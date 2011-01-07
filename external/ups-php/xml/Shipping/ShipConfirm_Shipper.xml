@@ -1,0 +1,16 @@
+		<Shipper>
+			<Name><![CDATA[{SHIPPER_NAME}]]></Name>
+			<AttentionName><![CDATA[{SHIPPER_NAME}]]></AttentionName>
+			<PhoneNumber><![CDATA[{SHIPPER_PHONE}]]></PhoneNumber>
+			<ShipperNumber><![CDATA[{SHIPPER_NUMBER}]]></ShipperNumber>
+			<Address>
+				<AddressLine1><![CDATA[{SHIPPER_ADDRESS_1}]]></AddressLine1>
+				<AddressLine2><![CDATA[{SHIPPER_ADDRESS_2}]]></AddressLine2>
+				<AddressLine3><![CDATA[{SHIPPER_ADDRESS_3}]]></AddressLine3>
+				<City><![CDATA[{SHIPPER_CITY}]]></City>
+				<StateProvinceCode><![CDATA[{SHIPPER_STATE}]]></StateProvinceCode>
+				<PostalCode><![CDATA[{SHIPPER_POSTAL_CODE}]]></PostalCode>
+				<PostcodeExtendedLow></PostcodeExtendedLow>
+				<CountryCode><![CDATA[{SHIPPER_COUNTRY_CODE}]]></CountryCode>
+			</Address>
+		</Shipper>

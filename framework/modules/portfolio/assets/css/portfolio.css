@@ -1,0 +1,11 @@
+.portfolio.showall .thumbnail {
+    float:left;
+    display:block;
+    border:1px solid #333;
+    margin-right:10px;
+    padding:3px;
+    background:#dedede;
+}
+.portfolio.showall .thumbnail img {
+    display:block;
+}

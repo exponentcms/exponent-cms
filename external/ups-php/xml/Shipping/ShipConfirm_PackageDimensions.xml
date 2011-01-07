@@ -1,0 +1,8 @@
+			<Dimensions>
+				<UnitOfMeasurement>
+					<Code>IN</Code>
+				</UnitOfMeasurement>
+				<Length>{PACKAGE_LENGTH}</Length>
+				<Width>{PACKAGE_WIDTH}</Width>
+				<Height>{PACKAGE_HEIGHT}</Height>
+			</Dimensions>

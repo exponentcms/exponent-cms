@@ -1,0 +1,50 @@
+.listingmodule .listings  {
+	display: block;
+	padding:5px;
+	width:100% ;
+}
+
+.listingmodule .item {
+	display: block;
+	border:1px solid #eeeeee;
+	margin:5px 0;
+	padding:5px;
+}
+
+.listingmodule .item .bodycopy {
+
+}
+
+.listingmodule .item h2 {
+	margin:0;
+}
+
+.listingmodule .item .listingimage {
+	float:left;
+	border:1px solid #444;
+	margin-right:10px;
+}
+
+.listingmodule .item a {
+	clear: both;
+}
+
+.listingmodule span.name  {
+	display: block;
+	width:100% ;
+	color:#996666;
+	font-size:13px;
+	font-weight:bold;
+}
+
+.listingmodule .moduleactions  {
+	clear:both;
+	display: block;
+	width:100% ;
+}
+
+.listingmodule.viewlisting .bodycopy img.listingimage  {
+	border:1px solid #666666;
+	margin-right:10px;
+	float:left;
+}

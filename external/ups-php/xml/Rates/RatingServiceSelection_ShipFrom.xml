@@ -1,0 +1,14 @@
+		<ShipFrom>
+			<CompanyName><![CDATA[{SHIPFROM_COMPANY_NAME}]]></CompanyName>
+			<AttentionName><![CDATA[{SHIPFROM_ATTN_NAME}]]></AttentionName>
+			<PhoneNumber><![CDATA[{SHIPFROM_PHONE}]]></PhoneNumber>
+			<Address>
+				<AddressLine1><![CDATA[{SHIPFROM_ADDRESS_1}]]></AddressLine1>
+				<AddressLine2><![CDATA[{SHIPFROM_ADDRESS_2}]]></AddressLine2>
+				<AddressLine3><![CDATA[{SHIPFROM_ADDRESS_3}]]></AddressLine3>
+				<City><![CDATA[{SHIPFROM_CITY}]]></City>
+				<StateProvinceCode><![CDATA[{SHIPFROM_STATE}]]></StateProvinceCode>
+				<PostalCode><![CDATA[{SHIPFROM_POSTAL_CODE}]]></PostalCode>
+				<CountryCode><![CDATA[{SHIPFROM_COUNTRY_CODE}]]></CountryCode>
+			</Address>
+		</ShipFrom>

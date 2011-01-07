@@ -1,0 +1,33 @@
+
+.loginmodule .box {
+	width: 45%;
+	float: left;
+	border: 2px solid #7C6F4A;
+	margin: 4px;
+	padding: 4px;
+	font-size: 85%;
+	height: 200px;
+	min-height: 200px;
+}
+
+.loginmodule .box h2 {
+	font-size: 138.5%;
+	font-family: Georgia,Georgia,serif;
+	font-weight: bold;
+	border-bottom: 1px dotted #7C6F4A;
+}
+
+.loginmodule .box a {
+	font-weight: bold;
+}
+
+.loginmodule .box .control {
+	margin: 0px 0px 3px 5px;
+	padding:0;
+}
+
+.loginmodule .control {
+    _border:0;
+    _background:none!important;
+}
+

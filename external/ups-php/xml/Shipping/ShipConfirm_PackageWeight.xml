@@ -1,0 +1,6 @@
+			<PackageWeight>
+				<UnitOfMeasurement>
+					<Code>LBS</Code>
+				</UnitOfMeasurement>
+				<Weight>{PACKAGE_WEIGHT}</Weight>
+			</PackageWeight>

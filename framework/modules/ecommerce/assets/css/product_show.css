@@ -1,0 +1,42 @@
+/****************  enlarged image  ***********************/
+.store.show .large-ecom-image {
+    float:left;
+    margin-right:20px;
+}
+
+/****************  swatches and thumbnails  ***********************/
+.store.show .thumbnails ul li {
+    list-style:none;
+    display:inline-block;
+    zoom:1;
+    margin-right:2px;
+    border:1px solid #555;
+}
+
+.store.show .swatches img {
+    display:block; 
+    /* get rid of the margin below the image */
+}
+
+
+.store.show .swatches ul li div {
+    position:absolute;
+    border:1px solid #333;
+    border-width:1px 2px 2px 1px;
+    background:#fff;
+    display:none;
+    margin-top:-20px;
+    margin-left:10px;
+}
+.store.show .swatches ul li:hover div {
+    display:block;
+}
+.store.show .swatches ul li div strong {
+    padding:0 0 2px 3px;
+    display:block;
+}
+
+/****************  general styles  ***********************/
+.store.show  .bodycopy {
+    clear:both;
+}

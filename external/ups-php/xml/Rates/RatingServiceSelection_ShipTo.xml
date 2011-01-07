@@ -1,0 +1,14 @@
+		<ShipTo>
+			<CompanyName><![CDATA[{SHIPTO_COMPANY_NAME}]]></CompanyName>
+			<AttentionName><![CDATA[{SHIPTO_ATTN_NAME}]]></AttentionName>
+			<PhoneNumber><![CDATA[{SHIPTO_PHONE}]]></PhoneNumber>
+			<Address>
+				<AddressLine1><![CDATA[{SHIPTO_ADDRESS_1}]]></AddressLine1>
+				<AddressLine2><![CDATA[{SHIPTO_ADDRESS_2}]]></AddressLine2>
+				<AddressLine3><![CDATA[{SHIPTO_ADDRESS_3}]]></AddressLine3>
+				<City><![CDATA[{SHIPTO_CITY}]]></City>
+				<StateProvinceCode><![CDATA[{SHIPTO_STATE}]]></StateProvinceCode>
+				<PostalCode><![CDATA[{SHIPTO_POSTAL_CODE}]]></PostalCode>
+				<CountryCode><![CDATA[{SHIPTO_COUNTRY_CODE}]]></CountryCode>
+			</Address>
+		</ShipTo>

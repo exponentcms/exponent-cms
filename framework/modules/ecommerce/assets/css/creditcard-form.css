@@ -1,0 +1,39 @@
+.creditcard-form {
+    position:relative;
+}
+.creditcard-form .control .label {
+    float:left;
+    width:130px;
+    text-align:right;
+    padding-right:10px;
+    color:#116C8D;
+}
+.creditcard-form .control input,
+.creditcard-form .control select {
+    border:2px solid #116C8D;
+}
+.creditcard-form .control select {
+    padding:3px;
+}
+#cc_numberControl input,
+#cc_typeControl select {
+    width:150px;
+}
+#cc_typeControl select {
+    width:160px;
+}
+.creditcard-form .control.htmlcontrol {
+    position:absolute;
+    top:120px;
+    left:220px;
+}
+
+#continue-checkout {
+    position:absolute;
+    right:10px;
+    bottom:10px;
+    _position:relative;
+    _margin-left:30px;
+}
+
+

@@ -1,0 +1,9 @@
+		<Package>
+			<Description><![CDATA[{PACKAGE_DESCRIPTION}]]></Description>
+			<PackagingType>
+				<Code>{PACKAGING_CODE}</Code>
+				<Description><![CDATA[{PACKAGING_DESCRIPTION}]]></Description>
+			</PackagingType>
+{PACKAGE_SIZE}
+			{PACKAGE_EXTRAS}
+		</Package>

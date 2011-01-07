@@ -1,0 +1,15 @@
+
+
+#sidebar .newsmodule h2 {
+	margin: 0px 5px 0px 5px;
+	padding-left:15px;
+	background:transparent url(../images/arrow-grey.gif) no-repeat 0 50%;
+}
+
+#sidebar .date {
+	font-size:90%;
+	color:#cccccc;
+	font-style:italic;
+	margin: 0px 5px 0px 5px;
+}
+

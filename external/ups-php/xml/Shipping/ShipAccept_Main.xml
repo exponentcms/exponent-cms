@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<ShipmentAcceptRequest>
+    <Request>
+        <TransactionReference>
+            <CustomerContext>Web Artillery UPS Shipping v1.0</CustomerContext>
+        </TransactionReference>
+        <RequestAction>ShipAccept</RequestAction>
+    </Request>
+    <ShipmentDigest>{SHIPMENT_DIGEST}</ShipmentDigest>
+</ShipmentAcceptRequest>

@@ -1,0 +1,46 @@
+
+.htmleditor_toolbarbutton,
+.editorcontrol_toolbarbutton {
+	float: left;
+	padding: 3px;
+}
+
+.editorcontrol_toobarbutton_wrapper {
+	float: left; 
+	display: block; 
+	border: 1px solid #AAAAAA; 
+	height: 26px; 
+	width: 24px;
+}
+
+.editorcontrol_toolboxbutton {
+	border : 2px white solid;
+}
+
+.editorcontrol_toolboxbutton:hover {
+	border : 2px red solid;
+}
+	
+.editorcontrol_toolboxbutton_selected {
+	background-color : gray;
+	border : 2px white solid;
+}
+	
+.editorcontrol_cursor {
+	float:left;
+	border:1px black solid;
+	background-color : white;
+	width:5px;
+	height:26px;
+}
+
+.editorcontrol_cursor_selected {
+	float:left;
+	background-color : blue;
+	width:5px;
+	height:26px;
+}
+	
+.clearfloat {
+	clear:both;
+}

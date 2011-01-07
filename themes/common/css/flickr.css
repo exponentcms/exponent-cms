@@ -1,0 +1,9 @@
+.flickr.showall {
+    overflow: auto;
+}
+.flickr.showall .item {
+	float: left;
+	width: 240px; 
+	padding:5px;
+	height: 280px;
+}

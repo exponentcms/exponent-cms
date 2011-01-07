@@ -1,0 +1,43 @@
+#hd .links.quicklinks {
+    position:absolute;
+    right:255px;
+    top:30px;
+    color:#fff;
+}
+
+#hd .links.quicklinks .module-actions {
+    position:absolute;
+    top:-30px;
+    left:-20px;
+    white-space:nowrap;
+}
+
+#hd .links.quicklinks .item-actions {
+    position:absolute;
+    bottom:-16px;
+    display:none;
+    white-space:nowrap;
+}
+
+#hd .links.quicklinks ul,
+#hd .links.quicklinks ul li {
+    margin:0;
+    padding:0;
+    text-align:right;
+}
+
+#hd .links.quicklinks ul li {
+    float:left;
+    position:relative;
+    margin-right:24px;
+}
+
+#hd .links.quicklinks ul li a.link {
+    color:#fff;
+    text-decoration:none;
+}
+
+#hd .links.quicklinks ul li:hover .item-actions {
+    display:block;
+}
+

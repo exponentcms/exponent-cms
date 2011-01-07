@@ -1,0 +1,36 @@
+# Don't show directory directory listings.
+Options -Indexes
+
+# Route requests to Exponent.
+DirectoryIndex index.php
+
+# Various rewrite rules.
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    
+    # To redirect all users to access the site WITH the 'www.' prefix,
+    # (http://example.com/... will be redirected to http://www.example.com/...)
+    # adapt and uncomment the following:
+    # RewriteCond %{HTTP_HOST} ^example\.com$ [NC]
+    # RewriteRule ^(.*)$ http://www.example.com/$1 [L,R=301]
+    #
+    # To redirect all users to access the site WITHOUT the 'www.' prefix,
+    # (http://www.example.com/... will be redirected to http://example.com/...)
+    # uncomment and adapt the following:
+    # RewriteCond %{HTTP_HOST} ^www\.example\.com$ [NC]
+    # RewriteRule ^(.*)$ http://example.com/$1 [L,R=301] 
+  
+    RewriteRule ^$ index.html [QSA]
+    RewriteRule ^([^.]+)$ $1.html [QSA]
+
+    # Kludge out certain file types that we don't want to try to route thru the eXp router.
+    RewriteCond $1 !^(.*\.css|.*\.js|.*\.png|.*\.pdf|.*favicon\.ico|robots\.txt|.*\.shtml|.*\.htc) [NC]
+
+    # Kludge out image files that we don't want to try to route thru the eXp router.
+    RewriteCond $1 !^(.*\.jpg|.*\.gif|.*\.png|.*\.jpeg|.*\.tiff|.*\.bmp) [NC]
+    
+    # These rules 
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^(.*)$ index.php [QSA,L]
+</IfModule>

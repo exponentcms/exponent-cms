@@ -1,0 +1,59 @@
+.top-nav {
+    width:100%;
+}
+
+.top-nav .yuimenubar {
+    border:0;
+    background:none;
+}
+
+.top-nav .yuimenubar .yuimenubaritem,
+.top-nav .yuimenubar .yuimenubaritemlabel {
+    border:0;
+}
+
+.top-nav .yuimenubar .yuimenubaritemlabel {
+    color:#fff;
+    font-size:16px;
+}
+
+.top-nav.yui-skin-sam .yuimenubarnav .yuimenubaritem-selected {
+    background:#480101;
+}
+
+.top-nav.yui-skin-sam .yuimenubarnav .yuimenubaritemlabel-selected {
+    margin-left:0;
+    border:0;
+}
+
+.top-nav.yui-skin-sam .yuimenubarnav .bd {
+    background:#0A3B4D;
+}
+
+.top-nav.yui-skin-sam .yuimenubarnav .yuimenuitemlabel {
+    color:#ffffff;
+}
+
+.top-nav.yui-skin-sam .yuimenubarnav .yuimenuitem-selected {
+    background:#480101;
+}
+
+/****************  sidenav  ***********************/
+
+#leftcol .children-only {
+    padding-bottom:10px;
+}
+
+.children-only ul,
+.children-only ul li {
+    list-style:none;
+    padding:0;
+    margin:0;
+}
+
+.children-only ul li {
+    padding:3px 0 3px 16px;
+    background:url(../images/nbul.gif) 0 50% no-repeat;
+}
+
+

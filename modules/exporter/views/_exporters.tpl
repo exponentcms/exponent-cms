@@ -1,0 +1,34 @@
+{*
+ * Copyright (c) 2004-2006 OIC Group, Inc.
+ * Written and Designed by James Hunt
+ *
+ * This file is part of Exponent
+ *
+ * Exponent is free software; you can redistribute
+ * it and/or modify it under the terms of the GNU
+ * General Public License as published by the Free
+ * Software Foundation; either version 2 of the
+ * License, or (at your option) any later version.
+ *
+ * GPL: http://www.gnu.org/licenses/gpl.txt
+ *
+ *}
+<div class="form_title">{$_TR.form_title}</div>
+<div class="form_header">{$_TR.form_header}</div>
+<table cellpadding="4" cellspacing="0" border="0" width="100%">
+	{foreach from=$exporters item=exporter key=impname}
+	<tr>
+		<td class="administration_modmgrheader"><b>{$exporter.name}</b> {$_TR.by|sprintf:$exporter.author}</td>
+	</tr>
+	<tr>
+		<td class="administration_modmgrbody">
+			{$exporter.description}
+			<hr size='1'/>
+			<a class="mngmntlink administration_mngmntlink" href="{link module=exporter action=page page=start exporter=$impname}">{$_TR.run}</a>
+		</td>
+	</tr>
+	<tr><td></td></tr>
+	{foreachelse}
+	<tr><td align="center"><i>{$_TR.no_exporters}</i></td></tr>
+	{/foreach}
+</table>

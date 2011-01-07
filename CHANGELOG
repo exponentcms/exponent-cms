@@ -1,0 +1,265 @@
+Exponent Content Management System
+Copyright (c) 2004-2007 OIC Group, Inc.
+===============================================
+
+Added / Fixed / changed for 0.97.0 Release Candidate 1
+-----------------------
+# YAHOO! User Interface Library upgraded to version 2.5.1
+# {$script} smarty plugin now handles external non-yui scripts
+# Exponent core Javascript are now housed and being migrated to the framework/core/js direcotry
+# Cleaned up some Resource module views
+# Added "skins" concept to themes/common, which, when mimicked in a users theme, overriding styles becomes very easy.
+# The style naming convention of the linklist module in quicklinks view conflicted in IE 6 with admin quicklinks styles adn has been changed to quick-links
+# Fixed bugs in the 4 YUI menu views, and adjusted styles to have common stylability
+# Re-written the 2 YUI menu plugins for the two views (YUI Top Nav JS and YUI Side Nav JS) that build the menus on Javascript.
+# Fixed firefox 3 mac scollers on the admin menus so they no longer show.
+# Some Coolwater theme style changes
+# Fixed a bug in the calendar module categories feature
+# Updated the admin create user to use the validator code
+# The minified stylesheets are now removed when a config change is made.
+# Spelling correction on the word CAPTCHA systemwide
+# Changed the sort of the RSS feeds and the list of "previous posts"
+# New confidentiality agreement config for Resource Module
+# Router maps commented out to reduce potential errors in routing for now
+# The Sitemap view for Navigation Module has been cleanup up and made more friendly in all senses.
+# A bug in the form builder module where viewing records would pitch an error in SEF mode.
+# Made the global table header style apply to <th>'s as well as <td>'s
+# The Image Gallery Module has been deprecated. A re-write will be out shortly.
+
+
+
+Added / Fixed for 0.97.0 Beta
+-----------------------
+
+# External Library Updates:
+# Smarty Templating Engine upgraded to version 2.6.19
+# FCKEditor upgraded to version 2.6
+# YAHOO! User Interface Library upgraded to version 2.5.1
+# Minify http://code.google.com/p/minify/ version 1.0.1 was added to the system
+# Swift Mailer version 3.3.3 has been added to subsytems
+# Flow Player has been added to /external for the Media Player Module
+
+# Interface:
+# Overall user interface and usability improvements including container module chrome and navigation management.
+# Administration control panel Quicklinks view for easier administration.
+# Further options and configuration added to Administration Default panel, including a Developer's menu.
+# Drag and Drop Hierarchy navigation management.
+# Full Search-Engine Friendly URL support.
+# JSCal date and time picker in newsmodule and calendarmadule have 
+# An automatic resizing mechanism has been added to the Image Gallery Module when changing thumbnail size
+
+# Theme:
+# CSS Engine optimized and tuned for easier debugging over the 0.97 Alpha.
+# Many default views cleaned up to adhere to new CSS conventions.
+# Many Accessibility and Standards Compliant adjustments to the system at large.
+# New Navigation module views taking advantage of YUI's Menu system.
+# exponent_theme_headerInfo() and exponent_theme_footerInfo() are now required in a theme's index.php and subtheme files. 
+# Drastic reduction in use of tables for site structure, namely in the forms subsystem.  Many navigation views have been converted to unordered lists as well.
+# Action Maps to map certain actions to a specific subtheme
+# The Image Gallery Module's views have been cleaned up slightly, and With Thumbnails view has been added taking advantage of YUI's panels as a popup
+
+
+# Developments:
+# Drastic speed improvements.
+# Form control helpers. Generate forms in your views with new SMARTY tags which intelligently insert needed tags to save you time.
+# Increased YUI integration.  Exponent will depend on only one external javascript library for a more solid development environment. 
+# {script} Smarty plugin to move javascript to the foot of the document.  Also will load YUI modules using YUI Loader.
+# Validation subsystem for validating forms.
+# Build up of the themes/common directory which encapsulates theme ambiguous CSS, images, and javascript.
+# Scaffolding for easy form and module creation.
+# Added stub function for exponent_getText() in subsystems/lang.php as a start to the lang system upgrades.
+# Sectional Administration Permission - This allows an admin to give a user(s) the ability to administration a page or set of pages.
+# Rewrite of upgrade scripts.  The installer will now show what scripts it ran and their completion status.
+# mysqli database subsystem - it's also been made the default.
+# Mediaplayer module.
+# Podcasting integrated into the Resources Module.
+# RSS aggregation integrated into the News Module.
+# Added the ability to tie (aggregate) multiple news or calendar module togther.
+# YouTube Module
+# Code Snippet Module - for adding javascript/html/flash, etc into a page without the GUI editors stripping it out.
+
+# Trimming:
+# moved some modules, language packs, and themes out of the core package and onto the contributions page on ExponentCMS.org  to reduce core release file size
+# The "Upload Image File" field has been removed from the Calendar Module's edit form. 
+
+# Bug Fixes:
+# TONS - see SVN commit logs for more details.
+
+Added / Fixed in 0.97.0 -prealpha-1
+-----------------------
+# Added SEF URL code via the new Exponent Router.  
+# CSS Minify - We are now using google Minify class to minify the CSS and push it all into one file which is then included in themes, in some cases this significantly reduces the http requests needed by a theme.
+# changed the call to {link} to $section->link to work with SEF URLs
+# New Mail subsystem
+# Added exponent_users_isLoggedIn() to subsystems/user.php
+# There was a bug in this plugin where an extra slash was being added to the paths of the javascript files being included which caused them to fail to include.  Fixed this.
+# Yui menubar top nav
+# Admin Toolbar.  What else can I say?
+# New smarty level form controls & basic scaffolding
+# Adding a handful of new smarty plugins
+# Changed the style to bold for the user attribution in the weblog default view.
+# Removing the Danish and German language packs from the base install.  These will now downloadable on an as needed basis.
+# Added the exponent_core_getCurrencySymbol function
+# Added exponent_theme_showAction() to allow actions to be run directly from a theme.
+# Upgraded to YUI 2.3
+# Lots of other bug fixes and tweaks.
+
+Added / Fixed in 0.96.6 GA
+-----------------------
+# Added ability to specify the quality of the image generated by the thumbnailer.
+# Added MySQLi Database option. Use the MySQLi database interface for improved MySQL performance.
+# Added new i18n strings.
+# Added database encoding check to the createTable function in MySQL class.
+# Fixes to links generated in search results.
+# Fixed session timeout check comparing against the string "true" instead of the value true.
+# Fixed bug in news module with permissions regardling the workflow system.
+# Fixed bug in resource module download script. Now sends proper headers for download which are recognized by all modern browsers.
+# Fixed bug in EditorControl which would cause installation problems on PHP4 servers.
+# Fixed bug which would cause pagination to show an extra, empty page under certain circumstances.
+# Fixed a bug which was preventing links from being deleted from linklist module
+# Fixed issue where an upgrade from 96.3 or 96.5 to 96.6 would cause a calendar in the Monthly view to not be shown.
+# Fixed a bug where a session could timeout mid-post when saving on the bbmodule.
+# Fixed bugs in file manager which was causing deletes to not be processed correctly.
+# Removed Image Workshop module and Directory Listing module from release.
+# Contact form will now use the sender's email address if available to allow for direct replies.
+# Install Wizard will remove improperly named wizard_pages file from datatypes directory which existed in 96.6 alpha
+# Icons converted to gif format for better load performance in Internet Explorer.
+# Many other various cleanups in views.
+
+Added / Fixed in 0.96.6 Beta
+-----------------------
+# New editors!  The single most requested feature is now  implemented.  Not only do we have a new and better editor, but we have three new and better editors to choose from - FCKEditor, Xinha, and TinyMCE.  As of the alpha release, we are only shipping FCK for file size reasons, and TinyMCE needs a bit more work.  When 0.96.6 hits stable, we will offer all three editors either packaged with the core, or as add-ons.
+# New image management interface.  Image management has taken a step forward.  Existing image managers are still supported, but you can now upload your image via the editor image selection interface, which saves quite a few clicks.  Future: We have some sketches completed for the full Media Manager, which will centralise all resource upload, download, and manipulation into a very kick-butt, AJAXed interface.
+# Tags.  Our initial implementation of technorati style tags have been added to the calendar, news, and weblog modules.
+# User signup notification.  Added configuration to send email notification to site admin when new user signsup. Also email the user signing up if configured to do so.
+# Various underlying code changes to speed things up and/or make long-term development easier.
+# New Guestbook module integrated (contribution)
+# New RSS Feed displayer module integrated (contribution)
+# Many weblog module enhancements.
+# Added 'Can Download' permissions to the resource managers (authenticated downloads).
+# YUI (Yahoo's AJAX and CSS library) integrated.
+# Several new themes, including a base Barebones theme using YUI Grids for pure CSS driven templates
+# "Featured Items" field and views for Calendar & News mods.
+# Added Codemap Module (aka Roadmap module)
+# Added the Article module to the base install - It was an add-on module
+# Added the Wizard Module to Exponent.
+# Added in RSS support as default instead of addon patch
+# Replaced missing i18n strings all around.
+# Added two views to the Textmodule. The new views are "With Header" and "Without Header".
+# Added the Tasklist module to the base install (aka Todo Module).
+# Added the Slideshow Module to the base install.
+# Added the Simple Poll Module to the base install.
+# Added a new action, View All, to the Content Rotator module
+# Added the Page module to the base install.
+# RSSified the newsmodule
+# Many new navigation Module views Added
+    * Children Only 2
+    * Children Only 3
+    * CSS Menu
+    * Full CSS Menu
+    * Site Map
+    * Expanding Heirarchy - Children Only (check this one out if you get a chance!)
+    * Enhanced version of the Breadcrumb.tpl
+# Misc login Module changes.
+# Added action "showuserprofile".
+# Added Listing Module to the base install - It was an add-on module.
+# Added Link List Module (allows users to easily create a list of web links).
+# Added Imageworkshop module: this module is still in development. 
+# Added Greeking Module.
+# Form Module changes:
+    * Added form.validate.js into core (or back in).
+# Added FAQ module to the base install.
+    * Added table of contents view (as seen on this www.ExponentCMS.org).
+# Calendar Module
+    * Added RSS.
+    * Added Search action.
+# Added Directory Listing Module.
+# Added the new BBmodule (a.k.a. Forum) as seen on www.ExponentCMS.org
+# Added the Image Gallery module along with the "View All" view and the "View All with Popups"
+# Added Smarty plugin for function.currency_symbol.php for Currency Symbol.
+# Added Smarty plugin function.makecase.php for case modification of strings.
+# Added Smarty plugin function.rsslink.php for making an RSS link.
+# Container Module changes
+    * Added infopopup functionality & view
+    * New views
+          o Two Column Homepage
+          o Home
+          o Rightcolumn
+# Replaced default view for the search module with one that is more Googlish.
+# Added Danish language pack.
+# Many other minor improvements (too many to list) on a varitey of modules and views.
+
+Added / Fixed in 0.96.5
+-----------------------
+0.96.5	Added _mainteanance.tpl language file. [FD]
+0.96.5  A php injection problem is fixed in the bannermodule [HW]
+0.96.5  Added a final confirmation message to the Contact Form module (which is NOT being deprecated, contrary to popular belief)
+0.96.5  Added a notification to the connect code for the database (mysql) simular as phpReview [HW]
+0.96.5  Added a view link for Resources Module search results.
+0.96.5  Added ability to name archive of exported files, much like the EQL exporter lets you name the EQL file.
+0.96.5  Added an eDebug function to do preformated outputing of objects/arrays. [FD]
+0.96.5  Added charsets to htmlentities calls (for better i18n support)
+0.96.5  Added fix in block.paginate.php Smarty plugin to fix bug related to random insertion of PHPSESSID [PB]
+0.96.5  Added full system0.96.5 level i18n support [JH, FD, HW]
+0.96.5  Added gz compression to the archive created when exporting uploaded files through the Uploaded Files Exporter (previsouly, they were just straight tars, and rather large)
+0.96.5  Added new Logout view for the loginmodule [AK]
+0.96.5  Added optional orderby parameter to mysql.php selectObject and selectObjects function [FD]
+0.96.5  Added the ability to sort Address Book entries by name.
+0.96.5  Added the option to open Navigational pages in a new window.
+0.96.5  Added unlinking in installer of two deprecated files in administrationmodule/tasks [AK]
+0.96.5  Added username checking to parse out leading and trailing spaces and disallow names less than 4 chars [FD]
+0.96.5  Added version forcing to the EQL handler functions (backup subsystem)
+0.96.5  Better display name generation for the login module, in case the user has no first or last name.
+0.96.5  Captcha: Typecasted variables for the width & height.
+0.96.5  Consolidated all file0.96.5 upload error handling into one place.
+0.96.5  Corrected incomplete sentence in System Info page of Administration Control Panel
+0.96.5  Enhanced Jacob Mesu's username checking in the login module to use the existing security check in the security subsystem [FD]
+0.96.5  Fixed a blank page problem when logging in through login.php without visiting the site first.  Upon successful login, the user will be taken to the Default section.
+0.96.5  Fixed bug in format_date plugin that caused misinterpretation of some strftime arguments on Windows.
+0.96.5  Fixed EQL download / save code for Windows browsers.
+0.96.5  Fixed existing content picker 'No Content' error message [FD]
+0.96.5  Fixed Monthly by Day recurrence bugs in Calendar module
+0.96.5  Fixed some newline handling bugs in the EQL functions (backup subsystem)
+0.96.5  Fixed some strange bugs related to grant and revocation of Acting Administrator status.
+0.96.5  Fixed the '$message' bug in the SMTP subsystem
+0.96.5  Fixed the phantom last section bug, where a user is taken to the last page they visited, even if it was days ago.
+0.96.5  Fixed the 'Unable to Add Codebase' bug in the MultiSite Manager (along with some other issues)
+0.96.5  Fixed two issues with Daylight Savings Time in the calendar module [FD]
+0.96.5  Fixed undefined index in administrationmodule/actions/configsite.php [FD]
+0.96.5  Fixed weblog bug so that comments can be edited.
+0.96.5  Image module: Directory disclosure fix
+0.96.5  Image module: Fixed a security issue that parsed php within the image code
+0.96.5  Increased field length of phone numbers in Address Book entries to 15 characters (from 10) for non0.96.5 US phone numbers
+0.96.5  Merged various SMTP subsystem enhancements [FD]
+0.96.5  Moved title in Text Module views so that it appears above the edit icons (since it cannot be edited).
+0.96.5  Removed unused Caching code and added new navigation cacheing for better performance [JH & HW]
+0.96.5  Resource module: Checks for the excistance of files before a link to a file is shown [HW]
+0.96.5  Security update: Typecasted all variables where appropriate [HW & FD]
+0.96.5  The pathos lib is fixed to only accept typecasted sections [HW].
+0.96.5  Updated the Private Message Center so that error conditions on the form are handled a little more gracefully (especially with respect to recipient lists)
+0.96.5  URL validation now being performed in Address Book for website, and http:// prepended if something seems off.  This fixes some relative path bugs when linking.
+0.96.5  WAMP platform fix in template.php subsystem.
+0.96.5  Incorrect dates saved for recurring monthly by day events. (adam)
+0.96.5  After closing browser, user remains logged-in (adam)
+0.96.5  Admin Module: System Info Export fails (adam)
+0.96.5  Checksum files incorrect (adam)
+0.96.5  Admin Module: No restore defaults for File Types (adam)
+0.96.5  Upgrade scenario fails (adam)
+
+
+Limitations in Exponent 0.96.5
+
+You may enter content in whatever language you choose, but you can not enter multi-language content and switch between them as of yet - this is coming in a future release. 
+
+
+426	Admin Module: Spider Site complains about Exponent File Manager
+431	The Exponent equivalent of "su - <someuser>"
+432	Weekly view show events of whole month
+433	After changing resource title, its not updated
+434	Loop is reserved word in mysql 5.0
+449	BBModule: improve quoting(more intutitive)
+451	Can't connect to the database via sock path
+452	Resource Manager: Upload resource link is hidden in One Click Download mode
+453	Resource Manager: Download link is hidden in Preview mode
+454	Resource Manager: settings via Module Configuration do not appear
+455	Listing module: Damaged non-ascii characters

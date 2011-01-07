@@ -1,0 +1,46 @@
+/**
+* Cintainer Module
+*/
+
+
+/**
+* Two Column View
+*/
+.containermodule.two-column {
+    border:0;
+}
+.containermodule.two-column .twocolcontainerleft {
+    width:49%;
+    float:left;
+}
+.containermodule.two-column .twocolcontainerright {
+    width:49%;
+    float:right;
+}
+
+div.containermodule.main-wrapper {
+    border-width:0 1px 1px 1px;
+    padding:0 0 5px 0;
+}
+
+
+
+
+/**
+* Three Column View
+*/
+.containermodule.three-column .col1,
+.containermodule.three-column .col2,
+.containermodule.three-column .col3 {
+    width:31%;
+    float:left;
+}
+
+.containermodule.three-column .col2 {
+    margin-left:1.5em;
+}
+
+.containermodule.three-column .col3 {
+    width:32%;
+    float:right;
+}

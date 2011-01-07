@@ -1,0 +1,6 @@
+	<Shipment>
+		<Description>{SHIPMENT_DESCRIPTION}</Description>
+		<Service>
+			<Code>{SHIPPING_CODE}</Code>
+		</Service>
+{SHIPMENT_CONTENT}	</Shipment>

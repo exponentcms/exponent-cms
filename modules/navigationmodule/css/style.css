@@ -1,0 +1,52 @@
+a.side_link {
+
+}
+
+a.side_link_active {
+        font-style: bold;
+}
+
+a.activecrumb {
+	font-style: bold;
+}
+
+a.breadcrumb {
+
+}
+
+#breadcrumb {
+        clear: both;
+        padding-top: 2px;
+        padding-bottom: 7px;
+        padding-left: 12px;
+        border-bottom: 1px solid #CCCCCC;
+        font-family: Verdana, Arial, Helvetica, sans-serif;
+        font-size: 10px;
+        text-decoration: none;
+        background-image: url(images/01-breadcrum-backgr.jpg);
+        background-repeat: repeat-x;
+        background-position: left bottom;
+}
+
+div.breadcrumb {
+        font-family: Verdana, Arial, Helvetica, sans-serif;
+        font-size: 10px;
+        text-decoration: none;
+        color: #C4C4C4;
+}
+
+div.breadcrumb a {
+        font-family: Verdana, Arial, Helvetica, sans-serif;
+        font-size: 10px;
+        text-decoration: none;
+}
+div.breadcrumb a:visited {
+        font-family: Verdana, Arial, Helvetica, sans-serif;
+        font-size: 10px;
+        text-decoration: none;
+}
+div.breadcrumb a:hover {
+        font-family: Verdana, Arial, Helvetica, sans-serif;
+        font-size: 10px;
+        text-decoration: underline;
+}

@@ -1,0 +1,57 @@
+<?php
+
+define("DEVELOPMENT",0);
+define("DB_ENGINE",'mysql');
+define("DB_ENCODING",'utf8');
+define("DB_HOST",'localhost');
+define("DB_PORT",'3306');
+define("DB_NAME",'not_configured');
+define("DB_USER",'not_configured');
+define("DB_PASS",'not_configured');
+define("DB_TABLE_PREFIX",'exponent');
+define("SMTP_USE_PHP_MAIL",'0');
+define("SMTP_SERVER",'localhost');
+define("SMTP_PORT",'25');
+define("SMTP_AUTHTYPE",'NONE');
+define("SMTP_USERNAME",'');
+define("SMTP_PASSWORD",'');
+define("SMTP_FROMADDRESS",'website@localhost');
+define("SITE_TITLE",'My New Exponent Site');
+define("SITE_ALLOW_REGISTRATION",'0');
+define("SITE_USE_CAPTCHA",'1');
+define("SITE_404_HTML",exponent_unhtmlentities('&lt;h3&gt;Resource Not Found&lt;/h3&gt;The resource you were looking for wasn&#039;t found.  It may have been deleted, or moved.'));
+define("SITE_403_REAL_HTML",exponent_unhtmlentities('&lt;h3&gt;Authorization Failed&lt;/h3&gt;You are not allowed to perform this operation.'));
+define("SITE_KEYWORDS",'');
+define("SITE_DESCRIPTION",'');
+define("SITE_DEFAULT_SECTION",'1');
+define("SITE_WYSIWYG_EDITOR",'FCKeditor');
+define("SESSION_TIMEOUT_ENABLE",'false');
+define("SESSION_TIMEOUT",'3600*5');
+define("SESSION_TIMEOUT_HTML",exponent_unhtmlentities('&lt;h3&gt;Expired Login Session&lt;/h3&gt;Your session has expired, because you were idle too long.  You will have to log back into the system to continue what you were doing.'));
+define("ENABLE_SSL",'0');
+define("SSL_URL",'https://my.domain/');
+define("NONSSL_URL",'http://my.domain/');
+define("FILE_DEFAULT_MODE_STR",'0777');
+define("DIR_DEFAULT_MODE_STR",'0777');
+define("USE_LANG",'eng_US');
+define("ENABLE_WORKFLOW",'0');
+define("SEF_URLS",'0');
+define("MAINTENANCE_MODE",'0');
+define("MAINTENANCE_MSG_HTML",exponent_unhtmlentities('This site is currently down for maintenance.'));
+define("DISPLAY_THEME_REAL",'basetheme');
+define("DISPLAY_ATTRIBUTION",'username');
+define("DISPLAY_DATETIME_FORMAT",'%D -- %T');
+define("DISPLAY_DATE_FORMAT",'%D');
+define("DISPLAY_TIME_FORMAT",'%l:%M%p');
+define("DISPLAY_START_OF_WEEK",'0');
+define("USER_REGISTRATION_SEND_NOTIF",'0');
+define("USER_REGISTRATION_NOTIF_SUBJECT",'New User Registration From Website');
+define("USER_REGISTRATION_ADMIN_EMAIL",'');
+define("USER_REGISTRATION_SEND_WELCOME",'0');
+define("USER_REGISTRATION_WELCOME_SUBJECT",'Welcome to our website!');
+define("USER_REGISTRATION_WELCOME_MSG",'');
+
+?>
+<?php
+define("CURRENTCONFIGNAME","Default");
+?>

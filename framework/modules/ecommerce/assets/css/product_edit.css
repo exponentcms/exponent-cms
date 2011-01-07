@@ -1,0 +1,89 @@
+/****************  images tab  ***********************/
+.radiogroup-control table {
+    margin:0;
+}
+.radiogroup-control table td,
+.imngfuncbody table td {
+    padding:0;
+}
+.radiogroup-control table td .control {
+    margin:0;
+    padding:0;
+}
+
+.imngfuncbody {
+    padding:3px;
+    border:1px solid #999;
+    background:#dedede;
+}
+
+.imngfuncbody .control {
+    padding:0;
+}
+
+
+/****************  replated products  ***********************/
+
+#relprod .control {
+    height:20px;
+    padding:0;
+    margin:0;
+}
+
+#relatedItemsList li {
+    border-bottom:1px dotted #777;
+    padding:4px;
+}
+
+/********************* options ******************************/
+.store.edit .hd {
+    margin:0;
+    position:relative;
+    background:url(../images/ecom-sprite.png) repeat-x 0 -44px;
+    border:1px solid #b6cdde;
+    -moz-border-radius:2px;
+    -webkit-border-radius:2px;
+
+}
+
+.store.edit .hd a.collapse {
+    background:url(../images/ecom-sprite.png) repeat-x -4px -386px;
+    position:absolute;
+    text-indent:20px;
+    overflow:hidden;
+    width:14px;
+    height:14px;
+    display:block;
+    bottom:1px;
+    right:1px;
+}
+
+.store.edit .hd a.expand {
+    background:url(../images/ecom-sprite.png) repeat-x -4px -413px;
+    position:absolute;
+    text-indent:20px;
+    overflow:hidden;
+    width:14px;
+    height:14px;
+    display:block;
+    bottom:1px;
+    right:1px;
+}
+
+.store.edit .hd h2 {
+    margin:0;
+    color:#103684;
+    padding:8px 0 8px 33px;
+    font-size:14px;
+/*    background-image:url(../images/ecom-sprite.png);*/
+    background-repeat:no-repeat;
+}
+
+.store.edit div.bd {
+    margin-bottom:5px;
+    overflow:hidden;
+}
+
+.store.edit div.collapsed {
+    height:0;
+}

@@ -1,0 +1,4 @@
+		<LabelStockSize>
+			<Height>{LABEL_STOCK_HEIGHT}</Height>
+			<Width>{LABEL_STOCK_WIDTH}</Width>
+		</LabelStockSize>

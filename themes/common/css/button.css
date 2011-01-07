@@ -1,0 +1,110 @@
+/****************  ecom links  ***********************/
+
+a.exp-ecom-link {
+    display:inline-block;
+    zoom:1;
+    height:25px;
+    position:relative;
+    color:#fff;
+    background:url(../skin/button/exp-btn.png) no-repeat;
+    padding:0 0 0 10px;
+    text-decoration:none;
+    margin-right:10px;
+    _margin-right:0px;
+}
+a.exp-ecom-link strong {
+    display:inline-block;
+    zoom:1;
+    margin-right:-10px;
+    _margin-right:0px;
+    padding-right:15px;
+    height:25px;
+    background:url(../skin/button/exp-btn.png) no-repeat 100% 0;
+}
+a.exp-ecom-link em {
+    display:block;
+    margin:3px 0;
+    text-shadow:.5px .5px #333;
+}
+/* hover */
+
+a.exp-ecom-link:hover {
+    background-position:0 -27px;
+}
+a.exp-ecom-link:hover strong {
+    background-position:100% -27px;
+}
+
+/* dissabled */
+
+a.exp-ecom-link-dis {
+    display:inline-block;
+    zoom:1;
+    height:25px;
+    position:relative;
+    color:#fff;
+    background:url(../skin/button/exp-btn.png) no-repeat 0 -108px;
+    padding:0 0 0 10px;
+    text-decoration:none;
+    margin-right:10px;
+}
+a.exp-ecom-link-dis strong {
+    display:inline-block;
+    zoom:1;
+    margin-right:-10px;
+    padding-right:15px;
+    height:25px;
+    background:url(../skin/button/exp-btn.png) no-repeat 100% -108px;
+}
+a.exp-ecom-link-dis em {
+    display:block;
+    margin:3px 0;
+    text-shadow:.5px .5px #fff;
+    color:#777;
+}
+
+
+/****************  general button  ***********************/
+
+a.btn {
+    display:inline-block;
+    zoom:1;
+    height:25px;
+    position:relative;
+    color:#fff;
+    background:url(../skin/button/exp-btn.png) no-repeat;
+    padding:0 0 0 10px;
+    text-decoration:none;
+    margin-right:10px;
+}
+a.btn strong {
+    display:inline-block;
+    zoom:1;
+    margin-right:-10px;
+    padding-right:15px;
+    height:25px;
+    background:url(../skin/button/exp-btn.png) no-repeat 100% 0;
+}
+a.btn em {
+    display:block;
+    margin:3px 0;
+}
+/* hover */
+
+a.btn:hover {
+    background-position:0 -27px;
+}
+a.btn:hover strong {
+    background-position:100% -27px;
+}
+
+/* dissabled */
+
+a.btn:hover {
+    background-position:0 -27px;
+}
+a.btn:hover strong {
+    background-position:100% -27px;
+}
+
+

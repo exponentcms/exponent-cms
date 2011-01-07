@@ -1,0 +1,257 @@
+/****************  header styles  ***********************/
+.info-header {
+    border-bottom:2px dotted #19396C;
+    margin:10px 0;
+    padding:8px;
+}
+
+
+.info-header h1 {
+    margin:0;
+}
+
+.info-header .related-actions {
+    float:right;
+}
+
+
+/**************** various icon links in the chrome  ***********************/
+a.helplink {
+    display:inline-block;
+    zoom:1;
+    padding:4px 5px 4px 20px;
+    background:url(../images/exp-admin-sprite.png) no-repeat 0 -116px;
+}
+
+a.managemodules {
+    display:inline-block;
+    zoom:1;
+    padding:4px 5px 4px 25px;
+    background:url(../images/exp-admin-sprite.png) no-repeat 3px -386px;
+}
+
+a.selectall {
+    display:inline-block;
+    zoom:1;
+    padding:4px 5px 4px 25px;
+    background:url(../images/exp-admin-sprite.png) no-repeat 3px -415px;
+}
+
+a.selectnone {
+    display:inline-block;
+    zoom:1;
+    padding:4px 5px 4px 25px;
+    background:url(../images/exp-admin-sprite.png) no-repeat 3px -445px;
+}
+
+
+/****************  active / inactive  ***********************/
+
+a.inactive,
+span.active {
+    display:block;
+    width:16px;
+    padding-top:16px;
+    height:0;
+    overflow:hidden;
+    background:url(../images/exp-admin-sprite.png) no-repeat 0px -540px;
+}
+
+span.active {
+    display:block;
+    width:16px;
+    padding-top:16px;
+    height:0;
+    overflow:hidden;
+    background:url(../images/exp-admin-sprite.png) no-repeat 0px -570px;
+}
+
+/****************  administrative action links  ***********************/
+
+a.add,
+a.edit,
+a.revisions,
+a.delete,
+a.reranklink,
+a.view {
+    padding:3px 3px 3px 20px;
+    display:inline-block;
+    *display:inline;
+    zoom:1;
+    background: url(../images/add.png) no-repeat 0 50%;
+}
+
+a.add {
+    background: url(../images/add.png) no-repeat 0 50%;
+}
+
+a.edit {
+    text-transform:capitalize;
+    background: url(../images/edit.png) no-repeat 0 50%;
+}
+
+a.revisions {
+    background: url(../images/revisions.png) no-repeat 0 50%;
+}
+
+a.delete {
+    text-transform:capitalize;
+    background: url(../images/delete.png) no-repeat 0 50%;
+}
+
+a.reranklink {
+    background: url(../images/rerank.png) no-repeat 0 50%;
+}
+
+a.view {
+    background: url(../images/view.png) no-repeat 0 50%;
+}
+
+/****************  loading div style  ***********************/
+
+.loadingdiv {
+    text-align:center;
+    padding:20px 0 60px 0;
+    color:#333;
+    font-weight:bold;
+    font-style:italic;
+    background:url(../images/laoding1.gif) no-repeat 50% 50%;
+}
+
+/****************  tabview admin  ***********************/
+
+.exp-skin-tabview .yui-navset-top .yui-nav li {
+    display:inline-block;
+    zoom:1;
+    *display:inline;
+    list-style:none;
+    border:0;
+    margin-bottom:0;
+    padding:0;
+}
+.exp-skin-tabview .yui-navset-top .yui-nav li a {
+    text-decoration:none;
+    display:inline-block;
+    cursor:pointer;
+    padding-right:4px;
+    background:url(../images/tabs/tab-norm-r.gif) no-repeat 100% 0;
+}
+.exp-skin-tabview .yui-navset-top .yui-nav li em {
+    display:inline-block;
+    padding:5px 4px 4px 8px;
+    color:#626261;
+    background:url(../images/tabs/tab-norm-l.gif) no-repeat;
+}
+.exp-skin-tabview .yui-navset-top .yui-nav li a:hover {
+    text-decoration:none;
+    display:inline-block;
+    cursor:pointer;
+    padding-right:4px;
+    background:url(../images/tabs/tab-hov-r.gif) no-repeat 100% 0;
+}
+.exp-skin-tabview .yui-navset-top .yui-nav li a:hover em {
+    display:inline-block;
+    padding:5px 4px 4px 8px;
+    color:#2d2b28;
+    background:url(../images/tabs/tab-hov-l.gif) no-repeat;
+}
+.exp-skin-tabview .yui-navset-top .yui-nav li.selected a,
+.exp-skin-tabview .yui-navset-top .yui-nav li.selected a:hover {
+    background:url(../images/tabs/tab-cur-r.gif) no-repeat 100% 0;
+    
+}
+.exp-skin-tabview .yui-navset-top .yui-nav li.selected em,
+.exp-skin-tabview .yui-navset-top .yui-nav li.selected a:hover em {
+    background:url(../images/tabs/tab-cur-l.gif) no-repeat;
+    padding:4px 6px 4px 10px;
+    color:#ffffff;
+}
+.exp-skin-tabview .yui-nav {
+    padding:0;
+    margin:0 0 0 10px;
+}
+.exp-skin-tabview .yui-navset-top .yui-nav ul {
+    padding:0;
+    margin:0;
+}
+
+.exp-skin-tabview .yui-content {
+    padding:10px 0;
+    margin:0;
+    border:2px solid #071633;
+    border-width: 2px 0 0 0;
+
+}
+
+.exp-skin-tabview .yui-hidden {
+    display:none;
+}
+
+
+/****************  tables  ***********************/
+
+.exp-skin-table table,
+table.exp-skin-table {
+	border-collapse:separate;
+	border-spacing:0;
+	margin:0 0 1em 0;
+	color:#000;
+	border-bottom:1px solid #523A0B;
+	width: 100%;
+}
+
+
+.exp-skin-table thead th,
+.exp-skin-tablethead td,
+.exp-skin-tabletfoot th,
+.exp-skin-tabletfoot td {
+	border:1px solid #523A0B;
+	border-width:1px 0;
+	background:#EBE5D9;
+}
+.exp-skin-table th {
+	font-weight:bold;
+	line-height:normal;
+	padding:5px;
+	text-align:left;
+}
+.exp-skin-table tbody th,
+.exp-skin-table td {
+	padding:0.25em 0.5em;
+	text-align:left;
+	vertical-align:top;
+	}
+.exp-skin-table tbody th {
+	font-weight:normal;
+	white-space:nowrap;
+	}
+.exp-skin-table tbody td,
+.exp-skin-table tbody th {
+	border:1px solid #fff;
+	border-width:1px 0;
+	}
+.exp-skin-table tbody tr.odd th,
+.exp-skin-table tbody tr.odd td {
+	border-color:#EBE5D9;
+	background:#F7F4EE;
+	}
+.exp-skin-table tbody tr:hover td,
+.exp-skin-table tbody tr:hover th {
+	background:#d5e3f3;
+	border-color:#999;
+	border-style:dotted;
+}
+.exp-skin-table caption {
+	font-family:Georgia,Times,serif;
+	font-weight:normal;
+	font-size:1.4em;
+	text-align:left;
+	margin:0;
+	padding:0.5em 0.25em;
+}
+
+/****************  some form stuff  ***********************/
+
+.control input.title {
+    width:98%;
+}

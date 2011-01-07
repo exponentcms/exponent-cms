@@ -1,0 +1,23 @@
+a.exp-ecom-link.next {
+    float:right;
+}
+
+.order-total {
+    float:right;
+}
+
+.billinginfo {
+    float:left;
+}
+
+.shippinginfo {
+    clear:both;
+}
+
+.confirmationlinks {
+    padding:5px;
+    border:1px solid #aaaaff;
+    background:#eeeeff;
+    -moz-border-radius:16px;
+    margin-bottom:10px;
+}

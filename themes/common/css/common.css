@@ -1,0 +1,149 @@
+/* Gets rid of the border applied to management icons */
+/* If needed, add borders to images on a lower level */
+a img {
+	border:none;
+}
+
+a.add {
+    padding:0 0 0 20px;
+    background: url(../skin/actions/add.png) no-repeat 0 50%;
+}
+
+a.edit {
+    padding:0 0 0 20px;
+    background: url(../skin/actions/edit.png) no-repeat 0 50%;
+}
+
+a.delete {
+    padding:0 0 0 20px;
+    background: url(../skin/delete.png) no-repeat 0 50%;
+}
+
+a.reranklink {
+    padding:0 0 0 20px;
+    background: url(../skin/actions/rerank.png) no-repeat 0 50%;
+}
+
+a.view {
+    padding:0 0 0 20px;
+    background: url(../skin/actions/view.png) no-repeat 0 50%;
+}
+
+a.readmore {
+	padding-left: 15px;
+    background-image: url(../skin/readmore.gif);
+    background-repeat: no-repeat;
+}
+a.readmore:hover {
+	background-image: url(../skin/readmore.gif);
+	background-repeat: no-repeat;
+}
+
+a.addnews{
+	padding:2px 0 2px 20px;
+	background:url(../skin/addnews.png) no-repeat 0 50%;
+}
+
+a.expirednews{
+	padding:2px 0 2px 20px;
+	background:url(../skin/expirednews.png) no-repeat 0 50%;
+}
+a.download {
+	padding:2px 0 2px 20px;
+	background:url(../skin/save.png) no-repeat 0 50%;
+}
+
+a.viewmorenews{
+	padding:2px 0 2px 20px;
+	background:url(../skin/viewallnews.png) no-repeat 0 50%;
+	_background:url(../skin/viewallnews.gif) no-repeat 0 50%;
+}
+
+a.rsslink {
+    background:url(../skin/feed-icon.png) no-repeat 3px 50%;
+    padding-left:18px;
+}
+
+a.printer-friendly-link {
+    padding:2px 0 2px 20px;
+	background:url(../skin/print.png) no-repeat 0 50%;
+	_background:url(../skin/print.gif) no-repeat 0 50%;
+}
+
+.hide {
+    display:none;
+}
+
+.hideButton {
+    display:none;
+}
+
+.loadingdiv {
+    text-align:center;
+    padding:20px 0 60px 0;
+    color:#333;
+    font-weight:bold;
+    font-style:italic;
+    background:url(../skin/loading/laoding1.gif) no-repeat 50% 50%;
+}
+
+/**************    TABLE SKIN   *********************************/
+.exp-skin-table table,
+table.exp-skin-table {
+	border-collapse:separate;
+	border-spacing:0;
+	margin:0 0 1em 0;
+	color:#000;
+	border-bottom:1px solid #523A0B;
+	width: 100%;
+}
+
+
+.exp-skin-table thead th,
+.exp-skin-tablethead td,
+.exp-skin-tabletfoot th,
+.exp-skin-tabletfoot td {
+	border:1px solid #523A0B;
+	border-width:1px 0;
+	background:#EBE5D9;
+}
+.exp-skin-table th {
+	font-weight:bold;
+	line-height:normal;
+	padding:5px;
+	text-align:left;
+}
+.exp-skin-table tbody th,
+.exp-skin-table td {
+	padding:0.25em 0.5em;
+	text-align:left;
+	vertical-align:top;
+	}
+.exp-skin-table tbody th {
+	font-weight:normal;
+	white-space:nowrap;
+	}
+.exp-skin-table tbody td,
+.exp-skin-table tbody th {
+	border:1px solid #fff;
+	border-width:1px 0;
+	}
+.exp-skin-table tbody tr.odd th,
+.exp-skin-table tbody tr.odd td {
+	border-color:#EBE5D9;
+	background:#F7F4EE;
+	}
+.exp-skin-table tbody tr:hover td,
+.exp-skin-table tbody tr:hover th {
+	background:#d5e3f3;
+	border-color:#999;
+	border-style:dotted;
+}
+.exp-skin-table caption {
+	font-family:Georgia,Times,serif;
+	font-weight:normal;
+	font-size:1.4em;
+	text-align:left;
+	margin:0;
+	padding:0.5em 0.25em;
+}

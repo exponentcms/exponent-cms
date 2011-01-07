@@ -1,0 +1,131 @@
+.report.dashboard .leftcol {
+    float:left;
+    width:25%;
+    padding-top:20px;
+}
+
+.report.dashboard .rightcol {
+    float:right;
+    width:70%;
+    padding-top:20px;
+}
+
+.report.dashboard .hd {
+    margin:0;
+    position:relative;
+    background:url(../images/ecom-sprite.png) repeat-x 0 -44px;
+    border:1px solid #b6cdde;
+    -moz-border-radius:2px;
+    -webkit-border-radius:2px;
+
+}
+
+.report.dashboard .hd a.collapse {
+    background:url(../images/ecom-sprite.png) repeat-x -4px -386px;
+    position:absolute;
+    text-indent:20px;
+    overflow:hidden;
+    width:14px;
+    height:14px;
+    display:block;
+    bottom:1px;
+    right:1px;
+}
+
+.report.dashboard .hd a.expand {
+    background:url(../images/ecom-sprite.png) repeat-x -4px -413px;
+    position:absolute;
+    text-indent:20px;
+    overflow:hidden;
+    width:14px;
+    height:14px;
+    display:block;
+    bottom:1px;
+    right:1px;
+}
+
+.report.dashboard *:focus {
+    display:block;
+}
+
+.report.dashboard .hd h2 {
+    margin:0;
+    color:#103684;
+    padding:8px 0 8px 33px;
+    font-size:14px;
+    background-image:url(../images/ecom-sprite.png);
+    background-repeat:no-repeat;
+}
+
+.report.dashboard #quickstats .hd h2 {
+    background-position: 6px -210px;
+}
+
+.report.dashboard #orders .hd h2 {
+    background-position: 6px -245px;
+}
+
+.report.dashboard #configuration .hd h2 {
+    background-position: 6px -278px;
+}
+
+.report.dashboard #products .hd h2 {
+    background-position: 6px -310px;
+}
+
+.report.dashboard #shipping .hd h2 {
+    background-position: 6px -278px;
+}
+
+.report.dashboard ul,
+.report.dashboard ul li {
+    margin:0;
+    padding:0;
+    list-style:none;
+}
+.report.dashboard div.bd {
+    margin-bottom:5px;
+    overflow:hidden;
+}
+
+.report.dashboard div.collapsed {
+    height:0;
+}
+
+.report.dashboard ul.yui-nav {
+    margin-bottom:0px;
+}
+
+.report.dashboard div.yui-content {
+    padding:5px 0 0 0;
+    border-width:1px 0 0 0;
+}
+
+.report.dashboard ul li {
+    padding:8px 2px;
+    border-bottom:1px dashed #555;
+}
+.report.dashboard ul li strong {
+    display:block;
+}
+
+.report.dashboard ul li a {
+    color:#035fbc;
+}
+
+.report.dashboard .control .label {
+    float:left;
+    padding-right:10px;
+}
+
+.report.dashboard .dashboard-totals {
+    padding:10px;
+    border:1px solid #83AA53;
+    text-align:right;
+}
+
+.report.dashboard .dashboard-totals strong {
+    display:inline-block;
+    margin:0 10px;
+}
+

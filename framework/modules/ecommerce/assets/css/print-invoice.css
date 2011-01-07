@@ -1,0 +1,74 @@
+#invoice * {
+    color:#000000;
+}
+
+#barcode {
+    position:absolute;
+    top:0;
+    right:0;
+}
+
+#invoice {
+    position:relative;
+    color:#000000;
+    font-size:90%;
+}
+
+#invoice table {
+    width:100%;
+    border:0;
+}
+
+#invoice table thead tr {
+    background:#aaaaaa;
+}
+
+#invoice table td,
+#invoice table th {
+    text-align:left;
+    vertical-align:top;
+}
+
+#invoice table td {
+    background:#dedede;
+}
+#invoice table td,
+#invoice table th {
+    border:1px solid #ffffff;
+}
+
+#invoice address span {
+    display:block;
+}
+
+#invoice .div-rows div.even,
+#invoice tr.even td {
+    background:#cdcdcd;
+}
+
+#invoice .div-rows div.odd,
+#invoice tr.odd td {
+    background:#bbbbbb;
+}
+
+#invoice .payment-info th,
+#invoice .shipping-info th {
+    width:50%;
+}
+
+#invoice .div-rows {
+    padding:0px;
+}
+
+#invoice .div-rows div span.pmt-label {
+    display:inline-block;
+    text-align:right;
+    width:170px;
+    padding:5px;
+    color:#555555;
+}
+
+#invoice .div-rows div span.pmt-value {
+    font-style:italic;
+}
+

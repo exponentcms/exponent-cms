@@ -1,0 +1,208 @@
+.bodytext {
+	font-size: 11pt;
+	font-family: Arial, Verdana, sans-serif;
+}
+
+.noncss {
+	display: none;
+}
+
+.warning {
+	color: yellow;
+	font-weight: bold;
+	font-size: 9pt;
+}
+
+.failed, .error {
+	color: red;
+	font-weight: bold;
+	font-size: 9pt;
+}
+
+.success {
+	color: green;
+	font-weight: bold;
+	font-size: 9pt;
+}
+
+.important_message {
+	font-weight: bold;
+	color: red;
+	font-size: 12pt;
+}
+
+td.error, td.warning {
+	background-color: #999;
+}
+
+tr.even_row {
+	background-color: #DDD;
+	font-size: 11pt;
+	font-family: Arial, Verdana, sans-serif;
+}
+
+tr.row:hover td, tr.row:hover td a {
+	background-color: #666;
+	color: #fff;
+	font-size: 11pt;
+	font-family: Arial, Verdana, sans-serif;
+}
+
+tr.odd_row {
+	font-size: 11pt;
+	font-family: Arial, Verdana, sans-serif;
+	
+}
+
+.administration_header {
+	font-size: 12pt;
+	font-family: Arial, Verdana, sans-serif;
+	font-weight: bold;
+}
+
+h1#maintitle {
+	height: 62px;
+	background-image: url(images/logo.jpg);
+	margin: 0px;
+	background-repeat: no-repeat;
+	background-position: 100% 0;
+}
+
+h2#subtitle {
+	background-image: url(images/glyph.png);
+	background-repeat: no-repeat;
+	padding-left: 50px;
+	height: 32px;
+}
+
+h2#subtitle span {
+	vertical-align: middle;
+}
+
+/* Container for entire Install Wizard */
+div#installer {
+	width: 662px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+/* Main 'window' part of installer. */
+div#main {
+	width: 562px;
+	position: absolute;
+	top: 10px;
+	margin-left: 100px;
+	z-index: 0;
+}
+
+	/* Contains top curve image */
+div#main1 {
+	height: 27px;
+	background-image: url(images/mainbar_01.png);
+	background-repeat: no-repeat;
+}
+
+
+	/* Contains bottom curve image */
+div#main3 {
+	height: 29px;
+	background-image: url(images/mainbar_05.png);
+	background-repeat: no-repeat;
+	margin-bottom: 20px;
+}
+
+/* Sidebar (for status messages, mostly) */
+div#side {
+	width: 180px;
+	position: absolute;
+	top: 50px;
+	z-index: 1;
+}
+
+	/* Contains top curve image */
+div#side1 {
+	height: 22px;
+	background-image: url(images/sidebar_01.png);
+	background-repeat: no-repeat;
+}
+
+div#side2 {
+	background-image: url(images/sidebar_03.png);
+	background-repeat: repeat-y;
+	padding-left: 15px;
+	padding-right: 15px;
+}
+
+	/* Contains bottom curve image */
+div#side3 {
+	height: 23px;
+	background-image: url(images/sidebar_05.png);
+	background-repeat: no-repeat;
+}
+
+body {
+	background-color: #fff;
+	margin: 0;
+	padding: 10px;
+}
+
+
+a {
+	color: #060;
+	border-bottom: 2px;
+}
+
+/** Form CSS **/
+
+div.form_section_header {
+	font-weight: bold;
+	font-size: 14px;
+	background-color: #333;
+	color: #FFF;
+	margin-bottom: 5px;
+	padding-left: 5px;
+}
+
+div.control {
+	margin-bottom: 1em;
+	padding-left: 10px;
+}
+
+span.control_caption {
+	font-weight: bold;
+}
+
+div.control_help {
+	padding-left: 25px;
+	padding-right: 25px;
+}
+
+div.important_box {
+	border: 2px dashed #060;
+	padding: 4px;
+}
+
+  /* Controls */
+textarea, input.text {
+	border: 1px solid #060;
+	padding-left: 5px;
+}
+
+/* Sanity instructions page */
+div.sanity_req {
+	border: 2px solid black;
+	background-color: #FF6;
+	margin: 0px;
+	padding: 2px;
+}
+
+div.sanity_shell {
+	background-color: #DDD;
+	font-family: monospace;
+	padding-left: .75em;
+	font-size: smaller;
+}
+
+span.var {
+	color: #666;
+}

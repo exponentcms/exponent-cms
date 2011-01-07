@@ -1,0 +1,38 @@
+/****************  showall  ***********************/
+
+.photoalbum.showall ul li {
+    display:-moz-inline-stack;
+display:inline-block;
+zoom:1;
+*display:inline;
+    border:2px solid #999;
+    margin:5px 5px 0 0;
+    padding:3px;
+    text-align:center;
+    position:relative;
+}
+
+.photoalbum.showall ul li div.admin-actions {
+    display:none;
+}
+
+.photoalbum.showall ul li:hover div.admin-actions {
+    display:block;
+    position:absolute;
+    top:-5px;
+    left:-5px;
+    padding:3px;
+}
+
+.photoalbum.showall ul li em {
+    display:block;
+}
+
+/****************  show  ***********************/
+
+.photoalbum.show img.enlarged {
+    float:left;
+    margin-right:10px;
+    border:1px solid #999;
+    padding:2px;
+}

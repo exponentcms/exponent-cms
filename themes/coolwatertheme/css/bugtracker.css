@@ -1,0 +1,29 @@
+.bugtracker.showall table {
+	width: 95%;
+}
+
+.bugtracker.showall th { 
+	border-bottom: 1px solid black; 
+	padding-left: 3px;
+}
+.bugtracker.showall td { padding-left: 5px; }
+
+.bugtracker.showall th.bugid {width: 65px;}
+.bugtracker.showall th.bugstate {width: 85px;}
+.bugtracker.showall th.buguser {width: 85px;}
+
+.bugtracker.showall tr.bugheader {
+	border-bottom: 1px solid black;
+}
+
+.bugtracker div.comment {
+	padding: 5px 0px 0px 25px;
+	border-top: 1px solid black;
+	border-bottom: 1px solid black;
+}
+
+.bugtracker div.comment span.attribution {
+	font-size: 125%;
+	font-weight: bold;
+}
+

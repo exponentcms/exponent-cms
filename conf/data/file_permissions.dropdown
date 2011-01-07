@@ -1,0 +1,31 @@
+# File Permissions Drop Down File
+#
+# Comments start with a '#' sign,
+# and must be the only thing on the line.
+#
+# Each entry in this file consists of two lines - the
+#   first line is the octal UNIX permission bits and
+#   the second is the name of the permissions set,
+#   which will be provided to the user when configuring.
+#
+# If you add entries to this file, I ask that you let me
+# know, through our Sourceforge page. If you want or need
+# a mode that isn't listed here, and you tell me, I
+# will put it in the standard distribution.
+
+# The group options were added by faz2, 2/9/05.  Thanks faz!
+
+0600 
+	Accessible only to Web Server 
+ 
+0666 
+	World Readable and Writable 
+ 
+0660 
+	Group Readable and Writable 
+ 
+0644 
+	World Read-only 
+ 
+0640 
+	Group Read-only

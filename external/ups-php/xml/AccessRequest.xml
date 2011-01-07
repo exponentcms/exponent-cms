@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<AccessRequest xml:lang="en-US">
+	<AccessLicenseNumber>{LICENSE}</AccessLicenseNumber>
+	<UserId>{USER_ID}</UserId>
+	<Password>{PASSWORD}</Password>
+</AccessRequest> 

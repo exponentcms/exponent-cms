@@ -1,0 +1,10 @@
+	<LabelSpecification>
+		<LabelPrintMethod>
+			<Code>{LABEL_CODE}</Code>
+			<Description>{LABEL_DESCRIPTION}</Description>
+		</LabelPrintMethod>{LABEL_STOCK_SIZE}
+		<LabelImageFormat>
+			<Code>{LABEL_CODE}</Code>
+			<Description>{LABEL_DESCRIPTION}</Description>
+		</LabelImageFormat>
+	</LabelSpecification>

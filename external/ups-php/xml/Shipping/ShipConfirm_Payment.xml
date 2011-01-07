@@ -1,0 +1,7 @@
+		<PaymentInformation>
+			<Prepaid>
+				<BillShipper>
+					<AccountNumber>{SHIPPER_NUMBER}</AccountNumber>
+				</BillShipper>
+			</Prepaid>
+		</PaymentInformation>

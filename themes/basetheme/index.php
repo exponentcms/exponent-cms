@@ -1,0 +1,43 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+ "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+    <?php 
+    expTheme::head(array(
+    	"xhtml"=>false,
+    	"css_primer"=>array(
+    	    YUI2_PATH."reset-fonts-grids/reset-fonts-grids.css"),
+    	"css_core"=>array("common"),
+    	"css_links"=>true,
+    	"css_theme"=>true
+        )
+    );
+    ?>
+</head>
+<body>
+	<div id="doc4" class="yui-t2">
+		<div id="hd">
+			<h1 id="logo">
+			    <a href="<?php echo URL_FULL; ?>" title="Welcome to Exponent Content Management System">Exponent CMS</a>
+			</h1>
+			<?php expTheme::module(array("module"=>"navigation","view"=>"YUI Top Nav","source"=>"@top")); ?>
+		</div>
+		<div id="bd">
+			<div class="yui-b">
+    			<?php expTheme::module(array("module"=>"container","view"=>"Default","source"=>"@left")); ?>
+			</div>
+			<div id="yui-main">
+				<div class="yui-b">
+					<div class="yui-g">
+ 						<?php expTheme::main(); ?>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="ft">
+            <?php expTheme::module(array("controller"=>"text","action"=>"showall","view"=>"single","source"=>"@footer","chrome"=>1)) ?>
+		</div>
+	</div>
+    <?php expTheme::foot(); ?>
+</body>
+</html>

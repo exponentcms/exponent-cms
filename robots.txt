@@ -1,0 +1,11 @@
+User-agent: *
+Crawl-delay: 5
+Disallow: /exponent.js.php
+Disallow: /ABOUT
+Disallow: /INSTALLATION
+Disallow: /CHANGELOG
+Disallow: /CREDITS
+Disallow: /LICENSE
+Disallow: /README
+Disallow: /RELEASE
+Disallow: /TODO

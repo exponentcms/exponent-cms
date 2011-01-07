@@ -1,0 +1,105 @@
+/****************  ecomerce table  ***********************/
+.exp-ecom-table {
+    position:relative;
+    color:#000000;
+    font-size:90%;
+}
+
+.exp-ecom-table table {
+    width:100%;
+    border:1px solid #83aa53;
+/*    border-width:0 1px 1px 1px;*/
+}
+
+.exp-ecom-table table.collapse {
+    width:10%;
+}
+
+.exp-ecom-table table thead tr {
+    background:url(../images/ecom-sprite.png) repeat-x #486F11 0 -1px;
+}
+
+.exp-ecom-table table th,
+.exp-ecom-table table.nowrap th,
+.exp-ecom-table table.nowrap td {
+    white-space:nowrap;
+}
+
+.exp-ecom-table table td,
+.exp-ecom-table table th {
+    text-align:left;
+    vertical-align:top;
+    padding:4px;
+}
+
+.exp-ecom-table.coumnize table td {
+    border-right:1px solid #b4caa3;
+}
+
+.exp-ecom-table table td.right {
+    text-align:right;
+    width:10%;
+    white-space:nowrap;
+}
+
+.exp-ecom-table table th h1 {
+    text-align:center;
+    color:#ffffff;
+    text-shadow:1px 1px #333333;
+    margin:0;
+}
+
+.exp-ecom-table table th a {
+    color:#071939;
+    text-decoration:none;
+    display:block;
+}
+
+.exp-ecom-table table td {
+    background:#edffdf;
+}
+
+.exp-ecom-table tbody tr:hover td,
+.exp-ecom-table tbody tr:hover th {
+	background:#d5e3f3;
+}
+
+.exp-ecom-table address span {
+    display:block;
+}
+
+.exp-ecom-table .div-rows div.even,
+.exp-ecom-table tr.even td {
+    background:#dfffc6;
+}
+
+.exp-ecom-table .div-rows div.odd,
+.exp-ecom-table tr.odd td {
+    background:#cce9b5;
+}
+
+.exp-ecom-table .payment-info th,
+.exp-ecom-table .shipping-info th {
+    width:50%;
+}
+
+.exp-ecom-table .div-rows {
+    padding:0px;
+}
+
+.exp-ecom-table .div-rows div span.pmt-label {
+    display:inline-block;
+    text-align:right;
+    width:170px;
+    padding:5px;
+    font-weight:bold;
+    color:#555555;
+}
+
+.exp-ecom-table .div-rows div span.pmt-value {
+    font-style:italic;
+}
+
+.surcharge{
+    font-size: 8px;    
+}

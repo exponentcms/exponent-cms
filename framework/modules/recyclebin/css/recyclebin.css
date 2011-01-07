@@ -1,0 +1,33 @@
+html {
+    padding:10px;
+    background:none;
+}
+body {
+    padding:10px;
+    background:none;
+    text-align:left;
+}
+
+.recyclebin.orphan-content h1.main {
+    padding:5px 40px;
+    height:40px;
+    background:url(../images/trashcan_full_large.png) no-repeat;
+    border-bottom:2px solid #999999;
+}
+
+.recyclebin.orphan-content .rb-item {
+    border-bottom: 2px dotted #595;
+    margin-bottom: 15px;
+}
+
+.recyclebin.orphan-content .rb-item a.usecontent {
+    text-align: center;
+    padding: 5px 0px 5px 25px;
+    background:url(../images/use-recycled.png) no-repeat;
+    font-size: 115%;
+}
+.recyclebin.orphan-content .rb-item .recycledcontent {
+    border:1px solid #dedede;
+    padding:10px;
+    margin:10px 0;
+}

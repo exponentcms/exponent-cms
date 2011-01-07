@@ -1,0 +1,92 @@
+#tab1 {
+    position:relative;
+}
+
+#buttons {
+    position:absolute;
+    right:0;
+    top:0;
+    z-index:5;
+}
+
+#invoice {
+    position:relative;
+    color:#000000;
+}
+
+
+#invoice table {
+    width:100%;
+    border:1px solid #83aa53;
+    border-width:0 1px 1px 1px;
+}
+
+#invoice table thead tr {
+    background:url(../images/ecom-sprite.png) repeat-x;
+}
+
+#invoice table td,
+#invoice table th {
+    text-align:left;
+    vertical-align:top;
+}
+
+#invoice table td {
+    background:#edffdf;
+}
+
+#invoice address span {
+    display:block;
+}
+
+#invoice .div-rows div.even,
+#invoice tr.even td {
+    background:#dfffc6;
+}
+
+#invoice .div-rows div.odd,
+#invoice tr.odd td {
+    background:#cce9b5;
+}
+
+#invoice .payment-info th,
+#invoice .shipping-info th {
+    width:50%;
+}
+
+#invoice .div-rows {
+    padding:0px;
+}
+
+#invoice .div-rows div span.pmt-label {
+    display:inline-block;
+    text-align:right;
+    width:170px;
+    padding:5px;
+    font-weight:bold;
+    color:#555555;
+}
+
+#invoice .div-rows div span.pmt-value {
+    font-style:italic;
+}
+
+#billinfo table {
+    width:100%;
+    border:1px solid #83aa53;
+    border-width:0 1px 1px 1px;
+}
+
+#billinfo table thead tr {
+    background:url(../images/ecom-sprite.png) repeat-x;
+}
+
+#billinfo table td,
+#billinfo table th {
+    text-align:left;
+    vertical-align:top;
+}
+
+#billinfo table td {
+    background:#edffdf;
+}

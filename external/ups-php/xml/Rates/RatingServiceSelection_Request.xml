@@ -1,0 +1,8 @@
+	<Request>
+		<TransactionReference>
+			<CustomerContext>upsPHP Framework</CustomerContext>
+			<XpciVersion/>
+		</TransactionReference>
+		<RequestAction>Rate</RequestAction>  
+		<RequestOption>{RATE_OPTION}</RequestOption>  
+	</Request>

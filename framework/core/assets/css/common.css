@@ -1,0 +1,52 @@
+/****************  clearfix. allows for vertical expansion when children are floating without an extra element  ***********************/
+
+.clearfix:before,
+.clearfix:after {
+    content: ".";    
+    display: block;    
+    height: 0;    
+    visibility: hidden;	
+}
+.clearfix:after {clear: both;}
+.clearfix {zoom: 1;} /* IE < 8 */
+
+.clear {
+    clear:both;
+}
+
+/****************  common style rules  ***********************/
+a img {
+	border:none;
+}
+
+.hide {
+    display:none;
+}
+
+/****************  common visitor-facing styles  ***********************/
+
+a.rsslink {
+    background:url(../images/feed-icon.png) no-repeat 3px 50%;
+    padding-left:18px;
+}
+
+a.printer-friendly-link {
+    padding:2px 0 2px 20px;
+	background:url(../images/print.png) no-repeat 0 50%;
+}
+
+.date {
+    color:#777;
+    font-size:80%;
+}
+
+img.border {
+    border:1px solid #777;
+    padding:2px;
+    background:#fff;
+}
+
+.item {
+    padding-bottom:1em;
+    border-bottom:1px dotted #777;
+}

@@ -1,0 +1,28 @@
+====== About ======
+
+This project was started due to an obvious lack of PHP tools to communicate 
+with the UPS Shipping API.  The plan for this project is to create reusable 
+code for use with all of the UPS shipping tools through thier XML API.
+
+This project will eventually cover all of these UPS API tools.
+
+UPS Tracking Tool
+UPS Signature Tracking
+UPS Rates & Service Selection Tool
+UPS Address Validation Tool
+UPS File Download for Quantum View
+UPS Shipping Tool
+UPS Time in Transit Tool
+UPS Trade Ability
+
+===== Getting Setup with UPS ======
+
+1. Sign up for a UPS Online Tools Developer's Key: http://www.ups.com/e_comm_access/gettools_index?loc=en_US
+2. Select to use the "UPS Rates & Service Selection"
+3. If you haven't signed up for a regular UPS account folow the link "Create UPS Account ->"
+4. Skip downloading the information and go right to the "Access Key" section
+5. Enter your Developer's Key (it will be emailed to you)
+6. Viola! You now have all the information needed to use this tool.
+
+For the latest documentation and code visit:
+http://code.google.com/p/ups-php/

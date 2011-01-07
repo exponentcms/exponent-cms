@@ -1,0 +1,43 @@
+/****************  showall  ***********************/
+
+.showall-images.showall-images ol {
+    margin:0;
+    padding:0;
+}
+
+.showall-images.showall-images li {
+    position:relative;
+    list-style:none;
+    display:block;
+    float:left;
+    text-align:center;
+    margin:5px;
+    padding:5px;
+    border:1px solid #333333;
+}
+.showall-images.showall-images li a.imglink {
+    display:block;
+}
+.showall-images.showall-images li .actions {
+    position:absolute;
+    display:none;
+    top:0;
+    left:-15px;
+    border:1px solid #333333;
+    background:#dedede;
+    padding:3px;
+}
+.showall-images.showall-images li:hover .actions {
+    display:block;
+}
+
+/****************  show  ***********************/
+
+.show-image .gallery-image {
+    float:left;
+    border:1px solid #333;
+    padding:5px;
+    background:#fff;
+    margin-right:10px;
+    
+}

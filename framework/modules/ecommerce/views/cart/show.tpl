@@ -1,0 +1,52 @@
+{*
+ * Copyright (c) 2007-2008 OIC Group, Inc.
+ * Written and Designed by Adam Kessler
+ *
+ * This file is part of Exponent
+ *
+ * Exponent is free software; you can redistribute
+ * it and/or modify it under the terms of the GNU
+ * General Public License as published by the Free
+ * Software Foundation; either version 2 of the
+ * License, or (at your option) any later version.
+ *
+ * GPL: http://www.gnu.org/licenses/gpl.txt
+ *
+ *}
+ 
+ {script unique="cartview"}
+ {literal}
+ YAHOO.util.Event.onDOMReady(function(){
+     YAHOO.util.Dom.removeClass("myCart", 'hide');
+     var loading = YAHOO.util.Dom.getElementsByClassName('loadingdiv', 'div');
+     YAHOO.util.Dom.setStyle(loading, 'display', 'none');
+ });
+ {/literal}
+ {/script}
+<div class="loadingdiv">Loading Cart</div>
+
+<div id="myCart" class="module cart show hide">
+	<h1>{$moduletitle|default:"Your Shopping Cart"}</h1>
+
+	<div id="cartbox">
+		<div id="cart-top" width="100%" cellpadding="0" cellspacing="0">
+			<div class="cart-total-label">
+			    <span class="total-label">Cart Total:</span>
+				<span id="cart-total" class="carttotal">{currency_symbol}{$order->total|number_format:2}</span>
+			</div>
+			{if $coupons}
+				{img src="`$smarty.const.ICON_RELATIVE`/ecom/cart-coupon-btn.png"}
+			{/if}
+		    <a class="checkout-now-btn" href="{link action=checkout}" title="Proceed to checkout">
+		        <img src="{$smarty.const.URL_FULL}themes/common/skin/ecom/cart-checkout-btn.png" alt="checkout now">
+			</a>					
+		</div>
+		{include file="show_cart_only.tpl"}
+	</div>
+    <div style="padding-top: 8px;">
+        <a class="exp-ecom-link" href="{link controller=store action=showall}"><strong><em>Continue Shopping</em></strong></a>
+        {if $items|@count gt 0}
+        <a class="exp-ecom-link" style="margin-left: 18px;" href="{securelink controller=cart action=checkout}"><strong><em>Checkout Now</em></strong></a>
+        {/if}
+    </div>
+</div>

@@ -1,0 +1,23 @@
+/****************  Headlines view  ***********************/
+
+.news.headlines ul,
+.news.headlines ul li {
+    margin:0;
+    padding:0;
+    list-style:none;
+}
+
+.news.headlines ul li{
+    margin-bottom:10px;
+}
+
+.news.headlines ul li span.date {
+    display:block;
+    color:#777;
+    font-size:80%;
+}
+
+.news.headlines ul li a.link {
+    display:block;
+}
+

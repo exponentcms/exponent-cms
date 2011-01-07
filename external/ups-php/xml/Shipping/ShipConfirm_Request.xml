@@ -1,0 +1,8 @@
+	<Request>
+		<TransactionReference>
+			<CustomerContext>Web Artillery UPS Shipping v1.0</CustomerContext>
+			<XpciVersion/>
+		</TransactionReference>
+		<RequestAction>ShipConfirm</RequestAction>
+		<RequestOption>{VALIDATE}</RequestOption>
+	</Request>

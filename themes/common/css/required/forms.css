@@ -1,0 +1,221 @@
+/* container module - _form_edit.tpl @todo: move this CSS  */
+
+.form_header h1 {
+	margin:0;
+}
+.form_header p {
+	font-style:italic;
+	border-left:3px solid #53708e;
+	padding:0 0 0 10px;
+	margin:10px 0 10px 10px;
+}
+.form_header p .managemodules {
+	font-family:"Trebuchet MS";
+	padding:3px 0 2px 15px;
+	background:url(../../skin/admin/managemodules.png) no-repeat 0 50%;
+}
+
+
+/* control (wrapers for input and other form fields) and label styles */
+/* @todo: thse styles are bloated and need a good cleaning */
+
+.control {
+	display:block;
+	margin:0 0 5px 0;
+	padding:5px;
+}
+.control legend {
+	font-size:1.1em;
+	font-weight:bold;
+	padding:0px 3px;
+}
+.control .label {
+	display:block;
+}
+
+.control .checkboxlabel {
+	font-family:"Trebuchet MS";
+	color:#444444;
+	font-weight:bold;
+	margin-left:5px;
+}
+.control.flipped .checkbox {
+	margin-left:5px;
+}
+.control.flipped .checkboxlabel {
+	margin-left:0px;
+}
+.control .label a {
+	font-family:"Trebuchet MS";
+	color:#883333;
+}
+
+/* input styles */
+
+/*  for all titles. All views need to be gone through and have a title class added to the plugin */
+input.text.title {
+    width:100%;
+}
+
+button.button,
+input.button { 
+    border:1px solid #aaaaaa;
+    border-bottom-color:#555555;
+    border-right-color:#555555;
+    -moz-border-radius: 12px; /* FF1+ */
+    -webkit-border-radius: 12px; /* Saf3+, Chrome */
+    border-radius: 12px; /* Opera 10.5, IE 9 */
+    padding:2px 3px;
+    background-image: -moz-linear-gradient(top, #F6D38F, #F0AA48); /* FF3.6 */
+    background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0, #F6D38F),color-stop(1, #F0AA48)); /* Saf4+, Chrome */
+    filter:  progid:DXImageTransform.Microsoft.gradient(startColorStr='#F6D38F', EndColorStr='#F0AA48'); /* IE6,IE7 */
+    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#F6D38F', EndColorStr='#F0AA48')"; /* IE8 */
+    margin-right:5px;
+    text-shadow: 0px 1px 0px #e5e5ee;
+    filter: dropshadow(color=#e5e5ee,offX=0,offY=1);
+    font-weight:bold;
+}
+.disabled input.submit { 
+    background-image: -moz-linear-gradient(top, #dedede, #999); /* FF3.6 */
+    background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0, #dedede),color-stop(1, #999)); /* Saf4+, Chrome */
+    filter:  progid:DXImageTransform.Microsoft.gradient(startColorStr='#dedede', EndColorStr='#999'); /* IE6,IE7 */
+    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#dedede', EndColorStr='#999')"; /* IE8 */
+}
+
+.control.radio table,
+.control.checkbox table {
+    margin:0 0 0 0;
+    border:0!important;
+}
+.control.radio td,
+.control.checkbox td {
+    padding:0 0 0 0;
+    margin:0 0 0 0;
+    border:0;
+    vertical-align:middle;
+}
+.control.radio td.input,
+.control.checkbox td.input {
+    width:0px;
+}
+
+.control .nowrap {
+    white-space:nowrap;
+}
+
+.control.checkbox tr td:hover,
+.control.radio tr td:hover {
+    border:0;
+}
+
+.control.checkbox tr:hover,
+.control.radio tr:hover {
+    border:0;
+    background:none;
+}
+.control.checkbox .label,
+.control.radio .label {
+
+}
+
+input.checkbox,
+input.radio {
+	float:left;
+	margin-right:5px;
+}
+
+.control .radiogroup-label {
+    display:inline;
+    white-space:normal;
+}
+
+
+input.text,
+input.password,
+select.select,
+textarea.textarea {
+	border:1px solid #555555;
+}
+
+input.password,
+input.text {
+	padding:3px;
+}
+
+input.text,
+input.password,
+select.select,
+textarea.textarea {
+    color:#555555;
+    font-weight:normal;
+    font-size:14px;
+}
+
+
+.text input,
+.password input,
+.textarea {
+	padding:3px;
+}
+
+.disabled label {
+    color:#777777;
+}
+
+.disabled .select {
+    color:#777777;
+    border-color:#777777;
+}
+
+
+
+/* yui calendar control */
+
+#calinput{
+	float:left;
+	clear:left;
+}
+#calinput .text{
+	width:60px;
+	float:left;
+	margin-top:3px;
+}
+#calinput .button{
+	margin-top:3px;
+	margin-left:2px;
+	height:21px;
+	width:108px;
+	float:left;
+}
+.yuitime {
+	margin-top:3px;
+}
+.yuitime .text {
+	margin-right:2px;
+}
+
+.tagpicker .label {
+	display:inline;
+	padding-left:5px;
+}
+.tagpicker .depth1 {
+	margin-left:20px;
+}
+table.checkboxtable td {
+	border:0;
+	padding:1px;
+}
+
+.control.field-error label {
+    color: red;
+    font-weight: bold;
+}
+
+.control.field-error input.text,
+.control.field-error input.password,
+.control.field-error select.select,
+.control.field-error textarea.textarea {
+	border: 2px solid red;
+}
+
+

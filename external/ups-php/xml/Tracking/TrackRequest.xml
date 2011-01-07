@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<TrackRequest xml:lang="en-US">
+	<Request>
+		<TransactionReference>
+			<CustomerContext>upsPHP Framework</CustomerContext>
+			<XpciVersion />
+		</TransactionReference>
+		<RequestAction>Track</RequestAction>
+	</Request>
+	<TrackingNumber>{TRACKING_NUMBER}</TrackingNumber>
+</TrackRequest>

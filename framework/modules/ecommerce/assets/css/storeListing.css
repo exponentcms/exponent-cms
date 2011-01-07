@@ -1,0 +1,18 @@
+/****************  showall storefont, with the product's view of storeListing  ***********************/
+
+.store.showall .break {
+    clear:both;
+    float:left;
+    width:100%;
+}
+
+.store.showall .product {
+    float:left;
+    width:145px;
+    margin-right:10%;
+}
+
+.store.showall .product.last-in-row {
+    margin-right:0;
+}
+

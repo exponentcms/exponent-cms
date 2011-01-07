@@ -1,0 +1,67 @@
+.build-report {
+    margin-top:10px;
+}
+.build-report .exp-ecom-table table th h1 {
+    text-align:left;
+    margin-left:310px;
+}
+
+.build-report .control {
+    padding:0;
+    margin:0;
+    float:left;
+}
+
+.build-report .control .label {
+    display:inline-block;
+    width:300px;
+    padding-right:10px;
+    text-align:right;
+}
+
+.build-report .control .text {
+    width:300px;
+}
+
+.build-report .control.collapse .label {
+    display:none;
+}
+
+.build-report .control.collapse.orn {
+    margin-left:10px;
+}
+
+.build-report .control.collapse.orn .text {
+    width:187px;
+}
+
+.build-report .radiogroup-control {
+    width:310px;
+}
+
+.build-report .radiogroup-control table {
+    border:0;
+    margin:0;
+    float:right;
+    width:0;
+}
+
+.build-report .radiogroup-control td {
+    padding:0;
+    text-align:right;
+    white-space:nowrap;
+}
+
+.build-report .radiogroup-control td .radio {
+    float:right;
+}
+
+
+.build-report .radiogroup-control .label {
+    display:inline;
+}
+
+#submit-report {
+    margin-left:310px;
+    text-shadow:1px 1px 0px #274f70;
+}
