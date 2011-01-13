@@ -1,5 +1,5 @@
 Exponent Content Management System
-Copyright (c) 2004-2008 OIC Group, Inc.
+Copyright (c) 2004-2011 OIC Group, Inc.
 ===============================================
 
 For installation information, please read the INSTALLATION file.
@@ -9,7 +9,7 @@ For LICENSING information, please read the LICENSE file.
 For questions, support, or further information, please visit
 http://www.exponentcms.org/
 
-Exponent is an exciting web-based content management system. It makes
+Exponent CMS 2.0 is an exciting web-based content management system. It makes
 creating and maintaining websites easy for non-technical users, while
 providing site managers the power and flexibility to add new features,
 completely customize the layout, and delegate responsibilities to other
@@ -20,10 +20,6 @@ Getting Started
 
 First, you'll need to install and configure Exponent. See the INSTALLATION
 file for a detailed description of how to do this.
-
-Once your site is up and running, you can play around with the default
-content, or head over to the Exponent website at
-http://www.exponentcms.org/
 
 ------------
 Contributing
@@ -36,14 +32,12 @@ Exponent development team encourages you to get involved. We are currently
 looking for contributions in the following area:
 
     * Development - Those able and willing to contribute development skills
-are encouraged to join in.  Those who contribute code at any level will be
-included in the credits and will receive priority support by the existing
-Exponent development community.  Please see the Contributors section on
-www.exponentcms.org for more information on contributing code.
+are encouraged to join in.  Simply fork this repository, hack away, and submit 
+a pull request. We'll take a look at your code and changes
 
-    * Documentation - We are slowly working on our software guide, but any
-help is greatly appreciated. Anyone interested in helping out should visit
-the Documentation Wiki: http://docs.exponentcms.org/
+    * Documentation - If you're interested in helping with documentation, 
+contact us: https://github.com/inbox/new/exponentcms and we'll advise you
+as to where to contribute documentation.
 
     * Testing - As with every software application, there are bound to be
 bugs. We think the system is stable enough to use, but we are always
@@ -54,3 +48,7 @@ The more bugs we find and fix, the better off the package is.
 Support / Questions
 For questions, support, or further information, please visit
 http://www.exponentcms.org/
+https://github.com/inbox/new/exponentcms
+http://forums.exponentcms.org/
+
+
