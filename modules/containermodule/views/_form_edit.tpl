@@ -14,12 +14,12 @@
  *
  *}
 
- {css unique="addmodule1" link="`$smarty.const.PATH_RELATIVE`framework/modules/container/assets/css/add-content.css" corecss="admin-global"}
 
- {/css}
+{css unique="addmodule1" link="`$smarty.const.PATH_RELATIVE`framework/modules/container/assets/css/add-content.css" corecss="admin-global"}
 
+{/css}
 
-<div class="containermodule edit hide">
+<div class="containermodule edit {if !$error}hide{/if}">
     <div class="info-header">
         <div class="related-actions">
             {if $user->is_admin}
@@ -30,6 +30,13 @@
         <h1>{if $is_edit}Edit Module{else}Add New Content{/if}</h1>
     </div>
     
+    {if $error}
+    <div class="msg-queue error">
+    	<div class="msg">{$error}</div>
+    </div>
+</div>
+    {else}
+
     {form action=save}
     {if $is_edit}
         {control type=hidden name=id value=$container->id}
@@ -324,6 +331,4 @@ YUI({base:'{/literal}{$smarty.const.URL_FULL}external/yui3/build/{literal}',comb
 
 {/literal}
 {/script}
-
-
-
+{/if}

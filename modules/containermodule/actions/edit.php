@@ -118,6 +118,9 @@ if (exponent_permissions_check('edit_module',$loc) || exponent_permissions_check
 	//$js_init .= "\r\n</script>";
 	
 	asort($mods);
+	if (!key_exists($container->internal->mod, $mods)) {
+        $template->assign('error',expLang::gettext('The module you are trying to edit is inactive. Please contact your administrator to activate this module.'));
+	}
 	$template->assign('user',$user);
 	$template->assign('json_obj',json_encode($modules));
 	$template->assign('modules',$mods);
