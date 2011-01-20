@@ -74,12 +74,12 @@
 <div class="loadingdiv">Loading Content Creation Form</div>
 {* src="`$smarty.const.PATH_RELATIVE`js/ContainerSourceControl.js" *}
 
-{script unique="addmodule" yuimodules="connection,json"}
+{script unique="addmodule" yui2mods="connection,json"}
 {literal}
 
 
 
-YUI({base:'{/literal}{$smarty.const.URL_FULL}external/yui3/build/{literal}',combine: false}).use("node","event",function(Y){
+YUI(EXPONENT.YUI_CONFIG).use("node","event",function(Y){
     var osmv = {/literal}{$json_obj};{literal} //oldschool module views (in a JSON object)
     var modpicker = Y.get('#modcntrol'); // the module selection dropdown
     var is_edit = {/literal}{$is_edit}{literal} //are we editing?
