@@ -12,8 +12,9 @@ Added / Fixed / changed for 2.0.0 beta 1
 # Many Internet Explorer bug fixes
 # Removal of YUI PHP loader to calculate YUI JS dependencies.
 # Migration scripts added for pages, files, and a handfule of modules.
-# Added support for placing datatypes inside a module's directory
-
+# Added support for placing datatypes inside a module's directory.
+# Added ability for users in a group to be directed to a specified page on login.
+# 
 
 
 Added / Fixed / changed for 2.0.0 Preview Release 2

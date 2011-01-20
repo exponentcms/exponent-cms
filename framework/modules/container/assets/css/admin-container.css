@@ -184,14 +184,16 @@
 /****************    ***********************/
 
 .exp-container-wrapper a.addmodule span.addtext{
-    vertical-align:middle;
     padding:3px 0 3px 20px!important;
     background-color:transparent;
-    background-image:url(../images/exp-admin-sprite.png);  
+    background-image:url(../../../../core/assets/images/exp-admin-sprite.png);  
     background-repeat:no-repeat;  
-    background-position: 0px -471px; 
+    background-position: 8px -591px; 
     font-size:10px;
     text-transform:uppercase;
+    display:inline-block;
+    *display:inline;
+    zoom:1;
 }
 .exp-container-wrapper a.addmodule{
     display:block!important;
