@@ -14,6 +14,7 @@ Added / Fixed / changed for 2.0.0 beta 1
 # Migration scripts added for pages, files, and a handfule of modules.
 # Added support for placing datatypes inside a module's directory.
 # Added ability for users in a group to be directed to a specified page on login.
+# Added message to edit form when attempting to change the view, but the module has since been deactivated.
 # 
 
 
