@@ -80,11 +80,11 @@ class genericcontrol extends formcontrol {
             $html = '<div'.$divID.' class="'.$this->type.'-control control'." ".$class." ".$dissabled;
             $html .= (!empty($this->required)) ? ' required">' : '">';
             if(empty($this->flip)){
-                    $html .= "<label".$for." class=\"label\">". $label."</label>";
+                    $html .= empty($label) ? "" : "<label".$for." class=\"label\">". $label."</label>";
                     $html .= $this->controlToHTML($name, $label);
             } else {
                     $html .= $this->controlToHTML($name, $label);
-                    $html .= "<label".$for." class=\"label\">".$label."</label>";
+                    $html .= empty($label) ? "" : "<label".$for." class=\"label\">". $label."</label>";
             }
             $html .= "</div>";
         } else {
