@@ -69,7 +69,7 @@ EXPONENT.fileManager = function() {
         var fileUrl = fo;
         var ck = getUrlParam('ck');
         {/literal}
-        {if $update=="fck"}
+        {if $update|strstr:"fck"}
         window.opener.CKEDITOR.tools.callFunction(funcNum, fileUrl);
         {else}
         window.opener.EXPONENT.passBackFile{$update}(fi);
