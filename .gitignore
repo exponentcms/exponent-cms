@@ -6,7 +6,3 @@
 
 #excludes cache files
 /tmp/*
-
-#excludes .htaccess file
-/.htaccess
-
