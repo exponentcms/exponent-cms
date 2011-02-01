@@ -445,7 +445,7 @@ class usersController extends expController {
     public function change_password() {
         global $user;
         expHistory::set('editable', $this->params);
-        $id = isset($this->params['id']) ? $this->params['id'] : null;
+        $id = isset($this->params['ud']) ? $this->params['ud'] : $this->params['id'];
         
         if ($user->isAdmin() || ($user->id == $id)) {
             $isuser = ($user->id == $id) ? 1 : 0 ;
@@ -478,12 +478,13 @@ class usersController extends expController {
             expHistory::returnTo('editable');
         }else{
             $u->update();  
+            $user->password = $u->password;
         }
         
         if ($this->params['uid'] != $user->id) {
-            flash('message', 'Your password for '.$u->username.' been reset.');
+            flash('message', 'Your password for '.$u->username.' been changed.');
         } else {
-            flash('message', 'Your password has been reset.');
+            flash('message', 'Your password has been changed.');
         }
         expHistory::back();
     }

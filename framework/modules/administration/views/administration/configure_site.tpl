@@ -83,6 +83,7 @@
                     {control type="dropdown" name="sc[DISPLAY_ATTRIBUTION]" label="Attribution Display" items=$attribution default=$smarty.const.DISPLAY_ATTRIBUTION}
                     {control type="dropdown" name="sc[DISPLAY_DATE_FORMAT]" label="Date Format" items=$date_format default=$smarty.const.DISPLAY_DATE_FORMAT}
                     {control type="dropdown" name="sc[DISPLAY_TIME_FORMAT]" label="Time Format" items=$time_format default=$smarty.const.DISPLAY_TIME_FORMAT}
+                    {control type="text" name="c[DISPLAY_DEFAULT_TIMEZONE]" label="Select the default timezone for this site. CAUTION: This may break calendars and other features that use date functions if you change this after entering data. Must be in a format shown here: <a href='http://www.php.net/manual/en/timezones.php' target='_blank'>http://www.php.net/manual/en/timezones.php</a>" value=$smarty.const.DISPLAY_DEFAULT_TIMEZONE}
                 </div>
                 {if $user->is_admin==1}
                 <div id="tab6">
