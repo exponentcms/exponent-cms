@@ -18,35 +18,30 @@
     {if $moduletitle}<h1>{$moduletitle}</h1>{/if}
 
     {permissions level=$smarty.const.UILEVEL_NORMAL}
-        {if $permissions.create == 1}
-            {icon class="add" action=edit rank=1 title="Add text to the top" text="Add text at the top"}
-        {/if}
+        <div class="itemactions">
+            {if $permissions.create == 1}
+                {icon class="add" action=edit rank=1 title="Add text to the top" text="Add text at the top"}
+            {/if}
+            {if $permissions.edit == 1}
+                {ddrerank items=$items model="text" label="Text Items"|gettext}
+            {/if}
+        </div>
     {/permissions}
     {foreach from=$items item=text name=items}
         {if $text->title}<h2>{$text->title}</h2>{/if}
         {permissions level=$smarty.const.UILEVEL_NORMAL}
             {if $permissions.edit == 1}
-                {icon action=edit img=edit.png class="editlink" id=$text->id title="Edit this `$modelname`"}
+                {icon action=edit class="edit" id=$text->id title="Edit this `$modelname`"}
             {/if}
             {if $permissions.delete == 1}
-                {icon action=delete img=delete.png id=$text->id title="Delete this `$modelname`" onclick="return confirm('Are you sure you want to delete this `$modelname`?');"}
-            {/if}
-            {if $permissions.edit == true}
-                {if $smarty.foreach.items.first == 0}
-                    {icon controller=text action=rerank img=up.png id=$text->id push=up}    
-                {/if}
-                {if $smarty.foreach.items.last == 0}
-                    {icon controller=text action=rerank img=down.png id=$text->id push=down}
-                {/if}
+                {icon action=delete id=$text->id title="Delete this Text Item" onclick="return confirm('Are you sure you want to delete this `$modelname`?');"}
             {/if}
         {/permissions}
         <div class="bodycopy">
+            {filedisplayer view="`$config.filedisplay`" files=$text->expFile id=$text->id}
             {$text->body}
             {clear}
         </div>
-        
-        {***  DISPLAY ATTACHABLE FILES  ***}
-        {filedisplayer view="`$config.filedisplay`" files=$text->expFile id=$text->id}
         
         {permissions level=$smarty.const.UILEVEL_NORMAL}
             {if $permissions.create == 1}
