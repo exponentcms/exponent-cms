@@ -49,7 +49,7 @@ define("USER_REGISTRATION_WELCOME_SUBJECT",'Welcome to our website!');
 define("USER_REGISTRATION_WELCOME_MSG",'');
 define("MAINTENANCE_MODE",'0');
 define("MAINTENANCE_MSG_HTML",exponent_unhtmlentities('&lt;p&gt;<br />	<br /><br />	<br /><br />	<br /><br />	<br /><br />	<br /><br />	<br /><br />	<br /><br />	stay out&lt;/p&gt;<br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />'));
-define("DEVELOPMENT",'1');
+define("DEVELOPMENT",0);
 define("USE_LDAP",'0');
 define("LDAP_SERVER",'not_configured');
 define("LDAP_BASE_DN",'not_configured');
@@ -72,5 +72,5 @@ define("RECAPTCHA_PUB_KEY",'test');
 define("RECAPTCHA_PRIVATE_KEY",'save me');
 define("CURRENTCONFIGNAME",'Default');
 define("HELP_ACTIVE",'1');
-define("MINIFY",1);
+define("MINIFY",'1');
 ?>

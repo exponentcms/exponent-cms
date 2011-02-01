@@ -24,7 +24,7 @@
     {/permissions}
     <ul>
         {foreach name=items from=$items item=item}
-        <li class="item{if $smarty.foreach.items.last} last{/if}">
+        <li>
             <a class="link" href="{$item->url}">{$item->title}</a>
             {permissions level=$smarty.const.UILEVEL_NORMAL}
                 <div class="item-actions">
