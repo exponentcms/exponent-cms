@@ -112,6 +112,7 @@ function exponent_users_login($username, $password) {
     $obj->authenticated = $authenticated;
     //$db->insertObject($obj, "user_loginAttempts");
     
+    return $user;
 }
 
 /* exdoc

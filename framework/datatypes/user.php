@@ -192,7 +192,7 @@ class user extends expRecord {
 	    
 	    // check groups to see if this group has the ability to admin anything
 	    foreach ($this->groups as $group) {
-	        if ($db->selectValue('grouppermission','gid','gid=\''.$group->id.'\'')) return true;
+	        if ($db->selectValue('grouppermission','gid','gid=\''.$group->id.'\' AND permission!=\'view\'')) return true;
 	    }
 	    
 	    return false;

@@ -90,11 +90,13 @@
 		uploader.setAllowMultipleFiles(true);
 		
 		// New set of file filters.
-		var ff = new Array({description:"Images", extensions:"*.jpg;*.png;*.gif"},
-                            {description:"Videos", extensions:"*.avi;*.mov;*.mpg"},
-                            {description:"Documents", extensions:"*pdf;*.doc;*.odt;*.zip;*.psd;*.flv;*.csv;*.xls"},
-                            {description:"All Files", extensions:"*.*;"}
-		                    );
+		var ff = new Array({description:"All Files", extensions:"*.*;"});
+
+		// uncomment the lists below to limit the types of files that can be uploaded
+        // var ff = new Array({description:"Images", extensions:"*.jpg;*.png;*.gif"},
+        //                             {description:"Videos", extensions:"*.avi;*.mov;*.mpg"},
+        //                             {description:"Documents", extensions:"*pdf;*.doc;*.odt;*.zip;*.psd;*.flv;*.csv;*.xls"},
+        //                             {description:"All Files", extensions:"*.*;"}
 		                   
 		// Apply new set of file filters to the uploader.
 		uploader.setFileFilters(ff);

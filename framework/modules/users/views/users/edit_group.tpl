@@ -25,6 +25,7 @@
         {control type="hidden" name="id" value=$record->id}
         {control type="text" name="name" label="Name" value=$record->name}
         {control type="textarea" name="description" label="Description" value=$record->description}
+        {control type="text" name="redirect" label="Login Landing Page" value=$record->redirect}
         {control type="checkbox" name="inclusive" label="Default Group?" value=1 checked=$record->inclusive}
         {control type="buttongroup" submit="Submit" cancel="Cancel"}
     {/form}
