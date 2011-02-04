@@ -156,7 +156,7 @@ class expPaginator {
 		} 		
 		
 		// figure out how many records we're dealing with & grab the records
-		if (!empty($this->records)) { //PRB: we could have empty records, and need to hit this
+		if (isset($params['records'])) { //PRB: we could have empty records, and need to hit this
 		    // sort, count and slice the records that were passed in to us
 		    usort($this->records,array('expPaginator', strtolower($this->order_direction)));
 		    $this->total_records = count($this->records);
