@@ -122,11 +122,21 @@ class expCSS {
         $cssdir = BASE.'themes/'.DISPLAY_THEME.'/css/';
 
         if (is_dir($cssdir) && is_readable($cssdir)) {
-            $dh = opendir($cssdir);
-            while (($cssfile = readdir($dh)) !== false) {
-                $filename = $cssdir.$cssfile;
-                if ( is_file($filename) && substr($filename,-4,4) == ".css") {
+
+            if (is_array($head_config['css_theme'])) {
+                foreach($head_config['css_theme'] as $filename){
+                    $cssfile = $filename.".css";
                     $css_theme[reset(explode(".",end(explode("/",$filename))))."-theme"] = PATH_RELATIVE."themes/".DISPLAY_THEME_REAL."/css/".$cssfile;
+                }
+            } elseif(empty($head_config['css_theme'])) {
+                # do nothing. We're not including CSS from the theme
+            } else {
+                $dh = opendir($cssdir);
+                while (($cssfile = readdir($dh)) !== false) {
+                    $filename = $cssdir.$cssfile;
+                    if ( is_file($filename) && substr($filename,-4,4) == ".css") {
+                        $css_theme[reset(explode(".",end(explode("/",$filename))))."-theme"] = PATH_RELATIVE."themes/".DISPLAY_THEME_REAL."/css/".$cssfile;
+                    }
                 }
             }
         }

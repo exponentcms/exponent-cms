@@ -4,18 +4,31 @@ Copyright (c) 2004-2011 OIC Group, Inc.
 
 Added / Fixed / changed for 2.0.0 beta 1
 -----------------------
-# Installer no longer allows the option for anything other than MySQLi as a database option.
-# Patched security vulnerabilities in site_podcast.php and 3 YUI swf files.
-# Conteiner module 2 and 3 column views fixed to display correctly.
-# Turned off user tracking for performance reasons and lack of implimentation.
-# "Siblings and Current Children" view added for navigation module.
-# Many Internet Explorer bug fixes
-# Removal of YUI PHP loader to calculate YUI JS dependencies.
-# Migration scripts added for pages, files, and a handfule of modules.
-# Added support for placing datatypes inside a module's directory.
-# Added ability for users in a group to be directed to a specified page on login.
-# Added message to edit form when attempting to change the view, but the module has since been deactivated.
-# 
+# Security
+    • YUI SWF Replacement
+    • Podcast file vulnerability
+
+# Performance
+    • Turned off user tracking for performance reasons and lack of full implimentation.
+    • Removal of YUI PHP loader to calculate YUI JS dependencies, as YUI now has conditional loading
+      based on the browser that YUI PHP Loader cannot accomplish
+
+# System
+    • Installer no longer allows the option for anything other than MySQLi as a database option.
+    • Migration scripts added for pages, files, and a handfule of modules.
+    • Added support for placing datatypes inside a module's directory.
+    • Ability to change your password, and other users as an admin, fixed.
+    • Added ability for users in a group to be directed to a specified page on login.
+    • Added message to edit form when attempting to change the view, but the module has since been deactivated.
+
+# Modules
+    • Container Module
+        + 2 and 3 column views fixed to display correctly.
+    • Navigation Module
+        + "Siblings and Current Children" view added.
+
+# Cross Browser Compatibility
+    • Many Internet Explorer bug fixes
 
 
 Added / Fixed / changed for 2.0.0 Preview Release 2

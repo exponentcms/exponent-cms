@@ -218,15 +218,6 @@ function headerInfo($config) {
     // may not need this soon here...
     $langinfo = include(BASE.'subsystems/lang/'.LANG.'.php');
     
-    // Checking to see that we included headerInfo
-    if (!is_array($config)){
-        echo "<h1 style='padding:10px;border:5px solid #992222;color:red;background:white;position:absolute;top:100px;left:300px;width:400px;z-index:999'>
-        The exponent_theme_headerInfo() function only takes 1 parameter, and it MUST be an array (\$config). Please refer to the Exponent documentation for details:<br />
-        <a href=\"http://docs.exponentcms.org/New_Themes_Guide\" target=\"_blank\">http://docs.exponentcms.org/</a>
-        </h1>";
-        die();
-    }
-    
     $validateTheme['headerinfo'] = true;
     // end checking for headerInfo
 
@@ -234,15 +225,17 @@ function headerInfo($config) {
     $head_config = $config;
 
     // check to see if we're in XHTML or HTML mode
-    if(empty($config['xhtml'])||($config['xhtml']==false)){ 
-        define("XHTML",0);define("XHTML_CLOSING","");
+    if(empty($config['xhtml'])||($config['xhtml']==true)){ 
+        define("XHTML",1);define("XHTML_CLOSING",""); //default
     } else {
-        define("XHTML",1); define("XHTML_CLOSING","/");
+        define("XHTML",0); define("XHTML_CLOSING","/");
     }
 
-    // Load primer CSS files.
+    // Load primer CSS files, or default to false if not set.
     if(!empty($config['css_primer'])){
         expCSS::pushToHead($config);
+    } else {
+        $config['css_primer'] = false;
     };
 
     if(isset($config['css_core'])) {
@@ -252,8 +245,22 @@ function headerInfo($config) {
     		    "corecss"=>$corecss
     	    ));
         }
+    } else {
+        $config['css_core'] = false;
     };
+
+    // Default the running of view based CSS inclusion to true
+    if(empty($config['css_links'])){
+        $config['css_links'] = true;
+    }
+    
+    // default theme css collecting to true if not set
+    if(empty($config['css_theme'])){
+        $config['css_theme'] = true;
+    }
         
+    //eDebug($config);
+
     if (empty($sectionObj)) return false;
     
     $metainfo = expTheme::pageMetaInfo();

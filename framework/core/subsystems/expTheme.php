@@ -20,7 +20,7 @@
 
 class expTheme {
 
-    public function head($config){
+    public function head($config = array()){
     	echo headerInfo($config); 
     }
     

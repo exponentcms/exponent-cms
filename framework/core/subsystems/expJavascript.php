@@ -30,6 +30,7 @@ class expJavascript {
 	public static function parseJSFiles() {
         global $userjsfiles,$expJS,$yui2js,$yui3js;
         
+    	$scripts = "";
         if (!empty($yui2js)) {
         	require_once(BASE.'external/lissa/class.lissa.php');        
         
