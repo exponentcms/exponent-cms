@@ -36,7 +36,7 @@
 }
 
 /********************* options ******************************/
-.store.edit .hd {
+.store.edit .options .hd {
     margin:0;
     position:relative;
     background:url(../images/ecom-sprite.png) repeat-x 0 -44px;

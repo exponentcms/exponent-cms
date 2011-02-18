@@ -14,7 +14,11 @@
  *
  *}
  
- {script unique="cartview"}
+ {css unique="cart" link="`$asset_path`css/cart.css" corecss="panels"}
+
+ {/css}
+ 
+ {script unique="cartview" yui2mods="dom"}
  {literal}
  YAHOO.util.Event.onDOMReady(function(){
      YAHOO.util.Dom.removeClass("myCart", 'hide');
@@ -37,16 +41,13 @@
 			{if $coupons}
 				{img src="`$smarty.const.ICON_RELATIVE`/ecom/cart-coupon-btn.png"}
 			{/if}
-		    <a class="checkout-now-btn" href="{link action=checkout}" title="Proceed to checkout">
-		        <img src="{$smarty.const.URL_FULL}themes/common/skin/ecom/cart-checkout-btn.png" alt="checkout now">
-			</a>					
 		</div>
 		{include file="show_cart_only.tpl"}
 	</div>
     <div style="padding-top: 8px;">
-        <a class="exp-ecom-link" href="{link controller=store action=showall}"><strong><em>Continue Shopping</em></strong></a>
+        <a class="awesome large blue" href="{backlink}">Continue Shopping</a>
         {if $items|@count gt 0}
-        <a class="exp-ecom-link" style="margin-left: 18px;" href="{securelink controller=cart action=checkout}"><strong><em>Checkout Now</em></strong></a>
+        <a class="awesome large blue" style="margin-left: 18px;" href="{securelink controller=cart action=checkout}">Checkout Now</a>
         {/if}
     </div>
 </div>

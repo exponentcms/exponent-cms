@@ -1,0 +1,31 @@
+.cart.show-inline li {
+    position:relative;
+}
+
+.cart.show-inline li a.delete {
+    position:absolute;
+    right:5px;
+    top:5px;
+    overflow:hidden;
+    text-indent:-999px;
+    width:15px;
+    height:15px;
+    padding:0;
+    background: url(../../../../core/assets/images/delete.png) no-repeat 0 50%;
+}
+
+.cart.show-inline li .image {
+    float:left;
+    clear:both;
+    margin:0 5px 0 0;
+}
+
+.cart.show-inline li .title {
+    display:block;
+}
+
+.cart.show-inline li:hover {
+    background:#c3c2c2;
+}
+
+

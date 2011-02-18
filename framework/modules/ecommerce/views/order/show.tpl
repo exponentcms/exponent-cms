@@ -42,22 +42,22 @@
             <li class="selected"><a href="#invoice"><em>Invoice</em></a></li>
             <li><a href="#ordhistory"><em>Order History</em></a></li>
             <li><a href="#shipinfo"><em>Shipping Information</em></a></li>
-            <li><a href="#billinfo"><em>Billing Information</em></a></li>
-            {permissions level=$smarty.const.UILEVEL_NORMAL}
+            <!--li><a href="#billinfo"><em>Billing Information</em></a></li-->
+            {*permissions level=$smarty.const.UILEVEL_NORMAL}
                 {if $permissions.manage == 1}
                     <li><a href="#addinfo"><em>Additional Information</em></a></li>
                     <li><a href="#notes"><em>Notes</em></a></li>
                 {/if}
-            {/permissions}
+            {/permissions*}
         </ul>   
                  
         <div class="yui-content">
             <div id="invoice">
                 <div id="buttons">
-                    {printer_friendly_link class="exp-ecom-link" text="<strong><em>Print this invoice</em></strong>" view="show_printable"} 
+                    {printer_friendly_link class="awesome blue small" text="Print this invoice" view="show_printable"} 
                     {permissions level=$smarty.const.UILEVEL_NORMAL}
                         {if $permissions.manage == 1}
-                            {printer_friendly_link class="exp-ecom-link" text="<strong><em>Print Packing Slip</em></strong>" view="show_packing"}
+                            {printer_friendly_link class="awesome blue small" text="Print Packing Slip" view="show_packing"}
                         {/if}
                     {/permissions} 
                 </div>
@@ -65,7 +65,36 @@
             </div>
             <div id="ordhistory">
                 <h2>Order History</h2>
-                <h3>The status of this order is: {$order->getStatus()}</h3>
+                <table border="0" cellspacing="0" cellpadding="0" class="exp-skin-table">
+                    <thead>
+                        <tr>
+                            <th>
+                                <strong>Current Status:</strong> <em>{$order->getStatus()}</em>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            {foreach from=$order->order_status_changes item=change}
+                            <td>
+                                <p>
+                                Status was changed from {selectValue table='order_status' field="title" where="id=`$change->from_status_id`"} 
+                                to {selectValue table='order_status' field="title" where="id=`$change->to_status_id`"} on {$change->created_at|format_date:$smarty.const.DISPLAY_DATETIME_FORMAT}
+                                </p>
+                                <h4>Comments</h4>
+                                {$change->comment}
+                            </td>
+                            {foreachelse}
+                            <td>
+                                <p>
+                                    There is no change history for this order yet.
+                                </p>
+                            </td>
+                            {/foreach}
+                        </tr>
+                    </tbody>
+                </table>
+                
                 {permissions level=$smarty.const.UILEVEL_NORMAL}
                 {if $permissions.manage == 1}
                     {form action=setStatus}
@@ -86,17 +115,6 @@
                 {/if}
                 {/permissions}
                 
-                <h3>History</h3>
-                {foreach from=$order->order_status_changes item=change}
-                    <strong>
-                    Status was changed from {selectValue table='order_status' field="title" where="id=`$change->from_status_id`"} 
-                    to {selectValue table='order_status' field="title" where="id=`$change->to_status_id`"} on {$change->created_at|format_date:$smarty.const.DISPLAY_DATETIME_FORMAT}
-                    </strong>
-                    <h4>Comments</h4>
-                    {$change->comment}{br}{br}
-                {foreachelse}
-                    There is no change history for this order yet.
-                {/foreach}
 
             </div>
             <div id="shipinfo">
@@ -113,7 +131,7 @@
                     Date Shipped: {if $order->shipped != 0}{$order->shipped|format_date:$smarty.const.DISPLAY_DATE_FORMAT}{else}This order has not been shipped yet{/if}
                 {/if}
             </div>
-            <div id="billinfo">
+            <!--div id="billinfo">
                 <h2>Billing Information</h2>
                 {* eDebug var=$order->billingmethod[0] *}
                 {foreach from=$order->billingmethod[0]->billingtransaction item=bt name=foo}
@@ -156,33 +174,33 @@
                     </tbody>  
                     </table>
                 {/foreach}
-            </div>
-    {permissions level=$smarty.const.UILEVEL_NORMAL}
-        {if $permissions.manage == 1}
-            <div id="addinfo">
-                <h2>Additional Information</h2>
-                
-                <h3>Order Type</h3>
-                <p>This order is a {$order_type} order</p>
+            </div-->
+    {*        permissions level=$smarty.const.UILEVEL_NORMAL}
                 {if $permissions.manage == 1}
-                    {form action=set_order_type}
-                        {control type="hidden" name="id" value=$order->id}
-                        {control type="dropdown" name="order_type_id" label="Change order type to:" frommodel='order_type' orderby='rank' value=$order->order_type_id}
-                        {control type=buttongroup submit="Save change"}
-                    {/form}
+                    <div id="addinfo">
+                        <h2>Additional Information</h2>
+
+                        <h3>Order Type</h3>
+                        <p>This order is a {$order_type} order</p>
+                        {if $permissions.manage == 1}
+                            {form action=set_order_type}
+                                {control type="hidden" name="id" value=$order->id}
+                                {control type="dropdown" name="order_type_id" label="Change order type to:" frommodel='order_type' orderby='rank' value=$order->order_type_id}
+                                {control type=buttongroup submit="Save change"}
+                            {/form}
+                        {/if}
+
+                        {br}{br}
+
+                        <h3>Origional Referrer</h3>
+                        <p>{$order->orig_referrer}</p>
+                    </div>
+                    <div id="notes">
+                        <h2>Notes</h2>
+                        {simplenote content_type="order" content_id=$order->id require_login="1" require_approval="0" require_notification="0" tab="notes"}
+                    </div>
                 {/if}
-                
-                {br}{br}
-                
-                <h3>Origional Referrer</h3>
-                <p>{$order->orig_referrer}</p>
-            </div>
-            <div id="notes">
-                <h2>Notes</h2>
-                {simplenote content_type="order" content_id=$order->id require_login="1" require_approval="0" require_notification="0" tab="notes"}
-            </div>
-        {/if}
-    {/permissions}
+            {/permissions*}
         </div>
     </div>
 </div>

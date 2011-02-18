@@ -36,17 +36,10 @@
     padding:5px;
 }
 
-#cart {
-    margin-bottom:0;
-}
 
-#cart th {
-	background-image: url(../skin/ecom/cart_th_bg.png);
-	height: 30px;
-	color: #000000;
-	padding: 0px 0px 0px 10px;
-	border-width:0;
-	text-align:left;
+table#cart table,
+table#cart table td {
+    border:0 none;
 }
 #cart tr.odd { 
     background: #ebebeb; 
@@ -79,7 +72,6 @@
 #cart table.cart-item td {
 	margin:0;
 	padding:0;
-    vertical-align:top;
 }
 
 #cart table.cart-item .cart-image {
@@ -89,9 +81,6 @@
     padding-right:5px;
 }
 
-#cart table.cart-item .cart-image img { 
-	border: 1px solid #d7d7d7; 
-}
 
 
 /****************  quantity  ***********************/
@@ -536,4 +525,25 @@ a.backtolist {
 .store.quick-links a.vieworders {
 	background-image: url(../../../../core/assets/images/view.png);
 	background-repeat: no-repeat;
+}
+/****************  NEW shipping options  ***********************/
+
+#shipping-method-options .shippingmethodimg {
+    float:left;
+}
+
+#shipping-method-options .sm-info {
+    margin-left:60px;
+}
+
+#shipping-method-options .sm-info strong em {
+    display:block;
+    color:#006600;
+    font-size:112%;
+}
+
+#shipping-method-options .selected-info {
+    display:block;
+    padding-bottom:10px;
+    margin-bottom:10px;
 }

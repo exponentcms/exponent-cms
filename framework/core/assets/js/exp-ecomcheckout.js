@@ -1,4 +1,4 @@
-YUI({ base:EXPONENT.URL_FULL+'external/lissa/3.0.0/build/',loadOptional: true}).use('node', function(Y) {
+YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
 
     var toggleCart = {
             cartWrap: YAHOO.util.Dom.get('shoppingcartwrapper'),
@@ -196,14 +196,14 @@ YUI({ base:EXPONENT.URL_FULL+'external/lissa/3.0.0/build/',loadOptional: true}).
             this.oForm = YAHOO.util.Dom.get("omform");
             YAHOO.util.Event.on(this.oForm, 'submit', this.handleSubmit, this, true);
             
-            this.nosave = YAHOO.util.Dom.get('nosave');
+            //this.nosave = YAHOO.util.Dom.get('nosave');
             this.msgto = YAHOO.util.Dom.get('shpmessageto');
             this.msgfrom = YAHOO.util.Dom.get('shpmessagefrom');
             this.msgmsg = YAHOO.util.Dom.get('shpmessage');
             
-            this.nosave.value = 0;
+            //this.nosave.value = 0;
             this.msgpanel.hideEvent.subscribe(function(e){
-                this.nosave.value = 0;
+                //this.nosave.value = 0;
             },this,true);
             
         },
@@ -275,14 +275,12 @@ YUI({ base:EXPONENT.URL_FULL+'external/lissa/3.0.0/build/',loadOptional: true}).
     //initialize things
     function inititCheckout(){
         hide();
-        shippingMethod.init();
+        //shippingMethod.init();
         //addressManager.init();
         //creditCard.init();
-        giftmessage.init();
-        toggleCart.init();
-        Y.one('#loadingdiv').remove();
-        Y.one('#expresscheckout').removeClass('hide');
+        //giftmessage.init();
+        //toggleCart.init();
     }
-    inititCheckout();
+    Y.on('domready',inititCheckout);
     
 });

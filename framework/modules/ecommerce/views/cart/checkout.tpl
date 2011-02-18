@@ -14,7 +14,7 @@
  *
  *}
  
-<div id="expresscheckout" class="cart checkout exp-skin hide">
+<div id="expresscheckout" class="cart checkout exp-skin">
     <h1>{$moduletitle|default:"Express Checkout"}</h1>
 
     {if $cartConfig.policy!=""}
@@ -65,7 +65,6 @@
 
     <div class="cartitems separate">
         
-        <p>You've got <strong>{$order->item_count}</strong> item{if $order->item_count > 1}s{/if} in your cart. <a id="expandcart" href="#" class="ecom-link">Show them?<span></span></a></p>
         <div id="shoppingcartwrapper">
             {chain controller=cart action=show view=show_cart_only}
         </div>
@@ -136,14 +135,13 @@
                     <p>Your order requires <strong>{$shipping->shippingmethod->option_title}</strong></p>
                 {else}
                     <p{if $noShippingPrices} class="hide"{/if}><strong id="cur-calc">{if $shipping->calculator->id}{$shipping->calculator->title}{else}No service selected{/if}</strong>  -  <a href="#" id="servicepicker">Select a Service</a></p>
-
+                    {*
                     <div id="calculators" class="exp-dropmenu">
                         <div class="hd"><span class="type-icon"></span>Select a Shipping Service</div>
                         <div class="bd">
                             <div>
                                 <ul>
                                 {foreach key=key from=$shipping->selectable_calculators item=calc}
-                                {*if $option.id == $shipping->shippingmethod->option}{assign var=selected value=true}{else}{assign var=selected value=false}{/if*}
                                     <li><a rel="{$key}" href="#" class="servopt">{$calc}</a></li>
                                 {/foreach}
                                 </ul>
@@ -153,6 +151,7 @@
                             </div>
                         </div>
                     </div>
+                    *}
                 {/if}
                 {/if}
                 {if $shipping->splitshipping == false}
@@ -164,7 +163,6 @@
                 </div>
 
                 <h3>Shipping Address</h3>
-                <p>Would you like to <a class="ordermessage" href="#" rel="{$shipping->shippingmethod->id}">add a gift message</a> to this Order?</p>
                 
                 <div class="shipping-address">
                     <div id="shpAddSwp">
@@ -181,41 +179,11 @@
                     
                 </div>
                 <div style="clear:both"></div>
-                {else}
-
-                {* else, we have split shipping *}
-                <a id="miltiaddresslink" class="ecomlink-link" href="{link action=splitShipping}">Edit Shipping Information</a>
-            
-                {foreach from=$shipping->splitmethods item=method}
-                    <div class="splitaddress">
-                        <h4>{$order->countOrderitemsByShippingmethod($method->id)} items will be shipped to:</h4>
-                        <a class="ordermessage exp-ecom-link" href="#" rel="{$method->id}"><strong><em>Add a Gift Message to this Order</em></strong></a>
-                        <address>
-                            {$method->firstname} {$method->middlename} {$method->lastname}{br}
-                            {$method->address1}{br}
-                            {if $method->address2 != ""}{$method->address2}{br}{/if}
-                            {$method->city}, {$method->state|statename:abv}, {$method->zip}
-                        </address>
-                    </div>
-                {/foreach}
-                
+              
                 {/if}
             </div>
             {* end split shipping *}
             {/if} {* end shipping required check *}
-            <div id="ordermessageform"  class="exp-form">
-                    <div class="hd">Add a Gift Message</div>
-                    <div class="bd"><span class="type-icon"></span>
-                        {form controller=shipping name=omform action="leaveMessage"}
-                            {control type=hidden name=shippingmessageid id=shippingmessageid value="0"}
-                            {control type=hidden name=nosave id=nosave value="0"}
-                            {control type=text name=shpmessageto id=shpmessageto label="To"}
-                            {control type=text name=shpmessagefrom id=shpmessagefrom label="From"}
-                            {control type=textarea name=shpmessage id=shpmessage label="Message"}
-                            {control type=buttongroup name="savemessage" id="savemessage" submit="Save Message"}
-                        {/form}
-                    </div>
-                </div>
         </div>
         <div class="billingdetails separate">
             <h2>Your Billing Information</h2>
@@ -235,7 +203,8 @@
             </div>
         
             <h3>Payment Information</h3>
-            {foreach from=$billing->calculator_views item=cviews name=calcs}                   
+
+            {foreach from=$billing->calculator_views item=cviews name=calcs key=key}
                 {include file=$cviews}
                 {if $smarty.foreach.calcs.last!=1}
                     <strong>- OR -</strong>
@@ -247,7 +216,6 @@
         </div-->
     </div>
 </div>
-<div id="loadingdiv" class="loadingdiv">Loading Checkout Page</div>
 
 {*  Kludged out while testing paypal *}
 {script unique="shoppingcartcheckout" yuimodules="animation,container,json" src=`$smarty.const.JS_FULL`exp-ecomcheckout.js}

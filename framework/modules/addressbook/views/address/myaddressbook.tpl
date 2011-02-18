@@ -61,7 +61,7 @@
             {permissions level=$smarty.const.UILEVEL_PERMISSIONS}
                 <div class="itemactions">
                     {if $user->id == $address->user_id}
-                        {icon action=edit id=$address->id title="Edit this Address" text=" "}
+                        {icon action=edit id=$address->id title="Edit this Address"}
                         {if $addresses|@count > 1}{icon action=delete id=$address->id title="Delete this Address" onclick="return confirm('Are you sure you want to delete this address?');"}{/if}
                     {/if}
                 </div>
@@ -73,6 +73,6 @@
     {/foreach}
     </tbody>
     </table>
-    <a class="btn" href="{backlink}"><strong><em>Done</em></strong></a>
+    <a class="awesome blue small" href="{backlink}">Done</a>
 </div>
 

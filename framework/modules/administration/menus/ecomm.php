@@ -113,26 +113,26 @@ return array(
                     ),                        
                 ),
             ),
-            array(
-                'text'=>"Discounts & Promos",
-                'submenu'=>array(
-                    'id'=>'discount',
-                    'itemdata'=>array(
-                        array(
-                            'text'=>"Discount Rules",
-                            'url'=>makeLink(array('controller'=>'ecomconfig','action'=>'manage_discounts')),
-                        ),
-                        array(
-                            'text'=>"Promo Codes",
-                            'url'=>makeLink(array('controller'=>'ecomconfig','action'=>'manage_promocodes')),
-                        ),
-                        array(
-                            'text'=>"Group Discounts",
-                            'url'=>makeLink(array('controller'=>'ecomconfig','action'=>'manage_groupdiscounts')),
-                        ),
-                    ),                        
-                ),
-            ),
+            // array(
+            //     'text'=>"Discounts & Promos",
+            //     'submenu'=>array(
+            //         'id'=>'discount',
+            //         'itemdata'=>array(
+            //             array(
+            //                 'text'=>"Discount Rules",
+            //                 'url'=>makeLink(array('controller'=>'ecomconfig','action'=>'manage_discounts')),
+            //             ),
+            //             array(
+            //                 'text'=>"Promo Codes",
+            //                 'url'=>makeLink(array('controller'=>'ecomconfig','action'=>'manage_promocodes')),
+            //             ),
+            //             array(
+            //                 'text'=>"Group Discounts",
+            //                 'url'=>makeLink(array('controller'=>'ecomconfig','action'=>'manage_groupdiscounts')),
+            //             ),
+            //         ),                        
+            //     ),
+            // ),
         ),
     )
 );

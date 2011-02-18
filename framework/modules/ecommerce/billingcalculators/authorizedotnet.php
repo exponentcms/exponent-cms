@@ -56,7 +56,7 @@ class authorizedotnet extends creditcard {
 			"x_ship_to_state"=>$shipping_state->code,
 			"x_ship_to_zip"=>$shippingaddress->zip,
 			"x_ship_to_country"=>$shipping_country->iso_code_2letter,
-			"x_amount"=>$order->finalTotal,
+			"x_amount"=>$order->grand_total,
 			"x_description"=>"Secure Order from " . HOSTNAME,
 			"x_method"=>'CC',
 			"x_recurring_billing"=>'NO',
@@ -102,6 +102,12 @@ class authorizedotnet extends creditcard {
 		if ($response[0] == 1) { //Approved !!!
 			$object->errorCode = 0;
 			$object->message = $response[3] . " Approval Code: ".$response[4];
+			$object->status = 'Approved';
+            $object->AUTHCODE = $response[4];
+            $object->AVSResponse = $response[5];
+            $object->HASH = $response[37];            
+	     $object->CVVResponse = $response[38];
+            $object->PNREF = $response[6];
 		} else {
 			$object->errorCode = $response[2]; //Response reason code
 			$object->message = $response[3];
@@ -158,10 +164,62 @@ class authorizedotnet extends creditcard {
 		return $html;
 	}
 
-    public function postProcess() {
+    public function postProcess($order=null,$params=null) {
         $this->opts = null;
+        return true;
+    }
+    
+    function getPaymentAuthorizationNumber($billingmethod){
+        $ret = expUnserialize($billingmethod->billing_options);
+        return $ret->result->AUTHCODE;
+    }
+    
+    function getPaymentReferenceNumber($opts) {
+        $ret = expUnserialize($opts);
+        if (isset($ret->result))
+        {
+            return $ret->result->PNREF;    
+        }
+        else
+        {
+            return $ret->PNREF;
+        }         
+    }
+    
+    function getPaymentStatus($billingmethod) {
+        $ret = expUnserialize($billingmethod->billing_options);
+        return $ret->result->status;
+    }
+    
+    function getAVSAddressVerified($billingmethod) {
+        $ret = expUnserialize($billingmethod->billing_options);
+        $response = $ret->result->AVSResponse;
+        if (stristr($response, 'P') || stristr($response, 'S') || stristr($response, 'U')) return "N/A";
+        elseif (stristr($response, 'A') || stristr($response, 'X') || stristr($response, 'Y')) return 'Y';
+        else return 'X';
+    }
+                                
+    function getAVSZipVerified($billingmethod) {
+        $ret = expUnserialize($billingmethod->billing_options);
+        $response = $ret->result->AVSResponse;
+        if (stristr($response, 'P') || stristr($response, 'S') || stristr($response, 'U')) return "N/A";
+        elseif (stristr($response, 'W') || stristr($response, 'X') || stristr($response, 'Y') || stristr($response, 'Z')) return 'Y';
+        else return 'X';
+    }
+    
+    function getCVVMatched($billingmethod) {
+        $ret = expUnserialize($billingmethod->billing_options);
+        $response = $ret->result->CVVResponse;
+        if (stristr($response, 'M')) return 'Y';
+        else return 'X';
+    }
+ 
+    function getPaymentMethod($billingmethod) {
+        $ret = expUnserialize($billingmethod->billing_options);
+        return $ret->cc_type;
     }
 }
 
 ?>
+
 

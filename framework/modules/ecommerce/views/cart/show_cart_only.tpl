@@ -15,7 +15,8 @@
  *}
 
 {if $items|@count > 0}
-<table id="cart" width="100%" cellpadding="0" cellspacing="0">
+<table id="cart" width="100%" cellpadding="0" cellspacing="0" class="exp-skin-table">
+    <thead>
     <tr>
         <th>Item</th>
         <th>Price</th>
@@ -23,9 +24,11 @@
         <th>Quantity</th>
         <th>&nbsp;</th>
     </tr>
+    </thead>
+    <tbody>
     {foreach from=$items item=item}
     <tr class="{cycle values="odd,even"}">
-        <td class="prodrow item">
+        <td class="prodrow">
              {get_cart_summary item=$item}
         </td>
         <!--td class="prodrow price" id="price-{$item->id}">${$item->products_price*$item->quantity|number_format:2}</td-->
@@ -54,6 +57,7 @@
         </td>
     </tr>
     {/foreach}
+    </tbody>
 </table>
 {else}
 <div class="no-items">

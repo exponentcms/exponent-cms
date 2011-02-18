@@ -14,6 +14,9 @@
  *
  *}
 
+{css unique="store-tree" corecss="tree"}
+
+{/css}
 
 <div class="storeCategory manage-categories">
 	<div class="form_header">

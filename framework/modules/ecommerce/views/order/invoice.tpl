@@ -113,7 +113,7 @@
                             {gettext str="Payment Reference #"}
                             </span>
                             <span class="pmt-value">
-                            {$billing->calculator->getPaymentReferenceNumber($billing->billingmethod)}
+                            {$billing->calculator->getPaymentReferenceNumber($billing->billingmethod->billing_options)}
                             </span>
                         </div>
                         <div class="odd">
@@ -275,7 +275,7 @@
                     </td>
                     <td>
                     {currency_symbol}
-                    </td
+                    </td>
                     <td style="text-align:right;">{$order->subtotal|number_format:2}
                     </td>
                 </tr>
@@ -286,7 +286,7 @@
                     </td>
                     <td>
                     {currency_symbol}
-                    </td
+                    </td>
                     <td style="text-align:right;">-{$order->total_discounts|number_format:2}
                     </td>
                 </tr>
@@ -296,7 +296,7 @@
                     </td>
                     <td>
                     {currency_symbol}
-                    </td
+                    </td>
                     <td style="text-align:right;">{$order->total|number_format:2}
                     </td>
                 </tr>   
@@ -312,7 +312,7 @@
                     </td>
                     <td>
                     {currency_symbol}
-                    </td
+                    </td>
                     <td style="text-align:right;">{$order->tax|number_format:2}
                     </td>
                 </tr>   
@@ -322,7 +322,7 @@
                     </td>
                     <td>
                     {currency_symbol}
-                    </td
+                    </td>
                     <td style="text-align:right;">{$order->shipping_total|number_format:2}
                     </td>
                 </tr>
@@ -333,7 +333,7 @@
                         </td>
                         <td>
                         {currency_symbol}
-                        </td
+                        </td>
                         <td style="text-align:right;">{$order->surcharge_total|number_format:2}
                         </td>
                     </tr>
@@ -344,8 +344,9 @@
                     </td>
                     <td>
                     {currency_symbol}
-                    </td
+                    </td>
                     <td style="text-align:right;">{$order->grand_total|number_format:2}
+                        
                     </td>
                 </tr>
             </tbody>
