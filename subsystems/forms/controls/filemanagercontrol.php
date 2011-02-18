@@ -61,14 +61,14 @@ class filemanagercontrol extends formcontrol {
         $files = $this->buildImages();
         $html = '<div id="filemanager'.$name.'" class="filemanager control'.(empty($this->class)?"":" ".$this->class).'">';
         //$html .= '<div id="displayfiles" class="displayfiles" style="padding:5px; border:1px solid #444"> </div>';
-        $html .= '<div class="hd"><label class="label">'.$label.'</label>';
+        $html .= '<div class="hd"><label class="label">'.$label.'';
         if ($this->limit!=null){
-            $html .= '<strong>Limit: <em class="limit">'.$this->limit.'</em></strong>';
+            $html .= ' | <small>Limit: <em class="limit">'.$this->limit.'</em></small>';
         }
         if ($this->count < $this->limit){
-            $html .= '<a class="add" href="#" id="addfiles-'.$name.'">Add Files</a>';
+            $html .= ' | <a class="add" href="#" id="addfiles-'.$name.'">Add Files</a>';
         }
-        $html .= '</div>';
+        $html .= '</label></div>';
 
         if (empty($files)) {
             $this->count = 0;
