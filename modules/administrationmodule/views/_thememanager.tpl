@@ -23,7 +23,7 @@
 
 	{foreach name=t from=$themes key=class item=theme}
 	<div class="item {cycle values="odd,even"}">
-		<img class="previewimage" src="{$smarty.const.URL_FULL}thumb.php?file={$theme->preview}&constraint=1&width=100&height=100" {$smarty.const.XHTML_CLOSING}>
+	    {img class="themepreview" src=$theme->preview w=100}
 
 		<div class="themeinfo">
 			<h2>
