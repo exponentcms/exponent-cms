@@ -28,5 +28,10 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','event', function(Y) {
             
         // };
 
+        // move hard coded mod menus inside the mod wrapper they pertain to
+        Y.all('.hardcoded-chrome').each(function(n,k){
+            n.get('parentNode').next().prepend(n.get('parentNode'));
+        });
+
     });
 });
