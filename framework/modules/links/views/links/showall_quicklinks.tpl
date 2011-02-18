@@ -20,11 +20,14 @@
         {if $permissions.create == 1 || $permissions.edit == 1}
             {icon controller=links class="add" action=create text="Create new link" title="Create a new link"}
         {/if}
+        {if $permissions.edit == 1}
+            {ddrerank items=$items model="links" label="Links"|gettext}
+        {/if}
         </div>
     {/permissions}
     <ul>
-        {foreach name=items from=$items item=item}
-        <li>
+        {foreach name=items from=$items item=item name=links}
+        <li{if $smarty.foreach.links.last} class="last"{/if}>
             <a class="link" href="{$item->url}">{$item->title}</a>
             {permissions level=$smarty.const.UILEVEL_NORMAL}
                 <div class="item-actions">
@@ -35,7 +38,6 @@
                     {icon controller=links action=delete id=$item->id title="Delete this `$modelname`" onclick="return confirm('Are you sure you want to delete this `$modelname`?');"}
                 {/if}
                 </div>
-                
             {/permissions}
         </li>
         {/foreach}
