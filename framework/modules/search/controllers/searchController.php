@@ -21,6 +21,8 @@ class searchController extends expController {
     public $useractions = array('show'=>'Show Search Form');
     public $add_permissions = array('spider'=>'Spider Site');
 
+    public $remove_configs = array('ealerts','tags','files','aggregation','comments','rss');
+
     function name() { return $this->displayname(); } //for backwards compat with old modules
     function displayname() { return "Search Form"; }
     function description() { return "Add a form to allow users to search for content on your website."; }

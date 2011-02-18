@@ -14,20 +14,31 @@
  *
  *}
  
+{css unique="searchform" corecss="forms" link="`$asset_path`css/show-form.css"}
+    
+{/css}
+ 
 <div class="module search show-form">
     {if $moduletitle != ""}<h1>{$moduletitle}</h1>{/if}
     <form id="form" name="form" class="" method="POST" action="{$smarty.const.URL_FULL}index.php">
         <input type="hidden" name="action" id="action" value="search">
         <input type="hidden" name="module" id="module" value="search">
-        {control type="text" name="search_string" id="search_string" label=" " value="Search"}
-        {control type="buttongroup" submit="Search"}
+        {control type="text" name="search_string" id="search_string" value=$config.inputtext|default:"Keywords"|gettext}
+        {control type="buttongroup" submit=$config.buttontext|default:"Search"|gettext}
     </form>
 </div>
-{script unique="search" yui3mods="node"}
+{script unique="search" yui3mods="yui"}
 {literal}
 
-YUI({ base:EXPONENT.YUI3_PATH,loadOptional: true}).use('*', function(Y) {
-    Y.get('#search_string').on('click',function(e){e.target.set('value','');});
+YUI().use('node', function(Y) {
+    Y.get('#search_string').on({
+        'focus':function(e){
+            e.target.set('value',(e.target.get('value')=='{/literal}{$config.default_txt|default:"Keywords"|gettext}{literal}')?'':e.target.get('value'));
+        },
+        'blur':function(e){
+            e.target.set('value',(e.target.get('value')=='')?'{/literal}{$config.default_txt|default:"Keywords"|gettext}{literal}':e.target.get('value'));
+        }
+    });
 });
 
 {/literal}
