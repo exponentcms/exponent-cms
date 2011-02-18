@@ -136,13 +136,13 @@
     {control type="buttongroup" submit="Update Active Modules"}
     {/form}
 </div>
-<div class="loadingdiv">Loading File Download Form</div>
+<div class="loadingdiv">{"Loading"|gettext}</div>
 
 {script unique="filetabs" yui2mods="tabview,element" yui3mods="node"}
 {literal}
 YUI({base:EXPONENT.YUI3_PATH,loadOptional: true}).use('*', function(Y) {
     var tabView = new YAHOO.widget.TabView('mods');
-    Y.one('.hide').removeClass('hide');
+    Y.one('.modulemanager.hide').removeClass('hide');
     Y.one('.loadingdiv').remove();
     
     EXPONENT.selectAllCheckboxes = function (selector) {
