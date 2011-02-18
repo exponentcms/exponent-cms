@@ -14,6 +14,10 @@
  *
  *}
 
+{css unique="top-nav" link="`$smarty.const.PATH_RELATIVE`modules/navigationmodule/assets/css/topnav.css"}
+
+{/css}
+
 <div class="navigationmodule top-nav">
 	<ul>
 	{assign var=isparent value=0}	
@@ -29,7 +33,7 @@
 		{/if}
 		
 		{if $section->active == 1}
-			<li{if $section->id==$current->id || $isparent==1} class="current"{/if}><a class="navlink" href="{$section->link}"{if $section->new_window} target="_blank"{/if}>{$section->name}</a></li>
+			<li class="{if $section->id==$current->id || $isparent==1}current{/if}{if $section->last==1} last{/if}{if $section->first==1} first{/if}"><a class="navlink" href="{$section->link}"{if $section->new_window} target="_blank"{/if}>{$section->name}</a></li>
 		{else}
 			<li><span class="navlink">{$section->name}</span></li>
 		{/if}
