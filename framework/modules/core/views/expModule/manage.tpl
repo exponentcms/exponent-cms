@@ -58,7 +58,7 @@
 
  
 
-<div class="module administrationmodule modulemanager exp-skin-tabview hide">
+<div id="mod-manager" class="module administrationmodule modulemanager exp-skin-tabview hide">
     <div class="info-header">
         <div class="related-actions">
             {help text="Get Help Managing Modules" module="addcontent"}
@@ -142,7 +142,7 @@
 {literal}
 YUI({base:EXPONENT.YUI3_PATH,loadOptional: true}).use('*', function(Y) {
     var tabView = new YAHOO.widget.TabView('mods');
-    Y.one('.modulemanager.hide').removeClass('hide');
+    Y.one('#mod-manager').removeClass('hide');
     Y.one('.loadingdiv').remove();
     
     EXPONENT.selectAllCheckboxes = function (selector) {
