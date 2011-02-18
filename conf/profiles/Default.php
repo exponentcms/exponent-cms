@@ -56,7 +56,7 @@ define("LDAP_BASE_DN",'not_configured');
 define("LDAP_BIND_USER",'not_configured');
 define("LDAP_BIND_PASS",'not_configured');
 define("SLINGBAR_TOP",'1');
-define("DISPLAY_THEME_REAL",'basetheme');
+define("DISPLAY_THEME_REAL",'retrotheme');
 define("DISPLAY_ATTRIBUTION",'lastfirst');
 define("DISPLAY_DATETIME_FORMAT",'%D -- %T');
 define("DISPLAY_DATE_FORMAT",'%d.%m.%y');
