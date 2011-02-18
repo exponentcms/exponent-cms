@@ -66,6 +66,7 @@ class loginmodule {
 				$template->assign('is_group_admin',0);
 			}
 		} else {
+			$template->assign('isecom',in_array('storeController',listActiveControllers()));
 			$template->assign('loggedin',0);
 		}
 		$template->output($view);
