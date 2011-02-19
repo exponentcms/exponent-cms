@@ -17,7 +17,8 @@
 ##################################################
 
 if (!defined("EXPONENT")) include_once('exponent.php');
-if (!defined('SYS_PODCASTING')) include_once('core_podcast.php');
+//if (!defined('SYS_PODCASTING')) include_once('core_podcast.php');
+if (!defined('SYS_RSS')) include_once('core_rss.php');
 
 //$location = new Location($_REQUEST['module'],$_REQUEST['identifier'],$_REQUEST['internal']);
 $location->mod = "";
@@ -54,7 +55,8 @@ if (isset($module)) {
 				$rss->addItem($item);
 			}
 			header("Content-type: text/xml");
-			echo $rss->createFeed("RSS2.0");
+//			echo $rss->createFeed("RSS2.0");
+			echo $rss->createFeed("PODCAST");
 		} else {
 			echo "This Podcast has been disabled.";
 		}
