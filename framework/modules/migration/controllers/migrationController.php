@@ -43,21 +43,40 @@ class migrationController extends expController {
     // Not sure we need to note deprecated modules...
     public $deprecated_modules = array(
         'administrationmodule',
-        'contactmodule',
-        'containermodule',  // not really deprecated, but must be in this list to skip
+        'contactmodule',  // this is of value to some?
+        'containermodule',  // not really deprecated, but must be in this list to skip processing
         'searchmodule',
         'rssmodule',
-//        'navigationmodule',
+//        'navigationmodule',  // veiws are still used, so modules need importing
         'imagemanagermodule',
         'imageworkshopmodule',
         'inboxmodule',
+        'loginmodule',
+        'articlemodule',
+        'bbmodule',
+        'pagemodule',
         'previewmodule',
-        'loginmodule'
+        'tasklistmodule',
+        'wizardmodule',
     );
 
-    public $needs_written = array(
+    public $needs_written = array(  // variable isn't used, comment list
+        'listingmodule',  // to companyController or portfolioController?
+        'bannermodule',  // to bannerController?
+        'faqmodule',  // to faqController?
+        'headlinermodule',  // to headlineController?
+        'weblogmodule',  // to blogController?
+        'mediaplayermodule',  // to flowplayerController?
+        'youtubemodule', // to youtubeController?
+        'categories',  // no controller and not in old school ???
+        'tags',	 // no controller and not in old school ???
+    );
+    
+    public $old_school = array(  // variable isn't used, no controller-list of old school modules still in code base
+        'calendarmodule',
         'formmodule',
-        'listingmodule',
+        'navigationmodule',
+        'simplepollmodule',
     );
     
     function name() { return $this->displayname(); } //for backwards compat with old modules
@@ -276,6 +295,16 @@ class migrationController extends expController {
                 }
                 $configs = $old_db->selectObjects('calendarmodule_config', "location_data='".serialize($iloc)."'");
                 foreach ($configs as $config) {
+                    unset($config->enable_ical);
+                    unset($config->rss_limit);
+                    unset($config->rss_cachetime);
+                    unset($config->reminder_notify);
+                    unset($config->email_title_reminder);
+                    unset($config->email_from_reminder);
+                    unset($config->email_address_reminder);
+                    unset($config->email_reply_reminder);
+                    unset($config->email_showdetail);
+                    unset($config->email_signature);
                     $db->insertObject($config, 'calendarmodule_config');
                 }
             break;

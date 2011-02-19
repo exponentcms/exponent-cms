@@ -22,5 +22,5 @@
             </td>
         </tr>
         {/foreach}
-    </tbody>
+	</tbody>
 </table>
