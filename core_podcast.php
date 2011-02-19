@@ -30,8 +30,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 // Added for Exponent
 define('SYS_PODCASTING', 1);
 // your local timezone, set to "" to disable or for GMT
-define("TIME_ZONE","-0600");
-
+//define("TIME_ZONE","-0600");
+define("TIME_ZONE",date('O',time()));
 
 
 

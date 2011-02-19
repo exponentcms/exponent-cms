@@ -30,7 +30,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 // your local timezone, set to "" to disable or for GMT
 define("SYS_RSS",1);
-define("TIME_ZONE","+01:00");
+//define("TIME_ZONE","+01:00");
+define("TIME_ZONE",date('O',time()));
 
 /**
  * Version string.
