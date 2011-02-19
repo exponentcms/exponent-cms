@@ -33,6 +33,7 @@ class migrationController extends expController {
         'slideshowmodule'=>'photosController',
         'imagegallerymodule'=>'photosController',
         'linklistmodule'=>'linksController',
+        'linkmodule'=>'linksController',
         'snippetmodule'=>'snippetController',
         'swfmodule'=>'textController',
         'rotatormodule'=>'textController'
@@ -43,10 +44,10 @@ class migrationController extends expController {
     public $deprecated_modules = array(
         'administrationmodule',
         'contactmodule',
-        'containermodule',
+        'containermodule',  // not really deprecated, but must be in this list to skip
         'searchmodule',
         'rssmodule',
-        'navigationmodule',
+//        'navigationmodule',
         'imagemanagermodule',
         'imageworkshopmodule',
         'inboxmodule',
@@ -241,7 +242,7 @@ class migrationController extends expController {
                 $this->convert($iloc, $module);                
             } else if (!in_array($iloc->mod, $this->deprecated_modules)) {
                 // add old school modules not in the deprecation list
-                if (!$db->selectObject('container',"internal='".$cont->internal."'")) {
+                if (!$db->selectObject('container',"internal='".$module->internal."'")) {
                     $db->insertObject($module, 'container');
                     @$this->msg['container']++;
                 }
@@ -359,6 +360,30 @@ class migrationController extends expController {
             case 'linklistmodule':
                 $iloc->mod = 'linklistmodule';
                 $links = $old_db->selectArrays('linklist_link', "location_data='".serialize($iloc)."'");
+
+                @$module->view = "showall_quicklinks";
+
+                foreach ($links as $link) {
+                    $lnk = new links();
+                    $loc = expUnserialize($link['location_data']);
+                    $loc->mod = "links";
+                    $lnk->title = $link['name'];
+                    $lnk->body = $link['description'];
+                    $lnk->new_window = $link['opennew'];
+                    $lnk->url = $link['url'];
+                    $lnk->rank = $link['rank'];                    
+                    $lnk->poster = 1;
+                    $lnk->editor = 1;                    
+                    $lnk->location_data = serialize($loc);
+                    
+                    $lnk->save();
+                    @$this->msg['migrated'][$iloc->mod]['count']++;
+                    @$this->msg['migrated'][$iloc->mod]['name'] = $this->new_modules[$iloc->mod];
+                }
+            break;
+            case 'linkmodule':  // user mod, not widely distributed
+                $iloc->mod = 'linkmodule';
+                $links = $old_db->selectArrays('link', "location_data='".serialize($iloc)."'");
 
                 @$module->view = "showall_quicklinks";
 
