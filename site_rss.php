@@ -28,6 +28,8 @@ $site_rss = new expRss($_REQUEST);
 $config->enable_rss = true;
 $config->feed_title = empty($site_rss->feed_title) ? 'RSS for '.URL_FULL : $site_rss->feed_title;
 $config->feed_desc = empty($site_rss->feed_desc) ? 'This is the site wide RSS syndication for '.HOSTNAME : $site_rss->feed_desc;
+$ttl = $config->rss_cachetime;
+if ($ttl == 0) { $ttl = 24; }
 
 if ($config->enable_rss == true) {
 	$rss = new UniversalFeedCreator();
@@ -35,6 +37,7 @@ if ($config->enable_rss == true) {
 	$rss->useCached();
 	$rss->title = $config->feed_title;
 	$rss->description = $config->feed_desc;
+	$rss->ttl = $ttl;
 	$rss->link = "http://".HOSTNAME.PATH_RELATIVE;
 	$rss->syndicationURL = "http://".HOSTNAME.PATH_RELATIVE.$_SERVER['PHP_SELF'];	
 

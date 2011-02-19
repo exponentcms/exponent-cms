@@ -34,6 +34,8 @@ $config = new expConfig(exponent_core_makeLocation($_REQUEST['module'], $_REQUES
 $config->enable_rss = true;
 $config->feed_title = empty($site_rss->feed_title) ? 'RSS for '.URL_FULL : $site_rss->feed_title;
 $config->feed_desc = empty($site_rss->feed_desc) ? 'This is the site wide RSS syndication for '.HOSTNAME : $site_rss->feed_desc;
+$ttl = $config->rss_cachetime;
+if ($ttl == 0) { $ttl = 24; }
 
 $ic = explode(";", $config->config['itunes_cats']);
 
@@ -53,6 +55,7 @@ if ($config->enable_rss == true) {
 	$rss->useCached("PODCAST");
 	$rss->title = $config->feed_title;
 	$rss->description = $config->feed_desc;
+	$rss->ttl = $ttl;
 	$rss->itunes->summary = $config->feed_desc;
 	$rss->itunes->author = ORGANIZATION_NAME;
 	$rss->link = "http://".HOSTNAME.PATH_RELATIVE;
