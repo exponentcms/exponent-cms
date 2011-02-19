@@ -34,32 +34,42 @@ if (isset($_REQUEST['module'])) {
 }
 //echo "module: ".$module;
 if (isset($module)) {
-		//get the RSS Items from the module	
-		include_once('modules/'.$module.'/class.php');
-		$obj = new $module();	
-		$rss_items = $obj->getRSSContent($location);
+	//get the RSS Items from the module	
+	include_once('modules/'.$module.'/class.php');
+	$obj = new $module();	
+	$rss_items = $obj->getRSSContent($location);
+	$itemdate = array();
+	foreach($rss_items as $item) {
+		$itemdate[] = strtotime($item->date); 
+	} 
+	$pubDate = date('r', max($itemdate)); 
+	//get the modules config data which should have the feed title & desc
+	$config = $db->selectObject($module."_config", "location_data='".serialize($location)."'");		
+	$ttl = $config->rss_cachetime;
+	if ($ttl == 0) { $ttl = 24; }
+	if (is_object($config) && $config->enable_podcasting == true) {
+		$rss = new UniversalFeedCreator();
+		$rss->cssStyleSheet = "";
+		$rss->useCached();
+		$rss->title = $config->feed_title;
+		$rss->description = $config->feed_desc;
+		$rss->ttl = $ttl;
+		$rss->pubDate = $pubDate;
+		$rss->link = "http://".HOSTNAME.PATH_RELATIVE;
+		$rss->syndicationURL = "http://".HOSTNAME.PATH_RELATIVE.$_SERVER['PHP_SELF'];	
 
-		//get the modules config data which should have the feed title & desc
-		$config = $db->selectObject($module."_config", "location_data='".serialize($location)."'");		
-
-		if (is_object($config) && $config->enable_podcasting == true) {
-			$rss = new UniversalFeedCreator();
-			$rss->cssStyleSheet = "";
-			$rss->useCached();
-			$rss->title = $config->feed_title;
-			$rss->description = $config->feed_desc;
-			$rss->link = "http://".HOSTNAME.PATH_RELATIVE;
-			$rss->syndicationURL = "http://".HOSTNAME.PATH_RELATIVE.$_SERVER['PHP_SELF'];	
-
-			foreach ($rss_items as $item) {
-				$rss->addItem($item);
-			}
-			header("Content-type: text/xml");
-//			echo $rss->createFeed("RSS2.0");
+		foreach ($rss_items as $item) {
+			$rss->addItem($item);
+		}
+		header("Content-type: text/xml");
+		if ($module == "resourcesmodule") {
 			echo $rss->createFeed("PODCAST");
 		} else {
-			echo "This Podcast has been disabled.";
+			echo $rss->createFeed("RSS2.0");
 		}
+	} else {
+		echo "This Podcast has been disabled.";
+	}
 } 
 
 ?>
