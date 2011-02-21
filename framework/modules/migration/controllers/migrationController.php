@@ -44,15 +44,16 @@ class migrationController extends expController {
     // Not sure we need to note deprecated modules...
     public $deprecated_modules = array(
         'administrationmodule',
-        'contactmodule',  // this is of value to some?
+        'contactmodule',  // this module is of value to some?  perhpas needs to be converted to a form or something?
         'containermodule',  // not really deprecated, but must be in this list to skip processing
         'searchmodule',
         'rssmodule',
-//        'navigationmodule',  // veiws are still used, so modules need importing
+//        'navigationmodule',  // veiws are still used, so modules need importing?
         'imagemanagermodule',
         'imageworkshopmodule',
         'inboxmodule',
         'loginmodule',
+// following were added by Dave Leffler based on lack of info showing they will exist in 2.0
         'articlemodule',
         'bbmodule',
         'pagemodule',
@@ -61,7 +62,7 @@ class migrationController extends expController {
         'wizardmodule',
     );
 
-    public $needs_written = array(  // variable isn't used, comment list
+    public $needs_written = array(
         'listingmodule',  // to companyController or portfolioController?
         'bannermodule',  // to bannerController?
         'faqmodule',  // to faqController?
@@ -175,14 +176,19 @@ class migrationController extends expController {
             $db->delete('container');
             $db->delete('text');
             $db->delete('snippet');
-            $db->delete('news');
             $db->delete('links');
-            $db->delete('photo');
+            $db->delete('news');
             $db->delete('filedownloads');
+            $db->delete('photo');
+            $db->delete('headline');
             $db->delete('content_expFiles');
             $db->delete('calendar');
-            $db->delete('calendarmodule_config');
             $db->delete('eventdate');
+            $db->delete('calendarmodule_config');
+            $db->delete('poll_question');
+            $db->delete('poll_answer');
+            $db->delete('poll_timeblock');
+            $db->delete('simplepollmodule_config');
             @$this->msg['clearedcontent']++;
         }
         
@@ -272,7 +278,8 @@ class migrationController extends expController {
         expSession::clearUserCache();
         assign_to_template(array('msg'=>@$this->msg));
     }
-    
+
+// pull over extra/related data required for old school modules    
     private function pulldata($iloc, $module) {
         global $db;
         $old_db = $this->connect();
@@ -306,6 +313,24 @@ class migrationController extends expController {
                     unset($config->email_showdetail);
                     unset($config->email_signature);
                     $db->insertObject($config, 'calendarmodule_config');
+                }
+            break;
+            case 'simplepollmodule':
+                $questions = $old_db->selectObjects('poll_question', "location_data='".serialize($iloc)."'");
+                foreach($questions as $question) {
+                    $db->insertObject($question, 'poll_question');
+					$answers = $old_db->selectObjects('poll_answer', "question_id='".$question->id."'");
+					foreach($answers as $answer) {
+						$db->insertObject($answer, 'poll_answer');
+					}
+					$timeblocks = $old_db->selectObjects('poll_timeblock', "question_id='".$question->id."'");
+					foreach($timeblocks as $timeblock) {
+						$db->insertObject($timeblock, 'poll_timeblock');
+					}
+                }
+                $configs = $old_db->selectObjects('simplepollmodule_config', "location_data='".serialize($iloc)."'");
+                foreach ($configs as $config) {
+                    $db->insertObject($config, 'simplepollmodule_config');
                 }
             break;
         }
