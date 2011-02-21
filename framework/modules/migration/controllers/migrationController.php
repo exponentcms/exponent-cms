@@ -36,7 +36,8 @@ class migrationController extends expController {
         'linkmodule'=>'linksController',
         'snippetmodule'=>'snippetController',
         'swfmodule'=>'textController',
-        'rotatormodule'=>'textController'
+        'rotatormodule'=>'textController',
+        'headlinemodule'=>'headlineController',
     );
     
     // these are modules that have either been deprecated or have no content to migrate
@@ -64,7 +65,6 @@ class migrationController extends expController {
         'listingmodule',  // to companyController or portfolioController?
         'bannermodule',  // to bannerController?
         'faqmodule',  // to faqController?
-        'headlinermodule',  // to headlineController?
         'weblogmodule',  // to blogController?
         'mediaplayermodule',  // to flowplayerController?
         'youtubemodule', // to youtubeController?
@@ -566,6 +566,27 @@ class migrationController extends expController {
                             }
                         }
 
+                    }
+                }
+            break;
+            case 'headlinemodule':
+                $iloc->mod = 'headlinemodule';
+                $headlines = $old_db->selectObjects('headline', "location_data='".serialize($iloc)."'");
+
+                if ($headlines) {
+                    foreach ($headlines as $hl) {
+                        $headline = new headline();
+                        $loc = expUnserialize($hl->location_data);
+                        $loc->mod = "headline";
+                        $headline->location_data = serialize($loc);
+                        $headline->title = $hl->headline;
+                        $headline->poster = 1;
+                        $headline->created_at = time();
+                        $headline->edited_at = time();
+
+                        $headline->save();
+                        @$this->msg['migrated'][$iloc->mod]['count']++;
+                        @$this->msg['migrated'][$iloc->mod]['name'] = $this->new_modules[$iloc->mod];
                     }
                 }
             break;
