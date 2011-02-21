@@ -36,9 +36,11 @@ class migrationController extends expController {
         'snippetmodule'=>'snippetController',
         'swfmodule'=>'textController',
         'rotatormodule'=>'textController',
+// following were added by Dave Leffler
         'linkmodule'=>'linksController',
         'headlinemodule'=>'headlineController',
         'weblogmodule'=>'blogController',
+        'faqmodule'=>'faqController',
     );
     
     // these are modules that have either been deprecated or have no content to migrate
@@ -66,14 +68,13 @@ class migrationController extends expController {
     public $needs_written = array(
         'listingmodule',  // to companyController or portfolioController?
         'bannermodule',  // to bannerController?
-        'faqmodule',  // to faqController?
         'mediaplayermodule',  // to flowplayerController?
         'youtubemodule', // to youtubeController?
         'categories',  // no controller and not in old school ???
         'tags',	 // no controller and not in old school ???
     );
     
-    public $old_school = array(  // variable isn't used, no controller-list of old school modules still in code base
+    public $old_school = array(  // variable isn't used, no-controller list of old school modules still in code base
         'calendarmodule',  // working?
         'simplepollmodule',  // working
         'navigationmodule',  // working
@@ -184,6 +185,7 @@ class migrationController extends expController {
             $db->delete('blog');
             $db->delete('content_expComments');
             $db->delete('expComments');
+            $db->delete('faqs');
             $db->delete('content_expFiles');
             $db->delete('calendar');
             $db->delete('eventdate');
@@ -649,6 +651,28 @@ class migrationController extends expController {
 							$contentlink->content_type = 'blog';
 							$db->insertObject($commentlink, 'content_expComments');
 						}
+                    }
+                }
+            break;
+            case 'faqmodule':                
+                $iloc->mod = 'faqmodule';
+                $faqs = $old_db->selectArrays('faq', "location_data='".serialize($iloc)."'");
+                
+                if ($faqs) {
+                    foreach ($faqs as $fqi) {
+                        unset($fqi['id']);
+                        $faq = new faq($fqi);                   
+                        $loc = expUnserialize($fqi['location_data']);
+                        $loc->mod = "faq";
+                        $faq->location_data = serialize($loc);
+                        $faq->question = $fqi['question'];
+                        $faq->answer = $fqi['answer'];                    
+                        $faq->rank = $fqi['rank'];                    
+                        $faq->include_in_faq = 1;                    
+
+                        $faq->save();
+                        @$this->msg['migrated'][$iloc->mod]['count']++;
+                        @$this->msg['migrated'][$iloc->mod]['name'] = $this->new_modules[$iloc->mod];
                     }
                 }
             break;
