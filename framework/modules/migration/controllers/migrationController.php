@@ -33,11 +33,12 @@ class migrationController extends expController {
         'slideshowmodule'=>'photosController',
         'imagegallerymodule'=>'photosController',
         'linklistmodule'=>'linksController',
-        'linkmodule'=>'linksController',
         'snippetmodule'=>'snippetController',
         'swfmodule'=>'textController',
         'rotatormodule'=>'textController',
+        'linkmodule'=>'linksController',
         'headlinemodule'=>'headlineController',
+        'weblogmodule'=>'blogController',
     );
     
     // these are modules that have either been deprecated or have no content to migrate
@@ -53,7 +54,7 @@ class migrationController extends expController {
         'imageworkshopmodule',
         'inboxmodule',
         'loginmodule',
-// following were added by Dave Leffler based on lack of info showing they will exist in 2.0
+// following 0.97/98 modules were added by Dave Leffler based on lack of info showing they will exist in 2.0
         'articlemodule',
         'bbmodule',
         'pagemodule',
@@ -66,7 +67,6 @@ class migrationController extends expController {
         'listingmodule',  // to companyController or portfolioController?
         'bannermodule',  // to bannerController?
         'faqmodule',  // to faqController?
-        'weblogmodule',  // to blogController?
         'mediaplayermodule',  // to flowplayerController?
         'youtubemodule', // to youtubeController?
         'categories',  // no controller and not in old school ???
@@ -74,10 +74,10 @@ class migrationController extends expController {
     );
     
     public $old_school = array(  // variable isn't used, no controller-list of old school modules still in code base
-        'calendarmodule',
-        'formmodule',
-        'navigationmodule',
-        'simplepollmodule',
+        'calendarmodule',  // working?
+        'simplepollmodule',  // working
+        'navigationmodule',  // working
+        'formmodule',  // NOT working!
     );
     
     function name() { return $this->displayname(); } //for backwards compat with old modules
@@ -181,6 +181,9 @@ class migrationController extends expController {
             $db->delete('filedownloads');
             $db->delete('photo');
             $db->delete('headline');
+            $db->delete('blog');
+            $db->delete('content_expComments');
+            $db->delete('expComments');
             $db->delete('content_expFiles');
             $db->delete('calendar');
             $db->delete('eventdate');
@@ -612,6 +615,40 @@ class migrationController extends expController {
                         $headline->save();
                         @$this->msg['migrated'][$iloc->mod]['count']++;
                         @$this->msg['migrated'][$iloc->mod]['name'] = $this->new_modules[$iloc->mod];
+                    }
+                }
+            break;
+            case 'weblogmodule':                
+                $iloc->mod = 'weblogmodule';
+                $blogitems = $old_db->selectArrays('weblog_post', "location_data='".serialize($iloc)."'");
+                
+                if ($blogitems) {
+                    foreach ($blogitems as $bi) {
+                        unset($bi['id']);
+                        $post = new blog($bi);                   
+                        $loc = expUnserialize($bi['location_data']);
+                        $loc->mod = "blog";
+                        $post->location_data = serialize($loc);
+                        $post->created_at = $bi['posted'];
+                        $post->edited_at = $bi['edited'];                    
+
+                        $post->save();
+                        @$this->msg['migrated'][$iloc->mod]['count']++;
+                        @$this->msg['migrated'][$iloc->mod]['name'] = $this->new_modules[$iloc->mod];
+                        if (!empty($bi['file_id'])) {
+                            $oldfile = $old_db->selectArray('file', 'id='.$bi['file_id']);
+                            $file = new expFile($oldfile);
+                            $post->attachitem($file,'downloadable');
+                        }
+						
+						$comments = $old_db->selectObjects('weblog_comment', "location_data='".serialize($iloc)."'");
+						foreach($comments as $comment) {
+							$newcomment = new expComments($comment);
+							$contentlink->expcomments_id = $db->insertObject($comment, 'expComments');
+							$contentlink->content_id = $post->id;
+							$contentlink->content_type = 'blog';
+							$db->insertObject($commentlink, 'content_expComments');
+						}
                     }
                 }
             break;
