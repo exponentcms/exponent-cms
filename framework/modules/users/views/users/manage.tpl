@@ -38,7 +38,7 @@
 				<td>{if $user->is_acting_admin == 1}{img src=`$smarty.const.ICON_RELATIVE`toggle_on.gif}{/if}</td>
 			    <td>
 			        {permissions level=$smarty.const.UILEVEL_PERMISSIONS}
-                    <div class="itemactions">
+                    <div class="item-actions">
                     {icon img=edit.png action=edituser id=$user->id title="Edit"}
                     {icon img=lock.png action=change_password id=$user->id title="Change this users password"}
                     {icon img=delete.png action=delete id=$user->id title="Delete" onclick="return confirm('Are you sure you want to delete this user?');"}

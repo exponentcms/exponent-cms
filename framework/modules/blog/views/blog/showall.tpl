@@ -39,7 +39,7 @@
             </a>
             </h2>
             {permissions level=$smarty.const.UILEVEL_NORMAL}
-                <div class="itemactions">
+                <div class="item-actions">
                     {if $permissions.edit == 1}
                         {icon action=edit img=edit.png class="editlink" id=$record->id title="Edit this `$modelname`"}
                     {/if}

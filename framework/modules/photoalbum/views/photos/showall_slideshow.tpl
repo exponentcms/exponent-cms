@@ -50,7 +50,7 @@
                 {$item->body}
             </div>
             {permissions level=$smarty.const.UILEVEL_NORMAL}
-                <div class="itemactions">
+                <div class="item-actions">
                     {if $permissions.edit == 1}
                         {icon action=edit id=$item->id title="Edit `$item->title`"}
                     {/if}

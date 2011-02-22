@@ -18,7 +18,7 @@
     {if $moduletitle}<h1>{$moduletitle}</h1>{/if}
 
     {permissions level=$smarty.const.UILEVEL_NORMAL}
-        <div class="itemactions">
+        <div class="item-actions">
             {if $permissions.create == 1}
                 {icon class="add" action=edit rank=1 title="Add text to the top" text="Add text at the top"}
             {/if}
