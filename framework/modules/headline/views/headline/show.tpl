@@ -20,7 +20,7 @@
 
     {permissions level=$smarty.const.UILEVEL_NORMAL}
         {if $permissions.edit == 1}
-        <div class="moduleactions">
+        <div class="module-actions">
             {icon action=edit id=$record->id title="Edit this `$modelname`"}
         </div>
         {/if}

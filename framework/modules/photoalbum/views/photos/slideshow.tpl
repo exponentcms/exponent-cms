@@ -25,7 +25,7 @@
 
     {if $moduletitle != ""}<h1>{$moduletitle}</h1>{/if}
     {permissions}
-    <div class="moduleactions">
+    <div class="module-actions">
         {if $permissions.create == 1}
             {icon class="add" action=edit rank=1 title="Add a Slide"|gettext text="Add a Slide"|gettext}
         {/if}
