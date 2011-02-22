@@ -42,7 +42,7 @@
                 <div class="bodycopy">
 
                     {permissions}
-                        <div class="itemactions">
+                        <div class="item-actions">
                             {if $permissions.edit == 1}
                                 {icon action=edit id=$slide->id title="Edit `$item->title`"}
                             {/if}

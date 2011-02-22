@@ -33,7 +33,7 @@
 	{include file="`$smarty.const.BASE`modules/common/views/_permission_icons.tpl"}
 
 	{permissions level=$smarty.const.UILEVEL_PERMISSIONS}
-	<div class="itemactions">
+	<div class="item-actions">
 		{if $permissions.edit == 1 || $item->permissions.edit == 1}
 			{if $item->approved == 1}
 			<a href="{link action=edit id=$item->id date_id=$item->eventdate->id}"><img class="mngmnt_icon" style="border:none;" src="{$smarty.const.ICON_RELATIVE}edit.png" title="{$_TR.alt_edit}" alt="{$_TR.alt_edit}" /></a>&nbsp;

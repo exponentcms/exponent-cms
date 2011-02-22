@@ -59,7 +59,7 @@
             </td>
             <td>
             {permissions level=$smarty.const.UILEVEL_PERMISSIONS}
-                <div class="itemactions">
+                <div class="item-actions">
                     {if $user->id == $address->user_id}
                         {icon action=edit id=$address->id title="Edit this Address"}
                         {if $addresses|@count > 1}{icon action=delete id=$address->id title="Delete this Address" onclick="return confirm('Are you sure you want to delete this address?');"}{/if}

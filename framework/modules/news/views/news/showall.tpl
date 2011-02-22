@@ -30,7 +30,7 @@
             </h2>
             {if $item->isRss != true}
                 {permissions level=$smarty.const.UILEVEL_PERMISSIONS}
-                <div class="itemactions">
+                <div class="item-actions">
                     {if $permissions.edit == true}
                         {icon controller=news action=edit id=$item->id title="Edit this news post"}
                     {/if}

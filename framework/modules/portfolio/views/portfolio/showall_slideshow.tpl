@@ -58,7 +58,7 @@
                 {$record->body|summarize:"html":"para"}
             </div>
             {permissions level=$smarty.const.UILEVEL_NORMAL}
-                <div class="itemactions">
+                <div class="item-actions">
                     {if $permissions.edit == 1}
                         {icon action=edit id=$record->id title="Edit `$record->title`"}
                     {/if}
