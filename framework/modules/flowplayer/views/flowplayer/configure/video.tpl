@@ -14,6 +14,6 @@
  *
  *}
 
-<h2>Configure this Module</h2>
-{control type="text" name="video_height" label="Video Height" value=$config.video_height}
-{control type="text" name="video_width" label="Video Width" value=$config.video_width}
+<h2>{"Configure this Module"|gettext}</h2>
+{control type="text" name="video_width" label="Video Width" value=$config.video_width|default:200 size=4}
+{control type="text" name="video_height" label="Video Height" value=$config.video_height|default:143 size=4}
