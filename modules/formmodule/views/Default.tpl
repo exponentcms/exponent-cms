@@ -28,10 +28,9 @@
 	{/permissions}
 	<h1>{$moduletitle}</h1>
 	{if $formmsg != "" }
-		<br /><br />
 		{$formmsg}
 	{/if}
-	 <div style="border: padding: 1em;">
+	 <div>
 		{$form_html}
 	</div>
 </div>
