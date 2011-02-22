@@ -27,6 +27,12 @@ if (isset($_GET['id'])) {
 if ($f) {
 	$floc = unserialize($f->location_data);
 	if (exponent_permissions_check('editform',unserialize($f->location_data))) {
+        expCSS::pushToHead(array(
+           "unique"=>"forms",
+           "corecss"=>"forms",
+           )
+        );
+	    
 		$form = formbuilder_form::form($f);
 		$form->location($loc);
 		$form->meta('action','save_form');
