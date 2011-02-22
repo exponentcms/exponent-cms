@@ -67,7 +67,7 @@
 	<div class="bodycopy">
 		{$item->body}
 	</div>
-	<div class="moduleactions">
+	<div class="module-actions">
 		{$form}
 		<a class="mngmntlink calendar_mngmntlink" href="{link action=viewweek time=$item->eventstart}" title="{$_TR.alt_view_week}" alt="{$_TR.alt_view_week}">{$_TR.view_week}</a>&nbsp;|&nbsp;
 		<a class="mngmntlink calendar_mngmntlink" href="{link action=viewmonth time=$item->eventstart}" title="{$_TR.alt_view_month}" alt="{$_TR.alt_view_month}">{$_TR.view_month}</a><br />
