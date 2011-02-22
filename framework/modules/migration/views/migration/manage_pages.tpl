@@ -36,7 +36,7 @@
                 {control type="checkbox" name="pages[]" label=" " value=$page->id checked=true}
             </td>
             <td>
-                {$page->name}
+                {$page->name} {if ($page->parent == -1)}(<b><em>Standalone</em></b>){/if}
             </td>
             
         </tr>
