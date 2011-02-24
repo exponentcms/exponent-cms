@@ -198,10 +198,15 @@ class migrationController extends expController {
         }
         
         //pull the locationref data
-        $where = '1';
-        foreach ($this->params['migrate'] as $key=>$var) {
-            $where .= " and module='".$key."'";
-        }
+		if (empty($this->params['migrate'])) {
+			$where = '1';
+		} else {
+			$where = '';
+			foreach ($this->params['migrate'] as $key=>$var) {
+				if (!empty($where)) {$where .= " or";}
+				$where .= " module='".$key."'";
+			}
+		}
 
         $locref = $old_db->selectObjects('locationref',$where);
         foreach ($locref as $lr) {
@@ -487,6 +492,7 @@ class migrationController extends expController {
                         </p>    
                     ';
                     $text->body = $swfcode;
+					
                     $text->save();
                     @$this->msg['migrated'][$iloc->mod]['count']++;
                     @$this->msg['migrated'][$iloc->mod]['name'] = $this->new_modules[$iloc->mod];
@@ -500,6 +506,7 @@ class migrationController extends expController {
                     foreach ($newsitems as $ni) {
                         unset($ni['id']);
                         $news = new news($ni);                   
+						$news->makeSefUrl();
                         $loc = expUnserialize($ni['location_data']);
                         $loc->mod = "news";
                         $news->location_data = serialize($loc);
@@ -523,6 +530,7 @@ class migrationController extends expController {
                 foreach ($resourceitems as $ri) {
                     unset($ri['id']);
                     $filedownload = new filedownload($ri);                   
+					$filedownload->makeSefUrl();
                     $loc = expUnserialize($ri['location_data']);
                     $loc->mod = "filedownload";
                     $filedownload->title = $ri['name'];
@@ -628,12 +636,13 @@ class migrationController extends expController {
                     foreach ($blogitems as $bi) {
                         unset($bi['id']);
                         $post = new blog($bi);                   
+						$post->makeSefUrl();
                         $loc = expUnserialize($bi['location_data']);
                         $loc->mod = "blog";
                         $post->location_data = serialize($loc);
                         $post->created_at = $bi['posted'];
-                        $post->edited_at = $bi['edited'];                    
-
+                        $post->edited_at = $bi['edited']; 
+						
                         $post->save();
                         @$this->msg['migrated'][$iloc->mod]['count']++;
                         @$this->msg['migrated'][$iloc->mod]['name'] = $this->new_modules[$iloc->mod];
@@ -642,14 +651,12 @@ class migrationController extends expController {
                             $file = new expFile($oldfile);
                             $post->attachitem($file,'downloadable');
                         }
-						
 						$comments = $old_db->selectObjects('weblog_comment', "location_data='".serialize($iloc)."'");
 						foreach($comments as $comment) {
 							$newcomment = new expComments($comment);
-							$contentlink->expcomments_id = $db->insertObject($comment, 'expComments');
-							$contentlink->content_id = $post->id;
-							$contentlink->content_type = 'blog';
-							$db->insertObject($commentlink, 'content_expComments');
+							$newcomment->created_at = $comment['posted'];
+							$newcomment->edited_at = $comment['edited'];                    
+							$post->attachitem($newcomment,'');
 						}
                     }
                 }
