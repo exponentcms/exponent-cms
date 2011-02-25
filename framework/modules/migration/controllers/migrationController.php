@@ -26,21 +26,21 @@ class migrationController extends expController {
     
     // this is a list of modules that we can convert to exp2 type modules.
     public $new_modules = array(
-        'textmodule'=>'textController',
-        'newsmodule'=>'newsController',
-        'resourcesmodule'=>'filedownloadController',
-        'addressbookmodule'=>'addressController',
-        'slideshowmodule'=>'photosController',
+//        'addressbookmodule'=>'addressController',  // NOT WRITTEN YET???
         'imagegallerymodule'=>'photosController',
         'linklistmodule'=>'linksController',
+        'newsmodule'=>'newsController',
+        'slideshowmodule'=>'photosController',
         'snippetmodule'=>'snippetController',
         'swfmodule'=>'textController',
+        'textmodule'=>'textController',
+        'resourcesmodule'=>'filedownloadController',
         'rotatormodule'=>'textController',
-// following were added by Dave Leffler
-        'linkmodule'=>'linksController',
-        'headlinemodule'=>'headlineController',
-        'weblogmodule'=>'blogController',
+// the following "scripts" were added by Dave Leffler
         'faqmodule'=>'faqController',
+        'headlinemodule'=>'headlineController',
+        'linkmodule'=>'linksController',
+        'weblogmodule'=>'blogController',
     );
     
     // these are modules that have either been deprecated or have no content to migrate
@@ -49,36 +49,49 @@ class migrationController extends expController {
         'administrationmodule',
         'contactmodule',  // this module is of value to some?  perhpas needs to be converted to a form or something?
         'containermodule',  // not really deprecated, but must be in this list to skip processing
-        'searchmodule',
-        'rssmodule',
-//        'navigationmodule',  // veiws are still used, so modules need importing?
+//        'navigationmodule',  // veiws are still used, so modules need to be imported?
         'imagemanagermodule',
         'imageworkshopmodule',
         'inboxmodule',
         'loginmodule',
-// following 0.97/98 modules were added by Dave Leffler based on lack of info showing they will exist in 2.0
+        'rssmodule',
+        'searchmodule',
+// the following 0.97/98 modules were added to this list by Dave Leffler 
+//   based on lack of info showing they will exist in 2.0
         'articlemodule',
         'bbmodule',
         'pagemodule',
         'previewmodule',
         'tasklistmodule',
         'wizardmodule',
+// other older or user-contributed modules we don't want to deal with
+        'cataloguemodule',
+        'codemapmodule',
+        'extendedlistingmodule',
+        'feedlistmodule',
+        'googlemapmodule',
+        'greekingmodule',
+        'guestbookmodule',
+        'keywordmodule',
+        'sharedcoremodule',
+        'svgallerymodule',
     );
 
     public $needs_written = array(
-        'listingmodule',  // to companyController or portfolioController?
+		'addressbookmodule',  // listed above, but no script here?
         'bannermodule',  // to bannerController?
+//        'categories',  // no controller and not in old school ???
+        'listingmodule',  // to companyController or portfolioController?
         'mediaplayermodule',  // to flowplayerController?
         'youtubemodule', // to youtubeController?
-        'categories',  // no controller and not in old school ???
-        'tags',	 // no controller and not in old school ???
+//        'tags',	 // no controller and not in old school ???
     );
     
-    public $old_school = array(  // variable isn't used, no-controller list of old school modules still in code base
-        'calendarmodule',  // working?
-        'simplepollmodule',  // working
-        'navigationmodule',  // working
+    public $old_school = array(  // psuedo-variable isn't used, list of old school modules still in code base
+        'calendarmodule',  // working
         'formmodule',  // NOT working!
+        'navigationmodule',  // working
+        'simplepollmodule',  // working
     );
     
     function name() { return $this->displayname(); } //for backwards compat with old modules
@@ -312,16 +325,18 @@ class migrationController extends expController {
                 }
                 $configs = $old_db->selectObjects('calendarmodule_config', "location_data='".serialize($iloc)."'");
                 foreach ($configs as $config) {
-                    unset($config->enable_ical);
-                    unset($config->rss_limit);
-                    unset($config->rss_cachetime);
-                    unset($config->reminder_notify);
-                    unset($config->email_title_reminder);
-                    unset($config->email_from_reminder);
-                    unset($config->email_address_reminder);
-                    unset($config->email_reply_reminder);
-                    unset($config->email_showdetail);
-                    unset($config->email_signature);
+					$config->enable_categories = 0;
+					$config->enable_tags = 0;
+                    // unset($config->enable_ical);
+                    // unset($config->rss_limit);
+                    // unset($config->rss_cachetime);
+                    // unset($config->reminder_notify);
+                    // unset($config->email_title_reminder);
+                    // unset($config->email_from_reminder);
+                    // unset($config->email_address_reminder);
+                    // unset($config->email_reply_reminder);
+                    // unset($config->email_showdetail);
+                    // unset($config->email_signature);
                     $db->insertObject($config, 'calendarmodule_config');
                 }
             break;
@@ -695,12 +710,19 @@ class migrationController extends expController {
         return $module;
     }
     
-    
-    
     public function manage_pages() {
+        global $db;
+
         expHistory::set('managable', $this->params);
         $old_db = $this->connect();
-        $pages = $old_db->selectObjects('section');
+        $pages = $old_db->selectObjects('section','id > 1');
+        foreach($pages as $page) {
+			if ($db->selectObject('section',"id='".$page->id."'")) {
+				$page->exists = true;
+			} else {
+				$page->exists = false;
+			}
+		}
         assign_to_template(array('pages'=>$pages));
     }
     
@@ -713,7 +735,12 @@ class migrationController extends expController {
     
     public function migrate_pages() {
         global $db;
-        
+
+		$del_pages = '';
+        if (isset($this->params['wipe_pages'])) {
+            print_r($db->delete('section',"id > '1'"));
+			$del_pages = ' after clearing database of pages';
+		}
         $successful = 0;
         $failed     = 0;
         $old_db = $this->connect();
@@ -727,7 +754,7 @@ class migrationController extends expController {
             }
         }
         
-        flash ('message', $successful.' pages were imported from '.$this->config['database']);
+        flash ('message', $successful.' pages were imported from '.$this->config['database'].$del_pages = '');
         if ($failed > 0) {
             flash('error', $failed.' pages could not be imported from '.$this->config['database'].' This is usually because a page with the same ID already exists in the database you importing to.');
         }
@@ -735,7 +762,50 @@ class migrationController extends expController {
         expSession::clearUserCache();
         expHistory::back();
     }
+  
+    public function manage_users() {
+        global $db;
+		
+        expHistory::set('managable', $this->params);
+        $old_db = $this->connect();
+        $users = $old_db->selectObjects('user','id > 1');
+		$newusers = array();
+        foreach($users as $user) {
+			if (!$db->selectObject('user',"username='".$user->username."'")) {
+				$newusers[] = $user;
+			}
+		}
+		assign_to_template(array('users'=>$newusers));
+    }
     
+    public function migrate_users() {
+        global $db;
+        
+         // if (isset($this->params['wipe_users'])) {
+            // $db->delete('user','id > 1');
+		 // }
+        $successful = 0;
+        $failed     = 0;
+        $old_db = $this->connect();
+        foreach($this->params['users'] as $userid) {
+            $user = $old_db->selectObject('user', 'id='.$userid);
+			if (!$db->selectObject('user',"username='".$user->username."'")) {
+				$user->id = '';
+				$ret = $db->insertObject($user, 'user');
+                $successful += 1;
+			} else {
+                $failed += 1;
+            }
+        }
+
+        flash ('message', $successful.' users were imported from '.$this->config['database']);
+        if ($failed > 0) {
+            flash('error', $failed.' users could not be imported from '.$this->config['database'].' This is usually because a user with the username already exists in the database you importing to.');
+        }        
+        expSession::clearUserCache();
+        expHistory::back();
+    }
+	
     private function connect() {
         // check for required info...then make the DB connection.
         if (
