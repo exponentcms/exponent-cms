@@ -28,7 +28,7 @@
     <ul>
         {foreach name=items from=$items item=item name=links}
         <li{if $smarty.foreach.links.last} class="last"{/if}>
-            <a class="link" href="{$item->url}">{$item->title}</a>
+            <a class="link" {if $item->new_window}target="_blank"{/if} href="{$item->url}">{$item->title}</a>
             {permissions level=$smarty.const.UILEVEL_NORMAL}
                 <div class="item-actions">
                 {if $permissions.edit == 1}
