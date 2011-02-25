@@ -575,11 +575,12 @@ class migrationController extends expController {
                     foreach ($gis as $gi) {
                         $photo = new photo();                   
                         //$loc = expUnserialize($gi['location_data']);
+                        $loc = expUnserialize($gallery['location_data']);
                         $loc->mod = "photos";
                         $photo->title = $gi['name'];
                         $photo->body = $gi['description'];
                         $photo->alt = $gi['alt'];
-                        $photo->location_data = serialize($iloc);
+                        $photo->location_data = serialize($loc);
 
                         $photo->save();
                         @$this->msg['migrated'][$iloc->mod]['count']++;
@@ -600,11 +601,12 @@ class migrationController extends expController {
                     foreach ($gis as $gi) {
                         $photo = new photo();                   
                         //$loc = expUnserialize($gi['location_data']);
+                        $loc = expUnserialize($gallery['location_data']);
                         $loc->mod = "photos";
                         $photo->title = $gi['name'];
                         $photo->body = $gi['description'];
                         $photo->alt = $gi['alt'];
-                        $photo->location_data = serialize($iloc);
+                        $photo->location_data = serialize($loc);
                         // $photo->created_at = $gi['posted'];
                         // $photo->edited_at = $gi['edited'];                    
 
