@@ -59,11 +59,13 @@ if ($config->enable_rss == true) {
 	$rss->ttl = $ttl;
 	$rss->link = "http://".HOSTNAME.PATH_RELATIVE;
 	$rss->syndicationURL = "http://".HOSTNAME.PATH_RELATIVE.$_SERVER['PHP_SELF'];
-	if ($_REQUEST['module'] == "filedownloadsmodule") {
+	if ($_REQUEST['module'] == "filedownload") {
 		$rss->itunes->summary = $config->feed_desc;
 		$rss->itunes->author = ORGANIZATION_NAME;
 //		$rss->itunes->category = @$itunes_cats[0]->category;
 //		$rss->itunes->subcategory = @$itunes_cats[0]->subcategory;
+		$rss->itunes->category = '';
+		$rss->itunes->subcategory = '';
 		$rss->itunes->image = URL_FULL."framework/modules/filedownloads/assets/images/logo.png";
 		$rss->itunes->explicit = 0;
 		$rss->itunes->subtitle = 0;
@@ -76,7 +78,7 @@ if ($config->enable_rss == true) {
 	}
 
 	header("Content-type: text/xml");
-	if ($_REQUEST['module'] == "filedownloadsmodule") {
+	if ($_REQUEST['module'] == "filedownload") {
 		echo $rss->createFeed("PODCAST");
 	} else {
 		echo $rss->createFeed("RSS2.0");
