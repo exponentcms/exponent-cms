@@ -17,11 +17,11 @@
 <div class="module migration manage-pages">
     <h1>Migrate Files</h1>
     <p> 
-        The following is a list of files found in the database you're migrating from ({$config.database}). 
+        The following is a list of files found in the database ({$config.database}). 
         Note: this will only copy over the records from the old database properly in the Exponent 2.0's database. Make sure you manually copy the "files" 
         directory over to this installation.
         <span class="warning">
-            WARNING: This process will wipe out all current file in the database.
+            WARNING: This process will wipe out all current file records in the database.
         </span>
     </p>
     
@@ -44,7 +44,7 @@
             </td>
         </tr>
         {foreachelse}
-                <tr><td colspan=2>No files found in database {$config.database}</td></tr>
+                <tr><td colspan=2>No files found in the database {$config.database}</td></tr>
         {/foreach}
         </tbody>
         </table>

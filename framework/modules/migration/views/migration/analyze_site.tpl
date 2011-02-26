@@ -17,7 +17,7 @@
 <div class="module migration analyze_site">
     <h1>Migrate Content</h1>
     <p> 
-        The following is a list of modules we found in the {$config.database}.
+        The following is a list of modules we found in the database {$config.database}.
     </p>
     
     {form action="migrate_content"}
@@ -47,7 +47,7 @@
         </tr>
         {/if}
         {foreachelse}
-                <tr><td colspan=2>No pages found in database {$config.database}</td></tr>
+                <tr><td colspan=2>No modules found in the database {$config.database}</td></tr>
         {/foreach}
         </tbody>
         </table>

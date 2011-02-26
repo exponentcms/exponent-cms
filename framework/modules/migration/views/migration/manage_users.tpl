@@ -17,7 +17,7 @@
 <div class="module migration manage-users">
     <h1>Migrate Users</h1>
     <p> 
-        The following is a list of users we found in the {$config.database}.
+        The following is a list of users we found in the database {$config.database}.
         Select the users you would like to pull over from {$config.database}.
     </p>
     
@@ -52,7 +52,7 @@
             </td>            
         </tr>
         {foreachelse}
-			<tr><td colspan=2>No users found in database {$config.database}</td></tr>
+			<tr><td colspan=2>No users found in the database {$config.database}</td></tr>
         {/foreach}
         </tbody>
         </table>
