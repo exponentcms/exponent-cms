@@ -20,9 +20,7 @@
  
 <div class="module news headlines">
     {if $enable_rss == true}
-        <a class="rsslink" href="{rsslink}">
-            <img src="{$smarty.const.ICON_RELATIVE}rss-feed.gif" title="{$_TR.alt_rssfeed}" alt="{$_TR.alt_rssfeed}" />
-        </a>
+        <a class="rsslink" href="{rsslink}">Subscribe to {$config.feed_title}</a>
     {/if}
     {if $moduletitle != ""}<h2>{$moduletitle}</h2>{/if}
 
