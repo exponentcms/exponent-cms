@@ -42,6 +42,7 @@ if (isset($module)) {
 		$itemdate[] = strtotime($item->date); 
 	} 
 	$pubDate = date('r', max($itemdate)); 
+	
 	//get the modules config data which should have the feed title & desc
 	$config = $db->selectObject($module."_config", "location_data='".serialize($location)."'");		
 	$ttl = $config->rss_cachetime;
@@ -56,6 +57,17 @@ if (isset($module)) {
 		$rss->pubDate = $pubDate;
 		$rss->link = "http://".HOSTNAME.PATH_RELATIVE;
 		$rss->syndicationURL = "http://".HOSTNAME.PATH_RELATIVE.$_SERVER['PHP_SELF'];	
+		if ($_REQUEST['module'] == "resourcesmodule") {
+			$rss->itunes->summary = $config->feed_desc;
+			$rss->itunes->author = ORGANIZATION_NAME;
+			$rss->itunes->category = '';
+			$rss->itunes->subcategory = '';
+			$rss->itunes->image = URL_FULL."framework/modules/filedownloads/assets/images/logo.png";
+			$rss->itunes->explicit = 0;
+			$rss->itunes->subtitle = 0;
+			$rss->itunes->keywords = 0;
+			$rss->itunes->owner_email = 0;
+		}
 
 		foreach ($rss_items as $item) {
 			$rss->addItem($item);

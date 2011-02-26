@@ -17,7 +17,7 @@
 <div class="module migration manage-pages">
     <h1>Migrate Pages</h1>
     <p> 
-        The following is a list of pages we found in the {$config.database}.
+        The following is a list of pages we found in the database {$config.database}.
         Select the pages you would like to pull over from {$config.database}.
     </p>
     
@@ -45,7 +45,7 @@
             
         </tr>
         {foreachelse}
-			<tr><td colspan=2>No new pages found in database {$config.database}</td></tr>
+			<tr><td colspan=2>No new pages found in the database {$config.database}</td></tr>
         {/foreach}
         </tbody>
         </table>

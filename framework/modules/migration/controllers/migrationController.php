@@ -78,7 +78,7 @@ class migrationController extends expController {
     );
 
     public $needs_written = array(
-		'addressbookmodule',  // listed above, but no script here?
+		'addressbookmodule',  // listed above, but no script appears here?
         'bannermodule',  // to bannerController?
 //        'categories',  // no controller and not in old school ???
         'listingmodule',  // to companyController or portfolioController?
@@ -381,11 +381,19 @@ class migrationController extends expController {
         if (!array_key_exists($iloc->mod, $this->params['migrate'])) return $module;
         global $db;
         $old_db = $this->connect();
-        
+
         switch ($iloc->mod) {
             case 'textmodule':
 			
 				@$module->view = 'showall'; 
+				
+				//check to see if it's already pulled in (circumvent !is_original)
+				$ploc = $iloc;
+				$ploc->mod = "text";
+				if ($db->countObjects($ploc->mod, "location_data='".serialize($ploc)."'")) {
+					$iloc->mod = 'textmodule';
+					break; 
+				}
 				
                 $iloc->mod = 'textmodule';
                 $textitems = $old_db->selectObjects('textitem', "location_data='".serialize($iloc)."'");
@@ -409,6 +417,14 @@ class migrationController extends expController {
                 $module->action = 'showRandom';
                 $module->view = 'showRandom';                
                 
+				//check to see if it's already pulled in (circumvent !is_original)
+				$ploc = $iloc;
+				$ploc->mod = "text";
+				if ($db->countObjects($ploc->mod, "location_data='".serialize($ploc)."'")) {
+					$iloc->mod = 'rotatormodule';
+					break; 
+				}
+
                 $iloc->mod = 'rotatormodule';
                 $textitems = $old_db->selectObjects('rotator_item', "location_data='".serialize($iloc)."'");
                 if ($textitems) {
@@ -426,9 +442,17 @@ class migrationController extends expController {
                 }
             break;
             case 'snippetmodule':
-			
+
 				$module->view = 'showall'; 
 						
+				//check to see if it's already pulled in (circumvent !is_original)
+				$ploc = $iloc;
+				$ploc->mod = "snippet";
+				if ($db->countObjects($ploc->mod, "location_data='".serialize($ploc)."'")) {
+					$iloc->mod = 'snippetmodule';
+					break; 
+				}
+			
                 $iloc->mod = 'snippetmodule';
                 $textitems = $old_db->selectObjects('textitem', "location_data='".serialize($iloc)."'");
                 if ($textitems) {
@@ -449,7 +473,7 @@ class migrationController extends expController {
                 }
             break;
             case 'linklistmodule':
-			
+
 				switch ($module->view) {
 					case 'Quick Links':
 						@$module->view = "showall_quicklinks";
@@ -459,6 +483,14 @@ class migrationController extends expController {
 					break;
 				}
 
+				//check to see if it's already pulled in (circumvent !is_original)
+				$ploc = $iloc;
+				$ploc->mod = "links";
+				if ($db->countObjects($ploc->mod, "location_data='".serialize($ploc)."'")) {
+					$iloc->mod = 'linklistmodule';
+					break; 
+				}
+			
                 $iloc->mod = 'linklistmodule';
                 $links = $old_db->selectArrays('linklist_link', "location_data='".serialize($iloc)."'");
 
@@ -481,7 +513,7 @@ class migrationController extends expController {
                 }
             break;
             case 'linkmodule':  // user mod, not widely distributed
-			
+
 				switch ($module->view) {
 					case 'Summary':
 						@$module->view = "showall_quicklinks";
@@ -491,6 +523,14 @@ class migrationController extends expController {
 					break;
 				}
 
+				//check to see if it's already pulled in (circumvent !is_original)
+				$ploc = $iloc;
+				$ploc->mod = "links";
+				if ($db->countObjects($ploc->mod, "location_data='".serialize($ploc)."'")) {
+					$iloc->mod = 'linkmodule';
+					break; 
+				}
+			
                 $iloc->mod = 'linkmodule';
                 $links = $old_db->selectArrays('link', "location_data='".serialize($iloc)."'");
 
@@ -516,6 +556,14 @@ class migrationController extends expController {
 
 				$module->view = 'showall'; 
 			
+				//check to see if it's already pulled in (circumvent !is_original)
+				$ploc = $iloc;
+				$ploc->mod = "text";
+				if ($db->countObjects($ploc->mod, "location_data='".serialize($ploc)."'")) {
+					$iloc->mod = 'swfmodule';
+					break; 
+				}
+
                 $iloc->mod = 'swfmodule';
                 $swfitems = $old_db->selectObjects('swfitem', "location_data='".serialize($iloc)."'");
 				
@@ -559,6 +607,14 @@ class migrationController extends expController {
 					break;
 				}
 			
+				//check to see if it's already pulled in (circumvent !is_original)
+				$ploc = $iloc;
+				$ploc->mod = "news";
+				if ($db->countObjects($ploc->mod, "location_data='".serialize($ploc)."'")) {
+					$iloc->mod = 'newsmodule';
+					break; 
+				}
+
                 $iloc->mod = 'newsmodule';
                 $newsitems = $old_db->selectArrays('newsitem', "location_data='".serialize($iloc)."'");
                 
@@ -585,7 +641,7 @@ class migrationController extends expController {
                 }
             break;
             case 'resourcesmodule':
-			
+
 				switch ($module->view) {
 					case 'One Click Download - Descriptive':
 						$module->view = 'showall_quick_download_with_description'; 
@@ -594,6 +650,14 @@ class migrationController extends expController {
 						$module->view = 'showall'; 
 					break;
 				}			
+			
+				//check to see if it's already pulled in (circumvent !is_original)
+				$ploc = $iloc;
+				$ploc->mod = "filedownload";
+				if ($db->countObjects($ploc->mod, "location_data='".serialize($ploc)."'")) {
+					$iloc->mod = 'resourcesmodule';
+					break; 
+				}
 			
                 $iloc->mod = 'resourcesmodule';
                 $resourceitems = $old_db->selectArrays('resourceitem', "location_data='".serialize($iloc)."'");
@@ -633,6 +697,14 @@ class migrationController extends expController {
 					break;
 				}
 
+				//check to see if it's already pulled in (circumvent !is_original)
+				$ploc = $iloc;
+				$ploc->mod = "photos";
+				if ($db->countObjects($ploc->mod, "location_data='".serialize($ploc)."'")) {
+					$iloc->mod = 'imagegallerymodule';
+					break; 
+				}
+
 				$iloc->mod = 'imagegallerymodule';
                 $galleries = $old_db->selectArrays('imagegallery_gallery', "location_data='".serialize($iloc)."'");
                 foreach ($galleries as $gallery) {
@@ -659,10 +731,18 @@ class migrationController extends expController {
                 }
             break;
             case 'slideshowmodule':
-			
+
                 $module->action = 'slideshow';
                 $module->view = 'showall';   
 				
+				//check to see if it's already pulled in (circumvent !is_original)
+				$ploc = $iloc;
+				$ploc->mod = "photos";
+				if ($db->countObjects($ploc->mod, "location_data='".serialize($ploc)."'")) {
+					$iloc->mod = 'slideshowmodule';
+					break; 
+				}
+			
                 $iloc->mod = 'slideshowmodule';
                 $galleries = $old_db->selectArrays('imagegallery_gallery', "location_data='".serialize($iloc)."'");
                 foreach ($galleries as $gallery) {
@@ -695,8 +775,16 @@ class migrationController extends expController {
                 }
             break;
             case 'headlinemodule':
-			
+
                 $module->view = 'showall';   
+			
+				//check to see if it's already pulled in (circumvent !is_original)
+				$ploc = $iloc;
+				$ploc->mod = "headline";
+				if ($db->countObjects($ploc->mod, "location_data='".serialize($ploc)."'")) {
+					$iloc->mod = 'headlinemodule';
+					break; 
+				}
 			
                 $iloc->mod = 'headlinemodule';
                 $headlines = $old_db->selectObjects('headline', "location_data='".serialize($iloc)."'");
@@ -738,6 +826,14 @@ class migrationController extends expController {
 					break;
 				}
             
+				//check to see if it's already pulled in (circumvent !is_original)
+				$ploc = $iloc;
+				$ploc->mod = "blog";
+				if ($db->countObjects($ploc->mod, "location_data='".serialize($ploc)."'")) {
+					$iloc->mod = 'weblogmodule';
+					break; 
+				}
+
                 $iloc->mod = 'weblogmodule';
                 $blogitems = $old_db->selectArrays('weblog_post', "location_data='".serialize($iloc)."'");
                 
@@ -774,6 +870,14 @@ class migrationController extends expController {
 
 				$module->view = 'showall'; 
 			
+				//check to see if it's already pulled in (circumvent !is_original)
+				$ploc = $iloc;
+				$ploc->mod = "faq";
+				if ($db->countObjects($ploc->mod, "location_data='".serialize($ploc)."'")) {
+					$iloc->mod = 'faqmodule';
+					break; 
+				}
+
                 $iloc->mod = 'faqmodule';
                 $faqs = $old_db->selectArrays('faq', "location_data='".serialize($iloc)."'");
                 
@@ -799,7 +903,6 @@ class migrationController extends expController {
                 @$this->msg['noconverter'][$iloc->mod]++;
             break;
         }
-        
         // quick check for non hard coded modules
         // We add a container if they're not hard coded.
         (!$hc) ? $this->add_container($iloc,$module) : "";
