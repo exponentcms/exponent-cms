@@ -4,9 +4,15 @@ return array(
 	'prev_week'=>'Previous Week',
 	'next_week'=>'Next Week',
 
-	'view_week'=>'Events for the week of',
+	'view_week'=>'Week of',
+	
 	'view_month'=>'View Month',
 	'alt_view_month'=>'View Entire Month',
+	
+	'administration_view'=>'Administration',
+	'alt_rssfeed'=>'Subscribe to this calender\'s RSS Feed',
+	'alt_ical'=>'iCalendar Feed',
+	'ical'=>'',
 
 	'alt_userperm'=>'Assign user permissions on this Calendar Event',
 	'alt_groupperm'=>'Assign group permissions on this Calendar Event',

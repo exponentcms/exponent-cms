@@ -17,6 +17,7 @@ return array(
 
 	'alt_create'=>'Create a new Calendar Event',
 	'create'=>'Create Event',
+	'administration_view'=>'Administration View',	
 
 	'alt_approval'=>'View Calendar Events in Approval',
 	'view_approval'=>'View Approval',

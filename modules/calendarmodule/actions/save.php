@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2006 OIC Group, Inc.
+# Copyright (c) 2004-2011 OIC Group, Inc.
 # Written and Designed by James Hunt
 #
 # This file is part of Exponent
@@ -21,7 +21,8 @@ if (!defined("EXPONENT")) exit("");
 
 $item = null;
 $iloc = null;
-if (isset($_POST['id'])) {
+
+if (isset($_POST['id']) && !isset($_POST['submitNew'])) {
 	$item = $db->selectObject("calendar","id=".intval($_POST['id']));
 	$loc = unserialize($item->location_data);
 	$iloc = exponent_core_makeLocation($loc->mod,$loc->src,$item->id);
@@ -31,6 +32,7 @@ if (($item == null && exponent_permissions_check("post",$loc)) ||
 	($item != null && exponent_permissions_check("edit",$loc)) ||
 	($iloc != null && exponent_permissions_check("edit",$iloc))
 ) {
+
 	$item = calendar::update($_POST,$item);
 	$item->location_data = serialize($loc);
 
@@ -54,21 +56,22 @@ if (($item == null && exponent_permissions_check("post",$loc)) ||
 	if (!defined("SYS_FORMS")) require_once(BASE."subsystems/forms.php");
 
 	//Get and save the image
-	/*  Yeah, no.
+	/*  Yeah, no. Yeah, yes... Maia 6/23/09 */
+	$file = null;
 	if ($_FILES['file']['name'] != '') {
-                $dir = 'files/calendarmodule/'.$loc->src;
-                $file = file::update('file',$dir,null);
-                if (is_object($file)) {
-                        $item->file_id = $db->insertObject($file,'file');
-                } else {
-                        // If file::update() returns a non-object, it should be a string.  That string is the error message.
-                        $post = $_POST;
-                        $post['_formError'] = $file;
-                        exponent_sessions_set('last_POST',$post);
-                        header('Location: ' . $_SERVER['HTTP_REFERER']);
-                }
-        }
-    */
+		$dir = 'files/calendarmodule/'.$loc->src;
+		$file = file::update('file',$dir,null,time().'_'.$_FILES['file']['name']);
+		if (is_object($file)) {
+			$item->file_id = $db->insertObject($file,'file');
+		} else {
+			// If file::update() returns a non-object, it should be a string.  That string is the error message.
+			$post = $_POST;
+			$post['_formError'] = $file;
+			exponent_sessions_set('last_POST',$post);
+			header('Location: ' . $_SERVER['HTTP_REFERER']);
+		}
+    }
+
 	if (isset($item->id)) {
 		if ($item->is_recurring == 1) {
 			// For recurring events, check some stuff.
@@ -109,7 +112,7 @@ if (($item == null && exponent_permissions_check("post",$loc)) ||
 			$eventdate->date = exponent_datetime_startOfDayTimestamp(yuicalendarcontrol::parseData("eventdate",$_POST));
 			$db->updateObject($eventdate,'eventdate');
 		}
-		calendarmodule::spiderContent($item);
+//		calendarmodule::spiderContent($item);
 	} else {
 		exponent_forms_initialize();
 		//$start_recur = exponent_datetime_startOfDayTimestamp(popupdatetimecontrol::parseData("eventdate",$_POST));
@@ -117,7 +120,7 @@ if (($item == null && exponent_permissions_check("post",$loc)) ||
 		//$stop_recur  = exponent_datetime_startOfDayTimestamp(popupdatetimecontrol::parseData("untildate",$_POST));
 		$stop_recur  = exponent_datetime_startOfDayTimestamp(yuicalendarcontrol::parseData("untildate",$_POST));
 
-		if ($_POST['recur'] != "recur_none") {
+		if (($_POST['recur'] != "recur_none") && isset($_POST['recur'])) {
 			// Do recurrence
 			$freq = $_POST['recur_freq_'.$_POST['recur']];
 
@@ -158,11 +161,11 @@ if (($item == null && exponent_permissions_check("post",$loc)) ||
 			$edate->date = $d;
 			$db->insertObject($edate,"eventdate");
 		}
-		calendarmodule::spiderContent($item);
+//		calendarmodule::spiderContent($item);
 	}
 
 	exponent_workflow_post($item,'calendar',$loc);
-	exponent_flow_redirect();
+//	exponent_flow_redirect();
 } else {
 	echo SITE_403_HTML;
 }

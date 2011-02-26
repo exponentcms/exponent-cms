@@ -46,7 +46,7 @@ if ($item) {
 		
 	}  else {
 		// Process a regular delete
-		include(BASE.'modules/calendarmodule/delete.php');
+		include(BASE.'modules/calendarmodule/actions/delete.php');
 	}
 } else {
 	echo SITE_404_HTML;

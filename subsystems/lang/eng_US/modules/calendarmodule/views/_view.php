@@ -13,11 +13,20 @@ return array(
 	'alt_revisions'=>'View Revision History for this Calendar Event',
 	'revisions'=>'Revisions',
 
+	'view_day'=>'View Day',
+	'alt_view_day'=>'View Entire Day',
+	
 	'view_week'=>'View Week',
 	'alt_view_week'=>'View Entire Week',
 
 	'view_month'=>'View Month',
 	'alt_view_month'=>'View Entire Month',
+	
+	'alt_ical'=>'Export this Event as iCalendar file',
+	'ical'=>'',
+	
+	'administration_view'=>'Administration',
+	
 	'all_day'=>'All Day',
 );
 

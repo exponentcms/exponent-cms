@@ -19,6 +19,18 @@ return array(
 	'revisions'=>'Revisions',
 
 	'no_event'=>'No past events.',
+	
+	'event_title'=>'Event Title',
+	'when'=>'When',
+	'category'=>'Category',
+	'calendar_view'=>'Calendar View',
+	'list_view'=>'List View',	
+	'administration_view'=>'Administration View',	
+	'past_events'=>'Past Events View',	
+	'printer_friendly'=>'Printer-friendly',	
+	'delete_past'=>'Delete All Past Events',	
+	'delete_all_confirm'=>'Delete All Past Events?',	
+	'delete_all_past'=>'Purge All Past Events',	
 
 	'alt_create'=>'Create a new Calendar Event',
 	'create'=>'Create Event',

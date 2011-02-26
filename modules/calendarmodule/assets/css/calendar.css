@@ -28,7 +28,6 @@
 	text-decoration: none;
 }	
 
-
 .calendarmodule.cal-default caption {
 	margin: 0;
 	padding: 0;
@@ -112,3 +111,102 @@
     margin-bottom:5px;
 }
 
+/****************  mini-cal  viewday viewweek***********************/
+
+.mini-cal {
+	border:none; 
+	width:10em; 
+	text-align: center;
+}
+
+.mini-cal caption, .viewweek caption, .viewday caption, p.caption {
+	line-height: 2.5em;
+	text-align: center;
+	font-weight: bold;
+	border-top: 1px solid;
+}
+
+.viewweek td  {
+	padding: .1em .1em .1em 0;
+}
+
+.mini-cal th, .mini-cal td {
+	padding: .1em .2em;
+	text-align: right;
+}
+
+.viewweek, .viewday {
+	border: none;
+	width:100%;
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+.mini-cal th {
+	text-align: center;
+}
+.viewweek dt {
+	line-height: 2em;
+}
+
+.divider, .viewday li, .viewweek dt {
+	border-top: 1px solid;
+}
+
+/* BASIC CALENDAR LINK STYLES */
+
+.calendarmodule .addevent {
+	background-image: url(../images/addevent.png);
+	background-repeat: no-repeat;
+	background-position: 0% 50%;
+	padding-left: 18px;
+}
+
+.calendarmodule .listviewlink {
+	background-image: url(../images/list.gif);
+	background-repeat: no-repeat;
+	background-position: 0% 50%;
+	padding-left: 18px;
+}
+
+.calendarmodule .monthviewlink {
+	background-image: url(../images/date_month.png);
+	background-repeat: no-repeat;
+	background-position: 0% 50%;
+	padding-left: 18px;
+}
+
+.calendarmodule .weekviewlink {
+	background-image: url(../images/date_week.png);
+	background-repeat: no-repeat;
+	background-position: 0% 50%;
+	padding-left: 18px;
+}
+
+.calendarmodule .dayviewlink {
+	background-image: url(../images/date_day.png);
+	background-repeat: no-repeat;
+	background-position: 0% 50%;
+	padding-left: 18px;
+}
+
+.calendarmodule .adminviewlink {
+	background-image: url(../images/site-admin.png);
+	background-repeat: no-repeat;
+	background-position: 0% 50%;
+	padding-left: 18px;
+}
+
+.calendarmodule .icallink {
+	background-image: url(../images/ical.gif);
+	background-repeat: no-repeat;
+	background-position: 0% 50%;
+	padding-left: 38px;
+}
+
+a.cats {
+	padding-left: 20px;
+    background-image: url(../images/tree.png);
+	background-repeat: no-repeat;
+}

@@ -8,6 +8,11 @@ return array(
 	'event_title'=>'Event Title',
 	'when'=>'When',
 	'category'=>'Category',
+	'calendar_view'=>'Calendar View',
+	'list_view'=>'List View',	
+	'administration_view'=>'Administration View',	
+	'past_events'=>'Past Events View',	
+	'printer_friendly'=>'Printer-friendly',	
 
 	'alt_userperm_one'=>'Assign user permissions on this Calendar Event',
 	'alt_groupperm_one'=>'Assign group permissions on this Calendar Event',
@@ -19,7 +24,11 @@ return array(
 	'delete_confirm'=>'Are you sure you want to delete this Calendar Event?',
 	'alt_delete_disabled'=>'Deleting Disabled - Calendar Event In Approval',
 	'alt_revisions'=>'View Revision History for this Calendar Event',
+	'revisions'=>'Revisions',
 
+	'alt_ical'=>'iCalendar Feed',
+	'ical'=>'',
+	
 	'no_events'=>'No events were found.',
 	'create'=>'Create Event',
 	'alt_create'=>'Create a new Calendar Event',
@@ -31,8 +40,7 @@ return array(
 
 	'view_categories'=>'View Categories',
 	'alt_view_cat'=>'View Event Categories',
-
-	'revisions'=>'Revisions',
+	'alt_rssfeed'=>'Subscribe to this Event RSS Feed',
 );
 
 ?>

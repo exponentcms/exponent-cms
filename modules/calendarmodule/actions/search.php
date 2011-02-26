@@ -33,6 +33,7 @@
 if (!defined('EXPONENT')) exit('');
 
 exponent_flow_set(SYS_FLOW_PUBLIC,SYS_FLOW_ACTION);
+
 $template = new template("calendarmodule","_search",$loc,false);
 $time = (isset($_GET['time']) ? $_GET['time'] : time());
 if (!defined("SYS_DATETIME")) include_once(BASE."subsystems/datetime.php");

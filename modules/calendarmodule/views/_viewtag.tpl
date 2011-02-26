@@ -18,7 +18,7 @@
 
 {/css}
 
-<div class="calendarmodule upcoming">
+<div class="calendarmodule viewtag">
 	<div class="itemactions">
 		<a class="monthviewlink" href="{link action=viewmonth time=$time}">{$_TR.calendar_view}</a>
 		{permissions level=$smarty.const.UILEVEL_NORMAL}
@@ -100,7 +100,7 @@
 		{/if}
 		{if $config->enable_categories == 1}
 			{if $permissions.manage_categories == 1}
-				<a class="mngmntlink mngmntlinkcats" href="{link module=categories orig_module=calendarmodule action=manage}" class="mngmntlink calendar_mngmntlink">{$_TR.manage_categories}</a>
+				<a class="mngmntlink mngmntlinkcats cats" href="{link module=categories orig_module=calendarmodule action=manage}" class="mngmntlink calendar_mngmntlink">{$_TR.manage_categories}</a>
 			{else}
 				<a class="cats" href="#" onclick="window.open('{$smarty.const.PATH_RELATIVE}popup.php?module=categories&m={$__loc->mod}&action=view&src={$__loc->src}','legend','width=200,height=200,title=no,status=no'); return false" title="{$_TR.alt_view_cat}" alt="{$_TR.alt_view_cat}">{$_TR.view_categories}</a>
 			{/if}

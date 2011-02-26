@@ -13,7 +13,7 @@
  * GPL: http://www.gnu.org/licenses/gpl.txt
  *
  *}
-<div class="form_title">{$_TR.form_title}</div>
+<h1>{$_TR.form_title}</h1>
 <table cellspacing="0" cellpadding="2" border="0">
 {foreach from=$categories item=category}
 	<td>{$category->name}</td>

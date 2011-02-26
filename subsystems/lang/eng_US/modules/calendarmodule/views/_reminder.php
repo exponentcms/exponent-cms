@@ -1,20 +1,19 @@
 <?php
 
 return array(
-	'prev_day'=>'Previous Day',
-	'next_day'=>'Next Day',
+	'prev_week'=>'Previous Week',
+	'next_week'=>'Next Week',
 
-	'view_week'=>'View Week',
-	'alt_view_week'=>'View Entire Week',
-
+	'view1'=>'Events for',
+	'view2'=>' the next ',
+	'view3'=>' days from',
+	
 	'view_month'=>'View Month',
 	'alt_view_month'=>'View Entire Month',
 	
-	'administration_view'=>'Administration',	
+	'administration_view'=>'Administration',
 	'alt_rssfeed'=>'Subscribe to this calender\'s RSS Feed',
-	'alt_ical'=>'iCalendar Feed',
-	'ical'=>'',
-	
+
 	'alt_userperm'=>'Assign user permissions on this Calendar Event',
 	'alt_groupperm'=>'Assign group permissions on this Calendar Event',
 
@@ -28,7 +27,6 @@ return array(
 	'revisions'=>'Revisions',
 
 	'no_events'=>'No Events',
-	'all_day'=>'All Day',
 );
 
 ?>

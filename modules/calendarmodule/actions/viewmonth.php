@@ -21,6 +21,9 @@ if (!defined('EXPONENT')) exit('');
 
 exponent_flow_set(SYS_FLOW_PUBLIC,SYS_FLOW_ACTION);
 
-calendarmodule::show(DEFAULT_VIEW,$loc);
+$view = (isset($_GET['view']) ? $_GET['view'] : "Default");
+$title = $db->selectValue('container', 'title', "internal='".serialize($loc)."'");
+
+calendarmodule::show($view,$loc,$title);
 
 ?>
