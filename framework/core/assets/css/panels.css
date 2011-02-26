@@ -513,3 +513,53 @@
 
 }
 
+/****************  drop for options  ***********************/
+
+.exp-dropmenu {
+    border:none;
+}
+
+.exp-dropmenu .hd,
+.exp-dropmenu .bd,
+.exp-dropmenu .ft{
+    border:none;
+    position:relative;
+    font-family:"Trebuchet MS","Trebuchet MS", Helvetica, sans-serif;
+}
+.exp-dropmenu .type-icon {
+    display:block;
+    width:14px;
+    height:7px;
+    position:absolute;
+    left:10px;
+    top:-7px;
+    background: url(../../skin/panel/point.gif) no-repeat;
+}
+.exp-dropmenu .hd {
+    text-align:left;
+    color:#222;
+    font-size:100%;
+    background:none;
+    height:25px;
+    background:#ffffff;
+    border:1px solid #9fabaf;
+    border-width:1px 1px 0 1px;
+    border-bottom:1px solid #dedede;
+}
+
+.exp-dropmenu .bd {
+    margin:none;
+    background:#ffffff;
+    color:#444;
+    padding-top:0;
+    padding-left:0;
+    padding-bottom:0;
+    padding-right:0;
+    border:1px solid #9fabaf;
+    border-width:0 1px 1px 1px;
+}
+.exp-dropmenu .ft {
+    background:#fff;
+}
+
+

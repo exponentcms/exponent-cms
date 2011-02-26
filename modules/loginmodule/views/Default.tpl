@@ -1,7 +1,3 @@
-{css unique="login" link="`$smarty.const.PATH_RELATIVE`modules/loginmodule/assets/css/login.css" corecss="forms"}
-
-{/css}
-
 <div class="loginmodule default">
 {if $loggedin == false || $smarty.const.PREVIEW_READONLY == 1}
 	<div class="box login-form">
@@ -15,7 +11,7 @@
 	    
 	    
 	    
-		<h2>Existing {$usertype}</h2>
+		<h2>{"Existing"|gettext} {$usertype}</h2>
 		<!--p>If you are an existing customer please log-in below to continue in the checkout process.</p-->
 		{form action=login}
 			{control type="text" name="username" label=$label size=25}
@@ -27,13 +23,31 @@
             {/if}
 	</div>
 	{if $smarty.const.SITE_ALLOW_REGISTRATION == 1}
+	{css unique="regbox"}
+	{literal}
+	.box {
+	  display:inline-block;
+	  *display:inline;
+	  zoom:1;
+	  width:49%;
+	  vertical-align:top;
+	}
+	
+	{/literal}
+	{/css}
+
+	
 	<div class="box new-user">
-		<h2>New Customers</h2>
+		<h2>{"New"|gettext} {$usertype}</h2>
 		<p>
-			If you are a new customer please create an account to continue in the checkout process.{br}
-			Creating an account will allow you to save your billing and shipping information and track your order status.{br}{br}
+		    {if $isecom}
+			{"If you are a new customer please create an account to continue in the checkout process.
+			Creating an account will allow you to save your billing and shipping information and track your order status."|gettext}{br}{br}
+			{else}
+            {* should put some basic text here*}
+		    {/if}
+			<a href="{link module=users action=create}">{"Create an Account"|gettext}</a>
 		</p>
-			<a href="{link module=users action=create}">- Create your account here -</a><br />
 	</div>
 	{/if}
 {/if}

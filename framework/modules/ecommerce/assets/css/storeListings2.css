@@ -1,0 +1,14 @@
+/****************  showall storefont, with the product's view of storeListing  ***********************/
+
+.store.showall .product{
+    text-align:left;
+    margin-bottom:35px;
+    padding-bottom:35px;
+    border-bottom:1px solid #333333;
+}
+.store.showall .product .prod-img {
+    float:left;
+}
+.store.showall .product .bodycopy {
+    margin-left:180px;
+}

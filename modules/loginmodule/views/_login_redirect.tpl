@@ -13,7 +13,5 @@
  * GPL: http://www.gnu.org/licenses/gpl.txt
  *
  *}
-<div class="loginmodule login-redirect">	
-	<h2>{$_TR.form_title}</h2>
-	{$output}
-</div>
+
+{$output}

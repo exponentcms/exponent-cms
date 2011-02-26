@@ -80,8 +80,8 @@ class billing extends expRecord {
             $calcid = key($this->available_calculators);
             $order->billingmethod[0]->update(array('billingcalculator_id'=>$calcid));
         }           
-        
-        if ($number_of_calculators > 0) {
+
+	if ($number_of_calculators > 0) {
             $calcname = $this->available_calculators[$order->billingmethod[0]->billingcalculator_id];            
             $this->calculator = new $calcname($order->billingmethod[0]->billingcalculator_id);
         } else {
@@ -121,16 +121,16 @@ class billing extends expRecord {
             BASE.'themes/'.DISPLAY_THEME_REAL.'/modules/ecommerce/views/billing/',
             BASE.'framework/modules/ecommerce/views/billing/',
         );
-        
-        foreach ($this->available_calculators as $calcname) {
+
+        foreach ($this->available_calculators as $key=>$calcname) {
             if (file_exists($dirs[0].$calcname.'.tpl')) {
-                $views[$calcname] = $dirs[0].$calcname.'.tpl';    
+                $views[$key] = $dirs[0].$calcname.'.tpl';    
             } else {
-                $views[$calcname] = $dirs[1].$calcname.'.tpl';    
+                $views[$key] = $dirs[1].$calcname.'.tpl';    
             }
         }
         
-        return @array_reverse($views); // @ added to ditch warning when ecom is off
+        return @array_reverse($views,1); // @ added to ditch warning when ecom is off
     }
     
    /* public function refresh()

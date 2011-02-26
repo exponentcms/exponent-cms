@@ -18,7 +18,7 @@
     <tr>
         <td class="cart-image">
             {if $item->product->expFile.mainimage[0]->id}
-                <a style="margin: 0px; padding:0px" href="{link action=showByTitle controller=store title=$item->product->sef_url}">{img file_id=$item->product->expFile.mainimage[0]->id h=50 w=50 zc=1}</a>
+                <a style="margin: 0px; padding:0px" href="{link action=showByTitle controller=store title=$item->product->sef_url}">{img file_id=$item->product->expFile.mainimage[0]->id h=50 w=50 zc=1 class="border"}</a>
             {else}
                 No Image Available
             {/if}
@@ -26,8 +26,8 @@
         <td>
             <span class="itemname"><strong>{$item->products_name}</strong></span>
             <div class="itembody">
-                {*$item->product->body|strip_tags|truncate:50:"..."*}
-                {$item->getCartSummary()}
+                {$item->product->body|strip_tags|truncate:50:"..."}
+                {*$item->getCartSummary()*}
             </div>
             {if $options|@count > 0 || $item->getUserInputFields()!= ''}
                 <div class="options">
@@ -40,9 +40,7 @@
                             <div class="bd">
                                 <ul>
                                     {foreach key=key from=$options item=option}
-                                    {eDebug var=$key} 
-                                    {eDebug var=$option}
-                                        <li>{$option[1]} ({$option[3]}${$option[4]})</li>
+                                        <li>{$option[1]} {if $option[4]!=0}({$option[3]}${$option[4]}){/if}</li>
                                     {/foreach}
                                 </ul> 
                             </div>

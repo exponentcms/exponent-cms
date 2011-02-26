@@ -304,7 +304,7 @@ class expRouter {
             {
                 $sef_url = $this->url_parts[0];
                 //check for a firm
-                $mf = new memberfirms();
+                /*$mf = new memberfirms();
                 $memberfirm = $mf->findBy('sef_url', $sef_url);
                 if(!empty($memberfirm))
                 {                                                           
@@ -332,7 +332,7 @@ class expRouter {
                     //eDebug($this->url_parts,true);
                     $this->params = $this->convertPartsToParams();
                     return $this->routeActionRequest();
-                }
+                }*/
                 //else fall through
                 /*else
                 {

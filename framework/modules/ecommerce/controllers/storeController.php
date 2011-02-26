@@ -63,8 +63,8 @@ class storeController extends expController {
         
         // we're setting the config here globably
         $this->grabConfig();          
-
-        if (!empty($router->url_parts) && ($router->url_parts[0]=="store"&&$router->url_parts[1]=="showall")) {
+        //eDebug($this->config);
+        if (expTheme::inAction() && !empty($router->url_parts[1]) && ($router->url_parts[0]=="store"&&$router->url_parts[1]=="showall")) {
             if (isset($router->url_parts[array_search('title',$router->url_parts)+1]) && is_string($router->url_parts[array_search('title',$router->url_parts)+1])) {
                 $default_id = $db->selectValue('storeCategories', 'id', "sef_url='".$router->url_parts[array_search('title',$router->url_parts)+1]."'");
                 $active = $db->selectValue('storeCategories', 'is_active', "sef_url='".$router->url_parts[array_search('title',$router->url_parts)+1]."'");
@@ -73,7 +73,7 @@ class storeController extends expController {
                 }
                 expSession::set('catid',$default_id);
             }
-        } elseif (!empty($router->url_parts) && ($router->url_parts[0]=="store" && ($router->url_parts[1]=="show" || $router->url_parts[1]=="showByTitle"))) {
+        } elseif (expTheme::inAction() && !empty($router->url_parts[1]) && ($router->url_parts[0]=="store" && ($router->url_parts[1]=="show" || $router->url_parts[1]=="showByTitle"))) {
             if (isset($router->url_parts[array_search('id',$router->url_parts)+1])&&($router->url_parts[array_search('id',$router->url_parts)+1]!=0)) {
                 $default_id = $db->selectValue('product_storeCategories', 'storecategories_id', "product_id='".$router->url_parts[array_search('id',$router->url_parts)+1]."'");
                 expSession::set('catid',$default_id);
@@ -82,9 +82,11 @@ class storeController extends expController {
                 $default_id = $db->selectValue('product_storeCategories', 'storecategories_id', "product_id='".$prod_id."'");
                 expSession::set('catid',$default_id);
             }
-        } elseif (ecomconfig::getConfig('show_first_category') || (!expTheme::inAction() && $section==SITE_DEFAULT_SECTION)) {
+        } elseif ($this->config['show_first_category'] || (!expTheme::inAction() && $section==SITE_DEFAULT_SECTION)) {
             $default_id = $db->selectValue('storeCategories', 'id', 'lft=1');
             expSession::set('catid',$default_id);
+        } elseif (!$this->config['show_first_category'] && !expTheme::inAction()) {
+            expSession::set('catid',0);
         } else {
             $default_id = 0;
         }
@@ -100,7 +102,6 @@ class storeController extends expController {
 
         $this->parent = expSession::get('catid');
         $this->category = new storeCategory($this->parent);
-
         // we're setting the config here for the category
         $this->grabConfig($this->category);          
     }
@@ -593,8 +594,10 @@ class storeController extends expController {
            
             foreach ($content as $cnt) {
                 $origid = $cnt['id'];
+                $prod = new product($cnt['id']);
                 unset($cnt['id']);
-                $cnt['title'] = $cnt['title'].' - SKU# '.$cnt['model'];
+                //$cnt['title'] = $cnt['title'].' - SKU# '.$cnt['model'];
+                $cnt['title'] = (isset($prod->expFile['mainimage'][0]) ? '<img src="'.URL_FULL.'thumb.php?id='.$prod->expFile['mainimage'][0]->id.'&w=40&h=40&zc=1" style="float:left;margin-right:5px;" />':'') .$cnt['title']. (!empty($cnt['model']) ? ' - SKU#: '.$cnt['model']:'');
                 $search_record = new search($cnt, false, false);
                 $search_record->posted = empty($cnt['created_at']) ? null : $cnt['created_at'];
                 $search_record->view_link = $router->makeLink(array('controller'=>$this->baseclassname, 'action'=>'showByTitle', 'title'=>$cnt['sef_url']));
@@ -607,11 +610,10 @@ class storeController extends expController {
                 $search_record->save();
                 
                 $count += 1;
-                ob_flush();
-                flush();
             }
         }
     }
+    
     
     function search_by_model_form() {
         //do nothing...just show the view.
@@ -846,10 +848,11 @@ class storeController extends expController {
     function picktype() {
         $prodfiles = storeController::getProductTypes();
         $products = array();
-        foreach($prodfiles as $filepath=>$classname) {
-            $prodObj = new $classname();
-            $products[$classname] = $prodObj->product_name;
-        }
+        // foreach($prodfiles as $filepath=>$classname) {
+        //     $prodObj = new $classname();
+        //     $products[$classname] = $prodObj->product_name;
+        // }
+        $products['product'] = 'Product';
         assign_to_template(array('product_types'=>$products));
     }
     
@@ -1047,7 +1050,8 @@ class storeController extends expController {
         switch($action) {
             case 'show':
             case 'showall': //category page
-                $cat = new storeCategory(isset($_REQUEST['title']) ? $_REQUEST['title']: $_REQUEST['id']);
+                //$cat = new storeCategory(isset($_REQUEST['title']) ? $_REQUEST['title']: $_REQUEST['id']);
+                $cat = $this->category;
                 if (!empty($cat)) {
                     $metainfo['title'] = empty($cat->meta_title) ? $cat->title : $cat->meta_title;
                     $metainfo['keywords'] = empty($cat->meta_keywords) ? $cat->title : strip_tags($cat->meta_keywords);
@@ -1067,10 +1071,9 @@ class storeController extends expController {
         }
         
         // Remove any quotes if there are any.
-        $metainfo['title'] =  $this->parseAndTrim($metainfo['title']);
+        $metainfo['title'] =  $this->parseAndTrim($metainfo['title'],1);
         $metainfo['description'] = str_replace('"', '', $this->parseAndTrim($metainfo['description']));
         $metainfo['keywords'] = str_replace('"', '', $this->parseAndTrim($metainfo['keywords']));
-        
         return $metainfo;
     }
     

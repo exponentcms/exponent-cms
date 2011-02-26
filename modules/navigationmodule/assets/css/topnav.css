@@ -1,0 +1,17 @@
+.top-nav ul,
+.top-nav ul li {
+    list-style:none;
+    margin:0;
+    padding:0;
+}
+
+.top-nav ul li {
+    display:inline-block;
+    *display:inline;
+    zoom:1;
+}
+
+.top-nav ul li a {
+    display:block;
+    padding:3px 10px;
+}

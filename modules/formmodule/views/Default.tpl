@@ -14,6 +14,10 @@
  *
  *}
 
+{css unique="formmod" corecss="forms"}
+
+{/css}
+
 <div class="formmodule default"> 
 	{include file="`$smarty.const.BASE`modules/common/views/_permission_icons.tpl"}
 	{permissions level=$smarty.const.UILEVEL_NORMAL}
@@ -24,10 +28,9 @@
 	{/permissions}
 	<h1>{$moduletitle}</h1>
 	{if $formmsg != "" }
-		<br /><br />
 		{$formmsg}
 	{/if}
-	 <div style="border: padding: 1em;">
+	 <div>
 		{$form_html}
 	</div>
 </div>

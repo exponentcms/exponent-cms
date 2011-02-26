@@ -30,7 +30,7 @@
             </h2>
             {if $item->isRss != true}
                 {permissions level=$smarty.const.UILEVEL_PERMISSIONS}
-                <div class="itemactions">
+                <div class="item-actions">
                     {if $permissions.edit == true}
                         {icon controller=news action=edit id=$item->id title="Edit this news post"}
                     {/if}
@@ -68,7 +68,7 @@
     
     {permissions level=$smarty.const.UILEVEL_NORMAL}
     {if $morenews == 1 || $permissions.create == true || $permissions.edit == true || $permissions.showExpired == 1}
-    <div class="moduleactions">
+    <div class="module-actions">
         {permissions level=$smarty.const.UILEVEL_NORMAL}
         {if $permissions.create == true || $permissions.edit == true}
             <a class="addnews" href="{link action=create}">{$_TR.create_news|default:"Create a news post"}</a>{br}

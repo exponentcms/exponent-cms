@@ -21,6 +21,7 @@ class photosController extends expController {
     public $basemodel_name = 'photo';
     public $useractions = array(
         'showall'=>'Gallery', 
+        'slideshow'=>'Slideshow', 
         //'showall_tags'=>"Tag Categories"
     );
     public $remove_configs = array('files','ealerts','comments','rss','tags');
@@ -53,6 +54,16 @@ class photosController extends expController {
                     ));
                     
         assign_to_template(array('page'=>$page));
+    }
+    
+    public function slideshow() {
+        expHistory::set('viewable', $this->params);
+        $where = $this->aggregateWhereClause();
+        $order = 'rank';
+        $s = new photo();
+        $slides = $s->find('all',$where,$order);
+                    
+        assign_to_template(array('slides'=>$slides));
     }
     
     public function showall_tags() {

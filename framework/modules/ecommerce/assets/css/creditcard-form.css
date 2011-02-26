@@ -29,11 +29,7 @@
 }
 
 #continue-checkout {
-    position:absolute;
-    right:10px;
-    bottom:10px;
-    _position:relative;
-    _margin-left:30px;
+    margin:10px 0 10px 140px;
 }
 
 

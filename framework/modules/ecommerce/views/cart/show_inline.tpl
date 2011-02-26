@@ -14,6 +14,10 @@
  *
  *}
 
+{css unique="inline-cart" link="`$asset_path`css/inline-cart.css"}
+
+{/css}
+
 <div class="module cart show-inline">
     {if $moduletitle}<h2>{$moduletitle}</h2>{/if}
     <div class="total">
@@ -22,11 +26,17 @@
     <ul>
         {foreach from=$items item=item}
             <li class="{cycle values="odd,even"}">
-                <a href="{link controller=store action=show id=$item->product_id}">{if $item->product->expFile[0]->id}{img file_id=$item->product->expFile[0]->id square=55}{/if}{$item->products_name}</a>
-                 {$item->quantity} @ <span class="price">{currency_symbol}{$item->products_price|number_format:2}</span>
-                {br}
-                <a href="{link action=removeItem id=$item->id}" class="removefromcart">Remove from cart</a>
-                {clear}
+                <a class="image" href="{link controller=store action=show id=$item->product_id}">
+                    {if $item->product->expFile.mainimage[0]->id}{img file_id=$item->product->expFile.mainimage[0]->id  w=30 h=30 zc=1 class="border"}{/if}
+                </a>
+                <div class="p-info">
+                    <a class="title" href="{link controller=store action=show id=$item->product_id}">
+                    {$item->products_name}
+                    </a>
+                    {$item->quantity} @ <span class="price">{currency_symbol}{$item->products_price|number_format:2}</span>
+                </div>
+                <a href="{link action=removeItem id=$item->id}" class="delete">Remove from cart</a>
+                <div style="clear:both"></div>
             </li>
         {foreachelse}
             <li>You currently have no items in your cart</li>

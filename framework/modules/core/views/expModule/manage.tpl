@@ -58,7 +58,7 @@
 
  
 
-<div class="module administrationmodule modulemanager exp-skin-tabview hide">
+<div id="mod-manager" class="module administrationmodule modulemanager exp-skin-tabview hide">
     <div class="info-header">
         <div class="related-actions">
             {help text="Get Help Managing Modules" module="addcontent"}
@@ -136,13 +136,13 @@
     {control type="buttongroup" submit="Update Active Modules"}
     {/form}
 </div>
-<div class="loadingdiv">Loading File Download Form</div>
+<div class="loadingdiv">{"Loading"|gettext}</div>
 
 {script unique="filetabs" yui2mods="tabview,element" yui3mods="node"}
 {literal}
 YUI({base:EXPONENT.YUI3_PATH,loadOptional: true}).use('*', function(Y) {
     var tabView = new YAHOO.widget.TabView('mods');
-    Y.one('.hide').removeClass('hide');
+    Y.one('#mod-manager').removeClass('hide');
     Y.one('.loadingdiv').remove();
     
     EXPONENT.selectAllCheckboxes = function (selector) {

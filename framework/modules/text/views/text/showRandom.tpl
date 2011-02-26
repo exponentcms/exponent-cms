@@ -15,17 +15,20 @@
  *}
 
 <div class="module text show-random">
-	<h1>{$moduletitle|default:"Listings for `$modelname`"}</h1>
-	{permissions level=$smarty.const.UILEVEL_NORMAL}
+	    {if $moduletitle}<h1>{$moduletitle}</h1>{/if}
+	    {permissions}
         	{if $permissions.create == 1}
-        		<a href="{link controller=$model_name action=create}">Create a new {$modelname}</a>
+                {icon class="add" action=edit title="Add Text"|gettext text="Add Text"|gettext}
+        	{/if}
+        	{if $permissions.edit == 1}
+                {br}{icon class="manage" action=showall title="Manage Text Items"|gettext text="Manage Text Items"|gettext}
         	{/if}
         {/permissions}
 	
         {foreach from=$items item=listing}
-		<h3>
-			<a href="{link controller=$controller action=show id=$listing->id}">{$listing->title}</a>
-			{permissions level=$smarty.const.UILEVEL_NORMAL}
+		<div class="item-actions">
+			{if $listing->title}<h2><a href="{link controller=$controller action=show id=$listing->id}">{$listing->title}</a></h2>{/if}
+			{permissions}
 				{if $permissions.edit == 1}
 					{icon controller=$controller action=edit id=$listing->id title="Edit this `$modelname`"}
 				{/if}
@@ -33,9 +36,11 @@
 					{icon controller=$controller action=delete id=$listing->id title="Delete this `$modelname`" onclick="return confirm('Are you sure you want to delete this `$modelname`?');"}
 				{/if}
 			{/permissions}
-		</h3>
-		<p>{$listing->body}</p>
 		
+    		<div class="bodycopy">
+    		    {$listing->body}
+    		</div>
+		
+		</div>
         {/foreach}
-        {clear}
 </div>

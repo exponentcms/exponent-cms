@@ -25,7 +25,7 @@
     {control type="text" name="title" label="Title" value=$record->title}
     {control type="text" name="url" label="URL" value=$record->url}
     {control type="checkbox" name="new_window" label="Open in New Window" checked=$record->new_window value="1"}
-    {control type="files" name="image" label="Image" value=$record->expFile limit=1}
+    {control type="files" name="image" label="Image" value=$record->expFile limit=2}
     {control type="editor" name="body" label="URL Description" value=$record->body}
     {control type="buttongroup" submit="Save" cancel="Cancel"}
 {/form}

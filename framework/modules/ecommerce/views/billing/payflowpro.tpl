@@ -6,7 +6,7 @@
 <div class="billing-method payflowpro creditcard-form">
     <h4>Pay By Credit Card</h4>
     {form name="ccinfoform" controller=cart action=preprocess}
-        {control type="hidden" name="billingcalculator_id" value=4}
+        {control type="hidden" name="billingcalculator_id" value=$key}
         {$billing->form}
         <a href="#" id="continue-checkout" class="exp-ecom-link"><strong><em>Continue Checkout</em></strong></a>
     {/form}

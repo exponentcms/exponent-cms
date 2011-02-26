@@ -43,6 +43,13 @@ require_once(BASE."subsystems/forms/controls/formcontrol.php");
  * @package Subsystems
  * @subpackage Forms
  */
+if (SITE_WYSIWYG_EDITOR == "ckeditor") {
+
+class htmleditorcontrol extends ckeditorcontrol {
+}
+
+} else {
+    
 class htmleditorcontrol extends formcontrol {
 	var $module = "";
 	var $toolbar = "";
@@ -124,6 +131,7 @@ class htmleditorcontrol extends formcontrol {
 		if (trim($html) == "<br />") $html = "";
 		return $html;
 	}
+}
 }
 
 ?>

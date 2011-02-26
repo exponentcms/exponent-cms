@@ -26,7 +26,7 @@
 <div class="module photoalbum slideshow">
     {if $moduletitle != ""}<h1>{$moduletitle}</h1>{/if}
     {permissions level=$smarty.const.UILEVEL_NORMAL}
-            <div class="moduleactions">
+            <div class="module-actions">
                 {if $permissions.create == 1}
                     {icon class="add" action=edit rank=1 title="Add to the top" text="Add a new slide at the beginning"}
                 {/if}
@@ -50,7 +50,7 @@
                 {$item->body}
             </div>
             {permissions level=$smarty.const.UILEVEL_NORMAL}
-                <div class="itemactions">
+                <div class="item-actions">
                     {if $permissions.edit == 1}
                         {icon action=edit id=$item->id title="Edit `$item->title`"}
                     {/if}

@@ -44,7 +44,7 @@
 			<td>{if $group->inclusive}<b>Default</b>{else}Normal{/if}</td>
 		    <td>
 		        {permissions level=$smarty.const.UILEVEL_PERMISSIONS}
-                <div class="itemactions">
+                <div class="item-actions">
                 {icon img=edit.png controller=users action=edit_group id=$group->id title="Edit"}
                 {icon controller=users action=delete id=$user->id title="Delete" onclick="return confirm('Are you sure you want to delete this user?');"}
                 {icon img=groupperms.png controller=users action="manage_group_memberships" id=$group->id title="Add/Remove Members to Group `$group->name`"}

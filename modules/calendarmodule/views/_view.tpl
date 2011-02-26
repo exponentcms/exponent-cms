@@ -33,7 +33,7 @@
 	{include file="`$smarty.const.BASE`modules/common/views/_permission_icons.tpl"}
 
 	{permissions level=$smarty.const.UILEVEL_PERMISSIONS}
-	<div class="itemactions">
+	<div class="item-actions">
 		{if $permissions.edit == 1 || $item->permissions.edit == 1}
 			{if $item->approved == 1}
 			<a href="{link action=edit id=$item->id date_id=$item->eventdate->id}"><img class="mngmnt_icon" style="border:none;" src="{$smarty.const.ICON_RELATIVE}edit.png" title="{$_TR.alt_edit}" alt="{$_TR.alt_edit}" /></a>&nbsp;
@@ -67,7 +67,7 @@
 	<div class="bodycopy">
 		{$item->body}
 	</div>
-	<div class="moduleactions">
+	<div class="module-actions">
 		{$form}
 		<a class="mngmntlink calendar_mngmntlink" href="{link action=viewweek time=$item->eventstart}" title="{$_TR.alt_view_week}" alt="{$_TR.alt_view_week}">{$_TR.view_week}</a>&nbsp;|&nbsp;
 		<a class="mngmntlink calendar_mngmntlink" href="{link action=viewmonth time=$item->eventstart}" title="{$_TR.alt_view_month}" alt="{$_TR.alt_view_month}">{$_TR.view_month}</a><br />

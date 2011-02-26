@@ -1,3 +1,18 @@
-.search.show-form .control{
-    display:inline-block;
+.search.show-form {
+    position:relative;
+    text-align:left;
+}
+
+.search.show-form input.text {
+    width:60%;
+    margin-top:0;
+}
+
+.search.show-form .button {
+    position:absolute;
+    top:4px;
+    right:0;
+    width:30%;
+    padding:5px;
+    margin-right:0;
 }

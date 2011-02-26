@@ -168,7 +168,8 @@ class orderController extends expController {
 	    $template = get_template_for_action($this, 'show_printable', $this->loc);
 	    $order = new order($this->params['id']);		
 	    $billing = new billing($this->params['id']);
-	    assign_to_template(array('order'=>$order,'shipping'=>$order->orderitem[0],'billing'=>$billing));
+	    $css = file_get_contents(BASE.'framework/modules/ecommerce/assets/css/print-invoice.css');
+	    assign_to_template(array('order'=>$order,'shipping'=>$order->orderitem[0],'billing'=>$billing,'css'=>$css));
 	
 	    // build the html and text versions of the message
 	    $html = $template->render();
@@ -191,7 +192,7 @@ class orderController extends expController {
         }
         
         // email the invoice to the user if we need to
-        if (ecomconfig::getConfig('email_invoice_to_user') == true && !empty($user->email)) {
+        if (ecomconfig::getConfig('email_invoice_to_user') == true) {
             $usermsg  = "<p>".ecomconfig::getConfig('invoice_msg')."<p>";
             $usermsg .= $html;
             $usermsg .= ecomconfig::getConfig('footer');
@@ -200,7 +201,7 @@ class orderController extends expController {
             $mail->quickSend(array(
                     'html_message'=>$usermsg,
 			        'text_message'=>$txt,
-			        'to'=>$user->email,
+			        'to'=>$order->billingmethod[0]->email,
 			        'from'=>ecomconfig::getConfig('from_address'),
 			        'from_name'=>ecomconfig::getConfig('from_name'),
 			        'subject'=>ecomconfig::getConfig('invoice_subject'),

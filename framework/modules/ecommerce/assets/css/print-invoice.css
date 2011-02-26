@@ -35,6 +35,7 @@
 #invoice table td,
 #invoice table th {
     border:1px solid #ffffff;
+    padding:5px;
 }
 
 #invoice address span {

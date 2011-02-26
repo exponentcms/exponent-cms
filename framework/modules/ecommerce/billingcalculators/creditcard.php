@@ -71,14 +71,14 @@ class creditcard extends billingcalculator {
 		$cardnumber = new textcontrol("",20,false,20,"integer", true);
 		$expiration = new monthyearcontrol("", "");
 		$cvv = new textcontrol("",4,false,4,"integer", true);
-		$cvvhelp = new htmlcontrol("<a href='http://en.wikipedia.org/wiki/Card_Verification_Value' target='_blank'>What's this?</a>");
+		//$cvvhelp = new htmlcontrol("<a href='http://en.wikipedia.org/wiki/Card_Verification_Value' target='_blank'>What's this?</a>");
 
 		$cardtypes->id = "cc_type";
 		$cardnumber->id = "cc_number";
 		$expiration->id = "expiration";
 		$cvv->id = "cvv";
 		$cvv->size = 5;
-		$cvvhelp->id = "cvvhelp";
+		//$cvvhelp->id = "cvvhelp";
 
 		//$form .= $fname->toHTML("First Name", "first_name");
 		//$form .= $lname->toHTML("Last Name", "last_name");
@@ -86,8 +86,8 @@ class creditcard extends billingcalculator {
 		$form .= $cardnumber->toHTML("Card #", "cc_number");
 		//$form .= "<strong class=\"example\">Example: 1234567890987654</strong>";
 		$form .= $expiration->toHTML("Expiration", "expiration");
-		$form .= $cvv->toHTML("CVV #", 'cvv');
-		$form .= $cvvhelp->toHTML('', 'cvvhelp');
+		$form .= $cvv->toHTML("CVV # <br /><a href='http://en.wikipedia.org/wiki/Card_Verification_Value' target='_blank'>What's this?</a>", 'cvv');
+		//$form .= $cvvhelp->toHTML('', 'cvvhelp');
 		//$form .= "<a class=\"exp-ecom-link-dis continue\" href=\"#\" id=\"checkoutnow\"><strong><em>Continue Checkout</em></strong></a>";
         //$form .= '<input id="cont-checkout" type="submit" value="Continue Checkout">';
 		return $form;	

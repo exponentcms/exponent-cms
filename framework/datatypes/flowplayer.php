@@ -24,10 +24,10 @@ class flowplayer extends expRecord {
         'content_expFiles'=>'expFile'
     );
 
-    public $validates = array(
-        'presence_of'=>array(
-            'title'=>array('message'=>'Title is a required field.')
-        ));
+    // public $validates = array(
+    //     'presence_of'=>array(
+    //         'title'=>array('message'=>'Title is a required field.')
+    //     ));
         
 }
 

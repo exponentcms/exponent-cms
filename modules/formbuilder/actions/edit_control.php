@@ -25,6 +25,13 @@ exponent_forms_initialize();
 $f = $db->selectObject("formbuilder_form","id=".(isset($_REQUEST['form_id'])?intval($_REQUEST['form_id']):0));
 if ($f) {
 	if (exponent_permissions_check("editform",unserialize($f->location_data))) {
+
+        expCSS::pushToHead(array(
+           "unique"=>"forms",
+           "corecss"=>"forms",
+           )
+        );
+	    
 		if (isset($_POST['control_type']) && $_POST['control_type']{0} == ".") {
 			$htmlctl = new htmlcontrol();
 			$htmlctl->identifier = uniqid("");
