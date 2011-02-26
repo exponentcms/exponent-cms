@@ -286,7 +286,7 @@ class migrationController extends expController {
                 // convert new modules added via container
                 unset($module->internal);
                 unset($module->action);
-                unset($module->view);
+//                unset($module->view);
                 $this->convert($iloc, $module);                
             } else if (!in_array($iloc->mod, $this->deprecated_modules)) {
                 // add old school modules not in the deprecation list
@@ -309,9 +309,11 @@ class migrationController extends expController {
         
         switch ($iloc->mod) {
             case 'calendarmodule':
+				@$this->msg['migrated'][$iloc->mod]['name'] = $iloc->mod;
                 $events = $old_db->selectObjects('eventdate', "location_data='".serialize($iloc)."'");
                 foreach($events as $event) {
-                    $db->insertObject($event, 'eventdate');
+                    $res = $db->insertObject($event, 'eventdate');
+					if ($res) { @$this->msg['migrated'][$iloc->mod]['count']++; }
                 }
                 $cals = $old_db->selectObjects('calendar', "location_data='".serialize($iloc)."'");
                 foreach($cals as $cal) {
@@ -341,6 +343,7 @@ class migrationController extends expController {
                 }
             break;
             case 'simplepollmodule':
+				@$this->msg['migrated'][$iloc->mod]['name'] = $iloc->mod;
                 $questions = $old_db->selectObjects('poll_question', "location_data='".serialize($iloc)."'");
                 foreach($questions as $question) {
                     $db->insertObject($question, 'poll_question');
@@ -352,6 +355,7 @@ class migrationController extends expController {
 					foreach($timeblocks as $timeblock) {
 						$db->insertObject($timeblock, 'poll_timeblock');
 					}
+					@$this->msg['migrated'][$iloc->mod]['count']++;
                 }
                 $configs = $old_db->selectObjects('simplepollmodule_config', "location_data='".serialize($iloc)."'");
                 foreach ($configs as $config) {
@@ -367,6 +371,9 @@ class migrationController extends expController {
         $m->internal = (isset($m->internal) && strstr($m->internal,"Controller")) ? $m->internal : serialize($iloc);
         $m->action = isset($m->action) ? $m->action : 'showall';
         $m->view = isset($m->view) ? $m->view : 'showall';
+        if ($m->view == "Default") {
+			$m->view = 'showall';
+		}
         $db->insertObject($m, 'container');
     }
     
@@ -377,6 +384,9 @@ class migrationController extends expController {
         
         switch ($iloc->mod) {
             case 'textmodule':
+			
+				@$module->view = 'showall'; 
+				
                 $iloc->mod = 'textmodule';
                 $textitems = $old_db->selectObjects('textitem', "location_data='".serialize($iloc)."'");
 
@@ -396,7 +406,6 @@ class migrationController extends expController {
             break;
             case 'rotatormodule':
 
-                // quick check for hard coded modules
                 $module->action = 'showRandom';
                 $module->view = 'showRandom';                
                 
@@ -417,6 +426,9 @@ class migrationController extends expController {
                 }
             break;
             case 'snippetmodule':
+			
+				$module->view = 'showall'; 
+						
                 $iloc->mod = 'snippetmodule';
                 $textitems = $old_db->selectObjects('textitem', "location_data='".serialize($iloc)."'");
                 if ($textitems) {
@@ -437,10 +449,18 @@ class migrationController extends expController {
                 }
             break;
             case 'linklistmodule':
+			
+				switch ($module->view) {
+					case 'Quick Links':
+						@$module->view = "showall_quicklinks";
+					break;
+					default:
+						@$module->view = 'showall'; 
+					break;
+				}
+
                 $iloc->mod = 'linklistmodule';
                 $links = $old_db->selectArrays('linklist_link', "location_data='".serialize($iloc)."'");
-
-                @$module->view = "showall_quicklinks";
 
                 foreach ($links as $link) {
                     $lnk = new links();
@@ -461,10 +481,18 @@ class migrationController extends expController {
                 }
             break;
             case 'linkmodule':  // user mod, not widely distributed
+			
+				switch ($module->view) {
+					case 'Summary':
+						@$module->view = "showall_quicklinks";
+					break;
+					default:
+						@$module->view = 'showall'; 
+					break;
+				}
+
                 $iloc->mod = 'linkmodule';
                 $links = $old_db->selectArrays('link', "location_data='".serialize($iloc)."'");
-
-                @$module->view = "showall_quicklinks";
 
                 foreach ($links as $link) {
                     $lnk = new links();
@@ -485,8 +513,12 @@ class migrationController extends expController {
                 }
             break;
             case 'swfmodule':
+
+				$module->view = 'showall'; 
+			
                 $iloc->mod = 'swfmodule';
                 $swfitems = $old_db->selectObjects('swfitem', "location_data='".serialize($iloc)."'");
+				
                 foreach ($swfitems as $ti) {
                     $text = new text();
                     $file = new expFile($ti->swf_id);
@@ -513,7 +545,20 @@ class migrationController extends expController {
                     @$this->msg['migrated'][$iloc->mod]['name'] = $this->new_modules[$iloc->mod];
                 }
             break;
-            case 'newsmodule':                
+            case 'newsmodule':  
+
+				switch ($module->view) {
+					case 'Headlines':
+						$module->view = 'showall_headlines'; 
+					break;
+					case 'Summary':
+						$module->view = 'showall_summary'; 
+					break;
+					default:
+						$module->view = 'showall'; 
+					break;
+				}
+			
                 $iloc->mod = 'newsmodule';
                 $newsitems = $old_db->selectArrays('newsitem', "location_data='".serialize($iloc)."'");
                 
@@ -540,6 +585,16 @@ class migrationController extends expController {
                 }
             break;
             case 'resourcesmodule':
+			
+				switch ($module->view) {
+					case 'One Click Download - Descriptive':
+						$module->view = 'showall_quick_download_with_description'; 
+					break;
+					default:
+						$module->view = 'showall'; 
+					break;
+				}			
+			
                 $iloc->mod = 'resourcesmodule';
                 $resourceitems = $old_db->selectArrays('resourceitem', "location_data='".serialize($iloc)."'");
                 foreach ($resourceitems as $ri) {
@@ -567,7 +622,18 @@ class migrationController extends expController {
                 }
             break;
             case 'imagegallerymodule':
-                $iloc->mod = 'imagegallerymodule';
+
+				switch ($module->view) {
+					case 'Slideshow':
+						$module->action = 'slideshow';
+						$module->view = 'showall';   
+					break;
+					default:
+						$module->view = 'showall'; 
+					break;
+				}
+
+				$iloc->mod = 'imagegallerymodule';
                 $galleries = $old_db->selectArrays('imagegallery_gallery', "location_data='".serialize($iloc)."'");
                 foreach ($galleries as $gallery) {
                     $gis = $old_db->selectArrays('imagegallery_image', "gallery_id='".$gallery['id']."'");
@@ -593,6 +659,10 @@ class migrationController extends expController {
                 }
             break;
             case 'slideshowmodule':
+			
+                $module->action = 'slideshow';
+                $module->view = 'showall';   
+				
                 $iloc->mod = 'slideshowmodule';
                 $galleries = $old_db->selectArrays('imagegallery_gallery', "location_data='".serialize($iloc)."'");
                 foreach ($galleries as $gallery) {
@@ -625,6 +695,9 @@ class migrationController extends expController {
                 }
             break;
             case 'headlinemodule':
+			
+                $module->view = 'showall';   
+			
                 $iloc->mod = 'headlinemodule';
                 $headlines = $old_db->selectObjects('headline', "location_data='".serialize($iloc)."'");
 
@@ -645,7 +718,26 @@ class migrationController extends expController {
                     }
                 }
             break;
-            case 'weblogmodule':                
+            case 'weblogmodule':    
+
+				switch ($module->view) {
+					case 'By Author':
+						$module->action = 'authors';
+						$module->view = 'authors';   
+					break;
+					case 'By Tag':
+						$module->action = 'tags';
+						$module->view = 'tags_list';   
+					break;
+					case 'Monthly':
+						$module->action = 'dates';
+						$module->view = 'dates';   
+					break;
+					default:
+						$module->view = 'showall'; 
+					break;
+				}
+            
                 $iloc->mod = 'weblogmodule';
                 $blogitems = $old_db->selectArrays('weblog_post', "location_data='".serialize($iloc)."'");
                 
@@ -678,7 +770,10 @@ class migrationController extends expController {
                     }
                 }
             break;
-            case 'faqmodule':                
+            case 'faqmodule': 
+
+				$module->view = 'showall'; 
+			
                 $iloc->mod = 'faqmodule';
                 $faqs = $old_db->selectArrays('faq', "location_data='".serialize($iloc)."'");
                 
