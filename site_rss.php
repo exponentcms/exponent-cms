@@ -73,9 +73,12 @@ if ($config->enable_rss == true) {
 		$rss->itunes->owner_email = 0;
 	}
 
+	$pubDate = '';
 	foreach ($site_rss->getFeedItems() as $item) {
+		if ($item->date > $pubDate) { $pubDate = $item->date; }
 		$rss->addItem($item);
 	}
+	$rss->pubDate = $pubDate;
 
 	header("Content-type: text/xml");
 	if ($_REQUEST['module'] == "filedownload") {
