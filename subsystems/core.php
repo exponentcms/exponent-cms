@@ -165,9 +165,11 @@ function exponent_core_makePodcastLink($params) {
 	$link = (ENABLE_SSL ? NONSSL_URL : URL_BASE);
 	//FIXME: Hardcoded controller stuff!!
 	if (controllerExists($params['module'])) {
-	    $link .= SCRIPT_RELATIVE . "site_podcast.php" . "?";
+//	    $link .= SCRIPT_RELATIVE . "site_podcast.php" . "?";
+	    $link .= SCRIPT_RELATIVE . "site_rss.php" . "?";
 	} else {
-	    $link .= SCRIPT_RELATIVE . "podcast.php" . "?";
+//	    $link .= SCRIPT_RELATIVE . "podcast.php" . "?";
+	    $link .= SCRIPT_RELATIVE . "rss.php" . "?";
 	}
 	foreach ($params as $key=>$value) {
         $value = chop($value);

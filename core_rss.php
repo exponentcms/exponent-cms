@@ -1,7 +1,7 @@
 <?php
 /***************************************************************************
 
-FeedCreator class v1.7.2
+FeedCreator class v1.7.2-iTunes
 originally (c) Kai Blankenhorn
 www.bitfolge.de
 kaib@bitfolge.de
@@ -27,15 +27,108 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 ***************************************************************************
 *          A little setup                                                 *
 **************************************************************************/
-
+// Added for Exponent
+//define('SYS_PODCASTING', 1);
+define('SYS_RSS', 1);
 // your local timezone, set to "" to disable or for GMT
-define("SYS_RSS",1);
-define("TIME_ZONE","+01:00");
+//define("TIME_ZONE","-0600");
+define("TIME_ZONE",date('O',time()));
+
+
 
 /**
  * Version string.
  **/
-define("FEEDCREATOR_VERSION", "FeedCreator 1.7.2");
+// define("FEEDCREATOR_VERSION", "FeedCreator 1.7.2-iTunes");
+define("FEEDCREATOR_VERSION", SITE_TITLE);
+
+/**
+ * An Enclosure is a part of an Item
+ *
+ * @author Steven Pothoven <steven@pothoven.net>
+ * @since 1.7.2-podcast
+ */
+class Enclosure {
+   /**
+    * Attributes of an enclosure
+    */
+   var $url, $length, $type = "audio/mpeg"; 
+}
+
+/**
+ * iTunes extensions to RSS 2.0
+ *
+ * @author Steven Pothoven <steven@pothoven.net>
+ * @since 1.7.2-iTunes
+ */
+class iTunes {
+   /**
+    * This tag can only be populated using iTunes specific categories.
+    */
+   var $category, $subcategory;
+
+   /**
+    * This tag should be used to note whether or not your Podcast contains explicit material.
+    * There are 2 possible values for this tag: Yes or No
+    */
+   var $explicit;
+
+   /*
+    * At the Channel level, this tag is a short description that provides general information about the Podcast. It will appear next to your Podcast as users browse through listings of Podcasts
+    * At the Item level, this tag is a short description that provides specific information for each episode.
+    * Limited to 255 characters or less, plain text, no HTML
+    */
+   var $subtitle;
+
+   /*
+    * At the Channel level, this tag is a long description that will appear next to your Podcast cover art when a user selects your Podcast.
+    * At the Item level, this tag is a long description that will be displayed in an expanded window when users click on an episode.
+    * Limited to 4000 characters or less, plain text, no HTML
+    */
+   var $summary;
+
+   /*
+    * At the Channel level this tag contains the name of the person or company that is most widely attributed to publishing the Podcast and will be displayed immediately underneath the title of the Podcast.
+    * If applicable, at the item level, this tag can contain information about the person(s) featured on a specific episode.
+    */
+   var $author;
+
+   /*
+    * This tag is for informational purposes only and will allow users to know the duration prior to download
+    * The tag is formatted: HH:MM:SS
+    */
+   var $duration;
+
+   /*
+    * This tag allows users to search on text keywords
+    * Limited to 255 characters or less, plain text, no HTML, words must be separated by spaces
+    */
+   var $keywords;
+
+   /*
+    * This tag contains the e-mail address that will be used to contact the owner of the Podcast for communication specifically about their Podcast on iTunes.
+    * Required element specifying the email address of the owner.
+    */
+   var $owner_email;
+
+   /*
+    * Optional element specifying the name of the owner.
+    */
+   var $owner_name;
+
+   /*
+    * This tag specifies the artwork for the Channel and Item(s). This artwork can be larger than the maximum allowed by RSS.
+    * Preferred size: 300 x 300 at 72 dpi
+    * Minimum size: 170 pixels x 170 pixels square at 72 dpi
+    * Format: JPG, PNG, uncompressed
+    */
+   var $image;
+
+   /*
+    * This tag is used to block a podcast or an episode within a podcast from being posted to iTunes. Only use this tag when you want a podcast or an episode to appear within the iTunes podcast directory.
+    */
+   var $block;
+}
 
 /**
  * A FeedItem is a part of a FeedCreator feed.
@@ -52,7 +145,17 @@ class FeedItem extends HtmlDescribable {
 	/**
 	 * Optional attributes of an item.
 	 */
-	var $author, $authorEmail, $image, $category, $comments, $guid, $source, $creator;
+	var $author, $authorEmail, $image, $category = Array(), $comments, $guid, $source, $creator;
+
+        /**
+         * Support for attachments
+         */
+        var $enclosure;
+
+        /**
+         * Support for iTunes
+         */
+        var $itunes;
 	
 	/**
 	 * Publishing date of an item. May be in one of the following formats:
@@ -251,7 +354,10 @@ class UniversalFeedCreator extends FeedCreator {
 			case "JAVASCRIPT":
 				$this->_feed = new JSCreator();
 				break;
-			
+
+			case "PODCAST":
+				$this->_feed = new PodcastCreator();
+				break;			
 			default:
 				$this->_feed = new RSSCreator091();
 				break;
@@ -343,7 +449,12 @@ class FeedCreator extends HtmlDescribable {
 	* Ignored in the output when empty.
 	*/
 	var $xslStyleSheet = "";
+
 	
+        /**
+         * Support for iTunes
+         */
+        var $itunes;
 	
 	/**
 	 * @access private
@@ -363,8 +474,7 @@ class FeedCreator extends HtmlDescribable {
 	 * This feed's character encoding.
 	 * @since 1.6.1
 	 **/
-	//var $encoding = "ISO-8859-1";
-	var $encoding = "UTF-8";
+	var $encoding = "ISO-8859-1";
 	
 	
 	/**
@@ -387,7 +497,8 @@ class FeedCreator extends HtmlDescribable {
 	function addItem($item) {
 		$this->items[] = $item;
 	}
-
+	
+	
 	/**
 	 * Truncates a string to a certain length at the most sensible point.
 	 * First, if there's a '.' character near the end of the string, the string is truncated after this character.
@@ -550,7 +661,7 @@ class FeedCreator extends HtmlDescribable {
 		if ($filename=="") {
 			$filename = $this->_generateFilename();
 		}
-		$feedFile = fopen($filename, "w+");
+		$feedFile = fopen($filename, "w");
 		if ($feedFile) {
 			fputs($feedFile,$this->createFeed());
 			fclose($feedFile);
@@ -580,7 +691,7 @@ class FeedDate {
 	function FeedDate($dateString="") {
 		if ($dateString=="") $dateString = date("r");
 		
-		if (is_integer($dateString)) {
+		if (is_numeric($dateString)) {
 			$this->unix = $dateString;
 			return;
 		}
@@ -753,6 +864,12 @@ class RSSCreator091 extends FeedCreator {
 	 */
 	var $RSSVersion;
 
+	/**
+	 * Sets an optional XML namespace
+	 * @access private
+	 */
+	var $XMLNS;
+
 	function RSSCreator091() {
 		$this->_setRSSVersion("0.91");
 		$this->contentType = "application/rss+xml";
@@ -767,15 +884,27 @@ class RSSCreator091 extends FeedCreator {
 	}
 
 	/**
+	 * Sets an XML namepace fot hos RSS feed
+	 * @access private
+	 */
+	function _setXMLNS($xmlns) {
+		$this->XMLNS = $xmlns;
+	}
+
+	/**
 	 * Builds the RSS feed's text. The feed will be compliant to RDF Site Summary (RSS) 1.0.
 	 * The feed will contain all items previously added in the same order.
 	 * @return    string    the feed's complete text 
 	 */
 	function createFeed() {
 		$feed = "<?xml version=\"1.0\" encoding=\"".$this->encoding."\"?>\n";
-		$feed.= $this->_createGeneratorComment();
+		/** $feed.= $this->_createGeneratorComment(); */
 		$feed.= $this->_createStylesheetReferences();
-		$feed.= "<rss version=\"".$this->RSSVersion."\">\n"; 
+		$feed.= "<rss ";
+                if ($this->XMLNS!="") {
+                        $feed.= "xmlns:".$this->XMLNS." ";
+		}
+		$feed.= "version=\"".$this->RSSVersion."\">\n"; 
 		$feed.= "    <channel>\n";
 		$feed.= "        <title>".FeedCreator::iTrunc(htmlspecialchars($this->title),100)."</title>\n";
 		$this->descriptionTruncSize = 500;
@@ -837,10 +966,47 @@ class RSSCreator091 extends FeedCreator {
 		}
 		$feed.= $this->_createAdditionalElements($this->additionalElements, "    ");
 
+                /* iTunes add iTunes specific tags */
+                if ($this->itunes!="") {
+			if ($this->itunes->category!="") {
+				$feed.= "        <itunes:category text=\"".htmlspecialchars($this->itunes->category)."\">\n";
+			   if ($this->itunes->subcategory!="") {
+			   	$feed.= "            <itunes:category text=\"".htmlspecialchars($this->itunes->subcategory)."\"/>\n";
+			   }
+			   $feed.= "        </itunes:category>\n";
+			}
+			if ($this->itunes->explicit!="") {
+				$feed.= "        <itunes:explicit>".$this->itunes->explicit."</itunes:explicit>\n";
+			}
+			if ($this->itunes->subtitle!="") {
+				$feed.= "        <itunes:subtitle>".htmlspecialchars($this->itunes->subtitle)."</itunes:subtitle>\n";
+			}
+			if ($this->itunes->summary!="") {
+				$feed.= "        <itunes:summary>".htmlspecialchars($this->itunes->summary)."</itunes:summary>\n";
+			}
+			if ($this->itunes->author!="") {
+				$feed.= "        <itunes:author>".htmlspecialchars($this->itunes->author)."</itunes:author>\n";
+			}
+			if ($this->itunes->keywords!="") {
+				$feed.= "        <itunes:keywords>".htmlspecialchars($this->itunes->keywords)."</itunes:keywords>\n";
+			}
+			if ($this->itunes->owner_email!="") {
+				$feed.= "        <itunes:owner>\n";
+                                $feed.= "            <itunes:email>".$this->itunes->owner_email."</itunes:email>\n";
+			   if ($this->itunes->owner_name!="") {
+				$feed.= "            <itunes:name>".$this->itunes->owner_name."</itunes:name>\n";
+			   }
+                                $feed.= "        </itunes:owner>\n";
+			}
+			if ($this->itunes->image!="") {
+				$feed.= "        <itunes:image href=\"".$this->itunes->image."\" />\n";
+			}
+                }
+
 		for ($i=0;$i<count($this->items);$i++) {
 			$feed.= "        <item>\n";
 			$feed.= "            <title>".FeedCreator::iTrunc(htmlspecialchars(strip_tags($this->items[$i]->title)),100)."</title>\n";
-			$feed.= "            <link>".htmlspecialchars($this->items[$i]->link)."</link>\n";
+			$feed.= "            <link>".str_replace(" ", "%20", htmlspecialchars($this->items[$i]->link))."</link>\n";
 			$feed.= "            <description>".$this->items[$i]->getDescription()."</description>\n";
 			
 			if ($this->items[$i]->author!="") {
@@ -852,8 +1018,48 @@ class RSSCreator091 extends FeedCreator {
 					$feed.= "            <source>".htmlspecialchars($this->items[$i]->source)."</source>\n";
 			}
 			*/
-			if ($this->items[$i]->category!="") {
-				$feed.= "            <category>".htmlspecialchars($this->items[$i]->category)."</category>\n";
+                  /* podcasts add the enclosure element */
+			if ($this->items[$i]->enclosure!="") {
+				$feed.= "            <enclosure url=\"".str_replace(" ", "%20", htmlspecialchars($this->items[$i]->enclosure->url)).
+								"\" length=\"".htmlspecialchars($this->items[$i]->enclosure->length).
+								"\" type=\"".htmlspecialchars($this->items[$i]->enclosure->type).
+								"\"/>\n";
+			}
+                  /* iTunes add iTunes specific tags */
+                        if ($this->items[$i]->itunes!="") {
+				if ($this->items[$i]->itunes->category!="") {
+					$feed.= "            <itunes:category text=\"".htmlspecialchars($this->items[$i]->itunes->category)."\">\n";
+				   if ($this->items[$i]->itunes->subcategory!="") {
+				   	$feed.= "                <itunes:category text=\"".htmlspecialchars($this->items[$i]->itunes->subcategory)."\"/>\n";
+				   }
+				   $feed.= "            </itunes:category>\n";
+				}
+				if ($this->items[$i]->itunes->explicit!="") {
+					$feed.= "            <itunes:explicit>".$this->items[$i]->itunes->explicit."</itunes:explicit>\n";
+				}
+				if ($this->items[$i]->itunes->subtitle!="") {
+					$feed.= "            <itunes:subtitle>".htmlspecialchars($this->items[$i]->itunes->subtitle)."</itunes:subtitle>\n";
+				}
+				if ($this->items[$i]->itunes->summary!="") {
+					$feed.= "            <itunes:summary>".htmlspecialchars($this->items[$i]->itunes->summary)."</itunes:summary>\n";
+				}
+				if ($this->items[$i]->itunes->author!="") {
+					$feed.= "            <itunes:author>".htmlspecialchars($this->items[$i]->itunes->author)."</itunes:author>\n";
+				}
+				if ($this->items[$i]->itunes->keywords!="") {
+					$feed.= "            <itunes:keywords>".htmlspecialchars($this->items[$i]->itunes->keywords)."</itunes:keywords>\n";
+				}
+				if ($this->items[$i]->itunes->duration!="") {
+					$feed.= "            <itunes:duration>".$this->items[$i]->itunes->duration."</itunes:duration>\n";
+				}
+				if ($this->items[$i]->itunes->image!="") {
+					$feed.= "            <itunes:link rel=\"image\" type=\"image/jpeg\" href=\"".$this->items[$i]->itunes->image."\">[image]</itunes:link>\n";
+				}
+                        }
+			for ($c=0;$c<count($this->items[$i]->category);$c++) {
+	                  if ($this->items[$i]->category[$c]!="") {
+					$feed.= "            <category>".htmlspecialchars($this->items[$i]->category[$c])."</category>\n";
+				}
 			}
 			if ($this->items[$i]->comments!="") {
 				$feed.= "            <comments>".htmlspecialchars($this->items[$i]->comments)."</comments>\n";
@@ -889,6 +1095,22 @@ class RSSCreator20 extends RSSCreator091 {
         parent::_setRSSVersion("2.0");
     }
     
+}
+
+
+
+/**
+ * PodcastCreator is a FeedCreator that implements Podcast
+ *
+ * @see http://backend.userland.com/rss
+ * @since 1.7.2-podcast
+ * @author Steven Pothoven <steven@pothoven.net>
+ */
+class PodcastCreator extends RSSCreator20 {  
+	function PodcastCreator() {
+	   parent::_setRSSVersion("2.0");
+	   parent::_setXMLNS("itunes=\"http://www.itunes.com/DTDs/Podcast-1.0.dtd\"");
+	}
 }
 
 

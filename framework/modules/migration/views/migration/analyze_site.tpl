@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2008 OIC Group, Inc.
+ * Copyright (c) 2004-2011 OIC Group, Inc.
  * Written and Designed by Adam Kessler
  *
  * This file is part of Exponent
@@ -51,7 +51,7 @@
         {/foreach}
         </tbody>
         </table>
-        {control type="checkbox" name="wipe_content" label="Erase current content before import?" value=1}
+        {control type="checkbox" name="wipe_content" label="Erase current content before import?" value=1 checked=false}
         {control type="buttongroup" submit="Migrate Content" cancel="Cancel"}
     {/form}
 </div>

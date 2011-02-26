@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2008 OIC Group, Inc.
+ * Copyright (c) 2004-2011 OIC Group, Inc.
  * Written and Designed by Adam Kessler
  *
  * This file is part of Exponent
@@ -25,7 +25,7 @@
         <table class="exp-skin-table">
         <thead>
             <tr>
-                <th>Select</th>
+                <th>Migrate</th>
                 <th>Name</th>
             </tr>
         </thead>
@@ -33,18 +33,23 @@
         {foreach from=$pages item=page name=pages}
         <tr class="{cycle values="even,odd"}">            
             <td>
-                {control type="checkbox" name="pages[]" label=" " value=$page->id checked=true}
+				{if ($page->exists == true)}
+					<em>already exists</em>
+				{else}
+					{control type="checkbox" name="pages[]" label=" " value=$page->id checked=true}
+				{/if}
             </td>
             <td>
-                {$page->name}
+                {$page->name} {if ($page->parent == -1)}(<b><em>Standalone</em></b>){/if}
             </td>
             
         </tr>
         {foreachelse}
-                <tr><td colspan=2>No pages found in database {$config.database}</td></tr>
+			<tr><td colspan=2>No new pages found in database {$config.database}</td></tr>
         {/foreach}
         </tbody>
         </table>
+        {control type="checkbox" name="wipe_pages" label="Erase all current pages then import?" value=1 checked=false}
         {control type="buttongroup" submit="Migrate Pages" cancel="Cancel"}
     {/form}
 </div>

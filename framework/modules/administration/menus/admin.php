@@ -106,16 +106,16 @@ return array(
                                         'url'=>makeLink(array('module'=>'administrationmodule','action'=>'installtables')),
                                     ),
                                     // array(
-                                    //     'text'=>$i18n['import_data'],
-                                    //     'url'=>makeLink(array('module'=>'importer','action'=>'list_importers')),
+                                        // 'text'=>$i18n['import_data'],
+                                        // 'url'=>makeLink(array('module'=>'importer','action'=>'list_importers')),
                                     // ),
                                     // array(
-                                    //     'text'=>$i18n['export_data'],
-                                    //     'url'=>makeLink(array('module'=>'importer','action'=>'list_exporters')),
+                                        // 'text'=>$i18n['export_data'],
+                                        // 'url'=>makeLink(array('module'=>'exporter','action'=>'list_exporters')),
                                     // ),
                                     // array(
-                                    //     'text'=>$i18n['archived_modules'],
-                                    //     'url'=>makeLink(array('module'=>'administrationmodule','action'=>'orphanedcontent')),
+                                        // 'text'=>$i18n['archived_modules'],
+                                        // 'url'=>makeLink(array('module'=>'administrationmodule','action'=>'orphanedcontent')),
                                     // ),
                                     array(
                                         'text'=>$i18n['optimize_database'],
@@ -149,6 +149,10 @@ return array(
                                     array(
                                         'text'=>'Migrate Content',
             			                'url'=>makeLink(array('module'=>'migration','action'=>'analyze_site')),
+                                    ),
+                                    array(
+                                        'text'=>'Migrate Users',
+            			                'url'=>makeLink(array('module'=>'migration','action'=>'manage_users')),
                                     ),
                                 )
                             )
