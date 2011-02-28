@@ -6,3 +6,8 @@
 
 #excludes cache files
 /tmp/*
+
+.buildpath
+.project
+index.html
+.gitignore

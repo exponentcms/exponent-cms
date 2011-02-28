@@ -18,10 +18,20 @@ return array(
 	'alt_revisions'=>'View Revision History for this Calendar Event',
 	'revisions'=>'Revisions',
 
+	'alt_ical'=>'iCalendar Feed',
+	'ical'=>'',
+
 	'no_event'=>'No upcoming events.',
+	'more_events'=>'More Events...',	
+	
+	'calendar_view'=>'Calendar View',
+	'view_month'=>'Month View',
+	'alt_view_month'=>'View Entire Month',	
+	'administration_view'=>'Administration View',	
+	'printer_friendly'=>'Printer-friendly',	
 
 	'alt_create'=>'Create a new Calendar Event',
-	'create'=>'Create Event',
+	'create'=>'Create a new event',
 
 	'approval'=>'View Approval',
 	'alt_approval'=>'View Calendar Events in Approval',
@@ -29,6 +39,7 @@ return array(
 	'manage_categories'=>'Manage Categories',
 	'view_categories'=>'View Categories',
 	'alt_view_cat'=>'View Event Categories',
+	'alt_rssfeed'=>'Subscribe to this Event RSS Feed',
 );
 
 ?>

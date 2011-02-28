@@ -290,10 +290,10 @@ class migrationController extends expController {
                 $this->convert($iloc, $module);                
             } else if (!in_array($iloc->mod, $this->deprecated_modules)) {
                 // add old school modules not in the deprecation list
-                if (!$db->selectObject('container',"internal='".$module->internal."'")) {
+//                if (!$db->selectObject('container',"internal='".$module->internal."'")) {
                     $db->insertObject($module, 'container');
                     @$this->msg['container']++;
-                }
+//                }
                 $this->pulldata($iloc, $module);
             } 
         }

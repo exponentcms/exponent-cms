@@ -22,10 +22,11 @@
 
 {/css}
 
- 
 <div class="calendarmodule edit">
+	<div class="form_title">
+		{if $is_edit == 1}{$_TR.form_title_edit}{else}{$_TR.form_title_new}{/if}
+	</div>
 	<div class="form_header">
-		<h1>{if $is_edit == 1}{$_TR.form_title_edit}{else}{$_TR.form_title_new}{/if}</h1>
 		<p>{$_TR.form_header}</p>
 	</div>
 	{$form_html}

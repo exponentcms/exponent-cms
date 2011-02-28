@@ -19,6 +19,8 @@
 
 if (!defined("EXPONENT")) exit("");
 
+exponent_flow_set(SYS_FLOW_PUBLIC,SYS_FLOW_ACTION);
+
 $item = $db->selectObject("calendar","id=" . intval($_GET['id']));
 if ($item) {
 	$loc = unserialize($item->location_data);
@@ -37,7 +39,12 @@ if ($item) {
 
 	$eventdate = $db->selectObject("eventdate","id=".intval($_GET['date_id']));
 	$item->eventdate = $eventdate;
-	
+
+	//Get the image file if there is one.
+	if (isset($item->file_id) && $item->file_id > 0) {
+		$file = $db->selectObject('file', 'id='.$item->file_id);
+		$item->image_path = $file->directory.'/'.$file->filename;
+	}	
 	//FJD - Goofy-ass daylight savings time hack.  Should be improved at some point.
 	//need to do some comparisons on the timestamp and value returned from strftime and adjust accordingly up or down 
 	//to correct output.  This will still cause one display bug: if your times are within an hour of the change in one
@@ -49,7 +56,7 @@ if ($item) {
 	//(so our data should be portable).  If they are off, then create the adjustment +/- and correct
 	//eventstart and eventend
 	$timeHourStart =  intval($item->eventstart / 3600);
-	$strHourStart = intval(strftime("%H", $eventdate->date + $item->eventstart));	
+	$strHourStart = intval(strftime("%H", $eventdate->date + $item->eventstart));
 	$timeHourEnd =  intval($item->eventend / 3600);
 	$strHourEnd = intval(strftime("%H", $eventdate->date + $item->eventend));
 	
@@ -58,6 +65,7 @@ if ($item) {
 	
 	$item->eventstart += ($eventdate->date + $adjustStart); 
 	$item->eventend += ($eventdate->date + $adjustEnd); 
+	$title = $db->selectValue('container', 'title', "internal='".serialize($loc)."'");
 		
 	$template = new template("calendarmodule","_view",$loc);
 
@@ -72,12 +80,29 @@ if ($item) {
 		$template->assign('form', $form);
 	}
 
+	$tags = unserialize($item->tags);
+	if (!empty($tags)) {
+		$selected_tags = $db->selectObjectsInArray('tags', $tags);
+	} else {
+		$selected_tags = array();
+	}
+	$template->assign('tags',$selected_tags);
+	$template->assign('tagcnt',count($selected_tags));
+
+	$config = $db->selectObject("calendarmodule_config","location_data='".serialize($loc)."'");
+	if (!$config) {
+		$config->enable_ical = 1;
+	}
+	if (!isset($config->enable_ical)) {$config->enable_ical = 1;}
+	$template->assign("enable_ical", $config->enable_ical);
+	
 	$template->assign("item",$item);
 	$template->assign("directory","files/calendarmodule/".$loc->src);
 	$template->register_permissions(
 		array("post","edit","delete","administrate","manage_approval"),
 		$loc
 	);
+	$template->assign('moduletitle',$title);
 
 	$template->output();
 } else {

@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2006 OIC Group, Inc.
+ * Copyright (c) 2004-2011 OIC Group, Inc.
  * Written and Designed by James Hunt
  *
  * This file is part of Exponent
@@ -24,13 +24,6 @@
     {permissions}
         {if $permissions.post == 1}
             <a class="add" href="{link action=edit id=0}" title={"Create Event"|gettext}>{"Create Event"|gettext}</a>
-        {/if}
-        {if $modconfig->enable_categories == 1}
-            {if $permissions.administrate == 1}
-                <a href="{link module=categories orig_module=calendarmodule action=manage}" title={"Manage Categories"|gettext}>{"Manage Categories"|gettext}</a>
-            {else}
-                <a href="#" onclick="window.open('{$smarty.const.PATH_RELATIVE}popup.php?module=categories&m={$__loc->mod}&action=view&src={$__loc->src}','legend','width=200,height=200,title=no,status=no'); return false" title="{"View Categories"|gettext}">{"View Categories"|gettext}</a>
-            {/if}
         {/if}
     {/permissions} 
 
@@ -57,5 +50,4 @@
         </li>
     {/foreach}
     </ul>
-    
 </div>

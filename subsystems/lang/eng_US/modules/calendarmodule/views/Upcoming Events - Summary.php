@@ -19,9 +19,16 @@ return array(
 	'revisions'=>'Revisions',
 
 	'no_event'=>'No upcoming events.',
+	'more_events'=>'More Events...',	
+	
+	'alt_rssfeed'=>'Subscribe to this Event RSS Feed',
+	'alt_ical'=>'iCalendar Feed',
+	'ical'=>'',
+	
+	'administration_view'=>'Administration View',	
 
 	'alt_create'=>'Create a new Calendar Event',
-	'create'=>'Create Event',
+	'create'=>'Create a new event',
 
 	'approval'=>'View Approval',
 	'alt_approval'=>'View Calendar Events in Approval',

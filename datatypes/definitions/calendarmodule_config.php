@@ -27,34 +27,20 @@ return array(
 	'location_data'=>array(
 		DB_FIELD_TYPE=>DB_DEF_STRING,
 		DB_FIELD_LEN=>200,
-                DB_INDEX=>10),
-	'enable_categories'=>array(
-		DB_FIELD_TYPE=>DB_DEF_BOOLEAN),
+        DB_INDEX=>10),
 	'enable_feedback'=>array(
 		DB_FIELD_TYPE=>DB_DEF_BOOLEAN),
+	'aggregate'=>array(
+		DB_FIELD_TYPE=>DB_DEF_STRING,
+		DB_FIELD_LEN=>1000),
 	'enable_rss'=>array(
-	    	DB_FIELD_TYPE=>DB_DEF_BOOLEAN),
-	'enable_tags'=>array(
-                DB_FIELD_TYPE=>DB_DEF_BOOLEAN),
-        'collections'=>array(
-                DB_FIELD_TYPE=>DB_DEF_STRING,
-                DB_FIELD_LEN=>1000,
-                DB_INDEX=>10),
-        'group_by_tags'=>array(
-                DB_FIELD_TYPE=>DB_DEF_BOOLEAN),
-        'show_tags'=>array(
-                DB_FIELD_TYPE=>DB_DEF_STRING,
-                DB_FIELD_LEN=>1000,
-                DB_INDEX=>10),
+	    DB_FIELD_TYPE=>DB_DEF_BOOLEAN),
   	'feed_title'=>array(
-    		DB_FIELD_TYPE=>DB_DEF_STRING,
-	    	DB_FIELD_LEN=>75),
+		DB_FIELD_TYPE=>DB_DEF_STRING,
+		DB_FIELD_LEN=>75),
   	'feed_desc'=>array(
-    		DB_FIELD_TYPE=>DB_DEF_STRING,
-	    	DB_FIELD_LEN=>200),	
-        'aggregate'=>array(
-                DB_FIELD_TYPE=>DB_DEF_STRING,
-                DB_FIELD_LEN=>1000),
+		DB_FIELD_TYPE=>DB_DEF_STRING,
+		DB_FIELD_LEN=>200),	
 );
 
 ?>

@@ -27,7 +27,7 @@ return array(
 	'location_data'=>array(
 		DB_FIELD_TYPE=>DB_DEF_STRING,
 		DB_FIELD_LEN=>200,
-                DB_INDEX=>10),
+		DB_INDEX=>10),
 	'title'=>array(
 		DB_FIELD_TYPE=>DB_DEF_STRING,
 		DB_FIELD_LEN=>100),
@@ -36,10 +36,10 @@ return array(
 		DB_FIELD_LEN=>10000),
 	'eventstart'=>array(
 		DB_FIELD_TYPE=>DB_DEF_TIMESTAMP,
-                DB_INDEX=>0),
+		DB_INDEX=>0),
 	'eventend'=>array(
 		DB_FIELD_TYPE=>DB_DEF_TIMESTAMP,
-                DB_INDEX=>0),
+		DB_INDEX=>0),
 	'posted'=>array(
 		DB_FIELD_TYPE=>DB_DEF_TIMESTAMP),
 	'poster'=>array(
@@ -53,7 +53,7 @@ return array(
 	'is_allday'=>array(
 		DB_FIELD_TYPE=>DB_DEF_BOOLEAN),
 	'is_featured'=>array(
-                DB_FIELD_TYPE=>DB_DEF_BOOLEAN),
+		DB_FIELD_TYPE=>DB_DEF_BOOLEAN),
 	'is_recurring'=>array(
 		DB_FIELD_TYPE=>DB_DEF_BOOLEAN),
 	'category_id'=>array(
@@ -64,11 +64,6 @@ return array(
 	'feedback_email'=>array(
 		DB_FIELD_TYPE=>DB_DEF_STRING,
 		DB_FIELD_LEN=>1000),
-	'tags'=>array(
-                DB_FIELD_TYPE=>DB_DEF_STRING,
-                DB_FIELD_LEN=>10000),
-	'file_id'=>array(
-                DB_FIELD_TYPE=>DB_DEF_ID),
 );
 
 ?>

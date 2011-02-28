@@ -18,25 +18,34 @@
 ##################################################
  
 if (!defined('EXPONENT')) exit('');
+	exponent_flow_redirect();
 
-$item = $db->selectObject('calendar','id='.intval($_GET['id']));
-if ($item) {
-	$loc = unserialize($item->location_data);
-	$iloc = exponent_core_makeLocation($loc->mod,$loc->src,$item->id);
+//$item = $db->selectObject('calendar','id='.intval($_POST['id']));
+
+if (!defined("SYS_DATETIME")) include_once(BASE."subsystems/datetime.php");
+$dates = $db->selectObjects("eventdate",$locsql." AND date < ".strtotime('-1 months',time()));
+$all_events = calendarmodule::_getEventsForDates($dates);
+
+
+if ($item && $item->is_recurring == 1) {
+	$eventdates = $db->selectObjectsIndexedArray('eventdate','event_id='.$item->id);
+	foreach (array_keys($_POST['dates']) as $d) {
+		if (isset($eventdates[$d])) {
+			$db->delete('eventdate','id='.$d);
+			unset($eventdates[$d]);
+		}
+	}
 	
-	if (exponent_permissions_check('delete',$loc) ||
-		exponent_permissions_check('delete',$iloc)
-	) {
+	if (!count($eventdates)) {
 		$db->delete('calendar','id='.$item->id);
-		$db->delete('eventdate','event_id='.$item->id);
 		$db->delete("calendar_wf_info","real_id=".$_GET['id']);
 		$db->delete("calendar_revision","wf_original=".$_GET['id']);		
 		//Delete search entries
 		$db->delete('search',"ref_module='calendarmodule' AND ref_type='calendar' AND original_id=".$item->id);
-		exponent_flow_redirect();
-	} else {
-		echo SITE_403_HTML;
 	}
+	
+	
+	exponent_flow_redirect();
 } else {
 	echo SITE_404_HTML;
 }

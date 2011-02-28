@@ -19,9 +19,11 @@ return array(
 	'revisions'=>'Revisions',
 
 	'no_event'=>'No events.',
+	
+	'administration_view'=>'Administration',	
 
 	'alt_create'=>'Create a new Calendar Event',
-	'create'=>'Create Event',
+	'create'=>'Create a new event',
 
 	'approval'=>'View Approval',
 	'alt_approval'=>'View Calendar Events in Approval',
