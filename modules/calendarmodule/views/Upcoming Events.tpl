@@ -92,12 +92,4 @@
 		<<dd><em>{$_TR.no_events}</em></dd>
 	{/foreach}
 	</dl>
-	
-	<div class="itemactions">
-	{permissions level=$smarty.const.UILEVEL_NORMAL}
-		{if $permissions.post == 1}
-			<p><a class="addevent mngmntlink" href="{link action=edit id=0}" title="{$_TR.alt_create}" alt="{$_TR.alt_create}">{$_TR.create}</a></p>
-		{/if}
-	{/permissions}
-	</div>
 </div>

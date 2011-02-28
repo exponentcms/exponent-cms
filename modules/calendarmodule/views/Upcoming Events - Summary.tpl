@@ -27,6 +27,9 @@
 	</h2>
 	<div class="itemactions">
 		{permissions level=$smarty.const.UILEVEL_NORMAL}
+			{if $permissions.administrate == 1}
+				<a class="adminviewlink mngmntlink" href="{link _common=1 view='Administration' action='show_view' time=$time}">{$_TR.administration_view}</a>
+			{/if}
 			{if $permissions.post == 1}
 				<a class="addevent mngmntlink" href="{link action=edit id=0}" title="{$_TR.alt_create}" alt="{$_TR.alt_create}">{$_TR.create}</a>
 			{/if}
@@ -89,13 +92,5 @@
 		{if $more_events == 1}
 			<a class="mngmntlink monthviewlink" href="{link _common=1 view='Upcoming Events' action='show_view' time=$time}">{$_TR.more_events}</a>{br}
 		{/if}
-		{permissions level=$smarty.const.UILEVEL_NORMAL}
-			{if $permissions.post == 1}
-				<a class="addevent mngmntlink" href="{link action=edit id=0}" title="{$_TR.alt_create}">{$_TR.create}</a>{br}
-			{/if}
-			{if $permissions.administrate == 1}
-				<a class="adminviewlink mngmntlink" href="{link _common=1 view='Administration' action='show_view' time=$time}">{$_TR.administration_view}</a>
-			{/if}
-		{/permissions}
 	</p>
 </div>

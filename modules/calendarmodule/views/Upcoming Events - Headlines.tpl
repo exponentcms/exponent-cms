@@ -50,5 +50,4 @@
         </li>
     {/foreach}
     </ul>
-    
 </div>
