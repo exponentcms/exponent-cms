@@ -4,9 +4,11 @@ return array(
 	'alt_userperm'=>'Assign user permissions on this Calendar Event',
 	'alt_groupperm'=>'Assign group permissions on this Calendar Event',
 
+	'edit'=>'Edit',
 	'alt_edit'=>'Edit this Calendar Event',
 	'alt_edit_disabled'=>'Editing Disabled - Calendar Event In Approval',
 
+	'delete'=>'Delete',
 	'alt_delete'=>'Delete this Calendar Event',
 	'delete_confirm'=>'Are you sure you want to delete this Calendar Event?',
 	'alt_delete_disabled'=>'Deleting Disabled - Calendar Event In Approval',

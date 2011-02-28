@@ -26,6 +26,9 @@ return array(
 	'alt_revisions'=>'View Revision History for this Calendar Event',
 	'revisions'=>'Revisions',
 
+	'create'=>'Create a new event',
+	'alt_create'=>'Create a new Calendar Event',
+
 	'no_events'=>'No Events',
 );
 

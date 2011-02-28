@@ -36,11 +36,11 @@ if (($item == null && exponent_permissions_check("post",$loc)) ||
 	$item = calendar::update($_POST,$item);
 	$item->location_data = serialize($loc);
 
-	if (isset($_POST['category'])) $item->category_id = $_POST['category'];
-	else $item->category_id = 0;
+	// if (isset($_POST['category'])) $item->category_id = $_POST['category'];
+	// else $item->category_id = 0;
 
 	//Get and add the tags selected by the user
-        $item->tags = serialize(listbuildercontrol::parseData($_POST,'tags'));
+    // $item->tags = serialize(listbuildercontrol::parseData($_POST,'tags'));
 
 	//Check to see if the feedback form is enabled and/or being used for this event.
 	if (isset($_POST['feedback_form'])) {
@@ -57,20 +57,20 @@ if (($item == null && exponent_permissions_check("post",$loc)) ||
 
 	//Get and save the image
 	/*  Yeah, no. Yeah, yes... Maia 6/23/09 */
-	$file = null;
-	if ($_FILES['file']['name'] != '') {
-		$dir = 'files/calendarmodule/'.$loc->src;
-		$file = file::update('file',$dir,null,time().'_'.$_FILES['file']['name']);
-		if (is_object($file)) {
-			$item->file_id = $db->insertObject($file,'file');
-		} else {
-			// If file::update() returns a non-object, it should be a string.  That string is the error message.
-			$post = $_POST;
-			$post['_formError'] = $file;
-			exponent_sessions_set('last_POST',$post);
-			header('Location: ' . $_SERVER['HTTP_REFERER']);
-		}
-    }
+	// $file = null;
+	// if ($_FILES['file']['name'] != '') {
+		// $dir = 'files/calendarmodule/'.$loc->src;
+		// $file = file::update('file',$dir,null,time().'_'.$_FILES['file']['name']);
+		// if (is_object($file)) {
+			// $item->file_id = $db->insertObject($file,'file');
+		// } else {
+			// // If file::update() returns a non-object, it should be a string.  That string is the error message.
+			// $post = $_POST;
+			// $post['_formError'] = $file;
+			// exponent_sessions_set('last_POST',$post);
+			// header('Location: ' . $_SERVER['HTTP_REFERER']);
+		// }
+    // }
 
 	if (isset($item->id)) {
 		if ($item->is_recurring == 1) {

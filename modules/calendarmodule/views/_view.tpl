@@ -39,9 +39,10 @@
 		<a class="monthviewlink" href="{link action=viewmonth time=$item->eventstart}" title="{$_TR.alt_view_month}" alt="{$_TR.alt_view_month}">{$_TR.view_month}</a>&nbsp;&nbsp;|&nbsp;&nbsp;
 		{printer_friendly_link class="printer-friendly-link" text=$_TR.printer_friendly}{br}
 		{permissions level=$smarty.const.UILEVEL_PERMISSIONS}
+			{br}
 			{if $permissions.edit == 1 || $item->permissions.edit == 1}
 				{if $item->approved == 1}
-					<a href="{link action=edit id=$item->id date_id=$item->eventdate->id}"><img class="mngmnt_icon" src="{$smarty.const.ICON_RELATIVE}edit.png" title="{$_TR.alt_edit}" alt="{$_TR.alt_edit}" /></a>&nbsp;
+					<a href="{link action=edit id=$item->id date_id=$item->eventdate->id}"><img class="mngmnt_icon" src="{$smarty.const.ICON_RELATIVE}edit.png" title="{$_TR.alt_edit}" alt="{$_TR.alt_edit}" />{$_TR.edit}</a>&nbsp;
 				{else}
 					<img class="mngmnt_icon" src="{$smarty.const.ICON_RELATIVE}edit.disabled.png" title="{$_TR.alt_edit_disabled}" alt="{$_TR.alt_edit_disabled}" />
 				{/if}
@@ -49,16 +50,13 @@
 			{if $permissions.delete == 1 || $item->permissions.delete == 1}
 				{if $item->approved == 1}
 					{if $item->is_recurring == 0}
-						<a href="{link action=delete id=$item->id}" onclick="return confirm('{$_TR.delete_confirm}');"><img class="mngmnt_icon" src="{$smarty.const.ICON_RELATIVE}delete.png" title="{$_TR.alt_delete}" alt="{$_TR.alt_delete}" /></a>
+						<a href="{link action=delete id=$item->id}" onclick="return confirm('{$_TR.delete_confirm}');"><img class="mngmnt_icon" src="{$smarty.const.ICON_RELATIVE}delete.png" title="{$_TR.alt_delete}" alt="{$_TR.alt_delete}" />{$_TR.delete}</a>
 					{else}
-						<a href="{link action=delete_form date_id=$item->eventdate->id id=$item->id}"><img class="mngmnt_icon" src="{$smarty.const.ICON_RELATIVE}delete.png" title="{$_TR.alt_delete}" alt="{$_TR.alt_delete}" /></a>
+						<a href="{link action=delete_form date_id=$item->eventdate->id id=$item->id}"><img class="mngmnt_icon" src="{$smarty.const.ICON_RELATIVE}delete.png" title="{$_TR.alt_delete}" alt="{$_TR.alt_delete}" />{$_TR.delete}</a>
 					{/if}
 				{else}
 					<img class="mngmnt_icon" src="{$smarty.const.ICON_RELATIVE}delete.disabled.png" title="{$_TR.alt_delete_disabled}" alt="{$_TR.alt_delete_disabled}" />
 				{/if}
-			{/if}
-			{if $permissions.manage_approval == 1}
-				<a class="mngmntlink calendar_mngmntlink" href="{link module=workflow datatype=calendar m=CalendarModule s=$__loc->src action=revisions_view id=$item->id}" title="{$_TR.alt_revisions}"><img class="mngmnt_icon" src="{$smarty.const.ICON_RELATIVE}revisions.png" title="{$_TR.alt_revisions}" alt="{$_TR.alt_revisions}" /></a>
 			{/if}
 		{/permissions}
 	</div>
@@ -79,15 +77,6 @@
 	<div class="bodycopy">
 		{$item->body}
 	</div>
-	{if $tagcnt > 0}
-		<div style="border: 1px solid LightGray; padding: 10px;">
-			<b>Tags:</b> 
-			{foreach from=$tags item=tag}
-				<a href="{link action=viewtag id=$tag->id}" title="{$_TR.view_tag}'{$tag->name}'">{$tag->name}</a>;
-			{/foreach}
-		</div>
-		{br}
-	{/if}	
 	<div class="itemactions">
 		{$form}
 	</div>

@@ -4,6 +4,7 @@ return array(
 	'calendar_view'=>'Calendar View',
 	'list_view'=>'List View',
 	'administration_view'=>'Administration View',	
+	'printer_friendly'=>'Printer-friendly',	
 
 	'alt_userperm'=>'Assign user permissions on this Calendar Module',
 	'alt_groupperm'=>'Assign group permissions on this Calendar Module',
@@ -14,7 +15,7 @@ return array(
 	'alt_next'=>'Next Month',
 
 	'alt_create'=>'Create a new Calendar Event',
-	'create'=>'Create Event',
+	'create'=>'Create a new event',
 
 	'alt_userperm_one'=>'Assign user permissions on this Calendar Event',
 	'alt_groupperm_one'=>'Assign group permissions on this Calendar Event',

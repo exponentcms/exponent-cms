@@ -417,12 +417,12 @@ class calendarmodule {
 				);
 			}
 			//Get the image file if there is one.
-			for ($i = 0; $i < count($items); $i++) {
-				if (isset($items[$i]->file_id) && $items[$i]->file_id > 0) {
-					$file = $db->selectObject('file', 'id='.$items[$i]->file_id);
-					$items[$i]->image_path = $file->directory.'/'.$file->filename;
-				}
-			}
+			// for ($i = 0; $i < count($items); $i++) {
+				// if (isset($items[$i]->file_id) && $items[$i]->file_id > 0) {
+					// $file = $db->selectObject('file', 'id='.$items[$i]->file_id);
+					// $items[$i]->image_path = $file->directory.'/'.$file->filename;
+				// }
+			// }
 			//eDebug($items);
 			$template->assign('items',$items);
 			$template->assign('moreevents',$moreevents);
@@ -435,14 +435,14 @@ class calendarmodule {
 		);
 
 //		$cats = $db->selectObjectsIndexedArray("category","location_data='".serialize($loc)."'");
-		$cats = $db->selectObjectsIndexedArray("category");
-		$cats[0] = null;
-		$cats[0]->name = '<i>'.$i18n['no_category'].'</i>';
-		$cats[0]->color = "#000000";
-		$template->assign("categories",$cats);
+		// $cats = $db->selectObjectsIndexedArray("category");
+		// $cats[0] = null;
+		// $cats[0]->name = '<i>'.$i18n['no_category'].'</i>';
+		// $cats[0]->color = "#000000";
+		// $template->assign("categories",$cats);
 
 		if (!$config) {
-			$config->enable_categories = 0;
+			// $config->enable_categories = 0;
 			$config->enable_ical = 1;
 		}
 
@@ -451,32 +451,32 @@ class calendarmodule {
 		$template->assign("enable_ical", $config->enable_ical);
 
 		//Get the tags that have been selected to be shown in the grouped by tag views
-		if (isset($config->show_tags)) {
-			$available_tags = unserialize($config->show_tags);
-		} else {
-			$available_tags = array();
-		}
+		// if (isset($config->show_tags)) {
+			// $available_tags = unserialize($config->show_tags);
+		// } else {
+			// $available_tags = array();
+		// }
 
-		if (isset($items) && is_array($items)) {
-			for ($i = 0; $i < count($items); $i++) {
-				//Get the tags for this calendar event
-				$selected_tags = array();
-				$tag_ids = unserialize($items[$i]->tags);
-				if(is_array($tag_ids)) {$selected_tags = $db->selectObjectsInArray('tags', $tag_ids, 'name');}
-				$items[$i]->tags = $selected_tags;
+		// if (isset($items) && is_array($items)) {
+			// for ($i = 0; $i < count($items); $i++) {
+				// //Get the tags for this calendar event
+				// $selected_tags = array();
+				// $tag_ids = unserialize($items[$i]->tags);
+				// if(is_array($tag_ids)) {$selected_tags = $db->selectObjectsInArray('tags', $tag_ids, 'name');}
+				// $items[$i]->tags = $selected_tags;
 
-				//If this module was configured to group the newsitems by tags, then we need to change the data array a bit
-				if (isset($config->group_by_tags) && $config->group_by_tags == true) {
-					$grouped_news = array();
-					foreach($items[$i]->tags as $tag) {
-						if (in_array($tag->id, $available_tags) || count($available_tags) == 0) {
-							if (!isset($grouped_news[$tag->name])) { $grouped_news[$tag->name] = array();}
-							array_push($grouped_news[$tag->name],$items[$i]);
-						}
-					}
-				}
-			}
-		}
+				// //If this module was configured to group the newsitems by tags, then we need to change the data array a bit
+				// if (isset($config->group_by_tags) && $config->group_by_tags == true) {
+					// $grouped_news = array();
+					// foreach($items[$i]->tags as $tag) {
+						// if (in_array($tag->id, $available_tags) || count($available_tags) == 0) {
+							// if (!isset($grouped_news[$tag->name])) { $grouped_news[$tag->name] = array();}
+							// array_push($grouped_news[$tag->name],$items[$i]);
+						// }
+					// }
+				// }
+			// }
+		// }
 		$template->output();
 	}
 

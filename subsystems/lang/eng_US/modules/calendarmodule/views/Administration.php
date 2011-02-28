@@ -30,7 +30,7 @@ return array(
 	'ical'=>'',
 	
 	'no_events'=>'No events were found.',
-	'create'=>'Create Event',
+	'create'=>'Create a new event',
 	'alt_create'=>'Create a new Calendar Event',
 
 	'view_approval'=>'View Approval',

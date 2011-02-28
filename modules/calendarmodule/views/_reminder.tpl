@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2006 OIC Group, Inc.
+ * Copyright (c) 2004-2011 OIC Group, Inc.
  * Written and Designed by James Hunt
  *
  * This file is part of Exponent
@@ -53,7 +53,7 @@
 						<strong>
 							<a class="itemtitle calendar_mngmntlink" href="{link module=calendarmodule action=view id=$event->id date_id=$event->eventdate->id}">{$event->title}</a>
 						</strong>							
-						<div><span style="color: {$categories[$catid]->color}">
+						<div>
 							&nbsp-&nbsp 
 							{if $event->is_allday == 1}
 								All Day
@@ -68,7 +68,7 @@
 								&nbsp-&nbsp{$event->body|summarize:"html":"paralinks"}
 							{/if}
 							{br}
-						</span></div>
+						</div>
 					</dd>
 				{/foreach}
 			{/if}

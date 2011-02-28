@@ -22,7 +22,8 @@ return array(
 	'revisions'=>'Revisions',
 
 	'no_events'=>'No Events.',
-	'create_event'=>'Create Event',
+	'alt_create'=>'Create a new Calendar Event',
+	'create_event'=>'Create a new event',
 	'view_approval'=>'View Approval',
 
 	'manage_categories'=>'Manage Categories',

@@ -9,7 +9,7 @@ return array(
 	'view_month'=>'View Whole Month',
 
 	'alt_create'=>'Create a new Calendar Event',
-	'create'=>'Create Event',
+	'create'=>'Create a new event',
 
 	'view_approval'=>'View Approval',
 	'alt_approval'=>'View Calendar Events in Approval',

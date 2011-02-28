@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2006 OIC Group, Inc.
+ * Copyright (c) 2004-2011 OIC Group, Inc.
  * Written and Designed by James Hunt
  *
  * This file is part of Exponent
@@ -26,24 +26,6 @@
 		{printer_friendly_link class="printer-friendly-link" text=$_TR.printer_friendly}
 		{br}
 		<a class="listviewlink" href="{link _common=1 view='Past Events' action='show_view' time=$time}">{$_TR.past_events}</a>{br}
-		{permissions level=$smarty.const.UILEVEL_NORMAL}
-			{if $permissions.post == 1}
-				{br}
-				<a class="addevent mngmntlink" href="{link action=edit id=0}" title="{$_TR.alt_create}" alt="{$_TR.alt_create}">{$_TR.create}</a>
-			{/if}
-			{if $in_approval != 0 && $canview_approval_link == 1}
-				{br}
-				<a class="mngmntlink calendar_mngmntlink" href="{link module=workflow datatype=calendar m=calendarmodule s=$__loc->src action=summary}" title="{$_TR.alt_approval}" alt="{$_TR.alt_approval}">{$_TR.view_approval}</a>
-			{/if}
-			{if $config->enable_categories == 1}
-				{br}
-				{if $permissions.manage_categories == 1}
-					<a href="{link module=categories orig_module=calendarmodule action=manage}" class="mngmntlink cats">{$_TR.manage_categories}</a>
-				{else}
-					<a class="cats" href="#" onclick="window.open('{$smarty.const.PATH_RELATIVE}popup.php?module=categories&m={$__loc->mod}&action=view&src={$__loc->src}','legend','width=200,height=200,title=no,status=no'); return false" title="{$_TR.alt_view_cat}" alt="{$_TR.alt_view_cat}">{$_TR.view_categories}</a>
-				{/if}
-			{/if}
-		{/permissions}
 	</div>
 	<h2>
 		{if $enable_ical == true}
@@ -51,15 +33,19 @@
 		{/if}
 		{if $moduletitle != ""}{$moduletitle} - {$_TR.administration_view}{/if}
 	</h2>
+	<div class="itemactions">
+		{permissions level=$smarty.const.UILEVEL_NORMAL}
+			{if $permissions.post == 1}
+				<a class="addevent mngmntlink" href="{link action=edit id=0}" title="{$_TR.alt_create}" alt="{$_TR.alt_create}">{$_TR.create}</a>
+			{/if}
+		{/permissions}
+	</div>
 	<table cellspacing="0" cellpadding="4" border="0" width="100%" class="exp-skin-table">
 		<thead>
 			<tr>
 				<strong><em>
 				<th class="header calendarcontentheader">{$_TR.event_title}</th>
 				<th class="header calendarcontentheader">{$_TR.when}</th>
-				{if $config->enable_categories == 1}
-					<th class="header calendarcontentheader">{$_TR.category}</th>
-				{/if}
 				<th class="header calendarcontentheader">&nbsp;</th>
 				</em></strong>
 			 </tr>
@@ -79,11 +65,6 @@
 					{/if}		
 				{/if}
 				</td>
-				{if $config->enable_categories == 1}
-					<td>{assign var=catid value=$item->category_id}
-						<b><span style="color: {$categories[$catid]->color}">{$categories[$catid]->name}</span></b>
-					</td>
-				{/if}
 				<td>
 					<div class="itemactions">
 						{permissions level=$smarty.const.UILEVEL_PERMISSIONS}
@@ -110,9 +91,6 @@
 								{else}
 									<img class="mngmnt_icon" style="border:none;" src="{$smarty.const.ICON_RELATIVE}delete.disabled.png" title="{$_TR.alt_delete_disabled}" alt="{$_TR.alt_delete_disabled}" />
 								{/if}
-							{/if}
-							{if $permissions.manage_approval == 1}
-								<a class="mngmntlink calendar_mngmntlink" href="{link module=workflow datatype=calendar m=calendarmodule s=$__loc->src action=revisions_view id=$item->id}" title="{$_TR.alt_revisions}"><img class="mngmnt_icon" src="{$smarty.const.ICON_RELATIVE}revisions.png" title="{$_TR.alt_revisions}" alt="{$_TR.alt_revisions}"/></a>
 							{/if}
 						{/permissions}
 					</div>

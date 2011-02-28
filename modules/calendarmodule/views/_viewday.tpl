@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2006 OIC Group, Inc.
+ * Copyright (c) 2004-2011 OIC Group, Inc.
  * Written and Designed by James Hunt
  *
  * This file is part of Exponent
@@ -25,11 +25,18 @@
 		{printer_friendly_link class="printer-friendly-link" text=$_TR.printer_friendly}
 	</div>
 	<h2>
-	{if $enable_ical == true}
-		<a class="icallink itemactions" href="{link action=ical}" title="{$_TR.alt_ical}" alt="{$_TR.alt_ical}">{$_TR.ical}</a>
-	{/if}
-	{if $moduletitle != ""}{$moduletitle}{/if}
+		{if $enable_ical == true}
+			<a class="icallink itemactions" href="{link action=ical}" title="{$_TR.alt_ical}" alt="{$_TR.alt_ical}">{$_TR.ical}</a>
+		{/if}
+		{if $moduletitle != ""}{$moduletitle}{/if}
 	</h2>
+	<div class="itemactions">
+		{permissions level=$smarty.const.UILEVEL_NORMAL}
+			{if $permissions.post == 1}
+				<a class="addevent mngmntlink" href="{link action=edit id=0}" title="{$_TR.alt_create}" alt="{$_TR.alt_create}">{$_TR.create}</a>
+			{/if}
+		{/permissions}
+	</div>
 	<p class="caption">
 		<a class="itemactions calendar_mngmntlink" href="{link action=viewday time=$prevday3}" title="{$prevday3|format_date:"%A, %B %e, %Y"}">{$prevday3|format_date:"%a"}</a>&nbsp;&nbsp;&laquo;&nbsp;
 		<a class="itemactions calendar_mngmntlink" href="{link action=viewday time=$prevday2}" title="{$prevday2|format_date:"%A, %B %e, %Y"}">{$prevday2|format_date:"%a"}</a>&nbsp;&nbsp;&laquo;&nbsp;
@@ -67,9 +74,6 @@
 							{else}
 								<img class="mngmnt_icon" src="{$smarty.const.ICON_RELATIVE}delete.disabled.png" title="{$_TR.alt_delete_disabled}" alt="{$_TR.alt_delete_disabled}" />
 							{/if}
-						{/if}
-						{if $permissions.manage_approval == 1}
-							<a class="mngmntlink calendar_mngmntlink" href="{link module=workflow datatype=calendar m=calendarmodule s=$__loc->src action=revisions_view id=$event->id}" title="{$_TR.alt_revisions}"><img class="mngmnt_icon" src="{$smarty.const.ICON_RELATIVE}revisions.png" title="{$_TR.alt_revisions}" alt="{$_TR.alt_revisions}"/></a>
 						{/if}
 						{if $permissions.administrate == 1 || $event->permissions.administrate == 1 || 
 							$permissions.edit == 1 || $event->permissions.edit == 1 ||

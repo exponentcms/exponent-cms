@@ -52,59 +52,59 @@ if (($item == null && exponent_permissions_check('post',$loc)) ||
 	
 	$i18n = exponent_lang_loadFile('modules/calendarmodule/actions/edit.php');
 
-	if (isset($config->enable_tags)) {
-		$cols = array();
-		$tags = array();
-		$cols = unserialize($config->collections);
-		if (count($cols) > 0) {
-			foreach ($cols as $col) {
-				$available_tags = array();
-				$available_tags = $db->selectObjects('tags', 'collection_id='.$col);
-				$tags = array_merge($tags, $available_tags);
-			}
+	// if (isset($config->enable_tags)) {
+		// $cols = array();
+		// $tags = array();
+		// $cols = unserialize($config->collections);
+		// if (count($cols) > 0) {
+			// foreach ($cols as $col) {
+				// $available_tags = array();
+				// $available_tags = $db->selectObjects('tags', 'collection_id='.$col);
+				// $tags = array_merge($tags, $available_tags);
+			// }
 
-			if (!defined('SYS_SORTING')) include_once(BASE.'subsystems/sorting.php');
-			usort($tags, "exponent_sorting_byNameAscending");
+			// if (!defined('SYS_SORTING')) include_once(BASE.'subsystems/sorting.php');
+			// usort($tags, "exponent_sorting_byNameAscending");
 
-			$tag_list = array();
-			foreach ($tags as $tag) {
-				$tag_list[$tag->id] = $tag->name;
-			}
+			// $tag_list = array();
+			// foreach ($tags as $tag) {
+				// $tag_list[$tag->id] = $tag->name;
+			// }
 
-			$selected_tags = array();
-			$used_tags = array();
-			if (isset($item->id)) {
-				$tag_ids = unserialize($item->tags);
-//				if (is_array($tag_ids) && count($tag_ids)>0) {  //If it's not an array, we don't have any tags.
-				if (!empty($tag_ids)) {  //If it's not an array, we don't have any tags.
-					$selected_tags = $db->selectObjectsInArray('tags', $tag_ids, 'name');
-					foreach ($selected_tags as $selected_tag) {
-							$used_tags[$selected_tag->id] = $selected_tag->name;
-					}
-				}
-			}
+			// $selected_tags = array();
+			// $used_tags = array();
+			// if (isset($item->id)) {
+				// $tag_ids = unserialize($item->tags);
+// //				if (is_array($tag_ids) && count($tag_ids)>0) {  //If it's not an array, we don't have any tags.
+				// if (!empty($tag_ids)) {  //If it's not an array, we don't have any tags.
+					// $selected_tags = $db->selectObjectsInArray('tags', $tag_ids, 'name');
+					// foreach ($selected_tags as $selected_tag) {
+							// $used_tags[$selected_tag->id] = $selected_tag->name;
+					// }
+				// }
+			// }
 
-			if (count($tag_list) > 0) {
-				$form->registerAfter('tag_header','tags',$i18n['tags'],new listbuildercontrol($used_tags,$tag_list));
-			} else {
-				$form->registerAfter('tag_header','tags', '',new htmlcontrol('<br /><div>There are no tags assigned to the collection(s) available to this module.</div>'));
-			}
-		} else {
-			$form->registerAfter('tag_header','tags', '',new htmlcontrol('<br /><div>No tag collection have been assigned to this module</div>'));
-		}
-	}
+			// if (count($tag_list) > 0) {
+				// $form->registerAfter('tag_header','tags',$i18n['tags'],new listbuildercontrol($used_tags,$tag_list));
+			// } else {
+				// $form->registerAfter('tag_header','tags', '',new htmlcontrol('<br /><div>There are no tags assigned to the collection(s) available to this module.</div>'));
+			// }
+		// } else {
+			// $form->registerAfter('tag_header','tags', '',new htmlcontrol('<br /><div>No tag collection have been assigned to this module</div>'));
+		// }
+	// }
 	
-	if ($config->enable_categories == 1) {
-		$ddopts = array();
-		foreach ($db->selectObjects('category',"location_data='".serialize($loc)."' ORDER BY rank ASC") as $opt) {
-			$ddopts[$opt->id] = $opt->name;
-		}
-//		uasort($ddopts,'strnatcmp');
+	// if ($config->enable_categories == 1) {
+		// $ddopts = array();
+		// foreach ($db->selectObjects('category',"location_data='".serialize($loc)."' ORDER BY rank ASC") as $opt) {
+			// $ddopts[$opt->id] = $opt->name;
+		// }
+// //		uasort($ddopts,'strnatcmp');
 
-		if (!isset($item->category_id)) $item->category_id = null;
-		$form->registerAfter('eventend','category',$i18n['categories'],new dropdowncontrol($item->category_id,$ddopts));
-		$form->registerBefore('category', null, '', new htmlcontrol('<hr size="1" />'));
-	}
+		// if (!isset($item->category_id)) $item->category_id = null;
+		// $form->registerAfter('eventend','category',$i18n['categories'],new dropdowncontrol($item->category_id,$ddopts));
+		// $form->registerBefore('category', null, '', new htmlcontrol('<hr size="1" />'));
+	// }
 	
 	if ($config->enable_feedback == 1) {
 		$form->registerBefore('submit', null,'', new htmlcontrol('<hr size="1" />'));

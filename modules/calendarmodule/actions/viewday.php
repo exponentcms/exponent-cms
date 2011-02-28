@@ -68,8 +68,9 @@ foreach ($dates as $d) {
 }
 
 $template->register_permissions(
-	array("manage_approval"),
-	$loc);
+	array("post","edit","delete","administrate","manage_approval"),
+	$loc
+);
 
 if (!$config) {
 	$config->enable_categories = 0;

@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2006 OIC Group, Inc.
+ * Copyright (c) 2004-2011 OIC Group, Inc.
  * Written and Designed by James Hunt
  *
  * This file is part of Exponent
@@ -66,11 +66,6 @@
 				<img class="mngmnt_icon" style="border:none;" src="{$smarty.const.ICON_RELATIVE}delete.disabled.png" title="{$_TR.alt_delete_disabled}" alt="{$_TR.alt_delete_disabled}" />
 				{/if}
 			{/if}
-			{if $permissions.manage_approval == 1}
-				<a class="mngmntlink calendar_mngmntlink" href="{link module=workflow datatype=calendar m=calendarmodule s=$__loc->src action=revisions_view id=$event->id}">
-					<img class="mngmnt_icon" src="{$smarty.const.ICON_RELATIVE}revisions.png" title="{$_TR.alt_revisions}" alt="{$_TR.alt_revisions}"/>
-				</a>
-			{/if}
 			{/permissions}
 			</div>
 			<br />
@@ -84,18 +79,6 @@
 	{permissions level=$smarty.const.UILEVEL_NORMAL}
 	{if $permissions.post == 1}
 	<a class="mngmntlink calendar_mngmntlink" href="{link action=edit id=0}">{$_TR.create_event}</a><br />
-	{/if}
-	{if $in_approval != 0 && $canview_approval_link == 1}
-	<a class="mngmntlink calendar_mngmntlink" href="{link module=workflow datatype=calendar m=calendarmodule s=$__loc->src action=summary}">{$_TR.view_approval}</a>
-	{/if}
-	{if $config->enable_categories == 1}
-	{if $permissions.manage_categories == 1}
-	<br />
-	<a href="{link module=categories orig_module=calendarmodule action=manage}" class="mngmntlink cats">{$_TR.manage_categories}</a>
-	{else}
-	<br />
-	<a class="cats" href="#" onclick="window.open('{$smarty.const.PATH_RELATIVE}popup.php?module=categories&m={$__loc->mod}&action=view&src={$__loc->src}','legend','width=200,height=200,title=no,status=no'); return false" title="{$_TR.alt_view_cat}" alt="{$_TR.alt_view_cat}">{$_TR.view_categories}</a>
-	{/if}
 	{/if}
 	{/permissions}
 </div>
