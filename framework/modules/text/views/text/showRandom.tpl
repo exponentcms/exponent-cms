@@ -17,12 +17,14 @@
 <div class="module text show-random">
 	    {if $moduletitle}<h1>{$moduletitle}</h1>{/if}
 	    {permissions}
+    	    <div class="module-actions">
         	{if $permissions.create == 1}
                 {icon class="add" action=edit title="Add Text"|gettext text="Add Text"|gettext}
         	{/if}
         	{if $permissions.edit == 1}
                 {br}{icon class="manage" action=showall title="Manage Text Items"|gettext text="Manage Text Items"|gettext}
         	{/if}
+            </div>
         {/permissions}
 	
         {foreach from=$items item=listing}
