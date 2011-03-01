@@ -208,18 +208,18 @@ function exponent_config_change($var, $val) {
 }
 
 function exponent_config_writeFile($str, $configname="") {
-	if ($configname != "") {
-                // Wishing to save
-                if ((file_exists(BASE."conf/profiles/$configname.php") && is_really_writable(BASE."conf/profiles/$configname.php")) ||
-                        is_really_writable($BASE."conf/profiles")) {
-
-                        $fh = fopen(BASE."conf/profiles/$configname.php","w");
-                        fwrite($fh,$str);
-                        fclose($fh);
-                } else {
-                        echo $i18n['profile_not_writable'].'<br />';
-                }
-        }
+    // if ($configname != "") {
+    //                 // Wishing to save
+    //                 if ((file_exists(BASE."conf/profiles/$configname.php") && is_really_writable(BASE."conf/profiles/$configname.php")) ||
+    //                         is_really_writable($BASE."conf/profiles")) {
+    // 
+    //                         $fh = fopen(BASE."conf/profiles/$configname.php","w");
+    //                         fwrite($fh,$str);
+    //                         fclose($fh);
+    //                 } else {
+    //                         echo $i18n['profile_not_writable'].'<br />';
+    //                 }
+    //         }
 
         //if (isset($values['activate']) || $configname == "") {
                 if ((file_exists(BASE."conf/config.php") && is_really_writable(BASE."conf/config.php")) || is_really_writable(BASE."conf")) {
@@ -302,18 +302,18 @@ function exponent_config_saveConfiguration($values,$site_root=null) {
 	}
 	$str .= "\n?>";
 	
-	if ($configname != "") {
-		// Wishing to save
-		if (	(file_exists($site_root."conf/profiles/$configname.php") && is_really_writable($site_root."conf/profiles/$configname.php")) ||
-			is_really_writable($site_root."conf/profiles")) {
-			
-			$fh = fopen($site_root."conf/profiles/$configname.php","w");
-			fwrite($fh,$str);
-			fclose($fh);
-		} else {
-			echo $i18n['profile_not_writable'].'<br />';
-		}
-	}
+    // if ($configname != "") {
+    //  // Wishing to save
+    //  if (    (file_exists($site_root."conf/profiles/$configname.php") && is_really_writable($site_root."conf/profiles/$configname.php")) ||
+    //      is_really_writable($site_root."conf/profiles")) {
+    //      
+    //      $fh = fopen($site_root."conf/profiles/$configname.php","w");
+    //      fwrite($fh,$str);
+    //      fclose($fh);
+    //  } else {
+    //      echo $i18n['profile_not_writable'].'<br />';
+    //  }
+    // }
 	
 	if (isset($values['activate']) || $configname == "") {
 		
