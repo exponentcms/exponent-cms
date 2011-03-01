@@ -19,7 +19,7 @@
 {/css}
 
 <div class="calendarmodule cal-admin"> 
-	<div class="itemactions">
+	<div class="module-actions">
 		<a class="monthviewlink" href="{link action=viewmonth time=$time}">{$_TR.calendar_view}</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a class="listviewlink" href="{link _common=1 view='Monthly List' action='show_view' time=$time}">{$_TR.list_view}</a>
 		&nbsp;&nbsp;|&nbsp;&nbsp;<span class="adminviewlink">{$_TR.administration_view}</span>
 		&nbsp;&nbsp;|&nbsp;&nbsp;
@@ -29,11 +29,11 @@
 	</div>
 	<h2>
 		{if $enable_ical == true}
-			<a class="icallink itemactions" href="{link action=ical}" title="{$_TR.alt_ical}" alt="{$_TR.alt_ical}">{$_TR.ical}</a>
+			<a class="icallink module-actions" href="{link action=ical}" title="{$_TR.alt_ical}" alt="{$_TR.alt_ical}">{$_TR.ical}</a>
 		{/if}
 		{if $moduletitle != ""}{$moduletitle} - {$_TR.administration_view}{/if}
 	</h2>
-	<div class="itemactions">
+	<div class="module-actions">
 		{permissions level=$smarty.const.UILEVEL_NORMAL}
 			{if $permissions.post == 1}
 				<a class="addevent mngmntlink" href="{link action=edit id=0}" title="{$_TR.alt_create}" alt="{$_TR.alt_create}">{$_TR.create}</a>
@@ -66,7 +66,7 @@
 				{/if}
 				</td>
 				<td>
-					<div class="itemactions">
+					<div class="item-actions">
 						{permissions level=$smarty.const.UILEVEL_PERMISSIONS}
 							{if $permissions.administrate == 1 || $item->permissions.administrate == 1}
 								<a class="mngmntlink calendar_mngmntlink" href="{link action=userperms int=$item->id _common=1}"><img class="mngmnt_icon" style="border:none;" src="{$smarty.const.ICON_RELATIVE}userperms.png" title="{$_TR.alt_userperm_one}" alt="{$_TR.alt_userperm_one}" /></a>

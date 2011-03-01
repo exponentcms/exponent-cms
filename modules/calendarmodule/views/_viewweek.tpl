@@ -19,17 +19,17 @@
 {/css}
 
 <div class="calendarmodule cal-default"> 
-	<div class="itemactions">
+	<div class="module-actions">
 		<a class="monthviewlink" href="{link action=viewmonth time=$startweek}" title="{$_TR.alt_view_month}">{$_TR.view_month}</a>
 		&nbsp;&nbsp;|&nbsp;&nbsp;{printer_friendly_link class="printer-friendly-link" text=$_TR.printer_friendly}
 	</div>
 	<h2>
 		{if $enable_ical == true}
-			<a class="icallink itemactions" href="{link action=ical}" title="{$_TR.alt_ical}" alt="{$_TR.alt_ical}">{$_TR.ical}</a>
+			<a class="icallink module-actions" href="{link action=ical}" title="{$_TR.alt_ical}" alt="{$_TR.alt_ical}">{$_TR.ical}</a>
 		{/if}
 		{if $moduletitle != ""}{$moduletitle}{/if}
 	</h2>
-	<div class="itemactions">
+	<div class="module-actions">
 		{permissions level=$smarty.const.UILEVEL_NORMAL}
 			{if $permissions.post == 1}
 				<a class="addevent mngmntlink" href="{link action=edit id=0}" title="{$_TR.alt_create}" alt="{$_TR.alt_create}">{$_TR.create}</a>
@@ -37,11 +37,11 @@
 		{/permissions}
 	</div>
 	<p class="caption">
-		<a class="itemactions calendar_mngmntlink" href="{link action=viewweek time=$startprevweek2}" title="{$_TR.view_week} {$startprevweek2|format_date:"%B %e, %Y"}">{$startprevweek2|format_date:"%b %e"}</a>&nbsp;&nbsp;&laquo;&nbsp;
-		<a class="itemactions calendar_mngmntlink" href="{link action=viewweek time=$startprevweek}" title="{$_TR.view_week} {$startprevweek|format_date:"%B %e, %Y"}">{$startprevweek|format_date:"%b %e"}</a>&nbsp;&nbsp;&laquo;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<a class="module-actions calendar_mngmntlink" href="{link action=viewweek time=$startprevweek2}" title="{$_TR.view_week} {$startprevweek2|format_date:"%B %e, %Y"}">{$startprevweek2|format_date:"%b %e"}</a>&nbsp;&nbsp;&laquo;&nbsp;
+		<a class="module-actions calendar_mngmntlink" href="{link action=viewweek time=$startprevweek}" title="{$_TR.view_week} {$startprevweek|format_date:"%B %e, %Y"}">{$startprevweek|format_date:"%b %e"}</a>&nbsp;&nbsp;&laquo;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 		<span>{$_TR.view_week} {$startweek|format_date:"%B %e, %Y"}</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&raquo;&nbsp;&nbsp;
-		<a class="itemactions calendar_mngmntlink" href="{link action=viewweek time=$startnextweek}" title="{$_TR.view_week} {$startnextweek|format_date:"%B %e, %Y"}">{$startnextweek|format_date:"%b %e"}</a>&nbsp;&nbsp;&raquo;&nbsp;
-		<a class="itemactions calendar_mngmntlink" href="{link action=viewweek time=$startnextweek2}" title="{$_TR.view_week} {$startnextweek2|format_date:"%B %e, %Y"}">{$startnextweek2|format_date:"%b %e"}</a>
+		<a class="module-actions calendar_mngmntlink" href="{link action=viewweek time=$startnextweek}" title="{$_TR.view_week} {$startnextweek|format_date:"%B %e, %Y"}">{$startnextweek|format_date:"%b %e"}</a>&nbsp;&nbsp;&raquo;&nbsp;
+		<a class="module-actions calendar_mngmntlink" href="{link action=viewweek time=$startnextweek2}" title="{$_TR.view_week} {$startnextweek2|format_date:"%B %e, %Y"}">{$startnextweek2|format_date:"%b %e"}</a>
 	</p>
 	<dl class="viewweek">
 
@@ -59,7 +59,8 @@
 			{foreach from=$events item=event}
 				{assign var=none value=0}
 				<dd>
-					<div class="itemactions">
+					<a class="itemtitle calendar_mngmntlink" href="{link action=view id=$event->id date_id=$event->eventdate->id}" title="{$event->body|summarize:"html":"para"}">{$event->title}</a>
+					<div class="item-actions">
 						{permissions level=$smarty.const.UILEVEL_PERMISSIONS}
 							{if $permissions.administrate == 1 || $event->permissions.administrate == 1}
 								<a href="{link action=userperms int=$event->id _common=1}"><img class="mngmnt_icon" src="{$smarty.const.ICON_RELATIVE}userperms.png" title="{$_TR.alt_userperm}" alt="{$_TR.alt_userperm}" /></a>&nbsp;
@@ -85,7 +86,6 @@
 							{/if}
 						{/permissions}
 					</div>
-					<a class="itemtitle calendar_mngmntlink" href="{link action=view id=$event->id date_id=$event->eventdate->id}" title="{$event->body|summarize:"html":"para"}">{$event->title}</a>
 					<div>
 						{if $event->is_allday == 1}- All Day{else}
 							{if $event->eventstart != $event->eventend}
