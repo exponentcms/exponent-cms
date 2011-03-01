@@ -93,9 +93,23 @@ class expCSS {
             }
         } else {
             //2048
-            $urlstr = implode(',',$css_files);
-            eDebug(strlen($urlstr));
-            $html = "\t".'<link rel="stylesheet" type="text/css" href="'.PATH_RELATIVE.'external/minify/min/index.php?f=' . $urlstr . '" />';
+            $i = 0;
+            $srt = array();
+            $srt[$i] = "";
+            foreach ($css_files as $file) {
+                if (strlen($srt[$i])+strlen($file)<=1500) {
+                    $srt[$i] .= $file.",";
+                } else {
+                    $i++;
+                    $srt[$i] = "";
+                    $srt[$i] .= $file.",";
+                }
+            }
+
+            foreach ($srt as $link) {
+                $link = rtrim($link,",");
+                $html .= "\t".'<link rel="stylesheet" type="text/css" href="'.PATH_RELATIVE.'external/minify/min/index.php?f=' . $link . '" />'."\r\n";
+            }
         }
         
         
