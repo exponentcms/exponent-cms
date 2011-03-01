@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2006 OIC Group, Inc.
+# Copyright (c) 2004-2011 OIC Group, Inc.
 # Written and Designed by James Hunt
 #
 # This file is part of Exponent
@@ -64,6 +64,11 @@ return array(
 	'feedback_email'=>array(
 		DB_FIELD_TYPE=>DB_DEF_STRING,
 		DB_FIELD_LEN=>1000),
+	'tags'=>array(
+		DB_FIELD_TYPE=>DB_DEF_STRING,
+		DB_FIELD_LEN=>10000),
+	'file_id'=>array(
+		DB_FIELD_TYPE=>DB_DEF_ID),
 );
 
 ?>
