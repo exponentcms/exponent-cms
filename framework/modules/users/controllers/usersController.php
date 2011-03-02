@@ -588,7 +588,30 @@ class usersController extends expController {
         $group->update($this->params);
         expHistory::back();
     }
-    
+
+    public function delete_group() {
+        global $user, $db;
+        if (!$user->isAdmin()) {
+            flash('error', 'You do not have permission to delete user groups');
+            expHistory::back();
+        }
+        
+        if (empty($this->params['id'])) {
+            flash('error', 'No group selected.');
+            expHistory::back();
+        }
+        
+        // remove group members
+        $db->delete('groupmembership', 'group_id='.$this->params['id']);
+        
+        // remove group permissions
+        $db->delete('grouppermission', 'gid='.$this->params['id']);
+        
+        // remove group
+        $db->delete('group', 'id='.$this->params['id']);
+        expHistory::back();		
+    }
+        
     public function toggle_extension() {
         global $db;
 	    if (isset($this->params['id'])) $db->toggle('profileextension', 'active', 'id='.$this->params['id']);
