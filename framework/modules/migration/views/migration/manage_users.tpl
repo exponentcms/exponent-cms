@@ -15,10 +15,12 @@
  *}
 
 <div class="module migration manage-users">
-    <h1>Migrate Users</h1>
+    <h1>Migrate Users and Groups</h1>
     <p> 
-        The following is a list of users we found in the database {$config.database}.
-        Select the users you would like to pull over from {$config.database}.
+        The following is a list of users and groups we found in the database {$config.database}.
+        Select the users and groups you would like to pull over from {$config.database}.
+		User and group permissions will NOT be migrated.  Group assignments will likewise NOT be migrated.
+		You must reassign users to groups after migration and reassign permissions for new users and groups.
     </p>
     
     {form action="migrate_users"}
@@ -29,7 +31,7 @@
                 <th>Username</th>
                 <th>Name</th>
                 <th>E-Mail</th>
-                <th>Admin?</th>
+                <th>Is Admin</th>
             </tr>
         </thead>
         <tbody>
@@ -48,14 +50,45 @@
                 {$user->email}
             </td>
             <td>
-                {if ($user->is_acting_admin==1)}<b>Yes</b>{else}No{/if}
+				{if $user->is_acting_admin == 1}{img src=`$smarty.const.ICON_RELATIVE`toggle_on.gif}{/if}
             </td>            
         </tr>
         {foreachelse}
-			<tr><td colspan=2>No users found in the database {$config.database}</td></tr>
+			<tr><td colspan=5>No users found to migrate from the database {$config.database}</td></tr>
+        {/foreach}
+        </tbody>
+		<tbody>
+		<tr><td>&nbsp;</td></tr>
+        </tbody>
+        <thead>
+            <tr>
+                <th>Migrate</th>
+                <th>Group Name</th>
+                <th>Description</th>
+                <th>Type</th>
+            </tr>
+        </thead>
+        <tbody>
+        {foreach from=$groups item=group name=groups}
+        <tr class="{cycle values="even,odd"}">            
+            <td>
+                {control type="checkbox" name="groups[]" label=" " value=$group->id checked=true}
+            </td>
+            <td>
+                {$group->name}
+            </td>
+            <td>
+                {$group->description}
+            </td>
+            <td>
+				{if $group->inclusive}<b>Default</b>{else}Normal{/if}				
+            </td>            
+        </tr>
+        {foreachelse}
+			<tr><td colspan=4>No groups found to migrate from the database {$config.database}</td></tr>
         {/foreach}
         </tbody>
         </table>
-        {control type="buttongroup" submit="Migrate Users" cancel="Cancel"}
+        {control type="buttongroup" submit="Migrate Users/Groups" cancel="Cancel"}
     {/form}
 </div>

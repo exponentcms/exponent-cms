@@ -151,7 +151,7 @@ return array(
             			                'url'=>makeLink(array('module'=>'migration','action'=>'analyze_site')),
                                     ),
                                     array(
-                                        'text'=>'Migrate Users',
+                                        'text'=>'Migrate Users/Groups',
             			                'url'=>makeLink(array('module'=>'migration','action'=>'manage_users')),
                                     ),
                                 )
