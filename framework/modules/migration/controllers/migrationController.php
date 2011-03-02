@@ -976,6 +976,15 @@ class migrationController extends expController {
 			}
 		}
 		assign_to_template(array('users'=>$newusers));
+		
+        $groups = $old_db->selectObjects('group');
+		$newgroups = array();
+        foreach($groups as $group) {
+			if (!$db->selectObject('group',"name='".$group->name."'")) {
+				$newgroups[] = $group;
+			}
+		}
+		assign_to_template(array('groups'=>$newgroups));
     }
     
     public function migrate_users() {
@@ -984,9 +993,10 @@ class migrationController extends expController {
          // if (isset($this->params['wipe_users'])) {
             // $db->delete('user','id > 1');
 		 // }
+        $old_db = $this->connect();
+		
         $successful = 0;
         $failed     = 0;
-        $old_db = $this->connect();
         foreach($this->params['users'] as $userid) {
             $user = $old_db->selectObject('user', 'id='.$userid);
 			if (!$db->selectObject('user',"username='".$user->username."'")) {
@@ -998,9 +1008,30 @@ class migrationController extends expController {
             }
         }
 
-        flash ('message', $successful.' users were imported from '.$this->config['database']);
-        if ($failed > 0) {
-            flash('error', $failed.' users could not be imported from '.$this->config['database'].' This is usually because a user with the username already exists in the database you importing to.');
+        $gsuccessful = 0;
+        $gfailed     = 0;
+        foreach($this->params['groups'] as $groupid) {
+            $group = $old_db->selectObject('group', 'id='.$groupid);
+			if (!$db->selectObject('group',"name='".$group->name."'")) {
+				$group->id = '';
+				$ret = $db->insertObject($group, 'group');
+                $gsuccessful += 1;
+			} else {
+                $gfailed += 1;
+            }
+        }
+		
+        flash ('message', $successful.' users and '.$gsuccessful.' groups were imported from '.$this->config['database']);
+        if ($failed > 0 || $gfailed > 0) {
+			$msg = '';
+			if ($failed > 0) {
+				$msg = $failed.' users ';
+			}
+			if ($gfailed > 0) {
+				if ($msg != '') { $msg .= ' and ';}
+				$msg .= $gfailed.' groups ';
+			}
+            flash('error', $msg.' could not be imported from '.$this->config['database'].' This is usually because a user with the username or group with that name already exists in the database you importing to.');
         }        
         expSession::clearUserCache();
         expHistory::back();
