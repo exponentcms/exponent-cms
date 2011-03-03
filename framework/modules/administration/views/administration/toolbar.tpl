@@ -1,4 +1,4 @@
-{css unique="slingbar" link="`$asset_path`css/slingbar.css"}
+{css unique="slingbar" link="`$asset_path`css/slingbar.css" corecss="admin-global"}
     
 {/css}
 
