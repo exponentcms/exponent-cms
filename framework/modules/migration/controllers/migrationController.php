@@ -906,17 +906,7 @@ class migrationController extends expController {
             break;
             case 'listingmodule':  
 
-				// switch ($module->view) {
-					// case 'Headlines':
-						// $module->view = 'showall_headlines'; 
-					// break;
-					// case 'Summary':
-						// $module->view = 'showall_summary'; 
-					// break;
-					// default:
-						 $module->view = 'showall'; 
-					// break;
-				// }
+				$module->view = 'showall'; 
 			
 				//check to see if it's already pulled in (circumvent !is_original)
 				$ploc = $iloc;
@@ -942,7 +932,7 @@ class migrationController extends expController {
                         $listing->poster = 1;
                         $listing->created_at = time();
                         $listing->edited_at = time();                    
-                        $listing->body = $li['summary']."<br><br>".$li['body'];                    
+                        $listing->body = "<p>".$li['summary']."</p>".$li['body'];                    
 
                         $listing->save();
                         @$this->msg['migrated'][$iloc->mod]['count']++;
