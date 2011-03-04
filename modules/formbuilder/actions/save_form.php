@@ -54,9 +54,11 @@ if (exponent_permissions_check('editform',unserialize($f->location_data))) {
 	$data->user_id = 0;
 	$data->email='';
 	$data->form_id = $f->id;
-	foreach (listbuildercontrol::parseData($_POST,'groups') as $group_id) {
-		$data->group_id = $group_id;
-		$db->insertObject($data,'formbuilder_address');
+	if(isset($_POST['groups'])){
+		foreach (listbuildercontrol::parseData($_POST,'groups') as $group_id) {
+			$data->group_id = $group_id;
+			$db->insertObject($data,'formbuilder_address');
+		}
 	}
 	$data->group_id = 0;
 	foreach (listbuildercontrol::parseData($_POST,'users') as $user_id) {

@@ -36,7 +36,7 @@ class formbuilder_report {
 		
 		$form->register('name',$i18n['name'],new textcontrol($object->name));
 		$form->register('description',$i18n['description'],new texteditorcontrol($object->description));
-		$form->register(null,'', new htmlcontrol('<br /><br />'.$i18n['blank_report_message'].'<br /><br />'));
+		$form->register(null,'', new htmlcontrol($i18n['blank_report_message']));
 		$form->register('text',$i18n['text'],new htmleditorcontrol($object->text));
 		
 		$fields = array();
@@ -69,7 +69,7 @@ class formbuilder_report {
 		}
 
 		$form->register('column_names',$i18n['column_names'], new listbuildercontrol($column_names,$fields));
-		$form->register(null,'', new htmlcontrol('<br /><br /><br />'));
+//		$form->register(null,'', new htmlcontrol('<br /><br /><br />'));
 		$form->register('submit','',new buttongroupcontrol($i18n['save'],'',$i18n['cancel']));
 		return $form;
 	}

@@ -13,7 +13,8 @@
  * GPL: http://www.gnu.org/licenses/gpl.txt
  *
  *}
- 
+
+ <h2>{$title}</h2><br />
  <table border="1" cellspacing="0" cellpadding="4">
  {foreach from=$fields key=fieldname item=value}
 	<tr>
@@ -23,5 +24,6 @@
  {/foreach}
  </table>
  {if $is_email == 0}
+  {br}
 	<a href="{$backlink}">{$_TR.back}</a>
  {/if}

@@ -29,6 +29,7 @@ function links(object) {literal}{{/literal}
 
 {/paginate}
 <table cellspacing="0" cellpadding="2" style="border:none;" width="100%">
+<tr><h2>{$title}</h2></tr>
 	<tbody id="dataTable">
 	</tbody>
 </table>

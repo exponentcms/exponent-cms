@@ -14,6 +14,7 @@
  *
  *}
  
+<div class="formmodule view-form">
  <div align="center"><center><b>{$_TR.form_title}</b><br />{$_TR.form_header}</center></div>
  <div style="border: 2px dashed lightgrey; padding: 1em;">
 {$form_html}
@@ -38,12 +39,9 @@
 	</select>
 	</form>
 </td>
-<td>
-	<a href="{$backlink}">{$_TR.done}</a>
-</td>
-<td>
-	<a href="JavaScript: pickSource();">{$_TR.append_existing}</a>
-</td>
 </tr>
 </table>
+	<p><a href="JavaScript: pickSource();">{$_TR.append_existing}</a></p>
+	<p><a href="{$backlink}">{$_TR.done}</a></p>
 {/if}
+</div>
