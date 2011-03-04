@@ -27,7 +27,7 @@
     <table cellpadding="4" cellspacing="0" border="0" width="100%">
 	    {foreach from=$sessions item=session}
 	    <tr>
-		    <td style="background-color: lightgrey">{$session->user->username}</td>
+		    <td style="background-color: lightgrey"><strong>{$session->user->username}</strong></td>
 		    <td style="background-color: lightgrey">IP: {$session->ip_address}</td>
 		    {*<td style="background-color: lightgrey">Duration: {foreach name=d from=$session->duration key=tag item=number}{$number}{if $smarty.foreach.d.last == false}:{/if}{/foreach}</td>*}
 			<td style="background-color: lightgrey">Duration: {foreach name=d from=$session->duration key=tag item=number}{$number} {$tag}{if $smarty.foreach.d.last == false}, {/if}{/foreach}</td>
