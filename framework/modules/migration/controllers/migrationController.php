@@ -210,6 +210,10 @@ class migrationController extends expController {
             $db->delete('poll_answer');
             $db->delete('poll_timeblock');
             $db->delete('simplepollmodule_config');
+            $db->delete('formbuilder_address');
+            $db->delete('formbuilder_control');
+            $db->delete('formbuilder_form');
+            $db->delete('formbuilder_report');
             @$this->msg['clearedcontent']++;
         }
         
@@ -364,6 +368,31 @@ class migrationController extends expController {
                 foreach ($configs as $config) {
                     $db->insertObject($config, 'simplepollmodule_config');
                 }
+            break;
+            case 'formmodule':
+				@$this->msg['migrated'][$iloc->mod]['name'] = $iloc->mod;
+                $form = $old_db->selectObject('formbuilder_form', "location_data='".serialize($iloc)."'");
+                $db->insertObject($form, 'formbuilder_form');
+				@$this->msg['migrated'][$iloc->mod]['count']++;
+				$addresses = $old_db->selectObjects('formbuilder_address', "form_id='".$form->id."'");
+                foreach($addresses as $address) {
+                    $db->insertObject($address, 'formbuilder_address');
+				}
+				$controls = $old_db->selectObjects('formbuilder_control', "form_id='".$form->id."'");
+                foreach($controls as $control) {
+                    $db->insertObject($control, 'formbuilder_control');
+				}
+				$reports = $old_db->selectObjects('formbuilder_report', "form_id='".$form->id."'");
+                foreach($reports as $report) {
+                    $db->insertObject($report, 'formbuilder_report');
+				}
+				if (isset($form->table_name)) {
+					formbuilder_form::updateTable($form);
+					$records = $old_db->selectObjects('formbuilder_'.$form->table_name, 1);
+					foreach($records as $record) {
+						$db->insertObject($record, 'formbuilder_'.$form->table_name);
+					}
+				}
             break;
         }
     }
