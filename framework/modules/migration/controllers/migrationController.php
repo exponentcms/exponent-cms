@@ -41,6 +41,7 @@ class migrationController extends expController {
         'headlinemodule'=>'headlineController',
         'linkmodule'=>'linksController',
         'weblogmodule'=>'blogController',
+        'listingmodule'=>'portfolioController',
     );
     
     // these are modules that have either been deprecated or have no content to migrate
@@ -81,7 +82,6 @@ class migrationController extends expController {
 		'addressbookmodule',  // listed above, but no script appears here?
         'bannermodule',  // to bannerController?
 //        'categories',  // no controller and not in old school ???
-        'listingmodule',  // to companyController or portfolioController?
         'mediaplayermodule',  // to flowplayerController?
         'youtubemodule', // to youtubeController?
 //        'tags',	 // no controller and not in old school ???
@@ -200,6 +200,9 @@ class migrationController extends expController {
             $db->delete('expComments');
             $db->delete('faqs');
             $db->delete('content_expFiles');
+            $db->delete('portfolio');
+            $db->delete('content_expTags');
+            $db->delete('content_expSimpleNote');
             $db->delete('calendar');
             $db->delete('eventdate');
             $db->delete('calendarmodule_config');
@@ -719,6 +722,7 @@ class migrationController extends expController {
                         $photo->body = $gi['description'];
                         $photo->alt = $gi['alt'];
                         $photo->location_data = serialize($loc);
+						$photo->makeSefUrl();
 
                         $photo->save();
                         @$this->msg['migrated'][$iloc->mod]['count']++;
@@ -757,6 +761,7 @@ class migrationController extends expController {
                         $photo->body = $gi['description'];
                         $photo->alt = $gi['alt'];
                         $photo->location_data = serialize($loc);
+						$photo->makeSefUrl();
                         // $photo->created_at = $gi['posted'];
                         // $photo->edited_at = $gi['edited'];                    
 
@@ -899,6 +904,56 @@ class migrationController extends expController {
                     }
                 }
             break;
+            case 'listingmodule':  
+
+				// switch ($module->view) {
+					// case 'Headlines':
+						// $module->view = 'showall_headlines'; 
+					// break;
+					// case 'Summary':
+						// $module->view = 'showall_summary'; 
+					// break;
+					// default:
+						 $module->view = 'showall'; 
+					// break;
+				// }
+			
+				//check to see if it's already pulled in (circumvent !is_original)
+				$ploc = $iloc;
+				$ploc->mod = "portfolio";
+				if ($db->countObjects($ploc->mod, "location_data='".serialize($ploc)."'")) {
+					$iloc->mod = 'listingmodule';
+					break; 
+				}
+
+                $iloc->mod = 'listingmodule';
+                $listingitems = $old_db->selectArrays('listing', "location_data='".serialize($iloc)."'");
+                
+                if ($listingitems) {
+                    foreach ($listingitems as $li) {
+                        unset($li['id']);
+                        $listing = new portfolio($li);                   
+						$listing->title = $li['name'];
+						$listing->makeSefUrl();
+                        $loc = expUnserialize($li['location_data']);
+                        $loc->mod = "portfolio";
+                        $listing->location_data = serialize($loc);
+                        $listing->featured = true;
+                        $listing->poster = 1;
+                        $listing->created_at = time();
+                        $listing->edited_at = time();                    
+                        $listing->body = $li['summary']."<br><br>".$li['body'];                    
+
+                        $listing->save();
+                        @$this->msg['migrated'][$iloc->mod]['count']++;
+                        @$this->msg['migrated'][$iloc->mod]['name'] = $this->new_modules[$iloc->mod];
+                        if (!empty($li['file_id'])) {
+							$file = new expFile($li['file_id']);
+							$listing->attachitem($file,'');							
+                        }
+                    }
+                }
+            break;
             default:
                 @$this->msg['noconverter'][$iloc->mod]++;
             break;
@@ -990,10 +1045,28 @@ class migrationController extends expController {
     public function migrate_users() {
         global $db;
         
+         // if (isset($this->params['wipe_groups'])) {
+            // $db->delete('group');
+		 // }
          // if (isset($this->params['wipe_users'])) {
             // $db->delete('user','id > 1');
 		 // }
         $old_db = $this->connect();
+//		print_r("<pre>");
+//		print_r($old_db->selectAndJoinObjects('', '', 'group', 'groupmembership','id', 'group_id', 'name = "Editors"', ''));
+		
+        $gsuccessful = 0;
+        $gfailed     = 0;
+        foreach($this->params['groups'] as $groupid) {
+            $group = $old_db->selectObject('group', 'id='.$groupid);
+			if (!$db->selectObject('group',"name='".$group->name."'")) {
+				$group->id = '';
+				$ret = $db->insertObject($group, 'group');
+                $gsuccessful += 1;
+			} else {
+                $gfailed += 1;
+            }
+        }
 		
         $successful = 0;
         $failed     = 0;
@@ -1008,19 +1081,6 @@ class migrationController extends expController {
             }
         }
 
-        $gsuccessful = 0;
-        $gfailed     = 0;
-        foreach($this->params['groups'] as $groupid) {
-            $group = $old_db->selectObject('group', 'id='.$groupid);
-			if (!$db->selectObject('group',"name='".$group->name."'")) {
-				$group->id = '';
-				$ret = $db->insertObject($group, 'group');
-                $gsuccessful += 1;
-			} else {
-                $gfailed += 1;
-            }
-        }
-		
         flash ('message', $successful.' users and '.$gsuccessful.' groups were imported from '.$this->config['database']);
         if ($failed > 0 || $gfailed > 0) {
 			$msg = '';
@@ -1035,6 +1095,7 @@ class migrationController extends expController {
         }        
         expSession::clearUserCache();
         expHistory::back();
+		
     }
 	
     private function connect() {
