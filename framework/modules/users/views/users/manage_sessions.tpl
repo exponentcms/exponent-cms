@@ -19,7 +19,7 @@
         This page shows all of the active sessions, along with session information like login time, 
         browser signature, etc. You can forcibly end either a specific session or all sessions for 
         a user account. Ending a session will cause that user to be logged out of the site, and any 
-        content they were editting will be lost.
+        content they were editing will be lost.
         {br}{br}
         <em>Administrator sessions cannot be forcibly ended.</em>
     </p>
