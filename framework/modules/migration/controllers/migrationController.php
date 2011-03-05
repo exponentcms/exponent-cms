@@ -49,7 +49,7 @@ class migrationController extends expController {
     // Not sure we need to note deprecated modules...
     public $deprecated_modules = array(
         'administrationmodule',
-        'containermodule',  // not really deprecated, but must be in this list to skip processing
+//        'containermodule',  // not really deprecated, but must be in this list to skip processing
 //        'navigationmodule',  // veiws are still used, so modules need to be imported?
         'imagemanagermodule',
         'imageworkshopmodule',
