@@ -19,6 +19,7 @@
 
 class formmodule {
 	function name() { return exponent_lang_loadKey('modules/formmodule/class.php','module_name'); }
+    function displayname() { return '(old school) form'; } //for forwards compat with new modules
 	function description() { return exponent_lang_loadKey('modules/formmodule/class.php','module_description'); }
 	function author() { return 'OIC Group, Inc'; }
 	

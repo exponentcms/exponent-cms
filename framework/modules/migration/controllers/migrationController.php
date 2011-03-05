@@ -42,13 +42,13 @@ class migrationController extends expController {
         'linkmodule'=>'linksController',
         'weblogmodule'=>'blogController',
         'listingmodule'=>'portfolioController',
+        'contactmodule'=>'formmodule',  // this module is converted to a functionally similar formmodule
     );
     
     // these are modules that have either been deprecated or have no content to migrate
     // Not sure we need to note deprecated modules...
     public $deprecated_modules = array(
         'administrationmodule',
-        'contactmodule',  // this module is of value to some?  perhpas needs to be converted to a form or something?
         'containermodule',  // not really deprecated, but must be in this list to skip processing
 //        'navigationmodule',  // veiws are still used, so modules need to be imported?
         'imagemanagermodule',
@@ -88,10 +88,10 @@ class migrationController extends expController {
     );
     
     public $old_school = array(  // psuedo-variable isn't used, list of old school modules still in code base
-        'calendarmodule',  // working
-        'formmodule',  // NOT working!
-        'navigationmodule',  // working
-        'simplepollmodule',  // working
+        'calendarmodule',
+        'formmodule',
+        'navigationmodule',
+        'simplepollmodule',
     );
     
     function name() { return $this->displayname(); } //for backwards compat with old modules
@@ -372,21 +372,32 @@ class migrationController extends expController {
             case 'formmodule':
 				@$this->msg['migrated'][$iloc->mod]['name'] = $iloc->mod;
                 $form = $old_db->selectObject('formbuilder_form', "location_data='".serialize($iloc)."'");
-                $db->insertObject($form, 'formbuilder_form');
+				$oldformid = $form->id;
+				unset($form->id);
+                $form->id = $db->insertObject($form, 'formbuilder_form');
 				@$this->msg['migrated'][$iloc->mod]['count']++;
-				$addresses = $old_db->selectObjects('formbuilder_address', "form_id='".$form->id."'");
+				$addresses = $old_db->selectObjects('formbuilder_address', "form_id='".$oldformid."'");
                 foreach($addresses as $address) {
+					unset($address->id);
+					$address->form_id = $form->id;
                     $db->insertObject($address, 'formbuilder_address');
 				}
-				$controls = $old_db->selectObjects('formbuilder_control', "form_id='".$form->id."'");
+				$controls = $old_db->selectObjects('formbuilder_control', "form_id='".$oldformid."'");
                 foreach($controls as $control) {
+					unset($control->id);
+					$control->form_id = $form->id;
                     $db->insertObject($control, 'formbuilder_control');
 				}
-				$reports = $old_db->selectObjects('formbuilder_report', "form_id='".$form->id."'");
+				$reports = $old_db->selectObjects('formbuilder_report', "form_id='".$oldformid."'");
                 foreach($reports as $report) {
+					unset($report->id);
+					$report->form_id = $form->id;
                     $db->insertObject($report, 'formbuilder_report');
 				}
 				if (isset($form->table_name)) {
+					if (isset($this->params['wipe_content'])) {
+						$db->delete('formbuilder_'.$form->table_name);
+					}
 					formbuilder_form::updateTable($form);
 					$records = $old_db->selectObjects('formbuilder_'.$form->table_name, 1);
 					foreach($records as $record) {
@@ -399,12 +410,17 @@ class migrationController extends expController {
     
     private function add_container($iloc,$m) {
         global $db;
-        $iloc->mod = $this->new_modules[$iloc->mod];
-        $m->internal = (isset($m->internal) && strstr($m->internal,"Controller")) ? $m->internal : serialize($iloc);
-        $m->action = isset($m->action) ? $m->action : 'showall';
-        $m->view = isset($m->view) ? $m->view : 'showall';
-        if ($m->view == "Default") {
-			$m->view = 'showall';
+		if ($iloc->mod != 'contactmodule') {
+			$iloc->mod = $this->new_modules[$iloc->mod];
+			$m->internal = (isset($m->internal) && strstr($m->internal,"Controller")) ? $m->internal : serialize($iloc);
+			$m->action = isset($m->action) ? $m->action : 'showall';
+			$m->view = isset($m->view) ? $m->view : 'showall';
+			if ($m->view == "Default") {
+				$m->view = 'showall';
+			}
+		} else {
+			$iloc->mod = $this->new_modules[$iloc->mod];
+			$m->internal = serialize($iloc);
 		}
         $db->insertObject($m, 'container');
     }
@@ -973,6 +989,75 @@ class migrationController extends expController {
                     }
                 }
             break;
+            case 'contactmodule':  // convert to an old school form
+			
+				$module->view == "Default";
+
+                $contactform = $old_db->selectObject('contactmodule_config', "location_data='".serialize($iloc)."'");
+				$loc = expUnserialize($contactform->location_data);
+				$loc->mod = 'formmodule';
+				$contactform->location_data = serialize($loc);
+//				$replyto_address = $contactform->replyto_address;
+				unset($contactform->replyto_address);
+//				$from_address = $contactform->from_address;
+				unset($contactform->from_address);
+//				$from_name = $contactform->from_name;
+				unset($contactform->from_name);
+				unset($contactform->use_captcha);
+				$contactform->name = 'Send us an e-mail';
+				$contactform->description = '';
+				$contactform->response = $contactform->final_message;
+				unset($contactform->final_message);
+				$contactform->table_name ='';
+				$contactform->is_email = true;
+				$contactform->is_saved = false;
+				$contactform->submitbtn = 'Send Message';
+				$contactform->resetbtn = 'Reset';
+				unset($contactform->id);
+                $contactform->id = $db->insertObject($contactform, 'formbuilder_form');
+		
+				$addresses = $old_db->selectObjects('contact_contact', "location_data='".serialize($iloc)."'");
+                foreach($addresses as $address) {
+					unset($address->addressbook_contact_id);
+					unset($address->contact_info);
+					unset($address->location_data);
+					$address->form_id = $contactform->id;
+                    $db->insertObject($address, 'formbuilder_address');
+				}
+				
+				$report->name = 'Default Report';
+				$report->location_data = $contactform->location_data;
+				$report->form_id = $contactform->id;
+                $db->insertObject($report, 'formbuilder_report');
+
+				$control->name = 'name';
+				$control->caption = 'Your Name';
+				$control->form_id = $contactform->id;
+				$control->data = 'O:11:"textcontrol":12:{s:4:"size";i:0;s:9:"maxlength";i:0;s:7:"caption";s:9:"Your Name";s:9:"accesskey";s:0:"";s:7:"default";s:0:"";s:8:"disabled";b:0;s:8:"required";b:1;s:8:"tabindex";i:-1;s:7:"inError";i:0;s:4:"type";s:4:"text";s:6:"filter";s:0:"";s:10:"identifier";s:4:"name";}';
+				$control->rank = 0;
+				$control->is_readonly = 0;
+				$control->is_static = 0;
+				$db->insertObject($control, 'formbuilder_control');
+				$control->name = 'email';
+				$control->caption = 'Your Email';
+				$control->data = 'O:11:"textcontrol":12:{s:4:"size";i:0;s:9:"maxlength";i:0;s:7:"caption";s:18:"Your Email Address";s:9:"accesskey";s:0:"";s:7:"default";s:0:"";s:8:"disabled";b:0;s:8:"required";b:1;s:8:"tabindex";i:-1;s:7:"inError";i:0;s:4:"type";s:4:"text";s:6:"filter";s:0:"";s:10:"identifier";s:5:"email";}';
+				$control->rank = 1;
+				$db->insertObject($control, 'formbuilder_control');
+				$control->name = 'subject';
+				$control->caption = 'Subject';
+				$control->data = 'O:11:"textcontrol":12:{s:4:"size";i:0;s:9:"maxlength";i:0;s:7:"caption";s:7:"Subject";s:9:"accesskey";s:0:"";s:7:"default";s:0:"";s:8:"disabled";b:0;s:8:"required";b:1;s:8:"tabindex";i:-1;s:7:"inError";i:0;s:4:"type";s:4:"text";s:6:"filter";s:0:"";s:10:"identifier";s:7:"subject";}';
+				$control->rank = 2;
+				$db->insertObject($control, 'formbuilder_control');
+				$control->name = 'message';
+				$control->caption = 'Message';
+				$control->data = 'O:17:"texteditorcontrol":12:{s:4:"cols";i:60;s:4:"rows";i:8;s:9:"accesskey";s:0:"";s:7:"default";s:0:"";s:8:"disabled";b:0;s:8:"required";b:0;s:8:"tabindex";i:-1;s:7:"inError";i:0;s:4:"type";s:4:"text";s:8:"maxchars";i:0;s:10:"identifier";s:7:"message";s:7:"caption";s:7:"Message";}';
+				$control->rank = 3;
+				$db->insertObject($control, 'formbuilder_control');
+				
+				@$this->msg['migrated'][$iloc->mod]['count']++;
+				@$this->msg['migrated'][$iloc->mod]['name'] = $this->new_modules[$iloc->mod];
+//				@$this->msg['migrated'][$iloc->mod]['name'] = $iloc->mod;
+			break;
             default:
                 @$this->msg['noconverter'][$iloc->mod]++;
             break;
