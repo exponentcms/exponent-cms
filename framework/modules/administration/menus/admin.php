@@ -148,7 +148,7 @@ return array(
                                     ),
                                     array(
                                         'text'=>'Migrate Content',
-            			                'url'=>makeLink(array('module'=>'migration','action'=>'analyze_site')),
+            			                'url'=>makeLink(array('module'=>'migration','action'=>'manage_content')),
                                     ),
                                     array(
                                         'text'=>'Migrate Users/Groups',

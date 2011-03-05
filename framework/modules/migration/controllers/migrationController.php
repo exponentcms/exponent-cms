@@ -104,7 +104,7 @@ class migrationController extends expController {
     function supportsWorkflow() { return false; }
     function isSearchable() { return false; }
     
-    public function analyze_site() {
+    public function manage_content() {
         global $db;
         //$containers = $db->selectObjects('container', 'external="N;"');
         //eDebug($containers);
@@ -196,13 +196,18 @@ class migrationController extends expController {
             $db->delete('photo');
             $db->delete('headline');
             $db->delete('blog');
-            $db->delete('content_expComments');
-            $db->delete('expComments');
             $db->delete('faqs');
-            $db->delete('content_expFiles');
             $db->delete('portfolio');
-            $db->delete('content_expTags');
+            $db->delete('content_expComments');
+            $db->delete('content_expFiles');
             $db->delete('content_expSimpleNote');
+            $db->delete('content_expTags');
+            $db->delete('expComments');
+//            $db->delete('expConfigs');
+//            $db->delete('expFiles');
+//            $db->delete('expRSS');
+            $db->delete('expSimpleNote');
+            $db->delete('expTags');
             $db->delete('calendar');
             $db->delete('eventdate');
             $db->delete('calendarmodule_config');
@@ -217,7 +222,7 @@ class migrationController extends expController {
             @$this->msg['clearedcontent']++;
         }
         
-        //pull the locationref data
+        //pull the locationref data for selected modules
 		if (empty($this->params['migrate'])) {
 			$where = '1';
 		} else {
@@ -242,7 +247,7 @@ class migrationController extends expController {
             }
         }
 
-        // pull the sectionref data
+        // pull the sectionref data for selected modules
         $secref = $old_db->selectObjects('sectionref',$where);
         foreach ($secref as $sr) {
             // hard coded modules
@@ -259,13 +264,17 @@ class migrationController extends expController {
             if (!in_array($sr->module, $this->deprecated_modules)) {
                 // if the module is not in the depecation list, we're hitting here
                 if (!$db->selectObject('sectionref',"source='".$sr->source."'")) {
+					if (array_key_exists($sr->module, $this->new_modules)) {
+						// convert the source to new exp controller
+						$sr->module = $this->new_modules[$sr->module];
+					}
                     $db->insertObject($sr, 'sectionref');
                     @$this->msg['sectionref']++;
                 }
             }
         }
 
-        //pull over all the container modules
+        //pull over all the top level containers
         $containers = $old_db->selectObjects('container', 'external="N;"');
         foreach ($containers as $cont) {
             if (!$db->selectObject('container',"internal='".$cont->internal."'")) {

@@ -14,6 +14,7 @@
         </tr>
     </thead>
     <tbody>
+		<tr><td>Migrated {$msg.locationref} total locations and {$msg.container} total containers which included:</td></tr>
         {foreach from=$msg.migrated item=val key=key}
         <tr class="{cycle values="odd,even"}">
             <td>
