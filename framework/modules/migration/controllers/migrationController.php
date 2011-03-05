@@ -1025,7 +1025,7 @@ class migrationController extends expController {
                     $db->insertObject($address, 'formbuilder_address');
 				}
 				
-				$report->name = 'Default Report';
+				$report->name = $contactform->subject;
 				$report->location_data = $contactform->location_data;
 				$report->form_id = $contactform->id;
                 $db->insertObject($report, 'formbuilder_report');
