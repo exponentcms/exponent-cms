@@ -63,22 +63,6 @@ class expCSS {
         // gather up all .css files in themes/mytheme/css/
         expCSS::themeCSS();
         
-                
-        // if (is_array($css_primer)) ksort($css_primer);
-        // eDebug($css_primer);
-        // 
-        // if (is_array($css_core)) ksort($css_core);
-        // eDebug($css_core);
-        // 
-        // if (is_array($css_links)) ksort($css_links);
-        // eDebug($css_links);
-        // 
-        // if (is_array($css_primer)) ksort($css_theme);
-        // eDebug($css_theme);
-        // 
-        // if (is_array($css_inline)) ksort($css_inline);
-        // eDebug($css_inline);
-
         unset($head_config['xhtml']);
         $css_files = array();
         foreach($head_config as $key=>$value) {
@@ -92,7 +76,8 @@ class expCSS {
                 $html .= "\t".'<link rel="stylesheet" type="text/css" href="'.$file.'" '.XHTML_CLOSING.'>'."\r\n";
             }
         } else {
-            //2048
+            // if we're minifying, we'll break our URLs apart at 1500 characters to allow it through 
+            // browser string limits
             $i = 0;
             $srt = array();
             $srt[$i] = "";
