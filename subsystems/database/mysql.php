@@ -88,7 +88,7 @@ class mysql_database {
 		list($major, $minor, $micro) = sscanf(mysql_get_server_info(), "%d.%d.%d-%s");
 		//in case the config was written before the constant was introduced
 		//TODO: we might need a general api/registry to make backward compatibility checks + automatic upgrade wizzard
-		if(defined("DB_ENCODING")) {
+		if(defined("DB_ENCODING") && $database == DB_NAME /* Second check added by Imran to keep includes from ResearchWebsites working */) {
 			//SET NAMES is possible since version 4.1
 			if(($major > 4) OR (($major == 4) AND ($minor >= 1))) {
 				@mysql_query("SET NAMES " . DB_ENCODING, $this->connection);
@@ -553,6 +553,12 @@ class mysql_database {
                 return $objects;
         }
 	
+	function selectObjectBySql($sql) {
+        $res = @mysql_query($this->connection,$sql);
+        if ($res == null) return null;
+        return mysql_fetch_object($res);
+	}
+	
 
 	function selectObjectsBySql($sql) {
                 $res = @mysql_query($sql, $this->connection);
@@ -686,6 +692,16 @@ class mysql_database {
                 $obj = mysql_fetch_object($res);
                 return $obj->c;
         }
+	
+	/* exdoc
+	 * Count Objects matching a given criteria using raw sql
+	 *
+	 * @param string $sql The sql query to be run
+	 */
+	function queryRows($sql) {
+        $res = @mysql_query($this->connection,$sql);
+        return empty($res) ? 0 : mysql_num_rows($res);
+	}
 
 	/* exdoc
 	 * Select a single object.
@@ -1087,6 +1103,54 @@ class mysql_database {
 		if ($res == null) return array();
 		for ($i = 0; $i < mysql_num_rows($res); $i++) $arrays[] = mysql_fetch_assoc($res);
 		return $arrays;
+	}
+	
+	/* exdoc
+	 * Select an array of arrays
+	 *
+	 * Selects a set of arrays from the database.  Because of the way
+	 * Exponent handles objects and database tables, this is akin to
+	 * SELECTing a set of records from a database table.  Returns an
+	 * array of arrays, in any random order.
+	 *
+	 * @param string $table The name of the table/object to look at
+	 * @param string $where Criteria used to narrow the result set.  If this
+	 *   is specified as null, then no criteria is applied, and all objects are
+	 *   returned
+	 */
+	function selectArraysBySql($sql) {
+        /*$logFile = "C:\\xampp\\htdocs\\supserg\\tmp\\queryLog.txt";
+        $lfh = fopen($logFile, 'a');
+        fwrite($lfh, $sql . "\n");    
+        fclose($lfh);                                  */
+    	$res = @mysql_query($this->connection,$sql);
+		if ($res == null) return array();
+		$arrays = array();
+		for ($i = 0; $i < mysql_num_rows($res); $i++) $arrays[] = mysql_fetch_assoc($res);
+		return $arrays;
+	}
+
+    /* exdoc
+	 * Select a record from the database as an array
+	 *
+	 * Selects a set of arrays from the database.  Because of the way
+	 * Exponent handles objects and database tables, this is akin to
+	 * SELECTing a set of records from a database table.  Returns an
+	 * array of arrays, in any random order.
+	 *
+	 * @param string $table The name of the table/object to look at
+	 * @param string $where Criteria used to narrow the result set.  If this
+	 *   is specified as null, then no criteria is applied, and all objects are
+	 *   returned
+	 */
+	function selectArray($table, $where = null, $orderby = null, $is_revisioned=false) {
+		if ($where == null) $where = "1";
+		if($is_revisioned) $where.= " AND revision_id=(SELECT MAX(revision_id) FROM `" . $this->prefix . "$table` WHERE $where)";
+		$orderby = empty($orderby) ? '' : "ORDER BY " . $orderby;
+	    	$arrays = array();
+	    	$res = @mysql_query("SELECT * FROM `" . $this->prefix . "$table` WHERE $where $orderby",$this->connection);
+		if ($res == null) return null;
+		return mysql_fetch_assoc($res);
 	}
 	
 	function selectExpObjects($table, $where=null, $classname) {
