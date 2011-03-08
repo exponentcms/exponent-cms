@@ -589,9 +589,6 @@ class expRouter {
     
     private function buildSEFPath () {
         // Apache
-        eDebug($_SERVER);
-        eDebug($_ENV);
-        eDebug(php_sapi_name());
         if (strpos($_SERVER['SERVER_SOFTWARE'],'Apache') === 0 || strpos($_SERVER['SERVER_SOFTWARE'],'WebServerX') === 0) {
             switch(php_sapi_name()) {
                 case "cgi":
