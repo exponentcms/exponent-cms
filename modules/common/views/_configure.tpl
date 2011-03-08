@@ -14,6 +14,9 @@
  *
  *}
 {if $hasConfig == 1}
+{css unique="forms" corecss="forms"}
+
+{/css}
 <div class="form_header">
 	<h1>{$_TR.form_title}</h1>
 	<p>{$_TR.form_header}</p>	

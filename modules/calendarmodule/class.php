@@ -370,7 +370,7 @@ class calendarmodule {
 					$dates = $db->selectObjects("eventdate",$locsql);
 					break;
 				case "upcoming":
-					if ($config->rss_limit > 0) {
+					if (!empty($config->rss_limit) && $config->rss_limit > 0) {
 						$eventlimit = " AND date <= " . ($day + ($config->rss_limit * 86400));
 					} else {
 						$eventlimit = "";
@@ -393,7 +393,7 @@ class calendarmodule {
 					$dates = $db->selectObjects("eventdate",$locsql." AND date >= ".exponent_datetime_startOfMonthTimestamp(time()) . " AND date <= " . exponent_datetime_endOfMonthTimestamp(time()));
 					break;
 			}
-			$items = calendarmodule::_getEventsForDates($dates,$sort_asc,$template->viewconfig['featured_only'] ? true : false);
+			$items = calendarmodule::_getEventsForDates($dates,$sort_asc,isset($template->viewconfig['featured_only']) ? true : false);
 			// Upcoming events can be configured to show a specific number of events.
 			// The previous call gets all events in the future from today
 			// If configured, cut the array to the configured number of events
