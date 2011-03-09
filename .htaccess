@@ -1,4 +1,4 @@
-# Don't show directory directory listings.
+# Don't show directory directory listings..
 Options -Indexes
 
 # Route requests to Exponent.
