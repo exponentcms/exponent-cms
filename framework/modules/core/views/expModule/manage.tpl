@@ -13,7 +13,7 @@
  * GPL: http://www.gnu.org/licenses/gpl.txt
  *
  *}
-{css unique="managemods" link="`$smarty.const.PATH_RELATIVE`framework/core/assets/css/admin-global.css"}
+{css unique="managemods" corecss="admin-global"}
 {literal}
 .exp-skin-table td label {
     display:block;
