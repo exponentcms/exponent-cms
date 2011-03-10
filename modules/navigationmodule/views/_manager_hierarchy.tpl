@@ -233,6 +233,10 @@ eXp.ddNavTree = function() {
 		window.location="{/literal}{$smarty.const.URL_FULL}{literal}index.php?module=navigationmodule&action=add_section&parent="+currentMenuNode.data.id;
 	}
 	
+	function viewNode (){
+		window.location="{/literal}{$smarty.const.URL_FULL}{literal}index.php?section="+currentMenuNode.data.id;
+	}
+	
 	function editNode (){
 		if (currentMenuNode.data.obj.alias_type==0){
 			window.location="{/literal}{$smarty.const.URL_FULL}{literal}index.php?module=navigationmodule&action=edit_contentpage&id="+currentMenuNode.data.id;
@@ -403,6 +407,7 @@ eXp.ddNavTree = function() {
 	
 	var navoptions = [
 			{ classname:"addsubpage", text: "Add A Subpage", onclick: { fn: addSubNode } },
+			{ classname:"viewpage", text: "View This Page", onclick: { fn: viewNode } },
 			{ classname:"editpage", text: "Edit This Page", onclick: { fn: editNode } },
 			{ classname:"deletepage", text: "Delete This Page", onclick: { fn: deleteNode } },
 			{ classname:"userperms", text: "Manage User Permissions", onclick: { fn: editUserPerms } },

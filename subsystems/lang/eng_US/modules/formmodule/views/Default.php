@@ -6,9 +6,10 @@ return array(
 	'alt_configure'=>'Configure this Module',
 	
 	'view_data'=>'View Data',
-	'edit_settings'=>'Edit Form Settings',
+	'export_cvs'=>'Export CVS',
+	'edit_settings'=>'Form Settings',
 	'edit_form'=>'Edit Form',
-	'edit_report'=>'Edit Report Settings',
+	'edit_report'=>'Report Settings',
 );
 
 ?>

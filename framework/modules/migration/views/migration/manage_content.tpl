@@ -14,7 +14,7 @@
  *
  *}
 
-<div class="module migration analyze_site">
+<div class="module migration manage_content">
     <h1>Migrate Content</h1>
     <p> 
         The following is a list of modules we found in the database {$config.database}.

@@ -89,7 +89,7 @@
 			{$item->body|summarize:html:paralinks}
 		</dd>
 	{foreachelse}
-		<<dd><em>{$_TR.no_events}</em></dd>
+		<dd><em>{$_TR.no_events}</em></dd>
 	{/foreach}
 	</dl>
 </div>

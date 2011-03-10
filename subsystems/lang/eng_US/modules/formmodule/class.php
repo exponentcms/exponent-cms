@@ -1,7 +1,7 @@
 <?php
 
 return array(
-	'module_name'=>'Form Module',
+	'module_name'=>'Form',
 	'module_description'=>'Allows the creation of forms that can be emailed and/or stored in the database.',
 	
 	'perm_administrate'=>'Administrate',

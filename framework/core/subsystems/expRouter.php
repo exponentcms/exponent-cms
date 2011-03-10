@@ -592,10 +592,16 @@ class expRouter {
         if (strpos($_SERVER['SERVER_SOFTWARE'],'Apache') === 0 || strpos($_SERVER['SERVER_SOFTWARE'],'WebServerX') === 0) {
             switch(php_sapi_name()) {
                 case "cgi":
-                     $this->sefPath = !empty($_SERVER['REQUEST_URI']) ? urldecode($_SERVER['REQUEST_URI']): null;
+                    $this->sefPath = !empty($_SERVER['REQUEST_URI']) ? urldecode($_SERVER['REQUEST_URI']): null;
                     break;
                 case "cgi-fcgi":
-                    $this->sefPath = (isset($_SERVER['REDIRECT_URL']) && $_SERVER['REDIRECT_URL'] != PATH_RELATIVE.'index.php') ? urldecode($_SERVER['REDIRECT_URL']) : urldecode($_ENV['REQUEST_URI']);
+                    if (isset($_SERVER['REDIRECT_URL']) && $_SERVER['REDIRECT_URL'] != PATH_RELATIVE.'index.php') {
+                        $this->sefPath = urldecode($_SERVER['REDIRECT_URL']);
+                    } elseif (!empty($_ENV['REQUEST_URI'])) {
+                        $this->sefPath = urldecode($_ENV['REQUEST_URI']);
+                    } else {
+                        $this->sefPath = urldecode($_SERVER['REQUEST_URI']);
+                    }
                     break;
                 default:
                     $this->sefPath = !empty($_SERVER['REDIRECT_URL']) ? urldecode($_SERVER['REDIRECT_URL']) : null;

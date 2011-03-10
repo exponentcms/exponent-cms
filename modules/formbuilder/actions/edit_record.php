@@ -44,8 +44,10 @@ if ($f && $data && $controls) {
 			$ctl->_readonly = $c->is_readonly;
 			if ($c->is_readonly == 0) {
 				$name = $c->name;
-				$ctl->default = $data->$name;
-			}
+				if ($c->is_static == 0) {
+					$ctl->default = $data->$name;
+				}
+      }
 			$form->register($c->name,$c->caption,$ctl);
 		}
 		$form->register(uniqid(''),'', new htmlcontrol('<br /><br />'));
@@ -53,6 +55,7 @@ if ($f && $data && $controls) {
 		$form->meta('action','submit_form');
 		$form->meta('m',$loc->mod);
 		$form->meta('s',$loc->src);
+		$form->meta('isedit',1);
 		$form->meta('i',$loc->int);
 		$form->meta('id',$f->id);
 		$form->meta('data_id',$data->id);

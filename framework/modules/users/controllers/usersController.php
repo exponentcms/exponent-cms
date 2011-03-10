@@ -234,17 +234,30 @@ class usersController extends expController {
         expHistory::set('managable', $this->params);
         
         //cleans up any old sessions
-	    $db->delete('sessionticket','last_active < ' . (time() - SESSION_TIMEOUT));
-	
+		if(SESSION_TIMEOUT_ENABLE == true){	
+			$db->delete('sessionticket','last_active < ' . (time() - SESSION_TIMEOUT));
+		}
+		
 	    if (!defined('SYS_DATETIME')) require_once(BASE.'subsystems/datetime.php');
-	
+
+		if (isset($_GET['id']) && $_GET['id'] == 0) {
+			$sessions = $db->selectObjects('sessionticket', "uid<>0");
+			$filtered = 1;
+		} else {
+			$sessions = $db->selectObjects('sessionticket');
+			$filtered = 0;
+		}
+		
 	    $sessions = $db->selectObjects('sessionticket');
 	    for ($i = 0; $i < count($sessions); $i++) {
 		    $sessions[$i]->user = new user($sessions[$i]->uid);
+			if ($sessions[$i]->uid == 0) {
+				$sessions[$i]->user->id = 0;
+			}
 		    $sessions[$i]->duration = exponent_datetime_duration($sessions[$i]->last_active,$sessions[$i]->start_time);
 	    }
-	
-	    assign_to_template(array('sessions'=>$sessions));
+
+	    assign_to_template(array('sessions'=>$sessions, 'filter'=>$filtered));
     }
     
     public function kill_session() {
