@@ -5,8 +5,8 @@ return array(
 	'standalone_pages'=>'Standalone&nbsp;Pages',
 	'pagesets'=>'Pagesets',
 	
-	'form_title'=>'Manage Site Navigation',
-	'form_header'=>'<strong>Drag and drop</strong> tree items to re-order your site\'s hierarchy. <strong>Right click on any tree item</strong> for a context menu of options for that item.',
+	'form_title'=>'Manage Menu Hierarchy Pages',
+	'form_header'=>'<strong>Drag and drop</strong> tree items to re-order your site\'s hierarchy (main menu). <strong>Right click on any tree item</strong> for a context menu of options for that item.',
 	
 	'new_top_level'=>'Create a New Top Level Page',
 	'new_sub_page'=>'Add Subpage',

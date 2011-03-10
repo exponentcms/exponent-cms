@@ -15,7 +15,7 @@
  *}
 
 <div class="module store showall-uncategorized">
-    <h1>Uncategories Products</h1>
+    <h1>Uncategorized Products</h1>
     <div id="products">
         {$page->links}
         <table id="prods" class="exp-skin-table" style="width:95%">

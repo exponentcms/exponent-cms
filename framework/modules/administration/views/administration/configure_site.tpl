@@ -42,6 +42,7 @@
             <li><a href="#tab8"><em>{gettext str="Security Settings"}</em></a></li>
             <li><a href="#tab9"><em>{gettext str="Help Settings"}</em></a></li>
             <li><a href="#tab10"><em>{gettext str="HTML Editor Settings"}</em></a></li>
+            <li><a href="#tab10"><em>{gettext str="Error Messages"}</em></a></li>
             {/if}
             </ul>            
             <div class="yui-content">
@@ -83,6 +84,7 @@
                     {control type="dropdown" name="sc[DISPLAY_ATTRIBUTION]" label="Attribution Display" items=$attribution default=$smarty.const.DISPLAY_ATTRIBUTION}
                     {control type="dropdown" name="sc[DISPLAY_DATE_FORMAT]" label="Date Format" items=$date_format default=$smarty.const.DISPLAY_DATE_FORMAT}
                     {control type="dropdown" name="sc[DISPLAY_TIME_FORMAT]" label="Time Format" items=$time_format default=$smarty.const.DISPLAY_TIME_FORMAT}
+                    {control type="dropdown" name="sc[DISPLAY_START_OF_WEEK]" label="Start of Week" items=$start_of_week default=$smarty.const.DISPLAY_START_OF_WEEK}
                     {control type="text" name="sc[DISPLAY_DEFAULT_TIMEZONE]" label="Enter the default timezone for this site. CAUTION: This may break calendars and other features that use date functions if you change this after entering data. Must be in a format shown here: <a href='http://www.php.net/manual/en/timezones.php' target='_blank'>http://www.php.net/manual/en/timezones.php</a>" value=$smarty.const.DISPLAY_DEFAULT_TIMEZONE}
                 </div>
                 {if $user->is_admin==1}
@@ -116,9 +118,16 @@
                     {control type="checkbox" postfalse=1 name="sc[HELP_ACTIVE]" label="Enable Help links for documentation?" checked=$smarty.const.HELP_ACTIVE value=1}
                     {control type="text" name="sc[HELP_URL]" label="URL For Help Documentation" value=$smarty.const.HELP_URL}
                 </div>
-                <div id="tab9">
+                <div id="tab10">
                     <h2>{gettext str="HTML Editor Settings"}</h2>
                     {control type="dropdown" name="sc[SITE_WYSIWYG_EDITOR]" label="HTML Editor" items="CKEditor,FCK Editor" values="ckeditor,FCKeditor" default=$smarty.const.SITE_WYSIWYG_EDITOR}
+                </div>
+                <div id="tab11">
+                    <h2>{gettext str="Error Messages"}</h2>
+                    {control type="text" name="sc[SITE_404_TITLE]" label="Page Title For 'Not Found' (404) Error" value=$smarty.const.SITE_404_TITLE}
+                    {control type="html" name="sc[SITE_404_HTML]" label="'Not Found' (404) Error Message" value=$smarty.const.SITE_404_HTML}
+                    {control type="html" name="sc[SITE_403_REAL_HTML]" label="'Access Denied' (403) Error Message" value=$smarty.const.SITE_403_REAL_HTML}
+                    {control type="html" name="sc[SESSION_TIMEOUT_HTML]" label="'Session Expired' Error  Message" value=$smarty.const.SESSION_TIMEOUT_HTML}
                 </div>
                 {/if}
             </div>

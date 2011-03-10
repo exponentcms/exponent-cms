@@ -54,6 +54,12 @@ foreach ($controls as $c) {
         $fields[$c->name] = call_user_func(array($control_type,'templateFormat'),$value,$ctl);
         $emailFields[$c->name] = call_user_func(array($control_type,'templateFormat'),$emailValue,$ctl);        
         $captions[$c->name] = $c->caption;
+		if ($c->name == "email") {
+			$from = $value;
+		}
+		if ($c->name == "name") {
+			$from_name = $value;
+		}
     }
 }
 
@@ -71,8 +77,16 @@ if (!isset($_POST['data_id']) || (isset($_POST['data_id']) && exponent_permissio
             $db_data->ip = $_SERVER['REMOTE_ADDR'];
             if (exponent_sessions_loggedIn()) {
                 $db_data->user_id = $user->id;
+				$from = $user->email
+				$from_name = $user->firstname." ".$user->lastname." (".$user->username).")";
             } else {
                 $db_data->user_id = 0;
+				if (empty($from) {
+					$from = trim(SMTP_FROMADDRESS);
+				}
+				if (empty($from_name) {
+					$from_name = trim(ORGANIZATION_NAME);
+				}
             }
             $db_data->timestamp = time();
         }        
@@ -105,10 +119,10 @@ if (!isset($_POST['data_id']) || (isset($_POST['data_id']) && exponent_permissio
         }
         $template->assign("fields",$emailFields);        
         $template->assign("captions",$captions);
-		    $template->assign('title',$rpt->name);
+		$template->assign('title',$rpt->name);
         $template->assign("is_email",1);
         $emailHtml = $template->render();
-        
+		$emailText = chop(strip_tags(str_replace(array("<br />","<br>","br/>"),"\n",$emailHtml)));
         
         if (count($emaillist)) {
             //This is an easy way to remove duplicates
@@ -118,9 +132,10 @@ if (!isset($_POST['data_id']) || (isset($_POST['data_id']) && exponent_permissio
                 $mail = new expMail();        
                 $mail->quickSend(array(
                         'html_message'=>$emailHtml,
+						"text_message"=>$emailText,
         			    'to'=>trim($address),
-        			    'from'=>trim(SMTP_FROMADDRESS),
-        			    'from_name'=>trim(ORGANIZATION_NAME),
+        			    'from'=>$from,
+        			    'from_name'=>$from_name,
         			    'subject'=>$f->subject,
                 ));
             }

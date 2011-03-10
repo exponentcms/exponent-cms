@@ -15,7 +15,7 @@
  *}
 
 <div class="modules order_status showall">
-	<h1>{$moduletitle|default:"Status Administration"}</h1>
+	<h1>{$moduletitle|default:"Manage Status Codes"}</h1>
 	
 	<a href="{link action=create}">Create a new status code</a>{br}{br}
 	<div id="orders">
