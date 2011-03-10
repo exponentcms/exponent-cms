@@ -1,21 +1,19 @@
 <?php
 /**
- * This file is part of Exponent Content Management System
+ *  This file is part of Exponent
+ *  Exponent is free software; you can redistribute
+ *  it and/or modify it under the terms of the GNU
+ *  General Public License as published by the Free
+ *  Software Foundation; either version 2 of the
+ *  License, or (at your option) any later version.
  *
- * Exponent is free software; you can redistribute
- * it and/or modify it under the terms of the GNU
- * General Public License as published by the Free
- * Software Foundation; either version 2 of the
- * License, or (at your option) any later version.
+ * The file thats holds the expFile class
  *
- * @category   Exponent CMS
- * @package    Framework
- * @subpackage Datatypes
- * @author     Adam Kessler <adam@oicgroup.net>
- * @copyright  2004-2009 OIC Group, Inc.
- * @license    GPL: http://www.gnu.org/licenses/gpl.txt
- * @version    Release: @package_version@
- * @link       http://www.exponent-docs.org/api/package/PackageName
+ * @link http://www.gnu.org/licenses/gpl.txt GPL http://www.gnu.org/licenses/gpl.txt
+ * @package Exponent-CMS
+ * @copyright 2004-2006 OIC Group, Inc.
+ * @author Adam Kessler <adam@oicgroup.net>
+ * @version 2.0.0
  */
 
  /**
@@ -28,18 +26,8 @@
   * and importing of data in preperation of data importation. Upload and
   * import via child classes.
   *
-  * @author Adam Kessler
-  *
-  * @tutorial /path/to/tutorial.php Complete Class tutorial
-  * @example url://path/to/example.php description
-  *
-  * @package Exponent
-  * @subpackage File
-  *
-  * @extends expRecord
-  *
-  * @requires class_name
-  * @uses class|method|global|variable description
+ * @subpackage Core-Datatypes
+ * @package Framework
   *
   */
 class expFile extends expRecord {

@@ -1,5 +1,3 @@
-THIS IS A TEST
-
 Exponent Content Management System
 Copyright (c) 2004-2011 OIC Group, Inc.
 ===============================================
@@ -17,7 +15,7 @@ providing site managers the power and flexibility to add new features,
 completely customize the layout, and delegate responsibilities to other
 users.
 
----------------
+----------------
 Getting Started
 
 First, you'll need to install and configure Exponent. See the INSTALLATION
