@@ -110,7 +110,9 @@ class section {
 		exponent_forms_initialize();
 		
 		$form = section::_commonForm($object);
+		// the name and sef_name are already set in the stand-alone page
 		$form->unregister('name');
+		$form->unregister('sef_name');
 		
 		global $db;
 		$standalones = array();
@@ -196,6 +198,8 @@ class section {
 		// This has the name and positional dropdowns registered.
 		// This call also initializes the section object, if it is not an existing section.
 		$form = section::_commonForm($object);
+		// do we need an sef_name for an external page?
+		//$form->unregister('sef_name');
 		
 		if (!isset($object->external_link)) $object->external_link = '';
 		// Add a textbox the user can enter the external website's URL into.
@@ -239,6 +243,8 @@ class section {
 		// This has the name and positional dropdowns registered.
 		// This call also initializes the section object, if it is not an existing section.
 		$form = section::_commonForm($object);
+		// the sef_name is already set in this existing page
+		$form->unregister('sef_name');
 		
 		// Add a dropdown to allow the user to choose an internal page.
 		$form->register('internal_id',$i18n['internal_link'],new dropdowncontrol($object->internal_id,navigationmodule::levelDropDownControlArray(0,0)));
@@ -312,7 +318,7 @@ class section {
 	 */
 	function _updateCommon($values,$object) {
 		$object->name = $values['name'];
-		$object->sef_name = $values['sef_name'];
+		if (isset($values['sef_name'])) $object->sef_name = $values['sef_name'];
 		if (isset($values['rank'])) $object->rank = $values['rank'];
 		if (isset($values['parent'])) $object->parent = $values['parent'];
 		$object->new_window = (isset($values['new_window']) ? 1 : 0);
@@ -401,6 +407,8 @@ class section {
 		// expected to catch this if a link to an inactive section is made, and that behaviour
 		// is undesired.
 		$object->active = $section->active;
+		// Set the sef_name the new section from the linked section.
+		$object->sef_name = $section->sef_name;
 		return $object;
 	}
 	
