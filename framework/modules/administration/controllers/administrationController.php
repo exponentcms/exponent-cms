@@ -166,6 +166,9 @@ class administrationController extends expController {
         // Time Format
         $time_format = exponent_config_dropdownData('time_format');
         
+        // Start of Week
+        $start_of_week = exponent_config_dropdownData('start_of_week');
+
         // File Permissions
         $file_permisions = exponent_config_dropdownData('file_permissions');
         
@@ -181,6 +184,7 @@ class administrationController extends expController {
                                 'attribution'=>$attribution,
                                 'date_format'=>$date_format,
                                 'time_format'=>$time_format,
+                                'start_of_week'=>$start_of_week,
                                 'file_permisions'=>$file_permisions,
                                 'dir_permissions'=>$dir_permissions,
                                 'section_dropdown'=>$section_dropdown
