@@ -35,7 +35,7 @@ return array(
                     'id'=>'configure',
                     'itemdata'=>array(
                         array(
-                            'text'=>"Configure Site",
+                            'text'=>"Configure Website",
 			                'url'=>makeLink(array('module'=>'administration','action'=>'configure_site')),
                         ),
                         array(
@@ -43,7 +43,7 @@ return array(
     		                'url'=>makeLink(array('module'=>'administrationmodule','action'=>'upload_extension')),
                         ),
                         array(
-                            'text'=>expLang::gettext('Manage Active Modules'),
+                            'text'=>expLang::gettext('Manage Modules'),
 			                'url'=>makeLink(array('controller'=>'expModule','action'=>'manage')),
                         ),
                         array(
@@ -51,7 +51,7 @@ return array(
 			                'url'=>makeLink(array('module'=>'administrationmodule','action'=>'managethemes')),
                         ),
                         array(
-                            'text'=>'Spider Site',
+                            'text'=>'Regenerate Search Index',
 			                'url'=>makeLink(array('module'=>'search','action'=>'spider')),
                         ),
                         array(

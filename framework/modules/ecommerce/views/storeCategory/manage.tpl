@@ -20,7 +20,7 @@
 
 <div class="storeCategory manage-categories">
 	<div class="form_header">
-			<h1>Manage Categories</h1>
+			<h1>Manage Store Categories</h1>
 			<p>This is where you can add, edit and rearrange categories.</p>
 	</div>	
 	{control type="tagtree" addable="true" id="managecats" name="managecats" controller=storeCategory draggable=true menu=true}
