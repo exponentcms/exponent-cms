@@ -1,23 +1,26 @@
 <?php
 /**
- * expCommentController is a part of the SimpleNote Attachable Item
+ *  This file is part of Exponent
  * 
- * This file is part of Exponent Content Management System
+ *  Exponent is free software; you can redistribute
+ *  it and/or modify it under the terms of the GNU
+ *  General Public License as published by the Free
+ *  Software Foundation; either version 2 of the
+ *  License, or (at your option) any later version.
  *
- * Exponent is free software; you can redistribute
- * it and/or modify it under the terms of the GNU
- * General Public License as published by the Free
- * Software Foundation; either version 2 of the
- * License, or (at your option) any later version.
+ * The file thats holds the expSimpleNoteController class.
  *
- * @category   Exponent CMS
- * @package    Framework
- * @subpackage Controllers
- * @author     Jonathan Worent <jonathan@oicgroup.net>
- * @copyright  2004-2009 OIC Group, Inc.
- * @license    GPL: http://www.gnu.org/licenses/gpl.txt
- * @version    Release: @package_version@
- * @link       http://www.exponent-docs.org/api/package/PackageName
+ * @link http://www.gnu.org/licenses/gpl.txt GPL http://www.gnu.org/licenses/gpl.txt
+ * @package Exponent-CMS
+ * @copyright 2004-2006 OIC Group, Inc.
+ * @author Jonathan Worrent
+ * @version 2.0.0
+ */
+/**
+ * This is the class expSimpleNoteController
+ *
+ * @subpackage Core-Controllers
+ * @package Framework
  */
 
 class expSimpleNoteController extends expController {

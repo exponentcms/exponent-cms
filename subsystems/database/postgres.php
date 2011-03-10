@@ -1,42 +1,26 @@
 <?php
-
-##################################################
-#
-# Copyright (c) 2004-2006 OIC Group, Inc.
-# Written and Designed by James Hunt
-#
-# This file is part of Exponent
-#
-# Exponent is free software; you can redistribute
-# it and/or modify it under the terms of the GNU
-# General Public License as published by the Free
-# Software Foundation; either version 2 of the
-# License, or (at your option) any later version.
-#
-# GPL: http://www.gnu.org/licenses/gpl.txt
-#
-##################################################
-
 /**
- * PostGreSQL Database Engine
+ *  This file is part of Exponent
+ *  Exponent is free software; you can redistribute
+ *  it and/or modify it under the terms of the GNU
+ *  General Public License as published by the Free
+ *  Software Foundation; either version 2 of the
+ *  License, or (at your option) any later version.
  *
- * Manages SQL transactions made to a (possibly
- * networked) PostGreSQL database server.
+ * The file thats holds the mysqli_database class
  *
- * @package	Subsystems
- * @subpackage	Database = PostGreSQL
+ * @link http://www.gnu.org/licenses/gpl.txt GPL http://www.gnu.org/licenses/gpl.txt
+ * @package Exponent-CMS
+ */
+/**
+ * This is the class postgres_database
  *
- * @author		James Hunt
- * @copyright	2004-2008
- *
- *
- *
- *
- *
- * OIC Group, Inc.
- * @version	0.95
- *
- * @ignore
+ * This is the Postgres-specific implementation of the database class.
+ * @copyright 2004-2006 OIC Group, Inc.
+ * @author Written and Designed by James Hunt
+ * @version 2.0.0
+ * @subpackage Database = Postgres
+ * @package Subsystems
  */
 
 class postgres_database {

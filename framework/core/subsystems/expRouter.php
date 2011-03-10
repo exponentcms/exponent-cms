@@ -1,21 +1,25 @@
 <?php
 /**
- * This file is part of Exponent Content Management System
+ *  This file is part of Exponent
+ *  Exponent is free software; you can redistribute
+ *  it and/or modify it under the terms of the GNU
+ *  General Public License as published by the Free
+ *  Software Foundation; either version 2 of the
+ *  License, or (at your option) any later version.
  *
- * Exponent is free software; you can redistribute
- * it and/or modify it under the terms of the GNU
- * General Public License as published by the Free
- * Software Foundation; either version 2 of the
- * License, or (at your option) any later version.
+ * The file thats holds the expRouter class
  *
- * @category   Exponent CMS
- * @package    Framework
- * @subpackage Subsystems
- * @author     Adam Kessler <adam@oicgroup.net>
- * @copyright  2004-2009 OIC Group, Inc.
- * @license    GPL: http://www.gnu.org/licenses/gpl.txt
- * @version    Release: @package_version@
- * @link       http://www.exponent-docs.org/api/package/PackageName
+ * @link http://www.gnu.org/licenses/gpl.txt GPL http://www.gnu.org/licenses/gpl.txt
+ * @package Exponent-CMS
+ * @copyright 2004-2006 OIC Group, Inc.
+ * @author Adam Kessler <adam@oicgroup.net>
+ * @version 2.0.0
+ */
+/**
+ * This is the class expRouter
+ *
+ * @subpackage Core-Subsytems
+ * @package Framework
  */
 
 class expRouter {
