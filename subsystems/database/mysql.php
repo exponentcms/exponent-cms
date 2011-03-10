@@ -1,35 +1,33 @@
 <?php
-
-##################################################
-#
-# Copyright (c) 2004-2006 OIC Group, Inc.
-# Written and Designed by James Hunt
-#
-# This file is part of Exponent
-#
-# Exponent is free software; you can redistribute
-# it and/or modify it under the terms of the GNU
-# General Public License as published by the Free
-# Software Foundation; either version 2 of the
-# License, or (at your option) any later version.
-#
-# GPL: http://www.gnu.org/licenses/gpl.txt
-#
-##################################################
-
-/* exdoc
+/**
+ *  This file is part of Exponent
+ *  Exponent is free software; you can redistribute
+ *  it and/or modify it under the terms of the GNU
+ *  General Public License as published by the Free
+ *  Software Foundation; either version 2 of the
+ *  License, or (at your option) any later version.
+ *
+ * The file thats holds the mysqli_database class
+ *
+ * @link http://www.gnu.org/licenses/gpl.txt GPL http://www.gnu.org/licenses/gpl.txt
+ * @package Exponent-CMS
+ */
+/**
  * Database Class (MySQL)
  *
  * This is the MySQL-specific implementation of the database class.
- *
- * @node Subsystems:Database:MySQL
+ * @copyright 2004-2006 OIC Group, Inc.
+ * @author Written and Designed by James Hunt
+ * @version 2.0.0
+ * @subpackage Database
+ * @package Subsystems
  */
 class mysql_database {
 	var $connection = null;
 	var $havedb = false;
 	var $prefix = "";
 
-	/* exdoc
+	/**
 	 * Make a connection to the Database Server
 	 *
 	 * Takes the supplied credentials (username / password) and tries to
@@ -98,7 +96,7 @@ class mysql_database {
 		$this->prefix = DB_TABLE_PREFIX . '_';
 	}
 
-	/* exdoc
+	/**
 	 * Create a new Table
 	 *
 	 * Creates a new database table, according to the passed data definition.
@@ -175,9 +173,9 @@ class mysql_database {
 		return $return;
 	}
 
-	/* exdoc
+	/**
 	 * This is an internal function for use only within the MySQL database class
-	 * @state Internal
+	 * @internal Internal
 	 */
 	function fieldSQL($name,$def) {
 		$sql = "`$name`";
@@ -215,9 +213,9 @@ class mysql_database {
 		return $sql;
 	}
 
-	/* exdoc
+	/**
 	 * This is an internal function for use only within the MySQL database class
-	 * @state Internal
+	 * @internal Internal
 	 */
 	function switchValues($table,$field,$a,$b,$additional_where = null) {
 		if ($additional_where == null) {
@@ -240,7 +238,7 @@ class mysql_database {
 		}
 	}
 
-	/* exdoc
+	/**
 	 * Checks to see if the connection for this database object is valid.
 	 * @return bool True if the connection can be used to execute SQL queries.
 	 */
@@ -248,7 +246,7 @@ class mysql_database {
 		return ($this->connection != null && $this->havedb);
 	}
 
-	/* exdoc
+	/**
 	 * Test the privileges of the user account for the connection.
 	 * Tests run include:
 	 * <ul>
@@ -338,7 +336,7 @@ class mysql_database {
 		return $status;
 	}
 
-	/* exdoc
+	/**
 	 * Alter an existing table
 	 *
 	 * Alters the structure of an existing database table to conform to the passed
@@ -440,7 +438,7 @@ class mysql_database {
 		return $return;
 	}
 
-	/* exdoc
+	/**
 	 * Drop a table from the database
 	 *
 	 * Removes an existing table from the database. Returns true if the table was dropped, false if there
@@ -452,7 +450,7 @@ class mysql_database {
 		return @mysql_query("DROP TABLE `".$this->prefix."$table`",$this->connection) !== false;
 	}
 
-	/* exdoc
+	/**
 	 * Run raw SQL.  Returns true if the query succeeded, and false
 	 *   if an error was returned from the MySQL server.
 	 *
@@ -474,7 +472,7 @@ class mysql_database {
                 $this->updateObject($obj, $table);
         }
 
-	/* exdoc
+	/**
 	 * Select a series of objects
 	 *
 	 * Selects a set of objects from the database.  Because of the way
@@ -619,7 +617,7 @@ class mysql_database {
                 }
         }
 
-	/*
+	/**
 	* This function takes an array of indexes and returns an array with the objects associated with each id
 	*/
 	function selectObjectsInArray($table, $array=array(), $orderby=null) {
@@ -637,7 +635,7 @@ class mysql_database {
 		return $res;
 	}
 
-	/* exdoc
+	/**
 	 * Select a series of objects, and return by ID
 	 *
 	 * Selects a set of objects from the database.  Because of the way
@@ -666,7 +664,7 @@ class mysql_database {
 		return $objects;
 	}
 
-	/* exdoc
+	/**
 	 * Count Objects matching a given criteria
 	 *
 	 * @param string $table The name of the table to count objects in.
@@ -687,7 +685,7 @@ class mysql_database {
                 return $obj->c;
         }
 
-	/* exdoc
+	/**
 	 * Select a single object.
 	 *
 	 * Selects an objects from the database.  Because of the way
@@ -707,7 +705,7 @@ class mysql_database {
 		    return mysql_fetch_object($res);
 	}
 
-	/* exdoc
+	/**
 	 * Insert an Object into some table in the Database
 	 *
 	 * This method will return the ID assigned to the new record by MySQL.  Note that
@@ -717,7 +715,6 @@ class mysql_database {
 	 * @param Object $object The object to insert.
 	 * @param string $table The logical table name to insert into.  This does not include the table prefix, which
 	 *    is automagically prepended for you.
-	 * @state Stable
 	 */
 	function insertObject($object,$table) {
 		$sql = "INSERT INTO `" . $this->prefix . "$table` (";
@@ -741,7 +738,7 @@ class mysql_database {
 		} else return 0;
 	}
 
-	/* exdoc
+	/**
 	 * Delete one or more objects from the given table.
 	 *
 	 * @param string $table The name of the table to delete from.
@@ -757,7 +754,7 @@ class mysql_database {
 		}
 	}
 
-	/* exdoc
+	/**
 	 * Update one or more objects in the database.
 	 *
 	 * This function will only update the attributes of the resulting record(s)
@@ -788,7 +785,7 @@ class mysql_database {
 		return $res;
 	}
 
-	/* exdoc
+	/**
 	 * Find the maximum value of a field.  This is similar to a standard
 	 * SELECT MAX(field) ... query.
 	 *
@@ -811,7 +808,7 @@ class mysql_database {
 		return $res->fieldmax;
 	}
 
-	/* exdoc
+	/**
 	 * Find the minimum value of a field.  This is similar to a standard
 	 * SELECT MIN(field) ... query.
 	 *
@@ -834,7 +831,7 @@ class mysql_database {
 		return $res->fieldmin;
 	}
 
-	/* exdoc
+	/**
 	 * Increment a numeric table field in a table.
 	 *
 	 * @param string $table The name of the table to increment in.
@@ -849,7 +846,7 @@ class mysql_database {
 		return @mysql_query($sql,$this->connection);
 	}
 
-	/* exdoc
+	/**
 	 * Decrement a numeric table field in a table.
 	 *
 	 * @param string $table The name of the table to decrement in.
@@ -862,7 +859,7 @@ class mysql_database {
 		$this->increment($table,$field,-1*$step,$where);
 	}
 
-	/* exdoc
+	/**
 	 * Check to see if the named table exists in the database.
 	 * Returns true if the table exists, and false if it doesn't.
 	 *
@@ -873,7 +870,7 @@ class mysql_database {
 		return ($res != null);
 	}
 
-	/* exdoc
+	/**
 	 * Get a list of all tables in the database.  Optionally, only the tables
 	 * in the corrent logcial database (tables with the same prefix) can
 	 * be retrieved.
@@ -895,7 +892,7 @@ class mysql_database {
 		return $tables;
 	}
 
-	/* exdoc
+	/**
 	 * Runs whatever table optimization routines the database engine supports.
 	 *
 	 * @param string $table The name of the table to optimize.
@@ -905,7 +902,7 @@ class mysql_database {
 		return $res;
 	}
 
-	/* exdoc
+	/**
 	 * Retrieve table information for a named table.
 	 * Returns an object, with the following attributes:
 	 * <ul>
@@ -922,7 +919,7 @@ class mysql_database {
 		return $this->translateTableStatus(mysql_fetch_object($res));
 	}
 
-	/* exdoc
+	/**
 	 * Check whether or not a table in the database is empty (0 rows).
 	 * Returns tue of the specified table has no rows, and false if otherwise.
 	 *
@@ -932,7 +929,7 @@ class mysql_database {
 		return ($this->countObjects($table) == 0);
 	}
 
-	/* exdoc
+	/**
 	 * Returns table information for all tables in the database.
 	 * This function effectively calls tableInfo() on each table found.
 	 */
@@ -947,9 +944,9 @@ class mysql_database {
 		return $info;
 	}
 
-	/* exdoc
+	/**
 	 * This is an internal function for use only within the MySQL database class
-	 * @state Internal
+	 * @internal Internal
 	 */
 	function translateTableStatus($status) {
 		$data = null;
@@ -979,7 +976,7 @@ class mysql_database {
                 return $dd;
 	}
 
-	/* exdoc
+	/**
 	 * Build a data definition from a pre-existing table.  This is used
 	 * to intelligently alter tables that have already been installed.
 	 *
@@ -1004,9 +1001,9 @@ class mysql_database {
 		return $dd;
 	}
 
-	/* exdoc
+	/**
 	 * This is an internal function for use only within the MySQL database class
-	 * @state Internal
+	 * @internal Internal
 	 */
 	function getDDFieldType($fieldObj) {
 		$type = strtolower($fieldObj->Type);
@@ -1021,9 +1018,9 @@ class mysql_database {
 		}
 	}
 
-	/* exdoc
+	/**
 	 * This is an internal function for use only within the MySQL database class
-	 * @state Internal
+	 * @internal Internal
 	 */
 	function getDDStringLen($fieldObj) {
 		$type = strtolower($fieldObj->Type);
@@ -1035,7 +1032,7 @@ class mysql_database {
 		}
 	}
 
-	/* exdoc
+	/**
 	 * Returns an error message from the server.  This is intended to be
 	 * used by the implementors of the database wrapper, so that certain
 	 * cryptic error messages can be reworded.
@@ -1054,7 +1051,7 @@ class mysql_database {
 		} else return "";
 	}
 
-	/* exdoc
+	/**
 	 * Checks whether the database connection has experienced an error.
 	 */
 	function inError() {
@@ -1065,7 +1062,7 @@ class mysql_database {
 		return ' LIMIT '.$offset.','.$num.' ';
 	}
 	
-	/* exdoc
+	/**
 	 * Select an array of arrays
 	 *
 	 * Selects a set of arrays from the database.  Because of the way
@@ -1116,16 +1113,12 @@ class mysql_database {
 		$table = $this->prefix.$table;		
 		$this->sql('UPDATE `'.$table.'` SET rgt = rgt + '.$width.' WHERE rgt >='.$start);
                 $this->sql('UPDATE `'.$table.'` SET lft = lft + '.$width.' WHERE lft >='.$start);
-		//eDebug('UPDATE `'.$table.'` SET rgt = rgt + '.$width.' WHERE rgt >='.$start);
-                //eDebug('UPDATE `'.$table.'` SET lft = lft + '.$width.' WHERE lft >='.$start);
 	}
 
 	function adjustNestedTreeBetween($table, $lft, $rgt, $width) {
 		$table = $this->prefix.$table;	
 		$this->sql('UPDATE `'.$table.'` SET rgt = rgt + '.$width.' WHERE rgt BETWEEN '.$lft.' AND '.$rgt);
-		$this->sql('UPDATE `'.$table.'` SET lft = lft + '.$width.' WHERE lft BETWEEN '.$lft.' AND '.$rgt);	
-		//eDebug('UPDATE `'.$table.'` SET rgt = rgt + '.$width.' WHERE rgt BETWEEN '.$lft.' AND '.$rgt);
-		//eDebug('UPDATE `'.$table.'` SET lft = lft + '.$width.' WHERE lft BETWEEN '.$lft.' AND '.$rgt);	
+		$this->sql('UPDATE `'.$table.'` SET lft = lft + '.$width.' WHERE lft BETWEEN '.$lft.' AND '.$rgt);		
 	}
 
 	function selectNestedBranch($table, $node=null) {
