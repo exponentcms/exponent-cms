@@ -60,15 +60,17 @@ class calendarmodule_config {
 			$cols = unserialize($object->collections);
 			$object->collections = array();
 			$available_tags = array();
-			foreach ($cols as $col_id) {
-				$collection = $db->selectObject('tag_collections', 'id='.$col_id);
-				$object->collections[$collection->id] = $collection->name;
+			if (!empty($cols)) {
+    			foreach ($cols as $col_id) {
+    				$collection = $db->selectObject('tag_collections', 'id='.$col_id);
+    				$object->collections[$collection->id] = $collection->name;
 
-				//while we're here we will get the list of available tags.
-				$tmp_tags = $db->selectObjects('tags', 'collection_id='.$col_id);
-				foreach ($tmp_tags as $tag) {
-					$available_tags[$tag->id] = $tag->name;
-				}
+    				//while we're here we will get the list of available tags.
+    				$tmp_tags = $db->selectObjects('tags', 'collection_id='.$col_id);
+    				foreach ($tmp_tags as $tag) {
+    					$available_tags[$tag->id] = $tag->name;
+    				}
+    			}
 			}
 			//Get the tags the user chose to show in the group by views
 			$stags = unserialize($object->show_tags);
