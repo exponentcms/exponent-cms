@@ -15,7 +15,7 @@
  *}
 
 <div class="module store action">
-    <h1>{$moduletitle|default:"Select type of product"}</h1>
+    <h1>{$moduletitle|default:"Add a Product"}</h1>
     
     {form controller=store action=edit}
         {control type="hidden" name="id" value=0}

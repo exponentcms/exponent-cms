@@ -15,7 +15,7 @@
  *}
 
 <div id="storeconfig" class="module ecomconfig configure hide exp-skin-tabview">
-    <h1>Ecommerce Store Configuration</h1>
+    <h1>Store Configuration</h1>
     {script unique="storeconf" yuimodules="tabview, element"}
     {literal}
         var tabView = new YAHOO.widget.TabView('storetabs');     

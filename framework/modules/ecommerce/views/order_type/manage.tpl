@@ -15,7 +15,7 @@
  *}
 
 <div class="modules order_type showall">
-	<h1>{$moduletitle|default:"Order Type Administration"}</h1>
+	<h1>{$moduletitle|default:"Manage Order Types"}</h1>
 	
 	<a href="{link action=create}">Create a new order type</a>{br}{br}
 	<div id="orders">

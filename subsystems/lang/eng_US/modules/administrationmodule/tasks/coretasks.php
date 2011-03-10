@@ -6,7 +6,7 @@ return array(
 	'user_accounts'=>'User Accounts',
 	'user_sessions'=>'User Sessions',
 	'group_accounts'=>'Group Accounts',
-	'profile_definitions'=>'Profile Definitions',
+	'profile_definitions'=>'Profile Extensions',
 		
 	'subscriptions'=>'Subscriptions',
         'manage_subscriptions'=>'Manage Subscriptions',
@@ -18,7 +18,7 @@ return array(
 	'manage_tags'=>'Manage Tags',
 	'manage_wizards'=>'Manage Wizards',
 	'manage_subsystems'=>'Subsystems',
-	'upload_extension'=>'Upload Extension',
+	'upload_extension'=>'Upload New Extension',
 	
 	
 	'database'=>'Database',

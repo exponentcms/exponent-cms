@@ -51,7 +51,7 @@ return array(
                     'id'=>'store',
                     'itemdata'=>array(                        
                         array(
-                            'text'=>"General Store Settings",
+                            'text'=>"Store Configuration",
                             'url'=>makeLink(array('controller'=>'ecomconfig','action'=>'configure')),
                         ),
                         array(
@@ -59,7 +59,7 @@ return array(
                             'url'=>makeLink(array('controller'=>'order_status','action'=>'manage')),
                         ),
                         array(
-                            'text'=>"Manage Status Messages",
+                            'text'=>"Manage Order Status Messages",
                             'url'=>makeLink(array('controller'=>'order_status','action'=>'manage_messages')),
                         ),
                         array(
@@ -83,7 +83,7 @@ return array(
                             'url'=>makeLink(array('controller'=>'store','action'=>'manage')),
                         ),
                         array(
-                            'text'=>"Product Options",
+                            'text'=>"Manage Product Options",
                             'url'=>makeLink(array('controller'=>'ecomconfig','action'=>'options')),
                         ),
                         array(
@@ -91,23 +91,23 @@ return array(
                             'url'=>makeLink(array('controller'=>'storeCategoryController','action'=>'manage')),
                         ),
                         array(
-                            'text'=>"View Uncategories Products",
+                            'text'=>"View Uncategorized Products",
                             'url'=>makeLink(array('controller'=>'store','action'=>'showallUncategorized')),
                         ),
                     ),                        
                 ),
             ),
             array(
-                'text'=>"Payments & Shipping Settings",
+                'text'=>"Payment & Shipping Settings",
                 'submenu'=>array(
                     'id'=>'pay',
                     'itemdata'=>array(
                         array(
-                            'text'=>"Payment Options",
+                            'text'=>"Manage Payment Options",
                             'url'=>makeLink(array('controller'=>'billing','action'=>'manage')),
                         ),
                         array(
-                            'text'=>"Shipping Options",
+                            'text'=>"Manage Shipping Options",
                             'url'=>makeLink(array('controller'=>'shipping','action'=>'manage')),
                         ),
                     ),                        
