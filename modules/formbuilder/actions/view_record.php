@@ -64,6 +64,7 @@ if ($f && $controls && $data && $rpt) {
 			$template = new template('formbuilder','_custom_report');
 			$template->assign('template',$rpt->text);
 		}
+		$template->assign('title',$rpt->name);
 		$template->assign('fields',$fields);
 		$template->assign('captions',$captions);
 		$template->assign('backlink',exponent_flow_get());

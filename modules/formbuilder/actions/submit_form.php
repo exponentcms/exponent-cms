@@ -105,6 +105,7 @@ if (!isset($_POST['data_id']) || (isset($_POST['data_id']) && exponent_permissio
         }
         $template->assign("fields",$emailFields);        
         $template->assign("captions",$captions);
+		    $template->assign('title',$rpt->name);
         $template->assign("is_email",1);
         $emailHtml = $template->render();
         

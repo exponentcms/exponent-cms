@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2006 OIC Group, Inc.
+# Copyright (c) 2004-2011 OIC Group, Inc.
 # Written and Designed by James Hunt
 #
 # This file is part of Exponent
@@ -19,6 +19,7 @@
 
 class formmodule {
 	function name() { return exponent_lang_loadKey('modules/formmodule/class.php','module_name'); }
+    function displayname() { return '(old school) form'; } //for forwards compat with new modules
 	function description() { return exponent_lang_loadKey('modules/formmodule/class.php','module_description'); }
 	function author() { return 'OIC Group, Inc'; }
 	
@@ -128,6 +129,7 @@ class formmodule {
 			}
 			$template = new template("formmodule",$view,$loc);
 			$template->assign("moduletitle",$f->name);
+			$template->assign("description",$f->description);
 			$template->assign("formmsg",$formmsg);
 			$template->assign("form_html",$form->toHTML($f->id));
 			$template->assign("form",$f);

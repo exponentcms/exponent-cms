@@ -41,14 +41,15 @@ class migrationController extends expController {
         'headlinemodule'=>'headlineController',
         'linkmodule'=>'linksController',
         'weblogmodule'=>'blogController',
+        'listingmodule'=>'portfolioController',
+        'contactmodule'=>'formmodule',  // this module is converted to a functionally similar formmodule
     );
     
     // these are modules that have either been deprecated or have no content to migrate
     // Not sure we need to note deprecated modules...
     public $deprecated_modules = array(
         'administrationmodule',
-        'contactmodule',  // this module is of value to some?  perhpas needs to be converted to a form or something?
-        'containermodule',  // not really deprecated, but must be in this list to skip processing
+//        'containermodule',  // not really deprecated, but must be in this list to skip processing
 //        'navigationmodule',  // veiws are still used, so modules need to be imported?
         'imagemanagermodule',
         'imageworkshopmodule',
@@ -81,17 +82,16 @@ class migrationController extends expController {
 		'addressbookmodule',  // listed above, but no script appears here?
         'bannermodule',  // to bannerController?
 //        'categories',  // no controller and not in old school ???
-        'listingmodule',  // to companyController or portfolioController?
         'mediaplayermodule',  // to flowplayerController?
         'youtubemodule', // to youtubeController?
 //        'tags',	 // no controller and not in old school ???
     );
     
     public $old_school = array(  // psuedo-variable isn't used, list of old school modules still in code base
-        'calendarmodule',  // working
-        'formmodule',  // NOT working!
-        'navigationmodule',  // working
-        'simplepollmodule',  // working
+        'calendarmodule',
+        'formmodule',
+        'navigationmodule',
+        'simplepollmodule',
     );
     
     function name() { return $this->displayname(); } //for backwards compat with old modules
@@ -104,7 +104,7 @@ class migrationController extends expController {
     function supportsWorkflow() { return false; }
     function isSearchable() { return false; }
     
-    public function analyze_site() {
+    public function manage_content() {
         global $db;
         //$containers = $db->selectObjects('container', 'external="N;"');
         //eDebug($containers);
@@ -196,10 +196,18 @@ class migrationController extends expController {
             $db->delete('photo');
             $db->delete('headline');
             $db->delete('blog');
-            $db->delete('content_expComments');
-            $db->delete('expComments');
             $db->delete('faqs');
+            $db->delete('portfolio');
+            $db->delete('content_expComments');
             $db->delete('content_expFiles');
+            $db->delete('content_expSimpleNote');
+            $db->delete('content_expTags');
+            $db->delete('expComments');
+//            $db->delete('expConfigs');
+//            $db->delete('expFiles');
+//            $db->delete('expRSS');
+            $db->delete('expSimpleNote');
+            $db->delete('expTags');
             $db->delete('calendar');
             $db->delete('eventdate');
             $db->delete('calendarmodule_config');
@@ -207,10 +215,14 @@ class migrationController extends expController {
             $db->delete('poll_answer');
             $db->delete('poll_timeblock');
             $db->delete('simplepollmodule_config');
+            $db->delete('formbuilder_address');
+            $db->delete('formbuilder_control');
+            $db->delete('formbuilder_form');
+            $db->delete('formbuilder_report');
             @$this->msg['clearedcontent']++;
         }
         
-        //pull the locationref data
+        //pull the locationref data for selected modules
 		if (empty($this->params['migrate'])) {
 			$where = '1';
 		} else {
@@ -235,7 +247,7 @@ class migrationController extends expController {
             }
         }
 
-        // pull the sectionref data
+        // pull the sectionref data for selected modules
         $secref = $old_db->selectObjects('sectionref',$where);
         foreach ($secref as $sr) {
             // hard coded modules
@@ -252,13 +264,17 @@ class migrationController extends expController {
             if (!in_array($sr->module, $this->deprecated_modules)) {
                 // if the module is not in the depecation list, we're hitting here
                 if (!$db->selectObject('sectionref',"source='".$sr->source."'")) {
+					if (array_key_exists($sr->module, $this->new_modules)) {
+						// convert the source to new exp controller
+						$sr->module = $this->new_modules[$sr->module];
+					}
                     $db->insertObject($sr, 'sectionref');
                     @$this->msg['sectionref']++;
                 }
             }
         }
 
-        //pull over all the container modules
+        //pull over all the top level containers
         $containers = $old_db->selectObjects('container', 'external="N;"');
         foreach ($containers as $cont) {
             if (!$db->selectObject('container',"internal='".$cont->internal."'")) {
@@ -362,17 +378,58 @@ class migrationController extends expController {
                     $db->insertObject($config, 'simplepollmodule_config');
                 }
             break;
+            case 'formmodule':
+				@$this->msg['migrated'][$iloc->mod]['name'] = $iloc->mod;
+                $form = $old_db->selectObject('formbuilder_form', "location_data='".serialize($iloc)."'");
+				$oldformid = $form->id;
+				unset($form->id);
+                $form->id = $db->insertObject($form, 'formbuilder_form');
+				@$this->msg['migrated'][$iloc->mod]['count']++;
+				$addresses = $old_db->selectObjects('formbuilder_address', "form_id='".$oldformid."'");
+                foreach($addresses as $address) {
+					unset($address->id);
+					$address->form_id = $form->id;
+                    $db->insertObject($address, 'formbuilder_address');
+				}
+				$controls = $old_db->selectObjects('formbuilder_control', "form_id='".$oldformid."'");
+                foreach($controls as $control) {
+					unset($control->id);
+					$control->form_id = $form->id;
+                    $db->insertObject($control, 'formbuilder_control');
+				}
+				$reports = $old_db->selectObjects('formbuilder_report', "form_id='".$oldformid."'");
+                foreach($reports as $report) {
+					unset($report->id);
+					$report->form_id = $form->id;
+                    $db->insertObject($report, 'formbuilder_report');
+				}
+				if (isset($form->table_name)) {
+					if (isset($this->params['wipe_content'])) {
+						$db->delete('formbuilder_'.$form->table_name);
+					}
+					formbuilder_form::updateTable($form);
+					$records = $old_db->selectObjects('formbuilder_'.$form->table_name, 1);
+					foreach($records as $record) {
+						$db->insertObject($record, 'formbuilder_'.$form->table_name);
+					}
+				}
+            break;
         }
     }
     
     private function add_container($iloc,$m) {
         global $db;
-        $iloc->mod = $this->new_modules[$iloc->mod];
-        $m->internal = (isset($m->internal) && strstr($m->internal,"Controller")) ? $m->internal : serialize($iloc);
-        $m->action = isset($m->action) ? $m->action : 'showall';
-        $m->view = isset($m->view) ? $m->view : 'showall';
-        if ($m->view == "Default") {
-			$m->view = 'showall';
+		if ($iloc->mod != 'contactmodule') {
+			$iloc->mod = $this->new_modules[$iloc->mod];
+			$m->internal = (isset($m->internal) && strstr($m->internal,"Controller")) ? $m->internal : serialize($iloc);
+			$m->action = isset($m->action) ? $m->action : 'showall';
+			$m->view = isset($m->view) ? $m->view : 'showall';
+			if ($m->view == "Default") {
+				$m->view = 'showall';
+			}
+		} else {
+			$iloc->mod = $this->new_modules[$iloc->mod];
+			$m->internal = serialize($iloc);
 		}
         $db->insertObject($m, 'container');
     }
@@ -719,6 +776,7 @@ class migrationController extends expController {
                         $photo->body = $gi['description'];
                         $photo->alt = $gi['alt'];
                         $photo->location_data = serialize($loc);
+						$photo->makeSefUrl();
 
                         $photo->save();
                         @$this->msg['migrated'][$iloc->mod]['count']++;
@@ -757,6 +815,7 @@ class migrationController extends expController {
                         $photo->body = $gi['description'];
                         $photo->alt = $gi['alt'];
                         $photo->location_data = serialize($loc);
+						$photo->makeSefUrl();
                         // $photo->created_at = $gi['posted'];
                         // $photo->edited_at = $gi['edited'];                    
 
@@ -899,6 +958,115 @@ class migrationController extends expController {
                     }
                 }
             break;
+            case 'listingmodule':  
+
+				$module->view = 'showall'; 
+			
+				//check to see if it's already pulled in (circumvent !is_original)
+				$ploc = $iloc;
+				$ploc->mod = "portfolio";
+				if ($db->countObjects($ploc->mod, "location_data='".serialize($ploc)."'")) {
+					$iloc->mod = 'listingmodule';
+					break; 
+				}
+
+                $iloc->mod = 'listingmodule';
+                $listingitems = $old_db->selectArrays('listing', "location_data='".serialize($iloc)."'");
+                
+                if ($listingitems) {
+                    foreach ($listingitems as $li) {
+                        unset($li['id']);
+                        $listing = new portfolio($li);                   
+						$listing->title = $li['name'];
+						$listing->makeSefUrl();
+                        $loc = expUnserialize($li['location_data']);
+                        $loc->mod = "portfolio";
+                        $listing->location_data = serialize($loc);
+                        $listing->featured = true;
+                        $listing->poster = 1;
+                        $listing->created_at = time();
+                        $listing->edited_at = time();                    
+                        $listing->body = "<p>".$li['summary']."</p>".$li['body'];                    
+
+                        $listing->save();
+                        @$this->msg['migrated'][$iloc->mod]['count']++;
+                        @$this->msg['migrated'][$iloc->mod]['name'] = $this->new_modules[$iloc->mod];
+                        if (!empty($li['file_id'])) {
+							$file = new expFile($li['file_id']);
+							$listing->attachitem($file,'');							
+                        }
+                    }
+                }
+            break;
+            case 'contactmodule':  // convert to an old school form
+			
+				$module->view == "Default";
+
+                $contactform = $old_db->selectObject('contactmodule_config', "location_data='".serialize($iloc)."'");
+				$loc = expUnserialize($contactform->location_data);
+				$loc->mod = 'formmodule';
+				$contactform->location_data = serialize($loc);
+//				$replyto_address = $contactform->replyto_address;
+				unset($contactform->replyto_address);
+//				$from_address = $contactform->from_address;
+				unset($contactform->from_address);
+//				$from_name = $contactform->from_name;
+				unset($contactform->from_name);
+				unset($contactform->use_captcha);
+				$contactform->name = 'Send us an e-mail';
+				$contactform->description = '';
+				$contactform->response = $contactform->final_message;
+				unset($contactform->final_message);
+				$contactform->table_name ='';
+				$contactform->is_email = true;
+				$contactform->is_saved = false;
+				$contactform->submitbtn = 'Send Message';
+				$contactform->resetbtn = 'Reset';
+				unset($contactform->id);
+                $contactform->id = $db->insertObject($contactform, 'formbuilder_form');
+		
+				$addresses = $old_db->selectObjects('contact_contact', "location_data='".serialize($iloc)."'");
+                foreach($addresses as $address) {
+					unset($address->addressbook_contact_id);
+					unset($address->contact_info);
+					unset($address->location_data);
+					$address->form_id = $contactform->id;
+                    $db->insertObject($address, 'formbuilder_address');
+				}
+				
+				$report->name = $contactform->subject;
+				$report->location_data = $contactform->location_data;
+				$report->form_id = $contactform->id;
+                $db->insertObject($report, 'formbuilder_report');
+
+				$control->name = 'name';
+				$control->caption = 'Your Name';
+				$control->form_id = $contactform->id;
+				$control->data = 'O:11:"textcontrol":12:{s:4:"size";i:0;s:9:"maxlength";i:0;s:7:"caption";s:9:"Your Name";s:9:"accesskey";s:0:"";s:7:"default";s:0:"";s:8:"disabled";b:0;s:8:"required";b:1;s:8:"tabindex";i:-1;s:7:"inError";i:0;s:4:"type";s:4:"text";s:6:"filter";s:0:"";s:10:"identifier";s:4:"name";}';
+				$control->rank = 0;
+				$control->is_readonly = 0;
+				$control->is_static = 0;
+				$db->insertObject($control, 'formbuilder_control');
+				$control->name = 'email';
+				$control->caption = 'Your Email';
+				$control->data = 'O:11:"textcontrol":12:{s:4:"size";i:0;s:9:"maxlength";i:0;s:7:"caption";s:18:"Your Email Address";s:9:"accesskey";s:0:"";s:7:"default";s:0:"";s:8:"disabled";b:0;s:8:"required";b:1;s:8:"tabindex";i:-1;s:7:"inError";i:0;s:4:"type";s:4:"text";s:6:"filter";s:0:"";s:10:"identifier";s:5:"email";}';
+				$control->rank = 1;
+				$db->insertObject($control, 'formbuilder_control');
+				$control->name = 'subject';
+				$control->caption = 'Subject';
+				$control->data = 'O:11:"textcontrol":12:{s:4:"size";i:0;s:9:"maxlength";i:0;s:7:"caption";s:7:"Subject";s:9:"accesskey";s:0:"";s:7:"default";s:0:"";s:8:"disabled";b:0;s:8:"required";b:1;s:8:"tabindex";i:-1;s:7:"inError";i:0;s:4:"type";s:4:"text";s:6:"filter";s:0:"";s:10:"identifier";s:7:"subject";}';
+				$control->rank = 2;
+				$db->insertObject($control, 'formbuilder_control');
+				$control->name = 'message';
+				$control->caption = 'Message';
+				$control->data = 'O:17:"texteditorcontrol":12:{s:4:"cols";i:60;s:4:"rows";i:8;s:9:"accesskey";s:0:"";s:7:"default";s:0:"";s:8:"disabled";b:0;s:8:"required";b:0;s:8:"tabindex";i:-1;s:7:"inError";i:0;s:4:"type";s:4:"text";s:8:"maxchars";i:0;s:10:"identifier";s:7:"message";s:7:"caption";s:7:"Message";}';
+				$control->rank = 3;
+				$db->insertObject($control, 'formbuilder_control');
+				
+				@$this->msg['migrated'][$iloc->mod]['count']++;
+				@$this->msg['migrated'][$iloc->mod]['name'] = $this->new_modules[$iloc->mod];
+//				@$this->msg['migrated'][$iloc->mod]['name'] = $iloc->mod;
+			break;
             default:
                 @$this->msg['noconverter'][$iloc->mod]++;
             break;
@@ -990,10 +1158,28 @@ class migrationController extends expController {
     public function migrate_users() {
         global $db;
         
+         // if (isset($this->params['wipe_groups'])) {
+            // $db->delete('group');
+		 // }
          // if (isset($this->params['wipe_users'])) {
             // $db->delete('user','id > 1');
 		 // }
         $old_db = $this->connect();
+//		print_r("<pre>");
+//		print_r($old_db->selectAndJoinObjects('', '', 'group', 'groupmembership','id', 'group_id', 'name = "Editors"', ''));
+		
+        $gsuccessful = 0;
+        $gfailed     = 0;
+        foreach($this->params['groups'] as $groupid) {
+            $group = $old_db->selectObject('group', 'id='.$groupid);
+			if (!$db->selectObject('group',"name='".$group->name."'")) {
+				$group->id = '';
+				$ret = $db->insertObject($group, 'group');
+                $gsuccessful += 1;
+			} else {
+                $gfailed += 1;
+            }
+        }
 		
         $successful = 0;
         $failed     = 0;
@@ -1008,19 +1194,6 @@ class migrationController extends expController {
             }
         }
 
-        $gsuccessful = 0;
-        $gfailed     = 0;
-        foreach($this->params['groups'] as $groupid) {
-            $group = $old_db->selectObject('group', 'id='.$groupid);
-			if (!$db->selectObject('group',"name='".$group->name."'")) {
-				$group->id = '';
-				$ret = $db->insertObject($group, 'group');
-                $gsuccessful += 1;
-			} else {
-                $gfailed += 1;
-            }
-        }
-		
         flash ('message', $successful.' users and '.$gsuccessful.' groups were imported from '.$this->config['database']);
         if ($failed > 0 || $gfailed > 0) {
 			$msg = '';
@@ -1035,6 +1208,7 @@ class migrationController extends expController {
         }        
         expSession::clearUserCache();
         expHistory::back();
+		
     }
 	
     private function connect() {

@@ -47,7 +47,10 @@
     background-repeat: no-repeat;
     background-position:0 -492px;
 }
-
+#navTreeContext .viewpage {
+    background-image:url(../../../../framework/core/assets/images/view.png);
+    background-repeat: no-repeat;
+}
 #navTreeContext .editpage {
     background-image:url(../../../../framework/core/assets/images/exp1icons.png);
     background-repeat: no-repeat;

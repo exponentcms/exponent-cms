@@ -18,7 +18,7 @@
 
 {/css}
 
-<div class="calendarmodule cal-summary">	
+<div class="module calendarmodule upcoming-events-summary">	
 	<h2>
 		{if $enable_ical == true}
 			<a class="icallink module-actions" href="{link action=ical}" title="{$_TR.alt_ical}" alt="{$_TR.alt_ical}">{$_TR.ical}</a>
@@ -27,15 +27,16 @@
 	</h2>
 	<div class="module-actions">
 		{permissions level=$smarty.const.UILEVEL_NORMAL}
+			<p>
 			{if $permissions.administrate == 1}
-				<a class="adminviewlink mngmntlink" href="{link _common=1 view='Administration' action='show_view' time=$time}">{$_TR.administration_view}</a>
+				<a class="adminviewlink mngmntlink" href="{link _common=1 view='Administration' action='show_view' time=$time}">{$_TR.administration_view}</a>{br}
 			{/if}
 			{if $permissions.post == 1}
-				{br}<a class="addevent mngmntlink" href="{link action=edit id=0}" title="{$_TR.alt_create}" alt="{$_TR.alt_create}">{$_TR.create}</a>
+				<a class="addevent mngmntlink" href="{link action=edit id=0}" title="{$_TR.alt_create}" alt="{$_TR.alt_create}">{$_TR.create}</a>{br}
 			{/if}
+			</p>
 		{/permissions}
 	</div>
-</div>
 <div class="linklistmodule quick-links">
 	<ul>
 	{assign var=more_events value=0}	
@@ -89,7 +90,6 @@
 	{/foreach}
 	</ul>
 </div>
-<div class="calendarmodule cal-summary">	
 	<p>
 		{if $more_events == 1}
 			<a class="mngmntlink monthviewlink" href="{link _common=1 view='Upcoming Events' action='show_view' time=$time}">{$_TR.more_events}</a>{br}
