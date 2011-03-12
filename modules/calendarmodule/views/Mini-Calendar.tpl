@@ -18,7 +18,7 @@
 
 {/css}
 
-<div class="calendarmodule mini-cal"> 
+<div class="module calendar mini-cal"> 
 	<table class="mini-cal">
 	<caption><a class="nav doublearrow" href="{link action=viewmonth time=$prevmonth view='Mini-calendar'}" title="{$_TR.alt_previous}">&laquo;</a> {$now|format_date:"%B"} <a class="nav doublearrow" href="{link action=viewmonth time=$nextmonth view='Mini-Calendar'}" title="{$_TR.alt_next}">&raquo;</a></caption>
 

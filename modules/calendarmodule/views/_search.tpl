@@ -33,7 +33,7 @@
 
 {/css}
 
-<div class="calendarmodule search"> 
+<div class="module calendar search"> 
 	<b>{$title}</b><br/>
 	<table cellpadding="0" valign="top" cellspacing="0" width="100%" border="0">
 		{foreach from=$days item=event}

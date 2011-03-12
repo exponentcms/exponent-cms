@@ -14,7 +14,7 @@
  *
  *}
  
-<div class="calendarmodule recur-dates">
+<div class="module calendar recur-dates">
 	{foreach from=$dates item=d}
 		<tr class="row {cycle values='even_row,odd_row'}">
 			<td width="10">

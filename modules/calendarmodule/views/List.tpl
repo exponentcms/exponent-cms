@@ -18,7 +18,7 @@
 
 {/css}
 
-<div class="calendarmodule list"> 
+<div class="module calendar list"> 
 	<a class="monthviewlink" href="{link _common=1 view=Default action=show_view time=$time}">{$_TR.calendar_view}</a>&nbsp;&nbsp;|&nbsp;&nbsp;<span class="listviewlink">{$_TR.list_view}</span><br />
 	<a href="#" onclick="window.open('popup.php?module=calendarmodule&src={$__loc->src}&view=Monthly List&template=printerfriendly&time={$time}','printer','title=no,scrollbars=no,width=800,height=600'); return false">{$_TR.printer_friendly}</a>
 	<br />

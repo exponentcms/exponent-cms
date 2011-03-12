@@ -18,7 +18,7 @@
 
 {/css}
 
-<div class="calendarmodule cal-admin"> 
+<div class="module calendar cal-admin"> 
 	<div class="module-actions">
 		<a class="monthviewlink" href="{link action=viewmonth time=$time}">{$_TR.calendar_view}</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a class="listviewlink" href="{link _common=1 view='Monthly List' action='show_view' time=$time}">{$_TR.list_view}</a>
 		&nbsp;&nbsp;|&nbsp;&nbsp;<span class="adminviewlink">{$_TR.administration_view}</span>

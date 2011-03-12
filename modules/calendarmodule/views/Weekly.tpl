@@ -18,7 +18,7 @@
 
 {/css}
 
-<div class="calendarmodule weekly"> 
+<div class="module calendar weekly"> 
 	<table width="177" border="0" cellpadding="0" cellspacing="0" bordercolor="666666">
 							<tr>
 									<td align="left" valign="top" bgcolor="99999">

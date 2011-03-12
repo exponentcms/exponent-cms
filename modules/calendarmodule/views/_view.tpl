@@ -32,7 +32,7 @@
 
 {/css}
 
-<div class="calendarmodule view">
+<div class="module calendar view">
 	<div class="module-actions">
 		<a class="dayviewlink" href="{link action=viewday time=$item->eventstart}" title="{$_TR.alt_view_day}" alt="{$_TR.alt_view_day}">{$_TR.view_day}</a>&nbsp;&nbsp;|&nbsp;&nbsp;
 		<a class="weekviewlink" href="{link action=viewweek time=$item->eventstart}" title="{$_TR.alt_view_week}" alt="{$_TR.alt_view_week}">{$_TR.view_week}</a>&nbsp;&nbsp;|&nbsp;&nbsp;
