@@ -81,7 +81,8 @@ class ckeditorcontrol extends formcontrol {
 	    	EXPONENT.editor".createValidId($name)." = CKEDITOR.replace('".createValidId($name)."',
 				{
                     filebrowserBrowseUrl : '".makelink(array("controller"=>"file", "action"=>"picker", "ajax_action"=>1, "ck"=>1, "update"=>"fck"))."',
-                    toolbar : [".stripSlashes($tb)."],
+					filebrowserLinkBrowseUrl : '".PATH_RELATIVE."external/editors/ckconnector/CKeditor_link.php',
+					toolbar : [".stripSlashes($tb)."],
                     forcePasteAsPlainText:true,
                     filebrowserWindowWidth : '640',
                     filebrowserWindowHeight : '480'

@@ -17,10 +17,10 @@
 #
 ##################################################
 
-define('SCRIPT_EXP_RELATIVE','modules/navigationmodule/');
-define('SCRIPT_FILENAME','nav.php');
+// define('SCRIPT_EXP_RELATIVE','modules/navigationmodule/');
+// define('SCRIPT_FILENAME','nav.php');
 
-include_once('../../exponent.php');
+// include_once('../../exponent.php');
 
 include(BASE.'modules/navigationmodule/actions/linker.php');
 
