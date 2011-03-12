@@ -7,7 +7,7 @@ $url = $_GET['rss_url'];
 
 ?>
 
-<html
+<html>
 <body LINK="#999999" VLINK="#000000">
 
 <form>
