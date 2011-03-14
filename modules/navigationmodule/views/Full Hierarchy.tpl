@@ -24,7 +24,7 @@
 </td></tr>
 {/foreach}
 </table>
-{permissions level=$smarty.const.UILEVEL_NORMAL}
+{permissions}
 {if $canManage == 1}
 [ <a class="navlink" href="{link action=manage}">{$_TR.manage}</a> ]
 {/if}

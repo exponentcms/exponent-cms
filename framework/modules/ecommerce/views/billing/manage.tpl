@@ -34,7 +34,7 @@
             <td>{$calc->title}</td>
             <td>{$calc->body}</td>
             <td>
-                {permissions level=$smarty.const.UILEVEL_NORMAL}
+                {permissions}
                     {if $permissions.manage == 1}                        
                     {if $calc->enabled}
                         <a href="{link action=activate id=$calc->id enabled=0}">{img src=`$smarty.const.ICON_RELATIVE`toggle_on.gif}</a>

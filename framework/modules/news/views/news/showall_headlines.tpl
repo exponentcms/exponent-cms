@@ -24,7 +24,7 @@
     {/if}
     {if $moduletitle != ""}<h2>{$moduletitle}</h2>{/if}
 
-    {permissions level=$smarty.const.UILEVEL_NORMAL}
+    {permissions}
         <div class="module-actions">
         {if $permissions.create == true || $permissions.edit}
             <a class="add" href="{link action=create}">{"Create a news post"|gettext}</a>
@@ -51,7 +51,7 @@
             {/if}
             
             {if $item->isRss != true}
-                {permissions level=$smarty.const.UILEVEL_NORMAL}
+                {permissions}
                 <div class="item-actions">
                      {if $permissions.edit == true}
                         {icon controller=news action=edit id=$item->id title="Edit this news post"}

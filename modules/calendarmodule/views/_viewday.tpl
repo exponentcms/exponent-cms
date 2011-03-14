@@ -31,7 +31,7 @@
 		{if $moduletitle != ""}{$moduletitle}{/if}
 	</h2>
 	<div class="module-actions">
-		{permissions level=$smarty.const.UILEVEL_NORMAL}
+		{permissions}
 			{if $permissions.post == 1}
 				<a class="addevent mngmntlink" href="{link action=edit id=0}" title="{$_TR.alt_create}" alt="{$_TR.alt_create}">{$_TR.create}</a>
 			{/if}

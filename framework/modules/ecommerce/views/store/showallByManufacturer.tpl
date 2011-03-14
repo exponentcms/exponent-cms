@@ -28,7 +28,7 @@
 
     {$page->links}
     
-    {permissions level=$smarty.const.UILEVEL_NORMAL}
+    {permissions}
         {if $permissions.edit == 1}
             {icon class="add" action=create title="Add a new product" text="Add a New Product"}
       {/if}

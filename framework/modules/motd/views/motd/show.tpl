@@ -32,7 +32,7 @@
         {clear}
         <a class="link" href="{link action=showall}">View Previous Tips</a>
     
-        {permissions level=$smarty.const.UILEVEL_NORMAL}
+        {permissions}
             {if $permissions.edit == 1}
                 {icon class="add" action=create text="Add a tip"}
           {/if}

@@ -17,7 +17,7 @@
 <div class="module text single">
     {if $moduletitle != ""}<h1>{$moduletitle}</h1>{/if}
     {if $items[0]->title}<h2>{$items[0]->title}</h2>{/if}
-    {permissions level=$smarty.const.UILEVEL_NORMAL}
+    {permissions}
         {if $permissions.edit == 1}
         <div class="module-actions">
             {icon action=edit id=$items[0]->id title="Edit Text"|gettext}

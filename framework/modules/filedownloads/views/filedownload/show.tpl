@@ -29,7 +29,7 @@
         </div>
         <a class="download" href="{link action=downloadfile fileid=$record->id}">Download</a>
         {clear}
-        {permissions level=$smarty.const.UILEVEL_NORMAL}
+        {permissions}
             {if $permissions.edit == 1}
                 {icon action=edit img=edit.png class="editlink" id=$record->id title="Edit this file"}
             {/if}

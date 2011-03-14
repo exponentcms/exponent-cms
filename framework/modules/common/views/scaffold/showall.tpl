@@ -16,7 +16,7 @@
 
 <div class="scaffold showall">
 	<h1>{$moduletitle|default:"Listings for `$modelname`"}</h1>
-	{permissions level=$smarty.const.UILEVEL_NORMAL}
+	{permissions}
         	{if $permissions.create == 1}
         		<a href="{link controller=$model_name action=create}">Create a new {$modelname}</a>
         	{/if}
@@ -26,7 +26,7 @@
 		<li class="listing">
 			<h3>
 				<a href="{link controller=$controller action=show id=$listing->id}">{$listing->title}</a>
-				{permissions level=$smarty.const.UILEVEL_NORMAL}
+				{permissions}
 					{if $permissions.edit == 1}
 						{icon controller=$controller action=edit id=$listing->id title="Edit this `$modelname`"}
 					{/if}

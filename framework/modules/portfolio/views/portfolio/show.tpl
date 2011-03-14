@@ -16,7 +16,7 @@
 <div class="module portfolio show">
     <a class="back" href="{backlink}">Back to Portfolio Listings</a>
     <h1>{$record->title}</h1>
-    {permissions level=$smarty.const.UILEVEL_NORMAL}
+    {permissions}
         {if $permissions.edit == 1}
             {icon action=edit id=$record->id title="edit `$record->title`"}
         {/if}

@@ -30,7 +30,7 @@
 
 <div class="module imagegallery slideshow">
     {if $moduletitle}<h1>{$moduletitle}</h1>{/if}
-    {permissions level=$smarty.const.UILEVEL_NORMAL}
+    {permissions}
             <div class="module-actions">
                 {if $permissions.create == 1}
                     {icon class="add" action=edit rank=1 title="Add to the top" text="Add a new slide at the beginning"}
@@ -57,7 +57,7 @@
                 </h2>
                 {$record->body|summarize:"html":"para"}
             </div>
-            {permissions level=$smarty.const.UILEVEL_NORMAL}
+            {permissions}
                 <div class="item-actions">
                     {if $permissions.edit == 1}
                         {icon action=edit id=$record->id title="Edit `$record->title`"}

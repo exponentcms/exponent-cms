@@ -14,7 +14,7 @@
  *
  *}
 
-{permissions level=$smarty.const.UILEVEL_NORMAL}
+{permissions}
 {if $permissions.manage == 1}
 
 <div class="module storeadmin options">

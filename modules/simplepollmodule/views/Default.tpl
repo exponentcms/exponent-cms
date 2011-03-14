@@ -70,7 +70,7 @@
 	</form>
 	{/if}
 	
-	{permissions level=$smarty.const.UILEVEL_NORMAL}
+	{permissions}
 	{if $permissions.manage_question == 1 || $permissions.manage_answer == 1}
 	<a href="{link action=manage_questions}">Manage Questions</a>
 	{/if}

@@ -40,7 +40,7 @@
             <td>{if $version->is_current == 1}{img src=`$smarty.const.ICON_RELATIVE`toggle_on.gif}{/if}</td>
             <td><a href="">{$version->num_docs}</a></td>
             <td>
-                {permissions level=$smarty.const.UILEVEL_NORMAL}
+                {permissions}
                     {if $permissions.edit == 1}
                         {icon img=edit.png action=edit_version id=$version->id title="Edit Help Version"}
                     {/if}

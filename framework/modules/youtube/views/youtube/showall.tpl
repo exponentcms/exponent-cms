@@ -17,7 +17,7 @@
 <div class="module youtube showall">
     {if $moduletitle}<h1>{$moduletitle}</h1>{/if}
 
-    {permissions level=$smarty.const.UILEVEL_NORMAL}
+    {permissions}
         <div class="module-actions">
         {if $permissions.create == 1}
             {icon class="add" action=edit rank=1 title="Add to the top" text="Add a YouTube Video Here"}

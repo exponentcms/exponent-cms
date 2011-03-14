@@ -31,8 +31,8 @@
 			<cite>
                 <span class="comment-data">{$note->edited_at|format_date:$smarty.const.DISPLAY_DATETIME_FORMAT}</span> - <span class="attribution">{$note->name}</span>
 			</cite>
-			{permissions level=$smarty.const.UILEVEL_NORMAL}
-                {permissions level=$smarty.const.UILEVEL_NORMAL}
+			{permissions}
+                {permissions}
                     {if $permissions.manage == 1}
                         {icon img=edit.png action=edit id=$note->id tab=$tab content_id=$content_id content_type=$content_type title="Edit Note"}
                     {/if}

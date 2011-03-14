@@ -14,7 +14,7 @@
  *
  *}
 
-{*permissions level=$smarty.const.UILEVEL_NORMAL}
+{*permissions}
     {if $permissions.show == 1*}
         <div class="module storeadmin show">
 	        <h1>{$moduletitle|default:"Ecommerce Administration"}</h1>

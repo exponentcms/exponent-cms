@@ -14,7 +14,7 @@
  *
  *}
 
-{permissions level=$smarty.const.UILEVEL_NORMAL}
+{permissions}
 {if $permissions.manage == 1}
 <div class="module storeadmin edit_option_master">
 	<h1>{$moduletitle|default:"Edit Product Options"}</h1>

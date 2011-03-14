@@ -16,7 +16,7 @@
 
 <div class="module filedownload quick-with-description">
     {if $moduletitle}<h1>{$moduletitle}</h1>{/if}
-    {permissions level=$smarty.const.UILEVEL_NORMAL}
+    {permissions}
         <div class="module-actions">
         {if $permissions.create == 1}
             {icon class="add" action=edit rank=1 title="Add to the top" text="Add a File"}
@@ -34,7 +34,7 @@
                 {img class="preview-img" file_id=$file->expFile.preview[0]->id square=150}
             {/if}
             <h2><a class="download" href="{link action=downloadfile fileid=$file->id}">{$file->title}</a></h2>
-            {permissions level=$smarty.const.UILEVEL_NORMAL}
+            {permissions}
             <div class="item-actions">
                 {if $permissions.edit == 1}
                     {icon action=edit img=edit.png class="editlink" id=$file->id title="Edit this file"}
@@ -57,7 +57,7 @@
             </div>
         </div>
     {/foreach}
-    {permissions level=$smarty.const.UILEVEL_NORMAL}
+    {permissions}
         {if $permissions.create == 1}
             {icon class=add action=edit title="Add a File" text="Add a File for Download"}
         {/if}

@@ -39,7 +39,7 @@
         &nbsp;&nbsp;
         <a class="download" href="{link action=downloadfile fileid=$file->id}">Download</a>
         {clear}
-        {permissions level=$smarty.const.UILEVEL_NORMAL}
+        {permissions}
             {if $permissions.edit == 1}
                 {icon action=edit img=edit.png class="editlink" id=$file->id title="Edit this file"}
             {/if}
@@ -59,7 +59,7 @@
     {/foreach}
     {$page->links}
     
-    {permissions level=$smarty.const.UILEVEL_NORMAL}
+    {permissions}
         {if $permissions.create == 1}
             {icon class=add action=edit title="Add a File" text="Add a File for Download"}
         {/if}

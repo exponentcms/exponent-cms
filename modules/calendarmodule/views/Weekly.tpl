@@ -60,7 +60,7 @@
 			<a class="mngmntlink calendar_mngmntlink" href="{link action=groupperms int=$event->id _common=1}"><img class="mngmnt_icon" style="border:none;" src="{$smarty.const.ICON_RELATIVE}groupperms.png" title="{$_TR.alt_groupperm_one}" alt="{$_TR.alt_groupperm_one}" /></a>
 			{/if}
 			{/permissions}
-			{permissions level=$smarty.const.UILEVEL_NORMAL}
+			{permissions}
 			{if $permissions.edit == 1 || $event->permissions.edit == 1}
 				{if $event->approved == 1}
 				<a class="mngmntlink calendar_mngmntlink" href="{link action=edit id=$event->id date_id=$event->eventdate->id}"><img class="mngmnt_icon" style="border:none;" src="{$smarty.const.ICON_RELATIVE}edit.png" title="{$_TR.alt_edit}" alt="{$_TR.alt_edit}" /></a>
@@ -90,7 +90,7 @@
 		{/if}
 		<br />
 	{/foreach}
-	{permissions level=$smarty.const.UILEVEL_NORMAL}
+	{permissions}
 	{if $permissions.post == 1}
 	<a class="mngmntlink calendar_mngmntlink" href="{link action=edit id=0}" title="{$_TR.alt_create}" alt="{$_TR.alt_create}">{$_TR.create}</a><br />
 	{/if}
@@ -111,7 +111,7 @@
 							</tr>
 					</table>
 
-	{permissions level=$smarty.const.UILEVEL_NORMAL}
+	{permissions}
 	{if $config->enable_categories == 1}
 	{if $permissions.manage_categories == 1}
 	<br />

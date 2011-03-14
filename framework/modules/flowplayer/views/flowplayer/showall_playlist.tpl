@@ -23,7 +23,7 @@
     <ul>
     {foreach name=items from=$page->records item=video}
         <li><a class="li-link" href="#" onclick="swapvideo('{$video->expFile.video[0]->url}')">{$video->title}</a>
-            {permissions level=$smarty.const.UILEVEL_NORMAL}
+            {permissions}
                 <div class="actions">
                 {if $permissions.edit == 1}
                     {icon class="edit" action=edit id=$video->id title="Edit `$video->title`"}
@@ -64,7 +64,7 @@
             {/literal}
         ); 
     </script>
-    {permissions level=$smarty.const.UILEVEL_NORMAL}
+    {permissions}
         {if $permissions.edit == 1}
             {icon class="add" action=edit title="Add a video" text="Add a new video"}
       {/if}

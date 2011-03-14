@@ -35,7 +35,7 @@
             <h3>{$question->question}</h3>
             <p>{$question->answer}</p>
             <span class="editicons">
-                {permissions level=$smarty.const.UILEVEL_NORMAL}
+                {permissions}
                 
                     {if $permissions.edit == 1}
                         {icon img=edit.png action=edit id=$question->id title="Edit FAQ"}
@@ -62,7 +62,7 @@
     {/foreach}
 
     
-    {permissions level=$smarty.const.UILEVEL_NORMAL}
+    {permissions}
         {if $permissions.create == 1}
             {icon class=add action=create title="Add a new FAQ" text="Add a New FAQ"}
         {/if}
