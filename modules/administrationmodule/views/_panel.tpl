@@ -20,7 +20,7 @@
 			Administration Panel 
 		</div>
 		<div class="bd" style="text-align:left;">
-				{permissions level=$smarty.const.UILEVEL_NORMAL}
+				{permissions}
 					<a class="sitetree" href="{link module=navigationmodule action=manage}">Manage Site Navigation</a>
 					<a class="files" href="{$smarty.const.URL_FULL}modules/filemanagermodule/actions/picker.php">Manage Files</a>
 					<a class="admin" href="{link module=administrationmodule action=index}">Site Administration</a>
@@ -30,7 +30,7 @@
 
 			{get_user assign=user}
 			{if $user->id != '' && $user->id != 0} 
-				{permissions level=$smarty.const.UILEVEL_NORMAL}
+				{permissions}
 				<a class="changepassword" href="{link module=loginmodule action=changepass}">Change Password</a>
 				<a class="editprofile" href="{link module=loginmodule action=editprofile}">Edit Profile</a>
 				<a class="logout" href="{link module=loginmodule action=logout}">Log Out</a>

@@ -16,7 +16,7 @@
 
 <div class="module company show">
 	<div id="details">
-		{permissions level=$smarty.const.UILEVEL_NORMAL}
+		{permissions}
 		        <div class="module-actions">
                 		{if $permissions.edit == 1}
 					{icon controller=$model_name action=edit id=$record->id text="Edit `$record->title`"}

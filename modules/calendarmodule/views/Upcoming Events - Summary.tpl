@@ -24,7 +24,7 @@
 	{/if}
     {if $moduletitle != ""}<h2>{$moduletitle}</h2>{/if}
 	<div class="module-actions">
-		{permissions level=$smarty.const.UILEVEL_NORMAL}
+		{permissions}
 			<p>
 			{if $permissions.administrate == 1}
 				<a class="adminviewlink mngmntlink" href="{link _common=1 view='Administration' action='show_view' time=$time}">{$_TR.administration_view}</a>{br}
@@ -58,7 +58,7 @@
 						<a class="mngmntlink calendar_mngmntlink" href="{link action=groupperms int=$item->id _common=1}"><img class="mngmnt_icon" style="border:none;" src="{$smarty.const.ICON_RELATIVE}groupperms.png" title="{$_TR.alt_groupperm_one}" alt="{$_TR.alt_groupperm_one}" /></a>
 					{/if}
 				{/permissions}
-				{permissions level=$smarty.const.UILEVEL_NORMAL}
+				{permissions}
 					{if $permissions.edit == 1 || $item->permissions.edit == 1}
 						{if $item->approved == 1}
 							<a class="mngmntlink calendar_mngmntlink" href="{link action=edit id=$item->id date_id=$item->eventdate->id}"><img class="mngmnt_icon" style="border:none;" src="{$smarty.const.ICON_RELATIVE}edit.png" title="{$_TR.alt_edit}" alt="{$_TR.alt_edit}" /></a>

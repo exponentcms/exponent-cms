@@ -52,10 +52,10 @@
     {/foreach}
     {$page->links}
     
-    {permissions level=$smarty.const.UILEVEL_NORMAL}
+    {permissions}
     {if $morenews == 1 || $permissions.create == true || $permissions.edit == true || $permissions.showExpired == 1}
     <div class="module-actions">
-        {permissions level=$smarty.const.UILEVEL_NORMAL}
+        {permissions}
         {if $permissions.create == true || $permissions.edit == true}
             <a class="addnews" href="{link action=create}">{$_TR.create_news|default:"Create a news post"}</a>{br}
         {/if}

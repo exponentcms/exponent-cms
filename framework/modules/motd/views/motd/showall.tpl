@@ -21,7 +21,7 @@
     </div>
     
     {$page->links}
-    {permissions level=$smarty.const.UILEVEL_NORMAL}
+    {permissions}
         {if $permissions.edit == 1}
             {icon class="add" action=create text="Add a New Message"}
       {/if}
@@ -39,7 +39,7 @@
             <td>{$listing->month}/{$listing->day}</td>
             <td>{$listing->body}</td>
             <td>
-                {permissions level=$smarty.const.UILEVEL_NORMAL}
+                {permissions}
                     {if $permissions.edit == 1}
                         {icon img=edit.png action=edit id=$listing->id title="Edit this message"}
                     {/if}

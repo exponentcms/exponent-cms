@@ -15,7 +15,7 @@
  *}
 <div class="module links showall-links">
     {if $moduletitle}<h1>{$moduletitle}</h1>{/if}
-    {permissions level=$smarty.const.UILEVEL_NORMAL}
+    {permissions}
     <div class="module-actions">
         {if $permissions.create == 1 || $permissions.edit == 1}
             {icon controller=links class="add" action=create text="Create new link" title="Create a new link"}
@@ -28,7 +28,7 @@
         <div class="item">
                 
             <h2><a class="li-link" {if $item->new_window}target="_blank"{/if} href="{$item->url}">{$item->title}</a></h2>
-            {permissions level=$smarty.const.UILEVEL_NORMAL}
+            {permissions}
                 <div class="actions">
                 {if $permissions.edit == 1}
                     {icon controller=links action=edit id=$item->id title="Edit this `$modelname`"}

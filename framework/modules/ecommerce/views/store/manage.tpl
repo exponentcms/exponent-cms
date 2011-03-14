@@ -16,7 +16,7 @@
 
 <div class="module store showall-uncategorized">
     <h1>Manage Products</h1>
-    {permissions level=$smarty.const.UILEVEL_NORMAL}
+    {permissions}
         {if $permissions.edit == 1}
             {icon class="add" action=edit title="Create a new product" text="Add a product"}
       {/if}
@@ -41,7 +41,7 @@
                 <td><a href={link controller=store action=showByTitle title=$listing->sef_url}>{$listing->title}</a></td>
                 <td>${$listing->base_price|number_format:2}</td>
                 <td>
-                    {permissions level=$smarty.const.UILEVEL_NORMAL}
+                    {permissions}
                         {if $permissions.edit == 1}
                             {icon img=edit.png action=edit id=$listing->id title="Edit `$listing->title`"}
                         {/if}

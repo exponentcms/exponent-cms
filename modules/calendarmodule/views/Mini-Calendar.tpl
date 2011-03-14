@@ -56,7 +56,7 @@
 	</table>
 	<a class="mngmntlink calendar_mngmntlink" href="{link action=viewmonth}">{$_TR.view_month}</a>
 	<br />
-	{permissions level=$smarty.const.UILEVEL_NORMAL}
+	{permissions}
 	{if $permissions.post == 1}
 	<a class="mngmntlink calendar_mngmntlink" href="{link action=edit}" title="{$_TR.alt_create}">{$_TR.create}</a><br />
 	{/if}

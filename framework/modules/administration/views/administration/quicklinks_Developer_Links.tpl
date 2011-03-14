@@ -20,7 +20,7 @@
 	    Developer Quicklinks
 	</div>
 	<div class="bd">		
-	    {permissions level=$smarty.const.UILEVEL_NORMAL}
+	    {permissions}
 		    {if $permissions.administrate == 1}
 		    <a class="admin" href="{link module=administrationmodule action=installtables}">Install Tables</a>{br}
 		    <a class="admin" href="{link module=administrationmodule action=toggle_dev}">Toggle Dev</a>{br}

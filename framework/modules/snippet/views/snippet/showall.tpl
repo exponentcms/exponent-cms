@@ -20,7 +20,7 @@
 
     {assign var=text value=$page->records[0]}
     {if $text->title}<h2>{$text->title}</h2>{/if}
-    {permissions level=$smarty.const.UILEVEL_NORMAL}
+    {permissions}
         {if $permissions.edit == 1}
             {if $text->id != ""}
                 {icon action=edit img=edit.png class="editlink" id=$text->id title="Edit this code snippet" text="Edit this code snippet"}

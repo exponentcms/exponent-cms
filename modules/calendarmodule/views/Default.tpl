@@ -21,7 +21,7 @@
 <div class="module calendar default">
 	<div class="module-actions">
 		<span class="monthviewlink">{$_TR.calendar_view}</span>&nbsp;&nbsp;|&nbsp;&nbsp;<a class="listviewlink" href="{link _common=1 view='Monthly List' action='show_view' time=$time}">{$_TR.list_view}</a>
-		{permissions level=$smarty.const.UILEVEL_NORMAL}
+		{permissions}
 			{if $permissions.administrate == 1}
 				&nbsp;&nbsp;|&nbsp;&nbsp;<a class="adminviewlink mngmntlink" href="{link _common=1 view='Administration' action='show_view' time=$time}">{$_TR.administration_view}</a>
 			{/if}
@@ -37,7 +37,7 @@
 		{if $moduletitle != ""}{$moduletitle}{/if}
 	</h2>
 	<div class="module-actions">
-		{permissions level=$smarty.const.UILEVEL_NORMAL}
+		{permissions}
 			{if $permissions.post == 1}
 				<a class="addevent mngmntlink" href="{link action=edit id=0}" title="{$_TR.alt_create}">{$_TR.create}</a>
 			{/if}
@@ -102,7 +102,7 @@
 									<a class="mngmntlink calendar_mngmntlink" href="{link action=groupperms int=$event->id _common=1}"><img class="mngmnt_icon" style="border:none;" src="{$smarty.const.ICON_RELATIVE}groupperms.png" title="{$_TR.alt_groupperm_one}" alt="{$_TR.alt_groupperm_one}" /></a>
 								{/if}
 							{/permissions}
-							{permissions level=$smarty.const.UILEVEL_NORMAL}
+							{permissions}
 								{if $permissions.edit == 1 || $event->permissions.edit == 1}
 									{if $event->approved == 1}
 										<a class="mngmntlink calendar_mngmntlink" href="{link action=edit id=$event->id date_id=$event->eventdate->id}"><img class="mngmnt_icon" style="border:none;" src="{$smarty.const.ICON_RELATIVE}edit.png" title="{$_TR.alt_edit}" alt="{$_TR.alt_edit}" /></a>

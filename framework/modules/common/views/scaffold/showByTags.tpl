@@ -17,7 +17,7 @@
 <div class="scaffold showByTags">
 	<h1>{$moduletitle|default:"Listings for `$modelname`"}</h1>
 
-	{permissions level=$smarty.const.UILEVEL_NORMAL}
+	{permissions}
         	{if $permissions.create == 1}
         		{icon controller=$model_name action=create text="Create a new `$modelname`"}{br}
         	{/if}
@@ -29,7 +29,7 @@
 			<p>
 				{$listing->body}
 			</p>
-			{permissions level=$smarty.const.UILEVEL_NORMAL}
+			{permissions}
 				{if $permissions.edit == 1}
 					{icon controller=$controller action=edit id=$listing->id title="Edit this `$modelname`"}
 				{/if}

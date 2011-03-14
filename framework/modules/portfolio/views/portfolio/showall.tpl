@@ -20,7 +20,7 @@
 
 <div class="module portfolio showall">
     {if $moduletitle != ""}<h1>{$moduletitle}</h1>{/if}
-    {permissions level=$smarty.const.UILEVEL_NORMAL}
+    {permissions}
         <div class="module-actions">
         {if $permissions.create == 1}
             {icon class="add" action=edit rank=1 title="Add to the top" text="Add a Portfolio Piece"}
@@ -39,7 +39,7 @@
         <div class="bodycopy">
             <h2><a href="{link action=show title=$record->sef_url}" title="{$record->title|escape:"htmlall"}">{$record->title}</a></h2>
 
-            {permissions level=$smarty.const.UILEVEL_NORMAL}
+            {permissions}
             <div class="itempermissions">
                 {if $permissions.edit == 1}
                     {icon action=edit id=$record->id title="Edit `$record->title`"}
@@ -72,7 +72,7 @@
             {/if}
             <div style="clear:both"></div>
         </div>
-        {permissions level=$smarty.const.UILEVEL_NORMAL}
+        {permissions}
             {if $permissions.create == 1}
                 {icon class="add addhere" action=edit rank=`$text->rank+1` title="Add another here"  text="Add a portfolio piece here"}
             {/if}

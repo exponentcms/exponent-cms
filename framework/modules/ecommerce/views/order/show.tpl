@@ -43,7 +43,7 @@
             <li><a href="#ordhistory"><em>Order History</em></a></li>
             <li><a href="#shipinfo"><em>Shipping Information</em></a></li>
             <!--li><a href="#billinfo"><em>Billing Information</em></a></li-->
-            {*permissions level=$smarty.const.UILEVEL_NORMAL}
+            {*permissions}
                 {if $permissions.manage == 1}
                     <li><a href="#addinfo"><em>Additional Information</em></a></li>
                     <li><a href="#notes"><em>Notes</em></a></li>
@@ -55,7 +55,7 @@
             <div id="invoice">
                 <div id="buttons">
                     {printer_friendly_link class="awesome blue small" text="Print this invoice" view="show_printable"} 
-                    {permissions level=$smarty.const.UILEVEL_NORMAL}
+                    {permissions}
                         {if $permissions.manage == 1}
                             {printer_friendly_link class="awesome blue small" text="Print Packing Slip" view="show_packing"}
                         {/if}
@@ -95,7 +95,7 @@
                     </tbody>
                 </table>
                 
-                {permissions level=$smarty.const.UILEVEL_NORMAL}
+                {permissions}
                 {if $permissions.manage == 1}
                     {form action=setStatus}
                         {control type="hidden" name="id" value=$order->id}
@@ -175,7 +175,7 @@
                     </table>
                 {/foreach}
             </div-->
-    {*        permissions level=$smarty.const.UILEVEL_NORMAL}
+    {*        permissions}
                 {if $permissions.manage == 1}
                     <div id="addinfo">
                         <h2>Additional Information</h2>

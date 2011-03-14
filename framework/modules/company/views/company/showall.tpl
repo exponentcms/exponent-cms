@@ -29,7 +29,7 @@
             <td>{$company->title}</td>
             <td>{$company->website}</td>
             <td>
-                {permissions level=$smarty.const.UILEVEL_NORMAL}
+                {permissions}
                     {if $permissions.edit == 1}
                         {icon img=edit.png action=edit id=$company->id title="Edit `$company->title`"}
                     {/if}
