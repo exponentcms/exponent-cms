@@ -46,7 +46,7 @@
                         {icon img=delete.png action=delete id=$record->id title="Delete `$modelname`"}
                     {/if}
                     {if $permissions.create == 1}
-                        {icon img="actions/add.png" action=edit rank=`$text->rank+1` title="Add another image after this one"}
+                        {icon img="add.png" action=edit rank=`$text->rank+1` title="Add another image after this one"}
                     {/if}
                 </div>
             {/permissions}

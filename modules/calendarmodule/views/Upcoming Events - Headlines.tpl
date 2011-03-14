@@ -19,12 +19,22 @@
 {/css}
 
 <div class="module calendar upcoming-events-headlines">
+	{if $enable_ical == true}
+		<a class="icallink module-actions" href="{link action=ical}" title="{$_TR.alt_ical}" alt="{$_TR.alt_ical}">{$_TR.ical}</a>
+	{/if}
     {if $moduletitle != ""}<h2>{$moduletitle}</h2>{/if}
-    {permissions}
-        {if $permissions.post == 1}
-            <a class="add" href="{link action=edit id=0}" title={"Create Event"|gettext}>{"Create Event"|gettext}</a>
-        {/if}
-    {/permissions} 
+	<div class="module-actions">
+		{permissions}
+			<p>
+			{if $permissions.administrate == 1}
+				<a class="adminviewlink mngmntlink" href="{link _common=1 view='Administration' action='show_view' time=$time}">{$_TR.administration_view}</a>{br}
+			{/if}
+			{if $permissions.post == 1}
+				<a class="add" href="{link action=edit id=0}" title={"Create Event"|gettext}>{"Create Event"|gettext}</a>{br}
+			{/if}
+			</p>
+		{/permissions} 
+	</div>
     <ul>
 		{foreach from=$items item=item}
 			<li>

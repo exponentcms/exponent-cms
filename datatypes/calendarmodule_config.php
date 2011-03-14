@@ -57,32 +57,32 @@ class calendarmodule_config {
 		} else {
 			$form->meta('id',$object->id);
 
-			$cols = unserialize($object->collections);
-			$object->collections = array();
-			$available_tags = array();
-			if (!empty($cols)) {
-    			foreach ($cols as $col_id) {
-    				$collection = $db->selectObject('tag_collections', 'id='.$col_id);
-    				$object->collections[$collection->id] = $collection->name;
+			// $cols = unserialize($object->collections);
+			// $object->collections = array();
+			// $available_tags = array();
+			// if (!empty($cols)) {
+    			// foreach ($cols as $col_id) {
+    				// $collection = $db->selectObject('tag_collections', 'id='.$col_id);
+    				// $object->collections[$collection->id] = $collection->name;
 
-    				//while we're here we will get the list of available tags.
-    				$tmp_tags = $db->selectObjects('tags', 'collection_id='.$col_id);
-    				foreach ($tmp_tags as $tag) {
-    					$available_tags[$tag->id] = $tag->name;
-    				}
-    			}
-			}
-			//Get the tags the user chose to show in the group by views
-			$stags = unserialize($object->show_tags);
-			$object->show_tags = array();
+    				// //while we're here we will get the list of available tags.
+    				// $tmp_tags = $db->selectObjects('tags', 'collection_id='.$col_id);
+    				// foreach ($tmp_tags as $tag) {
+    					// $available_tags[$tag->id] = $tag->name;
+    				// }
+    			// }
+			// }
+			// //Get the tags the user chose to show in the group by views
+			// $stags = unserialize($object->show_tags);
+			// $object->show_tags = array();
 
-//			if (is_array($stags)) {
-			if (!empty($stags)) {
-				foreach ($stags as $stag_id) {
-					$show_tag = $db->selectObject('tags', 'id='.$stag_id);
-					$object->show_tags[$show_tag->id] = $show_tag->name;
-				}
-			}
+// //			if (is_array($stags)) {
+			// if (!empty($stags)) {
+				// foreach ($stags as $stag_id) {
+					// $show_tag = $db->selectObject('tags', 'id='.$stag_id);
+					// $object->show_tags[$show_tag->id] = $show_tag->name;
+				// }
+			// }
 		}
 
 		// setup the listbuilder arrays for calendar aggregation.	

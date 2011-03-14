@@ -1,6 +1,6 @@
 /****************  default view  ***********************/
 
-.calendarmodule.cal-default table {
+.calendar.default table {
 	width: 100%;
 	padding: 0;
 	margin: 0;
@@ -11,24 +11,24 @@
 	background-color: #fff;
 }
 
-.calendarmodule.cal-default table th {
+.calendar.default table th {
 	border-left:none;
 }
 
-.calendarmodule.cal-default table td {
+.calendar.default table td {
 	padding:0;
 	border-left:none;
 }
 
-.calendarmodule.cal-default .nav, 
-.calendarmodule.cal-default .nav a {
+.calendar.default .nav, 
+.calendar.default .nav a {
 	font: bold 18px "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
 	color: #fff;	
 	text-align: center;
 	text-decoration: none;
 }	
 
-.calendarmodule.cal-default caption {
+.calendar.default caption {
 	margin: 0;
 	padding: 0;
 	width: 100%;
@@ -38,7 +38,7 @@
 	text-align: center;
 }
 
-.calendarmodule.cal-default th {
+.calendar.default th {
 	font: bold 11px/20px "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
 	color: #616B76;
 	background: #D9E2E1;
@@ -47,16 +47,16 @@
 	border-top: 1px solid #A2ADBC;
 }
 
-.calendarmodule.cal-default .today, 
-.calendarmodule.cal-default td.today a, 
-.calendarmodule.cal-default td.today a:link, 
-.calendarmodule.cal-default td.today a:visited {
+.calendar.default .today, 
+.calendar.default td.today a, 
+.calendar.default td.today a:link, 
+.calendar.default td.today a:visited {
 	color: #F6F4DA;
 	font-weight: bold;
 	background: #DF9496;
 }
 
-.calendarmodule.cal-default td {
+.calendar.default td {
 	border-right: 1px solid #A2ADBC;
 	border-bottom: 1px solid #A2ADBC;
 	width: 14%;
@@ -65,11 +65,11 @@
 	text-align: left;
 	background: #f6f5f1;
 }
-.calendarmodule.cal-default td.notinmonth {
+.calendar.default td.notinmonth {
 	background: #e2e2e2;
 }
 
-.calendarmodule.cal-default td .number {
+.calendar.default td .number {
 	border:1px solid #A2ADBC;
 	border-width:0 0 1px 1px;
 	background:#fff;
@@ -80,7 +80,7 @@
 	text-align:right;
 }
 
-.calendarmodule.cal-default .calevent{
+.calendar.default .calevent{
 	font-size:80%;
 	padding-left:3px;
 	border-bottom:1px dotted #999;
@@ -109,6 +109,11 @@
 .upcoming-events-headlines ul li .date,
 .upcoming-events-summary ul li .date {
     margin-bottom:5px;
+}
+
+.upcoming-events-headlines ul li ,
+.upcoming-events-summary ul li  {
+    margin-bottom:10px;
 }
 
 /****************  mini-cal  viewday viewweek***********************/
@@ -156,49 +161,49 @@
 
 /* BASIC CALENDAR LINK STYLES */
 
-.calendarmodule .addevent {
+.calendar .addevent {
 	background-image: url(../images/addevent.png);
 	background-repeat: no-repeat;
 	background-position: 0% 50%;
 	padding-left: 18px;
 }
 
-.calendarmodule .listviewlink {
+.calendar .listviewlink {
 	background-image: url(../images/list.gif);
 	background-repeat: no-repeat;
 	background-position: 0% 50%;
 	padding-left: 18px;
 }
 
-.calendarmodule .monthviewlink {
+.calendar .monthviewlink {
 	background-image: url(../images/date_month.png);
 	background-repeat: no-repeat;
 	background-position: 0% 50%;
 	padding-left: 18px;
 }
 
-.calendarmodule .weekviewlink {
+.calendar .weekviewlink {
 	background-image: url(../images/date_week.png);
 	background-repeat: no-repeat;
 	background-position: 0% 50%;
 	padding-left: 18px;
 }
 
-.calendarmodule .dayviewlink {
+.calendar .dayviewlink {
 	background-image: url(../images/date_day.png);
 	background-repeat: no-repeat;
 	background-position: 0% 50%;
 	padding-left: 18px;
 }
 
-.calendarmodule .adminviewlink {
+.calendar .adminviewlink {
 	background-image: url(../images/site-admin.png);
 	background-repeat: no-repeat;
 	background-position: 0% 50%;
 	padding-left: 18px;
 }
 
-.calendarmodule .icallink {
+.calendar .icallink {
 	background-image: url(../images/ical.gif);
 	background-repeat: no-repeat;
 	background-position: 0% 50%;

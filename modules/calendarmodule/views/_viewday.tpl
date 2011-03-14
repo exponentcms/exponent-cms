@@ -18,7 +18,7 @@
 
 {/css}
 
-<div class="calendarmodule cal-default"> 
+<div class="module calendar default"> 
 	<div class="module-actions">
 		<a class="weekviewlink" href="{link action=viewweek time=$now view=_viewweek}" title="{$_TR.alt_view_week}">{$_TR.view_week}</a>&nbsp;&nbsp;|&nbsp;&nbsp;
 		<a class="monthviewlink" href="{link action=viewmonth time=$item->eventstart}" title="{$_TR.alt_view_month}" alt="{$_TR.alt_view_month}">{$_TR.view_month}</a>&nbsp;&nbsp;|&nbsp;&nbsp;

@@ -1,8 +1,8 @@
 <?PHP
-	define("SCRIPT_EXP_RELATIVE","external/editors/connector/");
-	define("SCRIPT_FILENAME","FCKeditor_link.php");
+	define("SCRIPT_EXP_RELATIVE","external/editors/ckconnector/");
+	define("SCRIPT_FILENAME","CKeditor_link.php");
 	
-	require_once("../../../exponent.php");
+	require_once('../../../exponent.php');
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -10,9 +10,9 @@
 	<head>
 		<title>Insert/Modify Link</title>
 
-		<script type="text/javascript" src="../../../exponent.js.php"></script>
+		<script type="text/javascript" src="<?PHP echo PATH_RELATIVE ?>exponent.js.php"></script>
 		<script type="text/javascript" src="popup.js"></script>
-		<script type="text/javascript" src="<?PHP echo PATH_RELATIVE . 'external/editors/connector/lang/' . exponent_lang_convertLangCode(LANG) . '.js'?>"></script>
+		<script type="text/javascript" src="<?PHP echo PATH_RELATIVE . 'external/editors/ckconnector/lang/' . exponent_lang_convertLangCode(LANG) . '.js'?>"></script>
   		<script type="text/javascript">
 		/* <![CDATA[ */
 			I18N = eXp.I18N;
@@ -21,21 +21,30 @@
   				return (I18N[str] || str);
 			};
 			
-			
+			function getUrlParam(paramName) {
+				var reParam = new RegExp('(?:[\?&]|&amp;)' + paramName + '=([^&]+)', 'i') ;
+				var match = window.location.search.match(reParam) ;
+
+				return (match && match.length > 1) ? match[1] : '' ;
+			}
 			
 			function onPageSelect(section) {
 				
-				// FCKeditor integration
-				window.opener.SetUrl(section);
-
+				// CKeditor integration
+				var funcNum = getUrlParam('CKEditorFuncNum');
+				var fileUrl = section;
+				window.opener.CKEDITOR.tools.callFunction(funcNum, fileUrl);
+		
 				window.close();
 				return false;
 			};
 
 			function onOK() {
 				
-				// FCKeditor integration
-				window.opener.SetUrl(document.getElementById("f_href").value);
+				// CKeditor integration
+				var funcNum = getUrlParam('CKEditorFuncNum');
+				var fileUrl = document.getElementById("f_href").value;
+				window.opener.CKEDITOR.tools.callFunction(funcNum, fileUrl);
 
 				window.close();
 				return false;
@@ -49,12 +58,12 @@
 
 
 			function openSectionLinker() {
-				window.open("../../../modules/navigationmodule/nav.php?linkbase="+escape("../../external/editors/connector/section_linked.php?dummy"),"sectionlinker","toolbar=no,title=no,width=250,height=480,scrollbars=yes");
+				window.open("../../../modules/navigationmodule/nav.php?linkbase="+escape("../../external/editors/ckconnector/section_linked.php?dummy"),"sectionlinker","toolbar=no,title=no,width=250,height=480,scrollbars=yes");
 			}
 
 			function openContentLinker() {
-				window.open("../../../content_selector.php?dest="+escape("external/editors/connector/content_linked.php?dummy")+"&vview=_linkPicker&vmod=containermodule&showmodules=all","contentlinker","toolbar=no,title=no,width=640,height=480,scrollbars=yes");
-//				window.open("../../../content_selector.php?dest="+escape("external/editors/connector/content_linked.php?dummy")+"&vview=_sourcePicker&vmod=containermodule&showmodules=all","contentlinker","toolbar=no,title=no,width=640,height=480,scrollbars=yes");
+				window.open("../../../content_selector.php?dest="+escape("external/editors/ckconnector/content_linked.php?dummy")+"&vview=_linkPicker&vmod=containermodule&showmodules=all","contentlinker","toolbar=no,title=no,width=640,height=480,scrollbars=yes");
+//				window.open("../../../content_selector.php?dest="+escape("external/editors/ckconnector/content_linked.php?dummy")+"&vview=_sourcePicker&vmod=containermodule&showmodules=all","contentlinker","toolbar=no,title=no,width=640,height=480,scrollbars=yes");
 			}
 		/* ]]> */
 		</script>

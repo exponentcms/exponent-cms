@@ -22,7 +22,7 @@
 
 {/css}
 
-<div class="calendarmodule edit">
+<div class="module calendar edit">
 	<div class="form_title">
 		{if $is_edit == 1}{$_TR.form_title_edit}{else}{$_TR.form_title_new}{/if}
 	</div>

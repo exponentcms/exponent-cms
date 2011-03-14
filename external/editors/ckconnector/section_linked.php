@@ -32,7 +32,7 @@
 ##################################################
 
 #  Thanks to Daniel Grabert for this patch. - 1/12/05
-	define("SCRIPT_EXP_RELATIVE","external/editors/connector/");
+	define("SCRIPT_EXP_RELATIVE","external/editors/ckconnector/");
 	define("SCRIPT_FILENAME","section_linked.php");
 	require_once("../../../exponent.php");
 

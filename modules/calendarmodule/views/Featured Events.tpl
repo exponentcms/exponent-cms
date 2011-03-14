@@ -18,7 +18,7 @@
 
 {/css}
 
-<div class="calendarmodule cal-admin">  
+<div class="module calendar cal-admin">  
 	<a href="{link _common=1 view=Default action=show_view}">Month View</a>{br}
 	<h2>
 	{if $enable_rss == true}

@@ -18,7 +18,7 @@
 
 {/css}
 
-<div class="calendarmodule monthly">
+<div class="module calendar monthly">
 	<div class="module-actions">
 		<a class="monthviewlink" href="{link action=viewmonth time=$time}">{$_TR.calendar_view}</a>&nbsp;&nbsp;|&nbsp;&nbsp;<span class="listviewlink"></span>{$_TR.list_view}
 		{permissions level=$smarty.const.UILEVEL_NORMAL}

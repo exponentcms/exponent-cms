@@ -18,7 +18,7 @@
 
 {/css}
 
-<div class="calendarmodule monthly"> 
+<div class="module calendar monthly"> 
 	<table class="calendar_monthly">
 	<tbody>
 	<tr><td>
