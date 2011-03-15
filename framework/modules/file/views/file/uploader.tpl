@@ -3,6 +3,7 @@
 <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8">
     <title>File Uploader  |  Exponent CMS</title>
+    <link rel="stylesheet" type="text/css" href="{$smarty.const.URL_FULL}framework/core/assets/css/msgq.css"> 
     <link rel="stylesheet" type="text/css" href="{$smarty.const.URL_FULL}framework/modules/file/assets/css/filemanager.css"> 
 
     <script type="text/javascript" src="{$smarty.const.YUI2_PATH}yahoo-dom-event/yahoo-dom-event.js"></script>
@@ -11,16 +12,21 @@
     <script type="text/javascript" src="{$smarty.const.YUI2_PATH}datasource/datasource-min.js"></script>
     <script type="text/javascript" src="{$smarty.const.YUI2_PATH}datatable/datatable-min.js"></script>
     <script type="text/javascript" src="{$smarty.const.URL_FULL}exponent.js.php"></script>
+
+    <script type="text/javascript" src="{$smarty.const.YUI3_PATH}yui/yui-min.js"></script>
+
 </head>
-<body class=" exp-skin">
+<body class="exp-skin">
 <div id="exp-uploader">
     <h1>Upload Files</h1>
     <div id="actionbar">
     	<div id="uploaderOverlay" style="position:absolute; z-index:2"></div>
     	<a class="btn" style="z-index:1" id="selectLink" href="#"><strong><em>Select Files</em></strong></a>
         <a id="uploadLink" class="btn" href="#"><strong><em>Upload Files</em></strong></a>
-        <a class="btn" href="{link action=picker update=$smarty.get.update fck=$smarty.get.fck ajax_action=1}?CKEditor={$smarty.get.CKEditor}&amp;CKEditorFuncNum={$smarty.get.CKEditorFuncNum}&amp;langCode={$smarty.get.langCode}"><strong><em>Back to Manager</em></strong></a>
+        <a id="backlink" class="btn" href="{link action=picker update=$smarty.get.update fck=$smarty.get.fck ajax_action=1}?CKEditor={$smarty.get.CKEditor}&amp;CKEditorFuncNum={$smarty.get.CKEditorFuncNum}&amp;langCode={$smarty.get.langCode}"><strong><em>Back to Manager</em></strong></a>
     </div>
+    {messagequeue}
+    
     <div id="dataTableContainer"></div>
 </div>
 
@@ -117,6 +123,15 @@
 	// Fired when the user selects files in the "Browse" dialog
 	// and clicks "Ok".
 	function onFileSelect(event) {
+	    
+        for (i in event.fileList) {
+ 	       if (event.fileList[i].size > {/literal}{$bmax}{literal}) {
+ 	           delete event.fileList[i];
+               // alert(event.fileList[i].name+" cannot be uploaded as it's file size is greater than the mximum limit.");
+ 	       };
+        }
+        
+                	    
 		if('fileList' in event && event.fileList != null) {
 			fileList = event.fileList;
 			createDataTable(fileList);
@@ -129,17 +144,22 @@
 	  this.dataArr = [];
 	  for(var i in entries) {
 	     var entry = entries[i];
-		 entry["progress"] = "<div style='height:5px;width:100px;background-color:#CCC;'></div>";
+		 entry["progress"] = "<div style='width:100%;background-color:#CCC;padding:3px;'><div style='height:12px;padding:0px;font-size:10px;color:#fff;background-color:#900;width:0;'>0%</div></div>";
 	     dataArr.unshift(entry);
 	  }
 	
 	  for (var j = 0; j < dataArr.length; j++) {
 	    this.fileIdHash[dataArr[j].id] = j;
 	  }
+	  
+	  var sizeFormat = function (elCell, oRecord, oColumn, oData) {
+          var newsize = Math.round(oData/1048576*100000)/100000;
+          elCell.innerHTML = newsize.toFixed(2)+"mb";
+      };
 	
 	    var myColumnDefs = [
 	        {key:"name", label: "File Name", sortable:false},
-	     	{key:"size", label: "Size", sortable:false},
+	     	{key:"size", label: "Size", sortable:false,formatter: sizeFormat},
 	     	{key:"progress", label: "Upload progress", sortable:false}
 	    ];
 
@@ -155,6 +175,8 @@
 	               selectionMode:"single"
 	           });
 	}
+	
+	createDataTable();
 
     // Do something on each file's upload start.
 	function onUploadStart(event) {
@@ -165,7 +187,7 @@
 	function onUploadProgress(event) {
 		rowNum = fileIdHash[event["id"]];
 		prog = Math.round(100*(event["bytesLoaded"]/event["bytesTotal"]));
-		progbar = "<div style='height:5px;width:100px;background-color:#CCC;'><div style='height:5px;background-color:#F00;width:" + prog + "px;'></div></div>";
+		progbar = "<div style='width:100%;background-color:#CCC;'><div style='height:12px;padding:3px;font-size:10px;color:#fff;background-color:#f00;width:" + prog + "%;'>"+prog+"%</div></div>";
 		singleSelectDataTable.updateRow(rowNum, {name: dataArr[rowNum]["name"], size: dataArr[rowNum]["size"], progress: progbar});	
 	}
 	
@@ -173,7 +195,7 @@
 	function onUploadComplete(event) {
 		rowNum = fileIdHash[event["id"]];
 		prog = Math.round(100*(event["bytesLoaded"]/event["bytesTotal"]));
-		progbar = "<div style='height:5px;width:100px;background-color:#CCC;'><div style='height:5px;background-color:#F00;width:100px;'></div></div>";
+		progbar = "<div style='width:100%;background-color:#CCC;'><div style='height:12px;padding:3px;font-size:10px;color:#fff;background-color:#090;width:100%;'>100%</div></div>";
 		singleSelectDataTable.updateRow(rowNum, {name: dataArr[rowNum]["name"], size: dataArr[rowNum]["size"], progress: progbar});
 	    uploader.removeFile(event["id"]);
 	    fileList = event.fileList;
@@ -197,6 +219,13 @@
 	    //uploader.removeFile(event["id"]);
 	}
 })();
+
+YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
+    Y.all('.msg-queue .close').on('click',function(e){
+        e.halt();
+        e.target.get('parentNode').remove();
+    });
+});
 
 {/literal}
 </script>

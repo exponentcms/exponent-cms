@@ -4,6 +4,7 @@
     <meta http-equiv="content-type" content="text/html; charset=utf-8">
     <title>File Manager  |  Exponent CMS</title>
 
+    <link rel="stylesheet" type="text/css" href="{$smarty.const.URL_FULL}framework/core/assets/css/msgq.css"> 
     <link rel="stylesheet" type="text/css" href="{$smarty.const.URL_FULL}framework/modules/file/assets/css/filemanager.css"> 
 
     <script type="text/javascript" src="{$smarty.const.YUI2_PATH}yahoo-dom-event/yahoo-dom-event.js"></script>
@@ -17,6 +18,9 @@
     <script type="text/javascript" src="{$smarty.const.YUI2_PATH}paginator/paginator-min.js"></script>
     <script type="text/javascript" src="{$smarty.const.YUI2_PATH}datatable/datatable-min.js"></script>
 
+    <script type="text/javascript" src="{$smarty.const.YUI3_PATH}yui/yui-min.js"></script>
+
+
     <script type="text/javascript" src="{$smarty.const.URL_FULL}exponent.js.php"></script>
 
 
@@ -24,7 +28,8 @@
 <body class=" exp-skin">
 
 <div id="filemanager">
-    <h1>File Manager{messagequeue}</h1>
+    <h1>File Manager</h1>
+    {messagequeue}
     <div id="autocomplete">
         <label for="dt_input">Filter by Filename, title, or alt:</label>
         <input id="dt_input" type="text" />
@@ -331,8 +336,12 @@ EXPONENT.fileManager = function() {
     };
 }();
 
-
-
+YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
+    Y.all('.msg-queue .close').on('click',function(e){
+        e.halt();
+        e.target.get('parentNode').remove();
+    });
+});
 {/literal}
 </script>
 

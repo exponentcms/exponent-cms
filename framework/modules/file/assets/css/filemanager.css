@@ -67,6 +67,14 @@ h1 {
     position:relative;
 }
 
+#actionbar a#selectLink.btn strong {
+    background:url(../images/select.gif) no-repeat 0 40%;
+}
+
+#actionbar a#backlink.btn strong {
+    background:url(../images/back.png) no-repeat 0 40%;
+}
+
 #actionbar a.btn em {
     height:32px;
     position:relative;
@@ -210,7 +218,13 @@ sans-serif;
 
 /****************  datatable  ***********************/
 
-#dynamicdata table { 
+#dynamicdata,
+#dataTableContainer { 
+    padding:0 10px;
+} 
+
+#dynamicdata table,
+#dataTableContainer table { 
     width:100%;
 } 
 
@@ -726,21 +740,6 @@ a.fileinfo:hover {
 }
 
 /****************  message que  ***********************/
-#msg-queue {
-    display:inline-block;
-    margin-left:50px;
+.msg-queue {
+    margin:10px;
 }
-
-#msg-queue ul,
-#msg-queue ul li {
-    padding:0;
-    margin:0;
-    list-style:none;
-}
-
-#msg-queue ul li {
-    padding:5px;
-    margin-bottom:5px;
-    font-size:14px;
-}
-
