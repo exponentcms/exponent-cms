@@ -13,10 +13,9 @@
  * GPL: http://www.gnu.org/licenses/gpl.txt
  *
  *}
-{script unique="hidePasswordFields"}
+{script unique="hidePasswordFields" yui3mods=1}
 {literal}
-YUI({base:EXPONENT.URL_FULL+'/external/yui3/build/'}).use('node',
-function(Y) { //specify YUI3 modules to use
+YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
      // start coding
      var checkbox = Y.get('#remember_me'); //the checkbox
      checkbox.on('click',function(e){
