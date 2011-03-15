@@ -144,7 +144,7 @@ EXPONENT.fileManager = function() {
             var editorstring = '<a title="Edit Image" href="{/literal}{link controller=pixidou action=editor ajax_action=1 id="replacewithid" update=$update fck=$smarty.get.fck}{literal}"><img width=16 height=16 style="border:none;" src="{/literal}{$smarty.const.ICON_RELATIVE}{literal}edit-image.png" /></a>&nbsp;&nbsp;&nbsp;';
             editorstring = editorstring.replace('replacewithid',oRecord._oData.id);
         } else {
-            var editorstring = '<img width=16 height=16 style="border:none;" src="{/literal}{$smarty.const.ICON_RELATIVE}{literal}actions/cant-edit-image.png" />&nbsp;&nbsp;&nbsp;';
+            var editorstring = '<img width=16 height=16 style="border:none;" src="{/literal}{$smarty.const.ICON_RELATIVE}{literal}cant-edit-image.png" />&nbsp;&nbsp;&nbsp;';
         }
         var pickerstring = {/literal}{if $smarty.get.update != "noupdate"}'<a title="Use This Image" onclick="window.opener.{if $smarty.get.fck}SetUrl(\''+EXPONENT.PATH_RELATIVE+oRecord._oData.directory+oRecord._oData.filename+'\',\''+oRecord._oData.image_width+'\',\''+oRecord._oData.image_height+'\'){else}EXPONENT.passBackFile{$update}(' + oRecord._oData.id + '){/if}; window.close(); return false;" href="#"><img width=16 height=16 style="border:none;" src="{$smarty.const.ICON_RELATIVE}use.png" /></a>&nbsp;&nbsp;&nbsp;'{else}''{/if}{literal}
         elCell.innerHTML =  pickerstring
