@@ -29,8 +29,7 @@
 </div>
 {script unique="search" yui3mods="yui"}
 {literal}
-
-YUI().use('node', function(Y) {
+YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
     Y.get('#search_string').on({
         'focus':function(e){
             e.target.set('value',(e.target.get('value')=='{/literal}{$config.default_txt|default:"Keywords"|gettext}{literal}')?'':e.target.get('value'));
