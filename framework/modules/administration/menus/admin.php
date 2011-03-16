@@ -139,6 +139,10 @@ return array(
             			                'url'=>makeLink(array('module'=>'migration','action'=>'configure')),
                                     ),
                                     array(
+                                        'text'=>'Migrate Users/Groups',
+            			                'url'=>makeLink(array('module'=>'migration','action'=>'manage_users')),
+                                    ),
+                                    array(
                                         'text'=>'Migrate Pages',
             			                'url'=>makeLink(array('module'=>'migration','action'=>'manage_pages')),
                                     ),
@@ -149,10 +153,6 @@ return array(
                                     array(
                                         'text'=>'Migrate Content',
             			                'url'=>makeLink(array('module'=>'migration','action'=>'manage_content')),
-                                    ),
-                                    array(
-                                        'text'=>'Migrate Users/Groups',
-            			                'url'=>makeLink(array('module'=>'migration','action'=>'manage_users')),
                                     ),
                                 )
                             )
