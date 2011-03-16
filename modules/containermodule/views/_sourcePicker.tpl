@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2006 OIC Group, Inc.
+ * Copyright (c) 2004-2011 OIC Group, Inc.
  * Written and Designed by James Hunt
  *
  * This file is part of Exponent
@@ -15,12 +15,15 @@
  *}
 
 {if $container->info.clickable}
-<div id="module{$container->id}" class="container_modulewrapper">
-	<div class="container_moduleheader">
-		<a style="text-align:center;display:block;color:#114;font-size:11px;padding-top:2px" href="{$dest|replace:"?":"index.php?"}&ss={$container->info.source}&sm={$container->info.class}">
+<div id="module{$container->id}" class="exp-container-module-wrapper">
+	<div class="container-chrome module-chrome">
+		{* <a style="text-align:center;display:block;font-size:11px;padding-top:2px" href="{$dest}&ss={$container->info.source}&sm={$container->info.class}"> *}
+		<a style="text-align:center;display:block;text-decoration:none;font-weight:bold;text-transform:uppercase;font-size:11px;
+					text-shadow: 0px -1px 0px #374683;padding:1px 15px 0 5px;top:0px; left:5px;line-height:15px;color:#fff;"
+					href="{$dest}&cid={$container->id}">
 			* {$container->info.module} - {$_TR.use_this_content} *
 		</a>
-	</div>
+	</div>	
 	{$container->output}
 </div>
 {else}
