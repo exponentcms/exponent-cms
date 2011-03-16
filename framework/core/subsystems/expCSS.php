@@ -32,7 +32,7 @@ class expCSS {
             $primer_array = $params['css_primer'];
             foreach ($primer_array as $path) {
                 //indexing the array by the filename
-                $css_primer[reset(explode(".",end(explode("/",$path))))] = $path;
+                $css_primer[$path] = $path;
             }
         }
         
@@ -43,14 +43,14 @@ class expCSS {
                 $existspath = BASE."framework/core/assets/css/".$filename.".css";
                 $filepath = PATH_RELATIVE."framework/core/assets/css/".$filename.".css";
                 if (is_file($existspath)) {
-                    $css_core[$filename] = $filepath;
+                    $css_core[$filepath] = $filepath;
                 }
             }
         }
         
         // css linked in through the css plugin
         if (isset($params['link'])){ 
-            $css_links[$params['unique']] = $params['link'];
+            $css_links[$params['link']] = $params['link'];
         };
         
         // CSS hard coded in a view
@@ -76,6 +76,7 @@ class expCSS {
         };
         
         if (MINIFY!=1) {
+            //eDebug($css_files);
             foreach ($css_files as $file) {
                 $html .= "\t".'<link rel="stylesheet" type="text/css" href="'.$file.'" '.XHTML_CLOSING.'>'."\r\n";
             }
