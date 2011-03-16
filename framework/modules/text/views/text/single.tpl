@@ -20,7 +20,7 @@
     {permissions}
         {if $permissions.edit == 1}
         <div class="module-actions">
-            {icon action=edit id=$items[0]->id title="Edit Text"|gettext}
+            {icon action=edit record=$items[0] title="Edit Text"|gettext}
         </div>
         {/if}
     {/permissions}
