@@ -18,7 +18,7 @@
     <h1>Migrate Files</h1>
     <p> 
         The following is a list of files found in the database ({$config.database}). 
-        Note: this will only copy over the records from the old database properly in the Exponent 2.0's database. Make sure you manually copy the "files" 
+        Note: this will only copy over the records from the old database properly into the Exponent 2.0 database. Make sure you manually copy the "files" 
         directory over to this installation.
         <span class="warning">
             WARNING: This process will wipe out all current file records in the database.
