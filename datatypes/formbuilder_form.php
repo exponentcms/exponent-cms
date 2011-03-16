@@ -58,6 +58,7 @@ class formbuilder_form {
 		
 		// Get User list
     	$userlist = array();
+    	$defaults = array();
 		$users = exponent_users_getAllUsers();
 		foreach ($db->selectObjects('formbuilder_address','form_id='.$object->id.' and user_id != 0') as $address) {
 			$locuser =  exponent_users_getUserById($address->user_id);

@@ -130,7 +130,9 @@ class formmodule {
 			$template = new template("formmodule",$view,$loc);
 			$template->assign("moduletitle",$f->name);
 			$template->assign("description",$f->description);
-			$template->assign("formmsg",$formmsg);
+			if ($formmsg) {
+                flash('notice',$formmsg);
+			}
 			$template->assign("form_html",$form->toHTML($f->id));
 			$template->assign("form",$f);
 			$template->register_permissions(array("administrate","editform","editformsettings","editreport","viewdata","editdata","deletedata"),$loc);
