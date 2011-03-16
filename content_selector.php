@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2006 OIC Group, Inc.
+# Copyright (c) 2004-2011 OIC Group, Inc.
 # Written and Designed by James Hunt
 #
 # This file is part of Exponent
@@ -20,15 +20,21 @@
 define('SCRIPT_EXP_RELATIVE','');
 define('SCRIPT_FILENAME','content_selector.php');
 
-// Initialize the Exponent Framework
-include_once('exponent.php');
 /* exdoc
  * Define Content Selector constant as 1, since we are not selecting orphaned content.
  * @node General
  */
 define('CONTENT_SELECTOR',1);
 
+// Initialize the Exponent Framework
+include_once('exponent.php');
+$section = $router->getSection();
+$sectionObj = $router->getSectionObj($section);
+
+// Call the real selector script.  It will use the value of CONTENT_SELECTOR to determine what it needs to do.
+include_once('selector.php');
+
 // Include the Selector script, which does all of the real work.
-include_once(dirname(__realpath(__FILE__)).'/selector.php');
+//include_once(dirname(__realpath(__FILE__)).'/selector.php');
 
 ?>
