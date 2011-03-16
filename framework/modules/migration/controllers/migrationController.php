@@ -87,12 +87,12 @@ class migrationController extends expController {
 //        'tags',	 // no controller and not in old school ???
     );
 
-    public $old_school = array(  // psuedo-variable isn't used, list of old school modules still in code base
-        'calendarmodule',
-        'formmodule',
-        'navigationmodule',
-        'simplepollmodule',
-    );
+    // public $old_school = array(  // psuedo-variable isn't used, list of old school modules still in code base
+        // 'calendarmodule',
+        // 'formmodule',
+        // 'navigationmodule',
+        // 'simplepollmodule',
+    // );
 
     function name() { return $this->displayname(); } //for backwards compat with old modules
     function displayname() { return "Content Migration Controller"; }
@@ -364,10 +364,11 @@ class migrationController extends expController {
                 $this->convert($iloc, $module);
             } else if (!in_array($iloc->mod, $this->deprecated_modules)) {
                 // add old school modules not in the deprecation list
-//                if (!$db->selectObject('container',"internal='".$module->internal."'")) {
-                    $db->insertObject($module, 'container');
-                    @$this->msg['container']++;
-//                }
+				if ($iloc->mod == 'calendarmodule' && $module->view == 'Upcoming Events - Summary') {
+					$module->view = 'Upcoming Events - Headlines';
+				}
+				$db->insertObject($module, 'container');
+				@$this->msg['container']++;
                 $this->pulldata($iloc, $module);
             }
         }
@@ -1218,13 +1219,7 @@ class migrationController extends expController {
 	// used to create containers for new modules
     private function add_container($iloc,$m) {
         global $db;
-		if ($iloc->mod == 'calendarmodule') {
-			$iloc->mod = $this->new_modules[$iloc->mod];
-			$m->internal = serialize($iloc);
-			if ($m->view == 'Upcoming Events - Summary') {
-				$m->view = '"Upcoming Events - Headlines"';
-			}
-		} elseif ($iloc->mod != 'contactmodule') {
+		if ($iloc->mod != 'contactmodule') {
 			$iloc->mod = $this->new_modules[$iloc->mod];
 			$m->internal = (isset($m->internal) && strstr($m->internal,"Controller")) ? $m->internal : serialize($iloc);
 			$m->action = isset($m->action) ? $m->action : 'showall';
