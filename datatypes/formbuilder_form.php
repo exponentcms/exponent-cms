@@ -58,6 +58,7 @@ class formbuilder_form {
 		
 		// Get User list
     	$userlist = array();
+    	$defaults = array();
 		$users = exponent_users_getAllUsers();
 		foreach ($db->selectObjects('formbuilder_address','form_id='.$object->id.' and user_id != 0') as $address) {
 			$locuser =  exponent_users_getUserById($address->user_id);
@@ -71,11 +72,10 @@ class formbuilder_form {
 		$form->register('users',$i18n['users'],new listbuildercontrol($defaults,$userlist));
 
 		// Get Group list
-		$defaults = array();
 		$grouplist = array();
+		$defaults = array();
 		$groups = exponent_users_getAllGroups();
 		if ($groups != null) {
-
 			foreach ($db->selectObjects('formbuilder_address','form_id='.$object->id.' and group_id != 0') as $address) {
 				$group =  exponent_users_getGroupById($address->group_id);
 				$defaults[$group->id] = $group->name;
@@ -88,12 +88,13 @@ class formbuilder_form {
 			$form->register('groups',$i18n['groups'],new listbuildercontrol($defaults,$grouplist));
 		}
 		
+		// Get free-form address list
 		$defaults = array();
 		foreach ($db->selectObjects('formbuilder_address','form_id='.$object->id." and email != ''") as $address) {
 			$defaults[$address->email] = $address->email;
-		}
-		
+		}		
 		$form->register('addresses',$i18n['addresses'],new listbuildercontrol($defaults,null));
+		
 		$form->register('subject',$i18n['subject'],new textcontrol($object->subject));
 		$form->register(null,'', new htmlcontrol('<h3>'.$i18n['database_header'].'</h3><hr size="1" /><br />'));
 		$form->register('is_saved',$i18n['is_saved'],new checkboxcontrol($object->is_saved,false));

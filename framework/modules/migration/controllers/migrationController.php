@@ -87,12 +87,12 @@ class migrationController extends expController {
 //        'tags',	 // no controller and not in old school ???
     );
 
-    public $old_school = array(  // psuedo-variable isn't used, list of old school modules still in code base
-        'calendarmodule',
-        'formmodule',
-        'navigationmodule',
-        'simplepollmodule',
-    );
+    // public $old_school = array(  // psuedo-variable isn't used, list of old school modules still in code base
+        // 'calendarmodule',
+        // 'formmodule',
+        // 'navigationmodule',
+        // 'simplepollmodule',
+    // );
 
     function name() { return $this->displayname(); } //for backwards compat with old modules
     function displayname() { return "Content Migration Controller"; }
@@ -164,10 +164,9 @@ class migrationController extends expController {
     public function migrate_files() {
         global $db;
 
+        echo "<ol>";
         $old_db = $this->connect();
         $db->delete('expFiles');
-        echo "<ol>";
-
         echo "<li class=\"mig-msg\">
             Emptied expFiles table before file import.
         </li>";
@@ -202,13 +201,13 @@ class migrationController extends expController {
         echo "<li class=\"mig-msg\">
             ".count($oldfiles)." files imported.
         </li>";
-
         echo "<li class=\"mig-msg\">
-            Done! You should now have all files from your previous system in your file manager.
+            Done! You should now have all files from your previous system listed in your file manager.
         </li>";
-
+        echo "<li class=\"mig-msg\">
+            HOWEVER, you must manually copy the 'files' directory over to this installation.
+        </li>";
         echo "</ol>";
-
     }
 
 	// gather info about all modules in old site for user selection
@@ -365,14 +364,15 @@ class migrationController extends expController {
                 $this->convert($iloc, $module);
             } else if (!in_array($iloc->mod, $this->deprecated_modules)) {
                 // add old school modules not in the deprecation list
-//                if (!$db->selectObject('container',"internal='".$module->internal."'")) {
-                    $db->insertObject($module, 'container');
-                    @$this->msg['container']++;
-//                }
+				if ($iloc->mod == 'calendarmodule' && $module->view == 'Upcoming Events - Summary') {
+					$module->view = 'Upcoming Events - Headlines';
+				}
+				$db->insertObject($module, 'container');
+				@$this->msg['container']++;
                 $this->pulldata($iloc, $module);
             }
         }
-
+		searchController::spider();
         expSession::clearUserCache();
         assign_to_template(array('msg'=>@$this->msg));
     }
@@ -456,7 +456,6 @@ class migrationController extends expController {
         }
         expSession::clearUserCache();
         expHistory::back();
-
     }
 
 	// main routine to convert old school module data into new controller format
@@ -473,11 +472,12 @@ class migrationController extends expController {
 				//check to see if it's already pulled in (circumvent !is_original)
 				$ploc = $iloc;
 				$ploc->mod = "text";
-                $iloc->mod = 'textmodule';
 				if ($db->countObjects($ploc->mod, "location_data='".serialize($ploc)."'")) {
+					$iloc->mod = 'textmodule';
 					break;
 				}
 
+                $iloc->mod = 'textmodule';
                 $textitems = $old_db->selectObjects('textitem', "location_data='".serialize($iloc)."'");
                 if ($textitems) {
                     foreach ($textitems as $ti) {
@@ -501,11 +501,12 @@ class migrationController extends expController {
 				//check to see if it's already pulled in (circumvent !is_original)
 				$ploc = $iloc;
 				$ploc->mod = "text";
-                $iloc->mod = 'rotatormodule';
 				if ($db->countObjects($ploc->mod, "location_data='".serialize($ploc)."'")) {
+					$iloc->mod = 'rotatormodule';
 					break;
 				}
 
+                $iloc->mod = 'rotatormodule';
                 $textitems = $old_db->selectObjects('rotator_item', "location_data='".serialize($iloc)."'");
                 if ($textitems) {
                     foreach ($textitems as $ti) {
@@ -528,11 +529,12 @@ class migrationController extends expController {
 				//check to see if it's already pulled in (circumvent !is_original)
 				$ploc = $iloc;
 				$ploc->mod = "snippet";
-                $iloc->mod = 'snippetmodule';
 				if ($db->countObjects($ploc->mod, "location_data='".serialize($ploc)."'")) {
+					$iloc->mod = 'snippetmodule';
 					break;
 				}
 
+                $iloc->mod = 'snippetmodule';
                 $textitems = $old_db->selectObjects('textitem', "location_data='".serialize($iloc)."'");
                 if ($textitems) {
                     foreach ($textitems as $ti) {
@@ -565,11 +567,12 @@ class migrationController extends expController {
 				//check to see if it's already pulled in (circumvent !is_original)
 				$ploc = $iloc;
 				$ploc->mod = "links";
-                $iloc->mod = 'linklistmodule';
 				if ($db->countObjects($ploc->mod, "location_data='".serialize($ploc)."'")) {
+					$iloc->mod = 'linklistmodule';
 					break;
 				}
 
+                $iloc->mod = 'linklistmodule';
                 $links = $old_db->selectArrays('linklist_link', "location_data='".serialize($iloc)."'");
 				if ($links) {
 					foreach ($links as $link) {
@@ -605,11 +608,12 @@ class migrationController extends expController {
 				//check to see if it's already pulled in (circumvent !is_original)
 				$ploc = $iloc;
 				$ploc->mod = "links";
-                $iloc->mod = 'linkmodule';
 				if ($db->countObjects($ploc->mod, "location_data='".serialize($ploc)."'")) {
+					$iloc->mod = 'linkmodule';
 					break;
 				}
 
+                $iloc->mod = 'linkmodule';
                 $links = $old_db->selectArrays('link', "location_data='".serialize($iloc)."'");
 				if ($links) {
 					foreach ($links as $link) {
@@ -638,11 +642,12 @@ class migrationController extends expController {
 				//check to see if it's already pulled in (circumvent !is_original)
 				$ploc = $iloc;
 				$ploc->mod = "text";
-                $iloc->mod = 'swfmodule';
 				if ($db->countObjects($ploc->mod, "location_data='".serialize($ploc)."'")) {
+					$iloc->mod = 'swfmodule';
 					break;
 				}
 
+                $iloc->mod = 'swfmodule';
                 $swfitems = $old_db->selectObjects('swfitem', "location_data='".serialize($iloc)."'");
 				if ($swfitems) {
 					foreach ($swfitems as $ti) {
@@ -689,11 +694,12 @@ class migrationController extends expController {
 				//check to see if it's already pulled in (circumvent !is_original)
 				$ploc = $iloc;
 				$ploc->mod = "news";
-                $iloc->mod = 'newsmodule';
 				if ($db->countObjects($ploc->mod, "location_data='".serialize($ploc)."'")) {
+					$iloc->mod = 'newsmodule';
 					break;
 				}
 
+                $iloc->mod = 'newsmodule';
                 $newsitems = $old_db->selectArrays('newsitem', "location_data='".serialize($iloc)."'");
                 if ($newsitems) {
                     foreach ($newsitems as $ni) {
@@ -731,11 +737,12 @@ class migrationController extends expController {
 				//check to see if it's already pulled in (circumvent !is_original)
 				$ploc = $iloc;
 				$ploc->mod = "filedownload";
-                $iloc->mod = 'resourcesmodule';
 				if ($db->countObjects($ploc->mod, "location_data='".serialize($ploc)."'")) {
+					$iloc->mod = 'resourcesmodule';
 					break;
 				}
 
+                $iloc->mod = 'resourcesmodule';
                 $resourceitems = $old_db->selectArrays('resourceitem', "location_data='".serialize($iloc)."'");
 				if ($resourceitems) {
 					foreach ($resourceitems as $ri) {
@@ -778,11 +785,12 @@ class migrationController extends expController {
 				//check to see if it's already pulled in (circumvent !is_original)
 				$ploc = $iloc;
 				$ploc->mod = "photos";
-				$iloc->mod = 'imagegallerymodule';
 				if ($db->countObjects($ploc->mod, "location_data='".serialize($ploc)."'")) {
+					$iloc->mod = 'imagegallerymodule';
 					break;
 				}
 
+				$iloc->mod = 'imagegallerymodule';
                 $galleries = $old_db->selectArrays('imagegallery_gallery', "location_data='".serialize($iloc)."'");
 					if ($galleries) {
 					foreach ($galleries as $gallery) {
@@ -818,11 +826,12 @@ class migrationController extends expController {
 				//check to see if it's already pulled in (circumvent !is_original)
 				$ploc = $iloc;
 				$ploc->mod = "photos";
-                $iloc->mod = 'slideshowmodule';
 				if ($db->countObjects($ploc->mod, "location_data='".serialize($ploc)."'")) {
+					$iloc->mod = 'slideshowmodule';
 					break;
 				}
 
+                $iloc->mod = 'slideshowmodule';
                 $galleries = $old_db->selectArrays('imagegallery_gallery', "location_data='".serialize($iloc)."'");
 				if ($galleries) {
 					foreach ($galleries as $gallery) {
@@ -863,11 +872,12 @@ class migrationController extends expController {
 				//check to see if it's already pulled in (circumvent !is_original)
 				$ploc = $iloc;
 				$ploc->mod = "headline";
-                $iloc->mod = 'headlinemodule';
 				if ($db->countObjects($ploc->mod, "location_data='".serialize($ploc)."'")) {
+					$iloc->mod = 'headlinemodule';
 					break;
 				}
 
+                $iloc->mod = 'headlinemodule';
                 $headlines = $old_db->selectObjects('headline', "location_data='".serialize($iloc)."'");
                 if ($headlines) {
                     foreach ($headlines as $hl) {
@@ -909,11 +919,12 @@ class migrationController extends expController {
 				//check to see if it's already pulled in (circumvent !is_original)
 				$ploc = $iloc;
 				$ploc->mod = "blog";
-                $iloc->mod = 'weblogmodule';
 				if ($db->countObjects($ploc->mod, "location_data='".serialize($ploc)."'")) {
+					$iloc->mod = 'weblogmodule';
 					break;
 				}
 
+                $iloc->mod = 'weblogmodule';
                 $blogitems = $old_db->selectArrays('weblog_post', "location_data='".serialize($iloc)."'");
                 if ($blogitems) {
                     foreach ($blogitems as $bi) {
@@ -951,11 +962,12 @@ class migrationController extends expController {
 				//check to see if it's already pulled in (circumvent !is_original)
 				$ploc = $iloc;
 				$ploc->mod = "faq";
-                $iloc->mod = 'faqmodule';
 				if ($db->countObjects($ploc->mod, "location_data='".serialize($ploc)."'")) {
+					$iloc->mod = 'faqmodule';
 					break;
 				}
 
+                $iloc->mod = 'faqmodule';
                 $faqs = $old_db->selectArrays('faq', "location_data='".serialize($iloc)."'");
                 if ($faqs) {
                     foreach ($faqs as $fqi) {
@@ -982,11 +994,12 @@ class migrationController extends expController {
 				//check to see if it's already pulled in (circumvent !is_original)
 				$ploc = $iloc;
 				$ploc->mod = "portfolio";
-                $iloc->mod = 'listingmodule';
 				if ($db->countObjects($ploc->mod, "location_data='".serialize($ploc)."'")) {
+					$iloc->mod = 'listingmodule';
 					break;
 				}
 
+                $iloc->mod = 'listingmodule';
                 $listingitems = $old_db->selectArrays('listing', "location_data='".serialize($iloc)."'");
                 if ($listingitems) {
                     foreach ($listingitems as $li) {
@@ -1020,11 +1033,12 @@ class migrationController extends expController {
 				//check to see if it's already pulled in (circumvent !is_original)
 				$ploc = $iloc;
 				$ploc->mod = "formmodule";
-                $iloc->mod = 'contactmodule';
 				if ($db->countObjects($ploc->mod, "location_data='".serialize($ploc)."'")) {
+					$iloc->mod = 'contactmodule';
 					break;
 				}
 
+                $iloc->mod = 'contactmodule';
                 $contactform = $old_db->selectObject('contactmodule_config', "location_data='".serialize($iloc)."'");
 				if ($contactform) {
 					$loc = expUnserialize($contactform->location_data);
@@ -1213,7 +1227,7 @@ class migrationController extends expController {
 			if ($m->view == "Default") {
 				$m->view = 'showall';
 			}
-		} else {
+		} else {  // must be old school contactmodule
 			$iloc->mod = $this->new_modules[$iloc->mod];
 			$m->internal = serialize($iloc);
 		}
