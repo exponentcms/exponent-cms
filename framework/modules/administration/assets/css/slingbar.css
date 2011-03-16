@@ -182,6 +182,12 @@
 #admintoolbar li.edit a.yuimenuitemlabel {
     background:url(../images/admintoolbar/editpage.png) no-repeat 5px 50%;
 }
+#admintoolbar .thispage li.user a.yuimenuitemlabel {
+    background:url(../../../../core/assets/images/exp-admin-sprite.png) no-repeat 3px -26px; 
+}
+#admintoolbar .thispage li.group a.yuimenuitemlabel {
+    background:url(../../../../core/assets/images/exp-admin-sprite.png) no-repeat 3px -56px; 
+}
 #admintoolbar li.filemanager a.yuimenuitemlabel {
     background:url(../images/admintoolbar/filemanager.png) no-repeat 5px 50%;
 }
@@ -190,7 +196,7 @@
 }
 
 #admintoolbar li.yuimenuitem-selected {
-    background:#0e1d3f;
+    background-color:#0e1d3f;
 }
 
 #admintoolbar li.yuimenuitem-selected a {
