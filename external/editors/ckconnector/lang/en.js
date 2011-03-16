@@ -1,5 +1,0 @@
-// Placeholder
-
-eXp._TR = {
-		};
-

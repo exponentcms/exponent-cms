@@ -18,7 +18,7 @@
 
     <h1>{$headline}</h1>
 
-    {permissions level=$smarty.const.UILEVEL_NORMAL}
+    {permissions}
         {if $permissions.edit == 1}
         <div class="module-actions">
             {icon action=edit id=$record->id title="Edit this `$modelname`"}

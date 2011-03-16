@@ -20,6 +20,10 @@
 define('SCRIPT_EXP_RELATIVE','');
 define('SCRIPT_FILENAME','source_selector.php');
 
+/* exdoc
+ * Define Source_Selector constant as 1, since we are not selecting orphaned content.
+ * @node General
+ */
 define('SOURCE_SELECTOR',1);
 
 // Initialize the Exponent Framework

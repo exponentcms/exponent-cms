@@ -13,7 +13,7 @@
  * @link       http://www.exponent-docs.org/
  *}
 
-{permissions level=$smarty.const.UILEVEL_NORMAL}
+{permissions}
 {if $permissions.manage == 1}
     <div class="module ecomconfig manage-discounts">
         <div class="form_header">

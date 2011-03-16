@@ -15,7 +15,7 @@
  *}
 
 <div class="navigationmodule manage">
-	{permissions level=$smarty.const.UILEVEL_NORMAL}
+	{permissions}
 	{if $canManage == 1}
 		<li><a class="navlink" href="{link action=manage}">Manage Navigation</a></li>
 	{/if}

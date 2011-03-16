@@ -43,8 +43,8 @@
 			<div class="comment-text bodycopy">	
                 {*avatar userid=$cmt->poster w=100  <-- we'll get back to you*}
                 
-    			{permissions level=$smarty.const.UILEVEL_NORMAL}
-                    {permissions level=$smarty.const.UILEVEL_NORMAL}
+    			{permissions}
+                    {permissions}
                         {if $permissions.manage == 1}
                             {icon img=edit.png action=edit id=$cmt->id title="Edit Comment"}
                         {/if}

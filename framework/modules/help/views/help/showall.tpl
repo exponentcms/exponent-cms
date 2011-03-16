@@ -25,7 +25,7 @@
         <li>
             <a href={link action=show version=$doc->help_version->version title=$doc->title}>{$doc->title}</a>
         
-            {permissions level=$smarty.const.UILEVEL_NORMAL}
+            {permissions}
                 {if $permissions.edit == 1}
                     {icon action=edit img=edit.png class="editlink" id=$doc->id title="Edit this `$modelname`"}
                 {/if}
@@ -37,7 +37,7 @@
         {clear}
     {/foreach}
     </ol>
-    {permissions level=$smarty.const.UILEVEL_NORMAL}
+    {permissions}
         {if $permissions.create == 1}
             {icon class=add action=edit title="Add help doc" text="Add help doc to version `$current_version->version`"}{br}
         {/if}

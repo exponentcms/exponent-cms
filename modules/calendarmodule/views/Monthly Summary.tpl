@@ -58,7 +58,7 @@
 	{/foreach}
 	</tbody>
 	</table>
-	{permissions level=$smarty.const.UILEVEL_NORMAL}
+	{permissions}
 	{if $permissions.post == 1}
 	<a class="mngmntlink calendar_mngmntlink" href="{link action=edit id=0}" title="{$_TR.alt_create}" alt="{$_TR.alt_create}">{$_TR.create}</a>
 	{/if}

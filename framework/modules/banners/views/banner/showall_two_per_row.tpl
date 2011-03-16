@@ -15,7 +15,7 @@
  *}
 
 <div class="module banner two-per-row">
-    {permissions level=$smarty.const.UILEVEL_NORMAL}
+    {permissions}
         <div class="module-actions">
             {if $permissions.manage == 1}
             {icon action=manage id=$item->id title="manage `$modelname`" text="Manage Banners"}

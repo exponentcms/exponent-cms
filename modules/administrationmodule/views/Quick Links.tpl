@@ -20,7 +20,7 @@
 			{gettext str=$_TR.quicklinks}
 	</div>
 	<div class="bd">		
-	{permissions level=$smarty.const.UILEVEL_NORMAL}
+	{permissions}
 	{if $can_manage_nav == 1}<a class="sitetree" href="{link module=navigationmodule action=manage}">{$_TR.manage_site}</a>{/if}
 		{if $permissions.administrate == 1}
 		<a class="files" href="{$smarty.const.URL_FULL}modules/filemanagermodule/actions/picker.php">{$_TR.manage_files}</a>
@@ -39,7 +39,7 @@
 			{$user->username}
 	</div>
 	<div class="bd">
-	{permissions level=$smarty.const.UILEVEL_NORMAL}
+	{permissions}
 	{get_user assign=user}
 	<a class="changepassword" href="{link controller=users action=change_password}">{$_TR.change_password}</a>
 	<a class="editprofile" href="{link controller=users action=edituser id=$user->id}">{$_TR.edit_profile}</a>

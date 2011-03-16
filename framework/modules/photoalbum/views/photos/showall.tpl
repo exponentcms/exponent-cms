@@ -20,7 +20,7 @@
 
 <div class="module photoalbum showall">
     {if $moduletitle != ""}<h1>{$moduletitle}</h1>{/if}
-    {permissions level=$smarty.const.UILEVEL_NORMAL}
+    {permissions}
         {if $permissions.create == 1}
             {icon class="add" action=edit rank=1 title="Add to the top" text="Add Image"}
         {/if}
@@ -37,8 +37,8 @@
             <a href="{link action=show title=$record->sef_url}" title="View more about {$record->title}">
                 {img class="thumb" alt=$record->alt file_id=$record->expFile[0]->id w=$config.pa_showall_thumbbox h=$config.pa_showall_thumbbox zc=1}            
             </a>
-            {permissions level=$smarty.const.UILEVEL_NORMAL}
-                <div class="admin-actions">
+            {permissions}
+                <div class="item-actions">
                     {if $permissions.edit == 1}
                         {icon img=edit.png action=edit id=$record->id title="Edit `$modelname`"}
                     {/if}

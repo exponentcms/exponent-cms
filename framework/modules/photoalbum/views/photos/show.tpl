@@ -22,7 +22,7 @@
 <div class="module photoalbum show">
     <h1>{$record->title}</h1>
 
-    {permissions level=$smarty.const.UILEVEL_NORMAL}
+    {permissions}
     <div class="item-actions">
         {if $permissions.edit == 1}
             {icon img=edit.png action=edit id=$record->id title="Edit `$record->title`" text="Edit `$record->title`"}

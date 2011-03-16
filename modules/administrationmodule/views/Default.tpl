@@ -14,7 +14,7 @@
  *
  *}
 
-{permissions level=$smarty.const.UILEVEL_NORMAL}
+{permissions}
 <div class="administrationmodule default">
 	<h1>{$moduletitle}</h1>
 	{include file="`$smarty.const.BASE`modules/common/views/_permission_icons.tpl"}

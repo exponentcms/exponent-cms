@@ -29,7 +29,7 @@
                 <a href="{link controller=cart action=addItem quick=1 product_type=$cause->product_type product_id=$cause->id}">Donate Now</a>                
             </td>
             <td>
-                {permissions level=$smarty.const.UILEVEL_NORMAL}
+                {permissions}
                     {if $permissions.edit == 1}
                         {icon img=edit.png controller=store action=edit id=$cause->id title="Edit Donation"}
                     {/if}

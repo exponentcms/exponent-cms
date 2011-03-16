@@ -20,7 +20,7 @@
     {/if}
     <h1>{$record->title}</h1>
     <span class="date">{$record->publish|format_date:"%A, %B %e, %Y"}</span>
-    {permissions level=$smarty.const.UILEVEL_NORMAL}
+    {permissions}
         <div class="itempermissions">   
             {if $permissions.edit == true}
                 {icon controller=news action=edit id=$record->id title="Edit this news post"}

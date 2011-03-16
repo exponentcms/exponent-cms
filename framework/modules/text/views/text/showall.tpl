@@ -17,7 +17,7 @@
 <div class="module text showall">
     {if $moduletitle}<h1>{$moduletitle}</h1>{/if}
 
-    {permissions level=$smarty.const.UILEVEL_NORMAL}
+    {permissions}
         <div class="item-actions">
             {if $permissions.create == 1}
                 {icon class="add" action=edit rank=1 title="Add text to the top" text="Add text at the top"}
@@ -29,7 +29,7 @@
     {/permissions}
     {foreach from=$items item=text name=items}
         {if $text->title}<h2>{$text->title}</h2>{/if}
-        {permissions level=$smarty.const.UILEVEL_NORMAL}
+        {permissions}
             {if $permissions.edit == 1}
                 {icon action=edit class="edit" id=$text->id title="Edit this `$modelname`"}
             {/if}
@@ -43,7 +43,7 @@
             {clear}
         </div>
         
-        {permissions level=$smarty.const.UILEVEL_NORMAL}
+        {permissions}
             {if $permissions.create == 1}
                 {icon class=add action=edit rank=`$text->rank+1` title="Add more text here" text="Add more text here"}
             {/if}

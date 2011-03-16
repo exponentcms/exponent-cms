@@ -29,7 +29,7 @@
 
 {script unique="closequeue" yui3mods="node"}
 {literal}
-YUI({ base:EXPONENT.YUI3_PATH,loadOptional: true}).use('*', function(Y) {
+YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
     Y.all('.msg-queue .close').on('click',function(e){
         e.halt();
         e.target.get('parentNode').remove();

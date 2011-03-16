@@ -17,7 +17,7 @@
 <div class="module blog showall-headlines">
     {if $moduletitle}<h2>{$moduletitle}</h2>{/if}
     
-    {permissions level=$smarty.const.UILEVEL_NORMAL}
+    {permissions}
         {if $permissions.edit == 1}
             {icon class="add" action=edit title="Add a new blog article" text="Add a new blog article"}
       {/if}
@@ -27,7 +27,7 @@
         {if $smarty.foreach.blogs.iteration <= $config.headcount}
         <li class="bodycopy">
             <a href="{link action=show title=$record->sef_url}">{$record->title}</a>
-            {permissions level=$smarty.const.UILEVEL_NORMAL}
+            {permissions}
                 <div class="item-actions">
                     {if $permissions.edit == 1}
                         {icon action=edit img=edit.png class="editlink" id=$record->id title="Edit this `$modelname`"}
