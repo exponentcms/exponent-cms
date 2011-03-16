@@ -18,6 +18,16 @@
 ##################################################
 
 if (!defined('EXPONENT')) exit('');
+function epb($buffer, $mode) {
+    //@ob_gzhandler($buffer, $mode);
+    @ob_gzhandler($buffer);
+    //return $buffer; // uncomment if you're messing with output buffering so errors show. ~pb
+    return expProcessBuffer($buffer);
+}
+
+ob_start('epb');
+$microtime_str = explode(' ',microtime());
+$i_start = $microtime_str[0] + $microtime_str[1];
 
 // Initialize the Theme Subsystem
 if (!defined('SYS_THEME')) require_once(BASE.'subsystems/theme.php');
@@ -30,7 +40,6 @@ $page = ($section && $section->subtheme != '' && is_readable('themes/'.DISPLAY_T
 	'themes/'.DISPLAY_THEME.'/subthemes/'.$section->subtheme.'.php' :
 	'themes/'.DISPLAY_THEME.'/index.php'
 );
-
 if (is_readable(BASE.$page)) {
 	define('PREVIEW_READONLY',1); // for mods
 	define('SELECTOR',1);
@@ -75,9 +84,12 @@ if (is_readable(BASE.$page)) {
 	exponent_sessions_set('source_select',$source_select);
 	// Include the rendering page.
 	include_once(BASE.$page);
+	exponent_theme_satisfyThemeRequirements();
 } else {
 	$i18n = exponent_lang_loadFile('selector.php');
 	echo sprintf($i18n['not_readable'],BASE.$page);
 }
+
+ob_end_flush();
 
 ?>

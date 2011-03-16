@@ -80,12 +80,14 @@ class ckeditorcontrol extends formcontrol {
 	    $content = "
 	    	EXPONENT.editor".createValidId($name)." = CKEDITOR.replace('".createValidId($name)."',
 				{
-                    filebrowserBrowseUrl : '".makelink(array("controller"=>"file", "action"=>"picker", "ajax_action"=>1, "ck"=>1, "update"=>"fck"))."',
-					filebrowserLinkBrowseUrl : '".PATH_RELATIVE."external/editors/ckconnector/CKeditor_link.php',
 					toolbar : [".stripSlashes($tb)."],
                     forcePasteAsPlainText:true,
+                    filebrowserBrowseUrl : '".makelink(array("controller"=>"file", "action"=>"picker", "ajax_action"=>1, "ck"=>1, "update"=>"fck"))."',
                     filebrowserWindowWidth : '640',
-                    filebrowserWindowHeight : '480'
+                    filebrowserWindowHeight : '480',
+					filebrowserLinkBrowseUrl : '".PATH_RELATIVE."external/editors/connector/CKeditor_link.php',
+                    filebrowserLinkWindowWidth : '320',
+                    filebrowserLinkWindowHeight : '600'
                 });
                 
 	    ";

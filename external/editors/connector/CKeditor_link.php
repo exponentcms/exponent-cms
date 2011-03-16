@@ -1,5 +1,5 @@
 <?PHP
-	define("SCRIPT_EXP_RELATIVE","external/editors/ckconnector/");
+	define("SCRIPT_EXP_RELATIVE","external/editors/connector/");
 	define("SCRIPT_FILENAME","CKeditor_link.php");
 	
 	require_once('../../../exponent.php');
@@ -12,7 +12,7 @@
 
 		<script type="text/javascript" src="<?PHP echo PATH_RELATIVE ?>exponent.js.php"></script>
 		<script type="text/javascript" src="popup.js"></script>
-		<script type="text/javascript" src="<?PHP echo PATH_RELATIVE . 'external/editors/ckconnector/lang/' . exponent_lang_convertLangCode(LANG) . '.js'?>"></script>
+		<script type="text/javascript" src="<?PHP echo PATH_RELATIVE . 'external/editors/connector/lang/' . exponent_lang_convertLangCode(LANG) . '.js'?>"></script>
   		<script type="text/javascript">
 		/* <![CDATA[ */
 			I18N = eXp.I18N;
@@ -43,7 +43,7 @@
 				
 				// CKeditor integration
 				var funcNum = getUrlParam('CKEditorFuncNum');
-				var fileUrl = document.getElementById("f_href").value;
+				var fileUrl = '/'+document.getElementById("f_href").value;
 				window.opener.CKEDITOR.tools.callFunction(funcNum, fileUrl);
 
 				window.close();
@@ -55,15 +55,14 @@
 				return false;
 			};
 
-
-
 			function openSectionLinker() {
-				window.open("../../../modules/navigationmodule/nav.php?linkbase="+escape("../../external/editors/ckconnector/section_linked.php?dummy"),"sectionlinker","toolbar=no,title=no,width=250,height=480,scrollbars=yes");
+				window.open("../../../modules/navigationmodule/nav.php?linkbase="+escape("../../external/editors/connector/section_linked.php?dummy"),"sectionlinker","toolbar=no,title=no,width=250,height=480,scrollbars=yes");
 			}
 
 			function openContentLinker() {
-				window.open("../../../content_selector.php?dest="+escape("external/editors/ckconnector/content_linked.php?dummy")+"&vview=_linkPicker&vmod=containermodule&showmodules=all","contentlinker","toolbar=no,title=no,width=640,height=480,scrollbars=yes");
-//				window.open("../../../content_selector.php?dest="+escape("external/editors/ckconnector/content_linked.php?dummy")+"&vview=_sourcePicker&vmod=containermodule&showmodules=all","contentlinker","toolbar=no,title=no,width=640,height=480,scrollbars=yes");
+//				window.open("../../../content_selector.php?dest="+escape("external/editors/connector/content_linked.php?dummy")+"&vview=_sourcePicker&vmod=containermodule&showmodules=all","contentlinker","toolbar=no,title=no,width=800,height=600,scrollbars=yes");
+//				window.open("../../../content_selector.php?dest="+escape("external/editors/connector/content_linked.php?dummy")+"&vview=_linkPicker&vmod=containermodule&showmodules=all","contentlinker","toolbar=no,title=no,width=800,height=600,scrollbars=yes");
+				window.open("../../../source_selector.php?dest="+escape("external/editors/connector/content_linked.php?dummy")+"&vview=_linkPicker&vmod=containermodule&showmodules=all","contentlinker","toolbar=no,title=no,width=800,height=600,scrollbars=yes");
 			}
 		/* ]]> */
 		</script>
