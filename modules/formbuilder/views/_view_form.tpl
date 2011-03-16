@@ -21,7 +21,7 @@
 </div>
 <script language="JavaScript">
 	function pickSource() {ldelim}
-		window.open('{$pickerurl}','sourcePicker','title=no,toolbar=no,width=640,height=480,scrollbars=yes');
+		window.open('{$pickerurl}','sourcePicker','title=no,toolbar=no,width=800,height=600,scrollbars=yes');
 	 {rdelim}
 </script>
 {if $edit_mode != 1}
