@@ -24,6 +24,7 @@ if (!$user->isAdmin()) return false;
 $type = "Page";
 $page = $db->selectObject('section', 'id='.$section);
 $subtheme = empty($page->subtheme) ? 'Default' : $page->subtheme;
+
 $info = array(
     'id'=>'pgmgmt',
     'itemdata'=>array(
@@ -33,12 +34,24 @@ $info = array(
             "submenu"=>array(
                 'id'=>'pginfo',
                 'itemdata'=>array(
-                    array('classname'=>'moreinfo','text'=>"Name : ".$page->name."<br />SEF Name : ".$page->sef_name."<br />Subtheme : ".$subtheme,"disabled"=>true)
+                    array('classname'=>'moreinfo','text'=>"Name : ".$page->name."<br />ID : ".$page->id."<br />SEF Name : ".$page->sef_name."<br />Subtheme : ".$subtheme,"disabled"=>true)
                 )
             )
         ),
         array('text'=>'Edit this page','classname'=>'edit', 'url'=>makeLink(array('module'=>'navigationmodule', 'action'=>'edit_contentpage', 'id'=>$page->id))),
+        array('text'=>'Manage User Permissions','classname'=>'user', 'url'=>makeLink(array('module'=>'navigationmodule','action'=>'userperms',"_common"=>"1","int"=>$page->id))),
+        array('text'=>'Manage Group Permissions','classname'=>'group', 'url'=>makeLink(array('module'=>'navigationmodule','action'=>'groupperms',"_common"=>"1","int"=>$page->id))),
         array('text'=>'Manage all pages','classname'=>'sitetree', 'url'=>makeLink(array('module'=>'navigationmodule','action'=>'manage'))),
+
+    // function editUserPerms (){
+    //  window.location="{/literal}{$smarty.const.URL_FULL}{literal}index.php?module=navigationmodule&_common=1&action=userperms&int="+currentMenuNode.data.id;
+    // }
+    // 
+    // function editGroupPerms (){
+    //  window.location="{/literal}{$smarty.const.URL_FULL}{literal}index.php?module=navigationmodule&_common=1&action=groupperms&int="+currentMenuNode.data.id;
+    // }
+
+
     )
 );
 
