@@ -24,7 +24,7 @@
 
 <div class="module calendar edit">
 	<div class="form_title">
-		{if $is_edit == 1}{$_TR.form_title_edit}{else}{$_TR.form_title_new}{/if}
+		{if $is_edit == 1}<h1>{$_TR.form_title_edit}</h1>{else}{$_TR.form_title_new}{/if}
 	</div>
 	<div class="form_header">
 		<p>{$_TR.form_header}</p>
