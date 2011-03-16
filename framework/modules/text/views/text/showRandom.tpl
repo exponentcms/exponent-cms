@@ -32,10 +32,10 @@
 			{if $listing->title}<h2><a href="{link controller=$controller action=show id=$listing->id}">{$listing->title}</a></h2>{/if}
 			{permissions}
 				{if $permissions.edit == 1}
-					{icon controller=$controller action=edit id=$listing->id title="Edit this `$modelname`"}
+					{icon controller=$controller action=edit record=$listing title="Edit this `$modelname`"}
 				{/if}
 				{if $permissions.delete == 1}
-					{icon controller=$controller action=delete id=$listing->id title="Delete this `$modelname`" onclick="return confirm('Are you sure you want to delete this `$modelname`?');"}
+					{icon controller=$controller action=delete record=$listing title="Delete this `$modelname`" onclick="return confirm('Are you sure you want to delete this `$modelname`?');"}
 				{/if}
 			{/permissions}
 		

@@ -31,16 +31,15 @@
         {if $text->title}<h2>{$text->title}</h2>{/if}
         {permissions}
             {if $permissions.edit == 1}
-                {icon action=edit class="edit" id=$text->id title="Edit this `$modelname`"}
+                {icon action=edit class="edit" record=$text title="Edit this `$modelname`"}
             {/if}
             {if $permissions.delete == 1}
-                {icon action=delete id=$text->id title="Delete this Text Item" onclick="return confirm('Are you sure you want to delete this `$modelname`?');"}
+                {icon action=delete record=$text title="Delete this Text Item" onclick="return confirm('Are you sure you want to delete this `$modelname`?');"}
             {/if}
         {/permissions}
         <div class="bodycopy">
             {filedisplayer view="`$config.filedisplay`" files=$text->expFile id=$text->id}
             {$text->body}
-            {clear}
         </div>
         
         {permissions}

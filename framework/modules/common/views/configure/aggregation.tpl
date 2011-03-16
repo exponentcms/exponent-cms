@@ -14,6 +14,9 @@
  *
  *}
 
+<h2>{"Aggregate content from similar modules"|gettext}</h2>
+{control type="checkbox" name="noeditagg" label="Prevent editing aggregate items" value=1 checked=$config.noeditagg}
+ <hr />
 {foreach from=$pullable_modules item=mod key=src}
     {control type="checkbox" name="aggregate[]" label="`$mod->title` on page `$mod->section`" value=$src checked=$config.aggregate}
 {foreachelse}
