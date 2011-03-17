@@ -161,7 +161,7 @@ class administrationController extends expController {
         	$lang_dh = opendir(BASE.'framework/core/lang');
         	while (($lang_file = readdir($lang_dh)) !== false) {
     			if (substr($lang_file, -4) == '.php') {
-    				$langs[$lang_file] = str_replace(".php","",$lang_file);
+    				$langs[str_replace(".php","",$lang_file)] = str_replace(".php","",$lang_file);
     			}
         	}
         }
