@@ -744,24 +744,26 @@ class migrationController extends expController {
 					foreach ($resourceitems as $ri) {
 						unset($ri['id']);
 						$filedownload = new filedownload($ri);
-						$filedownload->makeSefUrl();
+//						$filedownload->makeSefUrl();
 						$loc = expUnserialize($ri['location_data']);
 						$loc->mod = "filedownload";
 						$filedownload->title = $ri['name'];
 						$filedownload->body = $ri['description'];
 						$filedownload->downloads = $ri['num_downloads'];
 						$filedownload->location_data = serialize($loc);
+//						$filedownload->created_at = $ri['posted'];
+//						$filedownload->edited_at = $ri['edited'];
 						$filedownload->save();
-						// default is to create with current time						
-						$filedownload->created_at = $ri['posted'];
-						$filedownload->edited_at = $ri['edited'];
-						$filedownload->update();
 						@$this->msg['migrated'][$iloc->mod]['count']++;
 						@$this->msg['migrated'][$iloc->mod]['name'] = $this->new_modules[$iloc->mod];
 						if (!empty($ri['file_id'])) {
 							$oldfile = $old_db->selectArray('file', 'id='.$ri['file_id']);
 							$file = new expFile($oldfile);
 							$filedownload->attachitem($file,'downloadable');
+							// default is to create with current time						
+							$filedownload->created_at = $ri['posted'];
+							$filedownload->edited_at = $ri['edited'];
+//							$filedownload->update();
 						}
 					}
 				}
