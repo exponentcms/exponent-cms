@@ -49,7 +49,7 @@
         {/foreach}
         </tbody>
         </table>
-        {control type="checkbox" name="wipe_pages" label="Erase all current pages then import?" value=1 checked=false}
+        {control type="checkbox" name="wipe_pages" label="Erase all current pages then try again?" value=1 checked=false}
         {control type="buttongroup" submit="Migrate Pages" cancel="Cancel"}
     {/form}
 </div>
