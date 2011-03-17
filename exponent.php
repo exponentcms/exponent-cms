@@ -103,6 +103,8 @@ if (!defined('MIMEICON_RELATIVE')) {
 // Initialize the language subsystem
 require_once(BASE.'subsystems/lang.php');
 exponent_lang_initialize();
+// Load 2.0 lang
+expLang::loadLang();
 
 // Initialize the Core Subsystem
 require_once(BASE.'subsystems/core.php');
