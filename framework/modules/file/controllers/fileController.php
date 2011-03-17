@@ -59,8 +59,20 @@ class fileController extends expController {
     }
     
     public function uploader() {
+        global $user;
         //expHistory::set('manageable', $this->params);
-        assign_to_template(array('update'=>$_GET['update']));
+        flash('message','Upload size limit: '.ini_get('upload_max_filesize'));
+        if(intval(ini_get('upload_max_filesize'))!=intval(ini_get('post_max_size')) && $user->is_admin){
+            flash('error','In order for the uploader to work correctly, "post_max_size" and "upload_max_filesize" within your php.ini file must match one another');
+        }
+
+        assign_to_template(
+            array('update'=>$_GET['update'],
+            "upload_size"=>ini_get('upload_max_filesize'),
+            "post_size"=>ini_get('post_max_size'),
+            "bmax"=>intval(ini_get('upload_max_filesize')/1024*1000000000)
+            )
+        );
     }
     
     public function get_view_config() {

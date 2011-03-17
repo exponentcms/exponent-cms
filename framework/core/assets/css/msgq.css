@@ -21,21 +21,25 @@ div.msg-queue.error {
     border: 2px solid #ff0000;
     color: #ff0000;
 }
+
+div.msg-queue.notice {
+    background: #f1e778;
+    border: 2px solid #c59207;
+    color: #c59207;
+}
+
 .msg-queue {
     position:relative;
 }
 
 .msg-queue .close {
     position:absolute;
-    top:5px;
-    right:5px;
+    top:3px;
+    right:3px;
     display:block;
     width:16px;
     height:0px;
     padding-top:16px;
     overflow:hidden;
-    background:url(../images/exp-admin-sprite.png) no-repeat 0px -480px;
-}
-.msg-queue.error .close {
-    background:url(../images/exp-admin-sprite.png) no-repeat 0px -510px;
+    background:url(../images/exp-admin-sprite.png) no-repeat 0px -511px;
 }

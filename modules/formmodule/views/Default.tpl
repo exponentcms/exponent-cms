@@ -19,6 +19,7 @@
 {/css}
 
 <div class="formmodule default"> 
+    {messagequeue}
 	{permissions}
 		{if $permissions.viewdata == 1 && $form->is_saved == 1}<a class="addnew mngmntlink" href="{link action=view_data module=formbuilder id=$form->id}">{$_TR.view_data}</a>&nbsp;&nbsp;{/if}
 		{if $permissions.viewdata == 1 && $form->is_saved == 1}|&nbsp;&nbsp;<a class="addnew mngmntlink" href="{link action=export_csv module=formbuilder id=$form->id}">{$_TR.export_cvs}</a>&nbsp;&nbsp;
@@ -30,14 +31,11 @@
 		{if $permissions.editreport == 1}|&nbsp;&nbsp;<a class="addnew mngmntlink" href="{link action=edit_report module=formbuilder id=$form->id}">{$_TR.edit_report}</a>&nbsp;&nbsp;{/if}
 	{/permissions}
 	{if $moduletitle != ""}<h2>{$moduletitle}</h2>{/if}
-	{if $formmsg != "" }
-  {br}{br}
-		{$formmsg}
-	{/if}
-	{if $description != ""}
-		{$description}
-	{/if}
-	 <div style="border: padding: 1em;">
+	 <div class="bodycopy">
+	     {$description}
+    	{if $description != ""}
+    		{$description}
+    	{/if}
 		{$form_html}
 	</div>
 </div>
