@@ -155,6 +155,18 @@ class administrationController extends expController {
         }
         uasort($themes,'strnatcmp');
         
+        // Available Languages
+        $langs = array();
+        if (is_readable(BASE.'framework/core/lang')) {
+        	$lang_dh = opendir(BASE.'framework/core/lang');
+        	while (($lang_file = readdir($lang_dh)) !== false) {
+    			if (substr($lang_file, -4) == '.php') {
+    				$langs[$lang_file] = str_replace(".php","",$lang_file);
+    			}
+        	}
+        }
+        ksort($langs);
+        
         // attribution 
         $attribution = array('firstlast'=>'John Doe','lastfirst'=>'Doe, John','first'=>'John','username'=>'jdoe');
         
@@ -181,6 +193,7 @@ class administrationController extends expController {
         assign_to_template(array('as_types'=>$as_types,
                                 'as_themes'=>$as_themes,
                                 'themes'=>$themes,
+                                'langs'=>$langs,
                                 'attribution'=>$attribution,
                                 'date_format'=>$date_format,
                                 'time_format'=>$time_format,

@@ -24,10 +24,41 @@
 
 class expLang {
     
+    function loadLang() {
+        if (!defined('LANGUAGE')) return false;
+	    
+	    global $cur_lang, $default_lang, $defualt_lang_file;
+	    $defualt_lang_file = BASE."framework/core/lang/English - US.php";
+        $default_lang = include(BASE."framework/core/lang/English - US.php");
+        $cur_lang = include(BASE."framework/core/lang/".LANGUAGE.".php");
+    }
+    
 	public function gettext($str) {	
+	    if (!defined('LANGUAGE')) return $str;
+
+	    global $cur_lang;
+	    expLang::writeTemplate($str);
+	    $str = LANGUAGE!="English - US" && array_key_exists($str,$cur_lang) ? $cur_lang[$str] : $str;
 		return $str;
 	}
 	
+	public function writeTemplate($str) {
+	    global $default_lang, $defualt_lang_file;
+	    //!array_key_exists($str,$default_lang)
+        if (DEVELOPMENT && WRITE_LANG_TEMPLATE && LANGUAGE=="English - US") {
+            $fp = fopen($defualt_lang_file, 'w+') or die("I could not open $filename.");
+            $default_lang[$str] = $str;
+            ksort($default_lang);
+            fwrite($fp,"<?php\n");
+            fwrite($fp,"return array(\n");
+            foreach($default_lang as $key => $value){
+                fwrite($fp,"\t\"".$key."\"=>\"".$value."\",\n");
+            }
+            fwrite($fp,");\n");
+            fwrite($fp,"?>\n");
+            fclose($fp);
+        }
+	}
 }
 
 ?>
