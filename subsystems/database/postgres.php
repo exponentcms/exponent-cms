@@ -24,7 +24,9 @@
  */
 
 class postgres_database {
-
+    /**
+     * @var string $connection Database connection string
+     */
 	var $connection = null;
 	var $prefix = "";
 	
