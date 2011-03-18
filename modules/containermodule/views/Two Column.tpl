@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2006 OIC Group, Inc.
+ * Copyright (c) 2004-2011 OIC Group, Inc.
  * Written and Designed by James Hunt
  *
  * This file is part of Exponent
@@ -22,15 +22,17 @@
     {viewfile module=$singlemodule view=$singleview var=viewfile}
     <div class="twocolcontainerleft">
     	{assign var=container value=$containers.0}
-    	{assign var=rank value=0}
+    	{assign var=i value=0}
+		{assign var=rerank value=0}
     	{include file=$viewfile}
-    <div style="clear:both"></div>
+		<div style="clear:both"></div>
     </div>
     <div class="twocolcontainerright">
     	{assign var=container value=$containers.1}
-    	{assign var=rank value=1}
+    	{assign var=i value=1}
+		{assign var=rerank value=0}
     	{include file=$viewfile}
-    <div style="clear:both"></div>
+		<div style="clear:both"></div>
     </div>
     <div style="clear:both"></div>
 </div>

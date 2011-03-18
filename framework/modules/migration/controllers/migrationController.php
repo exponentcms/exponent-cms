@@ -486,7 +486,6 @@ class migrationController extends expController {
                         $loc->mod = "text";
                         $text->location_data = serialize($loc);
                         $text->body = $ti->text;
-
                         $text->save();
                         @$this->msg['migrated'][$iloc->mod]['count']++;
                         @$this->msg['migrated'][$iloc->mod]['name'] = $this->new_modules[$iloc->mod];
@@ -515,7 +514,6 @@ class migrationController extends expController {
                         $loc->mod = "text";
                         $text->location_data = serialize($loc);
                         $text->body = $ti->text;
-
                         $text->save();
                         @$this->msg['migrated'][$iloc->mod]['count']++;
                         @$this->msg['migrated'][$iloc->mod]['name'] = $this->new_modules[$iloc->mod];
@@ -587,7 +585,6 @@ class migrationController extends expController {
 						$lnk->poster = 1;
 						$lnk->editor = 1;
 						$lnk->location_data = serialize($loc);
-
 						$lnk->save();
 						@$this->msg['migrated'][$iloc->mod]['count']++;
 						@$this->msg['migrated'][$iloc->mod]['name'] = $this->new_modules[$iloc->mod];
@@ -628,7 +625,6 @@ class migrationController extends expController {
 						$lnk->poster = 1;
 						$lnk->editor = 1;
 						$lnk->location_data = serialize($loc);
-
 						$lnk->save();
 						@$this->msg['migrated'][$iloc->mod]['count']++;
 						@$this->msg['migrated'][$iloc->mod]['name'] = $this->new_modules[$iloc->mod];
@@ -670,7 +666,6 @@ class migrationController extends expController {
 							</p>
 						';
 						$text->body = $swfcode;
-
 						$text->save();
 						@$this->msg['migrated'][$iloc->mod]['count']++;
 						@$this->msg['migrated'][$iloc->mod]['name'] = $this->new_modules[$iloc->mod];
@@ -709,10 +704,11 @@ class migrationController extends expController {
                         $loc = expUnserialize($ni['location_data']);
                         $loc->mod = "news";
                         $news->location_data = serialize($loc);
+                        $news->save();
+						// default is to create with current time
                         $news->created_at = $ni['posted'];
                         $news->edited_at = $ni['edited'];
-
-                        $news->save();
+                        $news->update();
                         @$this->msg['migrated'][$iloc->mod]['count']++;
                         @$this->msg['migrated'][$iloc->mod]['name'] = $this->new_modules[$iloc->mod];
                         if (!empty($ni['file_id'])) {
@@ -748,24 +744,26 @@ class migrationController extends expController {
 					foreach ($resourceitems as $ri) {
 						unset($ri['id']);
 						$filedownload = new filedownload($ri);
-						$filedownload->makeSefUrl();
+//						$filedownload->makeSefUrl();
 						$loc = expUnserialize($ri['location_data']);
 						$loc->mod = "filedownload";
 						$filedownload->title = $ri['name'];
 						$filedownload->body = $ri['description'];
 						$filedownload->downloads = $ri['num_downloads'];
 						$filedownload->location_data = serialize($loc);
-						$filedownload->created_at = $ri['posted'];
-						$filedownload->edited_at = $ri['edited'];
-
+//						$filedownload->created_at = $ri['posted'];
+//						$filedownload->edited_at = $ri['edited'];
 						$filedownload->save();
 						@$this->msg['migrated'][$iloc->mod]['count']++;
 						@$this->msg['migrated'][$iloc->mod]['name'] = $this->new_modules[$iloc->mod];
-
 						if (!empty($ri['file_id'])) {
 							$oldfile = $old_db->selectArray('file', 'id='.$ri['file_id']);
 							$file = new expFile($oldfile);
 							$filedownload->attachitem($file,'downloadable');
+							// default is to create with current time						
+							$filedownload->created_at = $ri['posted'];
+							$filedownload->edited_at = $ri['edited'];
+//							$filedownload->update();
 						}
 					}
 				}
@@ -806,7 +804,6 @@ class migrationController extends expController {
 							$photo->alt = $gi['alt'];
 							$photo->location_data = serialize($loc);
 							$photo->makeSefUrl();
-
 							$photo->save();
 							@$this->msg['migrated'][$iloc->mod]['count']++;
 							@$this->msg['migrated'][$iloc->mod]['name'] = $this->new_modules[$iloc->mod];
@@ -849,7 +846,6 @@ class migrationController extends expController {
 							$photo->makeSefUrl();
 							// $photo->created_at = $gi['posted'];
 							// $photo->edited_at = $gi['edited'];
-
 							$te = $photo->find('first',"location_data='".$photo->location_data."'");
 							if (empty($te)) {
 								$photo->save();
@@ -887,9 +883,8 @@ class migrationController extends expController {
                         $headline->location_data = serialize($loc);
                         $headline->title = $hl->headline;
                         $headline->poster = 1;
-                        $headline->created_at = time();
-                        $headline->edited_at = time();
-
+//                        $headline->created_at = time();
+//                        $headline->edited_at = time();
                         $headline->save();
                         @$this->msg['migrated'][$iloc->mod]['count']++;
                         @$this->msg['migrated'][$iloc->mod]['name'] = $this->new_modules[$iloc->mod];
@@ -934,10 +929,11 @@ class migrationController extends expController {
                         $loc = expUnserialize($bi['location_data']);
                         $loc->mod = "blog";
                         $post->location_data = serialize($loc);
+                        $post->save();
+						// default is to create with current time						
                         $post->created_at = $bi['posted'];
                         $post->edited_at = $bi['edited'];
-
-                        $post->save();
+                        $post->update();
                         @$this->msg['migrated'][$iloc->mod]['count']++;
                         @$this->msg['migrated'][$iloc->mod]['name'] = $this->new_modules[$iloc->mod];
                         if (!empty($bi['file_id'])) {
@@ -980,7 +976,6 @@ class migrationController extends expController {
                         $faq->answer = $fqi['answer'];
                         $faq->rank = $fqi['rank'];
                         $faq->include_in_faq = 1;
-
                         $faq->save();
                         @$this->msg['migrated'][$iloc->mod]['count']++;
                         @$this->msg['migrated'][$iloc->mod]['name'] = $this->new_modules[$iloc->mod];
@@ -1012,11 +1007,12 @@ class migrationController extends expController {
                         $listing->location_data = serialize($loc);
                         $listing->featured = true;
                         $listing->poster = 1;
+                        $listing->body = "<p>".$li['summary']."</p>".$li['body'];
+                        $listing->save();
+						// default is to create with current time						
                         $listing->created_at = time();
                         $listing->edited_at = time();
-                        $listing->body = "<p>".$li['summary']."</p>".$li['body'];
-
-                        $listing->save();
+                        $listing->update();
                         @$this->msg['migrated'][$iloc->mod]['count']++;
                         @$this->msg['migrated'][$iloc->mod]['name'] = $this->new_modules[$iloc->mod];
                         if (!empty($li['file_id'])) {

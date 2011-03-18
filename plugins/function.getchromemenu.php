@@ -23,10 +23,7 @@ function smarty_function_getchromemenu($params,&$smarty) {
 	$module = $params['module'];
 
 	$list = '<ul class="container-menu">';
-
 	$list .= '<li class="container-info">'.$module->action.' / '.str_replace($module->action.'_','',$module->view).'</li>';
-
-
 	if (!empty($params['rank']) && exponent_permissions_check('order_modules', $cloc)) {
 		$uplink = $router->makeLink(array('module'=>'containermodule','src'=>$cloc->src,'action'=>'order','a'=>$params['rank'] - 2,'b'=>$params['rank'] - 1));
 		$downlink = $router->makeLink(array('module'=>'containermodule','src'=>$cloc->src,'action'=>'order', 'a'=>$params['rank'] - 1,'b'=>$params['rank']));
@@ -38,6 +35,13 @@ function smarty_function_getchromemenu($params,&$smarty) {
 		}
 	}
 
+	$rerank = $params['rerank'];
+	if ($rerank == 'false') {
+		$rerank = 0;
+	} else {
+		$rerank = 1;
+	}
+	
 	if ($module->permissions['administrate'] == 1) {
 		$userlink = $router->makeLink(array('module'=>getControllerName($module->info['class']), 'src'=>$module->info['source'], 'action'=>'userperms', '_common'=>1));
 		$grouplink = $router->makeLink(array('module'=>getControllerName($module->info['class']), 'src'=>$module->info['source'], 'action'=>'groupperms', '_common'=>1));
@@ -61,7 +65,7 @@ function smarty_function_getchromemenu($params,&$smarty) {
 	}
 
 	if (!empty($module->id) && exponent_permissions_check('delete_module', $cloc)) {
-		$deletelink = $router->makeLink(array('module'=>'containermodule', 'id'=>$module->id, 'action'=>'delete', 'rerank'=>1));
+		$deletelink = $router->makeLink(array('module'=>'containermodule', 'id'=>$module->id, 'action'=>'delete', 'rerank'=>$rerank));
 		$list .= '<li><a href="'.$deletelink.'" class="delete" onclick="alert(\''.expLang::gettext("This content is being sent to the Recycle Bin to be recovered later if you wish.").'\')">'.expLang::gettext("Remove Module").'</a></li>';
 	}
 	
