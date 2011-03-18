@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2006 OIC Group, Inc.
+ * Copyright (c) 2004-2011 OIC Group, Inc.
  * Written and Designed by James Hunt
  *
  * This file is part of Exponent
@@ -16,24 +16,25 @@
 
 {if $container != null}
 <a name="mod_{$container->id}"></a> 
-    {if ($permissions.administrate == 1 || $permissions.edit_module == 1 || $permissions.delete_module == 1 || $permissions.add_module == 1 || $container->permissions.administrate == 1)}
-
-	<div id="module{$container->id}" class="exp-container-module-wrapper">
-    	<div class="container-chrome module-chrome">
-    	    <a href="#" class="trigger" title="{$container->info.module}">{$container->info.module}</a>
-    	    {getchromemenu module=$container}
-    	</div>
-
-        {$container->output}
-	</div>
-	
-	{else}
-		{$container->output}
-	{/if}
+	{permissions level=$smarty.const.UILEVEL_STRUCTURE}
+		{if ($permissions.administrate == 1 || $permissions.edit_module == 1 || $permissions.delete_module == 1 || $permissions.add_module == 1 || $container->permissions.administrate == 1)}
+			<div id="module{$container->id}" class="exp-container-module-wrapper">
+				<div class="container-chrome module-chrome">
+					<a href="#" class="trigger" title="{$container->info.module}">{$container->info.module}</a>
+					{getchromemenu module=$container rank=$i rerank=$rerank last=$last}
+				</div>
+		{/if}
+	{/permissions}
+	{$container->output}
+	{permissions level=$smarty.const.UILEVEL_STRUCTURE}
+		{if ($permissions.administrate == 1 || $permissions.edit_module == 1 || $permissions.delete_module == 1 || $permissions.add_module == 1 || $container->permissions.administrate == 1)}
+			</div>
+		{/if}
+	{/permissions}
 {else}
 	{permissions level=$smarty.const.UILEVEL_STRUCTURE}
-	{if $permissions.add_module == 1 && $hidebox == 0}
-	    <a class="addmodule" href="{link action=edit rank=$rank}"><span class="addtext">{$_TR.add_new}</span></a>
-	{/if}
+		{if $permissions.add_module == 1 && $hidebox == 0}
+			<a class="addmodule" href="{link action=edit rank=$i}"><span class="addtext">{$_TR.add_new}</span></a>
+		{/if}
 	{/permissions}
 {/if}

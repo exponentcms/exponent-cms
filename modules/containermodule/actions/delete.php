@@ -31,7 +31,8 @@ if ($container != null) {
 
 	if (exponent_permissions_check('delete_module',$loc) || exponent_permissions_check('delete_module',$cloc) || exponent_permissions_check('administrate',$iloc)) {
 		
-		container::delete($container,(isset($_GET['rerank']) ? 1 : 0));
+//		container::delete($container,(isset($_GET['rerank']) ? 1 : 0));
+		container::delete($container,(isset($_GET['rerank']) ? $_GET['rerank'] : 0));
 		$db->delete('container','id='.$container->id);
 
         exponent_sessions_clearAllUsersSessionCache('containermodule');
