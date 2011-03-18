@@ -77,14 +77,14 @@ if (!isset($_POST['data_id']) || (isset($_POST['data_id']) && exponent_permissio
             $db_data->ip = $_SERVER['REMOTE_ADDR'];
             if (exponent_sessions_loggedIn()) {
                 $db_data->user_id = $user->id;
-				$from = $user->email
-				$from_name = $user->firstname." ".$user->lastname." (".$user->username).")";
+				$from = $user->email;
+				$from_name = $user->firstname." ".$user->lastname." (".$user->username.")";
             } else {
                 $db_data->user_id = 0;
-				if (empty($from) {
+				if (empty($from)) {
 					$from = trim(SMTP_FROMADDRESS);
 				}
-				if (empty($from_name) {
+				if (empty($from_name)) {
 					$from_name = trim(ORGANIZATION_NAME);
 				}
             }
