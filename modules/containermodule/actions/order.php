@@ -20,7 +20,22 @@
 if (!defined('EXPONENT')) exit('');
 
 if (exponent_permissions_check('order_modules',$loc)) {
-	$db->switchValues('container','rank',$_GET['a'],$_GET['b'],"external='".serialize($loc)."'");
+//	$db->switchValues('container','rank',$_GET['a'],$_GET['b'],"external='".serialize($loc)."'");
+	$object_a = $db->selectObject('container',"rank='".$_GET['a']."' AND external='".serialize($loc)."'");
+	$object_b = $db->selectObject('container',"rank='".$_GET['b']."' AND external='".serialize($loc)."'");
+
+	if ($object_a && $object_b) {
+		$db->switchValues('container','rank',$_GET['a'],$_GET['b'],"external='".serialize($loc)."'");
+	} else {
+		if ($object_a) {
+			$object_a->rank = $_GET['b'];
+			$db->updateObject($object_a,'container');
+		}
+		if ($object_b) {
+			$object_b->rank = $_GET['a'];
+			$db->updateObject($object_b,'container');
+		}
+	}
    	exponent_sessions_clearAllUsersSessionCache('containermodule');
     exponent_flow_redirect();
 } else {

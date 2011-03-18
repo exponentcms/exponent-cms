@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2006 OIC Group, Inc.
+ * Copyright (c) 2004-2011 OIC Group, Inc.
  * Written and Designed by Adam Kessler
  *
  * This file is part of Exponent
@@ -15,10 +15,10 @@
  *}
 
 {permissions}
-<div class="exp-container-wrapper">
-    <div class="container-chrome module-chrome hardcoded-chrome">
-    <a href="#" class="trigger" title="{$container->info.module}">{$container->info.module}</a>
-    {getchromemenu module=$container rank=$i last=$last}
-    </div>
-</div>
+	<div class="exp-container-wrapper">
+		<div class="container-chrome module-chrome hardcoded-chrome">
+			<a href="#" class="trigger" title="{$container->info.module}">{$container->info.module}</a>
+			{getchromemenu module=$container rank=$i rerank=$rerank last=$last}
+		</div>
+	</div>
 {/permissions}
