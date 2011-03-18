@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2006 OIC Group, Inc.
+ * Copyright (c) 2004-2011 OIC Group, Inc.
  * Written and Designed by James Hunt
  *
  * This file is part of Exponent
@@ -14,13 +14,18 @@
  *
  *}
  
- {css unique="tab-container" link="`$smarty.const.PATH_RELATIVE`framework/modules/container/assets/css/container.css"}
+{css unique="tab-container" link="`$smarty.const.PATH_RELATIVE`framework/modules/container/assets/css/container.css"}
 
 {/css}
 
-<div id="navmanager" class="navigationmodule manager exp-skin-tabview">
+{uniqueid assign=tabs}
+{css unique="`tabs`" link="`$smarty.const.YUI3_PATH`tabview/assets/skins/sam/tabview.css"}
+
+{/css}
+
+<div id="navmanager" class="navigationmodule manager exp-skin-tabview yui3-skin-sam">
 {viewfile module=$singlemodule view=$singleview var=viewfile} 
-<div id="nav-tabs" class="yui-navset">
+<div id="{$tabs}" class="yui-navset">
 	<ul class="yui-nav">
 		{foreach from=$containers item=container key=tabnum name=contain}
 			{assign var=numcontainers value=$tabnum+1}
@@ -39,6 +44,12 @@
 				<li class="selected"><a href="#tab{math equation="x + y" x=$smarty.section.contain.index y=1}"><em>{$tabtitle}</em></a></li>
 			{elseif $container != null}
 				<li><a href="#tab{math equation="x + y" x=$smarty.section.contain.index y=1}"><em>{$tabtitle}</em></a></li>
+			{else}
+				{permissions level=$smarty.const.UILEVEL_STRUCTURE}
+					{if ($permissions.administrate == 1 || $permissions.edit_module == 1 || $permissions.delete_module == 1 || $permissions.add_module == 1)}
+						<li><a href="#tab{math equation="x + y" x=$smarty.section.contain.index y=1}"><em>{$tabtitle}</em></a></li>
+					{/if}
+				{/permissions}
 			{/if}
 		{/section}	
 		{permissions level=$smarty.const.UILEVEL_STRUCTURE}
@@ -61,7 +72,8 @@
 			{if $container != null}	
 				<div id="tab{math equation="x + y" x=$smarty.section.contain.index y=1}"{if !$smarty.section.contain.first}{/if}>
 					{assign var=container value=$containers.$index}
-					{assign var=rank value=$index}
+					{assign var=i value=$menurank}
+					{assign var=rerank value=0}
 					{include file=$viewfile}
 				</div>
 			{else}
@@ -78,8 +90,11 @@
 </div>
 </div>
 
-{script unique="managenavtabs" yuimodules="tabview"}
+{script unique="`$tabs`" yui3mods="1"}
 {literal}
-	var tabView = new YAHOO.widget.TabView('nav-tabs');
+YUI(EXPONENT.YUI3_CONFIG).use('tabview', function(Y) {
+    var tabview = new Y.TabView({srcNode:'#{/literal}{$tabs}{literal}'});
+    tabview.render();
+});
 {/literal}
 {/script}

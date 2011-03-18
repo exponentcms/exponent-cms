@@ -47,7 +47,8 @@ class container {
             
             // Rank is only updateable from the order action
             $object->rank = $values['rank'];
-            if (isset($values['rerank'])) $db->increment("container","rank",1,"external='".serialize($loc)."' AND rank >= " . $values['rank']);
+//            if (isset($values['rerank'])) $db->increment("container","rank",1,"external='".serialize($loc)."' AND rank >= " . $values['rank']);
+			if ((isset($values['rerank'])) && ($values['rerank'])) $db->increment("container","rank",1,"external='".serialize($loc)."' AND rank >= " . $values['rank']);
             $object->internal = serialize($newInternal);
             $object->external = serialize($loc);
         }

@@ -57,7 +57,8 @@ if (exponent_permissions_check('edit_module',$loc) || exponent_permissions_check
    	exponent_sessions_clearAllUsersSessionCache('containermodule');
 
 	$template = new template('containermodule','_form_edit',$loc);
-	$template->assign('rerank', (isset($_GET['rerank']) ? 1 : 0) );
+//	$template->assign('rerank', (isset($_GET['rerank']) ? 1 : 0) );
+	$template->assign('rerank', (isset($_GET['rerank']) ? $_GET['rerank'] : 0) );
 	$template->assign('container',$container);
 	$template->assign('locref',$locref);
 	$template->assign('is_edit', (isset($container->id) ? 1 : 0) );
