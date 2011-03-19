@@ -23,7 +23,7 @@
 
 {/css}
 
-<div id="navmanager" class="navigationmodule manager exp-skin-tabview yui3-skin-sam">
+<div class="containermodule tabbed yui3-skin-sam">
 {viewfile module=$singlemodule view=$singleview var=viewfile} 
 <div id="{$tabs}" class="yui-navset">
 	<ul class="yui-nav">
