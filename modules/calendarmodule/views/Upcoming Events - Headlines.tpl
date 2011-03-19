@@ -38,8 +38,14 @@
     <ul>
 		{foreach from=$items item=item}
 			<li>
-				<a class="link" href="{link action=view id=$item->id date_id=$item->eventdate->id}">{$item->title}</a>
-				<em class="date">{$item->eventstart|date_format}</em>
+				<a class="link" href="{link action=view id=$item->id date_id=$item->eventdate->id}" title="{$item->body|summarize:"html":"para"}">{$item->title}</a>
+				<em class="date">
+					{if $item->is_allday == 1}
+						{$item->eventstart|format_date:$smarty.const.DISPLAY_DATE_FORMAT}
+					{else}
+						{$item->eventstart|format_date:$smarty.const.DISPLAY_DATE_FORMAT} @ {$item->eventstart|format_date:"%l:%M %p"}
+					{/if}
+				</em>
 				{permissions}
 					<div class="item-actions">
 						{if $permissions.edit == 1 || $item->permissions.edit == 1}
@@ -55,6 +61,8 @@
 					</div>
 				{/permissions}
 			</li>
+		{foreachelse}
+			<li align="center"><i>{$_TR.no_event}</i></li>
 		{/foreach}
     </ul>
 </div>
