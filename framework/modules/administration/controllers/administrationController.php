@@ -20,7 +20,7 @@
 class administrationController extends expController {
     public $basemodel_name = 'expRecord';
     public $useractions = array();
-    public $add_permissions = array('administrate'=>'Manage Administration','toggle_minify'=>'Configure Website Settings');
+    public $add_permissions = array('administrate'=>'Manage Administration','toggle_minify'=>'Configure Website Settings',"switch_themes"=>"change themes");
     
     function name() { return $this->displayname(); } //for backwards compat with old modules
     function displayname() { return "Administration Controls"; }
@@ -114,6 +114,66 @@ class administrationController extends expController {
     	flash('message',$message);
     	expHistory::back();
     }
+    
+    public function manage_themes() {
+        expHistory::set('managable', $this->params);
+    	$themes = array();
+    	if (is_readable(BASE.'themes')) {
+    		$dh = opendir(BASE.'themes');
+    		while (($file = readdir($dh)) !== false) {
+    			if (is_readable(BASE."themes/$file/class.php")) {
+    				include_once(BASE."themes/$file/class.php");
+    				$theme = new $file();
+    				$t = null;
+    				$t->name = $theme->name();
+    				$t->description = $theme->description();
+    				$t->author = $theme->author();
+    				if (is_dir(BASE."themes/$file/css_default")) {
+                		$sv = opendir(BASE.'themes/'.$file);
+                		while (($s = readdir($sv)) !== false) {
+                            if (substr($s,0,4) == "css_") {
+                                $t->style_variations[str_replace("css_","",$s)] = str_replace("css_","",$s);
+                            }
+                        }
+        			}
+    				$t->preview = is_readable(BASE."themes/$file/preview.jpg") ? "themes/$file/preview.jpg" : "themes/" . DISPLAY_THEME . "/noprev.jpg";
+    				$themes[$file] = $t;
+    			}
+    		}
+    	}
+
+        assign_to_template(array('themes'=>$themes));
+    }
+    
+    public function switch_themes() {
+        if (!defined('SYS_CONFIG')) include_once(BASE.'subsystems/config.php');
+
+    	exponent_config_change('DISPLAY_THEME_REAL', $this->params['theme']);
+    	
+    	if (isset($this->params['sv']) && THEME_STYLE!=$this->params['sv']) {
+        	exponent_config_change('THEME_STYLE', $this->params['sv']);
+    	    if (expFile::recurse_copy(BASE."themes/".$this->params['theme']."/css", BASE."themes/".$this->params['theme']."/styles_backup/css")
+    	        && expFile::recurse_copy(BASE."themes/".$this->params['theme']."/images", BASE."themes/".$this->params['theme']."/styles_backup/images")) {
+
+        	    if (!expFile::recurse_copy(BASE."themes/".$this->params['theme']."/css_".$this->params['sv'], BASE."themes/".$this->params['theme']."/css")) {
+                    flash('error',expLang::gettext('Couldn\'t copy') . "css_".$this->params['sv']);
+        	    }
+        	    if (!expFile::recurse_copy(BASE."themes/".$this->params['theme']."/images_".$this->params['sv'], BASE."themes/".$this->params['theme']."/images")) {
+                    flash('error',expLang::gettext('Couldn\'t copy') . "images_".$this->params['sv']);
+        	    }
+
+                flash('message',expLang::gettext('Your website\'s theme has been updated'));
+    	    } else {
+                flash('error',expLang::gettext('Exponent could not not switch your theme style variation because it wasn unable to cak up your current css and images directories. Create a directory called styles_backup within your theme, and try again.'));
+    	    }
+            //copy(BASE."themes/".DISPLAY_THEME_REAL."/css_".$this->params['sv'], BASE."themes/".DISPLAY_THEME_REAL."/css");
+            //copy(BASE."themes/".DISPLAY_THEME_REAL."css_".$this->params['sv'], BASE."themes/".DISPLAY_THEME_REAL."css")
+    	}
+     
+        // $message = (MINIFY != 1) ? "Exponent is now minifying Javascript and CSS" : "Exponent is no longer minifying Javascript and CSS" ;
+        // flash('message',$message);
+    	expHistory::returnTo('managable');
+    }	
     
     public function configure_site () {
         // little glue to help things move along

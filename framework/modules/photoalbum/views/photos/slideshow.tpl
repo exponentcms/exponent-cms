@@ -97,7 +97,7 @@
 </div>
 
 {if $slides|@count > 1}
-{script unique="slideshow" src="`$smarty.const.THEME_RELATIVE`js/gallery-yui-slideshow.js" yui3mods="anim"}
+{script unique="slideshow" yui3mods="anim"}
 {literal}
 
 YUI({   

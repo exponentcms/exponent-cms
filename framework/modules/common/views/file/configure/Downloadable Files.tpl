@@ -14,4 +14,5 @@
  *
  *}
 
-<h2>This is the config form for downloadable files</h2>
+<h2>{"Downloadable Files"|gettext}</h2>
+{control type=text name="title" label="File list title" value=$config.title}

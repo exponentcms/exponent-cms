@@ -14,54 +14,41 @@
  *
  *}
  
-{if $params.files[1]->id}
+{uniqueid prepend="slideshow" assign="name"}
 
-<div id="{$config.uniqueid}" class="files slideshow yui-sldshw-displayer" style="width:{$config.slideshow_width}px;height:{$config.slideshow_height}px;{$style}">
-    {foreach key=key from=$params.files item=item name=slides}
-    <div id="frame_{$config.uniqueid}_{$item->id}" class="yui-sldshw-frame{if $smarty.foreach.slides.first==true} yui-sldshw-active{/if}" style="width:{$config.slideshow_width}px;height:{$config.slideshow_height}px">
-        {* In order to fill out the slide window, see if the 
-            image is best resized by height or width *}
-        
-            {math assign=computedHeight equation=ceil(((imh*confw)/imw)) imh=$item->image_height confw=$config.slideshow_width imw=$item->image_width}
-            {math assign=computedWidth equation=ceil(((imw*confh)/imh)) imw=$item->image_width confh=$config.slideshow_height imh=$item->image_height}
-    
-        {if $computedHeight<=$config.slideshow_height}
-            {assign var=imgheight value=$config.slideshow_height}
-            {assign var=imgwidth value=$computedWidth}
+{css unique="files-gallery" link="`$smarty.const.PATH_RELATIVE`framework/modules/common/assets/css/filedisplayer.css"}
+
+{/css}
+
+<ul id="ss-{$name}" class="slideshow-frame" style="width:{$config.width|default:350}px;height:{$config.height|default:250}px;">
+    {foreach key=key from=$files item=slide name=slides}
+    <li class="slide" style="position:absolute;{if $smarty.foreach.slides.first}z-index:4;{else}z-index:1;{/if}">
+        {if $config.quality==100}
+            <img src="{$slide->url}" class="slide-image" />
         {else}
-            {assign var=imgwidth value=$computedHeight}
-            {assign var=imgwidth value=$config.slideshow_width}
+            {img file_id=$slide->id w=$config.width|default:350 h=$config.height|default:200 class="slide-image" zc=1 q=$config.quality|default:80}
         {/if}
-
-        {img alt=$item->alt file_id=$item->id width=$imgwidth height=$imgheight constraint=1}
-
-    </div>
+    </li>
     {/foreach}
-</div>
+</ul>
 
-{script unique="linkslideshow`$config.uniqueid`" yuimodules="animation" src="`$smarty.const.JS_FULL`exp-slideshow.js"}
+{if $files|@count > 1}
+{script unique="name" yui3mods="1"}
 {literal}
+EXPONENT.YUI3_CONFIG.modules = {
+    	'gallery-yui-slideshow': {
+    		fullpath: EXPONENT.PATH_RELATIVE+'framework/modules/photoalbum/assets/js/yui3-slideshow.js',
+    		requires: ['anim','node'],
+    	}
+    }
 
-YAHOO.util.Event.onDOMReady(function(){
-    
-    var slideshow{/literal}{$config.uniqueid}{literal} = {
-        speed: {/literal}{$config.slideshow_framelength}{literal}000,
-        displayer : {/literal}"{$config.uniqueid}"{literal},
-        linkslides: {},
-        timer: {},
-        init: function(){
-            this.linkslides = new YAHOO.myowndb.slideshow(this.displayer,{effect:  YAHOO.myowndb.slideshow.effects.{/literal}{$config.slideshow_anim}{literal}});
-            this.timer = YAHOO.lang.later(this.speed, this.linkslides , this.linkslides.transition, null , this.speed );
-        }
-    };
-    slideshow{/literal}{$config.uniqueid}{literal}.init();
+YUI(EXPONENT.YUI3_CONFIG).use('gallery-yui-slideshow', function(Y) {
+    var oSlideshow = new Y.Slideshow('#ss-{/literal}{$name}{literal}',
+    {interval:{/literal}{$config.speed|default:5}000{literal}}
+    );
 });
+
 
 {/literal}
 {/script}
-{else}
-<div class="files slideshow yui-sldshw-displayer {if $params.class}slideshow-{$params.class}{/if}" style="width:{$params.width}px;height:{$params.height}px">
-    {img class=$params.class file_id=$params.files[0]->id width=$params.width height=`$params.height+100` constraint=1}    
-</div>
-{/if} 
-
+{/if}

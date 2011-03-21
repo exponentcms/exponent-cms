@@ -15,16 +15,24 @@
  *}
 
 <h2>{"Configure File Display Settings"|gettext}</h2>
-
-{control id="filedisplay" type=filedisplay-types name=filedisplay label="Display Files as" value=$config.filedisplay}
+    {control id="filedisplay" type=filedisplay-types name=filedisplay label="Display Files as" value=$config.filedisplay}
+<div id="ff-options" style="display:none">
+    {control type="dropdown" name="float" label="File Display Box Float" items="No Float,Left,Right" value=$config.float}
+    {control type="text" label="Width of File Display Box" name="width" value=$config.width size=5}
+    {control type="text" label="Width of Margin" name="margin" value=$config.margin size=5}
+    <hr />
+</div>
 <div id="fileViewConfig">
     {if $config.filedisplay != ""}
+        {assign var=presaved value=1}
         {assign var=themefileview value="`$smarty.const.BASE`themes/`$smarty.const.DISPLAY_THEME_REAL`/modules/common/views/file/configure/`$config.filedisplay`.tpl"}
         {if file_exists($themefileview)}
             {include file=$themefileview}
         {else}
             {include file="`$smarty.const.BASE`framework/modules/common/views/file/configure/`$config.filedisplay`.tpl"}
         {/if}
+    {else}
+        <p></p>
     {/if}
 </div>
 
@@ -34,30 +42,28 @@
 YUI(EXPONENT.YUI3_CONFIG).use('node','io', function(Y) {
     var cfg = {
     			method: "POST",
-    			headers: { 'X-Transaction': 'Load File Config'}
+    			headers: { 'X-Transaction': 'Load File Config'},
+    			arguments : { 'X-Transaction': 'Load File Config'}
     		};
     		
 	var sUrl = EXPONENT.URL_FULL+"index.php?controller=file&action=get_view_config&ajax_action=1";
 
 	var handleSuccess = function(ioId, o){
-		Y.log(arguments);
+		Y.log(o.responseText);
 		Y.log("The success handler was called.  Id: " + ioId + ".", "info", "example");
-
-        if(o.responseText !== undefined){
+        
+        if(o.responseText){
             Y.one('#fileViewConfig').setContent(o.responseText);
+            Y.one('#ff-options').setStyle("display","block");
+        } else {
+            Y.one('#fileViewConfig .loadingdiv').remove();
+            Y.one('#ff-options').setStyle("display","none");
         }
 	};
 
 	//A function handler to use for failed requests:
 	var handleFailure = function(ioId, o){
 		Y.log("The failure handler was called.  Id: " + ioId + ".", "info", "example");
-
-        // if(o.responseText !== undefined){
-        //  var s = "<li>Transaction id: " + ioId + "</li>";
-        //  s += "<li>HTTP status: " + o.status + "</li>";
-        //  s += "<li>Status code message: " + o.statusText + "</li>";
-        //  div.set("innerHTML", s);
-        // }
 	};
 
 	//Subscribe our handlers to IO's global custom events:
@@ -67,32 +73,17 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','io', function(Y) {
     Y.one('#filedisplay').on('change',function(e){
         cfg.data = "view="+e.target.get('value');
         var request = Y.io(sUrl, cfg);
+        Y.one('#fileViewConfig').setContent(Y.Node.create('<div class="loadingdiv" style="width:40%">Loading Form</div>'));
+        if (e.target.get('value')==""){
+            Y.one('#ff-options').setStyle("display","none");
+        }
     });
+    {/literal}
+    {if $presaved}
+        Y.one('#ff-options').setStyle("display","block");
+    {/if}
+    {literal}
 });
-
-    
-    // var swapview = function(view) {    
-    //     // instantiate an ajax object
-    //     var ej = new EXPONENT.AjaxEvent();
-    // 
-    //     // handler for our ajax event
-    //     // o is our returned object, either parsed as JSON if json:1 was set
-    //     // if we're expecting a template (o.data), don't set json
-    //     // If you don't need to do anything on the response, you don't need to subscribe
-    //     ej.subscribe(function (viewConfigTemplate) {
-    //          var viewConfig = YAHOO.util.Dom.get('fileViewConfig'); //get the div to update
-    //          viewConfig.innerHTML = viewConfigTemplate; //put the returned markup in to the div
-    //     },this);
-    // 
-    //     // fire the ajax event
-    //     ej.fetch({action:"get_view_config",controller:"file",params:'&view='+view});
-    // };
-    // 
-    // var viewselector = YAHOO.util.Dom.get('filedisplay');
-    // YAHOO.util.Event.on(viewselector, 'change', function() {        
-    //     
-    //     swapview(EXPONENT.forms.getSelectValue('filedisplay'));
-    // });
 {/literal}
 {/script}
 

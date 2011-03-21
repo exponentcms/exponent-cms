@@ -29,13 +29,32 @@ function smarty_function_filedisplayer($params,&$smarty) {
 
     $badvals = array("[", "]", ",", " ", "'", "\"", "&", "#", "%", "@", "!", "$", "(", ")", "{", "}");
     $config['uniqueid'] = str_replace($badvals, "", $smarty->_tpl_vars[__loc]->src).$params['id'];
+    
+    $float = $config['float']=="No Float"?"":"float:".strtolower($config['float']).";";
+    $width = !empty($config['width'])?$config['width']:"200";
+    
+    switch ($config['float']) {
+        case 'Left':
+            $margin = "margin-right:".$config['margin']."px;";
+            break;
+        
+        case 'Right':
+            $margin = "margin-left:".$config['margin']."px;";
+            break;
 
-	$template = get_common_template($view, $smarty->_tpl_vars[__loc], 'file');
+        default:
+            $margin = "";
+            break;
+    }
+    
+    $html = '<div class="display-files" style="'.$float.'width:'.$width.'px;'.$margin.'">';
+    $template = get_common_template($view, $smarty->_tpl_vars[__loc], 'file');
 	$template->assign('files', $params['files']);
 	$template->assign('style', $params['style']);
 	$template->assign('config', $config);
 	$template->assign('params', $params);
-	$html = $template->render();
+	$html .= $template->render();
+    $html .= "</div>";
 	echo $html;
 }
 

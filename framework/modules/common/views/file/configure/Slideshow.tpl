@@ -14,14 +14,10 @@
  *
  *}
  
-<h2>Slideshow File Displayer Settings</h2>
-{control type=text name="slideshow_framelength" label="Slide length in Seconds" value=$config.slideshow_framelength|default:5 size="5"}
-
-{control type=dropdown name="slideshow_anim" 
-items="Fade,Slide Right,Slide Left,Slide Up,Reveal Left,Reveal Right,Reveal up,Reveal Down" 
-values="fadeOut,slideRight,slideLeft,slideUp,squeezeLeft,squeezeRight,squeezeUp,squeezeDown" label="Animation Type" value=$config.slideshow_anim}
-
-{control type=text name="slideshow_width" label="Slideshow Width" value=$config.slideshow_width|default:100 size="5"}
-{control type=text name="slideshow_height" label="Slideshow Height" value=$config.slideshow_height|default:100 size="5"}
+<h2>Slideshow Configuration</h2>
+{control type=text name="width" label="Slideshow Width" value=$config.width|default:350 size="5"}
+{control type=text name="height" label="Slideshow Height" value=$config.height|default:200 size="5"}
+{control type=text name="speed" label="Seconds per slide" value=$config.speed|default:5 size="5"}
+{control type=text name="quality" label="JPEG Quality (0 - 100)<br><small>If quality is set to 100, the raw image will be used instead of thumbnailing</small>" value=$config.quality|default:80 size="5"}
 
 

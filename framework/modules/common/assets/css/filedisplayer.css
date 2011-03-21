@@ -1,0 +1,23 @@
+/**************** Gallery  ***********************/
+
+.display-files a.image-link {
+    display:inline-block;
+    *display:inline;
+    zoom:1;
+    vertical-align:top;
+}
+
+.display-files a.image-link img {
+    display:block;
+}
+
+/****************  Slideshow  ***********************/
+
+.display-files ul.slideshow-frame,
+.display-files ul.slideshow-frame li.slide {
+    margin:0;
+    padding:0;
+    list-style:none;
+}
+
+
