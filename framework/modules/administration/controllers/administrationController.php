@@ -151,7 +151,7 @@ class administrationController extends expController {
     	exponent_config_change('DISPLAY_THEME_REAL', $this->params['theme']);
     	
     	if (isset($this->params['sv']) && THEME_STYLE!=$this->params['sv']) {
-        	exponent_config_change('THEME_STYLE', $this->params['sv']);
+            exponent_config_change('THEME_STYLE', $this->params['sv']);
     	    if (expFile::recurse_copy(BASE."themes/".$this->params['theme']."/css", BASE."themes/".$this->params['theme']."/styles_backup/css")
     	        && expFile::recurse_copy(BASE."themes/".$this->params['theme']."/images", BASE."themes/".$this->params['theme']."/styles_backup/images")) {
 

@@ -47,8 +47,8 @@ return array(
 			                'url'=>makeLink(array('controller'=>'expModule','action'=>'manage')),
                         ),
                         array(
-                            'text'=>$i18n['manage_themes'],
-			                'url'=>makeLink(array('module'=>'administrationmodule','action'=>'managethemes')),
+                            'text'=>expLang::gettext('Manage Themes'),
+			                'url'=>makeLink(array('module'=>'administration','action'=>'manage_themes')),
                         ),
                         array(
                             'text'=>'Regenerate Search Index',

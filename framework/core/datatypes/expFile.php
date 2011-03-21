@@ -1056,6 +1056,27 @@ class expFile extends expRecord {
 			return null;
 		}
 	}
+    
+    
+    
+    function recurse_copy($src,$dst) { 
+        $dir = opendir($src); 
+        @mkdir($dst); 
+        while(false !== ( $file = readdir($dir)) ) { 
+            if (( $file != '.' ) && ( $file != '..' )) { 
+                if ( is_dir($src . '/' . $file) ) { 
+                    recurse_copy($src . '/' . $file,$dst . '/' . $file); 
+                } 
+                else { 
+                    if(!copy($src . '/' . $file,$dst . '/' . $file)){
+                        return false;
+                    };
+                } 
+            } 
+        } 
+        closedir($dir); 
+        return true;
+    }
 
 }
 ?>
