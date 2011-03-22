@@ -700,7 +700,6 @@ class migrationController extends expController {
                     foreach ($newsitems as $ni) {
                         unset($ni['id']);
                         $news = new news($ni);
-						$news->makeSefUrl();
                         $loc = expUnserialize($ni['location_data']);
                         $loc->mod = "news";
                         $news->location_data = serialize($loc);
@@ -744,15 +743,12 @@ class migrationController extends expController {
 					foreach ($resourceitems as $ri) {
 						unset($ri['id']);
 						$filedownload = new filedownload($ri);
-//						$filedownload->makeSefUrl();
 						$loc = expUnserialize($ri['location_data']);
 						$loc->mod = "filedownload";
 						$filedownload->title = $ri['name'];
 						$filedownload->body = $ri['description'];
 						$filedownload->downloads = $ri['num_downloads'];
 						$filedownload->location_data = serialize($loc);
-//						$filedownload->created_at = $ri['posted'];
-//						$filedownload->edited_at = $ri['edited'];
 						$filedownload->save();
 						@$this->msg['migrated'][$iloc->mod]['count']++;
 						@$this->msg['migrated'][$iloc->mod]['name'] = $this->new_modules[$iloc->mod];
@@ -763,7 +759,7 @@ class migrationController extends expController {
 							// default is to create with current time						
 							$filedownload->created_at = $ri['posted'];
 							$filedownload->edited_at = $ri['edited'];
-//							$filedownload->update();
+							$filedownload->update();
 						}
 					}
 				}
@@ -800,16 +796,19 @@ class migrationController extends expController {
 							$loc = expUnserialize($gallery['location_data']);
 							$loc->mod = "photos";
 							$photo->title = $gi['name'];
+							if (empty($photo->title)) { $photo->title = 'Untitled'; }
 							$photo->body = $gi['description'];
 							$photo->alt = $gi['alt'];
 							$photo->location_data = serialize($loc);
-							$photo->makeSefUrl();
-							$photo->save();
-							@$this->msg['migrated'][$iloc->mod]['count']++;
-							@$this->msg['migrated'][$iloc->mod]['name'] = $this->new_modules[$iloc->mod];
 							if (!empty($gi['file_id'])) {
+								$photo->save();
+								@$this->msg['migrated'][$iloc->mod]['count']++;
+								@$this->msg['migrated'][$iloc->mod]['name'] = $this->new_modules[$iloc->mod];
 								$file = new expFile($gi['file_id']);
 								$photo->attachitem($file,'');
+								$photo->created_at = $gi['posted'];
+								$photo->edited_at = $gi['posted'];
+								$photo->update();								
 							}
 						}
 					}
@@ -840,20 +839,21 @@ class migrationController extends expController {
 							$loc = expUnserialize($gallery['location_data']);
 							$loc->mod = "photos";
 							$photo->title = $gi['name'];
+							if (empty($photo->title)) { $photo->title = 'Untitled'; }
 							$photo->body = $gi['description'];
 							$photo->alt = $gi['alt'];
 							$photo->location_data = serialize($loc);
-							$photo->makeSefUrl();
-							// $photo->created_at = $gi['posted'];
-							// $photo->edited_at = $gi['edited'];
 							$te = $photo->find('first',"location_data='".$photo->location_data."'");
 							if (empty($te)) {
-								$photo->save();
-								@$this->msg['migrated'][$iloc->mod]['count']++;
-								@$this->msg['migrated'][$iloc->mod]['name'] = $this->new_modules[$iloc->mod];
 								if (!empty($gi['file_id'])) {
+									$photo->save();
+									@$this->msg['migrated'][$iloc->mod]['count']++;
+									@$this->msg['migrated'][$iloc->mod]['name'] = $this->new_modules[$iloc->mod];
 									$file = new expFile($gi['file_id']);
 									$photo->attachitem($file,'');
+									$photo->created_at = $gi['posted'];
+									$photo->edited_at = $gi['posted'];
+									$photo->update();								
 								}
 							}
 
@@ -925,7 +925,6 @@ class migrationController extends expController {
                     foreach ($blogitems as $bi) {
                         unset($bi['id']);
                         $post = new blog($bi);
-						$post->makeSefUrl();
                         $loc = expUnserialize($bi['location_data']);
                         $loc->mod = "blog";
                         $post->location_data = serialize($loc);
@@ -1001,7 +1000,6 @@ class migrationController extends expController {
                         unset($li['id']);
                         $listing = new portfolio($li);
 						$listing->title = $li['name'];
-						$listing->makeSefUrl();
                         $loc = expUnserialize($li['location_data']);
                         $loc->mod = "portfolio";
                         $listing->location_data = serialize($loc);
@@ -1099,7 +1097,6 @@ class migrationController extends expController {
 
 					@$this->msg['migrated'][$iloc->mod]['count']++;
 					@$this->msg['migrated'][$iloc->mod]['name'] = $this->new_modules[$iloc->mod];
-	//				@$this->msg['migrated'][$iloc->mod]['name'] = $iloc->mod;
 				}
 				break;
             default:

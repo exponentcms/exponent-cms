@@ -19,9 +19,9 @@
         <tr class="{cycle values="odd,even"}">
             <td>
 				{if $key == $val.name}
-					<strong>{$val.count}</strong> record{if $val.count==1}s{/if} from <strong>{$key}</strong> {if $val.count==1}have{else}has{/if} been migrated as is</strong>
+					<strong>{$val.count}</strong> record{if $val.count!=1}s{/if} from <strong>{$key}</strong> {if $val.count!=1}have{else}has{/if} been migrated as is</strong>
 				{else}
-					<strong>{$val.count}</strong> record{if $val.count==1}s{/if} from <strong>{$key}</strong> {if $val.count==1}have{else}has{/if} been migrated to <strong>{$val.name}</strong>
+					<strong>{$val.count}</strong> record{if $val.count!=1}s{/if} from <strong>{$key}</strong> {if $val.count!=1}have{else}has{/if} been migrated to <strong>{$val.name}</strong>
 				{/if}
 			</td>
         </tr>
