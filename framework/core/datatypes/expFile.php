@@ -1065,7 +1065,7 @@ class expFile extends expRecord {
         while(false !== ( $file = readdir($dir)) ) { 
             if (( $file != '.' ) && ( $file != '..' )) { 
                 if ( is_dir($src . '/' . $file) ) { 
-                    recurse_copy($src . '/' . $file,$dst . '/' . $file); 
+                    expFile::recurse_copy($src . '/' . $file,$dst . '/' . $file); 
                 } 
                 else { 
                     if(!copy($src . '/' . $file,$dst . '/' . $file)){
