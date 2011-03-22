@@ -511,9 +511,16 @@ class expRecord {
 
     public function makeSefUrl() {
         global $db, $router;        
-        if (isset($this->title)) $this->sef_url = $router->encode($this->title);
+        if (isset($this->title)) {
+			$this->sef_url = $router->encode($this->title);
+		} else {
+			$this->sef_url = $router->encode('Untitled');
+		}
         $dupe = $db->selectValue($this->tablename, 'sef_url', 'sef_url="'.$this->sef_url.'"');
-        if (!empty($dupe)) $this->sef_url .= '-'.time();
+		if (!empty($dupe)) { 
+			list($u, $s) = explode(' ',microtime()); 
+			$this->sef_url .= '-'.$s.'-'.$u; 
+		}
         $this->runCallback('makeSefUrl');
     }
 
