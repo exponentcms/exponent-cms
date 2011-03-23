@@ -28,17 +28,29 @@
         <thead>
             <tr>
                 <th>Migrate</th>
+                <th>Replace</th>
                 <th>Username</th>
                 <th>Name</th>
                 <th>E-Mail</th>
-                <th>Is Admin</th>
+                <th>Admin</th>
             </tr>
         </thead>
         <tbody>
         {foreach from=$users item=user name=users}
         <tr class="{cycle values="even,odd"}">            
             <td>
-                {control type="checkbox" name="users[]" label=" " value=$user->id checked=true}
+				{if ($user->exists == true)}
+					<em>(exists)</em>
+				{else}
+					{control type="checkbox" name="users[]" label=" " value=$user->id checked=true}
+				{/if}			
+            </td>
+            <td>
+				{if ($user->exists == true)}
+					{control type="checkbox" name="rep_users[]" label=" " value=$user->id checked=false}
+				{else}
+					<em>(new)</em>
+				{/if}			
             </td>
             <td>
                 {$user->username}
@@ -58,11 +70,13 @@
         {/foreach}
         </tbody>
 		<tbody>
+        <tr><td colspan=5>{control type="checkbox" name="wipe_users" label="Erase all current users and then try again?" value=1 checked=false}</td></tr>
 		<tr><td>&nbsp;</td></tr>
         </tbody>
         <thead>
             <tr>
                 <th>Migrate</th>
+                <th>Replace</th>
                 <th>Group Name</th>
                 <th>Description</th>
                 <th>Type</th>
@@ -72,7 +86,18 @@
         {foreach from=$groups item=group name=groups}
         <tr class="{cycle values="even,odd"}">            
             <td>
-                {control type="checkbox" name="groups[]" label=" " value=$group->id checked=true}
+				{if ($group->exists == true)}
+					<em>(exists)</em>
+				{else}
+					{control type="checkbox" name="groups[]" label=" " value=$group->id checked=true}
+				{/if}			
+            </td>
+            <td>
+				{if ($group->exists == true)}
+					{control type="checkbox" name="rep_groups[]" label=" " value=$group->id checked=false}
+				{else}
+					<em>(new)</em>
+				{/if}			
             </td>
             <td>
                 {$group->name}
@@ -85,9 +110,10 @@
             </td>            
         </tr>
         {foreachelse}
-			<tr><td colspan=4>No groups found to migrate from the database {$config.database}</td></tr>
+			<tr><td colspan=5>No groups found to migrate from the database {$config.database}</td></tr>
         {/foreach}
         </tbody>
+        <tr><td colspan=5>{control type="checkbox" name="wipe_groups" label="Erase all current groups and then try again?" value=1 checked=false}</td></tr>
         </table>
         {control type="buttongroup" submit="Migrate Users/Groups" cancel="Cancel"}
     {/form}

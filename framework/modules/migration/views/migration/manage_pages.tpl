@@ -26,6 +26,7 @@
         <thead>
             <tr>
                 <th>Migrate</th>
+                <th>Replace</th>
                 <th>Name</th>
             </tr>
         </thead>
@@ -34,22 +35,28 @@
         <tr class="{cycle values="even,odd"}">            
             <td>
 				{if ($page->exists == true)}
-					<em>already exists</em>
+					<em>(exists)</em>
 				{else}
 					{control type="checkbox" name="pages[]" label=" " value=$page->id checked=true}
 				{/if}
             </td>
             <td>
+				{if ($page->exists == true)}
+					{control type="checkbox" name="rep_pages[]" label=" " value=$page->id checked=false}
+				{else}
+					<em>(new)</em>
+				{/if}
+            </td>
+            <td>
                 {$page->name} {if ($page->parent == -1)}(<b><em>Standalone</em></b>){/if}
             </td>
-            
         </tr>
         {foreachelse}
-			<tr><td colspan=2>No new pages found in the database {$config.database}</td></tr>
+			<tr><td colspan=>No new pages found in the database {$config.database}</td></tr>
         {/foreach}
         </tbody>
         </table>
-        {control type="checkbox" name="wipe_pages" label="Erase all current pages then try again?" value=1 checked=false}
+        {control type="checkbox" name="wipe_pages" label="Erase all current pages and then try again?" value=1 checked=false}
         {control type="buttongroup" submit="Migrate Pages" cancel="Cancel"}
     {/form}
 </div>

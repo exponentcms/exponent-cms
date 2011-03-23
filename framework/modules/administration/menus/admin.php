@@ -135,23 +135,23 @@ return array(
                                 'id'=>'migration',
                                 'itemdata'=>array(
                                     array(
-                                        'text'=>'Configure Migration Settings',
+                                        'text'=>'1-Configure Migration Settings',
             			                'url'=>makeLink(array('module'=>'migration','action'=>'configure')),
                                     ),
                                     array(
-                                        'text'=>'Migrate Users/Groups',
+                                        'text'=>'2-Migrate Users/Groups',
             			                'url'=>makeLink(array('module'=>'migration','action'=>'manage_users')),
                                     ),
                                     array(
-                                        'text'=>'Migrate Pages',
+                                        'text'=>'3-Migrate Pages',
             			                'url'=>makeLink(array('module'=>'migration','action'=>'manage_pages')),
                                     ),
                                     array(
-                                        'text'=>'Migrate Files',
+                                        'text'=>'4-Migrate Files',
             			                'url'=>makeLink(array('module'=>'migration','action'=>'manage_files')),
                                     ),
                                     array(
-                                        'text'=>'Migrate Content',
+                                        'text'=>'5-Migrate Content',
             			                'url'=>makeLink(array('module'=>'migration','action'=>'manage_content')),
                                     ),
                                 )

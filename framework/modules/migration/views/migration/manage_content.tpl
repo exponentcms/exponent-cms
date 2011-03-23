@@ -25,6 +25,7 @@
         <thead>
             <tr>
                 <th>Migrate</th>
+                <th>Replace</th>
                 <th>Module</th>
                 <th>Count</th>
                 <th>Action</th>
@@ -35,7 +36,10 @@
         {if !$module->notmigrating}
         <tr class="{cycle values="even,odd"}">            
             <td>
-                <input type=checkbox value=1 checked=1 name="migrate[{$module->module}]">
+                <input type=checkbox name="migrate[{$module->module}]" label=" " value=1 checked=1>
+            </td>
+            <td>
+                <input type=checkbox name="replace[{$module->module}]" label=" " value=1>
             </td>
             <td>
                 {$module->module}
@@ -51,7 +55,7 @@
         {/foreach}
         </tbody>
         </table>
-        {control type="checkbox" name="wipe_content" label="Erase current content before import?" value=1 checked=false}
+        {control type="checkbox" name="wipe_content" label="Erase all current content before import?" value=1 checked=false}
         {control type="buttongroup" submit="Migrate Content" cancel="Cancel"}
     {/form}
 </div>

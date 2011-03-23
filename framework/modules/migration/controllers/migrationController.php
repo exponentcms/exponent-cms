@@ -50,7 +50,7 @@ class migrationController extends expController {
     public $deprecated_modules = array(
         'administrationmodule',
 //        'containermodule',  // not really deprecated, but must be in this list to skip processing?
-//        'navigationmodule',  // veiws are still used, so modules need to be imported?
+//        'navigationmodule',  // views are still used, so modules need to be imported?
         'imagemanagermodule',
         'imageworkshopmodule',
         'inboxmodule',
@@ -133,15 +133,29 @@ class migrationController extends expController {
         $successful = 0;
         $failed     = 0;
         $old_db = $this->connect();
-        foreach($this->params['pages'] as $pageid) {
-            $page = $old_db->selectObject('section', 'id='.$pageid);
-            $ret = $db->insertObject($page, 'section');
-            if (empty($ret)) {
-                $failed += 1;
-            } else {
-                $successful += 1;
-            }
-        }
+		if (!empty($this->params['pages'])) {
+			foreach($this->params['pages'] as $pageid) {
+				$page = $old_db->selectObject('section', 'id='.$pageid);
+				$ret = $db->insertObject($page, 'section');
+				if (empty($ret)) {
+					$failed += 1;
+				} else {
+					$successful += 1;
+				}
+			}
+		}
+		if (!empty($this->params['rep_pages'])) {
+			foreach($this->params['rep_pages'] as $pageid) {
+				$db->delete('section','id='.$pageid);
+				$page = $old_db->selectObject('section', 'id='.$pageid);
+				$ret = $db->insertObject($page, 'section');
+				if (empty($ret)) {
+					$failed += 1;
+				} else {
+					$successful += 1;
+				}
+			}
+			}
 
         flash ('message', $successful.' pages were imported from '.$this->config['database'].$del_pages = '');
         if ($failed > 0) {
@@ -261,11 +275,11 @@ class migrationController extends expController {
             $db->delete('content_expSimpleNote');
             $db->delete('content_expTags');
             $db->delete('expComments');
+            $db->delete('expSimpleNote');
+            $db->delete('expTags');
 //            $db->delete('expConfigs');
 //            $db->delete('expFiles');
 //            $db->delete('expRSS');
-            $db->delete('expSimpleNote');
-            $db->delete('expTags');
             $db->delete('calendar');
             $db->delete('eventdate');
             $db->delete('calendarmodule_config');
@@ -279,6 +293,73 @@ class migrationController extends expController {
             $db->delete('formbuilder_report');
             @$this->msg['clearedcontent']++;
         }
+		
+		if (!empty($this->params['replace'])) {
+			if (in_array('containermodule',$this->params['replace'])) {
+				$db->delete('container');
+			}
+			if (in_array('textmodule',$this->params['replace'])) {
+				$db->delete('text');
+			}
+			if (in_array('rotatormodule',$this->params['replace'])) {
+				$db->delete('text');
+			}
+			if (in_array('snippetmodule',$this->params['replace'])) {
+				$db->delete('snippet');
+			}
+			if (in_array('linklistmodule',$this->params['replace'])) {
+				$db->delete('links');
+			}
+			if (in_array('linkmodule',$this->params['replace'])) {
+				$db->delete('links');
+			}
+			if (in_array('swfmodule',$this->params['replace'])) {
+				$db->delete('text');
+			}
+			if (in_array('newsmodule',$this->params['replace'])) {
+				$db->delete('news');
+			}
+			if (in_array('resourcesmodule',$this->params['replace'])) {
+				$db->delete('filedownload');
+			}
+			if (in_array('imagegallerymodule',$this->params['replace'])) {
+				$db->delete('photo');
+			}
+			if (in_array('slideshowmodule',$this->params['replace'])) {
+				$db->delete('photo');
+			}
+			if (in_array('headlinemodule',$this->params['replace'])) {
+				$db->delete('headline');
+			}
+			if (in_array('weblogmodule',$this->params['replace'])) {
+				$db->delete('blog');
+				$db->delete('expComments');
+				$db->delete('content_expComments');
+			}
+			if (in_array('faqmodule',$this->params['replace'])) {
+				$db->delete('faq');
+			}
+			if (in_array('listingmodule',$this->params['replace'])) {
+				$db->delete('portfolio');
+			}
+			if (in_array('calendarmodule',$this->params['replace'])) {
+				$db->delete('calendar');
+				$db->delete('eventdate');
+				$db->delete('calendarmodule_config');
+			}
+			if (in_array('simplepollmodule',$this->params['replace'])) {
+				$db->delete('poll_question');
+				$db->delete('poll_answer');
+				$db->delete('poll_timeblock');
+				$db->delete('simplepollmodule_config');
+			}
+			if (in_array('formmodule',$this->params['replace'])) {
+				$db->delete('formbuilder_address');
+				$db->delete('formbuilder_control');
+				$db->delete('formbuilder_form');
+				$db->delete('formbuilder_report');
+			}
+		}
 
         //pull the locationref data for selected modules
 		if (empty($this->params['migrate'])) {
@@ -367,8 +448,8 @@ class migrationController extends expController {
 				if ($iloc->mod == 'calendarmodule' && $module->view == 'Upcoming Events - Summary') {
 					$module->view = 'Upcoming Events - Headlines';
 				}
-				$db->insertObject($module, 'container');
-				@$this->msg['container']++;
+				$res = $db->insertObject($module, 'container');
+				if ($res) { @$this->msg['container']++; }
                 $this->pulldata($iloc, $module);
             }
         }
@@ -384,64 +465,117 @@ class migrationController extends expController {
         expHistory::set('managable', $this->params);
         $old_db = $this->connect();
         $users = $old_db->selectObjects('user','id > 1');
-		$newusers = array();
         foreach($users as $user) {
-			if (!$db->selectObject('user',"username='".$user->username."'")) {
-				$newusers[] = $user;
+			if ($db->selectObject('user',"id='".$user->id."'")) {
+				$user->exists = true;
+			} else {
+				$user->exists = false;
 			}
 		}
-		assign_to_template(array('users'=>$newusers));
+		assign_to_template(array('users'=>$users));
 
         $groups = $old_db->selectObjects('group');
-		$newgroups = array();
         foreach($groups as $group) {
-			if (!$db->selectObject('group',"name='".$group->name."'")) {
-				$newgroups[] = $group;
+			if ($db->selectObject('group',"id='".$group->id."'")) {
+				$group->exists = true;
+			} else {
+				$group->exists = false;
 			}
 		}
-		assign_to_template(array('groups'=>$newgroups));
+		assign_to_template(array('groups'=>$groups));
     }
 
 	// copy selected users/groups over from old site
     public function migrate_users() {
         global $db;
 
-         // if (isset($this->params['wipe_groups'])) {
-            // $db->delete('group');
-		 // }
-         // if (isset($this->params['wipe_users'])) {
-            // $db->delete('user','id > 1');
-		 // }
+		if (isset($this->params['wipe_groups'])) {
+			$db->delete('group');
+			$db->delete('groupmembership');
+		}
+		if (isset($this->params['wipe_users'])) {
+			$db->delete('user','id > 1');
+		}
         $old_db = $this->connect();
 //		print_r("<pre>");
 //		print_r($old_db->selectAndJoinObjects('', '', 'group', 'groupmembership','id', 'group_id', 'name = "Editors"', ''));
 
         $gsuccessful = 0;
         $gfailed     = 0;
-        foreach($this->params['groups'] as $groupid) {
-            $group = $old_db->selectObject('group', 'id='.$groupid);
-			if (!$db->selectObject('group',"name='".$group->name."'")) {
-				$group->id = '';
+		if (!empty($this->params['groups'])) {
+			foreach($this->params['groups'] as $groupid) {
+				$group = $old_db->selectObject('group', 'id='.$groupid);
 				$ret = $db->insertObject($group, 'group');
-                $gsuccessful += 1;
-			} else {
-                $gfailed += 1;
-            }
-        }
-
+				if (empty($ret)) {
+					$gfailed += 1;
+				} else {
+					$gsuccessful += 1;
+				}				
+			}
+		}
+		if (!empty($this->params['rep_groups'])) {
+			foreach($this->params['rep_groups'] as $groupid) {
+				$db->delete('group','id='.$groupid);
+				$group = $old_db->selectObject('group', 'id='.$groupid);
+				$ret = $db->insertObject($group, 'group');
+				if (empty($ret)) {
+					$gfailed += 1;
+				} else {
+					$gsuccessful += 1;
+				}				
+			}
+		}
+		
         $successful = 0;
         $failed     = 0;
-        foreach($this->params['users'] as $userid) {
-            $user = $old_db->selectObject('user', 'id='.$userid);
-			if (!$db->selectObject('user',"username='".$user->username."'")) {
-				$user->id = '';
+		if (!empty($this->params['users'])) {
+			foreach($this->params['users'] as $userid) {
+				$user = $old_db->selectObject('user', 'id='.$userid);
 				$ret = $db->insertObject($user, 'user');
-                $successful += 1;
-			} else {
-                $failed += 1;
-            }
-        }
-
+				if (empty($ret)) {
+					$failed += 1;
+				} else {
+					$successful += 1;
+				}				
+			}
+		}
+		if (!empty($this->params['rep_users'])) {
+			foreach($this->params['rep_users'] as $userid) {
+				$db->delete('user','id='.$userid);
+				$user = $old_db->selectObject('user', 'id='.$userid);
+				$ret = $db->insertObject($user, 'user');
+				if (empty($ret)) {
+					$failed += 1;
+				} else {
+					$successful += 1;
+				}				
+			}
+		}
+		if (!empty($this->params['groups']) && !empty($this->params['rep_groups'])) {
+			$groups = array_merge($this->params['groups'],$this->params['rep_groups']);
+		} elseif (!empty($this->params['groups'])) {
+			$groups = $this->params['groups'];
+		}  elseif (!empty($this->params['rep_groups']))  {
+			$groups = $this->params['rep_groups'];
+		}
+		if (!empty($this->params['users']) && !empty($this->params['rep_users'])) {
+			$users = array_merge($this->params['users'],$this->params['rep_users']);
+		} elseif (!empty($this->params['users'])) {
+			$users = $this->params['users'];
+		}  elseif (!empty($this->params['rep_users']))  {
+			$users = $this->params['rep_users'];
+		}
+		if (!empty($groups) && !empty($users)) {
+			foreach($groups as $groupid) {
+				$groupmembers = $old_db->selectObjects('groupmembership', 'group_id='.$groupid);
+				foreach($groupmembers as $userid) {
+					if (in_array($userid->member_id,$users)) {
+						$db->insertObject($userid, 'groupmembership');
+					}
+				}
+			}
+		}
+		
         flash ('message', $successful.' users and '.$gsuccessful.' groups were imported from '.$this->config['database']);
         if ($failed > 0 || $gfailed > 0) {
 			$msg = '';
@@ -732,7 +866,7 @@ class migrationController extends expController {
 				//check to see if it's already pulled in (circumvent !is_original)
 				$ploc = $iloc;
 				$ploc->mod = "filedownload";
-				if ($db->countObjects($ploc->mod, "location_data='".serialize($ploc)."'")) {
+				if ($db->countObjects('filedownloads', "location_data='".serialize($ploc)."'")) {
 					$iloc->mod = 'resourcesmodule';
 					break;
 				}
@@ -749,10 +883,10 @@ class migrationController extends expController {
 						$filedownload->body = $ri['description'];
 						$filedownload->downloads = $ri['num_downloads'];
 						$filedownload->location_data = serialize($loc);
-						$filedownload->save();
-						@$this->msg['migrated'][$iloc->mod]['count']++;
-						@$this->msg['migrated'][$iloc->mod]['name'] = $this->new_modules[$iloc->mod];
 						if (!empty($ri['file_id'])) {
+							$filedownload->save();
+							@$this->msg['migrated'][$iloc->mod]['count']++;
+							@$this->msg['migrated'][$iloc->mod]['name'] = $this->new_modules[$iloc->mod];
 							$oldfile = $old_db->selectArray('file', 'id='.$ri['file_id']);
 							$file = new expFile($oldfile);
 							$filedownload->attachitem($file,'downloadable');
@@ -779,7 +913,7 @@ class migrationController extends expController {
 				//check to see if it's already pulled in (circumvent !is_original)
 				$ploc = $iloc;
 				$ploc->mod = "photos";
-				if ($db->countObjects($ploc->mod, "location_data='".serialize($ploc)."'")) {
+				if ($db->countObjects('photo', "location_data='".serialize($ploc)."'")) {
 					$iloc->mod = 'imagegallerymodule';
 					break;
 				}
@@ -822,7 +956,7 @@ class migrationController extends expController {
 				//check to see if it's already pulled in (circumvent !is_original)
 				$ploc = $iloc;
 				$ploc->mod = "photos";
-				if ($db->countObjects($ploc->mod, "location_data='".serialize($ploc)."'")) {
+				if ($db->countObjects('photo', "location_data='".serialize($ploc)."'")) {
 					$iloc->mod = 'slideshowmodule';
 					break;
 				}
@@ -957,7 +1091,7 @@ class migrationController extends expController {
 				//check to see if it's already pulled in (circumvent !is_original)
 				$ploc = $iloc;
 				$ploc->mod = "faq";
-				if ($db->countObjects($ploc->mod, "location_data='".serialize($ploc)."'")) {
+				if ($db->countObjects('faqs', "location_data='".serialize($ploc)."'")) {
 					$iloc->mod = 'faqmodule';
 					break;
 				}
@@ -1027,7 +1161,7 @@ class migrationController extends expController {
 				//check to see if it's already pulled in (circumvent !is_original)
 				$ploc = $iloc;
 				$ploc->mod = "formmodule";
-				if ($db->countObjects($ploc->mod, "location_data='".serialize($ploc)."'")) {
+				if ($db->countObjects('formbuilder_form', "location_data='".serialize($ploc)."'")) {
 					$iloc->mod = 'contactmodule';
 					break;
 				}
@@ -1070,7 +1204,7 @@ class migrationController extends expController {
 					$report->location_data = $contactform->location_data;
 					$report->form_id = $contactform->id;
 					$db->insertObject($report, 'formbuilder_report');
-
+					// now add the controls to the form
 					$control->name = 'name';
 					$control->caption = 'Your Name';
 					$control->form_id = $contactform->id;
@@ -1117,7 +1251,9 @@ class migrationController extends expController {
 
         switch ($iloc->mod) {
             case 'calendarmodule':
-				@$this->msg['migrated'][$iloc->mod]['name'] = $iloc->mod;
+				if ($db->countObjects('calendar', "location_data='".serialize($iloc)."'")) {
+					break;
+				}
                 $events = $old_db->selectObjects('eventdate', "location_data='".serialize($iloc)."'");
                 foreach($events as $event) {
                     $res = $db->insertObject($event, 'eventdate');
@@ -1149,9 +1285,12 @@ class migrationController extends expController {
                     // unset($config->email_signature);
                     $db->insertObject($config, 'calendarmodule_config');
                 }
+				@$this->msg['migrated'][$iloc->mod]['name'] = $iloc->mod;
 				break;
             case 'simplepollmodule':
-				@$this->msg['migrated'][$iloc->mod]['name'] = $iloc->mod;
+				if ($db->countObjects('poll_question', "location_data='".serialize($iloc)."'")) {
+					break;
+				}
                 $questions = $old_db->selectObjects('poll_question', "location_data='".serialize($iloc)."'");
                 foreach($questions as $question) {
                     $db->insertObject($question, 'poll_question');
@@ -1169,9 +1308,12 @@ class migrationController extends expController {
                 foreach ($configs as $config) {
                     $db->insertObject($config, 'simplepollmodule_config');
                 }
+				@$this->msg['migrated'][$iloc->mod]['name'] = $iloc->mod;
 				break;
             case 'formmodule':
-				@$this->msg['migrated'][$iloc->mod]['name'] = $iloc->mod;
+				if ($db->countObjects('formbuilder_form', "location_data='".serialize($iloc)."'")) {
+					break;
+				}
                 $form = $old_db->selectObject('formbuilder_form', "location_data='".serialize($iloc)."'");
 				$oldformid = $form->id;
 				unset($form->id);
@@ -1205,6 +1347,7 @@ class migrationController extends expController {
 						$db->insertObject($record, 'formbuilder_'.$form->table_name);
 					}
 				}
+				@$this->msg['migrated'][$iloc->mod]['name'] = $iloc->mod;
 				break;
         }
     }
