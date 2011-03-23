@@ -47,7 +47,7 @@ function smarty_function_icon($params,&$smarty) {
 		}
 	}
 	
-    if(!empty($smarty->_tpl_vars['config']['noeditagg']) && ($smarty->_tpl_vars['__loc']->src != $params['src'])) return ; 
+    if(!is_object($smarty->_tpl_vars['config']) && !empty($smarty->_tpl_vars['config']['noeditagg']) && ($smarty->_tpl_vars['__loc']->src != $params['src'])) return ; 
 
 	if (!isset($params['int'])) $params['int'] = $loc->int;
 
