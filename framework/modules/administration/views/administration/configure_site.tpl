@@ -92,7 +92,7 @@
                 {if $user->is_admin==1}
                 <div id="tab6">
                     <h2>{gettext str="SMTP Mail Settings"}</h2>
-                    {control type="checkbox" postfalse=1 name="sc[SMTP_USE_PHP_MAIL]" label="Use php's mail() function instead of SMTP?" default=$smarty.const.SMTP_USE_PHP_MAIL value=1}
+                    {control type="checkbox" postfalse=1 name="sc[SMTP_USE_PHP_MAIL]" label="Use php's mail() function instead of SMTP?" checked=$smarty.const.SMTP_USE_PHP_MAIL value=1}
                     {control type="text" name="sc[SMTP_SERVER]" label="SMTP Server" value=$smarty.const.SMTP_SERVER}
                     {control type="text" name="sc[SMTP_PORT]" label="SMTP Port" value=$smarty.const.SMTP_PORT}
                     {control type="dropdown" name="sc[SMTP_AUTHTYPE]" label="Authentication Method" items="NONE,LOGIN,PLAIN" default=$smarty.const.SMTP_AUTHTYPE includeblank="No Authentication"}
@@ -102,7 +102,7 @@
                 </div>
                 <div id="tab7">
                     <h2>{gettext str="Site Maintenance Mode Settings"}</h2>
-                    {control type="checkbox" postfalse=1 name="sc[MAINTENANCE_MODE]" label="Maintenance Mode" default=$smarty.const.MAINTENANCE_MODE value=1}
+                    {control type="checkbox" postfalse=1 name="sc[MAINTENANCE_MODE]" label="Maintenance Mode" checked=$smarty.const.MAINTENANCE_MODE value=1}
                     {control type="html" name="sc[MAINTENANCE_MSG_HTML]" label="Maintenance Mode Message" value=$smarty.const.MAINTENANCE_MSG_HTML}
                 </div>
                 <div id="tab8">
