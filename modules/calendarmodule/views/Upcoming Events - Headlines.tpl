@@ -53,9 +53,9 @@
 						{/if}
 						{if $permissions.delete == 1 || $item->permissions.delete == 1}
 							{if $item->is_recurring == 0}
-								{icon action=delete id=$item->id title="Delete this Event" onclick="return confirm('Are you sure you want to delete this event?');"}
+								{icon action=delete id=$item->id date_id=$item->eventdate->id title="Delete this Event" onclick="return confirm('Are you sure you want to delete this event?');"}
 							{else}
-								{icon action=delete_form class=delete id=$item->id title="Edit this Event"}
+								{icon action=delete_form class=delete id=$item->id date_id=$item->eventdate->id title="Delete this Event"}
 							{/if}
 						{/if}
 					</div>
