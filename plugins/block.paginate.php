@@ -288,7 +288,7 @@ function smarty_block_paginate($params,$content,&$smarty) {
 			row = document.createElement("tr");
 
 			for (var data in this.columns) {
-				cell = document.createElement("td");
+				cell = document.createElement("th");
 				if (document.all) {
 					// IE is different
 					cell.setAttribute("className","header " + this.modulePrefix + "_header");
@@ -317,9 +317,9 @@ function smarty_block_paginate($params,$content,&$smarty) {
 						row = document.createElement("tr");
 						if (document.all) {
 							// IE is different
-							row.setAttribute("className","row " + ((rowCycle == 0)?"odd":"even") + "_row");
+							row.setAttribute("className","row " + ((rowCycle == 0)?"odd":"even"));
 						} else {
-							row.setAttribute("class","row " + ((rowCycle == 0)?"odd":"even") + "_row");
+							row.setAttribute("class","row " + ((rowCycle == 0)?"odd":"even"));
 						}
 						rowCycle = !rowCycle;
 						for (var data in this.columns) {
