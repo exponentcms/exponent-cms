@@ -60,10 +60,11 @@ class search extends expRecord {
         
         //FIXME: The page count is off when have to not show 
         // search results due to permissions...not sure what to do about that.
+        $recs = $records;
         for ($i=0; $i < count($records); $i++) {
             if($records[$i]->ref_type == 'product'){ 
                 $score = $records[$i]->score;               
-                if (!product::canView($records[$i]->original_id))  unset($records[$i]); 
+                if (!product::canView($records[$i]->original_id))  unset($recs[$i]); 
                 /*else 
                 {
                     $records[$i] = new product($records[$i]->original_id);
@@ -72,7 +73,7 @@ class search extends expRecord {
            }else if ($records[$i]->ref_type == 'section') {	
 		        $section = $db->selectObject('section', 'id='.$records[$i]->original_id);
                 if (empty($section) || !navigationmodule::canView($section)) {
-                    unset($records[$i]);
+                    unset($recs[$i]);
                     //$records[$i]->canview = false;
                 }
 	       } else {
@@ -82,7 +83,7 @@ class search extends expRecord {
                     if (!empty($sectionref)) {
                         $section = $db->selectObject("section","id=".$sectionref->section);
                         if (empty($section) || !navigationmodule::canView($section)) {
-                            unset($records[$i]);
+                            unset($recs[$i]);
                             //$records[$i]->canview = false;
                         }
                     }
@@ -90,7 +91,7 @@ class search extends expRecord {
 	        }
 	    }
 	    
-	    return $records;
+	    return $recs;
 	}
 }
 
