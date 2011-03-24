@@ -52,7 +52,7 @@ if ($f) {
 		}
 
 		if ($ctl != null) {
-			$name = preg_replace('/[^A-Za-z0-9]/','_',$ctl->identifier);
+			$name = substr(preg_replace('/[^A-Za-z0-9]/','_',$ctl->identifier),0,20);
 			if (!isset($_POST['id']) && $db->countObjects('formbuilder_control',"name='".$name."' and form_id=".intval($_POST['form_id'])) > 0) {
 				$post = $_POST;
 				$post['_formError'] = $i18n['bad_id'];
