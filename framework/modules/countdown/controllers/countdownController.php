@@ -20,6 +20,7 @@
 class countdownController extends expController {
 	//protected $basemodel_name = '';
 	public $useractions = array('show'=>'Show Clock');
+    public $codequality = 'stable';
 
     public $remove_configs = array('ealerts','tags','files','rss','comments','aggregation');
 

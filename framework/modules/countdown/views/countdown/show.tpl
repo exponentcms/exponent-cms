@@ -17,6 +17,11 @@
 
 
 <div class="module countdown show">
+
+    {if $moduletitle}<h1>{$moduletitle}</h1>{/if}
+    {if !$config}
+        <strong>{"Configure this module"|gettext}</strong>
+    {else}    
     {if $config.title}<h3>{$config.title}</h3>{/if}
 
     <script language="JavaScript">
@@ -34,6 +39,7 @@
     <div class="bodycopy">
         {$config.body}
     </div>
+    {/if}
 
 </div>
 

@@ -16,7 +16,7 @@
 
 <h2>Configure this Module</h2>
 
-{control type="title" name="title" label="Title" value=$config.title}
+{control type="text" name="title" label="Title" value=$config.title}
 {control type="text" name="count" label="Countdown Date" value=$config.count}
 <em>NOTE: date must follow this format: 12/31/2020 5:00 AM</em>
 {control type="text" name="message" label="Countdown Finish Message" value=$config.message}
