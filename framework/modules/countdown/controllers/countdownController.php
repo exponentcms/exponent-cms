@@ -25,7 +25,7 @@ class countdownController extends expController {
 
 	function name() { return $this->displayname(); } //for backwards compat with old modules
 	function displayname() { return "Countdown"; }
-	function description() { return "Use this to put snippets of code, i.e. Javascript, embedded video, etc, on your site."; }
+	function description() { return "This module allows you to display a timer counting down to a specified date/time."; }
 	function author() { return "Ported to Exponent by Phillip Ball. JS written by http://www.hashemian.com/tools/javascript-countdown.htm"; }
 	function hasSources() { return true; }
 	function hasViews() { return true; }

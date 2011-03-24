@@ -31,7 +31,7 @@ class rssController extends expController {
 
     function name() { return $this->displayname(); } //for backwards compat with old modules
     function displayname() { return "RSS Syndication"; }
-    function description() { return "This module will allow you to display a list of you syndicated RSS feeds on a web page"; }
+    function description() { return "This module will allow you to display a list of your syndicated RSS feeds on a web page"; }
     function author() { return "Adam Kessler - OIC Group, Inc"; }
     function hasSources() { return true; }
     function hasViews() { return true; }
