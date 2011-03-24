@@ -131,7 +131,7 @@ class radiogroupcontrol extends formcontrol {
 		$form->register("caption",$i18n['caption'], new textcontrol($object->caption));
 		$form->register("items",$i18n['items'], new listbuildercontrol($object->items,null));
 		$form->register("default",$i18n['default'], new textcontrol($object->default));
-		$form->register("flip",$i18n['flip'], new checkboxcontrol($object->flip,false));
+		$form->register("flip","Caption on Left", new checkboxcontrol($object->flip,false));
 		$form->register("cols",$i18n['cols'], new textcontrol($object->cols,4,false,2,"integer"));
 		$form->register(null,"", new htmlcontrol($i18n['spacing_msg']));
 		$form->register("spacing",$i18n['spacing'], new textcontrol($object->spacing,5,false,4,"integer"));

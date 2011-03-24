@@ -13,16 +13,31 @@
  * GPL: http://www.gnu.org/licenses/gpl.txt
  *
  *}
-
- <h2>{$title}</h2><br />
- <table border="1" cellspacing="0" cellpadding="4">
- {foreach from=$fields key=fieldname item=value}
-	<tr>
-		<td>{$captions[$fieldname]}</td>
-		<td>{$value}</td>
-	</tr>
- {/foreach}
+ 
+{if $is_email == 1}
+<style type="text/css" media="screen">
+    {$css}
+</style> 
+{/if}
+ 
+ <table border="0" cellspacing="0" cellpadding="0" class="exp-skin-table">
+    <thead>
+        <tr>
+            <th colspan="2">
+                <h2>{$title}</h2>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        {foreach from=$fields key=fieldname item=value}
+        <tr>
+            <td>{$captions[$fieldname]}</td>
+            <td>{$value}</td>
+        </tr>
+        {/foreach}
+    </tbody>
  </table>
+
  {if $is_email == 0}
   {br}
 	<a href="{$backlink}">{$_TR.back}</a>

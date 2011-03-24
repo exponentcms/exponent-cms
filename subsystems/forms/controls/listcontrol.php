@@ -26,7 +26,7 @@ class listcontrol extends formcontrol {
     var $span;
     
     function name() { return "List Control"; }
-    function isSimpleControl() { return true; }
+    function isSimpleControl() { return false; }
     
     function __construct() {
     }

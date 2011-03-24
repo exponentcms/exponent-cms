@@ -117,6 +117,7 @@ if (!isset($_POST['data_id']) || (isset($_POST['data_id']) && exponent_permissio
             $template = new template("formbuilder","_custom_report");
             $template->assign("template",$rpt->text);
         }
+        $template->assign("css",file_get_contents(BASE."framework/core/assets/css/tables.css"));        
         $template->assign("fields",$emailFields);        
         $template->assign("captions",$captions);
 		$template->assign('title',$rpt->name);

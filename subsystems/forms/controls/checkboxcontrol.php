@@ -200,10 +200,8 @@ class checkboxcontrol extends formcontrol {
         $form->register("identifier",$i18n['identifier'],new textcontrol($object->identifier));
         $form->register("caption",$i18n['caption'], new textcontrol($object->caption));
         $form->register("default",$i18n['default'], new checkboxcontrol($object->default,false));
-        $form->register("flip",$i18n['caption_right'], new checkboxcontrol($object->flip,false));
-        $form->register(null, null, new htmlcontrol('<br />'));
-        $form->register("required", $i18n['required'], new checkboxcontrol($object->required,true));
-        $form->register(null, null, new htmlcontrol('<br />')); 
+        $form->register("flip","Caption on Left", new checkboxcontrol($object->flip,false));
+        $form->register("required", $i18n['required'], new checkboxcontrol($object->required,false));
         $form->register("submit","",new buttongroupcontrol($i18n['save'],'',$i18n['cancel']));
         
         return $form;

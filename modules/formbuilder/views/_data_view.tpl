@@ -13,6 +13,11 @@
  * GPL: http://www.gnu.org/licenses/gpl.txt
  *
  *}
+ 
+{css unique="form-records" corecss="tables"}
+
+{/css}
+
 {paginate objects=$items paginateName="dataView" modulePrefix="data" rowsPerPage=20}
 
 function links(object) {literal}{{/literal}
@@ -28,19 +33,27 @@ function links(object) {literal}{{/literal}
 {$columdef}
 
 {/paginate}
-<table cellspacing="0" cellpadding="2" style="border:none;" width="100%">
-<tr><h2>{$title}</h2></tr>
+<h2>{$title}</h2>
+<table cellspacing="0" cellpadding="0" class="exp-skin-table">
 	<tbody id="dataTable">
 	</tbody>
 </table>
-<br />
+
 <table width="100%">
-<tr><td align="left" valign="bottom">
-<script language="JavaScript">document.write(paginate.drawPageStats(""));</script>
-</td><td align="right" valign="bottom">
-<script language="Javascript">document.write(paginate.drawPageTextPicker(3));</script>
-</td></tr>
+    <tr>
+        <td align="left" valign="bottom">
+            <script language="JavaScript">
+            document.write(paginate.drawPageStats(""));
+            </script>
+        </td>
+        <td align="right" valign="bottom">
+            <script language="Javascript">
+                document.write(paginate.drawPageTextPicker(3));
+            </script>
+        </td>
+    </tr>
 </table>
+
 <script language="JavaScript">
 	paginate.drawTable();
 </script>

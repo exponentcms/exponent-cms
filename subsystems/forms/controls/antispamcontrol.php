@@ -45,7 +45,7 @@ require_once(BASE."subsystems/forms/controls/formcontrol.php");
 class antispamcontrol extends formcontrol {
 
 	function name() { return "Anti-Spam Control"; }
-	function isSimpleControl() { return true; }
+	function isSimpleControl() { return false; }
 
 	function controlToHTML($name) {
 		$html = '<div class="antispam">This question is being presented to you to try to differentiate between a human submission and

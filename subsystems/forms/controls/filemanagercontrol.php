@@ -47,7 +47,7 @@ class filemanagercontrol extends formcontrol {
     var $span;
     
     function name() { return "Manage Files"; }
-    function isSimpleControl() { return true; }
+    function isSimpleControl() { return false; }
     
     function __construct($subtype=null, $html = "",$span = true) {
         $this->span = $span;

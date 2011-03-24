@@ -47,7 +47,7 @@ class popupdatetimecontrol extends formcontrol {
 	var $showtime = true;
 
 	function name() { return "Popup Date/Time Selector"; }
-	function isSimpleControl() { return true; }
+	function isSimpleControl() { return false; }
 	function getFieldDefinition() {
 		return array(
 			DB_FIELD_TYPE=>DB_DEF_TIMESTAMP);

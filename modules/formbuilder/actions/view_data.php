@@ -26,7 +26,6 @@ if (!defined('SYS_USERS')) include_once(BASE.'subsystems/users.php');
 exponent_forms_initialize();
 
 $template = new template('formbuilder','_data_view');
-exponent_flow_set(SYS_FLOW_PUBLIC,SYS_FLOW_ACTION);
 
 if (isset($_GET['id'])) {
 	$_GET['id'] = intval($_GET['id']);
@@ -84,9 +83,9 @@ if (isset($_GET['id'])) {
 					foreach ($items as $key=>$item) {
 						//We have to add special sorting for date time columns!!!
 						if (isset($datadef[DB_FIELD_TYPE]) && $datadef[DB_FIELD_TYPE] == DB_DEF_TIMESTAMP) {
-							$item->$srt = $item->$column_name;
+							$item->$srt = @$item->$column_name;
 						}
-						$item->$column_name = call_user_func(array($control_type,'templateFormat'),$item->$column_name,$ctl);
+						$item->$column_name = @call_user_func(array($control_type,'templateFormat'),$item->$column_name,$ctl);
 						$items[$key] = $item;
 					}
 					if (isset($datadef[DB_FIELD_TYPE]) && $datadef[DB_FIELD_TYPE] == DB_DEF_TIMESTAMP) {

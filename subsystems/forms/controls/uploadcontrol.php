@@ -44,7 +44,7 @@ require_once(BASE."subsystems/forms/controls/formcontrol.php");
  */
 class uploadcontrol extends formcontrol {
 	function name() { return "File Upload Field"; }
-	function isSimpleControl() { return true; }
+	function isSimpleControl() { return false; }
 	function getFieldDefinition() {
                 return array(
 			DB_FIELD_TYPE=>DB_DEF_STRING,
