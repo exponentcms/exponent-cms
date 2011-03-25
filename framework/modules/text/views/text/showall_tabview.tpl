@@ -28,14 +28,14 @@
                 <div id="tab{$smarty.foreach.items.iteration}">
                     {permissions}
                         {if $permissions.edit == 1}
-                            {icon action=edit class="edit" id=$text->id title="Edit this `$modelname`"}
+                            {icon action=edit class="edit" record=$text title="Edit this `$modelname`"}
                         {/if}
                         {if $permissions.delete == 1}
-                            {icon action=delete id=$text->id title="Delete this Text Item" onclick="return confirm('Are you sure you want to delete this `$modelname`?');"}
+                            {icon action=delete record=$text title="Delete this Text Item" onclick="return confirm('Are you sure you want to delete this `$modelname`?');"}
                         {/if}
                     {/permissions}
                     <div class="bodycopy">
-                        {chain controller="snippet" action="showall" source="snippet`$text->id`" scope="sectional"}
+                        {filedisplayer view="`$config.filedisplay`" files=$text->expFile id=$text->id}
                         {$text->body}
                         {permissions}
                             {if $permissions.create == 1}

@@ -6,35 +6,7 @@ Release Notes for Exponent Content Management System
 
 For a complete list of the changes made from release to release, see the CHANGELOG
 
-0.97.0 - 2008
+2.0.0 Beta 1 - 2011
 ========================
-- This release includes tighter YUI integration, CSS minification, standardized AJAX interfaces, new theming conventions and more.  Please note, as of this release, the minimum required PHP is version 5.2.1.
+- This release includes many bug fixes, feature enhancements, and infrastructure support over pr2.
 
-0.96.6 - October 03 2007
-========================
-- This release includes many improvements, bug fixes, and speed enhancements.  Multiple editors are now available, Ajax has been integrated via the YUI libraries, new modules, RSS, tags, and much more.
-
-0.96.5 - August 09 2006
-========================
-- This release includes a full system-level i18n (language internationalization) implementation, as well as various improvements, bug fixes, and speed enhancements.  We are also deprecating the PATHOS file and function prefix in favor of the EXPONENT prefix.  A compatibility layer will remain in place till the 0.97.0 release.
-
-0.96.3     - May 07 2005
-========================
- - This release is essentially a large bugfix / patch release.  It also introduces a new installer with an upgrade option.
-
-0.95.0     - Dec 20 2004
-========================
- - Stable version of 0.95 Exponent CMS.
-
-0.95.0-rc3 - Dec 07 2004
-========================
- - This release candidate address some more configuration-dependent redirection bugs, and introduces an overrides mechanism (the overrides.php file) for manually setting BASE and PATH_RELATIVE constants.
-
-
-0.95.0-rc2 - Nov 24 2004
-========================
- - This release candidate addresses bugs related to different system configuration, and should support versions of PHP back to 4.1.0.  It should also play nicely with either Linux or Windows.  It is still untested with IIS, but Apache support seems to be solid.  (Note, if you are running this version on IIS, let me know what works and what doesn't, and I'll try to work on whatever problems you may encounter)
-
-========================
-0.95.0-rc1 - Nov 17 2004
- - Initial release of Exponent CMS.

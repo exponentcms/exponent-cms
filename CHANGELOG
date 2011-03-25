@@ -7,28 +7,46 @@ Added / Fixed / changed for 2.0.0 beta 1
 # Security
     • YUI SWF Replacement
     • Podcast file vulnerability
+    • Recycle Bin propperly permissioned
 
 # Performance
     • Turned off user tracking for performance reasons and lack of full implimentation.
     • Removal of YUI PHP loader to calculate YUI JS dependencies, as YUI now has conditional loading
-      based on the browser that YUI PHP Loader cannot accomplish
+      based on the browser that YUI PHP Loader cannot accomplish.
+    • Minification system enhanced
 
 # System
     • Installer no longer allows the option for anything other than MySQLi as a database option.
-    • Migration scripts added for pages, files, and a handfule of modules.
-    • Added support for placing datatypes inside a module's directory.
+    • Migration scripts drastically enhanced.
+    • Added support for placing datatypes (and definitions partially) inside a module's directory.
     • Ability to change your password, and other users as an admin, fixed.
     • Added ability for users in a group to be directed to a specified page on login.
     • Added message to edit form when attempting to change the view, but the module has since been deactivated.
+    • File Displayer plugin cleaned up and standardized
 
-# Modules
+# Notable Module improvements and additions
+    • Text
+        + Makes use of Files config for enabling and configuring attachable files
+        + YUI3 Tabs View added
     • Container Module
         + 2 and 3 column views fixed to display correctly.
+        + Container in Tabview Added
     • Navigation Module
         + "Siblings and Current Children" view added.
+    • Flow Player Module
+        + View cleanup
+    • Form Module
+        + CSV Export
+    • Calendar
+        + iCal Export added
+    • Blog
+        + Made sourceless by default so that aggregation isn't needed to display
 
 # Cross Browser Compatibility
     • Many Internet Explorer bug fixes
+
+# Language
+    • Initial start for new Language system implimented 
 
 
 Added / Fixed / changed for 2.0.0 Preview Release 2
