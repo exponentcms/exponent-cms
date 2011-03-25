@@ -87,9 +87,24 @@ class ckeditorcontrol extends formcontrol {
                     filebrowserWindowHeight : '480',
 					filebrowserLinkBrowseUrl : '".PATH_RELATIVE."external/editors/connector/CKeditor_link.php',
                     filebrowserLinkWindowWidth : '320',
-                    filebrowserLinkWindowHeight : '600'
+                    filebrowserLinkWindowHeight : '600',
+					entities_additional : ''
                 });
-                
+				
+				CKEDITOR.on( 'instanceReady', function( ev ) {
+					var blockTags = ['div','h1','h2','h3','h4','h5','h6','p','pre','ol','ul','li'];
+					var rules =  {
+						indent : false,
+						breakBeforeOpen : false,
+						breakAfterOpen : false,
+						breakBeforeClose : false,
+						breakAfterClose : true
+					};
+					for (var i=0; i<blockTags.length; i++) {
+						ev.editor.dataProcessor.writer.setRules( blockTags[i], rules );
+					}
+				});
+   
 	    ";
 	    
 	    expJavascript::pushToFoot(array(

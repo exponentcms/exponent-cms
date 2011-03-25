@@ -96,7 +96,7 @@ function exponent_config_parseFile($file) {
 					
 				if (substr($opts[0],-5,5) == "_HTML") {
 					$opts[1] = eval("return ".$opts[1].";");
-					$opts[1] = preg_replace('/<[bB][rR]\s?\/?>/',"\r\n",$opts[1]);
+/*					$opts[1] = preg_replace('/<[bB][rR]\s?\/?>/',"\r\n",$opts[1]); */
 				}
 				$options[$opts[0]] = str_replace("\\'","'",$opts[1]);
 			}
@@ -179,7 +179,8 @@ function exponent_config_saveValues($values) {
                 $str .= "define(\"$directive\",";
                 if (substr($directive,-5,5) == "_HTML") {
                         $value = htmlentities(stripslashes($value),ENT_QUOTES,LANG_CHARSET); // slashes added by POST
-                        $value = str_replace(array("\r\n","\r","\n"),"<br />",$value);
+//                        $value = str_replace(array("\r\n","\r","\n"),"<br />",$value);
+                        $value = str_replace(array("\r\n","\r","\n"),"",$value);
                         $str .= "exponent_unhtmlentities('$value')";
 
                 } elseif (is_int($value)) {
