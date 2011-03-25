@@ -20,7 +20,7 @@
 class recyclebinController extends expController {
     //public $basemodel_name = '';
     //public $useractions = array('showall'=>'Show all');
-    //public $add_permissions = array('show'=>'View Links');
+    public $add_permissions = array('show'=>'View Recycle Bin');
     //public $remove_permissions = array('edit');
 
     function name() { return $this->displayname(); } //for backwards compat with old modules
