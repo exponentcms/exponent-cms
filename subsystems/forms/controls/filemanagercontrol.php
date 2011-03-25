@@ -96,7 +96,7 @@ class filemanagercontrol extends formcontrol {
                 };
                 
                 var listenForAdder = function(){
-                    var af = Y.get('#addfiles-".$name."');
+                    var af = Y.one('#addfiles-".$name."');
                     af.on('click',openFilePickerWindow);
                 };
                 
@@ -117,7 +117,7 @@ class filemanagercontrol extends formcontrol {
                 },'.delete');
                 
                 var showFileAdder = function() {
-                    var sf = Y.get('#addfiles-".$name."');
+                    var sf = Y.one('#addfiles-".$name."');
                     if (Y.Lang.isNull(sf)) {
                         var afl = Y.Node.create('<a class=\"add\" href=\"#\" id=\"addfiles-".$name."\">Add Files</a>');
                         Y.one('#filemanager".$name." .hd').append(afl);
@@ -128,44 +128,6 @@ class filemanagercontrol extends formcontrol {
                 }
 
                 
-                // calback function from open window
-                EXPONENT.passBackFile".$name." = function(id) {
-                    var ej = new EXPONENT.AjaxEvent();
-                    ej.subscribe(function (o) {
-                        var df = Y.one('#filelist".$name."');
-                        var obj = o.data;
-                        if (obj.mimetype!='image/png' && obj.mimetype!='image/gif' && obj.mimetype!='image/jpeg'){
-                            var filepic = '<img class=\"filepic\" src=\"'+EXPONENT.ICON_RELATIVE+'\"attachableitems/generic_22x22.png\">';
-                        } else {
-                            var filepic = '<img class=\"filepic\" src=\"'+EXPONENT.URL_FULL+'thumb.php?id='+obj.id+'&amp;w=24&amp;h=24&amp;zc=1\">';
-                        }
-                    
-                        var html = '<li>';
-                        html += '<input type=\"hidden\" name=\"".$subTypeName."\" value=\"'+obj.id+'\">';
-                        html += '<a class=\"delete\" rel=\"imgdiv'+obj.id+'\" href=\"javascript:{}\">delete<\/a>';
-                        html += filepic;
-                        html += '<span class=\"filename\">'+obj.filename+'<\/span>';
-                        html += '<\/li>';
-                        
-                        df.append(Y.Node.create(html));
-
-                        
-                        var af = Y.get('#addfiles-".$name."');
-
-                        if (filesAdded==0) {
-                            fl.one('.blank').remove();
-                        }
-
-                        filesAdded++
-
-                        if (!Y.Lang.isNull(af) && limit==filesAdded) {
-                            af.remove();
-                        }
-                        initDragables();
-                    });
-                    ej.fetch({action:'getFile',controller:'fileController',json:1,params:'&id='+id});
-                }
-
                 
                 
                 
@@ -243,6 +205,7 @@ class filemanagercontrol extends formcontrol {
                 var goingUp = false, lastY = 0;
 
                 var initDragables =  function(){
+
                     //Get the list of li's in the lists and make them draggable
                     var lis = Y.Node.all('#filelist".$name." li');
                     if (lis){
@@ -266,10 +229,68 @@ class filemanagercontrol extends formcontrol {
                         });
                     }
 
-                    var tar = new Y.DD.Drop({ node:Y.get('#filelist".$name."')});
+                    //var tar = new Y.DD.Drop({ node:Y.get('#filelist".$name."')});
                 }
                 
                 initDragables();
+
+                // calback function from open window
+                EXPONENT.passBackFile".$name." = function(id) {
+                    var ej = new EXPONENT.AjaxEvent();
+                    ej.subscribe(function (o) {
+                        var df = Y.one('#filelist".$name."');
+                        var obj = o.data;
+                        if (obj.mimetype!='image/png' && obj.mimetype!='image/gif' && obj.mimetype!='image/jpeg'){
+                            var filepic = '<img class=\"filepic\" src=\"'+EXPONENT.ICON_RELATIVE+'\"attachableitems/generic_22x22.png\">';
+                        } else {
+                            var filepic = '<img class=\"filepic\" src=\"'+EXPONENT.URL_FULL+'thumb.php?id='+obj.id+'&amp;w=24&amp;h=24&amp;zc=1\">';
+                        }
+                    
+                        var html = '<li>';
+                        html += '<input type=\"hidden\" name=\"".$subTypeName."\" value=\"'+obj.id+'\">';
+                        html += '<a class=\"delete\" rel=\"imgdiv'+obj.id+'\" href=\"javascript:{}\">delete<\/a>';
+                        html += filepic;
+                        html += '<span class=\"filename\">'+obj.filename+'<\/span>';
+                        html += '<\/li>';
+                        
+                        htmln = Y.Node.create(html);
+                        
+                        var dd = new Y.DD.Drag({
+                            node: htmln,
+                            proxy: true,
+                            moveOnEnd: false,
+                            target: {
+                                padding: '0 0 0 20'
+                            }
+                        }).plug(Y.Plugin.DDConstrained, {
+                            constrain2node: '#filelist".$name."',
+                            stickY:true
+                        }).plug(Y.Plugin.DDProxy, {
+                            moveOnEnd: false,
+                            borderStyle:'0'
+                        });
+                        
+                        
+                        df.append(htmln);
+
+                        
+                        var af = Y.one('#addfiles-".$name."');
+
+                        if (filesAdded==0) {
+                            fl.one('.blank').remove();
+                        }
+
+                        filesAdded++
+
+                        if (!Y.Lang.isNull(af) && limit==filesAdded) {
+                            af.remove();
+                        }
+
+                        initDragables();
+                    });
+                    ej.fetch({action:'getFile',controller:'fileController',json:1,params:'&id='+id});
+                }
+
             });
             "; // END PHP STRING LITERAL
 
