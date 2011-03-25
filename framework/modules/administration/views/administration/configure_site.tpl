@@ -71,7 +71,7 @@
                     {control type="text" name="sc[USER_REGISTRATION_ADMIN_EMAIL]" label="The email address that should be notified when a user signs up" value=$smarty.const.USER_REGISTRATION_ADMIN_EMAIL}
                     {control type="checkbox" postfalse=1 name="sc[USER_REGISTRATION_SEND_WELCOME]" label="Send an welcome email to the user after signing up?" checked=$smarty.const.USER_REGISTRATION_SEND_WELCOME value=1}
                     {control type="text" name="sc[USER_REGISTRATION_WELCOME_SUBJECT]" label="The subject of the Welcome Email to the user" value=$smarty.const.USER_REGISTRATION_WELCOME_SUBJECT}
-                    {control type="editor" name="sc[USER_REGISTRATION_WELCOME_MSG]" label="The content of the email sent to the user upon completing registration" value=$smarty.const.USER_REGISTRATION_WELCOME_MSG}
+                    {control type="textarea" name="sc[USER_REGISTRATION_WELCOME_MSG]" label="The content of the email sent to the user upon completing registration" value=$smarty.const.USER_REGISTRATION_WELCOME_MSG}
                 </div>
                 <div id="tab4">
                     {control type="checkbox" postfalse=1 name="sc[COMMENTS_REQUIRE_LOGIN]" label="Require Login to Post Comments" checked=$smarty.const.COMMENTS_REQUIRE_LOGIN value=1}
