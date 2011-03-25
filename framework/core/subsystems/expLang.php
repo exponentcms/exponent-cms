@@ -45,7 +45,8 @@ class expLang {
 	public function writeTemplate($str) {
 	    global $default_lang, $defualt_lang_file;
 	    //!array_key_exists($str,$default_lang)
-        if (DEVELOPMENT && WRITE_LANG_TEMPLATE && LANGUAGE=="English - US") {
+        if (DEVELOPMENT && (defined("WRITE_LANG_TEMPLATE") && WRITE_LANG_TEMPLATE!=0) && LANGUAGE=="English - US") {
+            eDebug(WRITE_LANG_TEMPLATE,1);
             $fp = fopen($defualt_lang_file, 'w+') or die("I could not open $filename.");
             $default_lang[$str] = $str;
             ksort($default_lang);

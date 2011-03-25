@@ -19,6 +19,8 @@
 
 if (!defined('DISPLAY_LANGUAGE')) define('DISPLAY_LANGUAGE','en');
 if (!defined('SLINGBAR_TOP')) define('SLINGBAR_TOP','1');
+if (!defined('LANGUAGE')) define("LANGUAGE",'English - US');
+if (!defined('WRITE_LANG_TEMPLATE')) define('WRITE_LANG_TEMPLATE','0');
 if (!defined('DISPLAY_THEME_REAL')) define('DISPLAY_THEME_REAL','retrotheme');
 if (!defined('DISPLAY_ATTRIBUTION')) define('DISPLAY_ATTRIBUTION','username');
 if (!defined('DISPLAY_DATETIME_FORMAT')) define('DISPLAY_DATETIME_FORMAT','%D -- %T');
