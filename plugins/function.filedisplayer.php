@@ -20,8 +20,8 @@
 function smarty_function_filedisplayer($params,&$smarty) {
     $config = $smarty->_tpl_vars['config'];
     
-    // make sure we have a view..otherwise return nada.
-    if (empty($params['view'])) return "";
+    // make sure we have a view, and files..otherwise return nada.
+    if (empty($params['view']) || empty($params['files'])) return "";
     
     // get the view, pass params and render & return it.
     $view = isset($params['view']) ? $params['view'] : 'Downloadable Files';
