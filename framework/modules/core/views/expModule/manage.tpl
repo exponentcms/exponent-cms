@@ -140,7 +140,7 @@
 
 {script unique="filetabs" yui2mods="tabview,element" yui3mods="node"}
 {literal}
-YUI({base:EXPONENT.YUI3_PATH,loadOptional: true}).use('*', function(Y) {
+YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
     var tabView = new YAHOO.widget.TabView('mods');
     Y.one('#mod-manager').removeClass('hide');
     Y.one('.loadingdiv').remove();
