@@ -21,6 +21,7 @@
 if (!defined('EXPONENT')) exit('');
 
 $i18n = exponent_lang_loadFile('conf/extensions/site.structure.php');
+$installed_editors = array();
 
 foreach (glob(BASE . "themes/common/editors/*.tpl") as $installed_glue_file) {
    $installed_editor = basename($installed_glue_file, ".tpl");
