@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2007-2008 OIC Group, Inc.
+ * Copyright (c) 2007-2011 OIC Group, Inc.
  * Written and Designed by Adam Kessler
  *
  * This file is part of Exponent
@@ -16,17 +16,20 @@
 
 <div class="module filedownload quick-with-description">
     {if $moduletitle}<h1>{$moduletitle}</h1>{/if}
+    {if $config.enable_rss}
+        <a class="podcastlink" href="{podcastlink}">Subscribe to {$config.feed_title}</a>
+    {/if}
+    {$page->links}
     {permissions}
         <div class="module-actions">
-        {if $permissions.create == 1}
-            {icon class="add" action=edit rank=1 title="Add to the top" text="Add a File"}
-        {/if}
-        {if $permissions.edit == 1}
-            {ddrerank items=$page->records model="filedownload" label="Downloadable Items"|gettext}
-        {/if}
+			{if $permissions.create == 1}
+				{icon class="add" action=edit rank=1 title="Add a File at the Top"|gettext text="Add a File"|gettext}
+			{/if}
+			{if $permissions.edit == 1}
+				{ddrerank items=$page->records model="filedownload" label="Downloadable Items"|gettext}
+			{/if}
         </div>
     {/permissions}    
-    
     
     {foreach from=$page->records item=file name=files}
        <div class="item">
@@ -35,14 +38,14 @@
             {/if}
             <h2><a class="download" href="{link action=downloadfile fileid=$file->id}">{$file->title}</a></h2>
             {permissions}
-            <div class="item-actions">
-                {if $permissions.edit == 1}
-                    {icon action=edit img=edit.png class="editlink" id=$file->id title="Edit this file"}
-                {/if}
-                {if $permissions.delete == 1}
-                    {icon action=delete img=delete.png id=$file->id title="Delete this file" onclick="return confirm('Are you sure you want to delete this file?');"}
-                {/if}
-            </div>
+				<div class="item-actions">
+					{if $permissions.edit == 1}
+						{icon action=edit img=edit.png class="editlink" id=$file->id title="Edit this file"|gettext text="Edit "|gettext}
+					{/if}
+					{if $permissions.delete == 1}
+						{icon action=delete img=delete.png id=$file->id title="Delete this file"|gettext onclick="return confirm('Are you sure you want to delete this file?');" text="Delete"|gettext}
+					{/if}
+				</div>
             {/permissions}
             <div class="bodycopy">
                 <div class="tags">
@@ -56,10 +59,14 @@
                 {$file->body}
             </div>
         </div>
+		{permissions}
+			<div class="module-actions">
+				{if $permissions.create == 1}
+					{icon class=add action=edit title="Add a File Here"|gettext text="Add a File"|gettext}
+				{/if}
+			</div>
+		{/permissions}
+		{clear}
     {/foreach}
-    {permissions}
-        {if $permissions.create == 1}
-            {icon class=add action=edit title="Add a File" text="Add a File for Download"}
-        {/if}
-    {/permissions}
+    {$page->links}
 </div>
