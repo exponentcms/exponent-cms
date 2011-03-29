@@ -63,7 +63,7 @@
 			{permissions}
 				<div class="module-actions">
 					{if $permissions.create == 1}
-						{icon class=add action=edit title="Add a File for Download" text="Add a File"|gettext}
+						{icon class=add action=edit title="Add a File Here" text="Add a File"|gettext}
 					{/if}
 				</div>
 			{/permissions}
