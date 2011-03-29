@@ -45,29 +45,21 @@
 		{/if}
 		{$item->title}
 	</h2>
-	<div class="item-actions">
-		{permissions level=$smarty.const.UILEVEL_PERMISSIONS}
+	{permissions level=$smarty.const.UILEVEL_PERMISSIONS}
+		<div class="item-actions">
 			{br}
-			{if $permissions.edit == 1 || $item->permissions.edit == 1}
-				{if $item->approved == 1}
-					<a href="{link action=edit id=$item->id date_id=$item->eventdate->id}"><img class="mngmnt_icon" src="{$smarty.const.ICON_RELATIVE}edit.png" title="{$_TR.alt_edit}" alt="{$_TR.alt_edit}" />{$_TR.edit}</a>&nbsp;
+			{if $permissions.edit == 1}
+				<a href="{link action=edit id=$item->id date_id=$item->eventdate->id}"><img class="mngmnt_icon" src="{$smarty.const.ICON_RELATIVE}edit.png" title="{$_TR.alt_edit}" alt="{$_TR.alt_edit}" />{$_TR.edit}</a>&nbsp;
+			{/if}
+			{if $permissions.delete == 1}
+				{if $item->is_recurring == 0}
+					<a href="{link action=delete id=$item->id}" onclick="return confirm('{$_TR.delete_confirm}');"><img class="mngmnt_icon" src="{$smarty.const.ICON_RELATIVE}delete.png" title="{$_TR.alt_delete}" alt="{$_TR.alt_delete}" />{$_TR.delete}</a>
 				{else}
-					<img class="mngmnt_icon" src="{$smarty.const.ICON_RELATIVE}edit.disabled.png" title="{$_TR.alt_edit_disabled}" alt="{$_TR.alt_edit_disabled}" />
+					<a href="{link action=delete_form date_id=$item->eventdate->id id=$item->id}"><img class="mngmnt_icon" src="{$smarty.const.ICON_RELATIVE}delete.png" title="{$_TR.alt_delete}" alt="{$_TR.alt_delete}" />{$_TR.delete}</a>
 				{/if}
 			{/if}
-			{if $permissions.delete == 1 || $item->permissions.delete == 1}
-				{if $item->approved == 1}
-					{if $item->is_recurring == 0}
-						<a href="{link action=delete id=$item->id}" onclick="return confirm('{$_TR.delete_confirm}');"><img class="mngmnt_icon" src="{$smarty.const.ICON_RELATIVE}delete.png" title="{$_TR.alt_delete}" alt="{$_TR.alt_delete}" />{$_TR.delete}</a>
-					{else}
-						<a href="{link action=delete_form date_id=$item->eventdate->id id=$item->id}"><img class="mngmnt_icon" src="{$smarty.const.ICON_RELATIVE}delete.png" title="{$_TR.alt_delete}" alt="{$_TR.alt_delete}" />{$_TR.delete}</a>
-					{/if}
-				{else}
-					<img class="mngmnt_icon" src="{$smarty.const.ICON_RELATIVE}delete.disabled.png" title="{$_TR.alt_delete_disabled}" alt="{$_TR.alt_delete_disabled}" />
-				{/if}
-			{/if}
-		{/permissions}
-	</div>
+		</div>
+	{/permissions}
 	{if $item->is_allday == 1}
 		{$item->eventstart|format_date:$smarty.const.DISPLAY_DATE_FORMAT}, {$_TR.all_day}
 	{else}

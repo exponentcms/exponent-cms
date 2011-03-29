@@ -44,9 +44,11 @@
 		{if $moduletitle != ""}{$moduletitle} - {$_TR.past_events}{/if}
 	</h2>
 	{permissions}
-		{if $permissions.post == 1}
-			<a class="addevent mngmntlink" href="{link action=edit id=0}" title="{$_TR.alt_create}" alt="{$_TR.alt_create}">{$_TR.create}</a>
-		{/if}
+		<div class="module-actions">
+			{if $permissions.post == 1}
+				<a class="add" href="{link action=edit id=0}" title={"Create Event"|gettext}>{"Create Event"|gettext}</a>
+			{/if}
+		</div>
 	{/permissions}
 	<table cellspacing="0" cellpadding="4" border="0" width="100%" class="exp-skin-table">
 		<thead>
@@ -61,45 +63,31 @@
 			<tr class="{cycle values="odd,even"}">
 				<td><a class="itemtitle calendar_mngmntlink" href="{link action=view id=$item->id date_id=$item->eventdate->id}" title="{$item->body|summarize:"html":"para"}">{$item->title}</a></td>
 				<td>
-				{if $item->is_allday == 1}
-					{$item->eventstart|format_date:$smarty.const.DISPLAY_DATE_FORMAT}
-				{else}
-					{if $event->eventstart != $event->eventend}
-						{$item->eventstart|format_date:"%b %e %Y"} @ {$item->eventstart|format_date:"%l:%M %p"} - {$event->eventend|format_date:"%l:%M %p"}
+					{if $item->is_allday == 1}
+						{$item->eventstart|format_date:$smarty.const.DISPLAY_DATE_FORMAT}
 					{else}
-						{$item->eventstart|format_date:"%b %e %Y"} @ {$item->eventstart|format_date:"%l:%M %p"}
-					{/if}		
-				{/if}
+						{if $event->eventstart != $event->eventend}
+							{$item->eventstart|format_date:"%b %e %Y"} @ {$item->eventstart|format_date:"%l:%M %p"} - {$event->eventend|format_date:"%l:%M %p"}
+						{else}
+							{$item->eventstart|format_date:"%b %e %Y"} @ {$item->eventstart|format_date:"%l:%M %p"}
+						{/if}		
+					{/if}
 				</td>
 				<td>
-					<div class="item-actions">
-						{permissions level=$smarty.const.UILEVEL_PERMISSIONS}
-							{if $permissions.administrate == 1 || $item->permissions.administrate == 1}
-								<a class="mngmntlink calendar_mngmntlink" href="{link action=userperms int=$item->id _common=1}"><img class="mngmnt_icon" style="border:none;" src="{$smarty.const.ICON_RELATIVE}userperms.png" title="{$_TR.alt_userperm_one}" alt="{$_TR.alt_userperm_one}" /></a>
-								<a class="mngmntlink calendar_mngmntlink" href="{link action=groupperms int=$item->id _common=1}"><img class="mngmnt_icon" style="border:none;" src="{$smarty.const.ICON_RELATIVE}groupperms.png" title="{$_TR.alt_groupperm_one}" alt="{$_TR.alt_groupperm_one}" /></a>
+					{permissions}
+						<div class="item-actions">
+							{if $permissions.edit == 1}
+								<a class="mngmntlink calendar_mngmntlink" href="{link action=edit id=$item->id date_id=$item->eventdate->id}"><img class="mngmnt_icon" style="border:none;" src="{$smarty.const.ICON_RELATIVE}edit.png" title="{$_TR.alt_edit}" alt="{$_TR.alt_edit}" /></a>
 							{/if}
-						{/permissions}
-						{permissions}
-							{if $permissions.edit == 1 || $item->permissions.edit == 1}
-								{if $item->approved == 1}
-									<a class="mngmntlink calendar_mngmntlink" href="{link action=edit id=$item->id date_id=$item->eventdate->id}"><img class="mngmnt_icon" style="border:none;" src="{$smarty.const.ICON_RELATIVE}edit.png" title="{$_TR.alt_edit}" alt="{$_TR.alt_edit}" /></a>
+							{if $permissions.delete == 1}
+								{if $item->is_recurring == 0}
+									<a class="mngmntlink calendar_mngmntlink" href="{link action=delete id=$item->id}" onclick="return confirm('{$_TR.delete_confirm}');"><img class="mngmnt_icon" style="border:none;" src="{$smarty.const.ICON_RELATIVE}delete.png" title="{$_TR.alt_delete}" alt="{$_TR.alt_delete}" /></a>
 								{else}
-									<img class="mngmnt_icon" style="border:none;" src="{$smarty.const.ICON_RELATIVE}edit.disabled.png" title="{$_TR.alt_edit_disabled}" alt="{$_TR.alt_edit_disabled}" />
+									<a class="mngmntlink calendar_mngmntlink" href="{link action=delete_form id=$item->id date_id=$item->eventdate->id}"><img class="mngmnt_icon" style="border:none;" src="{$smarty.const.ICON_RELATIVE}delete.png" title="{$_TR.alt_delete}" alt="{$_TR.alt_delete}" /></a>
 								{/if}
 							{/if}
-							{if $permissions.delete == 1 || $item->permissions.delete == 1}
-								{if $item->approved == 1}
-									{if $item->is_recurring == 0}
-										<a class="mngmntlink calendar_mngmntlink" href="{link action=delete id=$item->id}" onclick="return confirm('{$_TR.delete_confirm}');"><img class="mngmnt_icon" style="border:none;" src="{$smarty.const.ICON_RELATIVE}delete.png" title="{$_TR.alt_delete}" alt="{$_TR.alt_delete}" /></a>
-									{else}
-										<a class="mngmntlink calendar_mngmntlink" href="{link action=delete_form id=$item->id date_id=$item->eventdate->id}"><img class="mngmnt_icon" style="border:none;" src="{$smarty.const.ICON_RELATIVE}delete.png" title="{$_TR.alt_delete}" alt="{$_TR.alt_delete}" /></a>
-									{/if}
-								{else}
-									<img class="mngmnt_icon" style="border:none;" src="{$smarty.const.ICON_RELATIVE}delete.disabled.png" title="{$_TR.alt_delete_disabled}" alt="{$_TR.alt_delete_disabled}" />
-								{/if}
-							{/if}
-						{/permissions}
-					</div>
+						</div>
+					{/permissions}
 				</td>
 			</tr>
 		{foreachelse}
