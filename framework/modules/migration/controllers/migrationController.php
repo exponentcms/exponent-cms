@@ -22,7 +22,7 @@ class migrationController extends expController {
     protected $permissions = array('manage'=>'Manage', 'analyze'=>'Analyze Data', 'migrate'=>'Migrate Data','configure'=>'Configure');
     //public $useractions = array('showall'=>'Show all');
 	public $useractions = array();
-	public $codequality = 'alpha';
+	public $codequality = 'beta';
 
     // this is a list of modules that we can convert to exp2 type modules.
     public $new_modules = array(
@@ -42,7 +42,8 @@ class migrationController extends expController {
         'linkmodule'=>'linksController',
         'weblogmodule'=>'blogController',
         'listingmodule'=>'portfolioController',
-        'contactmodule'=>'formmodule',  // this module is converted to a functionally similar formmodule
+		'contactmodule'=>'formmodule',  // this module is converted to a functionally similar old school formmodule
+        'youtubemodule'=>'youtubeController',
     );
 
     // these are modules that have either been deprecated or have no content to migrate
@@ -79,11 +80,10 @@ class migrationController extends expController {
     );
 
     public $needs_written = array(
-		'addressbookmodule',  // listed above, but no script appears here?
+		'addressbookmodule',  // listed above, but no script written yet?
         'bannermodule',  // to bannerController?
-//        'categories',  // no controller and not in old school ???
         'mediaplayermodule',  // to flowplayerController?
-        'youtubemodule', // to youtubeController?
+//        'categories',  // no controller and not in old school ???
 //        'tags',	 // no controller and not in old school ???
     );
 
@@ -270,6 +270,7 @@ class migrationController extends expController {
             $db->delete('blog');
             $db->delete('faqs');
             $db->delete('portfolio');
+            $db->delete('youtube');
             $db->delete('content_expComments');
             $db->delete('content_expFiles');
             $db->delete('content_expSimpleNote');
@@ -358,6 +359,9 @@ class migrationController extends expController {
 				$db->delete('formbuilder_control');
 				$db->delete('formbuilder_form');
 				$db->delete('formbuilder_report');
+			}
+			if (in_array('youtubemodule',$this->params['replace'])) {
+				$db->delete('youtube');
 			}
 		}
 
@@ -1233,10 +1237,46 @@ class migrationController extends expController {
 					@$this->msg['migrated'][$iloc->mod]['name'] = $this->new_modules[$iloc->mod];
 				}
 				break;
+            case 'youtubemodule':
+
+				//check to see if it's already pulled in (circumvent !is_original)
+				$ploc = $iloc;
+				$ploc->mod = "youtube";
+				if ($db->countObjects('youtube', "location_data='".serialize($ploc)."'")) {
+					$iloc->mod = 'youtubemodule';
+					break;
+				}
+
+				$iloc->mod = 'youtubemodule';
+                $videos = $old_db->selectArrays('youtube', "location_data='".serialize($iloc)."'");
+				if ($videos) {
+					foreach ($videos as $vi) {
+						unset ($vi['id']);
+						$video = new youtube($vi);
+						//$loc = expUnserialize($vi['location_data']);
+						$loc = expUnserialize($vi['location_data']);
+						$loc->mod = "youtube";
+						$video->title = $vi['name'];
+						if (empty($video->title)) { $video->title = 'Untitled'; }
+						$video->location_data = serialize($loc);
+						$yt = explode("watch?v=",$vi['url']);
+						if (empty($yt[1])) {
+							break;
+						} else {
+							$ytid = $yt[1];			
+						}
+						unset ($video->url);
+						$video->embed_code = '<iframe title="YouTube video player" width="'.$vi['width'].'" height="'.$vi['height'].'" src="http://www.youtube.com/embed/'.$ytid.'" frameborder="0" allowfullscreen></iframe>';
+						$video->save();
+						@$this->msg['migrated'][$iloc->mod]['count']++;
+						@$this->msg['migrated'][$iloc->mod]['name'] = $this->new_modules[$iloc->mod];
+					}
+				}
+				break;
             default:
                 @$this->msg['noconverter'][$iloc->mod]++;
 				break;
-        }
+		}
         // quick check for non hard coded modules
         // We add a container if they're not hard coded.
         (!$hc) ? $this->add_container($iloc,$module) : "";
