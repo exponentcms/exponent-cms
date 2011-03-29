@@ -17,32 +17,51 @@
 <script src="{$smarty.const.URL_FULL}external/flowplayer3/example/flowplayer-3.2.6.min.js"></script>
 <div class="module flowplayer showall">
     {if $moduletitle}<h1>{$moduletitle}</h1>{/if}
-    
     <a id="playlist-player" href="{$page->records[0]->expFile.video[0]->url}" style="display:block;width:{$config.video_width}px;height:{$config.video_height}px;">
     </a>
+    {permissions}
+		<div class="module-actions">		
+			{if $permissions.edit == 1}
+				{ddrerank items=$page->records model="flowplayer" label="Videos"|gettext}
+			{/if}
+		</div>	
+    {/permissions}  
     <ul>
-    {foreach name=items from=$page->records item=video}
-        <li><a class="li-link" href="#" onclick="swapvideo('{$video->expFile.video[0]->url}')">{$video->title}</a>
-            {permissions}
-                <div class="actions">
-                {if $permissions.edit == 1}
-                    {icon class="edit" action=edit id=$video->id title="Edit `$video->title`"}
-                {/if}
-                {if $permissions.delete == 1}
-                    {icon class="delete" action=delete id=$video->id title="delete `$video->title`"}
-                {/if}
-                {if $permissions.edit == 1}
-                    {if $smarty.foreach.items.first == 0}
-                        {icon controller=flowplayer action=rerank img=up.png id=$video->id push=up}    
-                    {/if}
-                    {if $smarty.foreach.items.last == 0}
-                        {icon controller=flowplayer action=rerank img=down.png id=$video->id push=down}
-                    {/if}
-                {/if}
-                </div>
-            {/permissions}
-        </li>
-    {/foreach}
+		{permissions}
+			<div class="item".
+				<li>
+					<div class="module-actions">		
+						{if $permissions.edit == 1}
+							{icon class="add li-link" action=edit title="Add a Video at the Top"|gettext text="Add a Video at the Top"|gettext}{br}
+						{/if}
+					</div>	
+				</li>
+			</div>
+		{/permissions}  
+		{foreach name=items from=$page->records item=video}
+			<div class="item".
+				<li><a class="li-link" href="#" onclick="swapvideo('{$video->expFile.video[0]->url}')">{$video->title}</a>
+					{permissions}
+						<div class="item-actions">
+							{if $permissions.edit == 1}
+								{icon class="edit" action=edit id=$video->id title="Edit `$video->title`"}
+							{/if}
+							{if $permissions.delete == 1}
+								{icon class="delete" action=delete id=$video->id title="delete `$video->title`"}
+							{/if}
+						</div>
+					{/permissions}
+				</li>
+			</div>
+			{permissions}
+				<div class="module-actions">		
+					{if $permissions.create == 1}
+						{icon class=add action=edit rank=`$video->rank+1` title="Add a Video Here"|gettext text="Add a Video Here"|gettext}
+					{/if}
+				</div>
+			{/permissions}
+			{clear}
+		{/foreach}
     </ul>
     <!-- this script block will install Flowplayer inside previous anchor tag --> 
     <script language="JavaScript"> 
@@ -64,11 +83,6 @@
             {/literal}
         ); 
     </script>
-    {permissions}
-        {if $permissions.edit == 1}
-            {icon class="add" action=edit title="Add a video" text="Add a new video"}
-      {/if}
-    {/permissions}        
 </div>
 
 {script unique="playlist"}
