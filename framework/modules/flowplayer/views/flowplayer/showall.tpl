@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2007-2008 OIC Group, Inc.
+ * Copyright (c) 2007-2011 OIC Group, Inc.
  * Written and Designed by Adam Kessler
  *
  * This file is part of Exponent
@@ -14,9 +14,9 @@
  *
  *}
 
-{script unique="flowplayer" src="`$smarty.const.PATH_RELATIVE`external/flowplayer3/example/flowplayer-3.0.3.min.js"}
+{script unique="flowplayer" src="`$smarty.const.PATH_RELATIVE`external/flowplayer3/example/flowplayer-3.2.6.min.js"}
 {literal}
-flowplayer("a.flowplayer-video", EXPONENT.PATH_RELATIVE+"external/flowplayer3/flowplayer-3.0.3.swf",
+flowplayer("a.flowplayer-video", EXPONENT.PATH_RELATIVE+"external/flowplayer3/flowplayer-3.2.7.swf",
     {
         plugins:  { 
             controls: { 
@@ -70,4 +70,3 @@ flowplayer("a.flowplayer-video", EXPONENT.PATH_RELATIVE+"external/flowplayer3/fl
         </div>
     {/foreach}
 </div>
-

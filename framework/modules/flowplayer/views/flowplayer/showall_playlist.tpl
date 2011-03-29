@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2007-2008 OIC Group, Inc.
+ * Copyright (c) 2007-2011 OIC Group, Inc.
  * Written and Designed by Adam Kessler
  *
  * This file is part of Exponent
@@ -14,7 +14,7 @@
  *
  *}
 
-<script src="{$smarty.const.URL_FULL}external/flowplayer3/example/flowplayer-3.0.3.min.js"></script>
+<script src="{$smarty.const.URL_FULL}external/flowplayer3/example/flowplayer-3.2.6.min.js"></script>
 <div class="module flowplayer showall">
     {if $moduletitle}<h1>{$moduletitle}</h1>{/if}
     
@@ -46,7 +46,7 @@
     </ul>
     <!-- this script block will install Flowplayer inside previous anchor tag --> 
     <script language="JavaScript"> 
-        flowplayer("playlist-player", "{$smarty.const.PATH_RELATIVE}external/flowplayer3/flowplayer-3.0.3.swf",
+        flowplayer("playlist-player", "{$smarty.const.PATH_RELATIVE}external/flowplayer3/flowplayer-3.2.7.swf",
             {literal}
             {
                 clip:{ 
