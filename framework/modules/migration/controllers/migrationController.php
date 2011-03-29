@@ -36,7 +36,6 @@ class migrationController extends expController {
         'textmodule'=>'textController',
         'resourcesmodule'=>'filedownloadController',
         'rotatormodule'=>'textController',
-// the following "scripts" were added by Dave Leffler
         'faqmodule'=>'faqController',
         'headlinemodule'=>'headlineController',
         'linkmodule'=>'linksController',
@@ -44,6 +43,7 @@ class migrationController extends expController {
         'listingmodule'=>'portfolioController',
 		'contactmodule'=>'formmodule',  // this module is converted to a functionally similar old school formmodule
         'youtubemodule'=>'youtubeController',
+        'mediaplayermodule'=>'flowplayerController',
     );
 
     // these are modules that have either been deprecated or have no content to migrate
@@ -58,7 +58,7 @@ class migrationController extends expController {
         'loginmodule',
         'rssmodule',
         'searchmodule',
-// the following 0.97/98 modules were added to this list by Dave Leffler
+// the following 0.97/98 modules were added to this list
 //   based on lack of info showing they will exist in 2.0
         'articlemodule',
         'bbmodule',
@@ -82,7 +82,6 @@ class migrationController extends expController {
     public $needs_written = array(
 		'addressbookmodule',  // listed above, but no script written yet?
         'bannermodule',  // to bannerController?
-        'mediaplayermodule',  // to flowplayerController?
 //        'categories',  // no controller and not in old school ???
 //        'tags',	 // no controller and not in old school ???
     );
@@ -271,6 +270,7 @@ class migrationController extends expController {
             $db->delete('faqs');
             $db->delete('portfolio');
             $db->delete('youtube');
+            $db->delete('flowplayer');
             $db->delete('content_expComments');
             $db->delete('content_expFiles');
             $db->delete('content_expSimpleNote');
@@ -278,7 +278,7 @@ class migrationController extends expController {
             $db->delete('expComments');
             $db->delete('expSimpleNote');
             $db->delete('expTags');
-//            $db->delete('expConfigs');
+//            $db->delete('expConfigs', 'id>1');  // don't delete migration config
 //            $db->delete('expFiles');
 //            $db->delete('expRSS');
             $db->delete('calendar');
@@ -362,6 +362,9 @@ class migrationController extends expController {
 			}
 			if (in_array('youtubemodule',$this->params['replace'])) {
 				$db->delete('youtube');
+			}
+			if (in_array('mediaplayermodule',$this->params['replace'])) {
+				$db->delete('flowplayer');
 			}
 		}
 
@@ -924,7 +927,7 @@ class migrationController extends expController {
 
 				$iloc->mod = 'imagegallerymodule';
                 $galleries = $old_db->selectArrays('imagegallery_gallery', "location_data='".serialize($iloc)."'");
-					if ($galleries) {
+				if ($galleries) {
 					foreach ($galleries as $gallery) {
 						$gis = $old_db->selectArrays('imagegallery_image', "gallery_id='".$gallery['id']."'");
 						//eDebug($gis,1);
@@ -1270,6 +1273,50 @@ class migrationController extends expController {
 						$video->save();
 						@$this->msg['migrated'][$iloc->mod]['count']++;
 						@$this->msg['migrated'][$iloc->mod]['name'] = $this->new_modules[$iloc->mod];
+					}
+				}
+				break;
+            case 'mediaplayermodule':
+
+				//check to see if it's already pulled in (circumvent !is_original)
+				$ploc = $iloc;
+				$ploc->mod = "flowplayer";
+				if ($db->countObjects('flowplayer', "location_data='".serialize($ploc)."'")) {
+					$iloc->mod = 'mediaplayermodule';
+					break;
+				}
+
+				$iloc->mod = 'mediaplayermodule';
+                $movies = $old_db->selectArrays('mediaitem', "location_data='".serialize($iloc)."'");
+				if ($movies) {
+					foreach ($movies as $mi) {
+						unset ($mi['id']);
+						$movie = new flowplayer($mi);
+						//$loc = expUnserialize($mi['location_data']);
+						$loc = expUnserialize($mi['location_data']);
+						$loc->mod = "flowplayer";
+						$movie->title = $mi['name'];
+						if (empty($movie->title)) { $movie->title = 'Untitled'; }
+						unset ($mi['bgcolor']);
+						unset ($mi['alignment']);
+						unset ($mi['loop_media']);
+						unset ($mi['auto_rewind']);
+						unset ($mi['autoplay']);
+						unset ($mi['hide_controls']);
+						$movie->location_data = serialize($loc);
+						$movie->poster = 1;
+						$movie->rank = 1;
+						if (!empty($mi['media_id'])) {
+							$movie->save();
+							@$this->msg['migrated'][$iloc->mod]['count']++;
+							@$this->msg['migrated'][$iloc->mod]['name'] = $this->new_modules[$iloc->mod];
+							$file = new expFile($mi['media_id']);
+							$movie->attachitem($file,'video');
+							if (!empty($mi['alt_image_id'])) {
+								$file = new expFile($mi['alt_image_id']);
+								$movie->attachitem($file,'splash');
+							}
+						}
 					}
 				}
 				break;
