@@ -35,7 +35,7 @@ flowplayer("a.flowplayer-video", EXPONENT.PATH_RELATIVE+"external/flowplayer3/fl
 	{permissions}
 		<div class="module-actions">
 			{if $permissions.edit == 1}
-				{icon class="add" action=edit title="Add a Video at the Top"|gettext text="Add a Video at the Top"|gettext}
+				{icon class="add" action=edit title="Add a Video at the Top"|gettext text="Add a Video"|gettext}
 			{/if}
 			{if $permissions.edit == 1}
 				{ddrerank items=$page->records model="flowplayer" label="Videos"|gettext}
@@ -55,10 +55,10 @@ flowplayer("a.flowplayer-video", EXPONENT.PATH_RELATIVE+"external/flowplayer3/fl
 			{permissions}
 				<div class="item-actions">
 					{if $permissions.edit == 1}
-						{icon action=edit id=$video->id title="Edit video"|gettext text="Edit Video"|gettext}
+						{icon action=edit id=$video->id title="Edit video"|gettext text="Edit"|gettext}
 					{/if}
 					{if $permissions.delete == 1}
-						{icon action=delete id=$video->id title="Delete video"|gettext onclick="return confirm('Are you sure you want to delete this `$modelname`?');" text="Delete Video"|gettext}
+						{icon action=delete id=$video->id title="Delete video"|gettext onclick="return confirm('Are you sure you want to delete this `$modelname`?');" text="Delete"|gettext}
 					{/if}
 				</div>			
 			{/permissions} 
@@ -68,7 +68,7 @@ flowplayer("a.flowplayer-video", EXPONENT.PATH_RELATIVE+"external/flowplayer3/fl
 			{permissions}
 				<div class="module-actions">		
 					{if $permissions.create == 1}
-						{icon class=add action=edit rank=`$video->rank+1` title="Add a Video Here"|gettext text="Add a Video Here"|gettext}
+						{icon class=add action=edit rank=`$video->rank+1` title="Add a Video Here"|gettext text="Add a Video"|gettext}
 					{/if}
 				</div>
 			{/permissions}

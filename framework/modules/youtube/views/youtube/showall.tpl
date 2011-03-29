@@ -19,7 +19,7 @@
     {permissions}
         <div class="module-actions">
 			{if $permissions.create == 1}
-				{icon class="add" action=edit rank=1 title="Add a YouTube Video at the Top"|gettext text="Add a YouTube Video at the Top"|gettext}
+				{icon class="add" action=edit rank=1 title="Add a YouTube Video at the Top"|gettext text="Add a YouTube Video"|gettext}
 			{/if}
 			{if $permissions.edit == 1}
 				{ddrerank items=$page->records model="portfolio" label="YouTube Videos"|gettext}
@@ -32,10 +32,10 @@
 			{permissions}
 				<div class="item-actions">
 					{if $permissions.edit == 1}
-						{icon action=edit img=edit.png class="editlink" id=$ytv->id title="Edit this `$modelname`"}
+						{icon action=edit img=edit.png class="editlink" id=$ytv->id title="Edit this `$modelname`" text="Edit"|gettext}
 					{/if}
 					{if $permissions.delete == 1}
-						{icon action=delete img=delete.png id=$ytv->id title="Delete this Video"|gettext onclick="return confirm('Are you sure you want to delete this YouTube Video?');"}
+						{icon action=delete img=delete.png id=$ytv->id title="Delete this Video"|gettext onclick="return confirm('Are you sure you want to delete this YouTube Video?');" text="Delete"|gettext}
 					{/if}
 				</div>
 			{/permissions}
@@ -48,7 +48,7 @@
 			{permissions}
 				<div class="module-actions">
 					{if $permissions.create == 1}
-						{icon class=add action=edit rank=`$ytv->rank+1` title="Add a YouTube Video Here"|gettext text="Add a YouTube Video Here"|gettext}
+						{icon class=add action=edit rank=`$ytv->rank+1` title="Add a YouTube Video Here"|gettext text="Add a YouTube Video"|gettext}
 					{/if}
 				</div>
 			{/permissions}

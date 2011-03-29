@@ -32,7 +32,7 @@
 				<li>
 					<div class="module-actions">		
 						{if $permissions.edit == 1}
-							{icon class="add li-link" action=edit title="Add a Video at the Top"|gettext text="Add a Video at the Top"|gettext}{br}
+							{icon class="add li-link" action=edit title="Add a Video at the Top"|gettext text="Add a Video"|gettext}{br}
 						{/if}
 					</div>	
 				</li>
@@ -44,10 +44,10 @@
 					{permissions}
 						<div class="item-actions">
 							{if $permissions.edit == 1}
-								{icon class="edit" action=edit id=$video->id title="Edit `$video->title`"}
+								{icon class="edit" action=edit id=$video->id title="Edit `$video->title`" text="Edit"|gettext}
 							{/if}
 							{if $permissions.delete == 1}
-								{icon class="delete" action=delete id=$video->id title="delete `$video->title`"}
+								{icon class="delete" action=delete id=$video->id title="delete `$video->title`" text="Delete"|gettext}
 							{/if}
 						</div>
 					{/permissions}
@@ -56,7 +56,7 @@
 			{permissions}
 				<div class="module-actions">		
 					{if $permissions.create == 1}
-						{icon class=add action=edit rank=`$video->rank+1` title="Add a Video Here"|gettext text="Add a Video Here"|gettext}
+						{icon class=add action=edit rank=`$video->rank+1` title="Add a Video Here"|gettext text="Add a Video"|gettext}
 					{/if}
 				</div>
 			{/permissions}
