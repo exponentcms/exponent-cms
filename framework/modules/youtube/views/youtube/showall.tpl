@@ -16,37 +16,43 @@
 
 <div class="module youtube showall">
     {if $moduletitle}<h1>{$moduletitle}</h1>{/if}
-
     {permissions}
         <div class="module-actions">
-        {if $permissions.create == 1}
-            {icon class="add" action=edit rank=1 title="Add to the top" text="Add a YouTube Video Here"}
-        {/if}
-        {if $permissions.edit == 1}
-            {ddrerank items=$page->records model="portfolio" label="YouTube Videos"|gettext}
-        {/if}
+			{if $permissions.create == 1}
+				{icon class="add" action=edit rank=1 title="Add a YouTube Video at the Top"|gettext text="Add a YouTube Video at the Top"|gettext}
+			{/if}
+			{if $permissions.edit == 1}
+				{ddrerank items=$page->records model="portfolio" label="YouTube Videos"|gettext}
+			{/if}
         </div>
     {/permissions}    
-
     {foreach from=$items item=ytv name=items}
-        {if $ytv->title}<h2>{$ytv->title}</h2>{/if}
-
-        {permissions}
-            {if $permissions.edit == 1}
-                {icon action=edit img=edit.png class="editlink" id=$ytv->id title="Edit this `$modelname`"}
-            {/if}
-            {if $permissions.delete == 1}
-                {icon action=delete img=delete.png id=$ytv->id title="Delete this Video" onclick="return confirm('Are you sure you want to delete this YouTube Video?');"}
-            {/if}
-        {/permissions}
-
-        <div class="embedcode">
-            {$ytv->embed_code}
-        </div>
-
-        <div class="bodycopy">
-            {$ytv->description}
-        </div>
+		<div class="item">
+			{if $ytv->title}<h2>{$ytv->title}</h2>{/if}
+			{permissions}
+				<div class="item-actions">
+					{if $permissions.edit == 1}
+						{icon action=edit img=edit.png class="editlink" id=$ytv->id title="Edit this `$modelname`"}
+					{/if}
+					{if $permissions.delete == 1}
+						{icon action=delete img=delete.png id=$ytv->id title="Delete this Video"|gettext onclick="return confirm('Are you sure you want to delete this YouTube Video?');"}
+					{/if}
+				</div>
+			{/permissions}
+			<div class="embedcode">
+				{$ytv->embed_code}
+			</div>
+			<div class="bodycopy">
+				{$ytv->description}
+			</div>
+			{permissions}
+				<div class="module-actions">
+					{if $permissions.create == 1}
+						{icon class=add action=edit rank=`$ytv->rank+1` title="Add a YouTube Video Here"|gettext text="Add a YouTube Video Here"|gettext}
+					{/if}
+				</div>
+			{/permissions}
+			{clear}
+		</div>
     {/foreach}
-
 </div>

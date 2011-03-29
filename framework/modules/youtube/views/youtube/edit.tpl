@@ -18,7 +18,7 @@
     {if $record->id != ""}
         <h1>Editing {$record->title}</h1>
     {else}
-        <h1>New Code Snippet</h1>
+		<h1>New YouTube Video</h1>
     {/if}
 
     {form action=update}
