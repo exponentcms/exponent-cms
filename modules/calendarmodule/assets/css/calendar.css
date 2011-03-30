@@ -47,15 +47,6 @@
 	border-top: 1px solid #A2ADBC;
 }
 
-.calendar.default .today, 
-.calendar.default td.today a, 
-.calendar.default td.today a:link, 
-.calendar.default td.today a:visited {
-	color: #F6F4DA;
-	font-weight: bold;
-	background: #DF9496;
-}
-
 .calendar.default td {
 	border-right: 1px solid #A2ADBC;
 	border-bottom: 1px solid #A2ADBC;
@@ -88,6 +79,25 @@
 	background:#d5e0ed;
 }
 
+.calendar.default .today, 
+.calendar.default td.today a, 
+.calendar.default td.today a:link, 
+.calendar.default td.today a:visited {
+	color: #F6F4DA;
+	font-weight: bold;
+	background: #DF9496;
+}
+
+.calendar.default td .number.today {
+	border:1px solid #A2ADBC;
+	border-width:0 0 1px 1px;
+	background: #DF9496;
+	padding:3px;
+	float:right;
+	display:block;
+	width:15px;
+	text-align:right;
+}
 /****************  headlines  ***********************/
 
 .upcoming-events-headlines .link,

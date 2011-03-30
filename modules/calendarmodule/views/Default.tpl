@@ -81,10 +81,9 @@
 			{foreach name=w from=$week key=day item=events}
 				{assign var=number value=$counts[$weeknum][$day]}
 				<td {if $dayts == $today}class="today" {elseif $number == -1}class="notinmonth" {else}class="oneday" {/if}>
-					{if $number != -1}{math equation="x+86400" x=$dayts assign=dayts}{/if}
 					{if $number > -1}
 						{if $number == 0}
-							<span class="number">
+							<span {if $dayts == $today}class="number today"{else}class="number"{/if}>
 								{$day}
 							</span>
 						{else}
@@ -92,7 +91,7 @@
 						{/if}
 					{/if}
 					{foreach name=e from=$events item=event}
-						<div class="calevent">
+						<div {if $dayts == $today}class="calevent today"{else}class="calevent"{/if}>
 							<a class="mngmntlink calendar_mngmntlink" href="{link action=view id=$event->id date_id=$event->eventdate->id}"
 							   title="{if $event->is_allday == 1}All Day{elseif $event->eventstart != $event->eventend}{$event->eventstart|format_date:$smarty.const.DISPLAY_TIME_FORMAT} to {$event->eventend|format_date:$smarty.const.DISPLAY_TIME_FORMAT}{else}{$event->eventstart|format_date:$smarty.const.DISPLAY_TIME_FORMAT}{/if} - {$event->body|summarize:"html":"para"}">{$event->title}</a>
 							{permissions}
@@ -111,6 +110,7 @@
 							{/permissions}
 						</div>						
 					{/foreach}				
+					{if $number != -1}{math equation="x+86400" x=$dayts assign=dayts}{/if}
 				</td>
 			{/foreach}
 			</tr>
