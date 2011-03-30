@@ -170,36 +170,16 @@ class migrationController extends expController {
         expHistory::set('managable', $this->params);
         $old_db = $this->connect();
         $files = $old_db->selectObjects('file');
-        assign_to_template(array('files'=>$files));
+        assign_to_template(array('count'=>count($files)));
     }
 
 	// copy selected file information (not the files themselves) over from old site
     public function migrate_files() {
         global $db;
 
-        echo "<ol>";
+        expHistory::set('managable', $this->params);
         $old_db = $this->connect();
         $db->delete('expFiles');
-        echo "<li class=\"mig-msg\">
-            Emptied expFiles table before file import.
-        </li>";
-
-        // // pull the sectionref data
-        // $secref = $old_db->selectObjects('sectionref');
-        // foreach ($secref as $sr) {
-        //     if (array_key_exists($sr->module, $this->new_modules)) {
-        //         $sr->module = $this->new_modules[$sr->module];
-        //         $db->insertObject($sr, 'sectionref');
-        //     } elseif (in_array($sr->module, $this->deprecated_modules)) {
-        //         // do nothing...we don't want this module
-        //     } else {
-        //         $db->insertObject($sr, 'sectionref');
-        //     }
-        // }
-        //
-        echo "<li class=\"mig-msg\">
-            Importing files
-        </li>";
 
         //import the files
         $oldfiles = $old_db->selectObjects('file');
@@ -209,18 +189,10 @@ class migrationController extends expController {
             $file = $oldfile;
             $file->directory = $file->directory."/";
             $db->insertObject($file,'expFiles');
-        }
-
-        echo "<li class=\"mig-msg\">
-            ".count($oldfiles)." files imported.
-        </li>";
-        echo "<li class=\"mig-msg\">
-            Done! You should now have all files from your previous system listed in your file manager.
-        </li>";
-        echo "<li class=\"mig-msg\">
-            HOWEVER, you must manually copy the 'files' directory over to this installation.
-        </li>";
-        echo "</ol>";
+			$oldfile->exists = file_exists(BASE.$oldfile->directory."/".$oldfile->filename);
+		}
+        assign_to_template(array('files'=>$oldfiles));
+        assign_to_template(array('count'=>count($oldfiles)));
     }
 
 	// gather info about all modules in old site for user selection
