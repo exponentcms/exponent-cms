@@ -191,8 +191,7 @@ class migrationController extends expController {
             $db->insertObject($file,'expFiles');
 			$oldfile->exists = file_exists(BASE.$oldfile->directory."/".$oldfile->filename);
 		}
-        assign_to_template(array('files'=>$oldfiles));
-        assign_to_template(array('count'=>count($oldfiles)));
+        assign_to_template(array('files'=>$oldfiles,'count'=>count($oldfiles)));
     }
 
 	// gather info about all modules in old site for user selection
@@ -451,7 +450,6 @@ class migrationController extends expController {
 				$user->exists = false;
 			}
 		}
-		assign_to_template(array('users'=>$users));
 
         $groups = $old_db->selectObjects('group');
         foreach($groups as $group) {
@@ -461,7 +459,7 @@ class migrationController extends expController {
 				$group->exists = false;
 			}
 		}
-		assign_to_template(array('groups'=>$groups));
+		assign_to_template(array('users'=>$users,'groups'=>$groups));
     }
 
 	// copy selected users/groups over from old site

@@ -21,7 +21,6 @@
         Select the users and groups you would like to pull over from {$config.database}.
 		User and group permissions will NOT be migrated.
     </p>
-    
     {form action="migrate_users"}
         <table class="exp-skin-table">
 			<thead>
@@ -116,4 +115,5 @@
         </table>
         {control type="buttongroup" submit="Migrate Users/Groups" cancel="Cancel"}
     {/form}
+	<a class="admin" href="{link module=migration action=manage_pages}">Next Step -> Migrate Pages</a>
 </div>

@@ -20,7 +20,6 @@
         The following is a list of pages we found in the database {$config.database}.
         Select the pages you would like to pull over from {$config.database}.
     </p>
-    
     {form action="migrate_pages"}
         <table class="exp-skin-table">
         <thead>
@@ -59,4 +58,5 @@
         {control type="checkbox" name="wipe_pages" label="Erase all current pages and then try again?" value=1 checked=false}
         {control type="buttongroup" submit="Migrate Pages" cancel="Cancel"}
     {/form}
+	<a class="admin" href="{link module=migration action=manage_files}">Next Step -> Migrate Files</a>
 </div>

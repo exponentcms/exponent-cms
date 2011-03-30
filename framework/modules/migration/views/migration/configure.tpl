@@ -15,12 +15,12 @@
  *}
 
 <div id="migrationconfig" class="module migration configure">
+	<h1>{"Database Settings to Migrate Your Old Site"|gettext}</h1>
+	<p>
+		This is where you enter the database connection information for your
+		old Exponent v1 site you want to migrate data from.
+	</p>
     {form action=saveconfig}
-		<h2>{"Database Settings to Migrate Your Old Site"|gettext}</h2>
-		<p>
-			This is where you enter the database connection information for your
-			old Exponent v1 site you want to migrate data from.
-		</p>
 		{control type=text name=server label="Server Name" value=$config.server}
 		{control type="text" name="database" label="Database Name" value=$config.database}
 		{control type="text" name="username" label="Username" value=$config.username}
@@ -29,4 +29,5 @@
 		{control type="text" name="prefix" label="Exponent Table Prefix" value=$config.prefix}
         {control type=buttongroup submit="Save Config" cancel="Cancel"}
     {/form}
+	<a class="admin" href="{link module=migration action=manage_users}">Next Step -> Migrate Users & Groups</a>
 </div>

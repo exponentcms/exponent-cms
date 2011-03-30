@@ -20,7 +20,6 @@
 		Note: this only properly copied over the records from the old database into the Exponent v2 database. 
 		Make sure you manually copy the "files" directory over to this installation.
     </p>
-
         <ul>
 			<li class=\"mig-msg\">
 				Emptied the expFiles table before the file import
@@ -59,4 +58,5 @@
 			{/foreach}
 		</tbody>
 	</table>
+	<a class="admin" href="{link module=migration action=manage_content}">Next Step -> Migrate Content</a>
 </div>

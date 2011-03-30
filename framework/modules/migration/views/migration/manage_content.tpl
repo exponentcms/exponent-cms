@@ -19,7 +19,6 @@
     <p> 
         The following is a list of modules we found in the database {$config.database}.
     </p>
-    
     {form action="migrate_content"}
         <table class="exp-skin-table">
 			<thead>
@@ -50,4 +49,5 @@
         {control type="checkbox" name="wipe_content" label="Erase all current content before import?" value=1 checked=false}
         {control type="buttongroup" submit="Migrate Content" cancel="Cancel"}
     {/form}
+	<div class="admin">This is the Final Migration Step</div>
 </div>

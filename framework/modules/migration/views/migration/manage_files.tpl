@@ -24,7 +24,6 @@
             {br}WARNING: This process will wipe out all current file records in the database.
         </span>
     </p>
-    
     {form action="migrate_files"}
         <table>
 			<tbody>
@@ -33,4 +32,5 @@
         </table>
         {control type="buttongroup" submit="Migrate Files" cancel="Cancel"}
     {/form}
+	<a class="admin" href="{link module=migration action=manage_content}">Next Step -> Migrate Content</a>
 </div>

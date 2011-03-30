@@ -19,17 +19,13 @@
 {/css}
 
 <div class="module migration migrate_content">
+    <h1>{"Content Migration Report"|gettext}</h1>
+	{if $msg.clearedcontent}
+	    <p> 
+			{br} After clearing the database of content:
+		</p>
+	{/if}
 	<table border="0" cellspacing="0" cellpadding="0" class="exp-skin-table">
-		<thead>
-			<tr>
-				<th>
-					{"Content Migration Report"|gettext}
-					{if $msg.clearedcontent}
-						{br} After clearing the database of content:
-					{/if}
-				</th>
-			</tr>
-		</thead>
 		<tbody>
 			<tr><td>Migrated {if $msg.locationref}{$msg.locationref} total locations and {/if}{if $msg.container}{$msg.container} total containers{/if} which included:</td></tr>
 			{foreach from=$msg.migrated item=val key=key}
@@ -45,4 +41,5 @@
 			{/foreach}
 		</tbody>
 	</table>
+	<div class="admin">This is the Final Migration Step</div>
 </div>
