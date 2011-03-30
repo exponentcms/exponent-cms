@@ -17,7 +17,6 @@
 <div id="migrationconfig" class="module migration configure">
     {form action=saveconfig}
 		<h2>{"Database Settings to Migrate Your Old Site"|gettext}</h2>
-		}
 		<p>
 			This is where you enter the database connection information for your
 			old Exponent v1 site you want to migrate data from.
