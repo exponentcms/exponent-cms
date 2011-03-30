@@ -20,14 +20,13 @@
     {if $config.enable_rss}
         <a class="podcastlink" href="{podcastlink}">Subscribe to {$config.feed_title}</a>
     {/if}
-
     {$page->links}
     {permissions}
         <div class="module-actions">
 			{if $permissions.create == 1}
 				{icon class="add" action=edit rank=1 title="Add a File at the Top"|gettext text="Add a File"|gettext}
 			{/if}
-			{if $permissions.edit == 1}
+			{if ($permissions.edit == 1 && $order != 'created_at')}
 				{ddrerank items=$page->records model="filedownload" label="Downloadable Items"|gettext}
 			{/if}
         </div>

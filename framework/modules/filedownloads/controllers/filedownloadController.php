@@ -59,7 +59,7 @@ class filedownloadController extends expController {
                     'columns'=>array('ID#'=>'id','Title'=>'title', 'Body'=>'body'),
                     ));
                     
-        assign_to_template(array('page'=>$page, 'items'=>$page->records, 'modelname'=>$modelname));
+		assign_to_template(array('page'=>$page, 'items'=>$page->records, 'modelname'=>$modelname, 'order'=>$order));
     }
     
     public function downloadfile() {
