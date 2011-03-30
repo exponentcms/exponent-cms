@@ -108,25 +108,26 @@ class calendarmodule_config {
 		$form->register('enable_feedback',$i18n['enable_feedback'],new checkboxcontrol($object->enable_feedback,true));				
 
 		$form->register(null,'',new htmlcontrol('<h3>'.$i18n['events_reminder'].'</h3><hr size="1" />'));
-		$selected_users = array();
-		foreach(unserialize($object->reminder_notify) as $i) {
-			$selected_users[$i] = $db->selectValue('user', 'firstname', 'id='.$i) . ' ' . $db->selectValue('user', 'lastname', 'id='.$i) . ' (' . $db->selectValue('user', 'username', 'id='.$i) . ')';
-		}
-		$userlist = array();
-		$list = exponent_users_getAllUsers();
-		foreach ($list as $i) {
-			if(!array_key_exists($i->id, $selected_users)) {
-				$userlist[$i->id] = $i->firstname . ' ' . $i->lastname . ' (' . $i->username . ')';
-			}
-		}		
-		$form->register('reminder_notify',$i18n['reminder_notify'],new listbuildercontrol($selected_users, $userlist));
 		
+		// Get original style user lists
+		// $selected_users = array();
+		// foreach(unserialize($object->reminder_notify) as $i) {
+			// $selected_users[$i] = $db->selectValue('user', 'firstname', 'id='.$i) . ' ' . $db->selectValue('user', 'lastname', 'id='.$i) . ' (' . $db->selectValue('user', 'username', 'id='.$i) . ')';
+		// }
+		// $userlist = array();
+		// $list = exponent_users_getAllUsers();
+		// foreach ($list as $i) {
+			// if(!array_key_exists($i->id, $selected_users)) {
+				// $userlist[$i->id] = $i->firstname . ' ' . $i->lastname . ' (' . $i->username . ')';
+			// }
+		// }		
+		// $form->register('reminder_notify',$i18n['reminder_notify'],new listbuildercontrol($selected_users, $userlist));
 		
 		// Get User list
 		$defaults = array();
 		$userlist = array();
 		$users = exponent_users_getAllUsers();
-		foreach ($db->selectObjects('calendar_reminder_address','event_id='.$object->id.' and user_id != 0') as $address) {
+		foreach ($db->selectObjects('calendar_reminder_address','calendar_id='.$object->id.' and user_id != 0') as $address) {
 			$locuser =  exponent_users_getUserById($address->user_id);
 			$defaults[$locuser->id] = $locuser->firstname . ' ' . $locuser->lastname . ' (' . $locuser->username . ')';
 		} 
@@ -142,7 +143,7 @@ class calendarmodule_config {
 		$grouplist = array();
 		$groups = exponent_users_getAllGroups();
 		if ($groups != null) {
-			foreach ($db->selectObjects('calendar_reminder_address','event_id='.$object->id.' and group_id != 0') as $address) {
+			foreach ($db->selectObjects('calendar_reminder_address','calendar_id='.$object->id.' and group_id != 0') as $address) {
 				$group =  exponent_users_getGroupById($address->group_id);
 				$defaults[$group->id] = $group->name;
 			}
@@ -156,12 +157,10 @@ class calendarmodule_config {
 
 		// Get Freeform list		
 		$defaults = array();
-		foreach ($db->selectObjects('calendar_reminder_address','event_id='.$object->id." and email != ''") as $address) {
+		foreach ($db->selectObjects('calendar_reminder_address','calendar_id='.$object->id." and email != ''") as $address) {
 			$defaults[$address->email] = $address->email;
 		}
 		$form->register('addresses',$i18n['addresses'],new listbuildercontrol($defaults,null));
-
-
 		
 		$form->register('email_title_reminder',$i18n['message_subject_prefix'],new textcontrol($object->email_title_reminder,45));
 		$form->register('email_from_reminder',$i18n['from_display'],new textcontrol($object->email_from_reminder,45));
@@ -193,10 +192,11 @@ class calendarmodule_config {
 	}
 	
 	function update($values,$object) {
+		global $db;
 		// $object->enable_categories = (isset($values['enable_categories']) ? 1 : 0);
 		$object->enable_feedback = (isset($values['enable_feedback']) ? 1 : 0);
 		
-		$object->reminder_notify = serialize(listbuildercontrol::parseData($values,'reminder_notify'));
+//		$object->reminder_notify = serialize(listbuildercontrol::parseData($values,'reminder_notify'));
 		$object->email_title_reminder = $values['email_title_reminder'];
 		$object->email_from_reminder = $values['email_from_reminder'];
 		$object->email_address_reminder = $values['email_address_reminder'];
@@ -219,28 +219,31 @@ class calendarmodule_config {
 		// $object->show_tags = serialize(listbuildercontrol::parseData($values,'show_tags'));
 
 		//Deal with addresses by first deleting All addresses as we will be rebuilding it.
-		// $db->delete('calendar_reminder_address','form_id='.$object->id);
-		// $data->group_id = 0;
-		// $data->user_id = 0;
-		// $data->email='';
-		// $data->form_id = $object->id;
-		// if(isset($values['groups'])){
-			// foreach (listbuildercontrol::parseData($values,'groups') as $group_id) {
-				// $data->group_id = $group_id;
-				// $db->insertObject($data,'calendar_reminder_address');
-			// }
-		// }
-		// $data->group_id = 0;
-		// foreach (listbuildercontrol::parseData($values,'users') as $user_id) {
-			// $data->user_id = $user_id;
-			// $db->insertObject($data,'calendar_reminder_address');
-		// }
-		// $data->user_id = 0;
-		// foreach (listbuildercontrol::parseData($values,'addresses') as $email) {
-			// $data->email = $email;
-			// $db->insertObject($data,'calendar_reminder_address');
-		// }
-
+		$db->delete('calendar_reminder_address','calendar_id='.$object->id);
+		$data->group_id = 0;
+		$data->user_id = 0;
+		$data->email='';
+		$data->calendar_id = $object->id;
+		if(isset($values['groups'])){
+			foreach (listbuildercontrol::parseData($values,'groups') as $group_id) {
+				$data->group_id = $group_id;
+				$db->insertObject($data,'calendar_reminder_address');
+			}
+			$data->group_id = 0;
+		}
+		if(isset($values['users'])){
+			foreach (listbuildercontrol::parseData($values,'users') as $user_id) {
+				$data->user_id = $user_id;
+				$db->insertObject($data,'calendar_reminder_address');
+			}
+			$data->user_id = 0;
+		}
+		if(isset($values['addresses'])){
+			foreach (listbuildercontrol::parseData($values,'addresses') as $email) {
+				$data->email = $email;
+				$db->insertObject($data,'calendar_reminder_address');
+			}
+		}
 		return $object;
 	}
 }
