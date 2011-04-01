@@ -2,6 +2,13 @@ Exponent Content Management System
 Copyright (c) 2004-2011 OIC Group, Inc.
 ===============================================
 
+Added / Fixed / changed for 2.0.0 beta 1.1
+-----------------------
+# Notable Module improvements and additions
+    • Fixed metas in <head> to output correct version
+    • Fixed help links for when the help system is enabled
+    • Youtube and Media Player Modules migration scripts added
+
 Added / Fixed / changed for 2.0.0 beta 1
 -----------------------
 # Security

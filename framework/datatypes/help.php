@@ -45,9 +45,9 @@ class help extends expRecord {
         $full_version = EXPONENT_VERSION_MAJOR.'.'.EXPONENT_VERSION_MINOR.'.'.EXPONENT_VERSION_REVISION.EXPONENT_VERSION_TYPE;
 
         $link  = HELP_URL;
-        $link .= '/help/show/version';
+        $link .= 'docs';
         $link .= '/'.$full_version;
-        $link .= '/title/'.$module;
+        $link .= '/'.$module;
         
         return $link;
     }

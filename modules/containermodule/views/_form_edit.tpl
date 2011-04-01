@@ -25,7 +25,7 @@
             {if $user->is_admin}
                 <a class="managemodules" href="{link module=expModule action=manage}">{"Manage Active Modules"|gettext}</a>
             {/if}
-            {help text="Get Help with Adding Content" module="addcontent"}
+            {help text="Get Help with Adding Content" module="how-to-add-modules-to-a-page"}
         </div>
         <h1>{if $is_edit}Edit Module{else}Add New Content{/if}</h1>
     </div>

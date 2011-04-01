@@ -52,7 +52,7 @@ if (!defined('EXPONENT_VERSION_MAJOR')) {
 	 * This specifies the type of release, either 'alpha','beta','rc' or '' (for stable).
 	 */
 	//define('EXPONENT_VERSION_TYPE','%%TYPE%%');
-	define('EXPONENT_VERSION_TYPE','pr2');
+	define('EXPONENT_VERSION_TYPE','beta1.1');
 	/* exdoc
 	 * This number is bumped each time a distribution of a single version is
 	 * released.  For instance, the 3rd beta has an version type iteration of 3.
