@@ -52,6 +52,6 @@ if (!defined('ENABLE_WORKFLOW')) define('ENABLE_WORKFLOW',0);
 if (!defined('WORKFLOW_REVISION_LIMIT')) define('WORKFLOW_REVIOSION_LIMIT',0);
 if (!defined('ORGANIZATION_NAME')) define('ORGANIZATION_NAME',URL_BASE);
 if (!defined('HELP_ACTIVE')) define('HELP_ACTIVE',0);
-if (!defined('HELP_URL')) define('HELP_URL','http://docs.exponentcms.org/');
+if (!defined('HELP_URL')) define('HELP_URL','http://docs.exponentcms.org');
 
 ?>
