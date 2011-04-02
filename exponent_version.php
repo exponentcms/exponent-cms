@@ -1,7 +1,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2006 OIC Group, Inc.
+# Copyright (c) 2004-2011 OIC Group, Inc.
 # Written and Designed by James Hunt
 #
 # This file is part of Exponent
@@ -32,18 +32,15 @@ if (!defined('EXPONENT_VERSION_MAJOR')) {
 	/* exdoc
 	 * This is the major version number of Exponent; the 0 in 0.96.2-beta3
 	 */
-	//define('EXPONENT_VERSION_MAJOR','%%MAJOR%%');
-	define('EXPONENT_VERSION_MAJOR','2');
+	define('EXPONENT_VERSION_MAJOR','%%MAJOR%%');
 	/* exdoc
 	 * This is the minor version number of Exponent; the 96 in 0.96.2-beta3
 	 */
-	//define('EXPONENT_VERSION_MINOR','%%MINOR%%');
-	define('EXPONENT_VERSION_MINOR','0');
+	define('EXPONENT_VERSION_MINOR','%%MINOR%%');
 	/* exdoc
 	 * This is the revision version number of Exponent; the 2 in 0.96.2-beta3
 	 */
-	//define('EXPONENT_VERSION_REVISION','%%REVISION%%');
-	define('EXPONENT_VERSION_REVISION','0');
+	define('EXPONENT_VERSION_REVISION','%%REVISION%%');
 	/* exdoc
 	 * This is the date that this version of Exponent was exported from BZR and built.
 	 */
@@ -51,8 +48,7 @@ if (!defined('EXPONENT_VERSION_MAJOR')) {
 	/* exdoc
 	 * This specifies the type of release, either 'alpha','beta','rc' or '' (for stable).
 	 */
-	//define('EXPONENT_VERSION_TYPE','%%TYPE%%');
-	define('EXPONENT_VERSION_TYPE','beta1.1');
+	define('EXPONENT_VERSION_TYPE','%%TYPE%%');
 	/* exdoc
 	 * This number is bumped each time a distribution of a single version is
 	 * released.  For instance, the 3rd beta has an version type iteration of 3.
@@ -60,6 +56,13 @@ if (!defined('EXPONENT_VERSION_MAJOR')) {
 	define('EXPONENT_VERSION_ITERATION','%%ITERATION%%'); // only applies to betas/alphas / rcs
 }
 
+if (EXPONENT_VERSION_MAJOR == '%%MAJOR%%') { 
+	define('EXPONENT_VERSION_MAJOR','2');
+	define('EXPONENT_VERSION_MINOR','0');
+	define('EXPONENT_VERSION_REVISION','0');
+	define('EXPONENT_VERSION_TYPE','develop');
+	define('EXPONENT_VERSION_ITERATION','');
+}
 //return '0.96'; uncomment this when full deprecation of exponent is complete
 
 ?>
