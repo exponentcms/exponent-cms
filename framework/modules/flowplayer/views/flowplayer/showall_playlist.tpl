@@ -15,7 +15,7 @@
  *}
 
 <script src="{$smarty.const.URL_FULL}external/flowplayer3/example/flowplayer-3.2.6.min.js"></script>
-<div class="module flowplayer showall_playlist">
+<div class="module flowplayer showall-playlist">
     {if $moduletitle}<h1>{$moduletitle}</h1>{/if}
     <a id="playlist-player" href="{$page->records[0]->expFile.video[0]->url}" style="display:block;width:{$config.video_width}px;height:{$config.video_height}px;">
     </a>
