@@ -14,7 +14,7 @@
  *
  *}
 
-<div class="module filedownload showall-downloadinfo">
+<div class="module filedownload showall">
     {if $moduletitle}<h1>{$moduletitle}</h1>{/if}
     
     {if $config.enable_rss}
@@ -45,10 +45,10 @@
 			{permissions}
 				<div class="item-actions">
 					{if $permissions.edit == 1}
-						{icon action=edit img=edit.png class="editlink" id=$file->id title="Edit this file"|gettext text="Edit"|gettext}
+						{icon action=edit record=$file title="Edit this file"|gettext}
 					{/if}
 					{if $permissions.delete == 1}
-						{icon action=delete img=delete.png id=$file->id title="Delete this file"|gettext onclick="return confirm('Are you sure you want to delete this file?');" text="Delete"|gettext}
+						{icon action=delete record=$file title="Delete this file"|gettext onclick="return confirm('Are you sure you want to delete this file?');"}
 					{/if}
 				</div>
 			{/permissions}
