@@ -25,6 +25,7 @@
 			{/if}
         </div>
     {/permissions}    
+    {$page->links}
     {foreach from=$items item=ytv name=items}
 		<div class="item">
 			{if $ytv->title}<h2>{$ytv->title}</h2>{/if}
@@ -54,4 +55,5 @@
 		{/permissions}
 		{clear}
     {/foreach}
+    {$page->links}
 </div>

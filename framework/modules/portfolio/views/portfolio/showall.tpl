@@ -29,11 +29,7 @@
         {/if}
         </div>
     {/permissions}    
-
-    {if $page->records|@count >= $config.limit}
-		{$page->links}
-    {/if}
-    
+	{$page->links}
     {foreach from=$page->records item=record}
 		<div class="item">
 			<h2><a href="{link action=show title=$record->sef_url}" title="{$record->title|escape:"htmlall"}">{$record->title}</a></h2>
@@ -81,8 +77,5 @@
 			</div>
         {/permissions}
     {/foreach}   
-
-    {if $page->records|@count >= $config.limit}
-		{$page->links}
-    {/if}
+	{$page->links}
 </div>

@@ -19,7 +19,6 @@
     {if $config.enable_rss}
         <a class="podcastlink" href="{podcastlink}">Subscribe to {$config.feed_title}</a>
     {/if}
-    {$page->links}
     {permissions}
         <div class="module-actions">
 			{if $permissions.create == 1}
@@ -30,6 +29,7 @@
 			{/if}
         </div>
     {/permissions}    
+    {$page->links}
     {foreach from=$page->records item=file name=files}
 		<div class="item">
 			{if $file->expFile.preview[0] != ""}

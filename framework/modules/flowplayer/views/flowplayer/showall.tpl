@@ -45,6 +45,7 @@ flowplayer("a.flowplayer-video", EXPONENT.PATH_RELATIVE+"external/flowplayer3/fl
 			{/if}
 		</div>	
 	{/permissions}   
+    {$page->links}
     {foreach from=$page->records item=video key=key}
         <div class="item">
             <h2>{$video->title}</h2>
@@ -78,4 +79,5 @@ flowplayer("a.flowplayer-video", EXPONENT.PATH_RELATIVE+"external/flowplayer3/fl
 		{/permissions}
 		{clear}
     {/foreach}
+    {$page->links}
 </div>
