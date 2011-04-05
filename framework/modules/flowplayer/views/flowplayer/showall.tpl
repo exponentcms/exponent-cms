@@ -59,24 +59,24 @@ flowplayer("a.flowplayer-video", EXPONENT.PATH_RELATIVE+"external/flowplayer3/fl
 			{permissions}
 				<div class="item-actions">
 					{if $permissions.edit == 1}
-						{icon action=edit id=$video->id title="Edit video"|gettext text="Edit"|gettext}
+						{icon action=edit record=$video title="Edit `$video->title` video"}
 					{/if}
 					{if $permissions.delete == 1}
-						{icon action=delete id=$video->id title="Delete video"|gettext onclick="return confirm('Are you sure you want to delete this `$modelname`?');" text="Delete"|gettext}
+						{icon action=delete record=$video title="Delete `$video->title` video" onclick="return confirm('Are you sure you want to delete this `$modelname`?');"}
 					{/if}
 				</div>			
 			{/permissions} 
             <div class="bodycopy">
                 {$video->body}
             </div>            
-			{permissions}
-				<div class="module-actions">		
-					{if $permissions.create == 1}
-						{icon class=add action=edit rank=`$video->rank+1` title="Add a Video Here"|gettext text="Add a Video"|gettext}
-					{/if}
-				</div>
-			{/permissions}
-			{clear}
         </div>
+		{permissions}
+			<div class="module-actions">		
+				{if $permissions.create == 1}
+					{icon class="add" action=edit rank=`$video->rank+1` title="Add a Video Here"|gettext text="Add a Video"|gettext}
+				{/if}
+			</div>
+		{/permissions}
+		{clear}
     {/foreach}
 </div>
