@@ -1,6 +1,5 @@
 {*
  * Copyright (c) 2007-2008 OIC Group, Inc.
- * Written and Designed by Adam Kessler
  *
  * This file is part of Exponent
  *
@@ -48,7 +47,7 @@
 					{$item->body}
 				</div>
 			{/if}
-			<div style="clear:both"></div>
+			{clear}
 		</div>
 	{/foreach}
 </div>
