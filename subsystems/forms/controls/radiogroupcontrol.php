@@ -97,7 +97,7 @@ class radiogroupcontrol extends formcontrol {
 			$radio->newschool = !empty($this->newschool) ? $this->newschool : false;
 			$radio->value = $value;
 			
-			$radio->checked = ($this->default==$radio->value) ? true : false;
+			$radio->checked = ($this->default===$radio->value) ? true : false;
 			
             if ($this->cols!=0 && $i==$this->cols) {
     			$html .= '</tr><tr>';
