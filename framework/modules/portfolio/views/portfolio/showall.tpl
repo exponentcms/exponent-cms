@@ -1,6 +1,5 @@
 {*
- * Copyright (c) 2004-2008 OIC Group, Inc.
- * Written and Designed by Adam Kessler
+ * Copyright (c) 2004-2011 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -32,54 +31,58 @@
     {/permissions}    
 
     {if $page->records|@count >= $config.limit}
-    {$page->links}
+		{$page->links}
     {/if}
     
     {foreach from=$page->records item=record}
-        <div class="bodycopy">
-            <h2><a href="{link action=show title=$record->sef_url}" title="{$record->title|escape:"htmlall"}">{$record->title}</a></h2>
+		<div class="item">
+			<h2><a href="{link action=show title=$record->sef_url}" title="{$record->title|escape:"htmlall"}">{$record->title}</a></h2>
 
-            {permissions}
-            <div class="itempermissions">
-                {if $permissions.edit == 1}
-                    {icon action=edit id=$record->id title="Edit `$record->title`"}
-                {/if}
-                {if $permissions.delete == 1}
-                    {icon action=delete id=$record->id title="Delete `$record->title`"}
-                {/if}                
-            </div>
-            {/permissions}
-            
-            {if $record->expFile[0]->id}
-            <a href="{link action=show title=$record->sef_url}" title="{$record->title|escape:"htmlall"}" class="thumbnail">
-                {img file_id=$record->expFile[0]->id alt=$record->expFile[0]->alt w=$config.thumbsize h=$config.thumbsize zc=1}
-            </a>
-            {/if}
+			{permissions}
+				<div class="item-actions">
+					{if $permissions.edit == 1}
+						{icon action=edit record=$record title="Edit `$record->title`"}
+					{/if}
+					{if $permissions.delete == 1}
+						{icon action=delete record=$record title="Delete `$record->title`"}
+					{/if}                
+				</div>
+			{/permissions}
+			
+			{if $record->expFile[0]->id}
+				<a href="{link action=show title=$record->sef_url}" title="{$record->title|escape:"htmlall"}" class="thumbnail">
+					{img file_id=$record->expFile[0]->id alt=$record->expFile[0]->alt w=$config.thumbsize h=$config.thumbsize zc=1}
+				</a>
+			{/if}
 
-            {if $record->expTag|@count>0}
-            <div class="tag">
-                Tags: 
-                {foreach from=$record->expTag item=tag name=tags}
-                    <a href="{link action=showall_by_tags tag=$tag->sef_url}">{$tag->title}</a>
-                    {if $smarty.foreach.tags.last != 1},{/if}
-                {/foreach}
-            </div>
-            {/if}
-            {if $config.truncate}
-                <p>{$record->body|summarize:"html":"para"}</p>
-            {else}
-                {$record->body}
-            {/if}
-            <div style="clear:both"></div>
-        </div>
+			{if $record->expTag|@count>0}
+				<div class="tag">
+					Tags: 
+					{foreach from=$record->expTag item=tag name=tags}
+						<a href="{link action=showall_by_tags tag=$tag->sef_url}">{$tag->title}</a>
+						{if $smarty.foreach.tags.last != 1},{/if}
+					{/foreach}
+				</div>
+			{/if}
+			<div class="bodycopy">
+				{if $config.truncate}
+					<p>{$record->body|summarize:"html":"para"}</p>
+				{else}
+					{$record->body}
+				{/if}
+			</div>
+			{clear}
+		</div>
         {permissions}
-            {if $permissions.create == 1}
-                {icon class="add addhere" action=edit rank=`$text->rank+1` title="Add another here"  text="Add a portfolio piece here"}
-            {/if}
+			<div class="module-actions">
+				{if $permissions.create == 1}
+					{icon class="add addhere" action=edit rank=`$text->rank+1` title="Add another here"|gettext  text="Add a portfolio piece here"}
+				{/if}
+			</div>
         {/permissions}
     {/foreach}   
 
     {if $page->records|@count >= $config.limit}
-    {$page->links}
+		{$page->links}
     {/if}
 </div>

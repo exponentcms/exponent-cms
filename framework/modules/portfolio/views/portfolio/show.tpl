@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2008 OIC Group, Inc.
+ * Copyright (c) 2004-2011 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -15,39 +15,43 @@
 
 <div class="module portfolio show">
     <a class="back" href="{backlink}">Back to Portfolio Listings</a>
-    <h1>{$record->title}</h1>
-    {permissions}
-        {if $permissions.edit == 1}
-            {icon action=edit id=$record->id title="edit `$record->title`"}
-        {/if}
-    {/permissions}
-    
-    <div class="portfolio-img" style="width:{$config.enlargedsize+10}px;">
-        {img id="main-img" class="main-image" alt=$record->expFile[0]->alt file_id=$record->expFile[0]->id w=$config.enlargedsize}
-        {if $record->expFile[1]->id}
-            {foreach from=$record->expFile item=img key=key name=thumbs}
-                {if $smarty.foreach.thumbs.iteration%4==0}
-                    {assign var="style" value="margin-right:0"}
-                {else}
-                    {assign var="style" value=""}
-                {/if}
-                {img id="thumb-`$img->id`" class="thumbnail" alt=$img->alt file_id=$img->id w=$config.detailthumbsize h=$config.detailthumbsize zc=1 style=$style}
-            {/foreach}
-        {/if}
-    </div>
+	<div class="item">
+		<h1>{$record->title}</h1>
+		{permissions}
+			<div class="item-actions">
+				{if $permissions.edit == 1}
+					{icon action=edit record=$record title="edit `$record->title`"}
+				{/if}
+			</div>
+		{/permissions}
+		
+		<div class="portfolio-img" style="width:{$config.enlargedsize+10}px;">
+			{img id="main-img" class="main-image" alt=$record->expFile[0]->alt file_id=$record->expFile[0]->id w=$config.enlargedsize}
+			{if $record->expFile[1]->id}
+				{foreach from=$record->expFile item=img key=key name=thumbs}
+					{if $smarty.foreach.thumbs.iteration%4==0}
+						{assign var="style" value="margin-right:0"}
+					{else}
+						{assign var="style" value=""}
+					{/if}
+					{img id="thumb-`$img->id`" class="thumbnail" alt=$img->alt file_id=$img->id w=$config.detailthumbsize h=$config.detailthumbsize zc=1 style=$style}
+				{/foreach}
+			{/if}
+		</div>
 
-    {if $record->expTag}
-        <div class="tag">
-            Tags: 
-            {foreach from=$record->expTag item=tag name=tags}
-                <a href="{link action=showByTag tag=$tag->sef_url}">{$tag->title}</a>
-                {if $smarty.foreach.tags.last != 1},{/if}
-            {/foreach}
-        </div>
-    {/if}
-    <div class="bodycopy">
-        {$record->body}
-    </div>
+		{if $record->expTag}
+			<div class="tag">
+				Tags: 
+				{foreach from=$record->expTag item=tag name=tags}
+					<a href="{link action=showByTag tag=$tag->sef_url}">{$tag->title}</a>
+					{if $smarty.foreach.tags.last != 1},{/if}
+				{/foreach}
+			</div>
+		{/if}
+		<div class="bodycopy">
+			{$record->body}
+		</div>
+	</div>
 </div>
 
 {script unique="swapthumb"}
@@ -68,5 +72,3 @@ YUI({ base:EXPONENT.URL_FULL+'external/yui3/build/',loadOptional: true}).use('no
 
 {/literal}
 {/script}
-
-
