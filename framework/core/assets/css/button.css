@@ -1,110 +1,99 @@
-/****************  ecom links  ***********************/
-
-a.exp-ecom-link {
-    display:inline-block;
-    zoom:1;
-    height:25px;
-    position:relative;
-    color:#fff;
-    background:url(../skin/button/exp-btn.png) no-repeat;
-    padding:0 0 0 10px;
-    text-decoration:none;
-    margin-right:10px;
-    _margin-right:0px;
+.awesome, .awesome:visited {
+	background: #222 url(../images/button/gradient.png) repeat-x; 
+	display: inline-block; 
+	padding: 5px 10px 6px; 
+	color: #fff; 
+	text-decoration: none;
+	-moz-border-radius: 22px; 
+	-webkit-border-radius: 22px;
+	border-radius: 22px;
+	-moz-box-shadow: 0 1px 2px rgba(0,0,0,0.4);
+	-webkit-box-shadow: 0 1px 2px rgba(0,0,0,0.4);
+	text-shadow: 0 -1px 1px rgba(0,0,0,0.25);
+	border: 1px solid rgba(0,0,0,0.25);
+	position: relative;
+	cursor: pointer;
 }
-a.exp-ecom-link strong {
-    display:inline-block;
-    zoom:1;
-    margin-right:-10px;
-    _margin-right:0px;
-    padding-right:15px;
-    height:25px;
-    background:url(../skin/button/exp-btn.png) no-repeat 100% 0;
+ 
+.awesome:hover {
+    background-color: #111;
+    color: #fff;
 }
-a.exp-ecom-link em {
-    display:block;
-    margin:3px 0;
-    text-shadow:.5px .5px #333;
+.awesome:active {
+    top: 1px
 }
-/* hover */
-
-a.exp-ecom-link:hover {
-    background-position:0 -27px;
+.small.awesome,
+.small.awesome:visited {
+    font-size: 10px;
+    padding: ;
 }
-a.exp-ecom-link:hover strong {
-    background-position:100% -27px;
+.awesome,
+.awesome:visited,
+.medium.awesome,
+.medium.awesome:visited {
+    font-size: 13px;
+    font-weight: bold;
+    line-height: 1;
+    text-shadow: 0 -1px 1px rgba(0,0,0,0.25);
 }
-
-/* dissabled */
-
-a.exp-ecom-link-dis {
-    display:inline-block;
-    zoom:1;
-    height:25px;
-    position:relative;
-    color:#fff;
-    background:url(../skin/button/exp-btn.png) no-repeat 0 -108px;
-    padding:0 0 0 10px;
-    text-decoration:none;
-    margin-right:10px;
-}
-a.exp-ecom-link-dis strong {
-    display:inline-block;
-    zoom:1;
-    margin-right:-10px;
-    padding-right:15px;
-    height:25px;
-    background:url(../skin/button/exp-btn.png) no-repeat 100% -108px;
-}
-a.exp-ecom-link-dis em {
-    display:block;
-    margin:3px 0;
-    text-shadow:.5px .5px #fff;
-    color:#777;
+.large.awesome,
+.large.awesome:visited {
+    font-size: 14px;
+    padding: 8px 14px 9px;
 }
 
+/**************** colors  ***********************/
 
-/****************  general button  ***********************/
-
-a.btn {
-    display:inline-block;
-    zoom:1;
-    height:25px;
-    position:relative;
-    color:#fff;
-    background:url(../skin/button/exp-btn.png) no-repeat;
-    padding:0 0 0 10px;
-    text-decoration:none;
-    margin-right:10px;
+.green.awesome,
+.green.awesome:visited {
+    background-color: #91bd09
 }
-a.btn strong {
-    display:inline-block;
-    zoom:1;
-    margin-right:-10px;
-    padding-right:15px;
-    height:25px;
-    background:url(../skin/button/exp-btn.png) no-repeat 100% 0;
+.green.awesome:hover {
+    background-color: #749a02
 }
-a.btn em {
-    display:block;
-    margin:3px 0;
+.blue.awesome,
+.blue.awesome:visited {
+    background-color: #005293
 }
-/* hover */
-
-a.btn:hover {
-    background-position:0 -27px;
+.blue.awesome:hover {
+    background-color: #0162b0
 }
-a.btn:hover strong {
-    background-position:100% -27px;
+.red.awesome,
+.red.awesome:visited {
+    background-color: #b70700
 }
-
-/* dissabled */
-
-a.btn:hover {
-    background-position:0 -27px;
+.red.awesome:hover {
+    background-color: #e90800
 }
-a.btn:hover strong {
-    background-position:100% -27px;
+.magenta.awesome,
+.magenta.awesome:visited {
+    background-color: #a9014b
 }
-
+.magenta.awesome:hover {
+    background-color: #630030
+}
+.orange.awesome,
+.orange.awesome:visited {
+    background-color: #E37222
+}
+.orange.awesome:hover {
+    background-color: #f77f2a
+}
+.yellow.awesome,
+.yellow.awesome:visited {
+    background-color: #ffb515
+}
+.yellow.awesome:hover {
+    background-color: #fc9200
+}
+.grey.awesome,
+.yellow.awesome:visited {
+    background-color: #c1c1c1;
+    color: #525252;
+    text-shadow: none;
+}
+.grey.awesome:hover {
+    background-color: #d4d4d4;
+    color: #6d6d6d;
+}
 
