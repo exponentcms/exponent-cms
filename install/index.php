@@ -89,8 +89,12 @@ switch ($page) {
 		$page_image = 'system';
 		$page_text = $i18n['upgrade'];
 		break;
+	case 'final':
+
+		break;
 	default:
-		$page_image = '';
+		$page_image = 'welcome';
+		$page_text = $i18n['guide'];
 		break;
 }
 
@@ -101,62 +105,50 @@ switch ($page) {
 <head>
 	<title><?php echo $i18n['page_title']; ?></title>
 	<meta http-equiv="Content-Type" content="text/html; charset=<?php echo LANG_CHARSET; ?>" />
+	<link rel="stylesheet" href="<?php echo YUI3_PATH; ?>cssreset/reset.css" />
+	<link rel="stylesheet" href="<?php echo YUI3_PATH; ?>cssbase/base.css" />
+	<link rel="stylesheet" href="<?php echo YUI3_PATH; ?>cssfonts/fonts.css" />
+	<link rel="stylesheet" href="<?php echo PATH_RELATIVE; ?>framework/core/assets/css/forms.css" />
+	<link rel="stylesheet" href="<?php echo PATH_RELATIVE; ?>framework/core/assets/css/button.css" />
+	<link rel="stylesheet" href="<?php echo PATH_RELATIVE; ?>framework/core/assets/css/tables.css" />
 	<link rel="stylesheet" href="style.css" />
-	<script type="text/javascript">
-	
+
+	<script type="text/javascript" src="<?php echo YUI3_PATH; ?>/yui/yui-min.js"></script>
+    
+	<script type="text/javascript">	
 	function pop(page) {
-		url = "popup.php?page="+page;
-		window.open(url,"pop","height=400,width=600,title=no,titlebar=no,scrollbars=yes");
-		return false;
+    		var url = "popup.php?page="+page;
+    		window.open(url,"pop","height=400,width=600,title=no,titlebar=no,scrollbars=yes");
 	}
 	
 	</script>
-	<style type="text/css">
-		div#main2 {
-			background-image: url(images/mainbar_03.png);
-			background-repeat: repeat-y;
-			<?php if ($page_image != '') { ?>
-			padding-left: 95px;
-			<?php } else { ?>
-			padding-left: 15px;
-			<?php } ?>
-			padding-right: 15px;
-		}
-		
-		div#sidebar {
-			padding-top: 70px;
-			background-image: url(images/<?php echo $page_image; ?>.png);
-			background-repeat: no-repeat;
-		}
-	</style>
 </head>
 <body>
 	<div id="installer">
-		<?php if ($page_image != '') { ?>
-		<div id="side">
-			<div id="side1"><!-- Empty div for background-images on CSS-capable browsers --></div>
-			<div id="side2">
-				<div id="sidebar" class="bodytext">
-					<?php echo $page_text; ?>
-				</div>
-			</div>
-			<div id="side3"><!-- Empty div for background-images on CSS-capable browsers --></div>
-		</div>
-		<?php } ?>
-		<div id="main">
-			<div id="main1"><!-- Empty div for background-images on CSS-capable browsers --></div>
-			<div id="main2" class="bodytext">
-				<h1 id="maintitle"><span class="noncss"><?php echo $i18n['installer_title']; ?></span></h1>
-				<?php
-				if (file_exists('pages/'.$page.'.php')) {
-					include('pages/'.$page.'.php');
-				} else {
-					echo sprintf($i18n['unknown_page'],strip_tags($page));
-				}
-				?>
-				<br />
-			</div>
-			<div id="main3"><!-- Empty div for background-images on CSS-capable browsers --></div>
+	    <div id="hd">
+	       <h1 id="logo">
+	           <a href="http://www.exponentcms.org/" target="_blank">
+                   Exponent CMS
+               </a>
+	       </h1>
+	    </div>
+		<div id="bd">
+		    <div id="leftcol">
+    		<?php
+    		if (file_exists('pages/'.$page.'.php')) {
+    			include('pages/'.$page.'.php');
+    		} else {
+    			echo sprintf($i18n['unknown_page'],strip_tags($page));
+    		}
+    		?>
+    		</div>
+    		<?php if ($page_image != '') { ?>
+            <div id="rightcol">
+                <p>
+        		<?php echo $page_text; ?>
+        		</p>
+            </div>
+    		<?php } ?>
 		</div>
 	</div>
 </body>

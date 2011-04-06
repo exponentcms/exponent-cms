@@ -28,13 +28,20 @@ $status = sanity_checkFiles();
 $errcount = count($status);
 $warncount = 0; // No warnings with permissions
 ?>
-<h2 id="subtitle"><?php echo $i18n['subtitle']; ?></h2>
-<table cellspacing="0" cellpadding="3" rules="all" border="0" style="border:1px solid grey;" width="425">
-<tr><td colspan="2" style="background-color: lightgrey;"><b><?php echo $i18n['filedir_tests']; ?></b></td></tr>
+<h1><?php echo $i18n['subtitle']; ?></h1>
+<table cellspacing="0" cellpadding="0" rules="all" border="0" width="100%" class="exp-skin-table">
+    <thead>
+        <tr>
+            <th colspan="2">
+                <?php echo $i18n['filedir_tests']; ?>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
 <?php
-
+$row = "even";
 foreach ($status as $file=>$stat) {
-	echo '<tr><td width="55%" class="bodytext">'.$file.'</td><td align="center" width="45%"';
+	echo '<tr class="'.$row.'"><td>'.$file.'</td><td';
 	if ($stat != SANITY_FINE) echo ' class="bodytext error">';
 	else echo ' class="bodytext success">';
 	switch ($stat) {
@@ -56,16 +63,27 @@ foreach ($status as $file=>$stat) {
 			break;
 	}
 	echo '</td></tr>';
+	$row = ($row=="even") ? "odd" : "even";
 }
 ?>
-<tr><td colspan="2" style="background-color: lightgrey;"><b><?php echo $i18n['other_tests']; ?></b></td></tr>
+</tbody>
+<table cellspacing="0" cellpadding="0" rules="all" border="0" width="100%" class="exp-skin-table">
+    <thead>
+        <tr>
+            <th colspan="2">
+                <?php echo $i18n['other_tests']; ?>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
 <?php
 
 $status = sanity_checkServer();
 $errcount += count($status);
 $warncount += count($status);
+$row = "even";
 foreach ($status as $test=>$stat) {
-	echo '<tr><td width="55%" class="bodytext">'.$test.'</td>';
+	echo '<tr class="'.$row.'"><td>'.$test.'</td>';
 	echo '<td align="center" width="45%" ';
 	if ($stat[0] == SANITY_FINE) {
 		$warncount--;
@@ -79,11 +97,13 @@ foreach ($status as $test=>$stat) {
 		echo 'class="bodytext warning">';
 	}
 	echo $stat[1].'</td></tr>';
+	$row = ($row=="even") ? "odd" : "even";
 }
 
 ?>
+</tbody>
 </table>
-<br />
+
 <?php
 
 $write_file = 0;
@@ -127,11 +147,15 @@ if ($errcount > 0) {
 if ($errcount == 0) {
 	if (isset($_REQUEST['type']) && $_REQUEST['type'] == 'new'){
 		?>
-		<br /><a href="index.php?page=dbconfig"><?php echo $i18n['continue_new']; ?></a>.
+		<br />
+		<br />
+		<a class="awesome large green" href="index.php?page=dbconfig"><?php echo $i18n['continue_new']; ?></a>
 		<?php
 	} else {
 		?>
-		<br /><a href="index.php?page=upgrade_version"><?php echo $i18n['continue_upgrade']; ?></a>.
+		<br />
+		<br />
+		<a class="awesome large green" href="index.php?page=upgrade_version"><?php echo $i18n['continue_upgrade']; ?></a>
 		<?php
 	}
 }

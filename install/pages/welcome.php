@@ -22,13 +22,11 @@ if (!defined('EXPONENT')) exit('');
 $i18n = exponent_lang_loadFile('install/pages/welcome.php');
 
 ?>
-<h2 id="subtitle"><?php echo $i18n['title']; ?></h2>
-<?php echo $i18n['thanks']; ?>
-<br /><br />
-<?php echo $i18n['guide']; ?>
-<br /><br />
-
-<ul>
-	<li><a href="?page=sanity&type=new"><?php echo $i18n['new']; ?></a></li>
-	<li><a href="?page=sanity&type=upgrade"><?php echo $i18n['upgrade']; ?></a></li>
-</ul>
+<h1 id="subtitle"><?php echo $i18n['title']; ?></h1>
+<p>
+    <?php echo $i18n['thanks']; ?>
+</p>
+<p>
+    <a class="awesome large green" href="?page=sanity&type=new"><?php echo $i18n['new']; ?></a>
+    <a class="awesome large green" href="?page=sanity&type=upgrade"><?php echo $i18n['upgrade']; ?></a>
+</p>

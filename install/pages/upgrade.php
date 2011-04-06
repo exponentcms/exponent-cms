@@ -57,7 +57,7 @@ if (count($errors)) {
 	foreach ($errors as $e) echo $e . '<br />';
 } else {
 	echo $i18n['success'];;
-	echo '<br /><br /><a href="?page=final">'.$i18n['complete'].'</a>.';
+	echo '<br /><br /><a class="awesome large green" href="?page=final">'.$i18n['complete'].'</a>';
 }
 
 ?>

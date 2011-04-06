@@ -23,8 +23,14 @@ if (!defined('EXPONENT')) exit('');
 $i18n = exponent_lang_loadFile('install/pages/dbcheck.php');
 
 ?>
-<h2 id="subtitle"><?php echo $i18n['subtitle']; ?></h2>
-<table>
+<h1><?php echo $i18n['subtitle']; ?></h1>
+<table class="exp-skin-table">
+    <thead>
+        <tr>
+            <th colspan=2><?php echo expLang::gettext('Results'); ?></th>
+        <tr>
+    <thead>
+    <tbody>
 <?php
 
 function echoStart($msg) {
@@ -273,6 +279,7 @@ if ($passed) {
 }
 
 ?>
+</tbody>
 </table>
 <?php
 
@@ -284,9 +291,9 @@ if ($passed) {
 			$db->dropTable(str_replace($db->prefix,'',$t));
 		}
 	}
-	echo '<br /><br />';
+	echo '<p>';
 	echo $i18n['passed'];
-	echo '<br /><br />';
+	echo '</p>';
 
 	if (isset($_POST['install_default'])) {
 		if (!defined('SYS_BACKUP')) include_once(BASE.'subsystems/backup.php');
@@ -302,11 +309,11 @@ if ($passed) {
 		}
 	}
 	?>
-	<br /><br /><a href='?page=admin_user'><?php echo $i18n['continue']; ?></a>.
+	<a class="awesome green large" href='?page=admin_user'><?php echo $i18n['continue']; ?></a>.
 	<?php
 } else {
 	?>
-	<br /><br /><a href="?page=dbconfig" onclick="history.go(-1); return false;"><?php echo $i18n['back']; ?></a>
+	<a class="awesome red large" href="?page=dbconfig" onclick="history.go(-1); return false;"><?php echo $i18n['back']; ?></a>
 	<?php
 }
 ?>

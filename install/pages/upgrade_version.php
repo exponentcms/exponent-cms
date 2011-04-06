@@ -20,20 +20,19 @@
 if (!defined('EXPONENT')) exit('');
 
 $versions = array(	
-	'1.99.0'=>'Origin',
-	'1.99.1'=>'Secondsies',
-	'1.99.2'=>'Hopscotch',
+	'2.0.0 Preview Release 2'=>'Gnarly Nebula',
+	'2.0.0 Beta 1'=>'Efficient Entropy',
+	'2.0.0 Beta 1.1'=>'Extremely Efficient Entropy',
 );
 
 $i18n = exponent_lang_loadFile('install/pages/upgrade_version.php');
 
 ?>
 
+<h1><?php echo $i18n['select_ver']; ?></h1>
+
 <form method="post" action="index.php">
 <input type="hidden" name="page" value="upgrade" />
-
-<div class="form_section_header"><?php echo $i18n['select_ver']; ?></div>
-<div class="form_section">
 	<div class="control">
 		<select name="from_version" value="<?php echo EXPONENT; ?>">
 		<?php
@@ -51,14 +50,12 @@ $i18n = exponent_lang_loadFile('install/pages/upgrade_version.php');
 			}
 		?>
 		</select>
-		<div class="control_help">
-			<?php echo $i18n['select_version']; ?>
-			<br /><br />
-			<div class="important_message">
-				<?php echo $i18n['choose_correct']; ?>
-			</div>
-		</div>
-		<input type="submit" value="<?php echo $i18n['upgrade']; ?>" class="text" />
 	</div>
-</div>
+	<p>
+		<?php echo $i18n['select_version']; ?>
+	</p>
+	<p>
+		<?php echo $i18n['choose_correct']; ?>
+	</p>
+	<button class="awesome large green"><?php echo $i18n['upgrade']; ?></button>
 </form>

@@ -55,15 +55,15 @@ $i18n = exponent_lang_loadFile('install/pages/dbconfig.php');
 		}
 	}
 </script>
-<h2 id="subtitle"><?php echo $i18n['subtitle']; ?></h2>
+<h2><?php echo $i18n['subtitle']; ?></h2>
 
 <form method="post" action="index.php">
 <input type="hidden" name="page" value="dbcheck" />
 
-<div class="form_section_header"><?php echo $i18n['server_info']; ?></div>
+<h2><?php echo $i18n['server_info']; ?></h2>
 <div class="form_section">
 	<div class="control">
-		&#0149; <span class="control_caption"><?php echo $i18n['backend']; ?>: </span>
+		 <span class="label"><?php echo $i18n['backend']; ?>: </span>
 		<select name="c[db_engine]" onchange="showOptions(this.value);">
 		<?php
 		require_once(BASE.'subsystems/database.php');
@@ -85,7 +85,7 @@ $i18n = exponent_lang_loadFile('install/pages/dbconfig.php');
 
 
 	<div class="control" id="mysql_options">
-		&#0149; <span class="control_caption"><?php echo $i18n['DB_ENCODING']; ?>: </span>
+		 <span class="label"><?php echo $i18n['DB_ENCODING']; ?>: </span>
 		<select name="c[DB_ENCODING]" value="<?php echo $config['DB_ENCODING']; ?>" >
 <?PHP
 	if (!defined('SYS_CONFIG')) {
@@ -105,7 +105,7 @@ $i18n = exponent_lang_loadFile('install/pages/dbconfig.php');
 	</div>
 
 	<div class="control">
-		&#0149; <span class="control_caption"><?php echo $i18n['address']; ?>: </span>
+		 <span class="label"><?php echo $i18n['address']; ?>: </span>
 		<input class="text" type="text" name="c[db_host]" value="<?php echo $config['db_host']; ?>" />
 		<div class="control_help">
 			<?php echo $i18n['address_desc']; ?>
@@ -115,7 +115,7 @@ $i18n = exponent_lang_loadFile('install/pages/dbconfig.php');
 	</div>
 
 	<div class="control">
-		&#0149; <span class="control_caption"><?php echo $i18n['port'];?>: </span>
+		 <span class="label"><?php echo $i18n['port'];?>: </span>
 		<input class="text" type="text" name="c[db_port]" value="<?php echo $config['db_port']; ?>" size="5" />
 		<div class="control_help">
 			<?php echo $i18n['port_desc']; ?>
@@ -125,18 +125,16 @@ $i18n = exponent_lang_loadFile('install/pages/dbconfig.php');
 	</div>
 </div>
 
-<div class="form_section_header"><?php echo $i18n['database_info']; ?></div>
+<h2><?php echo $i18n['database_info']; ?></h2>
 <div class="form_section">
 	<div class="control">
-		&#0149; <span class="control_caption"><?php echo $i18n['dbname']; ?>: </span>
+		 <span class="label"><?php echo $i18n['dbname']; ?>: </span>
 		<input class="text" type="text" name="c[db_name]" value="<?php echo $config['db_name']; ?>" />
-		<div class="control_help">
-			<?php echo $i18n['dbname']; ?>
-		</div>
+
 	</div>
 
 	<div class="control">
-		&#0149; <span class="control_caption"><?php echo $i18n['username']; ?>: </span>
+		 <span class="label"><?php echo $i18n['username']; ?>: </span>
 		<input class="text" type="text" name="c[db_user]" value="<?php echo $config['db_user']; ?>" />
 		<div class="control_help">
 			<?php echo $i18n['username_desc']; ?>
@@ -145,7 +143,7 @@ $i18n = exponent_lang_loadFile('install/pages/dbconfig.php');
 		</div>
 	</div>
 	<div class="control">
-		&#0149; <span class="control_caption"><?php echo $i18n['password']; ?>: </span>
+		 <span class="label"><?php echo $i18n['password']; ?>: </span>
 		<input class="text" type="password" name="c[db_pass]" value="<?php echo $config['db_pass']; ?>" />
 		<div class="control_help">
 			<?php echo $i18n['password_desc']; ?>
@@ -153,7 +151,7 @@ $i18n = exponent_lang_loadFile('install/pages/dbconfig.php');
 	</div>
 
 	<div class="control">
-		&#0149; <span class="control_caption"><?php echo $i18n['prefix']; ?>: </span>
+		 <span class="label"><?php echo $i18n['prefix']; ?>: </span>
 		<input class="text" type="text" name="c[db_table_prefix]" value="<?php echo $config['db_table_prefix']; ?>" />
 		<div class="control_help">
 			<?php echo $i18n['prefix_desc']; ?>
@@ -163,10 +161,10 @@ $i18n = exponent_lang_loadFile('install/pages/dbconfig.php');
 	</div>
 </div>
 
-<!--div class="form_section_header"><?php echo $i18n['default_content']; ?></div>
+<!--h2><?php echo $i18n['default_content']; ?></h2>
 <div class="form_section">
 	<div class="control">
-		&#0149; <span class="control_caption"><?php echo $i18n['install']; ?></span>
+		 <span class="label"><?php echo $i18n['install']; ?></span>
 		<input type="checkbox" name="install_default" checked="checked" />
 		<div class="control_help">
 		<?php echo $i18n['install_desc']; ?>
@@ -175,10 +173,10 @@ $i18n = exponent_lang_loadFile('install/pages/dbconfig.php');
 	</div>
 </div-->
 
-<div class="form_section_header"><?php echo $i18n['sef']; ?></div>
+<h2><?php echo $i18n['sef']; ?></h2>
 <div class="form_section">
 	<div class="control">
-		&#0149; <span class="control_caption"><?php echo $i18n['enable_sef']; ?></span>
+		 <span class="label"><?php echo $i18n['enable_sef']; ?></span>
 		<input type="checkbox" name="c[sef_urls]" checked="checked" />
 		<div class="control_help">
                 <?php echo $i18n['sef_desc']; ?>
@@ -187,14 +185,14 @@ $i18n = exponent_lang_loadFile('install/pages/dbconfig.php');
 	</div>
 </div>
 
-<div class="form_section_header"><?php echo $i18n['verify']; ?></div>
+<h2><?php echo $i18n['verify']; ?></h2>
 <div class="form_section">
 	<div class="control">
 		<div class="control_help">
 		<?php echo $i18n['verify_desc']; ?>
 		<br /><br />
 		</div>
-		<input type="submit" value="<?php echo $i18n['test_settings']; ?>" class="text" />
+		<button class="awesome large green"><?php echo $i18n['test_settings']; ?></button>
 	</div>
 </div>
 </form>
