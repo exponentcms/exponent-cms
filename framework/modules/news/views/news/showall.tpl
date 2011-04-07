@@ -31,7 +31,7 @@
     </div>
     {/permissions}
 
-    {$page->links}
+    {pagelinks paginate=$page top=1}
     {foreach from=$page->records item=item}
         <div class="item">
             <h2>
@@ -65,5 +65,5 @@
             <div style="clear:both"></div>
         </div>
     {/foreach}
-    {$page->links}
+    {pagelinks paginate=$page bottom=1}
 </div>

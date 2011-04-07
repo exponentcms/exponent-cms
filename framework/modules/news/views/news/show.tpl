@@ -30,7 +30,7 @@
             {/if}
         </div>
     {/permissions}
-    <div class="bodycopy"> 
+    <div class="bodycopy">
         {filedisplayer view="`$config.filedisplay`" files=$record->expFile record=$record}
         {$record->body}
     </div>
