@@ -31,20 +31,7 @@
         </div>
     {/permissions}
     <div class="bodycopy"> 
-        <div class="news-img">
-            {if $record->expFile[1]->id}
-                {foreach from=$record->expFile item=img key=key name=thumbs}
-                    {if $smarty.foreach.thumbs.iteration%4==0}
-                        {assign var="style" value="margin-right:0"}
-                    {else}
-                        {assign var="style" value=""}
-                    {/if}
-                    {img id="thumb-`$img->id`" class="thumbnail" alt=$img->alt file_id=$img->id w=150 style=$style}
-                {/foreach}
-            {/if}
-        </div>
-        
+        {filedisplayer view="`$config.filedisplay`" files=$record->expFile record=$record}
         {$record->body}
-        {clear}
     </div>
 </div>

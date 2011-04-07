@@ -28,7 +28,12 @@ function smarty_function_filedisplayer($params,&$smarty) {
 	$title = isset($params['title']) ? $params['title'] : '';
 
     $badvals = array("[", "]", ",", " ", "'", "\"", "&", "#", "%", "@", "!", "$", "(", ")", "{", "}");
-    $config['uniqueid'] = str_replace($badvals, "", $smarty->_tpl_vars[__loc]->src).$params['id'];
+    $config['uniqueid'] = str_replace($badvals, "", $smarty->_tpl_vars[__loc]->src).$params['record']->id;
+    if ($config['pio'] && $params['is_listing']) {
+        $tmp = reset($params['files']);
+        unset($params['files']);
+        $params['files'][] = $tmp;
+    };
     
     $float = $config['float']=="No Float"?"":"float:".strtolower($config['float']).";";
     $width = !empty($config['width'])?$config['width']:"200";

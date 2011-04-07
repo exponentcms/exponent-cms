@@ -22,7 +22,7 @@ class newsController extends expController {
         'showall'=>'Show all News',
     );
 
-    public $remove_configs = array('ealerts','tags','comments','files');
+    public $remove_configs = array('ealerts','tags','comments');
 
     public $add_permissions = array('showUnpublished'=>'View Unpublished News');
     private $sortopts = array(
@@ -35,7 +35,7 @@ class newsController extends expController {
     function name() { return $this->displayname(); } //for backwards compat with old modules
     function displayname() { return "News"; }
     function description() { return "Use this to display & manage news type content on your site."; }
-    function author() { return "Adam Kessler - OIC Group, Inc"; }
+    function author() { return "OIC Group, Inc"; }
     function hasSources() { return true; }
     function hasViews() { return true; }
     function hasContent() { return true; }
