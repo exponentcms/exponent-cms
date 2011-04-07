@@ -5,7 +5,7 @@ YUI({base:EXPONENT.URL_FULL+'/external/yui3/build/'}).use('node','anim', functio
     var swatches = Y.all('.swatches .swatch');
 
     //remove loading
-    Y.get('.loading-images').removeClass('loading-images');
+    Y.one('.loading-images').removeClass('loading-images');
 
     var resetZ = function(n,y){
         n.setStyles({'zIndex':0,'display':'none'});

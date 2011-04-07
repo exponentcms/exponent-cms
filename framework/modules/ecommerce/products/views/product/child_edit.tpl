@@ -154,7 +154,7 @@
                         var radioSwitchers = Y.all('#main_image_functionalityControl input[name="main_image_functionality"]');
                         radioSwitchers.on('click',function(e){
                             Y.all(".imngfuncbody").setStyle('display','none');
-                            var curdiv = Y.get("#" + e.target.get('value') + "-div");
+                            var curdiv = Y.one("#" + e.target.get('value') + "-div");
                             curdiv.setStyle('display','block');
                         });
 

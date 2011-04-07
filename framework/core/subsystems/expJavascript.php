@@ -42,7 +42,7 @@ class expJavascript {
             $yui2Loader = new Lissa(YUI2_VERSION, null);
 
             // instantiate loader class for yui3
-            $yui3Loader = new Lissa(YUI3_VERSION, null, $expJS);
+            //$yui3Loader = new Lissa(YUI3_VERSION, null, $expJS);
 
             // load Exponent's yui2 dependencies
             $yui2Loader->load("dom");

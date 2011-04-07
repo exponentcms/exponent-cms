@@ -162,7 +162,7 @@
                         var radioSwitchers = Y.all('#main_image_functionalityControl input[name="main_image_functionality"]');
                         radioSwitchers.on('click',function(e){
                             Y.all(".imngfuncbody").setStyle('display','none');
-                            var curdiv = Y.get("#" + e.target.get('value') + "-div");
+                            var curdiv = Y.one("#" + e.target.get('value') + "-div");
                             curdiv.setStyle('display','block');
                         });
 
@@ -226,13 +226,13 @@
                     
                     
                     // the text box for the title
-                    var tagInput = Y.get('#related_items');
+                    var tagInput = Y.one('#related_items');
 
                     // the UL to append to
-                    var tagUL = Y.get('#relatedItemsList');
+                    var tagUL = Y.one('#relatedItemsList');
 
                     // the Add Link
-                    var tagAddToList = Y.get('#addToRelProdList');
+                    var tagAddToList = Y.one('#addToRelProdList');
 
 
                     var onRequestData = function( oSelf , sQuery , oRequest) {

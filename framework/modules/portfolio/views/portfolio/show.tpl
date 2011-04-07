@@ -59,7 +59,7 @@
 
 YUI({ base:EXPONENT.URL_FULL+'external/yui3/build/',loadOptional: true}).use('node', function(Y) {
     var thumbs = Y.all('.portfolio-img img.thumbnail');
-    var mainimg = Y.get('#main-img');
+    var mainimg = Y.one('#main-img');
     
     var swapimage = function(e){
         var tmbid = e.target.get('id').split('-')[1];

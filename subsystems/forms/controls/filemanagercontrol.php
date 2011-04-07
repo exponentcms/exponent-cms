@@ -229,7 +229,7 @@ class filemanagercontrol extends formcontrol {
                         });
                     }
 
-                    //var tar = new Y.DD.Drop({ node:Y.get('#filelist".$name."')});
+                    //var tar = new Y.DD.Drop({ node:Y.one('#filelist".$name."')});
                 }
                 
                 initDragables();

@@ -81,14 +81,14 @@
 
 YUI(EXPONENT.YUI_CONFIG).use("node","event",function(Y){
     var osmv = {/literal}{$json_obj};{literal} //oldschool module views (in a JSON object)
-    var modpicker = Y.get('#modcntrol'); // the module selection dropdown
+    var modpicker = Y.one('#modcntrol'); // the module selection dropdown
     var is_edit = {/literal}{$is_edit}{literal} //are we editing?
     var current_action = {/literal}{if $container->action}"{$container->action}"{else}false{/if}{literal}; //Do we have an existing action
     var current_view = {/literal}{if $container->view}"{$container->view}"{else}false{/if}{literal}; //Do we have an existing view 
-    var actionpicker = Y.get('#actions'); // the actions dropdown
-    var viewpicker = Y.get('#views'); // the views dropdown
-    var recyclebin = Y.get('#browse-bin'); // the recyclebin link
-    var recyclebinwrap = Y.get('#recyclebin'); // the recyclebin link
+    var actionpicker = Y.one('#actions'); // the actions dropdown
+    var viewpicker = Y.one('#views'); // the views dropdown
+    var recyclebin = Y.one('#browse-bin'); // the recyclebin link
+    var recyclebinwrap = Y.one('#recyclebin'); // the recyclebin link
     
     //listens for a change in the module dropdown
     modpicker.on('change',function(e){
@@ -182,14 +182,14 @@ YUI(EXPONENT.YUI_CONFIG).use("node","event",function(Y){
     }
     //enables the save button once the view is selected
     EXPONENT.enableSave = function() {
-        var svbtn = Y.get('#buttonsSubmit')
+        var svbtn = Y.one('#buttonsSubmit')
         svbtn.removeAttribute('disabled');
         svbtn.ancestor('.buttongroup').removeClass('disabled');
     }
     
     //disables save button
     EXPONENT.disableSave = function() {
-        Y.get('#buttonsSubmit').set('disabled',1).ancestor('.buttongroup').addClass('disabled');
+        Y.one('#buttonsSubmit').set('disabled',1).ancestor('.buttongroup').addClass('disabled');
     }
     
     
@@ -216,14 +216,14 @@ YUI(EXPONENT.YUI_CONFIG).use("node","event",function(Y){
 
     //called from the recyclebin one a trashed item is selected for use
     EXPONENT.useRecycled = function(src) {
-       var recycledSource = Y.get('#existing_source');
+       var recycledSource = Y.one('#existing_source');
        recycledSource.set('value',src)
        recyclebinwrap.addClass('using-rb');
     }
 
     //removes the source from the value of the hidden variable if the switch modules
     EXPONENT.clearRecycledSource = function() {
-        var recycledSource = Y.get('#existing_source');
+        var recycledSource = Y.one('#existing_source');
         recycledSource.set('value',"")
         recyclebinwrap.removeClass('using-rb');
     }
@@ -324,8 +324,8 @@ YUI(EXPONENT.YUI_CONFIG).use("node","event",function(Y){
         }
     };
     
-    Y.get('.loadingdiv').setStyle('display','none');
-    Y.get('.containermodule.hide').removeClass('hide');
+    Y.one('.loadingdiv').setStyle('display','none');
+    Y.one('.containermodule.hide').removeClass('hide');
     
 });
 

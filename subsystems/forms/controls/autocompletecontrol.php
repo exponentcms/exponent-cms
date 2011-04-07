@@ -63,7 +63,7 @@ class autocompletecontrol extends formcontrol {
         $script = "
         YUI({ base:EXPONENT.YUI3_PATH,loadOptional: true}).use('node', function(Y) {
 
-            Y.get('#".$name."').on('click',function(e){e.target.set('value','');});
+            Y.one('#".$name."').on('click',function(e){e.target.set('value','');});
 
             // autocomplete
             var autocomplete = function() {

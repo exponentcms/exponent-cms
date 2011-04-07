@@ -17,9 +17,9 @@
 {literal}
 YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
      // start coding
-     var checkbox = Y.get('#remember_me'); //the checkbox
+     var checkbox = Y.one('#remember_me'); //the checkbox
      checkbox.on('click',function(e){
-         var psswrd = Y.get("#passwordDiv");//div wrapping the password box
+         var psswrd = Y.one("#passwordDiv");//div wrapping the password box
          psswrd.toggleClass('hide-me');
      });
 })
