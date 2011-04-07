@@ -20,17 +20,6 @@ if (!defined('EXPONENT_VERSION_MAJOR')) {
 	// the RELEASE constant is changed by the build scripts at code freeeze
 	define('RELEASE','%%RELEASE%%');
 	if (RELEASE != '%%RELEASE%%') {
-		/* exdoc
-		 * If this constant is set to a true value (1 is the prefered value), then
-		 * the system will behave slightly differently, to accomodate for developers
-		 * and their environment.
-		 */
-		//##################################################################################//
-		//### IF YOU ARE WANTING TO CHANGE THE DEVELOPMENT DEFINE, YOU CAN NOW FIND IT IN ##//
-		//### THE config.php FILE OR CHANGE IT VIA THE ADMIN CONTROL PANEL                ##//
-		//##################################################################################//
-		//define('DEVELOPMENT',0); // CHANGE FOR DIST
-		//##################################################################################//
 
 		/* exdoc
 		 * This is the major version number of Exponent; the 0 in 0.96.2-beta3
@@ -63,6 +52,7 @@ if (!defined('EXPONENT_VERSION_MAJOR')) {
 		define('EXPONENT_VERSION_REVISION','0');
 		define('EXPONENT_VERSION_TYPE','develop');
 		define('EXPONENT_VERSION_ITERATION','');
+		define('EXPONENT_VERSION_BUILDDATE',time());
 	}
 }
 
