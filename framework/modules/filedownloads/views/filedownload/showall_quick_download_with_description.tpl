@@ -13,7 +13,7 @@
  *
  *}
 
-<div class="module filedownload quick-with-description">
+<div class="module filedownload quick-download-with-description">
     {if $moduletitle}<h1>{$moduletitle}</h1>{/if}
     {if $config.enable_rss}
         <a class="podcastlink" href="{podcastlink}">Subscribe to {$config.feed_title}</a>
@@ -49,11 +49,10 @@
                 <div class="tags">
                     Tags: 
                     {foreach from=$file->expTag item=tag name=tags}
-                    <a href="{link action=showall_by_tags tag=$tag->sef_url}">{$tag->title}</a>
-                    {if $smarty.foreach.tags.last != 1},{/if}
+						<a href="{link action=showall_by_tags tag=$tag->sef_url}">{$tag->title}</a>
+						{if $smarty.foreach.tags.last != 1},{/if}
                     {/foreach} 
                 </div>
-                
                 {$file->body}
             </div>
         </div>
