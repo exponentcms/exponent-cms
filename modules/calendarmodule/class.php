@@ -322,7 +322,7 @@ class calendarmodule {
 			$template->assign("nextmonth2",strtotime('+2 months',$timefirst));
 			$template->assign("nextmonth3",strtotime('+3 months',$timefirst));
 			$template->assign("now",$timefirst);
-			$template->assign("today",strtotime('today')-39600);
+			$template->assign("today",strtotime('today')-43200);
 		} else if ($viewparams['type'] == "administration") {
 			// Check perms and return if cant view
 			if ($viewparams['type'] == "administration" && !$user) return;
