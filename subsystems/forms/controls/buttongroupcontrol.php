@@ -81,7 +81,7 @@ class buttongroupcontrol extends formcontrol {
 		if (empty($this->id)) $this->id = $name;
 		$html = "";
 		if ($this->submit != "") {
-			$html .= '<input id="'.$this->id.'Submit" class="submit button" type="submit" value="' . $this->submit . '"';
+			$html .= '<button class="submit button awesome '.BTN_SIZE.' '.BTN_COLOR.'" type="submit" value="' . $this->submit . '"';
 			if ($this->disabled) $html .= " disabled";
 			$html .= ' onclick="if (checkRequired(this.form)';
 			if (isset($this->onclick)) $html .= ' '.$this->onclick;
@@ -93,14 +93,24 @@ class buttongroupcontrol extends formcontrol {
 			}
 			$html .= ' else { return false; }"';
 			$html .= ' />';
+			$html .= $this->submit;
+			$html .= ' </button>';
 
 		}
-		if ($this->reset != "") $html .= '<input class="button" type="reset" value="' . $this->reset . '"' . ($this->disabled?" disabled":"") . ' />';
+		//if ($this->reset != "") $html .= '<input class="button" type="reset" value="' . $this->reset . '"' . ($this->disabled?" disabled":"") . ' />';
 		if ($this->cancel != "") {
-			$html .= '<input class="cancel button" type="button" value="' . $this->cancel . '"';
-			$html .= ' onclick="document.location.href=\''.exponent_flow_get().'\'"';
-			$html .= ' />';
+			$html .= '<button class="cancel button awesome '.BTN_SIZE.' '.BTN_COLOR.'" onclick="document.location.href=\''.exponent_flow_get().'\'"';
+			$html .= '>';
+			$html .= $this->cancel;
+			$html .= '</button>';
 		}
+		
+		expCSS::pushToHead(array(
+		    "unique"=>"button",
+		    "corecss"=>"button",
+		    )
+		);
+		
 		return $html;
 	}
 

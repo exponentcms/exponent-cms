@@ -88,6 +88,8 @@
                     {control type="dropdown" name="sc[DISPLAY_START_OF_WEEK]" label="Start of Week" items=$start_of_week default=$smarty.const.DISPLAY_START_OF_WEEK}
                     {control type="text" name="sc[DISPLAY_DEFAULT_TIMEZONE]" label="Enter the default timezone for this site. CAUTION: This may break calendars and other features that use date functions if you change this after entering data. Must be in a format shown here: <a href='http://www.php.net/manual/en/timezones.php' target='_blank'>http://www.php.net/manual/en/timezones.php</a>" value=$smarty.const.DISPLAY_DEFAULT_TIMEZONE}
                     {control type="radiogroup" name="sc[SLINGBAR_TOP]" label="Default Admin Slingbar Position" items="Top of Viewport,Bottom of Viewport" values="1,0" default=$smarty.const.SLINGBAR_TOP}
+                    {control type="dropdown" name="sc[BTN_COLOR]" label="Form Button Color" items="Black,Green,Blue,Red,Magenta,Orange,Yellow,Grey" values="black,green,blue,red,magenta,orange,yellow,grey" default=$smarty.const.BTN_COLOR}
+                    {control type="dropdown" name="sc[BTN_SIZE]" label="Form Button Size" items="Large,Medium,Small" values="large,medium,small" default=$smarty.const.BTN_SIZE}
                 </div>
                 {if $user->is_admin==1}
                 <div id="tab6">
