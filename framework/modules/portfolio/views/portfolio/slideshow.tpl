@@ -58,8 +58,9 @@
                     {if !$config.hidetext}
                         <h2>
                             <a href="{link action="show" title=$slide->sef_url}">
-                        {$slide->title}
-                        </a></h2>
+                                {$slide->title}
+                            </a>
+                        </h2>
                         {$slide->body}
                     {/if}
                 </div>

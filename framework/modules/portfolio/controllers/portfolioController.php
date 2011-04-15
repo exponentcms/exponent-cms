@@ -39,6 +39,7 @@ class portfolioController extends expController {
     
     public function showall() {
         $where = $this->aggregateWhereClause();
+        $where .= (!empty($this->config['only_featured']))?"AND featured=1":"";
         $order = 'rank';
         $limit = empty($this->config['limit']) ? 10 : $this->config['limit'];
 
@@ -79,6 +80,7 @@ class portfolioController extends expController {
     public function slideshow() {
         expHistory::set('viewable', $this->params);
         $where = $this->aggregateWhereClause();
+        $where .= (!empty($this->config['only_featured']))?"AND featured=1":"";
         $order = 'rank';
         $s = new portfolio();
         $slides = $s->find('all',$where,$order);
