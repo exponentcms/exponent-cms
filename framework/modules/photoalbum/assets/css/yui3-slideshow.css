@@ -27,6 +27,12 @@
     height:100%;
 }
 
+.slideshow-frame .item-actions {
+    position:absolute;
+    left:0;
+    bottom:0;
+}
+
 .slideshow-frame .slide .bodycopy {
     position:relative;
     z-index:2;

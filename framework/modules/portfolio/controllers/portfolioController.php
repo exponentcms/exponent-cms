@@ -21,10 +21,11 @@ class portfolioController extends expController {
     //public $basemodel_name = '';
     public $useractions = array(
         'showall'=>'Show all', 
-        'showall_tags'=>"Tag Categories"
+        'tags'=>"Tags",
+        'slideshow'=>"Slideshow"
     );
     
-    public $remove_configs = array('ealerts','tags','files','rss','comments');
+    public $remove_configs = array('ealerts','tags','rss','comments');
 
     function name() { return $this->displayname(); } //for backwards compat with old modules
     function displayname() { return "Portfolio"; }
@@ -55,12 +56,11 @@ class portfolioController extends expController {
         assign_to_template(array('page'=>$page));
     }
     
-    public function showall_tags() {
-        $portfolio = new portfolio();
-        $portfolios = $portfolio->find('all');
+	public function tags() {
+        $ports = $this->portfolio->find('all');
         $used_tags = array();
-        foreach ($portfolios as $portfolio) {
-            foreach($portfolio->expTag as $tag) {
+        foreach ($ports as $port) {
+            foreach($port->expTag as $tag) {
                 if (isset($used_tags[$tag->id])) {
                     $used_tags[$tag->id]->count += 1;
                 } else {
@@ -72,8 +72,57 @@ class portfolioController extends expController {
             }
         }
         
-        assign_to_template(array('tags'=>$used_tags));
-    }           
+        $used_tags = expSorter::sort(array('array'=>$used_tags,'sortby'=>'title', 'order'=>'ASC', 'ignore_case'=>true));
+	    assign_to_template(array('tags'=>$used_tags));
+	}
+
+    public function slideshow() {
+        expHistory::set('viewable', $this->params);
+        $where = $this->aggregateWhereClause();
+        $order = 'rank';
+        $s = new portfolio();
+        $slides = $s->find('all',$where,$order);
+                    
+        assign_to_template(array('slides'=>$slides));
+    }
+
+	public function showall_by_tags() {
+	    global $db;	    
+
+	    // set history
+	    expHistory::set('viewable', $this->params);
+	    
+	    // get the tag being passed
+        $tag = new expTag($this->params['tag']);
+
+        // find all the id's of the blog posts for this blog module
+        $port_ids = $db->selectColumn('portfolio', 'id', $this->aggregateWhereClause());
+        
+        // find all the blogs that this tag is attached to
+        $ports = $tag->findWhereAttachedTo('portfolio');
+        
+        // loop the blogs for this tag and find out which ones belong to this module
+        $ports_by_tags = array();
+        foreach($ports as $port) {
+            if (in_array($port->id, $port_ids)) $ports_by_tags[] = $port;
+        }
+
+        // create a pagination object for the blog posts and render the action
+		$order = 'created_at';
+		$limit = empty($this->config['limit']) ? 10 : $this->config['limit'];
+		
+		$page = new expPaginator(array(
+		            'records'=>$ports_by_tags,
+		            'limit'=>$limit,
+		            'order'=>$order,
+		            'controller'=>$this->baseclassname,
+		            'action'=>$this->params['action'],
+		            'columns'=>array('Title'=>'title'),
+		            ));
+        $page->records = expSorter::sort(array('array'=>$page->records,'sortby'=>'rank', 'order'=>'ASC', 'ignore_case'=>true));
+
+		assign_to_template(array('page'=>$page));
+	}
     
     public function update() {
         //FIXME:  Remove this code once we have the new tag implementation

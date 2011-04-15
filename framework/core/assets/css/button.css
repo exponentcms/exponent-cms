@@ -96,4 +96,20 @@
     background-color: #d4d4d4;
     color: #6d6d6d;
 }
+/****************  dissabled  ***********************/
+.disabled.awesome,
+.disabled.awesome:visited {
+    background-color: #999999;
+    color: #525252;
+    text-shadow: none;
+	-moz-box-shadow: 0 0 0 0;
+	-webkit-box-shadow: 0 0 0 0;
+}
+.disabled.awesome:hover {
+    background-color: #999999;
+    color: #525252;
+}
 
+.disabled.awesome:active {
+    top: 0px
+}

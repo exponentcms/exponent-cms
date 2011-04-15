@@ -22,14 +22,16 @@
     {permissions}
         <div class="module-actions">
         {if $permissions.create == 1}
-            {icon class="add" action=edit rank=1 title="Add to the top" text="Add a Portfolio Piece"}
+            {icon class="add" action=edit title="Add to the top" text="Add a Portfolio Piece"}
         {/if}
         {if $permissions.edit == 1}
             {ddrerank items=$page->records model="portfolio" label="Portfolio Pieces"|gettext}
         {/if}
         </div>
     {/permissions}    
-	{$page->links}
+
+    {pagelinks paginate=$page top=1}
+
     {foreach from=$page->records item=record}
 		<div class="item">
 			<h2><a href="{link action=show title=$record->sef_url}" title="{$record->title|escape:"htmlall"}">{$record->title}</a></h2>
@@ -45,12 +47,6 @@
 				</div>
 			{/permissions}
 			
-			{if $record->expFile[0]->id}
-				<a href="{link action=show title=$record->sef_url}" title="{$record->title|escape:"htmlall"}" class="thumbnail">
-					{img file_id=$record->expFile[0]->id alt=$record->expFile[0]->alt w=$config.thumbsize h=$config.thumbsize zc=1}
-				</a>
-			{/if}
-
 			{if $record->expTag|@count>0}
 				<div class="tag">
 					Tags: 
@@ -60,22 +56,25 @@
 					{/foreach}
 				</div>
 			{/if}
-			<div class="bodycopy">
-				{if $config.truncate}
-					<p>{$record->body|summarize:"html":"para"}</p>
-				{else}
-					{$record->body}
-				{/if}
-			</div>
-			{clear}
+			
+            <div class="bodycopy">
+                {filedisplayer view="`$config.filedisplay`" files=$record->expFile record=$record is_listing=1}
+
+                {if $config.usebody==1}
+                    <p>{$record->body|summarize:"html":"para"}</p>
+                {else $config.usebody==2}
+                    {$record->body}
+                {/if}
+            </div>
+            <div style="clear:both"></div>
 		</div>
         {permissions}
-			<div class="module-actions">
-				{if $permissions.create == 1}
-					{icon class="add addhere" action=edit rank=`$text->rank+1` title="Add another here"|gettext  text="Add a portfolio piece here"}
-				{/if}
-			</div>
+			{if $permissions.create == 1}
+				{icon class="add addhere" action=edit rank=`$record->rank+1` title="Add another here"|gettext  text="Add a portfolio piece here"}
+			{/if}
         {/permissions}
     {/foreach}   
-	{$page->links}
+
+    {pagelinks paginate=$page bottom=1}
+
 </div>

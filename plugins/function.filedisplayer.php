@@ -35,16 +35,16 @@ function smarty_function_filedisplayer($params,&$smarty) {
         $params['files'][] = $tmp;
     };
     
-    $float = $config['float']=="No Float"?"":"float:".strtolower($config['float']).";";
-    $width = !empty($config['width'])?$config['width']:"200";
+    $float = $config['ffloat']=="No Float"?"":"float:".strtolower($config['ffloat']).";";
+    $width = !empty($config['fwidth'])?$config['fwidth']:"200";
     
-    switch ($config['float']) {
+    switch ($config['ffloat']) {
         case 'Left':
-            $margin = "margin-right:".$config['margin']."px;";
+            $margin = "margin-right:".$config['fmargin']."px;";
             break;
         
         case 'Right':
-            $margin = "margin-left:".$config['margin']."px;";
+            $margin = "margin-left:".$config['fmargin']."px;";
             break;
 
         default:

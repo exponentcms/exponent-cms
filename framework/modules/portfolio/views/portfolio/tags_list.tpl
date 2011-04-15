@@ -14,7 +14,13 @@
  *
  *}
 
-<h2>{"Configure Portfolio"|gettext}</h2>
-{control type="checkbox" name="only_featured" label="Only show featured pieces" value=1 checked=$config.only_featured}
-{control type="radiogroup" name="usebody" label="Body Text"|gettext default=$config.usebody items="Full,Summary,None" values="2,1,0"}
-
+<div class="module portfolio tags-list">
+    {if $moduletitle}<h2>{$moduletitle}</h2>{/if}
+    <ul>
+        {foreach from=$tags item=tag}
+            <li>
+                <a href="{link action=showall_by_tags tag=$tag->sef_url}">{$tag->title} ({$tag->count})</a>
+            </li>
+        {/foreach}
+    </ul>
+</div>
