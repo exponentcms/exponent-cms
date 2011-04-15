@@ -183,13 +183,13 @@ YUI(EXPONENT.YUI_CONFIG).use("node","event",function(Y){
     //enables the save button once the view is selected
     EXPONENT.enableSave = function() {
         var svbtn = Y.one('#buttonsSubmit')
-        svbtn.removeAttribute('disabled');
+        svbtn.removeAttribute('disabled').removeClass('disabled');
         svbtn.ancestor('.buttongroup').removeClass('disabled');
     }
     
     //disables save button
     EXPONENT.disableSave = function() {
-        Y.one('#buttonsSubmit').set('disabled',1).ancestor('.buttongroup').addClass('disabled');
+        Y.one('#buttonsSubmit').set('disabled',1).addClass('disabled').ancestor('.buttongroup').addClass('disabled');
     }
     
     
