@@ -81,12 +81,6 @@ if (!isset($_POST['data_id']) || (isset($_POST['data_id']) && exponent_permissio
 				$from_name = $user->firstname." ".$user->lastname." (".$user->username.")";
             } else {
                 $db_data->user_id = 0;
-				if (empty($from)) {
-					$from = trim(SMTP_FROMADDRESS);
-				}
-				if (empty($from_name)) {
-					$from_name = trim(ORGANIZATION_NAME);
-				}
             }
             $db_data->timestamp = time();
         }        
@@ -124,6 +118,12 @@ if (!isset($_POST['data_id']) || (isset($_POST['data_id']) && exponent_permissio
         $template->assign("is_email",1);
         $emailHtml = $template->render();
 		$emailText = chop(strip_tags(str_replace(array("<br />","<br>","br/>"),"\n",$emailHtml)));
+		if (empty($from)) {
+			$from = trim(SMTP_FROMADDRESS);
+		}
+		if (empty($from_name)) {
+			$from_name = trim(ORGANIZATION_NAME);
+		}
         
         if (count($emaillist)) {
             //This is an easy way to remove duplicates
