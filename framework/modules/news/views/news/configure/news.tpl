@@ -17,5 +17,5 @@
 <h2>Configure this News Module</h2>
 {*control type=dropdown name=order label="Sort Order" items="$sortopts" value=$config.order*}
 {control type="checkbox" name="only_featured" label="Only show Featured News Items" value=1 checked=$config.only_featured}
-{control type="checkbox" name="truncate" label="Summarize by showing only first paragraph on listing pages?"|gettext checked=$config.truncate value=1}
+{control type="radiogroup" name="usebody" label="Body Text"|gettext default=$config.usebody items="Full,Summary,None" values="2,1,0"}
 
