@@ -55,11 +55,13 @@
 
             <div class="bodycopy">
                 {filedisplayer view="`$config.filedisplay`" files=$item->expFile record=$item is_listing=1}
-                {if $config.truncate}
+
+                {if $config.usebody==1}
                     <p>{$item->body|summarize:"html":"para"}</p>
-                {else}
+                {else $config.usebody==2}
                     {$item->body}
                 {/if}
+
                 <a class="readmore" href="{if $item->isRss}{$item->rss_link}{else}{link action=showByTitle title=$item->sef_url}{/if}">{"Read More"|gettext}</a>
             </div>
             <div style="clear:both"></div>
