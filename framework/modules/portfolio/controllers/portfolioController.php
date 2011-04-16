@@ -18,6 +18,8 @@
 ##################################################
 
 class portfolioController extends expController {
+    public $codequality = 'stable';
+
     //public $basemodel_name = '';
     public $useractions = array(
         'showall'=>'Show all', 
