@@ -33,7 +33,11 @@
 				<h1>{$_TR.form_title}</h1>
 				<p>{$_TR.form_header}</p>
 		</div>
+		{permissions}
+		{if $user->isAdmin()}
 		<a class="add" href="{link action=add_section parent=0}">{$_TR.new_top_level}</a>
+		{/if}
+		{/permissions}
 		<div id="navtree"><img src="{$smarty.const.ICON_RELATIVE}ajax-loader.gif">	<strong>Loading Navigation</strong></div>
 </div>
 

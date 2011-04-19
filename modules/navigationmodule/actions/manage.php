@@ -20,6 +20,7 @@
 if (!defined('EXPONENT')) exit('');
 
 if (exponent_permissions_checkOnModule('manage','navigationmodule')) {
+    global $user;
 	exponent_flow_set(SYS_FLOW_PROTECTED, SYS_FLOW_ACTION);
 	
 	$template = new template('navigationmodule','_manager',$loc);
@@ -27,6 +28,7 @@ if (exponent_permissions_checkOnModule('manage','navigationmodule')) {
 	$template->assign('sections',navigationmodule::levelTemplate(0,0));
 	// Templates
 	$template->assign('canManageStandalones', navigationmodule::canManageStandalones());
+	$template->assign('user', $user);
 	$template->assign('canManagePagesets', exponent_users_isAdmin());
 	$tpls = $db->selectObjects('section_template','parent=0');
 	$template->assign('templates',$tpls);
