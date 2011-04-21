@@ -19,11 +19,11 @@
     <p>Here you can view questions on your site and edit, delete, and answer unanswered questions</p>
     
     {permissions}
-        {if $permissions.edit == 1 && $page->records|@count>1}
-            {ddrerank items=$page->records model="faq" sortfield="question" label="FAQs"}
-        {/if}
         {if $permissions.create == 1}
             {icon class=add action=create title="Add a new FAQ" text="Add a New FAQ"}
+        {/if}
+        {if $permissions.manage == 1}
+            {ddrerank items=$page->records model="faq" sortfield="question" label="FAQs"}
         {/if}
     {/permissions}
     <table class="exp-skin-table">

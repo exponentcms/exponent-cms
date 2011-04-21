@@ -179,6 +179,7 @@ class containermodule {
 			$cloc->mod = $loc->mod;
 			$cloc->src = $loc->src;
 			$cloc->int = $containers[$i]->id;
+            $location->mod = str_replace('Controller','',$location->mod);
 			$containers[$i]->permissions = array(
 				'administrate'=>(exponent_permissions_check('administrate',$location) ? 1 : 0),
 				'configure'=>(exponent_permissions_check('configure',$location) ? 1 : 0)

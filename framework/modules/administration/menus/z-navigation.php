@@ -20,7 +20,7 @@
 if (!defined('EXPONENT')) exit('');
 global $user, $router, $db, $section;
 
-if (!$db->selectValue('userpermission','uid','uid=\''.$user->id.'\' AND permission!=\'view\'') && !$user->isAdmin()) return false;
+if (!$db->selectValue('userpermission','uid','uid=\''.$user->id.'\' AND permission!=\'view\' AND internal!=\'\'') && !$user->isAdmin()) return false;
 
 $type = "Page";
 $page = $db->selectObject('section', 'id='.$section);
