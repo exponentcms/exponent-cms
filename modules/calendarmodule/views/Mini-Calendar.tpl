@@ -58,7 +58,7 @@
 	{permissions}
 		{if $permissions.post == 1}
 			<div class="module-actions">
-				{icon class="add" action=edit title="Add a New Event"|gettext text="Add an Event"|gettext}
+				{icon class=add action=edit title="Add a New Event"|gettext text="Add an Event"|gettext}
 			</div>
 		{/if}
 	{/permissions}

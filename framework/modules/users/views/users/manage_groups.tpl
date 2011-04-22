@@ -24,7 +24,7 @@
         When a new user account is created, it will be automatically added to all groups with a Type of "Default"
     </p>
 	<div class="module-actions">
-		{icon class=add controller="users" action="edit_group" title="Create a New User Group" text="Create a New User Group" alt="Create a New User Group"}
+		{icon class=add controller=users action=edit_group title="Create a New User Group" text="Create a New User Group" alt="Create a New User Group"}
 	</div>
 	{$page->links}
 	<table class="exp-skin-table">

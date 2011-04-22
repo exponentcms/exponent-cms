@@ -44,7 +44,7 @@
             {ddrerank label="Products" sql=$rerankSQL model="product" controller="storeCategory" id=$current_category->id}
         {/if}
         {if $permissions.edit == 1}
-              {icon class="add" action=create title="Add a new product" text="Add a New Product"}
+              {icon class=add action=create title="Add a new product" text="Add a New Product"}
         {/if}
     {/permissions}
     {/if}

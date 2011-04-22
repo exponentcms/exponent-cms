@@ -19,7 +19,7 @@
     {permissions}
 		<div class="module-actions">
 			{if $permissions.edit == 1}
-				{icon class="add" action=edit title="Create a new product" text="Add a product"}
+				{icon class=add action=edit title="Create a new product" text="Add a product"}
 			{/if}
 		</div>
     {/permissions}
@@ -52,7 +52,7 @@
 								{icon action=delete record=$listing title="Delete `$listing->title`"}
 							{/if}
 							{if $permissions.edit == 1}
-								{icon action="copyProduct" img="copy.png" title="Copy `$listing->title` " record=$listing}
+								{icon action=copyProduct img="copy.png" title="Copy `$listing->title` " record=$listing}
 							{/if}
 						</div>
                     {/permissions}  

@@ -21,7 +21,7 @@
     {permissions}
         <div class="module-actions">
 			{if $permissions.create == 1}
-				{icon class="add" action=edit rank=1 title="Add a File at the Top"|gettext text="Add a File"|gettext}
+				{icon class=add action=edit rank=1 title="Add a File at the Top"|gettext text="Add a File"|gettext}
 			{/if}
 			{if ($permissions.edit == 1 && $order != 'created_at')}
 				{ddrerank items=$page->records model="filedownload" label="Downloadable Items"|gettext}

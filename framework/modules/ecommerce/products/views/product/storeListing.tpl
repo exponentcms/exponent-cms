@@ -35,7 +35,7 @@
             {icon action=delete record=$listing title="Delete `$listing->title`" onclick="return confirm('Are you sure you want to delete this product?');"}
         {/if}
         {if $permissions.edit == 1}
-            {icon action="copyProduct" img="copy.png"  record=$listingtitle="Copy `$listing->title` "}
+            {icon action=copyProduct img="copy.png" record=$listingtitle="Copy `$listing->title` "}
         {/if}
     </div>
     {/permissions}

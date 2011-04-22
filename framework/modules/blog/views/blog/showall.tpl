@@ -24,7 +24,7 @@
     {permissions}
 		<div class="module-actions">
 			{if $permissions.edit == 1}
-				{icon class="add" action=edit title="Add a new blog article" text="Add a new blog article"}
+				{icon class=add action=edit title="Add a new blog article" text="Add a new blog article"}
 			{/if}
 		</div>
     {/permissions}

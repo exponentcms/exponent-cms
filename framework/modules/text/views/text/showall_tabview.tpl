@@ -26,7 +26,7 @@
     {permissions}
         <div class="module-actions">
             {if $permissions.create == 1}
-                {icon class="add" action=edit rank=1 title="Add Tab" text="Add Tab"}
+                {icon class=add action=edit rank=1 title="Add Tab" text="Add Tab"}
             {/if}
             {if $permissions.edit == 1}
                 {ddrerank items=$items model="text" label="Text Items"|gettext}

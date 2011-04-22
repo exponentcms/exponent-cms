@@ -43,7 +43,7 @@
             <td>{$comment->body}</td>
             <td>
 				<div class="item-actions">
-					{icon class="edit" action=approve record=$comment title="Edit Comment"}
+					{icon class=edit action=approve record=$comment title="Edit Comment"}
 					{icon action=delete record=$comment title="Delete Comment" onclick="return confirm('Are you sure you want to delete this comment?');"}
 				</div>
             </td>

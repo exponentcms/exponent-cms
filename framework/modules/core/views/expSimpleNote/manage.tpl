@@ -43,7 +43,7 @@
             <td>{$simplenote->body}</td>
             <td>
 				<div class="item-actions">
-					{icon class="edit" action=approve record=$simplenote tab=$tab title="Edit Note"}
+					{icon class=edit action=approve record=$simplenote tab=$tab title="Edit Note"}
 					{icon action=delete record=$simplenote tab=$tab title="Delete note" onclick="return confirm('Are you sure you want to delete this note?');"}
 				</div>
             </td>

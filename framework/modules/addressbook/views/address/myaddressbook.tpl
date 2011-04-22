@@ -17,7 +17,7 @@
 <div class="module address myaddressbook">
     <h1>{$moduletitle|default:"My address book"}</h1>
     <p>
-        {icon class="add" action=create title="Add New Address" text="Add New Address"|gettext}
+        {icon class=add action=create title="Add New Address" text="Add New Address"|gettext}
     </p>
     
     <table class="exp-skin-table">

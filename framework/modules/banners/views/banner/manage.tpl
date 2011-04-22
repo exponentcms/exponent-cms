@@ -20,10 +20,10 @@
         You can manage the banners for your site's banner modules here.  The banners you create and configure
         here will be available to all the banner modules you have on your site.
     </p>
-    {icon module="banner" action="create" title="Create a new banner" alt="Create a new banner"}{br}
-    {icon module="banner" action="export" title="Export banner data" alt="Export banner data"}{br}
-    {icon module="banner" action="reset_stats" title="Reset banner stats" alt="Reset banner stats"  onclick="return confirm('Are you sure you want to reset the Impression and Click statistics of your banners?');"}{br}
-    {icon module="company" action="create" title="Create a new company" alt="Create a new company"}{br}
+    {icon module=banner action=create title="Create a new banner" alt="Create a new banner"}{br}
+    {icon module=banner action=export title="Export banner data" alt="Export banner data"}{br}
+    {icon module=banner action=reset_stats title="Reset banner stats" alt="Reset banner stats"  onclick="return confirm('Are you sure you want to reset the Impression and Click statistics of your banners?');"}{br}
+    {icon module=company action=create title="Create a new company" alt="Create a new company"}{br}
 	{$page->links}
 	<table class="exp-skin-table">
 	    <thead>

@@ -39,7 +39,7 @@
             {icon action=delete record=$product title="Delete `$product->title`" onclick="return confirm('Are you sure you want to delete this product?');"}
         {/if}
         {if $permissions.edit == 1}
-            {icon action="copyProduct" img="copy.png" title="Copy `$product->title` " record=$product}
+            {icon action=copyProduct img="copy.png" title="Copy `$product->title` " record=$product}
         {/if}
     </div>
     {/permissions}
@@ -211,7 +211,7 @@
     {if $product->childProduct|@count >= 1}
     {permissions}                   
     {if $permissions.delete == 1}   
-        {icon img=delete.png action=deleteChildren record=$product title="Delete `$product->title`'s Children" onclick="return confirm('Are you sure you want to delete ALL child products?');"} 
+        {icon class=delete action=deleteChildren record=$product title="Delete `$product->title`'s Children" onclick="return confirm('Are you sure you want to delete ALL child products?');"} 
         Delete All Child Products
     {/if}
     {/permissions}
@@ -274,13 +274,13 @@
                             {permissions}
                             <div class="item-actions">
                                 {if $permissions.edit == 1}                                                        
-                                    {icon img=edit.png action=edit id=$chiprod->id title="Edit `$chiprod->title`"}
+                                    {icon class=edit action=edit id=$chiprod->id title="Edit `$chiprod->title`"}
                                 {/if}
                                 {if $permissions.delete == 1}
                                     {icon action=delete record=$chiprod title="Delete `$chiprod->title`" onclick="return confirm('Are you sure you want to delete this child product?');"}
                                 {/if}
                                 {if $permissions.edit == 1}
-                                    {icon action="copyProduct" img="copy.png" title="Copy `$chiprod->title` " record=$chiprod}
+                                    {icon action=copyProduct img="copy.png" title="Copy `$chiprod->title` " record=$chiprod}
                                 {/if}
                             </div>
                             {/permissions}

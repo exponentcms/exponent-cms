@@ -29,7 +29,7 @@
 				<a class="adminviewlink mngmntlink" href="{link _common=1 view='Administration' action='show_view' time=$time}">{$_TR.administration_view}</a>{br}
 			{/if}
 			{if $permissions.post == 1}
-				{icon class="add" action=edit title="Add a New Event"|gettext text="Add an Event"|gettext}
+				{icon class=add action=edit title="Add a New Event"|gettext text="Add an Event"|gettext}
 			{/if}
 			</p>
 		</div>

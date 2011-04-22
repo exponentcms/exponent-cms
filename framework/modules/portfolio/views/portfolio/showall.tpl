@@ -22,7 +22,7 @@
     {permissions}
         <div class="module-actions">
         {if $permissions.create == 1}
-            {icon class="add" action=edit title="Add to the top" text="Add a Portfolio Piece"}
+            {icon class=add action=edit title="Add to the top" text="Add a Portfolio Piece"}
         {/if}
         {if $permissions.manage == 1}
             {ddrerank items=$page->records model="portfolio" label="Portfolio Pieces"|gettext}

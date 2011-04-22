@@ -17,7 +17,7 @@
 <div class="company showall">
 	<h1>{$moduletitle|default:'Company Listings'}</h1>
 
-	{icon class="add" controller=$controller action=create text="Add a new `$modelname`"}
+	{icon class=add controller=$controller action=create text="Add a new `$modelname`"}
     <table class="exp-skin-table">
     <thead>
         {$page->header_columns}

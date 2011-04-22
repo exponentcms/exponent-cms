@@ -21,7 +21,7 @@
         You will not be able to create, modify or remove administrator accounts (these options will be disabled).
     </p>
 	<div class="module-actions">
-		{icon class=add module="users" action="create" title="Create a New User" alt="Create a New User"}
+		{icon class=add module=users action=create title="Create a New User" alt="Create a New User"}
 	</div>
 	{$page->links}
 	<table class="exp-skin-table">

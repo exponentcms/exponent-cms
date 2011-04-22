@@ -31,7 +31,7 @@
                  <a href="{link action=edit id=$product->id}" title="Edit this entry">
                      <img src="{$smarty.const.ICON_RELATIVE}edit.png" title="{$_TR.alt_edit}" alt="{$_TR.alt_edit}" />
                  </a>
-                 {icon action="delete" record=$product title="Delete this product"}
+                 {icon action=delete record=$product title="Delete this product"}
              {/if}
          </div>
          {/permissions}
