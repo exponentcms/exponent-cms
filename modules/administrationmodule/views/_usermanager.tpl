@@ -43,12 +43,12 @@
                 <td>
 			{if $user->is_locked}{icon img=lock.png title="Account Locked"}{/if}	
 			{if $user->is_admin == 0}
-				{*icon img="edit.png" action=umgr_edit id=$user->id title="Edit User `$user->username`"*}
-				{icon img="edit.png" module=userprofilemodule action=edit id=$user->id title="Edit User `$user->username`"}
-				{icon img="delete.png" action=umgr_delete id=$user->id title="Delete User `$user->username`"}
+				{*icon class=edit action=umgr_edit id=$user->id title="Edit User `$user->username`"*}
+				{icon class=edit module=userprofilemodule action=edit record=$user title="Edit User `$user->username`"}
+				{icon class=delete action=umgr_delete record=$user title="Delete User `$user->username`"}
 			{else}
 				{icon img="edit.disabled.png" title="Admin Users Can't Be Edited"}
-                                {icon img="delete.disabled.png" title="Admin Users Can't Be Deleted"}
+				{icon img="delete.disabled.png" title="Admin Users Can't Be Deleted"}
 			{/if}
 			
 		</td>

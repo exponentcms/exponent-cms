@@ -39,9 +39,9 @@
                 <td>{if $group->inclusive}<b>{$_TR.default}</b>{else}Normal{/if}</td>
                 <td>
                         {if $perm_level == 2}
-                                {icon img="edit.png" action=gmgr_editprofile id=$group->id title="Edit Group `$group->name`"}
-                                {icon img="delete.png" action=gmgr_delete id=$group->id title="Delete Group `$group->name`"}
-                                {icon img="groupperms.png" action="gmgr_membership" id=$group->id title="Add/Remove Members to Group `$group->name`"}
+                                {icon class=edit action=gmgr_editprofile record=$group title="Edit Group `$group->name`"}
+								{icon class=delete action=gmgr_delete record=$group title="Delete Group `$group->name`"}
+                                {icon img="groupperms.png" action=gmgr_membership record=$group title="Add/Remove Members to Group `$group->name`"}
                         {/if}
 
                 </td>
