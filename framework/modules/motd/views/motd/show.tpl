@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2008 OIC Group, Inc.
+ * Copyright (c) 2004-2011 OIC Group, Inc.
  * Written and Designed by Adam Kessler
  *
  * This file is part of Exponent
@@ -33,9 +33,11 @@
         <a class="link" href="{link action=showall}">View Previous Tips</a>
     
         {permissions}
-            {if $permissions.edit == 1}
-                {icon class="add" action=create text="Add a tip"}
-          {/if}
+			<div class="module-actions">
+				{if $permissions.edit == 1}
+					{icon class="add" action=create text="Add a tip"}
+			  {/if}
+			 </div>
         {/permissions}    
     </div>
 </div>
