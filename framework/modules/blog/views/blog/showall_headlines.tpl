@@ -18,9 +18,11 @@
     {if $moduletitle}<h2>{$moduletitle}</h2>{/if}
     
     {permissions}
-        {if $permissions.edit == 1}
-            {icon class="add" action=edit title="Add a new blog article" text="Add a new blog article"}
-      {/if}
+		<div clas="module-actions">
+			{if $permissions.edit == 1}
+				{icon class="add" action=edit title="Add a new blog article" text="Add a new blog article"}
+			{/if}
+		</div>
     {/permissions}
     <ul>
     {foreach from=$page->records item=record name="blogs"}
@@ -30,10 +32,10 @@
             {permissions}
                 <div class="item-actions">
                     {if $permissions.edit == 1}
-                        {icon action=edit img=edit.png class="editlink" id=$record->id title="Edit this `$modelname`"}
+                        {icon action=edit record=$record title="Edit this `$modelname`"}
                     {/if}
                     {if $permissions.delete == 1}
-                        {icon action=delete img=delete.png id=$record->id title="Delete this `$modelname`" onclick="return confirm('Are you sure you want to delete this `$modelname`?');"}
+                        {icon action=delete record=$record title="Delete this `$modelname`" onclick="return confirm('Are you sure you want to delete this `$modelname`?');"}
                     {/if}
                 </div>
             {/permissions}

@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2008 OIC Group, Inc.
+ * Copyright (c) 2004-2011 OIC Group, Inc.
  * Written and Designed by Adam Kessler
  *
  * This file is part of Exponent
@@ -19,10 +19,10 @@
     {permissions}
         <div class="item-actions">
             {if $permissions.edit == 1}
-                {icon action=edit id=$record->id title="Edit this `$modelname`"}
+                {icon action=edit record=$record title="Edit this `$modelname`"}
             {/if}
             {if $permissions.delete == 1}
-                {icon action=delete id=$record->id title="Delete this `$modelname`" onclick="return confirm('Are you sure you want to delete this `$modelname`?');"}
+                {icon action=delete record=$record title="Delete this `$modelname`" onclick="return confirm('Are you sure you want to delete this `$modelname`?');"}
             {/if}
         </div>
     {/permissions}
@@ -30,8 +30,8 @@
         <span class="tags">
             Tags: 
             {foreach from=$record->expTag item=tag name=tags}
-            <a href="{link action=showall_by_tags tag=$tag->sef_url}">{$tag->title}</a>
-            {if $smarty.foreach.tags.last != 1},{/if}
+				<a href="{link action=showall_by_tags tag=$tag->sef_url}">{$tag->title}</a>
+				{if $smarty.foreach.tags.last != 1},{/if}
             {/foreach} 
         </span>
     </span>
