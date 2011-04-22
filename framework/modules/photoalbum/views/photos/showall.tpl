@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2008 OIC Group, Inc.
+ * Copyright (c) 2004-2011 OIC Group, Inc.
  * Written and Designed by Adam Kessler
  *
  * This file is part of Exponent
@@ -21,12 +21,14 @@
 <div class="module photoalbum showall">
     {if $moduletitle != ""}<h1>{$moduletitle}</h1>{/if}
     {permissions}
-        {if $permissions.create == 1}
-            {icon class="add" action=edit rank=1 title="Add to the top" text="Add Image"}
-        {/if}
-        {if $permissions.edit == 1}
-            {ddrerank items=$page->records model="photo"}
-        {/if}
+		<div class="module-actions">
+			{if $permissions.create == 1}
+				{icon class=add action=edit rank=1 title="Add to the top" text="Add Image"}
+			{/if}
+			{if $permissions.edit == 1}
+				{ddrerank items=$page->records model="photo"}
+			{/if}
+		</div>
     {/permissions}
 
     {$page->links}    
@@ -40,13 +42,13 @@
             {permissions}
                 <div class="item-actions">
                     {if $permissions.edit == 1}
-                        {icon img=edit.png action=edit id=$record->id title="Edit `$modelname`"}
+                        {icon action=edit record=$record title="Edit `$modelname`"}
                     {/if}
                     {if $permissions.delete == 1}
-                        {icon img=delete.png action=delete id=$record->id title="Delete `$modelname`"}
+                        {icon action=delete record=$record title="Delete `$modelname`"}
                     {/if}
                     {if $permissions.create == 1}
-                        {icon img="add.png" action=edit rank=`$text->rank+1` title="Add another image after this one"}
+						{icon class=add action=edit rank=`$text->rank+1` title="Add another image after this one"}
                     {/if}
                 </div>
             {/permissions}

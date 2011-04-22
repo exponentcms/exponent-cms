@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2008 OIC Group, Inc.
+ * Copyright (c) 2004-2011 OIC Group, Inc.
  * Written and Designed by Adam Kessler
  *
  * This file is part of Exponent
@@ -21,14 +21,12 @@
 
 {/css}
 
-
-
 <div class="module photoalbum slideshow">
     {if $moduletitle != ""}<h1>{$moduletitle}</h1>{/if}
     {permissions}
             <div class="module-actions">
                 {if $permissions.create == 1}
-                    {icon class="add" action=edit rank=1 title="Add to the top" text="Add a new slide at the beginning"}
+                    {icon class=add action=edit rank=1 title="Add to the top" text="Add a new slide at the beginning"}
                 {/if}
                 {if $permissions.edit == 1 && $page->records|@count>1}
                     {ddrerank items=$page->records model="photo" label="Slides"}
@@ -52,17 +50,17 @@
             {permissions}
                 <div class="item-actions">
                     {if $permissions.edit == 1}
-                        {icon action=edit id=$item->id title="Edit `$item->title`"}
+                        {icon action=edit record=$item title="Edit `$item->title`"}
                     {/if}
                     {if $permissions.delete == 1}
-                        {icon action=delete id=$item->id title="Delete `$item->title`" onclick="return confirm('Are you sure you want to delete this `$modelname`?');"}
+                        {icon action=delete record=$item title="Delete `$item->title`" onclick="return confirm('Are you sure you want to delete this `$modelname`?');"}
                     {/if}
                     {if $permissions.edit == 1}
                         {if $smarty.foreach.linkloop.first == 0}
-                            {icon action=rerank img=up.png id=$item->id push=up}    
+                            {icon action=rerank img=up.png record=$item push=up}    
                         {/if}
                         {if $smarty.foreach.linkloop.last == 0}
-                            {icon action=rerank img=down.png id=$item->id push=down}
+                            {icon action=rerank img=down.png record=$item push=down}
                         {/if}
                     {/if}
                     {if $permissions.create == 1}
