@@ -1,6 +1,5 @@
 {*
  * Copyright (c) 2004-2011 OIC Group, Inc.
- * Written and Designed by James Hunt
  *
  * This file is part of Exponent
  *
@@ -18,7 +17,7 @@
 
 {/css}
 
-<div class="module calendar default"> 
+<div class="module calendar viewday"> 
 	<div class="module-actions">
 		<a class="weekviewlink" href="{link action=viewweek time=$now view=_viewweek}" title="{$_TR.alt_view_week}">{$_TR.view_week}</a>&nbsp;&nbsp;|&nbsp;&nbsp;
 		<a class="monthviewlink" href="{link action=viewmonth time=$item->eventstart}" title="{$_TR.alt_view_month}" alt="{$_TR.alt_view_month}">{$_TR.view_month}</a>&nbsp;&nbsp;|&nbsp;&nbsp;
@@ -33,7 +32,7 @@
 	{permissions}
 		<div class="module-actions">
 			{if $permissions.post == 1}
-				<a class="add" href="{link action=edit id=0}" title={"Create Event"|gettext}>{"Create Event"|gettext}</a>
+				{icon class="add" action=edit title="Add a New Event"|gettext text="Add an Event"|gettext}
 			{/if}
 		</div>
 	{/permissions}
@@ -48,20 +47,20 @@
 	</p>
 	<dl class="viewweek">
 		{assign var=count value=0}
-		{foreach from=$events item=event}
+		{foreach from=$events item=item}
 			{assign var=count value=1}
 			<dt>
-				<span class="eventtitle"><a class="itemtitle calendar_mngmntlink" href="{link action=view id=$event->id date_id=$event->eventdate->id}"><b>{$event->title}</b></a></span>
+				<span class="eventtitle"><a class="itemtitle calendar_mngmntlink" href="{link action=view id=$item->id date_id=$item->eventdate->id}"><b>{$item->title}</b></a></span>
 				{permissions level=$smarty.const.UILEVEL_PERMISSIONS}
 					<div class="item-actions">
 						{if $permissions.edit == 1}
-							<b><a href="{link action=edit id=$event->id date_id=$event->eventdate->id}"><img class="mngmnt_icon" src="{$smarty.const.ICON_RELATIVE}edit.png" title="{$_TR.alt_edit}" alt="{$_TR.alt_edit}" /></a></b>&nbsp;
+							{icon action=edit record=$item date_id=$item->eventdate->id title="Edit this Event"|gettext}
 						{/if}
 						{if $permissions.delete == 1}
-							{if $event->is_recurring == 0}
-								<a href="{link action=delete id=$event->id}" onclick="return confirm('{$_TR.delete_confirm}');"><img class="mngmnt_icon" src="{$smarty.const.ICON_RELATIVE}delete.png" title="{$_TR.alt_delete}" alt="{$_TR.alt_delete}" /></a>
+							{if $item->is_recurring == 0}
+								{icon action=delete record=$item date_id=$item->eventdate->id title="Delete this Event"|gettext}
 							{else}
-								<a href="{link action=delete_form date_id=$event->eventdate->id id=$event->id}"><img class="mngmnt_icon" src="{$smarty.const.ICON_RELATIVE}delete.png" title="{$_TR.alt_delete}" alt="{$_TR.alt_delete}" /></a>
+								{icon action=delete_form class=delete record=$item date_id=$item->eventdate->id title="Delete this Event"|gettext}
 							{/if}
 						{/if}
 						{if $permissions.administrate == 1 || $permissions.edit == 1 ||
@@ -74,16 +73,16 @@
 			<dd>
 				<p>
 					<span><b>
-						{if $event->is_allday == 1}{$_TR.all_day}{else}
-							{if $event->eventstart != $event->eventend}
-								{$event->eventstart|format_date:$smarty.const.DISPLAY_TIME_FORMAT} to {$event->eventend|format_date:$smarty.const.DISPLAY_TIME_FORMAT}
+						{if $item->is_allday == 1}{$_TR.all_day}{else}
+							{if $item->eventstart != $item->eventend}
+								{$item->eventstart|format_date:$smarty.const.DISPLAY_TIME_FORMAT} to {$item->eventend|format_date:$smarty.const.DISPLAY_TIME_FORMAT}
 							{else}
-								{$event->eventstart|format_date:$smarty.const.DISPLAY_TIME_FORMAT}
+								{$item->eventstart|format_date:$smarty.const.DISPLAY_TIME_FORMAT}
 							{/if}
 						{/if}
 					</b></span>
 					{br}
-					{$event->body|summarize:"html":"paralinks"}
+					{$item->body|summarize:"html":"paralinks"}
 				</p>
 			</dd>
 		{/foreach}

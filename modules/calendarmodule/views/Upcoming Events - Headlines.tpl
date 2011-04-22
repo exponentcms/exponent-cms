@@ -1,6 +1,5 @@
 {*
  * Copyright (c) 2004-2011 OIC Group, Inc.
- * Written and Designed by James Hunt
  *
  * This file is part of Exponent
  *
@@ -30,7 +29,7 @@
 				<a class="adminviewlink mngmntlink" href="{link _common=1 view='Administration' action='show_view' time=$time}">{$_TR.administration_view}</a>{br}
 			{/if}
 			{if $permissions.post == 1}
-				<a class="add" href="{link action=edit id=0}" title={"Create Event"|gettext}>{"Create Event"|gettext}</a>{br}
+				{icon class="add" action=edit title="Add a New Event"|gettext text="Add an Event"|gettext}
 			{/if}
 			</p>
 		</div>
@@ -49,13 +48,13 @@
 				{permissions}
 					<div class="item-actions">
 						{if $permissions.edit == 1}
-							{icon action=edit id=$item->id title="Edit this Event"}
+							{icon action=edit record=$item date_id=$item->eventdate->id title="Edit this Event"|gettext}
 						{/if}
 						{if $permissions.delete == 1}
 							{if $item->is_recurring == 0}
-								{icon action=delete id=$item->id date_id=$item->eventdate->id title="Delete this Event" onclick="return confirm('Are you sure you want to delete this event?');"}
+								{icon action=delete record=$item date_id=$item->eventdate->id title="Delete this Event"|gettext}
 							{else}
-								{icon action=delete_form class=delete id=$item->id date_id=$item->eventdate->id title="Delete this Event"}
+								{icon action=delete_form class=delete record=$item date_id=$item->eventdate->id title="Delete this Event"|gettext}
 							{/if}
 						{/if}
 					</div>

@@ -1,5 +1,4 @@
 {*
- *
  * Copyright (c) 2004-2011 OIC Group, Inc.
  *
  * This file is part of Exponent
@@ -10,21 +9,7 @@
  * Software Foundation; either version 2 of the
  * License, or (at your option) any later version.
  *
- * Exponent is distributed in the hope that it
- * will be useful, but WITHOUT ANY WARRANTY;
- * without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR
- * PURPOSE.  See the GNU General Public License
- * for more details.
- *
- * You should have received a copy of the GNU
- * General Public License along with Exponent; if
- * not, write to:
- *
- * Free Software Foundation, Inc.,
- * 59 Temple Place,
- * Suite 330,
- * Boston, MA 02111-1307  USA
+ * GPL: http://www.gnu.org/licenses/gpl.txt
  *
  *}
  
@@ -49,13 +34,13 @@
 		<div class="item-actions">
 			{br}
 			{if $permissions.edit == 1}
-				<a href="{link action=edit id=$item->id date_id=$item->eventdate->id}"><img class="mngmnt_icon" src="{$smarty.const.ICON_RELATIVE}edit.png" title="{$_TR.alt_edit}" alt="{$_TR.alt_edit}" />{$_TR.edit}</a>&nbsp;
+				{icon action=edit record=$item date_id=$item->eventdate->id title="Edit this Event"|gettext}
 			{/if}
 			{if $permissions.delete == 1}
 				{if $item->is_recurring == 0}
-					<a href="{link action=delete id=$item->id}" onclick="return confirm('{$_TR.delete_confirm}');"><img class="mngmnt_icon" src="{$smarty.const.ICON_RELATIVE}delete.png" title="{$_TR.alt_delete}" alt="{$_TR.alt_delete}" />{$_TR.delete}</a>
+					{icon action=delete record=$item date_id=$item->eventdate->id title="Delete this Event"|gettext}
 				{else}
-					<a href="{link action=delete_form date_id=$item->eventdate->id id=$item->id}"><img class="mngmnt_icon" src="{$smarty.const.ICON_RELATIVE}delete.png" title="{$_TR.alt_delete}" alt="{$_TR.alt_delete}" />{$_TR.delete}</a>
+					{icon action=delete_form class=delete record=$item date_id=$item->eventdate->id title="Delete this Event"|gettext}
 				{/if}
 			{/if}
 		</div>
