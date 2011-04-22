@@ -23,13 +23,13 @@
 	<div class="item-actions">
         {if $permissions.edit == 1}
             {if $text->id != ""}
-                {icon action=edit img=edit.png class="editlink" id=$text->id title="Edit this code snippet" text="Edit this code snippet"}
+                {icon action=edit record=$text title="Edit this code snippet"}
             {else}
-                {icon action=edit class="add" title="Add a new code snippet" text="Add a new code snippet"}
+                {icon action=edit class="add" title="Add a new code snippet"|gettext text="Add a code snippet"|gettext}
             {/if}              
         {/if}
         {if $permissions.delete == 1 && $text->id != ""}
-            {icon action=delete img=delete.png id=$text->id title="Delete this `$modelname`" onclick="return confirm('Are you sure you want to delete this `$modelname`?');"}
+            {icon action=delete record=$text title="Delete this `$modelname`" onclick="return confirm('Are you sure you want to delete this `$modelname`?');"}
         {/if}
 	</div>
 	<div class="module-actions">
