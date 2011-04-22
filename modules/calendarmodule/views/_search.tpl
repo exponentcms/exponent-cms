@@ -26,7 +26,6 @@
  * Suite 330,
  * Boston, MA 02111-1307  USA
  *
- * $Id: _viewday.tpl,v 1.1.1.1 2005/07/14 18:34:04 cvs Exp $
  *}
  
 {css unique="cal" link="`$smarty.const.PATH_RELATIVE`modules/calendarmodule/assets/css/calendar.css"}
