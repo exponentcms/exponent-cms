@@ -17,6 +17,8 @@
 <div class="module rss showall">
     <h1>{$moduletitle|default:"RSS Feeds"}</h1>
     {foreach from=$feeds item=feed}
-        {$feed->feed_title}{$feed->feed_desc}
+		<div class="item">
+			{$feed->feed_title}{$feed->feed_desc}
+		</div>
     {/foreach}    
 </div>
