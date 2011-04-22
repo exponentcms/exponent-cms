@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2007-2008 OIC Group, Inc.
+ * Copyright (c) 2007-2011 OIC Group, Inc.
  * Written and Designed by Adam Kessler
  *
  * This file is part of Exponent
@@ -27,11 +27,11 @@
 	{$page->links}
 	<table class="exp-skin-table">
 	    <thead>
-		<tr>
-		    <th>&nbsp;</th>
-		    {$page->header_columns}
-			<th>Admin</th>
-		</tr>
+			<tr>
+				<th>&nbsp;</th>
+				{$page->header_columns}
+				<th>Admin</th>
+			</tr>
 		</thead>
 		<tbody>
 			{foreach from=$page->records item=listing name=listings}
@@ -43,24 +43,23 @@
 				<td>{$listing->clicks}</td>
 			    <td>
 			        {permissions level=$smarty.const.UILEVEL_PERMISSIONS}
-                    <div class="item-actions">
-                    {if $permissions.edit == true}
-                        {icon controller=$page->controller action=edit id=$listing->id title="Edit"}
-                    {/if}
-                    {if $permissions.delete == true}
-                        {icon controller=$page->controller action=delete id=$listing->id title="Delete" onclick="return confirm('Are you sure you want to delete this?');"}
-                    {/if}
-                    </div>
+						<div class="item-actions">
+							{if $permissions.edit == true}
+								{icon controller=$page->controller action=edit record=$listing title="Edit"}
+							{/if}
+							{if $permissions.delete == true}
+								{icon controller=$page->controller action=delete record=$listing title="Delete" onclick="return confirm('Are you sure you want to delete this?');"}
+							{/if}
+						</div>
                     {/permissions}
 			    </td>
 			</tr>
 			{foreachelse}
-			<tr class="{cycle values="odd,even"}">
-			    <td colspan="{$page->columns|count}">No Data.</td>
-			</tr>
+				<tr class="{cycle values="odd,even"}">
+					<td colspan="{$page->columns|count}">No Data.</td>
+				</tr>
 			{/foreach}
 		</tbody>
-		</table>
-		{$page->links}
 	</table>
+	{$page->links}
 </div>
