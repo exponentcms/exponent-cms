@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2008 OIC Group, Inc.
+ * Copyright (c) 2004-2011 OIC Group, Inc.
  * Written and Designed by Adam Kessler
  *
  * This file is part of Exponent
@@ -21,10 +21,12 @@
         {br}
         <em>The current version is {$current_version->version}</em>
     </p>
-    
-    {icon class=add action=edit_version title="Add new help version" text="Add a New Help Version"}{br}
-    {icon class=add action=edit title="Add a New Help Document" text="Add a New Help Document to version `$current_version->version`"}{br}
-    {icon class=add action=manage_versions title="Manage Versions" text="Manage Versions"}{br}
+
+	<div class="module-actions">
+		{icon class=add action=edit_version title="Add new help version" text="Add a New Help Version"}{br}
+		{icon class=add action=edit title="Add a New Help Document" text="Add a New Help Document to version `$current_version->version`"}{br}
+		{icon class=manage action=manage_versions title="Manage Versions" text="Manage Versions"}{br}
+	</div>
     {$page->links}
     <table class="exp-skin-table">
         <thead>
@@ -41,12 +43,14 @@
             <td><a href="{link action=manage version=$doc->help_version->id}">{$doc->help_version->version|number_format:1}</a></td>
             <td>
                 {permissions}
-                    {if $permissions.edit == 1}
-                        {icon img=edit.png action=edit id=$doc->id title="Edit Help Doc"}
-                    {/if}
-                    {if $permissions.delete == 1}
-                        {icon action=delete img=delete.png id=$doc->id title="Delete this help doc" onclick="return confirm('Are you sure you want to delete this help document?');"}
-                    {/if}
+					<div class="item-actions">
+						{if $permissions.edit == 1}
+							{icon action=edit record=$doc title="Edit Help Doc"}
+						{/if}
+						{if $permissions.delete == 1}
+							{icon action=delete record=$doc title="Delete this help doc" onclick="return confirm('Are you sure you want to delete this help document?');"}
+						{/if}
+					</div>
                 {/permissions}
             </td>
         </tr>
