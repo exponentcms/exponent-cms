@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2007-2008 OIC Group, Inc.
+ * Copyright (c) 2007-2011 OIC Group, Inc.
  * Written and Designed by Adam Kessler
  *
  * This file is part of Exponent
@@ -18,7 +18,7 @@
     {if $moduletitle}<h1>{$moduletitle}</h1>{/if}
 
     {permissions}
-        <div class="item-actions">
+        <div class="module-actions">
             {if $permissions.create == 1}
                 {icon class="add" action=edit rank=1 title="Add text to the top" text="Add text at the top"|gettext}
             {/if}
@@ -30,12 +30,14 @@
     {foreach from=$items item=text name=items}
         {if $text->title}<h2>{$text->title}</h2>{/if}
         {permissions}
-            {if $permissions.edit == 1}
-                {icon action=edit class="edit" record=$text title="Edit this `$modelname`"}
-            {/if}
-            {if $permissions.delete == 1}
-                {icon action=delete record=$text title="Delete this Text Item" onclick="return confirm('Are you sure you want to delete this `$modelname`?');"}
-            {/if}
+			<div class="item-actions">
+				{if $permissions.edit == 1}
+					{icon action=edit class="edit" record=$text title="Edit this `$modelname`"}
+				{/if}
+				{if $permissions.delete == 1}
+					{icon action=delete record=$text title="Delete this Text Item" onclick="return confirm('Are you sure you want to delete this `$modelname`?');"}
+				{/if}
+			</div>
         {/permissions}
         <div class="bodycopy">
             {filedisplayer view="`$config.filedisplay`" files=$text->expFile id=$text->id}
@@ -43,9 +45,11 @@
         </div>
         
         {permissions}
-            {if $permissions.create == 1}
-                {icon class=add action=edit rank=`$text->rank+1` title="Add more text here" text="Add more text here"}
-            {/if}
+			<div class="module-actions">
+				{if $permissions.create == 1}
+					{icon class=add action=edit rank=`$text->rank+1` title="Add more text here" text="Add more text here"}
+				{/if}
+			</div>
         {/permissions}
         {clear}
     {/foreach}
