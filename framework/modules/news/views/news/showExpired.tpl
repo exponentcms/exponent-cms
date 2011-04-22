@@ -33,14 +33,14 @@
 				<td>{$listing->unpublish|format_date:"%B %e, %Y"}</td>
 				<td>
 				    {permissions level=$smarty.const.UILEVEL_PERMISSIONS}
-                    <div class="item-actions">
-	                {if $permissions.edit == true}
-                        {icon controller=news action=edit id=$listing->id title="Edit this news post"}
-                    {/if}
-                    {if $permissions.delete == true}
-                        {icon controller=news action=delete id=$listing->id title="Delete this news post" onclick="return confirm('Are you sure you want to delete `$item->title`?');"}
-                    {/if}
-                    </div>
+						<div class="item-actions">
+							{if $permissions.edit == true}
+								{icon controller=news action=edit record=$listing title="Edit this news post"}
+							{/if}
+							{if $permissions.delete == true}
+								{icon controller=news action=delete record=$listing title="Delete this news post" onclick="return confirm('Are you sure you want to delete `$item->title`?');"}
+							{/if}
+						</div>
                     {/permissions}
 				</td>
 			</tr>

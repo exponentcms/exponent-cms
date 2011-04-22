@@ -54,17 +54,17 @@
                 {permissions}
                 <div class="item-actions">
                      {if $permissions.edit == true}
-                        {icon controller=news action=edit id=$item->id title="Edit this news post"}
+                        {icon controller=news action=edit record=$item title="Edit this news post"}
                     {/if}
                     {if $permissions.delete == true}
-                        {icon controller=news action=delete id=$item->id title="Delete this news post" onclick="return confirm('Are you sure you want to delete `$item->title`?');"}
+                        {icon controller=news action=delete record=$item title="Delete this news post" onclick="return confirm('Are you sure you want to delete `$item->title`?');"}
                     {/if}
                     {if $permissions.edit == true && $config.order == 'rank ASC'}
                         {if $smarty.foreach.items.first == 0}
-                            {icon controller=news action=rerank img=up.png id=$item->id push=up}    
+                            {icon controller=news action=rerank img=up.png record=$item push=up}    
                         {/if}
                         {if $smarty.foreach.items.last == 0}
-                            {icon controller=news action=rerank img=down.png id=$item->id push=down}
+                            {icon controller=news action=rerank img=down.png record=$item push=down}
                         {/if}
                     {/if}
                 </div>

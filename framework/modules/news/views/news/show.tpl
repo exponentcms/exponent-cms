@@ -21,12 +21,12 @@
     <h1>{$record->title}</h1>
     <span class="date">{$record->publish|format_date:"%A, %B %e, %Y"}</span>
     {permissions}
-        <div class="itempermissions">   
+        <div class="item-actions">   
             {if $permissions.edit == true}
-                {icon controller=news action=edit id=$record->id title="Edit this news post"}
+                {icon controller=news action=edit record=$record title="Edit this news post"}
             {/if}
             {if $permissions.delete == true}
-                {icon controller=news action=delete id=$record->id title="Delete this news post" onclick="return confirm('Are you sure you want to delete `$record->title`?');"}
+                {icon controller=news action=delete record=$record title="Delete this news post" onclick="return confirm('Are you sure you want to delete `$record->title`?');"}
             {/if}
         </div>
     {/permissions}
