@@ -30,12 +30,14 @@
             </td>
             <td>
                 {permissions}
-                    {if $permissions.edit == 1}
-                        {icon img=edit.png controller=store action=edit id=$cause->id title="Edit Donation"}
-                    {/if}
-                    {if $permissions.delete == 1}
-                        {icon img=delete.png controller=store action=delete id=$cause->id title="Remove Donation"}
-                    {/if}
+					<div class="item-actions">
+						{if $permissions.edit == 1}
+							{icon controller=store action=edit record=$cause title="Edit Donation"}
+						{/if}
+						{if $permissions.delete == 1}
+							{icon controller=store action=delete record=$cause title="Remove Donation"}
+						{/if}
+					</div>
                 {/permissions}
             </td>
          </tr>

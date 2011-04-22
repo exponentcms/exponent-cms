@@ -17,9 +17,11 @@
 <div class="module store showall-uncategorized">
     <h1>Manage Products</h1>
     {permissions}
-        {if $permissions.edit == 1}
-            {icon class="add" action=edit title="Create a new product" text="Add a product"}
-      {/if}
+		<div class="module-actions">
+			{if $permissions.edit == 1}
+				{icon class="add" action=edit title="Create a new product" text="Add a product"}
+			{/if}
+		</div>
     {/permissions}
     <div id="products">
         {$page->links}
@@ -42,15 +44,17 @@
                 <td>${$listing->base_price|number_format:2}</td>
                 <td>
                     {permissions}
-                        {if $permissions.edit == 1}
-                            {icon img=edit.png action=edit id=$listing->id title="Edit `$listing->title`"}
-                        {/if}
-                        {if $permissions.delete == 1}
-                            {icon img=delete.png action=delete id=$listing->id title="Delete `$listing->title`"}
-                        {/if}
-                        {if $permissions.edit == 1}
-                            {icon action="copyProduct" img="copy.png" title="Copy `$listing->title` " id=$listing->id}
-                        {/if}
+						<div class="item-actions">
+							{if $permissions.edit == 1}
+								{icon action=edit record=$listing title="Edit `$listing->title`"}
+							{/if}
+							{if $permissions.delete == 1}
+								{icon action=delete record=$listing title="Delete `$listing->title`"}
+							{/if}
+							{if $permissions.edit == 1}
+								{icon action="copyProduct" img="copy.png" title="Copy `$listing->title` " record=$listing}
+							{/if}
+						</div>
                     {/permissions}  
                 </td>                   
             </tr>

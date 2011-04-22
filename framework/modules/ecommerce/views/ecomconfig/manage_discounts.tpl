@@ -21,8 +21,8 @@
                 <p>Here you can configure discounts to be used in your store.</p><p></p>
         </div>
         
-        {*icon img=edit.png action=edit_optiongroup_master id=$group->id}
-        {icon img=delete.png action=delete_optiongroup_master id=$group->id onclick="return confirm('This option group is being used by `$group->timesImplemented` products. Deleting this option group will also delete all of the options related to it. Are you sure you want to delete this option group?');"*}
+        {*icon img=edit.png action=edit_optiongroup_master record=$group}
+        {icon img=delete.png action=delete_optiongroup_master record=$group onclick="return confirm('This option group is being used by `$group->timesImplemented` products. Deleting this option group will also delete all of the options related to it. Are you sure you want to delete this option group?');"*}
        
         {icon class="add" controller="ecomconfig" action="edit_discount" title="Create a New Store Discount" alt="Create a New Store Discount"}
             
@@ -57,8 +57,8 @@
                                 <td>{$discount->enddate|date_format:"%m/%d/%y"} - {$discount->enddate_time|expdate:"g:i a"}</td>  
                             {/if}
                             <td>
-                                {icon img=edit.png action=edit_discount id=$discount->id}
-                                {*icon img=delete.png action=delete_discount id=$group->id onclick="return confirm('This option group is being used by `$group->timesImplemented` products. Deleting this option group will also delete all of the options related to it. Are you sure you want to delete this option group?');"*}
+                                {icon img=edit.png action=edit_discount record=$discount}
+                                {*icon img=delete.png action=delete_discount record=$group onclick="return confirm('This option group is being used by `$group->timesImplemented` products. Deleting this option group will also delete all of the options related to it. Are you sure you want to delete this option group?');"*}
                             </td>
                             <!--td>{control type="test" name="title" label=" " value=$discount->title}</td>  
                             <td>{control type="dropdown" name="discount_type" label=" {gettext str="test"}" items=$discount->discount_types value=$discount->discount_type}</td>

@@ -33,8 +33,8 @@
 					<td>{$listing->body}</td>
 					<td>
 					    {if $permissions.manage == true}
-                            {icon controller=order_status action=edit_message img=edit.png id=$listing->id}
-                            {icon controller=order_status action=delete_message img=delete.png id=$listing->id}
+                            {icon controller=order_status action=edit_message img=edit.png record=$listing}
+                            {icon controller=order_status action=delete_message img=delete.png record=$listing}
                         {/if}
 					</td>
 				</tr>

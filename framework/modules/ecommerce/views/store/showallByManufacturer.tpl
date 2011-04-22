@@ -29,8 +29,10 @@
     {$page->links}
     
     {permissions}
-        {if $permissions.edit == 1}
-            {icon class="add" action=create title="Add a new product" text="Add a New Product"}
-      {/if}
+		<div class="module-actions">
+			{if $permissions.edit == 1}
+				{icon class="add" action=create title="Add a new product" text="Add a New Product"}
+			{/if}
+		</div>
     {/permissions}
 </div>

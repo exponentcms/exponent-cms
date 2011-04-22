@@ -26,8 +26,8 @@
     <thead><th>
 	    <h2>
 	        {$group->title} 
-	        {icon img=edit.png action=edit_optiongroup_master id=$group->id}
-	        {icon img=delete.png action=delete_optiongroup_master id=$group->id onclick="return confirm('This option group is being used by `$group->timesImplemented` products. Deleting this option group will also delete all of the options related to it. Are you sure you want to delete this option group?');"}
+	        {icon img=edit.png action=edit_optiongroup_master record=$group}
+	        {icon img=delete.png action=delete_optiongroup_master record=$group onclick="return confirm('This option group is being used by `$group->timesImplemented` products. Deleting this option group will also delete all of the options related to it. Are you sure you want to delete this option group?');"}
 	    </h2>
 	</th></thead>  
     <tbody>
@@ -37,17 +37,17 @@
 	        {foreach name=options from=$group->option_master item=optname}
 	            <li>
 	                ({$optname->id}) {$optname->title}({$optname->rank}) 
-	                {icon img=edit.png  action=edit_option_master id=$optname->id}
+	                {icon img=edit.png  action=edit_option_master record=$optname}
                     {if $optname->timesImplemented > 0}
-	                    {icon img=delete.png action=delete_option_master id=$optname->id onclick="alert('This option is being used by `$optname->timesImplemented` products. You may not delete this option until they are removed from the products.'); return false;"}
+	                    {icon img=delete.png action=delete_option_master record=$optname onclick="alert('This option is being used by `$optname->timesImplemented` products. You may not delete this option until they are removed from the products.'); return false;"}
                     {else}
-                        {icon img=delete.png action=delete_option_master id=$optname->id onclick="return true;"}
+                        {icon img=delete.png action=delete_option_master record=$optname onclick="return true;"}
                     {/if}
                     {if $smarty.foreach.options.first == 0}
-                        {icon controller=ecomconfig action=rerank_optionmaster img=up.png id=$optname->id push=up master_id=$optname->optiongroup_master_id}    
+                        {icon controller=ecomconfig action=rerank_optionmaster img=up.png record=$optname push=up master_id=$optname->optiongroup_master_id}    
                     {/if}
                     {if $smarty.foreach.options.last == 0}
-                        {icon controller=ecomconfig action=rerank_optionmaster img=down.png id=$optname->id push=down master_id=$optname->optiongroup_master_id}
+                        {icon controller=ecomconfig action=rerank_optionmaster img=down.png record=$optname push=down master_id=$optname->optiongroup_master_id}
                     {/if}
 	            </li>
 	        {foreachelse}

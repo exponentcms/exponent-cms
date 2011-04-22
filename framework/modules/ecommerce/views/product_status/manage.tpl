@@ -34,8 +34,8 @@
 					<td>{$listing->title}</td>
 					<td>
 					    {if $permissions.manage == true}
-                            {icon controller=order_type action=edit img=edit.png id=$listing->id}
-                            {icon controller=order_type action=delete img=delete.png id=$listing->id}
+                            {icon controller=order_type action=edit record=$listing}
+                            {icon controller=order_type action=delete record=$listing}
                         {/if}
 					</td>
 				</tr>

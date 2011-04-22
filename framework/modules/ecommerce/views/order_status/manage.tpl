@@ -44,17 +44,17 @@
 					<td>{$listing->title}</td>
 					<td>
 					    {if $permissions.manage == true}
-                            {icon controller=order_status action=edit img=edit.png id=$listing->id}
-                            {icon controller=order_status action=delete img=delete.png id=$listing->id}
+                            {icon controller=order_status action=edit record=$listing}
+                            {icon controller=order_status action=delete record=$listing}
                         {/if}
 					</td>
 					<td>
 					    {if $permissions.manage == true}
                             {if $smarty.foreach.listings.first == 0}
-                                {icon controller=order_status action=rerank img=up.png id=$listing->id push=up}    
+                                {icon controller=order_status action=rerank img=up.png record=$listing push=up}    
                             {/if}
                             {if $smarty.foreach.listings.last == 0}
-                                {icon controller=order_status action=rerank img=down.png id=$listing->id push=down}
+                                {icon controller=order_status action=rerank img=down.png record=$listing push=down}
                             {/if}
                         {/if}
 					</td>
