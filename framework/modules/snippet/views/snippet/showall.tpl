@@ -25,7 +25,7 @@
             {if $text->id != ""}
                 {icon action=edit record=$text title="Edit this code snippet"}
             {else}
-                {icon action=edit class="add" title="Add a new code snippet"|gettext text="Add a code snippet"|gettext}
+                {icon action=edit class=add title="Add a new code snippet"|gettext text="Add a code snippet"|gettext}
             {/if}              
         {/if}
         {if $permissions.delete == 1 && $text->id != ""}
@@ -35,10 +35,10 @@
 	<div class="module-actions">
         {if $permissions.edit == true}
             {if $smarty.foreach.items.first == 0}
-                {icon controller=text action=rerank img=up.png id=$text->id push=up}    
+                {icon controller=text action=rerank img=up.png record=$text push=up}    
             {/if}
             {if $smarty.foreach.items.last == 0}
-                {icon controller=text action=rerank img=down.png id=$text->id push=down}
+                {icon controller=text action=rerank img=down.png record=$text push=down}
             {/if}
         {/if}
 	</div>
