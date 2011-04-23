@@ -26,7 +26,7 @@
 	<div class="module-actions">
 		{icon class=add controller=users action=edit_group title="Create a New User Group" text="Create a New User Group" alt="Create a New User Group"}
 	</div>
-	{$page->links}
+    {pagelinks paginate=$page top=1}
 	<table class="exp-skin-table">
 	    <thead>
 			<tr>
@@ -55,5 +55,5 @@
 			{/foreach}
 		</tbody>
 	</table>
-	{$page->links}
+    {pagelinks paginate=$page bottom=1}
 </div>

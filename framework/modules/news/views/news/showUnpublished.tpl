@@ -16,8 +16,7 @@
 
 <div class="module news show-expired">
 	<h1>{$moduletitle|default:"Expired News"}</h1>
-	
-	{$page->links}
+    {pagelinks paginate=$page top=1}
 	<table id="prods" class="exp-skin-table" width="95%">
 	    <thead>
 		<tr>
@@ -55,5 +54,5 @@
 			{/foreach}
 		</tbody>
 	</table>
-	{$page->links}
+    {pagelinks paginate=$page bottom=1}
 </div>

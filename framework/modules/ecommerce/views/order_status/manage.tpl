@@ -19,7 +19,7 @@
 	
 	<a href="{link action=create}">Create a new status code</a>{br}{br}
 	<div id="orders">
-		{$page->links}
+		{pagelinks paginate=$page top=1}
 		<table id="prods" class="exp-skin-table">
 			<thead>
 				<tr>
@@ -66,5 +66,6 @@
 				{/foreach}
 		</tbody>
 		</table>
+		{pagelinks paginate=$page bottom=1}
 	</div>
 </div>

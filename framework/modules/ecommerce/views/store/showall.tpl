@@ -90,9 +90,7 @@
     {/if}
     
     <h2>All Products Under {$current_category->title}</h2>
-        
-        
-    {$page->links}
+    {pagelinks paginate=$page top=1}
     {*control type="dropdown" name="sortme" items=$page->sort_dropdown default=$defaultSort*}
     
     {*script unique="sort-submit"}
@@ -126,7 +124,5 @@
         {/foreach}
     </div>
     {*control type="dropdown" name="sortme" items=$page->sort_dropdown default=$defaultSort*}
-
-    {$page->links}
-    
+    {pagelinks paginate=$page bottom=1}
 </div>

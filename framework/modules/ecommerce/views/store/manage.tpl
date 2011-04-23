@@ -24,7 +24,7 @@
 		</div>
     {/permissions}
     <div id="products">
-        {$page->links}
+		{pagelinks paginate=$page top=1}
         <table id="prods" class="exp-skin-table" style="width:95%">
         <thead>
             <tr>
@@ -61,7 +61,7 @@
             {/foreach}
         </tbody>
         </table>
-        {$page->links}
+		{pagelinks paginate=$page bottom=1}
     </div>
     {permissions level=$smarty.const.UILEVEL_PERMISSIONS}
         {if $permissions.configure == 1 or $permissions.administrate == 1}

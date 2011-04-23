@@ -16,7 +16,6 @@
 
 <div class="module text showall">
     {if $moduletitle}<h1>{$moduletitle}</h1>{/if}
-
     {permissions}
         <div class="module-actions">
             {if $permissions.create == 1}
@@ -43,7 +42,6 @@
             {filedisplayer view="`$config.filedisplay`" files=$text->expFile id=$text->id}
             {$text->body}
         </div>
-        
         {permissions}
 			<div class="module-actions">
 				{if $permissions.create == 1}

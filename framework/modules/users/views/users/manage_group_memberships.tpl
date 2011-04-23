@@ -15,8 +15,7 @@
  
 <div class="module users manage-group-memberships">
 	<h1>{$moduletitle|default:"Manage Group Membership"}</h1>	
-
-	{$page->links}
+    {pagelinks paginate=$page top=1}
 	<table class="exp-skin-table">
 		<thead>
 			<tr>
@@ -41,5 +40,5 @@
 			{/foreach}
 		</tbody>
 	</table>
-	{$page->links}
+    {pagelinks paginate=$page bottom=1}
 </div>

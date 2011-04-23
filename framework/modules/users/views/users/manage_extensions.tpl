@@ -21,8 +21,7 @@
         give users the ability to put in more information about themselves.  The active extensions will 
         add fields to the form a user has to fill out to create an account."|gettext}
     </p>
-
-	{$page->links}
+    {pagelinks paginate=$page top=1}
 	<table class="exp-skin-table">
 	    <thead>
 		<tr>
@@ -46,6 +45,6 @@
 			    <td colspan="{$page->columns|count}">No Data.</td>
 			{/foreach}
 		</tbody>
-		</table>
-		{$page->links}
+	</table>
+    {pagelinks paginate=$page bottom=1}
 </div>

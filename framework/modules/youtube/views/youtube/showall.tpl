@@ -25,7 +25,7 @@
 			{/if}
         </div>
     {/permissions}    
-    {$page->links}
+    {pagelinks paginate=$page top=1}
     {foreach from=$items item=ytv name=items}
 		<div class="item">
 			{if $ytv->title}<h2>{$ytv->title}</h2>{/if}
@@ -55,5 +55,5 @@
 		{/permissions}
 		{clear}
     {/foreach}
-    {$page->links}
+    {pagelinks paginate=$page bottom=1}
 </div>

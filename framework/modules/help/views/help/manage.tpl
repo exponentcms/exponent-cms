@@ -27,7 +27,7 @@
 		{icon class=add action=edit title="Add a New Help Document" text="Add a New Help Document to version `$current_version->version`"}{br}
 		{icon class=manage action=manage_versions title="Manage Versions" text="Manage Versions"}{br}
 	</div>
-    {$page->links}
+    {pagelinks paginate=$page top=1}
     <table class="exp-skin-table">
         <thead>
         <tr>
@@ -59,6 +59,5 @@
         {/foreach}
         </tbody>
     </table>
-    {$page->links}
-        
+    {pagelinks paginate=$page bottom=1}
 </div>

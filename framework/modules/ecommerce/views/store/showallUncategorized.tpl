@@ -17,7 +17,7 @@
 <div class="module store showall-uncategorized">
     <h1>Uncategorized Products</h1>
     <div id="products">
-        {$page->links}
+		{pagelinks paginate=$page top=1}
         <table id="prods" class="exp-skin-table" style="width:95%">
         <thead>
             <tr>
@@ -49,6 +49,6 @@
             {/foreach}
         </tbody>
         </table>
-        {$page->links}
+		{pagelinks paginate=$page bottom=1}
     </div>
 </div>

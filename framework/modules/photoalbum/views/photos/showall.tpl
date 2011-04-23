@@ -30,9 +30,7 @@
 			{/if}
 		</div>
     {/permissions}
-
-    {$page->links}    
-    
+    {pagelinks paginate=$page top=1}
     <ul>
     {foreach from=$page->records item=record name=items}
         <li style="width:{$config.pa_showall_thumbbox}px;height:{$config.pa_showall_thumbbox}px;">
@@ -55,6 +53,5 @@
         </li>
     {/foreach}
     </ul>
-    
-    {$page->links}
+    {pagelinks paginate=$page bottom=1}
 </div>

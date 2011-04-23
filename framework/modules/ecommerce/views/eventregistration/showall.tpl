@@ -16,7 +16,7 @@
 <div class="store showall">
     <h1>{$moduletitle|default:""}</h1>
     <div id="products">
-        {$page->links}
+    {pagelinks paginate=$page top=1}
 	<table class="exp-skin-table">
             <thead>
         	<tr>{$page->header_columns}<th></th></tr>
@@ -33,6 +33,6 @@
                 {/foreach}
 	    </tbody>
         </table>
-        {$page->links}
+    {pagelinks paginate=$page bottom=1}
     </div>
 </div>

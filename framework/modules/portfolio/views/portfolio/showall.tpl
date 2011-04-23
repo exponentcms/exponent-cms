@@ -21,17 +21,15 @@
     {if $moduletitle != ""}<h1>{$moduletitle}</h1>{/if}
     {permissions}
         <div class="module-actions">
-        {if $permissions.create == 1}
-            {icon class=add action=edit title="Add to the top" text="Add a Portfolio Piece"}
-        {/if}
-        {if $permissions.manage == 1}
-            {ddrerank items=$page->records model="portfolio" label="Portfolio Pieces"|gettext}
-        {/if}
+			{if $permissions.create == 1}
+				{icon class=add action=edit title="Add to the top" text="Add a Portfolio Piece"}
+			{/if}
+			{if $permissions.manage == 1}
+				{ddrerank items=$page->records model="portfolio" label="Portfolio Pieces"|gettext}
+			{/if}
         </div>
     {/permissions}    
-
     {pagelinks paginate=$page top=1}
-
     {foreach from=$page->records item=record}
 		<div class="item">
 			<h2><a href="{link action=show title=$record->sef_url}" title="{$record->title|escape:"htmlall"}">{$record->title}</a></h2>
@@ -74,7 +72,5 @@
 			{/if}
         {/permissions}
     {/foreach}   
-
     {pagelinks paginate=$page bottom=1}
-
 </div>

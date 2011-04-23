@@ -28,7 +28,7 @@
 			{/if}
         </div>
     {/permissions}    
-    {$page->links}
+    {pagelinks paginate=$page top=1}
     {foreach from=$page->records item=file name=files}
        <div class="item">
             {if $file->expFile.preview[0] != ""}
@@ -65,5 +65,5 @@
 		{/permissions}
 		{clear}
     {/foreach}
-    {$page->links}
+    {pagelinks paginate=$page bottom=1}
 </div>

@@ -28,9 +28,7 @@
 			{/if}
 		</div>
     {/permissions}
-    
-    {$page->links}
-    
+    {pagelinks paginate=$page top=1}
     {foreach from=$page->records item=record}
         <div class="bodycopy">
             <h2>
@@ -70,7 +68,5 @@
             </div>
         </div>
     {/foreach}    
-
-    {$page->links}
-
+    {pagelinks paginate=$page bottom=1}
 </div>

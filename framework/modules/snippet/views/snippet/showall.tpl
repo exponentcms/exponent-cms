@@ -47,5 +47,4 @@
         {$text->body}
         {clear}
     </div>
-
 </div>

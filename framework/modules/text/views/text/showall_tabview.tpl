@@ -22,7 +22,6 @@
 
 <div class="module text showall yui3-skin-sam">
     {if $moduletitle}<h1>{$moduletitle}</h1>{/if}
-
     {permissions}
         <div class="module-actions">
             {if $permissions.create == 1}
@@ -77,4 +76,3 @@ YUI(EXPONENT.YUI3_CONFIG).use('tabview', function(Y) {
 });
 {/literal}
 {/script}
-

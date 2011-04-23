@@ -24,7 +24,7 @@
     {icon module=banner action=export title="Export banner data" alt="Export banner data"}{br}
     {icon module=banner action=reset_stats title="Reset banner stats" alt="Reset banner stats"  onclick="return confirm('Are you sure you want to reset the Impression and Click statistics of your banners?');"}{br}
     {icon module=company action=create title="Create a new company" alt="Create a new company"}{br}
-	{$page->links}
+    {pagelinks paginate=$page top=1}
 	<table class="exp-skin-table">
 	    <thead>
 			<tr>
@@ -61,5 +61,5 @@
 			{/foreach}
 		</tbody>
 	</table>
-	{$page->links}
+    {pagelinks paginate=$page bottom=1}
 </div>

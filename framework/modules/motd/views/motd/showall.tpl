@@ -20,7 +20,7 @@
         {$record->body}
     </div>
     
-    {$page->links}
+    {pagelinks paginate=$page top=1}
     {permissions}
 		<div class="module-actions">
 			{if $permissions.edit == 1}
@@ -62,5 +62,5 @@
 			{/foreach}
 		</tbody>
     </table>
-    {$page->links}
+    {pagelinks paginate=$page bottom=1}
 </div>

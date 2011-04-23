@@ -23,7 +23,7 @@
 	<div class="module-actions">
 		{icon class=add module=users action=create title="Create a New User" alt="Create a New User"}
 	</div>
-	{$page->links}
+    {pagelinks paginate=$page top=1}
 	<table class="exp-skin-table">
 	    <thead>
 			<tr>
@@ -53,5 +53,5 @@
 			{/foreach}
 		</tbody>
 	</table>
-	{$page->links}
+    {pagelinks paginate=$page bottom=1}
 </div>

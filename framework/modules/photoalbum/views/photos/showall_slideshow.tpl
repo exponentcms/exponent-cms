@@ -55,14 +55,6 @@
                     {if $permissions.delete == 1}
                         {icon action=delete record=$item title="Delete `$item->title`" onclick="return confirm('Are you sure you want to delete this `$modelname`?');"}
                     {/if}
-                    {if $permissions.edit == 1}
-                        {if $smarty.foreach.linkloop.first == 0}
-                            {icon action=rerank img=up.png record=$item push=up}    
-                        {/if}
-                        {if $smarty.foreach.linkloop.last == 0}
-                            {icon action=rerank img=down.png record=$item push=down}
-                        {/if}
-                    {/if}
                     {if $permissions.create == 1}
                         {icon class="add addhere" action=edit rank=`$text->rank+1` title="Add another slide here"  text="Add another slide here"}
                     {/if}
