@@ -247,11 +247,13 @@ class migrationController extends expController {
             $db->delete('content_expSimpleNote');
             $db->delete('content_expTags');
             $db->delete('expComments');
+            $db->delete('expConfigs', 'id>1');  // don't delete migration config
+//            $db->delete('expFiles');			// deleted and rebuilt during (previous) file migration
+            $db->delete('expeAlerts');
+            $db->delete('expeAlerts_subscribers');
+            $db->delete('expeAlerts_temp');
             $db->delete('expSimpleNote');
             $db->delete('expTags');
-//            $db->delete('expConfigs', 'id>1');  // don't delete migration config
-//            $db->delete('expFiles');
-//            $db->delete('expRSS');
             $db->delete('calendar');
             $db->delete('eventdate');
             $db->delete('calendarmodule_config');
@@ -808,6 +810,7 @@ class migrationController extends expController {
                 $iloc->mod = 'newsmodule';
                 $newsitems = $old_db->selectArrays('newsitem', "location_data='".serialize($iloc)."'");
                 if ($newsitems) {
+					$files_attached = false;
                     foreach ($newsitems as $ni) {
                         unset($ni['id']);
                         $news = new news($ni);
@@ -822,11 +825,17 @@ class migrationController extends expController {
                         @$this->msg['migrated'][$iloc->mod]['count']++;
                         @$this->msg['migrated'][$iloc->mod]['name'] = $this->new_modules[$iloc->mod];
                         if (!empty($ni['file_id'])) {
-                            $oldfile = $old_db->selectArray('file', 'id='.$ni['file_id']);
-                            $file = new expFile($oldfile);
-                            $news->attachitem($file,'downloadable');
+                            $file = new expFile($ni['file_id']);
+                            $news->attachitem($file,'');
+							$files_attached = true;
                         }
                     }
+					if ($files_attached) {
+						// fudge a config to get attached files to appear
+						$config = new expConfig();
+						$config->location_data = serialize($loc);
+						$config->config = 'a:14:{s:9:"feedmaker";s:0:"";s:11:"filedisplay";s:7:"Gallery";s:6:"ffloat";s:4:"Left";s:6:"fwidth";s:3:"120";s:7:"fmargin";s:1:"5";s:7:"piwidth";s:3:"100";s:5:"thumb";s:3:"100";s:7:"spacing";s:2:"10";s:10:"floatthumb";s:8:"No Float";s:6:"tclass";s:0:"";s:5:"limit";s:0:"";s:9:"pagelinks";s:14:"Top and Bottom";s:10:"feed_title";s:0:"";s:9:"feed_desc";s:0:"";}';						$config->save();
+					}					
                 }
 				break;
             case 'resourcesmodule':
@@ -864,8 +873,7 @@ class migrationController extends expController {
 							$filedownload->save();
 							@$this->msg['migrated'][$iloc->mod]['count']++;
 							@$this->msg['migrated'][$iloc->mod]['name'] = $this->new_modules[$iloc->mod];
-							$oldfile = $old_db->selectArray('file', 'id='.$ri['file_id']);
-							$file = new expFile($oldfile);
+							$file = new expFile($ri['file_id']);
 							$filedownload->attachitem($file,'downloadable');
 							// default is to create with current time						
 							$filedownload->created_at = $ri['posted'];
@@ -1046,11 +1054,11 @@ class migrationController extends expController {
                         $post->update();
                         @$this->msg['migrated'][$iloc->mod]['count']++;
                         @$this->msg['migrated'][$iloc->mod]['name'] = $this->new_modules[$iloc->mod];
-                        if (!empty($bi['file_id'])) {
-                            $oldfile = $old_db->selectArray('file', 'id='.$bi['file_id']);
-                            $file = new expFile($oldfile);
-                            $post->attachitem($file,'downloadable');
-                        }
+						// this next section is moot since there are no attachments to blogs
+                        // if (!empty($bi['file_id'])) {
+                            // $file = new expFile($bi['file_id']);
+                            // $post->attachitem($file,'downloadable');
+                        // }
 						$comments = $old_db->selectObjects('weblog_comment', "location_data='".serialize($iloc)."'");
 						foreach($comments as $comment) {
 							$newcomment = new expComments($comment);
@@ -1107,6 +1115,7 @@ class migrationController extends expController {
                 $iloc->mod = 'listingmodule';
                 $listingitems = $old_db->selectArrays('listing', "location_data='".serialize($iloc)."'");
                 if ($listingitems) {
+					$files_attached = false;
                     foreach ($listingitems as $li) {
                         unset($li['id']);
                         $listing = new portfolio($li);
@@ -1127,8 +1136,16 @@ class migrationController extends expController {
                         if (!empty($li['file_id'])) {
 							$file = new expFile($li['file_id']);
 							$listing->attachitem($file,'');
-                        }
+							$files_attached = true;
+						}
                     }
+					if ($files_attached) {
+						// fudge a config to get attached files to appear
+						$config = new expConfig();
+						$config->location_data = serialize($loc);
+						$config->config = 'a:11:{s:11:"filedisplay";s:7:"Gallery";s:6:"ffloat";s:4:"Left";s:6:"fwidth";s:3:"120";s:7:"fmargin";s:1:"5";s:7:"piwidth";s:3:"100";s:5:"thumb";s:3:"100";s:7:"spacing";s:2:"10";s:10:"floatthumb";s:8:"No Float";s:6:"tclass";s:0:"";s:5:"limit";s:0:"";s:9:"pagelinks";s:14:"Top and Bottom";}';
+						$config->save();
+					}
                 }
 				break;
             case 'contactmodule':  // convert to an old school form
@@ -1284,7 +1301,7 @@ class migrationController extends expController {
 							$movie->attachitem($file,'video');
 							if (!empty($mi['alt_image_id'])) {
 								$file = new expFile($mi['alt_image_id']);
-								$movie->attachitem($file,'splash');
+								$movie->attachitem($file,'splash');					
 							}
 						}
 					}
