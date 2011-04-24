@@ -253,6 +253,7 @@ class migrationController extends expController {
             $db->delete('expeAlerts_subscribers');
             $db->delete('expeAlerts_temp');
             $db->delete('expSimpleNote');
+            $db->delete('expRss');
             $db->delete('expTags');
             $db->delete('calendar');
             $db->delete('eventdate');
@@ -725,6 +726,7 @@ class migrationController extends expController {
 
                 $iloc->mod = 'linkmodule';
                 $links = $old_db->selectArrays('link', "location_data='".serialize($iloc)."'");
+				$oldconfig = $old_db->selectObject('linkmodule_config', "location_data='".serialize($iloc)."'");
 				if ($links) {
 					foreach ($links as $link) {
 						$lnk = new links();
@@ -741,6 +743,21 @@ class migrationController extends expController {
 						$lnk->save();
 						@$this->msg['migrated'][$iloc->mod]['count']++;
 						@$this->msg['migrated'][$iloc->mod]['name'] = $this->new_modules[$iloc->mod];
+					}
+					if ($oldconfig->enable_rss == 1) {
+						$config['enable_rss'] = true;
+						$config['feed_title'] = $oldconfig->feed_title;
+						$config['feed_desc'] = $oldconfig->feed_desc;
+						$newconfig = new expConfig();
+						$newconfig->config = $config;
+						$newconfig->location_data = $loc;
+						$newconfig->save();
+						$newrss = new expRss();
+						$newrss->module = $loc->mod;
+						$newrss->src = $loc->src;
+						$newrss->feed_title = $oldconfig->feed_title;
+						$newrss->feed_desc = $oldconfig->feed_desc;
+						$newrss->save();
 					}
 				}
 				break;
@@ -809,6 +826,7 @@ class migrationController extends expController {
 
                 $iloc->mod = 'newsmodule';
                 $newsitems = $old_db->selectArrays('newsitem', "location_data='".serialize($iloc)."'");
+				$oldconfig = $old_db->selectObject('newsmodule_config', "location_data='".serialize($iloc)."'");
                 if ($newsitems) {
 					$files_attached = false;
                     foreach ($newsitems as $ni) {
@@ -830,12 +848,30 @@ class migrationController extends expController {
 							$files_attached = true;
                         }
                     }
+					$newconfig = new expConfig();
 					if ($files_attached) {
 						// fudge a config to get attached files to appear
-						$config = new expConfig();
-						$config->location_data = serialize($loc);
-						$config->config = 'a:14:{s:9:"feedmaker";s:0:"";s:11:"filedisplay";s:7:"Gallery";s:6:"ffloat";s:4:"Left";s:6:"fwidth";s:3:"120";s:7:"fmargin";s:1:"5";s:7:"piwidth";s:3:"100";s:5:"thumb";s:3:"100";s:7:"spacing";s:2:"10";s:10:"floatthumb";s:8:"No Float";s:6:"tclass";s:0:"";s:5:"limit";s:0:"";s:9:"pagelinks";s:14:"Top and Bottom";s:10:"feed_title";s:0:"";s:9:"feed_desc";s:0:"";}';						$config->save();
+						$newconfig->config = 'a:14:{s:9:"feedmaker";s:0:"";s:11:"filedisplay";s:7:"Gallery";s:6:"ffloat";s:4:"Left";s:6:"fwidth";s:3:"120";s:7:"fmargin";s:1:"5";s:7:"piwidth";s:3:"100";s:5:"thumb";s:3:"100";s:7:"spacing";s:2:"10";s:10:"floatthumb";s:8:"No Float";s:6:"tclass";s:0:"";s:5:"limit";s:0:"";s:9:"pagelinks";s:14:"Top and Bottom";s:10:"feed_title";s:0:"";s:9:"feed_desc";s:0:"";}';						$config->save();
 					}					
+					if ($oldconfig->enable_rss == 1) {
+						if ($newconfig->config != null) {
+							$config = expUnserialize($newconfig->config);
+						}
+						$config['enable_rss'] = true;
+						$config['feed_title'] = $oldconfig->feed_title;
+						$config['feed_desc'] = $oldconfig->feed_desc;
+						$newconfig->config = $config;
+						$newrss = new expRss();
+						$newrss->module = $loc->mod;
+						$newrss->src = $loc->src;
+						$newrss->feed_title = $oldconfig->feed_title;
+						$newrss->feed_desc = $oldconfig->feed_desc;
+						$newrss->save();
+					}
+					if ($newconfig != null) {
+						$newconfig->location_data = $loc;
+						$newconfig->save();
+					}
                 }
 				break;
             case 'resourcesmodule':
@@ -859,6 +895,7 @@ class migrationController extends expController {
 
                 $iloc->mod = 'resourcesmodule';
                 $resourceitems = $old_db->selectArrays('resourceitem', "location_data='".serialize($iloc)."'");
+				$oldconfig = $old_db->selectObject('resourcesmodule_config', "location_data='".serialize($iloc)."'");
 				if ($resourceitems) {
 					foreach ($resourceitems as $ri) {
 						unset($ri['id']);
@@ -881,6 +918,21 @@ class migrationController extends expController {
 							$filedownload->update();
 						}
 					}
+					if ($oldconfig->enable_rss == 1) {
+						$config['enable_rss'] = true;
+						$config['feed_title'] = $oldconfig->feed_title;
+						$config['feed_desc'] = $oldconfig->feed_desc;
+						$newconfig = new expConfig();
+						$newconfig->config = $config;
+						$newconfig->location_data = $loc;
+						$newconfig->save();
+						$newrss = new expRss();
+						$newrss->module = $loc->mod;
+						$newrss->src = $loc->src;
+						$newrss->feed_title = $oldconfig->feed_title;
+						$newrss->feed_desc = $oldconfig->feed_desc;
+						$newrss->save();
+					}					
 				}
 				break;
             case 'imagegallerymodule':
@@ -975,7 +1027,6 @@ class migrationController extends expController {
 									$photo->update();								
 								}
 							}
-
 						}
 					}
 				}
@@ -1040,6 +1091,7 @@ class migrationController extends expController {
 
                 $iloc->mod = 'weblogmodule';
                 $blogitems = $old_db->selectArrays('weblog_post', "location_data='".serialize($iloc)."'");
+				$oldconfig = $old_db->selectObject('weblogmodule_config', "location_data='".serialize($iloc)."'");
                 if ($blogitems) {
                     foreach ($blogitems as $bi) {
                         unset($bi['id']);
@@ -1067,6 +1119,21 @@ class migrationController extends expController {
 							$post->attachitem($newcomment,'');
 						}
                     }
+					if ($oldconfig->enable_rss == 1) {
+						$config['enable_rss'] = true;
+						$config['feed_title'] = $oldconfig->feed_title;
+						$config['feed_desc'] = $oldconfig->feed_desc;
+						$newconfig = new expConfig();
+						$newconfig->config = $config;
+						$newconfig->location_data = $loc;
+						$newconfig->save();
+						$newrss = new expRss();
+						$newrss->module = $loc->mod;
+						$newrss->src = $loc->src;
+						$newrss->feed_title = $oldconfig->feed_title;
+						$newrss->feed_desc = $oldconfig->feed_desc;
+						$newrss->save();
+					}					
                 }
 				break;
             case 'faqmodule':
@@ -1142,7 +1209,7 @@ class migrationController extends expController {
 					if ($files_attached) {
 						// fudge a config to get attached files to appear
 						$config = new expConfig();
-						$config->location_data = serialize($loc);
+						$config->location_data = $loc;
 						$config->config = 'a:11:{s:11:"filedisplay";s:7:"Gallery";s:6:"ffloat";s:4:"Left";s:6:"fwidth";s:3:"120";s:7:"fmargin";s:1:"5";s:7:"piwidth";s:3:"100";s:5:"thumb";s:3:"100";s:7:"spacing";s:2:"10";s:10:"floatthumb";s:8:"No Float";s:6:"tclass";s:0:"";s:5:"limit";s:0:"";s:9:"pagelinks";s:14:"Top and Bottom";}';
 						$config->save();
 					}
