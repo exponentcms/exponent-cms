@@ -17,7 +17,7 @@
     {if $moduletitle}<h1>{$moduletitle}</h1>{/if}
     
     {if $config.enable_rss}
-        <a class="podcastlink" href="{podcastlink}">Subscribe to {$config.feed_title}</a>
+        <a class="rsslink" href="{podcastlink}">Subscribe to {$config.feed_title}</a>
     {/if}
     {permissions}
         <div class="module-actions">
