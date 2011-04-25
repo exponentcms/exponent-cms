@@ -44,6 +44,7 @@ class migrationController extends expController {
 		'contactmodule'=>'formmodule',  // this module is converted to a functionally similar old school formmodule
         'youtubemodule'=>'youtubeController',
         'mediaplayermodule'=>'flowplayerController',
+        'bannermodule'=>'bannerController',
     );
 
     // these are modules that have either been deprecated or have no content to migrate
@@ -81,7 +82,6 @@ class migrationController extends expController {
 
     public $needs_written = array(
 		'addressbookmodule',  // listed above, but no script written yet?
-        'bannermodule',  // to bannerController?
 //        'categories',  // no controller and not in old school ???
 //        'tags',	 // no controller and not in old school ???
     );
@@ -242,6 +242,8 @@ class migrationController extends expController {
             $db->delete('portfolio');
             $db->delete('youtube');
             $db->delete('flowplayer');
+            $db->delete('banner');
+            $db->delete('companies');
             $db->delete('content_expComments');
             $db->delete('content_expFiles');
             $db->delete('content_expSimpleNote');
@@ -339,6 +341,10 @@ class migrationController extends expController {
 			}
 			if (in_array('mediaplayermodule',$this->params['replace'])) {
 				$db->delete('flowplayer');
+			}
+			if (in_array('bannermodule',$this->params['replace'])) {
+				$db->delete('banner');
+				$db->delete('companies');
 			}
 		}
 
@@ -960,10 +966,8 @@ class migrationController extends expController {
 				if ($galleries) {
 					foreach ($galleries as $gallery) {
 						$gis = $old_db->selectArrays('imagegallery_image', "gallery_id='".$gallery['id']."'");
-						//eDebug($gis,1);
 						foreach ($gis as $gi) {
 							$photo = new photo();
-							//$loc = expUnserialize($gi['location_data']);
 							$loc = expUnserialize($gallery['location_data']);
 							$loc->mod = "photos";
 							$photo->title = $gi['name'];
@@ -1003,10 +1007,8 @@ class migrationController extends expController {
 				if ($galleries) {
 					foreach ($galleries as $gallery) {
 						$gis = $old_db->selectArrays('imagegallery_image', "gallery_id='".$gallery['id']."'");
-						//eDebug($gis,1);
 						foreach ($gis as $gi) {
 							$photo = new photo();
-							//$loc = expUnserialize($gi['location_data']);
 							$loc = expUnserialize($gallery['location_data']);
 							$loc->mod = "photos";
 							$photo->title = $gi['name'];
@@ -1310,7 +1312,6 @@ class migrationController extends expController {
 					foreach ($videos as $vi) {
 						unset ($vi['id']);
 						$video = new youtube($vi);
-						//$loc = expUnserialize($vi['location_data']);
 						$loc = expUnserialize($vi['location_data']);
 						$loc->mod = "youtube";
 						$video->title = $vi['name'];
@@ -1346,7 +1347,6 @@ class migrationController extends expController {
 					foreach ($movies as $mi) {
 						unset ($mi['id']);
 						$movie = new flowplayer($mi);
-						//$loc = expUnserialize($mi['location_data']);
 						$loc = expUnserialize($mi['location_data']);
 						$loc->mod = "flowplayer";
 						$movie->title = $mi['name'];
@@ -1371,6 +1371,52 @@ class migrationController extends expController {
 								$movie->attachitem($file,'splash');					
 							}
 						}
+					}
+				}
+				break;
+            case 'bannermodule':
+
+				//check to see if it's already pulled in (circumvent !is_original)
+				$ploc = $iloc;
+				$ploc->mod = "banner";
+				if ($db->countObjects('banner', "location_data='".serialize($ploc)."'")) {
+					$iloc->mod = 'bannermodule';
+					break;
+				}
+
+				$iloc->mod = 'bannermodule';
+                $banners = $old_db->selectArrays('banner_ad', "location_data='".serialize($iloc)."'");
+				if ($banners) {
+					foreach ($banners as $bi) {
+						$oldclicks = $old_db->selectObjects('banner_click', "ad_id='".$bi['id']."'");
+						$oldcompany = $old_db->selectObject('banner_affiliate', "id='".$bi['affiliate_id']."'");
+						unset ($bi['id']);
+						$banner = new banner($bi);
+						$loc = expUnserialize($bi['location_data']);
+						$loc->mod = "banner";
+						$banner->title = $bi['name'];
+						if (empty($banner->title)) { $banner->title = 'Untitled'; }
+						$banner->location_data = serialize($loc);
+						$newcompany = $db->selectObject('companies', "title='".$oldcompany->name."'");
+						if ($newcompany == null) {
+							$newcompany = new company();
+							$newcompany->title = $oldcompany->name;
+							$newcompany->body = $oldcompany->contact_info;
+							$newcompany->location_data = $banner->location_data;
+							$newcompany->save();
+						}						
+						$banner->companies_id = $newcompany->id;
+						$banner->clicks = 0;
+						foreach($oldclicks as $click) {
+							$banner->clicks += $click->clicks;
+						}
+                        if (!empty($bi['file_id'])) {
+                            $file = new expFile($bi['file_id']);
+                            $banner->attachitem($file,'');
+                        }
+						$banner->save();
+						@$this->msg['migrated'][$iloc->mod]['count']++;
+						@$this->msg['migrated'][$iloc->mod]['name'] = $this->new_modules[$iloc->mod];
 					}
 				}
 				break;
