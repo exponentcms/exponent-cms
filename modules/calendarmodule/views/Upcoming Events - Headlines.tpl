@@ -35,7 +35,10 @@
 		</div>
 	{/permissions} 
     <ul>
+		{assign var=more_events value=0}	
+		{assign var=item_number value=0}	
 		{foreach from=$items item=item}
+{if (!$__viewconfig.num_events || $item_number < $__viewconfig.num_events) }	
 			<li>
 				<a class="link" href="{link action=view id=$item->id date_id=$item->eventdate->id}" title="{$item->body|summarize:"html":"para"}">{$item->title}</a>
 				<em class="date">
@@ -60,8 +63,17 @@
 					</div>
 				{/permissions}
 			</li>
+		{assign var=item_number value=$item_number+1}
+{else}
+	{assign var=more_events value=1}	
+{/if}
 		{foreachelse}
 			<li align="center"><i>{$_TR.no_event}</i></li>
 		{/foreach}
     </ul>
+	<p>
+		{if $more_events == 1}
+			<a class="mngmntlink monthviewlink module-actions" href="{link _common=1 view='Upcoming Events' action='show_view' time=$time}">{$_TR.more_events}</a>{br}
+		{/if}
+	</p>
 </div>
