@@ -435,9 +435,26 @@ class migrationController extends expController {
 				if ($iloc->mod == 'calendarmodule' && $module->view == 'Upcoming Events - Summary') {
 					$module->view = 'Upcoming Events - Headlines';
 				}
+				$linked = $this->pulldata($iloc, $module);
+				if ($linked) {
+					$newmodule['i_mod'] = $iloc->mod;
+					$newmodule['modcntrol'] = $iloc->mod;
+					$newmodule['rank'] = $module->rank;
+					$newmodule['views'] = $module->view;
+					$newmodule['title'] = $module->title;
+					$newmodule['actions'] = '';
+					$_POST['current_section'] = 1;
+					$module = container::update($newmodule,$module,expUnserialize($module->external));
+					$config = $old_db->selectObject('calendarmodule_config', "location_data='".serialize($iloc)."'");
+					$config->id = '';
+					$config->enable_categories = 1;
+					$config->enable_tags = 0;
+					$config->location_data = $module->internal;
+					$config->aggregate = serialize(Array($iloc->src));
+					$db->insertObject($config, 'calendarmodule_config');
+				}
 				$res = $db->insertObject($module, 'container');
 				if ($res) { @$this->msg['container']++; }
-                $this->pulldata($iloc, $module);
             }
         }
 		searchController::spider();
@@ -1454,10 +1471,12 @@ class migrationController extends expController {
     private function pulldata($iloc, $module) {
         global $db;
         $old_db = $this->connect();
-
+		$linked = false;
+		
         switch ($iloc->mod) {
             case 'calendarmodule':
 				if ($db->countObjects('calendar', "location_data='".serialize($iloc)."'")) {
+					$linked = true;
 					break;
 				}
                 $events = $old_db->selectObjects('eventdate', "location_data='".serialize($iloc)."'");
@@ -1477,18 +1496,9 @@ class migrationController extends expController {
                 }
                 $configs = $old_db->selectObjects('calendarmodule_config', "location_data='".serialize($iloc)."'");
                 foreach ($configs as $config) {
+					$config->id = '';
 					$config->enable_categories = 0;
 					$config->enable_tags = 0;
-                    // unset($config->enable_ical);
-                    // unset($config->rss_limit);
-                    // unset($config->rss_cachetime);
-                    // unset($config->reminder_notify);
-                    // unset($config->email_title_reminder);
-                    // unset($config->email_from_reminder);
-                    // unset($config->email_address_reminder);
-                    // unset($config->email_reply_reminder);
-                    // unset($config->email_showdetail);
-                    // unset($config->email_signature);
                     $db->insertObject($config, 'calendarmodule_config');
                 }
 				@$this->msg['migrated'][$iloc->mod]['name'] = $iloc->mod;
@@ -1556,6 +1566,7 @@ class migrationController extends expController {
 				@$this->msg['migrated'][$iloc->mod]['name'] = $iloc->mod;
 				break;
         }
+        return $linked;
     }
 
 	// used to create containers for new modules
