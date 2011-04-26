@@ -15,6 +15,9 @@
  *}
 
 <div class="module blog showall-headlines">
+    {if $config.enable_rss == true}
+        <a class="rsslink" href="{rsslink}">Subscribe to {$config.feed_title}</a>
+    {/if}
     {if $moduletitle}<h2>{$moduletitle}</h2>{/if}
     
     {permissions}
@@ -27,7 +30,7 @@
     <ul>
     {foreach from=$page->records item=record name="blogs"}
         {if $smarty.foreach.blogs.iteration <= $config.headcount}
-        <li class="bodycopy">
+        <li class="item">
             <a href="{link action=show title=$record->sef_url}">{$record->title}</a>
             {permissions}
                 <div class="item-actions">

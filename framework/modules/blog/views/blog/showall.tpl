@@ -15,12 +15,10 @@
  *}
 
 <div class="module blog showall">
-    {if $moduletitle}<h1>{$moduletitle}</h1>{/if}
-
     {if $config.enable_rss == true}
         <a class="rsslink" href="{rsslink}">Subscribe to {$config.feed_title}</a>
     {/if}
-    
+    {if $moduletitle}<h1>{$moduletitle}</h1>{/if}
     {permissions}
 		<div class="module-actions">
 			{if $permissions.edit == 1}
@@ -47,19 +45,21 @@
                 </div>
             {/permissions}
             <span class="post-info">Posted by {attribution user_id=$record->poster} on <span class="date">{$record->created_at|format_date:$smarty.const.DISPLAY_DATE_FORMAT}</span>
-                <span class="tags">
-                    Tags: 
-                    {foreach from=$record->expTag item=tag name=tags}
-                    <a href="{link action=showall_by_tags tag=$tag->sef_url}">{$tag->title}</a>
-                    {if $smarty.foreach.tags.last != 1},{/if}
-                    {/foreach} 
-                </span>
+				{if $config.usestags}
+					<span class="tags">
+						Tags: 
+						{foreach from=$record->expTag item=tag name=tags}
+						<a href="{link action=showall_by_tags tag=$tag->sef_url}">{$tag->title}</a>
+						{if $smarty.foreach.tags.last != 1},{/if}
+						{/foreach} 
+					</span>
+				{/if}
             </span>
-			{if $config.truncate}
-				{$record->body|summarize:"html":"para"}
-			{else}
+			{if $config.usebody==1}
+				<p>{$record->body|summarize:"html":"para"}</p>
+			{elseif $config.usebody==2}
 				{$record->body}
-			{/if}
+			{/if}			
             <div class="post-footer align-left">
                 <a class="readmore" href="{link action=show title=$record->sef_url}">Read more</a> |
                 {if $config.usescomments}
