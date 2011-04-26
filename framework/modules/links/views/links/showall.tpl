@@ -19,7 +19,7 @@
 			{if $permissions.create == 1 || $permissions.edit == 1}
 				{icon class=add action=create text="Create new link" title="Create a new link"|gettext}
 			{/if}
-			{if $permissions.edit == 1}
+			{if $permissions.edit == 1 && $rank == 1}
 				{ddrerank items=$items model="links" label="Links"|gettext}
 			{/if}
 		</div>
