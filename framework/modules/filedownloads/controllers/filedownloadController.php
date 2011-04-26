@@ -22,13 +22,13 @@ class filedownloadController extends expController {
 	public $useractions = array('showall'=>'Show all');
 
 	public $remove_configs = array(
-        'aggregretion',
         'comments',
         'files',
         'rss',
         'ealerts',
         'tags'
     );
+    public $codequality = 'beta';
 
 	function name() { return $this->displayname(); } //for backwards compat with old modules
 	function displayname() { return "File Downloads"; }
@@ -59,7 +59,7 @@ class filedownloadController extends expController {
                     'columns'=>array('ID#'=>'id','Title'=>'title', 'Body'=>'body'),
                     ));
                     
-		assign_to_template(array('page'=>$page, 'items'=>$page->records, 'modelname'=>$modelname, 'order'=>$order));
+		assign_to_template(array('page'=>$page, 'items'=>$page->records, 'modelname'=>$modelname, 'rank'=>($order==='rank')?1:0));
     }
     
     public function downloadfile() {

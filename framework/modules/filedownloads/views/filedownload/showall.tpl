@@ -14,17 +14,16 @@
  *}
 
 <div class="module filedownload showall">
-    {if $moduletitle}<h1>{$moduletitle}</h1>{/if}
-    
     {if $config.enable_rss}
         <a class="rsslink" href="{podcastlink}">Subscribe to {$config.feed_title}</a>
     {/if}
+    {if $moduletitle}<h1>{$moduletitle}</h1>{/if} 
     {permissions}
         <div class="module-actions">
 			{if $permissions.create == 1}
 				{icon class=add action=edit rank=1 title="Add a File at the Top"|gettext text="Add a File"|gettext}
 			{/if}
-			{if ($permissions.edit == 1 && $order != 'created_at')}
+			{if ($permissions.edit == 1 && $rank == 1)}
 				{ddrerank items=$page->records model="filedownload" label="Downloadable Items"|gettext}
 			{/if}
         </div>
@@ -52,7 +51,18 @@
 				</div>
 			{/permissions}
 			<div class="bodycopy">
-				{$file->body}
+                <div class="tags">
+                    Tags: 
+                    {foreach from=$file->expTag item=tag name=tags}
+						<a href="{link action=showall_by_tags tag=$tag->sef_url}">{$tag->title}</a>
+						{if $smarty.foreach.tags.last != 1},{/if}
+                    {/foreach} 
+                </div>
+				{if $config.usebody==1}
+                    <p>{$file->body|summarize:"html":"para"}</p>
+                {elseif $config.usebody==2}
+                    {$file->body}
+                {/if}
 			</div>
 			<a class="readmore" href="{link action=show title=$file->sef_url}">Read more</a>
 			&nbsp;&nbsp;
