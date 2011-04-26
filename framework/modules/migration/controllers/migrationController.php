@@ -583,6 +583,7 @@ class migrationController extends expController {
         if (!array_key_exists($iloc->mod, $this->params['migrate'])) return $module;
         global $db;
         $old_db = $this->connect();
+		$linked = false;
 
         switch ($iloc->mod) {
             case 'textmodule':
@@ -594,6 +595,7 @@ class migrationController extends expController {
 				$ploc->mod = "text";
 				if ($db->countObjects($ploc->mod, "location_data='".serialize($ploc)."'")) {
 					$iloc->mod = 'textmodule';
+					$linked = true;
 					break;
 				}
 
@@ -622,6 +624,7 @@ class migrationController extends expController {
 				$ploc->mod = "text";
 				if ($db->countObjects($ploc->mod, "location_data='".serialize($ploc)."'")) {
 					$iloc->mod = 'rotatormodule';
+					$linked = true;
 					break;
 				}
 
@@ -649,6 +652,7 @@ class migrationController extends expController {
 				$ploc->mod = "snippet";
 				if ($db->countObjects($ploc->mod, "location_data='".serialize($ploc)."'")) {
 					$iloc->mod = 'snippetmodule';
+					$linked = true;
 					break;
 				}
 
@@ -687,6 +691,7 @@ class migrationController extends expController {
 				$ploc->mod = "links";
 				if ($db->countObjects($ploc->mod, "location_data='".serialize($ploc)."'")) {
 					$iloc->mod = 'linklistmodule';
+					$linked = true;
 					break;
 				}
 
@@ -727,6 +732,7 @@ class migrationController extends expController {
 				$ploc->mod = "links";
 				if ($db->countObjects($ploc->mod, "location_data='".serialize($ploc)."'")) {
 					$iloc->mod = 'linkmodule';
+					$linked = true;
 					break;
 				}
 
@@ -776,6 +782,7 @@ class migrationController extends expController {
 				$ploc->mod = "text";
 				if ($db->countObjects($ploc->mod, "location_data='".serialize($ploc)."'")) {
 					$iloc->mod = 'swfmodule';
+					$linked = true;
 					break;
 				}
 
@@ -827,6 +834,7 @@ class migrationController extends expController {
 				$ploc->mod = "news";
 				if ($db->countObjects($ploc->mod, "location_data='".serialize($ploc)."'")) {
 					$iloc->mod = 'newsmodule';
+					$linked = true;
 					break;
 				}
 
@@ -896,6 +904,7 @@ class migrationController extends expController {
 				$ploc->mod = "filedownload";
 				if ($db->countObjects('filedownloads', "location_data='".serialize($ploc)."'")) {
 					$iloc->mod = 'resourcesmodule';
+					$linked = true;
 					break;
 				}
 
@@ -958,6 +967,7 @@ class migrationController extends expController {
 				$ploc->mod = "photos";
 				if ($db->countObjects('photo', "location_data='".serialize($ploc)."'")) {
 					$iloc->mod = 'imagegallerymodule';
+					$linked = true;
 					break;
 				}
 
@@ -999,6 +1009,7 @@ class migrationController extends expController {
 				$ploc->mod = "photos";
 				if ($db->countObjects('photo', "location_data='".serialize($ploc)."'")) {
 					$iloc->mod = 'slideshowmodule';
+					$linked = true;
 					break;
 				}
 
@@ -1042,6 +1053,7 @@ class migrationController extends expController {
 				$ploc->mod = "headline";
 				if ($db->countObjects($ploc->mod, "location_data='".serialize($ploc)."'")) {
 					$iloc->mod = 'headlinemodule';
+					$linked = true;
 					break;
 				}
 
@@ -1088,6 +1100,7 @@ class migrationController extends expController {
 				$ploc->mod = "blog";
 				if ($db->countObjects($ploc->mod, "location_data='".serialize($ploc)."'")) {
 					$iloc->mod = 'weblogmodule';
+					$linked = true;
 					break;
 				}
 
@@ -1147,6 +1160,7 @@ class migrationController extends expController {
 				$ploc->mod = "faq";
 				if ($db->countObjects('faqs', "location_data='".serialize($ploc)."'")) {
 					$iloc->mod = 'faqmodule';
+					$linked = true;
 					break;
 				}
 
@@ -1178,6 +1192,7 @@ class migrationController extends expController {
 				$ploc->mod = "portfolio";
 				if ($db->countObjects($ploc->mod, "location_data='".serialize($ploc)."'")) {
 					$iloc->mod = 'listingmodule';
+					$linked = true;
 					break;
 				}
 
@@ -1226,6 +1241,7 @@ class migrationController extends expController {
 				$ploc->mod = "formmodule";
 				if ($db->countObjects('formbuilder_form', "location_data='".serialize($ploc)."'")) {
 					$iloc->mod = 'contactmodule';
+					$linked = true;
 					break;
 				}
 
@@ -1303,6 +1319,7 @@ class migrationController extends expController {
 				$ploc->mod = "youtube";
 				if ($db->countObjects('youtube', "location_data='".serialize($ploc)."'")) {
 					$iloc->mod = 'youtubemodule';
+					$linked = true;
 					break;
 				}
 
@@ -1338,6 +1355,7 @@ class migrationController extends expController {
 				$ploc->mod = "flowplayer";
 				if ($db->countObjects('flowplayer', "location_data='".serialize($ploc)."'")) {
 					$iloc->mod = 'mediaplayermodule';
+					$linked = true;
 					break;
 				}
 
@@ -1381,6 +1399,7 @@ class migrationController extends expController {
 				$ploc->mod = "banner";
 				if ($db->countObjects('banner', "location_data='".serialize($ploc)."'")) {
 					$iloc->mod = 'bannermodule';
+					$linked = true;
 					break;
 				}
 
@@ -1426,7 +1445,7 @@ class migrationController extends expController {
 		}
         // quick check for non hard coded modules
         // We add a container if they're not hard coded.
-        (!$hc) ? $this->add_container($iloc,$module) : "";
+        (!$hc) ? $this->add_container($iloc,$module,$linked) : "";
 
         return $module;
     }
@@ -1540,7 +1559,7 @@ class migrationController extends expController {
     }
 
 	// used to create containers for new modules
-    private function add_container($iloc,$m) {
+	private function add_container($iloc,$m,$linked=false) {
         global $db;
 		if ($iloc->mod != 'contactmodule') {
 			$iloc->mod = $this->new_modules[$iloc->mod];
@@ -1550,11 +1569,29 @@ class migrationController extends expController {
 			if ($m->view == "Default") {
 				$m->view = 'showall';
 			}
-		} else {  // must be old school contactmodule
+		} else {  // must be an old school contactmodule
 			$iloc->mod = $this->new_modules[$iloc->mod];
 			$m->internal = serialize($iloc);
 		}
-        $db->insertObject($m, 'container');
+		if ($linked) {
+			$newconfig = new expConfig();
+			$config['aggregate'] = Array($iloc->src);
+			$newconfig->config = $config;
+			$newmodule['i_mod'] = $iloc->mod;
+			$newmodule['modcntrol'] = $iloc->mod;
+			$newmodule['rank'] = $m->rank;
+			$newmodule['views'] = $m->view;
+			$newmodule['title'] = $m->title;
+			$newmodule['actions'] = $m->action;
+			$_POST['current_section'] = 1;
+			$m = container::update($newmodule,$m,expUnserialize($m->external));
+			$newmodinternal = expUnserialize($m->internal);
+			$newmod = explode("Controller",$newmodinternal->mod);
+			$newmodinternal->mod = $newmod[0];
+			$newconfig->location_data = $newmodinternal;
+			$newconfig->save();
+		} 
+		$db->insertObject($m, 'container');
     }
 
 	// connect to old site's database
