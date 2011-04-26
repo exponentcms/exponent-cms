@@ -23,10 +23,9 @@ class filedownloadController extends expController {
 
 	public $remove_configs = array(
         'comments',
+        'ealerts',
         'files',
         'rss',
-        'ealerts',
-        'tags'
     );
     public $codequality = 'beta';
 
