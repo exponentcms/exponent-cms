@@ -20,6 +20,7 @@
 if (!defined('EXPONENT')) exit('');
 
 if (exponent_permissions_check('administrate',$loc)) {
+	global $router;
 	$i18n = exponent_lang_loadFile('subsystems/users.php');
 	if (exponent_template_getModuleViewFile($loc->mod,'_grouppermissions',false) == TEMPLATE_FALLBACK_VIEW) {
 		$template = new template('common','_grouppermissions',$loc);
@@ -37,37 +38,43 @@ if (exponent_permissions_check('administrate',$loc)) {
 	$modclass = $modulename;
 	$mod = new $modclass();
 	$perms = $mod->permissions($loc->int);
-	// Create the anonymous group
-	/*
-	$g = null;
-	$g->id = 0;
-	$g->name = $i18n['anonymous_group_name'];
-	$g->description = $i18n['anonymous_group_description'];
-	$g->inclusive = 1;
-	//$g->code = "";
-	foreach ($perms as $perm=>$name) {
-		$var = "perms_$perm";
-		if (exponent_permissions_checkGroup($g,$perm,$loc,true)) $g->$var = 1;
-		else if (exponent_permissions_checkGroup($g,$perm,$loc)) $g->$var = 2;
-		else $g->$var = 0;
-	}
-	$users[] = $g;
-	*/
+
 	foreach (exponent_users_getAllGroups() as $g) {
 		foreach ($perms as $perm=>$name) {
 			$var = 'perms_'.$perm;
 			if (exponent_permissions_checkGroup($g,$perm,$loc,true)) {
-				$g->$var = 1;
+				$g->$perm = 1;
 			} else if (exponent_permissions_checkGroup($g,$perm,$loc)) {
-				$g->$var = 2;
+				$g->$perm = 2;
 			} else {
-				$g->$var = 0;
+				$g->$perm = 0;
 			}
 		}
 		$users[] = $g;
 	}
+	
+	$p["Group"] = 'username';
+	foreach ($mod->permissions() as $key => $value) {
+        $p[$value]=$key;
+	}
+	
+    $page = new expPaginator(array(
+     //'model'=>'user',
+    'limit'=>(isset($_REQUEST['limit'])?$_REQUEST['limit']:20),
+     'controller'=>$router->params['controller'],
+     'action'=>$router->params['action'],
+     'records'=>$users,
+     //'sql'=>$sql,
+     'order'=>'username',
+     'dir'=>'DESC',
+     'columns'=>$p,
+     ));        
+        
+	
+	$template->assign('is_group',1);
 	$template->assign('have_users',count($users) > 0); // users = groups
-	$template->assign('users',$users); // users = groups
+	$template->assign('users',$users);
+	$template->assign('page',$page);
 	$template->assign('perms',$perms);
 
 	$template->output();

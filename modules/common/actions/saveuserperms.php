@@ -20,12 +20,10 @@
 if (!defined('EXPONENT')) exit('');
 
 if (exponent_permissions_check('administrate',$loc)) {
-	$users = explode(';',$_POST['permdata']);
 	if (!defined('SYS_USERS')) include_once(BASE.'subsystems/users.php');
-	foreach ($users as $user_str) {
-		$perms = explode(':',$user_str);
-		$u = exponent_users_getUserById($perms[0]);
-
+	foreach ($_POST['permdata'] as $k => $user_str) {
+		$perms = array_keys($user_str);
+		$u = exponent_users_getUserById($k);
 		$locarray = array();
 		if ($loc->mod == 'navigationmodule' && !empty($perms[1]) && $perms[1] == 'manage') {
 			$sections = navigationmodule::levelTemplate($loc->int);
@@ -39,18 +37,18 @@ if (exponent_permissions_check('administrate',$loc)) {
 
 		foreach ($locarray as $location) {
 			exponent_permissions_revokeAll($u,$location);
-			for ($i = 1; $i < count($perms); $i++) {
+			for ($i = 0; $i < count($perms); $i++) {
 				exponent_permissions_grant($u,$perms[$i],$location);
 			}
 		}
 
-		if ($perms[0] == $user->id) {
+		if ($k == $user->id) {
 			exponent_permissions_load($user);
 		}
 	}
 	
 	exponent_permissions_triggerRefresh();
-	exponent_flow_redirect();
+    exponent_flow_redirect();
 } else {
 	echo SITE_403_HTML;
 }

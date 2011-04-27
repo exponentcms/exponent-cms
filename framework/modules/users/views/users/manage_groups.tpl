@@ -13,6 +13,10 @@
  * GPL: http://www.gnu.org/licenses/gpl.txt
  *
  *}
+ 
+{css unique="manage_groups" corecss="tables"}
+
+{/css}
 
 <div class="module users manage-group">
 	<h1>{$moduletitle|default:"Manage User Groups"}</h1>	

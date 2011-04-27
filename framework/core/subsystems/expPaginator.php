@@ -317,7 +317,7 @@ class expPaginator {
                 
                 if ($col == $current) {
                     $class  = 'current';
-                    $class .= ' '.$this->order_direction;
+                    $class .= ' '.strtolower($this->order_direction);
                     if (isset($_REQUEST['dir'])) {
                         $params['dir'] = $_REQUEST['dir'] == 'ASC' ? 'DESC' : 'ASC';
                     } else {
@@ -337,7 +337,7 @@ class expPaginator {
                     $this->header_columns .= '<input type=checkbox name=selall value=1 class="select-all"/>';
                     
                     $js = "
-                    YUI({ base:EXPONENT.YUI3_PATH,loadOptional: true}).use('node', function(Y) {
+                    YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
                         Y.all('input[type=checkbox]').on('click',function(e){
                             if (e.target.test('.select-all')) {
                                 if (!e.target.get('checked')) {

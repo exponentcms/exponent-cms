@@ -190,14 +190,14 @@ a.view {
 
 /****************  tables  ***********************/
 
-.exp-skin-table table,
+/*.exp-skin-table table,
 table.exp-skin-table {
-	border-collapse:separate;
-	border-spacing:0;
-	margin:0 0 1em 0;
-	color:#000;
-	border-bottom:1px solid #523A0B;
-	width: 100%;
+    border-collapse:separate;
+    border-spacing:0;
+    margin:0 0 1em 0;
+    color:#000;
+    border-bottom:1px solid #523A0B;
+    width: 100%;
 }
 
 
@@ -205,51 +205,51 @@ table.exp-skin-table {
 .exp-skin-tablethead td,
 .exp-skin-tabletfoot th,
 .exp-skin-tabletfoot td {
-	border:1px solid #523A0B;
-	border-width:1px 0;
-	background:#EBE5D9;
+    border:1px solid #523A0B;
+    border-width:1px 0;
+    background:#EBE5D9;
 }
 .exp-skin-table th {
-	font-weight:bold;
-	line-height:normal;
-	padding:5px;
-	text-align:left;
+    font-weight:bold;
+    line-height:normal;
+    padding:5px;
+    text-align:left;
 }
 .exp-skin-table tbody th,
 .exp-skin-table td {
-	padding:0.25em 0.5em;
-	text-align:left;
-	vertical-align:top;
-	}
+    padding:0.25em 0.5em;
+    text-align:left;
+    vertical-align:top;
+    }
 .exp-skin-table tbody th {
-	font-weight:normal;
-	white-space:nowrap;
-	}
+    font-weight:normal;
+    white-space:nowrap;
+    }
 .exp-skin-table tbody td,
 .exp-skin-table tbody th {
-	border:1px solid #fff;
-	border-width:1px 0;
-	}
+    border:1px solid #fff;
+    border-width:1px 0;
+    }
 .exp-skin-table tbody tr.odd th,
 .exp-skin-table tbody tr.odd td {
-	border-color:#EBE5D9;
-	background:#F7F4EE;
-	}
+    border-color:#EBE5D9;
+    background:#F7F4EE;
+    }
 .exp-skin-table tbody tr:hover td,
 .exp-skin-table tbody tr:hover th {
-	background:#d5e3f3;
-	border-color:#999;
-	border-style:dotted;
+    background:#d5e3f3;
+    border-color:#999;
+    border-style:dotted;
 }
 .exp-skin-table caption {
-	font-family:Georgia,Times,serif;
-	font-weight:normal;
-	font-size:1.4em;
-	text-align:left;
-	margin:0;
-	padding:0.5em 0.25em;
+    font-family:Georgia,Times,serif;
+    font-weight:normal;
+    font-size:1.4em;
+    text-align:left;
+    margin:0;
+    padding:0.5em 0.25em;
 }
-
+*/
 /****************  some form stuff  ***********************/
 
 .control input.title {

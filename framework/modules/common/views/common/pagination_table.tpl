@@ -14,12 +14,11 @@
  *
  *}
 
-<div class="pagination-table">
+<div class="exp-skin-table">
 	<table>
 	    <thead>
     		<tr>
     		    {$page->header_columns}
-    			<!--th>Admin</th-->
     		</tr>
 		</thead>
 		<tbody>
