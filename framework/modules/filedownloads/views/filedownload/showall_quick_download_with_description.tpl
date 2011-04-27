@@ -14,21 +14,21 @@
  *}
 
 <div class="module filedownload quick-download-with-description">
-    {if $moduletitle}<h1>{$moduletitle}</h1>{/if}
     {if $config.enable_rss}
-        <a class="podcastlink" href="{podcastlink}">Subscribe to {$config.feed_title}</a>
+        <a class="rsslink" href="{podcastlink}">Subscribe to {$config.feed_title}</a>
     {/if}
+    {if $moduletitle}<h1>{$moduletitle}</h1>{/if}
     {permissions}
         <div class="module-actions">
 			{if $permissions.create == 1}
-				{icon class="add" action=edit rank=1 title="Add a File at the Top"|gettext text="Add a File"|gettext}
+				{icon class=add action=edit rank=1 title="Add a File at the Top"|gettext text="Add a File"|gettext}
 			{/if}
-			{if ($permissions.edit == 1 && $order != 'created_at')}
+			{if ($permissions.edit == 1 && $rank == 1)}
 				{ddrerank items=$page->records model="filedownload" label="Downloadable Items"|gettext}
 			{/if}
         </div>
     {/permissions}    
-    {$page->links}
+    {pagelinks paginate=$page top=1}
     {foreach from=$page->records item=file name=files}
        <div class="item">
             {if $file->expFile.preview[0] != ""}
@@ -46,14 +46,20 @@
 				</div>
             {/permissions}
             <div class="bodycopy">
-                <div class="tags">
-                    Tags: 
-                    {foreach from=$file->expTag item=tag name=tags}
-						<a href="{link action=showall_by_tags tag=$tag->sef_url}">{$tag->title}</a>
-						{if $smarty.foreach.tags.last != 1},{/if}
-                    {/foreach} 
-                </div>
-                {$file->body}
+				{if $config.usestags}
+					<div class="tags">
+						Tags: 
+						{foreach from=$file->expTag item=tag name=tags}
+							<a href="{link action=showall_by_tags tag=$tag->sef_url}">{$tag->title}</a>
+							{if $smarty.foreach.tags.last != 1},{/if}
+						{/foreach} 
+					</div>
+				{/if}
+				{if $config.usebody==1}
+                    <p>{$file->body|summarize:"html":"para"}</p>
+                {elseif $config.usebody==2}
+                    {$file->body}
+                {/if}
             </div>
         </div>
 		{permissions}
@@ -65,5 +71,5 @@
 		{/permissions}
 		{clear}
     {/foreach}
-    {$page->links}
+    {pagelinks paginate=$page bottom=1}
 </div>

@@ -586,8 +586,28 @@ class usersController extends expController {
 				$users[$i]->is_admin = 0;
 			}
 		}
-		
+
+        $limit = empty($this->config['limit']) ? 10 : $this->config['limit'];
+        $order = empty($this->config['order']) ? 'username' : $this->config['order'];
+        $page = new expPaginator(array(
+//                    'model'=>'user',
+					'records'=>$users,
+                    'where'=>1, 
+                    'limit'=>$limit,
+                    'order'=>$order,
+                    'controller'=>$this->baseclassname,
+                    'action'=>$this->params['action'],
+                    'columns'=>array(
+                        'Username'=>'username',
+                        'First Name'=>'firstname',
+                        'Last Name'=>'lastname',
+                        'Is Member'=>'is_member',
+                        'Is Admin'=>'is_admin',
+                        )
+                    ));
+                    
         assign_to_template(array(
+			'page'=>$page,
             'group'=>$group,
             'users'=>$users,
             'canAdd'=>(count($members) < count($users) ? 1 : 0),

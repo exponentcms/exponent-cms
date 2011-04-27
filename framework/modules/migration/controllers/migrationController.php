@@ -44,6 +44,7 @@ class migrationController extends expController {
 		'contactmodule'=>'formmodule',  // this module is converted to a functionally similar old school formmodule
         'youtubemodule'=>'youtubeController',
         'mediaplayermodule'=>'flowplayerController',
+        'bannermodule'=>'bannerController',
     );
 
     // these are modules that have either been deprecated or have no content to migrate
@@ -81,7 +82,6 @@ class migrationController extends expController {
 
     public $needs_written = array(
 		'addressbookmodule',  // listed above, but no script written yet?
-        'bannermodule',  // to bannerController?
 //        'categories',  // no controller and not in old school ???
 //        'tags',	 // no controller and not in old school ???
     );
@@ -242,16 +242,21 @@ class migrationController extends expController {
             $db->delete('portfolio');
             $db->delete('youtube');
             $db->delete('flowplayer');
+            $db->delete('banner');
+            $db->delete('companies');
             $db->delete('content_expComments');
             $db->delete('content_expFiles');
             $db->delete('content_expSimpleNote');
             $db->delete('content_expTags');
             $db->delete('expComments');
+            $db->delete('expConfigs', 'id>1');  // don't delete migration config
+//            $db->delete('expFiles');			// deleted and rebuilt during (previous) file migration
+            $db->delete('expeAlerts');
+            $db->delete('expeAlerts_subscribers');
+            $db->delete('expeAlerts_temp');
             $db->delete('expSimpleNote');
+            $db->delete('expRss');
             $db->delete('expTags');
-//            $db->delete('expConfigs', 'id>1');  // don't delete migration config
-//            $db->delete('expFiles');
-//            $db->delete('expRSS');
             $db->delete('calendar');
             $db->delete('eventdate');
             $db->delete('calendarmodule_config');
@@ -336,6 +341,10 @@ class migrationController extends expController {
 			}
 			if (in_array('mediaplayermodule',$this->params['replace'])) {
 				$db->delete('flowplayer');
+			}
+			if (in_array('bannermodule',$this->params['replace'])) {
+				$db->delete('banner');
+				$db->delete('companies');
 			}
 		}
 
@@ -426,9 +435,26 @@ class migrationController extends expController {
 				if ($iloc->mod == 'calendarmodule' && $module->view == 'Upcoming Events - Summary') {
 					$module->view = 'Upcoming Events - Headlines';
 				}
+				$linked = $this->pulldata($iloc, $module);
+				if ($linked) {
+					$newmodule['i_mod'] = $iloc->mod;
+					$newmodule['modcntrol'] = $iloc->mod;
+					$newmodule['rank'] = $module->rank;
+					$newmodule['views'] = $module->view;
+					$newmodule['title'] = $module->title;
+					$newmodule['actions'] = '';
+					$_POST['current_section'] = 1;
+					$module = container::update($newmodule,$module,expUnserialize($module->external));
+					$config = $old_db->selectObject('calendarmodule_config', "location_data='".serialize($iloc)."'");
+					$config->id = '';
+					$config->enable_categories = 1;
+					$config->enable_tags = 0;
+					$config->location_data = $module->internal;
+					$config->aggregate = serialize(Array($iloc->src));
+					$db->insertObject($config, 'calendarmodule_config');
+				}
 				$res = $db->insertObject($module, 'container');
 				if ($res) { @$this->msg['container']++; }
-                $this->pulldata($iloc, $module);
             }
         }
 		searchController::spider();
@@ -574,6 +600,7 @@ class migrationController extends expController {
         if (!array_key_exists($iloc->mod, $this->params['migrate'])) return $module;
         global $db;
         $old_db = $this->connect();
+		$linked = false;
 
         switch ($iloc->mod) {
             case 'textmodule':
@@ -585,6 +612,7 @@ class migrationController extends expController {
 				$ploc->mod = "text";
 				if ($db->countObjects($ploc->mod, "location_data='".serialize($ploc)."'")) {
 					$iloc->mod = 'textmodule';
+					$linked = true;
 					break;
 				}
 
@@ -613,6 +641,7 @@ class migrationController extends expController {
 				$ploc->mod = "text";
 				if ($db->countObjects($ploc->mod, "location_data='".serialize($ploc)."'")) {
 					$iloc->mod = 'rotatormodule';
+					$linked = true;
 					break;
 				}
 
@@ -640,6 +669,7 @@ class migrationController extends expController {
 				$ploc->mod = "snippet";
 				if ($db->countObjects($ploc->mod, "location_data='".serialize($ploc)."'")) {
 					$iloc->mod = 'snippetmodule';
+					$linked = true;
 					break;
 				}
 
@@ -678,6 +708,7 @@ class migrationController extends expController {
 				$ploc->mod = "links";
 				if ($db->countObjects($ploc->mod, "location_data='".serialize($ploc)."'")) {
 					$iloc->mod = 'linklistmodule';
+					$linked = true;
 					break;
 				}
 
@@ -718,11 +749,13 @@ class migrationController extends expController {
 				$ploc->mod = "links";
 				if ($db->countObjects($ploc->mod, "location_data='".serialize($ploc)."'")) {
 					$iloc->mod = 'linkmodule';
+					$linked = true;
 					break;
 				}
 
                 $iloc->mod = 'linkmodule';
                 $links = $old_db->selectArrays('link', "location_data='".serialize($iloc)."'");
+				$oldconfig = $old_db->selectObject('linkmodule_config', "location_data='".serialize($iloc)."'");
 				if ($links) {
 					foreach ($links as $link) {
 						$lnk = new links();
@@ -740,6 +773,21 @@ class migrationController extends expController {
 						@$this->msg['migrated'][$iloc->mod]['count']++;
 						@$this->msg['migrated'][$iloc->mod]['name'] = $this->new_modules[$iloc->mod];
 					}
+					if ($oldconfig->enable_rss == 1) {
+						$config['enable_rss'] = true;
+						$config['feed_title'] = $oldconfig->feed_title;
+						$config['feed_desc'] = $oldconfig->feed_desc;
+						$newconfig = new expConfig();
+						$newconfig->config = $config;
+						$newconfig->location_data = $loc;
+						$newconfig->save();
+						$newrss = new expRss();
+						$newrss->module = $loc->mod;
+						$newrss->src = $loc->src;
+						$newrss->feed_title = $oldconfig->feed_title;
+						$newrss->feed_desc = $oldconfig->feed_desc;
+						$newrss->save();
+					}
 				}
 				break;
             case 'swfmodule':
@@ -751,6 +799,7 @@ class migrationController extends expController {
 				$ploc->mod = "text";
 				if ($db->countObjects($ploc->mod, "location_data='".serialize($ploc)."'")) {
 					$iloc->mod = 'swfmodule';
+					$linked = true;
 					break;
 				}
 
@@ -802,12 +851,15 @@ class migrationController extends expController {
 				$ploc->mod = "news";
 				if ($db->countObjects($ploc->mod, "location_data='".serialize($ploc)."'")) {
 					$iloc->mod = 'newsmodule';
+					$linked = true;
 					break;
 				}
 
                 $iloc->mod = 'newsmodule';
                 $newsitems = $old_db->selectArrays('newsitem', "location_data='".serialize($iloc)."'");
+				$oldconfig = $old_db->selectObject('newsmodule_config', "location_data='".serialize($iloc)."'");
                 if ($newsitems) {
+					$files_attached = false;
                     foreach ($newsitems as $ni) {
                         unset($ni['id']);
                         $news = new news($ni);
@@ -822,11 +874,35 @@ class migrationController extends expController {
                         @$this->msg['migrated'][$iloc->mod]['count']++;
                         @$this->msg['migrated'][$iloc->mod]['name'] = $this->new_modules[$iloc->mod];
                         if (!empty($ni['file_id'])) {
-                            $oldfile = $old_db->selectArray('file', 'id='.$ni['file_id']);
-                            $file = new expFile($oldfile);
-                            $news->attachitem($file,'downloadable');
+                            $file = new expFile($ni['file_id']);
+                            $news->attachitem($file,'');
+							$files_attached = true;
                         }
                     }
+					$newconfig = new expConfig();
+					if ($files_attached) {
+						// fudge a config to get attached files to appear
+						$newconfig->config = 'a:14:{s:9:"feedmaker";s:0:"";s:11:"filedisplay";s:7:"Gallery";s:6:"ffloat";s:4:"Left";s:6:"fwidth";s:3:"120";s:7:"fmargin";s:1:"5";s:7:"piwidth";s:3:"100";s:5:"thumb";s:3:"100";s:7:"spacing";s:2:"10";s:10:"floatthumb";s:8:"No Float";s:6:"tclass";s:0:"";s:5:"limit";s:0:"";s:9:"pagelinks";s:14:"Top and Bottom";s:10:"feed_title";s:0:"";s:9:"feed_desc";s:0:"";}';						$config->save();
+					}					
+					if ($oldconfig->enable_rss == 1) {
+						if ($newconfig->config != null) {
+							$config = expUnserialize($newconfig->config);
+						}
+						$config['enable_rss'] = true;
+						$config['feed_title'] = $oldconfig->feed_title;
+						$config['feed_desc'] = $oldconfig->feed_desc;
+						$newconfig->config = $config;
+						$newrss = new expRss();
+						$newrss->module = $loc->mod;
+						$newrss->src = $loc->src;
+						$newrss->feed_title = $oldconfig->feed_title;
+						$newrss->feed_desc = $oldconfig->feed_desc;
+						$newrss->save();
+					}
+					if ($newconfig != null) {
+						$newconfig->location_data = $loc;
+						$newconfig->save();
+					}
                 }
 				break;
             case 'resourcesmodule':
@@ -845,11 +921,13 @@ class migrationController extends expController {
 				$ploc->mod = "filedownload";
 				if ($db->countObjects('filedownloads', "location_data='".serialize($ploc)."'")) {
 					$iloc->mod = 'resourcesmodule';
+					$linked = true;
 					break;
 				}
 
                 $iloc->mod = 'resourcesmodule';
                 $resourceitems = $old_db->selectArrays('resourceitem', "location_data='".serialize($iloc)."'");
+				$oldconfig = $old_db->selectObject('resourcesmodule_config', "location_data='".serialize($iloc)."'");
 				if ($resourceitems) {
 					foreach ($resourceitems as $ri) {
 						unset($ri['id']);
@@ -864,8 +942,7 @@ class migrationController extends expController {
 							$filedownload->save();
 							@$this->msg['migrated'][$iloc->mod]['count']++;
 							@$this->msg['migrated'][$iloc->mod]['name'] = $this->new_modules[$iloc->mod];
-							$oldfile = $old_db->selectArray('file', 'id='.$ri['file_id']);
-							$file = new expFile($oldfile);
+							$file = new expFile($ri['file_id']);
 							$filedownload->attachitem($file,'downloadable');
 							// default is to create with current time						
 							$filedownload->created_at = $ri['posted'];
@@ -873,6 +950,21 @@ class migrationController extends expController {
 							$filedownload->update();
 						}
 					}
+					if ($oldconfig->enable_rss == 1) {
+						$config['enable_rss'] = true;
+						$config['feed_title'] = $oldconfig->feed_title;
+						$config['feed_desc'] = $oldconfig->feed_desc;
+						$newconfig = new expConfig();
+						$newconfig->config = $config;
+						$newconfig->location_data = $loc;
+						$newconfig->save();
+						$newrss = new expRss();
+						$newrss->module = $loc->mod;
+						$newrss->src = $loc->src;
+						$newrss->feed_title = $oldconfig->feed_title;
+						$newrss->feed_desc = $oldconfig->feed_desc;
+						$newrss->save();
+					}					
 				}
 				break;
             case 'imagegallerymodule':
@@ -892,6 +984,7 @@ class migrationController extends expController {
 				$ploc->mod = "photos";
 				if ($db->countObjects('photo', "location_data='".serialize($ploc)."'")) {
 					$iloc->mod = 'imagegallerymodule';
+					$linked = true;
 					break;
 				}
 
@@ -900,10 +993,8 @@ class migrationController extends expController {
 				if ($galleries) {
 					foreach ($galleries as $gallery) {
 						$gis = $old_db->selectArrays('imagegallery_image', "gallery_id='".$gallery['id']."'");
-						//eDebug($gis,1);
 						foreach ($gis as $gi) {
 							$photo = new photo();
-							//$loc = expUnserialize($gi['location_data']);
 							$loc = expUnserialize($gallery['location_data']);
 							$loc->mod = "photos";
 							$photo->title = $gi['name'];
@@ -935,6 +1026,7 @@ class migrationController extends expController {
 				$ploc->mod = "photos";
 				if ($db->countObjects('photo', "location_data='".serialize($ploc)."'")) {
 					$iloc->mod = 'slideshowmodule';
+					$linked = true;
 					break;
 				}
 
@@ -943,10 +1035,8 @@ class migrationController extends expController {
 				if ($galleries) {
 					foreach ($galleries as $gallery) {
 						$gis = $old_db->selectArrays('imagegallery_image', "gallery_id='".$gallery['id']."'");
-						//eDebug($gis,1);
 						foreach ($gis as $gi) {
 							$photo = new photo();
-							//$loc = expUnserialize($gi['location_data']);
 							$loc = expUnserialize($gallery['location_data']);
 							$loc->mod = "photos";
 							$photo->title = $gi['name'];
@@ -967,7 +1057,6 @@ class migrationController extends expController {
 									$photo->update();								
 								}
 							}
-
 						}
 					}
 				}
@@ -981,6 +1070,7 @@ class migrationController extends expController {
 				$ploc->mod = "headline";
 				if ($db->countObjects($ploc->mod, "location_data='".serialize($ploc)."'")) {
 					$iloc->mod = 'headlinemodule';
+					$linked = true;
 					break;
 				}
 
@@ -1027,11 +1117,13 @@ class migrationController extends expController {
 				$ploc->mod = "blog";
 				if ($db->countObjects($ploc->mod, "location_data='".serialize($ploc)."'")) {
 					$iloc->mod = 'weblogmodule';
+					$linked = true;
 					break;
 				}
 
                 $iloc->mod = 'weblogmodule';
                 $blogitems = $old_db->selectArrays('weblog_post', "location_data='".serialize($iloc)."'");
+				$oldconfig = $old_db->selectObject('weblogmodule_config', "location_data='".serialize($iloc)."'");
                 if ($blogitems) {
                     foreach ($blogitems as $bi) {
                         unset($bi['id']);
@@ -1046,11 +1138,11 @@ class migrationController extends expController {
                         $post->update();
                         @$this->msg['migrated'][$iloc->mod]['count']++;
                         @$this->msg['migrated'][$iloc->mod]['name'] = $this->new_modules[$iloc->mod];
-                        if (!empty($bi['file_id'])) {
-                            $oldfile = $old_db->selectArray('file', 'id='.$bi['file_id']);
-                            $file = new expFile($oldfile);
-                            $post->attachitem($file,'downloadable');
-                        }
+						// this next section is moot since there are no attachments to blogs
+                        // if (!empty($bi['file_id'])) {
+                            // $file = new expFile($bi['file_id']);
+                            // $post->attachitem($file,'downloadable');
+                        // }
 						$comments = $old_db->selectObjects('weblog_comment', "location_data='".serialize($iloc)."'");
 						foreach($comments as $comment) {
 							$newcomment = new expComments($comment);
@@ -1059,6 +1151,21 @@ class migrationController extends expController {
 							$post->attachitem($newcomment,'');
 						}
                     }
+					if ($oldconfig->enable_rss == 1) {
+						$config['enable_rss'] = true;
+						$config['feed_title'] = $oldconfig->feed_title;
+						$config['feed_desc'] = $oldconfig->feed_desc;
+						$newconfig = new expConfig();
+						$newconfig->config = $config;
+						$newconfig->location_data = $loc;
+						$newconfig->save();
+						$newrss = new expRss();
+						$newrss->module = $loc->mod;
+						$newrss->src = $loc->src;
+						$newrss->feed_title = $oldconfig->feed_title;
+						$newrss->feed_desc = $oldconfig->feed_desc;
+						$newrss->save();
+					}					
                 }
 				break;
             case 'faqmodule':
@@ -1070,6 +1177,7 @@ class migrationController extends expController {
 				$ploc->mod = "faq";
 				if ($db->countObjects('faqs', "location_data='".serialize($ploc)."'")) {
 					$iloc->mod = 'faqmodule';
+					$linked = true;
 					break;
 				}
 
@@ -1101,12 +1209,14 @@ class migrationController extends expController {
 				$ploc->mod = "portfolio";
 				if ($db->countObjects($ploc->mod, "location_data='".serialize($ploc)."'")) {
 					$iloc->mod = 'listingmodule';
+					$linked = true;
 					break;
 				}
 
                 $iloc->mod = 'listingmodule';
                 $listingitems = $old_db->selectArrays('listing', "location_data='".serialize($iloc)."'");
                 if ($listingitems) {
+					$files_attached = false;
                     foreach ($listingitems as $li) {
                         unset($li['id']);
                         $listing = new portfolio($li);
@@ -1127,8 +1237,16 @@ class migrationController extends expController {
                         if (!empty($li['file_id'])) {
 							$file = new expFile($li['file_id']);
 							$listing->attachitem($file,'');
-                        }
+							$files_attached = true;
+						}
                     }
+					if ($files_attached) {
+						// fudge a config to get attached files to appear
+						$config = new expConfig();
+						$config->location_data = $loc;
+						$config->config = 'a:11:{s:11:"filedisplay";s:7:"Gallery";s:6:"ffloat";s:4:"Left";s:6:"fwidth";s:3:"120";s:7:"fmargin";s:1:"5";s:7:"piwidth";s:3:"100";s:5:"thumb";s:3:"100";s:7:"spacing";s:2:"10";s:10:"floatthumb";s:8:"No Float";s:6:"tclass";s:0:"";s:5:"limit";s:0:"";s:9:"pagelinks";s:14:"Top and Bottom";}';
+						$config->save();
+					}
                 }
 				break;
             case 'contactmodule':  // convert to an old school form
@@ -1140,6 +1258,7 @@ class migrationController extends expController {
 				$ploc->mod = "formmodule";
 				if ($db->countObjects('formbuilder_form', "location_data='".serialize($ploc)."'")) {
 					$iloc->mod = 'contactmodule';
+					$linked = true;
 					break;
 				}
 
@@ -1217,6 +1336,7 @@ class migrationController extends expController {
 				$ploc->mod = "youtube";
 				if ($db->countObjects('youtube', "location_data='".serialize($ploc)."'")) {
 					$iloc->mod = 'youtubemodule';
+					$linked = true;
 					break;
 				}
 
@@ -1226,7 +1346,6 @@ class migrationController extends expController {
 					foreach ($videos as $vi) {
 						unset ($vi['id']);
 						$video = new youtube($vi);
-						//$loc = expUnserialize($vi['location_data']);
 						$loc = expUnserialize($vi['location_data']);
 						$loc->mod = "youtube";
 						$video->title = $vi['name'];
@@ -1253,6 +1372,7 @@ class migrationController extends expController {
 				$ploc->mod = "flowplayer";
 				if ($db->countObjects('flowplayer', "location_data='".serialize($ploc)."'")) {
 					$iloc->mod = 'mediaplayermodule';
+					$linked = true;
 					break;
 				}
 
@@ -1262,7 +1382,6 @@ class migrationController extends expController {
 					foreach ($movies as $mi) {
 						unset ($mi['id']);
 						$movie = new flowplayer($mi);
-						//$loc = expUnserialize($mi['location_data']);
 						$loc = expUnserialize($mi['location_data']);
 						$loc->mod = "flowplayer";
 						$movie->title = $mi['name'];
@@ -1284,9 +1403,56 @@ class migrationController extends expController {
 							$movie->attachitem($file,'video');
 							if (!empty($mi['alt_image_id'])) {
 								$file = new expFile($mi['alt_image_id']);
-								$movie->attachitem($file,'splash');
+								$movie->attachitem($file,'splash');					
 							}
 						}
+					}
+				}
+				break;
+            case 'bannermodule':
+
+				//check to see if it's already pulled in (circumvent !is_original)
+				$ploc = $iloc;
+				$ploc->mod = "banner";
+				if ($db->countObjects('banner', "location_data='".serialize($ploc)."'")) {
+					$iloc->mod = 'bannermodule';
+					$linked = true;
+					break;
+				}
+
+				$iloc->mod = 'bannermodule';
+                $banners = $old_db->selectArrays('banner_ad', "location_data='".serialize($iloc)."'");
+				if ($banners) {
+					foreach ($banners as $bi) {
+						$oldclicks = $old_db->selectObjects('banner_click', "ad_id='".$bi['id']."'");
+						$oldcompany = $old_db->selectObject('banner_affiliate', "id='".$bi['affiliate_id']."'");
+						unset ($bi['id']);
+						$banner = new banner($bi);
+						$loc = expUnserialize($bi['location_data']);
+						$loc->mod = "banner";
+						$banner->title = $bi['name'];
+						if (empty($banner->title)) { $banner->title = 'Untitled'; }
+						$banner->location_data = serialize($loc);
+						$newcompany = $db->selectObject('companies', "title='".$oldcompany->name."'");
+						if ($newcompany == null) {
+							$newcompany = new company();
+							$newcompany->title = $oldcompany->name;
+							$newcompany->body = $oldcompany->contact_info;
+							$newcompany->location_data = $banner->location_data;
+							$newcompany->save();
+						}						
+						$banner->companies_id = $newcompany->id;
+						$banner->clicks = 0;
+						foreach($oldclicks as $click) {
+							$banner->clicks += $click->clicks;
+						}
+                        if (!empty($bi['file_id'])) {
+                            $file = new expFile($bi['file_id']);
+                            $banner->attachitem($file,'');
+                        }
+						$banner->save();
+						@$this->msg['migrated'][$iloc->mod]['count']++;
+						@$this->msg['migrated'][$iloc->mod]['name'] = $this->new_modules[$iloc->mod];
 					}
 				}
 				break;
@@ -1296,7 +1462,7 @@ class migrationController extends expController {
 		}
         // quick check for non hard coded modules
         // We add a container if they're not hard coded.
-        (!$hc) ? $this->add_container($iloc,$module) : "";
+        (!$hc) ? $this->add_container($iloc,$module,$linked) : "";
 
         return $module;
     }
@@ -1305,10 +1471,12 @@ class migrationController extends expController {
     private function pulldata($iloc, $module) {
         global $db;
         $old_db = $this->connect();
-
+		$linked = false;
+		
         switch ($iloc->mod) {
             case 'calendarmodule':
 				if ($db->countObjects('calendar', "location_data='".serialize($iloc)."'")) {
+					$linked = true;
 					break;
 				}
                 $events = $old_db->selectObjects('eventdate', "location_data='".serialize($iloc)."'");
@@ -1328,18 +1496,9 @@ class migrationController extends expController {
                 }
                 $configs = $old_db->selectObjects('calendarmodule_config', "location_data='".serialize($iloc)."'");
                 foreach ($configs as $config) {
+					$config->id = '';
 					$config->enable_categories = 0;
 					$config->enable_tags = 0;
-                    // unset($config->enable_ical);
-                    // unset($config->rss_limit);
-                    // unset($config->rss_cachetime);
-                    // unset($config->reminder_notify);
-                    // unset($config->email_title_reminder);
-                    // unset($config->email_from_reminder);
-                    // unset($config->email_address_reminder);
-                    // unset($config->email_reply_reminder);
-                    // unset($config->email_showdetail);
-                    // unset($config->email_signature);
                     $db->insertObject($config, 'calendarmodule_config');
                 }
 				@$this->msg['migrated'][$iloc->mod]['name'] = $iloc->mod;
@@ -1407,10 +1566,11 @@ class migrationController extends expController {
 				@$this->msg['migrated'][$iloc->mod]['name'] = $iloc->mod;
 				break;
         }
+        return $linked;
     }
 
 	// used to create containers for new modules
-    private function add_container($iloc,$m) {
+	private function add_container($iloc,$m,$linked=false) {
         global $db;
 		if ($iloc->mod != 'contactmodule') {
 			$iloc->mod = $this->new_modules[$iloc->mod];
@@ -1420,11 +1580,29 @@ class migrationController extends expController {
 			if ($m->view == "Default") {
 				$m->view = 'showall';
 			}
-		} else {  // must be old school contactmodule
+		} else {  // must be an old school contactmodule
 			$iloc->mod = $this->new_modules[$iloc->mod];
 			$m->internal = serialize($iloc);
 		}
-        $db->insertObject($m, 'container');
+		if ($linked) {
+			$newconfig = new expConfig();
+			$config['aggregate'] = Array($iloc->src);
+			$newconfig->config = $config;
+			$newmodule['i_mod'] = $iloc->mod;
+			$newmodule['modcntrol'] = $iloc->mod;
+			$newmodule['rank'] = $m->rank;
+			$newmodule['views'] = $m->view;
+			$newmodule['title'] = $m->title;
+			$newmodule['actions'] = $m->action;
+			$_POST['current_section'] = 1;
+			$m = container::update($newmodule,$m,expUnserialize($m->external));
+			$newmodinternal = expUnserialize($m->internal);
+			$newmod = explode("Controller",$newmodinternal->mod);
+			$newmodinternal->mod = $newmod[0];
+			$newconfig->location_data = $newmodinternal;
+			$newconfig->save();
+		} 
+		$db->insertObject($m, 'container');
     }
 
 	// connect to old site's database

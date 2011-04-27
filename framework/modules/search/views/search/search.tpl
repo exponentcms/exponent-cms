@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2008 OIC Group, Inc.
+ * Copyright (c) 2004-2011 OIC Group, Inc.
  * Written and Designed by Adam Kessler
  *
  * This file is part of Exponent
@@ -16,36 +16,32 @@
 
 <div class="module search search-results">
 	
-<h1>Search Results</h1>
-{$page->links}
-
-<span class="searched_for">
-Your search for <span class="terms">"{$terms}"</span> returned <span class="result-count">{$page->total_records}</span> results<br />
-</span>
-{if $config->is_categorized == 0}
-	{foreach from=$page->records item=result}
-	    {*if $result->canview == 1*}
-		    <div class="item {cycle values="odd,even"}">
-			    <a href="{$smarty.const.URL_FULL}{$result->view_link}">{$result->title}</a>
-			    {if $result->body != ""}<br /><span class="summary">{$result->body|strip_tags|truncate:240}</span>{/if}
-			    {clear}
-		    </div>
-		{*/if*}
-	{/foreach}
-{else}{* categorized, list of crap is two levels deep *}
-	{foreach from=$results key=category item=subresults}
-		<h2><a name="#{$category}">{$category} matching "{$query}":</a></h2>
-		{foreach from=$subresults item=result}
-			<div class="item {cycle values="odd,even"}">
-				<a href="{$smarty.const.URL_FULL}{$result->view_link}">{$result->title}</a>
-				{if $result->sum != ""}<br /><span class="summary">{$result->sum}</span>{/if}
-				{*<br /><span class="search_result_item_link">{$result->view_link}</span>*}
-			</div>
+	<h1>Search Results</h1>
+    {pagelinks paginate=$page top=1}
+	<span class="searched_for">
+	Your search for <span class="terms">"{$terms}"</span> returned <span class="result-count">{$page->total_records}</span> results<br />
+	</span>
+	{if $config->is_categorized == 0}
+		{foreach from=$page->records item=result}
+			{*if $result->canview == 1*}
+				<div class="item {cycle values="odd,even"}">
+					<a href="{$smarty.const.URL_FULL}{$result->view_link}">{$result->title}</a>
+					{if $result->body != ""}<br /><span class="summary">{$result->body|strip_tags|truncate:240}</span>{/if}
+					{clear}
+				</div>
+			{*/if*}
 		{/foreach}
-	{/foreach}
-{/if}
-{$page->links}
+	{else}{* categorized, list of crap is two levels deep *}
+		{foreach from=$results key=category item=subresults}
+			<h2><a name="#{$category}">{$category} matching "{$query}":</a></h2>
+			{foreach from=$subresults item=result}
+				<div class="item {cycle values="odd,even"}">
+					<a href="{$smarty.const.URL_FULL}{$result->view_link}">{$result->title}</a>
+					{if $result->sum != ""}<br /><span class="summary">{$result->sum}</span>{/if}
+					{*<br /><span class="search_result_item_link">{$result->view_link}</span>*}
+				</div>
+			{/foreach}
+		{/foreach}
+	{/if}
+    {pagelinks paginate=$page bottom=1}
 </div>
-
-
-

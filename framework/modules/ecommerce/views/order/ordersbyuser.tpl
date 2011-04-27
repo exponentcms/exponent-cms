@@ -17,7 +17,7 @@
 <div class="module order ordersbyuser">
     <h1>{$moduletitle|default:"My Orders"}</h1>
     <div id="orders">
-        {$page->links}
+		{pagelinks paginate=$page top=1}
         <table id="prods" class="exp-skin-table">
             <thead>
                 <tr>
@@ -35,5 +35,6 @@
                 {/foreach}
             </tbody>
         </table>
+		{pagelinks paginate=$page bottom=1}
     </div>
 </div>

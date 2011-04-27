@@ -242,14 +242,18 @@ class expMail {
  		}
 
      	$this->addTo($params['to']);
-     	if ( !empty($params['from'])) {
-         	if (stristr('^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$', $params['from'])) {
-                 	$this->addFrom = $params['from'];
-         	}
+     	if (!empty($params['from'])) {
+//         	if (stristr('^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$', $params['from'])) {
+				if (empty($params['from_name'])) {
+					$this->addFrom($params['from']);
+				} else {
+					$this->addFrom($params['from'],$params['from_name']);
+				}
+//         	}
      	}
 
  		if (!empty($params['subject'])) $this->subject($params['subject']);
-         if (!empty($params['headers'])) $this->addHeaders($params['headers']);
+        if (!empty($params['headers'])) $this->addHeaders($params['headers']);
      	if (!empty($params['html_message'])) $this->addHTML($params['html_message']);
      	if (!empty($params['text_message'])) $this->addText($params['text_message']);
 

@@ -98,6 +98,17 @@
 	width:15px;
 	text-align:right;
 }
+
+.calendar.default td.today a.edit {
+    text-transform:capitalize;
+    background: url(../images/edit.png) no-repeat 0 50%;
+}
+
+.calendar.default td.today a.delete {
+    text-transform:capitalize;
+    background: url(../images/delete.png) no-repeat 0 50%;
+}
+
 /****************  headlines  ***********************/
 
 .upcoming-events-headlines .link,

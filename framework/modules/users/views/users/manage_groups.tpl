@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2007-2008 OIC Group, Inc.
+ * Copyright (c) 2007-2011 OIC Group, Inc.
  * Written and Designed by Adam Kessler
  *
  * This file is part of Exponent
@@ -27,14 +27,16 @@
         {br}
         When a new user account is created, it will be automatically added to all groups with a Type of "Default"
     </p>
-    {icon class="add" controller="users" action="edit_group" title="Create a New User Group" text="Create a New User Group" alt="Create a New User Group"}
-	{$page->links}
+	<div class="module-actions">
+		{icon class=add controller=users action=edit_group title="Create a New User Group" text="Create a New User Group" alt="Create a New User Group"}
+	</div>
+    {pagelinks paginate=$page top=1}
 	<table class="exp-skin-table">
 	    <thead>
-		<tr>
-		    {$page->header_columns}
-			<th>&nbsp;</th>
-		</tr>
+			<tr>
+				{$page->header_columns}
+				<th>&nbsp;</th>
+			</tr>
 		</thead>
 		<tbody>
 			{foreach from=$page->records item=group name=listings}
@@ -44,11 +46,11 @@
 				<td>{if $group->inclusive}<b>Default</b>{else}Normal{/if}</td>
 			    <td>
 			        {permissions level=$smarty.const.UILEVEL_PERMISSIONS}
-                    <div class="item-actions">
-                    {icon img=groupperms.png module=administrationmodule action="gmgr_membership" id=$group->id title="Add/Remove Members to Group `$group->name`"}
-                    {icon img=edit.png controller=users action=edit_group id=$group->id title="Edit"}
-                    {icon img=delete.png controller=users action=delete_group id=$group->id title="Delete" onclick="return confirm('Are you sure you want to delete this group?');"}
-                    </div>
+						<div class="item-actions">
+							{icon img=groupperms.png controller=users action="manage_group_memberships" record=$group title="Add/Remove Members to Group `$group->name`"}
+							{icon class=edit controller=users action=edit_group record=$group title="Edit"}
+							{icon class=delete controller=users action=delete_group record=$group title="Delete" onclick="return confirm('Are you sure you want to delete this group?');"}
+						</div>
                     {/permissions}
 			    </td>
 			</tr>
@@ -56,6 +58,6 @@
 			    <td colspan="{$page->columns|count}">No Data.</td>
 			{/foreach}
 		</tbody>
-		</table>
-		{$page->links}
+	</table>
+    {pagelinks paginate=$page bottom=1}
 </div>

@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2007-2008 OIC Group, Inc.
+ * Copyright (c) 2007-2011 OIC Group, Inc.
  * Written and Designed by Adam Kessler
  *
  * This file is part of Exponent
@@ -17,7 +17,7 @@
 <div class="company showall">
 	<h1>{$moduletitle|default:'Company Listings'}</h1>
 
-    <a href="{link controller=$controller action=create}">Add a new {$modelname}</a><br />
+	{icon class=add controller=$controller action=create text="Add a new `$modelname`"}
     <table class="exp-skin-table">
     <thead>
         {$page->header_columns}
@@ -30,12 +30,14 @@
             <td>{$company->website}</td>
             <td>
                 {permissions}
-                    {if $permissions.edit == 1}
-                        {icon img=edit.png action=edit id=$company->id title="Edit `$company->title`"}
-                    {/if}
-                    {if $permissions.delete == 1}
-                        {icon img=delete.png action=delete id=$company->id title="delete `$company->title`" onclick="return confirm('Are you sure you want to delete this `$modelname`?');"}
-                    {/if}
+					<div class="item-actions">
+						{if $permissions.edit == 1}
+							{icon action=edit record=$company title="Edit `$company->title`"}
+						{/if}
+						{if $permissions.delete == 1}
+							{icon action=delete record=$company title="delete `$company->title`" onclick="return confirm('Are you sure you want to delete this `$modelname`?');"}
+						{/if}
+					</div>
                 {/permissions}
             </td>
         </tr>

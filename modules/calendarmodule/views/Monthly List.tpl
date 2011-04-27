@@ -1,6 +1,5 @@
 {*
  * Copyright (c) 2004-2011 OIC Group, Inc.
- * Written and Designed by James Hunt
  *
  * This file is part of Exponent
  *
@@ -39,7 +38,7 @@
 	{permissions}
 		<div class="module-actions">
 			{if $permissions.post == 1}
-				<a class="add" href="{link action=edit id=0}" title={"Create Event"|gettext}>{"Create Event"|gettext}</a>
+				{icon class=add action=edit title="Add a New Event"|gettext text="Add an Event"|gettext}
 			{/if}
 		</div>
 	{/permissions}
@@ -54,8 +53,8 @@
 		<a class="module-actions calendar_mngmntlink" href="{link action=viewmonth view='Monthly List' time=$next_timestamp3}" title="{$next_timestamp3|format_date:"%B %Y"}">{$next_timestamp3|format_date:"%b"}</a>&nbsp;&nbsp;&raquo;
 	</p>
 	<dl class="viewweek">
-		{foreach from=$days item=events key=ts}
-			{if_elements array=$events}
+		{foreach from=$days item=items key=ts}
+			{if_elements array=$items}
 				<dt>
 					<div class="sectiontitle"><strong>
 						<a class="itemtitle calendar_mngmntlink" href="{link action=viewday time=$ts}">{$ts|format_date:"%A, %b %e"}</a>
@@ -63,34 +62,34 @@
 				</dt>
 				<dd>
 					{assign var=none value=1}
-					{foreach from=$events item=event}
+					{foreach from=$items item=item}
 						{assign var=none value=0}
 						<div class="paragraph">
-							<a class="itemtitle calendar_mngmntlink" href="{link action=view id=$event->id date_id=$event->eventdate->id}" title="{$event->body|summarize:"html":"para"}">{$event->title}</a>
+							<a class="itemtitle calendar_mngmntlink" href="{link action=view id=$item->id date_id=$item->eventdate->id}" title="{$item->body|summarize:"html":"para"}">{$item->title}</a>
 							{permissions}
 								<div class="item-actions">
 									{if $permissions.edit == 1}
-										<a class="mngmntlink calendar_mngmntlink" href="{link action=edit id=$event->id date_id=$event->eventdate->id}" title="{$_TR.alt_edit}" alt="{$_TR.alt_edit}"><img class="mngmnt_icon" style="border:none;" src="{$smarty.const.ICON_RELATIVE}edit.png" title="{$_TR.alt_edit}" alt="{$_TR.alt_edit}" /></a>
+										{icon action=edit record=$item date_id=$item->eventdate->id title="Edit this Event"|gettext}
 									{/if}
 									{if $permissions.delete == 1}
-										{if $event->is_recurring == 0}
-											<a class="mngmntlink calendar_mngmntlink" href="{link action=delete id=$event->id}" onclick="return confirm('{$_TR.delete_confirm}');" title="{$_TR.alt_delete}" alt="{$_TR.alt_delete}"><img class="mngmnt_icon" style="border:none;" src="{$smarty.const.ICON_RELATIVE}delete.png" title="{$_TR.alt_delete}" alt="{$_TR.alt_delete}" /></a>
+										{if $item->is_recurring == 0}
+											{icon action=delete record=$item date_id=$item->eventdate->id title="Delete this Event"|gettext}
 										{else}
-											<a class="mngmntlink calendar_mngmntlink" href="{link action=delete_form id=$event->id date_id=$event->eventdate->id}" onclick="return confirm('{$_TR.delete_confirm}');" title="{$_TR.alt_delete}" alt="{$_TR.alt_delete}"><img class="mngmnt_icon" style="border:none;" src="{$smarty.const.ICON_RELATIVE}delete.png" title="{$_TR.alt_delete}" alt="{$_TR.alt_delete}" /></a>
+											{icon action=delete_form class=delete record=$item date_id=$item->eventdate->id title="Delete this Event"|gettext}
 										{/if}
 									{/if}
 								</div>
 							{/permissions}
 							<div>
-								{if $event->is_allday == 1}- All Day{else}
-									{if $event->eventstart != $event->eventend}
-										- {$event->eventstart|format_date:$smarty.const.DISPLAY_TIME_FORMAT} to {$event->eventend|format_date:$smarty.const.DISPLAY_TIME_FORMAT}
+								{if $item->is_allday == 1}- All Day{else}
+									{if $item->eventstart != $item->eventend}
+										- {$item->eventstart|format_date:$smarty.const.DISPLAY_TIME_FORMAT} to {$item->eventend|format_date:$smarty.const.DISPLAY_TIME_FORMAT}
 									{else}
-										- {$event->eventstart|format_date:$smarty.const.DISPLAY_TIME_FORMAT}
+										- {$item->eventstart|format_date:$smarty.const.DISPLAY_TIME_FORMAT}
 									{/if}
 								{/if}
 								{br}
-								{$event->summary}
+								{$item->summary}
 							</div>
 						</div>
 					{/foreach}

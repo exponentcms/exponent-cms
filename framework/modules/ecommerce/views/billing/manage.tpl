@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2008 OIC Group, Inc.
+ * Copyright (c) 2004-2011 OIC Group, Inc.
  * Written and Designed by Adam Kessler
  *
  * This file is part of Exponent
@@ -35,16 +35,18 @@
             <td>{$calc->body}</td>
             <td>
                 {permissions}
+					<div class="item-actions">
                     {if $permissions.manage == 1}                        
-                    {if $calc->enabled}
-                        <a href="{link action=activate id=$calc->id enabled=0}">{img src=`$smarty.const.ICON_RELATIVE`toggle_on.gif}</a>
-                    {else}
-                        <a href="{link action=activate id=$calc->id enabled=1}">{img src=`$smarty.const.ICON_RELATIVE`toggle_off.gif}</a>
-                    {/if}
-                    {if $calc->calculator->hasConfig() == 1}
-                        {icon img=configure.png action=configure id=$calc->id title="Configure `$calc->title`"}
-                    {/if}
-                {/if}
+						{if $calc->enabled}
+							<a href="{link action=activate id=$calc->id enabled=0}">{img src=`$smarty.const.ICON_RELATIVE`toggle_on.gif}</a>
+						{else}
+							<a href="{link action=activate id=$calc->id enabled=1}">{img src=`$smarty.const.ICON_RELATIVE`toggle_off.gif}</a>
+						{/if}
+						{if $calc->calculator->hasConfig() == 1}
+							{icon action=configure record=$calc title="Configure `$calc->title`"}
+						{/if}
+					{/if}
+					</div>
                 {/permissions}
             </td>
         </tr>

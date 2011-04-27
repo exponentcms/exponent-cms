@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2008 OIC Group, Inc.
+ * Copyright (c) 2004-2011 OIC Group, Inc.
  * Written and Designed by Adam Kessler
  *
  * This file is part of Exponent
@@ -15,25 +15,30 @@
  *}
 
 <div class="module blog showall-headlines">
+    {if $config.enable_rss == true}
+        <a class="rsslink" href="{rsslink}">Subscribe to {$config.feed_title}</a>
+    {/if}
     {if $moduletitle}<h2>{$moduletitle}</h2>{/if}
     
     {permissions}
-        {if $permissions.edit == 1}
-            {icon class="add" action=edit title="Add a new blog article" text="Add a new blog article"}
-      {/if}
+		<div clas="module-actions">
+			{if $permissions.edit == 1}
+				{icon class=add action=edit title="Add a new blog article" text="Add a new blog article"}
+			{/if}
+		</div>
     {/permissions}
     <ul>
     {foreach from=$page->records item=record name="blogs"}
         {if $smarty.foreach.blogs.iteration <= $config.headcount}
-        <li class="bodycopy">
+        <li class="item">
             <a href="{link action=show title=$record->sef_url}">{$record->title}</a>
             {permissions}
                 <div class="item-actions">
                     {if $permissions.edit == 1}
-                        {icon action=edit img=edit.png class="editlink" id=$record->id title="Edit this `$modelname`"}
+                        {icon action=edit record=$record title="Edit this `$modelname`"}
                     {/if}
                     {if $permissions.delete == 1}
-                        {icon action=delete img=delete.png id=$record->id title="Delete this `$modelname`" onclick="return confirm('Are you sure you want to delete this `$modelname`?');"}
+                        {icon action=delete record=$record title="Delete this `$modelname`" onclick="return confirm('Are you sure you want to delete this `$modelname`?');"}
                     {/if}
                 </div>
             {/permissions}

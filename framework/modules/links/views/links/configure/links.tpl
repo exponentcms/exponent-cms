@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2008 OIC Group, Inc.
+ * Copyright (c) 2004-2011 OIC Group, Inc.
  * Written and Designed by Adam Kessler
  *
  * This file is part of Exponent
@@ -15,4 +15,9 @@
  *}
 
 <h2>Configure this Module</h2>
-<p>There is nothing to configure for this module.</p>
+<p>
+    This is where you can configure the settings to be used by this Link Manager module. 
+    These settings will only apply to this particular module.
+</p>
+{control type=dropdown name=order label="Sort By" items="Alphabetical, Reverse Alphabetical, Order Manually" values="title,title DESC,rank" value=$config.order|default:rank}
+

@@ -18,14 +18,14 @@
     {permissions}
         <div class="module-actions">
 			{if $permissions.create == 1}
-				{icon class="add" action=edit rank=1 title="Add a YouTube Video at the Top"|gettext text="Add a YouTube Video"|gettext}
+				{icon class=add action=edit rank=1 title="Add a YouTube Video at the Top"|gettext text="Add a YouTube Video"|gettext}
 			{/if}
 			{if $permissions.edit == 1}
 				{ddrerank items=$page->records model="portfolio" label="YouTube Videos"|gettext}
 			{/if}
         </div>
     {/permissions}    
-    {$page->links}
+    {pagelinks paginate=$page top=1}
     {foreach from=$items item=ytv name=items}
 		<div class="item">
 			{if $ytv->title}<h2>{$ytv->title}</h2>{/if}
@@ -55,5 +55,5 @@
 		{/permissions}
 		{clear}
     {/foreach}
-    {$page->links}
+    {pagelinks paginate=$page bottom=1}
 </div>

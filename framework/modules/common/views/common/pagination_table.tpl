@@ -41,10 +41,10 @@
 			        {permissions level=$smarty.const.UILEVEL_PERMISSIONS}
                     <div class="item-actions">
                     {if $permissions.edit == true}
-                        {icon controller=$page->controller action=edit id=$item->id title="Edit"}
+                        {icon controller=$page->controller action=edit record=$item title="Edit"}
                     {/if}
                     {if $permissions.delete == true}
-                        {icon controller=$page->controller action=delete id=$item->id title="Delete" onclick="return confirm('Are you sure you want to delete this?');"}
+                        {icon controller=$page->controller action=delete record=$item title="Delete" onclick="return confirm('Are you sure you want to delete this?');"}
                     {/if}
                     </div>
                     {/permissions}

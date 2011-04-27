@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2007-2008 OIC Group, Inc.
+ * Copyright (c) 2007-2011 OIC Group, Inc.
  * Written and Designed by Adam Kessler
  *
  * This file is part of Exponent
@@ -27,24 +27,26 @@
         
 	    <ol class="notelist">		
         {foreach from=$simplenotes->records item=note name=simplenote}
-		<li class="note">
-			<cite>
-                <span class="comment-data">{$note->edited_at|format_date:$smarty.const.DISPLAY_DATETIME_FORMAT}</span> - <span class="attribution">{$note->name}</span>
-			</cite>
-			{permissions}
-                {permissions}
-                    {if $permissions.manage == 1}
-                        {icon img=edit.png action=edit id=$note->id tab=$tab content_id=$content_id content_type=$content_type title="Edit Note"}
-                    {/if}
-                    {if $permissions.delete == 1}
-                        {icon img=delete.png action=delete id=$note->id tab=$tab content_id=$content_id content_type=$content_type title="Delete Note" onclick="return confirm('Are you sure you want to delete this note?');"}
-                    {/if}
-                {/permissions}
-            {/permissions}
-			<div class="note-text bodycopy">			
-    			{$note->body}
-			</div>
-		</li>
+			<li class="note">
+				<cite>
+					<span class="comment-data">{$note->edited_at|format_date:$smarty.const.DISPLAY_DATETIME_FORMAT}</span> - <span class="attribution">{$note->name}</span>
+				</cite>
+				{permissions}
+					{permissions}
+						<div class="item-actions">
+							{if $permissions.manage == 1}
+								{icon action=edit record=$note tab=$tab content_id=$content_id content_type=$content_type title="Edit Note"}
+							{/if}
+							{if $permissions.delete == 1}
+								{icon action=delete record=$note tab=$tab content_id=$content_id content_type=$content_type title="Delete Note" onclick="return confirm('Are you sure you want to delete this note?');"}
+							{/if}
+						</div>
+					{/permissions}
+				{/permissions}
+				<div class="note-text bodycopy">			
+					{$note->body}
+				</div>
+			</li>
     	{/foreach}
     	</ol>
     	{$simplenotes->links}

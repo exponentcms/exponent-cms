@@ -19,7 +19,7 @@
 	
 	<a href="{link action=create}">Create a new product status</a>{br}{br}
 	<div id="orders">
-		{$page->links}
+		{pagelinks paginate=$page top=1}
 		<table id="prods" class="exp-skin-table">
 			<thead>
 				<tr>				   
@@ -34,8 +34,8 @@
 					<td>{$listing->title}</td>
 					<td>
 					    {if $permissions.manage == true}
-                            {icon controller=order_type action=edit img=edit.png id=$listing->id}
-                            {icon controller=order_type action=delete img=delete.png id=$listing->id}
+                            {icon controller=order_type action=edit record=$listing}
+                            {icon controller=order_type action=delete record=$listing}
                         {/if}
 					</td>
 				</tr>
@@ -46,5 +46,6 @@
 				{/foreach}
 		</tbody>
 		</table>
+		{pagelinks paginate=$page bottom=1}
 	</div>
 </div>

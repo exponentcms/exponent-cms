@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2008 OIC Group, Inc.
+ * Copyright (c) 2004-2011 OIC Group, Inc.
  * Written and Designed by Adam Kessler
  *
  * This file is part of Exponent
@@ -14,7 +14,6 @@
  *
  *}
 
-
 {uniqueid prepend="slideshow" assign="name"}
 
 {css unique="photoalbum`$name`" corecss="common,pagination" link="`$smarty.const.PATH_RELATIVE`framework/modules/photoalbum/assets/css/yui3-slideshow.css"}
@@ -25,14 +24,14 @@
 
     {if $moduletitle != ""}<h1>{$moduletitle}</h1>{/if}
     {permissions}
-    <div class="module-actions">
-        {if $permissions.create == 1}
-            {icon class="add" action=edit rank=1 title="Add a Slide"|gettext text="Add a Slide"|gettext}
-        {/if}
-        {if $permissions.edit == 1 && $slides|@count>1}
-            {ddrerank items=$slides model="photo" label="Slides"}
-        {/if}
-    </div>
+		<div class="module-actions">
+			{if $permissions.create == 1}
+				{icon class=add action=edit rank=1 title="Add a Slide"|gettext text="Add a Slide"|gettext}
+			{/if}
+			{if $permissions.edit == 1 && $slides|@count>1}
+				{ddrerank items=$slides model="photo" label="Slides"}
+			{/if}
+		</div>
     {/permissions}
 
     <div id="ss-{$name}" class="slideshow-container" style="width:{$config.width|default:350}px;">    
@@ -50,7 +49,7 @@
                                 {icon action=delete record=$slide title="Delete `$item->title`" onclick="return confirm('Are you sure you want to delete this `$modelname`?');"}
                             {/if}
                             {if $permissions.create == 1}
-                                {icon class="add" action=edit rank=`$slide->rank+1` title="Add another slide here"  text="Add another slide here"}
+                                {icon class=add action=edit rank=`$slide->rank+1` title="Add another slide here"  text="Add another slide here"}
                             {/if}
                         </div>
                     {/permissions}

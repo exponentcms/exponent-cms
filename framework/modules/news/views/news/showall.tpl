@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2006 OIC Group, Inc.
+ * Copyright (c) 2004-2011 OIC Group, Inc.
  * Written and Designed by James Hunt
  *
  * This file is part of Exponent
@@ -58,7 +58,7 @@
 
                 {if $config.usebody==1}
                     <p>{$item->body|summarize:"html":"para"}</p>
-                {else $config.usebody==2}
+                {elseif $config.usebody==2}
                     {$item->body}
                 {/if}
 

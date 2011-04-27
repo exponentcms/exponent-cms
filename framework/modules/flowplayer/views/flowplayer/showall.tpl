@@ -38,14 +38,14 @@ flowplayer("a.flowplayer-video", EXPONENT.PATH_RELATIVE+"external/flowplayer3/fl
 	{permissions}
 		<div class="module-actions">
 			{if $permissions.edit == 1}
-				{icon class="add" action=edit title="Add a Video at the Top"|gettext text="Add a Video"|gettext}
+				{icon class=add action=edit title="Add a Video at the Top"|gettext text="Add a Video"|gettext}
 			{/if}
 			{if $permissions.edit == 1}
 				{ddrerank items=$page->records model="flowplayer" label="Videos"|gettext}
 			{/if}
 		</div>	
 	{/permissions}   
-    {$page->links}
+    {pagelinks paginate=$page top=1}
     {foreach from=$page->records item=video key=key}
         <div class="item">
             <h2>{$video->title}</h2>
@@ -73,11 +73,11 @@ flowplayer("a.flowplayer-video", EXPONENT.PATH_RELATIVE+"external/flowplayer3/fl
 		{permissions}
 			<div class="module-actions">		
 				{if $permissions.create == 1}
-					{icon class="add" action=edit rank=`$video->rank+1` title="Add a Video Here"|gettext text="Add a Video"|gettext}
+					{icon class=add action=edit rank=`$video->rank+1` title="Add a Video Here"|gettext text="Add a Video"|gettext}
 				{/if}
 			</div>
 		{/permissions}
 		{clear}
     {/foreach}
-    {$page->links}
+    {pagelinks paginate=$page bottom=1}
 </div>

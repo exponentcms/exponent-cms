@@ -27,15 +27,15 @@
     </p>
 
     {permissions level=$smarty.const.UILEVEL_PERMISSIONS}
-    <div class="item-permissions">
+    <div class="item-actions">
         {if $permissions.edit == 1}
-            {icon img=edit.png action=edit id=$listing->id title="Edit `$listing->title`"}
+            {icon action=edit record=$listing title="Edit `$listing->title`"}
         {/if}
         {if $permissions.delete == 1}
-            {icon img=delete.png action=delete id=$listing->id title="Delete `$listing->title`" onclick="return confirm('Are you sure you want to delete this product?');"}
+            {icon action=delete record=$listing title="Delete `$listing->title`" onclick="return confirm('Are you sure you want to delete this product?');"}
         {/if}
         {if $permissions.edit == 1}
-            {icon action="copyProduct" img="copy.png" title="Copy `$listing->title` " id=$listing->id}
+            {icon action=copyProduct img="copy.png" record=$listingtitle="Copy `$listing->title` "}
         {/if}
     </div>
     {/permissions}

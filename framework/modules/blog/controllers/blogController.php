@@ -25,10 +25,12 @@ class blogController extends expController {
         'dates'=>"Dates",
     );
     
-    public $remove_configs = array('ealerts','tags','files');
+    public $remove_configs = array(
+		'ealerts',
+		'files'
+	);
     public $codequality = 'beta';
     
-
     function name() { return $this->displayname(); } //for backwards compat with old modules
     function displayname() { return "Blog"; }
     function description() { return "This module allows you to run a blog on your site."; }

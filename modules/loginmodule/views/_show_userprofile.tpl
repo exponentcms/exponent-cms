@@ -1,6 +1,6 @@
 {*
  *
- * Copyright (c) 2004-2005 James Hunt and the OIC Group, Inc.
+ * Copyright (c) 2004-2011 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -26,7 +26,6 @@
  * Suite 330,
  * Boston, MA 02111-1307  USA
  *
- * $Id: Default.tpl,v 1.7 2005/04/08 15:45:48 filetreefrog Exp $
  *}
 
 <h2>User Profile for {$profile->firstname} {$profile->lastname}</h2>

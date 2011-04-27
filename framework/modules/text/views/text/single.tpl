@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2007-2008 OIC Group, Inc.
+ * Copyright (c) 2007-2011 OIC Group, Inc.
  * Written and Designed by Adam Kessler
  *
  * This file is part of Exponent
@@ -19,7 +19,7 @@
     {if $items[0]->title}<h2>{$items[0]->title}</h2>{/if}
     {permissions}
         {if $permissions.edit == 1}
-        <div class="module-actions">
+        <div class="item-actions">
             {icon action=edit record=$items[0] title="Edit Text"|gettext}
         </div>
         {/if}

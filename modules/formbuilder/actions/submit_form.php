@@ -135,7 +135,7 @@ if (!isset($_POST['data_id']) || (isset($_POST['data_id']) && exponent_permissio
                         'html_message'=>$emailHtml,
 						"text_message"=>$emailText,
         			    'to'=>trim($address),
-        			    'from'=>$from,
+        			    'from'=>trim($from),
         			    'from_name'=>$from_name,
         			    'subject'=>$f->subject,
                 ));

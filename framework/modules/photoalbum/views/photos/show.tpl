@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2008 OIC Group, Inc.
+ * Copyright (c) 2004-2011 OIC Group, Inc.
  * Written and Designed by Adam Kessler
  *
  * This file is part of Exponent
@@ -18,14 +18,13 @@
 
  {/css}
 
-
 <div class="module photoalbum show">
     <h1>{$record->title}</h1>
 
     {permissions}
     <div class="item-actions">
         {if $permissions.edit == 1}
-            {icon img=edit.png action=edit id=$record->id title="Edit `$record->title`" text="Edit `$record->title`"}
+            {icon action=edit record=$record title="Edit `$record->title`" text="Edit `$record->title`"}
         {/if}
     </div>
     {/permissions}

@@ -32,19 +32,19 @@
     {if $current_category->id}
     {permissions}
         {if $permissions.edit == 1}
-            {icon class="edit" action=edit module=storeCategory id=$current_category->id title="Edit `$current_category->title`" text="Edit this Store Category"}{br}
+            {icon action=edit module=storeCategory record=$current_category title="Edit `$current_category->title`" text="Edit this Store Category"}{br}
         {/if}
         {*if $permissions.manage == 1}
-            {icon class="configure" action=configure module=storeCategory id=$current_category->id title="Configure `$current_category->title`" text="Configure this Store Category"}{br}
+            {icon action=configure module=storeCategory record=$current_category title="Configure `$current_category->title`" text="Configure this Store Category"}{br}
         {/if*}
         {*if $permissions.manage == 1}
-            {icon class="configure" action=configure module=ecomconfig hash="#tab2" title="Configure Categories Globally" text="Configure Categories Globally"}{br}
+            {icon action=configure module=ecomconfig hash="#tab2" title="Configure Categories Globally" text="Configure Categories Globally"}{br}
         {/if*}
         {if $permissions.edit == 1 && $config.orderby=="rank"}
             {ddrerank label="Products" sql=$rerankSQL model="product" controller="storeCategory" id=$current_category->id}
         {/if}
         {if $permissions.edit == 1}
-              {icon class="add" action=create title="Add a new product" text="Add a New Product"}
+              {icon class=add action=create title="Add a new product" text="Add a New Product"}
         {/if}
     {/permissions}
     {/if}
@@ -65,12 +65,12 @@
         
         <div class="cat{$positioninfo}{if $cat->is_active!=1} inactive{/if}">
             {permissions level=$smarty.const.UILEVEL_PERMISSIONS}
-            <div class="item-permissions">
+            <div class="item-actions">
                 {if $permissions.edit == 1}
-                    {icon img=edit.png controller=storeCategory action=edit id=$cat->id title="Edit `$cat->title`"}
+                    {icon controller=storeCategory action=edit record=$cat title="Edit `$cat->title`"}
                 {/if}
                 {if $permissions.delete == 1}
-                    {icon img=delete.png controller=storeCategory action=delete id=$cat->id title="Delete `$cat->title`" onclick="return confirm('Are you sure you want to delete this category?');"}
+                    {icon controller=storeCategory action=delete record=$cat title="Delete `$cat->title`" onclick="return confirm('Are you sure you want to delete this category?');"}
                 {/if}
             </div>
             {/permissions}
@@ -90,9 +90,7 @@
     {/if}
     
     <h2>All Products Under {$current_category->title}</h2>
-        
-        
-    {$page->links}
+    {pagelinks paginate=$page top=1}
     {*control type="dropdown" name="sortme" items=$page->sort_dropdown default=$defaultSort*}
     
     {*script unique="sort-submit"}
@@ -126,7 +124,5 @@
         {/foreach}
     </div>
     {*control type="dropdown" name="sortme" items=$page->sort_dropdown default=$defaultSort*}
-
-    {$page->links}
-    
+    {pagelinks paginate=$page bottom=1}
 </div>

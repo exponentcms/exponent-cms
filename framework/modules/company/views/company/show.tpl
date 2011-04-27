@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2007-2008 OIC Group, Inc.
+ * Copyright (c) 2007-2011 OIC Group, Inc.
  * Written and Designed by Adam Kessler
  *
  * This file is part of Exponent
@@ -17,9 +17,9 @@
 <div class="module company show">
 	<div id="details">
 		{permissions}
-		        <div class="module-actions">
-                		{if $permissions.edit == 1}
-					{icon controller=$model_name action=edit id=$record->id text="Edit `$record->title`"}
+			<div class="module-actions">
+				{if $permissions.edit == 1}
+					{icon controller=$model_name action=edit record=$record text="Edit `$record->title`"}
 				{/if}
 			</div>
 		{/permissions}
@@ -33,12 +33,12 @@
 		{filedisplayer files=$record->expFile.images title="ON THE JOB GALLERY"}
 		<h3>Resource Downloads</h3>
 	        <ul class="filelist">
-        	{foreach from=$record->expFile.downloads item=file}
-                	{if $file->name == ""}{assign var=name value=$file->filename}{else}{assign var=name value=$file->name}{/if}
-	                <li>{getfileicon file=$file}
-        	                <a href="{link action="downloadfile" id=$file->id}" title="{$name}">{$name}</a>
-                	</li>
-	        {/foreach}
+				{foreach from=$record->expFile.downloads item=file}
+					{if $file->name == ""}{assign var=name value=$file->filename}{else}{assign var=name value=$file->name}{/if}
+					<li>{getfileicon file=$file}
+							<a href="{link action="downloadfile" id=$file->id}" title="{$name}">{$name}</a>
+					</li>
+				{/foreach}
         	</ul>
 		{*filedisplayer files=$record->expFile.downloads title="RESOURCE DOWNLOADS" view=filelist*}
 	</div>

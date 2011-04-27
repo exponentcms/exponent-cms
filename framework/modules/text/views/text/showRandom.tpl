@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2007-2008 OIC Group, Inc.
+ * Copyright (c) 2007-2011 OIC Group, Inc.
  * Written and Designed by Adam Kessler
  *
  * This file is part of Exponent
@@ -18,31 +18,28 @@
 	    {if $moduletitle}<h1>{$moduletitle}</h1>{/if}
 	    {permissions}
     	    <div class="module-actions">
-        	{if $permissions.create == 1}
-                {icon class="add" action=edit title="Add Text"|gettext text="Add Text"|gettext}
-        	{/if}
-        	{if $permissions.edit == 1}
-                {br}{icon class="manage" action=showall title="Manage Text Items"|gettext text="Manage Text Items"|gettext}
-        	{/if}
+				{if $permissions.create == 1}
+					{icon class=add action=edit title="Add Text"|gettext text="Add Text"|gettext}
+				{/if}
+				{if $permissions.edit == 1}
+					{br}{icon class=manage action=showall title="Manage Text Items"|gettext text="Manage Text Items"|gettext}
+				{/if}
             </div>
         {/permissions}
-	
         {foreach from=$items item=listing}
-		<div class="item-actions">
 			{if $listing->title}<h2><a href="{link controller=$controller action=show id=$listing->id}">{$listing->title}</a></h2>{/if}
 			{permissions}
-				{if $permissions.edit == 1}
-					{icon controller=$controller action=edit record=$listing title="Edit this `$modelname`"}
-				{/if}
-				{if $permissions.delete == 1}
-					{icon controller=$controller action=delete record=$listing title="Delete this `$modelname`" onclick="return confirm('Are you sure you want to delete this `$modelname`?');"}
-				{/if}
+				<div class="item-actions">
+					{if $permissions.edit == 1}
+						{icon controller=$controller action=edit record=$listing title="Edit this `$modelname`"}
+					{/if}
+					{if $permissions.delete == 1}
+						{icon controller=$controller action=delete record=$listing title="Delete this `$modelname`" onclick="return confirm('Are you sure you want to delete this `$modelname`?');"}
+					{/if}
+				</div>
 			{/permissions}
-		
     		<div class="bodycopy">
     		    {$listing->body}
     		</div>
-		
-		</div>
         {/foreach}
 </div>

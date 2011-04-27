@@ -1,6 +1,6 @@
 {*
  *
- * Copyright (c) 2004-2005 OIC Group, Inc.
+ * Copyright (c) 2004-2011 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -26,7 +26,6 @@
  * Suite 330,
  * Boston, MA 02111-1307  USA
  *
- * $Id: _popup_info.tpl,v 1.1.1.1 2005/07/14 18:34:04 cvs Exp $
  *}
 <html>
 	<title>Module Information</title>

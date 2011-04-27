@@ -70,8 +70,10 @@ span.active {
 
 a.add,
 a.edit,
-a.revisions,
+a.configure,
 a.delete,
+a.manage,
+a.revisions,
 a.reranklink,
 a.view {
     padding:3px 3px 3px 20px;
@@ -82,6 +84,7 @@ a.view {
 }
 
 a.add {
+    text-transform:capitalize;
     background: url(../images/add.png) no-repeat 0 50%;
 }
 
@@ -90,8 +93,9 @@ a.edit {
     background: url(../images/edit.png) no-repeat 0 50%;
 }
 
-a.revisions {
-    background: url(../images/revisions.png) no-repeat 0 50%;
+a.configure {
+    text-transform:capitalize;
+    background: url(../images/configure.png) no-repeat 0 50%;
 }
 
 a.delete {
@@ -99,8 +103,17 @@ a.delete {
     background: url(../images/delete.png) no-repeat 0 50%;
 }
 
+a.manage {
+    text-transform:capitalize;
+    background: url(../images/manage.png) no-repeat 0 50%;
+}
+
 a.reranklink {
     background: url(../images/rerank.png) no-repeat 0 50%;
+}
+
+a.revisions {
+    background: url(../images/revisions.png) no-repeat 0 50%;
 }
 
 a.view {
