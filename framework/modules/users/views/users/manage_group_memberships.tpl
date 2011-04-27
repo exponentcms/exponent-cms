@@ -13,8 +13,16 @@
  *
  *}
  
+
+{css unique="group" corecss="tables"}
+
+{/css}
+
 <div class="module users manage-group-memberships">
-	<h1>{$moduletitle|default:"Manage Group Membership"}</h1>	
+	<h1>{"Manage Group Memberships"|gettext}</h1>	
+
+    {form action="update_memberships"}
+    <input type="hidden" name="id" value="{$group->id}"/>
     {pagelinks paginate=$page top=1}
 	<table class="exp-skin-table">
 		<thead>
@@ -29,10 +37,10 @@
 					<td>{$user->firstname}</td>
 					<td>{$user->lastname}</td>
 					<td>
-						{control type=checkbox name=is_member value=1 checked=$user->is_member}
+						{control type=checkbox name=memdata[{$user->id}][is_member] value=1 checked=$user->is_member}
 					</td>
 					<td>
-						{control type=checkbox name=is_admin value=1 checked=$user->is_admin}
+						{control type=checkbox name=memdata[{$user->id}][is_admin] value=1 checked=$user->is_admin}
 					</td>
 				</tr>
 			{foreachelse}
@@ -41,4 +49,8 @@
 		</tbody>
 	</table>
     {pagelinks paginate=$page bottom=1}
+    {control type="buttongroup" submit="Save Memberships" cancel="Cancel"}
+    {/form}
 </div>
+
+

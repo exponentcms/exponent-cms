@@ -650,6 +650,29 @@ class usersController extends expController {
 	    if (isset($this->params['id'])) $db->toggle('profileextension', 'active', 'id='.$this->params['id']);
 	    expHistory::back();
     }
+
+    public function update_memberships() {
+        global $user, $db;
+        
+        //$memb = $db->selectObject('groupmembership','member_id='.$user->id.' AND group_id='.$this->params['id'].' AND is_admin=1');
+
+    	$group = $db->selectObject('group','id='.intval($this->params['id']));
+
+		$db->delete('groupmembership','group_id='.$group->id);
+		$memb = null;
+		$memb->group_id = $group->id;
+		if ($this->params['membdata'] != "") {
+			foreach ($this->params['membdata'] as $u=>$str) {
+				$memb->member_id = $u;
+				$memb->is_admin = $str['is_admin'];
+				$db->insertObject($memb,'groupmembership');
+			}
+		}
+		exponent_permissions_triggerRefresh();
+        expoHistory::back();
+        
+    }
+
 }
 
 ?>
