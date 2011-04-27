@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2006 OIC Group, Inc.
+# Copyright (c) 2004-2011 OIC Group, Inc.
 # Copyright 2006-2007 Maxim Mueller
 # Written and Designed by James Hunt
 #
@@ -24,7 +24,7 @@ if (!defined('EXPONENT')) exit('');
  * HTML Editor Control
  *
  * @author James Hunt
- * @copyright 2004-2006 OIC Group, Inc.
+ * @copyright 2004-2011 OIC Group, Inc.
  * @version 0.95
  *
  * @package Subsystems

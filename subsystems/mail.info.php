@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2007 Ron Miller, OIC Group, Inc.
+# Copyright (c) 2004-2011 Ron Miller, OIC Group, Inc.
 #
 # This file is part of Exponent
 #

@@ -14,7 +14,9 @@
  *
  *}
  
- <div style="padding: 1em;">
+<div style="padding: 1em;">
 {$response_html}
+{clear}
 </div>
-<br /><br /><br /><a href="{$backlink}">{$_TR.back}</a>
+{br}{br}{br}
+<a href="{$backlink}">{$_TR.back}</a>

@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2008 OIC Group, Inc.
+# Copyright (c) 2004-2011 OIC Group, Inc.
 # Written and Designed by Phillip Ball
 #
 # This file is part of Exponent
@@ -23,7 +23,7 @@ if (!defined('EXPONENT')) exit('');
  * HTML Control
  *
  * @author phillip ball
- * @copyright 2004-2008 OIC Group, Inc.
+ * @copyright 2004-2011 OIC Group, Inc.
  * @version 2.0.0
  *
  * @package Subsystems

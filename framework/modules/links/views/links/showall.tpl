@@ -12,6 +12,7 @@
  * GPL: http://www.gnu.org/licenses/gpl.txt
  *
  *}
+ 
 <div class="module links showall">
     {if $moduletitle}<h1>{$moduletitle}</h1>{/if}
     {permissions}
