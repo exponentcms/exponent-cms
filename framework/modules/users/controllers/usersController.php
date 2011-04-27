@@ -587,13 +587,14 @@ class usersController extends expController {
 			}
 		}
 
-        $limit = empty($this->config['limit']) ? 10 : $this->config['limit'];
+        //$limit = empty($this->config['limit']) ? 10 : $this->config['limit'];
         $order = empty($this->config['order']) ? 'username' : $this->config['order'];
         $page = new expPaginator(array(
 //                    'model'=>'user',
 					'records'=>$users,
                     'where'=>1, 
-                    'limit'=>$limit,
+                    'limit'=>9999,  // unless we're showing all users on a page at once, there's no way to 
+                                    // add all users to a group, since it's rebuilding the group on save...
                     'order'=>$order,
                     'controller'=>$this->baseclassname,
                     'action'=>$this->params['action'],
@@ -655,21 +656,20 @@ class usersController extends expController {
         global $user, $db;
         
         //$memb = $db->selectObject('groupmembership','member_id='.$user->id.' AND group_id='.$this->params['id'].' AND is_admin=1');
-
     	$group = $db->selectObject('group','id='.intval($this->params['id']));
 
 		$db->delete('groupmembership','group_id='.$group->id);
 		$memb = null;
 		$memb->group_id = $group->id;
-		if ($this->params['membdata'] != "") {
-			foreach ($this->params['membdata'] as $u=>$str) {
+		if ($this->params['memdata'] != "") {
+			foreach ($this->params['memdata'] as $u=>$str) {
 				$memb->member_id = $u;
 				$memb->is_admin = $str['is_admin'];
 				$db->insertObject($memb,'groupmembership');
 			}
 		}
 		exponent_permissions_triggerRefresh();
-        expoHistory::back();
+        expHistory::back();
         
     }
 
