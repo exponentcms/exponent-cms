@@ -18,7 +18,7 @@ define("SMTP_PASSWORD",'');
 define("SMTP_FROMADDRESS",'website@localhost');
 define("SITE_TITLE",'My New Exponent Site');
 define("SITE_ALLOW_REGISTRATION",'0');
-define("SITE_USE_CAPTCHA",'1');
+define("SITE_USE_ANTI_SPAM",'1');
 define("SITE_404_HTML",exponent_unhtmlentities('&lt;h3&gt;Resource Not Found&lt;/h3&gt;The resource you were looking for wasn&#039;t found.  It may have been deleted, or moved.'));
 define("SITE_403_REAL_HTML",exponent_unhtmlentities('&lt;h3&gt;Authorization Failed&lt;/h3&gt;You are not allowed to perform this operation.'));
 define("SITE_KEYWORDS",'');

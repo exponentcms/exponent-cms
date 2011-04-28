@@ -41,7 +41,6 @@
 		</tbody>
 	</table>
 
-	<p>If the information above looks correct, fill out the security question below to submit your form submission</p>
 	{form action=submit_form}
 		{foreach from=$postdata item=data key=name}
 			{control type=hidden name=$name value=$data}

@@ -20,7 +20,7 @@
 
 if (!defined('SITE_TITLE')) define('SITE_TITLE','My New Exponent Site');
 //if (!defined('SITE_ALLOW_REGISTRATION')) define('SITE_ALLOW_REGISTRATION',1);
-//if (!defined('SITE_USE_CAPTCHA')) define('SITE_USE_CAPTCHA',1);
+//if (!defined('SITE_USE_ANTI_SPAM')) define('SITE_USE_ANTI_SPAM',1);
 
 if (!defined('SITE_404_TITLE')) define('SITE_404_TITLE','Page Not Found');
 if (!defined('SITE_404_HTML')) define('SITE_404_HTML',exponent_unhtmlentities('The page you were looking for wasn&apos;t found.  It may have been moved or deleted.'));

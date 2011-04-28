@@ -54,7 +54,7 @@ $stuff = array(
 			'description'=>$i18n['allow_registration_desc'],
 			'control'=>new checkboxcontrol()
 		),
-		'SITE_USE_CAPTCHA'=>array(
+		'SITE_USE_ANTI_SPAM'=>array(
 			'title'=>$i18n['use_captcha'],
 			'description'=>$i18n['use_captcha_desc'],
 			'control'=>new checkboxcontrol()

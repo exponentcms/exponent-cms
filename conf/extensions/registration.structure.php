@@ -35,11 +35,6 @@ $stuff = array(
 			'description'=>exponent_lang_getText('Selecting this will prompt the user for their email address instead of a username.'),
 			'control'=>new checkboxcontrol()
 		),
-		'SITE_USE_CAPTCHA'=>array(
-			'title'=>$i18n['use_captcha'],
-			'description'=>$i18n['use_captcha_desc'],
-			'control'=>new checkboxcontrol()
-		),
 		'USER_REGISTRATION_SEND_NOTIF'=>array(
 			'title'=>$i18n['user_registration_send_notif'],
 			'description'=>$i18n['user_registration_send_notif_desc'],
@@ -72,13 +67,5 @@ $stuff = array(
 		),
 	)
 );
-
-$info = gd_info();
-if (!EXPONENT_HAS_GD) {
-	$stuff[1]['SITE_USE_CAPTCHA']['description'] = $i18n['use_captcha_desc'].'<br /><br />'.$i18n['no_gd_support'];
-	$stuff[1]['SITE_USE_CAPTCHA']['control']->disabled = true;
-}
-
-return $stuff;
 
 ?>

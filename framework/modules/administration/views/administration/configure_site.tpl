@@ -57,15 +57,18 @@
                     {control type="textarea" name="sc[SITE_DESCRIPTION]" label="Meta Description" value=$smarty.const.SITE_DESCRIPTION}
                 </div>
                 <div id="tab2">
+					<h2>{gettext str="Anti-Spam Measures"}</h2>
+                    {control type="checkbox" postfalse=1 name="sc[SITE_USE_ANTI_SPAM]" label="Use Anti-Spam measures?" checked=$smarty.const.SITE_USE_ANTI_SPAM value=1}
+                    {control type="checkbox" postfalse=1 name="sc[ANTI_SPAM_USERS_SKIP]" label="Skip using Anti-Spam measures for Logged-In Users?" checked=$smarty.const.ANTI_SPAM_USERS_SKIP value=1}
                     {control type="dropdown" name="sc[ANTI_SPAM_CONTROL]" label="Anti-Spam Method" items=$as_types default=$smarty.const.ANTI_SPAM_CONTROL}
                     {control type="dropdown" name="sc[RECAPTCHA_THEME]" label="re-Captcha Theme" items=$as_themes default=$smarty.const.RECAPTCHA_THEME}
                     {control type="text" name="sc[RECAPTCHA_PUB_KEY]" label="reCAPTCHA Public Key" value=$smarty.const.RECAPTCHA_PUB_KEY}
                     {control type="text" name="sc[RECAPTCHA_PRIVATE_KEY]" label="reCAPTCHA Private Key" value=$smarty.const.RECAPTCHA_PRIVATE_KEY}
                 </div>
                 <div id="tab3">
+					<h2>{gettext str="User Registration"}</h2>
                     {control type="checkbox" postfalse=1 name="sc[SITE_ALLOW_REGISTRATION]" label="Should users be allowed to create accounts for themselves?" checked=$smarty.const.SITE_ALLOW_REGISTRATION value=1}
                     {control type="checkbox" postfalse=1 name="sc[USER_REGISTRATION_USE_EMAIL]" label="Use an email address instead of a username?" checked=$smarty.const.USER_REGISTRATION_USE_EMAIL value=1}
-                    {control type="checkbox" postfalse=1 name="sc[SITE_USE_CAPTCHA]" label="Use Anti-Spam measures when users create accounts?" checked=$smarty.const.SITE_USE_CAPTCHA value=1}
                     {control type="checkbox" postfalse=1 name="sc[USER_REGISTRATION_SEND_NOTIF]" label="Send an email to a site administrator when a new user registers on your website?" checked=$smarty.const.USER_REGISTRATION_SEND_NOTIF value=1}
                     {control type="text" name="sc[USER_REGISTRATION_NOTIF_SUBJECT]" label="Administrator's New User notification subject" value=$smarty.const.USER_REGISTRATION_NOTIF_SUBJECT}
                     {control type="text" name="sc[USER_REGISTRATION_ADMIN_EMAIL]" label="The email address that should be notified when a user signs up" value=$smarty.const.USER_REGISTRATION_ADMIN_EMAIL}
@@ -74,12 +77,14 @@
                     {control type="textarea" name="sc[USER_REGISTRATION_WELCOME_MSG]" label="The content of the email sent to the user upon completing registration" value=$smarty.const.USER_REGISTRATION_WELCOME_MSG}
                 </div>
                 <div id="tab4">
+					<h2>{gettext str="User Comment Policies"}</h2>
                     {control type="checkbox" postfalse=1 name="sc[COMMENTS_REQUIRE_LOGIN]" label="Require Login to Post Comments" checked=$smarty.const.COMMENTS_REQUIRE_LOGIN value=1}
                     {control type="checkbox" postfalse=1 name="sc[COMMENTS_REQUIRE_APPROVAL]" label="I Want to Approve All Comments" checked=$smarty.const.COMMENTS_REQUIRE_APPROVAL value=1}
                     {control type="checkbox" postfalse=1 name="sc[COMMENTS_REQUIRE_NOTIFICATION]" label="Notify Me of New Comments" checked=$smarty.const.COMMENTS_REQUIRE_NOTIFICATION value=1}
                     {control type="text" name="sc[COMMENTS_NOTIFICATION_EMAIL]" label="Notification Email Address(es) (Enter multiple addresses by using a comma to separate them)" value=$smarty.const.COMMENTS_NOTIFICATION_EMAIL}
                 </div>
                 <div id="tab5">
+					<h2>{gettext str="Display Settings"}</h2>
                     {control type="dropdown" name="sc[LANGUAGE]" label="Language" items=$langs default=$smarty.const.LANGUAGE}
                     {control type="dropdown" name="sc[DISPLAY_THEME_REAL]" label="Theme" items=$themes default=$smarty.const.DISPLAY_THEME_REAL}
                     {control type="dropdown" name="sc[DISPLAY_ATTRIBUTION]" label="Attribution Display" items=$attribution default=$smarty.const.DISPLAY_ATTRIBUTION}

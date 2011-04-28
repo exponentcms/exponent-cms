@@ -375,7 +375,9 @@ class usersController extends expController {
         // find the user
         $u = user::getByUsername($this->params['username']);
 
-        if (empty($u)) {
+        if (!expValidator::check_antispam($this->params)) {
+            expValidator::failAndReturnToForm('Anti-spam verification failed', $this->params);
+		} elseif (empty($u)) {
             expValidator::failAndReturnToForm('We were unable to find an account with that username', $this->params);
         } elseif (empty($u->email)) {
             expValidator::failAndReturnToForm('Your account does not appear to have an email address.  Please contact the site administrators to reset your password', $this->params);

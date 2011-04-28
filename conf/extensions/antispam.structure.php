@@ -38,6 +38,16 @@ $i18n = exponent_lang_loadFile('conf/extensions/antispam.structure.php');
 return array(
 	$i18n['title'],
 	array(
+		'SITE_USE_ANTI_SPAM'=>array(
+			'title'=>$i18n['use_captcha'],
+			'description'=>$i18n['use_captcha_desc'],
+			'control'=>new checkboxcontrol()
+		),
+		'ANTI_SPAM_USERS_SKIP'=>array(
+			'title'=>$i18n['antispam_users_skip'],
+			'description'=>$i18n['antispam_users_skip_desc'],
+			'control'=>new checkboxcontrol()
+		),
 		'ANTI_SPAM_CONTROL'=>array(
 			'title'=>$i18n['antispam_control'],
 			'description'=>$i18n['antispam_control_desc'],
@@ -61,5 +71,13 @@ return array(
 		
 	)
 );
+
+$info = gd_info();
+if (!EXPONENT_HAS_GD) {
+	$stuff[1]['SITE_USE_ANTI_SPAM']['description'] = $i18n['use_captcha_desc'].'<br /><br />'.$i18n['no_gd_support'];
+	$stuff[1]['SITE_USE_ANTI_SPAM']['control']->disabled = true;
+}
+
+return $stuff;
 
 ?>

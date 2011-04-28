@@ -22,7 +22,7 @@ if (!defined("EXPONENT")) exit("");
 // Check for form errors
 $post = $_POST;
 $post['manual_redirect'] = true;
-if (SITE_USE_CAPTCHA && !expValidator::check_antispam($post)) {
+if (!expValidator::check_antispam($post)) {
     flash('error', 'Security Validation Failed');
     exponent_flow_redirect();
 }
