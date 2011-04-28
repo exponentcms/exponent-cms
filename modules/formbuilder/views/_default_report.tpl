@@ -19,7 +19,7 @@
     {$css}
 </style> 
 {else
-	{css unique="form-records" corecss="tables"}
+	{css unique="default-report" corecss="tables"}
 
 	{/css}
 {/if}
