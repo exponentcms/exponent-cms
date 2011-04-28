@@ -39,15 +39,17 @@ class expQueue {
 	public function isEmpty() {
 		expQueue::isQueueEmpty();
 	}
+
 	static function flash($name, $msg="") {
-        $flash = exponent_sessions_get('flash');
-    	$flash[$name] = $msg;
-        exponent_sessions_set('flash', $flash);
-	}
+        	$flash = exponent_sessions_get('flash');
+	        if(empty($flash[$name])) $flash[$name]  = $msg;           
+	        else $flash[$name] .= "<br/><br/>" . $msg;
+	        exponent_sessions_set('flash', $flash);
+    	}
 
 	static function flashAndFlow($name, $msg) {
-    	flash($name, $msg);
-    	expHistory::back();
+    		flash($name, $msg);
+	    	expHistory::back();
 	}
 
 	static function flashIfNotLoggedIn($name, $msg) {
