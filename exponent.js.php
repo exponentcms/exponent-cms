@@ -19,7 +19,11 @@
 ##################################################
 
 //Initialize exponent Framework
-include_once("exponent.php");
+include_once('exponent_common.php');
+include_once(BASE.'exponent_constants.php');
+// Initialize the language subsystem
+require_once(BASE.'subsystems/lang.php');
+exponent_lang_initialize();
 ?>
 // exponent Javascript Support Systems
 
