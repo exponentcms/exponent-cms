@@ -777,6 +777,8 @@ class migrationController extends expController {
 						$config['enable_rss'] = true;
 						$config['feed_title'] = $oldconfig->feed_title;
 						$config['feed_desc'] = $oldconfig->feed_desc;
+						$config['rss_limit'] = isset($oldconfig->rss_limit) ? $oldconfig->rss_limit : 24;
+						$config['rss_cachetime'] = isset($oldconfig->rss_cachetime) ? $oldconfig->rss_cachetime : 1440;
 						$newconfig = new expConfig();
 						$newconfig->config = $config;
 						$newconfig->location_data = $loc;
@@ -894,6 +896,8 @@ class migrationController extends expController {
 						$config['enable_rss'] = true;
 						$config['feed_title'] = $oldconfig->feed_title;
 						$config['feed_desc'] = $oldconfig->feed_desc;
+						$config['rss_limit'] = isset($oldconfig->rss_limit) ? $oldconfig->rss_limit : 24;
+						$config['rss_cachetime'] = isset($oldconfig->rss_cachetime) ? $oldconfig->rss_cachetime : 1440;
 						$newconfig->config = $config;
 						$newrss = new expRss();
 						$newrss->module = $loc->mod;
@@ -960,6 +964,8 @@ class migrationController extends expController {
 						$config['enable_rss'] = true;
 						$config['feed_title'] = $oldconfig->feed_title;
 						$config['feed_desc'] = $oldconfig->feed_desc;
+						$config['rss_limit'] = isset($oldconfig->rss_limit) ? $oldconfig->rss_limit : 24;
+						$config['rss_cachetime'] = isset($oldconfig->rss_cachetime) ? $oldconfig->rss_cachetime : 1440;
 						$newconfig = new expConfig();
 						$newconfig->config = $config;
 						$newconfig->location_data = $loc;
@@ -1164,6 +1170,8 @@ class migrationController extends expController {
 						$config['enable_rss'] = true;
 						$config['feed_title'] = $oldconfig->feed_title;
 						$config['feed_desc'] = $oldconfig->feed_desc;
+						$config['rss_limit'] = isset($oldconfig->rss_limit) ? $oldconfig->rss_limit : 24;
+						$config['rss_cachetime'] = isset($oldconfig->rss_cachetime) ? $oldconfig->rss_cachetime : 1440;
 						$newconfig = new expConfig();
 						$newconfig->config = $config;
 						$newconfig->location_data = $loc;
