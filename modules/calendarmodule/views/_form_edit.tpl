@@ -21,6 +21,10 @@
 
 {/css}
 
+{css unique="calendar-edit3" link="`$smarty.const.PATH_RELATIVE`framework/core/assets/css/button.css"}
+
+{/css}
+
 <div class="module calendar edit">
 	<div class="form_title">
 		<h1>{if $is_edit == 1}{$_TR.form_title_edit}{else}{$_TR.form_title_new}{/if}</h1>

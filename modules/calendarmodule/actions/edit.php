@@ -121,9 +121,28 @@ if (($item == null && exponent_permissions_check('post',$loc)) ||
 	if (isset($_GET['id']) && $_GET['id'] != 0) {
 		$form->unregister('submit');
 //		$buttons = "<div id=\"submitControl\" class=\"control buttongroup\"> ";
-		$buttons = "<input name=\"submitSubmit\" class=\"button\" type=\"submit\" value=\"Save\" onclick=\"if (checkRequired(this.form)) { if (validate(this.form)) { return true; } else { return false; } } else { return false; }\" /> ";
-		$buttons .= "<input name=\"submitNew\" class=\"button\" type=\"submit\" value=\"Save as New Event\" onclick=\"if (checkRequired(this.form)) { if (validate(this.form)) { return true; } else { return false; } } else { return false; }\" /> ";
-		$buttons .= "<input class=\"button\" type=\"button\" value=\"Cancel\" onclick=\"document.location.href='".exponent_flow_get()."'\" /> ";
+//		$buttons = "<input name=\"submitSubmit\" class=\"button\" type=\"submit\" value=\"Save\" onclick=\"if (checkRequired(this.form)) { if (validate(this.form)) { return true; } else { return false; } } else { return false; }\" /> ";
+		$buttons = '<button name="submitSubmit" type="submit" id="'.$_GET['id'].'Submit" class="submit button awesome '.BTN_SIZE.' '.BTN_COLOR;
+		$buttons .='" type="submit" value="' . "Save" . '"';
+		$buttons .= ' onclick="if (checkRequired(this.form)) { if (validate(this.form)) { return true; } else { return false; } } else { return false; }"';
+		$buttons .= ' />';
+		$buttons .= "Save";
+		$buttons .= ' </button>';
+
+//		$buttons .= "<input name=\"submitNew\" class=\"button\" type=\"submit\" value=\"Save as New Event\" onclick=\"if (checkRequired(this.form)) { if (validate(this.form)) { return true; } else { return false; } } else { return false; }\" /> ";
+		$buttons .= '<button name="submitNew" type="submit" id="'.$_GET['id'].'Submit" class="submit button awesome '.BTN_SIZE.' '.BTN_COLOR;
+		$buttons .='" type="submit" value="' . "Save as New Event" . '"';
+		$buttons .= ' onclick="if (checkRequired(this.form)) { if (validate(this.form)) { return true; } else { return false; } } else { return false; }"';
+		$buttons .= ' />';
+		$buttons .= "Save as New Event";
+		$buttons .= ' </button>';
+
+//		$buttons .= "<input class=\"button\" type=\"button\" value=\"Cancel\" onclick=\"document.location.href='".exponent_flow_get()."'\" /> ";
+		$buttons .= '<button type="cancel" class="cancel button awesome '.BTN_SIZE.' '.BTN_COLOR.'" onclick="document.location.href=\''.exponent_flow_get().'\'; return false;"';
+		$buttons .= '>';
+		$buttons .= "Cancel";
+		$buttons .= '</button>';
+		
 //		$buttons .= "</div>";
 		$form->register(null,'',new htmlcontrol($buttons));
 	}
