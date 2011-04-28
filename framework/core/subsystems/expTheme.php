@@ -26,6 +26,7 @@ class expTheme {
 
     public function head($config = array()){
     	echo headerInfo($config); 
+		echo exponent_theme_advertiseRSS();
     }
     
     public function foot($params = array()) {
