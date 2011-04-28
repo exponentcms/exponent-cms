@@ -1,0 +1,131 @@
+.options-partial .leftcol {
+    float:left;
+    width:25%;
+    padding-top:20px;
+}
+
+.options-partial .rightcol {
+    float:right;
+    width:70%;
+    padding-top:20px;
+}
+
+.options-partial .hd {
+    margin:0;
+    position:relative;
+    background:url(../images/ecom-sprite.png) repeat-x 0 -44px;
+    border:1px solid #b6cdde;
+    -moz-border-radius:2px;
+    -webkit-border-radius:2px;
+
+}
+
+.options-partial .hd a.collapse {
+    background:url(../images/ecom-sprite.png) repeat-x -4px -386px;
+    position:absolute;
+    text-indent:20px;
+    overflow:hidden;
+    width:14px;
+    height:14px;
+    display:block;
+    bottom:1px;
+    right:1px;
+}
+
+.options-partial .hd a.expand {
+    background:url(../images/ecom-sprite.png) repeat-x -4px -413px;
+    position:absolute;
+    text-indent:20px;
+    overflow:hidden;
+    width:14px;
+    height:14px;
+    display:block;
+    bottom:1px;
+    right:1px;
+}
+
+.options-partial *:focus {
+    display:block;
+}
+
+.options-partial .hd h2 {
+    margin:0;
+    color:#103684;
+    padding:8px 0 8px 8px;
+    font-size:14px;
+/*    background-image:url(../images/ecom-sprite.png);*/
+    background-repeat:no-repeat;
+}
+
+.options-partial #quickstats .hd h2 {
+    background-position: 6px -210px;
+}
+
+.options-partial #orders .hd h2 {
+    background-position: 6px -245px;
+}
+
+.options-partial #configuration .hd h2 {
+    background-position: 6px -278px;
+}
+
+.options-partial #products .hd h2 {
+    background-position: 6px -310px;
+}
+
+.options-partial #shipping .hd h2 {
+    background-position: 6px -278px;
+}
+
+.options-partial ul,
+.options-partial ul li {
+    margin:0;
+    padding:0;
+    list-style:none;
+}
+.options-partial div.bd {
+    margin-bottom:5px;
+    overflow:hidden;
+}
+
+.options-partial div.collapsed {
+    height:0;
+}
+
+.options-partial ul.yui-nav {
+    margin-bottom:0px;
+}
+
+.options-partial div.yui-content {
+    padding:5px 0 0 0;
+    border-width:1px 0 0 0;
+}
+
+.options-partial ul li {
+    padding:8px 2px;
+    border-bottom:1px dashed #555;
+}
+.options-partial ul li strong {
+    display:block;
+}
+
+.options-partial ul li a {
+    color:#035fbc;
+}
+
+.options-partial .control .label {
+    float:left;
+    padding-right:10px;
+}
+
+.options-partial .dashboard-totals {
+    padding:10px;
+    border:1px solid #83AA53;
+    text-align:right;
+}
+
+.options-partial .dashboard-totals strong {
+    display:inline-block;
+    margin:0 10px;
+}
+

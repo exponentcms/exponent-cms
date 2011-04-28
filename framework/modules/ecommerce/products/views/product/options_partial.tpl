@@ -14,27 +14,9 @@
  *
  *}
  
- {script unique="optionjs"}
- {literal}
- YAHOO.util.Event.onDOMReady(function(){
-     var toggles = YAHOO.util.Dom.getElementsByClassName('togglelink', 'a');
-     YAHOO.util.Event.on(toggles, 'click', function(e){
-         YAHOO.util.Event.stopEvent(e);
-        var targ = YAHOO.util.Event.getTarget(e);
-        if (YAHOO.util.Dom.getStyle(targ.rel, 'display')=="none") {
-            if (YAHOO.env.ua.ie > 0) {
-                YAHOO.util.Dom.setStyle(targ.rel, 'display', 'block');
-            } else {
-                YAHOO.util.Dom.setStyle(targ.rel, 'display', 'table-row');
-            }
-        } else {
-            YAHOO.util.Dom.setStyle(targ.rel, 'display',"none");
-        }
-     });
-     
- });
- {/literal}
- {/script}
+{css unique="option-styles" link="`$asset_path`css/options-edit.css" corecss="tables"}
+
+{/css}
 
 <div class="product options-partial">
 	{foreach from=$optiongroups item=group}
@@ -58,15 +40,15 @@
         	        {control type="radio" nowrap=true name="optiongroups[`$group->title`][allow_multiple]" label="Select  Multiple" value=1 checked=$group->allow_multiple}
         	    </th>
     	    </tr>
+            <tr class="column-label">     
+                <th>Label</th>
+                <th>Adjustment</th>
+                <th>Modifier</th>
+                <th>Amount</th>
+                <th>Default</th>
+            </tr>
     	    </thead>
     	    <tbody>
-            <tr class="column-label">     
-                <td>Label</td>
-                <td>Adjustment</td>
-                <td>Modifier</td>
-                <td>Amount</td>
-                <td>Default</td>
-            </tr>
             {foreach key=key from=$group->options item=option}
             <tr class="{cycle values='odd,even' advance=false}">     
                 <td width="100%">       
@@ -75,14 +57,14 @@
                     {control type="hidden" name="optiongroups[`$group->title`][options][`$option->title`][option_master_id]" value=$option->option_master_id}                  
 
                     {control type="checkbox" name="optiongroups[`$group->title`][options][`$option->title`][enable]" label=$option->title value=1 checked=$option->enable}
-                    <a rel="mo-{$key}-{$group->title}" class="togglelink" href="#">+More...</a>
+                    <a rel="mo-{$key}-{$group->id}" class="togglelink" href="#">+More...</a>
                 </td>
                 <td>{control type="dropdown" name="optiongroups[`$group->title`][options][`$option->title`][updown]" items="+,-" values="+,-" label=" " value=$option->updown}</td>
                 <td>{control type="dropdown" name="optiongroups[`$group->title`][options][`$option->title`][modtype]" items="$,%" values="$,%" label=" " value=$option->modtype}</td>
                 <td>{control type="text" name="optiongroups[`$group->title`][options][`$option->title`][amount]" label=" " size=6 value=$option->amount}</td>
                 <td>{control type="radio" name="defaults[`$group->title`]" label="Default" value=$option->title checked=$option->is_default}</td>
             </tr>
-            <tr class="{cycle values='odd,even'}" id="mo-{$key}-{$group->title}" style="display:none">  
+            <tr class="{cycle values='odd,even'}" id="mo-{$key}-{$group->id}" style="display:none">  
                 <td colspan=5>
                     {control type="text" name="optiongroups[`$group->title`][options][`$option->title`][optionweight]" label="Option Weight" size=6 value=$option->amount}
                     <hr>
@@ -90,7 +72,7 @@
             </tr>
             {foreachelse}
                 <p>
-                 This option group doesn't have any options yet.
+                 This option group does not have any options yet.
                 </p>
             {/foreach}
             </tbody>
@@ -104,13 +86,12 @@
 
 {script unique="expand-panels"}
 {literal}
-YUI({ base:EXPONENT.URL_FULL+'external/yui3/build/',loadOptional: true}).use('node', function(Y) {
+YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
 
         var action = function(e){
             e.halt();
 
-            var pBody = e.target.ancestor('.panel').query('.bd');
-            var pID = e.target.ancestor('.panel').getAttribute('id');
+            var pBody = e.target.ancestor('.panel').one('.bd');
             
             if (e.target.getAttribute("class")=="collapse") {
                 pBody.replaceClass('expanded','collapsed');
@@ -121,7 +102,23 @@ YUI({ base:EXPONENT.URL_FULL+'external/yui3/build/',loadOptional: true}).use('no
             }
         }
         Y.all('.options-partial .panel .hd a').on('click',action);
+
+        var toggles = Y.all('a.togglelink');
+        toggles.on('click', function(e){
+            e.halt();
+            var targrel = e.target.get("rel");
+           if (Y.one('#'+targrel).getStyle('display')=="none") {
+               if (Y.UA.ie > 0) {
+                   Y.one('#'+targrel).setStyle('display', 'block');
+               } else {
+                   Y.one('#'+targrel).setStyle('display', 'table-row');
+               }
+           } else {
+               Y.one('#'+targrel).setStyle('display',"none");
+           }
+        });
+    
     });
-    {/literal}
+{/literal}
 {/script}
 

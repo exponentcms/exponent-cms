@@ -59,7 +59,7 @@
                 {script unique="z-index" }
                 {literal}
                 
-                YUI({ base:EXPONENT.URL_FULL+'external/yui3/build/',loadOptional: true}).use('node', function(Y) {
+                YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
                     var opts = Y.all(".options");
                     opts.each(function(n,k){
                         n.setStyle('zIndex',opts.size()-k);

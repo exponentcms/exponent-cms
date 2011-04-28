@@ -13,7 +13,10 @@
  * GPL: http://www.gnu.org/licenses/gpl.txt
  *
  *}
- 
+{css unique="cart" link="`$asset_path`css/cart.css" corecss="panels"}
+
+{/css}
+
 <div id="expresscheckout" class="cart checkout exp-skin">
     <h1>{$moduletitle|default:"Express Checkout"}</h1>
 
