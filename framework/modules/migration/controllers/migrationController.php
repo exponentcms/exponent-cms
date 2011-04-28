@@ -784,8 +784,11 @@ class migrationController extends expController {
 						$newrss = new expRss();
 						$newrss->module = $loc->mod;
 						$newrss->src = $loc->src;
+						$newrss->enable_rss = $oldconfig->enable_rss;
 						$newrss->feed_title = $oldconfig->feed_title;
 						$newrss->feed_desc = $oldconfig->feed_desc;
+						$newrss->rss_limit = isset($oldconfig->rss_limit) ? $oldconfig->rss_limit : 24;
+						$newrss->rss_cachetime = isset($oldconfig->rss_cachetime) ? $oldconfig->rss_cachetime : 1440;
 						$newrss->save();
 					}
 				}
@@ -895,8 +898,11 @@ class migrationController extends expController {
 						$newrss = new expRss();
 						$newrss->module = $loc->mod;
 						$newrss->src = $loc->src;
+						$newrss->enable_rss = $oldconfig->enable_rss;
 						$newrss->feed_title = $oldconfig->feed_title;
 						$newrss->feed_desc = $oldconfig->feed_desc;
+						$newrss->rss_limit = isset($oldconfig->rss_limit) ? $oldconfig->rss_limit : 24;
+						$newrss->rss_cachetime = isset($oldconfig->rss_cachetime) ? $oldconfig->rss_cachetime : 1440;
 						$newrss->save();
 					}
 					if ($newconfig != null) {
@@ -961,8 +967,11 @@ class migrationController extends expController {
 						$newrss = new expRss();
 						$newrss->module = $loc->mod;
 						$newrss->src = $loc->src;
+						$newrss->enable_rss = $oldconfig->enable_rss;
 						$newrss->feed_title = $oldconfig->feed_title;
 						$newrss->feed_desc = $oldconfig->feed_desc;
+						$newrss->rss_limit = isset($oldconfig->rss_limit) ? $oldconfig->rss_limit : 24;
+						$newrss->rss_cachetime = isset($oldconfig->rss_cachetime) ? $oldconfig->rss_cachetime : 1440;
 						$newrss->save();
 					}					
 				}
@@ -1162,8 +1171,11 @@ class migrationController extends expController {
 						$newrss = new expRss();
 						$newrss->module = $loc->mod;
 						$newrss->src = $loc->src;
+						$newrss->enable_rss = $oldconfig->enable_rss;
 						$newrss->feed_title = $oldconfig->feed_title;
 						$newrss->feed_desc = $oldconfig->feed_desc;
+						$newrss->rss_limit = isset($oldconfig->rss_limit) ? $oldconfig->rss_limit : 24;
+						$newrss->rss_cachetime = isset($oldconfig->rss_cachetime) ? $oldconfig->rss_cachetime : 1440;
 						$newrss->save();
 					}					
                 }
