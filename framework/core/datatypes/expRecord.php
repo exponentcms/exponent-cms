@@ -159,7 +159,7 @@ class expRecord {
     public function update($params=array()) {  
         $this->checkForAttachableItems($params);    
         $this->build($params);
-        $this->save(true);  
+        $this->save((isset($params['_validate'])?$params['_validate']:true));  
     }
 
     public function refresh() {
