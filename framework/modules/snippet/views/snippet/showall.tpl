@@ -35,10 +35,10 @@
 	<div class="module-actions">
         {if $permissions.edit == true}
             {if $smarty.foreach.items.first == 0}
-                {icon controller=text action=rerank img=up.png record=$text push=up}    
+                {icon action=rerank img=up.png record=$text push=up}    
             {/if}
             {if $smarty.foreach.items.last == 0}
-                {icon controller=text action=rerank img=down.png record=$text push=down}
+                {icon action=rerank img=down.png record=$text push=down}
             {/if}
         {/if}
 	</div>
