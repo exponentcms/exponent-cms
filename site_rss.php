@@ -34,9 +34,8 @@ $config = new expConfig(exponent_core_makeLocation($_REQUEST['module'], $_REQUES
 $config->enable_rss = true;
 $config->feed_title = empty($site_rss->feed_title) ? 'RSS for '.URL_FULL : $site_rss->feed_title;
 $config->feed_desc = empty($site_rss->feed_desc) ? 'This is the site wide RSS syndication for '.HOSTNAME : $site_rss->feed_desc;
-// $ttl = $config->rss_cachetime;
-// if ($ttl == 0) { $ttl = 24; }
-$ttl = 24;
+if (isset($config->config['rss_cachetime'])) { $ttl = $config->config['rss_cachetime']; }
+if ($ttl == 0) { $ttl = 1440; }
 
 // $ic = explode(";", $config->config['itunes_cats']);
 // $x = 0;
@@ -77,6 +76,9 @@ if ($config->enable_rss == true) {
 	foreach ($site_rss->getFeedItems() as $item) {
 		if ($item->date > $pubDate) { $pubDate = $item->date; }
 		$rss->addItem($item);
+	}
+	if (isset($config->config['rss_limit']) && $config->config['rss_limit'] > 0) {
+		$rss->items = array_slice($rss->items, 0, $config->config['rss_limit']);
 	}
 	$rss->pubDate = $pubDate;
 

@@ -46,7 +46,7 @@ if (isset($module)) {
 	//get the modules config data which should have the feed title & desc
 	$config = $db->selectObject($module."_config", "location_data='".serialize($location)."'");		
 	$ttl = $config->rss_cachetime;
-	if ($ttl == 0) { $ttl = 24; }
+	if ($ttl == 0) { $ttl = 1440; }
 	if ($config->enable_rss == true) {
 		$rss = new UniversalFeedCreator();
 		$rss->cssStyleSheet = "";
