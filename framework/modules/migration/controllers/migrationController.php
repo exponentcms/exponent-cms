@@ -1025,7 +1025,7 @@ class migrationController extends expController {
 								$photo->attachitem($file,'');
 								$photo->created_at = $gi['posted'];
 								$photo->edited_at = $gi['posted'];
-								$photo->update();								
+								$photo->update(array("validate"=>false));								
 							}
 						}
 					}

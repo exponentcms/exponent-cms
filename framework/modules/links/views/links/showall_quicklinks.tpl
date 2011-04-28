@@ -27,21 +27,19 @@
     {/permissions}
     <ul>
         {foreach name=items from=$items item=item name=links}
-			<div class="item">     
-				<li{if $smarty.foreach.links.last} class="last"{/if}>
-					<a class="link" {if $item->new_window}target="_blank"{/if} href="{$item->url}">{$item->title}</a>
-					{permissions}
-						<div class="item-actions">
-							{if $permissions.edit == 1}
-								{icon action=edit record=$item title="Edit this `$modelname`"}
-							{/if}
-							{if $permissions.delete == 1}
-								{icon action=delete record=$item title="Delete this `$modelname`" onclick="return confirm('Are you sure you want to delete this `$modelname`?');"}
-							{/if}
-						</div>
-					{/permissions}
-				</li>
-			</div>
+		<li{if $smarty.foreach.links.last} class="item last"{/if}>
+			<a class="link" {if $item->new_window}target="_blank"{/if} href="{$item->url}">{$item->title}</a>
+			{permissions}
+				<div class="item-actions">
+					{if $permissions.edit == 1}
+						{icon action=edit record=$item title="Edit this `$modelname`"}
+					{/if}
+					{if $permissions.delete == 1}
+						{icon action=delete record=$item title="Delete this `$modelname`" onclick="return confirm('Are you sure you want to delete this `$modelname`?');"}
+					{/if}
+				</div>
+			{/permissions}
+		</li>
         {/foreach}
     </ul>
 </div>

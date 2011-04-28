@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2011 OIC Group, Inc.
+# Copyright (c) 2004-2006 OIC Group, Inc.
 # Written and Designed by James Hunt
 #
 # This file is part of Exponent
@@ -17,20 +17,7 @@
 #
 ##################################################
 
-function __realpath($path) {
-	$path = str_replace('\\','/',realpath($path));
-	if ($path{1} == ':') {
-		// We can't just check for C:/, because windows users may have the IIS webroot on X: or F:, etc.
-		$path = substr($path,2);
-	}
-	return $path;
-}
-
-// Bootstrap, which will clean the _POST, _GET and _REQUEST arrays, and include 
-// necessary setup files (exponent_setup.php, exponent_variables.php) as well as initialize
-// the compatibility layer.
-// This was moved into its own file from this file so that 'lighter' scripts could bootstrap.
-include_once(dirname(__realpath(__FILE__)).'/exponent_bootstrap.php');
+require_once('exponent_common.php');
 
 // Initialize the AutoLoader Subsystem
 require_once(BASE.'subsystems/autoloader.php');
@@ -40,65 +27,8 @@ require_once(BASE.'subsystems/sessions.php');
 // Initializes the session.	 
 exponent_sessions_initialize();
 
-/*
-if (isset($_REQUEST['section'])) {
-	exponent_sessions_set('last_section', intval($_REQUEST['section']));
-} else {
-	if (!isset($_REQUEST['action']) && !isset($_REQUEST['module'])) exponent_sessions_set('last_section', SITE_DEFAULT_SECTION);
-}
-*/
-
-if (!defined('DISPLAY_THEME')) {
-	/* exdoc
-	 * The directory and class name of the current active theme.  This may be different
-	 * than the configure theme (DISPLAY_THEME_REAL) due to previewing.
-	 */
-	define('DISPLAY_THEME',DISPLAY_THEME_REAL);
-}
-if (!defined('THEME_ABSOLUTE')) {
-	/* exdoc
-	 * The absolute path to the current active theme's files.  This is similar to the BASE constant
-	 */
-	define('THEME_ABSOLUTE',BASE.'themes/'.DISPLAY_THEME.'/'); // This is the recommended way
-}
-if (!defined('THEME_RELATIVE')) {
-	/* exdoc
-	 * The relative web path to the current active theme.  This is similar to the PATH_RELATIVE consant.
-	 */
-	define('THEME_RELATIVE',PATH_RELATIVE.'themes/'.DISPLAY_THEME.'/');
-}
-if (!defined('JS_FULL')) {
-	/* exdoc
-	 * The absolute path to Exponent's core javascript.
-	 */
-	define('JS_FULL',URL_FULL.'framework/core/assets/js/');
-}
-
-// Initialize the theme subsystem
-if (!defined('SYS_THEME')) require_once(BASE.'subsystems/theme.php');
-
-// iconset base
-if (!defined('ICON_RELATIVE')) {
-	
-	define('ICON_RELATIVE', PATH_RELATIVE . 'framework/core/assets/images/');
-
-}
-if (!defined('MIMEICON_RELATIVE')) {
-	//DEPRECATED: old directory, inconsitent naming
-    // if (is_readable(THEME_ABSOLUTE . 'mimetypes/')) {
-		/* exdoc
-		 * The relative web path to the current MIME icon set.	If a mimetypes/ directory
-		 * exists directly underneath the theme's directory, then that is used.	 Otherwise, the
-		 * system falls back to the iconset/mimetypes/ directory in the root of the Exponent directory.
-		 */
-    //  define('MIMEICON_RELATIVE', THEME_RELATIVE . 'mimetypes/');
-    // } else if(is_readable(THEME_ABSOLUTE . "images/icons/mimetypes" )){
-    //  define('MIMEICON_RELATIVE', THEME_RELATIVE . "images/icons/mimetypes/");
-    // } else {
-    //  define('MIMEICON_RELATIVE', PATH_RELATIVE . 'themes/common/images/icons/mimetypes/');
-    // }
-    define('MIMEICON_RELATIVE', PATH_RELATIVE . 'themes/common/skin/mimetypes/');
-}
+// initialize useful/needed constants throughout the system
+require_once(BASE.'exponent_constants.php');
 
 // Initialize the language subsystem
 require_once(BASE.'subsystems/lang.php');
