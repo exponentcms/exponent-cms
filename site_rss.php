@@ -24,19 +24,10 @@ if (!defined("EXPONENT")) include_once('exponent.php');
 if (!defined('SYS_RSS')) include_once('core_rss.php');
 
 $site_rss = new expRss($_REQUEST);
-
-//FIXME: 
-// We need to add a site wide config to turn RSS on/off
-// and a site wide title & description as well..i'm hardcoding 
-// these for now.
-$config = new expConfig(exponent_core_makeLocation($_REQUEST['module'], $_REQUEST['src']));
-
-$config->enable_rss = true;
-$config->feed_title = empty($site_rss->feed_title) ? 'RSS for '.URL_FULL : $site_rss->feed_title;
-$config->feed_desc = empty($site_rss->feed_desc) ? 'This is the site wide RSS syndication for '.HOSTNAME : $site_rss->feed_desc;
-// $ttl = $config->rss_cachetime;
-// if ($ttl == 0) { $ttl = 24; }
-$ttl = 24;
+$site_rss->feed_title = empty($site_rss->feed_title) ? 'RSS for '.URL_FULL : $site_rss->feed_title;
+$site_rss->feed_desc = empty($site_rss->feed_desc) ? 'This is the site wide RSS syndication for '.HOSTNAME : $site_rss->feed_desc;
+if (isset($site_rss->rss_cachetime)) { $ttl = $site_rss->rss_cachetime; }
+if ($ttl == 0) { $ttl = 1440; }
 
 // $ic = explode(";", $config->config['itunes_cats']);
 // $x = 0;
@@ -49,18 +40,18 @@ $ttl = 24;
 	// $x++;
 // }
 
-if ($config->enable_rss == true) {
+if ($site_rss->enable_rss == true) {
 	$rss = new UniversalFeedCreator();
 	$rss->cssStyleSheet = "";
 //	$rss->useCached("PODCAST");
 	$rss->useCached();
-	$rss->title = $config->feed_title;
-	$rss->description = $config->feed_desc;
+	$rss->title = $site_rss->feed_title;
+	$rss->description = $site_rss->feed_desc;
 	$rss->ttl = $ttl;
 	$rss->link = "http://".HOSTNAME.PATH_RELATIVE;
 	$rss->syndicationURL = "http://".HOSTNAME.PATH_RELATIVE.$_SERVER['PHP_SELF'];
 	if ($_REQUEST['module'] == "filedownload") {
-		$rss->itunes->summary = $config->feed_desc;
+		$rss->itunes->summary = $site_rss->feed_desc;
 		$rss->itunes->author = ORGANIZATION_NAME;
 //		$rss->itunes->category = @$itunes_cats[0]->category;
 //		$rss->itunes->subcategory = @$itunes_cats[0]->subcategory;
@@ -77,6 +68,9 @@ if ($config->enable_rss == true) {
 	foreach ($site_rss->getFeedItems() as $item) {
 		if ($item->date > $pubDate) { $pubDate = $item->date; }
 		$rss->addItem($item);
+	}
+	if (isset($site_rss->rss_limit) && $site_rss->rss_limit > 0) {
+		$rss->items = array_slice($rss->items, 0, $site_rss->rss_limit);
 	}
 	$rss->pubDate = $pubDate;
 

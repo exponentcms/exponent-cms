@@ -8,7 +8,7 @@
  * License, or (at your option) any later version.
  *
  * @category   Exponent CMS
- * @copyright  2004-2009 OIC Group, Inc.
+ * @copyright  2004-2011 OIC Group, Inc.
  * @license    GPL: http://www.gnu.org/licenses/gpl.txt
  * @link       http://www.exponent-docs.org/
  *}

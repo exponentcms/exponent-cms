@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2006 OIC Group, Inc.
+# Copyright (c) 2004-2011 OIC Group, Inc.
 # Written and Designed by James Hunt
 #
 # This file is part of Exponent
@@ -20,11 +20,20 @@
 function smarty_function_pagelinks($params,&$smarty) {
     $config = $smarty->_tpl_vars['config'];
     if (!$config['pagelinks'] || $config['pagelinks']=="Top and Bottom") {
-        echo $params['paginate']->links;
+		if ($params['paginate']->total_pages == 1 && $config['multipageonly']==1) {
+		} else {
+			echo $params['paginate']->links;
+		}
     } else if ($params['top'] && $config['pagelinks']=="Top Only") {
-        echo $params['paginate']->links;
+		if ($params['paginate']->total_pages == 1 && $config['multipageonly']==1) {
+		} else {
+			echo $params['paginate']->links;
+		}
     } else if ($params['bottom'] && $config['pagelinks']=="Bottom Only") {
-        echo $params['paginate']->links;
+		if ($params['paginate']->total_pages == 1 && $config['multipageonly']==1) {
+		} else {
+			echo $params['paginate']->links;
+		}
     }
 }
 

@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2006 OIC Group, Inc.
+# Copyright (c) 2004-2011 OIC Group, Inc.
 # Written and Designed by James Hunt
 #
 # This file is part of Exponent
@@ -22,7 +22,7 @@ if (!defined("EXPONENT")) exit("");
 // Check for form errors
 $post = $_POST;
 $post['manual_redirect'] = true;
-if (SITE_USE_CAPTCHA && !expValidator::check_antispam($post)) {
+if (!expValidator::check_antispam($post)) {
     flash('error', 'Security Validation Failed');
     exponent_flow_redirect();
 }
@@ -124,7 +124,6 @@ if (!isset($_POST['data_id']) || (isset($_POST['data_id']) && exponent_permissio
 		if (empty($from_name)) {
 			$from_name = trim(ORGANIZATION_NAME);
 		}
-        
         if (count($emaillist)) {
             //This is an easy way to remove duplicates
             $emaillist = array_flip(array_flip($emaillist));
@@ -149,10 +148,10 @@ if (!isset($_POST['data_id']) || (isset($_POST['data_id']) && exponent_permissio
     //If is a new post show response, otherwise redirect to the flow.
     if (!isset($_POST['data_id'])) {
         $template = new template("formbuilder","_view_response");
-        global $SYS_FLOW_REDIRECTIONPATH;
-        $SYS_FLOW_REDIRECTIONPATH = "editfallback";
+//        global $SYS_FLOW_REDIRECTIONPATH;
+//        $SYS_FLOW_REDIRECTIONPATH = "editfallback";
         $template->assign("backlink",exponent_flow_get());
-        $SYS_FLOW_REDIRECTIONPATH = "exponent_default";
+//        $SYS_FLOW_REDIRECTIONPATH = "exponent_default";
         $template->assign("response_html",$f->response);
         $template->output();
     } else {

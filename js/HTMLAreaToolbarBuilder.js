@@ -1,6 +1,6 @@
 //##################################################
 //#
-//# Copyright (c) 2004-2006 OIC Group, Inc.
+//# Copyright (c) 2004-2011 OIC Group, Inc.
 //# Copyright (c) 2006 Maxim Mueller 
 //# Written and Designed by James Hunt
 //#

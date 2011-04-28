@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2006 OIC Group, Inc., Maxim Mueller
+# Copyright (c) 2004-2011 OIC Group, Inc., Maxim Mueller
 # Written and Designed by James Hunt
 #
 # This file is part of Exponent

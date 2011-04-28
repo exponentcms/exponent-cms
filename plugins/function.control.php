@@ -153,7 +153,7 @@ function smarty_function_control($params,&$smarty) {
         } elseif ($params['type'] == 'list') {
             $control = new listcontrol();
         } elseif ($params['type'] == 'captcha') {
-            if (SITE_USE_CAPTCHA && EXPONENT_HAS_GD) {
+            if (SITE_USE_ANTI_SPAM && EXPONENT_HAS_GD) {
                 echo '<div id="'.$params['name'].'Control" class="control"><label class="label" for="'.$params['name'].'">'.$params['label'].'</label>';
                 echo '<div class="captcha">'.sprintf($i18n['captcha_description'],'<img class="captcha-img" src="'.PATH_RELATIVE.'captcha.php" />');
                 echo '<a href="javascript:void(0)" class="captcha-why" onclick="window.open(\''.URL_FULL.'/captcha_why.php\',\'mywindow\',\'width=450,height=300\')">'.$i18n['why_do_this'].'</a></div>';
@@ -167,16 +167,20 @@ function smarty_function_control($params,&$smarty) {
             }
         } elseif ($params['type'] == 'antispam') {
             //eDebug(ANTI_SPAM_CONTROL, true);
-            if (ANTI_SPAM_CONTROL == 'recaptcha') {                
+			if (SITE_USE_ANTI_SPAM && ANTI_SPAM_CONTROL == 'recaptcha') {                
                 // make sure we have the proper config.
                 if (!defined('RECAPTCHA_PUB_KEY')) {
                     echo '<h2 style="color:red">reCaptcha configuration is missing the public key.</h2>';
                     return;
                 }
-                
-                // include the library and show the form control
-                require_once(BASE.'external/recaptchalib.php');
-                echo recaptcha_get_html(RECAPTCHA_PUB_KEY, $error);
+				if (exponent_users_isLoggedIn() && ANTI_SPAM_USERS_SKIP == 1) {
+					// skip it for logged on users based on config
+				} else {
+					// include the library and show the form control
+					require_once(BASE.'external/recaptchalib.php');
+					echo recaptcha_get_html(RECAPTCHA_PUB_KEY, $error);
+					echo '<p>Fill out the above security question to submit your form.</p>';
+				}
                 return;
             } elseif (ANTI_SPAM_CONTROL == 0) {
                 return;

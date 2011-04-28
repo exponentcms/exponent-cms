@@ -16,7 +16,7 @@
  * This is the class postgres_database
  *
  * This is the Postgres-specific implementation of the database class.
- * @copyright 2004-2006 OIC Group, Inc.
+ * @copyright 2004-2011 OIC Group, Inc.
  * @author Written and Designed by James Hunt
  * @version 2.0.0
  * @subpackage Database = Postgres

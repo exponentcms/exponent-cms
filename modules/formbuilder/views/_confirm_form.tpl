@@ -24,6 +24,10 @@
     {/literal}
 {/if}
 
+{css unique="form-records" corecss="tables"}
+
+{/css}
+
 <div class="formbuilder confirm-form">
 	<h1>Please confirm your submission</h1>
 	<table width="100%" border="0" cellpadding="0" cellspacing="0" class="exp-skin-table">
@@ -41,7 +45,6 @@
 		</tbody>
 	</table>
 
-	<p>If the information above looks correct, fill out the security question below to submit your form submission</p>
 	{form action=submit_form}
 		{foreach from=$postdata item=data key=name}
 			{control type=hidden name=$name value=$data}

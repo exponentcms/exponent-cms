@@ -38,35 +38,35 @@
 		{assign var=more_events value=0}	
 		{assign var=item_number value=0}	
 		{foreach from=$items item=item}
-{if (!$__viewconfig.num_events || $item_number < $__viewconfig.num_events) }	
-			<li>
-				<a class="link" href="{link action=view id=$item->id date_id=$item->eventdate->id}" title="{$item->body|summarize:"html":"para"}">{$item->title}</a>
-				<em class="date">
-					{if $item->is_allday == 1}
-						{$item->eventstart|format_date:$smarty.const.DISPLAY_DATE_FORMAT}
-					{else}
-						{$item->eventstart|format_date:$smarty.const.DISPLAY_DATE_FORMAT} @ {$item->eventstart|format_date:"%l:%M %p"}
-					{/if}
-				</em>
-				{permissions}
-					<div class="item-actions">
-						{if $permissions.edit == 1}
-							{icon action=edit record=$item date_id=$item->eventdate->id title="Edit this Event"|gettext}
+			{if (!$__viewconfig.num_events || $item_number < $__viewconfig.num_events) }	
+				<li>
+					<a class="link" href="{link action=view id=$item->id date_id=$item->eventdate->id}" title="{$item->body|summarize:"html":"para"}">{$item->title}</a>
+					<em class="date">
+						{if $item->is_allday == 1}
+							{$item->eventstart|format_date:$smarty.const.DISPLAY_DATE_FORMAT}
+						{else}
+							{$item->eventstart|format_date:$smarty.const.DISPLAY_DATE_FORMAT} @ {$item->eventstart|format_date:"%l:%M %p"}
 						{/if}
-						{if $permissions.delete == 1}
-							{if $item->is_recurring == 0}
-								{icon action=delete record=$item date_id=$item->eventdate->id title="Delete this Event"|gettext}
-							{else}
-								{icon action=delete_form class=delete record=$item date_id=$item->eventdate->id title="Delete this Event"|gettext}
+					</em>
+					{permissions}
+						<div class="item-actions">
+							{if $permissions.edit == 1}
+								{icon action=edit record=$item date_id=$item->eventdate->id title="Edit this Event"|gettext}
 							{/if}
-						{/if}
-					</div>
-				{/permissions}
-			</li>
-		{assign var=item_number value=$item_number+1}
-{else}
-	{assign var=more_events value=1}	
-{/if}
+							{if $permissions.delete == 1}
+								{if $item->is_recurring == 0}
+									{icon action=delete record=$item date_id=$item->eventdate->id title="Delete this Event"|gettext}
+								{else}
+									{icon action=delete_form class=delete record=$item date_id=$item->eventdate->id title="Delete this Event"|gettext}
+								{/if}
+							{/if}
+						</div>
+					{/permissions}
+				</li>
+				{assign var=item_number value=$item_number+1}
+			{else}
+				{assign var=more_events value=1}	
+			{/if}
 		{foreachelse}
 			<li align="center"><i>{$_TR.no_event}</i></li>
 		{/foreach}

@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2006 OIC Group, Inc.
+# Copyright (c) 2004-2011 OIC Group, Inc.
 # Written and Designed by James Hunt
 #
 # This file is part of Exponent
@@ -17,6 +17,8 @@
 #
 ##################################################
 
+if (!defined('SITE_USE_ANTI_SPAM')) define('SITE_USE_ANTI_SPAM',1);
+if (!defined('ANTI_SPAM_USERS_SKIP')) define('ANTI_SPAM_USERS_SKIP','0');
 if (!defined('ANTI_SPAM_CONTROL')) define('ANTI_SPAM_CONTROL','0');
 if (!defined('RECAPTCHA_THEME')) define('RECAPTCHA_THEME','clean');
 

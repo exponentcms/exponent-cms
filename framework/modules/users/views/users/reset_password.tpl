@@ -23,6 +23,7 @@
     
     {form action=send_new_password}
         {control type="text" name="username" label="Username/Email"}
+		{control type=antispam}
         {control type="buttongroup" submit="Submit"}
     {/form}
 </div>

@@ -14,7 +14,7 @@
  *
  *}
  
-{css unique="form-records" corecss="tables"}
+{css unique="data-view" corecss="tables"}
 
 {/css}
 

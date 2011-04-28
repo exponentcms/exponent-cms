@@ -46,7 +46,7 @@
     {/foreach}    
     </tbody>
     </table>
-    {*control type="antispam"*}    
+    {control type="antispam"}    
     {control type="buttongroup" submit="Sign up now" cancel="Cancel"}    
     {/form}
 </div>
