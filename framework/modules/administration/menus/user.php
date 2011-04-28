@@ -38,8 +38,7 @@ if ($level == UILEVEL_PREVIEW) {
 /////////////////////////////////////////////////////////////////////////
 // BUILD THE MENU
 /////////////////////////////////////////////////////////////////////////
-$my_version = EXPONENT_VERSION_MAJOR.".".EXPONENT_VERSION_MINOR.".".EXPONENT_VERSION_REVISION;
-$my_type = EXPONENT_VERSION_TYPE.EXPONENT_VERSION_ITERATION;
+
 return array(
     'text'=>$user->firstname.' '.$user->lastname,
     'classname'=>'quicklink user',
@@ -66,16 +65,6 @@ return array(
                 'classname'=>$preview_class,
                 'url'=>$preview_url
             ),
-			array(
-				'classname'=>'info',
-				'text'=>'About ExponentCMS',
-				"submenu"=>array(
-					'id'=>'ver',
-					'itemdata'=>array(
-						array('classname'=>'moreinfo','text'=>"Exponent Version : ".$my_version."<br />Release level : ".$my_type."<br />Release date : ".EXPONENT_VERSION_BUILDDATE,"disabled"=>true)
-					)
-				)
-			),
         ),
     )
 );

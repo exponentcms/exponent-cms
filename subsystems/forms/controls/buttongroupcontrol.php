@@ -81,7 +81,7 @@ class buttongroupcontrol extends formcontrol {
 		if (empty($this->id)) $this->id = $name;
 		$html = "";
 		if ($this->submit != "") {
-			$html .= '<button id="'.$this->id.'Submit" class="submit button awesome '.BTN_SIZE.' '.BTN_COLOR;
+			$html .= '<button type="submit" id="'.$this->id.'Submit" class="submit button awesome '.BTN_SIZE.' '.BTN_COLOR;
 			if ($this->disabled) $html .= " disabled";
 			$html .='" type="submit" value="' . $this->submit . '"';
 			if ($this->disabled) $html .= " disabled";
@@ -101,7 +101,7 @@ class buttongroupcontrol extends formcontrol {
 		}
 		//if ($this->reset != "") $html .= '<input class="button" type="reset" value="' . $this->reset . '"' . ($this->disabled?" disabled":"") . ' />';
 		if ($this->cancel != "") {
-			$html .= '<button class="cancel button awesome '.BTN_SIZE.' '.BTN_COLOR.'" onclick="document.location.href=\''.exponent_flow_get().'\'"';
+			$html .= '<button type="cancel" class="cancel button awesome '.BTN_SIZE.' '.BTN_COLOR.'" onclick="document.location.href=\''.exponent_flow_get().'\'; return false;"';
 			$html .= '>';
 			$html .= $this->cancel;
 			$html .= '</button>';
