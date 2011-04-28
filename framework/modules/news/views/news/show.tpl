@@ -23,10 +23,10 @@
     {permissions}
         <div class="item-actions">   
             {if $permissions.edit == true}
-                {icon controller=news action=edit record=$record title="Edit this news post"}
+                {icon action=edit record=$record title="Edit this news post"}
             {/if}
             {if $permissions.delete == true}
-                {icon controller=news action=delete record=$record title="Delete this news post" onclick="return confirm('Are you sure you want to delete `$record->title`?');"}
+                {icon action=delete record=$record title="Delete this news post" onclick="return confirm('Are you sure you want to delete `$record->title`?');"}
             {/if}
         </div>
     {/permissions}
