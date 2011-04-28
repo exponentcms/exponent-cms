@@ -18,6 +18,10 @@
 <style type="text/css" media="screen">
     {$css}
 </style> 
+{else
+	{css unique="form-records" corecss="tables"}
+
+	{/css}
 {/if}
  
  <table border="0" cellspacing="0" cellpadding="0" class="exp-skin-table">
