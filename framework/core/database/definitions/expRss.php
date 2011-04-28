@@ -38,6 +38,12 @@ return array(
 	'feed_desc'=>array(
 		DB_FIELD_TYPE=>DB_DEF_STRING,
 		DB_FIELD_LEN=>100000),
+	'enable_rss'=>array(
+		DB_FIELD_TYPE=>DB_DEF_BOOLEAN),
+	'rss_limit'=>array(
+	    DB_FIELD_TYPE=>DB_DEF_INTEGER),
+	'rss_cachetime'=>array(
+	    DB_FIELD_TYPE=>DB_DEF_INTEGER),
 );
 
 ?>
