@@ -20,6 +20,7 @@
 class pixidouController extends expController {
     public $cacheDir = "framework/modules/pixidou/images/";
     public $requires_login = array('editor','exitEditor');
+	public $codequality = 'beta';
 
     function name() { return $this->displayname(); } //for backwards compat with old modules
     function displayname() { return "Pixidou Image Editor"; }

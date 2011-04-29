@@ -19,6 +19,7 @@
 
 class companyController extends expController {
 	public $useractions = array('showall'=>'Show all');
+	public $codequality = 'beta';
 
 	public $remove_configs = array(
         'aggregretion',

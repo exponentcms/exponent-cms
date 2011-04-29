@@ -19,6 +19,7 @@
 
 class faqController extends expController {
     public $useractions = array('showall'=>'Show FAQs', 'ask_question'=>'Show Question Form');
+	public $codequality = 'beta';
 
 	public $remove_configs = array(
         'aggregretion',

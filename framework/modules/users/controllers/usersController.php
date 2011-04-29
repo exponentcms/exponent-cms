@@ -26,6 +26,7 @@ class usersController extends expController {
         'boot_user'=>'Boot Users',
     );
     public $remove_permissions = array('create', 'edit_user');
+	public $codequality = 'beta';
     
     //public $useractions = array('showall'=>'Show all');
 

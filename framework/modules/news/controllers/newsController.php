@@ -23,6 +23,7 @@ class newsController extends expController {
     );
 
     public $remove_configs = array('ealerts','tags','comments');
+	public $codequality = 'beta';
 
     public $add_permissions = array('showUnpublished'=>'View Unpublished News');
     private $sortopts = array(

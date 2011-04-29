@@ -22,6 +22,7 @@ class youtubeController extends expController {
 	public $useractions = array('showall'=>'Display a YouTube Video');
 
     public $remove_configs = array('ealerts','tags','files','rss','comments');
+	public $codequality = 'beta';
 
 	function name() { return $this->displayname(); } //for backwards compat with old modules
 	function displayname() { return "YouTube"; }

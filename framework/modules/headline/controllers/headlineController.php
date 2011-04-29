@@ -22,6 +22,7 @@ class headlineController extends expController {
     public $useractions = array(
             'show'=>'Show Headline',
     );
+	public $codequality = 'beta';
  
 	public $remove_configs = array(
         'aggregretion',

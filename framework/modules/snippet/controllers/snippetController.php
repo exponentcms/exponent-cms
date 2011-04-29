@@ -20,6 +20,7 @@
 class snippetController extends expController {
 	//protected $basemodel_name = '';
 	public $useractions = array('showall'=>'Copy and Display Snippet');
+	public $codequality = 'beta';
 
 	function name() { return $this->displayname(); } //for backwards compat with old modules
 	function displayname() { return "Code Snippets"; }

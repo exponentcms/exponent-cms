@@ -21,6 +21,7 @@ class bannerController extends expController {
     //public $basemodel_name = '';
     public $remove_configs = array('aggregation', 'comments', 'files','rss');
     public $useractions = array('showall'=>'Display Banner(s)');
+	public $codequality = 'beta';
 
     function name() { return $this->displayname(); } //for backwards compat with old modules
     function displayname() { return "Banners"; }

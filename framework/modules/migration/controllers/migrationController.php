@@ -26,7 +26,7 @@ class migrationController extends expController {
 
     // this is a list of modules that we can convert to exp2 type modules.
     public $new_modules = array(
-//        'addressbookmodule'=>'addressController',  // NOT WRITTEN YET???
+        'addressbookmodule'=>'addressController', 
         'imagegallerymodule'=>'photosController',
         'linklistmodule'=>'linksController',
         'newsmodule'=>'newsController',
@@ -81,7 +81,6 @@ class migrationController extends expController {
     );
 
     public $needs_written = array(
-		'addressbookmodule',  // listed above, but no script written yet?
 //        'categories',  // no controller and not in old school ???
 //        'tags',	 // no controller and not in old school ???
     );
@@ -244,6 +243,7 @@ class migrationController extends expController {
             $db->delete('flowplayer');
             $db->delete('banner');
             $db->delete('companies');
+            $db->delete('addresses');
             $db->delete('content_expComments');
             $db->delete('content_expFiles');
             $db->delete('content_expSimpleNote');
@@ -345,6 +345,9 @@ class migrationController extends expController {
 			if (in_array('bannermodule',$this->params['replace'])) {
 				$db->delete('banner');
 				$db->delete('companies');
+			}
+			if (in_array('addressmodule',$this->params['replace'])) {
+				$db->delete('addresses');
 			}
 		}
 
@@ -1476,7 +1479,49 @@ class migrationController extends expController {
 					}
 				}
 				break;
-            default:
+            case 'addressbookmodule':  // user mod, not widely distributed
+
+				@$module->view = 'myaddressbook';
+				@$module->action = 'myaddressbook';
+
+				//check to see if it's already pulled in (circumvent !is_original)
+				// $ploc = $iloc;
+				// $ploc->mod = "addresses";
+				// if ($db->countObjects($ploc->mod, "location_data='".serialize($ploc)."'")) {
+					// $iloc->mod = 'addressbookmodule';
+					// $linked = true;
+					// break;
+				// }
+
+//                $iloc->mod = 'addressbookmodule';
+                $addresses = $old_db->selectArrays('addressbook_contact', "location_data='".serialize($iloc)."'");
+				if ($addresses) {
+					foreach ($addresses as $address) {
+//						unset($address['id']);
+						$addr = new address();
+						$addr->user_id = 1;
+						$addr->is_default = 1;
+						$addr->is_billing = 1;
+						$addr->is_shipping = 1;
+						$addr->firstname = (!empty($address['firstname'])) ? $address['firstname'] : 'blank'; 
+						$addr->lastname = (!empty($address['lastname'])) ? $address['lastname'] : 'blank'; 
+						$addr->address1 = (!empty($address['address1'])) ? $address['address1'] : 'blank'; 
+						$addr->city = (!empty($address['city'])) ? $address['city'] : 'blank'; 
+						$address['state'] = (!empty($address['state'])) ? $address['state'] : 'CA'; 
+						$state = $db->selectObject('geo_region', 'code="'.strtoupper($address['state']).'"');
+						$addr->state = $state->id;
+						$addr->zip = (!empty($address['zip'])) ? $address['zip'] : '99999'; 
+						$addr->phone = (!empty($address['phone'])) ? $address['phone'] : '800-555-1212'; 
+						$addr->email = (!empty($address['email'])) ? $address['email'] : 'address@website.com'; 
+						$addr->organization = $address['business'];
+						$addr->phone2 = $address['cell'];
+						$addr->save();
+						@$this->msg['migrated'][$iloc->mod]['count']++;
+						@$this->msg['migrated'][$iloc->mod]['name'] = $this->new_modules[$iloc->mod];
+					}
+				}
+				break;
+			default:
                 @$this->msg['noconverter'][$iloc->mod]++;
 				break;
 		}

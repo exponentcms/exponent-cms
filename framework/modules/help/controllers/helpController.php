@@ -19,6 +19,7 @@
 
 class helpController extends expController {
 	public $useractions = array('showall'=>'Show all');
+	public $codequality = 'beta';
 
 	function name() { return $this->displayname(); } //for backwards compat with old modules
 	function displayname() { return "HELP!"; }

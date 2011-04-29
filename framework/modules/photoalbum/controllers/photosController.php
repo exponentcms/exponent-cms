@@ -25,7 +25,8 @@ class photosController extends expController {
         //'showall_tags'=>"Tag Categories"
     );
     public $remove_configs = array('files','ealerts','comments','rss','tags');
-    
+ 	public $codequality = 'beta';
+   
     function name() { return $this->displayname(); } //for backwards compat with old modules
     function displayname() { return "Photo Album"; }
     function description() { return "This module allows you to display and manage images."; }

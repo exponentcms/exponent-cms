@@ -23,7 +23,7 @@ class fileController extends expController {
     //public $add_permissions = array('picker'=>'Manage Files');
     //public $remove_permissions = array('edit');
     public $requires_login = array('picker'=>'must be logged in','edit_alt'=>'must be logged in');
-
+	public $codequality = 'beta';
 
     function name() { return $this->displayname(); } //for backwards compat with old modules
     function displayname() { return "File Manager"; }

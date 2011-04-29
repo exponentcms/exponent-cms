@@ -20,6 +20,7 @@
 class flowplayerController extends expController {
     //public $basemodel_name = '';
     public $useractions = array('showall'=>'Show all');
+	public $codequality = 'beta';
 
 	public $remove_configs = array(
         'aggregretion',

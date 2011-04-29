@@ -19,6 +19,7 @@ class flickrfeedController extends expController {
     public $useractions = array(
         'showall'=>'Display Public Photostream',
     );
+	public $codequality = 'beta';
     
     function name() { return $this->displayname(); } //for backwards compat with old modules
     function displayname() { return "Flickr Feed"; }

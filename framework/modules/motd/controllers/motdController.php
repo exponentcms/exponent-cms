@@ -20,6 +20,7 @@
 class motdController extends expController {
     //public $basemodel_name = '';
     public $useractions = array('show'=>'Show Todays Message');
+	public $codequality = 'beta';
 
     function name() { return $this->displayname(); } //for backwards compat with old modules
     function displayname() { return "Message of the Day"; }

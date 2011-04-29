@@ -28,6 +28,7 @@ class rssController extends expController {
         //'rss',
         'tags'
     );
+	public $codequality = 'beta';
 
     function name() { return $this->displayname(); } //for backwards compat with old modules
     function displayname() { return "RSS Syndication"; }
