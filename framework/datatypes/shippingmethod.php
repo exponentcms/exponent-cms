@@ -30,7 +30,8 @@ class shippingmethod extends expRecord {
 		$address = is_object($address) ? $address : new address($address);
 		$this->addresses_id = $address->id;
 		unset($address->id);
-		$this->update($address);
+//		$this->update($address);
+		$this->update();
 	}	
 	
 	function afterSave() {
