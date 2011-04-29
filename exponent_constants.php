@@ -31,7 +31,7 @@ if (!defined('SYS_THEME')) require_once(BASE.'subsystems/theme.php');
 // iconset base
 if (!defined('ICON_RELATIVE')) {
 	
-	define('ICON_RELATIVE', PATH_RELATIVE . 'themes/common/skin/');
+	define('ICON_RELATIVE', PATH_RELATIVE . 'framework/core/assets/images/');
 	
 	//DEPRECATED: old directory, inconsitent naming
 	/*if (is_readable(THEME_ABSOLUTE . 'icons/')) {
@@ -65,7 +65,7 @@ if (!defined('MIMEICON_RELATIVE')) {
     // } else {
     //  define('MIMEICON_RELATIVE', PATH_RELATIVE . 'themes/common/images/icons/mimetypes/');
     // }
-    define('MIMEICON_RELATIVE', PATH_RELATIVE . 'themes/common/skin/mimetypes/');
+    define('MIMEICON_RELATIVE', PATH_RELATIVE . 'framework/core/assets/images/mimetypes/');
 }
 
 if (!defined('YUI3_PATH')) {
