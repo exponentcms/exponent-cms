@@ -96,13 +96,13 @@
 							{permissions}
 								<div class="item-actions">
 									{if $permissions.edit == 1}
-										{icon action=edit record=$item date_id=$item->eventdate->id title="Edit this Event"|gettext}
+										{icon img=edit.png action=edit record=$item date_id=$item->eventdate->id title="Edit this Event"|gettext}
 									{/if}
 									{if $permissions.delete == 1}
 										{if $item->is_recurring == 0}
-											{icon action=delete record=$item date_id=$item->eventdate->id title="Delete this Event"|gettext}
+											{icon img=delete.png action=delete record=$item date_id=$item->eventdate->id title="Delete this Event"|gettext}
 										{else}
-											{icon action=delete_form class=delete record=$item date_id=$item->eventdate->id title="Delete this Event"|gettext}
+											{icon img=delete.png action=delete_form record=$item date_id=$item->eventdate->id title="Delete this Event"|gettext}
 										{/if}
 									{/if}
 								</div>	
