@@ -47,8 +47,8 @@
 <script type="text/javascript">
 {literal}
 
-this.moveTo(1,1);
-this.resizeTo(screen.width,screen.height);
+// this.moveTo(1,1);
+// this.resizeTo(screen.width,screen.height);
 
 EXPONENT.fileManager = function() {
     var queryString = '&results=50&output=json'; //autocomplete query
