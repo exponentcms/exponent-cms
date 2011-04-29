@@ -1,11 +1,13 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+ "http://www.w3.org/TR/html4/strict.dtd">
+<html>
 <head>
     	
     <?php 
     expTheme::head(array(
     	"xhtml"=>true,
-    	"css_primer"=>false,
+    	"css_primer"=>array(
+    	    YUI2_PATH."reset-fonts-grids/reset-fonts-grids.css"),
     	"css_core"=>array("common"), 
     	"css_links"=>true,
     	"css_theme"=>true
@@ -26,21 +28,21 @@
 			<a href="<?php echo exponent_core_makeLink(array('section'=>10)); ?>">Site-map</a>
 		</div>
 		<div id="header-login">
-			<?php exponent_theme_showModule("loginmodule","Expanded"); ?>
+      <?php expTheme::module(array("module"=>"login","view"=>"Expanded")); ?>
 		</div>
 	</div>
 	<!-- navigation -->
 	<div  id="menu">
-		<?php exponent_theme_showModule("navigationmodule","YUI Top Nav"); ?>
+    <?php expTheme::module(array("module"=>"navigation","view"=>"YUI Top Nav")); ?>
 	</div>
 	<!-- content-wrap starts here -->
 	<div id="content-wrap">
 		<div id="main">
-			<?php exponent_theme_main(); ?>
+      <?php expTheme::main(); ?>
 		</div>
 		<div id="sidebar">
-			<?php exponent_theme_showModule("containermodule","Default","","@left"); ?>			
-		</div>
+    	<?php expTheme::module(array("module"=>"container","view"=>"Default","source"=>"@left")); ?>
+    </div>
 	<!-- content-wrap ends here -->	
 	</div>
 	<!--footer starts here-->
@@ -48,6 +50,6 @@
 	    <?php expTheme::showController(array("controller"=>"text","action"=>"showall","view"=>"showall","source"=>"textmodulesrc1")) ?>
 	</div>	
 </div>
-	<?php echo exponent_theme_footerInfo(); ?>
+<?php echo expTheme::foot(); ?>
 </body>
 </html>
