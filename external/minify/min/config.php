@@ -4,6 +4,8 @@
  * @package Minify
  */
 
+//Initialize exponent Framework
+//include_once('../../../exponent_common.php');
 
 /**
  * In 'debug' mode, Minify can combine files with no minification and 
