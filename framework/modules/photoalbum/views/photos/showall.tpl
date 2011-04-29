@@ -25,7 +25,7 @@
 			{if $permissions.create == 1}
 				{icon class=add action=edit rank=1 title="Add to the top" text="Add Image"}
 			{/if}
-			{if $permissions.edit == 1}
+			{if $permissions.manage == 1}
 				{ddrerank items=$page->records model="photo"}
 			{/if}
 		</div>

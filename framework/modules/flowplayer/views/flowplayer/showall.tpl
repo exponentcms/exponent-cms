@@ -40,7 +40,7 @@ flowplayer("a.flowplayer-video", EXPONENT.PATH_RELATIVE+"external/flowplayer3/fl
 			{if $permissions.edit == 1}
 				{icon class=add action=edit title="Add a Video at the Top"|gettext text="Add a Video"|gettext}
 			{/if}
-			{if $permissions.edit == 1}
+			{if $permissions.manage == 1}
 				{ddrerank items=$page->records model="flowplayer" label="Videos"|gettext}
 			{/if}
 		</div>	

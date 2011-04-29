@@ -21,7 +21,7 @@
             {if $permissions.create == 1}
                 {icon class=add action=edit rank=1 title="Add text to the top" text="Add text at the top"|gettext}
             {/if}
-            {if $permissions.edit == 1}
+            {if $permissions.manage == 1}
                 {ddrerank items=$items model="text" label="Text Items"|gettext}
             {/if}
         </div>

@@ -28,7 +28,7 @@
                 {if $permissions.create == 1}
                     {icon class=add action=edit rank=1 title="Add to the top" text="Add a new slide at the beginning"}
                 {/if}
-                {if $permissions.edit == 1 && $page->records|@count>1}
+                {if $permissions.manage == 1 && $page->records|@count>1}
                     {ddrerank items=$page->records model="photo" label="Slides"}
                 {/if}
             </div>

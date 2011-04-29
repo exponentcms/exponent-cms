@@ -40,7 +40,7 @@
         {*if $permissions.manage == 1}
             {icon action=configure module=ecomconfig hash="#tab2" title="Configure Categories Globally" text="Configure Categories Globally"}{br}
         {/if*}
-        {if $permissions.edit == 1 && $config.orderby=="rank"}
+        {if $permissions.manage == 1 && $config.orderby=="rank"}
             {ddrerank label="Products" sql=$rerankSQL model="product" controller="storeCategory" id=$current_category->id}
         {/if}
         {if $permissions.edit == 1}

@@ -20,7 +20,7 @@
     </a>
     {permissions}
 		<div class="module-actions">		
-			{if $permissions.edit == 1}
+			{if $permissions.mangage == 1}
 				{ddrerank items=$page->records model="flowplayer" label="Videos"|gettext}
 			{/if}
 		</div>	
