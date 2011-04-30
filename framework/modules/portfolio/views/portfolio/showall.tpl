@@ -60,7 +60,8 @@
 
                 {if $config.usebody==1}
                     <p>{$record->body|summarize:"html":"para"}</p>
-                {else $config.usebody==2}
+                {elseif $config.usebody==2}
+				{else}
                     {$record->body}
                 {/if}
             </div>

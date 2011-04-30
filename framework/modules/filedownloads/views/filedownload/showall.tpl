@@ -63,6 +63,7 @@
 				{if $config.usebody==1}
                     <p>{$file->body|summarize:"html":"para"}</p>
                 {elseif $config.usebody==2}
+				{else}
                     {$file->body}
                 {/if}
 			</div>
