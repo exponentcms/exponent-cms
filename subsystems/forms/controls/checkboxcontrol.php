@@ -49,6 +49,7 @@ require_once(BASE."subsystems/forms/controls/formcontrol.php");
 class checkboxcontrol extends formcontrol {
     var $flip = false;
     var $jsHooks = array();
+    var $nowrap = '';
     
     function name() { return "Checkbox"; }
     function isSimpleControl() { return true; }

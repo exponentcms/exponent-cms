@@ -1,6 +1,5 @@
 {*
  * Copyright (c) 2004-2011 OIC Group, Inc.
- * Written and Designed by James Hunt
  *
  * This file is part of Exponent
  *
@@ -13,10 +12,11 @@
  * GPL: http://www.gnu.org/licenses/gpl.txt
  *
  *}
- 
-{eval var=$template}
 
-{if $is_email == 0}
-	{br}
-	<a href="{$backlink}">{$_TR.back}</a>
-{/if}
+<div class="module formbuilder edit-form">
+	<div class="form_title">
+		<h1>{$_TR.form_title_edit}</h1>
+	</div>
+	{$form_html}
+</div>
+

@@ -3,9 +3,10 @@
 return array(
 	'name'=>'Name',
 	'description'=>'Description',
-	'blank_report_message'=>'Leave the report definition blank to use the default "all fields" report.',
-	'text'=>'Report Definition',
-	'column_names'=>'Columns shown in Summary',
+	'blank_report_message'=>'Leave the below custom definition blank to use the default "all fields" e-mail report and record view.',
+	'text'=>'Custom E-Mail Report and View Record Definition',
+	'column_names'=>'Columns shown in View Data/Export CSV',
+	'note'=>'Selecting NO columns is equal to selecting all columns',
 	
 	'save'=>'Save',
 	'cancel'=>'Cancel',

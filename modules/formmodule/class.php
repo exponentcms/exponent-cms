@@ -127,6 +127,7 @@ class formmodule {
 				$form->controls['submit']->disabled = true;
 				$formmsg .= $i18n['no_actions']; 
 			}
+			$count = $db->countObjects("formbuilder_".$f->table_name);
 			$template = new template("formmodule",$view,$loc);
 			$template->assign("moduletitle",$f->name);
 			$template->assign("description",$f->description);
@@ -135,6 +136,7 @@ class formmodule {
 			}
 			$template->assign("form_html",$form->toHTML($f->id));
 			$template->assign("form",$f);
+			$template->assign("count",$count);
 			$template->register_permissions(array("administrate","editform","editformsettings","editreport","viewdata","editdata","deletedata"),$loc);
 			$template->output();
 		}

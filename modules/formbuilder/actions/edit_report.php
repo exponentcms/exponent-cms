@@ -37,8 +37,9 @@ if ($f) {
 		$form->meta('m',$floc->mod);
 		$form->meta('s',$floc->src);
 		$form->meta('i',$floc->int);
-		echo $form->toHTML();
-		
+		$template = new template('formbuilder','_edit_report');
+		$template->assign('form_html',$form->toHTML($f->id));
+		$template->output();		
 	} else {
 		echo SITE_403_HTML;
 	}

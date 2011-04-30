@@ -18,13 +18,13 @@
 <style type="text/css" media="screen">
     {$css}
 </style> 
-{else
-	{css unique="default-report" corecss="tables"}
-
-	{/css}
 {/if}
  
- <table border="0" cellspacing="0" cellpadding="0" class="exp-skin-table">
+{css unique="data-view" corecss="tables"}
+
+{/css}
+
+<table border="0" cellspacing="0" cellpadding="0" class="exp-skin-table">
     <thead>
         <tr>
             <th colspan="2">
@@ -40,9 +40,9 @@
         </tr>
         {/foreach}
     </tbody>
- </table>
+</table>
 
- {if $is_email == 0}
-  {br}
+{if $is_email == 0}
+	{br}
 	<a href="{$backlink}">{$_TR.back}</a>
- {/if}
+{/if}
