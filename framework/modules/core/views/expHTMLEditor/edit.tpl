@@ -15,12 +15,17 @@
  *}
 
 <div class="module text edit">
+    <div class="info-header">
+        <div class="related-actions">
+            <a class="add" href="{link action="edit"}">{"Create New Configuration"|gettext}</a>
+            {help text="Get Help with Toolbar Configuration" module="ckeditor-toolbar-configuration"}
+        </div>
     {if $record->id != ""}
         <h1>Editing CKEditor Toolbar Configuration</h1>
     {else}
         <h1>New CKEditor Toolbar Configuration</h1>
     {/if}
-    
+    </div>
 
     {form action=update}
         {control type=hidden name=id value=$record->id}

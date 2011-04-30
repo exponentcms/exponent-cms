@@ -15,11 +15,17 @@
  *}
 
 <div class="module users edit">
-{if $edit_user->id == ""}
-    <h1>Create a New User Account</h1>
-{else}
-    <h1>Edit User {$edit_user->username}</h1>
-{/if}    
+    <div class="info-header">
+        <div class="related-actions">
+			{help text="Get Help with User Accounts" module="edit-user"}
+        </div>
+		{if $edit_user->id == ""}
+			<h1>Create a New User Account</h1>
+		{else}
+			<h1>Edit User {$edit_user->username}</h1>
+		{/if}    
+    </div>
+	
 {form action=update}
     {if $edit_user->id == "" || $edit_user->id == 0}
 	    {if $smarty.const.USER_REGISTRATION_USE_EMAIL == 0}

@@ -15,7 +15,12 @@
  *}
 
 <div class="module users manage-extensions">
-	<h1>{"Manage User Profile Extensions"|gettext}</h1>	
+    <div class="info-header">
+        <div class="related-actions">
+			{help text="Get Help Managing User Profile Extensions" module="manage-extensions"}
+        </div>
+        <h1>{"Manage User Profile Extensions"|gettext}</h1>
+    </div>
 	<p>
         {"From here activate or deactivate user profile extensions.  User profile extensions are used to 
         give users the ability to put in more information about themselves.  The active extensions will 

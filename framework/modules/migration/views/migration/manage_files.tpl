@@ -15,7 +15,13 @@
  *}
 
 <div class="module migration manage-files">
-	<h1>{"Migrate Files"|gettext}</h1>
+    <div class="info-header">
+        <div class="related-actions">
+			{help text="Get Help with Migrating Files" module="migrate-files"}
+        </div>
+		<h1>{"Migrate Files"|gettext}</h1>	    
+    </div>
+
     <p> 
 		This copies the list of files found in the database ({$config.database}). 
 		Note: this will only properly copy over the records from the old database into the Exponent v2 database. 

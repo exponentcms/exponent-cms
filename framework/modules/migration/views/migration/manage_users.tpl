@@ -15,7 +15,13 @@
  *}
 
 <div class="module migration manage-users">
-    <h1>{"Migrate Users and Groups"|gettext}</h1>
+    <div class="info-header">
+        <div class="related-actions">
+			{help text="Get Help with Migrating Users and Groups" module="migrate-users"}
+        </div>
+		<h1>{"Migrate Users and Groups"|gettext}</h1>	    
+    </div>
+
     <p> 
         The following is a list of users and groups we found in the database {$config.database}.
         Select the users and groups you would like to pull over from {$config.database}.

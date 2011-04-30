@@ -13,6 +13,11 @@
  * GPL: http://www.gnu.org/licenses/gpl.txt
  *
  *}
-<div class="form_title">{$_TR.form_title}</div>
-<div class="form_header">{$_TR.form_header}</div>
+    <div class="info-header">
+        <div class="related-actions">
+			{help text="Get Help Uploading New Extensions" module="upload-extension"}
+        </div>
+        <h1>{$_TR.form_title}</h1>
+    </div>
+<div class="form_header"><p>{$_TR.form_header}</p></div>
 {$form_html}

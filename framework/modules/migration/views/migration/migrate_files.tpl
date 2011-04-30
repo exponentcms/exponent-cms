@@ -15,7 +15,13 @@
  *}
 
 <div class="module migration migrate-files">
-    <h1>{"File Migration Report"|gettext}</h1>
+    <div class="info-header">
+        <div class="related-actions">
+			{help text="Tips to Follow after Migrating Files" module="post-file-migration"}
+        </div>
+		<h1>{"File Migration Report"|gettext}</h1>	    
+    </div>
+
     <p> 
 		Note: this only properly copied over the records from the old database into the Exponent v2 database. 
 		Make sure you manually copy the "files" directory over to this installation.

@@ -19,7 +19,13 @@
 {/css}
 
 <div class="module migration migrate_content">
-    <h1>{"Content Migration Report"|gettext}</h1>
+    <div class="info-header">
+        <div class="related-actions">
+			{help text="Tips to Follow after Migrating Content" module="post-content-migration"}
+        </div>
+		<h1>{"Content Migration Report"|gettext}</h1>	    
+    </div>
+
 	{if $msg.clearedcontent}
 	    <p> 
 			{br} After clearing the database of content:

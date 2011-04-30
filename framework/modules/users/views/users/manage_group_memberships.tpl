@@ -19,7 +19,12 @@
 {/css}
 
 <div class="module users manage-group-memberships">
-	<h1>{"Manage Group Memberships"|gettext}</h1>	
+    <div class="info-header">
+        <div class="related-actions">
+			{help text="Get Help with Managing Group Memberships" module="manage-group-members"}
+        </div>
+		<h1>{"Manage Group Memberships"|gettext}</h1>	    
+    </div>
 
     {form action="update_memberships"}
     <input type="hidden" name="id" value="{$group->id}"/>
