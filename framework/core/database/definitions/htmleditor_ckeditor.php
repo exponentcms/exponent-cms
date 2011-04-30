@@ -27,6 +27,9 @@ return array(
 	'name'=>array(
 		DB_FIELD_TYPE=>DB_DEF_STRING,
 		DB_FIELD_LEN=>100),
+	'skin'=>array(
+		DB_FIELD_TYPE=>DB_DEF_STRING,
+		DB_FIELD_LEN=>100),
 	'data'=>array(
 		DB_FIELD_TYPE=>DB_DEF_STRING,
 		DB_FIELD_LEN=>10000),

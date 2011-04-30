@@ -55,10 +55,10 @@ class ckeditorcontrol extends formcontrol {
 
 	function controlToHTML($name) {
 	    global $db;
-	    
-	    $toolbar = $db->selectObject('htmleditor_ckeditor','active=1');
-	    if (empty($toolbar)||$this->toolbar=="default") {
-	       $tb = "
+		$toolbar = 'def';
+		if (empty($this->toolbar)) $toolbar = $db->selectObject('htmleditor_ckeditor','active=1');
+		if (empty($toolbar) || $this->toolbar=="default") {
+			$tb = "
 	           ['Source','-','Preview','-','Templates'],
                ['Cut','Copy','Paste','PasteText','PasteFromWord'],
                ['Undo','Redo','-','Find','Replace','-','SelectAll','RemoveFormat'],
@@ -72,14 +72,24 @@ class ckeditorcontrol extends formcontrol {
                ['Styles','Format','Font','FontSize'],
                ['TextColor','BGColor'],
                ['Maximize', 'ShowBlocks','-','About']
-	       ";
+			";
+			$skin = 'kama';
 	    } else {
-     	       $tb = !empty($this->toolbar) ? $this->toolbar : $toolbar->data;
+//			$tb = !empty($this->toolbar) ? $this->toolbar->data : $toolbar->data;
+//			$skin = !empty($toolbar->skin) ? $toolbar->skin : 'kama';
+			if (!empty($this->toolbar)) {
+				$tb = $this->toolbar->data;
+				$skin = $this->toolbar->skin;
+			} else {
+				$tb = $toolbar->data;
+				$skin = $toolbar->skin;
+			}
 	    }
 	    
 	    $content = "
 	    	EXPONENT.editor".createValidId($name)." = CKEDITOR.replace('".createValidId($name)."',
 				{
+					skin : '".$skin."',
 					toolbar : [".stripSlashes($tb)."],
                     forcePasteAsPlainText:true,
                     filebrowserBrowseUrl : '".makelink(array("controller"=>"file", "action"=>"picker", "ajax_action"=>1, "ck"=>1, "update"=>"fck"))."',

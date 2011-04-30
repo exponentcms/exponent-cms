@@ -52,6 +52,7 @@ class expHTMLEditorController extends expController {
         $obj = $db->selectObject('htmleditor_ckeditor',"id=".$this->params['id']);
         $obj->name = $this->params['name'];
         $obj->data = stripSlashes($this->params['data']);
+        $obj->skin = $this->params['skin'];
         if (empty($this->params['id'])) {
             $db->insertObject($obj,'htmleditor_ckeditor');
         } else {
