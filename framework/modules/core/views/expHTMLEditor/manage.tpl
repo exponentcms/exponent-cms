@@ -20,6 +20,7 @@
 <div class="module administration htmleditoranager">
     <div class="info-header">
         <div class="related-actions">
+            <a class="add" href="{link action="edit"}">{"Create New Configuration"|gettext}</a>
             {help text="Get Help Managing CKEditor Toolbars" module="managecke"}
         </div>
         <h1>{"CKEditor Toolbar Manager"|gettext}</h1>

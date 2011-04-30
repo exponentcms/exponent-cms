@@ -17,7 +17,6 @@
 <div class="module text edit">
     <div class="info-header">
         <div class="related-actions">
-            <a class="add" href="{link action="edit"}">{"Create New Configuration"|gettext}</a>
             {help text="Get Help with Toolbar Configuration" module="ckeditor-toolbar-configuration"}
         </div>
     {if $record->id != ""}
