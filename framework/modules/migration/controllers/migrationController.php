@@ -45,6 +45,7 @@ class migrationController extends expController {
         'youtubemodule'=>'youtubeController',
         'mediaplayermodule'=>'flowplayerController',
         'bannermodule'=>'bannerController',
+        'feedlistmodule'=>'rssController',
     );
 
     // these are modules that have either been deprecated or have no content to migrate
@@ -1520,6 +1521,37 @@ class migrationController extends expController {
 						@$this->msg['migrated'][$iloc->mod]['name'] = $this->new_modules[$iloc->mod];
 					}
 				}
+				break;
+            case 'feedlistmodule':
+
+				@$module->view = 'showall';
+
+                $iloc->mod = 'feedlistmodule';
+                $feedlist = $old_db->selectObject('feedlistmodule_config', "location_data='".serialize($iloc)."'");
+                if ($feedlist->enable_rss == 1) {
+					$loc = expUnserialize($feedlist->location_data);
+					$loc->mod = "rssController";
+					$config['enable_rss'] = true;
+					$config['feed_title'] = $feedlist->feed_title;
+					$config['feed_desc'] = $feedlist->feed_desc;
+					$config['rss_limit'] = isset($feedlist->rss_limit) ? $feedlist->rss_limit : 24;
+					$config['rss_cachetime'] = isset($feedlist->rss_cachetime) ? $feedlist->rss_cachetime : 1440;
+					$newconfig = new expConfig();
+					$newconfig->config = $config;
+					$newconfig->location_data = $loc;
+					$newconfig->save();
+					$newrss = new expRss();
+					$newrss->module = $loc->mod;
+					$newrss->src = $loc->src;
+					$newrss->enable_rss = $feedlist->enable_rss;
+					$newrss->feed_title = $feedlist->feed_title;
+					$newrss->feed_desc = $feedlist->feed_desc;
+					$newrss->rss_limit = isset($feedlist->rss_limit) ? $feedlist->rss_limit : 24;
+					$newrss->rss_cachetime = isset($feedlist->rss_cachetime) ? $feedlist->rss_cachetime : 1440;
+					$newrss->save();
+					@$this->msg['migrated'][$iloc->mod]['count']++;
+					@$this->msg['migrated'][$iloc->mod]['name'] = $this->new_modules[$iloc->mod];
+                }
 				break;
 			default:
                 @$this->msg['noconverter'][$iloc->mod]++;
