@@ -36,7 +36,7 @@ if (!defined('EXPONENT_VERSION_MAJOR')) {
 		/* exdoc
 		 * This is the date that this version of Exponent was exported from BZR and built.
 		 */
-		define('EXPONENT_VERSION_BUILDDATE','%%BUILDDATE%%');
+		define('EXPONENT_VERSION_BUILDDATE',time());
 		/* exdoc
 		 * This specifies the type of release, either 'alpha','beta','rc' or '' (for stable).
 		 */
