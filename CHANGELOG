@@ -104,4 +104,3 @@ Added / Fixed / changed for 2.0.0 Preview Release 2
 # Many “old school” (1.0 codeline) modules have been removed from the distributed package for incompatibility reasons.
 # “Site Configuration” within the Slingbar’s Exponent > Configure > Configure Site option has been overhauled and made more user friendly.
 # The savability of site configurations has been removed (so back up conf/config.php manually if you ever used that feature).
-
