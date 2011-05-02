@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2008 OIC Group, Inc.
+# Copyright (c) 2004-2011 OIC Group, Inc.
 # Written and Designed by Adam Kessler
 #
 # This file is part of Exponent
@@ -28,18 +28,23 @@ function smarty_function_filedisplayer($params,&$smarty) {
 	$title = isset($params['title']) ? $params['title'] : '';
 
     $badvals = array("[", "]", ",", " ", "'", "\"", "&", "#", "%", "@", "!", "$", "(", ")", "{", "}");
-    $config['uniqueid'] = str_replace($badvals, "", $smarty->_tpl_vars[__loc]->src).$params['id'];
+    $config['uniqueid'] = str_replace($badvals, "", $smarty->_tpl_vars[__loc]->src).$params['record']->id;
+    if ($config['pio'] && $params['is_listing']) {
+        $tmp = reset($params['files']);
+        unset($params['files']);
+        $params['files'][] = $tmp;
+    };
     
-    $float = $config['float']=="No Float"?"":"float:".strtolower($config['float']).";";
-    $width = !empty($config['width'])?$config['width']:"200";
+    $float = $config['ffloat']=="No Float"?"":"float:".strtolower($config['ffloat']).";";
+    $width = !empty($config['fwidth'])?$config['fwidth']:"200";
     
-    switch ($config['float']) {
+    switch ($config['ffloat']) {
         case 'Left':
-            $margin = "margin-right:".$config['margin']."px;";
+            $margin = "margin-right:".$config['fmargin']."px;";
             break;
         
         case 'Right':
-            $margin = "margin-left:".$config['margin']."px;";
+            $margin = "margin-left:".$config['fmargin']."px;";
             break;
 
         default:

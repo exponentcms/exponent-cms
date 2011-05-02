@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2008 OIC Group, Inc.
+ * Copyright (c) 2004-2011 OIC Group, Inc.
  * Written and Designed by Adam Kessler
  *
  * This file is part of Exponent
@@ -14,7 +14,6 @@
  *
  *}
 
-
 {uniqueid prepend="slideshow" assign="name"}
 
 {css unique="photoalbum`$name`" corecss="common,pagination" link="`$asset_path`css/yui3-slideshow.css"}
@@ -27,9 +26,9 @@
     {permissions}
     <div class="module-actions">
         {if $permissions.create == 1}
-            {icon class="add" action=edit rank=1 title="Add a Slide"|gettext text="Add a Slide"|gettext}
+            {icon class=add action=edit rank=1 title="Add a Slide"|gettext text="Add a Slide"|gettext}
         {/if}
-        {if $permissions.edit == 1 && $slides|@count>1}
+        {if $permissions.manage == 1 && $slides|@count>1}
             {ddrerank items=$slides model="photo" label="Slides"}
         {/if}
     </div>
@@ -44,13 +43,13 @@
                     {permissions}
                         <div class="item-actions">
                             {if $permissions.edit == 1}
-                                {icon action=edit id=$slide->id title="Edit `$item->title`"}
+                                {icon action=edit record=$slide title="Edit `$item->title`"}
                             {/if}
                             {if $permissions.delete == 1}
-                                {icon action=delete id=$slide->id title="Delete `$item->title`" onclick="return confirm('Are you sure you want to delete this `$modelname`?');"}
+                                {icon action=delete record=$slide title="Delete `$item->title`" onclick="return confirm('Are you sure you want to delete this `$modelname`?');"}
                             {/if}
                             {if $permissions.create == 1}
-                                {icon class="add" action=edit rank=`$slide->rank+1` title="Add another slide here"  text="Add another slide here"}
+                                {icon class=add action=edit rank=`$slide->rank+1` title="Add another slide here"  text="Add another slide here"}
                             {/if}
                         </div>
                     {/permissions}

@@ -14,7 +14,7 @@
  *
  *}
  
-{uniqueid prepend="slideshow" assign="name"}
+{uniqueid prepend="slideshow`$params.record->id`" assign="name"}
 
 {css unique="files-gallery" link="`$smarty.const.PATH_RELATIVE`framework/modules/common/assets/css/filedisplayer.css"}
 
@@ -33,7 +33,7 @@
 </ul>
 
 {if $files|@count > 1}
-{script unique="name" yui3mods="1"}
+{script unique="slideshow`$name`" yui3mods="1"}
 {literal}
 EXPONENT.YUI3_CONFIG.modules = {
     	'gallery-yui-slideshow': {

@@ -1,6 +1,5 @@
 {*
- * Copyright (c) 2004-2006 OIC Group, Inc.
- * Written and Designed by James Hunt
+ * Copyright (c) 2004-2011 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -22,9 +21,13 @@
 
 {/css}
 
+{css unique="calendar-edit3" link="`$smarty.const.PATH_RELATIVE`framework/core/assets/css/button.css"}
+
+{/css}
+
 <div class="module calendar edit">
 	<div class="form_title">
-		{if $is_edit == 1}<h1>{$_TR.form_title_edit}</h1>{else}{$_TR.form_title_new}{/if}
+		<h1>{if $is_edit == 1}{$_TR.form_title_edit}{else}{$_TR.form_title_new}{/if}</h1>
 	</div>
 	<div class="form_header">
 		<p>{$_TR.form_header}</p>

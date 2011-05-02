@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2006 OIC Group, Inc.
+ * Copyright (c) 2004-2011 OIC Group, Inc.
  * Written and Designed by James Hunt
  *
  * This file is part of Exponent
@@ -20,7 +20,18 @@
     {/if}
     {if $moduletitle}<h1>{$moduletitle}</h1>{/if}
 
-    {$page->links}
+    {permissions}
+    <div class="module-actions">
+        {if $permissions.create == true || $permissions.edit == true}
+            <a class="add" href="{link action=create}">{$_TR.create_news|default:"Add a news post"}</a>
+        {/if}
+        {if $permissions.showUnpublished == 1 }
+              |  <a class="view" href="{link action=showUnpublished}">{$_TR.view_expired|default:"View Expired/Unpublished News"}</a>
+        {/if}
+    </div>
+    {/permissions}
+
+    {pagelinks paginate=$page top=1}
     {foreach from=$page->records item=item}
         <div class="item">
             <h2>
@@ -29,21 +40,13 @@
                 </a>
             </h2>
             {if $item->isRss != true}
-                {permissions level=$smarty.const.UILEVEL_PERMISSIONS}
+                {permissions}
                 <div class="item-actions">
                     {if $permissions.edit == true}
-                        {icon controller=news action=edit id=$item->id title="Edit this news post"}
+                        {icon action=edit record=$item title="Edit News Post"}
                     {/if}
                     {if $permissions.delete == true}
-                        {icon controller=news action=delete id=$item->id title="Delete this news post" onclick="return confirm('Are you sure you want to delete `$item->title`?');"}
-                    {/if}
-                    {if $permissions.edit == true && $config.order == 'rank ASC'}
-                        {if $smarty.foreach.items.first == 0}
-                            {icon controller=news action=rerank img=up.png id=$item->id push=up}    
-                        {/if}
-                        {if $smarty.foreach.items.last == 0}
-                            {icon controller=news action=rerank img=down.png id=$item->id push=down}
-                        {/if}
+                        {icon action=delete record=$item title="Delete News Post" onclick="return confirm('Are you sure you want to delete `$item->title`?');"}
                     {/if}
                 </div>
                 {/permissions}
@@ -51,33 +54,18 @@
             <span class="date">{$item->publish_date|date_format}</span>
 
             <div class="bodycopy">
-                {if $item->expFile[0]->id}
-                    {img class="thumbnail" file_id=$item->expFile[0]->id w=200 alt=$item->expFile[0]->alt}
-                {/if}
-                {if $config.truncate}
+                {filedisplayer view="`$config.filedisplay`" files=$item->expFile record=$item is_listing=1}
+
+                {if $config.usebody==1}
                     <p>{$item->body|summarize:"html":"para"}</p>
-                {else}
+                {elseif $config.usebody==2}
                     {$item->body}
                 {/if}
+
                 <a class="readmore" href="{if $item->isRss}{$item->rss_link}{else}{link action=showByTitle title=$item->sef_url}{/if}">{"Read More"|gettext}</a>
             </div>
             <div style="clear:both"></div>
         </div>
     {/foreach}
-    {$page->links}
-    
-    {permissions}
-    {if $morenews == 1 || $permissions.create == true || $permissions.edit == true || $permissions.showExpired == 1}
-    <div class="module-actions">
-        {permissions}
-        {if $permissions.create == true || $permissions.edit == true}
-            <a class="addnews" href="{link action=create}">{$_TR.create_news|default:"Create a news post"}</a>{br}
-        {/if}
-        {if $permissions.showUnpublished == 1 }
-            <a class="expirednews" href="{link action=showUnpublished}">{$_TR.view_expired|default:"View Expired/Unpublished News"}</a>
-        {/if}
-        {/permissions}
-    </div>
-    {/if}
-    {/permissions}
+    {pagelinks paginate=$page bottom=1}
 </div>

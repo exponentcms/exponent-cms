@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2006 OIC Group, Inc.
+# Copyright (c) 2004-2011 OIC Group, Inc.
 # Written and Designed by James Hunt
 #
 # This file is part of Exponent
@@ -20,6 +20,7 @@
 if (!defined('EXPONENT')) exit('');
 
 if (exponent_permissions_check('administrate',$loc)) {
+	global $router;
 	if (exponent_template_getModuleViewFile($loc->mod,'_userpermissions',false) == TEMPLATE_FALLBACK_VIEW) {
 		$template = new template('common','_userpermissions',$loc);
 	} else {
@@ -44,17 +45,39 @@ if (exponent_permissions_check('administrate',$loc)) {
 		foreach ($perms as $perm=>$name) {
 			$var = 'perms_'.$perm;
 			if (exponent_permissions_checkUser($u,$perm,$loc,true)) {
-				$u->$var = 1;
+				$u->$perm = 1;
 			} else if (exponent_permissions_checkUser($u,$perm,$loc)) {
-				$u->$var = 2;
+				$u->$perm = 2;
 			} else {
-				$u->$var = 0;
+				$u->$perm = 0;
 			}
 		}
 		$users[] = $u;
 	}
+	
+	$p["User Name"] = 'username';
+	$p["First Name"] = 'firstname';
+	$p["Last Name"] = 'lastname';
+	foreach ($mod->permissions() as $key => $value) {
+        $p[$value]=$key;
+	}
+	
+    $page = new expPaginator(array(
+     //'model'=>'user',
+    'limit'=>(isset($_REQUEST['limit'])?$_REQUEST['limit']:20),
+     'controller'=>$router->params['controller'],
+     'action'=>$router->params['action'],
+     'records'=>$users,
+     //'sql'=>$sql,
+     'order'=>'username',
+     'dir'=>'DESC',
+     'columns'=>$p,
+     ));        
+        
+	
 	$template->assign('have_users',$have_users);
 	$template->assign('users',$users);
+	$template->assign('page',$page);
 	$template->assign('perms',$perms);
 	
 	$template->output();

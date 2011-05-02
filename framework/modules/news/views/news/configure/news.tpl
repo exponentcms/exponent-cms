@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2008 OIC Group, Inc.
+ * Copyright (c) 2004-2011 OIC Group, Inc.
  * Written and Designed by Adam Kessler
  *
  * This file is part of Exponent
@@ -15,8 +15,7 @@
  *}
 
 <h2>Configure this News Module</h2>
-{control type=text name=limit label="Number of posts to paginate News Items at" value=$config.limit}
 {*control type=dropdown name=order label="Sort Order" items="$sortopts" value=$config.order*}
 {control type="checkbox" name="only_featured" label="Only show Featured News Items" value=1 checked=$config.only_featured}
-{control type="checkbox" name="truncate" label="Summarize by showing only first paragraph on listing pages?"|gettext checked=$config.truncate value=1}
+{control type="radiogroup" name="usebody" label="Body Text"|gettext default=$config.usebody items="Full,Summary,None" values="2,1,0"}
 

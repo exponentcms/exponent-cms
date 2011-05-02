@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2006 OIC Group, Inc.
+# Copyright (c) 2004-2011 OIC Group, Inc.
 # Written and Designed by James Hunt
 #
 # This file is part of Exponent
@@ -109,14 +109,22 @@ function sanity_checkDirectory($dir,$flag) {
 function sanity_checkFiles() {
 	$status = array(
 		'conf/config.php'=>sanity_checkFile(BASE.'conf/config.php',1,SANITY_CREATEFILE),
-		'conf/profiles/'=>sanity_checkFile(BASE.'conf/profiles',0,SANITY_READWRITE),
-		'overrides.php'=>sanity_checkFile(BASE.'overrides.php',1,SANITY_READWRITE),
-		'install/'=>sanity_checkFile(BASE.'install',0,SANITY_READWRITE),
-		'modules/'=>sanity_checkFile(BASE.'modules',0,SANITY_READONLY),		
 		'extensionuploads/'=>sanity_checkFile(BASE.'extensionuploads',0,SANITY_READWRITE),
 		'files/'=>sanity_checkDirectory('files',SANITY_READWRITE),
+		'framework/modules/'=>sanity_checkDirectory('framework/modules',SANITY_READWRITE),
+		//'framework/datatypes/'=>sanity_checkDirectory('framework/datatypes',SANITY_READWRITE),
+		//'conf/profiles/'=>sanity_checkFile(BASE.'conf/profiles',0,SANITY_READWRITE),
+		//'overrides.php'=>sanity_checkFile(BASE.'overrides.php',1,SANITY_READWRITE),
+		'install/'=>sanity_checkFile(BASE.'install',0,SANITY_READWRITE),
+		'modules/'=>sanity_checkFile(BASE.'modules',0,SANITY_READONLY),		
 		'tmp/'=>sanity_checkDirectory('tmp',SANITY_READWRITE),
-		'tmp/views_c'=>sanity_checkDirectory('tmp/views_c',SANITY_READWRITE)
+		'tmp/views_c'=>sanity_checkDirectory('tmp/views_c',SANITY_READWRITE),
+		'tmp/cache'=>sanity_checkDirectory('tmp/cache',SANITY_READWRITE),
+		'tmp/minify'=>sanity_checkDirectory('tmp/minify',SANITY_READWRITE),
+		'tmp/pods'=>sanity_checkDirectory('tmp/pods',SANITY_READWRITE),
+		'tmp/rsscache'=>sanity_checkDirectory('tmp/rsscache',SANITY_READWRITE),
+		'tmp/mail'=>sanity_checkDirectory('tmp/mail',SANITY_READWRITE),
+		'tmp/img_cache'=>sanity_checkDirectory('tmp/img_cache',SANITY_READWRITE)
 	);
 	
 	return $status;

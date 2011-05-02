@@ -1,0 +1,59 @@
+/* comments list */
+.exp-comments h3 {
+    border-bottom:1px solid #777777;
+}
+
+.exp-comments .avatar {
+    float:left;
+    border:1px solid #333333;
+    margin-right:5px;
+}
+
+.exp-comments ol.commentlist {
+	margin: 0;
+	padding: 0;
+}
+.exp-comments .commentlist li {
+    position:relative;
+	margin: 0;
+	padding: 1px;
+	list-style: none;
+	border: 1px solid #EEE8E1; 
+	margin-bottom:5px;
+
+}
+.exp-comments .commentlist li cite {
+	display: block;
+	font-style: normal;
+	font-weight: bold;
+	padding: 1px;	
+}
+.exp-comments .commentlist li cite .comment-date {
+	position:absolute;
+	right:5px;
+	top:3px;
+}
+.exp-comments .commentlist li cite .attribution {
+	display:block;
+	background:#CCD1DD;
+	padding:1px 5px;
+}
+.exp-comments .commentlist li cite .date {
+	font-size: .8em;
+	font-weight: normal;
+	position:absolute;
+	top:2px;
+	right:10px;
+}
+.exp-comments .commentlist li cite img {
+	float: left;
+	margin-right: 10px;	
+}
+.exp-comments .commentlist li .comment-text {
+	clear: both;
+	margin: 0; 
+	padding: 2px;
+}
+.exp-comments .commentlist li.alt {
+	background: #FAF7F5; 
+}

@@ -13,7 +13,7 @@
  * @category   Exponent CMS
  * @package    Plugins
  * @author     Jonathan Worent <jonathan@oicgroup.net>
- * @copyright  2004-2009 OIC Group, Inc.
+ * @copyright  2004-2011 OIC Group, Inc.
  * @license    GPL: http://www.gnu.org/licenses/gpl.txt
  * @version    Release: @package_version@
  * @link       http://www.exponent-docs.org/api/package/PackageName

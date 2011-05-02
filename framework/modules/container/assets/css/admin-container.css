@@ -1,4 +1,4 @@
-.exp-container-wrapper .container-chrome {
+.container-chrome {
     background:url(../../../../core/assets/images/exp-admin-sprite.png) repeat-x 0 -300px;
     border:1px solid #0064A7;
     border-top-color:#4396cd;
@@ -14,7 +14,7 @@
     line-height:13px!important;
 }
 
-.exp-container-wrapper .container-chrome.module-chrome {
+.container-chrome.module-chrome {
     background:url(../../../../core/assets/images/exp-admin-sprite.png) repeat-x 0 -330px;
     border:1px solid #296604;
     border-top-color:#83b466;
@@ -22,7 +22,7 @@
     z-index:1;
 }
 
-.exp-container-wrapper .container-chrome.module-chrome.hardcoded-chrome {
+.container-chrome.module-chrome.hardcoded-chrome {
     background:url(../../../../core/assets/images/exp-admin-sprite.png) repeat-x 0 -360px;
     border:1px solid #74151e;
     border-top-color:#e27c86;
@@ -31,8 +31,8 @@
 }
 
 
-.exp-container-wrapper .container-chrome ul,
-.exp-container-wrapper .container-chrome ul li {
+.container-chrome ul,
+.container-chrome ul li {
     padding:0;
     margin:0;
     list-style:none;
@@ -40,7 +40,7 @@
 
 /****************  pop-down menu  ***********************/
 
-.exp-container-wrapper .container-chrome ul {
+.container-chrome ul {
     display:none;
     background:#abd1e3;
     position:absolute;
@@ -57,18 +57,18 @@
 }
 
 /* module chrome */
-.exp-container-wrapper .container-chrome.module-chrome.hardcoded-chrome ul {
+.container-chrome.module-chrome.hardcoded-chrome ul {
     border:2px solid #73292e;
     background:#d5afb2;
 }
 
 /* hard-coded module chrome */
-.exp-container-wrapper .container-chrome.module-chrome ul {
+.container-chrome.module-chrome ul {
     border:2px solid #057005;
     background:#b5e3ab;
 }
 
-.exp-container-wrapper .container-chrome.module-chrome ul li.container-info {
+.container-chrome.module-chrome ul li.container-info {
     border-bottom:1px dotted #007800;
     margin-top:-3px;
     padding:2px 6px 6px 26px;  
@@ -78,7 +78,7 @@
 }
 
 /* menu link colors*/
-.exp-container-wrapper .container-chrome ul li a {
+.container-chrome ul li a {
     display:block;
     padding:4px 20px 4px 26px;
     color:#054b70;
@@ -87,65 +87,65 @@
     white-space:nowrap ;
 }
 
-.exp-container-wrapper .container-chrome.module-chrome ul li a {
+.container-chrome.module-chrome ul li a {
     color:#057005;
 }
 
-.exp-container-wrapper .container-chrome.module-chrome.hardcoded-chrome ul li a {
+.container-chrome.module-chrome.hardcoded-chrome ul li a {
     color:#73292e;
 }
 
-.exp-container-wrapper .container-chrome ul li a:hover {
+.container-chrome ul li a:hover {
     background-color:#004773;
     color:#fff;
 }
 
-.exp-container-wrapper .container-chrome.module-chrome ul li a:hover {
+.container-chrome.module-chrome ul li a:hover {
     background-color:#007800;
     color:#fff;
 }
 
-.exp-container-wrapper .container-chrome.module-chrome.hardcoded-chrome ul li a:hover {
+.container-chrome.module-chrome.hardcoded-chrome ul li a:hover {
     background-color:#73292e;
     color:#fff;
 }
 
 /* icon styles */
-.exp-container-wrapper .container-chrome ul li a.user {
+.container-chrome ul li a.user {
     background-position:0 -26px;  
 }
 
-.exp-container-wrapper .container-chrome ul li a.group {
+.container-chrome ul li a.group {
     background-position:0 -56px;  
 }
 
-.exp-container-wrapper .container-chrome ul li a.helplink {
+.container-chrome ul li a.helplink {
     background-position:0 -85px;  
 }
 
-.exp-container-wrapper .container-chrome ul li a.delete {
+.container-chrome ul li a.delete {
     background-position:0 -145px;  
 }
 
-.exp-container-wrapper .container-chrome ul li a.config-view {
+.container-chrome ul li a.config-view {
     background-position:0 -175px;  
 }
 
-.exp-container-wrapper .container-chrome ul li a.config-mod {
+.container-chrome ul li a.config-mod {
     background-position:0 -205px;  
 }
 
-.exp-container-wrapper .container-chrome ul li a.mod-up {
+.container-chrome ul li a.mod-up {
     background-position:0 -237px;  
 }
 
-.exp-container-wrapper .container-chrome ul li a.mod-down {
+.container-chrome ul li a.mod-down {
     background-position:0 -267px;  
 }
 
 /****************  What triggers the menu  ***********************/
 
-.exp-container-wrapper .container-chrome .trigger {
+.container-chrome .trigger {
     color:#fff;
     text-decoration:none;
     font-weight:bold;
@@ -161,29 +161,29 @@
     background:url(../../../../core/assets/images/exp-admin-sprite.png) no-repeat 100% 0; 
 }
 
-.exp-container-wrapper .container-chrome.module-chrome .trigger {
+.container-chrome.module-chrome .trigger {
     line-height:15px;
     padding:2px 15px 0 5px;
 }
 
-.exp-container-wrapper .container-chrome .trigger.current-trigger {
+.container-chrome .trigger.current-trigger {
     line-height:15px;
     background-color:#49A4DE;
     outline:0;
     border-left:1px solid #777;
 }
 
-.exp-container-wrapper .container-chrome.module-chrome .trigger.current-trigger {
+.container-chrome.module-chrome .trigger.current-trigger {
     background-color:#71B253;
 }
 
-.exp-container-wrapper .container-chrome.module-chrome.hardcoded-chrome .trigger.current-trigger {
+.container-chrome.module-chrome.hardcoded-chrome .trigger.current-trigger {
     background-color:#b73240;
 }
 
 /****************    ***********************/
 
-.exp-container-wrapper a.addmodule span.addtext{
+a.addmodule span.addtext{
     padding:3px 0 3px 20px!important;
     background-color:transparent;
     background-image:url(../../../../core/assets/images/exp-admin-sprite.png);  
@@ -195,7 +195,7 @@
     *display:inline;
     zoom:1;
 }
-.exp-container-wrapper a.addmodule{
+a.addmodule{
     display:block!important;
     background:#c1d9bf;
     padding:0;
@@ -211,7 +211,7 @@
     -webkit-border-radius:3px;
     text-decoration:none;
 }
-.exp-container-wrapper a.addmodule:hover{
+a.addmodule:hover{
     color:#64855f!important;
     background:#d9f2d9;
     text-decoration:none;

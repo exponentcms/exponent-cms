@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2008 OIC Group, Inc.
+ * Copyright (c) 2004-2011 OIC Group, Inc.
  * Written and Designed by Adam Kessler
  *
  * This file is part of Exponent
@@ -15,8 +15,6 @@
  *}
 
 <h2>{"Configure Portfolio"|gettext}</h2>
-{control type="text" name="limit" label="Number of pieces to show before paginating"|gettext size=3 filter=integer value=$config.limit|default:10}
-{control type="text" name="thumbsize" label="Thumbnail Box Size on listing page"|gettext size=3 filter=integer value=$config.thumbsize|default:200}
-{control type="text" name="detailthumbsize" label="Thumbnail Box Size detail page"|gettext size=3 filter=integer value=$config.detailthumbsize|default:100}
-{control type="text" name="enlargedsize" label="Enlarged image size"|gettext size=3 filter=integer value=$config.enlargedsize|default:500}
-{control type="checkbox" name="truncate" label="Summarize by showing only first paragraph on listing pages?"|gettext checked=$config.truncate value=1}
+{control type="checkbox" name="only_featured" label="Only show featured pieces" value=1 checked=$config.only_featured}
+{control type="radiogroup" name="usebody" label="Body Text"|gettext default=$config.usebody items="Full,Summary,None" values="2,1,0"}
+

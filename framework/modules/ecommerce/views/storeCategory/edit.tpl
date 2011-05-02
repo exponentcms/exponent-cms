@@ -74,7 +74,7 @@
                     {control type=text name=meta_keywords label="Meta Keywords" value=$node->meta_keywords}
                     {control type=text name=meta_description label="Meta Description" value=$node->meta_description}                        
                 </div>        
-            </div    
+            </div> 
         </div>
         {control type=buttongroup submit=Save cancel=Cancel}
         {/form}                      

@@ -11,7 +11,7 @@
  *
  * @link http://www.gnu.org/licenses/gpl.txt GPL http://www.gnu.org/licenses/gpl.txt
  * @package Exponent-CMS
- * @copyright 2004-2006 OIC Group, Inc.
+ * @copyright 2004-2011 OIC Group, Inc.
  * @author Phillip Ball <phillip@oicgroup.net>
  * @version 2.0.0
  */
@@ -39,15 +39,17 @@ class expQueue {
 	public function isEmpty() {
 		expQueue::isQueueEmpty();
 	}
+
 	static function flash($name, $msg="") {
-        $flash = exponent_sessions_get('flash');
-    	$flash[$name] = $msg;
-        exponent_sessions_set('flash', $flash);
-	}
+        	$flash = exponent_sessions_get('flash');
+	        if(empty($flash[$name])) $flash[$name]  = $msg;           
+	        else $flash[$name] .= "<br/><br/>" . $msg;
+	        exponent_sessions_set('flash', $flash);
+    	}
 
 	static function flashAndFlow($name, $msg) {
-    	flash($name, $msg);
-    	expHistory::back();
+    		flash($name, $msg);
+	    	expHistory::back();
 	}
 
 	static function flashIfNotLoggedIn($name, $msg) {

@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2006 OIC Group, Inc.
+# Copyright (c) 2004-2011 OIC Group, Inc.
 # Written and Designed by James Hunt
 #
 # This file is part of Exponent
@@ -26,10 +26,10 @@ $i18n = exponent_lang_loadFile('install/popup.php');
 <html>
 <head>
 	<title><?php echo $i18n['title']; ?></title>
-	<link rel="stylesheet" title="exponent" href="style.css" />
 	<link rel="stylesheet" title="exponent" href="page.css" />
+	<link rel="stylesheet" href="<?php echo PATH_RELATIVE; ?>framework/core/assets/css/tables.css" />
 	<meta http-equiv="Content-Type" content="text/html; charset=<?php echo LANG_CHARSET; ?>" />
-	<meta name="Generator" value="Exponent (formerly Exponent) Content Management System" />
+	<meta name="Generator" value="Exponent Content Management System" />
 </head>
 <body>
 	<div class="popup_content_area">

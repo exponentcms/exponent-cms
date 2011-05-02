@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2008 OIC Group, Inc.
+ * Copyright (c) 2004-2011 OIC Group, Inc.
  * Written and Designed by Adam Kessler
  *
  * This file is part of Exponent
@@ -42,8 +42,10 @@
             <td>{$simplenote->name}</td>
             <td>{$simplenote->body}</td>
             <td>
-                {icon img=edit.png action=approve id=$simplenote->id tab=$tab title="Edit Note"}
-                {icon img=delete.png action=delete id=$simplenote->id tab=$tab title="Delete note" onclick="return confirm('Are you sure you want to delete this note?');"}
+				<div class="item-actions">
+					{icon class=edit action=approve record=$simplenote tab=$tab title="Edit Note"}
+					{icon action=delete record=$simplenote tab=$tab title="Delete note" onclick="return confirm('Are you sure you want to delete this note?');"}
+				</div>
             </td>
         </tr>
         {foreachelse}

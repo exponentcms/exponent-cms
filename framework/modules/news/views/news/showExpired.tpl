@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2007-2008 OIC Group, Inc.
+ * Copyright (c) 2007-2011 OIC Group, Inc.
  * Written and Designed by Adam Kessler
  *
  * This file is part of Exponent
@@ -16,8 +16,7 @@
 
 <div class="module news show-expired">
 	<h1>{$moduletitle|default:"Expired News"}</h1>
-	
-	{$page->links}
+    {pagelinks paginate=$page top=1}
 	<table id="prods">
 	    <thead>
 		<tr>
@@ -33,14 +32,14 @@
 				<td>{$listing->unpublish|format_date:"%B %e, %Y"}</td>
 				<td>
 				    {permissions level=$smarty.const.UILEVEL_PERMISSIONS}
-                    <div class="item-actions">
-	                {if $permissions.edit == true}
-                        {icon controller=news action=edit id=$listing->id title="Edit this news post"}
-                    {/if}
-                    {if $permissions.delete == true}
-                        {icon controller=news action=delete id=$listing->id title="Delete this news post" onclick="return confirm('Are you sure you want to delete `$item->title`?');"}
-                    {/if}
-                    </div>
+						<div class="item-actions">
+							{if $permissions.edit == true}
+								{icon action=edit record=$listing title="Edit this news post"}
+							{/if}
+							{if $permissions.delete == true}
+								{icon action=delete record=$listing title="Delete this news post" onclick="return confirm('Are you sure you want to delete `$item->title`?');"}
+							{/if}
+						</div>
                     {/permissions}
 				</td>
 			</tr>
@@ -48,6 +47,6 @@
 			    <td colspan=3>There is no expired news.</td>
 			{/foreach}
 		</tbody>
-		</table>
-		{$page->links}
+	</table>
+    {pagelinks paginate=$page bottom=1}
 </div>

@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2008 OIC Group, Inc.
+# Copyright (c) 2004-2011 OIC Group, Inc.
 # Written and Designed by Adam Kessler
 #
 # This file is part of Exponent
@@ -20,6 +20,7 @@
 class motdController extends expController {
     //public $basemodel_name = '';
     public $useractions = array('show'=>'Show Todays Message');
+	public $codequality = 'beta';
 
     function name() { return $this->displayname(); } //for backwards compat with old modules
     function displayname() { return "Message of the Day"; }

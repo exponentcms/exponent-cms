@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2006 OIC Group, Inc.
+# Copyright (c) 2004-2011 OIC Group, Inc.
 # Copyright 2006 Maxim Mueller
 # Written and Designed by James Hunt
 #
@@ -19,7 +19,11 @@
 ##################################################
 
 //Initialize exponent Framework
-include_once("exponent.php");
+include_once('exponent_common.php');
+include_once(BASE.'exponent_constants.php');
+// Initialize the language subsystem
+require_once(BASE.'subsystems/lang.php');
+exponent_lang_initialize();
 ?>
 // exponent Javascript Support Systems
 

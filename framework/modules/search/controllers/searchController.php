@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2008 OIC Group, Inc.
+# Copyright (c) 2004-2011 OIC Group, Inc.
 # Written and Designed by Adam Kessler
 #
 # This file is part of Exponent
@@ -22,6 +22,7 @@ class searchController extends expController {
     public $add_permissions = array('spider'=>'Spider Site');
 
     public $remove_configs = array('ealerts','tags','files','aggregation','comments','rss');
+	public $codequality = 'beta';
 
     function name() { return $this->displayname(); } //for backwards compat with old modules
     function displayname() { return "Search Form"; }

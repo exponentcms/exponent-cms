@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2006 OIC Group, Inc.
+# Copyright (c) 2004-2011 OIC Group, Inc.
 # Written and Designed by James Hunt
 #
 # This file is part of Exponent
@@ -111,17 +111,38 @@ if (($item == null && exponent_permissions_check('post',$loc)) ||
 		$allforms = array();
 		$allforms[''] = $i18n['no_feedback'];
 		$allforms = array_merge($allforms, exponent_template_listFormTemplates("forms/email"));
-		$form->registerAfter('eventend', 'feedback_form', $i18n['feedback_form'], new dropdowncontrol($item->feedback_form, $allforms));
-		$form->registerAfter('feedback_form', 'feedback_email', $i18n['feedback_email'], new textcontrol($item->feedback_email, 20));
+		$feedback_form = ($item == null ? 0 : $item->feedback_form);
+		$feedback_email = ($item == null ? '' : $item->feedback_email);
+		$form->registerAfter('eventend', 'feedback_form', $i18n['feedback_form'], new dropdowncontrol($feedback_form, $allforms));
+		$form->registerAfter('feedback_form', 'feedback_email', $i18n['feedback_email'], new textcontrol($feedback_email, 20));
 		$form->registerBefore('feedback_form', null, '', new htmlcontrol('<hr size="1" />'));
 	}
 
-	if ($_GET['id'] != 0) {
+	if (isset($_GET['id']) && $_GET['id'] != 0) {
 		$form->unregister('submit');
 //		$buttons = "<div id=\"submitControl\" class=\"control buttongroup\"> ";
-		$buttons = "<input name=\"submitSubmit\" class=\"button\" type=\"submit\" value=\"Save\" onclick=\"if (checkRequired(this.form)) { if (validate(this.form)) { return true; } else { return false; } } else { return false; }\" /> ";
-		$buttons .= "<input name=\"submitNew\" class=\"button\" type=\"submit\" value=\"Save as New Event\" onclick=\"if (checkRequired(this.form)) { if (validate(this.form)) { return true; } else { return false; } } else { return false; }\" /> ";
-		$buttons .= "<input class=\"button\" type=\"button\" value=\"Cancel\" onclick=\"document.location.href='".exponent_flow_get()."'\" /> ";
+//		$buttons = "<input name=\"submitSubmit\" class=\"button\" type=\"submit\" value=\"Save\" onclick=\"if (checkRequired(this.form)) { if (validate(this.form)) { return true; } else { return false; } } else { return false; }\" /> ";
+		$buttons = '<button name="submitSubmit" type="submit" id="'.$_GET['id'].'Submit" class="submit button awesome '.BTN_SIZE.' '.BTN_COLOR;
+		$buttons .='" type="submit" value="' . "Save" . '"';
+		$buttons .= ' onclick="if (checkRequired(this.form)) { if (validate(this.form)) { return true; } else { return false; } } else { return false; }"';
+		$buttons .= ' />';
+		$buttons .= "Save";
+		$buttons .= ' </button>';
+
+//		$buttons .= "<input name=\"submitNew\" class=\"button\" type=\"submit\" value=\"Save as New Event\" onclick=\"if (checkRequired(this.form)) { if (validate(this.form)) { return true; } else { return false; } } else { return false; }\" /> ";
+		$buttons .= '<button name="submitNew" type="submit" id="'.$_GET['id'].'Submit" class="submit button awesome '.BTN_SIZE.' '.BTN_COLOR;
+		$buttons .='" type="submit" value="' . "Save as New Event" . '"';
+		$buttons .= ' onclick="if (checkRequired(this.form)) { if (validate(this.form)) { return true; } else { return false; } } else { return false; }"';
+		$buttons .= ' />';
+		$buttons .= "Save as New Event";
+		$buttons .= ' </button>';
+
+//		$buttons .= "<input class=\"button\" type=\"button\" value=\"Cancel\" onclick=\"document.location.href='".exponent_flow_get()."'\" /> ";
+		$buttons .= '<button type="cancel" class="cancel button awesome '.BTN_SIZE.' '.BTN_COLOR.'" onclick="document.location.href=\''.exponent_flow_get().'\'; return false;"';
+		$buttons .= '>';
+		$buttons .= "Cancel";
+		$buttons .= '</button>';
+		
 //		$buttons .= "</div>";
 		$form->register(null,'',new htmlcontrol($buttons));
 	}

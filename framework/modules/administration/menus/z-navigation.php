@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2008 OIC Group, Inc.
+# Copyright (c) 2004-2011 OIC Group, Inc.
 # Written and Designed by Adam Kessler
 #
 # This file is part of Exponent
@@ -19,7 +19,8 @@
 
 if (!defined('EXPONENT')) exit('');
 global $user, $router, $db, $section;
-if (!$user->isAdmin()) return false;
+
+if (!$db->selectValue('userpermission','uid','uid=\''.$user->id.'\' AND permission!=\'view\' AND internal!=\'\'') && !$user->isAdmin()) return false;
 
 $type = "Page";
 $page = $db->selectObject('section', 'id='.$section);
@@ -37,23 +38,16 @@ $info = array(
                     array('classname'=>'moreinfo','text'=>"Name : ".$page->name."<br />ID : ".$page->id."<br />SEF Name : ".$page->sef_name."<br />Subtheme : ".$subtheme,"disabled"=>true)
                 )
             )
-        ),
-        array('text'=>'Edit this page','classname'=>'edit', 'url'=>makeLink(array('module'=>'navigationmodule', 'action'=>'edit_contentpage', 'id'=>$page->id))),
-        array('text'=>'Manage User Permissions','classname'=>'user', 'url'=>makeLink(array('module'=>'navigationmodule','action'=>'userperms',"_common"=>"1","int"=>$page->id))),
-        array('text'=>'Manage Group Permissions','classname'=>'group', 'url'=>makeLink(array('module'=>'navigationmodule','action'=>'groupperms',"_common"=>"1","int"=>$page->id))),
-        array('text'=>'Manage all pages','classname'=>'sitetree', 'url'=>makeLink(array('module'=>'navigationmodule','action'=>'manage'))),
-
-    // function editUserPerms (){
-    //  window.location="{/literal}{$smarty.const.URL_FULL}{literal}index.php?module=navigationmodule&_common=1&action=userperms&int="+currentMenuNode.data.id;
-    // }
-    // 
-    // function editGroupPerms (){
-    //  window.location="{/literal}{$smarty.const.URL_FULL}{literal}index.php?module=navigationmodule&_common=1&action=groupperms&int="+currentMenuNode.data.id;
-    // }
-
-
+        )
     )
 );
+
+if ($db->selectValue('userpermission','uid','uid=\''.$user->id.'\' AND permission!=\'view\' AND internal='.$section.'') || $user->isAdmin()) {
+    $info['itemdata'][] = array('text'=>'Edit this page','classname'=>'edit', 'url'=>makeLink(array('module'=>'navigationmodule', 'action'=>'edit_contentpage', 'id'=>$page->id)));
+    $info['itemdata'][] = array('text'=>'Manage User Permissions','classname'=>'user', 'url'=>makeLink(array('module'=>'navigationmodule','action'=>'userperms',"_common"=>"1","int"=>$page->id)));
+    $info['itemdata'][] = array('text'=>'Manage Group Permissions','classname'=>'group', 'url'=>makeLink(array('module'=>'navigationmodule','action'=>'groupperms',"_common"=>"1","int"=>$page->id)));
+}
+$info['itemdata'][] = array('text'=>'Manage all pages','classname'=>'sitetree', 'url'=>makeLink(array('module'=>'navigationmodule','action'=>'manage')));
 
 return array(
     'text'=>'Pages',

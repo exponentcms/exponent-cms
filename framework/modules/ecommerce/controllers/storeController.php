@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2006 OIC Group, Inc.
+# Copyright (c) 2004-2011 OIC Group, Inc.
 # Created by Adam Kessler @ 05/28/2008
 #
 # This file is part of Exponent
@@ -20,16 +20,21 @@
 class storeController extends expController {
     public $basemodel_name = 'product';
     
-    public $useractions = array(
-        'showall'=>'Show all products & categories',
-        'showall_featured_products'=>'Show all featured products',
-        'upcoming_events'=>'Show all upcoming events',
-        'showallSubcategories'=>'Show subcategories to the current category.',
-        'showallManufacturers'=>'Show products by manufacturer',
-        'quicklinks'=>'Quick Links for Users',
-        'showTopLevel'=>'Show Top Level Store Categories',
-        'search_by_model_form'=>'Product Search - By Model',
-		'events_calendar'=>'Show events in a calendar'
+ 
+	
+	public $useractions = array(
+        'showall'=>'All Products and Categories',
+        'showall_featured_products'=>'Products - Only show Featured',
+        'showallManufacturers'=>'Products - By Manufacturer',
+        'showTopLevel'=>'Categories - Show Top Level',
+        'showFullTree'=>'Categories - Show Full Tree',
+        'showallSubcategories'=>'Categories - Subcategories of current category',
+        'upcoming_events'=>'Event Registration - Upcomming Events',
+		'events_calendar'=>'Event Registration - Calendar View',
+        'ecom_search'=>'Search - Autocomplete',
+        'search_by_model_form'=>'Search - By Model',
+        'quicklinks'=>'Links - Users Links',
+		'showall_category_featured_products' => 'Show Featured Products under the current category'
     );
     
     // hide the configs we don't need
@@ -77,15 +82,16 @@ class storeController extends expController {
             if (isset($router->url_parts[array_search('id',$router->url_parts)+1])&&($router->url_parts[array_search('id',$router->url_parts)+1]!=0)) {
                 $default_id = $db->selectValue('product_storeCategories', 'storecategories_id', "product_id='".$router->url_parts[array_search('id',$router->url_parts)+1]."'");
                 expSession::set('catid',$default_id);
+				
             } else {
                 $prod_id = $db->selectValue('product', 'id', "sef_url='".$router->url_parts[array_search('title',$router->url_parts)+1]."'");
                 $default_id = $db->selectValue('product_storeCategories', 'storecategories_id', "product_id='".$prod_id."'");
                 expSession::set('catid',$default_id);
             }
-        } elseif ($this->config['show_first_category'] || (!expTheme::inAction() && $section==SITE_DEFAULT_SECTION)) {
-            $default_id = $db->selectValue('storeCategories', 'id', 'lft=1');
+        } elseif (isset($this->config['show_first_category']) || (!expTheme::inAction() && $section==SITE_DEFAULT_SECTION)) {
+            $default_id = $db->selectValue('storeCategories', 'id', 'lft=0');
             expSession::set('catid',$default_id);
-        } elseif (!$this->config['show_first_category'] && !expTheme::inAction()) {
+        } elseif (!isset($this->config['show_first_category']) && !expTheme::inAction()) {
             expSession::set('catid',0);
         } else {
             $default_id = 0;
@@ -99,7 +105,7 @@ class storeController extends expController {
         // } else {
         //     $default_id = 0;
         // }
-
+		
         $this->parent = expSession::get('catid');
         $this->category = new storeCategory($this->parent);
         // we're setting the config here for the category
@@ -482,8 +488,7 @@ class storeController extends expController {
         //eDebug($product);
         assign_to_template(array('config'=>$this->config, 'product'=>$product, 'last_category'=>$order->lastcat));
     }
-
-    
+	   
     function showByTitle() {
         global $order, $template, $user;
         //need to add a check here for child product and redirect to parent if hit directly by ID
@@ -566,17 +571,52 @@ class storeController extends expController {
                 
         assign_to_template(array('page'=>$page));   
     }
+	
+	 function showall_category_featured_products() {
+	 
+        $curcat = $this->category;
+		
+        $order = 'title';
+        $dir = 'ASC';
+        
+        $page = new expPaginator(array(
+                'model_field'=>'product_type',
+                'sql'=>'SELECT * FROM '.DB_TABLE_PREFIX.'_product,'.DB_TABLE_PREFIX.'_product_storeCategories WHERE product_id = id and is_featured=1 and storecategories_id =' . $curcat->id,
+                'limit'=>ecomconfig::getConfig('pagination_default'),
+                'order'=>$order,
+                'dir'=>$dir,
+                'controller'=>$this->params['controller'],
+                'action'=>$this->params['action'],
+                'columns'=>array('Model #'=>'model','Product Name'=>'title','Price'=>'base_price'),
+                ));
+                
+        assign_to_template(array('page'=>$page));   
+    }
     
     function showTopLevel() {
         $category = new storeCategory(null,false,false);
         //$categories = $category->getEcomSubcategories();
-        $categories = $category->getTopLevel();
+        $categories = $category->getTopLevel(null, false, true);
+        $ancestors = $this->category->pathToNode();   
+        $curcat = $this->category;
+
+        assign_to_template(array('categories'=>$categories,'curcat'=>$curcat,'topcat'=>@$ancestors[0]));
+    }
+	
+	function showFullTree() {
+        $category = new storeCategory(null,false,false);
+        //$categories = $category->getEcomSubcategories();
+        $categories = $category->getFullTree();
         $ancestors = $this->category->pathToNode();   
         $curcat = $this->category;
 
         assign_to_template(array('categories'=>$categories,'curcat'=>$curcat,'topcat'=>@$ancestors[0]));
     }
     
+    function ecom_search() {
+
+    }
+
     function billing_config() {
 
     }
@@ -752,8 +792,8 @@ class storeController extends expController {
             'parent'=>$parent,
             'form'=>$record->getForm($view), 
             'optiongroups'=>$editable_options, 
-            'shipping_services'=>$shipping_services,
-            'shipping_methods'=>$shipping_methods,
+            'shipping_services'=> isset($shipping_services) ? $shipping_services : '', // Added implication since the shipping_services default value is a null
+            'shipping_methods' => isset($shipping_methods)  ? $shipping_methods  : '',   // Added implication since the shipping_methods default value is a null
             //'status_display'=>$status_display->getStatusArray()
         ));
     }
@@ -1139,7 +1179,6 @@ class storeController extends expController {
         "*' IN BOOLEAN MODE) AND p.parent_id=0  GROUP BY p.id "; 
         $sql .= "order by match (p.title,p.model,p.body) against ('" . $this->params['query'] . "*') desc LIMIT 10";
         $res = $db->selectObjectsBySql($sql);
-        //eDebug($sql);
         $ar = new expAjaxReply(200, gettext('Here\'s the items you wanted'), $res);
         $ar->send();
     }

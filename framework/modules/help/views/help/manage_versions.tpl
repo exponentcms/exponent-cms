@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2008 OIC Group, Inc.
+ * Copyright (c) 2004-2011 OIC Group, Inc.
  * Written and Designed by Adam Kessler
  *
  * This file is part of Exponent
@@ -21,10 +21,12 @@
         {br}
         <em>The current version is {$current_version->version}</em>
     </p>
-    
-    {icon class=add action=edit_version title="Add new help version" text="Add a New Help Version"}{br}
-    {icon class=add action=manage title="Manage Help" text="Manage Help Docs"}{br}
-    {$page->links}
+
+	<div class="module-actions">
+		{icon class=add action=edit_version title="Add new help version" text="Add a New Help Version"}{br}
+		{icon action=manage title="Manage Help" text="Manage Help Docs"}{br}
+	</div>
+    {pagelinks paginate=$page top=1}
     <table class="exp-skin-table">
         <thead>
         <tr>
@@ -41,12 +43,14 @@
             <td><a href="">{$version->num_docs}</a></td>
             <td>
                 {permissions}
-                    {if $permissions.edit == 1}
-                        {icon img=edit.png action=edit_version id=$version->id title="Edit Help Version"}
-                    {/if}
-                    {if $permissions.delete == 1}
-                        {icon action=delete_version img=delete.png id=$version->id title="Delete this version" onclick="return confirm('Are you sure you want to delete this help version and all the documentation that goes along with it?');"}
-                    {/if}
+					<div class="item-actions">
+						{if $permissions.edit == 1}
+							{icon action=edit_version record=$version title="Edit Help Version"}
+						{/if}
+						{if $permissions.delete == 1}
+							{icon action=delete_version record=$version title="Delete this version" onclick="return confirm('Are you sure you want to delete this help version and all the documentation that goes along with it?');"}
+						{/if}
+					</div>
                 {/permissions}
             </td>
         </tr>
@@ -55,6 +59,5 @@
         {/foreach}
         </tbody>
     </table>
-    {$page->links}
-        
+    {pagelinks paginate=$page bottom=1}
 </div>

@@ -1,6 +1,5 @@
 {*
  * Copyright (c) 2007-2011 OIC Group, Inc.
- * Written and Designed by Adam Kessler
  *
  * This file is part of Exponent
  *
@@ -18,6 +17,10 @@
 {literal}
 flowplayer("a.flowplayer-video", EXPONENT.PATH_RELATIVE+"external/flowplayer3/flowplayer-3.2.7.swf",
     {
+		wmode: 'opaque',
+		clip: { 
+			autoPlay:{/literal}{if $config.autoplay}true{else}false{/if}{literal},
+			},		  
         plugins:  { 
             controls: { 
                 play: true,  
@@ -35,13 +38,14 @@ flowplayer("a.flowplayer-video", EXPONENT.PATH_RELATIVE+"external/flowplayer3/fl
 	{permissions}
 		<div class="module-actions">
 			{if $permissions.edit == 1}
-				{icon class="add" action=edit title="Add a Video at the Top"|gettext text="Add a Video"|gettext}
+				{icon class=add action=edit title="Add a Video at the Top"|gettext text="Add a Video"|gettext}
 			{/if}
-			{if $permissions.edit == 1}
+			{if $permissions.manage == 1}
 				{ddrerank items=$page->records model="flowplayer" label="Videos"|gettext}
 			{/if}
 		</div>	
 	{/permissions}   
+    {pagelinks paginate=$page top=1}
     {foreach from=$page->records item=video key=key}
         <div class="item">
             <h2>{$video->title}</h2>
@@ -55,24 +59,25 @@ flowplayer("a.flowplayer-video", EXPONENT.PATH_RELATIVE+"external/flowplayer3/fl
 			{permissions}
 				<div class="item-actions">
 					{if $permissions.edit == 1}
-						{icon action=edit id=$video->id title="Edit video"|gettext text="Edit"|gettext}
+						{icon action=edit record=$video title="Edit `$video->title` video"}
 					{/if}
 					{if $permissions.delete == 1}
-						{icon action=delete id=$video->id title="Delete video"|gettext onclick="return confirm('Are you sure you want to delete this `$modelname`?');" text="Delete"|gettext}
+						{icon action=delete record=$video title="Delete `$video->title` video" onclick="return confirm('Are you sure you want to delete this `$modelname`?');"}
 					{/if}
 				</div>			
 			{/permissions} 
             <div class="bodycopy">
                 {$video->body}
             </div>            
-			{permissions}
-				<div class="module-actions">		
-					{if $permissions.create == 1}
-						{icon class=add action=edit rank=`$video->rank+1` title="Add a Video Here"|gettext text="Add a Video"|gettext}
-					{/if}
-				</div>
-			{/permissions}
-			{clear}
         </div>
+		{permissions}
+			<div class="module-actions">		
+				{if $permissions.create == 1}
+					{icon class=add action=edit rank=`$video->rank+1` title="Add a Video Here"|gettext text="Add a Video"|gettext}
+				{/if}
+			</div>
+		{/permissions}
+		{clear}
     {/foreach}
+    {pagelinks paginate=$page bottom=1}
 </div>

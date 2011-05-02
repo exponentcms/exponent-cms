@@ -17,20 +17,18 @@
 <div class="store showall showall-by-manufacturer">
     
     <h1>All Products for {$company->title}</h1>
-    
-    {$page->links}
-    
+    {pagelinks paginate=$page top=1}
     <div class="products">
         {foreach from=$page->records item=listing name=listings}
         {include file=$listing->getForm('storeListing')}
         {/foreach}
     </div>
-
-    {$page->links}
-    
+    {pagelinks paginate=$page bottom=1}
     {permissions}
-        {if $permissions.edit == 1}
-            {icon class="add" action=create title="Add a new product" text="Add a New Product"}
-      {/if}
+		<div class="module-actions">
+			{if $permissions.edit == 1}
+				{icon class=add action=create title="Add a new product" text="Add a New Product"}
+			{/if}
+		</div>
     {/permissions}
 </div>

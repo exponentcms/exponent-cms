@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2006 OIC Group, Inc.
+# Copyright (c) 2004-2011 OIC Group, Inc.
 # Written and Designed by James Hunt
 #
 # This file is part of Exponent
@@ -70,10 +70,10 @@ class radiogroupcontrol extends formcontrol {
 
 	function toHTML($label,$name) {
 		$this->id  = (empty($this->id)) ? $name : $this->id;
-		$html = "<div id=\"".$this->id."Control\" class=\"radiogroup-control control";
+		$html = "<div id=\"".$this->id."Control\" class=\"radiogroup control";
 		$html .= (!empty($this->required)) ? ' required">' : '">';
 		$html .= "<table border=0 cellspacing=0 cellpadding=0><tr>";
-		$html .= "<td><span class=\"radiogroup-label\">".$label."</span></td></tr><tr>";
+		$html .= "<td><span class=\"label\">".$label."</span></td></tr><tr>";
 		$html .= "<td>".$this->controlToHTML($name, $label)."</td>";
 		$html .= "</tr></table>";
 		$html .= "</div>";			
@@ -91,13 +91,14 @@ class radiogroupcontrol extends formcontrol {
 			if (!empty($this->checked)) {
 			    $checked = $value == $this->checked ? true : false;
 			}	
-            
+
 			$radio = new radiocontrol($checked, $value, $rname, $this->flip, $this->onclick);
 
 			$radio->newschool = !empty($this->newschool) ? $this->newschool : false;
 			$radio->value = $value;
 			
-			$radio->checked = ($this->default==$radio->value) ? true : false;
+			$radio->checked = (isset($this->default) && $this->default==$radio->value) ? true : false;
+
 			
             if ($this->cols!=0 && $i==$this->cols) {
     			$html .= '</tr><tr>';

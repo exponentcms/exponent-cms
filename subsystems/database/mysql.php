@@ -16,7 +16,7 @@
  * Database Class (MySQL)
  *
  * This is the MySQL-specific implementation of the database class.
- * @copyright 2004-2006 OIC Group, Inc.
+ * @copyright 2004-2011 OIC Group, Inc.
  * @author Written and Designed by James Hunt
  * @version 2.0.0
  * @subpackage Database
@@ -86,7 +86,7 @@ class mysql_database {
 		list($major, $minor, $micro) = sscanf(mysql_get_server_info(), "%d.%d.%d-%s");
 		//in case the config was written before the constant was introduced
 		//TODO: we might need a general api/registry to make backward compatibility checks + automatic upgrade wizzard
-		if(defined("DB_ENCODING") && $database == DB_NAME /* Second check added by Imran to keep includes from ResearchWebsites working */) {
+		if(defined("DB_ENCODING") && $database == DB_NAME) {
 			//SET NAMES is possible since version 4.1
 			if(($major > 4) OR (($major == 4) AND ($minor >= 1))) {
 				@mysql_query("SET NAMES " . DB_ENCODING, $this->connection);

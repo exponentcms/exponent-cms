@@ -16,14 +16,11 @@
 
 <div class="store showall">
     <h2>Search results for {$terms}</h2>
-    
-    {$page->links}
-    
+    {pagelinks paginate=$page top=1}
     <div class="products">
         {foreach from=$page->records item=listing name=listings}
             {include file=$listing->getForm('storeListing')}
         {/foreach}
     </div>
-
-    {$page->links}
+    {pagelinks paginate=$page bottom=1}
 </div>

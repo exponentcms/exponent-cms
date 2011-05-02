@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2008 OIC Group, Inc.
+ * Copyright (c) 2004-2011 OIC Group, Inc.
  * Written and Designed by Adam Kessler
  *
  * This file is part of Exponent
@@ -26,17 +26,15 @@
 
     {permissions}
         <div class="module-actions">
-        {if $permissions.create == true || $permissions.edit}
-            <a class="add" href="{link action=create}">{"Create a news post"|gettext}</a>
-        {/if}
-        
-        {if $permissions.showUnpublished == 1 }
-            <a class="view" href="{link action=showUnpublished}">{"View Unpublished"|gettext}</a>
-        {/if}
+			{if $permissions.create == true || $permissions.edit}
+				<a class="add" href="{link action=create}">{"Add a news post"|gettext}</a>
+			{/if}
+			{if $permissions.showUnpublished == 1 }
+				<a class="view" href="{link action=showUnpublished}">{"View Unpublished"|gettext}</a>
+			{/if}
         </div>
     {/permissions}
 
-    
     <ul>
     {foreach name=items from=$page->records item=item}
         {if $smarty.foreach.items.iteration<=$config.headcount || !$config.headcount}
@@ -54,17 +52,17 @@
                 {permissions}
                 <div class="item-actions">
                      {if $permissions.edit == true}
-                        {icon controller=news action=edit id=$item->id title="Edit this news post"}
+                        {icon action=edit record=$item title="Edit this news post"}
                     {/if}
                     {if $permissions.delete == true}
-                        {icon controller=news action=delete id=$item->id title="Delete this news post" onclick="return confirm('Are you sure you want to delete `$item->title`?');"}
+                        {icon action=delete record=$item title="Delete this news post" onclick="return confirm('Are you sure you want to delete `$item->title`?');"}
                     {/if}
                     {if $permissions.edit == true && $config.order == 'rank ASC'}
                         {if $smarty.foreach.items.first == 0}
-                            {icon controller=news action=rerank img=up.png id=$item->id push=up}    
+                            {icon action=rerank img=up.png record=$item push=up}    
                         {/if}
                         {if $smarty.foreach.items.last == 0}
-                            {icon controller=news action=rerank img=down.png id=$item->id push=down}
+                            {icon action=rerank img=down.png record=$item push=down}
                         {/if}
                     {/if}
                 </div>

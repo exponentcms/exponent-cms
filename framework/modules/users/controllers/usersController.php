@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2008 OIC Group, Inc.
+# Copyright (c) 2004-2011 OIC Group, Inc.
 # Written and Designed by Adam Kessler
 #
 # This file is part of Exponent
@@ -26,6 +26,7 @@ class usersController extends expController {
         'boot_user'=>'Boot Users',
     );
     public $remove_permissions = array('create', 'edit_user');
+	public $codequality = 'beta';
     
     //public $useractions = array('showall'=>'Show all');
 
@@ -375,7 +376,9 @@ class usersController extends expController {
         // find the user
         $u = user::getByUsername($this->params['username']);
 
-        if (empty($u)) {
+        if (!expValidator::check_antispam($this->params)) {
+            expValidator::failAndReturnToForm('Anti-spam verification failed', $this->params);
+		} elseif (empty($u)) {
             expValidator::failAndReturnToForm('We were unable to find an account with that username', $this->params);
         } elseif (empty($u->email)) {
             expValidator::failAndReturnToForm('Your account does not appear to have an email address.  Please contact the site administrators to reset your password', $this->params);
@@ -586,8 +589,29 @@ class usersController extends expController {
 				$users[$i]->is_admin = 0;
 			}
 		}
-		
+
+        //$limit = empty($this->config['limit']) ? 10 : $this->config['limit'];
+        $order = empty($this->config['order']) ? 'username' : $this->config['order'];
+        $page = new expPaginator(array(
+//                    'model'=>'user',
+					'records'=>$users,
+                    'where'=>1, 
+                    'limit'=>9999,  // unless we're showing all users on a page at once, there's no way to 
+                                    // add all users to a group, since it's rebuilding the group on save...
+                    'order'=>$order,
+                    'controller'=>$this->baseclassname,
+                    'action'=>$this->params['action'],
+                    'columns'=>array(
+                        'Username'=>'username',
+                        'First Name'=>'firstname',
+                        'Last Name'=>'lastname',
+                        'Is Member'=>'is_member',
+                        'Is Admin'=>'is_admin',
+                        )
+                    ));
+                    
         assign_to_template(array(
+			'page'=>$page,
             'group'=>$group,
             'users'=>$users,
             'canAdd'=>(count($members) < count($users) ? 1 : 0),
@@ -630,6 +654,28 @@ class usersController extends expController {
 	    if (isset($this->params['id'])) $db->toggle('profileextension', 'active', 'id='.$this->params['id']);
 	    expHistory::back();
     }
+
+    public function update_memberships() {
+        global $user, $db;
+        
+        //$memb = $db->selectObject('groupmembership','member_id='.$user->id.' AND group_id='.$this->params['id'].' AND is_admin=1');
+    	$group = $db->selectObject('group','id='.intval($this->params['id']));
+
+		$db->delete('groupmembership','group_id='.$group->id);
+		$memb = null;
+		$memb->group_id = $group->id;
+		if ($this->params['memdata'] != "") {
+			foreach ($this->params['memdata'] as $u=>$str) {
+				$memb->member_id = $u;
+				$memb->is_admin = $str['is_admin'];
+				$db->insertObject($memb,'groupmembership');
+			}
+		}
+		exponent_permissions_triggerRefresh();
+        expHistory::back();
+        
+    }
+
 }
 
 ?>

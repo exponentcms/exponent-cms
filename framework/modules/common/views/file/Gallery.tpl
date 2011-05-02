@@ -2,20 +2,36 @@
 
 {/css}
 
+{if $config.lightbox}
 {css unique="files-gallery" link="`$smarty.const.PATH_RELATIVE`framework/modules/common/assets/css/gallery-lightbox.css"}
 
-{/css}
+{/css}    
+{/if}
+
+{if $config.floatthumb!="No Float" && !$config.lightbox}
+    {capture assign="imgflot"}
+    float:{$config.floatthumb|lower};
+    {/capture}
+
+    {capture assign="spacing"}
+    margin:{$config.spacing}px;
+    {/capture}
+{/if}
 
 {foreach from=$files item=img key=key}
-<a href="{$img->url}" rel="lightbox['{$config.uniqueid}']" title="{$img->title}" class="image-link" style="margin:{$config.spacing}px;" />
-    {if $key==0}
-        {img file_id=$img->id w=$config.piwidth|default:$config.thumb style="margin:0;" alt="`$img->alt`" class="mainimg `$config.tclass`"}
+
+{if $config.lightbox}<a href="{$img->url}" rel="lightbox['{$config.uniqueid}']" title="{$img->title}" class="image-link" style="margin:{$config.spacing}px;{if $config.floatthumb!="No Float"}float:{$config.floatthumb|lower};{/if}" />{/if}
+    {if $key==0 && $config.piwidth}
+        {img file_id=$img->id w=$config.piwidth|default:$config.thumb style="`$imgflot``$spacing`" alt="`$img->alt`" class="mainimg `$config.tclass`"}
     {else}
-        {img file_id=$img->id w=$config.thumb h=$config.thumb zc=1 alt="`$img->alt`" class="`$config.tclass`"}
+        {img file_id=$img->id w=$config.thumb h=$config.thumb zc=1 style="`$imgflot``$spacing`" alt="`$img->alt`" class="`$config.tclass`"}
     {/if}
-</a>
+
+{if $config.lightbox}</a>{/if}
+
 {/foreach}
 
+{if $config.lightbox}
 {script unique="shadowbox" yui3mods=1}
 {literal}
 EXPONENT.YUI3_CONFIG.modules = {
@@ -30,3 +46,4 @@ YUI(EXPONENT.YUI3_CONFIG).use('gallery-lightbox', function(Y) {
 });
 {/literal}
 {/script}
+{/if}

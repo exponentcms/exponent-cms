@@ -24,6 +24,21 @@ table.exp-skin-table {
 	padding:5px;
 	text-align:left;
 }
+
+.exp-skin-table th.current{
+	background:#d4cbba;
+}
+
+.exp-skin-table th.current.asc a {
+	background:url(../images/sort_asc.png) 95% no-repeat;
+	padding-right:22px;
+}
+
+.exp-skin-table th.current.desc a {
+	background:url(../images/sort_desc.png) 95% no-repeat;
+	padding-right:22px;
+}
+
 .exp-skin-table tbody th,
 .exp-skin-table td {
 	padding:0.25em 0.5em;

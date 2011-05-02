@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2006 OIC Group, Inc., Maxim Mueller
+# Copyright (c) 2004-2011 OIC Group, Inc., Maxim Mueller
 # Written and Designed by James Hunt
 #
 # This file is part of Exponent
@@ -42,14 +42,14 @@ function checkPassword(f){
 <input type="hidden" name="page" value="save_admin" />
 <div class="form_section">
 	<div class="control">
-		&#0149; <span class="control_caption"><?php echo $i18n['username']; ?>: </span>
+		<span class="label"><?php echo $i18n['username']; ?>: </span>
 		<input class="text" type="text" name="username" value="<?php echo $i18n['username_default']; ?>" />
 		<div class="control_help">
 			<?php echo $i18n['username_desc']; ?>
 		</div>
 	</div>
 	<div class="control">
-		&#0149; <span class="control_caption"><?php echo $i18n['password']; ?>: </span>
+		<span class="label"><?php echo $i18n['password']; ?>: </span>
 		<input class="text" type="password" name="password" value="" />
 <?php
 //FJD - this isn't working well and it's unnecessary
@@ -108,22 +108,22 @@ function checkPassword(f){
 		</div>
 	</div>
 		<div class="control">
-		&#0149; <span class="control_caption"><?php echo $i18n['password2']; ?>: </span>
+		<span class="label"><?php echo $i18n['password2']; ?>: </span>
 		<input class="text" type="password" name="password2" value="" />
 		<div class="control_help">
 			<?php echo $i18n['password_desc2']; ?>
 		</div>
 	</div>
 	<div class="control">
-		&#0149; <span class="control_caption"><?php echo $i18n['firstname']; ?>: </span>
+		<span class="label"><?php echo $i18n['firstname']; ?>: </span>
 		<input class="text" type="text" name="firstname" value="<?php echo $i18n['firstname_default']; ?>" />
 	</div>
 	<div class="control">
-		&#0149; <span class="control_caption"><?php echo $i18n['lastname']; ?>: </span>
+		<span class="label"><?php echo $i18n['lastname']; ?>: </span>
 		<input class="text" type="text" name="lastname" value="<?php echo $i18n['lastname_default']; ?>" />
 	</div>
 	<div class="control">
-		&#0149; <span class="control_caption"><?php echo $i18n['email']; ?>: </span>
+		<span class="label"><?php echo $i18n['email']; ?>: </span>
 		<input class="text" type="text" name="email" value="" />
 	</div>
 </div>

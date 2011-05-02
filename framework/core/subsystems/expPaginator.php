@@ -11,7 +11,7 @@
  *
  * @link http://www.gnu.org/licenses/gpl.txt GPL http://www.gnu.org/licenses/gpl.txt
  * @package Exponent-CMS
- * @copyright 2004-2006 OIC Group, Inc.
+ * @copyright 2004-2011 OIC Group, Inc.
  * @author Phillip Ball <phillip@oicgroup.net>
  * @version 2.0.0
  */
@@ -317,7 +317,7 @@ class expPaginator {
                 
                 if ($col == $current) {
                     $class  = 'current';
-                    $class .= ' '.$this->order_direction;
+                    $class .= ' '.strtolower($this->order_direction);
                     if (isset($_REQUEST['dir'])) {
                         $params['dir'] = $_REQUEST['dir'] == 'ASC' ? 'DESC' : 'ASC';
                     } else {
@@ -337,7 +337,7 @@ class expPaginator {
                     $this->header_columns .= '<input type=checkbox name=selall value=1 class="select-all"/>';
                     
                     $js = "
-                    YUI({ base:EXPONENT.YUI3_PATH,loadOptional: true}).use('node', function(Y) {
+                    YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
                         Y.all('input[type=checkbox]').on('click',function(e){
                             if (e.target.test('.select-all')) {
                                 if (!e.target.get('checked')) {

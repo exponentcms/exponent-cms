@@ -14,40 +14,23 @@
  *
  *}
 
-<div class="module migration manage-pages">
-    <h1>Migrate Files</h1>
+<div class="module migration manage-files">
+	<h1>{"Migrate Files"|gettext}</h1>
     <p> 
-        The following is a list of files found in the database ({$config.database}). 
-        Note: this will only copy over the records from the old database properly into the Exponent 2.0 database. Make sure you manually copy the "files" 
-        directory over to this installation.
+		This copies the list of files found in the database ({$config.database}). 
+		Note: this will only properly copy over the records from the old database into the Exponent v2 database. 
+		Make sure you manually copy the "files" directory over to this installation.
         <span class="warning">
-            WARNING: This process will wipe out all current file records in the database.
+            {br}WARNING: This process will wipe out all current file records in the database.
         </span>
     </p>
-    
     {form action="migrate_files"}
-        <table class="exp-skin-table">
-        <thead>
-            <tr>
-                <th width="30%">File Name</th>
-                <th width="70%">Directory</th>
-            </tr>
-        </thead>
-        <tbody>
-        {foreach from=$files item=file name=files}
-        <tr class="{cycle values="even,odd"}">            
-            <td width="30%">
-                {$file->filename}
-            </td>
-            <td width="70%">
-                {$file->directory}
-            </td>
-        </tr>
-        {foreachelse}
-                <tr><td colspan=2>No files found in the database {$config.database}</td></tr>
-        {/foreach}
-        </tbody>
+        <table>
+			<tbody>
+				<tr><td>{if $count > 0}{$count}{else}No{/if} files found in the database '{$config.database}'</td>
+			</tbody>
         </table>
         {control type="buttongroup" submit="Migrate Files" cancel="Cancel"}
     {/form}
+	<a class="admin" href="{link module=migration action=manage_content}">Next Step -> Migrate Content</a>
 </div>

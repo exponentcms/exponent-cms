@@ -385,7 +385,7 @@ YUI.add('gallery-yui-slideshow', function(Y) {
 			}, this.pauseButton, this);
 		}
 		if(this.pagination !== false){
-		    var linkParent = Y.get(this.pagination).get('parentNode');
+		    var linkParent = Y.one(this.pagination).get('parentNode');
             linkParent.one('[rel=0]').addClass('current');
             
 			Y.on('click', function(e){

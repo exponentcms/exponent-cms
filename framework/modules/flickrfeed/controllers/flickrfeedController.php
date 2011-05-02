@@ -10,7 +10,7 @@
  * License, or (at your option) any later version.
  *
  * @category   Exponent CMS
- * @copyright  2004-2009 OIC Group, Inc.
+ * @copyright  2004-2011 OIC Group, Inc.
  * @license    GPL: http://www.gnu.org/licenses/gpl.txt
  * @link       http://www.exponent-docs.org/
  */
@@ -19,6 +19,7 @@ class flickrfeedController extends expController {
     public $useractions = array(
         'showall'=>'Display Public Photostream',
     );
+	public $codequality = 'beta';
     
     function name() { return $this->displayname(); } //for backwards compat with old modules
     function displayname() { return "Flickr Feed"; }

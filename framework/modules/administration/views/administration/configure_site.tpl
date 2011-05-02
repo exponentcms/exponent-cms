@@ -52,20 +52,24 @@
                     {control type="text" name="sc[ORGANIZATION_NAME]" label="Organization Name" value=$smarty.const.ORGANIZATION_NAME}
                     {control type="text" name="sc[SITE_TITLE]" label="Site Title" value=$smarty.const.SITE_TITLE}
                     {control type="checkbox" postfalse=1 name="sc[SEF_URLS]" label="Search Engine Friendly URLSs" checked=$smarty.const.SEF_URLS value=1}
+					{control type="checkbox" postfalse=1 name="sc[ADVERTISE_RSS]" label="Advertise all RSS Feeds to Web Browsers" checked=$smarty.const.ADVERTISE_RSS value=1}
                     {control type="dropdown" name="sc[SITE_DEFAULT_SECTION]" label="Default Section (Home Page)" items=$section_dropdown default=$smarty.const.SITE_DEFAULT_SECTION}
                     {control type="textarea" name="sc[SITE_KEYWORDS]" label="Meta Keywords" value=$smarty.const.SITE_KEYWORDS}
                     {control type="textarea" name="sc[SITE_DESCRIPTION]" label="Meta Description" value=$smarty.const.SITE_DESCRIPTION}
                 </div>
                 <div id="tab2">
+					<h2>{gettext str="Anti-Spam Measures"}</h2>
+                    {control type="checkbox" postfalse=1 name="sc[SITE_USE_ANTI_SPAM]" label="Use Anti-Spam measures?" checked=$smarty.const.SITE_USE_ANTI_SPAM value=1}
+                    {control type="checkbox" postfalse=1 name="sc[ANTI_SPAM_USERS_SKIP]" label="Skip using Anti-Spam measures for Logged-In Users?" checked=$smarty.const.ANTI_SPAM_USERS_SKIP value=1}
                     {control type="dropdown" name="sc[ANTI_SPAM_CONTROL]" label="Anti-Spam Method" items=$as_types default=$smarty.const.ANTI_SPAM_CONTROL}
                     {control type="dropdown" name="sc[RECAPTCHA_THEME]" label="re-Captcha Theme" items=$as_themes default=$smarty.const.RECAPTCHA_THEME}
                     {control type="text" name="sc[RECAPTCHA_PUB_KEY]" label="reCAPTCHA Public Key" value=$smarty.const.RECAPTCHA_PUB_KEY}
                     {control type="text" name="sc[RECAPTCHA_PRIVATE_KEY]" label="reCAPTCHA Private Key" value=$smarty.const.RECAPTCHA_PRIVATE_KEY}
                 </div>
                 <div id="tab3">
+					<h2>{gettext str="User Registration"}</h2>
                     {control type="checkbox" postfalse=1 name="sc[SITE_ALLOW_REGISTRATION]" label="Should users be allowed to create accounts for themselves?" checked=$smarty.const.SITE_ALLOW_REGISTRATION value=1}
                     {control type="checkbox" postfalse=1 name="sc[USER_REGISTRATION_USE_EMAIL]" label="Use an email address instead of a username?" checked=$smarty.const.USER_REGISTRATION_USE_EMAIL value=1}
-                    {control type="checkbox" postfalse=1 name="sc[SITE_USE_CAPTCHA]" label="Use Anti-Spam measures when users create accounts?" checked=$smarty.const.SITE_USE_CAPTCHA value=1}
                     {control type="checkbox" postfalse=1 name="sc[USER_REGISTRATION_SEND_NOTIF]" label="Send an email to a site administrator when a new user registers on your website?" checked=$smarty.const.USER_REGISTRATION_SEND_NOTIF value=1}
                     {control type="text" name="sc[USER_REGISTRATION_NOTIF_SUBJECT]" label="Administrator's New User notification subject" value=$smarty.const.USER_REGISTRATION_NOTIF_SUBJECT}
                     {control type="text" name="sc[USER_REGISTRATION_ADMIN_EMAIL]" label="The email address that should be notified when a user signs up" value=$smarty.const.USER_REGISTRATION_ADMIN_EMAIL}
@@ -74,12 +78,14 @@
                     {control type="textarea" name="sc[USER_REGISTRATION_WELCOME_MSG]" label="The content of the email sent to the user upon completing registration" value=$smarty.const.USER_REGISTRATION_WELCOME_MSG}
                 </div>
                 <div id="tab4">
+					<h2>{gettext str="User Comment Policies"}</h2>
                     {control type="checkbox" postfalse=1 name="sc[COMMENTS_REQUIRE_LOGIN]" label="Require Login to Post Comments" checked=$smarty.const.COMMENTS_REQUIRE_LOGIN value=1}
                     {control type="checkbox" postfalse=1 name="sc[COMMENTS_REQUIRE_APPROVAL]" label="I Want to Approve All Comments" checked=$smarty.const.COMMENTS_REQUIRE_APPROVAL value=1}
                     {control type="checkbox" postfalse=1 name="sc[COMMENTS_REQUIRE_NOTIFICATION]" label="Notify Me of New Comments" checked=$smarty.const.COMMENTS_REQUIRE_NOTIFICATION value=1}
                     {control type="text" name="sc[COMMENTS_NOTIFICATION_EMAIL]" label="Notification Email Address(es) (Enter multiple addresses by using a comma to separate them)" value=$smarty.const.COMMENTS_NOTIFICATION_EMAIL}
                 </div>
                 <div id="tab5">
+					<h2>{gettext str="Display Settings"}</h2>
                     {control type="dropdown" name="sc[LANGUAGE]" label="Language" items=$langs default=$smarty.const.LANGUAGE}
                     {control type="dropdown" name="sc[DISPLAY_THEME_REAL]" label="Theme" items=$themes default=$smarty.const.DISPLAY_THEME_REAL}
                     {control type="dropdown" name="sc[DISPLAY_ATTRIBUTION]" label="Attribution Display" items=$attribution default=$smarty.const.DISPLAY_ATTRIBUTION}
@@ -88,6 +94,8 @@
                     {control type="dropdown" name="sc[DISPLAY_START_OF_WEEK]" label="Start of Week" items=$start_of_week default=$smarty.const.DISPLAY_START_OF_WEEK}
                     {control type="text" name="sc[DISPLAY_DEFAULT_TIMEZONE]" label="Enter the default timezone for this site. CAUTION: This may break calendars and other features that use date functions if you change this after entering data. Must be in a format shown here: <a href='http://www.php.net/manual/en/timezones.php' target='_blank'>http://www.php.net/manual/en/timezones.php</a>" value=$smarty.const.DISPLAY_DEFAULT_TIMEZONE}
                     {control type="radiogroup" name="sc[SLINGBAR_TOP]" label="Default Admin Slingbar Position" items="Top of Viewport,Bottom of Viewport" values="1,0" default=$smarty.const.SLINGBAR_TOP}
+                    {control type="dropdown" name="sc[BTN_COLOR]" label="Form Button Color" items="Black,Green,Blue,Red,Magenta,Orange,Yellow,Grey" values="black,green,blue,red,magenta,orange,yellow,grey" default=$smarty.const.BTN_COLOR}
+                    {control type="dropdown" name="sc[BTN_SIZE]" label="Form Button Size" items="Large,Medium,Small" values="large,medium,small" default=$smarty.const.BTN_SIZE}
                 </div>
                 {if $user->is_admin==1}
                 <div id="tab6">

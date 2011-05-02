@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2008 OIC Group, Inc.
+# Copyright (c) 2004-2011 OIC Group, Inc.
 # Written and Designed by Adam Kessler
 #
 # This file is part of Exponent
@@ -30,7 +30,8 @@ class shippingmethod extends expRecord {
 		$address = is_object($address) ? $address : new address($address);
 		$this->addresses_id = $address->id;
 		unset($address->id);
-		$this->update($address);
+//		$this->update($address);
+		$this->update();
 	}	
 	
 	function afterSave() {

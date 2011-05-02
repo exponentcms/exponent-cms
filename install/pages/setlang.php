@@ -22,13 +22,15 @@ if (!defined('EXPONENT')) exit('');
 $i18n = exponent_lang_loadFile('install/pages/setlang.php');
 
 ?>
-<h2 id="subtitle"><?php echo $i18n['title']; ?></h2>
+<h1 id="subtitle"><?php echo $i18n['title']; ?></h1>
+<p>
 <?php echo $i18n['guide']; ?>
-<br /><br />
+</p>
 
 <form method="post" action="index.php">
 	<!-- send us to the next page -->
 	<input type="hidden" name="page" value="welcome" />
+	<div class="control">
 	<select name="lang">
 		<?PHP foreach(exponent_lang_list() as $currid=>$currlang) {?>
 			<?php if ($currid == "eng_US") { ?>
@@ -37,6 +39,7 @@ $i18n = exponent_lang_loadFile('install/pages/setlang.php');
 			<option value="<?PHP echo $currid?>"><?PHP echo $currlang?></option>
 			<?php } ?>
 		<?PHP }?>
-	</select>
-	<input type="submit" value="<?php echo $i18n['setlang']; ?>" class="text" />
+	</select> 
+	</div>
+	<button class="awesome large green" /><?php echo $i18n['setlang']; ?></button>
 </form>

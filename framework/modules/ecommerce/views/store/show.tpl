@@ -31,15 +31,15 @@
     <h1>{$product->title}</h1>
     
     {permissions}
-    <div class="item-permissions">
+    <div class="item-actions">
         {if $permissions.edit == 1}
-            {icon img=edit.png action=edit id=$product->id title="Edit `$product->title`"}
+            {icon action=edit record=$product title="Edit `$product->title`"}
         {/if}
         {if $permissions.delete == 1}
-            {icon img=delete.png action=delete id=$product->id title="Delete `$product->title`" onclick="return confirm('Are you sure you want to delete this product?');"}
+            {icon action=delete record=$product title="Delete `$product->title`" onclick="return confirm('Are you sure you want to delete this product?');"}
         {/if}
         {if $permissions.edit == 1}
-            {icon action="copyProduct" img="copy.png" title="Copy `$product->title` " id=$product->id}
+            {icon action=copyProduct img="copy.png" title="Copy `$product->title` " record=$product}
         {/if}
     </div>
     {/permissions}
@@ -211,7 +211,7 @@
     {if $product->childProduct|@count >= 1}
     {permissions}                   
     {if $permissions.delete == 1}   
-        {icon img=delete.png action=deleteChildren id=$product->id title="Delete `$product->title`'s Children" onclick="return confirm('Are you sure you want to delete ALL child products?');"} 
+        {icon class=delete action=deleteChildren record=$product title="Delete `$product->title`'s Children" onclick="return confirm('Are you sure you want to delete ALL child products?');"} 
         Delete All Child Products
     {/if}
     {/permissions}
@@ -272,15 +272,15 @@
                             </td> 
                             <td>
                             {permissions}
-                            <div class="item-permissions">
+                            <div class="item-actions">
                                 {if $permissions.edit == 1}                                                        
-                                    {icon img=edit.png action=edit id=$chiprod->id title="Edit `$chiprod->title`"}
+                                    {icon class=edit action=edit id=$chiprod->id title="Edit `$chiprod->title`"}
                                 {/if}
                                 {if $permissions.delete == 1}
-                                    {icon img=delete.png action=delete id=$chiprod->id title="Delete `$chiprod->title`" onclick="return confirm('Are you sure you want to delete this child product?');"}
+                                    {icon action=delete record=$chiprod title="Delete `$chiprod->title`" onclick="return confirm('Are you sure you want to delete this child product?');"}
                                 {/if}
                                 {if $permissions.edit == 1}
-                                    {icon action="copyProduct" img="copy.png" title="Copy `$chiprod->title` " id=$chiprod->id}
+                                    {icon action=copyProduct img="copy.png" title="Copy `$chiprod->title` " record=$chiprod}
                                 {/if}
                             </div>
                             {/permissions}
@@ -297,7 +297,7 @@
         
         {script unique="children-submit"}
         {literal}
-        YUI({ base:EXPONENT.URL_FULL+'external/yui3/build/',loadOptional: true}).use('node', function(Y) {
+        YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
             Y.one('#submit-chiprods').on('click',function(e){
                 e.halt();
                 var frm = Y.one('#child-products-form');

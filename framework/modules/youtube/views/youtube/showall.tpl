@@ -1,6 +1,5 @@
 {*
- * Copyright (c) 2007-2008 OIC Group, Inc.
- * Written and Designed by Adam Kessler
+ * Copyright (c) 2007-2011 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -19,23 +18,24 @@
     {permissions}
         <div class="module-actions">
 			{if $permissions.create == 1}
-				{icon class="add" action=edit rank=1 title="Add a YouTube Video at the Top"|gettext text="Add a YouTube Video"|gettext}
+				{icon class=add action=edit rank=1 title="Add a YouTube Video at the Top"|gettext text="Add a YouTube Video"|gettext}
 			{/if}
-			{if $permissions.edit == 1}
+			{if $permissions.manage == 1}
 				{ddrerank items=$page->records model="portfolio" label="YouTube Videos"|gettext}
 			{/if}
         </div>
     {/permissions}    
+    {pagelinks paginate=$page top=1}
     {foreach from=$items item=ytv name=items}
 		<div class="item">
 			{if $ytv->title}<h2>{$ytv->title}</h2>{/if}
 			{permissions}
 				<div class="item-actions">
 					{if $permissions.edit == 1}
-						{icon action=edit img=edit.png class="editlink" id=$ytv->id title="Edit this `$modelname`" text="Edit"|gettext}
+						{icon action=edit record=$ytv title="Edit this `$modelname`"}
 					{/if}
 					{if $permissions.delete == 1}
-						{icon action=delete img=delete.png id=$ytv->id title="Delete this Video"|gettext onclick="return confirm('Are you sure you want to delete this YouTube Video?');" text="Delete"|gettext}
+						{icon action=delete record=$ytv title="Delete this Video"|gettext onclick="return confirm('Are you sure you want to delete this YouTube Video?');"}
 					{/if}
 				</div>
 			{/permissions}
@@ -45,14 +45,15 @@
 			<div class="bodycopy">
 				{$ytv->description}
 			</div>
-			{permissions}
-				<div class="module-actions">
-					{if $permissions.create == 1}
-						{icon class=add action=edit rank=`$ytv->rank+1` title="Add a YouTube Video Here"|gettext text="Add a YouTube Video"|gettext}
-					{/if}
-				</div>
-			{/permissions}
-			{clear}
 		</div>
+		{permissions}
+			<div class="module-actions">
+				{if $permissions.create == 1}
+					{icon class=add action=edit rank=`$ytv->rank+1` title="Add a YouTube Video Here"|gettext text="Add a YouTube Video"|gettext}
+				{/if}
+			</div>
+		{/permissions}
+		{clear}
     {/foreach}
+    {pagelinks paginate=$page bottom=1}
 </div>

@@ -14,42 +14,20 @@
  *
  *}
 
-<div id="migrationconfig" class="module migration configure exp-skin-tabview">
-    {script unique="newsconf" yuimodules="tabview, element"}
-    {literal}
-        var tabView = new YAHOO.widget.TabView('migrationtabs');     
-        YAHOO.util.Dom.removeClass("nmigrationconfig", 'hide');
-        var loading = YAHOO.util.Dom.getElementsByClassName('loadingdiv', 'div');
-        YAHOO.util.Dom.setStyle(loading, 'display', 'none');
-    {/literal}
-    {/script}
-    
+<div id="migrationconfig" class="module migration configure">
+	<h1>{"Database Settings to Migrate Your Old Site"|gettext}</h1>
+	<p>
+		This is where you enter the database connection information for your
+		old Exponent v1 site you want to migrate data from.
+	</p>
     {form action=saveconfig}
-        <div id="migrationtabs" class="yui-navset">
-            <ul class="yui-nav">
-                <li class="selected"><a href="#tab1"><em>Database</em></a></li>
-                <li><a href="#tab2"><em>Modules</em></a></li>
-            </ul>            
-                <div class="yui-content">
-                    <div id="tab1">
-                        <h2>Database Settings for Your Old Site</h2>
-                        <p>
-                            This is where you enter the database connection information for your
-                            old Exponent 1 site you want to migrate data from.
-                        </p>
-                        {control type=text name=server label="Server Name" value=$config.server}
-                        {control type="text" name="database" label="Database Name" value=$config.database}
-                        {control type="text" name="username" label="Username" value=$config.username}
-                        {control type="password" name="password" label="Password" value=$config.password}
-                        {control type="text" name="port" label="Port" value=$config.port|default:3306}
-                        {control type="text" name="prefix" label="Exponent Table Prefix" value=$config.prefix}
-                    </div>
-                    <div id="tab2">
-                        <p>Module information goes here...someday.</p>
-                    </div> 
-            </div>
-        </div>
+		{control type=text name=server label="Server Name" value=$config.server}
+		{control type="text" name="database" label="Database Name" value=$config.database}
+		{control type="text" name="username" label="Username" value=$config.username}
+		{control type="password" name="password" label="Password" value=$config.password}
+		{control type="text" name="port" label="Port" value=$config.port|default:3306}
+		{control type="text" name="prefix" label="Exponent Table Prefix" value=$config.prefix}
         {control type=buttongroup submit="Save Config" cancel="Cancel"}
     {/form}
+	<a class="admin" href="{link module=migration action=manage_users}">Next Step -> Migrate Users & Groups</a>
 </div>
-<div class="loadingdiv">Loading Migration Configuration</div>

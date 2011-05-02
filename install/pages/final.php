@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2006 OIC Group, Inc.
+# Copyright (c) 2004-2011 OIC Group, Inc.
 # Written and Designed by James Hunt
 #
 # This file is part of Exponent
@@ -52,5 +52,5 @@ if (file_exists(BASE.'install/not_configured')) {
 
 ?>
 <br /><br />
-<a href="<?php echo URL_FULL; ?>login.php">Now go log in and add some content!</a>
+<a class="awesome large green" href="<?php echo URL_FULL; ?>login.php">Now go log in and add some content!</a>
 <?php exponent_sessions_clearAllSessionData();?>

@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2008 OIC Group, Inc.
+# Copyright (c) 2004-2011 OIC Group, Inc.
 # Written and Designed by Adam Kessler
 #
 # This file is part of Exponent
@@ -38,6 +38,7 @@ if ($level == UILEVEL_PREVIEW) {
 /////////////////////////////////////////////////////////////////////////
 // BUILD THE MENU
 /////////////////////////////////////////////////////////////////////////
+
 return array(
     'text'=>$user->firstname.' '.$user->lastname,
     'classname'=>'quicklink user',
@@ -50,7 +51,7 @@ return array(
                 'classname'=>'edit',
             ),
             array(
-                'text'=>"Change My Pasword",
+                'text'=>"Change My Password",
                 'url'=>makeLink(array('controller'=>'users','action'=>'change_password','ud'=>$user->id)),
                 'classname'=>'password',
             ),

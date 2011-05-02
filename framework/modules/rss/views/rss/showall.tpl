@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2008 OIC Group, Inc.
+ * Copyright (c) 2004-2011 OIC Group, Inc.
  * Written and Designed by Adam Kessler
  *
  * This file is part of Exponent
@@ -17,6 +17,8 @@
 <div class="module rss showall">
     <h1>{$moduletitle|default:"RSS Feeds"}</h1>
     {foreach from=$feeds item=feed}
-        {$feed->feed_title}{$feed->feed_desc}
+		<div class="item">
+			<a class="rsslink" href="{rsslink}" title="{$feed->feed_desc}">Subscribe to {$feed->feed_title}</a>
+		</div>
     {/foreach}    
 </div>

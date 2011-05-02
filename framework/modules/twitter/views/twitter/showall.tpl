@@ -8,7 +8,7 @@
  * License, or (at your option) any later version.
  *
  * @category   Exponent CMS
- * @copyright  2004-2009 OIC Group, Inc.
+ * @copyright  2004-2011 OIC Group, Inc.
  * @license    GPL: http://www.gnu.org/licenses/gpl.txt
  * @link       http://www.exponent-docs.org/
  *}
@@ -17,8 +17,10 @@
 	{if $moduletitle}<h2>{$moduletitle}</h2>{/if}
 	<dl>
 	{foreach from=$items item=tweet}
-		<dt>{$tweet.created_at|date_format:"%A, %B %e, %Y %l:%M %p"}</dt>
-		<dd>{$tweet.text}</dd>
+		<div class="item">
+			<dt>{$tweet.created_at|date_format:"%A, %B %e, %Y %l:%M %p"}</dt>
+			<dd>{$tweet.text}</dd>
+		</div>
 	{/foreach}
 	</dl>
 </div>

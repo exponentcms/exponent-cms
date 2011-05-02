@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2008 OIC Group, Inc.
+ * Copyright (c) 2004-2011 OIC Group, Inc.
  * Written and Designed by Adam Kessler
  *
  * This file is part of Exponent
@@ -29,7 +29,7 @@ YUI({base:EXPONENT.URL_FULL+'external/lissa/3.0.0/build/'}).use('*',function(Y) 
     
     Y.on('domready',function(){
     
-        EXPONENT.pricediv = Y.get(".item-price");
+        EXPONENT.pricediv = Y.one(".item-price");
         EXPONENT.baseprice = parseFloat(EXPONENT.pricediv.get('innerHTML'));
 
         var drops = Y.all('#prod{/literal}{$product->id}{literal} select');

@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2006 OIC Group, Inc.
+# Copyright (c) 2004-2011 OIC Group, Inc.
 # Copyright (c) 2006 Maxim Mueller
 # Written and Designed by James Hunt
 #
@@ -33,11 +33,6 @@ $stuff = array(
 		'USER_REGISTRATION_USE_EMAIL'=>array(
 			'title'=>exponent_lang_getText('Use Email Address as username'),
 			'description'=>exponent_lang_getText('Selecting this will prompt the user for their email address instead of a username.'),
-			'control'=>new checkboxcontrol()
-		),
-		'SITE_USE_CAPTCHA'=>array(
-			'title'=>$i18n['use_captcha'],
-			'description'=>$i18n['use_captcha_desc'],
 			'control'=>new checkboxcontrol()
 		),
 		'USER_REGISTRATION_SEND_NOTIF'=>array(
@@ -72,13 +67,5 @@ $stuff = array(
 		),
 	)
 );
-
-$info = gd_info();
-if (!EXPONENT_HAS_GD) {
-	$stuff[1]['SITE_USE_CAPTCHA']['description'] = $i18n['use_captcha_desc'].'<br /><br />'.$i18n['no_gd_support'];
-	$stuff[1]['SITE_USE_CAPTCHA']['control']->disabled = true;
-}
-
-return $stuff;
 
 ?>

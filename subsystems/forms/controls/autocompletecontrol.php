@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2006 OIC Group, Inc.
+# Copyright (c) 2004-2011 OIC Group, Inc.
 # Written and Designed by James Hunt
 #
 # This file is part of Exponent
@@ -63,7 +63,7 @@ class autocompletecontrol extends formcontrol {
         $script = "
         YUI({ base:EXPONENT.YUI3_PATH,loadOptional: true}).use('node', function(Y) {
 
-            Y.get('#".$name."').on('click',function(e){e.target.set('value','');});
+            Y.one('#".$name."').on('click',function(e){e.target.set('value','');});
 
             // autocomplete
             var autocomplete = function() {

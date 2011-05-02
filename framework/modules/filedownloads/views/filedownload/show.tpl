@@ -1,6 +1,5 @@
 {*
- * Copyright (c) 2007-2008 OIC Group, Inc.
- * Written and Designed by Adam Kessler
+ * Copyright (c) 2007-2011 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -15,6 +14,7 @@
  *}
 
 <div class="module filedownload show">
+	<div class="item">
         {if $record->expFile.preview[0] != ""}
             {img class="preview-img" file_id=$record->expFile.preview[0]->id square=150}
         {/if}
@@ -30,15 +30,18 @@
         <a class="download" href="{link action=downloadfile fileid=$record->id}">Download</a>
         {clear}
         {permissions}
-            {if $permissions.edit == 1}
-                {icon action=edit img=edit.png class="editlink" id=$record->id title="Edit this file"}
-            {/if}
-            {if $permissions.delete == 1}
-                {icon action=delete img=delete.png id=$record->id title="Delete this file" onclick="return confirm('Are you sure you want to delete this file?');"}
-            {/if}
+			<div class="item-actions">
+				{if $permissions.edit == 1}
+					{icon action=edit record=$record title="Edit this file"|gettext}
+				{/if}
+				{if $permissions.delete == 1}
+					{icon action=delete record=$record title="Delete this file" onclick="return confirm('Are you sure you want to delete this file?');"}
+				{/if}
+			</div>
         {/permissions}  
         
         {if $config.usescomments == true}
             {comments content_type="filedownload" content_id=$record->id title="Comments"}
-        {/if}      
+        {/if}  
+	</div>		
 </div>

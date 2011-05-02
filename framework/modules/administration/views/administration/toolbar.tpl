@@ -57,7 +57,7 @@
          
          });
          YUI(EXPONENT.YUI3_CONFIG).use('node','dd','anim', function(Y) {
-             var tb = Y.get('#admintoolbar');
+             var tb = Y.one('#admintoolbar');
 
              //Selector of the node to make draggable
              var dd = new Y.DD.Drag({

@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2008 OIC Group, Inc.
+# Copyright (c) 2004-2011 OIC Group, Inc.
 # Written and Designed by Phillip Ball
 
 # This file is part of Exponent
@@ -23,7 +23,7 @@ class fileController extends expController {
     //public $add_permissions = array('picker'=>'Manage Files');
     //public $remove_permissions = array('edit');
     public $requires_login = array('picker'=>'must be logged in','edit_alt'=>'must be logged in');
-
+	public $codequality = 'beta';
 
     function name() { return $this->displayname(); } //for backwards compat with old modules
     function displayname() { return "File Manager"; }

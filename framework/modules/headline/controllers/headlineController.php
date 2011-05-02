@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2008 OIC Group, Inc.
+# Copyright (c) 2004-2011 OIC Group, Inc.
 # Written and Designed by Adam Kessler
 #
 # This file is part of Exponent
@@ -22,6 +22,7 @@ class headlineController extends expController {
     public $useractions = array(
             'show'=>'Show Headline',
     );
+	public $codequality = 'beta';
  
 	public $remove_configs = array(
         'aggregretion',

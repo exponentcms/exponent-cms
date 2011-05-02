@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2007-2008 OIC Group, Inc.
+ * Copyright (c) 2007-2011 OIC Group, Inc.
  * Written and Designed by Adam Kessler
  *
  * This file is part of Exponent
@@ -26,24 +26,28 @@
             <a href={link action=show version=$doc->help_version->version title=$doc->title}>{$doc->title}</a>
         
             {permissions}
-                {if $permissions.edit == 1}
-                    {icon action=edit img=edit.png class="editlink" id=$doc->id title="Edit this `$modelname`"}
-                {/if}
-                {if $permissions.delete == 1}
-                    {icon action=delete img=delete.png id=$doc->id title="Delete this `$modelname`" onclick="return confirm('Are you sure you want to delete this `$modelname`?');"}
-                {/if}
+				<div class="item-actions>
+					{if $permissions.edit == 1}
+						{icon action=edit class="editlink" record=$doc title="Edit this `$modelname`"}
+					{/if}
+					{if $permissions.delete == 1}
+						{icon action=delete record=$doc title="Delete this `$modelname`" onclick="return confirm('Are you sure you want to delete this `$modelname`?');"}
+					{/if}
+				</div>
             {/permissions}
         </li>
         {clear}
     {/foreach}
     </ol>
     {permissions}
-        {if $permissions.create == 1}
-            {icon class=add action=edit title="Add help doc" text="Add help doc to version `$current_version->version`"}{br}
-        {/if}
-        {if $permissions.manage == 1}
-            {icon class=add action=manage title="Manage Help" text="Manage Help"}{br}
-            {icon class=add action=manage_versions title="Manage Versions" text="Manage Versions"}{br}
-        {/if}
+		<div class="module-actions">
+			{if $permissions.create == 1}
+				{icon class=add action=edit title="Add help doc" text="Add help doc to version `$current_version->version`"}{br}
+			{/if}
+			{if $permissions.manage == 1}
+				{icon class=add action=manage title="Manage Help" text="Manage Help"}{br}
+				{icon class=add action=manage_versions title="Manage Versions" text="Manage Versions"}{br}
+			{/if}
+		</div>
     {/permissions}
 </div>

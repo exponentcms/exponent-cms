@@ -2,6 +2,31 @@ Exponent Content Management System
 Copyright (c) 2004-2011 OIC Group, Inc.
 ===============================================
 
+Added / Fixed / changed for 2.0.0 beta 2
+-----------------------
+# Notable improvements and additions
+    • Included version of YUI 3 upgraded to 3.3.0.
+    • Retrofitting of all module views.
+        - integration of pagination configuration.
+        - Integration of File Displayer to many modules to be configured by File Tab in Configuration.
+        - Style and class name consistancy system-wide.
+    • Added visual styling for buttons based off "Super Awesome Buttons".
+        - http://www.zurb.com/playground/super-awesome-buttons.
+    • Major cosmetic cleanup to the installer.
+    • Major cosmetic cleanup to permission management system-wide.
+		- Note: Beta 3 will target definition and completion of permission management.
+    • More migration script enhancements.
+		- Adds banner, rss configuration, rss feedlist, and addressbook migration.
+		- Properly uses module aggregation replacing the "use existing" content method in pre-2.0 code
+    • Admin Slignbar additions.
+        - Added system Information under Exponent Menu.
+        - Re-arranged and permissioned for better administrative task grouping.
+    • Additional Antispam Re-captcha usage options in site configuration.
+    • Fixes bad file names containing invalid characters upon upload.
+    • File Manager window no longer automatically resizes itself upon opening.
+    • Message Queue stacking now supported.
+    • Many more bug fixes.
+
 Added / Fixed / changed for 2.0.0 beta 1.1
 -----------------------
 # Notable Module improvements and additions

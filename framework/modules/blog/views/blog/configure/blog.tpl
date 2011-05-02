@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2008 OIC Group, Inc.
+ * Copyright (c) 2004-2011 OIC Group, Inc.
  * Written and Designed by Adam Kessler
  *
  * This file is part of Exponent
@@ -15,5 +15,8 @@
  *}
 
 <h2>Configure this Module</h2>
-{control type="text" name="limit" label="Number of posts to show before paginating" size=3 filter=integer value=$config.limit}
-{control type="checkbox" name="truncate" label="Summarize by showing only first paragraph on blog listing pages?" checked=$config.truncate value=1}
+<p>
+    This is where you can configure the settings to be used by this Blog module. 
+    These settings will only apply to this particular module.
+</p>
+{control type="radiogroup" name="usebody" label="Body Text"|gettext value=$config.usebody|default:2 items="Full,Summary,None" values="2,1,0"}

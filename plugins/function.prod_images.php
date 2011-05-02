@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2006 OIC Group, Inc.
+# Copyright (c) 2004-2011 OIC Group, Inc.
 # Written and Designed by James Hunt
 #
 # This file is part of Exponent
@@ -119,7 +119,7 @@ function smarty_function_prod_images($params,&$smarty) {
                     var swatches = Y.all('.swatches .swatch');
 
                     //remove loading
-                    Y.get('.loading-images').removeClass('loading-images');
+                    Y.one('.loading-images').removeClass('loading-images');
 
                     var resetZ = function(n,y){
                         n.setStyles({'zIndex':0,'display':'none'});

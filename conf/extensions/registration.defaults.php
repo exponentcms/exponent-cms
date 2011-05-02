@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2006 OIC Group, Inc.
+# Copyright (c) 2004-2011 OIC Group, Inc.
 # Copyright (c) 2006 Maxim Mueller
 # Written and Designed by James Hunt
 #
@@ -20,7 +20,6 @@
 
 if (!defined('SITE_ALLOW_REGISTRATION')) define('SITE_ALLOW_REGISTRATION',0);
 if (!defined('USER_REGISTRATION_USE_EMAIL')) define('USER_REGISTRATION_USE_EMAIL',0);
-if (!defined('SITE_USE_CAPTCHA')) define('SITE_USE_CAPTCHA',1);
 
 if (!defined('USER_REGISTRATION_SEND_NOTIF')) define('USER_REGISTRATION_SEND_NOTIF',0);
 if (!defined('USER_REGISTRATION_NOTIF_SUBJECT')) define('USER_REGISTRATION_NOTIF_SUBJECT','New User Registration From Website');

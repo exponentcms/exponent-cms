@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2006 OIC Group, Inc.
+# Copyright (c) 2004-2011 OIC Group, Inc.
 # Written and Designed by James Hunt
 #
 # This file is part of Exponent
@@ -25,7 +25,7 @@ if (!defined('EXPONENT')) exit('');
  * Contains information about the MySQL Database Engine implementation
  *
  * @author Ron Miller
- * @copyright 2004-2007 OIC Group, Inc.
+ * @copyright 2004-2011 OIC Group, Inc.
  * @version 0.96.6
  *
  * @package Subsystems

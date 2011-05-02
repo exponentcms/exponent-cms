@@ -1,6 +1,5 @@
 {*
  * Copyright (c) 2007-2011 OIC Group, Inc.
- * Written and Designed by Adam Kessler
  *
  * This file is part of Exponent
  *
@@ -14,24 +13,22 @@
  *
  *}
 
-<div class="module filedownload showall-downloadinfo">
-    {if $moduletitle}<h1>{$moduletitle}</h1>{/if}
-    
+<div class="module filedownload showall">
     {if $config.enable_rss}
-        <a class="podcastlink" href="{podcastlink}">Subscribe to {$config.feed_title}</a>
+        <a class="rsslink" href="{podcastlink}">Subscribe to {$config.feed_title}</a>
     {/if}
-
-    {$page->links}
+    {if $moduletitle}<h1>{$moduletitle}</h1>{/if} 
     {permissions}
         <div class="module-actions">
 			{if $permissions.create == 1}
-				{icon class="add" action=edit rank=1 title="Add a File at the Top"|gettext text="Add a File"|gettext}
+				{icon class=add action=edit rank=1 title="Add a File at the Top"|gettext text="Add a File"|gettext}
 			{/if}
-			{if $permissions.edit == 1}
+			{if ($permissions.manage == 1 && $rank == 1)}
 				{ddrerank items=$page->records model="filedownload" label="Downloadable Items"|gettext}
 			{/if}
         </div>
     {/permissions}    
+    {pagelinks paginate=$page top=1}
     {foreach from=$page->records item=file name=files}
 		<div class="item">
 			{if $file->expFile.preview[0] != ""}
@@ -46,15 +43,28 @@
 			{permissions}
 				<div class="item-actions">
 					{if $permissions.edit == 1}
-						{icon action=edit img=edit.png class="editlink" id=$file->id title="Edit this file"|gettext text="Edit"|gettext}
+						{icon action=edit record=$file title="Edit this file"|gettext}
 					{/if}
 					{if $permissions.delete == 1}
-						{icon action=delete img=delete.png id=$file->id title="Delete this file"|gettext onclick="return confirm('Are you sure you want to delete this file?');" text="Delete"|gettext}
+						{icon action=delete record=$file title="Delete this file"|gettext onclick="return confirm('Are you sure you want to delete this file?');"}
 					{/if}
 				</div>
 			{/permissions}
 			<div class="bodycopy">
-				{$file->body}
+				{if $config.usestags}
+					<div class="tags">
+						Tags: 
+						{foreach from=$file->expTag item=tag name=tags}
+							<a href="{link action=showall_by_tags tag=$tag->sef_url}">{$tag->title}</a>
+							{if $smarty.foreach.tags.last != 1},{/if}
+						{/foreach} 
+					</div>
+				{/if}
+				{if $config.usebody==1}
+                    <p>{$file->body|summarize:"html":"para"}</p>
+                {elseif $config.usebody==2}
+                    {$file->body}
+                {/if}
 			</div>
 			<a class="readmore" href="{link action=show title=$file->sef_url}">Read more</a>
 			&nbsp;&nbsp;
@@ -70,5 +80,5 @@
 			{clear}  
 		</div>		
     {/foreach}
-    {$page->links}
+    {pagelinks paginate=$page bottom=1}
 </div>

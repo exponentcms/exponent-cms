@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2008 OIC Group, Inc.
+# Copyright (c) 2004-2011 OIC Group, Inc.
 # Written and Designed by Adam Kessler
 #
 # This file is part of Exponent
@@ -78,9 +78,9 @@ function smarty_function_icon($params,&$smarty) {
 	unset($params['class']);
 	unset($params['record']);
 	//eDebug($params);
-
 	if (!empty($params['action'])) {
 		echo '<a href="'.exponent_core_makeLink($params).'" title="'.$title.'" class="'.$class.'"';
+		if ($params['action']=="delete"&&!isset($params['onclick'])) echo ' onclick="return confirm(\'Are you sure you want to delete this item?\');"';
 		if (isset($params['onclick'])) echo ' onclick="'.$params['onclick'].'"';
 		echo '>'.$linktext.'</a>';
 	} else {

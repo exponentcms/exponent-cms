@@ -15,47 +15,39 @@
  *}
 
 <div class="module migration manage_content">
-    <h1>Migrate Content</h1>
+    <h1>{"Migrate Content"|gettext}</h1>
     <p> 
         The following is a list of modules we found in the database {$config.database}.
     </p>
-    
     {form action="migrate_content"}
         <table class="exp-skin-table">
-        <thead>
-            <tr>
-                <th>Migrate</th>
-                <th>Replace</th>
-                <th>Module</th>
-                <th>Count</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody>
-        {foreach from=$modules item=module name=modules}
-        {if !$module->notmigrating}
-        <tr class="{cycle values="even,odd"}">            
-            <td>
-                <input type=checkbox name="migrate[{$module->module}]" label=" " value=1 checked=1>
-            </td>
-            <td>
-                <input type=checkbox name="replace[{$module->module}]" label=" " value=1>
-            </td>
-            <td>
-                {$module->module}
-            </td>
-            <td>
-                {$module->count}
-            </td>
-            <td>{$module->action}</td>
-        </tr>
-        {/if}
-        {foreachelse}
-                <tr><td colspan=2>No modules found in the database {$config.database}</td></tr>
-        {/foreach}
-        </tbody>
+			<thead>
+				<tr>
+					<th>Migrate</th>
+					<th>Replace</th>
+					<th>Module</th>
+					<th>Count</th>
+					<th>Action</th>
+				</tr>
+			</thead>
+			<tbody>
+				{foreach from=$modules item=module name=modules}
+					{if !$module->notmigrating}
+						<tr class="{cycle values="even,odd"}">            
+							<td><input type=checkbox name="migrate[{$module->module}]" label=" " value=1 checked=1></td>
+							<td><input type=checkbox name="replace[{$module->module}]" label=" " value=1></td>
+							<td>{$module->module}</td>
+							<td>{$module->count}</td>
+							<td>{$module->action}</td>
+						</tr>
+					{/if}
+				{foreachelse}
+					<tr><td colspan=2>No modules found in the database {$config.database}</td></tr>
+				{/foreach}
+			</tbody>
         </table>
         {control type="checkbox" name="wipe_content" label="Erase all current content before import?" value=1 checked=false}
         {control type="buttongroup" submit="Migrate Content" cancel="Cancel"}
     {/form}
+	<div class="admin">This is the Final Migration Step</div>
 </div>

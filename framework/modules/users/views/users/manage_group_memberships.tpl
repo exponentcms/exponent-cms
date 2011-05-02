@@ -1,6 +1,5 @@
 {*
- * Copyright (c) 2004-2006 OIC Group, Inc.
- * Written and Designed by James Hunt
+ * Copyright (c) 2004-2011 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -14,47 +13,44 @@
  *
  *}
  
+
 {css unique="group" corecss="tables"}
 
 {/css}
 
- 
+<div class="module users manage-group-memberships">
+	<h1>{"Manage Group Memberships"|gettext}</h1>	
 
-<div class="form_header">
-    <h1>{$_TR.form_title}</h1>
-    <p>
-    {$_TR.form_header|sprintf:$group->name}
-    </p
+    {form action="update_memberships"}
+    <input type="hidden" name="id" value="{$group->id}"/>
+    {pagelinks paginate=$page top=1}
+	<table class="exp-skin-table">
+		<thead>
+			<tr>
+				{$page->header_columns}
+			</tr>
+		</thead>
+		<tbody>
+			{foreach from=$page->records item=user name=listings}
+				<tr class="{cycle values="odd,even"}">
+					<td>{$user->username}</td>
+					<td>{$user->firstname}</td>
+					<td>{$user->lastname}</td>
+					<td>
+						{control type=checkbox name="memdata[`$user->id`][is_member]" value=1 checked=$user->is_member}
+					</td>
+					<td>
+						{control type=checkbox name="memdata[`$user->id`][is_admin]" value=1 checked=$user->is_admin}
+					</td>
+				</tr>
+			{foreachelse}
+				<td colspan="{$page->columns|count}">No Data.</td>
+			{/foreach}
+		</tbody>
+	</table>
+    {pagelinks paginate=$page bottom=1}
+    {control type="buttongroup" submit="Save Memberships" cancel="Cancel"}
+    {/form}
 </div>
 
 
-{$page->links}
-<table class="exp-skin-table">
-    <thead>
-	<tr>
-	    {$page->header_columns}
-		<th>&nbsp;</th>
-	</tr>
-	</thead>
-	<tbody>
-		{foreach from=$page->records item=group name=listings}
-		<tr class="{cycle values="odd,even"}">
-			<td>{$group->name}</td>
-			<td>{$group->description}</td>
-			<td>{if $group->inclusive}<b>Default</b>{else}Normal{/if}</td>
-		    <td>
-		        {permissions level=$smarty.const.UILEVEL_PERMISSIONS}
-                <div class="item-actions">
-                {icon img=edit.png controller=users action=edit_group id=$group->id title="Edit"}
-                {icon controller=users action=delete id=$user->id title="Delete" onclick="return confirm('Are you sure you want to delete this user?');"}
-                {icon img=groupperms.png controller=users action="manage_group_memberships" id=$group->id title="Add/Remove Members to Group `$group->name`"}
-                </div>
-                {/permissions}
-		    </td>
-		</tr>
-		{foreachelse}
-		    <td colspan="{$page->columns|count}">No Data.</td>
-		{/foreach}
-	</tbody>
-	</table>
-	{$page->links}

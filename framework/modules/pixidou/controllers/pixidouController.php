@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2008 OIC Group, Inc.
+# Copyright (c) 2004-2011 OIC Group, Inc.
 # Written and Designed by Phillip Ball
 
 # This file is part of Exponent
@@ -20,6 +20,7 @@
 class pixidouController extends expController {
     public $cacheDir = "framework/modules/pixidou/images/";
     public $requires_login = array('editor','exitEditor');
+	public $codequality = 'beta';
 
     function name() { return $this->displayname(); } //for backwards compat with old modules
     function displayname() { return "Pixidou Image Editor"; }

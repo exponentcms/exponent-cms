@@ -20,18 +20,24 @@
     border:0;
     padding:5px;
     color:#004b74;
-    padding:2px 5px;
+    padding:4px 5px;
      -moz-box-shadow:none;
   -webkit-box-shadow:none;
           box-shadow:none;
 }
 
-.search.show-form input.submit {
+.search.show-form button.submit {
     border:0;
     background:none;
     width:30px;
     height:0px;
     overflow:hidden;
     padding-top:20px;
+    -moz-border-radius: 0px; /* FF1+ */
+    -webkit-border-radius: 0px; /* Saf3+, Chrome */
+    border-radius: 0px; /* Opera 10.5, IE 9 */
+       -moz-box-shadow:0 0 0 0; 
+    -webkit-box-shadow:0 0 0 0; 
+            box-shadow:0 0 0 0; 
 }
 

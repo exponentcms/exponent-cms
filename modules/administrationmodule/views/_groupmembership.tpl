@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2006 OIC Group, Inc.
+ * Copyright (c) 2004-2011 OIC Group, Inc.
  * Written and Designed by James Hunt
  *
  * This file is part of Exponent
@@ -18,15 +18,7 @@
 
 {/css}
 
- 
-
-<div class="form_header">
-    <h1>{$_TR.form_title}</h1>
-    <p>
-    {$_TR.form_header|sprintf:$group->name}
-    </p
-</div>
-
+<h1>{$moduletitle|default:"Manage Group Membership"}</h1>	
 
 {paginate objects=$users}
 	{literal}

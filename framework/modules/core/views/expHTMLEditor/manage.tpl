@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2006 OIC Group, Inc.
+ * Copyright (c) 2004-2011 OIC Group, Inc.
  * Written and Designed by James Hunt
  *
  * This file is part of Exponent
@@ -17,7 +17,6 @@
 
 {/css}
 
- 
 <div class="module administration htmleditoranager">
     <div class="info-header">
         <div class="related-actions">
@@ -70,8 +69,10 @@
                     <a href="{link action="preview" id=$cfg->id}">{$cfg->name}</a>
                 </td>
                 <td>
-                    {icon action=edit id=$cfg->id}
-                    {icon action=delete id=$cfg->id}
+					<div class="item-actions">
+						{icon action=edit record=$cfg}
+						{icon action=delete record=$cfg}
+					</div>
                 </td>
             </tr>
             {/foreach}

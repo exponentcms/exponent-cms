@@ -11,7 +11,7 @@
  *
  * @link http://www.gnu.org/licenses/gpl.txt GPL http://www.gnu.org/licenses/gpl.txt
  * @package Exponent-CMS
- * @copyright 2004-2006 OIC Group, Inc.
+ * @copyright 2004-2011 OIC Group, Inc.
  * @author Adam Kessler <adam@oicgroup.net>
  * @version 2.0.0
  */
@@ -383,16 +383,18 @@ class expFile extends expRecord {
 				break;
 		}
         
-        // Fix the filename, so that we don't have funky characters screwing
-        // with our attempt to create the destination file.
-		$_destFile = expFile::fixFileName($_destFile);
 
         // If $_destDir is not defined, use the default Files directory
         $_destDir = ( $_destDir == null ) ? UPLOAD_DIRECTORY : $_destDir;
 
 		// If $_destFile is defined, use that name as an override for the
         // uploaded file name
-		$_destFile = ($_destFile == null) ? $_FILES[$_postName]['name'] : $_destFile;
+		$_destFile = ($_destFile == null) ? expFile::fixFileName( $_FILES[$_postName]['name']) : $_destFile;
+
+        // Fix the filename, so that we don't have funky characters screwing
+        // with our attempt to create the destination file.
+        // $_destFile = expFile::fixFileName( $_FILES[$_postName]['name']);
+        // eDebug($_destFile,1);
 		
         // Build destination fille path for future use
         $_destFullPath = $_destDir . $_destFile;

@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2008 OIC Group, Inc.
+# Copyright (c) 2004-2011 OIC Group, Inc.
 # Written and Designed by Adam Kessler
 #
 # This file is part of Exponent
@@ -28,6 +28,7 @@ class rssController extends expController {
         //'rss',
         'tags'
     );
+	public $codequality = 'beta';
 
     function name() { return $this->displayname(); } //for backwards compat with old modules
     function displayname() { return "RSS Syndication"; }

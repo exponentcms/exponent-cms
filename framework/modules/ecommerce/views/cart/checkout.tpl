@@ -13,7 +13,10 @@
  * GPL: http://www.gnu.org/licenses/gpl.txt
  *
  *}
- 
+{css unique="cart" link="`$asset_path`css/cart.css" corecss="panels"}
+
+{/css}
+
 <div id="expresscheckout" class="cart checkout exp-skin">
     <h1>{$moduletitle|default:"Express Checkout"}</h1>
 
@@ -88,7 +91,7 @@
                             {foreach from=$discounts item=discount}
                             <li>
                                 <strong>{$discount->coupon_code}</strong>
-                                &nbsp;&nbsp;{icon img="delete.png" action=removeDiscountFromCart id=$discount->id alt="Remove discount from cart."}
+                                &nbsp;&nbsp;{icon class=delete action=removeDiscountFromCart record=$discount alt="Remove discount from cart."}
                                 {br}
                                 <em>{$discount->title}</em>
                             </li>

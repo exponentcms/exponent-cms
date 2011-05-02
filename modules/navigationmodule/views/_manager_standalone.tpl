@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2006 OIC Group, Inc.
+ * Copyright (c) 2004-2011 OIC Group, Inc.
  * Written and Designed by James Hunt
  *
  * This file is part of Exponent
@@ -44,8 +44,8 @@
 			{$section->name}&nbsp;
 		{/if}
 	</td><td>
-        {icon action=edit_contentpage id=$section->id img=edit.png title=$_TR.alt_edit}
-        {icon action=delete id=$section->id img=delete.png title=$_TR.alt_delete onclick="return confirm('`$_TR.delete_confirm`');"}
+        {icon action=edit_contentpage record=$section img=edit.png title=$_TR.alt_edit}
+        {icon action=delete record=$section title=$_TR.alt_delete onclick="return confirm('`$_TR.delete_confirm`');"}
 	</td><td>
         {icon int=$section->id action=userperms _common=1 img=userperms.png title=$_TR.alt_userperm}
         {icon int=$section->id action=groupperms _common=1 img=groupperms.png title=$_TR.alt_groupperm}

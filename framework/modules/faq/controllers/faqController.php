@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2008 OIC Group, Inc.
+# Copyright (c) 2004-2011 OIC Group, Inc.
 # Written and Designed by Adam Kessler
 #
 # This file is part of Exponent
@@ -19,6 +19,7 @@
 
 class faqController extends expController {
     public $useractions = array('showall'=>'Show FAQs', 'ask_question'=>'Show Question Form');
+	public $codequality = 'beta';
 
 	public $remove_configs = array(
         'aggregretion',

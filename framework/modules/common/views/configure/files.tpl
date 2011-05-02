@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2008 OIC Group, Inc.
+ * Copyright (c) 2004-2011 OIC Group, Inc.
  * Written and Designed by Adam Kessler
  *
  * This file is part of Exponent
@@ -17,9 +17,9 @@
 <h2>{"Configure File Display Settings"|gettext}</h2>
     {control id="filedisplay" type=filedisplay-types name=filedisplay label="Display Files as" value=$config.filedisplay}
 <div id="ff-options" style="display:none">
-    {control type="dropdown" name="float" label="File Display Box Float" items="No Float,Left,Right" value=$config.float}
-    {control type="text" label="Width of File Display Box" name="width" value=$config.width size=5}
-    {control type="text" label="Width of Margin" name="margin" value=$config.margin size=5}
+    {control type="dropdown" name="ffloat" label="File Display Box Float" items="No Float,Left,Right" value=$config.ffloat}
+    {control type="text" label="Width of File Display Box" name="fwidth" value=$config.fwidth size=5}
+    {control type="text" label="Width of Margin" name="fmargin" value=$config.fmargin size=5}
     <hr />
 </div>
 <div id="fileViewConfig">

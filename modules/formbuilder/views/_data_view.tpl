@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2006 OIC Group, Inc.
+ * Copyright (c) 2004-2011 OIC Group, Inc.
  * Written and Designed by James Hunt
  *
  * This file is part of Exponent
@@ -14,16 +14,16 @@
  *
  *}
  
-{css unique="form-records" corecss="tables"}
+{css unique="data-view" corecss="tables"}
 
 {/css}
 
 {paginate objects=$items paginateName="dataView" modulePrefix="data" rowsPerPage=20}
 
 function links(object) {literal}{{/literal}
-	out = '<a href="{link action=view_record module=formbuilder form_id=$f->id}{if $smarty.const.SEF_URLS == 1}{else}&{/if}id{if $smarty.const.SEF_URLS == 1}/{else}={/if}' + object.var_id + '"><img class="mngmnt_icon" style="border:none;" src="{$smarty.const.ICON_RELATIVE}view.png" title="{$_TR.alt_view}" alt="{$_TR.alt_view}" /></a>'; 
-	out += '{if $permissions.editdata == 1}<a href="{link action=edit_record module=formbuilder form_id=$f->id}{if $smarty.const.SEF_URLS == 1}{else}&{/if}id{if $smarty.const.SEF_URLS == 1}/{else}={/if}' + object.var_id + '"><img class="mngmnt_icon" style="border:none;" src="{$smarty.const.ICON_RELATIVE}edit.png" title="{$_TR.alt_edit}" alt="{$_TR.alt_edit}" /></a>{/if}'; 
-	out += '{if $permissions.deletedata == 1}<a href="{link action=delete_record module=formbuilder form_id=$f->id}{if $smarty.const.SEF_URLS == 1}{else}&{/if}id{if $smarty.const.SEF_URLS == 1}/{else}={/if}' + object.var_id + '" onclick="return confirm(\'{$_TR.delete_confirm}\');"><img class="mngmnt_icon" style="border:none;" src="{$smarty.const.ICON_RELATIVE}delete.png" title="{$_TR.alt_delete}" alt="{$_TR.alt_delete}" /></a>{/if}'; 
+	out = '<a href="{link action=view_record module=formbuilder form_id=$f->id}{if $smarty.const.SEF_URLS == 1}/{else}&{/if}id{if $smarty.const.SEF_URLS == 1}/{else}={/if}' + object.var_id + '"><img class="mngmnt_icon" style="border:none;" src="{$smarty.const.ICON_RELATIVE}view.png" title="{$_TR.alt_view}" alt="{$_TR.alt_view}" /></a>'; 
+	out += '{if $permissions.editdata == 1}<a href="{link action=edit_record module=formbuilder form_id=$f->id}{if $smarty.const.SEF_URLS == 1}/{else}&{/if}id{if $smarty.const.SEF_URLS == 1}/{else}={/if}' + object.var_id + '"><img class="mngmnt_icon" style="border:none;" src="{$smarty.const.ICON_RELATIVE}edit.png" title="{$_TR.alt_edit}" alt="{$_TR.alt_edit}" /></a>{/if}'; 
+	out += '{if $permissions.deletedata == 1}<a href="{link action=delete_record module=formbuilder form_id=$f->id}{if $smarty.const.SEF_URLS == 1}/{else}&{/if}id{if $smarty.const.SEF_URLS == 1}/{else}={/if}' + object.var_id + '" onclick="return confirm(\'{$_TR.delete_confirm}\');"><img class="mngmnt_icon" style="border:none;" src="{$smarty.const.ICON_RELATIVE}delete.png" title="{$_TR.alt_delete}" alt="{$_TR.alt_delete}" /></a>{/if}'; 
 	
 	return out;
 {literal}}{/literal}

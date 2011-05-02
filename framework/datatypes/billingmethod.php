@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2008 OIC Group, Inc.
+# Copyright (c) 2004-2011 OIC Group, Inc.
 # Written and Designed by Adam Kessler
 #
 # This file is part of Exponent
@@ -34,7 +34,8 @@ class billingmethod extends expRecord {
 		$address = is_numeric($address) ? new address($address) : $address;
 		$this->addresses_id = isset($address->id) ? $address->id : '';
 		unset($address->id);
-		$this->update($address);
+//		$this->update($address);
+		$this->update();
 	}	
 }
 

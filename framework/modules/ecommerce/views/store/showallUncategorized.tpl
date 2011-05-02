@@ -17,7 +17,7 @@
 <div class="module store showall-uncategorized">
     <h1>Uncategorized Products</h1>
     <div id="products">
-        {$page->links}
+		{pagelinks paginate=$page top=1}
         <table id="prods" class="exp-skin-table" style="width:95%">
         <thead>
             <tr>
@@ -35,18 +35,20 @@
                 <td>${$listing->base_price|number_format:2}</td>
                 <td>
                     {permissions}
-                        {if $permissions.edit == 1}
-                            {icon img=edit.png action=edit id=$listing->id title="Edit `$listing->title`"}
-                        {/if}
-                        {if $permissions.delete == 1}
-                            {icon img=delete.png action=delete id=$listing->id title="Delete `$listing->title`"}
-                        {/if}
+						<div class="item-actions">
+							{if $permissions.edit == 1}
+								{icon action=edit record=$listing title="Edit `$listing->title`"}
+							{/if}
+							{if $permissions.delete == 1}
+								{icon action=delete record=$listing title="Delete `$listing->title`"}
+							{/if}
+						</div>
                     {/permissions}  
                 </td>                   
             </tr>
             {/foreach}
         </tbody>
         </table>
-        {$page->links}
+		{pagelinks paginate=$page bottom=1}
     </div>
 </div>

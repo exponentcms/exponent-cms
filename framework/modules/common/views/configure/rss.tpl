@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2008 OIC Group, Inc.
+ * Copyright (c) 2004-2011 OIC Group, Inc.
  * Written and Designed by Adam Kessler
  *
  * This file is part of Exponent
@@ -22,3 +22,5 @@
 {control type="checkbox" name="enable_rss" label="Enable RSS" value=1 checked=$config.enable_rss}
 {control type="text" name="feed_title" label="Feed Title" value=$config.feed_title}
 {control type="textarea" name="feed_desc" label="Feed Description" value=$config.feed_desc}
+{control type="text" name="rss_limit" label="Maximum number of RSS items to publish (0 = all)" value=$config.rss_limit|default:24 size=5}
+{control type="text" name="rss_cachetime" label="Recommended RSS feed update interval in minutes (1440 = 1 day)" value=$config.rss_cachetime|default:1440 size=5}

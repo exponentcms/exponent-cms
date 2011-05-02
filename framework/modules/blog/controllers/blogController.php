@@ -1,7 +1,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2008 OIC Group, Inc.
+# Copyright (c) 2004-2011 OIC Group, Inc.
 # Written and Designed by Adam Kessler
 #
 # This file is part of Exponent
@@ -25,10 +25,12 @@ class blogController extends expController {
         'dates'=>"Dates",
     );
     
-    public $remove_configs = array('ealerts','tags','files');
+    public $remove_configs = array(
+		'ealerts',
+		'files'
+	);
     public $codequality = 'beta';
     
-
     function name() { return $this->displayname(); } //for backwards compat with old modules
     function displayname() { return "Blog"; }
     function description() { return "This module allows you to run a blog on your site."; }

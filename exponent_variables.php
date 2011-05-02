@@ -121,23 +121,6 @@ if (!defined('SCRIPT_FILENAME')) {
 	define('SCRIPT_FILENAME', 'index.php');
 }
 
-if (!defined('YUI3_PATH')) {
-    /*
-	 *  YUI 3 Version Constant Constant
-	 *
-	 * Changing the version here lets Exponent adjust where 
-	 */
-	define('YUI3_VERSION', '3.2.0');
-	define('YUI3_PATH', PATH_RELATIVE.'external/lissa/'.YUI3_VERSION.'/build/');
-	define('YUI3_URL', URL_FULL.'external/lissa/'.YUI3_VERSION.'/build/');
-}
-
-if (!defined('YUI2_PATH')) {
-	define('YUI2_VERSION', '2.8.0r4');
-	define('YUI2_PATH', PATH_RELATIVE.'external/lissa/'.YUI2_VERSION.'/build/');
-	define('YUI2_URL', URL_FULL.'external/lissa/'.YUI2_VERSION.'/build/');
-}
-
 include_once(BASE . '/subsystems/config/load.php');
 
 ?>

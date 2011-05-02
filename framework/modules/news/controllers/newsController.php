@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2008 OIC Group, Inc.
+# Copyright (c) 2004-2011 OIC Group, Inc.
 # Written and Designed by Adam Kessler
 #
 # This file is part of Exponent
@@ -22,7 +22,8 @@ class newsController extends expController {
         'showall'=>'Show all News',
     );
 
-    public $remove_configs = array('ealerts','tags','comments','files');
+    public $remove_configs = array('ealerts','tags','comments');
+	public $codequality = 'beta';
 
     public $add_permissions = array('showUnpublished'=>'View Unpublished News');
     private $sortopts = array(
@@ -35,7 +36,7 @@ class newsController extends expController {
     function name() { return $this->displayname(); } //for backwards compat with old modules
     function displayname() { return "News"; }
     function description() { return "Use this to display & manage news type content on your site."; }
-    function author() { return "Adam Kessler - OIC Group, Inc"; }
+    function author() { return "OIC Group, Inc"; }
     function hasSources() { return true; }
     function hasViews() { return true; }
     function hasContent() { return true; }
@@ -88,7 +89,7 @@ class newsController extends expController {
             'view'=>empty($this->params['view']) ? null : $this->params['view']
             ));
             
-        $morenews = (count($items) > $this->config['limit']) ? 1 : 0;
+        $morenews = (count($items) > $limit) ? 1 : 0;
 
         assign_to_template(array(
             'morenews'=>$morenews,

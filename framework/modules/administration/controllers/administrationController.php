@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2008 OIC Group, Inc.
+# Copyright (c) 2004-2011 OIC Group, Inc.
 # Written and Designed by Adam Kessler
 #
 # This file is part of Exponent
@@ -21,6 +21,7 @@ class administrationController extends expController {
     public $basemodel_name = 'expRecord';
     public $useractions = array();
     public $add_permissions = array('administrate'=>'Manage Administration','toggle_minify'=>'Configure Website Settings',"switch_themes"=>"change themes");
+	public $codequality = 'beta';
     
     function name() { return $this->displayname(); } //for backwards compat with old modules
     function displayname() { return "Administration Controls"; }
@@ -31,7 +32,6 @@ class administrationController extends expController {
     function hasContent() { return true; }
     function supportsWorkflow() { return false; }
     function isSearchable() { return false; }
-    
     
     public function manage_unused_tables() {
         global $db;

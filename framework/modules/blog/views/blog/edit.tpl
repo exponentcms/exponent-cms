@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2008 OIC Group, Inc.
+ * Copyright (c) 2004-2011 OIC Group, Inc.
  * Written and Designed by Adam Kessler
  *
  * This file is part of Exponent
@@ -33,7 +33,7 @@
         <div id="demo" class="yui-navset">
             <ul class="yui-nav">
                 <li class="selected"><a href="#tab1"><em>General</em></a></li>
-                <li><a href="#tab2"><em>Tags</em></a></li>
+                {if $config.usestags}<li><a href="#tab2"><em>Tags</em></a></li>{/if}
                 <li><a href="#tab3"><em>Files</em></a></li>
                 <li><a href="#tab4"><em>SEO</em></a></li>
             </ul>            
@@ -43,6 +43,7 @@
                 {control type=html name=body label="Body Content" value=$record->body}
                 {control type="checkbox" name="private" label="Save as draft" value=1 checked=$record->private}
             </div>
+			{if $config.usestags}
             <div id="tab2">
                 {foreach from=$record->expTag item=tag name=tags}
                     {if $smarty.foreach.tags.first == false}
@@ -53,6 +54,7 @@
                 {/foreach}
                 {control type="textarea" name="tags" label="Tags (comma separated)" value=$tags}
             </div>
+			{/if}
             <div id="tab3">
                 {control type="files" name="files" label="Files" value=$record->expFile}
             </div>

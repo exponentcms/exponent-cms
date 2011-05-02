@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2008 OIC Group, Inc.
+ * Copyright (c) 2004-2011 OIC Group, Inc.
  * Written and Designed by Adam Kessler
  *
  * This file is part of Exponent
@@ -42,8 +42,10 @@
             <td>{$comment->name}</td>
             <td>{$comment->body}</td>
             <td>
-                {icon img=edit.png action=approve id=$comment->id title="Edit Comment"}
-                {icon img=delete.png action=delete id=$comment->id title="Delete Comment" onclick="return confirm('Are you sure you want to delete this comment?');"}
+				<div class="item-actions">
+					{icon class=edit action=approve record=$comment title="Edit Comment"}
+					{icon action=delete record=$comment title="Delete Comment" onclick="return confirm('Are you sure you want to delete this comment?');"}
+				</div>
             </td>
         </tr>
         {foreachelse}

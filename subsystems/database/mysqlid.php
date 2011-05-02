@@ -16,7 +16,7 @@
  * This is the class mysqlid_database
  *
  * This is the MySQL-specific implementation of the database class.
- * @copyright 2004-2006 OIC Group, Inc.
+ * @copyright 2004-2011 OIC Group, Inc.
  * @author Written and Designed by James Hunt
  * @version 2.0.0
  * @subpackage Database = mysqlid

@@ -51,7 +51,7 @@ var updateCart = {
             item_td.innerHTML = totals.item_total;
             
             //hide the mask again
-            Y.get('#udq-quantity-'+totals.item_id).addClass('hide');
+            Y.one('#udq-quantity-'+totals.item_id).addClass('hide');
             
         });
     }

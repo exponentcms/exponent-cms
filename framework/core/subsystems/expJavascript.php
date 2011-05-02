@@ -11,7 +11,7 @@
  *
  * @link http://www.gnu.org/licenses/gpl.txt GPL http://www.gnu.org/licenses/gpl.txt
  * @package Exponent-CMS
- * @copyright 2004-2006 OIC Group, Inc.
+ * @copyright 2004-2011 OIC Group, Inc.
  * @author Adam Kessler <adam@oicgroup.net>
  * @version 2.0.0
  */
@@ -42,7 +42,7 @@ class expJavascript {
             $yui2Loader = new Lissa(YUI2_VERSION, null);
 
             // instantiate loader class for yui3
-            $yui3Loader = new Lissa(YUI3_VERSION, null, $expJS);
+            //$yui3Loader = new Lissa(YUI3_VERSION, null, $expJS);
 
             // load Exponent's yui2 dependencies
             $yui2Loader->load("dom");

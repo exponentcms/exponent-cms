@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2006 OIC Group, Inc.
+# Copyright (c) 2004-2011 OIC Group, Inc.
 # Written and Designed by James Hunt
 #
 # This file is part of Exponent
@@ -210,6 +210,7 @@ function exponent_theme_includeCSS($cssfile) {
  */
 function exponent_theme_headerInfo($config) {
     echo headerInfo($config);
+	echo exponent_theme_advertiseRSS();
 }
 
 function headerInfo($config) {
@@ -283,6 +284,53 @@ function headerInfo($config) {
     }
 
     return $str;
+}
+
+/* exdoc
+ * Output <link /> elements for each RSS feed on the site
+ *
+ * @node Subsystems:Theme
+ */
+function exponent_theme_advertiseRSS() {
+	if (defined("ADVERTISE_RSS") && ADVERTISE_RSS == 1){
+		echo "\n\t<!-- RSS Feeds -->\n";
+		$rss = new expRss();
+		$feeds = $rss->getFeeds();
+		foreach ($feeds as $feed) {
+			if ($feed->enable_rss) {
+				$title = empty($feed->feed_title) ? 'RSS' : htmlspecialchars($feed->feed_title, ENT_QUOTES);
+				$params['module'] = $feed->module;
+				$params['src'] = $feed->src;
+				echo "\t".'<link rel="alternate" type="application/rss+xml" title="' . $title . '" href="' . exponent_core_makeRSSLink($params) . "\" />\n";
+			}
+		}
+		
+		// now for the old school module rss feeds
+		global $db;
+		
+		$modules = $db->selectObjects("sectionref", "refcount > 0");  // get all the modules being using
+		$feeds = array();
+		foreach ($modules as $module) {
+			if (isset($feeds[$module->source])) continue;
+			$location->mod = $module->module;
+			$location->src = $module->source;
+			$location->int = $module->internal;
+
+			if (!controllerExists($module->module)) {	
+				//get the module's config data
+				$config = $db->selectObject($module->module."_config", "location_data='".serialize($location)."'");
+				if (!empty($config->enable_rss)) {
+					$title = empty($config->feed_title) ? 'RSS' : htmlspecialchars($config->feed_title, ENT_QUOTES);
+					$params['module'] = $module->module;
+					$params['src'] = $module->source;
+					if (!empty($module->internal)) $params['int'] = $module->internal;
+
+					echo "\t".'<link rel="alternate" type="application/rss+xml" title="' . $title . '" href="' . exponent_core_makeRSSLink($params) . "\" />\n";
+					$feeds[$module->source] = $title;
+				}
+			}
+		}
+	}
 }
 
 function exponent_theme_footerInfo($params = array()) {

@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2008 OIC Group, Inc.
+# Copyright (c) 2004-2011 OIC Group, Inc.
 # Written and Designed by Adam Kessler
 #
 # This file is part of Exponent
@@ -20,6 +20,7 @@
 class snippetController extends expController {
 	//protected $basemodel_name = '';
 	public $useractions = array('showall'=>'Copy and Display Snippet');
+	public $codequality = 'beta';
 
 	function name() { return $this->displayname(); } //for backwards compat with old modules
 	function displayname() { return "Code Snippets"; }

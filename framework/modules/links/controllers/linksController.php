@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2008 OIC Group, Inc.
+# Copyright (c) 2004-2011 OIC Group, Inc.
 # Written and Designed by Adam Kessler
 #
 # This file is part of Exponent
@@ -26,12 +26,13 @@ class linksController extends expController {
     function requiresConfiguration() { return true; }
 
 	public $remove_configs = array(
-        'aggregretion',
         'comments',
         'files',
+        'pagination',
         'rss',
         'tags'
     );
+    public $codequality = 'beta';
 
     function name() { return $this->displayname(); } //for backwards compat with old modules
     function displayname() { return "Link Manager"; }
@@ -47,10 +48,10 @@ class linksController extends expController {
         expHistory::set('viewable', $this->params);
         $modelname = $this->basemodel_name;
         $where = $this->hasSources() ? $this->aggregateWhereClause() : null;
-        $limit = isset($this->params['limit']) ? $this->params['limit'] : null;
-        $order = isset($this->params['order']) ? $this->params['order'] : "rank ASC";
+        $limit = isset($this->config['limit']) ? $this->config['limit'] : null;
+        $order = isset($this->config['order']) ? $this->config['order'] : "rank";
         $links = $this->$modelname->find('all', $where, $order, $limit);
-        assign_to_template(array('items'=>$links, 'modelname'=>$modelname));
+        assign_to_template(array('items'=>$links, 'modelname'=>$modelname, 'rank'=>($order==='rank')?1:0));
     }
     
     public function show() {
