@@ -26,7 +26,10 @@ if (isset($_GET['date_id']) || isset($_GET['src'])) {
 	$loc = exponent_core_makeLocation('calendarmodule',$_GET['src'],'');
 	$locsql = "(location_data='".serialize($loc)."'";
 	$config = $db->selectObject("calendarmodule_config","location_data='".serialize($loc)."'");
-	if (isset($config->enable_ical) && $config->enable_ical) {
+	if (!$config) {
+		$config->enable_ical = 1;
+	}
+	if ($config->enable_ical) {
 		if (!defined("SYS_DATETIME")) include_once(BASE."subsystems/datetime.php");
 
 		if (isset($_GET['date_id'])) {  // get single specific event only

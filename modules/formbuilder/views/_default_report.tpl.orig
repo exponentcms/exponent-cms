@@ -18,14 +18,20 @@
 <style type="text/css" media="screen">
     {$css}
 </style> 
+<<<<<<< HEAD
+=======
 {else}
 	{css unique="default-report" corecss="tables"}
 
-
 	{/css}
+>>>>>>> release/v2.0.0.beta2
 {/if}
  
- <table border="0" cellspacing="0" cellpadding="0" class="exp-skin-table">
+{css unique="data-view" corecss="tables"}
+
+{/css}
+
+<table border="0" cellspacing="0" cellpadding="0" class="exp-skin-table">
     <thead>
         <tr>
             <th colspan="2">
