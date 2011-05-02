@@ -34,7 +34,6 @@
 	{/permissions}
 	{if $moduletitle != ""}<h2>{$moduletitle}</h2>{/if}
 	 <div class="bodycopy">
-	    {$description}
     	{if $description != ""}
     		{$description}
     	{/if}
