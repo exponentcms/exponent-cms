@@ -51,7 +51,7 @@ return array(
                 'classname'=>'edit',
             ),
             array(
-                'text'=>"Change My Pasword",
+                'text'=>"Change My Password",
                 'url'=>makeLink(array('controller'=>'users','action'=>'change_password','ud'=>$user->id)),
                 'classname'=>'password',
             ),
