@@ -18,7 +18,7 @@
 <style type="text/css" media="screen">
     {$css}
 </style> 
-{else
+{else}
 	{css unique="default-report" corecss="tables"}
 
 	{/css}
