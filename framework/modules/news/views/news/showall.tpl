@@ -57,7 +57,7 @@
                 {filedisplayer view="`$config.filedisplay`" files=$item->expFile record=$item is_listing=1}
 
                 {if $config.usebody==1}
-                    <p>{$item->body|summarize:"html":"para"}</p>
+                    <p>{$item->body|summarize:"html":"paralinks"}</p>
                 {elseif $config.usebody==2}
 				{else}
                     {$item->body}

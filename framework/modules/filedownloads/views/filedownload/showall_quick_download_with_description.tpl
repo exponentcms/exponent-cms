@@ -56,7 +56,7 @@
 					</div>
 				{/if}
 				{if $config.usebody==1}
-                    <p>{$file->body|summarize:"html":"para"}</p>
+                    <p>{$file->body|summarize:"html":"paralinks"}</p>
                 {elseif $config.usebody==2}
 				{else}
                     {$file->body}
