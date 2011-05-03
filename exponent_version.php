@@ -36,7 +36,7 @@ if (!defined('EXPONENT_VERSION_MAJOR')) {
 		/* exdoc
 		 * This is the date that this version of Exponent was exported from BZR and built.
 		 */
-		define('EXPONENT_VERSION_BUILDDATE',time());
+		define('EXPONENT_VERSION_BUILDDATE','%%BUILDDATE%%');
 		/* exdoc
 		 * This specifies the type of release, either 'alpha','beta','rc' or '' (for stable).
 		 */
@@ -52,7 +52,7 @@ if (!defined('EXPONENT_VERSION_MAJOR')) {
 		define('EXPONENT_VERSION_REVISION','0');
 		define('EXPONENT_VERSION_TYPE','develop');
 		define('EXPONENT_VERSION_ITERATION','');
-		define('EXPONENT_VERSION_BUILDDATE','time()');
+		define('EXPONENT_VERSION_BUILDDATE',time());
 	}
 }
 
