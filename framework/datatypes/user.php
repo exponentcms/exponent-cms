@@ -46,7 +46,7 @@ class user extends expRecord {
         global $db;
         
         // if someone is trying to make this user an admin, lets make sure they have permission to do so.
-        if(isset($params['is_admin']) || isset($params['is_acting_admin'])) $this->checkAdminFlags();
+        $this->checkAdminFlags();
         
         // if the site is configured to use the email addy as the username we need to force the 
         // the email address into the username field.
