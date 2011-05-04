@@ -14,6 +14,10 @@
  *
  *}
 
+{css unique="manage_groups" corecss="tables"}
+
+{/css}
+
 <div class="module users manage">
     <div class="info-header">
         <div class="related-actions">
@@ -47,7 +51,7 @@
 			        {permissions level=$smarty.const.UILEVEL_PERMISSIONS}
 						<div class="item-actions">
 							{icon class=edit action=edituser record=$user}
-							{icon img=change_password.png action=change_password record=$user title="Change this users password"}
+							{icon img=change_password.png action=change_password record=$user title="Change this users password" text="Password"}
 							{icon action=delete record=$user title="Delete" onclick="return confirm('Are you sure you want to delete this user?');"}
 						</div>
                     {/permissions}

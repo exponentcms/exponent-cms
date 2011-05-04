@@ -14,6 +14,10 @@
  *
  *}
 
+{css unique="manage_groups" corecss="tables"}
+
+{/css}
+ 
 <div class="module users manage-extensions">
     <div class="info-header">
         <div class="related-actions">
