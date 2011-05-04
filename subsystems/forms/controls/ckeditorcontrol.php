@@ -60,14 +60,14 @@ class ckeditorcontrol extends formcontrol {
 		if (empty($toolbar) || $this->toolbar=="default") {
 			$tb = "
 	           ['Source','-','Preview','-','Templates'],
-               ['Cut','Copy','Paste','PasteText','PasteFromWord'],
+               ['Cut','Copy','Paste','PasteText','PasteFromWord','-','Print','SpellChecker','Scayt'],
                ['Undo','Redo','-','Find','Replace','-','SelectAll','RemoveFormat'],
                '/',
                ['Bold','Italic','Underline','Strike','-','Subscript','Superscript'],
                ['NumberedList','BulletedList','-','Outdent','Indent','Blockquote','CreateDiv'],
                ['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock'],
                ['Link','Unlink','Anchor'],
-               ['Image','Flash','Table','HorizontalRule','Smiley','SpecialChar','PageBreak'],
+               ['Image','Flash','Table','HorizontalRule','Smiley','SpecialChar','PageBreak','Iframe'],
                '/',
                ['Styles','Format','Font','FontSize'],
                ['TextColor','BGColor'],
@@ -91,7 +91,8 @@ class ckeditorcontrol extends formcontrol {
 				{
 					skin : '".$skin."',
 					toolbar : [".stripSlashes($tb)."],
-                    forcePasteAsPlainText:true,
+					pasteFromWordPromptCleanup : true,
+                    scayt_autoStartup : true,
                     filebrowserBrowseUrl : '".makelink(array("controller"=>"file", "action"=>"picker", "ajax_action"=>1, "ck"=>1, "update"=>"fck"))."',
                     filebrowserWindowWidth : '640',
                     filebrowserWindowHeight : '480',
