@@ -37,7 +37,8 @@ class migrationController extends expController {
         'resourcesmodule'=>'filedownloadController',
         'rotatormodule'=>'textController',
         'faqmodule'=>'faqController',
-        'headlinemodule'=>'headlineController',
+//        'headlinemodule'=>'headlineController',
+        'headlinemodule'=>'textController',
         'linkmodule'=>'linksController',
         'weblogmodule'=>'blogController',
         'listingmodule'=>'portfolioController',
@@ -1086,7 +1087,7 @@ class migrationController extends expController {
 
 				//check to see if it's already pulled in (circumvent !is_original)
 				$ploc = $iloc;
-				$ploc->mod = "headline";
+				$ploc->mod = "text";
 				if ($db->countObjects($ploc->mod, "location_data='".serialize($ploc)."'")) {
 					$iloc->mod = 'headlinemodule';
 					$linked = true;
@@ -1097,9 +1098,9 @@ class migrationController extends expController {
                 $headlines = $old_db->selectObjects('headline', "location_data='".serialize($iloc)."'");
                 if ($headlines) {
                     foreach ($headlines as $hl) {
-                        $headline = new headline();
+                        $headline = new text();
                         $loc = expUnserialize($hl->location_data);
-                        $loc->mod = "headline";
+                        $loc->mod = "text";
                         $headline->location_data = serialize($loc);
                         $headline->title = $hl->headline;
                         $headline->poster = 1;
