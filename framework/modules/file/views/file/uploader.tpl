@@ -4,6 +4,7 @@
     <meta http-equiv="content-type" content="text/html; charset=utf-8">
     <title>File Uploader  |  Exponent CMS</title>
     <link rel="stylesheet" type="text/css" href="{$smarty.const.URL_FULL}framework/core/assets/css/msgq.css"> 
+    <link rel="stylesheet" type="text/css" href="{$smarty.const.URL_FULL}framework/core/assets/css/admin-global.css"> 
     <link rel="stylesheet" type="text/css" href="{$smarty.const.URL_FULL}framework/modules/file/assets/css/filemanager.css"> 
 
     <script type="text/javascript" src="{$smarty.const.YUI2_PATH}yahoo-dom-event/yahoo-dom-event.js"></script>
@@ -25,8 +26,13 @@
         <a id="uploadLink" class="btn" href="#"><strong><em>Upload Files</em></strong></a>
         <a id="backlink" class="btn" href="{link action=picker update=$smarty.get.update fck=$smarty.get.fck ajax_action=1}?CKEditor={$smarty.get.CKEditor}&amp;CKEditorFuncNum={$smarty.get.CKEditorFuncNum}&amp;langCode={$smarty.get.langCode}"><strong><em>Back to Manager</em></strong></a>
     </div>
+	<div class="info-header">
+		<div class="related-actions">
+			{help text="Get Help with Uploading Files" module="upload-files"}
+		</div>
+		&nbsp;
+	</div>    
     {messagequeue}
-    
     <div id="dataTableContainer"></div>
 </div>
 

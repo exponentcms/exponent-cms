@@ -13,14 +13,19 @@
  * GPL: http://www.gnu.org/licenses/gpl.txt
  *
  *}
+ 
 {css unique="standalone" corecss="tables"}
 
 {/css}
 
-
 <div class="navigationmodule manager-standalone">
 	<div class="form_header">
-		<h1>{$_TR.form_title}</h1>
+		<div class="info-header">
+			<div class="related-actions">
+				{help text="Get Help Managing Pages" module="manage-all-pages"}
+			</div>
+			<h1>{$_TR.form_title}</h1>
+		</div>
 		<p>{$_TR.form_header}</p>
 		<a class="add" href="{link action=edit_contentpage parent=-1}">{$_TR.new}</a>
 	</div>

@@ -25,20 +25,23 @@
 
 {/css}
 
-
-
 <div class="navigationmodule manager-hierarchy">
 
-		<div class="form_header">
-				<h1>{$_TR.form_title}</h1>
-				<p>{$_TR.form_header}</p>
+	<div class="form_header">
+		<div class="info-header">
+			<div class="related-actions">
+				{help text="Get Help Managing the Menu Hierarchy" module="manage-all-pages"}
+			</div>
+			<h1>{$_TR.form_title}</h1>
 		</div>
-		{permissions}
+		<p>{$_TR.form_header}</p>
+	</div>
+	{permissions}
 		{if $user->isAdmin()}
-		<a class="add" href="{link action=add_section parent=0}">{$_TR.new_top_level}</a>
+			<a class="add" href="{link action=add_section parent=0}">{$_TR.new_top_level}</a>
 		{/if}
-		{/permissions}
-		<div id="navtree"><img src="{$smarty.const.ICON_RELATIVE}ajax-loader.gif">	<strong>Loading Navigation</strong></div>
+	{/permissions}
+	<div id="navtree"><img src="{$smarty.const.ICON_RELATIVE}ajax-loader.gif">	<strong>Loading Navigation</strong></div>
 </div>
 
 {script yui2mods="'treeview','menu','animation','dragdrop','json','container','connection'" unique="DDTreeNav" yuideptype="js"}

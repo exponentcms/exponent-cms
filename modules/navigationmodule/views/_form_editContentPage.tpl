@@ -17,9 +17,13 @@
 
 {/css}
 
-
 <div class="navigationmodule form-editContentPage"> 
-    <h1>{if $is_edit == 1}{$_TR.form_title_edit}{else}{$_TR.form_title_new}{/if}</h1>
+    <div class="info-header">
+        <div class="related-actions">
+			{help text="Get Help Editing Content Pages" module="edit-page"}
+        </div>
+		<h1>{if $is_edit == 1}{$_TR.form_title_edit}{else}{$_TR.form_title_new}{/if}</h1>
+	</div>
     <p>{if $is_edit == 1}{$_TR.form_header_edit}{else}{$_TR.form_header_new}{/if}</p>
 
     {$form_html}

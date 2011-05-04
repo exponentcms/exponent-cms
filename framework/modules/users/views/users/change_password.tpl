@@ -15,7 +15,12 @@
  *}
 
 <div class="module users change-password">
-    <h1>Change {if $isuser}your{else}{$u->username}'s{/if} password</h1>
+		<div class="info-header">
+			<div class="related-actions">
+				{help text="Get Help with Changing User Passwords" module="change-my-password"}
+			</div>
+			<h1>Change {if $isuser}your{else}{$u->username}'s{/if} password</h1>
+		</div>
     <p>To change your password enter your current password and then enter what you would like your new password to be.</p>
     
     {form action=save_change_password}
