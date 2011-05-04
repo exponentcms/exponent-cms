@@ -1702,6 +1702,29 @@ class migrationController extends expController {
 		$db->insertObject($m, 'container');
     }
 
+	// module customized function to circumvent going to previous page
+	function saveconfig() {
+        
+        // unset some unneeded params
+        unset($this->params['module']);
+        unset($this->params['controller']);
+        unset($this->params['src']);
+        unset($this->params['int']);
+        unset($this->params['id']);
+        unset($this->params['action']);
+        unset($this->params['PHPSESSID']);
+        
+        // setup and save the config
+        $config = new expConfig($this->loc);
+        $config->update(array('config'=>$this->params));
+		// update our object config
+		$this->config = expUnserialize($config->config);
+        flash('message', 'Configuration updated');
+//        expHistory::back();
+		$this->fix_database();
+		echo "<a class=\"admin\" href=\"/migration/manage_users\">Next Step -> Migrate Users & Groups</a>";
+    }
+	
 	// connect to old site's database
     private function connect() {
         // check for required info...then make the DB connection.
@@ -1727,6 +1750,75 @@ class migrationController extends expController {
        $database->prefix = $this->config['prefix']. '_';;
        return $database;
     }
+
+// several things that may clear up problems in the old database and do a better job of migrating data
+	private function fix_database() {
+		// let's test the connection
+		$old_db = $this->connect();
+		
+		print_r("<h2>Connected to the Old Database!<br>Running several checks and fixes on the old database<br>to enhance Migration.</h2><br><br>");
+
+		print_r("<pre>");
+	// upgrade sectionref's that have lost their originals
+		print_r("<b>Searching for sectionrefs that have lost their originals</b><br><br>");
+		$sectionrefs = $old_db->selectObjects('sectionref',"is_original=0");
+		print_r("Found: ".count($sectionrefs)." copies (not originals)<br>");
+		foreach ($sectionrefs as $sectionref) {
+			if ($old_db->selectObject('sectionref',"module='".$sectionref->module."' AND source='".$sectionref->source."' AND is_original='1'") == null) {
+			// There is no original for this sectionref so change it to the original
+				$sectionref->is_original = 1;
+				$old_db->updateObject($sectionref,"sectionref");
+				print_r("Fixed: ".$sectionref->module." - ".$sectionref->source."<br>");
+			}
+		}
+		print_r("</pre>");
+	
+		print_r("<pre>");
+	// upgrade sectionref's that have still point to missing sections (pages)
+		print_r("<b>Searching for sectionrefs pointing to missing sections/pages <br>to fix for the Recycle Bin</b><br><br>");
+		$sectionrefs = $old_db->selectObjects('sectionref',"refcount!=0");
+		foreach ($sectionrefs as $sectionref) {
+			if ($old_db->selectObject('section',"id='".$sectionref->section."'") == null) {
+			// There is no section/page for sectionref so change the refcount
+				$sectionref->refcount = 0;
+				$old_db->updateObject($sectionref,"sectionref");
+				print_r("Fixed: ".$sectionref->module." - ".$sectionref->source."<br>");
+			}
+		}
+		print_r("</pre>");
+
+		print_r("<pre>");
+	// add missing locationref's based on existing sectionref's 
+		print_r("<b>Searching for detached modules with no original</b><br><br>");
+		$sectionrefs = $old_db->selectObjects('sectionref',1);
+		foreach ($sectionrefs as $sectionref) {
+			if ($old_db->selectObject('locationref',"module='".$sectionref->module."' AND source='".$sectionref->source."'") == null) {
+			// There is no locationref for sectionref.  Populate reference
+				$newLocRef->module   = $sectionref->module;
+				$newLocRef->source   = $sectionref->source;
+				$newLocRef->internal = $sectionref->internal;
+				$newLocRef->refcount = $sectionref->refcount;
+				$old_db->insertObject($newLocRef,"locationref");
+				print_r("Copied: ".$sectionref->module." - ".$sectionref->source."<br>");
+			}
+		}
+		print_r("</pre>");	
+
+		print_r("<pre>");
+	// delete sectionref's & locationref's that have empty sources
+		print_r("<b>Searching for unassigned modules (no source)</b><br><br>");
+		$sectionrefs = $old_db->selectObjects('sectionref',"source=''");
+		if ($sectionrefs != null) {
+			print_r("Removing: ".count($sectionrefs)." sectionref empties (no source)<br>");
+			$old_db->delete('sectionref',"source=''");
+		}
+		$locationrefs = $old_db->selectObjects('locationref',"source=''");
+		if ($locationrefs != null) {
+			print_r("Removing: ".count($locationrefs)." locationref empties (no source)<br>");
+			$old_db->delete('locationref',"source=''");
+		}
+		print_r("</pre>");		
+	}
 }
 
 ?>
