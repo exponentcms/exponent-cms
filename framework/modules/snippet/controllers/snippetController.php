@@ -22,7 +22,7 @@ class snippetController extends expController {
     public $basemodel_name = 'text';
 	public $useractions = array(
 		'showall'=>'Copy and Display Snippet',
-		'highlight'=>'Highlight and Display Snippet'
+		'showall_highlight'=>'Highlight and Display Snippet'
 	);
 	public $codequality = 'stable';
 
@@ -44,7 +44,7 @@ class snippetController extends expController {
 		assign_to_template(array('items'=>$items));
 	}	
 
-	public function highlight() {
+	public function showall_highlight() {
 	    expHistory::set('viewable', $this->params);
 		$where = $this->aggregateWhereClause();
 		$order = 'rank ASC';
