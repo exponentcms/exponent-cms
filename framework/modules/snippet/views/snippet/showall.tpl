@@ -16,35 +16,39 @@
 
 <div class="module snippet showall">
     {if $moduletitle}<h1>{$moduletitle}</h1>{/if}
-
-    {assign var=text value=$page->records[0]}
-    {if $text->title}<h2>{$text->title}</h2>{/if}
     {permissions}
-	<div class="item-actions">
-        {if $permissions.edit == 1}
-            {if $text->id != ""}
-                {icon action=edit record=$text title="Edit this code snippet"}
-            {else}
-                {icon action=edit class=add title="Add a new code snippet"|gettext text="Add a code snippet"|gettext}
-            {/if}              
-        {/if}
-        {if $permissions.delete == 1 && $text->id != ""}
-            {icon action=delete record=$text title="Delete this `$modelname`" onclick="return confirm('Are you sure you want to delete this `$modelname`?');"}
-        {/if}
-	</div>
-	<div class="module-actions">
-        {if $permissions.edit == true}
-            {if $smarty.foreach.items.first == 0}
-                {icon action=rerank img=up.png record=$text push=up}    
+        <div class="module-actions">
+            {if $permissions.create == 1}
+				{icon class=add action=edit rank=1 title="Add a snippet to the top"|gettext text="Add a snippet at the top"|gettext}
             {/if}
-            {if $smarty.foreach.items.last == 0}
-                {icon action=rerank img=down.png record=$text push=down}
+            {if $permissions.manage == 1}
+                {ddrerank items=$items model="text" label="Code Snippets"|gettext}
             {/if}
-        {/if}
-	</div>
+        </div>
     {/permissions}
-    <div class="bodycopy">
-        {$text->body}
+    {foreach from=$items item=text name=items}
+        {if $text->title}<h2>{$text->title}</h2>{/if}
+        {permissions}
+			<div class="item-actions">
+				{if $permissions.edit == 1}
+					{icon action=edit class="edit" record=$text title="Edit this Snippet"|gettext}
+				{/if}
+				{if $permissions.delete == 1}
+					{icon action=delete record=$text title="Delete this Snippet"|gettext onclick="return confirm('Are you sure you want to delete this Snippet?');"}
+				{/if}
+			</div>
+        {/permissions}
+        <div class="bodycopy">
+            {$text->body}
+            {clear}
+        </div>
+        {permissions}
+			<div class="module-actions">
+				{if $permissions.create == 1}
+					{icon class=add action=edit rank=`$text->rank+1` title="Add a snippet here"|gettext text="Add a snippet here"|gettext}
+				{/if}
+			</div>
+        {/permissions}
         {clear}
-    </div>
+    {/foreach}
 </div>
