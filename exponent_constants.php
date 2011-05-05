@@ -1,4 +1,4 @@
-<?
+<?php
 if (!defined('DISPLAY_THEME')) {
 	/* exdoc
 	 * The directory and class name of the current active theme.  This may be different
