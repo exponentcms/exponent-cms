@@ -1775,7 +1775,7 @@ class migrationController extends expController {
 		print_r("</pre>");
 	
 		print_r("<pre>");
-	// upgrade sectionref's that have still point to missing sections (pages)
+	// upgrade sectionref's that point to missing sections (pages)
 		print_r("<b>Searching for sectionrefs pointing to missing sections/pages <br>to fix for the Recycle Bin</b><br><br>");
 		$sectionrefs = $old_db->selectObjects('sectionref',"refcount!=0");
 		foreach ($sectionrefs as $sectionref) {
@@ -1790,7 +1790,7 @@ class migrationController extends expController {
 
 		print_r("<pre>");
 	// add missing locationref's based on existing sectionref's 
-		print_r("<b>Searching for detached modules with no original</b><br><br>");
+		print_r("<b>Searching for detached modules with no original (no matching locationref)</b><br><br>");
 		$sectionrefs = $old_db->selectObjects('sectionref',1);
 		foreach ($sectionrefs as $sectionref) {
 			if ($old_db->selectObject('locationref',"module='".$sectionref->module."' AND source='".$sectionref->source."'") == null) {
@@ -1805,20 +1805,20 @@ class migrationController extends expController {
 		}
 		print_r("</pre>");	
 
-		print_r("<pre>");
-	// delete sectionref's & locationref's that have empty sources
-		print_r("<b>Searching for unassigned modules (no source)</b><br><br>");
-		$sectionrefs = $old_db->selectObjects('sectionref',"source=''");
-		if ($sectionrefs != null) {
-			print_r("Removing: ".count($sectionrefs)." sectionref empties (no source)<br>");
-			$old_db->delete('sectionref',"source=''");
-		}
-		$locationrefs = $old_db->selectObjects('locationref',"source=''");
-		if ($locationrefs != null) {
-			print_r("Removing: ".count($locationrefs)." locationref empties (no source)<br>");
-			$old_db->delete('locationref',"source=''");
-		}
-		print_r("</pre>");		
+		// print_r("<pre>");
+	// // delete sectionref's & locationref's that have empty sources
+		// print_r("<b>Searching for unassigned modules (no source)</b><br><br>");
+		// $sectionrefs = $old_db->selectObjects('sectionref',"source=''");
+		// if ($sectionrefs != null) {
+			// print_r("Removing: ".count($sectionrefs)." sectionref empties (no source)<br>");
+			// $old_db->delete('sectionref',"source=''");
+		// }
+		// $locationrefs = $old_db->selectObjects('locationref',"source=''");
+		// if ($locationrefs != null) {
+			// print_r("Removing: ".count($locationrefs)." locationref empties (no source)<br>");
+			// $old_db->delete('locationref',"source=''");
+		// }
+		// print_r("</pre>");		
 	}
 }
 
