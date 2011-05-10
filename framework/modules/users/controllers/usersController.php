@@ -70,6 +70,7 @@ class usersController extends expController {
         
         // set history
         expHistory::set('editable', $this->params);
+        expSession::set("userkey",sha1(microtime()));
         
         $id = isset($this->params['id']) ? $this->params['id'] : null;
         
@@ -83,14 +84,15 @@ class usersController extends expController {
         }
         
         $active_extensions = $db->selectColumn('profileextension','classname','active=1', 'rank');
-        assign_to_template(array('edit_user'=>$u, 'extensions'=>$active_extensions));
+        assign_to_template(array('edit_user'=>$u, 'extensions'=>$active_extensions,"userkey"=>expSession::get("userkey")));
     }
     
     public function update() {
         global $user, $db;
-        
+
         // get the id of user we are editing, if there is one
         $id = empty($this->params['id']) ? null : $this->params['id'];
+        if ((($user->id == $id) || $user->isAdmin()) && $this->params['userkey'] != expSession::get("userkey")) expHistory::back();
         
         // make sure this user should be updating user accounts
         if (!exponent_users_isLoggedIn() && SITE_ALLOW_REGISTRATION == 0){
