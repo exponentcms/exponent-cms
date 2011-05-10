@@ -37,7 +37,8 @@
 
 
     <div class="bodycopy">
-        {img alt=$record->alt file_id=$record->expFile[0]->id w=$config.enlarged class="img-large" title=$record->alt|default:$record->expFile[0]->title}    
+        {capture assign="float"}{$config.pa_float_enlarged|lower|replace:" ":""}{/capture}
+        {img alt=$record->alt file_id=$record->expFile[0]->id w=$config.pa_showall_enlarged class="img-large float-`$float`" title=$record->alt|default:$record->expFile[0]->title style="float:`$float`;"}    
         {$record->body}
     </div>
     

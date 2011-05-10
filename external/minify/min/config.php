@@ -5,7 +5,8 @@
  */
 
 //Initialize exponent Framework
-//include_once('../../../exponent_common.php');
+include_once('../../../exponent_common.php');
+include_once(BASE.'conf/config.php');
 
 /**
  * In 'debug' mode, Minify can combine files with no minification and 
@@ -42,7 +43,7 @@ $min_enableBuilder = false;
  * will have to load extra code to guess. Some examples below:
  */
 //$min_cachePath = 'c:\\WINDOWS\\Temp';
-//$min_cachePath = '/tmp';
+$min_cachePath = BASE.'/tmp/minify';
 //$min_cachePath = preg_replace('/^\\d+;/', '', session_save_path());
 
 /**
@@ -87,9 +88,11 @@ $min_serveOptions['bubbleCssImports'] = false;
  * Note: Despite this setting, if you include a number at the end of the
  * querystring, maxAge will be set to one year. E.g. /min/f=hello.css&123456
  */
-$min_serveOptions['maxAge'] = 180000;
+ 
+$ma = MINIFY_MAXAGE;
+$ma = empty($ma)?0:$ma;
+$min_serveOptions['maxAge'] = $ma;
 //$min_serveOptions['maxAge'] = 0;
-
 
 /**
  * If you'd like to restrict the "f" option to files within/below

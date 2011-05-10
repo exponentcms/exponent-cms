@@ -15,16 +15,21 @@
     position:relative;
 }
 
-.photoalbum.showall ul li div.admin-actions {
+.photoalbum.showall ul li div.item-actions {
     display:none;
 }
 
-.photoalbum.showall ul li:hover div.admin-actions {
+.photoalbum.showall ul li:hover div.item-actions {
     display:block;
     position:absolute;
-    top:-5px;
-    left:-5px;
+    top:5px;
+    left:5px;
     padding:3px;
+}
+
+.photoalbum.showall ul li .item-actions a {
+    display:block;
+    text-align:left;
 }
 
 .photoalbum.showall ul li em {
@@ -33,8 +38,12 @@
 
 /****************  show  ***********************/
 
-.photoalbum.show img.img-large {
+.photoalbum.show img.img-large.float-right {
+    margin-left:20px;
+}
 
+.photoalbum.show img.img-large.float-left {
+    margin-right:20px;
 }
 
 .photoalbum.show .next-prev {

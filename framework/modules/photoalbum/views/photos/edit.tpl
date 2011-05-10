@@ -31,16 +31,16 @@
         {control type=hidden name=id value=$record->id}
         <div id="demo" class="yui-navset">
             <ul class="yui-nav">
-                <li class="selected"><a href="#tab1"><em>General</em></a></li>
-                <li><a href="#tab3"><em>Files</em></a></li>
-                <li><a href="#tab4"><em>SEO</em></a></li>
+                <li class="selected"><a href="#tab1"><em>{"General"|gettext}</em></a></li>
+                <li><a href="#tab3"><em>{"Image"|gettext}</em></a></li>
+                <li><a href="#tab4"><em>{"SEO"|gettext}</em></a></li>
             </ul>            
             <div class="yui-content">
             <div id="tab1">
                 {control type=text name=title label="Title" value=$record->title}
                 {control type=html name=body label="Description" value=$record->body}
-                {control type="text" name="link" label="Link this image" value=$record->link}
-                {control type="text" name="alt" label="Alt Tag" value=$record->alt}
+                {control type="text" name="link" label="Link a Slideshow Slide" value=$record->link}
+                {control type="text" name="alt" label="Alt Tag (overwrites alt supplied in file manager)" value=$record->alt}
             </div>
             <div id="tab3">
                 {control type="files" name="files" label="Files" value=$record->expFile limit=1}
@@ -49,8 +49,8 @@
                  <h2>SEO Settings</h2>
                 {control type="text" name="sef_url" label="SEF URL" value=$record->sef_url}
                 {control type="text" name="meta_title" label="Meta Title" value=$record->meta_title}
-                {control type="textarea" name="meta_keywords" label="Meta Description" rows=5 cols=35 value=$record->meta_description}
-                {control type="textarea" name="meta_description" label="Meta Keywords" rows=5 cols=35 value=$record->meta_keywords}
+                {control type="textarea" name="meta_description" label="Meta Description" rows=5 cols=35 value=$record->meta_description}
+                {control type="textarea" name="meta_keywords" label="Meta Keywords" rows=5 cols=35 value=$record->meta_keywords}
             </div>
             </div>
         </div>

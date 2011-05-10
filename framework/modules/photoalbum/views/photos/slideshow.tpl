@@ -35,34 +35,40 @@
     {/permissions}
 
     <div id="ss-{$name}" class="slideshow-container" style="width:{$config.width|default:350}px;">    
-        <ul class="slideshow-frame"{if $config.width} style="width:{$config.width}px;height:{$config.height}px;"{/if}>
+        <ul class="slideshow-frame" style="width:{$config.width|default:350}px;height:{$config.height|default:300}px;">
             {foreach key=key from=$slides item=slide name=slides}
             <li class="slide" style="position:absolute;{if $smarty.foreach.slides.first}z-index:4;{else}z-index:1;{/if}">
-                <div class="bodycopy">
+                {permissions}
+                    <div class="item-actions">
+                        {if $permissions.edit == 1}
+                            {icon action=edit record=$slide title="Edit `$item->title`"}
+                        {/if}
+                        {if $permissions.delete == 1}
+                            {icon action=delete record=$slide title="Delete `$item->title`" onclick="return confirm('Are you sure you want to delete this `$modelname`?');"}
+                        {/if}
+                        {if $permissions.create == 1}
+                            {icon class=add action=edit rank=`$slide->rank+1` title="Add another slide here"  text="Add After"}
+                        {/if}
+                    </div>
+                {/permissions}
 
-                    {permissions}
-                        <div class="item-actions">
-                            {if $permissions.edit == 1}
-                                {icon action=edit record=$slide title="Edit `$item->title`"}
-                            {/if}
-                            {if $permissions.delete == 1}
-                                {icon action=delete record=$slide title="Delete `$item->title`" onclick="return confirm('Are you sure you want to delete this `$modelname`?');"}
-                            {/if}
-                            {if $permissions.create == 1}
-                                {icon class=add action=edit rank=`$slide->rank+1` title="Add another slide here"  text="Add another slide here"}
-                            {/if}
-                        </div>
-                    {/permissions}
+                <div class="bodycopy">
 
                     {if !$config.hidetext}
                         <h2>{$slide->title}</h2>
                         {$slide->body}
                     {/if}
                 </div>
+                {if $slide->link}
+                    <a href="{$slide->link}">
+                {/if}
                 {if $config.quality==100}
                     <img src="{$slide->expFile[0]->url}" class="slide-image" />
                 {else}
-                    {img file_id=$slide->expFile[0]->id w=$config.width|default:350 h=$config.height|default:200 class="slide-image" zc=1 q=$config.quality|default:80}
+                    {img file_id=$slide->expFile[0]->id w=$config.width|default:350 h=$config.height|default:300 class="slide-image" zc=1 q=$config.quality|default:80}
+                {/if}
+                {if $slide->link}
+                    </a>
                 {/if}
             </li>
             {foreachelse}

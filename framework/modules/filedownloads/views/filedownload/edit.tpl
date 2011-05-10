@@ -62,8 +62,8 @@
                  <h2>SEO Settings</h2>
                 {control type="text" name="sef_url" label="SEF URL" value=$record->sef_url}
                 {control type="text" name="meta_title" label="Meta Title" value=$record->meta_title}
-                {control type="textarea" name="meta_keywords" label="Meta Description" rows=5 cols=35 value=$record->meta_description}
-                {control type="textarea" name="meta_description" label="Meta Keywords" rows=5 cols=35 value=$record->meta_keywords}
+                {control type="textarea" name="meta_description" label="Meta Description" rows=5 cols=35 value=$record->meta_description}
+                {control type="textarea" name="meta_keywords" label="Meta Keywords" rows=5 cols=35 value=$record->meta_keywords}
             </div>
             </div>
         </div>
