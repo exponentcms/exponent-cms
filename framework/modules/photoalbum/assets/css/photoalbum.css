@@ -1,11 +1,14 @@
 /****************  showall  ***********************/
 
+.photoalbum.showall ul.image-list {
+    padding:0;
+    margin:0;
+}
+
 .photoalbum.showall ul li {
-    display:-moz-inline-stack;
-display:inline-block;
-zoom:1;
-*display:inline;
-    border:2px solid #999;
+    display:inline-block;
+    zoom:1;
+    *display:inline;
     margin:5px 5px 0 0;
     padding:3px;
     text-align:center;
@@ -30,9 +33,12 @@ zoom:1;
 
 /****************  show  ***********************/
 
-.photoalbum.show img.enlarged {
-    float:left;
-    margin-right:10px;
-    border:1px solid #999;
-    padding:2px;
+.photoalbum.show img.img-large {
+
 }
+
+.photoalbum.show .next-prev {
+    padding:5px 0;
+}
+
+

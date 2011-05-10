@@ -14,7 +14,7 @@
  *
  *}
 
-{css unique="photo-album" link="`$smarty.const.PATH_RELATIVE`framework/modules/photoalbum/assets/css/photoalbum.css"}
+{css unique="photo-album" link="`$asset_path`css/photoalbum.css"}
 
 {/css}
 
@@ -31,11 +31,11 @@
 		</div>
     {/permissions}
     {pagelinks paginate=$page top=1}
-    <ul>
+    <ul class="image-list">
     {foreach from=$page->records item=record name=items}
-        <li style="width:{$config.pa_showall_thumbbox}px;height:{$config.pa_showall_thumbbox}px;">
-            <a href="{link action=show title=$record->sef_url}" title="View more about {$record->title}">
-                {img class="thumb" alt=$record->alt file_id=$record->expFile[0]->id w=$config.pa_showall_thumbbox h=$config.pa_showall_thumbbox zc=1}            
+        <li style="width:{$config.pa_showall_thumbbox|default:"150"}px;height:{$config.pa_showall_thumbbox|default:"150"}px;">
+            <a href="{link action=show title=$record->sef_url}" title="{$record->title|default:$record->expFile[0]->title}">
+                {img class="img-small" alt=$record->alt|default:$record->expFile[0]->alt file_id=$record->expFile[0]->id w=$config.pa_showall_thumbbox|default:"150" h=$config.pa_showall_thumbbox|default:"150" zc=1}            
             </a>
             {permissions}
                 <div class="item-actions">

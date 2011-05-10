@@ -57,6 +57,37 @@ class photosController extends expController {
         assign_to_template(array('page'=>$page));
     }
     
+    function show() {
+        global $db;
+        expHistory::set('viewable', $this->params);
+        
+        // figure out if we're looking this up by id or title
+        $id = null;
+        if (isset($this->params['id'])) {
+            $id = $this->params['id'];
+        } elseif (isset($this->params['title'])) {
+            $id = $this->params['title'];
+        }
+        $record = new photo($id);
+        $where = $this->aggregateWhereClause();
+        $maxrank = $db->max($this->model_table,'rank','',$where);
+                
+        $next = $db->selectValue($this->model_table,'sef_url',$where." AND rank=".($record->rank+1));
+        $prev = $db->selectValue($this->model_table,'sef_url',$where." AND rank=".($record->rank-1));
+
+        if ($record->rank==$maxrank) {
+            $where = $where." AND rank=1";
+            $next = $db->selectValue($this->model_table,'sef_url',$where);
+        }
+        
+        if ($record->rank==1) {
+            $where = $where." AND rank=".$maxrank;
+            $prev = $db->selectValue($this->model_table,'sef_url',$where);
+        }
+        
+        assign_to_template(array('record'=>$record,'imgnum'=>$record->rank,'imgtot'=>count($record->find('all',$this->aggregateWhereClause())),"next"=>$next,"previous"=>$prev));
+    }
+    
     public function slideshow() {
         expHistory::set('viewable', $this->params);
         $where = $this->aggregateWhereClause();
