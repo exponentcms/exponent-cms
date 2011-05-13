@@ -29,6 +29,10 @@ function smarty_function_img($params,&$smarty) {
 	if (isset($params['rel'])) $rel = ' rel="'.$params['rel'].'"';
 	if (isset($params['w']) && isset($params['h']) && isset($params['zc'])) $dims = ' height="'.$params['h'].'" width="'.$params['w'].'"';
         
+	if (!isset($params['q']) && defined('THUMB_QUALITY')) {
+		$params['q'] = THUMB_QUALITY;
+	}
+
 	$src = URL_FULL.'thumb.php';
 	
 	// figure out which file we're showing

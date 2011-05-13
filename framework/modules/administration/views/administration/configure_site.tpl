@@ -101,6 +101,7 @@
                     {control type="radiogroup" name="sc[SLINGBAR_TOP]" label="Default Admin Slingbar Position" items="Top of Viewport,Bottom of Viewport" values="1,0" default=$smarty.const.SLINGBAR_TOP}
                     {control type="dropdown" name="sc[BTN_COLOR]" label="Form Button Color" items="Black,Green,Blue,Red,Magenta,Orange,Yellow,Grey" values="black,green,blue,red,magenta,orange,yellow,grey" default=$smarty.const.BTN_COLOR}
                     {control type="dropdown" name="sc[BTN_SIZE]" label="Form Button Size" items="Large,Medium,Small" values="large,medium,small" default=$smarty.const.BTN_SIZE}
+					{control type="text" name="sc[THUMB_QUALITY]" label="Thumbnail Quality (1-95)" value=$smarty.const.THUMB_QUALITY}
                 </div>
                 {if $user->is_admin==1}
                 <div id="tab6">
@@ -141,6 +142,8 @@
                     <h2>{gettext str="WYSIWYG Editor Settings"}</h2>
 					{help text="Learn More about WYSIWYG editor settings"|gettext module="wysiwyg-editor settings"}
                     {control type="dropdown" name="sc[SITE_WYSIWYG_EDITOR]" label="HTML Editor" items="CKEditor,FCK Editor" values="ckeditor,FCKeditor" default=$smarty.const.SITE_WYSIWYG_EDITOR}
+					{br}<hr>
+					{chain module=expHTMLEditor view="manage"}
                 </div>
                 <div id="tab11">
                     <h2>{gettext str="Error Messages"}</h2>
