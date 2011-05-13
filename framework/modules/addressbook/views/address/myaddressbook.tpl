@@ -32,16 +32,16 @@
 				<tr class="{cycle values="odd,even"}">
 					<td align="center">
 						{if $address->is_billing}
-							{img src=`$smarty.const.ICON_RELATIVE`toggle_on.gif}
+							{img src=`$smarty.const.ICON_RELATIVE`toggle_on.png}
 						{else}
-							<a href="{link action=activate_address is_what="is_billing" id=$address->id enabled=1}">{img src=`$smarty.const.ICON_RELATIVE`toggle_off.gif}</a>
+							<a href="{link action=activate_address is_what="is_billing" id=$address->id enabled=1}">{img src=`$smarty.const.ICON_RELATIVE`toggle_off.png}</a>
 						{/if}   
 					</td>
 					<td align="center">
 						{if $address->is_shipping}
-							{img src=`$smarty.const.ICON_RELATIVE`toggle_on.gif}
+							{img src=`$smarty.const.ICON_RELATIVE`toggle_on.png}
 						{else}
-							<a href="{link action=activate_address is_what="is_shipping"  id=$address->id enabled=1}">{img src=`$smarty.const.ICON_RELATIVE`toggle_off.gif}</a>
+							<a href="{link action=activate_address is_what="is_shipping"  id=$address->id enabled=1}">{img src=`$smarty.const.ICON_RELATIVE`toggle_off.png}</a>
 						{/if}   
 					</td>
 					<td>

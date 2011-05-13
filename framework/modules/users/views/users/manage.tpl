@@ -46,7 +46,7 @@
 				<td>{$user->username}</td>
 				<td>{$user->firstname}</td>
 				<td>{$user->lastname}</td>
-				<td>{if $user->is_acting_admin == 1}{img src=`$smarty.const.ICON_RELATIVE`toggle_on.gif}{/if}</td>
+				<td>{if $user->is_acting_admin == 1}{img src=`$smarty.const.ICON_RELATIVE`toggle_on.png}{/if}</td>
 			    <td>
 			        {permissions level=$smarty.const.UILEVEL_PERMISSIONS}
 						<div class="item-actions">

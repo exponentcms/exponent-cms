@@ -44,9 +44,9 @@
 				<td>{$listing->body}</td>
 				<td>
                     {if $listing->active}
-                        <a href="{link action=toggle_extension id=$listing->id}">{img src=`$smarty.const.ICON_RELATIVE`toggle_on.gif}</a>
+                        <a href="{link action=toggle_extension id=$listing->id}">{img src=`$smarty.const.ICON_RELATIVE`toggle_on.png}</a>
                     {else}
-                        <a href="{link action=toggle_extension id=$listing->id}">{img src=`$smarty.const.ICON_RELATIVE`toggle_off.gif}</a>
+                        <a href="{link action=toggle_extension id=$listing->id}">{img src=`$smarty.const.ICON_RELATIVE`toggle_off.png}</a>
                     {/if}
 				</td>
 			</tr>

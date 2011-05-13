@@ -30,7 +30,7 @@
 			<tbody>
 				{foreach from=$page->records item=listing name=listings}
 				<tr class="{cycle values="odd,even"}">
-				    <!--td>{if $smarty.foreach.listings.first == 1}{img src=`$smarty.const.ICON_RELATIVE`toggle_on.gif}{/if}</td-->
+				    <!--td>{if $smarty.foreach.listings.first == 1}{img src=`$smarty.const.ICON_RELATIVE`toggle_on.png}{/if}</td-->
 					<td>{$listing->title}</td>
 					<td>
 					    {if $permissions.manage == true}

@@ -31,11 +31,11 @@
             <td>
                 {if $simplenote->approved == 1}
                     <a href="{link action=approve_toggle id=$simplenote->id tab=$tab}" title="Disable this note">
-                        {img src=`$smarty.const.ICON_RELATIVE`toggle_on.gif}
+                        {img src=`$smarty.const.ICON_RELATIVE`toggle_on.png}
                     </a>
                 {else}
                     <a href="{link action=approve_toggle id=$simplenote->id tab=$tab}" title="Approve this note">
-                        {img src=`$smarty.const.ICON_RELATIVE`toggle_off.gif}
+                        {img src=`$smarty.const.ICON_RELATIVE`toggle_off.png}
                     </a>   
                 {/if}  
             </td>

@@ -154,10 +154,10 @@
     background:url(../images/admintoolbar/lock.png) no-repeat 3px 50%;
 }
 #admintoolbar li.preview_on a.yuimenuitemlabel {
-    background:url(../images/admintoolbar/toggle_on.gif) no-repeat 5px 50%;
+    background:url(../images/admintoolbar/toggle_on.png) no-repeat 5px 50%;
 }
 #admintoolbar li.preview_off a.yuimenuitemlabel {
-    background:url(../images/admintoolbar/toggle_off.gif) no-repeat 5px 50%;
+    background:url(../images/admintoolbar/toggle_off.png) no-repeat 5px 50%;
 }
 
 

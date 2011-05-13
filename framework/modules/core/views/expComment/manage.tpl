@@ -31,11 +31,11 @@
             <td>
                 {if $comment->approved == 1}
                     <a href="{link action=approve_toggle id=$comment->id}" title="Disable this comment">
-                        {img src=`$smarty.const.ICON_RELATIVE`toggle_on.gif}
+                        {img src=`$smarty.const.ICON_RELATIVE`toggle_on.png}
                     </a>
                 {else}
                     <a href="{link action=approve_toggle id=$comment->id}" title="Approve this comment">
-                        {img src=`$smarty.const.ICON_RELATIVE`toggle_off.gif}
+                        {img src=`$smarty.const.ICON_RELATIVE`toggle_off.png}
                     </a>   
                 {/if}  
             </td>
