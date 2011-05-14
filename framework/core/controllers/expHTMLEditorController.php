@@ -53,6 +53,8 @@ class expHTMLEditorController extends expController {
         $obj->name = $this->params['name'];
         $obj->data = stripSlashes($this->params['data']);
         $obj->skin = $this->params['skin'];
+        $obj->scayt_on = $this->params['scayt_on'];
+        $obj->paste_word = $this->params['paste_word'];
         if (empty($this->params['id'])) {
             $db->insertObject($obj,'htmleditor_ckeditor');
         } else {
@@ -89,6 +91,7 @@ class expHTMLEditorController extends expController {
         if ($this->params['id']=="default") {
             $demo->name="Default";
             $demo->data="default";
+			$demo->skin = 'kama';
         } else {
             $demo = $db->selectObject('htmleditor_ckeditor',"id=".$this->params['id']);
         }

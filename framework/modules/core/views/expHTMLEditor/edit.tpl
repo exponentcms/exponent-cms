@@ -30,6 +30,8 @@
         {control type=hidden name=id value=$record->id}
         {control type=text name=name label="Configuration Name" value=$record->name}
 		{control type=dropdown name=skin label="Toolbar Skin" items="Kama, Office 2003, Version 2" values="kama,office2003,v2" value=$record->skin}
+		{control type="checkbox" postfalse=1 name=scayt_on label="Autostart SpellCheck" checked=$record->scayt_on value=1}
+		{control type="checkbox" postfalse=1 name=paste_word label="Allow Formatted Pasting from MS Word" checked=$record->paste_word value=1}
 		{control type=textarea cols=80 rows=20 name=data label="Toolbar Button Configuration" value=$record->data}
         {control type=buttongroup submit="Save Toolbar" cancel="Cancel"}
     {/form}   

@@ -57,7 +57,7 @@ class ckeditorcontrol extends formcontrol {
 	    global $db;
 		$toolbar = 'def';
 		if (empty($this->toolbar)) $toolbar = $db->selectObject('htmleditor_ckeditor','active=1');
-		if (empty($toolbar) || $this->toolbar=="default") {
+		if (empty($toolbar) || $this->toolbar=="default" || $this->toolbar->data=="default") {
 			$tb = "
 	           ['Source','-','Preview','-','Templates'],
                ['Cut','Copy','Paste','PasteText','PasteFromWord','-','Print','SpellChecker','Scayt'],
@@ -74,15 +74,21 @@ class ckeditorcontrol extends formcontrol {
                ['Maximize', 'ShowBlocks','-','About']
 			";
 			$skin = 'kama';
+			$scayt_on = 'true';
+			$paste_word = 'forcePasteAsPlainText : true,';
 	    } else {
 //			$tb = !empty($this->toolbar) ? $this->toolbar->data : $toolbar->data;
 //			$skin = !empty($toolbar->skin) ? $toolbar->skin : 'kama';
 			if (!empty($this->toolbar)) {
 				$tb = $this->toolbar->data;
 				$skin = $this->toolbar->skin;
+				$scayt_on = $this->toolbar->scayt_on ? 'true' : 'false';
+				$paste_word = $this->toolbar->paste_word ? 'pasteFromWordPromptCleanup : true,' : 'forcePasteAsPlainText : true,';
 			} else {
 				$tb = $toolbar->data;
 				$skin = $toolbar->skin;
+				$scayt_on = $toolbar->scayt_on ? 'true' : 'false';
+				$paste_word = $toolbar->paste_word ? 'pasteFromWordPromptCleanup : true,' : 'forcePasteAsPlainText : true,';
 			}
 	    }
 	    
@@ -91,8 +97,8 @@ class ckeditorcontrol extends formcontrol {
 				{
 					skin : '".$skin."',
 					toolbar : [".stripSlashes($tb)."],
-					pasteFromWordPromptCleanup : true,
-                    scayt_autoStartup : true,
+					".$paste_word."
+                    scayt_autoStartup : ".$scayt_on.",
                     filebrowserBrowseUrl : '".makelink(array("controller"=>"file", "action"=>"picker", "ajax_action"=>1, "ck"=>1, "update"=>"fck"))."',
                     filebrowserWindowWidth : '640',
                     filebrowserWindowHeight : '480',

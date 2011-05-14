@@ -42,6 +42,12 @@
                 <th>
                     {"Skin"|gettext}
                 </th>
+                <th>
+					{"SpellCheck"|gettext}
+                </th>
+                <th>
+					{"Word Pasting"|gettext}
+                </th>
                 <th width="20%">
                     {"Action"|gettext}
                 </th>
@@ -69,6 +75,12 @@
 					kama
                 </td>
                 <td>
+					On
+                </td>
+                <td>
+					No
+                </td>
+                <td>
 
                 </td>
             </tr>
@@ -86,7 +98,22 @@
                 </td>
                 <td>
                     {$cfg->skin}
-                </td>                <td>
+                </td>
+                <td>
+					{if $cfg->scayt_on}
+						On
+					{else}
+						Off
+					{/if}
+                </td>
+                <td>
+					{if $cfg->paste_word}
+						Yes
+					{else}
+						No
+					{/if}
+                </td>
+                <td>
 					<div class="item-actions">
 						{icon module="expHTMLEditor" action=edit title="Edit this Toolbar" record=$cfg}
 						{icon module="expHTMLEditor" action=delete title="Delete this Toolbar" record=$cfg}
