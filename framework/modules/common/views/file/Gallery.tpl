@@ -18,17 +18,19 @@
     {/capture}
 {/if}
 
+{assign var=quality value=$config.quality}
+{if !$quality}
+	{assign var=quality value=THUMB_QUALITY}
+{/if}
+
 {foreach from=$files item=img key=key}
-
-{if $config.lightbox}<a href="{$img->url}" rel="lightbox['{$config.uniqueid}']" title="{$img->title}" class="image-link" style="margin:{$config.spacing}px;{if $config.floatthumb!="No Float"}float:{$config.floatthumb|lower};{/if}" />{/if}
-    {if $key==0 && $config.piwidth}
-        {img file_id=$img->id w=$config.piwidth|default:$config.thumb style="`$imgflot``$spacing`" alt="`$img->alt`" class="mainimg `$config.tclass`"}
-    {else}
-        {img file_id=$img->id w=$config.thumb h=$config.thumb zc=1 style="`$imgflot``$spacing`" alt="`$img->alt`" class="`$config.tclass`"}
-    {/if}
-
-{if $config.lightbox}</a>{/if}
-
+	{if $config.lightbox}<a href="{$img->url}" rel="lightbox['{$config.uniqueid}']" title="{$img->title}" class="image-link" style="margin:{$config.spacing}px;{if $config.floatthumb!="No Float"}float:{$config.floatthumb|lower};{/if}" />{/if}
+		{if $key==0 && $config.piwidth}
+			{img file_id=$img->id w=$config.piwidth|default:$config.thumb style="`$imgflot``$spacing`" alt="`$img->alt`" class="mainimg `$config.tclass`"}
+		{else}
+			{img file_id=$img->id w=$config.thumb h=$config.thumb zc=1 q=$quality|default:75 style="`$imgflot``$spacing`" alt="`$img->alt`" class="`$config.tclass`"}
+		{/if}
+	{if $config.lightbox}</a>{/if}
 {/foreach}
 
 {if $config.lightbox}

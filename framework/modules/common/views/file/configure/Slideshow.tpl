@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2007-2008 OIC Group, Inc.
+ * Copyright (c) 2007-2011 OIC Group, Inc.
  * Written and Designed by Adam Kessler
  *
  * This file is part of Exponent
@@ -18,6 +18,6 @@
 {control type=text name="width" label="Slideshow Width" value=$config.width|default:350 size="5"}
 {control type=text name="height" label="Slideshow Height" value=$config.height|default:200 size="5"}
 {control type=text name="speed" label="Seconds per slide" value=$config.speed|default:5 size="5"}
-{control type=text name="quality" label="JPEG Quality (0 - 100)<br><small>If quality is set to 100, the raw image will be used instead of thumbnailing</small>" value=$config.quality|default:80 size="5"}
+{control type=text name="quality" label="Slide Thumbnail JPEG Quality (0 - 95, 100)<br><small>If quality is set to 100, the raw image will be used instead of thumbnailing</small>" value=$config.quality|default:$smarty.const.THUMB_QUALITY size="5"}
 
 

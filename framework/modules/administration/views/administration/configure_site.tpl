@@ -101,7 +101,7 @@
                     {control type="radiogroup" name="sc[SLINGBAR_TOP]" label="Default Admin Slingbar Position" items="Top of Viewport,Bottom of Viewport" values="1,0" default=$smarty.const.SLINGBAR_TOP}
                     {control type="dropdown" name="sc[BTN_COLOR]" label="Form Button Color" items="Black,Green,Blue,Red,Magenta,Orange,Yellow,Grey" values="black,green,blue,red,magenta,orange,yellow,grey" default=$smarty.const.BTN_COLOR}
                     {control type="dropdown" name="sc[BTN_SIZE]" label="Form Button Size" items="Large,Medium,Small" values="large,medium,small" default=$smarty.const.BTN_SIZE}
-					{control type="text" name="sc[THUMB_QUALITY]" label="Thumbnail Quality (1-95)" value=$smarty.const.THUMB_QUALITY}
+					{control type="text" name="sc[THUMB_QUALITY]" label="Thumbnail JPEG Quality (1 - 95)" value=$smarty.const.THUMB_QUALITY|default:75 size="5"}
                 </div>
                 {if $user->is_admin==1}
                 <div id="tab6">

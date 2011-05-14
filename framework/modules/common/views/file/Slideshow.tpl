@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2007-2008 OIC Group, Inc.
+ * Copyright (c) 2007-2011 OIC Group, Inc.
  * Written and Designed by Adam Kessler
  *
  * This file is part of Exponent
@@ -21,12 +21,16 @@
 {/css}
 
 <ul id="ss-{$name}" class="slideshow-frame" style="width:{$config.width|default:350}px;height:{$config.height|default:250}px;">
+	{assign var=quality value=$config.quality}
+	{if !$quality}
+		{assign var=quality value=THUMB_QUALITY}
+	{/if}
     {foreach key=key from=$files item=slide name=slides}
     <li class="slide" style="position:absolute;{if $smarty.foreach.slides.first}z-index:4;{else}z-index:1;{/if}">
         {if $config.quality==100}
             <img src="{$slide->url}" class="slide-image" />
         {else}
-            {img file_id=$slide->id w=$config.width|default:350 h=$config.height|default:200 class="slide-image" zc=1 q=$config.quality|default:80}
+            {img file_id=$slide->id w=$config.width|default:350 h=$config.height|default:200 class="slide-image" zc=1 q=$quality|default:75}
         {/if}
     </li>
     {/foreach}
@@ -47,7 +51,6 @@ YUI(EXPONENT.YUI3_CONFIG).use('gallery-yui-slideshow', function(Y) {
     {interval:{/literal}{$config.speed|default:5}000{literal}}
     );
 });
-
 
 {/literal}
 {/script}

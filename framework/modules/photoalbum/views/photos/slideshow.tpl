@@ -36,6 +36,10 @@
 
     <div id="ss-{$name}" class="slideshow-container" style="width:{$config.width|default:350}px;">    
         <ul class="slideshow-frame" style="width:{$config.width|default:350}px;height:{$config.height|default:300}px;">
+			{assign var=quality value=$config.quality}
+			{if !$quality}
+				{assign var=quality value=THUMB_QUALITY}
+			{/if}
             {foreach key=key from=$slides item=slide name=slides}
             <li class="slide" style="position:absolute;{if $smarty.foreach.slides.first}z-index:4;{else}z-index:1;{/if}">
                 {permissions}
@@ -65,7 +69,7 @@
                 {if $config.quality==100}
                     <img src="{$slide->expFile[0]->url}" class="slide-image" />
                 {else}
-                    {img file_id=$slide->expFile[0]->id w=$config.width|default:350 h=$config.height|default:300 class="slide-image" zc=1 q=$config.quality|default:80}
+                    {img file_id=$slide->expFile[0]->id w=$config.width|default:350 h=$config.height|default:300 class="slide-image" zc=1 q=$quality|default:75}
                 {/if}
                 {if $slide->link}
                     </a>

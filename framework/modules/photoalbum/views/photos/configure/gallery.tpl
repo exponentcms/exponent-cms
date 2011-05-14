@@ -18,6 +18,7 @@
 <hr />
 <h4>Gallery Page</h4>
 {control type=text name="pa_showall_thumbbox" label="Box size for image thumbnails" value=$config.pa_showall_thumbbox|default:100 size="5"}
+{control type=text name="quality" label="Thumbnail JPEG Quality (0 - 95)" value=$config.quality|default:$smarty.const.THUMB_QUALITY size="5"}
 {control type="checkbox" name="lightbox" label="Use lightbox effect" value=1 checked=$config.lightbox}
 <hr />
 <h4>Detail Page or Lightbox</h4>
