@@ -35,6 +35,7 @@ if (isset($_GET['id'])) {
 	$items = $db->selectObjects("formbuilder_".$f->table_name);
 	if (exponent_permissions_check("viewdata",unserialize($f->location_data))) {
 		$columndef = "paginate.columns = new Array(";
+		$columns = array();
 		$sortfuncts = "";
 		if ($rpt->column_names == '') {
 			//define some default columns...
@@ -51,6 +52,7 @@ if (isset($_GET['id'])) {
 		foreach (explode("|!|",$rpt->column_names) as $column_name) {
 			if ($column_name == "ip") {
 				$columndef .= 'new cColumn("'.$i18n['ip'].'","ip",null,null),';
+				$columns[$i18n['ip']] = 'ip';
 			} elseif ($column_name == "user_id") {
 				foreach ($items as $key=>$item) {
 					if ($item->$column_name != 0) {
@@ -63,6 +65,7 @@ if (isset($_GET['id'])) {
 					$items[$key] = $item;
 				}
 				$columndef .= 'new cColumn("'.$i18n['username'].'","user_id",null,null),';
+				$columns[$i18n['username']] = 'user_id';
 			} elseif ($column_name == "timestamp") {
 				$srt = $column_name."_srt";
 				foreach ($items as $key=>$item) {
@@ -71,6 +74,7 @@ if (isset($_GET['id'])) {
 					$items[$key] = $item;
 				}
 				$columndef .= 'new cColumn("'.$i18n['timestamp'].'","timestamp",null,f'.$srt.'),';
+				$columns[$i18n['timestamp']] = 'timestamp';
 				$sortfuncts .= 'function f'.$srt.'(a,b) {return (a.var_'.$srt.'<b.var_'.$srt.')?1:-1;}';
 			
 			} else {
@@ -90,15 +94,17 @@ if (isset($_GET['id'])) {
 					}
 					if (isset($datadef[DB_FIELD_TYPE]) && $datadef[DB_FIELD_TYPE] == DB_DEF_TIMESTAMP) {
 						$columndef .= 'new cColumn("' . $control->caption . '","'.$column_name.'",null,f'.$srt.'),';
+						$columns[$control->caption] = $column_name;
 						$sortfuncts .= 'function f'.$srt.'(a,b) {return (a.var_'.$srt.'<b.var_'.$srt.')?1:-1;}';
 					} else {
 						$columndef .= 'new cColumn("' . $control->caption . '","'.$column_name.'",null,null),';
+						$columns[$control->caption] = $column_name;
 					}
 				}
 			}
 		}
 		
-		$template->assign("items",$items);
+//		$template->assign("items",$items);
 		$template->assign("f",$f);
 		global $SYS_FLOW_REDIRECTIONPATH;
 		$SYS_FLOW_REDIRECTIONPATH = "editfallback";
@@ -108,8 +114,18 @@ if (isset($_GET['id'])) {
 		$columndef .= 'new cColumn("Links","",links,null)';
 		$columndef .= ');';
 		
-		$template->assign('columdef',$columndef);
-		$template->assign('sortfuncs',$sortfuncts);
+//		$template->assign('columdef',$columndef);
+//		$template->assign('sortfuncs',$sortfuncts);
+        $page = new expPaginator(array(
+//                    'model'=>$f->table_name,
+					'records'=>$items,
+                    'where'=>1, 
+                    'limit'=>10,
+//                    'order'=>$order,
+                    'action'=>'view_data',
+					'columns'=>$columns
+                    ));
+		$template->assign('page',$page);			
 		$template->assign('title',$rpt->name);
 		$template->output();
 	} else {
