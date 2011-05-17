@@ -13,7 +13,6 @@
  *
  *}
  
-
 {css unique="group" corecss="tables"}
 
 {/css}

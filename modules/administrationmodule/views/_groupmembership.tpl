@@ -120,7 +120,6 @@
 	</tbody>
 </table>
 
-
 <table width="100%" class="exp-skin-table">
     <tbody>
     <tr>

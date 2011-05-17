@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2007-2008 OIC Group, Inc.
+ * Copyright (c) 2007-2011 OIC Group, Inc.
  * Written and Designed by Adam Kessler
  *
  * This file is part of Exponent
@@ -13,6 +13,10 @@
  * GPL: http://www.gnu.org/licenses/gpl.txt
  *
  *}
+
+{css unique="showcartonly" corecss="tables"}
+
+{/css}
 
 {if $items|@count > 0}
 <table id="cart" width="100%" cellpadding="0" cellspacing="0" class="exp-skin-table">

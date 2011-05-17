@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2007-2008 OIC Group, Inc.
+ * Copyright (c) 2007-2011 OIC Group, Inc.
  * Written and Designed by Adam Kessler
  *
  * This file is part of Exponent
@@ -13,6 +13,10 @@
  * GPL: http://www.gnu.org/licenses/gpl.txt
  *
  *}
+
+{css unique="showallorders" corecss="tables"}
+
+{/css}
 
 <div class="modules order showall">
 	<h1>{$moduletitle|default:"Store Order Administration"}</h1>

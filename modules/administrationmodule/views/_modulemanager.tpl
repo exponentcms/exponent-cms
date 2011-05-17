@@ -13,6 +13,11 @@
  * GPL: http://www.gnu.org/licenses/gpl.txt
  *
  *}
+
+{css unique="modulemanager" corecss="tables"}
+
+{/css}
+
 <div class="module administrationmodule modulemanager">
     {form action=}
     {/form}

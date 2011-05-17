@@ -14,6 +14,10 @@
  *
  *}
 
+{css unique="managecomments" corecss="tables"}
+
+{/css}
+
 <div class="module expcomment manage">
     <h1>Manage Comments</h1>
     <p>The table below shows comments have not yet been approved.</p>

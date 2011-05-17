@@ -14,6 +14,10 @@
  *
  *}
 
+{css unique="manageshippingmethod" corecss="tables"}
+
+{/css}
+
 <div class="module cart select-shipping-methods">
     <h1>{$moduletitle|default:"Select Shipping Methods"}</h1>    
     

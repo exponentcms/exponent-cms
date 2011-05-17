@@ -14,6 +14,10 @@
  *
  *}
 
+{css unique="manageshipping" corecss="tables"}
+
+{/css}
+
 <div class="module shipping manage">
     <h1>Manage Shipping Options</h1>
     <p>

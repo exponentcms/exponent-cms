@@ -13,6 +13,7 @@
  * GPL: http://www.gnu.org/licenses/gpl.txt
  *
  *}
+ 
 {css unique="managemods" corecss="admin-global"}
 {literal}
 .exp-skin-table td label {

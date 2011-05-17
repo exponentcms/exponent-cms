@@ -14,6 +14,10 @@
  *
  *}
 
+{css unique="myaddressbook" corecss="tables"}
+
+{/css}
+
 <div class="module address myaddressbook">
     <h1>{$moduletitle|default:"My address book"}</h1>
     <p>

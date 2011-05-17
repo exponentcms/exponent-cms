@@ -14,6 +14,10 @@
  *
  *}
 
+{css unique="managesimplenotes" corecss="tables"}
+
+{/css}
+
 <div class="module simplenote manage">
     <h1>Manage Notes</h1>
     <p>The table below shows notes have not yet been approved.</p>

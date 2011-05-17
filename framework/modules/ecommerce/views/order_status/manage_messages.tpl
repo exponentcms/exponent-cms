@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2007-2008 OIC Group, Inc.
+ * Copyright (c) 2007-2011 OIC Group, Inc.
  * Written and Designed by Adam Kessler
  *
  * This file is part of Exponent
@@ -13,6 +13,10 @@
  * GPL: http://www.gnu.org/licenses/gpl.txt
  *
  *}
+
+{css unique="managemessages" corecss="tables"}
+
+{/css}
 
 <div class="modules order_status manage-messages">
 	<h1>{$moduletitle|default:"Manage Order Status Messages"}</h1>

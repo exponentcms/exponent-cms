@@ -1,4 +1,7 @@
 {*
+ * Copyright (c) 2007-2011 OIC Group, Inc.
+ * Written and Designed by Adam Kessler
+ *
  * This file is part of Exponent Content Management System
  *
  * Exponent is free software; you can redistribute
@@ -12,6 +15,10 @@
  * @license    GPL: http://www.gnu.org/licenses/gpl.txt
  * @link       http://www.exponent-docs.org/
  *}
+
+{css unique="managediscounts" corecss="tables"}
+
+{/css}
 
 {permissions}
 {if $permissions.manage == 1}

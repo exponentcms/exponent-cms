@@ -14,6 +14,10 @@
  *
  *}
 
+{css unique="manageversions" corecss="tables"}
+
+{/css}
+
 <div class="module help manage">
     <h1>Manage Help Versions</h1>
     <p>

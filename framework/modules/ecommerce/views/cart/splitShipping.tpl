@@ -14,6 +14,10 @@
  *
  *}
 
+{css unique="splitshipping" corecss="tables"}
+
+{/css}
+
 <div class="module cart split-shipping">
     <h1>{$moduletitle|default:"Choose which addresses to ship your items."}</h1>    
     

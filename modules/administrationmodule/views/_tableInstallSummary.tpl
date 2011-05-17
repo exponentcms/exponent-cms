@@ -14,6 +14,10 @@
  *
  *}
 
+{css unique="installtablesummary" corecss="tables"}
+
+{/css}
+
  <div class="form_header">
  	<h1>{$_TR.form_title}</h1>
  	<p>

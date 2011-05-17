@@ -14,6 +14,10 @@
  *
  *}
 
+{css unique="showallmotd" corecss="tables"}
+
+{/css}
+
 <div class="module motd showall">
     <h1>{$moduletitle|default:"Messages by day"}</h1>
     <div class="bodycopy">

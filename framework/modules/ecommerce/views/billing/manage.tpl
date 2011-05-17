@@ -14,6 +14,10 @@
  *
  *}
 
+{css unique="managebilling" corecss="tables"}
+
+{/css}
+
 <div class="module billing manage">
     <h1>Manage Payment Options</h1>
     <p>

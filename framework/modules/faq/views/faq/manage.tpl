@@ -14,6 +14,10 @@
  *
  *}
 
+{css unique="managefaq" corecss="tables"}
+
+{/css}
+
 <div class="module faq manage">
     <h1>Manage Questions</h1>
     <p>Here you can view questions on your site and edit, delete, and answer unanswered questions</p>

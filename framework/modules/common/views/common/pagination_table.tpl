@@ -14,6 +14,10 @@
  *
  *}
 
+{css unique="paginationtable" corecss="tables"}
+
+{/css}
+
 <div class="exp-skin-table">
 	<table>
 	    <thead>
