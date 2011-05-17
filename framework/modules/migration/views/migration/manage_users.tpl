@@ -14,6 +14,10 @@
  *
  *}
 
+{css unique="manageusers" corecss="tables"}
+
+{/css}
+
 <div class="module migration manage-users">
     <div class="info-header">
         <div class="related-actions">

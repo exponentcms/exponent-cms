@@ -14,6 +14,10 @@
  *
  *}
 
+{css unique="managecontent" corecss="tables"}
+
+{/css}
+
 <div class="module migration manage_content">
     <div class="info-header">
         <div class="related-actions">

@@ -14,6 +14,10 @@
  *
  *}
 
+{css unique="migratefiles" corecss="tables"}
+
+{/css}
+
 <div class="module migration migrate-files">
     <div class="info-header">
         <div class="related-actions">

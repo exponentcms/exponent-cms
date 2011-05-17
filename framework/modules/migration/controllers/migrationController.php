@@ -157,6 +157,26 @@ class migrationController extends expController {
 			}
 			}
 
+		if (isset($this->params['copy_permissions'])) {
+			print_r($db->delete('userpermission',"module = 'navigationmodule' AND source = ''"));
+			print_r($db->delete('grouppermission',"module = 'navigationmodule' AND source = ''"));
+			
+			$users = $db->selectObjects('user','id > 1');
+			foreach($users as $user) {
+				$pages = $old_db->selectObjects('userpermission',"uid='".$user->id."' AND module = 'navigationmodule' AND source = ''");
+				foreach($pages as $page) {
+					$db->insertObject($page,'userpermission');
+				}
+			}		
+			$groups = $db->selectObjects('group','id > 1');
+			foreach($groups as $group) {
+				$pages = $old_db->selectObjects('grouppermission',"gid='".$group->id."' AND module = 'navigationmodule' AND source = ''");
+				foreach($pages as $page) {
+					$db->insertObject($page,'grouppermission');
+				}
+			}		
+		}
+
         flash ('message', $successful.' pages were imported from '.$this->config['database'].$del_pages = '');
         if ($failed > 0) {
             flash('error', $failed.' pages could not be imported from '.$this->config['database'].' This is usually because a page with the same ID already exists in the database you importing to.');
@@ -229,7 +249,7 @@ class migrationController extends expController {
         $old_db = $this->connect();
         if (isset($this->params['wipe_content'])) {
             $db->delete('sectionref');
-            $db->delete('locationref');
+			$db->delete('locationref');  //TODO Remove this, uneeded in future
             $db->delete('container');
             $db->delete('text');
             $db->delete('snippet');
@@ -364,6 +384,7 @@ class migrationController extends expController {
 			}
 		}
 
+		// TODO Remove this in future
         $locref = $old_db->selectObjects('locationref',$where);
         foreach ($locref as $lr) {
             if (array_key_exists($lr->module, $this->new_modules)) {
@@ -377,6 +398,7 @@ class migrationController extends expController {
                 }
             }
         }
+		// Remove to here
 
         // pull the sectionref data for selected modules
         $secref = $old_db->selectObjects('sectionref',$where);
@@ -1788,22 +1810,22 @@ class migrationController extends expController {
 		}
 		print_r("</pre>");
 
-		print_r("<pre>");
-	// add missing locationref's based on existing sectionref's 
-		print_r("<b>Searching for detached modules with no original (no matching locationref)</b><br><br>");
-		$sectionrefs = $old_db->selectObjects('sectionref',1);
-		foreach ($sectionrefs as $sectionref) {
-			if ($old_db->selectObject('locationref',"module='".$sectionref->module."' AND source='".$sectionref->source."'") == null) {
-			// There is no locationref for sectionref.  Populate reference
-				$newLocRef->module   = $sectionref->module;
-				$newLocRef->source   = $sectionref->source;
-				$newLocRef->internal = $sectionref->internal;
-				$newLocRef->refcount = $sectionref->refcount;
-				$old_db->insertObject($newLocRef,"locationref");
-				print_r("Copied: ".$sectionref->module." - ".$sectionref->source."<br>");
-			}
-		}
-		print_r("</pre>");	
+		// print_r("<pre>");
+	// // add missing locationref's based on existing sectionref's 
+		// print_r("<b>Searching for detached modules with no original (no matching locationref)</b><br><br>");
+		// $sectionrefs = $old_db->selectObjects('sectionref',1);
+		// foreach ($sectionrefs as $sectionref) {
+			// if ($old_db->selectObject('locationref',"module='".$sectionref->module."' AND source='".$sectionref->source."'") == null) {
+			// // There is no locationref for sectionref.  Populate reference
+				// $newLocRef->module   = $sectionref->module;
+				// $newLocRef->source   = $sectionref->source;
+				// $newLocRef->internal = $sectionref->internal;
+				// $newLocRef->refcount = $sectionref->refcount;
+				// $old_db->insertObject($newLocRef,"locationref");
+				// print_r("Copied: ".$sectionref->module." - ".$sectionref->source."<br>");
+			// }
+		// }
+		// print_r("</pre>");	
 
 		// print_r("<pre>");
 	// // delete sectionref's & locationref's that have empty sources
