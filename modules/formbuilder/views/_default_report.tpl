@@ -21,7 +21,6 @@
 {else}
 	{css unique="default-report" corecss="tables"}
 
-
 	{/css}
 {/if}
  
@@ -35,7 +34,7 @@
     </thead>
     <tbody>
         {foreach from=$fields key=fieldname item=value}
-        <tr>
+        <tr class="{cycle values="even,odd"}">
             <td>{$captions[$fieldname]}</td>
             <td>{$value}</td>
         </tr>

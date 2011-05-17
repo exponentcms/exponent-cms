@@ -14,11 +14,9 @@
  *
  *}
  
- 
 {css unique="permissions" corecss="tables"}
 
 {/css}
-
 
 <form method="post">
 <input type="hidden" name="module" value="{$__loc->mod}" />
@@ -39,7 +37,7 @@
     </thead>
     <tbody>
         {foreach from=$page->records item=user key=ukey name=user}
-        <tr>    
+        <tr class="{cycle values="even,odd"}">    
 
             {if !$is_group}
             <td>
