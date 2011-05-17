@@ -30,6 +30,7 @@
 <input type="hidden" name="_common" value="1" />
 
 {$page->links}
+<div style="overflow : auto; overflow-y : hidden;">
 <table border="0" cellspacing="0" cellpadding="0" class="exp-skin-table">
     <thead>
         <tr>
@@ -65,6 +66,7 @@
         {/foreach}
     </tbody>
 </table>
+</div>
 {$page->links}
 
 {control type="buttongroup" submit="Save Permissions"|gettext cancel="Cancel"|gettext}

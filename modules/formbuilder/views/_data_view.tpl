@@ -34,11 +34,12 @@ function links(object) {literal}{{/literal}
 
 {/paginate}
 <h2>{$title}</h2>
+<div style="overflow : auto; overflow-y : hidden;">
 <table cellspacing="0" cellpadding="0" class="exp-skin-table">
 	<tbody id="dataTable">
 	</tbody>
 </table>
-
+</div>
 <table width="100%">
     <tr>
         <td align="left" valign="bottom">
