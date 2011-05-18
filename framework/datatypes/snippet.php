@@ -19,6 +19,7 @@
 
 class snippet extends expRecord {
 #	public $table = 'text';
+	public $table = 'snippet';
 #	public $validates = array(
 #		'presence_of'=>array(
 #			'body'=>array('message'=>'Body is a required field.'),
