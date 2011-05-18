@@ -112,6 +112,7 @@ switch ($page) {
 		break;
 	default:
 		$page_image = 'welcome';
+		$page = 'welcome';
 		$page_text = $i18n['guide'];
 		break;
 }
