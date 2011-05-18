@@ -85,4 +85,7 @@ if (!defined('YUI2_PATH')) {
 	define('YUI2_URL', URL_FULL.'external/lissa/'.YUI2_VERSION.'/build/');
 }
 
+// include constants defined in the theme
+if (file_exists(BASE.'themes/'.DISPLAY_THEME_REAL.'/config.php')) include_once(BASE.'themes/'.DISPLAY_THEME_REAL.'/config.php');
+
 ?>
