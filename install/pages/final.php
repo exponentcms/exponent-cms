@@ -20,37 +20,20 @@
 if (!defined('EXPONENT')) exit('');
 
 exponent_sessions_unset('installer_config');
-$i18n = exponent_lang_loadFile('install/pages/final.php');
+exponent_sessions_clearAllSessionData();
 
-?>
-<h2 id="subtitle"><?php echo $i18n['subtitle']; ?></h2>
-<?php
+global $user;
 
-unlink(BASE.'install/not_configured');
+if (unlink(BASE.'install/not_configured')) { 
+    
+    ?>
+    <h2><?php echo gt('You\'re all set!') ?></h2>
+<?php } else { ?>
+    <h2><?php echo gt('Hmmm..') ?></h2>
+    <p><?php echo gt('We weren\'t able to remove /install/not_configured. Remove this file manually to complete your installation.') ?></p>
+<?php } ?>
 
-//old files merged into coretasks.php
-if (file_exists(BASE.'modules/administrationmodule/tasks/files_tasks.php')){
-	$ret = unlink(BASE.'modules/administrationmodule/tasks/files_tasks.php');
-	if ($ret == false){
-		echo '<br />';
-        	echo '<span style="color: red">'.$i18n['no_remove_filetask'].'</span>';
-	}
-}
-
-if (file_exists(BASE.'modules/administrationmodule/tasks/workflow_tasks.php')){
-	$ret = unlink(BASE.'modules/administrationmodule/tasks/workflow_tasks.php');
-	if ($ret == false){
-		echo '<br /><br />';
-        	echo '<span style="color: red">'.$i18n['no_remove_workflow'].'</span>';
-	}
-}
-
-if (file_exists(BASE.'install/not_configured')) {
-	echo '<br /><br />';
-	echo '<span style="color: red">'.$i18n['no_remove'].'</span>';
-}
-
-?>
-<br /><br />
-<a class="awesome large green" href="<?php echo URL_FULL; ?>login.php">Now go log in and add some content!</a>
-<?php exponent_sessions_clearAllSessionData();?>
+<?php if (isset($_REQUEST['upgrade'])) { ?>
+<p><?php echo gt('Log back in to start using all your fancy new enhancements!') ?></p>
+<a class="awesome large green" href="<?php echo URL_FULL; ?>login.php">Log In Screen</a>
+<?php } ?>
