@@ -18,15 +18,7 @@
         <a href="{link controller=store action=showByTitle title=$listing->sef_url}">{$listing->title}</a>
     </h3>   
 
-    <a href="{link controller=store action=showByTitle title=$listing->sef_url}" class="prod-img">
-        {img file_id=$listing->expFile.mainimage[0]->id w=135}
-    </a>
-    
-    <p class="bodycopy">
-        {$listing->summary}
-    </p>
-
-    {permissions level=$smarty.const.UILEVEL_PERMISSIONS}
+    {permissions}
     <div class="item-actions">
         {if $permissions.edit == 1}
             {icon action=edit record=$listing title="Edit `$listing->title`"}
@@ -35,11 +27,18 @@
             {icon action=delete record=$listing title="Delete `$listing->title`" onclick="return confirm('Are you sure you want to delete this product?');"}
         {/if}
         {if $permissions.edit == 1}
-            {icon action=copyProduct img="copy.png" record=$listingtitle="Copy `$listing->title` "}
+            {icon action=copyProduct class="copy" record=$listingtitle label="Copy `$listing->title` "}
         {/if}
     </div>
     {/permissions}
 
+    <a href="{link controller=store action=showByTitle title=$listing->sef_url}" class="prod-img">
+        {img file_id=$listing->expFile.mainimage[0]->id w=135}
+    </a>
+    
+    <p class="bodycopy">
+        {$listing->summary}
+    </p>
     
     <div class="prod-price"> 
         {if $listing->availability_type == 3}       
@@ -55,7 +54,7 @@
     </div>
     
         {if $listing->availability_type != 3 && $listing->active_type == 0}
-            <a href="{link controller=store action=showByTitle title=$listing->sef_url}" class="button">View Item</a>   
+            <a href="{link controller=store action=showByTitle title=$listing->sef_url}" class="button awesome small">View Item</a>   
             
             
             {*if $listing->hasChildren()}   <~~~  something ain't right with child products. Returns True when it shoudln't. deal with it later.
@@ -74,5 +73,4 @@
             {* message here saying product not availalble...? *}
         {/if}
         
-    <div style="clear:both"></div>
 </div>

@@ -51,7 +51,7 @@ class storeController extends expController {
     protected $add_permissions = array('copyProduct'=>"Copy Product",'delete_children'=>"Delete Children", 'import'=>'Import Products', 'export'=>'Export Products','findDupes'=>'Fix Duplicate SEF Names');
      
     function name() { return $this->displayname(); } //for backwards compat with old modules
-    function displayname() { return "Ecommerce Store Front"; }
+    function displayname() { return "Store Front"; }
     function description() { return "Use this module to display products and categories of you Ecommerce store"; }
     function author() { return "OIC Group, Inc"; }
     function hasSources() { return true; }
@@ -888,11 +888,11 @@ class storeController extends expController {
     function picktype() {
         $prodfiles = storeController::getProductTypes();
         $products = array();
-        // foreach($prodfiles as $filepath=>$classname) {
-        //     $prodObj = new $classname();
-        //     $products[$classname] = $prodObj->product_name;
-        // }
-        $products['product'] = 'Product';
+        foreach($prodfiles as $filepath=>$classname) {
+            $prodObj = new $classname();
+            $products[$classname] = $prodObj->product_name;
+        }
+        //$products['product'] = 'Product';
         assign_to_template(array('product_types'=>$products));
     }
     
