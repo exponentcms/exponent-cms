@@ -52,15 +52,32 @@ if (isset($_POST['lang'])) {
 	include_once(BASE . "/subsystems/config.php");
 	exponent_config_saveConfiguration($values);
 }
+
+if (file_exists("../conf/config.php") && !isset($_REQUEST['page'])) {
+	$_REQUEST['page'] = 'upgrade-1';
+}
 		
-if (!isset($_REQUEST['page'])) {
+if (!isset($_REQUEST['page']) && file_exists("../conf/config.php")) {
 	$_REQUEST['page'] = 'setlang';
 }
 $page = $_REQUEST['page'];
 
 $page_image = '';
 $page_text = '';
+
 switch ($page) {
+	case 'upgrade-1':
+	    $masthead = "Upgrade";
+		$page_text = gt("You've upgraded your Exponent code.");
+		break;
+	case 'upgrade-2':
+	    $masthead = "Upgrade";
+		$page_text = gt("Installing Tables add any new fields to existing tables, and adds any additional tables Exponent needs to be awesome.");
+		break;
+	case 'upgrade-3':
+	    $masthead = "Upgrade";
+		$page_text = gt("We'll now run any upgrade scripts for this versio of Exponent.");
+		break;
 	case 'setlang':
 		$page_image = 'setlang';
 		$page_text = $i18n['setlang'];
@@ -90,7 +107,8 @@ switch ($page) {
 		$page_text = $i18n['upgrade'];
 		break;
 	case 'final':
-
+        $masthead = (isset($_REQUEST['upgrade']))?"Upgrade":"Install";
+    	$page_text = gt("Your upgrade is complete!");
 		break;
 	default:
 		$page_image = 'welcome';
@@ -99,8 +117,7 @@ switch ($page) {
 }
 
 ?>
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
-	"http://www.w3.org/TR/html4/strict.dtd">
+<!DOCTYPE>
 <html>
 <head>
 	<title><?php echo $i18n['page_title']; ?></title>
@@ -131,24 +148,21 @@ switch ($page) {
                    Exponent CMS
                </a>
 	       </h1>
+	       <strong><?php echo $masthead ?></strong>
 	    </div>
 		<div id="bd">
 		    <div id="leftcol">
     		<?php
     		if (file_exists('pages/'.$page.'.php')) {
     			include('pages/'.$page.'.php');
-    		} else {
-    			echo sprintf($i18n['unknown_page'],strip_tags($page));
     		}
     		?>
     		</div>
-    		<?php if ($page_image != '') { ?>
             <div id="rightcol">
                 <p>
         		<?php echo $page_text; ?>
         		</p>
             </div>
-    		<?php } ?>
 		</div>
 	</div>
 </body>

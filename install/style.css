@@ -24,7 +24,6 @@ body {
 #hd {
     height:80px;
     z-index:3;
-    text-indent:-999px;
     overflow:hidden;
 } 
 
@@ -34,6 +33,17 @@ body {
     left:0;
     margin:0;
     padding:0;
+    text-indent:-999px;
+}
+
+#hd strong {
+    position:absolute;
+    left:625px;
+    top:30px;
+    color:#ffffff;
+    font-size:28px;
+    font-style:italic;
+
 }
 
 #logo a {
@@ -179,6 +189,10 @@ p,fieldset,table,pre {
 p {
     font-size:120%;
 
+}
+p.success {
+    color:green;
+    font-style:italic;
 }
 #rightcol p {
     font-size:110%;
