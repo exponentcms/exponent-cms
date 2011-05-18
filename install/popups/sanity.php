@@ -172,7 +172,7 @@ $i18n = exponent_lang_loadFile('install/popups/sanity.php');
 	</td>
 </tr>
 <tr>
-	<td class="bodytext" style="font-weight: bold;" valign="top"><a name="o_php" />PHP 4.0.6+</td>
+	<td class="bodytext" style="font-weight: bold;" valign="top"><a name="o_php" />PHP 5.2.1+</td>
 	<td class="bodytext" valign="top">
 		<?php echo $i18n['php_desc']; ?>
 	</td>
