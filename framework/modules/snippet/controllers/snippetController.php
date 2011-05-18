@@ -19,7 +19,8 @@
 
 class snippetController extends expController {
 	//protected $basemodel_name = '';
-    public $basemodel_name = 'text';
+//    public $basemodel_name = 'text';
+    public $basemodel_name = 'snippet';
 	public $useractions = array(
 		'showall'=>'Copy and Display Snippet',
 		'showall_highlight'=>'Highlight and Display Snippet'
@@ -40,7 +41,8 @@ class snippetController extends expController {
 	    expHistory::set('viewable', $this->params);
 		$where = $this->aggregateWhereClause();
 		$order = 'rank ASC';
-		$items = $this->text->find('all', $where, $order);
+//		$items = $this->text->find('all', $where, $order);
+		$items = $this->snippet->find('all', $where, $order);
 		assign_to_template(array('items'=>$items));
 	}	
 
@@ -48,7 +50,8 @@ class snippetController extends expController {
 	    expHistory::set('viewable', $this->params);
 		$where = $this->aggregateWhereClause();
 		$order = 'rank ASC';
-		$items = $this->text->find('all', $where, $order);
+//		$items = $this->text->find('all', $where, $order);
+		$items = $this->snippet->find('all', $where, $order);
 		foreach ($items as $item) {
 			$item->body = highlight_string($item->body, true); 
 		}

@@ -149,10 +149,10 @@ class expPaginator {
 		if (expTheme::inAction()) {
 		    //FIXME: module/controller glue code
 		    $mod = !empty($_REQUEST['controller']) ? $_REQUEST['controller'] : $_REQUEST['module'];
-		    if ($this->controller == $mod && $this->action == $_REQUEST['action']) {
+//		    if ($this->controller == $mod && $this->action == $_REQUEST['action']) {
 			    $this->order = isset($_REQUEST['order']) ? $_REQUEST['order'] : $this->order;
 			    $this->order_direction = isset($_REQUEST['dir']) ? $_REQUEST['dir'] : $this->dir;
-			}
+//			}
 		} 		
 		
 		// figure out how many records we're dealing with & grab the records

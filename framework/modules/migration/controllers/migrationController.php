@@ -127,7 +127,7 @@ class migrationController extends expController {
 
 		$del_pages = '';
         if (isset($this->params['wipe_pages'])) {
-            print_r($db->delete('section',"id > '1'"));
+            $db->delete('section',"id > '1'");
 			$del_pages = ' after clearing database of pages';
 		}
         $successful = 0;
@@ -158,21 +158,25 @@ class migrationController extends expController {
 			}
 
 		if (isset($this->params['copy_permissions'])) {
-			print_r($db->delete('userpermission',"module = 'navigationmodule' AND source = ''"));
-			print_r($db->delete('grouppermission',"module = 'navigationmodule' AND source = ''"));
+			$db->delete('userpermission',"module = 'navigationmodule' AND source = ''");
+			$db->delete('grouppermission',"module = 'navigationmodule' AND source = ''");
 			
 			$users = $db->selectObjects('user','id > 1');
 			foreach($users as $user) {
 				$pages = $old_db->selectObjects('userpermission',"uid='".$user->id."' AND module = 'navigationmodule' AND source = ''");
 				foreach($pages as $page) {
-					$db->insertObject($page,'userpermission');
+					if ($db->selectObject('section','id = '.$page->internal)) {
+						$db->insertObject($page,'userpermission');
+					}
 				}
 			}		
-			$groups = $db->selectObjects('group','id > 1');
+			$groups = $db->selectObjects('group','1');
 			foreach($groups as $group) {
 				$pages = $old_db->selectObjects('grouppermission',"gid='".$group->id."' AND module = 'navigationmodule' AND source = ''");
 				foreach($pages as $page) {
-					$db->insertObject($page,'grouppermission');
+					if ($db->selectObject('section','id = '.$page->internal)) {
+						$db->insertObject($page,'grouppermission');
+					}
 				}
 			}		
 		}
@@ -484,6 +488,45 @@ class migrationController extends expController {
 				if ($res) { @$this->msg['container']++; }
             }
         }
+		
+		if (isset($this->params['copy_permissions'])) {
+			$db->delete('userpermission',"module != 'navigationmodule'");
+			$db->delete('grouppermission',"module != 'navigationmodule'");
+			
+			$users = $db->selectObjects('user','id > 1');
+			foreach($users as $user) {
+				$containers = $old_db->selectObjects('userpermission',"uid='".$user->id."' AND module != 'navigationmodule'");
+				foreach($containers as $item) {
+					$loc->mod = $item->module;
+					$loc->src = $item->source;
+					$loc->int = '';
+					if (array_key_exists($item->module, $this->new_modules)) {
+						$loc->mod = $this->new_modules[$item->module];
+						$item->module = $this->new_modules[$item->module];
+					}
+					if ($db->selectObject('container',"internal = '".serialize($loc)."'")) {
+						$db->insertObject($item,'userpermission');
+					}
+				}
+			}		
+			$groups = $db->selectObjects('group','1');
+			foreach($groups as $group) {
+				$containers = $old_db->selectObjects('grouppermission',"gid='".$group->id."' AND module != 'navigationmodule'");
+				foreach($containers as $item) {
+					$loc->mod = $item->module;
+					$loc->src = $item->source;
+					$loc->int = '';
+					if (array_key_exists($item->module, $this->new_modules)) {
+						$loc->mod = $this->new_modules[$item->module];
+						$item->module = $this->new_modules[$item->module];
+					}
+					if ($db->selectObject('container',"internal = '".serialize($loc)."'")) {
+						$db->insertObject($item,'grouppermission');
+					}
+				}
+			}		
+		}		
+		
 		searchController::spider();
         expSession::clearUserCache();
         assign_to_template(array('msg'=>@$this->msg));
