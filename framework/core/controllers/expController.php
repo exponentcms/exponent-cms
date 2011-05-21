@@ -462,6 +462,8 @@ class expController {
         }
     }
     
+    function delete_In($loc) { $this->delete_instance(); }   //for backwards compat with old modules
+    
     function delete_instance() {
         global $db;
         $model = new $this->basemodel_name();
