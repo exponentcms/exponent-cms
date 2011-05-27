@@ -13,9 +13,10 @@
  * GPL: http://www.gnu.org/licenses/gpl.txt
  *
  *}
+ 
 {eval var=$template}
 
- {if $is_email == 0}
-<br /><br />
-<a href="{$backlink}">{$_TR.back}</a>
- {/if}
+{if $is_email == 0}
+	{br}
+	<a href="{$backlink}">{$_TR.back}</a>
+{/if}

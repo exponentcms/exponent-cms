@@ -14,6 +14,10 @@
  *
  *}
 
+{css unique="managehelp" corecss="tables"}
+
+{/css}
+
 <div class="module help manage">
     <h1>Manage Help Documents</h1>
     <p>

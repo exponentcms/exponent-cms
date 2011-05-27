@@ -14,6 +14,10 @@
  *
  *}
 
+{css unique="manageversions" corecss="tables"}
+
+{/css}
+
 <div class="module help manage">
     <h1>Manage Help Versions</h1>
     <p>
@@ -39,7 +43,7 @@
         <tr class="{cycle values="odd,even"}">
             <td><a href="{link action=manage version=$version->id}">{$version->version}</a></td>
             <td>{$version->title}</td>
-            <td>{if $version->is_current == 1}{img src=`$smarty.const.ICON_RELATIVE`toggle_on.gif}{/if}</td>
+            <td>{if $version->is_current == 1}{img src=`$smarty.const.ICON_RELATIVE`toggle_on.png}{/if}</td>
             <td><a href="">{$version->num_docs}</a></td>
             <td>
                 {permissions}

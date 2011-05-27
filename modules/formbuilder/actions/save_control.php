@@ -80,6 +80,12 @@ if ($f) {
 						$control->rank = $db->max('formbuilder_control','rank','form_id','form_id='.$control->form_id)+1;
 					}
 					$db->insertObject($control,'formbuilder_control');
+					// reset summary report to all columns
+					if (!$control->is_static) {
+						$rpt = $db->selectObject('formbuilder_report','form_id='.$control->form_id);
+						$rpt->column_names = "";
+						$res = $db->updateObject($rpt,"formbuilder_report");
+					}
 				}
 				
 				formbuilder_form::updateTable($f);

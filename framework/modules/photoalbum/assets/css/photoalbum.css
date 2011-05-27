@@ -1,27 +1,35 @@
 /****************  showall  ***********************/
 
+.photoalbum.showall ul.image-list {
+    padding:0;
+    margin:0;
+}
+
 .photoalbum.showall ul li {
-    display:-moz-inline-stack;
-display:inline-block;
-zoom:1;
-*display:inline;
-    border:2px solid #999;
+    display:inline-block;
+    zoom:1;
+    *display:inline;
     margin:5px 5px 0 0;
     padding:3px;
     text-align:center;
     position:relative;
 }
 
-.photoalbum.showall ul li div.admin-actions {
+.photoalbum.showall ul li div.item-actions {
     display:none;
 }
 
-.photoalbum.showall ul li:hover div.admin-actions {
+.photoalbum.showall ul li:hover div.item-actions {
     display:block;
     position:absolute;
-    top:-5px;
-    left:-5px;
+    top:5px;
+    left:5px;
     padding:3px;
+}
+
+.photoalbum.showall ul li .item-actions a {
+    display:block;
+    text-align:left;
 }
 
 .photoalbum.showall ul li em {
@@ -30,9 +38,16 @@ zoom:1;
 
 /****************  show  ***********************/
 
-.photoalbum.show img.enlarged {
-    float:left;
-    margin-right:10px;
-    border:1px solid #999;
-    padding:2px;
+.photoalbum.show img.img-large.float-right {
+    margin-left:20px;
 }
+
+.photoalbum.show img.img-large.float-left {
+    margin-right:20px;
+}
+
+.photoalbum.show .next-prev {
+    padding:5px 0;
+}
+
+

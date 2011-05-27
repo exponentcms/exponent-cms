@@ -13,6 +13,7 @@
  * GPL: http://www.gnu.org/licenses/gpl.txt
  *
  *}
+ 
 {css unique="managemods" corecss="admin-global"}
 {literal}
 .exp-skin-table td label {
@@ -61,7 +62,7 @@
 <div id="mod-manager" class="module administrationmodule modulemanager exp-skin-tabview hide">
     <div class="info-header">
         <div class="related-actions">
-            {help text="Get Help Managing Modules" module="addcontent"}
+            {help text="Get Help Managing Modules" module="manage-modules"}
         </div>
         <h1>{"Module Manager"|gettext}</h1>
     </div>

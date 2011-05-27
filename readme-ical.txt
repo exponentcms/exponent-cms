@@ -1,4 +1,4 @@
-ExponentCMS v0.98 Calendar iCalendar feed implementation
+ExponentCMS Calendar iCalendar feed implementation
 
 There are NO guarantees this may not open up security vulnerabilites on your site!  Please use with caution!
 

@@ -14,6 +14,10 @@
  *
  *}
 
+{css unique="managefaq" corecss="tables"}
+
+{/css}
+
 <div class="module faq manage">
     <h1>Manage Questions</h1>
     <p>Here you can view questions on your site and edit, delete, and answer unanswered questions</p>
@@ -41,11 +45,11 @@
 				<td>                
 					{if $question->include_in_faq == 1}
 						<a href="{link action=edit_toggle id=$question->id}" title="Remove this question from the FAQs">
-							{img src=`$smarty.const.ICON_RELATIVE`toggle_on.gif}
+							{img src=`$smarty.const.ICON_RELATIVE`toggle_on.png}
 						</a>
 					{else}
 						<a href="{link action=edit_toggle id=$question->id}" title="Add this question to the FAQs">
-							{img src=`$smarty.const.ICON_RELATIVE`toggle_off.gif}
+							{img src=`$smarty.const.ICON_RELATIVE`toggle_off.png}
 						</a>   
 					{/if}                
 				</td>

@@ -56,8 +56,9 @@
 				{/if}
             </span>
 			{if $config.usebody==1}
-				<p>{$record->body|summarize:"html":"para"}</p>
+				<p>{$record->body|summarize:"html":"paralinks"}</p>
 			{elseif $config.usebody==2}
+			{else}
 				{$record->body}
 			{/if}			
             <div class="post-footer align-left">

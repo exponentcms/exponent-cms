@@ -19,7 +19,12 @@
 {/css}
 
 <div class="module users manage-group">
-	<h1>{$moduletitle|default:"Manage User Groups"}</h1>	
+    <div class="info-header">
+        <div class="related-actions">
+			{help text="Get Help Managing User Groups" module="manage-groups"}
+        </div>
+        <h1>{$moduletitle|default:"Manage User Groups"}</h1>
+    </div>
 	<p>
         Groups are used to treat a set of users as a single entity, mostly for permission management. 
         This form allows you to determine which users belong to which groups, create new groups, modify 

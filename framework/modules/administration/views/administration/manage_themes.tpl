@@ -30,7 +30,12 @@ a.switchtheme.current {
 {/css}
 
 <div class="administrationmodule thememanager">
-	<h1>{"Manage Themes"|gettext}</h1>
+    <div class="info-header">
+        <div class="related-actions">
+            {help text="Get Help Managing Themes" module="manage-themes"}
+        </div>
+		<h1>{"Theme Manager"|gettext}</h1>
+    </div>
 
     <table border="0" cellspacing="0" cellpadding="0" class="exp-skin-table">
         <thead>

@@ -14,8 +14,18 @@
  *
  *}
 
+{css unique="managecontent" corecss="tables"}
+
+{/css}
+
 <div class="module migration manage_content">
-    <h1>{"Migrate Content"|gettext}</h1>
+    <div class="info-header">
+        <div class="related-actions">
+			{help text="Get Help with Migrating Content" module="migrate-content"}
+        </div>
+		<h1>{"Migrate Content"|gettext}</h1>	    
+    </div>
+
     <p> 
         The following is a list of modules we found in the database {$config.database}.
     </p>
@@ -46,6 +56,7 @@
 				{/foreach}
 			</tbody>
         </table>
+		{* control type="checkbox" name="copy_permissions" label="Migrate content permissions? (erases current content permissions!)" value=1 checked=false *}
         {control type="checkbox" name="wipe_content" label="Erase all current content before import?" value=1 checked=false}
         {control type="buttongroup" submit="Migrate Content" cancel="Cancel"}
     {/form}

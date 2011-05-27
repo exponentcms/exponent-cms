@@ -21,22 +21,29 @@ if (!defined('EXPONENT')) exit('');
 
 if (exponent_permissions_check('administrate',$loc)) {
 	if (!defined('SYS_USERS')) include_once(BASE.'subsystems/users.php');
+	
+	$locarray = array();
+	if ($loc->mod == 'navigationmodule' && !empty($perms[1]) && $perms[1] == 'manage') {
+		$sections = navigationmodule::levelTemplate($loc->int);
+		$locarray[] = $loc;
+		foreach ($sections as $section) {
+			$locarray[] = exponent_core_makeLocation('navigationmodule', null, $section->id);
+		}
+	} else {
+		$locarray[] = $loc;
+	}
+	$users = exponent_users_getAllUsers();
+	foreach ($locarray as $location) {
+		foreach ($users as $u) {
+			exponent_permissions_revokeAll($u,$location);
+		}
+	}	
+	
 	foreach ($_POST['permdata'] as $k => $user_str) {
 		$perms = array_keys($user_str);
 		$u = exponent_users_getUserById($k);
-		$locarray = array();
-		if ($loc->mod == 'navigationmodule' && !empty($perms[1]) && $perms[1] == 'manage') {
-			$sections = navigationmodule::levelTemplate($loc->int);
-			$locarray[] = $loc;
-			foreach ($sections as $section) {
-				$locarray[] = exponent_core_makeLocation('navigationmodule', null, $section->id);
-			}
-		} else {
-			$locarray[] = $loc;
-		}
 
 		foreach ($locarray as $location) {
-			exponent_permissions_revokeAll($u,$location);
 			for ($i = 0; $i < count($perms); $i++) {
 				exponent_permissions_grant($u,$perms[$i],$location);
 			}
@@ -46,7 +53,6 @@ if (exponent_permissions_check('administrate',$loc)) {
 			exponent_permissions_load($user);
 		}
 	}
-	
 	exponent_permissions_triggerRefresh();
     exponent_flow_redirect();
 } else {

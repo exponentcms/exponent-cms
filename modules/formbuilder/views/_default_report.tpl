@@ -34,15 +34,15 @@
     </thead>
     <tbody>
         {foreach from=$fields key=fieldname item=value}
-        <tr>
+        <tr class="{cycle values="even,odd"}">
             <td>{$captions[$fieldname]}</td>
             <td>{$value}</td>
         </tr>
         {/foreach}
     </tbody>
- </table>
+</table>
 
- {if $is_email == 0}
-  {br}
+{if $is_email == 0}
+	{br}
 	<a href="{$backlink}">{$_TR.back}</a>
- {/if}
+{/if}

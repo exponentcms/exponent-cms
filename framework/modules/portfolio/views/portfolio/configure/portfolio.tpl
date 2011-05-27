@@ -16,5 +16,5 @@
 
 <h2>{"Configure Portfolio"|gettext}</h2>
 {control type="checkbox" name="only_featured" label="Only show featured pieces" value=1 checked=$config.only_featured}
-{control type="radiogroup" name="usebody" label="Body Text"|gettext default=$config.usebody items="Full,Summary,None" values="2,1,0"}
+{control type="radiogroup" name="usebody" label="Body Text"|gettext value=$config.usebody|default:0 items="Full,Summary,None" values="0,1,2"}
 

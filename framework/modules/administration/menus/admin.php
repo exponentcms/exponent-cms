@@ -38,7 +38,15 @@ $expAdminMenu = array(
     			"submenu"=>array(
     				'id'=>'ver',
     				'itemdata'=>array(
-    					array('classname'=>'moreinfo','text'=>"Exponent Version : ".$my_version."<br />Release level : ".$my_type."<br />Release date : ".date("F-d-Y",EXPONENT_VERSION_BUILDDATE),"disabled"=>true)
+						array(
+							'classname'=>'moreinfo',
+							'text'=>"Exponent Version : ".$my_version."<br />Release level : ".$my_type."<br />Release date : ".date("F-d-Y",EXPONENT_VERSION_BUILDDATE)."<br />PHP Version : ".phpversion(),"disabled"=>true
+						),
+						array(
+							'text' => "Report a bug",
+							'url' => 'http://exponentcms.lighthouseapp.com/projects/61783-exponent-cms/tickets/new',
+							'icon' => ICON_RELATIVE . "bug.png"
+						)				
     				)
     			)
     		),

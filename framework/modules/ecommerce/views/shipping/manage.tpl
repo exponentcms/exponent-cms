@@ -14,6 +14,10 @@
  *
  *}
 
+{css unique="manageshipping" corecss="tables"}
+
+{/css}
+
 <div class="module shipping manage">
     <h1>Manage Shipping Options</h1>
     <p>
@@ -37,9 +41,9 @@
                 {permissions}
                     {if $permissions.toggle == 1}                        
                     {if $calc->enabled}
-                        <a href="{link action=toggle id=$calc->id}">{img src=`$smarty.const.ICON_RELATIVE`toggle_on.gif}</a>
+                        <a href="{link action=toggle id=$calc->id}">{img src=`$smarty.const.ICON_RELATIVE`toggle_on.png}</a>
                     {else}
-                        <a href="{link action=toggle id=$calc->id}">{img src=`$smarty.const.ICON_RELATIVE`toggle_off.gif}</a>
+                        <a href="{link action=toggle id=$calc->id}">{img src=`$smarty.const.ICON_RELATIVE`toggle_off.png}</a>
                     {/if}
                     {if $calc->hasConfig() == 1}
                         {icon action=configure record=$calc title="Configure `$calc->title`"}

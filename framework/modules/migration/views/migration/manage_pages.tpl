@@ -14,8 +14,18 @@
  *
  *}
 
+{css unique="managespages" corecss="tables"}
+
+{/css}
+
 <div class="module migration manage-pages">
-    <h1>Migrate Pages</h1>
+    <div class="info-header">
+        <div class="related-actions">
+			{help text="Get Help with Migrating Pages" module="migrate-pages"}
+        </div>
+		<h1>{"Migrate Pages"|gettext}</h1>	    
+    </div>
+
     <p> 
         The following is a list of pages we found in the database {$config.database}.
         Select the pages you would like to pull over from {$config.database}.
@@ -55,6 +65,7 @@
         {/foreach}
         </tbody>
         </table>
+		{control type="checkbox" name="copy_permissions" label="Migrate page permissions? (erases current page permissions!)" value=1 checked=false}
         {control type="checkbox" name="wipe_pages" label="Erase all current pages and then try again?" value=1 checked=false}
         {control type="buttongroup" submit="Migrate Pages" cancel="Cancel"}
     {/form}

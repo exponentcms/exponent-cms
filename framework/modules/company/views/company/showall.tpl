@@ -14,6 +14,10 @@
  *
  *}
 
+{css unique="showallcompany" corecss="tables"}
+
+{/css}
+
 <div class="company showall">
 	<h1>{$moduletitle|default:'Company Listings'}</h1>
 

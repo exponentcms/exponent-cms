@@ -55,33 +55,50 @@ class ckeditorcontrol extends formcontrol {
 
 	function controlToHTML($name) {
 	    global $db;
-	    
-	    $toolbar = $db->selectObject('htmleditor_ckeditor','active=1');
-	    if (empty($toolbar)||$this->toolbar=="default") {
-	       $tb = "
+		$toolbar = 'def';
+		if (empty($this->toolbar)) $toolbar = $db->selectObject('htmleditor_ckeditor','active=1');
+		if (empty($toolbar) || $this->toolbar=="default" || $this->toolbar->data=="default") {
+			$tb = "
 	           ['Source','-','Preview','-','Templates'],
-               ['Cut','Copy','Paste','PasteText','PasteFromWord'],
+               ['Cut','Copy','Paste','PasteText','PasteFromWord','-','Print','SpellChecker','Scayt'],
                ['Undo','Redo','-','Find','Replace','-','SelectAll','RemoveFormat'],
                '/',
                ['Bold','Italic','Underline','Strike','-','Subscript','Superscript'],
                ['NumberedList','BulletedList','-','Outdent','Indent','Blockquote','CreateDiv'],
                ['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock'],
                ['Link','Unlink','Anchor'],
-               ['Image','Flash','Table','HorizontalRule','Smiley','SpecialChar','PageBreak'],
+               ['Image','Flash','Table','HorizontalRule','Smiley','SpecialChar','PageBreak','Iframe'],
                '/',
                ['Styles','Format','Font','FontSize'],
                ['TextColor','BGColor'],
                ['Maximize', 'ShowBlocks','-','About']
-	       ";
+			";
+			$skin = 'kama';
+			$scayt_on = 'true';
+			$paste_word = 'forcePasteAsPlainText : true,';
 	    } else {
-     	       $tb = !empty($this->toolbar) ? $this->toolbar : $toolbar->data;
+//			$tb = !empty($this->toolbar) ? $this->toolbar->data : $toolbar->data;
+//			$skin = !empty($toolbar->skin) ? $toolbar->skin : 'kama';
+			if (!empty($this->toolbar)) {
+				$tb = $this->toolbar->data;
+				$skin = $this->toolbar->skin;
+				$scayt_on = $this->toolbar->scayt_on ? 'true' : 'false';
+				$paste_word = $this->toolbar->paste_word ? 'pasteFromWordPromptCleanup : true,' : 'forcePasteAsPlainText : true,';
+			} else {
+				$tb = $toolbar->data;
+				$skin = $toolbar->skin;
+				$scayt_on = $toolbar->scayt_on ? 'true' : 'false';
+				$paste_word = $toolbar->paste_word ? 'pasteFromWordPromptCleanup : true,' : 'forcePasteAsPlainText : true,';
+			}
 	    }
 	    
 	    $content = "
 	    	EXPONENT.editor".createValidId($name)." = CKEDITOR.replace('".createValidId($name)."',
 				{
+					skin : '".$skin."',
 					toolbar : [".stripSlashes($tb)."],
-                    forcePasteAsPlainText:true,
+					".$paste_word."
+                    scayt_autoStartup : ".$scayt_on.",
                     filebrowserBrowseUrl : '".makelink(array("controller"=>"file", "action"=>"picker", "ajax_action"=>1, "ck"=>1, "update"=>"fck"))."',
                     filebrowserWindowWidth : '640',
                     filebrowserWindowHeight : '480',

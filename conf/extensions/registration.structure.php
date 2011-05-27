@@ -22,7 +22,7 @@ if (!defined('EXPONENT')) exit('');
 
 $i18n = exponent_lang_loadFile('conf/extensions/registration.structure.php');
 
-$stuff = array(
+return array(
 	$i18n['title'],
 	array(
 		'SITE_ALLOW_REGISTRATION'=>array(

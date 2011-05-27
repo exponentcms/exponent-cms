@@ -2,6 +2,28 @@ Exponent Content Management System
 Copyright (c) 2004-2011 OIC Group, Inc.
 ===============================================
 
+Added / Fixed / changed for 2.0.0 beta 3
+-----------------------
+# Help: Added help links to most of the management screens with associated page implemented on the help/docs site.
+# Fixed a reported security vulnerability
+# Notable Module fixes and improvements
+    • Migration: Adds option to migrate page permissions. Changed migration of headlines to text items in preparation for headline controller deprecation. Added some error checking and fixes prior to migration of old database. Adds rss feedlistmodule migration.
+    • Photo Album: Upgraded code quality to Stable. Improvements to photo album gallery view.
+    • Code Snippet: Adds multiple item capability to module and new "highlight text" action
+    • Forms: Displays number of records next to View Data link. Resets report columns to "all" whenever a new control is added to keep new field from seeming hidden or not saved. Fixes error thrown by checkbox control.
+    • CKEditor (WYSIWYG): Upgraded to v3.6, fixes issues where dialogues won't close. Adds toolbar skin selection, spell-checking-as-you-type, and formatted pasting to CKEditor (site configuration controlled). Fixes several problems with custom toolbar manager. Moves toolbar configuration to the wysiwyg tab of site configuration.
+    • Added per-module thumbnail jpeg quality setting for files and photoalbums slideshows and galleries. Adds user adjusted thumbnail quality (jpeg compression level) to site configuration display tab.
+    • Adds horizontal scrolling to user/group permissions and form module view data.  Previously these tables flowed over the side of the column and looked ugly.
+    • Changes summaries to allow breaks and add links where applicable
+    • Fixed "Cannot delete items from recycle bin/archived modules"
+    • Removed button color and size settings from the site config, replaced by the ability to define constants in the theme.
+    • Swiftmailer now compatible with PHP v5.3 (after reverting to older version)
+    • Adds PHP version and preliminary 'report a bug' to Exponent menu
+    • Fixes checkbox control readonly (which is actually disabled)
+    • Fixes problem of removing all permissions from a user or group once a permission is assigned.
+    • Standardizes wording used on many pages
+    • Changes default content view type in blog, filedownloads, news, & portfolio to full body.  All selectable as full, summary, or none.
+
 Added / Fixed / changed for 2.0.0 beta 2.1
 -----------------------
 # Fixed an observed security vulnerability
@@ -13,7 +35,7 @@ Added / Fixed / changed for 2.0.0 beta 2
     • Retrofitting of all module views.
         - integration of pagination configuration.
         - Integration of File Displayer to many modules to be configured by File Tab in Configuration.
-        - Style and class name consistancy system-wide.
+        - Style and class name consistency system-wide.
     • Added visual styling for buttons based off "Super Awesome Buttons".
         - http://www.zurb.com/playground/super-awesome-buttons.
     • Major cosmetic cleanup to the installer.
@@ -22,7 +44,7 @@ Added / Fixed / changed for 2.0.0 beta 2
     • More migration script enhancements.
 		- Adds banner, rss configuration, rss feedlist, and addressbook migration.
 		- Properly uses module aggregation replacing the "use existing" content method in pre-2.0 code
-    • Admin Slignbar additions.
+    • Admin Slingbar additions.
         - Added system Information under Exponent Menu.
         - Re-arranged and permissioned for better administrative task grouping.
     • Additional Antispam Re-captcha usage options in site configuration.
@@ -43,10 +65,10 @@ Added / Fixed / changed for 2.0.0 beta 1
 # Security
     • YUI SWF Replacement
     • Podcast file vulnerability
-    • Recycle Bin propperly permissioned
+    • Recycle Bin properly permissioned
 
 # Performance
-    • Turned off user tracking for performance reasons and lack of full implimentation.
+    • Turned off user tracking for performance reasons and lack of full implementation.
     • Removal of YUI PHP loader to calculate YUI JS dependencies, as YUI now has conditional loading
       based on the browser that YUI PHP Loader cannot accomplish.
     • Minification system enhanced
@@ -82,7 +104,7 @@ Added / Fixed / changed for 2.0.0 beta 1
     • Many Internet Explorer bug fixes
 
 # Language
-    • Initial start for new Language system implimented 
+    • Initial start for new Language system implemented
 
 
 Added / Fixed / changed for 2.0.0 Preview Release 2

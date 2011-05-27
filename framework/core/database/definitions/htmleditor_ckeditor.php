@@ -27,9 +27,16 @@ return array(
 	'name'=>array(
 		DB_FIELD_TYPE=>DB_DEF_STRING,
 		DB_FIELD_LEN=>100),
+	'skin'=>array(
+		DB_FIELD_TYPE=>DB_DEF_STRING,
+		DB_FIELD_LEN=>100),
 	'data'=>array(
 		DB_FIELD_TYPE=>DB_DEF_STRING,
 		DB_FIELD_LEN=>10000),
+	'scayt_on'=>array(
+		DB_FIELD_TYPE=>DB_DEF_BOOLEAN),
+	'paste_word'=>array(
+		DB_FIELD_TYPE=>DB_DEF_BOOLEAN),
 	'active'=>array(
 		DB_FIELD_TYPE=>DB_DEF_BOOLEAN)
 );

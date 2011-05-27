@@ -14,6 +14,10 @@
  *
  *}
 
+{css unique="managecomments" corecss="tables"}
+
+{/css}
+
 <div class="module expcomment manage">
     <h1>Manage Comments</h1>
     <p>The table below shows comments have not yet been approved.</p>
@@ -31,11 +35,11 @@
             <td>
                 {if $comment->approved == 1}
                     <a href="{link action=approve_toggle id=$comment->id}" title="Disable this comment">
-                        {img src=`$smarty.const.ICON_RELATIVE`toggle_on.gif}
+                        {img src=`$smarty.const.ICON_RELATIVE`toggle_on.png}
                     </a>
                 {else}
                     <a href="{link action=approve_toggle id=$comment->id}" title="Approve this comment">
-                        {img src=`$smarty.const.ICON_RELATIVE`toggle_off.gif}
+                        {img src=`$smarty.const.ICON_RELATIVE`toggle_off.png}
                     </a>   
                 {/if}  
             </td>

@@ -15,11 +15,17 @@
  *}
 
 <div class="module users edit">
-{if $edit_user->id == ""}
-    <h1>Create a New User Account</h1>
-{else}
-    <h1>Edit User {$edit_user->username}</h1>
-{/if}    
+    <div class="info-header">
+        <div class="related-actions">
+			{help text="Get Help with User Accounts" module="edit-user"}
+        </div>
+		{if $edit_user->id == ""}
+			<h1>Create a New User Account</h1>
+		{else}
+			<h1>Edit User {$edit_user->username}</h1>
+		{/if}    
+    </div>
+	
 {form action=update}
     {if $edit_user->id == "" || $edit_user->id == 0}
 	    {if $smarty.const.USER_REGISTRATION_USE_EMAIL == 0}
@@ -32,12 +38,17 @@
 	{else}
 	    {control type="hidden" name="id" value=$edit_user->id}
     {/if}
+    {control type="hidden" name="userkey" value=$userkey}
     {if $smarty.const.USER_REGISTRATION_USE_EMAIL == 0}{control type=text name=email label="Email Address" value=$edit_user->email}{/if}
     {control type=text name=firstname label="First Name" value=$edit_user->firstname}
     {control type=text name=lastname label="Last Name" value=$edit_user->lastname}
     {*control type=checkbox name="recv_html" label="I prefer HTML Email" value=1 checked=$edit_user->recv_html*}
-    {if exponent_users_isAdmin() == 1}
-	    {control type=checkbox name=is_acting_admin value=1 label="Make this user an Administrator?" checked=$edit_user->is_acting_admin}
+    {if $user->isAdmin() == 1}
+        {if $edit_user->id==$user->id || $user->isActingAdmin()}
+	        {control type=checkbox readonly="readonly" name=is_acting_admin value=1 label="Make this user an Administrator?" checked=$edit_user->is_acting_admin}
+        {else}
+            {control type=checkbox name=is_acting_admin value=1 label="Make this user an Administrator?" checked=$edit_user->is_acting_admin}
+        {/if}
     {/if}
     
     {foreach from=$extensions item=extension}

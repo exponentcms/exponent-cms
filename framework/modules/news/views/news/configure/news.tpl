@@ -17,5 +17,5 @@
 <h2>Configure this News Module</h2>
 {*control type=dropdown name=order label="Sort Order" items="$sortopts" value=$config.order*}
 {control type="checkbox" name="only_featured" label="Only show Featured News Items" value=1 checked=$config.only_featured}
-{control type="radiogroup" name="usebody" label="Body Text"|gettext default=$config.usebody items="Full,Summary,None" values="2,1,0"}
+{control type="radiogroup" name="usebody" label="Body Text"|gettext value=$config.usebody|default:0 items="Full,Summary,None" values="0,1,2"}
 

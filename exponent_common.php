@@ -1,4 +1,4 @@
-<?
+<?php
 function __realpath($path) {
     $path = str_replace('\\','/',realpath($path));
     if ($path{1} == ':') {

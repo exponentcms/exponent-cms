@@ -16,8 +16,13 @@
 
 <div class="common userpermissions">
 	<div class="form_header">
+		<div class="info-header">
+			<div class="related-actions">
+				{help text="Get Help Managing User Permissions" module="manage-user-permissions"}
+			</div>
         	<h1>{$_TR.form_title}</h1>
-	        <p>{$_TR.form_header}</p>
+		</div>
+		<p>{$_TR.form_header}</p>
 	</div>
 	{capture assign="file"}{$smarty.const.BASE}modules/common/views/_permissions.tpl{/capture}
 	{include file=$file}

@@ -14,6 +14,10 @@
  *
  *}
 
+{css unique="showallealerts" corecss="tables"}
+
+{/css}
+
 <div class="module ealerts showall">
     <h1>{$moduletitle|default:"Sign Up for E-Alerts"}</h1>
     <p>

@@ -14,11 +14,9 @@
  *
  *}
  
- 
 {css unique="permissions" corecss="tables"}
 
 {/css}
-
 
 <form method="post">
 <input type="hidden" name="module" value="{$__loc->mod}" />
@@ -30,6 +28,7 @@
 <input type="hidden" name="_common" value="1" />
 
 {$page->links}
+<div style="overflow : auto; overflow-y : hidden;">
 <table border="0" cellspacing="0" cellpadding="0" class="exp-skin-table">
     <thead>
         <tr>
@@ -38,7 +37,7 @@
     </thead>
     <tbody>
         {foreach from=$page->records item=user key=ukey name=user}
-        <tr>    
+        <tr class="{cycle values="even,odd"}">    
 
             {if !$is_group}
             <td>
@@ -65,6 +64,7 @@
         {/foreach}
     </tbody>
 </table>
+</div>
 {$page->links}
 
 {control type="buttongroup" submit="Save Permissions"|gettext cancel="Cancel"|gettext}

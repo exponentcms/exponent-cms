@@ -15,7 +15,13 @@
  *}
 
 <div id="migrationconfig" class="module migration configure">
-	<h1>{"Database Settings to Migrate Your Old Site"|gettext}</h1>
+    <div class="info-header">
+        <div class="related-actions">
+			{help text="Get Help with Migration Database Settings" module="configure-migration-settings"}
+        </div>
+		<h1>{"Database Settings to Migrate Your Old Site"|gettext}</h1>	    
+    </div>
+
 	<p>
 		This is where you enter the database connection information for your
 		old Exponent v1 site you want to migrate data from.

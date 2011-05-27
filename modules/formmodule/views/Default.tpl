@@ -22,7 +22,7 @@
     {messagequeue}
 	{permissions}
 		<div class="module-actions">
-			{if $permissions.viewdata == 1 && $form->is_saved == 1}<a class="addnew mngmntlink" href="{link action=view_data module=formbuilder id=$form->id}">{$_TR.view_data}</a>&nbsp;&nbsp;{/if}
+			{if $permissions.viewdata == 1 && $form->is_saved == 1}<a class="addnew mngmntlink" href="{link action=view_data module=formbuilder id=$form->id}">{$_TR.view_data} ({$count})</a>&nbsp;&nbsp;{/if}
 			{if $permissions.viewdata == 1 && $form->is_saved == 1}|&nbsp;&nbsp;<a class="addnew mngmntlink" href="{link action=export_csv module=formbuilder id=$form->id}">{"Export CSV"|gettext}</a>&nbsp;&nbsp;
 				{if $permissions.editformsettings == 1}|&nbsp;&nbsp;
 				{/if}

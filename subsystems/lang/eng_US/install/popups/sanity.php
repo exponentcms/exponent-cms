@@ -21,10 +21,10 @@ return array(
 	
 	'other_tests'=>'Other Tests',
 	'db_backend'=>'Database Backend',
-	'db_backend_desc'=>'Exponent stores all the content for your website in a relational database.  For portability reasons, a custom database abstraction layer is used.  Currently, this abstraction layer only support MySQL and PostGreSQL.  If this test fails, then PHP support for these database engines was not detected.',
+	'db_backend_desc'=>'Exponent stores all the content for your website in a relational database.  For portability reasons, a custom database abstraction layer is used.  Currently, this abstraction layer only supports MySQL.  If this test fails, then PHP support for these database engines was not detected.',
 	'gd'=>'GD Graphics Library',
 	'gd_desc'=>'Various parts of Exponent utilize the GD Graphics library for imaging functions.  Exponent can operate without GD, but you will lose such features as Captcha tests and automatic thumbnails.  A version of GD that is 2.0.x compatible will give you sharper and crisper thumbnails.',
-	'php_desc'=>'Because of some of the functions that Exponent uses, versions of PHP prior to 4.0.6 are not suitable.  Most functions that are supported in later versions have workarounds, but there are a few major bugs, and functions that can\'t be re-implemented in PHP prior to 4.0.6.',
+	'php_desc'=>'Because of some of the functions that Exponent uses, versions of PHP prior to 5.2.1 are not suitable.  Most functions that are supported in later versions have workarounds, but there are a few major bugs, and functions that can\'t be re-implemented in PHP prior to 5.2.1.',
 	'zlib'=>'ZLib Support',
 	'zlib_desc'=>'ZLib is used for archive support, which Exponent uses for uncompressing Tar and Zip archives.',
 	'xml'=>'XML (Expat Library)',

@@ -47,10 +47,28 @@ if ($f && $data && $controls) {
 				if ($c->is_static == 0) {
 					$ctl->default = $data->$name;
 				}
-      }
+			}
 			$form->register($c->name,$c->caption,$ctl);
 		}
-		$form->register(uniqid(''),'', new htmlcontrol('<br /><br />'));
+		
+		$antispam = '';
+		if (SITE_USE_ANTI_SPAM && ANTI_SPAM_CONTROL == 'recaptcha') {                
+			// make sure we have the proper config.
+			if (!defined('RECAPTCHA_PUB_KEY')) {
+				$antispam .= '<h2 style="color:red">reCaptcha configuration is missing the public key.</h2>';
+			}
+			if (exponent_users_isLoggedIn() && ANTI_SPAM_USERS_SKIP == 1) {
+				// skip it for logged on users based on config
+			} else {
+				// include the library and show the form control
+				require_once(BASE.'external/recaptchalib.php');
+				$antispam .= recaptcha_get_html(RECAPTCHA_PUB_KEY);
+				$antispam .= '<p>Fill out the above security question to submit your form.</p>';
+			}
+		}		
+		
+//		$form->register(uniqid(''),'', new htmlcontrol('<br /><br />'));
+		$form->register(uniqid(''),'', new htmlcontrol($antispam));
 		$form->register('submit','',new buttongroupcontrol($i18n['save'],'',$i18n['cancel']));
 		$form->meta('action','submit_form');
 		$form->meta('m',$loc->mod);
@@ -61,6 +79,8 @@ if ($f && $data && $controls) {
 		$form->meta('data_id',$data->id);
 		$form->location($loc);
 		
+		global $SYS_FLOW_REDIRECTIONPATH;
+		$SYS_FLOW_REDIRECTIONPATH = "editfallback";
 		$template = new template('formbuilder','_view_form');
 		$template->assign('form_html',$form->toHTML($f->id));
 		$template->assign('form',$f);

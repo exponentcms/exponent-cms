@@ -16,7 +16,12 @@
 
 <div class="module common group-permissions">
     <div class="form_header">
-        <h1>{$_TR.form_title}</h1>
+		<div class="info-header">
+			<div class="related-actions">
+				{help text="Get Help Managing Group Permissions" module="manage-group-permissions"}
+			</div>
+			<h1>{$_TR.form_title}</h1>
+		</div>
         <p>{$_TR.form_header}</p>
     </div>
 	{capture assign="file"}{$smarty.const.BASE}modules/common/views/_permissions.tpl{/capture}

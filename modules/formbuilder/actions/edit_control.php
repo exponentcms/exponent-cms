@@ -78,8 +78,12 @@ if ($f) {
 			$form->meta("action","save_control");
 			$form->meta('control_type',$control_type);
 			$form->meta('form_id',$f->id);
-			
-			echo $form->toHTML();
+			$types = exponent_forms_listControlTypes();
+			$template = new template('formbuilder','_edit_control');
+			$template->assign('form_html',$form->toHTML($f->id));
+			$template->assign('type',$types[$control_type]);
+			$template->assign('is_edit',($ctl == null ? 0 : 1));
+			$template->output();			
 		}
 	} else {
 		echo SITE_403_HTML;

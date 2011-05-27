@@ -44,6 +44,13 @@ a.selectnone {
     background:url(../images/exp-admin-sprite.png) no-repeat 3px -445px;
 }
 
+a.copy {
+    display:inline-block;
+    zoom:1;
+    padding:4px 5px 4px 25px;
+    background:url(../images/copy.png) no-repeat 3px 5px;
+}
+
 
 /****************  active / inactive  ***********************/
 

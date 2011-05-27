@@ -14,7 +14,7 @@
  *
  *}
  
-{css unique="product-show" link="`$asset_path`css/product_show.css"}
+{css unique="product-show" link="`$asset_path`css/product_show.css" corecss="button,tables"}
 
 {/css}
 
@@ -39,7 +39,11 @@
             {icon action=delete record=$product title="Delete `$product->title`" onclick="return confirm('Are you sure you want to delete this product?');"}
         {/if}
         {if $permissions.edit == 1}
-            {icon action=copyProduct img="copy.png" title="Copy `$product->title` " record=$product}
+            {icon action=copyProduct class="copy" text="Copy Product" title="Copy `$product->title` " record=$product}
+        {/if}
+        {if $permissions.edit == 1}   
+        
+            <a href="{link controller=store action=edit parent_id=$product->id product_type='childProduct'}" class="add">Add Child Product</a>
         {/if}
     </div>
     {/permissions}
@@ -93,10 +97,10 @@
         {*control name="qty" type="text" value="`$product->minimum_order_quantity`" size=3 maxlength=5 class="lstng-qty"*}
 
         {if $product->availability_type == 0 && $product->active_type == 0}
-            <a href="#" onclick="document.getElementById('addtocart{$product->id}').submit(); return false;" class="exp-ecom-link addtocart" rel="nofollow"><strong><em>Add to Cart</em></strong></a>
+            <a href="#" onclick="document.getElementById('addtocart{$product->id}').submit(); return false;" class="awesome {$smarty.const.BTN_COLOR} {$smarty.const.BTN_SIZE} addtocart" rel="nofollow"><strong><em>Add to Cart</em></strong></a>
         {elseif $product->availability_type == 1 && $product->active_type == 0}
             <!--a href="{link controller=cart action=addItem product_id=$product->id product_type=$product->product_type qty=1}" class="addtocart exp-ecom-link" rel="nofollow"><strong><em>Add to cart</em></strong></a--> 
-            <a href="#" onclick="document.getElementById('addtocart{$product->id}').submit(); return false;" class="exp-ecom-link addtocart" rel="nofollow"><strong><em>Add to Cart</em></strong></a>
+            <a href="#" onclick="document.getElementById('addtocart{$product->id}').submit(); return false;" class="awesome {$smarty.const.BTN_COLOR} {$smarty.const.BTN_SIZE} addtocart" rel="nofollow"><strong><em>Add to Cart</em></strong></a>
             {if $product->quantity <= 0}<span class="error">{$product->availability_note}</span>{/if}   
         {elseif $product->availability_type == 2}    
             {if $product->quantity <= 0}<span class="error">{$product->availability_note}</span>{/if}              
@@ -203,11 +207,6 @@
     {/if}
      
     <div style="clear:both"></div>
-    {permissions}
-    {if $permissions.edit == 1}   
-    <a href="{link controller=store action=edit parent_id=$product->id product_type='childProduct'}">Add Child Product</a>{br} 
-    {/if}
-    {/permissions}
     {if $product->childProduct|@count >= 1}
     {permissions}                   
     {if $permissions.delete == 1}   
@@ -218,80 +217,99 @@
     
     <div id="child-products">
         {form id="child-products-form" controller=cart action=addItem}
-        <table border="0" cellspacing="0" cellpadding="0">
+        <table border="0" cellspacing="0" cellpadding="0" class="exp-skin-table">
             <thead>
                 <tr>
                     <th>&nbsp;</th>
                     <th><strong>{gettext str="QTY"}</strong></th>
                     <th><strong>{gettext str="SKU"}</strong></th>
+                    {if $product->extra_fields}
                     {foreach from=$product->extra_fields item=chiprodname}                        
                         <th><span>{$chiprodname.name}</span></th>                            
                     {/foreach}
+                    {/if}
                     <th style="text-align: right;"><strong>{gettext str="PRICE"}</strong></th>
                     <th>&nbsp;</th>
                 </tr>
             </thead>
             <tbody>
-                {foreach from=$product->childProduct item=chiprod}
-                    
-                        <tr class="{cycle values="odd,even"}">
+            {foreach from=$product->childProduct item=chiprod}
+                <tr class="{cycle values="odd,even"}">
                             
-                                {* 
-                                    [0] => Always available even if out of stock.
-                                    [1] => Available but shown as backordered if out of stock.
-                                    [2] => Unavailable if out of stock.
-                                    [3] => Show as &quot;Call for Price&quot;.
-                                *}
+                        {* 
+                            [0] => Always available even if out of stock.
+                            [1] => Available but shown as backordered if out of stock.
+                            [2] => Unavailable if out of stock.
+                            [3] => Show as &quot;Call for Price&quot;.
+                        *}
 
-                                {if  $chiprod->active_type == 0 && $product->active_type == 0 && ($chiprod->availability_type == 0 || $chiprod->availability_type == 1 || ($chiprod->availability_type == 2 && ($chiprod->quantity - $chiprod->minimum_order_quantity >= 0))) }
-                                    <td><input name="prod-check[]" type="checkbox" value="{$chiprod->id}"></td>
-                                    <td><input name="prod-quantity[{$chiprod->id}]" type="text" value="{$chiprod->minimum_order_quantity}" size=3 maxlength=5></td>
-                                {elseif ($chiprod->availability_type == 2 && $chiprod->quantity <= 0) && $chiprod->active_type == 0}
-                                    <td colspan="2"><span><a href="javascript:void();" rel=nofollow title="{$chiprod->availability_note}">Out Of Stock</a></span></td>
-                                {elseif $product->active_type != 0 || $chiprod->availability_type == 3 || $chiprod->active_type == 1 || $chiprod->active_type == 2}
-                                     <td colspan="2" style="text-align:center; font-weight: bold;">N/A</td> 
-                                {/if}
-                            
-                            <td><span>{$chiprod->model}</span></td>
-                            {if $chiprod->extra_fields}
-                                {foreach from=$chiprod->extra_fields item=ef}
-                                <td><span>{$ef.value|stripslashes}</span></td>
-                                {/foreach}
+                    {if  $chiprod->active_type == 0 && $product->active_type == 0 && ($chiprod->availability_type == 0 || $chiprod->availability_type == 1 || ($chiprod->availability_type == 2 && ($chiprod->quantity - $chiprod->minimum_order_quantity >= 0))) }
+                        <td>
+                            <input name="prod-check[]" type="checkbox" value="{$chiprod->id}">
+                        </td>
+                        <td>
+                            <input name="prod-quantity[{$chiprod->id}]" type="text" value="{$chiprod->minimum_order_quantity}" size=3 maxlength=5>
+                        </td>
+                    {elseif ($chiprod->availability_type == 2 && $chiprod->quantity <= 0) && $chiprod->active_type == 0}
+                        <td>
+
+                        </td>
+                        <td>
+                            <span><a href="javascript:void();" rel=nofollow title="{$chiprod->availability_note}">{"Out Of Stock"|gettext}</a></span>
+                        </td>
+                    {elseif $product->active_type != 0 || $chiprod->availability_type == 3 || $chiprod->active_type == 1 || $chiprod->active_type == 2}
+                        <td>
+
+                        </td>
+                         <td>
+                             N/A
+                        </td> 
+                    {/if}
+                
+                    <td>
+                        <span>{$chiprod->model}</span>
+                    </td>
+                    {if $chiprod->extra_fields}
+                    {foreach from=$chiprod->extra_fields item=ef}
+                    <td>
+                        <span>{$ef.value|stripslashes}</span>
+                    </td>
+                    {/foreach}
+                    {/if}
+                    <td style="text-align: right;">
+                        {if $chiprod->availability_type == 3 && $chiprod->active_type == 0}
+                            <strong><a href="javascript:void();" rel=nofollow title="{$chiprod->availability_note}">Call for price</a></strong>                
+                        {else}
+                            {if $chiprod->use_special_price}
+                                <span style="color:red; font-size: 8px; font-weight: bold;">SALE</span>{br}
+                                <span style="color:red; font-weight: bold;">{currency_symbol}{$chiprod->special_price|number_format:2}</span>
+                            {else}
+                                <span>{currency_symbol}{$chiprod->base_price|number_format:2}</span>
                             {/if}
-                            <td style="text-align: right;">
-                                {if $chiprod->availability_type == 3 && $chiprod->active_type == 0}
-                                    <strong><a href="javascript:void();" rel=nofollow title="{$chiprod->availability_note}">Call for price</a></strong>                
-                                {else}
-                                    {if $chiprod->use_special_price}
-                                        <span style="color:red; font-size: 8px; font-weight: bold;">SALE</span>{br}
-                                        <span style="color:red; font-weight: bold;">{currency_symbol}{$chiprod->special_price|number_format:2}</span>
-                                    {else}
-                                        <span>{currency_symbol}{$chiprod->base_price|number_format:2}</span>
-                                    {/if}
-                                {/if}
-                            </td> 
-                            <td>
-                            {permissions}
-                            <div class="item-actions">
-                                {if $permissions.edit == 1}                                                        
-                                    {icon class=edit action=edit id=$chiprod->id title="Edit `$chiprod->title`"}
-                                {/if}
-                                {if $permissions.delete == 1}
-                                    {icon action=delete record=$chiprod title="Delete `$chiprod->title`" onclick="return confirm('Are you sure you want to delete this child product?');"}
-                                {/if}
-                                {if $permissions.edit == 1}
-                                    {icon action=copyProduct img="copy.png" title="Copy `$chiprod->title` " record=$chiprod}
-                                {/if}
-                            </div>
-                            {/permissions}
-                            </td>
-                        </tr>                
+                        {/if}
+                    </td> 
+                    <td>
+                    {permissions}
+                    <div class="item-actions">
+                        {if $permissions.edit == 1}                                                        
+                            {icon img="edit.png" action=edit id=$chiprod->id title="Edit `$chiprod->title`"}
+                        {/if}
+                        {if $permissions.delete == 1}
+                            {icon img="delete.png" action=delete record=$chiprod title="Delete `$chiprod->title`" onclick="return confirm('Are you sure you want to delete this child product?');"}
+                        {/if}
+                        {if $permissions.edit == 1}
+                            {icon action=copyProduct img="copy.png" title="Copy `$chiprod->title` " record=$chiprod}
+                        {/if}
+                    </div>
+                    {/permissions}
+                    </td>
+                    </tr>                
                 {/foreach}
             </tbody>
         </table>
 
         {if $product->active_type == 0}
-        <a id="submit-chiprods" href="javascript:{ldelim}{rdelim}" class="addtocart exp-ecom-link" rel="nofollow"><strong><em>Add selected items to cart</em></strong></a>
+        <a id="submit-chiprods" href="javascript:{ldelim}{rdelim}" class="awesome {$smarty.const.BTN_COLOR} {$smarty.const.BTN_SIZE} exp-ecom-link" rel="nofollow"><strong><em>Add selected items to cart</em></strong></a>
         {/if}
         {/form}
         

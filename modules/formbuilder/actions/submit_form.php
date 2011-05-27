@@ -155,6 +155,7 @@ if (!isset($_POST['data_id']) || (isset($_POST['data_id']) && exponent_permissio
         $template->assign("response_html",$f->response);
         $template->output();
     } else {
+		flash ('message', 'Record was updated!');
         exponent_flow_redirect();
     }
 } else {

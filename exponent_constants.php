@@ -1,4 +1,4 @@
-<?
+<?php
 if (!defined('DISPLAY_THEME')) {
 	/* exdoc
 	 * The directory and class name of the current active theme.  This may be different
@@ -84,5 +84,6 @@ if (!defined('YUI2_PATH')) {
 	define('YUI2_PATH', PATH_RELATIVE.'external/lissa/'.YUI2_VERSION.'/build/');
 	define('YUI2_URL', URL_FULL.'external/lissa/'.YUI2_VERSION.'/build/');
 }
+
 
 ?>

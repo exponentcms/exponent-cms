@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2007-2008 OIC Group, Inc.
+ * Copyright (c) 2007-2011 OIC Group, Inc.
  * Written and Designed by Adam Kessler
  *
  * This file is part of Exponent
@@ -13,6 +13,10 @@
  * GPL: http://www.gnu.org/licenses/gpl.txt
  *
  *}
+
+{css unique="manageorderstatus" corecss="tables"}
+
+{/css}
 
 <div class="modules order_status showall">
 	<h1>{$moduletitle|default:"Manage Status Codes"}</h1>
@@ -33,12 +37,12 @@
 			<tbody>
 				{foreach from=$page->records item=listing name=listings}
 				<tr class="{cycle values="odd,even"}">
-				    <td>{if $smarty.foreach.listings.first == 1}{img src=`$smarty.const.ICON_RELATIVE`toggle_on.gif}{/if}</td>
+				    <td>{if $smarty.foreach.listings.first == 1}{img src=`$smarty.const.ICON_RELATIVE`toggle_on.png}{/if}</td>
 				    <td>
 				        {if $listing->treat_as_closed == 1}
-				            <a href="{link action=toggle_closed id=$listing->id}">{img src=`$smarty.const.ICON_RELATIVE`toggle_on.gif}</a>
+				            <a href="{link action=toggle_closed id=$listing->id}">{img src=`$smarty.const.ICON_RELATIVE`toggle_on.png}</a>
 				        {else}
-				            <a href="{link action=toggle_closed id=$listing->id}">{img src=`$smarty.const.ICON_RELATIVE`toggle_off.gif}</a>
+				            <a href="{link action=toggle_closed id=$listing->id}">{img src=`$smarty.const.ICON_RELATIVE`toggle_off.png}</a>
 				        {/if}
 				    </td>
 					<td>{$listing->title}</td>

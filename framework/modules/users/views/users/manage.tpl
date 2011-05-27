@@ -14,8 +14,17 @@
  *
  *}
 
+{css unique="manage_groups" corecss="tables"}
+
+{/css}
+
 <div class="module users manage">
-	<h1>{$moduletitle|default:"Manage Users"}</h1>	
+    <div class="info-header">
+        <div class="related-actions">
+            {help text="Get Help Managing Users" module="manage-users"}
+        </div>
+        <h1>{$moduletitle|default:"Manage Users"}</h1>
+    </div>
 	<p>
         From here, you can create, modify and remove normal user accounts. 
         You will not be able to create, modify or remove administrator accounts (these options will be disabled).
@@ -37,12 +46,12 @@
 				<td>{$user->username}</td>
 				<td>{$user->firstname}</td>
 				<td>{$user->lastname}</td>
-				<td>{if $user->is_acting_admin == 1}{img src=`$smarty.const.ICON_RELATIVE`toggle_on.gif}{/if}</td>
+				<td>{if $user->is_acting_admin == 1}{img src=`$smarty.const.ICON_RELATIVE`toggle_on.png}{/if}</td>
 			    <td>
 			        {permissions level=$smarty.const.UILEVEL_PERMISSIONS}
 						<div class="item-actions">
 							{icon class=edit action=edituser record=$user}
-							{icon img=change_password.png action=change_password record=$user title="Change this users password"}
+							{icon img=change_password.png action=change_password record=$user title="Change this users password" text="Password"}
 							{icon action=delete record=$user title="Delete" onclick="return confirm('Are you sure you want to delete this user?');"}
 						</div>
                     {/permissions}

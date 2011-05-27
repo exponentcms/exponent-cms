@@ -326,7 +326,7 @@ function exponent_config_saveConfiguration($values,$site_root=null) {
 			$fh = fopen($site_root."conf/config.php","w");
 			fwrite($fh,$str);
 			
-			fwrite($fh,"\n<?php\ndefine(\"CURRENTCONFIGNAME\",\"$configname\");\n?>\n");
+			/*fwrite($fh,"\n<?php\ndefine(\"CURRENTCONFIGNAME\",\"$configname\");\n?>\n");*/
 			fclose($fh);
 		} else {
 			echo $i18n['active_not_writable'].'<br />';

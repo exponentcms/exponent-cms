@@ -27,7 +27,7 @@ $i18n = exponent_lang_loadFile('install/pages/dbcheck.php');
 <table class="exp-skin-table">
     <thead>
         <tr>
-            <th colspan=2><?php echo expLang::gettext('Results'); ?></th>
+            <th colspan=2><?php echo gt('Results'); ?></th>
         <tr>
     <thead>
     <tbody>
@@ -55,9 +55,9 @@ function isAllGood($str) {
 	return !preg_match("/[^A-Za-z0-9]/",$str);
 }
 
-exponent_sessions_set("installer_config",$_POST['c']);
-$config = $_POST['c'];
-$config['sef_urls'] = empty($_POST['c']['sef_urls']) ? 0 : 1;
+//exponent_sessions_set("installer_config",$_POST['sc']);
+$config = $_POST['sc'];
+//$config['sef_urls'] = empty($_POST['c']['sef_urls']) ? 0 : 1;
 
 $passed = true;
 
@@ -80,7 +80,7 @@ if ($passed) {
 	echoStart($i18n['connecting'].':');
 
 	if ($db->connection == null) {
-		echoFailure($db->error());
+		echoFailure("Trying to Connect to Database (".$db->error().")");
 		// FIXME:BETTER ERROR CHECKING
 		$passed = false;
 	}
@@ -89,7 +89,7 @@ if ($passed) {
 if ($passed) {
 	$tables = $db->getTables();
 	if ($db->inError()) {
-		echoFailure($db->error());
+		echoFailure("Trying to Get Tables (".$db->error().")");
 		$passed = false;
 	} else {
 		echoSuccess();
@@ -115,7 +115,7 @@ if ($passed) {
 	if ($db->tableExists($tablename)) {
 		echoSuccess();
 	} else {
-		echoFailure();
+		echoFailure("Trying to Create Tables");
 		$passed = false;
 	}
 }
@@ -129,7 +129,7 @@ if ($passed) {
 	$insert_id = $db->insertObject($obj,$tablename);
 	if ($insert_id == 0) {
 		$passed = false;
-		echoFailure($db->error());
+		echoFailure("Trying to Insert Items (".$db->error().")");
 	} else {
 		echoSuccess();
 	}
@@ -140,7 +140,7 @@ if ($passed) {
 	$obj = $db->selectObject($tablename,"id=".$insert_id);
 	if ($obj == null || $obj->installer_test != "Exponent Installer Wizard") {
 		$passed = false;
-		echoFailure($db->error());
+		echoFailure("Trying to Select Items (".$db->error().")");
 	} else {
 		echoSuccess();
 	}
@@ -151,7 +151,7 @@ if ($passed) {
 	$obj->installer_test = "Exponent 2";
 	if (!$db->updateObject($obj,$tablename)) {
 		$passed = false;
-		echoFailure($db->error());
+		echoFailure("Trying to Update Items (".$db->error().")");
 	} else {
 		echoSuccess();
 	}
@@ -164,7 +164,7 @@ if ($passed) {
 	$obj = $db->selectObject($tablename,"id=".$insert_id);
 	if ($obj != null) {
 		$passed = false;
-		echoFailure($error);
+		echoFailure("Trying to Delete Items (".$error.")");
 	} else {
 		echoSuccess();
 	}
@@ -185,7 +185,7 @@ if ($passed) {
 
 	if (!$db->insertObject($obj,$tablename)) {
 		$passed = false;
-		echoFailure($error);
+		echoFailure("Trying to Alter Tables (".$error.")");
 	} else {
 		echoSuccess();
 	}
@@ -198,7 +198,7 @@ if ($passed) {
 	$error = $db->error();
 	if ($db->tableExists($tablename)) {
 		$passed = false;
-		echoFailure($error);
+		echoFailure("Trying to Drop Tables (".$error.")");
 	} else {
 		echoSuccess();
 	}
@@ -265,15 +265,20 @@ if ($passed) {
 if ($passed) {
 	echoStart($i18n['saving_config']);
 
-	$values = array(
-		'c'=>$config,
-		'opts'=>array(),
-		'configname'=>'Default',
-		'activate'=>1
-	);
+    $config = $_POST['sc'];
+    foreach ($config as $key => $value) {
+        exponent_config_change($key, stripslashes($value));
+    }
 
-	if (!defined('SYS_CONFIG')) include_once(BASE.'subsystems/config.php');
-	exponent_config_saveConfiguration($values);
+    // version tracking
+    $version = EXPONENT_VERSION_MAJOR.'.'.EXPONENT_VERSION_MINOR.'.'.EXPONENT_VERSION_REVISION.'-'.EXPONENT_VERSION_TYPE.''.EXPONENT_VERSION_ITERATION;
+    $vo->version = EXPONENT_VERSION_MAJOR.'.'.EXPONENT_VERSION_MINOR.'.'.EXPONENT_VERSION_REVISION;
+    $vo->type = EXPONENT_VERSION_TYPE.EXPONENT_VERSION_ITERATION;
+    $vo->builddate = EXPONENT_VERSION_BUILDDATE;
+    $vo->created_at = time();
+    $ins = $db->insertObject($vo,'version') or die(mysql_error());
+
+
 	// ERROR CHECKING
 	echoSuccess();
 }
@@ -309,11 +314,11 @@ if ($passed) {
 		}
 	}
 	?>
-	<a class="awesome green large" href='?page=admin_user'><?php echo $i18n['continue']; ?></a>.
+	<a class="awesome green large" href='?page=install-4'><?php echo gt('Continue Installation'); ?></a>
 	<?php
 } else {
 	?>
-	<a class="awesome red large" href="?page=dbconfig" onclick="history.go(-1); return false;"><?php echo $i18n['back']; ?></a>
+	<a class="awesome red large" href="?page=install-2" onclick="history.go(-1); return false;"><?php echo $i18n['back']; ?></a>
 	<?php
 }
 ?>

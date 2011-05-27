@@ -14,6 +14,10 @@
  *
  *}
 
+{css unique="managebanners" corecss="tables"}
+
+{/css}
+
 <div class="module banner manage">
 	<h1>{$moduletitle|default:"Manage Banners"}</h1>	
 	<p>

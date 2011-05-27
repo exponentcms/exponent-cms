@@ -19,8 +19,13 @@
 
 class snippetController extends expController {
 	//protected $basemodel_name = '';
-	public $useractions = array('showall'=>'Copy and Display Snippet');
-	public $codequality = 'beta';
+//    public $basemodel_name = 'text';
+    public $basemodel_name = 'snippet';
+	public $useractions = array(
+		'showall'=>'Copy and Display Snippet',
+		'showall_highlight'=>'Highlight and Display Snippet'
+	);
+	public $codequality = 'stable';
 
 	function name() { return $this->displayname(); } //for backwards compat with old modules
 	function displayname() { return "Code Snippets"; }
@@ -32,6 +37,26 @@ class snippetController extends expController {
 	function supportsWorkflow() { return false; }
 	function isSearchable() { return false; }	
 	
+	public function showall() {
+	    expHistory::set('viewable', $this->params);
+		$where = $this->aggregateWhereClause();
+		$order = 'rank ASC';
+//		$items = $this->text->find('all', $where, $order);
+		$items = $this->snippet->find('all', $where, $order);
+		assign_to_template(array('items'=>$items));
+	}	
+
+	public function showall_highlight() {
+	    expHistory::set('viewable', $this->params);
+		$where = $this->aggregateWhereClause();
+		$order = 'rank ASC';
+//		$items = $this->text->find('all', $where, $order);
+		$items = $this->snippet->find('all', $where, $order);
+		foreach ($items as $item) {
+			$item->body = highlight_string($item->body, true); 
+		}
+		assign_to_template(array('items'=>$items));
+	}	
 }
 
 ?>

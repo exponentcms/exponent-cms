@@ -20,21 +20,11 @@
 
 ob_start();
 
-// If we do not have a not_configured file, the user has already gone through the installer once.
-// Pop them back to the main page.
-if (!file_exists('not_configured')) {
+//define('DEVELOPMENT',1);
+
+if (!file_exists('not_configured') && file_exists(BASE.'conf/config.php')) {
 	header('Location: ../index.php');
 	exit('This Exponent Site has already been configured.');
-}
-
-// Initialize the Database engine so that the correct backend gets initialized.
-if (isset($_POST['c'])) {
-	define('DB_BACKEND',$_POST['c']['db_engine']);
-}
-
-// Initialize the language
-if (isset($_POST['lang'])) {
-	define('LANG', $_POST['lang']);
 }
 
 define('SCRIPT_EXP_RELATIVE','install/');
@@ -44,38 +34,105 @@ include_once('../exponent.php');
 // Load i18n values
 $i18n = exponent_lang_loadFile('install/index.php');
 
+if (!defined('SYS_CONFIG')) include_once(BASE . 'subsystems/config.php');
+
 // Initialize the language
-if (isset($_POST['lang'])) {
-	//prepare value array for exponent_config_saveConfiguration
-	$values = array("c");
-	$values["c"]["LANG"] = LANG;
-	include_once(BASE . "/subsystems/config.php");
-	exponent_config_saveConfiguration($values);
+if (isset($_POST['sc'])) {
+
+    if (file_exists("../conf/config.php")) {
+        // Update the config
+        $config = $_POST['sc'];
+        foreach ($config as $key => $value) {
+            exponent_config_change($key, stripslashes($value));
+        }
+    } else {
+        // Update init the config
+        $config = $_POST['sc'];
+    	$values = array(
+    		'c'=>$config,
+    		'opts'=>array(),
+    		'configname'=>'Default',
+    		'activate'=>1
+    	);
+    	exponent_config_saveConfiguration($values);
+    }
+}
+
+if (file_exists("../conf/config.php") && !isset($_REQUEST['page'])) {
+	$_REQUEST['page'] = 'upgrade-1';
 }
 		
-if (!isset($_REQUEST['page'])) {
-	$_REQUEST['page'] = 'setlang';
+if (!isset($_REQUEST['page']) && !file_exists("../conf/config.php")) {
+    $_REQUEST['page'] = '';
 }
 $page = $_REQUEST['page'];
 
 $page_image = '';
 $page_text = '';
+
 switch ($page) {
+	case 'upgrade-1':
+	    $masthead = "Upgrade";
+		$page_text = gt("You've upgraded your Exponent code.");
+		break;
+	case 'upgrade-2':
+	    $masthead = "Upgrade";
+		$page_text = gt("Installing Tables add any new fields to existing tables, and adds any additional tables Exponent needs to be awesome.");
+		break;
+	case 'upgrade-3':
+	    $masthead = "Upgrade";
+		$page_text = gt("We'll now run any upgrade scripts for this versio of Exponent.");
+		break;
 	case 'setlang':
 		$page_image = 'setlang';
 		$page_text = $i18n['setlang'];
 		break;
-	case 'sanity':
-		$page_image = 'sanity';
-		$page_text = $i18n['sanity'];
+	case 'install-1':
+        $masthead = "New Installation";
+		$page_text = gt('
+        Exponent requires that several permissions be set correctly in order to operate.  
+        Sanity checks are being run right now to ensure that the web server directory you wish to install Exponent in is suitable.
+        <br><br>
+        If something fails, please 
+        <a href="javascript:void(0)" onclick="return pop(\'sanity\');">read about each sanity check</a>
+        for an explanation of what exactly the installer is checking for, and how to fix it.        		
+		');
 		break;
-	case 'dbconfig':
-		$page_image = 'database';
-		$page_text = $i18n['dbconfig'];
+	case 'install-2':
+        $masthead = "New Installation";
+		$page_text = gt('
+        Exponent requires a database to store and manage content. Simply create a database using your database tool of of choice, and fill in the information on this page.
+		');
 		break;
-	case 'dbcheck':
-		$page_image = 'database';
-		$page_text = $i18n['dbcheck'];
+	case 'install-3':
+        $masthead = "New Installation";
+		$page_text = gt('
+            Exponent is now checking to make sure that the database configuration information you provided is valid.
+ 		');
+		break;
+	case 'install-4':
+        $masthead = "New Installation";
+		$page_text = gt('
+            Provide some basic information for your site.
+ 		');
+		break;
+	case 'install-5':
+        $masthead = "New Installation";
+		$page_text = gt('
+            Your theme is your site\'s look and feel. Select what you\'d like you site to look like from the list of themes.
+ 		');
+		break;
+	case 'install-6':
+        $masthead = "New Installation";
+		$page_text = gt('
+            The user you\'re about to create will be the Super Administrator for the entire system. This level of administration has un-restricted access and abilities throughout the entire website.
+ 		');
+		break;
+	case 'install-7':
+        $masthead = "New Installation";
+		$page_text = gt('
+            The user you\'re about to create will be the Super Administrator for the entire system. This level of administration has un-restricted access and abilities throughout the entire website.
+ 		');
 		break;
 	case 'admin_user':
 		$page_image = 'account';
@@ -90,27 +147,28 @@ switch ($page) {
 		$page_text = $i18n['upgrade'];
 		break;
 	case 'final':
-
+        $masthead = (isset($_REQUEST['upgrade']))?"Upgrade":"New Installation";
+        $page_text = (isset($_REQUEST['upgrade']))?gt("Your upgrade is complete!"):gt("Your installation is complete!");
 		break;
 	default:
-		$page_image = 'welcome';
+        $masthead = "New Installation";
+		$page = 'welcome';
 		$page_text = $i18n['guide'];
 		break;
 }
 
 ?>
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
-	"http://www.w3.org/TR/html4/strict.dtd">
+<!DOCTYPE>
 <html>
 <head>
 	<title><?php echo $i18n['page_title']; ?></title>
 	<meta http-equiv="Content-Type" content="text/html; charset=<?php echo LANG_CHARSET; ?>" />
 	<link rel="stylesheet" href="<?php echo YUI3_PATH; ?>cssreset/reset.css" />
-	<link rel="stylesheet" href="<?php echo YUI3_PATH; ?>cssbase/base.css" />
 	<link rel="stylesheet" href="<?php echo YUI3_PATH; ?>cssfonts/fonts.css" />
 	<link rel="stylesheet" href="<?php echo PATH_RELATIVE; ?>framework/core/assets/css/forms.css" />
 	<link rel="stylesheet" href="<?php echo PATH_RELATIVE; ?>framework/core/assets/css/button.css" />
 	<link rel="stylesheet" href="<?php echo PATH_RELATIVE; ?>framework/core/assets/css/tables.css" />
+	<link rel="stylesheet" href="<?php echo PATH_RELATIVE; ?>framework/core/assets/css/common.css" />
 	<link rel="stylesheet" href="style.css" />
 
 	<script type="text/javascript" src="<?php echo YUI3_PATH; ?>/yui/yui-min.js"></script>
@@ -131,24 +189,21 @@ switch ($page) {
                    Exponent CMS
                </a>
 	       </h1>
+	       <strong><?php echo $masthead ?></strong>
 	    </div>
 		<div id="bd">
 		    <div id="leftcol">
     		<?php
     		if (file_exists('pages/'.$page.'.php')) {
     			include('pages/'.$page.'.php');
-    		} else {
-    			echo sprintf($i18n['unknown_page'],strip_tags($page));
     		}
     		?>
     		</div>
-    		<?php if ($page_image != '') { ?>
             <div id="rightcol">
                 <p>
         		<?php echo $page_text; ?>
         		</p>
             </div>
-    		<?php } ?>
 		</div>
 	</div>
 </body>

@@ -14,7 +14,7 @@
  *
  *}
  
- {css unique="photo-album" link="`$smarty.const.PATH_RELATIVE`framework/modules/photoalbum/assets/css/photoalbum.css"}
+ {css unique="photo-album" link="`$asset_path`css/photoalbum.css"}
 
  {/css}
 
@@ -24,24 +24,21 @@
     {permissions}
     <div class="item-actions">
         {if $permissions.edit == 1}
-            {icon action=edit record=$record title="Edit `$record->title`" text="Edit `$record->title`"}
+            {icon action=edit record=$record title="Edit `$record->title`"}
         {/if}
     </div>
     {/permissions}
-    
-    {img alt=$record->alt file_id=$record->expFile[0]->id w=$config.pa_showall_enlarged zc=1 class="enlarged" title=$record->alt}
 
-    {*if $record->expTag != ""}
-        <div class="tag">
-            Tags: 
-            {foreach from=$record->expTag item=tag name=tags}
-                <a href="{link action=showall_by_tags tag=$tag->sef_url}">{$tag->title}</a>
-                {if $smarty.foreach.tags.last != 1},{/if}
-            {/foreach}
-        </div>
-    {/if*}
-    
+    <div class="next-prev">
+        <a href="{link action=show id=$previous}">{"Previous Image"|gettext}</a>
+         | {$imgnum} {"of"|gettext} {$imgtot}| 
+        <a href="{link action=show id=$next}">{"Next Image"|gettext}</a>
+    </div>
+
+
     <div class="bodycopy">
+        {capture assign="float"}{$config.pa_float_enlarged|lower|replace:" ":""}{/capture}
+        {img alt=$record->alt file_id=$record->expFile[0]->id w=$config.pa_showall_enlarged class="img-large float-`$float`" title=$record->alt|default:$record->expFile[0]->title style="float:`$float`;"}    
         {$record->body}
     </div>
     

@@ -37,7 +37,8 @@ class migrationController extends expController {
         'resourcesmodule'=>'filedownloadController',
         'rotatormodule'=>'textController',
         'faqmodule'=>'faqController',
-        'headlinemodule'=>'headlineController',
+//        'headlinemodule'=>'headlineController',
+        'headlinemodule'=>'textController',
         'linkmodule'=>'linksController',
         'weblogmodule'=>'blogController',
         'listingmodule'=>'portfolioController',
@@ -45,6 +46,7 @@ class migrationController extends expController {
         'youtubemodule'=>'youtubeController',
         'mediaplayermodule'=>'flowplayerController',
         'bannermodule'=>'bannerController',
+        'feedlistmodule'=>'rssController',
     );
 
     // these are modules that have either been deprecated or have no content to migrate
@@ -125,7 +127,7 @@ class migrationController extends expController {
 
 		$del_pages = '';
         if (isset($this->params['wipe_pages'])) {
-            print_r($db->delete('section',"id > '1'"));
+            $db->delete('section',"id > '1'");
 			$del_pages = ' after clearing database of pages';
 		}
         $successful = 0;
@@ -154,6 +156,30 @@ class migrationController extends expController {
 				}
 			}
 			}
+
+		if (isset($this->params['copy_permissions'])) {
+			$db->delete('userpermission',"module = 'navigationmodule' AND source = ''");
+			$db->delete('grouppermission',"module = 'navigationmodule' AND source = ''");
+			
+			$users = $db->selectObjects('user','id > 1');
+			foreach($users as $user) {
+				$pages = $old_db->selectObjects('userpermission',"uid='".$user->id."' AND module = 'navigationmodule' AND source = ''");
+				foreach($pages as $page) {
+					if ($db->selectObject('section','id = '.$page->internal)) {
+						$db->insertObject($page,'userpermission');
+					}
+				}
+			}		
+			$groups = $db->selectObjects('group','1');
+			foreach($groups as $group) {
+				$pages = $old_db->selectObjects('grouppermission',"gid='".$group->id."' AND module = 'navigationmodule' AND source = ''");
+				foreach($pages as $page) {
+					if ($db->selectObject('section','id = '.$page->internal)) {
+						$db->insertObject($page,'grouppermission');
+					}
+				}
+			}		
+		}
 
         flash ('message', $successful.' pages were imported from '.$this->config['database'].$del_pages = '');
         if ($failed > 0) {
@@ -227,7 +253,7 @@ class migrationController extends expController {
         $old_db = $this->connect();
         if (isset($this->params['wipe_content'])) {
             $db->delete('sectionref');
-            $db->delete('locationref');
+			$db->delete('locationref');  //TODO Remove this, uneeded in future
             $db->delete('container');
             $db->delete('text');
             $db->delete('snippet');
@@ -362,6 +388,7 @@ class migrationController extends expController {
 			}
 		}
 
+		// TODO Remove this in future
         $locref = $old_db->selectObjects('locationref',$where);
         foreach ($locref as $lr) {
             if (array_key_exists($lr->module, $this->new_modules)) {
@@ -375,6 +402,7 @@ class migrationController extends expController {
                 }
             }
         }
+		// Remove to here
 
         // pull the sectionref data for selected modules
         $secref = $old_db->selectObjects('sectionref',$where);
@@ -460,6 +488,45 @@ class migrationController extends expController {
 				if ($res) { @$this->msg['container']++; }
             }
         }
+		
+//		if (isset($this->params['copy_permissions'])) {
+//			$db->delete('userpermission',"module != 'navigationmodule'");
+//			$db->delete('grouppermission',"module != 'navigationmodule'");
+//
+//			$users = $db->selectObjects('user','id > 1');
+//			foreach($users as $user) {
+//				$containers = $old_db->selectObjects('userpermission',"uid='".$user->id."' AND module != 'navigationmodule'");
+//				foreach($containers as $item) {
+//					$loc->mod = $item->module;
+//					$loc->src = $item->source;
+//					$loc->int = '';
+//					if (array_key_exists($item->module, $this->new_modules)) {
+//						$loc->mod = $this->new_modules[$item->module];
+//						$item->module = $this->new_modules[$item->module];
+//					}
+//					if ($db->selectObject('container',"internal = '".serialize($loc)."'")) {
+//						$db->insertObject($item,'userpermission');
+//					}
+//				}
+//			}
+//			$groups = $db->selectObjects('group','1');
+//			foreach($groups as $group) {
+//				$containers = $old_db->selectObjects('grouppermission',"gid='".$group->id."' AND module != 'navigationmodule'");
+//				foreach($containers as $item) {
+//					$loc->mod = $item->module;
+//					$loc->src = $item->source;
+//					$loc->int = '';
+//					if (array_key_exists($item->module, $this->new_modules)) {
+//						$loc->mod = $this->new_modules[$item->module];
+//						$item->module = $this->new_modules[$item->module];
+//					}
+//					if ($db->selectObject('container',"internal = '".serialize($loc)."'")) {
+//						$db->insertObject($item,'grouppermission');
+//					}
+//				}
+//			}
+//		}
+		
 		searchController::spider();
         expSession::clearUserCache();
         assign_to_template(array('msg'=>@$this->msg));
@@ -1085,7 +1152,7 @@ class migrationController extends expController {
 
 				//check to see if it's already pulled in (circumvent !is_original)
 				$ploc = $iloc;
-				$ploc->mod = "headline";
+				$ploc->mod = "text";
 				if ($db->countObjects($ploc->mod, "location_data='".serialize($ploc)."'")) {
 					$iloc->mod = 'headlinemodule';
 					$linked = true;
@@ -1096,9 +1163,9 @@ class migrationController extends expController {
                 $headlines = $old_db->selectObjects('headline', "location_data='".serialize($iloc)."'");
                 if ($headlines) {
                     foreach ($headlines as $hl) {
-                        $headline = new headline();
+                        $headline = new text();
                         $loc = expUnserialize($hl->location_data);
-                        $loc->mod = "headline";
+                        $loc->mod = "text";
                         $headline->location_data = serialize($loc);
                         $headline->title = $hl->headline;
                         $headline->poster = 1;
@@ -1521,6 +1588,37 @@ class migrationController extends expController {
 					}
 				}
 				break;
+            case 'feedlistmodule':
+
+				@$module->view = 'showall';
+
+                $iloc->mod = 'feedlistmodule';
+                $feedlist = $old_db->selectObject('feedlistmodule_config', "location_data='".serialize($iloc)."'");
+                if ($feedlist->enable_rss == 1) {
+					$loc = expUnserialize($feedlist->location_data);
+					$loc->mod = "rssController";
+					$config['enable_rss'] = true;
+					$config['feed_title'] = $feedlist->feed_title;
+					$config['feed_desc'] = $feedlist->feed_desc;
+					$config['rss_limit'] = isset($feedlist->rss_limit) ? $feedlist->rss_limit : 24;
+					$config['rss_cachetime'] = isset($feedlist->rss_cachetime) ? $feedlist->rss_cachetime : 1440;
+					$newconfig = new expConfig();
+					$newconfig->config = $config;
+					$newconfig->location_data = $loc;
+					$newconfig->save();
+					$newrss = new expRss();
+					$newrss->module = $loc->mod;
+					$newrss->src = $loc->src;
+					$newrss->enable_rss = $feedlist->enable_rss;
+					$newrss->feed_title = $feedlist->feed_title;
+					$newrss->feed_desc = $feedlist->feed_desc;
+					$newrss->rss_limit = isset($feedlist->rss_limit) ? $feedlist->rss_limit : 24;
+					$newrss->rss_cachetime = isset($feedlist->rss_cachetime) ? $feedlist->rss_cachetime : 1440;
+					$newrss->save();
+					@$this->msg['migrated'][$iloc->mod]['count']++;
+					@$this->msg['migrated'][$iloc->mod]['name'] = $this->new_modules[$iloc->mod];
+                }
+				break;
 			default:
                 @$this->msg['noconverter'][$iloc->mod]++;
 				break;
@@ -1670,6 +1768,29 @@ class migrationController extends expController {
 		$db->insertObject($m, 'container');
     }
 
+	// module customized function to circumvent going to previous page
+	function saveconfig() {
+        
+        // unset some unneeded params
+        unset($this->params['module']);
+        unset($this->params['controller']);
+        unset($this->params['src']);
+        unset($this->params['int']);
+        unset($this->params['id']);
+        unset($this->params['action']);
+        unset($this->params['PHPSESSID']);
+        
+        // setup and save the config
+        $config = new expConfig($this->loc);
+        $config->update(array('config'=>$this->params));
+		// update our object config
+		$this->config = expUnserialize($config->config);
+        flash('message', 'Configuration updated');
+//        expHistory::back();
+		$this->fix_database();
+		echo "<a class=\"admin\" href=\"/migration/manage_users\">Next Step -> Migrate Users & Groups</a>";
+    }
+	
 	// connect to old site's database
     private function connect() {
         // check for required info...then make the DB connection.
@@ -1695,6 +1816,75 @@ class migrationController extends expController {
        $database->prefix = $this->config['prefix']. '_';;
        return $database;
     }
+
+// several things that may clear up problems in the old database and do a better job of migrating data
+	private function fix_database() {
+		// let's test the connection
+		$old_db = $this->connect();
+		
+		print_r("<h2>Connected to the Old Database!<br>Running several checks and fixes on the old database<br>to enhance Migration.</h2><br><br>");
+
+		print_r("<pre>");
+	// upgrade sectionref's that have lost their originals
+		print_r("<b>Searching for sectionrefs that have lost their originals</b><br><br>");
+		$sectionrefs = $old_db->selectObjects('sectionref',"is_original=0");
+		print_r("Found: ".count($sectionrefs)." copies (not originals)<br>");
+		foreach ($sectionrefs as $sectionref) {
+			if ($old_db->selectObject('sectionref',"module='".$sectionref->module."' AND source='".$sectionref->source."' AND is_original='1'") == null) {
+			// There is no original for this sectionref so change it to the original
+				$sectionref->is_original = 1;
+				$old_db->updateObject($sectionref,"sectionref");
+				print_r("Fixed: ".$sectionref->module." - ".$sectionref->source."<br>");
+			}
+		}
+		print_r("</pre>");
+	
+		print_r("<pre>");
+	// upgrade sectionref's that point to missing sections (pages)
+		print_r("<b>Searching for sectionrefs pointing to missing sections/pages <br>to fix for the Recycle Bin</b><br><br>");
+		$sectionrefs = $old_db->selectObjects('sectionref',"refcount!=0");
+		foreach ($sectionrefs as $sectionref) {
+			if ($old_db->selectObject('section',"id='".$sectionref->section."'") == null) {
+			// There is no section/page for sectionref so change the refcount
+				$sectionref->refcount = 0;
+				$old_db->updateObject($sectionref,"sectionref");
+				print_r("Fixed: ".$sectionref->module." - ".$sectionref->source."<br>");
+			}
+		}
+		print_r("</pre>");
+
+		// print_r("<pre>");
+	// // add missing locationref's based on existing sectionref's 
+		// print_r("<b>Searching for detached modules with no original (no matching locationref)</b><br><br>");
+		// $sectionrefs = $old_db->selectObjects('sectionref',1);
+		// foreach ($sectionrefs as $sectionref) {
+			// if ($old_db->selectObject('locationref',"module='".$sectionref->module."' AND source='".$sectionref->source."'") == null) {
+			// // There is no locationref for sectionref.  Populate reference
+				// $newLocRef->module   = $sectionref->module;
+				// $newLocRef->source   = $sectionref->source;
+				// $newLocRef->internal = $sectionref->internal;
+				// $newLocRef->refcount = $sectionref->refcount;
+				// $old_db->insertObject($newLocRef,"locationref");
+				// print_r("Copied: ".$sectionref->module." - ".$sectionref->source."<br>");
+			// }
+		// }
+		// print_r("</pre>");	
+
+		// print_r("<pre>");
+	// // delete sectionref's & locationref's that have empty sources
+		// print_r("<b>Searching for unassigned modules (no source)</b><br><br>");
+		// $sectionrefs = $old_db->selectObjects('sectionref',"source=''");
+		// if ($sectionrefs != null) {
+			// print_r("Removing: ".count($sectionrefs)." sectionref empties (no source)<br>");
+			// $old_db->delete('sectionref',"source=''");
+		// }
+		// $locationrefs = $old_db->selectObjects('locationref',"source=''");
+		// if ($locationrefs != null) {
+			// print_r("Removing: ".count($locationrefs)." locationref empties (no source)<br>");
+			// $old_db->delete('locationref',"source=''");
+		// }
+		// print_r("</pre>");		
+	}
 }
 
 ?>

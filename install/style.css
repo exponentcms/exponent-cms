@@ -24,7 +24,6 @@ body {
 #hd {
     height:80px;
     z-index:3;
-    text-indent:-999px;
     overflow:hidden;
 } 
 
@@ -34,6 +33,17 @@ body {
     left:0;
     margin:0;
     padding:0;
+    text-indent:-999px;
+}
+
+#hd strong {
+    position:absolute;
+    left:625px;
+    top:30px;
+    color:#ffffff;
+    font-size:28px;
+    font-style:italic;
+
 }
 
 #logo a {
@@ -180,9 +190,65 @@ p {
     font-size:120%;
 
 }
+p.success {
+    color:green;
+    font-style:italic;
+}
 #rightcol p {
     font-size:110%;
     font-style:italic;
     margin:20px 0;
     margin-right:40px;
 }
+
+.important_message {
+    color:orange;
+}
+
+.control_help {
+    display:none;
+}
+
+input[type="text"], input[type="password"], textarea {
+    width: 100%;
+}
+.theme {
+    border-bottom:1px dotted #999;
+    padding-bottom:10px;
+    margin-bottom:10px;
+}
+
+.theme .themepreview {
+    float:left;
+    border:1px solid #444;
+}
+
+.theme h2{
+    margin:0;
+}
+
+.theme h2,
+.theme em,
+.theme p {
+    display:block;
+    margin-left:110px;
+}
+
+/**************** new forms ***********************/
+.formcontrol {
+    padding:4px 0;
+    margin-bottom:4px;
+}
+
+.formcontrol .label {
+    display:block;
+    font-size:114%;
+    margin-bottom:4px;
+    font-weight:bold;
+}
+
+.formcontrol.radiogroup label {
+    font-weight:bold;
+}
+
+

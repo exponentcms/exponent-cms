@@ -14,6 +14,10 @@
  *
  *}
 
+{css unique="showunpublished" corecss="tables"}
+
+{/css}
+
 <div class="module news show-expired">
 	<h1>{$moduletitle|default:"Expired News"}</h1>
     {pagelinks paginate=$page top=1}

@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2007-2008 OIC Group, Inc.
+ * Copyright (c) 2007-2011 OIC Group, Inc.
  * Written and Designed by Adam Kessler
  *
  * This file is part of Exponent
@@ -13,6 +13,10 @@
  * GPL: http://www.gnu.org/licenses/gpl.txt
  *
  *}
+
+{css unique="manageordertype" corecss="tables"}
+
+{/css}
 
 <div class="modules order_type showall">
 	<h1>{$moduletitle|default:"Manage Order Types"}</h1>
@@ -31,7 +35,7 @@
 			<tbody>
 				{foreach from=$page->records item=listing name=listings}
 				<tr class="{cycle values="odd,even"}">
-				    <td>{if $listing->is_default == 1}{img src=`$smarty.const.ICON_RELATIVE`toggle_on.gif}{/if}</td>
+				    <td>{if $listing->is_default == 1}{img src=`$smarty.const.ICON_RELATIVE`toggle_on.png}{/if}</td>
 					<td>{$listing->title}</td>
 					<td>
 					    {if $permissions.manage == true}

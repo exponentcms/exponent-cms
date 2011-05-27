@@ -13,8 +13,18 @@
  * GPL: http://www.gnu.org/licenses/gpl.txt
  *
  *}
+ 
+{css unique="manage_groups" corecss="tables"}
+
+{/css}
+ 
 <div class="module users manage-sessions">
-    <h1>Manage User Sessions</h1>
+    <div class="info-header">
+        <div class="related-actions">
+			{help text="Get Help Managing User Sessions" module="manage-sessions"}
+        </div>
+        <h1>{"Manage User Sessions"|gettext}</h1>
+    </div>
     <p>
         This page shows all of the active sessions, along with session information like login time, 
         browser signature, etc. You can forcibly end either a specific session or all sessions for 

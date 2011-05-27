@@ -13,14 +13,19 @@
  * GPL: http://www.gnu.org/licenses/gpl.txt
  *
  *}
+ 
 {css unique="standalone" corecss="tables"}
 
 {/css}
 
-
 <div class="navigationmodule manager-standalone">
 	<div class="form_header">
-		<h1>{$_TR.form_title}</h1>
+		<div class="info-header">
+			<div class="related-actions">
+				{help text="Get Help Managing Pages" module="manage-all-pages"}
+			</div>
+			<h1>{$_TR.form_title}</h1>
+		</div>
 		<p>{$_TR.form_header}</p>
 		<a class="add" href="{link action=edit_contentpage parent=-1}">{$_TR.new}</a>
 	</div>
@@ -44,11 +49,11 @@
 			{$section->name}&nbsp;
 		{/if}
 	</td><td>
-        {icon action=edit_contentpage record=$section img=edit.png title=$_TR.alt_edit}
+		{icon class=edit action=edit_contentpage record=$section title=$_TR.alt_edit}
         {icon action=delete record=$section title=$_TR.alt_delete onclick="return confirm('`$_TR.delete_confirm`');"}
 	</td><td>
-        {icon int=$section->id action=userperms _common=1 img=userperms.png title=$_TR.alt_userperm}
-        {icon int=$section->id action=groupperms _common=1 img=groupperms.png title=$_TR.alt_groupperm}
+		{icon int=$section->id action=userperms _common=1 img=userperms.png title=$_TR.alt_userperm text="User"}
+		{icon int=$section->id action=groupperms _common=1 img=groupperms.png title=$_TR.alt_groupperm text="Group"}
 	</td></tr>
 	{foreachelse}
 		<tr><td colspan=3><i>{$_TR.no_pages}</i></td></tr>

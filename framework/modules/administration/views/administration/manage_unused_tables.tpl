@@ -14,6 +14,10 @@
  *
  *}
 
+{css unique="manageunused" corecss="tables"}
+
+{/css}
+
 <div class="module administration manage-unused-tables">
     <h1>Deprecated/Unused Tables</h1>
     <h2>{$unused_tables|@count} unused tables found</h2>

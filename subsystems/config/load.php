@@ -32,6 +32,8 @@ function exponent_unhtmlentities( $str )
 }
 
 @include_once(BASE."conf/config.php");
+// include constants defined in the theme
+if (file_exists(BASE.'themes/'.DISPLAY_THEME_REAL.'/config.php')) include_once(BASE.'themes/'.DISPLAY_THEME_REAL.'/config.php');
 if (is_readable(BASE."conf/extensions")) {
 	$dh = opendir(BASE."conf/extensions");
 	while (($file = readdir($dh)) !== false) {

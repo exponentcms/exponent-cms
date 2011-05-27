@@ -14,6 +14,10 @@
  *
  *}
 
+{css unique="managesimplenotes" corecss="tables"}
+
+{/css}
+
 <div class="module simplenote manage">
     <h1>Manage Notes</h1>
     <p>The table below shows notes have not yet been approved.</p>
@@ -31,11 +35,11 @@
             <td>
                 {if $simplenote->approved == 1}
                     <a href="{link action=approve_toggle id=$simplenote->id tab=$tab}" title="Disable this note">
-                        {img src=`$smarty.const.ICON_RELATIVE`toggle_on.gif}
+                        {img src=`$smarty.const.ICON_RELATIVE`toggle_on.png}
                     </a>
                 {else}
                     <a href="{link action=approve_toggle id=$simplenote->id tab=$tab}" title="Approve this note">
-                        {img src=`$smarty.const.ICON_RELATIVE`toggle_off.gif}
+                        {img src=`$smarty.const.ICON_RELATIVE`toggle_off.png}
                     </a>   
                 {/if}  
             </td>

@@ -49,6 +49,7 @@ require_once(BASE."subsystems/forms/controls/formcontrol.php");
 class checkboxcontrol extends formcontrol {
     var $flip = false;
     var $jsHooks = array();
+    var $nowrap = '';
     
     function name() { return "Checkbox"; }
     function isSimpleControl() { return true; }
@@ -159,12 +160,11 @@ class checkboxcontrol extends formcontrol {
             $html .= "onfocus=\"".$this->filter."_filter.onfocus(this);\" ";
             $html .= "onpaste=\"return ".$this->filter."_filter.onpaste(this, event);\" ";
         }
-        if ($this->disabled) $html .= ' disabled';
+        if (!empty($this->readonly)||!empty($this->disabled)) $html .= ' disabled="disabled"';
         foreach ($this->jsHooks as $type=>$val) {
             $html .= ' '.$type.'="'.$val.'"';
         }
-
-        if (!empty($this->readonly)) $html .= ' readonly="readonly"';
+        //if (!empty($this->readonly)) $html .= ' disabled="disabled"';
 
         $caption = isset($this->caption) ? $this->caption : str_replace(array(":","*"), "", ucwords($label));
         if (!empty($this->required)) $html .= ' required="'.rawurlencode($this->default).'" caption="'.$caption.'" ';
