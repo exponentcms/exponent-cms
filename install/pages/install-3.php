@@ -80,7 +80,7 @@ if ($passed) {
 	echoStart($i18n['connecting'].':');
 
 	if ($db->connection == null) {
-		echoFailure($db->error());
+		echoFailure("Trying to Connect to Database (".$db->error().")");
 		// FIXME:BETTER ERROR CHECKING
 		$passed = false;
 	}
@@ -89,7 +89,7 @@ if ($passed) {
 if ($passed) {
 	$tables = $db->getTables();
 	if ($db->inError()) {
-		echoFailure($db->error());
+		echoFailure("Trying to Get Tables (".$db->error().")");
 		$passed = false;
 	} else {
 		echoSuccess();
@@ -115,7 +115,7 @@ if ($passed) {
 	if ($db->tableExists($tablename)) {
 		echoSuccess();
 	} else {
-		echoFailure();
+		echoFailure("Trying to Create Tables");
 		$passed = false;
 	}
 }
@@ -129,7 +129,7 @@ if ($passed) {
 	$insert_id = $db->insertObject($obj,$tablename);
 	if ($insert_id == 0) {
 		$passed = false;
-		echoFailure($db->error());
+		echoFailure("Trying to Insert Items (".$db->error().")");
 	} else {
 		echoSuccess();
 	}
@@ -140,7 +140,7 @@ if ($passed) {
 	$obj = $db->selectObject($tablename,"id=".$insert_id);
 	if ($obj == null || $obj->installer_test != "Exponent Installer Wizard") {
 		$passed = false;
-		echoFailure($db->error());
+		echoFailure("Trying to Select Items (".$db->error().")");
 	} else {
 		echoSuccess();
 	}
@@ -151,7 +151,7 @@ if ($passed) {
 	$obj->installer_test = "Exponent 2";
 	if (!$db->updateObject($obj,$tablename)) {
 		$passed = false;
-		echoFailure($db->error());
+		echoFailure("Trying to Update Items (".$db->error().")");
 	} else {
 		echoSuccess();
 	}
@@ -164,7 +164,7 @@ if ($passed) {
 	$obj = $db->selectObject($tablename,"id=".$insert_id);
 	if ($obj != null) {
 		$passed = false;
-		echoFailure($error);
+		echoFailure("Trying to Delete Items (".$error.")");
 	} else {
 		echoSuccess();
 	}
@@ -185,7 +185,7 @@ if ($passed) {
 
 	if (!$db->insertObject($obj,$tablename)) {
 		$passed = false;
-		echoFailure($error);
+		echoFailure("Trying to Alter Tables (".$error.")");
 	} else {
 		echoSuccess();
 	}
@@ -198,7 +198,7 @@ if ($passed) {
 	$error = $db->error();
 	if ($db->tableExists($tablename)) {
 		$passed = false;
-		echoFailure($error);
+		echoFailure("Trying to Drop Tables (".$error.")");
 	} else {
 		echoSuccess();
 	}

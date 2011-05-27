@@ -22,11 +22,10 @@ ob_start();
 
 //define('DEVELOPMENT',1);
 
-if (!file_exists('not_configured')) {
+if (!file_exists('not_configured') && file_exists(BASE.'conf/config.php')) {
 	header('Location: ../index.php');
 	exit('This Exponent Site has already been configured.');
 }
-
 
 define('SCRIPT_EXP_RELATIVE','install/');
 define('SCRIPT_FILENAME','index.php');

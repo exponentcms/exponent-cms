@@ -68,6 +68,11 @@ if (MAINTENANCE_MODE && !exponent_users_isAdmin() && ( !isset($_REQUEST['module'
 		exit('Redirecting to the Exponent Install Wizard');
 	}
 
+	if (!(file_exists(BASE.'conf/config.php'))) {
+		header('Location: '.URL_FULL.'install/index.php');
+		exit('Redirecting to the Exponent Install Wizard');
+	}
+
 	// Handle sub themes
 	$page = exponent_theme_getTheme();
 

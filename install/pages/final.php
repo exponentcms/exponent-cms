@@ -88,11 +88,11 @@ if (isset($_REQUEST['upgrade'])) {
             <span class="label">And:</span>
             <div class="formcontrol radiobutton">
                 <input type="radio" id="radiocontrol-1" class="radiobutton" value="migration" name="next">
-				<label for="radiocontrol-1">Take me to the Content Migration Wizard</label>
+				<label for="radiocontrol-1">I want to begin transferring an existing Exponent v0.9x site</label>
             </div>
             <div class="formcontrol radiobutton">
                 <input type="radio" id="radiocontrol-2" class="radiobutton" value="configsite" name="next">
-				<label for="radiocontrol-2">Take me to configure my site</label>
+				<label for="radiocontrol-2">I want to start configuring my new site</label>
             </div>
             <div class="formcontrol radiobutton">
                 <input type="radio" id="radiocontrol-3" class="radiobutton" value="homepage" name="next">
