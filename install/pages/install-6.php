@@ -2,7 +2,8 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2011 OIC Group, Inc., Maxim Mueller
+# Copyright (c) 2004-2011 OIC Group, Inc.
+# Copyright (c) 2006 Maxim Mueller
 # Written and Designed by James Hunt
 #
 # This file is part of Exponent
@@ -17,12 +18,16 @@
 #
 ##################################################
 
-if (!defined('EXPONENT')) exit('');
+if (!defined('EXPONENT'))
+    exit('');
 
 $i18n = exponent_lang_loadFile('install/pages/admin_user.php');
 
 ?>
-<h2 id="subtitle"><?php echo $i18n['subtitle']; ?></h2>
+<h1><?php
+echo gt('Create an Administrator');
+?></h1>
+
 <span style="color: red; font-weight: bold; padding-top: 8px;" id="errorMessage">
 <?php echo isset($_GET['erremail']) == 'true' ? 'You must supply a valid email address.' : ''; ?>
 </span>
@@ -39,7 +44,7 @@ function checkPassword(f){
 }
 </script>
 <form method="post" onsubmit="return checkPassword(this);">
-<input type="hidden" name="page" value="save_admin" />
+<input type="hidden" name="page" value="install-7" />
 <div class="form_section">
 	<div class="control">
 		<span class="label"><?php echo $i18n['username']; ?>: </span>
@@ -75,5 +80,5 @@ function checkPassword(f){
 		<input class="text" type="text" name="email" value="" />
 	</div>
 </div>
-<input type="submit" value="<?php echo $i18n['continue']; ?>" class="text" />
+<button class="awesome large green"><?php echo gt('Create Administrator'); ?></button>
 </form>

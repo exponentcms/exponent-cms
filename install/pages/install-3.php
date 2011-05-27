@@ -27,7 +27,7 @@ $i18n = exponent_lang_loadFile('install/pages/dbcheck.php');
 <table class="exp-skin-table">
     <thead>
         <tr>
-            <th colspan=2><?php echo expLang::gettext('Results'); ?></th>
+            <th colspan=2><?php echo gt('Results'); ?></th>
         <tr>
     <thead>
     <tbody>
@@ -55,9 +55,9 @@ function isAllGood($str) {
 	return !preg_match("/[^A-Za-z0-9]/",$str);
 }
 
-exponent_sessions_set("installer_config",$_POST['c']);
-$config = $_POST['c'];
-$config['sef_urls'] = empty($_POST['c']['sef_urls']) ? 0 : 1;
+//exponent_sessions_set("installer_config",$_POST['sc']);
+$config = $_POST['sc'];
+//$config['sef_urls'] = empty($_POST['c']['sef_urls']) ? 0 : 1;
 
 $passed = true;
 
@@ -265,15 +265,20 @@ if ($passed) {
 if ($passed) {
 	echoStart($i18n['saving_config']);
 
-	$values = array(
-		'c'=>$config,
-		'opts'=>array(),
-		'configname'=>'Default',
-		'activate'=>1
-	);
+    $config = $_POST['sc'];
+    foreach ($config as $key => $value) {
+        exponent_config_change($key, stripslashes($value));
+    }
 
-	if (!defined('SYS_CONFIG')) include_once(BASE.'subsystems/config.php');
-	exponent_config_saveConfiguration($values);
+    // version tracking
+    $version = EXPONENT_VERSION_MAJOR.'.'.EXPONENT_VERSION_MINOR.'.'.EXPONENT_VERSION_REVISION.'-'.EXPONENT_VERSION_TYPE.''.EXPONENT_VERSION_ITERATION;
+    $vo->version = EXPONENT_VERSION_MAJOR.'.'.EXPONENT_VERSION_MINOR.'.'.EXPONENT_VERSION_REVISION;
+    $vo->type = EXPONENT_VERSION_TYPE.EXPONENT_VERSION_ITERATION;
+    $vo->builddate = EXPONENT_VERSION_BUILDDATE;
+    $vo->created_at = time();
+    $ins = $db->insertObject($vo,'version') or die(mysql_error());
+
+
 	// ERROR CHECKING
 	echoSuccess();
 }
@@ -309,11 +314,11 @@ if ($passed) {
 		}
 	}
 	?>
-	<a class="awesome green large" href='?page=admin_user'><?php echo $i18n['continue']; ?></a>.
+	<a class="awesome green large" href='?page=install-4'><?php echo gt('Continue Installation'); ?></a>
 	<?php
 } else {
 	?>
-	<a class="awesome red large" href="?page=dbconfig" onclick="history.go(-1); return false;"><?php echo $i18n['back']; ?></a>
+	<a class="awesome red large" href="?page=install-2" onclick="history.go(-1); return false;"><?php echo $i18n['back']; ?></a>
 	<?php
 }
 ?>

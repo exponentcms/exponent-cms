@@ -19,14 +19,11 @@
 
 if (!defined('EXPONENT')) exit('');
 
-$i18n = exponent_lang_loadFile('install/pages/welcome.php');
 
 ?>
-<h1 id="subtitle"><?php echo $i18n['title']; ?></h1>
+<h1><?php echo gt('Welcome to Exponent CMS'); ?></h1>
 <p>
-    <?php echo $i18n['thanks']; ?>
+    <?php echo gt('Exponent Development Team would like to thank you for downloading and installing Exponent Content Management System. 
+    We fervently hope that you will enjoy the power, flexibility, and ease-of-use that Exponent has to offer.') ?>
 </p>
-<p>
-    <a class="awesome large green" href="?page=sanity&type=new"><?php echo $i18n['new']; ?></a>
-    <a class="awesome large green" href="?page=sanity&type=upgrade"><?php echo $i18n['upgrade']; ?></a>
-</p>
+<a class="awesome large green" href="?page=install-1"><?php echo gt('Begin Installation'); ?></a>

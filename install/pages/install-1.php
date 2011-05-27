@@ -130,34 +130,31 @@ if ($errcount > 0) {
 
 	<?php
 } else if ($warncount > 0) {
-	echo $i18n['found_minor'];
+//} else if (true) {
+	?><p><?php
+	echo gt('The Exponent Install Wizard found some minor problems with the server environment, but you should be able to continue.');
+	?></p><?php
 	
 	if (ini_get('safe_mode') == true) {
-		echo '<br /><br /><div class="important_message">'.$i18n['safe_mode'].'</div>';
+    	?><p class="important_message"><?php
+    	echo gt('SAFE MODE IS ENABLED. You may encounter many strange errors unless you give the web server user ownership of ALL Exponent files. On UNIX, this can be done with a "chown -R" command');
+    	?></p><?php
 	}
 	
 	$write_file = 1;
 } else {
 	// No errors, and no warnings.  Let them through.
-	echo $i18n['found_none'];
+	?><p><?php
+	echo gt('The Exponent Install Wizard found no problems with the server environment.');
+	?></p><?php
 	
 	$write_file = 1;
 }
 
 if ($errcount == 0) {
-	if (isset($_REQUEST['type']) && $_REQUEST['type'] == 'new'){
-		?>
-		<br />
-		<br />
-		<a class="awesome large green" href="index.php?page=dbconfig"><?php echo $i18n['continue_new']; ?></a>
-		<?php
-	} else {
-		?>
-		<br />
-		<br />
-		<a class="awesome large green" href="index.php?page=upgrade_version"><?php echo $i18n['continue_upgrade']; ?></a>
-		<?php
-	}
+?>
+    <a class="awesome large green" href="index.php?page=install-2"><?php echo gt('Configure Your Database'); ?></a>
+<?php
 }
 
 if ($write_file) {
@@ -173,9 +170,9 @@ if ($write_file) {
 #	}
 	
 	if (isset($_SERVER['SCRIPT_NAME'])) {
-	    $components = join('/',array_splice(split('/',$_SERVER['SCRIPT_NAME']),0,-2)).'/';
+	    $components = join('/',array_splice(explode('/',$_SERVER['SCRIPT_NAME']),0,-2)).'/';
     } elseif (isset($_SERVER['PATH_INFO'])) {
-        $components = join('/',array_splice(split('/',$_SERVER['PATH_INFO']),0,-2)).'/';
+        $components = join('/',array_splice(explode('/',$_SERVER['PATH_INFO']),0,-2)).'/';
     } else {
         $components = '/';
     }
