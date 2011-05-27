@@ -52,7 +52,7 @@ if (!defined('EXPONENT_VERSION_MAJOR')) {
 		define('EXPONENT_VERSION_REVISION','0');
 		define('EXPONENT_VERSION_TYPE','develop');
 		define('EXPONENT_VERSION_ITERATION','');
-		define('EXPONENT_VERSION_BUILDDATE',time());
+		define('EXPONENT_VERSION_BUILDDATE','1306523940');
 	}
 }
 
