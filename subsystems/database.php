@@ -256,6 +256,7 @@ if (!defined('DB_ENGINE')) {
  * This function looks for available database engines,
  * and then returns an array to the caller.
  *
+ * @param int $valid_only
  * @return Array An associative array of engine identifiers.
  *	The internal engine name is the key, and the external
  *	descriptive name is the value.
@@ -274,6 +275,20 @@ function exponent_database_backends($valid_only = 1) {
 	return $options;
 }
 
+/**
+ * Connect to the Exponent database
+ *
+ * This function attempts to connect to the exponent database,
+ * and then returns the database object to the caller.
+ *
+ * @param string $username the database username
+ * @param string $password the database password
+ * @param string $hostname the url of the database server
+ * @param string $database the name of the database
+ * @param string $dbclass
+ * @param bool $new
+ * @return mysqli_database the exponent database object
+ */
 function exponent_database_connect($username,$password,$hostname,$database,$dbclass = '',$new=false) {
 	if ($dbclass == '' || $dbclass == null) $dbclass = DB_ENGINE;
 	(include_once(BASE.'subsystems/database/'.$dbclass.'.php')) or exit('The specified database backend  ('.$dbclass.') is not supported by Exponent');

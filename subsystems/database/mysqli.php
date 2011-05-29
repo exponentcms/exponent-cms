@@ -90,8 +90,8 @@ class mysqli_database {
      * @param array $datadef The data definition to create, expressed in
      *   the Exponent Data Definition Language.
      * @param array $info Information about the table itself.
+     * @return array
      */
-
     function createTable($tablename, $datadef, $info) {
         if (!is_array($info))
             $info = array(); // Initialize for later use.
@@ -168,8 +168,10 @@ class mysqli_database {
     /**
      * This is an internal function for use only within the MySQL database class
      * @internal Internal
+     * @param  $name
+     * @param  $def
+     * @return bool|string
      */
-
     function fieldSQL($name, $def) {
         $sql = "`$name`";
         if (!isset($def[DB_FIELD_TYPE])) {
@@ -215,8 +217,13 @@ class mysqli_database {
     /**
      * This is an internal function for use only within the MySQL database class
      * @internal Internal
+     * @param  $table
+     * @param  $field
+     * @param  $a
+     * @param  $b
+     * @param null $additional_where
+     * @return bool
      */
-
     function switchValues($table, $field, $a, $b, $additional_where = null) {
         if ($additional_where == null) {
             $additional_where = '1';
@@ -263,8 +270,8 @@ class mysqli_database {
      * terminates when the first test fails, and the status flag array is returned then.
      * Returns an array of status flags.  Key is the test name.  Value is a boolean,
      * true if the test succeeded, and false if it failed.
+     * @return array
      */
-
     function testPrivileges() {
 
         $status = array();
@@ -361,8 +368,8 @@ class mysqli_database {
      * @param array $info Information about the table itself.
      * @param bool $aggressive Whether or not to aggressively update the table definition.
      *   An aggressive update will drop columns in the table that are not in the Exponent definition.
+     * @return array
      */
-
     function alterTable($tablename, $newdatadef, $info, $aggressive = false) {
         $dd = $this->getDataDefinition($tablename);
         $modified = false;
@@ -457,8 +464,8 @@ class mysqli_database {
      * was an error returned by the MySQL server.
      *
      * @param string $table The name of the table to drop.
+     * @return bool
      */
-
     function dropTable($table) {
         return @mysqli_query($this->connection, "DROP TABLE `" . $this->prefix . "$table`") !== false;
     }
@@ -474,19 +481,32 @@ class mysqli_database {
      * provided as a last resort.
      *
      * @param string $sql The SQL query to run
+     * @return mixed
      */
-
     function sql($sql) {
         $res = @mysqli_query($this->connection, mysqli_real_escape_string($this->connection, $sql));
         return $res;
     }
 
+	/**
+	 * @param  $table
+	 * @param  $col
+	 * @param null $where
+	 * @return void
+	 */
     function toggle($table, $col, $where=null) {
         $obj = $this->selectObject($table, $where);
         $obj->$col = ($obj->$col == 0) ? 1 : 0;
         $this->updateObject($obj, $table);
     }
 
+	/**
+	 * @param  $object
+	 * @param  $table
+	 * @param  $col
+	 * @param null $where
+	 * @return bool
+	 */
     function setUniqueFlag($object, $table, $col, $where=null) {
         if (isset($object->id)) {
             $this->sql("UPDATE " . DB_TABLE_PREFIX . "_" . $table . " SET " . $col . "=0 WHERE " . $where);
@@ -508,8 +528,9 @@ class mysqli_database {
      * @param string $where Criteria used to narrow the result set.  If this
      *   is specified as null, then no criteria is applied, and all objects are
      *   returned
+     * @param null $orderby
+     * @return array
      */
-
     function selectObjects($table, $where = null, $orderby = null) {
         if ($where == null)
             $where = "1";
@@ -527,6 +548,11 @@ class mysqli_database {
         return $objects;
     }
 
+	/**
+	 * @param  $terms
+	 * @param null $where
+	 * @return array
+	 */
     function selectSearch($terms, $where = null) {
         if ($where == null)
             $where = "1";
@@ -542,6 +568,17 @@ class mysqli_database {
         return $objects;
     }
 
+	/**
+	 * @param null $colsA
+	 * @param null $colsB
+	 * @param  $tableA
+	 * @param  $tableB
+	 * @param  $keyA
+	 * @param null $keyB
+	 * @param null $where
+	 * @param null $orderby
+	 * @return array'
+	 */
     function selectAndJoinObjects($colsA=null, $colsB=null, $tableA, $tableB, $keyA, $keyB=null, $where = null, $orderby = null) {
         $sql = 'SELECT ';
         if ($colsA != null) {
@@ -591,6 +628,10 @@ class mysqli_database {
         return $objects;
     }
 
+	/**
+	 * @param  $sql
+	 * @return null|void
+	 */
     function selectObjectBySql($sql) {
         //$logFile = "C:\\xampp\\htdocs\\supserg\\tmp\\queryLog.txt";
         //$lfh = fopen($logFile, 'a');
@@ -602,6 +643,10 @@ class mysqli_database {
         return mysqli_fetch_object($res);
     }
 
+	/**
+	 * @param  $sql
+	 * @return array
+	 */
     function selectObjectsBySql($sql) {
         $res = @mysqli_query($this->connection, $sql);
         if ($res == null)
@@ -612,6 +657,14 @@ class mysqli_database {
         return $objects;
     }
 
+	/**
+	 * @param  $table
+	 * @param  $col
+	 * @param null $where
+	 * @param null $orderby
+	 * @param bool $distinct
+	 * @return array
+	 */
     function selectColumn($table, $col, $where = null, $orderby = null, $distinct=false) {
         if ($where == null)
             $where = "1";
@@ -632,6 +685,12 @@ class mysqli_database {
         return $resarray;
     }
 
+	/**
+	 * @param  $table
+	 * @param  $col
+	 * @param null $where
+	 * @return int
+	 */
     function selectSum($table, $col, $where = null) {
         if ($where == null)
             $where = "1";
@@ -647,6 +706,13 @@ class mysqli_database {
         return $resarray[0];
     }
 
+	/**
+	 * @param  $table
+	 * @param  $col
+	 * @param null $where
+	 * @param null $orderby
+	 * @return array
+	 */
     function selectDropdown($table, $col, $where = null, $orderby = null) {
         if ($where == null)
             $where = "1";
@@ -666,6 +732,12 @@ class mysqli_database {
         return $resarray;
     }
 
+	/**
+	 * @param  $table
+	 * @param  $col
+	 * @param null $where
+	 * @return null
+	 */
     function selectValue($table, $col, $where=null) {
         if ($where == null)
             $where = "1";
@@ -682,6 +754,10 @@ class mysqli_database {
         }
     }
 
+	/**
+	 * @param  $sql
+	 * @return null
+	 */
     function selectValueBySql($sql) {
         $res = $this->sql($sql);
         if ($res == null)
@@ -696,8 +772,11 @@ class mysqli_database {
 
     /**
      * This function takes an array of indexes and returns an array with the objects associated with each id
+     * @param  $table
+     * @param array $array
+     * @param null $orderby
+     * @return array
      */
-
     function selectObjectsInArray($table, $array=array(), $orderby=null) {
         $where = 'id IN ' . implode(",", $array);
         $res = $this->selectObjects($table, $where, $orderby);
@@ -717,8 +796,9 @@ class mysqli_database {
      * @param string $where Criteria used to narrow the result set.  If this
      *   is specified as null, then no criteria is applied, and all objects are
      *   returned
+     * @param null $orderby
+     * @return array
      */
-
     function selectObjectsIndexedArray($table, $where = null, $orderby = null) {
         if ($where == null)
             $where = "1";
@@ -743,8 +823,8 @@ class mysqli_database {
      *
      * @param string $table The name of the table to count objects in.
      * @param string $where Criteria for counting.
+     * @return int
      */
-
     function countObjects($table, $where = null) {
         if ($where == null)
             $where = "1";
@@ -759,8 +839,8 @@ class mysqli_database {
      * Count Objects matching a given criteria using raw sql
      *
      * @param string $sql The sql query to be run
+     * @return int
      */
-
     function countObjectsBySql($sql) {
         $res = @mysqli_query($this->connection, $sql);
         if ($res == null)
@@ -773,8 +853,8 @@ class mysqli_database {
      * Count Objects matching a given criteria using raw sql
      *
      * @param string $sql The sql query to be run
+     * @return int|void
      */
-
     function queryRows($sql) {
         /* $logFile = "C:\\xampp\\htdocs\\supserg\\tmp\\queryLog.txt";
           $lfh = fopen($logFile, 'a');
@@ -796,8 +876,8 @@ class mysqli_database {
      *
      * @param string $table The name of the table/object to look at
      * @param string $where Criteria used to narrow the result set.
+     * @return null|void
      */
-
     function selectObject($table, $where) {
         $res = mysqli_query($this->connection, "SELECT * FROM `" . $this->prefix . "$table` WHERE $where LIMIT 0,1");
         if ($res == null)
@@ -815,8 +895,8 @@ class mysqli_database {
      * @param Object $object The object to insert.
      * @param string $table The logical table name to insert into.  This does not include the table prefix, which
      *    is automagically prepended for you.
+     * @return int|void
      */
-
     function insertObject($object, $table) {
         //if ($table=="text") eDebug($object,true); 
         $sql = "INSERT INTO `" . $this->prefix . "$table` (";
@@ -845,8 +925,8 @@ class mysqli_database {
      *
      * @param string $table The name of the table to delete from.
      * @param string $where Criteria for determining which record(s) to delete.
+     * @return mixed
      */
-
     function delete($table, $where = null) {
         if ($where != null) {
             $res = @mysqli_query($this->connection, "DELETE FROM `" . $this->prefix . "$table` WHERE $where");
@@ -868,8 +948,10 @@ class mysqli_database {
      *    the select* methods.
      * @param string $table The table to update in.
      * @param string $where Optional criteria used to narrow the result set.
+     * @param string $identifier
+     * @param bool $is_revisioned
+     * @return bool|int|void
      */
-
     function updateObject($object, $table, $where=null, $identifier='id', $is_revisioned=false) {
 
         if ($is_revisioned) {
@@ -897,17 +979,17 @@ class mysqli_database {
         return $res;
     }
 
-    /**
-     * Find the maximum value of a field.  This is similar to a standard
-     * SELECT MAX(field) ... query.
-     *
-     * @param string $table The name of the table to select from.
-     * @param string $attribute The attribute name to find a maximum value for.
-     * @param A comma-separated list of fields (or a single field) name, used
-     *    for a GROUP BY clause.  This can also be passed as an array of fields.
-     * @param $where Optional criteria for narrowing the result set.
-     */
-
+	/**
+	 * Find the maximum value of a field.  This is similar to a standard
+	 * SELECT MAX(field) ... query.
+	 *
+	 * @param string $table The name of the table to select from.
+	 * @param string $attribute The attribute name to find a maximum value for.
+	 * @param string $groupfields A comma-separated list of fields (or a single field) name, used
+	 *    for a GROUP BY clause.  This can also be passed as an array of fields.
+	 * @param string $where Optional criteria for narrowing the result set.
+	 * @return mixed
+	 */
     function max($table, $attribute, $groupfields = null, $where = null) {
         if (is_array($groupfields))
             $groupfields = implode(",", $groupfields);
@@ -926,17 +1008,18 @@ class mysqli_database {
         return $res->fieldmax;
     }
 
-    /**
-     * Find the minimum value of a field.  This is similar to a standard
-     * SELECT MIN(field) ... query.
-     *
-     * @param string $table The name of the table to select from.
-     * @param string $attribute The attribute name to find a minimum value for.
-     * @param A comma-separated list of fields (or a single field) name, used
-     *    for a GROUP BY clause.  This can also be passed as an array of fields.
-     * @param $where Optional criteria for narrowing the result set.
-     */
-
+	/**
+	 * Find the minimum value of a field.  This is similar to a standard
+	 * SELECT MIN(field) ... query.
+	 *
+	 * @internal Internal
+	 * @param string $table The name of the table to select from.
+	 * @param string $attribute The attribute name to find a minimum value for.
+	 * @param string $groupfields A comma-separated list of fields (or a single field) name, used
+	 *    for a GROUP BY clause.  This can also be passed as an array of fields.
+	 * @param $where Optional criteria for narrowing the result set.
+	 * @return null
+	 */
     function min($table, $attribute, $groupfields = null, $where = null) {
         if (is_array($groupfields))
             $groupfields = implode(",", $groupfields);
@@ -963,8 +1046,8 @@ class mysqli_database {
      * @param integer $step The step value.  Usually 1.  This can be negative, to
      *    decrement, but the decrement() method is prefered, for readability.
      * @param string $where Optional criteria to determine which records to update.
+     * @return mixed
      */
-
     function increment($table, $field, $step, $where = null) {
         if ($where == null)
             $where = "1";
@@ -991,8 +1074,8 @@ class mysqli_database {
      * Returns true if the table exists, and false if it doesn't.
      *
      * @param string $table Name of the table to look for.
+     * @return bool
      */
-
     function tableExists($table) {
         $res = @mysqli_query($this->connection, "SELECT * FROM `" . $this->prefix . "$table` LIMIT 0,1");
         return ($res != null);
@@ -1005,8 +1088,8 @@ class mysqli_database {
      *
      * @param bool $prefixed_only Whether to return only the tables
      *    for the logical database, or all tables in the physical database.
+     * @return array
      */
-
     function getTables($prefixed_only=true) {
         $res = @mysqli_query($this->connection, "SHOW TABLES");
         $tables = array();
@@ -1025,8 +1108,8 @@ class mysqli_database {
      * Runs whatever table optimization routines the database engine supports.
      *
      * @param string $table The name of the table to optimize.
+     * @return bool
      */
-
     function optimize($table) {
         $res = (@mysqli_query($this->connection, "OPTIMIZE TABLE `" . $this->prefix . "$table`") != false);
         return $res;
@@ -1041,8 +1124,9 @@ class mysqli_database {
      * <li><b>data_total</b> -- How much total disk space is used by the table.</li>
      * <li><b>data_overhead</b> -- How much storage space in the table is unused (for compacting purposes)</li>
      * </ul>
+     * @param  $table
+     * @return null
      */
-
     function tableInfo($table) {
         $sql = "SHOW TABLE STATUS LIKE '" . $this->prefix . "$table'";
         $res = @mysqli_query($this->connection, $sql);
@@ -1056,8 +1140,8 @@ class mysqli_database {
      * Returns tue of the specified table has no rows, and false if otherwise.
      *
      * @param string $table Name of the table to check.
+     * @return bool
      */
-
     function tableIsEmpty($table) {
         return ($this->countObjects($table) == 0);
     }
@@ -1065,8 +1149,8 @@ class mysqli_database {
     /**
      * Returns table information for all tables in the database.
      * This function effectively calls tableInfo() on each table found.
+     * @return array
      */
-
     function databaseInfo() {
         $sql = "SHOW TABLE STATUS";
         $res = @mysqli_query($this->connection, "SHOW TABLE STATUS LIKE '" . $this->prefix . "%'");
@@ -1081,8 +1165,9 @@ class mysqli_database {
     /**
      * This is an internal function for use only within the MySQL database class
      * @internal Internal
+     * @param  $status
+     * @return null
      */
-
     function translateTableStatus($status) {
         $data = null;
         $data->rows = $status->Rows;
@@ -1093,6 +1178,10 @@ class mysqli_database {
         return $data;
     }
 
+	/**
+	 * @param  $table
+	 * @return array
+	 */
     function describeTable($table) {
         if (!$this->tableExists($table))
             return array();
@@ -1117,8 +1206,8 @@ class mysqli_database {
      * to intelligently alter tables that have already been installed.
      *
      * @param string $table The name of the table to get a data definition for.
+     * @return array|null
      */
-
     function getDataDefinition($table) {
         // make sure the table exists
         if (!$this->tableExists($table))
@@ -1150,8 +1239,9 @@ class mysqli_database {
     /**
      * This is an internal function for use only within the MySQL database class
      * @internal Internal
+     * @param  $fieldObj
+     * @return int
      */
-
     function getDDFieldType($fieldObj) {
         $type = strtolower($fieldObj->Type);
 
@@ -1175,8 +1265,9 @@ class mysqli_database {
     /**
      * This is an internal function for use only within the MySQL database class
      * @internal Internal
+     * @param  $fieldObj
+     * @return int|mixed
      */
-
     function getDDStringLen($fieldObj) {
         $type = strtolower($fieldObj->Type);
         if ($type == "text")
@@ -1194,8 +1285,8 @@ class mysqli_database {
      * Returns an error message from the server.  This is intended to be
      * used by the implementors of the database wrapper, so that certain
      * cryptic error messages can be reworded.
+     * @return string
      */
-
     function error() {
         if ($this->connection && mysqli_errno($this->connection) != 0) {
             $errno = mysqli_errno($this->connection);
@@ -1213,12 +1304,17 @@ class mysqli_database {
 
     /**
      * Checks whether the database connection has experienced an error.
+     * @return bool
      */
-
     function inError() {
         return ($this->connection != null && mysqli_errno($this->connection) != 0);
     }
 
+	/**
+	 * @param  $num
+	 * @param  $offset
+	 * @return string
+	 */
     function limit($num, $offset) {
         return ' LIMIT ' . $offset . ',' . $num . ' ';
     }
@@ -1235,8 +1331,9 @@ class mysqli_database {
      * @param string $where Criteria used to narrow the result set.  If this
      *   is specified as null, then no criteria is applied, and all objects are
      *   returned
+     * @param string $orderby
+     * @return array
      */
-
     function selectArrays($table, $where = null, $orderby = null) {
         if ($where == null)
             $where = "1";
@@ -1262,12 +1359,9 @@ class mysqli_database {
      * SELECTing a set of records from a database table.  Returns an
      * array of arrays, in any random order.
      *
-     * @param string $table The name of the table/object to look at
-     * @param string $where Criteria used to narrow the result set.  If this
-     *   is specified as null, then no criteria is applied, and all objects are
-     *   returned
+     * @param string $sql The name of the table/object to look at
+     * @return array
      */
-
     function selectArraysBySql($sql) {
         /* $logFile = "C:\\xampp\\htdocs\\supserg\\tmp\\queryLog.txt";
           $lfh = fopen($logFile, 'a');
@@ -1294,8 +1388,10 @@ class mysqli_database {
      * @param string $where Criteria used to narrow the result set.  If this
      *   is specified as null, then no criteria is applied, and all objects are
      *   returned
+     * @param null $orderby
+     * @param bool $is_revisioned
+     * @return array|void
      */
-
     function selectArray($table, $where = null, $orderby = null, $is_revisioned=false) {
         if ($where == null)
             $where = "1";
@@ -1316,8 +1412,11 @@ class mysqli_database {
      * @param string $where Criteria used to narrow the result set.  If this
      *   is specified as null, then no criteria is applied, and all objects are
      *   returned
+     * @param  $classname
+     * @param bool $get_assoc
+     * @param bool $get_attached
+     * @return array
      */
-
     function selectExpObjects($table, $where=null, $classname, $get_assoc=true, $get_attached=true) {
         if ($where == null)
             $where = "1";
@@ -1341,8 +1440,10 @@ class mysqli_database {
      * @param string $sql The sql statement to run on the model/classname
      * @param string $classname Can be $this->baseclassname
      * Returns an array of fields
+     * @param bool $get_assoc
+     * @param bool $get_attached
+     * @return array
      */
-
     function selectExpObjectsBySql($sql, $classname, $get_assoc=true, $get_attached=true) {
         $res = @mysqli_query($this->connection, $sql);
         if ($res == null)
@@ -1354,6 +1455,10 @@ class mysqli_database {
         return $arrays;
     }
 
+	/**
+	 * @param  $table
+	 * @return array
+	 */
     function selectNestedTree($table) {
         $sql = 'SELECT node.*, (COUNT(parent.sef_url) - 1) AS depth
 			FROM `' . $this->prefix . $table . '` AS node,
@@ -1364,6 +1469,12 @@ class mysqli_database {
         return $this->selectObjectsBySql($sql);
     }
 
+	/**
+	 * @param  $table
+	 * @param  $start
+	 * @param  $width
+	 * @return void
+	 */
     function adjustNestedTreeFrom($table, $start, $width) {
         $table = $this->prefix . $table;
         $this->sql('UPDATE `' . $table . '` SET rgt = rgt + ' . $width . ' WHERE rgt >=' . $start);
@@ -1372,6 +1483,13 @@ class mysqli_database {
         //eDebug('UPDATE `'.$table.'` SET lft = lft + '.$width.' WHERE lft >='.$start);
     }
 
+	/**
+	 * @param  $table
+	 * @param  $lft
+	 * @param  $rgt
+	 * @param  $width
+	 * @return void
+	 */
     function adjustNestedTreeBetween($table, $lft, $rgt, $width) {
         $table = $this->prefix . $table;
         $this->sql('UPDATE `' . $table . '` SET rgt = rgt + ' . $width . ' WHERE rgt BETWEEN ' . $lft . ' AND ' . $rgt);
@@ -1380,6 +1498,11 @@ class mysqli_database {
         //eDebug('UPDATE `'.$table.'` SET lft = lft + '.$width.' WHERE lft BETWEEN '.$lft.' AND '.$rgt);
     }
 
+	/**
+	 * @param  $table
+	 * @param null $node
+	 * @return array
+	 */
     function selectNestedBranch($table, $node=null) {
         if (empty($node))
             return array();
@@ -1408,6 +1531,12 @@ class mysqli_database {
         return $this->selectObjectsBySql($sql);
     }
 
+	/**
+	 * @param  $table
+	 * @param  $lft
+	 * @param  $rgt
+	 * @return void
+	 */
     function deleteNestedNode($table, $lft, $rgt) {
         $table = $this->prefix . $table;
 
@@ -1417,6 +1546,11 @@ class mysqli_database {
         $this->sql('UPDATE `' . $table . '` SET lft = lft - ' . $width . ' WHERE lft > ' . $rgt);
     }
 
+	/**
+	 * @param  $table
+	 * @param null $node
+	 * @return array
+	 */
     function selectPathToNestedNode($table, $node=null) {
         if (empty($node))
             return array();
@@ -1431,6 +1565,11 @@ class mysqli_database {
         return $this->selectObjectsBySql($sql);
     }
 
+	/**
+	 * @param  $table
+	 * @param null $node
+	 * @return array
+	 */
     function selectNestedNodeParent($table, $node=null) {
         if (empty($node))
             return array();
@@ -1447,6 +1586,11 @@ class mysqli_database {
         return $parent_array[0];
     }
 
+	/**
+	 * @param  $table
+	 * @param null $node
+	 * @return array
+	 */
     function selectNestedNodeChildren($table, $node=null) {
         if (empty($node))
             return array();
