@@ -28,10 +28,24 @@ class expController {
     protected $permissions = array('create'=>'Create', 'edit'=>'Edit', 'delete'=>'Delete', 'configure'=>'Configure', 'perms'=>'Manage Permissions', 'manage'=>'Manage Module');
     protected $remove_permissions = array();    
     protected $add_permissions = array();
-    
-    function canImportData() { return false; }
-    function canExportData() { return false; }
-    function requiresConfiguration() { return false; }
+
+	/**
+	 * can this module import data
+	 * @return bool
+	 */
+	function canImportData() { return false; }
+
+	/**
+	 * can this module export data
+	 * @return bool
+	 */
+	function canExportData() { return false; }
+
+	/**
+	 * does this module require configuration
+	 * @return bool
+	 */
+	function requiresConfiguration() { return false; }
     
     public $requires_login = array();
     public $remove_configs = array();
@@ -44,8 +58,14 @@ class expController {
     public $filepath = '';
     public $viewpath = '';
     public $relative_viewpath = '';
-    
-    function __construct($src=null, $params=array()) {
+
+	/**
+	 * @param null $src
+	 * @param array $params
+	 * @return expController
+	 *
+	 */
+	function __construct($src=null, $params=array()) {
         // setup some basic information about this class
         $this->classinfo = new ReflectionClass($this);
         $this->classname = $this->classinfo->getName();
@@ -90,16 +110,52 @@ class expController {
         $this->params = $params;
 
     }
-    
-    function name() { return $this->displayname(); } //for backwards compat with old modules
-    function displayname() { return "Exponent Base Controller"; }
-    function author() { return "Adam Kessler @ OIC Group, Inc"; }
-    function description() { return "This is the base controller that most Exponent modules will inherit from."; }
-    function hasSources() { return true; }
-    function hasViews() { return true; }
-    function isSearchable() { return false; }
- 
-    function moduleSelfAwareness() {
+
+	/**
+	 * name of module for backwards compat with old modules
+	 * @return string
+	 */
+	function name() { return $this->displayname(); }
+	/**
+	 * name of module
+	 * @return string
+	 */
+	function displayname() { return "Exponent Base Controller"; }
+
+	/**
+	 * author of module
+	 * @return string
+	 */
+	function author() { return "Adam Kessler @ OIC Group, Inc"; }
+
+	/**
+	 * description of module
+	 * @return string
+	 */
+	function description() { return "This is the base controller that most Exponent modules will inherit from."; }
+
+	/**
+	 * does module have sources available
+	 * @return bool
+	 */
+	function hasSources() { return true; }
+
+	/**
+	 * does module have views available
+	 * @return bool
+	 */
+	function hasViews() { return true; }
+
+	/**
+	 * is module content searchable
+	 * @return bool
+	 */
+	function isSearchable() { return false; }
+
+	/**
+	 * glue to make module aware of itself
+	 */
+	function moduleSelfAwareness() {
         assign_to_template(array(
             'asset_path'=>$this->asset_path,
             'model_name'=>$this->basemodel_name,
@@ -107,8 +163,11 @@ class expController {
             'controller'=>$this->baseclassname
         ));
     }
- 
-    function showall() {
+
+	/**
+	 * default module view method for all items
+	 */
+	function showall() {
         expHistory::set('viewable', $this->params);
         $modelname = $this->basemodel_name;
         $where = $this->hasSources() ? $this->aggregateWhereClause() : null;
@@ -128,7 +187,10 @@ class expController {
         assign_to_template(array('page'=>$page, 'items'=>$page->records, 'modelname'=>$modelname));
     }
 
-    function show() {
+	/**
+	 * default view for individual item
+	 */
+	function show() {
         expHistory::set('viewable', $this->params);
         $modelname = $this->basemodel_name;
         
@@ -143,8 +205,11 @@ class expController {
         $record = new $modelname($id);
         assign_to_template(array('record'=>$record));
     }
-    
-    function showByTitle() {
+
+	/**
+	 * view the item by refering to its title
+	 */
+	function showByTitle() {
         expHistory::set('viewable', $this->params);
         $modelname = $this->basemodel_name;
         // first we'll check to see if this matches the sef_url field...if not then we'll look for the 
@@ -160,14 +225,20 @@ class expController {
         assign_to_template(array('record'=>$record,"__loc"=>$this->loc));
     }
 
-    public function showRandom() {
+	/**
+	 * view a random item
+	 */
+	public function showRandom() {
 		$where = $this->hasSources() ? $this->aggregateWhereClause() : null;
 		$limit = isset($this->params['limit']) ? $this->params['limit'] : 1;
 		$order = 'RAND()';
 		assign_to_template(array('items'=>$this->text->find('all', $where, $order, $limit)));
 	}
-	
-    function showByTags() {
+
+	/**
+	 * view items referenced by tags
+	 */
+	function showByTags() {
         global $db;
 
         // set the history point for this action
@@ -208,14 +279,20 @@ class expController {
         assign_to_template(array('items'=>$records, 'modelname'=>$modelname));
     }
 
-    function create() {
+	/**
+	 * create an item in this module
+	 */
+	function create() {
         $args = array('controller'=>$this->params['controller'], 'action'=>'edit');
         //if (!empty($this->params['instance'])) $args['instance'] = $this->params['instance'];
         if (!empty($this->params['src'])) $args['src'] = $this->params['src'];
         redirect_to($args);
     }
 
-    function edit() {
+	/**
+	 * edit item in module
+	 */
+	function edit() {
         expHistory::set('editable', $this->params);
         $modelname = $this->basemodel_name;
         assign_to_template(array('controller'=>$this->params['controller']));
@@ -224,7 +301,10 @@ class expController {
         assign_to_template(array('record'=>$record, 'table'=>$this->$modelname->tablename));
     }
 
-    function update() {
+	/**
+	 * update item in module
+	 */
+	function update() {
         $modelname = $this->basemodel_name;
         $this->$modelname->update($this->params);
         $this->addContentToSearch();
@@ -236,7 +316,10 @@ class expController {
         }
     }
 
-    function delete() {
+	/**
+	 * delete item in module
+	 */
+	function delete() {
         $modelname = $this->basemodel_name;
         if (empty($this->params['id'])) {
 	        flash('error', 'Missing id for the '.$modelname.' you would like to delete');
@@ -256,14 +339,20 @@ class expController {
         expHistory::back();
     }
 
-    function rerank() {
+	/**
+	 * rerank items in module
+	 */
+	function rerank() {
         $modelname = $this->basemodel_name;
         $obj = new $modelname($this->params['id']);
         $obj->rerank($this->params['push']);
         expHistory::back();
     }
-    
-    function manage() {
+
+	/**
+	 * display module management view
+	 */
+	function manage() {
         expHistory::set('manageable', $this->params);
         $modelname = $this->basemodel_name;
         $where = $this->hasSources() ? $this->aggregateWhereClause() : null;
@@ -282,8 +371,11 @@ class expController {
         
         assign_to_template(array('page'=>$page, 'items'=>$page->records, 'modelname'=>$modelname));
     }
-    
-    function manage_ranks() {
+
+	/**
+	 * display view to rerank items
+	 */
+	function manage_ranks() {
         $rank = 1;
         foreach($this->params['rerank'] as $key=>$id) {
             $modelname = $this->params['model'];
@@ -297,8 +389,10 @@ class expController {
         
     }
     
-    // generic config action
-    function configure() {
+	/**
+	 * generic config action
+	 */
+	function configure() {
         expHistory::set('editable', $this->params);
         $pullable_modules = listInstalledControllers($this->classname, $this->loc);
         $views = get_config_templates($this, $this->loc);
@@ -334,7 +428,11 @@ class expController {
     //     return $rssitems;
     // }
 
-    function getRSSContent() {
+	/**
+	 * get the items in an rss feed format
+	 * @return array
+	 */
+	function getRSSContent() {
         // this function is very general and will most of the time need to be overwritten and customized
         
         global $db;     
@@ -355,8 +453,11 @@ class expController {
         }
         return $rssitems;
     }
-    
-    function saveconfig() {
+
+	/**
+	 * save module configuration
+	 */
+	function saveconfig() {
         // create a new RSS object if enable is checked.
         if (!empty($this->params['enable_rss'])) {
             $rssfeed = new expRss($this->params);
@@ -385,7 +486,10 @@ class expController {
         expHistory::back();
     }
 
-    function downloadfile() {
+	/**
+	 * download a file attached to item
+	 */
+	function downloadfile() {
         global $db;    
         
         if (!isset($this->config['allowdownloads']) || $this->config['allowdownloads'] == true) { 
@@ -398,9 +502,12 @@ class expController {
         }
         
     }
-    
-    //permission functions
-    function permissions() {
+
+	/**
+	 * permission functions
+	 * @return array
+	 */
+	function permissions() {
         //set the permissions array
         $perms = array();
         foreach($this->permissions as $perm=>$name) {
@@ -410,19 +517,35 @@ class expController {
         return $perms;
     }
 
-    function getModels() {
+	/**
+	 * get the models (datatypes) associated with this module
+	 * @return array
+	 */
+	function getModels() {
         return isset($this->models) ? $this->models : array($this->basemodel_name);
     }
 
-    function searchName() {
+	/**
+	 * type of items searched in the module
+	 * @return string
+	 */
+	function searchName() {
         return $this->name();
     }
 
-    function searchCategory() {
+	/**
+	 * category of items searched in the module
+	 * @return string
+	 */
+	function searchCategory() {
         return $this->basemodel_name;
     }
-    
-    function addContentToSearch() {
+
+	/**
+	 * add all module items to search index
+	 * @return int
+	 */
+	function addContentToSearch() {
         global $db, $router;
         
         $count = 0;
@@ -451,8 +574,11 @@ class expController {
          
          return $count;
     }
-    
-    function delete_search() {
+
+	/**
+	 * remove module items from search index
+	 */
+	function delete_search() {
         global $db;        
         // remove this modules entries from the search table.
         if ($this->isSearchable()) {
@@ -461,18 +587,29 @@ class expController {
             $db->delete('search', $where);
         }
     }
-    
-    function delete_In($loc) { $this->delete_instance(); }   //for backwards compat with old modules
-    
-    function delete_instance() {
+
+	/**
+	 * delete an item by instance for backwards compat with old modules
+	 * @param $loc
+	 */
+	function delete_In($loc) { $this->delete_instance(); }
+
+	/**
+	 * delete an item by instance
+	 */
+	function delete_instance() {
         global $db;
         $model = new $this->basemodel_name();
         $where = null;
         if ($this->hasSources()) $where = "location_data='".serialize($this->loc)."'";
         $db->delete($model->tablename, $where);
     }
-    
-    function metainfo() {
+
+	/**
+	 * get the metainfo for this module
+	 * @return array
+	 */
+	function metainfo() {
         global $router;
         if (empty($router->params['action'])) return false;
         
@@ -515,8 +652,13 @@ class expController {
         
         return $metainfo;
     }
-    
-    function aggregateWhereClause() {
+
+	/**
+	 * The aggregateWhereClause function creates a sql where clause which also includes aggregated module content
+	 *
+	 * @return string
+	 */
+	function aggregateWhereClause() {
         $sql = '';
         
         if (!$this->hasSources() && empty($this->config['add_source'])) { return $sql; }
