@@ -14,7 +14,7 @@
  *
  *}
  
-{css unique="managemods" corecss="admin-global"}
+{css unique="managemods" corecss="admin-global,tables"}
 {literal}
 .exp-skin-table td label {
     display:block;
