@@ -1860,7 +1860,8 @@ class Archive_Zip
       else if (   (isset($p_params[ARCHIVE_ZIP_PARAM_BY_EREG]))
                && ($p_params[ARCHIVE_ZIP_PARAM_BY_EREG] != "")) {
 
-          if (ereg($p_params[ARCHIVE_ZIP_PARAM_BY_EREG], $v_header['stored_filename'])) {
+//          if (ereg($p_params[ARCHIVE_ZIP_PARAM_BY_EREG], $v_header['stored_filename'])) {
+          if (preg_match($p_params[ARCHIVE_ZIP_PARAM_BY_EREG], $v_header['stored_filename'])) {
               $v_extract = true;
           }
       }
@@ -2743,7 +2744,8 @@ class Archive_Zip
       else if (   (isset($p_params[ARCHIVE_ZIP_PARAM_BY_EREG]))
                && ($p_params[ARCHIVE_ZIP_PARAM_BY_EREG] != "")) {
 
-          if (ereg($p_params[ARCHIVE_ZIP_PARAM_BY_EREG],
+//          if (ereg($p_params[ARCHIVE_ZIP_PARAM_BY_EREG],
+          if (preg_match($p_params[ARCHIVE_ZIP_PARAM_BY_EREG],
 		           $v_header_list[$v_nb_extracted]['stored_filename'])) {
               $v_found = true;
           }

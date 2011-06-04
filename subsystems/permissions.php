@@ -17,29 +17,29 @@
 #
 ##################################################
 
-/* exdoc
+/** exdoc
  * The definition of this constant lets other parts of the system know
  * that the subsystem has been included for use.
  * @node Subsystems:Permissions
  */
 define('SYS_PERMISSIONS',1);
 
-/* exdoc
+/** exdoc
  * UI Level of Preview - No management links of any kind should be shown.
  * @node Subsystems:Permissions
  */
 define('UILEVEL_PREVIEW',0);
-/* exdoc
+/** exdoc
 * UI Level of Norma - Only normal management links (edit, delete, etc.) should be shown.
 * @node Subsystems:Permissions
 */
 define('UILEVEL_NORMAL',1);
-/* exdoc
+/** exdoc
 * UI Level of Permissions - Permission Management links (user and group perms) should be shown.
 * @node Subsystems:Permissions
 */
 define('UILEVEL_PERMISSIONS',2);
-/* exdoc
+/** exdoc
 * UI Level of Structure - All management links are shown.
 * @node Subsystems:Permissions
 */
@@ -49,7 +49,7 @@ define('UILEVEL_STRUCTURE',3);
 // by anything outside of the permissions subsystem.
 $exponent_permissions_r = array();
 
-/* exdoc
+/** exdoc
  * Loads permission data from the database for the specified user.
  *
  * @param User $user THe user to load permissions for.
@@ -141,7 +141,7 @@ function exponent_permissions_load($user) {
 	exponent_sessions_set('uilevels',$ui_levels);
 }
 
-/* exdoc
+/** exdoc
  * This clears the cached permission data.  It does NOT
  * delete that data out of the database.
  * @node Subsystems:Permissions
@@ -150,7 +150,7 @@ function exponent_permissions_clear() {
 	exponent_sessions_unset("permissions");
 }
 
-/* exdoc
+/** exdoc
  * Initialize Permissions Subsystems
  * Pulls in the permission data from the session, for faster
  * access later.
@@ -161,18 +161,21 @@ function exponent_permissions_initialize() {
 	$exponent_permissions_r = exponent_sessions_get("permissions");
 }
 
-/* exdoc
+/** exdoc
  * @state <b>UNDOCUMENTED</b>
  * @node Undocumented
+ * @param $src
+ * @return int
  */
 function exponent_permissions_getSourceUID($src) {
 	if (substr($src,0,5) == "@uid_") {
-		$t = split("_",$src);
+//		$t = split("_",$src);
+		$t = explode("_",$src);
 		return $t[count($t)-1]+0;
 	} else return 0;
 }
 
-/* exdoc
+/** exdoc
  * Looks to the permission data and checks to see
  * if the current user has been granted the given permission
  * on the granted the given location.  Recursive checking is
@@ -184,6 +187,7 @@ function exponent_permissions_getSourceUID($src) {
  * @param Object $location The location to check on.  This will be passed
  *	to getLocationHierarchy (defined by the module) for a full hierarchy
  *	of permissions.
+ * @return bool
  * @node Subsystems:Permissions
  */
 function exponent_permissions_check($permission,$location) {
@@ -239,13 +243,14 @@ function exponent_permissions_check($permission,$location) {
 	return $has_perm;
 }
 
-/* exdoc
+/** exdoc
  * Looks to the permission data and check to see
  * if the current user has been granted the given permission
  * on any instance of the module type. Returns true if the permission is granted, false if it is not.
  *
  * @param string $permission The name of the permission to check
  * @param string $module The classname of the module to check.
+ * @return bool
  * @node Subsystems:Permissions
  * @state BUGGY
  */
@@ -255,7 +260,7 @@ function exponent_permissions_checkOnModule($permission,$module) {
 	return (isset($exponent_permissions_r[$module]) && (count($exponent_permissions_r[$module]) > 0));
 }
 
-/* exdoc
+/** exdoc
  * Checks to see if the given user has been given permission.  Handles
  * explicit checks (actually assigned to the user) or implicit checks
  * (assigned to a group the user belongs to).  Returns true if the permission is granted, false if it is not.
@@ -265,6 +270,7 @@ function exponent_permissions_checkOnModule($permission,$module) {
  * @param Object $location The location to check on.
  * @param boolean $explicitOnly Whether to check for explit assignment or implicit.
  *
+ * @return bool
  * @node Subsystems:Permissions
  */
 function exponent_permissions_checkUser($user,$permission,$location,$explicitOnly = false) {
@@ -321,7 +327,7 @@ function exponent_permissions_checkUser($user,$permission,$location,$explicitOnl
 	return ($implicit || $explicit);
 }
 
-/* exdoc
+/** exdoc
  * Checks to see if the given group has been given permission on a location.
  * Returns true if the permission is granted, false if it is not.
  *
@@ -329,6 +335,8 @@ function exponent_permissions_checkUser($user,$permission,$location,$explicitOnl
  * @param string $permission The name of the permission to check
  * @param Object $location The location to check on.
  *
+ * @param bool $explicitOnly
+ * @return bool
  * @node Subsystems:Permissions
  */
 function exponent_permissions_checkGroup($group,$permission,$location,$explicitOnly = false) {
@@ -350,14 +358,17 @@ function exponent_permissions_checkGroup($group,$permission,$location,$explicitO
 	return ($implicit || $explicit);
 }
 
-/* exdoc
+/** exdoc
  * Checks to see if the given group has been given permission on a location.
  * Returns true if the permission is granted, false if it is not.
  *
- * @param Object $group The group to check
+ * @param $subscription
  * @param string $permission The name of the permission to check
  * @param Object $location The location to check on.
  *
+ * @param bool $explicitOnly
+ * @return bool
+ * @internal param \Object $group The group to check
  * @node Subsystems:Permissions
  */
 function exponent_permissions_checkSubscription($subscription,$permission,$location,$explicitOnly = false) {
@@ -379,7 +390,7 @@ function exponent_permissions_checkSubscription($subscription,$permission,$locat
         return ($implicit || $explicit);
 }
 
-/* exdoc
+/** exdoc
  * Grants the specified permission to the specified user, on the given location
  *
  * @param User $user The user to grant the permission to
@@ -403,7 +414,7 @@ function exponent_permissions_grant($user,$permission,$location) {
 	}
 }
 
-/* exdoc
+/** exdoc
  * Grants the specified permission to the specified user group, on the given location
  *
  * @param Object $group The group to grant the permission to
@@ -430,7 +441,7 @@ function exponent_permissions_grantGroup($group,$permission,$location) {
 	}
 }
 
-/* exdoc
+/** exdoc
  * Grants the specified permission to the specified subscription, on the given location
  *
  * @param Object $sub The subscription to grant the permission to
@@ -457,13 +468,14 @@ function exponent_permissions_grantSubscription($sub,$permission,$location) {
         }
 }
 
-/* exdoc
+/** exdoc
  * Takes a permission away from a group, on a specific location.
  * This actually modifies the database.
  *
  * @param Object $group The group to remove the permission from
  * @param string $permission The name of the permission to revoke
  * @param Object $location The location to revoke the permission on
+ * @return mixed
  * @node Subsystems:Permissions
  */
 function exponent_permissions_revokeGroup($group,$permission,$location) {
@@ -471,13 +483,14 @@ function exponent_permissions_revokeGroup($group,$permission,$location) {
 	return $db->delete("grouppermission","gid=" . $group->id . " AND permission='$permission' AND module='" . $location->mod . "' AND source='" . $location->src . "' AND internal='" . $location->int . "'");
 }
 
-/* exdoc
+/** exdoc
  * Takes a permission away from a user, on a specific location.
  * This actually modifies the database.
  *
  * @param User $user The user to remove the permission from
  * @param string $permission The name of the permission to revoke
  * @param Object $location The location to revoke the permission on
+ * @return mixed
  * @node Subsystems:Permissions
  */
 function exponent_permissions_revoke($user,$permission,$location) {
@@ -485,11 +498,12 @@ function exponent_permissions_revoke($user,$permission,$location) {
 	return $db->delete("userpermission","uid=" . $user->id . " AND permission='$permission' AND module='" . $location->mod . "' AND source='" . $location->src . "' AND internal='" . $location->int . "'");
 }
 
-/* exdoc
+/** exdoc
  * Removes all permissions from a user, on a specific location.
  *
  * @param User $user The user to remove all permissions from
  * @param Object $location The location to remove all permission on
+ * @return mixed
  * @node Subsystems:Permissions
  */
 function exponent_permissions_revokeAll($user,$location) {
@@ -497,9 +511,11 @@ function exponent_permissions_revokeAll($user,$location) {
 	return $db->delete("userpermission","uid=" . $user->id . " AND module='" . $location->mod . "' AND source='" . $location->src . "' AND internal='" . $location->int . "'");
 }
 
-/* exdoc
+/** exdoc
  * @state <b>UNDOCUMENTED</b>
  * @node Undocumented
+ * @param $location
+ * @return bool
  */
 function exponent_permissions_revokeComplete($location) {
 	global $db;
@@ -508,11 +524,12 @@ function exponent_permissions_revokeComplete($location) {
 	return true;
 }
 
-/* exdoc
+/** exdoc
  * Removes all permissions from a group, on a specific location.
  *
  * @param Object $group The group to remove all permissions from
  * @param Object $location The location to remove all permission on
+ * @return mixed
  * @node Subsystems:Permissions
  */
 function exponent_permissions_revokeAllGroup($group,$location) {
@@ -520,11 +537,14 @@ function exponent_permissions_revokeAllGroup($group,$location) {
 	return $db->delete('grouppermission','gid=' . $group->id . " AND module='" . $location->mod . "' AND source='" . $location->src . "' AND internal='" . $location->int . "'");
 }
 
-/* exdoc
+/** exdoc
  * Removes all permissions from a subscription, on a specific location.
  *
- * @param Object $subscription The subscription to remove all permissions from
+ * @param $sub
  * @param Object $location The location to remove all permission on
+ * @return mixed
+ *
+ * @internal param \Object $subscription The subscription to remove all permissions from
  * @node Subsystems:Permissions
  */
 function exponent_permissions_revokeAllSubscription($sub,$location) {
@@ -532,7 +552,7 @@ function exponent_permissions_revokeAllSubscription($sub,$location) {
         return $db->delete('subscriptionpermissions','subscription_id=' . $sub->id . " AND module='" . $location->mod . "' AND source='" . $location->src . "' AND internal='" . $location->int . "'");
 }
 
-/* exdoc
+/** exdoc
  * This call will force all active session to reload their
  * permission data.  This is useful if permissions are assigned
  * or revoked, and is required to see these changes.
@@ -545,11 +565,12 @@ function exponent_permissions_triggerRefresh() {
 	$db->updateObject($obj,'sessionticket','true'); // force a global refresh
 }
 
-/* exdoc
+/** exdoc
  * This call will force all active sessions for the given user to
  * reload their permission data.  This is useful if permissions
  * are assigned or revoked, and is required to see these changes.
  * @node Subsystems:Permissions
+ * @param $user
  */
 function exponent_permissions_triggerSingleRefresh($user) {
 	global $db;
@@ -558,13 +579,14 @@ function exponent_permissions_triggerSingleRefresh($user) {
 	$db->updateObject($obj,'sessionticket','uid='.$user->id); // force a global refresh
 }
 
-/* exdoc
+/** exdoc
  * Looks through the entire permissions database and finds all users who have been
  * assigned the specified permission on the specified location.  Returns an array
  * of user ids for users that matched criteria.
  *
  * @param string $permission The name of the permission to search by
  * @param Object $location The location to check on
+ * @return array
  * @node Subsystems:Permissions
  */
 function exponent_permissions_getUserIDsWithPermission($permission,$location) {

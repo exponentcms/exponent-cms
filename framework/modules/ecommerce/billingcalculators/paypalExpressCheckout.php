@@ -530,7 +530,8 @@ class paypalExpressCheckout extends billingcalculator {
         $nvpstr = "";
         while(list($key, $value) = each($apiParams)) 
         {
-            $nvpstr .= $key . '=' . urlencode(ereg_replace(',', '', $value)) . '&';
+//            $nvpstr .= $key . '=' . urlencode(ereg_replace(',', '', $value)) . '&';
+            $nvpstr .= $key . '=' . urlencode(preg_replace(',', '', $value)) . '&';
         }
             
         // take the last & out for the string

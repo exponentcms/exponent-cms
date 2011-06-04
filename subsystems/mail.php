@@ -236,7 +236,8 @@ class exponentMail extends Swift {
 		
     	$this->addTo($params['to']);
     	if ( !empty($params['from'])) {
-        	if (ereg('^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$', $params['from'])) {
+//        	if (ereg('^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$', $params['from'])) {
+	        if (preg_match('^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$', $params['from'])) {
                 	$this->addFrom = $params['from'];
         	}
     	}

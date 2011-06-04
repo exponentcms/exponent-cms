@@ -499,23 +499,24 @@ class reportController extends expController {
     }
     
     private function parseAndTrim($str)
-    {   //“Death from above”? ®
+    {   //ï¿½Death from aboveï¿½? ï¿½
         //echo "1<br>"; eDebug($str);    
-        $str = str_replace("’","&rsquo;",$str);
-        $str = str_replace("‘","&lsquo;",$str);
-        $str = str_replace("®","&#174;",$str);
-        $str = str_replace("–","-", $str);
-        $str = str_replace("—","&#151;", $str); 
-        $str = str_replace("”", "&rdquo;", $str);
-        $str = str_replace("“", "&ldquo;", $str);
+        $str = str_replace("ï¿½","&rsquo;",$str);
+        $str = str_replace("ï¿½","&lsquo;",$str);
+        $str = str_replace("ï¿½","&#174;",$str);
+        $str = str_replace("ï¿½","-", $str);
+        $str = str_replace("ï¿½","&#151;", $str); 
+        $str = str_replace("ï¿½", "&rdquo;", $str);
+        $str = str_replace("ï¿½", "&ldquo;", $str);
         $str = str_replace("\r\n"," ",$str); 
         $str = str_replace(",","\,",$str); 
         $str = str_replace('\"',"&quot;",$str);
         $str = str_replace('"',"&quot;",$str);
-        $str = str_replace("¼","&#188;",$str);
-        $str = str_replace("½","&#189;",$str);
-        $str = str_replace("¾","&#190;",$str);
-        $str = mysql_escape_string(trim(str_replace("™", "&trade;", $str))); 
+        $str = str_replace("ï¿½","&#188;",$str);
+        $str = str_replace("ï¿½","&#189;",$str);
+        $str = str_replace("ï¿½","&#190;",$str);
+//        $str = mysql_escape_string(trim(str_replace("ï¿½", "&trade;", $str)));
+        $str = mysql_real_escape_string(trim(str_replace("ï¿½", "&trade;", $str)));
         //echo "2<br>"; eDebug($str,die);
         return $str;
     }

@@ -742,7 +742,8 @@ class mysql_database {
 				if (version_compare(phpversion(),'4.0.3','>=') > 0) {
 				  $values .= "'".mysql_real_escape_string($val)."',";
 				} else {
-				  $values .= "'".mysql_escape_string($val)."',";
+//				  $values .= "'".mysql_escape_string($val)."',";
+				  $values .= "'".mysql_real_escape_string($val)."',";
 			   }
 			}
 		}
@@ -790,7 +791,8 @@ class mysql_database {
 				if (version_compare(phpversion(),'4.0.3','>=') > 0) {
 				   $sql .= "`$var`='".mysql_real_escape_string($val)."',";
 				} else {
-				   $sql .= "`$var`='".mysql_escape_string($val)."',";
+//				   $sql .= "`$var`='".mysql_escape_string($val)."',";
+				   $sql .= "`$var`='".mysql_real_escape_string($val)."',";
 			   }
 			}
 		}

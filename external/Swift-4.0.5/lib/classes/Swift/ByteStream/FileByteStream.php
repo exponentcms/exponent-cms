@@ -79,12 +79,14 @@ class Swift_ByteStream_FileByteStream
     {
       if ($this->_quotes)
       {
-        set_magic_quotes_runtime(0);
+//        set_magic_quotes_runtime(0);
+	    ini_set('magic_quotes_runtime', 0);
       }
       $bytes = fread($fp, $length);
       if ($this->_quotes)
       {
-        set_magic_quotes_runtime(1);
+//        set_magic_quotes_runtime(1);
+	    ini_set('magic_quotes_runtime', 1);
       }
       $this->_offset = ftell($fp);
       return $bytes;

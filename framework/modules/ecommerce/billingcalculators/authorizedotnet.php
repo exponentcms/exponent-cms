@@ -79,7 +79,8 @@ class authorizedotnet extends creditcard {
 
 		$data2 = "";
 		while(list($key, $value) = each($data)) {
-			$data2 .= $key . '=' . urlencode(ereg_replace(',', '', $value)) . '&';
+//			$data2 .= $key . '=' . urlencode(ereg_replace(',', '', $value)) . '&';
+			$data2 .= $key . '=' . urlencode(preg_replace(',', '', $value)) . '&';
 		}
 			
 		// take the last & out for the string
@@ -97,7 +98,8 @@ class authorizedotnet extends creditcard {
 		$authorize = curl_exec($ch);
 		curl_close($ch);
 		
-		$response = split("\|", $authorize);	
+//		$response = split("\|", $authorize);
+		$response = explode("\|", $authorize);
 
 		if ($response[0] == 1) { //Approved !!!
 			$object->errorCode = 0;

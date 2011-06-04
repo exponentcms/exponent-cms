@@ -30,7 +30,7 @@ if (!expValidator::check_antispam($post)) {
 if (!defined("SYS_USER")) require_once(BASE."subsystems/users.php");
 if (!defined("SYS_FORMS")) require_once(BASE."subsystems/forms.php");
 exponent_forms_initialize();
-global $user;
+global $db, $user;
 $f = $db->selectObject("formbuilder_form","id=".intval($_POST['id']));
 $rpt = $db->selectObject("formbuilder_report","form_id=".intval($_POST['id']));
 $controls = $db->selectObjects("formbuilder_control","form_id=".$f->id." and is_readonly=0");
@@ -47,7 +47,8 @@ foreach ($controls as $c) {
     $def = call_user_func(array($control_type,"getFieldDefinition"));
     if ($def != null) {
         $emailValue = htmlspecialchars_decode(html_entity_decode(call_user_func(array($control_type,'parseData'),$c->name,$_POST,true))); 
-        $value = mysql_escape_string($emailValue);
+        //$value = mysql_escape_string($emailValue);
+        $value = mysql_real_escape_string($emailValue);
         //eDebug($value);
         $varname = $c->name;
         $db_data->$varname = $value;
