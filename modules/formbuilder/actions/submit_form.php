@@ -125,6 +125,11 @@ if (!isset($_POST['data_id']) || (isset($_POST['data_id']) && exponent_permissio
 		if (empty($from_name)) {
 			$from_name = trim(ORGANIZATION_NAME);
 		}
+		$langinfo = include(BASE.'subsystems/lang/'.LANG.'.php');
+		$headers = array(
+			"MIME-Version"=>"1.0",
+			"Content-type"=>"text/html; charset=".$langinfo['charset']
+		);
         if (count($emaillist)) {
             //This is an easy way to remove duplicates
             $emaillist = array_flip(array_flip($emaillist));
@@ -132,6 +137,7 @@ if (!isset($_POST['data_id']) || (isset($_POST['data_id']) && exponent_permissio
             foreach ($emaillist as $address) {
                 $mail = new expMail();        
                 $mail->quickSend(array(
+	                    'headers'=>$headers,
                         'html_message'=>$emailHtml,
 						"text_message"=>$emailText,
         			    'to'=>trim($address),
