@@ -29,9 +29,9 @@
  *}
 
 <div class="module simplepoll manage-question">
-	<div class="moduletitle">{$question->question}</div>
+	<h1>{$question->question}</h1>
 	<table cellspacing="0" cellpadding="0" style="border:none;" width="100%">
-		<tr><td class="header">Answer</td><td class="header"></td></tr>
+		<tr><th class="header">Answer</th><th class="header"></th></tr>
 		{foreach name=loop from=$answers item=answer}
 			<tr><td>
 				{$answer->answer}
