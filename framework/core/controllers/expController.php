@@ -305,11 +305,30 @@ class expController {
 	 * update item in module
 	 */
 	function update() {
+        global $db;
+                
+        //check for and handle tags
+        if (array_key_exists('expTag',$this->params)) {
+	        if (isset($this->params['id'])) {
+    	        $db->delete('content_expTags', 'content_type="'.(!empty($this->params['content_type'])?$this->params['content_type']:$this->basemodel_name).'" AND content_id='.$this->params['id']);
+    	    }
+	        $tags = explode(",", $this->params['expTag']);
+	        unset($this->params['expTag']);
+	        
+	        foreach($tags as $tag) {
+	            $tag = strtolower(trim($tag));
+	            $expTag = new expTag($tag);
+	            if (empty($expTag->id)) $expTag->update(array('title'=>$tag));
+	            $this->params['expTag'][] = $expTag->id;
+	        }
+	    }
+	    
         $modelname = $this->basemodel_name;
         $this->$modelname->update($this->params);
         $this->addContentToSearch();
-        
-        if (!empty($this->params['send_ealerts'])) {
+
+	    // check for eAlerts
+	    if (!empty($this->params['send_ealerts'])) {
             redirect_to(array('controller'=>'ealert','action'=>'send_confirm','model'=>$modelname,'id'=>$this->$modelname->id, 'src'=>$this->loc->src,'orig_controller'=>getControllerName($this->classname)));
         } else {
             expHistory::back();
