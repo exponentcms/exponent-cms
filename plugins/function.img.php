@@ -33,12 +33,12 @@ function smarty_function_img($params,&$smarty) {
 		$params['q'] = THUMB_QUALITY;
 	}
 
-	$src = URL_FULL.'thumb.php';
+	$src = URL_FULL.'thumb.php?';
 	
 	// figure out which file we're showing
-	if (isset($params['src'])) $src .= '?src='.$params['src'];
-	if (isset($params['file'])) $src .= '?file='.$params['file'];
-	if (isset($params['file_id'])) $src .= '?id='.$params['file_id'];
+	//if (isset($params['src'])) $src .= '?src='.$params['src'];
+	if (isset($params['file'])) $src .= 'file='.$params['file'];
+	if (isset($params['file_id'])) $src .= 'id='.$params['file_id'];
     
 	/*if (((isset($params['width']) || isset($params['height']) || isset($params['square']))&&empty($params['lgcy']))||(!empty($params['lgcy']))) {
 	    $src .= '&amp;lgcy=1';
