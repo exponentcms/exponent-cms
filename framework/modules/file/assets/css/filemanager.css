@@ -46,65 +46,22 @@ h1 {
 }
 
 
-#actionbar a.btn {
-    position:relative;
+#actionbar a span {
+    padding:4px 0 4px 20px;
     display:inline-block;
-    left:-20px;
-    margin-left:20px;
-    height:32px;
-    padding:0 0 0 14px;
-    font-size:16px;
-    color:#0e1133;
-    text-decoration:none;
-    background:url(../images/button.png) no-repeat 0 0;
+    position:relative;
 }
 
-
-#actionbar a.btn strong {
+#actionbar a.upload span {
     background:url(../images/upload.png) no-repeat 0 40%;
-    height:32px;
-    display:inline-block;
-    position:relative;
 }
 
-#actionbar a#selectLink.btn strong {
+#actionbar a.select span {
     background:url(../images/select.gif) no-repeat 0 40%;
 }
 
-#actionbar a#backlink.btn strong {
+#actionbar a.back span {
     background:url(../images/back.png) no-repeat 0 40%;
-}
-
-#actionbar a.btn em {
-    height:32px;
-    position:relative;
-    right:-20px;
-    white-space:nowrap;
-    display:inline-block;
-    font-style:normal;
-    padding:6px 14px 0 0;
-    background:url(../images/button.png) no-repeat 100% 0;
-}
-
-
-/*  btn hover  */
-#actionbar a.btn:hover,
-#actionbar a.btn-selected {
-    background:url(../images/button.png) no-repeat 0 -44px;
-}
-
-#actionbar a.btn:hover em,
-#actionbar a.btn-selected em {
-    background:url(../images/button.png) no-repeat 100% -44px;
-}
-
-/*  btn active  */
-#actionbar a.btn:active {
-    background:url(../images/button.png) no-repeat 0 -91px;
-}
-
-#actionbar a.btn:active em {
-    background:url(../images/button.png) no-repeat 100% -91px;
 }
 
 /****************  pagination  ***********************/

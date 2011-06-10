@@ -5,6 +5,7 @@
     <title>File Manager  |  Exponent CMS</title>
 
     <link rel="stylesheet" type="text/css" href="{$smarty.const.URL_FULL}framework/core/assets/css/msgq.css"> 
+    <link rel="stylesheet" type="text/css" href="{$smarty.const.URL_FULL}framework/core/assets/css/button.css"> 
     <link rel="stylesheet" type="text/css" href="{$smarty.const.URL_FULL}framework/core/assets/css/admin-global.css"> 
     <link rel="stylesheet" type="text/css" href="{$smarty.const.URL_FULL}framework/modules/file/assets/css/filemanager.css"> 
 
@@ -45,7 +46,7 @@
     
     </div>
     <div id="actionbar">
-        <a class="btn" href="{link action=uploader update=$smarty.get.update fck=$smarty.get.fck CKEditor=$smarty.get.CKEditor CKEditorFuncNum=$smarty.get.CKEditorFuncNum langCode=$smarty.get.langCode ajax_action=1 }"><strong><em>Upload Files</em></strong></a>
+        <a class="upload awesome green small" href="{link action=uploader update=$smarty.get.update fck=$smarty.get.fck CKEditor=$smarty.get.CKEditor CKEditorFuncNum=$smarty.get.CKEditorFuncNum langCode=$smarty.get.langCode ajax_action=1 }"><span>{"Upload Files"|gettext}</span></a>
     </div>
 
     <div id="infopanel">
