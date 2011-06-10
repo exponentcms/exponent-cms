@@ -174,7 +174,7 @@
     background:url(../images/admintoolbar/sitetree.png) no-repeat 5px 50%;
 }
 #admintoolbar li.configure a.yuimenuitemlabel {
-    background:url(../images/actions/configure.png) no-repeat 5px 50%;
+    background:url(../../../../core/assets/images/configure.png) no-repeat 5px 50%;
 }
 #admintoolbar li.info a.yuimenuitemlabel {
     background:url(../images/admintoolbar/info.png) no-repeat 5px 50%;
@@ -238,16 +238,7 @@
     background-position:3px 50%;
 }
 
-
-
-
-
-
-
-
-
-
-#admintoolbar .yuimenu
+admintoolbar .yuimenu
 {
 	left: -999em;
 	top: -999em;
@@ -463,7 +454,7 @@
 #admintoolbar .yuimenu .topscrollbar,
 #admintoolbar .yuimenu .bottomscrollbar
 {
-	background: #fff url(../images/admintoolbar/../../../../assets/skins/sam/sprite.png) no-repeat 0 0;
+	background: #fff url(../images/admintoolbar/sprite.png) no-repeat 0 0;
 	border: solid 1px #808080;
 	height: 16px;
 }
