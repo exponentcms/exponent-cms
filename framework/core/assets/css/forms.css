@@ -11,6 +11,10 @@
     font-weight:bold;
 }
 
+.control.required .label .required{
+    color:#ff0000;
+}
+
 .control input.password,
 .control input.text,
 .control textarea {
