@@ -25,7 +25,6 @@
     margin:0;
 }
 
-
 #admintoolbar td.tl,
 #admintoolbar td.tc,
 #admintoolbar td.tr {
@@ -82,9 +81,6 @@
     background : url(../images/admintoolbar/rtbs.png) 100% 100%;
 }
 
-
-
-
 #admintoolbar td.bc {
     background : url(../images/admintoolbar/tbshad.png) 0 100%;
 }
@@ -97,8 +93,6 @@
     height:27px;
     background:#dedede;
 }
-
-
 
 /**************** icon styles for slingbar  ***********************/
 
@@ -151,7 +145,7 @@
     background:url(../images/admintoolbar/logout.png) no-repeat 3px 50%;
 }
 #admintoolbar li.password a.yuimenuitemlabel {
-    background:url(../images/admintoolbar/lock.png) no-repeat 3px 50%;
+    background:url(../../../../core/assets/images/lock.png) no-repeat 3px 50%;
 }
 #admintoolbar li.preview_on a.yuimenuitemlabel {
     background:url(../../../../core/assets/images/toggle_on.png) no-repeat 5px 50%;
@@ -159,7 +153,6 @@
 #admintoolbar li.preview_off a.yuimenuitemlabel {
     background:url(../../../../core/assets/images/toggle_off.png) no-repeat 5px 50%;
 }
-
 
 #admintoolbar li.config a.yuimenuitemlabel {
     background:url(../images/admintoolbar/config.png) no-repeat 5px 50%;
@@ -204,8 +197,6 @@
 }
 
 /****************  menu styles  ***********************/
-
-
 
 #admintoolbar .yuimenubar {
     border:0;
