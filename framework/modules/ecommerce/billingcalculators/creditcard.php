@@ -206,7 +206,8 @@ class creditcard extends billingcalculator {
     // luhn algorithm
     function validate_card_number($card_number) 
     {
-        $card_number = ereg_replace('[^0-9]', '', $card_number);      
+//        $card_number = ereg_replace('[^0-9]', '', $card_number);
+        $card_number = preg_replace('[^0-9]', '', $card_number);
         if ($card_number < 9)
         {
             return false;

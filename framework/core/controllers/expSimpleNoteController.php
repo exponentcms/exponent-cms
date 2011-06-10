@@ -343,7 +343,8 @@ class expSimpleNoteController extends expController {
         
         // setup some email variables.
         $subject = 'Notification of a New Note Posted to '.URL_BASE;
-        $tos = split(',', str_replace(' ', '', $notification_email));
+//        $tos = split(',', str_replace(' ', '', $notification_email));
+        $tos = explode(',', str_replace(' ', '', $notification_email));
         $editlink = makelink(array('controller'=>'expSimpleNote', 'action'=>'edit', 'id'=>$simplenote->id));
         
         // make the email body

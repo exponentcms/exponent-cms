@@ -17,17 +17,31 @@
 #
 ##################################################
 
+/**
+ *
+ */
 class user_avatar extends expRecord {
 #    public $validates = array(
 #        'presence_of'=>array(
 #            'title'=>array('message'=>'Title is a required field.'),
 #            'body'=>array('message'=>'Body is a required field.'),
 #        ));
-        
-    public function name() { return 'Avatars'; }
+
+	/**
+	 * @return string
+	 */
+	public function name() { return 'Avatars'; }
+
+	/**
+	 * @return string
+	 */
 	public function description() { return 'The extension allows users to upload avatar images.'; }
 
-    public function update($params=array()) {
+	/**
+	 * @param array $params
+	 * @return bool
+	 */
+	public function update($params=array()) {
         global $db;
         
         // if not user id then we should not be doing anything here
@@ -43,7 +57,8 @@ class user_avatar extends expRecord {
             $info = expFile::getImageInfo($_FILES['avatar']['tmp_name']);
             if ($info['is_image']) {
                 // figure out the mime type and set the file extension and name
-                $extinfo = split('/',$info['mime']);
+//                $extinfo = split('/',$info['mime']);
+                $extinfo = explode('/',$info['mime']);
                 $extension = $extinfo[1];
                 $avatar_name = $this->user_id.'.'.$extension;
                 

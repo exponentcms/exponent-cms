@@ -17,13 +17,13 @@
 #
 ##################################################
 
-/* exdoc
+/** exdoc
  * The definition of this constant lets other parts of the system know 
  * that the subsystem has been included for use.
  */
 define("SYS_SMTP",1);
 
-/* exdoc
+/** exdoc
  * Sends mail through a raw SMTP socket connection, to one or
  * more recipients.  This function is optimized for multiple recipients.
  * Returns true if all mail messages were sent.  Returns false if anything failed.
@@ -31,11 +31,17 @@ define("SYS_SMTP",1);
  * @param array $to_r An array of recipient email address, or a single email address string.
  * @param string $from The from header string, usually an email address.
  * @param string $subject The subject of the message to send.  The same subject is used for all messages.
- * 	The subject cannot have newlines or carriage returns in it. (currently not checked)
+ *	 The subject cannot have newlines or carriage returns in it. (currently not checked)
  * @param string $message The message to send.  The same message is used for all messages.  Newlines
- * 	will be converted as needed.
+ *	 will be converted as needed.
  * @param array $headers An associative array of header fields for the email.
- * @param string $callback The name of a callback function for processing each message
+ * @param string $precallback
+ * @param null $preUdata
+ * @param string $postcallback
+ * @param null $postUdata
+ * @return bool
+ *
+ * @internal param string $callback The name of a callback function for processing each message
  * @udata object $callback The name of a callback function for processing each message
  * @node Subsystems:SMTP
  */
@@ -45,7 +51,8 @@ function exponent_smtp_mail($to_r,$from,$subject,$message,$headers=array(), $pre
 	$mail = new exponentMail();
 	$mail->addTo($to_r);
 	if ( $from != '' ) {
-		if (ereg('^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$', $from)) {
+//		if (ereg('^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$', $from)) {
+		if (preg_match('^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$', $from)) {
 			$mail->from = $from;
 		}
 	}
@@ -232,13 +239,14 @@ function exponent_smtp_mail($to_r,$from,$subject,$message,$headers=array(), $pre
 */	
 }
 
-/* exdoc
+/** exdoc
  * Checks the server response to a message sent previously.  Returns
  * rue if the expected response was the actual response, and false if there was a discrepency.
  *
  * @param Socket $socket The socket object connected to the mail server
  * @param string $expected_response The response code (3-digit number)
  *	expected from the server
+ * @return bool
  * @node Subsystems:SMTP
  */
 function exponent_smtp_checkResponse($socket,$expected_response) {
@@ -256,7 +264,7 @@ function exponent_smtp_checkResponse($socket,$expected_response) {
 	return (substr($response,0,3) == $expected_response);
 }
 
-/* exdoc
+/** exdoc
  * Sends an SMTP message to the server through the given socket.
  *
  * @param Socket $socket The socket object connected to the mail server
@@ -272,9 +280,10 @@ function exponent_smtp_sendServerMessage($socket,$message) {
 	if ($message != null) fwrite($socket,$message);
 }
 
-/* exdoc
+/** exdoc
  * @state <b>UNDOCUMENTED</b>
  * @node Undocumented
+ * @param $socket
  */
 function exponent_smtp_sendExit($socket) {
 	debug("Sending RSET to server");
@@ -283,7 +292,7 @@ function exponent_smtp_sendExit($socket) {
 	exponent_smtp_sendServerMessage($socket,"QUIT");
 }
 
-/* exdoc
+/** exdoc
  * Sends the header part of an email message to the server.  This takes
  * care of properly escaping newlines as \r\n escape characters
  *
@@ -302,7 +311,7 @@ function exponent_smtp_sendHeadersPart($socket,$headers) {
 	exponent_smtp_sendServerMessage($socket,$headerstr);
 }
 
-/* exdoc
+/** exdoc
  * Sends the message part of an email message to the server.  This takes
  * care of properly (and intelligently) escaping newlines as \r\n escape characters.
  *
@@ -322,17 +331,23 @@ function exponent_smtp_sendMessagePart($socket,$message) {
 	exponent_smtp_sendServerMessage($socket,$message);
 }
 
-/* exdoc
+/** exdoc
  * @state <b>UNDOCUMENTED</b>
  * @node Undocumented
+ * @param $socket
  */
 function exponent_smtp_parseEHLO($socket) {
 	
 }
 
-/* exdoc
+/** exdoc
  * @state <b>UNDOCUMENTED</b>
  * @node Undocumented
+ * @param $socket
+ * @param $type
+ * @param $username
+ * @param $password
+ * @return bool
  */
 function exponent_smtp_authenticate($socket,$type,$username,$password) {
 	exponent_smtp_sendServerMessage($socket,"AUTH $type");
@@ -357,7 +372,7 @@ function exponent_smtp_authenticate($socket,$type,$username,$password) {
 	}
 }
 
-/* exdoc
+/** exdoc
  * A blank callback function that shows external argument list
  *
  * @param integer $email_index The numerical index of the email address

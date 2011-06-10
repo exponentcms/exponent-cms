@@ -30,7 +30,7 @@ if (!expValidator::check_antispam($post)) {
 if (!defined("SYS_USER")) require_once(BASE."subsystems/users.php");
 if (!defined("SYS_FORMS")) require_once(BASE."subsystems/forms.php");
 exponent_forms_initialize();
-global $user;
+global $db, $user;
 $f = $db->selectObject("formbuilder_form","id=".intval($_POST['id']));
 $rpt = $db->selectObject("formbuilder_report","form_id=".intval($_POST['id']));
 $controls = $db->selectObjects("formbuilder_control","form_id=".$f->id." and is_readonly=0");
@@ -47,7 +47,8 @@ foreach ($controls as $c) {
     $def = call_user_func(array($control_type,"getFieldDefinition"));
     if ($def != null) {
         $emailValue = htmlspecialchars_decode(html_entity_decode(call_user_func(array($control_type,'parseData'),$c->name,$_POST,true))); 
-        $value = mysql_escape_string($emailValue);
+        //$value = mysql_escape_string($emailValue);
+        $value = mysql_real_escape_string($emailValue);
         //eDebug($value);
         $varname = $c->name;
         $db_data->$varname = $value;
@@ -124,6 +125,11 @@ if (!isset($_POST['data_id']) || (isset($_POST['data_id']) && exponent_permissio
 		if (empty($from_name)) {
 			$from_name = trim(ORGANIZATION_NAME);
 		}
+		$langinfo = include(BASE.'subsystems/lang/'.LANG.'.php');
+		$headers = array(
+			"MIME-Version"=>"1.0",
+			"Content-type"=>"text/html; charset=".$langinfo['charset']
+		);
         if (count($emaillist)) {
             //This is an easy way to remove duplicates
             $emaillist = array_flip(array_flip($emaillist));
@@ -131,6 +137,7 @@ if (!isset($_POST['data_id']) || (isset($_POST['data_id']) && exponent_permissio
             foreach ($emaillist as $address) {
                 $mail = new expMail();        
                 $mail->quickSend(array(
+	                    'headers'=>$headers,
                         'html_message'=>$emailHtml,
 						"text_message"=>$emailText,
         			    'to'=>trim($address),

@@ -133,7 +133,8 @@ class Swift_File
    */
   public function readln()
   {
-    set_magic_quotes_runtime(0);
+//    set_magic_quotes_runtime(0);
+	  ini_set('magic_quotes_runtime', 0);
     $this->createHandle();
     if (!$this->EOF())
     {
@@ -141,7 +142,8 @@ class Swift_File
     }
     else $ret = false;
     
-    set_magic_quotes_runtime($this->magic_quotes);
+//    set_magic_quotes_runtime($this->magic_quotes);
+	  ini_set('magic_quotes_runtime', $this->magic_quotes);
     
     return $ret;
   }
@@ -153,9 +155,11 @@ class Swift_File
   public function readFull()
   {
     $ret = "";
-    set_magic_quotes_runtime(0);
+//    set_magic_quotes_runtime(0);
+	  ini_set('magic_quotes_runtime', 0);
     while (false !== $chunk = $this->read(8192, false)) $ret .= $chunk;
-    set_magic_quotes_runtime($this->magic_quotes);
+//    set_magic_quotes_runtime($this->magic_quotes);
+	  ini_set('magic_quotes_runtime', $this->magic_quotes);
     return $ret;
   }
   /**
@@ -166,7 +170,8 @@ class Swift_File
    */
   public function read($bytes, $unquote=true)
   {
-    if ($unquote) set_magic_quotes_runtime(0);
+//    if ($unquote) set_magic_quotes_runtime(0);
+    if ($unquote) ini_set('magic_quotes_runtime', 0);
     $this->createHandle();
     if (!$this->EOF())
     {
@@ -174,8 +179,9 @@ class Swift_File
     }
     else $ret = false;
     
-    if ($unquote) set_magic_quotes_runtime($this->magic_quotes);
-    
+//    if ($unquote) set_magic_quotes_runtime($this->magic_quotes);
+    if ($unquote) ini_set('magic_quotes_runtime', $this->magic_quotes);
+
     return $ret;
   }
   /**

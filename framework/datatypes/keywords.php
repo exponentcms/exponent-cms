@@ -22,8 +22,9 @@ class keywords {
 	public function getAndWeightKeywords($text) {
 		if (empty($text)) return array();
 
-		$words = split(' ', str_ireplace(self::getExcludedWords(), ' ', $text));
-         
+//		$words = split(' ', str_ireplace(self::getExcludedWords(), ' ', $text));
+		$words = explode(' ', str_ireplace(self::getExcludedWords(), ' ', $text));
+
 		foreach($words as $word) {
         	if (!empty($word)) {
     		    $keywords[$word] = empty($keywords[$word]) ? 1 : $keywords[$word] += 1;

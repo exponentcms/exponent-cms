@@ -1,5 +1,5 @@
 <div class="module simplepoll results">
-	<div class="moduletitle">{$question->question} </div>
+	<h1>{$question->question} </h1>
 	<hr size="1" />
 	<table cellpadding="0" cellspacing="0" border="0" width="100%">
 		{foreach name=loop from=$answers item=answer}
