@@ -38,23 +38,37 @@ class expTagController extends expController {
 	function isSearchable() { return false; }
 	
     function manage() {
+        global $db;
         expHistory::set('manageable', $this->params);
         $modelname = $this->basemodel_name;
         $where = $this->hasSources() ? $this->aggregateWhereClause() : null;
-        $limit = isset($this->params['limit']) ? $this->params['limit'] : null;
         $order = "title";
         $page = new expPaginator(array(
                     'model'=>$modelname,
                     'where'=>$where, 
-                    'limit'=>$limit,
+                    'limit'=>50,
                     'order'=>$order,
                     'controller'=>$this->baseclassname,
                     'action'=>$this->params['action'],
                     'src'=>$this->hasSources() == true ? $this->loc->src : null,
                     'columns'=>array('ID#'=>'id','Title'=>'title', 'Body'=>'body'),
                     ));
+
+        foreach ($db->selectColumn('content_expTags','content_type',null,null,true) as $contenttype) {
+            foreach ($page->records as $key => $value) {
+                $attatchedat = $page->records[$key]->findWhereAttachedTo($contenttype);
+                if (!empty($attatchedat)) {
+                    $page->records[$key]->attachedcount = @$page->records[$key]->attachedcount + count($attatchedat);
+                    $page->records[$key]->attached[$contenttype] = $attatchedat;
+                }
+            }
+        }
         
-        assign_to_template(array('page'=>$page, 'items'=>$page->records, 'modelname'=>$modelname));
+        
+        assign_to_template(array(
+            'page'=>$page, 
+            'modelname'=>$modelname
+        ));
     }
 }
 ?>

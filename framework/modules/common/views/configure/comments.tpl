@@ -14,4 +14,6 @@
  *
  *}
 
-{control type=checkbox name=usescomments label="Accept Comments" value=1 checked=$config.usescomments}
+{control type=checkbox name=usescomments label="Disable Adding Comments" value=1 checked=$config.usescomments}
+{control type=checkbox name=hidecomments label="Hide Posted Comments" value=1 checked=$config.hidecomments}
+{control type=editor name=commentinfo label="Comment Information" value=$config.commentinfo}

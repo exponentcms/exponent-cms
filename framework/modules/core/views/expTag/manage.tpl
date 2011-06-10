@@ -14,6 +14,69 @@
  *
  *}
 
+<div class="module expTags manage">
+	<h1>{"Manage Tags"|gettext}</h1>
+	{permissions level=$smarty.const.UILEVEL_NORMAL}
+    	{if $permissions.create == 1}
+    		<a class="add" href="{link controller=$model_name action=create}">{"Create a new Tag"|gettext}</a>
+    	{/if}
+    {/permissions}
+    
+    {$page->links}
+    
+    <table border="0" cellspacing="0" cellpadding="0" class="exp-skin-table">
+        <thead>
+            <tr>
+                <th>
+                {"Tag Name"|gettext}
+                </th>
+                <th>
+                {"Use Count"|gettext}
+                </th>
+                <th>
+                {"Used in"|gettext}
+                </th>
+                <th>
+                {"Actions"|gettext}
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+        {foreach from=$page->records item=listing}
+            <tr class="{cycle values="odd,even"}">
+                <td>
+        			<strong>{$listing->title}</strong>
+                </td>
+                <td>
+                    {$listing->attachedcount}
+                </td>
+                <td>
+        			{foreach from=$listing->attached item="type" key=key name=types}
+                        <strong>{$key}</strong><br />
+                        {foreach from=$type item=ai name=ai}
+                            <a href="{link controller=$key action="show" title=$ai->sef_url}">{$ai->title|truncate:50:"..."}</a>
+                            <br />
+                            <br />
+                        {/foreach}
+        			{/foreach}
+                </td>
+                <td>
+    				{permissions}
+    					{if $permissions.edit == 1}
+    						{icon controller=$controller action=edit id=$listing->id title="Edit this `$modelname`"}
+    					{/if}
+    					{if $permissions.delete == 1}
+    						{icon controller=$controller action=delete id=$listing->id title="Delete this `$modelname`" onclick="return confirm('Are you sure you want to delete this `$modelname`?');"}
+    					{/if}
+    				{/permissions}
+                </td>
+            </tr>
+            {/foreach}
+        </tbody>
+    </table>
+    {$page->links}
+</div>
 
 
-{control type="tagtree" name="managecats" model="expTag" draggable=true checkable=false menu=true}
+	
+

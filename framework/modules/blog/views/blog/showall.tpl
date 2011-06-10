@@ -14,6 +14,10 @@
  *
  *}
 
+{css unique="blog" link="`$asset_path`css/blog.css"}
+
+{/css}
+
 <div class="module blog showall">
     {if $config.enable_rss == true}
         <a class="rsslink" href="{rsslink}">Subscribe to {$config.feed_title}</a>
@@ -24,48 +28,54 @@
 			{if $permissions.edit == 1}
 				{icon class=add action=edit title="Add a new blog article" text="Add a new blog article"}
 			{/if}
+            {if $permissions.manage == 1}
+                {icon class="manage" controller=expTag action=manage title="Manage Tags"|gettext text="Manage Tags"|gettext}
+            {/if}
 		</div>
     {/permissions}
     {pagelinks paginate=$page top=1}
-    {foreach from=$page->records item=record}
-        <div class="bodycopy">
+    {foreach from=$page->records item=item}
+        <div class="item">
             <h2>
-            <a href="{link action=show title=$record->sef_url}">
-            {$record->title}
+            <a href="{link action=show title=$item->sef_url}">
+            {$item->title}
             </a>
             </h2>
             {permissions}
                 <div class="item-actions">
                     {if $permissions.edit == 1}
-                        {icon action=edit record=$record title="Edit this `$modelname`"}
+                        {icon action=edit record=$item title="Edit this `$modelname`"}
                     {/if}
                     {if $permissions.delete == 1}
-                        {icon action=delete record=$record title="Delete this `$modelname`" onclick="return confirm('Are you sure you want to delete this `$modelname`?');"}
+                        {icon action=delete record=$item title="Delete this `$modelname`" onclick="return confirm('Are you sure you want to delete this `$modelname`?');"}
                     {/if}
                 </div>
             {/permissions}
-            <span class="post-info">Posted by {attribution user_id=$record->poster} on <span class="date">{$record->created_at|format_date:$smarty.const.DISPLAY_DATE_FORMAT}</span>
-				{if $config.usestags}
-					<span class="tags">
-						Tags: 
-						{foreach from=$record->expTag item=tag name=tags}
-						<a href="{link action=showall_by_tags tag=$tag->sef_url}">{$tag->title}</a>
-						{if $smarty.foreach.tags.last != 1},{/if}
-						{/foreach} 
-					</span>
+            <div class="post-info">
+                <span class="attribution">
+                    Posted by {attribution user_id=$item->poster} on <span class="date">{$item->created_at|format_date:$smarty.const.DISPLAY_DATE_FORMAT}</span>
+                </span>
+
+                | <a class="comments" href="{link action=show title=$item->sef_url}#exp-comments">{$item->expComment|@count} {"Comments"|gettext}</a>
+                
+				{if $item->expTag[0]->id}
+				| <span class="tags">
+					{"Tags"|gettext}: 
+					{foreach from=$item->expTag item=tag name=tags}
+					<a href="{link action=showall_by_tags tag=$tag->sef_url}">{$tag->title}</a>{if $smarty.foreach.tags.last != 1},{/if}
+					{/foreach} 
+				</span>
 				{/if}
-            </span>
-			{if $config.usebody==1}
-				<p>{$record->body|summarize:"html":"paralinks"}</p>
-			{elseif $config.usebody==2}
-			{else}
-				{$record->body}
-			{/if}			
-            <div class="post-footer align-left">
-                <a class="readmore" href="{link action=show title=$record->sef_url}">Read more</a> |
-                {if $config.usescomments}
-                    <a class="comments" href="{link action=show title=$record->sef_url}">Comments ({$record->expComment|@count})</a>
-                {/if}
+            </div>
+            <div class="bodycopy">
+                {filedisplayer view="`$config.filedisplay`" files=$item->expFile item=$item is_listing=1}
+    			{if $config.usebody==1}
+    				<p>{$item->body|summarize:"html":"paralinks"}</p>
+    			{elseif $config.usebody==2}
+    			{else}
+    				{$item->body}
+    			{/if}			
+                
             </div>
         </div>
     {/foreach}    

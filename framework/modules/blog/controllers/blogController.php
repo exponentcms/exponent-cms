@@ -25,17 +25,16 @@ class blogController extends expController {
         'dates'=>"Dates",
     );
     
-    public $remove_configs = array(
-		'ealerts',
-		'files'
-	);
+    public $remove_configs = array('ealerts');
+    //public $add_permissions = array('approve');
     public $codequality = 'beta';
     
+
     function name() { return $this->displayname(); } //for backwards compat with old modules
     function displayname() { return "Blog"; }
     function description() { return "This module allows you to run a blog on your site."; }
-    function author() { return "Adam Kessler, Phillip Ball - OIC Group, Inc"; }
-    function hasSources() { return true; }
+    function author() { return "Phillip Ball - OIC Group, Inc"; }
+    function hasSources() { return false; }
     function hasViews() { return true; }
     function hasContent() { return true; }
     function supportsWorkflow() { return false; }
@@ -128,7 +127,7 @@ class blogController extends expController {
 	    
 	    $start_date = mktime(0, 0, 0, $this->params['month'], 1, $this->params['year']);
 	    $end_date = mktime(0, 0, 0, $this->params['month']+1, 0, $this->params['year']);
-		$where = $this->aggregateWhereClause().' AND created_at > '.$start_date.' AND created_at < '.$end_date;
+		$where = ($this->aggregateWhereClause()?$this->aggregateWhereClause()." AND ":"").'created_at > '.$start_date.' AND created_at < '.$end_date;
 		$order = 'created_at';
 		$limit = empty($this->config['limit']) ? 10 : $this->config['limit'];
 		
@@ -137,6 +136,7 @@ class blogController extends expController {
 		            'where'=>$where, 
 		            'limit'=>$limit,
 		            'order'=>$order,
+		            'dir'=>'desc',
 		            'controller'=>$this->baseclassname,
 		            'action'=>$this->params['action'],
 		            'columns'=>array('Title'=>'title'),
@@ -150,7 +150,8 @@ class blogController extends expController {
 	    
 	    $user = user::getByUsername($this->params['author']);
 	    
-		$where = $this->aggregateWhereClause()." AND poster=".$user->id;
+		$where = ($this->aggregateWhereClause()?$this->aggregateWhereClause()." AND ":"")."poster=".$user->id;
+
 		$order = 'created_at';
 		$limit = empty($this->config['limit']) ? 10 : $this->config['limit'];
 		
@@ -163,7 +164,7 @@ class blogController extends expController {
 		            'action'=>$this->params['action'],
 		            'columns'=>array('Title'=>'title'),
 		            ));
-		            
+            	    
 		assign_to_template(array('page'=>$page));
 	}
 	
@@ -218,7 +219,8 @@ class blogController extends expController {
 	    assign_to_template(array('__loc'=>$loc,'record'=>$blog));
 	}
 	
-	public function update() {
+	public function supdate() {
+	    eDebug($this->params,1);
 	    //FIXME:  Remove this code once we have the new tag implementation	    
 	    if (!empty($this->params['tags'])) {
 	        global $db;

@@ -14,19 +14,23 @@
  *
  *}
 
-{*
-    This view is broken. I think it's basing itself off a click count, which I'm not sure exists as a feature of tags yet...
-    Leaving this for Ben. I thik he created it.
-*}
+{css unique="blog" link="`$asset_path`css/blog.css"}
 
-<div class="module blog tag-cloud">
-    <h2>{$moduletitle|default:"Tags"}</h2>
+{/css}
+
+<div class="module blog tags_cloud">
+    {if $moduletitle}<h2>{$moduletitle}</h2>{/if}
+
+    {permissions}
+    {if $permissions.manage == 1}
+        {icon class="manage" controller=expTag action=manage title="Manage Tags"|gettext text="Manage Tags"|gettext}
+    {/if}
+    {/permissions}
+    <ul>
     {foreach from=$tags item=tag}
-       {if $tag->cnt != ""}
-       		<span style="font-size:{if $tag->cnt lt 9}9px{elseif $tag->cnt gt 20}20px{else}{$tag->cnt}px{/if}">
-       			<a href="{link action=showall_by_tags tag=$tag->sef_url}">{$tag->title}{*<!--({$tag->count})-->*}</a>
-        	</span>&nbsp;&nbsp;
-        {/if} 
+    <li>
+        <a href="{link action=showall_by_tags tag=$tag->sef_url}" style="font-size:1.{if $tag->count<10}0{$tag->count}{else}{$tag->count}{/if}em;">{$tag->title}</a>
+    </li>
     {/foreach}
+    </ul>
 </div>
-   
