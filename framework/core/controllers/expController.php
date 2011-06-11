@@ -7,7 +7,7 @@
  *  Software Foundation; either version 2 of the
  *  License, or (at your option) any later version.
  *
- * The file thats holds the expController class.
+ * The file that holds the expController class.
  *
  * @link http://www.gnu.org/licenses/gpl.txt GPL http://www.gnu.org/licenses/gpl.txt
  * @package Exponent-CMS
@@ -30,19 +30,19 @@ class expController {
     protected $add_permissions = array();
 
 	/**
-	 * can this module import data
+	 * can this module import data?
 	 * @return bool
 	 */
 	function canImportData() { return false; }
 
 	/**
-	 * can this module export data
+	 * can this module export data?
 	 * @return bool
 	 */
 	function canExportData() { return false; }
 
 	/**
-	 * does this module require configuration
+	 * does this module require configuration?
 	 * @return bool
 	 */
 	function requiresConfiguration() { return false; }
@@ -58,6 +58,7 @@ class expController {
     public $filepath = '';
     public $viewpath = '';
     public $relative_viewpath = '';
+	public $codequality = 'stable';
 
 	/**
 	 * @param null $src
@@ -116,6 +117,7 @@ class expController {
 	 * @return string
 	 */
 	function name() { return $this->displayname(); }
+	
 	/**
 	 * name of module
 	 * @return string
@@ -135,19 +137,31 @@ class expController {
 	function description() { return "This is the base controller that most Exponent modules will inherit from."; }
 
 	/**
-	 * does module have sources available
+	 * does module have sources available?
 	 * @return bool
 	 */
 	function hasSources() { return true; }
 
 	/**
-	 * does module have views available
+	 * does module have views available?
 	 * @return bool
 	 */
 	function hasViews() { return true; }
 
 	/**
-	 * is module content searchable
+	 * does module have content available?
+	 * @return bool
+	 */
+	function hasContent() { return true; }
+
+	/**
+	 * does module support workflow?
+	 * @return bool
+	 */
+	function supportsWorkflow() { return false; }
+
+	/**
+	 * is module content searchable?
 	 * @return bool
 	 */
 	function isSearchable() { return false; }
@@ -207,7 +221,7 @@ class expController {
     }
 
 	/**
-	 * view the item by refering to its title
+	 * view the item by referring to its title
 	 */
 	function showByTitle() {
         expHistory::set('viewable', $this->params);
