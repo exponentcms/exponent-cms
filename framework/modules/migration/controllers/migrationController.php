@@ -7,7 +7,7 @@
  *  Software Foundation; either version 2 of the
  *  License, or (at your option) any later version.
  *
- * The file thats holds the expRecord class
+ * The file that holds the migrationController class
  *
  * @link http://www.gnu.org/licenses/gpl.txt GPL http://www.gnu.org/licenses/gpl.txt
  * @package Exponent-CMS
@@ -224,7 +224,9 @@ class migrationController extends expController {
 				$pages = $old_db->selectObjects('userpermission',"uid='".$user->id."' AND module = 'navigationmodule' AND source = ''");
 				foreach($pages as $page) {
 					if ($db->selectObject('section','id = '.$page->internal)) {
-						$db->insertObject($page,'userpermission');
+						 if ($page->permission != 'administrate') {
+							 $db->insertObject($page,'userpermission');
+						 }
 					}
 				}
 			}		
@@ -233,7 +235,9 @@ class migrationController extends expController {
 				$pages = $old_db->selectObjects('grouppermission',"gid='".$group->id."' AND module = 'navigationmodule' AND source = ''");
 				foreach($pages as $page) {
 					if ($db->selectObject('section','id = '.$page->internal)) {
-						$db->insertObject($page,'grouppermission');
+						 if ($page->permission != 'administrate') {
+							 $db->insertObject($page,'grouppermission');
+						 }
 					}
 				}
 			}		
@@ -326,7 +330,7 @@ class migrationController extends expController {
         $old_db = $this->connect();
         if (isset($this->params['wipe_content'])) {
             $db->delete('sectionref');
-			$db->delete('locationref');  //TODO Remove this, uneeded in future
+			$db->delete('locationref');  //TODO Remove this locationref, uneeded in future
             $db->delete('container');
             $db->delete('text');
             $db->delete('snippet');
@@ -461,7 +465,7 @@ class migrationController extends expController {
 			}
 		}
 
-		// TODO Remove this in future
+		// TODO Remove this locationref in future
         $locref = $old_db->selectObjects('locationref',$where);
         foreach ($locref as $lr) {
             if (array_key_exists($lr->module, $this->new_modules)) {
@@ -563,44 +567,47 @@ class migrationController extends expController {
             }
         }
 
-//TODO uncomment to work on content permissions migration
-//		if (isset($this->params['copy_permissions'])) {
-//			$db->delete('userpermission',"module != 'navigationmodule'");
-//			$db->delete('grouppermission',"module != 'navigationmodule'");
-//
-//			$users = $db->selectObjects('user','id > 1');
-//			foreach($users as $user) {
-//				$containers = $old_db->selectObjects('userpermission',"uid='".$user->id."' AND module != 'navigationmodule'");
-//				foreach($containers as $item) {
-//					$loc->mod = $item->module;
-//					$loc->src = $item->source;
-//					$loc->int = '';
-//					if (array_key_exists($item->module, $this->new_modules)) {
-//						$loc->mod = $this->new_modules[$item->module];
-//						$item->module = $this->new_modules[$item->module];
-//					}
-//					if ($db->selectObject('container',"internal = '".serialize($loc)."'")) {
-//						$db->insertObject($item,'userpermission');
-//					}
-//				}
-//			}
-//			$groups = $db->selectObjects('group','1');
-//			foreach($groups as $group) {
-//				$containers = $old_db->selectObjects('grouppermission',"gid='".$group->id."' AND module != 'navigationmodule'");
-//				foreach($containers as $item) {
-//					$loc->mod = $item->module;
-//					$loc->src = $item->source;
-//					$loc->int = '';
-//					if (array_key_exists($item->module, $this->new_modules)) {
-//						$loc->mod = $this->new_modules[$item->module];
-//						$item->module = $this->new_modules[$item->module];
-//					}
-//					if ($db->selectObject('container',"internal = '".serialize($loc)."'")) {
-//						$db->insertObject($item,'grouppermission');
-//					}
-//				}
-//			}
-//		}
+		if (isset($this->params['copy_permissions'])) {
+			$db->delete('userpermission',"module != 'navigationmodule'");
+			$db->delete('grouppermission',"module != 'navigationmodule'");
+
+			$users = $db->selectObjects('user','id > 1');
+			foreach($users as $user) {
+				$containers = $old_db->selectObjects('userpermission',"uid='".$user->id."' AND source != ''");
+				$loc = null;
+				foreach($containers as $item) {
+					$loc->mod = $item->module;
+					$loc->src = $item->source;
+					$loc->int = '';
+					if (array_key_exists($item->module, $this->new_modules)) {
+						$loc->mod = $this->new_modules[$item->module];
+						$item->module = $this->new_modules[$item->module];
+						$item = $this->convert_permission($item);
+					}
+					if ($item && $db->selectObject('container',"internal = '".serialize($loc)."'")) {
+						$db->insertObject($item,'userpermission');
+					}
+				}
+			}
+			$groups = $db->selectObjects('group','1');
+			foreach($groups as $group) {
+				$containers = $old_db->selectObjects('grouppermission',"gid='".$group->id."' AND source != ''");
+				$loc = null;
+				foreach($containers as $item) {
+					$loc->mod = $item->module;
+					$loc->src = $item->source;
+					$loc->int = '';
+					if (array_key_exists($item->module, $this->new_modules)) {
+						$loc->mod = $this->new_modules[$item->module];
+						$item->module = $this->new_modules[$item->module];
+						$item = $this->convert_permission($item);
+					}
+					if ($item && $db->selectObject('container',"internal = '".serialize($loc)."'")) {
+						$db->insertObject($item,'grouppermission');
+					}
+				}
+			}
+		}
 		
 		searchController::spider();
         expSession::clearUserCache();
@@ -1899,7 +1906,7 @@ class migrationController extends expController {
         flash('message', 'Configuration updated');
 //        expHistory::back();
 		$this->fix_database();
-		echo "<a class=\"admin\" href=\"/migration/manage_users\">Next Step -> Migrate Users & Groups</a>";
+		echo "<a class=\"admin\" href=\"migration/manage_users\">Next Step -> Migrate Users & Groups</a>";
     }
 	
 	/**
@@ -2003,6 +2010,65 @@ class migrationController extends expController {
 		// }
 		// print_r("</pre>");		
 	}
+
+	/**
+	 * Take an old school permission and convert it to a newmodule permission
+	 *
+	 * @param $item
+	 * @return mixed
+	 */
+	private function convert_permission($item) {
+		if ($item == null) return null;
+		switch ($item->permission) {
+		    case 'administrate':
+			    $item->permission = 'perms';
+				break;
+			case 'post':
+			case 'create_slide':
+			case 'create':
+			case 'add':
+			case 'add_item':
+				$item->permission = 'create';
+				break;
+			case 'edit_item':
+			case 'edit_slide':
+				$item->permission = 'edit';
+				break;
+			case 'delete_item':
+			case 'delete_slide':
+				$item->permission = 'delete';
+				break;
+			case 'order':
+			case 'import':
+				$item->permission = 'manage';
+				break;
+			case 'view_unpublished':
+				$item->permission = 'show_unpublished';
+				break;
+			case 'manage_categories':
+			case 'manage_approval':
+			case 'approve':
+			case 'can_download':
+			case 'comment':
+			case 'approve_comments':
+			case 'edit_comments':
+			case 'delete_comments':
+			case 'view_private':
+                $item = null;
+				break;
+			case 'create':
+			case 'configure':
+			case 'delete':
+			case 'edit':
+			case 'manage':
+			case 'spider':
+			case 'view':
+			default:
+				break;
+		}
+		return $item;
+	}
+
 }
 
 ?>
