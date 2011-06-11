@@ -157,11 +157,38 @@
 #admintoolbar li.config a.yuimenuitemlabel {
     background:url(../images/admintoolbar/config.png) no-repeat 5px 50%;
 }
+#admintoolbar .info li.reportbug a.yuimenuitemlabel {
+    background:url(../../../../core/assets/images/bug.png) no-repeat 5px 50%;
+}
 #admintoolbar li.development a.yuimenuitemlabel {
     background:url(../images/admintoolbar/development.png) no-repeat 5px 50%;
 }
+#admintoolbar li.develop_on_red a.yuimenuitemlabel {
+    background:url(../../../../core/assets/images/toggle_red.png) no-repeat 5px 50%;
+}
+#admintoolbar li.develop_on_green a.yuimenuitemlabel {
+    background:url(../../../../core/assets/images/toggle_on.png) no-repeat 5px 50%;
+}
+#admintoolbar li.develop_off a.yuimenuitemlabel {
+    background:url(../../../../core/assets/images/toggle_off.png) no-repeat 5px 50%;
+}
+#admintoolbar li.remove a.yuimenuitemlabel {
+    background:url(../../../../core/assets/images/delete.png) no-repeat 5px 50%;
+}
+#admintoolbar li.search a.yuimenuitemlabel {
+    background:url(../../../../core/assets/images/view.png) no-repeat 5px 50%;
+}
+#admintoolbar li.manage a.yuimenuitemlabel {
+    background:url(../../../../core/assets/images/manage.png) no-repeat 5px 50%;
+}
 #admintoolbar li.users a.yuimenuitemlabel {
     background:url(../images/admintoolbar/manage-users.png) no-repeat 5px 50%;
+}
+#admintoolbar li.euser a.yuimenuitemlabel {
+    background:url(../../../../core/assets/images/exp-admin-sprite.png) no-repeat 3px -26px;
+}
+#admintoolbar li.egroup a.yuimenuitemlabel {
+    background:url(../../../../core/assets/images/exp-admin-sprite.png) no-repeat 3px -56px;
 }
 #admintoolbar li.sitetree a.yuimenuitemlabel {
     background:url(../images/admintoolbar/sitetree.png) no-repeat 5px 50%;

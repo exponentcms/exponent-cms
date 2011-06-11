@@ -1,21 +1,21 @@
 <?php
 
-##################################################
-#
-# Copyright (c) 2004-2011 OIC Group, Inc.
-# Written and Designed by Adam Kessler
-#
-# This file is part of Exponent
-#
-# Exponent is free software; you can redistribute
-# it and/or modify it under the terms of the GNU
-# General Public License as published by the Free
-# Software Foundation; either version 2 of the
-# License, or (at your option) any later version.
-#
-# GPL: http://www.gnu.org/licenses/gpl.txt
-#
-##################################################
+/**
+ *  This file is part of Exponent
+ *  Exponent is free software; you can redistribute
+ *  it and/or modify it under the terms of the GNU
+ *  General Public License as published by the Free
+ *  Software Foundation; either version 2 of the
+ *  License, or (at your option) any later version.
+ *
+ * The file that holds the user class
+ *
+ * @link http://www.gnu.org/licenses/gpl.txt GPL http://www.gnu.org/licenses/gpl.txt
+ * @package Exponent-CMS
+ * @copyright 2004-2011 OIC Group, Inc.
+ * @author Adam Kessler <adam@oicgroup.net>
+ * @version 2.0.0
+ */
 
 class user extends expRecord {
     public $validates = array(
@@ -93,24 +93,45 @@ class user extends expRecord {
     
 	public function updateLastLogin() {
 		global $db, $user;
+		$obj = null;
 		$obj->id = $this->id;
 		$obj->last_login = time();
 		$db->updateObject($obj, 'user');
 		//$this->update(array('last_login'=>time()));
 	}
 
+	/**
+	 * Is the user either a super admin or an acting admin?
+	 *
+	 * @return bool
+	 */
 	public function isAdmin() {
 		return (!empty($this->is_acting_admin) || !empty($this->is_admin)) ? true : false;
 	}
 
+	/**
+	 * Is the user a super admin?
+	 *
+	 * @return bool
+	 */
 	public function isSuperAdmin() {
 		return $this->is_admin;
 	}
 
-    public function isActingAdmin() {
+	/**
+	 * Is the user an acting admin and NOT a super admin?
+	 *
+	 * @return bool
+	 */
+	public function isActingAdmin() {
        return ($this->is_admin == false && $this->is_acting_admin == true) ? true : false;
 	}
-	
+
+	/**
+	 * Is the user logged on
+	 *
+	 * @return bool
+	 */
 	public function isLoggedIn() {
 		return (empty($this->id)) ? false : true;
 	}
@@ -134,6 +155,9 @@ class user extends expRecord {
         }
     }
 
+	/**
+	 * Set user object admin flags
+	 */
 	private function checkAdminFlags() {
 		global $user;
 		if (!empty($this->is_admin) && $user->is_admin == 0) $this->is_admin = 0;
