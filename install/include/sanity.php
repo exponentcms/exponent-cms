@@ -104,6 +104,7 @@ function sanity_checkDirectory($dir,$flag) {
 			}
 		}
 	}
+	return $status;
 }
 
 function sanity_checkFiles() {
@@ -216,7 +217,7 @@ function _sanity_checkTemp($dir) {
 
 function _sanity_checkDB() {
 	if (!defined('SYS_DATABASE')) require_once(BASE.'subsystems/database.php');
-	$have_good = false;
+//	$have_good = false;
 	
 	global $global_i18n;
 	if (count(exponent_database_backends(1)) > 0) {

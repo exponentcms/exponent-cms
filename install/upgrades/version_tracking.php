@@ -18,25 +18,30 @@
 
 class version_tracking extends upgradescript {
 	protected $from_version = '1.99.0';
-	protected $to_version = '99'; 
+//	protected $to_version = '99';
 
 	function name() { return "Install Version Tracking"; }
-	function description() { return "Beginning with Exponent 2.0.0 Beta3, the system will begin keeping track of it's versions and upgrades."; }
 
-	function needed() {
+	function description() { return "Beginning with Exponent 2.0.0 Beta3, the system begins keeping track of its versions and upgrades."; }
+
+	function needed($version) {
 	    global $db;
-        return $db->selectObject('version','created_at=(select max(created_at) from '.DB_TABLE_PREFIX.'_version)') ? false : true;
+
+		// we'll run when versions are equal since we may be doing an interation update
+        $ver = $db->selectObject('version','created_at=(select max(created_at) from '.DB_TABLE_PREFIX.'_version)');
+        return ($ver->version <= $version) ? true : false;
 	}
 
 	function upgrade() {
 	    global $db;
-        $version = EXPONENT_VERSION_MAJOR.'.'.EXPONENT_VERSION_MINOR.'.'.EXPONENT_VERSION_REVISION.'-'.EXPONENT_VERSION_TYPE.''.EXPONENT_VERSION_ITERATION;
-        $vo->version = EXPONENT_VERSION_MAJOR.'.'.EXPONENT_VERSION_MINOR.'.'.EXPONENT_VERSION_REVISION;
+//        $version = EXPONENT_VERSION_MAJOR.'.'.EXPONENT_VERSION_MINOR.'.'.EXPONENT_VERSION_REVISION.'-'.EXPONENT_VERSION_TYPE.''.EXPONENT_VERSION_ITERATION;
+	    $vo = null;
+	    $vo->version = EXPONENT_VERSION_MAJOR.'.'.EXPONENT_VERSION_MINOR.'.'.EXPONENT_VERSION_REVISION;
         $vo->type = EXPONENT_VERSION_TYPE.EXPONENT_VERSION_ITERATION;
         $vo->builddate = EXPONENT_VERSION_BUILDDATE;
         $vo->created_at = time();
         $ins = $db->insertObject($vo,'version') or die(mysql_error());
-        return $ins ? gt('success') : gt('Failed');
+        return $ins ? gt('Success') : gt('Failed');
 	}
 }
 

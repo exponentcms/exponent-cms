@@ -20,9 +20,9 @@ class upgradescript {
 	protected $from_version = '9999.99.99'; //set this ridiculously high so that it NEVER runs
 	protected $to_version = '9999.99.99'; //set this to something ridiculously high so it always runs
 
-	function name() {
-		return "Base Upgrade Script";
-	}
+	function name() { return "Base Model for the Upgrade Scripts"; }
+
+	function description() { return "This Script attempts to ".$this->name(); }
 
 	function checkVersion($version) {
 		// if this upgrade applies to only one version then check to see if we have a match
@@ -35,8 +35,12 @@ class upgradescript {
 		}
 	}
 
+	function needed() {
+		return true;
+	}
+
 	function upgrade() {
-		return $false;
+		return false;
 	}
 }
 

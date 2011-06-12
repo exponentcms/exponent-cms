@@ -18,6 +18,7 @@
 ##################################################
 
 if (!defined('EXPONENT')) exit('');
+global $db;
 
 $user = $db->selectObject('user','is_admin=1');
 

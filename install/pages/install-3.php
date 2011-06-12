@@ -19,6 +19,7 @@
 ##################################################
 
 if (!defined('EXPONENT')) exit('');
+global $db;
 
 $i18n = exponent_lang_loadFile('install/pages/dbcheck.php');
 
@@ -272,6 +273,7 @@ if ($passed) {
 
     // version tracking
     $version = EXPONENT_VERSION_MAJOR.'.'.EXPONENT_VERSION_MINOR.'.'.EXPONENT_VERSION_REVISION.'-'.EXPONENT_VERSION_TYPE.''.EXPONENT_VERSION_ITERATION;
+	$vo = null;
     $vo->version = EXPONENT_VERSION_MAJOR.'.'.EXPONENT_VERSION_MINOR.'.'.EXPONENT_VERSION_REVISION;
     $vo->type = EXPONENT_VERSION_TYPE.EXPONENT_VERSION_ITERATION;
     $vo->builddate = EXPONENT_VERSION_BUILDDATE;
