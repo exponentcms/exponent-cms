@@ -7,20 +7,10 @@
  *  Software Foundation; either version 2 of the
  *  License, or (at your option) any later version.
  *
- * The file thats holds the mysqli_database class
+ * The file that holds the Exponent CMS Framework functions
  *
  * @link http://www.gnu.org/licenses/gpl.txt GPL http://www.gnu.org/licenses/gpl.txt
  * @package Exponent-CMS
- */
-/**
- * This is the class mysqli_database
- *
- * This is the MySQL-specific implementation of the database class.
- * @copyright 2004-2011 OIC Group, Inc.
- * @author Adam Kessler <adam@oicgroup.net>
- * @version 2.0.0
- * @subpackage Core
- * @package Framework
  */
 
 function renderAction(array $parms=array()) {

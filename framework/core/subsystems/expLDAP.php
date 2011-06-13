@@ -7,7 +7,7 @@
  *  Software Foundation; either version 2 of the
  *  License, or (at your option) any later version.
  *
- * The file thats holds the expLDAP class
+ * The file that holds the expLDAP class
  *
  * @link http://www.gnu.org/licenses/gpl.txt GPL http://www.gnu.org/licenses/gpl.txt
  * @package Exponent-CMS
@@ -64,7 +64,8 @@ class expLDAP {
 		return empty($user['dn']) ? '' : $user['dn'];
 	}
 
-	public function addLdapUserToDatabase($username, $password, $context) {
+//	public function addLdapUserToDatabase($username, $password, $context) {
+	public function addLdapUserToDatabase($username, $password) {
 		// figure out our context for searching
 		$user = self::getLdapUser($username);
 

@@ -7,7 +7,7 @@
  *  Software Foundation; either version 2 of the
  *  License, or (at your option) any later version.
  *
- * The file thats holds the mysqli_database class
+ * The file that holds the postgres_database class
  *
  * @link http://www.gnu.org/licenses/gpl.txt GPL http://www.gnu.org/licenses/gpl.txt
  * @package Exponent-CMS
@@ -32,9 +32,10 @@ class postgres_database {
 	
 	var $error = "";
 	var $in_error = false;
-	
+
 	/**
 	 * @internal
+	 * @param $res
 	 */
 	function checkError($res) {
 		if ($res === false) {

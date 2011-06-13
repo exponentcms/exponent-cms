@@ -7,7 +7,7 @@
  *  Software Foundation; either version 2 of the
  *  License, or (at your option) any later version.
  *
- * The file thats holds the mysqli_database class
+ * The file that holds the mysqlid_database class
  *
  * @link http://www.gnu.org/licenses/gpl.txt GPL http://www.gnu.org/licenses/gpl.txt
  * @package Exponent-CMS
@@ -31,7 +31,7 @@ class mysqlid_database {
     var $logFH;
     var $totalQueries = 0;
     var $totalDuration = 0;
-    
+
 	/**
 	 * Make a connection to the Database Server
 	 *
@@ -41,13 +41,20 @@ class mysqlid_database {
 	 *
 	 * This must be called before any other methods of database are invoked.
 	 *
-	 * @param string $username The username to connect to the server as.
-	 * @param string $password The password for $username
-	 * @param string $hostname The hostname of the database server.  If
+	 * @param null $log_file
+	 * @return \mysqlid_database
+	 *
+	 * @internal param string $username The username to connect to the server as.
+	 *
+	 * @internal param string $password The password for $username
+	 *
+	 * @internal param string $hostname The hostname of the database server.  If
 	 *   localhost is specified, a local socket connection will be attempted.
-	 * @param string $database The name of the database to use.  Multi-database
+	 *
+	 * @internal param string $database The name of the database to use.  Multi-database
 	 *   sites are still not yet supported.
-	 * @param bool $new Whether or not to force the PHP connection function to establish
+	 *
+	 * @internal param bool $new Whether or not to force the PHP connection function to establish
 	 *   a distinctly new connection handle to the server.
 	 */
    
@@ -211,6 +218,9 @@ class mysqlid_database {
 	/**
 	 * This is an internal function for use only within the MySQL database class
 	 * @internal Internal
+	 * @param $name
+	 * @param $def
+	 * @return bool|string
 	 */
 	function fieldSQL($name,$def) {
 		$sql = "`$name`";
@@ -251,6 +261,12 @@ class mysqlid_database {
 	/**
 	 * This is an internal function for use only within the MySQL database class
 	 * @internal Internal
+	 * @param $table
+	 * @param $field
+	 * @param $a
+	 * @param $b
+	 * @param null $additional_where
+	 * @return bool
 	 */
 	function switchValues($table,$field,$a,$b,$additional_where = null) {
 		if ($additional_where == null) {
@@ -522,6 +538,9 @@ class mysqlid_database {
 	 * @param string $where Criteria used to narrow the result set.  If this
 	 *   is specified as null, then no criteria is applied, and all objects are
 	 *   returned
+	 * @param null $orderby
+	 * @return array
+	 *
 	 */
 	function selectObjects($table, $where = null,$orderby = null) {
         if ($where == null) $where = "1";
@@ -709,6 +728,9 @@ class mysqlid_database {
 	 * @param string $where Criteria used to narrow the result set.  If this
 	 *   is specified as null, then no criteria is applied, and all objects are
 	 *   returned
+	 * @param null $orderby
+	 * @return array
+	 *
 	 */
 	function selectObjectsIndexedArray($table,$where = null,$orderby = null) {
 		if ($where == null) $where = "1";
@@ -874,9 +896,13 @@ class mysqlid_database {
 	 *
 	 * @param string $table The name of the table to select from.
 	 * @param string $attribute The attribute name to find a maximum value for.
-	 * @param A comma-separated list of fields (or a single field) name, used
-	 *    for a GROUP BY clause.  This can also be passed as an array of fields.
+	 * @param null $groupfields
 	 * @param $where Optional criteria for narrowing the result set.
+	 * @return mixed
+	 *
+	 * @internal param \comma $A -separated list of fields (or a single field) name, used
+	 *    for a GROUP BY clause.  This can also be passed as an array of fields.
+	 *
 	 */
 	function max($table,$attribute,$groupfields = null,$where = null) {
 		if (is_array($groupfields)) $groupfields = implode(",",$groupfields);
@@ -898,9 +924,13 @@ class mysqlid_database {
 	 *
 	 * @param string $table The name of the table to select from.
 	 * @param string $attribute The attribute name to find a minimum value for.
-	 * @param A comma-separated list of fields (or a single field) name, used
-	 *    for a GROUP BY clause.  This can also be passed as an array of fields.
+	 * @param null $groupfields
 	 * @param $where Optional criteria for narrowing the result set.
+	 * @return mixed
+	 *
+	 * @internal param \comma $A -separated list of fields (or a single field) name, used
+	 *    for a GROUP BY clause.  This can also be passed as an array of fields.
+	 *
 	 */
 	function min($table,$attribute,$groupfields = null,$where = null) {
 		if (is_array($groupfields)) $groupfields = implode(",",$groupfields);
@@ -998,6 +1028,8 @@ class mysqlid_database {
 	 * <li><b>data_total</b> -- How much total disk space is used by the table.</li>
 	 * <li><b>data_overhead</b> -- How much storage space in the table is unused (for compacting purposes)</li>
 	 * </ul>
+	 * @param $table
+	 * @return null
 	 */
 	function tableInfo($table) {
 		$sql = "SHOW TABLE STATUS LIKE '" . $this->prefix . "$table'";
@@ -1035,6 +1067,8 @@ class mysqlid_database {
 	/**
 	 * This is an internal function for use only within the MySQL database class
 	 * @internal Internal
+	 * @param $status
+	 * @return null
 	 */
 	function translateTableStatus($status) {
 		$data = null;
@@ -1100,6 +1134,8 @@ class mysqlid_database {
 	/**
 	 * This is an internal function for use only within the MySQL database class
 	 * @internal Internal
+	 * @param $fieldObj
+	 * @return int
 	 */
 	function getDDFieldType($fieldObj) {
 		$type = strtolower($fieldObj->Type);
@@ -1119,6 +1155,8 @@ class mysqlid_database {
 	/**
 	 * This is an internal function for use only within the MySQL database class
 	 * @internal Internal
+	 * @param $fieldObj
+	 * @return int
 	 */
 	function getDDStringLen($fieldObj) {
 		$type = strtolower($fieldObj->Type);
@@ -1159,7 +1197,7 @@ class mysqlid_database {
 	function limit($num,$offset) {
 		return ' LIMIT '.$offset.','.$num.' ';
 	}
-	
+
 	/**
 	 * Select an array of arrays
 	 *
@@ -1172,6 +1210,9 @@ class mysqlid_database {
 	 * @param string $where Criteria used to narrow the result set.  If this
 	 *   is specified as null, then no criteria is applied, and all objects are
 	 *   returned
+	 * @param null $orderby
+	 * @return array
+	 *
 	 */
 	function selectArrays($table, $where = null,$orderby = null) {
 		if ($where == null) $where = "1";
@@ -1185,7 +1226,7 @@ class mysqlid_database {
 		for ($i = 0; $i < mysqli_num_rows($res); $i++) $arrays[] = mysqli_fetch_assoc($res);
 		return $arrays;
 	}
-	
+
 	/**
 	 * Select an array of arrays
 	 *
@@ -1194,8 +1235,12 @@ class mysqlid_database {
 	 * SELECTing a set of records from a database table.  Returns an
 	 * array of arrays, in any random order.
 	 *
-	 * @param string $table The name of the table/object to look at
-	 * @param string $where Criteria used to narrow the result set.  If this
+	 * @param $sql
+	 * @return array
+	 *
+	 * @internal param string $table The name of the table/object to look at
+	 *
+	 * @internal param string $where Criteria used to narrow the result set.  If this
 	 *   is specified as null, then no criteria is applied, and all objects are
 	 *   returned
 	 */
@@ -1212,7 +1257,7 @@ class mysqlid_database {
 		return $arrays;
 	}
 
-    /**
+	/**
 	 * Select a record from the database as an array
 	 *
 	 * Selects a set of arrays from the database.  Because of the way
@@ -1224,6 +1269,9 @@ class mysqlid_database {
 	 * @param string $where Criteria used to narrow the result set.  If this
 	 *   is specified as null, then no criteria is applied, and all objects are
 	 *   returned
+	 * @param null $orderby
+	 * @return array
+	 *
 	 */
 	function selectArray($table, $where = null, $orderby = null) {
 		if ($where == null) $where = "1";
