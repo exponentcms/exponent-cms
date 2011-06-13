@@ -38,7 +38,7 @@ if (!defined("SYS_SORTING")) require_once(BASE."subsystems/sorting.php");
 usort($controls,"exponent_sorting_byRankAscending");
 
 $db_data = null;
-$fields = array();
+//$fields = array();
 $emailFields = array();
 $captions = array();
 foreach ($controls as $c) {
@@ -52,7 +52,7 @@ foreach ($controls as $c) {
         //eDebug($value);
         $varname = $c->name;
         $db_data->$varname = $value;
-        $fields[$c->name] = call_user_func(array($control_type,'templateFormat'),$value,$ctl);
+//        $fields[$c->name] = call_user_func(array($control_type,'templateFormat'),$value,$ctl);
         $emailFields[$c->name] = call_user_func(array($control_type,'templateFormat'),$emailValue,$ctl);        
         $captions[$c->name] = $c->caption;
 		if ($c->name == "email") {

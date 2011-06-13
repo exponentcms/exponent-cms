@@ -20,9 +20,7 @@ class convert_db_trim extends upgradescript {
 	protected $from_version = '1.99.0';
 	protected $to_version = '1.99.0'; 
 
-	function name() {
-		return "Upgrade Database Table Removal Code";
-	}
+	function name() { return "Upgrade Database Table Removal Code"; }
 
 	function upgrade() {
 		// check if the files are there and remove them

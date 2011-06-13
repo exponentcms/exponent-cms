@@ -27,7 +27,7 @@ class version_tracking extends upgradescript {
 	function needed($version) {
 	    global $db;
 
-		// we'll run when versions are equal since we may be doing an interation update
+		// we'll run when versions are equal since we may be doing an iteration update
         $ver = $db->selectObject('version','created_at=(select max(created_at) from '.DB_TABLE_PREFIX.'_version)');
         return ($ver->version <= $version) ? true : false;
 	}

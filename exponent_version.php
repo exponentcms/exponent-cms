@@ -17,7 +17,7 @@
 ##################################################
 
 if (!defined('EXPONENT_VERSION_MAJOR')) {
-	// the RELEASE constant is changed by the build scripts at code freeeze
+	// the RELEASE constant is changed by the build scripts at code freeze
 	define('RELEASE','%%RELEASE%%');
 	if (RELEASE != '%%RELEASE%%') {
 
