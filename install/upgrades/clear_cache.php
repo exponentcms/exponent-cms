@@ -26,12 +26,13 @@ class clear_cache extends upgradescript {
 		// work our way through all the tmp files and remove them
 		if (!defined('SYS_FILES')) include_once(BASE.'subsystems/files.php');
 		$files = array(
-			BASE.'tmp/cache',
-//			BASE.'tmp/css',  // css cache??
-			BASE.'tmp/mail',
+			BASE.'tmp/cache',  // not used??  FIXME
+//			BASE.'tmp/css',  // not used, css cache??  FIXME
+			BASE.'tmp/mail',  // not used??  FIXME
+			BASE.'tmp/pods',  // not used??  FIXME
 			BASE.'tmp/minify', // minify cache
-			BASE.'tmp/pods',
-		    BASE.'tmp/rsscache',
+			BASE.'tmp/pixidou', // (new) pixidou cache
+		    BASE.'tmp/rsscache',  // magpierss cache
 		    BASE.'tmp/views_c',  // smarty cache
 		);
 
