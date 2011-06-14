@@ -27,9 +27,9 @@ class clear_cache extends upgradescript {
 		if (!defined('SYS_FILES')) include_once(BASE.'subsystems/files.php');
 		$files = array(
 			BASE.'tmp/cache',  // not used??  FIXME
-//			BASE.'tmp/css',  // not used, css cache??  FIXME
 			BASE.'tmp/mail',  // not used??  FIXME
 			BASE.'tmp/pods',  // not used??  FIXME
+			BASE.'tmp/css',  // exponent minified css cache
 			BASE.'tmp/minify', // minify cache
 			BASE.'tmp/pixidou', // (new) pixidou cache
 		    BASE.'tmp/rsscache',  // magpierss cache
@@ -45,7 +45,7 @@ class clear_cache extends upgradescript {
 			$errors += count($files['not_removed']);
 		}
 		
-		// delete the entire img_cache and recreate the folder
+		// phpThumb cache includes subfolders
 		if (file_exists(BASE.'tmp/img_cache')) $this->cleardir_recursive(BASE.'tmp/img_cache');
 
 		return "Caches were cleared.<br>".$errors." files could not be removed.";
