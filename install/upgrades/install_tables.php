@@ -125,7 +125,9 @@ ksort($tables);
 <tbody>
 <?php
 $row = "even";
+$line = 0;
 foreach ($tables as $table => $statusnum) {
+	if ($statusnum != TMP_TABLE_EXISTED) {
 ?>
 
 <tr class="<?php echo $row ?>">
@@ -157,12 +159,17 @@ foreach ($tables as $table => $statusnum) {
 	</td>
 </tr>
 <?php
-$row  = $row == "even" ? "odd" : "even";
-} ?>
+$row = $row == "even" ? "odd" : "even";
+$line++;
+}
+?>
  <tbody>
 </table>
 <?php
+		}
+		if ($line == 0) {
+			echo "<p class=\"success\">No Tables Were Changed!</p>";
+		}
 	}
 }
-
 ?>

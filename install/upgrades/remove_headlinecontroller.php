@@ -17,8 +17,9 @@
 ##################################################
 
 class remove_headlinecontroller extends upgradescript {
-	protected $from_version = '1.99.0';
-	protected $to_version = '2.0.1';
+// TODO next two lines are commented out to disable this script
+//	protected $from_version = '1.99.0';
+//	protected $to_version = '2.0.1';
 
 	function name() { return "Remove the (deprecated) Headline Controller"; }
 
@@ -78,9 +79,6 @@ class remove_headlinecontroller extends upgradescript {
 			$text->update();
 			$headlines_converted += 1;
 		}
-
-// FIXME - remove when final
-return "TEST - We're NOT removing the headline table nor the files yet...<br>".$modules_converted." Headline modules were converted.<br>".$headlines_converted." Headlines were converted.<br>";
 
 		// delete headline table
 		$db->dropTable('headline');
