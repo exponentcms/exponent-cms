@@ -14,21 +14,21 @@
  *
  *}
 
-<div class="module notfound page-not-found">
+<div class="module notfound search-results">
     <h1>{$smarty.const.SITE_404_TITLE}</h1>
     <p>{$smarty.const.SITE_404_HTML}</p>
     
-    {if $results|@count > 0}
-        <h2>Could these be what you are looking for?</h2>
-        <p>We did find the following pages that were similar to the page you were looking for</p>
-        <div class="module search search">
-            {foreach from=$results item=result}
-	            <div class="item {cycle values="odd,even"}">
-		            <a href="{$result->view_link}">{$result->title}</a>
-		            {if $result->body != ""}<br /><span class="summary">{$result->body|strip_tags|truncate:240}</span>{/if}
-		            {clear}
-	            </div>
-	        {/foreach}
-	    </div>
+    {if $page->records|@count > 0}
+        <h2>Could this be what you are looking for?</h2>
+        <span class="searched_for">
+        We found the following pages which are similar to the page <span class="terms">"{$terms}"</span> you were looking for
+	    </span>
+		{foreach from=$page->records item=result}
+			<div class="item {cycle values="odd,even"}">
+				<a href="{$smarty.const.URL_FULL}{$result->view_link}">{$result->title}</a>
+				{if $result->body != ""}<br /><span class="summary">{$result->body|strip_tags|truncate:240}</span>{/if}
+				{clear}
+			</div>
+		{/foreach}
 	{/if}
 </div>
