@@ -62,7 +62,7 @@ class clear_cache extends upgradescript {
 			if (substr($file, 0, 1) != '.') {  // don't remove dot files
 				$file = $dir . '/' . $file;
 				if (is_dir($file)) {
-					cleardir_recursive($file);
+					$this->cleardir_recursive($file);
 					rmdir($file);
 				} else {
 					unlink($file);
