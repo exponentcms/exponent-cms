@@ -20,12 +20,56 @@ class clear_cache extends upgradescript {
 	protected $from_version = '1.99.0';
 //	protected $to_version = '1.99.2';
 
-	function name() { return "Clear the Cache"; }
+	function name() { return "Clear the Caches"; }
 
 	function upgrade() {
-		$files = exponent_theme_remove_smarty_cache();
-		return count($files['removed'])." files were removed from the cache.";
+		// work our way through all the tmp files and remove them
+		if (!defined('SYS_FILES')) include_once(BASE.'subsystems/files.php');
+		$files = array(
+			BASE.'tmp/cache',
+//			BASE.'tmp/css',  // css cache??
+			BASE.'tmp/mail',
+			BASE.'tmp/minify', // minify cache
+			BASE.'tmp/pods',
+		    BASE.'tmp/rsscache',
+		    BASE.'tmp/views_c',  // smarty cache
+		);
 
+        // delete the files.
+        $removed = 0;
+        $errors = 0;
+		foreach ($files as $file) {
+			$files = exponent_files_remove_files_in_directory($file);
+			$removed += count($files['removed']);
+			$errors += count($files['not_removed']);
+		}
+		
+		// delete the entire img_cache and recreate the folder
+		if (file_exists(BASE.'tmp/img_cache')) $this->cleardir_recursive(BASE.'tmp/img_cache');
+
+		return "Caches were cleared.<br>".$errors." files could not be removed.";
+	}
+
+	/**
+	 * recursively clear a directories contents, but leave the directory
+	 * @param $dir
+	 */
+	function cleardir_recursive($dir) {
+		$files = scandir($dir);
+		array_shift($files);    // remove '.' from array
+		array_shift($files);    // remove '..' from array
+		foreach ($files as $file) {
+			if (substr($file, 0, 1) != '.') {  // don't remove dot files
+				$file = $dir . '/' . $file;
+				if (is_dir($file)) {
+					cleardir_recursive($file);
+					rmdir($file);
+				} else {
+					unlink($file);
+				}
+			}
+		}
+		// rmdir($dir);
 	}
 }
 
