@@ -25,6 +25,7 @@ exponent_permissions_clear();
 exponent_sessions_unset('uilevel');
 exponent_sessions_clearCurrentUserSessionCache();
 flash('message', 'You have been logged out');
-exponent_flow_redirect();
+redirect_to(array("section"=>SITE_DEFAULT_SECTION));
+//exponent_flow_redirect();
 
 ?>
