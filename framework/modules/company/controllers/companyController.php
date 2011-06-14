@@ -26,7 +26,7 @@ class companyController extends expController {
         'comments',
         //'files',
         'rss',
-        //'tags'
+        'tags'
     );
 
 	function name() { return $this->displayname(); } //for backwards compat with old modules

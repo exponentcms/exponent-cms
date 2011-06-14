@@ -26,6 +26,7 @@ class filedownloadController extends expController {
         'ealerts',
         'files',
         'rss',
+		'tags'
     );
     public $codequality = 'beta';
 
