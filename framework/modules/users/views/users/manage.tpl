@@ -30,7 +30,7 @@
         You will not be able to create, modify or remove administrator accounts (these options will be disabled).
     </p>
 	<div class="module-actions">
-		{icon class=add module=users action=create title="Create a New User" alt="Create a New User"}
+		{icon class=add module=users action=create text="Create a New User"|gettext title="Create a New User"|gettext alt="Create a New User"|gettext}
 	</div>
     {pagelinks paginate=$page top=1}
 	<table class="exp-skin-table">
@@ -46,12 +46,16 @@
 				<td>{$user->username}</td>
 				<td>{$user->firstname}</td>
 				<td>{$user->lastname}</td>
-				<td>{if $user->is_acting_admin == 1}{img src=`$smarty.const.ICON_RELATIVE`toggle_on.png}{/if}</td>
+				<td>
+				{if $user->is_acting_admin == 1}
+				    <img src="{$smarty.const.ICON_RELATIVE}toggle_on.png">
+				{/if}
+				</td>
 			    <td>
 			        {permissions level=$smarty.const.UILEVEL_PERMISSIONS}
 						<div class="item-actions">
 							{icon class=edit action=edituser record=$user}
-							{icon img=change_password.png action=change_password record=$user title="Change this users password" text="Password"}
+							{icon class="password" action=change_password record=$user title="Change this users password" text="Password"}
 							{icon action=delete record=$user title="Delete" onclick="return confirm('Are you sure you want to delete this user?');"}
 						</div>
                     {/permissions}
