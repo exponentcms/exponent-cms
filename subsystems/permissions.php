@@ -307,6 +307,7 @@ function exponent_permissions_checkUser($user,$permission,$location,$explicitOnl
 		}
 	}
 	if (!$implicit && $location->mod != 'navigationmodule') {
+	    $location->mod = (strstr($location->mod,'module')||strstr($location->mod,'Controller')) ? $location->mod : $location->mod.'Controller';
 		foreach ($db->selectObjects('sectionref',"is_original=1 AND module='".$location->mod."' AND source='".$location->src."'") as $secref) {
 			if (exponent_permissions_checkUser($user,'manage',exponent_core_makeLocation('navigationmodule','',$secref->section))) {
 				$implicit = true;
