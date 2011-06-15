@@ -106,14 +106,13 @@ if (isset($_GET['id'])) {
 				
 		*/ 
 				
-$file = "";	
-
-//$file .= "\r\n\r\nCSV Export\r\n\r\n";
+if (LANG_CHARSET == 'UTF-8') {
+	$file = chr(0xEF).chr(0xBB).chr(0xBF).$file;  // add utf-8 signature to file to open appropriately in Excel, etc...
+} else {
+	$file = "";
+}
 
 $file .= sql2csv($items);
-if (LANG_CHARSET == 'UTF-8') {
-	$file = chr(0xEF).chr(0xBB).chr(0xBF).$file;
-}
 
 //CODE FOR LATER CREAATING A TEMP FILE
 $tmpfname = tempnam(getcwd(), "rep"); // Rig
