@@ -111,6 +111,9 @@ $file = "";
 //$file .= "\r\n\r\nCSV Export\r\n\r\n";
 
 $file .= sql2csv($items);
+if (LANG_CHARSET == 'UTF-8') {
+	$file = chr(0xEF).chr(0xBB).chr(0xBF).$file;
+}
 
 //CODE FOR LATER CREAATING A TEMP FILE
 $tmpfname = tempnam(getcwd(), "rep"); // Rig
@@ -129,9 +132,9 @@ if(file_exists($tmpfname))
       //        MSIE and Opera seems to prefer 'application/octetstream'
      // It seems that other headers I've added make IE prefer octet-stream again. - RAM
 
-      $mime_type = (EXPONENT_USER_BROWSER == 'IE' || EXPONENT_USER_BROWSER == 'OPERA') ? 'application/octet-stream;' : 'text/comma-separated-values';
+      $mime_type = (EXPONENT_USER_BROWSER == 'IE' || EXPONENT_USER_BROWSER == 'OPERA') ? 'application/octet-stream;' : 'text/comma-separated-values;';
 
-      header('Content-Type: ' . $mime_type);
+      header('Content-Type: ' . $mime_type . ' charset=' . LANG_CHARSET. "'");
       header('Expires: ' . gmdate('D, d M Y H:i:s') . ' GMT');
       header("Content-length: ".filesize($tmpfname));
       header('Content-Transfer-Encoding: binary');
@@ -187,40 +190,23 @@ use the array_keys function to strip out a functional header
 */
 
 function sql2csv($items) {
- 	
-		$str = "";
-
+	$str = "";
 	foreach ($items as $key=>$item)  {
-
-	if($str == "")
-	{
-		$header_Keys = array_keys((array)$item);
-	
-		foreach ($header_Keys as $individual_Header)
-		{
+		if($str == "") {
+			$header_Keys = array_keys((array)$item);
+			foreach ($header_Keys as $individual_Header) {
 				$str .= $individual_Header.",";
-						
-		}
-		$str .= "\r\n";
-			
-	}
-	
-		foreach ($item as $bob=>$rowitem)
-			{
-	
-		 	$rowitem = str_replace(",", " ", $rowitem);
-		 
-			$str .= $rowitem.",";
-		
-	}//foreach rowitem	
-			
-			$str = substr($str,0,strlen($str)-1);
+			}
 			$str .= "\r\n";
-		
-	}//end of foreach loop
-	
+		}
+		foreach ($item as $bob=>$rowitem) {
+		 	$rowitem = str_replace(",", " ", $rowitem);
+			$str .= $rowitem.",";
+		} //foreach rowitem
+		$str = substr($str,0,strlen($str)-1);
+		$str .= "\r\n";
+	} //end of foreach loop
 	return $str;
-
 }
 
 ?>
