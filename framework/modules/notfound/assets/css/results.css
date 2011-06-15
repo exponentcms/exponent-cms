@@ -1,0 +1,18 @@
+.search-results .searched_for{
+	display:block;
+	padding:5px 0;
+	margin:0 0 15px 0;
+	font-size:115%;
+}
+
+.search-results .searched_for .terms {
+	font-weight:bold;
+	font-style:italic;
+}
+
+.search-results .item {
+	padding:5px 0;
+	margin: 0 0 10px 0;
+	border-bottom:1px dotted #333;
+}
+
