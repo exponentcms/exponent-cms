@@ -28,7 +28,7 @@ class expNestedNodeController extends expController {
 	function name() { return $this->displayname(); } //for backwards compat with old modules
 	function displayname() { return "Nested Node Manager"; }
 	function description() { return "This module is for manageing your Nested Nodes"; }
-	function author() { return "Adam Kessler @ OIC Group, Inc"; }
+	function author() { return "OIC Group, Inc"; }
 	function hasSources() { return true; }
 	function hasViews() { return true; }
 

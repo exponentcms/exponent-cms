@@ -17,16 +17,20 @@
  
 class order_discounts extends expRecord {
     public $table = 'order_discounts';
+    public $has_one = array('discounts');    
     /*public $validates = array(
         'presence_of'=>array(
             'title'=>array('message'=>'Title is a required field.')
         ));*/
         
    
-    function validate()    
+    function validate($redirectOnFailureTo = array('controller'=>'cart', 'action'=>'checkout'))   
     {
-        $discount = new discounts($this->discount_id);
-        $validateDiscountMessage = $discount->validateDiscount();
+        global $router;
+        /*$discount = new discounts($this->discounts_id);
+        $validateDiscountMessage = $discount->validateDiscount();*/        
+        $validateDiscountMessage = $this->discounts->validateDiscount();
+        
         if ($validateDiscountMessage == "")
         {
             return true;
@@ -36,14 +40,15 @@ class order_discounts extends expRecord {
             //somthing is wrong so we need to remove the code, flash an erorr, and redirect to rebuild the cart
             $this->delete();
             flash('error', $validateDiscountMessage . "This discount code has been removed from your cart.");
-            redirect_to(array('controller'=>'cart', 'action'=>'checkout'));          
+            //redirect_to($redirectOnFailureTo);          
+            redirect_to($router->current_url);          
         }        
     }
         
     function caclulateDiscount()
     {
         global $order;
-        $discount = new discounts($this->discount_id);
+        $discount = new discounts($this->discounts_id);
         //check discount type and calculate accordingly
         //eDebug($this);   
         //eDebug($discount, true);
@@ -59,7 +64,34 @@ class order_discounts extends expRecord {
             return $discount->discount_amount;
         }
     }
-        
+      
+    public function isCartDiscount()
+    {
+        if ($this->discounts->action_type < 5) return true;
+        else return false;
+    }
+    
+    public function isShippingDiscount()
+    {
+        if ($this->discounts->action_type >= 5) return true;
+        else return false;
+    }
+    
+    public function requiresForcedShipping()
+    {
+        if(empty($this->discounts->required_shipping_calculator_id))return false;
+        else return true;
+    }  
+    
+    public function getRequiredShippingCalculatorId()
+    {           
+        return $this->discounts->required_shipping_calculator_id;
+    }
+    
+    public function getRequiredShippingMethod()
+    {
+        return $this->discounts->required_shipping_method;
+    }
 }
 
 ?>

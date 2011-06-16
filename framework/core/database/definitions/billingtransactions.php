@@ -40,6 +40,10 @@ return array(
     'transaction_state'=>array(
         DB_FIELD_TYPE=>DB_DEF_STRING,
         DB_FIELD_LEN=>50),
+    'poster'=>array(
+        DB_FIELD_TYPE=>DB_DEF_INTEGER),
+    'created_at'=>array(
+        DB_FIELD_TYPE=>DB_DEF_TIMESTAMP),
 );
 
 ?>

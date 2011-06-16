@@ -21,7 +21,7 @@
 
 
 <div class="module store quick-links">
-    {if $moduletitle}<h2>{$moduletitle}</h2>{/if}
+    <h2>{$moduletitle|default:"Store Links"}</h2>
     {if $user->id != '' && $user->id != 0}
         <strong class="attribution">Welcome {attribution user=$user display=firstlast}</strong>
     {/if}
@@ -36,8 +36,8 @@
     {/if}
 
     {if $user->id != '' && $user->id != 0}
-        <li><a class="addressbook" href="{link module=address action=myaddressbook}">Manage My Address Book</a></li>
-        <li><a class="vieworders" href="{link module=order action=ordersbyuser}">View my Orders</a></li>
+        <li><a class="addressbook" href="{link module=address action=myaddressbook}">Manage My Addresses</a></li>
+        <li><a class="vieworders" href="{link module=order action=ordersbyuser}">View My Orders</a></li>
         <li><a class="password" href="{link controller=users action=change_password}">Change My Password</a></li>
         <li><a class="logout" href="{link module=loginmodule action=logout}">Log Out</a></li>
     {else}

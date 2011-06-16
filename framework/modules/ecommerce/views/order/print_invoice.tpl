@@ -36,8 +36,15 @@
 				        {if $shipping->shippingmethod->company != ""}{$shipping->shippingmethod->company}<br>{/if}
 				        {if $shipping->shippingmethod->address1 != ""}{$shipping->shippingmethod->address1}<br>{/if}
 				        {if $shipping->shippingmethod->address2 != ""}{$shipping->shippingmethod->address2}<br>{/if}
-				        {$shipping->shippingmethod->city}{if $shipping->shippingmethod->state != ""}, {$shipping->shippingmethod->state|statename:abbv}{/if} {$shipping->shippingmethod->zip}<br>
-				        {$shipping->shippingmethod->country} 
+				        {$shipping->shippingmethod->city},&nbsp;
+                        {if $shipping->shippingmethod->state == -2}
+                             {$shipping->shippingmethod->non_us_state}
+                        {elseif $shipping->shippingmethod->state != ""}
+                             {$shipping->shippingmethod->state|statename:abbv}
+                        {/if} {$shipping->shippingmethod->zip}
+                        {if $shipping->shippingmethod->state == -2}
+                            {br}{$shipping->shippingmethod->country|countryname}
+                        {/if}
 				        </address>
 				        <br>
 				        {if $shipping->shippingmethod->phone_number != ""}{$shipping->shippingmethod->phone_number}<br>{/if}
@@ -57,9 +64,16 @@
 				{if $order->billingmethod[0]->company != ""}{$order->billingmethod[0]->company}<br>{/if}
 				{if $order->billingmethod[0]->address1 != ""}{$order->billingmethod[0]->address1}{br}{/if}
 				{if $order->billingmethod[0]->address2 != ""}{$order->billingmethod[0]->address2}<br>{/if}
-				{$order->billingmethod[0]->city}{if $order->billingmethod[0]->state != ""}, {$order->billingmethod[0]->state|statename:abbv}{/if} {$order->billingmethod[0]->zip}<br>
-				{$order->billingmethod[0]->country} 
-				{$order->billingmethod[0]->phone} 
+				{$order->billingmethod[0]->city},&nbsp;
+                        {if $order->billingmethod[0]->state == -2}
+                             {$order->billingmethod[0]->non_us_state}
+                        {elseif $order->billingmethod[0]->state != ""}
+                             {$order->billingmethod[0]->state|statename:abbv}
+                        {/if} {$order->billingmethod[0]->zip}
+                        {if $order->billingmethod[0]->state == -2}
+                            {br}{$order->billingmethod[0]->country|countryname}
+                        {/if}
+				{br}{$order->billingmethod[0]->phone} 
 				</address>
 				<br>
 				{if $order->billingmethod[0]->phone_number != ""}{$order->billingmethod[0]->phone_number}<br>{/if}

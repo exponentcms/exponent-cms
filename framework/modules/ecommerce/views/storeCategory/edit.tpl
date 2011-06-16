@@ -59,7 +59,8 @@
             <ul class="yui-nav">
             <li class="selected"><a href="#general"><em>General</em></a></li>
             <li><a href="#seo"><em>Meta Info</em></a></li>
-
+            <li><a href="#events"><em>Events</em></a></li>
+			<li><a href="#google_product_types"><em>Google Product Types</em></a></li>
             </ul>            
             <div class="yui-content">
                 <div id="general">   
@@ -74,7 +75,14 @@
                     {control type=text name=meta_keywords label="Meta Keywords" value=$node->meta_keywords}
                     {control type=text name=meta_description label="Meta Description" value=$node->meta_description}                        
                 </div>        
-            </div> 
+                 <div id="events">   
+                    {control type="checkbox" name="is_events" label="This category is used for events" value=1 checked=$node->is_events}                        
+                    {control type="checkbox" name="hide_closed_events" label="Don't Show Closed Events" value=1 checked=$node->hide_closed_events}
+                </div>  
+				<div id="google_product_types">	
+					{control type="tagtree" name="managecats" id="managecats" model="google_product_types" draggable=false addable=false menu=true checkable=true expandonstart=false values=`$record->google_product_types`}
+				</div>
+            </div>    
         </div>
         {control type=buttongroup submit=Save cancel=Cancel}
         {/form}                      

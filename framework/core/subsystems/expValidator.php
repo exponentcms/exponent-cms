@@ -157,6 +157,8 @@ class expValidator {
 	 */
 	public static function is_valid_zipcode($field, $object, $opts) {
         $match = array();
+        if($object->country != 223) return true; //if non-us, than we won't validate the zip
+        
 		$pattern = "/^\d{5}([\-]\d{4})?$/";
 		if (!preg_match($pattern, $object->$field, $match, PREG_OFFSET_CAPTURE)) {
 			return array_key_exists('message', $opts) ? $opts['message'] : ucwords($field)." is not a valid US zip code.";
@@ -181,6 +183,15 @@ class expValidator {
 		}
     }
 
+    public static function is_valid_state($field, $object, $opts) {        
+        if(($object->state == -2 && !empty($object->non_us_state)) || $object->state > 0)
+        {
+            return true; //supplied a non-us state/province, so we're OK
+        } else {
+            return array_key_exists('message', $opts) ? $opts['message'] : ucwords($field)." is not a valid US zip code.";
+        }
+    }
+    
 	/**
 	 * @param $field
 	 * @param $object
@@ -191,6 +202,17 @@ class expValidator {
         $email = $object->$field;
         // First, we check that there's one @ symbol, and that the lengths are right
 //        if (!ereg("^[^@]{1,64}@[^@]{1,255}$", $email)) {
+
+        //
+        if(expValidator::isValidEmail($email))
+        {
+            return true; 
+        }
+        else
+        {
+            return array_key_exists('message', $opts) ? $opts['message'] : ucwords($field)." does not appear to be a valid email address";
+        }
+        //  old code below
         if (!preg_match("^[^@]{1,64}@[^@]{1,255}$", $email)) {
             // Email invalid because wrong number of characters in one section, or wrong number of @ symbols.
             return array_key_exists('message', $opts) ? $opts['message'] : ucwords($field)." does not appear to be a valid email address";
@@ -218,6 +240,74 @@ class expValidator {
             }
         }
         return true;
+    }
+
+    /**
+    Validate an email address.
+    Provide email address (raw input)
+    Returns true if the email address has the email 
+    address format and the domain exists.
+    */
+    private static function isValidEmail($email)
+    {
+       $isValid = true;
+       $atIndex = strrpos($email, "@");
+       if (is_bool($atIndex) && !$atIndex)
+       {
+          $isValid = false;
+       }
+       else
+       {
+          $domain = substr($email, $atIndex+1);
+          $local = substr($email, 0, $atIndex);
+          $localLen = strlen($local);
+          $domainLen = strlen($domain);
+          if ($localLen < 1 || $localLen > 64)
+          {
+             // local part length exceeded
+             $isValid = false;
+          }
+          else if ($domainLen < 1 || $domainLen > 255)
+          {
+             // domain part length exceeded
+             $isValid = false;
+          }
+          else if ($local[0] == '.' || $local[$localLen-1] == '.')
+          {
+             // local part starts or ends with '.'
+             $isValid = false;
+          }
+          else if (preg_match('/\\.\\./', $local))
+          {
+             // local part has two consecutive dots
+             $isValid = false;
+          }
+          else if (!preg_match('/^[A-Za-z0-9\\-\\.]+$/', $domain))
+          {
+             // character not valid in domain part
+             $isValid = false;
+          }
+          else if (preg_match('/\\.\\./', $domain))
+          {
+             // domain part has two consecutive dots
+             $isValid = false;
+          }
+          else if (!preg_match('/^(\\\\.|[A-Za-z0-9!#%&`_=\\/$\'*+?^{}|~.-])+$/', str_replace("\\\\","",$local)))
+          {
+             // character not valid in local part unless 
+             // local part is quoted
+             if (!preg_match('/^"(\\\\"|[^"])+"$/', str_replace("\\\\","",$local)))
+             {
+                $isValid = false;
+             }
+          }
+          /*if ($isValid && !(checkdnsrr($domain,"MX") ||  checkdnsrr($domain,"A")))
+          {
+             // domain not found in DNS
+             $isValid = false;
+          }*/
+       }
+       return $isValid;
     }
 
 	/**

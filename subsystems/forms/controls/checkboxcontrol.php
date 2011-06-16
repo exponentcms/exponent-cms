@@ -116,28 +116,28 @@ class checkboxcontrol extends formcontrol {
 
 
     function controlToHTML($name) {
+        $this->value = isset($this->value) ? $this->value : 1;
         $inputID  = (!empty($this->id)) ? ' id="'.$this->id.'"' : "";
-		$val = 1;
-		$html = "";
-
-	    $html .= '<input'.$inputID.' class="checkbox" type="checkbox" name="' . $name . '" value="'.$val.'"';
-	    if ($this->default) $html .= ' checked="checked"';
-	    if ($this->tabindex >= 0) $html .= ' tabindex="' . $this->tabindex . '"';
-	    if ($this->accesskey != "") $html .= ' accesskey="' . $this->accesskey . '"';
-	    if ($this->disabled) $html .= ' disabled';
-	    foreach ($this->jsHooks as $type=>$val) {
-	        $html .= ' '.$type.'="'.$val.'"';
-	    }
-	    if (@$this->required) {
-	        $html .= 'required="'.rawurlencode($this->default).'" caption="'.rawurlencode($this->caption).'" ';
-	    }
-	    $html .= ' />';
-	    return $html;
-	}
+        $html = '<input'.$inputID.' class="checkbox" type="checkbox" name="' . $name . '" value="'.$this->value.'"';
+        if ($this->default) $html .= ' checked="checked"';
+        if ($this->tabindex >= 0) $html .= ' tabindex="' . $this->tabindex . '"';
+        if ($this->accesskey != "") $html .= ' accesskey="' . $this->accesskey . '"';
+        if ($this->disabled) $html .= ' disabled';
+        foreach ($this->jsHooks as $type=>$val) {
+            $html .= ' '.$type.'="'.$val.'"';
+        }
+        if (@$this->required) {
+            $html .= 'required="'.rawurlencode($this->default).'" caption="'.rawurlencode($this->caption).'" ';
+        }
+        $html .= ' />';
+        return $html;
+    }
     
     //FIXME:  this is just here until we completely deprecate the old school checkbox
     //control calls in the old school forms
     function controlToHTML_newschool($name, $label) {
+        $this->value = isset($this->value) ? $this->value : 1;
+        
         $inputID  = (!empty($this->id)) ? ' id="'.$this->id.'"' : "";
         $this->name = empty($this->name) ? $name : $this->name;
 

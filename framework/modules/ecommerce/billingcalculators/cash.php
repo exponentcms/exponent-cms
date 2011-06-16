@@ -1,6 +1,6 @@
 <?php
 
-class cash {
+class cash extends billingcalculator{
 	function name() { return "Cash/Check"; }
 	function description() { return "Enabling this payment option will allow your customers to pay by sending cash or check to you."; }
 	function hasConfig() { return false;}

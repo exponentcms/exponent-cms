@@ -14,9 +14,11 @@
  *
  *}
 <div class="prod-listing">    
-    <h3>
-        <a href="{link controller=store action=showByTitle title=$listing->sef_url}">{$listing->title}</a>
-    </h3>   
+     <h3>
+		<a href="{link controller=store action=showByTitle title=$listing->sef_url}">{$listing->title}</a>
+	</h3>   
+     
+    <a href="{link controller=store action=showByTitle title=$listing->sef_url}" class="prod-img">{img file_id=$listing->expFile.mainimage[0]->id w=140 h=150}</a>
 
     {permissions}
     <div class="item-actions">
@@ -32,13 +34,13 @@
     </div>
     {/permissions}
 
-    <a href="{link controller=store action=showByTitle title=$listing->sef_url}" class="prod-img">
+    <!-- a href="{link controller=store action=showByTitle title=$listing->sef_url}" class="prod-img">
         {img file_id=$listing->expFile.mainimage[0]->id w=135}
     </a>
     
     <p class="bodycopy">
         {$listing->summary}
-    </p>
+    </p -->
     
     <div class="prod-price"> 
         {if $listing->availability_type == 3}       
@@ -46,18 +48,14 @@
         {else}                   
             {if $listing->use_special_price}
                 <span style="font-size:14px; text-decoration: line-through;">{currency_symbol}{$listing->base_price|number_format:2}</span>
-                <span style="color:red;">{currency_symbol}{$listing->special_price|number_format:2}</span>
+                <span style="color:red;">{currency_symbol}{$listing->special_price|number_format:2}&nbsp;<sup>SALE!</sup></span>
             {else}
                 {currency_symbol}{$listing->base_price|number_format:2}
             {/if}
         {/if}
     </div>
-    
         {if $listing->availability_type != 3 && $listing->active_type == 0}
-            <a href="{link controller=store action=showByTitle title=$listing->sef_url}" class="button awesome small">View Item</a>   
-            
-            
-            {*if $listing->hasChildren()}   <~~~  something ain't right with child products. Returns True when it shoudln't. deal with it later.
+            {if $listing->hasChildren()}            
                 <a href="{link controller=store action=showByTitle title=$listing->sef_url}" class="exp-ecom-link view-item" rel="nofollow"><strong><em>View Item</em></strong></a>   
             {else}
                 {form id="addtocart`$listing->id`" controller=cart action=addItem} 
@@ -68,9 +66,9 @@
                         {control name="qty" type="text" value="`$listing->minimum_order_quantity`" size=3 maxlength=5 class="lstng-qty"}
                     {/if}
                  {/form}
-            {/if*}
+            {/if}
         {else}
             {* message here saying product not availalble...? *}
         {/if}
-        
+    <div style="clear:both"></div>
 </div>

@@ -339,7 +339,7 @@ class expController {
 	    
         $modelname = $this->basemodel_name;
         $this->$modelname->update($this->params);
-        $this->addContentToSearch();
+        $this->addContentToSearch($this->params);
 
 	    // check for eAlerts
 	    if (!empty($this->params['send_ealerts'])) {

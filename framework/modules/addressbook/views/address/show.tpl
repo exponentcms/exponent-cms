@@ -18,6 +18,15 @@
 	{$address->firstname} {$address->middlename} {$address->lastname}{br}
 	{$address->address1}
 	{if $address->address2 != ""}, {$address->address2}{br}{else}{br}{/if}
-	{$address->city}. {$address->state|statename} {$address->zip}{br}
+	{$address->city}, 
+    {if $address->state == -2}    
+        {$address->non_us_state} 
+    {else}
+        {$address->state|statename} 
+    {/if}
+    {$address->zip}{br}
+    {if $address->state == -2}    
+        {$address->country|countryname}{br}
+    {/if}
 	{$address->phone}
 </address>

@@ -35,13 +35,16 @@ class address extends expRecord {
 	        ),
 		    'is_valid_email'=>array(
 			    'email'=>array('message'=>'The email address you entered does not appear to be a valid email address')
-	        )
+	        ),
+            'is_valid_state'=>array(
+                'state'=>array('message'=>'You must select a valid state, or select --Non US-- and enter a state manually.')
+            )
 		);
     
 	public function __construct($params=null, $get_assoc = false, $get_attached = false) {
 		global $db;
 		parent::__construct($params, $get_assoc, $get_attached);
-		if (!empty($this->state)) {
+		if (!empty($this->state) && $this->state > 0) {
 			$stateObj = $db->selectObject('geo_region', 'id='.$this->state);
 			$this->statename = $stateObj->name;
 			$this->state_code = $stateObj->code;

@@ -28,14 +28,18 @@
 			<thead>
 				<tr>
 				    <th>Default</th>
+                    <th>Creates New User</th> 
+                    <th>Emails Customer</th> 
 					<th>Name</th>
 					<th>Admin</th>
 				</tr>
 			</thead>
 			<tbody>
 				{foreach from=$page->records item=listing name=listings}
-				<tr class="{cycle values="odd,even"}">
-				    <td>{if $listing->is_default == 1}{img src=`$smarty.const.ICON_RELATIVE`toggle_on.png}{/if}</td>
+				<tr class="{cycle values="odd,even"}">				    
+                    <td>{if $listing->is_default == 1}{icon img="clean.png"}{/if}</td>
+                    <td>{if $listing->creates_new_user == 1}{icon img="clean.png"}{/if}</td>
+                    <td>{if $listing->emails_customer == 1}{icon img="clean.png"}{/if}</td>
 					<td>{$listing->title}</td>
 					<td>
 					    {if $permissions.manage == true}

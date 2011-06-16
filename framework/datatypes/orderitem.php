@@ -31,7 +31,8 @@ class orderitem extends expRecord {
 			$this->product = new $prodtype($this->product_id,false,true);
 		} elseif (isset($params['product_id']) && isset($params['product_type'])) {	
 			// see if this is an existing item in the cart
-			$order = order::getUserCart();
+			if(isset($params['orderid'])) $order = new order($params['orderid']);
+            else $order = order::getUserCart();
 			
             //adding lookup on price to acocomdate quantity discounts
 			$where = 'orders_id='.$order->id.' AND product_id='.$params['product_id'].' AND products_price='.$params['products_price']." AND product_type='".$params['product_type']."'";
@@ -161,19 +162,36 @@ class orderitem extends expRecord {
 	}
 	
 	public function getExtraData() {
+        //eDebug($this,true);
         return ($this->extra_data);
 	    //$product = new $this->product_type($this->product_id);
 	    //return $product->formatExtraData($this);
 	}
     
-    public function getShippingSurcharge()
+    public function getProductsName()
     {
-        if ($this->product->surcharge > 0) return "<span class='surcharge'>* This item has an extra freight surcharge of $" . number_format($this->product->surcharge,2).' each.</span>';
+        $name = $this->products_name;        
+        if (is_array($this->product->extra_fields))
+        {
+               $name.="<br/>";
+               foreach ($this->product->extra_fields as $f)
+               {
+                   $name .= " " . $f['value'];
+               }
+        }
+        return $name;    
+        
+    }
+    
+    public function getShippingSurchargeMessage()
+    {
+        $sc = $this->product->getSurcharge();
+        if ($sc > 0) return "<span class='surcharge'>* This item has an extra freight surcharge of $" . number_format($sc,2) .' each.</span>';
         else return '';
     }
     
     public function getLineItemTotal() {
-        return $this->quantity * $this->products_price_adjusted;
+        return $this->quantity * $this->products_price;
     }
     
     /*public function getStatus(){

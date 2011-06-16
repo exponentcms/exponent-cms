@@ -53,6 +53,9 @@ return array(
 	'state'=>array(
 		DB_FIELD_TYPE=>DB_DEF_STRING,
 		DB_FIELD_LEN=>2),
+    'non_us_state'=>array(
+        DB_FIELD_TYPE=>DB_DEF_STRING,
+        DB_FIELD_LEN=>100),
 	'zip'=>array(
 		DB_FIELD_TYPE=>DB_DEF_STRING,
 		DB_FIELD_LEN=>10),

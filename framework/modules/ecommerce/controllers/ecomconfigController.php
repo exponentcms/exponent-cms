@@ -174,12 +174,27 @@ class ecomconfigController extends expController {
        if ($discount->discount_amount == "") $discount->discount_amount = 0;
        if ($discount->discount_percent == "") $discount->discount_percent = 0;
        
-       assign_to_template(array('discount'=>$discount, 'groups'=>$groups, 'selected_groups'=>$selected_groups));
+        // get the shipping options and their methods
+        $shipping = new shipping();
+        foreach ($shipping->available_calculators as $calcid=>$name) {
+            $calc = new $name($calcid);
+            $shipping_services[$calcid] = $calc->title;
+            $shipping_methods[$calcid] = $calc->availableMethods();
+        }
+        
+       assign_to_template(array('discount'=>$discount, 'groups'=>$groups, 'selected_groups'=>$selected_groups, 'shipping_services'=>$shipping_services,'shipping_methods'=>$shipping_methods));
     }
     
     public function update_discount() {
         $id = empty($this->params['id']) ? null : $this->params['id'];
         $discount = new discounts($id);
+        // find required shipping method if needed
+        if ($this->params['required_shipping_calculator_id'] > 0) {
+            $this->params['required_shipping_method'] = $this->params['required_shipping_methods'][$this->params['required_shipping_calculator_id']];
+        } else {
+            $this->params['required_shipping_calculator_id'] = 0;
+        }
+        
         $discount->update($this->params);
         expHistory::back();
     }

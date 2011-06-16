@@ -21,6 +21,7 @@ class shippingcalculator extends expRecord {
     public $table = 'shippingcalculator';
     public $icon = '';
     public $configdata = array();
+    public function addressRequired() { return true; }
     
     public function __construct($params=null, $get_assoc=true, $get_attached=true) {        
         parent::__construct($params, $get_assoc, $get_attached);

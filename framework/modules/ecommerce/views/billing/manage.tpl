@@ -29,7 +29,8 @@
         <tr>
             <th>Name</th>
             <th>Description</th>
-            <th>on/off</th>
+            <th>Enabled</th>
+            <th>Configure</th>
         </tr>
         </thead>
         <tbody>
@@ -42,16 +43,18 @@
 					<div class="item-actions">
                     {if $permissions.manage == 1}                        
 						{if $calc->enabled}
-							<a href="{link action=activate id=$calc->id enabled=0}">{img src=`$smarty.const.ICON_RELATIVE`toggle_on.png}</a>
+							<a href="{link action=activate id=$calc->id enabled=0}">{icon img="toggle_on.png"}</a>
 						{else}
-							<a href="{link action=activate id=$calc->id enabled=1}">{img src=`$smarty.const.ICON_RELATIVE`toggle_off.png}</a>
-						{/if}
-						{if $calc->calculator->hasConfig() == 1}
-							{icon action=configure record=$calc title="Configure `$calc->title`"}
-						{/if}
+							<a href="{link action=activate id=$calc->id enabled=1}">{icon img="toggle_off.png"}</a>
+						{/if}						
 					{/if}
 					</div>
                 {/permissions}
+            </td>
+            <td>
+                {if $calc->calculator->hasConfig() == 1}
+                    {icon action=configure record=$calc title="Configure `$calc->title`"}
+                {/if}
             </td>
         </tr>
         {/foreach}

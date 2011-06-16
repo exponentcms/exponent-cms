@@ -15,7 +15,7 @@
 /**
  * This is the class mysqli_database
  *
- * This is the MySQL-specific implementation of the database class.
+ * This is the MySQLi-specific implementation of the database class.
  * @copyright 2004-2011 OIC Group, Inc.
  * @author Written and Designed by James Hunt
  * @version 2.0.0
@@ -55,28 +55,29 @@ class mysqli_database {
      *   a distinctly new connection handle to the server.
      */
 
-    function connect($username, $password, $hostname, $database, $new=false) {
-        list ( $host, $port ) = @explode(":", $hostname);
-        if ($this->connection = mysqli_connect($host, $username, $password, $database, $port)) {
-            $this->havedb = true;
-        }
-        //fix to support utf8, warning it only works from a certain mySQL version on
-        //needed on mySQL servers that dont have the default connection encoding setting to utf8
-        //As we do not have any setting for ISAM or InnoDB tables yet, i set the minimum specs
-        // for using this feature to 4.1.2, although isam tables got the support for utf8 already in 4.1
-        //anything else would result in an inconsitent user experience
-        //TODO: determine how to handle encoding on postgres
+	function connect ($username, $password, $hostname, $database, $new=false) {
+		list ( $host, $port ) = @explode (":", $hostname);
+		if ($this->connection = mysqli_connect($host, $username, $password, $database, $port)) {
+			$this->havedb = true;
+		}
+		//fix to support utf8, warning it only works from a certain mySQL version on
+		//needed on mySQL servers that dont have the default connection encoding setting to utf8
 
-        list($major, $minor, $micro) = sscanf(mysqli_get_server_info($this->connection), "%d.%d.%d-%s");
-        if (defined("DB_ENCODING")) {
-            //SET NAMES is possible since version 4.1
-            if (($major > 4) OR (($major == 4) AND ($minor >= 1))) {
-                @mysqli_query($this->connection, "SET NAMES " . DB_ENCODING);
-            }
-        }
+		//As we do not have any setting for ISAM or InnoDB tables yet, i set the minimum specs
+		// for using this feature to 4.1.2, although isam tables got the support for utf8 already in 4.1
+		//anything else would result in an inconsitent user experience
+		//TODO: determine how to handle encoding on postgres
 
-        $this->prefix = DB_TABLE_PREFIX . '_';
-    }
+		list($major, $minor, $micro) = sscanf(mysqli_get_server_info($this->connection), "%d.%d.%d-%s");
+		if(defined("DB_ENCODING")) {
+			//SET NAMES is possible since version 4.1
+			if(($major > 4) OR (($major == 4) AND ($minor >= 1))) {
+				@mysqli_query($this->connection, "SET NAMES " . DB_ENCODING);
+			}
+		}
+
+		$this->prefix = DB_TABLE_PREFIX . '_';
+	}
 
     /**
      * Create a new Table
@@ -91,26 +92,23 @@ class mysqli_database {
      *   the Exponent Data Definition Language.
      * @param array $info Information about the table itself.
      * @return array
-     */
-    function createTable($tablename, $datadef, $info) {
-        if (!is_array($info))
-            $info = array(); // Initialize for later use.
+	 */
+	function createTable($tablename,$datadef,$info) {
+		if (!is_array($info)) $info = array(); // Initialize for later use.
 
-            $sql = "CREATE TABLE `" . $this->prefix . "$tablename` (";
-        $primary = array();
-        $fulltext = array();
-        $unique = array();
-        $index = array();
-        foreach ($datadef as $name => $def) {
-            if ($def != null) {
-                $sql .= $this->fieldSQL($name, $def) . ",";
-                if (!empty($def[DB_PRIMARY]))
-                    $primary[] = $name;
-                if (!empty($def[DB_FULLTEXT]))
-                    $fulltext[] = $name;
-                if (isset($def[DB_INDEX]) && ($def[DB_INDEX] > 0)) {
-                    if ($def[DB_FIELD_TYPE] == DB_DEF_STRING) {
-                        $index[$name] = $def[DB_INDEX];
+		$sql = "CREATE TABLE `" . $this->prefix . "$tablename` (";
+		$primary = array();
+		$fulltext = array();
+		$unique = array();
+		$index = array();
+		foreach ($datadef as $name=>$def) {
+			if ($def != null) {
+				$sql .= $this->fieldSQL($name,$def) . ",";
+				if (!empty($def[DB_PRIMARY]))  $primary[] = $name;
+				if (!empty($def[DB_FULLTEXT])) $fulltext[] = $name;
+				if (isset($def[DB_INDEX]) && ($def[DB_INDEX] > 0)) {
+					if ($def[DB_FIELD_TYPE] == DB_DEF_STRING) {
+						$index[$name] = $def[DB_INDEX];
                     } else {
                         $index[$name] = 0;
                     }
@@ -507,7 +505,7 @@ class mysqli_database {
 	 * @param null $where
 	 * @return bool
 	 */
-    function setUniqueFlag($object, $table, $col, $where=null) {
+    function setUniqueFlag($object, $table, $col, $where=1) {
         if (isset($object->id)) {
             $this->sql("UPDATE " . DB_TABLE_PREFIX . "_" . $table . " SET " . $col . "=0 WHERE " . $where);
             $this->sql("UPDATE " . DB_TABLE_PREFIX . "_" . $table . " SET " . $col . "=1 WHERE id=" . $object->id);
@@ -856,10 +854,6 @@ class mysqli_database {
      * @return int|void
      */
     function queryRows($sql) {
-        /* $logFile = "C:\\xampp\\htdocs\\supserg\\tmp\\queryLog.txt";
-          $lfh = fopen($logFile, 'a');
-          fwrite($lfh, $sql . "\n");
-          fclose($lfh); */
         $res = @mysqli_query($this->connection, $sql);
         return empty($res) ? 0 : mysqli_num_rows($res);
     }
@@ -884,8 +878,22 @@ class mysqli_database {
             return null;
         return mysqli_fetch_object($res);
     }
-
-    /**
+    
+    function lockTable($table,$lockType="WRITE") {
+        $sql = "LOCK TABLES `" . $this->prefix . "$table` $lockType";
+       
+        $res = mysqli_query($this->connection, $sql); 
+        return $res;
+    }
+    
+    function unlockTables() {
+        $sql = "UNLOCK TABLES";
+        
+        $res = mysqli_query($this->connection, $sql);
+        return $res;
+    }
+    
+	/**
      * Insert an Object into some table in the Database
      *
      * This method will return the ID assigned to the new record by MySQL.  Note that
@@ -966,7 +974,14 @@ class mysqli_database {
             //We do not want to save any fields that start with an '_'
             //if($is_revisioned && $var=='revision_id') $val++;
             if ($var{0} != '_') {
-                $sql .= "`$var`='" . mysqli_real_escape_string($this->connection, $val) . "',";
+                if (is_array($val) || is_object($val)) 
+                {            
+                    $val = serialize($val);   
+                    $sql .= "`$var`='".$val."',";
+                }else
+                {   
+                    $sql .= "`$var`='".mysqli_real_escape_string($this->connection,$val)."',";
+                }
             }
         }
         $sql = substr($sql, 0, -1) . " WHERE ";
@@ -1362,11 +1377,7 @@ class mysqli_database {
      * @param string $sql The name of the table/object to look at
      * @return array
      */
-    function selectArraysBySql($sql) {
-        /* $logFile = "C:\\xampp\\htdocs\\supserg\\tmp\\queryLog.txt";
-          $lfh = fopen($logFile, 'a');
-          fwrite($lfh, $sql . "\n");
-          fclose($lfh); */
+    function selectArraysBySql($sql) {        
         $res = @mysqli_query($this->connection, $sql);
         if ($res == null)
             return array();
@@ -1417,22 +1428,20 @@ class mysqli_database {
      * @param bool $get_attached
      * @return array
      */
-    function selectExpObjects($table, $where=null, $classname, $get_assoc=true, $get_attached=true) {
-        if ($where == null)
-            $where = "1";
+    function selectExpObjects($table, $where=null, $classname, $get_assoc=true, $get_attached=true, $except=array(), $cascade_except=false) {
+        if ($where == null) $where = "1";        
         $sql = "SELECT * FROM `" . $this->prefix . "$table` WHERE $where";
-        /* $logFile = "C:\\xampp\\htdocs\\supserg\\tmp\\queryLog.txt";
-          $lfh = fopen($logFile, 'a');
-          fwrite($lfh, $sql . "\n");
-          fclose($lfh); */
-        //eDebug($sql); 
         $res = @mysqli_query($this->connection, $sql);
-        if ($res == null)
-            return array();
+        if ($res == null) return array();
         $arrays = array();
         $numrows = mysqli_num_rows($res);
         for ($i = 0; $i < $numrows; $i++)
-            $arrays[] = new $classname(mysqli_fetch_assoc($res), $get_assoc, $get_attached);
+        {
+            $assArr = mysqli_fetch_assoc($res);
+            $assArr['except'] = $except;
+            if($cascade_except) $assArr['cascade_except'] = $cascade_except;
+            $arrays[] = new $classname($assArr, $get_assoc, $get_attached);
+        }
         return $arrays;
     }
 
@@ -1616,9 +1625,22 @@ class mysqli_database {
 			GROUP BY node.title
 			HAVING depth = 1
 			ORDER BY node.lft;';
-        $children = $this->selectObjectsBySql($sql);
+		$children = $this->selectObjectsBySql($sql);
         return $children;
-    }
+	}
+	
+	/* This function returns all the text columns in the given table */
+	function getTextColumns($table) {
+		$sql = "SHOW COLUMNS FROM " . $this->prefix.$table . " WHERE type = 'text' OR type like 'varchar%'";
+		$res = @mysqli_query($this->connection, $sql);
+		if ($res == null) return array();
+		$records = array();
+		while($row = mysqli_fetch_object($res)) {
+			$records[] = $row->Field;
+		}
+		
+		return $records;
+	}
 
 }
 

@@ -44,9 +44,11 @@
 						</a>
 					</td> 
 					<td><a href="{link action=show id=$listing->id}">{$listing->invoice_id}</a></td>
-					<td>${$listing->grand_total|number_format:2}</td>
+					<td style="text-align:right;">${$listing->grand_total|number_format:2}</td>
 					<td>{$listing->purchased|format_date:$smarty.const.DISPLAY_DATETIME_FORMAT}</td>
+                    <td>{$listing->order_type}</td>
 					<td>{$listing->status}</td>
+                    <td>{if $listing->orig_referrer !=''}<a href="{$listing->orig_referrer}" target="_blank" title="{$listing->orig_referrer}">{icon img="clean.png"}</a>{/if}</td> 
 				</tr>
 				{foreachelse}
 				    <tr class="{cycle values="odd,even"}">

@@ -3,7 +3,7 @@
 {/css}
 
 
-<div class="billing-method payflowpro creditcard-form">
+<div class="billing-method authorized creditcard-form">
     <h4>Pay By Credit Card</h4>
     {form name="ccinfoform" id="ccinfoform" controller=cart action=preprocess}
         {control type="hidden" name="billingcalculator_id" value=$key}

@@ -30,8 +30,7 @@ class shippingmethod extends expRecord {
 		$address = is_object($address) ? $address : new address($address);
 		$this->addresses_id = $address->id;
 		unset($address->id);
-//		$this->update($address);
-		$this->update();
+		$this->update($address);
 	}	
 	
 	function afterSave() {
@@ -49,8 +48,8 @@ class shippingmethod extends expRecord {
         }
 	}
 	
-	function requiresShipping() {
-	    global $order;
+	function requiresShipping($order) {
+	    //global $order;
 	    $orderitem = new orderitem();
         $items = $orderitem->find('all', 'orders_id='.$order->id." AND shippingmethods_id=".$this->id);
         foreach ($items as $item) {

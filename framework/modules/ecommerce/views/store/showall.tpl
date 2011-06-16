@@ -52,6 +52,7 @@
     <div class="bodycopy">{$current_category->body}</div>
 
     {if $categories|@count > 0}
+    <hr/>
     <div class="cats">
     <h2>Categories Under {$current_category->title}</h2>
     {foreach name="cats" from=$categories item="cat"}
@@ -87,8 +88,8 @@
     {/foreach}
     <div style="clear:both"></div>
     </div>
-    {/if}
-    
+    {else}
+    <!--hr/-->
     <h2>All Products Under {$current_category->title}</h2>
     {pagelinks paginate=$page top=1}
     {*control type="dropdown" name="sortme" items=$page->sort_dropdown default=$defaultSort*}
@@ -126,3 +127,43 @@
     {*control type="dropdown" name="sortme" items=$page->sort_dropdown default=$defaultSort*}
     {pagelinks paginate=$page bottom=1}
 </div>
+
+
+{script unique="expanding-text" yui3mods="yui"}
+{literal}
+YUI().use("anim-easing","node","anim", function(Y) {
+    
+    var modules = Y.all('.showall.store .bodycopy');
+
+    modules.each(function(n,k){
+        // add fx plugin to module body
+        var content = n.one('.more-text');
+        if (!Y.Lang.isNull(content)) {
+        content.plug(Y.Plugin.NodeFX, {
+            to: { height: 0 },
+            from: {
+                height: function(node) { // dynamic in case of change
+                    return node.get('scrollHeight'); // get expanded height (offsetHeight may be zero)
+                }
+            },
+
+            easing: Y.Easing.easeOut,
+            duration: 0.5
+        });
+
+        var onClick = function(e) {
+            e.halt();
+            n.toggleClass('yui-closed');
+            content.fx.set('reverse', !content.fx.get('reverse')); // toggle reverse
+            content.fx.run();
+        };
+
+        var control = n.one('.toggle');
+        control.on('click', onClick);
+        //n.one('.more-text .close').on('click', onClick);
+        };
+    });
+    
+});
+{/literal}
+{/script}

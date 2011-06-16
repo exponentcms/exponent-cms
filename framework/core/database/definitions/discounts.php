@@ -60,8 +60,16 @@ return array(
     'discount_amount'=>array(
         DB_FIELD_TYPE=>DB_DEF_DECIMAL,
         FORM_FIELD_FILTER=>MONEY),
+    'shipping_discount_amount'=>array(
+        DB_FIELD_TYPE=>DB_DEF_DECIMAL,
+        FORM_FIELD_FILTER=>MONEY),
     'discount_percent'=>array(
         DB_FIELD_TYPE=>DB_DEF_DECIMAL),
+    "required_shipping_calculator_id"=>array(
+        DB_FIELD_TYPE=>DB_DEF_ID),
+    "required_shipping_method"=>array(
+        DB_FIELD_TYPE=>DB_DEF_STRING,
+        DB_FIELD_LEN=>100),    
     'created_at'=>array(
         DB_FIELD_TYPE=>DB_DEF_TIMESTAMP),
     'edited_at'=>array(

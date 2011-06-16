@@ -18,7 +18,12 @@
 #invoice table {
     width:100%;
     border:1px solid #83aa53;
-    border-width:0 1px 1px 1px;
+    border-width:0 1px 1px 1px;    
+}
+
+#invoice table.payment-info
+{
+    table-layout: fixed;
 }
 
 #invoice table thead tr {
@@ -33,6 +38,10 @@
 
 #invoice table td {
     background:#edffdf;
+}
+
+#invoice .email{
+    word-wrap: break-word;
 }
 
 #invoice address span {

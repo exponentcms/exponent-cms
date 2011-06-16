@@ -21,8 +21,10 @@
     
     {form action=update}
         {control type="hidden" name="id" value=$record->id}
-        {control type="text" name="title" label="Status Type" value=$record->title}
+        {control type="text" name="title" label="Order Type" value=$record->title}
         {control type="checkbox" name="is_default" label="Default?" value=1 checked=$record->is_default}
+        {control type="checkbox" name="creates_new_user" label="Creates New User?" value=1 checked=$record->creates_new_user}
+        {control type="checkbox" name="emails_customer" label="Emails Customer?" value=1 checked=$record->emails_customer}
         {control type="buttongroup" submit="Submit" cancel="Cancel"}
     {/form}
 </div>

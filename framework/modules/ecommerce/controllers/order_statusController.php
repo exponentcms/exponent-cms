@@ -89,6 +89,13 @@ class order_statusController extends expController {
         expHistory::back();
     }
     
+    public function toggle_default() {
+        global $db;
+        $order_status = new order_status($this->params['id']);
+        $db->setUniqueFlag($order_status, 'order_status', 'is_default');
+        expHistory::back();
+    }
+    
     public function showall() {
         redirct_to(array('controller'=>'order_status', 'action'=>'manage'));
     }

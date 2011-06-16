@@ -18,16 +18,17 @@
     <tr>
         <td class="cart-image">
             {if $item->product->expFile.mainimage[0]->id}
-                <a style="margin: 0px; padding:0px" href="{link action=showByTitle controller=store title=$item->product->sef_url}">{img file_id=$item->product->expFile.mainimage[0]->id h=50 w=50 zc=1 class="border"}</a>
+                <a style="margin: 0px; padding:0px" href="{link action=showByTitle controller=store title=$item->product->getSEFURL()}">{img file_id=$item->product->expFile.mainimage[0]->id h=50 w=50 zc=1 class="border"}</a>
             {else}
                 No Image Available
             {/if}
         </td>
         <td>
-            <span class="itemname"><strong>{$item->products_name}</strong></span>
+            <span class="itemname"><strong><a style="margin: 0px; padding:0px" href="{link action=showByTitle controller=store title=$item->product->getSEFURL()}">{$item->products_name}</a></strong></span>
             <div class="itembody">
-                {$item->product->body|strip_tags|truncate:50:"..."}
-                {*$item->getCartSummary()*}
+                {*$item->product->body|strip_tags|truncate:50:"..."*}
+                {$item->getCartSummary()}{br}
+                {$item->getShippingSurchargeMessage()}
             </div>
             {if $options|@count > 0 || $item->getUserInputFields()!= ''}
                 <div class="options">

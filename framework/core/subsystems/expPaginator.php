@@ -46,6 +46,7 @@ class expPaginator {
      * @var string
      */
 	public $model = null;
+    public $search_string = '';
 	public $sql = '';
     public $count_sql = '';
 	public $where = '';	
@@ -93,7 +94,7 @@ class expPaginator {
 	 */
 	public function __construct($params=array()) {
 		global $router,$db;		
-		
+		                                     
 		$this->where = empty($params['where']) ? null : $params['where'];
 		$this->records = empty($params['records']) ? array() : $params['records'];
 		$this->limit = empty($params['limit']) ? 10 : $params['limit'];
@@ -156,12 +157,14 @@ class expPaginator {
 		} 		
 		
 		// figure out how many records we're dealing with & grab the records
-		if (isset($params['records'])) { //PRB: we could have empty records, and need to hit this
+		if (!empty($this->records)) { //from MUS
+		//if (isset($params['records'])) { //from most current Trunk.... PRB: we could have empty records, and need to hit this
 		    // sort, count and slice the records that were passed in to us
 		    usort($this->records,array('expPaginator', strtolower($this->order_direction)));
 		    $this->total_records = count($this->records);
 		    $this->records = array_slice($this->records, $this->start, $this->limit);
-		} elseif (!empty($class)) { //where clause     //FJD: was $this->class, but wasn't working...
+		} elseif (!empty($this->where)) { //from MUS....where clause
+		//} elseif (!empty($class)) { //from most current Trunk    //FJD: was $this->class, but wasn't working...
 			$this->total_records = $class->find('count', $this->where);
 			$this->records = $class->find('all', $this->where, $this->order.' '.$this->order_direction, $this->limit, $this->start);
 		} else { //sql clause
@@ -170,9 +173,9 @@ class expPaginator {
             //this is MUCH faster if you supply a proper count_sql param using a COUNT() function; if not,
             //we'll run the standard sql and do a queryRows with it
             
-//			$this->total_records = $this->count_sql == '' ? $db->queryRows($this->sql) : $db->selectValueBySql($this->count_sql);
-			$this->total_records = $db->queryRows($this->sql);
-			//eDebug($this->count_sql);
+			//$this->total_records = $this->count_sql == '' ? $db->queryRows($this->sql) : $db->selectValueBySql($this->count_sql); //From MUS
+			$this->total_records = $db->queryRows($this->sql); //From most current Trunk
+			
             if (!empty($this->order)) $this->sql .= ' ORDER BY '.$this->order.' '.$this->order_direction;
 			if (!empty($this->limit)) $this->sql .= ' LIMIT '.$this->start.','.$this->limit;
 			
@@ -180,13 +183,15 @@ class expPaginator {
 			if (isset($this->model) || isset($params['model_field'])) {
 			    foreach($db->selectObjectsBySql($this->sql) as $record) {
 			        $classname = isset($params['model_field']) ? $record->$params['model_field'] : $this->model;
-			        $this->records[] = new $classname($record->id, true, true); //added false, true, as we shouldn't need associated items here, but do need attached. FJD.
+			        //$this->records[] = new $classname($record->id, true, true); //From current trunk // added false, true, as we shouldn't need associated items here, but do need attached. FJD.
+					$this->records[] = new $classname($record->id, false, true); //From MUS //added false, true, as we shouldn't need associated items here, but do need attached. FJD.
 			    }
 			} else {
 			    $this->records = $db->selectObjectsBySql($this->sql);
 			}
 		}	
 		
+        $this->runCallback();
         //eDebug($this->records);
 		// get the number of the last record we are showing...this is used in the page links.
 		// i.e.  "showing 10-19 of 57"...$this->last would be the 19 in that string
@@ -200,7 +205,9 @@ class expPaginator {
 		}
 			
 		// get the page parameters from the router to build the links
-		$page_params = $router->params;
+		//$page_params = $router->params; //from Current Trunk
+		$page_params = $this->cleanParams($router->params); //From MUS
+
 		//if (empty($page_params['module'])) $page_params['module'] = $this->controller;
 		//if (empty($page_params['action'])) $page_params['action'] = $this->action;
 		//if (empty($page_params['src']) && isset($params['src'])) $page_params['src'] = $params['src'];
@@ -277,7 +284,12 @@ class expPaginator {
 		$this->makeHeaderCols($page_params);
          
         $sortparams = array_merge($page_params, $router->params);
-        
+		
+		//From MUS ****
+        if (isset($router->params['page'])) $sortparams['page'] = $router->params['page'];
+        else unset($sortparams['page']);
+        //End From MUS ****
+
 		$this->makeSortDropdown($sortparams);
        
         
@@ -289,6 +301,32 @@ class expPaginator {
                                                            
 	}
 	
+	//From MUS
+    private function cleanParams($params)
+    {  
+        $defaultParams = array('title'=>'','module'=>'','controller'=>'','src'=>'','dir'=>'');
+        $newParams = array();
+        $func = new ReflectionClass($this);       
+        foreach ($params as $pKey=>$pVal)
+        {               
+            $propname = $pKey;
+            if (array_key_exists($propname,$defaultParams))
+            {
+                $newParams[$propname] = $params[$propname];                
+            }               
+        }        
+        foreach ($func->getProperties() as $p)
+        {               
+            $propname = $p->name;
+            if (array_key_exists($propname,$params))
+            {
+                $newParams[$propname] = $params[$propname];                
+            }               
+        }        
+        
+        return $newParams;
+    }
+    
     public function makeHeaderCols($params) {
         global $router;
         if (!empty($this->columns) && is_array($this->columns)) {
@@ -366,6 +404,24 @@ class expPaginator {
         }
     }
     
+    //here if we want to modify the record for some reason. Using in search results w/ products
+    private function runCallback()
+    {
+        foreach ($this->records as &$record)
+        {
+            if (isset($record->ref_type))
+            {
+                $refType = $record->ref_type;
+                $type = new $refType();
+                $classinfo = new ReflectionClass($type); 
+                if ($classinfo->hasMethod('paginationCallback')) {
+                    $item = new $type($record->original_id);
+                    $item->paginationCallback(&$record);
+                }
+            } 
+        }    
+    }
+    
 	public function makeSortDropdown($params) {
 		global $router;
 		if (!empty($this->columns) && is_array($this->columns)) {
@@ -387,6 +443,13 @@ class expPaginator {
 			}  */
 			
 			//loop over the columns and build out a list of <th>'s to be used in the page table
+           // eDebug($router);
+            $defaultParams['controller'] = $params['controller'];
+            $defaultParams['action'] = $params['action'];
+            if (isset($params['title'])) $defaultParams['title'] = $params['title'];
+            if (isset($params['page'])) $defaultParams['page'] = $params['page'];
+            
+            $this->sort_dropdown[$router->makeLink($defaultParams, null, null, true)] = "Default";
 			foreach ($this->columns as $colname=>$col) {
 				// if this is the column we are sorting on right now we need to setup some class info
 				/*$class = isset($this->class) ? $this->class : 'page';

@@ -19,13 +19,12 @@
 
  {css unique="confirmation2" link="`$asset_path`css/confirmation.css"}
 
- {/css}
-
- 
+ {/css}                                                
 
 <div class="module cart confirm">
-    <h1>{$moduletitle|default:"Confirm your order"}</h1> 
-
+    <h1>{ecomconfig var='checkout_title_top' default="Confirm Your Secure Order"}</h1> 
+    <div id="cart-message">{ecomconfig var='checkout_message_top' default=""}</div>
+    {br}
     <div class="billinginfo exp-ecom-table">
         <h2>Billing Information</h2>
         You will be paying by <strong>{$billing->calculator->payment_type}</strong>{br}{br}
@@ -37,14 +36,26 @@
         <table class="collapse nowrap">
             <tbody>
                 <tr class="even"><td class="right">Subtotal:</td><td class="totals subtotal">{currency_symbol}{$order->subtotal|number_format:2}</td></tr>
-                <tr class="odd"><td class="right">Discounts:</td><td class="totals discounts">-{currency_symbol}{$order->total_discounts|number_format:2}</td></tr>
-                <tr class="even"><td class="right">Total:</td><td class="totals subtotal">{currency_symbol}{$order->total|number_format:2}</td></tr>
+                {if $order->total_discounts > 0}
+                    <tr class="odd"><td class="right">Discounts:</td><td class="totals discounts">-{currency_symbol}{$order->total_discounts|number_format:2}</td></tr>
+                    <tr class="even"><td class="right">Total:</td><td class="totals subtotal">{currency_symbol}{$order->total|number_format:2}</td></tr>
+                {/if}
                 <tr class="odd"><td class="right">Tax:</td><td class="totals tax">{currency_symbol}{$order->tax|number_format:2}</td></tr>
                 {if $order->shipping_required == true} 
-                <tr class="even">
-                    <td class="right">Shipping:</td>
-                    <td class="totals shipping">{currency_symbol}{$order->shipping_total|number_format:2}</td>
-                </tr>
+                    <tr class="even">
+                        <td class="right">Shipping:</td>
+                        <td class="totals shipping">{currency_symbol}{$order->shipping_total_before_discounts|number_format:2}</td>                   
+                    </tr>                    
+                    {if $order->shippingDiscount > 0}
+                        <tr class="odd">
+                            <td class="right">Shipping<br/>Discount:</td>
+                            <td class="totals shipping">{currency_symbol}-{$order->shippingDiscount|number_format:2}</td>
+                        </tr>
+                        <tr class="even">
+                            <td class="right">Total Shipping:</td>
+                            <td class="totals shipping">{currency_symbol}{$order->shipping_total|number_format:2}</td>
+                        </tr>
+                    {/if}
                 {/if}
                 {if $order->surcharge_total != 0} 
                 <tr class="even">
@@ -101,7 +112,17 @@
             {$shipping->shippingmethod->firstname} {$shipping->shippingmethod->middlename} {$shipping->shippingmethod->lastname}{br}
             {$shipping->shippingmethod->address1}{br}
             {if $shipping->shippingmethod->address2}{$shipping->shippingmethod->address2}{br}{/if}
-            {$shipping->shippingmethod->city}, {$shipping->shippingmethod->state|statename}, {$shipping->shippingmethod->zip}
+            {$shipping->shippingmethod->city}, 
+            {* $shipping->shippingmethod->state|statename}, {$shipping->shippingmethod->zip *}
+            {if $shipping->shippingmethod->state == -2}
+                    {$shipping->shippingmethod->non_us_state}
+                {else}
+                    {$shipping->shippingmethod->state|statename:abv}
+                {/if}
+                 {$shipping->shippingmethod->zip}
+                {if $shipping->shippingmethod->state == -2}
+                    {br}{$shipping->shippingmethod->country|countryname}
+                {/if}
             </address>      
             {clear}
             {if $shipping->shippingmethod->to != "" || $shipping->shippingmethod->from != "" || $shipping->shippingmethod->message != ""}
@@ -126,7 +147,17 @@
                 Items shipping to {$method->firstname} {$method->lastname} 
                 {$method->organization} 
                 {$method->address1} 
-                {$method->address2} {$method->city}, {$method->state|statename:abbv} {$method->zip}
+                {$method->address2} {$method->city}, 
+                {* $method->state|statename:abbv} {$method->zip *}
+                {if $method->state == -2}
+                    {$method->non_us_state}
+                {else}
+                    {$method->state|statename:abv}
+                {/if}
+                 {$method->zip}
+                {if $method->state == -2}
+                    {br}{$method->country|countryname}
+                {/if}
                 &nbsp;-&nbsp;{$method->option_title} - ${$method->shipping_cost}
             </h4>
             {include file="../order/partial_summary.tpl" items=$method->orderitem}
@@ -137,11 +168,18 @@
     </div>
     
     <div class="confirmationlinks">
-        <a href="{if $nologin}{link controller=cart action=process nologin=1}{else}{link controller=cart action=process}{/if}" class="exp-ecom-link awesome blue medium next">
-            Looks good, process it &rarr;
+        <a href="{if $nologin}{link controller=cart action=process nologin=1}{else}{link controller=cart action=process}{/if}" class="exp-ecom-link next">
+            <strong><em>Looks good, submit my order!</em></strong>
         </a>
-        <a href="{link controller=cart action=checkout}" class="exp-ecom-link awesome blue medium back">
-            &larr; Let me edit something
+        <a href="{link controller=cart action=checkout}" class="exp-ecom-link back">
+            <strong><em>Let me edit something</em></strong>
         </a>
     </div>
+    <p align="center">
+    <div style="width:100%; margin: auto;">
+    {ecomconfig var='ssl_seal' default="" unescape="true"}
+    </div>
+</p>
+
+{ecomconfig var='checkout_message_bottom' default=""}
 </div>

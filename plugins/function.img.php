@@ -195,7 +195,7 @@ function smarty_function_img($params,&$smarty) {
 											 (default is 0 for overlay and 10% for underlay);
 											 <o> is opacity (0 = transparent, 100 = opaque)
 												 (requires PHP v4.3.2, otherwise 100% opaque);
-											 (thanks raynerapeÿgmail*com, shabazz3ÿmsu*edu)
+											 (thanks raynerape?gmail*com, shabazz3?msu*edu)
 										   - "wmi" (WaterMarkImage)
 											 [ex: &fltr[]=wmi|<f>|<a>|<o>|<x>|<y>|<r>] where
 											 <f> is the filename of the image to overlay;

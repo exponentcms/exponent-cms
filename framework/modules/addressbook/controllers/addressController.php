@@ -26,6 +26,7 @@ class addressController extends expController {
     function author() { return "Adam Kessler @ OIC Group, Inc"; }
     function hasSources() { return true; }
     function hasViews() { return true; }
+    function canImportData() { return true;}
     function hasContent() { return true; }
     function supportsWorkflow() { return false; }
     function isSearchable() { return true; }
@@ -85,7 +86,7 @@ class addressController extends expController {
             $this->params['is_shipping'] = 1; 
             $this->address->update($this->params);
         }
-		expHistory::back();
+		expHistory::back(); 
 	}
 	
 	public function delete() {

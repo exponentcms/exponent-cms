@@ -110,10 +110,11 @@ class creditcard extends billingcalculator {
 	//the returnd object will be saved in the session and passed to post_process.
 	//If need be this could use another method of data storage, as long post_process can get the data.
 	function userFormUpdate($params) {
-        //eDebug($params);
-        if (!$this->validate_card_number($params['cc_number'])) expValidator::failAndReturnToForm("Please enter a valid credit card number.");
-        if (!$this->validate_card_expire($params['expiration_month'] . substr($params['expiration_year'],2,2))) expValidator::failAndReturnToForm("Please enter a valid expiration data.");
-        if (!$this->validate_cvv($params['cvv'])) expValidator::failAndReturnToForm("Please enter a valid CVV number.");
+        //eDebug($params);        
+        if (!$this->validate_card_number($params['cc_number']) || !$this->validate_card_type($params['cc_number'],$params['cc_type'])) 
+            expValidator::failAndReturnToForm("Either the card number you entered is not a " .$this->cards[$params['cc_type']].", or the credit card you entered is not a valid credit card number. Please select the proper credit card type and verify the number entered and try again.<br/>For your security, your previously entered credit card information has been cleared.");
+        if (!$this->validate_card_expire($params['expiration_month'] . substr($params['expiration_year'],2,2))) expValidator::failAndReturnToForm("Please enter a valid expiration data.<br/>For your security, your previously entered credit card information has been cleared.");
+        if (!$this->validate_cvv($params['cvv'])) expValidator::failAndReturnToForm("Please enter a valid CVV number.<br/>For your security, your previously entered credit card information has been cleared.");
             
         //eDebug(debug_backtrace(), true);
         //eDebug($params);
@@ -157,7 +158,7 @@ class creditcard extends billingcalculator {
     * @param array $params The url prameters, as if sef was off. 
     * @return mixed An object indicating pass of failure. 
     */
-    function preprocess($method, $opts, $params)
+    function preprocess($method, $opts, $params, $order)
     {
          //just save the opts        
         $method->update(array('billing_options'=>serialize($opts)));
@@ -203,6 +204,47 @@ class creditcard extends billingcalculator {
         return false;
 
     }
+    function validate_card_type($cc_num,$type)
+    {
+        if($type == "AmExCard")
+        {
+            $pattern = "/^3[47][0-9]{13}$/";//American Express            
+            if (preg_match($pattern,$cc_num)) {
+                return true;
+            } else {
+                return false;
+            }
+        } 
+        elseif($type == "DiscoverCard") 
+        {
+            $pattern = "/^6(?:011|5[0-9]{2})[0-9]{12}$/";//Discover Card
+            if (preg_match($pattern,$cc_num)) {
+                return true;
+            } else {
+                return false;
+            }
+        } 
+        elseif($type == "MasterCard") 
+        {            
+            $pattern = "/^5[1-5][0-9]{14}$/";//Mastercard
+            if (preg_match($pattern,$cc_num)) {
+                return true;
+            } else {
+                return false;
+            }
+        } 
+        elseif($type == "VisaCard") 
+        {
+            $pattern = "/^4[0-9]{12}(?:[0-9]{3})?$/";//Visa
+            
+            if (preg_match($pattern,$cc_num)) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+    }
+    
     // luhn algorithm
     function validate_card_number($card_number) 
     {

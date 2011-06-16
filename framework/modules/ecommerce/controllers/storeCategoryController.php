@@ -26,7 +26,7 @@ class storeCategoryController extends expNestedNodeController {
 	function hasSources() { return true; }
 	function hasViews() { return true; }
 
-	protected $add_permissions = array('fix_categories'=>'to do what you are trying to so. So knock it off!');
+	protected $add_permissions = array('fix_categories'=>'to run this action.');
 
     // hide the configs we don't need
     public $remove_configs = array(
@@ -39,8 +39,9 @@ class storeCategoryController extends expNestedNodeController {
     );
 
     public function edit() {
+		$record = new storeCategoryFeeds($this->params['id']);
         $site_page_default = ecomconfig::getConfig('pagination_default');
-        assign_to_template(array('site_page_default'=>$site_page_default));
+        assign_to_template(array('site_page_default'=>$site_page_default, 'record'=>$record));
         parent::edit();
     }
     
@@ -119,29 +120,34 @@ class storeCategoryController extends expNestedNodeController {
             $chldcat->is_active = $this->params['is_active'];
             $chldcat->save();
         }
+
+		$category_type = isset($this->params['category_type']) ? $this->params['category_type'] : 'google_product_types';
+        $record = new $category_type();
+		$record->saveCategories($this->params['google_product_types'], $curcat->id); 
+		
         expHistory::back();
     }
     
     function fix_categories() {
         //--Flat Structure--//
         global $db;
-        
-        $Nodes = $db->selectArrays('storeCategories');
+        $baseCat = new storeCategory();
+        //$Nodes = $db->selectObjects('storeCategories');
+        $Nodes = $baseCat->find('all','','lft ASC');
 
         //--This function converts flat structure into an array--//
         function BuildTree($TheNodes, $ID = 0, $depth=-1) {
             $Tree = array();
-            if(is_array($TheNodes)) {
-                
+            if(is_array($TheNodes)) {                
                 foreach($TheNodes as $Node) {
-                    if($Node["parent_id"] == $ID) {
+                    if($Node->parent_id == $ID) {
                         array_push($Tree, $Node);
                     }
                 }
                 $depth++;
                 for($x = 0; $x < count($Tree); $x++) {
-                    $Tree[$x]["depth"] = $depth;
-                    $Tree[$x]["kids"] = BuildTree($TheNodes, $Tree[$x]["id"], $depth);
+                    $Tree[$x]->depth = $depth;
+                    $Tree[$x]->kids = BuildTree($TheNodes, $Tree[$x]->id, $depth);
                     //array_merge($test,$Tree[$x]["kids"]);
                 }
                 return($Tree);
@@ -152,10 +158,47 @@ class storeCategoryController extends expNestedNodeController {
         //--Call Build Tree (returns structured array)
         $TheTree = BuildTree($Nodes);
         
-        
+        //eDebug($TheTree,true);
         // flattens a tree created by parent/child relationships
         
-        function flattenArray(array $array){
+        function recurseBuild(&$thisNode, &$thisLeft, &$thisRight)
+        {
+           $thisNode->lft = $thisLeft;
+           if(count($thisNode->kids) > 0) 
+           {
+                $thisLeft = $thisNode->lft + 1;                 
+                foreach ($thisNode->kids as &$myKidNode)
+                {
+                    $thisRight = $thisLeft + 1;   
+                    recurseBuild($myKidNode,$thisLeft, $thisRight); 
+                    $myKidNode->save();                  
+                }    
+                $thisNode->rgt = $thisLeft;
+                $thisLeft = $thisRight;
+           }else
+           {                  
+               $thisNode->rgt = $thisRight;               
+               
+               $thisLeft = $thisRight+1;
+           }                  
+           
+           $thisRight = $thisLeft+1;
+           $thisNode->save();
+        }
+        
+        //if kids, set lft, but not right
+        //else set both and move down
+        $newLeft = 1;
+        $newRight = 2;
+        foreach ($TheTree as &$myNode)
+        {
+           recurseBuild($myNode,$newLeft, $newRight);
+        }
+        //eDebug($TheTree,true);
+        
+        echo "Done";
+        
+        /*function flattenArray(array $array){
             $ret_array = array();
             $counter=0;
             foreach(new RecursiveIteratorIterator(new RecursiveArrayIterator($array)) as $key=>$value) {
@@ -165,12 +208,14 @@ class storeCategoryController extends expNestedNodeController {
                 $ret_array[$counter][$key] = $value;
             }
             return $ret_array;
-        }
+        }*/
+        
         
         // takes a flat array with propper parent/child relationships in propper order
         // and adds the lft and rgt extents correctly for a nested set
         
-        function nestify($categories) {
+        
+        /*function nestify($categories) {
             // Trees mapped            
             $trees = array();
             $trackParents = array();
@@ -207,20 +252,20 @@ class storeCategoryController extends expNestedNodeController {
                     }
                     
                     $categories[$key]['lft'] = $counter;
-                    $counter++;
+                    //???$counter++;
                 }        
                 $prevDepth=$val['depth'];
             }
 
             $categories[$key]['rgt'] = $counter;
             return $categories;
-        }
+        } */
 
 
         
         // takes a flat nested set formatted array and creates a multi-dimensional array from it
 
-        function toHierarchy($collection)
+        /*function toHierarchy($collection)
         {
                 // Trees mapped
                 $trees = array();
@@ -259,12 +304,12 @@ class storeCategoryController extends expNestedNodeController {
                 }
 
                 return $trees;
-        }
+        }*/
         
         // this will test our data manipulation
         // eDebug(toHierarchy(nestify(flattenArray($TheTree))),1);
         
-        $flat_fixed_cats = nestify(flattenArray($TheTree));
+        /*$flat_fixed_cats = nestify(flattenArray($TheTree));
                 
         foreach ($flat_fixed_cats as $k=>$v) {
             $cat = new storeCategory($v['id']);
@@ -273,7 +318,7 @@ class storeCategoryController extends expNestedNodeController {
             $cat->save();
             eDebug($cat);
         }
-
+          */
         //-Show Array Structure--//
         // print_r($TheTree);
         // 

@@ -5,6 +5,9 @@ define("ECOM_AUTHORIZENET_AUTH_ONLY",1);
 
 class authorizedotnet extends creditcard {
 	function name() { return "Authorize.net Payment Gateway"; }
+	public function captureEnabled() {return true; }
+    public function voidEnabled() {return true; }
+    public function creditEnabled() {return true; }
 	function description() {
 	    return "Enabling this payment option will allow your customers to use their credit card to make purchases on your site.  It does require
 	    an account with Authorize.net before you can use it to process credit cards.";
@@ -32,8 +35,7 @@ class authorizedotnet extends creditcard {
 		$data = array(
 			"x_login"=>$config['username'],
 			"x_version"=>'3.1',
-			"x_tran_key"=>$config['transaction_key'],
-			"x_test_request"=> $config['testmode'], 
+			"x_tran_key"=>$config['transaction_key'],			
 			//"x_password"=>$config['password'],
 			"x_delim_data"=>'TRUE',
 			"x_delim_char"=>'|',
@@ -65,6 +67,8 @@ class authorizedotnet extends creditcard {
 			"x_card_code"=>$opts->cvv,
 		);
 		
+		if ($config['testmode']) $data["x_test_request"] = "TRUE"; 
+
 		if (!empty($user->email) && $config['email_customer']) {
 			$data['x_email_customer'] = 'TRUE';
 		} else {
@@ -85,8 +89,13 @@ class authorizedotnet extends creditcard {
 			
 		// take the last & out for the string
 		$data2 = substr($data2, 0, -1);
-
-		$url = "https://secure.authorize.net/gateway/transact.dll";
+		
+		//Check if it is test mode and assign the proper url
+		if($config['testmode']) {
+			$url = "https://test.authorize.net/gateway/transact.dll";
+		} else {
+			$url = "https://secure.authorize.net/gateway/transact.dll";
+		}
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL,$url);
 		curl_setopt($ch, CURLOPT_TIMEOUT,30);
@@ -108,17 +117,118 @@ class authorizedotnet extends creditcard {
             $object->AUTHCODE = $response[4];
             $object->AVSResponse = $response[5];
             $object->HASH = $response[37];            
-	     $object->CVVResponse = $response[38];
+			$object->CVVResponse = $response[38];
             $object->PNREF = $response[6];
+			$object->transactionID = $response[6];
+			$object->correlationID = $response[7];
+			$trax_state = "complete";     
 		} else {
 			$object->errorCode = $response[2]; //Response reason code
 			$object->message = $response[3];
+			$trax_state = "error";     
 		}
 
-        $opts->result = $object;        
+        $opts->result = $object;      
         $opts->cc_number = 'xxxx-xxxx-xxxx-'.substr($opts->cc_number, -4);
         $method->update(array('billing_options'=>serialize($opts)));
+		$this->createBillingTransaction($method, number_format($order->grand_total, 2, '.', ''),$opts->result,$trax_state);
 		return $object;
+	}
+	
+	function credit_transaction($method, $amount) {
+
+		$config = unserialize($this->config);
+		$billing_options = unserialize($method->billing_options);
+
+		$data = array (
+				'x_login' 				=> $config['username'],
+				'x_tran_key' 			=> $config['transaction_key'],
+				'x_type' 				=> 'VOID', 
+				'x_amount'				=> $amount,
+				'x_card_num'			=> substr($billing_options->cc_number, -4),
+				'x_trans_id'			=> urlencode($billing_options->result->transactionID),
+				'x_relay_response' 		=> 'FALSE', 
+				'x_delim_data'			=> 'TRUE'
+			);
+	
+		if (!empty($user->email) && $config['email_customer']) {
+			$data['x_email_customer'] = 'TRUE';
+		} else {
+			$data['x_email_customer'] = 'FALSE';
+		}
+		
+		$data2 = "";
+		while(list($key, $value) = each($data)) {
+			$data2 .= $key . '=' . urlencode(ereg_replace(',', '', $value)) . '&';
+		}
+			
+		// take the last & out for the string
+		$data2 = substr($data2, 0, -1);
+		
+		//Check if it is test mode and assign the proper url
+		if($config['testmode']) {
+			$url = "https://test.authorize.net/gateway/transact.dll";
+		} else {
+			$url = "https://secure.authorize.net/gateway/transact.dll";
+		}
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL,$url);
+		curl_setopt($ch, CURLOPT_TIMEOUT,30);
+		curl_setopt($ch, CURLOPT_VERBOSE, 0);
+		curl_setopt($ch, CURLOPT_POST, 1);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $data2);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER,1);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);  //Windows 2003 Compatibility 
+		$authorize = curl_exec($ch);
+		curl_close($ch);
+		
+		$response = split(",", $authorize);	
+		if($response[2] == 1) { //if it is completed
+			$method->update(array('billing_options'=>serialize($billing_options), 'transaction_state'=>'voided'));
+			$this->createBillingTransaction($method, urldecode($response[9]),$billing_options->result,'voided');
+			
+			flash('message', 'Void Completed Successfully.');
+			redirect_to(array('controller'=>'order', 'action'=>'show', 'id'=>$method->orders_id));
+		} else { // if it has error which like means it is already settled
+		
+			$data = array (
+				'x_login' 				=> $config['username'],
+				'x_tran_key' 			=> $config['transaction_key'],
+				'x_type' 				=> 'CREDIT', 
+				'x_amount'				=> $amount,
+				'x_card_num'			=> substr($billing_options->cc_number, -4),
+				'x_trans_id'			=> urlencode($billing_options->result->transactionID),
+				'x_relay_response' 		=> 'FALSE', 
+				'x_delim_data'			=> 'TRUE'
+			);
+	
+			$data2 = "";
+			while(list($key, $value) = each($data)) {
+				$data2 .= $key . '=' . urlencode(ereg_replace(',', '', $value)) . '&';
+			}
+				
+			// take the last & out for the string
+			$data2 = substr($data2, 0, -1);
+			
+			$ch = curl_init();
+			curl_setopt($ch, CURLOPT_URL,$url);
+			curl_setopt($ch, CURLOPT_TIMEOUT,30);
+			curl_setopt($ch, CURLOPT_VERBOSE, 0);
+			curl_setopt($ch, CURLOPT_POST, 1);
+			curl_setopt($ch, CURLOPT_POSTFIELDS, $data2);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER,1);
+			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);  //Windows 2003 Compatibility 
+			$authorize = curl_exec($ch);
+			curl_close($ch);
+			
+			$response = split(",", $authorize);	
+			
+			$method->update(array('billing_options'=>serialize($billing_options), 'transaction_state'=>'refunded'));
+			$this->createBillingTransaction($method, urldecode($response[9]),$billing_options->result,'refunded');
+			
+			flash('message', 'Refund Completed Successfully.');
+			redirect_to(array('controller'=>'order', 'action'=>'show', 'id'=>$method->orders_id));
+		}
 	}
 	
 	//Config Form

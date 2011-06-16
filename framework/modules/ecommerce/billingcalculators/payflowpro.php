@@ -8,13 +8,17 @@ class payflowpro extends creditcard {
 	function hasUserForm() { return true;}
 	function isOffsite() { return false; }
 	function isSelectable() { return true; }
+    
+    public function captureEnabled() {return true; }
+    public function voidEnabled() {return true; }
+    public function creditEnabled() {return true; }
 
     /*function preprocess($method, $opts, $params)
     {
        
     } */
     
-	function process($method, $opts) {
+	function process($method, $opts, $params, $invoice_number) {
 	    
         $config = unserialize($this->config);
         //eDebug($config,true);
@@ -70,6 +74,7 @@ class payflowpro extends creditcard {
         if ($config['testmode'] == 1) 
         {
             $submiturl = 'https://pilot-payflowpro.paypal.com';   
+            flash('message','This Transaction is in TEST MODE');   
         } 
         else 
         {
@@ -85,7 +90,7 @@ class payflowpro extends creditcard {
             'TENDER'    =>  'C', // C = credit card, P = PayPal
             'TRXTYPE'   =>  'S', // S = Sale transaction, A = Authorisation, C = Credit, D = Delayed Capture, V = Void
             'ACCT'      =>  $opts->cc_number,
-            'EXPDATE'   =>  $opts->exp_month.$opts->exp_year,
+            'EXPDATE'   =>  $opts->exp_month . substr($opts->exp_year,2,2),
             'NAME'      =>  $method->firstname.$method->lastname,
             'AMT'       =>  number_format($order->grand_total, 2, '.', ''),
             
@@ -113,8 +118,7 @@ class payflowpro extends creditcard {
         $nvpstr = "";
         while(list($key, $value) = each($apiParams)) 
         {
-//            $tmpVal = urlencode(ereg_replace(',', '', $value));
-            $tmpVal = urlencode(preg_replace(',', '', $value));
+            $tmpVal = urlencode(ereg_replace(',', '', $value));
             $nvpstr .= $key . '[' . strlen($tmpVal) . ']=' . $tmpVal . '&';
         }
             
@@ -123,7 +127,7 @@ class payflowpro extends creditcard {
         
         
         // build hash
-        $request_id = md5($opts->cc_number . $order->grand_total . date('YmdGis') . "1");
+        $request_id = md5($opts->cc_number . $order->grand_total . time() . "1");
         
         $headers[] = "X-VPS-Request-ID: " . $request_id;
         $headers[] = "Content-Type: text/namevalue "; //or maybe text/xml
@@ -163,6 +167,7 @@ class payflowpro extends creditcard {
         $object->message = "Transaction failed. Error #-1";
         if (isset($response['RESULT']) && $response['RESULT'] == 0)  // Approved !!!
         {
+            $object->request_id = $request_id; 
             $object->errorCode = $response['RESULT'];
             $object->message = $response['RESPMSG'];
             $object->PNREF = $response['PNREF'];
@@ -177,6 +182,7 @@ class payflowpro extends creditcard {
         }
         else                          
         {
+            $object->request_id = $request_id; 
             $object->errorCode = $response['RESULT'];
             $object->message = $response['RESPMSG'];
             $object->PNREF = $response['PNREF'];
@@ -219,7 +225,8 @@ class payflowpro extends creditcard {
         // set the api endpoint url depending on test mode setting
         if ($config['testmode'] == 1) 
         {
-            $submiturl = 'https://pilot-payflowpro.paypal.com';   
+            $submiturl = 'https://pilot-payflowpro.paypal.com';
+            flash('message','This Transaction is in TEST MODE');   
         } 
         else 
         {
@@ -235,7 +242,7 @@ class payflowpro extends creditcard {
             'TENDER'    =>  'C', // C = credit card, P = PayPal
             'TRXTYPE'   =>  'A', // S = Sale transaction, A = Authorization, C = Credit, D = Delayed Capture, V = Void
             'ACCT'      =>  $opts->cc_number,
-            'EXPDATE'   =>  $opts->exp_month.$opts->exp_year,
+            'EXPDATE'   =>  $opts->exp_month . substr($opts->exp_year,2,2),
             'NAME'      =>  $method->firstname.$method->lastname,
             'AMT'       =>  number_format($order->grand_total, 2, '.', ''),
             
@@ -262,8 +269,7 @@ class payflowpro extends creditcard {
         $nvpstr = "";
         while(list($key, $value) = each($apiParams)) 
         {
-//            $tmpVal = urlencode(ereg_replace(',', '', $value));
-            $tmpVal = urlencode(preg_replace(',', '', $value));
+            $tmpVal = urlencode(str_replace(',', '', $value));
             $nvpstr .= $key . '[' . strlen($tmpVal) . ']=' . $tmpVal . '&';
             //$nvpstr .= $key . '=' . $tmpVal . '&';
         }
@@ -272,7 +278,7 @@ class payflowpro extends creditcard {
         $nvpstr = substr($nvpstr, 0, -1); 
         
         // build hash
-        $request_id = md5($opts->cc_number . $order->grand_total . date('YmdGis') . "1");
+        $request_id = md5($opts->cc_number . $order->grand_total . time() . "1");
         
         $headers[] = "X-VPS-Request-ID: " . $request_id;
         $headers[] = "Content-Type: text/namevalue "; //or maybe text/xml
@@ -318,6 +324,7 @@ class payflowpro extends creditcard {
         $object->message = "Transaction failed. Error #-1";
         if (isset($response['RESULT']) && $response['RESULT'] == 0)  // Approved !!!
         {
+            $object->request_id = $request_id; 
             $object->errorCode = $response['RESULT'];
             $object->message = $response['RESPMSG'];
             $object->PNREF = $response['PNREF'];
@@ -332,6 +339,7 @@ class payflowpro extends creditcard {
         }
         else
         {
+            $object->request_id = $request_id; 
             $object->errorCode = $response['RESULT'];
             $object->message = $response['RESPMSG'];
             $object->PNREF = $response['PNREF'];
@@ -371,12 +379,14 @@ class payflowpro extends creditcard {
         if ($config['testmode'] == 1) 
         {
             $submiturl = 'https://pilot-payflowpro.paypal.com';   
+            flash('message','This Transaction is in TEST MODE');   
         } 
         else 
         {
             $submiturl = 'https://payflowpro.paypal.com';
         }
         
+        //eDebug($config,true);
         $apiParams = array(
             'USER'      =>  (empty($config['user'])) ? $config['vendor'] : $config['user'],
             'VENDOR'    =>  $config['vendor'],
@@ -399,8 +409,7 @@ class payflowpro extends creditcard {
         $nvpstr = "";
         while(list($key, $value) = each($apiParams)) 
         {
-//            $tmpVal = urlencode(ereg_replace(',', '', $value));
-            $tmpVal = urlencode(preg_replace(',', '', $value));
+            $tmpVal = urlencode(ereg_replace(',', '', $value));
             $nvpstr .= $key . '[' . strlen($tmpVal) . ']=' . $tmpVal . '&';
         }
             
@@ -408,7 +417,7 @@ class payflowpro extends creditcard {
         $nvpstr = substr($nvpstr, 0, -1);        
         
         // build hash
-        $request_id = md5( $config['vendor'] . $amount . date('YmdGis') . "1");
+        $request_id = md5( $config['vendor'] . $opts->result->PNREF . time());
         
         $headers[] = "X-VPS-Request-ID: " . $request_id;    //random unique string
         $headers[] = "Content-Type: text/namevalue "; //or maybe text/xml
@@ -450,14 +459,11 @@ class payflowpro extends creditcard {
         $object->message = "Transaction failed. Error #-1";
         if (isset($response['RESULT']) && $response['RESULT'] == 0)  // Approved !!!
         {
+            $opts->result->request_id = $request_id;
             $opts->result->errorCode = $response['RESULT'];
             $opts->result->message = $response['RESPMSG'];
             $opts->result->PNREF = $response['PNREF'];
-            $opts->result->AUTHCODE = $response['AUTHCODE'];
-            /*$opts->result->AVSADDR = $response['AVSADDR'];
-            $opts->result->AVSZIP = $response['AVSZIP'];
-            $opts->result->HOSTCODE = $response['HOSTCODE'];
-            $opts->result->PROCAVS = $response['PROCAVS'];*/
+            $opts->result->AUTHCODE = $response['AUTHCODE'];            
             $opts->result->traction_type = 'Capture';
             $opts->result->amount_captured = $amount;
             $trax_state = "complete";
@@ -466,6 +472,7 @@ class payflowpro extends creditcard {
         }
         else
         {
+            $object->request_id = $request_id;
             $object->errorCode = $response['RESULT'];
             $object->message = $response['RESPMSG'];
             /*$opts->result->PNREF = $response['PNREF'];
@@ -496,6 +503,7 @@ class payflowpro extends creditcard {
         if ($config['testmode'] == 1) 
         {
             $submiturl = 'https://pilot-payflowpro.paypal.com';   
+            flash('message','This Transaction is in TEST MODE');   
         } 
         else 
         {
@@ -522,8 +530,7 @@ class payflowpro extends creditcard {
         $nvpstr = "";
         while(list($key, $value) = each($apiParams)) 
         {
-//            $tmpVal = urlencode(ereg_replace(',', '', $value));
-            $tmpVal = urlencode(preg_replace(',', '', $value));
+            $tmpVal = urlencode(ereg_replace(',', '', $value));
             $nvpstr .= $key . '[' . strlen($tmpVal) . ']=' . $tmpVal . '&';
         }
             
@@ -532,7 +539,7 @@ class payflowpro extends creditcard {
         
         
         // build hash
-        $request_id = md5($opts->cc_number . $order->grand_total . date('YmdGis') . "1");
+        $request_id = md5($opts->cc_number . $order->grand_total . time() . "1");
         
         $headers[] = "X-VPS-Request-ID: " . $request_id;
         $headers[] = "Content-Type: text/namevalue "; //or maybe text/xml
@@ -574,6 +581,7 @@ class payflowpro extends creditcard {
         $object->message = "Transaction failed. Error #-1";
         if (isset($response['RESULT']) && $response['RESULT'] == 0)  // Approved !!!
         {
+            $opts->result->request_id = $request_id;
             $opts->result->errorCode = $response['RESULT'];
             $opts->result->message = $response['RESPMSG'];
             $opts->result->PNREF = $response['PNREF'];
@@ -590,6 +598,7 @@ class payflowpro extends creditcard {
         }
         else
         {
+            $object->request_id = $request_id;
             $object->errorCode = $response['RESULT'];
             $object->message = $response['RESPMSG'];
             /*$opts->result->PNREF = $response['PNREF'];
@@ -620,6 +629,7 @@ class payflowpro extends creditcard {
         if ($config['testmode'] == 1) 
         {
             $submiturl = 'https://pilot-payflowpro.paypal.com';   
+            flash('message','This Transaction is in TEST MODE');   
         } 
         else 
         {
@@ -647,8 +657,7 @@ class payflowpro extends creditcard {
         $nvpstr = "";
         while(list($key, $value) = each($apiParams)) 
         {
-//            $tmpVal = urlencode(ereg_replace(',', '', $value));
-            $tmpVal = urlencode(preg_replace(',', '', $value));
+            $tmpVal = urlencode(ereg_replace(',', '', $value));
             $nvpstr .= $key . '[' . strlen($tmpVal) . ']=' . $tmpVal . '&';
         }
             
@@ -656,7 +665,7 @@ class payflowpro extends creditcard {
         $nvpstr = substr($nvpstr, 0, -1);        
 
         // build hash
-        $request_id = md5($opts->cc_number . $order->grand_total . date('YmdGis') . "1");
+        $request_id = md5($opts->cc_number . $order->grand_total . time() . "1");
         
         $headers[] = "X-VPS-Request-ID: " . $request_id;
         $headers[] = "Content-Type: text/namevalue "; //or maybe text/xml
@@ -698,6 +707,7 @@ class payflowpro extends creditcard {
         $object->message = "Transaction failed. Error #-1";
         if (isset($response['RESULT']) && $response['RESULT'] == 0)  // Approved !!!
         {
+            $opts->result->request_id = $request_id;
             $opts->result->errorCode = $response['RESULT'];
             $opts->result->message = $response['RESPMSG'];
             $opts->result->PNREF = $response['PNREF'];
@@ -714,6 +724,7 @@ class payflowpro extends creditcard {
         }
         else
         {
+            $object->request_id = $request_id;
             $object->errorCode = $response['RESULT'];
             $object->message = $response['RESPMSG'];
             /*$opts->result->PNREF = $response['PNREF'];
@@ -780,8 +791,9 @@ class payflowpro extends creditcard {
 	}
     
     
-        public function postProcess() {
+    public function postProcess($order,$params) {
         $this->opts = null;
+        return true;
     }
     
     
@@ -831,9 +843,16 @@ class payflowpro extends creditcard {
         return $ret->result->AUTHCODE;
     }
     
-    function getPaymentReferenceNumber($billingmethod) {
-        $ret = expUnserialize($billingmethod->billing_options);
-        return $ret->result->PNREF;
+    function getPaymentReferenceNumber($opts) {
+        $ret = expUnserialize($opts);
+        if (isset($ret->result))
+        {
+            return $ret->result->PNREF;    
+        }
+        else
+        {
+            return $ret->PNREF;
+        }         
     }
     
     function getPaymentStatus($billingmethod) {

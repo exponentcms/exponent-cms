@@ -26,10 +26,7 @@ return array(
         DB_FIELD_TYPE=>DB_DEF_ID),
     "discount_id"=>array(
         DB_FIELD_TYPE=>DB_DEF_ID,
-        DB_INDEX=>10),
-    "carts_id"=>array(
-        DB_FIELD_TYPE=>DB_DEF_ID,
-        DB_INDEX=>10),    
+        DB_INDEX=>10),        
     'title'=>array(
         DB_FIELD_TYPE=>DB_DEF_STRING,
         DB_FIELD_LEN=>200),

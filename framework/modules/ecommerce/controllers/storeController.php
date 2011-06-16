@@ -20,9 +20,7 @@
 class storeController extends expController {
     public $basemodel_name = 'product';
     
- 
-	
-	public $useractions = array(
+    public $useractions = array(
         'showall'=>'All Products and Categories',
         'showall_featured_products'=>'Products - Only show Featured',
         'showallManufacturers'=>'Products - By Manufacturer',
@@ -48,10 +46,17 @@ class storeController extends expController {
     );
     
     //protected $permissions = array_merge(array("test"=>'Test'), array('copyProduct'=>"Copy Product"));
-    protected $add_permissions = array('copyProduct'=>"Copy Product",'delete_children'=>"Delete Children", 'import'=>'Import Products', 'export'=>'Export Products','findDupes'=>'Fix Duplicate SEF Names');
+    protected $add_permissions = array('copyProduct'=>"Copy Product",'delete_children'=>"Delete Children", 'import'=>'Import Products', 'reimport'=>'ReImport Products', 'export'=>'Export Products','findDupes'=>'Fix Duplicate SEF Names','manage_sales_reps'=>'Manage Sales Reps', 'batch_process'=>'Batch capture order transactions','process_orders'=>'Batch capture order transactions','import_external_addresses'=>'Import addressess from other sources',
+    'showallImpropercategorized'=>'View products in top level categories that should not be',
+    'showallUncategorized'=>'View all uncategorized products',
+    'nonUnicodeProducts'=>'View all non-unicode charset products',
+    'cleanNonUnicodeProducts'=>'Clean all non-unicode charset products',
+    '_convertUTF'=>'Convert to UTF products',
+    '_validUTF'=>'isValid UTF products',
+    );
      
     function name() { return $this->displayname(); } //for backwards compat with old modules
-    function displayname() { return "Store Front"; }
+    function displayname() { return "e-Commerce Store Front"; }
     function description() { return "Use this module to display products and categories of you Ecommerce store"; }
     function author() { return "OIC Group, Inc"; }
     function hasSources() { return true; }
@@ -68,7 +73,7 @@ class storeController extends expController {
         
         // we're setting the config here globably
         $this->grabConfig();          
-        //eDebug($this->config);
+
         if (expTheme::inAction() && !empty($router->url_parts[1]) && ($router->url_parts[0]=="store"&&$router->url_parts[1]=="showall")) {
             if (isset($router->url_parts[array_search('title',$router->url_parts)+1]) && is_string($router->url_parts[array_search('title',$router->url_parts)+1])) {
                 $default_id = $db->selectValue('storeCategories', 'id', "sef_url='".$router->url_parts[array_search('title',$router->url_parts)+1]."'");
@@ -82,7 +87,6 @@ class storeController extends expController {
             if (isset($router->url_parts[array_search('id',$router->url_parts)+1])&&($router->url_parts[array_search('id',$router->url_parts)+1]!=0)) {
                 $default_id = $db->selectValue('product_storeCategories', 'storecategories_id', "product_id='".$router->url_parts[array_search('id',$router->url_parts)+1]."'");
                 expSession::set('catid',$default_id);
-				
             } else {
                 $prod_id = $db->selectValue('product', 'id', "sef_url='".$router->url_parts[array_search('title',$router->url_parts)+1]."'");
                 $default_id = $db->selectValue('product_storeCategories', 'storecategories_id', "product_id='".$prod_id."'");
@@ -121,7 +125,7 @@ class storeController extends expController {
             $count_sql_start = 'SELECT COUNT(DISTINCT p.id) FROM '.DB_TABLE_PREFIX.'_product p ';
             
             
-            $sql_start  = 'SELECT DISTINCT p.* FROM '.DB_TABLE_PREFIX.'_product p ';            
+            $sql_start  = 'SELECT DISTINCT p.*, IF(base_price > special_price AND use_special_price=1,special_price, base_price) as price FROM '.DB_TABLE_PREFIX.'_product p ';            
             $sql = 'JOIN '.DB_TABLE_PREFIX.'_product_storeCategories sc ON p.id = sc.product_id ';
             $sql .= 'WHERE ';
             if ( !($user->is_admin || $user->is_acting_admin) ) $sql .= '(p.active_type=0 OR p.active_type=1) AND ' ;
@@ -162,7 +166,7 @@ class storeController extends expController {
                 'dir'=>$dir,
                 'controller'=>$this->params['controller'],
                 'action'=>$this->params['action'],
-                'columns'=>array('Model #'=>'model','Product Name'=>'title','Price'=>'base_price'),
+                'columns'=>array('Model #'=>'model','Product Name'=>'title','Price'=>'price'),
                 ));
         } else {
             $page = new expPaginator(array(
@@ -173,13 +177,13 @@ class storeController extends expController {
                 'dir'=>$dir,
                 'controller'=>$this->params['controller'],
                 'action'=>$this->params['action'],
-                'columns'=>array('Model #'=>'model','Product Name'=>'title','Price'=>'base_price'),
+                'columns'=>array('Model #'=>'model','Product Name'=>'title','Price'=>'price'),
                 ));
         }
 
         $ancestors = $this->category->pathToNode();   
         $categories = ($this->parent == 0) ? $this->category->getTopLevel(null,false,true) : $this->category->getChildren(null,false,true);
-        
+                
         $rerankSQL = "SELECT DISTINCT p.* FROM ".DB_TABLE_PREFIX."_product p JOIN ".DB_TABLE_PREFIX."_product_storeCategories sc ON  p.id = sc.product_id WHERE sc.storecategories_id=".$this->category->id." ORDER BY rank ASC";
         //eDebug($router);
         $defaultSort = $router->current_url;
@@ -229,19 +233,19 @@ class storeController extends expController {
         
         assign_to_template(array('page'=>$page));
     }
-	
+    
     function events_calendar() {
-    	global $db;
-		
+        global $db;
+        
         expHistory::set('viewable', $this->params);
-		
-		if (!defined("SYS_DATETIME")) include_once(BASE."subsystems/datetime.php");
+        
+        if (!defined("SYS_DATETIME")) include_once(BASE."subsystems/datetime.php");
         if (!defined('SYS_SORTING')) include_once(BASE.'subsystems/sorting.php');
-		
-		$time = isset($this->params['time']) ? $this->params['time'] : time();
+        
+        $time = isset($this->params['time']) ? $this->params['time'] : time();
         assign_to_template(array('time'=>$time));
-		
-		$monthly = array();
+        
+        $monthly = array();
         $counts = array();
         
         $info = getdate($time);
@@ -253,7 +257,7 @@ class storeController extends expController {
         
         $timefirst = mktime(12,0,0,$info['mon'],1,$info['year']);
         $infofirst = getdate($timefirst);
-		
+        
         if ($infofirst['wday'] == 0) {
             $monthly[$week] = array(); // initialize for non days
             $counts[$week] = array();
@@ -268,15 +272,15 @@ class storeController extends expController {
         // $endofmonth = exponent_datetime_endOfMonthDay($time);
         
         $endofmonth = date('t', $time);
-		
+        
         
         for ($i = 1; $i <= $endofmonth; $i++) {
             $start = mktime(0,0,0,$info['mon'],$i,$info['year']);
             if ($i == $nowinfo['mday']) $currentweek = $week;
            
-		    $dates = $db->selectObjects("eventregistration","`eventdate` = $start");
+            $dates = $db->selectObjects("eventregistration","`eventdate` = $start");
             $monthly[$week][$i] = storeController::_getEventsForDates($dates);
-			
+            
             $counts[$week][$i] = count($monthly[$week][$i]);
             if ($weekday >= 6) {
                 $week++;
@@ -291,20 +295,20 @@ class storeController extends expController {
             $counts[$week][$i+$endofmonth] = -1;
         }
         
-		assign_to_template(array(
-		    'currentweek'=>$currentweek,
-			'monthly'=>$monthly,
-			'counts'=>$counts,
-			'nextmonth'=>$timefirst+(86400*45),
-			'prevmonth'=>$timefirst-(86400*15),
-			'now'=>$timefirst
-		));
+        assign_to_template(array(
+            'currentweek'=>$currentweek,
+            'monthly'=>$monthly,
+            'counts'=>$counts,
+            'nextmonth'=>$timefirst+(86400*45),
+            'prevmonth'=>$timefirst-(86400*15),
+            'now'=>$timefirst
+        ));
     }
-	
-	/*
-	 * Helper function for the Calendar view
-	 */
-	function _getEventsForDates($edates,$sort_asc = true) {		
+    
+    /*
+     * Helper function for the Calendar view
+     */
+    function _getEventsForDates($edates,$sort_asc = true) {        
         if (!defined('SYS_SORTING')) include_once(BASE.'subsystems/sorting.php');
         if ($sort_asc && !function_exists('exponent_sorting_byEventStartAscending')) {
             function exponent_sorting_byEventStartAscending($a,$b) {
@@ -320,22 +324,22 @@ class storeController extends expController {
         global $db;
         $events = array();
         foreach ($edates as $edate) {
-        	if (!isset($this->params['cat'])) {
-	            if (isset($this->params['title']) && is_string($this->params['title'])) {
-	                $default_id = $db->selectValue('storeCategories', 'id', "sef_url='".$this->params['title']."'");
-	            } elseif (!empty($this->config['category'])) {
-	                $default_id = $this->config['category'];
-	            } elseif (ecomconfig::getConfig('show_first_category')) {
-	                $default_id = $db->selectValue('storeCategories', 'id', 'lft=1');
-	            } else {
-	                $default_id = 0;
-	            }
-	        }
-	        
-	        $parent = isset($this->params['cat']) ? intval($this->params['cat']) : $default_id;
-	        
-	        $category = new storeCategory($parent);
-	        
+            if (!isset($this->params['cat'])) {
+                if (isset($this->params['title']) && is_string($this->params['title'])) {
+                    $default_id = $db->selectValue('storeCategories', 'id', "sef_url='".$this->params['title']."'");
+                } elseif (!empty($this->config['category'])) {
+                    $default_id = $this->config['category'];
+                } elseif (ecomconfig::getConfig('show_first_category')) {
+                    $default_id = $db->selectValue('storeCategories', 'id', 'lft=1');
+                } else {
+                    $default_id = 0;
+                }
+            }
+            
+            $parent = isset($this->params['cat']) ? intval($this->params['cat']) : $default_id;
+            
+            $category = new storeCategory($parent);
+            
             $sql  = 'SELECT DISTINCT p.*, er.event_starttime, er.signup_cutoff FROM '.DB_TABLE_PREFIX.'_product p ';
             $sql .= 'JOIN '.DB_TABLE_PREFIX.'_product_storeCategories sc ON p.id = sc.product_id ';
             $sql .= 'JOIN '.DB_TABLE_PREFIX.'_eventregistration er ON p.product_type_id = er.id ';
@@ -344,11 +348,11 @@ class storeController extends expController {
             if ($category->hide_closed_events) {
                 $sql .= ' AND er.signup_cutoff > '.time();
             }
-			$sql .= ' AND er.id = '.$edate->id;      
+            $sql .= ' AND er.id = '.$edate->id;      
                     
             $order = 'event_starttime';
             $dir = 'ASC';
-			
+            
             $o = $db->selectObjectBySql($sql);
             $o->eventdate = $edate->eventdate;
             $o->eventstart += $edate->event_starttime;
@@ -399,6 +403,8 @@ class storeController extends expController {
         $sql  = 'SELECT p.* FROM '.DB_TABLE_PREFIX.'_product p JOIN '.DB_TABLE_PREFIX.'_product_storeCategories ';
         $sql .= 'sc ON p.id = sc.product_id WHERE sc.storecategories_id = 0 AND parent_id=0';
         
+        exponent_sessions_set('product_export_query',$sql);
+        
         $page = new expPaginator(array(
             'model_field'=>'product_type',
             'sql'=>$sql,
@@ -419,6 +425,31 @@ class storeController extends expController {
             'columns'=>array('Type'=>'product_type', 'Model #'=>'model', 'Product Name'=>'title','Price'=>'base_price')
             ));
         assign_to_template(array('page'=>$page));
+    }
+   
+   function showallImpropercategorized() {
+        expHistory::set('viewable', $this->params);
+        
+        $sql  = 'SELECT DISTINCT(p.id),p.product_type FROM '.DB_TABLE_PREFIX.'_product p JOIN '.DB_TABLE_PREFIX.'_product_storeCategories psc ON p.id = psc.product_id ';        
+        $sql .= 'JOIN exponent_storeCategories sc ON psc.storecategories_id = sc.parent_id WHERE ';
+        $sql .= 'p.parent_id=0 AND sc.parent_id != 0';
+                              
+        exponent_sessions_set('product_export_query',$sql);
+        
+        $page = new expPaginator(array(
+            'model_field'=>'product_type',
+            'sql'=>$sql,
+            'controller'=>$this->params['controller'],
+            'action'=>$this->params['action'],
+            'columns'=>array('Model #'=>'model','Product Name'=>'title','Price'=>'base_price'),
+            ));
+            
+        assign_to_template(array('page'=>$page, 'moduletitle'=>'Improperly Categorized Products'));
+    }
+    
+    function exportMe()
+    {
+        redirect_to(array('controller'=>'report','action'=>'batch_export','applytoall'=>true));
     }
     
     function showallByManufacturer() {
@@ -477,9 +508,6 @@ class storeController extends expController {
         foreach ($product->crosssellItem as &$csi) {
             $csi->getAttachableItems();
         }
-        
-      //   eDebug($product); 
-         
          
         $tpl = $product_type->getForm('show');
         
@@ -488,14 +516,19 @@ class storeController extends expController {
         //eDebug($product);
         assign_to_template(array('config'=>$this->config, 'product'=>$product, 'last_category'=>$order->lastcat));
     }
-	   
+    
     function showByTitle() {
         global $order, $template, $user;
         //need to add a check here for child product and redirect to parent if hit directly by ID
         expHistory::set('viewable', $this->params);
         $product = new product(addslashes($this->params['title']));
         $product_type = new $product->product_type($product->id);
+        
+        $product_type->title = $this->parseAndTrim($product_type->title,true);
+        $product_type->image_alt_tag = $this->parseAndTrim($product_type->image_alt_tag,true);
+        
         //eDebug($product_type);
+         
         //if we're trying to view a child product directly, then we redirect to it's parent show view
         //bunk URL, no product found
         if(empty($product->id))
@@ -602,7 +635,44 @@ class storeController extends expController {
 
         assign_to_template(array('categories'=>$categories,'curcat'=>$curcat,'topcat'=>@$ancestors[0]));
     }
-	
+    
+    function showTopLevel_images() {
+        global $user;
+        $count_sql_start = 'SELECT COUNT(DISTINCT p.id) FROM '.DB_TABLE_PREFIX.'_product p ';
+        $sql_start  = 'SELECT DISTINCT p.* FROM '.DB_TABLE_PREFIX.'_product p ';            
+        $sql = 'JOIN '.DB_TABLE_PREFIX.'_product_storeCategories sc ON p.id = sc.product_id ';
+        $sql .= 'WHERE ';
+        if ( !($user->is_admin || $user->is_acting_admin) ) $sql .= '(p.active_type=0 OR p.active_type=1)';//' AND ' ;
+        //$sql .= 'sc.storecategories_id IN (';
+        //$sql .= 'SELECT id FROM '.DB_TABLE_PREFIX.'_storeCategories WHERE rgt BETWEEN '.$this->category->lft.' AND '.$this->category->rgt.')';         
+        
+        $count_sql = $count_sql_start . $sql;
+        $sql = $sql_start . $sql;
+        
+        $order = 'sc.rank'; //$this->config['orderby'];
+        $dir = 'ASC'; $this->config['orderby_dir'];
+        
+       $page = new expPaginator(array(
+                'model_field'=>'product_type',
+                'sql'=>$sql,
+                'count_sql'=>$count_sql,
+                'limit'=>$this->config['pagination_default'],
+                'order'=>$order,
+                'dir'=>$dir,
+                'controller'=>$this->params['controller'],
+                'action'=>$this->params['action'],
+                'columns'=>array('Model #'=>'model','Product Name'=>'title','Price'=>'base_price'),
+                ));
+       
+        $category = new storeCategory(null,false,false);
+        //$categories = $category->getEcomSubcategories();
+        $categories = $category->getTopLevel(null,false,true);
+        $ancestors = $this->category->pathToNode();   
+        $curcat = $this->category;
+
+        assign_to_template(array('page'=>$page,'categories'=>$categories));
+    }
+
 	function showFullTree() {
         $category = new storeCategory(null,false,false);
         //$categories = $category->getEcomSubcategories();
@@ -616,7 +686,7 @@ class storeController extends expController {
     function ecom_search() {
 
     }
-
+    
     function billing_config() {
 
     }
@@ -654,28 +724,8 @@ class storeController extends expController {
         }
     }
     
-    
     function search_by_model_form() {
         //do nothing...just show the view.
-    }
-    
-    function search_by_model() {
-        // get the search terms
-        $terms = $this->params['search_string'];
-
-        $sql = "model like '%".$terms."%'";
-
-        $page = new expPaginator(array(
-			'model'=>'product',
-			'controller'=>$this->params['controller'],
-			'action'=>$this->params['action'],
-			'where'=>$sql,
-			'order'=>'title',
-			'dir'=>'DESC',
-			'columns'=>array('Model #'=>'model','Product Name'=>'title','Price'=>'base_price'),
-			));
-        
-        assign_to_template(array('page'=>$page, 'terms'=>$terms));
     }
     
     function edit() {
@@ -892,7 +942,6 @@ class storeController extends expController {
             $prodObj = new $classname();
             $products[$classname] = $prodObj->product_name;
         }
-        //$products['product'] = 'Product';
         assign_to_template(array('product_types'=>$products));
     }
     
@@ -970,7 +1019,6 @@ class storeController extends expController {
                     }
                 }
             }
-
             
             if (!empty($this->params['relatedProducts']) && (empty($originalId) || !empty($this->params['copy_related']))) {
                 $relprods = $db->selectObjects('crosssellItem_product',"product_id=".$record->id);
@@ -1019,9 +1067,25 @@ class storeController extends expController {
                 }
             }
         }        
-        //eDebug($record);
+        
         $record->addContentToSearch();
-        expHistory::back();
+        
+        if($record->parent_id != 0 )
+        {
+            $parent = new $product_type($record->parent_id,false,false);
+            flash("message","Child product saved.");                
+            redirect_to(array('controller'=>'store','action'=>'showByTitle','title'=>$parent->sef_url));
+        }
+        else if(isset($this->params['original_id']) )
+        {
+            flash("message","Product copied and saved. You are now viewing your new product.");                
+            redirect_to(array('controller'=>'store','action'=>'showByTitle','title'=>$record->sef_url));
+        }
+        else
+        {            
+            flash("message","Product saved.");                
+            redirect_to(array('controller'=>'store','action'=>'showByTitle','title'=>$record->sef_url));
+        }        
     }
     
     function delete() {
@@ -1060,18 +1124,18 @@ class storeController extends expController {
     }
     
     static public function getProductTypes() {        
-	    $paths = array(
-	        BASE.'framework/modules/ecommerce/products/datatypes',
-	    );
-	
-	    $products = array();
-	    foreach ($paths as $path) {
-	        if (is_readable($path)) {
+        $paths = array(
+            BASE.'framework/modules/ecommerce/products/datatypes',
+        );
+    
+        $products = array();
+        foreach ($paths as $path) {
+            if (is_readable($path)) {
                 $dh = opendir($path);
                 while (($file = readdir($dh)) !== false) {
                     if (is_readable($path.'/'.$file) && substr($file, -4) == '.php') {
-	                    $classname = substr($file, 0, -4);
-	                    $products[$path.'/'.$file] = $classname;
+                        $classname = substr($file, 0, -4);
+                        $products[$path.'/'.$file] = $classname;
                     }
                 }
             }
@@ -1098,7 +1162,7 @@ class storeController extends expController {
                     $metainfo['description'] = empty($cat->meta_description) ? strip_tags($cat->body) : strip_tags($cat->meta_description);
                 }              
             break;
-            case 'showByTitle':
+            case 'showByTitle':                
                 $prod = new product(isset($_REQUEST['title']) ? $_REQUEST['title']: $_REQUEST['id']);
                 if (!empty($prod)) {
                     $metainfo['title'] = empty($prod->meta_title) ? $prod->title : $prod->meta_title;
@@ -1111,33 +1175,36 @@ class storeController extends expController {
         }
         
         // Remove any quotes if there are any.
-        $metainfo['title'] =  $this->parseAndTrim($metainfo['title'],1);
-        $metainfo['description'] = str_replace('"', '', $this->parseAndTrim($metainfo['description']));
-        $metainfo['keywords'] = str_replace('"', '', $this->parseAndTrim($metainfo['keywords']));
+        $metainfo['title'] =  $this->parseAndTrim($metainfo['title'],true);
+        $metainfo['description'] = $this->parseAndTrim($metainfo['description'],true);
+        $metainfo['keywords'] = $this->parseAndTrim($metainfo['keywords'],true);
+                
         return $metainfo;
     }
-    
+       
     private function parseAndTrim($str, $unescape=false)
-    {   //ï¿½Death from aboveï¿½? ï¿½
+    {   //“Death from above”? ®
         //echo "1<br>"; eDebug($str);    
+        global $db;
         $str = str_replace("<br>"," ",$str);
         $str = str_replace("</br>"," ",$str);
         $str = str_replace("<br/>"," ",$str);
         $str = str_replace("<br />"," ",$str);
-        $str = str_replace("ï¿½","&rsquo;",$str);
-        $str = str_replace("ï¿½","&lsquo;",$str);
-        $str = str_replace("ï¿½","&#174;",$str);
-        $str = str_replace("ï¿½","-", $str);
-        $str = str_replace("ï¿½","&#151;", $str); 
-        $str = str_replace("ï¿½", "&rdquo;", $str);
-        $str = str_replace("ï¿½", "&ldquo;", $str);
+        $str = str_replace('"',"&quot;",$str);
+        $str = str_replace("'","&#39;",$str);
+        $str = str_replace("’","&rsquo;",$str);
+        $str = str_replace("‘","&lsquo;",$str);
+        $str = str_replace("®","&#174;",$str);
+        $str = str_replace("–","-", $str);
+        $str = str_replace("—","&#151;", $str); 
+        $str = str_replace("”", "&rdquo;", $str);
+        $str = str_replace("“", "&ldquo;", $str);
         $str = str_replace("\r\n"," ",$str); 
-        $str = str_replace("ï¿½","&#188;",$str);
-        $str = str_replace("ï¿½","&#189;",$str);
-        $str = str_replace("ï¿½","&#190;",$str);
-        if ($unescape) $str = stripcslashes(trim(str_replace("ï¿½", "&trade;", $str)));  
-//        else $str = mysql_escape_string(trim(str_replace("ï¿½", "&trade;", $str)));
-        else $str = mysql_real_escape_string(trim(str_replace("ï¿½", "&trade;", $str)));
+        $str = str_replace("¼","&#188;",$str);
+        $str = str_replace("½","&#189;",$str);
+        $str = str_replace("¾","&#190;",$str);
+        if ($unescape) $str = stripcslashes(trim(str_replace("™", "&trade;", $str)));  
+        else $str = @mysql_real_escape_string(trim(str_replace("™", "&trade;", $str))); 
         //echo "2<br>"; eDebug($str,die);
         return $str;
     }
@@ -1169,8 +1236,52 @@ class storeController extends expController {
         $ret = str_ireplace('/','',str_ireplace("(", '', str_ireplace(')', '', $ret)));
         return $ret;
     }
- 
-    public function search() {
+    
+    function search_by_model_old() {
+        // get the search terms
+        $terms = $this->params['search_string'];
+
+        $sql = "model like '%".$terms."%'";
+
+        $page = new expPaginator(array(
+            'model'=>'product',
+            'controller'=>$this->params['controller'],
+            'action'=>$this->params['action'],
+            'where'=>$sql,
+            'order'=>'title',
+            'dir'=>'DESC',
+            'columns'=>array('Model #'=>'model','Product Name'=>'title','Price'=>'base_price'),
+            ));
+        
+        assign_to_template(array('page'=>$page, 'terms'=>$terms));
+    }
+    
+    function search_by_model() {
+        global $db, $user;
+        
+        $sql = "select DISTINCT(p.id) as id, p.title, model from " . $db->prefix . "product as p WHERE ";
+        if ( !($user->is_admin || $user->is_acting_admin) ) $sql .= '(p.active_type=0 OR p.active_type=1) AND ' ;
+
+        
+        //if first character of search is a -, then we do a wild card, else from beginning
+        if($this->params['query'][0] == '-')
+        {
+            $sql .= " p.model LIKE '%" . $this->params['query'];
+        }        
+        else
+        {
+            $sql .= " p.model LIKE '" . $this->params['query'];
+        }
+        
+        $sql .= "%' AND p.parent_id=0 GROUP BY p.id ";    
+        $sql .= "order by p.model ASC LIMIT 30";
+        $res = $db->selectObjectsBySql($sql);
+        //eDebug($sql);
+        $ar = new expAjaxReply(200, gettext('Here\'s the items you wanted'), $res);
+        $ar->send();
+    }
+    
+     public function search() {
         global $db, $user;
         $sql = "select DISTINCT(p.id) as id, p.title, model, sef_url, f.id as fileid  from " . $db->prefix . "product as p INNER JOIN " . 
         $db->prefix . "content_expFiles as cef ON p.id=cef.content_id INNER JOIN " . $db->prefix . 
@@ -1178,11 +1289,671 @@ class storeController extends expController {
         if ( !($user->is_admin || $user->is_acting_admin) ) $sql .= '(p.active_type=0 OR p.active_type=1) AND ' ;
         $sql .= " match (p.title,p.model,p.body) against ('" . $this->params['query'] . 
         "*' IN BOOLEAN MODE) AND p.parent_id=0  GROUP BY p.id "; 
-        $sql .= "order by match (p.title,p.model,p.body) against ('" . $this->params['query'] . "*') desc LIMIT 10";
+        $sql .= "order by match (p.title,p.model,p.body) against ('" . $this->params['query'] . "*') desc LIMIT 30";
         $res = $db->selectObjectsBySql($sql);
+        //eDebug($sql);
         $ar = new expAjaxReply(200, gettext('Here\'s the items you wanted'), $res);
         $ar->send();
     }
+    
+     public function searchNew() {
+        global $db, $user;
+        $sql = "select DISTINCT(p.id) as id, p.title, model, sef_url, f.id as fileid, ";
+        $sql .= "match (p.title,p.model,p.body) against ('" . $this->params['query'] . "') as relevance, ";
+        $sql .= "CASE when p.model like '" . $this->params['query'] . "%' then 1 else 0 END as modelmatch, "; 
+        $sql .= "CASE when p.title like '%" . $this->params['query'] . "%' then 1 else 0 END as titlematch ";        
+        $sql .= "from " . $db->prefix . "product as p INNER JOIN " . 
+        $db->prefix . "content_expFiles as cef ON p.id=cef.content_id INNER JOIN " . $db->prefix . 
+        "expFiles as f ON cef.expFiles_id = f.id WHERE ";
+        if ( !($user->is_admin || $user->is_acting_admin) ) $sql .= '(p.active_type=0 OR p.active_type=1) AND ' ;
+        $sql .= " match (p.title,p.model,p.body) against ('" . $this->params['query'] . "*' IN BOOLEAN MODE) AND p.parent_id=0 "; 
+        $sql .= " HAVING relevance > 0 ";
+        //$sql .= "GROUP BY p.id "; 
+        $sql .= "order by modelmatch,titlematch,relevance desc LIMIT 10";
+        
+        eDebug($sql);
+        $res = $db->selectObjectsBySql($sql);
+        //eDebug($sql);
+        $ar = new expAjaxReply(200, gettext('Here\'s the items you wanted'), $res);
+        $ar->send();
+    }
+    
+    function batch_process()
+    {
+        $os = new order_status();
+        $oss = $os->find('all');        
+        $order_status =  array();
+        $order_status[-1] = '';
+        foreach ($oss as $status)
+        {
+            $order_status[$status->id] = $status->title;
+        }    
+        assign_to_template(array('order_status'=>$order_status));
+    }
+    
+    function process_orders()
+    {
+        /*
+          Testing
+        */
+        /*echo "Here?";
+        $inv = 30234;
+        $req = 'a29f9shsgh32hsf80s7';        
+        $amt = 101.00;
+        for($count=1;$count<=25;$count+=2)
+        {   
+            $data[2] = $inv + $count;
+            $amt += $count*$count;
+            $successSet[$count]['message'] = "Sucessfully imported row " . $count . ", order: " . $data[2] . "<br/>";                
+            $successSet[$count]['order_id'] = $data[2];
+            $successSet[$count]['amount'] = $amt;
+            $successSet[$count]['request_id'] = $req;
+            $successSet[$count]['reference_id'] = $req;
+            $successSet[$count]['authorization_code'] = $req;
+            $successSet[$count]['shipping_tracking_number'] = '1ZNF453937547';    
+            $successSet[$count]['carrier'] = 'UPS';
+        }
+        for($count=2;$count<=25;$count+=2)
+        {   
+            $data[2] = $inv + $count;                
+            $amt += $count*$count;        
+            $errorSet[$count]['error_code'] = '42';
+            $errorSet[$count]['message'] = "No go for some odd reason. Try again.";
+            $errorSet[$count]['order_id'] = $data[2];
+            $errorSet[$count]['amount'] = $amt;
+        }
+        
+        assign_to_template(array('errorSet'=>$errorSet, 'successSet'=>$successSet));     
+        return;*/
+        
+        ###########
+        
+        global $db;
+        $template = get_template_for_action(new orderController(), 'setStatus', $this->loc);
+         
+        //eDebug($_FILES);
+        //eDebug($this->params,true); 
+        set_time_limit(0);
+        //$file = new expFile($this->params['expFile']['batch_process_upload'][0]);
+        if(!empty($_FILES['batch_upload_file']['error']))
+        {
+            flash('error','There was an error uploading your file.  Please try again.');
+            redirect_to(array('controller'=>'store','action'=>'batch_process'));        
+        }
+        
+        $file->path = $_FILES['batch_upload_file']['tmp_name'];
+        echo "Validating file...<br/>";
+        
+        $checkhandle = fopen($file->path, "r");
+        $checkdata = fgetcsv($checkhandle, 10000, ",");
+        $fieldCount = count($checkdata);        
+        $count = 1;
+        while (($checkdata = fgetcsv($checkhandle, 10000, ",")) !== FALSE) {
+            $count++;
+            if (count($checkdata) != $fieldCount) 
+            {                   
+                echo "Line ". $count ." of your CSV import file does not contain the correct number of columns.<br/>";
+                echo "Found " . $fieldCount . " header fields, but only " . count($checkdata) ." field in row " . $count . " Please check your file and try again.";
+                exit();
+            }
+        }        
+        fclose($checkhandle);
+        
+        echo "<br/>CSV File passed validation...<br/><br/>Detecting carrier type....<br/>";
+        //exit();
+        $handle = fopen($file->path, "r");
+        $data = fgetcsv($handle, 10000, ",");
+        //eDebug($data);      
+        $dataset = array();
+        $carrier = '';
+        if (trim($data[0]) == 'ShipmentInformationShipmentID') 
+        {
+            echo "Detected UPS file...<br/>";
+            $carrier = "UPS";
+            $carrierTrackingLink = "http://wwwapps.ups.com/etracking/tracking.cgi?TypeOfInquiryNumber=T&InquiryNumber1=";
+        }
+        elseif(trim($data[0]) == 'PIC') 
+        {
+            echo "Detected United States Post Service file...<br/>";
+            $carrier = "USPS";       
+            $carrierTrackingLink = "http://trkcnfrm1.smi.usps.com/PTSInternetWeb/InterLabelInquiry.do?origTrackNum=";
+        }        
+        
+        //eDebug($carrier);
+        $count = 1;
+        $errorSet = array();
+        $successSet = array();
+               
+        $oo = new order();
+         
+        while (($data = fgetcsv($handle, 10000, ",")) !== FALSE) {
+            $count++;
+            $originalOrderId = $data[2];
+            $data[2] = intval($data[2]);
+            $order = null;  
+            $bm = null;
+            $transactionState = null;
+            
+            //check for valid order number - if not present or not order, fail and continue with next record
+            if (isset($data[2]) && !empty($data[2]))
+            {                
+                $order = $oo->findBy('invoice_id',$data[2]);  
+                if (empty($order->id)) 
+                {
+                    $errorSet[$count]['message'] = $originalOrderId . " is not a valid order in this system.";
+                    $errorSet[$count]['order_id'] = $originalOrderId;  
+                    continue;
+                }
+            }else{
+                $errorSet[$count]['message'] = "Row " . $count . " has no order number.";
+                $errorSet[$count]['order_id'] = "N/A";  
+                continue;
+            }
+            
+            /*we have a valid order, so let's see what we can do: */
+            
+            //set status of order to var
+            $currentStat = $order->order_status;
+            //eDebug($currentStat,true);
+            
+            //-- check the order for a closed status - if so, do NOT process or set shipping
+            if($currentStat->treat_as_closed == true)
+            {
+                $errorSet[$count]['message'] =  "This is currently a closed order. Not processing.";
+                $errorSet[$count]['order_id'] = $data[2];
+                continue;
+            }
+            
+            //ok, if we made it here we have a valid order that is "open"
+            //we'll try to capture the transaction if it's in an authorized state, but set shipping regardless
+            if(isset($order->billingmethod[0]))
+            {
+                $bm = $order->billingmethod[0];  
+                $transactionState = $bm->transaction_state;
+            } 
+            else 
+            {
+                $bm = null;   
+                $transactionState = '';
+            }
+            
+            if ($transactionState == 'authorized')
+            {  
+                //eDebug($order,true);
+                $calc = $bm->billingcalculator->calculator;
+                $calc->config = $bm->billingcalculator->config;
+                if (method_exists($calc,'delayed_capture'))
+                {                
+                    //$result = $calc->delayed_capture($bm,$bm->billing_cost);
+                    $result = $calc->delayed_capture($bm,$order->grand_total);                    
+                    if ($result->errorCode == 0) 
+                    {
+                        //we've succeeded.  transaction already created and billing info updated.
+                        //just need to set the order shipping info, check and see if we send user an email, and set statuses.  
+                        //shipping info:                                      
+                        $successSet[$count]['order_id'] = $data[2];                    
+                        $successSet[$count]['message'] = "Sucessfully captured order " . $data[2] . " and set shipping information.";
+                        $successSet[$count]['amount'] = $order->grand_total;
+                        $successSet[$count]['request_id'] = $result->request_id;
+                        $successSet[$count]['reference_id'] = $result->PNREF;
+                        $successSet[$count]['authorization_code'] = $result->AUTHCODE;                         
+                        $successSet[$count]['shipping_tracking_number'] = $data[0];    
+                        $successSet[$count]['carrier'] = $carrier;
+                    }
+                    else
+                    {   
+                        //failed capture, so we report the error but still set the shipping information
+                        //because it's already out the door
+                        //$failMessage = "Attempted to delay capture order " . $data[2] . " and it failed with the following error: " . $result->errorCode . " - " .$result->message;   
+                        //if the user seelected to set a different status for failed orders, set it here.
+                        /*if(isset($this->params['order_status_fail'][0]) && $this->params['order_status_fail'][0] > -1)
+                        {
+                            $change = new order_status_changes();
+                            // save the changes
+                            $change->from_status_id = $order->order_status_id;
+                            //$change->comment = $this->params['comment'];
+                            $change->to_status_id = $this->params['order_status_fail'][0];
+                            $change->orders_id = $order->id;
+                            $change->save();
+                            
+                            // update the status of the order
+                            $order->order_status_id = $this->params['order_status_fail'][0];
+                            $order->save();                             
+                        }*/
+                        $errorSet[$count]['error_code'] = $result->errorCode;
+                        $errorSet[$count]['message'] = "Capture failed: " . $result->message . "<br/>Setting shipping information.";
+                        $errorSet[$count]['order_id'] = $data[2];
+                        $errorSet[$count]['amount'] = $order->grand_total;
+                        $errorSet[$count]['shipping_tracking_number'] = $data[0];    
+                        $errorSet[$count]['carrier'] = $carrier;
+                        //continue;   
+                    }
+                }
+                else
+                {
+                    //dont suppose we do anything here, as it may be set to approved manually 
+                    //$errorSet[$count] = "Order " . $data[2] . " does not use a billing method with delayed capture ability.";  
+                    $successSet[$count]['message'] = 'No capture processing available for order:' . $data[2] . '. Setting shipping information.';
+                    $successSet[$count]['order_id'] = $data[2];
+                    $successSet[$count]['amount'] = $order->grand_total;                        
+                    $successSet[$count]['shipping_tracking_number'] = $data[0];    
+                    $successSet[$count]['carrier'] = $carrier;            
+                }
+            }
+            //if we hit this else, it means we have an order that is not in an authorized state
+            //so we do not try to process it = still set shipping though.
+            else
+            {
+                $successSet[$count]['message'] = 'No processing necessary for order:' . $data[2] . '. Setting shipping information.';
+                $successSet[$count]['order_id'] = $data[2];
+                $successSet[$count]['amount'] = $order->grand_total;
+                $successSet[$count]['shipping_tracking_number'] = $data[0];    
+                $successSet[$count]['carrier'] = $carrier;                                    
+            }                
+            
+            $order->shipped = time();
+            $order->shipping_tracking_number = $data[0];                     
+            $order->save();
+                        
+            $s = array_pop($order->shippingmethods);
+            $sm = new shippingmethod($s->id);
+            $sm->carrier = $carrier;
+            $sm->save();
+                                      
+            //statuses and email
+            if(isset($this->params['order_status_success'][0]) && $this->params['order_status_success'][0] > -1)
+            {
+                $change = new order_status_changes();
+                // save the changes
+                $change->from_status_id = $order->order_status_id;
+                //$change->comment = $this->params['comment'];
+                $change->to_status_id = $this->params['order_status_success'][0];
+                $change->orders_id = $order->id;
+                $change->save();
+                
+                // update the status of the order
+                $order->order_status_id = $this->params['order_status_success'][0];
+                $order->save();                        
+                       
+                // email the user if we need to
+                if (!empty($this->params['email_customer'])) {
+                    $email_addy = $order->billingmethod[0]->email;
+                    if (!empty($email_addy)) 
+                    {
+                        $from_status = $db->selectValue('order_status', 'title', 'id='.$change->from_status_id);
+                        $to_status = $db->selectValue('order_status', 'title', 'id='.$change->to_status_id);
+                        $template->assign(
+                        //assign_to_template(
+                            array(
+                                'comment'=>$change->comment, 
+                                'to_status'=>$to_status, 
+                                'from_status'=>$from_status, 
+                                'order'=>$order, 
+                                'date'=>date("F j, Y, g:i a"),
+                                'storename'=>ecomconfig::getConfig('storename'),
+                                'include_shipping'=>true,
+                                'tracking_link'=>$carrierTrackingLink . $order->shipping_tracking_number,
+                                'carrier'=>$carrier
+                                )
+                         );
+                        
+                        $html = $template->render();
+                        $html .= ecomconfig::getConfig('footer');
+                        
+                        try{
+                            $mail = new expMail();
+                            $mail->quickSend(array(
+                                'html_message'=>$html,
+                                'text_message'=>str_replace("<br>", "\r\n", $template->render()),
+                                'to'=>$email_addy,
+                                'from'=>ecomconfig::getConfig('from_address'),
+                                'subject'=>'Your Order Has Been Shipped (#'.$order->invoice_id.') - '.ecomconfig::getConfig('storename')
+                            ));
+                        }
+                        catch (Exception $e)
+                        {
+                            //do nothing for now
+                            eDebug("Email error:");
+                            eDebug($e);
+                        }
+                    } 
+                    //else {
+                    //    $errorSet[$count]['message'] .= "<br/>Order " . $data[2] . " was captured successfully, however the email notification was not successful.";
+                    //}
+                }
+            }
+                       
+            //eDebug($product);        
+        }   
+        
+        assign_to_template(array('errorSet'=>$errorSet, 'successSet'=>$successSet));
+    }
+    
+    function manage_sales_reps()
+    {
+        
+    }
+    
+    function showHistory()
+    {
+        $h = new expHistory();
+        echo "<xmp>";
+        print_r($h);
+        echo "</xmp>";
+    }
+    
+    function import_external_addresses()
+    {
+        $sources = array('mc'=>'MilitaryClothing.com','nt'=>'NameTapes.com','am'=>'Amazon');
+        assign_to_template(array('sources'=>$sources));
+    }
+    
+    function process_external_addresses()
+    {
+        global $db;
+         set_time_limit(0);
+        //$file = new expFile($this->params['expFile']['batch_process_upload'][0]);
+        eDebug($this->params);
+//        eDebug($_FILES,true);
+        if(!empty($_FILES['address_csv']['error']))
+        {
+            flash('error','There was an error uploading your file.  Please try again.');
+            redirect_to(array('controller'=>'store','action'=>'import_external_addresses'));        
+        }
+        
+        $file->path = $_FILES['address_csv']['tmp_name'];
+        echo "Validating file...<br/>";
+        
+        //replace tabs with commas
+        /*if($this->params['type_of_address'][0] == 'am')
+        {
+            $checkhandle = fopen($file->path, "w");
+            $oldFile = file_get_contents($file->path);
+            $newFile = str_ireplace(chr(9),',',$oldFile);
+            fwrite($checkhandle,$newFile);
+            fclose($checkhandle);
+        }*/
+        
+        $checkhandle = fopen($file->path, "r");
+        if($this->params['type_of_address'][0] == 'am')
+        {
+            $checkdata = fgetcsv($checkhandle, 10000, "\t");
+            $fieldCount = count($checkdata);        
+        }
+        else
+        {
+            $checkdata = fgetcsv($checkhandle, 10000, ",");
+            $fieldCount = count($checkdata);            
+        }
+        
+        $count = 1;
+         if($this->params['type_of_address'][0] == 'am')
+         {
+            while (($checkdata = fgetcsv($checkhandle, 10000, "\t")) !== FALSE) 
+            {
+                $count++;
+                //eDebug($checkdata);
+                if (count($checkdata) != $fieldCount) 
+                {                   
+                    echo "Line ". $count ." of your CSV import file does not contain the correct number of columns.<br/>";
+                    echo "Found " . $fieldCount . " header fields, but only " . count($checkdata) ." field in row " . $count . " Please check your file and try again.";
+                    exit();
+                }
+            }
+         }
+         else
+         {
+            while (($checkdata = fgetcsv($checkhandle, 10000, ",")) !== FALSE) 
+            {
+                $count++;
+                if (count($checkdata) != $fieldCount) 
+                {                   
+                    echo "Line ". $count ." of your CSV import file does not contain the correct number of columns.<br/>";
+                    echo "Found " . $fieldCount . " header fields, but only " . count($checkdata) ." field in row " . $count . " Please check your file and try again.";
+                    exit();
+                }
+            }     
+         }
+                
+        fclose($checkhandle);
+        
+        echo "<br/>CSV File passed validation...<br/><br/>Importing....<br/><br/>";
+        //exit();
+        $handle = fopen($file->path, "r");
+        $data = fgetcsv($handle, 10000, ",");
+        //eDebug($data);      
+        $dataset = array();
+        
+        
+        //mc=1, nt=2, amm=3
+              
+         if($this->params['type_of_address'][0] == 'mc')
+         {
+             //militaryclothing
+             $db->delete('external_addresses','source=1');
+                                 
+         }
+         else if($this->params['type_of_address'][0] == 'nt')
+         {
+             //nametapes
+             $db->delete('external_addresses','source=2');
+         }
+         else if($this->params['type_of_address'][0] == 'am')
+         {
+             //amazon
+             $db->delete('external_addresses','source=3');
+         }
+         
+         if($this->params['type_of_address'][0] == 'am')
+         {
+            while (($data = fgetcsv($handle, 10000, "\t")) !== FALSE) 
+             {
+                //eDebug($data,true);
+                $extAddy = new external_address();               
+                            
+                //eDebug($data);
+                $extAddy->source = 3;
+                $extAddy->user_id = 0;
+                $name = explode(' ',$data[15]);
+                $extAddy->firstname = $name[0];
+                if(isset($name[3]))
+                {
+                    $extAddy->firstname .= ' ' . $name[1];
+                    $extAddy->middlename = $name[2];   
+                    $extAddy->lastname = $name[3];
+                }
+                else if(isset($name[2]))
+                {
+                    $extAddy->middlename = $name[1];
+                    $extAddy->lastname = $name[2];
+                }
+                else
+                {
+                    $extAddy->lastname = $name[1];
+                }                
+                $extAddy->organization = $data[15];
+                $extAddy->address1 = $data[16];
+                $extAddy->address2 = $data[17];
+                $extAddy->city = $data[19];
+                $state = new geoRegion();
+                $state = $state->findBy('code',trim($data[20]));
+                if(empty($state->id)) {
+                    $state = new geoRegion();
+                    $state = $state->findBy('name',trim($data[20]));   
+                }
+                $extAddy->state = $state->id;
+                $extAddy->zip = str_ireplace("'",'',$data[21]);
+                $extAddy->phone = $data[6];
+                $extAddy->email = $data[4];
+                //eDebug($extAddy);
+                $extAddy->save();
+             }
+         } 
+         else
+         {
+             while (($data = fgetcsv($handle, 10000, ",")) !== FALSE) 
+             {
+                eDebug($data);
+                $extAddy = new external_address();
+                if($this->params['type_of_address'][0] == 'mc')
+                {             
+                    $extAddy->source = 1;
+                    $extAddy->user_id = 0;
+                    $name = explode(' ',$data[3]);
+                    $extAddy->firstname = $name[0];
+                    if(isset($name[2]))
+                    {
+                        $extAddy->middlename = $name[1];
+                        $extAddy->lastname = $name[2];
+                    }
+                    else
+                    {
+                        $extAddy->lastname = $name[1];
+                    }
+                    $extAddy->organization = $data[4];
+                    $extAddy->address1 = $data[5];
+                    $extAddy->address2 = $data[6];
+                    $extAddy->city = $data[7];
+                    $state = new geoRegion();
+                    $state = $state->findBy('code',$data[8]);
+                    $extAddy->state = $state->id;
+                    $extAddy->zip = str_ireplace("'",'',$data[9]);
+                    $extAddy->phone = $data[20];
+                    $extAddy->email = $data[21];
+                    //eDebug($extAddy);
+                    $extAddy->save();
+					
+					//Check if the shipping add is same as the billing add
+					if($data[5] != $data[14]) {
+						$extAddy = new external_address();
+						$extAddy->source = 1;
+						$extAddy->user_id = 0;
+						$name = explode(' ',$data[12]);
+						$extAddy->firstname = $name[0];
+						if(isset($name[2]))
+						{
+							$extAddy->middlename = $name[1];
+							$extAddy->lastname = $name[2];
+						}
+						else
+						{
+							$extAddy->lastname = $name[1];
+						}
+						$extAddy->organization = $data[13];
+						$extAddy->address1 = $data[14];
+						$extAddy->address2 = $data[15];
+						$extAddy->city = $data[16];
+						$state = new geoRegion();
+						$state = $state->findBy('code',$data[17]);
+						$extAddy->state = $state->id;
+						$extAddy->zip = str_ireplace("'",'',$data[18]);
+						$extAddy->phone = $data[20];
+						$extAddy->email = $data[21];
+						// eDebug($extAddy, true);
+						$extAddy->save();
+					}
+                }
+                if($this->params['type_of_address'][0] == 'nt')
+                {             
+                    //eDebug($data,true);
+                    $extAddy->source = 2;
+                    $extAddy->user_id = 0;
+                    $extAddy->firstname = $data[16];
+                    $extAddy->lastname = $data[17];                
+                    $extAddy->organization = $data[15];
+                    $extAddy->address1 = $data[18];
+                    $extAddy->address2 = $data[19];
+                    $extAddy->city = $data[20];
+                    $state = new geoRegion();
+                    $state = $state->findBy('code',$data[21]);
+                    $extAddy->state = $state->id;
+                    $extAddy->zip = str_ireplace("'",'',$data[22]);
+                    $extAddy->phone = $data[23];
+                    $extAddy->email = $data[13];
+                    //eDebug($extAddy);
+                    $extAddy->save();
+                }
+             }
+         }       
+         echo "Done!";
+    }
+	
+	function nonUnicodeProducts() {
+		global $db, $user;
+		$products = $db->selectObjectsIndexedArray('product');
+		$affected_fields = array();
+		$listings = array();
+		$listedProducts = array();
+		$count = 0;
+		//Get all the columns of the product table
+		$columns = $db->getTextColumns('product');
+		foreach($products as $item) {
+		
+			foreach($columns as $column) {
+				if($column != 'body' && $column != 'summary' && $column != 'featured_body') {
+					if(!$this->_validUTF($item->$column) || strrpos($item->$column, '?')) {
+						$affected_fields[] = $column;
+					}
+				} else {
+					if(!$this->_validUTF($item->$column)) {
+						$affected_fields[] = $column;
+					}
+				}
+			}
+			
+			if(isset($affected_fields)) {
+				if(count($affected_fields) > 0) {
+					//Hard coded fields since this is only for displaying
+					$listedProducts[$count]['id'] = $item->id;
+					$listedProducts[$count]['title'] = $item->title;
+					$listedProducts[$count]['model'] = $item->model;
+					$listedProducts[$count]['sef_url'] = $item->sef_url;
+					$listedProducts[$count]['nonunicode'] = implode(', ', $affected_fields);
+					$count++;
+				}
+			}
+			unset($affected_fields);
+		}
+		
+		assign_to_template(array( 'products' => $listedProducts, 'count' => $count ));
+	}
+	
+	function cleanNonUnicodeProducts() {
+		global $db, $user;
+		$products = $db->selectObjectsIndexedArray('product');
+		//Get all the columns of the product table
+		$columns = $db->getTextColumns('product');
+		foreach($products as $item) {
+			//Since body, summary, featured_body can have a ? intentionally such as a link with get parameter. 
+			//TO Improved
+			foreach($columns as $column) {
+				if($column != 'body' && $column != 'summary' && $column != 'featured_body') {
+					if(!$this->_validUTF($item->$column) || strrpos($item->$column, '?')) {
+						$item->$column = $this->_convertUTF($item->$column); 
+					}
+				} else {
+					if(!$this->_validUTF($item->$column)) {
+						$item->$column = $this->_convertUTF($item->$column); 
+					}
+				}
+			}
+			
+			$db->updateObject($item, 'product');
+		}
+		
+		redirect_to(array('controller'=>'store', 'action'=>'nonUnicodeProducts'));
+	}
+	
+	function _convertUTF($content) {
+		return $content = str_replace('?', '', htmlspecialchars($content, ENT_IGNORE, 'UTF-8'));
+	} 
+	
+	function _validUTF($content) {
+		if(!mb_check_encoding($content, 'UTF-8') OR !($content === mb_convert_encoding(mb_convert_encoding($content, 'UTF-32', 'UTF-8' ), 'UTF-8', 'UTF-32'))) {
+			return false;
+		}		
+		return true;
+	}
 }
 
 ?>

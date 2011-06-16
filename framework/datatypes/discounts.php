@@ -43,7 +43,8 @@ class discounts extends expRecord {
     public $actions = array(
         3=>'Pecentage off entire cart', 
         4=>'Fixed amount off entire cart',
-        /*5=>'Free Shipping'*/
+        5=>'Free shipping',
+        6=>'Fixed amount off shipping'
         );
         
     //public $discount_types = array(1=>'%', 2=>'$');
@@ -60,7 +61,7 @@ class discounts extends expRecord {
         //FJD TODO: actually calculate this
         //if never_expired return false
         //if current datetime is within being and end valid dates, return false
-        //else return true
+        //else return true        
         if(!$this->enabled) return false;
         if($this->never_expires == true) return true;
         
@@ -106,7 +107,7 @@ class discounts extends expRecord {
     {
         global $order, $user;
         $retMessage = "";
-        if (!$this->isAvailable()) {
+        if (!$this->isAvailable()) {            
             return "This discount code you entered is currently unavailable.";            
         } 
         
@@ -141,7 +142,7 @@ class discounts extends expRecord {
         
         
         //5. check minimum order amount
-        if ($order->total < $this->minimum_order_amount) 
+        if ($order->subtotal < $this->minimum_order_amount) 
         {
             $retMessage = "You must purchase a minimum of $" . /* number_format() */ $this->minimum_order_amount . " to use this coupon code.";            
         }
@@ -152,6 +153,25 @@ class discounts extends expRecord {
         return $retMessage;  
     }
 
+    public function calculateShippingTotal($shippingTotal) 
+    {
+        if ($this->action_type == 5)
+        {                       
+             return 0;
+        }
+        else if ($this->action_type == 6)
+        {                       
+              $ret = $shippingTotal - $this->shipping_discount_amount;
+              if ($ret < 0) return 0;
+              else return $ret;
+        }                 
+        else
+        {
+            return $shippingTotal;
+        }
+    }
+    
+       
    /* public static function getOrderDiscounts(&$order) {
         $groupdiscounts = groupdiscounts::getGroupDiscountsForUser();
         foreach($groupdiscounts as $discount) {

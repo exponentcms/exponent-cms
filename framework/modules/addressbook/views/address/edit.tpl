@@ -49,7 +49,16 @@ YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
         {control type=text name=address1 label="*Street Address" value=$record->address1}
         {control type=text name=address2 label="Apt/Suite #" value=$record->address2}
         {control type=text name=city label="*City" value=$record->city}
-        {control type=state name=state label="*State" includeblank="-- Choose a State -- " value=$record->state}
+        
+        {if $user->is_admin || $user->is_acting_admin}
+            {control type=state name=state label="*State" includeblank="-- Choose a State -- " all_us_territories=true exclude="6,8,10,17,30,46,50" value=$record->state add_other=true}
+            {control type=text name=non_us_state label="&nbsp;State/Province if non-US" value=$record->non_us_state}           
+            {control type=country name=country label="&nbsp;Country" value=$record->country|default:223}            
+        {else}
+            {control type=state name=state label="*State" includeblank="-- Choose a State -- " value=$record->state all_us_territories=true exclude="6,8,10,17,30,46,50"}
+            {control type=hidden name=country value=223}
+        {/if}
+        
         {control type=text name=zip label="*Zip Code" value=$record->zip}
         {control type="text" name="phone" label="*Phone Number (xxx-xxx-xxxx)" value=$record->phone}
         {control type="text" name="email" label="*Email Address" value=$record->email}
@@ -69,7 +78,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
             <!--The following field is an anti-spam measure to prevent fradulent account creation. -->
             {* control type="antispam" *}
         {/if}
-        {control type=buttongroup submit="Save Address and Continue"}
+        {control type=buttongroup submit="Save Address and Continue" cancel="Cancel"}            
         
     {/form}
 </div>
