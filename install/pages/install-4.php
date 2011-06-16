@@ -54,7 +54,7 @@ $i18n = exponent_lang_loadFile('install/pages/dbcheck.php');
             <input type="checkbox" name="sc[SEF_URLS]" value="1" checked="checked" class="checkbox">
           </td>
           <td>
-            <label class="label ">Search Engine Friendly URLSs</label>
+            <label class="label ">Enable Search Engine Friendly URLSs</label>
           </td>
         </tr>
       </tbody>

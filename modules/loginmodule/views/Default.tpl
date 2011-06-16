@@ -23,32 +23,33 @@
             {/if}
 	</div>
 	{if $smarty.const.SITE_ALLOW_REGISTRATION == 1}
-	{css unique="regbox"}
-	{literal}
-	.box {
-	  display:inline-block;
-	  *display:inline;
-	  zoom:1;
-	  width:49%;
-	  vertical-align:top;
-	}
-	
-	{/literal}
-	{/css}
+	    {css unique="regbox"}
+	    {literal}
+	    .box {
+	      display:inline-block;
+	      *display:inline;
+	      zoom:1;
+	      width:49%;
+	      vertical-align:top;
+	    }
+	    
+	    {/literal}
+	    {/css}
 
-	
-	<div class="box new-user">
-		<h2>{"New"|gettext} {$usertype}</h2>
-		<p>
-		    {if $isecom}
-			{"If you are a new customer please create an account to continue in the checkout process.
-			Creating an account will allow you to save your billing and shipping information and track your order status."|gettext}{br}{br}
-			{else}
-            {* should put some basic text here*}
-		    {/if}
-			<a href="{link module=users action=create}">{"Create an Account"|gettext}</a>
-		</p>
-	</div>
+	    
+	    <div class="box new-user">
+		    <h2>{"New"|gettext} {$usertype}</h2>
+		    <p>
+		        {if $isecom}
+			        {"If you are a new customer, select this option to continue with the checkout process."|gettext}{br}{br}
+                    {"We will gather billing and shipping information, and you will have the option to create an account so can track your order status."|gettext}{br}{br}
+                    <a href="{link module=cart action=setAnonymousCheckout}">{" - Click Here to Continue Checking Out - "|gettext}</a> 
+			    {else}
+                    {"Create a new account here."|gettext}
+                    <a href="{link module=users action=create}">{"Create an Account"|gettext}</a>
+		        {/if}			    
+		    </p>
+	    </div>
 	{/if}
 {/if}
 </div>
