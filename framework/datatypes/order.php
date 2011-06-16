@@ -233,7 +233,7 @@ class order extends expRecord {
                                 //3) Was logged in WITH items in cart                            
                                 else if(!empty($tmpCart->user_id) && count($tmpCart->orderitem) > 0)
                                 {                                                                           
-                                     //3) Was Logged in w/ NON-”real user” account
+                                     //3) Was Logged in w/ NON-?real user? account
                                      //eDebug(expUtil::right($u->username,10),true);
                                      if(is_numeric(expUtil::right($u->username,10)))
                                      {                                            
@@ -907,7 +907,8 @@ class order extends expRecord {
     public function getSalesReps()
     {
         $sr = new sales_rep();
-        $srs = $sr->find('all');                
+        $srs = $sr->find('all'); 
+        $sales_reps = array();               
         foreach ($srs as $sales_rep)
         {
             $sales_reps[$sales_rep->id] = $sales_rep->initials;            

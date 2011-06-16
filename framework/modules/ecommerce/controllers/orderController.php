@@ -1559,9 +1559,7 @@ class orderController extends expController {
     public function verifyAndRestoreCart()
     {
         global $user,$order;
-        $sessAr = exponent_sessions_get('verify_shopper');
-        eDebug($this->params);
-        eDebug($sessAr);
+        $sessAr = exponent_sessions_get('verify_shopper');        
         if(isset($sessAr) && isset($this->params['cid']) && $this->params['cid'] == $sessAr['cid'])        
         {
             $tmpCart = new order($sessAr['cid']);
@@ -1569,9 +1567,7 @@ class orderController extends expController {
             {   
                 //eDebug($tmpCart,true); 
                 $shippingMethod = $tmpCart->shippingmethod;
-                $billingMethod = $tmpCart->billingmethod[0];
-                eDebug($shippingMethod);             
-                eDebug($billingMethod);             
+                $billingMethod = $tmpCart->billingmethod[0];                
                              
                 if( ($this->params['lastname'] == $shippingMethod->lastname || $this->params['lastname'] == $billingMethod->lastname) &&
                     ($this->params['email'] == $shippingMethod->email || $this->params['email'] == $billingMethod->email) &&

@@ -132,6 +132,7 @@ class billing extends expRecord {
             BASE.'framework/modules/ecommerce/views/billing/',
         );
         
+        $views = array();
         foreach ($this->available_calculators as $calcname) {
             if (file_exists($dirs[0].$calcname.'.tpl')) {
                 $views[$calcname] = $dirs[0].$calcname.'.tpl';    
