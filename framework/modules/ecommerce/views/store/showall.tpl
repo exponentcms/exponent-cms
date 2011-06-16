@@ -56,7 +56,7 @@
     <div class="cats">
     <h2>Categories Under {$current_category->title}</h2>
     {foreach name="cats" from=$categories item="cat"}
-    {if $cat->is_active==1 || $user->is_acting_admin}
+    {if $cat->is_active==1 || $user->isAdmin()}
 	{counter assign=iteration}
         {if $iteration%2==0}
             {assign var="positioninfo" value=" last-in-row"}
@@ -88,7 +88,7 @@
     {/foreach}
     <div style="clear:both"></div>
     </div>
-    {else}
+    {/if}
     <!--hr/-->
     <h2>All Products Under {$current_category->title}</h2>
     {pagelinks paginate=$page top=1}
