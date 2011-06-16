@@ -724,7 +724,8 @@ class product extends expRecord {
         //check if cateegory is 
     }
     
-    public function paginationCallback($item)
+//    public function paginationCallback($item)
+	public function paginationCallback(&$item) // (deprecated) moved call by reference to function, not caller
     {
         $score = $item->score;
         $item = $this;
