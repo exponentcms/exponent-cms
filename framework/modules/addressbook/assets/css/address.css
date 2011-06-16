@@ -1,0 +1,24 @@
+.address.edit .control .label {
+    display:inline-block;
+    *display:inline;
+    zoom:1;
+    vertical-align:top;
+    width:200px;
+    text-align:right;
+    padding-right:10px;
+}
+
+#passwordDiv p {
+    margin-left:230px;
+    border-top:1px dotted #999;
+    padding-top:10px;
+    font-size:90%;
+    font-style:italic;
+    position:relative;
+    margin-top:-20px;
+}
+
+.address.edit .buttongroup {
+    padding-left:210px;
+}
+
