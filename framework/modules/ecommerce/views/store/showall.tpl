@@ -126,6 +126,7 @@
     </div>
     {*control type="dropdown" name="sortme" items=$page->sort_dropdown default=$defaultSort*}
     {pagelinks paginate=$page bottom=1}
+    {/if}
 </div>
 
 
