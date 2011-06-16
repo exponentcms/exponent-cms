@@ -255,10 +255,12 @@ class FeedHtmlField {
 	 * 
 	 */
 	var $truncSize, $syndicateHtml;
-	
+
 	/**
 	 * Creates a new instance of FeedHtmlField.
-	 * @param  $string: if given, sets the rawFieldContent property
+	 * @param $parFieldContent
+	 *
+	 * @internal param $string : if given, sets the rawFieldContent property
 	 */
 	function FeedHtmlField($parFieldContent) {
 		if ($parFieldContent) {
@@ -371,12 +373,14 @@ class UniversalFeedCreator extends FeedCreator {
 			}
 		}
 	}
-	
+
 	/**
 	 * Creates a syndication feed based on the items previously added.
 	 *
 	 * @see        FeedCreator::addItem()
-	 * @param    string    format    format the feed should comply to. Valid values are:
+	 * @param string $format
+	 *
+	 * @internal param \format $string format the feed should comply to. Valid values are:
 	 *			"PIE0.1", "mbox", "RSS0.91", "RSS1.0", "RSS2.0", "OPML", "ATOM0.3", "HTML", "JS"
 	 * @return    string    the contents of the feed.
 	 */
@@ -384,18 +388,23 @@ class UniversalFeedCreator extends FeedCreator {
 		$this->_setFormat($format);
 		return $this->_feed->createFeed();
 	}
-	
-	
-	
+
+
 	/**
 	 * Saves this feed as a file on the local disk. After the file is saved, an HTTP redirect
 	 * header may be sent to redirect the use to the newly created file.
 	 * @since 1.4
-	 * 
-	 * @param	string	format	format the feed should comply to. Valid values are:
+	 *
+	 * @param string $format
+	 * @param string $filename
+	 * @param bool $displayContents
+	 *
+	 * @internal param \format $string format the feed should comply to. Valid values are:
 	 *			"PIE0.1" (deprecated), "mbox", "RSS0.91", "RSS1.0", "RSS2.0", "OPML", "ATOM", "ATOM0.3", "HTML", "JS"
-	 * @param	string	filename	optional	the filename where a recent version of the feed is saved. If not specified, the filename is $_SERVER["PHP_SELF"] with the extension changed to .xml (see _generateFilename()).
-	 * @param	boolean	displayContents	optional	send the content of the file or not. If true, the file will be sent in the body of the response.
+	 *
+	 * @internal param \filename $string optional	the filename where a recent version of the feed is saved. If not specified, the filename is $_SERVER["PHP_SELF"] with the extension changed to .xml (see _generateFilename()).
+	 *
+	 * @internal param \displayContents $boolean optional	send the content of the file or not. If true, the file will be sent in the body of the response.
 	 */
 	function saveFeed($format="RSS0.91", $filename="", $displayContents=true) {
 		$this->_setFormat($format);
@@ -403,18 +412,21 @@ class UniversalFeedCreator extends FeedCreator {
 	}
 
 
-   /**
-    * Turns on caching and checks if there is a recent version of this feed in the cache.
-    * If there is, an HTTP redirect header is sent.
-    * To effectively use caching, you should create the FeedCreator object and call this method
-    * before anything else, especially before you do the time consuming task to build the feed
-    * (web fetching, for example).
-    *
-    * @param   string   format   format the feed should comply to. Valid values are:
-    *       "PIE0.1" (deprecated), "mbox", "RSS0.91", "RSS1.0", "RSS2.0", "OPML", "ATOM0.3".
-    * @param filename   string   optional the filename where a recent version of the feed is saved. If not specified, the filename is $_SERVER["PHP_SELF"] with the extension changed to .xml (see _generateFilename()).
-    * @param timeout int      optional the timeout in seconds before a cached version is refreshed (defaults to 3600 = 1 hour)
-    */
+	/**
+	 * Turns on caching and checks if there is a recent version of this feed in the cache.
+	 * If there is, an HTTP redirect header is sent.
+	 * To effectively use caching, you should create the FeedCreator object and call this method
+	 * before anything else, especially before you do the time consuming task to build the feed
+	 * (web fetching, for example).
+	 *
+	 * @param string $format
+	 * @param filename   string   optional the filename where a recent version of the feed is saved. If not specified, the filename is $_SERVER["PHP_SELF"] with the extension changed to .xml (see _generateFilename()).
+	 * @param timeout int      optional the timeout in seconds before a cached version is refreshed (defaults to 3600 = 1 hour)
+	 *
+	 * @internal param \format $string format the feed should comply to. Valid values are:
+	 *       "PIE0.1" (deprecated), "mbox", "RSS0.91", "RSS1.0", "RSS2.0", "OPML", "ATOM0.3".
+	 *
+	 */
    function useCached($format="RSS0.91", $filename="", $timeout=3600) {
       $this->_setFormat($format);
       $this->_feed->useCached($filename, $timeout);
@@ -486,29 +498,33 @@ class FeedCreator extends HtmlDescribable {
 	 * the FeedCreator class used.
 	 */
 	var $additionalElements = Array();
-   
-    
+
+
 	/**
 	 * Adds an FeedItem to the feed.
 	 *
-	 * @param object FeedItem $item The FeedItem to add to the feed.
+	 * @param $item
+	 *
+	 * @internal param \FeedItem $object $item The FeedItem to add to the feed.
 	 * @access public
 	 */
 	function addItem($item) {
 		$this->items[] = $item;
 	}
-	
-	
+
+
 	/**
 	 * Truncates a string to a certain length at the most sensible point.
 	 * First, if there's a '.' character near the end of the string, the string is truncated after this character.
 	 * If there is no '.', the string is truncated after the last ' ' character.
 	 * If the string is truncated, " ..." is appended.
 	 * If the string is already shorter than $length, it is returned unchanged.
-	 * 
+	 *
 	 * @static
 	 * @param string    string A string to be truncated.
-	 * @param int        length the maximum length the string should be truncated to
+	 * @param $length
+	 *
+	 * @internal param \length $int the maximum length the string should be truncated to
 	 * @return string    the truncated string
 	 */
 	function iTrunc($string, $length) {
@@ -543,6 +559,7 @@ class FeedCreator extends HtmlDescribable {
 	 * Creates a comment indicating the generator of this feed.
 	 * The format of this comment seems to be recognized by
 	 * Syndic8.com.
+	 * @return string
 	 */
 	function _createGeneratorComment() {
 		return "<!-- generator=\"".FEEDCREATOR_VERSION."\" -->\n";
@@ -602,11 +619,12 @@ class FeedCreator extends HtmlDescribable {
 		$fileInfo = pathinfo($_SERVER["PHP_SELF"]);
 		return substr($fileInfo["basename"],0,-(strlen($fileInfo["extension"])+1)).".xml";
 	}
-	
-	
+
+
 	/**
 	 * @since 1.4
 	 * @access private
+	 * @param $filename
 	 */
 	function _redirect($filename) {
 		// attention, heavily-commented-out-area
@@ -647,15 +665,17 @@ class FeedCreator extends HtmlDescribable {
 			$this->_redirect($filename);
 		}
 	}
-	
-	
+
+
 	/**
 	 * Saves this feed as a file on the local disk. After the file is saved, a redirect
 	 * header may be sent to redirect the user to the newly created file.
 	 * @since 1.4
-	 * 
+	 *
 	 * @param filename	string	optional	the filename where a recent version of the feed is saved. If not specified, the filename is $_SERVER["PHP_SELF"] with the extension changed to .xml (see _generateFilename()).
-	 * @param redirect	boolean	optional	send an HTTP redirect header or not. If true, the user will be automatically redirected to the created file.
+	 * @param bool $displayContents
+	 *
+	 * @internal param bool $redirect optional	send an HTTP redirect header or not. If true, the user will be automatically redirected to the created file.
 	 */
 	function saveFeed($filename="", $displayContents=true) {
 		if ($filename=="") {
@@ -874,10 +894,11 @@ class RSSCreator091 extends FeedCreator {
 		$this->_setRSSVersion("0.91");
 		$this->contentType = "application/rss+xml";
 	}
-	
+
 	/**
 	 * Sets this RSS feed's version number.
 	 * @access private
+	 * @param $version
 	 */
 	function _setRSSVersion($version) {
 		$this->RSSVersion = $version;
@@ -886,6 +907,7 @@ class RSSCreator091 extends FeedCreator {
 	/**
 	 * Sets an XML namepace fot hos RSS feed
 	 * @access private
+	 * @param $xmlns
 	 */
 	function _setXMLNS($xmlns) {
 		$this->XMLNS = $xmlns;

@@ -7,7 +7,7 @@
  *  Software Foundation; either version 2 of the
  *  License, or (at your option) any later version.
  *
- * The file thats holds the mysqli_database class
+ * The file that holds the mysqli_database class
  *
  * @link http://www.gnu.org/licenses/gpl.txt GPL http://www.gnu.org/licenses/gpl.txt
  * @package Exponent-CMS
@@ -213,8 +213,9 @@ class mysqli_database {
     }
 
     /**
-     * This is an internal function for use only within the MySQL database class
-     * @internal Internal
+     * Switch field values between two entries in a  Table
+     *
+     * Switches values between two table entries for things like swapping rank, etc...
      * @param  $table
      * @param  $field
      * @param  $a
@@ -247,7 +248,6 @@ class mysqli_database {
      * Checks to see if the connection for this database object is valid.
      * @return bool True if the connection can be used to execute SQL queries.
      */
-
     function isValid() {
         return ($this->connection != null && $this->havedb);
     }
@@ -487,6 +487,8 @@ class mysqli_database {
     }
 
 	/**
+	 * Toggle a boolean value in a Table Entry
+	 *
 	 * @param  $table
 	 * @param  $col
 	 * @param null $where
@@ -1297,8 +1299,8 @@ class mysqli_database {
     }
 
     /**
-     * Returns an error message from the server.  This is intended to be
-     * used by the implementors of the database wrapper, so that certain
+     * Returns an error message from the database server.  This is intended to be
+     * used by the implementers of the database wrapper, so that certain
      * cryptic error messages can be reworded.
      * @return string
      */
@@ -1326,6 +1328,8 @@ class mysqli_database {
     }
 
 	/**
+	 * Create a SQL "limit" phrase
+	 *
 	 * @param  $num
 	 * @param  $offset
 	 * @return string

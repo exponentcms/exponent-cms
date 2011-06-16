@@ -19,7 +19,7 @@
 
 class bannerController extends expController {
     //public $basemodel_name = '';
-    public $remove_configs = array('aggregation', 'comments', 'files','rss');
+    public $remove_configs = array('aggregation', 'comments', 'files','rss','tags');
     public $useractions = array('showall'=>'Display Banner(s)');
 	public $codequality = 'beta';
 

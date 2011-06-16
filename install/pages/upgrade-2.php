@@ -122,9 +122,11 @@ ksort($tables);
 <tbody>
 <?php 
 $row = "even";
+$line = 0;
 foreach ($tables as $table => $statusnum) {
+	if ($statusnum != TMP_TABLE_EXISTED) {
 ?>
-    
+
 <tr class="<?php echo $row ?>">
 	<td>
 		 <?php echo gt($table) ?>
@@ -153,10 +155,18 @@ foreach ($tables as $table => $statusnum) {
         <?php } ?>
 	</td>
 </tr>
-<?php 
-$row  = $row == "even" ? "odd" : "even";
-} ?>
+<?php
+	$row = $row == "even" ? "odd" : "even";
+	$line++;
+	}
+?>
  <tbody>
 </table>
+<?php
+}
+if ($line == 0) {
+	echo "<b>No Tables Were Changed!</b>";
+}
+?>
 
 <a class="awesome large green" href="?page=upgrade-3"><?php echo gt('Continue Upgrade') ?></a>

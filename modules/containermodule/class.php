@@ -31,11 +31,11 @@ class containermodule {
 	function permissions($internal = '') {
 		$i18n = exponent_lang_loadFile('modules/containermodule/class.php');
 		return array(
-			'administrate'=>$i18n['perm_administrate'],
+			'administrate'=>gt('Manage'),
 			'add_module'=>$i18n['perm_add_module'],
 			'edit_module'=>$i18n['perm_edit_module'],
 			'delete_module'=>$i18n['perm_delete_module'],
-			'order_modules'=>$i18n['perm_order_modules'],
+			'order_modules'=>gt('Reorder'),
 		);
 	}
 	

@@ -25,7 +25,14 @@
 class expController {   
     protected $basemodel = null;
     protected $classname = '';
-    protected $permissions = array('create'=>'Create', 'edit'=>'Edit', 'delete'=>'Delete', 'configure'=>'Configure', 'perms'=>'Manage Permissions', 'manage'=>'Manage Module');
+    protected $permissions = array(
+        'manage'=>'Manage',
+        'create'=>'Create', 
+        'edit'=>'Edit', 
+        'delete'=>'Delete', 
+        'configure'=>'Configure', 
+        //'perms'=>'Manage Permissions', 
+        );
     protected $remove_permissions = array();    
     protected $add_permissions = array();
 

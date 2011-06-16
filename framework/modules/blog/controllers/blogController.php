@@ -26,8 +26,8 @@ class blogController extends expController {
     );
     
     public $remove_configs = array('ealerts');
-    //public $add_permissions = array('approve');
-    public $codequality = 'beta';
+    public $add_permissions = array('approve'=>"Approve Comments");
+    public $codequality = 'stable';
     
 
     function name() { return $this->displayname(); } //for backwards compat with old modules

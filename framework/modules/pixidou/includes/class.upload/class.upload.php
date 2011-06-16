@@ -2433,23 +2433,27 @@ class upload {
         return $dst_im;
     }
 
-    /**
-     * Merges two images
-     *
-     * If the output format is PNG, then we do it pixel per pixel to retain the alpha channel
-     *
-     * @access private
-     * @param  resource $dst_img Destination image
-     * @param  resource $src_img Overlay image
-     * @param  int      $dst_x   x-coordinate of destination point 
-     * @param  int      $dst_y   y-coordinate of destination point 
-     * @param  int      $src_x   x-coordinate of source point 
-     * @param  int      $src_y   y-coordinate of source point 
-     * @param  int      $src_w   Source width 
-     * @param  int      $src_h   Source height 
-     * @param  int      $pct     Optional percentage of the overlay, between 0 and 100 (default: 100)
-     * @return resource Destination image
-     */
+	/**
+	 * Merges two images
+	 *
+	 * If the output format is PNG, then we do it pixel per pixel to retain the alpha channel
+	 *
+	 * @access private
+	 * @param $dst_im
+	 * @param $src_im
+	 * @param  int      $dst_x   x-coordinate of destination point
+	 * @param  int      $dst_y   y-coordinate of destination point
+	 * @param  int      $src_x   x-coordinate of source point
+	 * @param  int      $src_y   y-coordinate of source point
+	 * @param  int      $src_w   Source width
+	 * @param  int      $src_h   Source height
+	 * @param  int      $pct     Optional percentage of the overlay, between 0 and 100 (default: 100)
+	 *
+	 * @internal param \resource $dst_img Destination image
+	 *
+	 * @internal param \resource $src_img Overlay image
+	 * @return resource Destination image
+	 */
     function imagecopymergealpha(&$dst_im, &$src_im, $dst_x, $dst_y, $src_x, $src_y, $src_w, $src_h, $pct = 0) {
         $dst_x = (int) $dst_x;
         $dst_y = (int) $dst_y;
@@ -4022,13 +4026,15 @@ class upload {
     }
 
 
-    /**
-     * Opens a BMP image
-     *
-     * This function has been written by DHKold, and is used with permission of the author
-     *
-     * @access public
-     */
+	/**
+	 * Opens a BMP image
+	 *
+	 * This function has been written by DHKold, and is used with permission of the author
+	 *
+	 * @access public
+	 * @param $filename
+	 * @return mixed
+	 */
     function imagecreatefrombmp($filename) {
         if (! $f1 = fopen($filename,"rb")) return false;
 
@@ -4096,14 +4102,17 @@ class upload {
         fclose($f1);
         return $res;
     }
-    
-    /**
-     * Saves a BMP image
-     *
-     * This function has been published on the PHP website, and can be used freely
-     *
-     * @access public
-     */    
+
+	/**
+	 * Saves a BMP image
+	 *
+	 * This function has been published on the PHP website, and can be used freely
+	 *
+	 * @access public
+	 * @param $im
+	 * @param string $filename
+	 * @return bool
+	 */
     function imagebmp(&$im, $filename = "") {      
         
         if (!$im) return false;

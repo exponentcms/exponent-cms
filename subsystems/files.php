@@ -285,26 +285,27 @@ function exponent_files_canCreate($dest) {
 	}
 }
 
+// FIXME doesn't always recurse
 function exponent_files_remove_files_in_directory($dir) {
-        $files['removed'] = array();
-        $files['not_removed'] = array();
+	$files['removed'] = array();
+	$files['not_removed'] = array();
 
-        if (is_readable($dir)) {
-                $dh = opendir($dir);
-                while (($file = readdir($dh)) !== false) {
-                        $filepath = $dir.'/'.$file;
-                        if (substr($file,0,1) != '.') {
-                                if (is_writeable($filepath) && !is_dir($filepath)) {
-                                        unlink($filepath);
-                                        $files['removed'][] = $filepath;
-                                } else {
-                                        $files['not_removed'][] = $filepath;
-                                }
-                        }
-                }
-        }
+	if (is_readable($dir)) {
+		$dh = opendir($dir);
+		while (($file = readdir($dh)) !== false) {
+			$filepath = $dir.'/'.$file;
+			if (substr($file,0,1) != '.') {
+				if (is_writeable($filepath) && !is_dir($filepath)) {
+					unlink($filepath);
+					$files['removed'][] = $filepath;
+				} else {
+					$files['not_removed'][] = $filepath;
+				}
+			}
+		}
+	}
 
-        return $files;
+	return $files;
 }
 
 function exponent_files_bytesToHumanReadable($size) {

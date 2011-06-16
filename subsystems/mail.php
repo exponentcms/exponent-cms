@@ -329,7 +329,7 @@ class exponentMail extends Swift {
 	 *	@todo Update this section to use batch processing properly
      * 
 	 *  @author Tyler Smart <tyleresmart@gmail.com>
-      */		
+	  * @return mixed
 	
 	public function batchSend() {
 		require_once(BASE.'external/Swift/Plugin/AntiFlood.php');
@@ -576,45 +576,44 @@ class exponentMail extends Swift {
 	public function addText($text) {
 		$this->message->addPart($text, "text/plain");
 	}
-	
-	
-	
-	 /**
-     *  addRaw() - This is a wrapper around setHTMLBody for backwards compatibility
-     * 
-	 *  @author Tyler Smart <tyleresmart@gmail.com>
-     */	
+
+
+	/**
+	 *  addRaw() - This is a wrapper around setHTMLBody for backwards compatibility
+	 *
+	 * @author Tyler Smart <tyleresmart@gmail.com>
+	 * @param $body
+	 */
 
 	public function addRaw($body) {
 		setHTMLBody($body);
 	}
-	
-	
-    	
-	 /**
-     *  addTo() - This adds people to the Recipient List in the To Field. 
-	 *    
+
+
+	/**
+	 *  addTo() - This adds people to the Recipient List in the To Field.
+	 *
 	 *  If the first variable passed is an array,
 	 *	it assumes you are sending messages to multiple people.
-	 *	
-	 *	If you want to add people with their names associated with the email, you must use an outside for loop. 
+	 *
+	 *	If you want to add people with their names associated with the email, you must use an outside for loop.
 	 *  This function does not yet support the parsing of associative arrays for a quick add to the To recipient list.
-	 *	
-	 *	
-	 *	
-     * 
-	 *  @author Tyler Smart <tyleresmart@gmail.com>
-     *  @example This will send a basic message, looping through an array of email addresses add adding them to the BCC list. 
-	 *	
-	 *	
-	 *	
-	 *	 
-	 *	      
-	 *	$emailItem = new expMail(); 
-	 *	
-	 *	       
+	 *
+	 *
+	 *
+	 *
+	 * @author Tyler Smart <tyleresmart@gmail.com>
+	 * @example This will send a basic message, looping through an array of email addresses add adding them to the BCC list.
+	 *
+	 *
+	 *
+	 *
+	 *
+	 *	$emailItem = new expMail();
+	 *
+	 *
 	 *   $emailItem->addText('My Text ');
-     * 	 $emailItem->addText('Line Two ');
+	 *	  $emailItem->addText('Line Two ');
 	 *   $emailItem->addText('Line Three ');
 	 *	 $to_array = array('a@website.com'=>'Mr A.', 'b@website.com'=>'Mr B.', 'c@website.com'=>'Mr C.', 'd@website.com'=>'Mr D.', 'e@website.com'=>'Mr E.', 'f@website.com'=>'Mr F.');
 	 *
@@ -623,67 +622,68 @@ class exponentMail extends Swift {
 	 *	foreach ($to_array as $email => $name)
 	 *	{
 	 *		$emailItem->addBcc($email, $name);
-	 *		
+	 *
 	 *	}
 	 *	$emailItem->addFrom('from@sender.com');
 	 *	$emailItem->subject('Hello World!');
-	 *	
+	 *
 	 *	$emailItem->send();
-	 *	
-	 *	
-	 *	
+	 *
+	 *
+	 *
 	 *	//You can also just specify the email without the name, like so:
-	 *	
-	 *	
-	 *	
-	 *	$emailItem = new expMail(); 
-	 *	
-	 *	       
+	 *
+	 *
+	 *
+	 *	$emailItem = new expMail();
+	 *
+	 *
 	 *  $emailItem->addText('My Text ');
-     * 	$emailItem->addText('Line Two ');
+	 *	 $emailItem->addText('Line Two ');
 	 *  $emailItem->addText('Line Three ');
-	 *	
+	 *
 	 *	$emailItem->addTo('bob@smith.com');
 	 *	$emailItem->addFrom('from@sender.com');
 	 *	$emailItem->subject('Hello World!');
-	 *	
-	 *	$emailItem->send();		
-	 *	
-	 *	
-	 *	
+	 *
+	 *	$emailItem->send();
+	 *
+	 *
+	 *
 	 *	//You can also send an array of email addresses as the first argument, like so:
-	 *	
-	 *	
-	 *	$emailItem = new expMail(); 
-	 *	
-	 *	       
+	 *
+	 *
+	 *	$emailItem = new expMail();
+	 *
+	 *
 	 *  $emailItem->addText('My Text ');
-     * 	$emailItem->addText('Line Two ');
+	 *	 $emailItem->addText('Line Two ');
 	 *  $emailItem->addText('Line Three ');
-	 *	
+	 *
 	 *	$emailItem->addTo(array('myemail@mysite.com', 'secondemail@website.com', 'third@emailsite.com'));
 	 *	$emailItem->addFrom('from@sender.com');
 	 *	$emailItem->subject('Hello World!');
-	 *	
-	 *	$emailItem->send();		
-     * 
 	 *
-	 * @param string $email_address_array This is the array 
+	 *	$emailItem->send();
+	 *
+	 *
+	 * @param string $email_address_array This is the array
 	 * @param string $singular_name  This is the name associated with the above email address.
 	 *
-	 * @todo 		A nice future feature addition would be to allow the passing in of associative arrays like so:
-	 *			
+	 * @param string $where
+	 * @todo		 A nice future feature addition would be to allow the passing in of associative arrays like so:
+	 *
 	 *				$emailsToSendTo = array('bob@smith.com'=>'Bob Smith', 'mary@smith.com'=>'Mary Smith');
-	 *		
+	 *
 	 *				$emailItem->addTo($emailsToSendTo);
-	 *		
-	 *		
+	 *
+	 *
 	 *				OR
-	 *		
+	 *
 	 *				$emailItem->addTo('array('myemail@mysite.com'=>'Website Owner', 'secondemail@website.com'=>'Frank Jones');
-	 *				
+	 *
 	 *				Actually, cleanup should be done so that this function only takes associative arrays, and nothing else.
-     */	
+	 */
 	 
 
 	public function addTo ($email_address_array = '', $singular_name = '', $where="to") {
@@ -929,41 +929,41 @@ class exponentMail extends Swift {
 		$this->message->setTo(array());
 
 	}
-	
-	
-	
-	
-	
-	 /**
-     * attach_file_not_on_disk() - This function will utilize the swift mailer's ability to attach files
+
+
+	/**
+	 * attach_file_not_on_disk() - This function will utilize the swift mailer's ability to attach files
 	 *	that are not on disk, but are just variables.
-	 *	
-	 *	This works well if you don't want to store it to disk, or if you are not enouraged 
+	 *
+	 *	This works well if you don't want to store it to disk, or if you are not enouraged
 	 *	to do so beause of HIPPA regulations or some such thing
-     * 
+	 *
 	 * @author Tyler Smart <tyleresmart@gmail.com>
-     * @example This will generate some PDF data from an unknown PDF library without writing it to disk, then will pass that data off to Swift to attach.
+	 * @example This will generate some PDF data from an unknown PDF library without writing it to disk, then will pass that data off to Swift to attach.
 	 *	//Create your file contents in the normal way, but don't write them to disk
 	 *	$data = create_my_pdf_data();
 	 *
 	 * //Create the attachment with your data
-	 *	$attachment = Swift_Attachment::newInstance($data, 'my-file.pdf', 'application/pdf');  
-	 *	
+	 *	$attachment = Swift_Attachment::newInstance($data, 'my-file.pdf', 'application/pdf');
+	 *
 	 *	//Attach it to the message
 	 *	$message->attach($attachment);
-	 *	
-	 *	
+	 *
+	 *
 	 *	//You can alternatively use method chaining to build the attachment
 	 *	$attachment = Swift_Attachment::newInstance()
 	 *	  ->setFilename('my-file.pdf')
 	 *	  ->setContentType('application/pdf')
 	 *	  ->setBody($data)
 	 *	  ;
-     * 
-     * @param mixed   $file_to_attach This is the data for the file that you want to send, for example, the HTML, CSV, or PDF data
-     * @param string  $file_name This is the name that you want to give the attached file, so for ex., if you have CSV data in the first param, you could call it "myfile.csv"
-     * @param string  $file_type This is the MIME type of the file that you are attaching
-     */
+	 *
+	 * @param $data_to_attach
+	 * @param string  $file_name This is the name that you want to give the attached file, so for ex., if you have CSV data in the first param, you could call it "myfile.csv"
+	 * @param string  $file_type This is the MIME type of the file that you are attaching
+	 *
+	 * @internal param mixed $file_to_attach This is the data for the file that you want to send, for example, the HTML, CSV, or PDF data
+	 *
+	 */
 	 
 	 
 

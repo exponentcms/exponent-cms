@@ -43,9 +43,25 @@ class notfoundController extends expController {
         $params = $router->params;
         unset($params['controller']);
         unset($params['action']);
+
+        expCSS::pushToHead(array(
+	        "unique"=>"search-results",
+	        "link"=>$this->asset_path."css/results.css",
+	        )
+	    );
+
         $search = new search();
-        $results = $search->getSearchResults(implode(' ', $params));
-        assign_to_template(array('results'=>$results));
+		$page = new expPaginator(array(
+			'model'=>'search',
+			'controller'=>$this->params['controller'],
+			'action'=>$this->params['action'],
+			'records'=>$search->getSearchResults(implode(' ', $params)),
+			//'sql'=>$sql,
+			'order'=>'score',
+			'dir'=>'DESC',
+			));
+
+        assign_to_template(array('page'=>$page, 'terms'=>$params[0]));
     }
 
 }

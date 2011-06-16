@@ -7,7 +7,7 @@
  *  Software Foundation; either version 2 of the
  *  License, or (at your option) any later version.
  *
- * The file thats holds the expRecord class
+ * The file that initializes everything
  *
  * @link http://www.gnu.org/licenses/gpl.txt GPL http://www.gnu.org/licenses/gpl.txt
  * @package Exponent-CMS
@@ -93,24 +93,24 @@ exponent_sessions_validate();
 
 // Initialize permissions variables
 exponent_permissions_initialize();
-// initialize the expRouter
 /**
+ * initialize the expRouter
  * the routing/link/url object
  * @global expRouter $router
  * @name $router
  */
 $router = new expRouter();
 
-// initialize this users cart if they have ecomm installed.
 /**
+ * initialize this users cart if they have ecomm installed.
  * the shopping cart/order object
  * @global order $order
  * @name $order
  */
 if (controllerExists('cart')) $order = order::getUserCart();
 
-//Initialize the navigation heirarchy
 /**
+ * Initialize the navigation hierarchy
  * the list of sections/pages for the site
  * @global array $sections
  * @name $sections

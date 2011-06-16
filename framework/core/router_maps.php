@@ -14,6 +14,7 @@
 # GPL: http://www.gnu.org/licenses/gpl.txt
 #
 ##################################################
+
 $maps = array();
 
 // Find news by the title of the news post.  URL would look like news/my-post-title

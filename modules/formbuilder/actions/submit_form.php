@@ -38,7 +38,7 @@ if (!defined("SYS_SORTING")) require_once(BASE."subsystems/sorting.php");
 usort($controls,"exponent_sorting_byRankAscending");
 
 $db_data = null;
-$fields = array();
+//$fields = array();
 $emailFields = array();
 $captions = array();
 foreach ($controls as $c) {
@@ -46,14 +46,16 @@ foreach ($controls as $c) {
     $control_type = get_class($ctl);
     $def = call_user_func(array($control_type,"getFieldDefinition"));
     if ($def != null) {
-        $emailValue = htmlspecialchars_decode(html_entity_decode(call_user_func(array($control_type,'parseData'),$c->name,$_POST,true))); 
+//        $emailValue = htmlspecialchars_decode(html_entity_decode(call_user_func(array($control_type,'parseData'),$c->name,$_POST,true),ENT_COMPAT,LANG_CHARSET));
+        $emailValue = htmlspecialchars_decode(call_user_func(array($control_type,'parseData'),$c->name,$_POST,true));
         //$value = mysql_escape_string($emailValue);
         $value = mysql_real_escape_string($emailValue);
         //eDebug($value);
         $varname = $c->name;
         $db_data->$varname = $value;
-        $fields[$c->name] = call_user_func(array($control_type,'templateFormat'),$value,$ctl);
-        $emailFields[$c->name] = call_user_func(array($control_type,'templateFormat'),$emailValue,$ctl);        
+//        $fields[$c->name] = call_user_func(array($control_type,'templateFormat'),$value,$ctl);
+//        $emailFields[$c->name] = call_user_func(array($control_type,'templateFormat'),$emailValue,$ctl);
+        $emailFields[$c->name] = call_user_func(array($control_type,'templateFormat'),$value,$ctl);
         $captions[$c->name] = $c->caption;
 		if ($c->name == "email") {
 			$from = $value;
@@ -125,10 +127,9 @@ if (!isset($_POST['data_id']) || (isset($_POST['data_id']) && exponent_permissio
 		if (empty($from_name)) {
 			$from_name = trim(ORGANIZATION_NAME);
 		}
-		$langinfo = include(BASE.'subsystems/lang/'.LANG.'.php');
 		$headers = array(
 			"MIME-Version"=>"1.0",
-			"Content-type"=>"text/html; charset=".$langinfo['charset']
+			"Content-type"=>"text/html; charset=".LANG_CHARSET
 		);
         if (count($emaillist)) {
             //This is an easy way to remove duplicates

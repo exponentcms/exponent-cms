@@ -344,7 +344,8 @@ class paypalExpressCheckout extends billingcalculator {
     * process config form
     * 
     * @param mixed $values
-    */
+	 * @return array
+	 */
 	function parseConfig($values) {
 	    $config_vars = array('username', 'password', 'signature', 'testmode', 'process_mode', 'email_customer', 'email_admin', 'notification_addy');
 	    foreach ($config_vars as $varname) {
@@ -368,7 +369,8 @@ class paypalExpressCheckout extends billingcalculator {
     * @param mixed $config_object
     * 
     * TODO: Hasen't this been depricated in favor of the config.tpl?
-    */
+	 * @return string
+	 */
 	function view($config_object) {
 		$html = "<br>Settings:<br/><hr>";
 		$html .= "API Login ID: " . $config_object->username."<br>";
