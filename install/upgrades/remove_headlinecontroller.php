@@ -1,30 +1,55 @@
 <?php
-##################################################
-#
-# Copyright (c) 2007-2008 OIC Group, Inc.
-# Written and Designed by Adam Kessler
-#
-# This file is part of Exponent
-#
-# Exponent is free software; you can redistribute
-# it and/or modify it under the terms of the GNU
-# General Public License as published by the Free
-# Software Foundation; either version 2 of the
-# License, or (at your option) any later version.
-#
-# GPL: http://www.gnu.org/licenses/gpl.txt
-#
-##################################################
+/**
+ *  This file is part of Exponent
+ *  Exponent is free software; you can redistribute
+ *  it and/or modify it under the terms of the GNU
+ *  General Public License as published by the Free
+ *  Software Foundation; either version 2 of the
+ *  License, or (at your option) any later version.
+ *
+ * The file that holds the remove_headlinecontroller class
+ *
+ * @link http://www.gnu.org/licenses/gpl.txt GPL http://www.gnu.org/licenses/gpl.txt
+ * @package Exponent-CMS
+ * @copyright 2004-2011 OIC Group, Inc.
+ * @author Adam Kessler <adam@oicgroup.net>
+ * @version 2.0.0
+ */
 
+/**
+ * This is the class remove_headlinecontroller
+ *
+ * @subpackage Upgrade
+ * @package Installation
+ */
 class remove_headlinecontroller extends upgradescript {
-// TODO next two lines are commented out to disable this script
-//	protected $from_version = '1.99.0';
-//	protected $to_version = '2.0.1';
+	protected $from_version = '1.99.0';
+	protected $to_version = '2.0.1';
 
+	/**
+	 * name/title of upgrade script
+	 * @return string
+	 */
 	function name() { return "Remove the (deprecated) Headline Controller"; }
 
+	/**
+	 * generic description of upgrade script
+	 * @return string
+	 */
 	function description() { return "Beginning with Exponent 2.0.0 Beta4, the Headline Controller is replaced by the Text Controller.  This Script converts headline modules to text modules and then deletes the headlines"; }
 
+	/**
+	 * additional test(s) to see if upgrade script should be run
+	 * @return bool
+	 */
+	function needed() {
+		return false;  // TODO this line is set to false to disable this sample script
+	}
+
+	/**
+	 * coverts all headline modules/items into text modules/items and deletes headline controller files
+	 * @return bool
+	 */
 	function upgrade() {
 	    global $db;
 
