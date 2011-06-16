@@ -43,7 +43,7 @@
     <ul class="image-list">
 	{assign var=quality value=$config.quality}
 	{if !$quality}
-		{assign var=quality value=THUMB_QUALITY}
+		{assign var=quality value=$smarty.const.THUMB_QUALITY}
 	{/if}	
     {foreach from=$page->records item=record name=items}
         <li style="width:{$config.pa_showall_thumbbox|default:"150"}px;height:{$config.pa_showall_thumbbox|default:"150"}px;">
