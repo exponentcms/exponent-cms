@@ -416,7 +416,8 @@ class expPaginator {
                 $classinfo = new ReflectionClass($type); 
                 if ($classinfo->hasMethod('paginationCallback')) {
                     $item = new $type($record->original_id);
-                    $item->paginationCallback(&$record);
+//                    $item->paginationCallback(&$record);
+                    $item->paginationCallback($record);  // (deprecated) moved call by reference to function, not caller
                 }
             } 
         }    
