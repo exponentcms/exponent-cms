@@ -37,7 +37,7 @@
         {if $items|@count gt 0}
         <a class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" style="margin-left: 18px;" href="{securelink controller=cart action=checkout}">Checkout Now</a>
         {/if}
-        <a class="awesome {$smarty.const.BTN_SIZE} red" style="margin-left: 18px;" href="{link action=empty_cart}"  onclick="return confirm('Are you sure you want to empty all items from your shopping cart?');">Empty Cart</a>
+        <a class="awesome small red" style="float:right; margin-left: 18px;" href="{link action=empty_cart}"  onclick="return confirm('Are you sure you want to empty all items from your shopping cart?');">Empty Cart</a>
     </div>
 	<div id="cartbox">        
 		<div id="cart-top" width="100%" cellpadding="0" cellspacing="0">
@@ -70,7 +70,7 @@
                         <td>
                         {currency_symbol}
                         </td>
-                        <td style="text-align:left;">{$order->subtotal|number_format:2}
+                        <td style="text-align:right;">{$order->subtotal|number_format:2}
                         </td>
                     </tr>
                      {if isset($discounts[0])}                        
@@ -109,7 +109,7 @@
                         <td>
                         {currency_symbol}
                         </td>
-                        <td style="text-align:left;">{$order->tax|number_format:2}
+                        <td style="text-align:right;">{$order->tax|number_format:2}
                         </td>
                     </tr>   
                     <tr class="{cycle values="odd, even"}">
@@ -126,7 +126,7 @@
                         <td>
                         {currency_symbol}
                         </td>
-                        <td style="text-align:left;">                    
+                        <td style="text-align:right;">                    
                            {$order->shipping_total|number_format:2}                    
                         </td>
                     </tr>
@@ -138,7 +138,7 @@
                             <td>
                             {currency_symbol}
                             </td>
-                            <td style="text-align:left;">{$order->surcharge_total|number_format:2}
+                            <td style="text-align:right;">{$order->surcharge_total|number_format:2}
                             </td>
                         </tr>
                     {/if}
@@ -149,7 +149,7 @@
                         <td>
                         {currency_symbol}
                         </td>
-                        <td style="text-align:left;">{$order->grand_total|number_format:2}
+                        <td style="text-align:right;">{$order->grand_total|number_format:2}
                         </td>
                     </tr>
                     <tr class="{cycle values="odd, even"}">
@@ -174,6 +174,5 @@
         {if $items|@count gt 0}
         <a class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" style="margin-left: 18px;" href="{securelink controller=cart action=checkout}">Checkout Now</a>
         {/if}
-        <a class="awesome {$smarty.const.BTN_SIZE} red" style="margin-left: 18px;" href="{link action=empty_cart}"  onclick="return confirm('Are you sure you want to empty all items from your shopping cart?');">Empty Cart</a>
     </div>
 </div>
