@@ -60,18 +60,20 @@ class tablebasedcalculator extends shippingcalculator {
         //52 - PuertoRico
         $stateUpcharge = array('2','21','52');
        
-		if(!empty($c)) {
+       $rates = array();
+	   if(!empty($c)) {
 			for($i = 0; $i < count($c); $i++) {
 			
 				if (in_array($currentMethod->state, $stateUpcharge)) { 
 					$c[$i] += 1.50; $c[$i] += 1.50; 
 				}
-				$rates[0 . ($i+1)] = array('id' => 0 . ($i+1), 'title' => $this->shippingspeeds[$i]->speed, 'cost' => $c[$i]);
+                if($i <= 9) $rates[($i+1)] = array('id' => 0 . ($i+1), 'title' => $this->shippingspeeds[$i]->speed, 'cost' => $c[$i]);
+                else $rates[0 . ($i+1)] = array('id' => 0 . ($i+1), 'title' => $this->shippingspeeds[$i]->speed, 'cost' => $c[$i]);
 				
 			}
 		}
 		
-		
+        if(!count($rates)) $rates[01] = array('id' => 01, 'title' => "Table Based Shipping is Currently NOT Configured", 'cost' => 0);
 		return $rates;
     }    
     
