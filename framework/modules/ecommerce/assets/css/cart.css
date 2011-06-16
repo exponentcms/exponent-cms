@@ -153,6 +153,13 @@ table#cart table td {
     white-space:nowrap;
 }
 
+/* discount code styles */
+.input-code .control {
+    display:inline-block;
+    *display:inline;
+    zoom:1;
+    vertical-align:bottom;
+}
 
 /*************  END CART STYLES ****************/
 
