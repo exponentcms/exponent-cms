@@ -88,7 +88,7 @@
     {/foreach}
     <div style="clear:both"></div>
     </div>
-    {/if}
+    {else}
     <!--hr/-->
     <h2>All Products Under {$current_category->title}</h2>
     {pagelinks paginate=$page top=1}
@@ -126,6 +126,7 @@
     </div>
     {*control type="dropdown" name="sortme" items=$page->sort_dropdown default=$defaultSort*}
     {pagelinks paginate=$page bottom=1}
+    {/if}
 </div>
 
 

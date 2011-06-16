@@ -32,7 +32,7 @@ class shippingcalculator extends expRecord {
         if (file_exists(BASE.'framework/modules/ecommerce/shippingcalculators/icons/'.$this->classname.'.gif')) {
             $this->icon = PATH_RELATIVE.'framework/modules/ecommerce/shippingcalculators/icons/'.$this->classname.'.gif';
         } else {
-            $this->icon = PATH_RELATIVE.'framework/modules/ecommerce/shippingcalculators/icons/default.gif';
+            $this->icon = PATH_RELATIVE.'framework/modules/ecommerce/shippingcalculators/icons/default.png';
         }
         
     }
