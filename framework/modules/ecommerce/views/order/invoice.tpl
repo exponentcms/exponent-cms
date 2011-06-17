@@ -1,4 +1,4 @@
-{if $smarty.get.printerfriendly==1}
+{if $smartY.one.printerfriendly==1}
     {assign var=pf value=1}
     {css unique="invoice" link="`$smarty.const.PATH_RELATIVE`framework/modules/ecommerce/assets/css/print-invoice.css"}
     {/css}
@@ -342,13 +342,13 @@
                         
                         
                         // the text box for the title
-                        var tagInput = Y.get('#related_items');
+                        var tagInput = Y.one('#related_items');
 
                         // the UL to append to
-                        var tagUL = Y.get('#relatedItemsList');
+                        var tagUL = Y.one('#relatedItemsList');
 
                         // the Add Link
-                        var tagAddToList = Y.get('#addToRelProdList');
+                        var tagAddToList = Y.one('#addToRelProdList');
 
 
                         var onRequestData = function( oSelf , sQuery , oRequest) {

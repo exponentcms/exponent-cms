@@ -59,12 +59,12 @@
         <div class="yui-content">
             <div id="invoice">
                 <div id="buttons">
-                    {printer_friendly_link class="awesome blue small" text="Print this invoice" view="show_printable"} 
-                    <a href="{link controller='order' action='getPDF' id=$order->id inum=$order->invoice_number}"><strong><em>Download PDF</em></strong></a>
+                    {printer_friendly_link class="awesome `$smarty.const.BTN_SIZE` `$smarty.const.BTN_COLOR`" text="Print this invoice" view="show_printable"} 
+                    <a class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" href="{link controller='order' action='getPDF' id=$order->id inum=$order->invoice_number}">Download PDF</a>
                     {permissions}
                         {if $permissions.manage == 1}
-                            {printer_friendly_link class="awesome blue small" text="Print Packing Slip" view="show_packing"}
-                            <a class="exp-ecom-link" href="{link controller='order' action='createReferenceOrder' id=$order->id}"><strong><em>Spawn Reference Order</em></strong></a>
+                            {printer_friendly_link class="awesome `$smarty.const.BTN_SIZE` `$smarty.const.BTN_COLOR`" text="Print Packing Slip" view="show_packing"}
+                            <a class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" href="{link controller='order' action='createReferenceOrder' id=$order->id}"><strong><em>Spawn Reference Order</em></strong></a>
                         {/if}
                     {/permissions} 
                 </div>               
