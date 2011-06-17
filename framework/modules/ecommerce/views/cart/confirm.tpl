@@ -17,7 +17,7 @@
 
  {/css}
 
- {css unique="confirmation2" link="`$asset_path`css/confirmation.css"}
+ {css unique="confirmation2" link="`$asset_path`css/confirmation.css" corecss="button"}
 
  {/css}                                                
 
@@ -168,11 +168,11 @@
     </div>
     
     <div class="confirmationlinks">
-        <a href="{if $nologin}{link controller=cart action=process nologin=1}{else}{link controller=cart action=process}{/if}" class="exp-ecom-link next">
-            <strong><em>Looks good, submit my order!</em></strong>
+        <a href="{if $nologin}{link controller=cart action=process nologin=1}{else}{link controller=cart action=process}{/if}" class="awesome {$smarty.const.BTN_SIZE} green next" />
+            {"Looks good, submit my order!"|gettext} &raquo;
         </a>
-        <a href="{link controller=cart action=checkout}" class="exp-ecom-link back">
-            <strong><em>Let me edit something</em></strong>
+        <a href="{link controller=cart action=checkout}" class="awesome {$smarty.const.BTN_SIZE} yellow back" />
+            &laquo; {"Let me edit something"|gettext}
         </a>
     </div>
     <p align="center">

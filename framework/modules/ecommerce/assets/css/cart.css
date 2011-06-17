@@ -167,8 +167,6 @@ table#cart table td {
 /****************  Checkout page styles  ***********************/
 .cart.checkout {
     position:relative;
-/*  line-height:1.5em;*/
-    *width:100%!important;
 }
 
 .cart.checkout h2 {

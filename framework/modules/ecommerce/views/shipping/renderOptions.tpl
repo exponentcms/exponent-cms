@@ -4,6 +4,7 @@
     <div class="sm-info">
         <strong class="selected-info">{$shipping->shippingmethod->option_title}
             <em>${$shipping->shippingmethod->shipping_cost|number_format:2}</em></strong>
+        {if $shipping->pricelist|@count >1}
         <h4>{"Avalable Options"|gettext}</h4>
         <div class="bd">
             {form name="shpmthdopts" controller=shipping action=selectShippingOption}
@@ -15,8 +16,10 @@
             <button type="submit" class="awesome small blue">{"Change Shipping Option"|gettext}</button>
             {/form}
         </div>
+        {/if}
     </div>
 </div>
+<hr>
 {else}
 <div id="shipping-error" class="error">
     {$shipping->pricelist}

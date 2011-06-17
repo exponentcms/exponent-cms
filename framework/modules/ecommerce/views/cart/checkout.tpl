@@ -152,8 +152,8 @@
                 {if $order->forced_shipping == true}
                     <p>Your order requires <strong>{$shipping->shippingmethod->option_title}</strong></p>
                 {else}
+                {*
                     <p{if $noShippingPrices} class="hide"{/if}><strong id="cur-calc">{if $shipping->calculator->id}{$shipping->calculator->title}{else}No service selected{/if}</strong>  -  <a href="#" id="servicepicker">Select a Service</a></p>
-                    {*
                     <div id="calculators" class="exp-dropmenu">
                         <div class="hd"><span class="type-icon"></span>Select a Shipping Service</div>
                         <div class="bd">
@@ -193,7 +193,7 @@
                     </div>    
                     
                     <div class="bracket{if !$shipping->address->id} hide{/if}">
-                        <a class="exp-ecom-link" href="{link controller=address action=myaddressbook}"><strong><em>Change or Add Address</em></strong></a>
+                        <a class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" href="{link controller=address action=myaddressbook}">{"Change or Add Address"|gettext}</a>
                     </div>
                     
                 </div>
@@ -206,7 +206,7 @@
                 {foreach from=$shipping->splitmethods item=method}
                     <div class="splitaddress">
                         <h4>{$order->countOrderitemsByShippingmethod($method->id)} items will be shipped to:</h4>
-                        <!--a class="ordermessage exp-ecom-link" href="#" rel="{$method->id}"><strong><em>Add a Gift Message to this Order</em></strong></a-->
+                        <!--a class="ordermessage awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" href="#" rel="{$method->id}"><strong><em>Add a Gift Message to this Order</em></strong></a-->
                         <address>
                             {$method->firstname} {$method->middlename} {$method->lastname}{br}
                             {$method->address1}{br}
@@ -243,7 +243,7 @@
                     {/if}
                 </div>
                 <div class="bracket">
-                    <a class="exp-ecom-link" href="{link controller=address action=myaddressbook}"><strong><em>Change or Add Address</em></strong></a>
+                    <a class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" href="{link controller=address action=myaddressbook}"><strong><em>Change or Add Address</em></strong></a>
                 </div>                
             </div>
             <div style="clear: both;"></div>
@@ -260,7 +260,7 @@
             </div>
         </div>
         <!--div class="separate">
-            <a class="exp-ecom-link-dis continue" href="#" id="checkoutnow"><strong><em>Complete your checkout information to continue</em></strong></a>
+            <a class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}-dis continue" href="#" id="checkoutnow"><strong><em>Complete your checkout information to continue</em></strong></a>
         </div-->
     </div>
 </div>
