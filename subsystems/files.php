@@ -88,12 +88,14 @@ function exponent_files_makeDirectory($dir,$mode=null,$is_full=false) {
 	return SYS_FILES_SUCCESS;
 }
 
-/* exdoc
+/**
  * Recursively removes the given directory, and all
  * of the files and directories underneath it.
  *
  * @param string $dir The path of the directory to remove
  * @node Subsystems:Files
+ * @param string $dir directory to work with
+ * @return int
  */
 function exponent_files_removeDirectory($dir) {
 	if (strpos($dir,BASE) != 0) $dir = BASE.$dir;
@@ -285,11 +287,40 @@ function exponent_files_canCreate($dest) {
 	}
 }
 
-// FIXME doesn't always recurse
-function exponent_files_remove_files_in_directory($dir) {
-	$files['removed'] = array();
-	$files['not_removed'] = array();
+/**
+ * Recursively removes all files in a given directory, and all
+ * the files and directories underneath it.
+ * Optionally can skip dotfiles
+ *
+ * @param string $dir directory to work with
+ * @param bool $dot_files should dotfiles be removed?
+ * @return array
+ */
+function exponent_files_remove_files_in_directory($dir, $dot_files = false) {
+	$results['removed'] = array();
+	$results['not_removed'] = array();
 
+	$files = scandir($dir);
+	array_shift($files);    // remove '.' from array
+	array_shift($files);    // remove '..' from array
+	foreach ($files as $file) {
+		if ($dot_files || substr($file, 0, 1) != '.') {  // don't remove dot files
+			$file = $dir . '/' . $file;
+			if (is_dir($file)) {
+				cleardir_recursive($file);
+				rmdir($file);
+			} else {
+				if (is_writeable($file) && !is_dir($file)) {
+					unlink($file);
+					$results['removed'][] = $file;
+				} else {
+					$results['not_removed'][] = $file;
+				}
+			}
+		}
+	}
+
+/*	odl routine
 	if (is_readable($dir)) {
 		$dh = opendir($dir);
 		while (($file = readdir($dh)) !== false) {
@@ -297,15 +328,15 @@ function exponent_files_remove_files_in_directory($dir) {
 			if (substr($file,0,1) != '.') {
 				if (is_writeable($filepath) && !is_dir($filepath)) {
 					unlink($filepath);
-					$files['removed'][] = $filepath;
+					$results['removed'][] = $filepath;
 				} else {
-					$files['not_removed'][] = $filepath;
+					$results['not_removed'][] = $filepath;
 				}
 			}
 		}
-	}
+	}*/
 
-	return $files;
+	return $results;
 }
 
 function exponent_files_bytesToHumanReadable($size) {

@@ -54,10 +54,16 @@ class fix_database extends upgradescript {
 	    global $db;
 
 		print_r("<pre>");
+	    print_r("<h3>Some Error Conditions can NOT be repaired by this Procedure!</h3><br>");
+		print_r("<pre>");
 	// upgrade sectionref's that have lost their originals
 		print_r("<b>Searching for sectionrefs that have lost their originals</b><br><br>");
 		$sectionrefs = $db->selectObjects('sectionref',"is_original=0");
-		print_r("Found: ".count($sectionrefs)." copies (not originals)<br>");
+		if (count($sectionrefs)) {
+			print_r("Found: ".count($sectionrefs)." copies (not originals)<br>");
+		} else {
+			print_r("None Found: Good!<br>");
+		}
 		foreach ($sectionrefs as $sectionref) {
 			if ($db->selectObject('sectionref',"module='".$sectionref->module."' AND source='".$sectionref->source."' AND is_original='1'") == null) {
 			// There is no original for this sectionref so change it to the original
@@ -72,13 +78,18 @@ class fix_database extends upgradescript {
 	// upgrade sectionref's that point to missing sections (pages)
 		print_r("<b>Searching for sectionrefs pointing to missing sections/pages <br>to fix for the Recycle Bin</b><br><br>");
 		$sectionrefs = $db->selectObjects('sectionref',"refcount!=0");
+		$found = 0;
 		foreach ($sectionrefs as $sectionref) {
 			if ($db->selectObject('section',"id='".$sectionref->section."'") == null) {
 			// There is no section/page for sectionref so change the refcount
 				$sectionref->refcount = 0;
 				$db->updateObject($sectionref,"sectionref");
 				print_r("Fixed: ".$sectionref->module." - ".$sectionref->source."<br>");
+				$found += 1;
 			}
+		}
+		if (!$found) {
+			print_r("None Found: Good!<br>");
 		}
 		print_r("</pre>");
 
@@ -95,7 +106,7 @@ class fix_database extends upgradescript {
 				 $newLocRef->source   = $sectionref->source;
 				 $newLocRef->internal = $sectionref->internal;
 				 $newLocRef->refcount = $sectionref->refcount;
-				 $db->insertObject($newLocRef,"locationref");
+				 $db->insertObject($newLocRef,'locationref');
 				 print_r("Copied: ".$sectionref->module." - ".$sectionref->source."<br>");
 			 }
 		 }
@@ -104,16 +115,20 @@ class fix_database extends upgradescript {
 		 print_r("<pre>");
 	 // delete sectionref's & locationref's that have empty sources since they are dead
 		 print_r("<b>Searching for unassigned modules (no source)</b><br><br>");
-		 $sectionrefs = $db->selectObjects('sectionref',"source=''");
+		 $sectionrefs = $db->selectObjects('sectionref','source=""');
 		 if ($sectionrefs != null) {
-			 print_r("Removing: ".count($sectionrefs)." sectionref empties (no source)<br>");
-			 $db->delete('sectionref',"source=''");
+			 print_r("Removing: ".count($sectionrefs)." empty sectionref's (no source)<br>");
+			 $db->delete('sectionref','source=""');
+		 } else {
+			 print_r("No Empties Found: Good!<br>");
 		 }
 // FIXME Not needed when locationrefs are removed
-		 $locationrefs = $db->selectObjects('locationref',"source=''");
+		 $locationrefs = $db->selectObjects('locationref','source=""');
 		 if ($locationrefs != null) {
-			 print_r("Removing: ".count($locationrefs)." locationref empties (no source)<br>");
-			 $db->delete('locationref',"source=''");
+			 print_r("Removing: ".count($locationrefs)." empty locationref's (no source)<br>");
+			 $db->delete('locationref','source=""');
+		 } else {
+			 print_r("No Empties Found: Good!<br>");
 		 }
 		 print_r("</pre>");
 

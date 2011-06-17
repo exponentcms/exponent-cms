@@ -83,7 +83,7 @@ if ($user->isAdmin()) {
 						'itemdata'=>array(
 							array(
 								'classname' => 'moreinfo',
-								'text'=>"Exponent Version : ".$my_version."<br />Release level : ".$my_type."<br />Release date : ".date("F-d-Y",EXPONENT_VERSION_BUILDDATE)."<br />PHP Version : ".phpversion(),"disabled"=>true
+								'text'=>"Exponent Version : ".$my_version."<br />Release level : ".$my_type."<br />Release date : ".date("F-d-Y",EXPONENT_VERSION_BUILDDATE),"disabled"=>true
 							)
 						)
 					)
@@ -185,16 +185,8 @@ if ($user->isSuperAdmin()) {
                     'text' => (DEVELOPMENT)?expLang::gettext('Turn Error Reporting off'):expLang::gettext('Turn Error Reporting on'),
                     'classname' => (DEVELOPMENT)?'develop_on_red':'develop_off',
                     'url' => makeLink(array(
-                        'module' => 'administrationmodule',
-                        'action' => 'toggle_dev'
-                    ))
-                ),
-                array(
-                    'text' => (MINIFY)?expLang::gettext('Turn Minification off'):expLang::gettext('Turn Minification on'),
-                    'classname' => (MINIFY)?'develop_on_green':'develop_off',
-                    'url' => makeLink(array(
                         'module' => 'administration',
-                        'action' => 'toggle_minify'
+                        'action' => 'toggle_dev'
                     ))
                 ),
                 array(
@@ -205,8 +197,8 @@ if ($user->isSuperAdmin()) {
                             array(
                                 'text' => $i18n['install_tables'],
                                 'url' => makeLink(array(
-                                    'module' => 'administrationmodule',
-                                    'action' => 'installtables'
+                                    'module' => 'administration',
+                                    'action' => 'install_tables'
                                 ))
                             ),
                             // array(
@@ -224,8 +216,22 @@ if ($user->isSuperAdmin()) {
                             array(
                                 'text' => $i18n['optimize_database'],
                                 'url' => makeLink(array(
-                                    'module' => 'administrationmodule',
-                                    'action' => 'optimizedatabase'
+                                    'module' => 'administration',
+                                    'action' => 'optimize_database'
+                                ))
+                            ),
+                            array(
+                                'text' => 'Repair Database',
+                                'url' => makeLink(array(
+                                    'module' => 'administration',
+                                    'action' => 'fix_database'
+                                ))
+                            ),
+                            array(
+                                'text' => 'Reset Sessions Table',
+                                'url' => makeLink(array(
+                                    'module' => 'administration',
+                                    'action' => 'fix_sessions'
                                 ))
                             ),
                             array(
@@ -292,7 +298,7 @@ if ($user->isSuperAdmin()) {
                                 'text' => $i18n['upload_extension'],
                                 'classname'=>'fileuploader',
                                 'url' => makeLink(array(
-                                    'module' => 'administrationmodule',
+                                    'module' => 'administration',
                                     'action' => 'upload_extension'
                                 ))
                             ),
@@ -316,19 +322,67 @@ if ($user->isSuperAdmin()) {
                     )
                 ),
                 array(
-                    'text' => $i18n['clear_smarty'],
-	                'classname' => 'remove',
-                    'url' => makeLink(array(
-                        'module' => 'administrationmodule',
-                        'action' => 'clear_smarty_cache'
-                    ))
-                ),
+                    'text' => expLang::gettext('System Cache'),
+                    'submenu' => array(
+                        'id' => 'cache',
+                        'itemdata' => array(
+							array(
+								'text' => (MINIFY)?expLang::gettext('Turn Minification off'):expLang::gettext('Turn Minification on'),
+								'classname' => (MINIFY)?'develop_on_green':'develop_off',
+								'url' => makeLink(array(
+									'module' => 'administration',
+									'action' => 'toggle_minify'
+								))
+							),
+							array(
+								'text' => $i18n['clear_smarty'],
+								'classname' => 'remove',
+								'url' => makeLink(array(
+									'module' => 'administration',
+									'action' => 'clear_smarty_cache'
+								))
+							),
+							array(
+								'text' => expLang::gettext('Clear CSS/Minify Cache'),
+								'classname' => 'remove',
+								'url' => makeLink(array(
+								    'module' => 'administration',
+									'action' => 'clear_css_cache'
+								))
+							),
+							array(
+								'text' => expLang::gettext('Clear Image Cache'),
+								'classname' => 'remove',
+								'url' => makeLink(array(
+								    'module' => 'administration',
+									'action' => 'clear_image_cache'
+								))
+							),
+							array(
+								'text' => expLang::gettext('Clear RSS/Podcast Cache'),
+								'classname' => 'remove',
+								'url' => makeLink(array(
+								    'module' => 'administration',
+									'action' => 'clear_rss_cache'
+								))
+							),
+							array(
+								'text' => expLang::gettext('Clear All Caches'),
+								'classname' => 'remove',
+								'url' => makeLink(array(
+								    'module' => 'administration',
+									'action' => 'clear_all_caches'
+								))
+							),
+	                    )
+					)
+				),
                 array(
 	                'text' => (MAINTENANCE_MODE)?expLang::gettext('Turn Maintenance Mode off'):expLang::gettext('Turn Maintenance Mode on'),
 	                'classname' => (MAINTENANCE_MODE)?'develop_on_red':'develop_off',
                     'text' => $i18n['toggle_maint'],
                     'url' => makeLink(array(
-                        'module' => 'administrationmodule',
+                        'module' => 'administration',
                         'action' => 'toggle_maintenance'
                     ))
                 )

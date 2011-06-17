@@ -163,7 +163,7 @@ foreach ($tables as $table => $statusnum) {
 		</div>
 		 <?php } elseif ($statusnum == TMP_TABLE_INSTALLED) {  ?>
 		<div style="color: green; font-weight: bold">
-			<?php echo gt('Succeeded') ?>
+			<?php echo gt('Added') ?>
 		</div>
         <?php } elseif ($statusnum == TMP_TABLE_FAILED) {  ?>
 		<div style="color: red; font-weight: bold">
@@ -185,10 +185,12 @@ $row = $row == "even" ? "odd" : "even";
 $line++;
 }
 ?>
- <tbody>
-</table>
 <?php
 		}
+	?>
+<tbody>
+</table>
+		<?php
 		if ($line == 0) {
 			echo "<p class=\"success\">No Tables Were Changed!</p>";
 		}
