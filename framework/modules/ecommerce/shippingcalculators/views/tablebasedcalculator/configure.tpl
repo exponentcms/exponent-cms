@@ -14,7 +14,7 @@
  *
  *}
  
-{css unique="shippingtable"}
+{css unique="shippingtable" corecss="tables"}
 {literal}
 .exp-skin-table td {
     white-space:nowrap;
@@ -33,7 +33,7 @@
 			</li>
 		{/foreach}
     </ul>
-    {icon class="new" action=editspeed/id/`$calculator->id` text="Create new Shipping Speed"}
+    {icon class="add" action=editspeed/id/`$calculator->id` text="Create new Shipping Speed"}
     {br}{br}
 	<div class="{if !$calculator->shippingspeeds}hide{/if}">
     <hr>
@@ -115,9 +115,9 @@
 <div class="loadingdiv">Loading</div>
 
 
-{script unique="shipping-table"}
+{script unique="shipping-table" yui3mods=1}
 {literal}
-YUI().use('node', function(Y) {
+YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
     var stb = Y.one('#shippingtable tbody');
     var andup = stb.one('.last');
     var addrange = Y.one('#newrange');

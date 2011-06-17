@@ -2,15 +2,17 @@
     position:relative;
 }
 .creditcard-form .control .label {
-    float:left;
+    display:inline-block;
+    *display:inline;
+    zoom:1;
+    vertical-align:top;
     width:130px;
     text-align:right;
     padding-right:10px;
-    color:#116C8D;
 }
 .creditcard-form .control input,
 .creditcard-form .control select {
-    border:2px solid #116C8D;
+
 }
 .creditcard-form .control select {
     padding:3px;
@@ -22,11 +24,7 @@
 #cc_typeControl select {
     width:160px;
 }
-.creditcard-form .control.htmlcontrol {
-    position:absolute;
-    top:120px;
-    left:220px;
-}
+
 
 #continue-checkout {
     margin:10px 0 10px 140px;

@@ -13,7 +13,7 @@
  * GPL: http://www.gnu.org/licenses/gpl.txt
  *
  *}
-{css unique="cart" link="`$asset_path`css/cart.css" corecss="panels"}
+{css unique="cart" link="`$asset_path`css/cart.css" corecss="panels,button"}
 
 {/css}
 
@@ -30,7 +30,7 @@
                 {$cartConfig.policy}
             </div>
         </div>
-        {script unique="policypop" yuimodules="container"}
+        {script unique="policypop" yui2mods="container"}
         {literal}
             var policies = new YAHOO.widget.Panel("storepolicies", { 
                 width:"400px",
@@ -268,6 +268,6 @@
 
 {* eDebug var=$order *}
 {*  Kludged out while testing paypal *}
-{script unique="shoppingcartcheckout" yuimodules="animation,container,json" src=`$smarty.const.JS_FULL`exp-ecomcheckout.js}
+{*script unique="shoppingcartcheckout" yuimodules="animation,container,json" src=`$smarty.const.JS_FULL`exp-ecomcheckout.js}
 //
-{/script}
+{/script*}
