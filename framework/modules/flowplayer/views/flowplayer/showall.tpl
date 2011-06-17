@@ -18,7 +18,7 @@
 flowplayer("a.flowplayer-video", EXPONENT.PATH_RELATIVE+"external/flowplayer3/flowplayer-3.2.7.swf",
     {
 		wmode: 'opaque',
-		clip: { 
+		clip: {
 			autoPlay:{/literal}{if $config.autoplay}true{else}false{/if}{literal},
 			},		  
         plugins:  { 
