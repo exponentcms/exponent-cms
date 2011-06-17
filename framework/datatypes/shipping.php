@@ -105,8 +105,8 @@ class shipping extends expRecord {
 		    if(empty($this->shippingmethod->option)) {
 		        $opt = current($this->pricelist);
 		        $this->shippingmethod->update(array('option'=>$opt['id'],'option_title'=>$opt['title'],'shipping_cost'=>$opt['cost'])); //updates SECOND created shipping method w/ rates, as that was the one set to $this->shippingmethod
-		    } else {
-		        if ($this->shippingmethod->shipping_cost != $this->pricelist[$this->shippingmethod->option]['cost']) {
+		    } else {                
+		        if ($this->shippingmethod->shipping_cost != $this->pricelist[$this->shippingmethod->option]['cost']) {                    
 		            $opt = $this->pricelist[$this->shippingmethod->option];
 		            $this->shippingmethod->update(array('option'=>$opt['id'],'option_title'=>$opt['title'],'shipping_cost'=>$opt['cost']));
 		        }
