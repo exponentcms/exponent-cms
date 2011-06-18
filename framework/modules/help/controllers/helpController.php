@@ -22,24 +22,40 @@ class helpController extends expController {
 	public $codequality = 'beta';
 
 	function name() { return $this->displayname(); } //for backwards compat with old modules
-	function displayname() { return "HELP!"; }
+	function displayname() { return "Help"; }
 	function description() { return "Module for managing Exponent CMS help files."; }
 	function author() { return "Adam Kessler - OIC Group, Inc"; }
-	function hasSources() { return false; }
+	function hasSources() { return true; }
 	function hasViews() { return true; }
 	function hasContent() { return true; }
 	function supportsWorkflow() { return false; }
 	function isSearchable() { return true; }
 	
+    function __construct($src=null, $params=array()) {
+        global $db;
+        parent::__construct($src,$params);
+        if(!empty($params['version']) && !expSession::get('help-version')) {
+            expSession::set('help-version',isset($params['version']));
+        } elseif (empty($params['version']) && !expSession::get('help-version')) {
+    	    $version = $db->selectValue('help_version', 'version','is_current=1');
+            expSession::set('help-version',$version);            
+        }
+        
+        $this->help_version = expSession::get('help-version');
+	}
+	
 	public function showall() {
 	    expHistory::set('viewable', $this->params);
 	    $hv = new help_version();
-	    $current_version = $hv->find('first', 'is_current=1');
+	    //$current_version = $hv->find('first', 'is_current=1');
+	    $ref_version = $hv->find('first', 'version=\''.$this->help_version.'\'');
 
         // pagination parameter..hard coded for now.	    
-	    $where = 'help_version_id='.$current_version->id;
+		$where = $this->aggregateWhereClause();
+	    $where .= 'AND help_version_id='.$ref_version->id;
 	    $limit = 500;
-	    $order = 'title';
+//	    $order = 'rank';
+	    $order = isset($this->config['order']) ? $this->config['order'] : 'rank';
 	    $dir   = 'ASC';
 	    
 	    // grab the pagination object
@@ -54,11 +70,11 @@ class helpController extends expController {
 	                'columns'=>array('Title'=>'title', 'Body'=>'body', 'Version'=>'help_version_id'),
 	                ));
 	    
-	    assign_to_template(array('current_version'=>$current_version, 'page'=>$page));
+	    assign_to_template(array('current_version'=>$ref_version, 'page'=>$page, 'rank'=>($order==='rank')?1:0));
 	}
 	
 	public function edit() {
-	    global $db;
+	    global $db, $sectionObj;
 	    expHistory::set('editable', $this->params);
 	    $id = empty($this->params['id']) ? null : $this->params['id'];
 	    $help = new help($id);
@@ -66,12 +82,27 @@ class helpController extends expController {
 	    // get the id of the current version and use it if we need to.
 	    $version = $db->selectValue('help_version', 'id', 'is_current=1');
 	    if (empty($help->help_version_id)) $help->help_version_id = $version;
-	    assign_to_template(array('record'=>$help));
+
+		$sectionlist = array();
+		$sections = $db->selectObjectsIndexedArray('section',1);
+		$helpsections = $db->selectObjects('help',1);
+		foreach ($helpsections as $helpsection) {
+			if (!array_key_exists($helpsection->section, $sectionlist)) {
+				if (array_key_exists($helpsection->section, $sections)) {
+					$sectionlist[$helpsection->section] = $sections[$helpsection->section]->name;
+				}
+			}
+		}
+		$sectionlist[$sectionObj->id] = $sections[$sectionObj->id]->name." (current page)";
+
+	    assign_to_template(array('record'=>$help,"cursec"=>$sectionObj->id,"sections"=>$sectionlist));
 	}
 	
 	public function show() {
 	    global $db;
 	
+	    expHistory::set('viewable', $this->params);
+
 	    $help = new help();
 	    if (empty($this->params['version'])) {
 	        $version_id = $db->selectValue('help_version', 'id', 'is_current=1');
@@ -79,12 +110,12 @@ class helpController extends expController {
 	        $version_id = $db->selectValue('help_version', 'id', 'version=\''.$this->params['version'].'\'');
 	    }	    
 
-	    $doc = $help->find('first', 'help_version_id='.$version_id.' AND title="'.$this->params['title'].'"');
-	    assign_to_template(array('doc'=>$doc));
+	    $doc = $help->find('first', 'help_version_id='.$version_id.' AND sef_url="'.$this->params['title'].'"');
+	    assign_to_template(array('doc'=>$doc,"hv"=>$this->help_version));
 	}
 	
 	public function manage() {
-	    expHistory::set('managable', $this->params);
+	    expHistory::set('manageable', $this->params);
 	    global $db;
 	    
 	    $hv = new help_version();
@@ -94,7 +125,9 @@ class helpController extends expController {
 	        flash('error', "You don't have any software versions created yet.  Please do so now.");
 	        redirect_to(array('controller'=>'help', 'action'=>'edit_version'));
 	    }
-	    
+
+	    $sections = $db->selectObjectsIndexedArray('section',1);
+
 	    $where = empty($this->params['version']) ? 1 : 'help_version_id='.$this->params['version'];
 	    $page = new expPaginator(array(
 	                'model'=>'help',
@@ -104,10 +137,10 @@ class helpController extends expController {
 	                'dir'=>'DESC',
 	                'controller'=>$this->baseclassname,
 	                'action'=>$this->params['action'],
-	                'columns'=>array('Title'=>'title', 'Body'=>'body', 'Version'=>'help_version_id'),
+	                'columns'=>array('Title'=>'title', 'Version'=>'help_version_id', 'Section'=>'section'),
 	                ));
 	    
-	    assign_to_template(array('current_version'=>$current_version, 'page'=>$page));
+	    assign_to_template(array('current_version'=>$current_version, 'page'=>$page, 'sections'=>$sections));
 	}
 	
 	private static function copydocs($from, $to) {
@@ -115,12 +148,13 @@ class helpController extends expController {
 	    	    
 	    $help = new help();
 	    $current_docs = $help->find('all', 'help_version_id='.$from);
-	    foreach ($current_docs as $doc) {
+	    foreach ($current_docs as $key=>$doc) {
+	        unset($doc->id);
 	        unset($doc->id);
 	        $doc->help_version_id = $to;
 	        $doc->sef_url = $doc->makeSefUrl();
 	        $doc->save();
-	        
+
 	        foreach($doc->expFile as $subtype=>$files) {
 	            foreach($files as $file) {
 	                $doc->attachItem($file, $subtype);
@@ -128,7 +162,7 @@ class helpController extends expController {
 	            
 	        }
 	    }
-	    
+
 	    // get version #'s for the two versions
 	    $oldvers = $db->selectValue('help_version', 'version', 'id='.$from);
 	    $newvers = $db->selectValue('help_version', 'version', 'id='.$to);
@@ -139,7 +173,7 @@ class helpController extends expController {
 	}
 	
 	public function manage_versions() {
-	    expHistory::set('managable', $this->params);
+	    expHistory::set('manageable', $this->params);
 	    
 	    $hv = new help_version();
 	    $current_version = $hv->find('first', 'is_current=1');
@@ -223,6 +257,21 @@ class helpController extends expController {
 	    flash('message', 'Saved version '.$version->version);
 	    expHistory::back();
 	}
+	
+	public static function getSection($params) {
+	    global $db;
+	    $h = new help();
+	    $hv = $db->selectValue('help_version', 'id', 'version='.$params['version']);
+	    $help = $h->find('first','help_version_id='.$hv.' and sef_url=\''.$params['title'].'\'');
+	    $sessec = expSession::get('last_section') ? expSession::get('last_section') : 1 ;
+	    $sid = ($help->section!=0)?$help->section:$sessec;
+        if (!expSession::get('last_section')) {
+            expSession::set('last_section',$sid);
+        }
+	    $section = $db->selectObject('section','id='. intval($sid));
+	    return $section;
+	}
+	
 }
 
 ?>
