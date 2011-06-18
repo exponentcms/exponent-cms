@@ -162,10 +162,16 @@ class expPaginator {
 		    // sort, count and slice the records that were passed in to us
 		    usort($this->records,array('expPaginator', strtolower($this->order_direction)));
 		    $this->total_records = count($this->records);
+			if ($this->start > $this->total_records) {
+				$this->start = $this->total_records - $this->limit;
+			}
 		    $this->records = array_slice($this->records, $this->start, $this->limit);
 		} elseif (!empty($this->where)) { //from MUS....where clause
 		//} elseif (!empty($class)) { //from most current Trunk    //FJD: was $this->class, but wasn't working...
 			$this->total_records = $class->find('count', $this->where);
+			if ($this->start > $this->total_records) {
+				$this->start = $this->total_records - $this->limit;
+			}
 			$this->records = $class->find('all', $this->where, $this->order.' '.$this->order_direction, $this->limit, $this->start);
 		} else { //sql clause
 			//$records = $db->selectObjectsBySql($this->sql);
@@ -175,7 +181,10 @@ class expPaginator {
             
 			//$this->total_records = $this->count_sql == '' ? $db->queryRows($this->sql) : $db->selectValueBySql($this->count_sql); //From MUS
 			$this->total_records = $db->queryRows($this->sql); //From most current Trunk
-			
+			if ($this->start > $this->total_records) {
+				$this->start = $this->total_records - $this->limit;
+			}
+
             if (!empty($this->order)) $this->sql .= ' ORDER BY '.$this->order.' '.$this->order_direction;
 			if (!empty($this->limit)) $this->sql .= ' LIMIT '.$this->start.','.$this->limit;
 			
@@ -229,7 +238,9 @@ class expPaginator {
 		//if ($this->total_records <= $this->limit) return true;
 		
 		$this->total_pages = ($this->limit > 0) ? ceil($this->total_records/$this->limit) : 0;
-	
+		if ($this->page > $this->total_pages) {
+			$this->page = $this->total_pages;
+		}
 		//setup the pages for the links
 		if ($this->total_pages > $this->pages_to_show) {
 			$this->first_pagelink = max(1, floor(($this->page) - ($this->pages_to_show) / 2));
