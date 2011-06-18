@@ -645,7 +645,13 @@ class expRouter {
 
     public function getSectionObj($section) {
         global $db;
-        $sectionObj = $db->selectObject('section','id='. intval($section));
+        if ($section == "*") {
+            $action = $this->params['controller']."Controller";
+            $sectionObj = call_user_func($action."::getSection",$this->params);
+        } else {
+            $sectionObj = $db->selectObject('section','id='. intval($section));
+        }
+//        $sectionObj = $db->selectObject('section','id='. intval($section));
         if (!navigationmodule::canView($sectionObj)) {
             define('AUTHORIZED_SECTION',0);
         } else {
