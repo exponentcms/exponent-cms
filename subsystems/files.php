@@ -307,7 +307,7 @@ function exponent_files_remove_files_in_directory($dir, $dot_files = false) {
 		if ($dot_files || substr($file, 0, 1) != '.') {  // don't remove dot files
 			$file = $dir . '/' . $file;
 			if (is_dir($file)) {
-				cleardir_recursive($file);
+				exponent_files_remove_files_in_directory($file);
 				rmdir($file);
 			} else {
 				if (is_writeable($file) && !is_dir($file)) {

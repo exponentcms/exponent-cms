@@ -55,12 +55,12 @@ class help extends expRecord {
         $module = getControllerName($module);
         
         // figure out which version we're on
-        $full_version = EXPONENT_VERSION_MAJOR.'.'.EXPONENT_VERSION_MINOR.'.'.EXPONENT_VERSION_REVISION.EXPONENT_VERSION_TYPE.EXPONENT_VERSION_ITERATION;
+        $full_version = EXPONENT_VERSION_MAJOR.'.'.EXPONENT_VERSION_MINOR.'.'.EXPONENT_VERSION_REVISION.EXPONENT_VERSION_TYPE;
 
         $link  = HELP_URL;
-        $link .= '/help/show/version';
+        $link .= 'docs';
         $link .= '/'.$full_version;
-        $link .= '/title/'.$module;
+        $link .= '/'.$module;
         
         return $link;
     }
