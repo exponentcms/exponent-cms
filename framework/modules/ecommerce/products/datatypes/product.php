@@ -151,6 +151,7 @@ class product extends expRecord {
         else $order = new order($orderid);
         //eDebug($this);
         //eDebug($params,true);
+        $params['qty'] = isset($params['qty']) ? $params['qty'] : 1;
         if (!isset($params['product_type'])) $params['product_type'] = 'product';
         
         $params['error'] = '';
