@@ -47,6 +47,7 @@
 				<li><a href="#tab3"><em>Categories and Display Options</em></a></li>
 				<li><a href="#tab4"><em>Notifications</em></a></li>
 				<li><a href="#tab5"><em>Emails</em></a></li>
+                <li><a href="#tab6"><em>Geography</em></a></li>       
 			</ul>            
 	    	<div class="yui-content">
 	        	<div id="tab1">
@@ -114,7 +115,11 @@
 				    {control type="checkbox" name="email_invoice_to_user" label="Email a copy of the invoice to the user after purchase?" value=1 checked=$config.email_invoice_to_user}
 				    {control type="text" name="invoice_subject" label="Subject of invoice email" size="40" value=$config.invoice_subject}
 				    {control type="textarea" name="invoice_msg" label="Message to put in invoice email:" rows=5 cols=45 value=$config.invoice_msg}				    	
-				</div>
+				</div>      
+                <div id="tab6">
+                    <h2>General Address/Geo Settings</h2>
+                    {control type="checkbox" name="address_allow_admins_all" label="Allow admins access to the full geographical data regardless of other settings?" value=1 checked=$config.address_allow_admins_all}
+                </div>          
             </div>
         </div>
         {control type=buttongroup submit="Save Config" cancel="Cancel"}

@@ -67,6 +67,10 @@ return array(
                             'url'=>makeLink(array('controller'=>'cart','action'=>'configure')),
                         ),
                         array(
+                            'text'=>"Address/Geo Settings",
+                            'url'=>makeLink(array('controller'=>'address','action'=>'manage')),
+                        ),
+                        array(
                             'text'=>"Manage Status Codes",
                             'url'=>makeLink(array('controller'=>'order_status','action'=>'manage')),
                         ),
