@@ -23,10 +23,12 @@
 YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
      // start coding
      var checkbox = Y.one('#remember_me'); //the checkbox
-     checkbox.on('click',function(e){
-         var psswrd = Y.one("#passwordDiv");//div wrapping the password box
-         psswrd.toggleClass('hide-me');
-     });
+     if (checkbox){
+         checkbox.on('click',function(e){
+             var psswrd = Y.one("#passwordDiv .passwords");//div wrapping the password boxs
+             psswrd.toggleClass('hide');
+         });
+     }
 })
 {/literal}
 {/script}
@@ -75,9 +77,11 @@ YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
                 <p>
                     {"If you would like us to remember you, simply supply a password here and you may login to this site anytime to track your orders and view your order history.
     Otherwise uncheck \"Remember Me?\" and continue anonymously."|gettext}
-                </p>             
-                {control type="password" name="password" label="<span class=\"required\">*</span>Password"}
-                {control type="password" name="password2" label="<span class=\"required\">*</span>Confirm Password"}                
+                </p>
+                <div class="passwords">
+                    {control type="password" name="password" label="<span class=\"required\">*</span>Password"}
+                    {control type="password" name="password2" label="<span class=\"required\">*</span>Confirm Password"}                
+                </div>
             </div>
             
             <!--The following field is an anti-spam measure to prevent fradulent account creation. -->
