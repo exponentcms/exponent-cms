@@ -1,16 +1,54 @@
+.cart.confirm h2 {
+    margin:5px 0;
+}
+
 a.awesome.next {
     float:right;
 }
 
 .order-total {
-    float:right;
+
 }
 
-.billinginfo {
-    float:left;
+.billinginfo .address-info,
+.billinginfo .payment-info {
+    display:inline-block;
+    *display:inline;
+    zoom:1;
+    vertical-align:top;
+    width:48%;
+}
+
+.billinginfo .address-info {
+    margin-left:20px;
 }
 
 .shippinginfo {
     clear:both;
 }
 
+.purchased-items,
+.purchased-totals {
+    display:inline-block;
+    *display:inline;
+    zoom:1;
+    vertical-align:top;
+    width:80%;
+}
+.purchased-totals {
+    width:18%;
+}
+
+.purchased-totals {
+    width:18%;
+    float:right;
+}
+
+.purchased-totals table {
+    float:right;
+}
+
+
+.exp-ecom-table table td.totals {
+    text-align:right;
+}

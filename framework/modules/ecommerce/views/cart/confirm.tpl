@@ -21,57 +21,53 @@
 
  {/css}                                                
 
-<div class="module cart confirm">
+<div class="module cart confirm exp-ecom-table">
     <h1>{ecomconfig var='checkout_title_top' default="Confirm Your Secure Order"}</h1> 
     <div id="cart-message">{ecomconfig var='checkout_message_top' default=""}</div>
     {br}
-    <div class="billinginfo exp-ecom-table">
+    <div class="billinginfo">
         <h2>Billing Information</h2>
-        You will be paying by <strong>{$billing->calculator->payment_type}</strong>{br}{br}
-        {$billinginfo}
-    </div>
-    
-     <div class="exp-ecom-table order-total"> 
-         <h2>Totals</h2>
-        <table class="collapse nowrap">
-            <tbody>
-                <tr class="even"><td class="right">Subtotal:</td><td class="totals subtotal">{currency_symbol}{$order->subtotal|number_format:2}</td></tr>
-                {if $order->total_discounts > 0}
-                    <tr class="odd"><td class="right">Discounts:</td><td class="totals discounts">-{currency_symbol}{$order->total_discounts|number_format:2}</td></tr>
-                    <tr class="even"><td class="right">Total:</td><td class="totals subtotal">{currency_symbol}{$order->total|number_format:2}</td></tr>
-                {/if}
-                <tr class="odd"><td class="right">Tax:</td><td class="totals tax">{currency_symbol}{$order->tax|number_format:2}</td></tr>
-                {if $order->shipping_required == true} 
-                    <tr class="even">
-                        <td class="right">Shipping:</td>
-                        <td class="totals shipping">{currency_symbol}{$order->shipping_total_before_discounts|number_format:2}</td>                   
-                    </tr>                    
-                    {if $order->shippingDiscount > 0}
-                        <tr class="odd">
-                            <td class="right">Shipping<br/>Discount:</td>
-                            <td class="totals shipping">{currency_symbol}-{$order->shippingDiscount|number_format:2}</td>
-                        </tr>
-                        <tr class="even">
-                            <td class="right">Total Shipping:</td>
-                            <td class="totals shipping">{currency_symbol}{$order->shipping_total|number_format:2}</td>
-                        </tr>
-                    {/if}
-                {/if}
-                {if $order->surcharge_total != 0} 
-                <tr class="even">
-                    <td class="right">Freight Surcharge:</td>
-                    <td class="totals shipping">{currency_symbol}{$order->surcharge_total|number_format:2}</td>
-                </tr>
-                {/if}
-                <tr class="odd"><td class="right">Final Total:</td><td class="totals total">{currency_symbol}{$order->grand_total|number_format:2}</td></tr>
-                </tr>
-            </tbody>
-        </table>
+        <div class="payment-info">
+            {$billinginfo}
+        </div>
+        <div class="address-info">
+            <table border="0" cellspacing="0" cellpadding="0" class="">
+                <thead>
+                    <tr>
+                        <th>
+                            {"Billing Address"|gettext}
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <address>
+                            {$billing->address->firstname} {$billing->address->middlename} {$billing->address->lastname}{br}
+                            {$billing->address->address1}{br}
+                            {if $billing->address->address2}{$billing->address->address2}{br}{/if}
+                            {$billing->address->city}, 
+                            {* $billing->address->state|statename}, {$billing->address->zip *}
+                            {if $billing->address->state == -2}
+                                    {$billing->address->non_us_state}
+                                {else}
+                                    {$billing->address->state|statename:abv}
+                                {/if}
+                                 {$billing->address->zip}
+                                {if $billing->address->state == -2}
+                                    {br}{$billing->address->country|countryname}
+                                {/if}
+                            </address>      
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
     
     <div class="shippinginfo">
     {if $order->shipping_required == true}
-        <h2>Shipping Information</h2>
+        <h2>{"Shipping Information"|gettext}</h2>
         {if $shipping->splitshipping == true}
             {*foreach from=$shipping->splitmethods item=method}
                 <h3>1 order via {$method->option_title} @ {$method->shipping_cost}</h3>
@@ -107,32 +103,44 @@
                 <hr>
             {/foreach*}
         {else}
-            <strong>{$shipping->shippingmethod->option_title}</strong> to:{br}
-            <address>
-            {$shipping->shippingmethod->firstname} {$shipping->shippingmethod->middlename} {$shipping->shippingmethod->lastname}{br}
-            {$shipping->shippingmethod->address1}{br}
-            {if $shipping->shippingmethod->address2}{$shipping->shippingmethod->address2}{br}{/if}
-            {$shipping->shippingmethod->city}, 
-            {* $shipping->shippingmethod->state|statename}, {$shipping->shippingmethod->zip *}
-            {if $shipping->shippingmethod->state == -2}
-                    {$shipping->shippingmethod->non_us_state}
-                {else}
-                    {$shipping->shippingmethod->state|statename:abv}
-                {/if}
-                 {$shipping->shippingmethod->zip}
-                {if $shipping->shippingmethod->state == -2}
-                    {br}{$shipping->shippingmethod->country|countryname}
-                {/if}
-            </address>      
-            {clear}
-            {if $shipping->shippingmethod->to != "" || $shipping->shippingmethod->from != "" || $shipping->shippingmethod->message != ""}
-                    {br}
-                    <h4>Gift Message</h4>
-                    <strong>To: </strong>{$shipping->shippingmethod->to}{br}
-                    <strong>From: </strong>{$shipping->shippingmethod->from}{br}
-                    <strong>Message: </strong>{$shipping->shippingmethod->message}{br}
-                {/if}
-            {br}            
+            <table border="0" cellspacing="0" cellpadding="0" class="">
+                <thead>
+                    <tr>
+                        <th>
+                            <strong>{$shipping->shippingmethod->option_title}</strong> to:
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <address>
+                            {$shipping->shippingmethod->firstname} {$shipping->shippingmethod->middlename} {$shipping->shippingmethod->lastname}{br}
+                            {$shipping->shippingmethod->address1}{br}
+                            {if $shipping->shippingmethod->address2}{$shipping->shippingmethod->address2}{br}{/if}
+                            {$shipping->shippingmethod->city}, 
+                            {* $shipping->shippingmethod->state|statename}, {$shipping->shippingmethod->zip *}
+                            {if $shipping->shippingmethod->state == -2}
+                                    {$shipping->shippingmethod->non_us_state}
+                                {else}
+                                    {$shipping->shippingmethod->state|statename:abv}
+                                {/if}
+                                 {$shipping->shippingmethod->zip}
+                                {if $shipping->shippingmethod->state == -2}
+                                    {br}{$shipping->shippingmethod->country|countryname}
+                                {/if}
+                            </address>      
+                            {if $shipping->shippingmethod->to != "" || $shipping->shippingmethod->from != "" || $shipping->shippingmethod->message != ""}
+                                {br}
+                                <h4>Gift Message</h4>
+                                <strong>To: </strong>{$shipping->shippingmethod->to}{br}
+                                <strong>From: </strong>{$shipping->shippingmethod->from}{br}
+                                <strong>Message: </strong>{$shipping->shippingmethod->message}{br}
+                            {/if}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
         {/if}
     {/if}
     
@@ -163,9 +171,60 @@
             {include file="../order/partial_summary.tpl" items=$method->orderitem}
         {/foreach}
     {else}
-        {include file="../order/partial_summary.tpl" items=$order->orderitem}
+        <h2>{"You're purchasing"|gettext}</h2>
+        <div class="purchased-items">
+            {include file="../order/partial_summary.tpl" items=$order->orderitem}
+        </div>
+        <div class="purchased-totals">
+             <div class=" order-total"> 
+                <table class="collapse nowrap">
+                    <thead>
+                        <tr>
+                            <th colspan="2">
+                                Totals
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="even"><td class="right">Subtotal:</td><td class="totals subtotal">{currency_symbol}{$order->subtotal|number_format:2}</td></tr>
+                        {if $order->total_discounts > 0}
+                            <tr class="odd"><td class="right">Discounts:</td><td class="totals discounts">-{currency_symbol}{$order->total_discounts|number_format:2}</td></tr>
+                            <tr class="even"><td class="right">Total:</td><td class="totals subtotal">{currency_symbol}{$order->total|number_format:2}</td></tr>
+                        {/if}
+                        <tr class="odd"><td class="right">Tax:</td><td class="totals tax">{currency_symbol}{$order->tax|number_format:2}</td></tr>
+                        {if $order->shipping_required == true} 
+                            <tr class="even">
+                                <td class="right">Shipping:</td>
+                                <td class="totals shipping">{currency_symbol}{$order->shipping_total_before_discounts|number_format:2}</td>                   
+                            </tr>                    
+                            {if $order->shippingDiscount > 0}
+                                <tr class="odd">
+                                    <td class="right">Shipping<br/>Discount:</td>
+                                    <td class="totals shipping">{currency_symbol}-{$order->shippingDiscount|number_format:2}</td>
+                                </tr>
+                                <tr class="even">
+                                    <td class="right">Total Shipping:</td>
+                                    <td class="totals shipping">{currency_symbol}{$order->shipping_total|number_format:2}</td>
+                                </tr>
+                            {/if}
+                        {/if}
+                        {if $order->surcharge_total != 0} 
+                        <tr class="even">
+                            <td class="right">Freight Surcharge:</td>
+                            <td class="totals shipping">{currency_symbol}{$order->surcharge_total|number_format:2}</td>
+                        </tr>
+                        {/if}
+                        <tr class="odd"><td class="right">Final Total:</td><td class="totals total">{currency_symbol}{$order->grand_total|number_format:2}</td></tr>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+        </div>
     {/if}
     </div>
+    
+    <div style="clear:both"></div>
     
     <div class="confirmationlinks">
         <a href="{if $nologin}{link controller=cart action=process nologin=1}{else}{link controller=cart action=process}{/if}" class="awesome {$smarty.const.BTN_SIZE} green next" />
@@ -175,11 +234,14 @@
             &laquo; {"Let me edit something"|gettext}
         </a>
     </div>
+    
+    
+    
     <p align="center">
-    <div style="width:100%; margin: auto;">
-    {ecomconfig var='ssl_seal' default="" unescape="true"}
-    </div>
-</p>
+        <div style="width:100%; margin: auto;">
+        {ecomconfig var='ssl_seal' default="" unescape="true"}
+        </div>
+    </p>
 
 {ecomconfig var='checkout_message_bottom' default=""}
 </div>

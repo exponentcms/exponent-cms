@@ -13,7 +13,7 @@
  * GPL: http://www.gnu.org/licenses/gpl.txt
  *
  *}
-<div class="exp-ecom-table coumnize">
+<div class="exp-ecom-table columnize">
     <table>
     <thead>
         <tr>
