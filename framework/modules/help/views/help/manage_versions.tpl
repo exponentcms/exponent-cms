@@ -23,7 +23,7 @@
     </p>
     
     {icon class=add action=edit_version title="Add new help version" text="Add a New Help Version"}{br}
-    {icon class=add action=manage title="Manage Help" text="Manage Help Docs"}{br}
+    {icon action=manage title="Manage Help" text="Manage Help Docs"}{br}
     {$page->links}
     <table class="exp-skin-table">
         <thead>

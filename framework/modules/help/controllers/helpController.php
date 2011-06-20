@@ -87,15 +87,19 @@ class helpController extends expController {
 		$sections = $db->selectObjectsIndexedArray('section',1);
 		$helpsections = $db->selectObjects('help',1);
 		foreach ($helpsections as $helpsection) {
-			if (!array_key_exists($helpsection->section, $sectionlist)) {
-				if (array_key_exists($helpsection->section, $sections)) {
-					$sectionlist[$helpsection->section] = $sections[$helpsection->section]->name;
+			if ($helpsection->location_data != null) {
+				$helpsrc = expUnserialize($helpsection->location_data);
+				if (!array_key_exists($helpsrc->src, $sectionlist) && $helpsection->section != 0) {
+					$sectionlist[$helpsrc->src] = $sections[$helpsection->section]->name;
+					if ($helpsection->section == $sectionObj->id) {
+						$sectionlist[$helpsrc->src] .= " (current section)";
+					}
 				}
 			}
 		}
-		$sectionlist[$sectionObj->id] = $sections[$sectionObj->id]->name." (current page)";
-
-	    assign_to_template(array('record'=>$help,"cursec"=>$sectionObj->id,"sections"=>$sectionlist));
+		$sectionlist[$this->loc->src] = $sectionObj->name." (current section)";
+//	    assign_to_template(array('record'=>$help,"cursec"=>$sectionObj->id,"sections"=>$sectionlist));
+	    assign_to_template(array('record'=>$help,"cursec"=>$this->loc->src,"sections"=>$sectionlist));
 	}
 	
 	public function show() {
@@ -126,6 +130,8 @@ class helpController extends expController {
 	        redirect_to(array('controller'=>'help', 'action'=>'edit_version'));
 	    }
 
+		// for now we'll display help by section, though location_data would be more accurate
+		//  this helps find problems in older help docs
 	    $sections = $db->selectObjectsIndexedArray('section',1);
 
 	    $where = empty($this->params['version']) ? 1 : 'help_version_id='.$this->params['version'];

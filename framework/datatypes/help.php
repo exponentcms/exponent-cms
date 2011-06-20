@@ -26,6 +26,21 @@ class help extends expRecord {
         $this->loc = expUnserialize($this->location_data);
     }
 
+	public function save() {
+        global $db;
+
+		// manipulate section & location_data to correct values
+        $hlpsection = $db->selectObject('sectionref','module = "helpController" AND source = "'.$_POST['section'].'"');
+		$this->section = $hlpsection->section;
+		$loc = null;
+		$loc->mod = help;
+		$loc->src = $_POST['section'];
+		$loc->int = '';
+		$this->location_data = serialize($loc);
+
+        parent::save();
+   }
+
     public function makeSefUrl() {
         global $router, $db;
         

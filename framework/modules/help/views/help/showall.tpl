@@ -22,8 +22,8 @@
             {icon class=add action=edit title="Add help doc" text="Add help doc to version `$current_version->version`"}{br}
         {/if}
         {if $permissions.manage == 1}
-            {icon class=add action=manage title="Manage Help" text="Manage Help"}{br}
-            {icon class=add action=manage_versions title="Manage Versions" text="Manage Versions"}{br}
+            {icon action=manage title="Manage Help" text="Manage Help"}{br}
+            {icon class=manage action=manage_versions title="Manage Versions" text="Manage Versions"}{br}
 		    {if ($rank == 1)}
 	            {ddrerank items=$page->records model="help" label="Help Docs"}
 		    {/if}

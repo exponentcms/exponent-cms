@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2008 OIC Group, Inc.
+ * Copyright (c) 2004-2011 OIC Group, Inc.
  * Written and Designed by Adam Kessler
  *
  * This file is part of Exponent
@@ -21,7 +21,7 @@
     {permissions}
     <div class="item-actions">
         {if $permissions.edit == 1}
-            {icon action=edit img=edit.png class="editlink" record=$doc title="Edit this `$modelname`"}
+            {icon action=edit record=$doc title="Edit this `$modelname`"}
         {/if}
     </div>
     {/permissions}

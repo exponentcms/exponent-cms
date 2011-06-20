@@ -38,7 +38,7 @@
                 {control type=html name=body label="General Information" value=$record->body}
 				{if $record->id != ""}
 					{*control type=text name="section" label="Help Section" value=$record->section*}
-					{control type="dropdown" name="section" label="Help Section" items=$sections value=$record->section}
+					{control type="dropdown" name="section" label="Help Section" items=$sections value=$record->location_data}
 	            {else}
 					{*control type=text name="section" label="Help Section" value=$cursec*}
 					{control type="dropdown" name="section" label="Help Section" items=$sections value=$cursec}

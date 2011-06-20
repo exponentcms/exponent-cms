@@ -24,7 +24,7 @@
     
     {icon class=add action=edit_version title="Add new help version" text="Add a New Help Version"}{br}
     {icon class=add action=edit title="Add a New Help Document" text="Add a New Help Document to version `$current_version->version`"}{br}
-    {icon class=add action=manage_versions title="Manage Versions" text="Manage Versions"}{br}
+    {icon class=manage action=manage_versions title="Manage Versions" text="Manage Versions"}{br}
     {$page->links}
     <table class="exp-skin-table">
         <thead>
