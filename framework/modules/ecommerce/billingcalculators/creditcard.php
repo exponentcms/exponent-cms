@@ -137,8 +137,9 @@ class creditcard extends billingcalculator {
 	function userView($opts) {
 	    if (empty($opts)) return false;
 		$html = '';
-		$html .= '<table id="ccinfo" border=0 cellspacing=0 cellpadding=0 class="collapse nowrap"><tbody>';
-		$html .= '<tr class="odd"><td class="right">Type of Credit Card: </td><td>'.$opts->cc_type.'</td></tr>';
+		$html .= '<table id="ccinfo" border=0 cellspacing=0 cellpadding=0 class=""><thead>';
+		$html .= '<tr><th colspan="2">'.gt('You will be paying by ').$this->payment_type.'</th></tr></thead>';
+		$html .= '<tbody><tr class="odd"><td class="right">Type of Credit Card: </td><td>'.$opts->cc_type.'</td></tr>';
 		$html .= '<tr class="even"><td class="right">Credit Card Number: </td><td>'.'xxxx-xxxx-xxxx-'.substr($opts->cc_number, -4). '</td></tr>';
 		$html .= '<tr class="odd"><td class="right">Expires on: </td><td>'.$opts->exp_month.'/'.$opts->exp_year.'</td></tr>';
 		$html .= '<tr class="even"><td class="right">CVV/Security Number: </td><td>'.$opts->cvv.'</td></tr>';
