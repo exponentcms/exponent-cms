@@ -499,7 +499,25 @@ class mysqli_database {
         $obj->$col = ($obj->$col == 0) ? 1 : 0;
         $this->updateObject($obj, $table);
     }
-
+    
+    /**
+     * Update a column in all records in a table
+     *
+     * @param  $table
+     * @param  $col
+     * @param null $where
+     * @return void
+     */
+    function columnUpdate($table, $col, $val, $where=1) {         
+        $res = @mysqli_query($this->connection, "UPDATE `" . $this->prefix . "$table` SET `$col`='" . $val . "' WHERE $where");
+        /*if ($res == null)
+            return array();
+        $objects = array();
+        for ($i = 0; $i < mysqli_num_rows($res); $i++)
+            $objects[] = mysqli_fetch_object($res);*/
+        //return $objects;
+    }
+    
 	/**
 	 * @param  $object
 	 * @param  $table

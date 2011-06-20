@@ -276,7 +276,14 @@ class ecomconfigController extends expController {
         $this->config = $config->config;
         $pullable_modules = listInstalledControllers($this->classname, $this->loc);
         $views = get_config_templates($this, $this->loc);
-        assign_to_template(array('config'=>$this->config, 'pullable_modules'=>$pullable_modules, 'views'=>$views));
+        
+        $gc = new geoCountry();             
+        $countries = $gc->find('all');
+        
+        $gr = new geoRegion();             
+        $regions = $gr->find('all');
+        
+        assign_to_template(array('config'=>$this->config, 'pullable_modules'=>$pullable_modules, 'views'=>$views,'countries'=>$countries, 'regions'=>$regions));
     }    
 }
 

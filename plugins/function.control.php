@@ -192,32 +192,38 @@ function smarty_function_control($params,&$smarty) {
             $control->items = $db->selectDropdown('user', 'username');
         } elseif ($params['type'] == 'state') {
             
-            if (empty($params['all_us_territories'])) {
+            //old use:  if (empty($params['all_us_territories'])) {
+            /*$regions = $db->select
                 $not_states = array(3,6,7,8,9,10,11,17,20,30,46,50,52,60);
             } else {
                 $not_states = array();
-            }
+            }*/
             
-            if(!empty($params['exclude'])) $not_states = array_merge($not_states,explode(',',$params['exclude']));
+            //if(!empty($params['exclude'])) $not_states = array_merge($not_states,explode(',',$params['exclude']));
             
             if ($db->tableExists('geo_region')) {
-                $country = empty($params['country']) ? 223 : $params['country']; //check for a country,else default to US.
+                $c = $db->selectObject('geo_country','is_default=1');
+                if (empty($c->id)) $country = 223 ;
+                else $country = $c->id;
+                
                 $control = new dropdowncontrol();
-                $control->include_blank = isset($params['includeblank']) ? $params['includeblank'] : false;
+                
                 if (isset($params['multiple'])) {
                     $control->multiple = true;
                     $control->items[-1] = 'ALL United States';
                 }
-                if (isset($params['add_other'])) {                   
-                    $control->items[-2] = '-- Non US --';
-                }
-                
-                foreach($db->selectObjects('geo_region', 'country_id='.$country . ' ORDER BY rank, name ASC') as $state) {
+                /*if (isset($params['add_other'])) {                   
+                    $control->items[-2] = '-- Specify State Below --';
+                }*/                
+                $states = $db->selectObjects('geo_region', 'country_id='.$country . ' AND active=1 ORDER BY rank, name ASC');
+                foreach($states as $state) {
                     // only show the US states unless the theme says to show all us territories
-                    if (!in_array($state->id, $not_states)) {
-                        $control->items[$state->id] = isset($params['abbv']) ? $state->code : $state->name;
-                    }
+                    //if (!in_array($state->id, $not_states)) {
+                    $control->items[$state->id] = isset($params['abbv']) ? $state->code : $state->name;
+                    //}
                 }
+                if(!count($states)) $control->items[-2] = '-- Specify State Below --';
+                else $control->include_blank = isset($params['includeblank']) ? $params['includeblank'] : false;
 
                 // sanitize the default value. can accept as id, code abbrv or full name,
                 if (!empty($params['value']) && !is_numeric($params['value']) && !is_array($params['value'])) {
@@ -228,8 +234,9 @@ function smarty_function_control($params,&$smarty) {
             }
         } elseif ($params['type'] == 'country') {
             
-            if(!empty($params['exclude'])) $not_countries = explode(',',$params['exclude']);
-            else $not_countries = array();
+            //old - pre address configuration
+            //if(!empty($params['exclude'])) $not_countries = explode(',',$params['exclude']);
+            //else $not_countries = array();
             
             if ($db->tableExists('geo_country')) {
                 $control = new dropdowncontrol();
@@ -239,11 +246,10 @@ function smarty_function_control($params,&$smarty) {
                     //$control->items[-1] = 'ALL United States';
                 }
                 
-                foreach($db->selectObjects('geo_country', '', 'name ASC') as $country) {
-                    // only show the US states unless the theme says to show all us territories
-                    if (!in_array($country->id, $not_countries)) {
-                        $control->items[$country->id] = isset($params['abbv']) ? $country->iso_code_3letter : $country->name;
-                    }
+                foreach($db->selectObjects('geo_country', 'active=1', 'name ASC') as $country) {
+                    //if (!in_array($country->id, $not_countries)) {
+                    $control->items[$country->id] = isset($params['abbv']) ? $country->iso_code_3letter : $country->name;
+                    //}
                 }
 
                 // sanitize the default value. can accept as id, code abbrv or full name,
