@@ -14,46 +14,68 @@
  *
  *}
 
-<div id="showhelp" class="module help show hide exp-skin-tabview">
-    
-    <h1>Help for {$doc->title} (v{$doc->help_version->version})</h1>
-    
-    {script unique="showtabs" yuimodules="tabview, element"}
+<div id="showhelp" class="module help show exp-skin-tabview">
+
+    <h1>{$doc->title}</h1>
+
+    {permissions}
+    <div class="item-actions">
+        {if $permissions.edit == 1}
+            {icon action=edit record=$doc title="Edit this `$modelname`"}
+        {/if}
+    </div>
+    {/permissions}
+
+    {script unique="help-show" yuimodules="tabview, element"}
     {literal}
-        var tabView = new YAHOO.widget.TabView('demo');
-        YAHOO.util.Dom.removeClass("showhelp", 'hide');
+        var tabView = new YAHOO.widget.TabView('show-help');
         var loading = YAHOO.util.Dom.getElementsByClassName('loadingdiv', 'div');
-        YAHOO.util.Dom.setStyle(loading, 'display', 'none');        
+        YAHOO.util.Dom.setStyle(loading, 'display', 'none');
+        
     {/literal}
     {/script}
     
-    <div id="demo" class="yui-navset">
-        <ul class="yui-nav">
-        <li class="selected"><a href="#tab1"><em>Overview of {$doc->title}</em></a></li>
-            <li><a href="#tab2"><em>Video Tutorials</em></a></li>
-            <li><a href="#tab3"><em>Screenshots</em></a></li>
-        </ul>            
-        <div class="yui-content">
-            <div id="tab1">
-                {$doc->body}
-            </div>
-            <div id="tab2">
-                {if $doc->expFile.videos == ""}
-                    <em>There currently are no videos for {$doc->title}</em>
-                {else}
-                    // videos go here.
+        <div id="show-help" class="yui-navset">
+            <ul class="yui-nav">
+                <li class="selected"><a href="#tab1"><em>General Overview</em></a></li>
+                {if $doc->actions_views}
+                <li><a href="#tab2"><em>Actions and Views</em></a></li>
                 {/if}
-            </div>
-            <div id="tab3">
-                {if $doc->expFile.screenshots == ""}
-                    <em>There currently are no screenshots for {$doc->title}</em>
-                {else}
-                    {foreach from=$doc->expFile.screenshots item=pic}
-                        {img src=$pic->url}
-                    {/foreach}
+                {if $doc->configuration}
+                <li><a href="#tab3"><em>Configuration</em></a></li>
+                {/if}
+                {if $doc->youtube_vid_code}
+                    <li><a href="#tab4"><em>Videos</em></a></li>
+                {/if}
+                {if $doc->additional}
+                <li><a href="#tab4"><em>Additional Info</em></a></li>
+                {/if}
+            </ul>            
+            <div class="yui-content bodycopy">
+                <div id="tab1">
+                    {$doc->body|replace:"!!!version!!!":$hv}
+                </div>
+                {if $doc->actions_views}
+                <div id="tab2">
+                    {$doc->actions_views|replace:"!!!version!!!":$hv}
+                </div>
+                {/if}
+                {if $doc->configuration}
+                <div id="tab3">
+                    {$doc->configuration|replace:"!!!version!!!":$hv}
+                </div>
+                {/if}
+                {if $doc->youtube_vid_code}
+                <div id="tab4">
+                    {$doc->youtube_vid_code}
+                </div>
+                {/if}
+                {if $doc->additional}
+                <div id="tab4">
+                    {$doc->additional|replace:"!!!version!!!":$hv}
+                </div>
                 {/if}
             </div>
         </div>
-    </div>    
+
 </div>
-<div class="loadingdiv">Loading Help Files for {$doc->title}</div>

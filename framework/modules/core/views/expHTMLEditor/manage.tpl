@@ -25,7 +25,7 @@
     <div class="info-header">
         <div class="related-actions">
 			<a class="add" href="{link module="expHTMLEditor" action="edit"}">{"Create New Configuration"|gettext}</a>
-            {help text="Get Help Managing CKEditor Toolbars" module="managecke"}
+            {help text="Get Help Managing CKEditor Toolbars" module="ckeditor-toolbar-configuration"}
         </div>
         <h1>{"CKEditor Toolbar Manager"|gettext}</h1>
     </div>
