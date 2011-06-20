@@ -30,9 +30,9 @@ class address extends expRecord {
 		    'is_valid_zipcode'=>array(
 			    'zip'=>array('message'=>'The zip code you entered does not appear to be a valid US zip code.')
 	        ),
-	        'is_valid_phonenumber'=>array(
+	        /*'is_valid_phonenumber'=>array(
 			    'phone'=>array('message'=>'The phone number you entered does not appear to be valid.')
-	        ),
+	        ),*/
 		    'is_valid_email'=>array(
 			    'email'=>array('message'=>'The email address you entered does not appear to be a valid email address')
 	        ),
