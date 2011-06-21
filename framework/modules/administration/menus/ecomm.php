@@ -34,7 +34,6 @@ if ($new_orders>0) {
 }else{
     $newo = '';
 };
-$newo = '<em class="newalert">58 new</em>';
 
 $ecom = array(
     'text'=>'Ecommerce'.$newo.'<form id="orderQuickfinder" method="POST" action="/index.php" enctype="multipart/form-data"><input type="hidden" name="controller" value="order"><input type="hidden" name="action" value="quickfinder"><input style="padding-top: 3px;" type="text" name="ordernum" id="ordernum" size="25" value="Order Quickfinder" onclick="this.value=\'\';"></form>',
