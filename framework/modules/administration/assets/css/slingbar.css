@@ -114,16 +114,40 @@
 #admintoolbar li.ecom a.yuimenubaritemlabel {
     background:url(../images/admintoolbar/ecom.png) no-repeat 5px 40%;
 }
+
+#admintoolbar li.ecom form {
+    display:inline-block;
+    *display:inline;
+    zoom:1;
+    vertical-align:top;
+}
+
+#admintoolbar li.ecom form input {
+    margin-left:5px;
+    font-size:10px;
+    height:10px;
+    padding:3px;
+    line-height:12px;
+    position:relative;
+    top:-4px;
+    background:#dde;
+    border-radius:3px;
+    border:1px solid #0D1740;
+}
+
+
 #admintoolbar li.files a.yuimenubaritemlabel {
     background:url(../images/admintoolbar/files.png) no-repeat 5px 40%;
 }
 #admintoolbar li.ecom a.yuimenubaritemlabel em.newalert {
     position:relative;
     top:-5px;
-    font-size:8px;
-    background:url(../images/admintoolbar/new.png) no-repeat 5px 40%;
-    padding:5px 0 2px 15px;
-    text-transform:uppercase;
+    font-size:10px;
+    font-style:normal;
+/*    background:url(../images/admintoolbar/new.png) no-repeat 5px 40%;
+*/
+    padding:5px 0 2px 10px;
+    text-transform:capitalize;
 }
 #admintoolbar li.events a.yuimenubaritemlabel {
     background:url(../images/admintoolbar/cal.png) no-repeat 5px 40%;

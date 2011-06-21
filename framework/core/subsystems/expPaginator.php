@@ -157,8 +157,8 @@ class expPaginator {
 		} 		
 		
 		// figure out how many records we're dealing with & grab the records
-		if (!empty($this->records)) { //from MUS
-		//if (isset($params['records'])) { //from most current Trunk.... PRB: we could have empty records, and need to hit this
+		//if (!empty($this->records)) { //from MUS <~~ this doesn't work. Could be empty, but still need to hit.
+		if (isset($params['records'])) { // if we pass $params['records'], we WANT to hit this
 		    // sort, count and slice the records that were passed in to us
 		    usort($this->records,array('expPaginator', strtolower($this->order_direction)));
 		    $this->total_records = count($this->records);
@@ -166,8 +166,10 @@ class expPaginator {
 				$this->start = $this->total_records - $this->limit;
 			}
 		    $this->records = array_slice($this->records, $this->start, $this->limit);
+		} elseif (!empty($class)) { //where clause     //FJD: was $this->class, but wasn't working...
+			$this->total_records = $class->find('count', $this->where);
+			$this->records = $class->find('all', $this->where, $this->order.' '.$this->order_direction, $this->limit, $this->start);
 		} elseif (!empty($this->where)) { //from MUS....where clause
-		//} elseif (!empty($class)) { //from most current Trunk    //FJD: was $this->class, but wasn't working...
 			$this->total_records = $class->find('count', $this->where);
 			if ($this->start > $this->total_records) {
 				$this->start = $this->total_records - $this->limit;

@@ -162,8 +162,10 @@ class orderController extends expController {
         
         $order->setReferencingIds();
         
+        $css = file_get_contents(BASE.'framework/modules/ecommerce/assets/css/print-invoice.css');
+	    
         
-        assign_to_template(array('printerfriendly'=>$pf,'order'=>$order,'shipping'=>$order->orderitem[0],'billing'=>$billing, 'messages'=>$status_messages, 'order_type'=>$order_type, 'storeConfig'=>$storeConfig->config,'sales_reps'=>$order->getSalesReps(), 'from_addresses'=>$from_addresses, 'from_default'=>ecomconfig::getConfig('from_address'),'email_subject'=>$email_subject,'to_addresses'=>implode(',',$to_addresses)));
+        assign_to_template(array('css'=>$css,'printerfriendly'=>$pf,'order'=>$order,'shipping'=>$order->orderitem[0],'billing'=>$billing, 'messages'=>$status_messages, 'order_type'=>$order_type, 'storeConfig'=>$storeConfig->config,'sales_reps'=>$order->getSalesReps(), 'from_addresses'=>$from_addresses, 'from_default'=>ecomconfig::getConfig('from_address'),'email_subject'=>$email_subject,'to_addresses'=>implode(',',$to_addresses)));
 	}
 	
 	function myOrder() {

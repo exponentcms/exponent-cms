@@ -22,14 +22,14 @@ ob_start();
 
 //define('DEVELOPMENT',1);
 
+define('SCRIPT_EXP_RELATIVE','install/');
+define('SCRIPT_FILENAME','index.php');
+include_once('../exponent.php');
+
 if (!file_exists('not_configured') && file_exists(BASE.'conf/config.php')) {
 	header('Location: ../index.php');
 	exit('This Exponent Site has already been configured.');
 }
-
-define('SCRIPT_EXP_RELATIVE','install/');
-define('SCRIPT_FILENAME','index.php');
-include_once('../exponent.php');
 
 // Load i18n values
 $i18n = exponent_lang_loadFile('install/index.php');

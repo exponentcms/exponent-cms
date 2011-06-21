@@ -96,3 +96,16 @@
 #billinfo table td {
     background:#edffdf;
 }
+
+#search_stringControl {
+    position:relative;
+    height:30px;
+}
+
+#search_stringControl #related_items {
+    position:absolute;
+    top:0;
+    left:0;
+    width:98%;
+}
+
