@@ -342,8 +342,9 @@ class orderController extends expController {
 			}
 			file_put_contents($htmltopdftmp, $invoice);
 			// eDebug(HTMLTOPDF_PATH . " " . $htmltopdftmp . " " . HTMLTOPDF_PATH_TMP . "MUS_Invoice.pdf", true);
-			exec(HTMLTOPDF_PATH . " " . $htmltopdftmp . " " . HTMLTOPDF_PATH_TMP . "MUS_Invoice.pdf");
-			$this->returnFile(HTMLTOPDF_PATH_TMP . "MUS_Invoice.pdf", "MUS_Invoice.pdf", "pdf"); 
+            $org_name = str_ireplace(" ","_",ORGANIZATION_NAME);
+			exec(HTMLTOPDF_PATH . " " . $htmltopdftmp . " " . HTMLTOPDF_PATH_TMP . $org_name . "_Invoice.pdf");
+			$this->returnFile(HTMLTOPDF_PATH_TMP . $org_name . "_Invoice.pdf", $org_name . "_Invoice.pdf", "pdf"); 
 			exit();
 		} else {
 			$pdfer = new expHtmlToPDF();
