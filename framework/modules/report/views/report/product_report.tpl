@@ -1,7 +1,7 @@
 {css unique="general-ecom" link="`$smarty.const.PATH_RELATIVE`framework/modules/ecommerce/assets/css/ecom.css"}
 
 {/css}
-{css unique="report-builder" link="`$smarty.const.PATH_RELATIVE`framework/modules/ecommerce/assets/css/report-builder.css"}
+{css unique="report-builder" link="`$smarty.const.PATH_RELATIVE`framework/modules/ecommerce/assets/css/report-builder.css" corecss="panels,tree,button"}
 
 {/css}
 
@@ -30,7 +30,7 @@
             <tr class="even">
                 <td>
                     <div class="control">
-                        <span class="label">Select Categories</span><a href="#" id="showcats">Show Categories</a>
+                        <span class="label">Select Categories</span><a href="#create-prod-report" id="showcats" class="awesome small green">{"Show Categories"|gettext}</a>
                     </div>
                     <div id="catpicker" class="hide">
                         <div class="hd">Select Categories</div>
@@ -40,7 +40,7 @@
                             </div>
                         </div>
                     </div>
-                    {script unique="pickerpopper" yuimodules="container"}
+                    {script unique="pickerpopper" yui2mods="container"}
                     {literal}
                     YAHOO.util.Event.onDOMReady(function(){
                         var panel = new YAHOO.widget.Panel("catpicker", { width:"500px", zIndex:10, visible:false, draggable:false, close:true, context:['showcats','tl','tr'] } ); 
@@ -56,13 +56,13 @@
             <tr class="odd">
                 <td>
                     {control type="dropdown" name="product-range-op" label="A Product ID..." items="Equal to,Less than,Greater than" values="e,l,g"}
-                    {control type="text" name="product-range-num" label=" " value=$record->prn class="collapse prn"}
+                    {control type="text" name="product-range-num" value=$record->prn class="collapse prn"}
                 </td>
             </tr>
             <tr class="even">
                  <td>
                     {control type="dropdown" name="product-price-op" label="Product Price..." items="Equal to,Less than,Greater than" values="e,l,g"}
-                    {control type="text" name="product-price-num" label=" " value=$record->ppn class="collapse ppn"}
+                    {control type="text" name="product-price-num" value=$record->ppn class="collapse ppn"}
                 </td> 
             </tr>
             <tr class="odd">
@@ -80,7 +80,7 @@
             
             <tr class="odd">
                 <td>
-                    <a id="submit-report" href="#" onclick="document.reportform.submit(); return false;" class="btn"><strong><em>Generate Report</em></strong></a>
+                    <button id="submit-report" href="javascript:document.reportform.submit(); return false;" class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}">{"Generate Report"|gettext}</button>
                 </td>
             </tr>
         </tbody>
