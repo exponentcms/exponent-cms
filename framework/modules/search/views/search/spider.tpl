@@ -14,20 +14,29 @@
  *
  *}
  
+{css unique="search-spider" corecss="tables"}
+
+{/css}
+
+
 <div class="module search spider">
-    <h1>Regenerating Search Index</h1>
-    <table cellspacing="0" cellpadding="0" border="0" width="100%">
-    <tr>
-        <th>Type of Content</th>
-        <th>Number of Content Items</th>
-    </tr>
-    {foreach from=$mods key=name item=status}
-    <tr class="row {cycle values=odd_row,even_row}">
-	    <td>{$name}</td>
-	    <td>
-	        {$status}
-	    </td>
-    </tr>
-    {/foreach}
+    <h1>{"Regenerating Search Index"|gettext}</h1>
+    <table border="0" cellspacing="0" cellpadding="0" class="exp-skin-table">
+        <thead>
+            <tr>
+                <th>{"Type of Content"|gettext}</th>
+                <th>{"Number of Content Items"|gettext}</th>
+            </tr>
+        </thead>
+        <tbody>
+            {foreach from=$mods key=name item=status}
+            <tr class="row {cycle values=odd_row,even_row}">
+        	    <td>{$name}</td>
+        	    <td>
+        	        {$status}
+        	    </td>
+            </tr>
+            {/foreach}
+        </tbody>
     </table>
 </div>
