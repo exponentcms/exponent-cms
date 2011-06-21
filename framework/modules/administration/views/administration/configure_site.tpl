@@ -43,7 +43,8 @@
             <li><a href="#tab8"><em>{gettext str="Security"}</em></a></li>
 			<li><a href="#tab9"><em>{gettext str="Help Links"}</em></a></li>
 			<li><a href="#tab10"><em>{gettext str="WYSIWYG Editor"}</em></a></li>
-            <li><a href="#tab10"><em>{gettext str="Error Messages"}</em></a></li>
+            <li><a href="#tab11"><em>{gettext str="Error Messages"}</em></a></li>
+            <li><a href="#tab12"><em>{gettext str="PDF Generation"}</em></a></li>
             {/if}
             </ul>            
             <div class="yui-content">
@@ -150,6 +151,12 @@
                     {control type="html" name="sc[SITE_404_HTML]" label="'Not Found' (404) Error Message" value=$smarty.const.SITE_404_HTML}
                     {control type="html" name="sc[SITE_403_REAL_HTML]" label="'Access Denied' (403) Error Message" value=$smarty.const.SITE_403_REAL_HTML}
                     {control type="html" name="sc[SESSION_TIMEOUT_HTML]" label="'Session Expired' Error  Message" value=$smarty.const.SESSION_TIMEOUT_HTML}
+                </div>
+                <div id="tab12">
+                    <h2>{gettext str="PDF Generation"}</h2>
+                    {help text="Learn More about generating PDF's"|gettext module="pdf-generation"}
+                    {control type="text" name="sc[HTMLTOPDF_PATH]" label="Full Path to the WKHTMLtoPDF Binary Utility" value=$smarty.const.HTMLTOPDF_PATH}
+                    {control type="text" name="sc[HTMLTOPDF_PATH_TMP]" label="Full Path to the WKHTMLtoPDF Temp Directory" value=$smarty.const.HTMLTOPDF_PATH_TMP}
                 </div>
                 {/if}
             </div>

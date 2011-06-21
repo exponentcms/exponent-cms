@@ -60,7 +60,9 @@
             <div id="invoice">
                 <div id="buttons">
                     {printer_friendly_link class="awesome `$smarty.const.BTN_SIZE` `$smarty.const.BTN_COLOR`" text="Print this invoice" view="show_printable"} 
-                    <a class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" href="{link controller='order' action='getPDF' id=$order->id inum=$order->invoice_number}">Download PDF</a>
+                    {if $smarty.const.HTMLTOPDF_PATH && $smarty.const.HTMLTOPDF_PATH_TMP}                                        
+                        <a class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" href="{link controller='order' action='getPDF' id=$order->id inum=$order->invoice_number}">Download PDF</a>
+                    {/if}
                     {permissions}
                         {if $permissions.manage == 1}
                             {printer_friendly_link class="awesome `$smarty.const.BTN_SIZE` `$smarty.const.BTN_COLOR`" text="Print Packing Slip" view="show_packing"}

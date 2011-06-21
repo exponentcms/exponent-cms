@@ -17,7 +17,7 @@
 ##################################################
 
 
-if (!defined('HTMLTOPDF_PATH')) define('HTMLTOPDF_PATH', '/bin/wkhtmltopdf-i386');
-if (!defined('HTMLTOPDF_PATH_TMP')) define('HTMLTOPDF_PATH_TMP','/tmp/');
+if (!defined('HTMLTOPDF_PATH')) define('HTMLTOPDF_PATH', '');
+if (!defined('HTMLTOPDF_PATH_TMP')) define('HTMLTOPDF_PATH_TMP','');
 
 ?>
