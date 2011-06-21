@@ -31,12 +31,12 @@ return array(
         DB_INDEX=>10),
 	'content_type'=>array(
 		DB_FIELD_TYPE=>DB_DEF_STRING,
-		DB_FIELD_LEN=>200,
+		DB_FIELD_LEN=>50,
 		DB_PRIMARY=>true,
         DB_INCREMENT=>false),
 	'subtype'=>array(
         DB_FIELD_TYPE=>DB_DEF_STRING,
-        DB_FIELD_LEN=>200,
+        DB_FIELD_LEN=>50,
         DB_PRIMARY=>true,
         DB_INCREMENT=>false),
     'rank'=>array(
