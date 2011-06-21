@@ -336,6 +336,7 @@ class orderController extends expController {
         
 	    $invoice .= "</BODY></HTML>";
         // eDebug($invoice);
+        $org_name = str_ireplace(" ","_",ORGANIZATION_NAME); 
 		if (stristr(PHP_OS, 'Win')) {
 			if(file_exists(HTMLTOPDF_PATH)) {
 				do{
@@ -344,7 +345,7 @@ class orderController extends expController {
 			}
 			file_put_contents($htmltopdftmp, $invoice);
 			// eDebug(HTMLTOPDF_PATH . " " . $htmltopdftmp . " " . HTMLTOPDF_PATH_TMP . "MUS_Invoice.pdf", true);
-            $org_name = str_ireplace(" ","_",ORGANIZATION_NAME);
+            
 			exec(HTMLTOPDF_PATH . " " . $htmltopdftmp . " " . HTMLTOPDF_PATH_TMP . $org_name . "_Invoice.pdf");
 			$this->returnFile(HTMLTOPDF_PATH_TMP . $org_name . "_Invoice.pdf", $org_name . "_Invoice.pdf", "pdf"); 
 			exit();
@@ -358,7 +359,7 @@ class orderController extends expController {
 			$pdfer->render();
 			ob_clean();
 			//$pdfer->output('D',"MUS_Invoice" . $this->params['id'] . ".pdf");    
-			$pdfer->output('D',"MUS_Invoice" . ".pdf");	
+			$pdfer->output('D', $org_name . "_Invoice" . ".pdf");	
 			exit();
 		}
     }

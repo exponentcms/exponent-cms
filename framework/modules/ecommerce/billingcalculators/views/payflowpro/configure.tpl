@@ -39,7 +39,7 @@
             {control type="text" name="partner" label="Partner" value=$calculator->configdata.partner}
             {control type="text" name="password" label="Password" value=$calculator->configdata.password}
             {control type="checkbox" name="testmode" label="Enable Test Mode?" value=1 checked=$calculator->configdata.testmode}
-            {control type="radiogroup" name="process_mode" label="Processing Mode" items="Authorize and Capture, Authorize Only" values="S,A" checked=$calculator->configdata.process_mode}
+            {control type="radiogroup" name="process_mode" label="Processing Mode" items="Authorize and Capture, Authorize Only" values="S,A" default=$calculator->configdata.process_mode}
         </div>
         <div id="tab2">
             {control type="checkbox" name="accepted_cards[]" label="Master Card" value="MasterCard" checked=$calculator->configdata.accepted_cards}
