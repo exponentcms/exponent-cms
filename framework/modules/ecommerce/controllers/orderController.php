@@ -306,7 +306,7 @@ class orderController extends expController {
     {
         global $user;
 	    //$invoice = '<HTML><HEAD><link rel="stylesheet" type="text/css" href="'.NONSSL_URL.PATH_RELATIVE.'external/yui2/build/reset-fonts-grids/reset-fonts-grids.css" ><link rel="stylesheet" type="text/css" href="'.NONSSL_URL.THEME_RELATIVE.'css/base-styles.css"><link rel="stylesheet" type="text/css" href="'.NONSSL_URL.PATH_RELATIVE.'framework/modules/ecommerce/assets/css/print-invoice.css"><style>html{background:none;} #store-header{text-align:left;}</style></HEAD><BODY>';
-        $invoice = '<HTML><HEAD></HEAD><BODY>';
+        $invoice = '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd"><HTML><HEAD></HEAD><BODY>';
         if(is_array($orders))
         {
             foreach ($orders as $order)
