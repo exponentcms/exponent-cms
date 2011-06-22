@@ -1,4 +1,4 @@
-{if $smartY.one.printerfriendly==1}
+{if $printerfriendly==1}
     {assign var=pf value=1}
     {css unique="invoice" link="`$smarty.const.PATH_RELATIVE`framework/modules/ecommerce/assets/css/print-invoice.css"}
 
