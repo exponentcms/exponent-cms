@@ -329,7 +329,7 @@ class expController {
         global $db;
                 
         //check for and handle tags
-        if (array_key_exists('expTag',$this->params)) {
+        if (array_key_exists('expTag',$this->params)&&!empty($this->params['expTag'])) {
 	        if (isset($this->params['id'])) {
     	        $db->delete('content_expTags', 'content_type="'.(!empty($this->params['content_type'])?$this->params['content_type']:$this->basemodel_name).'" AND content_id='.$this->params['id']);
     	    }
