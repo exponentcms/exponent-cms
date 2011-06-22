@@ -1,10 +1,7 @@
 .build-report {
     margin-top:10px;
 }
-.build-report .exp-ecom-table table th h1 {
-    text-align:left;
-    margin-left:310px;
-}
+
 
 .build-report .control {
     padding:0;
@@ -14,8 +11,11 @@
 
 .build-report .control .label {
     display:inline-block;
-    width:300px;
-    padding-right:10px;
+    *display:inline;
+    zoom:1;
+    vertical-align:top;
+    width:200px;
+    padding:5px 10px;
     text-align:right;
 }
 
@@ -23,8 +23,17 @@
     width:300px;
 }
 
+.build-report .control .select {
+    margin:4px 10px 0 0;
+}
+
 .build-report .control.collapse .label {
     display:none;
+}
+
+.build-report .control.collapse.prn .text,
+.build-report .control.collapse.ppn .text {
+    width:184px;
 }
 
 .build-report .control.collapse.orn {
@@ -39,29 +48,6 @@
     width:310px;
 }
 
-.build-report .radiogroup-control table {
-    border:0;
-    margin:0;
-    float:right;
-    width:0;
-}
-
-.build-report .radiogroup-control td {
-    padding:0;
-    text-align:right;
-    white-space:nowrap;
-}
-
-.build-report .radiogroup-control td .radio {
-    float:right;
-}
-
-
-.build-report .radiogroup-control .label {
-    display:inline;
-}
-
 #submit-report {
-    margin-left:310px;
-    text-shadow:1px 1px 0px #274f70;
+    margin-left:300px;
 }
