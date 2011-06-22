@@ -213,7 +213,7 @@
 
                         if(strpos(strtolower($this->pdf['stderr']),'error')!==false)throw new Exception('WKPDF system error: <pre>'.$this->pdf['stderr'].'</pre>');
                         if($this->pdf['stdout']=='')throw new Exception('WKPDF didn\'t return any data. <pre>'.$this->pdf['stderr'].'</pre>');
-                        if(((int)$this->pdf['return'])>1)throw new Exception('WKPDF shell error, return code '.(int)$this->pdf['return'].'.');
+                        if(((int)$this->pdf['return'])>2)throw new Exception('WKPDF shell error, return code '.(int)$this->pdf['return'].'.');
                         $this->status=$this->pdf['stderr'];
                         $this->pdf=$this->pdf['stdout'];
                         unlink($this->tmp);
