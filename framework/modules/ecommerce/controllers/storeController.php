@@ -93,7 +93,7 @@ class storeController extends expController {
                 expSession::set('catid',$default_id);
             }
         } elseif (isset($this->config['show_first_category']) || (!expTheme::inAction() && $section==SITE_DEFAULT_SECTION)) {
-            $default_id = $db->selectValue('storeCategories', 'id', 'lft=0');
+            $default_id = $db->selectValue('storeCategories', 'id', 'lft=1');
             expSession::set('catid',$default_id);
         } elseif (!isset($this->config['show_first_category']) && !expTheme::inAction()) {
             expSession::set('catid',0);
