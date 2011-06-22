@@ -305,7 +305,8 @@ class orderController extends expController {
     function getPDF($orders = null)
     {
         global $user;
-	    $invoice = '<HTML><HEAD><link rel="stylesheet" type="text/css" href="'.NONSSL_URL.PATH_RELATIVE.'external/yui2/build/reset-fonts-grids/reset-fonts-grids.css" ><link rel="stylesheet" type="text/css" href="'.NONSSL_URL.THEME_RELATIVE.'css/base-styles.css"><link rel="stylesheet" type="text/css" href="'.NONSSL_URL.PATH_RELATIVE.'framework/modules/ecommerce/assets/css/print-invoice.css"><style>html{background:none;} #store-header{text-align:left;}</style></HEAD><BODY>';
+	    //$invoice = '<HTML><HEAD><link rel="stylesheet" type="text/css" href="'.NONSSL_URL.PATH_RELATIVE.'external/yui2/build/reset-fonts-grids/reset-fonts-grids.css" ><link rel="stylesheet" type="text/css" href="'.NONSSL_URL.THEME_RELATIVE.'css/base-styles.css"><link rel="stylesheet" type="text/css" href="'.NONSSL_URL.PATH_RELATIVE.'framework/modules/ecommerce/assets/css/print-invoice.css"><style>html{background:none;} #store-header{text-align:left;}</style></HEAD><BODY>';
+        $invoice = '<HTML><HEAD></HEAD><BODY>';
         if(is_array($orders))
         {
             foreach ($orders as $order)
