@@ -272,7 +272,7 @@ class expRouter {
         }
                               
         // Check if this was a printer friendly link request
-        define('PRINTER_FRIENDLY', isset($_REQUEST['printerfriendly']) ? 1 : 0); 
+        define('PRINTER_FRIENDLY', (isset($_REQUEST['printerfriendly']) || isset($this->params['printerfriendly'])) ? 1 : 0);         
     }
 
     public function routePageRequest() {        
