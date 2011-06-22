@@ -2,14 +2,15 @@
  "http://www.w3.org/TR/html4/strict.dtd">
 <html>
 <head>
-	<?php
-		$config = array(
-			"reset-fonts-grids"=>false,
-			"include-common-css"=>true,
-			"include-theme-css"=>true
-		);
-		echo exponent_theme_headerInfo($config);
-	?>
+<?php 
+    expTheme::head(array(
+    	"css_primer"=>false,
+    	"css_core"=>array('button'),
+    	"css_links"=>true,
+    	"css_theme"=>false
+        )
+    );
+    ?>
 	<style>
 	    html,body {
 	        background: none !important;
@@ -30,7 +31,7 @@
 </head>
 <body style="background:none;text-align: left;">
 	<div class="printer-button-bar">
-	    <a href="#" onclick="window.print();return false;" class="btn" title="Print this page"><strong><em><?php echo exponent_lang_getText("Print This Page"); ?></em></strong></a>
+	    <a href="#" onclick="window.print();return false;" class="awesome small blue" title="Print this page"><?php echo gt("Print This Page"); ?></a>
 	</div>
 	<?php exponent_theme_main(); ?>
 </body>
