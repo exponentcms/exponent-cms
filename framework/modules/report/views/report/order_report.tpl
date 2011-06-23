@@ -7,7 +7,7 @@
 
 <div class="module report build-report">
     <div id="report-form" class="exp-ecom-table">
-    {form controller="report" action="generate_report" id="reportform" name="reportform"}
+    {form controller="report" action="generateOrderReport" id="reportform" name="reportform"}
     <table border="0" cellspacing="0" cellpadding="0">
         <thead>
             <tr>
@@ -17,26 +17,56 @@
             </tr>
         </thead>
         <tbody>
-            <tr class="odd">                
-                <td>
-                    {control type="calendar" name="startdate" label="Between"}
+            <tr class="even">   
+                  <td>
+                    {control type="dropdown" name="order_type" label="An Order Type Of..." size=4 multiple=true items=$order_type default=-1}    
                 </td>
             </tr>
-            <tr class="even">
-                 <td colspan="2">
-                    {control type="calendar" name="enddate" label="And"}
+            <tr class="odd">                
+                <td>
+                    {control type="checkbox" name="include_purchased_date" label="Include Purchase Date" flip=true}
+                </td>
+            </tr>
+            <tr class="odd">                
+                <td>
+                    {control type="calendar" name="pstartdate" label="Purchased Between" default_date=$prev_month default_hour='12' default_min='00' default_ampm='AM'}
                 </td>
             </tr>
             <tr class="odd">
+                 <td>
+                    {control type="calendar" name="penddate" label="And" default_date=$now_date default_hour=$now_hour default_min=$now_min default_ampm=$now_ampm}
+                </td>
+            </tr>
+             <tr class="even">
                   <td>
-                    {control type="dropdown" name="order_status" label="An Order Status Of" size=4 multiple=true items=$order_status}    
+                    {control type="dropdown" name="order_status" label="A CURRENT Order Status Of..." size=4 multiple=true items=$order_status default=-1}    
+                </td>
+            </tr>
+            <tr class="odd">                
+                <td>
+                    {control type="checkbox" name="include_status_date" label="Include Status Changed Date" flip=true}
+                </td>
+            </tr>
+            <tr class="odd">                
+                <td>
+                    {control type="calendar" name="sstartdate" label="Status Changed Between" default_date=$prev_month default_hour='12' default_min='00' default_ampm='AM'}
+                </td>
+            </tr>
+            <tr class="odd">
+                 <td>
+                    {control type="calendar" name="senddate" label="And" default_date=$now_date default_hour=$now_hour default_min=$now_min default_ampm=$now_ampm}
                 </td>
             </tr>
             <tr class="even">
                   <td>
-                    {control type="dropdown" name="order_type" label="An Order Type Of" size=4 multiple=true items=$order_type}    
+                    {control type="dropdown" name="order_status_changed" label="Status Was Changed To..." size=4 multiple=true items=$order_status default=-1}    
                 </td>
             </tr>
+            <!--tr class="even">
+                  <td>
+                    {* control type="dropdown" name="order_type" label="An Order Type Of" size=4 multiple=true items=$order_type default=-1 *}    
+                </td>
+            </tr-->
             <tr class="odd">
                 <td>
                     {control type="dropdown" name="order-range-op" label="An Order ID..." items="Equal to,Less than,Greater than" values="e,l,g"}
@@ -60,6 +90,17 @@
                     {control type="text" name="sku" label="Containg A SKU Like" value=$record->sku}
                 </td>
                 
+            </tr>
+            <tr class="odd">
+                <td>
+                    {control type="checkbox" name="uidata" label="Has Items With User Input Data" value=$record->uidata flip=true}
+                </td>
+                
+            </tr>
+            <tr class="even">
+                <td>
+                    {control type="dropdown" name="product_status" label="Contains A Product with a Status Of" includeblank="--Any--" size=4 multiple=true frommodel=product_status}    
+                </td>                
             </tr>
             <tr class="odd">
                  <td>
@@ -86,7 +127,7 @@
                 <td>
                     {control type=radiogroup columns=2 name="bl-sp-state" label=" " items="By Billing,or Shipping State:" values="b,s"  default=$record->bl-sp-zip|default:"s"}
                     {*control type="dropdown" name="state" label=" " size=4 multiple=true items=$states class="collapse" include_blank=true*} 
-                    {control type="state" name="state" label=" " all_us_territories=true size=4 multiple=true class="collapse" includeblank=true} 
+                    {control type="state" name="state" label=" " all_us_territories=true exclude="6,8,10,17,30,46,50" size=4 multiple=true class="collapse" includeblank=true} 
                 </td>
             </tr>
            

@@ -42,8 +42,8 @@
 		    <p>
 		        {if $isecom}
 			        {"If you are a new customer, select this option to continue with the checkout process."|gettext}{br}{br}
-                    {"We will gather billing and shipping information, and you will have the option to create an account so can track your order status."|gettext}{br}{br}
-                    <a href="{link module=cart action=setAnonymousCheckout}">{" - Click Here to Continue Checking Out - "|gettext}</a> 
+                    {"We will gather billing and shipping information, and you will have the option to create an account so can track your order status."|gettext}{br}{br}                    
+                    <a class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" href="{link module=cart action=setAnonymousCheckout}">{"Click Here to Continue Checking Out"|gettext}</a>
 			    {else}
                     {"Create a new account here."|gettext}
                     <a href="{link module=users action=create}">{"Create an Account"|gettext}</a>

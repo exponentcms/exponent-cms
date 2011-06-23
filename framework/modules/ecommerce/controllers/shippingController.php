@@ -149,11 +149,11 @@ class shippingController extends expController {
     }
     
     public function saveconfig() {
-        global $db;
+        global $db;                
         if (empty($this->params['id'])) return false;
         $calcname = $db->selectValue('shippingcalculator', 'calculator_name', 'id='.$this->params['id']);
         $calc = new $calcname($this->params['id']);
-        $conf = serialize($calc->parseConfig($this->params));
+        $conf = serialize($calc->parseConfig($this->params));        
         $calc->update(array('config'=>$conf));
         expHistory::back();
     }

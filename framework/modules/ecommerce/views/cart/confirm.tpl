@@ -25,6 +25,15 @@
     <h1>{ecomconfig var='checkout_title_top' default="Confirm Your Secure Order"}</h1> 
     <div id="cart-message">{ecomconfig var='checkout_message_top' default=""}</div>
     {br}
+    <div class="confirmationlinks">
+        <a href="{if $nologin}{link controller=cart action=process nologin=1}{else}{link controller=cart action=process}{/if}" class="awesome {$smarty.const.BTN_SIZE} green next" />
+            {"Looks good, submit my order!"|gettext} &raquo;
+        </a>
+        <a href="{link controller=cart action=checkout}" class="awesome {$smarty.const.BTN_SIZE} yellow back" />
+            &laquo; {"Let me edit something"|gettext}
+        </a>
+    </div>
+    {br}
     <div class="billinginfo">
         <h2>Billing Information</h2>
         <div class="payment-info">
@@ -234,9 +243,6 @@
             &laquo; {"Let me edit something"|gettext}
         </a>
     </div>
-    
-    
-    
     <p align="center">
         <div style="width:100%; margin: auto;">
         {ecomconfig var='ssl_seal' default="" unescape="true"}

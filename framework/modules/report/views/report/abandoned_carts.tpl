@@ -72,18 +72,18 @@
                         <table>
                         <tr>                            
                             <td>
-                            {form controller="report" action="dashboard" name="filter_dashboard" id="filter_dashboard"}
-                                Quick Range Filter:{br}
-                                {control type="dropdown" name="quickrange" label="" items=$quickrange default=$quickrange_default onchange="this.form.submit();"}      
-                                {/form}
-                                </td>
-                                <td>{form action="dashboard"}   
-                                Purchased Between:{br}
-                                {control type="calendar" name="starttime" label="" default_date=$prev_month default_hour=$prev_hour default_min=$prev_min default_ampm=$prev_ampm}{br}                
-                                And{br}
-                                {control type="calendar" name="endtime" label="" default_date=$now_date default_hour=$now_hour default_min=$now_min default_ampm=$now_ampm}    {br}
-                                {control type="submit" name="submit" value="Apply Filter"}
+                            {form action="abandoned_carts"}
+                            Quick Range Filter:{br}
+                            {control type="dropdown" name="quickrange" label="" items=$quickrange default=$quickrange_default onchange="this.form.submit();"}      
                             {/form}
+                            </td>
+                            <td>{form action="abandoned_carts"}   
+                            Purchased Between:{br}
+                            {control type="calendar" name="starttime" label="" default_date=$prev_month default_hour=$prev_hour default_min=$prev_min default_ampm=$prev_ampm}{br}                
+                            And{br}
+                            {control type="calendar" name="endtime" label="" default_date=$now_date default_hour=$now_hour default_min=$now_min default_ampm=$now_ampm}    {br}
+                            {control type="submit" name="submit" value="Apply Filter"}
+                            {/form} 
                             </td>
                         </tr>                    
                     </table>

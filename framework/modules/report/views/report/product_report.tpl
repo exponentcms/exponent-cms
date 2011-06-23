@@ -1,7 +1,7 @@
 {css unique="general-ecom" link="`$smarty.const.PATH_RELATIVE`framework/modules/ecommerce/assets/css/ecom.css"}
 
 {/css}
-{css unique="report-builder" link="`$smarty.const.PATH_RELATIVE`framework/modules/ecommerce/assets/css/report-builder.css" corecss="panels,tree,button"}
+{css unique="report-builder" link="`$smarty.const.PATH_RELATIVE`framework/modules/ecommerce/assets/css/report-builder.css"}
 
 {/css}
 
@@ -29,18 +29,19 @@
             </tr>
             <tr class="even">
                 <td>
-                    <div class="control">
-                        <span class="label">Select Categories</span><a href="#create-prod-report" id="showcats" class="awesome small green">{"Show Categories"|gettext}</a>
+                <div>{control type="checkbox" name="uncategorized" flip=true label="Uncategorized Products Only" value=1}  </div>{br}
+                    <div class="control"> 
+                        <span class="label">Select Categories</span><a href="#" id="showcats">Show Categories</a>
                     </div>
                     <div id="catpicker" class="hide">
                         <div class="hd">Select Categories</div>
-                        <div class="bd">
-                            <div style="overflow-y:scroll;height:300px;">
+                        <div class="bd">                            
+                            <div style="overflow-y:scroll;height:300px;">                            
                             {control type="tagtree" addable=false id="managecats" name="managecats" controller=storeCategory draggable=false menu=false expandonstart=false checkable=true}
                             </div>
                         </div>
                     </div>
-                    {script unique="pickerpopper" yui2mods="container"}
+                    {script unique="pickerpopper" yuimodules="container"}
                     {literal}
                     YAHOO.util.Event.onDOMReady(function(){
                         var panel = new YAHOO.widget.Panel("catpicker", { width:"500px", zIndex:10, visible:false, draggable:false, close:true, context:['showcats','tl','tr'] } ); 
@@ -54,15 +55,23 @@
                 </td>
             </tr>
             <tr class="odd">
+                <td>&nbsp;</td>
+            </tr>
+            <tr class="even">
+                <td>
+                    {control type="dropdown" name="company" label="Product company... " includeblank="--Any--" size=4 multiple=true frommodel=company}    
+                </td>
+            </tr>
+            <tr class="odd">
                 <td>
                     {control type="dropdown" name="product-range-op" label="A Product ID..." items="Equal to,Less than,Greater than" values="e,l,g"}
-                    {control type="text" name="product-range-num" value=$record->prn class="collapse prn"}
+                    {control type="text" name="product-range-num" label=" " value=$record->prn class="collapse prn"}
                 </td>
             </tr>
             <tr class="even">
                  <td>
                     {control type="dropdown" name="product-price-op" label="Product Price..." items="Equal to,Less than,Greater than" values="e,l,g"}
-                    {control type="text" name="product-price-num" value=$record->ppn class="collapse ppn"}
+                    {control type="text" name="product-price-num" label=" " value=$record->ppn class="collapse ppn"}
                 </td> 
             </tr>
             <tr class="odd">
@@ -80,7 +89,7 @@
             
             <tr class="odd">
                 <td>
-                    <button id="submit-report" href="javascript:document.reportform.submit(); return false;" class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}">{"Generate Report"|gettext}</button>
+                    <a id="submit-report" href="#" onclick="document.reportform.submit(); return false;" class="btn"><strong><em>Generate Report</em></strong></a>
                 </td>
             </tr>
         </tbody>

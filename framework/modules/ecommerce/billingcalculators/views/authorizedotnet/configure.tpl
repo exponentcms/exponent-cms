@@ -38,7 +38,7 @@
             {control type="text" name="transaction_key" label="Transaction Key" value=$calculator->configdata.transaction_key}
             {control type="text" name="password" label="Password" value=$calculator->configdata.password}
             {control type="checkbox" name="testmode" label="Enable Test Mode?" value=1 checked=$calculator->configdata.testmode}
-            {control type="radiogroup" name="process_mode" label="Processing Mode" items="Authorize and Capture, Authorize Only" values="0,1" checked=$calculator->configdata.process_mode}
+            {control type="radiogroup" name="process_mode" label="Processing Mode" items="Authorize and Capture, Authorize Only" values="0,1" default=$calculator->configdata.process_mode}
         </div>
         <div id="tab2">
             {control type="checkbox" name="accepted_cards[]" label="Master Card" value="MasterCard" checked=$calculator->configdata.accepted_cards}

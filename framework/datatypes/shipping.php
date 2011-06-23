@@ -63,14 +63,23 @@ class shipping extends expRecord {
                     $this->shippingmethod->update(array('shippingcalculator_id'=>$calcid));
                 }
             } 
-            
+                                                      
             if (!empty($this->available_calculators) && !empty($this->shippingmethod->shippingcalculator_id)) {
-                $calcname = $this->available_calculators[$this->shippingmethod->shippingcalculator_id];            
+                if(isset($this->available_calculators[$this->shippingmethod->shippingcalculator_id]))
+                {
+                    $calcname = $this->available_calculators[$this->shippingmethod->shippingcalculator_id];                
+                }
+                else
+                {
+                    //recently reconfigured/disabled shipping calc that was already set in the object, so default to the first one available
+                    $key = array_shift(array_keys($this->available_calculators));                         
+                    $calcname = $this->available_calculators[$key];      
+                    $this->shippingmethod->shippingcalculator_id = $key;                             
+                }                              
                 $this->calculator = new $calcname($this->shippingmethod->shippingcalculator_id);
             } else {
                 $this->calculator = null;                
-            }            
-            
+            }                                
             $this->getRates();
             
         } else {

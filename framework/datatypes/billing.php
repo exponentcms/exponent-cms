@@ -133,12 +133,13 @@ class billing extends expRecord {
         );
         
         $views = array();
-        foreach ($this->available_calculators as $calcname) {
+        foreach ($this->available_calculators as $key=>$calcname) {
             if (file_exists($dirs[0].$calcname.'.tpl')) {
-                $views[$calcname] = $dirs[0].$calcname.'.tpl';    
+                $views[$calcname]['view'] = $dirs[0].$calcname.'.tpl';    
             } else {
-                $views[$calcname] = $dirs[1].$calcname.'.tpl';    
-            }            
+                $views[$calcname]['view'] = $dirs[1].$calcname.'.tpl';    
+            }   
+            $views[$calcname]['id'] = $key;          
         }
         
         return array_reverse($views);

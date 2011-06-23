@@ -7,9 +7,9 @@
 
 <div class="module report generate-report">
     {$page->links}
-    {form id="batch" controller=batch}
+    {form id="batch" controller=report}
     <div class="actions-to-apply">
-        {control type="dropdown" name="action" label="Select Action" items="Add Notes,Delete,Apply Discount,Refund"}
+        {control type="dropdown" name="action" label="Select Action" items=$action_items}
         {control type="checkbox" name="applytoall" label="Apply to all pages" class="applytoall" value=1}
         <a href="javascript:document.getElementById('batch').submit();" class="exp-ecom-link"><strong><em>Apply Batch Action</em></strong></a>
     </div>
