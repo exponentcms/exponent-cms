@@ -44,21 +44,26 @@ table.exp-skin-table {
 	padding:0.25em 0.5em;
 	text-align:left;
 	vertical-align:top;
-	}
+}
 .exp-skin-table tbody th {
 	font-weight:normal;
 	white-space:nowrap;
-	}
+}
 .exp-skin-table tbody td,
 .exp-skin-table tbody th {
 	border:1px solid #fff;
 	border-width:1px 0;
-	}
+}
 .exp-skin-table tbody tr.odd th,
 .exp-skin-table tbody tr.odd td {
 	border-color:#EBE5D9;
 	background:#F7F4EE;
-	}
+}
+.exp-skin-table tbody tr.even th,
+.exp-skin-table tbody tr.even td {
+	border-color:#EBE5D9;
+	background:#cdcbc6;
+}
 .exp-skin-table tbody tr:hover td,
 .exp-skin-table tbody tr:hover th {
 	background:#d5e3f3;

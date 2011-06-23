@@ -233,6 +233,12 @@ table#cart table td {
 }
 
 
+#shpAddSwp address span,
+#bllAddSwp address span {
+    display:block;
+}
+
+
 #shoppingcartwrapper {
 	overflow:hidden;
 }

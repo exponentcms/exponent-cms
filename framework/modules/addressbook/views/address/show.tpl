@@ -15,9 +15,13 @@
  *}
 
 <address class="address show">
-	{$address->firstname} {$address->middlename} {$address->lastname}{br}
-	{$address->address1}
-	{if $address->address2 != ""}, {$address->address2}{br}{else}{br}{/if}
+	<span class="fullname">
+	{$address->firstname} {$address->middlename} {$address->lastname}
+	</span>
+	{if $address->organization}<span class="company">{$address->organization}</span>{/if}
+	<span class="address1">{$address->address1}</span>
+	{if $address->address2 != ""}<span class="address2">{$address->address2}</span>{/if}
+	<span class="citystatzip">
 	{$address->city}, 
     {if $address->state == -2}    
         {$address->non_us_state} 
@@ -26,7 +30,10 @@
     {/if}
     {$address->zip}{br}
     {if $address->state == -2}    
-        {$address->country|countryname}{br}
+        {$address->country|countryname}
     {/if}
-	{$address->phone}
+    </span>
+	{if $address->address_type}<span class="address_type">{$address->address_type}</span>{/if}
+	<span class="phone">{$address->phone}</span>
+	<span class="email">{$address->email}</span>
 </address>

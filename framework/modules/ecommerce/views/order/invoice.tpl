@@ -89,24 +89,7 @@
             <tbody>
                 <tr>
                     <td style="width:27%;">
-                    <address>
-                        <span class="fullname">{$order->billingmethod[0]->firstname} {if $order->billingmethod[0]->middlename !=''}{$order->billingmethod[0]->middlename} {/if}{$order->billingmethod[0]->lastname}</span>
-                        {if $order->billingmethod[0]->organization != ""}<span class="company">{$order->billingmethod[0]->organization}</span>{/if}
-                        {if $order->billingmethod[0]->address1 != ""}<span class="address1">{$order->billingmethod[0]->address1}</span>{/if}
-                        {if $order->billingmethod[0]->address2 != ""}<span class="address2">{$order->billingmethod[0]->address2}</span>{/if}
-                        <span class="citystatzip">{$order->billingmethod[0]->city},&nbsp;
-                        {if $order->billingmethod[0]->state == -2}
-                             {$order->billingmethod[0]->non_us_state}
-                        {elseif $order->billingmethod[0]->state != ""}
-                             {$order->billingmethod[0]->state|statename:abbv}
-                        {/if} {$order->billingmethod[0]->zip}
-                        {if $order->billingmethod[0]->state == -2}
-                            {br}{$order->billingmethod[0]->country|countryname}
-                        {/if}
-                        </span>
-                        {if $order->billingmethod[0]->phone != ""}<span class="phone">{$order->billingmethod[0]->phone}</span>{/if}
-                        {if $order->billingmethod[0]->email != ""}<span class="email">{$order->billingmethod[0]->email}</span>{/if}                        
-                    </address>
+                    {$order->billingmethod[0]->addresses_id|address}
                      {permissions}
                             <div class="item-permissions">
                                 {if $permissions.edit_address == 1 && !$pf}                                                                                        
@@ -117,23 +100,7 @@
                      {/permissions}
                     </td>
                     <td style="width:27%;">
-                        <address>
-                            <span class="fullname">{$shipping->shippingmethod->firstname} {if $shipping->shippingmethod->middlename !=''}{$shipping->shippingmethod->middlename} {/if}{$shipping->shippingmethod->lastname}</span>
-                            {if $shipping->shippingmethod->organization != ""}<span class="company">{$shipping->shippingmethod->organization}</span>{/if}
-                            {if $shipping->shippingmethod->address1 != ""}<span class="address1">{$shipping->shippingmethod->address1}</span>{/if}
-                            {if $shipping->shippingmethod->address2 != ""}<span class="address2">{$shipping->shippingmethod->address2}</span>{/if}
-                            <span class="citystatzip">{$shipping->shippingmethod->city},&nbsp;
-                        {if $shipping->shippingmethod->state == -2}
-                             {$shipping->shippingmethod->non_us_state}
-                        {elseif $shipping->shippingmethod->state != ""}
-                             {$shipping->shippingmethod->state|statename:abbv}
-                        {/if} {$shipping->shippingmethod->zip}
-                        {if $shipping->shippingmethod->state == -2}
-                            {br}{$shipping->shippingmethod->country|countryname}
-                        {/if}</span>
-                            {if $shipping->shippingmethod->phone != ""}<span class="phone">{$shipping->shippingmethod->phone}</span>{/if}
-                            {if $shipping->shippingmethod->email != ""}<span class="email">{$shipping->shippingmethod->email}</span>{/if}
-                        </address>
+                        {$shipping->shippingmethod->addresses_id|address}
                         {permissions}
                             <div class="item-permissions">
                                 {if $permissions.edit_address == 1 && !$pf}                                                                                        
