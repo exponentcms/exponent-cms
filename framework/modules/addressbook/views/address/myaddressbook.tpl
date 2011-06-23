@@ -56,28 +56,27 @@
                 {/if}   
             </td>
             <td>
-            <address class="address show">
-            
-            <strong>{$address->firstname} {$address->middlename} {$address->lastname}</strong>{br}
-            {$address->address1}{br}
-            {if $address->address2 != ""}{$address->address2}{br}{/if}
-            {$address->city}, {if $address->state == -2}{$address->non_us_state}{else}{$address->state|statename}{/if} {$address->zip}{br}
-            {if $address->state == -2}{$address->country|countryname}{br}{/if}
-							{$address->phone}{br}
-							{$address->email}{br}
-							{clear}
-						</address>
-					</td>
-					<td>
-						{permissions level=$smarty.const.UILEVEL_PERMISSIONS}
-							<div class="item-actions">
-								{if $user->id == $address->user_id}
-									{icon action=edit record=$address title="Edit this Address"}
-									{if $addresses|@count > 1}{icon action=delete record=$address title="Delete this Address" onclick="return confirm('Are you sure you want to delete this address?');"}{/if}
-								{/if}
-							</div>
-						{/permissions}
-					</td>
+                <address class="address show">
+                    <strong>{$address->firstname} {$address->middlename} {$address->lastname}</strong>{br}
+                    {$address->address1}{br}
+                    {if $address->address2 != ""}{$address->address2}{br}{/if}
+                    {$address->city}, {if $address->state == -2}{$address->non_us_state}{else}{$address->state|statename}{/if} {$address->zip}{br}
+                    {if $address->state == -2}{$address->country|countryname}{br}{/if}
+                    {$address->address_type}{br}
+    				{$address->phone}{br}
+    				{$address->email}{br}
+				</address>
+			</td>
+			<td>
+				{permissions level=$smarty.const.UILEVEL_PERMISSIONS}
+					<div class="item-actions">
+						{if $user->id == $address->user_id}
+							{icon action=edit record=$address title="Edit this Address"}
+							{if $addresses|@count > 1}{icon action=delete record=$address title="Delete this Address" onclick="return confirm('Are you sure you want to delete this address?');"}{/if}
+						{/if}
+					</div>
+				{/permissions}
+			</td>
 				</tr>    
 			{foreachelse}
 				<tr><td colspan="4"></tr><p>You don't have any addresses in your address book yet</p></td>

@@ -81,7 +81,8 @@ function exponent_config_parse($configname,$site_root = null) {
 function exponent_config_parseFile($file) {
 	$options = array();
 	foreach (file($file) as $line) {
-		$line = trim(preg_replace(array("/^.*define\([\"']/","/[^&][#].*$/"),"",$line));
+		//$line = trim(preg_replace(array("/^.*define\([\"']/","/[^&][#].*$/"),"",$line));
+		$line = trim(preg_replace(array("/^.*define\([\"']/","/[^&][#][@].*$/"),"",$line));
 		if ($line != "" && substr($line,0,2) != "<?" && substr($line,-2,2) != "?>") {
 			$line = str_replace(array("<?php","?>","<?",),"",$line);
 						

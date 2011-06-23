@@ -14,7 +14,7 @@
  *
  *}
 
-<div class="module store showall-toplevel">
+<div class="module store show-top-level">
 	{assign var=depth value=0}
 	<h1>{$moduletitle|default:""}</h1>
 	<div id="catnav">

@@ -42,7 +42,6 @@ YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
     <p>
         <em>Fields marked with an * are required.</em>
     </p>
-    {*eDebug var=$record*}
     
     {form action=update}
         {control type=hidden name=id value=$record->id}
@@ -59,7 +58,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
         
         {if $user->is_admin || $user->is_acting_admin}
             {control type=state name=state label="<span class=\"required\">*</span>State/Province" includeblank="-- Choose a State -- " all_us_territories=true exclude="6,8,10,17,30,46,50" value=$record->state add_other=true}
-            {control type=text name=non_us_state label="&nbsp;State/Province" value=$record->non_us_state}           
+            {*control type=text name=non_us_state label="&nbsp;State/Province" value=$record->non_us_state*}           
             {control type=country name=country label="&nbsp;Country" value=$record->country|default:223}            
         {else}
             {control type=state name=state label="<span class=\"required\">*</span>State" includeblank="-- Choose a State -- " value=$record->state}
@@ -69,6 +68,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
         
         {control type=text name=zip label="<span class=\"required\">*</span>Zip/Postal Code" value=$record->zip}
         {control type="text" name="phone" label="<span class=\"required\">*</span>Phone Number <span class=\"example\">ex: 480-555-4200</span>" value=$record->phone}
+        {control type="dropdown" name="address_type" label="Address Type"|gettext items="Business,Residential" default=$record->address_type|default:"Residential"}
         {control type="text" name="email" label="<span class=\"required\">*</span>Email Address" value=$record->email}
         {if !$user->isLoggedIn()}
  
