@@ -20,13 +20,13 @@
 class administrationController extends expController {
     public $basemodel_name = 'expRecord';
     public $useractions = array();
-    public $add_permissions = array('administrate'=>'Manage Administration','toggle_minify'=>'Configure Website Settings',"switch_themes"=>"change themes");
+    public $add_permissions = array('administrate'=>'Manage Administration','toggle_minify'=>'Configure Website Settings',"switch_themes"=>"change themes","install_tables"=>"Install Tables");
 	public $codequality = 'beta';
     
     function name() { return $this->displayname(); } //for backwards compat with old modules
     function displayname() { return "Administration Controls"; }
     function description() { return "This is the beginnings of the new Administration Module"; }
-    function author() { return "Adam Kessler - OIC Group, Inc"; }
+    function author() { return "OIC Group, Inc"; }
     function hasSources() { return true; }
     function hasViews() { return true; }
     function hasContent() { return true; }
@@ -115,6 +115,7 @@ class administrationController extends expController {
 			}
 		}
 		ksort($tables);
+    	exponent_sessions_clearCurrentUserSessionCache();
 	    assign_to_template(array('status'=>$tables));
 	}
 
