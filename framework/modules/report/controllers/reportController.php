@@ -83,7 +83,7 @@ class reportController extends expController {
     
 	function dashboard (){
         //eDebug($this->params);                
-       eDebug($this->params);
+       //eDebug($this->params);
        
         $this->setDateParams($this->params);                
        
