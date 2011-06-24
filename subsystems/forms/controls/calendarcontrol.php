@@ -96,9 +96,9 @@ class calendarcontrol extends formcontrol {
     	$assets_path = SCRIPT_RELATIVE.'subsystems/forms/controls/assets/';
         $html = "
         <div id=\"cal-container-".$name."\" class=\"yui-skin-sam control calendar-control\">
-            <label for=\"".$name."\" class=\"label\">".$label."</label><input size=26 type=\"text\" id=\"date-".$name."\" name=\"date-".$name."\" value=\"\" class=\"datebox\" /> 
-            @ <input size=3 type=\"text\" id=\"time-h-".$name."\" name=\"time-h-".$name."\" value=\"\" class=\"timebox\" maxlength=2/>
-            : <input size=3 type=\"text\" id=\"time-m-".$name."\" name=\"time-m-".$name."\" value=\"\" class=\"timebox\" maxlength=2/>
+            <label for=\"".$name."\" class=\"label\">".$label."</label><input size=26 type=\"text\" id=\"date-".$name."\" name=\"date-".$name."\" value=\"\" class=\"text datebox\" /> 
+            @ <input size=3 type=\"text\" id=\"time-h-".$name."\" name=\"time-h-".$name."\" value=\"\" class=\"text timebox\" maxlength=2/>
+            : <input size=3 type=\"text\" id=\"time-m-".$name."\" name=\"time-m-".$name."\" value=\"\" class=\"text timebox\" maxlength=2/>
             <select id=\"ampm-".$name."\" name=\"ampm-".$name."\">
                 <option>am</option>
                 <option>pm</option>
@@ -108,7 +108,7 @@ class calendarcontrol extends formcontrol {
         ";
         
         $script = "
-        YUI({ base:EXPONENT.YUI3_PATH,loadOptional: true}).use('node', function(Y) {
+        YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
 
             var Event = YAHOO.util.Event,
                 Dom = YAHOO.util.Dom,
