@@ -181,12 +181,9 @@
         {/foreach}
     {else}
         <h2>{"You're purchasing"|gettext}</h2>
-        <div class="purchased-items">
             {include file="../order/partial_summary.tpl" items=$order->orderitem}
-        </div>
-        <div class="purchased-totals">
              <div class=" order-total"> 
-                <table class="collapse nowrap">
+                <table class="nowrap">
                     <thead>
                         <tr>
                             <th colspan="2">
@@ -227,7 +224,6 @@
                         </tr>
                     </tbody>
                 </table>
-            </div>
             
         </div>
     {/if}

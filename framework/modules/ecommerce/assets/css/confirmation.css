@@ -51,4 +51,10 @@ a.awesome.next {
 
 .exp-ecom-table table td.totals {
     text-align:right;
+    width:10%;
 }
+.exp-ecom-table table td.right {
+    text-align:right;
+    width:90%;
+}
+
