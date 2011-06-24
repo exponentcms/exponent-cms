@@ -22,3 +22,7 @@
     padding-left:210px;
 }
 
+.address .address_type {
+    font-style: italic;
+}
+
