@@ -44,7 +44,7 @@
     
     <div class="prod-price"> 
         {if $listing->availability_type == 3}       
-            Call for Price
+            {"Call for Price"|gettext}
         {else}                   
             {if $listing->use_special_price}
                 <span style="font-size:14px; text-decoration: line-through;">{currency_symbol}{$listing->base_price|number_format:2}</span>
@@ -56,12 +56,12 @@
     </div>
         {if $listing->availability_type != 3 && $listing->active_type == 0}
             {if $listing->hasChildren()}            
-                <a href="{link controller=store action=showByTitle title=$listing->sef_url}" class="exp-ecom-link view-item" rel="nofollow"><strong><em>View Item</em></strong></a>   
+                <a href="{link controller=store action=showByTitle title=$listing->sef_url}" class="exp-ecom-link awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}">{"View Item"|gettext}</a>   
             {else}
                 {form id="addtocart`$listing->id`" controller=cart action=addItem} 
                     {control type="hidden" name="product_id" value="`$listing->id`"}   
                     {control type="hidden" name="product_type" value="`$listing->product_type`"}
-                    <a href="#" onclick="document.getElementById('addtocart{$listing->id}').submit(); return false;" class="exp-ecom-link wqty view-item" rel="nofollow"><strong><em>Add to Cart</em></strong></a>
+                    <button type="submit" class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}">{"Add to Cart"|gettext}</button>
                     {if $listing->parent_id == 0}
                         {control name="qty" type="text" value="`$listing->minimum_order_quantity`" size=3 maxlength=5 class="lstng-qty"}
                     {/if}

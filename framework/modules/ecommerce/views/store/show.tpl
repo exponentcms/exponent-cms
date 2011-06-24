@@ -217,7 +217,7 @@
     
     <div id="child-products">
         {form id="child-products-form" controller=cart action=addItem}
-        <table border="0" cellspacing="0" cellpadding="0" class="exp-skin-table">
+        <table border="0" cellspacing="0" cellpadding="0" class="exp-ecom-table">
             <thead>
                 <tr>
                     <th>&nbsp;</th>

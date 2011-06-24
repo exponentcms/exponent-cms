@@ -14,7 +14,7 @@
  *
  *}
  
-{css unique="storeListing" link="`$asset_path`css/storeListing.css"}
+{css unique="storeListing" link="`$asset_path`css/storeListing.css" corecss="button"}
 
 {/css}
 
@@ -25,9 +25,9 @@
     {if $moduletitle}<h1>{$moduletitle}</h1>{/if}
     <h1>
     <span>{$current_category->title}</span>
-    {if $current_category->expFile[0]->id}
-        {img file_id=$current_category->expFile[0]->id w=600 h=100 zc=1}
-    {/if}
+    {*if $current_category->expFile[0]->id}
+        {img file_id=$current_category->expFile[0]->id w=522 h=100}
+    {/if*}
     </h1>
     {if $current_category->id}
     {permissions}
@@ -132,7 +132,8 @@
 
 {script unique="expanding-text" yui3mods="yui"}
 {literal}
-YUI().use("anim-easing","node","anim", function(Y) {
+
+YUI(EXPONENT.YUI3_CONFIG).use("anim-easing","node","anim", function(Y) {
     
     var modules = Y.all('.showall.store .bodycopy');
 
