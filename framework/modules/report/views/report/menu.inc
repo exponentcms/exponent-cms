@@ -119,13 +119,13 @@
 
 {script unique="expand-panels"}
 {literal}
-YUI({ base:EXPONENT.URL_FULL+'external/yui3/build/',loadOptional: true}).use('node','cookie','anim', function(Y) {
+YUI(EXPONENT.YUI3_CONFIG).use('node','cookie','anim', function(Y) {
         var panels = Y.all(".dashboard .panel");
         var expandHeight = [];
         var action = function(e){
             e.halt();
 
-            var pBody = e.target.ancestor('.panel').query('.bd');
+            var pBody = e.target.ancestor('.panel').one('.bd');
             var pID = e.target.ancestor('.panel').getAttribute('id');
             var cfg = {
                 node: pBody,
@@ -155,10 +155,10 @@ YUI({ base:EXPONENT.URL_FULL+'external/yui3/build/',loadOptional: true}).use('no
         panels.each(function(n,k){
             n.delegate('click',action,'.hd a');
             if (Y.Cookie.get(n.get('id'))==="collapsed") {
-                n.query('.hd a').replaceClass('collapse','expand');
-                n.query('.bd').addClass('collapsed');
+                n.one('.hd a').replaceClass('collapse','expand');
+                n.one('.bd').addClass('collapsed');
             };
-            expandHeight[n.get('id')] = n.query('.bd ul').get('offsetHeight');
+            expandHeight[n.get('id')] = n.one('.bd ul').get('offsetHeight');
         });
     });
     {/literal}
