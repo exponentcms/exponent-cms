@@ -65,9 +65,7 @@ class authorizedotnet extends creditcard {
 			"x_exp_date"=>$opts->exp_month.'/'.$opts->exp_year,
 			"x_card_code"=>$opts->cvv,
 		);
-		
-		if ($config['testmode']) $data["x_test_request"] = "TRUE"; 
-
+		        
 		if (!empty($user->email) && $config['email_customer']) {
 			$data['x_email_customer'] = 'TRUE';
 		} else {
@@ -80,6 +78,16 @@ class authorizedotnet extends creditcard {
 			$data['x_type'] = "AUTH_ONLY";
 		}
 
+        //Check if it is test mode and assign the proper url        
+        if($config['testmode']) {
+            $url = "https://test.authorize.net/gateway/transact.dll";
+            //$data["x_test_request"] = "TRUE"; 
+            flash('message','Authorize.net is in TEST Mode!');
+            
+        } else {
+            $url = "https://secure.authorize.net/gateway/transact.dll";
+        }
+        
 		$data2 = "";
 		while(list($key, $value) = each($data)) {
 //			$data2 .= $key . '=' . urlencode(ereg_replace(',', '', $value)) . '&';
@@ -89,13 +97,6 @@ class authorizedotnet extends creditcard {
 		// take the last & out for the string
 		$data2 = substr($data2, 0, -1);
 		
-		//Check if it is test mode and assign the proper url
-		if($config['testmode']) {
-			$url = "https://test.authorize.net/gateway/transact.dll";
-		} else {
-			$url = "https://secure.authorize.net/gateway/transact.dll";
-		}
-        
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL,$url);
 		curl_setopt($ch, CURLOPT_TIMEOUT,30);
@@ -158,6 +159,16 @@ class authorizedotnet extends creditcard {
 			$data['x_email_customer'] = 'FALSE';
 		}
 		
+        //Check if it is test mode and assign the proper url        
+        if($config['testmode']) {
+            $url = "https://test.authorize.net/gateway/transact.dll";
+            //$data["x_test_request"] = "TRUE"; 
+            flash('message','Authorize.net is in TEST Mode!');
+            
+        } else {
+            $url = "https://secure.authorize.net/gateway/transact.dll";
+        }
+        
 		$data2 = "";
 		while(list($key, $value) = each($data)) {
 			$data2 .= $key . '=' . urlencode(str_ireplace(',', '', $value)) . '&';
@@ -165,13 +176,7 @@ class authorizedotnet extends creditcard {
 			
 		// take the last & out for the string
 		$data2 = substr($data2, 0, -1);
-		
-		//Check if it is test mode and assign the proper url
-		if($config['testmode']) {
-			$url = "https://test.authorize.net/gateway/transact.dll";
-		} else {
-			$url = "https://secure.authorize.net/gateway/transact.dll";
-		}
+			
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL,$url);
 		curl_setopt($ch, CURLOPT_TIMEOUT,30);
@@ -226,7 +231,7 @@ class authorizedotnet extends creditcard {
 			$response = split("|", $authorize);	
 			
 			$method->update(array('billing_options'=>serialize($billing_options), 'transaction_state'=>'refunded'));
-			$this->createBillingTransaction($method, urldecode($response[9]),$billing_options->result,'refunded');
+			$this->createBillingTransaction($method, number_format($amount, 2, '.', ''),$billing_options->result,'refunded');
 			
 			flash('message', 'Refund Completed Successfully.');
 			redirect_to(array('controller'=>'order', 'action'=>'show', 'id'=>$method->orders_id));
