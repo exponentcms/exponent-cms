@@ -11,7 +11,7 @@
         
         <div id="quickstats" class="panel">
             <div class="hd"><h2>Quick Stats</h2><a href="#" class="collapse">Collapse</a></div>
-            <div class="bd">
+            <div class="bd {if $smarty.cookies.quickstats=='collapsed'}collapsed{/if}">
                 <ul>
                     <li>
                         <strong><a href="#">View recent orders</a></strong>
@@ -23,7 +23,7 @@
         
         <div id="cartstats" class="panel">
             <div class="hd"><h2>Cart Stats</h2><a href="#" class="collapse">Collapse</a></div>
-            <div class="bd">
+            <div class="bd {if $smarty.cookies.cartstats=='collapsed'}collapsed{/if}">
                 <ul>
                     <li>
                         <strong><a href="{link action=cart_summary}">Summary Stats</a></strong>
@@ -41,7 +41,7 @@
         
         <div id="orders" class="panel">
             <div class="hd"><h2>Orders</h2><a href="#" class="collapse">Collapse</a></div>
-            <div class="bd">
+            <div class="bd {if $smarty.cookies.orders=='collapsed'}collapsed{/if}">
                 <ul>
                     <li>
                         <strong><a href="#">View recent orders</a></strong>
@@ -57,7 +57,7 @@
         
         <div id="configuration" class="panel">
             <div class="hd"><h2>Store Settings</h2><a href="#" class="collapse">Collapse</a></div>
-            <div class="bd">
+            <div class="bd {if $smarty.cookies.configuration=='collapsed'}collapsed{/if}">
                 <ul>
                     <li>
                         <strong><a href="#">Configure General Store Settings</a></strong>
@@ -77,7 +77,7 @@
         
         <div id="products" class="panel">
             <div class="hd"><h2>Products and Categories</h2><a href="#" class="collapse">Collapse</a></div>
-            <div class="bd">
+            <div class="bd {if $smarty.cookies.products=='collapsed'}collapsed{/if}">
                 <ul>
                     <li>
                         <strong><a href="#">Add a Product</a></strong>
@@ -101,7 +101,7 @@
         
         <div id="shipping" class="panel">
             <div class="hd"><h2>Billing and Shipping</h2><a href="#" class="collapse">Collapse</a></div>
-            <div class="bd">
+            <div class="bd {if $smarty.cookies.shipping=='collapsed'}collapsed{/if}">
                 <ul>
                     <li>
                         <strong><a href="#">Configure Billing Settings</a></strong>
