@@ -27,8 +27,7 @@ class authorizedotnet extends creditcard {
 		$shipping_state = new geoRegion($shippingaddress->state);
 		$shipping_country = new geoCountry($shipping_state->country_id);
 		
-		$config = unserialize($this->config);
-		
+		$config = unserialize($this->config);		
 		$state = new geoRegion($method->state);
 		$country = new geoCountry($state->country_id);
 		
@@ -84,7 +83,7 @@ class authorizedotnet extends creditcard {
 		$data2 = "";
 		while(list($key, $value) = each($data)) {
 //			$data2 .= $key . '=' . urlencode(ereg_replace(',', '', $value)) . '&';
-			$data2 .= $key . '=' . urlencode(preg_replace(',', '', $value)) . '&';
+			$data2 .= $key . '=' . urlencode(str_ireplace(',', '', $value)) . '&';
 		}
 			
 		// take the last & out for the string
@@ -96,6 +95,7 @@ class authorizedotnet extends creditcard {
 		} else {
 			$url = "https://secure.authorize.net/gateway/transact.dll";
 		}
+        
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL,$url);
 		curl_setopt($ch, CURLOPT_TIMEOUT,30);
@@ -108,8 +108,8 @@ class authorizedotnet extends creditcard {
 		curl_close($ch);
 		
 //		$response = split("\|", $authorize);
-		$response = explode("\|", $authorize);
-
+		$response = explode("|", $authorize);
+        
 		if ($response[0] == 1) { //Approved !!!
 			$object->errorCode = 0;
 			$object->message = $response[3] . " Approval Code: ".$response[4];
@@ -148,7 +148,8 @@ class authorizedotnet extends creditcard {
 				'x_card_num'			=> substr($billing_options->cc_number, -4),
 				'x_trans_id'			=> urlencode($billing_options->result->transactionID),
 				'x_relay_response' 		=> 'FALSE', 
-				'x_delim_data'			=> 'TRUE'
+				'x_delim_data'			=> 'TRUE',
+                "x_delim_char"          => '|'
 			);
 	
 		if (!empty($user->email) && $config['email_customer']) {
@@ -159,7 +160,7 @@ class authorizedotnet extends creditcard {
 		
 		$data2 = "";
 		while(list($key, $value) = each($data)) {
-			$data2 .= $key . '=' . urlencode(ereg_replace(',', '', $value)) . '&';
+			$data2 .= $key . '=' . urlencode(str_ireplace(',', '', $value)) . '&';
 		}
 			
 		// take the last & out for the string
@@ -182,7 +183,7 @@ class authorizedotnet extends creditcard {
 		$authorize = curl_exec($ch);
 		curl_close($ch);
 		
-		$response = split(",", $authorize);	
+		$response = split("|", $authorize);	
 		if($response[2] == 1) { //if it is completed
 			$method->update(array('billing_options'=>serialize($billing_options), 'transaction_state'=>'voided'));
 			$this->createBillingTransaction($method, urldecode($response[9]),$billing_options->result,'voided');
@@ -199,12 +200,13 @@ class authorizedotnet extends creditcard {
 				'x_card_num'			=> substr($billing_options->cc_number, -4),
 				'x_trans_id'			=> urlencode($billing_options->result->transactionID),
 				'x_relay_response' 		=> 'FALSE', 
-				'x_delim_data'			=> 'TRUE'
+				'x_delim_data'			=> 'TRUE',
+                "x_delim_char"          => '|'
 			);
 	
 			$data2 = "";
 			while(list($key, $value) = each($data)) {
-				$data2 .= $key . '=' . urlencode(ereg_replace(',', '', $value)) . '&';
+				$data2 .= $key . '=' . urlencode(str_ireplace(',', '', $value)) . '&';
 			}
 				
 			// take the last & out for the string
@@ -221,7 +223,7 @@ class authorizedotnet extends creditcard {
 			$authorize = curl_exec($ch);
 			curl_close($ch);
 			
-			$response = split(",", $authorize);	
+			$response = split("|", $authorize);	
 			
 			$method->update(array('billing_options'=>serialize($billing_options), 'transaction_state'=>'refunded'));
 			$this->createBillingTransaction($method, urldecode($response[9]),$billing_options->result,'refunded');

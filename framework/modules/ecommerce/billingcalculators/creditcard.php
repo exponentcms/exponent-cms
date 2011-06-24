@@ -93,7 +93,7 @@ class creditcard extends billingcalculator {
 		return $form;	
 	}
 	
-	public function getAvailableCards() {
+    public function getAvailableCards() {        	        
         if (empty($this->config)) {
             return;
         }
