@@ -38,7 +38,7 @@
         <ul class="slideshow-frame" style="width:{$config.width|default:350}px;height:{$config.height|default:300}px;">
 			{assign var=quality value=$config.quality}
 			{if !$quality}
-				{assign var=quality value=THUMB_QUALITY}
+				{assign var=quality value=$smarty.const.THUMB_QUALITY}
 			{/if}
             {foreach key=key from=$slides item=slide name=slides}
             <li class="slide" style="position:absolute;{if $smarty.foreach.slides.first}z-index:4;{else}z-index:1;{/if}">
