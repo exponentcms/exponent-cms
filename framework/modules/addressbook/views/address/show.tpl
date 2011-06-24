@@ -33,7 +33,7 @@
         {$address->country|countryname}
     {/if}
     </span>
-	{if $address->address_type}<span class="address_type">{$address->address_type}</span>{/if}
+	{if $address->address_type}<span class="address_type">({$address->address_type})</span>{/if}
 	<span class="phone">{$address->phone}</span>
 	<span class="email">{$address->email}</span>
 </address>
