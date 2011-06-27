@@ -41,10 +41,7 @@
     {/permissions}
     {pagelinks paginate=$page top=1}
     <ul class="image-list">
-	{assign var=quality value=$config.quality}
-	{if !$quality}
-		{assign var=quality value=$smarty.const.THUMB_QUALITY}
-	{/if}	
+    {assign var=quality value=$config.quality|default:$smarty.const.THUMB_QUALITY}	
     {foreach from=$page->records item=record name=items}
         <li style="width:{$config.pa_showall_thumbbox|default:"150"}px;height:{$config.pa_showall_thumbbox|default:"150"}px;">
             
