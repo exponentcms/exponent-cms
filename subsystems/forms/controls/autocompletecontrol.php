@@ -61,7 +61,7 @@ class autocompletecontrol extends formcontrol {
         ';
         
         $script = "
-        YUI({ base:EXPONENT.YUI3_PATH,loadOptional: true}).use('node', function(Y) {
+        YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
 
             Y.one('#".$name."').on('click',function(e){e.target.set('value','');});
 
@@ -101,8 +101,15 @@ class autocompletecontrol extends formcontrol {
     	    )
     	);
 	
+        expJavascript::pushToFoot(array(
+            "unique"=>'ac'.$name,
+            "yui2mods"=>"animation,autocomplete,connection,datasource",
+            "yui3mods"=>1,
+            "content"=>$script,
+            "src"=>$params['src']
+         ));
        
-        exponent_javascript_toFoot('ac'.$name, "animation,autocomplete,connection,datasource", null, $script);
+        //exponent_javascript_toFoot('ac'.$name, "animation,autocomplete,connection,datasource", null, $script);
         return $html;
     }
 
