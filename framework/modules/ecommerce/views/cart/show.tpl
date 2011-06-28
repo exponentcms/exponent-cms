@@ -152,19 +152,19 @@
                         <td style="text-align:right;">{$order->grand_total|number_format:2}
                         </td>
                     </tr>
+                    {if $discounts}      
                     <tr class="{cycle values="odd, even"}">
                         <td colspan="3">
-                            {if !$discounts}      
                         <div class="input-code">   
                             {form action="addDiscountToCart"}
                                 {control type="text" name="coupon_code" label="Enter a Discount Code"}
                                 {control type="buttongroup" submit="Apply Code"}
                             {/form}
                         </div>                
-                    {/if}
-                    <div style="clear:both"></div>
+                        <div style="clear:both"></div>
                         </td>
                     </tr>
+                    {/if}
                 </tbody>
             </table>       
         {/if}
