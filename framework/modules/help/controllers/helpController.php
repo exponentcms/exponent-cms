@@ -156,10 +156,16 @@ class helpController extends expController {
 	    $current_docs = $help->find('all', 'help_version_id='.$from);
 	    foreach ($current_docs as $key=>$doc) {
 	        unset($doc->id);
-	        unset($doc->id);
 	        $doc->help_version_id = $to;
-	        $doc->sef_url = $doc->makeSefUrl();
+		    
+//	        $tmpsef = $doc->sef_url;
+//	        $doc->sef_url = "";
+//	        $doc->save();
+//	        $doc->sef_url = $tmpsef;
 	        $doc->save();
+		    
+//	        $doc->sef_url = $doc->makeSefUrl();
+//	        $doc->save();
 
 	        foreach($doc->expFile as $subtype=>$files) {
 	            foreach($files as $file) {
@@ -259,8 +265,9 @@ class helpController extends expController {
 	    if (empty($id)) {
 	        self::copydocs($current_version->id, $version->id);	        
 	    }
-	    
-	    flash('message', 'Saved version '.$version->version);
+	    expSession::set('help-version',$version->version);
+
+	    flash('message', 'Saved help version '.$version->version);
 	    expHistory::back();
 	}
 	

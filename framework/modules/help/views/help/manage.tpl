@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2008 OIC Group, Inc.
+ * Copyright (c) 2004-2011 OIC Group, Inc.
  * Written and Designed by Adam Kessler
  *
  * This file is part of Exponent
@@ -23,8 +23,8 @@
     </p>
     
     {icon class=add action=edit_version title="Add new help version" text="Add a New Help Version"}{br}
-    {icon class=add action=edit title="Add a New Help Document" text="Add a New Help Document to version `$current_version->version`"}{br}
-    {icon class=manage action=manage_versions title="Manage Versions" text="Manage Versions"}{br}
+    {icon class=add action=edit title="Add a New Help Document" text="Add a New Help Document"}{br}
+    {icon class=manage action=manage_versions title="Manage Help Versions" text="Manage Help Versions"}{br}
     {$page->links}
     <table class="exp-skin-table">
         <thead>
@@ -37,7 +37,7 @@
         {foreach from=$page->records item=doc}
         {assign var=sec value=$doc->section}
         <tr class="{cycle values="odd,even"}">
-            <td><a href={link action=show version=$doc->help_version->version title=$doc->title}>{$doc->title}</a></td>
+            <td><a href={link action=show version=$doc->help_version->version title=$doc->sef_url}>{$doc->title}</a></td>
             <td><a href="{link action=manage version=$doc->help_version->id}">{$doc->help_version->version}</a></td>
 	        <td>{$sections[$sec]->name}</td>
             <td>
