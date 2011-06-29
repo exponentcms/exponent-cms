@@ -186,7 +186,6 @@ table#cart table td {
 	border-bottom:1px dotted #999;
 	margin:0 0 5px 0;
 	width:100%;
-	_overflow:hidden;
 }
 
 .cart.checkout .totals {
@@ -236,11 +235,6 @@ table#cart table td {
 #shpAddSwp address span,
 #bllAddSwp address span {
     display:block;
-}
-
-
-#shoppingcartwrapper {
-	overflow:hidden;
 }
 
 .shipping-address,
