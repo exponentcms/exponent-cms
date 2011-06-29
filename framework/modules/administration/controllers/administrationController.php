@@ -20,7 +20,26 @@
 class administrationController extends expController {
     public $basemodel_name = 'expRecord';
     public $useractions = array();
-    public $add_permissions = array('administrate'=>'Manage Administration','toggle_minify'=>'Configure Website Settings',"switch_themes"=>"change themes","install_tables"=>"Install Tables");
+    public $add_permissions = array(
+	    'administrate'=>'Manage Administration',
+	    'clear_all_cache'=>'Clear All Caches',
+	    'clear_css_cache'=>'Clear CSS Cache',
+	    'clear_image_cache'=>'Clear Image Cache',
+	    'clear_rss_cache'=>'Clear RSS Cache',
+	    'clear_smarty_cache'=>'Clear Smarty Cache',
+	    'configure_site'=>'Configure Site',
+	    'delete_unused_tables'=>'Delete Unused Tables',
+	    "fix_database"=>"Fix Database",
+	    "fix_sessions"=>"Fix Sessions",
+	    "install_tables"=>"Install Tables",
+	    'manage_unused_tables'=>'Manage Unused Tables',
+	    'optimize_database'=>'Optimize Database',
+	    'toggle_dev'=>'Toggle Development Mode',
+	    'toggle_maintenance'=>'Toggle Maintenance Mode',
+	    'toggle_minify'=>'Toggle Minify Mode',
+	    "switch_themes"=>"Change Themes",
+	    "upload_extension"=>"Upload Extension",
+        );
 	public $codequality = 'beta';
     
     function name() { return $this->displayname(); } //for backwards compat with old modules
@@ -126,6 +145,7 @@ class administrationController extends expController {
         $unused_tables = array();
         $tables = $db->getTables();
         //eDebug($tables);
+	    //FIXME Need to update for definitions moving into controller folder
         foreach($tables as $table) {
             $basename = str_replace(DB_TABLE_PREFIX.'_', '', $table);
             $oldpath = BASE.'datatypes/definitions/'.$basename.'.php';
