@@ -63,7 +63,7 @@ function smarty_function_prod_images($params,&$smarty) {
                                             
             if (!$images[0]->id) {
                 unset($imgparams['file_id']);
-                $imgparams['src'] = 'themes/common/skin/ecom/no-image.jpg';
+                $imgparams['src'] = 'framework/modules/ecommerce/assets/images/no-image.jpg';
                 $imgparams['alt'] = 'No image found for '.$rec->title;
             }
             $img = smarty_function_img($imgparams,&$smarty);
