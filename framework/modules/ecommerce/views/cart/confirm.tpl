@@ -49,25 +49,10 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
+                    <tr class="even">
                         <td>
-                            <address>
-                            {$billing->address->firstname} {$billing->address->middlename} {$billing->address->lastname}{br}
-                            {$billing->address->address1}{br}
-                            {if $billing->address->address2}{$billing->address->address2}{br}{/if}
-                            {$billing->address->city}, 
-                            {* $billing->address->state|statename}, {$billing->address->zip *}
-                            {if $billing->address->state == -2}
-                                    {$billing->address->non_us_state}
-                                {else}
-                                    {$billing->address->state|statename:abv}
-                                {/if}
-                                 {$billing->address->zip}
-                                {if $billing->address->state == -2}
-                                    {br}{$billing->address->country|countryname}
-                                {/if}
-                            </address>      
-                        </td>
+                            {$order->billingmethod[0]->addresses_id|address}
+                      </td>
                     </tr>
                 </tbody>
             </table>
@@ -121,24 +106,9 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
+                    <tr class="even">
                         <td>
-                            <address>
-                            {$shipping->shippingmethod->firstname} {$shipping->shippingmethod->middlename} {$shipping->shippingmethod->lastname}{br}
-                            {$shipping->shippingmethod->address1}{br}
-                            {if $shipping->shippingmethod->address2}{$shipping->shippingmethod->address2}{br}{/if}
-                            {$shipping->shippingmethod->city}, 
-                            {* $shipping->shippingmethod->state|statename}, {$shipping->shippingmethod->zip *}
-                            {if $shipping->shippingmethod->state == -2}
-                                    {$shipping->shippingmethod->non_us_state}
-                                {else}
-                                    {$shipping->shippingmethod->state|statename:abv}
-                                {/if}
-                                 {$shipping->shippingmethod->zip}
-                                {if $shipping->shippingmethod->state == -2}
-                                    {br}{$shipping->shippingmethod->country|countryname}
-                                {/if}
-                            </address>      
+                            {$shipping->shippingmethod->addresses_id|address}
                             {if $shipping->shippingmethod->to != "" || $shipping->shippingmethod->from != "" || $shipping->shippingmethod->message != ""}
                                 {br}
                                 <h4>Gift Message</h4>
