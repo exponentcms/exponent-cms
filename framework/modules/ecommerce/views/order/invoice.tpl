@@ -90,14 +90,14 @@
                 <tr>
                     <td style="width:27%;">
                     {$order->billingmethod[0]->addresses_id|address}
-                     {permissions}
-                            <div class="item-permissions">
-                                {if $permissions.edit_address == 1 && !$pf}                                                                                        
-                                    {br}    
-                                    <a href="{link action=edit_address id=$order->id type='b'}">[-edit-]</a>
-                                {/if} 
-                            </div>
-                     {/permissions}
+                    {permissions}
+                    <div class="item-permissions">
+                        {if $permissions.edit_address == 1 && !$pf}                                                                                        
+                        {br}    
+                        <a href="{link action=edit_address id=$order->id type='b'}">[-edit-]</a>
+                        {/if} 
+                    </div>
+                    {/permissions}
                     </td>
                     <td style="width:27%;">
                         {$shipping->shippingmethod->addresses_id|address}
