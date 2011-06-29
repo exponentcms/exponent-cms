@@ -11,7 +11,7 @@ body {
 .recyclebin.orphan-content h1.main {
     padding:5px 40px;
     height:40px;
-    background:url(../images/trashcan_full_large.png) no-repeat;
+    background:url(../assets/images/trashcan_full_large.png) no-repeat;
     border-bottom:2px solid #999999;
 }
 
@@ -23,7 +23,7 @@ body {
 .recyclebin.orphan-content .rb-item a.usecontent {
     text-align: center;
     padding: 5px 0px 5px 25px;
-    background:url(../images/use-recycled.png) no-repeat;
+    background:url(../assets/images/use-recycled.png) no-repeat;
     font-size: 115%;
 }
 .recyclebin.orphan-content .rb-item .recycledcontent {
