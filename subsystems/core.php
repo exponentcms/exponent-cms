@@ -233,13 +233,13 @@ function exponent_core_copyObject($o) {
  */
 function exponent_core_decrementLocationReference($loc,$section) {
 	global $db;
-	$oldLocRef = $db->selectObject("locationref","module='".$loc->mod."' AND source='".$loc->src."' AND internal='".$loc->int."'");
+//	$oldLocRef = $db->selectObject("locationref","module='".$loc->mod."' AND source='".$loc->src."' AND internal='".$loc->int."'");
 	$oldSecRef = $db->selectObject("sectionref", "module='".$loc->mod."' AND source='".$loc->src."' AND internal='".$loc->int."' AND section=$section");
 	
-	$oldLocRef->refcount -= 1;
+//	$oldLocRef->refcount -= 1;
 	$oldSecRef->refcount -= 1;
 	
-	$db->updateObject($oldLocRef,"locationref","module='".$loc->mod."' AND source='".$loc->src."' AND internal='".$loc->int."'");
+//	$db->updateObject($oldLocRef,"locationref","module='".$loc->mod."' AND source='".$loc->src."' AND internal='".$loc->int."'");
 	$db->updateObject($oldSecRef,"sectionref","module='".$loc->mod."' AND source='".$loc->src."' AND internal='".$loc->int."' AND section=$section");
 }
 
@@ -253,33 +253,33 @@ function exponent_core_decrementLocationReference($loc,$section) {
  */
 function exponent_core_incrementLocationReference($loc,$section) {
 	global $db;
-	$newLocRef = $db->selectObject("locationref","module='".$loc->mod."' AND source='".$loc->src."' AND internal='".$loc->int."'");
-	$is_new = false; // For the is_original sectionref attribute
-	if ($newLocRef != null) {
-		// Pulled an existing source.  Update refcount
-		$newLocRef->refcount += 1;
-		$db->updateObject($newLocRef,"locationref","module='".$loc->mod."' AND source='".$loc->src."' AND internal='".$loc->int."'");
-	} else {
-		$is_new = true;
-		// New source.  Populate reference
-		$newLocRef->module   = $loc->mod;
-		$newLocRef->source   = $loc->src;
-		$newLocRef->internal = $loc->int;
-		$newLocRef->refcount = 1;
-		$db->insertObject($newLocRef,"locationref");
+	// $newLocRef = $db->selectObject("locationref","module='".$loc->mod."' AND source='".$loc->src."' AND internal='".$loc->int."'");
+	// $is_new = false; // For the is_original sectionref attribute
+	// if ($newLocRef != null) {
+		// // Pulled an existing source.  Update refcount
+		// $newLocRef->refcount += 1;
+		// $db->updateObject($newLocRef,"locationref","module='".$loc->mod."' AND source='".$loc->src."' AND internal='".$loc->int."'");
+	// } else {
+		// $is_new = true;
+		// // New source.  Populate reference
+		// $newLocRef->module   = $loc->mod;
+		// $newLocRef->source   = $loc->src;
+		// $newLocRef->internal = $loc->int;
+		// $newLocRef->refcount = 1;
+		// $db->insertObject($newLocRef,"locationref");
 		
-		// Go ahead and assign permissions on contained module.
-		if ($loc->mod != 'navigationmodule' && $loc->mod != 'administrationmodule') {
-			//$perms = call_user_func(array($loc->mod,"permissions"));
-			$mod = new $loc->mod();
-			$perms = $mod->permissions();
-			global $user;
-			foreach (array_keys($perms) as $perm) {
-				exponent_permissions_grant($user,$perm,$loc);
-			}
-		}
-		exponent_permissions_triggerSingleRefresh($user);
-	}
+		// // Go ahead and assign permissions on contained module.
+		// if ($loc->mod != 'navigationmodule' && $loc->mod != 'administrationmodule') {
+			// //$perms = call_user_func(array($loc->mod,"permissions"));
+			// $mod = new $loc->mod();
+			// $perms = $mod->permissions();
+			// global $user;
+			// foreach (array_keys($perms) as $perm) {
+				// exponent_permissions_grant($user,$perm,$loc);
+			// }
+		// }
+		// exponent_permissions_triggerSingleRefresh($user);
+	// }
 	
 	$newSecRef = $db->selectObject("sectionref", "module='".$loc->mod."' AND source='".$loc->src."' AND internal='".$loc->int."' AND section=$section");
 	if ($newSecRef != null) {
@@ -293,7 +293,8 @@ function exponent_core_incrementLocationReference($loc,$section) {
 		$newSecRef->internal = $loc->int;
 		$newSecRef->section = $section;
 		$newSecRef->refcount = 1;
-		$newSecRef->is_original = ($is_new ? 1 : 0);
+//		$newSecRef->is_original = ($is_new ? 1 : 0);
+		$newSecRef->is_original = 1;
 		$db->insertObject($newSecRef,"sectionref");
 	}
 }
@@ -403,11 +404,11 @@ function glob2keyedArray($workArray){
 /* exdoc
  * This function finds the most appropriate version of a file
  *  - if given wildcards, files -
- * and returns an array with the file's physical loaction's full path or,
+ * and returns an array with the file's physical location's full path or,
  * if no file was found, false
  *
- * @param string $type (to be superceeded) type of base ressource (= directory name)
- * @param string $name (hopefully in the future type named) Ressource identifier (= class name = directory name)
+ * @param string $type (to be superseded) type of base resource (= directory name)
+ * @param string $name (hopefully in the future type named) Resource identifier (= class name = directory name)
  * @param string $subtype type of the actual file (= file extension = (future) directory name)
  * @param string $subname name of the actual file (= filename name without extension)
  * 
@@ -441,6 +442,8 @@ function exponent_core_resolveFilePaths($type, $name, $subtype, $subname) {
 		} elseif($type == "forms") {
 			if ($name != "forms/email") {
 				$relpath .= "subsystems/forms/";
+			} else {  //TODO  forms/email only used by calendarmodule
+				$relpath .= "modules/calendarmodule/";
 			}
 		} elseif($type == "themes") {
 			$relpath .= "themes/";
@@ -462,7 +465,7 @@ function exponent_core_resolveFilePaths($type, $name, $subtype, $subname) {
 	
 	// for later use for searching in lib/common
 	$typepath = $relpath;
-	if ($name != "") {
+	if ($name != "" && $name != "forms/email") {  //TODO  forms/email only used by calendarmodule
 		$relpath .= $name . "/";
 	}
 
@@ -475,8 +478,9 @@ function exponent_core_resolveFilePaths($type, $name, $subtype, $subname) {
 		} elseif($subtype == "tpl") {
 			if ($type == 'controllers' || $type == 'Controller') {
 				//do nothing
-			} elseif ($name == "forms/email") {
-				$relpath2 .= "/";
+			} elseif ($name == "forms/email") {  //TODO  forms/email only used by calendarmodule
+//				$relpath2 .= "/";
+				$relpath2 .= "forms/email/";
 		    } elseif ($type == 'controls' || $type == 'Control') {
 		        $relpath2 .= 'editors/';
 		    } elseif ($type == 'profileextension') {

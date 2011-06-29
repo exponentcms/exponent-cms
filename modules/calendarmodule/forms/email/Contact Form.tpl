@@ -22,22 +22,22 @@
 <input type="hidden" name="id" value="{$id}" />
 <table cellpadding="2" cellspacing="0" border="0">
 <tr>
-	<td width="10" style="width: 10px" valign="top" colspan="2"><b>{$_TR.submit_feedback}</b></td>
+	<td width="10" style="width: 10px" valign="top" colspan="2"><b>Submit Feedback</b></td>
 </tr>
 <tr>
-	<td valign="top">{$_TR.email}</td>
+	<td valign="top">Your E-mail Address:</td>
 	<td>
 		<input type="text" name="email" />
 	</td>
 </tr>
 <tr>
-	<td valign="top">{$_TR.subject}</td>
+	<td valign="top">Subject:</td>
 	<td>
 		<input type="text" name="subject" />
 	</td>
 </tr>
 <tr>
-	<td valign="top">{$_TR.message}</td>
+	<td valign="top">Message:</td>
 	<td>
 		<textarea name="message"></textarea>
 	</td>
