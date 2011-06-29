@@ -57,36 +57,10 @@
             <tbody>
                 <tr>
                     <td style="border:1px solid #DEDEDE; text-align:left; vertical-align:top; padding:0.5em;">
-                    <address>
-                        <span class="fullname" style="display:block;">{$order->billingmethod[0]->firstname} {if $order->billingmethod[0]->middlename !=''}{$order->billingmethod[0]->middlename} {/if}{$order->billingmethod[0]->lastname}</span>{br}
-                        {if $order->billingmethod[0]->organization != ""}<span class="company" style="display:block;">{$order->billingmethod[0]->organization}</span>{br}{/if}
-                        {if $order->billingmethod[0]->address1 != ""}<span class="address1" style="display:block;">{$order->billingmethod[0]->address1}</span>{br}{/if}
-                        {if $order->billingmethod[0]->address2 != ""}<span class="address2" style="display:block;">{$order->billingmethod[0]->address2}</span>{br}{/if}
-                        <span class="citystatzip" style="display:block;">{$order->billingmethod[0]->city}
-                        {if $order->billingmethod[0]->state == -2}
-                            , {$order->billingmethod[0]->non_us_state}{br}                            
-                        {elseif $order->billingmethod[0]->state != ""}
-                            , {$order->billingmethod[0]->state|statename:abbv}
-                        {/if} 
-                        {$order->billingmethod[0]->zip}
-                        {if $order->billingmethod[0]->state == -2}
-                            {br}{$order->billingmethod[0]->country|countryname}{br}
-                        {/if}
-                        </span>{br}
-                        {if $order->billingmethod[0]->phone != ""}<span class="phone" style="display:block;">{$order->billingmethod[0]->phone}</span>{br}{/if}
-                        {if $order->billingmethod[0]->email != ""}<span class="email" style="display:block;">{$order->billingmethod[0]->email}</span>{br}{/if}                        
-                    </address>                    
+                        {$order->billingmethod[0]->addresses_id|address}
                     </td>
                     <td style="border:1px solid #DEDEDE; text-align:left; vertical-align:top; padding:0.5em;">
-                        <address>
-                            <span class="fullname" style="display:block;">{$shipping->shippingmethod->firstname} {if $shipping->shippingmethod->middlename !=''}{$shipping->shippingmethod->middlename} {/if}{$shipping->shippingmethod->lastname}</span>{br}
-                            {if $shipping->shippingmethod->organization != ""}<span class="company" style="display:block;">{$shipping->shippingmethod->organization}</span>{br}{/if}
-                            {if $shipping->shippingmethod->address1 != ""}<span class="address1" style="display:block;">{$shipping->shippingmethod->address1}</span>{br}{/if}
-                            {if $shipping->shippingmethod->address2 != ""}<span class="address2" style="display:block;">{$shipping->shippingmethod->address2}</span>{br}{/if}
-                            <span class="citystatzip" style="display:block;">{$shipping->shippingmethod->city}{if $shipping->shippingmethod->state != ""}, {$shipping->shippingmethod->state|statename:abbv}{/if} {$shipping->shippingmethod->zip}</span>{br}
-                            {if $shipping->shippingmethod->phone != ""}<span class="phone" style="display:block;">{$shipping->shippingmethod->phone}</span>{br}{/if}
-                            {if $shipping->shippingmethod->email != ""}<span class="email" style="display:block;">{$shipping->shippingmethod->email}</span>{br}{/if}
-                        </address>                       
+                        {$shipping->shippingmethod->addresses_id|address}
                         {br}
                         <strong>{gettext str="Shipping Method"}:</strong>{br}
                         {$shipping->shippingmethod->option_title}
