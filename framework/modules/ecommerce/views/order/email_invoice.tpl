@@ -1,3 +1,11 @@
+<style type="text/css" media="screen">
+{literal}
+.address span {
+    display:block;
+}
+{/literal}
+</style>
+
 <div id="invoice" style="color:#000000; font-size:100%; position:relative; text-align: left; margin: 0px; padding: 0px;">   
     <div id="invoice-data">
         <table style="border:0 none; width:100%; color:#000000; margin-bottom: 1em; " border="0" cellspacing="0" cellpadding="0">
