@@ -159,25 +159,43 @@ a.view {
 .exp-skin-tabview .yui-navset-top .yui-nav li a {
     text-decoration:none;
     display:inline-block;
+    *display:inline;
+    zoom:1;
+    vertical-align:top;
     cursor:pointer;
     padding-right:4px;
+    font-size:10px;
     background:url(../images/tabs/tab-norm-r.gif) no-repeat 100% 0;
 }
 .exp-skin-tabview .yui-navset-top .yui-nav li em {
     display:inline-block;
+    *display:inline;
+    zoom:1;
+    vertical-align:top;
     padding:5px 4px 4px 8px;
-    color:#626261;
+    color:#333;
+    font-style:normal;
+    font-family:arial;
+    font-weight:bold;
+    text-align:center;
+    text-shadow:1px 1px 0px #fff;
     background:url(../images/tabs/tab-norm-l.gif) no-repeat;
 }
 .exp-skin-tabview .yui-navset-top .yui-nav li a:hover {
     text-decoration:none;
     display:inline-block;
+    *display:inline;
+    zoom:1;
+    vertical-align:top;
     cursor:pointer;
     padding-right:4px;
     background:url(../images/tabs/tab-hov-r.gif) no-repeat 100% 0;
 }
 .exp-skin-tabview .yui-navset-top .yui-nav li a:hover em {
     display:inline-block;
+    *display:inline;
+    zoom:1;
+    vertical-align:top;
     padding:5px 4px 4px 8px;
     color:#2d2b28;
     background:url(../images/tabs/tab-hov-l.gif) no-repeat;
@@ -190,9 +208,14 @@ a.view {
 .exp-skin-tabview .yui-navset-top .yui-nav li.selected em,
 .exp-skin-tabview .yui-navset-top .yui-nav li.selected a:hover em {
     background:url(../images/tabs/tab-cur-l.gif) no-repeat;
-    padding:4px 6px 4px 10px;
+    padding:5px 4px 4px 8px;
     color:#ffffff;
 }
+
+.exp-skin-tabview .yui-navset-top .yui-nav li.selected em {
+    text-shadow:-1px -1px 0px #000;
+}
+
 .exp-skin-tabview .yui-nav {
     padding:0;
     margin:0 0 0 10px;
