@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2007-2008 OIC Group, Inc.
+ * Copyright (c) 2007-2011 OIC Group, Inc.
  * Written and Designed by Adam Kessler
  *
  * This file is part of Exponent
@@ -13,10 +13,10 @@
  * GPL: http://www.gnu.org/licenses/gpl.txt
  *
  *}
+
 <div id="edithelp" class="module help edit hide exp-skin-tabview">
     
     {if $record->id != ""}<h1>Editing {$record->title}</h1>{else}<h1>New Help Document</h1>{/if}
-    
     
     {form action=update record=$record}
         {control type=hidden name=id value=$record->id}
@@ -25,44 +25,38 @@
                 <li class="selected"><a href="#tab1"><em>General</em></a></li>
                 <li><a href="#tab2"><em>Actions and Views</em></a></li>
                 <li><a href="#tab3"><em>Configuration</em></a></li>
-                <li><a href="#tab5"><em>Videos</em></a></li>
-                <li><a href="#tab6"><em>Additional Info</em></a></li>
-                <li><a href="#tab7"><em>SEO</em></a></li>
+                <li><a href="#tab4"><em>Videos</em></a></li>
+                <li><a href="#tab5"><em>Additional Info</em></a></li>
+                <li><a href="#tab6"><em>SEO</em></a></li>
             </ul>            
             <div class="yui-content">
             <div id="tab1">
                 <h2>General Information</h2>
                 {control type=text name=title label="Title" value=$record->title}
+	            {control type="text" name="sef_url" label="SEF URL" value=$record->sef_url}
                 {control type="dropdown" name="help_version_id" label="Version" frommodel="help_version" key=id display=version order=version dir=DESC value=$record->help_version_id}
                 {control type=textarea name=summary label="Summary" value=$record->summary}
                 {control type=html name=body label="General Information" value=$record->body}
-				{if $record->id != ""}
-					{*control type=text name="section" label="Help Section" value=$record->section*}
-					{control type="dropdown" name="section" label="Help Section" items=$sections value=$record->location_data}
-	            {else}
-					{*control type=text name="section" label="Help Section" value=$cursec*}
-					{control type="dropdown" name="section" label="Help Section" items=$sections value=$cursec}
-	            {/if}
+				{control type="dropdown" name="section" label="Help Section" items=$sections value=$cursec}
             </div>
             <div id="tab2">
                  <h2>Actions and Views</h2>
                  {control type=html name=actions_views label="Actions and Views" value=$record->actions_views}
             </div>
-            <div id="tab2">
+            <div id="tab3">
                  <h2>Configuration</h2>
                  {control type=html name=configuration label="Configurations" value=$record->configuration}
             </div>
-            <div id="tab2">
+            <div id="tab4">
                 <h2>YouTube Video Code</h2>
-                {control type=textarea cols=80 rows=30 name=youtube_vid_code label="YouTube Video Code" value=$record->youtube_vid_code}
+                {control type=textarea cols=80 rows=20 name=youtube_vid_code label="YouTube Video (Embed) Code" value=$record->youtube_vid_code}
             </div>
-            <div id="tab2">
+            <div id="tab5">
                  <h2>Additional Information</h2>
                  {control type=html name=additional label="Additional Info (displays in side column)" value=$record->additional}
             </div>
-            <div id="tab2">
+            <div id="tab6">
                  <h2>SEO Settings</h2>
-                {control type="text" name="sef_url" label="SEF URL" value=$record->sef_url}
                 {control type="text" name="meta_title" label="Meta Title" value=$record->meta_title}
                 {control type="textarea" name="meta_keywords" label="Meta Description" rows=5 cols=35 value=$record->meta_description}
                 {control type="textarea" name="meta_description" label="Meta Keywords" rows=5 cols=35 value=$record->meta_keywords}
@@ -83,4 +77,3 @@ YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
 });
 {/literal}
 {/script}
-

@@ -35,47 +35,46 @@
     {/literal}
     {/script}
     
-        <div id="show-help" class="yui-navset">
-            <ul class="yui-nav">
-                <li class="selected"><a href="#tab1"><em>General Overview</em></a></li>
-                {if $doc->actions_views}
-                <li><a href="#tab2"><em>Actions and Views</em></a></li>
-                {/if}
-                {if $doc->configuration}
-                <li><a href="#tab3"><em>Configuration</em></a></li>
-                {/if}
-                {if $doc->youtube_vid_code}
-                    <li><a href="#tab4"><em>Videos</em></a></li>
-                {/if}
-                {if $doc->additional}
-                <li><a href="#tab4"><em>Additional Info</em></a></li>
-                {/if}
-            </ul>            
-            <div class="yui-content bodycopy">
-                <div id="tab1">
-                    {$doc->body|replace:"!!!version!!!":$hv}
-                </div>
-                {if $doc->actions_views}
-                <div id="tab2">
-                    {$doc->actions_views|replace:"!!!version!!!":$hv}
-                </div>
-                {/if}
-                {if $doc->configuration}
-                <div id="tab3">
-                    {$doc->configuration|replace:"!!!version!!!":$hv}
-                </div>
-                {/if}
-                {if $doc->youtube_vid_code}
-                <div id="tab4">
-                    {$doc->youtube_vid_code}
-                </div>
-                {/if}
-                {if $doc->additional}
-                <div id="tab4">
-                    {$doc->additional|replace:"!!!version!!!":$hv}
-                </div>
-                {/if}
-            </div>
-        </div>
-
+	<div id="show-help" class="yui-navset">
+		<ul class="yui-nav">
+			<li class="selected"><a href="#tab1"><em>General Overview</em></a></li>
+			{if $doc->actions_views}
+				<li><a href="#tab2"><em>Actions and Views</em></a></li>
+			{/if}
+			{if $doc->configuration}
+				<li><a href="#tab3"><em>Configuration</em></a></li>
+			{/if}
+			{if $doc->youtube_vid_code}
+				<li><a href="#tab4"><em>Videos</em></a></li>
+			{/if}
+			{if $doc->additional}
+				<li><a href="#tab5"><em>Additional Info</em></a></li>
+			{/if}
+		</ul>
+		<div class="yui-content bodycopy">
+			<div id="tab1">
+				{$doc->body|replace:"!!!version!!!":$hv}
+			</div>
+			{if $doc->actions_views}
+				<div id="tab2">
+					{$doc->actions_views|replace:"!!!version!!!":$hv}
+				</div>
+			{/if}
+			{if $doc->configuration}
+				<div id="tab3">
+					{$doc->configuration|replace:"!!!version!!!":$hv}
+				</div>
+			{/if}
+			{if $doc->youtube_vid_code}
+				<div id="tab4">
+					{$doc->youtube_vid_code}
+				</div>
+			{/if}
+			{if $doc->additional}
+				<div id="tab5">
+					{$doc->additional|replace:"!!!version!!!":$hv}
+				</div>
+			{/if}
+		</div>
+	</div>
 </div>

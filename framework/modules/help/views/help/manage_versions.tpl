@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2008 OIC Group, Inc.
+ * Copyright (c) 2004-2011 OIC Group, Inc.
  * Written and Designed by Adam Kessler
  *
  * This file is part of Exponent
@@ -22,8 +22,8 @@
         <em>The current version is {$current_version->version}</em>
     </p>
     
-    {icon class=add action=edit_version title="Add new help version" text="Add a New Help Version"}{br}
-    {icon action=manage title="Manage Help" text="Manage Help Docs"}{br}
+    {icon class=add action=edit_version title="Add a New Help Version" text="Add a New Help Version"}{br}
+    {icon action=manage title="Manage All Help Docs" text="Manage All Help Docs"}{br}
     {$page->links}
     <table class="exp-skin-table">
         <thead>
@@ -38,7 +38,7 @@
             <td><a href="{link action=manage version=$version->id}">{$version->version}</a></td>
             <td>{$version->title}</td>
             <td>{if $version->is_current == 1}{img src=`$smarty.const.ICON_RELATIVE`toggle_on.gif}{/if}</td>
-            <td><a href="">{$version->num_docs}</a></td>
+            <td>{$version->num_docs}</td>
             <td>
                 {permissions level=$smarty.const.UILEVEL_NORMAL}
                     {if $permissions.edit == 1}

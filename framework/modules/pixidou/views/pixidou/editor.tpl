@@ -35,7 +35,7 @@
         <title>Pixidou - Open Source AJAX Image Editor</title>
         <!-- Combo-handled YUI CSS files: -->
         <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/combo?2.6.0/build/reset-fonts/reset-fonts.css&2.6.0/build/assets/skins/sam/skin.css" />
-        <link rel="stylesheet" type="text/css" href="{$smarty.const.URL_FULL}framework/modules/pixidou/css/pixidou.css" />
+        <link rel="stylesheet" type="text/css" href="{$smarty.const.URL_FULL}framework/modules/pixidou/assets/css/pixidou.css" />
     </head>
     <body class="yui-skin-sam">
         <div id="doc3" class="yui-t7 hide">
@@ -142,7 +142,7 @@
                     <div class="hd">Adjust contrast</div>
                     <div class="bd">
                         <div id="contrastSliderBg" class="yui-h-slider" title="Slider">
-                            <div id="contrastSliderThumb" class="yui-slider-thumb"><img src="assets/thumb-n.gif" alt="" /></div>
+                            <div id="contrastSliderThumb" class="yui-slider-thumb"><img src="assets/images/thumb-n.gif" alt="" /></div>
                         </div>
                         <p>Value : <span id="contrastSliderValue">0</span></p>
                     </div>
@@ -154,7 +154,7 @@
                     <div class="hd">Adjust brightness</div>
                     <div class="bd">
                         <div id="brightnessSliderBg" class="yui-h-slider" title="Slider">
-                            <div id="brightnessSliderThumb" class="yui-slider-thumb"><img src="assets/thumb-n.gif" alt="" /></div>
+                            <div id="brightnessSliderThumb" class="yui-slider-thumb"><img src="assets/images/thumb-n.gif" alt="" /></div>
                         </div>
                         <p>Value : <span id="brightnessSliderValue">0</span></p>
                     </div>

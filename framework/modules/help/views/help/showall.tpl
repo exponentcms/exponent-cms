@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2007-2008 OIC Group, Inc.
+ * Copyright (c) 2007-2011 OIC Group, Inc.
  * Written and Designed by Adam Kessler
  *
  * This file is part of Exponent
@@ -19,11 +19,11 @@
 
     {permissions level=$smarty.const.UILEVEL_NORMAL}
         {if $permissions.create == 1}
-            {icon class=add action=edit title="Add help doc" text="Add help doc to version `$current_version->version`"}{br}
+            {icon class=add action=edit title="Add a Help Doc" text="Add Help Doc"}{br}
         {/if}
         {if $permissions.manage == 1}
-            {icon action=manage title="Manage Help" text="Manage Help"}{br}
-            {icon class=manage action=manage_versions title="Manage Versions" text="Manage Versions"}{br}
+            {icon action=manage version=$current_version->id title="Manage Help Docs" text="Manage Help Docs for version `$current_version->version`"}{br}
+            {icon class=manage action=manage_versions title="Manage Help Versions" text="Manage Help Versions"}{br}
 		    {if ($rank == 1)}
 	            {ddrerank items=$page->records model="help" label="Help Docs"}
 		    {/if}

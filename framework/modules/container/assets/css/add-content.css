@@ -20,13 +20,13 @@
     display:block;
     margin:3px 0 3px 170px;
     padding:4px 0 4px 28px;
-    background:url(../../../../../themes/common/skin/actions/trashcan_full.png) no-repeat;
+    background:url(../images/trashcan_full.png) no-repeat;
 }
 .containermodule.edit #recyclebin.disabled a {
     text-decoration:none;
     margin:3px 0 3px 170px;
     padding:4px 0 4px 28px;
-    background:url(../../../../../themes/common/skin/actions/trashcan_full_grey.png) no-repeat;
+    background:url(../images/trashcan_full_grey.png) no-repeat;
 }
 
 .containermodule.edit .control label {
@@ -36,7 +36,7 @@
 }
 
 .containermodule.edit .using-rb {
-    background:url(../../../../../framework/modules/recyclebin/images/usingrb-check.png) no-repeat 70px 0;
+    background:url(../../../../../framework/modules/recyclebin/assets/images/usingrb-check.png) no-repeat 70px 0;
     padding-right:25px;
 }
 .containermodule.edit .text {
