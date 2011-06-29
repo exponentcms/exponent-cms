@@ -49,7 +49,7 @@ foreach ($controls as $c) {
 //        $emailValue = htmlspecialchars_decode(html_entity_decode(call_user_func(array($control_type,'parseData'),$c->name,$_POST,true),ENT_COMPAT,LANG_CHARSET));
         $emailValue = htmlspecialchars_decode(call_user_func(array($control_type,'parseData'),$c->name,$_POST,true));
         //$value = mysql_escape_string($emailValue);
-        $value = mysql_real_escape_string($emailValue);
+        $value = @mysql_real_escape_string($emailValue);
         //eDebug($value);
         $varname = $c->name;
         $db_data->$varname = $value;
@@ -114,13 +114,14 @@ if (!isset($_POST['data_id']) || (isset($_POST['data_id']) && exponent_permissio
             $template = new template("formbuilder","_custom_report");
             $template->assign("template",$rpt->text);
         }
-        $template->assign("css",file_get_contents(BASE."framework/core/assets/css/tables.css"));        
-        $template->assign("fields",$emailFields);        
+        $template->assign("fields",$emailFields);
         $template->assign("captions",$captions);
 		$template->assign('title',$rpt->name);
         $template->assign("is_email",1);
-        $emailHtml = $template->render();
-		$emailText = chop(strip_tags(str_replace(array("<br />","<br>","br/>"),"\n",$emailHtml)));
+        $emailText = $template->render();
+		$emailText = chop(strip_tags(str_replace(array("<br />","<br>","br/>"),"\n",$emailText)));
+		$template->assign("css",file_get_contents(BASE."framework/core/assets/css/tables.css"));
+		$emailHtml = $template->render();
 		if (empty($from)) {
 			$from = trim(SMTP_FROMADDRESS);
 		}
