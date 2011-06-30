@@ -70,7 +70,7 @@ class tablebasedcalculator extends shippingcalculator {
                 if($i > 9) $rates[($i+1)] = array('id' => 0 . ($i+1), 'title' => $this->shippingspeeds[$i]->speed, 'cost' => $c[$i]);
                 else $rates[0 . ($i+1)] = array('id' => 0 . ($i+1), 'title' => $this->shippingspeeds[$i]->speed, 'cost' => $c[$i]);
 				
-			}
+			}            
 		}
 		
         if(!count($rates)) $rates[01] = array('id' => 01, 'title' => "Table Based Shipping is Currently NOT Configured", 'cost' => 0);

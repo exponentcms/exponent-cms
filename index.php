@@ -38,8 +38,10 @@ require_once('exponent.php');
 // skip it and default back to the old way of doing things.
 $router->routeRequest();
 
-if (isset($_GET['id']) && !is_numeric($_GET['id'])) $_GET['id'] = intval($_GET['id']);
+// initialize this users cart if they have ecomm installed.
+$order = order::getUserCart();   
 
+if (isset($_GET['id']) && !is_numeric($_GET['id'])) $_GET['id'] = intval($_GET['id']);
 $section = $router->getSection();
 $sectionObj = $router->getSectionObj($section);
 if (ENABLE_TRACKING) $router->updateHistory($section);

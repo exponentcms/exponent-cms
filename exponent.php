@@ -101,13 +101,6 @@ exponent_permissions_initialize();
  */
 $router = new expRouter();
 
-/**
- * initialize this users cart if they have ecomm installed.
- * the shopping cart/order object
- * @global order $order
- * @name $order
- */
-if (controllerExists('cart')) $order = order::getUserCart();
 
 /**
  * Initialize the navigation hierarchy
