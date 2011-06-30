@@ -96,6 +96,27 @@
         {control type="hidden" name="product_type" value="`$product->product_type`"}
         {*control name="qty" type="text" value="`$product->minimum_order_quantity`" size=3 maxlength=5 class="lstng-qty"*}
 
+        {if $product->hasOptions()}
+            <div class="product-options">
+                {foreach from=$product->optiongroup item=og}
+                    {if $og->hasEnabledOptions()} 
+                        <div class="option {cycle values="odd,even"}">
+                            <h4>{$og->title}</h4>
+                            {if $og->allow_multiple}
+                                {optiondisplayer product=$product options=$og->title view=checkboxes display_price_as=diff selected=$params.options}           
+                            {else}
+                                {if $og->required}
+                                    {optiondisplayer product=$product options=$og->title view=dropdown display_price_as=diff selected=$params.options required=true}          
+                                {else}
+                                    {optiondisplayer product=$product options=$og->title view=dropdown display_price_as=diff selected=$params.options}          
+                                {/if}                                           
+                            {/if}
+                        </div> 
+                    {/if}
+                {/foreach}
+            </div>
+        {/if}
+
         {if $product->availability_type == 0 && $product->active_type == 0}
             <a href="#" onclick="document.getElementById('addtocart{$product->id}').submit(); return false;" class="awesome {$smarty.const.BTN_COLOR} {$smarty.const.BTN_SIZE} addtocart" rel="nofollow"><strong><em>Add to Cart</em></strong></a>
         {elseif $product->availability_type == 1 && $product->active_type == 0}
