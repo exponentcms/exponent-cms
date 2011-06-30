@@ -1,0 +1,28 @@
+.verifyReturnShopper {
+    padding-bottom:20px;
+}
+
+.verifyReturnShopper .col {
+    display:inline-block;
+    *display:inline;
+    zoom:1;
+    vertical-align:top;
+    width:40%;
+}
+
+.verifyReturnShopper .col.one {
+    border-right:1px dotted #cdcdcd;
+    padding-right:4%;
+    margin-right:4%;
+}
+
+.verifyReturnShopper .top {
+    border-bottom:1px dotted #999;
+    margin-bottom:10px;
+    padding-bottom:10px;
+}
+
+.msg-queue.message {
+    display:none;
+}
+

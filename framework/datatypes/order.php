@@ -249,7 +249,7 @@ class order extends expRecord {
                                             exponent_sessions_login($user);
                                             //Update the last login timestamp for this user.
                                             $user->updateLastLogin();                                        
-                                            flash('message','Welcome back ' . $sessAr['firstname'] . '! Your shopping cart has been restored - you may continue shopping or <a href="/cart/checkout">checkout</a> at your convenience.');                                             
+                                            flash('message','Welcome back ' . $sessAr['firstname'] . '! Your shopping cart has been restored - you may continue shopping or <a href="'.makelink(array("controller"=>"cart","action"=>"checkout")).'">checkout</a> at your convenience.');                                             
                                         }
                                         else
                                         {
@@ -270,7 +270,7 @@ class order extends expRecord {
                                             }
                                             else
                                             {
-                                                flash('message','Welcome back ' . $u->firstname . '! We see that you have shopped with us before.<br><br><div style="text-align:center;"><a id="submit-verify" class="exp-ecom-link" href="/order/verifyReturnShopper" rel="nofollow"><strong><em>Click Here to Restore Your Previous Shopping Cart</em></strong></a><br><br><a class="exp-ecom-link" href="/order/clearCart/id/' . $cookie_cart_id . '"><strong><em>Click Here To Start a New Shopping Cart</em></strong></a></div>');                                             
+                                                flash('message','Welcome back ' . $u->firstname . '! We see that you have shopped with us before.<br><br><a id="submit-verify" href="'.makelink(array("controller"=>"order","action"=>"verifyReturnShopper")).'" rel="nofollow">Click Here to Restore Your Previous Shopping Cart</a><br><br><a class="exp-ecom-link" href="'.makelink(array("controller"=>"order","action"=>"clearCart","id"=>$cookie_cart_id)).'">Click Here To Start a New Shopping Cart</a>');                                             
                                                 $sessAr['orig_path'] = $router->current_url;
                                                 exponent_sessions_set('verify_shopper',$sessAr);
                                             }                                                                                                                                                                                                                                                                                                                           
@@ -282,7 +282,7 @@ class order extends expRecord {
                                             $cart->update(array("sessionticket_ticket"=>$ticket, 'return_count'=>$cart->setReturnCount($orig_referrer)));                                             
                                             exponent_sessions_set('verify_shopper',array('au'=>1,'orig_path'=>$router->current_url, 'firstname'=>$u->firstname, 'cid'=>$cookie_cart_id, 'awaiting_choice'=>true));
                                             //order::setCartCookie($cart);                                            
-                                            flash('message','Welcome back ' . $u->firstname . '! We see that you have shopped with us before.<br><br><div style="text-align:center;"><a id="submit-verify" class="exp-ecom-link" href="/order/verifyReturnShopper" rel="nofollow"><strong><em>Click Here to Restore Your Previous Shopping Cart</em></strong></a><br><br><a class="exp-ecom-link" href="/order/clearCart/id/' . $cookie_cart_id . '"><strong><em>Click Here To Start a New Shopping Cart</em></strong></a></div>');                                             
+                                            flash('message','Welcome back ' . $u->firstname . '! We see that you have shopped with us before.<br><br><a id="submit-verify" href="'.makelink(array("controller"=>"order","action"=>"verifyReturnShopper")).'" rel="nofollow">Click Here to Restore Your Previous Shopping Cart</a><br><br><a class="exp-ecom-link" href="'.makelink(array("controller"=>"order","action"=>"clearCart","id"=>$cookie_cart_id)).'">Click Here To Start a New Shopping Cart</a>');                                             
                                           }                                         
                                         }                                        
                                      }
