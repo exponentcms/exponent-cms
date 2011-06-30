@@ -27,7 +27,9 @@
     {/if}
 <div class="module cart add-to-cart"> 
     <h1>{$product->title}</h1>
+    {if $product->expFile.mainimage.0->id}
     {img file_id=$product->expFile.mainimage.0->id w=150 class="prod-img"}
+    {/if}
     <p>
         <strong>Additional information is required before we can add to your cart</strong>
     {br}{br}
@@ -55,6 +57,7 @@
                                 {optiondisplayer product=$product options=$og->title view=checkboxes display_price_as=diff selected=$params.options}           
                             {else}
                                 {if $og->required}
+                                    {$og->title}
                                     {optiondisplayer product=$product options=$og->title view=dropdown display_price_as=diff selected=$params.options required=true}          
                                 {else}
                                     {optiondisplayer product=$product options=$og->title view=dropdown display_price_as=diff selected=$params.options}          
@@ -86,19 +89,6 @@
             </div>
         {/if}
         {control type="buttongroup" submit="Add to cart"}
-        <div class="hideButton">
-            <a href="#" class="addtocart exp-ecom-link" rel="nofollow"><strong><em>Add to cart</em></strong></a>
-        </div>
     {/form}
 </div>
-
-{script unique="replace-button"}
-{literal}
-    YUI({ base:EXPONENT.URL_FULL+'external/yui3/build/',loadOptional: true}).use('node', function(Y) {
-        Y.one('.control.buttongroup').setStyle('display','none');
-        Y.one('.hideButton').removeClass('hideButton').one('.addtocart').on('click',function(e){Y.one('#options-uifields').submit()});
-    });
-    
-{/literal}
-{/script}
 
