@@ -39,7 +39,13 @@ require_once('exponent.php');
 $router->routeRequest();
 
 // initialize this users cart if they have ecomm installed.
-$order = order::getUserCart();   
+// define whether or not ecom is enabled
+if ($db->selectValue('modstate', 'active', 'module="storeController"')) {
+    define("ECOM",1);
+    $order = order::getUserCart();   
+} else {
+    define("ECOM",0);
+}
 
 if (isset($_GET['id']) && !is_numeric($_GET['id'])) $_GET['id'] = intval($_GET['id']);
 $section = $router->getSection();
