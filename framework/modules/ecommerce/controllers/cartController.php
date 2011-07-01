@@ -295,7 +295,7 @@ class cartController extends expController {
             $discounts = null;
             $estimated_shipping = null;    
         }         
-		assign_to_template(array('items'=>$order->orderitem, 'order'=>$order, 'discounts'=>$discounts, /*'estimated_shipping'=>$estimated_shipping*/));
+		@assign_to_template(array('items'=>$order->orderitem, 'order'=>$order, 'discounts'=>$discounts, /*'estimated_shipping'=>$estimated_shipping*/));
         
 	}
 	
@@ -310,15 +310,15 @@ class cartController extends expController {
         $order->calculateGrandTotal();
         $order->validateDiscounts(array('controller'=>'cart','action'=>'checkout'));        
                         
-        if($order->total<intval($config->config['min_order'])){
-            flashAndFlow('error', "Note: Thank you for your decision to purchase. However, our minimum order for merchandise is $".number_format($config->config['min_order'],2,".",",").". Please increase your quantity or continue shopping.");
-        }
-
-		if (!exponent_sessions_get("ALLOW_ANONYMOUS_CHECKOUT") && !exponent_users_isLoggedIn()) {
+		if (!expSession::get('customer-signup') && !$user::isLoggedin()) {
 		    expHistory::set('viewable', $this->params);
 			flash('message', "Please select how you would like to continue with the checkout process.");
 			exponent_flow_redirecto_login(makeLink(array('module'=>'cart','action'=>'checkout'), 'secure'));
 		}
+
+        if($order->total<intval($config->config['min_order'])){
+            flashAndFlow('error', "Note: Thank you for your decision to purchase. However, our minimum order for merchandise is $".number_format($config->config['min_order'],2,".",",").". Please increase your quantity or continue shopping.");
+        }
 
 		if (empty($order->orderitem)) flashAndFlow('error', 'There are no items in your cart.');
 
@@ -367,7 +367,8 @@ class cartController extends expController {
 		$address = new address();
 		//$addresses_dd = $address->dropdownByUser($user->id);
 		$shipAddress = $address->find('first', 'user_id='.$user->id . ' AND is_shipping=1');
-		if (empty($shipAddress) || $user->id == 0) {
+		if (empty($shipAddress) || !$user::isLoggedin()) {
+		    expSession::set('customer-signup',false);
 		    flash('message', 'Step One: enter your primary address info now. 
             <br><br>You may also optionally provide a password if you would like to return to our store at a later time to view your order history or 
             make additional purchases.
@@ -763,9 +764,9 @@ class cartController extends expController {
         assign_to_template(array('shipping_items'=>$shipping_items, 'shipping'=>$shipping));
     }
     
-    public function setAnonymousCheckout()
+    public function customerSignup()
     {
-        exponent_sessions_set('ALLOW_ANONYMOUS_CHECKOUT', true);        
+        expSession::set('customer-signup', true);        
         redirect_to(array('controller'=>'cart', 'action'=>'checkout'));
     }
     
