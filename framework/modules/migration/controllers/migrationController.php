@@ -194,6 +194,20 @@ class migrationController extends expController {
 		if (!empty($this->params['pages'])) {
 			foreach($this->params['pages'] as $pageid) {
 				$page = $old_db->selectObject('section', 'id='.$pageid);
+				// make sure the SEF name is valid
+				global $router;
+				if (empty($page->sef_name)) {
+					if (isset($page->name)) {
+						$page->sef_name = $router->encode($page->name);
+					} else {
+						$page->sef_name = $router->encode('Untitled');
+					}
+				}
+				$dupe = $db->selectValue('section', 'sef_name', 'sef_name="'.$page->sef_name.'"');
+				if (!empty($dupe)) {
+					list($u, $s) = explode(' ',microtime());
+					$this->sef_name .= '-'.$s.'-'.$u;
+				}
 				$ret = $db->insertObject($page, 'section');
 				if (empty($ret)) {
 					$failed += 1;
@@ -206,6 +220,20 @@ class migrationController extends expController {
 			foreach($this->params['rep_pages'] as $pageid) {
 				$db->delete('section','id='.$pageid);
 				$page = $old_db->selectObject('section', 'id='.$pageid);
+				// make sure the SEF name is valid
+				global $router;
+				if (empty($page->sef_name)) {
+					if (isset($page->name)) {
+						$page->sef_name = $router->encode($page->name);
+					} else {
+						$page->sef_name = $router->encode('Untitled');
+					}
+				}
+				$dupe = $db->selectValue('section', 'sef_name', 'sef_name="'.$page->sef_name.'"');
+				if (!empty($dupe)) {
+					list($u, $s) = explode(' ',microtime());
+					$this->sef_name .= '-'.$s.'-'.$u;
+				}
 				$ret = $db->insertObject($page, 'section');
 				if (empty($ret)) {
 					$failed += 1;
@@ -213,7 +241,7 @@ class migrationController extends expController {
 					$successful += 1;
 				}
 			}
-			}
+		}
 
 		if (isset($this->params['copy_permissions'])) {
 			$db->delete('userpermission',"module = 'navigationmodule' AND source = ''");
