@@ -120,7 +120,7 @@
                         {control type="autocomplete" controller="order" action="search_external" name="related_items2" value="Search other customer name or email" schema="id,source,firstname,middlename,lastname,organization,email" searchmodel="addresses" searchoncol="firstname,lastname,organization,email" jsinject=$callbacks2}
      
                         {br}
-        <div id="submit_order_item_formControl" class="control buttongroup"><input id="submit_order_item_form" class="submit button" type="submit" value="Save New Order" /><input class="cancel button" type="button" value="Cancel" onclick="javascript:history.back(1);" /></div>
+        <div id="submit_order_item_formControl" class="control buttongroup"><input id="submit_order_item_form" class="submit button" type="submit" value="Save New Order" /><input class="cancel button" type="button" value="Cancel" onclick="history.back(1);" /></div>
         
     {/form}
     </div>

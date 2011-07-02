@@ -115,7 +115,7 @@
         </tbody>
         </table>
         {* control id=submit_order_item_form name=submit_order_item_form type=buttongroup submit="Save Reference Order" cancel="Cancel"*}            
-        <div id="submit_order_item_formControl" class="control buttongroup"><input id="submit_order_item_form" class="submit button" type="submit" value="Save Reference Order" /><input class="cancel button" type="button" value="Cancel" onclick="javascript:history.back(1);" /></div>
+        <div id="submit_order_item_formControl" class="control buttongroup"><input id="submit_order_item_form" class="submit button" type="submit" value="Save Reference Order" /><input class="cancel button" type="button" value="Cancel" onclick="history.back(1);" /></div>
         
     {/form}
     </div>

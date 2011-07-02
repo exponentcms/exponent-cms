@@ -70,7 +70,7 @@
 				wmode: 'opaque',
                 clip: {
                     url: '{/literal}{$page->records[0]->expFile.video[0]->url}{literal}', 
-					autoPlay:{/literal}{if $config.autoplay}true{else}false{/if}{literal},  
+					autoPlay: {/literal}{if $config.autoplay}true{else}false{/if}{literal},
                     autoBuffering: false  
                 }, 
                 plugins: {

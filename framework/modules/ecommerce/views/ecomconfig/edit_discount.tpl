@@ -41,7 +41,7 @@
                     {control type="editor" name="body" label="Description"|gettext height=250 value=$discount->body}   
                     {*control type="text" name="priority" label="Priority"|gettext value=$discount->priority*}   
                 </div>
-                 <div id="tab3">
+                 <div id="tab2">
                     <h2>{"Usage Rules"|gettext}</h2>
                     {* control type="text" name="uses_per_coupon" label="Uses Per Coupon"|gettext value=$discount->uses_per_coupon}
                     {control type="text" name="uses_per_user" label="Uses Per Customer"|gettext value=$discount->uses_per_user *}
@@ -60,12 +60,12 @@
                         </div>
                     {/foreach}
                 </div>
-                <div id="tab2">
+                <div id="tab3">
                     <h2>{"Conditions"|gettext}</h2>
                     {* control type="dropdown" name="group_ids[]" label="Groups"|gettext items=$groups default=$selected_groups multiple=true size=10 *}   
                     {control type="text" name="minimum_order_amount" label="Minimum Order Amount"|gettext filter=money value=$discount->minimum_order_amount}                                        
                 </div>
-                <div id="tab3">
+                <div id="tab4">
                     <h2>{"Actions and Amounts"|gettext}</h2>                    
                     {control type="dropdown" name="action_type" label="Discount Action"|gettext items=$discount->actions default=$discount->action_type}
                     If you selected 'Precentage off entire cart', enter the precentage discount you would like applied with this coupon code here.                                                                                                                             

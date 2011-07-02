@@ -79,7 +79,7 @@
                     <thead>
                         <tr>
                             <th>
-                                <a class="selectall" href="#" id="sa_conts" onclick="EXPONENT.selectAllCheckboxes('#tab1 input[type=checkbox]'); return false;">{"Select All"|gettext}</a> / <a class="selectnone" href="#" id="sa_conts" onclick="EXPONENT.unSelectAllCheckboxes('#tab1 input[type=checkbox]'); return false;">{"Select None"|gettext}</a>
+                                <a class="selectall" href="#" id="sa_conts" onclick="EXPONENT.selectAllCheckboxes('#tab1 input[type=checkbox]'); return false;">{"Select All"|gettext}</a> / <a class="selectnone" href="#" id="sn_conts" onclick="EXPONENT.unSelectAllCheckboxes('#tab1 input[type=checkbox]'); return false;">{"Select None"|gettext}</a>
                             </th>
                         </tr>
                     </thead>
@@ -111,7 +111,7 @@
                     <thead>
                         <tr>
                             <th>
-                                <a class="selectall" href="#" id="sa_conts" onclick="EXPONENT.selectAllCheckboxes('#tab2 input[type=checkbox]'); return false;">{"Select All"|gettext}</a> / <a class="selectnone" href="#" id="sa_conts" onclick="EXPONENT.unSelectAllCheckboxes('#tab2 input[type=checkbox]'); return false;">{"Select None"|gettext}</a>
+                                <a class="selectall" href="#" id="sa_conts1" onclick="EXPONENT.selectAllCheckboxes('#tab2 input[type=checkbox]'); return false;">{"Select All"|gettext}</a> / <a class="selectnone" href="#" id="sn_conts1" onclick="EXPONENT.unSelectAllCheckboxes('#tab2 input[type=checkbox]'); return false;">{"Select None"|gettext}</a>
                             </th>
                         </tr>
                     </thead>
