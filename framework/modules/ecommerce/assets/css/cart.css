@@ -344,7 +344,7 @@ table#cart table td {
 }
 .exp-dropmenu .address.current,
 #shippingmethodoptions .shpmthdopswtch.current {
-    background:url(../../../../core/assets/accepted.png) #f1faef no-repeat 99% 5px;
+    background:url(../../../../core/assets/images/accepted.png) #f1faef no-repeat 99% 5px;
 }
 .exp-dropmenu .address:hover {
     cursor:pointer;
@@ -472,7 +472,7 @@ a.removefromcart {
 	padding:1px 0 3px 20px;
 }
 a.backtolist {
-	background: url(../../../../core/assets/backtolist.png) 0px 50%;
+	background: url(../../../../core/assets/images/backtolist.png) 0px 50%;
 	background-repeat: no-repeat;
 	padding-left: 20px;
 }
