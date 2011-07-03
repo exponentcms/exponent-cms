@@ -1,6 +1,6 @@
 ExponentCMS Calendar iCalendar feed implementation
 
-There are NO guarantees this may not open up security vulnerabilites on your site!  Please use with caution!
+There are NO guarantees this may not open up security vulnerabilities on your site!  Please use with caution!
 
 Install into the root ExponentCMS directory.
 
@@ -12,5 +12,5 @@ Currently this action
 - requires either an event id or calendar src as a parameter
 - adhere's to aggregated/merged calendars
 - passes a single event when a event id is passed
-- passes all furture events if a calendar module src is passed
+- passes all future events if a calendar module src is passed
 - passes "month's" events if a calendar src is passed with a time, defaults to now

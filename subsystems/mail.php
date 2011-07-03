@@ -803,20 +803,15 @@ class exponentMail extends Swift {
 	 *
 	 *	Courtesy of the underlying Swift mailer:
      * 
-	 *
 	 * ID headers contain identifiers for the entity (or the message). The most notable ID header is the Message-ID header on the message itself.
 	 *
      * An ID that exists inside an ID header looks more-or-less less like an email address. For example, <1234955437.499becad62ec2@example.org>. The part to the left of the @ sign is usually unique, based on the 	     * current time and some random factor. The part on the right is usually a domain name.
      *
-     * 
-     * 
-	 *
 	 *  @author Tyler Smart <tyleresmart@gmail.com>
      *  @example This returns the Message ID on the mail
 	 *	
 	 *	$emailItem = new expMail(); 
-	 *	
-	 *	       
+	 *
 	 *  $emailItem->addText('My Text ');
      * 	$emailItem->addText('Line Two ');
 	 *  $emailItem->addText('Line Three ');
@@ -828,16 +823,13 @@ class exponentMail extends Swift {
 	 *  echo "$emailItem->messageID()"; 
 	 *
 	 *	$emailItem->send();		
-     * 
-	 *
-	 * 
-	 *
-     */			
+     *
+	  * @return string
+	  */
 	public function messageId() {
 		if (!is_object($this->message)) {
 			$this->message = new Swift_Message();
 		}
-		
 		
 		return $this->message->getHeaders()->getHeader('Message-ID');
 

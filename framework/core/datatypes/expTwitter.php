@@ -689,15 +689,17 @@ class expTwitter {
     
     /****** Private and Helpers Methods ******/
 
-    
-    /**
-     * Internal function where all the juicy curl fun takes place
-     * this should not be called by anything external unless you are
-     * doing something else completely then knock youself out.
-     * @access private
-     * @param string $url Required. API URL to request
-     * @param string $postargs Optional. Urlencoded query string to append to the $url
-     */
+
+	/**
+	 * Internal function where all the juicy curl fun takes place
+	 * this should not be called by anything external unless you are
+	 * doing something else completely then knock youself out.
+	 * @access private
+	 * @param string $url Required. API URL to request
+	 * @param bool|string $postargs Optional. Urlencoded query string to append to the $url
+	 * @return bool
+	 *
+	 */
     protected function process($url,$postargs=false)
     {
         $url = ( $this->suppress_response_code ) ? $url . '&suppress_response_code=true' : $url;
@@ -736,6 +738,7 @@ class expTwitter {
      * Function to prepare data for return to client
      * @access private
      * @param string $data
+     * @return mixed
      */
     protected function objectify( $data )
     {

@@ -242,12 +242,14 @@ class expValidator {
         return true;
     }
 
-    /**
-    Validate an email address.
-    Provide email address (raw input)
-    Returns true if the email address has the email 
-    address format and the domain exists.
-    */
+	/**
+	Validate an email address.
+	Provide email address (raw input)
+	Returns true if the email address has the email
+	address format and the domain exists.
+	 * @param $email
+	 * @return bool
+	 */
     private static function isValidEmail($email)
     {
        $isValid = true;

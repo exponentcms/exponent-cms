@@ -178,8 +178,10 @@ ITEMS
 So by nature of the array, the keys are repetated in each line (id, name, etc)
 So if we want to make a header row, we just run through once at the beginning and 
 use the array_keys function to strip out a functional header
+ * @param $items
+ * @return string
 
-*/
+ */
 
 function sql2csv($items) {
 	$str = "";

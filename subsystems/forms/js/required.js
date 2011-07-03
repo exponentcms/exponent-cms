@@ -38,7 +38,7 @@ function unregisterRG(name) {
 function checkRG() {
 	for (var x = 0; x < g_rgName.length; x++) {
 		if (g_rgName[x] != "") {
-			alert("Missing required selection for " + unescape(g_rgName[x]));
+			alert("Missing required selection for " + decodeURIComponent(g_rgName[x]));
 			return false;
 		}
 	}
@@ -52,12 +52,12 @@ function checkRequired(locForm) {
 			s = locForm.elements[field].getAttribute("required");
 			if (s != null) {
 				val = trim(locForm.elements[field].value);
-				s = unescape(s);
+				s = decodeURIComponent(s);
 				//if ((s == val) || (val == "")) {
 				if (locForm.elements[field].type == 'checkbox' || locForm.elements[field].type == 'radio') {
 					if (!locForm.elements[field].checked) {
 						locForm.elements[field].focus();
-                        alert(unescape(locForm.elements[field].getAttribute("caption")) + " is a required field.");
+                        alert(decodeURIComponent(locForm.elements[field].getAttribute("caption")) + " is a required field.");
                         return false;
 					}
 					for (var i=0; i<document.form.group1.length; i++)  {
@@ -69,7 +69,7 @@ function checkRequired(locForm) {
 				    //alert (locForm.elements[field].type);				    
 					if (val == "") {
 						locForm.elements[field].focus();
-						alert(unescape(locForm.elements[field].getAttribute("caption")) + " is a required field.");
+						alert(decodeURIComponent(locForm.elements[field].getAttribute("caption")) + " is a required field.");
 						return false;
 					}
 				}

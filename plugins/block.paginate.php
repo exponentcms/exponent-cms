@@ -29,7 +29,7 @@ function smarty_block_paginate($params,$content,&$smarty) {
 		var endstr = document.cookie.indexOf(";", offset);
 		if (endstr == -1)
 			endstr = document.cookie.length;
-		return unescape(document.cookie.substring(offset, endstr));
+		return decodeURIComponent (document.cookie.substring(offset, endstr));
 	}
 
 
@@ -50,7 +50,7 @@ function smarty_block_paginate($params,$content,&$smarty) {
 	}
 
 	function setCookie(name, value) {
-		document.cookie = name + "=" + escape(value);
+		document.cookie = name + "=" + encodeURIComponent(value);
 	}
 	//End Cookie Stuff.
 

@@ -199,7 +199,7 @@ EXPONENT.fileManager = function() {
                 callback(true, oldValue);
             }
         },this);
-        es.fetch({action:"editShare",controller:"fileController",json:1,data:'&id='+record.getData().id + '&newValue=' + escape(newValue)});
+        es.fetch({action:"editShare",controller:"fileController",json:1,data:'&id='+record.getData().id + '&newValue=' + encodeURIComponent(newValue)});
             
     };
     
@@ -218,7 +218,7 @@ EXPONENT.fileManager = function() {
                 callback(true, oldValue);
             }
         },this);
-        et.fetch({action:"editTitle",controller:"fileController",json:1,data:'&id='+record.getData().id + '&newValue=' + escape(newValue)});
+        et.fetch({action:"editTitle",controller:"fileController",json:1,data:'&id='+record.getData().id + '&newValue=' + encodeURIComponent(newValue)});
     };
     
     // request to change the alt
@@ -237,7 +237,7 @@ EXPONENT.fileManager = function() {
                 callback(true, oldValue);
             }
         },this);
-        var req = {action:"editAlt",controller:"fileController",json:1,data:'&id='+record.getData().id + '&newValue=' + escape(newValue)};
+        var req = {action:"editAlt",controller:"fileController",json:1,data:'&id='+record.getData().id + '&newValue=' + encodeURIComponent(newValue)};
         ea.fetch(req);
     };
     
