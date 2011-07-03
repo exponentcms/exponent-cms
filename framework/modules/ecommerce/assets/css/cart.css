@@ -108,7 +108,7 @@ table#cart table td {
     left:0;
     bottom:0;
     z-index:40;
-    background:#000000 url(../../../../core/assets/images/laoding2.gif) no-repeat 25% 50%;
+    background:#000000 url(../../../../core/assets/images/loading2.gif) no-repeat 25% 50%;
 }
 
 
