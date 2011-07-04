@@ -14,7 +14,7 @@
  *
  *}
  
-{css unique="blog-comments" link="`$smarty.const.PATH_RELATIVE`framework/modules/core/assets/comments.css"}
+{css unique="blog-comments" link="`$smarty.const.PATH_RELATIVE`framework/modules/core/assets/css/comments.css"}
 
 {/css}
  
