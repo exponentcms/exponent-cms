@@ -310,7 +310,7 @@ class cartController extends expController {
         $order->calculateGrandTotal();
         $order->validateDiscounts(array('controller'=>'cart','action'=>'checkout'));        
                         
-		if (!expSession::get('customer-signup') && !$user::isLoggedin()) {
+		if (!expSession::get('customer-signup') && !$user->isLoggedin()) {
 		    expHistory::set('viewable', $this->params);
 			flash('message', "Please select how you would like to continue with the checkout process.");
 			exponent_flow_redirecto_login(makeLink(array('module'=>'cart','action'=>'checkout'), 'secure'));
@@ -367,7 +367,7 @@ class cartController extends expController {
 		$address = new address();
 		//$addresses_dd = $address->dropdownByUser($user->id);
 		$shipAddress = $address->find('first', 'user_id='.$user->id . ' AND is_shipping=1');
-		if (empty($shipAddress) || !$user::isLoggedin()) {
+		if (empty($shipAddress) || !$user->isLoggedin()) {
 		    expSession::set('customer-signup',false);
 		    flash('message', 'Step One: enter your primary address info now. 
             <br><br>You may also optionally provide a password if you would like to return to our store at a later time to view your order history or 
