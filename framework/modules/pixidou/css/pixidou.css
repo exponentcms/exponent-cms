@@ -28,7 +28,7 @@ a:hover{
 .yui-skin-sam .yui-layout .yui-layout-unit div.yui-layout-bd {
 	border: 0px;
 	text-align: left;
-	background:transparent url(../assets/images/background.gif) repeat scroll 0pt 0px;
+	background:transparent url(../assets/background.gif) repeat scroll 0pt 0px;
 }
 
 .yui-skin-sam .yui-layout .yui-layout-hd {
@@ -40,7 +40,7 @@ a:hover{
 }
 
 .yui-skin-sam .yui-h-slider {
-	background:transparent url(../assets/images/bg-h.gif) repeat-x scroll 5px 0;
+	background:transparent url(../assets/bg-h.gif) repeat-x scroll 5px 0;
 	height:28px;
 	width:254px;
 }

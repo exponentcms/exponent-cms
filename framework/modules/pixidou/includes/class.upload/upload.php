@@ -9,7 +9,7 @@
         }
         fieldset {
             width: 50%;
-            background: url(../../assets/images/background.gif);
+            background: url(bg.gif);
             margin: 15px 0px 25px 0px;
             padding: 15px;
         }

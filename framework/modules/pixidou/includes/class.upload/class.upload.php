@@ -2173,8 +2173,7 @@ class upload {
                     $this->file_src_pathname   = $file;
                     $this->file_src_name       = basename($file);
                     $this->log .= '- local file name OK<br />';
-//                    ereg('\.([^\.]*$)', $this->file_src_name, $extension);
-                    preg_match('\.([^\.]*$)', $this->file_src_name, $extension);
+                    ereg('\.([^\.]*$)', $this->file_src_name, $extension);
                     if (is_array($extension)) {
                         $this->file_src_name_ext      = strtolower($extension[1]);
                         $this->file_src_name_body     = substr($this->file_src_name, 0, ((strlen($this->file_src_name) - strlen($this->file_src_name_ext)))-1);
@@ -2246,8 +2245,7 @@ class upload {
 
             if ($this->uploaded) {
                 $this->log .= '- file name OK<br />';
-//                ereg('\.([^\.]*$)', $this->file_src_name, $extension);
-                preg_match('\.([^\.]*$)', $this->file_src_name, $extension);
+                ereg('\.([^\.]*$)', $this->file_src_name, $extension);
                 if (is_array($extension)) {
                     $this->file_src_name_ext      = strtolower($extension[1]);
                     $this->file_src_name_body     = substr($this->file_src_name, 0, ((strlen($this->file_src_name) - strlen($this->file_src_name_ext)))-1);
@@ -2433,27 +2431,23 @@ class upload {
         return $dst_im;
     }
 
-	/**
-	 * Merges two images
-	 *
-	 * If the output format is PNG, then we do it pixel per pixel to retain the alpha channel
-	 *
-	 * @access private
-	 * @param $dst_im
-	 * @param $src_im
-	 * @param  int      $dst_x   x-coordinate of destination point
-	 * @param  int      $dst_y   y-coordinate of destination point
-	 * @param  int      $src_x   x-coordinate of source point
-	 * @param  int      $src_y   y-coordinate of source point
-	 * @param  int      $src_w   Source width
-	 * @param  int      $src_h   Source height
-	 * @param  int      $pct     Optional percentage of the overlay, between 0 and 100 (default: 100)
-	 *
-	 * @internal param \resource $dst_img Destination image
-	 *
-	 * @internal param \resource $src_img Overlay image
-	 * @return resource Destination image
-	 */
+    /**
+     * Merges two images
+     *
+     * If the output format is PNG, then we do it pixel per pixel to retain the alpha channel
+     *
+     * @access private
+     * @param  resource $dst_img Destination image
+     * @param  resource $src_img Overlay image
+     * @param  int      $dst_x   x-coordinate of destination point 
+     * @param  int      $dst_y   y-coordinate of destination point 
+     * @param  int      $src_x   x-coordinate of source point 
+     * @param  int      $src_y   y-coordinate of source point 
+     * @param  int      $src_w   Source width 
+     * @param  int      $src_h   Source height 
+     * @param  int      $pct     Optional percentage of the overlay, between 0 and 100 (default: 100)
+     * @return resource Destination image
+     */
     function imagecopymergealpha(&$dst_im, &$src_im, $dst_x, $dst_y, $src_x, $src_y, $src_w, $src_h, $pct = 0) {
         $dst_x = (int) $dst_x;
         $dst_y = (int) $dst_y;
@@ -2680,8 +2674,7 @@ class upload {
             }
             if ($this->file_safe_name) { // formats the name
                 $this->file_dst_name_body = str_replace(array(' ', '-'), array('_','_'), $this->file_dst_name_body) ;
-//                $this->file_dst_name_body = ereg_replace('[^A-Za-z0-9_]', '', $this->file_dst_name_body) ;
-                $this->file_dst_name_body = preg_replace('[^A-Za-z0-9_]', '', $this->file_dst_name_body) ;
+                $this->file_dst_name_body = ereg_replace('[^A-Za-z0-9_]', '', $this->file_dst_name_body) ;
                 $this->log .= '- file name safe format<br />';
             }
 
@@ -4026,15 +4019,13 @@ class upload {
     }
 
 
-	/**
-	 * Opens a BMP image
-	 *
-	 * This function has been written by DHKold, and is used with permission of the author
-	 *
-	 * @access public
-	 * @param $filename
-	 * @return mixed
-	 */
+    /**
+     * Opens a BMP image
+     *
+     * This function has been written by DHKold, and is used with permission of the author
+     *
+     * @access public
+     */
     function imagecreatefrombmp($filename) {
         if (! $f1 = fopen($filename,"rb")) return false;
 
@@ -4102,17 +4093,14 @@ class upload {
         fclose($f1);
         return $res;
     }
-
-	/**
-	 * Saves a BMP image
-	 *
-	 * This function has been published on the PHP website, and can be used freely
-	 *
-	 * @access public
-	 * @param $im
-	 * @param string $filename
-	 * @return bool
-	 */
+    
+    /**
+     * Saves a BMP image
+     *
+     * This function has been published on the PHP website, and can be used freely
+     *
+     * @access public
+     */    
     function imagebmp(&$im, $filename = "") {      
         
         if (!$im) return false;
