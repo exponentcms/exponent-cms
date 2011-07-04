@@ -52,7 +52,8 @@ class clear_cache extends upgradescript {
 			BASE.'tmp/pods',  // not used??  FIXME
 			BASE.'tmp/css',  // exponent minified css cache
 			BASE.'tmp/minify', // minify cache
-			BASE.'tmp/pixidou', // (new) pixidou cache
+//			BASE.'tmp/pixidou', // (new) pixidou cache
+			BASE.'framework/modules/pixidou/images', // (old) pixidou cache
 		    BASE.'tmp/rsscache',  // magpierss cache
 		    BASE.'tmp/views_c',  // smarty cache
 		    BASE.'tmp/cache',  // alternate smarty cache

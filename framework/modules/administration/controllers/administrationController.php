@@ -388,7 +388,8 @@ class administrationController extends expController {
 
 	public function clear_image_cache() {
 		if (!defined('SYS_FILES')) include_once(BASE.'subsystems/files.php');
-		exponent_files_remove_files_in_directory(BASE.'tmp/pixidou');  // alt location for cache
+//		exponent_files_remove_files_in_directory(BASE.'tmp/pixidou');  // alt location for pixidou cache
+		exponent_files_remove_files_in_directory(BASE.'framework/modules/pixidou/images');  // location for pixidou cache
 		// phpThumb cache includes subfolders
 		if (file_exists(BASE.'tmp/img_cache')) exponent_files_remove_files_in_directory(BASE.'tmp/img_cache');
 		$message = "Image/Pixidou Cache has been cleared" ;
@@ -408,7 +409,8 @@ class administrationController extends expController {
 		if (!defined('SYS_FILES')) include_once(BASE.'subsystems/files.php');
 		exponent_theme_remove_smarty_cache();
 		exponent_theme_remove_css();
-		exponent_files_remove_files_in_directory(BASE.'tmp/pixidou');  // alt location for cache
+//		exponent_files_remove_files_in_directory(BASE.'tmp/pixidou');  // alt location for pixidou cache
+		exponent_files_remove_files_in_directory(BASE.'framework/modules/pixidou/images');  // location for pixidou cache
 		if (file_exists(BASE.'tmp/img_cache')) exponent_files_remove_files_in_directory(BASE.'tmp/img_cache');
 		exponent_files_remove_files_in_directory(BASE.'tmp/rsscache');
 		$message = "All the System Caches have been cleared" ;
