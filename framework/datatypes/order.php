@@ -235,7 +235,7 @@ class order extends expRecord {
                                 {                                                                           
                                      //3) Was Logged in w/ NON-?real user? account
                                      //eDebug(expUtil::right($u->username,10),true);
-                                     if(is_numeric(expUtil::right($u->username,10)))
+                                     if($u->isTempUser())
                                      {                                            
                                         if(isset($sessAr['validated']) && $sessAr['validated'])
                                         {

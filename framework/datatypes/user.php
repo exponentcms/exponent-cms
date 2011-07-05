@@ -227,6 +227,11 @@ class user extends expRecord {
         $user = new user($db->selectValue('user', 'id', 'username="'.$username.'"'));
         return empty($user->id) ? false : $user;
     }
+    
+    public function isTempUser()
+    {
+        return is_numeric(expUtil::right($u->username,10)) ? true : false;
+    }
 }
 
 ?>
