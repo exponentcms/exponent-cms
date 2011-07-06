@@ -758,7 +758,7 @@ class FeedDate {
 	/**
 	 * Gets the date stored in this FeedDate as an RFC 822 date.
 	 *
-	 * @return a date in RFC 822 format
+	 * @return string a date in RFC 822 format
 	 */
 	function rfc822() {
 		//return gmdate("r",$this->unix);
@@ -770,7 +770,7 @@ class FeedDate {
 	/**
 	 * Gets the date stored in this FeedDate as an ISO 8601 date.
 	 *
-	 * @return a date in ISO 8601 format
+	 * @return string a date in ISO 8601 format
 	 */
 	function iso8601() {
 		$date = gmdate("Y-m-d\TH:i:sO",$this->unix);
@@ -782,7 +782,7 @@ class FeedDate {
 	/**
 	 * Gets the date stored in this FeedDate as unix time stamp.
 	 *
-	 * @return a date as a unix time stamp
+	 * @return string a date as a unix time stamp
 	 */
 	function unix() {
 		return $this->unix;
