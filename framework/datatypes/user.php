@@ -230,7 +230,7 @@ class user extends expRecord {
     
     public function isTempUser()
     {
-        return is_numeric(expUtil::right($u->username,10)) ? true : false;
+        return is_numeric(expUtil::right($this->username,10)) ? true : false;
     }
 }
 
