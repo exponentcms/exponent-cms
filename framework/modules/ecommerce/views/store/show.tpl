@@ -174,6 +174,8 @@
     </div>
     {/if}
     
+    {rating content_type="product" subtype="quality" record=$product}
+    
     {if $product->main_image_functionality=="iws"}
     <div class="swatches thumbnails">
         <h3>{gettext str="Available Patterns"}</h3>
