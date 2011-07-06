@@ -174,7 +174,7 @@
     </div>
     {/if}
     
-    {rating content_type="product" subtype="quality" record=$product}
+    {rating content_type="product" subtype="quality" label="Product Rating"|gettext record=$product}
     
     {if $product->main_image_functionality=="iws"}
     <div class="swatches thumbnails">
