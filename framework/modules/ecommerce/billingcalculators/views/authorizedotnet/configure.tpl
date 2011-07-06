@@ -36,7 +36,6 @@
         <div id="tab1">
             {control type="text" name="username" label="API Login ID" value=$calculator->configdata.username}
             {control type="text" name="transaction_key" label="Transaction Key" value=$calculator->configdata.transaction_key}
-            {control type="text" name="password" label="Password" value=$calculator->configdata.password}
             {control type="checkbox" name="testmode" label="Enable Test Mode?" value=1 checked=$calculator->configdata.testmode}
             {control type="radiogroup" name="process_mode" label="Processing Mode" items="Authorize and Capture, Authorize Only" values="0,1" default=$calculator->configdata.process_mode}
         </div>
