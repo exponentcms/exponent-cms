@@ -13,7 +13,7 @@
         <h1>{$storeConfig.storename}</h1>
         {$storeConfig.header}
     </div>
-    {if $pf}
+    {if $pf && $storeConfig.enable_barcode}
     <div id="barcode">
         <img style="margin:10px" src="{$smarty.const.URL_FULL}external/barcode.php?barcode={$order->invoice_id}&amp;width=400&amp;height=50" alt="">
     </div>

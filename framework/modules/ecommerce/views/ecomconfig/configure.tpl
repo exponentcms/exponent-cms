@@ -47,7 +47,8 @@
 				<li><a href="#tab3"><em>Categories and Display Options</em></a></li>
 				<li><a href="#tab4"><em>Notifications</em></a></li>
 				<li><a href="#tab5"><em>Emails</em></a></li>
-                <li><a href="#tab6"><em>Geography</em></a></li>       
+                <li><a href="#tab6"><em>Geography</em></a></li>      
+				<li><a href="#tab7"><em>Invoice</em></a></li>  				
 			</ul>            
 	    	<div class="yui-content">
 	        	<div id="tab1">
@@ -119,7 +120,12 @@
                 <div id="tab6">
                     <h2>General Address/Geo Settings</h2>
                     {control type="checkbox" name="address_allow_admins_all" label="Allow admins access to the full geographical data regardless of other settings?" value=1 checked=$config.address_allow_admins_all}
-                </div>          
+                </div>      
+
+				<div id="tab6">
+                    <h2>Invoice Settings</h2>
+                    {control type="checkbox" name="enable_barcode" label="Enable Barcode?" value=1 checked=$config.enable_barcode}
+                </div>  
             </div>
         </div>
         {control type=buttongroup submit="Save Config" cancel="Cancel"}
