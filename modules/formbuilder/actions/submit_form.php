@@ -49,7 +49,15 @@ foreach ($controls as $c) {
 //        $emailValue = htmlspecialchars_decode(html_entity_decode(call_user_func(array($control_type,'parseData'),$c->name,$_POST,true),ENT_COMPAT,LANG_CHARSET));
         $emailValue = htmlspecialchars_decode(call_user_func(array($control_type,'parseData'),$c->name,$_POST,true));
         //$value = mysql_escape_string($emailValue);
-        $value = @mysql_real_escape_string($emailValue);
+
+        if (DB_ENGINE=='mysqli') {
+            $value = stripslashes(mysqli_real_escape_string($db->connection,$emailValue));
+        } elseif(DB_ENGINE=='mysql') {
+            $value = stripslashes(mysql_real_escape_string($emailValue,$db->connection));
+        } else {
+            $value = $emailValue;
+        }
+
         //eDebug($value);
         $varname = $c->name;
         $db_data->$varname = $value;
