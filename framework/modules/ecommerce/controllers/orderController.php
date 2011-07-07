@@ -336,6 +336,7 @@ class orderController extends expController {
         }
         
 	    $invoice .= "</BODY></HTML>";
+		$invoice = mb_convert_encoding($invoice, 'HTML-ENTITIES', "UTF-8");
         // eDebug($invoice);
         $org_name = str_ireplace(" ","_",ORGANIZATION_NAME); 
 		if (stristr(PHP_OS, 'Win')) {
