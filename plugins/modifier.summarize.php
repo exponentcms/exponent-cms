@@ -28,7 +28,8 @@ function smarty_modifier_summarize($string, $strtype, $type) {
 				$string = $para[0];
 			}
 			if (strlen($string) < strlen($origstring)-4) {$string .= " ...";}
-			return str_replace("&amp;#160;"," ",htmlentities(convert_smart_quotes(strip_tags($string)),ENT_QUOTES));
+//			return str_replace("&amp;#160;"," ",htmlentities(convert_smart_quotes(strip_tags($string)),ENT_QUOTES));
+			return convert_smart_quotes(strip_tags($string));
 			break;
 		case "paralinks":
 			foreach ($sep as $s) {
@@ -36,13 +37,15 @@ function smarty_modifier_summarize($string, $strtype, $type) {
 				$string = $para[0];
 			}
 			if (strlen($string) < strlen($origstring)-4) {$string .= " ...";}
-			return str_replace("&#160;"," ",htmlspecialchars_decode(htmlentities(convert_smart_quotes(strip_tags($string,'<a>')),ENT_QUOTES)));
-			break;			
+//			return str_replace("&#160;"," ",htmlspecialchars_decode(htmlentities(convert_smart_quotes(strip_tags($string,'<a>')),ENT_QUOTES)));
+			return convert_smart_quotes(strip_tags($string,'<a>'));
+			break;
 		default:
 			$words = explode(" ",strip_tags($string));
 			$string = implode(" ",array_slice($words,0,$type+0));
 			if (strlen($string) < strlen($origstring)-4) {$string .= " ...";}
-			return str_replace("&amp;#160;"," ",htmlentities(convert_smart_quotes($string),ENT_QUOTES));
+//			return str_replace("&amp;#160;"," ",htmlentities(convert_smart_quotes($string),ENT_QUOTES));
+			return convert_smart_quotes($string);
 			break;
 	}
 }
@@ -66,13 +69,13 @@ function convert_smart_quotes($str) {
 					  // "&bull;");
 	 // return str_replace($search, $replace, $str);
 
-	$find[] = '“';  // left side double smart quote
-	$find[] = '”';  // right side double smart quote
-	$find[] = '‘';  // left side single smart quote
-	$find[] = '’';  // right side single smart quote
-	$find[] = '…';  // elipsis
-	$find[] = '—';  // em dash
-	$find[] = '–';  // en dash
+	$find[] = 'ï¿½';  // left side double smart quote
+	$find[] = 'ï¿½';  // right side double smart quote
+	$find[] = 'ï¿½';  // left side single smart quote
+	$find[] = 'ï¿½';  // right side single smart quote
+	$find[] = 'ï¿½';  // elipsis
+	$find[] = 'ï¿½';  // em dash
+	$find[] = 'ï¿½';  // en dash
 
 	$replace[] = '"';
 	$replace[] = '"';
