@@ -317,7 +317,7 @@ class expPaginator {
 	//From MUS
     private function cleanParams($params)
     {  
-        $defaultParams = array('title'=>'','module'=>'','controller'=>'','src'=>'','dir'=>'');
+        $defaultParams = array('title'=>'','module'=>'','controller'=>'','src'=>'','id'=>'','dir'=>'');
         $newParams = array();
         $func = new ReflectionClass($this);       
         foreach ($params as $pKey=>$pVal)
