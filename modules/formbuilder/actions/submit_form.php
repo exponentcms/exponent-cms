@@ -51,9 +51,9 @@ foreach ($controls as $c) {
         //$value = mysql_escape_string($emailValue);
 
         if (DB_ENGINE=='mysqli') {
-            $value = mysqli_real_escape_string($db->connection,$emailValue);
+            $value = stripslashes(mysqli_real_escape_string($db->connection,$emailValue));
         } elseif(DB_ENGINE=='mysql') {
-            $value = mysql_real_escape_string($emailValue,$db->connection);
+            $value = stripslashes(mysql_real_escape_string($emailValue,$db->connection));
         } else {
             $value = $emailValue;
         }
