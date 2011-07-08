@@ -653,7 +653,7 @@ ENDSQL;
                 if ($res == null) return array();
                 $resarray = array();
                 for ($i = 0; $i < pg_num_rows($res); $i++){
-                        $row = pg_fetch_array($res, MYSQL_NUM);
+                        $row = pg_fetch_array($res, PG_NUM);
                         $resarray[$i] = $row[0];
                 }
                 return $resarray;
@@ -666,7 +666,7 @@ ENDSQL;
                 if ($res == null) return 0;
                 $resarray = array();
                 for ($i = 0; $i < pg_num_rows($res); $i++){
-                        $row = pg_fetch_array($res, MYSQL_NUM);
+                        $row = pg_fetch_array($res, PG_NUM);
                         $resarray[$i] = $row[0];
                 }
                 return $resarray[0];

@@ -41,7 +41,7 @@ class mysqli_database {
      *
      * Takes the supplied credentials (username / password) and tries to
      * connect to the server and select the given database.  All the rules
-     * governing mysql_connect also govern this method.
+     * governing mysqli_connect also govern this method.
      *
      * This must be called before any other methods of database are invoked.
      *
@@ -697,7 +697,7 @@ class mysqli_database {
             return array();
         $resarray = array();
         for ($i = 0; $i < mysqli_num_rows($res); $i++) {
-            $row = mysqli_fetch_array($res, MYSQL_NUM);
+            $row = mysqli_fetch_array($res, MYSQLI_NUM);
             $resarray[$i] = $row[0];
         }
         return $resarray;
@@ -718,7 +718,7 @@ class mysqli_database {
             return 0;
         $resarray = array();
         for ($i = 0; $i < mysqli_num_rows($res); $i++) {
-            $row = mysqli_fetch_array($res, MYSQL_NUM);
+            $row = mysqli_fetch_array($res, MYSQLI_NUM);
             $resarray[$i] = $row[0];
         }
         return $resarray[0];
@@ -1222,8 +1222,8 @@ class mysqli_database {
             return array();
         $res = @mysqli_query($this->connection, "DESCRIBE `" . $this->prefix . "$table`");
         $dd = array();
-        for ($i = 0; $i < mysql_num_rows($res); $i++) {
-            $fieldObj = mysql_fetch_object($res);
+        for ($i = 0; $i < mysqli_num_rows($res); $i++) {
+            $fieldObj = mysqli_fetch_object($res);
 
             $fieldObj->ExpFieldType = $this->getDDFieldType($fieldObj);
             if ($fieldObj->ExpFieldType == DB_DEF_STRING) {
