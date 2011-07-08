@@ -1074,22 +1074,22 @@ class reportController extends expController {
     }
     
     public static function parseAndTrimExport($str, $isHTML = false)
-    {   //“Death from above”? ®
+    {   //ï¿½Death from aboveï¿½? ï¿½
         //echo "1<br>"; eDebug($str); 
            
-        $str = str_replace("’","&rsquo;",$str);
-        $str = str_replace("‘","&lsquo;",$str);
-        $str = str_replace("®","&#174;",$str);
-        $str = str_replace("–","-", $str);
-        $str = str_replace("—","&#151;", $str); 
-        $str = str_replace("”", "&rdquo;", $str);
-        $str = str_replace("“", "&ldquo;", $str);
+        $str = str_replace("ï¿½","&rsquo;",$str);
+        $str = str_replace("ï¿½","&lsquo;",$str);
+        $str = str_replace("ï¿½","&#174;",$str);
+        $str = str_replace("ï¿½","-", $str);
+        $str = str_replace("ï¿½","&#151;", $str); 
+        $str = str_replace("ï¿½", "&rdquo;", $str);
+        $str = str_replace("ï¿½", "&ldquo;", $str);
         $str = str_replace("\r\n"," ",$str); 
         $str = str_replace("\t"," ",$str); 
         $str = str_replace(",","\,",$str); 
-        $str = str_replace("¼","&#188;",$str);
-        $str = str_replace("½","&#189;",$str);
-        $str = str_replace("¾","&#190;",$str);
+        $str = str_replace("ï¿½","&#188;",$str);
+        $str = str_replace("ï¿½","&#189;",$str);
+        $str = str_replace("ï¿½","&#190;",$str);
         
         if(!$isHTML)
         {
@@ -1102,22 +1102,23 @@ class reportController extends expController {
         
         //$str = htmlspecialchars($str);
         //$str = utf8_encode($str);
-        $str = trim(str_replace("™", "&trade;", $str)); 
+        $str = trim(str_replace("ï¿½", "&trade;", $str)); 
         //echo "2<br>"; eDebug($str,die);
         return $str;
     }
     
     public static function parseAndTrimImport($str,$isHTML = false)
-    {   //“Death from above”? ®
-        //echo "1<br>"; eDebug($str); 
-           
-        $str = str_replace("’","&rsquo;",$str);
-        $str = str_replace("‘","&lsquo;",$str);
-        $str = str_replace("®","&#174;",$str);
-        $str = str_replace("–","-", $str);
-        $str = str_replace("—","&#151;", $str); 
-        $str = str_replace("”", "&rdquo;", $str);
-        $str = str_replace("“", "&ldquo;", $str);
+    {   //ï¿½Death from aboveï¿½? ï¿½
+        //echo "1<br>"; eDebug($str);
+	    global $db;
+
+        $str = str_replace("ï¿½","&rsquo;",$str);
+        $str = str_replace("ï¿½","&lsquo;",$str);
+        $str = str_replace("ï¿½","&#174;",$str);
+        $str = str_replace("ï¿½","-", $str);
+        $str = str_replace("ï¿½","&#151;", $str); 
+        $str = str_replace("ï¿½", "&rdquo;", $str);
+        $str = str_replace("ï¿½", "&ldquo;", $str);
         $str = str_replace("\r\n"," ",$str);         
         $str = str_replace("\,",",",$str); 
         $str = str_replace('""','"',$str); //do this no matter what...in case someone added a quote in a non HTML field
@@ -1126,38 +1127,51 @@ class reportController extends expController {
             //if HTML, then leave the single quotes alone, otheriwse replace w/ special Char            
             $str = str_replace('"',"&quot;",$str);                                
         }
-        $str = str_replace("¼","&#188;",$str);
-        $str = str_replace("½","&#189;",$str);
-        $str = str_replace("¾","&#190;",$str);
+        $str = str_replace("ï¿½","&#188;",$str);
+        $str = str_replace("ï¿½","&#189;",$str);
+        $str = str_replace("ï¿½","&#190;",$str);
         //$str = htmlspecialchars($str);
         //$str = utf8_encode($str);
-        $str = mysql_escape_string(trim(str_replace("™", "&trade;", $str))); 
+        if (DB_ENGINE=='mysqli') {
+	        $str = @mysqli_real_escape_string($db->connection,trim(str_replace("ï¿½", "&trade;", $str)));
+        } elseif(DB_ENGINE=='mysql') {
+            $str = @mysql_real_escape_string(trim(str_replace("ï¿½", "&trade;", $str)),$db->connection);
+        } else {
+	        $str = trim(str_replace("ï¿½", "&trade;", $str));
+        }
         //echo "2<br>"; eDebug($str,die);
         return $str;
     }
     
     public static function parseAndTrim($str,$isHTML = false)
-    {   //“Death from above”? ®
-        //echo "1<br>"; eDebug($str); 
-           
-        $str = str_replace("’","&rsquo;",$str);
-        $str = str_replace("‘","&lsquo;",$str);
-        $str = str_replace("®","&#174;",$str);
-        $str = str_replace("–","-", $str);
-        $str = str_replace("—","&#151;", $str); 
-        $str = str_replace("”", "&rdquo;", $str);
-        $str = str_replace("“", "&ldquo;", $str);
+    {   //ï¿½Death from aboveï¿½? ï¿½
+        //echo "1<br>"; eDebug($str);
+	    global $db;
+
+        $str = str_replace("ï¿½","&rsquo;",$str);
+        $str = str_replace("ï¿½","&lsquo;",$str);
+        $str = str_replace("ï¿½","&#174;",$str);
+        $str = str_replace("ï¿½","-", $str);
+        $str = str_replace("ï¿½","&#151;", $str); 
+        $str = str_replace("ï¿½", "&rdquo;", $str);
+        $str = str_replace("ï¿½", "&ldquo;", $str);
         $str = str_replace("\r\n"," ",$str);         
         //$str = str_replace(",","\,",$str); 
         
         $str = str_replace('\"',"&quot;",$str);
         $str = str_replace('"',"&quot;",$str);                    
-        $str = str_replace("¼","&#188;",$str);
-        $str = str_replace("½","&#189;",$str);
-        $str = str_replace("¾","&#190;",$str);
+        $str = str_replace("ï¿½","&#188;",$str);
+        $str = str_replace("ï¿½","&#189;",$str);
+        $str = str_replace("ï¿½","&#190;",$str);
         //$str = htmlspecialchars($str);
         //$str = utf8_encode($str);
-        $str = mysql_escape_string(trim(str_replace("™", "&trade;", $str))); 
+        if (DB_ENGINE=='mysqli') {
+	        $str = mysqli_real_escape_string($db->connection,trim(str_replace("ï¿½", "&trade;", $str)));
+        } elseif(DB_ENGINE=='mysql') {
+            $str = mysql_real_escape_string(trim(str_replace("ï¿½", "&trade;", $str)),$db->connection);
+        } else {
+	        $str = trim(str_replace("ï¿½", "&trade;", $str));
+        }
         //echo "2<br>"; eDebug($str,die);
         return $str;
     }
