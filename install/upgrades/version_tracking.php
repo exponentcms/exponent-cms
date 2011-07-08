@@ -62,7 +62,7 @@ class version_tracking extends upgradescript {
         $vo->type = EXPONENT_VERSION_TYPE.EXPONENT_VERSION_ITERATION;
         $vo->builddate = EXPONENT_VERSION_BUILDDATE;
         $vo->created_at = time();
-        $ins = $db->insertObject($vo,'version') or die(mysql_error());
+        $ins = $db->insertObject($vo,'version') or die(mysqli_error());
         return $ins ? gt('Success') : gt('Failed');
 	}
 }
