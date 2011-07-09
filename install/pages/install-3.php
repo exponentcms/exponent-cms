@@ -29,8 +29,8 @@ $i18n = exponent_lang_loadFile('install/pages/dbcheck.php');
     <thead>
         <tr>
             <th colspan=2><?php echo gt('Results'); ?></th>
-        <tr>
-    <thead>
+        </tr>
+    </thead>
     <tbody>
 <?php
 
@@ -69,7 +69,7 @@ if (preg_match('/[^A-Za-z0-9]/',$config['db_table_prefix'])) {
 
 if ($passed) {
 	//set connection encoding, works only on mySQL > 4.1
-	if($config["db_engine"] == "mysql") {
+	if($config["db_engine"] == "mysqli") {
 		if (!defined("DB_ENCODING")) define("DB_ENCODING", $config["DB_ENCODING"]);
 	}
 	$db = exponent_database_connect($config['db_user'],$config['db_pass'],$config['db_host'],$config['db_name'],$config['db_engine'],1);
@@ -191,7 +191,6 @@ if ($passed) {
 		echoSuccess();
 	}
 }
-
 
 if ($passed) {
 	echoStart($i18n['check_drop'].':');

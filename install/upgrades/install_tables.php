@@ -101,7 +101,7 @@ if (is_readable($newdef)) {
             if (file_exists($dirpath)) {
                 $def_dir = opendir($dirpath);
                 while (($def = readdir($def_dir)) !== false) {
-                    eDebug("$dirpath/$def");
+//                    eDebug("$dirpath/$def");
     				if (is_readable("$dirpath/$def") && is_file("$dirpath/$def") && substr($def,-4,4) == ".php" && substr($def,-9,9) != ".info.php") {
     					$tablename = substr($def,0,-4);
     					$dd = include("$dirpath/$def");
@@ -188,7 +188,7 @@ $line++;
 <?php
 		}
 	?>
-<tbody>
+</tbody>
 </table>
 		<?php
 		if ($line == 0) {

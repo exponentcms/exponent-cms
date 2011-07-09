@@ -26,7 +26,7 @@ $i18n = exponent_lang_loadFile('install/popup.php');
 <html>
 <head>
 	<title><?php echo $i18n['title']; ?></title>
-	<link rel="stylesheet" title="exponent" href="page.css" />
+	<link rel="stylesheet" title="exponent" href="style.css" />
 	<link rel="stylesheet" href="<?php echo PATH_RELATIVE; ?>framework/core/assets/css/tables.css" />
 	<meta http-equiv="Content-Type" content="text/html; charset=<?php echo LANG_CHARSET; ?>" />
 	<meta name="Generator" value="Exponent Content Management System" />
