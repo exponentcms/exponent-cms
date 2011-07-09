@@ -34,7 +34,7 @@ if (exponent_permissions_check('administrate',$loc)) {
 			$module->external = $container->internal;
 			$module->rank = $rank;
 			$rank++;
-			$db->updateObject($module,"container") or die(mysqli_error());
+			$db->updateObject($module,"container") or die($db->error());
 		   	exponent_sessions_clearAllUsersSessionCache('containermodule');
 		}
 	}
