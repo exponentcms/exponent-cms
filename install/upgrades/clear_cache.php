@@ -72,7 +72,7 @@ class clear_cache extends upgradescript {
 //		if (file_exists(BASE.'tmp/img_cache')) $this->cleardir_recursive(BASE.'tmp/img_cache');
 		if (file_exists(BASE.'tmp/img_cache')) exponent_files_remove_files_in_directory(BASE.'tmp/img_cache');
 
-		return "Caches were cleared.<br>".$errors." files could not be removed.";
+		return "All Caches were cleared.<br>".$errors." files could not be removed.";
 	}
 
 	/**

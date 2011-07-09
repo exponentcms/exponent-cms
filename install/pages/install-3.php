@@ -205,6 +205,7 @@ if ($passed) {
 	}
 }
 
+//FIXME needs to be updated for definitions in controller/module folders
 if ($passed) {
 	echoStart($i18n['installing_tables'].':');
 
@@ -278,7 +279,7 @@ if ($passed) {
     $vo->type = EXPONENT_VERSION_TYPE.EXPONENT_VERSION_ITERATION;
     $vo->builddate = EXPONENT_VERSION_BUILDDATE;
     $vo->created_at = time();
-    $ins = $db->insertObject($vo,'version') or die(mysql_error());
+    $ins = $db->insertObject($vo,'version') or die($db->error());
 
 
 	// ERROR CHECKING
