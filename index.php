@@ -71,12 +71,7 @@ if (MAINTENANCE_MODE && !exponent_users_isAdmin() && ( !isset($_REQUEST['module'
 		//exponent_users_login("anonymous", "anonymous");
 	}
 
-	if (@file_exists(BASE.'install/not_configured')) {
-		header('Location: '.URL_FULL.'install/index.php');
-		exit('Redirecting to the Exponent Install Wizard');
-	}
-
-	if (!(file_exists(BASE.'conf/config.php'))) {
+	if (@file_exists(BASE.'install/not_configured') || !(file_exists(BASE.'conf/config.php'))) {
 		header('Location: '.URL_FULL.'install/index.php');
 		exit('Redirecting to the Exponent Install Wizard');
 	}

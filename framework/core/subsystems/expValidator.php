@@ -447,6 +447,9 @@ class expValidator {
 	 * @return bool
 	 */
 	public static function validate_email_address($email) {
+		return expValidator::isValidEmail($email);
+
+		// old code
         // First, we check that there's one @ symbol, and that the lengths are right
 //        if (!ereg("^[^@]{1,64}@[^@]{1,255}$", $email)) {
         if (!preg_match("^[^@]{1,64}@[^@]{1,255}$", $email)) {

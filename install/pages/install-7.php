@@ -29,7 +29,7 @@ if ($user->username == '') {
 } else {
     if (expValidator::validate_email_address($_POST['email']) == false) {
         flash('You must supply a valid email address.');
-        header('Location: index.php?page=admin_user&erremail=true');
+        header('Location: index.php?page=install-6&erremail=true');
         exit();
     }
 	$user->password = md5($_POST['password']);
