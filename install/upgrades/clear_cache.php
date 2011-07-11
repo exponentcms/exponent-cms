@@ -57,21 +57,19 @@ class clear_cache extends upgradescript {
 		    BASE.'tmp/rsscache',  // magpierss cache
 		    BASE.'tmp/views_c',  // smarty cache
 		    BASE.'tmp/cache',  // alternate smarty cache
+			BASE.'tmp/img_cache', // phpThumb cache includes subfolders
 		);
 
         // delete the files.
         $removed = 0;
         $errors = 0;
 		foreach ($files as $file) {
-			$files = exponent_files_remove_files_in_directory($file);
-			$removed += count($files['removed']);
-			$errors += count($files['not_removed']);
+			if (file_exists($file)) {
+				$files = exponent_files_remove_files_in_directory($file);
+				$removed += count($files['removed']);
+				$errors += count($files['not_removed']);
+			}
 		}
-		
-		// phpThumb cache includes subfolders
-//		if (file_exists(BASE.'tmp/img_cache')) $this->cleardir_recursive(BASE.'tmp/img_cache');
-		if (file_exists(BASE.'tmp/img_cache')) exponent_files_remove_files_in_directory(BASE.'tmp/img_cache');
-
 		return "All Caches were cleared.<br>".$errors." files could not be removed.";
 	}
 
