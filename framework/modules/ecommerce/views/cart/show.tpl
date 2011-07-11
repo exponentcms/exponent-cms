@@ -14,19 +14,19 @@
  *
  *}
  
- {css unique="cart" link="`$asset_path`css/cart.css" corecss="tables,panels,button"}
+{css unique="cart" link="`$asset_path`css/cart.css" corecss="tables,panels,button"}
 
- {/css}
- 
- {script unique="cartview" yui2mods="dom"}
- {literal}
- YAHOO.util.Event.onDOMReady(function(){
-     YAHOO.util.Dom.removeClass("myCart", 'hide');
-     var loading = YAHOO.util.Dom.getElementsByClassName('loadingdiv', 'div');
-     YAHOO.util.Dom.setStyle(loading, 'display', 'none');
- });
- {/literal}
- {/script}
+{/css}
+
+{script unique="cartview" yui2mods="dom"}
+{literal}
+YAHOO.util.Event.onDOMReady(function(){
+ YAHOO.util.Dom.removeClass("myCart", 'hide');
+ var loading = YAHOO.util.Dom.getElementsByClassName('loadingdiv', 'div');
+ YAHOO.util.Dom.setStyle(loading, 'display', 'none');
+});
+{/literal}
+{/script}
 <div class="loadingdiv">Loading Cart</div>
 
 <div id="myCart" class="module cart show hide">
