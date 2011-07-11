@@ -61,7 +61,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
             {*control type=text name=non_us_state label="&nbsp;State/Province" value=$record->non_us_state*}           
             {control type=country name=country label="&nbsp;Country" value=$record->country|default:223}            
         {else}
-            {control type=state name=state label="<span class=\"required\">*</span>State" includeblank="-- Choose a State -- " value=$record->state}
+            {control type=state name=state label="<span class=\"required\">*</span>State/Province" includeblank="-- Choose a State -- " value=$record->state}
             {* control type=hidden name=country value=223 *}
             {control type=country name=country label="&nbsp;Country" value=$record->country} 
         {/if}

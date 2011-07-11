@@ -78,7 +78,7 @@
             [3] => Show as &quot;Call for Price&quot;.
         *}                                                                                      
         {if $product->availability_type == 3}
-            <strong><a href="javascript:void();" rel=nofollow title="{$product->availability_note}">Call for price</a></strong>                
+            <strong>{"Call for price"|gettext}</strong>
         {else}
             {if $product->use_special_price}                     
                 <span style="font-size:12px;">Regular Price: {currency_symbol}{$product->base_price|number_format:2}</span>{br}
@@ -118,14 +118,16 @@
         {/if}
 
         {if $product->availability_type == 0 && $product->active_type == 0}
-            <a href="#" onclick="document.getElementById('addtocart{$product->id}').submit(); return false;" class="awesome {$smarty.const.BTN_COLOR} {$smarty.const.BTN_SIZE} addtocart" rel="nofollow"><strong><em>Add to Cart</em></strong></a>
+            <button type="submit" class="awesome {$smarty.const.BTN_COLOR} {$smarty.const.BTN_SIZE}" rel="nofollow">{"Add to Cart"|gettext}</button>
         {elseif $product->availability_type == 1 && $product->active_type == 0}
-            <!--a href="{link controller=cart action=addItem product_id=$product->id product_type=$product->product_type qty=1}" class="addtocart exp-ecom-link" rel="nofollow"><strong><em>Add to cart</em></strong></a--> 
-            <a href="#" onclick="document.getElementById('addtocart{$product->id}').submit(); return false;" class="awesome {$smarty.const.BTN_COLOR} {$smarty.const.BTN_SIZE} addtocart" rel="nofollow"><strong><em>Add to Cart</em></strong></a>
+            <button type="submit" class="awesome {$smarty.const.BTN_COLOR} {$smarty.const.BTN_SIZE}" rel="nofollow">{"Add to Cart"|gettext}</button>
             {if $product->quantity <= 0}<span class="error">{$product->availability_note}</span>{/if}   
-        {elseif $product->availability_type == 2}    
+        {elseif $product->availability_type == 2}
             {if $product->quantity <= 0}<span class="error">{$product->availability_note}</span>{/if}              
+        {elseif $product->active_type == 1}
+            <a href="javascript: return false;"class="awesome disabled {$smarty.const.BTN_SIZE}" rel="nofollow">{"Product currently unavailable for purchase"|gettext}</a>
         {/if}    
+        
         {/form}
     </div> 
     {/if}   

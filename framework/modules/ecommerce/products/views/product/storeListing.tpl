@@ -55,7 +55,8 @@
         {/if}
     </div>
         {if $listing->availability_type != 3 && $listing->active_type == 0}
-            {if $listing->hasChildren()}            
+            <a href="{link controller=store action=showByTitle title=$listing->sef_url}" class="exp-ecom-link awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}">{"View Item"|gettext}</a>   
+            {*if $listing->hasChildren()}            
                 <a href="{link controller=store action=showByTitle title=$listing->sef_url}" class="exp-ecom-link awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}">{"View Item"|gettext}</a>   
             {else}
                 {form id="addtocart`$listing->id`" controller=cart action=addItem} 
@@ -66,9 +67,11 @@
                         {control name="qty" type="text" value="`$listing->minimum_order_quantity`" size=3 maxlength=5 class="lstng-qty"}
                     {/if}
                  {/form}
-            {/if}
+            {/if*}
         {else}
-            {* message here saying product not availalble...? *}
+            {if $listing->active_type == 1}
+                <a href="{link controller=store action=showByTitle title=$listing->sef_url}" class="exp-ecom-link awesome {$smarty.const.BTN_SIZE} grey">{"View Item"|gettext}</a>   
+            {/if}
         {/if}
     <div style="clear:both"></div>
 </div>
