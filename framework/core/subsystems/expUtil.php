@@ -19,10 +19,51 @@
  */
 
 class expUtil {
-       
+          
     static function right($string,$chars)
     {
         $vright = substr($string, strlen($string)-$chars,$chars);
         return $vright;
     }
+    
+    static function isNumberEqualTo($firstnumber,$secondnumber,$precision = 10) // are 2 floats equal
+    {
+        $e = pow(10,$precision);
+        $i1 = intval($firstnumber * $e);
+        $i2 = intval($secondnumber * $e);
+        return ($i1 == $i2);
+    }
+
+    static function isNumberGreaterThan($firstnumber,$secondnumber,$precision = 10) // is one float bigger than another
+    {
+        $e = pow(10,$precision);
+        $ibig = intval($firstnumber * $e);
+        $ismall = intval($secondnumber * $e);
+        return ($ibig > $ismall);
+    }
+
+    static function isNumberGreaterThanOrEqualTo($firstnumber,$secondnumber,$precision = 10) // is on float bigger or equal to another
+    {
+        $e = pow(10,$precision);
+        $ibig = intval($firstnumber * $e);
+        $ismall = intval($secondnumber * $e);
+        return ($ibig >= $ismall);
+    }
+    
+    static function isNumberLessThan($firstnumber,$secondnumber,$precision = 10) // is one float bigger than another
+    {
+        $e = pow(10,$precision);
+        $ibig = intval($firstnumber * $e);
+        $ismall = intval($secondnumber * $e);
+        return ($ibig < $ismall);
+    }
+
+    static function isNumberLessThanOrEqualTo($firstnumber,$secondnumber,$precision = 10) // is on float bigger or equal to another
+    {
+        $e = pow(10,$precision);
+        $ibig = intval($firstnumber * $e);
+        $ismall = intval($secondnumber * $e);
+        return ($ibig <= $ismall);
+}
+
 }

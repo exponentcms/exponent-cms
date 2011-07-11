@@ -33,24 +33,23 @@ class tablebasedcalculator extends shippingcalculator {
     public function isSelectable() { return true; }    
 
     public function getRates($order) {   
-        
-        $a = $order->total;
+        $a = $order->total;        
 		//get the rates
 		for($i = 0; $i < @count($this->configdata['from']); $i++) {
-			// We need to check if it is not the last in the array since we don't have a 'to' value in the last element
-			if(count($this->configdata['from']) != ($i + 1)) {
-				if( $a >= $this->configdata['from'][$i] && $a <= $this->configdata['to'][$i] ) {
+			// We need to check if it is not the last in the array since we don't have a 'to' value in the last element            
+            if(count($this->configdata['from']) != ($i + 1)) {                
+				if( expUtil::isNumberGreaterThanOrEqualTo($a,$this->configdata['from'][$i]) && expUtil::isNumberLessThanOrEqualTo($a,$this->configdata['to'][$i])) {                    
 					foreach($this->shippingspeeds as $item) {
 						$c[] = @$this->configdata[str_replace(' ', '_', $item->speed)][$i];
 					}
 				}
 			} else {
-				if( $a >= $this->configdata['from'][$i] ) {
+                if( $a >= floatval($this->configdata['from'][$i]) ) {
 					foreach($this->shippingspeeds as $item) {
 						$c[] = @$this->configdata[str_replace(' ', '_', $item->speed)][$i];
 					}
 				}
-			}
+			}            
 		}
 		
 		 //if certain states, add $$ from config
@@ -73,7 +72,7 @@ class tablebasedcalculator extends shippingcalculator {
 			}            
 		}
 		
-        if(!count($rates)) $rates[01] = array('id' => 01, 'title' => "Table Based Shipping is Currently NOT Configured", 'cost' => 0);
+        if(!count($rates)) $rates['01'] = array('id' => '01', 'title' => "Table Based Shipping is Currently NOT Configured", 'cost' => 0);
 		return $rates;
     }    
     
@@ -106,7 +105,8 @@ class tablebasedcalculator extends shippingcalculator {
     function availableMethods() {
 
 		for($i = 0; $i < count($this->shippingspeeds); $i++) {
-			$shippingmethods[0 . ($i+1)] = $this->shippingspeeds[$i]->speed;
+            if($i > 9 ) $shippingmethods[($i+1)] = $this->shippingspeeds[$i]->speed;
+			else $shippingmethods[0 . ($i+1)] = $this->shippingspeeds[$i]->speed;
 		}
 		
         return $shippingmethods;
