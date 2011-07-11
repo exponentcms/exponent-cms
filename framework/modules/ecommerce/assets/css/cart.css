@@ -4,6 +4,11 @@
     border:1px solid #8E8E8E;
 }
 
+#cartbox table td.cart-totals-title {
+    text-align:right;
+    font-weight: bold;
+}
+
 /****************  cart head  ***********************/
 #cart-top {
 	height:38px;
@@ -45,7 +50,7 @@ table#cart table td {
     background: #ebebeb; 
 }
 #cart tr.even { 
-    background: #f6f5f5; 
+    background: #000000; 
 }
 
 #cart td.prodrow  {
