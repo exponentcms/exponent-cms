@@ -57,12 +57,12 @@ table.exp-skin-table {
 .exp-skin-table tbody tr.odd th,
 .exp-skin-table tbody tr.odd td {
 	border-color:#EBE5D9;
-	background:#F7F4EE;
+	background:#FFFFFF;
 }
 .exp-skin-table tbody tr.even th,
 .exp-skin-table tbody tr.even td {
 	border-color:#EBE5D9;
-	background:#cdcbc6;
+	background:#F7F4EE;
 }
 .exp-skin-table tbody tr:hover td,
 .exp-skin-table tbody tr:hover th {
