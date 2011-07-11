@@ -14,7 +14,7 @@
  *
  *}
  
- {css unique="cart" link="`$asset_path`css/cart.css" corecss="tables,panels"}
+ {css unique="cart" link="`$asset_path`css/cart.css" corecss="tables,panels,button"}
 
  {/css}
  
