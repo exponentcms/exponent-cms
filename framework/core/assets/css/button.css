@@ -104,10 +104,12 @@
     text-shadow: none;
 	-moz-box-shadow: 0 0 0 0;
 	-webkit-box-shadow: 0 0 0 0;
+	border:1px solid #aaa;
 }
 .disabled.awesome:hover {
     background-color: #999999;
     color: #525252;
+    cursor:default;
 }
 
 .disabled.awesome:active {
