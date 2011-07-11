@@ -71,6 +71,10 @@ $ecom = array(
                             'url'=>makeLink(array('controller'=>'address','action'=>'manage')),
                         ),
                         array(
+                            'text'=>"Manage Tax Classes",
+                            'url'=>makeLink(array('controller'=>'tax','action'=>'manage')),
+                        ),
+                        array(
                             'text'=>"Manage Status Codes",
                             'url'=>makeLink(array('controller'=>'order_status','action'=>'manage')),
                         ),
