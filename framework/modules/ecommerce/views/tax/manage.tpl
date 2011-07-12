@@ -42,6 +42,9 @@
             <th>
                 Country
             </th>
+			 <th>
+                Action
+            </th>
         </tr>
     </thead>
     <tbody>
@@ -61,6 +64,10 @@
             </td>
             <td>
             {$tax->country}
+            </td>
+			<td>
+                {icon action=edit record=$tax img="edit.png"}  
+                {icon action=delete record=$tax img="delete.png"}  
             </td>
         </tr>
         {/foreach}

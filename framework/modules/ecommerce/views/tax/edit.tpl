@@ -13,12 +13,11 @@
  * GPL: http://www.gnu.org/licenses/gpl.txt
  *
  *}
-
 {form action=update}
     {control type="hidden" name="id" value=$record->id}
     {control type="text" name="name" label="Class Name" value=$record->classname}
     {control type="text" name="rate" label="Rate" value=$record->rate}
-    {control type="dropdown" name="zone" label="Zone" values=$record->zones default=$record->zonename}
+    {control type="dropdown" name="zone" label="Zone" items=$zones value=$record->zone}
     {control type=state name=state label="State/Province" value=$record->state}
     {control type=country name=country label="Country" value=$record->country} 
 
