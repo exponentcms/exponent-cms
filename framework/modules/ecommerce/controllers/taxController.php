@@ -44,22 +44,21 @@ class taxController extends expController {
         $sql = "
 
             SELECT 
-            	exponent_tax_class.id, 
-            	exponent_tax_zone.`name` AS zonename, 
-            	exponent_tax_rate.rate as rate, 
-            	exponent_tax_class.`name` AS classname, 
-            	exponent_geo_country.`name` as country, 
-            	exponent_geo_region.`name` as state
-            FROM exponent_tax_class INNER JOIN exponent_tax_rate ON exponent_tax_class.id = exponent_tax_rate.class_id
-            	 INNER JOIN exponent_tax_zone ON exponent_tax_rate.zone_id = exponent_tax_zone.id
-            	 INNER JOIN exponent_tax_geo ON exponent_tax_geo.zone_id = exponent_tax_zone.id
-            	 INNER JOIN exponent_geo_country ON exponent_tax_geo.country_id = exponent_geo_country.id
-            	 INNER JOIN exponent_geo_region ON exponent_tax_geo.region_id = exponent_geo_region.id
+            	".DB_TABLE_PREFIX."_tax_class.id, 
+            	".DB_TABLE_PREFIX."_tax_zone.`name` AS zonename, 
+            	".DB_TABLE_PREFIX."_tax_rate.rate as rate, 
+            	".DB_TABLE_PREFIX."_tax_class.`name` AS classname, 
+            	".DB_TABLE_PREFIX."_geo_country.`name` as country, 
+            	".DB_TABLE_PREFIX."_geo_region.`name` as state
+            FROM ".DB_TABLE_PREFIX."_tax_class INNER JOIN ".DB_TABLE_PREFIX."_tax_rate ON ".DB_TABLE_PREFIX."_tax_class.id = ".DB_TABLE_PREFIX."_tax_rate.class_id
+            	 INNER JOIN ".DB_TABLE_PREFIX."_tax_zone ON ".DB_TABLE_PREFIX."_tax_rate.zone_id = ".DB_TABLE_PREFIX."_tax_zone.id
+            	 INNER JOIN ".DB_TABLE_PREFIX."_tax_geo ON ".DB_TABLE_PREFIX."_tax_geo.zone_id = ".DB_TABLE_PREFIX."_tax_zone.id
+            	 INNER JOIN ".DB_TABLE_PREFIX."_geo_country ON ".DB_TABLE_PREFIX."_tax_geo.country_id = ".DB_TABLE_PREFIX."_geo_country.id
+            	 INNER JOIN ".DB_TABLE_PREFIX."_geo_region ON ".DB_TABLE_PREFIX."_tax_geo.region_id = ".DB_TABLE_PREFIX."_geo_region.id
 
             ";
 
         $taxes = $db->selectObjectsBySql($sql);
-
         assign_to_template(array('taxes'=>$taxes));
     }
 
@@ -72,7 +71,7 @@ class taxController extends expController {
 
             SELECT 
             *
-            FROM exponent_tax_zone ORDER BY name ASC;
+            FROM ".DB_TABLE_PREFIX."_tax_zone ORDER BY name ASC;
 
             ";
 
@@ -88,7 +87,7 @@ class taxController extends expController {
 
             SELECT 
             *
-            FROM exponent_tax_zone ORDER BY name ASC;
+            FROM ".DB_TABLE_PREFIX."_tax_zone ORDER BY name ASC;
 
             ";
 
