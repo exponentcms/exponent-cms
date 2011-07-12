@@ -3,10 +3,15 @@
     *display:inline;
     zoom:1;
     vertical-align:top;
-    width:200px;
+    width:180px;
     text-align:right;
     padding-right:10px;
 }
+
+.address.edit .control .text {
+    width:250px;
+}
+
 
 #passwordDiv p {
     margin-left:230px;
@@ -19,7 +24,7 @@
 }
 
 .address.edit .buttongroup {
-    padding-left:210px;
+    padding-left:190px;
 }
 
 .address .address_type {
