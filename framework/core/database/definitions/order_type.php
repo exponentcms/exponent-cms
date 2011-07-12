@@ -32,6 +32,8 @@ return array(
     'creates_new_user'=>array(
         DB_FIELD_TYPE=>DB_DEF_INTEGER),
     'emails_customer'=>array(
+        DB_FIELD_TYPE=>DB_DEF_INTEGER),
+    'affects_inventory'=>array(
         DB_FIELD_TYPE=>DB_DEF_INTEGER)
 );
 
