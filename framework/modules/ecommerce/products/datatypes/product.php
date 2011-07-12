@@ -90,7 +90,14 @@ class product extends expRecord {
 	}
 	
 	function updateQuantity($newval) {
-		return $newval;
+        if($this->allow_partial)
+        {
+            return floatval($newval);    
+        }
+        else
+        {
+            return intval($newval);
+        }		
 	}
 	
     function getBasePrice($orderitem=null) {
@@ -410,15 +417,19 @@ class product extends expRecord {
         return true;
     }
     
-    
-    
-    public function process($item) {
+        
+    public function process($item, $affects_inventory) {
         global $db;
-        $this->quantity = $this->quantity - $item->quantity;
-        //$this->save();
-        $pobj->id = $this->id;
-        $pobj->quantity = $this->quantity;
-        $db->updateObject($pobj, 'product', 'id='.$this->id);
+        //only adjust inventory if the order type says it should, or we otherwise tell it to
+        if($affects_inventory)
+        {
+            $this->quantity = $this->quantity - $item->quantity;
+            //$this->save();
+            $pobj->id = $this->id;
+            $pobj->quantity = $this->quantity;
+            $db->updateObject($pobj, 'product', 'id='.$this->id);    
+        }
+        return;        
     }
     
     public function optionDropdown($key, $display_price_as) {

@@ -125,6 +125,7 @@ class cartController extends expController {
 			$id = str_replace('quantity-', '', $this->params['id']);
             $item = new orderitem($id);
             if (!empty($item->id)) {
+                //$newqty = $item->product->updateQuantity($this->params['value']);                  
                 $newqty = $item->product->updateQuantity($this->params['value']);                  
                 if ($newqty > $item->product->quantity) {
                     if ($item->product->availability_type == 1) {
@@ -576,7 +577,7 @@ class cartController extends expController {
             // run each items process callback function
 		    foreach($order->orderitem as $item) {
 		        $product = new $item->product_type($item->product_id);
-		        $product->process($item);
+		        $product->process($item,$order->order_type->affects_inventory);
 		    }
 		
             $billing->calculator->postProcess($order,$this->params);

@@ -25,6 +25,7 @@
         {control type="checkbox" name="is_default" label="Default?" value=1 checked=$record->is_default}
         {control type="checkbox" name="creates_new_user" label="Creates New User?" value=1 checked=$record->creates_new_user}
         {control type="checkbox" name="emails_customer" label="Emails Customer?" value=1 checked=$record->emails_customer}
+        {control type="checkbox" name="affects_inventory" label="Affects Inventory?" value=1 checked=$record->affects_inventory}
         {control type="buttongroup" submit="Submit" cancel="Cancel"}
     {/form}
 </div>

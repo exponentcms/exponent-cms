@@ -30,7 +30,7 @@
 </div>
 {/if}
 
-<div class="module store show">
+<div class="module store show product">
     <h1>{$product->title}</h1>
     
     {permissions}
@@ -84,10 +84,10 @@
             <strong>{"Call for price"|gettext}</strong>
         {else}
             {if $product->use_special_price}                     
-                <span class="regular-price on-sale">{currency_symbol}{$listing->base_price|number_format:2}</span>
-                <span class="sale-price">{currency_symbol}{$listing->special_price|number_format:2}&nbsp;<sup>{"SALE!"|gettext}</sup></span>
+                <span class="regular-price on-sale">{currency_symbol}{$product->base_price|number_format:2}</span>
+                <span class="sale-price">{currency_symbol}{$product->special_price|number_format:2}&nbsp;<sup>{"SALE!"|gettext}</sup></span>
             {else}
-                <span class="regular-price">{currency_symbol}{$listing->base_price|number_format:2}</span>
+                <span class="regular-price">{currency_symbol}{$product->base_price|number_format:2}</span>
             {/if}
         {/if}
     </div>

@@ -30,6 +30,7 @@
 				    <th>Default</th>
                     <th>Creates New User</th> 
                     <th>Emails Customer</th> 
+                    <th>Affects Inventory</th> 
 					<th>Name</th>
 					<th>Admin</th>
 				</tr>
@@ -40,6 +41,7 @@
                     <td>{if $listing->is_default == 1}{icon img="clean.png"}{/if}</td>
                     <td>{if $listing->creates_new_user == 1}{icon img="clean.png"}{/if}</td>
                     <td>{if $listing->emails_customer == 1}{icon img="clean.png"}{/if}</td>
+                    <td>{if $listing->affects_inventory == 1}{icon img="clean.png"}{/if}</td>
 					<td>{$listing->title}</td>
 					<td>
 					    {if $permissions.manage == true}
