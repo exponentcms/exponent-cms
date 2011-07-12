@@ -15,8 +15,8 @@
  *}
 
 {form action=update_zone}
-    {control type="hidden" name="id" value=$record->id}
-    {control type="text" name="name" label="Zone Name" value=$record->zone}
+    {control type="hidden" name="id" value=$zone->id}
+    {control type="text" name="name" label="Zone Name" value=$zone->name}
 
     {control type="buttongroup" submit="Submit" cancel="Cancel"}
 {/form}

@@ -39,7 +39,7 @@
         <tr class="{cycle values="odd,even"}">
             <td>
                 {icon action=edit_zone record=$zone img="edit.png"}  
-                {icon action=delete record=$zone img="delete.png"}  
+                {icon action=delete_zone record=$zone img="delete.png"}  
             </td>
             <td>
             {$zone->name}

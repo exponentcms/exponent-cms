@@ -67,7 +67,7 @@ class tablebasedcalculator extends shippingcalculator {
 					$c[$i] += 1.50; $c[$i] += 1.50; 
 				}
                 if($i > 9) $rates[($i+1)] = array('id' => 0 . ($i+1), 'title' => $this->shippingspeeds[$i]->speed, 'cost' => $c[$i]);
-                else $rates[0 . ($i+1)] = array('id' => 0 . ($i+1), 'title' => $this->shippingspeeds[$i]->speed, 'cost' => $c[$i]);
+                else $rates[0 . ($i+1)] = array('id' => 0 . ($i+1), 'title' => @$this->shippingspeeds[$i]->speed, 'cost' => $c[$i]);
 				
 			}            
 		}
