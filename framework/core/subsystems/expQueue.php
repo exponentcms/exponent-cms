@@ -47,12 +47,12 @@ class expQueue {
 	        exponent_sessions_set('flash', $flash);
     	}
 
-	static function flashAndFlow($name, $msg) {
+	static function flashAndFlow($name, $msg="") {
     		flash($name, $msg);
 	    	expHistory::back();
 	}
 
-	static function flashIfNotLoggedIn($name, $msg) {
+	static function flashIfNotLoggedIn($name, $msg="") {
 		global $user;
 		if (!$user->isLoggedIn()) self::flashAndFlow($name, $msg);
 	}
