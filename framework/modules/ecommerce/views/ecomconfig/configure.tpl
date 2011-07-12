@@ -128,7 +128,7 @@
                 </div>  
                 <div id="tab8">
                     <h2>{"General Store Display"|gettext}</h2>
-				    {control type="text" name="images_per_row" label="Images per row on listing pages" size="3" value=$config.images_per_row}
+				    {control type="text" name="images_per_row" label="Products per row" size="3" value=$config.images_per_row}
                 </div>  
             </div>
         </div>
