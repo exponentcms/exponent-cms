@@ -14,10 +14,13 @@
  *
  *}
  
-{css unique="product-show" link="`$asset_path`css/product_show.css" corecss="button,tables"}
+{css unique="product-show" link="`$asset_path`css/storefront.css" corecss="button,tables"}
 
 {/css}
 
+{css unique="product-show" link="`$asset_path`css/ecom.css"}
+
+{/css}
 
 {if $product->user_message != ''}
 <div id="msg-queue" class="common msg-queue">
@@ -27,7 +30,7 @@
 </div>
 {/if}
 
-<div class="store show">
+<div class="module store show">
     <h1>{$product->title}</h1>
     
     {permissions}
@@ -70,7 +73,7 @@
     
     
 
-    <div class="price">
+    <div class="prod-price"> 
         {* 
             [0] => Always available even if out of stock.
             [1] => Available but shown as backordered if out of stock.
@@ -81,10 +84,10 @@
             <strong>{"Call for price"|gettext}</strong>
         {else}
             {if $product->use_special_price}                     
-                <span style="font-size:12px;">Regular Price: {currency_symbol}{$product->base_price|number_format:2}</span>{br}
-                <span style="color:red; font-weight: bold;">SALE Price: {currency_symbol}{$product->special_price|number_format:2}</span>
+                <span class="regular-price on-sale">{currency_symbol}{$listing->base_price|number_format:2}</span>
+                <span class="sale-price">{currency_symbol}{$listing->special_price|number_format:2}&nbsp;<sup>{"SALE!"|gettext}</sup></span>
             {else}
-                <strong>{currency_symbol}{$product->base_price|number_format:2}</strong>
+                <span class="regular-price">{currency_symbol}{$listing->base_price|number_format:2}</span>
             {/if}
         {/if}
     </div>
@@ -123,9 +126,15 @@
             <button type="submit" class="awesome {$smarty.const.BTN_COLOR} {$smarty.const.BTN_SIZE}" rel="nofollow">{"Add to Cart"|gettext}</button>
             {if $product->quantity <= 0}<span class="error">{$product->availability_note}</span>{/if}   
         {elseif $product->availability_type == 2}
+            {if $user->isAdmin()}
+                <button type="submit" class="awesome red {$smarty.const.BTN_SIZE}" rel="nofollow">{"Add to Cart"|gettext}</button>
+            {/if}
             {if $product->quantity <= 0}<span class="error">{$product->availability_note}</span>{/if}              
         {elseif $product->active_type == 1}
-            <a href="javascript: return false;"class="awesome disabled {$smarty.const.BTN_SIZE}" rel="nofollow">{"Product currently unavailable for purchase"|gettext}</a>
+            {if $user->isAdmin()}
+                <button type="submit" class="awesome red {$smarty.const.BTN_SIZE}" rel="nofollow">{"Add to Cart"|gettext}</button>
+            {/if}
+            <em class="unavailable">{"Product currently unavailable for purchase"|gettext}</em>
         {/if}    
         
         {/form}
@@ -240,9 +249,9 @@
     {/if}
     {/permissions}
     
-    <div id="child-products">
+    <div id="child-products" class="exp-ecom-table">
         {form id="child-products-form" controller=cart action=addItem}
-        <table border="0" cellspacing="0" cellpadding="0" class="exp-ecom-table">
+        <table border="0" cellspacing="0" cellpadding="0">
             <thead>
                 <tr>
                     <th>&nbsp;</th>
@@ -376,28 +385,42 @@
     {/if}
     
      {if $product->crosssellItem|@count >= 1}
-     <div class="store showall">
-         <div id="relatedItemsDiv"><h3 id="relatedItemsHeader">Related Items</h3></div>
-         <div class="products">
-             {foreach name=listings from=$product->crosssellItem item=listing}
-             {if $smarty.foreach.listings.iteration%3==0}
-                 {assign var="positioninfo" value=" last-in-row"}
-             {else}
-                 {assign var="positioninfo" value=""}
+     <div class="products ipr{$config.images_per_row} related-products">
+         <h2>{"Related Items"|gettext}</h2>
+         
+         {counter assign="ipr" name="ipr" start=1}
+
+         {foreach name=listings from=$product->crosssellItem item=listing}
+
+         {if $smarty.foreach.listings.first || $open_row}
+             <div class="product-row">
+             {assign var=open_row value=0}
+         {/if}
+
+         {include file=$listing->getForm('storeListing')}
+
+
+         {if $smarty.foreach.listings.last || $ipr%$config.images_per_row==0}
+             </div>
+             {assign var=open_row value=1}
+         {/if}
+         {counter name="ipr"}
+         {*if !$listing->active_type==2}
+
+             {$ipr}
+             {if $smarty.foreach.listings.first || $ipr%0}
+             {counter name="ipr" start=0}
+             <div class="product-row">
              {/if}
 
-             <div class="product{$positioninfo}">{include file=$listing->getForm('storeListing')}</div>
+             {include file=$listing->getForm('storeListing')}
 
-             {if $positioninfo!=""}
-                 <div style="clear:both"></div>
+             {if $smarty.foreach.listings.last || $ipr%0}
+                 </div>
              {/if}
-
-             {/foreach}
-
-         </div>
-        
+         {counter name="ipr" start=$ipr+1}
+         {/if*}
+         {/foreach}
      </div>
      {/if}
-        
-    {clear}
 </div>
