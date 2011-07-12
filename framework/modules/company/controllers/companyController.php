@@ -71,6 +71,7 @@ class companyController extends expController {
         //$sql .= 'sc.storecategories_id IN (';
         //$sql .= 'SELECT id FROM '.DB_TABLE_PREFIX.'_storeCategories WHERE rgt BETWEEN '.$this->category->lft.' AND '.$this->category->rgt.')';         
         $sql .=  'p.companies_id=' . $this->params['id'];
+        $sql .=  ' AND p.parent_id = 0';
         
         $count_sql = $count_sql_start . $sql;
         $sql = $sql_start . $sql;

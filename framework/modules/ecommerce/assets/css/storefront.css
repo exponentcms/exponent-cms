@@ -27,12 +27,27 @@
     text-align:center;
 }
 
+.product .related-products h2.related-products-header {
+    margin-top: 22px;
+    margin-bottom: 18px;
+    padding: 2px;
+    border-top: 1px solid grey;
+    border-bottom: 1px solid grey;
+    background-color: #E4E4E4;
+}
+    
 /* prices */
 
 .product .prod-price {
     margin:5px 0;
     font-size:130%;
     font-weight:bold;
+}
+
+.product p.warehouse-location {
+    font-size: 10px;
+    color: gray;
+    font-variant: small-caps;
 }
 
 .product .prod-price .regular-price {
