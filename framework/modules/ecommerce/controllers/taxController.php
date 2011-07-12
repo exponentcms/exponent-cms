@@ -62,6 +62,99 @@ class taxController extends expController {
         assign_to_template(array('taxes'=>$taxes));
     }
 
+	function edit() {
+		global $db;
+		
+		if(!empty($this->params['id'])) {
+			//Get the data from the 3 tables
+			$tax_class = $db->selectObject('tax_class', 'id =' .$this->params['id']);
+			$tax_rate  = $db->selectObject('tax_rate', 'class_id =' .$this->params['id']);
+			$tax_geo   = $db->selectObject('tax_geo', 'zone_id =' . $tax_rate->zone_id);
+			//Store it in a single object all the data needed
+			$record->id        = $tax_class->id;
+			$record->classname = $tax_class->name;
+			$record->rate      = $tax_rate->rate;
+			$record->zone      = $tax_rate->zone_id;
+			$record->state     = $tax_geo->region_id; 
+			$record->country   = $tax_geo->country_id;
+		}
+		
+		//Get the tax_zone
+		$records = $db->selectObjects('tax_zone');
+		foreach($records as $item) {
+			$zones[$item->id] = $item->name;
+		}
+
+		assign_to_template(array('zones'=>$zones, 'record'=>$record));
+	}
+	
+	function update() {
+		global $db;
+			
+		if(empty($this->params['id'])) {
+			//Add data in tax class
+			$tax_class->name = $this->params['name'];
+			$class_id        = $db->insertObject($tax_class,'tax_class');
+			
+			//Add data in the tax geo
+			$tax_geo->zone_id    = $this->params['zone'];
+			$tax_geo->country_id = $this->params['country'];
+			$tax_geo->region_id  = $this->params['state'];
+			$db->insertObject($tax_geo,'tax_geo');
+			
+			//Add data in the tax rate
+			$tax_rate->zone_id  = $this->params['zone'];
+			$tax_rate->class_id = $class_id;
+			$tax_rate->rate     = $this->params['rate'];
+			$db->insertObject($tax_rate,'tax_rate');
+		} else {
+		
+			//Update the Tax class table
+			$tax_class        = $db->selectObject('tax_class', 'id =' .$this->params['id']);
+			$tax_class->name  = $this->params['name'];
+			$db->updateObject($tax_class, 'tax_class');
+		
+			//Update the Tax rate table
+			$tax_rate           = $db->selectObject('tax_rate', 'class_id =' .$this->params['id']);
+			$zone_id            = $tax_rate->zone_id;
+			$tax_rate->zone_id  = $this->params['zone'];
+			$tax_rate->rate     = $this->params['rate'];
+			$db->updateObject($tax_rate,'tax_rate');
+			
+			//Update the Tax geo table
+			$tax_geo             = $db->selectObject('tax_geo', 'zone_id  =' .$zone_id);
+			$tax_geo->zone_id    = $this->params['zone'];
+			$tax_geo->country_id = $this->params['country'];
+			$tax_geo->region_id  = $this->params['state'];
+			$db->updateObject($tax_geo,'tax_geo');
+		}
+		
+        expHistory::back();
+	}
+	
+	function delete() {
+		global $db;
+		
+        if (empty($this->params['id'])) return false;
+        $zone = $db->selectObject('tax_zone', 'id =' .$this->params['id']);
+		
+		//Get the data from the text rate to get the zone id
+		$rate = $db->selectObject('tax_rate', 'class_id=' . $this->params['id']);
+		
+		//Delete record in tax rate
+        $db->delete('tax_rate', 'class_id =' .$this->params['id']);
+		
+		//Delete record in tax geo
+		$db->delete('tax_geo', 'zone_id =' . $rate->zone_id);
+		
+		//Finally delete the record in tax class
+		$db->delete('tax_class', 'id =' .$this->params['id']);
+		
+		
+        expHistory::back();
+	
+	}
+	
     function manage_zones() {
         global $db;
         
@@ -96,7 +189,7 @@ class taxController extends expController {
 			$obj->name = $this->params['name'];
 			$db->insertObject($obj,'tax_zone');
 		} else {
-			$zone = $db->selectObject('tax_zone', 'id =' .$this->params['id']);
+			$zone        = $db->selectObject('tax_zone', 'id =' .$this->params['id']);
 			$zone->name  = $this->params['name'];
 			$db->updateObject($zone, 'tax_zone');
 		}
@@ -108,7 +201,6 @@ class taxController extends expController {
 		global $db;
 		
         if (empty($this->params['id'])) return false;
-        $zone = $db->selectObject('tax_zone', 'id =' .$this->params['id']);
         $db->delete('tax_zone', 'id =' .$this->params['id']);
 		
         expHistory::back();
