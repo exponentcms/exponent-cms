@@ -82,27 +82,37 @@ class taxController extends expController {
    
     function edit_zone() {
         global $db;
-                
-        $sql = "
-
-            SELECT 
-            *
-            FROM ".DB_TABLE_PREFIX."_tax_zone ORDER BY name ASC;
-
-            ";
-
-        $zones = $db->selectObjectsBySql($sql);
-
-        assign_to_template(array('zones'=>$zones));
+		
+		if(isset($this->params['id'])) {
+			$zone = $db->selectObject('tax_zone', 'id =' .$this->params['id']);
+			assign_to_template(array('zone'=>$zone));
+		}
     }
 
     function update_zone() {
         global $db;
-        $obj->name = $this->params['name'];
-        $db->insertObject($obj,'tax_zone');
+			
+		if(empty($this->params['id'])) {
+			$obj->name = $this->params['name'];
+			$db->insertObject($obj,'tax_zone');
+		} else {
+			$zone = $db->selectObject('tax_zone', 'id =' .$this->params['id']);
+			$zone->name  = $this->params['name'];
+			$db->updateObject($zone, 'tax_zone');
+		}
+		
         expHistory::back();
     }
-   
+	
+	function delete_zone() {
+		global $db;
+		
+        if (empty($this->params['id'])) return false;
+        $zone = $db->selectObject('tax_zone', 'id =' .$this->params['id']);
+        $db->delete('tax_zone', 'id =' .$this->params['id']);
+		
+        expHistory::back();
+    }
 }
 
 ?>
