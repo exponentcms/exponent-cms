@@ -41,6 +41,18 @@ class ecomconfig extends expConfig {
             return null;
         }
     }
+	
+	public static function splitConfigUpCharge($upcharge = array(), $type = 'region') {
+		$upchargeRate = array();
+		foreach($upcharge as $key => $item) {
+			$tmp = explode('_', $key);
+			if($tmp[0] == $type) {
+				$upchargeRate[$tmp[1]] = $item;
+			}
+		}
+		
+		return $upchargeRate;
+	}
 }
 
 ?>

@@ -284,7 +284,45 @@ class ecomconfigController extends expController {
         $regions = $gr->find('all');
         
         assign_to_template(array('config'=>$this->config, 'pullable_modules'=>$pullable_modules, 'views'=>$views,'countries'=>$countries, 'regions'=>$regions));
-    }    
+    }   
+
+
+	/*****************************************************************/
+    /***************  Upcharge Rate   *******************************/
+    /*****************************************************************/
+	
+	 function manage_upcharge() {
+		$this->loc->src = "@globalstoresettings";
+        $config = new expConfig($this->loc);
+		$this->config = $config->config;
+
+		$gc = new geoCountry();             
+        $countries = $gc->find('all');
+        
+        $gr = new geoRegion();             
+        $regions = $gr->find('all',null,'rank asc,name asc');
+        assign_to_template(array('countries'=>$countries, 'regions'=>$regions, 'upcharge'=>$this->config['upcharge']));
+	 }
+	 
+	 function update_upcharge() {
+       
+        $this->loc->src = "@globalstoresettings";
+        $config = new expConfig($this->loc);
+		$this->config = $config->config;
+		
+		//This will make sure that only the country or region that given a rate value will be saved in the db
+		$upcharge = array();
+		foreach($this->params['upcharge'] as $key => $item) {
+			if(!empty($item)) {
+				$upcharge[$key] = $item;
+			}
+		}
+		$this->config['upcharge'] = $upcharge;
+		
+        $config->update(array('config'=>$this->config));
+        flash('message', 'Configuration updated');
+        expHistory::back();
+    }
 }
 
 ?>
