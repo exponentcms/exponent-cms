@@ -54,17 +54,21 @@ class tablebasedcalculator extends shippingcalculator {
 		
 		 //if certain states, add $$ from config
         $currentMethod = $order->getCurrentShippingMethod(); //third created shipping method
+		
+		//Get the config and parse to get the states/regions only
+		$upcharge = ecomconfig::getConfig('upcharge');
+		$stateUpcharge = ecomconfig::splitConfigUpCharge($upcharge, 'region');
+		
         //2 - alaska
         //21 - hawaii
         //52 - PuertoRico
-        $stateUpcharge = array('2','21','52');
-       
-       $rates = array();
-	   if(!empty($c)) {
+        // $stateUpcharge = array('2','21','52');
+        $rates = array();
+	    if(!empty($c)) {
 			for($i = 0; $i < count($c); $i++) {
 			
-				if (in_array($currentMethod->state, $stateUpcharge)) { 
-					$c[$i] += 1.50; $c[$i] += 1.50; 
+				if (array_key_exists($currentMethod->state, $stateUpcharge)) { 
+					$c[$i] += $stateUpcharge[$currentMethod->state]; // $c[$i] += $stateUpcharge[$currentMethod->state]; Commented this though i'm not sure if this is done intentionally 
 				}
                 if($i > 9) $rates[($i+1)] = array('id' => 0 . ($i+1), 'title' => $this->shippingspeeds[$i]->speed, 'cost' => $c[$i]);
                 else $rates[0 . ($i+1)] = array('id' => 0 . ($i+1), 'title' => @$this->shippingspeeds[$i]->speed, 'cost' => $c[$i]);

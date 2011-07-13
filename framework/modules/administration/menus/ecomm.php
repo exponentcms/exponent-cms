@@ -70,6 +70,10 @@ $ecom = array(
                             'text'=>"Address/Geo Settings",
                             'url'=>makeLink(array('controller'=>'address','action'=>'manage')),
                         ),
+						array(
+                            'text'=>"Manage Up Charge Rate",
+                            'url'=>makeLink(array('controller'=>'ecomconfig','action'=>'manage_upcharge')),
+                        ),
                         array(
                             'text'=>"Manage Tax Classes",
                             'url'=>makeLink(array('controller'=>'tax','action'=>'manage')),
