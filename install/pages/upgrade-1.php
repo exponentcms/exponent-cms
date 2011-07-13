@@ -37,4 +37,4 @@ Since your website has a configuration file already in place, we're going to per
 Next, we'll run through any upgrade scripts needed to bring your code and database up to date.
 "); ?>
 </p>
-<a class="awesome large green" href="?page=upgrade-3"><?php echo gt('Continue Upgrade') ?></a>
+<a class="awesome large green" href="?page=upgrade-2"><?php echo gt('Continue Upgrade') ?></a>

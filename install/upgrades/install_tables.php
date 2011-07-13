@@ -23,7 +23,7 @@
  * @package Installation
  */
 class install_tables extends upgradescript {
-	protected $from_version = '0.96.3';
+//	protected $from_version = '0.96.3';
 //	protected $to_version = '1110.97.0'; //set this to something ridiculously high so it always runs
 
 	/**
