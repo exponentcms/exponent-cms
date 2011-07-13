@@ -14,7 +14,11 @@
  *
  *}
 
-{css unique="showorder" corecss="tables"}
+{* css unique="showorder" link="`$asset_path`css/ecom.css" corecss="tables"}
+
+ {/css*}
+
+{css unique="showorder" link="`$asset_path`css/ecom.css" corecss="tables"}
 
 {/css}
 
@@ -56,7 +60,7 @@
             {/permissions}                                                           
         </ul>   
                  
-        <div class="yui-content">
+        <div class="yui-content exp-ecom-table">
             <div id="invoice">
                 <div id="buttons">
                     {printer_friendly_link class="awesome `$smarty.const.BTN_SIZE` `$smarty.const.BTN_COLOR`" text="Print this invoice" view="show_printable"} 

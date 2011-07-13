@@ -106,7 +106,8 @@ class ckeditorcontrol extends formcontrol {
                     filebrowserLinkWindowWidth : '320',
                     filebrowserLinkWindowHeight : '600',
 					filebrowserImageBrowseLinkUrl : '".PATH_RELATIVE."external/editors/connector/CKeditor_link.php',
-					entities_additional : ''
+					entities_additional : '',
+					uiColor : '#dedede'
                 });
 				
 				CKEDITOR.on( 'instanceReady', function( ev ) {
