@@ -131,7 +131,7 @@ class expSimpleNoteController extends expController {
         $sql .= 'AND n.approved=1';
         
         $simplenotes = new expPaginator(array(
-            'model'=>'expSimpleNote',
+            //'model'=>'expSimpleNote',
             'sql'=>$sql, 
             'limit'=>10,
             'order'=>'created_at',
@@ -151,7 +151,7 @@ class expSimpleNoteController extends expController {
         } else {
             $unapproved = 0;
         }        
-        
+ 
         assign_to_template(array(
             'simplenotes'=>$simplenotes,
             'unapproved'=>$unapproved, 

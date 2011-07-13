@@ -31,7 +31,7 @@
  * @param array $params
  * @param mixed $smarty
  */
-function smarty_function_simplenote($params,&$smarty) {
+function smarty_function_simplenote($params,&$smarty) {    
     $hideform = empty($params['hideform']) ? false : true;
     $hidenotes = empty($params['hidenotes']) ? false : true;
     $title = empty($params['title']) ? 'Notes' : $params['title'];
