@@ -65,11 +65,10 @@ function smarty_function_rating($params,&$smarty) {
                 </div>';
                 
             }
-        $html.='</div><em><span class="avg">'.$total_average.'</span> avg. by <span class="raters">'.$rating_count.'</span> people</em>
-        </div>
-    ';
-
-    $rated = $db->selectValue('content_expRatings','expratings_id',"content_type='".$params['content_type']."' AND subtype='".$params['subtype']."' AND poster='".$user->id."'");
+        if ($rating_count) $html.='</div><em><span class="avg">'.$total_average.'</span> avg. by <span class="raters">'.$rating_count.'</span> people</em></div>';
+        else $html .= '</div><em><span class="raters">Be the first to rate this item.</em></div>';
+        
+        $rated = $db->selectValue('content_expRatings','expratings_id',"content_type='".$params['content_type']."' AND subtype='".$params['subtype']."' AND poster='".$user->id."'");
     $rated_val = $db->selectValue('expRatings','rating',"id='".$rated."' AND poster='".$user->id."'");
     $html .= '
         <div class="rating-form">

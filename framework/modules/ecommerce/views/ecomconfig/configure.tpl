@@ -49,7 +49,7 @@
 				<li><a href="#tab5"><em>Emails</em></a></li>
                 <li><a href="#tab6"><em>Geography</em></a></li>
 				<li><a href="#tab7"><em>Invoice</em></a></li>
-				<li><a href="#tab7"><em>Display Settings</em></a></li>
+				<li><a href="#tab7"><em>Display & Feature Settings</em></a></li>
 			</ul>            
 	    	<div class="yui-content">
 	        	<div id="tab1">
@@ -129,6 +129,7 @@
                 <div id="tab8">
                     <h2>{"General Store Display"|gettext}</h2>
 				    {control type="text" name="images_per_row" label="Products per row" size="3" value=$config.images_per_row}
+                    {control type="checkbox" name="enable_ratings_and_reviews" label="Enable Ratings & Reviews?" value=1 checked=$config.enable_ratings_and_reviews}
                 </div>  
             </div>
         </div>
