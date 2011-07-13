@@ -185,7 +185,9 @@
     </div>
     {/if}
     
-    {rating content_type="product" subtype="quality" label="Product Rating"|gettext record=$product}
+    {if $config.enable_ratings_and_reviews} 
+        {rating content_type="product" subtype="quality" label="Product Rating"|gettext record=$product}
+    {/if}
     
     {if $product->main_image_functionality=="iws"}
     <div class="swatches thumbnails">
@@ -244,8 +246,7 @@
     {if $product->childProduct|@count >= 1}
     {permissions}                   
     {if $permissions.delete == 1}   
-        {icon class=delete action=deleteChildren record=$product title="Delete `$product->title`'s Children" onclick="return confirm('Are you sure you want to delete ALL child products?');"} 
-        Delete All Child Products
+        {icon class=delete action=deleteChildren record=$product text="Delete All Child Products" title="Delete `$product->title`'s Children" onclick="return confirm('Are you sure you want to delete ALL child products?  This is permanent.');"}         
     {/if}
     {/permissions}
     
