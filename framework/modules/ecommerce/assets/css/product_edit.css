@@ -36,7 +36,7 @@
 }
 
 /********************* options ******************************/
-.store.edit .options .hd {
+.store.editproduct .options .hd {
     margin:0;
     position:relative;
     background:url(../images/ecom-sprite.png) repeat-x 0 -44px;
@@ -46,7 +46,7 @@
 
 }
 
-.store.edit .hd a.collapse {
+.store.editproduct .hd a.collapse {
     background:url(../images/ecom-sprite.png) repeat-x -4px -386px;
     position:absolute;
     text-indent:20px;
@@ -58,7 +58,7 @@
     right:1px;
 }
 
-.store.edit .hd a.expand {
+.store.editproduct .hd a.expand {
     background:url(../images/ecom-sprite.png) repeat-x -4px -413px;
     position:absolute;
     text-indent:20px;
@@ -70,7 +70,8 @@
     right:1px;
 }
 
-.store.edit .hd h2 {
+.editproduct .hd h2,
+.editproduct legend {
     margin:0;
     color:#103684;
     padding:8px 0 8px 33px;
@@ -79,11 +80,11 @@
     background-repeat:no-repeat;
 }
 
-.store.edit div.bd {
+.store.editproduct div.bd {
     margin-bottom:5px;
     overflow:hidden;
 }
 
-.store.edit div.collapsed {
+.store.editproduct div.collapsed {
     height:0;
 }

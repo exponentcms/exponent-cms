@@ -18,7 +18,8 @@
             {control type=radiogroup columns=1 name="sales_rep_2_id" label="Select Sales Rep 2" items=$sales_reps flip=false}                    
             {control type=radiogroup columns=1 name="sales_rep_3_id" label="Select Sales Rep 3" items=$sales_reps flip=false}        
         </td></tr></table>
-        <a href="#" id="continue-passthru-checkout" class="exp-ecom-link"><strong><em>Continue To Last Step</em></strong></a>        
+        <a href="#" id="continue-passthru-checkout" class="exp-ecom-link"><strong><em>Continue To Last Step</em></strong></a>     
+        <button id="continue-passthru-checkout" type="submit" class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}">{"Continue Checkout"|gettext}</button>   
     {/form}
     <div style="clear:both;"></div>
 </div>

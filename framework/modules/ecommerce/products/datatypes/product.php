@@ -192,6 +192,7 @@ class product extends expRecord {
             }
         }else
         {
+            eDebug($params);
             foreach ($params['children'] as $idKey=>$childQty)
             {
                 $cprod = new childProduct($idKey);
@@ -206,9 +207,7 @@ class product extends expRecord {
                     if($orderItem->product_id == $idKey) $qCheck += $orderItem->quantity;
                 }
                 //}
-                /*eDebug("Qty:".$childQty);
-                eDebug("Product Quantity:".$cprod->quantity);
-                eDebug("Qcheck:".$qCheck,true);*/
+                
                 if (($cprod->quantity - $qCheck) < $childQty) {
                     if ($cprod->availability_type == 2) {
                         flash('error', $this->title. ' - ' .$cprod->model. ' only has '.$cprod->quantity.' on hand. You can not add more than that to your cart.');
@@ -216,6 +215,11 @@ class product extends expRecord {
                         expHistory::back();
                     }
                 }
+                /*eDebug("Current Qty Adding:".$childQty);
+                eDebug("Product Quantity On Hand:".$cprod->quantity);
+                eDebug("Prod min order qty:" . $cprod->minimum_order_quantity);
+                eDebug("Current Qty In Cart:".$qCheck); */               
+                
                 //check minimum quantity
                 if (($childQty + $qCheck) < $cprod->minimum_order_quantity)
                 {
@@ -287,9 +291,10 @@ class product extends expRecord {
         }else{
             foreach ($params['children'] as $ckey=>$cqty)
             {
-                $params['qty'] =  1;
-                for ($qty=1; $qty<=$cqty; $qty++)  
-                {
+                //$params['qty'] =  1;
+                $params['quantity'] = $cqty;
+                //for ($qty=1; $qty<=$cqty; $qty++)  
+               // {
                     $child = new $params['product_type']($ckey);                     //$params['prod-quantity'][$ckey];
                     $this->createOrderItem($child, $params, $user_input_info, $orderid);
                     
@@ -298,7 +303,7 @@ class product extends expRecord {
                         if ($child->id == $ckey) $this->createOrderItem($child, $params, $user_input_info);
                         break;   
                     }*/ 
-                }  
+                //}  
                                      
             }
             //die();
