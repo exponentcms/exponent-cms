@@ -65,7 +65,7 @@ if (MAINTENANCE_MODE && !exponent_users_isAdmin() && ( !isset($_REQUEST['module'
 	//the default user is anonymous
 	if (!exponent_sessions_loggedIn()) {
 		// Initialize the users subsystem
-		require_once(BASE.'subsystems/users.php');
+		require_once(BASE.'subsystems/users.php');  // FIXME users.php is already loaded within exponent.php above
 
 		//TODO: Maxims initial anonymous user implementation
 		//exponent_users_login("anonymous", "anonymous");
@@ -105,7 +105,6 @@ if (MAINTENANCE_MODE && !exponent_users_isAdmin() && ( !isset($_REQUEST['module'
 		exponent_sessions_unset('uilevel');
 	}
 }
-
 
 //$microtime_str = explode(' ',microtime());
 //$i_end = $microtime_str[0] + $microtime_str[1];

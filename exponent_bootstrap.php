@@ -62,7 +62,7 @@ if (function_exists('date_default_timezone_set')) {
 // Process PHP-wrapper settings (ini_sets and setting detectors)
 include_once(dirname(__realpath(__FILE__)) . '/exponent_setup.php');
 
-// Initialize the Compatibility Layer
+// Initialize the PHP4 Compatibility Layer
 include(BASE.'compat.php');
 
 ?>

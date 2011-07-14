@@ -7,21 +7,21 @@ Added / Fixed / changed for 2.0.0 beta 4
 # This release includes an emphasis on the permission system
 # Major update to the e-commerce system
 # Notable Module fixes and improvements
-    • Blog module updated to also better implement use of tags and comments
-    • Better implementation of database interaction
+    • Blog module updated; also better use of tags and comments
+    • Better implementation of database interaction (mysqli only @tt)
     • More robust api documentation - new api.exponentcms.org site is now online
-    • Changes to promote better internationalization (utf8) support, esp in forms
+    • Changes to promote better internationalization (utf8) support, esp. in forms
     • Added a new "showcase view" to the file displayer
     • More consistent "asset" file organization
-    • Scrubbed code to be fully php v5.3 compliant
+    • Scrubbed code to be (more) fully php v5.3+ compliant
     • Revised "Exponent" menu to be more intuitive & added some commands
     • Migration now can import permissions from old site, and better handle pre-0.97 pages
-    • Prepping for headline module deprecation (text module is better choice)
-    • Updates to the help module
-    • Fixed issue where "flash" would cover menus
-    • Minor changes to the installation and upgrade process
-    • Cleaned up several page displays and the "tabs" display
-    • Added a minor "fix database" routine to the slingbar and upgrades
+    • Headline module deprecated (still exists, but text module is better choice)
+    • Updates to the help module to allow better management of exponent doc site
+    • Fixed issue where "flash" objects would cover drop-down menus
+    • Minor tweaks to the revised installation and upgrade process
+    • Cleaned up several page displays and "tabs" styling
+    • Added a minor "fix database" routine to the "Exponent" menu and during upgrades
     • Many, many other tweaks and fixes
 
 Added / Fixed / changed for 2.0.0 beta 3

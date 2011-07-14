@@ -1,12 +1,23 @@
 <?php
+
+##################################################
+#
+# Copyright (c) 2004-2011 OIC Group, Inc.
+# Written and Designed by James Hunt
+#
+# This file is part of Exponent
+#
+# Exponent is free software; you can redistribute
+# it and/or modify it under the terms of the GNU
+# General Public License as published by the Free
+# Software Foundation; either version 2 of the
+# License, or (at your option) any later version.
+#
+# GPL: http://www.gnu.org/licenses/gpl.txt
+#
+##################################################
+
 /**
- *  This file is part of Exponent
- *  Exponent is free software; you can redistribute
- *  it and/or modify it under the terms of the GNU
- *  General Public License as published by the Free
- *  Software Foundation; either version 2 of the
- *  License, or (at your option) any later version.
- *
  * The file that initializes everything
  *
  * @link http://www.gnu.org/licenses/gpl.txt GPL http://www.gnu.org/licenses/gpl.txt
@@ -101,7 +112,6 @@ exponent_permissions_initialize();
  */
 $router = new expRouter();
 
-
 /**
  * Initialize the navigation hierarchy
  * the list of sections/pages for the site
@@ -152,4 +162,5 @@ function eLog($var, $type='', $path='', $minlevel='0') {
 		}
 	}
 }
+
 ?>
