@@ -157,8 +157,7 @@ class product extends expRecord {
         if ($orderid == null) global $order;
         else $order = new order($orderid);
         //eDebug($this);
-        //eDebug($params,true);
-        $params['qty'] = isset($params['qty']) ? $params['qty'] : 1;
+        $params['quantity'] = isset($params['quantity']) ? $params['quantity'] : 1;
         if (!isset($params['product_type'])) $params['product_type'] = 'product';
         
         $params['error'] = '';
@@ -176,7 +175,7 @@ class product extends expRecord {
                     if($orderItem->product_id == $this->id) $qCheck += $orderItem->quantity;
                 }
             //}
-            $qty = $params['qty'];
+            $qty = $params['quantity'];
             if (($this->quantity - $qCheck) < $qty) {
                 if ($this->availability_type == 2) {
                     flash('error', $this->title.' only has '.$this->quantity.' on hand. You can not add more than that to your cart.');
@@ -188,8 +187,8 @@ class product extends expRecord {
             if (($qty + $qCheck) < $this->minimum_order_quantity)
             {
                  flash('message', $this->title.' has a minimum order quantity of '.$this->minimum_order_quantity.'. The quantity has been adjusted accordingly.');
-                 $params['qty'] += $this->minimum_order_quantity - ($qty + $qCheck);
-                 $qty = $params['qty'];                             
+                 $params['quantity'] += $this->minimum_order_quantity - ($qty + $qCheck);
+                 $qty = $params['quantity'];                             
             }
         }else
         {
@@ -385,7 +384,7 @@ class product extends expRecord {
         eDebug($params);
         eDebug($product->minimum_order_quantity);*/
         
-        $item->quantity += is_numeric($params['qty']) && $params['qty'] >= $product->minimum_order_quantity ? $params['qty'] : $product->minimum_order_quantity;
+        $item->quantity += is_numeric($params['quantity']) && $params['quantity'] >= $product->minimum_order_quantity ? $params['quantity'] : $product->minimum_order_quantity;
         if ($item->quantity < 1 ) $item->quantity = 1;
        // eDebug($item->quantity,true);
         //eDebug($params);

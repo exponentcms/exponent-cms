@@ -48,8 +48,8 @@ class cartController extends expController {
             flash('message', "Please select a product and quantity from the options listed below to add to your cart.");
             redirect_to(array('controller'=>'store','action'=>'show','id'=>$this->params['product_id']));      
         }
-         
-        //check for multiple product adding
+		
+		//check for multiple product adding
         if (isset($this->params['prod-quantity'])) 
         {
             //we are adding multiple children, so we approach a bit different
@@ -77,6 +77,18 @@ class cartController extends expController {
         
         $product = new $product_type($this->params['product_id'], true, true);  //need true here?
         
+		//Check the Main Product quantity
+		if (isset($this->params['quantity'])) 
+		{
+			if(((int)$this->params['quantity']) < $product->minimum_order_quantity) 
+			{
+				flash('message', "Please enter a quantity equal or greater than the minimum order quantity.");
+				redirect_to(array('controller'=>'store','action'=>'show','id'=>$this->params['product_id']));
+			} else {
+			
+			}
+		}
+		
         if (($product->hasOptions() || $product->hasUserInputFields()) && (!isset($this->params['options_shown']) || $this->params['options_shown']!= $product->id)) 
         {
             
