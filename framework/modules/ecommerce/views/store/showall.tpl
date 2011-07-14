@@ -115,6 +115,12 @@
             {/if}
         {/foreach}
 
+        {* close the row if left open. might happen for non-admins *}
+        {if $open_c_row==0}
+            </div>
+            {assign var=open_c_row value=1}
+        {/if}
+
     </div>
     {else}
 
