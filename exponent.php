@@ -112,7 +112,6 @@ exponent_permissions_initialize();
  */
 $router = new expRouter();
 
-
 /**
  * Initialize the navigation hierarchy
  * the list of sections/pages for the site
