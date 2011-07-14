@@ -1,4 +1,22 @@
 <?php
+
+##################################################
+#
+# Copyright (c) 2004-2011 OIC Group, Inc.
+# Written and Designed by James Hunt
+#
+# This file is part of Exponent
+#
+# Exponent is free software; you can redistribute
+# it and/or modify it under the terms of the GNU
+# General Public License as published by the Free
+# Software Foundation; either version 2 of the
+# License, or (at your option) any later version.
+#
+# GPL: http://www.gnu.org/licenses/gpl.txt
+#
+##################################################
+
 if (!defined('DISPLAY_THEME')) {
 	/* exdoc
 	 * The directory and class name of the current active theme.  This may be different
@@ -6,18 +24,21 @@ if (!defined('DISPLAY_THEME')) {
 	 */
 	define('DISPLAY_THEME',DISPLAY_THEME_REAL);
 }
+
 if (!defined('THEME_ABSOLUTE')) {
 	/* exdoc
 	 * The absolute path to the current active theme's files.  This is similar to the BASE constant
 	 */
 	define('THEME_ABSOLUTE',BASE.'themes/'.DISPLAY_THEME.'/'); // This is the recommended way
 }
+
 if (!defined('THEME_RELATIVE')) {
 	/* exdoc
-	 * The relative web path to the current active theme.  This is similar to the PATH_RELATIVE consant.
+	 * The relative web path to the current active theme.  This is similar to the PATH_RELATIVE constant.
 	 */
 	define('THEME_RELATIVE',PATH_RELATIVE.'themes/'.DISPLAY_THEME.'/');
 }
+
 if (!defined('JS_FULL')) {
 	/* exdoc
 	 * The absolute path to Exponent's core javascript.
@@ -33,7 +54,7 @@ if (!defined('ICON_RELATIVE')) {
 	
 	define('ICON_RELATIVE', PATH_RELATIVE . 'framework/core/assets/images/');
 	
-	//DEPRECATED: old directory, inconsitent naming
+	//DEPRECATED: old directory, inconsistent naming
 	/*if (is_readable(THEME_ABSOLUTE . 'icons/')) {
 		/* exdoc
 		 * The relative web path to the current icon set.  If an icons/ directory exists directly
@@ -51,6 +72,7 @@ if (!defined('ICON_RELATIVE')) {
 	}
 	*/
 }
+
 if (!defined('MIMEICON_RELATIVE')) {
 	//DEPRECATED: old directory, inconsitent naming
     // if (is_readable(THEME_ABSOLUTE . 'mimetypes/')) {
@@ -84,6 +106,5 @@ if (!defined('YUI2_PATH')) {
 	define('YUI2_PATH', PATH_RELATIVE.'external/lissa/'.YUI2_VERSION.'/build/');
 	define('YUI2_URL', URL_FULL.'external/lissa/'.YUI2_VERSION.'/build/');
 }
-
 
 ?>
