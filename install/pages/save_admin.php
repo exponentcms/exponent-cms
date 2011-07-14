@@ -28,7 +28,7 @@ if ($user->username == '') {
 	echo $i18n['bad_username'];
 } else {
     if (expValidator::validate_email_address($_POST['email']) == false) {
-        flash('You must supply a valid email address.');
+        flash('error','You must supply a valid email address.');
         header('Location: index.php?page=admin_user&erremail=true');
         exit();
     }

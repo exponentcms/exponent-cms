@@ -95,7 +95,7 @@
                                     {control type="dropdown" name="order_status_id" label="Change order status to:" frommodel='order_status' orderby='rank' value=$order->order_status_id}
                                     {control type="checkbox" name="email_user" label="Send email to user to notify them of status change?" value=1}
                                     {control type="checkbox" name="include_shipping_info" label="Include Shipping Information in email?" value=1}
-                                    <select id="order_status_messages" name="order_status_messages" size="1" onchange="populate_msgbox('comment');">
+                                    <select id="order_status_messages" name="order_status_messages" size="1">
                                         <option value="0" selected>-- Select a predefined message --</option>
                                         {foreach from=$messages item=msg}
                                             <option value="{$msg->body}">{$msg->body|truncate:80}</option>
@@ -138,6 +138,8 @@
                 </table>
             </div>
             <div id="shipinfo">
+                <h2>{"Shipping and Tracking"|gettext}</h2>
+                
                  <table class="order-info">
                     <thead>
                         <tr>
@@ -153,7 +155,7 @@
                             {control type="datetimecontrol" name="shipped" showtime=false label="Date Shipped" value=$order->shipped}
                             {control type="buttongroup" submit="Save Shipping Info"}
                         {/form}
-                        </td><td>&nbsp;</td>
+                        </td>
                         </tr>
                     {else}
                         <tr><td> 
@@ -229,35 +231,64 @@
     {permissions}
         {if $permissions.manage == 1}
             <div id="addinfo">              
-                <h3>Sales Reps</h3>
-                <p>
-                    {form action=update_sales_reps}
-                        {control type="hidden" name="id" value=$order->id}
-                        {control type="dropdown" name="sales_rep_1_id" label="Sales Rep 1 (Initial Order)" includeblank=true items=$sales_reps value=$order->sales_rep_1_id}
-                        {control type="dropdown" name="sales_rep_2_id" label="Sales Rep 2 (Completed Order)" includeblank=true items=$sales_reps value=$order->sales_rep_2_id}
-                        {control type="dropdown" name="sales_rep_3_id" label="Sales Rep 3 (Other)" includeblank=true items=$sales_reps value=$order->sales_rep_3_id}
-                        {control type="buttongroup" submit="Update Sales Reps"}
-                    {/form}
-                </p>
-                <h3>Original HTTP Referrer</h3>
-                {if $order->orig_referrer !=''}
-                    <p><a href="{$order->orig_referrer}" target="_blank">{$order->orig_referrer}</a></p>        {else}
-                    <p>Direct Traffic</p>
-                {/if}
-                
-                {if $order->reference_id != 0}
-                    <h3>Invoice Reference:</h3>
-                    <p><a href="/order/show/id/{$order->reference_id}">{$order->reference_id}</a></p>
-                {/if}
-                                
-                {if $order->referencing_ids|@count > 0}
-                    <h3>Spawned Invoices Referencing This Invoice:</h3>                    
-                    {foreach from=$order->referencing_ids item=ref_id}
-                        <p><a href="/order/show/id/{$ref_id}">{$ref_id}</a></p>
-                    {/foreach}
-                {/if}
+                <h2>Sales Reps and Referrers</h2>
+                <table border="0" cellspacing="0" cellpadding="0">
+                    <thead>
+                        <tr>
+                            <th>
+                            Sales Reps
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="odd">
+                            <td>
+                                {form action=update_sales_reps}
+                                    {control type="hidden" name="id" value=$order->id}
+                                    {control type="dropdown" name="sales_rep_1_id" label="Sales Rep 1 (Initial Order)" includeblank=true items=$sales_reps value=$order->sales_rep_1_id}
+                                    {control type="dropdown" name="sales_rep_2_id" label="Sales Rep 2 (Completed Order)" includeblank=true items=$sales_reps value=$order->sales_rep_2_id}
+                                    {control type="dropdown" name="sales_rep_3_id" label="Sales Rep 3 (Other)" includeblank=true items=$sales_reps value=$order->sales_rep_3_id}
+                                    {control type="buttongroup" submit="Update Sales Reps"}
+                                {/form}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table border="0" cellspacing="0" cellpadding="0">
+                    <thead>
+                        <tr>
+                            <th>
+                                Original HTTP Referrer
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="even">
+                            <td>
+                                {if $order->orig_referrer !=''}
+                                    <p><a href="{$order->orig_referrer}" target="_blank">{$order->orig_referrer}</a></p>        {else}
+                                    <p>Direct Traffic</p>
+                                {/if}
+
+                                {if $order->reference_id != 0}
+                                    <h3>Invoice Reference:</h3>
+                                    <p><a href="/order/show/id/{$order->reference_id}">{$order->reference_id}</a></p>
+                                {/if}
+
+                                {if $order->referencing_ids|@count > 0}
+                                    <h3>Spawned Invoices Referencing This Invoice:</h3>                    
+                                    {foreach from=$order->referencing_ids item=ref_id}
+                                        <p><a href="/order/show/id/{$ref_id}">{$ref_id}</a></p>
+                                    {/foreach}
+                                {/if}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
             </div>
             <div id="notes">
+                <h2>{"Email the Customer about this order"|gettext}</h2>
                 <table class="order-info">
                     <thead>
                         <tr>
@@ -265,8 +296,9 @@
                         </tr> 
                     </thead>
                     <tbody>
-                        <tr><td>
-                            {permissions level=$smarty.const.UILEVEL_NORMAL}
+                        <tr>
+                            <td>
+                            {permissions}
                             {if $permissions.manage == 1}
                                 {form action=emailCustomer}
                                     {control type="hidden" name="id" value=$order->id}
@@ -287,8 +319,11 @@
                                 {/form}
                             {/if}
                             {/permissions}                        
-                        </td></tr>
-                </table>                
+                        </td>
+                    </tr>
+                </table>     
+                <hr>
+                <h2>{"Notes on this order"|gettext}</h2>
                 {simplenote content_type="order" content_id=$order->id require_login="1" require_approval="0" require_notification="0" tab="notes"}
             </div>
         {/if}
@@ -300,17 +335,11 @@
 
 {script unique="msgbox"}
 {literal}
-    function populate_msgbox() {
-        var dd = YAHOO.util.Dom.get('order_status_messages');
-        var msgbox = YAHOO.util.Dom.get('comment');
-        var idx = dd.selectedIndex;
-        
-        if (dd.options[idx].value == 0) {
-            msgbox.value = '';
-        } else {
-            msgbox.value = dd.options[idx].value;
-        }
-        
-    }
+YUI(EXPONENT.YUI3_CONFIG).use('node','event', function(Y) {
+    var selects = Y.all('#order_status_messages option');
+    selects.on('click',function(e){
+        EXPONENT.editoremail_message.setData(e.target.get('value'));
+    });
+});
 {/literal}
 {/script}

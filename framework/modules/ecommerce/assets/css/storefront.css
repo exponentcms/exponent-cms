@@ -23,17 +23,21 @@
     zoom:1;
     vertical-align:top;
     width:30%;
+    *width:29%;
     margin-right:4%;
     text-align:center;
 }
 
-.product .related-products h2.related-products-header {
+.product .related-products h2 {
     margin-top: 22px;
     margin-bottom: 18px;
     padding: 2px;
     border-top: 1px solid grey;
     border-bottom: 1px solid grey;
     background-color: #E4E4E4;
+    padding:2px 5px;
+    font-size:14px;
+    text-shadow:1px 1px 0 #fff;
 }
     
 /* prices */
@@ -45,9 +49,11 @@
 }
 
 .product p.warehouse-location {
-    font-size: 10px;
-    color: gray;
-    font-variant: small-caps;
+   position:relative;
+   margin-top:-10px;
+   font-size: 10px;
+   color: gray;
+   font-variant: small-caps;
 }
 
 .product .prod-price .regular-price {
@@ -78,6 +84,7 @@ em.unavailable {
 .store.showall .category-row .cat {
     white-space:normal;
     width:48%;
+    *width:47%;
     margin-right:2%;
     display:inline-block;
     *display:inline;
@@ -140,12 +147,3 @@ em.unavailable {
     padding:0 0 2px 3px;
     display:block;
 }
-
-/****************   ***********************/
-.related-items h3 {
-   background-color: #E4E4E4;
-   border-bottom: 1px solid grey;
-   border-top: 1px solid grey;
-   margin-bottom: 8px;
-   margin-top: 12px;
-   padding: 2px;}
