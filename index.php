@@ -106,7 +106,6 @@ if (MAINTENANCE_MODE && !exponent_users_isAdmin() && ( !isset($_REQUEST['module'
 	}
 }
 
-
 //$microtime_str = explode(' ',microtime());
 //$i_end = $microtime_str[0] + $microtime_str[1];
 //echo "\r\n<!--".sprintf($base_i18n['exec_time'],round($i_end - $i_start,4)).'-->';

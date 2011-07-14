@@ -152,4 +152,5 @@ function eLog($var, $type='', $path='', $minlevel='0') {
 		}
 	}
 }
+
 ?>
