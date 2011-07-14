@@ -42,7 +42,7 @@ class billingcalculator extends expRecord {
         $bt->billing_options  = serialize($result);
         $bt->extra_data = '';
         $bt->transaction_state = $trax_state;
-        $bt->result = $result;    
+        //$bt->result = $result;    
         $bt->save();
     }
     

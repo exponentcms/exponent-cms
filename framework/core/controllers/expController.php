@@ -498,6 +498,7 @@ class expController {
 	 * save module configuration
 	 */
 	function saveconfig() {
+        
         // create a new RSS object if enable is checked.
         if (!empty($this->params['enable_rss'])) {
             $rssfeed = new expRss($this->params);
@@ -509,19 +510,21 @@ class expController {
             $ealert = new expeAlerts($this->params);
             $ealert->update($this->params);
         }
-        
+                           
         // unset some unneeded params
         unset($this->params['module']);
         unset($this->params['controller']);
         unset($this->params['src']);
         unset($this->params['int']);
         unset($this->params['id']);
+        unset($this->params['cid']);
         unset($this->params['action']);
         unset($this->params['PHPSESSID']);
         
         // setup and save the config
         $config = new expConfig($this->loc);
-        $config->update(array('config'=>$this->params));
+                
+        $config->update(array('config'=>$this->params));        
         flash('message', 'Configuration updated');
         expHistory::back();
     }

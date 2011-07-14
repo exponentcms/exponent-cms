@@ -282,15 +282,21 @@ class paypalExpressCheckout extends billingcalculator {
         $nvpResArray = $this->paypalApiCall($data);    
         //eDebug($nvpResArray);  
         
-        if ($nvpResArray['ACK'] == 'Failure' || $nvpResArray['ACK'] == 'FailureWithWarning') 
+        //if ($nvpResArray['ACK'] == 'Failure' || $nvpResArray['ACK'] == 'FailureWithWarning') 
+        //{ 
+        //FJD: somehow some orders have snuck through wihtout fully processing, so I switched this 
+        //around to check for succcess ONLY and then default to an error otherwise    
+        if (!empty($nvpResArray['curl_error'])) 
         { 
-            $billing_options->result->status = $nvpResArray['ACK'];
-            $billing_options->result->errorCode = $nvpResArray[0]['ERRORCODE'];
-            $billing_options->result->message = $nvpResArray[0]['SHORTMESSAGE'] . ":" . $nvpResArray[0]['LONGMESSAGE']; ; 
-            $billing_options->result->correlationID = $nvpResArray['CORRELATIONID'];  
-            $transaction_state = "Failure";      
-            $trax_state = "error";                                                               
-        }else{
+            //curl error            
+            $billing_options->result->errorCode = curl_errno($ch); //Response reason code
+            $billing_options->result->message = curl_error($ch);                
+            //$opts->result = $object;                
+            $transaction_state = "Temporary Failure";      
+            $trax_state = "error";                 
+        }
+        else if($nvpResArray['ACK'] == 'Success' || $nvpResArray['ACK'] == 'SuccessWithWarning')
+        {
             /*
             [TOKEN] => EC-7YW97132PA0236148 [TIMESTAMP] => 2010-01-16T21:49:15Z [CORRELATIONID] => 7f49bba2eac7e 
             [ACK] => Success [VERSION] => 59.0 [BUILD] => 1152253 [TRANSACTIONID] => 1AA09727DG247464P [TRANSACTIONTYPE] => cart 
@@ -316,6 +322,16 @@ class paypalExpressCheckout extends billingcalculator {
 			
             $transaction_state = $nvpResArray['PAYMENTSTATUS'];
             $trax_state = "complete";                                          
+        }
+        else
+        {
+            $billing_options->result->status = $nvpResArray['ACK'];
+            $billing_options->result->errorCode = $nvpResArray[0]['ERRORCODE'];
+            if(!$billing_options->result->errorCode) $billing_options->result->errorCode = "1010";
+            $billing_options->result->message = $nvpResArray[0]['SHORTMESSAGE'] . ":" . $nvpResArray[0]['LONGMESSAGE']; ; 
+            $billing_options->result->correlationID = $nvpResArray['CORRELATIONID'];  
+            $transaction_state = "Failure";      
+            $trax_state = "error";                                                               
         }
         //eDebug($billing_options,true);                                                               
         $method->update(array('billing_options'=>serialize($billing_options), 'transaction_state'=>$transaction_state));

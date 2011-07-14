@@ -935,17 +935,10 @@ class cartController extends expController {
     }
     
     function configure() {
-        expHistory::set('editable', $this->params);
-        
-        $cfg->mod = "cart";
-        $cfg->src = "@globalcartsettings";
-        $cfg->int = "";
-        $config = new expConfig($cfg);
-        
-        //$this->loc->src = "@globalcartsettings";
-        $config = new expConfig($cfg);
-        $this->config = $config->config;
-
+        expHistory::set('editable', $this->params);        
+        $this->loc->src = "@globalcartsettings";                        
+        $config = new expConfig($this->loc);   
+        $this->config = $config->config;             
         assign_to_template(array('config'=>$this->config));
     }    
     
@@ -1046,6 +1039,13 @@ class cartController extends expController {
         expHistory::back();   
     }
     
+    function saveconfig() {
+        // setup and save the config
+        $this->loc->mod = "cart"; 
+        $this->loc->src = "@globalcartsettings"; 
+        $this->loc->int = "";         
+        parent::saveconfig();
+    }    
 }
 
 ?>
