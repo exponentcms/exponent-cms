@@ -74,7 +74,7 @@
                         {/if}
                     {/permissions} 
                 </div>               
-                {include file="invoice.tpl"}
+                {include file="`$smarty.const.BASE`framework/modules/ecommerce/views/order/invoice.tpl"}
             </div>
             <div id="ordhistory">
                 <h2>Order History</h2>                
