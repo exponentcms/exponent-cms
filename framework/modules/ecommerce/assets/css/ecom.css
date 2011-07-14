@@ -63,9 +63,13 @@
     background:#edffdf;
 }
 
-.exp-ecom-table tbody tr:hover td,
-.exp-ecom-table tbody tr:hover th {
-	background:#d5e3f3;
+.exp-ecom-table .cke_skin_kama table td {
+    background:inherit;
+}
+
+.exp-ecom-table .hover tbody tr:hover td,
+.exp-ecom-table .hover tbody tr:hover th {
+   background:#d5e3f3;
 }
 
 .exp-ecom-table .div-rows div.even,
