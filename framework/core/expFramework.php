@@ -174,11 +174,11 @@ function redirect_to($params=array(), $secure=false) {
     exit();
 }   
 
-function flash($name, $msg="") {
+function flash($name, $msg) {
     expQueue::flash($name, $msg);
 }
 
-function flashAndFlow($name, $msg="") {
+function flashAndFlow($name, $msg) {
     expQueue::flashAndFlow($name, $msg);
 }
 

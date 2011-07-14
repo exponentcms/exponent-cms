@@ -76,7 +76,7 @@ if (is_readable($newdef)) {
             if (file_exists($dirpath)) {
                 $def_dir = opendir($dirpath);
                 while (($def = readdir($def_dir)) !== false) {
-                    eDebug("$dirpath/$def");
+//                    eDebug("$dirpath/$def");
     				if (is_readable("$dirpath/$def") && is_file("$dirpath/$def") && substr($def,-4,4) == ".php" && substr($def,-9,9) != ".info.php") {
     					$tablename = substr($def,0,-4);
     					$dd = include("$dirpath/$def");
@@ -138,7 +138,7 @@ foreach ($tables as $table => $statusnum) {
 		</div>
 		 <?php } elseif ($statusnum == TMP_TABLE_INSTALLED) {  ?>
 		<div style="color: green; font-weight: bold">
-			<?php echo gt('Succeeded') ?>
+			<?php echo gt('Added') ?>
 		</div>
         <?php } elseif ($statusnum == TMP_TABLE_FAILED) {  ?>
 		<div style="color: red; font-weight: bold">
@@ -160,7 +160,7 @@ foreach ($tables as $table => $statusnum) {
 	$line++;
 	}
 ?>
- <tbody>
+ </tbody>
 </table>
 <?php
 }

@@ -65,7 +65,7 @@ class mysqli_database {
 
 		//As we do not have any setting for ISAM or InnoDB tables yet, i set the minimum specs
 		// for using this feature to 4.1.2, although isam tables got the support for utf8 already in 4.1
-		//anything else would result in an inconsitent user experience
+		//anything else would result in an inconsistent user experience
 		//TODO: determine how to handle encoding on postgres
 
 		list($major, $minor, $micro) = sscanf(mysqli_get_server_info($this->connection), "%d.%d.%d-%s");
@@ -499,15 +499,16 @@ class mysqli_database {
         $obj->$col = ($obj->$col == 0) ? 1 : 0;
         $this->updateObject($obj, $table);
     }
-    
-    /**
-     * Update a column in all records in a table
-     *
-     * @param  $table
-     * @param  $col
-     * @param null $where
-     * @return void
-     */
+
+	/**
+	 * Update a column in all records in a table
+	 *
+	 * @param  $table
+	 * @param  $col
+	 * @param $val
+	 * @param int|null $where
+	 * @return void
+	 */
     function columnUpdate($table, $col, $val, $where=1) {         
         $res = @mysqli_query($this->connection, "UPDATE `" . $this->prefix . "$table` SET `$col`='" . $val . "' WHERE $where");
         /*if ($res == null)
@@ -517,12 +518,12 @@ class mysqli_database {
             $objects[] = mysqli_fetch_object($res);*/
         //return $objects;
     }
-    
+
 	/**
 	 * @param  $object
 	 * @param  $table
 	 * @param  $col
-	 * @param null $where
+	 * @param int|null $where
 	 * @return bool
 	 */
     function setUniqueFlag($object, $table, $col, $where=1) {
@@ -898,15 +899,23 @@ class mysqli_database {
             return null;
         return mysqli_fetch_object($res);
     }
-    
-    function lockTable($table,$lockType="WRITE") {
+
+	/**
+	 * @param $table
+	 * @param string $lockType
+	 * @return mixed
+	 */
+	function lockTable($table,$lockType="WRITE") {
         $sql = "LOCK TABLES `" . $this->prefix . "$table` $lockType";
        
         $res = mysqli_query($this->connection, $sql); 
         return $res;
     }
-    
-    function unlockTables() {
+
+	/**
+	 * @return mixed
+	 */
+	function unlockTables() {
         $sql = "UNLOCK TABLES";
         
         $res = mysqli_query($this->connection, $sql);
@@ -1346,6 +1355,15 @@ class mysqli_database {
     }
 
 	/**
+	 * Unescape a string based on the database connection
+	 * @param $string
+	 * @return string
+	 */
+	function escapeString($string) {
+	    return (mysqli_real_escape_string($this->connection, $string));
+	}
+
+	/**
 	 * Create a SQL "limit" phrase
 	 *
 	 * @param  $num
@@ -1438,18 +1456,20 @@ class mysqli_database {
         return mysqli_fetch_assoc($res);
     }
 
-    /**
-     * Select a records from the database
+	/**
+	 * Select a records from the database
+	 * @param string $table The name of the table/object to look at
+	 * @param string $where Criteria used to narrow the result set.  If this
+	 *   is specified as null, then no criteria is applied, and all objects are
+	 *   returned
+	 * @param  $classname
+	 * @param bool $get_assoc
+	 * @param bool $get_attached
+	 * @param array $except
+	 * @param bool $cascade_except
 
-     * @param string $table The name of the table/object to look at
-     * @param string $where Criteria used to narrow the result set.  If this
-     *   is specified as null, then no criteria is applied, and all objects are
-     *   returned
-     * @param  $classname
-     * @param bool $get_assoc
-     * @param bool $get_attached
-     * @return array
-     */
+	 * @return array
+	 */
     function selectExpObjects($table, $where=null, $classname, $get_assoc=true, $get_attached=true, $except=array(), $cascade_except=false) {
         if ($where == null) $where = "1";        
         $sql = "SELECT * FROM `" . $this->prefix . "$table` WHERE $where";
@@ -1651,7 +1671,11 @@ class mysqli_database {
         return $children;
 	}
 	
-	/* This function returns all the text columns in the given table */
+	/**
+	 * This function returns all the text columns in the given table
+	 * @param $table
+	 * @return array
+	 */
 	function getTextColumns($table) {
 		$sql = "SHOW COLUMNS FROM " . $this->prefix.$table . " WHERE type = 'text' OR type like 'varchar%'";
 		$res = @mysqli_query($this->connection, $sql);

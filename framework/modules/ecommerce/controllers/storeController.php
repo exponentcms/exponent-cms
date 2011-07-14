@@ -1206,13 +1206,14 @@ class storeController extends expController {
         $str = str_replace("�","&#190;",$str);
         if ($unescape) $str = stripcslashes(trim(str_replace("�", "&trade;", $str)));  
         else {
-	        if (DB_ENGINE=='mysqli') {
-		        $str = @mysqli_real_escape_string($db->connection,trim(str_replace("�", "&trade;", $str)));
-	        } elseif(DB_ENGINE=='mysql') {
-	            $str = @mysql_real_escape_string(trim(str_replace("�", "&trade;", $str)),$db->connection);
-	        } else {
-		        $str = trim(str_replace("�", "&trade;", $str));
-	        }
+//	        if (DB_ENGINE=='mysqli') {
+//		        $str = @mysqli_real_escape_string($db->connection,trim(str_replace("�", "&trade;", $str)));
+//	        } elseif(DB_ENGINE=='mysql') {
+//	            $str = @mysql_real_escape_string(trim(str_replace("�", "&trade;", $str)),$db->connection);
+//	        } else {
+//		        $str = trim(str_replace("�", "&trade;", $str));
+//	        }
+	        $str = @$db->escapeString(trim(str_replace("�", "&trade;", $str)));
         }
         //echo "2<br>"; eDebug($str,die);
         return $str;
