@@ -121,8 +121,14 @@
         {/if}
 
         {if $product->availability_type == 0 && $product->active_type == 0}
+			{if $product->minimum_order_quantity > 1}
+				{control type="text" name="quantity" label="Quantity:" size="5" value="`$product->minimum_order_quantity`"}
+			{/if}
             <button type="submit" class="awesome {$smarty.const.BTN_COLOR} {$smarty.const.BTN_SIZE}" rel="nofollow">{"Add to Cart"|gettext}</button>
         {elseif $product->availability_type == 1 && $product->active_type == 0}
+			{if $product->minimum_order_quantity > 1}
+				{control type="text" name="quantity" label="Quantity:" size="5" value="`$product->minimum_order_quantity`"}
+			{/if}
             <button type="submit" class="awesome {$smarty.const.BTN_COLOR} {$smarty.const.BTN_SIZE}" rel="nofollow">{"Add to Cart"|gettext}</button>
             {if $product->quantity <= 0}<span class="error">{$product->availability_note}</span>{/if}   
         {elseif $product->availability_type == 2}
@@ -136,7 +142,6 @@
             {/if}
             <em class="unavailable">{"Product currently unavailable for purchase"|gettext}</em>
         {/if}    
-        
         {/form}
     </div> 
     {/if}   
