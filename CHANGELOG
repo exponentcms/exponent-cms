@@ -4,6 +4,25 @@ Copyright (c) 2004-2011 OIC Group, Inc.
 
 Added / Fixed / changed for 2.0.0 beta 4
 -----------------------
+# This release includes an emphasis on the permission system
+# Major update to the e-commerce system
+# Notable Module fixes and improvements
+    • Blog module updated to also better implement use of tags and comments
+    • Better implementation of database interaction
+    • More robust api documentation - new api.exponentcms.org site is now online
+    • Changes to promote better internationalization (utf8) support, esp in forms
+    • Added a new "showcase view" to the file displayer
+    • More consistent "asset" file organization
+    • Scrubbed code to be fully php v5.3 compliant
+    • Revised "Exponent" menu to be more intuitive & added some commands
+    • Migration now can import permissions from old site, and better handle pre-0.97 pages
+    • Prepping for headline module deprecation (text module is better choice)
+    • Updates to the help module
+    • Fixed issue where "flash" would cover menus
+    • Minor changes to the installation and upgrade process
+    • Cleaned up several page displays and the "tabs" display
+    • Added a minor "fix database" routine to the slingbar and upgrades
+    • Many, many other tweaks and fixes
 
 Added / Fixed / changed for 2.0.0 beta 3
 -----------------------
@@ -108,7 +127,6 @@ Added / Fixed / changed for 2.0.0 beta 1
 
 # Language
     • Initial start for new Language system implemented
-
 
 Added / Fixed / changed for 2.0.0 Preview Release 2
 -----------------------
