@@ -49,9 +49,11 @@
 }
 
 .product p.warehouse-location {
-    font-size: 10px;
-    color: gray;
-    font-variant: small-caps;
+   position:relative;
+   margin-top:-10px;
+   font-size: 10px;
+   color: gray;
+   font-variant: small-caps;
 }
 
 .product .prod-price .regular-price {
