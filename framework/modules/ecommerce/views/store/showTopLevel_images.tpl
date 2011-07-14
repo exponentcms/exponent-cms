@@ -13,8 +13,16 @@
  * GPL: http://www.gnu.org/licenses/gpl.txt
  *
  *}
-<div class="store showall">
-    
+
+{css unique="home" link="`$asset_path`css/storefront.css" corecss="tables"}
+
+{/css}
+
+{css unique="home" link="`$asset_path`css/ecom.css"}
+
+{/css}
+
+<div class="module store showall">
     {if $moduletitle}<h1>{$moduletitle}</h1>{/if}
     <h1>{$current_category->title}</h1>
 
@@ -41,38 +49,58 @@
     <hr/>
     <div class="cats">
     <h2>Browse Our Store:</h2>
-    {foreach name="cats" from=$categories item="cat"}
-    {if $cat->is_active==1 || $user->is_acting_admin}
-	{counter assign=iteration}
-        {if $iteration%2==0}
-            {assign var="positioninfo" value=" last-in-row"}
-        {else}
-            {assign var="positioninfo" value=""}
-        {/if}
-        
-        <div class="cat{$positioninfo}{if $cat->is_active!=1} inactive{/if}">
-            {permissions level=$smarty.const.UILEVEL_PERMISSIONS}
-            <div class="item-permissions">
-                {if $permissions.edit == 1}
-                    {icon img=edit.png controller=storeCategory action=edit id=$cat->id title="Edit `$cat->title`"}
+        {counter assign="ipcr" name="ipcr" start=1}
+        {foreach name="cats" from=$categories item="cat"}
+            {if $cat->is_active==1 || $user->isAdmin()}
+            
+                {if $smarty.foreach.cats.first || $open_c_row}
+                    <div class="category-row">
+                    {assign var=open_c_row value=0}
                 {/if}
-                {if $permissions.delete == 1}
-                    {icon img=delete.png controller=storeCategory action=delete id=$cat->id title="Delete `$cat->title`" onclick="return confirm('Are you sure you want to delete this category?');"}
+                        
+                <div class="cat{if $cat->is_active!=1} inactive{/if} clearfix">
+                
+                    {permissions}
+                    <div class="item-actions">
+                        {if $permissions.edit == 1}
+                            {icon controller=storeCategory action=edit record=$cat title="Edit `$cat->title`"}
+                        {/if}
+                        {if $permissions.delete == 1}
+                            {icon controller=storeCategory action=delete record=$cat title="Delete `$cat->title`" onclick="return confirm('Are you sure you want to delete this category?');"}
+                        {/if}
+                    </div>
+                    {/permissions}
+            
+                    <a href="{link controller=store action=showall title=$cat->sef_url}" class="cat-img-link">
+                        {if $cat->expFile[0]->id}
+                            {img file_id=$cat->expFile[0]->id w=100 class="cat-image"}
+                        {else}
+                            {img file_id=$cat->getFirstImageId() w=100 class="cat-image"}
+                        {/if}
+                    </a>
+                
+                    <h3>
+                        <a href="{link controller=store action=showall title=$cat->sef_url}">
+                            {$cat->title}
+                        </a>
+                    </h3>
+
+                </div>
+
+                {if $smarty.foreach.cats.last || $ipcr%2==0}
+                    </div>
+                    {assign var=open_c_row value=1}
                 {/if}
+                {counter name="ipcr"}
+
+            {/if}
+        {/foreach}
+
+        {* close the row if left open. might happen for non-admins *}
+        {if $open_c_row==0}
             </div>
-            {/permissions}
-            <a href="{link controller=store action=showall title=$cat->sef_url}" class="cat-img">
-                {if $cat->expFile[0]->id}
-                    {img file_id=$cat->expFile[0]->id w=100 class="cat-image"}
-                {else}
-                    {img file_id=$cat->getFirstImageId() w=100 class="cat-image"}
-                {/if}
-                <h3>{$cat->title}</h3>
-            </a>
-        </div>
-    {/if}
-    {/foreach}
-    <div style="clear:both"></div>
+            {assign var=open_c_row value=1}
+        {/if}
     </div>
     {else}
     <!--hr/-->
