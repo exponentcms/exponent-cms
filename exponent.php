@@ -39,7 +39,9 @@ require_once(BASE.'subsystems/sessions.php');
 exponent_sessions_initialize();
 
 // initialize useful/needed constants throughout the system
-require_once(BASE.'exponent_constants.php');
+//require_once(BASE.'exponent_constants.php');
+// Initialize the theme subsystem
+if (!defined('SYS_THEME')) require_once(BASE.'subsystems/theme.php');
 
 // Initialize the language subsystem
 require_once(BASE.'subsystems/lang.php');

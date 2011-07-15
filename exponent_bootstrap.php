@@ -59,6 +59,9 @@ if (function_exists('date_default_timezone_set')) {
     @date_default_timezone_set(DISPLAY_DEFAULT_TIMEZONE);
 }
 
+// initialize useful/needed constants throughout the system
+require_once(BASE.'exponent_constants.php');
+
 // Process PHP-wrapper settings (ini_sets and setting detectors)
 include_once(dirname(__realpath(__FILE__)) . '/exponent_setup.php');
 

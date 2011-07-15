@@ -47,7 +47,7 @@ if (!defined('JS_FULL')) {
 }
 
 // Initialize the theme subsystem
-if (!defined('SYS_THEME')) require_once(BASE.'subsystems/theme.php');
+//if (!defined('SYS_THEME')) require_once(BASE.'subsystems/theme.php');
 
 // iconset base
 if (!defined('ICON_RELATIVE')) {
