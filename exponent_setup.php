@@ -36,13 +36,13 @@ if (DEVELOPMENT) {
 	ini_set('ignore_repeated_errors',1);
 }
 
-if (DEVELOPMENT >= 2) {
-	function debug($str) { echo $str.'<br /><br />'; }
-	function dump_debug($var) { var_dump($var);echo '<br /><br />'; }
-} else {
-	function debug($str) { }
-	function dump_debug($var) { }
-}
+//if (DEVELOPMENT >= 2) {
+//	function debug($str) { echo $str.'<br /><br />'; }
+//	function dump_debug($var) { var_dump($var);echo '<br /><br />'; }
+//} else {
+//	function debug($str) { }
+//	function dump_debug($var) { }
+//}
 
 // The following code was lifted from phpMyAdmin, but then again, this is Open Source, right?
 
