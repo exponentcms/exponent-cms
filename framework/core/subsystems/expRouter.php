@@ -7,7 +7,7 @@
  *  Software Foundation; either version 2 of the
  *  License, or (at your option) any later version.
  *
- * The file thats holds the expRouter class
+ * The file that holds the expRouter class
  *
  * @link http://www.gnu.org/licenses/gpl.txt GPL http://www.gnu.org/licenses/gpl.txt
  * @package Exponent-CMS
@@ -272,7 +272,7 @@ class expRouter {
         }
                               
         // Check if this was a printer friendly link request
-        define('PRINTER_FRIENDLY', isset($_REQUEST['printerfriendly']) ? 1 : 0); 
+        define('PRINTER_FRIENDLY', (isset($_REQUEST['printerfriendly']) || isset($this->params['printerfriendly'])) ? 1 : 0);         
     }
 
     public function routePageRequest() {        
@@ -307,38 +307,29 @@ class expRouter {
             if (empty($section))
             {
                 $sef_url = $this->url_parts[0];
-                //check for a firm
-                /*$mf = new memberfirms();
-                $memberfirm = $mf->findBy('sef_url', $sef_url);
-                if(!empty($memberfirm))
-                {                                                           
-                    //fake parts and route to action  
-                    $this->url_type = 'action';                   
-                    $this->url_parts[0] = 'directory'; //controller
-                    $this->url_parts[1] = 'showByTitle'; //controller
-                    $this->url_parts[2] = 'title'; //controller                    
-                    $this->url_parts[3] = $sef_url; //controller
-                    //eDebug($this->url_parts,true);
-                    $this->params = $this->convertPartsToParams();
-                    return $this->routeActionRequest();
+                //check for a category
+                $c = new storeCategory();                
+                $cat = $c->findBy('sef_url', $sef_url);
+                if (empty($cat))
+                {
+                    //check for a product
+                    $p = new product();
+                    $prod = $p->findBy('sef_url', $sef_url);
+                    if(!empty($prod))
+                    {                                                           
+                        //fake parts and route to action  
+                        $this->url_type = 'action';                   
+                        $this->url_parts[0] = 'store'; //controller
+                        $this->url_parts[1] = 'showByTitle'; //controller
+                        $this->url_parts[2] = 'title'; //controller                    
+                        $this->url_parts[3] = $sef_url; //controller
+                        //eDebug($this->url_parts,true);
+                        $this->params = $this->convertPartsToParams();
+                        return $this->routeActionRequest();
+                    }
+                    //else fall through
                 }
-                
-                $tol = new types_of_law();
-                $type_of_law = $tol->findBy('sef_url', $sef_url);                
-                if (!empty($type_of_law))
-                {                                                           
-                    //fake parts and route to action  
-                    $this->url_type = 'action';                   
-                    $this->url_parts[0] = 'directory'; //controller
-                    $this->url_parts[1] = 'showTypesOfLawByTitle'; //controller
-                    $this->url_parts[2] = 'title'; //controller                    
-                    $this->url_parts[3] = $sef_url; //controller
-                    //eDebug($this->url_parts,true);
-                    $this->params = $this->convertPartsToParams();
-                    return $this->routeActionRequest();
-                }*/
-                //else fall through
-                /*else
+                else
                 {
                     //fake parts and route to action 
                     $this->url_type = 'action';                                      
@@ -349,7 +340,7 @@ class expRouter {
                     //eDebug($this->url_parts,true);
                     $this->params = $this->convertPartsToParams();
                     return $this->routeActionRequest();
-                }*/
+                }
                 return false;
             }
             #########################################################
@@ -624,6 +615,19 @@ class expRouter {
         if (strpos($this->sefPath,'/index.php') === 0) {
             $this->sefPath = null;
         }
+        
+		//parse the ecommerce tracking code if present and include in the object
+        if(isset($_SERVER['argv']) && is_array($_SERVER['argv']))
+        {
+            foreach($_SERVER['argv'] as $set)
+            {
+                $s = explode("=",$set);
+                if($s[0]= "ectid")
+                {
+                    $this->ectid = $s[1];    
+                }   
+            }            
+        }
     }
 
     public function getSection() {
@@ -641,7 +645,13 @@ class expRouter {
 
     public function getSectionObj($section) {
         global $db;
-        $sectionObj = $db->selectObject('section','id='. intval($section));
+        if ($section == "*") {
+            $action = $this->params['controller']."Controller";
+            $sectionObj = call_user_func($action."::getSection",$this->params);
+        } else {
+            $sectionObj = $db->selectObject('section','id='. intval($section));
+        }
+//        $sectionObj = $db->selectObject('section','id='. intval($section));
         if (!navigationmodule::canView($sectionObj)) {
             define('AUTHORIZED_SECTION',0);
         } else {
@@ -671,5 +681,10 @@ class expRouter {
         $this->maps = $maps;
     }
     
+    public function getTrackingId()
+    {        
+        if(isset($this->ectid)) return $this->ectid;
+        else return '';
+    }
 }
 ?>

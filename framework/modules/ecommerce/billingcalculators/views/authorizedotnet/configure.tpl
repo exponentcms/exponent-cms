@@ -30,15 +30,14 @@
         <li class="selected"><a href="#tab1"><em>Authorize.net<br>Settings</em></a></li>
         <li><a href="#tab2"><em>Accepted<br>Credit Cards</em></a></li>
         <li><a href="#tab3"><em>Customer<br>Confirmations</em></a></li>
-        <li><a href="#tab4"><em>Administrator<br>Notifications</em></a></li>
+        <!--li><a href="#tab4"><em>Administrator<br>Notifications</em></a></li-->
         </ul>            
         <div class="yui-content">
         <div id="tab1">
             {control type="text" name="username" label="API Login ID" value=$calculator->configdata.username}
             {control type="text" name="transaction_key" label="Transaction Key" value=$calculator->configdata.transaction_key}
-            {control type="text" name="password" label="Password" value=$calculator->configdata.password}
             {control type="checkbox" name="testmode" label="Enable Test Mode?" value=1 checked=$calculator->configdata.testmode}
-            {control type="radiogroup" name="process_mode" label="Processing Mode" items="Authorize and Capture, Authorize Only" values="0,1" checked=$calculator->configdata.process_mode}
+            {control type="radiogroup" name="process_mode" label="Processing Mode" items="Authorize and Capture, Authorize Only" values="0,1" default=$calculator->configdata.process_mode}
         </div>
         <div id="tab2">
             {control type="checkbox" name="accepted_cards[]" label="Master Card" value="MasterCard" checked=$calculator->configdata.accepted_cards}
@@ -49,10 +48,10 @@
         <div id="tab3">
             {control type="checkbox" name="email_customer" label="Send customer an email confirmation?" value=1 checked=$calculator->configdata.email_customer}
         </div>
-        <div id="tab4">
-            {control type="checkbox" name="email_admin" label="Send a notication that a new order was received?" value=1 checked=$calculator->configdata.email_admin}
+        <!--div id="tab4">
+            {control type="checkbox" name="email_admin" label="Send a notification that a new order was received?" value=1 checked=$calculator->configdata.email_admin}
             {control type="text" name="notification_addy" label="Email addresses to send notifications to (comma separated list of email addresses)" value=$calculator->configdata.notification_addy}
-        </div>
+        </div-->
         </div>
     </div>
 </div>

@@ -8,7 +8,7 @@
  *  Software Foundation; either version 2 of the
  *  License, or (at your option) any later version.
  *
- * The file thats holds the expTagController class.
+ * The file that holds the expTagController class.
  *
  * @link http://www.gnu.org/licenses/gpl.txt GPL http://www.gnu.org/licenses/gpl.txt
  * @package Exponent-CMS
@@ -26,35 +26,95 @@
 class expTagController extends expController {
 	//public $useractions = array('browse'=>'Browse content by tags');
 	public $useractions = array();
-	
+
+	/**
+	 * name of module for backwards compat with old modules
+	 * @return string
+	 */
 	function name() { return $this->displayname(); } //for backwards compat with old modules
-    function displayname() { return "Tag Manager"; }
-    function description() { return "This module is for manageing your tags"; }
-    function author() { return "Adam Kessler @ OIC Group, Inc"; }
-    function hasSources() { return false; }
-    function hasViews() { return true; }
+	/**
+	 * name of module
+	 * @return string
+	 */
+	function displayname() { return "Tag Manager"; }
+
+	/**
+	 * description of module
+	 * @return string
+	 */
+	function description() { return "This module is for manageing your tags"; }
+
+	/**
+	 * author of module
+	 * @return string
+	 */
+	function author() { return "Adam Kessler @ OIC Group, Inc"; }
+
+	/**
+	 * does module have sources available?
+	 * @return bool
+	 */
+	function hasSources() { return false; }
+
+	/**
+	 * does module have views available?
+	 * @return bool
+	 */
+	function hasViews() { return true; }
+
+	/**
+	 * does module have content available?
+	 * @return bool
+	 */
 	function hasContent() { return true; }
+
+	/**
+	 * does module support workflow?
+	 * @return bool
+	 */
 	function supportsWorkflow() { return false; }
+
+	/**
+	 * is module content searchable?
+	 * @return bool
+	 */
 	function isSearchable() { return false; }
-	
-    function manage() {
+
+	/**
+	 * manage tags
+	 */
+	function manage() {
+        global $db;
         expHistory::set('manageable', $this->params);
         $modelname = $this->basemodel_name;
         $where = $this->hasSources() ? $this->aggregateWhereClause() : null;
-        $limit = isset($this->params['limit']) ? $this->params['limit'] : null;
         $order = "title";
         $page = new expPaginator(array(
                     'model'=>$modelname,
                     'where'=>$where, 
-                    'limit'=>$limit,
+                    'limit'=>50,
                     'order'=>$order,
                     'controller'=>$this->baseclassname,
                     'action'=>$this->params['action'],
                     'src'=>$this->hasSources() == true ? $this->loc->src : null,
                     'columns'=>array('ID#'=>'id','Title'=>'title', 'Body'=>'body'),
                     ));
+
+        foreach ($db->selectColumn('content_expTags','content_type',null,null,true) as $contenttype) {
+            foreach ($page->records as $key => $value) {
+                $attatchedat = $page->records[$key]->findWhereAttachedTo($contenttype);
+                if (!empty($attatchedat)) {
+                    $page->records[$key]->attachedcount = @$page->records[$key]->attachedcount + count($attatchedat);
+                    $page->records[$key]->attached[$contenttype] = $attatchedat;
+                }
+            }
+        }
         
-        assign_to_template(array('page'=>$page, 'items'=>$page->records, 'modelname'=>$modelname));
+        
+        assign_to_template(array(
+            'page'=>$page, 
+            'modelname'=>$modelname
+        ));
     }
 }
 ?>

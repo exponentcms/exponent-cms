@@ -30,7 +30,9 @@ return array(
 	'rank'=>array(
 		DB_FIELD_TYPE=>DB_DEF_INTEGER),
 	'treat_as_closed'=>array(
-		DB_FIELD_TYPE=>DB_DEF_BOOLEAN),
+        DB_FIELD_TYPE=>DB_DEF_BOOLEAN),
+    'is_default'=>array(
+        DB_FIELD_TYPE=>DB_DEF_BOOLEAN),
 );
 
 ?>

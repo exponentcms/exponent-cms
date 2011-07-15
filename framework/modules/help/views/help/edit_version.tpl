@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2007-2008 OIC Group, Inc.
+ * Copyright (c) 2007-2011 OIC Group, Inc.
  * Written and Designed by Adam Kessler
  *
  * This file is part of Exponent
@@ -21,7 +21,7 @@
         <h1>New Help Version</h1>
         <p>
             Creating a new version will copy all the docs from the current version over to the 
-            new version and make them available for viewing and editting
+            new version and make them available for viewing and editing
         </p>
     {/if}
 

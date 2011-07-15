@@ -8,7 +8,7 @@
  *  Software Foundation; either version 2 of the
  *  License, or (at your option) any later version.
  *
- * The file thats holds the expSimpleNoteController class.
+ * The file that holds the expSimpleNoteController class.
  *
  * @link http://www.gnu.org/licenses/gpl.txt GPL http://www.gnu.org/licenses/gpl.txt
  * @package Exponent-CMS
@@ -131,7 +131,7 @@ class expSimpleNoteController extends expController {
         $sql .= 'AND n.approved=1';
         
         $simplenotes = new expPaginator(array(
-            'model'=>'expSimpleNote',
+            //'model'=>'expSimpleNote',
             'sql'=>$sql, 
             'limit'=>10,
             'order'=>'created_at',
@@ -151,7 +151,7 @@ class expSimpleNoteController extends expController {
         } else {
             $unapproved = 0;
         }        
-        
+ 
         assign_to_template(array(
             'simplenotes'=>$simplenotes,
             'unapproved'=>$unapproved, 
@@ -343,7 +343,8 @@ class expSimpleNoteController extends expController {
         
         // setup some email variables.
         $subject = 'Notification of a New Note Posted to '.URL_BASE;
-        $tos = split(',', str_replace(' ', '', $notification_email));
+//        $tos = split(',', str_replace(' ', '', $notification_email));
+        $tos = explode(',', str_replace(' ', '', $notification_email));
         $editlink = makelink(array('controller'=>'expSimpleNote', 'action'=>'edit', 'id'=>$simplenote->id));
         
         // make the email body

@@ -16,12 +16,10 @@
  
 <div class="formmodule view-form">
 	<div align="center">
-		<center>
-			<h1>{$_TR.form_title}</h1>
-			{if $edit_mode != 1}
-				{$_TR.form_header}
-			{/if}
-		</center>
+		<h1>{$_TR.form_title}</h1>
+		{if $edit_mode != 1}
+			{$_TR.form_header}
+		{/if}
 	</div>
 	{if $edit_mode != 1} 
 		<div style="border: 2px dashed lightgrey; padding: 1em;">

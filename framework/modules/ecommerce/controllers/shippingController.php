@@ -130,7 +130,6 @@ class shippingController extends expController {
                 }
             }
         }
-
         assign_to_template(array('calculators'=>$calculators));
 	}
 	
@@ -150,14 +149,39 @@ class shippingController extends expController {
     }
     
     public function saveconfig() {
+        global $db;                
+        if (empty($this->params['id'])) return false;
+        $calcname = $db->selectValue('shippingcalculator', 'calculator_name', 'id='.$this->params['id']);
+        $calc = new $calcname($this->params['id']);
+        $conf = serialize($calc->parseConfig($this->params));        
+        $calc->update(array('config'=>$conf));
+        expHistory::back();
+    }
+	
+	public function editspeed() {
+	
         global $db;
         if (empty($this->params['id'])) return false;
         $calcname = $db->selectValue('shippingcalculator', 'calculator_name', 'id='.$this->params['id']);
         $calc = new $calcname($this->params['id']);
-        $conf = serialize($calc->parseConfig($this->params));
-        $calc->update(array('config'=>$conf));
-        expHistory::back();
+        assign_to_template(array('calculator'=>$calc));
+		
     }
+	
+	public function saveEditSpeed() {
+		global $db;
+		$obj->speed = $this->params['speed'];
+		$obj->shippingcalculator_id = $this->params['shippingcalculator_id'];
+		$db->insertObject($obj, $this->params['table']);
+		redirect_to(array('controller'=>'shipping', 'action'=>'configure', 'id'=>$this->params['shippingcalculator_id']));
+	}
+	
+	public function deleteSpeed() {
+		global $db;
+        if (empty($this->params['id'])) return false;
+		$db->delete('shippingspeeds',' id =' . $this->params['id']);
+		expHistory::back();
+	}
 }
 
 ?>

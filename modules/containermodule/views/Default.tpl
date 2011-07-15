@@ -27,7 +27,8 @@
 {/permissions}
 
 {permissions}
-	{if $hasParent == 0 && ($permissions.edit_module == 1 || $permissions.administrate == 1)}{** top level container module **}
+	{if $hasParent == 0 && ($permissions.edit_module == 1 || $permissions.administrate == 1)}
+	{** top level container module **}
 		<div class="container-chrome">
 			<a href="#" class="trigger" title="Container">Container</a>
 			<ul class="container-menu">

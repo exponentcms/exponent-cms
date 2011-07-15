@@ -30,6 +30,13 @@ a.managemodules {
     background:url(../images/exp-admin-sprite.png) no-repeat 3px -386px;
 }
 
+a.password {
+    display:inline-block;
+    zoom:1;
+    padding:4px 5px 4px 20px;
+    background:url(../images/change_password.png) no-repeat 0 50%;
+}
+
 a.selectall {
     display:inline-block;
     zoom:1;
@@ -135,10 +142,11 @@ a.view {
     color:#333;
     font-weight:bold;
     font-style:italic;
-    background:url(../images/laoding1.gif) no-repeat 50% 50%;
+    background:url(../images/loading1.gif) no-repeat 50% 50%;
 }
 
 /****************  tabview admin  ***********************/
+
 
 .exp-skin-tabview .yui-navset-top .yui-nav li {
     display:inline-block;
@@ -152,25 +160,44 @@ a.view {
 .exp-skin-tabview .yui-navset-top .yui-nav li a {
     text-decoration:none;
     display:inline-block;
+    *display:inline;
+    zoom:1;
+    vertical-align:top;
     cursor:pointer;
     padding-right:4px;
+    font-size:11px;
+    
     background:url(../images/tabs/tab-norm-r.gif) no-repeat 100% 0;
 }
 .exp-skin-tabview .yui-navset-top .yui-nav li em {
     display:inline-block;
+    *display:inline;
+    zoom:1;
+    vertical-align:top;
     padding:5px 4px 4px 8px;
-    color:#626261;
+    color:#333;
+    font-style:normal;
+    font-family:arial;
+    font-weight:bold;
+    text-align:center;
+    text-shadow:1px 1px 0px #fff;
     background:url(../images/tabs/tab-norm-l.gif) no-repeat;
 }
 .exp-skin-tabview .yui-navset-top .yui-nav li a:hover {
     text-decoration:none;
     display:inline-block;
+    *display:inline;
+    zoom:1;
+    vertical-align:top;
     cursor:pointer;
     padding-right:4px;
     background:url(../images/tabs/tab-hov-r.gif) no-repeat 100% 0;
 }
 .exp-skin-tabview .yui-navset-top .yui-nav li a:hover em {
     display:inline-block;
+    *display:inline;
+    zoom:1;
+    vertical-align:top;
     padding:5px 4px 4px 8px;
     color:#2d2b28;
     background:url(../images/tabs/tab-hov-l.gif) no-repeat;
@@ -183,12 +210,15 @@ a.view {
 .exp-skin-tabview .yui-navset-top .yui-nav li.selected em,
 .exp-skin-tabview .yui-navset-top .yui-nav li.selected a:hover em {
     background:url(../images/tabs/tab-cur-l.gif) no-repeat;
-    padding:4px 6px 4px 10px;
+    padding:5px 4px 4px 8px;
     color:#ffffff;
+    font-weight:bold;
+    text-shadow:none;
 }
+
 .exp-skin-tabview .yui-nav {
-    padding:0;
-    margin:0 0 0 10px;
+    padding:10px 0 0 0;
+    margin:0 10px;
 }
 .exp-skin-tabview .yui-navset-top .yui-nav ul {
     padding:0;
@@ -196,11 +226,13 @@ a.view {
 }
 
 .exp-skin-tabview .yui-content {
-    padding:10px 0;
+    padding:10px;
     margin:0;
-    border:2px solid #071633;
-    border-width: 2px 0 0 0;
-
+    border:1px solid #888;
+       -moz-border-radius: 5px; 
+    -webkit-border-radius: 5px; 
+            border-radius: 5px; 
+    
 }
 
 .exp-skin-tabview .yui-hidden {

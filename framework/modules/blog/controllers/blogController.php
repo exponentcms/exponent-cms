@@ -25,17 +25,16 @@ class blogController extends expController {
         'dates'=>"Dates",
     );
     
-    public $remove_configs = array(
-		'ealerts',
-		'files'
-	);
-    public $codequality = 'beta';
+    public $remove_configs = array('ealerts');
+    public $add_permissions = array('approve'=>"Approve Comments");
+    public $codequality = 'stable';
     
+
     function name() { return $this->displayname(); } //for backwards compat with old modules
     function displayname() { return "Blog"; }
     function description() { return "This module allows you to run a blog on your site."; }
-    function author() { return "Adam Kessler, Phillip Ball - OIC Group, Inc"; }
-    function hasSources() { return true; }
+    function author() { return "Phillip Ball - OIC Group, Inc"; }
+    function hasSources() { return false; }
     function hasViews() { return true; }
     function hasContent() { return true; }
     function supportsWorkflow() { return false; }
@@ -128,7 +127,7 @@ class blogController extends expController {
 	    
 	    $start_date = mktime(0, 0, 0, $this->params['month'], 1, $this->params['year']);
 	    $end_date = mktime(0, 0, 0, $this->params['month']+1, 0, $this->params['year']);
-		$where = $this->aggregateWhereClause().' AND created_at > '.$start_date.' AND created_at < '.$end_date;
+		$where = ($this->aggregateWhereClause()?$this->aggregateWhereClause()." AND ":"").'created_at > '.$start_date.' AND created_at < '.$end_date;
 		$order = 'created_at';
 		$limit = empty($this->config['limit']) ? 10 : $this->config['limit'];
 		
@@ -137,6 +136,7 @@ class blogController extends expController {
 		            'where'=>$where, 
 		            'limit'=>$limit,
 		            'order'=>$order,
+		            'dir'=>'desc',
 		            'controller'=>$this->baseclassname,
 		            'action'=>$this->params['action'],
 		            'columns'=>array('Title'=>'title'),
@@ -150,7 +150,8 @@ class blogController extends expController {
 	    
 	    $user = user::getByUsername($this->params['author']);
 	    
-		$where = $this->aggregateWhereClause()." AND poster=".$user->id;
+		$where = ($this->aggregateWhereClause()?$this->aggregateWhereClause()." AND ":"")."poster=".$user->id;
+
 		$order = 'created_at';
 		$limit = empty($this->config['limit']) ? 10 : $this->config['limit'];
 		
@@ -163,7 +164,7 @@ class blogController extends expController {
 		            'action'=>$this->params['action'],
 		            'columns'=>array('Title'=>'title'),
 		            ));
-		            
+            	    
 		assign_to_template(array('page'=>$page));
 	}
 	
@@ -217,26 +218,102 @@ class blogController extends expController {
 	    
 	    assign_to_template(array('__loc'=>$loc,'record'=>$blog));
 	}
+
+	function metainfo() {
+        global $router;
+        if (empty($router->params['action'])) return false;
+        
+        // figure out what metadata to pass back based on the action 
+        // we are in.
+        $action = $_REQUEST['action'];
+        $metainfo = array('title'=>'', 'keywords'=>'', 'description'=>'');
+        $modelname = $this->basemodel_name;
+        switch($action) {
+            case 'showall':
+                $metainfo = array('title'=>"Showing all - ".$this->displayname(), 'keywords'=>SITE_KEYWORDS, 'description'=>SITE_DESCRIPTION);
+            break;
+            case 'show':
+            case 'showByTitle':
+                // look up the record.
+                if (isset($_REQUEST['id']) || isset($_REQUEST['title'])) {
+                    $lookup = isset($_REQUEST['id']) ? $_REQUEST['id'] :$_REQUEST['title']; 
+                    $object = new $modelname($lookup);
+                    // set the meta info
+                    if (!empty($object)) {
+                        $metainfo['title'] = empty($object->meta_title) ? $object->title : $object->meta_title;
+                        $metainfo['keywords'] = empty($object->meta_keywords) ? SITE_KEYWORDS : $object->meta_keywords;
+                        $metainfo['description'] = empty($object->meta_description) ? SITE_DESCRIPTION : $object->meta_description;
+                    }              
+                }
+            break;
+            case 'showall_by_tags':
+                // look up the record.
+                if (isset($_REQUEST['tag'])) {
+                    $object = new expTag($_REQUEST['tag']);
+                    // set the meta info
+                    if (!empty($object)) {
+                        $metainfo['title'] = gt('Showing all Blog Posts with tagged with ') ."\"" . $object->title . "\"";
+                        $metainfo['keywords'] = empty($object->meta_keywords) ? SITE_KEYWORDS : $object->meta_keywords;
+                        $metainfo['description'] = empty($object->meta_description) ? SITE_DESCRIPTION : $object->meta_description;
+                    }              
+                }
+            break;
+            case 'showall_by_author':
+                // look up the record.
+                if (isset($_REQUEST['author'])) {
+                    // set the meta info
+                    $u = exponent_users_getUserByName($_REQUEST['author']);
+                    
+            		switch (DISPLAY_ATTRIBUTION) {
+            			case "firstlast":
+            				$str = $u->firstname . " " . $u->lastname;
+            				break;
+            			case "lastfirst":
+            				$str = $u->lastname . ", " . $u->firstname;
+            				break;
+            			case "first":
+            				$str = $u->firstname;
+            				break;
+            			case "username":
+            			default:
+            				$str = $u->username;
+            				break;
+            		}
+                    
+                    if (!empty($str)) {
+                        $metainfo['title'] = gt('Showing all Blog Posts written by ') ."\"" . $str . "\"";
+                        $metainfo['keywords'] = empty($object->meta_keywords) ? SITE_KEYWORDS : $object->meta_keywords;
+                        $metainfo['description'] = empty($object->meta_description) ? SITE_DESCRIPTION : $object->meta_description;
+                    }              
+                }
+                case 'showall_by_date':
+                    // look up the record.
+                    if (isset($_REQUEST['month'])) {
+            			$mk = mktime(0, 0, 0, $_REQUEST['month'], 01, $_REQUEST['year']);
+            			$ts = strftime('%B, %Y',$mk);
+                        // set the meta info
+                        $metainfo['title'] = gt('Showing all Blog Posts written in ') . $ts ;
+                        $metainfo['keywords'] = empty($object->meta_keywords) ? SITE_KEYWORDS : $object->meta_keywords;
+                        $metainfo['description'] = empty($object->meta_description) ? SITE_DESCRIPTION : $object->meta_description;
+                    }
+            break;
+            default:
+                //check for a function in the controller called 'action'_meta and use it if so
+                $functionName = $action."_meta";
+                $mod = new $this->classname;                
+                if(method_exists($mod,$functionName))
+                {
+                    $metainfo = $mod->$functionName($_REQUEST);
+                }                    
+                else
+                {
+                    $metainfo = array('title'=>$this->displayname()." - ".SITE_TITLE, 'keywords'=>SITE_KEYWORDS, 'description'=>SITE_DESCRIPTION);
+                }
+        }
+        
+        return $metainfo;
+    }
 	
-	public function update() {
-	    //FIXME:  Remove this code once we have the new tag implementation	    
-	    if (!empty($this->params['tags'])) {
-	        global $db;
-	        if (isset($this->params['id'])) {
-    	        $db->delete('content_expTags', 'content_type="blog" AND content_id='.$this->params['id']);
-    	    }
-    	    
-	        $tags = explode(",", $this->params['tags']);
-	        
-	        foreach($tags as $tag) {
-	            $tag = trim($tag);
-	            $expTag = new expTag($tag);
-	            if (empty($expTag->id)) $expTag->update(array('title'=>$tag));
-	            $this->params['expTag'][] = $expTag->id;
-	        }
-	    }
-	    // call expController update to save the blog article
-	    parent::update();
-	}
+
 }
 ?>

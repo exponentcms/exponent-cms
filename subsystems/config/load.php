@@ -31,14 +31,20 @@ function exponent_unhtmlentities( $str )
 	return strtr($str, $trans);
 }
 
+// include global constants
 @include_once(BASE."conf/config.php");
-// include constants defined in the theme
-if (file_exists(BASE.'themes/'.DISPLAY_THEME_REAL.'/config.php')) include_once(BASE.'themes/'.DISPLAY_THEME_REAL.'/config.php');
+
+// include constants defined in the current theme (if theme is defined)
+if (defined('DISPLAY_THEME_REAL')) {
+	if (file_exists(BASE.'themes/'.DISPLAY_THEME_REAL.'/config.php')) @include_once(BASE.'themes/'.DISPLAY_THEME_REAL.'/config.php');
+}
+
+// include default constants, fill in missing pieces
 if (is_readable(BASE."conf/extensions")) {
 	$dh = opendir(BASE."conf/extensions");
 	while (($file = readdir($dh)) !== false) {
 		if (is_readable(BASE."conf/extensions/$file") && substr($file,-13,13) == ".defaults.php") {
-			include_once(BASE."conf/extensions/$file");
+			@include_once(BASE."conf/extensions/$file");
 		}
 	}
 }

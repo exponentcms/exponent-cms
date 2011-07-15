@@ -19,14 +19,28 @@
 
 class billingtransaction extends expRecord {  
     public $has_one = array('billingcalculator'); 
-	public $table = 'billingtransactions';	
+	public $table = 'billingtransactions';
+    
+    public function captureEnabled() 
+    {
+        return $this->billingcalculator->calculator->captureEnabled(); 
+    }
+    
+    public function voidEnabled() 
+    {
+        return $this->billingcalculator->calculator->captureEnabled();
+    }
+    
+    public function creditEnabled() 
+    {
+        return $this->billingcalculator->calculator->captureEnabled(); 
+    }
     
     public function getRefNum()
     {
-        $opts = expUnserialize($this->billing_options);
-        //eDebug($opts);
-        return $opts->PNREF; 
+        //$opts = expUnserialize($this->billing_options);
+        //return $opts->PNREF; 
+        return $this->billingcalculator->calculator->getPaymentReferenceNumber($this->billing_options);
     }
 }
-
 ?>

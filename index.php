@@ -38,8 +38,16 @@ require_once('exponent.php');
 // skip it and default back to the old way of doing things.
 $router->routeRequest();
 
-if (isset($_GET['id']) && !is_numeric($_GET['id'])) $_GET['id'] = intval($_GET['id']);
+// initialize this users cart if they have ecomm installed.
+// define whether or not ecom is enabled
+if ($db->selectValue('modstate', 'active', 'module="storeController"')) {
+    define("ECOM",1);
+    $order = order::getUserCart();   
+} else {
+    define("ECOM",0);
+}
 
+if (isset($_GET['id']) && !is_numeric($_GET['id'])) $_GET['id'] = intval($_GET['id']);
 $section = $router->getSection();
 $sectionObj = $router->getSectionObj($section);
 if (ENABLE_TRACKING) $router->updateHistory($section);
@@ -57,18 +65,13 @@ if (MAINTENANCE_MODE && !exponent_users_isAdmin() && ( !isset($_REQUEST['module'
 	//the default user is anonymous
 	if (!exponent_sessions_loggedIn()) {
 		// Initialize the users subsystem
-		require_once(BASE.'subsystems/users.php');
+		require_once(BASE.'subsystems/users.php');  // FIXME users.php is already loaded within exponent.php above
 
 		//TODO: Maxims initial anonymous user implementation
 		//exponent_users_login("anonymous", "anonymous");
 	}
 
-	if (@file_exists(BASE.'install/not_configured')) {
-		header('Location: '.URL_FULL.'install/index.php');
-		exit('Redirecting to the Exponent Install Wizard');
-	}
-
-	if (!(file_exists(BASE.'conf/config.php'))) {
+	if (@file_exists(BASE.'install/not_configured') || !(file_exists(BASE.'conf/config.php'))) {
 		header('Location: '.URL_FULL.'install/index.php');
 		exit('Redirecting to the Exponent Install Wizard');
 	}
@@ -102,7 +105,6 @@ if (MAINTENANCE_MODE && !exponent_users_isAdmin() && ( !isset($_REQUEST['module'
 		exponent_sessions_unset('uilevel');
 	}
 }
-
 
 //$microtime_str = explode(' ',microtime());
 //$i_end = $microtime_str[0] + $microtime_str[1];

@@ -14,8 +14,12 @@
  *
  *}
 
+{css unique="blog" link="`$asset_path`css/blog.css"}
+
+{/css}
+
 <div class="module blog show">
-    <h2>{$record->title}</h2>
+    <h1>{$record->title}</h1>
     {permissions}
         <div class="item-actions">
             {if $permissions.edit == 1}
@@ -24,25 +28,34 @@
             {if $permissions.delete == 1}
                 {icon action=delete record=$record title="Delete this `$modelname`" onclick="return confirm('Are you sure you want to delete this `$modelname`?');"}
             {/if}
+            {if $permissions.manage == 1}
+                {icon class="manage" controller=expTag action=manage title="Manage Tags"|gettext text="Manage Tags"|gettext}
+            {/if}
         </div>
     {/permissions}
-    <span class="post-info">Posted by {attribution user_id=$record->poster} on <span class="date">{$record->created_at|format_date:$smarty.const.DISPLAY_DATE_FORMAT}</span>
-		{if $config.usestags}
-			<span class="tags">
-				Tags: 
-				{foreach from=$record->expTag item=tag name=tags}
-					<a href="{link action=showall_by_tags tag=$tag->sef_url}">{$tag->title}</a>
-					{if $smarty.foreach.tags.last != 1},{/if}
-				{/foreach} 
-			</span>
+    <div class="post-info">
+        <span class="attribution">
+            Posted by {attribution user_id=$record->poster} on <span class="date">{$record->created_at|format_date:$smarty.const.DISPLAY_DATE_FORMAT}</span>
+        </span>
+
+        | <a class="comments" href="{link action=show title=$record->sef_url}#exp-comments">{$record->expComment|@count} {"Comments"|gettext}</a>
+        
+		{if $record->expTag[0]->id}
+		| <span class="tags">
+			{"Tags"|gettext}: 
+			{foreach from=$record->expTag item=tag name=tags}
+			<a href="{link action=showall_by_tags tag=$tag->sef_url}">{$tag->title}</a>
+			{if $smarty.foreach.tags.last != 1},{/if}
+			{/foreach} 
+		</span>
 		{/if}
-    </span>
+    </div>
     
     <div class="bodycopy">
+        {filedisplayer view="`$config.filedisplay`" files=$record->expFile id=$record->id}
         {$record->body}
     </div>
 
-    {filedisplayer view="`$config.filedisplay`" files=$record->expFile id=$record->id}
     
     {comments content_type="blog" content_id=$record->id title="Comments"}
 </div>

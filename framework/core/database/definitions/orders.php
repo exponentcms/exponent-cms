@@ -51,6 +51,8 @@ return array(
 	"shipping_tracking_number"=>array(
 		DB_FIELD_TYPE=>DB_DEF_STRING,
 		DB_FIELD_LEN=>100),
+    "shippingmethods_id"=>array(
+        DB_FIELD_TYPE=>DB_DEF_ID),
 	'order_status_id'=>array(
 		DB_FIELD_TYPE=>DB_DEF_INTEGER),
     'order_type_id'=>array(
@@ -71,7 +73,28 @@ return array(
         DB_FIELD_TYPE=>DB_DEF_DECIMAL),
     'orig_referrer'=>array(
         DB_FIELD_TYPE=>DB_DEF_STRING,
-        DB_FIELD_LEN=>2000)
+        DB_FIELD_LEN=>2000),
+    'poster'=>array(
+        DB_FIELD_TYPE=>DB_DEF_INTEGER),
+    'created_at'=>array(
+        DB_FIELD_TYPE=>DB_DEF_TIMESTAMP),
+    'editor'=>array(
+        DB_FIELD_TYPE=>DB_DEF_ID),
+    'edited_at'=>array(
+        DB_FIELD_TYPE=>DB_DEF_TIMESTAMP),
+    "order_references"=>array(
+        DB_FIELD_TYPE=>DB_DEF_STRING,
+        DB_FIELD_LEN=>2000),
+    "sales_rep_1_id"=>array(
+        DB_FIELD_TYPE=>DB_DEF_INTEGER),
+    "sales_rep_2_id"=>array(
+        DB_FIELD_TYPE=>DB_DEF_INTEGER),
+    "sales_rep_3_id"=>array(
+        DB_FIELD_TYPE=>DB_DEF_INTEGER),
+    "return_count"=>array(
+        DB_FIELD_TYPE=>DB_DEF_STRING,
+        DB_FIELD_LEN=>2000),
+        
 );
 
 ?>

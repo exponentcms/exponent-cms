@@ -44,8 +44,11 @@ class youtubeController extends expController {
                 $val->embed_code = preg_replace("/width=\"\d+\"/", 'width='.$this->config['width'], $val->embed_code);
             }
         }
-        
-        
+		// force fix for menus appearing BEHIND the video in IE
+        foreach ($vids as $key=>$val) {
+            $val->embed_code = preg_replace("/\" frameborder=\"/", '?wmode=transparent" frameborder="', $val->embed_code);
+        }
+
         assign_to_template(array('items'=>$vids));
     }
 	

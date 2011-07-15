@@ -29,13 +29,14 @@
             </tr>
             <tr class="even">
                 <td>
-                    <div class="control">
+                <div>{control type="checkbox" name="uncategorized" flip=true label="Uncategorized Products Only" value=1}  </div>{br}
+                    <div class="control"> 
                         <span class="label">Select Categories</span><a href="#" id="showcats">Show Categories</a>
                     </div>
                     <div id="catpicker" class="hide">
                         <div class="hd">Select Categories</div>
-                        <div class="bd">
-                            <div style="overflow-y:scroll;height:300px;">
+                        <div class="bd">                            
+                            <div style="overflow-y:scroll;height:300px;">                            
                             {control type="tagtree" addable=false id="managecats" name="managecats" controller=storeCategory draggable=false menu=false expandonstart=false checkable=true}
                             </div>
                         </div>
@@ -51,6 +52,14 @@
                     });
                     {/literal}
                     {/script}
+                </td>
+            </tr>
+            <tr class="odd">
+                <td>&nbsp;</td>
+            </tr>
+            <tr class="even">
+                <td>
+                    {control type="dropdown" name="company" label="Product company... " includeblank="--Any--" size=4 multiple=true frommodel=company}    
                 </td>
             </tr>
             <tr class="odd">

@@ -533,7 +533,7 @@
     position:absolute;
     left:10px;
     top:-7px;
-    background: url(../../skin/panel/point.gif) no-repeat;
+    background: url(../images/panel/point.gif) no-repeat;
 }
 .exp-dropmenu .hd {
     text-align:left;

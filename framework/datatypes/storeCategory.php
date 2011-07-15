@@ -60,6 +60,27 @@ class storeCategory extends expNestedNode {
 
 		return $children;
 	}
+    
+    public function getFirstImageId() {
+        global $db, $user;
+        //$sql = 'SELECT DISTINCT p.* FROM '.DB_TABLE_PREFIX.'_product p ';   
+        $sql = 'SELECT DISTINCT cf.expfiles_id FROM '.DB_TABLE_PREFIX.'_product as p '; 
+        $sql .= 'JOIN '.DB_TABLE_PREFIX.'_content_expFiles cf ON p.id = cf.content_id ';           
+        $sql .= 'JOIN '.DB_TABLE_PREFIX.'_product_storeCategories psc ON p.id = psc.product_id ';
+        $sql .= 'WHERE (p.active_type=0) AND ';
+        $sql .= 'psc.storecategories_id IN (';
+        $sql .= 'SELECT id FROM '.DB_TABLE_PREFIX.'_storeCategories WHERE rgt BETWEEN '.$this->lft.' AND '.$this->rgt.') LIMIT 1';         
+        
+        /*$sql  = 'SELECT cf.id FROM '.DB_TABLE_PREFIX.'_storeCategories sc JOIN '.DB_TABLE_PREFIX.'_content_expFiles as cf ';
+        $sql .= 'ON cf.content_id = psc.product_id ';
+        $sql .= 'JOIN '.DB_TABLE_PREFIX.'_product_storeCategories as psc ON psc.storecategories_id = sc.id ';
+        $sql .= 'WHERE sc.storecategories_id=' . $this->id . " AND cf.subtype='mainimage'";*/
+        //echo $sql;
+        $idObj = $db->selectObjectBySql($sql);
+        //eDebug($idObj);
+        return $idObj->expfiles_id;
+        
+    }             
 
 }
 

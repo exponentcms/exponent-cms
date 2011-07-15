@@ -14,10 +14,19 @@
  *
  *}
  
-{css unique="product-show" link="`$asset_path`css/product_show.css" corecss="button,tables"}
+{css unique="product-show" link="`$asset_path`css/storefront.css" corecss="button,tables"}
 
 {/css}
 
+{css unique="product-show" link="`$asset_path`css/ecom.css"}
+
+{/css}
+
+{if $config.enable_lightbox}
+{css unique="files-gallery" link="`$smarty.const.PATH_RELATIVE`framework/modules/common/assets/css/gallery-lightbox.css"}
+
+{/css}    
+{/if}
 
 {if $product->user_message != ''}
 <div id="msg-queue" class="common msg-queue">
@@ -27,7 +36,7 @@
 </div>
 {/if}
 
-<div class="store show">
+<div class="module store show product">
     <h1>{$product->title}</h1>
     
     {permissions}
@@ -48,29 +57,93 @@
     </div>
     {/permissions}
     
+    
+    {******* IMAGES *****}
     <div class="large-ecom-image">
         {if $product->main_image_functionality=="iws"}
             {* Image with swatches *}
-            {if $product->image_alt_tag !=''} 
-                {img file_id=$product->expFile.imagesforswatches[0]->id w=250 alt="`$product->image_alt_tag`" title="`$product->title`" class="large-img" id="enlarged-image"}
-            {else}
-                {img file_id=$product->expFile.imagesforswatches[0]->id w=250 alt="Image of `$product->title`" title="`$product->title`" class="large-img" id="enlarged-image"}
-            {/if}
-            {assign value=$product->expFile.imagesforswatches[0]->id var=mainimg}
+            {img file_id=$product->expFile.imagesforswatches[0]->id w=250 alt=$product->image_alt_tag|default:"Image of `$product->title`" title="`$product->title`" class="large-img" id="enlarged-image"}
+            {assign value=$product->expFile.imagesforswatches.0 var=mainimg}
         {else}
-            {if $product->image_alt_tag !=''}  
-                {img file_id=$product->expFile.mainimage[0]->id w=250 alt="`$product->image_alt_tag`" title="`$product->title`"  class="large-img" id="enlarged-image"}
-            {else}
-                {img file_id=$product->expFile.mainimage[0]->id w=250 alt="Image of `$product->title`" title="`$product->title`" class="large-img" id="enlarged-image"}
+            {if $config.enable_lightbox}
+                <a href="{$product->expFile.mainimage[0]->url}" title="{$product->expFile.mainimage[0]->title|default:$product->title}" rel="lightbox[g{$product->id}]">
             {/if}
-            {assign value=$product->expFile.mainimage[0]->id var=mainimg}
-            
+            {img file_id=$product->expFile.mainimage[0]->id w=250 alt=$product->image_alt_tag|default:"Image of `$product->title`" title="`$product->title`"  class="large-img" id="enlarged-image"}
+            {if $config.enable_lightbox}
+                </a>
+            {/if}
+            {assign value=$product->expFile.mainimage.0 var=mainimg}
         {/if}
+        
+        {if $product->expFile.images[0]->id}
+        <div class="additional thumbnails">
+            <h3>{gettext str="Additional Images"}</h3>
+            <ul>
+                <li>
+                    {if $config.enable_lightbox}
+                        <a href="{$product->expFile.mainimage[0]->url}" title="{$mainimg->title|default:$product->title}" rel="lightbox[g{$product->id}]">
+                    {/if}
+                    {img file_id=$product->expFile.mainthumbnail[0]->id|default:$mainimg->id w=50 h=50 zc=1 class="thumbnail" id="thumb-`$mainimg->id`"}
+                    {if $config.enable_lightbox}
+                        </a>
+                    {/if}
+                </li>
+                {foreach from=$product->expFile.images item=thmb}
+                <li>
+                    {if $config.enable_lightbox}
+                        <a href="{$thmb->url}" title="{$thmb->title|default:$product->title}" rel="lightbox[g{$product->id}]">
+                    {/if}
+                    {img file_id=$thmb->id w=50 h=50 zc=1 class="thumbnail" id="thumb-`$thmb->id`"}
+                    {if $config.enable_lightbox}
+                        </a>
+                    {/if}
+                </li>
+                {/foreach}
+            </ul>
+        </div>
+        {/if}
+        
+        {if $config.enable_lightbox}
+        {script unique="thumbswap-shadowbox" yui3mods=1}
+        {literal}
+        EXPONENT.YUI3_CONFIG.modules = {
+                   'gallery-lightbox' : {
+                       fullpath: EXPONENT.PATH_RELATIVE+'framework/modules/common/assets/js/gallery-lightbox.js',
+                       requires : ['base','node','anim','selector-css3']
+                   }
+             }
+
+        YUI(EXPONENT.YUI3_CONFIG).use('gallery-lightbox', function(Y) {
+            Y.Lightbox.init();    
+        });
+        {/literal}
+        {/script}
+        {else}
+        {script unique="thumbswap-shadowbox" yui3mods=1}
+        {literal}
+        YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
+            var thumbs = Y.all('.thumbnails li img.thumbnail');
+            var swatches = Y.all('.swatches li img.swatch');
+            var mainimg = Y.one('#enlarged-image');
+
+            var swapimage = function(e){
+                var tmbid = e.target.get('id').split('-')[1];
+                mainimg.set('src',EXPONENT.URL_FULL+"thumb.php?id="+tmbid+"&w=250");
+            };
+
+            thumbs.on('click',swapimage);
+            swatches.on('click',swapimage);
+
+        });
+        {/literal}
+        {/script}
+        {/if}
+        
     </div>
     
     
 
-    <div class="price">
+    <div class="prod-price"> 
         {* 
             [0] => Always available even if out of stock.
             [1] => Available but shown as backordered if out of stock.
@@ -78,13 +151,13 @@
             [3] => Show as &quot;Call for Price&quot;.
         *}                                                                                      
         {if $product->availability_type == 3}
-            <strong><a href="javascript:void();" rel=nofollow title="{$product->availability_note}">Call for price</a></strong>                
+            <strong>{"Call for price"|gettext}</strong>
         {else}
             {if $product->use_special_price}                     
-                <span style="font-size:12px;">Regular Price: {currency_symbol}{$product->base_price|number_format:2}</span>{br}
-                <span style="color:red; font-weight: bold;">SALE Price: {currency_symbol}{$product->special_price|number_format:2}</span>
+                <span class="regular-price on-sale">{currency_symbol}{$product->base_price|number_format:2}</span>
+                <span class="sale-price">{currency_symbol}{$product->special_price|number_format:2}&nbsp;<sup>{"SALE!"|gettext}</sup></span>
             {else}
-                <strong>{currency_symbol}{$product->base_price|number_format:2}</strong>
+                <span class="regular-price">{currency_symbol}{$product->base_price|number_format:2}</span>
             {/if}
         {/if}
     </div>
@@ -96,14 +169,54 @@
         {control type="hidden" name="product_type" value="`$product->product_type`"}
         {*control name="qty" type="text" value="`$product->minimum_order_quantity`" size=3 maxlength=5 class="lstng-qty"*}
 
+        {if $product->hasOptions()}
+            <div class="product-options">
+                {foreach from=$product->optiongroup item=og}
+                    {if $og->hasEnabledOptions()} 
+                        <div class="option {cycle values="odd,even"}">
+                            <h4>{$og->title}</h4>
+                            {if $og->allow_multiple}
+                                {optiondisplayer product=$product options=$og->title view=checkboxes display_price_as=diff selected=$params.options}           
+                            {else}
+                                {if $og->required}
+                                    {optiondisplayer product=$product options=$og->title view=dropdown display_price_as=diff selected=$params.options required=true}          
+                                {else}
+                                    {optiondisplayer product=$product options=$og->title view=dropdown display_price_as=diff selected=$params.options}          
+                                {/if}                                           
+                            {/if}
+                        </div> 
+                    {/if}
+                {/foreach}
+            </div>
+        {/if}
+
         {if $product->availability_type == 0 && $product->active_type == 0}
-            <a href="#" onclick="document.getElementById('addtocart{$product->id}').submit(); return false;" class="awesome {$smarty.const.BTN_COLOR} {$smarty.const.BTN_SIZE} addtocart" rel="nofollow"><strong><em>Add to Cart</em></strong></a>
+            <button type="submit" class="awesome {$smarty.const.BTN_COLOR} {$smarty.const.BTN_SIZE}" rel="nofollow">
+                <input type="text" class="text " size="5" value="{$product->minimum_order_quantity|default:1}" name="quantity">
+                {"Add to Cart"|gettext}
+            </button>
         {elseif $product->availability_type == 1 && $product->active_type == 0}
-            <!--a href="{link controller=cart action=addItem product_id=$product->id product_type=$product->product_type qty=1}" class="addtocart exp-ecom-link" rel="nofollow"><strong><em>Add to cart</em></strong></a--> 
-            <a href="#" onclick="document.getElementById('addtocart{$product->id}').submit(); return false;" class="awesome {$smarty.const.BTN_COLOR} {$smarty.const.BTN_SIZE} addtocart" rel="nofollow"><strong><em>Add to Cart</em></strong></a>
+            <button type="submit" class="awesome {$smarty.const.BTN_COLOR} {$smarty.const.BTN_SIZE}" rel="nofollow">
+                <input type="text" class="text " size="5" value="{$product->minimum_order_quantity|default:1}" name="quantity">
+                {"Add to Cart"|gettext}
+            </button>
             {if $product->quantity <= 0}<span class="error">{$product->availability_note}</span>{/if}   
-        {elseif $product->availability_type == 2}    
+        {elseif $product->availability_type == 2}
+            {if $user->isAdmin()}
+                <button type="submit" class="awesome red {$smarty.const.BTN_SIZE}" rel="nofollow">
+                    <input type="text" class="text " size="5" value="{$product->minimum_order_quantity|default:1}" name="quantity">
+                    {"Add to Cart"|gettext}
+                </button>
+            {/if}
             {if $product->quantity <= 0}<span class="error">{$product->availability_note}</span>{/if}              
+        {elseif $product->active_type == 1}
+            {if $user->isAdmin()}
+                <button type="submit" class="awesome red {$smarty.const.BTN_SIZE}" rel="nofollow">
+                    <input type="text" class="text " size="5" value="{$product->minimum_order_quantity|default:1}" name="quantity">
+                    {"Add to Cart"|gettext}
+                </button>
+            {/if}
+            <em class="unavailable">{"Product currently unavailable for purchase"|gettext}</em>
         {/if}    
         {/form}
     </div> 
@@ -137,7 +250,7 @@
     </p>
     {/if}    
 
-    {if $product->expFile.images[0]->id}
+    {*if $product->expFile.images[0]->id}
     <div class="additional thumbnails">
         <h3>{gettext str="Additional Images"}</h3>
         <ul>
@@ -151,6 +264,10 @@
         {/foreach}
         </ul>
     </div>
+    {/if*}
+    
+    {if $config.enable_ratings_and_reviews} 
+        {rating content_type="product" subtype="quality" label="Product Rating"|gettext record=$product}
     {/if}
     
     {if $product->main_image_functionality=="iws"}
@@ -170,26 +287,6 @@
     {if $product->main_image_functionality=="iws" || $product->expFile.images[0]->id}
         
     {/if}
-    {script unique="swapthumb" yui3mods='node'}
-    {literal}
-
-    YUI({ base:EXPONENT.YUI3_PATH,loadOptional: true}).use('node', function(Y) {
-        var thumbs = Y.all('.thumbnails li img.thumbnail');
-        var swatches = Y.all('.swatches li img.swatch');
-        var mainimg = Y.one('#enlarged-image');
-
-        var swapimage = function(e){
-            var tmbid = e.target.get('id').split('-')[1];
-            mainimg.set('src',EXPONENT.URL_FULL+"thumb.php?id="+tmbid+"&w=250");
-        };
-        
-        thumbs.on('click',swapimage);
-        swatches.on('click',swapimage);
-
-    });
-
-    {/literal}
-    {/script}
             
     <div class="bodycopy">
         {$product->body}        
@@ -210,14 +307,13 @@
     {if $product->childProduct|@count >= 1}
     {permissions}                   
     {if $permissions.delete == 1}   
-        {icon class=delete action=deleteChildren record=$product title="Delete `$product->title`'s Children" onclick="return confirm('Are you sure you want to delete ALL child products?');"} 
-        Delete All Child Products
+        {icon class=delete action=deleteChildren record=$product text="Delete All Child Products" title="Delete `$product->title`'s Children" onclick="return confirm('Are you sure you want to delete ALL child products?  This is permanent.');"}         
     {/if}
     {/permissions}
     
-    <div id="child-products">
+    <div id="child-products" class="exp-ecom-table">
         {form id="child-products-form" controller=cart action=addItem}
-        <table border="0" cellspacing="0" cellpadding="0" class="exp-skin-table">
+        <table border="0" cellspacing="0" cellpadding="0">
             <thead>
                 <tr>
                     <th>&nbsp;</th>
@@ -351,28 +447,43 @@
     {/if}
     
      {if $product->crosssellItem|@count >= 1}
-     <div class="store showall">
-         <div id="relatedItemsDiv"><h3 id="relatedItemsHeader">Related Items</h3></div>
-         <div class="products">
-             {foreach name=listings from=$product->crosssellItem item=listing}
-             {if $smarty.foreach.listings.iteration%3==0}
-                 {assign var="positioninfo" value=" last-in-row"}
-             {else}
-                 {assign var="positioninfo" value=""}
+     <div class="products ipr{$config.images_per_row} related-products">
+         <h2>{"Related Items"|gettext}</h2>
+         
+         {counter assign="ipr" name="ipr" start=1}
+
+         {foreach name=listings from=$product->crosssellItem item=listing}
+
+         {if $smarty.foreach.listings.first || $open_row}
+             <div class="product-row">
+             {assign var=open_row value=0}
+         {/if}
+
+         {include file=$listing->getForm('storeListing')}
+
+
+         {if $smarty.foreach.listings.last || $ipr%$config.images_per_row==0}
+             </div>
+             {assign var=open_row value=1}
+         {/if}
+         {counter name="ipr"}
+         {*if !$listing->active_type==2}
+
+             {$ipr}
+             {if $smarty.foreach.listings.first || $ipr%0}
+             {counter name="ipr" start=0}
+             <div class="product-row">
              {/if}
 
-             <div class="product{$positioninfo}">{include file=$listing->getForm('storeListing')}</div>
+             {include file=$listing->getForm('storeListing')}
 
-             {if $positioninfo!=""}
-                 <div style="clear:both"></div>
+             {if $smarty.foreach.listings.last || $ipr%0}
+                 </div>
              {/if}
-
-             {/foreach}
-
-         </div>
-        
+         {counter name="ipr" start=$ipr+1}
+         {/if*}
+         {/foreach}
      </div>
      {/if}
-        
-    {clear}
 </div>
+

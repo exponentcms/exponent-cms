@@ -20,12 +20,10 @@ class remove_exp1_faqmodule extends upgradescript {
 	protected $from_version = '1.99.0';
 	protected $to_version = '1.99.2'; 
 
-	function name() {
-		return "Remove the old FAQ Module";
-	}
+	function name() { return "Remove the old FAQ Module"; }
 
 	function upgrade() {
-	    global $db;
+//	    global $db;
 	    
 		// check if the files are there and remove them
 		$files = array(
@@ -48,7 +46,7 @@ class remove_exp1_faqmodule extends upgradescript {
 		    }
 		} 
 		
-		return $removed." files were delete.<br>".$errors." files could not be removed.";
+		return $removed." files were deleted.<br>".$errors." files could not be removed.";
 		
 	}
 }

@@ -6,7 +6,7 @@
 {/css}
 
 <div class="module report generate-report">
-    {pagelinks paginate=$page top=1}
+    {$page->links}
     {form id="batch" controller=batch}
     <div class="actions-to-apply">
         {control type="dropdown" name="action" label="Select Action" items="Add Notes,Delete,Apply Discount,Refund"}
@@ -17,5 +17,5 @@
         {$page->table}
     </div>
     {/form}
-    {pagelinks paginate=$page bottom=1}
+	{$page->links}
 </div>

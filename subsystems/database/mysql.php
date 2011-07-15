@@ -7,7 +7,7 @@
  *  Software Foundation; either version 2 of the
  *  License, or (at your option) any later version.
  *
- * The file thats holds the mysqli_database class
+ * The file that holds the mysql_database class
  *
  * @link http://www.gnu.org/licenses/gpl.txt GPL http://www.gnu.org/licenses/gpl.txt
  * @package Exponent-CMS
@@ -742,7 +742,8 @@ class mysql_database {
 				if (version_compare(phpversion(),'4.0.3','>=') > 0) {
 				  $values .= "'".mysql_real_escape_string($val)."',";
 				} else {
-				  $values .= "'".mysql_escape_string($val)."',";
+//				  $values .= "'".mysql_escape_string($val)."',";
+				  $values .= "'".mysql_real_escape_string($val)."',";
 			   }
 			}
 		}
@@ -790,7 +791,8 @@ class mysql_database {
 				if (version_compare(phpversion(),'4.0.3','>=') > 0) {
 				   $sql .= "`$var`='".mysql_real_escape_string($val)."',";
 				} else {
-				   $sql .= "`$var`='".mysql_escape_string($val)."',";
+//				   $sql .= "`$var`='".mysql_escape_string($val)."',";
+				   $sql .= "`$var`='".mysql_real_escape_string($val)."',";
 			   }
 			}
 		}

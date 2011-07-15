@@ -19,19 +19,19 @@
         	<h1>Edit Tags</h1>
         	<p>Add new tags to this tag collection</p>
 	</div>
-	{if $node->id == ""}
+	{if $record->id == ""}
 		{assign var=action value=create}
 	{else}
 		{assign var=action value=update}
 	{/if}
 	
 	{form controller=expTag action=$action}
-		{control type=hidden name=id value=$node->id}
-		{control type=hidden name=tag_collections_id value=$node->tag_collections_id}
-		{control type=hidden name=parent_id value=$node->parent_id}
-		{control type=hidden name=rgt value=$node->rgt}
-		{control type=hidden name=lft value=$node->lft}
-		{control type=text name=title label="Tag" value=$node->title}
+		{control type=hidden name=id value=$record->id}
+		{control type=hidden name=tag_collections_id value=$record->tag_collections_id}
+		{control type=hidden name=parent_id value=$record->parent_id}
+		{control type=hidden name=rgt value=$record->rgt}
+		{control type=hidden name=lft value=$record->lft}
+		{control type=text name=title label="Tag" value=$record->title}
 		{control type=buttongroup submit=Save cancel=Cancel}
 	{/form}
 </div>

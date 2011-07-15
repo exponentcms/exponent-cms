@@ -56,8 +56,8 @@
         <div id="demo" class="yui-navset">
             <ul class="yui-nav">
             <li class="selected"><a href="#general"><em>General</em></a></li>
-            <li><a href="#pricing"><em>Pricing</em></a></li>
-            <li><a href="#images"><em>Images</em></a></li>
+            <li><a href="#pricing"><em>Pricing, Tax & Discounts</em></a></li>
+            <li><a href="#images"><em>Images & Files</em></a></li>
             <li><a href="#quantity"><em>Quantity</em></a></li>
             <li><a href="#shipping"><em>Shipping</em></a></li>
             <li><a href="#categories"><em>Categories</em></a></li>
@@ -65,8 +65,7 @@
             <li><a href="#featured"><em>Featured</em></a></li>
             <li><a href="#relprod"><em>Related Products</em></a></li>
             <li><a href="#uifld"><em>User Input Fields</em></a></li>
-            <li><a href="#active"><em>Active/Inactive</em></a></li>
-            <li><a href="#status"><em>Status</em></a></li>  
+            <li><a href="#active"><em>Active & Status Settings</em></a></li>            
             <li><a href="#meta"><em>Meta Info</em></a></li>
             <li><a href="#notes"><em>Notes</em></a></li>
             <li><a href="#xtrafields"><em>Extra Fields</em></a></li>      
@@ -78,13 +77,15 @@
                     {control type="text" name="model" label="Model # / SKU" value=$record->model}
                     {control type="text" class="title" name="title" label="Product Name" value=$record->title}
                     {control type="dropdown" name="companies_id" label="Manufacturer" includeblank=true frommodel=company value=$record->companies_id}<a href='{link controller="company" action="manage"}'>Manage Manufacturers</a>{br}
-                    {control type="textarea" name="summary" label="Product Summary" rows=3 cols=45 value=$record->summary}
-                    {control type="editor" name="body" label="Product Description" height=250 value=$record->body}
-                    {control type=files name=brochures label="Product Brochures/Docs" subtype="brochures" value=$record->expFile}
+                    {control type="textarea" name="summary" label="Product Summary" rows=5 cols=85 value=$record->summary}
+                    {control type="editor" name="body" label="Product Description" height=450 value=$record->body}
+                    {control type="text" class="title" name="feed_title" label="Product Title for Data Feeds" value=$record->feed_title}
+                    {control type="textarea" name="feed_body" label="Product Description for Data Feeds (Description ONLY! - no HTML, no promotional language, no email addresses, phone numbers, or references to this website.)" rows=5 cols=85 value=$record->feed_body}
+                    
                 </div>
                 <div id="pricing">
                     <fieldset>
-                    <legend>General Pricing</legend>
+                    <h2>General Pricing</h2>
                         <table>
                         <tr>
                             <td>{control type="text" name="base_price" label="Base Price" value=$record->base_price filter=money}</td>
@@ -96,7 +97,7 @@
                         </table>
                     </fieldset>
                     <fieldset>
-                    <legend>Quantity Discounts</legend>
+                    <h2>Quantity Discounts</h2>
                         <p>
                             Quantity discounts are discounts that get applied when a customer purchases a certain 
                             amount of this product. You can configure how the discounts work by setting the discount
@@ -116,7 +117,8 @@
                         </tr>
                         </table>
                     </fieldset>                 
-                    {control type="dropdown" name="tax_class_id" label="Tax Class" frommodel=taxclass key=id display=name includeblank="-- No Tax Required --" value=$record->tax_class_id}
+                    <h2>Tax Class</h2>
+                    {control type="dropdown" name="tax_class_id" label="" frommodel=taxclass key=id display=name includeblank="-- No Tax Required --" value=$record->tax_class_id|default:1}
                 </div>
                 <div id="images">
                     <div id="imagefunctionality">              
@@ -130,7 +132,7 @@
                             {control type=files name=mainimages label="Product Images" subtype="mainimage" value=$record->expFile limit=1}
                             <h4>{gettext str="Thumbnail for Main Image"}</h4>
                             <p>{gettext str="If no image is provided to use as a thumbnail, one will be generated from the main image. This image will only show if additional images are provided"}</p>
-                            {control type=files name=mainthumb label="Main Image Thumbnail" subtype="mainthumbnail" value=$record->expFile limit=1}
+                            {control type=files name=mainthumb label="Product Images" subtype="mainthumbnail" value=$record->expFile limit=1}
                         </div>
                         <div id="iws-div" class="imngfuncbody" style="display:none;">
                             <table border="0" cellspacing="0" cellpadding="1" width="100%">
@@ -148,12 +150,17 @@
                                 </tr>
                             </table>
                         </div>
+                        {br}
                         <h4>{gettext str="Additional Images"}</h4>
                         <p>{gettext str="Have additional images to show for your product?"}</p>
                         
                         <div class="additional-images">
                             {control type=files name=images label="Additional Images" subtype="images" value=$record->expFile}
                         </div>
+                        {br}
+                        <h4>{gettext str="Additional File Attachments"}</h4>
+                        <p>{gettext str="Attach Product Brochures, Docs, Manuals, etc."}</p>
+                        {control type=files name=brochures label="Additional Files" subtype="brochures" value=$record->expFile}
                     </div>
 
                     {script unique="mainimagefunctionality" yui3mods="node,node-event-simulate"}
@@ -183,7 +190,7 @@
                     {control type="checkbox"  name="allow_partial" label="Allow partial quantities?" value=1 checked=$record->allow_partial}
                     {control type="checkbox" name="is_hidden" label="Hide Product" value=$record->is_hidden} 
                     {control type="radiogroup" name="availability_type" label="Quantity Display" items=$record->quantity_display default=$record->availability_type|default:0}
-                    {control type="textarea" name="availability_note" label="Note to display when product is not available" rows=5 cols=45 value=$record->availability_note}
+                    {control type="textarea" name="availability_note" label="* Note to display per above selection" rows=5 cols=45 value=$record->availability_note}
                 </div>
                 <div id="shipping">
                     {control type="checkbox" name="no_shipping" label="This item doesn't require shipping" value=1 checked=$record->no_shipping}
@@ -466,11 +473,9 @@
                 <div id="active">
                     <h2>Active/Inactive</h2>
                     {control type="radiogroup" name="active_type" label=" " items=$record->active_display default=$record->active_type|default:0}
-                </div>
-                <div id="status">
                     <h2>Status</h2>
                     {control type="dropdown" name="product_status_id" label=" " frommodel=product_status items=$status_display value=$record->product_status_id}
-                </div>
+                </div>                
                 <div id="meta">
                     <h2>Meta Info</h2>
                     {control type="text" name="sef_url" label="SEF URL" value=$record->sef_url}

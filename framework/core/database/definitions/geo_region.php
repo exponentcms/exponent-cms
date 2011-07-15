@@ -31,7 +31,11 @@ return array(
 		DB_FIELD_TYPE=>DB_DEF_STRING,
 		DB_FIELD_LEN=>20),
 	'country_id'=>array(
-		DB_FIELD_TYPE=>DB_DEF_ID)
+		DB_FIELD_TYPE=>DB_DEF_ID),
+    'rank'=>array(
+        DB_FIELD_TYPE=>DB_DEF_ID),
+    'active'=>array(
+        DB_FIELD_TYPE=>DB_DEF_BOOLEAN)
 );
 
 ?>

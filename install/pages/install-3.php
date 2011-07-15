@@ -19,6 +19,7 @@
 ##################################################
 
 if (!defined('EXPONENT')) exit('');
+global $db;
 
 $i18n = exponent_lang_loadFile('install/pages/dbcheck.php');
 
@@ -28,8 +29,8 @@ $i18n = exponent_lang_loadFile('install/pages/dbcheck.php');
     <thead>
         <tr>
             <th colspan=2><?php echo gt('Results'); ?></th>
-        <tr>
-    <thead>
+        </tr>
+    </thead>
     <tbody>
 <?php
 
@@ -68,7 +69,7 @@ if (preg_match('/[^A-Za-z0-9]/',$config['db_table_prefix'])) {
 
 if ($passed) {
 	//set connection encoding, works only on mySQL > 4.1
-	if($config["db_engine"] == "mysql") {
+	if($config["db_engine"] == "mysqli") {
 		if (!defined("DB_ENCODING")) define("DB_ENCODING", $config["DB_ENCODING"]);
 	}
 	$db = exponent_database_connect($config['db_user'],$config['db_pass'],$config['db_host'],$config['db_name'],$config['db_engine'],1);
@@ -191,7 +192,6 @@ if ($passed) {
 	}
 }
 
-
 if ($passed) {
 	echoStart($i18n['check_drop'].':');
 	$db->dropTable($tablename);
@@ -204,6 +204,7 @@ if ($passed) {
 	}
 }
 
+//FIXME needs to be updated for definitions in controller/module folders
 if ($passed) {
 	echoStart($i18n['installing_tables'].':');
 
@@ -272,11 +273,12 @@ if ($passed) {
 
     // version tracking
     $version = EXPONENT_VERSION_MAJOR.'.'.EXPONENT_VERSION_MINOR.'.'.EXPONENT_VERSION_REVISION.'-'.EXPONENT_VERSION_TYPE.''.EXPONENT_VERSION_ITERATION;
+	$vo = null;
     $vo->version = EXPONENT_VERSION_MAJOR.'.'.EXPONENT_VERSION_MINOR.'.'.EXPONENT_VERSION_REVISION;
     $vo->type = EXPONENT_VERSION_TYPE.EXPONENT_VERSION_ITERATION;
     $vo->builddate = EXPONENT_VERSION_BUILDDATE;
     $vo->created_at = time();
-    $ins = $db->insertObject($vo,'version') or die(mysql_error());
+    $ins = $db->insertObject($vo,'version') or die($db->error());
 
 
 	// ERROR CHECKING

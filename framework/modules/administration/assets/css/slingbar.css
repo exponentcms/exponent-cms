@@ -25,7 +25,6 @@
     margin:0;
 }
 
-
 #admintoolbar td.tl,
 #admintoolbar td.tc,
 #admintoolbar td.tr {
@@ -82,9 +81,6 @@
     background : url(../images/admintoolbar/rtbs.png) 100% 100%;
 }
 
-
-
-
 #admintoolbar td.bc {
     background : url(../images/admintoolbar/tbshad.png) 0 100%;
 }
@@ -97,8 +93,6 @@
     height:27px;
     background:#dedede;
 }
-
-
 
 /**************** icon styles for slingbar  ***********************/
 
@@ -120,16 +114,40 @@
 #admintoolbar li.ecom a.yuimenubaritemlabel {
     background:url(../images/admintoolbar/ecom.png) no-repeat 5px 40%;
 }
+
+#admintoolbar li.ecom form {
+    display:inline-block;
+    *display:inline;
+    zoom:1;
+    vertical-align:top;
+}
+
+#admintoolbar li.ecom form input {
+    margin-left:5px;
+    font-size:10px;
+    height:10px;
+    padding:3px;
+    line-height:12px;
+    position:relative;
+    top:-4px;
+    background:#dde;
+    border-radius:3px;
+    border:1px solid #0D1740;
+}
+
+
 #admintoolbar li.files a.yuimenubaritemlabel {
     background:url(../images/admintoolbar/files.png) no-repeat 5px 40%;
 }
 #admintoolbar li.ecom a.yuimenubaritemlabel em.newalert {
     position:relative;
     top:-5px;
-    font-size:8px;
-    background:url(../images/admintoolbar/new.png) no-repeat 5px 40%;
-    padding:5px 0 2px 15px;
-    text-transform:uppercase;
+    font-size:10px;
+    font-style:normal;
+/*    background:url(../images/admintoolbar/new.png) no-repeat 5px 40%;
+*/
+    padding:5px 0 2px 10px;
+    text-transform:capitalize;
 }
 #admintoolbar li.events a.yuimenubaritemlabel {
     background:url(../images/admintoolbar/cal.png) no-repeat 5px 40%;
@@ -151,30 +169,56 @@
     background:url(../images/admintoolbar/logout.png) no-repeat 3px 50%;
 }
 #admintoolbar li.password a.yuimenuitemlabel {
-    background:url(../images/admintoolbar/lock.png) no-repeat 3px 50%;
+    background:url(../../../../core/assets/images/lock.png) no-repeat 3px 50%;
 }
 #admintoolbar li.preview_on a.yuimenuitemlabel {
-    background:url(../images/admintoolbar/toggle_on.png) no-repeat 5px 50%;
+    background:url(../../../../core/assets/images/toggle_on.png) no-repeat 5px 50%;
 }
 #admintoolbar li.preview_off a.yuimenuitemlabel {
-    background:url(../images/admintoolbar/toggle_off.png) no-repeat 5px 50%;
+    background:url(../../../../core/assets/images/toggle_off.png) no-repeat 5px 50%;
 }
-
 
 #admintoolbar li.config a.yuimenuitemlabel {
     background:url(../images/admintoolbar/config.png) no-repeat 5px 50%;
 }
+#admintoolbar .info li.reportbug a.yuimenuitemlabel {
+    background:url(../../../../core/assets/images/bug.png) no-repeat 5px 50%;
+}
 #admintoolbar li.development a.yuimenuitemlabel {
     background:url(../images/admintoolbar/development.png) no-repeat 5px 50%;
 }
+#admintoolbar li.develop_on_red a.yuimenuitemlabel {
+    background:url(../../../../core/assets/images/toggle_red.png) no-repeat 5px 50%;
+}
+#admintoolbar li.develop_on_green a.yuimenuitemlabel {
+    background:url(../../../../core/assets/images/toggle_on.png) no-repeat 5px 50%;
+}
+#admintoolbar li.develop_off a.yuimenuitemlabel {
+    background:url(../../../../core/assets/images/toggle_off.png) no-repeat 5px 50%;
+}
+#admintoolbar li.remove a.yuimenuitemlabel {
+    background:url(../../../../core/assets/images/delete.png) no-repeat 5px 50%;
+}
+#admintoolbar li.search a.yuimenuitemlabel {
+    background:url(../../../../core/assets/images/view.png) no-repeat 5px 50%;
+}
+#admintoolbar li.manage a.yuimenuitemlabel {
+    background:url(../../../../core/assets/images/manage.png) no-repeat 5px 50%;
+}
 #admintoolbar li.users a.yuimenuitemlabel {
     background:url(../images/admintoolbar/manage-users.png) no-repeat 5px 50%;
+}
+#admintoolbar li.euser a.yuimenuitemlabel {
+    background:url(../../../../core/assets/images/exp-admin-sprite.png) no-repeat 3px -26px;
+}
+#admintoolbar li.egroup a.yuimenuitemlabel {
+    background:url(../../../../core/assets/images/exp-admin-sprite.png) no-repeat 3px -56px;
 }
 #admintoolbar li.sitetree a.yuimenuitemlabel {
     background:url(../images/admintoolbar/sitetree.png) no-repeat 5px 50%;
 }
 #admintoolbar li.configure a.yuimenuitemlabel {
-    background:url(../images/actions/configure.png) no-repeat 5px 50%;
+    background:url(../../../../core/assets/images/configure.png) no-repeat 5px 50%;
 }
 #admintoolbar li.info a.yuimenuitemlabel {
     background:url(../images/admintoolbar/info.png) no-repeat 5px 50%;
@@ -204,8 +248,6 @@
 }
 
 /****************  menu styles  ***********************/
-
-
 
 #admintoolbar .yuimenubar {
     border:0;
@@ -238,16 +280,7 @@
     background-position:3px 50%;
 }
 
-
-
-
-
-
-
-
-
-
-#admintoolbar .yuimenu
+admintoolbar .yuimenu
 {
 	left: -999em;
 	top: -999em;
@@ -463,7 +496,7 @@
 #admintoolbar .yuimenu .topscrollbar,
 #admintoolbar .yuimenu .bottomscrollbar
 {
-	background: #fff url(../images/admintoolbar/../../../../assets/skins/sam/sprite.png) no-repeat 0 0;
+	background: #fff url(../images/admintoolbar/sprite.png) no-repeat 0 0;
 	border: solid 1px #808080;
 	height: 16px;
 }

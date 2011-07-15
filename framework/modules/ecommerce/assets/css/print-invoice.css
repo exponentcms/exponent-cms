@@ -11,7 +11,8 @@
 #invoice {
     position:relative;
     color:#000000;
-    font-size:90%;
+    font-size:10px;
+    font-family: "Trebuchet MS",Arial,sans-serif;
 }
 
 #invoice table {
@@ -19,8 +20,12 @@
     border:0;
 }
 
+#invoice h1 {
+font-size: 138.5%;
+}
+
 #invoice table thead tr {
-    background:#aaaaaa;
+    background:#dddddd;
 }
 
 #invoice table td,
@@ -30,26 +35,28 @@
 }
 
 #invoice table td {
-    background:#dedede;
+    background:#FFFFFF;
 }
 #invoice table td,
 #invoice table th {
-    border:1px solid #ffffff;
+    border:1px solid #dddddd;
     padding:5px;
 }
 
 #invoice address span {
     display:block;
+    font-size: 14px;
+    font-style:normal;    
 }
 
 #invoice .div-rows div.even,
 #invoice tr.even td {
-    background:#cdcdcd;
+    background:#FFFFFF;
 }
 
 #invoice .div-rows div.odd,
 #invoice tr.odd td {
-    background:#bbbbbb;
+    background:#FFFFFF;
 }
 
 #invoice .payment-info th,
@@ -65,7 +72,7 @@
     display:inline-block;
     text-align:right;
     width:170px;
-    padding:5px;
+    padding:2px;
     color:#555555;
 }
 

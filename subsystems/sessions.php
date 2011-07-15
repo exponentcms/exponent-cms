@@ -92,19 +92,21 @@ function exponent_sessions_initialize() {
  * @node Subsystems:Sessions
  */
 function exponent_sessions_validate() {
-	global $db, $user;
-	//eDebug($_SESSION);
+	global $db, $user;    
 	//FJD - create a ticket for every session instead of just logged in users
 	if (!isset($_SESSION[SYS_SESSION_KEY]['ticket'])) {	
-		$ticket = exponent_sessions_createTicket();
+		$ticket = exponent_sessions_createTicket();    
 	}else{
-		$ticket = $db->selectObject('sessionticket',"ticket='".$_SESSION[SYS_SESSION_KEY]['ticket']."'");
+		$ticket = $db->selectObject('sessionticket',"ticket='".$_SESSION[SYS_SESSION_KEY]['ticket']."'");               
 	}	
-
+    
+    //if we don't have a ticket here, that means the browser passed the cookie, the session is still 
+    // active, but the DATABASE tickets table was cleared.
+    
 	if(SESSION_TIMEOUT_ENABLE == true){	
 		$timeoutval = SESSION_TIMEOUT;
-		if ($timeoutval < 300) $timeoutval = 300;
-		if ($ticket == null || $ticket->last_active < time() - $timeoutval) {
+        if ($timeoutval < 300) $timeoutval = 300;
+        if ($ticket == null || $ticket->last_active < time() - $timeoutval) {
 			exponent_sessions_logout();
 			define('SITE_403_HTML',SESSION_TIMEOUT_HTML);
 			return;
@@ -123,6 +125,7 @@ function exponent_sessions_validate() {
 		exponent_sessions_clearCurrentUserSessionCache();
 		$ticket->refresh = 0;		
 	}
+        
 	exponent_sessions_updateTicket($ticket, $user);
 	// Clean out old sessions from the sessionticket table.
 	$db->delete('sessionticket','last_active < ' . (time() - SESSION_TIMEOUT));
@@ -152,7 +155,7 @@ function exponent_sessions_login($user) {
  * @param User $user The user object of the newly logged-in user. Uses id of 0 if not supplied.
  * @node Subsystems:Sessions
  */
-function exponent_sessions_createTicket($user = null){
+function exponent_sessions_createTicket($user = null){    
 	$ticket = null;
 	if (!isset($user->id)) $user = new user(0);
 	$ticket->uid = $user->id;
@@ -166,7 +169,7 @@ function exponent_sessions_createTicket($user = null){
     }
 	$_SESSION[SYS_SESSION_KEY]['ticket'] = $ticket->ticket;
 	
-	global $db;
+	global $db;    
 	$db->insertObject($ticket,'sessionticket');
 	return $ticket;
 }

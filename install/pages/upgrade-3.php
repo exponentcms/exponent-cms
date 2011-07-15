@@ -43,7 +43,7 @@ if (is_readable($upgrade_dir)) {
             include_once($upgrade_dir . '/' . $file);
             $classname     = substr($file, 0, -4);
             $upgradescript = new $classname;
-            if ($upgradescript->checkVersion($num_version) && $upgradescript->needed()) {
+            if ($upgradescript->checkVersion($num_version) && $upgradescript->needed($num_version)) {
                 echo '<li><h3>' . $upgradescript->name() . '</h3>';
                 if (isset($_REQUEST['run'])) {
                     echo '<p class="success">' . $upgradescript->upgrade() . '</p></li>';

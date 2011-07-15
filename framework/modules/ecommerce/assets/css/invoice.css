@@ -3,10 +3,8 @@
 }
 
 #buttons {
-    position:absolute;
-    right:0;
-    top:0;
-    z-index:5;
+    margin-bottom:20px;
+    float:right;
 }
 
 #invoice {
@@ -18,7 +16,12 @@
 #invoice table {
     width:100%;
     border:1px solid #83aa53;
-    border-width:0 1px 1px 1px;
+    border-width:0 1px 1px 1px;    
+}
+
+#invoice table.payment-info
+{
+    table-layout: fixed;
 }
 
 #invoice table thead tr {
@@ -33,6 +36,10 @@
 
 #invoice table td {
     background:#edffdf;
+}
+
+#invoice .email{
+    word-wrap: break-word;
 }
 
 #invoice address span {
@@ -90,3 +97,16 @@
 #billinfo table td {
     background:#edffdf;
 }
+
+#search_stringControl {
+    position:relative;
+    height:30px;
+}
+
+#search_stringControl #related_items {
+    position:absolute;
+    top:0;
+    left:0;
+    width:98%;
+}
+

@@ -1,4 +1,5 @@
 <?php
+
 ##################################################
 #
 # Copyright (c) 2004-2011 OIC Group, Inc.
@@ -17,7 +18,7 @@
 ##################################################
 
 if (!defined('EXPONENT_VERSION_MAJOR')) {
-	// the RELEASE constant is changed by the build scripts at code freeeze
+	// the RELEASE constant is changed by the build scripts at code freeze
 	define('RELEASE','RELEASE');
 	if (RELEASE != '%%RELEASE%%') {
 
@@ -36,7 +37,7 @@ if (!defined('EXPONENT_VERSION_MAJOR')) {
 		/* exdoc
 		 * This is the date that this version of Exponent was exported from BZR and built.
 		 */
-		define('EXPONENT_VERSION_BUILDDATE','%%BUILDDATE%%');
+		define('EXPONENT_VERSION_BUILDDATE','1310760578');
 		/* exdoc
 		 * This specifies the type of release, either 'alpha','beta','rc' or '' (for stable).
 		 */
@@ -45,14 +46,14 @@ if (!defined('EXPONENT_VERSION_MAJOR')) {
 		 * This number is bumped each time a distribution of a single version is
 		 * released.  For instance, the 3rd beta has an version type iteration of 3.
 		 */
-		define('EXPONENT_VERSION_ITERATION','3'); // only applies to betas/alphas / rcs
+		define('EXPONENT_VERSION_ITERATION','4'); // only applies to betas/alphas / rcs
 	} else {
 		define('EXPONENT_VERSION_MAJOR','2');
 		define('EXPONENT_VERSION_MINOR','0');
 		define('EXPONENT_VERSION_REVISION','0');
 		define('EXPONENT_VERSION_TYPE','develop');
 		define('EXPONENT_VERSION_ITERATION','');
-		define('EXPONENT_VERSION_BUILDDATE','1306523940');
+		define('EXPONENT_VERSION_BUILDDATE',time());
 	}
 }
 

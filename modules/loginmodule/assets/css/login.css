@@ -1,4 +1,14 @@
 .loginmodule .box {
-	border: 2px solid #999;
-	padding: 4px 20px;
+    display:inline-block;
+    *display:inline;
+    zoom:1;
+    vertical-align:top;
+    width:40%;
 }
+.loginmodule .box.two {
+    border-left:1px dotted #cdcdcd;
+    padding-left:4%;
+    margin-left:4%;
+}
+
+

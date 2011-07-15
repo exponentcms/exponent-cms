@@ -3,17 +3,18 @@
 {/css}
 
 
-<div class="billing-method payflowpro creditcard-form">
+<div class="billing-method authorized creditcard-form">
     <h4>Pay By Credit Card</h4>
     {form name="ccinfoform" id="ccinfoform" controller=cart action=preprocess}
         {control type="hidden" name="billingcalculator_id" value=$key}
         {$billing->form}
-        <button id="continue-checkout" class="awesome blue large">Continue Checkout</button>  
+        <button id="continue-checkout" class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}">Continue Checkout</button>  
     {/form}
 </div>
 
-{script unique="continue-checkout"}
+{*script unique="continue-checkout"}
 {literal}
+    
     YUI({ base:EXPONENT.URL_FULL+'external/yui3/build/',loadOptional: true}).use('node', function(Y) {
         //Y.one('#cont-checkout').setStyle('display','none');
         Y.one('#continue-checkout').on('click',function(e){
@@ -22,4 +23,4 @@
         });
     });
 {/literal}
-{/script}
+{/script*}

@@ -20,19 +20,124 @@
 class administrationController extends expController {
     public $basemodel_name = 'expRecord';
     public $useractions = array();
-    public $add_permissions = array('administrate'=>'Manage Administration','toggle_minify'=>'Configure Website Settings',"switch_themes"=>"change themes");
+    public $add_permissions = array(
+	    'administrate'=>'Manage Administration',
+	    'clear_all_cache'=>'Clear All Caches',
+	    'clear_css_cache'=>'Clear CSS Cache',
+	    'clear_image_cache'=>'Clear Image Cache',
+	    'clear_rss_cache'=>'Clear RSS Cache',
+	    'clear_smarty_cache'=>'Clear Smarty Cache',
+	    'configure_site'=>'Configure Site',
+	    'delete_unused_tables'=>'Delete Unused Tables',
+	    "fix_database"=>"Fix Database",
+	    "fix_sessions"=>"Fix Sessions",
+	    "install_tables"=>"Install Tables",
+	    'manage_unused_tables'=>'Manage Unused Tables',
+	    'optimize_database'=>'Optimize Database',
+	    'toggle_dev'=>'Toggle Development Mode',
+	    'toggle_maintenance'=>'Toggle Maintenance Mode',
+	    'toggle_minify'=>'Toggle Minify Mode',
+	    "switch_themes"=>"Change Themes",
+	    "upload_extension"=>"Upload Extension",
+        );
 	public $codequality = 'beta';
     
     function name() { return $this->displayname(); } //for backwards compat with old modules
     function displayname() { return "Administration Controls"; }
     function description() { return "This is the beginnings of the new Administration Module"; }
-    function author() { return "Adam Kessler - OIC Group, Inc"; }
+    function author() { return "OIC Group, Inc"; }
     function hasSources() { return true; }
     function hasViews() { return true; }
     function hasContent() { return true; }
     function supportsWorkflow() { return false; }
     function isSearchable() { return false; }
-    
+
+
+	public function install_tables() {
+	    global $db;
+
+		define("TMP_TABLE_EXISTED",		1);
+		define("TMP_TABLE_INSTALLED",	2);
+		define("TMP_TABLE_FAILED",		3);
+		define("TMP_TABLE_ALTERED",		4);
+
+		$dirs = array(
+			BASE."datatypes/definitions",
+			BASE."framework/core/database/definitions",
+			);
+
+		$tables = array();
+		foreach ($dirs as $dir) {
+			if (is_readable($dir)) {
+				$dh = opendir($dir);
+				while (($file = readdir($dh)) !== false) {
+					if (is_readable("$dir/$file") && is_file("$dir/$file") && substr($file,-4,4) == ".php" && substr($file,-9,9) != ".info.php") {
+						$tablename = substr($file,0,-4);
+						$dd = include("$dir/$file");
+						$info = null;
+						if (is_readable("$dir/$tablename.info.php")) $info = include("$dir/$tablename.info.php");
+						if (!$db->tableExists($tablename)) {
+							foreach ($db->createTable($tablename,$dd,$info) as $key=>$status) {
+								$tables[$key] = $status;
+							}
+						} else {
+							foreach ($db->alterTable($tablename,$dd,$info) as $key=>$status) {
+								if (isset($tables[$key])) echo "$tablename, $key<br>";
+								if ($status == TABLE_ALTER_FAILED){
+									$tables[$key] = $status;
+								}else{
+									$tables[$key] = ($status == TABLE_ALTER_NOT_NEEDED ? DATABASE_TABLE_EXISTED : DATABASE_TABLE_ALTERED);
+								}
+
+							}
+						}
+					}
+				}
+			}
+		}
+
+		$newdef = BASE."framework/modules";
+
+		if (is_readable($newdef)) {
+			$dh = opendir($newdef);
+			while (($file = readdir($dh)) !== false) {
+				if (is_dir($newdef.'/'.$file) && ($file != '..' && $file != '.')) {
+					$dirpath = $newdef.'/'.$file.'/definitions';
+					if (file_exists($dirpath)) {
+						$def_dir = opendir($dirpath);
+						while (($def = readdir($def_dir)) !== false) {
+							eDebug("$dirpath/$def");
+							if (is_readable("$dirpath/$def") && is_file("$dirpath/$def") && substr($def,-4,4) == ".php" && substr($def,-9,9) != ".info.php") {
+								$tablename = substr($def,0,-4);
+								$dd = include("$dirpath/$def");
+								$info = null;
+								if (is_readable("$dirpath/$tablename.info.php")) $info = include("$dirpath/$tablename.info.php");
+								if (!$db->tableExists($tablename)) {
+									foreach ($db->createTable($tablename,$dd,$info) as $key=>$status) {
+										$tables[$key] = $status;
+									}
+								} else {
+									foreach ($db->alterTable($tablename,$dd,$info) as $key=>$status) {
+										if (isset($tables[$key])) echo "$tablename, $key<br>";
+										if ($status == TABLE_ALTER_FAILED){
+											$tables[$key] = $status;
+										}else{
+											$tables[$key] = ($status == TABLE_ALTER_NOT_NEEDED ? DATABASE_TABLE_EXISTED : DATABASE_TABLE_ALTERED);
+										}
+
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		ksort($tables);
+    	exponent_sessions_clearCurrentUserSessionCache();
+	    assign_to_template(array('status'=>$tables));
+	}
+
     public function manage_unused_tables() {
         global $db;
         
@@ -40,6 +145,7 @@ class administrationController extends expController {
         $unused_tables = array();
         $tables = $db->getTables();
         //eDebug($tables);
+	    //FIXME Need to update for definitions moving into controller folder
         foreach($tables as $table) {
             $basename = str_replace(DB_TABLE_PREFIX.'_', '', $table);
             $oldpath = BASE.'datatypes/definitions/'.$basename.'.php';
@@ -65,7 +171,140 @@ class administrationController extends expController {
         flash('message', 'Deleted '.$count.' unused tables.');
         expHistory::back();
     }
-    
+
+	public function optimize_database() {
+	    global $db;
+
+		$before = $db->databaseInfo();
+		foreach (array_keys($before) as $table) {
+			$db->optimize($table);
+		}
+		$after = $db->databaseInfo();
+	    assign_to_template(array('before'=>$before,'after'=>$after));
+	}
+
+	public function fix_sessions() {
+	    global $db;
+
+//		$test = $db->sql('CHECK TABLE '.DB_TABLE_PREFIX.'sessionticket');
+		$fix = $db->sql('REPAIR TABLE '.DB_TABLE_PREFIX.'sessionticket');
+		flash('message', 'Sessions Table was Repaired');
+		expHistory::back();
+	}
+
+
+	public function fix_database() {
+	    global $db;
+
+	    print_r("<h1>Attempting to Fix the Exponent Database</h1>");
+	    print_r("<h3>Some Error Conditions can NOT be repaired by this Procedure!</h3><br>");
+		print_r("<pre>");
+	// upgrade sectionref's that have lost their originals
+		print_r("<b>Searching for sectionrefs that have lost their originals</b><br><br>");
+		$sectionrefs = $db->selectObjects('sectionref',"is_original=0");
+		if (count($sectionrefs)) {
+			print_r("Found: ".count($sectionrefs)." copies (not originals)<br>");
+		} else {
+			print_r("None Found: Good!<br>");
+		}
+		foreach ($sectionrefs as $sectionref) {
+			if ($db->selectObject('sectionref',"module='".$sectionref->module."' AND source='".$sectionref->source."' AND is_original='1'") == null) {
+			// There is no original for this sectionref so change it to the original
+				$sectionref->is_original = 1;
+				$db->updateObject($sectionref,"sectionref");
+				print_r("Fixed: ".$sectionref->module." - ".$sectionref->source."<br>");
+			}
+		}
+		print_r("</pre>");
+
+		print_r("<pre>");
+	// upgrade sectionref's that point to missing sections (pages)
+		print_r("<b>Searching for sectionrefs pointing to missing sections/pages <br>to fix for the Recycle Bin</b><br><br>");
+		$sectionrefs = $db->selectObjects('sectionref',"refcount!=0");
+		$found = 0;
+		foreach ($sectionrefs as $sectionref) {
+			if ($db->selectObject('section',"id='".$sectionref->section."'") == null) {
+			// There is no section/page for sectionref so change the refcount
+				$sectionref->refcount = 0;
+				$db->updateObject($sectionref,"sectionref");
+				print_r("Fixed: ".$sectionref->module." - ".$sectionref->source."<br>");
+				$found += 1;
+			}
+		}
+		if (!$found) {
+			print_r("None Found: Good!<br>");
+		}
+		print_r("</pre>");
+
+// FIXME Not needed when locationrefs are removed
+		 print_r("<pre>");
+	 // add missing locationref's based on existing sectionref's
+		 print_r("<b>Searching for detached modules with no original (no matching locationref)</b><br><br>");
+		 $sectionrefs = $db->selectObjects('sectionref',1);
+		 foreach ($sectionrefs as $sectionref) {
+			 if ($db->selectObject('locationref',"module='".$sectionref->module."' AND source='".$sectionref->source."'") == null) {
+			 // There is no locationref for sectionref.  Populate reference
+				 $newLocRef = null;
+				 $newLocRef->module   = $sectionref->module;
+				 $newLocRef->source   = $sectionref->source;
+				 $newLocRef->internal = $sectionref->internal;
+				 $newLocRef->refcount = $sectionref->refcount;
+				 $db->insertObject($newLocRef,'locationref');
+				 print_r("Copied: ".$sectionref->module." - ".$sectionref->source."<br>");
+			 }
+		 }
+		 print_r("</pre>");
+
+		 print_r("<pre>");
+	 // delete sectionref's & locationref's that have empty sources since they are dead
+		 print_r("<b>Searching for unassigned modules (no source)</b><br><br>");
+		 $sectionrefs = $db->selectObjects('sectionref','source=""');
+		 if ($sectionrefs != null) {
+			 print_r("Removing: ".count($sectionrefs)." empty sectionref's (no source)<br>");
+			 $db->delete('sectionref','source=""');
+		 } else {
+			 print_r("No Empties Found: Good!<br>");
+		 }
+// FIXME Not needed when locationrefs are removed
+		 $locationrefs = $db->selectObjects('locationref','source=""');
+		 if ($locationrefs != null) {
+			 print_r("Removing: ".count($locationrefs)." empty locationref's (no source)<br>");
+			 $db->delete('locationref','source=""');
+		 } else {
+			 print_r("No Empties Found: Good!<br>");
+		 }
+		 print_r("</pre>");
+
+		print_r("<pre>");
+	// add missing sectionrefs based on existing containers (fixes aggregation problem)
+		print_r("<b>Searching for missing sectionref's based on existing container's</b><br><br>");
+		$containers = $db->selectObjects('container',1);
+		foreach ($containers as $container) {
+			$iloc = expUnserialize($container->internal);
+			if ($db->selectObject('sectionref',"module='".$iloc->mod."' AND source='".$iloc->src."'") == null) {
+			// There is no sectionref for this container.  Populate sectionref
+				$newSecRef = null;
+				$newSecRef->module   = $iloc->mod;
+				$newSecRef->source   = $iloc->src;
+				$newSecRef->internal = '';
+				$newSecRef->refcount = 1;
+				$newSecRef->is_original = 1;
+				if ($container->external != "N;") {
+					$eloc = expUnserialize($container->external);
+					$section = $db->selectObject('sectionref',"module='containermodule' AND source='".$eloc->src."'");
+					if (!empty($section)) {
+						$newSecRef->section = $section->id;
+						$db->insertObject($newSecRef,"sectionref");
+						print_r("Missing sectionref for container replaced: ".$iloc->mod." - ".$iloc->src." - PageID #".$section->id."<br>");
+					} else {
+						print_r("Cant' find the container page for container: ".$iloc->mod." - ".$iloc->src."<br>");
+					}
+				}
+			}
+		}
+		print_r("</pre>");
+	}
+
     public function toolbar() {
         global $user;
         $menu = array();
@@ -115,6 +354,178 @@ class administrationController extends expController {
     	expHistory::back();
     }
     
+	public function toggle_dev() {
+	    if (!defined('SYS_CONFIG')) include_once(BASE.'subsystems/config.php');
+	    $value = (DEVELOPMENT == 1) ? 0 : 1;
+	    exponent_config_change('DEVELOPMENT', $value);
+	    exponent_theme_remove_css();
+		$message = (DEVELOPMENT != 1) ? "Exponent is now in 'Development' mode" : "Exponent is no longer in 'Development' mode" ;
+		flash('message',$message);
+		expHistory::back();
+	}
+
+	public function toggle_maintenance() {
+		if (!defined('SYS_CONFIG')) include_once(BASE.'subsystems/config.php');
+		$value = (MAINTENANCE_MODE == 1) ? 0 : 1;
+		exponent_config_change('MAINTENANCE_MODE', $value);
+		MAINTENANCE_MODE == 1 ? flash('message',"Exponent is no longer in 'Maintenance' mode") : "" ;
+		expHistory::back();
+	}
+
+	public function clear_smarty_cache() {
+		exponent_theme_remove_smarty_cache();
+		$message = "Smarty Cache has been cleared" ;
+		flash('message',$message);
+		expHistory::back();
+	}
+
+	public function clear_css_cache() {
+		exponent_theme_remove_css();
+		$message = "CSS/Minfy Cache has been cleared" ;
+		flash('message',$message);
+		expHistory::back();
+	}
+
+	public function clear_image_cache() {
+		if (!defined('SYS_FILES')) include_once(BASE.'subsystems/files.php');
+//		exponent_files_remove_files_in_directory(BASE.'tmp/pixidou');  // alt location for pixidou cache
+		exponent_files_remove_files_in_directory(BASE.'framework/modules/pixidou/images');  // location for pixidou cache
+		// phpThumb cache includes subfolders
+		if (file_exists(BASE.'tmp/img_cache')) exponent_files_remove_files_in_directory(BASE.'tmp/img_cache');
+		$message = "Image/Pixidou Cache has been cleared" ;
+		flash('message',$message);
+		expHistory::back();
+	}
+
+	public function clear_rss_cache() {
+		if (!defined('SYS_FILES')) include_once(BASE.'subsystems/files.php');
+		exponent_files_remove_files_in_directory(BASE.'tmp/rsscache');
+		$message = "RSS/Podcast Cache has been cleared" ;
+		flash('message',$message);
+		expHistory::back();
+	}
+
+	public function clear_all_caches() {
+		if (!defined('SYS_FILES')) include_once(BASE.'subsystems/files.php');
+		exponent_theme_remove_smarty_cache();
+		exponent_theme_remove_css();
+//		exponent_files_remove_files_in_directory(BASE.'tmp/pixidou');  // alt location for pixidou cache
+		exponent_files_remove_files_in_directory(BASE.'framework/modules/pixidou/images');  // location for pixidou cache
+		if (file_exists(BASE.'tmp/img_cache')) exponent_files_remove_files_in_directory(BASE.'tmp/img_cache');
+		exponent_files_remove_files_in_directory(BASE.'tmp/rsscache');
+		$message = "All the System Caches have been cleared" ;
+		flash('message',$message);
+		expHistory::back();
+	}
+
+	public function upload_extension() {
+		if (!defined('SYS_FORMS')) require_once(BASE.'subsystems/forms.php');
+		exponent_forms_initialize();
+		$form = new form();
+		$form->register(null,'',new htmlcontrol(exponent_core_maxUploadSizeMessage()));
+		$form->register('mod_archive','Module Archive',new uploadcontrol());
+		$form->register('submit','',new buttongroupcontrol('Install'));
+		$form->meta('module','administration');
+		$form->meta('action','install_extension');
+
+		assign_to_template(array('form_html'=>$form->toHTML()));
+	}
+
+	public function install_extension() {
+
+		$i18n = exponent_lang_loadFile('modules/administrationmodule/actions/install_extension.php');
+		if ($_FILES['mod_archive']['error'] != UPLOAD_ERR_OK) {
+			switch($_FILES['mod_archive']['error']) {
+				case UPLOAD_ERR_INI_SIZE:
+				case UPLOAD_ERR_FORM_SIZE:
+					echo $i18n['file_too_large'].'<br />';
+					break;
+				case UPLOAD_ERR_PARTIAL:
+					echo $i18n['partial_file'].'<br />';
+					break;
+				case UPLOAD_ERR_NO_FILE:
+					echo $i18n['no_file'].'<br />';
+					break;
+			}
+		} else {
+			$basename = basename($_FILES['mod_archive']['name']);
+			// Check future radio buttons
+			// for now, try auto-detect
+			$compression = null;
+			$ext = '';
+			if (substr($basename,-4,4) == '.tar') {
+				$compression = null;
+				$ext = '.tar';
+			} else if (substr($basename,-7,7) == '.tar.gz') {
+				$compression = 'gz';
+				$ext = '.tar.gz';
+			} else if (substr($basename,-4,4) == '.tgz') {
+				$compression = 'gz';
+				$ext = '.tgz';
+			} else if (substr($basename,-8,8) == '.tar.bz2') {
+				$compression = 'bz2';
+				$ext = '.tar.bz2';
+			} else if (substr($basename,-4,4) == '.zip') {
+				$compression = 'zip';
+				$ext = '.zip';
+			}
+
+			if ($ext == '') {
+				echo $i18n['bad_archive'].'<br />';
+			} else {
+				if (!defined('SYS_FILES')) require_once(BASE.'subsystems/files.php');
+
+				// Look for stale sessid directories:
+				$sessid = session_id();
+				if (file_exists(BASE."extensionuploads/$sessid") && is_dir(BASE."extensionuploads/$sessid")) exponent_files_removeDirectory("extensionuploads/$sessid");
+				$return = exponent_files_makeDirectory("extensionuploads/$sessid");
+				if ($return != SYS_FILES_SUCCESS) {
+					switch ($return) {
+						case SYS_FILES_FOUNDFILE:
+						case SYS_FILES_FOUNDDIR:
+							echo $i18n['file_in_parh'].'<br />';
+							break;
+						case SYS_FILES_NOTWRITABLE:
+							echo $i18n['dest_not_w'].'<br />';
+							break;
+						case SYS_FILES_NOTREADABLE:
+							echo $i18n['dest_not_r'].'<br />';
+							break;
+					}
+				}
+
+				$dest = BASE."extensionuploads/$sessid/archive$ext";
+				move_uploaded_file($_FILES['mod_archive']['tmp_name'],$dest);
+
+				if ($compression != 'zip') {// If not zip, must be tar
+					include_once(BASE.'external/Tar.php');
+
+					$tar = new Archive_Tar($dest,$compression);
+
+					PEAR::setErrorHandling(PEAR_ERROR_PRINT);
+					$return = $tar->extract(dirname($dest));
+					if (!$return) {
+						echo '<br />'.$i18n['error_tar'].'<br />';
+					} else {
+						header('Location: ' . URL_FULL . 'index.php?module=administrationmodule&action=verify_extension&type=tar');
+					}
+				} else { // must be zip
+					include_once(BASE.'external/Zip.php');
+
+					$zip = new Archive_Zip($dest);
+
+					PEAR::setErrorHandling(PEAR_ERROR_PRINT);
+					if ($zip->extract(array('add_path'=>dirname($dest))) == 0) {
+						echo '<br />'.$i18n['error_zip'].':<br />';
+						echo $zip->_error_code . ' : ' . $zip->_error_string . '<br />';
+					} else {
+						header('Location: ' . URL_FULL . 'index.php?module=administrationmodule&action=verify_extension&type=zip');
+					}
+				}
+			}
+		}
+	}
+
     public function manage_themes() {
         expHistory::set('managable', $this->params);
     	$themes = array();

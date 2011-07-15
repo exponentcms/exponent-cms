@@ -18,17 +18,18 @@
 ##################################################
 
 if (!defined('EXPONENT')) exit('');
+global $db;
 
 $user = $db->selectObject('user','is_admin=1');
 
 $user->username = $_POST['username'];
-if ($user->username == '') {
+if ($user->username == '') {  //FIXME Shouldn't get this because of check in install-6.php
 	$i18n = exponent_lang_loadFile('install/pages/save_admin.php');
 	echo $i18n['bad_username'];
 } else {
     if (expValidator::validate_email_address($_POST['email']) == false) {
-        flash('You must supply a valid email address.');
-        header('Location: index.php?page=admin_user&erremail=true');
+        flash('error','You must supply a valid email address.');
+        header('Location: index.php?page=install-6&erremail=true');
         exit();
     }
 	$user->password = md5($_POST['password']);

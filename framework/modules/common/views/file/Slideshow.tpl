@@ -21,7 +21,7 @@
 {/css}
 
 <ul id="ss-{$name}" class="slideshow-frame" style="width:{$config.width|default:350}px;height:{$config.height|default:250}px;">
-	{assign var=quality value=$config.quality}
+	{assign var=quality value=$config.quality|default:$smarty.const.THUMB_QUALITY}
 	{if !$quality}
 		{assign var=quality value=THUMB_QUALITY}
 	{/if}

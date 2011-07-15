@@ -96,21 +96,31 @@ class billing extends expRecord {
     }
 
     public static function listAvailableCalculators() {
-        global $db;
+        global $db,$user;
         
         $calcs = array();
-        foreach ($db->selectObjects('billingcalculator', 'enabled=1') as $calc) {
-            $calcs[$calc->id] = $calc->calculator_name;
+        foreach ($db->selectObjects('billingcalculator', 'enabled=1') as $calcObj) {
+            $calcNameReal = $calcObj->calculator_name;
+            $calc = new $calcNameReal($calcObj->id);
+            if($user->isAdmin() || $calc->isRestricted() == false)
+            {
+                $calcs[$calc->id] = $calc->calculator_name;
+            }
         }
         
         return $calcs;
     }
 
     public function selectableCalculators() {
-        global $db;
+        global $db,$user;
         $calcs = array();
-        foreach ($db->selectObjects('billingcalculator', 'enabled=1') as $calc) {
-            $calcs[$calc->id] = $calc->user_title;
+        foreach ($db->selectObjects('billingcalculator', 'enabled=1') as $calcObj) {
+            $calcNameReal = $calcObj->calculator_name;
+            $calc = new $calcNameReal($calcObj->id);
+            if($user->isAdmin() || $calc->isRestricted() == false)
+            {
+                $calcs[$calc->id] = $calc->user_title;
+            }
         }
         
         return $calcs;
@@ -121,16 +131,27 @@ class billing extends expRecord {
             BASE.'themes/'.DISPLAY_THEME_REAL.'/modules/ecommerce/views/billing/',
             BASE.'framework/modules/ecommerce/views/billing/',
         );
-
+        
+        $views = array();
         foreach ($this->available_calculators as $key=>$calcname) {
             if (file_exists($dirs[0].$calcname.'.tpl')) {
-                $views[$key] = $dirs[0].$calcname.'.tpl';    
+                $views[$calcname]['view'] = $dirs[0].$calcname.'.tpl';    
             } else {
-                $views[$key] = $dirs[1].$calcname.'.tpl';    
-            }
+                $views[$calcname]['view'] = $dirs[1].$calcname.'.tpl';    
+            }   
+            $views[$calcname]['id'] = $key;          
         }
         
-        return @array_reverse($views,1); // @ added to ditch warning when ecom is off
+        return array_reverse($views);
+    }
+    
+    public function getCalcForms() {
+        //eDebug($this);
+        foreach ($this->available_calculators as $calcid=>$calcname) {            
+            $calc = new $calcname($calcid);
+            $forms[$calcname] = $calc->userForm();
+        }        
+        return array_reverse($forms);
     }
     
    /* public function refresh()

@@ -110,7 +110,7 @@ function exponent_users_login($username, $password) {
     $obj->timestamp = time();
     $obj->ip_address = exponent_users_getRealIpAddr();
     $obj->authenticated = $authenticated;
-    //$db->insertObject($obj, "user_loginAttempts");
+    $db->insertObject($obj, "user_loginAttempts");
     
     return $user;
 }

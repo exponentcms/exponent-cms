@@ -25,8 +25,7 @@ function validate(frm) {
 		//reqFieldTitleArray[n];
 	}
 	alert ('all good');
-	if (confirm('Are you sure you want to submit your form?')) return true;
-	else return false;
+	return confirm('Are you sure you want to submit your form?');
 }
 
 function showMessage(msg, field){

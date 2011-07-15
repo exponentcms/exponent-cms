@@ -73,6 +73,7 @@
                 <a href="{link controller=store action=create}">Add a new Product</a>
                 {br}<a href="{link controller=storeCategory action=manage}">Manage Categories</a>
                 {br}<a href="{link controller=store action=config}">Configure Store</a>
+				{br}<a href="{link controller=store action=nonUnicodeProducts}">Show Non-Unicode Products</a>
         </div>
     {/if}
     {/permissions}

@@ -26,6 +26,7 @@ class addressController extends expController {
     function author() { return "Adam Kessler @ OIC Group, Inc"; }
     function hasSources() { return true; }
     function hasViews() { return true; }
+    function canImportData() { return true;}
     function hasContent() { return true; }
     function supportsWorkflow() { return false; }
     function isSearchable() { return true; }
@@ -85,7 +86,7 @@ class addressController extends expController {
             $this->params['is_shipping'] = 1; 
             $this->address->update($this->params);
         }
-		expHistory::back();
+		expHistory::back(); 
 	}
 	
 	public function delete() {
@@ -124,6 +125,50 @@ class addressController extends expController {
         $db->setUniqueFlag($object, 'addresses', $this->params['is_what'], "user_id=" . $user->id);
         flash("message", "Successfully updated address.");
         expHistory::back(); 
+    }
+    
+    public function manage()
+    {
+        $gc = new geoCountry();             
+        $countries = $gc->find('all');
+        
+        $gr = new geoRegion();             
+        $regions = $gr->find('all',null,'rank asc,name asc');
+        
+        assign_to_template(array('countries'=>$countries, 'regions'=>$regions));
+    }
+    
+    public function manage_update()
+    {
+        global $db;
+        //eDebug($this->params,true);
+        //countries
+        $db->columnUpdate('geo_country','active',0,'active=1');
+        foreach($this->params['country'] as $country_id=>$is_active)
+        {
+            $gc = new geoCountry($country_id);
+            $gc->active = true;            
+            $gc->save();            
+        }
+        //country default
+        $db->columnUpdate('geo_country','is_default',0,'is_default=1');
+        if(isset($this->params['country_default']))
+        {
+            $gc = new geoCountry($this->params['country_default']);            
+            $db->setUniqueFlag($gc,'geo_country','is_default','id=' . $gc->id);    
+            $gc->refresh();            
+        }
+        //regions
+        $db->columnUpdate('geo_region','active',0,'active=1');
+        foreach($this->params['region'] as $region_id=>$is_active)
+        {
+            $gr = new geoRegion($region_id);
+            $gr->active = true;
+            if(isset($this->params['region_rank'][$region_id])) $gr->rank = $this->params['region_rank'][$region_id];
+            $gr->save();            
+        }
+        flash('message','Address configurations successfully updated.');
+        redirect_to(array('controller'=>'address','action'=>'manage'));        
     }
 }
 

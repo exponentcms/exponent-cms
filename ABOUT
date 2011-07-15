@@ -6,9 +6,9 @@ Introduction
 ============
 
 The Exponent Team is pleased to announce the GA release of Exponent Content Management System 
-version 0.96.6 - Content Management Made Simple.   
+version 2.0 - Content Management Made Simple.
 
-The culmination of over 3 years of R&D and user community input, 
+The culmination of over several years of R&D and user community input,
 Exponent offers many features found in other systems (both open source and 
 proprietary). 
 
@@ -62,12 +62,7 @@ its underlying simplicity and common sense.
 
 Exponent is the next generation CMS for everyone
 
-
-
-New in Exponent 0.96.6
-======================
-
-Please refer to the CHANGELOG for a full list of new Exponent 0.96.6 features, and 
+Please refer to the CHANGELOG for a full list of new Exponent features, and
 a list of features coming up in future releases.
 
 Thank you for using Exponent!

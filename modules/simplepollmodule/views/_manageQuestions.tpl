@@ -1,10 +1,10 @@
 <div class="module simplepoll manage-questions">
 	<table cellpadding="0" cellspacing="0" style="border:none;" width="100%">
-		<tr><td class="header">Question</td>
-			<td class="header">Active?</td>
-			<td class="header">Open Results?</td>
-			<td class="header">Open Voting?</td>
-			<td class="header"></td>
+		<tr><th class="header">Question</th>
+			<th class="header">Active?</th>
+			<th class="header">Open Results?</th>
+			<th class="header">Open Voting?</th>
+			<th class="header"></th>
 		</tr>
 		{foreach from=$questions item=question}
 			<tr class="row {cycle values=odd_row,even_row}"><td>

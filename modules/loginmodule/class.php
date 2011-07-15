@@ -41,14 +41,16 @@ class loginmodule {
 	}
 
 	function show($view,$loc=null,$title='') {
-		global $user;
+		global $user, $order;
 		
 		$template = new template('loginmodule',$view,$loc);
 		$template->assign('title',$title);
 		
 		$template->assign('moduletitle',$title);
+
+		$template->assign('oicount',($order?$order->item_count:0));
 		
-		
+		//eDebug($order);
 		if (exponent_sessions_loggedIn() && $user->username != "anonymous") {
 			global $db;
 			$template->assign('loggedin',1);
@@ -66,7 +68,7 @@ class loginmodule {
 				$template->assign('is_group_admin',0);
 			}
 		} else {
-			$template->assign('isecom',in_array('storeController',listActiveControllers()));
+			//$template->assign('isecom',in_array('storeController',listActiveControllers()));
 			$template->assign('loggedin',0);
 		}
 		$template->output($view);

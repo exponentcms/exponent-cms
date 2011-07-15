@@ -53,6 +53,9 @@ return array(
         DB_FIELD_TYPE=>DB_DEF_TIMESTAMP),
 	'is_ldap'=>array(
 		DB_FIELD_TYPE=>DB_DEF_BOOLEAN),
+    'is_system_user'=>array(
+        DB_FIELD_TYPE=>DB_DEF_BOOLEAN),
+
 
 );
 

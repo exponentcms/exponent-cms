@@ -7,7 +7,7 @@
  *  Software Foundation; either version 2 of the
  *  License, or (at your option) any later version.
  *
- * The file thats holds the expHistory class
+ * The file that holds the expHistory class
  *
  * @link http://www.gnu.org/licenses/gpl.txt GPL http://www.gnu.org/licenses/gpl.txt
  * @package Exponent-CMS
@@ -108,6 +108,7 @@ class expHistory {
         // bunch of identical entries        
 
         $url = '';
+        if (stristr($router->current_url,'EXPONENT.')) return false;
         if (exponent_theme_inAction()) {
             // we don't want to save history for these action...it screws up the flow when loging in
             if (!isset($router->params['action']) || $router->params['action'] == 'loginredirect' || $router->params['action'] == 'logout') return false;

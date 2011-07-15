@@ -7,7 +7,7 @@
  *  Software Foundation; either version 2 of the
  *  License, or (at your option) any later version.
  *
- * The file thats holds the expCSS class
+ * The file that holds the expCSS class
  *
  * @link http://www.gnu.org/licenses/gpl.txt GPL http://www.gnu.org/licenses/gpl.txt
  * @package Exponent-CMS
@@ -81,13 +81,13 @@ class expCSS {
                 $html .= "\t".'<link rel="stylesheet" type="text/css" href="'.$file.'" '.XHTML_CLOSING.'>'."\r\n";
             }
         } else {
-            // if we're minifying, we'll break our URLs apart at 1500 characters to allow it through 
+            // if we're minifying, we'll break our URLs apart at MINIFY_URL_LENGTH characters to allow it through 
             // browser string limits
             $i = 0;
             $srt = array();
             $srt[$i] = "";
             foreach ($css_files as $file) {
-                if (strlen($srt[$i])+strlen($file)<=1500) {
+                if (strlen($srt[$i])+strlen($file)<= MINIFY_URL_LENGTH) {
                     $srt[$i] .= $file.",";
                 } else {
                     $i++;

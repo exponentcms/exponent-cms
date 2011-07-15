@@ -451,7 +451,7 @@ foreach($emails as $recip) {	// to keep other recepients hidden
 	try {
 		$mail->addTo($recip);
 		$mail->send();
-	} catch (Error $e) {
+	} catch (Exception $e) {
 	}
 	$mail->flushRecipients();
 }

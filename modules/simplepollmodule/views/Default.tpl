@@ -43,14 +43,15 @@
 				{/foreach}
 			</ol>
 			
-			<div class="actions"
+			<div class="actions">
 				{if $question->open_voting}
 					<input class="button" type="submit" value="Vote!" />
 				{else}
-					Voting has closed for this poll.<br />
-					{if $question->open_results}
-						<a href="{link action=results id=$question->id}">Results</a>
-					{/if}
+					Voting has closed for this poll.
+				{/if}
+				{br}{br}
+				{if $question->open_results}
+					<a href="{link action=results id=$question->id}">Results</a>
 				{/if}
 			</div>
 		</form>

@@ -1,7 +1,13 @@
+{css unique="login" link="`$smarty.const.URL_FULL`modules/loginmodule/assets/css/login.css"}
+
+{/css}
+
+
+
 <div class="loginmodule default">
 {if $loggedin == false || $smarty.const.PREVIEW_READONLY == 1}
-	<div class="box login-form">
-	    {if $smarty.const.USER_REGISTRATION_USE_EMAIL == 1}
+	<div class="box login-form one">
+	    {if $smarty.const.USER_REGISTRATION_USE_EMAIL || $smarty.const.ECOM}
             {assign var=usertype value="Customers"}
             {assign var=label value="Email Address:"}
 	    {else}
@@ -22,33 +28,26 @@
                 {br}<a href="{link controller=users action=reset_password}">Forgot Your Password?</a><br />
             {/if}
 	</div>
-	{if $smarty.const.SITE_ALLOW_REGISTRATION == 1}
-	{css unique="regbox"}
-	{literal}
-	.box {
-	  display:inline-block;
-	  *display:inline;
-	  zoom:1;
-	  width:49%;
-	  vertical-align:top;
-	}
-	
-	{/literal}
-	{/css}
 
-	
-	<div class="box new-user">
-		<h2>{"New"|gettext} {$usertype}</h2>
-		<p>
-		    {if $isecom}
-			{"If you are a new customer please create an account to continue in the checkout process.
-			Creating an account will allow you to save your billing and shipping information and track your order status."|gettext}{br}{br}
-			{else}
-            {* should put some basic text here*}
-		    {/if}
-			<a href="{link module=users action=create}">{"Create an Account"|gettext}</a>
-		</p>
-	</div>
+	{if $smarty.const.SITE_ALLOW_REGISTRATION || $smarty.const.ECOM}
+	    <div class="box new-user two">
+		    <h2>{"New"|gettext} {$usertype}</h2>
+		    <p>
+		        {if $smarty.const.ECOM}
+                    {if $oicount>0}
+    			        {"If you are a new customer, select this option to continue with the checkout process."|gettext}{br}{br}
+                        {"We will gather billing and shipping information, and you will have the option to create an account so can track your order status."|gettext}{br}{br}
+                        <a class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" href="{link module=cart action=customerSignup}">{"Continue Checking Out"|gettext}</a>
+                    {else}
+    			        {"If you are a new customer, add an item to your cart to continue with the checkout process."|gettext}{br}{br}
+                        <a class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" href="{backlink}">{"Keep Shopping"|gettext}</a>
+                    {/if}               
+			    {else}
+                    {"Create a new account here."|gettext}{br}{br}
+                    <a class="awesome {$smarty.const.BTN_COLOR} {$smarty.const.BTN_SIZE}" href="{link module=users action=create}">{"Create an Account"|gettext}</a>
+		        {/if}			    
+		    </p>
+	    </div>
 	{/if}
 {/if}
 </div>

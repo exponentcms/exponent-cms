@@ -76,7 +76,7 @@ if (is_readable($newdef)) {
             if (file_exists($dirpath)) {
                 $def_dir = opendir($dirpath);
                 while (($def = readdir($def_dir)) !== false) {
-                    eDebug("$dirpath/$def");
+//                    eDebug("$dirpath/$def");
     				if (is_readable("$dirpath/$def") && is_file("$dirpath/$def") && substr($def,-4,4) == ".php" && substr($def,-9,9) != ".info.php") {
     					$tablename = substr($def,0,-4);
     					$dd = include("$dirpath/$def");
@@ -122,9 +122,11 @@ ksort($tables);
 <tbody>
 <?php 
 $row = "even";
+$line = 0;
 foreach ($tables as $table => $statusnum) {
+	if ($statusnum != TMP_TABLE_EXISTED) {
 ?>
-    
+
 <tr class="<?php echo $row ?>">
 	<td>
 		 <?php echo gt($table) ?>
@@ -136,7 +138,7 @@ foreach ($tables as $table => $statusnum) {
 		</div>
 		 <?php } elseif ($statusnum == TMP_TABLE_INSTALLED) {  ?>
 		<div style="color: green; font-weight: bold">
-			<?php echo gt('Succeeded') ?>
+			<?php echo gt('Added') ?>
 		</div>
         <?php } elseif ($statusnum == TMP_TABLE_FAILED) {  ?>
 		<div style="color: red; font-weight: bold">
@@ -153,10 +155,20 @@ foreach ($tables as $table => $statusnum) {
         <?php } ?>
 	</td>
 </tr>
-<?php 
-$row  = $row == "even" ? "odd" : "even";
-} ?>
- <tbody>
+<?php
+		$row = $row == "even" ? "odd" : "even";
+		$line++;
+	}
+?>
+<?php
+}
+?>
+</tbody>
 </table>
+<?php
+if ($line == 0) {
+	echo "<p class=\"success\">No Tables Were Changed!</p>";
+}
+?>
 
 <a class="awesome large green" href="?page=upgrade-3"><?php echo gt('Continue Upgrade') ?></a>

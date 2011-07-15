@@ -22,14 +22,15 @@ ob_start();
 
 //define('DEVELOPMENT',1);
 
-if (!file_exists('not_configured') && file_exists(BASE.'conf/config.php')) {
-	header('Location: ../index.php');
-	exit('This Exponent Site has already been configured.');
-}
-
 define('SCRIPT_EXP_RELATIVE','install/');
 define('SCRIPT_FILENAME','index.php');
 include_once('../exponent.php');
+
+if (!file_exists('not_configured') && file_exists(BASE.'conf/config.php')) {
+//	header('Location: ../index.php');
+	header('Location: ./pages/final.php');  // take us to the final install/upgrade page
+	exit('This Exponent Site has already been configured.');
+}
 
 // Load i18n values
 $i18n = exponent_lang_loadFile('install/index.php');
@@ -73,15 +74,15 @@ $page_text = '';
 switch ($page) {
 	case 'upgrade-1':
 	    $masthead = "Upgrade";
-		$page_text = gt("You've upgraded your Exponent code.");
+		$page_text = gt("It appears you've upgraded your Exponent code.");
 		break;
 	case 'upgrade-2':
 	    $masthead = "Upgrade";
-		$page_text = gt("Installing Tables add any new fields to existing tables, and adds any additional tables Exponent needs to be awesome.");
+		$page_text = gt("Installing Tables adds any new fields to existing tables, and adds any additional tables Exponent needs to be awesome.");
 		break;
 	case 'upgrade-3':
 	    $masthead = "Upgrade";
-		$page_text = gt("We'll now run any upgrade scripts for this versio of Exponent.");
+		$page_text = gt("We'll now run any upgrade scripts needed for this version of Exponent.");
 		break;
 	case 'setlang':
 		$page_image = 'setlang';
@@ -90,8 +91,8 @@ switch ($page) {
 	case 'install-1':
         $masthead = "New Installation";
 		$page_text = gt('
-        Exponent requires that several permissions be set correctly in order to operate.  
-        Sanity checks are being run right now to ensure that the web server directory you wish to install Exponent in is suitable.
+        Exponent requires that several file permissions be set correctly in order to operate.
+        Sanity checks are being run right now to ensure that the web server directory you wish to install Exponent in, is suitable.
         <br><br>
         If something fails, please 
         <a href="javascript:void(0)" onclick="return pop(\'sanity\');">read about each sanity check</a>
@@ -113,7 +114,7 @@ switch ($page) {
 	case 'install-4':
         $masthead = "New Installation";
 		$page_text = gt('
-            Provide some basic information for your site.
+            Please enter some basic information for your site.
  		');
 		break;
 	case 'install-5':
@@ -125,13 +126,13 @@ switch ($page) {
 	case 'install-6':
         $masthead = "New Installation";
 		$page_text = gt('
-            The user you\'re about to create will be the Super Administrator for the entire system. This level of administration has un-restricted access and abilities throughout the entire website.
+            The user you\'re about to create will be the <b>Super Administrator</b> for the entire system. This level of administration has un-restricted access and abilities throughout the entire website.
  		');
 		break;
 	case 'install-7':
         $masthead = "New Installation";
 		$page_text = gt('
-            The user you\'re about to create will be the Super Administrator for the entire system. This level of administration has un-restricted access and abilities throughout the entire website.
+            The user you\'re about to create will be the <b>Super Administrator</b> for the entire system. This level of administration has un-restricted access and abilities throughout the entire website.
  		');
 		break;
 	case 'admin_user':

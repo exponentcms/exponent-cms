@@ -128,26 +128,6 @@ class portfolioController extends expController {
 		assign_to_template(array('page'=>$page));
 	}
     
-    public function update() {
-        //FIXME:  Remove this code once we have the new tag implementation
-        if (!empty($this->params['tags'])) {
-            global $db;
-            if (isset($this->params['id'])) {
-                $db->delete('content_expTags', 'content_type="portfolio" AND content_id='.$this->params['id']);
-            }
-            
-            $tags = explode(",", $this->params['tags']);
-            
-            foreach($tags as $tag) {
-                $tag = strtolower(trim($tag));
-                $expTag = new expTag($tag);
-                if (empty($expTag->id)) $expTag->update(array('title'=>$tag));
-                $this->params['expTag'][] = $expTag->id;
-            }
-        }
-        // call expController update to save the blog article
-        parent::update();
-    }
 }
 
 ?>

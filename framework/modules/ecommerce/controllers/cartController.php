@@ -38,7 +38,7 @@ class cartController extends expController {
         $product_type = isset($this->params['product_type']) ? $this->params['product_type'] : 'product';
         $product = new product();
         
-        //eDebug($this->params,true);
+        
         //eDebug($this->params);
         //if we're trying to add a parent product ONLY, then we redirect to it's show view
         $c = null;
@@ -48,8 +48,8 @@ class cartController extends expController {
             flash('message', "Please select a product and quantity from the options listed below to add to your cart.");
             redirect_to(array('controller'=>'store','action'=>'show','id'=>$this->params['product_id']));      
         }
-        
-        //check for multiple product adding
+		
+		//check for multiple product adding
         if (isset($this->params['prod-quantity'])) 
         {
             //we are adding multiple children, so we approach a bit different
@@ -61,21 +61,34 @@ class cartController extends expController {
                 {
                     //this might not be working...FJD
                     $child = new $product_type($qkey); 
-                    if ($quantity < $child->minimum_order_quantity)                       
+                    /*if ($quantity < $child->minimum_order_quantity)                       
                     {
                         flash('message', $child->title . " - " . $child->model . " has a minimum order quantity of " . $child->minimum_order_quantity . 
                         '. Your quantity has been adjusted accordingly.');
                         $quantity = $child->minimum_order_quantity;
                         
-                    }
+                    }*/
                     $this->params['children'][$qkey] = $quantity;    
                 }
                 if (isset($child)) $this->params['product_id'] = $child->parent_id;                                                       
             }
            
         }         
-         $product = new $product_type($this->params['product_id'], true, true);  //need true here?
         
+        $product = new $product_type($this->params['product_id'], true, true);  //need true here?
+        
+		//Check the Main Product quantity
+		if (isset($this->params['quantity'])) 
+		{
+			if(((int)$this->params['quantity']) < $product->minimum_order_quantity) 
+			{
+				flash('message', "Please enter a quantity equal or greater than the minimum order quantity.");
+				redirect_to(array('controller'=>'store','action'=>'show','id'=>$this->params['product_id']));
+			} else {
+			
+			}
+		}
+		
         if (($product->hasOptions() || $product->hasUserInputFields()) && (!isset($this->params['options_shown']) || $this->params['options_shown']!= $product->id)) 
         {
             
@@ -92,21 +105,30 @@ class cartController extends expController {
             ));*/
             $product->displayForm('addToCart', $this->params);
             return false;
-        }         
+        } 
+                
         //product either has no options, user input fields, or has already seen and passed the options page, so we try adding to cart
         //it will validate and fail back to the options page if data is incorrect for whatever reason (eg, bad form post)
         //eDebug($this->params, true);
         //$this->params['qty'] = 1; //REMOVE ME
         if ($product->addToCart($this->params))
         {
+            
             if (empty($this->params['quick'])) {
+                
                 flash('message', "Added ".$product->title." to your cart. <a href='" . $router->makeLink(array('controller'=>'cart', 'action'=>'checkout'), false, true) ."'>Click here to checkout now.</a>");
-                expHistory::back();
+                //expHistory::back();
+                //eDebug(show_msg_queue(false),true);
+                redirect_to(array('controller'=>'cart', 'action'=>'show'));
                 //expHistory::lastNotEditable();
             } else {
                 redirect_to(array('controller'=>'cart', 'action'=>'quickPay'));
             } 
         } 
+        else
+        {
+            //expHistory::back();
+        }
     }
 	    
 	function updateQuantity() {
@@ -115,13 +137,14 @@ class cartController extends expController {
 			$id = str_replace('quantity-', '', $this->params['id']);
             $item = new orderitem($id);
             if (!empty($item->id)) {
-                $newqty = $item->product->updateQuantity($this->params['value']);
+                //$newqty = $item->product->updateQuantity($this->params['value']);                  
+                $newqty = $item->product->updateQuantity($this->params['value']);                  
                 if ($newqty > $item->product->quantity) {
                     if ($item->product->availability_type == 1) {
                         $diff = ($item->product->quantity <=0) ? $newqty : $newqty - $item->product->quantity;
                         $updates->message = 'Only '.$item->product->quantity.' '.$item->products_name.' are currently in stock. Shipping may be delayed on the other '.$diff;
                     } elseif ($item->product->availability_type == 2) {
-                        $updates->message = $item->products_name.' only has '.$item->product->quantity.' on hand. You can not add any more to your cart.';
+                        $updates->message = $item->products_name.' only has '.$item->product->quantity.' on hand. You can not add any more than that to your cart.';
                         $updates->cart_total = '$'.number_format($order->getCartTotal(), 2);
 			            $updates->item_total = '$'.number_format($item->getTotal(), 2);
 			            $updates->item_id = $id;
@@ -150,15 +173,40 @@ class cartController extends expController {
             $item = new orderitem($this->params['id']);
             
             if (!empty($item->id)) {
-                $newqty = $item->product->updateQuantity($this->params['quantity']);
-                if ($newqty > $item->product->quantity) 
+                //$newqty = $item->product->updateQuantity($this->params['quantity']);
+                $newqty = $this->params['quantity'];
+                //$oiObj = new orderitem();
+                //$oi = $oiObj->find('all','product_id='.$item->product->id);
+                $qCheck = 0;//$item->product->quantity;
+                //if (!empty($oi))
+                //{
+                foreach($order->orderitem as $orderItem)
+                {                       
+                    if($orderItem->product_id == $item->product_id) $qCheck += $orderItem->quantity;
+                }
+                //eDebug("Done",true);
+                //}                           
+                /*eDebug($item->quantity);   
+                eDebug($item->product->quantity); 
+                eDebug($qCheck);                  
+                eDebug($newqty,true);  */
+                //check minimum quantity
+                $qtyMessage = '';
+                if ($newqty < $item->product->minimum_order_quantity)
+                {
+                     $qtyMessage = $item->product->title.' has a minimum order quantity of '.$item->product->minimum_order_quantity.'. The quantity has been adjusted and added to your cart.<br/><br/>';
+                     $newqty = $item->product->minimum_order_quantity;                     
+                }
+                
+                $itemMessage = '';
+                if (($qCheck + ($newqty - $item->quantity)) > $item->product->quantity) 
                 {
                     if ($item->product->availability_type == 1) {
                         $diff = ($item->product->quantity <=0) ? $newqty : $newqty - $item->product->quantity;
-                        flash('message', 'Only '.$item->product->quantity.' '.$item->products_name.' are currently in stock. Shipping may be delayed on the other '.$diff);
+                        $itemMessage = 'Only '.$item->product->quantity.' '.$item->products_name.' are currently in stock. Shipping may be delayed on the other '.$diff."<br/><br/>";
                         //$updates->message = 'Only '.$item->product->quantity.' '.$item->products_name.' are currently in stock. Shipping may be delayed on the other '.$diff;
                     } elseif ($item->product->availability_type == 2) {
-                        flash('error', $item->products_name.' only has '.$item->product->quantity.' on hand. You can not add any more to your cart.');
+                        flash('error', $item->products_name.' only has '.$item->product->quantity.' on hand. You can not add any more than that to your cart.');
                         /*$updates->message = $item->products_name.' only has '.$item->product->quantity.' on hand. You can not add any more to your cart.';                        
                         $updates->cart_total = '$'.number_format($order->getCartTotal(), 2);
                         $updates->item_total = '$'.number_format($item->quantity*$item->products_price, 2);
@@ -167,8 +215,8 @@ class cartController extends expController {
                         echo json_encode($updates);  */
                         expHistory::back();
                     }
-                }
-                else if ($newqty == 0)
+                }                
+                else if ($newqty <= 0)
                 {
                     $item->delete();
                     flash('message', $item->products_name.' has been removed from your cart.');
@@ -185,7 +233,7 @@ class cartController extends expController {
                 //echo json_encode($updates);
             }
 			//redirect_to(array('controller'=>'cart','action'=>'show'));
-            flash('message', $item->products_name.' quantity has been updated.');
+            flash('message', $qtyMessage . $itemMessage . $item->products_name.' quantity has been updated.');
             expHistory::back();
 		}
 	}
@@ -205,27 +253,85 @@ class cartController extends expController {
 
 	function show() {
 		global $order;
-		expHistory::set('viewable', $this->params);
-		assign_to_template(array('items'=>$order->orderitem, 'order'=>$order));
+		//$cartinfo->''ecomconfig::getConfig('email_invoice')
+        //$back = expHistory::getLast('viewable');
+        //eDebug(new expHistory);
+        expHistory::set('viewable', $this->params);
+        //eDebug($order,true);
+        if (isset($order))
+        {   
+            /*
+            $shipping->getRates();    */
+            //this triggers creation/updating of the shippingmethod and setting
+            //default rate if user has not yet choosen one.
+            $shipping = new shipping();
+            $order->calculateGrandTotal();      
+            
+            //eDebug($order,true);
+            //check to see if we have calculate shipping yet - if shipping_total_before_discounts is set
+            //to something other than 0, then we have, but we'll set the estimtae to shipping_total to 
+            //accomodate any applied discounts
+            //if (!empty($order->shipping_total_before_discounts))
+            //{
+            //    $estimated_shipping = $order->shipping_total;
+            //}
+            //otherwise we'll grab an estimate
+            //else
+            //{    
+                //$estimated_shipping = shipping::estimateShipping($order);
+               /* $shipping = new shipping();
+                $shipping->getRates();    
+                //eDebug($shipping,true);
+                $estimated_shipping = $shipping->pricelist['01']['cost'];*/
+                //foreach ($order->orderitem as $item)
+                //{
+                    //eDebug($item->product);
+                //}
+            //}
+            
+            // are there active discounts in the db?
+            $discountCheck = new discounts();
+            $discountsEnabled = $discountCheck->find('all','enabled=1');
+            if (empty($discountsEnabled)) {
+                // flag to hide the discount box
+                assign_to_template(array('noactivediscounts'=>'1'));
+                $discounts = null;
+            } else {
+                // get all current discount codes that are valid and applied                
+                $discounts = $order->validateDiscounts();                
+            }
+        }
+        else
+        {
+            $order = null;
+            $items = null;
+            $discounts = null;
+            $estimated_shipping = null;    
+        }         
+		@assign_to_template(array('items'=>$order->orderitem, 'order'=>$order, 'discounts'=>$discounts, /*'estimated_shipping'=>$estimated_shipping*/));
+        
 	}
 	
 	function checkout() {
 		global $user, $order;
-                
+              
         $cfg->mod = "cart";
         $cfg->src = "@globalcartsettings";
         $cfg->int = "";
         $config = new expConfig($cfg);
-                
-        if($order->total<intval($config->config['min_order'])){
-            flashAndFlow('error', "The minimum cart amount is $".number_format($config->config['min_order'],2,".",",").". Keep Shopping!");
-        }
-
-		if (!exponent_sessions_get("ALLOW_ANONYMOUS_CHECKOUT") && !exponent_users_isLoggedIn()) {
+        
+        $order->calculateGrandTotal();
+        $order->validateDiscounts(array('controller'=>'cart','action'=>'checkout'));        
+                        
+		if (!expSession::get('customer-signup') && !$user->isLoggedin()) {
 		    expHistory::set('viewable', $this->params);
 			flash('message', "Please select how you would like to continue with the checkout process.");
 			exponent_flow_redirecto_login(makeLink(array('module'=>'cart','action'=>'checkout'), 'secure'));
 		}
+
+        if($order->total<intval($config->config['min_order'])){
+            flashAndFlow('error', "Note: Thank you for your decision to purchase. However, our minimum order for merchandise is $".number_format($config->config['min_order'],2,".",",").". Please increase your quantity or continue shopping.");
+        }
 
 		if (empty($order->orderitem)) flashAndFlow('error', 'There are no items in your cart.');
 
@@ -240,7 +346,7 @@ class cartController extends expController {
 		
         //this validate the discount codes already applied to make sure they are still OK
         //if they are not it will remove them and redirect back to checkout w/ a message flash
-        $order->updateOrderDiscounts();
+        //$order->updateOrderDiscounts();
         
         //eDebug($order);
         // are there active discounts in the db?
@@ -274,7 +380,8 @@ class cartController extends expController {
 		$address = new address();
 		//$addresses_dd = $address->dropdownByUser($user->id);
 		$shipAddress = $address->find('first', 'user_id='.$user->id . ' AND is_shipping=1');
-		if (empty($shipAddress)) {
+		if (empty($shipAddress) || !$user->isLoggedin()) {
+		    expSession::set('customer-signup',false);
 		    flash('message', 'Step One: enter your primary address info now. 
             <br><br>You may also optionally provide a password if you would like to return to our store at a later time to view your order history or 
             make additional purchases.
@@ -288,8 +395,9 @@ class cartController extends expController {
 		$shipping = new shipping();
         //$shipping->shippingmethod->setAddress($shipAddress);
         
-        $shipping->getRates();
-
+        //FJD?
+        //$shipping->getRates();
+                 
 		assign_to_template(array(
                     'cartConfig'=>$config->config,
         			//'addresses_dd'=>$addresses_dd,
@@ -299,6 +407,11 @@ class cartController extends expController {
 					'billing'=>$billing,
 					'discounts'=>$discounts,
 					'order'=>$order,
+                    'order_types'=>$order->getOrderTypes(),
+                    'default_order_type'=>$order->getDefaultOrderType(),
+                    'order_statuses'=>$order->getOrderStatuses(),
+                    'default_order_status'=>$order->getDefaultOrderStatus(),
+                    'sales_reps'=>$order->getSalesReps()
 					//'needs_address'=>$needs_address,
 		));
 	}
@@ -371,14 +484,25 @@ class cartController extends expController {
              
         // get the billing options..this is usually the credit card info entered by the user
         $opts = $billing->calculator->userFormUpdate($this->params);
+        //$billing->calculator->preprocess($this->params);
+        
+        //eDebug($opts);
         exponent_sessions_set('billing_options', $opts);
-        //eDebug($opts,true);
+        //$o = exponent_sessions_get('billing_options');
+        //eDebug($o,true);
+        //eDebug($this->params,true);
+        
+        //this should probably be genericized a bit more - currently assuming order_type parameter is present, or defaults
+        //eDebug($order->getDefaultOrderType(),true);
+        $order->setOrderType($this->params);
+        $order->setOrderStatus($this->params);
+        //eDebug($order,true);
         // final the cart totals       
         $order->calculateGrandTotal(); 
         //eDebug($order,true);
         // call the billing mehod's preprocess in case it needs to prepare things.
        // eDebug($billing);
-        $result = $billing->calculator->preprocess($billing->billingmethod, $opts, $this->params);
+        $result = $billing->calculator->preprocess($billing->billingmethod, $opts, $this->params, $order);
         //eDebug($result, true);
         if (empty($result->errorCode)) 
         {
@@ -394,7 +518,9 @@ class cartController extends expController {
 	public function confirm() 
     {
         global $order, $user, $db;
-        
+        //eDebug($this->params);
+        if (empty($order->orderitem)) flashAndFlow('error', 'There are no items in your cart.');
+            
         // final the cart totals       
         $order->calculateGrandTotal(); 
               
@@ -405,7 +531,7 @@ class cartController extends expController {
         $billing = new billing();
         
         $opts = exponent_sessions_get('billing_options');
-        
+        //eDebug($opts,true);
 		assign_to_template(array(
 		    'shipping'=>$shipping, 
 		    'billing'=>$billing, 
@@ -418,7 +544,7 @@ class cartController extends expController {
 	public function process() {
 		global $db, $order, $user;
         
-        
+        //eDebug($order,true);
 		if (!$user->isLoggedIn() && empty($this->params['nologin'])) {
             flash('message', "It appears that your session has expired. Please log in to continue the checkout process.");
             expHistory::back();
@@ -440,10 +566,12 @@ class cartController extends expController {
 
         // finalize the total to bill
         $order->calculateGrandTotal();
+        //eDebug($order,true);
+        $invNum = $order->getInvoiceNumber();
         
 		// call the billing calculators process method - this will handle saving the billing options to the database.
-		$result = $billing->calculator->process($billing->billingmethod, exponent_sessions_get('billing_options'), $this->params);
-
+		$result = $billing->calculator->process($billing->billingmethod, exponent_sessions_get('billing_options'), $this->params, $invNum);
+        //eDebug($result,true);
         if ($result->errorCode == 0) {
             // save out the cart total to the database		
 		    $billing->billingmethod->update(array('billing_cost'=>$order->grand_total));
@@ -453,19 +581,19 @@ class cartController extends expController {
 		    //if ($invoice_num < ecomconfig::getConfig('starting_invoice_number')) $invoice_num += ecomconfig::getConfig('starting_invoice_number');
 		    
 		    // get the first order status and set it for this order
-		    $order->update(array('invoice_id'=>$order->getInvoiceNumber(), 'purchased'=>time(), 'updated'=>time(), 'comment'=>serialize($comment)));
-		    $order->setDefaultStatus();
-            $order->setDefaultOrderType();
+		    $order->update(array('invoice_id'=>$invNum, 'purchased'=>time(), 'updated'=>time(), 'comment'=>serialize($comment)));		    
+		    //$order->setDefaultStatus(); --FJD?
+            //$order->setDefaultOrderType(); --FJD?
 		    $order->refresh();
 		
             // run each items process callback function
 		    foreach($order->orderitem as $item) {
 		        $product = new $item->product_type($item->product_id);
-		        $product->process($item);
+		        $product->process($item,$order->order_type->affects_inventory);
 		    }
 		
-            $billing->calculator->postProcess();
-            
+            $billing->calculator->postProcess($order,$this->params);
+            orderController::clearCartCookie();
         } else {
             flash('error', 'An error was encountered while processing your transaction.<br /><br />'.$result->message);
             expHistory::back();
@@ -475,12 +603,18 @@ class cartController extends expController {
         
         $billinginfo = $billing->calculator->userView(unserialize($billing->billingmethod->billing_options));
         
-        // send email invoices to the admins & users if needed
-        $invoice = renderAction(array('controller'=>'order', 'action'=>'email', 'id'=>$order->id));
+        if(!DEVELOPMENT)
+        {  
+            // send email invoices to the admins & users if needed
+            if($order->order_type->emails_customer) $invoice = renderAction(array('controller'=>'order', 'action'=>'email', 'id'=>$order->id));
+        }else
+        {
+            flash('message','Development on, skipping email sending.');
+        }
         
 		//assign_to_template(array('order'=>$order, 'billing'=>$billing, 'shipping'=>$shipping, 'result'=>$result, 'billinginfo'=>$billinginfo));
 		flash('message', 'Your order has been submitted.');
-        redirect_to(array('controller'=>'order', 'action'=>'myOrder', 'id'=>$order->id));
+        redirect_to(array('controller'=>'order', 'action'=>'myOrder', 'id'=>$order->id, 'tc'=>1));
 	}
 	
 	function quickPay() {
@@ -643,9 +777,9 @@ class cartController extends expController {
         assign_to_template(array('shipping_items'=>$shipping_items, 'shipping'=>$shipping));
     }
     
-    public function setAnonymousCheckout()
+    public function customerSignup()
     {
-        exponent_sessions_set('ALLOW_ANONYMOUS_CHECKOUT', true);        
+        expSession::set('customer-signup', true);        
         redirect_to(array('controller'=>'cart', 'action'=>'checkout'));
     }
     
@@ -751,14 +885,16 @@ class cartController extends expController {
         
         if (empty($discount)) {
             flash('error', "This discount code you entered does not exist.");
-            redirect_to(array('controller'=>'cart', 'action'=>'checkout'));       
+            //redirect_to(array('controller'=>'cart', 'action'=>'checkout'));       
+            expHistory::back();  
         } 
         
         //check to see if it's in our cart already
         if ($this->isDiscountInCart($discount->id))
         {
             flash('error', "This discount code is already in your cart.");
-            redirect_to(array('controller'=>'cart', 'action'=>'checkout'));
+            //redirect_to(array('controller'=>'cart', 'action'=>'checkout'));
+            expHistory::back();
         }   
         
         //this should really be reworked, as it shoudn't redirect directly and not return
@@ -768,7 +904,7 @@ class cartController extends expController {
             //if all good, add to cart, otherwise it will have redirected
             $od = new order_discounts();
             $od->orders_id = $order->id;
-            $od->discount_id = $discount->id;
+            $od->discounts_id = $discount->id;
             $od->coupon_code = $discount->coupon_code;
             $od->title = $discount->title;
             $od->body = $discount->body;
@@ -780,7 +916,8 @@ class cartController extends expController {
         {
             flash('error',$validateDiscountMessage);         
         }   
-        redirect_to(array('controller'=>'cart', 'action'=>'checkout'));                           
+        //redirect_to(array('controller'=>'cart', 'action'=>'checkout'));                           
+        expHistory::back();
     }
     
     function removeDiscountFromCart($id = null, $redirect = true){
@@ -791,7 +928,8 @@ class cartController extends expController {
         flash('message', "The discount code has been removed from your cart");
         if ($redirect == true)
         {
-            redirect_to(array('controller'=>'cart', 'action'=>'checkout'));
+            //redirect_to(array('controller'=>'cart', 'action'=>'checkout'));
+            expHistory::back();
         }
     }  
                      
@@ -803,18 +941,16 @@ class cartController extends expController {
        
         foreach ($cds as $d)
         {
-            if ($discountId == $d->discount_id) return true;
+            if ($discountId == $d->discounts_id) return true;
         }
         return false;
     }
     
     function configure() {
-        expHistory::set('editable', $this->params);
-        
-        $this->loc->src = "@globalcartsettings";
-        $config = new expConfig($this->loc);
-        $this->config = $config->config;
-
+        expHistory::set('editable', $this->params);        
+        $this->loc->src = "@globalcartsettings";                        
+        $config = new expConfig($this->loc);   
+        $this->config = $config->config;             
         assign_to_template(array('config'=>$this->config));
     }    
     
@@ -904,6 +1040,24 @@ class cartController extends expController {
         
     }
     
+    public function empty_cart()
+    {
+        global $order;
+        foreach($order->orderitem as $orderItem)
+        {
+            $orderItem->delete();
+        }
+        flash('message','Your shopping cart is now empty.');
+        expHistory::back();   
+    }
+    
+    function saveconfig() {
+        // setup and save the config
+        $this->loc->mod = "cart"; 
+        $this->loc->src = "@globalcartsettings"; 
+        $this->loc->int = "";         
+        parent::saveconfig();
+    }    
 }
 
 ?>

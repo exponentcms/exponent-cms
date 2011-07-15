@@ -22,8 +22,8 @@ class freeshippingcalculator extends shippingcalculator {
 	 * Returns the name of the shipping calculator, for use in the Shipping Administration Module
 	 */
 	//overridden methods:
-	public function name() { return exponent_lang_getText('Free Shipping'); }
-	public function description() { return exponent_lang_getText('Use this to offer customers free shipping'); }
+	public function name() { return exponent_lang_getText('Free Shipping Calculator'); }
+	public function description() { return exponent_lang_getText('Use this to offer customers free shipping.'); }
 	public function hasUserForm() { return true; }
 	public function hasConfig() { return true; }
 	public function addressRequired() { return true; }
@@ -31,8 +31,25 @@ class freeshippingcalculator extends shippingcalculator {
 
     public $shippingmethods = array("01"=>"Free Shipping");
 
-    public function getRates($order) {        
-	    $rates = array('01'=>array('id'=>'01','title'=>'Free','cost'=>0));
+    public function __construct($params)
+    {
+        parent::__construct($params);
+        if(isset($this->configdata['free_shipping_method_default_name']))
+        {
+            $this->shippingmethods["01"] = $this->configdata['free_shipping_method_default_name'];
+        }
+    }
+    
+    public function getRates($order) {                        
+        if(isset($this->configdata['free_shipping_option_default_name']))
+        {
+            $title = $this->configdata['free_shipping_option_default_name'];
+        }
+        else
+        {
+            $title = "Free";
+        }
+	    $rates = array('01'=>array('id'=>'01','title'=>$title,'cost'=>0));        
 	    return $rates;
     }	
     
@@ -42,16 +59,10 @@ class freeshippingcalculator extends shippingcalculator {
 	
 	//process config form
 	function parseConfig($values) {
-	    $config_vars = array('rate');
-	    foreach ($config_vars as $varname) {
-	        if ($varname == 'rate') {
-	            $config[$varname] = isset($values[$varname]) ? preg_replace("/[^0-9.]/","",$values[$varname]) : null;    
-	        } else {
-	            $config[$varname] = isset($values[$varname]) ? $values[$varname] : null;
-	        }
-	        
-	    }
-	    
+	    $config_vars = array('free_shipping_option_default_name','free_shipping_method_default_name');
+	    foreach ($config_vars as $varname) {	        
+	        $config[$varname] = isset($values[$varname]) ? $values[$varname] : null;
+	    }   	    
 		return $config;
 	}
 	

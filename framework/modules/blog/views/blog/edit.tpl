@@ -33,18 +33,14 @@
         <div id="demo" class="yui-navset">
             <ul class="yui-nav">
                 <li class="selected"><a href="#tab1"><em>General</em></a></li>
-                {if $config.usestags}<li><a href="#tab2"><em>Tags</em></a></li>{/if}
-                <li><a href="#tab3"><em>Files</em></a></li>
-                <li><a href="#tab4"><em>SEO</em></a></li>
+                <li><a href="#tab2"><em>SEO</em></a></li>
             </ul>            
             <div class="yui-content">
             <div id="tab1">
                 {control type=text name=title label="Title" value=$record->title}
                 {control type=html name=body label="Body Content" value=$record->body}
-                {control type="checkbox" name="private" label="Save as draft" value=1 checked=$record->private}
-            </div>
-			{if $config.usestags}
-            <div id="tab2">
+                {*control type="checkbox" name="private" label="Save as draft" value=1 checked=$record->private*}
+                {control type="files" name="files" label="Files" value=$record->expFile}
                 {foreach from=$record->expTag item=tag name=tags}
                     {if $smarty.foreach.tags.first == false}
                         {assign var=tags value="`$tags`,`$tag->title`"}
@@ -52,13 +48,9 @@
                         {assign var=tags value=$tag->title}
                     {/if}                    
                 {/foreach}
-                {control type="textarea" name="tags" label="Tags (comma separated)" value=$tags}
+                {control type="textarea" name="expTag" label="Tags (comma separated)" value=$tags}
             </div>
-			{/if}
-            <div id="tab3">
-                {control type="files" name="files" label="Files" value=$record->expFile}
-            </div>
-            <div id="tab4">
+            <div id="tab2">
                 <h2>SEO Settings</h2>
                 {control type="text" name="sef_url" label="SEF URL" value=$record->sef_url}
                 {control type="text" name="meta_title" label="Meta Title" value=$record->meta_title}

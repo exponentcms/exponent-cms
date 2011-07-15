@@ -7,7 +7,7 @@
  *  Software Foundation; either version 2 of the
  *  License, or (at your option) any later version.
  *
- * The file thats holds the expQueue class
+ * The file that holds the expQueue class
  *
  * @link http://www.gnu.org/licenses/gpl.txt GPL http://www.gnu.org/licenses/gpl.txt
  * @package Exponent-CMS
@@ -40,7 +40,7 @@ class expQueue {
 		expQueue::isQueueEmpty();
 	}
 
-	static function flash($name, $msg="") {
+	static function flash($name, $msg) {
         	$flash = exponent_sessions_get('flash');
 	        if(empty($flash[$name])) $flash[$name]  = $msg;           
 	        else $flash[$name] .= "<br/><br/>" . $msg;

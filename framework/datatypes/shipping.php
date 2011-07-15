@@ -47,15 +47,15 @@ class shipping extends expRecord {
             
             // if this shippingmethod doesn't have an address assigned to it, lets check and see if this
             // user has set one up yet and default to that if so
-            //if (empty($this->shippingmethod->addresses_id) && $user->isLoggedIn()) {
-            $address = new address();
-            $addy = $address->find('first', 'user_id='.$user->id.'  AND is_shipping=1');
-            if (empty($addy->id)) $addy = $address->find('first', 'user_id='.$user->id);
-            if (!empty($addy->id)) $this->shippingmethod->setAddress($addy);
-            //}
-            
+            //if (empty($this->shippingmethod->addresses_id) && $user->isLoggedIn()) {            
+            if ($user->id !=0) {            
+                $address = new address();
+                $addy = $address->find('first', 'user_id='.$user->id.'  AND is_shipping=1');
+                if (empty($addy->id)) $addy = $address->find('first', 'user_id='.$user->id);
+                if (!empty($addy->id)) $this->shippingmethod->setAddress($addy);                
+            }                                                                     
             $this->address = new address($this->shippingmethod->addresses_id);
-
+            
             $number_of_calculators = count($this->available_calculators);
             if ($number_of_calculators == 1 || empty($this->shippingmethod->shippingcalculator_id)) {
                 $calcid = key($this->available_calculators);
@@ -63,15 +63,28 @@ class shipping extends expRecord {
                     $this->shippingmethod->update(array('shippingcalculator_id'=>$calcid));
                 }
             } 
-            
+                                                      
             if (!empty($this->available_calculators) && !empty($this->shippingmethod->shippingcalculator_id)) {
-                $calcname = $this->available_calculators[$this->shippingmethod->shippingcalculator_id];            
+                if(isset($this->available_calculators[$this->shippingmethod->shippingcalculator_id]))
+                {
+                    $calcname = $this->available_calculators[$this->shippingmethod->shippingcalculator_id];                
+                }
+                else
+                {
+                    //recently reconfigured/disabled shipping calc that was already set in the object, so default to the first one available
+                    $key = array_shift(array_keys($this->available_calculators));                         
+                    $calcname = $this->available_calculators[$key];      
+                    $this->shippingmethod->shippingcalculator_id = $key;                             
+                }                              
                 $this->calculator = new $calcname($this->shippingmethod->shippingcalculator_id);
             } else {
                 $this->calculator = null;                
-            }            
+            }                                
+            $this->getRates();
             
         } else {
+            eDebug($this);
+            eDebug($order);
             eDebug("Error in shipping constuctor.", true) ;
             //NO split shipping for now
             /*$this->splitshipping = true;
@@ -89,6 +102,7 @@ class shipping extends expRecord {
 	
 	public function getRates() {
 	    global $order;
+        
 	    if (!empty($this->calculator->id) && (!empty($this->shippingmethod->addresses_id) || !$this->calculator->addressRequired())) {	
 		    $this->pricelist = $this->calculator->getRates($order);
 		} else {
@@ -99,15 +113,14 @@ class shipping extends expRecord {
 		if ((!empty($this->shippingmethod->id) && (is_array($this->pricelist) && (count($this->pricelist) > 0)))) { 
 		    if(empty($this->shippingmethod->option)) {
 		        $opt = current($this->pricelist);
-		        $this->shippingmethod->update(array('option'=>$opt['id'],'option_title'=>$opt['title'],'shipping_cost'=>$opt['cost']));
-		    } else {
-		        if ($this->shippingmethod->shipping_cost != $this->pricelist[$this->shippingmethod->option]['cost']) {
+		        $this->shippingmethod->update(array('option'=>$opt['id'],'option_title'=>$opt['title'],'shipping_cost'=>$opt['cost'])); //updates SECOND created shipping method w/ rates, as that was the one set to $this->shippingmethod
+		    } else {                       
+		        if ($this->shippingmethod->shipping_cost != $this->pricelist[$this->shippingmethod->option]['cost']) {                    
 		            $opt = $this->pricelist[$this->shippingmethod->option];
 		            $this->shippingmethod->update(array('option'=>$opt['id'],'option_title'=>$opt['title'],'shipping_cost'=>$opt['cost']));
 		        }
 		    }
-		}
-		
+		}		
 		//return $pricelist;
 	}
 	
@@ -139,7 +152,23 @@ class shipping extends expRecord {
 	    
 		return $calcs;
     }
-        
+    
+    static function estimateShipping($order)
+    {        
+        $c = new shippingcalculator();
+        $calc = $c->find('first',"enabled=1 AND is_default=1");
+        $calcName = $calc->calculator_name;
+        $calculator = new $calcName();
+        if($calculator->addressRequired())
+        {
+            return 0;
+        }
+        else
+        {
+            $rates = $calculator->getRates($order);
+            return $rates['01']['cost'];
+        }
+    }
 }
 
 ?>

@@ -2,7 +2,6 @@
 .exp-ecom-table {
     position:relative;
     color:#000000;
-    font-size:90%;
 }
 
 .exp-ecom-table table {
@@ -25,6 +24,11 @@
     white-space:nowrap;
 }
 
+.exp-ecom-table table th {
+    text-shadow:1px 1px 0 #9c9;
+    color:#333;
+}
+
 .exp-ecom-table table td,
 .exp-ecom-table table th {
     text-align:left;
@@ -32,7 +36,7 @@
     padding:4px;
 }
 
-.exp-ecom-table.coumnize table td {
+.exp-ecom-table.columnize table td {
     border-right:1px solid #b4caa3;
 }
 
@@ -59,13 +63,13 @@
     background:#edffdf;
 }
 
-.exp-ecom-table tbody tr:hover td,
-.exp-ecom-table tbody tr:hover th {
-	background:#d5e3f3;
+.exp-ecom-table .cke_skin_kama table td {
+    background:inherit;
 }
 
-.exp-ecom-table address span {
-    display:block;
+.exp-ecom-table .hover tbody tr:hover td,
+.exp-ecom-table .hover tbody tr:hover th {
+   background:#d5e3f3;
 }
 
 .exp-ecom-table .div-rows div.even,
@@ -100,6 +104,9 @@
     font-style:italic;
 }
 
+.coupon-color {
+    background-color:#33CC00;
+}
 .surcharge{
     font-size: 8px;    
 }

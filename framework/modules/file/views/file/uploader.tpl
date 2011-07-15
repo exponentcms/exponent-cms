@@ -4,6 +4,7 @@
     <meta http-equiv="content-type" content="text/html; charset=utf-8">
     <title>File Uploader  |  Exponent CMS</title>
     <link rel="stylesheet" type="text/css" href="{$smarty.const.URL_FULL}framework/core/assets/css/msgq.css"> 
+    <link rel="stylesheet" type="text/css" href="{$smarty.const.URL_FULL}framework/core/assets/css/button.css"> 
     <link rel="stylesheet" type="text/css" href="{$smarty.const.URL_FULL}framework/core/assets/css/admin-global.css"> 
     <link rel="stylesheet" type="text/css" href="{$smarty.const.URL_FULL}framework/modules/file/assets/css/filemanager.css"> 
 
@@ -19,12 +20,12 @@
 </head>
 <body class="exp-skin">
 <div id="exp-uploader">
-    <h1>Upload Files</h1>
+    <h1>{"Upload Files"|gettext}</h1>
     <div id="actionbar">
     	<div id="uploaderOverlay" style="position:absolute; z-index:2"></div>
-    	<a class="btn" style="z-index:1" id="selectLink" href="#"><strong><em>Select Files</em></strong></a>
-        <a id="uploadLink" class="btn" href="#"><strong><em>Upload Files</em></strong></a>
-        <a id="backlink" class="btn" href="{link action=picker update=$smarty.get.update fck=$smarty.get.fck ajax_action=1}?CKEditor={$smarty.get.CKEditor}&amp;CKEditorFuncNum={$smarty.get.CKEditorFuncNum}&amp;langCode={$smarty.get.langCode}"><strong><em>Back to Manager</em></strong></a>
+    	<a class="select awesome small green" style="z-index:1" id="selectLink" href="#"><span>Select Files</span></a>
+        <a id="uploadLink" class="upload awesome small green" href="#"><span>{"Upload Files"|gettext}</span></a>
+        <a id="backlink" class="back awesome small green" href="{link action=picker update=$smarty.get.update fck=$smarty.get.fck ajax_action=1}?CKEditor={$smarty.get.CKEditor}&amp;CKEditorFuncNum={$smarty.get.CKEditorFuncNum}&amp;langCode={$smarty.get.langCode}"><span>Back to Manager</span></a>
     </div>
 	<div class="info-header">
 		<div class="related-actions">

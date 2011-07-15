@@ -8,7 +8,7 @@
  *  Software Foundation; either version 2 of the
  *  License, or (at your option) any later version.
  *
- * The file thats holds the expNestedNodeController class.
+ * The file that holds the expNestedNodeController class.
  *
  * @link http://www.gnu.org/licenses/gpl.txt GPL http://www.gnu.org/licenses/gpl.txt
  * @package Exponent-CMS
@@ -28,7 +28,7 @@ class expNestedNodeController extends expController {
 	function name() { return $this->displayname(); } //for backwards compat with old modules
 	function displayname() { return "Nested Node Manager"; }
 	function description() { return "This module is for manageing your Nested Nodes"; }
-	function author() { return "Adam Kessler @ OIC Group, Inc"; }
+	function author() { return "OIC Group, Inc"; }
 	function hasSources() { return true; }
 	function hasViews() { return true; }
 

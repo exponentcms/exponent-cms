@@ -23,7 +23,7 @@ a.breadcrumb {
         font-family: Verdana, Arial, Helvetica, sans-serif;
         font-size: 10px;
         text-decoration: none;
-        background-image: url(images/01-breadcrum-backgr.jpg);
+        background-image: url(../assets/images/01-breadcrum-backgr.jpg);
         background-repeat: repeat-x;
         background-position: left bottom;
 }

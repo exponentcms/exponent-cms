@@ -1,0 +1,15 @@
+/****************  clearfix. allows for vertical expansion when children are floating without an extra element  ***********************/
+
+.clearfix:before,
+.clearfix:after {
+    content: ".";    
+    display: block;    
+    height: 0;    
+    visibility: hidden;	
+}
+.clearfix:after {clear: both;}
+.clearfix {zoom: 1;} /* IE < 8 */
+
+.clear {
+    clear:both;
+}

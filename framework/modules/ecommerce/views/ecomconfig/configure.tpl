@@ -16,6 +16,7 @@
 
 <div id="storeconfig" class="module ecomconfig configure hide exp-skin-tabview">
     <h1>Store Configuration</h1>
+    
     {script unique="storeconf" yuimodules="tabview, element"}
     {literal}
         var tabView = new YAHOO.widget.TabView('storetabs');     
@@ -43,15 +44,19 @@
 		<div id="storetabs" class="yui-navset">
 			<ul class="yui-nav">
 				<li class="selected"><a href="#tab1"><em>General</em></a></li>
-				<li><a href="#tab2"><em>Categories and Display Options</em></a></li>
-				<li><a href="#tab3"><em>Notifications</em></a></li>
-				<li><a href="#tab4"><em>Emails</em></a></li>
+                <li><a href="#tab2"><em>Cart Messages</em></a></li>
+				<li><a href="#tab3"><em>Categories and Display Options</em></a></li>
+				<li><a href="#tab4"><em>Notifications</em></a></li>
+				<li><a href="#tab5"><em>Emails</em></a></li>
+                <li><a href="#tab6"><em>Geography</em></a></li>
+				<li><a href="#tab7"><em>Invoice</em></a></li>
+				<li><a href="#tab7"><em>Display & Feature Settings</em></a></li>
 			</ul>            
 	    	<div class="yui-content">
 	        	<div id="tab1">
 				    <h2>General Configuration</h2>
 				    {control type="text" name="storename" label="Store Name" value=$config.storename}
-                    {control type="checkbox" name="allow_anonymous_checkout" label="Allow Anonymous Checkout" value=1 checked=$config.allow_anonymous_checkout}
+                    {* control type="checkbox" name="allow_anonymous_checkout" label="Allow Anonymous Checkout" value=1 checked=$config.allow_anonymous_checkout *}
 				    {control type="text" name="starting_invoice_number" label="Starting Invoice Number" size=50 value=$config.starting_invoice_number}				    
 				    <h2>Header</h2>
 				    <p>This will be displayed on the top of your emails and invoices.</p>
@@ -59,8 +64,30 @@
 				    <h2>Footer</h2>
 				    <p>This will be displayed on the bottom of your emails and invoices.</p>
 				    {control type="html" name="footer" label=" " rows=6 cols=60 value=$config.footer}
+                    
 				</div>
-				<div id="tab2">
+                <div id="tab2">
+                    <h2>Cart Title</h2>
+                    <p>The title that appears at the top of your shopping cart.</p>
+                    {control type="text" name="cart_title_text" label="Shopping Cart Title" value=$config.cart_title_text}
+                    <h2>Cart Message</h2>
+                    <p>This will be displayed at the top of your shopping cart.</p>
+                    {control type="html" name="cart_description_text" label="Shopping Cart Description Text" value=$config.cart_description_text}    
+                    <hr>
+                    <h2>Checkout Title</h2>
+                    <p>The title that appears at the top of your final confirmation checkout page.</p>
+                    {control type="text" name="checkout_title_top" label="Checkout Title" value=$config.checkout_title_top}
+                    <h2>Checkout Message - Top</h2>
+                    <p>This will be displayed on the top of your final confirmation checkout page.</p>
+                    {control type="html" name="checkout_message_top" label=" " rows=6 cols=60 value=$config.checkout_message_top}
+                    <h2>Checkout Message - Bottom</h2>
+                    <p>This will be displayed on the bottom of your final confirmation checkout page.</p>
+                    {control type="html" name="checkout_message_bottom" label=" " rows=6 cols=60 value=$config.checkout_message_bottom}
+                    <h2>SSL Display Seal Code</h2>
+                    <p>This will be displayed in various places on your site.</p>
+                    {control type="textarea" name="ssl_seal" label=" " rows=6 cols=60 value=$config.ssl_seal}
+                </div>
+				<div id="tab3">
 				    <h2>Product Sorting</h2>
 				    {control type="dropdown" name="orderby" label="Default sort order" items="Name, Price, Rank" values="title,base_price,rank" value=$config.orderby}
 				    {control type="dropdown" name="orderby_dir" label="Sort direction" items="Ascending, Descending" values="ASC, DESC" value=$config.orderby_dir}				    
@@ -79,19 +106,34 @@
                     drop down coming soon...
                     *}
 				</div>
-				<div id="tab3">
+				<div id="tab4">
 				    <h2>Notifications</h2>
 				    {control type="checkbox" name="email_invoice" label="Send email notification of new orders?" value=1 checked=$config.email_invoice}
 				    {control type="text" name="email_invoice_addresses" label="Send email notifications to (separate email addresses with a comma)" size=60 value=$config.email_invoice_addresses}			    
 				</div>
-				<div id="tab4">
+				<div id="tab5">
 				    <h2>Store Email Settings</h2>
 				    {control type="text" name="from_name" label="Email From Name" value=$config.from_name}
 				    {control type="text" name="from_address" label="Email From Address" value=$config.from_address}
 				    {control type="checkbox" name="email_invoice_to_user" label="Email a copy of the invoice to the user after purchase?" value=1 checked=$config.email_invoice_to_user}
 				    {control type="text" name="invoice_subject" label="Subject of invoice email" size="40" value=$config.invoice_subject}
 				    {control type="textarea" name="invoice_msg" label="Message to put in invoice email:" rows=5 cols=45 value=$config.invoice_msg}				    	
-				</div>
+				</div>      
+                <div id="tab6">
+                    <h2>General Address/Geo Settings</h2>
+                    {control type="checkbox" name="address_allow_admins_all" label="Allow admins access to the full geographical data regardless of other settings?" value=1 checked=$config.address_allow_admins_all}
+                </div>      
+                <div id="tab6">
+                    <h2>Invoice Settings</h2>
+                    {control type="checkbox" name="enable_barcode" label="Enable Barcode?" value=1 checked=$config.enable_barcode}
+                </div>  
+                <div id="tab8">
+                    <h2>{"Product Listing Pages"|gettext}</h2>
+				    {control type="text" name="images_per_row" label="Products per row" size="3" value=$config.images_per_row}
+                    <h2>{"Product Detail Pages"|gettext}</h2>
+                    {control type="checkbox" name="enable_ratings_and_reviews" label="Enable Ratings & Reviews?" value=1 checked=$config.enable_ratings_and_reviews}
+                    {control type="checkbox" name="enable_lightbox" label="Enable Lightbox Image Viewer?" value=1 checked=$config.enable_lightbox}
+                </div>  
             </div>
         </div>
         {control type=buttongroup submit="Save Config" cancel="Cancel"}

@@ -35,8 +35,8 @@ class product extends expRecord {
     
     public $quantity_display = array(
             0=>'Always available even if out of stock.',
-            1=>'Available but shown as backordered if out of stock.',
-            2=>'Unavailable if out of stock.',
+            1=>'* Available to order, but will display the message below if out of stock.',
+            2=>'* Unavailable if out of stock and will display the message below.',
             3=>'Show as &quot;Call for Price&quot;.'
     );
     
@@ -51,8 +51,8 @@ class product extends expRecord {
     
     protected $attachable_item_types = array(
         'content_expFiles'=>'expFile', 
-        //'content_expTags'=>'expTag', 
-        //'content_expComments'=>'expComment',
+        'content_expRatings'=>'expRating', 
+        'content_expComments'=>'expComment',
         'content_expSimpleNote'=>'expSimpleNote',
     );
     
@@ -90,7 +90,14 @@ class product extends expRecord {
 	}
 	
 	function updateQuantity($newval) {
-		return $newval;
+        if($this->allow_partial)
+        {
+            return floatval($newval);    
+        }
+        else
+        {
+            return intval($newval);
+        }		
 	}
 	
     function getBasePrice($orderitem=null) {
@@ -101,6 +108,22 @@ class product extends expRecord {
         }
     }
     
+    function getSurcharge() {        
+        $sc = 0;
+        //take parent level surcharge, but override surcharge child product is set            
+        if($this->surcharge == 0 && $this->parent_id != 0)
+        {            
+            $parentProd = new product($this->parent_id);
+            $sc = $parentProd->surcharge;            
+        }
+        else
+        {            
+            $sc = $this->surcharge;
+        }
+        //eDebug($sc);
+        return $sc;
+    }
+        
     function getDefaultQuantity() {
 		//TMP: Make this actually do something.
 		return 1;
@@ -129,13 +152,83 @@ class product extends expRecord {
         $this->addToCart($this->params);    
     } */
     
-	function addToCart($params) {
-	    global $order;
+	function addToCart($params, $orderid = null) {
+        //eDebug("OID: " . $orderid,true);
+        if ($orderid == null) global $order;
+        else $order = new order($orderid);
         //eDebug($this);
-        //eDebug($params);
+        $params['quantity'] = isset($params['quantity']) ? $params['quantity'] : 1;
         if (!isset($params['product_type'])) $params['product_type'] = 'product';
         
         $params['error'] = '';
+        
+        if (empty($params['children']))
+        {   
+            //$oiObj = new orderitem();
+            //$oi = $oiObj->find('all','product_id='.$this->id);
+            $qCheck = 0;//$this->quantity;
+            //if (!empty($oi))
+            //{
+            foreach($order->orderitem as $orderItem)
+                {
+                    //eDebug($orderItem->quantity);
+                    if($orderItem->product_id == $this->id) $qCheck += $orderItem->quantity;
+                }
+            //}
+            $qty = $params['quantity'];
+            if (($this->quantity - $qCheck) < $qty) {
+                if ($this->availability_type == 2) {
+                    flash('error', $this->title.' only has '.$this->quantity.' on hand. You can not add more than that to your cart.');
+                    //return false;
+                    expHistory::back();
+                }
+            }
+            //check minimum quantity
+            if (($qty + $qCheck) < $this->minimum_order_quantity)
+            {
+                 flash('message', $this->title.' has a minimum order quantity of '.$this->minimum_order_quantity.'. The quantity has been adjusted accordingly.');
+                 $params['quantity'] += $this->minimum_order_quantity - ($qty + $qCheck);
+                 $qty = $params['quantity'];                             
+            }
+        }else
+        {
+            eDebug($params);
+            foreach ($params['children'] as $idKey=>$childQty)
+            {
+                $cprod = new childProduct($idKey);
+                //$oiObj = new orderitem();
+                //$oi = $oiObj->find('all','product_id='.$idKey);
+                $qCheck = 0;//$cprod->quantity;
+                //if (!empty($oi))
+                //{
+                foreach($order->orderitem as $orderItem)
+                {
+                    //eDebug($orderItem->quantity);
+                    if($orderItem->product_id == $idKey) $qCheck += $orderItem->quantity;
+                }
+                //}
+                
+                if (($cprod->quantity - $qCheck) < $childQty) {
+                    if ($cprod->availability_type == 2) {
+                        flash('error', $this->title. ' - ' .$cprod->model. ' only has '.$cprod->quantity.' on hand. You can not add more than that to your cart.');
+                        //return false;
+                        expHistory::back();
+                    }
+                }
+                /*eDebug("Current Qty Adding:".$childQty);
+                eDebug("Product Quantity On Hand:".$cprod->quantity);
+                eDebug("Prod min order qty:" . $cprod->minimum_order_quantity);
+                eDebug("Current Qty In Cart:".$qCheck); */               
+                
+                //check minimum quantity
+                if (($childQty + $qCheck) < $cprod->minimum_order_quantity)
+                {
+                     flash('message', $cprod->title.' has a minimum order quantity of '.$cprod->minimum_order_quantity.'. The quantity has been adjusted accordingly.');
+                     $params['children'][$idKey] += $cprod->minimum_order_quantity - ($childQty + $qCheck);
+                     //$qty = $params['qty'];                    
+                }
+            }
+        }
         
         foreach ($this->optiongroup as $og) {
             if ($og->required) {
@@ -178,32 +271,39 @@ class product extends expRecord {
             $user_input_info[] = array($uif['name']=>$params['user_input_fields'][$uifkey]);
         }
         
-        if ($params['error'] != '') {
-            $this->displayForm('addToCart',$params);
-            return false;   
+        if($orderid == null)
+        {
+            if ($params['error'] != '') {
+                $this->displayForm('addToCart',$params);
+                return false;   
+            }
+        }else
+        {
+            if ($params['error'] != '') {
+                $this->displayForm('addToOrder',$params);
+                return false;   
+            }    
         }
-       
-        //return false;
-        //check options and redirect
         
         if (empty($params['children']))
         {
-            $this->createOrderItem($this, $params, $user_input_info);   
+            $this->createOrderItem($this, $params, $user_input_info, $orderid);   
         }else{
             foreach ($params['children'] as $ckey=>$cqty)
             {
-                $params['qty'] =  1;
-                for ($qty=1; $qty<=$cqty; $qty++)  
-                {
+                //$params['qty'] =  1;
+                $params['quantity'] = $cqty;
+                //for ($qty=1; $qty<=$cqty; $qty++)  
+               // {
                     $child = new $params['product_type']($ckey);                     //$params['prod-quantity'][$ckey];
-                    $this->createOrderItem($child, $params, $user_input_info);
+                    $this->createOrderItem($child, $params, $user_input_info, $orderid);
                     
                     /*foreach($this->childProduct as $child)
                     {
                         if ($child->id == $ckey) $this->createOrderItem($child, $params, $user_input_info);
                         break;   
                     }*/ 
-                }  
+                //}  
                                      
             }
             //die();
@@ -235,9 +335,13 @@ class product extends expRecord {
         echo $form->render();
     }
     
-    private function createOrderItem($product, $params, $user_input_info)
+    private function createOrderItem($product, $params, $user_input_info, $orderid)
     {
-        global $order; 
+        //eDebug($params,true);
+        global $db;
+        if ($orderid == null) global $order;
+        else $order = new order($orderid);
+         
         $price = $product->getBasePrice();
         $options = array();  
         
@@ -263,22 +367,29 @@ class product extends expRecord {
         
         //eDebug($params,true);
         // add the product to the cart.
+        if ($orderid != null) 
+        {
+            if(empty($params['children'])) $price = $params['products_price'];
+            else $price = $params['prod-price'][$product->id];
+        }
         
         $params['product_id'] = $product->id;
         $params['options'] = serialize($options);
         $params['products_price'] = $price; 
         $params['user_input_fields'] = serialize($user_input_info); 
+        $params['orderid'] = $orderid;
         /*$params['products_status'] = 
         $params['products_warehouse_location'] = 
         $params['products_model'] = $product->model;*/
         $item = new orderitem($params);
         //eDebug($item); 
         $item->products_price = $price;
+        
         /*eDebug($item->quantity);
         eDebug($params);
         eDebug($product->minimum_order_quantity);*/
         
-        $item->quantity += is_numeric($params['qty']) && $params['qty'] >= $product->minimum_order_quantity ? $params['qty'] : $product->minimum_order_quantity;
+        $item->quantity += is_numeric($params['quantity']) && $params['quantity'] >= $product->minimum_order_quantity ? $params['quantity'] : $product->minimum_order_quantity;
         if ($item->quantity < 1 ) $item->quantity = 1;
        // eDebug($item->quantity,true);
         //eDebug($params);
@@ -286,8 +397,17 @@ class product extends expRecord {
         //eDebug($item, true);
         $item->options = serialize($options);
         $item->user_input_fields = $params['user_input_fields'];
-        $item->products_status = $product->product_status->title; 
-        $item->products_warehouse_location = $product->warehouse_location;
+        $item->products_status = $product->product_status->title;
+        if($product->parent_id == 0 || $product->warehouse_location != '') 
+        {
+            //eDebug("here1",true);
+            $item->products_warehouse_location = $product->warehouse_location;    
+        }
+        else
+        {            
+            $item->products_warehouse_location = $db->selectValue('product','warehouse_location','id='.$product->parent_id);
+        }
+        
         $item->products_model = $product->model;
         
         $sm = $order->getCurrentShippingMethod();
@@ -301,11 +421,19 @@ class product extends expRecord {
         return true;
     }
     
-    
-    
-    public function process($item) {
-        $this->quantity = $this->quantity - $item->quantity;
-        $this->save();
+        
+    public function process($item, $affects_inventory) {
+        global $db;
+        //only adjust inventory if the order type says it should, or we otherwise tell it to
+        if($affects_inventory)
+        {
+            $this->quantity = $this->quantity - $item->quantity;
+            //$this->save();
+            $pobj->id = $this->id;
+            $pobj->quantity = $this->quantity;
+            $db->updateObject($pobj, 'product', 'id='.$this->id);    
+        }
+        return;        
     }
     
     public function optionDropdown($key, $display_price_as) {
@@ -379,6 +507,13 @@ class product extends expRecord {
         return $view->render('cartSummary');
     }
   
+    public function getSEFURL()
+    {
+        if (!empty($this->sef_url)) return $this->sef_url; 
+        $parent = new product($this->parent_id, false, false);
+        return $parent->sef_url;
+    }
+    
     public function getForm($form) {        
         $dirs = array(
             BASE.'themes/'.DISPLAY_THEME_REAL.'/modules/ecommerce/products/views/'.$this->product_type.'/',
@@ -466,8 +601,7 @@ class product extends expRecord {
     //this is not guaranteed to be correct if the object was instantiated withOUT associated items,
     //so be careful where you call it
     public function hasChildren()
-    {                            
-        //eDebug(empty($this->childProduct));                                     
+    {                                                                 
         global $db;
         if(isset($this->childProduct))
         {
@@ -488,7 +622,7 @@ class product extends expRecord {
         else if ($a->child_rank == $b->child_rank) return 0; 
     }
     
-    public function saveCategories($catArray)
+    public function saveCategories($catArray,$catRankArray = null)
     {
         global $db;
         // if there are no categories specified we'll set this to the 0 category..meaning uncategorized'
@@ -516,11 +650,32 @@ class product extends expRecord {
             foreach ($catArray as $cat) {
                 if (!in_array($cat,$curCats))
                 {
+                    //create new
                     $assoc->storecategories_id = $cat;
                     $assoc->product_id = $this->id;
                     $assoc->product_type = $this->product_type;
-                    $assoc->rank = $db->max('product_storeCategories','rank', null, 'storecategories_id=' . $cat) + 1 ;
+                    if($catRankArray != null && isset($catRankArray[$cat]) && $catRankArray[$cat]!='' && $catRankArray[$cat]!='0')
+                    {
+                        $assoc->rank = $catRankArray[$cat];
+                    }else{
+                        $assoc->rank = $db->max('product_storeCategories','rank', null, 'storecategories_id=' . $cat) + 1 ;    
+                    } 
+                    
                     $db->insertObject($assoc, 'product_storeCategories');    
+                    //eDebug("Adding " . $cat);
+                }else
+                {
+                    //update old
+                    $assoc->storecategories_id = $cat;
+                    $assoc->product_id = $this->id;
+                    $assoc->product_type = $this->product_type;
+                    if($catRankArray != null && isset($catRankArray[$cat]) && $catRankArray[$cat]!='' && $catRankArray[$cat]!='0')
+                    {
+                        $assoc->rank = $catRankArray[$cat];
+                    }else{
+                        $assoc->rank = $db->selectValue('product_storeCategories','rank', 'storecategories_id=' . $cat . ' AND product_id=' . $this->id);    
+                    }                    
+                    $db->updateObject($assoc, 'product_storeCategories','product_id=' . $this->id . ' AND storecategories_id=' . $cat);  
                     //eDebug("Adding " . $cat);
                 }                    
             }
@@ -538,6 +693,10 @@ class product extends expRecord {
     public function addContentToSearch()
     {
         global $db,$router;
+        
+        //only add top level products, not children
+        if ($this->parent_id != 0 ) return true;
+        
         if (!defined('SYS_SEARCH')) include_once(BASE.'subsystems/search.php');
         
         $exists = $db->selectObject('search',"category='Products' AND ref_module='store' AND original_id = " . $this->id);
@@ -581,7 +740,8 @@ class product extends expRecord {
         //check if cateegory is 
     }
     
-    public function paginationCallback($item)
+//    public function paginationCallback($item)
+	public function paginationCallback(&$item) // (deprecated) moved call by reference to function, not caller
     {
         $score = $item->score;
         $item = $this;

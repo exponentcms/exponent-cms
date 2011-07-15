@@ -7,7 +7,7 @@
  *  Software Foundation; either version 2 of the
  *  License, or (at your option) any later version.
  *
- * The file thats holds the expRecord class
+ * The file that holds the expRecord class
  *
  * @link http://www.gnu.org/licenses/gpl.txt GPL http://www.gnu.org/licenses/gpl.txt
  * @package Exponent-CMS
@@ -41,12 +41,14 @@ class expRecord {
     public $default_sort_field = '';
     public $default_sort_direction = '';
     
+    public $rank_by_field = '';    
+    
     public $validate = array();
     public $do_not_validate = array();
     
     public $supports_revisions = false;
 
-    //chnaged to nothing by default to speed things up. FJD
+    //changed to nothing by default to speed things up. FJD
     protected $attachable_item_types = array(); 
    /* protected $attachable_item_types = array(
         'content_expFiles'=>'expFile', 
@@ -56,7 +58,14 @@ class expRecord {
         //'content_expEventdate'=>'expEventdate', 
     );*/
 
-    function __construct($params=null, $get_assoc=true, $get_attached=true) {
+	/**
+	 * @param null $params
+	 * @param bool $get_assoc
+	 * @param bool $get_attached
+	 * @return expRecord
+	 *
+	 */
+	function __construct($params=null, $get_assoc=true, $get_attached=true) {
         global $db;
         
         // @TODO Change this conditional check as the default value in arguement list 
@@ -99,12 +108,24 @@ class expRecord {
         // setup the exception array if it's not there.  This array tells the getAssociatedObjectsForThisModel() function which 
         // modules NOT to setup.  This stops us from getting infinant loops with many to many relationships.
         $params['except'] = isset($params['except']) ? $params['except'] : array();
-        //if (!empty($this->id)) $this->getAssociatedObjectsForThisModel($params['except']);
-        if ($get_assoc) $this->getAssociatedObjectsForThisModel($params['except']);
+        $params['cascade_except'] = isset($params['cascade_except']) ? $params['cascade_except'] : false;        
+        
+        if ($get_assoc) $this->getAssociatedObjectsForThisModel($params['except'],$params['cascade_except']);
         if ($get_attached) $this->getAttachableItems();        
     }
 
-    public function find($range='all', $where=null, $order=null, $limit=null, $limitstart=0, $get_assoc=true, $get_attached=true) {
+	/**
+	 * find an item
+	 * @param string $range
+	 * @param null $where
+	 * @param null $order
+	 * @param null $limit
+	 * @param int $limitstart
+	 * @param bool $get_assoc
+	 * @param bool $get_attached
+	 * @return array
+	 */
+    public function find($range='all', $where=null, $order=null, $limit=null, $limitstart=0, $get_assoc=true, $get_attached=true, $except=array(), $cascade_except = false) {
         global $db;
 
         if (is_numeric($range)) {
@@ -119,13 +140,13 @@ class expRecord {
 
         if (strcasecmp($range, 'all') == 0 || strcasecmp($range, 'revisions') == 0) {
             $sql .= empty($limit) ? '' : ' LIMIT '.$limitstart.','.$limit;
-            return $db->selectExpObjects($this->tablename, $sql, $this->classname, $get_assoc, $get_attached);
+            return $db->selectExpObjects($this->tablename, $sql, $this->classname, $get_assoc, $get_attached, $except, $cascade_except);
         } elseif (strcasecmp($range, 'first') == 0) {   
             $sql .= ' LIMIT 0,1';
-            $records = $db->selectExpObjects($this->tablename, $sql, $this->classname, $get_assoc, $get_attached);
+            $records = $db->selectExpObjects($this->tablename, $sql, $this->classname, $get_assoc, $get_attached, $except, $cascade_except);
             return empty($records) ? null : $records[0];  
         } elseif (strcasecmp($range, 'bytitle') == 0) {
-            $records = $db->selectExpObjects($this->tablename, "title='".$where."' OR sef_url='".$where."'", $this->classname, $get_assoc, $get_attached);
+            $records = $db->selectExpObjects($this->tablename, "title='".$where."' OR sef_url='".$where."'", $this->classname, $get_assoc, $get_attached, $except, $cascade_except);
             return empty($records) ? null : $records[0];
         } elseif (strcasecmp($range, 'count') == 0) {
             return $db->countObjects($this->tablename, $sql);
@@ -146,23 +167,41 @@ class expRecord {
             return $records;
         }
     }
-    
-    public function findBy($column, $value) {
+
+	/**
+	 * find an item by column
+	 * @param $column
+	 * @param $value
+	 * @return array
+	 */
+    public function findBy($column, $value, $get_assoc=true, $get_attached=true, $except=array(), $cascade_except = false) {
         global $db;
         $where = "`".$column."`=";
         if (!is_numeric($value)) $where .= "'";
         $where .= $value;
         if (!is_numeric($value)) $where .= "'";
-        return $this->find('first', $where);
-    }
-    
-    public function update($params=array()) {  
-        $this->checkForAttachableItems($params);    
-        $this->build($params);
-        $this->save((isset($params['_validate'])?$params['_validate']:true));  
+        return $this->find('first', $where, null, null, null, $get_assoc, $get_attached, $except, $cascade_except);
     }
 
-    public function refresh() {
+	/**
+	 * update item
+	 * @param array $params
+	 */
+	public function update($params=array()) {
+        $this->checkForAttachableItems($params);    
+        $this->build($params); 
+        if(is_array($params))       
+            $this->save((isset($params['_validate'])?$params['_validate']:true));  
+        else if(is_object($params))
+            $this->save((isset($params->_validate)?$params->_validate:true));  
+        else
+            $this->save(true);  
+    }
+
+	/**
+	 * @return bool
+	 */
+	public function refresh() {
         if (empty($this->id)) return false;
         $this->__construct($this->id);
     }
@@ -233,7 +272,7 @@ class expRecord {
                 if (is_array($params) && isset($params[$datename])) {
                     $this->$col = yuidatetimecontrol::parseData($col,$params);
                 } elseif (is_object($params) && isset($params->$datename)) {
-                    $this->$col = yuidatetimecontrol::parseData($col,object_to_array($params));
+                    $this->$col = yuidatetimecontrol::parseData($col,object2Array($params));
                 } else {
                     $this->$col = !empty($this->$col) ? $this->$col : 0;
                 }   
@@ -247,7 +286,12 @@ class expRecord {
         }
     }
 
-    public function rerank($direction, $where='') {
+	/**
+	 * rerank items
+	 * @param $direction
+	 * @param string $where
+	 */
+	public function rerank($direction, $where='') {
         global $db;        
         if (!empty($this->rank)) {
             $next_prev = $direction == 'up' ? $this->rank - 1 : $this->rank +1;  
@@ -255,8 +299,14 @@ class expRecord {
             $db->switchValues($this->tablename, 'rank', $this->rank, $next_prev, $where);
         }
     }
-    
-    public function attachItem($item, $subtype='') {
+
+	/**
+	 * attach to item
+	 * @param $item
+	 * @param string $subtype
+	 * @return bool
+	 */
+	public function attachItem($item, $subtype='') {
         global $db;
         
         // make sure we have the info we need..otherwise return
@@ -265,6 +315,7 @@ class expRecord {
         // save the attachable items
         $refname = strtolower($item->classname).'s_id';
         $db->delete($item->attachable_table, 'content_type="'.$this->classname.'" AND content_id='.$this->id.' AND '.$refname.'='.$item->id);
+        $obj = null;
         $obj->$refname = $item->id;
         $obj->content_id = $this->id;
         $obj->content_type = $this->classname;
@@ -272,8 +323,12 @@ class expRecord {
         $obj->rank = 1 + $db->max($item->attachable_table,'rank',null, 'content_type="'.$this->classname.'" AND subtype="'.$subtype.'" AND content_id'.$this->id);
         $db->insertObject($obj, $item->attachable_table);
     }
-    
-    public function save($validate=false) {
+
+	/**
+	 * save item
+	 * @param bool $validate
+	 */
+	public function save($validate=false) {
         global $db, $user;
         
         // call the validation callback functions if we need to.
@@ -309,7 +364,11 @@ class expRecord {
         $this->afterSave();
     }
 
-    public function validate() {
+	/**
+	 * validate item sef_url
+	 * @return bool
+	 */
+	public function validate() {
         global $db;
         // check for an sef url field.  If it exists make sure it's valid and not a duplicate
         //this needs to check for SEF URLS being turned on also: TODO
@@ -347,15 +406,24 @@ class expRecord {
         if (count($messages) >= 1) expValidator::failAndReturnToForm($messages, $post);
     }
 
-    public function afterCreate() {
+	/**
+	 * after creating item
+	 */
+	public function afterCreate() {
         $this->runCallback('afterCreate');
     }
 
-    public function afterUpdate() {
+	/**
+	 * after updating item
+	 */
+	public function afterUpdate() {
         $this->runCallback('afterUpdate');
     }
 
-    public function afterSave() {
+	/**
+	 * after saving item
+	 */
+	public function afterSave() {
         global $db;
         $this->runCallback('afterSave');
 
@@ -393,7 +461,10 @@ class expRecord {
         }
     }
 
-    public function beforeSave() {
+	/**
+	 * before saving item
+	 */
+	public function beforeSave() {
         global $user, $db;
         $this->runCallback('beforeSave');
         // populate the magic fields
@@ -406,8 +477,11 @@ class expRecord {
             // fill in the rank field if it exist
             if (property_exists($this, 'rank')) {
                 if (empty($this->rank)) {
-                    $where = empty($this->location_data) ? null : "location_data='".$this->location_data."'";
+                    $where = "1 ";
+                    $where .= empty($this->location_data) ? null : "AND location_data='".$this->location_data."' ";
+                    //FIXME: $where .= empty($this->rank_by_field) ? null : "AND " . $this->rank_by_field . "='" . $this->$this->rank_by_field . "'";
                     $groupby = empty($this->location_data) ? null : 'location_data';
+                    $groupby .= empty($this->rank_by_field) ? null : empty($groupby) ? null : ',' . $this->rank_by_field;
                     $this->rank = $db->max($this->tablename, 'rank', $groupby, $where) +1;
                 } else {
                     // check if this rank is already there..if so increment everything below it.
@@ -442,15 +516,24 @@ class expRecord {
         }
     }
 
-    public function beforeCreate() {
+	/**
+	 * before creating item
+	 */
+	public function beforeCreate() {
         $this->runCallback('beforeCreate');
     }
 
-    public function beforeUpdate() {
+	/**
+	 * before updating item
+	 */
+	public function beforeUpdate() {
         $this->runCallback('beforeUpdate');
     }
 
-    public function beforeValidation() {
+	/**
+	 * before validating item
+	 */
+	public function beforeValidation() {
         $this->runCallback('beforeValidation');
         if (empty($this->id)) {
             $this->beforeValidationOnCreate();
@@ -459,15 +542,24 @@ class expRecord {
         }
     }
 
-    public function beforeValidationOnCreate() {
+	/**
+	 * before validating item during creation
+	 */
+	public function beforeValidationOnCreate() {
         $this->runCallback('beforeValidationOnCreate');
     }
 
-    public function beforeValidationOnUpdate() {
+	/**
+	 * before validating item during update
+	 */
+	public function beforeValidationOnUpdate() {
         $this->runCallback('beforeValidationOnUpdate');
     }
 
-    public function afterValidation() {
+	/**
+	 * after validating item
+	 */
+	public function afterValidation() {
         $this->runCallback('afterValidation');
         if (empty($this->id)) {
             $this->afterValidationOnCreate();
@@ -476,15 +568,34 @@ class expRecord {
         }
     }
 
-    public function afterValidationOnCreate() {
+	/**
+	 * after validating item during creation
+	 */
+	public function afterValidationOnCreate() {
         $this->runCallback('afterValidationOnCreate');
     }
 
-    public function afterValidationOnUpdate() {
+	/**
+	 * after validating item during update
+	 */
+	public function afterValidationOnUpdate() {
         $this->runCallback('afterValidationOnUpdate');
     }
+	
+	public function beforeDelete() {
+        $this->runCallback('beforeDelete');
+    }
+    
+    public function afterDelete() {
+        $this->runCallback('afterDelete');
+    }
 
-    private function runCallback($type) {
+	/**
+	 * jump to subclass calling routine
+	 * @param $type
+	 * @return bool
+	 */
+	private function runCallback($type) {
         if (empty($type)) return false;
 
         // check for and run any callbacks listed in the $type array.
@@ -496,9 +607,15 @@ class expRecord {
         }
     }
 
-    public function delete($where = '') {
+	/**
+	 * delete item
+	 * @param string $where
+	 * @return bool
+	 */
+	public function delete($where = '') {
         global $db;
         if (empty($this->id)) return false;
+        $this->beforeDelete();
         $db->delete($this->tablename,'id='.$this->id);
         if (!empty($where)) $where .= ' AND ';
         if (property_exists($this, 'rank')) $db->decrement($this->tablename,'rank',1, $where . 'rank>='.$this->rank);
@@ -507,9 +624,13 @@ class expRecord {
         foreach($this->attachable_item_types as $content_table=>$type) {
             $db->delete($content_table, 'content_type="'.$this->classname.'" AND content_id='.$this->id);
         }
+        $this->afterDelete();
     }
 
-    public function makeSefUrl() {
+	/**
+	 * make an sef_url for item
+	 */
+	public function makeSefUrl() {
         global $db, $router;        
         if (isset($this->title)) {
 			$this->sef_url = $router->encode($this->title);
@@ -524,7 +645,12 @@ class expRecord {
         $this->runCallback('makeSefUrl');
     }
 
-    public function getAssociatedObjects($obj=null) {
+	/**
+	 * get item's associated objects
+	 * @param null $obj
+	 * @return null
+	 */
+	public function getAssociatedObjects($obj=null) {
         global $db;
         $records = array();
         
@@ -558,8 +684,12 @@ class expRecord {
         return $obj;
     }
     
-    // this function finds models at that have this attachable item attached to it
-    public function findWhereAttachedTo($content_type) {
+	/**
+	 * this function finds models at that have this attachable item attached to it
+	 * @param $content_type
+	 * @return array
+	 */
+	public function findWhereAttachedTo($content_type) {
         global $db;
         $objarray = array();
         if (!empty($this->id) && !empty($this->attachable_table)) {
@@ -572,7 +702,12 @@ class expRecord {
         return $objarray;
     }
 
-    private function checkForAttachableItems($params) {
+	/**
+	 * check for what objects may be attached
+	 * @param $params
+	 * @return bool
+	 */
+	private function checkForAttachableItems($params) {
         if (empty($params)) return false;
         foreach ($this->attachable_item_types as $type) {
             if (array_key_exists($type, $params)) {
@@ -581,7 +716,10 @@ class expRecord {
         }
     }
 
-    protected function getAttachableItems() {
+	/**
+	 * get attachable object types
+	 */
+	protected function getAttachableItems() {
         global $db;
     
         foreach($this->attachable_item_types as $content_table=>$type) {
@@ -622,7 +760,11 @@ class expRecord {
         }
     }
 
-    private function getAssociatedObjectsForThisModel($except=array()) {
+	/**
+	 * list associated objects for this model
+	 * @param array $except
+	 */
+	private function getAssociatedObjectsForThisModel($except=array(), $cascade_except = false) {
         global $db;
         foreach ($this->has_extended_fields as $assoc_object) {
             // figure out the name of the model based off the models tablename
@@ -632,33 +774,52 @@ class expRecord {
         //this requires a field in the table only with the ID of the associated object we're looking for in its table
         foreach ($this->has_one as $assoc_object) {
             // figure out the name of the model based off the models tablename
-            $obj = new $assoc_object(null, false, false);
-            $id_name = $obj->tablename.'_id';
-          
-            // check to see if we have an association yet.  if not we'll initialize an empty model
-            $id = empty($this->$id_name) ? array() : $this->$id_name;
-            
-            $this->$assoc_object = new $assoc_object($id, in_array($assoc_object, $this->get_assoc_for), in_array($assoc_object, $this->get_attachable_for));
-        }
-        //perhaps add a 'in' option to the find so we can pass an array of ids and make ONE db call instead of looping
-        foreach($this->has_many as $assoc_object) {                     
-            $assoc_obj = new $assoc_object();
-            $ret = $db->selectArrays($assoc_obj->tablename, $this->tablename.'_id='.$this->id, $assoc_obj->default_sort_field != '' ? $assoc_obj->default_sort_field . " " . $assoc_obj->default_sort_direction : null);
-            $records = array();
-            foreach ($ret as $record) {
-                $records[] = new $assoc_object($record, in_array($assoc_object, $this->get_assoc_for), in_array($assoc_object, $this->get_attachable_for));
+            if (!in_array($assoc_object, $except)) { 
+                $obj = new $assoc_object(null, false, false);
+                $id_name = $obj->tablename.'_id';
+              
+                // check to see if we have an association yet.  if not we'll initialize an empty model
+                $id = empty($this->$id_name) ? array() : $this->$id_name;
+                
+                $this->$assoc_object = new $assoc_object($id, in_array($assoc_object, $this->get_assoc_for), in_array($assoc_object, $this->get_attachable_for));
+            }else{
+                $this->$assoc_object = array();
             }
-            $this->$assoc_object = $records;
+        }
+        //TODO: perhaps add a 'in' option to the find so we can pass an array of ids and make ONE db call instead of looping
+        foreach($this->has_many as $assoc_object) {                     
+            if (!in_array($assoc_object, $except)) { 
+                $assoc_obj = new $assoc_object();
+                $ret = $db->selectArrays($assoc_obj->tablename, $this->tablename.'_id='.$this->id, $assoc_obj->default_sort_field != '' ? $assoc_obj->default_sort_field . " " . $assoc_obj->default_sort_direction : null);
+                $records = array();
+                if($cascade_except) 
+                {                       
+                    $record['except'] = $except; 
+                    $record['cascade_except'] = $cascade_except;  
+                    
+                }
+                foreach ($ret as $record) {
+                    $records[] = new $assoc_object($record, in_array($assoc_object, $this->get_assoc_for), in_array($assoc_object, $this->get_attachable_for));
+                }
+                $this->$assoc_object = $records;
+            }else{
+                //eDebug("No: " .$assoc_object);
+                $this->$assoc_object = array();
+            }
         }
 
         foreach($this->has_many_self as $assoc_object) {                     
-            $assoc_obj = new $assoc_object();
-            $ret = $db->selectArrays($assoc_obj->tablename, $assoc_obj->has_many_self_id. '=' .$this->id);
-            $records = array();
-            foreach ($ret as $record) {
-                $records[] = new $assoc_object($record, in_array($assoc_object, $this->get_assoc_for), in_array($assoc_object, $this->get_attachable_for));
+            if (!in_array($assoc_object, $except)) { 
+                $assoc_obj = new $assoc_object();
+                $ret = $db->selectArrays($assoc_obj->tablename, $assoc_obj->has_many_self_id. '=' .$this->id, $assoc_obj->default_sort_field != '' ? $assoc_obj->default_sort_field . " " . $assoc_obj->default_sort_direction : null);
+                $records = array();
+                foreach ($ret as $record) {
+                    $records[] = new $assoc_object($record, in_array($assoc_object, $this->get_assoc_for), in_array($assoc_object, $this->get_attachable_for));
+                }
+                $this->$assoc_object = $records;
+            }else{
+                $this->$assoc_object = array();
             }
-            $this->$assoc_object = $records;
         }
         
         foreach($this->has_and_belongs_to_many as $assoc_object) {
@@ -666,16 +827,23 @@ class expRecord {
                 $assocObj = new $assoc_object(null, false, false);
                 $tablename = $this->makeManyToManyTablename($assocObj->tablename);
                 
-                $ret = $db->selectObjects($assocObj->tablename, 'id IN (SELECT '.$assocObj->tablename.'_id from '.DB_TABLE_PREFIX.'_'.$tablename.' WHERE '.$this->tablename.'_id='.$this->id.')');
+                $ret = $db->selectObjects($assocObj->tablename, 'id IN (SELECT '.$assocObj->tablename.'_id from '.DB_TABLE_PREFIX.'_'.$tablename.' WHERE '.$this->tablename.'_id='.$this->id.')', $assocObj->default_sort_field != '' ? $assocObj->default_sort_field . " " . $assocObj->default_sort_direction : null);                
                 $records = array();
                 foreach ($ret as $record) {
                     $record_array = $this->object2Array($record);
                     // put in the current model as an exception, otherwise the auto assoc's keep initializing instances of each other in an
                     // infinant loop
                     $record_array['except'] = array($this->classinfo->name);
+                    if($cascade_except) 
+                    {                           
+                        $record_array['except'] = array_merge($record_array['except'],$except);   
+                        $record_array['cascade_except'] = $cascade_except;   
+                    }                                      
                     $records[] = new $assoc_object($record_array, in_array($assoc_object, $this->get_assoc_for), in_array($assoc_object, $this->get_attachable_for));
                 }
                 $this->$assoc_object = $records;
+            }else{
+                $this->$assoc_object = array();
             }
         }
         
@@ -694,10 +862,17 @@ class expRecord {
                     $records[] = new $assoc_object($record_array, in_array($assoc_object, $this->get_assoc_for), in_array($assoc_object, $this->get_attachable_for));
                 }
                 $this->$assoc_object = $records;
+            }else{
+                $this->$assoc_object = array();
             }
         }
     }
 
+	/**
+	 * get objects this item belongs to
+	 * @param $datatype
+	 * @param $id
+	 */
     public function associateWith($datatype, $id) {
         global $db;
         
@@ -707,13 +882,17 @@ class expRecord {
             $tablename = $this->makeManyToManyTablename($assocObj->tablename);
             $thisid = $this->tablename.'_id';
             $otherid = $assocObj->tablename.'_id';
+            $obj = null;
             $obj->$thisid = $this->id;
             $obj->$otherid = $id;
             $db->insertObject($obj, $tablename);
         }
     }
-    
-    public function saveAssociatedObjects() {
+
+	/**
+	 * save associated objects
+	 */
+	public function saveAssociatedObjects() {
         global $db;
 
         foreach ($this->has_one as $assoc_object) {
@@ -724,8 +903,14 @@ class expRecord {
             $this->$assoc_id_name = $obj->id;
         }
     }
-    //why the copmare to flip order?
-    private function makeManyToManyTablename($assoc_table) {
+
+    //why the compare to flip order?
+	/**
+	 * create a many to many table relationship
+	 * @param $assoc_table
+	 * @return string
+	 */
+	private function makeManyToManyTablename($assoc_table) {
         if ( strcmp($this->tablename, $assoc_table) > 0) {
             $tablename = $assoc_table.'_'.$this->tablename;
         } else {
@@ -733,8 +918,13 @@ class expRecord {
         }
         return $tablename;
     }
-    
-    private function object2Array($object=null) {
+
+	/**
+	 * convert an object to an array
+	 * @param null $object
+	 * @return array
+	 */
+	private function object2Array($object=null) {
         $ret_array = array();
         if(empty($object)) return $ret_array;
 
@@ -743,6 +933,28 @@ class expRecord {
         }
         
         return $ret_array;
+    }
+
+    public function getPoster()
+    {
+        if(isset($this->poster))
+        {
+            $user = new user($this->poster);
+            return $user->firstname . " " . $user->lastname; 
+        }
+        else
+        {
+            return null;
+        }
+    }
+    
+    public function getTimestamp($type=0)
+    {
+        if($type==0) $getType = 'created_at';
+        else $getType = 'edited_at';        
+        if(isset($this->$getType)) return date("F j, Y, g:i a",$this->$getType);
+        //TODO: should incorporate DISPLAY_DATETIME_FORMAT here
+        else return null;                        
     }
 
 };

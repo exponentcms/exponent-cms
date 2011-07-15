@@ -13,7 +13,7 @@
  * GPL: http://www.gnu.org/licenses/gpl.txt
  *
  *}
-{css unique="cart" link="`$asset_path`css/cart.css" corecss="panels"}
+{css unique="cart" link="`$asset_path`css/cart.css" corecss="panels,button"}
 
 {/css}
 
@@ -30,7 +30,7 @@
                 {$cartConfig.policy}
             </div>
         </div>
-        {script unique="policypop" yuimodules="container"}
+        {script unique="policypop" yui2mods="container"}
         {literal}
             var policies = new YAHOO.widget.Panel("storepolicies", { 
                 width:"400px",
@@ -52,22 +52,23 @@
             
         {/literal}
         {/script}
-    {/if}
+    {/if}  
     
-    {if $order->forced_shipping == true}
+    {* if $order->forced_shipping == true}
     <ul id="forcedshipping" class="queue error">
         <li>{$order->product_forcing_shipping->title} requires you to ship this order via {$shipping->shippingmethod->option_title}</li>
     </ul>
-    {/if}
+    {/if *}
 
     <div class="totals">
         <div class="details">
-            Total{if $discounts} with discounts{/if}: <span class="carttotal">{currency_symbol}{$order->total|number_format:2}</span>
+            Subtotal{if $discounts} with discounts{/if}: <span class="carttotal">{currency_symbol}{$order->total|number_format:2}</span>
         </div>
     </div>
 
     <div class="cartitems separate">
         
+        <!-- p>You have <strong>{$order->item_count}</strong> item{if $order->item_count > 1}s{/if} in your cart. <a id="expandcart" href="#" class="ecom-link">[Click here to show your cart]<span></span></a></p -->
         <div id="shoppingcartwrapper">
             {chain controller=cart action=show view=show_cart_only}
         </div>
@@ -95,9 +96,13 @@
                                 {br}
                                 <em>{$discount->title}</em>
                             </li>
+                            {if $discount->isShippingDiscount()}{assign var='is_shipping_discount' value=true}{/if}
                             {/foreach}
                         </ul>
-                        {if $discounts|@count==1}This Coupon is {else}These Coupons are {/if}saving you {currency_symbol}{$order->totalBeforeDiscounts-$order->total|number_format:2}.
+                        {if $discounts|@count==1}This coupon is {else}These coupons are {/if} saving you {currency_symbol}
+                        {if $discounts[0]->isCartDiscount()}{$order->total_discounts|number_format:2}.
+                        {else} {$order->shippingDiscount|number_format:2}. 
+                        {/if}
                     </div>
                 {/if}
                 <div style="clear:both"></div>
@@ -109,7 +114,6 @@
         {if $order->shipping_required == true}
         <div class="shippingdetails separate">
             {if $shipping->selectable_calculators|@count > 1}
-
             {/if}
         
             {if $shipping->shippingmethod->option!=""}
@@ -122,7 +126,18 @@
                 {/foreach}
             {/if}
             <div class="shipping-info">
-                <h2>Your Shipping Information</h2>
+                <h2>Your Shipping Information</h2>  
+                {if $order->forced_shipping == true || $is_shipping_discount == true}
+                    <ul id="forcedshipping" class="queue message">
+                        {if $order->forced_shipping == true}
+                            <li>{$order->forcing_shipping_reason} requires you to ship this order via {$shipping->shippingmethod->option_title}</li>
+                        {/if}
+                        {if $is_shipping_discount}                
+                            <li>Your full shipping discount will be reflected on the following order confirmation page, prior to submitting your order.</li>                
+                        {/if}
+                    </ul>
+                 {/if}              
+                
                 {*if $order->orderitem|@count>1 && $shipping->splitshipping == false && $order->forced_shipping == false}
                     <a id="miltiaddresslink" class="ecom-link {if hideMultiShip == 1}hide{/if}" href="{link action=splitShipping}">Ship to multiple addresses</a>
                 {/if*}
@@ -137,8 +152,8 @@
                 {if $order->forced_shipping == true}
                     <p>Your order requires <strong>{$shipping->shippingmethod->option_title}</strong></p>
                 {else}
+                {*
                     <p{if $noShippingPrices} class="hide"{/if}><strong id="cur-calc">{if $shipping->calculator->id}{$shipping->calculator->title}{else}No service selected{/if}</strong>  -  <a href="#" id="servicepicker">Select a Service</a></p>
-                    {*
                     <div id="calculators" class="exp-dropmenu">
                         <div class="hd"><span class="type-icon"></span>Select a Shipping Service</div>
                         <div class="bd">
@@ -166,6 +181,7 @@
                 </div>
 
                 <h3>Shipping Address</h3>
+                <!--p>Would you like to <a class="ordermessage" href="#" rel="{$shipping->shippingmethod->id}">add a gift message</a> to this Order?</p-->
                 
                 <div class="shipping-address">
                     <div id="shpAddSwp">
@@ -177,12 +193,38 @@
                     </div>    
                     
                     <div class="bracket{if !$shipping->address->id} hide{/if}">
-                        <a class="exp-ecom-link" href="{link controller=address action=myaddressbook}"><strong><em>Change Address</em></strong></a>
+                        <a class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" href="{link controller=address action=myaddressbook}">{"Change or Add Address"|gettext}</a>
                     </div>
                     
                 </div>
                 <div style="clear:both"></div>
-              
+                {else}
+
+                {* else, we have split shipping *}
+                <a id="miltiaddresslink" class="ecomlink-link" href="{link action=splitShipping}">Edit Shipping Information</a>
+            
+                {foreach from=$shipping->splitmethods item=method}
+                    <div class="splitaddress">
+                        <h4>{$order->countOrderitemsByShippingmethod($method->id)} items will be shipped to:</h4>
+                        <!--a class="ordermessage awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" href="#" rel="{$method->id}"><strong><em>Add a Gift Message to this Order</em></strong></a-->
+                        <address>
+                            {$method->firstname} {$method->middlename} {$method->lastname}{br}
+                            {$method->address1}{br}
+                            {if $method->address2 != ""}{$method->address2}{br}{/if}
+                            {$method->city}, 
+                            {if $method->state == -2}
+                                {$method->non_us_state}
+                            {else}
+                                {$method->state|statename:abv}
+                            {/if}
+                            , {$method->zip}
+                            {if $method->state == -2}
+                                {br}{$method->country|countryname}
+                            {/if}
+                        </address>
+                    </div>
+                {/foreach}
+                
                 {/if}
             </div>
             {* end split shipping *}
@@ -201,26 +243,31 @@
                     {/if}
                 </div>
                 <div class="bracket">
-                    <a class="exp-ecom-link" href="{link controller=address action=myaddressbook}"><strong><em>Change Address</em></strong></a>
-                </div>
+                    <a class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" href="{link controller=address action=myaddressbook}"><strong><em>Change or Add Address</em></strong></a>
+                </div>                
             </div>
-        
-            <h3>Payment Information</h3>
-
-            {foreach from=$billing->calculator_views item=cviews name=calcs key=key}
-                {include file=$cviews}
-                {if $smarty.foreach.calcs.last!=1}
-                    <strong>- OR -</strong>
-                {/if}
-            {/foreach}
+            <div style="clear: both;"></div>
+        </div>
+        <div class="separate">
+            <h2>Payment Information</h2>
+            <div>
+                {foreach from=$billing->calculator_views item=cviews name=calcs}                  
+                    {include file=$cviews.view key=$cviews.id}
+                    {if $smarty.foreach.calcs.last!=1}
+                        <strong>- OR -</strong>
+                    {/if}
+                {/foreach}
+            </div>
         </div>
         <!--div class="separate">
-            <a class="exp-ecom-link-dis continue" href="#" id="checkoutnow"><strong><em>Complete your checkout information to continue</em></strong></a>
+            <a class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}-dis continue" href="#" id="checkoutnow"><strong><em>Complete your checkout information to continue</em></strong></a>
         </div-->
     </div>
 </div>
+<!-- div id="loadingdiv" class="loadingdiv">Loading Checkout Page</div -->
 
+{* eDebug var=$order *}
 {*  Kludged out while testing paypal *}
-{script unique="shoppingcartcheckout" yuimodules="animation,container,json" src=`$smarty.const.JS_FULL`exp-ecomcheckout.js}
+{*script unique="shoppingcartcheckout" yuimodules="animation,container,json" src=`$smarty.const.JS_FULL`exp-ecomcheckout.js}
 //
-{/script}
+{/script*}

@@ -13,7 +13,7 @@
  * GPL: http://www.gnu.org/licenses/gpl.txt
  *
  *}
-<div class="exp-ecom-table coumnize">
+<div class="exp-ecom-table columnize">
     <table>
     <thead>
         <tr>
@@ -28,8 +28,8 @@
     <tbody>
         {foreach from=$items item=oi}
         <tr class={cycle values="even,odd"}>
-            <td>
-                <a href="{link action=showByTitle controller="storeController" title=$oi->product->sef_url}">
+            <td>            
+                <a href="{link action=showByTitle controller="store" title=$oi->product->getSEFURL()}">
                     {$oi->products_name}
                 </a>
                 {if $oi->opts[0]}
@@ -41,7 +41,7 @@
                 {/if}
                 {$oi->getUserInputFields('list')} 
                 {$oi->getExtraData()}
-                {$oi->getShippingSurcharge()}   
+                {$oi->getShippingSurchargeMessage()}   
             </td>
             <td>
                 {if $oi->product->model != ""}{$oi->product->model}{else}N/A{/if}

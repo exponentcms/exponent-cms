@@ -33,7 +33,7 @@
 		{/if}
 		{if $moduletitle != ""}{$moduletitle}{/if}
 	</h2>
-		permissions}
+		{permissions}
 		<div class="module-actions">
 			{if $permissions.post == 1}
 				{icon class=add action=edit title="Add a New Event"|gettext text="Add an Event"|gettext}

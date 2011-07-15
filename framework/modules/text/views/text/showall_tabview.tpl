@@ -20,7 +20,7 @@
 
 {/css}
 
-<div class="module text showall yui3-skin-sam">
+<div class="module text showall-tabview yui3-skin-sam">
     {if $moduletitle}<h1>{$moduletitle}</h1>{/if}
     {permissions}
         <div class="module-actions">

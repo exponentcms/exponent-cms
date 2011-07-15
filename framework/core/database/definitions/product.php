@@ -39,6 +39,10 @@ return array(
 		DB_FIELD_LEN=>100,
 		DB_INDEX=>10,
 		DB_FULLTEXT=>true),
+    "feed_title"=>array(
+        DB_FIELD_TYPE=>DB_DEF_STRING,
+        DB_FIELD_LEN=>100,
+        DB_INDEX=>10), 
 	'sef_url'=>array(
 		DB_FIELD_TYPE=>DB_DEF_STRING,
 		DB_FIELD_LEN=>150,
@@ -56,6 +60,9 @@ return array(
 	"body"=>array(
 		DB_FIELD_TYPE=>DB_DEF_STRING,
 		DB_FIELD_LEN=>10000),
+    "feed_body"=>array(
+        DB_FIELD_TYPE=>DB_DEF_STRING,
+        DB_FIELD_LEN=>10000),
 	"summary"=>array(
 		DB_FIELD_TYPE=>DB_DEF_STRING,
 		DB_FIELD_LEN=>500),
@@ -126,8 +133,6 @@ return array(
 	"companies_id"=>array(
 		DB_FIELD_TYPE=>DB_DEF_ID,
 		DB_INDEX=>1), 
-	"created_at"=>array(
-		DB_FIELD_TYPE=>DB_DEF_TIMESTAMP),
 	"minimum_order_quantity"=>array(
     	DB_FIELD_TYPE=>DB_DEF_DECIMAL),
     'product_type'=>array(

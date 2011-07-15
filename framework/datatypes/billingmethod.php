@@ -20,6 +20,7 @@
 class billingmethod extends expRecord {
     public $has_one = array('billingcalculator');
     public $has_many = array('billingtransaction');
+    public $get_assoc_for = array('billingtransaction');
     
 	public $table = 'billingmethods';
 
@@ -34,8 +35,7 @@ class billingmethod extends expRecord {
 		$address = is_numeric($address) ? new address($address) : $address;
 		$this->addresses_id = isset($address->id) ? $address->id : '';
 		unset($address->id);
-//		$this->update($address);
-		$this->update();
+		$this->update($address);
 	}	
 }
 

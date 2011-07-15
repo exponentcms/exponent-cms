@@ -4,6 +4,11 @@
     border:1px solid #8E8E8E;
 }
 
+#cartbox table td.cart-totals-title {
+    text-align:right;
+    font-weight: bold;
+}
+
 /****************  cart head  ***********************/
 #cart-top {
 	height:38px;
@@ -45,7 +50,7 @@ table#cart table td {
     background: #ebebeb; 
 }
 #cart tr.even { 
-    background: #f6f5f5; 
+    background: #000000; 
 }
 
 #cart td.prodrow  {
@@ -55,7 +60,7 @@ table#cart table td {
 
 #cart td.prodrow a {
 	display:block;
-	margin:7px 10px 0 0;
+	margin:2px 10px 0 0;
 }
 
 
@@ -108,7 +113,7 @@ table#cart table td {
     left:0;
     bottom:0;
     z-index:40;
-    background:#000000 url(../../../../core/assets/images/laoding2.gif) no-repeat 25% 50%;
+    background:#000000 url(../../../../core/assets/images/loading2.gif) no-repeat 25% 50%;
 }
 
 
@@ -153,6 +158,13 @@ table#cart table td {
     white-space:nowrap;
 }
 
+/* discount code styles */
+.input-code .control {
+    display:inline-block;
+    *display:inline;
+    zoom:1;
+    vertical-align:bottom;
+}
 
 /*************  END CART STYLES ****************/
 
@@ -160,8 +172,6 @@ table#cart table td {
 /****************  Checkout page styles  ***********************/
 .cart.checkout {
     position:relative;
-/*  line-height:1.5em;*/
-    *width:100%!important;
 }
 
 .cart.checkout h2 {
@@ -181,7 +191,6 @@ table#cart table td {
 	border-bottom:1px dotted #999;
 	margin:0 0 5px 0;
 	width:100%;
-	_overflow:hidden;
 }
 
 .cart.checkout .totals {
@@ -228,8 +237,9 @@ table#cart table td {
 }
 
 
-#shoppingcartwrapper {
-	overflow:hidden;
+#shpAddSwp address span,
+#bllAddSwp address span {
+    display:block;
 }
 
 .shipping-address,
@@ -339,7 +349,7 @@ table#cart table td {
 }
 .exp-dropmenu .address.current,
 #shippingmethodoptions .shpmthdopswtch.current {
-    background:url(../skin/accepted.png) #f1faef no-repeat 99% 5px;
+    background:url(../../../../core/assets/images/accepted.png) #f1faef no-repeat 99% 5px;
 }
 .exp-dropmenu .address:hover {
     cursor:pointer;
@@ -467,7 +477,7 @@ a.removefromcart {
 	padding:1px 0 3px 20px;
 }
 a.backtolist {
-	background: url(../../../../core/assets/imagesbacktolist.png) 0px 50%;
+	background: url(../../../../core/assets/images/backtolist.png) 0px 50%;
 	background-repeat: no-repeat;
 	padding-left: 20px;
 }

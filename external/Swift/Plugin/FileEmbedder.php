@@ -337,9 +337,11 @@ class Swift_Plugin_FileEmbedder implements Swift_Events_BeforeSendListener
       return $matches[1] . $cid . $matches[4];
     }
     $magic_quotes = get_magic_quotes_runtime();
-    set_magic_quotes_runtime(0);
+//    set_magic_quotes_runtime(0);
+	  ini_set('magic_quotes_runtime', 0);
     $filedata = @file_get_contents($url);
-    set_magic_quotes_runtime($magic_quotes);
+//    set_magic_quotes_runtime($magic_quotes);
+	  ini_set('magic_quotes_runtime', $magic_quotes);
     if (!$filedata)
     {
       return $matches[1] . $matches[3] . $matches[4];

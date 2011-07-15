@@ -15,7 +15,12 @@
  *}
  
 {css unique="permissions" corecss="tables"}
-
+{literal}
+.exp-skin-table thead th {
+    white-space:nowrap;
+    border-right:1px solid #D4CBBA;
+}
+{/literal}
 {/css}
 
 <form method="post">
@@ -57,7 +62,7 @@
 
             {foreach from=$perms item=perm key=pkey name=perms}
                 <td>
-                    <input type="checkbox"{if $user->$pkey==1||$user->$pkey==2} checked{/if} name="permdata[{$user->id}][{$pkey}]" value="1"{if $user->$pkey==2} disabled=1{/if} id="permdata[{$user->id}][{$pkey}]">
+                    <input class="{$pkey}" type="checkbox"{if $user->$pkey==1||$user->$pkey==2} checked{/if} name="permdata[{$user->id}][{$pkey}]" value="1"{if $user->$pkey==2} disabled=1{/if} id="permdata[{$user->id}][{$pkey}]">
                 </td>
             {/foreach}
         </tr>
@@ -69,3 +74,55 @@
 
 {control type="buttongroup" submit="Save Permissions"|gettext cancel="Cancel"|gettext}
 </form>
+
+
+{script unique="permission-checking" yui3mods=1}
+{literal}
+YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
+    var manage = Y.all('input.manage');
+    var admin = Y.all('input.administrate');
+    var checkSubs = function(row) {
+        row.each(function(n,k){
+            if (!n.hasClass('manage') && !n.hasClass('administrate')) {
+                n.insertBefore('<input type="hidden" name="'+n.get("name")+'" value="1">',n);
+                n.setAttrs({'checked':1,'disabled':1});
+            };
+        });
+    };
+
+    var unCheckSubs = function(row) {
+        row.each(function(n,k){
+            if (!n.hasClass('manage') && !n.hasClass('administrate')) {
+                n.get('previousSibling').remove();
+                n.setAttrs({'checked':0,'disabled':0});
+            };
+        });
+    };
+    
+    var toggleChecks = function(target,start) {
+        var row = target.ancestor('tr').all('input[type=checkbox]');
+        if(target.get('checked')&&!target.get('disabled')){
+            checkSubs(row);
+        } else {
+            if (!start) {
+                unCheckSubs(row);
+            }
+        }
+    };
+    
+    manage.on('click',function(e){
+        toggleChecks(e.target);
+    });
+    admin.on('click',function(e){
+        toggleChecks(e.target);
+    });
+    manage.each(function(n){
+        toggleChecks(n,1);
+    });
+    admin.each(function(n){
+        toggleChecks(n,1);
+    });
+});
+{/literal}
+{/script}
+

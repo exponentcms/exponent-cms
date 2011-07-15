@@ -1,0 +1,35 @@
+.report.generate-report .actions-to-apply {
+    position:relative;
+    height:50px;
+    border:1px dotted #777;
+    border-width:1px 0 0 1px;
+    margin:30px 0 5px 12px;
+}
+.report.generate-report .actions-to-apply .exp-ecom-link {
+    position:absolute;
+    top:-12px;
+    right:-10px;
+}
+
+.report.generate-report .actions-to-apply .select-control .label {
+    float:left;
+    padding-right:10px;
+    text-align:right;
+}
+
+.report.generate-report .actions-to-apply .select-control {
+    position:absolute;
+    right:150px;
+    top:-14px;
+    background:#fff;
+}
+
+.report.generate-report .actions-to-apply .control.checkbox {
+    position:absolute;
+    bottom:5px;
+    left:-8px;
+    padding:0;
+    margin:6px 0;
+    background:#fff;
+}
+

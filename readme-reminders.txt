@@ -1,6 +1,6 @@
 ExponentCMS Calendar Event Reminders implementation
 
-There are NO guarantees this may not open up security vulnerabilites on your site!  Please use with caution!
+There are NO guarantees this may not open up security vulnerabilities on your site!  Please use with caution!
 
 After installation (into the root ExponentCMS directory), you'll need to update/change the settings on the calendars you plan to use it with.  Primarily this allows you to add the info needed about the mailouts.
 
@@ -21,5 +21,5 @@ days - number of days of events to pull (defaults to 7)
 Currently this script:
 - adhere's to aggregated/merged calendars
 - uses the default (weekly) template of "_reminder" which pulls the next 7 days of events.  I may add a daily template
-- sends an html/text formatted message, but the text message isn't formatted very well, it's just the hmtl less the tags
+- sends an html/text formatted message, but the text message isn't formatted very well, it's just the html less the tags
 - only sends to the addresses selected in module settings which are selected from web site user profiles (think of it as the calendar owner).  I may add the ability to address groups and freestyle address just like in private messages and forms.  Not planning on adding a subscription option, but anything's possible.

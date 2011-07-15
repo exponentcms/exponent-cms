@@ -7,7 +7,7 @@
  *  Software Foundation; either version 2 of the
  *  License, or (at your option) any later version.
  *
- * The file thats holds the expCommentController class.
+ * The file that holds the expCommentController class.
  *
  * @link http://www.gnu.org/licenses/gpl.txt GPL http://www.gnu.org/licenses/gpl.txt
  * @package Exponent-CMS
@@ -35,6 +35,10 @@ class expCommentController extends expController {
     function hasViews() { return true; }
     
 	function edit() {
+	    if (empty($this->params['content_id'])) {
+	        flash('message','An error occured: No content id set.');
+            expHistory::back();  
+	    } 
         /* The global constants can be overriden by passing appropriate params */ 
         //sure wish I could do this once in the constructor. sadly $this->params[] isn't set yet
         $require_login = empty($this->params['require_login']) ? COMMENTS_REQUIRE_LOGIN : $this->params['require_login'];
@@ -45,7 +49,10 @@ class expCommentController extends expController {
         
 	    $id = empty($this->params['id']) ? null : $this->params['id'];
 	    $comment = new expComment($id);
-		assign_to_template(array('comment'=>$comment));
+		assign_to_template(array(
+		    'content_id'=>$this->params['content_id'],
+		    'comment'=>$comment
+		));
 	}	
 	
 	function manage() {
@@ -61,7 +68,7 @@ class expCommentController extends expController {
 	    $sql  = 'SELECT c.* FROM '.DB_TABLE_PREFIX.'_expComments c ';
         $sql .= 'JOIN '.DB_TABLE_PREFIX.'_content_expComments cnt ON c.id=cnt.expcomments_id ';
         $sql .= 'WHERE cnt.content_id='.$this->params['content_id']." AND cnt.content_type='".$this->params['content_type']."' ";
-        $sql .= 'AND c.approved=0';
+        //$sql .= 'AND c.approved=0';
 
         $page = new expPaginator(array(
             //'model'=>'expComment',
@@ -74,7 +81,11 @@ class expCommentController extends expController {
             'columns'=>array('Approved'=>'approved', 'Poster'=>'name', 'Comment'=>'body'),
         ));
         
-        assign_to_template(array('page'=>$page));
+        assign_to_template(array(
+            'page'=>$page,
+		    'content_id'=>$this->params['content_id'],
+		    'content_type'=>$this->params['content_type'],
+        ));
 	}
 	
 	function getComments() {
@@ -96,7 +107,7 @@ class expCommentController extends expController {
         $comments = new expPaginator(array(
             //'model'=>'expComment',
             'sql'=>$sql, 
-            'limit'=>10,
+            'limit'=>999,
             'order'=>'created_at',
             'controller'=>$this->baseclassname,
             'action'=>$this->params['action'],
@@ -115,6 +126,8 @@ class expCommentController extends expController {
         } else {
             $unapproved = 0;
         }        
+        
+        $this->config = $this->params['config'];
         
         assign_to_template(array(
             'comments'=>$comments,
@@ -150,8 +163,11 @@ class expCommentController extends expController {
             $this->params['name'] = $user->firstname." ".$user->lastname;
             $this->params['email'] = $user->email;
         }
-                
+                        
         // save the comment
+        if (empty($require_approval)) {
+            $this->expComment->approved=1;
+        }
         $this->expComment->update($this->params);
         
         // attach the comment to the datatype it belongs to (blog, news, etc..);
@@ -168,10 +184,10 @@ class expCommentController extends expController {
 		}
 		
 		if ($require_notification && !$user->isAdmin()) {
-		    $this->sendNotification($this->expComment);
+		    $this->sendNotification($this->expComment,$this->params);
 		}
         if ($require_approval==1 && $this->params['approved']==1) {
-		    $this->sendApprovalNotification($this->expComment);
+		    $this->sendApprovalNotification($this->expComment,$this->params);
         }
 		//if ($require_notification && !$user->isAdmin()) {
 		//}
@@ -234,7 +250,7 @@ class expCommentController extends expController {
 	    $comment = new expComment($this->params['id']);
 	    $comment->approved = $comment->approved == 1 ? 0 : 1;
 	    if ($comment->approved) {
-		    $this->sendApprovalNotification($comment);
+		    $this->sendApprovalNotification($comment,$this->params);
 	    }
 	    $comment->save();
 	    expHistory::back();
@@ -265,9 +281,11 @@ class expCommentController extends expController {
         expHistory::back();
 	}
 	
-	private function sendNotification($comment) {
+	private function sendNotification($comment,$params) {
+	    global $db;
 	    if (empty($comment)) return false;
         
+        //eDebug($comment,1);
         /* The global constants can be overriden by passing appropriate params */ 
         //sure wish I could do this once in the constructor. sadly $this->params[] isn't set yet
         $require_login = empty($this->params['require_login']) ? COMMENTS_REQUIRE_LOGIN : $this->params['require_login'];
@@ -278,13 +296,25 @@ class expCommentController extends expController {
 	    // setup some email variables.
 	    $subject = 'Notification of a New Comment Posted to '.URL_BASE;
         $tos = explode(',', str_replace(' ', '', $notification_email));
+        
+        $model = new $params['content_type']($params['content_id']);
+	    $loc = expUnserialize($model->location_data);
+
+        $posting = makelink(array('controller'=>$params['content_type'], 'action'=>'show', 'id'=>$params['content_id'],"src"=>$loc->src));
         $editlink = makelink(array('controller'=>'expComment', 'action'=>'edit', 'id'=>$comment->id));
         
         // make the email body
-        $body  = 'Posted By:&nbsp;'.$comment->name."<br>";
-        $body .= 'Posters Email:&nbsp;'.$comment->email."<br><br>";
-        $body .= $comment->body."<br><br>";
-        $body .= 'You can view, edit and optionally approved this comment by going to ';
+        $body = '<h1>New Comment Posted</h1>';
+        $body .= '<h2>Posted By</h2>';
+        $body .= '<p>'.$comment->name."</p>";
+        $body .= '<h2>Poster\'s Email</h2>';
+        $body .= '<p>'.$comment->email."</p>";
+        $body .= "<h2>Comment</h2>";
+        $body .= "<p>".$comment->body."</p>";
+        $body .= '<h3>View posting</h3>';
+        $body .= '<a href="'.$posting.'">'.$posting.'</a>';
+        //1$body .= "<br><br>";
+        $body .= '<h3>Edit / Approve comment</h3>';
         $body .= '<a href="'.$editlink.'">'.$editlink.'</a>';
         
         // create the mail message
@@ -300,7 +330,7 @@ class expCommentController extends expController {
         return true;
 	}
 
-	private function sendApprovalNotification($comment) {
+	private function sendApprovalNotification($comment,$params) {
 	    if (empty($comment)) return false;
         
         /* The global constants can be overriden by passing appropriate params */ 
@@ -311,17 +341,27 @@ class expCommentController extends expController {
         $notification_email = empty($this->params['notification_email']) ? COMMENTS_NOTIFICATION_EMAIL : $this->params['notification_email'];
 	    
 	    // setup some email variables.
-	    $subject = 'Notification of a New Comment Posted to '.URL_BASE;
+	    $subject = 'Notification of Comment Approval on '.URL_BASE;
         $tos = explode(',', str_replace(' ', '', $notification_email));
+        $tos[] = $comment->email;
+
+        $model = new $params['content_type']($params['content_id']);
+	    $loc = expUnserialize($model->location_data);
+
+        $posting = makelink(array('controller'=>$params['content_type'], 'action'=>'show', 'id'=>$params['content_id'],"src"=>$loc->src));
         $editlink = makelink(array('controller'=>'expComment', 'action'=>'edit', 'id'=>$comment->id));
-        
+                
         // make the email body
-        $body  = 'Posted By:&nbsp;'.$comment->name."<br>";
-        $body .= 'Posters Email:&nbsp;'.$comment->email."<br><br>";
-        $body .= $comment->body."<br><br>";
-        $body .= 'Your comment has been approved.';
-        //$body .= '<a href="'.$editlink.'">'.$editlink.'</a>';
-        
+        $body = '<h1>Comment Approved</h1>';
+        $body .= '<h2>Posted By</h2>';
+        $body .= '<p>'.$comment->name."</p>";
+        $body .= '<h2>Poster\'s Email</h2>';
+        $body .= '<p>'.$comment->email."</p>";
+        $body .= "<h2>Comment</h2>";
+        $body .= "<p>".$comment->body."</p>";
+        $body .= '<h3>View posting</h3>';
+        $body .= '<a href="'.$posting.'">'.$posting.'</a>';
+
         // create the mail message
         $mail = new expMail();        
         $mail->quickSend(array(

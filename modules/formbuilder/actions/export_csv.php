@@ -101,62 +101,59 @@ if (isset($_GET['id'])) {
 		}
 		
 		/* Tyler's additions --
-		
 		Here I want to add a section that runs through items, which has the first row as headers, and creates a new array which it will then push out as a CSV download.
+		*/
 				
-		*/ 
-				
-$file = "";	
+		if (LANG_CHARSET == 'UTF-8') {
+			$file = chr(0xEF).chr(0xBB).chr(0xBF).$file;  // add utf-8 signature to file to open appropriately in Excel, etc...
+		} else {
+			$file = "";
+		}
 
-//$file .= "\r\n\r\nCSV Export\r\n\r\n";
+		$file .= sql2csv($items);
 
-$file .= sql2csv($items);
+		//CODE FOR LATER CREAATING A TEMP FILE
+		$tmpfname = tempnam(getcwd(), "rep"); // Rig
 
-//CODE FOR LATER CREAATING A TEMP FILE
-$tmpfname = tempnam(getcwd(), "rep"); // Rig
+		$handle = fopen($tmpfname, "w");
+		fwrite($handle,$file);
+		fclose($handle);
 
-$handle = fopen($tmpfname, "w");
-fwrite($handle,$file);
-fclose($handle);
+		if(file_exists($tmpfname)) {
 
-if(file_exists($tmpfname))
-{
+			ob_end_clean();
 
-      ob_end_clean();
-     
-      // This code was lifted from phpMyAdmin, but this is Open Source, right?
-      // 'application/octet-stream' is the registered IANA type but
-      //        MSIE and Opera seems to prefer 'application/octetstream'
-     // It seems that other headers I've added make IE prefer octet-stream again. - RAM
+			// This code was lifted from phpMyAdmin, but this is Open Source, right?
+			// 'application/octet-stream' is the registered IANA type but
+			//        MSIE and Opera seems to prefer 'application/octetstream'
+			// It seems that other headers I've added make IE prefer octet-stream again. - RAM
 
-      $mime_type = (EXPONENT_USER_BROWSER == 'IE' || EXPONENT_USER_BROWSER == 'OPERA') ? 'application/octet-stream;' : 'text/comma-separated-values';
+			$mime_type = (EXPONENT_USER_BROWSER == 'IE' || EXPONENT_USER_BROWSER == 'OPERA') ? 'application/octet-stream;' : 'text/comma-separated-values;';
 
-      header('Content-Type: ' . $mime_type);
-      header('Expires: ' . gmdate('D, d M Y H:i:s') . ' GMT');
-      header("Content-length: ".filesize($tmpfname));
-      header('Content-Transfer-Encoding: binary');
-      header('Content-Encoding:');
-      header('Content-Disposition: attachment; filename="' . 'report.csv' . '"');
-      // IE need specific headers
-      if (EXPONENT_USER_BROWSER == 'IE') {
-        header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
-        header('Pragma: public');
-		header('Vary: User-Agent');
-      } else {
-        header('Pragma: no-cache');
-      }
-      //Read the file out directly
-		  
-      readfile($tmpfname);
-      exit();
+			header('Content-Type: ' . $mime_type . ' charset=' . LANG_CHARSET. "'");
+			header('Expires: ' . gmdate('D, d M Y H:i:s') . ' GMT');
+			header("Content-length: ".filesize($tmpfname));
+			header('Content-Transfer-Encoding: binary');
+			header('Content-Encoding:');
+			header('Content-Disposition: attachment; filename="' . 'report.csv' . '"');
+			// IE need specific headers
+			if (EXPONENT_USER_BROWSER == 'IE') {
+				header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+				header('Pragma: public');
+				header('Vary: User-Agent');
+			} else {
+				header('Pragma: no-cache');
+			}
+			//Read the file out directly
 
-unlink($tmpfname);
+			readfile($tmpfname);
+			exit();
 
-}
-else
-{
-error_log("error file doesn't exist",0);
-}
+			unlink($tmpfname);
+
+		} else {
+			error_log("error file doesn't exist",0);
+		}
 
 	} else {
 		echo SITE_403_HTML;
@@ -165,12 +162,10 @@ error_log("error file doesn't exist",0);
 	echo SITE_404_HTML;
 }
 
-/*
+/**
 This converts the sql statement into a nice CSV.
-
-We grab the items array which is stored funkily in the DB in an associative array when we pull it. 
-
-So basically our aray looks like this: 
+We grab the items array which is stored funkily in the DB in an associative array when we pull it.
+So basically our aray looks like this:
 
 ITEMS
 {[id]=>myID, [Name]=>name, [Address]=>myaddr} 
@@ -183,44 +178,29 @@ ITEMS
 So by nature of the array, the keys are repetated in each line (id, name, etc)
 So if we want to make a header row, we just run through once at the beginning and 
 use the array_keys function to strip out a functional header
+ * @param $items
+ * @return string
 
-*/
+ */
 
 function sql2csv($items) {
- 	
-		$str = "";
-
+	$str = "";
 	foreach ($items as $key=>$item)  {
-
-	if($str == "")
-	{
-		$header_Keys = array_keys((array)$item);
-	
-		foreach ($header_Keys as $individual_Header)
-		{
+		if($str == "") {
+			$header_Keys = array_keys((array)$item);
+			foreach ($header_Keys as $individual_Header) {
 				$str .= $individual_Header.",";
-						
-		}
-		$str .= "\r\n";
-			
-	}
-	
-		foreach ($item as $bob=>$rowitem)
-			{
-	
-		 	$rowitem = str_replace(",", " ", $rowitem);
-		 
-			$str .= $rowitem.",";
-		
-	}//foreach rowitem	
-			
-			$str = substr($str,0,strlen($str)-1);
+			}
 			$str .= "\r\n";
-		
-	}//end of foreach loop
-	
+		}
+		foreach ($item as $bob=>$rowitem) {
+		 	$rowitem = str_replace(",", " ", $rowitem);
+			$str .= $rowitem.",";
+		} //foreach rowitem
+		$str = substr($str,0,strlen($str)-1);
+		$str .= "\r\n";
+	} //end of foreach loop
 	return $str;
-
 }
 
 ?>
