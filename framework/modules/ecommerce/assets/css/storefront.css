@@ -137,6 +137,15 @@ em.unavailable {
 
 
 /****************  swatches and thumbnails  ***********************/
+/* additional images */
+.additional.thumbnails ul,
+.additional.thumbnails ul li {
+   padding:0;
+   margin:0;
+   list-style:none;
+}
+
+/* swatches */
 .store.show .thumbnails ul li {
     list-style:none;
     display:inline-block;
@@ -167,3 +176,4 @@ em.unavailable {
     padding:0 0 2px 3px;
     display:block;
 }
+
