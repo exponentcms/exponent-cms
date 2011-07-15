@@ -56,7 +56,7 @@
         <div id="demo" class="yui-navset">
             <ul class="yui-nav">
             <li class="selected"><a href="#general"><em>General</em></a></li>
-            <li><a href="#pricing"><em>Pricing</em></a></li>
+            <li><a href="#pricing"><em>Pricing, Tax & Discounts</em></a></li>
             <li><a href="#images"><em>Images & Files</em></a></li>
             <li><a href="#quantity"><em>Quantity</em></a></li>
             <li><a href="#shipping"><em>Shipping</em></a></li>
@@ -65,8 +65,7 @@
             <li><a href="#featured"><em>Featured</em></a></li>
             <li><a href="#relprod"><em>Related Products</em></a></li>
             <li><a href="#uifld"><em>User Input Fields</em></a></li>
-            <li><a href="#active"><em>Active/Inactive</em></a></li>
-            <li><a href="#status"><em>Status</em></a></li>  
+            <li><a href="#active"><em>Active & Status Settings</em></a></li>            
             <li><a href="#meta"><em>Meta Info</em></a></li>
             <li><a href="#notes"><em>Notes</em></a></li>
             <li><a href="#xtrafields"><em>Extra Fields</em></a></li>      
@@ -86,7 +85,7 @@
                 </div>
                 <div id="pricing">
                     <fieldset>
-                    <legend>General Pricing</legend>
+                    <h2>General Pricing</h2>
                         <table>
                         <tr>
                             <td>{control type="text" name="base_price" label="Base Price" value=$record->base_price filter=money}</td>
@@ -98,7 +97,7 @@
                         </table>
                     </fieldset>
                     <fieldset>
-                    <legend>Quantity Discounts</legend>
+                    <h2>Quantity Discounts</h2>
                         <p>
                             Quantity discounts are discounts that get applied when a customer purchases a certain 
                             amount of this product. You can configure how the discounts work by setting the discount
@@ -118,7 +117,8 @@
                         </tr>
                         </table>
                     </fieldset>                 
-                    {control type="dropdown" name="tax_class_id" label="Tax Class" frommodel=taxclass key=id display=name includeblank="-- No Tax Required --" value=$record->tax_class_id|default:1}
+                    <h2>Tax Class</h2>
+                    {control type="dropdown" name="tax_class_id" label="" frommodel=taxclass key=id display=name includeblank="-- No Tax Required --" value=$record->tax_class_id|default:1}
                 </div>
                 <div id="images">
                     <div id="imagefunctionality">              
@@ -473,11 +473,9 @@
                 <div id="active">
                     <h2>Active/Inactive</h2>
                     {control type="radiogroup" name="active_type" label=" " items=$record->active_display default=$record->active_type|default:0}
-                </div>
-                <div id="status">
                     <h2>Status</h2>
                     {control type="dropdown" name="product_status_id" label=" " frommodel=product_status items=$status_display value=$record->product_status_id}
-                </div>
+                </div>                
                 <div id="meta">
                     <h2>Meta Info</h2>
                     {control type="text" name="sef_url" label="SEF URL" value=$record->sef_url}

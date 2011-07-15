@@ -306,8 +306,7 @@
                     <tr>
                         <td colspan="8" style='text-align: right;'><!--a href="{link action=add_order_item id=$order->id}">[+]</a-->
                         {capture assign="callbacks"}
-                        {literal}
-                        
+                        {literal}                       
                         
                         // the text box for the title
                         var tagInput = Y.one('#related_items');
@@ -355,7 +354,7 @@
                         // makes formatResult work mo betta
                         oAC.resultTypeList = false;
                         
-                        //oAC.useShadow = true;
+                        //AC.useShadow = true;
                         //oAC.autoHighlight  = true;
                         //oAC.typeAhead = true;
     
