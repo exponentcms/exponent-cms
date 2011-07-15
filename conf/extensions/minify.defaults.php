@@ -17,5 +17,6 @@
 ##################################################
 
 if (!defined('MINIFY')) define ('MINIFY',0);
-
+if (!defined('MINIFY_MAXAGE')) define('MINIFY_MAXAGE', 180000);
+if (!defined('MINIFY_URL_LENGTH')) define('MINIFY_URL_LENGTH', 1500);
 ?>

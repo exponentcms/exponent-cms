@@ -81,13 +81,13 @@ class expCSS {
                 $html .= "\t".'<link rel="stylesheet" type="text/css" href="'.$file.'" '.XHTML_CLOSING.'>'."\r\n";
             }
         } else {
-            // if we're minifying, we'll break our URLs apart at 1500 characters to allow it through 
+            // if we're minifying, we'll break our URLs apart at MINIFY_URL_LENGTH characters to allow it through 
             // browser string limits
             $i = 0;
             $srt = array();
             $srt[$i] = "";
             foreach ($css_files as $file) {
-                if (strlen($srt[$i])+strlen($file)<=1500) {
+                if (strlen($srt[$i])+strlen($file)<= MINIFY_URL_LENGTH) {
                     $srt[$i] .= $file.",";
                 } else {
                     $i++;
