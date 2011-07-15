@@ -380,14 +380,14 @@ class expValidator {
         $post['_formError'] = array();
         foreach($vars as $validate_type=>$param) {
             switch($validate_type) {
-                case 'captcha':
-                case 'capcha':
-                    $captcha_real = exponent_sessions_get('captcha_string');
-                    if (SITE_USE_ANTI_SPAM && strtoupper($post[$param]) != $captcha_real) {
-                            unset($post[$param]);
-                            $post['_formError'][] = exponent_lang_getText('Captcha Verification Failed');
-                    }
-                break;
+//                case 'captcha':
+//                case 'capcha':
+//                    $captcha_real = exponent_sessions_get('captcha_string');
+//                    if (SITE_USE_ANTI_SPAM && strtoupper($post[$param]) != $captcha_real) {
+//                            unset($post[$param]);
+//                            $post['_formError'][] = exponent_lang_getText('Captcha Verification Failed');
+//                    }
+//                break;
                 case 'presence_of':
                     if (empty($post[$param])) $post['_formError'][] = $param.' is a required field.';
                 break;
