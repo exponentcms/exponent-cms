@@ -29,15 +29,20 @@ echo gt('Create an Administrator');
 ?></h1>
 
 <span style="color: red; font-weight: bold; padding-top: 8px;" id="errorMessage">
+<?php echo isset($_GET['errusername']) == 'true' ? 'You must supply a username.' : ''; ?>
 <?php echo isset($_GET['erremail']) == 'true' ? 'You must supply a valid email address.' : ''; ?>
 </span>
 <script>
 function checkPassword(f){	
-	if (f.password.value != f.password2.value) {
+	if (f.username.value == "") {
+		//alert('<?php echo $i18n['bad_username_message']; ?>');
+		document.getElementById("errorMessage").innerHTML = "<?php echo $i18n['bad_username_message']; ?>";
+		return false;
+	} else if (f.password.value != f.password2.value) {
 		//alert('<?php echo $i18n['bad_password_message']; ?>');
 		document.getElementById("errorMessage").innerHTML = "<?php echo $i18n['bad_password_message']; ?>";
 		return false;
-	}else{
+	} else {
 		f.submit();
 		return true;
 	}

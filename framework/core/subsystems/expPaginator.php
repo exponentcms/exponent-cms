@@ -157,7 +157,7 @@ class expPaginator {
 		} 		
 		
 		// figure out how many records we're dealing with & grab the records
-		//if (!empty($this->records)) { //from MUS <~~ this doesn't work. Could be empty, but still need to hit.
+		//if (!empty($this->records)) { //from Merge <~~ this doesn't work. Could be empty, but still need to hit.
 		if (isset($params['records'])) { // if we pass $params['records'], we WANT to hit this
 		    // sort, count and slice the records that were passed in to us
 		    usort($this->records,array('expPaginator', strtolower($this->order_direction)));
@@ -169,7 +169,7 @@ class expPaginator {
 		} elseif (!empty($class)) { //where clause     //FJD: was $this->class, but wasn't working...
 			$this->total_records = $class->find('count', $this->where);
 			$this->records = $class->find('all', $this->where, $this->order.' '.$this->order_direction, $this->limit, $this->start);
-		} elseif (!empty($this->where)) { //from MUS....where clause
+		} elseif (!empty($this->where)) { //from Merge....where clause
 			$this->total_records = $class->find('count', $this->where);
 			if ($this->start > $this->total_records) {
 				$this->start = $this->total_records - $this->limit;
@@ -181,7 +181,7 @@ class expPaginator {
             //this is MUCH faster if you supply a proper count_sql param using a COUNT() function; if not,
             //we'll run the standard sql and do a queryRows with it
             
-			//$this->total_records = $this->count_sql == '' ? $db->queryRows($this->sql) : $db->selectValueBySql($this->count_sql); //From MUS
+			//$this->total_records = $this->count_sql == '' ? $db->queryRows($this->sql) : $db->selectValueBySql($this->count_sql); //From Merge
 			$this->total_records = $db->queryRows($this->sql); //From most current Trunk
 			if ($this->start > $this->total_records) {
 				$this->start = $this->total_records - $this->limit;
@@ -195,7 +195,7 @@ class expPaginator {
 			    foreach($db->selectObjectsBySql($this->sql) as $record) {
 			        $classname = isset($params['model_field']) ? $record->$params['model_field'] : $this->model;
 			        //$this->records[] = new $classname($record->id, true, true); //From current trunk // added false, true, as we shouldn't need associated items here, but do need attached. FJD.
-					$this->records[] = new $classname($record->id, false, true); //From MUS //added false, true, as we shouldn't need associated items here, but do need attached. FJD.
+					$this->records[] = new $classname($record->id, false, true); //From Merge //added false, true, as we shouldn't need associated items here, but do need attached. FJD.
 			    }
 			} else {
 			    $this->records = $db->selectObjectsBySql($this->sql);
@@ -217,7 +217,7 @@ class expPaginator {
 			
 		// get the page parameters from the router to build the links
 		//$page_params = $router->params; //from Current Trunk
-		$page_params = $this->cleanParams($router->params); //From MUS
+		$page_params = $this->cleanParams($router->params); //From Merge
 
 		//if (empty($page_params['module'])) $page_params['module'] = $this->controller;
 		//if (empty($page_params['action'])) $page_params['action'] = $this->action;
@@ -298,10 +298,10 @@ class expPaginator {
          
         $sortparams = array_merge($page_params, $router->params);
 		
-		//From MUS ****
+		//From Merge ****
         if (isset($router->params['page'])) $sortparams['page'] = $router->params['page'];
         else unset($sortparams['page']);
-        //End From MUS ****
+        //End From Merge ****
 
 		$this->makeSortDropdown($sortparams);
        
@@ -314,7 +314,7 @@ class expPaginator {
                                                            
 	}
 	
-	//From MUS
+	//From Merge
     private function cleanParams($params)
     {  
         $defaultParams = array('title'=>'','module'=>'','controller'=>'','src'=>'','id'=>'','dir'=>'');

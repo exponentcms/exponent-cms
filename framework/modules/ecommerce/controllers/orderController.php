@@ -346,8 +346,7 @@ class orderController extends expController {
 				} while(file_exists($htmltopdftmp));
 			}
 			file_put_contents($htmltopdftmp, $invoice);
-			// eDebug(HTMLTOPDF_PATH . " " . $htmltopdftmp . " " . HTMLTOPDF_PATH_TMP . "MUS_Invoice.pdf", true);
-            
+			
 			exec(HTMLTOPDF_PATH . " " . $htmltopdftmp . " " . HTMLTOPDF_PATH_TMP . $org_name . "_Invoice.pdf");
 			$this->returnFile(HTMLTOPDF_PATH_TMP . $org_name . "_Invoice.pdf", $org_name . "_Invoice.pdf", "pdf"); 
 			exit();
@@ -357,10 +356,9 @@ class orderController extends expController {
 			$pdfer->set_orientation('Portrait');
 			$pdfer->set_page_size('Letter');
 			$pdfer->set_grayscale(true);
-			//$pdfer->set_title("MUS_Invoice#" . $this->params['id'] . ".pdf");  
+			
 			$pdfer->render();
-			ob_clean();
-			//$pdfer->output('D',"MUS_Invoice" . $this->params['id'] . ".pdf");    
+			ob_clean();			
 			$pdfer->output('D', $org_name . "_Invoice" . ".pdf");	
 			exit();
 		}
@@ -919,7 +917,7 @@ class orderController extends expController {
         //eDebug($this->params);
         /*addresses_id
         customer_type = 1 //new
-        customer_type = 2 //existing MUS
+        customer_type = 2 //existing Internal
         customer_type = 3 //existing external*/
         global $user,$db;
         //eDebug($this->params,true);
@@ -934,7 +932,7 @@ class orderController extends expController {
         }
         else if ($this->params['customer_type'] == 2)
         {
-            //mus customer
+            //internal customer
             $newAddy = new address($this->params['addresses_id']);
         }
         else if ($this->params['customer_type'] == 3)

@@ -1931,7 +1931,7 @@ class migrationController extends expController {
         $config->update(array('config'=>$this->params));
 		// update our object config
 		$this->config = expUnserialize($config->config);
-        flash('message', 'Configuration updated');
+        flash('message', 'Migration Configuration Saved');
 //        expHistory::back();
 		$this->fix_database();
 		echo "<a class=\"admin\" href=\"migration/manage_users\">Next Step -> Migrate Users & Groups</a>";
@@ -1975,7 +1975,7 @@ class migrationController extends expController {
 		// let's test the connection
 		$old_db = $this->connect();
 		
-		print_r("<h2>Connected to the Old Database!<br>Running several checks and fixes on the old database<br>to enhance Migration.</h2><br><br>");
+		print_r("<h2>We're connected to the Old Database!</h2><br><br><h3>Running several checks and fixes on the old database<br>to enhance Migration.</h3><br>");
 
 		print_r("<pre>");
 	// upgrade sectionref's that have lost their originals

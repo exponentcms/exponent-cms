@@ -45,6 +45,7 @@
 			<li><a href="#tab10"><em>{gettext str="WYSIWYG Editor"}</em></a></li>
             <li><a href="#tab11"><em>{gettext str="Error Messages"}</em></a></li>
             <li><a href="#tab12"><em>{gettext str="PDF Generation"}</em></a></li>
+			<li><a href="#tab13"><em>{gettext str="Minify"}</em></a></li>
             {/if}
             </ul>            
             <div class="yui-content">
@@ -157,6 +158,12 @@
                     {help text="Learn More about generating PDF's"|gettext module="pdf-generation"}
                     {control type="text" name="sc[HTMLTOPDF_PATH]" label="Full Path to the WKHTMLtoPDF Binary Utility" value=$smarty.const.HTMLTOPDF_PATH}
                     {control type="text" name="sc[HTMLTOPDF_PATH_TMP]" label="Full Path to the WKHTMLtoPDF Temp Directory" value=$smarty.const.HTMLTOPDF_PATH_TMP}
+                </div>
+				
+				<div id="tab13">
+                    <h2>{gettext str="Minify Configuration"}</h2>
+                    {control type="text" name="sc[MINIFY_MAXAGE]" label="Maximum age of browser cache in seconds" value=$smarty.const.MINIFY_MAXAGE}
+					{control type="text" name="sc[MINIFY_URL_LENGTH]" label="The length of minification url" value=$smarty.const.MINIFY_URL_LENGTH}
                 </div>
                 {/if}
             </div>
