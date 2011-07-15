@@ -28,8 +28,8 @@
         {control type="hidden" id="addresses_id" name="addresses_id"}
         {br}        
         <input type="radio" id="customer_type1" name="customer_type" value="1" checked=""> New Customer{br}
-        <input type="radio" id="customer_type2" name="customer_type"  value="2"> Existing Customer MUS{br}
-        <input type="radio" id="customer_type3" name="customer_type"  value="3"> Existing Customer Other{br}
+        <input type="radio" id="customer_type2" name="customer_type"  value="2"> Existing Customer - Internal{br}
+        <input type="radio" id="customer_type3" name="customer_type"  value="3"> Existing Customer - External{br}
         {capture assign="callbacks"}
                         {literal}
                         
@@ -71,7 +71,7 @@
 
                         {/literal}
                         {/capture}
-                        {control type="autocomplete" controller="order" action="search" name="related_items" value="Search MUS customer name or email" schema="id,firstname,middlename,lastname,organization,email" searchmodel="addresses" searchoncol="firstname,lastnamename,organization,email" jsinject=$callbacks}
+                        {control type="autocomplete" controller="order" action="search" name="related_items" value="Search customer name or email" schema="id,firstname,middlename,lastname,organization,email" searchmodel="addresses" searchoncol="firstname,lastnamename,organization,email" jsinject=$callbacks}
                         
       {capture assign="callbacks2"}
                         {literal}

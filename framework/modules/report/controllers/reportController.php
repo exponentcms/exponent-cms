@@ -805,7 +805,7 @@ class reportController extends expController {
             $out .= $line;    
         }
         //eDebug($out,true);
-        $this->download($out,'MUS_Inventory_Export_' . time() . '.csv', 'application/csv');
+        $this->download($out,'Inventory_Export_' . time() . '.csv', 'application/csv');
        // [firstname] => Fred [middlename] => J [lastname] => Dirkse [organization] => OIC Group, Inc. [address1] => PO Box 1111 [address2] => [city] => Peoria [state] => 23 [zip] => 61653 [country] => [phone] => 309-555-1212 begin_of_the_skype_highlighting              309-555-1212      end_of_the_skype_highlighting  [email] => fred@oicgroup.net [shippingcalculator_id] => 4 [option] => 01 [option_title] => 8-10 Day [shipping_cost] => 5.95   
     }
     
@@ -879,7 +879,7 @@ class reportController extends expController {
             $out .= $line;    
         }
         //eDebug($out,true);
-        $this->download($out,'MUS_Inventory_Export_' . time() . '.csv', 'application/csv');
+        $this->download($out,'Inventory_Export_' . time() . '.csv', 'application/csv');
        // [firstname] => Fred [middlename] => J [lastname] => Dirkse [organization] => OIC Group, Inc. [address1] => PO Box 1111 [address2] => [city] => Peoria [state] => 23 [zip] => 61653 [country] => [phone] => 309-555-1212 begin_of_the_skype_highlighting              309-555-1212      end_of_the_skype_highlighting  [email] => fred@oicgroup.net [shippingcalculator_id] => 4 [option] => 01 [option_title] => 8-10 Day [shipping_cost] => 5.95   
         
     } 
@@ -1274,7 +1274,7 @@ class reportController extends expController {
             $out .= $line;
         }
         //eDebug($out,true);
-        $this->download($out,'MUS_ODBC_Export.csv', 'application/csv');
+        $this->download($out,'ODBC_Export.csv', 'application/csv');
        // [firstname] => Fred [middlename] => J [lastname] => Dirkse [organization] => OIC Group, Inc. [address1] => PO Box 1111 [address2] => [city] => Peoria [state] => 23 [zip] => 61653 [country] => [phone] => 309-555-1212 begin_of_the_skype_highlighting              309-555-1212      end_of_the_skype_highlighting  [email] => fred@oicgroup.net [shippingcalculator_id] => 4 [option] => 01 [option_title] => 8-10 Day [shipping_cost] => 5.95
             
     }
@@ -1318,7 +1318,7 @@ class reportController extends expController {
                 $out .= $line;   
             }                 
         }
-        $this->download($out,'MUS_Inventory_Export_' . time() . '.csv', 'application/csv');
+        $this->download($out,'Inventory_Export_' . time() . '.csv', 'application/csv');
     } 
     
     function download($file,$name,$type)
