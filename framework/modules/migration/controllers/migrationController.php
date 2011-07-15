@@ -917,10 +917,10 @@ class migrationController extends expController {
 						$lnk = new links();
 						$loc = expUnserialize($link['location_data']);
 						$loc->mod = "links";
-						$lnk->title = $link['name'];
+						$lnk->title = (!empty($link['name'])) ? $link['name'] : 'Untitled';
 						$lnk->body = $link['description'];
 						$lnk->new_window = $link['opennew'];
-						$lnk->url = $link['url'];
+						$lnk->url = (!empty($link['url'])) ? $link['url'] : '#';
 						$lnk->rank = $link['rank'];
 						$lnk->poster = 1;
 						$lnk->editor = 1;
@@ -959,10 +959,10 @@ class migrationController extends expController {
 						$lnk = new links();
 						$loc = expUnserialize($link['location_data']);
 						$loc->mod = "links";
-						$lnk->title = $link['name'];
+						$lnk->title = (!empty($link['name'])) ? $link['name'] : 'Untitled';
 						$lnk->body = $link['description'];
 						$lnk->new_window = $link['opennew'];
-						$lnk->url = $link['url'];
+						$lnk->url = (!empty($link['url'])) ? $link['url'] : '#';
 						$lnk->rank = $link['rank'];
 						$lnk->poster = 1;
 						$lnk->editor = 1;
@@ -1069,6 +1069,8 @@ class migrationController extends expController {
                         $loc = expUnserialize($ni['location_data']);
                         $loc->mod = "news";
                         $news->location_data = serialize($loc);
+                        $news->title = (!empty($ni['title'])) ? $ni['title'] : 'Untitled';
+                        $news->body = (!empty($ni['body'])) ? $ni['body'] : '(empty)';
                         $news->save();
 						// default is to create with current time
                         $news->created_at = $ni['posted'];
@@ -1142,7 +1144,7 @@ class migrationController extends expController {
 						$filedownload = new filedownload($ri);
 						$loc = expUnserialize($ri['location_data']);
 						$loc->mod = "filedownload";
-						$filedownload->title = $ri['name'];
+						$filedownload->title = (!empty($ri['name'])) ? $ri['name'] : 'Untitled';
 						$filedownload->body = $ri['description'];
 						$filedownload->downloads = $ri['num_downloads'];
 						$filedownload->location_data = serialize($loc);
@@ -1210,8 +1212,7 @@ class migrationController extends expController {
 							$photo = new photo();
 							$loc = expUnserialize($gallery['location_data']);
 							$loc->mod = "photos";
-							$photo->title = $gi['name'];
-							if (empty($photo->title)) { $photo->title = 'Untitled'; }
+							$photo->title = (!empty($gi['name'])) ? $gi['name'] : 'Untitled';
 							$photo->body = $gi['description'];
 							$photo->alt = $gi['alt'];
 							$photo->location_data = serialize($loc);
@@ -1252,8 +1253,7 @@ class migrationController extends expController {
 							$photo = new photo();
 							$loc = expUnserialize($gallery['location_data']);
 							$loc->mod = "photos";
-							$photo->title = $gi['name'];
-							if (empty($photo->title)) { $photo->title = 'Untitled'; }
+							$photo->title = (!empty($gi['name'])) ? $gi['name'] : 'Untitled';
 							$photo->body = $gi['description'];
 							$photo->alt = $gi['alt'];
 							$photo->location_data = serialize($loc);
@@ -1344,6 +1344,8 @@ class migrationController extends expController {
                         $loc = expUnserialize($bi['location_data']);
                         $loc->mod = "blog";
                         $post->location_data = serialize($loc);
+                        $post->title = (!empty($bi['title'])) ? $bi['title'] : 'Untitled';
+                        $post->body = (!empty($bi['body'])) ? $bi['body'] : '(empty)';
                         $post->save();
 						// default is to create with current time						
                         $post->created_at = $bi['posted'];
@@ -1408,10 +1410,12 @@ class migrationController extends expController {
                         $loc = expUnserialize($fqi['location_data']);
                         $loc->mod = "faq";
                         $faq->location_data = serialize($loc);
-                        $faq->question = $fqi['question'];
+                        $faq->question = (!empty($fqi['question'])) ? $fqi['question'] : 'Untitled?';
                         $faq->answer = $fqi['answer'];
                         $faq->rank = $fqi['rank'];
                         $faq->include_in_faq = 1;
+                        $faq->submitter_name = 'Unknown';
+                        $faq->submitter_email = 'address@website.com';
                         $faq->save();
                         @$this->msg['migrated'][$iloc->mod]['count']++;
                         @$this->msg['migrated'][$iloc->mod]['name'] = $this->new_modules[$iloc->mod];
@@ -1438,7 +1442,7 @@ class migrationController extends expController {
                     foreach ($listingitems as $li) {
                         unset($li['id']);
                         $listing = new portfolio($li);
-						$listing->title = $li['name'];
+						$listing->title = (!empty($li['name'])) ? $li['name'] : 'Untitled?';
                         $loc = expUnserialize($li['location_data']);
                         $loc->mod = "portfolio";
                         $listing->location_data = serialize($loc);
@@ -1651,12 +1655,13 @@ class migrationController extends expController {
 						$loc = expUnserialize($bi['location_data']);
 						$loc->mod = "banner";
 						$banner->title = $bi['name'];
+						$banner->url = (!empty($bi['url'])) ? $bi['url'] : '#';
 						if (empty($banner->title)) { $banner->title = 'Untitled'; }
 						$banner->location_data = serialize($loc);
 						$newcompany = $db->selectObject('companies', "title='".$oldcompany->name."'");
 						if ($newcompany == null) {
 							$newcompany = new company();
-							$newcompany->title = $oldcompany->name;
+							$newcompany->title = (!empty($oldcompany->name)) ? $oldcompany->name : 'Untitled';
 							$newcompany->body = $oldcompany->contact_info;
 							$newcompany->location_data = $banner->location_data;
 							$newcompany->save();
