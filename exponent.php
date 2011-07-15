@@ -27,7 +27,8 @@
  * @version 2.0.0
  */
 
-require_once('exponent_common.php');
+//require_once('exponent_common.php');
+include_once('exponent_bootstrap.php');
 
 // Initialize the AutoLoader Subsystem
 require_once(BASE.'subsystems/autoloader.php');

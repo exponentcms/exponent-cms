@@ -19,8 +19,8 @@
 ##################################################
 
 //Initialize exponent Framework
-include_once('exponent_common.php');
-include_once(BASE.'exponent_constants.php');
+//include_once('exponent_common.php');
+include_once('exponent_bootstrap.php');
 // Initialize the language subsystem
 require_once(BASE.'subsystems/lang.php');
 exponent_lang_initialize();
