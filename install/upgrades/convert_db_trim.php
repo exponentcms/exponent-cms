@@ -26,7 +26,7 @@ class convert_db_trim extends upgradescript {
 		// check if the files are there and remove them
 		$file1 = BASE."/modules/administrationmodule/actions/trimdatabase.php";
 		$file2 = BASE."/modules/administrationmodule/actions/trimdatabase_final.php";
-		if (is_really_writable($file1) && is_really_writable($file2)) {
+		if (expUtil::reallyWritable($file1) && expUtil::reallyWritable($file2)) {
 			unlink ($file1);
 			unlink ($file2);
 			return "Complete";
