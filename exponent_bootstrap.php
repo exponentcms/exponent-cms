@@ -63,6 +63,6 @@ if (function_exists('date_default_timezone_set')) {
 include_once(dirname(__realpath(__FILE__)) . '/exponent_setup.php');
 
 // Initialize the PHP4 Compatibility Layer
-include(BASE.'compat.php');
+//include(BASE.'compat.php');
 
 ?>
