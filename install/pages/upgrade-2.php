@@ -156,16 +156,18 @@ foreach ($tables as $table => $statusnum) {
 	</td>
 </tr>
 <?php
-	$row = $row == "even" ? "odd" : "even";
-	$line++;
+		$row = $row == "even" ? "odd" : "even";
+		$line++;
 	}
 ?>
- </tbody>
-</table>
 <?php
 }
+?>
+</tbody>
+</table>
+<?php
 if ($line == 0) {
-	echo "<b>No Tables Were Changed!</b>";
+	echo "<p class=\"success\">No Tables Were Changed!</p>";
 }
 ?>
 

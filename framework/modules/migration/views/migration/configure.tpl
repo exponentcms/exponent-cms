@@ -27,12 +27,12 @@
 		old Exponent v1 site you want to migrate data from.
 	</p>
     {form action=saveconfig}
-		{control type=text name=server label="Server Name" value=$config.server}
+		{control type=text name=server label="Server Name" value=$config.server|default:'localhost'}
 		{control type="text" name="database" label="Database Name" value=$config.database}
 		{control type="text" name="username" label="Username" value=$config.username}
 		{control type="password" name="password" label="Password" value=$config.password}
 		{control type="text" name="port" label="Port" value=$config.port|default:3306}
-		{control type="text" name="prefix" label="Exponent Table Prefix" value=$config.prefix}
+		{control type="text" name="prefix" label="Exponent Table Prefix" value=$config.prefix|default:'exponent'}
         {control type=buttongroup submit="Save Config" cancel="Cancel"}
     {/form}
 	<a class="admin" href="{link module=migration action=manage_users}">Next Step -> Migrate Users & Groups</a>

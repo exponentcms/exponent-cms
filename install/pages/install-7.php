@@ -23,7 +23,7 @@ global $db;
 $user = $db->selectObject('user','is_admin=1');
 
 $user->username = $_POST['username'];
-if ($user->username == '') {
+if ($user->username == '') {  //FIXME Shouldn't get this because of check in install-6.php
 	$i18n = exponent_lang_loadFile('install/pages/save_admin.php');
 	echo $i18n['bad_username'];
 } else {

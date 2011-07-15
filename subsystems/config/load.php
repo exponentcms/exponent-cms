@@ -33,8 +33,12 @@ function exponent_unhtmlentities( $str )
 
 // include global constants
 @include_once(BASE."conf/config.php");
-// include constants defined in the current theme
-if (file_exists(BASE.'themes/'.DISPLAY_THEME_REAL.'/config.php')) @include_once(BASE.'themes/'.DISPLAY_THEME_REAL.'/config.php');
+
+// include constants defined in the current theme (if theme is defined)
+if (defined('DISPLAY_THEME_REAL')) {
+	if (file_exists(BASE.'themes/'.DISPLAY_THEME_REAL.'/config.php')) @include_once(BASE.'themes/'.DISPLAY_THEME_REAL.'/config.php');
+}
+
 // include default constants, fill in missing pieces
 if (is_readable(BASE."conf/extensions")) {
 	$dh = opendir(BASE."conf/extensions");

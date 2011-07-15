@@ -5,7 +5,8 @@ return array(
 	'username'=>'Username',
 	'username_desc'=>'The username of your administrator account.  You should change this to something other than the default of "admin".',
 	'username_default'=>'admin',
-	
+	'bad_username_message'=>'You must specify a username.',
+
 	'password'=>'Password',
 	'password_desc'=>'The password of your administrator account.',
 	'password2'=>'Password Again',
