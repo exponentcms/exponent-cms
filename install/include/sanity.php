@@ -66,10 +66,10 @@ function sanity_checkFile($file,$as_file,$flags) {
 		}
 	}
 	if ($flags == SANITY_READWRITE) {
-		if (!expUtil::reallyWritable($file)) {
+		if (!expUtil::isReallyWritable($file)) {
 			@chmod($file,0777);
 		}
-		if (!expUtil::reallyWritable($file)) {
+		if (!expUtil::isReallyWritable($file)) {
 			umask($__oldumask);
 			return SANITY_NOT_RW;
 		} else if ($not_r) {
@@ -207,7 +207,7 @@ function _sanity_checkOpenBaseDir() {
 function _sanity_checkTemp($dir) {
 	global $global_i18n;
 	$file = tempnam($dir,'temp');
-	if (is_readable($file) && expUtil::reallyWritable($file)) {
+	if (is_readable($file) && expUtil::isReallyWritable($file)) {
 		unlink($file);
 		return array(SANITY_FINE,$global_i18n['passed']);
 	} else {

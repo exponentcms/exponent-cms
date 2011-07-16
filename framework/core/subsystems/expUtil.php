@@ -66,10 +66,10 @@ class expUtil {
         return ($ibig <= $ismall);
 	}
 
-	# reallyWritable is an alternate implementation of is_writable that should work on
+	# isReallyWritable is an alternate implementation of is_writable that should work on
 	# a windows platform as well as Linux.
-	static function reallyWritable($file) {
-		// Check the operating system.  reallyWritable needs to be defined
+	static function isReallyWritable($file) {
+		// Check the operating system.  isReallyWritable needs to be defined
 		// specifically for Windows, but the overhead is pointless otherwise.
 		if (strtolower(substr(PHP_OS,0,3)) == 'win') {
 			// If we are not on a linux platform, we can assume nothing,
@@ -122,7 +122,7 @@ class expUtil {
 			// special -- Linux has a sane permissions system that PHP
 			// understands.
 
-			// At this point, reallyWritable simply becomes a wrapper
+			// At this point, isReallyWritable simply becomes a wrapper
 			// for the standard is_writable call.
 			// see http://php.net/is_writable
 			return is_writable($file);

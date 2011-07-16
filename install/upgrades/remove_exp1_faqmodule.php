@@ -38,7 +38,7 @@ class remove_exp1_faqmodule extends upgradescript {
         $removed = 0;
         $errors = 0;
 		foreach ($files as $file) {
-		    if (expUtil::reallyWritable($file)) {
+		    if (expUtil::isReallyWritable($file)) {
 		        unlink ($file);
 		        $removed += 1;
 		    } else {

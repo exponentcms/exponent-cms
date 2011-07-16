@@ -212,8 +212,8 @@ function exponent_config_change($var, $val) {
 function exponent_config_writeFile($str, $configname="") {
     // if ($configname != "") {
     //                 // Wishing to save
-    //                 if ((file_exists(BASE."conf/profiles/$configname.php") && expUtil::reallyWritable(BASE."conf/profiles/$configname.php")) ||
-    //                         expUtil::reallyWritable($BASE."conf/profiles")) {
+    //                 if ((file_exists(BASE."conf/profiles/$configname.php") && expUtil::isReallyWritable(BASE."conf/profiles/$configname.php")) ||
+    //                         expUtil::isReallyWritable($BASE."conf/profiles")) {
     // 
     //                         $fh = fopen(BASE."conf/profiles/$configname.php","w");
     //                         fwrite($fh,$str);
@@ -224,7 +224,7 @@ function exponent_config_writeFile($str, $configname="") {
     //         }
 
         //if (isset($values['activate']) || $configname == "") {
-                if ((file_exists(BASE."conf/config.php") && expUtil::reallyWritable(BASE."conf/config.php")) || expUtil::reallyWritable(BASE."conf")) {
+                if ((file_exists(BASE."conf/config.php") && expUtil::isReallyWritable(BASE."conf/config.php")) || expUtil::isReallyWritable(BASE."conf")) {
                         $fh = fopen(BASE."conf/config.php","w");
                         fwrite($fh,$str);
                         /*fwrite($fh,"\n<?php\ndefine(\"CURRENTCONFIGNAME\",\"$configname\");\n?>\n");*/
@@ -306,8 +306,8 @@ function exponent_config_saveConfiguration($values,$site_root=null) {
 	
     // if ($configname != "") {
     //  // Wishing to save
-    //  if (    (file_exists($site_root."conf/profiles/$configname.php") && expUtil::reallyWritable($site_root."conf/profiles/$configname.php")) ||
-    //      expUtil::reallyWritable($site_root."conf/profiles")) {
+    //  if (    (file_exists($site_root."conf/profiles/$configname.php") && expUtil::isReallyWritable($site_root."conf/profiles/$configname.php")) ||
+    //      expUtil::isReallyWritable($site_root."conf/profiles")) {
     //      
     //      $fh = fopen($site_root."conf/profiles/$configname.php","w");
     //      fwrite($fh,$str);
@@ -320,8 +320,8 @@ function exponent_config_saveConfiguration($values,$site_root=null) {
 	if (isset($values['activate']) || $configname == "") {
 		
 		if (
-			(file_exists($site_root."conf/config.php") && expUtil::reallyWritable($site_root."conf/config.php")) ||
-			expUtil::reallyWritable($site_root."conf")) {
+			(file_exists($site_root."conf/config.php") && expUtil::isReallyWritable($site_root."conf/config.php")) ||
+			expUtil::isReallyWritable($site_root."conf")) {
 			
 			
 			$fh = fopen($site_root."conf/config.php","w");
@@ -419,7 +419,7 @@ function exponent_config_deleteProfile($profile) {
  * @node Subsystems:Config
  */
 function exponent_config_activateProfile($profile) {
-	if (is_readable(BASE."conf/profiles/$profile.php") && expUtil::reallyWritable(BASE."conf/config.php")) {
+	if (is_readable(BASE."conf/profiles/$profile.php") && expUtil::isReallyWritable(BASE."conf/config.php")) {
 		copy(BASE."conf/profiles/$profile.php",BASE."conf/config.php");
 		$fh = fopen(BASE."conf/config.php","a");
 		fwrite($fh,"\n<?php\ndefine(\"CURRENTCONFIGNAME\",\"$profile\");\n?>");
