@@ -22,6 +22,10 @@
 // magic quotes were removed in php6
 if(phpversion() < 6) { 
 	if (get_magic_quotes_gpc()) {
+		/**
+		 * @param $value
+		 * @return mixed
+		 */
 		function stripslashes_deep($value) {
 			return is_array($value) ? array_map('stripslashes_deep', $value) : stripslashes($value);
 		}
@@ -35,6 +39,10 @@ if(phpversion() < 6) {
 // for scripts that want to bootstrap minimally, we will need _realpath()
 // if it isn't already defined.
 if (!function_exists('__realpath')) {
+	/**
+	 * @param $path
+	 * @return string
+	 */
 	function __realpath($path) {
 		$path = str_replace('\\','/',realpath($path));
 		if ($path{1} == ':') {

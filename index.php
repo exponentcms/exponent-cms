@@ -20,6 +20,11 @@
 
 define('SCRIPT_EXP_RELATIVE','');
 define('SCRIPT_FILENAME','index.php');
+/**
+ * @param $buffer
+ * @param $mode
+ * @return string
+ */
 function epb($buffer, $mode) {
     //@ob_gzhandler($buffer, $mode);
     @ob_gzhandler($buffer);

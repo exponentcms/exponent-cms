@@ -208,7 +208,7 @@ if (!defined('ICON_RELATIVE')) {
 }
 
 if (!defined('MIMEICON_RELATIVE')) {
-	//DEPRECATED: old directory, inconsitent naming
+	//DEPRECATED: old directory, inconsistent naming
     // if (is_readable(THEME_ABSOLUTE . 'mimetypes/')) {
 		/* exdoc
 		 * The relative web path to the current MIME icon set.	If a mimetypes/ directory
