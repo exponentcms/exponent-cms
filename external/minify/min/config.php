@@ -5,7 +5,8 @@
  */
 
 //Initialize exponent Framework
-include_once('../../../exponent_common.php');
+//include_once('../../../exponent_common.php');
+include_once('../../../exponent_bootstrap.php');
 include_once(BASE.'conf/config.php');
 
 /**

@@ -17,26 +17,160 @@
 #
 ##################################################
 
-if (!defined('DISPLAY_THEME')) {
-	/* exdoc
-	 * The directory and class name of the current active theme.  This may be different
-	 * than the configure theme (DISPLAY_THEME_REAL) due to previewing.
+if (!defined('BASE')) {
+	/*
+	 * BASE Constant
+	 *
+	 * The BASE constant is the absolute path on the server filesystem, from the root (/ or C:\)
+	 * to the Exponent directory.
 	 */
-	define('DISPLAY_THEME',DISPLAY_THEME_REAL);
+	define('BASE',__realpath(dirname(__FILE__)).'/');
 }
 
-if (!defined('THEME_ABSOLUTE')) {
-	/* exdoc
-	 * The absolute path to the current active theme's files.  This is similar to the BASE constant
-	 */
-	define('THEME_ABSOLUTE',BASE.'themes/'.DISPLAY_THEME.'/'); // This is the recommended way
+/*
+ * EXPONENT Constant
+ *
+ * The EXPONENT constant defines the current Major.Minor version of Exponent/Exponent (i.e. 0.95).
+ * It's definition also signals to other parts of the system that they are operating within the confines
+ * of the Exponent Framework.  (Module actions check this -- if it is not defined, they must abort).
+ */
+//define('EXPONENT', include(BASE.'exponent_version.php'));
+
+if (!defined('PATH_RELATIVE')) {
+	if (isset($_SERVER['DOCUMENT_ROOT'])) {
+		/*
+		 * PATH_RELATIVE Constant
+		 *
+		 * The PATH_RELATIVE constant is the web path to the Exponent directory,
+		 * from the web root.  It is related to the BASE constant, but different.
+		 */
+		define('PATH_RELATIVE',str_replace(__realpath($_SERVER['DOCUMENT_ROOT']),'',BASE));
+	} else {
+		// FIXME: PATH_RELATIVE definition will break in certain parts when the server does not offer the Document_root.
+		// FIXME: Notable, it breaks in the installer.
+		// This triggers on IIS, which has no DOCUMENT_ROOT.
+		define('PATH_RELATIVE',__realpath(dirname($_SERVER['SCRIPT_NAME']) . '/'));
+	}
 }
 
-if (!defined('THEME_RELATIVE')) {
-	/* exdoc
-	 * The relative web path to the current active theme.  This is similar to the PATH_RELATIVE constant.
+if (!defined('HOSTNAME')) {
+	if (isset($_SERVER['HTTP_HOST'])) {
+		define('HOSTNAME',$_SERVER['HTTP_HOST']);
+	} else if (isset($_SERVER['SERVER_NAME'])) {
+		define('HOSTNAME',$_SERVER['SERVER_NAME']);
+	}
+}
+
+if (!defined('URL_BASE')) {
+	/*
+	 * URL_BASE Constant
+	 *
+	 * The URL_BASE constant is the base URL of the domain hosting the Exponent site.
+	 * It does not include the PATH_RELATIVE information.  The automatic
+	 * detection code can figure out if the server is running in SSL mode or not
 	 */
-	define('THEME_RELATIVE',PATH_RELATIVE.'themes/'.DISPLAY_THEME.'/');
+	define('URL_BASE',((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ? 'https://' : 'http://') . HOSTNAME);
+}
+
+if (!defined('URL_BASE_SECURE')) {
+        /*
+         * URL_BASE_SECURE Constant
+         *
+         * The URL_BASE constant is the base URL of the domain hosting the Exponent site.
+         * It does not include the PATH_RELATIVE information.  The automatic
+         * detection code can figure out if the server is running in SSL mode or not
+         */
+        define('URL_BASE_SECURE','https://'.HOSTNAME);
+}
+
+if (!defined('URL_FULL')) {
+	/*
+	 * URL_FULL Constant
+	 *
+	 * The URL_FULL constant is the full URL path to the Exponent directory.  The automatic
+	 * detection code can figure out if the server is running in SSL mode or not.
+	 */
+	define('URL_FULL', URL_BASE.PATH_RELATIVE);
+}
+
+if (!defined('UPLOAD_DIRECTORY')) {
+    /*
+	 * UPLOAD_DIRECTORY Constant
+	 *
+	 * This is the directory where file uploads will go
+	 */
+	define('UPLOAD_DIRECTORY', BASE.'files/');
+}
+
+if (!defined('UPLOAD_DIRECTORY_RELATIVE')) {
+    /*
+	 * UPLOAD_DIRECTORY Constant
+	 *
+	 * This is the directory where file uploads will go
+	 */
+	define('UPLOAD_DIRECTORY_RELATIVE', 'files/');
+}
+
+if (defined('SCRIPT_EXP_RELATIVE')) {
+	define('SCRIPT_RELATIVE', PATH_RELATIVE.SCRIPT_EXP_RELATIVE);
+	define('SCRIPT_ABSOLUTE', BASE.SCRIPT_EXP_RELATIVE);
+} else {
+	ob_start();
+	define('SCRIPT_RELATIVE', PATH_RELATIVE);
+	define('SCRIPT_ABSOLUTE', BASE);
+}
+
+if (!defined('SCRIPT_FILENAME')) {
+	define('SCRIPT_FILENAME', 'index.php');
+}
+
+//include_once(BASE . '/subsystems/config/load.php');
+
+// Determines platform (OS), browser and version of the user
+// Based on a phpBuilder article:
+//   see http://www.phpbuilder.net/columns/tim20000821.php
+if (!defined('EXPONENT_USER_OS')) {
+    // 1. Platform
+    if (strstr($_SERVER['HTTP_USER_AGENT'], 'Win')) {
+        define('EXPONENT_USER_OS', 'Win');
+    } else if (strstr($_SERVER['HTTP_USER_AGENT'], 'Mac')) {
+        define('EXPONENT_USER_OS', 'Mac');
+    } else if (strstr($_SERVER['HTTP_USER_AGENT'], 'Linux')) {
+        define('EXPONENT_USER_OS', 'Linux');
+    } else if (strstr($_SERVER['HTTP_USER_AGENT'], 'Unix')) {
+        define('EXPONENT_USER_OS', 'Unix');
+    } else if (strstr($_SERVER['HTTP_USER_AGENT'], 'OS/2')) {
+        define('EXPONENT_USER_OS', 'OS/2');
+    } else {
+        define('EXPONENT_USER_OS', 'Other');
+    }
+
+    // 2. browser and version
+    // (must check everything else before Mozilla)
+	$log_version = array();
+    if (preg_match('@Opera(/| )([0-9].[0-9]{1,2})@', $_SERVER['HTTP_USER_AGENT'], $log_version)) {
+        define('EXPONENT_USER_BROWSER_VERSION', $log_version[2]);
+        define('EXPONENT_USER_BROWSER', 'OPERA');
+    } else if (preg_match('@MSIE ([0-9].[0-9]{1,2})@', $_SERVER['HTTP_USER_AGENT'], $log_version)) {
+        define('EXPONENT_USER_BROWSER_VERSION', $log_version[1]);
+        define('EXPONENT_USER_BROWSER', 'IE');
+    } else if (preg_match('@OmniWeb/([0-9].[0-9]{1,2})@', $_SERVER['HTTP_USER_AGENT'], $log_version)) {
+        define('EXPONENT_USER_BROWSER_VERSION', $log_version[1]);
+        define('EXPONENT_USER_BROWSER', 'OMNIWEB');
+    } else if (preg_match('@(Konqueror/)(.*)(;)@', $_SERVER['HTTP_USER_AGENT'], $log_version)) {
+        define('EXPONENT_USER_BROWSER_VERSION', $log_version[2]);
+        define('EXPONENT_USER_BROWSER', 'KONQUEROR');
+    } else if (preg_match('@Mozilla/([0-9].[0-9]{1,2})@', $_SERVER['HTTP_USER_AGENT'], $log_version)
+               && preg_match('@Safari/([0-9]*)@', $_SERVER['HTTP_USER_AGENT'], $log_version2)) {
+        define('EXPONENT_USER_BROWSER_VERSION', $log_version[1] . '.' . $log_version2[1]);
+        define('EXPONENT_USER_BROWSER', 'SAFARI');
+    } else if (preg_match('@Mozilla/([0-9].[0-9]{1,2})@', $_SERVER['HTTP_USER_AGENT'], $log_version)) {
+        define('EXPONENT_USER_BROWSER_VERSION', $log_version[1]);
+        define('EXPONENT_USER_BROWSER', 'MOZILLA');
+    } else {
+        define('EXPONENT_USER_BROWSER_VERSION', 0);
+        define('EXPONENT_USER_BROWSER', 'OTHER');
+    }
 }
 
 if (!defined('JS_FULL')) {
@@ -51,9 +185,9 @@ if (!defined('JS_FULL')) {
 
 // iconset base
 if (!defined('ICON_RELATIVE')) {
-	
+
 	define('ICON_RELATIVE', PATH_RELATIVE . 'framework/core/assets/images/');
-	
+
 	//DEPRECATED: old directory, inconsistent naming
 	/*if (is_readable(THEME_ABSOLUTE . 'icons/')) {
 		/* exdoc
@@ -61,10 +195,10 @@ if (!defined('ICON_RELATIVE')) {
 		 * underneath the theme's directory, that is used.	Otherwise, the system falls back to
 		 * the iconset directory in the root of the Exponent directory.
 		define('ICON_RELATIVE', THEME_RELATIVE . 'icons/');
-	} else 
+	} else
 		Commented out compat layer for < 0.96.6 version.  All icons should be in common/skin  ~phillip Ball
-	
-	
+
+
 	if(is_readable(THEME_ABSOLUTE . "images/icons/")){
 		define('ICON_RELATIVE',THEME_RELATIVE . 'images/icons/');
 	} else {
@@ -94,7 +228,7 @@ if (!defined('YUI3_PATH')) {
     /*
 	 *  YUI 3 Version Constant Constant
 	 *
-	 * Changing the version here lets Exponent adjust where 
+	 * Changing the version here lets Exponent adjust where
 	 */
 	define('YUI3_VERSION', '3.3.0');
 	define('YUI3_PATH', PATH_RELATIVE.'external/lissa/'.YUI3_VERSION.'/build/');
