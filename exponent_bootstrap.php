@@ -53,25 +53,29 @@ if (!function_exists('__realpath')) {
 	}
 }
 
-// Process user-defined constants in overrides.php
+// Process user-defined constants first in overrides.php (if it exists)
 include_once('overrides.php');
 
-// defines paths and other environment constants not overridden in overrides.php
-include_once(dirname(__realpath(__FILE__)) . '/exponent_constants.php');
+// load constants for paths and other environment  not overridden in overrides.php
+require_once(dirname(__realpath(__FILE__)) . '/exponent_constants.php');
+
+// load the code version
+require_once(BASE.'exponent_version.php');
 
 /*
  * EXPONENT Constant
  *
- * The EXPONENT Constant defines the current Major.Minor version of Exponent/Exponent (i.e. 0.95).
- * It's definition also signals to other parts of the system that they are operating within the confines
+ * The EXPONENT Constant signals to other parts of the system that they are operating within the confines
  * of the Exponent Framework.  (Module actions check this -- if it is not defined, they must abort).
  */
-define('EXPONENT', include(BASE.'exponent_version.php'));
+define('EXPONENT', '1');
 
-// load the defines from the global config, theme config, and then default config settings
-include_once(BASE . '/subsystems/config/load.php');
+// load the constants from the global config, theme config, and then default config settings
+require_once(BASE . '/subsystems/config/load.php');
 
-// define remaining constants throughout the system based on configuration constants
+// define remaining constants throughout the system based on loaded configuration constants
+
+//require_once(BASE.'exponent_constants2.php'); // moved to below
 
 // Set the default timezone.
 if (function_exists('date_default_timezone_set')) {
@@ -100,12 +104,10 @@ if (!defined('THEME_RELATIVE')) {
 	define('THEME_RELATIVE',PATH_RELATIVE.'themes/'.DISPLAY_THEME.'/');
 }
 
-//require_once(BASE.'exponent_constants2.php');
-
 // Process PHP-wrapper settings (ini_sets and setting detectors)
-include_once(BASE . 'exponent_php_setup.php');
+require_once(BASE . 'exponent_php_setup.php');
 
 // Initialize the PHP4 Compatibility Layer
-//include(BASE.'compat.php');
+//include(BASE.'compat.php');  // deprecated in Exp 2.0
 
 ?>

@@ -36,6 +36,7 @@ if (DEVELOPMENT) {
 	ini_set('ignore_repeated_errors',1);
 }
 
+//FIXME Deprecated and delete here
 //if (DEVELOPMENT >= 2) {
 //	function debug($str) { echo $str.'<br /><br />'; }
 //	function dump_debug($var) { var_dump($var);echo '<br /><br />'; }
@@ -44,6 +45,7 @@ if (DEVELOPMENT) {
 //	function dump_debug($var) { }
 //}
 
+//FIXME remainder moved to exponent_constants.php and delete here
 // The following code was lifted from phpMyAdmin, but then again, this is Open Source, right?
 
 //// Determines platform (OS), browser and version of the user

@@ -124,7 +124,7 @@ if (!defined('SCRIPT_FILENAME')) {
 	define('SCRIPT_FILENAME', 'index.php');
 }
 
-//include_once(BASE . '/subsystems/config/load.php');
+//include_once(BASE . '/subsystems/config/load.php');  // moved to exponent_bootstrap.php
 
 // Determines platform (OS), browser and version of the user
 // Based on a phpBuilder article:
@@ -208,6 +208,9 @@ if (!defined('ICON_RELATIVE')) {
 }
 
 if (!defined('MIMEICON_RELATIVE')) {
+
+	define('MIMEICON_RELATIVE', PATH_RELATIVE . 'framework/core/assets/images/mimetypes/');
+
 	//DEPRECATED: old directory, inconsistent naming
     // if (is_readable(THEME_ABSOLUTE . 'mimetypes/')) {
 		/* exdoc
@@ -221,14 +224,13 @@ if (!defined('MIMEICON_RELATIVE')) {
     // } else {
     //  define('MIMEICON_RELATIVE', PATH_RELATIVE . 'themes/common/images/icons/mimetypes/');
     // }
-    define('MIMEICON_RELATIVE', PATH_RELATIVE . 'framework/core/assets/images/mimetypes/');
 }
 
 if (!defined('YUI3_PATH')) {
     /*
-	 *  YUI 3 Version Constant Constant
+	 *  YUI 3 Version Constant
 	 *
-	 * Changing the version here lets Exponent adjust where
+	 * Changing the version here lets Exponent adjust where to look
 	 */
 	define('YUI3_VERSION', '3.3.0');
 	define('YUI3_PATH', PATH_RELATIVE.'external/lissa/'.YUI3_VERSION.'/build/');
@@ -236,6 +238,11 @@ if (!defined('YUI3_PATH')) {
 }
 
 if (!defined('YUI2_PATH')) {
+    /*
+	 *  YUI 2 Version Constant
+	 *
+	 * Changing the version here lets Exponent adjust where to look
+	 */
 	define('YUI2_VERSION', '2.8.0r4');
 	define('YUI2_PATH', PATH_RELATIVE.'external/lissa/'.YUI2_VERSION.'/build/');
 	define('YUI2_URL', URL_FULL.'external/lissa/'.YUI2_VERSION.'/build/');
