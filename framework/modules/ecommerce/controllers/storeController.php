@@ -187,6 +187,7 @@ class storeController extends expController {
         $rerankSQL = "SELECT DISTINCT p.* FROM ".DB_TABLE_PREFIX."_product p JOIN ".DB_TABLE_PREFIX."_product_storeCategories sc ON  p.id = sc.product_id WHERE sc.storecategories_id=".$this->category->id." ORDER BY rank ASC";
         //eDebug($router);
         $defaultSort = $router->current_url;
+		
         assign_to_template(array('page'=>$page, 'defaultSort'=>$defaultSort, 'ancestors'=>$ancestors, 'categories'=>$categories, 'current_category'=>$this->category,'rerankSQL'=>$rerankSQL));
     }
     
@@ -207,8 +208,13 @@ class storeController extends expController {
         $cfg->src = "@globalstoresettings";
         $cfg->int = "";
         $config = new expConfig($cfg);
+        $this->config = (empty($catConfig->config) || @$catConfig->config['use_global']==1) ? $config->config : $catConfig->config;    
 
-        $this->config = (empty($catConfig->config) || @$catConfig->config['use_global']==1) ? $config->config : $catConfig->config;        
+		//This is needed since in the first installation of ecom the value for this will be empty and we are doing % operation for this value
+		//So we need to ensure if the value is = 0, then we can as well make it to 1
+		if(empty($this->config['images_per_row'])) {
+			$this->config['images_per_row'] = 3;
+		}
     }
     
     function upcoming_events() {
@@ -513,8 +519,8 @@ class storeController extends expController {
         
         if (!empty($tpl)) $template = new controllerTemplate($this, $tpl);
         $this->grabConfig();     
-        //eDebug($product);
-        assign_to_template(array('config'=>$this->config, 'product'=>$product, 'last_category'=>$order->lastcat));
+		
+		assign_to_template(array('config'=>$this->config, 'product'=>$product, 'last_category'=>$order->lastcat));
     }
     
     function showByTitle() {
@@ -556,7 +562,8 @@ class storeController extends expController {
         //eDebug($product);
         if (!empty($tpl)) $template = new controllerTemplate($this, $tpl);
         $this->grabConfig();     
-        assign_to_template(array('config'=>$this->config, 'product'=>$product_type, 'last_category'=>$order->lastcat));
+		
+		assign_to_template(array('config'=>$this->config, 'product'=>$product_type, 'last_category'=>$order->lastcat));
     }
 
     function showByModel() {
