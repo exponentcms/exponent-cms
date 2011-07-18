@@ -86,7 +86,6 @@ function exponent_config_parseFile($file) {
 		if ($line != "" && substr($line,0,2) != "<?" && substr($line,-2,2) != "?>") {
 			$line = str_replace(array("<?php","?>","<?",),"",$line);
 						
-//			$opts = split("[\"'],",$line);  // deprecated in php 5.3+
 			$opts = preg_split("/[\"'],/",$line);
 			
 			if (count($opts) == 2) {

@@ -169,7 +169,6 @@ function exponent_permissions_initialize() {
  */
 function exponent_permissions_getSourceUID($src) {
 	if (substr($src,0,5) == "@uid_") {
-//		$t = split("_",$src);
 		$t = explode("_",$src);
 		return $t[count($t)-1]+0;
 	} else return 0;
