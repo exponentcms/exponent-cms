@@ -29,23 +29,25 @@ $min_allowDebugFlag = false;
  *
  * @todo cache system does not have error logging yet.
  */
-$min_errorLogger = false;
+$min_errorLogger = MINIFY_ERROR_LOGGER;
 
 
 /**
  * Allow use of the Minify URI Builder app. If you no longer need 
  * this, set to false.
  **/
-$min_enableBuilder = false;
+$min_enableBuilder = true;
 
 
 /**
  * For best performance, specify your temp directory here. Otherwise Minify
  * will have to load extra code to guess. Some examples below:
  */
-//$min_cachePath = 'c:\\WINDOWS\\Temp';
+// $min_cachePath = 'c:\\WINDOWS\\Temp';
+//$min_cachePath = '/tmp';
 $min_cachePath = BASE.'/tmp/minify';
 //$min_cachePath = preg_replace('/^\\d+;/', '', session_save_path());
+
 
 /**
  * Leave an empty string to use PHP's $_SERVER['DOCUMENT_ROOT'].
@@ -89,11 +91,10 @@ $min_serveOptions['bubbleCssImports'] = false;
  * Note: Despite this setting, if you include a number at the end of the
  * querystring, maxAge will be set to one year. E.g. /min/f=hello.css&123456
  */
- 
 $ma = MINIFY_MAXAGE;
 $ma = empty($ma)?0:$ma;
 $min_serveOptions['maxAge'] = $ma;
-//$min_serveOptions['maxAge'] = 0;
+
 
 /**
  * If you'd like to restrict the "f" option to files within/below
@@ -114,7 +115,7 @@ $min_serveOptions['minApp']['groupsOnly'] = false;
 /**
  * Maximum # of files that can be specified in the "f" GET parameter
  */
-$min_serveOptions['minApp']['maxFiles'] = 30;
+$min_serveOptions['minApp']['maxFiles'] = MINIFY_MAX_FILES;
 
 
 /**
