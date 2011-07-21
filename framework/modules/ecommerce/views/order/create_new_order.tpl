@@ -20,7 +20,7 @@
     
 <div>
     <h1>Create A New Order</h1>
-    <div id="invoice">
+    <div id="create_new_order">
     {form id=order_item_form name=order_item_form action=save_new_order}              
         Select the order type, order status, and customer.{br}{br}            
         {control type="dropdown" name="order_type_id" label="Order Type:" frommodel='order_type'}
@@ -34,7 +34,7 @@
                         {literal}
                         
                         // the text box for the title
-                        var tagInput = Y.get('#related_items');                            
+                        var tagInput = Y.get('#search_internal');                            
                         var theAddressesId = Y.get('#addresses_id');                                                   
                         var existingRadio = Y.get('#customer_type2');
                         
@@ -71,7 +71,7 @@
 
                         {/literal}
                         {/capture}
-                        {control type="autocomplete" controller="order" action="search" name="related_items" value="Search customer name or email" schema="id,firstname,middlename,lastname,organization,email" searchmodel="addresses" searchoncol="firstname,lastnamename,organization,email" jsinject=$callbacks}
+                        {control type="autocomplete" controller="order" action="search" name="search_internal" value="Search customer name or email" schema="id,firstname,middlename,lastname,organization,email" searchmodel="addresses" searchoncol="firstname,lastnamename,organization,email" jsinject=$callbacks}
                         
       {capture assign="callbacks2"}
                         {literal}

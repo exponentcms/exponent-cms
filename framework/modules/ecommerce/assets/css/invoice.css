@@ -4,7 +4,7 @@
 
 #buttons {
     margin-bottom:20px;
-    float:right;
+    text-align:right;
 }
 
 #invoice {
@@ -103,10 +103,24 @@
     height:30px;
 }
 
-#search_stringControl #related_items {
+#search_stringControl #add_new_item {
     position:absolute;
     top:0;
-    left:0;
-    width:98%;
+    right:0;
+    width:515px;      
 }
 
+#bd #search_stringControl .yui-ac-content { 
+  max-height:400px;
+  width:500px;
+  padding-right: 15px;
+  overflow-y:auto;
+  overflow-x:hidden;
+}
+
+#invoice #create_new_order #search_stringControl #search_internal{
+    width:515px;      
+}
+#invoice #create_new_order #search_stringControl #search_external{
+    width:515px;      
+}

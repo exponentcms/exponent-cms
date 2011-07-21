@@ -70,7 +70,7 @@
                     {permissions}
                         {if $permissions.manage == 1}
                             {printer_friendly_link class="awesome `$smarty.const.BTN_SIZE` `$smarty.const.BTN_COLOR`" text="Print Packing Slip" view="show_packing"}
-                            <a class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" href="{link controller='order' action='createReferenceOrder' id=$order->id}"><strong><em>Spawn Reference Order</em></strong></a>
+                            <a class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" href="{link controller='order' action='createReferenceOrder' id=$order->id}">Spawn Reference Order</a>
                         {/if}
                     {/permissions} 
                 </div>               

@@ -222,7 +222,8 @@ function smarty_function_control($params,&$smarty) {
                     $control->items[$state->id] = isset($params['abbv']) ? $state->code : $state->name;
                     //}
                 }
-                if(!count($states)) $control->items[-2] = '-- Specify State Below --';
+                //if(!count($states)) $control->items[-2] = '-- Specify State Below --';
+                if (isset($params['add_other'])) $control->items[-2] = '-- Specify State Below --';
                 else $control->include_blank = isset($params['includeblank']) ? $params['includeblank'] : false;
 
                 // sanitize the default value. can accept as id, code abbrv or full name,
@@ -246,7 +247,10 @@ function smarty_function_control($params,&$smarty) {
                     //$control->items[-1] = 'ALL United States';
                 }
                 
-                foreach($db->selectObjects('geo_country', 'active=1', 'name ASC') as $country) {
+                if($params['show_all']) $countries = $db->selectObjects('geo_country', null, 'name ASC');
+                else $countries = $db->selectObjects('geo_country', 'active=1', 'name ASC');
+                
+                foreach($countries as $country) {
                     //if (!in_array($country->id, $not_countries)) {
                     $control->items[$country->id] = isset($params['abbv']) ? $country->iso_code_3letter : $country->name;
                     //}
