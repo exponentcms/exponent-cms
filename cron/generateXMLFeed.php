@@ -201,6 +201,10 @@
 				$columns.='<g:product_type>';
 				$columns.= parseAndTrim($prod->google_product_type);
 				$columns.='</g:product_type>'.chr(13).chr(10);
+			} elseif(!empty($google_types)) {
+				$columns.='<g:product_type>';
+				$columns.= parseAndTrim($google_types);
+				$columns.='</g:product_type>'.chr(13).chr(10);
 			}
             //$breadcrumb = $prod->storeCategory[0]->getEcomSubcategories();
             //eDebug($breadcrumb,true);
