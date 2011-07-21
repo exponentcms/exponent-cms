@@ -69,6 +69,7 @@
             <li><a href="#meta"><em>Meta Info</em></a></li>
             <li><a href="#notes"><em>Notes</em></a></li>
             <li><a href="#xtrafields"><em>Extra Fields</em></a></li>      
+			<li><a href="#skus"><em>SKUS/Model</em></a></li>
             <li><a href="#misc"><em>Misc</em></a></li>
             </ul>            
             <div class="yui-content">
@@ -509,6 +510,18 @@
                         </tr>
                     </table>
                 </div>
+				
+				<div id="skus">
+                    <h2>Product SKUS / Model</h2>
+					<ul>
+					{foreach from=$record->model_alias item=item}
+						<li>
+							{$item->model}{br}
+						</li>
+					{/foreach}
+					</ul>
+                </div>
+				
                 <div id="misc">
                     <h2>Miscellaneous Information</h2>
                     {control type="text" name="warehouse_location" label="Warehouse Location" value=$record->warehouse_location}

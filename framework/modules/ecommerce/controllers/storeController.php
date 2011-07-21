@@ -53,6 +53,11 @@ class storeController extends expController {
     'cleanNonUnicodeProducts'=>'Clean all non-unicode charset products',
     '_convertUTF'=>'Convert to UTF products',
     '_validUTF'=>'isValid UTF products',
+	'_onlyreadables'=>'Process only readables format',
+	'uploadModelAliases'=>'Upload model aliases',
+	'processModelAliases'=>'Process model aliases',
+	'saveModelAliases'=>'Save model aliases',
+	'deleteProcessedModelAliases'=>'Delete model aliases'
     );
      
     function name() { return $this->displayname(); } //for backwards compat with old modules
@@ -2004,6 +2009,204 @@ class storeController extends expController {
 			return false;
 		}		
 		return true;
+	}
+	
+	function uploadModelAliases() {
+		 global $db;
+         set_time_limit(0);
+        
+		if(isset($_FILES['modelaliases']['tmp_name'])) {
+			if(!empty($_FILES['modelaliases']['error']))
+			{
+				flash('error','There was an error uploading your file.  Please try again.');
+				redirect_to(array('controller'=>'store','action'=>'uploadModelAliases'));        
+			}
+			
+			$file->path = $_FILES['modelaliases']['tmp_name'];
+			echo "Validating file...<br/>";
+			
+			$checkhandle = fopen($file->path, "r");
+			$checkdata = fgetcsv($checkhandle, 10000, ",");
+			$fieldCount = count($checkdata);      
+			$count = 1;
+			
+			while (($checkdata = fgetcsv($checkhandle, 10000, ",")) !== FALSE) 
+			{
+				$count++;
+				if (count($checkdata) != $fieldCount) 
+				{                   
+					echo "Line ". $count ." of your CSV import file does not contain the correct number of columns.<br/>";
+					echo "Found " . $fieldCount . " header fields, but only " . count($checkdata) ." field in row " . $count . " Please check your file and try again.";
+					exit();
+				}
+			}     
+					
+			fclose($checkhandle);
+			
+			echo "<br/>CSV File passed validation...<br/><br/>Importing....<br/><br/>";
+			$handle = fopen($file->path, "r");
+			$data = fgetcsv($handle, 10000, ",");
+			
+			//clear the db
+			$db->delete('model_aliases_tmp');
+			while (($data = fgetcsv($handle, 10000, ",")) !== FALSE) {
+				
+				$tmp->field1 = $this->_onlyreadables($data[0]);
+				$tmp->field2 = $this->_onlyreadables($data[1]);
+				$db->insertObject($tmp,'model_aliases_tmp');
+				// eDebug($tmp);
+			}
+			redirect_to(array('controller'=>'store','action'=>'processModelAliases'));
+			echo "Done!";
+		}        
+		
+		//check if there are interrupted model alias in the db
+		$res = $db->selectObjectsBySql("SELECT * FROM exponent_model_aliases_tmp WHERE is_processed = 0");
+		if(!empty($res)) {
+			assign_to_template(array('continue' => '1'));
+		}
+	}
+	
+	function processModelAliases($index = 0, $error = '') {
+		global $db;
+		
+		//Going next and delete the previous one
+		if(isset($this->params['index'])) {
+			$index = $this->params['index'];
+			
+			//if go to the next processs
+			if(isset($this->params['next'])) {
+				$res = $db->selectObjectBySql("SELECT * FROM exponent_model_aliases_tmp LIMIT " . ($index - 1) . ", 1");
+				//Update the record in the tmp table to mark it as process
+				$res->is_processed = 1;
+				$db->updateObject($res, 'model_aliases_tmp');
+			}
+		}
+		
+		$product_id = '';
+		$autocomplete = '';
+		
+		do {
+			$count = $db->countObjects('model_aliases_tmp', 'is_processed=0'); 
+			$res = $db->selectObjectBySql("SELECT * FROM exponent_model_aliases_tmp LIMIT {$index}, 1");
+			//Validation
+			//Check the field one
+			if(!empty($res)) {
+				$product_field1 = $db->selectObject("product", "model='{$res->field1}'");
+				$product_field2 = $db->selectObject("product", "model='{$res->field2}'");
+			}
+			if(!empty($product_field1)) {
+				$product_id = $product_field1->id;
+				//check the other field if it also being used by another product
+				if(!empty($product_field2) && $product_field1->id != $product_field2->id) {
+					$error = "Both {$res->field1} and {$res->field2} are models of a product. <br />";
+				} else {
+					//Check the field2 if it is already in the model alias
+					$model_alias = $db->selectObject("model_aliases", "model='{$res->field2}'");
+					if(empty($model_alias) && @$model_alias->product_id != $product_field1->id) {
+						//Add the first field
+						$tmp->model = $res->field1;
+						$tmp->product_id = $product_field1->id;
+						$db->insertObject($tmp,'model_aliases');
+						//Add the second field
+						$tmp->model = $res->field2;
+						$tmp->product_id = $product_field1->id;
+						$db->insertObject($tmp,'model_aliases');
+						//Update the record in the tmp table to mark it as process
+						$res->is_processed = 1;
+						$db->updateObject($res, 'model_aliases_tmp');
+						
+					} else {
+						$error = "{$res->field2} has already a product alias. <br />";
+					}
+				}
+			} elseif(!empty($product_field2)) {
+				$product_id = $product_field2->id;
+				$model_alias = $db->selectObject("model_aliases", "model='{$res->field1}'");
+				if(empty($model_alias) && @$model_alias->product_id != $product_field2->id) {
+					//Add the first field
+					$tmp->model = $res->field1;
+					$tmp->product_id = $product_field2->id;
+					$db->insertObject($tmp,'model_aliases');
+					//Add the second field
+					$tmp->model = $res->field2;
+					$tmp->product_id = $product_field2->id;
+					$db->insertObject($tmp,'model_aliases');
+					//Update the record in the tmp table to mark it as process
+					$res->is_processed = 1;
+					$db->updateObject($res, 'model_aliases_tmp');
+				} else {
+					$error = "{$res->field1} has already a product alias. <br />";
+				}
+			} else {
+				$model_alias1 = $db->selectObject("model_aliases", "model='{$res->field1}'");
+				$model_alias2 = $db->selectObject("model_aliases", "model='{$res->field2}'");
+				
+				if(!empty($model_alias1) || !empty($model_alias2)) {
+					$error = "The {$res->field1} and {$res->field2} are already being used by another product.<br />";
+				} else {
+					$error = "No product match found, please choose a product to be alias in the following models below:<br />";
+					$error .= $res->field1 . "<br />";
+					$error .= $res->field2 . "<br />";
+					$autocomplete = 1;
+				}
+			}
+			$index++;
+		} while(empty($error));
+		assign_to_template(array('count' => $count, 'alias' => $res, 'index' => $index, 'product_id' => $product_id, 'autocomplete' => $autocomplete, 'error' => $error));
+	}
+	
+	function saveModelAliases() {
+		global $db;
+		$index = $this->params['index'];
+		$title = mysql_real_escape_string($this->params['product_title']);
+		
+		$product = $db->selectObject("product", "title='{$title}'");
+		if(!empty($product->id)) {
+			// echo "SELECT * FROM exponent_model_aliases_tmp LIMIT " . ($index - 1) . ", 1";
+			// exit();
+			$res = $db->selectObjectBySql("SELECT * FROM exponent_model_aliases_tmp LIMIT "  . ($index - 1)  . ", 1");
+			//Add the first field
+			$tmp->model = $res->field1;
+			$tmp->product_id = $product->id;
+			$db->insertObject($tmp,'model_aliases');
+			//Add the second field
+			$tmp->model = $res->field2;
+			$tmp->product_id = $product->id;
+			$db->insertObject($tmp,'model_aliases');
+			//if the model is empty, update the product table so that it will used the field 1 as its primary model
+			if(empty($product->model)) {
+				$product->model = $res->field1;
+				$db->updateObject($product, 'product');
+			}
+			
+			//Update the record in the tmp table to mark it as process
+			$res->is_processed = 1;
+			$db->updateObject($res, 'model_aliases_tmp');
+			flash("message", "Product succesfully Saved.");
+			redirect_to(array('controller'=>'store','action'=>'processModelAliases', 'index' => $index));
+		} else {
+			flash("error", "Product title is invalid.");
+			redirect_to(array('controller'=>'store','action'=>'processModelAliases', 'index' => $index - 1, 'error' => 'Product title is invalid.'));
+		}
+	}	
+	
+	function deleteProcessedModelAliases() {
+		global $db;
+		$db->delete('model_aliases_tmp','is_processed=1');
+		redirect_to(array('controller' => 'store','action' => 'processModelAliases'));
+	}
+	
+	function _onlyreadables($string) {
+		for ($i=0;$i<strlen($string);$i++) {
+			$chr = $string{$i};
+			$ord = ord($chr);
+			if ($ord<32 or $ord>126) {
+			$chr = "~";
+			$string{$i} = $chr;
+			}
+		}
+		return str_replace("~", "", $string);
 	}
 }
 
