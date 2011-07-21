@@ -55,9 +55,12 @@ class storeController extends expController {
     '_validUTF'=>'isValid UTF products',
 	'_onlyreadables'=>'Process only readables format',
 	'uploadModelAliases'=>'Upload model aliases',
-	'processModelAliases'=>'Process model aliases',
-	'saveModelAliases'=>'Save model aliases',
-	'deleteProcessedModelAliases'=>'Delete model aliases'
+	'processModelAliases'=>'Process uploaded model aliases',
+	'saveModelAliases'=>'Save uploaded model aliases',
+	'deleteProcessedModelAliases'=>'Delete processed uploaded model aliases',
+	'delete_model_alias'=>'Process model aliases',
+	'update_model_alias'=>'Save model aliases',
+	'edit_model_alias'=>'Delete model aliases'
     );
      
     function name() { return $this->displayname(); } //for backwards compat with old modules
@@ -2011,6 +2014,7 @@ class storeController extends expController {
 		return true;
 	}
 	
+	//This function is being used in the uploadModelaliases page for showing the form upload
 	function uploadModelAliases() {
 		 global $db;
          set_time_limit(0);
@@ -2067,6 +2071,7 @@ class storeController extends expController {
 		}
 	}
 	
+	// This function process the uploading of the model aliases in the uploadModelAliases page
 	function processModelAliases($index = 0, $error = '') {
 		global $db;
 		
@@ -2156,6 +2161,7 @@ class storeController extends expController {
 		assign_to_template(array('count' => $count, 'alias' => $res, 'index' => $index, 'product_id' => $product_id, 'autocomplete' => $autocomplete, 'error' => $error));
 	}
 	
+	// This function save the uploaded processed model aliases in the uploadModelAliases page
 	function saveModelAliases() {
 		global $db;
 		$index = $this->params['index'];
@@ -2191,11 +2197,52 @@ class storeController extends expController {
 		}
 	}	
 	
+	// This function delete all the already processed model aliases in the uploadModelAliases page
 	function deleteProcessedModelAliases() {
 		global $db;
 		$db->delete('model_aliases_tmp','is_processed=1');
 		redirect_to(array('controller' => 'store','action' => 'processModelAliases'));
 	}
+	
+	// This function show the form of model alias to be edit or add in the product edit page
+	function edit_model_alias() {
+        global $db;
+		
+		if(isset($this->params['id'])) {
+			$model_alias = $db->selectObject('model_aliases', 'id =' .$this->params['id']);
+			assign_to_template(array('model_alias'=>$model_alias));
+		} else {
+			assign_to_template(array('product_id'=>$this->params['product_id']));
+		}
+    }
+
+	// This function update or add the model alias in the product edit page
+    function update_model_alias() {
+        global $db;
+			
+		if(empty($this->params['id'])) {
+			$obj->model = $this->params['model'];
+			$obj->product_id = $this->params['product_id'];
+			$db->insertObject($obj,'model_aliases');
+			
+		} else {
+			$model_alias        = $db->selectObject('model_aliases', 'id =' .$this->params['id']);
+			$model_alias->model  = $this->params['model'];
+			$db->updateObject($model_alias, 'model_aliases');
+		}
+		
+        expHistory::back();
+    }
+	
+	// This function delete the model alias in the product edit page
+	function delete_model_alias() {
+		global $db;
+		
+        if (empty($this->params['id'])) return false;
+        $db->delete('model_aliases', 'id =' .$this->params['id']);
+		
+        expHistory::back();
+    }
 	
 	function _onlyreadables($string) {
 		for ($i=0;$i<strlen($string);$i++) {
