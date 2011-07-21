@@ -69,6 +69,7 @@
             <li><a href="#meta"><em>Meta Info</em></a></li>
             <li><a href="#notes"><em>Notes</em></a></li>
             <li><a href="#xtrafields"><em>Extra Fields</em></a></li>      
+			<li><a href="#skus"><em>SKUS/Model</em></a></li>
             <li><a href="#misc"><em>Misc</em></a></li>
             </ul>            
             <div class="yui-content">
@@ -81,7 +82,7 @@
                     {control type="editor" name="body" label="Product Description" height=450 value=$record->body}
                     {control type="text" class="title" name="feed_title" label="Product Title for Data Feeds" value=$record->feed_title}
                     {control type="textarea" name="feed_body" label="Product Description for Data Feeds (Description ONLY! - no HTML, no promotional language, no email addresses, phone numbers, or references to this website.)" rows=5 cols=85 value=$record->feed_body}
-                    
+                    {control type="text" class="title" name="google_product_type" label="Google Product Type" value=$record->google_product_type}
                 </div>
                 <div id="pricing">
                     <fieldset>
@@ -509,6 +510,37 @@
                         </tr>
                     </table>
                 </div>
+				
+				<div id="skus">
+                    <h2>Product SKUS / Model</h2>
+					<a href='{link controller="store" action="edit_model_alias" product_id=`$record->id`}' class="add">Add Model Alias</a>
+					<table border="0" cellspacing="0" cellpadding="0" class="exp-skin-table">
+						<thead>
+							<tr>
+								<th style="width:50px">
+									&nbsp;
+								</th>
+								<th>
+									Alias
+								</th>
+							</tr>
+						</thead>
+						<tbody>
+							{foreach from=$record->model_alias item=model_alias key=key name=model_aliases}
+							<tr class="{cycle values='odd,even'}">
+								<td>
+									{icon action=edit_model_alias record=$model_alias img="edit.png"}  
+									{icon action=delete_model_alias record=$model_alias img="delete.png"}  
+								</td>
+								<td>
+								{$model_alias->model}
+								</td>
+							</tr>
+							{/foreach}
+						</tbody>
+					</table>
+                </div>
+				
                 <div id="misc">
                     <h2>Miscellaneous Information</h2>
                     {control type="text" name="warehouse_location" label="Warehouse Location" value=$record->warehouse_location}

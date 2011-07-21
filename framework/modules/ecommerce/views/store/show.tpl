@@ -22,6 +22,12 @@
 
 {/css}
 
+{if $config.enable_lightbox}
+{css unique="files-gallery" link="`$smarty.const.PATH_RELATIVE`framework/modules/common/assets/css/gallery-lightbox.css"}
+
+{/css}    
+{/if}
+
 {if $product->user_message != ''}
 <div id="msg-queue" class="common msg-queue">
     <ul class="queue error">
@@ -51,24 +57,88 @@
     </div>
     {/permissions}
     
+    
+    {******* IMAGES *****}
     <div class="large-ecom-image">
         {if $product->main_image_functionality=="iws"}
             {* Image with swatches *}
-            {if $product->image_alt_tag !=''} 
-                {img file_id=$product->expFile.imagesforswatches[0]->id w=250 alt="`$product->image_alt_tag`" title="`$product->title`" class="large-img" id="enlarged-image"}
-            {else}
-                {img file_id=$product->expFile.imagesforswatches[0]->id w=250 alt="Image of `$product->title`" title="`$product->title`" class="large-img" id="enlarged-image"}
-            {/if}
-            {assign value=$product->expFile.imagesforswatches[0]->id var=mainimg}
+            {img file_id=$product->expFile.imagesforswatches[0]->id w=250 alt=$product->image_alt_tag|default:"Image of `$product->title`" title="`$product->title`" class="large-img" id="enlarged-image"}
+            {assign value=$product->expFile.imagesforswatches.0 var=mainimg}
         {else}
-            {if $product->image_alt_tag !=''}  
-                {img file_id=$product->expFile.mainimage[0]->id w=250 alt="`$product->image_alt_tag`" title="`$product->title`"  class="large-img" id="enlarged-image"}
-            {else}
-                {img file_id=$product->expFile.mainimage[0]->id w=250 alt="Image of `$product->title`" title="`$product->title`" class="large-img" id="enlarged-image"}
+            {if $config.enable_lightbox}
+                <a href="{$product->expFile.mainimage[0]->url}" title="{$product->expFile.mainimage[0]->title|default:$product->title}" rel="lightbox[g{$product->id}]">
             {/if}
-            {assign value=$product->expFile.mainimage[0]->id var=mainimg}
-            
+            {img file_id=$product->expFile.mainimage[0]->id w=250 alt=$product->image_alt_tag|default:"Image of `$product->title`" title="`$product->title`"  class="large-img" id="enlarged-image"}
+            {if $config.enable_lightbox}
+                </a>
+            {/if}
+            {assign value=$product->expFile.mainimage.0 var=mainimg}
         {/if}
+        
+        {if $product->expFile.images[0]->id}
+        <div class="additional thumbnails">
+            <h3>{gettext str="Additional Images"}</h3>
+            <ul>
+                <li>
+                    {if $config.enable_lightbox}
+                        <a href="{$product->expFile.mainimage[0]->url}" title="{$mainimg->title|default:$product->title}" rel="lightbox[g{$product->id}]">
+                    {/if}
+                    {img file_id=$product->expFile.mainthumbnail[0]->id|default:$mainimg->id w=50 h=50 zc=1 class="thumbnail" id="thumb-`$mainimg->id`"}
+                    {if $config.enable_lightbox}
+                        </a>
+                    {/if}
+                </li>
+                {foreach from=$product->expFile.images item=thmb}
+                <li>
+                    {if $config.enable_lightbox}
+                        <a href="{$thmb->url}" title="{$thmb->title|default:$product->title}" rel="lightbox[g{$product->id}]">
+                    {/if}
+                    {img file_id=$thmb->id w=50 h=50 zc=1 class="thumbnail" id="thumb-`$thmb->id`"}
+                    {if $config.enable_lightbox}
+                        </a>
+                    {/if}
+                </li>
+                {/foreach}
+            </ul>
+        </div>
+        {/if}
+        
+        {if $config.enable_lightbox}
+        {script unique="thumbswap-shadowbox" yui3mods=1}
+        {literal}
+        EXPONENT.YUI3_CONFIG.modules = {
+                   'gallery-lightbox' : {
+                       fullpath: EXPONENT.PATH_RELATIVE+'framework/modules/common/assets/js/gallery-lightbox.js',
+                       requires : ['base','node','anim','selector-css3']
+                   }
+             }
+
+        YUI(EXPONENT.YUI3_CONFIG).use('gallery-lightbox', function(Y) {
+            Y.Lightbox.init();    
+        });
+        {/literal}
+        {/script}
+        {else}
+        {script unique="thumbswap-shadowbox" yui3mods=1}
+        {literal}
+        YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
+            var thumbs = Y.all('.thumbnails li img.thumbnail');
+            var swatches = Y.all('.swatches li img.swatch');
+            var mainimg = Y.one('#enlarged-image');
+
+            var swapimage = function(e){
+                var tmbid = e.target.get('id').split('-')[1];
+                mainimg.set('src',EXPONENT.URL_FULL+"thumb.php?id="+tmbid+"&w=250");
+            };
+
+            thumbs.on('click',swapimage);
+            swatches.on('click',swapimage);
+
+        });
+        {/literal}
+        {/script}
+        {/if}
+        
     </div>
     
     
@@ -180,7 +250,7 @@
     </p>
     {/if}    
 
-    {if $product->expFile.images[0]->id}
+    {*if $product->expFile.images[0]->id}
     <div class="additional thumbnails">
         <h3>{gettext str="Additional Images"}</h3>
         <ul>
@@ -194,7 +264,7 @@
         {/foreach}
         </ul>
     </div>
-    {/if}
+    {/if*}
     
     {if $config.enable_ratings_and_reviews} 
         {rating content_type="product" subtype="quality" label="Product Rating"|gettext record=$product}
@@ -217,26 +287,6 @@
     {if $product->main_image_functionality=="iws" || $product->expFile.images[0]->id}
         
     {/if}
-    {script unique="swapthumb" yui3mods='node'}
-    {literal}
-
-    YUI({ base:EXPONENT.YUI3_PATH,loadOptional: true}).use('node', function(Y) {
-        var thumbs = Y.all('.thumbnails li img.thumbnail');
-        var swatches = Y.all('.swatches li img.swatch');
-        var mainimg = Y.one('#enlarged-image');
-
-        var swapimage = function(e){
-            var tmbid = e.target.get('id').split('-')[1];
-            mainimg.set('src',EXPONENT.URL_FULL+"thumb.php?id="+tmbid+"&w=250");
-        };
-        
-        thumbs.on('click',swapimage);
-        swatches.on('click',swapimage);
-
-    });
-
-    {/literal}
-    {/script}
             
     <div class="bodycopy">
         {$product->body}        
@@ -436,3 +486,4 @@
      </div>
      {/if}
 </div>
+

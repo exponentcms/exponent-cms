@@ -96,7 +96,6 @@ class ups {
 		}
 		preg_match_all("/(\{.*?\})/",$buffer,$availArr);
 		$lines = file($templateFile);
-//		$items = split(' ',$lines[1]);
 		$items = explode(' ',$lines[1]);
 		$prefix = str_replace(array('<','>',"\n","\r"),'',$items[0]);
 		$x=0;

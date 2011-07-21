@@ -58,8 +58,8 @@ if (exponent_permissions_check('configuration',exponent_core_makeLocation('admin
 	$template->assign('configname',$configname);
 	
 	$canactivate = ($configname != '' && is_readable(BASE."conf/profiles/$configname.php"));
-	$candelete = ($configname != '' && is_really_writable(BASE.'conf/profiles'));
-	$canedit = (($configname == '' && (is_really_writable(BASE.'conf/config.php'))) || is_really_writable(BASE.'conf/profiles/'));
+	$candelete = ($configname != '' && expUtil::isReallyWritable(BASE.'conf/profiles'));
+	$canedit = (($configname == '' && (expUtil::isReallyWritable(BASE.'conf/config.php'))) || expUtil::isReallyWritable(BASE.'conf/profiles/'));
 	
 	$template->assign('canactivate',$canactivate);
 	$template->assign('canedit',$canedit);

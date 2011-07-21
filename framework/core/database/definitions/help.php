@@ -46,7 +46,7 @@ return array(
 		DB_FIELD_TYPE=>DB_DEF_STRING,
 		DB_FIELD_LEN=>100000),
 	'help_version_id'=>array(
-		DB_FIELD_TYPE=>DB_DEF_STRING),
+		DB_FIELD_TYPE=>DB_DEF_ID),
 	'poster'=>array(
 		DB_FIELD_TYPE=>DB_DEF_INTEGER),
 	'section'=>array(

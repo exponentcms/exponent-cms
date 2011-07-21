@@ -17,11 +17,15 @@
 #
 ##################################################
 
-# Following code taken from http://us4.php.net/manual/en/function.get-magic-quotes-gpc.php
-#   - it allows magic_quotes to be on without screwing stuff up.
-# magic quotes were removed in php6
+// Following code taken from http://us4.php.net/manual/en/function.get-magic-quotes-gpc.php
+//   - it allows magic_quotes to be on without screwing stuff up.
+// magic quotes were removed in php6
 if(phpversion() < 6) { 
 	if (get_magic_quotes_gpc()) {
+		/**
+		 * @param $value
+		 * @return mixed
+		 */
 		function stripslashes_deep($value) {
 			return is_array($value) ? array_map('stripslashes_deep', $value) : stripslashes($value);
 		}
@@ -32,10 +36,13 @@ if(phpversion() < 6) {
 	}
 }
 
-// exponent.php (the file that includes this file the most) will define this for its own purposes
-// but for other scripts that want to bootstrap minimally, we will need it, so only define it
+// for scripts that want to bootstrap minimally, we will need _realpath()
 // if it isn't already defined.
 if (!function_exists('__realpath')) {
+	/**
+	 * @param $path
+	 * @return string
+	 */
 	function __realpath($path) {
 		$path = str_replace('\\','/',realpath($path));
 		if ($path{1} == ':') {
@@ -46,23 +53,61 @@ if (!function_exists('__realpath')) {
 	}
 }
 
-// Process user-defined constants in overrides.php
-// THIS CANNOT USE __realpath like the others, since this file could be
-// symlinked through the multi-site manager
+// Process user-defined constants first in overrides.php (if it exists)
 include_once('overrides.php');
 
-// Auto-detect whatever variables the user hasn't overridden in overrides.php
-include_once(dirname(__realpath(__FILE__)) . '/exponent_variables.php');
+// load constants for paths and other environment  not overridden in overrides.php
+require_once(dirname(__realpath(__FILE__)) . '/exponent_constants.php');
+
+// load the code version
+require_once(BASE.'exponent_version.php');
+
+/*
+ * EXPONENT Constant
+ *
+ * The EXPONENT Constant signals to other parts of the system that they are operating within the confines
+ * of the Exponent Framework.  (Module actions check this -- if it is not defined, they must abort).
+ */
+define('EXPONENT', '1');
+
+// load the constants from the global config, theme config, and then default config settings
+require_once(BASE . '/subsystems/config/load.php');
+
+// define remaining constants throughout the system based on loaded configuration constants
+
+//require_once(BASE.'exponent_constants2.php'); // moved to below
 
 // Set the default timezone.
 if (function_exists('date_default_timezone_set')) {
     @date_default_timezone_set(DISPLAY_DEFAULT_TIMEZONE);
 }
 
+if (!defined('DISPLAY_THEME')) {
+	/* exdoc
+	 * The directory and class name of the current active theme.  This may be different
+	 * than the configure theme (DISPLAY_THEME_REAL) due to previewing.
+	 */
+	define('DISPLAY_THEME',DISPLAY_THEME_REAL);
+}
+
+if (!defined('THEME_ABSOLUTE')) {
+	/* exdoc
+	 * The absolute path to the current active theme's files.  This is similar to the BASE constant
+	 */
+	define('THEME_ABSOLUTE',BASE.'themes/'.DISPLAY_THEME.'/'); // This is the recommended way
+}
+
+if (!defined('THEME_RELATIVE')) {
+	/* exdoc
+	 * The relative web path to the current active theme.  This is similar to the PATH_RELATIVE constant.
+	 */
+	define('THEME_RELATIVE',PATH_RELATIVE.'themes/'.DISPLAY_THEME.'/');
+}
+
 // Process PHP-wrapper settings (ini_sets and setting detectors)
-include_once(dirname(__realpath(__FILE__)) . '/exponent_setup.php');
+require_once(BASE . 'exponent_php_setup.php');
 
 // Initialize the PHP4 Compatibility Layer
-include(BASE.'compat.php');
+//include(BASE.'compat.php');  // deprecated in Exp 2.0
 
 ?>

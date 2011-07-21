@@ -27,18 +27,20 @@
  * @version 2.0.0
  */
 
-require_once('exponent_common.php');
+//require_once('exponent_common.php');  // incorporated into exponent_bootstrap.php
+require_once('exponent_bootstrap.php');
 
 // Initialize the AutoLoader Subsystem
 require_once(BASE.'subsystems/autoloader.php');
 
 // Initialize the Sessions Subsystem
 require_once(BASE.'subsystems/sessions.php');
-// Initializes the session.	 
 exponent_sessions_initialize();
 
 // initialize useful/needed constants throughout the system
-require_once(BASE.'exponent_constants.php');
+//require_once(BASE.'exponent_constants.php');
+// Initialize the theme subsystem
+if (!defined('SYS_THEME')) require_once(BASE.'subsystems/theme.php');
 
 // Initialize the language subsystem
 require_once(BASE.'subsystems/lang.php');
@@ -59,7 +61,7 @@ require_once(BASE.'subsystems/database.php');
  */
 $db = exponent_database_connect(DB_USER,DB_PASS,DB_HOST.':'.DB_PORT,DB_NAME);
 
-// Initialize the Modules Subsystem.
+// Initialize the old school Modules Subsystem.
 require_once(BASE.'subsystems/modules.php');
 exponent_modules_initialize();
 
@@ -69,7 +71,7 @@ require_once(BASE.'subsystems/template.php');
 // Initialize the Permissions Subsystem.
 require_once(BASE.'subsystems/permissions.php');
 
-// Initialize the Flow Subsystem.
+// Initialize the Flow/History Subsystem.
 if (!defined('SYS_FLOW')) require_once(BASE.'subsystems/flow.php');
 /**
  * the browsing history object
@@ -80,10 +82,11 @@ $history = new expHistory(); //<--This is the new flow subsystem and will be rep
 
 // Initialize the User Subsystem.
 require_once(BASE.'subsystems/users.php');
+
 // Initialize the javascript subsystem
 if (!defined('SYS_JAVASCRIPT')) require_once(BASE.'subsystems/javascript.php');
 
-// Initialize the new MVC framework
+// Initialize the MVC framework
 require_once(BASE.'framework/core/expFramework.php');
 /**
  * the list of available/active controllers
@@ -104,6 +107,7 @@ exponent_sessions_validate();
 
 // Initialize permissions variables
 exponent_permissions_initialize();
+
 /**
  * initialize the expRouter
  * the routing/link/url object

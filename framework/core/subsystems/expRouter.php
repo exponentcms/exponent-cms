@@ -518,7 +518,7 @@ class expRouter {
             if ($this->url_style == 'sef') {
                 $url .= $this->convertToOldSchoolUrl();
                 $url .= empty($view) ? '' : '&view='.$view;
-                if ($this->url_type=='base') $url .= 'index.php?section='.SITE_DEFAULT_SECTION;
+                if ($this->url_type=='base') $url .= '/index.php?section='.SITE_DEFAULT_SECTION;
             } else {
                 $url .= $this->current_url;
             }

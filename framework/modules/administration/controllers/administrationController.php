@@ -679,7 +679,7 @@ class administrationController extends expController {
         if (!defined('SYS_CONFIG')) include_once(BASE.'subsystems/config.php');
 
         foreach ($this->params['sc'] as $key => $value) {
-            exponent_config_change($key, stripslashes($value));
+            exponent_config_change($key, $value);
         }
         
         flash('message', "Your Website Configuration has been updated");

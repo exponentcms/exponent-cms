@@ -119,7 +119,7 @@ class remove_headlinecontroller extends upgradescript {
         $removed = 0;
         $errors = 0;
 		foreach ($files as $file) {
-		    if (is_really_writable($file)) {
+		    if (expUtil::isReallyWritable($file)) {
 		        unlink ($file);
 		        $removed += 1;
 		    } else {

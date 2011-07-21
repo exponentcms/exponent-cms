@@ -16,6 +16,7 @@
 
 <div id="storeconfig" class="module ecomconfig configure hide exp-skin-tabview">
     <h1>Store Configuration</h1>
+    
     {script unique="storeconf" yuimodules="tabview, element"}
     {literal}
         var tabView = new YAHOO.widget.TabView('storetabs');     
@@ -127,9 +128,11 @@
                     {control type="checkbox" name="enable_barcode" label="Enable Barcode?" value=1 checked=$config.enable_barcode}
                 </div>  
                 <div id="tab8">
-                    <h2>{"General Store Display"|gettext}</h2>
+                    <h2>{"Product Listing Pages"|gettext}</h2>
 				    {control type="text" name="images_per_row" label="Products per row" size="3" value=$config.images_per_row}
+                    <h2>{"Product Detail Pages"|gettext}</h2>
                     {control type="checkbox" name="enable_ratings_and_reviews" label="Enable Ratings & Reviews?" value=1 checked=$config.enable_ratings_and_reviews}
+                    {control type="checkbox" name="enable_lightbox" label="Enable Lightbox Image Viewer?" value=1 checked=$config.enable_lightbox}
                 </div>  
             </div>
         </div>

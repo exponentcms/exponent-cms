@@ -140,7 +140,7 @@
                 </div>
                 <div id="tab10">
                     <h2>{gettext str="WYSIWYG Editor Settings"}</h2>
-					{help text="Learn More about WYSIWYG editor settings"|gettext module="wysiwyg-editor settings"}
+					{help text="Learn More about WYSIWYG editor settings"|gettext module="wysiwyg-editor-settings"}
                     {control type="dropdown" name="sc[SITE_WYSIWYG_EDITOR]" label="HTML Editor" items="CKEditor,FCK Editor" values="ckeditor,FCKeditor" default=$smarty.const.SITE_WYSIWYG_EDITOR}
 					{br}<hr>
 					{chain module=expHTMLEditor view="manage"}
@@ -162,8 +162,12 @@
 				
 				<div id="tab13">
                     <h2>{gettext str="Minify Configuration"}</h2>
+					{help text="Learn More about minification"|gettext module="minify-configuration"}
                     {control type="text" name="sc[MINIFY_MAXAGE]" label="Maximum age of browser cache in seconds" value=$smarty.const.MINIFY_MAXAGE}
+					{control type="text" name="sc[MINIFY_MAX_FILES]" label="Maximum # of files that can be specified in the 'f' GET parameter" value=$smarty.const.MINIFY_MAX_FILES}
 					{control type="text" name="sc[MINIFY_URL_LENGTH]" label="The length of minification url" value=$smarty.const.MINIFY_URL_LENGTH}
+					{control type="checkbox" postfalse=1 name="sc[MINIFY_ERROR_LOGGER]" label="Enable logging of minify error messages to FirePHP?" checked=$smarty.const.MINIFY_ERROR_LOGGER value=1}
+                    
                 </div>
                 {/if}
             </div>

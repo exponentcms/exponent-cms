@@ -47,7 +47,7 @@ if (isset($_REQUEST['vmod'])) {
 if (isset($_REQUEST['showmodules'])) {
 	if (is_array($_REQUEST['showmodules'])) $source_select['showmodules'] = $_REQUEST['showmodules'];
 	else if ($_REQUEST['showmodules'] == 'all') $source_select['showmodules'] = null;
-	else $source_select['showmodules'] = split(',',$_REQUEST['showmodules']);
+	else $source_select['showmodules'] = explode(',',$_REQUEST['showmodules']);
 } else if (!isset($source_select['showmodules'])) {
 	$source_select['showmodules'] = null;
 }

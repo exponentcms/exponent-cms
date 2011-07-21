@@ -104,7 +104,7 @@ class file {
 			return true;
 		}
 		
-		if (is_really_writable(BASE.$file->directory)) {
+		if (expUtil::isReallyWritable(BASE.$file->directory)) {
 			unlink($file->directory.'/'.$file->filename);
 			if (!file_exists(BASE.$file->directory.'/'.$file->filename)) {
 				return true;

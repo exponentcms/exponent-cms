@@ -30,11 +30,22 @@ return array(
 			'description'=>$i18n['minify_maxage_desc'],
 			'control'=>new textcontrol()
 		),
+		'MINIFY_MAX_FILES'=>array(
+			'title'=>$i18n['minify_max_files'],
+			'description'=>$i18n['minify_max_files_desc'],
+			'control'=>new textcontrol()
+		),
 		'MINIFY_URL_LENGTH'=>array(
 			'title'=>$i18n['minify_url_length'],
 			'description'=>$i18n['minify_url_length_desc'],
 			'control'=>new textcontrol()
+		),
+		'MINIFY_ERROR_LOGGER'=>array(
+			'title'=>$i18n['minify_error_logger'],
+			'description'=>$i18n['minify_error_logger_desc'],
+			'control'=>new checkboxcontrol()
 		)
+		
 	)
 );
 
