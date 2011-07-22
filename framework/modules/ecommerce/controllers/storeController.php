@@ -718,10 +718,10 @@ class storeController extends expController {
                 $search_record->original_id = $origid;
                 //$search_record->location_data = serialize($this->loc);
                 $search_record->save();
-                
                 $count += 1;
             }
         }
+        return $count;
     }
     
     function search_by_model_form() {
