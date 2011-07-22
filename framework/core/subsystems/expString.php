@@ -24,6 +24,37 @@ class expString {
 		}
 		return str_replace("~", "", $string);
 	}
+	
+	static function parseAndTrim($str, $unescape=false) {
+
+        $str = str_replace("<br>"," ",$str);
+        $str = str_replace("</br>"," ",$str);
+        $str = str_replace("<br/>"," ",$str);
+        $str = str_replace("<br />"," ",$str);
+        $str = str_replace('"',"&quot;",$str);
+        $str = str_replace("'","&#39;",$str);
+        $str = str_replace("?","&rsquo;",$str);
+        $str = str_replace("?","&lsquo;",$str);
+        $str = str_replace("?","&#174;",$str);
+        $str = str_replace("?","-", $str);
+        $str = str_replace("?","&#151;", $str); 
+        $str = str_replace("?", "&rdquo;", $str);
+        $str = str_replace("?", "&ldquo;", $str);
+        $str = str_replace("\r\n"," ",$str); 
+        $str = str_replace("?","&#188;",$str);
+        $str = str_replace("?","&#189;",$str);
+        $str = str_replace("?","&#190;",$str);
+		$str = str_replace("?", "&trade;", $str);
+		$str = trim($str);
+		
+        if ($unescape) {
+			$str = stripcslashes($str);  
+		} else {
+	        $str = addslashes($str);
+        }
+
+        return $str;
+    }
 
 }
 ?>

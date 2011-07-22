@@ -196,7 +196,7 @@ class storeController extends expController {
         assign_to_template(array('page'=>$page, 'defaultSort'=>$defaultSort, 'ancestors'=>$ancestors, 'categories'=>$categories, 'current_category'=>$this->category,'rerankSQL'=>$rerankSQL));
     }
     
-    function grabConfig($category=null){
+    function grabConfig($category=null) {
         
         // grab the configs for the category
         if (is_object($category)) 
@@ -458,9 +458,10 @@ class storeController extends expController {
         assign_to_template(array('page'=>$page, 'moduletitle'=>'Improperly Categorized Products'));
     }
     
-    function exportMe()
-    {
-        redirect_to(array('controller'=>'report','action'=>'batch_export','applytoall'=>true));
+    function exportMe() {
+	
+		redirect_to(array('controller'=>'report','action'=>'batch_export','applytoall'=>true));
+	  
     }
     
     function showallByManufacturer() {
@@ -529,16 +530,15 @@ class storeController extends expController {
     }
     
     function showByTitle() {
+		
         global $order, $template, $user;
         //need to add a check here for child product and redirect to parent if hit directly by ID
         expHistory::set('viewable', $this->params);
+		
         $product = new product(addslashes($this->params['title']));
         $product_type = new $product->product_type($product->id);
-        
-        $product_type->title = $this->parseAndTrim($product_type->title,true);
-        $product_type->image_alt_tag = $this->parseAndTrim($product_type->image_alt_tag,true);
-        
-        //eDebug($product_type);
+        $product_type->title         = expString::parseAndTrim($product_type->title,true);
+        $product_type->image_alt_tag = expString::parseAndTrim($product_type->image_alt_tag,true);
          
         //if we're trying to view a child product directly, then we redirect to it's parent show view
         //bunk URL, no product found
@@ -664,7 +664,7 @@ class storeController extends expController {
         $order = 'sc.rank'; //$this->config['orderby'];
         $dir = 'ASC'; $this->config['orderby_dir'];
         
-       $page = new expPaginator(array(
+        $page = new expPaginator(array(
                 'model_field'=>'product_type',
                 'sql'=>$sql,
                 'count_sql'=>$count_sql,
@@ -1187,52 +1187,14 @@ class storeController extends expController {
         }
         
         // Remove any quotes if there are any.
-        $metainfo['title'] =  $this->parseAndTrim($metainfo['title'],true);
-        $metainfo['description'] = $this->parseAndTrim($metainfo['description'],true);
-        $metainfo['keywords'] = $this->parseAndTrim($metainfo['keywords'],true);
+        $metainfo['title']       = expString::parseAndTrim($metainfo['title'],true);
+        $metainfo['description'] = expString::parseAndTrim($metainfo['description'],true);
+        $metainfo['keywords']    = expString::parseAndTrim($metainfo['keywords'],true);
                 
         return $metainfo;
     }
        
-    private function parseAndTrim($str, $unescape=false)
-    {   //�Death from above�? �
-        //echo "1<br>"; eDebug($str);    
-        global $db;
-
-        $str = str_replace("<br>"," ",$str);
-        $str = str_replace("</br>"," ",$str);
-        $str = str_replace("<br/>"," ",$str);
-        $str = str_replace("<br />"," ",$str);
-        $str = str_replace('"',"&quot;",$str);
-        $str = str_replace("'","&#39;",$str);
-        $str = str_replace("�","&rsquo;",$str);
-        $str = str_replace("�","&lsquo;",$str);
-        $str = str_replace("�","&#174;",$str);
-        $str = str_replace("�","-", $str);
-        $str = str_replace("�","&#151;", $str); 
-        $str = str_replace("�", "&rdquo;", $str);
-        $str = str_replace("�", "&ldquo;", $str);
-        $str = str_replace("\r\n"," ",$str); 
-        $str = str_replace("�","&#188;",$str);
-        $str = str_replace("�","&#189;",$str);
-        $str = str_replace("�","&#190;",$str);
-        if ($unescape) $str = stripcslashes(trim(str_replace("�", "&trade;", $str)));  
-        else {
-//	        if (DB_ENGINE=='mysqli') {
-//		        $str = @mysqli_real_escape_string($db->connection,trim(str_replace("�", "&trade;", $str)));
-//	        } elseif(DB_ENGINE=='mysql') {
-//	            $str = @mysql_real_escape_string(trim(str_replace("�", "&trade;", $str)),$db->connection);
-//	        } else {
-//		        $str = trim(str_replace("�", "&trade;", $str));
-//	        }
-	        $str = @$db->escapeString(trim(str_replace("�", "&trade;", $str)));
-        }
-        //echo "2<br>"; eDebug($str,die);
-        return $str;
-    }
-
-    public function deleteChildren()
-    {
+    public function deleteChildren() {
         //eDebug($data[0],true);
         //if($id!=null) $this->params['id'] = $id;
         //eDebug($this->params,true);        
@@ -1252,8 +1214,7 @@ class storeController extends expController {
         }
     }
     
-    function cleanSEF($sef_val)
-    {
+    function cleanSEF($sef_val) {
         $ret = str_ireplace('.','',str_ireplace("'", '', str_ireplace(' ', '-', strtolower(trim($sef_val)))));
         $ret = str_ireplace('/','',str_ireplace("(", '', str_ireplace(')', '', $ret)));
         return $ret;
@@ -1374,8 +1335,8 @@ class storeController extends expController {
         $ar->send();
     }
     
-    function batch_process()
-    {
+    function batch_process() {
+	
         $os = new order_status();
         $oss = $os->find('all');        
         $order_status =  array();
@@ -1387,8 +1348,7 @@ class storeController extends expController {
         assign_to_template(array('order_status'=>$order_status));
     }
     
-    function process_orders()
-    {
+    function process_orders() {
         /*
           Testing
         */
@@ -1685,27 +1645,23 @@ class storeController extends expController {
         assign_to_template(array('errorSet'=>$errorSet, 'successSet'=>$successSet));
     }
     
-    function manage_sales_reps()
-    {
+    function manage_sales_reps() {
         
     }
     
-    function showHistory()
-    {
+    function showHistory() {
         $h = new expHistory();
         echo "<xmp>";
         print_r($h);
         echo "</xmp>";
     }
     
-    function import_external_addresses()
-    {
+    function import_external_addresses() {
         $sources = array('mc'=>'MilitaryClothing.com','nt'=>'NameTapes.com','am'=>'Amazon');
         assign_to_template(array('sources'=>$sources));
     }
     
-    function process_external_addresses()
-    {
+    function process_external_addresses() {
         global $db;
          set_time_limit(0);
         //$file = new expFile($this->params['expFile']['batch_process_upload'][0]);
@@ -1936,6 +1892,7 @@ class storeController extends expController {
 	
 	function nonUnicodeProducts() {
 		global $db, $user;
+		
 		$products = $db->selectObjectsIndexedArray('product');
 		$affected_fields = array();
 		$listings = array();
@@ -1976,6 +1933,7 @@ class storeController extends expController {
 	
 	function cleanNonUnicodeProducts() {
 		global $db, $user;
+		
 		$products = $db->selectObjectsIndexedArray('product');
 		//Get all the columns of the product table
 		$columns = $db->getTextColumns('product');
@@ -2149,13 +2107,12 @@ class storeController extends expController {
 	// This function save the uploaded processed model aliases in the uploadModelAliases page
 	function saveModelAliases() {
 		global $db;
+		
 		$index = $this->params['index'];
 		$title = mysql_real_escape_string($this->params['product_title']);
-		
 		$product = $db->selectObject("product", "title='{$title}'");
+		
 		if(!empty($product->id)) {
-			// echo "SELECT * FROM exponent_model_aliases_tmp LIMIT " . ($index - 1) . ", 1";
-			// exit();
 			$res = $db->selectObjectBySql("SELECT * FROM exponent_model_aliases_tmp LIMIT "  . ($index - 1)  . ", 1");
 			//Add the first field
 			$tmp->model = $res->field1;
@@ -2165,6 +2122,7 @@ class storeController extends expController {
 			$tmp->model = $res->field2;
 			$tmp->product_id = $product->id;
 			$db->insertObject($tmp,'model_aliases');
+			
 			//if the model is empty, update the product table so that it will used the field 1 as its primary model
 			if(empty($product->model)) {
 				$product->model = $res->field1;
@@ -2185,6 +2143,7 @@ class storeController extends expController {
 	// This function delete all the already processed model aliases in the uploadModelAliases page
 	function deleteProcessedModelAliases() {
 		global $db;
+		
 		$db->delete('model_aliases_tmp','is_processed=1');
 		redirect_to(array('controller' => 'store','action' => 'processModelAliases'));
 	}
