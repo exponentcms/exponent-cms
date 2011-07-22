@@ -1214,12 +1214,6 @@ class storeController extends expController {
         }
     }
     
-    function cleanSEF($sef_val) {
-        $ret = str_ireplace('.','',str_ireplace("'", '', str_ireplace(' ', '-', strtolower(trim($sef_val)))));
-        $ret = str_ireplace('/','',str_ireplace("(", '', str_ireplace(')', '', $ret)));
-        return $ret;
-    }
-    
     function search_by_model_old() {
         // get the search terms
         $terms = $this->params['search_string'];
