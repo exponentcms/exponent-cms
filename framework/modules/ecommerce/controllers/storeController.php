@@ -51,9 +51,6 @@ class storeController extends expController {
     'showallUncategorized'=>'View all uncategorized products',
     'nonUnicodeProducts'=>'View all non-unicode charset products',
     'cleanNonUnicodeProducts'=>'Clean all non-unicode charset products',
-    '_convertUTF'=>'Convert to UTF products',
-    '_validUTF'=>'isValid UTF products',
-	'_onlyreadables'=>'Process only readables format',
 	'uploadModelAliases'=>'Upload model aliases',
 	'processModelAliases'=>'Process uploaded model aliases',
 	'saveModelAliases'=>'Save uploaded model aliases',
@@ -1950,11 +1947,11 @@ class storeController extends expController {
 		
 			foreach($columns as $column) {
 				if($column != 'body' && $column != 'summary' && $column != 'featured_body') {
-					if(!$this->_validUTF($item->$column) || strrpos($item->$column, '?')) {
+					if(!expString::validUTF($item->$column) || strrpos($item->$column, '?')) {
 						$affected_fields[] = $column;
 					}
 				} else {
-					if(!$this->_validUTF($item->$column)) {
+					if(!expString::validUTF($item->$column)) {
 						$affected_fields[] = $column;
 					}
 				}
@@ -1987,12 +1984,12 @@ class storeController extends expController {
 			//TO Improved
 			foreach($columns as $column) {
 				if($column != 'body' && $column != 'summary' && $column != 'featured_body') {
-					if(!$this->_validUTF($item->$column) || strrpos($item->$column, '?')) {
-						$item->$column = $this->_convertUTF($item->$column); 
+					if(!expString::validUTF($item->$column) || strrpos($item->$column, '?')) {
+						$item->$column = expString::convertUTF($item->$column); 
 					}
 				} else {
-					if(!$this->_validUTF($item->$column)) {
-						$item->$column = $this->_convertUTF($item->$column); 
+					if(!expString::validUTF($item->$column)) {
+						$item->$column = expString::convertUTF($item->$column); 
 					}
 				}
 			}
@@ -2001,17 +1998,6 @@ class storeController extends expController {
 		}
 		
 		redirect_to(array('controller'=>'store', 'action'=>'nonUnicodeProducts'));
-	}
-	
-	function _convertUTF($content) {
-		return $content = str_replace('?', '', htmlspecialchars($content, ENT_IGNORE, 'UTF-8'));
-	} 
-	
-	function _validUTF($content) {
-		if(!mb_check_encoding($content, 'UTF-8') OR !($content === mb_convert_encoding(mb_convert_encoding($content, 'UTF-32', 'UTF-8' ), 'UTF-8', 'UTF-32'))) {
-			return false;
-		}		
-		return true;
 	}
 	
 	//This function is being used in the uploadModelaliases page for showing the form upload
@@ -2055,10 +2041,9 @@ class storeController extends expController {
 			$db->delete('model_aliases_tmp');
 			while (($data = fgetcsv($handle, 10000, ",")) !== FALSE) {
 				
-				$tmp->field1 = $this->_onlyreadables($data[0]);
-				$tmp->field2 = $this->_onlyreadables($data[1]);
+				$tmp->field1 = expString::onlyReadables($data[0]);
+				$tmp->field2 = expString::onlyReadables($data[1]);
 				$db->insertObject($tmp,'model_aliases_tmp');
-				// eDebug($tmp);
 			}
 			redirect_to(array('controller'=>'store','action'=>'processModelAliases'));
 			echo "Done!";
@@ -2243,18 +2228,6 @@ class storeController extends expController {
 		
         expHistory::back();
     }
-	
-	function _onlyreadables($string) {
-		for ($i=0;$i<strlen($string);$i++) {
-			$chr = $string{$i};
-			$ord = ord($chr);
-			if ($ord<32 or $ord>126) {
-			$chr = "~";
-			$string{$i} = $chr;
-			}
-		}
-		return str_replace("~", "", $string);
-	}
 }
 
 ?>
