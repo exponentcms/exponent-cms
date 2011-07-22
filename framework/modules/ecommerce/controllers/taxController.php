@@ -32,7 +32,7 @@ class taxController extends expController {
     function hasViews() { return true; }
     function hasContent() { return true; }
     function supportsWorkflow() { return false; }
-    function isSearchable() { return true; }
+    function isSearchable() { return false; }
     function canImportData() { return true; }
     function canExportData() { return true; }
 
