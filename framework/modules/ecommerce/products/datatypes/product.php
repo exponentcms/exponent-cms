@@ -20,7 +20,7 @@
 class product extends expRecord {
 	public $table = 'product';
 	public $has_one = array('company', 'product_status');
-	public $has_many = array('optiongroup');
+	public $has_many = array('optiongroup', 'model_alias');
     public $has_many_self = array('childProduct');            
 	public $has_and_belongs_to_many = array('storeCategory');
     public $has_and_belongs_to_self = array('crosssellItem');

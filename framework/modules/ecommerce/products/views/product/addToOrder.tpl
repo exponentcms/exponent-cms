@@ -75,7 +75,7 @@
         {control type=hidden name=options_shown value=$product->id}                    
         {if $product->childProduct|@count >= 1}
     
-    <div id="child-products">
+    <div id="child-products" class="exp-ecom-table">
        <table border="0" cellspacing="0" cellpadding="0">
             <thead>
                 <tr>

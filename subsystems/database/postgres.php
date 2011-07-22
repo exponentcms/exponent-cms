@@ -56,7 +56,6 @@ class postgres_database {
 
 	function connect($username,$password,$hostname,$database,$new = false) {
   		if( function_exists( 'pg_connect')){
-//			$host_data = split(":",$hostname);
 			$host_data = explode(":",$hostname);
 			$hostname = $host_data[0];
 			$port = $hostname[1];

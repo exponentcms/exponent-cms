@@ -57,7 +57,6 @@ class user_avatar extends expRecord {
             $info = expFile::getImageInfo($_FILES['avatar']['tmp_name']);
             if ($info['is_image']) {
                 // figure out the mime type and set the file extension and name
-//                $extinfo = split('/',$info['mime']);
                 $extinfo = explode('/',$info['mime']);
                 $extension = $extinfo[1];
                 $avatar_name = $this->user_id.'.'.$extension;

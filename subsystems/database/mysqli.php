@@ -196,7 +196,7 @@ class mysqli_database {
                 else
                     $sql .= "LONGTEXT";
             } else {
-                return false; // must specify a field length as integer.
+                return false; // must specify a field length as integer.  //FIXME need to have a default
             }
         } else if ($type == DB_DEF_DECIMAL) {
             $sql .= " DOUBLE";

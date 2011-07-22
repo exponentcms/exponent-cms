@@ -39,7 +39,7 @@
     //print "\n" . $prodCount . "\n";
     //print "\n";
     
-    $products = $db->selectObjectsBySql('SELECT DISTINCT(p.id),active_type,availability_type,quantity, model,feed_title,feed_body,sef_url,base_price,use_special_price, special_price,f.directory,f.filename, c.title as company FROM exponent_product p
+    $products = $db->selectObjectsBySql('SELECT DISTINCT(p.id),active_type,availability_type,quantity, model,feed_title,feed_body,google_product_type,sef_url,base_price,use_special_price, special_price,f.directory,f.filename, c.title as company FROM exponent_product p
     LEFT JOIN exponent_content_expFiles cf ON
          p.id = cf.content_id 
     LEFT JOIN exponent_expFiles f ON
@@ -69,13 +69,13 @@
         
         foreach ($prodflipper as $p2)
         {
-            $prodflipper2[$p2->sef_url] = $p2;
+            @$prodflipper2[$p2->sef_url] = $p2;
         }
         echo "Flip Count 2: " . count($prodflipper2). "\r\n";;  
         
         foreach ($prodflipper2 as $p3)
         {
-            $prodflipper3[$p3->model] = $p3;
+            @$prodflipper3[$p3->model] = $p3;
         }
         echo "Flip Count 3: " . count($prodflipper3). "\r\n";;  
         
@@ -113,6 +113,10 @@
    	        $prod->feed_title = parseAndTrim(html_entity_decode(strip_tags($prod->feed_title)));
 			$prod->feed_title = htmlspecialchars($prod->feed_title);
 			$prod->feed_title = onlyreadables($prod->feed_title);
+			
+			$prod->google_product_type = parseAndTrim(html_entity_decode(strip_tags($prod->google_product_type)));
+			$prod->google_product_type = htmlspecialchars($prod->google_product_type);
+			$prod->google_product_type = onlyreadables($prod->google_product_type);
             //if(ctype_upper($prod->feed_title))
             //{
                 //$prod->feed_title = ucwords(strtolower($prod->feed_title));
@@ -193,7 +197,11 @@
                 $columns.='<g:quantity>0</g:quantity>'.chr(13).chr(10);
             }
            
-		    if(!empty($google_types)) {
+		    if(!empty($prod->google_product_type)) {
+				$columns.='<g:product_type>';
+				$columns.= parseAndTrim($prod->google_product_type);
+				$columns.='</g:product_type>'.chr(13).chr(10);
+			} elseif(!empty($google_types)) {
 				$columns.='<g:product_type>';
 				$columns.= parseAndTrim($google_types);
 				$columns.='</g:product_type>'.chr(13).chr(10);

@@ -46,7 +46,15 @@ class addressController extends expController {
     function showall() {
         redirect_to(array("controller"=>'address',"action"=>'myaddressbook'));
 	}
-
+    
+    public function edit()
+    {
+        if((isset($this->params['id']))) $record = new address(intval($this->params['id']));
+        else $record = null;
+        $config = ecomconfig::getConfig('address_allow_admins_all');
+        assign_to_template(array('record'=>$record,'admin_config'=>$config));
+    }
+    
 	public function myaddressbook() {
 		global $user;
 		// check if the user is logged in.

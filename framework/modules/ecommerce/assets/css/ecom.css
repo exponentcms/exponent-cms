@@ -110,3 +110,7 @@
 .surcharge{
     font-size: 8px;    
 }
+
+.additional.thumbnails ul li img.thumbnail:hover {
+	cursor: pointer;
+}

@@ -309,10 +309,10 @@
                         {literal}                       
                         
                         // the text box for the title
-                        var tagInput = Y.one('#related_items');
+                        var tagInput = Y.one('#add_new_item');
 
                         // the UL to append to
-                        var tagUL = Y.one('#relatedItemsList');
+                        var tagUL = Y.one('#new_items');
 
                         // the Add Link
                         var tagAddToList = Y.one('#addToRelProdList');
@@ -374,8 +374,8 @@
 
                         {/literal}
                         {/capture}
-                        {control type="autocomplete" controller="store" action="search" name="related_items" label="Add a new item" value="Search title or SKU to add an item" schema="title,id,sef_url,expFile,model" searchmodel="product" searchoncol="title,model" jsinject=$callbacks}
-                        <div id="relatedItemsList">                        
+                        {control type="autocomplete" controller="store" action="search" name="add_new_item" label="Add a new item" value="Search title or SKU to add an item" schema="title,id,sef_url,expFile,model" searchmodel="product" searchoncol="title,model" jsinject=$callbacks}
+                        <div id="new_items">                        
                         </div>
                         </td>
                     </tr>

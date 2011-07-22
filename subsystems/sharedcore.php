@@ -129,7 +129,7 @@ function exponent_sharedcore_setup($core,$site) {
 	if (!is_readable($linksrc)) {
 		return SHAREDCORE_ERR_LINKSRC_NOTREADABLE;
 	}
-	if (!is_really_writable($linkdest)) {
+	if (!expUtil::isReallyWritable($linkdest)) {
 		return SHAREDCORE_ERR_LINKDEST_NOTWRITABLE;
 	}
 	
