@@ -202,7 +202,9 @@ class expPaginator {
 			}
 		}	
 		
-        $this->runCallback();
+      if (!isset($params['records'])) $this->runCallback(); // isset($params['records']) added to correct search for products.
+      //$this->runCallback();
+      
         //eDebug($this->records);
 		// get the number of the last record we are showing...this is used in the page links.
 		// i.e.  "showing 10-19 of 57"...$this->last would be the 19 in that string
@@ -309,8 +311,7 @@ class expPaginator {
         $table_template = get_common_template('pagination_table', null, 'common');
         $table_template->assign('page', $this);
         $this->table = $table_template->render();
-       // eDebug($this);
-       //eDebug($this);
+        
                                                            
 	}
 	

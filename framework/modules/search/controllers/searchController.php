@@ -50,15 +50,16 @@ class searchController extends expController {
             $terms = stripslashes($terms);
         }
         
+        
         $search = new search();
         $page = new expPaginator(array(
-			'model'=>'search',
-			'controller'=>$this->params['controller'],
-			'action'=>$this->params['action'],
-			'records'=>$search->getSearchResults($terms),
-			//'sql'=>$sql,
-			'order'=>'score',
-			'dir'=>'DESC',
+            //'model'=>'search',
+            'controller'=>$this->params['controller'],
+            'action'=>$this->params['action'],
+            'records'=>$search->getSearchResults($terms),
+            //'sql'=>$sql,
+            'order'=>'score',
+            'dir'=>'DESC',
 			));        
 
         assign_to_template(array('page'=>$page, 'terms'=>$terms));
