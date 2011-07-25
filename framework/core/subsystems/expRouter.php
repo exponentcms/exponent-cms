@@ -622,7 +622,7 @@ class expRouter {
             foreach($_SERVER['argv'] as $set)
             {
                 $s = explode("=",$set);
-                if($s[0]= "ectid")
+                if($s[0] == "ectid")
                 {
                     $this->ectid = $s[1];    
                 }   
