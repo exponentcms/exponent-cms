@@ -28,11 +28,11 @@ class storeController extends expController {
         'showFullTree'=>'Categories - Show Full Tree',
         'showallSubcategories'=>'Categories - Subcategories of current category',
         'upcoming_events'=>'Event Registration - Upcomming Events',
-		'events_calendar'=>'Event Registration - Calendar View',
+		  'events_calendar'=>'Event Registration - Calendar View',
         'ecom_search'=>'Search - Autocomplete',
         'search_by_model_form'=>'Search - By Model',
         'quicklinks'=>'Links - Users Links',
-		'showall_category_featured_products' => 'Show Featured Products under the current category'
+		  'showall_category_featured_products' => 'Show Featured Products under the current category'
     );
     
     // hide the configs we don't need
@@ -98,7 +98,11 @@ class storeController extends expController {
                 expSession::set('catid',$default_id);
             }
         } elseif (isset($this->config['show_first_category']) || (!expTheme::inAction() && $section==SITE_DEFAULT_SECTION)) {
-            $default_id = $db->selectValue('storeCategories', 'id', 'lft=1');
+            if (!empty($this->config['show_first_category'])) {
+              $default_id = $db->selectValue('storeCategories', 'id', 'lft=1');
+            } else {
+              $default_id = 0;
+            }
             expSession::set('catid',$default_id);
         } elseif (!isset($this->config['show_first_category']) && !expTheme::inAction()) {
             expSession::set('catid',0);
