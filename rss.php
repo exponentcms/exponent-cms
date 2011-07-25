@@ -16,8 +16,9 @@
 #
 ##################################################
 
-if (!defined("EXPONENT")) include_once('exponent.php');
-if (!defined('SYS_RSS')) include_once('core_rss.php');
+if (!defined("EXPONENT")) require_once('exponent.php');
+//if (!defined('SYS_RSS')) include_once('core_rss.php');
+if (!defined('SYS_RSS')) require_once(BASE.'external/feedcreator.class.php');
 
 //$location = new Location($_REQUEST['module'],$_REQUEST['identifier'],$_REQUEST['internal']);
 $location->mod = "";
