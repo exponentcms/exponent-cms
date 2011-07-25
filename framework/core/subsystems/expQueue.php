@@ -63,7 +63,7 @@ class expQueue {
 	}
 
 	static function flushQueue($name) {
-		$flash = exponent_seesions_get('flash');
+		$flash = exponent_sessions_get('flash');
 		$flash[$name] = array();
 		exponent_sessions_set('flash', $flash);
 	}
