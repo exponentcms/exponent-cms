@@ -133,9 +133,9 @@ class administrationController extends expController {
 				}
 			}
 		}
-		ksort($tables);
     	exponent_sessions_clearCurrentUserSessionCache();
-	    assign_to_template(array('status'=>$tables));
+		ksort($tables);
+      assign_to_template(array('status'=>$tables));
 	}
 
     public function manage_unused_tables() {
