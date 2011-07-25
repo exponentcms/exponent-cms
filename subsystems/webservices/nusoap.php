@@ -3475,8 +3475,7 @@ class wsdl extends nusoap_base {
             $this->message[$pos] = array('cdata' => ''); 
             // get element prefix
 //            if (ereg(':', $name)) {
-            if (preg_m
-            (':', $name)) {
+            if (preg_match(':', $name)) {
                 // get ns prefix
                 $prefix = substr($name, 0, strpos($name, ':')); 
                 // get ns
