@@ -55,6 +55,38 @@ class expString {
 
         return $str;
     }
+	
+	static function convertXMLFeedSafeChar($str) {
+		$str = str_replace("<br>","",$str);
+        $str = str_replace("</br>","",$str);
+        $str = str_replace("<br/>","",$str);
+        $str = str_replace("<br />","",$str);
+        $str = str_replace("&quot;",'"',$str);
+        $str = str_replace("&#39;","'",$str);
+        $str = str_replace("&rsquo;","'",$str);
+        $str = str_replace("&lsquo;","'",$str);        
+        $str = str_replace("&#174;","",$str);
+        $str = str_replace("–","-", $str);
+        $str = str_replace("—","-", $str); 
+        $str = str_replace("”", '"', $str);
+        $str = str_replace("&rdquo;",'"', $str);
+        $str = str_replace("“", '"', $str);
+        $str = str_replace("&ldquo;",'"', $str);
+        $str = str_replace("\r\n"," ",$str); 
+        $str = str_replace("¼"," 1/4",$str);
+        $str = str_replace("&#188;"," 1/4", $str);
+        $str = str_replace("½"," 1/2",$str);
+        $str = str_replace("&#189;"," 1/2",$str);
+        $str = str_replace("¾"," 3/4",$str);
+        $str = str_replace("&#190;"," 3/4",$str);
+        $str = str_replace("™", "(TM)", $str);
+        $str = str_replace("&trade;","(TM)", $str);
+        $str = str_replace("&reg;","(R)", $str);
+        $str = str_replace("®","(R)",$str);        
+        $str = str_replace("&","&amp;",$str);      
+		$str = str_replace(">","&gt;",$str);      		
+        return trim($str);
+	}
 
 }
 ?>
