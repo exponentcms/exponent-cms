@@ -42,11 +42,11 @@ class sales_repController extends expController {
     }
     
     public function showall() {
-        redirct_to(array('controller'=>'sales_rep', 'action'=>'manage'));
+        redirect_to(array('controller'=>'sales_rep', 'action'=>'manage'));
     }
     
     public function show() {
-        redirct_to(array('controller'=>'sales_rep', 'action'=>'manage'));
+        redirect_to(array('controller'=>'sales_rep', 'action'=>'manage'));
     }
     
     /*public function update() {

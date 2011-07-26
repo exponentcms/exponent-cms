@@ -97,11 +97,11 @@ class order_statusController extends expController {
     }
     
     public function showall() {
-        redirct_to(array('controller'=>'order_status', 'action'=>'manage'));
+        redirect_to(array('controller'=>'order_status', 'action'=>'manage'));
     }
     
     public function show() {
-        redirct_to(array('controller'=>'order_status', 'action'=>'manage'));
+        redirect_to(array('controller'=>'order_status', 'action'=>'manage'));
     }
     
 }

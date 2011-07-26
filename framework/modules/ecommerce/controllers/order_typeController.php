@@ -42,11 +42,11 @@ class order_typeController extends expController {
     }
     
     public function showall() {
-        redirct_to(array('controller'=>'order_type', 'action'=>'manage'));
+        redirect_to(array('controller'=>'order_type', 'action'=>'manage'));
     }
     
     public function show() {
-        redirct_to(array('controller'=>'order_type', 'action'=>'manage'));
+        redirect_to(array('controller'=>'order_type', 'action'=>'manage'));
     }
     
     public function update() {
