@@ -118,7 +118,7 @@ class payflowpro extends creditcard {
         $nvpstr = "";
         while(list($key, $value) = each($apiParams)) 
         {
-            $tmpVal = urlencode(ereg_replace(',', '', $value));
+            $tmpVal = urlencode(preg_replace('/,/', '', $value));
             $nvpstr .= $key . '[' . strlen($tmpVal) . ']=' . $tmpVal . '&';
         }
             
@@ -409,7 +409,7 @@ class payflowpro extends creditcard {
         $nvpstr = "";
         while(list($key, $value) = each($apiParams)) 
         {
-            $tmpVal = urlencode(ereg_replace(',', '', $value));
+            $tmpVal = urlencode(preg_replace('/,/', '', $value));
             $nvpstr .= $key . '[' . strlen($tmpVal) . ']=' . $tmpVal . '&';
         }
             
@@ -530,7 +530,7 @@ class payflowpro extends creditcard {
         $nvpstr = "";
         while(list($key, $value) = each($apiParams)) 
         {
-            $tmpVal = urlencode(ereg_replace(',', '', $value));
+            $tmpVal = urlencode(preg_replace('/,/', '', $value));
             $nvpstr .= $key . '[' . strlen($tmpVal) . ']=' . $tmpVal . '&';
         }
             
@@ -657,7 +657,7 @@ class payflowpro extends creditcard {
         $nvpstr = "";
         while(list($key, $value) = each($apiParams)) 
         {
-            $tmpVal = urlencode(ereg_replace(',', '', $value));
+            $tmpVal = urlencode(preg_replace('/,/', '', $value));
             $nvpstr .= $key . '[' . strlen($tmpVal) . ']=' . $tmpVal . '&';
         }
             
