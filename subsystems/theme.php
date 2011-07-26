@@ -16,6 +16,7 @@
 # GPL: http://www.gnu.org/licenses/gpl.txt
 #
 ##################################################
+/** @define "BASE" "../" */
 
 /* exdoc
  * The definition of this constant lets other parts of the system know
@@ -147,24 +148,27 @@ function rebuild_css(){
 
         // Specify the files to be minified. Full URLs are allowed as long as they point                 
         // to the same server running Minify. 
-            $minifyCSS->addFile($css_files);
+//            $minifyCSS->addFile($css_files);  // No longer used, passed as parameter to combine
 
         // Establish the file where we will build the compiled CSS file
             $compiled_file = fopen(BASE.'tmp/css/exp-styles-min.css', 'w');
         //  eDebug($minifyCSS->combine());
 
-        fwrite($compiled_file, $minifyCSS->combine());
+//        fwrite($compiled_file, $minifyCSS->combine());
+        fwrite($compiled_file, $minifyCSS->combine($css_files));
         fclose($compiled_file);
     }
 }
 
 function exponent_theme_remove_css() {
     if (!defined('SYS_FILES')) include_once(BASE.'subsystems/files.php');
+    exponent_files_remove_files_in_directory(BASE.'tmp/minify');  // also clear the minify engine's cache
     return exponent_files_remove_files_in_directory(BASE.'tmp/css');
 }
 
 function exponent_theme_remove_smarty_cache() {
     if (!defined('SYS_FILES')) include_once(BASE.'subsystems/files.php');
+    exponent_files_remove_files_in_directory(BASE.'tmp/cache');  // alt location for cache
     return exponent_files_remove_files_in_directory(BASE.'tmp/views_c');    
 }
 
@@ -172,19 +176,20 @@ function exponent_theme_buildCSSFile($cssfile) {
     if (DEVELOPMENT > 0 || !is_readable(BASE.$cssfile)) {
         global $css_files;
         define('MINIFY_CACHE_DIR',BASE.'tmp/minify');           // Define the cache dir first.
-        if (!is_dir(BASE.'tmp/minify')) mkdir(BASE.'tmp/minify');   //if the dir doesnt exist- create it  
+        if (!is_dir(BASE.'tmp/minify')) mkdir(BASE.'tmp/minify');   //if the dir doesnt exist - create it
         include_once(BASE.'external/minify/minify.php');        // Load the Minify library if needed.                 
         
         // Create new Minify objects.                 
         $minifyCSS = new Minify(Minify::TYPE_CSS);                         
 
         // Specify the files to be minified. Full URLs are allowed as long as they point to the same server running Minify. 
-        $minifyCSS->addFile($css_files);
+//        $minifyCSS->addFile($css_files);  // No longer used, passed as parameter to combine
 
         // Establish the file where we will build the compiled CSS file
         $compiled_file = fopen(BASE . $cssfile, 'w');
 
-        fwrite($compiled_file, $minifyCSS->combine());
+//        fwrite($compiled_file, $minifyCSS->combine());
+        fwrite($compiled_file, $minifyCSS->combine($css_files));
         fclose($compiled_file);
     }
 }
@@ -215,9 +220,6 @@ function exponent_theme_headerInfo($config) {
 
 function headerInfo($config) {
     global $sectionObj, $validateTheme, $head_config;
-    
-    // may not need this soon here...
-    $langinfo = include(BASE.'subsystems/lang/'.LANG.'.php');
     
     $validateTheme['headerinfo'] = true;
     // end checking for headerInfo
@@ -268,7 +270,7 @@ function headerInfo($config) {
     
     $str = '';
     $str = '<title>'.$metainfo['title']."</title>\r\n";
-    $str .= "\t".'<meta http-equiv="Content-Type" content="text/html; charset='.$langinfo['charset'].'" '.XHTML_CLOSING.'>'."\n";
+    $str .= "\t".'<meta http-equiv="Content-Type" content="text/html; charset='.LANG_CHARSET.'" '.XHTML_CLOSING.'>'."\n";
     $str .= "\t".'<meta name="Generator" content="Exponent Content Management System - '.EXPONENT_VERSION_MAJOR.'.'.EXPONENT_VERSION_MINOR.'.'.EXPONENT_VERSION_REVISION.'.'.EXPONENT_VERSION_TYPE.EXPONENT_VERSION_ITERATION.'" '.XHTML_CLOSING.'>' . "\n";
     $str .= "\t".'<meta name="Keywords" content="'.$metainfo['keywords'] . '" />'."\n";
     $str .= "\t".'<meta name="Description" content="'.$metainfo['description']. '" '.XHTML_CLOSING.'>'."\n";
@@ -482,20 +484,31 @@ function exponent_theme_showModule($module,$view="Default",$title="",$source=nul
     }
     $loc = exponent_core_makeLocation($module,$source."");
 
-    if ($db->selectObject("locationref","module='$module' AND source='".$loc->src."'") == null) {
-        $locref = null;
-        $locref->module = $module;
-        $locref->source = $loc->src;
-        $locref->internal = "";
-        $locref->refcount = 1000;
-        $db->insertObject($locref,"locationref");
-        if ($sectionObj != null) {
-            $locref->section = $sectionObj->id;
-            $locref->is_original = 1;
-            $db->insertObject($locref,'sectionref');
-        }
+    // if ($db->selectObject("locationref","module='$module' AND source='".$loc->src."'") == null) {
+        // $locref = null;
+        // $locref->module = $module;
+        // $locref->source = $loc->src;
+        // $locref->internal = "";
+        // $locref->refcount = 1000;
+        // $db->insertObject($locref,"locationref");
+        // if ($sectionObj != null) {
+            // $locref->section = $sectionObj->id;
+            // $locref->is_original = 1;
+            // $db->insertObject($locref,'sectionref');
+        // }
+    // }
+    if ($db->selectObject("sectionref","module='$module' AND source='".$loc->src."'") == null) {
+			$secref = null;
+			$secref->module = $module;
+			$secref->source = $loc->src;
+			$secref->internal = "";
+			$secref->refcount = 1000;
+			if ($sectionObj != null) {
+                $secref->section = $sectionObj->id;
+			}
+            $secref->is_original = 1;
+            $db->insertObject($secref,'sectionref');
     }
-
     $iscontroller = controllerExists($module);
 
     if (defined("SELECTOR") && call_user_func(array($module,"hasSources"))) {

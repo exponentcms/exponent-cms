@@ -16,6 +16,7 @@
 # GPL: http://www.gnu.org/licenses/gpl.txt
 #
 ##################################################
+/** @define "BASE" "." */
 
 define('SCRIPT_EXP_RELATIVE','');
 define('SCRIPT_FILENAME','orphan_source_selector.php');
@@ -82,7 +83,8 @@ if (isset($_GET['module'])) {
 	$thistemplate->assign('main_output',ob_get_contents());
 	$thistemplate->assign('error','');
 	ob_end_clean();
-} else if ($db->countObjects('locationref','refcount = 0')) {
+//} else if ($db->countObjects('locationref','refcount = 0')) {
+} else if ($db->countObjects('sectionref','refcount = 0')) {
 	$thistemplate->assign('error','needmodule');
 } else {
 	$thistemplate->assign('error','nomodules');

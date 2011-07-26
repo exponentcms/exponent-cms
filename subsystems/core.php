@@ -17,6 +17,7 @@
 # GPL: http://www.gnu.org/licenses/gpl.txt
 #
 ##################################################
+/** @define "BASE" ".." */
 
 /* exdoc
  * The definition of this constant lets other parts
@@ -233,13 +234,13 @@ function exponent_core_copyObject($o) {
  */
 function exponent_core_decrementLocationReference($loc,$section) {
 	global $db;
-	$oldLocRef = $db->selectObject("locationref","module='".$loc->mod."' AND source='".$loc->src."' AND internal='".$loc->int."'");
+//	$oldLocRef = $db->selectObject("locationref","module='".$loc->mod."' AND source='".$loc->src."' AND internal='".$loc->int."'");
 	$oldSecRef = $db->selectObject("sectionref", "module='".$loc->mod."' AND source='".$loc->src."' AND internal='".$loc->int."' AND section=$section");
 	
-	$oldLocRef->refcount -= 1;
+//	$oldLocRef->refcount -= 1;
 	$oldSecRef->refcount -= 1;
 	
-	$db->updateObject($oldLocRef,"locationref","module='".$loc->mod."' AND source='".$loc->src."' AND internal='".$loc->int."'");
+//	$db->updateObject($oldLocRef,"locationref","module='".$loc->mod."' AND source='".$loc->src."' AND internal='".$loc->int."'");
 	$db->updateObject($oldSecRef,"sectionref","module='".$loc->mod."' AND source='".$loc->src."' AND internal='".$loc->int."' AND section=$section");
 }
 
@@ -253,33 +254,33 @@ function exponent_core_decrementLocationReference($loc,$section) {
  */
 function exponent_core_incrementLocationReference($loc,$section) {
 	global $db;
-	 $newLocRef = $db->selectObject("locationref","module='".$loc->mod."' AND source='".$loc->src."' AND internal='".$loc->int."'");
-	 $is_new = false; // For the is_original sectionref attribute
-	 if ($newLocRef != null) {
-		 // Pulled an existing source.  Update refcount
-		 $newLocRef->refcount += 1;
-		 $db->updateObject($newLocRef,"locationref","module='".$loc->mod."' AND source='".$loc->src."' AND internal='".$loc->int."'");
-	 } else {
-		 $is_new = true;
-		 // New source.  Populate reference
-		 $newLocRef->module   = $loc->mod;
-		 $newLocRef->source   = $loc->src;
-		 $newLocRef->internal = $loc->int;
-		 $newLocRef->refcount = 1;
-		 $db->insertObject($newLocRef,"locationref");
-		
-		 // Go ahead and assign permissions on contained module.
-		 if ($loc->mod != 'navigationmodule' && $loc->mod != 'administrationmodule') {
-			 //$perms = call_user_func(array($loc->mod,"permissions"));
-			 $mod = new $loc->mod();
-			 $perms = $mod->permissions();
-			 global $user;
-			 foreach (array_keys($perms) as $perm) {
-				 exponent_permissions_grant($user,$perm,$loc);
-			 }
-		 }
-		 exponent_permissions_triggerSingleRefresh($user);
-	 }
+//	 $newLocRef = $db->selectObject("locationref","module='".$loc->mod."' AND source='".$loc->src."' AND internal='".$loc->int."'");
+//	 $is_new = false; // For the is_original sectionref attribute
+//	 if ($newLocRef != null) {
+//		 // Pulled an existing source.  Update refcount
+//		 $newLocRef->refcount += 1;
+//		 $db->updateObject($newLocRef,"locationref","module='".$loc->mod."' AND source='".$loc->src."' AND internal='".$loc->int."'");
+//	 } else {
+//		 $is_new = true;
+//		 // New source.  Populate reference
+//		 $newLocRef->module   = $loc->mod;
+//		 $newLocRef->source   = $loc->src;
+//		 $newLocRef->internal = $loc->int;
+//		 $newLocRef->refcount = 1;
+//		 $db->insertObject($newLocRef,"locationref");
+//
+//		 // Go ahead and assign permissions on contained module.
+//		 if ($loc->mod != 'navigationmodule' && $loc->mod != 'administrationmodule') {
+//			 //$perms = call_user_func(array($loc->mod,"permissions"));
+//			 $mod = new $loc->mod();
+//			 $perms = $mod->permissions();
+//			 global $user;
+//			 foreach (array_keys($perms) as $perm) {
+//				 exponent_permissions_grant($user,$perm,$loc);
+//			 }
+//		 }
+//		 exponent_permissions_triggerSingleRefresh($user);
+//	 }
 	
 	$newSecRef = $db->selectObject("sectionref", "module='".$loc->mod."' AND source='".$loc->src."' AND internal='".$loc->int."' AND section=$section");
 	if ($newSecRef != null) {
@@ -293,8 +294,8 @@ function exponent_core_incrementLocationReference($loc,$section) {
 		$newSecRef->internal = $loc->int;
 		$newSecRef->section = $section;
 		$newSecRef->refcount = 1;
-		$newSecRef->is_original = ($is_new ? 1 : 0);
-//		$newSecRef->is_original = 1;
+//		$newSecRef->is_original = ($is_new ? 1 : 0);
+		$newSecRef->is_original = 1;
 		$db->insertObject($newSecRef,"sectionref");
 	}
 }

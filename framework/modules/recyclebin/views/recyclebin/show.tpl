@@ -18,7 +18,7 @@
 <head>
     <title>Restore from Recycle Bin</title>
     <link rel="stylesheet" type="text/css" href="{$smarty.const.URL_FULL}tmp/css/exp-styles-min.css" >
-    <link rel="stylesheet" type="text/css" href="{$smarty.const.URL_FULL}framework/modules/recyclebin/css/recyclebin.css" >
+    <link rel="stylesheet" type="text/css" href="{$smarty.const.URL_FULL}framework/modules/recyclebin/assets/css/recyclebin.css" >
     
 </head>
 <body>
