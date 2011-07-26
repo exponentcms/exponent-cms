@@ -1,4 +1,5 @@
 <?php
+/** @define "BASE" ".." */
 
 if (!defined('EXPONENT')) exit('');
 

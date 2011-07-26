@@ -16,7 +16,8 @@
 # GPL: http://www.gnu.org/licenses/gpl.txt
 #
 ##################################################
- 
+/** @define "BASE" "../../.." */
+
 if (!defined("EXPONENT")) exit("");
 
 exponent_flow_set(SYS_FLOW_PUBLIC,SYS_FLOW_ACTION);

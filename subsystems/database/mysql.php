@@ -12,6 +12,8 @@
  * @link http://www.gnu.org/licenses/gpl.txt GPL http://www.gnu.org/licenses/gpl.txt
  * @package Exponent-CMS
  */
+/** @define "BASE" "../.." */
+
 /**
  * Database Class (MySQL)
  *

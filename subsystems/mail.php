@@ -14,6 +14,7 @@
  * @copyright  Copyright (c) 2009 Tyler Smart, Kenosis Designs, LLC.
  * @license    http://www.gnu.org/licenses/gpl.txt	GPL
  */
+/** @define "BASE" ".." */
 
 if (!defined('EXPONENT')) exit('');
 

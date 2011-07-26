@@ -15,6 +15,8 @@
  * @author Adam Kessler <adam@oicgroup.net>
  * @version 2.0.0
  */
+/** @define "BASE" "../../.." */
+
 /**
  * This is the class expValidator
  *

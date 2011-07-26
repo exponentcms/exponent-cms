@@ -17,7 +17,7 @@
  * @version    Release: @package_version@
  * @link       http://www.exponent-docs.org/api/package/PackageName
  */
-
+/** @define "BASE" "../../.." */
 
 /* 
 exponentMail is an integrator class, bringing the flexibility of SwiftMail into Exponent gracefully.
@@ -85,7 +85,7 @@ class expMail extends Swift {
 						$conn = new Swift_Connection_Sendmail($params['connections']);
 					} else {
 						// Attempt to auto-detect.
-						$conn = new Swift_Connection_Sendmail(Swift_Conection_Sendmail::AUTO_DETECT);
+						$conn = new Swift_Connection_Sendmail(Swift_Connection_Sendmail::AUTO_DETECT);
 					}
 				break;
 				case "rotator":

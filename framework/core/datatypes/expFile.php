@@ -15,6 +15,7 @@
  * @author Adam Kessler <adam@oicgroup.net>
  * @version 2.0.0
  */
+/** @define "BASE" "../../.." */
 
  /**
   * Class to handle files at the File System Level and updating

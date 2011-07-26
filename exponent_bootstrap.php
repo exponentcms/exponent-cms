@@ -16,6 +16,7 @@
 # GPL: http://www.gnu.org/licenses/gpl.txt
 #
 ##################################################
+/** @define "BASE" "." */
 
 // Following code taken from http://us4.php.net/manual/en/function.get-magic-quotes-gpc.php
 //   - it allows magic_quotes to be on without screwing stuff up.
@@ -71,7 +72,7 @@ require_once(BASE.'exponent_version.php');
 define('EXPONENT', '1');
 
 // load the constants from the global config, theme config, and then default config settings
-require_once(BASE . '/subsystems/config/load.php');
+require_once(BASE . 'subsystems/config/load.php');
 
 // define remaining constants throughout the system based on loaded configuration constants
 

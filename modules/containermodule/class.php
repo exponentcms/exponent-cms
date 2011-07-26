@@ -16,6 +16,7 @@
 # GPL: http://www.gnu.org/licenses/gpl.txt
 #
 ##################################################
+/** @define "BASE" "../.." */
 
 class containermodule {
 	function name() { return exponent_lang_loadKey('modules/containermodule/class.php','module_name'); }

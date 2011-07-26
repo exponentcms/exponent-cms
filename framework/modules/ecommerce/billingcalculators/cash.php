@@ -1,4 +1,5 @@
 <?php
+/** @define "BASE" "../../../.." */
 
 class cash extends billingcalculator{
 	function name() { return "Cash/Check"; }

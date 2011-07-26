@@ -30,6 +30,8 @@
 #
 # $Id: view.php,v 1.1.1.1 2005/07/14 18:34:04 cvs Exp $
 ##################################################
+/** @define "BASE" "../../.." */
+
 if (!defined('EXPONENT')) exit('');
 
 exponent_flow_set(SYS_FLOW_PUBLIC,SYS_FLOW_ACTION);

@@ -30,6 +30,7 @@
 #
 # $Id: manage_question.php,v 1.2 2005/04/26 03:06:00 filetreefrog Exp $
 ##################################################
+/** @define "BASE" "../../.." */
 
 if (!defined('EXPONENT')) exit('');
 
