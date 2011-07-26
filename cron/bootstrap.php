@@ -41,6 +41,8 @@
     
     //define('BASE',str_ireplace('/cron','',__realpath(dirname(__FILE__))));
     define("EXP_PATH", BASE);
+/** @define "EXP_PATH" ".." */
+
     //Pull in the mysqli helper class form exponet. 
     // Sure, we could have used mysqli directly but we have this nice friendly class so why not use it
     require_once(EXP_PATH . "subsystems/database/mysqli.php");

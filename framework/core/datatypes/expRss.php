@@ -21,7 +21,8 @@
  * @subpackage Core-Datatypes
  * @package Framework
  */
- 
+/** @define "BASE" "../../../" */
+
 class expRss extends expRecord {
     public $table = 'expRss';
     protected $attachable_item_types = array(

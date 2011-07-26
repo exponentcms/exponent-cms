@@ -15,6 +15,7 @@
 # GPL: http://www.gnu.org/licenses/gpl.txt
 #
 ##################################################
+/** @define "BASE" "." */
 
 if (!defined("EXPONENT")) require_once('exponent.php');
 //if (!defined('SYS_PODCASTING')) include_once('core_podcast.php');

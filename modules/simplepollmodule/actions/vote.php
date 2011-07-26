@@ -30,6 +30,7 @@
 #
 # $Id: vote.php,v 1.1 2005/04/10 23:24:02 filetreefrog Exp $
 ##################################################
+/** @define "BASE" "../../.." */
 
 if (!defined('EXPONENT')) exit('');
 

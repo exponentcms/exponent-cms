@@ -29,6 +29,8 @@ if (!defined('MAGPIE_DIR')) {
 if (!defined('MAGPIE_OUTPUT_ENCODING')) {
     define('MAGPIE_OUTPUT_ENCODING', 'UTF-8');
 }
+
+/** @define "MAGPIE_DIR" "../external/magpierss/" */
 require_once(MAGPIE_DIR.'rss_fetch.inc');
 require_once(MAGPIE_DIR.'rss_utils.inc');
 define('MAGPIE_CACHE_DIR', BASE.'tmp/rsscache');

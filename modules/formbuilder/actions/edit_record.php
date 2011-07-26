@@ -16,7 +16,8 @@
 # GPL: http://www.gnu.org/licenses/gpl.txt
 #
 ##################################################
-	
+/** @define "BASE" "../../.." */
+
 if (!defined('EXPONENT')) exit('');
 
 $i18n = exponent_lang_loadFile('modules/formbuilder/actions/edit_record.php');

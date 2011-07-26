@@ -16,6 +16,7 @@
 # GPL: http://www.gnu.org/licenses/gpl.txt
 #
 ##################################################
+/** @define "BASE" ".." */
 
 /** exdoc
  * The definition of this constant lets other parts of the system know 
@@ -47,7 +48,7 @@ define("SYS_SMTP",1);
  */
 function exponent_smtp_mail($to_r,$from,$subject,$message,$headers=array(), $precallback="", $preUdata=null, $postcallback="", $postUdata=null) {
 
-	require_once(BASE."/subsystems/mail.php");
+	require_once(BASE."subsystems/mail.php");
 	$mail = new exponentMail();
 	$mail->addTo($to_r);
 	if ( $from != '' ) {
