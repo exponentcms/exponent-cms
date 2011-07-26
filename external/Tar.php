@@ -1327,7 +1327,7 @@ class Archive_Tar extends PEAR
             $this->_error('Directory '.$v_header['filename'].' already exists as a file');
             return false;
           }
-          if (!is_really_writable($v_header['filename'])) {
+          if (!expUtil::isReallyWritable($v_header['filename'])) {
             $this->_error('File '.$v_header['filename'].' already exists and is write protected');
             return false;
           }
