@@ -206,14 +206,14 @@ class mysqlid_database {
 			$tablename=>($this->tableExists($tablename) ? DATABASE_TABLE_INSTALLED : DATABASE_TABLE_FAILED)
 		);
 
-		if (isset($info[DB_TABLE_WORKFLOW]) && $info[DB_TABLE_WORKFLOW]) {
-			// Initialize workflow tables:
-			if (!defined("SYS_WORKFLOW")) require_once(BASE."subsystems/workflow.php");
-			$wf = exponent_workflow_installWorkflowTables($tablename,$datadef);
-			foreach ($wf as $key=>$status) {
-				$return[$key] = $status;
-			}
-		}
+//		if (isset($info[DB_TABLE_WORKFLOW]) && $info[DB_TABLE_WORKFLOW]) {
+//			// Initialize workflow tables:
+//			if (!defined("SYS_WORKFLOW")) require_once(BASE."subsystems/workflow.php");
+//			$wf = exponent_workflow_installWorkflowTables($tablename,$datadef);
+//			foreach ($wf as $key=>$status) {
+//				$return[$key] = $status;
+//			}
+//		}
 
 		return $return;
 	}
@@ -480,14 +480,14 @@ class mysqlid_database {
 			$tablename=>($modified ? TABLE_ALTER_SUCCEEDED : TABLE_ALTER_NOT_NEEDED)
 		);
 		
-		if (isset($info[DB_TABLE_WORKFLOW]) && $info[DB_TABLE_WORKFLOW]) {
-			// Initialize workflow tables:
-			if (!defined("SYS_WORKFLOW")) require_once(BASE."subsystems/workflow.php");
-			$wf = exponent_workflow_alterWorkflowTables($tablename,$newdatadef,$aggressive);
-			foreach ($wf as $key=>$status) {
-				$return[$key] = $status;
-			}
-		}
+//		if (isset($info[DB_TABLE_WORKFLOW]) && $info[DB_TABLE_WORKFLOW]) {
+//			// Initialize workflow tables:
+//			if (!defined("SYS_WORKFLOW")) require_once(BASE."subsystems/workflow.php");
+//			$wf = exponent_workflow_alterWorkflowTables($tablename,$newdatadef,$aggressive);
+//			foreach ($wf as $key=>$status) {
+//				$return[$key] = $status;
+//			}
+//		}
 
 		return $return;
 	}

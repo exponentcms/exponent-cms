@@ -162,11 +162,12 @@ if (($item == null && exponent_permissions_check("post",$loc)) ||
 			$edate->date = $d;
 			$db->insertObject($edate,"eventdate");
 		}
+		$db->insertObject($item,"calendar");
 //		calendarmodule::spiderContent($item);
 	}
 
-	exponent_workflow_post($item,'calendar',$loc);
-//	exponent_flow_redirect();
+//	exponent_workflow_post($item,'calendar',$loc);
+	exponent_flow_redirect();
 } else {
 	echo SITE_403_HTML;
 }

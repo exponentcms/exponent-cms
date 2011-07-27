@@ -20,7 +20,7 @@
 
 if (!defined('EXPONENT')) exit('');
 
-if (!defined('SYS_SMTP')) require_once(BASE.'subsystems/smtp.php');
+//if (!defined('SYS_SMTP')) require_once(BASE.'subsystems/smtp.php');
 
 //filter the message thru the form template for formatting
 $msgtemplate = new formtemplate('forms/email', '_'.$_POST['formname']);
@@ -28,7 +28,7 @@ $msgtemplate->assign('post', $_POST);
 $msg = $msgtemplate->render();
 $ret = false;
 
-//make sure we this is from a valid event and that the email addresses are listed, then mail
+//make sure this is from a valid event and that the email addresses are listed, then mail
 if (isset($_POST['id'])) {
 	$event = $db->selectObject('calendar','id='.intval($_POST['id']));
 	$email_addrs = array();
@@ -36,12 +36,26 @@ if (isset($_POST['id'])) {
 //			$email_addrs = split(',', $event->feedback_email);
 			$email_addrs = explode(',', $event->feedback_email);
 			$email_addrs = array_map('trim', $email_addrs);
-		try {
-			$ret = exponent_smtp_mail($email_addrs, SMTP_FROMADDRESS,$_POST['subject'],$msg);
-		}catch (Exception $e){
-			$message = exponent_lang_getText("There has been an error with the mail server on this site. Please contact the site administrator. \n");
-			if (DEVELOPMENT != 0) $message .= $e->getMessage() . "\n";
-			flash('error', $message);
+
+// old mail method
+//		try {
+//			$ret = exponent_smtp_mail($email_addrs, SMTP_FROMADDRESS,$_POST['subject'],$msg);
+//		}catch (Exception $e){
+//			$message = exponent_lang_getText("There has been an error with the mail server on this site. Please contact the site administrator. \n");
+//			if (DEVELOPMENT != 0) $message .= $e->getMessage() . "\n";
+//			flash('error', $message);
+//		}
+
+// new mail method
+		foreach ($email_addrs as $recip) {
+			$mail = new expMail();
+			$ret = $mail->quickSend(array(
+					"text_message"=>$msg,
+//					'html_message'=>$msg,
+					'to'=>$recip,
+					'from'=>trim(SMTP_FROMADDRESS),
+					'subject'=>$_POST['subject'],
+			));
 		}
 	}
 }
