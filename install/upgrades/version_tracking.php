@@ -45,72 +45,72 @@ class version_tracking extends upgradescript {
 	 */
 	function needed($ver) {
 	    global $db;
-
-		// we'll run when versions are equal since we may be doing an iteration update
-		$version = $db->selectObject('version',1);
-		if (empty($version)) {
-			$version->major = 0;
-			$version->minor = 0;
-			$version->revision = 0;
-			$version->type = '';
-			$version->iteration = '';
-		}
-		if ($version->major < EXPONENT_VERSION_MAJOR) {
-			return true;
-		} elseif ($version->minor < EXPONENT_VERSION_MINOR) {
-			return true;
-		} elseif ($version->revision < EXPONENT_VERSION_REVISION) {
-			return true;
-		} elseif ($version->minor < EXPONENT_VERSION_MINOR) {
-			return true;
-		} else {
-			switch ($version->type) {
-				case 'alpha':
-					$dbtype = 1;
-					break;
-				case 'beta':
-					$dbtype = 2;
-					break;
-				case 'release candidate':
-					$dbtype = 3;
-					break;
-				case 'develop':
-					$dbtype = 5;
-					break;
-				case '': // stable
-					$dbtype = 10;
-					break;
-				default:
-					$dbtype = 0;
-					break;
-			}
-			switch (EXPONENT_VERSION_TYPE) {
-				case 'alpha':
-					$swtype = 1;
-					break;
-				case 'beta':
-					$swtype = 2;
-					break;
-				case 'release candidate':
-					$swtype = 3;
-					break;
-				case 'develop':
-					$swtype = 5;
-					break;
-				case '': // stable
-					$swtype = 10;
-					break;
-				default:
-					$swtype = 0;
-					break;
-			}
-			if ($dbtype < $swtype) {
-				return true;
-			} elseif ($dbtype == $swtype && $version->type < EXPONENT_VERSION_ITERATION) {
-				return true;
-			}
-		}
-		return false;
+		return true;
+//		// we'll run when versions are equal since we may be doing an iteration update
+//		$version = $db->selectObject('version',1);
+//		if (empty($version)) {
+//			$version->major = 0;
+//			$version->minor = 0;
+//			$version->revision = 0;
+//			$version->type = '';
+//			$version->iteration = '';
+//		}
+//		if ($version->major < EXPONENT_VERSION_MAJOR) {
+//			return true;
+//		} elseif ($version->minor < EXPONENT_VERSION_MINOR) {
+//			return true;
+//		} elseif ($version->revision < EXPONENT_VERSION_REVISION) {
+//			return true;
+//		} elseif ($version->minor < EXPONENT_VERSION_MINOR) {
+//			return true;
+//		} else {
+//			switch ($version->type) {
+//				case 'alpha':
+//					$dbtype = 1;
+//					break;
+//				case 'beta':
+//					$dbtype = 2;
+//					break;
+//				case 'release candidate':
+//					$dbtype = 3;
+//					break;
+//				case 'develop':
+//					$dbtype = 5;
+//					break;
+//				case '': // stable
+//					$dbtype = 10;
+//					break;
+//				default:
+//					$dbtype = 0;
+//					break;
+//			}
+//			switch (EXPONENT_VERSION_TYPE) {
+//				case 'alpha':
+//					$swtype = 1;
+//					break;
+//				case 'beta':
+//					$swtype = 2;
+//					break;
+//				case 'release candidate':
+//					$swtype = 3;
+//					break;
+//				case 'develop':
+//					$swtype = 5;
+//					break;
+//				case '': // stable
+//					$swtype = 10;
+//					break;
+//				default:
+//					$swtype = 0;
+//					break;
+//			}
+//			if ($dbtype < $swtype) {
+//				return true;
+//			} elseif ($dbtype == $swtype && $version->type < EXPONENT_VERSION_ITERATION) {
+//				return true;
+//			}
+//		}
+//		return false;
 	}
 
 	/**
