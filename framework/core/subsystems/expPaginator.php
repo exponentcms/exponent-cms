@@ -318,7 +318,7 @@ class expPaginator {
 	//From Merge
     private function cleanParams($params)
     {  
-        $defaultParams = array('title'=>'','module'=>'','controller'=>'','src'=>'','id'=>'','dir'=>'');
+        $defaultParams = array('title'=>'','module'=>'','controller'=>'','src'=>'','id'=>'','dir'=>'','_common'=>'');
         $newParams = array();
         $func = new ReflectionClass($this);       
         foreach ($params as $pKey=>$pVal)
