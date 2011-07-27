@@ -142,10 +142,9 @@ function rebuild_css(){
         //eDebug($css_files);
         //exit;
         // Load the Minify library if needed.                 
-        include_once(BASE.'external/minify/minify.php');                 
+        include_once(BASE.'external/minify/min/index.php');                 
         // Create new Minify objects.                 
         $minifyCSS = new Minify(Minify::TYPE_CSS);                         
-
         // Specify the files to be minified. Full URLs are allowed as long as they point                 
         // to the same server running Minify. 
 //            $minifyCSS->addFile($css_files);  // No longer used, passed as parameter to combine
@@ -177,11 +176,10 @@ function exponent_theme_buildCSSFile($cssfile) {
         global $css_files;
         define('MINIFY_CACHE_DIR',BASE.'tmp/minify');           // Define the cache dir first.
         if (!is_dir(BASE.'tmp/minify')) mkdir(BASE.'tmp/minify');   //if the dir doesnt exist - create it
-        include_once(BASE.'external/minify/minify.php');        // Load the Minify library if needed.                 
+        include_once(BASE.'external/minify/min/index.php');        // Load the Minify library if needed.                 
         
         // Create new Minify objects.                 
         $minifyCSS = new Minify(Minify::TYPE_CSS);                         
-
         // Specify the files to be minified. Full URLs are allowed as long as they point to the same server running Minify. 
 //        $minifyCSS->addFile($css_files);  // No longer used, passed as parameter to combine
 
