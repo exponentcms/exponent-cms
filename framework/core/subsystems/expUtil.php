@@ -225,7 +225,6 @@ class expUtil {
 			} elseif ($dbtype == $swtype && $version->type < EXPONENT_VERSION_ITERATION) {
 				expUtil::launchInstaller();
 			}
-
 		}
 	}
 
