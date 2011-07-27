@@ -48,6 +48,13 @@ class version_tracking extends upgradescript {
 
 		// we'll run when versions are equal since we may be doing an iteration update
 		$version = $db->selectObject('version',1);
+		if (empty($version)) {
+			$version->major = 0;
+			$version->minor = 0;
+			$version->revision = 0;
+			$version->type = '';
+			$version->iteration = '';
+		}
 		if ($version->major < EXPONENT_VERSION_MAJOR) {
 			return true;
 		} elseif ($version->minor < EXPONENT_VERSION_MINOR) {
