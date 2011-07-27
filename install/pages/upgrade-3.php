@@ -21,7 +21,8 @@
 if (!defined('EXPONENT')) exit('');
 //$db_version = $db->selectObject('version','created_at=(select max(created_at) from '.DB_TABLE_PREFIX.'_version)');
 
-$num_version = EXPONENT_VERSION_MAJOR.'.'.EXPONENT_VERSION_MINOR.'.'.EXPONENT_VERSION_REVISION;
+//$num_version = EXPONENT_VERSION_MAJOR.'.'.EXPONENT_VERSION_MINOR.'.'.EXPONENT_VERSION_REVISION;
+$num_version = expUtil::getVersion();
 
 ?>
 <h2><?php echo gt('Upgrade Scripts'); ?></h2>
