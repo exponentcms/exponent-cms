@@ -262,8 +262,20 @@ function exponent_users_create($formvalues) {
 		$msg = $u->firstname . ", \n\n";
 		$msg .= sprintf(USER_REGISTRATION_WELCOME_MSG, $u->firstname, $u->lastname, $u->username);
 
-		if (!defined("SYS_SMTP")) include_once(BASE."subsystems/smtp.php");
-		if (!exponent_smtp_mail($to, $from ,$subject,$msg,$headers));
+// old mail method
+//		if (!defined("SYS_SMTP")) include_once(BASE."subsystems/smtp.php");
+//		if (!exponent_smtp_mail($to, $from ,$subject,$msg,$headers));
+
+// new mail method
+		$mail = new expMail();
+		$mail->quickSend(array(
+				'headers'=>$headers,
+				'html_message'=>$msg,
+				"text_message"=>$msg,
+				'to'=>trim($to),
+				'from'=>trim($from),
+				'subject'=>$subject,
+		));
 	}
 
 	if (USER_REGISTRATION_SEND_NOTIF){
@@ -275,8 +287,20 @@ function exponent_users_create($formvalues) {
 		$msg = "When: " . date("F j, Y, g:i a") ."\n\n";
 		$msg .= "Their name is: " . $u->firstname . " " . $u->lastname . "\n\n";
 
-		if (!defined("SYS_SMTP")) include_once(BASE."subsystems/smtp.php");
-		if (exponent_smtp_mail($to, $from ,$subject,$msg,$headers));
+// old mail method
+//		if (!defined("SYS_SMTP")) include_once(BASE."subsystems/smtp.php");
+//		if (exponent_smtp_mail($to, $from ,$subject,$msg,$headers));
+
+// new mail method
+		$mail = new expMail();
+		$mail->quickSend(array(
+				'headers'=>$headers,
+				'html_message'=>$msg,
+				"text_message"=>$msg,
+				'to'=>trim($to),
+				'from'=>trim($from),
+				'subject'=>$subject,
+		));
   	}
 	// Return the newly created user object (complete with ID) to the caller.
 	return $u;

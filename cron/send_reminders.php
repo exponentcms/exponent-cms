@@ -16,12 +16,12 @@
 # GPL: http://www.gnu.org/licenses/gpl.txt
 #
 ##################################################
-/** @define "BASE" "." */
+/** @define "BASE" ".." */
 
 define('SCRIPT_EXP_RELATIVE','');
 define('SCRIPT_FILENAME','index.php');  // we need to force the links to build correctly
 // Initialize the Exponent Framework
-require_once('exponent.php');
+require_once('../exponent.php');
 global $user;
 global $db;
 $i18n = exponent_lang_loadFile('modules/calendarmodule/class.php');
@@ -88,8 +88,8 @@ $template->assign("time",$time);
 	// $viewparams = array("type"=>"byday", "range"=>"week");
 // }
 
-if (!defined("SYS_DATETIME")) include_once(BASE."subsystems/datetime.php");
-if (!defined('SYS_SORTING')) include_once(BASE.'subsystems/sorting.php');
+if (!defined("SYS_DATETIME")) include_once(BASE . "subsystems/datetime.php");
+if (!defined('SYS_SORTING')) include_once(BASE . 'subsystems/sorting.php');
 
 if (!function_exists("exponent_sorting_byEventStartAscending")) {
 	function exponent_sorting_byEventStartAscending($a,$b) {
@@ -405,7 +405,7 @@ $headers = array(
 	"From"=>$from = $config->email_from_reminder,
 	"Reply-to"=>$reply = $config->email_reply_reminder
 	);
-if (!defined("SYS_USERS")) require_once(BASE."subsystems/users.php");
+if (!defined("SYS_USERS")) require_once(BASE . "subsystems/users.php");
 
 // set up the html message
 $template->assign("showdetail",$config->email_showdetail);
@@ -442,19 +442,38 @@ if (empty($emails)) {
 	exit();
 }
 
-require_once(BASE."subsystems/mail.php");
-$mail = new exponentMail();
-$mail->subject($subject);
-$mail->addText($msg);
-$mail->addHTML($htmlmsg);
-$mail->addFrom($config->email_address_reminder,$config->email_from_reminder);
-foreach($emails as $recip) {	// to keep other recepients hidden
-	try {
-		$mail->addTo($recip);
-		$mail->send();
-	} catch (Exception $e) {
-	}
-	$mail->flushRecipients();
+// old mail method
+//require_once(BASE . "subsystems/mail.php");
+//$mail = new exponentMail();
+//$mail->subject($subject);
+//$mail->addText($msg);
+//$mail->addHTML($htmlmsg);
+//$mail->addFrom($config->email_address_reminder,$config->email_from_reminder);
+//foreach($emails as $recip) {	// to keep other recepients hidden
+//	try {
+//		$mail->addTo($recip);
+//		$mail->send();
+//	} catch (Exception $e) {
+//	}
+//	$mail->flushRecipients();
+//}
+
+// new mail method
+$headers = array(
+	"MIME-Version"=>"1.0",
+	"Content-type"=>"text/html; charset=".LANG_CHARSET
+);
+foreach ($emails as $recip) {
+	$mail = new expMail();
+	$mail->quickSend(array(
+			'headers'=>$headers,
+			'html_message'=>$htmlmsg,
+			"text_message"=>$msg,
+			'to'=>trim($recip),
+			'from'=>trim($config->email_address_reminder),
+			'from_name'=>$config->email_from_reminder,
+			'subject'=>$subject,
+	));
 }
 
 print_r("<p>The following reminder was sent via email:</p><br>");	
