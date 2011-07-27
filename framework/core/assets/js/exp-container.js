@@ -19,7 +19,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','event', function(Y) {
             //n.one(".exp-dropmenu").setStyle('zIndex',chromes.size()+1);
         });
 
-        if (Y.UA.ie < 9) {
+        if (Y.UA.ie < 9 && Y.UA.ie > 6) {
             Y.delegate('click', showMenu, document.body, '.container-chrome .trigger');
             Y.on('click', hideMenus, document.body);            
         } else {
