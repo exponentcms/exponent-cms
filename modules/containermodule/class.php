@@ -73,7 +73,7 @@ class containermodule {
 			$dest = $source_select['dest'];
 		}
 		
-		global $db;
+		global $db, $user;
 		
 		$container = null;
 		$container_key = serialize( $loc );
@@ -187,6 +187,7 @@ class containermodule {
 			);
 		}
 	
+		$template->assign('user',$user);
 		$template->assign('containers',$containers);
 		$template->assign('hasParent',(isset($this) && isset($this->_hasParent) ? 1 : 0));
 		$template->register_permissions(

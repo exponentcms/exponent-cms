@@ -18,7 +18,7 @@
 ##################################################
 
 function smarty_function_getchromemenu($params,&$smarty) {
-	global $router;
+	global $router, $user;
 	$cloc = $smarty->_tpl_vars['__loc'];
 	$module = $params['module'];
 
@@ -42,7 +42,7 @@ function smarty_function_getchromemenu($params,&$smarty) {
 		$rerank = 1;
 	}
 	
-	if ($module->permissions['administrate'] == 1) {
+	if ($user->isAdmin()) {
 		$userlink = $router->makeLink(array('module'=>getControllerName($module->info['class']), 'src'=>$module->info['source'], 'action'=>'userperms', '_common'=>1));
 		$grouplink = $router->makeLink(array('module'=>getControllerName($module->info['class']), 'src'=>$module->info['source'], 'action'=>'groupperms', '_common'=>1));
 		$list .= '<li><a href="'.$userlink.'" class="user">'.expLang::gettext("User Permissions").'</a></li>';

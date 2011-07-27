@@ -190,7 +190,7 @@ function exponent_permissions_getSourceUID($src) {
  * @node Subsystems:Permissions
  */
 function exponent_permissions_check($permission,$location) {
-	global $exponent_permissions_r, $user;
+	global $exponent_permissions_r, $user, $db;
 
 	if (!empty($user->id)) {		
 		//if (isset($user->is_acting_admin) && $user->is_acting_admin == 1) return true;
@@ -219,12 +219,23 @@ function exponent_permissions_check($permission,$location) {
 			if (isset($exponent_permissions_r[$location->mod][$location->src][$location->int][$perm])) {
 				$has_perm = true;
 				break;
-			}
+			} else if (array_key_exists('containermodule',$exponent_permissions_r)) {
+            // inclusive container perms
+            $tmpLoc->mod = $location->mod;
+            $tmpLoc->src = $location->src;
+            $tmpLoc->int = $location->int;
+            $tmpLoc->mod = (!strpos($tmpLoc->mod,"Controller") && !strpos($tmpLoc->mod,"module")) ? $tmpLoc->mod."Controller" : $tmpLoc->mod;
+            $cLoc = expUnserialize($db->selectValue('container','external','internal=\''.serialize($tmpLoc).'\''));
+            // eDebug($exponent_permissions_r[$cLoc->mod][$cLoc->src][$cLoc->int]);
+            if (@isset($exponent_permissions_r[$cLoc->mod][$cLoc->src][$cLoc->int])) {
+               $has_perm = true;
+            }
+            break;
+         }
 		}
 	}
 	
 	if (!$has_perm && $location->mod != 'navigationmodule') {
-		global $db;
 		global $sectionObj;
 		if (exponent_permissions_check('manage',exponent_core_makeLocation('navigationmodule','',$sectionObj->id))) {
             $has_perm = true;
