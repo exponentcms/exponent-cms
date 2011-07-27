@@ -171,6 +171,13 @@ class expUtil {
 
 		// version checking routine, check database version against software version
 		$version = $db->selectObject('version',1);
+		if (empty($version)) {
+			$version->major = 0;
+			$version->minor = 0;
+			$version->revision = 0;
+			$version->type = '';
+			$version->iteration = '';
+		}
 		if ($version->major < EXPONENT_VERSION_MAJOR) {
 			expUtil::launchInstaller();
 		} elseif ($version->minor < EXPONENT_VERSION_MINOR) {
@@ -232,6 +239,12 @@ class expUtil {
 	 * Routine to launch exponent installer
 	 */
 	function launchInstaller() {
+		// we'll need the not_configured file
+		if (!@file_exists(BASE.'install/not_configured')) {
+			$nc_file = fopen(BASE.'install/not_configured', "w");
+			fclose($nc_file);
+		}
+
 		header('Location: '.URL_FULL.'install/index.php');
 		exit('Redirecting to the Exponent Install Wizard');
 	}
