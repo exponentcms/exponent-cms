@@ -27,13 +27,17 @@
 {/permissions}
 
 {permissions}
-	{if $hasParent == 0 && ($permissions.edit_module == 1 || $permissions.administrate == 1)}
+
+    {*if $hasParent == 0 && ($permissions.edit_module || $permissions.add_module || $permissions.delete_module || $permissions.order_module || $permissions.administrate)*}
+    {if $hasParent == 0 && ($user->isAdmin())}
 	{** top level container module **}
 		<div class="container-chrome">
 			<a href="#" class="trigger" title="Container">Container</a>
 			<ul class="container-menu">
-				<li><a href="{link _common=1 action=userperms}" class="user">{"User Permissions"|gettext}</a></li>
-				<li><a href="{link _common=1 action=groupperms}" class="group">{"Group Permissions"|gettext}</a></li>
+			    {if $user->isAdmin()}
+    				<li><a href="{link _common=1 action=userperms}" class="user">{"User Permissions"|gettext}</a></li>
+    				<li><a href="{link _common=1 action=groupperms}" class="group">{"Group Permissions"|gettext}</a></li>
+			    {/if}
 				<li>{help text="Help with Containers"}</li>
 			</ul>
 		</div>
