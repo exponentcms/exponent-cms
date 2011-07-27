@@ -17,6 +17,7 @@
  * @version    Release: @package_version@
  * @link       http://www.exponent-docs.org/api/package/PackageName
  */
+/** @define "BASE" "../../.." */
 
 class expUtil {
           
@@ -66,8 +67,12 @@ class expUtil {
         return ($ibig <= $ismall);
 	}
 
-	# isReallyWritable is an alternate implementation of is_writable that should work on
-	# a windows platform as well as Linux.
+	/**
+	 * isReallyWritable is an alternate implementation of is_writable that should work on
+	 * a windows platform as well as Linux.
+	 * @param $file
+	 * @return bool
+	 */
 	static function isReallyWritable($file) {
 		// Check the operating system.  isReallyWritable needs to be defined
 		// specifically for Windows, but the overhead is pointless otherwise.
@@ -127,6 +132,108 @@ class expUtil {
 			// see http://php.net/is_writable
 			return is_writable($file);
 		}
+	}
+
+
+	/**
+	 * Return a string of the current version number.
+	 *
+	 * @param bool $full Whether or not to return a full version number.  If passed as true,
+	 *	a string in the form of '0.96.3-beta5' will be returned.  Otherwise, '0.96' would be returned.
+	 * @param bool $build Whether or not to return the build date in the string.
+	 * @node Subsystems:Util
+	 * @param bool $full
+	 * @param bool $build
+	 * @return string
+	 */
+	function getVersion($full = false, $build = false) {
+		if (!defined("EXPONENT_VERSION_MAJOR")) include_once(BASE."exponent_version.php");
+		$vers = EXPONENT_VERSION_MAJOR.".".EXPONENT_VERSION_MINOR;
+		if ($full) {
+			$vers .= ".".EXPONENT_VERSION_REVISION;
+			if (EXPONENT_VERSION_TYPE != "") $vers .= "-".EXPONENT_VERSION_TYPE.EXPONENT_VERSION_ITERATION;
+		}
+		if ($build) {
+			$vers .= " (Build Date: ".strftime("%D",EXPONENT_VERSION_BUILDDATE).")";
+		}
+		return $vers;
+	}
+
+	/**
+	 * Routine to check for installation or upgrade
+	 */
+	function checkVersion() {
+		global $db;
+
+		if (@file_exists(BASE.'install/not_configured') || !(@file_exists(BASE.'conf/config.php'))) {
+			expUtil::launchInstaller();
+		}
+
+		// version checking routine, check database version against software version
+		$version = $db->selectObject('version',1);
+		if ($version->major < EXPONENT_VERSION_MAJOR) {
+			expUtil::launchInstaller();
+		} elseif ($version->minor < EXPONENT_VERSION_MINOR) {
+			expUtil::launchInstaller();
+		} elseif ($version->revision < EXPONENT_VERSION_REVISION) {
+			expUtil::launchInstaller();
+		} elseif ($version->minor < EXPONENT_VERSION_MINOR) {
+			expUtil::launchInstaller();
+		} else {
+			switch ($version->type) {
+				case 'alpha':
+					$dbtype = 1;
+					break;
+				case 'beta':
+					$dbtype = 2;
+					break;
+				case 'release candidate':
+					$dbtype = 3;
+					break;
+				case 'develop':
+					$dbtype = 5;
+					break;
+				case '': // stable
+					$dbtype = 10;
+					break;
+				default:
+					$dbtype = 0;
+					break;
+			}
+			switch (EXPONENT_VERSION_TYPE) {
+				case 'alpha':
+					$swtype = 1;
+					break;
+				case 'beta':
+					$swtype = 2;
+					break;
+				case 'release candidate':
+					$swtype = 3;
+					break;
+				case 'develop':
+					$swtype = 5;
+					break;
+				case '': // stable
+					$swtype = 10;
+					break;
+				default:
+					$swtype = 0;
+					break;
+			}
+			if ($dbtype < $swtype) {
+				expUtil::launchInstaller();
+			} elseif ($dbtype == $swtype && $version->type < EXPONENT_VERSION_ITERATION) {
+				expUtil::launchInstaller();
+			}
+		}
+	}
+
+	/**
+	 * Routine to launch exponent installer
+	 */
+	function launchInstaller() {
+		header('Location: '.URL_FULL.'install/index.php');
+		exit('Redirecting to the Exponent Install Wizard');
 	}
 
 }

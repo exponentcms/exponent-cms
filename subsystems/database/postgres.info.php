@@ -37,7 +37,7 @@ return array(
 	"author"=>"James Hunt",
 	"description"=>"PostGreSQL Database Backend.",
 	'is_valid'=>0,//'is_valid'=>(function_exists('pg_connect') ? 1 : 0),
-	"version"=>exponent_core_version(true)
+	"version"=>expUtil::getVersion(true)
 );
 
 ?>
