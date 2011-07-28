@@ -27,10 +27,17 @@ function smarty_function_chain($params,&$smarty) {
         $title = isset($params['title']) ? $params['title'] : '';
         $view = isset($params['view']) ? $params['view'] : 'Default';
         $action = isset($params['action']) ? $params['action'] : null;
+		$parms = (isset($params['params'])?$params['params']:null);
+		if(!$parms) {
+			//return;
+		} else {
+			eval ('$new_parms = '.$parms.';');
+		    $parms = $new_parms;
+		}
         if (empty($action)) {
-            echo exponent_theme_showModule($params['module'], $view, $title, $src, false,null,$chrome);
+            echo exponent_theme_showModule($params['module'], $view, $title, $src, false, null, $chrome);
         } else {
-            echo exponent_theme_showAction($params['module'], $action, $src);
+            echo exponent_theme_showAction($params['module'], $action, $src, $parms);
         }
     } elseif (isset($params['controller'])) {
         $view = isset($params['view']) ? $params['view'] : $params['action'];
