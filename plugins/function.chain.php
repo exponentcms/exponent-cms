@@ -23,7 +23,8 @@ function smarty_function_chain($params,&$smarty) {
     $src = isset($params['src']) ? $params['src'] : $smarty->_tpl_vars['__loc']->src;
 
     if (isset($params['module'])) {
-        $chrome = $params['chrome'] == "none" ? true : false;
+//        $chrome = $params['chrome'] == "none" ? true : false;
+        $chrome = empty($params['chrome']) ? true : false;
         $title = isset($params['title']) ? $params['title'] : '';
         $view = isset($params['view']) ? $params['view'] : 'Default';
         $action = isset($params['action']) ? $params['action'] : null;
@@ -56,6 +57,8 @@ function smarty_function_chain($params,&$smarty) {
         //because of the silly way we have to toggle chrome
         if (!empty($params['chrome'])) {
             $cfg['chrome'] = true;
+        } else {
+	        $cfg['chrome'] = false;
         }
         //eDebug($cfg);
         expTheme::showController($cfg);
