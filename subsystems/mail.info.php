@@ -24,6 +24,6 @@ return array(
 	'name'=>'Exponent Mail Subsystem',
 	'author'=>'Ron Miller',
 	'description'=>'Flexible mail subsystem using Swiftmail backend.',
-	'version'=>expUtil::getVersion(true)
+	'version'=>expVersion::getVersion(true)
 );
 ?>

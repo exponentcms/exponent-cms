@@ -36,7 +36,7 @@ return array(
 	'author'=>'Ron Miller',
 	'description'=>'MySQLi Database Backend available in PHP5+. Offers greatly improved database performance.',
 	'is_valid'=>(function_exists('mysqli_connect') ? 1 : 0),
-	'version'=>expUtil::getVersion(true)
+	'version'=>expVersion::getVersion(true)
 );
 
 ?>

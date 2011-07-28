@@ -270,7 +270,7 @@ function headerInfo($config) {
     $str = '<title>'.$metainfo['title']."</title>\r\n";
     $str .= "\t".'<meta http-equiv="Content-Type" content="text/html; charset='.LANG_CHARSET.'" '.XHTML_CLOSING.'>'."\n";
 //    $str .= "\t".'<meta name="Generator" content="Exponent Content Management System - '.EXPONENT_VERSION_MAJOR.'.'.EXPONENT_VERSION_MINOR.'.'.EXPONENT_VERSION_REVISION.'.'.EXPONENT_VERSION_TYPE.EXPONENT_VERSION_ITERATION.'" '.XHTML_CLOSING.'>' . "\n";
-    $str .= "\t".'<meta name="Generator" content="Exponent Content Management System - '.expUtil::getVersion(true).'" '.XHTML_CLOSING.'>' . "\n";
+    $str .= "\t".'<meta name="Generator" content="Exponent Content Management System - '.expVersion::getVersion(true).'" '.XHTML_CLOSING.'>' . "\n";
     $str .= "\t".'<meta name="Keywords" content="'.$metainfo['keywords'] . '" />'."\n";
     $str .= "\t".'<meta name="Description" content="'.$metainfo['description']. '" '.XHTML_CLOSING.'>'."\n";
 		

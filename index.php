@@ -79,7 +79,7 @@ if (MAINTENANCE_MODE && !exponent_users_isAdmin() && ( !isset($_REQUEST['module'
 	}
 
 	// check to see if we need to install or upgrade the system
-	expUtil::checkVersion();
+	expVersion::checkVersion();
 
 	// Handle sub themes
 	$page = exponent_theme_getTheme();
