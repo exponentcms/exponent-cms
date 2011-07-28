@@ -397,7 +397,7 @@ function glob2keyedArray($workArray){
 	$temp = array();
 	foreach($workArray as $myWorkFile){
 		$temp[basename($myWorkFile)] = $myWorkFile;
-	} 
+	}
 	return $temp;
 }
 
@@ -486,11 +486,13 @@ function exponent_core_resolveFilePaths($type, $name, $subtype, $subname) {
 		        $relpath2 .= 'editors/';
 		    } elseif ($type == 'profileextension') {
 				$relpath2 .= "extensions/";
+			} elseif ($type == 'globalviews') {
+				$relpath2 .= "framework/core/views/";
 			} else {
 				$relpath2 .= "views/";
 			}
 		} elseif($subtype == "form") {
-			$relpath2 .= "views/";
+			$relpath2 .= "views/"; 
 		} elseif($subtype == "action") {
 			$relpath2 .= "actions/";
 			//HACK: workaround for now
@@ -503,7 +505,7 @@ function exponent_core_resolveFilePaths($type, $name, $subtype, $subname) {
 	}
 
 	$relpath .= $relpath2;
-
+	
 	//TODO: handle subthemes
 	//TODO: now that glob is used build a syntax for it instead of calling it repeatedly
 	//latter override the precursors
@@ -514,7 +516,7 @@ function exponent_core_resolveFilePaths($type, $name, $subtype, $subname) {
 		//TODO: add a check for Default in main path here
 		$checkpaths[] = $location . $relpath;
 	}
-	
+
 	//TODO: handle the - currently unused - case where there is 
 	//the same file in different $type categories 
 	$myFiles = array();
@@ -524,7 +526,6 @@ function exponent_core_resolveFilePaths($type, $name, $subtype, $subname) {
 			$myFiles = array_merge($myFiles, $tempFiles);
 		}
 	}
-
 	if(count($myFiles) != 0) {
 		return array_values($myFiles);
 	} else {
