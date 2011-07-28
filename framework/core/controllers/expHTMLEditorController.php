@@ -55,6 +55,7 @@ class expHTMLEditorController extends expController {
         $obj->skin = $this->params['skin'];
         $obj->scayt_on = $this->params['scayt_on'];
         $obj->paste_word = $this->params['paste_word'];
+        $obj->plugins = stripSlashes($this->params['plugins']);
         if (empty($this->params['id'])) {
             $db->insertObject($obj,'htmleditor_ckeditor');
         } else {

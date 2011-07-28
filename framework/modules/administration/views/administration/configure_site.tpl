@@ -143,7 +143,9 @@
 					{help text="Learn More about WYSIWYG editor settings"|gettext module="wysiwyg-editor-settings"}
                     {control type="dropdown" name="sc[SITE_WYSIWYG_EDITOR]" label="HTML Editor" items="CKEditor,FCK Editor" values="ckeditor,FCKeditor" default=$smarty.const.SITE_WYSIWYG_EDITOR}
 					{br}<hr>
-					{chain module=expHTMLEditor view="manage"}
+	                {if $smarty.const.SITE_WYSIWYG_EDITOR == 'ckeditor'}
+		                {chain module=expHTMLEditor view=manage}
+	                {/if}
                 </div>
                 <div id="tab11">
                     <h2>{gettext str="Error Messages"}</h2>
