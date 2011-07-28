@@ -73,6 +73,14 @@ class expHTMLEditorController extends expController {
         assign_to_template(array('record'=>$tool));
     }
     
+	function delete() {
+	    global $db;
+	    expHistory::set('editable', $this->params);
+	    @$db->delete('htmleditor_ckeditor',"id=".$this->params['id']);
+
+	    expHistory::back();
+	}
+
     function activate () {
         global $db;
         
