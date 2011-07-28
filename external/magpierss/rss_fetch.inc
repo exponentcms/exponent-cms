@@ -81,7 +81,7 @@ require_once( MAGPIE_EXTLIB . 'Snoopy.class.inc');
     version will be return, if it exists (and if MAGPIE_CACHE_FRESH_ONLY is off)
 \*=======================================================================*/
 
-define('MAGPIE_VERSION', '0.7');
+define('MAGPIE_VERSION', '0.72');
 
 $MAGPIE_ERROR = "";
 
@@ -117,7 +117,7 @@ function fetch_rss ($url) {
         $cache = new RSSCache( MAGPIE_CACHE_DIR, MAGPIE_CACHE_AGE );
         
         if (MAGPIE_DEBUG and $cache->ERROR) {
-            debugMagpie($cache->ERROR, E_USER_WARNING);
+            debug($cache->ERROR, E_USER_WARNING);
         }
         
         
@@ -134,7 +134,7 @@ function fetch_rss ($url) {
             // return cache HIT, MISS, or STALE
             $cache_status = $cache->check_cache( $cache_key);
         }
-        
+                
         // if object cached, and cache is fresh, return cached obj
         if ( $cache_status == 'HIT' ) {
             $rss = $cache->get( $cache_key );
@@ -142,8 +142,8 @@ function fetch_rss ($url) {
                 // should be cache age
                 $rss->from_cache = 1;
                 if ( MAGPIE_DEBUG > 1) {
-                debugMagpie("MagpieRSS: Cache HIT", E_USER_NOTICE);
-            }
+                    debug("MagpieRSS: Cache HIT", E_USER_NOTICE);
+                }
                 return $rss;
             }
         }
@@ -162,10 +162,10 @@ function fetch_rss ($url) {
         $resp = _fetch_remote_file( $url, $request_headers );
         
         if (isset($resp) and $resp) {
-            if ($resp->status == '304' ) {
+          if ($resp->status == '304' ) {
                 // we have the most current copy
                 if ( MAGPIE_DEBUG > 1) {
-                    debugMagpie("Got 304 for $url");
+                    debug("Got 304 for $url");
                 }
                 // reset cache on 304 (at minutillo insistent prodding)
                 $cache->set($cache_key, $rss);
@@ -175,7 +175,7 @@ function fetch_rss ($url) {
                 $rss = _response_to_rss( $resp );
                 if ( $rss ) {
                     if (MAGPIE_DEBUG > 1) {
-                        debugMagpie("Fetch successful");
+                        debug("Fetch successful");
                     }
                     // add object to cache
                     $cache->set( $cache_key, $rss );
@@ -207,7 +207,7 @@ function fetch_rss ($url) {
         // attempt to return cached object
         if ($rss) {
             if ( MAGPIE_DEBUG ) {
-                debugMagpie("Returning STALE object for $url");
+                debug("Returning STALE object for $url");
             }
             return $rss;
         }
@@ -239,7 +239,7 @@ function error ($errormsg, $lvl=E_USER_WARNING) {
         }
 }
 
-function debugMagpie ($debugmsg, $lvl=E_USER_NOTICE) {
+function debug ($debugmsg, $lvl=E_USER_NOTICE) {
     trigger_error("MagpieRSS [debug] $debugmsg", $lvl);
 }
             

@@ -32,7 +32,7 @@ function parse_w3cdtf ( $date_str ) {
             array( $match[1], $match[2], $match[3], $match[4], $match[5], $match[6]);
         
         # calc epoch for current date assuming GMT
-        $epoch = gmmktime( $hours, $minutes, 0, $month, $day, $year);
+        $epoch = gmmktime( $hours, $minutes, $seconds, $month, $day, $year);
         
         $offset = 0;
         if ( $match[10] == 'Z' ) {

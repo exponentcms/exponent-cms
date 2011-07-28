@@ -40,7 +40,7 @@ class flickrfeedController extends expController {
         }
 		
         $photos = array();
-        $RSS = new rssfeed();
+//        $RSS = new rssfeed();  // we'll use curl instead of magpierss
         foreach($this->config['pull_rss'] as $url) {
         	// we need to get at one of the query paramerers and change it
 			// parse the url into its parts

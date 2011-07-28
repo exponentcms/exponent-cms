@@ -19,24 +19,24 @@
 /*
 This class will handle reading a RSS feed from a
 given URL ($url) and passing it back to a common
-function (refreshRSS()) in a datatype ($datetype)
+function (refreshRSS()) in a datatype ($datatype)
 */
 
 if (!defined('MAGPIE_DIR')) {
 	define('MAGPIE_DIR', BASE.'/external/magpierss/');
+	/** @define "MAGPIE_DIR" "../../external/magpierss/" */
 }
 
 if (!defined('MAGPIE_OUTPUT_ENCODING')) {
     define('MAGPIE_OUTPUT_ENCODING', 'UTF-8');
 }
 
-/** @define "MAGPIE_DIR" "../external/magpierss/" */
 require_once(MAGPIE_DIR.'rss_fetch.inc');
 require_once(MAGPIE_DIR.'rss_utils.inc');
 define('MAGPIE_CACHE_DIR', BASE.'tmp/rsscache');
 if (!defined('MAGPIE_CACHE_AGE')) define('MAGPIE_CACHE_AGE', 3600);
 
-class rssfeed {
+class rssfeed extends expRecord {
 	private $url = null;
 	private $datatype = null;
 
