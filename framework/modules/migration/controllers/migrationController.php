@@ -403,82 +403,81 @@ class migrationController extends expController {
         }
 		
 		if (!empty($this->params['replace'])) {
-			if (in_array('containermodule',$this->params['replace'])) {
-				$db->delete('container');
-			}
-			if (in_array('textmodule',$this->params['replace'])) {
-				$db->delete('text');
-			}
-			if (in_array('rotatormodule',$this->params['replace'])) {
-				$db->delete('text');
-			}
-			if (in_array('snippetmodule',$this->params['replace'])) {
-				$db->delete('snippet');
-			}
-			if (in_array('linklistmodule',$this->params['replace'])) {
-				$db->delete('links');
-			}
-			if (in_array('linkmodule',$this->params['replace'])) {
-				$db->delete('links');
-			}
-			if (in_array('swfmodule',$this->params['replace'])) {
-				$db->delete('text');
-			}
-			if (in_array('newsmodule',$this->params['replace'])) {
-				$db->delete('news');
-			}
-			if (in_array('resourcesmodule',$this->params['replace'])) {
-				$db->delete('filedownload');
-			}
-			if (in_array('imagegallerymodule',$this->params['replace'])) {
-				$db->delete('photo');
-			}
-			if (in_array('slideshowmodule',$this->params['replace'])) {
-				$db->delete('photo');
-			}
-			if (in_array('headlinemodule',$this->params['replace'])) {
-				$db->delete('headline');
-			}
-			if (in_array('weblogmodule',$this->params['replace'])) {
-				$db->delete('blog');
-				$db->delete('expComments');
-				$db->delete('content_expComments');
-			}
-			if (in_array('faqmodule',$this->params['replace'])) {
-				$db->delete('faq');
-			}
-			if (in_array('listingmodule',$this->params['replace'])) {
-				$db->delete('portfolio');
-			}
-			if (in_array('calendarmodule',$this->params['replace'])) {
-				$db->delete('calendar');
-				$db->delete('eventdate');
-				$db->delete('calendarmodule_config');
-			}
-			if (in_array('simplepollmodule',$this->params['replace'])) {
-				$db->delete('poll_question');
-				$db->delete('poll_answer');
-				$db->delete('poll_timeblock');
-				$db->delete('simplepollmodule_config');
-			}
-			if (in_array('formmodule',$this->params['replace'])) {
-				$db->delete('formbuilder_address');
-				$db->delete('formbuilder_control');
-				$db->delete('formbuilder_form');
-				$db->delete('formbuilder_report');
-			}
-			if (in_array('youtubemodule',$this->params['replace'])) {
-				$db->delete('youtube');
-			}
-			if (in_array('mediaplayermodule',$this->params['replace'])) {
-				$db->delete('flowplayer');
-			}
-			if (in_array('bannermodule',$this->params['replace'])) {
-				$db->delete('banner');
-				$db->delete('companies');
-			}
-			if (in_array('addressmodule',$this->params['replace'])) {
-				$db->delete('addresses');
+			foreach($this->params['replace'] as $replace => $value) {
+				switch ($replace) {
+				    case 'containermodule':
+					    $db->delete('container');
+						break;
+					case 'textmodule':
+					case 'rotatormodule':
+					case 'swfmodule':
+						$db->delete('text');
+						break;
+					case 'snippetmodule':
+						$db->delete('snippet');
+						break;
+					case 'linklistmodule':
+					case 'linkmodule':
+						$db->delete('links');
+						break;
+					case 'linkmodule':
+						$db->delete('links');
+						break;
+					case 'newsmodule':
+						$db->delete('news');
+						break;
+					case 'resourcesmodule':
+						$db->delete('filedownloads');
+						break;
+					case 'imagegallerymodule':
+					case 'slideshowmodule':
+						$db->delete('photo');
+						break;
+					case 'headlinemodule':
+						$db->delete('headline');
+						break;
+					case 'weblogmodule':
+						$db->delete('blog');
+						$db->delete('expComments');
+						$db->delete('content_expComments');
+						break;
+					case 'faqmodule':
+						$db->delete('faq');
+						break;
+					case 'listingmodule':
+						$db->delete('portfolio');
+						break;
+					case 'calendarmodule':
+						$db->delete('calendar');
+						$db->delete('eventdate');
+						$db->delete('calendarmodule_config');
+						break;
+					case 'simplepollmodule':
+						$db->delete('poll_question');
+						$db->delete('poll_answer');
+						$db->delete('poll_timeblock');
+						$db->delete('simplepollmodule_config');
+						break;
+					case 'formmodule':
+						$db->delete('formbuilder_address');
+						$db->delete('formbuilder_control');
+						$db->delete('formbuilder_form');
+						$db->delete('formbuilder_report');
+						break;
+					case 'youtubemodule':
+						$db->delete('youtube');
+						break;
+					case 'mediaplayermodule':
+						$db->delete('flowplayer');
+						break;
+					case 'bannermodule':
+						$db->delete('banner');
+						$db->delete('companies');
+						break;
+					case 'addressmodule':
+						$db->delete('addresses');
+						break;
+				}
 			}
 		}
 
@@ -1160,7 +1159,14 @@ class migrationController extends expController {
 							$filedownload->update();
 						}
 					}
-					if ($oldconfig->enable_rss == 1) {
+					if (isset($oldconfig->enable_rss)) {
+						$dorss = $oldconfig->enable_rss;
+					} elseif (isset($oldconfig->enable_podcasting)) {
+						$dorss = $oldconfig->enable_podcasting;
+					} else {
+						$dorss = false;
+					}
+					if ($dorss) {
 						$config['enable_rss'] = true;
 						$config['feed_title'] = $oldconfig->feed_title;
 						$config['feed_desc'] = $oldconfig->feed_desc;
@@ -1173,7 +1179,8 @@ class migrationController extends expController {
 						$newrss = new expRss();
 						$newrss->module = $loc->mod;
 						$newrss->src = $loc->src;
-						$newrss->enable_rss = $oldconfig->enable_rss;
+//						$newrss->enable_rss = $oldconfig->enable_rss;
+						$newrss->enable_rss = true;
 						$newrss->feed_title = $oldconfig->feed_title;
 						$newrss->feed_desc = $oldconfig->feed_desc;
 						$newrss->rss_limit = isset($oldconfig->rss_limit) ? $oldconfig->rss_limit : 24;
