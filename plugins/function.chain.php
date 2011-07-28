@@ -23,7 +23,7 @@ function smarty_function_chain($params,&$smarty) {
     $src = isset($params['src']) ? $params['src'] : $smarty->_tpl_vars['__loc']->src;
 
     if (isset($params['module'])) {
-        $chrome = $params['chrome']="none" ? true : false;
+        $chrome = $params['chrome'] == "none" ? true : false;
         $title = isset($params['title']) ? $params['title'] : '';
         $view = isset($params['view']) ? $params['view'] : 'Default';
         $action = isset($params['action']) ? $params['action'] : null;
