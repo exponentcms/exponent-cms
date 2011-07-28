@@ -198,7 +198,7 @@ class expRecord {
         $this->build($params); 
         if (is_array($params)) {
             $this->save((isset($params['_validate'])?$params['_validate']:true));  
-        } else if (is_object($params)) {
+        } elseif (is_object($params)) {
            $this->save((isset($params->_validate)?$params->_validate:true));  
         } else {
            $this->save(true);  
