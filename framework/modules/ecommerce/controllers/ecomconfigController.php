@@ -154,7 +154,7 @@ class ecomconfigController extends expController {
         //loop our groups and append them to the array
        // foreach ($group->find() as $g){
        //this is a workaround for older code. Use the previous line if possible:
-       include_once(BASE.'subsystems//users.php');
+       include_once(BASE.'subsystems/users.php');
        $allGroups = exponent_users_getAllGroups();
        if (count($allGroups))
        {
