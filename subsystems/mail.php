@@ -19,7 +19,7 @@
 if (!defined('EXPONENT')) exit('');
 
 if ( version_compare ( phpversion(), "5.2.0", ">=" ) ) {
-	require_once(BASE.'external/Swift-4.0.5/lib/swift_required.php');
+	require_once(BASE.'external/Swift-4.1.1/lib/swift_required.php');
 
 // Create the class.
 class exponentMail extends Swift {

@@ -1,7 +1,7 @@
 Program,Version,URL,Avail version,Exponent Customization Notes:
 Ckeditor,3.6.1,ckeditor.com,3.6.1,ckeditor.js - delete the '#' part
 FlowPlayer,3.2.7,flowplayer.org,3.2.7,
-Swift,3.3.2 (4.0.5),swiftmailer.org,4.1.1,
+Swift,3.3.2 (4.1.1),swiftmailer.org,4.1.1,4.1.x not yet utilized
 ups-php,0.2,code.google.com/p/ups-php,0.2,
 fedex-php,9.0.0,,,
 swfobject,2.2,code.google.com/p/swfobject,2.2,
