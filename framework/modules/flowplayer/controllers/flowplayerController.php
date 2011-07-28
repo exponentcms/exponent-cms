@@ -43,7 +43,7 @@ class flowplayerController extends expController {
     function showall() {
         expHistory::set('viewable', $this->params);
         $modelname = $this->basemodel_name;
-        $where = $this->hasSources() ? $this->aggregateWhereClause() : null;
+        $where = $this->aggregateWhereClause();
         $limit = isset($this->params['limit']) ? $this->params['limit'] : null;
         $order = "rank";
         $page = new expPaginator(array(

@@ -34,7 +34,7 @@ class blogController extends expController {
     function displayname() { return "Blog"; }
     function description() { return "This module allows you to run a blog on your site."; }
     function author() { return "Phillip Ball - OIC Group, Inc"; }
-    function hasSources() { return false; }
+    function hasSources() { return false; }  // must be explicitly added by config['add_source'] or config['aggregate']
     function hasViews() { return true; }
     function hasContent() { return true; }
     function supportsWorkflow() { return false; }
