@@ -1373,16 +1373,14 @@ class migrationController extends expController {
 							$post->attachitem($newcomment,'');
 						}
                     }
+                    $newconfig = new expConfig();
+                    $config['add_source'] = '1';
 					if ($oldconfig->enable_rss == 1) {
 						$config['enable_rss'] = true;
 						$config['feed_title'] = $oldconfig->feed_title;
 						$config['feed_desc'] = $oldconfig->feed_desc;
 						$config['rss_limit'] = isset($oldconfig->rss_limit) ? $oldconfig->rss_limit : 24;
 						$config['rss_cachetime'] = isset($oldconfig->rss_cachetime) ? $oldconfig->rss_cachetime : 1440;
-						$newconfig = new expConfig();
-						$newconfig->config = $config;
-						$newconfig->location_data = $loc;
-						$newconfig->save();
 						$newrss = new expRss();
 						$newrss->module = $loc->mod;
 						$newrss->src = $loc->src;
@@ -1392,7 +1390,10 @@ class migrationController extends expController {
 						$newrss->rss_limit = isset($oldconfig->rss_limit) ? $oldconfig->rss_limit : 24;
 						$newrss->rss_cachetime = isset($oldconfig->rss_cachetime) ? $oldconfig->rss_cachetime : 1440;
 						$newrss->save();
-					}					
+					}
+					$newconfig->config = $config;
+					$newconfig->location_data = $loc;
+					$newconfig->save();
                 }
 				break;
             case 'faqmodule':
