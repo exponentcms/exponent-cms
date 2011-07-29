@@ -59,18 +59,31 @@ if (exponent_permissions_check('administrate',$loc)) {
         $p[$value]=$key;
 	}
 	
-    $page = new expPaginator(array(
-     //'model'=>'user',
-    'limit'=>(isset($_REQUEST['limit'])?$_REQUEST['limit']:20),
-     'controller'=>$router->params['controller'],
-     'action'=>$router->params['action'],
-     'records'=>$users,
-     //'sql'=>$sql,
-     'order'=>'username',
-     'dir'=>'DESC',
-     'columns'=>$p,
-     ));        
-        
+	if (SEF_URLS == 1) {
+		$page = new expPaginator(array(
+		//'model'=>'user',
+		'limit'=>(isset($_REQUEST['limit'])?$_REQUEST['limit']:20),
+		'controller'=>$router->params['controller'],
+		'action'=>$router->params['action'],
+		'records'=>$users,
+		//'sql'=>$sql,
+		'order'=>'username',
+		'dir'=>'DESC',
+		'columns'=>$p,
+		));
+	} else {
+		$page = new expPaginator(array(
+		//'model'=>'user',
+		'limit'=>(isset($_REQUEST['limit'])?$_REQUEST['limit']:20),
+		'controller'=>$_GET['module'],
+		'action'=>$_GET['action'],
+		'records'=>$users,
+		//'sql'=>$sql,
+		'order'=>'username',
+		'dir'=>'DESC',
+		'columns'=>$p,
+		));
+	}
 	
 	$template->assign('is_group',1);
 	$template->assign('have_users',count($users) > 0); // users = groups
