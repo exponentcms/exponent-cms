@@ -35,7 +35,7 @@ if (!defined('EXPONENT_VERSION_MAJOR')) {
 		 */
 		define('EXPONENT_VERSION_REVISION','0');
 		/* exdoc
-		 * This specifies the type of release, either 'alpha','beta','release candidate' or '' (for stable).
+		 * This specifies the type of release, either 'alpha','beta','release-candidate' or '' (for stable).
 		 */
 		define('EXPONENT_VERSION_TYPE','release-candidate');
 		/* exdoc
@@ -46,7 +46,7 @@ if (!defined('EXPONENT_VERSION_MAJOR')) {
 		/* exdoc
 		 * This is the date that this version of Exponent was exported from BZR and built.
 		 */
-		define('EXPONENT_VERSION_BUILDDATE','%%BUILDDATE%%');
+		define('EXPONENT_VERSION_BUILDDATE','1311961235');
 	} else {
 		// the info for the "next" version if we are a pre-release from the repository
 		define('EXPONENT_VERSION_MAJOR','2');

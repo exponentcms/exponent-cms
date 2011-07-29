@@ -80,7 +80,7 @@ class expVersion {
 				case 'beta':
 					$dbtype = 2;
 					break;
-				case 'release candidate':
+				case 'release-candidate':
 					$dbtype = 3;
 					break;
 				case 'develop':
@@ -100,7 +100,7 @@ class expVersion {
 				case 'beta':
 					$swtype = 2;
 					break;
-				case 'release candidate':
+				case 'release-candidate':
 					$swtype = 3;
 					break;
 				case 'develop':
