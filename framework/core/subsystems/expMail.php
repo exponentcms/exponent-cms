@@ -81,7 +81,7 @@ class expMail {
 					//require_once(BASE.'external/Swift-4.1.1/Connection/SMTP.php');
 					if (array_key_exists('connections', $params)) {
 						if (is_array($params['connections'])) {
-							//$conn = new Swift_Connection_SMTP($params['connections']['host'], $params['connections']['port'], $params['connections']['option']);
+							//$this->transport = new Swift_Connection_SMTP($params['connections']['host'], $params['connections']['port'], $params['connections']['option']);
 							$this->transport = Swift_SmtpTransport::newInstance($params['connections']['host'], $params['connections']['port']);
 						} else {
 							$this->transport = Swift_SmtpTransport::newInstance($params['connections']['host'], $params['connections']['port']);
@@ -96,9 +96,9 @@ class expMail {
 
 					if (isset($params['connections']) && !is_array($params['connections']) && $params['connections'] != '') {
 						// Allow custom mail parameters.
-						$conn = new Swift_Connection_NativeMail($params['connections']);
+						$this->transport = new Swift_Connection_NativeMail($params['connections']);
 					} else {
-						$conn = new Swift_Connection_NativeMail();
+						$this->transport = new Swift_Connection_NativeMail();
 					}
 					break;
 				case "exim":
@@ -109,14 +109,14 @@ class expMail {
 					break;
 				case "rotator":
 					if (is_array($params['connections'])) {
-						$conn = new Swift_Connection_Rotator($params['connections']);
+						$this->transport = new Swift_Connection_Rotator($params['connections']);
 					} else {
 						$this->errStack['Connection'] = '$params[\'connections\'] must be an array to use the connection rotator.';
 						$this->__destruct();
 					}
 					break;
 			}
-			// Use our current config vars 
+		// Use our current config vars
 		} else if (SMTP_USE_PHP_MAIL) {
 			if (isset($params['connections']) && !is_array($params['connections']) && $params['connections'] != '') {
 				// Allow custom mail parameters.
@@ -178,7 +178,7 @@ class expMail {
 		try {
 			$this->transport->start();
 			echo ("<h2>Mail Server Test Complete!</h2>We Connected to the Mail Server");
-		} catch (Exception $e) {
+		} catch (Swift_TransportException $e) {
 			echo ("<h2>Mail Server Test Failed!</h2>");
 			eDebug($e->getMessage());
 		}
@@ -215,8 +215,10 @@ class expMail {
 			return false;
 		}
 
-    	// set up the from address
+    	// set up the to address
 		$this->addTo($params['to']);
+
+    	// set up the from address
 //		if (!empty($params['from'])) {
 //			if (stristr('^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$', $params['from'])) {
 //				$this->addFrom = $params['from'];
@@ -239,7 +241,7 @@ class expMail {
 		$numsent = 0;
 		try {
 			$numsent = $this->send();
-		} catch (Exception $e) {
+		} catch (Swift_TransportException $e) {
 			flash('error','Sending Mail Failed! - '.$e->getMessage());
 		}
 		return $numsent;
@@ -311,6 +313,54 @@ class expMail {
 	}
 
 	/**
+	 *  quickBatchSend() - Does not seem to be working correctly.  Use at your own risk!
+	 *
+	 *  This should probably be taken out as it look like a failed attempt to use the old-school AntiFlood plugin
+	 *  This is leftover code from Swift 3.x
+	 *
+	 * @todo Update this section to use batch processing properly
+	 *
+	 * @author Tyler Smart <tyleresmart@gmail.com>
+	 * @return array
+	 */
+	public function quickBatchSend() {
+		if (empty($params['to']) || (empty($params['html_message']) || empty($params['text_message']))) {
+			return false;
+		}
+
+    	// set up the to address
+		$this->addTo($params['to']);
+
+    	// set up the from address
+//		if (!empty($params['from'])) {
+//			if (stristr('^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$', $params['from'])) {
+//				$this->addFrom = $params['from'];
+//			}
+			$from = isset($params['from']) ? $params['from'] : SMTP_FROMADDRESS;
+			$fromname = isset($params['from_name']) ? $params['from_name'] : null;
+			$this->addFrom($from, $fromname);
+//		}
+
+		$this->addSubject($params['subject'] = !empty($params['subject']) ? $params['subject'] : 'Message from '.SITE_TITLE);
+		if (!empty($params['headers'])) $this->addHeaders($params['headers']);
+		if (!empty($params['html_message'])) {
+//			$this->addHTML($params['html_message']);
+			$this->setHTMLBody($params['html_message']);
+			if (!empty($params['text_message'])) $this->addText($params['text_message']);
+		} elseif (!empty($params['text_message'])) {
+			$this->setTextBody($params['text_message']);
+		}
+
+		$numsent = 0;
+		try {
+			$numsent = $this->send();
+		} catch (Swift_TransportException $e) {
+			flash('error','Sending Mail Failed! - '.$e->getMessage());
+		}
+		return $numsent;
+	}
+
+	/**
 	 *  addHeaders() - Add text headers to the message. Limited to text headers for now.
 	 *
 	 * @author Tyler Smart <tyleresmart@gmail.com>
@@ -346,6 +396,7 @@ class expMail {
 	 *	  # Path Headers
 	 *			Path headers are like very-restricted mailbox headers. They contain a single email address with no associated name. The Return-Path header of a message is a path header.
 	 */
+	//FIXME the $headers parameter is wiped out with the 2nd line
 	public function addHeaders($headers) {
 		$headers = $this->message->getHeaders();
 		foreach ($headers as $header => $value) {
@@ -560,6 +611,39 @@ class expMail {
 				$this->message->addTo($email_address_array);
 			}
 		}
+	}
+
+		/**
+	 *  addCc() - This adds Carbon Copy addresses to the message one at a time, so if you want to add multiple CC's it is best to run through a loop in order to put them in.
+	 *
+	 * @author Tyler Smart <tyleresmart@gmail.com>
+	 * @example This will send a basic message, looping through an array of email addresses add adding them to the CC list.
+	 *
+	 *	$emailItem = new expMail();
+	 *
+	 *  $emailItem->addText('My Text ');
+	 *	$emailItem->addText('Line Two ');
+	 *  $emailItem->addText('Line Three ');
+	 *
+	 *	$ccs = array('a@website.com'=>'Mr A.', 'b@website.com'=>'Mr B.', 'c@website.com'=>'Mr C.', 'd@website.com'=>'Mr D.', 'e@website.com'=>'Mr E.', 'f@website.com'=>'Mr F.');
+	 *
+	 *	//add multiple bcc recipients to the email
+	 *	foreach ($ccs as $email => $name)
+	 *	{
+	 *		$emailItem->addCc($email, $name);
+	 *	}
+	 *
+	 *	$emailItem->addTo(array('myemail@mysite.com', 'secondemail@website.com', 'third@emailsite.com'));
+	 *	$emailItem->addFrom('from@sender.com'); //setting the From field using just the email.
+	 *	$emailItem->subject('Hello World!');
+	 *
+	 *	$emailItem->send();
+	 *
+	 * @param string $email This is the email address for the BCC.
+	 * @param string $name  This is the name associated with the above email address.
+	 */
+	public function addCc($email, $name = null) {
+		$this->message->addCc($email, $name);
 	}
 
 	/**

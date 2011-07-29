@@ -35,6 +35,8 @@ if (isset($_POST['id'])) {
 	if ($event->feedback_email != '') {
 //			$email_addrs = split(',', $event->feedback_email);
 			$email_addrs = explode(',', $event->feedback_email);
+            //This is an easy way to remove duplicates
+			$email_addrs = array_flip(array_flip($email_addrs));
 			$email_addrs = array_map('trim', $email_addrs);
 
 // old mail method
@@ -48,16 +50,17 @@ if (isset($_POST['id'])) {
 
 // new mail method
 		$ret = 0;
-		foreach ($email_addrs as $recip) {
+//		foreach ($email_addrs as $recip) {
 			$mail = new expMail();
 			$ret += $mail->quickSend(array(
 					"text_message"=>$msg,
 //					'html_message'=>$msg,
-					'to'=>$recip,
+//					'to'=>$recip,
+					'to'=>$email_addrs,
 					'from'=>trim(SMTP_FROMADDRESS),
 					'subject'=>$_POST['subject'],
 			));
-		}
+//		}
 	}
 }
 
