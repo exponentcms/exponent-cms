@@ -67,8 +67,8 @@ if (exponent_permissions_check('administrate',$loc)) {
 		'action'=>$router->params['action'],
 		'records'=>$users,
 		//'sql'=>$sql,
-		'order'=>'username',
-		'dir'=>'DESC',
+		'order'=>'name',
+		'dir'=>'ASC',
 		'columns'=>$p,
 		));
 	} else {
@@ -79,8 +79,8 @@ if (exponent_permissions_check('administrate',$loc)) {
 		'action'=>$_GET['action'],
 		'records'=>$users,
 		//'sql'=>$sql,
-		'order'=>'username',
-		'dir'=>'DESC',
+		'order'=>'name',
+		'dir'=>'ASC',
 		'columns'=>$p,
 		));
 	}

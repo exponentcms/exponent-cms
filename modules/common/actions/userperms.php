@@ -73,7 +73,7 @@ if ($user->isAdmin()) {
 		'records'=>$users,
 		//'sql'=>$sql,
 		'order'=>'username',
-		'dir'=>'DESC',
+		'dir'=>'ASC',
 		'columns'=>$p,
 		));
 	} else {
@@ -85,7 +85,7 @@ if ($user->isAdmin()) {
 		'records'=>$users,
 		//'sql'=>$sql,
 		'order'=>'username',
-		'dir'=>'DESC',
+		'dir'=>'ASC',
 		'columns'=>$p,
 		));
 	}
