@@ -13,10 +13,12 @@
  * GPL: http://www.gnu.org/licenses/gpl.txt
  *
  *}
- 
-<div style="padding: 1em;">
-{$response_html}
-{clear}
+
+<div class="formmodule submit-form">
+	{messagequeue}
+	<div style="padding: 1em;">
+		{$response_html}
+		{clear}
+	</div>
+	{br}<a href="{$backlink}">{$_TR.back}</a>
 </div>
-{br}{br}{br}
-<a href="{$backlink}">{$_TR.back}</a>

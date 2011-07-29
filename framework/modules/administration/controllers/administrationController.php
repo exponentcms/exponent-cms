@@ -338,7 +338,12 @@ class administrationController extends expController {
     public function update_SetSlingbarPosition() {
        expSession::set("slingbar_top",$this->params['top']);
     }
-    
+
+	public function test_smtp() {
+		$smtp = new expMail();
+		$smtp->test();
+	}
+
     public function toggle_minify() {
         if (!defined('SYS_CONFIG')) include_once(BASE.'subsystems/config.php');
     	$value = (MINIFY == 1) ? 0 : 1;

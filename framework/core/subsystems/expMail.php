@@ -39,7 +39,8 @@ class expMail {
 	public $from = NULL;
 	private $message = null;
 
-	//this is the mail transporter like exim, SMTP, whatever, that is setup in the constructor
+	//this is the mail transporter like exim, SMTP, whatever, that is setup in the constructor	private $mailer = null;
+	private $transport = null;
 	private $mailer = null;
 	private $precallfunction = null;
 	private $precalldata = null;
@@ -81,12 +82,12 @@ class expMail {
 					if (array_key_exists('connections', $params)) {
 						if (is_array($params['connections'])) {
 							//$conn = new Swift_Connection_SMTP($params['connections']['host'], $params['connections']['port'], $params['connections']['option']);
-							$transport = Swift_SmtpTransport::newInstance($params['connections']['host'], $params['connections']['port']);
+							$this->transport = Swift_SmtpTransport::newInstance($params['connections']['host'], $params['connections']['port']);
 						} else {
-							$transport = Swift_SmtpTransport::newInstance($params['connections']['host'], $params['connections']['port']);
+							$this->transport = Swift_SmtpTransport::newInstance($params['connections']['host'], $params['connections']['port']);
 						}
 					} else {
-						$transport = Swift_SmtpTransport::newInstance(SMTP_SERVER, SMTP_PORT)
+						$this->transport = Swift_SmtpTransport::newInstance(SMTP_SERVER, SMTP_PORT)
 								->setUsername(SMTP_USERNAME)
 								->setPassword(SMTP_PASSWORD);
 					}
@@ -101,10 +102,10 @@ class expMail {
 					}
 					break;
 				case "exim":
-					$transport = Swift_SendmailTransport::newInstance('/usr/sbin/exim -bs');
+					$this->transport = Swift_SendmailTransport::newInstance('/usr/sbin/exim -bs');
 					break;
 				case "sendmail":
-					$transport = Swift_SendmailTransport::newInstance('/usr/sbin/sendmail -bs');
+					$this->transport = Swift_SendmailTransport::newInstance('/usr/sbin/sendmail -bs');
 					break;
 				case "rotator":
 					if (is_array($params['connections'])) {
@@ -119,10 +120,10 @@ class expMail {
 		} else if (SMTP_USE_PHP_MAIL) {
 			if (isset($params['connections']) && !is_array($params['connections']) && $params['connections'] != '') {
 				// Allow custom mail parameters.
-				$transport = Swift_MailTransport::newInstance($params['connections']);
+				$this->transport = Swift_MailTransport::newInstance($params['connections']);
 			} else {
 				// Use default Mail parameters.
-				$transport = Swift_MailTransport::newInstance();
+				$this->transport = Swift_MailTransport::newInstance();
 			}
 		} else {
 			/*
@@ -132,19 +133,19 @@ class expMail {
 			if (array_key_exists('connections', $params)) {
 				if (is_array($params['connections'])) {
 					//$conn = new Swift_Connection_SMTP($params['connections']['host'], $params['connections']['port'], $params['connections']['option']);
-					$transport = Swift_SmtpTransport::newInstance($params['connections']['host'], $params['connections']['port']);
+					$this->transport = Swift_SmtpTransport::newInstance($params['connections']['host'], $params['connections']['port']);
 				} else {
-					$transport = Swift_SmtpTransport::newInstance($params['connections']['host'], $params['connections']['port']);
+					$this->transport = Swift_SmtpTransport::newInstance($params['connections']['host'], $params['connections']['port']);
 				}
 			} else {
-				$transport = Swift_SmtpTransport::newInstance(SMTP_SERVER, SMTP_PORT)
+				$this->transport = Swift_SmtpTransport::newInstance(SMTP_SERVER, SMTP_PORT)
 						->setUsername(SMTP_USERNAME)
 						->setPassword(SMTP_PASSWORD);
 			}
 		}
 
 		//setup the transport authority for sending the email, whether it is SMTP, exim, sendmail, PHP, whatever....
-		$this->mailer = Swift_Mailer::newInstance($transport);
+		$this->mailer = Swift_Mailer::newInstance($this->transport);
 		$this->message = new Swift_Message();
 
 		// use the eDebugLogger for Exponent
@@ -168,6 +169,20 @@ class expMail {
 
 	// End Constructor
 
+	/**
+	 *  test() - Does the system seem to be working correctly.
+	 *
+	 * @todo Update this section to use more error checking
+	 */
+	public function test() {
+		try {
+			$this->transport->start();
+			echo ("<h2>Mail Server Test Complete!</h2>We Connected to the Mail Server");
+		} catch (Exception $e) {
+			echo ("<h2>Mail Server Test Failed!</h2>");
+			eDebug($e->getMessage());
+		}
+	}
 	/**
 	 *  quickSend() - This is a quick method for sending email messages that requires a few values to be passed in or else the message fails immediately.
 	 * @author Tyler Smart <tyleresmart@gmail.com>
@@ -221,7 +236,13 @@ class expMail {
 			$this->setTextBody($params['text_message']);
 		}
 
-		return $this->send();
+		$numsent = 0;
+		try {
+			$numsent = $this->send();
+		} catch (Exception $e) {
+			flash('error','Sending Mail Failed! - '.$e->getMessage());
+		}
+		return $numsent;
 	}
 
 	/**

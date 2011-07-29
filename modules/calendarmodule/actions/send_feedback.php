@@ -47,9 +47,10 @@ if (isset($_POST['id'])) {
 //		}
 
 // new mail method
+		$ret = 0;
 		foreach ($email_addrs as $recip) {
 			$mail = new expMail();
-			$ret = $mail->quickSend(array(
+			$ret += $mail->quickSend(array(
 					"text_message"=>$msg,
 //					'html_message'=>$msg,
 					'to'=>$recip,
