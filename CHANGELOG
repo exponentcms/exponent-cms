@@ -9,6 +9,14 @@ Added / Fixed / changed for 2.0.0 release candidate 2
 Added / Fixed / changed for 2.0.0 release candidate 1
 -----------------------
 # This release focuses on stabilization and fixing brokenness
+	• Many tweaks to Ecommerce
+	• Permissions (cascading) problems fixed
+	• Adds a new 'Data' view to form module
+	• Minor updates to the install/upgrade process
+	• Page-loading process streamlined
+	• 3rd party libraries updated - Minfy, Swiftmail, MagpieRSS, SWFObject
+	• Many deprecated (1.0) files and functions removed from package
+    • Many, many other tweaks and fixes
 
 Added / Fixed / changed for 2.0.0 beta 4
 -----------------------
