@@ -27,15 +27,8 @@ class snippetController extends expController {
 	);
 	public $codequality = 'stable';
 
-	function name() { return $this->displayname(); } //for backwards compat with old modules
 	function displayname() { return "Code Snippets"; }
 	function description() { return "Use this to put snippets of code, i.e. Javascript, embedded video, etc, on your site."; }
-	function author() { return "Adam Kessler - OIC Group, Inc"; }
-	function hasSources() { return true; }
-	function hasViews() { return true; }
-	function hasContent() { return true; }
-	function supportsWorkflow() { return false; }
-	function isSearchable() { return false; }	
 	
 	public function showall() {
 	    expHistory::set('viewable', $this->params);

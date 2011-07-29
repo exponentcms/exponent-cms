@@ -2,13 +2,13 @@ ExponentCMS Calendar Event Reminders implementation
 
 There are NO guarantees this may not open up security vulnerabilities on your site!  Please use with caution!
 
-After installation (into the root ExponentCMS directory), you'll need to update/change the settings on the calendars you plan to use it with.  Primarily this allows you to add the info needed about the mailouts.
+After installation, you'll need to update/change the settings on the calendars you plan to use it with.  Primarily this allows you to add the info needed about the mailouts.
 
 To use, pull up the send_reminders.php file in a browser (or curl with cron, etc...) passing a calendar src number.  Currently, you'll have to know the src number by pulling up an event, etc....  You can also pass other parameters, e.g.
-http://www.mysite.org/send_reminders.php?src=@random4b2903417d3bb
-http://www.mysite.org/send_reminders.php?src=@random4b2903417d3bb&view=_reminder_week
+http://www.mysite.org/cron/send_reminders.php?src=@random4b2903417d3bb
+http://www.mysite.org/cron/send_reminders.php?src=@random4b2903417d3bb&view=_reminder_week
 (or with curl)
-curl -G -d "src=@random4b2903417d3bb&days=14" -s http://www.mysite.org/send_reminders.php
+curl -G -d "src=@random4b2903417d3bb&days=14" -s http://www.mysite.org/cron/send_reminders.php
 
 The script responds with either an error or displays a copy of the sent e-mail contents.
 

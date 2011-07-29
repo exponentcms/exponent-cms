@@ -108,7 +108,6 @@ class authorizedotnet extends creditcard {
 		$authorize = curl_exec($ch);
 		curl_close($ch);
 		
-//		$response = split("\|", $authorize);
 		$response = explode("|", $authorize);
         
 		if ($response[0] == 1) { //Approved !!!
@@ -188,7 +187,7 @@ class authorizedotnet extends creditcard {
 		$authorize = curl_exec($ch);
 		curl_close($ch);
 		
-		$response = split("|", $authorize);	
+		$response = explode("|", $authorize);	
 		if($response[2] == 1) { //if it is completed
 			$method->update(array('billing_options'=>serialize($billing_options), 'transaction_state'=>'voided'));
 			$this->createBillingTransaction($method, urldecode($response[9]),$billing_options->result,'voided');
@@ -228,7 +227,7 @@ class authorizedotnet extends creditcard {
 			$authorize = curl_exec($ch);
 			curl_close($ch);
 			
-			$response = split("|", $authorize);	
+			$response = explode("|", $authorize);	
 			
 			$method->update(array('billing_options'=>serialize($billing_options), 'transaction_state'=>'refunded'));
 			$this->createBillingTransaction($method, number_format($amount, 2, '.', ''),$billing_options->result,'refunded');

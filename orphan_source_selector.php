@@ -16,6 +16,7 @@
 # GPL: http://www.gnu.org/licenses/gpl.txt
 #
 ##################################################
+/** @define "BASE" "." */
 
 define('SCRIPT_EXP_RELATIVE','');
 define('SCRIPT_FILENAME','orphan_source_selector.php');
@@ -47,7 +48,7 @@ if (isset($_REQUEST['vmod'])) {
 if (isset($_REQUEST['showmodules'])) {
 	if (is_array($_REQUEST['showmodules'])) $source_select['showmodules'] = $_REQUEST['showmodules'];
 	else if ($_REQUEST['showmodules'] == 'all') $source_select['showmodules'] = null;
-	else $source_select['showmodules'] = split(',',$_REQUEST['showmodules']);
+	else $source_select['showmodules'] = explode(',',$_REQUEST['showmodules']);
 } else if (!isset($source_select['showmodules'])) {
 	$source_select['showmodules'] = null;
 }
@@ -82,7 +83,8 @@ if (isset($_GET['module'])) {
 	$thistemplate->assign('main_output',ob_get_contents());
 	$thistemplate->assign('error','');
 	ob_end_clean();
-} else if ($db->countObjects('locationref','refcount = 0')) {
+//} else if ($db->countObjects('locationref','refcount = 0')) {
+} else if ($db->countObjects('sectionref','refcount = 0')) {
 	$thistemplate->assign('error','needmodule');
 } else {
 	$thistemplate->assign('error','nomodules');

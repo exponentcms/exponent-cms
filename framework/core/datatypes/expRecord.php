@@ -123,6 +123,8 @@ class expRecord {
 	 * @param int $limitstart
 	 * @param bool $get_assoc
 	 * @param bool $get_attached
+	 * @param array $except
+	 * @param bool $cascade_except
 	 * @return array
 	 */
     public function find($range='all', $where=null, $order=null, $limit=null, $limitstart=0, $get_assoc=true, $get_attached=true, $except=array(), $cascade_except = false) {
@@ -172,6 +174,10 @@ class expRecord {
 	 * find an item by column
 	 * @param $column
 	 * @param $value
+	 * @param bool $get_assoc
+	 * @param bool $get_attached
+	 * @param array $except
+	 * @param bool $cascade_except
 	 * @return array
 	 */
     public function findBy($column, $value, $get_assoc=true, $get_attached=true, $except=array(), $cascade_except = false) {
@@ -180,7 +186,7 @@ class expRecord {
         if (!is_numeric($value)) $where .= "'";
         $where .= $value;
         if (!is_numeric($value)) $where .= "'";
-        return $this->find('first', $where, null, null, null, $get_assoc, $get_attached, $except, $cascade_except);
+        return $this->find('first', $where, null, null, 0, $get_assoc, $get_attached, $except, $cascade_except);
     }
 
 	/**
@@ -190,12 +196,13 @@ class expRecord {
 	public function update($params=array()) {
         $this->checkForAttachableItems($params);    
         $this->build($params); 
-        if(is_array($params))       
+        if (is_array($params)) {
             $this->save((isset($params['_validate'])?$params['_validate']:true));  
-        else if(is_object($params))
-            $this->save((isset($params->_validate)?$params->_validate:true));  
-        else
-            $this->save(true);  
+        } elseif (is_object($params)) {
+           $this->save((isset($params->_validate)?$params->_validate:true));  
+        } else {
+           $this->save(true);  
+        }
     }
 
 	/**
@@ -581,12 +588,18 @@ class expRecord {
 	public function afterValidationOnUpdate() {
         $this->runCallback('afterValidationOnUpdate');
     }
-	
+
+	/**
+	 * is run before deleting item
+	 */
 	public function beforeDelete() {
         $this->runCallback('beforeDelete');
     }
-    
-    public function afterDelete() {
+
+	/**
+	 * is run after deleting item
+	 */
+	public function afterDelete() {
         $this->runCallback('afterDelete');
     }
 
@@ -763,6 +776,8 @@ class expRecord {
 	/**
 	 * list associated objects for this model
 	 * @param array $except
+	 * @param bool $cascade_except
+	 *
 	 */
 	private function getAssociatedObjectsForThisModel($except=array(), $cascade_except = false) {
         global $db;
@@ -935,7 +950,11 @@ class expRecord {
         return $ret_array;
     }
 
-    public function getPoster()
+	/**
+	 * return the item poster
+	 * @return null|string
+	 */
+	public function getPoster()
     {
         if(isset($this->poster))
         {
@@ -947,8 +966,13 @@ class expRecord {
             return null;
         }
     }
-    
-    public function getTimestamp($type=0)
+
+	/**
+	 * return the item timestamp
+	 * @param int $type
+	 * @return mixed
+	 */
+	public function getTimestamp($type=0)
     {
         if($type==0) $getType = 'created_at';
         else $getType = 'edited_at';        

@@ -29,15 +29,8 @@ class ealertController extends expController {
         'tags'
     );
 	
-    function name() { return $this->displayname(); } //for backwards compat with old modules
     function displayname() { return "E-Alerts"; }
     function description() { return "This module will allow your users to signup for email alerts on a module by module basis."; }
-    function author() { return "Adam Kessler - OIC Group, Inc"; }
-    function hasSources() { return true; }
-    function hasViews() { return true; }
-    function hasContent() { return true; }
-    function supportsWorkflow() { return false; }
-    function isSearchable() { return false; }    
     
     public function showall() {
         $ealerts = new expeAlerts();

@@ -18,15 +18,11 @@
 ##################################################
 
 class order_typeController extends expController {
-    function name() { return $this->displayname(); } //for backwards compat with old modules
+
     function displayname() { return "Ecommerce Order Types"; }
     function description() { return "Manage Ecommerce Order Types"; }
-    function author() { return "Jonathan Worent - OIC Group, Inc"; }
     function hasSources() { return false; }
-    function hasViews() { return true; }
     function hasContent() { return false; }
-    function supportsWorkflow() { return false; }
-    function isSearchable() { return false; }
     
     public function manage() {
         expHistory::set('viewable', $this->params);
@@ -42,11 +38,11 @@ class order_typeController extends expController {
     }
     
     public function showall() {
-        redirct_to(array('controller'=>'order_type', 'action'=>'manage'));
+        redirect_to(array('controller'=>'order_type', 'action'=>'manage'));
     }
     
     public function show() {
-        redirct_to(array('controller'=>'order_type', 'action'=>'manage'));
+        redirect_to(array('controller'=>'order_type', 'action'=>'manage'));
     }
     
     public function update() {

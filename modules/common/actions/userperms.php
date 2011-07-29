@@ -16,10 +16,12 @@
 # GPL: http://www.gnu.org/licenses/gpl.txt
 #
 ##################################################
+/** @define "BASE" "../../.." */
 
 if (!defined('EXPONENT')) exit('');
 
-if (exponent_permissions_check('administrate',$loc)) {
+//if (exponent_permissions_check('administrate',$loc)) {
+if ($user->isAdmin()) {
 	global $router;
 	if (exponent_template_getModuleViewFile($loc->mod,'_userpermissions',false) == TEMPLATE_FALLBACK_VIEW) {
 		$template = new template('common','_userpermissions',$loc);

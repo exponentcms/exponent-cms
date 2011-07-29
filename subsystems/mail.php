@@ -14,11 +14,12 @@
  * @copyright  Copyright (c) 2009 Tyler Smart, Kenosis Designs, LLC.
  * @license    http://www.gnu.org/licenses/gpl.txt	GPL
  */
+/** @define "BASE" ".." */
 
 if (!defined('EXPONENT')) exit('');
 
 if ( version_compare ( phpversion(), "5.2.0", ">=" ) ) {
-	require_once(BASE.'external/Swift-4.0.5/lib/swift_required.php');
+	require_once(BASE.'external/Swift-4.1.1/lib/swift_required.php');
 
 // Create the class.
 class exponentMail extends Swift {
@@ -79,7 +80,7 @@ class exponentMail extends Swift {
 
 				break;
 				case "smtp":
-					//require_once(BASE.'external/Swift/Connection/SMTP.php');
+					//require_once(BASE.'external/Swift-4.1.1/Connection/SMTP.php');
 					if (array_key_exists('connections', $params)) {
 						if (is_array($params['connections'])) {
 							//$conn = new Swift_Connection_SMTP($params['connections']['host'], $params['connections']['port'], $params['connections']['option']);
@@ -332,7 +333,7 @@ class exponentMail extends Swift {
 	  * @return mixed
 	
 	public function batchSend() {
-		require_once(BASE.'external/Swift/Plugin/AntiFlood.php');
+		require_once(BASE.'external/Swift-4.1.1/Plugin/AntiFlood.php');
 		$this->attachPlugin(new Swift_Plugin_AntiFlood(200, 5),"anti-flood");
 		$batch = new Swift_BatchMailer($this);
 		$batch->setSleepTime(1);
@@ -962,7 +963,7 @@ class exponentMail extends Swift {
 	public function attach_file_not_on_disk($data_to_attach, $file_name, $file_type)
 	{
 		
-		require_once(BASE.'external/Swift-4.0.5/lib/classes/Swift/Attachment.php');	
+		require_once(BASE.'external/Swift-4.1.1/lib/classes/Swift/Attachment.php');
 
 		//Create the attachment with your data
 		$attachment = Swift_Attachment::newInstance($data_to_attach,  $file_name, $file_type);  
@@ -1007,7 +1008,7 @@ class exponentMail extends Swift {
 	public function attach_file_on_disk($file_to_attach, $file_type)
 	{
 		
-		require_once(BASE.'external/Swift-4.0.5/lib/classes/Swift/Attachment.php');	
+		require_once(BASE.'external/Swift-4.1.1/lib/classes/Swift/Attachment.php');
 
 		//Create the attachment with your data
 		$attachment = Swift_Attachment::fromPath($file_to_attach, $file_type);   

@@ -74,6 +74,7 @@
                 {br}<a href="{link controller=storeCategory action=manage}">Manage Categories</a>
                 {br}<a href="{link controller=store action=config}">Configure Store</a>
 				{br}<a href="{link controller=store action=nonUnicodeProducts}">Show Non-Unicode Products</a>
+				{br}<a href="{link controller=store action=uploadModelAliases}">Upload Model Aliases</a>
         </div>
     {/if}
     {/permissions}

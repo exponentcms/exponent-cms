@@ -138,8 +138,7 @@
     });
     {/literal}
     {/script*}
-   
-    <div class="products ipr{$config.images_per_row} listing-row">
+    <div class="products ipr{$config.images_per_row|default:3} listing-row">
         {counter assign="ipr" name="ipr" start=1}
         
         {foreach from=$page->records item=listing name=listings}

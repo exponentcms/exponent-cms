@@ -28,12 +28,9 @@ class expSimpleNoteController extends expController {
     protected $add_permissions = array('approve'=>"Approve Comments");
     protected $remove_permissions = array('edit', 'create');
 
-    function name() { return $this->displayname(); } //for backwards compat with old modules
     function displayname() { return "Simple Notes"; }
     function description() { return "Use this module to add Simple Notes attached to something (product, order, etc)"; }
     function author() { return "Jonathan Worent @ OIC Group, Inc"; }
-    function hasSources() { return true; }
-    function hasViews() { return true; }
     
     function edit() {
         global $user;
@@ -343,7 +340,6 @@ class expSimpleNoteController extends expController {
         
         // setup some email variables.
         $subject = 'Notification of a New Note Posted to '.URL_BASE;
-//        $tos = split(',', str_replace(' ', '', $notification_email));
         $tos = explode(',', str_replace(' ', '', $notification_email));
         $editlink = makelink(array('controller'=>'expSimpleNote', 'action'=>'edit', 'id'=>$simplenote->id));
         
@@ -359,8 +355,9 @@ class expSimpleNoteController extends expController {
         $mail->quickSend(array(
                 'html_message'=>$body,
                 'to'=>$tos,
-                'from'=>trim(SMTP_FROMADDRESS),
-                'from_name'=>trim(URL_BASE),
+//                'from'=>trim(SMTP_FROMADDRESS),
+//                'from_name'=>trim(URL_BASE),
+                'from'=>array(trim(SMTP_FROMADDRESS)=>trim(URL_BASE)),
                 'subject'=>$subject,
         ));
         

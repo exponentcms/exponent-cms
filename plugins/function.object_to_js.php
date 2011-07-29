@@ -16,6 +16,7 @@
 # GPL: http://www.gnu.org/licenses/gpl.txt
 #
 ##################################################
+/** @define "BASE" ".." */
 
 function smarty_function_object_to_js($params,&$smarty) {
 	

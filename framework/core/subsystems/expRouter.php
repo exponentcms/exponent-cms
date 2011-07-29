@@ -518,7 +518,7 @@ class expRouter {
             if ($this->url_style == 'sef') {
                 $url .= $this->convertToOldSchoolUrl();
                 $url .= empty($view) ? '' : '&view='.$view;
-                if ($this->url_type=='base') $url .= 'index.php?section='.SITE_DEFAULT_SECTION;
+                if ($this->url_type=='base') $url .= '/index.php?section='.SITE_DEFAULT_SECTION;
             } else {
                 $url .= $this->current_url;
             }
@@ -622,7 +622,7 @@ class expRouter {
             foreach($_SERVER['argv'] as $set)
             {
                 $s = explode("=",$set);
-                if($s[0]= "ectid")
+                if($s[0] == "ectid")
                 {
                     $this->ectid = $s[1];    
                 }   

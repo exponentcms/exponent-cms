@@ -27,8 +27,7 @@ define('SCRIPT_FILENAME','index.php');
 include_once('../exponent.php');
 
 if (!file_exists('not_configured') && file_exists(BASE.'conf/config.php')) {
-//	header('Location: ../index.php');
-	header('Location: ./pages/final.php');  // take us to the final install/upgrade page
+	header('Location: ../index.php');
 	exit('This Exponent Site has already been configured.');
 }
 

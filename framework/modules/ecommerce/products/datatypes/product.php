@@ -16,11 +16,12 @@
 # GPL: http://www.gnu.org/licenses/gpl.txt
 #
 ##################################################
+/** @define "BASE" "../../../../.." */
 
 class product extends expRecord {
 	public $table = 'product';
 	public $has_one = array('company', 'product_status');
-	public $has_many = array('optiongroup');
+	public $has_many = array('optiongroup', 'model_alias');
     public $has_many_self = array('childProduct');            
 	public $has_and_belongs_to_many = array('storeCategory');
     public $has_and_belongs_to_self = array('crosssellItem');
@@ -51,8 +52,8 @@ class product extends expRecord {
     
     protected $attachable_item_types = array(
         'content_expFiles'=>'expFile', 
-        'content_expRatings'=>'expRating', 
-        'content_expComments'=>'expComment',
+        //'content_expTags'=>'expTag', 
+        //'content_expComments'=>'expComment',
         'content_expSimpleNote'=>'expSimpleNote',
     );
     
@@ -90,14 +91,7 @@ class product extends expRecord {
 	}
 	
 	function updateQuantity($newval) {
-        if($this->allow_partial)
-        {
-            return floatval($newval);    
-        }
-        else
-        {
-            return intval($newval);
-        }		
+		return $newval;
 	}
 	
     function getBasePrice($orderitem=null) {
@@ -157,7 +151,8 @@ class product extends expRecord {
         if ($orderid == null) global $order;
         else $order = new order($orderid);
         //eDebug($this);
-        $params['quantity'] = isset($params['quantity']) ? $params['quantity'] : 1;
+        //eDebug($params,true);
+        $params['qty'] = isset($params['qty']) ? $params['qty'] : 1;
         if (!isset($params['product_type'])) $params['product_type'] = 'product';
         
         $params['error'] = '';
@@ -175,7 +170,7 @@ class product extends expRecord {
                     if($orderItem->product_id == $this->id) $qCheck += $orderItem->quantity;
                 }
             //}
-            $qty = $params['quantity'];
+            $qty = $params['qty'];
             if (($this->quantity - $qCheck) < $qty) {
                 if ($this->availability_type == 2) {
                     flash('error', $this->title.' only has '.$this->quantity.' on hand. You can not add more than that to your cart.');
@@ -187,12 +182,11 @@ class product extends expRecord {
             if (($qty + $qCheck) < $this->minimum_order_quantity)
             {
                  flash('message', $this->title.' has a minimum order quantity of '.$this->minimum_order_quantity.'. The quantity has been adjusted accordingly.');
-                 $params['quantity'] += $this->minimum_order_quantity - ($qty + $qCheck);
-                 $qty = $params['quantity'];                             
+                 $params['qty'] += $this->minimum_order_quantity - ($qty + $qCheck);
+                 $qty = $params['qty'];                             
             }
         }else
         {
-            eDebug($params);
             foreach ($params['children'] as $idKey=>$childQty)
             {
                 $cprod = new childProduct($idKey);
@@ -207,7 +201,9 @@ class product extends expRecord {
                     if($orderItem->product_id == $idKey) $qCheck += $orderItem->quantity;
                 }
                 //}
-                
+                /*eDebug("Qty:".$childQty);
+                eDebug("Product Quantity:".$cprod->quantity);
+                eDebug("Qcheck:".$qCheck,true);*/
                 if (($cprod->quantity - $qCheck) < $childQty) {
                     if ($cprod->availability_type == 2) {
                         flash('error', $this->title. ' - ' .$cprod->model. ' only has '.$cprod->quantity.' on hand. You can not add more than that to your cart.');
@@ -215,11 +211,6 @@ class product extends expRecord {
                         expHistory::back();
                     }
                 }
-                /*eDebug("Current Qty Adding:".$childQty);
-                eDebug("Product Quantity On Hand:".$cprod->quantity);
-                eDebug("Prod min order qty:" . $cprod->minimum_order_quantity);
-                eDebug("Current Qty In Cart:".$qCheck); */               
-                
                 //check minimum quantity
                 if (($childQty + $qCheck) < $cprod->minimum_order_quantity)
                 {
@@ -291,10 +282,9 @@ class product extends expRecord {
         }else{
             foreach ($params['children'] as $ckey=>$cqty)
             {
-                //$params['qty'] =  1;
-                $params['quantity'] = $cqty;
-                //for ($qty=1; $qty<=$cqty; $qty++)  
-               // {
+                $params['qty'] =  1;
+                for ($qty=1; $qty<=$cqty; $qty++)  
+                {
                     $child = new $params['product_type']($ckey);                     //$params['prod-quantity'][$ckey];
                     $this->createOrderItem($child, $params, $user_input_info, $orderid);
                     
@@ -303,7 +293,7 @@ class product extends expRecord {
                         if ($child->id == $ckey) $this->createOrderItem($child, $params, $user_input_info);
                         break;   
                     }*/ 
-                //}  
+                }  
                                      
             }
             //die();
@@ -389,7 +379,7 @@ class product extends expRecord {
         eDebug($params);
         eDebug($product->minimum_order_quantity);*/
         
-        $item->quantity += is_numeric($params['quantity']) && $params['quantity'] >= $product->minimum_order_quantity ? $params['quantity'] : $product->minimum_order_quantity;
+        $item->quantity += is_numeric($params['qty']) && $params['qty'] >= $product->minimum_order_quantity ? $params['qty'] : $product->minimum_order_quantity;
         if ($item->quantity < 1 ) $item->quantity = 1;
        // eDebug($item->quantity,true);
         //eDebug($params);
@@ -421,19 +411,15 @@ class product extends expRecord {
         return true;
     }
     
-        
-    public function process($item, $affects_inventory) {
+    
+    
+    public function process($item) {
         global $db;
-        //only adjust inventory if the order type says it should, or we otherwise tell it to
-        if($affects_inventory)
-        {
-            $this->quantity = $this->quantity - $item->quantity;
-            //$this->save();
-            $pobj->id = $this->id;
-            $pobj->quantity = $this->quantity;
-            $db->updateObject($pobj, 'product', 'id='.$this->id);    
-        }
-        return;        
+        $this->quantity = $this->quantity - $item->quantity;
+        //$this->save();
+        $pobj->id = $this->id;
+        $pobj->quantity = $this->quantity;
+        $db->updateObject($pobj, 'product', 'id='.$this->id);
     }
     
     public function optionDropdown($key, $display_price_as) {

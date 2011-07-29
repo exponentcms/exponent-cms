@@ -15,6 +15,7 @@
 # GPL: http://www.gnu.org/licenses/gpl.txt
 #
 ##################################################
+/** @define "BASE" "../.." */
 
 class calendarmodule {
 	function name() { return exponent_lang_loadKey('modules/calendarmodule/class.php','module_name'); }
@@ -25,7 +26,7 @@ class calendarmodule {
 	function hasSources() { return true; }
 	function hasViews()   { return true; }
 
-	function supportsWorkflow() { return true; }
+	function supportsWorkflow() { return false; }
 
 	function getRSSContent($loc) {
 		global $db;

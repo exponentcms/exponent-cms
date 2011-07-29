@@ -17,6 +17,7 @@
 # GPL: http://www.gnu.org/licenses/gpl.txt
 #
 ##################################################
+/** @define "BASE" ".." */
 
 if (!defined('EXPONENT')) exit('');
 
@@ -29,7 +30,7 @@ $userjsfiles = array();
  */
 define('SYS_TEMPLATE',1);
 
-define('TEMPLATE_FALLBACK_VIEW',BASE.'views/viewnotfound.tpl');
+define('TEMPLATE_FALLBACK_VIEW',BASE.'framework/core/views/viewnotfound.tpl');
 
 include_once(BASE.'external/Smarty/libs/Smarty.class.php');
 
@@ -74,7 +75,7 @@ class BaseTemplate {
 		$this->viewdir = realpath(dirname($this->viewfile));
 
 		$this->module = $item_dir;
-				
+		
 		$this->view = substr(basename($this->viewfile),0,-4);
 		
 		//fix for the wamp/lamp issue
@@ -333,7 +334,7 @@ class standalonetemplate extends BaseTemplate {
 		
 	//PHP5 constructor
 	function __construct($view) {
-		parent::__construct("", "", $view);
+		parent::__construct("globalviews", "", $view);
 	}
 		
 	//PHP4: compatibility wrapper
@@ -356,11 +357,10 @@ class standalonetemplate extends BaseTemplate {
  */
 function exponent_template_getViewFile($type="", $name="", $view="Default") {
 	$viewfilepath = exponent_core_resolveFilePaths($type, $name, "tpl", $view);
-
 	// Something is really screwed up.
 	if ($viewfilepath == false) {
 		// Fall back to something that won't error.
-		return BASE . 'views/viewnotfound.tpl';
+		return BASE . 'framework/core/views/viewnotfound.tpl';
 	}
 	//return first match
 	return array_shift($viewfilepath);	

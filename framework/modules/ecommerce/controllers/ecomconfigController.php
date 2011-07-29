@@ -16,6 +16,7 @@
 # GPL: http://www.gnu.org/licenses/gpl.txt
 #
 ##################################################
+/** @define "BASE" "../../../.." */
 
 class ecomconfigController extends expController {
 	//public $basemodel_name = 'expRecord';
@@ -23,14 +24,9 @@ class ecomconfigController extends expController {
 	public $useractions = array();
     public $add_permissions = array('show'=>'View Admin Options');
 	
-	function name() { return $this->displayname(); } //for backwards compat with old modules
     function displayname() { return "Ecommerce Configuration Manager"; }
     function description() { return "Use this module to configure your Ecommerce store"; }
-    function author() { return "Adam Kessler @ OIC Group, Inc"; }
     function hasSources() { return false; }
-    function hasViews() { return true; }
-	function hasContent() { return true; }
-	function supportsWorkflow() { return false; }
 
     function show() {
         expHistory::set('managable', $this->params);
@@ -153,7 +149,7 @@ class ecomconfigController extends expController {
         //loop our groups and append them to the array
        // foreach ($group->find() as $g){
        //this is a workaround for older code. Use the previous line if possible:
-       include_once(BASE.'subsystems//users.php');
+       include_once(BASE.'subsystems/users.php');
        $allGroups = exponent_users_getAllGroups();
        if (count($allGroups))
        {

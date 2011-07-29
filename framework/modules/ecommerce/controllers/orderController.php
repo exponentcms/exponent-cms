@@ -34,14 +34,8 @@ class orderController extends expController {
     'createReferenceOrder'=>'Create Reference Order', 'save_reference_order'=>'Save Reference Order'      
     );
 	
-	function name() { return $this->displayname(); } //for backwards compat with old modules
 	function displayname() { return "Ecommerce Order Manager"; }
 	function description() { return "Use this module to manage the orders from your ecommerce store."; }
-	function author() { return "Adam Kessler - OIC Group, Inc"; }
-	function hasSources() { return true; }
-	function hasViews() { return true; }
-	function hasContent() { return true; }
-	function supportsWorkflow() { return false; }
 	
 	function showall() {
 	    global $db;
@@ -267,8 +261,9 @@ class orderController extends expController {
 		                'html_message'=>$html,
 					    'text_message'=>$txt,
 					    'to'=>trim($address),
-					    'from'=>ecomconfig::getConfig('from_address'),
-					    'from_name'=>ecomconfig::getConfig('from_name'),
+//					    'from'=>ecomconfig::getConfig('from_address'),
+//					    'from_name'=>ecomconfig::getConfig('from_name'),
+					    'from'=>array(ecomconfig::getConfig('from_address')=>ecomconfig::getConfig('from_name')),
 					    'subject'=>'An order was placed on the '.ecomconfig::getConfig('storename'),
 		        ));
 		    }
@@ -286,8 +281,9 @@ class orderController extends expController {
 			        'text_message'=>$txt,
 			        'to'=>$user->email,
 					//'to'=>$order->billingmethod[0]->email,
-			        'from'=>ecomconfig::getConfig('from_address'),
-			        'from_name'=>ecomconfig::getConfig('from_name'),
+//			        'from'=>ecomconfig::getConfig('from_address'),
+//			        'from_name'=>ecomconfig::getConfig('from_name'),
+			        'from'=>array(ecomconfig::getConfig('from_address')=>ecomconfig::getConfig('from_name')),
 			        'subject'=>ecomconfig::getConfig('invoice_subject'),
             ));      
         }

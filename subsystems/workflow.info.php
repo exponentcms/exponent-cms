@@ -25,7 +25,7 @@ return array(
 	'name'=>$i18n['subsystem_name'],
 	'author'=>'James Hunt',
 	'description'=>$i18n['subsystem_description'],
-	'version'=>exponent_core_version(true)
+	'version'=>expVersion::getVersion(true)
 );
 
 ?>

@@ -16,6 +16,7 @@
 # GPL: http://www.gnu.org/licenses/gpl.txt
 #
 ##################################################
+/** @define "BASE" ".." */
 
 class section_template {
 	function form($object = null) {

@@ -17,9 +17,16 @@
 # GPL: http://www.gnu.org/licenses/gpl.txt
 #
 ##################################################
+/** @define "BASE" "." */
 
 define('SCRIPT_EXP_RELATIVE','');
 define('SCRIPT_FILENAME','index.php');
+
+/**
+ * @param $buffer
+ * @param $mode
+ * @return string
+ */
 function epb($buffer, $mode) {
     //@ob_gzhandler($buffer, $mode);
     @ob_gzhandler($buffer);
@@ -65,16 +72,14 @@ if (MAINTENANCE_MODE && !exponent_users_isAdmin() && ( !isset($_REQUEST['module'
 	//the default user is anonymous
 	if (!exponent_sessions_loggedIn()) {
 		// Initialize the users subsystem
-		require_once(BASE.'subsystems/users.php');  // FIXME users.php is already loaded within exponent.php above
+		require_once(BASE.'subsystems/users.php');  // FIXME users.php is already loaded from within exponent.php above
 
 		//TODO: Maxims initial anonymous user implementation
 		//exponent_users_login("anonymous", "anonymous");
 	}
 
-	if (@file_exists(BASE.'install/not_configured') || !(file_exists(BASE.'conf/config.php'))) {
-		header('Location: '.URL_FULL.'install/index.php');
-		exit('Redirecting to the Exponent Install Wizard');
-	}
+	// check to see if we need to install or upgrade the system
+	expVersion::checkVersion();
 
 	// Handle sub themes
 	$page = exponent_theme_getTheme();

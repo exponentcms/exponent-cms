@@ -16,6 +16,7 @@
 # GPL: http://www.gnu.org/licenses/gpl.txt
 #
 ##################################################
+/** @define "BASE" "../.." */
 
 class formmodule {
 	function name() { return exponent_lang_loadKey('modules/formmodule/class.php','module_name'); }

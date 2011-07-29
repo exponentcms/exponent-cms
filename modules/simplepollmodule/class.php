@@ -30,6 +30,7 @@
 #
 # $Id: class.php,v 1.2 2005/04/26 03:06:00 filetreefrog Exp $
 ##################################################
+/** @define "BASE" "../.." */
 
 class simplepollmodule {
 	function name() { return 'Simple Poll'; }

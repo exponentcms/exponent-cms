@@ -25,12 +25,10 @@
 
 class expModuleController extends expController {
 
-	function name() { return $this->displayname(); }
     function displayname() { return "Modules"; }
     function description() { return "Manages all things about Exponent Modules"; }
     function author() { return "Phillip Ball"; }
     function hasSources() { return false; }
-    function hasViews() { return true; }
 	function hasContent() { return false; }
     
     function manage () {

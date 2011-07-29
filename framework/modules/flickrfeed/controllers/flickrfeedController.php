@@ -21,14 +21,9 @@ class flickrfeedController extends expController {
     );
 	public $codequality = 'beta';
     
-    function name() { return $this->displayname(); } //for backwards compat with old modules
     function displayname() { return "Flickr Feed"; }
     function description() { return "Display your Flickr Photostream"; }
     function author() { return "Jonathan Worent - OIC Group, Inc"; }
-    function hasSources() { return true; }
-    function hasViews() { return true; }
-    function hasContent() { return true; }
-    function supportsWorkflow() { return false; }
     function isSearchable() { return true; }
     
     public function showall() { 
@@ -40,7 +35,7 @@ class flickrfeedController extends expController {
         }
 		
         $photos = array();
-        $RSS = new rssfeed();
+//        $RSS = new rssfeed();  // we'll use curl instead of magpierss
         foreach($this->config['pull_rss'] as $url) {
         	// we need to get at one of the query paramerers and change it
 			// parse the url into its parts

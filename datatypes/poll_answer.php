@@ -30,6 +30,7 @@
 #
 # $Id: poll_answer.php,v 1.2 2005/04/25 19:02:17 filetreefrog Exp $
 ##################################################
+/** @define "BASE" ".." */
 
 class poll_answer {
 	function form($object) {

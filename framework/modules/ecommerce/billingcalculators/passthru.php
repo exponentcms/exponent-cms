@@ -1,4 +1,5 @@
 <?php
+/** @define "BASE" "../../../.." */
 
 class passthru extends billingcalculator {
 	function name() { return "Passthru Payment"; }

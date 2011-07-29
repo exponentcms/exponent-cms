@@ -15,6 +15,7 @@
 # GPL: http://www.gnu.org/licenses/gpl.txt
 #
 ##################################################
+/** @define "BASE" "." */
 
 if (defined('EXPONENT')) return;                  
 // bootstrap some exponenty goodness
@@ -24,7 +25,7 @@ include_once('exponent_bootstrap.php');
 if (!defined('SYS_SESSION_KEY')) define('SYS_SESSION_KEY',PATH_RELATIVE);                                                                       
     if (isset($_GET['id'])) {        
     	include_once('subsystems/autoloader.php');
-    	include_once('subsystems/config/load.php');  // FIXME already loaded in exponent_bootstrap.php
+//    	include_once('subsystems/config/load.php');  // FIXME already loaded in exponent_bootstrap.php
     	// Initialize the Database Subsystem
     	include_once(BASE.'subsystems/database.php');
     	$db = exponent_database_connect(DB_USER,DB_PASS,DB_HOST.':'.DB_PORT,DB_NAME);

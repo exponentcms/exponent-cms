@@ -18,15 +18,15 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','event', function(Y) {
             n.setStyle('zIndex',(chromes.size()-k)+10);
             //n.one(".exp-dropmenu").setStyle('zIndex',chromes.size()+1);
         });
-                
-        // if (Y.UA.ie > 0) {
-        //     Y.delegate('click', showMenu, document.body, '.container-chrome .trigger');
-        //     Y.on('click', hideMenus, document.body);            
-        // } else {
+
+        if (Y.UA.ie < 9 && Y.UA.ie > 6) {
+            Y.delegate('click', showMenu, document.body, '.container-chrome .trigger');
+            Y.on('click', hideMenus, document.body);            
+        } else {
             Y.on('click', hideMenus, document.body);
             Y.delegate('click', showMenu, document.body, '.container-chrome .trigger');
             
-        // };
+        };
 
         // move hard coded mod menus inside the mod wrapper they pertain to
         Y.all('.hardcoded-chrome').each(function(n,k){

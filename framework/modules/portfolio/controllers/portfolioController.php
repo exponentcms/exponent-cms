@@ -29,14 +29,8 @@ class portfolioController extends expController {
     
     public $remove_configs = array('ealerts','tags','rss','comments');
 
-    function name() { return $this->displayname(); } //for backwards compat with old modules
     function displayname() { return "Portfolio"; }
     function description() { return "This module allows you to show off your work portfolio style."; }
-    function author() { return "Adam Kessler - OIC Group, Inc"; }
-    function hasSources() { return true; }
-    function hasViews() { return true; }
-    function hasContent() { return true; }
-    function supportsWorkflow() { return false; }
     function isSearchable() { return true; }
     
     public function showall() {

@@ -21,14 +21,8 @@ class helpController extends expController {
 	public $useractions = array('showall'=>'Show all');
 	public $codequality = 'beta';
 
-	function name() { return $this->displayname(); } //for backwards compat with old modules
 	function displayname() { return "Help"; }
 	function description() { return "Module for managing Exponent CMS help files."; }
-	function author() { return "Adam Kessler - OIC Group, Inc"; }
-	function hasSources() { return true; }
-	function hasViews() { return true; }
-	function hasContent() { return true; }
-	function supportsWorkflow() { return false; }
 	function isSearchable() { return true; }
 	
     function __construct($src=null, $params=array()) {

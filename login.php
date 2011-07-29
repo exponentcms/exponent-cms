@@ -16,6 +16,7 @@
 # GPL: http://www.gnu.org/licenses/gpl.txt
 #
 ##################################################
+/** @define "BASE" "." */
 
 // Initialize the Exponent Framework
 require_once('exponent.php');

@@ -22,15 +22,9 @@ class pixidouController extends expController {
     public $requires_login = array('editor','exitEditor');
 	public $codequality = 'beta';
 
-    function name() { return $this->displayname(); } //for backwards compat with old modules
     function displayname() { return "Pixidou Image Editor"; }
     function description() { return "Add and manage Exponent Files"; }
     function author() { return "Phillip Ball - OIC Group, Inc"; }
-    function hasSources() { return true; }
-    function hasViews() { return true; }
-    function hasContent() { return true; }
-    function supportsWorkflow() { return false; }
-    function isSearchable() { return false; }
 
     function editor() {
         global $user;

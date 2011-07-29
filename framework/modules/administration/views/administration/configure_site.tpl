@@ -105,15 +105,17 @@
                 </div>
                 {if $user->is_admin==1}
                 <div id="tab6">
-                    <h2>{gettext str="SMTP Server Settings"}</h2>
-					{help text="Learn More about SMTP server settings"|gettext module="smtp-server-settings"}
-                    {control type="checkbox" postfalse=1 name="sc[SMTP_USE_PHP_MAIL]" label="Use php's mail() function instead of SMTP?" checked=$smarty.const.SMTP_USE_PHP_MAIL value=1}
+                    <h2>{gettext str="Mail Server Settings"}</h2>
+					{help text="Learn More about mail server settings"|gettext module="mail-server-settings"}
+	                {control type="text" name="sc[SMTP_FROMADDRESS]" label="From Address" value=$smarty.const.SMTP_FROMADDRESS}
+                    {br}{control type="checkbox" postfalse=1 name="sc[SMTP_USE_PHP_MAIL]" label="Use php's mail() function instead of SMTP?" checked=$smarty.const.SMTP_USE_PHP_MAIL value=1}
+	                (or)<h3>{gettext str="SMTP Server Settings"}</h3>
                     {control type="text" name="sc[SMTP_SERVER]" label="SMTP Server" value=$smarty.const.SMTP_SERVER}
                     {control type="text" name="sc[SMTP_PORT]" label="SMTP Port" value=$smarty.const.SMTP_PORT}
                     {control type="dropdown" name="sc[SMTP_AUTHTYPE]" label="Authentication Method" items="NONE,LOGIN,PLAIN" default=$smarty.const.SMTP_AUTHTYPE includeblank="No Authentication"}
                     {control type="text" name="sc[SMTP_USERNAME]" label="SMTP Username" value=$smarty.const.SMTP_USERNAME}
                     {control type="text" name="sc[SMTP_PASSWORD]" label="SMTP Password" value=$smarty.const.SMTP_PASSWORD}
-                    {control type="text" name="sc[SMTP_FROMADDRESS]" label="From Address" value=$smarty.const.SMTP_FROMADDRESS}
+	                {control type="checkbox" postfalse=1 name="sc[SMTP_DEBUGGING]" label="Turn SMTP Debugging On?" checked=$smarty.const.SMTP_DEBUGGING value=1}
                 </div>
                 <div id="tab7">
                     <h2>{gettext str="Site Maintenance Mode Settings"}</h2>
@@ -140,10 +142,12 @@
                 </div>
                 <div id="tab10">
                     <h2>{gettext str="WYSIWYG Editor Settings"}</h2>
-					{help text="Learn More about WYSIWYG editor settings"|gettext module="wysiwyg-editor settings"}
+					{help text="Learn More about WYSIWYG editor settings"|gettext module="wysiwyg-editor-settings"}
                     {control type="dropdown" name="sc[SITE_WYSIWYG_EDITOR]" label="HTML Editor" items="CKEditor,FCK Editor" values="ckeditor,FCKeditor" default=$smarty.const.SITE_WYSIWYG_EDITOR}
-					{br}<hr>
-					{chain module=expHTMLEditor view="manage"}
+	                {if $smarty.const.SITE_WYSIWYG_EDITOR == 'ckeditor'}
+						{br}<hr>
+		                {chain module=expHTMLEditor view=manage}
+	                {/if}
                 </div>
                 <div id="tab11">
                     <h2>{gettext str="Error Messages"}</h2>
@@ -162,8 +166,12 @@
 				
 				<div id="tab13">
                     <h2>{gettext str="Minify Configuration"}</h2>
+					{help text="Learn More about minification"|gettext module="minify-configuration"}
                     {control type="text" name="sc[MINIFY_MAXAGE]" label="Maximum age of browser cache in seconds" value=$smarty.const.MINIFY_MAXAGE}
+					{control type="text" name="sc[MINIFY_MAX_FILES]" label="Maximum # of files that can be specified in the 'f' GET parameter" value=$smarty.const.MINIFY_MAX_FILES}
 					{control type="text" name="sc[MINIFY_URL_LENGTH]" label="The length of minification url" value=$smarty.const.MINIFY_URL_LENGTH}
+					{control type="checkbox" postfalse=1 name="sc[MINIFY_ERROR_LOGGER]" label="Enable logging of minify error messages to FirePHP?" checked=$smarty.const.MINIFY_ERROR_LOGGER value=1}
+                    
                 </div>
                 {/if}
             </div>

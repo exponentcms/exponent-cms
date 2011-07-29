@@ -61,9 +61,9 @@
 						<img class="mngmnt_icon" style="border:none;" src="{$smarty.const.ICON_RELATIVE}delete.disabled.png" title="{$_TR.alt_delete_disabled}" alt="{$_TR.alt_delete_disabled}" />
 						{/if}
 					{/if}
-					{if $permissions.manage_approval == 1}
+					{*if $permissions.manage_approval == 1}
 						<a class="mngmntlink calendar_mngmntlink" href="{link module=workflow datatype=calendar m=calendarmodule s=$__loc->src action=revisions_view id=$event->id}" title="View Revision History for this Calendar Event" alt="View Revision History for this Calendar Event"><img class="mngmnt_icon" src="{$smarty.const.ICON_RELATIVE}revisions.png" title="{$_TR.alt_revisions}" alt="{$_TR.alt_revisions}"/></a>
-					{/if}
+					{/if*}
 					<div style="padding-left: 10px">
 						<b>
 						{if $event->is_allday == 1}All Day{else}

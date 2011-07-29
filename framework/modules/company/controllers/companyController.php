@@ -29,14 +29,9 @@ class companyController extends expController {
         'tags'
     );
 
-	function name() { return $this->displayname(); } //for backwards compat with old modules
 	function displayname() { return "Company Listings"; }
 	function description() { return "This module shows company listings"; }
-	function author() { return "Adam Kessler - OIC Group, Inc"; }
 	function hasSources() { return false; }
-	function hasViews() { return true; }
-	function hasContent() { return true; }
-	function supportsWorkflow() { return false; }	
 	
 	function showall() {
         expHistory::set('viewable', $this->params);

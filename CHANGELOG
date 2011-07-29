@@ -2,6 +2,10 @@ Exponent Content Management System
 Copyright (c) 2004-2011 OIC Group, Inc.
 ===============================================
 
+Added / Fixed / changed for 2.0.0 release candidate 1
+-----------------------
+# This release focuses on stabilization and fixing brokenness
+
 Added / Fixed / changed for 2.0.0 beta 4
 -----------------------
 # This release includes an emphasis on the permission system and a major update to the Ecommerce system

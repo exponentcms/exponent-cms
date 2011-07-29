@@ -16,6 +16,7 @@
 # GPL: http://www.gnu.org/licenses/gpl.txt
 #
 ##################################################
+/** @define "BASE" "../../../.." */
 
 class storeController extends expController {
     public $basemodel_name = 'product';
@@ -28,11 +29,11 @@ class storeController extends expController {
         'showFullTree'=>'Categories - Show Full Tree',
         'showallSubcategories'=>'Categories - Subcategories of current category',
         'upcoming_events'=>'Event Registration - Upcomming Events',
-		'events_calendar'=>'Event Registration - Calendar View',
+		  'events_calendar'=>'Event Registration - Calendar View',
         'ecom_search'=>'Search - Autocomplete',
         'search_by_model_form'=>'Search - By Model',
         'quicklinks'=>'Links - Users Links',
-		'showall_category_featured_products' => 'Show Featured Products under the current category'
+		  'showall_category_featured_products' => 'Show Featured Products under the current category'
     );
     
     // hide the configs we don't need
@@ -51,18 +52,18 @@ class storeController extends expController {
     'showallUncategorized'=>'View all uncategorized products',
     'nonUnicodeProducts'=>'View all non-unicode charset products',
     'cleanNonUnicodeProducts'=>'Clean all non-unicode charset products',
-    '_convertUTF'=>'Convert to UTF products',
-    '_validUTF'=>'isValid UTF products',
+	'uploadModelAliases'=>'Upload model aliases',
+	'processModelAliases'=>'Process uploaded model aliases',
+	'saveModelAliases'=>'Save uploaded model aliases',
+	'deleteProcessedModelAliases'=>'Delete processed uploaded model aliases',
+	'delete_model_alias'=>'Process model aliases',
+	'update_model_alias'=>'Save model aliases',
+	'edit_model_alias'=>'Delete model aliases'
     );
      
-    function name() { return $this->displayname(); } //for backwards compat with old modules
     function displayname() { return "e-Commerce Store Front"; }
     function description() { return "Use this module to display products and categories of you Ecommerce store"; }
     function author() { return "OIC Group, Inc"; }
-    function hasSources() { return true; }
-    function hasViews() { return true; }
-    function hasContent() { return true; }
-    function supportsWorkflow() { return false; }
     function isSearchable() { return true; }
     function canImportData() { return true; }
     function canExportData() { return true; }
@@ -93,7 +94,11 @@ class storeController extends expController {
                 expSession::set('catid',$default_id);
             }
         } elseif (isset($this->config['show_first_category']) || (!expTheme::inAction() && $section==SITE_DEFAULT_SECTION)) {
-            $default_id = $db->selectValue('storeCategories', 'id', 'lft=1');
+            if (!empty($this->config['show_first_category'])) {
+              $default_id = $db->selectValue('storeCategories', 'id', 'lft=1');
+            } else {
+              $default_id = 0;
+            }
             expSession::set('catid',$default_id);
         } elseif (!isset($this->config['show_first_category']) && !expTheme::inAction()) {
             expSession::set('catid',0);
@@ -187,10 +192,11 @@ class storeController extends expController {
         $rerankSQL = "SELECT DISTINCT p.* FROM ".DB_TABLE_PREFIX."_product p JOIN ".DB_TABLE_PREFIX."_product_storeCategories sc ON  p.id = sc.product_id WHERE sc.storecategories_id=".$this->category->id." ORDER BY rank ASC";
         //eDebug($router);
         $defaultSort = $router->current_url;
+		
         assign_to_template(array('page'=>$page, 'defaultSort'=>$defaultSort, 'ancestors'=>$ancestors, 'categories'=>$categories, 'current_category'=>$this->category,'rerankSQL'=>$rerankSQL));
     }
     
-    function grabConfig($category=null){
+    function grabConfig($category=null) {
         
         // grab the configs for the category
         if (is_object($category)) 
@@ -207,8 +213,13 @@ class storeController extends expController {
         $cfg->src = "@globalstoresettings";
         $cfg->int = "";
         $config = new expConfig($cfg);
+        $this->config = (empty($catConfig->config) || @$catConfig->config['use_global']==1) ? $config->config : $catConfig->config;    
 
-        $this->config = (empty($catConfig->config) || @$catConfig->config['use_global']==1) ? $config->config : $catConfig->config;        
+		//This is needed since in the first installation of ecom the value for this will be empty and we are doing % operation for this value
+		//So we need to ensure if the value is = 0, then we can as well make it to 1
+		if(empty($this->config['images_per_row'])) {
+			$this->config['images_per_row'] = 3;
+		}
     }
     
     function upcoming_events() {
@@ -447,9 +458,10 @@ class storeController extends expController {
         assign_to_template(array('page'=>$page, 'moduletitle'=>'Improperly Categorized Products'));
     }
     
-    function exportMe()
-    {
-        redirect_to(array('controller'=>'report','action'=>'batch_export','applytoall'=>true));
+    function exportMe() {
+	
+		redirect_to(array('controller'=>'report','action'=>'batch_export','applytoall'=>true));
+	  
     }
     
     function showallByManufacturer() {
@@ -513,21 +525,20 @@ class storeController extends expController {
         
         if (!empty($tpl)) $template = new controllerTemplate($this, $tpl);
         $this->grabConfig();     
-        //eDebug($product);
-        assign_to_template(array('config'=>$this->config, 'product'=>$product, 'last_category'=>$order->lastcat));
+		
+		assign_to_template(array('config'=>$this->config, 'product'=>$product, 'last_category'=>$order->lastcat));
     }
     
     function showByTitle() {
+		
         global $order, $template, $user;
         //need to add a check here for child product and redirect to parent if hit directly by ID
         expHistory::set('viewable', $this->params);
+		
         $product = new product(addslashes($this->params['title']));
         $product_type = new $product->product_type($product->id);
-        
-        $product_type->title = $this->parseAndTrim($product_type->title,true);
-        $product_type->image_alt_tag = $this->parseAndTrim($product_type->image_alt_tag,true);
-        
-        //eDebug($product_type);
+        $product_type->title         = expString::parseAndTrim($product_type->title,true);
+        $product_type->image_alt_tag = expString::parseAndTrim($product_type->image_alt_tag,true);
          
         //if we're trying to view a child product directly, then we redirect to it's parent show view
         //bunk URL, no product found
@@ -556,7 +567,8 @@ class storeController extends expController {
         //eDebug($product);
         if (!empty($tpl)) $template = new controllerTemplate($this, $tpl);
         $this->grabConfig();     
-        assign_to_template(array('config'=>$this->config, 'product'=>$product_type, 'last_category'=>$order->lastcat));
+		
+		assign_to_template(array('config'=>$this->config, 'product'=>$product_type, 'last_category'=>$order->lastcat));
     }
 
     function showByModel() {
@@ -652,7 +664,7 @@ class storeController extends expController {
         $order = 'sc.rank'; //$this->config['orderby'];
         $dir = 'ASC'; $this->config['orderby_dir'];
         
-       $page = new expPaginator(array(
+        $page = new expPaginator(array(
                 'model_field'=>'product_type',
                 'sql'=>$sql,
                 'count_sql'=>$count_sql,
@@ -718,10 +730,10 @@ class storeController extends expController {
                 $search_record->original_id = $origid;
                 //$search_record->location_data = serialize($this->loc);
                 $search_record->save();
-                
                 $count += 1;
             }
         }
+        return $count;
     }
     
     function search_by_model_form() {
@@ -1175,52 +1187,14 @@ class storeController extends expController {
         }
         
         // Remove any quotes if there are any.
-        $metainfo['title'] =  $this->parseAndTrim($metainfo['title'],true);
-        $metainfo['description'] = $this->parseAndTrim($metainfo['description'],true);
-        $metainfo['keywords'] = $this->parseAndTrim($metainfo['keywords'],true);
+        $metainfo['title']       = expString::parseAndTrim($metainfo['title'],true);
+        $metainfo['description'] = expString::parseAndTrim($metainfo['description'],true);
+        $metainfo['keywords']    = expString::parseAndTrim($metainfo['keywords'],true);
                 
         return $metainfo;
     }
        
-    private function parseAndTrim($str, $unescape=false)
-    {   //�Death from above�? �
-        //echo "1<br>"; eDebug($str);    
-        global $db;
-
-        $str = str_replace("<br>"," ",$str);
-        $str = str_replace("</br>"," ",$str);
-        $str = str_replace("<br/>"," ",$str);
-        $str = str_replace("<br />"," ",$str);
-        $str = str_replace('"',"&quot;",$str);
-        $str = str_replace("'","&#39;",$str);
-        $str = str_replace("�","&rsquo;",$str);
-        $str = str_replace("�","&lsquo;",$str);
-        $str = str_replace("�","&#174;",$str);
-        $str = str_replace("�","-", $str);
-        $str = str_replace("�","&#151;", $str); 
-        $str = str_replace("�", "&rdquo;", $str);
-        $str = str_replace("�", "&ldquo;", $str);
-        $str = str_replace("\r\n"," ",$str); 
-        $str = str_replace("�","&#188;",$str);
-        $str = str_replace("�","&#189;",$str);
-        $str = str_replace("�","&#190;",$str);
-        if ($unescape) $str = stripcslashes(trim(str_replace("�", "&trade;", $str)));  
-        else {
-//	        if (DB_ENGINE=='mysqli') {
-//		        $str = @mysqli_real_escape_string($db->connection,trim(str_replace("�", "&trade;", $str)));
-//	        } elseif(DB_ENGINE=='mysql') {
-//	            $str = @mysql_real_escape_string(trim(str_replace("�", "&trade;", $str)),$db->connection);
-//	        } else {
-//		        $str = trim(str_replace("�", "&trade;", $str));
-//	        }
-	        $str = @$db->escapeString(trim(str_replace("�", "&trade;", $str)));
-        }
-        //echo "2<br>"; eDebug($str,die);
-        return $str;
-    }
-
-    public function deleteChildren()
-    {
+    public function deleteChildren() {
         //eDebug($data[0],true);
         //if($id!=null) $this->params['id'] = $id;
         //eDebug($this->params,true);        
@@ -1238,13 +1212,6 @@ class storeController extends expController {
             //fwrite($lfh, "Deleting:" . $ctd->id . "\n");                             
             $ctd->delete();
         }
-    }
-    
-    function cleanSEF($sef_val)
-    {
-        $ret = str_ireplace('.','',str_ireplace("'", '', str_ireplace(' ', '-', strtolower(trim($sef_val)))));
-        $ret = str_ireplace('/','',str_ireplace("(", '', str_ireplace(')', '', $ret)));
-        return $ret;
     }
     
     function search_by_model_old() {
@@ -1362,8 +1329,8 @@ class storeController extends expController {
         $ar->send();
     }
     
-    function batch_process()
-    {
+    function batch_process() {
+	
         $os = new order_status();
         $oss = $os->find('all');        
         $order_status =  array();
@@ -1375,8 +1342,7 @@ class storeController extends expController {
         assign_to_template(array('order_status'=>$order_status));
     }
     
-    function process_orders()
-    {
+    function process_orders() {
         /*
           Testing
         */
@@ -1673,27 +1639,23 @@ class storeController extends expController {
         assign_to_template(array('errorSet'=>$errorSet, 'successSet'=>$successSet));
     }
     
-    function manage_sales_reps()
-    {
+    function manage_sales_reps() {
         
     }
     
-    function showHistory()
-    {
+    function showHistory() {
         $h = new expHistory();
         echo "<xmp>";
         print_r($h);
         echo "</xmp>";
     }
     
-    function import_external_addresses()
-    {
+    function import_external_addresses() {
         $sources = array('mc'=>'MilitaryClothing.com','nt'=>'NameTapes.com','am'=>'Amazon');
         assign_to_template(array('sources'=>$sources));
     }
     
-    function process_external_addresses()
-    {
+    function process_external_addresses() {
         global $db;
          set_time_limit(0);
         //$file = new expFile($this->params['expFile']['batch_process_upload'][0]);
@@ -1924,6 +1886,7 @@ class storeController extends expController {
 	
 	function nonUnicodeProducts() {
 		global $db, $user;
+		
 		$products = $db->selectObjectsIndexedArray('product');
 		$affected_fields = array();
 		$listings = array();
@@ -1935,11 +1898,11 @@ class storeController extends expController {
 		
 			foreach($columns as $column) {
 				if($column != 'body' && $column != 'summary' && $column != 'featured_body') {
-					if(!$this->_validUTF($item->$column) || strrpos($item->$column, '?')) {
+					if(!expString::validUTF($item->$column) || strrpos($item->$column, '?')) {
 						$affected_fields[] = $column;
 					}
 				} else {
-					if(!$this->_validUTF($item->$column)) {
+					if(!expString::validUTF($item->$column)) {
 						$affected_fields[] = $column;
 					}
 				}
@@ -1964,6 +1927,7 @@ class storeController extends expController {
 	
 	function cleanNonUnicodeProducts() {
 		global $db, $user;
+		
 		$products = $db->selectObjectsIndexedArray('product');
 		//Get all the columns of the product table
 		$columns = $db->getTextColumns('product');
@@ -1972,12 +1936,12 @@ class storeController extends expController {
 			//TO Improved
 			foreach($columns as $column) {
 				if($column != 'body' && $column != 'summary' && $column != 'featured_body') {
-					if(!$this->_validUTF($item->$column) || strrpos($item->$column, '?')) {
-						$item->$column = $this->_convertUTF($item->$column); 
+					if(!expString::validUTF($item->$column) || strrpos($item->$column, '?')) {
+						$item->$column = expString::convertUTF($item->$column); 
 					}
 				} else {
-					if(!$this->_validUTF($item->$column)) {
-						$item->$column = $this->_convertUTF($item->$column); 
+					if(!expString::validUTF($item->$column)) {
+						$item->$column = expString::convertUTF($item->$column); 
 					}
 				}
 			}
@@ -1988,16 +1952,235 @@ class storeController extends expController {
 		redirect_to(array('controller'=>'store', 'action'=>'nonUnicodeProducts'));
 	}
 	
-	function _convertUTF($content) {
-		return $content = str_replace('?', '', htmlspecialchars($content, ENT_IGNORE, 'UTF-8'));
-	} 
-	
-	function _validUTF($content) {
-		if(!mb_check_encoding($content, 'UTF-8') OR !($content === mb_convert_encoding(mb_convert_encoding($content, 'UTF-32', 'UTF-8' ), 'UTF-8', 'UTF-32'))) {
-			return false;
-		}		
-		return true;
+	//This function is being used in the uploadModelaliases page for showing the form upload
+	function uploadModelAliases() {
+		 global $db;
+         set_time_limit(0);
+        
+		if(isset($_FILES['modelaliases']['tmp_name'])) {
+			if(!empty($_FILES['modelaliases']['error']))
+			{
+				flash('error','There was an error uploading your file.  Please try again.');
+				redirect_to(array('controller'=>'store','action'=>'uploadModelAliases'));        
+			}
+			
+			$file->path = $_FILES['modelaliases']['tmp_name'];
+			echo "Validating file...<br/>";
+			
+			$checkhandle = fopen($file->path, "r");
+			$checkdata = fgetcsv($checkhandle, 10000, ",");
+			$fieldCount = count($checkdata);      
+			$count = 1;
+			
+			while (($checkdata = fgetcsv($checkhandle, 10000, ",")) !== FALSE) 
+			{
+				$count++;
+				if (count($checkdata) != $fieldCount) 
+				{                   
+					echo "Line ". $count ." of your CSV import file does not contain the correct number of columns.<br/>";
+					echo "Found " . $fieldCount . " header fields, but only " . count($checkdata) ." field in row " . $count . " Please check your file and try again.";
+					exit();
+				}
+			}     
+					
+			fclose($checkhandle);
+			
+			echo "<br/>CSV File passed validation...<br/><br/>Importing....<br/><br/>";
+			$handle = fopen($file->path, "r");
+			$data = fgetcsv($handle, 10000, ",");
+			
+			//clear the db
+			$db->delete('model_aliases_tmp');
+			while (($data = fgetcsv($handle, 10000, ",")) !== FALSE) {
+				
+				$tmp->field1 = expString::onlyReadables($data[0]);
+				$tmp->field2 = expString::onlyReadables($data[1]);
+				$db->insertObject($tmp,'model_aliases_tmp');
+			}
+			redirect_to(array('controller'=>'store','action'=>'processModelAliases'));
+			echo "Done!";
+		}        
+		
+		//check if there are interrupted model alias in the db
+		$res = $db->selectObjectsBySql("SELECT * FROM exponent_model_aliases_tmp WHERE is_processed = 0");
+		if(!empty($res)) {
+			assign_to_template(array('continue' => '1'));
+		}
 	}
+	
+	// This function process the uploading of the model aliases in the uploadModelAliases page
+	function processModelAliases($index = 0, $error = '') {
+		global $db;
+		
+		//Going next and delete the previous one
+		if(isset($this->params['index'])) {
+			$index = $this->params['index'];
+			
+			//if go to the next processs
+			if(isset($this->params['next'])) {
+				$res = $db->selectObjectBySql("SELECT * FROM exponent_model_aliases_tmp LIMIT " . ($index - 1) . ", 1");
+				//Update the record in the tmp table to mark it as process
+				$res->is_processed = 1;
+				$db->updateObject($res, 'model_aliases_tmp');
+			}
+		}
+		
+		$product_id = '';
+		$autocomplete = '';
+		
+		do {
+			$count = $db->countObjects('model_aliases_tmp', 'is_processed=0'); 
+			$res = $db->selectObjectBySql("SELECT * FROM exponent_model_aliases_tmp LIMIT {$index}, 1");
+			//Validation
+			//Check the field one
+			if(!empty($res)) {
+				$product_field1 = $db->selectObject("product", "model='{$res->field1}'");
+				$product_field2 = $db->selectObject("product", "model='{$res->field2}'");
+			}
+			if(!empty($product_field1)) {
+				$product_id = $product_field1->id;
+				//check the other field if it also being used by another product
+				if(!empty($product_field2) && $product_field1->id != $product_field2->id) {
+					$error = "Both {$res->field1} and {$res->field2} are models of a product. <br />";
+				} else {
+					//Check the field2 if it is already in the model alias
+					$model_alias = $db->selectObject("model_aliases", "model='{$res->field2}'");
+					if(empty($model_alias) && @$model_alias->product_id != $product_field1->id) {
+						//Add the first field
+						$tmp->model = $res->field1;
+						$tmp->product_id = $product_field1->id;
+						$db->insertObject($tmp,'model_aliases');
+						//Add the second field
+						$tmp->model = $res->field2;
+						$tmp->product_id = $product_field1->id;
+						$db->insertObject($tmp,'model_aliases');
+						//Update the record in the tmp table to mark it as process
+						$res->is_processed = 1;
+						$db->updateObject($res, 'model_aliases_tmp');
+						
+					} else {
+						$error = "{$res->field2} has already a product alias. <br />";
+					}
+				}
+			} elseif(!empty($product_field2)) {
+				$product_id = $product_field2->id;
+				$model_alias = $db->selectObject("model_aliases", "model='{$res->field1}'");
+				if(empty($model_alias) && @$model_alias->product_id != $product_field2->id) {
+					//Add the first field
+					$tmp->model = $res->field1;
+					$tmp->product_id = $product_field2->id;
+					$db->insertObject($tmp,'model_aliases');
+					//Add the second field
+					$tmp->model = $res->field2;
+					$tmp->product_id = $product_field2->id;
+					$db->insertObject($tmp,'model_aliases');
+					//Update the record in the tmp table to mark it as process
+					$res->is_processed = 1;
+					$db->updateObject($res, 'model_aliases_tmp');
+				} else {
+					$error = "{$res->field1} has already a product alias. <br />";
+				}
+			} else {
+				$model_alias1 = $db->selectObject("model_aliases", "model='{$res->field1}'");
+				$model_alias2 = $db->selectObject("model_aliases", "model='{$res->field2}'");
+				
+				if(!empty($model_alias1) || !empty($model_alias2)) {
+					$error = "The {$res->field1} and {$res->field2} are already being used by another product.<br />";
+				} else {
+					$error = "No product match found, please choose a product to be alias in the following models below:<br />";
+					$error .= $res->field1 . "<br />";
+					$error .= $res->field2 . "<br />";
+					$autocomplete = 1;
+				}
+			}
+			$index++;
+		} while(empty($error));
+		assign_to_template(array('count' => $count, 'alias' => $res, 'index' => $index, 'product_id' => $product_id, 'autocomplete' => $autocomplete, 'error' => $error));
+	}
+	
+	// This function save the uploaded processed model aliases in the uploadModelAliases page
+	function saveModelAliases() {
+		global $db;
+		
+		$index = $this->params['index'];
+		$title = mysql_real_escape_string($this->params['product_title']);
+		$product = $db->selectObject("product", "title='{$title}'");
+		
+		if(!empty($product->id)) {
+			$res = $db->selectObjectBySql("SELECT * FROM exponent_model_aliases_tmp LIMIT "  . ($index - 1)  . ", 1");
+			//Add the first field
+			$tmp->model = $res->field1;
+			$tmp->product_id = $product->id;
+			$db->insertObject($tmp,'model_aliases');
+			//Add the second field
+			$tmp->model = $res->field2;
+			$tmp->product_id = $product->id;
+			$db->insertObject($tmp,'model_aliases');
+			
+			//if the model is empty, update the product table so that it will used the field 1 as its primary model
+			if(empty($product->model)) {
+				$product->model = $res->field1;
+				$db->updateObject($product, 'product');
+			}
+			
+			//Update the record in the tmp table to mark it as process
+			$res->is_processed = 1;
+			$db->updateObject($res, 'model_aliases_tmp');
+			flash("message", "Product succesfully Saved.");
+			redirect_to(array('controller'=>'store','action'=>'processModelAliases', 'index' => $index));
+		} else {
+			flash("error", "Product title is invalid.");
+			redirect_to(array('controller'=>'store','action'=>'processModelAliases', 'index' => $index - 1, 'error' => 'Product title is invalid.'));
+		}
+	}	
+	
+	// This function delete all the already processed model aliases in the uploadModelAliases page
+	function deleteProcessedModelAliases() {
+		global $db;
+		
+		$db->delete('model_aliases_tmp','is_processed=1');
+		redirect_to(array('controller' => 'store','action' => 'processModelAliases'));
+	}
+	
+	// This function show the form of model alias to be edit or add in the product edit page
+	function edit_model_alias() {
+        global $db;
+		
+		if(isset($this->params['id'])) {
+			$model_alias = $db->selectObject('model_aliases', 'id =' .$this->params['id']);
+			assign_to_template(array('model_alias'=>$model_alias));
+		} else {
+			assign_to_template(array('product_id'=>$this->params['product_id']));
+		}
+    }
+
+	// This function update or add the model alias in the product edit page
+    function update_model_alias() {
+        global $db;
+			
+		if(empty($this->params['id'])) {
+			$obj->model = $this->params['model'];
+			$obj->product_id = $this->params['product_id'];
+			$db->insertObject($obj,'model_aliases');
+			
+		} else {
+			$model_alias        = $db->selectObject('model_aliases', 'id =' .$this->params['id']);
+			$model_alias->model  = $this->params['model'];
+			$db->updateObject($model_alias, 'model_aliases');
+		}
+		
+        expHistory::back();
+    }
+	
+	// This function delete the model alias in the product edit page
+	function delete_model_alias() {
+		global $db;
+		
+        if (empty($this->params['id'])) return false;
+        $db->delete('model_aliases', 'id =' .$this->params['id']);
+		
+        expHistory::back();
+    }
 }
 
 ?>

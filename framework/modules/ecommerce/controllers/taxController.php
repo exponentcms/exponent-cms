@@ -20,19 +20,18 @@
 class taxController extends expController {
     public $basemodel_name = 'taxclass';
         
-    //protected $permissions = array_merge(array("test"=>'Test'), array('copyProduct'=>"Copy Product"));
-    //protected $add_permissions = array();
+    protected $add_permissions = array(
+			'manage_zones'  =>'Manages Zones',
+			'edit_zone'     =>'Add/Edit Zone',
+			'update_zone'   =>'Update Zone',
+			'delete_zone'   =>'Delete Zone'
+		);
+		
     public $useractions = null; // keeps it from showing up in available modules to activate
      
-    function name() { return $this->displayname(); } //for backwards compat with old modules
     function displayname() { return "e-Commerce Tax Class Manager"; }
     function description() { return "Manage tax classes for your Ecommerce store"; }
     function author() { return "OIC Group, Inc"; }
-    function hasSources() { return true; }
-    function hasViews() { return true; }
-    function hasContent() { return true; }
-    function supportsWorkflow() { return false; }
-    function isSearchable() { return true; }
     function canImportData() { return true; }
     function canExportData() { return true; }
 
@@ -159,16 +158,7 @@ class taxController extends expController {
         global $db;
         
         expHistory::set('managable', $this->params);
-        
-        $sql = "
-
-            SELECT 
-            *
-            FROM ".DB_TABLE_PREFIX."_tax_zone ORDER BY name ASC;
-
-            ";
-
-        $zones = $db->selectObjectsBySql($sql);
+        $zones = $db->selectObjects('tax_zone', null, 'name');
 
         assign_to_template(array('zones'=>$zones));
     }

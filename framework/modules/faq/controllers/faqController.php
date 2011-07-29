@@ -29,15 +29,8 @@ class faqController extends expController {
         'tags'
     );
 
-    function name() { return $this->displayname(); } //for backwards compat with old modules
     function displayname() { return "Frequently Asked Questions"; }
     function description() { return "This module allows you show frequently asked questions.  Users can post questions to you to answer too."; }
-    function author() { return "Adam Kessler - OIC Group, Inc"; }
-    function hasSources() { return true; }
-    function hasViews() { return true; }
-    function hasContent() { return true; }
-    function supportsWorkflow() { return false; }
-    function isSearchable() { return true; }
     
     public function showall() {
         expHistory::set('viewable', $this->params);
@@ -135,15 +128,16 @@ class faqController extends expController {
         $mail->quickSend(array(
                 'html_message'=>$this->params['body'],
 			    'to'=>trim($faq->submitter_email),
-			    'from'=>empty($this->config['answer_from_address']) ? SMTP_FROMADDRESS : $this->config['answer_from_address'],
-			    'from_name'=>empty($this->config['answer_from_name']) ? null : $this->config['answer_from_name'],
-			    'subject'=>$params['subject'],
+//			    'from'=>empty($this->config['answer_from_address']) ? SMTP_FROMADDRESS : $this->config['answer_from_address'],
+//			    'from_name'=>empty($this->config['answer_from_name']) ? null : $this->config['answer_from_name'],
+			    'from'=>array(empty($this->config['answer_from_address']) ? SMTP_FROMADDRESS : $this->config['answer_from_address']=>
+			        empty($this->config['answer_from_name']) ? null : $this->config['answer_from_name']),
+			    'subject'=>$this->params['subject'],
         ));
         
         flash('message', 'Your email was sent to '.$faq->submitter_name.' at '.$faq->submitter_email);
         expHistory::back();
     }
 }
-
 
 ?>

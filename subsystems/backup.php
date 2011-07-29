@@ -16,6 +16,7 @@
 # GPL: http://www.gnu.org/licenses/gpl.txt
 #
 ##################################################
+/** @define "BASE" ".." */
 
 /* exdoc
  * SYS Flag for Backup Subsystem.

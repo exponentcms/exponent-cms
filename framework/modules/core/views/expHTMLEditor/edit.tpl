@@ -33,6 +33,7 @@
 		{control type="checkbox" postfalse=1 name=scayt_on label="Autostart SpellCheck" checked=$record->scayt_on value=1}
 		{control type="checkbox" postfalse=1 name=paste_word label="Allow Formatted Pasting from MS Word" checked=$record->paste_word value=1}
 		{control type=textarea cols=80 rows=20 name=data label="Toolbar Button Configuration" value=$record->data}
+	    {control type=textarea cols=80 rows=2 name=plugins label="Load Custom Plugins (comma separated) MUST be installed first!" value=$record->plugins}
         {control type=buttongroup submit="Save Toolbar" cancel="Cancel"}
     {/form}   
 </div>

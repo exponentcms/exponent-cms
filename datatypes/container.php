@@ -69,13 +69,13 @@ class container {
         
         global $db;
         $section = exponent_sessions_get("last_section");
-        $locref = $db->selectObject("locationref","module='".$internal->mod."' AND source='".$internal->src."' AND internal='".$internal->int."'");
+//        $locref = $db->selectObject("locationref","module='".$internal->mod."' AND source='".$internal->src."' AND internal='".$internal->int."'");
         $secref = $db->selectObject("sectionref", "module='".$internal->mod."' AND source='".$internal->src."' AND internal='".$internal->int."' AND section=$section");
         
-        if ($locref) {
-            $locref->refcount -= 1;
-            $db->updateObject($locref,"locationref","module='".$internal->mod."' AND source='".$internal->src."' AND internal='".$internal->int."'");
-        }
+        // if ($locref) {
+            // $locref->refcount -= 1;
+            // $db->updateObject($locref,"locationref","module='".$internal->mod."' AND source='".$internal->src."' AND internal='".$internal->int."'");
+        // }
         
         if ($secref) {
             $secref->refcount -= 1;

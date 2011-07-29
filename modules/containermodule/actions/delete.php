@@ -38,8 +38,10 @@ if ($container != null) {
         exponent_sessions_clearAllUsersSessionCache('containermodule');
 
 		// Check to see if its the last reference
-		$locref = $db->selectObject('locationref',"module='".$iloc->mod."' AND source='".$iloc->src."' AND internal='".$iloc->int."'");
-		if ($locref->refcount == 0 && exponent_permissions_check('administrate',$iloc) && call_user_func(array($iloc->mod,'hasContent')) == 1) {
+//		$locref = $db->selectObject('locationref',"module='".$iloc->mod."' AND source='".$iloc->src."' AND internal='".$iloc->int."'");
+//		if ($locref->refcount == 0 && exponent_permissions_check('administrate',$iloc) && call_user_func(array($iloc->mod,'hasContent')) == 1) {
+		$secref = $db->selectObject('sectionref',"module='".$iloc->mod."' AND source='".$iloc->src."' AND internal='".$iloc->int."'");
+		if ($secref->refcount == 0 && exponent_permissions_check('administrate',$iloc) && call_user_func(array($iloc->mod,'hasContent')) == 1) {
 			//FIXME: module/controller glue code
 			// remove this controllers data from the search table.			
 			if (controllerExists($iloc->mod)) {

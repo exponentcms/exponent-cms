@@ -31,15 +31,21 @@
     {pagelinks paginate=$page top=1}
     {foreach from=$page->records item=file name=files}
 		<div class="item">
-			{if $file->expFile.preview[0] != ""}
+			{if $file->expFile.preview[0] != "" && $config.show_icon}
 				{img class="preview-img" file_id=$file->expFile.preview[0]->id square=150}
 			{/if}
-			{if $file->title}<h2>{$file->title}</h2>{/if}
-			<span class="label size">File Size:</span>
-			<span class="value">{$file->expFile.downloadable[0]->filesize|kilobytes}Kb</span>
-			&nbsp;&nbsp;
-			<span class="label downloads"># Downloads:</span>
-			<span class="value">{$file->downloads}</span>
+			{if $config.quick_download}
+				<h2><a class="download" href="{link action=downloadfile fileid=$file->id}">{$file->title}</a></h2>
+			{else}
+				{if $file->title}<h2><a class="readmore" href="{link action=show title=$file->sef_url}">{$file->title}</a></h2>{/if}
+			{/if}
+			{if $config.show_info}
+				<span class="label size">File Size:</span>
+				<span class="value">{$file->expFile.downloadable[0]->filesize|kilobytes}Kb</span>
+				&nbsp;&nbsp;
+				<span class="label downloads"># Downloads:</span>
+				<span class="value">{$file->downloads}</span>
+			{/if}
 			{permissions}
 				<div class="item-actions">
 					{if $permissions.edit == 1}
@@ -67,9 +73,13 @@
                     {$file->body}
                 {/if}
 			</div>
-			<a class="readmore" href="{link action=show title=$file->sef_url}">Read more</a>
-			&nbsp;&nbsp;
-			<a class="download" href="{link action=downloadfile fileid=$file->id}">Download</a>
+			{if $config.usebody==1 || $config.usebody==2}
+				<a class="readmore" href="{link action=show title=$file->sef_url}">Read more</a>
+				&nbsp;&nbsp;
+			{/if}
+			{if !$config.quick_download}
+				<a class="download" href="{link action=downloadfile fileid=$file->id}">Download</a>
+			{/if}
 			{clear}
 			{permissions}
 				<div class="module-actions">

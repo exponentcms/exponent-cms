@@ -16,6 +16,7 @@
 # GPL: http://www.gnu.org/licenses/gpl.txt
 #
 ##################################################
+/** @define "BASE" "../../.." */
 
 if (!defined("EXPONENT")) exit("");
 
@@ -144,19 +145,22 @@ if (!isset($_POST['data_id']) || (isset($_POST['data_id']) && exponent_permissio
         if (count($emaillist)) {
             //This is an easy way to remove duplicates
             $emaillist = array_flip(array_flip($emaillist));
+            $emaillist = array_map('trim', $emaillist);
 
-            foreach ($emaillist as $address) {
+//            foreach ($emaillist as $address) {
                 $mail = new expMail();        
                 $mail->quickSend(array(
 	                    'headers'=>$headers,
                         'html_message'=>$emailHtml,
 						"text_message"=>$emailText,
-        			    'to'=>trim($address),
-        			    'from'=>trim($from),
-        			    'from_name'=>$from_name,
+//        			    'to'=>trim($address),
+			            'to'=>$emaillist,
+//        			    'from'=>trim($from),
+//        			    'from_name'=>$from_name,
+			            'from'=>array(trim($from)=>$from_name),
         			    'subject'=>$f->subject,
                 ));
-            }
+//            }
         }
     }
 

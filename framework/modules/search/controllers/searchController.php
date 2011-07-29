@@ -24,15 +24,10 @@ class searchController extends expController {
     public $remove_configs = array('ealerts','tags','files','aggregation','comments','rss');
 	public $codequality = 'beta';
 
-    function name() { return $this->displayname(); } //for backwards compat with old modules
     function displayname() { return "Search Form"; }
     function description() { return "Add a form to allow users to search for content on your website."; }
-    function author() { return "Adam Kessler - OIC Group, Inc"; }
     function hasSources() { return false; }
-    function hasViews() { return true; }
     function hasContent() { return false; }
-    function supportsWorkflow() { return false; }
-    function isSearchable() { return false; }
 
     public function search() {
         // include CSS for results
@@ -50,15 +45,16 @@ class searchController extends expController {
             $terms = stripslashes($terms);
         }
         
+        
         $search = new search();
         $page = new expPaginator(array(
-			'model'=>'search',
-			'controller'=>$this->params['controller'],
-			'action'=>$this->params['action'],
-			'records'=>$search->getSearchResults($terms),
-			//'sql'=>$sql,
-			'order'=>'score',
-			'dir'=>'DESC',
+            //'model'=>'search',
+            'controller'=>$this->params['controller'],
+            'action'=>$this->params['action'],
+            'records'=>$search->getSearchResults($terms),
+            //'sql'=>$sql,
+            'order'=>'score',
+            'dir'=>'DESC',
 			));        
 
         assign_to_template(array('page'=>$page, 'terms'=>$terms));

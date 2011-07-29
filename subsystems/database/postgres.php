@@ -12,6 +12,9 @@
  * @link http://www.gnu.org/licenses/gpl.txt GPL http://www.gnu.org/licenses/gpl.txt
  * @package Exponent-CMS
  */
+/** @define "BASE" "../.." */
+
+
 /**
  * This is the class postgres_database
  *
@@ -56,7 +59,6 @@ class postgres_database {
 
 	function connect($username,$password,$hostname,$database,$new = false) {
   		if( function_exists( 'pg_connect')){
-//			$host_data = split(":",$hostname);
 			$host_data = explode(":",$hostname);
 			$hostname = $host_data[0];
 			$port = $hostname[1];
@@ -141,11 +143,11 @@ class postgres_database {
 			pg_query($indexes_sql);
 		}
 		
-		if (isset($info[DB_TABLE_WORKFLOW]) && $info[DB_TABLE_WORKFLOW]) {
-			// Initialize workflow tables:
-			if (!defined("SYS_WORKFLOW")) require_once(BASE."subsystems/workflow.php");
-			exponent_workflow_installWorkflowTables($tablename,$datadef);
-		}
+//		if (isset($info[DB_TABLE_WORKFLOW]) && $info[DB_TABLE_WORKFLOW]) {
+//			// Initialize workflow tables:
+//			if (!defined("SYS_WORKFLOW")) require_once(BASE."subsystems/workflow.php");
+//			exponent_workflow_installWorkflowTables($tablename,$datadef);
+//		}
 	}
 	
 	function fieldSQL($name,$def) {
@@ -204,11 +206,11 @@ class postgres_database {
 			}
 		}
 		
-		if (isset($info[DB_TABLE_WORKFLOW]) && $info[DB_TABLE_WORKFLOW]) {
-			// Initialize workflow tables:
-			if (!defined("SYS_WORKFLOW")) require_once(BASE."subsystems/workflow.php");
-			exponent_workflow_alterWorkflowTables($tablename,$newdatadef);
-		}
+//		if (isset($info[DB_TABLE_WORKFLOW]) && $info[DB_TABLE_WORKFLOW]) {
+//			// Initialize workflow tables:
+//			if (!defined("SYS_WORKFLOW")) require_once(BASE."subsystems/workflow.php");
+//			exponent_workflow_alterWorkflowTables($tablename,$newdatadef);
+//		}
 		
 		if ($modified) {
 			return TABLE_ALTER_SUCCEEDED;

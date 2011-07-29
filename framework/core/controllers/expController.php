@@ -479,6 +479,8 @@ class expController {
     
         // setup the where clause for looking up records.
         $where = $this->aggregateWhereClause();
+        $where = empty($where) ? '1' : $where;
+		
         $items = $db->selectObjects($this->basemodel_name, $where.' ORDER BY created_at');
 
         //Convert the items to rss items
@@ -703,9 +705,9 @@ class expController {
 	 */
 	function aggregateWhereClause() {
         $sql = '';
-        
+
         if (!$this->hasSources() && empty($this->config['add_source'])) { return $sql; }
-        
+
         if (!empty($this->config['aggregate'])) $sql .= '(';
         
         $sql .= "location_data ='".serialize($this->loc)."'";

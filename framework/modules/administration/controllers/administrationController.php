@@ -16,6 +16,7 @@
 # GPL: http://www.gnu.org/licenses/gpl.txt
 #
 ##################################################
+/** @define "BASE" "../../../.." */
 
 class administrationController extends expController {
     public $basemodel_name = 'expRecord';
@@ -42,16 +43,9 @@ class administrationController extends expController {
         );
 	public $codequality = 'beta';
     
-    function name() { return $this->displayname(); } //for backwards compat with old modules
     function displayname() { return "Administration Controls"; }
     function description() { return "This is the beginnings of the new Administration Module"; }
     function author() { return "OIC Group, Inc"; }
-    function hasSources() { return true; }
-    function hasViews() { return true; }
-    function hasContent() { return true; }
-    function supportsWorkflow() { return false; }
-    function isSearchable() { return false; }
-
 
 	public function install_tables() {
 	    global $db;
@@ -133,9 +127,9 @@ class administrationController extends expController {
 				}
 			}
 		}
-		ksort($tables);
     	exponent_sessions_clearCurrentUserSessionCache();
-	    assign_to_template(array('status'=>$tables));
+		ksort($tables);
+      assign_to_template(array('status'=>$tables));
 	}
 
     public function manage_unused_tables() {
@@ -237,23 +231,23 @@ class administrationController extends expController {
 		print_r("</pre>");
 
 // FIXME Not needed when locationrefs are removed
-		 print_r("<pre>");
-	 // add missing locationref's based on existing sectionref's
-		 print_r("<b>Searching for detached modules with no original (no matching locationref)</b><br><br>");
-		 $sectionrefs = $db->selectObjects('sectionref',1);
-		 foreach ($sectionrefs as $sectionref) {
-			 if ($db->selectObject('locationref',"module='".$sectionref->module."' AND source='".$sectionref->source."'") == null) {
-			 // There is no locationref for sectionref.  Populate reference
-				 $newLocRef = null;
-				 $newLocRef->module   = $sectionref->module;
-				 $newLocRef->source   = $sectionref->source;
-				 $newLocRef->internal = $sectionref->internal;
-				 $newLocRef->refcount = $sectionref->refcount;
-				 $db->insertObject($newLocRef,'locationref');
-				 print_r("Copied: ".$sectionref->module." - ".$sectionref->source."<br>");
-			 }
-		 }
-		 print_r("</pre>");
+//		 print_r("<pre>");
+//	 // add missing locationref's based on existing sectionref's
+//		 print_r("<b>Searching for detached modules with no original (no matching locationref)</b><br><br>");
+//		 $sectionrefs = $db->selectObjects('sectionref',1);
+//		 foreach ($sectionrefs as $sectionref) {
+//			 if ($db->selectObject('locationref',"module='".$sectionref->module."' AND source='".$sectionref->source."'") == null) {
+//			 // There is no locationref for sectionref.  Populate reference
+//				 $newLocRef = null;
+//				 $newLocRef->module   = $sectionref->module;
+//				 $newLocRef->source   = $sectionref->source;
+//				 $newLocRef->internal = $sectionref->internal;
+//				 $newLocRef->refcount = $sectionref->refcount;
+//				 $db->insertObject($newLocRef,'locationref');
+//				 print_r("Copied: ".$sectionref->module." - ".$sectionref->source."<br>");
+//			 }
+//		 }
+//		 print_r("</pre>");
 
 		 print_r("<pre>");
 	 // delete sectionref's & locationref's that have empty sources since they are dead
@@ -266,14 +260,14 @@ class administrationController extends expController {
 			 print_r("No Empties Found: Good!<br>");
 		 }
 // FIXME Not needed when locationrefs are removed
-		 $locationrefs = $db->selectObjects('locationref','source=""');
-		 if ($locationrefs != null) {
-			 print_r("Removing: ".count($locationrefs)." empty locationref's (no source)<br>");
-			 $db->delete('locationref','source=""');
-		 } else {
-			 print_r("No Empties Found: Good!<br>");
-		 }
-		 print_r("</pre>");
+//		 $locationrefs = $db->selectObjects('locationref','source=""');
+//		 if ($locationrefs != null) {
+//			 print_r("Removing: ".count($locationrefs)." empty locationref's (no source)<br>");
+//			 $db->delete('locationref','source=""');
+//		 } else {
+//			 print_r("No Empties Found: Good!<br>");
+//		 }
+//		 print_r("</pre>");
 
 		print_r("<pre>");
 	// add missing sectionrefs based on existing containers (fixes aggregation problem)
@@ -344,7 +338,12 @@ class administrationController extends expController {
     public function update_SetSlingbarPosition() {
        expSession::set("slingbar_top",$this->params['top']);
     }
-    
+
+	public function test_smtp() {
+		$smtp = new expMail();
+		$smtp->test();
+	}
+
     public function toggle_minify() {
         if (!defined('SYS_CONFIG')) include_once(BASE.'subsystems/config.php');
     	$value = (MINIFY == 1) ? 0 : 1;
@@ -679,7 +678,7 @@ class administrationController extends expController {
         if (!defined('SYS_CONFIG')) include_once(BASE.'subsystems/config.php');
 
         foreach ($this->params['sc'] as $key => $value) {
-            exponent_config_change($key, stripslashes($value));
+            exponent_config_change($key, $value);
         }
         
         flash('message', "Your Website Configuration has been updated");

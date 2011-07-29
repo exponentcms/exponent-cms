@@ -66,7 +66,7 @@
             {assign value=$product->expFile.imagesforswatches.0 var=mainimg}
         {else}
             {if $config.enable_lightbox}
-                <a href="{$product->expFile.mainimage[0]->url}" title="{$product->expFile.mainimage[0]->title|default:$product->title}" rel="lightbox[g{$product->id}]">
+                <a href="{$smarty.const.URL_FULL}thumb.php?id={$product->expFile.mainimage[0]->id}&w={$config.enlrg_w|default:500}" title="{$product->expFile.mainimage[0]->title|default:$product->title}" rel="lightbox[g{$product->id}]" id="enlarged-image-link">
             {/if}
             {img file_id=$product->expFile.mainimage[0]->id w=250 alt=$product->image_alt_tag|default:"Image of `$product->title`" title="`$product->title`"  class="large-img" id="enlarged-image"}
             {if $config.enable_lightbox}
@@ -81,7 +81,7 @@
             <ul>
                 <li>
                     {if $config.enable_lightbox}
-                        <a href="{$product->expFile.mainimage[0]->url}" title="{$mainimg->title|default:$product->title}" rel="lightbox[g{$product->id}]">
+                        <a href="{$smarty.const.URL_FULL}thumb.php?id={$product->expFile.mainimage[0]->id}&w={$config.enlrg_w|default:500}" title="{$mainimg->title|default:$product->title}" rel="lightbox[g{$product->id}]">
                     {/if}
                     {img file_id=$product->expFile.mainthumbnail[0]->id|default:$mainimg->id w=50 h=50 zc=1 class="thumbnail" id="thumb-`$mainimg->id`"}
                     {if $config.enable_lightbox}
@@ -91,7 +91,7 @@
                 {foreach from=$product->expFile.images item=thmb}
                 <li>
                     {if $config.enable_lightbox}
-                        <a href="{$thmb->url}" title="{$thmb->title|default:$product->title}" rel="lightbox[g{$product->id}]">
+                        <a href="{$smarty.const.URL_FULL}thumb.php?id={$thmb->id}&w={$config.enlrg_w|default:500}" title="{$thmb->title|default:$product->title}" rel="lightbox[g{$product->id}]">
                     {/if}
                     {img file_id=$thmb->id w=50 h=50 zc=1 class="thumbnail" id="thumb-`$thmb->id`"}
                     {if $config.enable_lightbox}
@@ -113,8 +113,36 @@
                    }
              }
 
-        YUI(EXPONENT.YUI3_CONFIG).use('gallery-lightbox', function(Y) {
+        YUI(EXPONENT.YUI3_CONFIG).use('node-event-simulate','gallery-lightbox', function(Y) {
             Y.Lightbox.init();    
+            
+            Y.one('#enlarged-image-link').on('click',function(e){
+               if(!Y.Lang.isNull(Y.one('.thumbnails'))) {
+                  e.halt();
+                  e.currentTarget.removeAttribute('rel');
+                  Y.Lightbox.init();
+                  Y.one('.thumbnails ul li a').simulate('click');
+               } 
+            });
+            
+            // Shadowbox.init({
+            //     modal: true,
+            //     overlayOpacity: 0.8,
+            //     continuous: true
+            // });
+            // 
+            // var mainimg = Y.one('#main-image');
+            // if (!Y.Lang.isNull(mainimg)) {
+            //     mainimg.on('click',function(e){
+            //         e.halt();
+            //         var content = Shadowbox.cache[1].content;
+            //         Shadowbox.open ({ 
+            //                         content: content, 
+            //                         player: "img", 
+            //                         gallery: "images"
+            //                         });
+            //     })
+            // };
         });
         {/literal}
         {/script}
@@ -141,29 +169,8 @@
         
     </div>
     
-    
-
-    <div class="prod-price"> 
-        {* 
-            [0] => Always available even if out of stock.
-            [1] => Available but shown as backordered if out of stock.
-            [2] => Unavailable if out of stock.
-            [3] => Show as &quot;Call for Price&quot;.
-        *}                                                                                      
-        {if $product->availability_type == 3}
-            <strong>{"Call for price"|gettext}</strong>
-        {else}
-            {if $product->use_special_price}                     
-                <span class="regular-price on-sale">{currency_symbol}{$product->base_price|number_format:2}</span>
-                <span class="sale-price">{currency_symbol}{$product->special_price|number_format:2}&nbsp;<sup>{"SALE!"|gettext}</sup></span>
-            {else}
-                <span class="regular-price">{currency_symbol}{$product->base_price|number_format:2}</span>
-            {/if}
-        {/if}
-    </div>
-    
     {if $product->childProduct|@count == 0}   
-    <div class="addtocart-area">
+    <div class="addtocart">
         {form id="addtocart`$product->id`" controller=cart action=addItem} 
         {control type="hidden" name="product_id" value="`$product->id`"}   
         {control type="hidden" name="product_type" value="`$product->product_type`"}
@@ -222,6 +229,24 @@
     </div> 
     {/if}   
     
+    <div class="prod-price"> 
+        {* 
+            [0] => Always available even if out of stock.
+            [1] => Available but shown as backordered if out of stock.
+            [2] => Unavailable if out of stock.
+            [3] => Show as &quot;Call for Price&quot;.
+        *}                                                                                      
+        {if $product->availability_type == 3}
+            <strong>{"Call for price"|gettext}</strong>
+        {else}
+            {if $product->use_special_price}                     
+                <span class="regular-price on-sale">{currency_symbol}{$product->base_price|number_format:2}</span>
+                <span class="sale-price">{currency_symbol}{$product->special_price|number_format:2}&nbsp;<sup>{"SALE!"|gettext}</sup></span>
+            {else}
+                <span class="regular-price">{currency_symbol}{$product->base_price|number_format:2}</span>
+            {/if}
+        {/if}
+    </div>    
     
     {if $product->company->id}
     <p class="manufacturer">
@@ -303,6 +328,66 @@
     </div>
     {/if}
      
+     {if $product->childProduct|@count == 0}   
+     <div class="addtocart">
+         {form id="addtocart`$product->id`" controller=cart action=addItem} 
+         {control type="hidden" name="product_id" value="`$product->id`"}   
+         {control type="hidden" name="product_type" value="`$product->product_type`"}
+         {*control name="qty" type="text" value="`$product->minimum_order_quantity`" size=3 maxlength=5 class="lstng-qty"*}
+
+         {if $product->hasOptions()}
+             <div class="product-options">
+                 {foreach from=$product->optiongroup item=og}
+                     {if $og->hasEnabledOptions()} 
+                         <div class="option {cycle values="odd,even"}">
+                             <h4>{$og->title}</h4>
+                             {if $og->allow_multiple}
+                                 {optiondisplayer product=$product options=$og->title view=checkboxes display_price_as=diff selected=$params.options}           
+                             {else}
+                                 {if $og->required}
+                                     {optiondisplayer product=$product options=$og->title view=dropdown display_price_as=diff selected=$params.options required=true}          
+                                 {else}
+                                     {optiondisplayer product=$product options=$og->title view=dropdown display_price_as=diff selected=$params.options}          
+                                 {/if}                                           
+                             {/if}
+                         </div> 
+                     {/if}
+                 {/foreach}
+             </div>
+         {/if}
+
+         {if $product->availability_type == 0 && $product->active_type == 0}
+             <button type="submit" class="awesome {$smarty.const.BTN_COLOR} {$smarty.const.BTN_SIZE}" rel="nofollow">
+                 <input type="text" class="text " size="5" value="{$product->minimum_order_quantity|default:1}" name="quantity">
+                 {"Add to Cart"|gettext}
+             </button>
+         {elseif $product->availability_type == 1 && $product->active_type == 0}
+             <button type="submit" class="awesome {$smarty.const.BTN_COLOR} {$smarty.const.BTN_SIZE}" rel="nofollow">
+                 <input type="text" class="text " size="5" value="{$product->minimum_order_quantity|default:1}" name="quantity">
+                 {"Add to Cart"|gettext}
+             </button>
+             {if $product->quantity <= 0}<span class="error">{$product->availability_note}</span>{/if}   
+         {elseif $product->availability_type == 2}
+             {if $user->isAdmin()}
+                 <button type="submit" class="awesome red {$smarty.const.BTN_SIZE}" rel="nofollow">
+                     <input type="text" class="text " size="5" value="{$product->minimum_order_quantity|default:1}" name="quantity">
+                     {"Add to Cart"|gettext}
+                 </button>
+             {/if}
+             {if $product->quantity <= 0}<span class="error">{$product->availability_note}</span>{/if}              
+         {elseif $product->active_type == 1}
+             {if $user->isAdmin()}
+                 <button type="submit" class="awesome red {$smarty.const.BTN_SIZE}" rel="nofollow">
+                     <input type="text" class="text " size="5" value="{$product->minimum_order_quantity|default:1}" name="quantity">
+                     {"Add to Cart"|gettext}
+                 </button>
+             {/if}
+             <em class="unavailable">{"Product currently unavailable for purchase"|gettext}</em>
+         {/if}    
+         {/form}
+     </div> 
+     {/if}   
+
     <div style="clear:both"></div>
     {if $product->childProduct|@count >= 1}
     {permissions}                   

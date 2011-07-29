@@ -16,6 +16,7 @@
 # GPL: http://www.gnu.org/licenses/gpl.txt
 #
 ##################################################
+/** @define "BASE" ".." */
 
 /** exdoc
  * The definition of this constant lets other parts of the system know 
@@ -47,7 +48,7 @@ define("SYS_SMTP",1);
  */
 function exponent_smtp_mail($to_r,$from,$subject,$message,$headers=array(), $precallback="", $preUdata=null, $postcallback="", $postUdata=null) {
 
-	require_once(BASE."/subsystems/mail.php");
+	require_once(BASE."subsystems/mail.php");
 	$mail = new exponentMail();
 	$mail->addTo($to_r);
 	if ( $from != '' ) {
@@ -66,12 +67,12 @@ function exponent_smtp_mail($to_r,$from,$subject,$message,$headers=array(), $pre
 			return false;
 		}
 	} catch (Exception $error) {
-		eDebug($error->getMessage());
+		//eDebug($error->getMessage());
 		return false;
 	}
 	
 /*
-	debug('Current revision of file is $Id: smtp.php 2008 2007-12-14 18:37:38Z kessler44 $');
+	//eDebug('Current revision of file is $Id: smtp.php 2008 2007-12-14 18:37:38Z kessler44 $');
 
 	// Ugly kluge
 	if (!isset($from) || $from == "") $from = SMTP_FROMADDRESS; // For shared hosters
@@ -101,8 +102,8 @@ function exponent_smtp_mail($to_r,$from,$subject,$message,$headers=array(), $pre
 		$error = "";
 		$socket = @fsockopen(SMTP_SERVER, SMTP_PORT, $errno, $error, 1);
 		if ($socket === false) {
-			eDebug("Unable to open a socket to communicate with the server.");
-			eDebug("Error was : $errno : $error");
+			//eDebug("Unable to open a socket to communicate with the server.");
+			//eDebug("Error was : $errno : $error");
 			return false;
 		}
 		
@@ -154,18 +155,18 @@ function exponent_smtp_mail($to_r,$from,$subject,$message,$headers=array(), $pre
 				if (!exponent_smtp_checkResponse($socket,"250")) {
 					exponent_smtp_sendExit($socket);
 					$debugMsg = 'Died in MAIL FROM on message: ' . $i . ', sent to: ' . $to . '<br/>';
-					debug($debugMsg);					
+					//eDebug($debugMsg);					
 				}else{				
 					exponent_smtp_sendServerMessage($socket,"RCPT TO: <$to>");
 					if (!exponent_smtp_checkResponse($socket,"250")) {
 						//exponent_smtp_sendExit($socket); - don't die, as we want to continue on RCPT TO: errors
 						$debugMsg = 'Error in RCPT TO on message: ' . $i . ', sent to: ' . $to . '<br/>';
-						debug($debugMsg);						
+						//eDebug($debugMsg);						
 					}else{
 						exponent_smtp_sendServerMessage($socket,"DATA");
 						if (!exponent_smtp_checkResponse($socket,"354")) {
 							$debugMsg = 'Died in DATA on message: ' . $i . ', sent to: ' . $to . '<br/>';
-							debug($debugMsg);							
+							//eDebug($debugMsg);							
 						}else{
 							exponent_smtp_sendHeadersPart($socket,$headers);
 							exponent_smtp_sendMessagePart($socket,"\r\n".wordwrap($message)."\r\n");
@@ -174,7 +175,7 @@ function exponent_smtp_mail($to_r,$from,$subject,$message,$headers=array(), $pre
 							if (!exponent_smtp_checkResponse($socket,"250")) {
 								exponent_smtp_sendExit($socket);
 								$debugMsg = 'Died after sending headers, message, and/or end lines on message: ' . $i . ', sent to: ' . $to . '<br/>';
-								debug($debugMsg);								
+								//eDebug($debugMsg);								
 							}			
 						}
 					}
@@ -192,7 +193,7 @@ function exponent_smtp_mail($to_r,$from,$subject,$message,$headers=array(), $pre
 			}else{			
 				exponent_smtp_sendExit($socket);
 				$debugMsg = 'NOOP failed on message: ' . $i . ', sent to: ' . $to . '<br/>';
-				eDebug($debugMsg);
+				//eDebug($debugMsg);
 				return false;						
 			}
 		}
@@ -250,15 +251,15 @@ function exponent_smtp_mail($to_r,$from,$subject,$message,$headers=array(), $pre
  * @node Subsystems:SMTP
  */
 function exponent_smtp_checkResponse($socket,$expected_response) {
-	debug("Checking response from server.");
-	debug("Expecting to get back $expected_response");
+	//eDebug("Checking response from server.");
+	//eDebug("Expecting to get back $expected_response");
 	$response = fgets($socket,256);
-	debug("Received response: ".substr($response,0,3));
+	//eDebug("Received response: ".substr($response,0,3));
 	$line = $response;
 	$count = 20;
 	while ($count && substr($line,3,1) == "-") {
 		$line = fgets($socket,256); // Clear the buffer, EHLO
-		debug("LINE: $line");
+		//eDebug("LINE: $line");
 		$count--;
 	}
 	return (substr($response,0,3) == $expected_response);
@@ -273,9 +274,9 @@ function exponent_smtp_checkResponse($socket,$expected_response) {
  */
 function exponent_smtp_sendServerMessage($socket,$message) {
 	// Xavier Basty - 2005/02/07 - Fix for Lotus Notes SMTP
-	debug("Sending Server Message");
-	debug("VARDUMP of message sent:");
-	dump_debug($message);
+	//eDebug("Sending Server Message");
+	//eDebug("VARDUMP of message sent:");
+	//eDebug($message);
 	if (substr($message,-2,2) != "\r\n") $message .="\r\n";
 	if ($message != null) fwrite($socket,$message);
 }
@@ -286,9 +287,9 @@ function exponent_smtp_sendServerMessage($socket,$message) {
  * @param $socket
  */
 function exponent_smtp_sendExit($socket) {
-	debug("Sending RSET to server");
+	//eDebug("Sending RSET to server");
 	exponent_smtp_sendServerMessage($socket,"RSET");
-	debug("Sending QUIT to server");
+	//eDebug("Sending QUIT to server");
 	exponent_smtp_sendServerMessage($socket,"QUIT");
 }
 
@@ -305,9 +306,9 @@ function exponent_smtp_sendHeadersPart($socket,$headers) {
 	foreach ($headers as $key=>$value) {
 		$headerstr .= $key.": ". $value . "\r\n";
 	}
-	debug("Sending email headers to server:");
-	debug("VARDUMP of headers sent:");
-	dump_debug($headerstr);
+	//eDebug("Sending email headers to server:");
+	//eDebug("VARDUMP of headers sent:");
+	//eDebug($headerstr);
 	exponent_smtp_sendServerMessage($socket,$headerstr);
 }
 
@@ -325,9 +326,9 @@ function exponent_smtp_sendMessagePart($socket,$message) {
 	// Replace lines with a single period with double periods, to prevent premature end of message situations.
 	$message = preg_replace("/\n\.\r\n/","\n..\r\n",$message);
 	
-	debug("Sending email message to server:");
-	debug("VARDUMP of message body sent:");
-	dump_debug($message);
+	//eDebug("Sending email message to server:");
+	//eDebug("VARDUMP of message body sent:");
+	//eDebug($message);
 	exponent_smtp_sendServerMessage($socket,$message);
 }
 

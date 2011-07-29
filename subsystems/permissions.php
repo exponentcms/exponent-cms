@@ -112,6 +112,7 @@ function exponent_permissions_load($user) {
 	}
 
 	exponent_sessions_set('permissions',$exponent_permissions_r);
+	
 
 	// Check perm stats for UI levels
 	$ui_levels = array();
@@ -169,7 +170,6 @@ function exponent_permissions_initialize() {
  */
 function exponent_permissions_getSourceUID($src) {
 	if (substr($src,0,5) == "@uid_") {
-//		$t = split("_",$src);
 		$t = explode("_",$src);
 		return $t[count($t)-1]+0;
 	} else return 0;
@@ -191,7 +191,7 @@ function exponent_permissions_getSourceUID($src) {
  * @node Subsystems:Permissions
  */
 function exponent_permissions_check($permission,$location) {
-	global $exponent_permissions_r, $user;
+	global $exponent_permissions_r, $user, $db;
 
 	if (!empty($user->id)) {		
 		//if (isset($user->is_acting_admin) && $user->is_acting_admin == 1) return true;
@@ -220,19 +220,28 @@ function exponent_permissions_check($permission,$location) {
 			if (isset($exponent_permissions_r[$location->mod][$location->src][$location->int][$perm])) {
 				$has_perm = true;
 				break;
-			}
+			} else if (array_key_exists('containermodule',$exponent_permissions_r)) {
+            // inclusive container perms
+            $tmpLoc->mod = $location->mod;
+            $tmpLoc->src = $location->src;
+            $tmpLoc->int = $location->int;
+            $tmpLoc->mod = (!strpos($tmpLoc->mod,"Controller") && !strpos($tmpLoc->mod,"module")) ? $tmpLoc->mod."Controller" : $tmpLoc->mod;
+            $cLoc = expUnserialize($db->selectValue('container','external','internal=\''.serialize($tmpLoc).'\''));
+            if (@isset($exponent_permissions_r[$cLoc->mod][$cLoc->src][$cLoc->int])) {
+               $has_perm = true;
+            }
+            break;
+         }
 		}
 	}
 	
 	if (!$has_perm && $location->mod != 'navigationmodule') {
-		global $db;
 		global $sectionObj;
 		if (exponent_permissions_check('manage',exponent_core_makeLocation('navigationmodule','',$sectionObj->id))) {
             $has_perm = true;
         }
 		//foreach ($db->selectObjects('sectionref',"is_original=1 AND module='".$location->mod."' AND source='".$location->src."'") as $secref) {
 		/*foreach ($db->selectObjects('sectionref',"module='".$location->mod."' AND source='".$location->src."'") as $secref) {
-			eDebug($secref);
 			if (exponent_permissions_check('manage',exponent_core_makeLocation('navigationmodule','',$secref->section))) {
 				$has_perm = true;
 				break;
@@ -290,6 +299,7 @@ function exponent_permissions_checkUser($user,$permission,$location,$explicitOnl
 			}
 		}
 	}
+
 	if (!$implicit) {
 		$memberships = $db->selectObjects("groupmembership","member_id=".$user->id);
 		foreach ($memberships as $memb) {
@@ -307,8 +317,13 @@ function exponent_permissions_checkUser($user,$permission,$location,$explicitOnl
 		}
 	}
 	if (!$implicit && $location->mod != 'navigationmodule') {
-	    $location->mod = (strstr($location->mod,'module')||strstr($location->mod,'Controller')) ? $location->mod : $location->mod.'Controller';
-		foreach ($db->selectObjects('sectionref',"is_original=1 AND module='".$location->mod."' AND source='".$location->src."'") as $secref) {
+
+       $tmpLoc->mod = $location->mod;
+       $tmpLoc->src = $location->src;
+       $tmpLoc->int = $location->int;
+       $tmpLoc->mod = (!strpos($tmpLoc->mod,"Controller") && !strpos($tmpLoc->mod,"module")) ? $tmpLoc->mod."Controller" : $tmpLoc->mod;
+
+		foreach ($db->selectObjects('sectionref',"is_original=1 AND module='".$tmpLoc->mod."' AND source='".$tmpLoc->src."'") as $secref) {
 			if (exponent_permissions_checkUser($user,'manage',exponent_core_makeLocation('navigationmodule','',$secref->section))) {
 				$implicit = true;
 				break;

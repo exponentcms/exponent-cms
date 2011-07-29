@@ -22,14 +22,10 @@ class reportController extends expController {
 	//public $useractions = array('showall'=>'Show all');
 	protected $add_permissions = array('build_report'=>'Manage','cart_summary'=>'View Cart Summary Report', 'dashboard'=>'View the Ecommerce Dashboard', 'order_report'=>'Generate Order Report', 'product_report'=>'Generate Product Report','generateOrderReport'=>'View Order Report','generateProductReport'=>'View Product Report','print_orders'=>'Print Orders','batch_export'=>'Export Products');
 	
-	function name() { return $this->displayname(); } //for backwards compat with old modules
 	function displayname() { return "Ecom Report Builder"; }
 	function description() { return "Build reports based on store activity"; }
 	function author() { return "Phillip Ball - OIC Group, Inc"; }
 	function hasSources() { return false; }
-	function hasViews() { return true; }
-	function hasContent() { return true; }
-	function supportsWorkflow() { return false; }
     
     protected $o;
     protected $oneday = 86400;           

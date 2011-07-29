@@ -24,7 +24,8 @@ if (!defined('EXPONENT')) exit('');
 if (exponent_permissions_check('database',exponent_core_makeLocation('administrationmodule'))) {
 	exponent_flow_set(SYS_FLOW_PROTECTED,SYS_FLOW_ACTION);
 
-	$nullrefs = $db->selectObjects('locationref','refcount=0');
+//	$nullrefs = $db->selectObjects('locationref','refcount=0');
+	$nullrefs = $db->selectObjects('sectionref','refcount=0');
 	$mods = array();
 	$have_bad_orphans = false;
 	foreach ($nullrefs as $nullref) {

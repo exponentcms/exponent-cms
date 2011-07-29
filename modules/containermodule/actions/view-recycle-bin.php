@@ -22,7 +22,8 @@ if (!defined("EXPONENT")) exit("");
 exponent_sessions_clearAllUsersSessionCache('containermodule');
 
 $orphans = array();
-foreach ($db->selectObjects("locationref","refcount=0", "module") as $orphan) {
+//foreach ($db->selectObjects("locationref","refcount=0", "module") as $orphan) {
+foreach ($db->selectObjects("sectionref","refcount=0", "module") as $orphan) {
 	$obj = null;
 	$loc = exponent_core_makeLocation($orphan->module,$orphan->source,$orphan->internal);
 	eDebug($orphan);	

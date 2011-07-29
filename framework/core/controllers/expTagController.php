@@ -28,11 +28,6 @@ class expTagController extends expController {
 	public $useractions = array();
 
 	/**
-	 * name of module for backwards compat with old modules
-	 * @return string
-	 */
-	function name() { return $this->displayname(); } //for backwards compat with old modules
-	/**
 	 * name of module
 	 * @return string
 	 */
@@ -45,40 +40,10 @@ class expTagController extends expController {
 	function description() { return "This module is for manageing your tags"; }
 
 	/**
-	 * author of module
-	 * @return string
-	 */
-	function author() { return "Adam Kessler @ OIC Group, Inc"; }
-
-	/**
 	 * does module have sources available?
 	 * @return bool
 	 */
 	function hasSources() { return false; }
-
-	/**
-	 * does module have views available?
-	 * @return bool
-	 */
-	function hasViews() { return true; }
-
-	/**
-	 * does module have content available?
-	 * @return bool
-	 */
-	function hasContent() { return true; }
-
-	/**
-	 * does module support workflow?
-	 * @return bool
-	 */
-	function supportsWorkflow() { return false; }
-
-	/**
-	 * is module content searchable?
-	 * @return bool
-	 */
-	function isSearchable() { return false; }
 
 	/**
 	 * manage tags

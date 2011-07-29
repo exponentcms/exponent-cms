@@ -152,10 +152,10 @@ YAHOO.util.Event.onDOMReady(function(){
                         <td style="text-align:right;">{$order->grand_total|number_format:2}
                         </td>
                     </tr>
-                    {if !isset($discounts[0])}                                                
+                    {if !isset($noactivediscounts)}                                                
                         <tr class="{cycle values="odd, even"}">
                             <td colspan="3">
-                            <div class="input-code">   
+                            <div class="input-code">
                                 {form action="addDiscountToCart"}
                                     {control type="text" name="coupon_code" label="Enter a Discount Code"}
                                     {control type="buttongroup" submit="Apply Code"}

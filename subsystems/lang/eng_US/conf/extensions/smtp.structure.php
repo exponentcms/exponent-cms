@@ -26,6 +26,10 @@ return array(
 	
 	'from_address'=>'From Address',
 	'from_address_desc'=>'The from address to use when talking to the SMTP server.  This is important for people using ISP SMTP servers, which may restrict access to certain email addresses.',
+
+	'smtp_debug'=>'Turn SMTP Debugging On?',
+	'smtp_debug_desc'=>'Turns on additional debugging output for all email system use.',
+
 );
 
 ?>

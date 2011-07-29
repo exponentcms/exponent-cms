@@ -16,13 +16,13 @@
 # GPL: http://www.gnu.org/licenses/gpl.txt
 #
 ##################################################
+/** @define "BASE" "../.." */
 
 class keywords {
 
 	public function getAndWeightKeywords($text) {
 		if (empty($text)) return array();
 
-//		$words = split(' ', str_ireplace(self::getExcludedWords(), ' ', $text));
 		$words = explode(' ', str_ireplace(self::getExcludedWords(), ' ', $text));
 
 		foreach($words as $word) {

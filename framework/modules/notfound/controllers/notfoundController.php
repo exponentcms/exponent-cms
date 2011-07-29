@@ -22,15 +22,11 @@ class notfoundController extends expController {
     //public $useractions = array('showall'=>'Show all');
     public $add_permissions = array('showall'=>'Showall', 'show'=>'Show');
 
-    function name() { return $this->displayname(); } //for backwards compat with old modules
     function displayname() { return "Not Found Controller"; }
     function description() { return "This controller handles routing not found pages to the appropriate place."; }
-    function author() { return "Adam Kessler - OIC Group, Inc"; }
     function hasSources() { return false; }
     function hasViews() { return false; }
     function hasContent() { return false; }
-    function supportsWorkflow() { return false; }
-    function isSearchable() { return false; }
     
     public function handle() {
         global $router, $db;
