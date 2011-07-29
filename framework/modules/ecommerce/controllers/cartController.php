@@ -25,7 +25,6 @@ class cartController extends expController {
 
 	function displayname() { return "Ecommerce Shopping Cart"; }
 	function description() { return "This is the cart users will add products from your store to."; }
-	function author() { return "Adam Kessler @ OIC Group, Inc"; }
 
 	function addItem() {
         global $router;

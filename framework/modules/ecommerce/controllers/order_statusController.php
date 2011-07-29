@@ -23,7 +23,6 @@ class order_statusController extends expController {
 
     function displayname() { return "Ecommerce Status Codes"; }
     function description() { return "Manage Ecommerce status codes"; }
-    function author() { return "Adam Kessler - OIC Group, Inc"; }
     function hasSources() { return false; }
     function hasContent() { return false; }
     

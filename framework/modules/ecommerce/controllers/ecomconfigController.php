@@ -26,7 +26,6 @@ class ecomconfigController extends expController {
 	
     function displayname() { return "Ecommerce Configuration Manager"; }
     function description() { return "Use this module to configure your Ecommerce store"; }
-    function author() { return "Adam Kessler @ OIC Group, Inc"; }
     function hasSources() { return false; }
 
     function show() {

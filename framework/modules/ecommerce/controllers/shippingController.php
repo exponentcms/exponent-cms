@@ -23,7 +23,6 @@ class shippingController extends expController {
 
 	function displayname() { return "Ecommerce Shipping Controller"; }
 	function description() { return ""; }
-	function author() { return "Adam Kessler - OIC Group, Inc"; }
 	function hasSources() { return false; }
 	function hasContent() { return false; }
 	

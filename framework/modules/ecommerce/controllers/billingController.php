@@ -23,7 +23,6 @@ class billingController extends expController {
     
 	function displayname() { return "Ecommerce Billing Controller"; }
 	function description() { return ""; }
-	function author() { return "Adam Kessler - OIC Group, Inc"; }
 	function hasSources() { return false; }
 	
 	function selectBillingCalculator() {

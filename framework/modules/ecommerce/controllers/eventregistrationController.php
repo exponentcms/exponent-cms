@@ -28,7 +28,6 @@ class eventregistrationController extends expController {
 
     function displayname() { return "Online Event Registration"; }
     function description() { return "Use this module to manage event registrations on your website"; }
-    function author() { return "Adam Kessler @ OIC Group, Inc"; }
 
     function showall() {
         expHistory::set('viewable', $this->params);

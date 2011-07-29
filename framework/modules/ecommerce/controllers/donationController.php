@@ -26,7 +26,6 @@ class donationController extends expController {
     
     function displayname() { return "Online Donations"; }
     function description() { return "Use this module to accept donations on your website"; }
-    function author() { return "Adam Kessler @ OIC Group, Inc"; }
 
     function showall() {
         expHistory::set('viewable', $this->params);

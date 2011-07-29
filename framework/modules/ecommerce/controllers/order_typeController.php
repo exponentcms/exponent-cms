@@ -21,7 +21,6 @@ class order_typeController extends expController {
 
     function displayname() { return "Ecommerce Order Types"; }
     function description() { return "Manage Ecommerce Order Types"; }
-    function author() { return "Jonathan Worent - OIC Group, Inc"; }
     function hasSources() { return false; }
     function hasContent() { return false; }
     

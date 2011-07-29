@@ -36,8 +36,6 @@ class orderController extends expController {
 	
 	function displayname() { return "Ecommerce Order Manager"; }
 	function description() { return "Use this module to manage the orders from your ecommerce store."; }
-	function author() { return "Adam Kessler - OIC Group, Inc"; }
-	function hasContent() { return true; }
 	
 	function showall() {
 	    global $db;
