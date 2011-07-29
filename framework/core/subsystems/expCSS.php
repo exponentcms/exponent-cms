@@ -24,7 +24,7 @@
 
 class expCSS {
 
-    public function pushToHead($params) {
+    static function pushToHead($params) {
         global $css_primer, $css_core, $css_links, $css_theme, $css_inline;
         
         // primer css

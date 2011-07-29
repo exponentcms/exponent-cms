@@ -27,7 +27,7 @@
 
 class expLang {
     
-    function loadLang() {
+    static function loadLang() {
         if (!defined('LANGUAGE')) return false;
 	    
 	    global $cur_lang, $default_lang, $defualt_lang_file;
@@ -36,7 +36,7 @@ class expLang {
         $cur_lang = include(BASE."framework/core/lang/".LANGUAGE.".php");
     }
     
-	public function gettext($str) {	
+	static function gettext($str) {
 	    if (!defined('LANGUAGE')) return $str;
 
 	    global $cur_lang;
