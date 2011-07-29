@@ -437,10 +437,14 @@ foreach ($db->selectObjects('calendar_reminder_address',"calendar_id='".$config-
 		$emails[] = $c->email;
 	}
 }
+
 if (empty($emails)) {
 	print_r("<br><b><i>Exponent - No One to Send Reminders to!</i></b><br>");	
 	exit();
 }
+
+$emails = array_flip(array_flip($emails));
+$emails = array_map('trim', $emails);
 
 // old mail method
 //require_once(BASE . "subsystems/mail.php");
@@ -463,18 +467,19 @@ $headers = array(
 	"MIME-Version"=>"1.0",
 	"Content-type"=>"text/html; charset=".LANG_CHARSET
 );
-foreach ($emails as $recip) {
+//foreach ($emails as $recip) {
 	$mail = new expMail();
 	$mail->quickSend(array(
 			'headers'=>$headers,
 			'html_message'=>$htmlmsg,
 			"text_message"=>$msg,
-			'to'=>trim($recip),
+//			'to'=>trim($recip),
+			'to'=>trim($emails),
 			'from'=>trim($config->email_address_reminder),
 			'from_name'=>$config->email_from_reminder,
 			'subject'=>$subject,
 	));
-}
+//}
 
 print_r("<p>The following reminder was sent via email:</p><br>");	
 print_r($htmlmsg);
