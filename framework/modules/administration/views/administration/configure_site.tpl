@@ -143,7 +143,7 @@
                 <div id="tab10">
                     <h2>{gettext str="WYSIWYG Editor Settings"}</h2>
 					{help text="Learn More about WYSIWYG editor settings"|gettext module="wysiwyg-editor-settings"}
-                    {control type="dropdown" name="sc[SITE_WYSIWYG_EDITOR]" label="HTML Editor" items="CKEditor,FCK Editor" values="ckeditor,FCKeditor" default=$smarty.const.SITE_WYSIWYG_EDITOR}
+                    {control type="dropdown" name="sc[SITE_WYSIWYG_EDITOR]" label="HTML Editor" items="CKEditor" values="ckeditor" default=$smarty.const.SITE_WYSIWYG_EDITOR}
 	                {if $smarty.const.SITE_WYSIWYG_EDITOR == 'ckeditor'}
 						{br}<hr>
 		                {chain module=expHTMLEditor view=manage}
