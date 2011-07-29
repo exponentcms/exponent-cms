@@ -29,15 +29,8 @@ class faqController extends expController {
         'tags'
     );
 
-    function name() { return $this->displayname(); } //for backwards compat with old modules
     function displayname() { return "Frequently Asked Questions"; }
     function description() { return "This module allows you show frequently asked questions.  Users can post questions to you to answer too."; }
-    function author() { return "Adam Kessler - OIC Group, Inc"; }
-    function hasSources() { return true; }
-    function hasViews() { return true; }
-    function hasContent() { return true; }
-    function supportsWorkflow() { return false; }
-    function isSearchable() { return true; }
     
     public function showall() {
         expHistory::set('viewable', $this->params);

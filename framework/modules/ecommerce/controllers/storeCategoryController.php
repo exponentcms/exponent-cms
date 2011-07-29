@@ -19,12 +19,9 @@
 
 class storeCategoryController extends expNestedNodeController {
 	
-	function name() { return $this->displayname(); } //for backwards compat with old modules
 	function displayname() { return "Store Category Manager"; }
 	function description() { return "This module is for manageing categories in your store."; }
 	function author() { return "OIC Group, Inc"; }
-	function hasSources() { return true; }
-	function hasViews() { return true; }
 
 	protected $add_permissions = array('fix_categories'=>'to run this action.');
 

@@ -43,16 +43,9 @@ class administrationController extends expController {
         );
 	public $codequality = 'beta';
     
-    function name() { return $this->displayname(); } //for backwards compat with old modules
     function displayname() { return "Administration Controls"; }
     function description() { return "This is the beginnings of the new Administration Module"; }
     function author() { return "OIC Group, Inc"; }
-    function hasSources() { return true; }
-    function hasViews() { return true; }
-    function hasContent() { return true; }
-    function supportsWorkflow() { return false; }
-    function isSearchable() { return false; }
-
 
 	public function install_tables() {
 	    global $db;

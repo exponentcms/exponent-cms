@@ -18,15 +18,12 @@
 ##################################################
 
 class product_statusController extends expController {
-    function name() { return $this->displayname(); } //for backwards compat with old modules
+
     function displayname() { return "Ecommerce Product Statuses"; }
     function description() { return "Manage Ecommerce Product Statuses"; }
     function author() { return "OIC Group, Inc"; }
     function hasSources() { return false; }
-    function hasViews() { return true; }
     function hasContent() { return false; }
-    function supportsWorkflow() { return false; }
-    function isSearchable() { return false; }
     
     public function manage() {
         expHistory::set('viewable', $this->params);

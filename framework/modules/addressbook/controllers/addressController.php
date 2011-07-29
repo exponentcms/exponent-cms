@@ -20,15 +20,9 @@
 class addressController extends expController {
 	public $useractions = array('myaddressbook'=>'Show my addressbook');
 
-	function name() { return $this->displayname(); } //for backwards compat with old modules
     function displayname() { return "Addresses"; }
     function description() { return "Use this module to display and manage addresses of users on your site."; }
-    function author() { return "Adam Kessler @ OIC Group, Inc"; }
-    function hasSources() { return true; }
-    function hasViews() { return true; }
     function canImportData() { return true;}
-    function hasContent() { return true; }
-    function supportsWorkflow() { return false; }
     function isSearchable() { return true; }
     
     public $codequality = 'beta';

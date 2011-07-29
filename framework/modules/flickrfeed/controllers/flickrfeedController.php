@@ -21,14 +21,9 @@ class flickrfeedController extends expController {
     );
 	public $codequality = 'beta';
     
-    function name() { return $this->displayname(); } //for backwards compat with old modules
     function displayname() { return "Flickr Feed"; }
     function description() { return "Display your Flickr Photostream"; }
     function author() { return "Jonathan Worent - OIC Group, Inc"; }
-    function hasSources() { return true; }
-    function hasViews() { return true; }
-    function hasContent() { return true; }
-    function supportsWorkflow() { return false; }
     function isSearchable() { return true; }
     
     public function showall() { 

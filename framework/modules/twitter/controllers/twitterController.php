@@ -31,15 +31,9 @@ class twitterController extends expController {
     );
 	public $codequality = 'beta';
     
-    function name() { return $this->displayname(); } //for backwards compat with old modules
     function displayname() { return "Twitter"; }
     function description() { return "For now you can only pull your tweets. Very soon you will be able have access to the entire Twitter API"; }
     function author() { return "Jonathan Worent - OIC Group, Inc"; }
-    function hasSources() { return true; }
-    function hasViews() { return true; }
-    function hasContent() { return true; }
-    function supportsWorkflow() { return false; }
-    function isSearchable() { return false; }
     
     public function showall() {
         if (!empty($this->config['consumer_key'])) {

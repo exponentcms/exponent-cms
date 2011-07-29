@@ -33,14 +33,9 @@ class newsController extends expController {
     );
     
 
-    function name() { return $this->displayname(); } //for backwards compat with old modules
     function displayname() { return "News"; }
     function description() { return "Use this to display & manage news type content on your site."; }
     function author() { return "OIC Group, Inc"; }
-    function hasSources() { return true; }
-    function hasViews() { return true; }
-    function hasContent() { return true; }
-    function supportsWorkflow() { return false; }
     function isSearchable() { return true; }
     
     public function showall() { 

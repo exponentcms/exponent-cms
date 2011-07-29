@@ -24,12 +24,10 @@
 
 class expHTMLEditorController extends expController {
 
-	function name() { return $this->displayname(); }
     function displayname() { return "Editors"; }
     function description() { return "Mostly for CKEditor"; }
     function author() { return "Phillip Ball"; }
     function hasSources() { return false; }
-    function hasViews() { return true; }
 	function hasContent() { return false; }
 	protected $add_permissions = array('activate'=>"activate",'preview'=>"preview CKEditor toolbars");
     

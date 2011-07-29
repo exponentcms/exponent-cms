@@ -30,14 +30,8 @@ class filedownloadController extends expController {
     );
     public $codequality = 'beta';
 
-	function name() { return $this->displayname(); } //for backwards compat with old modules
 	function displayname() { return "File Downloads"; }
 	function description() { return " This module lets you put files on your website for users to download."; }
-	function author() { return "Adam Kessler - OIC Group, Inc"; }
-	function hasSources() { return true; }
-	function hasViews() { return true; }
-	function hasContent() { return true; }
-	function supportsWorkflow() { return false; }
 	function isSearchable() { return true; }
 	
 

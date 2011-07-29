@@ -61,14 +61,9 @@ class storeController extends expController {
 	'edit_model_alias'=>'Delete model aliases'
     );
      
-    function name() { return $this->displayname(); } //for backwards compat with old modules
     function displayname() { return "e-Commerce Store Front"; }
     function description() { return "Use this module to display products and categories of you Ecommerce store"; }
     function author() { return "OIC Group, Inc"; }
-    function hasSources() { return true; }
-    function hasViews() { return true; }
-    function hasContent() { return true; }
-    function supportsWorkflow() { return false; }
     function isSearchable() { return true; }
     function canImportData() { return true; }
     function canExportData() { return true; }

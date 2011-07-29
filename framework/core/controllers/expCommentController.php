@@ -27,12 +27,8 @@ class expCommentController extends expController {
     protected $add_permissions = array('approve'=>"Approve Comments");
    	protected $remove_permissions = array('create');
 
-	function name() { return $this->displayname(); } //for backwards compat with old modules
     function displayname() { return "Comments"; }
     function description() { return "Use this module to add comments to a page."; }
-    function author() { return "Adam Kessler @ OIC Group, Inc"; }
-    function hasSources() { return true; }
-    function hasViews() { return true; }
     
 	function edit() {
 	    if (empty($this->params['content_id'])) {

@@ -21,15 +21,11 @@ class order_statusController extends expController {
     //public $basemodel_name = '';
     //public $useractions = array('manage'=>'Manage Status Codes');
 
-    function name() { return $this->displayname(); } //for backwards compat with old modules
     function displayname() { return "Ecommerce Status Codes"; }
     function description() { return "Manage Ecommerce status codes"; }
     function author() { return "Adam Kessler - OIC Group, Inc"; }
     function hasSources() { return false; }
-    function hasViews() { return true; }
     function hasContent() { return false; }
-    function supportsWorkflow() { return false; }
-    function isSearchable() { return false; }
     
     public function manage() {
         expHistory::set('viewable', $this->params);

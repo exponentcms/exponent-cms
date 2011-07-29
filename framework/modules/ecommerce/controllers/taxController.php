@@ -29,15 +29,9 @@ class taxController extends expController {
 		
     public $useractions = null; // keeps it from showing up in available modules to activate
      
-    function name() { return $this->displayname(); } //for backwards compat with old modules
     function displayname() { return "e-Commerce Tax Class Manager"; }
     function description() { return "Manage tax classes for your Ecommerce store"; }
     function author() { return "OIC Group, Inc"; }
-    function hasSources() { return true; }
-    function hasViews() { return true; }
-    function hasContent() { return true; }
-    function supportsWorkflow() { return false; }
-    function isSearchable() { return false; }
     function canImportData() { return true; }
     function canExportData() { return true; }
 

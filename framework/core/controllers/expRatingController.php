@@ -29,15 +29,10 @@ class expRatingController extends expController {
 	//public $useractions = array('browse'=>'Browse content by tags');
 	public $useractions = array();
 	
-	function name() { return $this->displayname(); } //for backwards compat with old modules
     function displayname() { return "Ratings Manager"; }
     function description() { return "This module is for manageing ratings on records"; }
     function author() { return "OIC Group, Inc"; }
     function hasSources() { return false; }
-    function hasViews() { return true; }
-	function hasContent() { return true; }
-	function supportsWorkflow() { return false; }
-	function isSearchable() { return false; }
 	
 	function __construct($src=null, $params=array()) {
         global $user;

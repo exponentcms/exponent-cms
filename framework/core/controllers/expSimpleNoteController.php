@@ -28,12 +28,9 @@ class expSimpleNoteController extends expController {
     protected $add_permissions = array('approve'=>"Approve Comments");
     protected $remove_permissions = array('edit', 'create');
 
-    function name() { return $this->displayname(); } //for backwards compat with old modules
     function displayname() { return "Simple Notes"; }
     function description() { return "Use this module to add Simple Notes attached to something (product, order, etc)"; }
     function author() { return "Jonathan Worent @ OIC Group, Inc"; }
-    function hasSources() { return true; }
-    function hasViews() { return true; }
     
     function edit() {
         global $user;

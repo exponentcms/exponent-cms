@@ -24,15 +24,10 @@ class searchController extends expController {
     public $remove_configs = array('ealerts','tags','files','aggregation','comments','rss');
 	public $codequality = 'beta';
 
-    function name() { return $this->displayname(); } //for backwards compat with old modules
     function displayname() { return "Search Form"; }
     function description() { return "Add a form to allow users to search for content on your website."; }
-    function author() { return "Adam Kessler - OIC Group, Inc"; }
     function hasSources() { return false; }
-    function hasViews() { return true; }
     function hasContent() { return false; }
-    function supportsWorkflow() { return false; }
-    function isSearchable() { return false; }
 
     public function search() {
         // include CSS for results

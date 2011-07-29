@@ -26,15 +26,9 @@ class eventregistrationController extends expController {
     
     public $add_permissions = array('showall'=>'View Event Registrations','view_registrants'=>'View Event Registrations','export'=>'Export Event Registrations');
 
-    function name() { return $this->displayname(); } //for backwards compat with old modules
     function displayname() { return "Online Event Registration"; }
     function description() { return "Use this module to manage event registrations on your website"; }
     function author() { return "Adam Kessler @ OIC Group, Inc"; }
-    function hasSources() { return true; }
-    function hasViews() { return true; }
-    function hasContent() { return true; }
-    function supportsWorkflow() { return false; }
-    function isSearchable() { return false; }
 
     function showall() {
         expHistory::set('viewable', $this->params);

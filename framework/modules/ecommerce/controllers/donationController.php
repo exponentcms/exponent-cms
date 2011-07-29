@@ -24,15 +24,9 @@ class donationController extends expController {
     // );
     public $useractions = array();
     
-    function name() { return $this->displayname(); } //for backwards compat with old modules
     function displayname() { return "Online Donations"; }
     function description() { return "Use this module to accept donations on your website"; }
     function author() { return "Adam Kessler @ OIC Group, Inc"; }
-    function hasSources() { return true; }
-    function hasViews() { return true; }
-    function hasContent() { return true; }
-    function supportsWorkflow() { return false; }
-    function isSearchable() { return false; }
 
     function showall() {
         expHistory::set('viewable', $this->params);

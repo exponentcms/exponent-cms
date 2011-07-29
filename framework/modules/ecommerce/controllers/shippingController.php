@@ -21,14 +21,11 @@ class shippingController extends expController {
 	public $useractions = array();
 	public $add_permissions = array('toggle'=>'Enable/Disable Options');
 
-	function name() { return $this->displayname(); } //for backwards compat with old modules
 	function displayname() { return "Ecommerce Shipping Controller"; }
 	function description() { return ""; }
 	function author() { return "Adam Kessler - OIC Group, Inc"; }
 	function hasSources() { return false; }
-	function hasViews() { return true; }
 	function hasContent() { return false; }
-	function supportsWorkflow() { return false; }
 	
 	function selectShippingCalculator() {
 	    global $db;

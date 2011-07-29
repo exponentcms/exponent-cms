@@ -34,14 +34,10 @@ class orderController extends expController {
     'createReferenceOrder'=>'Create Reference Order', 'save_reference_order'=>'Save Reference Order'      
     );
 	
-	function name() { return $this->displayname(); } //for backwards compat with old modules
 	function displayname() { return "Ecommerce Order Manager"; }
 	function description() { return "Use this module to manage the orders from your ecommerce store."; }
 	function author() { return "Adam Kessler - OIC Group, Inc"; }
-	function hasSources() { return true; }
-	function hasViews() { return true; }
 	function hasContent() { return true; }
-	function supportsWorkflow() { return false; }
 	
 	function showall() {
 	    global $db;

@@ -31,15 +31,10 @@ class usersController extends expController {
     
     //public $useractions = array('showall'=>'Show all');
 
-    function name() { return $this->displayname(); } //for backwards compat with old modules
     function displayname() { return "User Manager"; }
     function description() { return "This is the user management module. It allows for creating user, editing user, etc."; }
-    function author() { return "Adam Kessler - OIC Group, Inc"; }
     function hasSources() { return false; }
-    function hasViews() { return true; }
     function hasContent() { return false; }
-    function supportsWorkflow() { return false; }
-    function isSearchable() { return false; }
     
     public function manage() {
         expHistory::set('managable', $this->params);

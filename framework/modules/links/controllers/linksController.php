@@ -34,14 +34,9 @@ class linksController extends expController {
     );
     public $codequality = 'beta';
 
-    function name() { return $this->displayname(); } //for backwards compat with old modules
     function displayname() { return "Link Manager"; }
     function description() { return "Add and manage a list of URLs"; }
     function author() { return "Phillip Ball - OIC Group, Inc"; }
-    function hasSources() { return true; }
-    function hasViews() { return true; }
-    function hasContent() { return true; }
-    function supportsWorkflow() { return false; }
     function isSearchable() { return true; }
 
     function showall() {

@@ -101,12 +101,6 @@ class migrationController extends expController {
     // );
 
 	/**
-	 * name of module for backwards compat with old modules
-	 * @return string
-	 */
-    function name() { return $this->displayname(); }
-
-	/**
 	 * name of module
 	 * @return string
 	 */
@@ -119,40 +113,16 @@ class migrationController extends expController {
     function description() { return "Use this module to pull Exponent 1 style content from your old site."; }
 
 	/**
-	 * author of module
-	 * @return string
-	 */
-    function author() { return "Adam Kessler - OIC Group, Inc"; }
-
-	/**
 	 * if module has associated sources
 	 * @return bool
 	 */
     function hasSources() { return false; }
 
 	/**
-	 * if module has associated views
-	 * @return bool
-	 */
-    function hasViews() { return true; }
-
-	/**
 	 * if module has associated content
 	 * @return bool
 	 */
     function hasContent() { return false; }
-
-	/**
-	 * if module supports workflow
-	 * @return bool
-	 */
-    function supportsWorkflow() { return false; }
-
-	/**
-	 * if mdoule content can be searched
-	 * @return bool
-	 */
-    function isSearchable() { return false; }
 
 	/**
 	 * gather info about all pages in old site for user selection

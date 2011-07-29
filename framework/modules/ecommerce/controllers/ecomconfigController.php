@@ -24,14 +24,10 @@ class ecomconfigController extends expController {
 	public $useractions = array();
     public $add_permissions = array('show'=>'View Admin Options');
 	
-	function name() { return $this->displayname(); } //for backwards compat with old modules
     function displayname() { return "Ecommerce Configuration Manager"; }
     function description() { return "Use this module to configure your Ecommerce store"; }
     function author() { return "Adam Kessler @ OIC Group, Inc"; }
     function hasSources() { return false; }
-    function hasViews() { return true; }
-	function hasContent() { return true; }
-	function supportsWorkflow() { return false; }
 
     function show() {
         expHistory::set('managable', $this->params);
