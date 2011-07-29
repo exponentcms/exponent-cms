@@ -39,9 +39,10 @@ class expMail {
 	public $from = NULL;
 	private $message = null;
 
-	//this is the mail transporter like exim, SMTP, whatever, that is setup in the constructor	private $mailer = null;
+	//this is the mail transporter like exim, SMTP, whatever, that is setup in the constructor
 	private $transport = null;
 	private $mailer = null;
+
 	private $precallfunction = null;
 	private $precalldata = null;
 	private $postcallfunction = null;
@@ -96,9 +97,9 @@ class expMail {
 
 					if (isset($params['connections']) && !is_array($params['connections']) && $params['connections'] != '') {
 						// Allow custom mail parameters.
-						$this->transport = new Swift_Connection_NativeMail($params['connections']);
+						$this->transport = Swift_MailTransport::newInstance($params['connections']);
 					} else {
-						$this->transport = new Swift_Connection_NativeMail();
+						$this->transport = Swift_MailTransport::newInstance();
 					}
 					break;
 				case "exim":
@@ -170,7 +171,8 @@ class expMail {
 	// End Constructor
 
 	/**
-	 *  test() - Does the system seem to be working correctly.
+	 * test() - Does the mail system seem to be working correctly?
+	 *   This is useless for the Native mail system
 	 *
 	 * @todo Update this section to use more error checking
 	 */
@@ -184,52 +186,66 @@ class expMail {
 		}
 	}
 	/**
-	 *  quickSend() - This is a quick method for sending email messages that requires a few values to be passed in or else the message fails immediately.
+	 * quickSend() - This is a quick method for sending email messages.  It only requires a message value be passed in
+	 * an associative array, (or else the message fails immediately).
+	 *
+	 * @todo May add allowing a string param to be passed as the message (text_message) using all defaults to mail it.
+
 	 * @author Tyler Smart <tyleresmart@gmail.com>
 	 * @example This will send a quick message, showing you what basic fields are required.
 	 *
 	 *	 $body = "My body.";
-	 *	 $tos = split(',', str_replace(' ', '', COMMENTS_NOTIFICATION_EMAIL)); //pull list of CSV emails from the site config
+	 *	 $tos = explode(',', str_replace(' ', '', COMMENTS_NOTIFICATION_EMAIL)); //pull list of CSV emails from the site config
 	 *   $subject = "My subject";
 	 *
 	 *   $mail = new expMail();
 	 *   $mail->quickSend(array(
 	 *          'html_message'=>$body,
 	 *		    'to'=>$tos,
-	 *		    'from'=>trim(SMTP_FROMADDRESS), //pull from EMAIL from site config.
+	 *		    'from'=>trim(SMTP_FROMADDRESS), //pull EMAIL from site config
 	 *		    'subject'=>$subject,
 	 *   ));
 	 *
-	 * @param array $params This is the associative array required to send the email. The minimum basics for sending an email are:
-	 *	 -to
-	 *   -html_message
-	 *   -subject
-	 *  If a from is not specified, the send method will pull it from the site config.
+	 *   (or even simpler)
+	 *	 $mail = new expMail();
+	 *   $mail->quickSend(array('html_message'=>'Hello'));
 	 *
-	 * @todo Add support to send method for pulling to from Site config so that if none are specified, a quicksend will not require any options.
+	 * @param array $params This is the associative array required to send the email. The minimum basics for sending an email are:
+	 *   -html_message or -text_message
+	 *  If a from or a to is not specified, the send method will pull the default SMTP_FROMADDRESS from the site config.
+	 *  Usable parameters include:
+	 *   -to
+	 *   -from
+	 *   -subject
+	 *   -html_message
+	 *   -text_message
+	 *   -headers
 	 *
 	 * @return int number of recipients to which the email was successfully sent.
 	 */
 	public function quickSend($params = array()) {
-		if (empty($params['to']) || (empty($params['html_message']) || empty($params['text_message']))) {
+		if (empty($params['html_message']) && empty($params['text_message'])) {
 			return false;
 		}
 
-    	// set up the to address
-		$this->addTo($params['to']);
+//		$to = isset($params['to']) ? $params['to'] : SMTP_FROMADDRESS;
+//		$this->addTo($params['to']);
+		$this->message->setTo(isset($params['to']) ? $params['to'] : SMTP_FROMADDRESS);
 
-    	// set up the from address
 //		if (!empty($params['from'])) {
 //			if (stristr('^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$', $params['from'])) {
 //				$this->addFrom = $params['from'];
 //			}
-			$from = isset($params['from']) ? $params['from'] : SMTP_FROMADDRESS;
-			$fromname = isset($params['from_name']) ? $params['from_name'] : null;
-			$this->addFrom($from, $fromname);
+//		$from = isset($params['from']) ? $params['from'] : SMTP_FROMADDRESS;
+//		$fromname = isset($params['from_name']) ? $params['from_name'] : null;
+//		$this->message->setFrom($from, $fromname);
+		$this->message->setFrom(isset($params['from']) ? $params['from'] : SMTP_FROMADDRESS);
 //		}
 
-		$this->addSubject($params['subject'] = !empty($params['subject']) ? $params['subject'] : 'Message from '.SITE_TITLE);
+		$this->message->setSubject($params['subject'] = !empty($params['subject']) ? $params['subject'] : 'Message from '.SITE_TITLE);
+
 		if (!empty($params['headers'])) $this->addHeaders($params['headers']);
+
 		if (!empty($params['html_message'])) {
 //			$this->addHTML($params['html_message']);
 			$this->setHTMLBody($params['html_message']);
@@ -240,7 +256,7 @@ class expMail {
 
 		$numsent = 0;
 		try {
-			$numsent = $this->send();
+			$numsent = $this->mailer->send($this->message);
 		} catch (Swift_TransportException $e) {
 			flash('error','Sending Mail Failed! - '.$e->getMessage());
 		}

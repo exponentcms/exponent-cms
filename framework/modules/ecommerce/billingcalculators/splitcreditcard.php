@@ -56,8 +56,9 @@ class splitcreditcard extends creditcard {
 		                'html_message'=>$htmlmessage,
 					    'text_message'=>$txtmessage,
 					    'to'=>trim($address),
-					    'from'=>ecomconfig::getConfig('from_address'),
-					    'from_name'=>ecomconfig::getConfig('from_name'),
+//					    'from'=>ecomconfig::getConfig('from_address'),
+//					    'from_name'=>ecomconfig::getConfig('from_name'),
+					    'from'=>array(ecomconfig::getConfig('from_address')=>ecomconfig::getConfig('from_name')),
 					    'subject'=>'Billing Information for an order placed on '.ecomconfig::getConfig('storename'),
 		    ));
 		}

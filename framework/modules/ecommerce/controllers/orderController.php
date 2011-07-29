@@ -261,8 +261,9 @@ class orderController extends expController {
 		                'html_message'=>$html,
 					    'text_message'=>$txt,
 					    'to'=>trim($address),
-					    'from'=>ecomconfig::getConfig('from_address'),
-					    'from_name'=>ecomconfig::getConfig('from_name'),
+//					    'from'=>ecomconfig::getConfig('from_address'),
+//					    'from_name'=>ecomconfig::getConfig('from_name'),
+					    'from'=>array(ecomconfig::getConfig('from_address')=>ecomconfig::getConfig('from_name')),
 					    'subject'=>'An order was placed on the '.ecomconfig::getConfig('storename'),
 		        ));
 		    }
@@ -280,8 +281,9 @@ class orderController extends expController {
 			        'text_message'=>$txt,
 			        'to'=>$user->email,
 					//'to'=>$order->billingmethod[0]->email,
-			        'from'=>ecomconfig::getConfig('from_address'),
-			        'from_name'=>ecomconfig::getConfig('from_name'),
+//			        'from'=>ecomconfig::getConfig('from_address'),
+//			        'from_name'=>ecomconfig::getConfig('from_name'),
+			        'from'=>array(ecomconfig::getConfig('from_address')=>ecomconfig::getConfig('from_name')),
 			        'subject'=>ecomconfig::getConfig('invoice_subject'),
             ));      
         }

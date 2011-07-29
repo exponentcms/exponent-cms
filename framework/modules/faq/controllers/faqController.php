@@ -128,15 +128,16 @@ class faqController extends expController {
         $mail->quickSend(array(
                 'html_message'=>$this->params['body'],
 			    'to'=>trim($faq->submitter_email),
-			    'from'=>empty($this->config['answer_from_address']) ? SMTP_FROMADDRESS : $this->config['answer_from_address'],
-			    'from_name'=>empty($this->config['answer_from_name']) ? null : $this->config['answer_from_name'],
-			    'subject'=>$params['subject'],
+//			    'from'=>empty($this->config['answer_from_address']) ? SMTP_FROMADDRESS : $this->config['answer_from_address'],
+//			    'from_name'=>empty($this->config['answer_from_name']) ? null : $this->config['answer_from_name'],
+			    'from'=>array(empty($this->config['answer_from_address']) ? SMTP_FROMADDRESS : $this->config['answer_from_address']=>
+			        empty($this->config['answer_from_name']) ? null : $this->config['answer_from_name']),
+			    'subject'=>$this->params['subject'],
         ));
         
         flash('message', 'Your email was sent to '.$faq->submitter_name.' at '.$faq->submitter_email);
         expHistory::back();
     }
 }
-
 
 ?>

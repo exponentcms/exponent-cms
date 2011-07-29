@@ -475,8 +475,9 @@ $headers = array(
 			"text_message"=>$msg,
 //			'to'=>trim($recip),
 			'to'=>trim($emails),
-			'from'=>trim($config->email_address_reminder),
-			'from_name'=>$config->email_from_reminder,
+//			'from'=>trim($config->email_address_reminder),
+//			'from_name'=>$config->email_from_reminder,
+			'from'=>array(trim($config->email_address_reminder)=>$config->email_from_reminder),
 			'subject'=>$subject,
 	));
 //}
