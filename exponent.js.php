@@ -17,15 +17,10 @@
 # GPL: http://www.gnu.org/licenses/gpl.txt
 #
 ##################################################
-/** @define "BASE" "." */
 
 //Initialize exponent Framework
-//include_once('exponent_common.php');  // incorporated into exponent_bootstrap.php
-require_once('exponent_bootstrap.php');
+require_once('exponent.php');
 
-// Initialize the language subsystem
-require_once(BASE.'subsystems/lang.php');
-exponent_lang_initialize();
 ?>
 
 // exponent Javascript Support Systems
