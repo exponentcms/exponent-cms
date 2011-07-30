@@ -21,14 +21,14 @@ if (!defined('EXPONENT')) exit('');
 $script = "
     
     var filepickerwindow = function (){
-        win = window.open('".makeLink($params=array('controller'=>'file','action'=>'picker','ajax_action'=>'1','update'=>'noupdate'))."', 'IMAGE_BROWSER','left=0,top=0,scrollbars=yes,width=800,height=600,toolbar=no,resizable=yes,status=0');
+        win = window.open('".makeLink($params=array('controller'=>'file','action'=>'picker','ajax_action'=>'1','update'=>'noupdate'))."', 'IMAGE_BROWSER','left=0,top=0,scrollbars=yes,width=1024,height=600,toolbar=no,resizable=yes,status=0');
         if (!win) {
             //Catch the popup blocker
             alert(\"Your popup blocker has prevented the file manager from opening\");
         }
     }
     var fileuploaderwindow = function (){
-        win = window.open('".makeLink($params=array('controller'=>'file','action'=>'uploader','ajax_action'=>'1','update'=>'noupdate'))."', 'IMAGE_BROWSER','left=0,top=0,scrollbars=yes,width=800,height=600,toolbar=no,resizable=yes,status=0');
+        win = window.open('".makeLink($params=array('controller'=>'file','action'=>'uploader','ajax_action'=>'1','update'=>'noupdate'))."', 'IMAGE_BROWSER','left=0,top=0,scrollbars=yes,width=1024,height=600,toolbar=no,resizable=yes,status=0');
         if (!win) {
             //Catch the popup blocker
             alert(\"Your popup blocker has prevented the file manager from opening\");
