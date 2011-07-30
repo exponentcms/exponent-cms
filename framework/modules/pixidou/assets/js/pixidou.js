@@ -34,7 +34,7 @@ pixidou = {
 	initCropTool: function(){
 		// check if image has been uploaded before
 		if(pixidou.checkImage()){
-			// check whether we must save current image before continuin, especially prior to a resize
+			// check whether we must save current image before continuing, especially prior to a resize
 			pixidou.checkSavedState();
 			
 			// zoom to 100%
@@ -500,7 +500,7 @@ pixidou = {
 		pixidou.imageHeight = height;
 		
 		YAHOO.util.Dom.get('imageContainer').innerHTML = '<img id="yuiImg" src="'+EXPONENT.URL_FULL+'framework/modules/pixidou/images/' + image + '" width="' + width + '" height="' + height + '" alt="" style="width:' + width + 'px;height:' + height + 'px;" />';
-		
+
 		// add it to our history
 		var imageObject = new Object;
 		imageObject.image = image;

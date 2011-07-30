@@ -35,7 +35,7 @@
 		<title>Pixidou - Open Source AJAX Image Editor</title>
 		<!-- Combo-handled YUI CSS files: -->
 		<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/combo?2.6.0/build/reset-fonts/reset-fonts.css&2.6.0/build/assets/skins/sam/skin.css" />
-		<link rel="stylesheet" type="text/css" href="css/pixidou.css" />
+		<link rel="stylesheet" type="text/css" href="assets/css/pixidou.css" />
 	</head>
 	<body class="yui-skin-sam">
 		<div id="doc3" class="yui-t7">
@@ -137,7 +137,7 @@
 					<div class="hd">Adjust contrast</div>
 					<div class="bd">
 						<div id="contrastSliderBg" class="yui-h-slider" title="Slider">
-							<div id="contrastSliderThumb" class="yui-slider-thumb"><img src="assets/thumb-n.gif" alt="" /></div>
+							<div id="contrastSliderThumb" class="yui-slider-thumb"><img src="assets/images/thumb-n.gif" alt="" /></div>
 						</div>
 						<p>Value : <span id="contrastSliderValue">0</span></p>
 					</div>
@@ -149,7 +149,7 @@
 					<div class="hd">Adjust brightness</div>
 					<div class="bd">
 						<div id="brightnessSliderBg" class="yui-h-slider" title="Slider">
-							<div id="brightnessSliderThumb" class="yui-slider-thumb"><img src="assets/thumb-n.gif" alt="" /></div>
+							<div id="brightnessSliderThumb" class="yui-slider-thumb"><img src="assets/images/thumb-n.gif" alt="" /></div>
 						</div>
 						<p>Value : <span id="brightnessSliderValue">0</span></p>
 					</div>
@@ -212,11 +212,11 @@
 		<!-- Combo-handled YUI JS files: -->
 		<script type="text/javascript" src="http://yui.yahooapis.com/combo?2.6.0/build/utilities/utilities.js&2.6.0/build/container/container-min.js&2.6.0/build/menu/menu-min.js&2.6.0/build/button/button-min.js&2.6.0/build/slider/slider-min.js&2.6.0/build/colorpicker/colorpicker-min.js&2.6.0/build/resize/resize-min.js&2.6.0/build/imagecropper/imagecropper-beta-min.js&2.6.0/build/json/json-min.js&2.6.0/build/selector/selector-beta-min.js&2.6.0/build/layout/layout-min.js&2.6.0/build/tabview/tabview-min.js"></script>
 		
-		<script type="text/javascript" src="js/ui.js"></script>
-		<script type="text/javascript" src="js/layout.js"></script>
-		<script type="text/javascript" src="js/uploader.js"></script>
-		<script type="text/javascript" src="js/pixidou.js"></script>
-		<script type="text/javascript" src="js/keys.js"></script>
-		<script type="text/javascript" src="js/app.js"></script>
+		<script type="text/javascript" src="assets/js/ui.js"></script>
+		<script type="text/javascript" src="assets/js/layout.js"></script>
+		<script type="text/javascript" src="assets/js/uploader.js"></script>
+		<script type="text/javascript" src="assets/js/pixidou.js"></script>
+		<script type="text/javascript" src="assets/js/keys.js"></script>
+		<script type="text/javascript" src="assets/js/app.js"></script>
 	</body>
 </html>

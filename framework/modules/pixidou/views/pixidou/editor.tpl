@@ -35,7 +35,7 @@
         <title>Pixidou - Open Source AJAX Image Editor</title>
         <!-- Combo-handled YUI CSS files: -->
         <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/combo?2.6.0/build/reset-fonts/reset-fonts.css&2.6.0/build/assets/skins/sam/skin.css" />
-        <link rel="stylesheet" type="text/css" href="{$smarty.const.URL_FULL}framework/modules/pixidou/css/pixidou.css" />
+        <link rel="stylesheet" type="text/css" href="{$smarty.const.URL_FULL}framework/modules/pixidou/assets/css/pixidou.css" />
     </head>
     <body class="yui-skin-sam">
         <div id="doc3" class="yui-t7 hide">
@@ -178,7 +178,7 @@
                                     <p>(c) 2008 - Asvin Balloo</p>
                                 </div>
                                 <div id="aboutJoin">
-                                    <p>I'am currently looking for some collaborators to take Pixidou a level higher. </p>
+                                    <p>I'm currently looking for some collaborators to take Pixidou a level higher. </p>
                                     <br/>
                                     <p>If you're interested drop me an email at : asvin.balloo [@] gmail.com</p>
                                     <br/>
@@ -219,12 +219,12 @@
 
         <script type="text/javascript" src="{$smarty.const.URL_FULL}exponent.js.php"></script>
        
-        <script type="text/javascript" src="{$smarty.const.URL_FULL}framework/modules/pixidou/js/ui.js"></script>
-        <script type="text/javascript" src="{$smarty.const.URL_FULL}framework/modules/pixidou/js/layout.js"></script>
-        <script type="text/javascript" src="{$smarty.const.URL_FULL}framework/modules/pixidou/js/uploader.js"></script>
-        <script type="text/javascript" src="{$smarty.const.URL_FULL}framework/modules/pixidou/js/pixidou.js"></script>
-        <script type="text/javascript" src="{$smarty.const.URL_FULL}framework/modules/pixidou/js/keys.js"></script>
-        <script type="text/javascript" src="{$smarty.const.URL_FULL}framework/modules/pixidou/js/app.js"></script>
+        <script type="text/javascript" src="{$smarty.const.URL_FULL}framework/modules/pixidou/assets/js/ui.js"></script>
+        <script type="text/javascript" src="{$smarty.const.URL_FULL}framework/modules/pixidou/assets/js/layout.js"></script>
+        <script type="text/javascript" src="{$smarty.const.URL_FULL}framework/modules/pixidou/assets/js/uploader.js"></script>
+        <script type="text/javascript" src="{$smarty.const.URL_FULL}framework/modules/pixidou/assets/js/pixidou.js"></script>
+        <script type="text/javascript" src="{$smarty.const.URL_FULL}framework/modules/pixidou/assets/js/keys.js"></script>
+        <script type="text/javascript" src="{$smarty.const.URL_FULL}framework/modules/pixidou/assets/js/app.js"></script>
         
         <script type="text/javascript" charset="utf-8">
 
