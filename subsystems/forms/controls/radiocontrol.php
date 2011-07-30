@@ -21,35 +21,21 @@
 if (!defined('EXPONENT')) exit('');
 
 /**
- * Radio Control
- *
- * An HTML radio button
- *
- * @package Subsystems
- * @subpackage Forms
- */
-
-/**
- * Manually include the class file for formcontrol, for PHP4
- * (This does not adversely affect PHP5)
- */
-require_once(BASE."subsystems/forms/controls/formcontrol.php");
-
-/**
  * Radio Button Control class
  *
  * An HTML Radio Button
  *
- * @package Subsystems
- * @subpackage Forms
+ * @package Subsystems-Forms
+ * @subpackage Control
  */
 class radiocontrol extends formcontrol {
+
     var $flip = false;
     var $nowrap = '';
     
     function name() { return "Radio Button"; }
     
-    function radiocontrol($default = false, $value = "", $groupname="radiogroup", $flip=false, $onclick="") {
+    function __construct($default = false, $value = "", $groupname="radiogroup", $flip=false, $onclick="") {
         $this->default = $default;
         //$this->id = isset($this->id) ? $this->id : $this->name;
         $this->groupname = $groupname;
@@ -57,8 +43,7 @@ class radiocontrol extends formcontrol {
         $this->flip = $flip;
         $this->onclick = $onclick;
     }
-    
-    
+
     function toHTML($label,$name) {
         if (!empty($this->id)) {
 		    $divID  = ' id="'.$this->id.'Control"';

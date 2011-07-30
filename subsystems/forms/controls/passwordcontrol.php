@@ -23,34 +23,18 @@ if (!defined('EXPONENT')) exit('');
 /**
  * Password Control
  *
- * @author James Hunt
- * @copyright 2004-2011 OIC Group, Inc.
- * @version 0.95
- *
- * @package Subsystems
- * @subpackage Forms
- */
-
-/**
- * Manually include the class file for formcontrol, for PHP4
- * (This does not adversely affect PHP5)
- */
-require_once(BASE."subsystems/forms/controls/formcontrol.php");
-
-/**
- * Password Control
- *
- * @package Subsystems
- * @subpackage Forms
+ * @package Subsystems-Forms
+ * @subpackage Control
  */
 class passwordcontrol extends formcontrol {
+
 	var $default = "";
 	var $size = 0;
 	var $maxlength = "";
 	
 	function name() { return "Password Field"; }
 
-	function passwordcontrol($default = "", $size = 0, $disabled = false, $maxlength = 0) {
+	function __construct($default = "", $size = 0, $disabled = false, $maxlength = 0) {
 		$this->default = $default;
 		$this->size = $size;
 		$this->disabled = $disabled;
@@ -75,10 +59,7 @@ class passwordcontrol extends formcontrol {
 	function update($values, $object) {
 
 	}
-	
-	
-	
-	
+
 }
 
 ?>

@@ -23,27 +23,11 @@ if (!defined('EXPONENT')) exit('');
 /**
  * Text Control
  *
- * @author James Hunt
- * @copyright 2004-2011 OIC Group, Inc.
- * @version 0.95
- *
- * @package Subsystems
- * @subpackage Forms
- */
-
-/**
- * Manually include the class file for formcontrol, for PHP4
- * (This does not adversely affect PHP5)
- */
-require_once(BASE."subsystems/forms/controls/formcontrol.php");
-
-/**
- * Text Control
- *
- * @package Subsystems
- * @subpackage Forms
+ * @package Subsystems-Forms
+ * @subpackage Control
  */
 class textcontrol extends formcontrol {
+
     var $size = 40;
     var $maxlength = "";
     var $caption = "";
@@ -57,7 +41,7 @@ class textcontrol extends formcontrol {
             DB_FIELD_LEN=>512);
     }
 
-    function textcontrol($default = "", $size=40 , $disabled = false, $maxlength = 0, $filter = "", $required = false) {
+    function __construct($default = "", $size=40 , $disabled = false, $maxlength = 0, $filter = "", $required = false) {
         $this->default = $default;
         $this->size = $size;
         $this->disabled = $disabled;

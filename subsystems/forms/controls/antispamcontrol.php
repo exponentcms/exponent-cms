@@ -23,25 +23,8 @@ if (!defined('EXPONENT')) exit('');
 /**
  * Anti-Spam Control
  *
- * @author Ron Miller
- * @copyright 2004-2011 OIC Group, Inc.
- * @version 0.96.6
- *
- * @package Subsystems
- * @subpackage Forms
- */
-
-/**
- * Manually include the class file for formcontrol, for PHP4
- * (This does not adversely affect PHP5)
- */
-require_once(BASE."subsystems/forms/controls/formcontrol.php");
-
-/**
- * Text Control
- *
- * @package Subsystems
- * @subpackage Forms
+ * @package Subsystems-Forms
+ * @subpackage Control
  */
 class antispamcontrol extends formcontrol {
 

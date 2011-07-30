@@ -23,33 +23,17 @@ if (!defined('EXPONENT')) exit('');
 /**
  * HTML Control
  *
- * @author James Hunt
- * @copyright 2004-2011 OIC Group, Inc.
- * @version 0.95
- *
- * @package Subsystems
- * @subpackage Forms
- */
-
-/**
- * Manually include the class file for formcontrol, for PHP4
- * (This does not adversely affect PHP5)
- */
-require_once(BASE."subsystems/forms/controls/formcontrol.php");
-
-/**
- * HTML Control
- *
- * @package Subsystems
- * @subpackage Forms
+ * @package Subsystems-Forms
+ * @subpackage Control
  */class htmlcontrol extends formcontrol {
+
 	var $html;
 	var $span;
 	
 	function name() { return "Static Text"; }
 	function isSimpleControl() { return true; }
 	
-	function htmlcontrol($html = "",$span = true) {
+	function __construct($html = "",$span = true) {
 		$this->span = $span;
 		$this->html = $html;
 	}

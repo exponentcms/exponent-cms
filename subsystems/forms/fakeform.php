@@ -20,9 +20,17 @@
 
 if (!defined('EXPONENT')) exit('');
 
-include_once(BASE."subsystems/forms/form.php");
-
+/**
+ * Fake Form Class
+ *
+ * An HTML-form building class, that supports
+ * registerable and unregisterable controls.
+ *
+ * @package Subsystems-Forms
+ * @subpackage Form
+ */
 class fakeform extends form {
+
 	function toHTML($form_id, $module="formbuilder") {
 		// Form validation script
 		if ($this->validationScript != "") {

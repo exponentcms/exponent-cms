@@ -20,15 +20,6 @@
 
 if (!defined('EXPONENT')) exit('');
 
-if (phpversion() >= 5) {
-	/* exdoc
-	 * The definition of this constant lets other parts
-	 * of the system know that the AutoLoader Subsystem
-	 * has been included for use.
-	 * @node Subsystems:Autoloader
-	 */
-	define('SYS_AUTOLOADER',1);
-	
 	/* exdoc
 	 * In PHP5, the autoloader function will check these
 	 * directories when it tries to load a class definition
@@ -91,17 +82,5 @@ if (phpversion() >= 5) {
 		}
 		return false;
 	}*/
-	
-} else {
-	define('SYS_AUTOLOADER',2);
-	if (is_readable(BASE.'datatypes')) {
-		$dh = opendir(BASE.'datatypes');
-		while (($file = readdir($dh)) !== false) {
-			if (is_readable(BASE.'datatypes/'.$file) && substr($file,-4,4) == '.php') {
-				include_once(BASE.'datatypes/'.$file);
-			}
-		}
-	}
-}
 
 ?>

@@ -21,29 +21,12 @@
 /**
  * Month Year Picker
  *
- * @author Greg Otte
- * @copyright 2004-2011 OIC Group, Inc.
- * @version 0.95
- *
- * @package Subsystems
- * @subpackage Forms
- */
-
-/**
- * Manually include the class file for formcontrol, for PHP4
- * (This does not adversely affect PHP5)
- */
-include_once(BASE."subsystems/forms/controls/formcontrol.php");
-
-/**
- * Month Year Picker
- *
- * @package Subsystems
- * @subpackage Forms
+ * @package Subsystems-Forms
+ * @subpackage Control
  */
 class monthyearcontrol extends formcontrol {
 	
-	function monthyearcontrol($default_month = null,$default_year = null) {
+	function __construct($default_month = null,$default_year = null) {
 		if ($default_month == null) date("m");
 		if ($default_year == null) date("Y");
 		$this->default_month = $default_month;

@@ -20,9 +20,14 @@
 
 if (!defined('EXPONENT')) exit('');
 
-require_once(BASE."subsystems/forms/controls/formcontrol.php");
-
+/**
+ * List Control
+ *
+ * @package Subsystems-Forms
+ * @subpackage Control
+ */
 class listcontrol extends formcontrol {
+
     var $html;
     var $span;
     

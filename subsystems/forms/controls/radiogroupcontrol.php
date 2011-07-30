@@ -21,29 +21,15 @@
 if (!defined('EXPONENT')) exit('');
 
 /**
- * Radio Control
- *
- * An HTML radio button
- *
- * @package Subsystems
- * @subpackage Forms
- */
-
-/**
- * Manually include the class file for formcontrol, for PHP4
- * (This does not adversely affect PHP5)
- */
-require_once(BASE."subsystems/forms/controls/formcontrol.php");
-
-/**
  * Radio Button Control class
  *
  * An HTML Radio Button
  *
- * @package Subsystems
- * @subpackage Forms
+ * @package Subsystems-Forms
+ * @subpackage Control
  */
 class radiogroupcontrol extends formcontrol {
+
 	var $flip = false;
 	var $items = array();
 	var $spacing = 100;
@@ -51,16 +37,14 @@ class radiogroupcontrol extends formcontrol {
 	var $onclick = null;
 	
 	function name() { return "Radio Button Group"; }
-	
 	function isSimpleControl() { return true; }
-	
 	function getFieldDefinition() {
 		return array(
 			DB_FIELD_TYPE=>DB_DEF_STRING,
 			DB_FIELD_LEN=>512);
 	}
 	
-	function radiogroupcontrol($default = "", $items = array(), $flip=false, $spacing=100, $cols = 1) {
+	function __construct($default = "", $items = array(), $flip=false, $spacing=100, $cols = 1) {
 		$this->default = $default;
 		$this->items = $items;
 		$this->flip = $flip;
