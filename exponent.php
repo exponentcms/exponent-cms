@@ -28,7 +28,6 @@
  * @version 2.0.0
  */
 
-//require_once('exponent_common.php');  // incorporated into exponent_bootstrap.php
 require_once('exponent_bootstrap.php');
 
 // Initialize the AutoLoader Subsystem
@@ -38,8 +37,6 @@ require_once(BASE.'subsystems/autoloader.php');
 require_once(BASE.'subsystems/sessions.php');
 exponent_sessions_initialize();
 
-// initialize useful/needed constants throughout the system
-//require_once(BASE.'exponent_constants.php');
 // Initialize the theme subsystem
 if (!defined('SYS_THEME')) require_once(BASE.'subsystems/theme.php');
 

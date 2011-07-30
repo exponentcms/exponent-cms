@@ -23,19 +23,19 @@ if (!defined('EXPONENT_VERSION_MAJOR')) {
 	if (RELEASE != '%%RELEASE%%') {
 
 		/* exdoc
-		 * This is the major version number of Exponent; the 0 in 0.96.2-beta3
+		 * This is the major version number of Exponent; the 1 in 1.96.2-beta3
 		 */
 		define('EXPONENT_VERSION_MAJOR','%%MAJOR%%');
 		/* exdoc
-		 * This is the minor version number of Exponent; the 96 in 0.96.2-beta3
+		 * This is the minor version number of Exponent; the 96 in 1.96.2-beta3
 		 */
 		define('EXPONENT_VERSION_MINOR','%%MINOR%%');
 		/* exdoc
-		 * This is the revision version number of Exponent; the 2 in 0.96.2-beta3
+		 * This is the revision version number of Exponent; the 2 in 1.96.2-beta3
 		 */
 		define('EXPONENT_VERSION_REVISION','%%REVISION%%');
 		/* exdoc
-		 * This specifies the type of release, either 'alpha','beta','release candidate' or '' (for stable).
+		 * This specifies the type of release, either 'alpha','beta','release-candidate' or '' (for stable).
 		 */
 		define('EXPONENT_VERSION_TYPE','%%TYPE%%');
 		/* exdoc
@@ -44,7 +44,7 @@ if (!defined('EXPONENT_VERSION_MAJOR')) {
 		 */
 		define('EXPONENT_VERSION_ITERATION','%%ITERATION%%'); // only applies to betas, alphas, or release candidates
 		/* exdoc
-		 * This is the date that this version of Exponent was exported from BZR and built.
+		 * This is the date that this version of Exponent was released.
 		 */
 		define('EXPONENT_VERSION_BUILDDATE','%%BUILDDATE%%');
 	} else {

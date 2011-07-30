@@ -34,7 +34,6 @@ if (!defined('BASE')) {
  * It's definition also signals to other parts of the system that they are operating within the confines
  * of the Exponent Framework.  (Module actions check this -- if it is not defined, they must abort).
  */
-//define('EXPONENT', include(BASE.'exponent_version.php'));
 
 if (!defined('PATH_RELATIVE')) {
 	if (isset($_SERVER['DOCUMENT_ROOT'])) {
@@ -124,8 +123,6 @@ if (!defined('SCRIPT_FILENAME')) {
 	define('SCRIPT_FILENAME', 'index.php');
 }
 
-//include_once(BASE . '/subsystems/config/load.php');  // moved to exponent_bootstrap.php
-
 // Determines platform (OS), browser and version of the user
 // Based on a phpBuilder article:
 //   see http://www.phpbuilder.net/columns/tim20000821.php
@@ -180,50 +177,12 @@ if (!defined('JS_FULL')) {
 	define('JS_FULL',URL_FULL.'framework/core/js/');
 }
 
-// Initialize the theme subsystem
-//if (!defined('SYS_THEME')) require_once(BASE.'subsystems/theme.php');
-
 // iconset base
 if (!defined('ICON_RELATIVE')) {
-
 	define('ICON_RELATIVE', PATH_RELATIVE . 'framework/core/assets/images/');
-
-	//DEPRECATED: old directory, inconsistent naming
-	/*if (is_readable(THEME_ABSOLUTE . 'icons/')) {
-		/* exdoc
-		 * The relative web path to the current icon set.  If an icons/ directory exists directly
-		 * underneath the theme's directory, that is used.	Otherwise, the system falls back to
-		 * the iconset directory in the root of the Exponent directory.
-		define('ICON_RELATIVE', THEME_RELATIVE . 'icons/');
-	} else
-		Commented out compat layer for < 0.96.6 version.  All icons should be in common/skin  ~phillip Ball
-
-
-	if(is_readable(THEME_ABSOLUTE . "images/icons/")){
-		define('ICON_RELATIVE',THEME_RELATIVE . 'images/icons/');
-	} else {
-		define('ICON_RELATIVE', PATH_RELATIVE . 'themes/common/images/icons/');
-	}
-	*/
 }
-
 if (!defined('MIMEICON_RELATIVE')) {
-
 	define('MIMEICON_RELATIVE', PATH_RELATIVE . 'framework/core/assets/images/mimetypes/');
-
-	//DEPRECATED: old directory, inconsistent naming
-    // if (is_readable(THEME_ABSOLUTE . 'mimetypes/')) {
-		/* exdoc
-		 * The relative web path to the current MIME icon set.	If a mimetypes/ directory
-		 * exists directly underneath the theme's directory, then that is used.	 Otherwise, the
-		 * system falls back to the iconset/mimetypes/ directory in the root of the Exponent directory.
-		 */
-    //  define('MIMEICON_RELATIVE', THEME_RELATIVE . 'mimetypes/');
-    // } else if(is_readable(THEME_ABSOLUTE . "images/icons/mimetypes" )){
-    //  define('MIMEICON_RELATIVE', THEME_RELATIVE . "images/icons/mimetypes/");
-    // } else {
-    //  define('MIMEICON_RELATIVE', PATH_RELATIVE . 'themes/common/images/icons/mimetypes/');
-    // }
 }
 
 if (!defined('YUI3_PATH')) {

@@ -74,10 +74,6 @@ define('EXPONENT', '1');
 // load the constants from the global config, theme config, and then default config settings
 require_once(BASE . 'subsystems/config/load.php');
 
-// define remaining constants throughout the system based on loaded configuration constants
-
-//require_once(BASE.'exponent_constants2.php'); // moved to below
-
 // Set the default timezone.
 if (function_exists('date_default_timezone_set')) {
     @date_default_timezone_set(DISPLAY_DEFAULT_TIMEZONE);
@@ -107,8 +103,5 @@ if (!defined('THEME_RELATIVE')) {
 
 // Process PHP-wrapper settings (ini_sets and setting detectors)
 require_once(BASE . 'exponent_php_setup.php');
-
-// Initialize the PHP4 Compatibility Layer
-//include(BASE.'compat.php');  // deprecated in Exp 2.0
 
 ?>

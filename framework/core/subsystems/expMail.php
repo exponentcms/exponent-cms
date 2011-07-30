@@ -72,14 +72,14 @@ class expMail {
 	 * @todo add further documentation for using settings other than the system default
 	 */
 	function __construct($params = array()) {
-		require_once(BASE.'external/Swift-4.1.1/lib/swift_required.php');
+		require_once(BASE . 'external/Swift-4/lib/swift_required.php');
 
 		if (array_key_exists('method', $params)) {
 			switch ($params['method']) {
 				case "multi":
 					break;
 				case "smtp":
-					//require_once(BASE.'external/Swift-4.1.1/Connection/SMTP.php');
+					//require_once(BASE.'external/Swift-4/Connection/SMTP.php');
 					if (array_key_exists('connections', $params)) {
 						if (is_array($params['connections'])) {
 							//$this->transport = new Swift_Connection_SMTP($params['connections']['host'], $params['connections']['port'], $params['connections']['option']);
@@ -317,7 +317,7 @@ class expMail {
 	 * @return array
 	 */
 	public function batchSend() {
-//		require_once(BASE . 'external/Swift-4.1.1/lib/classes/Swift/Plugins/AntiFloodPlugin.php');
+//		require_once(BASE . 'external/Swift-4/lib/classes/Swift/Plugins/AntiFloodPlugin.php');
 //		$this->attachPlugin(new Swift_Plugin_AntiFlood(200, 5), "anti-flood");
 		$this->mailer->registerPlugin(new Swift_Plugins_AntiFloodPlugin(100, 30));
 
@@ -855,7 +855,7 @@ class expMail {
 	 * @internal param mixed $file_to_attach This is the data for the file that you want to send, for example, the HTML, CSV, or PDF data
 	 */
 	public function attach_file_not_on_disk($data_to_attach, $file_name, $file_type) {
-//		require_once(BASE . 'external/Swift-4.1.1/lib/classes/Swift/Attachment.php');
+//		require_once(BASE . 'external/Swift-4/lib/classes/Swift/Attachment.php');
 
 		//Create the attachment with your data
 		$attachment = Swift_Attachment::newInstance($data_to_attach, $file_name, $file_type);
@@ -887,7 +887,7 @@ class expMail {
 	 * @param string  $file_type This is the MIME type of the file that you are attaching
 	 */
 	public function attach_file_on_disk($file_to_attach, $file_type) {
-//		require_once(BASE . 'external/Swift-4.1.1/lib/classes/Swift/Attachment.php');
+//		require_once(BASE . 'external/Swift-4/lib/classes/Swift/Attachment.php');
 
 		//Create the attachment with your data
 		$attachment = Swift_Attachment::fromPath($file_to_attach, $file_type);
