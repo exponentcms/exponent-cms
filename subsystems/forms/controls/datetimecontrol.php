@@ -21,29 +21,13 @@
 if (!defined('EXPONENT')) exit('');
 
 /**
- * Contact Control
+ * Date Time Control
  *
- * @author James Hunt, Greg Otte
- * @copyright 2004-2011 OIC Group, Inc.
- * @version 0.95
- *
- * @package Subsystems
- * @subpackage Forms
- */
-
-/**
- * Manually include the class file for formcontrol, for PHP4
- * (This does not adversely affect PHP5)
- */
-require_once(BASE."subsystems/forms/controls/formcontrol.php");
-
-/**
- * Contact Control
- *
- * @package Subsystems
- * @subpackage Forms
+ * @package Subsystems-Forms
+ * @subpackage Control
  */
 class datetimecontrol extends formcontrol {
+
 	var $showdate = true;
 	var $showtime = true;
 	
@@ -54,7 +38,7 @@ class datetimecontrol extends formcontrol {
 			DB_FIELD_TYPE=>DB_DEF_TIMESTAMP);
 	}
 	
-	function datetimecontrol($default = 0, $showdate = true, $showtime = true) {
+	function __construct($default = 0, $showdate = true, $showtime = true) {
 		if (!defined("SYS_DATETIME")) include_once(BASE."subsystems/datetime.php");
 		if ($default == 0) $default = time();
 		$this->default = $default;
@@ -114,7 +98,7 @@ class datetimecontrol extends formcontrol {
 		$form->addScript('datetime_disable',PATH_RELATIVE.'subsystems/forms/controls/datetimecontrol.js');
 	}
 	
-	function parseData($original_name,$formvalues,$for_db = false) {
+	static function parseData($original_name,$formvalues,$for_db = false) {
 		$time = 0;
 		if (isset($formvalues[$original_name."_month"])) $time = mktime(8,0,0,$formvalues[$original_name.'_month'],$formvalues[$original_name.'_day'],$formvalues[$original_name.'_year']) - 8*3600;
 		if (isset($formvalues[$original_name."_hour"])) {

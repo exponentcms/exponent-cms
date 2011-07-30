@@ -20,23 +20,17 @@
 if (!defined('EXPONENT')) exit('');
 
 /**
- * Basic Form Control
+ * Base Form Control Class
  *
  * @author Phillip Ball
  * @copyright 2007-2009 OIC Group, Inc.
  * @version 2
  *
- * @package Subsystems
- * @subpackage Forms
- */
-
-/**
- * Basic Form Control
- *
- * @package Subsystems
- * @subpackage Forms
+ * @package Subsystems-Forms
+ * @subpackage Control
  */
 class formcontrol {
+
 	var $accesskey = "";
 	var $default = "";
 	var $disabled = false;
@@ -81,7 +75,7 @@ class formcontrol {
 		return "";
 	}
 	
-	function parseData($original_name,$formvalues) {
+	static function parseData($original_name,$formvalues) {
 		return (isset($formvalues[$original_name])?$formvalues[$original_name]:"");
 	}
 	

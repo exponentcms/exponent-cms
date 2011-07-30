@@ -30,7 +30,7 @@ class expSession {
      * @param unknown $val
      * @return void
      */
-    public function set($var, $val) {
+    public static function set($var, $val) {
         exponent_sessions_set($var, $val);
     }
     
@@ -40,15 +40,15 @@ class expSession {
      * @param unknown $var
      * @return void
      */
-    public function get($var) {
+    public static function get($var) {
         return exponent_sessions_get($var);
     }
 
-    public function exists($var) {
+    public static function exists($var) {
         return isset($_SESSION[SYS_SESSION_KEY]['vars'][$var]);
     }
 
-    public function deleteVar($var) {
+    public static function deleteVar($var) {
         exponent_sessions_unset($var);
     }
     
@@ -56,11 +56,11 @@ class expSession {
         $_SESSION[SYS_SESSION_KEY]['cache'][$params['module']] = $params['val'];
     }
     
-    public function setTableCache($tablename, $desc) {
+    public static function setTableCache($tablename, $desc) {
         $_SESSION[SYS_SESSION_KEY]['cache']['table_descriptions'][$tablename] = $desc;
     }
     
-    public function getTableCache($tablename) {
+    public static function getTableCache($tablename) {
         if (isset($_SESSION[SYS_SESSION_KEY]['cache']['table_descriptions'][$tablename])) {
             return $_SESSION[SYS_SESSION_KEY]['cache']['table_descriptions'][$tablename];
         } else {
@@ -68,11 +68,11 @@ class expSession {
         }
     }
     
-    public function issetTableCache($tablename) {
+    public static function issetTableCache($tablename) {
         return isset($_SESSION[SYS_SESSION_KEY]['cache']['table_descriptions'][$tablename]) ? true : false;
     }
     
-    public function clearUserCache() {
+    public static function clearUserCache() {
         exponent_sessions_clearCurrentUserSessionCache();
     }
 }

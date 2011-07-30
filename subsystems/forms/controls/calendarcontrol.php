@@ -23,27 +23,11 @@ if (!defined('EXPONENT')) exit('');
 /**
  * Popup Date/Time Picker Control
  *
- * @author James Hunt
- * @copyright 2004-2011 OIC Group, Inc.
- * @version 0.95
- *
- * @package Subsystems
- * @subpackage Forms
- */
-
-/**
- * Manually include the class file for formcontrol, for PHP4
- * (This does not adversely affect PHP5)
- */
-require_once(BASE."subsystems/forms/controls/formcontrol.php");
-
-/**
- * Popup Date/Time Picker Control
- *
- * @package Subsystems
- * @subpackage Forms
+ * @package Subsystems-Forms
+ * @subpackage Control
  */
 class calendarcontrol extends formcontrol {
+
     var $disable_text = "";
     var $showtime = true;
 
@@ -267,7 +251,7 @@ class calendarcontrol extends formcontrol {
         return $html;
     }
 
-    function parseData($original_name,$formvalues) {
+    static function parseData($original_name,$formvalues) {
         if (!empty($formvalues[$original_name])) {
             return strtotime($formvalues[$original_name]);
          } else return 0;

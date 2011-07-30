@@ -33,7 +33,7 @@
 /** @define "BASE" ".." */
 
 class poll_answer {
-	function form($object) {
+	static function form($object) {
 		if (!defined('SYS_FORMS')) require_once(BASE.'subsystems/forms.php');
 		exponent_forms_initialize();
 		
@@ -50,7 +50,7 @@ class poll_answer {
 		return $form;
 	}
 	
-	function update($values,$object) {
+	static function update($values,$object) {
 		$object->answer = $values['answer'];
 		return $object;
 	}

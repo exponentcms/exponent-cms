@@ -47,11 +47,11 @@ class expeAlerts extends expRecord {
         parent::beforeSave();
     }
     
-    public function getPendingBySubscriber($id) {
+    public static function getPendingBySubscriber($id) {
         expeAlerts::getBySubscriber($id, true);
     }
     
-    public function getBySubscriber($id, $pending=false) {
+    public static function getBySubscriber($id, $pending=false) {
         global $db;
         
         $enabled = empty($pending) ? 1 : 0;

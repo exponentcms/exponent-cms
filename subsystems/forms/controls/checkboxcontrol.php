@@ -21,33 +21,15 @@
 if (!defined('EXPONENT')) exit('');
 
 /**
- * Check Box Control
- *
- * An HTML checkbox
- *
- * @author Phillip Ball
- * @copyright 2004-2051 OIC Group, Inc.
- * @version 0.96.7
- *
- * @package Subsystems
- * @subpackage Forms
- */
-
-/**
- * Manually include the class file for formcontrol, for PHP4
- * (This does not adversely affect PHP5)
- */
-require_once(BASE."subsystems/forms/controls/formcontrol.php");
-
-/**
  * Check Box Control class
  *
  * An HTML checkbox
  *
- * @package Subsystems
- * @subpackage Forms
+ * @package Subsystems-Forms
+ * @subpackage Control
  */
 class checkboxcontrol extends formcontrol {
+
     var $flip = false;
     var $jsHooks = array();
     var $nowrap = '';
@@ -55,13 +37,12 @@ class checkboxcontrol extends formcontrol {
     function name() { return "Checkbox"; }
     function isSimpleControl() { return true; }
     function useGeneric() { return false; }
-    
     function getFieldDefinition() { 
         return array(
             DB_FIELD_TYPE=>DB_DEF_BOOLEAN);
     }
 
-    function checkboxcontrol($default = 1,$flip = false,$required = false) {
+    function __construct($default = 1,$flip = false,$required = false) {
         $this->default = $default;
         $this->flip = $flip;
         $this->jsHooks = array();
@@ -114,7 +95,6 @@ class checkboxcontrol extends formcontrol {
         return $html;
     }
 */
-
 
     function controlToHTML($name) {
         $this->value = isset($this->value) ? $this->value : 1;
@@ -175,7 +155,8 @@ class checkboxcontrol extends formcontrol {
         $html .= ' />';
         return $html;
     }
-    function parseData($name, $values, $for_db = false) {
+
+    static function parseData($name, $values, $for_db = false) {
         return isset($values[$name])?1:0;
     }
     

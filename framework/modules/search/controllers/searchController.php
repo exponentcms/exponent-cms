@@ -60,7 +60,7 @@ class searchController extends expController {
         assign_to_template(array('page'=>$page, 'terms'=>$terms));
     }
     
-    public function spider() {
+    public static function spider() {
         global $db;
 	    $db->delete('search');
 	    

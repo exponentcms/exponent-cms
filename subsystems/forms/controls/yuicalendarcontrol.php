@@ -21,29 +21,13 @@
 if (!defined('EXPONENT')) exit('');
 
 /**
- * Popup Date/Time Picker Control
+ * Popup YUI Date/Time Picker Control
  *
- * @author James Hunt
- * @copyright 2004-2011 OIC Group, Inc.
- * @version 0.95
- *
- * @package Subsystems
- * @subpackage Forms
- */
-
-/**
- * Manually include the class file for formcontrol, for PHP4
- * (This does not adversely affect PHP5)
- */
-require_once(BASE."subsystems/forms/controls/formcontrol.php");
-
-/**
- * Popup Date/Time Picker Control
- *
- * @package Subsystems
- * @subpackage Forms
+ * @package Subsystems-Forms
+ * @subpackage Control
  */
 class yuicalendarcontrol extends formcontrol {
+
     var $disable_text = "";
     var $showtime = true;
 
@@ -54,7 +38,7 @@ class yuicalendarcontrol extends formcontrol {
             DB_FIELD_TYPE=>DB_DEF_TIMESTAMP);
     }
 
-    function yuicalendarcontrol($default = null, $disable_text = "",$showtime = true) {
+    function __construct($default = null, $disable_text = "",$showtime = true) {
         $this->disable_text = $disable_text;
         $this->default = $default;
         $this->showtime = $showtime;
@@ -134,7 +118,7 @@ class yuicalendarcontrol extends formcontrol {
         return $html;
     }
 
-    function parseData($original_name,$formvalues) {
+    static function parseData($original_name,$formvalues) {
         if (!empty($formvalues[$original_name])) {
             return strtotime($formvalues[$original_name]);
          } else return 0;

@@ -19,7 +19,7 @@
 /** @define "BASE" ".." */
 
 class file {
-	function update($name,$dest,$object,$destname = null,$force=false) {
+	static function update($name,$dest,$object,$destname = null,$force=false) {
 		$i18n = exponent_lang_loadFile('datatypes/file.php');
 		
 		if (!defined('SYS_FILES')) include_once(BASE.'subsystems/files.php');
@@ -119,10 +119,10 @@ class file {
                 return $db->selectObjects('file', 'id IN (SELECT file_id FROM '.DB_TABLE_PREFIX.'_file_details WHERE item_type="'.$item_type.'")');
         }
 
-        function findFilesForItem($item_type, $item_id) {
-                global $db;
-                return $db->selectObjects('file', 'id IN (SELECT file_id FROM '.DB_TABLE_PREFIX.'_file_details WHERE item_type="'.$item_type.'" AND item_id='.$item_id.')');
-        }
+	static function findFilesForItem($item_type, $item_id) {
+		global $db;
+		return $db->selectObjects('file', 'id IN (SELECT file_id FROM '.DB_TABLE_PREFIX.'_file_details WHERE item_type="'.$item_type.'" AND item_id='.$item_id.')');
+	}
 }
 
 ?>

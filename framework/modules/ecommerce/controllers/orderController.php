@@ -1595,7 +1595,7 @@ class orderController extends expController {
         }        
     }
     
-    public function clearCartCookie()
+    public static function clearCartCookie()
     {
          exponent_sessions_unset('verify_shopper');
          order::setCartCookie(null);

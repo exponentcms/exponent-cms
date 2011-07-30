@@ -1060,7 +1060,7 @@ class expFile extends expRecord {
     
     
     
-    function recurse_copy($src,$dst) { 
+    static function recurse_copy($src,$dst) {
         $dir = opendir($src); 
         @mkdir($dst); 
         while(false !== ( $file = readdir($dir)) ) { 

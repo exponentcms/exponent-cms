@@ -152,7 +152,7 @@ class navigationmodule {
 		return ($sections[$i]->depth < $sections[$i+1]->depth) ? true : false;
 	}
 
-	function navtojson(){
+	static function navtojson(){
 		global $sections;
 		$json_array = array();
 
@@ -176,7 +176,7 @@ class navigationmodule {
 		return json_encode($json_array);
 	}
 	
-	function spiderContent($item = null) {
+	static function spiderContent($item = null) {
 		global $db;
 		//global $sections;
 		global $router;
@@ -266,7 +266,7 @@ class navigationmodule {
 	/*
 	 * Returns a flat representation of the full site hierarchy.
 	 */
-	function levelDropDownControlArray($parent,$depth = 0,$ignore_ids = array(),$full=false) {
+	static function levelDropDownControlArray($parent,$depth = 0,$ignore_ids = array(),$full=false) {
 		$i18n = exponent_lang_loadFile('modules/navigationmodule/class.php');
 
 		$ar = array();
@@ -294,7 +294,7 @@ class navigationmodule {
 		return $ar;
 	}
 	
-	function levelTemplate($parent, $depth = 0, $parents = array()) {
+	static function levelTemplate($parent, $depth = 0, $parents = array()) {
 		if ($parent != 0) $parents[] = $parent;
 		global $db, $user;
 		$nodes = array();
@@ -362,7 +362,7 @@ class navigationmodule {
 	}
 
 	
-	function getTemplateHierarchyFlat($parent,$depth = 1) {
+	static function getTemplateHierarchyFlat($parent,$depth = 1) {
 		global $db;
 		
 		$arr = array();
@@ -382,7 +382,7 @@ class navigationmodule {
 		return $arr;
 	}
 	
-	function process_section($section,$template) {
+	static function process_section($section,$template) {
 		global $db;
 		
 	        if (!is_object($template)) {
@@ -438,7 +438,7 @@ class navigationmodule {
 		navigationmodule::process_section($section,$subtpl);
 	}
 	
-	function deleteLevel($parent) {
+	static function deleteLevel($parent) {
 		global $db;
 		$kids = $db->selectObjects('section','parent='.$parent);
 		foreach ($kids as $kid) {
@@ -472,7 +472,7 @@ class navigationmodule {
 		$db->delete('section','parent='.$parent);
 	}
 	
-	function removeLevel($parent) {
+	static function removeLevel($parent) {
 		global $db;
 		$kids = $db->selectObjects('section','parent='.$parent);
 		foreach ($kids as $kid) {
@@ -482,7 +482,7 @@ class navigationmodule {
 		}
 	}
 	
-	function canView($section) {
+	static function canView($section) {
 		global $db;
 		if ($section == null) {return false;}
 		if ($section->public == 0) {
@@ -500,7 +500,7 @@ class navigationmodule {
 	}
 
 
-    function isPublic($s) {
+    static function isPublic($s) {
        global $db;
 	if ($s == null) {return false;}
         while ($s->public && $s->parent >0) {
@@ -510,7 +510,7 @@ class navigationmodule {
         return $lineage;
     }
 
-	function canManageStandalones() {
+	static function canManageStandalones() {
 		if (exponent_users_isAdmin()) return true;
 		$standalones = navigationmodule::levelTemplate(-1,0);
 		$canmanage = false;
@@ -520,7 +520,7 @@ class navigationmodule {
 		}
 	}
 
-	function checkForSectionalAdmins($id) {
+	static function checkForSectionalAdmins($id) {
 		global $db;
 
 		$section = $db->selectObject('section', 'id='.$id);
@@ -549,9 +549,9 @@ class navigationmodule {
 			}
 			
 			foreach ($allgroups as $gid) {
-        	        	$g = exponent_users_getGroupById($gid);
-                		exponent_permissions_grantGroup($g, 'manage', $sloc);
-                	}
+				$g = exponent_users_getGroupById($gid);
+				exponent_permissions_grantGroup($g, 'manage', $sloc);
+			}
 		}	
 	}
     /*

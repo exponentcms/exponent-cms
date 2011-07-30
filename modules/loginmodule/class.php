@@ -40,7 +40,7 @@ class loginmodule {
 		// Do nothing, no content
 	}
 
-	function show($view,$loc=null,$title='') {
+	static function show($view,$loc=null,$title='') {
 		global $user, $order;
 		
 		$template = new template('loginmodule',$view,$loc);

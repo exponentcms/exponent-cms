@@ -21,11 +21,6 @@
 
 if (!defined('EXPONENT')) exit('');
 
-// Added to prevent "White screen of death"
-if (version_compare(phpversion(),'5.0.0','>=') > 0) {
-require_once(BASE."subsystems/forms/controls/formcontrol.php");
-
-
 /*
  * WYSIWYG Editor Control Class
  * Controller Part of the Editor View Item
@@ -34,15 +29,14 @@ require_once(BASE."subsystems/forms/controls/formcontrol.php");
  * @copyright 2006 Maxim Mueller
  * @version 0.99
  *
- * @package Subsystems
- * @subpackage Forms
+ * @package Subsystems-Forms
+ * @subpackage Control
  */
 class EditorControl extends formcontrol {
 	
 	var $datamodel; //every view item commands a datamodel
 	var $context; //most likely identical to $loc
 	
-	//PHP5 constructor
 	function __construct($content = "", $context = "") {
 		$this->datamodel = new Object();
 		
@@ -66,12 +60,10 @@ class EditorControl extends formcontrol {
 		return $this->show(SITE_WYSIWYG_EDITOR);
 	}
 	
-	function parseData($name, $values, $for_db = false) {
+	static function parseData($name, $values, $for_db = false) {
 		$html = $values[$name];
 		if (trim($html) == "<br />") $html = "";
 		return $html;
 	}
-}
-// End if only allowing this to execute on PHP5
 }
 ?>

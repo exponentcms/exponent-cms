@@ -103,7 +103,7 @@ class section {
 		return $form;
 	}
 	
-	function moveStandaloneForm($object = null) {
+	static function moveStandaloneForm($object = null) {
 		$i18n = exponent_lang_loadFile('datatypes/section.php');
 		
 		// Initialize the forms subsystem for use.
@@ -138,7 +138,7 @@ class section {
 	 * @return Form A form object that can be used to create a new section, or
 	 *    edit an existing one.
 	 */
-	function form($object = null) {
+	static function form($object = null) {
 		$i18n = exponent_lang_loadFile('datatypes/section.php');
 		
 		// Initialize the forms subsystem for use.
@@ -188,7 +188,7 @@ class section {
 	 * @return Form A form object that can be used to create a new section, or
 	 *    edit an existing one.
 	 */
-	function externalAliasForm($object = null) {
+	static function externalAliasForm($object = null) {
 		$i18n = exponent_lang_loadFile('datatypes/section.php');
 		
 		// Initialize the forms subsystem for use.
@@ -228,7 +228,7 @@ class section {
 	 * @return Form A form object that can be used to create a new section, or
 	 *    edit an existing one.
 	 */
-	function internalAliasForm($object = null) {
+	static function internalAliasForm($object = null) {
 		$i18n = exponent_lang_loadFile('datatypes/section.php');
 		
 		// Initialize the forms subsystem for use.
@@ -271,7 +271,7 @@ class section {
 	 * @return Form A form object that can be used to create a new section, or
 	 *    edit an existing one.
 	 */
-	function pagesetForm($object = null) {
+	static function pagesetForm($object = null) {
 		$i18n = exponent_lang_loadFile('datatypes/section.php');
 		
 		// Initialize the forms subsystem for use.
@@ -337,7 +337,7 @@ class section {
 	 *
 	 * @return object The updated section object.
 	 */
-	function update($values,$object) {
+	static function update($values,$object) {
 		$object = section::_updateCommon($values,$object);
 		$object->subtheme = $values['subtheme'];
 		$object->active = (isset($values['active']) ? 1 : 0);
@@ -360,7 +360,7 @@ class section {
 	 *
 	 * @return object The updated section object.
 	 */
-	function updateExternalAlias($values,$object) {
+	static function updateExternalAlias($values,$object) {
 		$object = section::_updateCommon($values,$object);
 		
 		$object->active = 1;
@@ -385,7 +385,7 @@ class section {
 	 *
 	 * @return object The updated section object.
 	 */
-	function updateInternalAlias($values,$object) {
+	static function updateInternalAlias($values,$object) {
 		$object = section::_updateCommon($values,$object);
 		
 		$object->active = 1;
@@ -424,7 +424,7 @@ class section {
 	 *
 	 * @return object The updated section object.
 	 */
-	function updatePageset($values,$object) {
+	static function updatePageset($values,$object) {
 		$object = section::_updateCommon($values,$object);
 		
 		$object->active = 1;
@@ -474,7 +474,7 @@ class section {
 		return $depth;
 	}
 	
-	function changeParent($section,$old_parent,$new_parent) {
+	static function changeParent($section,$old_parent,$new_parent) {
 		global $db;
 		// Store new parent.
 		$section->parent = $new_parent;

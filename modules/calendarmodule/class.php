@@ -120,7 +120,7 @@ class calendarmodule {
 		else return array($loc,exponent_core_makelocation($loc->mod,$loc->src));
 	}
 
-	function show($view,$loc = null, $title = '') {
+	static function show($view,$loc = null, $title = '') {
 		global $user;
 		global $db;
 
@@ -533,7 +533,7 @@ class calendarmodule {
 
 	// The following functions are internal helper functions
 
-	function _getEventsForDates($edates,$sort_asc = true,$featuredonly = false) {
+	static function _getEventsForDates($edates,$sort_asc = true,$featuredonly = false) {
 		if (!defined('SYS_SORTING')) include_once(BASE.'subsystems/sorting.php');
 		if ($sort_asc && !function_exists('exponent_sorting_byEventStartAscending')) {
 			function exponent_sorting_byEventStartAscending($a,$b) {

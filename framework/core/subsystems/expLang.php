@@ -36,7 +36,7 @@ class expLang {
         $cur_lang = include(BASE."framework/core/lang/".LANGUAGE.".php");
     }
     
-	static function gettext($str) {
+	public static function gettext($str) {
 	    if (!defined('LANGUAGE')) return $str;
 
 	    global $cur_lang;

@@ -23,27 +23,11 @@ if (!defined('EXPONENT')) exit('');
 /**
  * Text Editor Control
  *
- * @author James Hunt
- * @copyright 2004-2011 OIC Group, Inc.
- * @version 0.95
- *
- * @package Subsystems
- * @subpackage Forms
- */
-
-/**
- * Manually include the class file for formcontrol, for PHP4
- * (This does not adversely affect PHP5)
- */
-require_once(BASE."subsystems/forms/controls/formcontrol.php");
-
-/**
- * Text Editor Control
- *
- * @package Subsystems
- * @subpackage Forms
+ * @package Subsystems-Forms
+ * @subpackage Control
  */
 class texteditorcontrol extends formcontrol {
+
 	var $cols = 45;
 	var $rows = 5;
 	
@@ -55,7 +39,7 @@ class texteditorcontrol extends formcontrol {
 			DB_FIELD_LEN=>10000);
 	}
 	
-	function texteditorcontrol($default="",$rows = 5,$cols = 38) {
+	function __construct($default="",$rows = 5,$cols = 38) {
 		$this->default = $default;
 		$this->rows = $rows;
 		$this->cols = $cols;
@@ -130,7 +114,7 @@ class texteditorcontrol extends formcontrol {
 	
 	}
 	
-	function parseData($original_name,$formvalues,$for_db = false) {
+	static function parseData($original_name,$formvalues,$for_db = false) {
 		return str_replace(array("\r\n","\n","\r"),'<br />', htmlspecialchars($formvalues[$original_name])); 
 	}
 	

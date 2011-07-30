@@ -21,7 +21,7 @@ class container {
     function form($object,$modules_list = null) {
     }
     
-    function update($values,$object,$loc) {
+    static function update($values,$object,$loc) {
         global $db;
         
         // check if this is a controller or module
@@ -62,7 +62,7 @@ class container {
         return $object;
     }
     
-    function delete($object,$rerank = false) {
+    static function delete($object,$rerank = false) {
         if ($object == null) return false;
         
         $internal = unserialize($object->internal);

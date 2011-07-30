@@ -19,7 +19,7 @@
 /** @define "BASE" ".." */
 
 class calendar {
-	function form($object) {
+	static function form($object) {
 		global $user;
 
 		$i18n = exponent_lang_loadFile('datatypes/calendar.php');
@@ -102,7 +102,7 @@ class calendar {
 		return $form;
 	}
 
-	function update($values,$object) {
+	static function update($values,$object) {
 		if (!defined('SYS_FORMS')) require_once(BASE.'subsystems/forms.php');
 		exponent_forms_initialize();
 

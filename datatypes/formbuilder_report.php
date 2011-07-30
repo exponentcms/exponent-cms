@@ -19,7 +19,7 @@
 /** @define "BASE" ".." */
 
 class formbuilder_report {
-	function form($object) {
+	static function form($object) {
 		$i18n = exponent_lang_loadFile('datatypes/formbuilder_report.php');
 	
 		global $db;
@@ -76,7 +76,7 @@ class formbuilder_report {
 		return $form;
 	}
 	
-	function update($values, $object) {
+	static function update($values, $object) {
 		if (!defined('SYS_FORMS')) require_once(BASE.'subsystems/forms.php');
 		exponent_forms_initialize();
 		$object->name = $values['name'];

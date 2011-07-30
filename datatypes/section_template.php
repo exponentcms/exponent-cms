@@ -19,7 +19,7 @@
 /** @define "BASE" ".." */
 
 class section_template {
-	function form($object = null) {
+	static function form($object = null) {
 		$i18n = exponent_lang_loadFile('datatypes/section_template.php');
 	
 		if (!defined('SYS_FORMS')) require_once(BASE.'subsystems/forms.php');
@@ -74,7 +74,7 @@ class section_template {
 		return $form;
 	}
 	
-	function update($values,$object=null) {
+	static function update($values,$object=null) {
 		$object->parent = $values['parent'];
 		$object->name = $values['name'];
 		$object->page_title = ($values['page_title'] != SITE_TITLE ? $values['page_title'] : "");

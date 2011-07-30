@@ -21,38 +21,23 @@
 if (!defined('EXPONENT')) exit('');
 
 /**
- * Generic HTML Input Control
+ * Hidden Field Control
  *
- * @package Subsystems
- * @subpackage Forms
- */
-
-/**
- * Manually include the class file for formcontrol, for PHP4
- * (This does not adversely affect PHP5)
- */
-require_once(BASE."subsystems/forms/controls/formcontrol.php");
-
-/**
- * Check Box Control class
- *
- * An HTML checkbox
- *
- * @package Subsystems
- * @subpackage Forms
+ * @package Subsystems-Forms
+ * @subpackage Control
  */
 class hiddenfieldcontrol extends formcontrol {
+
 	var $flip = false;
 	var $jsHooks = array();
 	
 	function name() { return "generic"; }
 	function isSimpleControl() { return false; }
-	
 	function getFieldDefinition() { 
 		return array();
 	}
 
-	function hiddenfieldcontrol() {
+	function __construct() {
 	}
 	
 	function toHTML($label,$name) {
@@ -60,14 +45,13 @@ class hiddenfieldcontrol extends formcontrol {
 		return $html;
 	}
 
-	
 	function controlToHTML() {
 		$html = '<input type="hidden" id="' . $this->id . '" name="' . $this->name . '" value="'.$this->default.'"';
 		$html .= ' />';
 		return $html;
 	}
 	
-	function parseData($name, $values, $for_db = false) {
+	static function parseData($name, $values, $for_db = false) {
 		return isset($values[$name])?1:0;
 	}
 	

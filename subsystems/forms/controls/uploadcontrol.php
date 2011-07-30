@@ -23,37 +23,20 @@ if (!defined('EXPONENT')) exit('');
 /**
  * Upload Control
  *
- * @author James Hunt
- * @copyright 2004-2011 OIC Group, Inc.
- * @version 0.95
- *
- * @package Subsystems
- * @subpackage Forms
- */
-
-/**
- * Manually include the class file for formcontrol, for PHP4
- * (This does not adversely affect PHP5)
- */
-require_once(BASE."subsystems/forms/controls/formcontrol.php");
-
-/**
- * Upload Control
- *
- * @package Subsystems
- * @subpackage Forms
+ * @package Subsystems-Forms
+ * @subpackage Control
  */
 class uploadcontrol extends formcontrol {
+
 	function name() { return "File Upload Field"; }
 	function isSimpleControl() { return false; }
 	function getFieldDefinition() {
-                return array(
+		return array(
 			DB_FIELD_TYPE=>DB_DEF_STRING,
-			DB_FIELD_LEN=>250,
-		);
-        }
+			DB_FIELD_LEN=>250,);
+	}
 	
-	function uploadcontrol($default = "", $disabled = false) {
+	function __construct($default = "", $disabled = false) {
 		$this->disabled = $disabled;
 	}
 	
@@ -72,23 +55,23 @@ class uploadcontrol extends formcontrol {
 	}
 
 	function form($object) {
-                if (!defined("SYS_FORMS")) require_once(BASE."subsystems/forms.php");
-                exponent_forms_initialize();
+		if (!defined("SYS_FORMS")) require_once(BASE."subsystems/forms.php");
+		exponent_forms_initialize();
 
-                $form = new form();
-                if (!isset($object->identifier)) {
-                        $object->identifier = "";
-                        $object->caption = "";
-                        $object->default = "";
-                }
-                $i18n = exponent_lang_loadFile('subsystems/forms/controls/textcontrol.php');
+		$form = new form();
+		if (!isset($object->identifier)) {
+			$object->identifier = "";
+			$object->caption = "";
+			$object->default = "";
+		}
+		$i18n = exponent_lang_loadFile('subsystems/forms/controls/textcontrol.php');
 
-                $form->register("identifier",$i18n['identifier'],new textcontrol($object->identifier));
-                $form->register("caption",$i18n['caption'], new textcontrol($object->caption));
-                $form->register("default",$i18n['default'], new textcontrol($object->default));
-                $form->register("submit","",new buttongroupcontrol($i18n['save'],'',$i18n['cancel']));
-                return $form;
-        }
+		$form->register("identifier",$i18n['identifier'],new textcontrol($object->identifier));
+		$form->register("caption",$i18n['caption'], new textcontrol($object->caption));
+		$form->register("default",$i18n['default'], new textcontrol($object->default));
+		$form->register("submit","",new buttongroupcontrol($i18n['save'],'',$i18n['cancel']));
+		return $form;
+	}
 
 	function update($values, $object) {
         if ($object == null) $object = new uploadcontrol();
@@ -117,7 +100,7 @@ class uploadcontrol extends formcontrol {
 		return $dest;
 	}
 
-	function parseData($original_name,$formvalues) {
+	static function parseData($original_name,$formvalues) {
 		$file = $formvalues[$original_name];
 		return '<a href="'.URL_FULL.$file.'">'.basename($file).'</a>';
 	}

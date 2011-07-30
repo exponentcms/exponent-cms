@@ -230,7 +230,7 @@ class containermodule {
 		return false;
 	}
 	
-	function wrapOutput($modclass,$view,$loc = null,$title = '') {
+	static function wrapOutput($modclass,$view,$loc = null,$title = '') {
 	    global $db;
 		if (defined('SOURCE_SELECTOR') && strtolower($modclass) != 'containermodule') {
 			$container = null;

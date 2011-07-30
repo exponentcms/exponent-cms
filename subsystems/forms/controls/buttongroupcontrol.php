@@ -25,43 +25,20 @@ if (!defined('EXPONENT')) exit('');
  *
  * A group of buttons
  *
- * @author James Hunt
- * @copyright 2004-2011 OIC Group, Inc.
- * @version 0.95
- *
- * @package Subsystems
- * @subpackage Forms
- */
-
-/**
- * Manually include the class file for formcontrol, for PHP4
- * (This does not adversely affect PHP5)
- */
-require_once(BASE."subsystems/forms/controls/formcontrol.php");
-
-/**
- * Button Group Control Class
- *
- * A group of buttons
- *
- * @package Subsystems
- * @subpackage Forms
+ * @package Subsystems-Forms
+ * @subpackage Control
  */
 class buttongroupcontrol extends formcontrol {
+
 	var $submit = "Submit";
 	var $reset = "";
 	var $cancel = "";
 	var $class = "";
-
 	var $validateJS = "";
 
 	function name() { return "Button Group"; }
 
-	function parseData($name, $values, $for_db = false) {
-		return;
-	}
-
-	function buttongroupcontrol($submit = "Submit", $reset = "", $cancel = "", $class="") {
+	function __construct($submit = "Submit", $reset = "", $cancel = "", $class="") {
 		$this->submit = $submit;
 		$this->reset = $reset;
 		$this->cancel = $cancel;
@@ -115,6 +92,10 @@ class buttongroupcontrol extends formcontrol {
 		);
 		
 		return $html;
+	}
+
+	static function parseData($name, $values, $for_db = false) {
+		return;
 	}
 
 }

@@ -23,36 +23,16 @@ if (!defined('EXPONENT')) exit('');
 /**
  * Contact Control
  *
- * @author James Hunt
- * @copyright 2004-2011 OIC Group, Inc.
- * @version 0.95
- *
- * @package Subsystems
- * @subpackage Forms
- */
-
-/**
- * Manually include the class file for formcontrol, for PHP4
- * (This does not adversely affect PHP5)
- */
-require_once(BASE."subsystems/forms/controls/formcontrol.php");
-
-/**
- * Contact Control
- *
- * @package Subsystems
- * @subpackage Forms
+ * @package Subsystems-Forms
+ * @subpackage Control
  */
 class contactcontrol extends formcontrol {
+
 	var $type = 0;
 
 	function name() { return "Contact"; }
 
-	function parseData($name, $values, $for_db = false) {
-		return;
-	}
-
-	function contactcontrol($default = "",$type = 0) {
+	function __construct($default = "",$type = 0) {
 		$this->default = $default;
 		$this->type = $type;
 	}
@@ -87,6 +67,11 @@ class contactcontrol extends formcontrol {
 		$html .= '<script type="text/javascript">activateContactControl('.$this->type.',"'.$name.'");</script>';
 		return $html;
 	}
+
+	static function parseData($name, $values, $for_db = false) {
+		return;
+	}
+
 }
 
 ?>
