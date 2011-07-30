@@ -108,14 +108,14 @@ class expMail {
 				case "sendmail":
 					$this->transport = Swift_SendmailTransport::newInstance('/usr/sbin/sendmail -bs');
 					break;
-				case "rotator":
-					if (is_array($params['connections'])) {
-						$this->transport = new Swift_Connection_Rotator($params['connections']);
-					} else {
-						$this->errStack['Connection'] = '$params[\'connections\'] must be an array to use the connection rotator.';
-						$this->__destruct();
-					}
-					break;
+//				case "rotator":
+//					if (is_array($params['connections'])) {
+//						$this->transport = new Swift_Connection_Rotator($params['connections']);
+//					} else {
+//						$this->errStack['Connection'] = '$params[\'connections\'] must be an array to use the connection rotator.';
+//						$this->__destruct();
+//					}
+//					break;
 			}
 		// Use our current config vars
 		} else if (SMTP_USE_PHP_MAIL) {
@@ -319,13 +319,13 @@ class expMail {
 	public function batchSend() {
 //		require_once(BASE . 'external/Swift-4/lib/classes/Swift/Plugins/AntiFloodPlugin.php');
 //		$this->attachPlugin(new Swift_Plugin_AntiFlood(200, 5), "anti-flood");
-		$this->mailer->registerPlugin(new Swift_Plugins_AntiFloodPlugin(100, 30));
-
-		$batch = new Swift_BatchMailer($this);
-		$batch->setSleepTime(1);
-		$batch->setMaxTries(1);
-		$batch->send($this->message, $this->to, $this->from);
-		return $batch->getFailedRecipients();
+//		$this->mailer->registerPlugin(new Swift_Plugins_AntiFloodPlugin(100, 30));
+//
+//		$batch = new Swift_BatchMailer($this);
+//		$batch->setSleepTime(1);
+//		$batch->setMaxTries(1);
+//		$batch->send($this->message, $this->to, $this->from);
+//		return $batch->getFailedRecipients();
 	}
 
 	/**

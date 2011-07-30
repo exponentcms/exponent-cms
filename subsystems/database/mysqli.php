@@ -63,7 +63,7 @@ class mysqli_database {
 			$this->havedb = true;
 		}
 		//fix to support utf8, warning it only works from a certain mySQL version on
-		//needed on mySQL servers that dont have the default connection encoding setting to utf8
+		//needed on mySQL servers that don't have the default connection encoding setting to utf8
 
 		//As we do not have any setting for ISAM or InnoDB tables yet, i set the minimum specs
 		// for using this feature to 4.1.2, although isam tables got the support for utf8 already in 4.1
@@ -1107,7 +1107,7 @@ class mysqli_database {
      * @param string $table The name of the table to decrement in.
      * @param string $field The field to decrement.
      * @param integer $step The step value.  Usually 1.  This can be negative, to
-     *    increment, but the increment() method is prefered, for readability.
+     *    increment, but the increment() method is preferred, for readability.
      * @param string $where Optional criteria to determine which records to update.
      */
 
@@ -1129,7 +1129,7 @@ class mysqli_database {
 
     /**
      * Get a list of all tables in the database.  Optionally, only the tables
-     * in the corrent logcial database (tables with the same prefix) can
+     * in the current logical database (tables with the same prefix) can
      * be retrieved.
      *
      * @param bool $prefixed_only Whether to return only the tables

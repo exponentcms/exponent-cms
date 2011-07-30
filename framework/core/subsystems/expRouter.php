@@ -34,22 +34,27 @@ class expRouter {
     function __construct() {
         $this->map = $this->getRouterMaps();
     }
-    
-    /**
-    * Will build url to a module/page/etc (determined by what is passed to the $params array).
-    * 
-    * @param array $params The params that are passed will determine what link is make
-    *               section
-    *               action
-    *               sef_name
-    *               module
-    *               controller
-    *               action
-    * @param boolean $force_old_school Old School as in not SEF.
-    * @param boolean $secure If you set $secure true but ENABLE_SSL is not turned on in the config this will be forced false
-    * @param boolean $no_map Ignore router_maps
-    * @return string A url
-    */
+
+	/**
+	 * Will build url to a module/page/etc (determined by what is passed to the $params array).
+	 *
+	 * @param $fulllink
+	 *
+	 * @internal param array $params The params that are passed will determine what link is make
+	 *               section
+	 *               action
+	 *               sef_name
+	 *               module
+	 *               controller
+	 *               action
+	 *
+	 * @internal param bool $force_old_school Old School as in not SEF.
+	 *
+	 * @internal param bool $secure If you set $secure true but ENABLE_SSL is not turned on in the config this will be forced false
+	 *
+	 * @internal param bool $no_map Ignore router_maps
+	 * @return string A url
+	 */
     
     //remove trailing links
     public static function cleanLink($fulllink)

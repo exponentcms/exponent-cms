@@ -189,34 +189,38 @@ abstract class expNestedNode extends expRecord {
 		return $db->selectNestedNodeParent($this->table, $this->id);
 	}
 
-   /**
-    * Returns an array of individual Child Tag Objects that belong to
-    * the current "parent" tag as defined in the current class ID property.
-    *
-    * Some tags may have 'child' tags, this method will access whether a "parent"
-    * Tag (as defined in the ID property of the current class instantiation)
-    * indeed has children. If so, it will wrap each child in its own Tag Object
-    * and wrap them all within a array.
-    * <p>
-    * If the current "parent" tag does not have children, then an empty array
-    * is created and returned.
-    * <p>
-    * This will *not* return "grandchildren", it is a single level query.
-    *
-    * @name getChildren
-    *
-    * @category nested_nodes
-    *
-    * @access public
-    * @PHPUnit Not Defined|Implement|Completed
-    *
-    *
-    * @global object $db
-    * @param none
-    * @return array $children   array of Child Tag Objects, empty if no children
-    * @throws Exception Class name
-    *
-    */
+	/**
+	 * Returns an array of individual Child Tag Objects that belong to
+	 * the current "parent" tag as defined in the current class ID property.
+	 *
+	 * Some tags may have 'child' tags, this method will access whether a "parent"
+	 * Tag (as defined in the ID property of the current class instantiation)
+	 * indeed has children. If so, it will wrap each child in its own Tag Object
+	 * and wrap them all within a array.
+	 * <p>
+	 * If the current "parent" tag does not have children, then an empty array
+	 * is created and returned.
+	 * <p>
+	 * This will *not* return "grandchildren", it is a single level query.
+	 *
+	 * @name getChildren
+	 *
+	 * @category nested_nodes
+	 *
+	 * @access public
+	 * @PHPUnit Not Defined|Implement|Completed
+	 *
+	 *
+	 * @param string $childName
+	 * @param bool $get_assoc
+	 * @param bool $get_attached
+	 * @global object $db
+	 *
+	 * @internal param $none
+	 * @return array $children   array of Child Tag Objects, empty if no children
+	 * @throws Exception Class name
+	 *
+	 */
 	public function getChildren($childName = "", $get_assoc=false, $get_attached=false) {
 		global $db;
 

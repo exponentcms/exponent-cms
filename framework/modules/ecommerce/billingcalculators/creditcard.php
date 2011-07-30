@@ -146,19 +146,20 @@ class creditcard extends billingcalculator {
 		$html .= '<tbody></table>';
 		return $html;
 	}
-    
-    
-    /**
-    * For paypal this will call out to the PP api and get a token then redirect to PP.
-    * PP then redirects back the site with token in the url. We can pick up that token 
-    * from the url such that if we already have it we'll ccall another PP api to get the
-    * details and make it match up to the order.
-    * 
-    * @param mixed $method The billing method information for this user
-    * @param mixed $opts 
-    * @param array $params The url prameters, as if sef was off. 
-    * @return mixed An object indicating pass of failure. 
-    */
+
+
+	/**
+	 * For paypal this will call out to the PP api and get a token then redirect to PP.
+	 * PP then redirects back the site with token in the url. We can pick up that token
+	 * from the url such that if we already have it we'll ccall another PP api to get the
+	 * details and make it match up to the order.
+	 *
+	 * @param mixed $method The billing method information for this user
+	 * @param mixed $opts
+	 * @param array $params The url prameters, as if sef was off.
+	 * @param $order
+	 * @return mixed An object indicating pass of failure.
+	 */
     function preprocess($method, $opts, $params, $order)
     {
          //just save the opts        

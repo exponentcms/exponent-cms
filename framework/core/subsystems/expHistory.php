@@ -73,15 +73,14 @@ class expHistory {
      */
     public $history = array();
 
-    /**
-     * expHistory Constructor
-     *
-     * The constructor will grab the users history from the session.  If it is not present in the session 
-     * it will be initialized and saved later.
-     * 
-     * @return void
-     *
-     */
+	/**
+	 * expHistory Constructor
+	 *
+	 * The constructor will grab the users history from the session.  If it is not present in the session
+	 * it will be initialized and saved later.
+	 *
+	 * @return \expHistory
+	 */
 	public function __construct() {
 		$history = exponent_sessions_get('history');
 		if (empty($history)) {

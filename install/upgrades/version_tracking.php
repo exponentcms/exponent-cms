@@ -43,7 +43,9 @@ class version_tracking extends upgradescript {
 
 	/**
 	 * additional test(s) to see if upgrade script should be run
-	 * @param $version
+	 * @param $ver
+	 *
+	 * @internal param $version
 	 * @return bool
 	 */
 	function needed($ver) {
