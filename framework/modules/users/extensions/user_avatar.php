@@ -53,7 +53,7 @@ class user_avatar extends expRecord {
         $this->image = $params['current_avatar'];
         if (empty($this->image)) $this->image = URL_FULL.'framework/modules/users/avatars/avatar_not_found.jpg';
         
-        // if the user chose gravatar, create the link save it!
+        // if the user chose gravatar, create the link and save it!
         if (!empty($params['use_gravatar'])) {
 	        $this->use_gravatar = $params['use_gravatar'];
 	        $emailMD5 = md5(strtolower(trim(exponent_users_getEmailById($params['user_id']))));
