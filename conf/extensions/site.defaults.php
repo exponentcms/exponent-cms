@@ -19,6 +19,7 @@
 ##################################################
 
 if (!defined('SITE_TITLE')) define('SITE_TITLE','My New Exponent Site');
+if (!defined('SITE_HEADER')) define('SITE_HEADER','My New Exponent Header');
 //if (!defined('SITE_ALLOW_REGISTRATION')) define('SITE_ALLOW_REGISTRATION',1);
 //if (!defined('SITE_USE_ANTI_SPAM')) define('SITE_USE_ANTI_SPAM',1);
 

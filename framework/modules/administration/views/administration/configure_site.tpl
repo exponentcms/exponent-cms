@@ -54,6 +54,7 @@
 					{help text="Learn More about general site configuration"|gettext module="general-configuration"}
                     {control type="text" name="sc[ORGANIZATION_NAME]" label="Organization Name" value=$smarty.const.ORGANIZATION_NAME}
                     {control type="text" name="sc[SITE_TITLE]" label="Site Title" value=$smarty.const.SITE_TITLE}
+					{control type="text" name="sc[SITE_HEADER]" label="Site Header" value=$smarty.const.SITE_HEADER}
                     {control type="checkbox" postfalse=1 name="sc[SEF_URLS]" label="Search Engine Friendly URLSs" checked=$smarty.const.SEF_URLS value=1}
 					{control type="checkbox" postfalse=1 name="sc[ADVERTISE_RSS]" label="Advertise all RSS Feeds to Web Browsers" checked=$smarty.const.ADVERTISE_RSS value=1}
                     {control type="dropdown" name="sc[SITE_DEFAULT_SECTION]" label="Default Section (Home Page)" items=$section_dropdown default=$smarty.const.SITE_DEFAULT_SECTION}
