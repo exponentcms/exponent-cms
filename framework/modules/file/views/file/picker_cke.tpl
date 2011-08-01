@@ -160,7 +160,7 @@ EXPONENT.fileManager = function() {
 
     // shared formatter
     var formatShared = function(elCell, oRecord, oColumn, sData) {
-        if (oRecord._oData.shared == 0) {
+        if (oRecord.getData().shared == 0) {
             elCell.innerHTML = '<img src="'+EXPONENT.URL_FULL+'framework/modules/file/assets/images/unchecked.gif" title="Make this fie available to other users">';
         } else {
             elCell.innerHTML = '<img src="'+EXPONENT.URL_FULL+'framework/modules/file/assets/images/checked.gif" title="Make this fie available to other users">';
@@ -193,12 +193,13 @@ EXPONENT.fileManager = function() {
         var es = new EXPONENT.AjaxEvent();
         es.subscribe(function (o) {
             if(o.replyCode<299) {
-                callback(true, o.data.share);
+                callback(true, o.data.shared);
             } else {
                 alert(o.replyText);
                 callback(true, oldValue);
             }
         },this);
+		
         es.fetch({action:"editShare",controller:"fileController",json:1,data:'&id='+record.getData().id + '&newValue=' + encodeURIComponent(newValue)});
             
     };

@@ -253,6 +253,9 @@ class fileController extends expController {
     public function editShare() {
         global $user;
         $file = new expFile($this->params['id']);
+		if(!isset($this->params['newValue'])) {
+			$this->params['newValue'] = 0;
+		}
         if ($user->id==$file->poster || $user->is_acting_admin==1) {
             $file->shared = $this->params['newValue'];
             $file->save();
