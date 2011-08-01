@@ -262,11 +262,6 @@ function exponent_users_create($formvalues) {
 		$msg = $u->firstname . ", \n\n";
 		$msg .= sprintf(USER_REGISTRATION_WELCOME_MSG, $u->firstname, $u->lastname, $u->username);
 
-// old mail method
-//		if (!defined("SYS_SMTP")) include_once(BASE."subsystems/smtp.php");
-//		if (!exponent_smtp_mail($to, $from ,$subject,$msg,$headers));
-
-// new mail method
 		$mail = new expMail();
 		$mail->quickSend(array(
 				'headers'=>$headers,
@@ -287,11 +282,6 @@ function exponent_users_create($formvalues) {
 		$msg = "When: " . date("F j, Y, g:i a") ."\n\n";
 		$msg .= "Their name is: " . $u->firstname . " " . $u->lastname . "\n\n";
 
-// old mail method
-//		if (!defined("SYS_SMTP")) include_once(BASE."subsystems/smtp.php");
-//		if (exponent_smtp_mail($to, $from ,$subject,$msg,$headers));
-
-// new mail method
 		$mail = new expMail();
 		$mail->quickSend(array(
 				'headers'=>$headers,

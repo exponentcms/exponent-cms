@@ -68,16 +68,6 @@ if ($title == '') {
 }
 $template->assign('moduletitle',$title);
 
-// $canviewapproval = false;
-// $inapproval = false;
-// if ($user) $canviewapproval = (exponent_permissions_check("approve",$loc) || exponent_permissions_check("manage_approval",$loc));
-// if ($db->countObjects("calendar","location_data='".serialize($loc)."' AND approved!=1")) {
-	// foreach ($db->selectObjects("calendar","location_data='".serialize($loc)."' AND approved!=1") as $c) {
-		// if ($c->poster == $user->id) $canviewapproval = true;
-	// }
-	// $inapproval = true;
-// }
-
 $time = (isset($_GET['time']) ? $_GET['time'] : time());
 $time = intval($time);
 
@@ -398,7 +388,6 @@ $template->assign("config",$config);
 
 // format and send email
 
-//$subject = $config->email_title_thread;
 $subject = $config->email_title_reminder." - $title";
 $from_addr = $config->email_address_reminder;
 $headers = array(
@@ -416,14 +405,7 @@ $msg = chop(strip_tags(str_replace(array("<br />","<br>","br/>"),"\n",$htmlmsg))
 
 // Saved.  do notifs
 $notifs = unserialize($config->reminder_notify);
-
 $emails = array();
-//foreach ($notifs as $n) {
-//	if ($n->user_id != $user->id) {
-//		$u = exponent_users_getUserById($n);
-//		if ($u->email != "" && !in_array($u->email,$emails)) $emails[] = $u->email;
-//	}
-//}
 foreach ($db->selectObjects('calendar_reminder_address',"calendar_id='".$config->id."'") as $c) {
 	if ($c->user_id != 0) {
 		$u = exponent_users_getUserById($c->user_id);
@@ -437,7 +419,6 @@ foreach ($db->selectObjects('calendar_reminder_address',"calendar_id='".$config-
 		$emails[] = $c->email;
 	}
 }
-
 if (empty($emails)) {
 	print_r("<br><b><i>Exponent - No One to Send Reminders to!</i></b><br>");	
 	exit();
@@ -445,42 +426,19 @@ if (empty($emails)) {
 
 $emails = array_flip(array_flip($emails));
 $emails = array_map('trim', $emails);
-
-// old mail method
-//require_once(BASE . "subsystems/mail.php");
-//$mail = new exponentMail();
-//$mail->subject($subject);
-//$mail->addText($msg);
-//$mail->addHTML($htmlmsg);
-//$mail->addFrom($config->email_address_reminder,$config->email_from_reminder);
-//foreach($emails as $recip) {	// to keep other recepients hidden
-//	try {
-//		$mail->addTo($recip);
-//		$mail->send();
-//	} catch (Exception $e) {
-//	}
-//	$mail->flushRecipients();
-//}
-
-// new mail method
 $headers = array(
 	"MIME-Version"=>"1.0",
 	"Content-type"=>"text/html; charset=".LANG_CHARSET
 );
-//foreach ($emails as $recip) {
-	$mail = new expMail();
-	$mail->quickSend(array(
-			'headers'=>$headers,
-			'html_message'=>$htmlmsg,
-			"text_message"=>$msg,
-//			'to'=>trim($recip),
-			'to'=>trim($emails),
-//			'from'=>trim($config->email_address_reminder),
-//			'from_name'=>$config->email_from_reminder,
-			'from'=>array(trim($config->email_address_reminder)=>$config->email_from_reminder),
-			'subject'=>$subject,
-	));
-//}
+$mail = new expMail();
+$mail->quickSend(array(
+		'headers'=>$headers,
+		'html_message'=>$htmlmsg,
+		"text_message"=>$msg,
+		'to'=>trim($emails),
+		'from'=>array(trim($config->email_address_reminder)=>$config->email_from_reminder),
+		'subject'=>$subject,
+));
 
 print_r("<p>The following reminder was sent via email:</p><br>");	
 print_r($htmlmsg);

@@ -611,6 +611,7 @@ class orderController extends expController {
             }
             
             $mail = new expMail();
+	        //FIXME Unless you need each mail sent separately, you can now set 'to'=>$email_addys and let expMail send a single email to all addresses
             foreach($email_addys as $email_addy)
             {
                 $mail->quickSend(array(

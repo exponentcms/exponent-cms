@@ -40,6 +40,12 @@ class formcontrol {
 	var $type = 'text';
 
 	function name() { return "formcontrol"; }
+
+	/**
+	 * Is this a Simple Control?
+	 * Used to determine if control is available for the Form (Builder) module
+	 * @return bool
+	 */
 	function isSimpleControl() { return false; }
 	function getFieldDefinition() { return array(); }
 
