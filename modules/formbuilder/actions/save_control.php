@@ -18,7 +18,7 @@
 ##################################################
 /** @define "BASE" "../../.." */
 
-if (!defined("EXPONENT")) exit("");
+if (!defined('EXPONENT')) exit('');
 
 $i18n = exponent_lang_loadFile('modules/formbuilder/actions/save_control.php');
 

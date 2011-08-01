@@ -17,7 +17,7 @@
 #
 ##################################################
 
-if (!defined("EXPONENT")) exit("");
+if (!defined('EXPONENT')) exit('');
 
 //$levels = exponent_sessions_get('uilevels');
 //exponent_sessions_set('uilevel',max(array_keys($levels)));

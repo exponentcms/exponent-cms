@@ -18,7 +18,7 @@
 ##################################################
 /** @define "BASE" "../../.." */
 
-if (!defined("EXPONENT")) exit("");
+if (!defined('EXPONENT')) exit('');
 
 // Check for form errors
 $post = $_POST;

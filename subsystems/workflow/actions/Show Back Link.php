@@ -19,7 +19,7 @@
 
 // GREP:HARDCODEDTEXT
 
-if (!defined("EXPONENT")) exit("");
+if (!defined('EXPONENT')) exit('');
 
 echo '<a class="mngmntlink workflow_mngmntlink" href="';
 echo exponent_flow_get();

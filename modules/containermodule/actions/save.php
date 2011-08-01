@@ -17,7 +17,7 @@
 #
 ##################################################
 
-if (!defined("EXPONENT")) exit("");
+if (!defined('EXPONENT')) exit('');
 
 $container = null;
 $iloc = null;

@@ -19,7 +19,7 @@
 /** @define "BASE" "../../../.." */
 
 //Sanity Check
-if (!defined("EXPONENT")) exit("");
+if (!defined('EXPONENT')) exit('');
 //if (!defined("SYS_USERS")) require_once(BASE."subsystems/users.php");
 require_once(BASE."subsystems/users.php");
 

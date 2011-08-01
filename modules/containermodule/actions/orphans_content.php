@@ -17,7 +17,7 @@
 #
 ##################################################
 
-if (!defined("EXPONENT")) exit("");
+if (!defined('EXPONENT')) exit('');
 
 // PERM CHECK
 	$source_select = array();

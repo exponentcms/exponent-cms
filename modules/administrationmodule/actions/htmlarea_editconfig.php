@@ -21,7 +21,7 @@
 // Part of the HTMLArea category
 //should be moved to EditorControl
 
-if (!defined("EXPONENT")) exit("");
+if (!defined('EXPONENT')) exit('');
 
 $loc = exponent_core_makeLocation('administrationmodule');
 

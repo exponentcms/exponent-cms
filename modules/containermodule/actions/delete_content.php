@@ -17,7 +17,7 @@
 #
 ##################################################
 
-if (!defined("EXPONENT")) exit("");
+if (!defined('EXPONENT')) exit('');
 
 $iloc = exponent_core_makeLocation($_GET['m'],@$_GET['s'],@$_GET['i']);
 

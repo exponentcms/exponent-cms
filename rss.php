@@ -17,7 +17,7 @@
 ##################################################
 /** @define "BASE" "." */
 
-//if (!defined("EXPONENT")) require_once('exponent.php');
+//if (!defined('EXPONENT')) require_once('exponent.php');
 require_once('exponent.php');
 //if (!defined('SYS_RSS')) include_once('core_rss.php');
 /** @define "__realpath(dirname(__FILE__))/" "." */

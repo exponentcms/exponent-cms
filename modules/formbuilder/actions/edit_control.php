@@ -18,7 +18,7 @@
 ##################################################
 /** @define "BASE" "../../.." */
 
-if (!defined("EXPONENT")) exit("");
+if (!defined('EXPONENT')) exit('');
 
 //if (!defined("SYS_FORMS")) require_once(BASE."subsystems/forms.php");
 require_once(BASE."subsystems/forms.php");

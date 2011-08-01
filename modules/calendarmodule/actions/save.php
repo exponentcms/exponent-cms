@@ -18,7 +18,7 @@
 ##################################################
 /** @define "BASE" "../../.." */
 
-if (!defined("EXPONENT")) exit("");
+if (!defined('EXPONENT')) exit('');
 
 $item = null;
 $iloc = null;

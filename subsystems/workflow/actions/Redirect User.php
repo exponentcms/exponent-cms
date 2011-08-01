@@ -17,7 +17,7 @@
 #
 ##################################################
 
-if (!defined("EXPONENT")) exit("");
+if (!defined('EXPONENT')) exit('');
 
 exponent_flow_redirect();
 

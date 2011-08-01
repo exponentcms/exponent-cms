@@ -17,7 +17,7 @@
 #
 ##################################################
 
-if (!defined("EXPONENT")) exit("");
+if (!defined('EXPONENT')) exit('');
 
 global $router;
 $container = $db->selectObject('container', 'id='.intval($_REQUEST['id']));

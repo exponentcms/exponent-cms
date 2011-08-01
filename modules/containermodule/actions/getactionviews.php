@@ -17,7 +17,7 @@
 #
 ##################################################
 
-if (!defined("EXPONENT")) exit("");
+if (!defined('EXPONENT')) exit('');
 	$views = get_action_views($_POST['mod'], $_POST['act'], $_POST['actname']);
 	if (count($views) < 1) $views[$_POST['act']] = $_POST['actname'].' - Default View';
 	echo json_encode($views);

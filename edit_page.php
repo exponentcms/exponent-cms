@@ -24,7 +24,7 @@ define('SCRIPT_FILENAME','edit_page.php');
 ob_start();
 
 include_once('exponent.php');
-if (!defined("EXPONENT")) exit("");
+if (!defined('EXPONENT')) exit('');
 
 //if (!defined('SYS_THEME')) include_once(BASE.'subsystems/theme.php');
 include_once(BASE.'subsystems/theme.php');

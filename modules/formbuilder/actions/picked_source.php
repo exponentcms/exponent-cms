@@ -18,7 +18,7 @@
 ##################################################
 /** @define "BASE" "../../.." */
 
-if (!defined("EXPONENT")) exit("");
+if (!defined('EXPONENT')) exit('');
 
 $f1_loc = exponent_core_makeLocation($_GET['sm'],$_GET['ss']);
 $f1 = $db->selectObject("formbuilder_form","location_data='".serialize($f1_loc)."'");

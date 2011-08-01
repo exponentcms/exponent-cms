@@ -17,7 +17,7 @@
 #
 ##################################################
 
-if (!defined("EXPONENT")) exit("");
+if (!defined('EXPONENT')) exit('');
 	$classname = $_POST['mod'];
 	$controller = new $classname();
 	echo json_encode($controller->useractions);

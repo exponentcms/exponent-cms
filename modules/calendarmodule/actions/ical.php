@@ -18,7 +18,7 @@
 ##################################################
 /** @define "BASE" "../../.." */
 
-if (!defined("EXPONENT")) exit("");
+if (!defined('EXPONENT')) exit('');
 
 //exponent_flow_set(SYS_FLOW_PUBLIC,SYS_FLOW_ACTION);
 // id & date_id set if single event, else
