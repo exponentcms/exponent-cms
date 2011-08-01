@@ -18,7 +18,7 @@
 <div class="module users extension avatar">
     {img src=$edit_user->image}     
     {control type="hidden" name="current_avatar" value=$edit_user->image}
-	{control type=checkbox name=use_gravatar value=1 label="Use Gravatar for Avatar Image (using e-mail above)?" checked=$edit_user->use_gravatar}
+	{control type=checkbox name=use_gravatar value=1 label="Use Gravatar.com Avatar Image (using above e-mail)?" checked=$edit_user->use_gravatar}
     {control type="file" name="avatar" label="or Upload a Custom Avatar Image"}
 </div>
 
