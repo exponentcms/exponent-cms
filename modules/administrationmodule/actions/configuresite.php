@@ -29,9 +29,11 @@ if (exponent_permissions_check('configuration',exponent_core_makeLocation('admin
 
 	$configname = (isset($_GET['configname']) ? $_GET['configname'] : "");
 	
-	if (!defined('SYS_CONFIG')) require_once(BASE.'subsystems/config.php');
-	if (!defined('SYS_FORMS')) require_once(BASE.'subsystems/forms.php');
-	exponent_forms_initialize();
+//	if (!defined('SYS_CONFIG')) require_once(BASE.'subsystems/config.php');
+//	if (!defined('SYS_FORMS')) require_once(BASE.'subsystems/forms.php');
+	require_once(BASE.'subsystems/config.php');
+	require_once(BASE.'subsystems/forms.php');
+//	exponent_forms_initialize();
 	
 	$profiles = exponent_config_profiles();
 	if (count($profiles) == 0) $profiles = array(''=>'[No Profiles]');

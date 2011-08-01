@@ -21,7 +21,7 @@
  * @state <b>UNDOCUMENTED</b>
  * @node Undocumented
  */
-define("SYS_SEARCH",1);
+//define("SYS_SEARCH",1);
 
 /* exdoc
  * @state <b>UNDOCUMENTED</b>

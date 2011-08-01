@@ -23,7 +23,7 @@
  * has been included for use.
  * @node Subsystems:Flow
  */
-define('SYS_FLOW',1);
+//define('SYS_FLOW',1);
 
 /* exdoc
  * Flow Type Specifier : None

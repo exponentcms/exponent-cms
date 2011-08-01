@@ -23,7 +23,8 @@
 if (!defined('EXPONENT')) exit('');
 
 if (exponent_permissions_check('user_management',exponent_core_makeLocation('administrationmodule'))) {
-	if (!defined('SYS_USERS')) require_once(BASE.'subsystems/users.php');
+//	if (!defined('SYS_USERS')) require_once(BASE.'subsystems/users.php');
+	require_once(BASE.'subsystems/users.php');
 	if (isset($_POST['id'])) { // Existing user profile edit
 		$g = exponent_users_getGroupById($_POST['id']);
 		$g = exponent_users_groupUpdate($_POST,$g);

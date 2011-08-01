@@ -23,7 +23,7 @@
  * that the Geo Subsystem has been included for use.
  * @node Subsystems:Geo
  */
-define("SYS_GEO",1);
+//define("SYS_GEO",1);
 
 /* exdoc
  * List all Countries in the Geo Database.  Returns an array of country objects.
@@ -57,7 +57,8 @@ function exponent_geo_listCountriesAndRegions() {
 		}
 		uasort($countries[$c->id]->regions,"strnatcasecmp");
 	}
-	if (!defined("SYS_SORTING")) require_once(BASE."subsystems/sorting.php");
+//	if (!defined("SYS_SORTING")) require_once(BASE."subsystems/sorting.php");
+	require_once(BASE."subsystems/sorting.php");
 	uasort($countries,"exponent_sorting_byNameAscending");
 	return $countries;
 }

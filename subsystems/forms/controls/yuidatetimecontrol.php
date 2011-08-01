@@ -38,7 +38,8 @@ class yuidatetimecontrol extends formcontrol {
     }
     
     function __construct($default = 0, $edit_text = "", $showdate = true, $showtime = true, $display_only=false, $checked=false) {
-        if (!defined("SYS_DATETIME")) include_once(BASE."subsystems/datetime.php");
+//        if (!defined("SYS_DATETIME")) include_once(BASE."subsystems/datetime.php");
+        include_once(BASE."subsystems/datetime.php");
         $this->default = ($default == 0) ? time() : $default;
         $this->edit_text = $edit_text;
         $this->showdate = $showdate;

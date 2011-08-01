@@ -29,7 +29,8 @@ $f2 = $db->selectObject("formbuilder_form","location_data='".serialize($f2_loc).
 if ($f1 && $f2) {
 	if (exponent_permissions_check("editform",unserialize($f2->location_data))) {
 		$controls  = $db->selectObjects("formbuilder_control","form_id=".$f1->id);
-		if (!defined("SYS_SORTING")) include_once(BASE."subsystems/sorting.php");
+//		if (!defined("SYS_SORTING")) include_once(BASE."subsystems/sorting.php");
+		include_once(BASE."subsystems/sorting.php");
 		usort($controls,"exponent_sorting_byRankAscending");
 		
 		foreach ($controls as $control) {

@@ -17,10 +17,12 @@
 ##################################################
 /** @define "BASE" "." */
 
-if (!defined("EXPONENT")) require_once('exponent.php');
+//if (!defined("EXPONENT")) require_once('exponent.php');
+require_once('exponent.php');
 //if (!defined('SYS_RSS')) include_once('core_rss.php');
 /** @define "__realpath(dirname(__FILE__))/" "." */
-if (!defined('SYS_RSS')) require_once(BASE.'external/feedcreator.class.php');
+//if (!defined('SYS_RSS')) require_once(BASE.'external/feedcreator.class.php');
+require_once(BASE.'external/feedcreator.class.php');
 
 //$location = new Location($_REQUEST['module'],$_REQUEST['identifier'],$_REQUEST['internal']);
 $location->mod = "";

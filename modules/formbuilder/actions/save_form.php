@@ -22,8 +22,9 @@ if (!defined('EXPONENT')) exit('');
 
 $i18n = exponent_lang_loadFile('modules/formbuilder/actions/save_form.php');
 
-if (!defined('SYS_FORMS')) include_once(BASE.'subsystems/forms.php');
-exponent_forms_initialize();
+//if (!defined('SYS_FORMS')) include_once(BASE.'subsystems/forms.php');
+include_once(BASE.'subsystems/forms.php');
+//exponent_forms_initialize();
 
 $f = null;
 if (isset($_POST['id'])) {

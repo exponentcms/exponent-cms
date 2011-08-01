@@ -24,7 +24,7 @@
  * that the subsystem has been included for use.
  * @node Subsystems:Users
  */
-define('SYS_USERS',1);
+//define('SYS_USERS',1);
 
 // This global array belongs exclusively to the Users subsystem, and is used to cache
 // users as they are retrieved, to help out with performance when doing a lot of
@@ -307,7 +307,8 @@ function exponent_users_userManagerFormTemplate($template) {
 	global $user;
 	$users = $db->selectObjects('user');
 
-	if (!defined('SYS_SORTING')) require_once(BASE.'subsystems/sorting.php');
+//	if (!defined('SYS_SORTING')) require_once(BASE.'subsystems/sorting.php');
+	require_once(BASE.'subsystems/sorting.php');
 	if (!function_exists('exponent_sorting_byLastFirstAscending')) {
 		function exponent_sorting_byLastFirstAscending($a,$b) {
 			return strnatcmp($a->lastname . ', '. $a->firstname,$b->lastname . ', '. $b->firstname);
@@ -340,7 +341,8 @@ function exponent_users_groupManagerFormTemplate($template) {
 	global $db;
 	$groups = $db->selectObjects('group');
 
-	if (!defined('SYS_SORTING')) require_once(BASE.'subsystems/sorting.php');
+//	if (!defined('SYS_SORTING')) require_once(BASE.'subsystems/sorting.php');
+	require_once(BASE.'subsystems/sorting.php');
 	usort($groups,'exponent_sorting_byNameAscending');
 
 	$template->assign('groups',$groups);

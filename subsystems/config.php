@@ -24,7 +24,7 @@
  * has been included for use.
  * @node Subsystems:Config
  */
-define('SYS_CONFIG',1);
+//define('SYS_CONFIG',1);
 
 /* exdoc
  * Uses magical regular expressions voodoo to pull the
@@ -40,8 +40,9 @@ function exponent_config_parse($configname,$site_root = null) {
 // Last argument added in 0.96, for shared core.  Default it to the old hard-coded value
 	if ($site_root == null) $site_root = BASE;
 	
-	if (!defined('SYS_FORMS')) require_once(BASE.'subsystems/forms.php');
-	exponent_forms_initialize();
+//	if (!defined('SYS_FORMS')) require_once(BASE.'subsystems/forms.php');
+	require_once(BASE.'subsystems/forms.php');
+//	exponent_forms_initialize();
 	// We don't actually use the forms subsystem, but the .structure.php files do.
 	
 	if ($configname == '') $file = $site_root.'conf/config.php';
@@ -125,8 +126,9 @@ function exponent_config_configurationForm($configname,$database=false) {
 		global $user;
 		$options = exponent_config_parse($configname);
 		
-		if (!defined('SYS_FORMS')) require_once(BASE.'subsystems/forms.php');
-		exponent_forms_initialize();
+//		if (!defined('SYS_FORMS')) require_once(BASE.'subsystems/forms.php');
+		require_once(BASE.'subsystems/forms.php');
+//		exponent_forms_initialize();
 		
 		$form = new form();
 	
@@ -166,7 +168,7 @@ function exponent_config_configurationForm($configname,$database=false) {
 		$form->registerAfter('activate',null,'',new htmlcontrol('<hr size="1" />'.implode('&nbsp;&nbsp;|&nbsp;&nbsp;',$sections)));
 		$form->register('submit','',new buttongroupcontrol($this_i18n['save'],'',$this_i18n['cancel']));
 		
-		exponent_forms_cleanup();
+//		exponent_forms_cleanup();
 		
 		return $form;
 	}

@@ -20,7 +20,8 @@
 
 if (!defined('EXPONENT')) exit('');
 
-if (!defined('SYS_USERS')) require_once(BASE.'subsystems/users.php');
+//if (!defined('SYS_USERS')) require_once(BASE.'subsystems/users.php');
+require_once(BASE.'subsystems/users.php');
 exponent_users_logout();
 exponent_permissions_clear();
 exponent_sessions_unset('uilevel');

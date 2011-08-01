@@ -120,7 +120,8 @@ class containermodule {
             		$containers = $cache[$container_key];            
         	}
  
-		if (!defined('SYS_WORKFLOW')) include_once(BASE.'subsystems/workflow.php');
+//		if (!defined('SYS_WORKFLOW')) include_once(BASE.'subsystems/workflow.php');
+		include_once(BASE.'subsystems/workflow.php');
 		ksort($containers);
 		foreach (array_keys($containers) as $i) {
 			$location = unserialize($containers[$i]->internal);

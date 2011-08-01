@@ -52,9 +52,12 @@ if (($item == null && exponent_permissions_check("post",$loc)) ||
 		$item->feedback_email = "";
 	}
 
-	if (!defined("SYS_WORKFLOW")) require_once(BASE."subsystems/workflow.php");
-	if (!defined("SYS_DATETIME")) require_once(BASE."subsystems/datetime.php");
-	if (!defined("SYS_FORMS")) require_once(BASE."subsystems/forms.php");
+//	if (!defined("SYS_WORKFLOW")) require_once(BASE."subsystems/workflow.php");
+//	if (!defined("SYS_DATETIME")) require_once(BASE."subsystems/datetime.php");
+//	if (!defined("SYS_FORMS")) require_once(BASE."subsystems/forms.php");
+	require_once(BASE."subsystems/workflow.php");
+	require_once(BASE."subsystems/datetime.php");
+	require_once(BASE."subsystems/forms.php");
 
 	//Get and save the image
 	/*  Yeah, no. Yeah, yes... Maia 6/23/09 */
@@ -115,7 +118,7 @@ if (($item == null && exponent_permissions_check("post",$loc)) ||
 		}
 //		calendarmodule::spiderContent($item);
 	} else {
-		exponent_forms_initialize();
+//		exponent_forms_initialize();
 		//$start_recur = exponent_datetime_startOfDayTimestamp(popupdatetimecontrol::parseData("eventdate",$_POST));
 		$start_recur = exponent_datetime_startOfDayTimestamp(yuicalendarcontrol::parseData("eventdate",$_POST));
 		//$stop_recur  = exponent_datetime_startOfDayTimestamp(popupdatetimecontrol::parseData("untildate",$_POST));

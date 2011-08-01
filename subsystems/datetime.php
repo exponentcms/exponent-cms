@@ -23,7 +23,7 @@
  * has been included for use.
  * @node Subsystems:DateTime
  */
-define("SYS_DATETIME",1);
+//define("SYS_DATETIME",1);
 
 /* exdoc
  * @state <b>UNDOCUMENTED</b>

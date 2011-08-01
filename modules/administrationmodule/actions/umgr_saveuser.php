@@ -24,8 +24,10 @@ if (!defined('EXPONENT')) exit('');
 
 if (exponent_permissions_check('user_management',exponent_core_makeLocation('administrationmodule'))) {
 #if ($user && $user->is_acting_admin == 1) {
-	if (!defined('SYS_USERS')) require_once(BASE.'subsystems/users.php');
-	if (!defined('SYS_SECURITY')) require_once(BASE.'subsystems/security.php');
+//	if (!defined('SYS_USERS')) require_once(BASE.'subsystems/users.php');
+//	if (!defined('SYS_SECURITY')) require_once(BASE.'subsystems/security.php');
+	require_once(BASE.'subsystems/users.php');
+	require_once(BASE.'subsystems/security.php');
 	if (isset($_POST['id'])) { // Existing user profile edit
 		$_POST['id'] = intval($_POST['id']);
 		$u = exponent_users_getUserById(intval($_POST['id']));

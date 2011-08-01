@@ -26,7 +26,8 @@ if (exponent_permissions_check('user_management',exponent_core_makeLocation('adm
 	exponent_flow_set(SYS_FLOW_PROTECTED,SYS_FLOW_ACTION);
 
 	$template = new template('administrationmodule','_groupmanager',$loc);
-	if (!defined('SYS_USERS')) include_once(BASE.'subsystems/users.php');
+//	if (!defined('SYS_USERS')) include_once(BASE.'subsystems/users.php');
+	include_once(BASE.'subsystems/users.php');
 	$groups = exponent_users_getAllGroups();
 	$template->assign('groups',$groups);
 	$template->assign('perm_level',2); // So we get the edit/delete links

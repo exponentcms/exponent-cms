@@ -24,7 +24,7 @@ if (!defined('EXPONENT')) exit('');
  * that the subsystem has been included for use.
  * @node Subsystems:Sessions
  */
-define('SYS_SESSIONS',1);
+//define('SYS_SESSIONS',1);
 
 // session key may be overridden
 if (!defined('SYS_SESSION_KEY')) {

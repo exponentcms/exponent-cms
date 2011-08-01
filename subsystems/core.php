@@ -25,7 +25,7 @@
  * has been included for use.
  * @node Subsystems:Core
  */
-define("SYS_CORE",1);
+//define("SYS_CORE",1);
 
 /* exdoc
  * This constant can (and should) be used by other parts of the system

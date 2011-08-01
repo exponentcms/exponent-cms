@@ -23,7 +23,7 @@
  * that the subsystem has been included for use.
  * @node Subsystems:Theme
  */
-define("SYS_THEME",1);
+//define("SYS_THEME",1);
 
 $css_files = array();  // This array keeps track of all the css files that need to be included via the minify script
 $jsfiles = array();
@@ -160,13 +160,15 @@ function rebuild_css(){
 }
 
 function exponent_theme_remove_css() {
-    if (!defined('SYS_FILES')) include_once(BASE.'subsystems/files.php');
+//    if (!defined('SYS_FILES')) include_once(BASE.'subsystems/files.php');
+    include_once(BASE.'subsystems/files.php');
     exponent_files_remove_files_in_directory(BASE.'tmp/minify');  // also clear the minify engine's cache
     return exponent_files_remove_files_in_directory(BASE.'tmp/css');
 }
 
 function exponent_theme_remove_smarty_cache() {
-    if (!defined('SYS_FILES')) include_once(BASE.'subsystems/files.php');
+//    if (!defined('SYS_FILES')) include_once(BASE.'subsystems/files.php');
+    include_once(BASE.'subsystems/files.php');
     exponent_files_remove_files_in_directory(BASE.'tmp/cache');  // alt location for cache
     return exponent_files_remove_files_in_directory(BASE.'tmp/views_c');    
 }

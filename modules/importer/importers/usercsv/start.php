@@ -20,8 +20,10 @@
 
 if (!defined("EXPONENT")) exit("");
 
-if (!defined("SYS_FORMS")) require_once(BASE."subsystems/forms.php");
-if (!defined("SYS_FILES")) require_once(BASE."subsystems/files.php");
+//if (!defined("SYS_FORMS")) require_once(BASE."subsystems/forms.php");
+//if (!defined("SYS_FILES")) require_once(BASE."subsystems/files.php");
+require_once(BASE."subsystems/forms.php");
+require_once(BASE."subsystems/files.php");
 
 $template = New template("importer", "_usercsv_form_start");
 
@@ -30,7 +32,7 @@ if (exponent_files_canCreate(BASE."modules/importer/importers/usercsv/tmp/test")
 	$template->output();
 }else{
 	//initialize the for stuff
-	exponent_forms_initialize();
+//	exponent_forms_initialize();
 	
 	$i18n = exponent_lang_loadFile('modules/importer/importers/usercsv/start.php');
 	

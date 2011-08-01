@@ -313,7 +313,8 @@ if ($passed) {
 	echo '</p>';
 
 	if (isset($_POST['install_default'])) {
-		if (!defined('SYS_BACKUP')) include_once(BASE.'subsystems/backup.php');
+//		if (!defined('SYS_BACKUP')) include_once(BASE.'subsystems/backup.php');
+		include_once(BASE.'subsystems/backup.php');
 
 		$eql = BASE.'install/sitetypes/db/_default.eql';
 		$errors = array();

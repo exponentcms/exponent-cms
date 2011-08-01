@@ -55,8 +55,9 @@ class uploadcontrol extends formcontrol {
 	}
 
 	function form($object) {
-		if (!defined("SYS_FORMS")) require_once(BASE."subsystems/forms.php");
-		exponent_forms_initialize();
+//		if (!defined("SYS_FORMS")) require_once(BASE."subsystems/forms.php");
+		require_once(BASE."subsystems/forms.php");
+//		exponent_forms_initialize();
 
 		$form = new form();
 		if (!isset($object->identifier)) {
@@ -89,7 +90,8 @@ class uploadcontrol extends formcontrol {
     }
 
 	function moveFile($original_name,$formvalues) {
-		if (!defined('SYS_FILES')) include_once(BASE.'subsystems/files.php');
+//		if (!defined('SYS_FILES')) include_once(BASE.'subsystems/files.php');
+		include_once(BASE.'subsystems/files.php');
 		$dir = 'files/uploads';
 		$filename = exponent_files_fixName(time().'_'.$formvalues[$original_name]['name']);
 		$dest = $dir.'/'.$filename;

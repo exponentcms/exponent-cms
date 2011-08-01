@@ -23,8 +23,9 @@ class database_importer {
 		
 		exponent_lang_loadDictionary('modules','database');
 	
-		if (!defined('SYS_FORMS')) require_once(BASE.'subsystems/forms.php');
-		exponent_forms_initialize();
+//		if (!defined('SYS_FORMS')) require_once(BASE.'subsystems/forms.php');
+		require_once(BASE.'subsystems/forms.php');
+//		exponent_forms_initialize();
 
 		$form = new form();
 		//Form is created to collect information from the user

@@ -34,7 +34,8 @@ if (!file_exists('not_configured') && file_exists(BASE.'conf/config.php')) {
 // Load i18n values
 $i18n = exponent_lang_loadFile('install/index.php');
 
-if (!defined('SYS_CONFIG')) include_once(BASE . 'subsystems/config.php');
+//if (!defined('SYS_CONFIG')) include_once(BASE . 'subsystems/config.php');
+include_once(BASE . 'subsystems/config.php');
 
 // Initialize the language
 if (isset($_POST['sc'])) {

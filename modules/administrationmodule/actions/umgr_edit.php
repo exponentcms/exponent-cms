@@ -23,8 +23,9 @@
 if (!defined('EXPONENT')) exit('');
 
 if (isset($_GET['id']) && exponent_permissions_check('user_management',exponent_core_makeLocation('administrationmodule'))) {
-	if (!defined('SYS_USERS')) require_once(BASE.'subsystems/users.php');
-	
+//	if (!defined('SYS_USERS')) require_once(BASE.'subsystems/users.php');
+	require_once(BASE.'subsystems/users.php');
+
 	$u = exponent_users_getUserById(intval($_GET['id']));
 	
 	$template = new template('administrationmodule','_umgr_edit_which',$loc);

@@ -26,8 +26,9 @@ function smarty_function_control($params,&$smarty) {
 	  || $params['type'] == 'recaptcha' || $params['type'] == 'antispam') {
         $i18n = exponent_lang_loadFile('plugins/function_control.php');
 
-        if (!defined('SYS_FORMS')) require_once(BASE.'subsystems/forms.php');
-        exponent_forms_initialize();
+//        if (!defined('SYS_FORMS')) require_once(BASE.'subsystems/forms.php');
+        require_once(BASE.'subsystems/forms.php');
+//        exponent_forms_initialize();
 
         // if a label wasn't passed in then we need to set one.
         //if (empty($params['label'])) $params['label'] = $params['name'];

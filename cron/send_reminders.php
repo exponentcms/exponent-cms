@@ -78,8 +78,10 @@ $template->assign("time",$time);
 	// $viewparams = array("type"=>"byday", "range"=>"week");
 // }
 
-if (!defined("SYS_DATETIME")) include_once(BASE . "subsystems/datetime.php");
-if (!defined('SYS_SORTING')) include_once(BASE . 'subsystems/sorting.php');
+//if (!defined("SYS_DATETIME")) include_once(BASE . "subsystems/datetime.php");
+include_once(BASE . "subsystems/datetime.php");
+//if (!defined('SYS_SORTING')) include_once(BASE . 'subsystems/sorting.php');
+include_once(BASE . 'subsystems/sorting.php');
 
 if (!function_exists("exponent_sorting_byEventStartAscending")) {
 	function exponent_sorting_byEventStartAscending($a,$b) {
@@ -394,7 +396,8 @@ $headers = array(
 	"From"=>$from = $config->email_from_reminder,
 	"Reply-to"=>$reply = $config->email_reply_reminder
 	);
-if (!defined("SYS_USERS")) require_once(BASE . "subsystems/users.php");
+//if (!defined("SYS_USERS")) require_once(BASE . "subsystems/users.php");
+require_once(BASE . "subsystems/users.php");
 
 // set up the html message
 $template->assign("showdetail",$config->email_showdetail);

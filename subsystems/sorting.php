@@ -23,7 +23,7 @@
  * has been included for use.
  * @node Subsystems:Sorting
  */
-define("SYS_SORTING",1);
+//define("SYS_SORTING",1);
 
 /* exdoc
  * Object sorting comparison function -- sorts by rank in ascending order.

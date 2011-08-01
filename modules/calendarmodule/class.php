@@ -49,7 +49,8 @@ class calendarmodule {
 		$locsql .= ')';
 							
 		if (!function_exists("exponent_datetime_startOfDayTimestamp")) {
-			if (!defined("SYS_DATETIME")) include_once(BASE."subsystems/datetime.php");               
+//			if (!defined("SYS_DATETIME")) include_once(BASE."subsystems/datetime.php");
+			include_once(BASE."subsystems/datetime.php");
 		}
 		$day = exponent_datetime_startOfDayTimestamp(time());
 		
@@ -167,8 +168,10 @@ class calendarmodule {
 			$viewparams = array("type"=>"default");
 		}
 
-		if (!defined("SYS_DATETIME")) include_once(BASE."subsystems/datetime.php");
-		if (!defined('SYS_SORTING')) include_once(BASE.'subsystems/sorting.php');
+//		if (!defined("SYS_DATETIME")) include_once(BASE."subsystems/datetime.php");
+		include_once(BASE."subsystems/datetime.php");
+//		if (!defined('SYS_SORTING')) include_once(BASE.'subsystems/sorting.php');
+		include_once(BASE.'subsystems/sorting.php');
 
 		if (!function_exists("exponent_sorting_byEventStartAscending")) {
 			function exponent_sorting_byEventStartAscending($a,$b) {
@@ -503,7 +506,8 @@ class calendarmodule {
 
 		$i18n = exponent_lang_loadFile('modules/calendarmodule/class.php');
 
-		if (!defined('SYS_SEARCH')) include_once(BASE.'subsystems/search.php');
+//		if (!defined('SYS_SEARCH')) include_once(BASE.'subsystems/search.php');
+		include_once(BASE.'subsystems/search.php');
 
 		$search = null;
 		$search->category = $i18n['search_category'];
@@ -534,7 +538,8 @@ class calendarmodule {
 	// The following functions are internal helper functions
 
 	static function _getEventsForDates($edates,$sort_asc = true,$featuredonly = false) {
-		if (!defined('SYS_SORTING')) include_once(BASE.'subsystems/sorting.php');
+//		if (!defined('SYS_SORTING')) include_once(BASE.'subsystems/sorting.php');
+		include_once(BASE.'subsystems/sorting.php');
 		if ($sort_asc && !function_exists('exponent_sorting_byEventStartAscending')) {
 			function exponent_sorting_byEventStartAscending($a,$b) {
 				return ($a->eventstart < $b->eventstart ? -1 : 1);

@@ -43,7 +43,8 @@ class countryregioncontrol extends formcontrol {
 	function controlToHTML($name) {
 		$html = "";
 
-		if (!defined("SYS_GEO")) require_once(BASE."subsystems/geo.php");
+//		if (!defined("SYS_GEO")) require_once(BASE."subsystems/geo.php");
+		require_once(BASE."subsystems/geo.php");
 		$countries = exponent_geo_listCountriesOnly();
 		$c_dd = new dropdowncontrol($this->country_default,$countries);
 		$c_dd->jsHooks["onchange"] = "geo_rebuildRegions(this,'".$name."_region_id'," . (($this->allow_entire_country)?'true':'false') . ");";
@@ -80,7 +81,8 @@ class countryregioncontrol extends formcontrol {
 			$html .= "		r_select.appendChild(o);";
 			$html .= "	}";
 			$html .= "}";
-			if (!defined("SYS_JAVACSRIPT")) require_once(BASE."subsystems/javascript.php");
+//			if (!defined("SYS_JAVACSRIPT")) require_once(BASE."subsystems/javascript.php");
+			require_once(BASE."subsystems/javascript.php");
 			$region = null;
 			$region->parent_id = 0;
 			$region->id = 0;

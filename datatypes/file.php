@@ -22,8 +22,9 @@ class file {
 	static function update($name,$dest,$object,$destname = null,$force=false) {
 		$i18n = exponent_lang_loadFile('datatypes/file.php');
 		
-		if (!defined('SYS_FILES')) include_once(BASE.'subsystems/files.php');
-		
+//		if (!defined('SYS_FILES')) include_once(BASE.'subsystems/files.php');
+		include_once(BASE.'subsystems/files.php');
+
 		// Get the filename, if it was passed in the update() call.  Otherwise, fallback
 		if ($destname == null) {
 			$object->filename = $_FILES[$name]['name'];

@@ -23,7 +23,7 @@
  * has been included for use.
  * @node Subsystems:Info
  */
-define("SYS_INFO",1);
+//define("SYS_INFO",1);
 
 /* exdoc
  * Looks through the subsystems/ directory for a *.info.php for

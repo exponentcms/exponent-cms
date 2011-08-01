@@ -23,16 +23,16 @@ class cash extends billingcalculator{
 	
 	//Config Form
 	function form($config_object) {
-		if (!defined("SYS_FORMS")) include_once(BASE."subsystems/forms.php");
-		
-		exponent_forms_initialize();
+//		if (!defined("SYS_FORMS")) include_once(BASE."subsystems/forms.php");
+		include_once(BASE."subsystems/forms.php");
+//		exponent_forms_initialize();
 		$form = new form();
 		if (!$config_object) {
 			$config_object->give_change = true;
 		}
 		$form->register("give_change","Give Change?",new checkboxcontrol($config_object->give_change));
 		$form->register("submit","",new buttongroupcontrol("Save","","Cancel"));
-		exponent_forms_cleanup();
+//		exponent_forms_cleanup();
 		return $form->toHTML();
 	}
 	
@@ -44,13 +44,14 @@ class cash extends billingcalculator{
 	
 	//Form for user input
 	function userForm($config_object=null, $user_data=null) {
-		if (!defined("SYS_FORMS")) include_once(BASE."subsystems/forms.php");
-		exponent_forms_initialize();
+//		if (!defined("SYS_FORMS")) include_once(BASE."subsystems/forms.php");
+		include_once(BASE."subsystems/forms.php");
+//		exponent_forms_initialize();
 		$form = new form();
 		$htmlinfo = "You may place your order and pay with a check or money order.  If paying by check, your order will be held util we receive the check and it clears our bank account.  Money order orders will be processed upon our receipt of the money order.<br/><br/>";
 		$form->register(uniqid(""),"", new htmlcontrol($htmlinfo));
 	  	$form->register("cash_amount","Cash Amount:",new textcontrol());
-		exponent_forms_cleanup();
+//		exponent_forms_cleanup();
 		return $form->toHTML();	
 	}
 	

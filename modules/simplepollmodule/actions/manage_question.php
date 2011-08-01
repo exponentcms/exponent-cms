@@ -47,7 +47,8 @@ if ($question) {
 		exponent_flow_set(SYS_FLOW_PROTECTED,SYS_FLOW_ACTION);
 	
 		$answers = $db->selectObjects('poll_answer','question_id='.$question->id);
-		if (!defined('SYS_SORTING')) require_once(BASE.'subsystems/sorting.php');
+//		if (!defined('SYS_SORTING')) require_once(BASE.'subsystems/sorting.php');
+		require_once(BASE.'subsystems/sorting.php');
 		uasort($answers,'exponent_sorting_byRankAscending');
 	
 		$template = new template('simplepollmodule','_manageQuestion',$loc);

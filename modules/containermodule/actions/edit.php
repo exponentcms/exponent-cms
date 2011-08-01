@@ -67,7 +67,8 @@ if (exponent_permissions_check('edit_module',$loc) || exponent_permissions_check
 	$template->assign('can_activate_modules',$user->is_acting_admin);
 	$template->assign('current_section',exponent_sessions_get('last_section'));
 	
-	if (!defined('SYS_JAVASCRIPT')) include_once(BASE.'subsystems/javascript.php');
+//	if (!defined('SYS_JAVASCRIPT')) include_once(BASE.'subsystems/javascript.php');
+	include_once(BASE.'subsystems/javascript.php');
 	$haveclass = false;
 	$mods = array();
 	

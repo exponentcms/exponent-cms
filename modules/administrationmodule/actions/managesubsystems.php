@@ -23,8 +23,9 @@
 if (!defined('EXPONENT')) exit('');
 
 if (exponent_permissions_check('extensions',exponent_core_makeLocation('administrationmodule'))) {
-	if (!defined('SYS_INFO')) require_once(BASE.'subsystems/info.php');
-	
+//	if (!defined('SYS_INFO')) require_once(BASE.'subsystems/info.php');
+	require_once(BASE.'subsystems/info.php');
+
 	$info = exponent_info_subsystems();
 	ksort($info);
 	

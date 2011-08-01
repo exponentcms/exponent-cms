@@ -345,7 +345,8 @@ class administrationController extends expController {
 	}
 
     public function toggle_minify() {
-        if (!defined('SYS_CONFIG')) include_once(BASE.'subsystems/config.php');
+//        if (!defined('SYS_CONFIG')) include_once(BASE.'subsystems/config.php');
+        include_once(BASE.'subsystems/config.php');
     	$value = (MINIFY == 1) ? 0 : 1;
     	exponent_config_change('MINIFY', $value);
     	$message = (MINIFY != 1) ? "Exponent is now minifying Javascript and CSS" : "Exponent is no longer minifying Javascript and CSS" ;
@@ -354,7 +355,8 @@ class administrationController extends expController {
     }
     
 	public function toggle_dev() {
-	    if (!defined('SYS_CONFIG')) include_once(BASE.'subsystems/config.php');
+//	    if (!defined('SYS_CONFIG')) include_once(BASE.'subsystems/config.php');
+	    include_once(BASE.'subsystems/config.php');
 	    $value = (DEVELOPMENT == 1) ? 0 : 1;
 	    exponent_config_change('DEVELOPMENT', $value);
 	    exponent_theme_remove_css();
@@ -364,7 +366,8 @@ class administrationController extends expController {
 	}
 
 	public function toggle_maintenance() {
-		if (!defined('SYS_CONFIG')) include_once(BASE.'subsystems/config.php');
+//		if (!defined('SYS_CONFIG')) include_once(BASE.'subsystems/config.php');
+		include_once(BASE.'subsystems/config.php');
 		$value = (MAINTENANCE_MODE == 1) ? 0 : 1;
 		exponent_config_change('MAINTENANCE_MODE', $value);
 		MAINTENANCE_MODE == 1 ? flash('message',"Exponent is no longer in 'Maintenance' mode") : "" ;
@@ -386,7 +389,8 @@ class administrationController extends expController {
 	}
 
 	public function clear_image_cache() {
-		if (!defined('SYS_FILES')) include_once(BASE.'subsystems/files.php');
+//		if (!defined('SYS_FILES')) include_once(BASE.'subsystems/files.php');
+		include_once(BASE.'subsystems/files.php');
 //		exponent_files_remove_files_in_directory(BASE.'tmp/pixidou');  // alt location for pixidou cache
 		exponent_files_remove_files_in_directory(BASE.'framework/modules/pixidou/images');  // location for pixidou cache
 		// phpThumb cache includes subfolders
@@ -397,7 +401,8 @@ class administrationController extends expController {
 	}
 
 	public function clear_rss_cache() {
-		if (!defined('SYS_FILES')) include_once(BASE.'subsystems/files.php');
+//		if (!defined('SYS_FILES')) include_once(BASE.'subsystems/files.php');
+		iinclude_once(BASE.'subsystems/files.php');
 		exponent_files_remove_files_in_directory(BASE.'tmp/rsscache');
 		$message = "RSS/Podcast Cache has been cleared" ;
 		flash('message',$message);
@@ -405,7 +410,8 @@ class administrationController extends expController {
 	}
 
 	public function clear_all_caches() {
-		if (!defined('SYS_FILES')) include_once(BASE.'subsystems/files.php');
+//		if (!defined('SYS_FILES')) include_once(BASE.'subsystems/files.php');
+		include_once(BASE.'subsystems/files.php');
 		exponent_theme_remove_smarty_cache();
 		exponent_theme_remove_css();
 //		exponent_files_remove_files_in_directory(BASE.'tmp/pixidou');  // alt location for pixidou cache
@@ -418,8 +424,9 @@ class administrationController extends expController {
 	}
 
 	public function upload_extension() {
-		if (!defined('SYS_FORMS')) require_once(BASE.'subsystems/forms.php');
-		exponent_forms_initialize();
+//		if (!defined('SYS_FORMS')) require_once(BASE.'subsystems/forms.php');
+		require_once(BASE.'subsystems/forms.php');
+//		exponent_forms_initialize();
 		$form = new form();
 		$form->register(null,'',new htmlcontrol(exponent_core_maxUploadSizeMessage()));
 		$form->register('mod_archive','Module Archive',new uploadcontrol());
@@ -472,7 +479,8 @@ class administrationController extends expController {
 			if ($ext == '') {
 				echo $i18n['bad_archive'].'<br />';
 			} else {
-				if (!defined('SYS_FILES')) require_once(BASE.'subsystems/files.php');
+//				if (!defined('SYS_FILES')) require_once(BASE.'subsystems/files.php');
+				require_once(BASE.'subsystems/files.php');
 
 				// Look for stale sessid directories:
 				$sessid = session_id();
@@ -556,7 +564,8 @@ class administrationController extends expController {
     }
     
     public function switch_themes() {
-        if (!defined('SYS_CONFIG')) include_once(BASE.'subsystems/config.php');
+//        if (!defined('SYS_CONFIG')) include_once(BASE.'subsystems/config.php');
+        include_once(BASE.'subsystems/config.php');
 
     	exponent_config_change('DISPLAY_THEME_REAL', $this->params['theme']);
     	
@@ -587,8 +596,9 @@ class administrationController extends expController {
     
     public function configure_site () {
         // little glue to help things move along
-        if (!defined('SYS_CONFIG')) require_once(BASE.'subsystems/config.php');
-        
+//        if (!defined('SYS_CONFIG')) require_once(BASE.'subsystems/config.php');
+        require_once(BASE.'subsystems/config.php');
+
         // TYPES OF ANTISPAM CONTROLS... CURRENTLY ONLY ReCAPTCHA
         $as_types = array(
             '0'=>'-- Please Select an Anti-Spam Control --',
@@ -675,7 +685,8 @@ class administrationController extends expController {
     }
     
     public function update_siteconfig () {
-        if (!defined('SYS_CONFIG')) include_once(BASE.'subsystems/config.php');
+//        if (!defined('SYS_CONFIG')) include_once(BASE.'subsystems/config.php');
+        include_once(BASE.'subsystems/config.php');
 
         foreach ($this->params['sc'] as $key => $value) {
             exponent_config_change($key, $value);

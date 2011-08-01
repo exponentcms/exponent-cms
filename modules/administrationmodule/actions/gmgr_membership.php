@@ -34,7 +34,8 @@ if (exponent_permissions_check('user_management',exponent_core_makeLocation('adm
 if ($perm_level) {
 	$group = $db->selectObject('group','id='.$_GET['id']);
 	if ($group != null) {
-		if (!defined('SYS_USERS')) require_once(BASE.'subsystems/users.php');
+//		if (!defined('SYS_USERS')) require_once(BASE.'subsystems/users.php');
+		require_once(BASE.'subsystems/users.php');
 		$users = exponent_users_getAllUsers(0);
 		
 		$members = array();

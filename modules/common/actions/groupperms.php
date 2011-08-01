@@ -31,7 +31,8 @@ if (exponent_permissions_check('administrate',$loc)) {
 	}
 	$template->assign('user_form',0);
 
-	if (!defined('SYS_GROUPS')) include_once(BASE.'subsystems/users.php');
+//	if (!defined('SYS_GROUPS')) include_once(BASE.'subsystems/users.php');
+	include_once(BASE.'subsystems/users.php');
 
 	$users = array(); // users = groups
     $modulename = controllerExists($loc->mod) ? getControllerClassName($loc->mod) : $loc->mod;    

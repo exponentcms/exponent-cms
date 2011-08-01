@@ -25,7 +25,7 @@
  * has been included for use.
  * @node Subsystems:Backup
  */
-define('SYS_BACKUP',1);
+//define('SYS_BACKUP',1);
 
 /* exdoc
  * The EQL header string for object dump file formats.

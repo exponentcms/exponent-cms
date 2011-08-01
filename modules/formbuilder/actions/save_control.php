@@ -22,8 +22,9 @@ if (!defined("EXPONENT")) exit("");
 
 $i18n = exponent_lang_loadFile('modules/formbuilder/actions/save_control.php');
 
-if (!defined('SYS_FORMS')) include_once(BASE.'subsystems/forms.php');
-exponent_forms_initialize();
+//if (!defined('SYS_FORMS')) include_once(BASE.'subsystems/forms.php');
+include_once(BASE.'subsystems/forms.php');
+//exponent_forms_initialize();
 $f = $db->selectObject('formbuilder_form','id='.intval($_POST['form_id']));
 if ($f) {
 	if (exponent_permissions_check('editform',unserialize($f->location_data))) {	

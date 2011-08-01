@@ -51,7 +51,8 @@ class clear_cache extends upgradescript {
 	 */
 	function upgrade() {
 		// work our way through all the tmp files and remove them
-		if (!defined('SYS_FILES')) include_once(BASE.'subsystems/files.php');
+//		if (!defined('SYS_FILES')) include_once(BASE.'subsystems/files.php');
+		include_once(BASE.'subsystems/files.php');
 		$files = array(
 			BASE.'tmp/mail',  // not used??  FIXME
 			BASE.'tmp/pods',  // not used??  FIXME

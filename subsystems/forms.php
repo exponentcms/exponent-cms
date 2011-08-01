@@ -24,7 +24,7 @@
  *
  * @node Subsystems:Forms
  */
-define("SYS_FORMS",1);
+//define("SYS_FORMS",1);
 
 /* exdoc
  * Initialize the Subsystem
@@ -43,41 +43,42 @@ define("SYS_FORMS",1);
  * @node Subsystems:Forms
  */
 function exponent_forms_initialize() {
-	$i18n = exponent_lang_loadFile('subsystems/forms.php');
-	
-	$forms_dir = BASE."subsystems/forms";
-	$controls_dir = BASE."subsystems/forms/controls";
-	if (phpversion() < 5) {
-		if (is_readable($forms_dir)) {
-			$dh = opendir($forms_dir);
-			while (($file = readdir($dh)) !== false) {
-				if (is_readable("$forms_dir/$file") && substr($file,-4,4) == ".php") {
-					include_once("$forms_dir/$file");
-				}
-			}
-		} else {
-			echo $i18n['forms_dir_unreadable'];
-		}
-		if (is_readable($controls_dir)) {
-			$dh = opendir($controls_dir);
-			while (($file = readdir($dh)) !== false) {
-				if (is_readable("$controls_dir/$file") && substr($file,-4,4) == ".php") {
-					include_once("$controls_dir/$file");
-				}
-			}
-		} else {
-			echo $i18n['controls_dir_unreadable'];
-		}
-	} else {
-		if (is_readable($controls_dir)) {
-			global $auto_dirs;
-			$auto_dirs["forms_forms"] = $forms_dir;
-			$auto_dirs["forms_controls"] = $controls_dir;
-		} else {
-			echo $i18n['controls_dir_unreadable'];
-		}
-	}
 }
+//	$i18n = exponent_lang_loadFile('subsystems/forms.php');
+//
+//	$forms_dir = BASE."subsystems/forms";
+//	$controls_dir = BASE."subsystems/forms/controls";
+//	if (phpversion() < 5) {
+//		if (is_readable($forms_dir)) {
+//			$dh = opendir($forms_dir);
+//			while (($file = readdir($dh)) !== false) {
+//				if (is_readable("$forms_dir/$file") && substr($file,-4,4) == ".php") {
+//					include_once("$forms_dir/$file");
+//				}
+//			}
+//		} else {
+//			echo $i18n['forms_dir_unreadable'];
+//		}
+//		if (is_readable($controls_dir)) {
+//			$dh = opendir($controls_dir);
+//			while (($file = readdir($dh)) !== false) {
+//				if (is_readable("$controls_dir/$file") && substr($file,-4,4) == ".php") {
+//					include_once("$controls_dir/$file");
+//				}
+//			}
+//		} else {
+//			echo $i18n['controls_dir_unreadable'];
+//		}
+//	} else {
+//		if (is_readable($controls_dir)) {
+//			global $auto_dirs;
+//			$auto_dirs["forms_forms"] = $forms_dir;
+//			$auto_dirs["forms_controls"] = $controls_dir;
+//		} else {
+//			echo $i18n['controls_dir_unreadable'];
+//		}
+//	}
+//}
 
 /* exdoc
  * This function complements exponent_forms_cleanup, by properly

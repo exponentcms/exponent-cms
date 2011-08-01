@@ -22,7 +22,7 @@
  * that the subsystem has been included for use.
  * @node Subsystems:Permissions
  */
-define('SYS_PERMISSIONS',1);
+//define('SYS_PERMISSIONS',1);
 
 /** exdoc
  * UI Level of Preview - No management links of any kind should be shown.

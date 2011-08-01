@@ -173,8 +173,9 @@ class popupdatetimecontrol extends formcontrol {
 	}
 
 	function form($object) {
-		if (!defined("SYS_FORMS")) require_once(BASE."subsystems/forms.php");
-		exponent_forms_initialize();
+//		if (!defined("SYS_FORMS")) require_once(BASE."subsystems/forms.php");
+		require_once(BASE."subsystems/forms.php");
+//		exponent_forms_initialize();
 
 		$form = new form();
 		if (!isset($object->identifier)) {

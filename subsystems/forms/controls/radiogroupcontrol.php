@@ -97,8 +97,9 @@ class radiogroupcontrol extends formcontrol {
 	}
 	
 	function form($object) {
-		if (!defined("SYS_FORMS")) require_once(BASE."subsystems/forms.php");
-		exponent_forms_initialize();
+//		if (!defined("SYS_FORMS")) require_once(BASE."subsystems/forms.php");
+		require_once(BASE."subsystems/forms.php");
+//		exponent_forms_initialize();
 	
 		$form = new form();
 		if (!isset($object->identifier)) {
@@ -135,8 +136,9 @@ class radiogroupcontrol extends formcontrol {
 			exponent_sessions_set("last_POST",$post);
 			return null;
 		}
-		if (!defined("SYS_FORMS")) require_once(BASE."subsystems/forms.php");
-		exponent_forms_initialize();
+//		if (!defined("SYS_FORMS")) require_once(BASE."subsystems/forms.php");
+		require_once(BASE."subsystems/forms.php");
+//		exponent_forms_initialize();
 		$object->identifier = $values['identifier'];
 		$object->caption = $values['caption'];
 		$object->default = $values['default'];

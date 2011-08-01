@@ -57,8 +57,9 @@ class formmodule {
 	
 	function show($view,$loc = null) {
 		global $db;
-		if (!defined("SYS_FORMS")) require_once(BASE."subsystems/forms.php");
-		exponent_forms_initialize();
+//		if (!defined("SYS_FORMS")) require_once(BASE."subsystems/forms.php");
+		require_once(BASE."subsystems/forms.php");
+//		exponent_forms_initialize();
 		
 		$i18n = exponent_lang_loadFile('modules/formmodule/class.php');
 		
@@ -98,7 +99,8 @@ class formmodule {
 			
 			$floc = unserialize($f->location_data);
 			$controls = $db->selectObjects("formbuilder_control","form_id=".$f->id);
-			if (!defined("SYS_SORTING")) require_once(BASE."subsystems/sorting.php");
+//			if (!defined("SYS_SORTING")) require_once(BASE."subsystems/sorting.php");
+			require_once(BASE."subsystems/sorting.php");
 			usort($controls,"exponent_sorting_byRankAscending");
 			
 			$form = new form();
