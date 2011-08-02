@@ -23,8 +23,8 @@
 if (!defined('EXPONENT')) exit('');
 
 if (exponent_permissions_check('user_management',exponent_core_makeLocation('administrationmodule'))) {
-//	if (!defined('SYS_USERS')) require_once(BASE.'subsystems/users.php');
-	require_once(BASE.'subsystems/users.php');
+//	if (!defined('SYS_USERS')) require_once(BASE.'framework/core/subsystems-1/users.php');
+	require_once(BASE.'framework/core/subsystems-1/users.php');
 	exponent_users_includeProfileExtensions();
 	
 	exponent_flow_set(SYS_FLOW_PROTECTED,SYS_FLOW_ACTION);
@@ -35,10 +35,11 @@ if (exponent_permissions_check('user_management',exponent_core_makeLocation('adm
 	
 	$exts = $db->selectObjects('profileextension');
 	
-//	if (!defined('SYS_SORTING')) require_once(BASE.'subsystems/sorting.php');
-	require_once(BASE.'subsystems/sorting.php');
-	usort($exts,'exponent_sorting_byRankAscending');
-	
+//	if (!defined('SYS_SORTING')) require_once(BASE.'framework/core/subsystems-1/sorting.php');
+//	require_once(BASE.'framework/core/subsystems-1/sorting.php');
+//	usort($exts,'exponent_sorting_byRankAscending');
+	$exts = expSorter::sort(array('array'=>$exts,'sortby'=>'rank', 'order'=>'ASC'));
+
 	for ($i = 0; $i < count($exts); $i++) {
 		$exts[$i]->name = call_user_func(array($exts[$i]->extension,'name'));
 		$exts[$i]->author = call_user_func(array($exts[$i]->extension,'author'));

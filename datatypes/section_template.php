@@ -22,8 +22,8 @@ class section_template {
 	static function form($object = null) {
 		$i18n = exponent_lang_loadFile('datatypes/section_template.php');
 	
-//		if (!defined('SYS_FORMS')) require_once(BASE.'subsystems/forms.php');
-		require_once(BASE.'subsystems/forms.php');
+//		if (!defined('SYS_FORMS')) require_once(BASE.'framework/core/subsystems-1/forms.php');
+		require_once(BASE.'framework/core/subsystems-1/forms.php');
 //		exponent_forms_initialize();
 		
 		$form = new form();
@@ -50,10 +50,11 @@ class section_template {
 			$sections = $db->selectObjects('section_template','parent='.$object->parent);
 			
 			if (count($sections)) {
-//				if (!defined('SYS_SORTING')) require_once(BASE.'subsystems/sorting.php');
-				require_once(BASE.'subsystems/sorting.php');
-				usort($sections,'exponent_sorting_byRankAscending');
-				
+//				if (!defined('SYS_SORTING')) require_once(BASE.'framework/core/subsystems-1/sorting.php');
+//				require_once(BASE.'framework/core/subsystems-1/sorting.php');
+//				usort($sections,'exponent_sorting_byRankAscending');
+				$sections = expSorter::sort(array('array'=>$sections,'sortby'=>'rank', 'order'=>'ASC'));
+
 				$dd = array($i18n['position_top']);
 				foreach ($sections as $s) $dd[] = sprintf($i18n['position_after'],$s->name);
 				

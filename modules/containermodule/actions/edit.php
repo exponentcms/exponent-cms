@@ -67,8 +67,8 @@ if (exponent_permissions_check('edit_module',$loc) || exponent_permissions_check
 	$template->assign('can_activate_modules',$user->is_acting_admin);
 	$template->assign('current_section',exponent_sessions_get('last_section'));
 	
-//	if (!defined('SYS_JAVASCRIPT')) include_once(BASE.'subsystems/javascript.php');
-	include_once(BASE.'subsystems/javascript.php');
+//	if (!defined('SYS_JAVASCRIPT')) include_once(BASE.'framework/core/subsystems-1/javascript.php');
+	include_once(BASE.'framework/core/subsystems-1/javascript.php');
 	$haveclass = false;
 	$mods = array();
 	
@@ -81,7 +81,7 @@ if (exponent_permissions_check('edit_module',$loc) || exponent_permissions_check
 		$template->assign('nomodules',0);
 	}
 	
-	//if (!defined('SYS_SORTING')) include_once(BASE.'subsystems/sorting.php');
+	//if (!defined('SYS_SORTING')) include_once(BASE.'framework/core/subsystems-1/sorting.php');
 	//usort($modules_list,'exponent_sorting_moduleClassByNameAscending');
 	//sort($modules_list);
 	

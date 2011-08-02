@@ -181,8 +181,8 @@ class navigationmodule {
 		//global $sections;
 		global $router;
 		
-//        if (!defined('SYS_SEARCH')) include_once(BASE.'subsystems/search.php');
-        include_once(BASE.'subsystems/search.php');
+//        if (!defined('SYS_SEARCH')) include_once(BASE.'framework/core/subsystems-1/search.php');
+        include_once(BASE.'framework/core/subsystems-1/search.php');
 
 	 	$db->delete('search',"ref_module='navigationmodule' AND ref_type='section'");
         
@@ -245,9 +245,10 @@ class navigationmodule {
 		$html = '';
 		global $db;
 		$nodes = $db->selectObjects('section','parent='.$parent);
-//		if (!defined('SYS_SORTING')) include_once(BASE.'subsystems/sorting.php');
-		include_once(BASE.'subsystems/sorting.php');
-		usort($nodes,'exponent_sorting_byRankAscending');
+//		if (!defined('SYS_SORTING')) include_once(BASE.'framework/core/subsystems-1/sorting.php');
+//		include_once(BASE.'framework/core/subsystems-1/sorting.php');
+//		usort($nodes,'exponent_sorting_byRankAscending');
+		$nodes = expSorter::sort(array('array'=>$nodes,'sortby'=>'rank', 'order'=>'ASC'));
 		foreach ($nodes as $node) {
 			if (($node->public == 1 || exponent_permissions_check('view',exponent_core_makeLocation('navigationmodule','',$node->id))) && !in_array($node->id,$ignore_ids)) {
 				$html .= '<option value="' . $node->id . '" ';
@@ -277,9 +278,10 @@ class navigationmodule {
 		}
 		global $db;
 		$nodes = $db->selectObjects('section','parent='.$parent);
-//		if (!defined('SYS_SORTING')) include_once(BASE.'subsystems/sorting.php');
-		include_once(BASE.'subsystems/sorting.php');
-		usort($nodes,'exponent_sorting_byRankAscending');
+//		if (!defined('SYS_SORTING')) include_once(BASE.'framework/core/subsystems-1/sorting.php');
+//		include_once(BASE.'framework/core/subsystems-1/sorting.php');
+//		usort($nodes,'exponent_sorting_byRankAscending');
+		$nodes = expSorter::sort(array('array'=>$nodes,'sortby'=>'rank', 'order'=>'ASC'));
 		foreach ($nodes as $node) {
 			if (($node->public == 1 || exponent_permissions_check('view',exponent_core_makeLocation('navigationmodule','',$node->id))) && !in_array($node->id,$ignore_ids)) {
 				if ($node->active == 1) {
@@ -310,9 +312,10 @@ class navigationmodule {
 			$kids = $cache['kids'][$parent];
 		}		
 			
-//        if (!defined('SYS_SORTING')) include_once(BASE.'subsystems/sorting.php');
-        include_once(BASE.'subsystems/sorting.php');
-		usort($kids,'exponent_sorting_byRankAscending');
+//        if (!defined('SYS_SORTING')) include_once(BASE.'framework/core/subsystems-1/sorting.php');
+//        include_once(BASE.'framework/core/subsystems-1/sorting.php');
+//		usort($kids,'exponent_sorting_byRankAscending');
+		$kids = expSorter::sort(array('array'=>$kids,'sortby'=>'rank', 'order'=>'ASC'));
 		for ($i = 0; $i < count($kids); $i++) {
 			$child = $kids[$i];
 			//foreach ($kids as $child) {
@@ -371,10 +374,11 @@ class navigationmodule {
 		
 		$arr = array();
 		$kids = $db->selectObjects('section_template','parent='.$parent);
-//		if (!defined('SYS_SORTING')) include_once(BASE.'subsystems/sorting.php');
-		include_once(BASE.'subsystems/sorting.php');
-		usort($kids,'exponent_sorting_byRankAscending');
-		
+//		if (!defined('SYS_SORTING')) include_once(BASE.'framework/core/subsystems-1/sorting.php');
+//		include_once(BASE.'framework/core/subsystems-1/sorting.php');
+//		usort($kids,'exponent_sorting_byRankAscending');
+		$kids = expSorter::sort(array('array'=>$kids,'sortby'=>'rank', 'order'=>'ASC'));
+
 		for ($i = 0; $i < count($kids); $i++) {
 			$page = $kids[$i];
 			

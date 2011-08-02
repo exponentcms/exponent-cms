@@ -31,15 +31,16 @@ if ($item) {
 		$template->assign('checked_date',$eventdate);
 		
 		$eventdates = $db->selectObjects('eventdate','event_id='.$item->id);
-//		if (!defined('SYS_SORTING')) include_once(BASE.'subsystems/sorting.php');
-		include_once(BASE.'subsystems/sorting.php');
-		if (!function_exists('exponent_sorting_byDateAscending')) {
-			function exponent_sorting_byDateAscending($a,$b) {
-				return ($a->date > $b->date ? 1 : -1);
-			}
-		}
-		usort($eventdates,'exponent_sorting_byDateAscending');
-		
+//		if (!defined('SYS_SORTING')) include_once(BASE.'framework/core/subsystems-1/sorting.php');
+//		include_once(BASE.'framework/core/subsystems-1/sorting.php');
+//		if (!function_exists('exponent_sorting_byDateAscending')) {
+//			function exponent_sorting_byDateAscending($a,$b) {
+//				return ($a->date > $b->date ? 1 : -1);
+//			}
+//		}
+//		usort($eventdates,'exponent_sorting_byDateAscending');
+		$eventdates = expSorter::sort(array('array'=>$eventdates,'sortby'=>'date', 'order'=>'ASC'));
+
 		$template->assign('dates',$eventdates);
 		
 		$template->assign('event',$item);

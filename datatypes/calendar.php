@@ -24,8 +24,8 @@ class calendar {
 
 		$i18n = exponent_lang_loadFile('datatypes/calendar.php');
 
-//		if (!defined('SYS_FORMS')) require_once(BASE.'subsystems/forms.php');
-		require_once(BASE.'subsystems/forms.php');
+//		if (!defined('SYS_FORMS')) require_once(BASE.'framework/core/subsystems-1/forms.php');
+		require_once(BASE.'framework/core/subsystems-1/forms.php');
 //		exponent_forms_initialize();
 
 		$form = new form();
@@ -72,14 +72,15 @@ class calendar {
 			$template = new template('calendarmodule','_recur_dates');
 			global $db;
 			$eventdates = $db->selectObjects('eventdate','event_id='.$object->id);
-//			if (!defined('SYS_SORTING')) require_once(BASE.'subsystems/sorting.php');
-			require_once(BASE.'subsystems/sorting.php');
-			if (!function_exists('exponent_sorting_byDateAscending')) {
-				function exponent_sorting_byDateAscending($a,$b) {
-					return ($a->date > $b->date ? 1 : -1);
-				}
-			}
-			usort($eventdates,'exponent_sorting_byDateAscending');
+//			if (!defined('SYS_SORTING')) require_once(BASE.'framework/core/subsystems-1/sorting.php');
+//			require_once(BASE.'framework/core/subsystems-1/sorting.php');
+//			if (!function_exists('exponent_sorting_byDateAscending')) {
+//				function exponent_sorting_byDateAscending($a,$b) {
+//					return ($a->date > $b->date ? 1 : -1);
+//				}
+//			}
+//			usort($eventdates,'exponent_sorting_byDateAscending');
+			$eventdates = expSorter::sort(array('array'=>$eventdates,'sortby'=>'date', 'order'=>'ASC'));
 			if (isset($object->eventdate)) $template->assign('checked_date',$object->eventdate);
 			$template->assign('dates',$eventdates);
 			$form->register(null,'',new htmlcontrol('<hr size="1"/>'.$i18n['recurrence_warning']));
@@ -101,8 +102,8 @@ class calendar {
 	}
 
 	static function update($values,$object) {
-//		if (!defined('SYS_FORMS')) require_once(BASE.'subsystems/forms.php');
-		require_once(BASE.'subsystems/forms.php');
+//		if (!defined('SYS_FORMS')) require_once(BASE.'framework/core/subsystems-1/forms.php');
+		require_once(BASE.'framework/core/subsystems-1/forms.php');
 //		exponent_forms_initialize();
 
 		$object->title = $values['title'];

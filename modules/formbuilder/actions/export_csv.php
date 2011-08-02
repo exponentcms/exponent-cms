@@ -22,10 +22,10 @@ if (!defined('EXPONENT')) exit('');
 
 $i18n = exponent_lang_loadFile('modules/formbuilder/actions/view_data.php');
 
-//if (!defined('SYS_FORMS')) include_once(BASE.'subsystems/forms.php');
-//if (!defined('SYS_USERS')) include_once(BASE.'subsystems/users.php');
-include_once(BASE.'subsystems/forms.php');
-include_once(BASE.'subsystems/users.php');
+//if (!defined('SYS_FORMS')) include_once(BASE.'framework/core/subsystems-1/forms.php');
+//if (!defined('SYS_USERS')) include_once(BASE.'framework/core/subsystems-1/users.php');
+include_once(BASE.'framework/core/subsystems-1/forms.php');
+include_once(BASE.'framework/core/subsystems-1/users.php');
 //exponent_forms_initialize();
 
 $template = new template('formbuilder','_data_view');
@@ -45,10 +45,11 @@ if (isset($_GET['id'])) {
 		if ($rpt->column_names == '') {
 			//define some default columns...
 			$controls = $db->selectObjects("formbuilder_control","form_id=".$f->id." and is_readonly = 0 and is_static = 0");
-//			if (!defined("SYS_SORTING")) include_once(BASE."subsystems/sorting.php");
-			include_once(BASE."subsystems/sorting.php");
-			usort($controls,"exponent_sorting_byRankAscending");
-			
+//			if (!defined("SYS_SORTING")) include_once(BASE."framework/core/subsystems-1/sorting.php");
+//			include_once(BASE."framework/core/subsystems-1/sorting.php");
+//			usort($controls,"exponent_sorting_byRankAscending");
+			$controls = expSorter::sort(array('array'=>$controls,'sortby'=>'rank', 'order'=>'ASC'));
+
 			foreach (array_slice($controls,0,5) as $control) {
 				if ($rpt->column_names != '') $rpt->column_names .= '|!|';
 				$rpt->column_names .= $control->name;

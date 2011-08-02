@@ -78,16 +78,15 @@ $template->assign("time",$time);
 	// $viewparams = array("type"=>"byday", "range"=>"week");
 // }
 
-//if (!defined("SYS_DATETIME")) include_once(BASE . "subsystems/datetime.php");
-include_once(BASE . "subsystems/datetime.php");
-//if (!defined('SYS_SORTING')) include_once(BASE . 'subsystems/sorting.php');
-include_once(BASE . 'subsystems/sorting.php');
-
-if (!function_exists("exponent_sorting_byEventStartAscending")) {
-	function exponent_sorting_byEventStartAscending($a,$b) {
-		return ($a->eventstart < $b->eventstart ? -1 : 1);
-	}
-}
+//if (!defined("SYS_DATETIME")) include_once(BASE . "framework/core/subsystems-1/datetime.php");
+include_once(BASE . "framework/core/subsystems-1/datetime.php");
+//if (!defined('SYS_SORTING')) include_once(BASE . 'framework/core/subsystems-1/sorting.php');
+//include_once(BASE . 'framework/core/subsystems-1/sorting.php');
+//if (!function_exists("exponent_sorting_byEventStartAscending")) {
+//	function exponent_sorting_byEventStartAscending($a,$b) {
+//		return ($a->eventstart < $b->eventstart ? -1 : 1);
+//	}
+//}
 
 
 
@@ -170,7 +169,8 @@ for ($i = 0; $i < $totaldays; $i++) {
 	}
 	$counts[$start] = count($days[$start]);
 	$count += count($days[$start]);
-	usort($days[$start],"exponent_sorting_byEventStartAscending");
+//	usort($days[$start],"exponent_sorting_byEventStartAscending");
+	$days[$start] = expSorter::sort(array('array'=>$days[$start],'sortby'=>'eventstart', 'order'=>'ASC'));
 }
 $template->assign("days",$days);
 $template->assign("counts",$counts);
@@ -271,6 +271,7 @@ $template->assign("totaldays",$totaldays);
 		// );
 	// }
 	// usort($items,"exponent_sorting_byEventStartAscending");
+	// $items = expSorter::sort(array('array'=>$items,'sortby'=>'eventstart', 'order'=>'ASC'));
 	// $template->assign("items",$items);
 // } else if ($viewparams['type'] == "default") {
 	// if (!isset($viewparams['range'])) $viewparams['range'] = "all";
@@ -396,8 +397,8 @@ $headers = array(
 	"From"=>$from = $config->email_from_reminder,
 	"Reply-to"=>$reply = $config->email_reply_reminder
 	);
-//if (!defined("SYS_USERS")) require_once(BASE . "subsystems/users.php");
-require_once(BASE . "subsystems/users.php");
+//if (!defined("SYS_USERS")) require_once(BASE . "framework/core/subsystems-1/users.php");
+require_once(BASE . "framework/core/subsystems-1/users.php");
 
 // set up the html message
 $template->assign("showdetail",$config->email_showdetail);

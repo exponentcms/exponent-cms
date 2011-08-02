@@ -22,8 +22,8 @@ if (!defined('EXPONENT')) exit('');
 
 $i18n = exponent_lang_loadFile('modules/formbuilder/actions/edit_record.php');
 
-//if (!defined('SYS_FORMS')) include_once(BASE.'subsystems/forms.php');
-include_once(BASE.'subsystems/forms.php');
+//if (!defined('SYS_FORMS')) include_once(BASE.'framework/core/subsystems-1/forms.php');
+include_once(BASE.'framework/core/subsystems-1/forms.php');
 //exponent_forms_initialize();
 
 // Sanitize required _GET parameters
@@ -36,10 +36,11 @@ $controls = $db->selectObjects('formbuilder_control','form_id='.$_GET['form_id']
 
 if ($f && $data && $controls) {
 	if (exponent_permissions_check('editdata',unserialize($f->location_data))) {
-//		if (!defined('SYS_SORTING')) include_once(BASE.'subsystems/sorting.php');
-		include_once(BASE.'subsystems/sorting.php');
-		usort($controls,'exponent_sorting_byRankAscending');
-		
+//		if (!defined('SYS_SORTING')) include_once(BASE.'framework/core/subsystems-1/sorting.php');
+//		include_once(BASE.'framework/core/subsystems-1/sorting.php');
+//		usort($controls,'exponent_sorting_byRankAscending');
+		$controls = expSorter::sort(array('array'=>$controls,'sortby'=>'rank', 'order'=>'ASC'));
+
 		$form = new form();
 		foreach ($controls as $c) {
 			$ctl = unserialize($c->data);

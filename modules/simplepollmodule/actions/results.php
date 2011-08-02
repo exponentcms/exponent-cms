@@ -47,15 +47,16 @@ if ($question) {
 			$total += $answers[$i]->vote_count;
 		}
 		
-//		if (!defined('SYS_SORTING')) require_once(BASE.'subsystems/sorting.php');
-		require_once(BASE.'subsystems/sorting.php');
-		if (!function_exists('exponent_sorting_byVoteCountDescending')) {
-			function exponent_sorting_byVoteCountDescending($a,$b) {
-				return ($a->vote_count > $b->vote_count ? -1 : 1);
-			}
-		}
-		uasort($answers,'exponent_sorting_byVoteCountDescending');
-		
+//		if (!defined('SYS_SORTING')) require_once(BASE.'framework/core/subsystems-1/sorting.php');
+//		require_once(BASE.'framework/core/subsystems-1/sorting.php');
+//		if (!function_exists('exponent_sorting_byVoteCountDescending')) {
+//			function exponent_sorting_byVoteCountDescending($a,$b) {
+//				return ($a->vote_count > $b->vote_count ? -1 : 1);
+//			}
+//		}
+//		uasort($answers,'exponent_sorting_byVoteCountDescending');
+		$answers = expSorter::sort(array('array'=>$answers,'sortby'=>'vote_count', 'order'=>'DESC', 'type'=>'a'));
+
 		$template = new template('simplepollmodule','_results');
 		$template->assign('vote_total',$total);
 		$template->assign('question',$question);

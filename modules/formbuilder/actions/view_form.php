@@ -22,8 +22,8 @@ if (!defined('EXPONENT')) exit('');
 
 $i18n = exponent_lang_loadFile('modules/formbuilder/actions/view_form.php');
 
-//if (!defined("SYS_FORMS")) require_once(BASE."subsystems/forms.php");
-require_once(BASE."subsystems/forms.php");
+//if (!defined("SYS_FORMS")) require_once(BASE."framework/core/subsystems-1/forms.php");
+require_once(BASE."framework/core/subsystems-1/forms.php");
 //exponent_forms_initialize();
 
 $f = null;
@@ -36,10 +36,11 @@ if ($f) {
 		expHistory::set('editable', $_GET);
 		$loc = unserialize($f->location_data);
 		$controls = $db->selectObjects("formbuilder_control","form_id=".$f->id);
-//		if (!defined("SYS_SORTING")) require_once(BASE."subsystems/sorting.php");
-		require_once(BASE."subsystems/sorting.php");
-		usort($controls,"exponent_sorting_byRankAscending");
-		
+//		if (!defined("SYS_SORTING")) require_once(BASE."framework/core/subsystems-1/sorting.php");
+//		require_once(BASE."framework/core/subsystems-1/sorting.php");
+//		usort($controls,"exponent_sorting_byRankAscending");
+		$controls = expSorter::sort(array('array'=>$controls,'sortby'=>'rank', 'order'=>'ASC'));
+
 		$form = new fakeform();
 		foreach ($controls as $c) {
 			$ctl = unserialize($c->data);

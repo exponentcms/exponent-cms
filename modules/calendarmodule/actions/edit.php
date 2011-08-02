@@ -64,9 +64,9 @@ if (($item == null && exponent_permissions_check('post',$loc)) ||
 				// $tags = array_merge($tags, $available_tags);
 			// }
 
-			// if (!defined('SYS_SORTING')) include_once(BASE.'subsystems/sorting.php');
+			// if (!defined('SYS_SORTING')) include_once(BASE.'framework/core/subsystems-1/sorting.php');
 			// usort($tags, "exponent_sorting_byNameAscending");
-
+			//$tags = expSorter::sort(array('array'=>$tags,'sortby'=>'name', 'order'=>'ASC', 'ignore_case'=>true));
 			// $tag_list = array();
 			// foreach ($tags as $tag) {
 				// $tag_list[$tag->id] = $tag->name;
@@ -148,8 +148,8 @@ if (($item == null && exponent_permissions_check('post',$loc)) ||
 		$form->register(null,'',new htmlcontrol($buttons));
 	}
 	
-//	if (!defined('SYS_MODULES')) include_once(BASE.'subsystems/modules.php');
-	include_once(BASE.'subsystems/modules.php');
+//	if (!defined('SYS_MODULES')) include_once(BASE.'framework/core/subsystems-1/modules.php');
+	include_once(BASE.'framework/core/subsystems-1/modules.php');
 	$form->validationScript = exponent_modules_getJSValidationFile('calendarmodule','postedit');
 	
 	$template = new template('calendarmodule','_form_edit',$loc);

@@ -49,8 +49,8 @@ class calendarmodule {
 		$locsql .= ')';
 							
 		if (!function_exists("exponent_datetime_startOfDayTimestamp")) {
-//			if (!defined("SYS_DATETIME")) include_once(BASE."subsystems/datetime.php");
-			include_once(BASE."subsystems/datetime.php");
+//			if (!defined("SYS_DATETIME")) include_once(BASE."framework/core/subsystems-1/datetime.php");
+			include_once(BASE."framework/core/subsystems-1/datetime.php");
 		}
 		$day = exponent_datetime_startOfDayTimestamp(time());
 		
@@ -168,16 +168,15 @@ class calendarmodule {
 			$viewparams = array("type"=>"default");
 		}
 
-//		if (!defined("SYS_DATETIME")) include_once(BASE."subsystems/datetime.php");
-		include_once(BASE."subsystems/datetime.php");
-//		if (!defined('SYS_SORTING')) include_once(BASE.'subsystems/sorting.php');
-		include_once(BASE.'subsystems/sorting.php');
-
-		if (!function_exists("exponent_sorting_byEventStartAscending")) {
-			function exponent_sorting_byEventStartAscending($a,$b) {
-				return ($a->eventstart < $b->eventstart ? -1 : 1);
-			}
-		}
+//		if (!defined("SYS_DATETIME")) include_once(BASE."framework/core/subsystems-1/datetime.php");
+		include_once(BASE."framework/core/subsystems-1/datetime.php");
+//		if (!defined('SYS_SORTING')) include_once(BASE.'framework/core/subsystems-1/sorting.php');
+//		include_once(BASE.'framework/core/subsystems-1/sorting.php');
+//		if (!function_exists("exponent_sorting_byEventStartAscending")) {
+//			function exponent_sorting_byEventStartAscending($a,$b) {
+//				return ($a->eventstart < $b->eventstart ? -1 : 1);
+//			}
+//		}
 		if ($viewparams['type'] == "minical") {
 			$monthly = exponent_datetime_monthlyDaysTimestamp($time);
 			$info = getdate($time);
@@ -263,7 +262,8 @@ class calendarmodule {
 						"delete"=>(exponent_permissions_check("delete",$thisloc) || exponent_permissions_check("delete",$loc))
 					);
 				}
-				usort($days[$start],"exponent_sorting_byEventStartAscending");
+//				usort($days[$start],"exponent_sorting_byEventStartAscending");
+				$days[$start] = expSorter::sort(array('array'=>$days[$start],'sortby'=>'eventstart', 'order'=>'ASC'));
 			}
 			$template->assign("days",$days);
 		} else if ($viewparams['type'] == "monthly") {
@@ -360,7 +360,8 @@ class calendarmodule {
 					"delete"=>(exponent_permissions_check("delete",$thisloc) || exponent_permissions_check("delete",$loc))
 				);
 			}
-			usort($items,"exponent_sorting_byEventStartAscending");
+//			usort($items,"exponent_sorting_byEventStartAscending");
+			$items = expSorter::sort(array('array'=>$items,'sortby'=>'eventstart', 'order'=>'ASC'));
 			$template->assign("items",$items);
 		} else if ($viewparams['type'] == "default") {
 			if (!isset($viewparams['range'])) $viewparams['range'] = "all";
@@ -506,8 +507,8 @@ class calendarmodule {
 
 		$i18n = exponent_lang_loadFile('modules/calendarmodule/class.php');
 
-//		if (!defined('SYS_SEARCH')) include_once(BASE.'subsystems/search.php');
-		include_once(BASE.'subsystems/search.php');
+//		if (!defined('SYS_SEARCH')) include_once(BASE.'framework/core/subsystems-1/search.php');
+		include_once(BASE.'framework/core/subsystems-1/search.php');
 
 		$search = null;
 		$search->category = $i18n['search_category'];
@@ -538,18 +539,18 @@ class calendarmodule {
 	// The following functions are internal helper functions
 
 	static function _getEventsForDates($edates,$sort_asc = true,$featuredonly = false) {
-//		if (!defined('SYS_SORTING')) include_once(BASE.'subsystems/sorting.php');
-		include_once(BASE.'subsystems/sorting.php');
-		if ($sort_asc && !function_exists('exponent_sorting_byEventStartAscending')) {
-			function exponent_sorting_byEventStartAscending($a,$b) {
-				return ($a->eventstart < $b->eventstart ? -1 : 1);
-			}
-		}
-		if (!$sort_asc && !function_exists('exponent_sorting_byEventStartDescending')) {
-			function exponent_sorting_byEventStartDescending($a,$b) {
-				return ($a->eventstart > $b->eventstart ? -1 : 1);
-			}
-		}
+//		if (!defined('SYS_SORTING')) include_once(BASE.'framework/core/subsystems-1/sorting.php');
+//		include_once(BASE.'framework/core/subsystems-1/sorting.php');
+//		if ($sort_asc && !function_exists('exponent_sorting_byEventStartAscending')) {
+//			function exponent_sorting_byEventStartAscending($a,$b) {
+//				return ($a->eventstart < $b->eventstart ? -1 : 1);
+//			}
+//		}
+//		if (!$sort_asc && !function_exists('exponent_sorting_byEventStartDescending')) {
+//			function exponent_sorting_byEventStartDescending($a,$b) {
+//				return ($a->eventstart > $b->eventstart ? -1 : 1);
+//			}
+//		}
 
 		global $db;
 		$events = array();
@@ -564,11 +565,12 @@ class calendarmodule {
 				$events[] = $o;
 			}
 		}
-		if ($sort_asc == true) {
-			usort($events,'exponent_sorting_byEventStartAscending');
-		} else {
-			usort($events,'exponent_sorting_byEventStartDescending');
-		}
+//		if ($sort_asc == true) {
+//			usort($events,'exponent_sorting_byEventStartAscending');
+//		} else {
+//			usort($events,'exponent_sorting_byEventStartDescending');
+//		}
+		$events = expSorter::sort(array('array'=>$events,'sortby'=>'eventstart', 'order'=>$sort_asc ? 'ASC' : 'DESC'));
 		return $events;
 	}
 }
