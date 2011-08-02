@@ -28,11 +28,11 @@ $userjsfiles = array();
  * that the subsystem has been included for use.
  * @node Subsystems:Template
  */
-define('SYS_TEMPLATE',1);
+//define('SYS_TEMPLATE',1);
 
 define('TEMPLATE_FALLBACK_VIEW',BASE.'framework/core/views/viewnotfound.tpl');
 
-include_once(BASE.'external/Smarty/libs/Smarty.class.php');
+include_once(BASE.'external/Smarty-2/libs/Smarty.class.php');
 
 class BaseTemplate {
 	// Smarty template object.
@@ -55,10 +55,9 @@ class BaseTemplate {
 	var $langdir = "";
 	//	
 	
-	//PHP5 constructor
 	function __construct($item_type, $item_dir, $view = "Default") {
 		
-		include_once(BASE.'external/Smarty/libs/Smarty.class.php');
+		include_once(BASE.'external/Smarty-2/libs/Smarty.class.php');
 		
 		// Set up the Smarty template variable we wrap around.
 		$this->tpl = new Smarty();
@@ -103,12 +102,6 @@ class BaseTemplate {
 		// Load language constants
 		$this->tpl->assign('_TR',exponent_lang_loadFile($this->langdir . $this->view . '.php'));
 		
-	}
-	
-	//PHP4: compatibility wrapper
-	function BaseTemplate($item_type, $item_dir, $view = "Default") {
-		//call PHP5 constructor
-		$this->__construct($item_type, $item_dir, $view);
 	}
 	
 	/*
@@ -162,7 +155,6 @@ class template extends BaseTemplate {
 		
 	var $module = '';	
 	
-	//PHP5 constructor
 	function __construct($module, $view = null, $loc = null, $caching=false, $type=null) {
 		$type = !isset($type) ? 'modules' : $type;
 
@@ -191,18 +183,11 @@ class template extends BaseTemplate {
 		$this->viewconfig = ($container && isset($container->view_data) && $container->view_data != "" ? unserialize($container->view_data) : array());
 		$this->tpl->assign("__viewconfig", $this->viewconfig);
 	}
-	
-	//PHP4: compatibility wrapper
-	function template($module, $view = null, $loc = null, $caching=false) {
-		$this->__construct($module, $view, $loc, $caching);
-	}
-	
-	
 }
 
 class controllerTemplate extends baseTemplate {
 	function __construct($controller, $viewfile) {
-		include_once(BASE.'external/Smarty/libs/Smarty.class.php');
+		include_once(BASE.'external/Smarty-2/libs/Smarty.class.php');
 		
 		// Set up the Smarty template variable we wrap around.
 		$this->tpl = new Smarty();
@@ -250,24 +235,16 @@ class controllerTemplate extends baseTemplate {
  *
  * Control Template wrapper
  *
- * 
  */
 class ControlTemplate extends BaseTemplate {
 	
 	var $viewitem = "";
-	
-	//PHP5 constructor
+
 	function __construct($control, $view = "Default", $loc = null) {
 		parent::__construct("controls", $control, $view);
-		
 		$this->tpl->assign("__name", $control);
-		}
-		
-	function ControlTemplate($control, $view = "Default", $loc = null) {
-		//PHP4: compatibility wrapper 
-		$this->__construct($control, $view, $loc);
 	}
-		
+
 	/*
 	 * Render the template and return the result to the caller.
 	 * temporary override for testing functionality
@@ -294,30 +271,16 @@ class ControlTemplate extends BaseTemplate {
  * @subpackage Template
  */
 class formtemplate extends BaseTemplate {
-	
-	//PHP5 constructor
+
 	function __construct($form, $view) {
 		parent::__construct("forms", $form, $view);
-		
 		$this->tpl->assign("__name", $form);
-	}
-	
-	//PHP4: compatibility wrapper
-	function formtemplate($form, $view) {
-		$this->__construct($form, $view);
 	}
 }
 
 class filetemplate extends BaseTemplate {
-		
-	//PHP5 constructor
 	function __construct($file) {
 		parent::__construct("", "", $file);
-	}
-		
-	//PHP4: compatibility wrapper
-	function filetemplate($file) {
-		$this->__construct($file);
 	}
 }
 
@@ -331,15 +294,8 @@ class filetemplate extends BaseTemplate {
  * @param string $view The name of the standalone view.
  */
 class standalonetemplate extends BaseTemplate {
-		
-	//PHP5 constructor
 	function __construct($view) {
 		parent::__construct("globalviews", "", $view);
-	}
-		
-	//PHP4: compatibility wrapper
-	function standalonetemplate($view) {
-		$this->__construct($view);
 	}
 }
 
@@ -386,8 +342,9 @@ function exponent_template_getViewConfigForm($module,$view,$form,$values) {
 		$form_file = $filepath;
 	}
 	
-	if (!defined("SYS_FORMS")) require_once(BASE."subsystems/forms.php");
-	exponent_forms_initialize();
+//	if (!defined("SYS_FORMS")) require_once(BASE."subsystems/forms.php");
+	require_once(BASE."subsystems/forms.php");
+//	exponent_forms_initialize();
 	
 	if ($form == null) $form = new form();
 	if ($form_file == "") return $form;
@@ -492,6 +449,5 @@ function exponent_template_getViewParams($viewfile) {
 	}
 	return $vparam;
 }
-
 
 ?>
