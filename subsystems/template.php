@@ -66,7 +66,7 @@ class BaseTemplate {
 		//FJD - this might break some editors...we'll see.
 		$this->tpl->php_handling = SMARTY_PHP_REMOVE;
 		//$this->tpl->plugins_dir[] = BASE . 'subsystems/template/Smarty/plugins';
-		$this->tpl->plugins_dir[] = BASE . 'plugins';
+		$this->tpl->plugins_dir[] = BASE . 'framework/plugins';
 		
 		//autoload filters
 		$this->tpl->autoload_filters = array('post' => array('includeMiscFiles'));
@@ -210,7 +210,7 @@ class controllerTemplate extends baseTemplate {
 		//FJD - this might break some editors...we'll see.
 		$this->tpl->php_handling = SMARTY_PHP_REMOVE;
 		//$this->tpl->plugins_dir[] = BASE . 'subsystems/template/Smarty/plugins';
-		$this->tpl->plugins_dir[] = BASE . 'plugins';
+		$this->tpl->plugins_dir[] = BASE . 'framework/plugins';
 		
 		//autoload filters
 		$this->tpl->autoload_filters = array('post' => array('includeMiscFiles'));
