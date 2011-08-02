@@ -1,15 +1,14 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html>
 <head>
-    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <title>File Manager</title>
 
-    <link rel="stylesheet" type="text/css" href="{$smarty.const.URL_FULL}framework/modules/file/assets/css/filemanager.css"> 
+    <link rel="stylesheet" type="text/css" href="{$smarty.const.URL_FULL}framework/modules/file/assets/css/filemanager.css" />
 
     <script type="text/javascript" src="{$smarty.const.YUI2_PATH}yahoo-dom-event/yahoo-dom-event.js"></script>
     <script type="text/javascript" src="{$smarty.const.YUI2_PATH}container/container-min.js"></script>
     <script type="text/javascript" src="{$smarty.const.YUI2_PATH}connection/connection-min.js"></script>
-
     <script type="text/javascript" src="{$smarty.const.YUI2_PATH}json/json-min.js"></script>
     <script type="text/javascript" src="{$smarty.const.YUI2_PATH}datasource/datasource-min.js"></script>
     <script type="text/javascript" src="{$smarty.const.YUI2_PATH}autocomplete/autocomplete-min.js"></script>
