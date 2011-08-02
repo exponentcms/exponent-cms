@@ -23,8 +23,8 @@ class database_importer {
 		
 		exponent_lang_loadDictionary('modules','database');
 	
-//		if (!defined('SYS_FORMS')) require_once(BASE.'subsystems/forms.php');
-		require_once(BASE.'subsystems/forms.php');
+//		if (!defined('SYS_FORMS')) require_once(BASE.'framework/core/subsystems-1/forms.php');
+		require_once(BASE.'framework/core/subsystems-1/forms.php');
 //		exponent_forms_initialize();
 
 		$form = new form();

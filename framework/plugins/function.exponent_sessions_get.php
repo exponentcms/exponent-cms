@@ -19,8 +19,8 @@
 /** @define "BASE" ".." */
 
 function smarty_function_exponent_sessions_get($params,&$smarty) {
-//	if (!defined("SYS_SESSIONS")) include_once(BASE."subsystems/sessions.php");
-	include_once(BASE."subsystems/sessions.php");
+//	if (!defined("SYS_SESSIONS")) include_once(BASE."framework/core/subsystems-1/sessions.php");
+	include_once(BASE."framework/core/subsystems-1/sessions.php");
 	$smarty->assign($params['var'], exponent_sessions_get($params['var']));
 }
 

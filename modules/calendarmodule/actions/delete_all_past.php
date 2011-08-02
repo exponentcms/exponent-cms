@@ -23,8 +23,8 @@ if (!defined('EXPONENT')) exit('');
 
 //$item = $db->selectObject('calendar','id='.intval($_POST['id']));
 
-//if (!defined("SYS_DATETIME")) include_once(BASE."subsystems/datetime.php");
-include_once(BASE."subsystems/datetime.php");
+//if (!defined("SYS_DATETIME")) include_once(BASE."framework/core/subsystems-1/datetime.php");
+include_once(BASE."framework/core/subsystems-1/datetime.php");
 $dates = $db->selectObjects("eventdate",$locsql." AND date < ".strtotime('-1 months',time()));
 $all_events = calendarmodule::_getEventsForDates($dates);
 

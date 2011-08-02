@@ -31,8 +31,8 @@ if (isset($_GET['date_id']) || isset($_GET['src'])) {
 		$config->enable_ical = 1;
 	}
 	if ($config->enable_ical) {
-//		if (!defined("SYS_DATETIME")) include_once(BASE."subsystems/datetime.php");
-		include_once(BASE."subsystems/datetime.php");
+//		if (!defined("SYS_DATETIME")) include_once(BASE."framework/core/subsystems-1/datetime.php");
+		include_once(BASE."framework/core/subsystems-1/datetime.php");
 
 		if (isset($_GET['date_id'])) {  // get single specific event only
 			$dates = array($db->selectObject("eventdate","id=".intval($_GET['date_id'])));
@@ -51,8 +51,8 @@ if (isset($_GET['date_id']) || isset($_GET['src'])) {
 			$locsql .= ')';
 
 			if (!function_exists("exponent_datetime_startOfDayTimestamp")) {
-//				if (!defined("SYS_DATETIME")) include_once(BASE."subsystems/datetime.php");
-				include_once(BASE."subsystems/datetime.php");
+//				if (!defined("SYS_DATETIME")) include_once(BASE."framework/core/subsystems-1/datetime.php");
+				include_once(BASE."framework/core/subsystems-1/datetime.php");
 			}
 			$day = exponent_datetime_startOfDayTimestamp(time());
 			if (isset($config->rss_limit) && ($config->rss_limit > 0)) {

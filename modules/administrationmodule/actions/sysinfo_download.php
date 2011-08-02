@@ -38,10 +38,10 @@ if (exponent_permissions_check('configuration',exponent_core_makeLocation('admin
 	
 	$template->assign('phpinfo',$str);
 	
-//	if (!defined('SYS_MODULES')) require_once(BASE.'subsystems/modules.php');
-//	if (!defined('SYS_INFO')) require_once(BASE.'subsystems/info.php');
-	require_once(BASE.'subsystems/modules.php');
-	require_once(BASE.'subsystems/info.php');
+//	if (!defined('SYS_MODULES')) require_once(BASE.'framework/core/subsystems-1/modules.php');
+//	if (!defined('SYS_INFO')) require_once(BASE.'framework/core/subsystems-1/info.php');
+	require_once(BASE.'framework/core/subsystems-1/modules.php');
+	require_once(BASE.'framework/core/subsystems-1/info.php');
 
 	$mods = array();
 	

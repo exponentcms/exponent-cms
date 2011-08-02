@@ -23,8 +23,8 @@ class formbuilder_report {
 		$i18n = exponent_lang_loadFile('datatypes/formbuilder_report.php');
 	
 		global $db;
-//		if (!defined('SYS_FORMS')) require_once(BASE.'subsystems/forms.php');
-		require_once(BASE.'subsystems/forms.php');
+//		if (!defined('SYS_FORMS')) require_once(BASE.'framework/core/subsystems-1/forms.php');
+		require_once(BASE.'framework/core/subsystems-1/forms.php');
 //		exponent_forms_initialize();
 		
 		$form = new form();
@@ -78,8 +78,8 @@ class formbuilder_report {
 	}
 	
 	static function update($values, $object) {
-//		if (!defined('SYS_FORMS')) require_once(BASE.'subsystems/forms.php');
-		require_once(BASE.'subsystems/forms.php');
+//		if (!defined('SYS_FORMS')) require_once(BASE.'framework/core/subsystems-1/forms.php');
+		require_once(BASE.'framework/core/subsystems-1/forms.php');
 //		exponent_forms_initialize();
 		$object->name = $values['name'];
 		$object->description = $values['description'];

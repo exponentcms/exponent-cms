@@ -52,12 +52,12 @@ if (($item == null && exponent_permissions_check("post",$loc)) ||
 		$item->feedback_email = "";
 	}
 
-//	if (!defined("SYS_WORKFLOW")) require_once(BASE."subsystems/workflow.php");
-//	if (!defined("SYS_DATETIME")) require_once(BASE."subsystems/datetime.php");
-//	if (!defined("SYS_FORMS")) require_once(BASE."subsystems/forms.php");
-	require_once(BASE."subsystems/workflow.php");
-	require_once(BASE."subsystems/datetime.php");
-	require_once(BASE."subsystems/forms.php");
+//	if (!defined("SYS_WORKFLOW")) require_once(BASE."framework/core/subsystems-1/workflow.php");
+//	if (!defined("SYS_DATETIME")) require_once(BASE."framework/core/subsystems-1/datetime.php");
+//	if (!defined("SYS_FORMS")) require_once(BASE."framework/core/subsystems-1/forms.php");
+	require_once(BASE."framework/core/subsystems-1/workflow.php");
+	require_once(BASE."framework/core/subsystems-1/datetime.php");
+	require_once(BASE."framework/core/subsystems-1/forms.php");
 
 	//Get and save the image
 	/*  Yeah, no. Yeah, yes... Maia 6/23/09 */

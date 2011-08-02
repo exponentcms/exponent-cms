@@ -19,8 +19,8 @@
 /** @define "BASE" ".." */
 
 function smarty_modifier_is_logged_in($string) {
-//	if (!defined("SYS_SESSIONS")) include_once(BASE."subsystems/sessions.php");
-	include_once(BASE."subsystems/sessions.php");
+//	if (!defined("SYS_SESSIONS")) include_once(BASE."framework/core/subsystems-1/sessions.php");
+	include_once(BASE."framework/core/subsystems-1/sessions.php");
 	if(exponent_sessions_loggedIn()) {
 		return true; 
 	} else {

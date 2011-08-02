@@ -24,8 +24,8 @@ exponent_flow_set(SYS_FLOW_PROTECTED,SYS_FLOW_ACTION);
 
 if ($user) {
 	$template = new template('administrationmodule','_groupmanager',$loc);
-//	if (!defined('SYS_USERS')) require_once(BASE.'subsystems/users.php');
-	require_once(BASE.'subsystems/users.php');
+//	if (!defined('SYS_USERS')) require_once(BASE.'framework/core/subsystems-1/users.php');
+	require_once(BASE.'framework/core/subsystems-1/users.php');
 	$groups = array();
 	foreach ($db->selectObjects('groupmembership','member_id='.$user->id.' AND is_admin=1') as $memb) {
 		$groups[] = $db->selectObject('group','id='.$memb->group_id);

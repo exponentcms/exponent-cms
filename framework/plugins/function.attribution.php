@@ -20,8 +20,8 @@
 
 function smarty_function_attribution($params,&$smarty) {
 	if (isset($params['user_id'])) {
-//		if (!defined("SYS_USERS")) require_once(BASE."subsystems/users.php");
-		require_once(BASE."subsystems/users.php");
+//		if (!defined("SYS_USERS")) require_once(BASE."framework/core/subsystems-1/users.php");
+		require_once(BASE."framework/core/subsystems-1/users.php");
 		$u = exponent_users_getUserById($params['user_id']);
 	} elseif (isset($params['user'])) {
 		$u = $params['user'];

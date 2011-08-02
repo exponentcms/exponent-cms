@@ -42,7 +42,7 @@ class keywords {
 
 	public function getTextBySection($section) {
 		global $db;
-		if (!defined('SYS_SEARCH')) include_once(BASE.'subsystems/search.php');
+		if (!defined('SYS_SEARCH')) include_once(BASE.'framework/core/subsystems-1/search.php');
 	
 		$id = is_object($section) ? $section->id : $section;
 		$refs = $db->selectObjects('sectionref', 'section='.$id);

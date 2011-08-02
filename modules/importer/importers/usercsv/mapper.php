@@ -20,8 +20,8 @@
 
 //Sanity check
 if (!defined('EXPONENT')) exit('');
-//if (!defined("SYS_FORMS")) require_once(BASE."subsystems/forms.php");
-require_once(BASE."subsystems/forms.php");
+//if (!defined("SYS_FORMS")) require_once(BASE."framework/core/subsystems-1/forms.php");
+require_once(BASE."framework/core/subsystems-1/forms.php");
 
 $i18n = exponent_lang_loadFile('modules/importer/importers/usercsv/mapper.php');
 

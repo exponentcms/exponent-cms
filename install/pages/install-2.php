@@ -60,7 +60,7 @@ $i18n = exponent_lang_loadFile('install/pages/dbconfig.php');
         <span class="label"><?php echo $i18n['backend']; ?>: </span>
         <select name="sc[db_engine]" onchange="showOptions(this.value);">
 		<?php
-		require_once(BASE.'subsystems/database.php');
+		require_once(BASE.'framework/core/subsystems-1/database.php');
 		foreach (exponent_database_backends(1) as $name=>$display) {
             echo '<option value="'.$name.'"';
             if ($config['db_engine'] == $name) {
@@ -83,7 +83,7 @@ $i18n = exponent_lang_loadFile('install/pages/dbconfig.php');
 		<select name="sc[DB_ENCODING]" value="<?php echo $config['DB_ENCODING']; ?>" >
 <?PHP
 	if (!defined('SYS_CONFIG')) {
-		include_once(BASE.'subsystems/config.php');
+		include_once(BASE.'framework/core/subsystems-1/config.php');
 	}
 
 	foreach(exponent_config_dropdownData("DB_ENCODING") as $key=>$value){

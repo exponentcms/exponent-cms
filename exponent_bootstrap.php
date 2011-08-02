@@ -72,7 +72,7 @@ require_once(BASE.'exponent_version.php');
 define('EXPONENT', '1');
 
 // load the constants from the global config, theme config, and then default config settings
-require_once(BASE . 'subsystems/config/load.php');
+require_once(BASE . 'framework/core/subsystems-1/config/load.php');
 
 // Set the default timezone.
 if (function_exists('date_default_timezone_set')) {

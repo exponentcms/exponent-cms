@@ -23,15 +23,15 @@
 if (!defined('EXPONENT')) exit('');
 
 if (exponent_permissions_check('configuration',exponent_core_makeLocation('administrationmodule'))) {
-//	if (!defined('SYS_CONFIG')) require_once(BASE.'subsystems/config.php');
-	require_once(BASE.'subsystems/config.php');
+//	if (!defined('SYS_CONFIG')) require_once(BASE.'framework/core/subsystems-1/config.php');
+	require_once(BASE.'framework/core/subsystems-1/config.php');
 
 	$continue = true;
 	if ($user->is_admin == 1) { // Only do the database stuff if we are a super admin
 		$errors = '';
 		
 		$i18n = exponent_lang_loadFile('modules/administrationmodule/actions/config_save.php');
-		
+
 		// Test the prefix
 		if (preg_match("/[^A-Za-z0-9]/",$_POST['c']['DB_TABLE_PREFIX'])) {
 			$continue = false;
@@ -64,8 +64,6 @@ if (exponent_permissions_check('configuration',exponent_core_makeLocation('admin
 		exponent_config_saveConfiguration($_POST);
 		$ob = "";
 		if ($user->is_admin == 1) {
-			$i18n = exponent_lang_loadFile('db_recover.php');
-		
 			$db = $newdb;
 			ob_start();
 			include_once(BASE.'modules/administrationmodule/actions/installtables.php');

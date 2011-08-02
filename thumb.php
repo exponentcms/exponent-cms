@@ -27,7 +27,7 @@ if (!defined('SYS_SESSION_KEY')) define('SYS_SESSION_KEY',PATH_RELATIVE);
     	include_once('subsystems/autoloader.php');
 //    	include_once('subsystems/config/load.php');  // FIXME already loaded in exponent_bootstrap.php
     	// Initialize the Database Subsystem
-    	include_once(BASE.'subsystems/database.php');
+    	include_once(BASE.'framework/core/subsystems-1/database.php');
     	$db = exponent_database_connect(DB_USER,DB_PASS,DB_HOST.':'.DB_PORT,DB_NAME);
 
     	$file_obj = new expFile($_GET['id']);         
