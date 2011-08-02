@@ -120,7 +120,8 @@ class ckeditorcontrol extends formcontrol {
             "content"=>$content,
             //"src"=>PATH_RELATIVE."external/ckeditor/ckeditor.js"
          ));
-		$html = "<script src=\"".PATH_RELATIVE."external/ckeditor/ckeditor.js\"></script>";
+//		$html = "<script src=\"".PATH_RELATIVE."external/ckeditor/ckeditor.js\"></script>";
+		$html = "<script src=\"".PATH_RELATIVE."external/editors/ckeditor/ckeditor.js\"></script>";
 		$html .= "<textarea class=\"textarea\" id=\"".createValidId($name)."\" name=\"$name\"";
 		$html .= " rows=\"" . $this->rows . "\" cols=\"" . $this->cols . "\"";
 		if ($this->accesskey != "") $html .= " accesskey=\"" . $this->accesskey . "\"";

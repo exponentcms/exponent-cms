@@ -46,13 +46,8 @@ class formbuilder_form {
 		
 		$form->register('name',$i18n['name'],new textcontrol($object->name));
 		$form->register('description',$i18n['description'],new texteditorcontrol($object->description));
+		$form->register('response',$i18n['response'],new htmleditorcontrol($object->response));
 
-		if (SITE_WYSIWYG_EDITOR=='ckeditor') {
-    		$form->register('response',$i18n['response'],new ckeditorcontrol($object->response));
-		} else {
-    		$form->register('response',$i18n['response'],new htmleditorcontrol($object->response));		    
-		}
-		
 		$form->register(null,'', new htmlcontrol('<h3>'.$i18n['button_header'].'</h3><hr size="1" />'));
 		$form->register('submitbtn',$i18n['submitbtn'], new textcontrol($object->submitbtn));
 		$form->register('resetbtn',$i18n['resetbtn'], new textcontrol($object->resetbtn));

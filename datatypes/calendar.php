@@ -45,11 +45,7 @@ class calendar {
 		}
 
 		$form->register('title',$i18n['title'],new textcontrol($object->title));
-		if (SITE_WYSIWYG_EDITOR=='ckeditor') {
-    		$form->register('body',$i18n['body'],new ckeditorcontrol($object->body));
-		} else {
-    		$form->register('body',$i18n['body'],new htmleditorcontrol($object->body));
-		}
+		$form->register('body',$i18n['body'],new htmleditorcontrol($object->body));
 
 		$form->register(null,'', new htmlcontrol('<hr size="1" />'));
 
