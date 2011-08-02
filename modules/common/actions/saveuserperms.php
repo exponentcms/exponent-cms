@@ -16,12 +16,14 @@
 # GPL: http://www.gnu.org/licenses/gpl.txt
 #
 ##################################################
+/** @define "BASE" "../../.." */
 
 if (!defined('EXPONENT')) exit('');
 
 if (exponent_permissions_check('administrate',$loc)) {
-	if (!defined('SYS_USERS')) include_once(BASE.'subsystems/users.php');
-	
+//	if (!defined('SYS_USERS')) include_once(BASE.'subsystems/users.php');
+	include_once(BASE.'subsystems/users.php');
+
 	$locarray = array();
 	if ($loc->mod == 'navigationmodule' && !empty($perms[1]) && $perms[1] == 'manage') {
 		$sections = navigationmodule::levelTemplate($loc->int);

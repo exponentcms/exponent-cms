@@ -1,26 +1,29 @@
 <?php
+
+##################################################
+#
+# Copyright (c) 2004-2011 OIC Group, Inc.
+# Written and Designed by James Hunt
+#
+# This file is part of Exponent
+#
+# Exponent is free software; you can redistribute
+# it and/or modify it under the terms of the GNU
+# General Public License as published by the Free
+# Software Foundation; either version 2 of the
+# License, or (at your option) any later version.
+#
+# GPL: http://www.gnu.org/licenses/gpl.txt
+#
+##################################################
+
 /**
- *  This file is part of Exponent
- *  Exponent is free software; you can redistribute
- *  it and/or modify it under the terms of the GNU
- *  General Public License as published by the Free
- *  Software Foundation; either version 2 of the
- *  License, or (at your option) any later version.
- *
- * The file that holds the fix_database class
- *
- * @link http://www.gnu.org/licenses/gpl.txt GPL http://www.gnu.org/licenses/gpl.txt
- * @package Exponent-CMS
- * @copyright 2004-2011 OIC Group, Inc.
- * @author Adam Kessler <adam@oicgroup.net>
- * @version 2.0.0
+ * @subpackage Upgrade
+ * @package Installation
  */
 
 /**
  * This is the class fix_database
- *
- * @subpackage Upgrade
- * @package Installation
  */
 class fix_database extends upgradescript {
 	protected $from_version = '0.96.3';
@@ -94,28 +97,28 @@ class fix_database extends upgradescript {
 		print_r("</pre>");
 
 // FIXME Not needed when locationrefs are removed
-		 print_r("<pre>");
-	 // add missing locationref's based on existing sectionref's
-		 print_r("<b>Searching for detached modules with no original (no matching locationref)</b><br><br>");
-		 $sectionrefs = $db->selectObjects('sectionref',1);
-		 $found = 0;
-		 foreach ($sectionrefs as $sectionref) {
-			 if ($db->selectObject('locationref',"module='".$sectionref->module."' AND source='".$sectionref->source."'") == null) {
-			 // There is no locationref for sectionref.  Populate reference
-				 $newLocRef = null;
-				 $newLocRef->module   = $sectionref->module;
-				 $newLocRef->source   = $sectionref->source;
-				 $newLocRef->internal = $sectionref->internal;
-				 $newLocRef->refcount = $sectionref->refcount;
-				 $db->insertObject($newLocRef,'locationref');
-				 print_r("Copied: ".$sectionref->module." - ".$sectionref->source."<br>");
-				 $found += 1;
-			 }
-		 }
-		 if (!$found) {
-			 print_r(" - None Found: Good!<br>");
-		 }
-		 print_r("</pre>");
+//		 print_r("<pre>");
+//	 // add missing locationref's based on existing sectionref's
+//		 print_r("<b>Searching for detached modules with no original (no matching locationref)</b><br><br>");
+//		 $sectionrefs = $db->selectObjects('sectionref',1);
+//		 $found = 0;
+//		 foreach ($sectionrefs as $sectionref) {
+//			 if ($db->selectObject('locationref',"module='".$sectionref->module."' AND source='".$sectionref->source."'") == null) {
+//			 // There is no locationref for sectionref.  Populate reference
+//				 $newLocRef = null;
+//				 $newLocRef->module   = $sectionref->module;
+//				 $newLocRef->source   = $sectionref->source;
+//				 $newLocRef->internal = $sectionref->internal;
+//				 $newLocRef->refcount = $sectionref->refcount;
+//				 $db->insertObject($newLocRef,'locationref');
+//				 print_r("Copied: ".$sectionref->module." - ".$sectionref->source."<br>");
+//				 $found += 1;
+//			 }
+//		 }
+//		 if (!$found) {
+//			 print_r(" - None Found: Good!<br>");
+//		 }
+//		 print_r("</pre>");
 
 		 print_r("<pre>");
 	 // delete sectionref's & locationref's that have empty sources since they are dead

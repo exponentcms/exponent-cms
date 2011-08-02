@@ -25,15 +25,9 @@ class fileController extends expController {
     public $requires_login = array('picker'=>'must be logged in','edit_alt'=>'must be logged in');
 	public $codequality = 'beta';
 
-    function name() { return $this->displayname(); } //for backwards compat with old modules
     function displayname() { return "File Manager"; }
     function description() { return "Add and manage Exponent Files"; }
     function author() { return "Phillip Ball - OIC Group, Inc"; }
-    function hasSources() { return true; }
-    function hasViews() { return true; }
-    function hasContent() { return true; }
-    function supportsWorkflow() { return false; }
-    function isSearchable() { return false; }
 
     public function manage_fixPaths() {
         // fixes file directory issues when the old file class was used to save record
@@ -259,6 +253,9 @@ class fileController extends expController {
     public function editShare() {
         global $user;
         $file = new expFile($this->params['id']);
+		if(!isset($this->params['newValue'])) {
+			$this->params['newValue'] = 0;
+		}
         if ($user->id==$file->poster || $user->is_acting_admin==1) {
             $file->shared = $this->params['newValue'];
             $file->save();

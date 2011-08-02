@@ -15,8 +15,11 @@
 # GPL: http://www.gnu.org/licenses/gpl.txt
 #
 ##################################################
+/** @define "BASE" ".." */
+
 function smarty_function_yuilogger($params,&$smarty) {
-	if (!defined('SYS_JAVBASCRIPT')) require_once(BASE.'subsystems/javascript.php');
+//	if (!defined('SYS_JAVASCRIPT')) require_once(BASE.'subsystems/javascript.php');
+	require_once(BASE.'subsystems/javascript.php');
 	global $userjsfiles;
 		$logger =  "
 		
@@ -38,9 +41,7 @@ function smarty_function_yuilogger($params,&$smarty) {
 					YAHOO.util.Dom.setStyle(skinContainer,'z-index','999')
 			    }
 			});
-		
-		
-		
+
 		// 
 		// 
 		// 
@@ -60,6 +61,5 @@ function smarty_function_yuilogger($params,&$smarty) {
 
 	$userjsfiles["logger"]["logger"] = $logger;
 }
-
 
 ?>

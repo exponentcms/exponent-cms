@@ -23,7 +23,7 @@
  * has been included for use.
  * @node Subsystems:Flow
  */
-define('SYS_FLOW',1);
+//define('SYS_FLOW',1);
 
 /* exdoc
  * Flow Type Specifier : None
@@ -55,8 +55,6 @@ define('SYS_FLOW_SECTIONAL', 1);
  */
 define('SYS_FLOW_ACTION',	 2);
 
-
-
 $SYS_FLOW_REDIRECTIONPATH = 'exponent_default';
 
 /* exdoc
@@ -79,7 +77,7 @@ function exponent_flow_set($access_level,$url_type) {
 	exponent_sessions_set($SYS_FLOW_REDIRECTIONPATH.'_flow_' . $access_level . '_' . $url_type, $router->current_url);
 	exponent_sessions_set($SYS_FLOW_REDIRECTIONPATH.'_flow_last_' . $access_level, $router->current_url);
 	
-	//FIXME:  Glue code to try to get new hisotry and old flow to play nicely together.
+	//FIXME:  Glue code to try to get new history and old flow to play nicely together.
 	expHistory::set('viewable', $router->params);
 }
 

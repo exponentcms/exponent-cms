@@ -16,6 +16,7 @@
 # GPL: http://www.gnu.org/licenses/gpl.txt
 #
 ##################################################
+/** @define "BASE" "." */
 
 define('SCRIPT_EXP_RELATIVE','');
 define('SCRIPT_FILENAME','popup.php');
@@ -26,7 +27,8 @@ ob_start();
 require_once('exponent.php');
 
 // Initialize the Theme Subsystem
-if (!defined('SYS_THEME')) require_once(BASE.'subsystems/theme.php');
+//if (!defined('SYS_THEME')) require_once(BASE.'subsystems/theme.php');
+require_once(BASE.'subsystems/theme.php');
 
 $loc = exponent_core_makeLocation(
 	(isset($_GET['module'])?$_GET['module']:''),

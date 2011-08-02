@@ -24,15 +24,9 @@ class youtubeController extends expController {
     public $remove_configs = array('ealerts','tags','files','rss','comments');
 	public $codequality = 'beta';
 
-	function name() { return $this->displayname(); } //for backwards compat with old modules
 	function displayname() { return "YouTube"; }
 	function description() { return "Display youtube videos on your page."; }
 	function author() { return "Phillip Ball - OIC Group, Inc"; }
-	function hasSources() { return true; }
-	function hasViews() { return true; }
-	function hasContent() { return true; }
-	function supportsWorkflow() { return false; }
-	function isSearchable() { return false; }	
 	
 	function showall() {
         $yt = new $this->basemodel_name();
@@ -46,7 +40,7 @@ class youtubeController extends expController {
         }
 		// force fix for menus appearing BEHIND the video in IE
         foreach ($vids as $key=>$val) {
-            $val->embed_code = preg_replace("/\" frameborder=\"/", '?wmode=transparent" frameborder="', $val->embed_code);
+            $val->embed_code = preg_replace("/\" frameborder=\"/", '?wmode=opaque" frameborder="', $val->embed_code);
         }
 
         assign_to_template(array('items'=>$vids));

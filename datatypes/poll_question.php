@@ -30,11 +30,13 @@
 #
 # $Id: poll_question.php,v 1.3 2005/04/25 19:02:17 filetreefrog Exp $
 ##################################################
+/** @define "BASE" ".." */
 
 class poll_question {
-	function form($object) {
-		if (!defined('SYS_FORMS')) require_once(BASE.'subsystems/forms.php');
-		exponent_forms_initialize();
+	static function form($object) {
+//		if (!defined('SYS_FORMS')) require_once(BASE.'subsystems/forms.php');
+		require_once(BASE.'subsystems/forms.php');
+//		exponent_forms_initialize();
 		
 		$form = new form();
 		if (!isset($object->id)) {
@@ -54,7 +56,7 @@ class poll_question {
 		return $form;
 	}
 	
-	function update($values,$object) {
+	static function update($values,$object) {
 		$object->question = $values['question'];
 		$object->open_results = (isset($values['open_results']) ? 1 : 0);
 		$object->open_voting = (isset($values['open_voting']) ? 1 : 0);

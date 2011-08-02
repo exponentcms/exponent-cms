@@ -27,6 +27,8 @@ return array(
     'image'=>array(
         DB_FIELD_TYPE=>DB_DEF_STRING,
         DB_FIELD_LEN=>255),
+    'use_gravatar'=>array(
+        DB_FIELD_TYPE=>DB_DEF_BOOLEAN),
 );
 
 ?>

@@ -17,6 +17,7 @@
 # GPL: http://www.gnu.org/licenses/gpl.txt
 #
 ##################################################
+/** @define "BASE" "." */
 
 define('SCRIPT_EXP_RELATIVE','');
 define('SCRIPT_FILENAME','index.php');
@@ -78,10 +79,7 @@ if (MAINTENANCE_MODE && !exponent_users_isAdmin() && ( !isset($_REQUEST['module'
 	}
 
 	// check to see if we need to install or upgrade the system
-	if (@file_exists(BASE.'install/not_configured') || !(file_exists(BASE.'conf/config.php'))) {
-		header('Location: '.URL_FULL.'install/index.php');
-		exit('Redirecting to the Exponent Install Wizard');
-	}
+	expVersion::checkVersion();
 
 	// Handle sub themes
 	$page = exponent_theme_getTheme();

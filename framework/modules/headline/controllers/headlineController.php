@@ -32,14 +32,9 @@ class headlineController extends expController {
         'tags'
     );
 	   
-    function name() { return $this->displayname(); } //for backwards compat with old modules
     function displayname() { return "Headline"; }
     function description() { return "Allows Admin's to create headlines for sections, and pulls the Title in for modules actions."; }
     function author() { return "Phillip Ball - OIC Group, Inc"; }
-    function hasSources() { return true; }
-    function hasViews() { return true; }
-    function hasContent() { return true; }
-    function supportsWorkflow() { return false; }
     function isSearchable() { return true; }
     
     public function show() {

@@ -16,13 +16,15 @@
 # GPL: http://www.gnu.org/licenses/gpl.txt
 #
 ##################################################
+/** @define "BASE" "../../.." */
 
 // Part of the User Management Category
 
 if (!defined('EXPONENT')) exit('');
 
 if (isset($_GET['id']) && exponent_permissions_check('user_management',exponent_core_makeLocation('administrationmodule'))) {
-	if (!defined('SYS_USERS')) require_once(BASE."subsystems/users.php");
+//	if (!defined('SYS_USERS')) require_once(BASE."subsystems/users.php");
+	require_once(BASE."subsystems/users.php");
 	//exponent_users_delete(intval($_GET['id']));
 	$u = new user(intval($_GET['id']));
 	$u->delete();

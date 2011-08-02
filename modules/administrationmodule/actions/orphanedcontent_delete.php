@@ -29,7 +29,7 @@ if (exponent_permissions_check('database',exponent_core_makeLocation('administra
 		$mod->deleteIn(exponent_core_makeLocation($_GET['mod'],$_GET['delsrc']));
 	}
 	
-	$db->delete('locationref',"module='" . $_GET['mod'] . "' AND source='$src' AND refcount=0");
+//	$db->delete('locationref',"module='" . $_GET['mod'] . "' AND source='$src' AND refcount=0");
 	$db->delete('sectionref',"module='" . $_GET['mod'] . "' AND source='$src' AND refcount=0");
 	
 	exponent_flow_redirect();

@@ -21,7 +21,6 @@
 {css unique="home" link="`$asset_path`css/ecom.css"}
 
 {/css}
-
 <div class="module store showall">
     {if $moduletitle}<h1>{$moduletitle}</h1>{/if}
     <h1>{$current_category->title}</h1>
@@ -72,11 +71,7 @@
                     {/permissions}
             
                     <a href="{link controller=store action=showall title=$cat->sef_url}" class="cat-img-link">
-                        {if $cat->expFile[0]->id}
-                            {img file_id=$cat->expFile[0]->id w=100 class="cat-image"}
-                        {else}
-                            {img file_id=$cat->getFirstImageId() w=100 class="cat-image"}
-                        {/if}
+						{img file_id=$cat->getCategoryImage($cat->expFile[0]->id) w=100 class="cat-image"}
                     </a>
                 
                     <h3>

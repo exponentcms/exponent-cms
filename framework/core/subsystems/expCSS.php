@@ -24,7 +24,7 @@
 
 class expCSS {
 
-    public function pushToHead($params) {
+    public static function pushToHead($params) {
         global $css_primer, $css_core, $css_links, $css_theme, $css_inline;
         
         // primer css
@@ -60,12 +60,12 @@ class expCSS {
         }
     }    
 
-    public function parseCSSFiles() {
+    public static function parseCSSFiles() {
         global $css_primer, $css_core, $css_links, $css_theme, $css_inline, $head_config;
         $html = "";
         
         // gather up all .css files in themes/mytheme/css/
-        expCSS::themeCSS();
+        self::themeCSS();
         
         unset($head_config['xhtml']);
         $css_files = array();

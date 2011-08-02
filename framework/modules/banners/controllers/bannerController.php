@@ -23,15 +23,8 @@ class bannerController extends expController {
     public $useractions = array('showall'=>'Display Banner(s)');
 	public $codequality = 'beta';
 
-    function name() { return $this->displayname(); } //for backwards compat with old modules
     function displayname() { return "Banners"; }
     function description() { return "Use this to display banners on your website."; }
-    function author() { return "Adam Kessler - OIC Group, Inc"; }
-    function hasSources() { return true; }
-    function hasViews() { return true; }
-    function hasContent() { return true; }
-    function supportsWorkflow() { return false; }
-    function isSearchable() { return false; }
     
     public function showall() {
         $banners = array();

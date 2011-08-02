@@ -16,10 +16,12 @@
 # GPL: http://www.gnu.org/licenses/gpl.txt
 #
 ##################################################
+/** @define "BASE" "../../.." */
 
 if (!defined('EXPONENT')) exit('');
 
-if (exponent_permissions_check('administrate',$loc)) {
+//if (exponent_permissions_check('administrate',$loc)) {
+if ($user->isAdmin()) {
 	global $router;
 	if (exponent_template_getModuleViewFile($loc->mod,'_userpermissions',false) == TEMPLATE_FALLBACK_VIEW) {
 		$template = new template('common','_userpermissions',$loc);
@@ -33,7 +35,8 @@ if (exponent_permissions_check('administrate',$loc)) {
 	}
 	$template->assign('user_form',1);
 	
-	if (!defined('SYS_USERS')) include_once(BASE.'subsystems/users.php');
+//	if (!defined('SYS_USERS')) include_once(BASE.'subsystems/users.php');
+	include_once(BASE.'subsystems/users.php');
 	$users = array();
 	$modulename = controllerExists($loc->mod) ? getControllerClassName($loc->mod) : $loc->mod;
 	$modclass = $modulename;
@@ -61,18 +64,32 @@ if (exponent_permissions_check('administrate',$loc)) {
 	foreach ($mod->permissions() as $key => $value) {
         $p[$value]=$key;
 	}
-	
-    $page = new expPaginator(array(
-     //'model'=>'user',
-    'limit'=>(isset($_REQUEST['limit'])?$_REQUEST['limit']:20),
-     'controller'=>$router->params['controller'],
-     'action'=>$router->params['action'],
-     'records'=>$users,
-     //'sql'=>$sql,
-     'order'=>'username',
-     'dir'=>'DESC',
-     'columns'=>$p,
-     ));        
+
+	if (SEF_URLS == 1) {
+		$page = new expPaginator(array(
+		//'model'=>'user',
+		'limit'=>(isset($_REQUEST['limit'])?$_REQUEST['limit']:20),
+		'controller'=>$router->params['controller'],
+		'action'=>$router->params['action'],
+		'records'=>$users,
+		//'sql'=>$sql,
+		'order'=>'username',
+		'dir'=>'ASC',
+		'columns'=>$p,
+		));
+	} else {
+		$page = new expPaginator(array(
+		//'model'=>'user',
+		'limit'=>(isset($_REQUEST['limit'])?$_REQUEST['limit']:20),
+		'controller'=>$_GET['module'],
+		'action'=>$_GET['action'],
+		'records'=>$users,
+		//'sql'=>$sql,
+		'order'=>'username',
+		'dir'=>'ASC',
+		'columns'=>$p,
+		));
+	}
         
 	
 	$template->assign('have_users',$have_users);

@@ -16,6 +16,7 @@
 # GPL: http://www.gnu.org/licenses/gpl.txt
 # 
 ##################################################
+/** @define "BASE" "../.." */
 
 class navigationmodule {
 	function name() { return exponent_lang_loadKey('modules/navigationmodule/class.php','module_name'); }
@@ -132,7 +133,7 @@ class navigationmodule {
 					$obj->submenu = null;
 					$obj->submenu->id = $sections[$i]->name.$sections[$i]->id;
 					//echo "getting children of ".$sections[$i]->name;
-					$obj->submenu->itemdata = getChildren($i);
+					$obj->submenu->itemdata = $this->getChildren($i);
 					$ret_array[] = $obj;
 				} else {
 					$ret_array[] = $obj;	
@@ -151,7 +152,7 @@ class navigationmodule {
 		return ($sections[$i]->depth < $sections[$i+1]->depth) ? true : false;
 	}
 
-	function navtojson(){
+	static function navtojson(){
 		global $sections;
 		$json_array = array();
 
@@ -175,12 +176,13 @@ class navigationmodule {
 		return json_encode($json_array);
 	}
 	
-	function spiderContent($item = null) {
+	static function spiderContent($item = null) {
 		global $db;
 		//global $sections;
 		global $router;
 		
-        if (!defined('SYS_SEARCH')) include_once(BASE.'subsystems/search.php');		
+//        if (!defined('SYS_SEARCH')) include_once(BASE.'subsystems/search.php');
+        include_once(BASE.'subsystems/search.php');
 
 	 	$db->delete('search',"ref_module='navigationmodule' AND ref_type='section'");
         
@@ -243,7 +245,8 @@ class navigationmodule {
 		$html = '';
 		global $db;
 		$nodes = $db->selectObjects('section','parent='.$parent);
-		if (!defined('SYS_SORTING')) include_once(BASE.'subsystems/sorting.php');
+//		if (!defined('SYS_SORTING')) include_once(BASE.'subsystems/sorting.php');
+		include_once(BASE.'subsystems/sorting.php');
 		usort($nodes,'exponent_sorting_byRankAscending');
 		foreach ($nodes as $node) {
 			if (($node->public == 1 || exponent_permissions_check('view',exponent_core_makeLocation('navigationmodule','',$node->id))) && !in_array($node->id,$ignore_ids)) {
@@ -265,7 +268,7 @@ class navigationmodule {
 	/*
 	 * Returns a flat representation of the full site hierarchy.
 	 */
-	function levelDropDownControlArray($parent,$depth = 0,$ignore_ids = array(),$full=false) {
+	static function levelDropDownControlArray($parent,$depth = 0,$ignore_ids = array(),$full=false) {
 		$i18n = exponent_lang_loadFile('modules/navigationmodule/class.php');
 
 		$ar = array();
@@ -274,7 +277,8 @@ class navigationmodule {
 		}
 		global $db;
 		$nodes = $db->selectObjects('section','parent='.$parent);
-		if (!defined('SYS_SORTING')) include_once(BASE.'subsystems/sorting.php');
+//		if (!defined('SYS_SORTING')) include_once(BASE.'subsystems/sorting.php');
+		include_once(BASE.'subsystems/sorting.php');
 		usort($nodes,'exponent_sorting_byRankAscending');
 		foreach ($nodes as $node) {
 			if (($node->public == 1 || exponent_permissions_check('view',exponent_core_makeLocation('navigationmodule','',$node->id))) && !in_array($node->id,$ignore_ids)) {
@@ -293,7 +297,7 @@ class navigationmodule {
 		return $ar;
 	}
 	
-	function levelTemplate($parent, $depth = 0, $parents = array()) {
+	static function levelTemplate($parent, $depth = 0, $parents = array()) {
 		if ($parent != 0) $parents[] = $parent;
 		global $db, $user;
 		$nodes = array();
@@ -306,7 +310,8 @@ class navigationmodule {
 			$kids = $cache['kids'][$parent];
 		}		
 			
-        	if (!defined('SYS_SORTING')) include_once(BASE.'subsystems/sorting.php');
+//        if (!defined('SYS_SORTING')) include_once(BASE.'subsystems/sorting.php');
+        include_once(BASE.'subsystems/sorting.php');
 		usort($kids,'exponent_sorting_byRankAscending');
 		for ($i = 0; $i < count($kids); $i++) {
 			$child = $kids[$i];
@@ -361,12 +366,13 @@ class navigationmodule {
 	}
 
 	
-	function getTemplateHierarchyFlat($parent,$depth = 1) {
+	static function getTemplateHierarchyFlat($parent,$depth = 1) {
 		global $db;
 		
 		$arr = array();
 		$kids = $db->selectObjects('section_template','parent='.$parent);
-		if (!defined('SYS_SORTING')) include_once(BASE.'subsystems/sorting.php');
+//		if (!defined('SYS_SORTING')) include_once(BASE.'subsystems/sorting.php');
+		include_once(BASE.'subsystems/sorting.php');
 		usort($kids,'exponent_sorting_byRankAscending');
 		
 		for ($i = 0; $i < count($kids); $i++) {
@@ -381,7 +387,7 @@ class navigationmodule {
 		return $arr;
 	}
 	
-	function process_section($section,$template) {
+	static function process_section($section,$template) {
 		global $db;
 		
 	        if (!is_object($template)) {
@@ -391,7 +397,8 @@ class navigationmodule {
 		}
 
 		$prefix = '@st'.$template->id;
-		$refs = $db->selectObjects('locationref',"source LIKE '$prefix%'");
+//		$refs = $db->selectObjects('locationref',"source LIKE '$prefix%'");
+		$refs = $db->selectObjects('sectionref',"source LIKE '$prefix%'");
 		
 		// Copy all modules and content for this section
 		foreach ($refs as $ref) {
@@ -436,7 +443,7 @@ class navigationmodule {
 		navigationmodule::process_section($section,$subtpl);
 	}
 	
-	function deleteLevel($parent) {
+	static function deleteLevel($parent) {
 		global $db;
 		$kids = $db->selectObjects('section','parent='.$parent);
 		foreach ($kids as $kid) {
@@ -447,9 +454,11 @@ class navigationmodule {
 			$loc = exponent_core_makeLocation($secref->module,$secref->source,$secref->internal);
 			exponent_core_decrementLocationReference($loc,$parent);
 			
-			foreach ($db->selectObjects('locationref',"module='".$secref->module."' AND source='".$secref->source."' AND internal='".$secref->internal."' AND refcount = 0") as $locref) {
-				if (class_exists($locref->module)) {
-				    $modclass = $locref->module;
+//			foreach ($db->selectObjects('locationref',"module='".$secref->module."' AND source='".$secref->source."' AND internal='".$secref->internal."' AND refcount = 0") as $locref) {
+//				if (class_exists($locref->module)) {
+//				    $modclass = $locref->module;
+				if (class_exists($secref->module)) {
+				    $modclass = $secref->module;
 				    
 				    //FIXME: more module/controller glue code
 	                if (controllerExists($modclass)) {
@@ -457,17 +466,18 @@ class navigationmodule {
 	                    $mod->delete_instance();
 	                } else {
 	                    $mod = new $modclass();
-	                    $mod->deleteIn(exponent_core_makeLocation($locref->module,$locref->source,$locref->internal));
+//	                    $mod->deleteIn(exponent_core_makeLocation($locref->module,$locref->source,$locref->internal));
+	                    $mod->deleteIn($loc);
 	                }
 				}
-			}
-			$db->delete('locationref',"module='".$secref->module."' AND source='".$secref->source."' AND internal='".$secref->internal."' AND refcount = 0");
+//			}
+//			$db->delete('locationref',"module='".$secref->module."' AND source='".$secref->source."' AND internal='".$secref->internal."' AND refcount = 0");
 		}
 		$db->delete('sectionref','section='.$parent);
 		$db->delete('section','parent='.$parent);
 	}
 	
-	function removeLevel($parent) {
+	static function removeLevel($parent) {
 		global $db;
 		$kids = $db->selectObjects('section','parent='.$parent);
 		foreach ($kids as $kid) {
@@ -477,7 +487,7 @@ class navigationmodule {
 		}
 	}
 	
-	function canView($section) {
+	static function canView($section) {
 		global $db;
 		if ($section == null) {return false;}
 		if ($section->public == 0) {
@@ -495,7 +505,7 @@ class navigationmodule {
 	}
 
 
-    function isPublic($s) {
+    static function isPublic($s) {
        global $db;
 	if ($s == null) {return false;}
         while ($s->public && $s->parent >0) {
@@ -505,7 +515,7 @@ class navigationmodule {
         return $lineage;
     }
 
-	function canManageStandalones() {
+	static function canManageStandalones() {
 		if (exponent_users_isAdmin()) return true;
 		$standalones = navigationmodule::levelTemplate(-1,0);
 		$canmanage = false;
@@ -515,7 +525,7 @@ class navigationmodule {
 		}
 	}
 
-	function checkForSectionalAdmins($id) {
+	static function checkForSectionalAdmins($id) {
 		global $db;
 
 		$section = $db->selectObject('section', 'id='.$id);
@@ -544,9 +554,9 @@ class navigationmodule {
 			}
 			
 			foreach ($allgroups as $gid) {
-        	        	$g = exponent_users_getGroupById($gid);
-                		exponent_permissions_grantGroup($g, 'manage', $sloc);
-                	}
+				$g = exponent_users_getGroupById($gid);
+				exponent_permissions_grantGroup($g, 'manage', $sloc);
+			}
 		}	
 	}
     /*

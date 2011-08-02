@@ -16,13 +16,14 @@
 # GPL: http://www.gnu.org/licenses/gpl.txt
 #
 ##################################################
+/** @define "BASE" ".." */
 
 /* exdoc
  * The definition of this constant lets other parts of the system know 
  * that the subsystem has been included for use.
  * @node Subsystems:Modules
  */
-define('SYS_MODULES',1);
+//define('SYS_MODULES',1);
 
 /* exdoc
  * This includes all modules available to the system, for use later.
@@ -115,7 +116,8 @@ function exponent_modules_moduleManagerFormTemplate($template) {
 			$moduleInfo[$module]->active = ($modstate != null ? $modstate->active : 0);
 		}
 	}
-	if (!defined('SYS_SORTING')) include_once(BASE.'subsystems/sorting.php');
+//	if (!defined('SYS_SORTING')) include_once(BASE.'subsystems/sorting.php');
+	include_once(BASE.'subsystems/sorting.php');
 	uasort($moduleInfo,"exponent_sorting_byNameAscending");
 	
 	$template->assign("modules",$moduleInfo);

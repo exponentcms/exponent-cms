@@ -16,6 +16,7 @@
 # GPL: http://www.gnu.org/licenses/gpl.txt
 #
 ##################################################
+/** @define "BASE" "../../../.." */
 
 class usersController extends expController {
     public $basemodel_name = 'user';
@@ -30,15 +31,10 @@ class usersController extends expController {
     
     //public $useractions = array('showall'=>'Show all');
 
-    function name() { return $this->displayname(); } //for backwards compat with old modules
     function displayname() { return "User Manager"; }
     function description() { return "This is the user management module. It allows for creating user, editing user, etc."; }
-    function author() { return "Adam Kessler - OIC Group, Inc"; }
     function hasSources() { return false; }
-    function hasViews() { return true; }
     function hasContent() { return false; }
-    function supportsWorkflow() { return false; }
-    function isSearchable() { return false; }
     
     public function manage() {
         expHistory::set('managable', $this->params);
@@ -82,8 +78,13 @@ class usersController extends expController {
             flash('error', 'You do not have the proper permissions to edit this user');
             expHistory::back();
         }
-        
         $active_extensions = $db->selectColumn('profileextension','classname','active=1', 'rank');
+		
+		//If there is no image uploaded and the system is not in the development mode, use the default avatar
+		if(empty($u->image) && !DEVELOPMENT) {
+			$u->image = DEFAULT_AVATAR;
+		}
+		
         assign_to_template(array('edit_user'=>$u, 'extensions'=>$active_extensions,"userkey"=>expSession::get("userkey")));
     }
     
@@ -241,7 +242,8 @@ class usersController extends expController {
 			$db->delete('sessionticket','last_active < ' . (time() - SESSION_TIMEOUT));
 		}
 		
-	    if (!defined('SYS_DATETIME')) require_once(BASE.'subsystems/datetime.php');
+//	    if (!defined('SYS_DATETIME')) require_once(BASE.'subsystems/datetime.php');
+	    require_once(BASE.'subsystems/datetime.php');
 
 		if (isset($_GET['id']) && $_GET['id'] == 0) {
 			$sessions = $db->selectObjects('sessionticket', "uid<>0");
@@ -558,8 +560,9 @@ class usersController extends expController {
     public function manage_group_memberships() {
         global $db, $user;
         expHistory::set('manageable', $this->params);
-        if (!defined('SYS_USERS')) require_once(BASE.'subsystems/users.php');
-		
+//        if (!defined('SYS_USERS')) require_once(BASE.'subsystems/users.php');
+        require_once(BASE.'subsystems/users.php');
+
         $memb = $db->selectObject('groupmembership','member_id='.$user->id.' AND group_id='.$this->params['id'].' AND is_admin=1');
 
         $perm_level = 0;

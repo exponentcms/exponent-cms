@@ -1,47 +1,35 @@
 <?php
-/**
-* This is meant to be called from cron. 
-* It will send off the ealerts.
-*/
-      
+
+    //Initialized the exponent
     require_once("bootstrap.php");    
     
+	//Get the filename to be use
     $filename = EXP_PATH . 'sitemap.xml';    
    
+    //Header of the xml file
     $content="<?xml version='1.0' encoding='UTF-8'?>".chr(13).chr(10);
     $content.="<urlset xmlns='http://www.sitemaps.org/schemas/sitemap/0.9'>".chr(13).chr(10);
     
-    if (is_writable($filename))
-    {
-        if (!$handle = fopen($filename, 'w')) {
-            echo "Cannot open file ($filename)";
-            exit;
-        }
-        // Write$somecontent to our opened file.
-        if (fwrite($handle, $content) == FALSE) {
-            $action_msg = "ER";
-        }
-    }
-    else
-    {
-        echo "$filename is not writeable.";
-    }
+	 //Check if the file exist
+	if (!$handle = fopen($filename, 'w')) {
+		echo "Cannot open file ($filename)";
+		exit;
+	}
+	
+	//Check if the file is writable
+	if (fwrite($handle, $content) == FALSE) {
+		$action_msg = "ER";
+	}
     
     $count=0;
     $columns = '';
     
-    //$ps = new product(); 
-    //$prodCount = $ps->find('count','parent_id=0 AND (availability_type=0 OR availability_type=1)');  
-    //print "\n" . $prodCount . "\n";
-    //print "\n";
-    
+	//Get all the sections
     $sections = $db->selectObjectsBySql('SELECT sef_name FROM exponent_section WHERE public = 1 and active = 1');
-
-	//Sections
+	
 	foreach ($sections as $item) {            
 		
 		$columns = '<url>'.chr(13).chr(10);
-
 	
 		$columns.='<loc>';
 		$columns.="http://www.militaryuniformsupply.com/".$item->sef_name;
@@ -61,14 +49,14 @@
 		
 		$columns.='</url>'.chr(13).chr(10);
 		$count++;
-		//size            
-		// Write$somecontent to our opened file.
+
+		// Write the section content to our opened file.
 		if (fwrite($handle, $columns.chr(13).chr(10)) == FALSE) {
 			$action_msg = "ER";
 		}
 	}
 
-	//Categories
+	//Get all the active categories
 	$categories = $db->selectObjectsBySql('SELECT sef_url FROM exponent_storeCategories WHERE is_active = 1');
 	foreach ($categories as $item) {            
 		
@@ -92,15 +80,14 @@
 		
 		$columns.='</url>'.chr(13).chr(10);
 		$count++;
-		//size            
-		// Write$somecontent to our opened file.
+       
+		// Write the active categories to our opened file.
 		if (fwrite($handle, $columns.chr(13).chr(10)) == FALSE) {
 			$action_msg = "ER";
 		}
 	}
 	
-	
-	//Products
+	//Get all the active products
 	$products = $db->selectObjectsBySql("SELECT sef_url FROM exponent_product WHERE (active_type = 0 or active_type = 1) and parent_id = 0");
 	foreach ($products as $item) {            
 		
@@ -124,8 +111,8 @@
 		
 		$columns.='</url>'.chr(13).chr(10);
 		$count++;
-		//size            
-		// Write$somecontent to our opened file.
+	           
+		// Write all the active products to our opened file.
 		if (fwrite($handle, $columns.chr(13).chr(10)) == FALSE) {
 			$action_msg = "ER";
 		}
@@ -133,7 +120,7 @@
 	
     $content='</urlset>'.chr(13).chr(10);
 
-    // Write$somecontent to our opened file.
+    // Write the footer to our opened file.
     if (fwrite($handle, $content) == FALSE) {
         $action_msg = "ER";
     }

@@ -16,13 +16,15 @@
 # GPL: http://www.gnu.org/licenses/gpl.txt
 #
 ##################################################
+/** @define "BASE" ".." */
 
 class file {
-	function update($name,$dest,$object,$destname = null,$force=false) {
+	static function update($name,$dest,$object,$destname = null,$force=false) {
 		$i18n = exponent_lang_loadFile('datatypes/file.php');
 		
-		if (!defined('SYS_FILES')) include_once(BASE.'subsystems/files.php');
-		
+//		if (!defined('SYS_FILES')) include_once(BASE.'subsystems/files.php');
+		include_once(BASE.'subsystems/files.php');
+
 		// Get the filename, if it was passed in the update() call.  Otherwise, fallback
 		if ($destname == null) {
 			$object->filename = $_FILES[$name]['name'];
@@ -118,10 +120,10 @@ class file {
                 return $db->selectObjects('file', 'id IN (SELECT file_id FROM '.DB_TABLE_PREFIX.'_file_details WHERE item_type="'.$item_type.'")');
         }
 
-        function findFilesForItem($item_type, $item_id) {
-                global $db;
-                return $db->selectObjects('file', 'id IN (SELECT file_id FROM '.DB_TABLE_PREFIX.'_file_details WHERE item_type="'.$item_type.'" AND item_id='.$item_id.')');
-        }
+	static function findFilesForItem($item_type, $item_id) {
+		global $db;
+		return $db->selectObjects('file', 'id IN (SELECT file_id FROM '.DB_TABLE_PREFIX.'_file_details WHERE item_type="'.$item_type.'" AND item_id='.$item_id.')');
+	}
 }
 
 ?>

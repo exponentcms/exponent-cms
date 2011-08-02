@@ -15,16 +15,18 @@
 # GPL: http://www.gnu.org/licenses/gpl.txt
 #
 ##################################################
+/** @define "BASE" "../../.." */
 
 if (!defined('EXPONENT')) exit('');
 
 /**
- * Manually include the class file for formcontrol, for PHP4
- * (This does not adversely affect PHP5)
+ * Popup YUI Date/Time Control
+ *
+ * @package Subsystems-Forms
+ * @subpackage Control
  */
-require_once(BASE."subsystems/forms/controls/formcontrol.php");
-
 class yuidatetimecontrol extends formcontrol {
+
     var $showdate = true;
     var $showtime = true;
     
@@ -35,8 +37,9 @@ class yuidatetimecontrol extends formcontrol {
             DB_FIELD_TYPE=>DB_DEF_TIMESTAMP);
     }
     
-    function yuidatetimecontrol($default = 0, $edit_text = "", $showdate = true, $showtime = true, $display_only=false, $checked=false) {
-        if (!defined("SYS_DATETIME")) include_once(BASE."subsystems/datetime.php");
+    function __construct($default = 0, $edit_text = "", $showdate = true, $showtime = true, $display_only=false, $checked=false) {
+//        if (!defined("SYS_DATETIME")) include_once(BASE."subsystems/datetime.php");
+        include_once(BASE."subsystems/datetime.php");
         $this->default = ($default == 0) ? time() : $default;
         $this->edit_text = $edit_text;
         $this->showdate = $showdate;
@@ -113,7 +116,7 @@ class yuidatetimecontrol extends formcontrol {
         //$form->addScript('datetime_disable',PATH_RELATIVE.'subsystems/forms/controls/datetimecontrol.js');
     }
     
-    function parseData($original_name,$formvalues) {
+    static function parseData($original_name,$formvalues) {
         if (!isset($formvalues[$original_name])) {
             $date = yuicalendarcontrol::parseData($original_name.'date',$formvalues);
             $time = datetimecontrol::parseData($original_name.'time',$formvalues);

@@ -16,6 +16,7 @@
 # GPL: http://www.gnu.org/licenses/gpl.txt
 #
 ##################################################
+/** @define "BASE" "../../.." */
 
 // GREP:HARDCODEDTEXT - 3am-6am is not i18n!
 
@@ -97,8 +98,9 @@ class bbextension {
 		$fileup = getimagesize ( $filenew );
 		if ($fileup[2] > 0 && $fileup[1] > 0) {
 			if ($fileup[0] <= 80 && $fileup[1] <= 80) {
-				if (!defined('SYS_FILES')) include_once(BASE.'subsystems/files.php');
-	
+//				if (!defined('SYS_FILES')) include_once(BASE.'subsystems/files.php');
+				include_once(BASE.'subsystems/files.php');
+
 				$directory = 'files/bbmodule/avatars';
 				$fname = null;
 				$file = null;

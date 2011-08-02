@@ -154,19 +154,25 @@
                 public function set_copies($count){
                         $this->copies=$count;
                 }
-                /**
-                 * Whether to print in grayscale or not.
-                 * By default it is OFF.
-                 * @param boolean True to print in grayscale, false in full color.
-                 */
+
+	        /**
+	         * Whether to print in grayscale or not.
+	         * By default it is OFF.
+	         * @param $mode
+	         *
+	         * @internal param \True $boolean to print in grayscale, false in full color.
+	         */
                 public function set_grayscale($mode){
                         $this->grayscale=$mode;
                 }
-                /**
-                 * Set PDF title. If empty, HTML <title> of first document is used.
-                 * By default it is empty.
-                 * @param string Title text.
-                 */
+
+	        /**
+	         * Set PDF title. If empty, HTML <title> of first document is used.
+	         * By default it is empty.
+	         * @param $text
+	         *
+	         * @internal param \Title $string text.
+	         */
                 public function set_title($text){
                         $this->title=$text;
                 }

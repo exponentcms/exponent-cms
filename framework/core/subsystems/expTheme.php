@@ -24,22 +24,22 @@
 
 class expTheme {
 
-    public function head($config = array()){
+    public static function head($config = array()){
     	echo headerInfo($config); 
 		echo exponent_theme_advertiseRSS();
     }
     
-    public function foot($params = array()) {
+    public static function foot($params = array()) {
     	echo footerInfo($params); 
     }
     
-    public function main() {
+    public static function main() {
     	exponent_theme_main();
     }
     
-    public function module($params) {
+    public static function module($params) {
         if (isset($params['controller'])) {
-            expTheme::showController($params);
+            self::showController($params);
         } else if (isset($params['module'])) {
             $moduletitle = (isset($params['moduletitle'])) ? $params['moduletitle'] : "";
             $source = (isset($params['source'])) ? $params['source'] : "";
@@ -72,7 +72,7 @@ class expTheme {
         }
     }
     
-    public function showController($params=array()) {
+    public static function showController($params=array()) {
         global $sectionObj, $db;
         if (empty($params)) return false;
         $params['view'] = isset($params['view']) ? $params['view'] : $params['action'];
@@ -109,11 +109,11 @@ class expTheme {
         self::showController($params);
     }
     
-    public function pageMetaInfo() {
+    public static function pageMetaInfo() {
         global $sectionObj, $db, $router;
         
         $metainfo = array();
-        if (expTheme::inAction() && (!empty($router->url_parts[0]) && controllerExists($router->url_parts[0]))) {
+        if (self::inAction() && (!empty($router->url_parts[0]) && controllerExists($router->url_parts[0]))) {
             $classname = getControllerClassName($router->url_parts[0]);
             $controller = new $classname();
             $metainfo = $controller->metainfo();
@@ -126,7 +126,7 @@ class expTheme {
         return $metainfo;
     }
     
-    public function inAction() {
+    public static function inAction() {
         return (isset($_REQUEST['action']) && (isset($_REQUEST['module']) || isset($_REQUEST['controller'])));
     }
     
@@ -164,7 +164,7 @@ class expTheme {
         return $files;
     }
     
-    public function processCSSandJS() {
+    public static function processCSSandJS() {
         global $jsForHead, $cssForHead;
         // resturns string, either minified combo url or multiple link and script tags 
         $jsForHead = expJavascript::parseJSFiles();

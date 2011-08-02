@@ -15,6 +15,7 @@
 # GPL: http://www.gnu.org/licenses/gpl.txt
 #
 ##################################################
+/** @define "BASE" "." */
 
 if (defined('EXPONENT')) return;                  
 // bootstrap some exponenty goodness

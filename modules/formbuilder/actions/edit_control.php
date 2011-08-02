@@ -16,11 +16,13 @@
 # GPL: http://www.gnu.org/licenses/gpl.txt
 #
 ##################################################
+/** @define "BASE" "../../.." */
 
-if (!defined("EXPONENT")) exit("");
+if (!defined('EXPONENT')) exit('');
 
-if (!defined("SYS_FORMS")) require_once(BASE."subsystems/forms.php");
-exponent_forms_initialize();
+//if (!defined("SYS_FORMS")) require_once(BASE."subsystems/forms.php");
+require_once(BASE."subsystems/forms.php");
+//exponent_forms_initialize();
 
 $f = $db->selectObject("formbuilder_form","id=".(isset($_REQUEST['form_id'])?intval($_REQUEST['form_id']):0));
 if ($f) {

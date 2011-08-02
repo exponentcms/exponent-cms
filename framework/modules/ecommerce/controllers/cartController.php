@@ -23,14 +23,8 @@ class cartController extends expController {
 	//public $useractions = array('show'=>'Display Cart');
 	public $useractions = array();
 
-	function name() { return $this->displayname(); } //for backwards compat with old modules
 	function displayname() { return "Ecommerce Shopping Cart"; }
 	function description() { return "This is the cart users will add products from your store to."; }
-	function author() { return "Adam Kessler @ OIC Group, Inc"; }
-	function hasSources() { return true; }
-	function hasViews() { return true; }
-	function hasContent() { return true; }
-	function supportsWorkflow() { return false; }
 
 	function addItem() {
         global $router;

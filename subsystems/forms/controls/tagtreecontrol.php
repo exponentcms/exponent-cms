@@ -19,12 +19,18 @@
 
 if (!defined('EXPONENT')) exit('');
 
+/**
+ * Tag Tree Control
+ *
+ * @package Subsystems-Forms
+ * @subpackage Control
+ */
 class tagtreecontrol extends formcontrol {
+
 	var $jsHooks = array();
 	
 	function name() { return "Nested Node Checkbox Dragdrop Tree"; }
 	function isSimpleControl() { return false; }
-	
 	function getFieldDefinition() { 
 		return array();
 	}

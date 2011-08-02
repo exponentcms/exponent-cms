@@ -16,9 +16,11 @@
 # GPL: http://www.gnu.org/licenses/gpl.txt
 #
 ##################################################
+/** @define "BASE" ".." */
 
 function smarty_function_exponent_sessions_get($params,&$smarty) {
-	if (!defined("SYS_SESSIONS")) include_once(BASE."subsystems/sessions.php");
+//	if (!defined("SYS_SESSIONS")) include_once(BASE."subsystems/sessions.php");
+	include_once(BASE."subsystems/sessions.php");
 	$smarty->assign($params['var'], exponent_sessions_get($params['var']));
 }
 

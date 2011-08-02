@@ -24,7 +24,7 @@ include_once(realpath(dirname(__FILE__).'/../compat/gd_info.php'));
  * that the Image Subsystem has been included for use.
  * @node Subsystems:Image
  */
-define('SYS_IMAGE',1);
+//define('SYS_IMAGE',1);
 
 define('IMAGE_ERR_NOGD','');
 define('IMAGE_ERR_NOTSUPPORTED','_unknown');

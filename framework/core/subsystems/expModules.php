@@ -24,7 +24,7 @@
 
 class expModules {
 
-    public function listActiveControllers() {
+    public static function listActiveControllers() {
         global $db;
         
         $controllers = listUserRunnableControllers();
@@ -46,10 +46,10 @@ class expModules {
     	return $moduleInfo;
     }
     
-    public function listActiveOSMods() {
+    public static function listActiveOSMods() {
         global $db;
         
-        $osmods = expModules::exponent_modules_list();
+        $osmods = self::exponent_modules_list();
 
         foreach ($osmods as $module) {
             if (class_exists($module)) {

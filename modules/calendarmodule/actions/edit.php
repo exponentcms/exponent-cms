@@ -16,7 +16,8 @@
 # GPL: http://www.gnu.org/licenses/gpl.txt
 #
 ##################################################
- 
+/** @define "BASE" "../../.." */
+
 if (!defined('EXPONENT')) exit('');
 
 $item = null;
@@ -147,7 +148,8 @@ if (($item == null && exponent_permissions_check('post',$loc)) ||
 		$form->register(null,'',new htmlcontrol($buttons));
 	}
 	
-	if (!defined('SYS_MODULES')) include_once(BASE.'subsystems/modules.php');
+//	if (!defined('SYS_MODULES')) include_once(BASE.'subsystems/modules.php');
+	include_once(BASE.'subsystems/modules.php');
 	$form->validationScript = exponent_modules_getJSValidationFile('calendarmodule','postedit');
 	
 	$template = new template('calendarmodule','_form_edit',$loc);

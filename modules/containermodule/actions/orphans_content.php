@@ -17,7 +17,7 @@
 #
 ##################################################
 
-if (!defined("EXPONENT")) exit("");
+if (!defined('EXPONENT')) exit('');
 
 // PERM CHECK
 	$source_select = array();
@@ -38,7 +38,8 @@ if (!defined("EXPONENT")) exit("");
    exponent_sessions_clearAllUsersSessionCache('containermodule');
 
 	$orphans = array();
-	foreach ($db->selectObjects("locationref","module='".preg_replace('/[^A-Za-z0-9_]/','',$_GET['module'])."' AND refcount=0") as $orphan) {
+//	foreach ($db->selectObjects("locationref","module='".preg_replace('/[^A-Za-z0-9_]/','',$_GET['module'])."' AND refcount=0") as $orphan) {
+	foreach ($db->selectObjects("sectionref","module='".preg_replace('/[^A-Za-z0-9_]/','',$_GET['module'])."' AND refcount=0") as $orphan) {
 		$obj = null;
 		$loc = exponent_core_makeLocation($orphan->module,$orphan->source,$orphan->internal);
 		

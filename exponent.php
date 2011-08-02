@@ -16,6 +16,7 @@
 # GPL: http://www.gnu.org/licenses/gpl.txt
 #
 ##################################################
+/** @define "BASE" "." */
 
 /**
  * The file that initializes everything
@@ -27,7 +28,6 @@
  * @version 2.0.0
  */
 
-//require_once('exponent_common.php');  // incorporated into exponent_bootstrap.php
 require_once('exponent_bootstrap.php');
 
 // Initialize the AutoLoader Subsystem
@@ -37,10 +37,9 @@ require_once(BASE.'subsystems/autoloader.php');
 require_once(BASE.'subsystems/sessions.php');
 exponent_sessions_initialize();
 
-// initialize useful/needed constants throughout the system
-//require_once(BASE.'exponent_constants.php');
 // Initialize the theme subsystem
-if (!defined('SYS_THEME')) require_once(BASE.'subsystems/theme.php');
+//if (!defined('SYS_THEME')) require_once(BASE.'subsystems/theme.php');
+require_once(BASE.'subsystems/theme.php');
 
 // Initialize the language subsystem
 require_once(BASE.'subsystems/lang.php');
@@ -72,7 +71,8 @@ require_once(BASE.'subsystems/template.php');
 require_once(BASE.'subsystems/permissions.php');
 
 // Initialize the Flow/History Subsystem.
-if (!defined('SYS_FLOW')) require_once(BASE.'subsystems/flow.php');
+//if (!defined('SYS_FLOW')) require_once(BASE.'subsystems/flow.php');
+require_once(BASE.'subsystems/flow.php');
 /**
  * the browsing history object
  * @global expHistory $history
@@ -84,7 +84,8 @@ $history = new expHistory(); //<--This is the new flow subsystem and will be rep
 require_once(BASE.'subsystems/users.php');
 
 // Initialize the javascript subsystem
-if (!defined('SYS_JAVASCRIPT')) require_once(BASE.'subsystems/javascript.php');
+//if (!defined('SYS_JAVASCRIPT')) require_once(BASE.'subsystems/javascript.php');
+require_once(BASE.'subsystems/javascript.php');
 
 // Initialize the MVC framework
 require_once(BASE.'framework/core/expFramework.php');

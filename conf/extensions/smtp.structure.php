@@ -24,6 +24,11 @@ $i18n = exponent_lang_loadFile('conf/extensions/smtp.structure.php');
 return array(
 	$i18n['title'],
 	array(
+		'SMTP_FROMADDRESS'=>array(
+			'title'=>$i18n['from_address'],
+			'description'=>$i18n['from_address_desc'],
+			'control'=>new textcontrol()
+		),
 		'SMTP_USE_PHP_MAIL'=>array(
 			'title'=>$i18n['php_mail'],
 			'description'=>$i18n['php_mail_desc'],
@@ -54,10 +59,10 @@ return array(
 			'description'=>$i18n['password'],
 			'control'=>new passwordcontrol()
 		),
-		'SMTP_FROMADDRESS'=>array(
-			'title'=>$i18n['from_address'],
-			'description'=>$i18n['from_address_desc'],
-			'control'=>new textcontrol()
+		'SMTP_DEBUGGING'=>array(
+			'title'=>$i18n['smtp_debug'],
+			'description'=>$i18n['smtp_debug_desc'],
+			'control'=>new checkboxcontrol()
 		),
 	)
 );

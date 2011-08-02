@@ -17,8 +17,9 @@
 # GPL: http://www.gnu.org/licenses/gpl.txt
 #
 ##################################################
+/** @define "BASE" ".." */
 
-define('SYS_LANG',1);
+//define('SYS_LANG',1);
 
 /*
 define('SYS_LANG_MODULE',	1);

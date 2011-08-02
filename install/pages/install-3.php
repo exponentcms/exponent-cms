@@ -272,17 +272,27 @@ if ($passed) {
     }
 
     // version tracking
-    $version = EXPONENT_VERSION_MAJOR.'.'.EXPONENT_VERSION_MINOR.'.'.EXPONENT_VERSION_REVISION.'-'.EXPONENT_VERSION_TYPE.''.EXPONENT_VERSION_ITERATION;
+	$db->delete('version',1);  // clear table of old accumulated entries
+//    $version = EXPONENT_VERSION_MAJOR.'.'.EXPONENT_VERSION_MINOR.'.'.EXPONENT_VERSION_REVISION.'-'.EXPONENT_VERSION_TYPE.''.EXPONENT_VERSION_ITERATION;
 	$vo = null;
-    $vo->version = EXPONENT_VERSION_MAJOR.'.'.EXPONENT_VERSION_MINOR.'.'.EXPONENT_VERSION_REVISION;
-    $vo->type = EXPONENT_VERSION_TYPE.EXPONENT_VERSION_ITERATION;
+//    $vo->version = EXPONENT_VERSION_MAJOR.'.'.EXPONENT_VERSION_MINOR.'.'.EXPONENT_VERSION_REVISION;	$vo->type = EXPONENT_VERSION_TYPE;
+	$vo->major = EXPONENT_VERSION_MAJOR;
+	$vo->minor = EXPONENT_VERSION_MINOR;
+	$vo->revision = EXPONENT_VERSION_REVISION;
+	$vo->type = EXPONENT_VERSION_TYPE;
+    $vo->iteration = EXPONENT_VERSION_ITERATION;
     $vo->builddate = EXPONENT_VERSION_BUILDDATE;
     $vo->created_at = time();
     $ins = $db->insertObject($vo,'version') or die($db->error());
 
-
 	// ERROR CHECKING
 	echoSuccess();
+}
+
+// create the not_configured file
+if (!@file_exists(BASE.'install/not_configured')) {
+	$nc_file = fopen(BASE.'install/not_configured', "w");
+	fclose($nc_file);
 }
 
 ?>
@@ -303,7 +313,8 @@ if ($passed) {
 	echo '</p>';
 
 	if (isset($_POST['install_default'])) {
-		if (!defined('SYS_BACKUP')) include_once(BASE.'subsystems/backup.php');
+//		if (!defined('SYS_BACKUP')) include_once(BASE.'subsystems/backup.php');
+		include_once(BASE.'subsystems/backup.php');
 
 		$eql = BASE.'install/sitetypes/db/_default.eql';
 		$errors = array();

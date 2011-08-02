@@ -17,6 +17,7 @@
  * @version    Release: @package_version@
  * @link       http://www.exponent-docs.org/api/package/PackageName
  */
+/** @define "BASE" "../../.." */
 
 class expUtil {
           
@@ -66,8 +67,12 @@ class expUtil {
         return ($ibig <= $ismall);
 	}
 
-	# isReallyWritable is an alternate implementation of is_writable that should work on
-	# a windows platform as well as Linux.
+	/**
+	 * isReallyWritable is an alternate implementation of is_writable that should work on
+	 * a windows platform as well as Linux.
+	 * @param $file
+	 * @return bool
+	 */
 	static function isReallyWritable($file) {
 		// Check the operating system.  isReallyWritable needs to be defined
 		// specifically for Windows, but the overhead is pointless otherwise.

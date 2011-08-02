@@ -95,38 +95,64 @@ if ($user->isAdmin()) {
 
 
 if ($user->isAdmin()) {
-$expAdminMenu['submenu']['itemdata'][] = array(
-    'text' => $i18n['configuration'],
-    'classname' => 'config',
-    'submenu' => array(
-        'id' => 'configure',
-        'itemdata' => array(
-            array(
-                'text' => "Configure Website",
-                'url' => makeLink(array(
-                    'module' => 'administration',
-                    'action' => 'configure_site'
-                ))
-            ),
-            array(
-                'text' => 'Regenerate Search Index',
-                'classname' => 'search',
-                'url' => makeLink(array(
-                    'module' => 'search',
-                    'action' => 'spider'
-                ))
-            ),
-/*            array(
-                'text' => expLang::gettext("Configure Editor Toolbar"),
-                'url' => makeLink(array(
-                    'module' => 'expHTMLEditor',
-                    'action' => 'manage'
-                ))
-            ) */
-        )
-    )
-);
-
+	if (SMTP_USE_PHP_MAIL){
+		$expAdminMenu['submenu']['itemdata'][] = array(
+			'text' => $i18n['configuration'],
+			'classname' => 'config',
+			'submenu' => array(
+				'id' => 'configure',
+				'itemdata' => array(
+					array(
+						'text' => "Configure Website",
+						'url' => makeLink(array(
+							'module' => 'administration',
+							'action' => 'configure_site'
+						))
+					),
+					array(
+						'text' => 'Regenerate Search Index',
+						'classname' => 'search',
+						'url' => makeLink(array(
+							'module' => 'search',
+							'action' => 'spider'
+						))
+					),
+				)
+			)
+		);
+	} else {
+		$expAdminMenu['submenu']['itemdata'][] = array(
+			'text' => $i18n['configuration'],
+			'classname' => 'config',
+			'submenu' => array(
+				'id' => 'configure',
+				'itemdata' => array(
+					array(
+						'text' => "Configure Website",
+						'url' => makeLink(array(
+							'module' => 'administration',
+							'action' => 'configure_site'
+						))
+					),
+					array(
+						'text' => 'Test SMTP Mail Server Settings',
+						'url' => makeLink(array(
+							'module' => 'administration',
+							'action' => 'test_smtp'
+						))
+					),
+					array(
+						'text' => 'Regenerate Search Index',
+						'classname' => 'search',
+						'url' => makeLink(array(
+							'module' => 'search',
+							'action' => 'spider'
+						))
+					),
+				)
+			)
+		);
+	}
 }
 
 $groups = $db->selectObjects('groupmembership','member_id='.$user->id.' AND is_admin=1');

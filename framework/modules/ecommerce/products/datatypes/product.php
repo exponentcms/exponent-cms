@@ -16,6 +16,7 @@
 # GPL: http://www.gnu.org/licenses/gpl.txt
 #
 ##################################################
+/** @define "BASE" "../../../../.." */
 
 class product extends expRecord {
 	public $table = 'product';
@@ -682,8 +683,9 @@ class product extends expRecord {
         //only add top level products, not children
         if ($this->parent_id != 0 ) return true;
         
-        if (!defined('SYS_SEARCH')) include_once(BASE.'subsystems/search.php');
-        
+//        if (!defined('SYS_SEARCH')) include_once(BASE.'subsystems/search.php');
+        include_once(BASE.'subsystems/search.php');
+
         $exists = $db->selectObject('search',"category='Products' AND ref_module='store' AND original_id = " . $this->id);
         
         $search = null;

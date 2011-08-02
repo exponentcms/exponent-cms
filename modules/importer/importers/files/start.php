@@ -16,13 +16,15 @@
 # GPL: http://www.gnu.org/licenses/gpl.txt
 #
 ##################################################
+/** @define "BASE" "../../../.." */
 
 if (!defined('EXPONENT')) exit('');
 
 $template = new template('importer','_files_uploadForm');
 
-if (!defined('SYS_FORMS')) require_once(BASE.'subsystems/forms.php');
-exponent_forms_initialize();
+//if (!defined('SYS_FORMS')) require_once(BASE.'subsystems/forms.php');
+require_once(BASE.'subsystems/forms.php');
+//exponent_forms_initialize();
 
 $i18n = exponent_lang_loadFile('modules/importer/importers/files/start.php');
 

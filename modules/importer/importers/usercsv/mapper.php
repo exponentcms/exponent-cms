@@ -16,10 +16,12 @@
 # GPL: http://www.gnu.org/licenses/gpl.txt
 #
 ##################################################
+/** @define "BASE" "../../../.." */
 
 //Sanity check
-if (!defined("EXPONENT")) exit("");
-if (!defined("SYS_FORMS")) require_once(BASE."subsystems/forms.php");
+if (!defined('EXPONENT')) exit('');
+//if (!defined("SYS_FORMS")) require_once(BASE."subsystems/forms.php");
+require_once(BASE."subsystems/forms.php");
 
 $i18n = exponent_lang_loadFile('modules/importer/importers/usercsv/mapper.php');
 
@@ -94,7 +96,7 @@ if ($lineInfo == null) {
 	exit("");
 }else{
 	//initialize the for stuff
-	exponent_forms_initialize();
+//	exponent_forms_initialize();
 	//Setup the mete data (hidden values)
 	$form = new form();
 	$form->meta("module","importer");

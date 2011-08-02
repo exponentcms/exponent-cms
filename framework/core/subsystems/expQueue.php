@@ -29,15 +29,15 @@ class expQueue {
 	}
 
 	public function addMsg($msg) {
-		expQueue::flash($this->name, $msg);
+		self::flash($this->name, $msg);
 	}
 
 	public function flush() {
-		expQueue::flushQueue($this->name);
+		self::flushQueue($this->name);
 	}
 
 	public function isEmpty() {
-		expQueue::isQueueEmpty();
+		self::isQueueEmpty();
 	}
 
 	static function flash($name, $msg) {
@@ -63,7 +63,7 @@ class expQueue {
 	}
 
 	static function flushQueue($name) {
-		$flash = exponent_seesions_get('flash');
+		$flash = exponent_sessions_get('flash');
 		$flash[$name] = array();
 		exponent_sessions_set('flash', $flash);
 	}

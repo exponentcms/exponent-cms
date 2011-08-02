@@ -16,13 +16,14 @@
 # GPL: http://www.gnu.org/licenses/gpl.txt
 #
 ##################################################
+/** @define "BASE" ".." */
 
 /* exdoc
  * The definition of this constant lets other parts of the system know 
  * that the subsystem has been included for use.
  * @node Subsystems:Workflow
  */
-define('SYS_WORKFLOW',1);
+//define('SYS_WORKFLOW',1);
 
 /* exdoc
  * @state <b>UNDOCUMENTED</b>
@@ -762,7 +763,8 @@ function exponent_workflow_form($datatype,$id) {
 function exponent_workflow_runActions($policy,$action_type,$revision) {
 	global $db;
 	$actions = $db->selectObjects("workflowaction","policy_id=".$policy->id." AND type=$action_type");
-	if (!defined('SYS_SORTING')) include_once(BASE.'subsystems/sorting.php');
+//	if (!defined('SYS_SORTING')) include_once(BASE.'subsystems/sorting.php');
+	include_once(BASE.'subsystems/sorting.php');
 	usort($actions,"exponent_sorting_byRankAscending");
 	foreach ($actions as $action) {
 		if (is_readable(BASE."subsystems/workflow/actions/".$action->method.".php")) {

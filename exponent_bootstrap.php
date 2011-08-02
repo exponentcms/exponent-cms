@@ -16,6 +16,7 @@
 # GPL: http://www.gnu.org/licenses/gpl.txt
 #
 ##################################################
+/** @define "BASE" "." */
 
 // Following code taken from http://us4.php.net/manual/en/function.get-magic-quotes-gpc.php
 //   - it allows magic_quotes to be on without screwing stuff up.
@@ -71,11 +72,7 @@ require_once(BASE.'exponent_version.php');
 define('EXPONENT', '1');
 
 // load the constants from the global config, theme config, and then default config settings
-require_once(BASE . '/subsystems/config/load.php');
-
-// define remaining constants throughout the system based on loaded configuration constants
-
-//require_once(BASE.'exponent_constants2.php'); // moved to below
+require_once(BASE . 'subsystems/config/load.php');
 
 // Set the default timezone.
 if (function_exists('date_default_timezone_set')) {
@@ -107,7 +104,7 @@ if (!defined('THEME_RELATIVE')) {
 // Process PHP-wrapper settings (ini_sets and setting detectors)
 require_once(BASE . 'exponent_php_setup.php');
 
-// Initialize the PHP4 Compatibility Layer
-//include(BASE.'compat.php');  // deprecated in Exp 2.0
+$info = gd_info();
+define('EXPONENT_HAS_GD',($info['GD Version'] == 'Not Supported' ? 0 : 1));
 
 ?>

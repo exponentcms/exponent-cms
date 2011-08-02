@@ -16,12 +16,14 @@
 # GPL: http://www.gnu.org/licenses/gpl.txt
 #
 ##################################################
+/** @define "BASE" "." */
 
 // Initialize the Exponent Framework
 require_once('exponent.php');
 
 //Fire off the login form via an exponent action.
-if (!defined('SYS_SESSIONS')) require_once(BASE.'subsystems/sessions.php');
+//if (!defined('SYS_SESSIONS')) require_once(BASE.'subsystems/sessions.php');
+require_once(BASE.'subsystems/sessions.php');
 exponent_sessions_set('redirecturl', exponent_flow_get());
 redirect_to(array("module"=>"loginmodule","action"=>"loginredirect"));
 

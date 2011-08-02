@@ -33,6 +33,9 @@ return array(
 	'data'=>array(
 		DB_FIELD_TYPE=>DB_DEF_STRING,
 		DB_FIELD_LEN=>10000),
+	'plugins'=>array(
+		DB_FIELD_TYPE=>DB_DEF_STRING,
+		DB_FIELD_LEN=>255),
 	'scayt_on'=>array(
 		DB_FIELD_TYPE=>DB_DEF_BOOLEAN),
 	'paste_word'=>array(

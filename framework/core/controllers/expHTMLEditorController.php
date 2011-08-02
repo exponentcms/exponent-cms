@@ -24,12 +24,10 @@
 
 class expHTMLEditorController extends expController {
 
-	function name() { return $this->displayname(); }
     function displayname() { return "Editors"; }
     function description() { return "Mostly for CKEditor"; }
     function author() { return "Phillip Ball"; }
     function hasSources() { return false; }
-    function hasViews() { return true; }
 	function hasContent() { return false; }
 	protected $add_permissions = array('activate'=>"activate",'preview'=>"preview CKEditor toolbars");
     
@@ -55,6 +53,7 @@ class expHTMLEditorController extends expController {
         $obj->skin = $this->params['skin'];
         $obj->scayt_on = $this->params['scayt_on'];
         $obj->paste_word = $this->params['paste_word'];
+        $obj->plugins = stripSlashes($this->params['plugins']);
         if (empty($this->params['id'])) {
             $db->insertObject($obj,'htmleditor_ckeditor');
         } else {
@@ -72,6 +71,14 @@ class expHTMLEditorController extends expController {
         assign_to_template(array('record'=>$tool));
     }
     
+	function delete() {
+	    global $db;
+	    expHistory::set('editable', $this->params);
+	    @$db->delete('htmleditor_ckeditor',"id=".$this->params['id']);
+
+	    expHistory::back();
+	}
+
     function activate () {
         global $db;
         

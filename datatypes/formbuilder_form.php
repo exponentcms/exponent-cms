@@ -16,16 +16,19 @@
 # GPL: http://www.gnu.org/licenses/gpl.txt
 #
 ##################################################
+/** @define "BASE" ".." */
 
 class formbuilder_form {
-	function form($object) {
+	static function form($object) {
 		$i18n = exponent_lang_loadFile('datatypes/formbuilder_form.php');
 		
 		global $db;
-		if (!defined('SYS_FORMS')) require_once(BASE.'subsystems/forms.php');
-		if (!defined('SYS_USERS')) require_once(BASE.'subsystems/users.php');
+//		if (!defined('SYS_FORMS')) require_once(BASE.'subsystems/forms.php');
+//		if (!defined('SYS_USERS')) require_once(BASE.'subsystems/users.php');
+		require_once(BASE.'subsystems/forms.php');
+		require_once(BASE.'subsystems/users.php');
 		//global $user;
-		exponent_forms_initialize();
+//		exponent_forms_initialize();
 		
 		$form = new form();
 		if (!isset($object->id)) {
@@ -109,7 +112,7 @@ class formbuilder_form {
 		return $form;
 	}
 	
-	function update($values,$object) {
+	static function update($values,$object) {
 		$object->name = $values['name'];
 		$object->description = $values['description'];
 		$object->is_email = (isset($values['is_email']) ? 1 : 0);
@@ -121,11 +124,12 @@ class formbuilder_form {
 		return $object;
 	}
 	
-	function updateTable($object) {
+	static function updateTable($object) {
 		global $db;
 		
-		if (!defined('SYS_FORMS')) require_once(BASE.'subsystems/forms.php');
-		exponent_forms_initialize();
+//		if (!defined('SYS_FORMS')) require_once(BASE.'subsystems/forms.php');
+		require_once(BASE.'subsystems/forms.php');
+//		exponent_forms_initialize();
 		if ($object->is_saved == 1) {
 			$datadef =  array(
 				'id'=>array(

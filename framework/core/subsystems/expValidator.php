@@ -15,6 +15,8 @@
  * @author Adam Kessler <adam@oicgroup.net>
  * @version 2.0.0
  */
+/** @define "BASE" "../../.." */
+
 /**
  * This is the class expValidator
  *
@@ -204,7 +206,7 @@ class expValidator {
 //        if (!ereg("^[^@]{1,64}@[^@]{1,255}$", $email)) {
 
         //
-        if(expValidator::isValidEmail($email))
+        if(self::isValidEmail($email))
         {
             return true; 
         }
@@ -447,7 +449,7 @@ class expValidator {
 	 * @return bool
 	 */
 	public static function validate_email_address($email) {
-		return expValidator::isValidEmail($email);
+		return self::isValidEmail($email);
 
 		// old code
         // First, we check that there's one @ symbol, and that the lengths are right

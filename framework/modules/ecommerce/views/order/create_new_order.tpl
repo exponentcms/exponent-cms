@@ -34,9 +34,9 @@
                         {literal}
                         
                         // the text box for the title
-                        var tagInput = Y.get('#search_internal');                            
-                        var theAddressesId = Y.get('#addresses_id');                                                   
-                        var existingRadio = Y.get('#customer_type2');
+                        var tagInput = Y.one('#search_internal');                            
+                        var theAddressesId = Y.one('#addresses_id');                                                   
+                        var existingRadio = Y.one('#customer_type2');
                         
                         var onRequestData = function( oSelf , sQuery , oRequest) {
                             existingRadio.set('checked',true);
@@ -77,9 +77,9 @@
                         {literal}
                         
                         // the text box for the title
-                        var tagInput = Y.get('#related_items2');                            
-                        var theAddressesId = Y.get('#addresses_id');                                                   
-                        var existingRadio = Y.get('#customer_type3');
+                        var tagInput = Y.one('#related_items2');                            
+                        var theAddressesId = Y.one('#addresses_id');                                                   
+                        var existingRadio = Y.one('#customer_type3');
                         
                         var onRequestData = function( oSelf , sQuery , oRequest) {
                             existingRadio.set('checked',true);

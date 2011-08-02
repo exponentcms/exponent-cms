@@ -8,7 +8,10 @@ return array(
 
 	'site_title'=>'Site Title',
 	'site_title_desc'=>'The title of the website.',
-
+	
+	'site_header'=>'Site Header',
+	'site_header_desc'=>'The header of the website.',
+	
 	'use_lang'=>'Interface Language',
 	'use_lang_desc'=>'What language should be used for the Exponent interface?',
 

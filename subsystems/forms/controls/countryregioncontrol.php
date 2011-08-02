@@ -16,42 +16,24 @@
 # GPL: http://www.gnu.org/licenses/gpl.txt
 #
 ##################################################
+/** @define "BASE" "../../.." */
 
 if (!defined('EXPONENT')) exit('');
 
 /**
- * Country Region
- *
- * @author James Hunt
- * @copyright 2004 Greg Otte and the OIC Group, Inc.
- *
- * @package Subsystems
- * @subpackage Forms
- */
-
-/**
- * Manually include the class file for formcontrol, for PHP4
- * (This does not adversely affect PHP5)
- */
-require_once(BASE."subsystems/forms/controls/formcontrol.php");
-
-/**
  * Country Region Control
  *
- * @package Subsystems
- * @subpackage Forms
+ * @package Subsystems-Forms
+ * @subpackage Control
  */
 class countryregioncontrol extends formcontrol {
+
 	var $size = 0;
 	var $maxlength = "";
 
 	function name() { return "Country / Region Selector"; }
 
-	function parseData($name, $values, $for_db = false) {
-		return;
-	}
-
-	function countryregioncontrol($country_default = "", $region_default = "", $allow_entire_country = false, $disabled = false) {
+	function __construct($country_default = "", $region_default = "", $allow_entire_country = false, $disabled = false) {
 		$this->country_default = $country_default;
 		$this->region_default = $region_default;
 		$this->allow_entire_country = $allow_entire_country;
@@ -61,7 +43,8 @@ class countryregioncontrol extends formcontrol {
 	function controlToHTML($name) {
 		$html = "";
 
-		if (!defined("SYS_GEO")) require_once(BASE."subsystems/geo.php");
+//		if (!defined("SYS_GEO")) require_once(BASE."subsystems/geo.php");
+		require_once(BASE."subsystems/geo.php");
 		$countries = exponent_geo_listCountriesOnly();
 		$c_dd = new dropdowncontrol($this->country_default,$countries);
 		$c_dd->jsHooks["onchange"] = "geo_rebuildRegions(this,'".$name."_region_id'," . (($this->allow_entire_country)?'true':'false') . ");";
@@ -98,7 +81,8 @@ class countryregioncontrol extends formcontrol {
 			$html .= "		r_select.appendChild(o);";
 			$html .= "	}";
 			$html .= "}";
-			if (!defined("SYS_JAVACSRIPT")) require_once(BASE."subsystems/javascript.php");
+//			if (!defined("SYS_JAVACSRIPT")) require_once(BASE."subsystems/javascript.php");
+			require_once(BASE."subsystems/javascript.php");
 			$region = null;
 			$region->parent_id = 0;
 			$region->id = 0;
@@ -135,6 +119,11 @@ class countryregioncontrol extends formcontrol {
 
 		return $html;
 	}
+
+	static function parseData($name, $values, $for_db = false) {
+		return;
+	}
+
 }
 
 ?>

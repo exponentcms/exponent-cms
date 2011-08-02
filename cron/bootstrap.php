@@ -37,22 +37,26 @@
     */
 
     require_once('../exponent.php');
-    require_once('../conf/config.php');      
+//    require_once('../conf/config.php');  // now pulled in by exponent.php
     
     //define('BASE',str_ireplace('/cron','',__realpath(dirname(__FILE__))));
     define("EXP_PATH", BASE);
+/** @define "EXP_PATH" ".." */
+
     //Pull in the mysqli helper class form exponet. 
     // Sure, we could have used mysqli directly but we have this nice friendly class so why not use it
     require_once(EXP_PATH . "subsystems/database/mysqli.php");
     
-    // Pull in the Swift lib from Exponent's external dir    
-    require_once(EXP_PATH . "external/Swift/Swift.php");
-    require_once(EXP_PATH . "external/Swift/Connection/SMTP.php");
-    require_once(EXP_PATH . "external/Swift/Plugin/AntiFlood.php");
-    require_once(EXP_PATH . "external/Swift/Plugin/Decorator.php");
+//TODO Swift 3.x is no longer available, but expMail is already waiting
+// $mail - new expMail(); $mail->quickSend();
+// Pull in the Swift lib from Exponent's external dir
+//    require_once(EXP_PATH . "external/Swift/Swift.php");
+//    require_once(EXP_PATH . "external/Swift/Connection/SMTP.php");
+//    require_once(EXP_PATH . "external/Swift/Plugin/AntiFlood.php");
+//    require_once(EXP_PATH . "external/Swift/Plugin/Decorator.php");
     
     // instantiate the mysql helper class and connect
-    $db = new mysqli_database();
+//    $db = new mysqli_database();  gobal $db now set by exponent.php above
     $db->connect(DB_USER, DB_PASS, DB_HOST.':'.DB_PORT, DB_NAME);
     
 ?>

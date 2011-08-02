@@ -26,18 +26,18 @@
 				<a href="<?php echo exponent_core_makeLink(array('section'=>10)); ?>">Site-map</a>
 			</div>
 		<div id="header-login">
-			<?php exponent_theme_showModule("loginmodule","Expanded"); ?>
+			<?php expTheme::module(array("module"=>"login","view"=>"Expanded")); ?>
 		</div>
 	</div>
 	<!-- navigation -->
 	<div  id="menu">
-		<?php exponent_theme_showModule("navigationmodule","YUI Top Nav","","@top"); ?>
+		<?php expTheme::module(array("module"=>"navigation","view"=>"YUI Top Nav")); ?>
 	</div>
 	<!-- content-wrap starts here -->
 	<div id="content-wrap">
 		
 		<div id="main">
-			<?php exponent_theme_main(); ?>
+			<?php expTheme::main(); ?>
 		</div>
 	<!-- content-wrap ends here -->	
 	</div>
@@ -46,7 +46,7 @@
 		<?php expTheme::showController(array("controller"=>"text","action"=>"showall","view"=>"showall","source"=>"textmodulesrc1")) ?>				
 	</div>	
 
-	<?php echo exponent_theme_footerInfo($section,$config);?>
+	<?php echo expTheme::foot(); ?>
 </div>
 
 </body>

@@ -2,7 +2,6 @@
  "http://www.w3.org/TR/html4/strict.dtd">
 <html>
 <head>
-    	
     <?php 
     expTheme::head(array(
     	"xhtml"=>true,
@@ -28,21 +27,21 @@
 			<a href="<?php echo exponent_core_makeLink(array('section'=>10)); ?>">Site-map</a>
 		</div>
 		<div id="header-login">
-      <?php expTheme::module(array("module"=>"login","view"=>"Expanded")); ?>
+            <?php expTheme::module(array("module"=>"login","view"=>"Expanded")); ?>
 		</div>
 	</div>
 	<!-- navigation -->
 	<div  id="menu">
-    <?php expTheme::module(array("module"=>"navigation","view"=>"YUI Top Nav")); ?>
+        <?php expTheme::module(array("module"=>"navigation","view"=>"YUI Top Nav")); ?>
 	</div>
 	<!-- content-wrap starts here -->
 	<div id="content-wrap">
 		<div id="main">
-      <?php expTheme::main(); ?>
+            <?php expTheme::main(); ?>
 		</div>
 		<div id="sidebar">
-    	<?php expTheme::module(array("module"=>"container","view"=>"Default","source"=>"@left")); ?>
-    </div>
+    	    <?php expTheme::module(array("module"=>"container","view"=>"Default","source"=>"@left")); ?>
+        </div>
 	<!-- content-wrap ends here -->	
 	</div>
 	<!--footer starts here-->

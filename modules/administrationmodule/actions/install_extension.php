@@ -16,6 +16,7 @@
 # GPL: http://www.gnu.org/licenses/gpl.txt
 #
 ##################################################
+/** @define "BASE" "../../.." */
 
 // Part of the Extensions category
 
@@ -65,8 +66,9 @@ if (exponent_permissions_check('extensions',exponent_core_makeLocation('administ
 		if ($ext == '') {
 			echo $i18n['bad_archive'].'<br />';
 		} else {
-			if (!defined('SYS_FILES')) require_once(BASE.'subsystems/files.php');
-		
+//			if (!defined('SYS_FILES')) require_once(BASE.'subsystems/files.php');
+			require_once(BASE.'subsystems/files.php');
+
 			// Look for stale sessid directories:
 			$sessid = session_id();
 			if (file_exists(BASE."extensionuploads/$sessid") && is_dir(BASE."extensionuploads/$sessid")) exponent_files_removeDirectory("extensionuploads/$sessid");

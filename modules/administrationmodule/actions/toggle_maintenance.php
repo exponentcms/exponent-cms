@@ -16,13 +16,15 @@
 # GPL: http://www.gnu.org/licenses/gpl.txt
 #
 ##################################################
+/** @define "BASE" "../../.." */
 
 // Part of Extensions category
 
 if (!defined('EXPONENT')) exit('');
 
 if (exponent_permissions_check('development',exponent_core_makeLocation('administrationmodule'))) {
-	if (!defined('SYS_CONFIG')) include_once(BASE.'subsystems/config.php');
+//	if (!defined('SYS_CONFIG')) include_once(BASE.'subsystems/config.php');
+	include_once(BASE.'subsystems/config.php');
 	$value = (MAINTENANCE_MODE == 1) ? 0 : 1;
 	exponent_config_change('MAINTENANCE_MODE', $value);
 	redirect_to(array('module'=>'administrationmodule', 'action'=>'index'));

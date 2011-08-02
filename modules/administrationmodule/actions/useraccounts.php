@@ -16,6 +16,7 @@
 # GPL: http://www.gnu.org/licenses/gpl.txt
 #
 ##################################################
+/** @define "BASE" "../../.." */
 
 // Part of the User Management category
 
@@ -24,8 +25,9 @@ if (!defined('EXPONENT')) exit('');
 if (exponent_permissions_check('user_management',exponent_core_makeLocation('administrationmodule'))) {
 	exponent_flow_set(SYS_FLOW_PROTECTED,SYS_FLOW_ACTION);
 
-	if (!defined('SYS_USERS')) require_once(BASE.'subsystems/users.php');
-	
+//	if (!defined('SYS_USERS')) require_once(BASE.'subsystems/users.php');
+	require_once(BASE.'subsystems/users.php');
+
 	$template = new template('administrationmodule','_usermanager',$loc);
 	
 	$template = exponent_users_userManagerFormTemplate($template);

@@ -16,6 +16,7 @@
 # GPL: http://www.gnu.org/licenses/gpl.txt
 #
 ##################################################
+/** @define "BASE" "." */
 
 if (!defined('EXPONENT')) exit('');
 function epb($buffer, $mode) {
@@ -30,7 +31,8 @@ $microtime_str = explode(' ',microtime());
 $i_start = $microtime_str[0] + $microtime_str[1];
 
 // Initialize the Theme Subsystem
-if (!defined('SYS_THEME')) require_once(BASE.'subsystems/theme.php');
+//if (!defined('SYS_THEME')) require_once(BASE.'subsystems/theme.php');
+require_once(BASE.'subsystems/theme.php');
 
 $section = (exponent_sessions_isset('last_section') ? exponent_sessions_get('last_section') : SITE_DEFAULT_SECTION);
 $section = $db->selectObject('section','id='.$section);

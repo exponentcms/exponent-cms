@@ -16,33 +16,22 @@
 # GPL: http://www.gnu.org/licenses/gpl.txt
 #
 ##################################################
+/** @define "BASE" "../../.." */
 
 if (!defined('EXPONENT')) exit('');
 
 /**
- * Autocomplete
+ * Auto-complete Control
  *
  * @author Phillip Ball
  * @copyright 2004-2010 OIC Group, Inc.
  * @version 2.0.0
  *
- * @package Subsystems
- * @subpackage Forms
- */
-
-/**
- * Manually include the class file for formcontrol, for PHP4
- * (This does not adversely affect PHP5)
- */
-require_once(BASE."subsystems/forms/controls/formcontrol.php");
-
-/**
- * Popup Date/Time Picker Control
- *
- * @package Subsystems
- * @subpackage Forms
+ * @package Subsystems-Forms
+ * @subpackage Control
  */
 class autocompletecontrol extends formcontrol {
+
     function name() { return "YAHOO! UI Autocomplete"; }
     function isSimpleControl() { return false; }
 
@@ -112,7 +101,6 @@ class autocompletecontrol extends formcontrol {
         //exponent_javascript_toFoot('ac'.$name, "animation,autocomplete,connection,datasource", null, $script);
         return $html;
     }
-
 
 }
 

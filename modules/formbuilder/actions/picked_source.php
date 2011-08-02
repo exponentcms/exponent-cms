@@ -16,8 +16,9 @@
 # GPL: http://www.gnu.org/licenses/gpl.txt
 #
 ##################################################
+/** @define "BASE" "../../.." */
 
-if (!defined("EXPONENT")) exit("");
+if (!defined('EXPONENT')) exit('');
 
 $f1_loc = exponent_core_makeLocation($_GET['sm'],$_GET['ss']);
 $f1 = $db->selectObject("formbuilder_form","location_data='".serialize($f1_loc)."'");
@@ -28,7 +29,8 @@ $f2 = $db->selectObject("formbuilder_form","location_data='".serialize($f2_loc).
 if ($f1 && $f2) {
 	if (exponent_permissions_check("editform",unserialize($f2->location_data))) {
 		$controls  = $db->selectObjects("formbuilder_control","form_id=".$f1->id);
-		if (!defined("SYS_SORTING")) include_once(BASE."subsystems/sorting.php");
+//		if (!defined("SYS_SORTING")) include_once(BASE."subsystems/sorting.php");
+		include_once(BASE."subsystems/sorting.php");
 		usort($controls,"exponent_sorting_byRankAscending");
 		
 		foreach ($controls as $control) {

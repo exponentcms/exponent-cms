@@ -30,6 +30,7 @@
 #
 # $Id: results.php,v 1.2 2005/04/26 03:06:00 filetreefrog Exp $
 ##################################################
+/** @define "BASE" "../../.." */
 
 if (!defined('EXPONENT')) exit('');
 
@@ -46,7 +47,8 @@ if ($question) {
 			$total += $answers[$i]->vote_count;
 		}
 		
-		if (!defined('SYS_SORTING')) require_once(BASE.'subsystems/sorting.php');
+//		if (!defined('SYS_SORTING')) require_once(BASE.'subsystems/sorting.php');
+		require_once(BASE.'subsystems/sorting.php');
 		if (!function_exists('exponent_sorting_byVoteCountDescending')) {
 			function exponent_sorting_byVoteCountDescending($a,$b) {
 				return ($a->vote_count > $b->vote_count ? -1 : 1);

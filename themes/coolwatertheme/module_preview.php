@@ -24,9 +24,9 @@ if (!defined('EXPONENT')) exit('');
 <html>
 	<head>
 		<title><?php echo SITE_TITLE; ?></title>
-		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-		<meta name="Generator" value="Exponent Content Management System" />
-		<link rel="stylesheet" title="default" href="<?php echo THEME_RELATIVE; ?>style.css" />
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" <?php echo XHTML_CLOSING; ?>>
+		<meta name="Generator" value="Exponent Content Management System" <?php echo XHTML_CLOSING; ?>>
+		<link rel="stylesheet" title="default" href="<?php echo THEME_RELATIVE; ?>style.css" <?php echo XHTML_CLOSING; ?>>
 		<script type="text/javascript" src="<?php echo PATH_RELATIVE; ?>exponent.js.php"></script>
 	</head>
 

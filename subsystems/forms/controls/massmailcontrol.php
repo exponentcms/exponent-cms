@@ -16,38 +16,23 @@
 # GPL: http://www.gnu.org/licenses/gpl.txt
 #
 ##################################################
+/** @define "BASE" "../../.." */
 
 if (!defined('EXPONENT')) exit('');
 
 /**
  * Mass Mailing Control
  *
- * @author James Hunt
- * @copyright 2004-2011 OIC Group, Inc.
- * @version 0.95
- *
- * @package Subsystems
- * @subpackage Forms
- */
-
-/**
- * Manually include the class file for formcontrol, for PHP4
- * (This does not adversely affect PHP5)
- */
-require_once(BASE."subsystems/forms/controls/formcontrol.php");
-
-/**
- * Mass Mailing Control
- *
- * @package Subsystems
- * @subpackage Forms
+ * @package Subsystems-Forms
+ * @subpackage Control
  */
 class massmailcontrol extends formcontrol {
+
 	var $type = 0;
 
 	function name() { return "Mass-Mailling Control"; }
 
-	function massmailcontrol($default = "",$type = 0) {
+	function __construct($default = "",$type = 0) {
 		$this->default = $default;
 		$this->type = $type;
 	}

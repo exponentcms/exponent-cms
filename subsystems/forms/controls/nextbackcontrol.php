@@ -16,50 +16,26 @@
 # GPL: http://www.gnu.org/licenses/gpl.txt
 #
 ##################################################
+/** @define "BASE" "../../.." */
 
 if (!defined('EXPONENT')) exit('');
 
 /**
- * Button Group Control
+ * Next Back Control
  *
- * A group of buttons
- *
- * @author Adam Kessler
- * @copyright 2004-2011 OIC Group, Inc.
- * @version 0.95
- *
- * @package Subsystems
- * @subpackage Forms
- */
-
-/**
- * Manually include the class file for formcontrol, for PHP4
- * (This does not adversely affect PHP5)
- */
-require_once(BASE."subsystems/forms/controls/formcontrol.php");
-
-/**
- * Button Group Control Class
- *
- * A group of buttons
- *
- * @package Subsystems
- * @subpackage Forms
+ * @package Subsystems-Forms
+ * @subpackage Control
  */
 class nextbackcontrol extends formcontrol {
+
 	var $next = "Next >";
 	var $back = "< Back";
 	var $cancel = "";
-
 	var $validateJS = "";
 
 	function name() { return "Next/Back Button Group"; }
 
-	function parseData($name, $values, $for_db = false) {
-		return;
-	}
-
-	function nextbackcontrol($next = "Next >", $back = "< Back", $cancel = "") {
+	function __construct($next = "Next >", $back = "< Back", $cancel = "") {
 		$this->next = $next;
 		$this->back = $back;
 		$this->cancel = $cancel;
@@ -105,6 +81,10 @@ class nextbackcontrol extends formcontrol {
 			$html .= ' />';
 		}
 		return $html;
+	}
+
+	static function parseData($name, $values, $for_db = false) {
+		return;
 	}
 
 }

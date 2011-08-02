@@ -27,15 +27,15 @@ define('SCRIPT_FILENAME','index.php');
 include_once('../exponent.php');
 
 if (!file_exists('not_configured') && file_exists(BASE.'conf/config.php')) {
-//	header('Location: ../index.php');
-	header('Location: ./pages/final.php');  // take us to the final install/upgrade page
+	header('Location: ../index.php');
 	exit('This Exponent Site has already been configured.');
 }
 
 // Load i18n values
 $i18n = exponent_lang_loadFile('install/index.php');
 
-if (!defined('SYS_CONFIG')) include_once(BASE . 'subsystems/config.php');
+//if (!defined('SYS_CONFIG')) include_once(BASE . 'subsystems/config.php');
+include_once(BASE . 'subsystems/config.php');
 
 // Initialize the language
 if (isset($_POST['sc'])) {

@@ -289,11 +289,19 @@ eXp.ddNavTree = function() {
 	}
 
 	function editUserPerms (){
-		window.location="{/literal}{$smarty.const.URL_FULL}{literal}index.php?module=navigationmodule&_common=1&action=userperms&int="+currentMenuNode.data.id;
+		{/literal} {if ($smarty.const.SEF_URLS == 1)} {literal}
+			window.location="{/literal}{$smarty.const.URL_FULL}{literal}navigationmodule/userperms/int/"+currentMenuNode.data.id+"/_common/1";
+		{/literal} {else} {literal}
+			window.location="{/literal}{$smarty.const.URL_FULL}{literal}index.php?module=navigationmodule&action=userperms&int="+currentMenuNode.data.id+"&_common=1";
+		{/literal} {/if} {literal}
 	}
 
 	function editGroupPerms (){
-		window.location="{/literal}{$smarty.const.URL_FULL}{literal}index.php?module=navigationmodule&_common=1&action=groupperms&int="+currentMenuNode.data.id;
+		{/literal} {if ($smarty.const.SEF_URLS == 1)} {literal}
+			window.location="{/literal}{$smarty.const.URL_FULL}{literal}navigationmodule/groupperms/int/"+currentMenuNode.data.id+"/_common/1";
+		{/literal} {else} {literal}
+			window.location="{/literal}{$smarty.const.URL_FULL}{literal}index.php?module=navigationmodule&action=groupperms&int="+currentMenuNode.data.id+"&_common=1";
+		{/literal} {/if} {literal}
 	}
 	
 	

@@ -23,7 +23,7 @@
  * that the subsystem has been included for use.
  * @node Subsystems:Javascript
  */
-define("SYS_JAVASCRIPT",1);
+//define("SYS_JAVASCRIPT",1);
 
 /* exdoc
  * Takes a stdClass object from PHP, and generates the

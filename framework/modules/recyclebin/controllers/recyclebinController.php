@@ -23,15 +23,11 @@ class recyclebinController extends expController {
     public $add_permissions = array('show'=>'View Recycle Bin');
     //public $remove_permissions = array('edit');
 
-    function name() { return $this->displayname(); } //for backwards compat with old modules
     function displayname() { return "Recycle Bin Manager"; }
     function description() { return "Manage modules that have been deleted from your web pages"; }
     function author() { return "Phillip Ball - OIC Group, Inc"; }
     function hasSources() { return false; }
-    function hasViews() { return true; }
     function hasContent() { return false; }
-    function supportsWorkflow() { return false; }
-    function isSearchable() { return false; }
 
     function showall() {
     }

@@ -15,6 +15,7 @@
  * @author Adam Kessler <adam@oicgroup.net>
  * @version 2.0.0
  */
+/** @define "BASE" "../../.." */
 
  /**
   * Class to handle files at the File System Level and updating
@@ -234,34 +235,35 @@ class expFile extends expRecord {
 // ==========================================================
 // Class Methods
 
-   /**
-    * Class constructor to create a File Class either from a database
-    * record or from the File System.
-    *
-    * Class will either: a) load an existing File Record
-    *                    b) modify an existing File Record
-    *                    c) create a new File Record
-    *
-    * This will also handle any File System handling that is needed: copy,
-    * move, create, delete, read and write.
-    *
-    * @access public
-    *
-    * @uses expRecord::__construct
-    *
-    * @PHPUnit Not Defined
-    *
-    * @param mixed $params  - If an INT is given, this assumes that it needs to
-    *                         load an exisiting File Record.
-    *                       - If an ARRAY is given, this assumes that the elements
-    *                         of the array are values to the File table that need
-    *                         to be modifiy or other processing.
-    *                       - If NULL is given, an empty File Object is created
-    *
-    * @return object File Object
-    * @throws void
-    *
-    */
+	/**
+	 * Class constructor to create a File Class either from a database
+	 * record or from the File System.
+	 *
+	 * Class will either: a) load an existing File Record
+	 *                    b) modify an existing File Record
+	 *                    c) create a new File Record
+	 *
+	 * This will also handle any File System handling that is needed: copy,
+	 * move, create, delete, read and write.
+	 *
+	 * @access public
+	 *
+	 * @uses expRecord::__construct
+	 *
+	 * @PHPUnit Not Defined
+	 *
+	 * @param mixed $params  - If an INT is given, this assumes that it needs to
+	 *                         load an exisiting File Record.
+	 *                       - If an ARRAY is given, this assumes that the elements
+	 *                         of the array are values to the File table that need
+	 *                         to be modifiy or other processing.
+	 *                       - If NULL is given, an empty File Object is created
+	 *
+	 * @param bool $get_assoc
+	 * @param bool $get_attached
+	 * @return \expFile Object@throws void
+	 *
+	 */
 	public function __construct($params = array(), $get_assoc = false, $get_attached = false) {
         // Set 'directory' as the default FILE location
         // This will be redefined if a FILE record is loaded
@@ -315,37 +317,35 @@ class expFile extends expRecord {
 // Static Methods
 
 
-   /**
-    * File UPLOAD that also inserts File info into datbase.
-    *
-    * File UPLOAD is a straight forward uploader and processer. It can accept
-    * filename and destination directory overrides as well. It has an additional
-    * pair of flags that allow for an upload NOT to be inserted into the database
-    * (default to INSERT) and if it previous file, with the same name, should be
-    * overwritten (default to NO overwrite)
-    *
-    * @static
-    * @access public
-    *
-    * @uses class|method|global|variable description
-    * @requires class_name
-    *
-    * @PHPUnit Not Defined|Implement|Completed
-    *
-    * @param string $_postName  The name of the _FILE upload array
-    * @param string $_force     Force the uploaded to overwrite existing file of same name
-    * @param string $_save      Save file info to database, defaults to TRUE
-    * @param string $_destFile  Override the uploaded file name
-    * @param string $_destDir   Override the default FILE UPLOAD location
-    *
-    * @return object $_objFile expFile Object
-    * @return string $errMsg   Error message if something failed
-    *
-    * @throws void
-    *
-    * @TODO Have file upload overwrite make sure not to duplicate its record in the DB
-    *
-    */
+	/**
+	 * File UPLOAD that also inserts File info into datbase.
+	 *
+	 * File UPLOAD is a straight forward uploader and processer. It can accept
+	 * filename and destination directory overrides as well. It has an additional
+	 * pair of flags that allow for an upload NOT to be inserted into the database
+	 * (default to INSERT) and if it previous file, with the same name, should be
+	 * overwritten (default to NO overwrite)
+	 *
+	 * @static
+	 * @access public
+	 *
+	 * @uses class|method|global|variable description
+	 * @requires class_name
+	 *
+	 * @PHPUnit Not Defined|Implement|Completed
+	 *
+	 * @param string $_postName  The name of the _FILE upload array
+	 * @param bool|string $_force Force the uploaded to overwrite existing file of same name
+	 * @param bool|string $_save Save file info to database, defaults to TRUE
+	 * @param string $_destFile  Override the uploaded file name
+	 * @param string $_destDir   Override the default FILE UPLOAD location
+	 *
+	 * @return object $_objFile expFile Object
+	 * @return object $errMsg   Error message if something failed@throws void
+	 *
+	 * @TODO Have file upload overwrite make sure not to duplicate its record in the DB
+	 *
+	 */
     public static function fileUpload( $_postName = null,
                                        $_force    = false,
                                        $_save     = true,
@@ -353,7 +353,8 @@ class expFile extends expRecord {
                                        $_destDir  = null
                                       ) {
 
-        if (!defined('SYS_FILES')) include_once(BASE.'subsystems/files.php');
+//        if (!defined('SYS_FILES')) include_once(BASE.'subsystems/files.php');
+        include_once(BASE.'subsystems/files.php');
 
         // Make sure something was sent first off...
         if ( ( !isset($_SERVER['CONTENT_TYPE'] )) ||
@@ -437,21 +438,21 @@ class expFile extends expRecord {
     }
 
 
-    /**
-     * Performs a system level check on the file and retrieves its size
-     *
-     * @static
-     * @access public
-     *
-     * @uses function filesize()    Built-in PHP method
-     *
-     * @PHPUnit Not Defined|Implement|Completed
-     *
-     * @param string $_path      Full path to file to pull info from
-     * @return int $_fileSize    Size of file in bytes
-     * @throws void
-     *
-     */
+	/**
+	 * Performs a system level check on the file and retrieves its size
+	 *
+	 * @static
+	 * @access public
+	 *
+	 * @uses function filesize()    Built-in PHP method
+	 *
+	 * @PHPUnit Not Defined|Implement|Completed
+	 *
+	 * @param bool|string $_path Full path to file to pull info from
+	 * @return int $_fileSize    Size of file in bytes
+	 * @throws void
+	 *
+	 */
 
      public static function fileSize($_path = false)
      {
@@ -575,26 +576,25 @@ class expFile extends expRecord {
 // Class Image Processing Methods
 // @TODO  This collection of methods need to be placed in their own Class
 
-   /**
+	/**
 	 * Return size and mimetype information about an image file,
-    * given its path/filename.  This is a wrapper around the
-    * built-in PHP 'getimagesize' function, to make all implementations
-    * work identically.
-    *
-    * @static
-    * @access public
+	 * given its path/filename.  This is a wrapper around the
+	 * built-in PHP 'getimagesize' function, to make all implementations
+	 * work identically.
 	 *
-    * @uses function getimagesize()   Built-in PHP function
-    *
-    * @PHPUnit Not Defined|Implement|Completed
-    *
-    * @param string $_path Full path to file to pull info from
-    *
-    * @return array  $_sizeinfo      An array of Image File info
-    * @return string $error message  Error message
-    *
-    * @throws void
-    *
+	 * @static
+	 * @access public
+	 *
+	 * @uses function getimagesize()   Built-in PHP function
+	 *
+	 * @PHPUnit Not Defined|Implement|Completed
+	 *
+	 * @param bool|string $_path Full path to file to pull info from
+
+	 *
+	 * @return array  $_sizeinfo      An array of Image File info
+	 * @return array $error message  Error message@throws void
+	 *
 	 */
 	public static function getImageInfo($_path = false) {
         
@@ -1061,7 +1061,7 @@ class expFile extends expRecord {
     
     
     
-    function recurse_copy($src,$dst) { 
+    static function recurse_copy($src,$dst) {
         $dir = opendir($src); 
         @mkdir($dst); 
         while(false !== ( $file = readdir($dir)) ) { 

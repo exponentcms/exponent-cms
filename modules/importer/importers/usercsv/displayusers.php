@@ -16,10 +16,12 @@
 # GPL: http://www.gnu.org/licenses/gpl.txt
 #
 ##################################################
+/** @define "BASE" "../../../.." */
 
 //Sanity Check
-if (!defined("EXPONENT")) exit("");
-if (!defined("SYS_USERS")) require_once(BASE."subsystems/users.php");
+if (!defined('EXPONENT')) exit('');
+//if (!defined("SYS_USERS")) require_once(BASE."subsystems/users.php");
+require_once(BASE."subsystems/users.php");
 
 
 $file = fopen(BASE.$_POST["filename"],"r");

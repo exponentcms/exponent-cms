@@ -16,20 +16,15 @@
 # GPL: http://www.gnu.org/licenses/gpl.txt
 #
 ##################################################
+/** @define "BASE" "../../../.." */
 
 class motdController extends expController {
     //public $basemodel_name = '';
     public $useractions = array('show'=>'Show Todays Message');
 	public $codequality = 'beta';
 
-    function name() { return $this->displayname(); } //for backwards compat with old modules
     function displayname() { return "Message of the Day"; }
     function description() { return "Display a message for a given day of the year."; }
-    function author() { return "Adam Kessler - OIC Group, Inc"; }
-    function hasSources() { return true; }
-    function hasViews() { return true; }
-    function hasContent() { return true; }
-    function supportsWorkflow() { return false; }
     function isSearchable() { return true; }
     
     function show() {
@@ -63,7 +58,8 @@ class motdController extends expController {
     }
     
     function update() {
-        if (!defined("SYS_DATETIME")) include_once(BASE."subsystems/datetime.php");
+//        if (!defined("SYS_DATETIME")) include_once(BASE."subsystems/datetime.php");
+        include_once(BASE."subsystems/datetime.php");
         $timestamp = mktime(0, 0, 0, $this->params['month'], 1);
         $endday = exponent_datetime_endOfMonthDay($timestamp);
         if ($this->params['day'] > $endday) {

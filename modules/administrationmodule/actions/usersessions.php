@@ -16,6 +16,7 @@
 # GPL: http://www.gnu.org/licenses/gpl.txt
 #
 ##################################################
+/** @define "BASE" "../../.." */
 
 // Part of the User Management category
 
@@ -27,9 +28,11 @@ if (exponent_permissions_check('user_management',exponent_core_makeLocation('adm
 	//cleans up any old sections
 	$db->delete('sessionticket','last_active < ' . (time() - SESSION_TIMEOUT));
 	
-	if (!defined('SYS_USERS')) require_once(BASE.'subsystems/users.php');
-	if (!defined('SYS_DATETIME')) require_once(BASE.'subsystems/datetime.php');
-	
+//	if (!defined('SYS_USERS')) require_once(BASE.'subsystems/users.php');
+//	if (!defined('SYS_DATETIME')) require_once(BASE.'subsystems/datetime.php');
+	require_once(BASE.'subsystems/users.php');
+	require_once(BASE.'subsystems/datetime.php');
+
 	$sessions = $db->selectObjects('sessionticket');
 	for ($i = 0; $i < count($sessions); $i++) {
 		$sessions[$i]->user = exponent_users_getUserById($sessions[$i]->uid);

@@ -17,7 +17,7 @@
 #
 ##################################################
 
-if (!defined("EXPONENT")) exit("");
+if (!defined('EXPONENT')) exit('');
 
 global $router;
 $container = $db->selectObject('container', 'id='.intval($_REQUEST['id']));
@@ -31,8 +31,10 @@ $clipboard_object->view = $container->view;
 $clipboard_object->copied_from = $db->selectValue('section', 'name', 'id='.exponent_sessions_get('last_section'));
 $clipboard_object->section_id = exponent_sessions_get('last_section');
 $clipboard_object->operation = $_REQUEST['op'];
-$clipboard_object->description = $db->selectValue('locationref', 'description', 'module="'.$clipboard_object->module.'" AND source="'.$clipboard_object->source.'"');
-$clipboard_object->refcount = $db->selectValue('locationref', 'refcount', 'module="'.$clipboard_object->module.'" AND source="'.$clipboard_object->source.'"');
+//$clipboard_object->description = $db->selectValue('locationref', 'description', 'module="'.$clipboard_object->module.'" AND source="'.$clipboard_object->source.'"');
+//$clipboard_object->refcount = $db->selectValue('locationref', 'refcount', 'module="'.$clipboard_object->module.'" AND source="'.$clipboard_object->source.'"');
+$clipboard_object->description = $db->selectValue('sectionref', 'description', 'module="'.$clipboard_object->module.'" AND source="'.$clipboard_object->source.'"');
+$clipboard_object->refcount = $db->selectValue('sectionref', 'refcount', 'module="'.$clipboard_object->module.'" AND source="'.$clipboard_object->source.'"');
 //eDebug($clipboard_object);
 $db->insertObject($clipboard_object, 'clipboard');
 flash('message', 'Module copied to clipboard');

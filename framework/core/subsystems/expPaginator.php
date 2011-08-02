@@ -82,15 +82,14 @@ class expPaginator {
      */	
 	public $pages = array();
 	public $records = array();
-	
+
 	/**
 	 * expPaginator Constructor
 	 *
 	 * This is the main entry point for using the expPaginator.  See example above.
 	 *
 	 * @param array $params Use this to set any of the class variables. Ones not passed will be set to a default.
-	 * @return void
-	 *
+	 * @return \expPaginator
 	 */
 	public function __construct($params=array()) {
 		global $router,$db;		
@@ -318,7 +317,7 @@ class expPaginator {
 	//From Merge
     private function cleanParams($params)
     {  
-        $defaultParams = array('title'=>'','module'=>'','controller'=>'','src'=>'','id'=>'','dir'=>'');
+        $defaultParams = array('title'=>'','module'=>'','controller'=>'','src'=>'','id'=>'','dir'=>'','_common'=>'');
         $newParams = array();
         $func = new ReflectionClass($this);       
         foreach ($params as $pKey=>$pVal)

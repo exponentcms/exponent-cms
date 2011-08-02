@@ -15,6 +15,9 @@
  * @author Adam Kessler <adam@oicgroup.net>
  * @version 2.0.0
  */
+/** @define "BASE" "../../.." */
+
+
 /**
  * This is the class expJavascript
  *
@@ -107,7 +110,7 @@ class expJavascript {
         
 	}
 	
-    public function pushToFoot($params) {
+    public static function pushToFoot($params) {
     	global $js2foot,$yui2js,$yui3js,$expJS;
 
     	if (!empty($params['src'])) {

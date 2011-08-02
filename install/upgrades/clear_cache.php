@@ -1,26 +1,31 @@
 <?php
+
+##################################################
+#
+# Copyright (c) 2004-2011 OIC Group, Inc.
+# Written and Designed by James Hunt
+#
+# This file is part of Exponent
+#
+# Exponent is free software; you can redistribute
+# it and/or modify it under the terms of the GNU
+# General Public License as published by the Free
+# Software Foundation; either version 2 of the
+# License, or (at your option) any later version.
+#
+# GPL: http://www.gnu.org/licenses/gpl.txt
+#
+##################################################
+
 /**
- *  This file is part of Exponent
- *  Exponent is free software; you can redistribute
- *  it and/or modify it under the terms of the GNU
- *  General Public License as published by the Free
- *  Software Foundation; either version 2 of the
- *  License, or (at your option) any later version.
+ * Upgrade Script
  *
- * The file that holds the clear_cache class
- *
- * @link http://www.gnu.org/licenses/gpl.txt GPL http://www.gnu.org/licenses/gpl.txt
- * @package Exponent-CMS
- * @copyright 2004-2011 OIC Group, Inc.
- * @author Adam Kessler <adam@oicgroup.net>
- * @version 2.0.0
+ * @package Installation
+ * @subpackage Upgrade
  */
 
 /**
  * This is the class clear_cache
- *
- * @subpackage Upgrade
- * @package Installation
  */
 class clear_cache extends upgradescript {
 	protected $from_version = '1.99.0';
@@ -46,7 +51,8 @@ class clear_cache extends upgradescript {
 	 */
 	function upgrade() {
 		// work our way through all the tmp files and remove them
-		if (!defined('SYS_FILES')) include_once(BASE.'subsystems/files.php');
+//		if (!defined('SYS_FILES')) include_once(BASE.'subsystems/files.php');
+		include_once(BASE.'subsystems/files.php');
 		$files = array(
 			BASE.'tmp/mail',  // not used??  FIXME
 			BASE.'tmp/pods',  // not used??  FIXME

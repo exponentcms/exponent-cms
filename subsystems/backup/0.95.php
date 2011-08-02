@@ -16,6 +16,7 @@
 # GPL: http://www.gnu.org/licenses/gpl.txt
 #
 ##################################################
+/** @define "BASE" "../.." */
 
 // Converting EQL version 0.95 to 0.96
 
@@ -41,7 +42,8 @@ function exponent_backup_095_addressbook_contact($db,$object) {
 // Field 'feedback_form' was added to 'calendar' in 0.96
 // Field 'feedback_email' was added to 'calendar' in 0.96
 function exponent_backup_095_calendar($db,$object) {
-	if (!defined('SYS_DATETIME')) include(BASE.'subsystems/datetime.php');
+//	if (!defined('SYS_DATETIME')) include(BASE.'subsystems/datetime.php');
+	include(BASE.'subsystems/datetime.php');
 
 	// Pull edited / editor from posted / poster
 	$object->editor = $object->poster;

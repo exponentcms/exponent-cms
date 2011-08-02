@@ -17,31 +17,15 @@
 # GPL: http://www.gnu.org/licenses/gpl.txt
 #
 ##################################################
+/** @define "BASE" "../../.." */
 
 if (!defined('EXPONENT')) exit('');
 
 /**
  * HTML Editor Control
  *
- * @author James Hunt
- * @copyright 2004-2011 OIC Group, Inc.
- * @version 0.95
- *
- * @package Subsystems
- * @subpackage Forms
- */
-
-/**
- * Manually include the class file for formcontrol, for PHP4
- * (This does not adversely affect PHP5)
- */
-require_once(BASE."subsystems/forms/controls/formcontrol.php");
-
-/**
- * HTML Editor Control
- *
- * @package Subsystems
- * @subpackage Forms
+ * @package Subsystems-Forms
+ * @subpackage Control
  */
 if (SITE_WYSIWYG_EDITOR == "ckeditor") {
 
@@ -51,23 +35,19 @@ class htmleditorcontrol extends ckeditorcontrol {
 } else {
     
 class htmleditorcontrol extends formcontrol {
+
 	var $module = "";
 	var $toolbar = "";
-	
-	
-	function name() {
-		return "WYSIWYG Editor";
-	}
-	
-	
-	function htmleditorcontrol($default="",$module = "",$rows = 20,$cols = 60, $toolbar = "", $height=300) {
+
+	function name() {return "WYSIWYG Editor";}
+
+	function __construct($default="",$module = "",$rows = 20,$cols = 60, $toolbar = "", $height=300) {
 		$this->default = $default;
 		$this->module = $module; // For looking up templates.
 		$this->toolbar = $toolbar;
 		$this->height = $height;
 	}
-	
-	
+
 	function controlToHTML($name) {
 
 			global $db;
@@ -124,9 +104,8 @@ class htmleditorcontrol extends formcontrol {
 			return $html;
 
 	}
-	
-	
-	function parseData($name, $values, $for_db = false) {
+
+	static function parseData($name, $values, $for_db = false) {
 		$html = $values[$name];
 		if (trim($html) == "<br />") $html = "";
 		return $html;

@@ -48,7 +48,9 @@
                 <th>
 					{"Word Pasting"|gettext}
                 </th>
-                <th width="20%">
+                <th>
+					{"Custom Plugins"|gettext}
+                </th>                <th width="20%">
                     {"Action"|gettext}
                 </th>
             </tr>
@@ -80,6 +82,9 @@
                 <td>
 					No
                 </td>
+	            <td>
+					No
+	            </td>
                 <td>
 
                 </td>
@@ -113,6 +118,13 @@
 						No
 					{/if}
                 </td>
+	            <td>
+					{if $cfg->plugins}
+						Yes
+					{else}
+						No
+					{/if}
+	            </td>
                 <td>
 					<div class="item-actions">
 						{icon module="expHTMLEditor" action=edit title="Edit this Toolbar" record=$cfg}

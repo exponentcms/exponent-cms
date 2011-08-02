@@ -16,14 +16,16 @@
 # GPL: http://www.gnu.org/licenses/gpl.txt
 #
 ##################################################
+/** @define "BASE" "../../.." */
 
 // Part of the Extensions category
 
 if (!defined('EXPONENT')) exit('');
 
 if (exponent_permissions_check('extensions',exponent_core_makeLocation('administrationmodule'))) {
-	if (!defined('SYS_FORMS')) require_once(BASE.'subsystems/forms.php');
-	exponent_forms_initialize();
+//	if (!defined('SYS_FORMS')) require_once(BASE.'subsystems/forms.php');
+	require_once(BASE.'subsystems/forms.php');
+//	exponent_forms_initialize();
 	$form = new form();
 	
 	$i18n = exponent_lang_loadFile('modules/administrationmodule/actions/upload_extension.php');

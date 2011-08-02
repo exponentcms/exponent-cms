@@ -30,13 +30,16 @@
 #
 # $Id: view.php,v 1.1.1.1 2005/07/14 18:34:04 cvs Exp $
 ##################################################
+/** @define "BASE" "../../.." */
+
 if (!defined('EXPONENT')) exit('');
 
 exponent_flow_set(SYS_FLOW_PUBLIC,SYS_FLOW_ACTION);
 
 $template = new template("calendarmodule","_search",$loc,false);
 $time = (isset($_GET['time']) ? $_GET['time'] : time());
-if (!defined("SYS_DATETIME")) include_once(BASE."subsystems/datetime.php");
+//if (!defined("SYS_DATETIME")) include_once(BASE."subsystems/datetime.php");
+include_once(BASE."subsystems/datetime.php");
 if (isset($_GET['categoryid'])) $xsearch = " AND category_id='" . $_GET['categoryid'] ."'";
 //$o = $db->selectObjects("calendar","title='".mysql_escape_string(trim($_GET['title']))."'" . $xsearch);
 //$o = $db->selectObjects("calendar","title='".mysqli_real_escape_string(trim($_GET['title']))."'" . $xsearch);

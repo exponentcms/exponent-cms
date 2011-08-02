@@ -19,13 +19,19 @@
 
 if (!defined('EXPONENT')) exit('');
 
+/**
+ * Tag Picker Control
+ *
+ * @package Subsystems-Forms
+ * @subpackage Control
+ */
 class tagpickercontrol extends formcontrol {
+
 	var $flip = false;
 	var $jsHooks = array();
 	
 	function name() { return "Tag Picker"; }
 	function isSimpleControl() { return false; }
-	
 	function getFieldDefinition() { 
 		return array();
 	}
@@ -36,6 +42,7 @@ class tagpickercontrol extends formcontrol {
 		$this->tags = $db->selectNestedTree('expTags');
 		$this->subtype = isset($subtype) ? $subtype : '';
 	}
+
 	function toHTML($label,$name) {
 		$this->class = "tagpicker";
 		$this->id  = (empty($this->id)) ? $name : $this->id;

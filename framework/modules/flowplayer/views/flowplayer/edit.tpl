@@ -19,12 +19,22 @@
         {if $record->id}New Video{else}Editing {$record->title}{/if}
     </h1>
 
+	{if !$config.video_width}
+		{assign var="width" value="200"}
+	{else}
+		{assign var="width" value=$config.video_width}
+	{/if}
+	{if !$config.video_height}
+		{assign var="height" value="143"}
+	{else}
+		{assign var="height" value=$config.video_height}
+	{/if}
     {form action=update}
         {control type="hidden" name="id" value=$record->id}
         {control type="text" name="title" label="Video Title" value=$record->title}
         {control type="html" name="body" label="Video Description" value=$record->body}
-        {control type="text" name="width" label="width" filter=integer value=$record->width|default:$config.video_width}
-        {control type="text" name="height" label="height" filter=integer value=$record->height|default:$config.video_height}
+        {control type="text" name="width" label="width" filter=integer value=$record->width|default:$width}
+        {control type="text" name="height" label="height" filter=integer value=$record->height|default:$height}
         {control type="files" name="files" label="Video File" subtype=video value=$record->expFile limit=1}
         {control type="files" name="splash" label="Splash Image" subtype=splash value=$record->expFile limit=1}
         {control type="buttongroup" submit="Submit" cancel="Cancel"}

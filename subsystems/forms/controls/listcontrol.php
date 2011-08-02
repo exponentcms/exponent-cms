@@ -16,12 +16,18 @@
 # GPL: http://www.gnu.org/licenses/gpl.txt
 #
 ##################################################
+/** @define "BASE" "../../.." */
 
 if (!defined('EXPONENT')) exit('');
 
-require_once(BASE."subsystems/forms/controls/formcontrol.php");
-
+/**
+ * List Control
+ *
+ * @package Subsystems-Forms
+ * @subpackage Control
+ */
 class listcontrol extends formcontrol {
+
     var $html;
     var $span;
     
@@ -122,8 +128,9 @@ class listcontrol extends formcontrol {
     }
     
     function form($object) {
-        if (!defined("SYS_FORMS")) require_once(BASE."subsystems/forms.php");
-        exponent_forms_initialize();
+//        if (!defined("SYS_FORMS")) require_once(BASE."subsystems/forms.php");
+        require_once(BASE."subsystems/forms.php");
+//        exponent_forms_initialize();
     
         $form = new form();
         if (!isset($object->html)) {

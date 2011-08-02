@@ -1,18 +1,17 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html>
 <head>
-    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <title>File Manager  |  Exponent CMS</title>
 
-    <link rel="stylesheet" type="text/css" href="{$smarty.const.URL_FULL}framework/core/assets/css/msgq.css"> 
-    <link rel="stylesheet" type="text/css" href="{$smarty.const.URL_FULL}framework/core/assets/css/button.css"> 
-    <link rel="stylesheet" type="text/css" href="{$smarty.const.URL_FULL}framework/core/assets/css/admin-global.css"> 
-    <link rel="stylesheet" type="text/css" href="{$smarty.const.URL_FULL}framework/modules/file/assets/css/filemanager.css"> 
+    <link rel="stylesheet" type="text/css" href="{$smarty.const.URL_FULL}framework/core/assets/css/msgq.css" />
+    <link rel="stylesheet" type="text/css" href="{$smarty.const.URL_FULL}framework/core/assets/css/button.css" />
+    <link rel="stylesheet" type="text/css" href="{$smarty.const.URL_FULL}framework/core/assets/css/admin-global.css" />
+    <link rel="stylesheet" type="text/css" href="{$smarty.const.URL_FULL}framework/modules/file/assets/css/filemanager.css" />
 
     <script type="text/javascript" src="{$smarty.const.YUI2_PATH}yahoo-dom-event/yahoo-dom-event.js"></script>
     <script type="text/javascript" src="{$smarty.const.YUI2_PATH}container/container-min.js"></script>
     <script type="text/javascript" src="{$smarty.const.YUI2_PATH}connection/connection-min.js"></script>
-
     <script type="text/javascript" src="{$smarty.const.YUI2_PATH}json/json-min.js"></script>
     <script type="text/javascript" src="{$smarty.const.YUI2_PATH}datasource/datasource-min.js"></script>
     <script type="text/javascript" src="{$smarty.const.YUI2_PATH}autocomplete/autocomplete-min.js"></script>
@@ -160,7 +159,7 @@ EXPONENT.fileManager = function() {
 
     // shared formatter
     var formatShared = function(elCell, oRecord, oColumn, sData) {
-        if (oRecord._oData.shared == 0) {
+        if (oRecord.getData().shared == 0) {
             elCell.innerHTML = '<img src="'+EXPONENT.URL_FULL+'framework/modules/file/assets/images/unchecked.gif" title="Make this fie available to other users">';
         } else {
             elCell.innerHTML = '<img src="'+EXPONENT.URL_FULL+'framework/modules/file/assets/images/checked.gif" title="Make this fie available to other users">';
@@ -193,12 +192,13 @@ EXPONENT.fileManager = function() {
         var es = new EXPONENT.AjaxEvent();
         es.subscribe(function (o) {
             if(o.replyCode<299) {
-                callback(true, o.data.share);
+                callback(true, o.data.shared);
             } else {
                 alert(o.replyText);
                 callback(true, oldValue);
             }
         },this);
+		
         es.fetch({action:"editShare",controller:"fileController",json:1,data:'&id='+record.getData().id + '&newValue=' + encodeURIComponent(newValue)});
             
     };

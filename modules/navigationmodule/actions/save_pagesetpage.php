@@ -25,8 +25,8 @@ $section = section::updatePageset($_POST,null);
 // make sure the SEF name is valid
 global $router;
 if (empty($section->sef_name)) $section->sef_name = $router->encode($section->name);
-if (!section::isValidName($section->sef_name)) validator::failAndReturnToForm('You have invalid characters in the SEF Name field.');
-if (section::isDuplicateName($section)) validator::failAndReturnToForm('The name specified in the SEF Name field is a duplicate of an existing page.');
+if (!section::isValidName($section->sef_name)) expValidator::failAndReturnToForm('You have invalid characters in the SEF Name field.');
+if (section::isDuplicateName($section)) expValidator::failAndReturnToForm('The name specified in the SEF Name field is a duplicate of an existing page.');
 
 if (exponent_permissions_check('manage',exponent_core_makeLocation('navigationmodule','',$section->parent))) {
 	// Still have to do some pageset processing, mostly handled by a handy

@@ -16,8 +16,9 @@
 # GPL: http://www.gnu.org/licenses/gpl.txt
 #
 ##################################################
+/** @define "BASE" "../../.." */
 
-if (!defined("EXPONENT")) exit("");
+if (!defined('EXPONENT')) exit('');
 
 // Check for form errors
 $post = $_POST;
@@ -27,18 +28,20 @@ if (!expValidator::check_antispam($post)) {
     exponent_flow_redirect();
 }
 
-if (!defined("SYS_USER")) require_once(BASE."subsystems/users.php");
-if (!defined("SYS_FORMS")) require_once(BASE."subsystems/forms.php");
-exponent_forms_initialize();
+//if (!defined("SYS_USER")) require_once(BASE."subsystems/users.php");
+//if (!defined("SYS_FORMS")) require_once(BASE."subsystems/forms.php");
+require_once(BASE."subsystems/users.php");
+require_once(BASE."subsystems/forms.php");
+//exponent_forms_initialize();
 global $db, $user;
 $f = $db->selectObject("formbuilder_form","id=".intval($_POST['id']));
 $rpt = $db->selectObject("formbuilder_report","form_id=".intval($_POST['id']));
 $controls = $db->selectObjects("formbuilder_control","form_id=".$f->id." and is_readonly=0");
-if (!defined("SYS_SORTING")) require_once(BASE."subsystems/sorting.php");
+//if (!defined("SYS_SORTING")) require_once(BASE."subsystems/sorting.php");
+require_once(BASE."subsystems/sorting.php");
 usort($controls,"exponent_sorting_byRankAscending");
 
 $db_data = null;
-//$fields = array();
 $emailFields = array();
 $captions = array();
 foreach ($controls as $c) {
@@ -46,17 +49,7 @@ foreach ($controls as $c) {
     $control_type = get_class($ctl);
     $def = call_user_func(array($control_type,"getFieldDefinition"));
     if ($def != null) {
-//        $emailValue = htmlspecialchars_decode(html_entity_decode(call_user_func(array($control_type,'parseData'),$c->name,$_POST,true),ENT_COMPAT,LANG_CHARSET));
         $emailValue = htmlspecialchars_decode(call_user_func(array($control_type,'parseData'),$c->name,$_POST,true));
-        //$value = mysql_escape_string($emailValue);
-
-//        if (DB_ENGINE=='mysqli') {
-//            $value = stripslashes(mysqli_real_escape_string($db->connection,$emailValue));
-//        } elseif(DB_ENGINE=='mysql') {
-//            $value = stripslashes(mysql_real_escape_string($emailValue,$db->connection));
-//        } else {
-//            $value = $emailValue;
-//        }
         $value = stripslashes($db->escapeString($emailValue));
 
         //eDebug($value);
@@ -98,10 +91,9 @@ if (!isset($_POST['data_id']) || (isset($_POST['data_id']) && exponent_permissio
         }        
         $db->insertObject($db_data, 'formbuilder_'.$f->table_name);
     }
-    //die(); 
+
     //Email stuff here...
     //Don't send email if this is an edit.
-
     if ($f->is_email == 1 && !isset($_POST['data_id'])) {
         //Building Email List...
         $emaillist = array();
@@ -144,19 +136,16 @@ if (!isset($_POST['data_id']) || (isset($_POST['data_id']) && exponent_permissio
         if (count($emaillist)) {
             //This is an easy way to remove duplicates
             $emaillist = array_flip(array_flip($emaillist));
-
-            foreach ($emaillist as $address) {
-                $mail = new expMail();        
-                $mail->quickSend(array(
-	                    'headers'=>$headers,
-                        'html_message'=>$emailHtml,
-						"text_message"=>$emailText,
-        			    'to'=>trim($address),
-        			    'from'=>trim($from),
-        			    'from_name'=>$from_name,
-        			    'subject'=>$f->subject,
-                ));
-            }
+            $emaillist = array_map('trim', $emaillist);
+			$mail = new expMail();
+			$mail->quickSend(array(
+					'headers'=>$headers,
+					'html_message'=>$emailHtml,
+					"text_message"=>$emailText,
+					'to'=>$emaillist,
+					'from'=>array(trim($from)=>$from_name),
+					'subject'=>$f->subject,
+			));
         }
     }
 

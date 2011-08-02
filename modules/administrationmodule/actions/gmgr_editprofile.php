@@ -16,15 +16,18 @@
 # GPL: http://www.gnu.org/licenses/gpl.txt
 #
 ##################################################
+/** @define "BASE" "../../.." */
 
 // Part of the User Management category
 
 if (!defined('EXPONENT')) exit('');
 
 if (exponent_permissions_check('user_management',exponent_core_makeLocation('administrationmodule'))) {
-	if (!defined('SYS_USERS')) require_once(BASE.'subsystems/users.php');
-	if (!defined('SYS_FORMS')) require_once(BASE.'subsystems/forms.php');
-	exponent_forms_initialize();
+//	if (!defined('SYS_USERS')) require_once(BASE.'subsystems/users.php');
+//	if (!defined('SYS_FORMS')) require_once(BASE.'subsystems/forms.php');
+	require_once(BASE.'subsystems/users.php');
+	require_once(BASE.'subsystems/forms.php');
+//	exponent_forms_initialize();
 
 	$g = exponent_users_getGroupById(intval($_GET['id']));
 	$form = exponent_users_groupForm($g);

@@ -30,6 +30,7 @@
 #
 # $Id: class.php,v 1.2 2005/04/26 03:06:00 filetreefrog Exp $
 ##################################################
+/** @define "BASE" "../.." */
 
 class simplepollmodule {
 	function name() { return 'Simple Poll'; }
@@ -58,7 +59,8 @@ class simplepollmodule {
 		if ($question) {
 			$answers = $db->selectObjects('poll_answer','question_id='.$question->id);
 		}
-		if (!defined('SYS_SORTING')) require_once(BASE.'subsystems/sorting.php');
+//		if (!defined('SYS_SORTING')) require_once(BASE.'subsystems/sorting.php');
+		require_once(BASE.'subsystems/sorting.php');
 		usort($answers,'exponent_sorting_byRankAscending');
 		
 		$template = new template('simplepollmodule',$view,$loc);

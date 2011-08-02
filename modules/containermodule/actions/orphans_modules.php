@@ -23,7 +23,8 @@ if (!defined('EXPONENT')) exit('');
    	exponent_sessions_clearAllUsersSessionCache('containermodule');
 
 	$orphan_mods = array();
-	$orph = $db->selectObjects('locationref','refcount = 0 AND module='.$_GET['module']);
+//	$orph = $db->selectObjects('locationref','refcount = 0 AND module='.$_GET['module']);
+	$orph = $db->selectObjects('sectionref','refcount = 0 AND module='.$_GET['module']);
 	foreach ($orph as $orphan) {
 		if (!isset($orphan_mods[$orphan->module]) && class_exists($orphan->module)) {
 			$modclass = $orphan->module;

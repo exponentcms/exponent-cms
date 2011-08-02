@@ -16,33 +16,18 @@
 # GPL: http://www.gnu.org/licenses/gpl.txt
 #
 ##################################################
+/** @define "BASE" "../../.." */
 
 if (!defined('EXPONENT')) exit('');
 
 /**
  * Dropdown Control
  *
- * @author James Hunt
- * @copyright 2004-2011 OIC Group, Inc.
- * @version 0.95
- *
- * @package Subsystems
- * @subpackage Forms
- */
-
-/**
- * Manually include the class file for formcontrol, for PHP4
- * (This does not adversely affect PHP5)
- */
-require_once(BASE."subsystems/forms/controls/formcontrol.php");
-
-/**
- * Dropdown Control
- *
- * @package Subsystems
- * @subpackage Forms
+ * @package Subsystems-Forms
+ * @subpackage Control
  */
 class dropdowncontrol extends formcontrol {
+
     var $items = array();
     var $size = 1;
     var $jsHooks = array();
@@ -58,7 +43,7 @@ class dropdowncontrol extends formcontrol {
             DB_FIELD_LEN=>255);
     }
     
-    function dropdowncontrol($default = "",$items = array(), $include_blank = false, $multiple=false) {
+    function __construct($default = "",$items = array(), $include_blank = false, $multiple=false) {
         $this->default = $default;
         $this->items = $items;
         $this->include_blank = $include_blank;
@@ -105,8 +90,9 @@ class dropdowncontrol extends formcontrol {
     }
     
     function form($object) {
-        if (!defined("SYS_FORMS")) require_once(BASE."subsystems/forms.php");
-        exponent_forms_initialize();
+//        if (!defined("SYS_FORMS")) require_once(BASE."subsystems/forms.php");
+        require_once(BASE."subsystems/forms.php");
+//        exponent_forms_initialize();
     
         $form = new form();
         if (!isset($object->identifier)) {
@@ -140,8 +126,9 @@ class dropdowncontrol extends formcontrol {
             exponent_sessions_set("last_POST",$post);
             return null;
         }
-        if (!defined("SYS_FORMS")) require_once(BASE."subsystems/forms.php");
-        exponent_forms_initialize();
+//        if (!defined("SYS_FORMS")) require_once(BASE."subsystems/forms.php");
+        require_once(BASE."subsystems/forms.php");
+//        exponent_forms_initialize();
         if ($object == null) $object = new dropdowncontrol();
         $object->identifier = $values['identifier'];
         $object->caption = $values['caption'];

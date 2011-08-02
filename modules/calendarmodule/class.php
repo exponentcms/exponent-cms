@@ -15,6 +15,7 @@
 # GPL: http://www.gnu.org/licenses/gpl.txt
 #
 ##################################################
+/** @define "BASE" "../.." */
 
 class calendarmodule {
 	function name() { return exponent_lang_loadKey('modules/calendarmodule/class.php','module_name'); }
@@ -25,7 +26,7 @@ class calendarmodule {
 	function hasSources() { return true; }
 	function hasViews()   { return true; }
 
-	function supportsWorkflow() { return true; }
+	function supportsWorkflow() { return false; }
 
 	function getRSSContent($loc) {
 		global $db;
@@ -48,7 +49,8 @@ class calendarmodule {
 		$locsql .= ')';
 							
 		if (!function_exists("exponent_datetime_startOfDayTimestamp")) {
-			if (!defined("SYS_DATETIME")) include_once(BASE."subsystems/datetime.php");               
+//			if (!defined("SYS_DATETIME")) include_once(BASE."subsystems/datetime.php");
+			include_once(BASE."subsystems/datetime.php");
 		}
 		$day = exponent_datetime_startOfDayTimestamp(time());
 		
@@ -119,7 +121,7 @@ class calendarmodule {
 		else return array($loc,exponent_core_makelocation($loc->mod,$loc->src));
 	}
 
-	function show($view,$loc = null, $title = '') {
+	static function show($view,$loc = null, $title = '') {
 		global $user;
 		global $db;
 
@@ -166,8 +168,10 @@ class calendarmodule {
 			$viewparams = array("type"=>"default");
 		}
 
-		if (!defined("SYS_DATETIME")) include_once(BASE."subsystems/datetime.php");
-		if (!defined('SYS_SORTING')) include_once(BASE.'subsystems/sorting.php');
+//		if (!defined("SYS_DATETIME")) include_once(BASE."subsystems/datetime.php");
+		include_once(BASE."subsystems/datetime.php");
+//		if (!defined('SYS_SORTING')) include_once(BASE.'subsystems/sorting.php');
+		include_once(BASE.'subsystems/sorting.php');
 
 		if (!function_exists("exponent_sorting_byEventStartAscending")) {
 			function exponent_sorting_byEventStartAscending($a,$b) {
@@ -502,7 +506,8 @@ class calendarmodule {
 
 		$i18n = exponent_lang_loadFile('modules/calendarmodule/class.php');
 
-		if (!defined('SYS_SEARCH')) include_once(BASE.'subsystems/search.php');
+//		if (!defined('SYS_SEARCH')) include_once(BASE.'subsystems/search.php');
+		include_once(BASE.'subsystems/search.php');
 
 		$search = null;
 		$search->category = $i18n['search_category'];
@@ -532,8 +537,9 @@ class calendarmodule {
 
 	// The following functions are internal helper functions
 
-	function _getEventsForDates($edates,$sort_asc = true,$featuredonly = false) {
-		if (!defined('SYS_SORTING')) include_once(BASE.'subsystems/sorting.php');
+	static function _getEventsForDates($edates,$sort_asc = true,$featuredonly = false) {
+//		if (!defined('SYS_SORTING')) include_once(BASE.'subsystems/sorting.php');
+		include_once(BASE.'subsystems/sorting.php');
 		if ($sort_asc && !function_exists('exponent_sorting_byEventStartAscending')) {
 			function exponent_sorting_byEventStartAscending($a,$b) {
 				return ($a->eventstart < $b->eventstart ? -1 : 1);

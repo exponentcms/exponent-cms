@@ -16,6 +16,7 @@
 # GPL: http://www.gnu.org/licenses/gpl.txt
 #
 ##################################################
+/** @define "BASE" "../../.." */
 
 if (!defined('EXPONENT')) exit('');
 
@@ -30,7 +31,8 @@ if (exponent_permissions_check('administrate',$loc)) {
 	}
 	$template->assign('user_form',0);
 
-	if (!defined('SYS_GROUPS')) include_once(BASE.'subsystems/users.php');
+//	if (!defined('SYS_USERS')) include_once(BASE.'subsystems/users.php');
+	include_once(BASE.'subsystems/users.php');
 
 	$users = array(); // users = groups
     $modulename = controllerExists($loc->mod) ? getControllerClassName($loc->mod) : $loc->mod;    
@@ -58,18 +60,31 @@ if (exponent_permissions_check('administrate',$loc)) {
         $p[$value]=$key;
 	}
 	
-    $page = new expPaginator(array(
-     //'model'=>'user',
-    'limit'=>(isset($_REQUEST['limit'])?$_REQUEST['limit']:20),
-     'controller'=>$router->params['controller'],
-     'action'=>$router->params['action'],
-     'records'=>$users,
-     //'sql'=>$sql,
-     'order'=>'username',
-     'dir'=>'DESC',
-     'columns'=>$p,
-     ));        
-        
+	if (SEF_URLS == 1) {
+		$page = new expPaginator(array(
+		//'model'=>'user',
+		'limit'=>(isset($_REQUEST['limit'])?$_REQUEST['limit']:20),
+		'controller'=>$router->params['controller'],
+		'action'=>$router->params['action'],
+		'records'=>$users,
+		//'sql'=>$sql,
+		'order'=>'name',
+		'dir'=>'ASC',
+		'columns'=>$p,
+		));
+	} else {
+		$page = new expPaginator(array(
+		//'model'=>'user',
+		'limit'=>(isset($_REQUEST['limit'])?$_REQUEST['limit']:20),
+		'controller'=>$_GET['module'],
+		'action'=>$_GET['action'],
+		'records'=>$users,
+		//'sql'=>$sql,
+		'order'=>'name',
+		'dir'=>'ASC',
+		'columns'=>$p,
+		));
+	}
 	
 	$template->assign('is_group',1);
 	$template->assign('have_users',count($users) > 0); // users = groups

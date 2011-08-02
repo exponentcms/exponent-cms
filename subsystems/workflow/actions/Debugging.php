@@ -19,7 +19,7 @@
 
 //GREP:HARDCODEDTEXT
 
-if (!defined("EXPONENT")) exit("");
+if (!defined('EXPONENT')) exit('');
 
 echo "<h3>Debugging Output:</h3>";
 

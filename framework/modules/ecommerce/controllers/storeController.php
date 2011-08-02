@@ -16,6 +16,7 @@
 # GPL: http://www.gnu.org/licenses/gpl.txt
 #
 ##################################################
+/** @define "BASE" "../../../.." */
 
 class storeController extends expController {
     public $basemodel_name = 'product';
@@ -28,11 +29,11 @@ class storeController extends expController {
         'showFullTree'=>'Categories - Show Full Tree',
         'showallSubcategories'=>'Categories - Subcategories of current category',
         'upcoming_events'=>'Event Registration - Upcomming Events',
-		'events_calendar'=>'Event Registration - Calendar View',
+		  'events_calendar'=>'Event Registration - Calendar View',
         'ecom_search'=>'Search - Autocomplete',
         'search_by_model_form'=>'Search - By Model',
         'quicklinks'=>'Links - Users Links',
-		'showall_category_featured_products' => 'Show Featured Products under the current category'
+		  'showall_category_featured_products' => 'Show Featured Products under the current category'
     );
     
     // hide the configs we don't need
@@ -60,14 +61,9 @@ class storeController extends expController {
 	'edit_model_alias'=>'Delete model aliases'
     );
      
-    function name() { return $this->displayname(); } //for backwards compat with old modules
     function displayname() { return "e-Commerce Store Front"; }
     function description() { return "Use this module to display products and categories of you Ecommerce store"; }
     function author() { return "OIC Group, Inc"; }
-    function hasSources() { return true; }
-    function hasViews() { return true; }
-    function hasContent() { return true; }
-    function supportsWorkflow() { return false; }
     function isSearchable() { return true; }
     function canImportData() { return true; }
     function canExportData() { return true; }
@@ -98,7 +94,11 @@ class storeController extends expController {
                 expSession::set('catid',$default_id);
             }
         } elseif (isset($this->config['show_first_category']) || (!expTheme::inAction() && $section==SITE_DEFAULT_SECTION)) {
-            $default_id = $db->selectValue('storeCategories', 'id', 'lft=1');
+            if (!empty($this->config['show_first_category'])) {
+              $default_id = $db->selectValue('storeCategories', 'id', 'lft=1');
+            } else {
+              $default_id = 0;
+            }
             expSession::set('catid',$default_id);
         } elseif (!isset($this->config['show_first_category']) && !expTheme::inAction()) {
             expSession::set('catid',0);
@@ -250,9 +250,11 @@ class storeController extends expController {
         
         expHistory::set('viewable', $this->params);
         
-        if (!defined("SYS_DATETIME")) include_once(BASE."subsystems/datetime.php");
-        if (!defined('SYS_SORTING')) include_once(BASE.'subsystems/sorting.php');
-        
+//        if (!defined("SYS_DATETIME")) include_once(BASE."subsystems/datetime.php");
+        include_once(BASE."subsystems/datetime.php");
+//        if (!defined('SYS_SORTING')) include_once(BASE.'subsystems/sorting.php');
+        include_once(BASE.'subsystems/sorting.php');
+
         $time = isset($this->params['time']) ? $this->params['time'] : time();
         assign_to_template(array('time'=>$time));
         
@@ -320,7 +322,8 @@ class storeController extends expController {
      * Helper function for the Calendar view
      */
     function _getEventsForDates($edates,$sort_asc = true) {        
-        if (!defined('SYS_SORTING')) include_once(BASE.'subsystems/sorting.php');
+//        if (!defined('SYS_SORTING')) include_once(BASE.'subsystems/sorting.php');
+        include_once(BASE.'subsystems/sorting.php');
         if ($sort_asc && !function_exists('exponent_sorting_byEventStartAscending')) {
             function exponent_sorting_byEventStartAscending($a,$b) {
                 return ($a->eventstart < $b->eventstart ? 1 : -1);

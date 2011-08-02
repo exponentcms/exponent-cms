@@ -30,11 +30,13 @@
 #
 # $Id: simplepollmodule_config.php,v 1.2 2005/04/25 19:02:17 filetreefrog Exp $
 ##################################################
+/** @define "BASE" ".." */
 
 class simplepollmodule_config {
 	function form($object) {
-		if (!defined('SYS_FORMS')) require_once(BASE.'subsystems/forms.php');
-		exponent_forms_initialize();
+//		if (!defined('SYS_FORMS')) require_once(BASE.'subsystems/forms.php');
+		require_once(BASE.'subsystems/forms.php');
+//		exponent_forms_initialize();
 		
 		$form = new form();
 		if (!isset($object->id)) {

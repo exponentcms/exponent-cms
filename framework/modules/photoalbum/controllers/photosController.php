@@ -27,14 +27,8 @@ class photosController extends expController {
     public $remove_configs = array('files','ealerts','comments','rss','tags');
  	public $codequality = 'stable';
    
-    function name() { return $this->displayname(); } //for backwards compat with old modules
     function displayname() { return "Photo Album"; }
     function description() { return "This module allows you to display and manage images."; }
-    function author() { return "Adam Kessler - OIC Group, Inc"; }
-    function hasSources() { return true; }
-    function hasViews() { return true; }
-    function hasContent() { return true; }
-    function supportsWorkflow() { return false; }
     function isSearchable() { return true; }
     
     public function showall() {

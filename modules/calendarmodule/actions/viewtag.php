@@ -16,12 +16,14 @@
 # GPL: http://www.gnu.org/licenses/gpl.txt
 #
 ##################################################
- 
-if (!defined("EXPONENT")) exit("");
+/** @define "BASE" "../../.." */
+
+if (!defined('EXPONENT')) exit('');
 
 exponent_flow_set(SYS_FLOW_PUBLIC,SYS_FLOW_ACTION);
 
-if (!defined("SYS_DATETIME")) include_once(BASE."subsystems/datetime.php");
+//if (!defined("SYS_DATETIME")) include_once(BASE."subsystems/datetime.php");
+include_once(BASE."subsystems/datetime.php");
 
 $locsql = "(location_data='".serialize($loc)."'";
 // look for possible aggregate

@@ -16,11 +16,13 @@
 # GPL: http://www.gnu.org/licenses/gpl.txt
 #
 ##################################################
+/** @define "BASE" ".." */
 
 function smarty_function_scaffold($params,&$smarty) {
 	if (isset($params['model']) ) {
-		if (!defined('SYS_FORMS')) require_once(BASE.'subsystems/forms.php');
-        	//exponent_forms_initialize();
+//		if (!defined('SYS_FORMS')) require_once(BASE.'subsystems/forms.php');
+		require_once(BASE.'subsystems/forms.php');
+        //exponent_forms_initialize();
 		global $db;
 		require_once $smarty->_get_plugin_filepath('function','control');
 

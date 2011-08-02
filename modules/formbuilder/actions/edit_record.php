@@ -16,13 +16,15 @@
 # GPL: http://www.gnu.org/licenses/gpl.txt
 #
 ##################################################
-	
+/** @define "BASE" "../../.." */
+
 if (!defined('EXPONENT')) exit('');
 
 $i18n = exponent_lang_loadFile('modules/formbuilder/actions/edit_record.php');
 
-if (!defined('SYS_FORMS')) include_once(BASE.'subsystems/forms.php');
-exponent_forms_initialize();
+//if (!defined('SYS_FORMS')) include_once(BASE.'subsystems/forms.php');
+include_once(BASE.'subsystems/forms.php');
+//exponent_forms_initialize();
 
 // Sanitize required _GET parameters
 $_GET['id'] = intval($_GET['id']);
@@ -34,7 +36,8 @@ $controls = $db->selectObjects('formbuilder_control','form_id='.$_GET['form_id']
 
 if ($f && $data && $controls) {
 	if (exponent_permissions_check('editdata',unserialize($f->location_data))) {
-		if (!defined('SYS_SORTING')) include_once(BASE.'subsystems/sorting.php');
+//		if (!defined('SYS_SORTING')) include_once(BASE.'subsystems/sorting.php');
+		include_once(BASE.'subsystems/sorting.php');
 		usort($controls,'exponent_sorting_byRankAscending');
 		
 		$form = new form();

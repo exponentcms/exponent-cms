@@ -16,42 +16,28 @@
 # GPL: http://www.gnu.org/licenses/gpl.txt
 #
 ##################################################
+/** @define "BASE" "../../.." */
 
 if (!defined('EXPONENT')) exit('');
 
 /**
  * Generic HTML Input Control
  *
- * @package Subsystems
- * @subpackage Forms
- */
-
-/**
- * Manually include the class file for formcontrol, for PHP4
- * (This does not adversely affect PHP5)
- */
-require_once(BASE."subsystems/forms/controls/formcontrol.php");
-
-/**
- * Check Box Control class
- *
- * An HTML checkbox
- *
- * @package Subsystems
- * @subpackage Forms
+ * @package Subsystems-Forms
+ * @subpackage Control
  */
 class genericcontrol extends formcontrol {
+
     var $flip = false;
     var $jsHooks = array();
     
     function name() { return "generic"; }
     function isSimpleControl() { return false; }
-    
     function getFieldDefinition() { 
         return array();
     }
 
-    function genericcontrol($type="", $default = false, $class="", $filter="", $checked=false, $required = false, $validate="", $onclick="", $label="", $maxlength="") {
+    function __construct($type="", $default = false, $class="", $filter="", $checked=false, $required = false, $validate="", $onclick="", $label="", $maxlength="") {
         $this->type = (empty($type)) ? "text" : $type;
         $this->default = $default;
         $this->class = $class;
@@ -126,7 +112,7 @@ class genericcontrol extends formcontrol {
         return $html;
     }
     
-    function parseData($name, $values, $for_db = false) {
+    static function parseData($name, $values, $for_db = false) {
         return isset($values[$name])?1:0;
     }
     
@@ -137,8 +123,9 @@ class genericcontrol extends formcontrol {
     function form($object) {
         $i18n = exponent_lang_loadFile('subsystems/forms/controls/checkboxcontrol.php');
     
-        if (!defined("SYS_FORMS")) require_once(BASE."subsystems/forms.php");
-        exponent_forms_initialize();
+//        if (!defined("SYS_FORMS")) require_once(BASE."subsystems/forms.php");
+        require_once(BASE."subsystems/forms.php");
+//        exponent_forms_initialize();
     
         $form = new form();
         if (!isset($object->identifier)) {

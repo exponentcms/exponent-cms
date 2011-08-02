@@ -16,6 +16,7 @@
 # GPL: http://www.gnu.org/licenses/gpl.txt
 #
 ##################################################
+/** @define "BASE" "../../.." */
 
 if (!defined('EXPONENT')) exit('');
 expHistory::set('editable',array("module"=>"containermodule","action"=>"edit"));;
@@ -41,9 +42,9 @@ if (exponent_permissions_check('edit_module',$loc) || exponent_permissions_check
 	#
 	# Initialize Container, in case its null
 	#
-	$locref = null;
+	$secref = null;
 	if (!isset($container->id)) {
-		$locref->description = '';
+		$secref->description = '';
 		$container->view = '';
 		$container->internal = exponent_core_makeLocation();
 		$container->title = '';
@@ -51,7 +52,8 @@ if (exponent_permissions_check('edit_module',$loc) || exponent_permissions_check
 		$container->is_private = 0;
 	} else {
 		$container->internal = unserialize($container->internal);
-		$locref = $db->selectObject('locationref',"module='".$container->internal->mod."' AND source='".$container->internal->src."'");
+//		$locref = $db->selectObject('locationref',"module='".$container->internal->mod."' AND source='".$container->internal->src."'");
+		$secref = $db->selectObject('sectionref',"module='".$container->internal->mod."' AND source='".$container->internal->src."'");
 	}
 
    	exponent_sessions_clearAllUsersSessionCache('containermodule');
@@ -60,12 +62,13 @@ if (exponent_permissions_check('edit_module',$loc) || exponent_permissions_check
 //	$template->assign('rerank', (isset($_GET['rerank']) ? 1 : 0) );
 	$template->assign('rerank', (isset($_GET['rerank']) ? $_GET['rerank'] : 0) );
 	$template->assign('container',$container);
-	$template->assign('locref',$locref);
+	$template->assign('locref',$secref);
 	$template->assign('is_edit', (isset($container->id) ? 1 : 0) );
 	$template->assign('can_activate_modules',$user->is_acting_admin);
 	$template->assign('current_section',exponent_sessions_get('last_section'));
 	
-	if (!defined('SYS_JAVASCRIPT')) include_once(BASE.'subsystems/javascript.php');
+//	if (!defined('SYS_JAVASCRIPT')) include_once(BASE.'subsystems/javascript.php');
+	include_once(BASE.'subsystems/javascript.php');
 	$haveclass = false;
 	$mods = array();
 	

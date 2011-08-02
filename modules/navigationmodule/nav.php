@@ -16,6 +16,7 @@
 # GPL: http://www.gnu.org/licenses/gpl.txt
 #
 ##################################################
+/** @define "BASE" "../.." */
 
 // define('SCRIPT_EXP_RELATIVE','modules/navigationmodule/');
 // define('SCRIPT_FILENAME','nav.php');

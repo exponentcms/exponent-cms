@@ -15,6 +15,7 @@
 # GPL: http://www.gnu.org/licenses/gpl.txt
 #
 ##################################################
+/** @define "BASE" ".." */
 
 class section {
 	/*
@@ -73,7 +74,8 @@ class section {
 			if (count($sections) && $object->parent >= 0) {
 				// Initialize the sorting subsystem so that we can order the sections
 				// by rank, ascending, and get the proper ordering.
-				if (!defined('SYS_SORTING')) require_once(BASE.'subsystems/sorting.php');
+//				if (!defined('SYS_SORTING')) require_once(BASE.'subsystems/sorting.php');
+				require_once(BASE.'subsystems/sorting.php');
 				usort($sections,'exponent_sorting_byRankAscending');
 				
 				// Generate the Position dropdown array.
@@ -102,12 +104,13 @@ class section {
 		return $form;
 	}
 	
-	function moveStandaloneForm($object = null) {
+	static function moveStandaloneForm($object = null) {
 		$i18n = exponent_lang_loadFile('datatypes/section.php');
 		
 		// Initialize the forms subsystem for use.
-		if (!defined('SYS_FORMS')) require_once(BASE.'subsystems/forms.php');
-		exponent_forms_initialize();
+//		if (!defined('SYS_FORMS')) require_once(BASE.'subsystems/forms.php');
+		require_once(BASE.'subsystems/forms.php');
+//		exponent_forms_initialize();
 		
 		$form = section::_commonForm($object);
 		// the name and sef_name are already set in the stand-alone page
@@ -120,7 +123,8 @@ class section {
 			$standalones[$s->id] = $s->name;
 		}
 
-		if (!defined('SYS_SORTING')) include_once(BASE.'subsystems/sorting.php');
+//		if (!defined('SYS_SORTING')) include_once(BASE.'subsystems/sorting.php');
+		include_once(BASE.'subsystems/sorting.php');
 		$form->register('page',$i18n['standalone_page'],new dropdowncontrol(0,$standalones));
 		$form->register('submit','',new buttongroupcontrol($i18n['save'],'',$i18n['cancel']));
 		return $form;
@@ -137,12 +141,13 @@ class section {
 	 * @return Form A form object that can be used to create a new section, or
 	 *    edit an existing one.
 	 */
-	function form($object = null) {
+	static function form($object = null) {
 		$i18n = exponent_lang_loadFile('datatypes/section.php');
 		
 		// Initialize the forms subsystem for use.
-		if (!defined('SYS_FORMS')) require_once(BASE.'subsystems/forms.php');
-		exponent_forms_initialize();
+//		if (!defined('SYS_FORMS')) require_once(BASE.'subsystems/forms.php');
+		require_once(BASE.'subsystems/forms.php');
+//		exponent_forms_initialize();
 		
 		// Grab the basic form that all page types share
 		// This has the name and positional dropdowns registered.
@@ -187,12 +192,13 @@ class section {
 	 * @return Form A form object that can be used to create a new section, or
 	 *    edit an existing one.
 	 */
-	function externalAliasForm($object = null) {
+	static function externalAliasForm($object = null) {
 		$i18n = exponent_lang_loadFile('datatypes/section.php');
 		
 		// Initialize the forms subsystem for use.
-		if (!defined('SYS_FORMS')) require_once(BASE.'subsystems/forms.php');
-		exponent_forms_initialize();
+//		if (!defined('SYS_FORMS')) require_once(BASE.'subsystems/forms.php');
+		require_once(BASE.'subsystems/forms.php');
+//		exponent_forms_initialize();
 		
 		// Grab the basic form that all page types share
 		// This has the name and positional dropdowns registered.
@@ -227,12 +233,13 @@ class section {
 	 * @return Form A form object that can be used to create a new section, or
 	 *    edit an existing one.
 	 */
-	function internalAliasForm($object = null) {
+	static function internalAliasForm($object = null) {
 		$i18n = exponent_lang_loadFile('datatypes/section.php');
 		
 		// Initialize the forms subsystem for use.
-		if (!defined('SYS_FORMS')) require_once(BASE.'subsystems/forms.php');
-		exponent_forms_initialize();
+//		if (!defined('SYS_FORMS')) require_once(BASE.'subsystems/forms.php');
+		require_once(BASE.'subsystems/forms.php');
+//		exponent_forms_initialize();
 		
 		// Initialization
 		if (!isset($object->id)) {
@@ -270,12 +277,13 @@ class section {
 	 * @return Form A form object that can be used to create a new section, or
 	 *    edit an existing one.
 	 */
-	function pagesetForm($object = null) {
+	static function pagesetForm($object = null) {
 		$i18n = exponent_lang_loadFile('datatypes/section.php');
 		
 		// Initialize the forms subsystem for use.
-		if (!defined('SYS_FORMS')) require_once(BASE.'subsystems/forms.php');
-		exponent_forms_initialize();
+//		if (!defined('SYS_FORMS')) require_once(BASE.'subsystems/forms.php');
+		require_once(BASE.'subsystems/forms.php');
+//		exponent_forms_initialize();
 		
 		// Grab the basic form that all page types share
 		// This has the name and positional dropdowns registered.
@@ -336,7 +344,7 @@ class section {
 	 *
 	 * @return object The updated section object.
 	 */
-	function update($values,$object) {
+	static function update($values,$object) {
 		$object = section::_updateCommon($values,$object);
 		$object->subtheme = $values['subtheme'];
 		$object->active = (isset($values['active']) ? 1 : 0);
@@ -359,7 +367,7 @@ class section {
 	 *
 	 * @return object The updated section object.
 	 */
-	function updateExternalAlias($values,$object) {
+	static function updateExternalAlias($values,$object) {
 		$object = section::_updateCommon($values,$object);
 		
 		$object->active = 1;
@@ -384,7 +392,7 @@ class section {
 	 *
 	 * @return object The updated section object.
 	 */
-	function updateInternalAlias($values,$object) {
+	static function updateInternalAlias($values,$object) {
 		$object = section::_updateCommon($values,$object);
 		
 		$object->active = 1;
@@ -423,7 +431,7 @@ class section {
 	 *
 	 * @return object The updated section object.
 	 */
-	function updatePageset($values,$object) {
+	static function updatePageset($values,$object) {
 		$object = section::_updateCommon($values,$object);
 		
 		$object->active = 1;
@@ -473,7 +481,7 @@ class section {
 		return $depth;
 	}
 	
-	function changeParent($section,$old_parent,$new_parent) {
+	static function changeParent($section,$old_parent,$new_parent) {
 		global $db;
 		// Store new parent.
 		$section->parent = $new_parent;

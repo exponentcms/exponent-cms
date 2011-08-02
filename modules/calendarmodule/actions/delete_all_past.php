@@ -16,13 +16,15 @@
 # GPL: http://www.gnu.org/licenses/gpl.txt
 #
 ##################################################
- 
+/** @define "BASE" "../../.." */
+
 if (!defined('EXPONENT')) exit('');
 	exponent_flow_redirect();
 
 //$item = $db->selectObject('calendar','id='.intval($_POST['id']));
 
-if (!defined("SYS_DATETIME")) include_once(BASE."subsystems/datetime.php");
+//if (!defined("SYS_DATETIME")) include_once(BASE."subsystems/datetime.php");
+include_once(BASE."subsystems/datetime.php");
 $dates = $db->selectObjects("eventdate",$locsql." AND date < ".strtotime('-1 months',time()));
 $all_events = calendarmodule::_getEventsForDates($dates);
 

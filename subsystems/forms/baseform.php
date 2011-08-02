@@ -20,23 +20,14 @@
 /**
  * Base Form Class
  *
- * The basic form
+ * An HTML-form building class, that supports
+ * registerable and unregisterable controls.
  *
- * @author James Hunt
- * @copyright 2004-2011 OIC Group, Inc.
- * @version 0.95
- *
- * @package Subsystems
- * @subpackage Forms
- */
-
-/**
- * baseform class
- *
- * @package Subsystems
- * @subpackage Forms
+ * @package Subsystems-Forms
+ * @subpackage Form
  */
 class baseform {
+
 	var $meta    = array();
 	var $scripts = array();
 	
@@ -45,7 +36,7 @@ class baseform {
 	var $action  = "";
 	var $enctype = "";
 
-	function baseform() {
+	function __construct() {
 		//$this->action = SCRIPT_RELATIVE.SCRIPT_FILENAME;
 		$this->action = URL_FULL.SCRIPT_FILENAME;
 	}
@@ -68,7 +59,7 @@ class baseform {
 		return true;
 	}
 	
-	/*
+	/**
 	 * Adds a javascript to the form.
 	 * 
 	 * This may be used for validation, dynamic controls, etc.
@@ -86,7 +77,7 @@ class baseform {
 		} else return false;
 	}
 	
-	/*
+	/**
 	 * Removes a javascript from the form.
 	 *
 	 * @param string $name The internal name of the script to remove.  This was

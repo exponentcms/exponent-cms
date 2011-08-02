@@ -101,12 +101,6 @@ class migrationController extends expController {
     // );
 
 	/**
-	 * name of module for backwards compat with old modules
-	 * @return string
-	 */
-    function name() { return $this->displayname(); }
-
-	/**
 	 * name of module
 	 * @return string
 	 */
@@ -119,40 +113,16 @@ class migrationController extends expController {
     function description() { return "Use this module to pull Exponent 1 style content from your old site."; }
 
 	/**
-	 * author of module
-	 * @return string
-	 */
-    function author() { return "Adam Kessler - OIC Group, Inc"; }
-
-	/**
 	 * if module has associated sources
 	 * @return bool
 	 */
     function hasSources() { return false; }
 
 	/**
-	 * if module has associated views
-	 * @return bool
-	 */
-    function hasViews() { return true; }
-
-	/**
 	 * if module has associated content
 	 * @return bool
 	 */
     function hasContent() { return false; }
-
-	/**
-	 * if module supports workflow
-	 * @return bool
-	 */
-    function supportsWorkflow() { return false; }
-
-	/**
-	 * if mdoule content can be searched
-	 * @return bool
-	 */
-    function isSearchable() { return false; }
 
 	/**
 	 * gather info about all pages in old site for user selection
@@ -358,7 +328,7 @@ class migrationController extends expController {
         $old_db = $this->connect();
         if (isset($this->params['wipe_content'])) {
             $db->delete('sectionref');
-			$db->delete('locationref');  //TODO Remove this locationref, uneeded in future
+//			$db->delete('locationref');  //TODO Remove this locationref, uneeded in future
             $db->delete('container');
             $db->delete('text');
             $db->delete('snippet');
@@ -403,82 +373,81 @@ class migrationController extends expController {
         }
 		
 		if (!empty($this->params['replace'])) {
-			if (in_array('containermodule',$this->params['replace'])) {
-				$db->delete('container');
-			}
-			if (in_array('textmodule',$this->params['replace'])) {
-				$db->delete('text');
-			}
-			if (in_array('rotatormodule',$this->params['replace'])) {
-				$db->delete('text');
-			}
-			if (in_array('snippetmodule',$this->params['replace'])) {
-				$db->delete('snippet');
-			}
-			if (in_array('linklistmodule',$this->params['replace'])) {
-				$db->delete('links');
-			}
-			if (in_array('linkmodule',$this->params['replace'])) {
-				$db->delete('links');
-			}
-			if (in_array('swfmodule',$this->params['replace'])) {
-				$db->delete('text');
-			}
-			if (in_array('newsmodule',$this->params['replace'])) {
-				$db->delete('news');
-			}
-			if (in_array('resourcesmodule',$this->params['replace'])) {
-				$db->delete('filedownload');
-			}
-			if (in_array('imagegallerymodule',$this->params['replace'])) {
-				$db->delete('photo');
-			}
-			if (in_array('slideshowmodule',$this->params['replace'])) {
-				$db->delete('photo');
-			}
-			if (in_array('headlinemodule',$this->params['replace'])) {
-				$db->delete('headline');
-			}
-			if (in_array('weblogmodule',$this->params['replace'])) {
-				$db->delete('blog');
-				$db->delete('expComments');
-				$db->delete('content_expComments');
-			}
-			if (in_array('faqmodule',$this->params['replace'])) {
-				$db->delete('faq');
-			}
-			if (in_array('listingmodule',$this->params['replace'])) {
-				$db->delete('portfolio');
-			}
-			if (in_array('calendarmodule',$this->params['replace'])) {
-				$db->delete('calendar');
-				$db->delete('eventdate');
-				$db->delete('calendarmodule_config');
-			}
-			if (in_array('simplepollmodule',$this->params['replace'])) {
-				$db->delete('poll_question');
-				$db->delete('poll_answer');
-				$db->delete('poll_timeblock');
-				$db->delete('simplepollmodule_config');
-			}
-			if (in_array('formmodule',$this->params['replace'])) {
-				$db->delete('formbuilder_address');
-				$db->delete('formbuilder_control');
-				$db->delete('formbuilder_form');
-				$db->delete('formbuilder_report');
-			}
-			if (in_array('youtubemodule',$this->params['replace'])) {
-				$db->delete('youtube');
-			}
-			if (in_array('mediaplayermodule',$this->params['replace'])) {
-				$db->delete('flowplayer');
-			}
-			if (in_array('bannermodule',$this->params['replace'])) {
-				$db->delete('banner');
-				$db->delete('companies');
-			}
-			if (in_array('addressmodule',$this->params['replace'])) {
-				$db->delete('addresses');
+			foreach($this->params['replace'] as $replace => $value) {
+				switch ($replace) {
+				    case 'containermodule':
+					    $db->delete('container');
+						break;
+					case 'textmodule':
+					case 'rotatormodule':
+					case 'swfmodule':
+						$db->delete('text');
+						break;
+					case 'snippetmodule':
+						$db->delete('snippet');
+						break;
+					case 'linklistmodule':
+					case 'linkmodule':
+						$db->delete('links');
+						break;
+					case 'linkmodule':
+						$db->delete('links');
+						break;
+					case 'newsmodule':
+						$db->delete('news');
+						break;
+					case 'resourcesmodule':
+						$db->delete('filedownloads');
+						break;
+					case 'imagegallerymodule':
+					case 'slideshowmodule':
+						$db->delete('photo');
+						break;
+					case 'headlinemodule':
+						$db->delete('headline');
+						break;
+					case 'weblogmodule':
+						$db->delete('blog');
+						$db->delete('expComments');
+						$db->delete('content_expComments');
+						break;
+					case 'faqmodule':
+						$db->delete('faq');
+						break;
+					case 'listingmodule':
+						$db->delete('portfolio');
+						break;
+					case 'calendarmodule':
+						$db->delete('calendar');
+						$db->delete('eventdate');
+						$db->delete('calendarmodule_config');
+						break;
+					case 'simplepollmodule':
+						$db->delete('poll_question');
+						$db->delete('poll_answer');
+						$db->delete('poll_timeblock');
+						$db->delete('simplepollmodule_config');
+						break;
+					case 'formmodule':
+						$db->delete('formbuilder_address');
+						$db->delete('formbuilder_control');
+						$db->delete('formbuilder_form');
+						$db->delete('formbuilder_report');
+						break;
+					case 'youtubemodule':
+						$db->delete('youtube');
+						break;
+					case 'mediaplayermodule':
+						$db->delete('flowplayer');
+						break;
+					case 'bannermodule':
+						$db->delete('banner');
+						$db->delete('companies');
+						break;
+					case 'addressmodule':
+						$db->delete('addresses');
+						break;
+				}
 			}
 		}
 
@@ -494,19 +463,19 @@ class migrationController extends expController {
 		}
 
 		// TODO Remove this locationref in future
-        $locref = $old_db->selectObjects('locationref',$where);
-        foreach ($locref as $lr) {
-            if (array_key_exists($lr->module, $this->new_modules)) {
-                $lr->module = $this->new_modules[$lr->module];
-            }
-
-            if (!in_array($lr->module, $this->deprecated_modules)) {
-                if (!$db->selectObject('locationref',"source='".$lr->source."'")) {
-                    $db->insertObject($lr, 'locationref');
-                    @$this->msg['locationref']++;
-                }
-            }
-        }
+//        $locref = $old_db->selectObjects('locationref',$where);
+//        foreach ($locref as $lr) {
+//            if (array_key_exists($lr->module, $this->new_modules)) {
+//                $lr->module = $this->new_modules[$lr->module];
+//            }
+//
+//            if (!in_array($lr->module, $this->deprecated_modules)) {
+//                if (!$db->selectObject('locationref',"source='".$lr->source."'")) {
+//                    $db->insertObject($lr, 'locationref');
+//                    @$this->msg['locationref']++;
+//                }
+//            }
+//        }
 		// Remove to here
 
         // pull the sectionref data for selected modules
@@ -1160,7 +1129,14 @@ class migrationController extends expController {
 							$filedownload->update();
 						}
 					}
-					if ($oldconfig->enable_rss == 1) {
+					if (isset($oldconfig->enable_rss)) {
+						$dorss = $oldconfig->enable_rss;
+					} elseif (isset($oldconfig->enable_podcasting)) {
+						$dorss = $oldconfig->enable_podcasting;
+					} else {
+						$dorss = false;
+					}
+					if ($dorss) {
 						$config['enable_rss'] = true;
 						$config['feed_title'] = $oldconfig->feed_title;
 						$config['feed_desc'] = $oldconfig->feed_desc;
@@ -1173,7 +1149,8 @@ class migrationController extends expController {
 						$newrss = new expRss();
 						$newrss->module = $loc->mod;
 						$newrss->src = $loc->src;
-						$newrss->enable_rss = $oldconfig->enable_rss;
+//						$newrss->enable_rss = $oldconfig->enable_rss;
+						$newrss->enable_rss = true;
 						$newrss->feed_title = $oldconfig->feed_title;
 						$newrss->feed_desc = $oldconfig->feed_desc;
 						$newrss->rss_limit = isset($oldconfig->rss_limit) ? $oldconfig->rss_limit : 24;
@@ -1366,16 +1343,14 @@ class migrationController extends expController {
 							$post->attachitem($newcomment,'');
 						}
                     }
+                    $newconfig = new expConfig();
+                    $config['add_source'] = '1';
 					if ($oldconfig->enable_rss == 1) {
 						$config['enable_rss'] = true;
 						$config['feed_title'] = $oldconfig->feed_title;
 						$config['feed_desc'] = $oldconfig->feed_desc;
 						$config['rss_limit'] = isset($oldconfig->rss_limit) ? $oldconfig->rss_limit : 24;
 						$config['rss_cachetime'] = isset($oldconfig->rss_cachetime) ? $oldconfig->rss_cachetime : 1440;
-						$newconfig = new expConfig();
-						$newconfig->config = $config;
-						$newconfig->location_data = $loc;
-						$newconfig->save();
 						$newrss = new expRss();
 						$newrss->module = $loc->mod;
 						$newrss->src = $loc->src;
@@ -1385,7 +1360,10 @@ class migrationController extends expController {
 						$newrss->rss_limit = isset($oldconfig->rss_limit) ? $oldconfig->rss_limit : 24;
 						$newrss->rss_cachetime = isset($oldconfig->rss_cachetime) ? $oldconfig->rss_cachetime : 1440;
 						$newrss->save();
-					}					
+					}
+					$newconfig->config = $config;
+					$newconfig->location_data = $loc;
+					$newconfig->save();
                 }
 				break;
             case 'faqmodule':

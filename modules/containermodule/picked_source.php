@@ -25,15 +25,16 @@ include_once('../../exponent.php');
 $src = $_GET['ss'];
 $mod = $_GET['sm'];
 
-$locref = $db->selectObject("locationref","module='".$mod."' AND source='".$src."'");
-if (!isset($locref->description)) $locref->description = '';
+//$locref = $db->selectObject("locationref","module='".$mod."' AND source='".$src."'");
+$secref = $db->selectObject("sectionref","module='".$mod."' AND source='".$src."'");
+if (!isset($secref->description)) $secref->description = '';
 
 ?>
 <html>
 <head>
 <script type="text/javascript">
 function saveSource() {
-	window.opener.sourcePicked("<?php echo $_GET['ss']; ?>","<?php echo str_replace(array("\"","\r\n"),array("\\\"","\\r\\n"),$locref->description); ?>");
+	window.opener.sourcePicked("<?php echo $_GET['ss']; ?>","<?php echo str_replace(array("\"","\r\n"),array("\\\"","\\r\\n"),$secref->description); ?>");
 	window.close();
 	
 }

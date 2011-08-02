@@ -19,12 +19,8 @@
 ##################################################
 
 //Initialize exponent Framework
-//include_once('exponent_common.php');  // incorporated into exponent_bootstrap.php
-require_once('exponent_bootstrap.php');
+require_once('exponent.php');
 
-// Initialize the language subsystem
-require_once(BASE.'subsystems/lang.php');
-exponent_lang_initialize();
 ?>
 
 // exponent Javascript Support Systems
@@ -66,7 +62,6 @@ EXPONENT.YUI3_CONFIG = {};
 <?php 
 }
 ?>
-
 
 // YUI 2 ajax helper method. This is much easier in YUI 3. Should also migrate.
 

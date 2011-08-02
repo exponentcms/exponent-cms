@@ -16,8 +16,9 @@
 # GPL: http://www.gnu.org/licenses/gpl.txt
 #
 ##################################################
+/** @define "BASE" "../../.." */
 
-if (!defined("EXPONENT")) exit("");
+if (!defined('EXPONENT')) exit('');
 
 $item = null;
 $iloc = null;
@@ -51,9 +52,12 @@ if (($item == null && exponent_permissions_check("post",$loc)) ||
 		$item->feedback_email = "";
 	}
 
-	if (!defined("SYS_WORKFLOW")) require_once(BASE."subsystems/workflow.php");
-	if (!defined("SYS_DATETIME")) require_once(BASE."subsystems/datetime.php");
-	if (!defined("SYS_FORMS")) require_once(BASE."subsystems/forms.php");
+//	if (!defined("SYS_WORKFLOW")) require_once(BASE."subsystems/workflow.php");
+//	if (!defined("SYS_DATETIME")) require_once(BASE."subsystems/datetime.php");
+//	if (!defined("SYS_FORMS")) require_once(BASE."subsystems/forms.php");
+	require_once(BASE."subsystems/workflow.php");
+	require_once(BASE."subsystems/datetime.php");
+	require_once(BASE."subsystems/forms.php");
 
 	//Get and save the image
 	/*  Yeah, no. Yeah, yes... Maia 6/23/09 */
@@ -114,7 +118,7 @@ if (($item == null && exponent_permissions_check("post",$loc)) ||
 		}
 //		calendarmodule::spiderContent($item);
 	} else {
-		exponent_forms_initialize();
+//		exponent_forms_initialize();
 		//$start_recur = exponent_datetime_startOfDayTimestamp(popupdatetimecontrol::parseData("eventdate",$_POST));
 		$start_recur = exponent_datetime_startOfDayTimestamp(yuicalendarcontrol::parseData("eventdate",$_POST));
 		//$stop_recur  = exponent_datetime_startOfDayTimestamp(popupdatetimecontrol::parseData("untildate",$_POST));
@@ -161,11 +165,12 @@ if (($item == null && exponent_permissions_check("post",$loc)) ||
 			$edate->date = $d;
 			$db->insertObject($edate,"eventdate");
 		}
+		$db->insertObject($item,"calendar");
 //		calendarmodule::spiderContent($item);
 	}
 
-	exponent_workflow_post($item,'calendar',$loc);
-//	exponent_flow_redirect();
+//	exponent_workflow_post($item,'calendar',$loc);
+	exponent_flow_redirect();
 } else {
 	echo SITE_403_HTML;
 }

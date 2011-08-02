@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2007-2008 OIC Group, Inc.
+# Copyright (c) 2007-2011 OIC Group, Inc.
 # Written and Designed by Adam Kessler, Phillip Ball, Ron Miller
 #
 # This file is part of Exponent
@@ -17,6 +17,24 @@
 #
 ##################################################
 
+/**
+ * Smarty plugin
+ * @package Smarty-Plugins
+ * @subpackage Block
+ */
+
+/**
+ * Smarty {form} block plugin
+ *
+ * Type:     block<br>
+ * Name:     form<br>
+ * Purpose:  Set up a form block
+ * 
+ * @param $params
+ * @param $content
+ * @param mixed $smarty
+ * @param $repeat
+ */
 function smarty_block_form($params,$content,&$smarty, &$repeat) {
 	if(empty($content)){
 		$name = isset($params['name']) ? $params['name'] : 'form';
@@ -56,4 +74,3 @@ function smarty_block_form($params,$content,&$smarty, &$repeat) {
 }
 
 ?>
-

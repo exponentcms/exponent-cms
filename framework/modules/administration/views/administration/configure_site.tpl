@@ -54,6 +54,7 @@
 					{help text="Learn More about general site configuration"|gettext module="general-configuration"}
                     {control type="text" name="sc[ORGANIZATION_NAME]" label="Organization Name" value=$smarty.const.ORGANIZATION_NAME}
                     {control type="text" name="sc[SITE_TITLE]" label="Site Title" value=$smarty.const.SITE_TITLE}
+					{control type="text" name="sc[SITE_HEADER]" label="Site Header" value=$smarty.const.SITE_HEADER}
                     {control type="checkbox" postfalse=1 name="sc[SEF_URLS]" label="Search Engine Friendly URLSs" checked=$smarty.const.SEF_URLS value=1}
 					{control type="checkbox" postfalse=1 name="sc[ADVERTISE_RSS]" label="Advertise all RSS Feeds to Web Browsers" checked=$smarty.const.ADVERTISE_RSS value=1}
                     {control type="dropdown" name="sc[SITE_DEFAULT_SECTION]" label="Default Section (Home Page)" items=$section_dropdown default=$smarty.const.SITE_DEFAULT_SECTION}
@@ -105,15 +106,17 @@
                 </div>
                 {if $user->is_admin==1}
                 <div id="tab6">
-                    <h2>{gettext str="SMTP Server Settings"}</h2>
-					{help text="Learn More about SMTP server settings"|gettext module="smtp-server-settings"}
-                    {control type="checkbox" postfalse=1 name="sc[SMTP_USE_PHP_MAIL]" label="Use php's mail() function instead of SMTP?" checked=$smarty.const.SMTP_USE_PHP_MAIL value=1}
+                    <h2>{gettext str="Mail Server Settings"}</h2>
+					{help text="Learn More about mail server settings"|gettext module="mail-server-settings"}
+	                {control type="text" name="sc[SMTP_FROMADDRESS]" label="From Address" value=$smarty.const.SMTP_FROMADDRESS}
+                    {br}{control type="checkbox" postfalse=1 name="sc[SMTP_USE_PHP_MAIL]" label="Use php's mail() function instead of SMTP?" checked=$smarty.const.SMTP_USE_PHP_MAIL value=1}
+	                (or)<h3>{gettext str="SMTP Server Settings"}</h3>
                     {control type="text" name="sc[SMTP_SERVER]" label="SMTP Server" value=$smarty.const.SMTP_SERVER}
                     {control type="text" name="sc[SMTP_PORT]" label="SMTP Port" value=$smarty.const.SMTP_PORT}
                     {control type="dropdown" name="sc[SMTP_AUTHTYPE]" label="Authentication Method" items="NONE,LOGIN,PLAIN" default=$smarty.const.SMTP_AUTHTYPE includeblank="No Authentication"}
                     {control type="text" name="sc[SMTP_USERNAME]" label="SMTP Username" value=$smarty.const.SMTP_USERNAME}
                     {control type="text" name="sc[SMTP_PASSWORD]" label="SMTP Password" value=$smarty.const.SMTP_PASSWORD}
-                    {control type="text" name="sc[SMTP_FROMADDRESS]" label="From Address" value=$smarty.const.SMTP_FROMADDRESS}
+	                {control type="checkbox" postfalse=1 name="sc[SMTP_DEBUGGING]" label="Turn SMTP Debugging On?" checked=$smarty.const.SMTP_DEBUGGING value=1}
                 </div>
                 <div id="tab7">
                     <h2>{gettext str="Site Maintenance Mode Settings"}</h2>
@@ -141,9 +144,11 @@
                 <div id="tab10">
                     <h2>{gettext str="WYSIWYG Editor Settings"}</h2>
 					{help text="Learn More about WYSIWYG editor settings"|gettext module="wysiwyg-editor-settings"}
-                    {control type="dropdown" name="sc[SITE_WYSIWYG_EDITOR]" label="HTML Editor" items="CKEditor,FCK Editor" values="ckeditor,FCKeditor" default=$smarty.const.SITE_WYSIWYG_EDITOR}
-					{br}<hr>
-					{chain module=expHTMLEditor view="manage"}
+                    {control type="dropdown" name="sc[SITE_WYSIWYG_EDITOR]" label="HTML Editor" items="CKEditor" values="ckeditor" default=$smarty.const.SITE_WYSIWYG_EDITOR}
+	                {if $smarty.const.SITE_WYSIWYG_EDITOR == 'ckeditor'}
+						{br}<hr>
+		                {chain module=expHTMLEditor view=manage}
+	                {/if}
                 </div>
                 <div id="tab11">
                     <h2>{gettext str="Error Messages"}</h2>

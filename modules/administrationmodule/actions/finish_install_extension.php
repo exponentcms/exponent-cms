@@ -16,6 +16,7 @@
 # GPL: http://www.gnu.org/licenses/gpl.txt
 #
 ##################################################
+/** @define "BASE" "../../.." */
 
 // Part of the Extensions category
 
@@ -29,7 +30,8 @@ if (exponent_permissions_check('extensions',exponent_core_makeLocation('administ
 	if (!file_exists(BASE."extensionuploads/$sessid") || !is_dir(BASE."extensionuploads/$sessid")) {
 		$template->assign('nofiles',1);
 	} else {
-		if (!defined('SYS_FILES')) require_once(BASE.'subsystems/files.php');
+//		if (!defined('SYS_FILES')) require_once(BASE.'subsystems/files.php');
+		require_once(BASE.'subsystems/files.php');
 		$success = array();
 		foreach (array_keys(exponent_files_listFlat(BASE."extensionuploads/$sessid",true,null,array(),BASE."extensionuploads/$sessid")) as $file) {
 			if ($file != '/archive.tar' && $file != '/archive.tar.gz' && $file != 'archive.tar.bz2' && $file != '/archive.zip') {

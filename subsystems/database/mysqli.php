@@ -12,6 +12,8 @@
  * @link http://www.gnu.org/licenses/gpl.txt GPL http://www.gnu.org/licenses/gpl.txt
  * @package Exponent-CMS
  */
+/** @define "BASE" "../.." */
+
 /**
  * This is the class mysqli_database
  *
@@ -61,7 +63,7 @@ class mysqli_database {
 			$this->havedb = true;
 		}
 		//fix to support utf8, warning it only works from a certain mySQL version on
-		//needed on mySQL servers that dont have the default connection encoding setting to utf8
+		//needed on mySQL servers that don't have the default connection encoding setting to utf8
 
 		//As we do not have any setting for ISAM or InnoDB tables yet, i set the minimum specs
 		// for using this feature to 4.1.2, although isam tables got the support for utf8 already in 4.1
@@ -150,15 +152,15 @@ class mysqli_database {
             $tablename => ($this->tableExists($tablename) ? DATABASE_TABLE_INSTALLED : DATABASE_TABLE_FAILED)
         );
 
-        if (isset($info[DB_TABLE_WORKFLOW]) && $info[DB_TABLE_WORKFLOW]) {
-            // Initialize workflow tables:
-            if (!defined("SYS_WORKFLOW"))
-                require_once(BASE . "subsystems/workflow.php");
-            $wf = exponent_workflow_installWorkflowTables($tablename, $datadef);
-            foreach ($wf as $key => $status) {
-                $return[$key] = $status;
-            }
-        }
+//        if (isset($info[DB_TABLE_WORKFLOW]) && $info[DB_TABLE_WORKFLOW]) {
+//            // Initialize workflow tables:
+//            if (!defined("SYS_WORKFLOW"))
+//                require_once(BASE . "subsystems/workflow.php");
+//            $wf = exponent_workflow_installWorkflowTables($tablename, $datadef);
+//            foreach ($wf as $key => $status) {
+//                $return[$key] = $status;
+//            }
+//        }
 
         return $return;
     }
@@ -442,15 +444,15 @@ class mysqli_database {
             $tablename => ($modified ? TABLE_ALTER_SUCCEEDED : TABLE_ALTER_NOT_NEEDED)
         );
 
-        if (isset($info[DB_TABLE_WORKFLOW]) && $info[DB_TABLE_WORKFLOW]) {
-            // Initialize workflow tables:
-            if (!defined("SYS_WORKFLOW"))
-                require_once(BASE . "subsystems/workflow.php");
-            $wf = exponent_workflow_alterWorkflowTables($tablename, $newdatadef, $aggressive);
-            foreach ($wf as $key => $status) {
-                $return[$key] = $status;
-            }
-        }
+//        if (isset($info[DB_TABLE_WORKFLOW]) && $info[DB_TABLE_WORKFLOW]) {
+//            // Initialize workflow tables:
+//            if (!defined("SYS_WORKFLOW"))
+//                require_once(BASE . "subsystems/workflow.php");
+//            $wf = exponent_workflow_alterWorkflowTables($tablename, $newdatadef, $aggressive);
+//            foreach ($wf as $key => $status) {
+//                $return[$key] = $status;
+//            }
+//        }
 
         return $return;
     }
@@ -1105,7 +1107,7 @@ class mysqli_database {
      * @param string $table The name of the table to decrement in.
      * @param string $field The field to decrement.
      * @param integer $step The step value.  Usually 1.  This can be negative, to
-     *    increment, but the increment() method is prefered, for readability.
+     *    increment, but the increment() method is preferred, for readability.
      * @param string $where Optional criteria to determine which records to update.
      */
 
@@ -1127,7 +1129,7 @@ class mysqli_database {
 
     /**
      * Get a list of all tables in the database.  Optionally, only the tables
-     * in the corrent logcial database (tables with the same prefix) can
+     * in the current logical database (tables with the same prefix) can
      * be retrieved.
      *
      * @param bool $prefixed_only Whether to return only the tables

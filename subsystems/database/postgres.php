@@ -12,6 +12,9 @@
  * @link http://www.gnu.org/licenses/gpl.txt GPL http://www.gnu.org/licenses/gpl.txt
  * @package Exponent-CMS
  */
+/** @define "BASE" "../.." */
+
+
 /**
  * This is the class postgres_database
  *
@@ -140,11 +143,11 @@ class postgres_database {
 			pg_query($indexes_sql);
 		}
 		
-		if (isset($info[DB_TABLE_WORKFLOW]) && $info[DB_TABLE_WORKFLOW]) {
-			// Initialize workflow tables:
-			if (!defined("SYS_WORKFLOW")) require_once(BASE."subsystems/workflow.php");
-			exponent_workflow_installWorkflowTables($tablename,$datadef);
-		}
+//		if (isset($info[DB_TABLE_WORKFLOW]) && $info[DB_TABLE_WORKFLOW]) {
+//			// Initialize workflow tables:
+//			if (!defined("SYS_WORKFLOW")) require_once(BASE."subsystems/workflow.php");
+//			exponent_workflow_installWorkflowTables($tablename,$datadef);
+//		}
 	}
 	
 	function fieldSQL($name,$def) {
@@ -203,11 +206,11 @@ class postgres_database {
 			}
 		}
 		
-		if (isset($info[DB_TABLE_WORKFLOW]) && $info[DB_TABLE_WORKFLOW]) {
-			// Initialize workflow tables:
-			if (!defined("SYS_WORKFLOW")) require_once(BASE."subsystems/workflow.php");
-			exponent_workflow_alterWorkflowTables($tablename,$newdatadef);
-		}
+//		if (isset($info[DB_TABLE_WORKFLOW]) && $info[DB_TABLE_WORKFLOW]) {
+//			// Initialize workflow tables:
+//			if (!defined("SYS_WORKFLOW")) require_once(BASE."subsystems/workflow.php");
+//			exponent_workflow_alterWorkflowTables($tablename,$newdatadef);
+//		}
 		
 		if ($modified) {
 			return TABLE_ALTER_SUCCEEDED;
@@ -652,7 +655,7 @@ ENDSQL;
                 if ($res == null) return array();
                 $resarray = array();
                 for ($i = 0; $i < pg_num_rows($res); $i++){
-                        $row = pg_fetch_array($res, PG_NUM);
+                        $row = pg_fetch_array($res, PGSQL_NUM);
                         $resarray[$i] = $row[0];
                 }
                 return $resarray;
@@ -665,7 +668,7 @@ ENDSQL;
                 if ($res == null) return 0;
                 $resarray = array();
                 for ($i = 0; $i < pg_num_rows($res); $i++){
-                        $row = pg_fetch_array($res, PG_NUM);
+                        $row = pg_fetch_array($res, PGSQL_NUM);
                         $resarray[$i] = $row[0];
                 }
                 return $resarray[0];

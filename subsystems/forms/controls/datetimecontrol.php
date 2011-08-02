@@ -16,33 +16,18 @@
 # GPL: http://www.gnu.org/licenses/gpl.txt
 #
 ##################################################
+/** @define "BASE" "../../.." */
 
 if (!defined('EXPONENT')) exit('');
 
 /**
- * Contact Control
+ * Date Time Control
  *
- * @author James Hunt, Greg Otte
- * @copyright 2004-2011 OIC Group, Inc.
- * @version 0.95
- *
- * @package Subsystems
- * @subpackage Forms
- */
-
-/**
- * Manually include the class file for formcontrol, for PHP4
- * (This does not adversely affect PHP5)
- */
-require_once(BASE."subsystems/forms/controls/formcontrol.php");
-
-/**
- * Contact Control
- *
- * @package Subsystems
- * @subpackage Forms
+ * @package Subsystems-Forms
+ * @subpackage Control
  */
 class datetimecontrol extends formcontrol {
+
 	var $showdate = true;
 	var $showtime = true;
 	
@@ -53,8 +38,9 @@ class datetimecontrol extends formcontrol {
 			DB_FIELD_TYPE=>DB_DEF_TIMESTAMP);
 	}
 	
-	function datetimecontrol($default = 0, $showdate = true, $showtime = true) {
-		if (!defined("SYS_DATETIME")) include_once(BASE."subsystems/datetime.php");
+	function __construct($default = 0, $showdate = true, $showtime = true) {
+//		if (!defined("SYS_DATETIME")) include_once(BASE."subsystems/datetime.php");
+		include_once(BASE."subsystems/datetime.php");
 		if ($default == 0) $default = time();
 		$this->default = $default;
 		$this->showdate = $showdate;
@@ -90,7 +76,8 @@ class datetimecontrol extends formcontrol {
 		if ($minute < 10) $minute = "0".$minute;
 		$html = "<input type='hidden' id='__".$name."' name='__".$name."' value='".($this->showdate?"1":"0").($this->showtime?"1":"0")."' />";
 		if ($this->showdate) {
-			if (!defined("SYS_DATETIME")) require_once(BASE."subsystems/datetime.php");
+//			if (!defined("SYS_DATETIME")) require_once(BASE."subsystems/datetime.php");
+			require_once(BASE."subsystems/datetime.php");
 			$html .= '<div class="datetime date"><label>Date: </label>';
 			$html .= exponent_datetime_monthsDropdown($name . "_month",$default_date['mon']);
 			$html .= '<input class="text" type="text" id="' . $name . '_day" name="' . $name . '_day" size="3" maxlength="2" value="' . $default_date['mday'] . '" />';
@@ -113,7 +100,7 @@ class datetimecontrol extends formcontrol {
 		$form->addScript('datetime_disable',PATH_RELATIVE.'subsystems/forms/controls/datetimecontrol.js');
 	}
 	
-	function parseData($original_name,$formvalues,$for_db = false) {
+	static function parseData($original_name,$formvalues,$for_db = false) {
 		$time = 0;
 		if (isset($formvalues[$original_name."_month"])) $time = mktime(8,0,0,$formvalues[$original_name.'_month'],$formvalues[$original_name.'_day'],$formvalues[$original_name.'_year']) - 8*3600;
 		if (isset($formvalues[$original_name."_hour"])) {
@@ -147,8 +134,9 @@ class datetimecontrol extends formcontrol {
 	}
 	
 	function form($object) {
-		if (!defined("SYS_FORMS")) require_once(BASE."subsystems/forms.php");
-		exponent_forms_initialize();
+//		if (!defined("SYS_FORMS")) require_once(BASE."subsystems/forms.php");
+		require_once(BASE."subsystems/forms.php");
+//		exponent_forms_initialize();
 	
 		$form = new form();
 		if (!isset($object->identifier)) {

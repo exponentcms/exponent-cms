@@ -21,7 +21,8 @@
  * @subpackage Core-Datatypes
  * @package Framework
  */
- 
+/** @define "BASE" "../../../" */
+
 class expRss extends expRecord {
     public $table = 'expRss';
     protected $attachable_item_types = array(
@@ -61,8 +62,10 @@ class expRss extends expRecord {
     }
     
     public function getFeedItems() {
-        if (!defined('SYS_RSS')) include_once('core_rss.php');
-        
+//        if (!defined('SYS_RSS')) include_once('core_rss.php');
+//        if (!defined('SYS_RSS')) require_once(BASE.'external/feedcreator.class.php');
+        require_once(BASE.'external/feedcreator.class.php');
+
         // get all the feeds available to this expRss object
         $feeds = $this->getFeeds();
         
@@ -70,7 +73,7 @@ class expRss extends expRecord {
         // loop over and build out a master list of rss items
         foreach ($feeds as $feed) {
             $controllername = getControllerClassname($feed->module);
-            $controller = new $controllername();
+            $controller = new $controllername($feed->src);
             $controller->loc = makeLocation($feed->module, $feed->src);
             $items = array_merge($items, $controller->getRSSContent());
         }

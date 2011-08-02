@@ -16,13 +16,15 @@
 # GPL: http://www.gnu.org/licenses/gpl.txt
 #
 ##################################################
+/** @define "BASE" "../../.." */
 
 // Part of the User Management category
 
 if (!defined('EXPONENT')) exit('');
 
 if (exponent_permissions_check('user_management',exponent_core_makeLocation('administrationmodule'))) {
-	if (!defined('SYS_USERS')) require_once(BASE.'subsystems/users.php');
+//	if (!defined('SYS_USERS')) require_once(BASE.'subsystems/users.php');
+	require_once(BASE.'subsystems/users.php');
 	exponent_users_includeProfileExtensions();
 	
 	exponent_flow_set(SYS_FLOW_PROTECTED,SYS_FLOW_ACTION);
@@ -33,7 +35,8 @@ if (exponent_permissions_check('user_management',exponent_core_makeLocation('adm
 	
 	$exts = $db->selectObjects('profileextension');
 	
-	if (!defined('SYS_SORTING')) require_once(BASE.'subsystems/sorting.php');
+//	if (!defined('SYS_SORTING')) require_once(BASE.'subsystems/sorting.php');
+	require_once(BASE.'subsystems/sorting.php');
 	usort($exts,'exponent_sorting_byRankAscending');
 	
 	for ($i = 0; $i < count($exts); $i++) {

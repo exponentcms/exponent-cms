@@ -16,33 +16,18 @@
 # GPL: http://www.gnu.org/licenses/gpl.txt
 #
 ##################################################
+/** @define "BASE" "../../.." */
 
 if (!defined('EXPONENT')) exit('');
 
 /**
  * Quantity Control
  *
- * @author Adam Kessler
- * @copyright 2004-2011 OIC Group, Inc.
- * @version 0.97
- *
- * @package Subsystems
- * @subpackage Forms
- */
-
-/**
- * Manually include the class file for formcontrol, for PHP4
- * (This does not adversely affect PHP5)
- */
-require_once(BASE."subsystems/forms/controls/formcontrol.php");
-
-/**
- * Quantity Control
- *
- * @package Subsystems
- * @subpackage Forms
+ * @package Subsystems-Forms
+ * @subpackage Control
  */
 class configcontrol extends formcontrol {
+
 	public $opts  = array();
 	public $title = '';
 
@@ -78,8 +63,9 @@ class configcontrol extends formcontrol {
 	}
 	
 	function form($object) {
-		if (!defined("SYS_FORMS")) require_once(BASE."subsystems/forms.php");
-		exponent_forms_initialize();
+//		if (!defined("SYS_FORMS")) require_once(BASE."subsystems/forms.php");
+		require_once(BASE."subsystems/forms.php");
+//		exponent_forms_initialize();
 	
 		$form = new form();
 		
@@ -124,7 +110,7 @@ class configcontrol extends formcontrol {
 	
 	}
 	
-	function parseData($original_name,$formvalues,$for_db = false) {
+	static function parseData($original_name,$formvalues,$for_db = false) {
 		return str_replace(array("\r\n","\n","\r"),'<br />', htmlspecialchars($formvalues[$original_name])); 
 	}
 	

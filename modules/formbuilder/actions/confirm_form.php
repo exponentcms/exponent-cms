@@ -17,7 +17,7 @@
 #
 ##################################################
     
-if (!defined("EXPONENT")) exit("");
+if (!defined('EXPONENT')) exit('');
 
 $cols = $db->selectObjects('formbuilder_control', 'form_id='.intval($_POST['id']) . ' ORDER BY rank');
 $counts = array();

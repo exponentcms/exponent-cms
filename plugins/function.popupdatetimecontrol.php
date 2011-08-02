@@ -16,11 +16,13 @@
 # GPL: http://www.gnu.org/licenses/gpl.txt
 #
 ##################################################
+/** @define "BASE" ".." */
 
 function smarty_function_control($params,&$smarty) {
 	if (isset($params['name']) ) {
-		if (!defined('SYS_FORMS')) require_once(BASE.'subsystems/forms.php');
-        	exponent_forms_initialize();
+//		if (!defined('SYS_FORMS')) require_once(BASE.'subsystems/forms.php');
+		require_once(BASE.'subsystems/forms.php');
+//        exponent_forms_initialize();
 		$control = new $params['type'];
 		echo $control->controlToHTML($params['name']);
 	}

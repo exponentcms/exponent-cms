@@ -34,14 +34,8 @@ class textController extends expController {
 
 
 
-	function name() { return $this->displayname(); } //for backwards compat with old modules
 	function displayname() { return "Text"; }
 	function description() { return "Puts text on your webpages"; }
-	function author() { return "Adam Kessler - OIC Group, Inc"; }
-	function hasSources() { return true; }
-	function hasViews() { return true; }
-	function hasContent() { return true; }
-	function supportsWorkflow() { return false; }
 	function isSearchable() { return true; }
 	
 	public function showall() {

@@ -16,40 +16,25 @@
 # GPL: http://www.gnu.org/licenses/gpl.txt
 #
 ##################################################
+/** @define "BASE" "../../.." */
 
 if (!defined('EXPONENT')) exit('');
 
 /**
  * List Builder Control
  *
- * @author James Hunt
- * @copyright 2004-2011 OIC Group, Inc.
- * @version 0.95
- *
- * @package Subsystems
- * @subpackage Forms
- */
-
-/**
- * Manually include the class file for formcontrol, for PHP4
- * (This does not adversely affect PHP5)
- */
-require_once(BASE."subsystems/forms/controls/formcontrol.php");
-
-/**
- * List Builder Control
- *
- * @package Subsystems
- * @subpackage Forms
+ * @package Subsystems-Forms
+ * @subpackage Control
  */
 class listbuildercontrol extends formcontrol {
+
 	var $source = null;
 	var $size = 8;
 	var $newList = false;
 
 	function name() { return "List Builder"; }
 
-	function listbuildercontrol($default,$source,$size=8) {
+	function __construct($default,$source,$size=8) {
 		if (is_array($default)) $this->default = $default;
 		else $this->default = array($default);
 
@@ -119,7 +104,7 @@ class listbuildercontrol extends formcontrol {
 		$form->addScript("listbuilder",PATH_RELATIVE."subsystems/forms/controls/listbuildercontrol.js");
 	}
 
-	function parseData($formvalues, $name, $forceindex = false) {
+	static function parseData($formvalues, $name, $forceindex = false) {
 		$values = array();
 		if ($formvalues[$name] == "") return array();
 		foreach (explode("|!|",$formvalues[$name]) as $value) {
@@ -136,8 +121,9 @@ class listbuildercontrol extends formcontrol {
 	}
 
 	function form($object) {
-		if (!defined("SYS_FORMS")) require_once(BASE."subsystems/forms.php");
-		exponent_forms_initialize();
+//		if (!defined("SYS_FORMS")) require_once(BASE."subsystems/forms.php");
+		require_once(BASE."subsystems/forms.php");
+//		exponent_forms_initialize();
 
 		$form = new form();
 		if (!isset($object->identifier)) {
@@ -166,7 +152,6 @@ class listbuildercontrol extends formcontrol {
 		$object->caption = $values['caption'];
 		return $object;
 	}
-
 
 }
 

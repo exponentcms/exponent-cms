@@ -23,7 +23,7 @@
  * has been included for use.
  * @node Subsystems:Files
  */
-define("SYS_FILES",1);
+//define("SYS_FILES",1);
 
 /* exdoc
  * Filesystem Error Response: Success

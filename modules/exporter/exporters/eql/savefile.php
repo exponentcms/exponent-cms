@@ -16,6 +16,7 @@
 # GPL: http://www.gnu.org/licenses/gpl.txt
 #
 ##################################################
+/** @define "BASE" "../../../.." */
 
 if (!defined('EXPONENT')) exit('');
 
@@ -23,8 +24,9 @@ if (!isset($_POST['tables'])) { // No checkboxes clicked, and got past the JS ch
 	$i18n = exponent_lang_loadFile('modules/exporters/exporter/eql/savefile.php');
 	echo $i18n['need_one'];
 } else { // All good
-	if (!defined('SYS_BACKUP')) require_once(BASE.'subsystems/backup.php');
-	
+//	if (!defined('SYS_BACKUP')) require_once(BASE.'subsystems/backup.php');
+	require_once(BASE.'subsystems/backup.php');
+
 	$filename = str_replace(
 		array('__DOMAIN__','__DB__'),
 		array(str_replace('.','_',HOSTNAME),DB_NAME),

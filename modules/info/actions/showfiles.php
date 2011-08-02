@@ -16,13 +16,15 @@
 # GPL: http://www.gnu.org/licenses/gpl.txt
 #
 ##################################################
+/** @define "BASE" "../../.." */
 
 // Part of the Administration Control Panel : Extensions category
 
 if (!defined('EXPONENT')) exit('');
 
 if (exponent_permissions_check('extensions',exponent_core_makeLocation('administrationmodule'))) {
-	if (!defined('SYS_INFO')) require_once(BASE.'subsystems/info.php');
+//	if (!defined('SYS_INFO')) require_once(BASE.'subsystems/info.php');
+	require_once(BASE.'subsystems/info.php');
 	$files = exponent_info_files($_GET['type'],$_GET['name']);
 	if (is_array($files)) ksort($files);
 	

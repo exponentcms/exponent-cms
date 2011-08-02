@@ -16,12 +16,14 @@
 # GPL: http://www.gnu.org/licenses/gpl.txt
 #
 ##################################################
+/** @define "BASE" "../../../.." */
 
 if (!defined('EXPONENT')) exit('');
 
 $dest_dir = exponent_sessions_get('dest_dir');
 $files = exponent_sessions_get('files_data');
-if (!defined('SYS_FILES')) require_once(BASE.'subsystems/files.php');
+//if (!defined('SYS_FILES')) require_once(BASE.'subsystems/files.php');
+require_once(BASE.'subsystems/files.php');
 if (!file_exists(BASE.'files')) {
 	mkdir(BASE.'files',0777);
 }

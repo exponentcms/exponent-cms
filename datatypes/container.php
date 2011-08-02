@@ -21,7 +21,7 @@ class container {
     function form($object,$modules_list = null) {
     }
     
-    function update($values,$object,$loc) {
+    static function update($values,$object,$loc) {
         global $db;
         
         // check if this is a controller or module
@@ -62,20 +62,20 @@ class container {
         return $object;
     }
     
-    function delete($object,$rerank = false) {
+    static function delete($object,$rerank = false) {
         if ($object == null) return false;
         
         $internal = unserialize($object->internal);
         
         global $db;
         $section = exponent_sessions_get("last_section");
-        $locref = $db->selectObject("locationref","module='".$internal->mod."' AND source='".$internal->src."' AND internal='".$internal->int."'");
+//        $locref = $db->selectObject("locationref","module='".$internal->mod."' AND source='".$internal->src."' AND internal='".$internal->int."'");
         $secref = $db->selectObject("sectionref", "module='".$internal->mod."' AND source='".$internal->src."' AND internal='".$internal->int."' AND section=$section");
         
-        if ($locref) {
-            $locref->refcount -= 1;
-            $db->updateObject($locref,"locationref","module='".$internal->mod."' AND source='".$internal->src."' AND internal='".$internal->int."'");
-        }
+        // if ($locref) {
+            // $locref->refcount -= 1;
+            // $db->updateObject($locref,"locationref","module='".$internal->mod."' AND source='".$internal->src."' AND internal='".$internal->int."'");
+        // }
         
         if ($secref) {
             $secref->refcount -= 1;

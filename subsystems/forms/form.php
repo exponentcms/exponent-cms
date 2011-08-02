@@ -16,6 +16,7 @@
 # GPL: http://www.gnu.org/licenses/gpl.txt
 #
 ##################################################
+/** @define "BASE" "../.." */
 
 if (!defined('EXPONENT')) exit('');
 
@@ -25,30 +26,11 @@ if (!defined('EXPONENT')) exit('');
  * An HTML-form building class, that supports
  * registerable and unregisterable controls.
  *
- * @author James Hunt
- * @copyright 2004-2011 OIC Group, Inc.
- * @version 0.95
- *
- * @package Subsystems
- * @subpackage Forms
- */
-
-/**
- * Include the baseform class file.
- * (This does not adversely affect PHP5)
- */
-include_once(BASE."subsystems/forms/baseform.php");
-
-/**
- * Form Class
- *
- * An HTML-form building class, that supports
- * registerable and unregisterable controls.
- *
- * @package Subsystems
- * @subpackage Forms
+ * @package Subsystems-Forms
+ * @subpackage Form
  */
 class form extends baseform {
+
 	var $controls   = array();
 	var $controlIdx = array();
 	var $controlLbl = array();
@@ -56,29 +38,30 @@ class form extends baseform {
 	var $validationScript = "";
 
 	function ajaxUpdater($module=null, $ajax_action=null, $div_to_update=null) {
-                if ( ($ajax_action != null) && ($module != null) ) {
-                        $this->ajax_updater = 1;
-                        $this->meta('action',$ajax_action);
-                        $this->meta('module',$module);
-                        $this->meta('ajax_action', '1');
-                }
+		if ( ($ajax_action != null) && ($module != null) ) {
+			$this->ajax_updater = 1;
+			$this->meta('action',$ajax_action);
+			$this->meta('module',$module);
+			$this->meta('ajax_action', '1');
+		}
 
-                if ($div_to_update != null) {
-                        $this->div_to_update = $div_to_update;
-                }
-        }
+		if ($div_to_update != null) {
+			$this->div_to_update = $div_to_update;
+		}
+	}
 	
 	function secure() {
 		$this->action = (ENABLE_SSL ? SSL_URL : '') . SCRIPT_RELATIVE . SCRIPT_FILENAME;
 		$this->meta("expid",session_id());
 	}
-	
-	/*
+
+	/**
 	 * Registers a new Control with the form.  This function will simply append the new Control to the end of the Form.
 	 *
 	 * @param $name The internal name of the control.  This is used for referring to the control later.  If this is a null string, the Control will not be registered, and this function will return false.
+	 * @param $label
 	 * @param $control The Control object to register with the form.
-	 * @param $replace A boolean dictating what to do if a Control with the specified internal name already exists on the form.  If passed as true (default), the existing Control will be replaced.  Otherwise, the Control registration will fail and return false.
+	 * @param \A|bool $replace boolean dictating what to do if a Control with the specified internal name already exists on the form.  If passed as true (default), the existing Control will be replaced.  Otherwise, the Control registration will fail and return false.
 	 *
 	 * @return boolean Returns true if the new Control was registered.
 	 */
@@ -93,7 +76,7 @@ class form extends baseform {
 		return true;
 	}
 
-	/*
+	/**
 	 * Unregisters a previously registered Control.
 	 *
 	 * @param $name The internal name of the control to remove from the Form.
@@ -118,12 +101,13 @@ class form extends baseform {
 		}
 		return true;
 	}
-	
-	/*
+
+	/**
 	 * Registers a new Control, placing it after a pre-existing named Control.  If the Control that the caller wants to insert after does not exist, the new Control is appended to the end of the Form.
 	 *
 	 * @param $afterName The internal name of the Control to register the new Control after.
 	 * @param $name The internal name of the new Control.
+	 * @param $label
 	 * @param $control The Control object to register with the Form.
 	 *
 	 * @return boolean Returns true if the new Control was registered.
@@ -146,12 +130,13 @@ class form extends baseform {
 			return true;
 		}
 	}
-	
-	/*
+
+	/**
 	 * Registers a new Control, placing it before a pre-existing named Control.  If the Control that the caller wants to insert the new Control before does not exist, the new Control is prepended to the form.
 	 *
 	 * @param $beforeName The internal name of the Control to register the new Control before.
 	 * @param $name The internal name of the new Control.
+	 * @param $label
 	 * @param $control the Control object to register with the Form.
 	 *
 	 * @return boolean Returns true if the new Control was registered.
@@ -175,7 +160,7 @@ class form extends baseform {
 		}
 	}
 
-	/*
+	/**
 	 * Convert the form to HTML output.
 	 *
 	 * @return The HTML code use to display the form to the browser.
@@ -204,28 +189,28 @@ class form extends baseform {
 			//exponent_sessions_unset("last_POST");
 		}
 		
-				$html = "<!-- Form Object '" . $this->name . "' -->\r\n";
-				$html .= '<script type="text/javascript" src="'.PATH_RELATIVE.'subsystems/forms/js/required.js"></script>'."\r\n";
-                $html .= "<script type=\"text/javascript\" src=\"" .PATH_RELATIVE."subsystems/forms/js/inputfilters.js.php\"></script>\r\n";
-                foreach ($this->scripts as $name=>$script) $html .= "<script type=\"text/javascript\" src=\"$script\"></script>\r\n";
-                $html .= '<div class="error">'.$formError.'</div>';
-                if (isset($this->ajax_updater)) {
-                        $html .= "<form name=\"" . $this->name . "\" method=\"" ;
-                        $html .= $this->method . "\" action=\"" . $this->action ."\" ";
-                        $html .= " onsubmit=\"new Ajax.Updater('".$this->div_to_update."', '".$this->action."', ";
-                        $html .= "{asynchronous:true, parameters:Form.serialize(this)}); return false;\">\r\n";
-                } else {
-                        $html .= "<form name=\"" . $this->name . "\" method=\"" . $this->method . "\" action=\"" . $this->action . "\" enctype=\"".$this->enctype."\">\r\n";
-                }
-                //$html .= "<form name=\"" . $this->name . "\" method=\"" . $this->method . "\" action=\"" . $this->action . "\" enctype=\"".$this->enctype."\">\r\n";
-                foreach ($this->meta as $name=>$value) $html .= "<input type=\"hidden\" name=\"$name\" id=\"$name\" value=\"$value\" />\r\n";
-                $html .= "<div class=\"form_wrapper\">\r\n";
-                foreach ($this->controlIdx as $name) {
-                        $html .= $this->controls[$name]->toHTML($this->controlLbl[$name],$name) . "\r\n";
-                }
-                $html .= "</div>\r\n";
-                $html .= "</form>\r\n";
-                return $html;	
+		$html = "<!-- Form Object '" . $this->name . "' -->\r\n";
+		$html .= '<script type="text/javascript" src="'.PATH_RELATIVE.'subsystems/forms/js/required.js"></script>'."\r\n";
+		$html .= "<script type=\"text/javascript\" src=\"" .PATH_RELATIVE."subsystems/forms/js/inputfilters.js.php\"></script>\r\n";
+		foreach ($this->scripts as $name=>$script) $html .= "<script type=\"text/javascript\" src=\"$script\"></script>\r\n";
+		$html .= '<div class="error">'.$formError.'</div>';
+		if (isset($this->ajax_updater)) {
+			$html .= "<form name=\"" . $this->name . "\" method=\"" ;
+			$html .= $this->method . "\" action=\"" . $this->action ."\" ";
+			$html .= " onsubmit=\"new Ajax.Updater('".$this->div_to_update."', '".$this->action."', ";
+			$html .= "{asynchronous:true, parameters:Form.serialize(this)}); return false;\">\r\n";
+		} else {
+			$html .= "<form name=\"" . $this->name . "\" method=\"" . $this->method . "\" action=\"" . $this->action . "\" enctype=\"".$this->enctype."\">\r\n";
+		}
+		//$html .= "<form name=\"" . $this->name . "\" method=\"" . $this->method . "\" action=\"" . $this->action . "\" enctype=\"".$this->enctype."\">\r\n";
+		foreach ($this->meta as $name=>$value) $html .= "<input type=\"hidden\" name=\"$name\" id=\"$name\" value=\"$value\" />\r\n";
+		$html .= "<div class=\"form_wrapper\">\r\n";
+		foreach ($this->controlIdx as $name) {
+			$html .= $this->controls[$name]->toHTML($this->controlLbl[$name],$name) . "\r\n";
+		}
+		$html .= "</div>\r\n";
+		$html .= "</form>\r\n";
+		return $html;
 	}
 	
 	/*

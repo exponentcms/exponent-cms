@@ -16,6 +16,7 @@
 # GPL: http://www.gnu.org/licenses/gpl.txt
 #
 ##################################################
+/** @define "BASE" "../../.." */
 
 // Part of the Configuration category
 
@@ -37,9 +38,11 @@ if (exponent_permissions_check('configuration',exponent_core_makeLocation('admin
 	
 	$template->assign('phpinfo',$str);
 	
-	if (!defined('SYS_MODULES')) require_once(BASE.'subsystems/modules.php');
-	if (!defined('SYS_INFO')) require_once(BASE.'subsystems/info.php');
-	
+//	if (!defined('SYS_MODULES')) require_once(BASE.'subsystems/modules.php');
+//	if (!defined('SYS_INFO')) require_once(BASE.'subsystems/info.php');
+	require_once(BASE.'subsystems/modules.php');
+	require_once(BASE.'subsystems/info.php');
+
 	$mods = array();
 	
 	foreach (exponent_modules_list() as $m) {

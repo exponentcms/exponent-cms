@@ -16,33 +16,18 @@
 # GPL: http://www.gnu.org/licenses/gpl.txt
 #
 ##################################################
+/** @define "BASE" "../../.." */
 
 if (!defined('EXPONENT')) exit('');
 
 /**
- * HTML Control
+ * File Manager Control
  *
- * @author phillip ball
- * @copyright 2004-2011 OIC Group, Inc.
- * @version 2.0.0
- *
- * @package Subsystems
- * @subpackage Forms
- */
-
-/**
- * Manually include the class file for formcontrol, for PHP4
- * (This does not adversely affect PHP5)
- */
-require_once(BASE."subsystems/forms/controls/formcontrol.php");
-
-/**
- * HTML Control
- *
- * @package Subsystems
- * @subpackage Forms
+ * @package Subsystems-Forms
+ * @subpackage Control
  */
 class filemanagercontrol extends formcontrol {
+
     var $html;
     var $span;
     
@@ -350,8 +335,9 @@ class filemanagercontrol extends formcontrol {
     }
     
     function form($object) {
-        if (!defined("SYS_FORMS")) require_once(BASE."subsystems/forms.php");
-        exponent_forms_initialize();
+//        if (!defined("SYS_FORMS")) require_once(BASE."subsystems/forms.php");
+        require_once(BASE."subsystems/forms.php");
+//        exponent_forms_initialize();
     
         $form = new form();
         if (!isset($object->html)) {

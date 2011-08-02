@@ -16,13 +16,15 @@
 # GPL: http://www.gnu.org/licenses/gpl.txt
 #
 ##################################################
+/** @define "BASE" "../../.." */
 
 // Part of the User Management category
 
 if (!defined('EXPONENT')) exit('');
 
 if (isset($_GET['id']) && exponent_permissions_check('user_management',exponent_core_makeLocation('administrationmodule'))) {
-	if (!defined('SYS_USERS')) require_once(BASE.'subsystems/users.php');
+//	if (!defined('SYS_USERS')) require_once(BASE.'subsystems/users.php');
+	require_once(BASE.'subsystems/users.php');
 	$u = exponent_users_getUserById(intval($_GET['id']));
 	if ($u && $u->is_admin == 0 && ($u->is_acting_admin == 0 || $user->is_admin == 1)) {
 		$u->is_locked = $_GET['value'];

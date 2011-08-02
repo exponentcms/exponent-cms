@@ -16,47 +16,34 @@
 # GPL: http://www.gnu.org/licenses/gpl.txt
 #
 ##################################################
+/** @define "BASE" "../../.." */
 
 if (!defined('EXPONENT')) exit('');
 
 /**
  * Custom Control
  *
- * @author James Hunt
- * @copyright 2004-2011 OIC Group, Inc.
- * @version 0.95
- *
- * @package Subsystems
- * @subpackage Forms
- */
-
-/**
- * Manually include the class file for formcontrol, for PHP4
- * (This does not adversely affect PHP5)
- */
-require_once(BASE."subsystems/forms/controls/formcontrol.php");
-
-/**
- * Custom Control
- *
- * @package Subsystems
- * @subpackage Forms
+ * @package Subsystems-Forms
+ * @subpackage Control
  */
 class customcontrol extends formcontrol {
+
 	var $html;
 	
 	function name() { return "Custom Control"; }
 	
-	function parseData($name, $values, $for_db = false) {
-		return;
-	}
-	function customcontrol($html = "") {
+	function __construct($html = "") {
 		$this->html = $html;
 	}
 
 	function controlToHTML($name) {
 		return $this->html;
 	}
+
+	static function parseData($name, $values, $for_db = false) {
+		return;
+	}
+
 }
 
 ?>

@@ -16,10 +16,12 @@
 # GPL: http://www.gnu.org/licenses/gpl.txt
 #
 ##################################################
+/** @define "BASE" ".." */
 
 function smarty_function_attribution($params,&$smarty) {
 	if (isset($params['user_id'])) {
-		if (!defined("SYS_USERS")) require_once(BASE."subsystems/users.php");
+//		if (!defined("SYS_USERS")) require_once(BASE."subsystems/users.php");
+		require_once(BASE."subsystems/users.php");
 		$u = exponent_users_getUserById($params['user_id']);
 	} elseif (isset($params['user'])) {
 		$u = $params['user'];

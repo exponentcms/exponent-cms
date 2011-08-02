@@ -13,6 +13,12 @@
  * GPL: http://www.gnu.org/licenses/gpl.txt
  *
  *}
-{if $success == 0}{$_TR.error}
-{else}{$_TR.success}
-{/if}
+
+<div class="calendar module">
+	{messagequeue}
+	{if $success == 0}
+		{$_TR.error}
+	{else}
+		{$_TR.success}
+	{/if}
+</div>

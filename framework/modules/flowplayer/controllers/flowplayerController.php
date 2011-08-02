@@ -30,20 +30,14 @@ class flowplayerController extends expController {
         'tags'
     );
 
-    function name() { return $this->displayname(); } //for backwards compat with old modules
     function displayname() { return "Flowplayer Media Player"; }
     function description() { return "Flowplayer is a video player for Web sites. Use it to embed video streams into your HTML pages."; }
-    function author() { return "Adam Kessler - OIC Group, Inc"; }
-    function hasSources() { return true; }
-    function hasViews() { return true; }
-    function hasContent() { return true; }
-    function supportsWorkflow() { return false; }
     function isSearchable() { return true; }
     
     function showall() {
         expHistory::set('viewable', $this->params);
         $modelname = $this->basemodel_name;
-        $where = $this->hasSources() ? $this->aggregateWhereClause() : null;
+        $where = $this->aggregateWhereClause();
         $limit = isset($this->params['limit']) ? $this->params['limit'] : null;
         $order = "rank";
         $page = new expPaginator(array(

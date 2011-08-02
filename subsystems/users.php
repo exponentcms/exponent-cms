@@ -17,13 +17,14 @@
 # GPL: http://www.gnu.org/licenses/gpl.txt
 #
 ##################################################
+/** @define "BASE" ".." */
 
 /* exdoc
  * The definition of this constant lets other parts of the system know
  * that the subsystem has been included for use.
  * @node Subsystems:Users
  */
-define('SYS_USERS',1);
+//define('SYS_USERS',1);
 
 // This global array belongs exclusively to the Users subsystem, and is used to cache
 // users as they are retrieved, to help out with performance when doing a lot of
@@ -171,6 +172,7 @@ function exponent_users_saveProfileExtensions($formvalues,$user,$is_new) {
  */
 function exponent_users_groupUpdate($formvalues, $group = null) {
 	// DEPRECATE
+	//FIXME this is not a static function and probably won't work?
 	return group::update($formvalues,$group);
 }
 
@@ -261,8 +263,15 @@ function exponent_users_create($formvalues) {
 		$msg = $u->firstname . ", \n\n";
 		$msg .= sprintf(USER_REGISTRATION_WELCOME_MSG, $u->firstname, $u->lastname, $u->username);
 
-		if (!defined("SYS_SMTP")) include_once(BASE."subsystems/smtp.php");
-		if (!exponent_smtp_mail($to, $from ,$subject,$msg,$headers));
+		$mail = new expMail();
+		$mail->quickSend(array(
+				'headers'=>$headers,
+				'html_message'=>$msg,
+				"text_message"=>$msg,
+				'to'=>trim($to),
+				'from'=>trim($from),
+				'subject'=>$subject,
+		));
 	}
 
 	if (USER_REGISTRATION_SEND_NOTIF){
@@ -274,8 +283,15 @@ function exponent_users_create($formvalues) {
 		$msg = "When: " . date("F j, Y, g:i a") ."\n\n";
 		$msg .= "Their name is: " . $u->firstname . " " . $u->lastname . "\n\n";
 
-		if (!defined("SYS_SMTP")) include_once(BASE."subsystems/smtp.php");
-		if (exponent_smtp_mail($to, $from ,$subject,$msg,$headers));
+		$mail = new expMail();
+		$mail->quickSend(array(
+				'headers'=>$headers,
+				'html_message'=>$msg,
+				"text_message"=>$msg,
+				'to'=>trim($to),
+				'from'=>trim($from),
+				'subject'=>$subject,
+		));
   	}
 	// Return the newly created user object (complete with ID) to the caller.
 	return $u;
@@ -292,7 +308,8 @@ function exponent_users_userManagerFormTemplate($template) {
 	global $user;
 	$users = $db->selectObjects('user');
 
-	if (!defined('SYS_SORTING')) require_once(BASE.'subsystems/sorting.php');
+//	if (!defined('SYS_SORTING')) require_once(BASE.'subsystems/sorting.php');
+	require_once(BASE.'subsystems/sorting.php');
 	if (!function_exists('exponent_sorting_byLastFirstAscending')) {
 		function exponent_sorting_byLastFirstAscending($a,$b) {
 			return strnatcmp($a->lastname . ', '. $a->firstname,$b->lastname . ', '. $b->firstname);
@@ -325,7 +342,8 @@ function exponent_users_groupManagerFormTemplate($template) {
 	global $db;
 	$groups = $db->selectObjects('group');
 
-	if (!defined('SYS_SORTING')) require_once(BASE.'subsystems/sorting.php');
+//	if (!defined('SYS_SORTING')) require_once(BASE.'subsystems/sorting.php');
+	require_once(BASE.'subsystems/sorting.php');
 	usort($groups,'exponent_sorting_byNameAscending');
 
 	$template->assign('groups',$groups);

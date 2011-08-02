@@ -49,7 +49,7 @@ define("DATABASE_TABLE_ALTERED",		4);
  * The definition of this constant lets other parts of the subsystem know
  * that the Database Subsystem has been included for use.
  */
-define('SYS_DATABASE',1);
+//define('SYS_DATABASE',1);
 
 /**
  * Database Field Type specifier

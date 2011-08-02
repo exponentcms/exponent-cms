@@ -16,33 +16,18 @@
 # GPL: http://www.gnu.org/licenses/gpl.txt
 #
 ##################################################
+/** @define "BASE" "../../.." */
 
 if (!defined('EXPONENT')) exit('');
 
 /**
  * Text Editor Control
  *
- * @author James Hunt
- * @copyright 2004-2011 OIC Group, Inc.
- * @version 0.95
- *
- * @package Subsystems
- * @subpackage Forms
- */
-
-/**
- * Manually include the class file for formcontrol, for PHP4
- * (This does not adversely affect PHP5)
- */
-require_once(BASE."subsystems/forms/controls/formcontrol.php");
-
-/**
- * Text Editor Control
- *
- * @package Subsystems
- * @subpackage Forms
+ * @package Subsystems-Forms
+ * @subpackage Control
  */
 class ckeditorcontrol extends formcontrol {
+
 	function name() { return "CKEditor"; }
 	
 	function __construct ($default="",$rows = 5,$cols = 45) {
@@ -76,6 +61,7 @@ class ckeditorcontrol extends formcontrol {
 			$skin = 'kama';
 			$scayt_on = 'true';
 			$paste_word = 'forcePasteAsPlainText : true,';
+			$plugins = '';
 	    } else {
 //			$tb = !empty($this->toolbar) ? $this->toolbar->data : $toolbar->data;
 //			$skin = !empty($toolbar->skin) ? $toolbar->skin : 'kama';
@@ -84,11 +70,13 @@ class ckeditorcontrol extends formcontrol {
 				$skin = $this->toolbar->skin;
 				$scayt_on = $this->toolbar->scayt_on ? 'true' : 'false';
 				$paste_word = $this->toolbar->paste_word ? 'pasteFromWordPromptCleanup : true,' : 'forcePasteAsPlainText : true,';
+				$plugins = $this->toolbar->plugins;
 			} else {
 				$tb = $toolbar->data;
 				$skin = $toolbar->skin;
 				$scayt_on = $toolbar->scayt_on ? 'true' : 'false';
 				$paste_word = $toolbar->paste_word ? 'pasteFromWordPromptCleanup : true,' : 'forcePasteAsPlainText : true,';
+				$plugins = $toolbar->plugins;
 			}
 	    }
 	    
@@ -106,6 +94,7 @@ class ckeditorcontrol extends formcontrol {
                     filebrowserLinkWindowWidth : '320',
                     filebrowserLinkWindowHeight : '600',
 					filebrowserImageBrowseLinkUrl : '".PATH_RELATIVE."external/editors/connector/CKeditor_link.php',
+					extraPlugins : '".$plugins."',
 					entities_additional : '',
 					uiColor : '#dedede'
                 });

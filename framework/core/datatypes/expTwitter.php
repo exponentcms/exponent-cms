@@ -154,17 +154,19 @@ class expTwitter {
 //
 //        return $this->objectify( $this->process($request) );
 //    }
-      
-    /**
-     * Send an authenticated request to Twitter for the timeline of authenticating user. 
-     * Returns the last 20 updates by default
-     * @param array <pre>
-     *      string $id Specifies the ID or screen name of the user for whom to return the friends_timeline. (set to false if you want to use authenticated user).
-     *      integer $since Narrows the returned results to just those statuses created after the specified date.
-     *      integer $count. As of July 7 2008, Twitter has requested the limitation of the count keyword. Therefore, we deprecate
-     * </pre>
-     * @return string
-     */
+
+	/**
+	 * Send an authenticated request to Twitter for the timeline of authenticating user.
+	 * Returns the last 20 updates by default
+	 * @param array $params
+	 *
+	 * @internal param $array <pre>
+	 *      string $id Specifies the ID or screen name of the user for whom to return the friends_timeline. (set to false if you want to use authenticated user).
+	 *      integer $since Narrows the returned results to just those statuses created after the specified date.
+	 *      integer $count. As of July 7 2008, Twitter has requested the limitation of the count keyword. Therefore, we deprecate
+	 * </pre>
+	 * @return string
+	 */
     public function getUserTimeline($params=array())
     {
         $id = (empty($params['id']) ? $this->username : $params['id']);

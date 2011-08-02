@@ -16,8 +16,9 @@
 # GPL: http://www.gnu.org/licenses/gpl.txt
 #
 ##################################################
+/** @define "BASE" "../../.." */
 
-if (!defined("EXPONENT")) exit("");
+if (!defined('EXPONENT')) exit('');
 
 //exponent_flow_set(SYS_FLOW_PUBLIC,SYS_FLOW_ACTION);
 // id & date_id set if single event, else
@@ -30,7 +31,8 @@ if (isset($_GET['date_id']) || isset($_GET['src'])) {
 		$config->enable_ical = 1;
 	}
 	if ($config->enable_ical) {
-		if (!defined("SYS_DATETIME")) include_once(BASE."subsystems/datetime.php");
+//		if (!defined("SYS_DATETIME")) include_once(BASE."subsystems/datetime.php");
+		include_once(BASE."subsystems/datetime.php");
 
 		if (isset($_GET['date_id'])) {  // get single specific event only
 			$dates = array($db->selectObject("eventdate","id=".intval($_GET['date_id'])));
@@ -49,8 +51,9 @@ if (isset($_GET['date_id']) || isset($_GET['src'])) {
 			$locsql .= ')';
 
 			if (!function_exists("exponent_datetime_startOfDayTimestamp")) {
-				if (!defined("SYS_DATETIME")) include_once(BASE."subsystems/datetime.php");               
-			}		
+//				if (!defined("SYS_DATETIME")) include_once(BASE."subsystems/datetime.php");
+				include_once(BASE."subsystems/datetime.php");
+			}
 			$day = exponent_datetime_startOfDayTimestamp(time());
 			if (isset($config->rss_limit) && ($config->rss_limit > 0)) {
 				$rsslimit = " AND date <= " . ($day + ($config->rss_limit * 86400));

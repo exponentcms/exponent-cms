@@ -16,15 +16,17 @@
 # GPL: http://www.gnu.org/licenses/gpl.txt
 #
 ##################################################
+/** @define "BASE" ".." */
 
 class calendar {
-	function form($object) {
+	static function form($object) {
 		global $user;
 
 		$i18n = exponent_lang_loadFile('datatypes/calendar.php');
 
-		if (!defined('SYS_FORMS')) require_once(BASE.'subsystems/forms.php');
-		exponent_forms_initialize();
+//		if (!defined('SYS_FORMS')) require_once(BASE.'subsystems/forms.php');
+		require_once(BASE.'subsystems/forms.php');
+//		exponent_forms_initialize();
 
 		$form = new form();
 		if (!isset($object->id)) {
@@ -74,7 +76,8 @@ class calendar {
 			$template = new template('calendarmodule','_recur_dates');
 			global $db;
 			$eventdates = $db->selectObjects('eventdate','event_id='.$object->id);
-			if (!defined('SYS_SORTING')) require_once(BASE.'subsystems/sorting.php');
+//			if (!defined('SYS_SORTING')) require_once(BASE.'subsystems/sorting.php');
+			require_once(BASE.'subsystems/sorting.php');
 			if (!function_exists('exponent_sorting_byDateAscending')) {
 				function exponent_sorting_byDateAscending($a,$b) {
 					return ($a->date > $b->date ? 1 : -1);
@@ -101,9 +104,10 @@ class calendar {
 		return $form;
 	}
 
-	function update($values,$object) {
-		if (!defined('SYS_FORMS')) require_once(BASE.'subsystems/forms.php');
-		exponent_forms_initialize();
+	static function update($values,$object) {
+//		if (!defined('SYS_FORMS')) require_once(BASE.'subsystems/forms.php');
+		require_once(BASE.'subsystems/forms.php');
+//		exponent_forms_initialize();
 
 		$object->title = $values['title'];
 

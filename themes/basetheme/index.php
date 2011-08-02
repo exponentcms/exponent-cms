@@ -18,7 +18,7 @@
 	<div id="doc4" class="yui-t2">
 		<div id="hd">
 			<h1 id="logo">
-			    <a href="<?php echo URL_FULL; ?>" title="Welcome to Exponent Content Management System">Exponent CMS</a>
+			    <a href="<?php echo URL_FULL; ?>" title="Welcome to Exponent Content Management System"><?php echo SITE_HEADER; ?></a>
 			</h1>
 			<?php expTheme::module(array("module"=>"navigation","view"=>"YUI Top Nav","source"=>"@top")); ?>
 		</div>

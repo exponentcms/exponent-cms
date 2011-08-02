@@ -34,22 +34,27 @@ class expRouter {
     function __construct() {
         $this->map = $this->getRouterMaps();
     }
-    
-    /**
-    * Will build url to a module/page/etc (determined by what is passed to the $params array).
-    * 
-    * @param array $params The params that are passed will determine what link is make
-    *               section
-    *               action
-    *               sef_name
-    *               module
-    *               controller
-    *               action
-    * @param boolean $force_old_school Old School as in not SEF.
-    * @param boolean $secure If you set $secure true but ENABLE_SSL is not turned on in the config this will be forced false
-    * @param boolean $no_map Ignore router_maps
-    * @return string A url
-    */
+
+	/**
+	 * Will build url to a module/page/etc (determined by what is passed to the $params array).
+	 *
+	 * @param $fulllink
+	 *
+	 * @internal param array $params The params that are passed will determine what link is make
+	 *               section
+	 *               action
+	 *               sef_name
+	 *               module
+	 *               controller
+	 *               action
+	 *
+	 * @internal param bool $force_old_school Old School as in not SEF.
+	 *
+	 * @internal param bool $secure If you set $secure true but ENABLE_SSL is not turned on in the config this will be forced false
+	 *
+	 * @internal param bool $no_map Ignore router_maps
+	 * @return string A url
+	 */
     
     //remove trailing links
     public static function cleanLink($fulllink)
@@ -64,7 +69,7 @@ class expRouter {
         $linkbase .= SCRIPT_RELATIVE;
                 
         if (isset($params['section']) && $params['section'] == SITE_DEFAULT_SECTION) {            
-                return expRouter::cleanLink($linkbase);
+                return self::cleanLink($linkbase);
         }
 
         // Check to see if SEF_URLS have been turned on in the site config
@@ -75,7 +80,7 @@ class expRouter {
                     global $db;
                     $params['sef_name'] = $db->selectValue('section', 'sef_name', 'id='.intval($params['section']));
                 }                               
-                return expRouter::cleanLink($linkbase.$params['sef_name']);
+                return self::cleanLink($linkbase.$params['sef_name']);
             } else {                
                 // initialize the link
                 $link = '';               
@@ -107,7 +112,7 @@ class expRouter {
 
                 // if we found a mapping for this link then we can return it now.
                 //if ($link != '') return expRouter::encode($linkbase.$link);
-                if ($link != '') return expRouter::cleanLink($linkbase.$link);        
+                if ($link != '') return self::cleanLink($linkbase.$link);
                 
                 $link .= $params['controller'].'/';
                 $link .= $params['action'].'/';
@@ -128,7 +133,7 @@ class expRouter {
                     }
                 }
                 //trim last / off                 
-                return expRouter::cleanLink($linkbase.$link);        
+                return self::cleanLink($linkbase.$link);
                 }
         } else {
             // if the users don't have SEF URL's turned on then we make the link the old school way.
@@ -622,7 +627,7 @@ class expRouter {
             foreach($_SERVER['argv'] as $set)
             {
                 $s = explode("=",$set);
-                if($s[0]= "ectid")
+                if($s[0] == "ectid")
                 {
                     $this->ectid = $s[1];    
                 }   
