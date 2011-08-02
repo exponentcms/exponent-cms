@@ -210,7 +210,7 @@ if ($passed) {
 
 	$dirs = array(
 			BASE."datatypes/definitions",
-			BASE."framework/core/database/definitions",
+			BASE."framework/core/definitions",
 		);
 	
 	foreach ($dirs as $dir) {

@@ -32,7 +32,7 @@ if (exponent_permissions_check('configuration',exponent_core_makeLocation('admin
 	
 	$dirs = array(
 		BASE."datatypes/definitions",
-		BASE."framework/core/database/definitions",
+		BASE."framework/core/definitions",
 		);
 		
 	$tables = array();

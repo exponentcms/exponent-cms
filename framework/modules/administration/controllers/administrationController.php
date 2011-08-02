@@ -57,7 +57,7 @@ class administrationController extends expController {
 
 		$dirs = array(
 			BASE."datatypes/definitions",
-			BASE."framework/core/database/definitions",
+			BASE."framework/core/definitions",
 			);
 
 		$tables = array();
@@ -143,7 +143,7 @@ class administrationController extends expController {
         foreach($tables as $table) {
             $basename = str_replace(DB_TABLE_PREFIX.'_', '', $table);
             $oldpath = BASE.'datatypes/definitions/'.$basename.'.php';
-            $mvcpath = BASE.'framework/core/database/definitions/'.$basename.'.php';
+            $mvcpath = BASE.'framework/core/definitions/'.$basename.'.php';
             if (!file_exists($oldpath) && !file_exists($mvcpath) && !stristr($basename, 'formbuilder')) {
                 $unused_tables[$basename]->name = $table;
                 $unused_tables[$basename]->rows = $db->countObjects($basename);

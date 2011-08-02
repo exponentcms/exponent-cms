@@ -33,7 +33,7 @@ define("TMP_TABLE_ALTERED",		4);
 
 $dirs = array(
 	BASE."datatypes/definitions",
-	BASE."framework/core/database/definitions",
+	BASE."framework/core/definitions",
 	);
 
 $tables = array();
