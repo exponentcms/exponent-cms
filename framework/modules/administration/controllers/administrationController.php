@@ -140,7 +140,7 @@ class administrationController extends expController {
         $unused_tables = array();
         $tables = $db->getTables();
         //eDebug($tables);
-	    //FIXME Need to update for definitions moving into controller folder
+	    //FIXME Need to update for definitions moving into controller folders
         foreach($tables as $table) {
             $basename = str_replace(DB_TABLE_PREFIX.'_', '', $table);
             $oldpath = BASE.'datatypes/definitions/'.$basename.'.php';
