@@ -26,7 +26,7 @@ class group extends expRecord {
         'uniqueness_of'=>array(
             'name'=>array('message'=>'There is already a group by that name.'),
         ),
-        );
+	);
         
 }
 

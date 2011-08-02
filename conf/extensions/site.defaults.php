@@ -32,6 +32,8 @@ if (!defined('SITE_KEYWORDS')) define('SITE_KEYWORDS','');
 if (!defined('SITE_DESCRIPTION')) define('SITE_DESCRIPTION','');
 if (!defined('SITE_DEFAULT_SECTION')) define('SITE_DEFAULT_SECTION',1);
 
+if (!defined('ADVERTISE_RSS')) define('ADVERTISE_RSS',0);
+
 if (!defined('SAVE_SEARCH_QUERIES')) define('SAVE_SEARCH_QUERIES',1);
 if (!defined('SITE_WYSIWYG_EDITOR')) define('SITE_WYSIWYG_EDITOR','ckeditor');
 

@@ -133,7 +133,7 @@ class navigationmodule {
 					$obj->submenu = null;
 					$obj->submenu->id = $sections[$i]->name.$sections[$i]->id;
 					//echo "getting children of ".$sections[$i]->name;
-					$obj->submenu->itemdata = getChildren($i);
+					$obj->submenu->itemdata = $this->getChildren($i);
 					$ret_array[] = $obj;
 				} else {
 					$ret_array[] = $obj;	

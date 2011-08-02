@@ -402,7 +402,7 @@ class administrationController extends expController {
 
 	public function clear_rss_cache() {
 //		if (!defined('SYS_FILES')) include_once(BASE.'subsystems/files.php');
-		iinclude_once(BASE.'subsystems/files.php');
+		include_once(BASE.'subsystems/files.php');
 		exponent_files_remove_files_in_directory(BASE.'tmp/rsscache');
 		$message = "RSS/Podcast Cache has been cleared" ;
 		flash('message',$message);

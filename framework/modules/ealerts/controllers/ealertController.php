@@ -204,7 +204,7 @@ class ealertController extends expController {
 		        'subject'=>'Please confirm your E-Alert subscriptions',
         ));
         
-        redirect_to(array(controller=>'ealert', 'action'=>'pending', 'id'=>$subscriber->id));
+        redirect_to(array('controller'=>'ealert', 'action'=>'pending', 'id'=>$subscriber->id));
     }
     
     public function pending() {

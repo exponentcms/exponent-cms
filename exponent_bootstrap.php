@@ -104,4 +104,7 @@ if (!defined('THEME_RELATIVE')) {
 // Process PHP-wrapper settings (ini_sets and setting detectors)
 require_once(BASE . 'exponent_php_setup.php');
 
+$info = gd_info();
+define('EXPONENT_HAS_GD',($info['GD Version'] == 'Not Supported' ? 0 : 1));
+
 ?>
