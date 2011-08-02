@@ -430,7 +430,7 @@ function intializeControllers() {
     return $controllers;
 }
 
-// recursive function used for (auto?)loading class files.
+// recursive function used for (auto?)loading 2.0 modules controllers & models
 function loadModulesDir($dir, &$controllers) {
     if (is_readable($dir)) {
         $dh = opendir($dir);

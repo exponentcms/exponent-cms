@@ -448,8 +448,8 @@ function exponent_core_resolveFilePaths($type, $name, $subtype, $subname) {
 			}
 		} elseif($type == "themes") {
 			$relpath .= "themes/";
-		} elseif($type == "datatypes") {
-			$relpath .= "datatypes/";
+		} elseif($type == "models") {
+			$relpath .= "models/";
 		} elseif($type == "controls") {
 			$relpath .= "themes/";
 		} elseif($type == "Control") {

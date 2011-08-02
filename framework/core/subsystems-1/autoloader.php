@@ -30,13 +30,13 @@ if (!defined('EXPONENT')) exit('');
 	 */
 	//$auto_dirs = array(BASE.'datatypes', BASE.'framework/core/subsystems-1/forms', BASE.'framework/core/subsystems-1/forms/controls');
 	$auto_dirs = array(
-			BASE.'frame/core/models-1',  // odl 1.0 /datatypes
+			BASE.'framework/core/models-1',  // old 1.0 /datatypes
 			BASE.'framework/core/subsystems-1/forms',
 			BASE.'framework/core/subsystems-1/forms/controls',
-			BASE.'framework/datatypes',  // models
-			BASE.'framework/core/subsystems',
-			BASE.'framework/core/datatypes',  // models
+//			BASE.'framework/datatypes',  // moved to framework/core/models
 			BASE.'framework/core/controllers',
+			BASE.'framework/core/models',  // old framework/core/datatypes & framework/datatypes
+			BASE.'framework/core/subsystems',
 			BASE.'framework/modules/ecommerce/billingcalculators',
 			BASE.'framework/modules/ecommerce/shippingcalculators',
 			BASE.'framework/modules/ecommerce/products/controllers',  //FIXME does NOT exist
