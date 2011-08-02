@@ -148,6 +148,7 @@ function renderAction(array $parms=array()) {
 function hotspot($source = null) {
     if (!empty($source)) {
         global $sectionObj;
+	    //FIXME there is NO page object written
         $page = new page($sectionObj->id);
         $modules = $page->getModulesBySource($source);
         //eDebug($modules);exit();
@@ -429,7 +430,7 @@ function intializeControllers() {
     return $controllers;
 }
 
-// recursive function used for autoloading class files.
+// recursive function used for (auto?)loading class files.
 function loadModulesDir($dir, &$controllers) {
     if (is_readable($dir)) {
         $dh = opendir($dir);
@@ -446,8 +447,8 @@ function loadModulesDir($dir, &$controllers) {
                         }
                     }
                 }
-                // load datatypes
-                $dirpath = $dir.'/'.$file.'/datatypes';
+                // load models
+                $dirpath = $dir.'/'.$file.'/models';
                 if (file_exists($dirpath)) {
                     $controller_dir = opendir($dirpath);
                     while (($ctl_file = readdir($controller_dir)) !== false) {
@@ -558,8 +559,8 @@ function listInstalledControllers($type=null, $loc=null) {
 }
 
 function getModulesAndControllers() {
-    $mods = exponent_modules_listActive();
-    $ctls = listActiveControllers();
+    $mods = exponent_modules_listActive();  // 1.0 modules
+    $ctls = listActiveControllers();        // 2.0 modules
     return array_merge($ctls, $mods);
 }
 

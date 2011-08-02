@@ -55,12 +55,13 @@ class administrationController extends expController {
 		define("TMP_TABLE_FAILED",		3);
 		define("TMP_TABLE_ALTERED",		4);
 
+		$tables = array();
+
+		// first the core and 1.0 definitions
 		$dirs = array(
-			BASE."datatypes/definitions",
+//			BASE."datatypes/definitions",
 			BASE."framework/core/definitions",
 			);
-
-		$tables = array();
 		foreach ($dirs as $dir) {
 			if (is_readable($dir)) {
 				$dh = opendir($dir);
@@ -90,8 +91,8 @@ class administrationController extends expController {
 			}
 		}
 
+		// then search for module definitions
 		$newdef = BASE."framework/modules";
-
 		if (is_readable($newdef)) {
 			$dh = opendir($newdef);
 			while (($file = readdir($dh)) !== false) {
@@ -100,7 +101,7 @@ class administrationController extends expController {
 					if (file_exists($dirpath)) {
 						$def_dir = opendir($dirpath);
 						while (($def = readdir($def_dir)) !== false) {
-							eDebug("$dirpath/$def");
+//							eDebug("$dirpath/$def");
 							if (is_readable("$dirpath/$def") && is_file("$dirpath/$def") && substr($def,-4,4) == ".php" && substr($def,-9,9) != ".info.php") {
 								$tablename = substr($def,0,-4);
 								$dd = include("$dirpath/$def");
@@ -129,7 +130,7 @@ class administrationController extends expController {
 		}
     	exponent_sessions_clearCurrentUserSessionCache();
 		ksort($tables);
-      assign_to_template(array('status'=>$tables));
+        assign_to_template(array('status'=>$tables));
 	}
 
     public function manage_unused_tables() {

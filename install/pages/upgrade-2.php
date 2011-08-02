@@ -31,12 +31,13 @@ define("TMP_TABLE_INSTALLED",	2);
 define("TMP_TABLE_FAILED",		3);
 define("TMP_TABLE_ALTERED",		4);
 
+$tables = array();
+
+// first the core and 1.0 definitions
 $dirs = array(
-	BASE."datatypes/definitions",
+//	BASE."datatypes/definitions",
 	BASE."framework/core/definitions",
 	);
-
-$tables = array();
 foreach ($dirs as $dir) {
 	if (is_readable($dir)) {		
 		$dh = opendir($dir);
@@ -66,8 +67,8 @@ foreach ($dirs as $dir) {
 	}
 }
 
+// then search for module definitions
 $newdef = BASE."framework/modules";
-
 if (is_readable($newdef)) {
     $dh = opendir($newdef);
     while (($file = readdir($dh)) !== false) {
@@ -103,7 +104,6 @@ if (is_readable($newdef)) {
         }
     }
 }
-
 ksort($tables);
 
 ?>
