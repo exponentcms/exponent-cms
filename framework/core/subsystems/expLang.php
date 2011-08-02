@@ -40,7 +40,7 @@ class expLang {
 	    if (!defined('LANGUAGE')) return $str;
 
 	    global $cur_lang;
-	    expLang::writeTemplate($str);
+	    self::writeTemplate($str);
 	    $str = LANGUAGE!="English - US" && array_key_exists($str,$cur_lang) ? $cur_lang[$str] : $str;
 		return $str;
 	}

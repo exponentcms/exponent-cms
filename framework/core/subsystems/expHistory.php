@@ -217,7 +217,7 @@ class expHistory {
     }
     
 	public static function redirecto_login($redirecturl) {
-    	$redirecturl = empty($redirecturl) ? expHistory::getLastNotEditable() : $redirecturl;
+    	$redirecturl = empty($redirecturl) ? self::getLastNotEditable() : $redirecturl;
         expSession::set('redirecturl',$redirecturl);
     	redirect_to(array('module'=>'loginmodule', 'action'=>'loginredirect'));
 	}

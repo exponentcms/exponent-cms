@@ -39,7 +39,7 @@ class expTheme {
     
     public static function module($params) {
         if (isset($params['controller'])) {
-            expTheme::showController($params);
+            self::showController($params);
         } else if (isset($params['module'])) {
             $moduletitle = (isset($params['moduletitle'])) ? $params['moduletitle'] : "";
             $source = (isset($params['source'])) ? $params['source'] : "";
@@ -113,7 +113,7 @@ class expTheme {
         global $sectionObj, $db, $router;
         
         $metainfo = array();
-        if (expTheme::inAction() && (!empty($router->url_parts[0]) && controllerExists($router->url_parts[0]))) {
+        if (self::inAction() && (!empty($router->url_parts[0]) && controllerExists($router->url_parts[0]))) {
             $classname = getControllerClassName($router->url_parts[0]);
             $controller = new $classname();
             $metainfo = $controller->metainfo();

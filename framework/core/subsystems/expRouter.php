@@ -69,7 +69,7 @@ class expRouter {
         $linkbase .= SCRIPT_RELATIVE;
                 
         if (isset($params['section']) && $params['section'] == SITE_DEFAULT_SECTION) {            
-                return expRouter::cleanLink($linkbase);
+                return self::cleanLink($linkbase);
         }
 
         // Check to see if SEF_URLS have been turned on in the site config
@@ -80,7 +80,7 @@ class expRouter {
                     global $db;
                     $params['sef_name'] = $db->selectValue('section', 'sef_name', 'id='.intval($params['section']));
                 }                               
-                return expRouter::cleanLink($linkbase.$params['sef_name']);
+                return self::cleanLink($linkbase.$params['sef_name']);
             } else {                
                 // initialize the link
                 $link = '';               
@@ -112,7 +112,7 @@ class expRouter {
 
                 // if we found a mapping for this link then we can return it now.
                 //if ($link != '') return expRouter::encode($linkbase.$link);
-                if ($link != '') return expRouter::cleanLink($linkbase.$link);        
+                if ($link != '') return self::cleanLink($linkbase.$link);
                 
                 $link .= $params['controller'].'/';
                 $link .= $params['action'].'/';
@@ -133,7 +133,7 @@ class expRouter {
                     }
                 }
                 //trim last / off                 
-                return expRouter::cleanLink($linkbase.$link);        
+                return self::cleanLink($linkbase.$link);
                 }
         } else {
             // if the users don't have SEF URL's turned on then we make the link the old school way.

@@ -29,15 +29,15 @@ class expQueue {
 	}
 
 	public function addMsg($msg) {
-		expQueue::flash($this->name, $msg);
+		self::flash($this->name, $msg);
 	}
 
 	public function flush() {
-		expQueue::flushQueue($this->name);
+		self::flushQueue($this->name);
 	}
 
 	public function isEmpty() {
-		expQueue::isQueueEmpty();
+		self::isQueueEmpty();
 	}
 
 	static function flash($name, $msg) {

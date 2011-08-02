@@ -65,7 +65,7 @@ class expCSS {
         $html = "";
         
         // gather up all .css files in themes/mytheme/css/
-        expCSS::themeCSS();
+        self::themeCSS();
         
         unset($head_config['xhtml']);
         $css_files = array();
