@@ -43,7 +43,7 @@ class containermodule {
 	function deleteIn($loc) {
 		global $user;
 		if ($user && $user->is_acting_admin == 1) {
-			include_once(BASE.'datatypes/container.php');
+			include_once(BASE . 'models-1/container.php');
 			
 			global $db;
 			$containers = $db->selectObjects('container',"external='" . serialize($loc) . "'");

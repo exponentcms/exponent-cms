@@ -30,7 +30,7 @@ if (!defined('EXPONENT')) exit('');
 	 */
 	//$auto_dirs = array(BASE.'datatypes', BASE.'framework/core/subsystems-1/forms', BASE.'framework/core/subsystems-1/forms/controls');
 	$auto_dirs = array(
-			BASE.'datatypes',  // models
+			BASE.'frame/core/models-1',  // odl 1.0 /datatypes
 			BASE.'framework/core/subsystems-1/forms',
 			BASE.'framework/core/subsystems-1/forms/controls',
 			BASE.'framework/datatypes',  // models
