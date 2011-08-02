@@ -202,7 +202,7 @@ if (!defined('YUI2_PATH')) {
 	 *
 	 * Changing the version here lets Exponent adjust where to look
 	 */
-	define('YUI2_VERSION', '2.8.0r4');
+	define('YUI2_VERSION', '2.9.0');
 	define('YUI2_PATH', PATH_RELATIVE.'external/lissa/'.YUI2_VERSION.'/build/');
 	define('YUI2_URL', URL_FULL.'external/lissa/'.YUI2_VERSION.'/build/');
 }

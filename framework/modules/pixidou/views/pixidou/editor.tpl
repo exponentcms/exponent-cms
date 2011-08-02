@@ -31,11 +31,16 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr" lang="fr">
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" >
         <title>Pixidou - Open Source AJAX Image Editor</title>
         <!-- Combo-handled YUI CSS files: -->
-        <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/combo?2.6.0/build/reset-fonts/reset-fonts.css&2.6.0/build/assets/skins/sam/skin.css" />
-        <link rel="stylesheet" type="text/css" href="{$smarty.const.URL_FULL}framework/modules/pixidou/assets/css/pixidou.css" />
+        <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/combo?2.6.0/build/reset-fonts/reset-fonts.css&2.6.0/build/assets/skins/sam/skin.css" >
+{*	    <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/combo?2.9.0/build/reset-fonts/reset-fonts.css&2.9.0/build/assets/skins/sam/skin.css">*}
+	    <!-- Using Local YUI CSS files: -->
+{*	    <link rel="stylesheet" type="text/css" href="{$smarty.const.YUI2_URL}reset-fonts/reset-fonts.css" >*}
+{*	    <link rel="stylesheet" type="text/css" href="{$smarty.const.YUI2_URL}assets/skins/sam/skin.css" >*}
+
+        <link rel="stylesheet" type="text/css" href="{$smarty.const.URL_FULL}framework/modules/pixidou/assets/css/pixidou.css" >
     </head>
     <body class="yui-skin-sam">
         <div id="doc3" class="yui-t7 hide">
@@ -216,6 +221,20 @@
         
         <!-- Combo-handled YUI JS files: -->
         <script type="text/javascript" src="http://yui.yahooapis.com/combo?2.6.0/build/utilities/utilities.js&2.6.0/build/container/container-min.js&2.6.0/build/menu/menu-min.js&2.6.0/build/button/button-min.js&2.6.0/build/slider/slider-min.js&2.6.0/build/colorpicker/colorpicker-min.js&2.6.0/build/resize/resize-min.js&2.6.0/build/imagecropper/imagecropper-beta-min.js&2.6.0/build/json/json-min.js&2.6.0/build/selector/selector-beta-min.js&2.6.0/build/layout/layout-min.js&2.6.0/build/tabview/tabview-min.js"></script>
+{*        <script type="text/javascript" src="http://yui.yahooapis.com/combo?2.9.0/build/utilities/utilities.js&2.9.0/build/container/container-min.js&2.9.0/build/menu/menu-min.js&2.9.0/build/button/button-min.js&2.9.0/build/slider/slider-min.js&2.9.0/build/colorpicker/colorpicker-min.js&2.9.0/build/resize/resize-min.js&2.9.0/build/imagecropper/imagecropper-min.js&2.9.0/build/json/json-min.js&2.9.0/build/selector/selector-min.js&2.9.0/build/layout/layout-min.js&2.9.0/build/tabview/tabview-min.js"></script>*}
+        <!-- Using Local YUI JS files: -->
+{*      <script type="text/javascript" src="{$smarty.const.YUI2_URL}utilities/utilities.js"></script>
+        <script type="text/javascript" src="{$smarty.const.YUI2_URL}container/container-min.js"></script>
+        <script type="text/javascript" src="{$smarty.const.YUI2_URL}menu/menu-min.js"></script>
+        <script type="text/javascript" src="{$smarty.const.YUI2_URL}button/button-min.js"></script>
+        <script type="text/javascript" src="{$smarty.const.YUI2_URL}slider/slider-min.js"></script>
+        <script type="text/javascript" src="{$smarty.const.YUI2_URL}colorpicker/colorpicker-min.js"></script>
+        <script type="text/javascript" src="{$smarty.const.YUI2_URL}resize/resize-min.js"></script>
+        <script type="text/javascript" src="{$smarty.const.YUI2_URL}imagecropper/imagecropper-min.js"></script>
+        <script type="text/javascript" src="{$smarty.const.YUI2_URL}json/json-min.js"></script>
+        <script type="text/javascript" src="{$smarty.const.YUI2_URL}selector/selector-min.js"></script>
+        <script type="text/javascript" src="{$smarty.const.YUI2_URL}layout/layout-min.js"></script>
+        <script type="text/javascript" src="{$smarty.const.YUI2_URL}tabview/tabview-min.js"></script> *}
 
         <script type="text/javascript" src="{$smarty.const.URL_FULL}exponent.js.php"></script>
        
