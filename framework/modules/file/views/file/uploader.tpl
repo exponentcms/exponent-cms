@@ -17,7 +17,7 @@
     <script type="text/javascript" src="{$smarty.const.URL_FULL}exponent.js.php"></script>
 
     <script type="text/javascript" src="{$smarty.const.YUI3_PATH}yui/yui-min.js"></script>
-
+	<script type="text/javascript" src="{$smarty.const.URL_FULL}framework/core/assets/js/exp-flashdetector.js"></script>
 </head>
 <body class="exp-skin">
 <div id="exp-uploader">
@@ -29,6 +29,14 @@
         <a id="backlink" class="back awesome small green" href="{link action=picker update=$smarty.get.update fck=$smarty.get.fck ajax_action=1}?CKEditor={$smarty.get.CKEditor}&amp;CKEditorFuncNum={$smarty.get.CKEditorFuncNum}&amp;langCode={$smarty.get.langCode}"><span>Back to Manager</span></a>
     </div>
 	<div class="info-header">
+		
+		<script type="text/javascript"> 
+			if(!FlashDetect.installed) {ldelim}
+				document.write('You need to have Adobe Flash Player installed in your browser to upload files.<br />');
+				document.write('<a href="http://get.adobe.com/flashplayer/" target="_blank">Download it from Adobe.</a>');
+			{rdelim}
+		</script>
+		
 		<div class="related-actions">
 			{help text="Get Help with Uploading Files" module="upload-files"}
 		</div>
