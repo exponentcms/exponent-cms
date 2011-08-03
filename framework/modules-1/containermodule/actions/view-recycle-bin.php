@@ -19,7 +19,7 @@
 
 if (!defined('EXPONENT')) exit('');
 
-exponent_sessions_clearAllUsersSessionCache('containermodule');
+expSession::clearAllUsersSessionCache('containermodule');
 
 $orphans = array();
 //foreach ($db->selectObjects("locationref","refcount=0", "module") as $orphan) {

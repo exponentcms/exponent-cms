@@ -71,11 +71,11 @@ function exponent_flow_set($access_level,$url_type) {
 	global $router;
 	//echo '<h1>setting flow</h1>'.$router->current_url;	
 	if ($access_level == SYS_FLOW_PUBLIC) {
-		exponent_sessions_set($SYS_FLOW_REDIRECTIONPATH.'_flow_' . SYS_FLOW_PROTECTED . '_' . $url_type, $router->current_url);
-		exponent_sessions_set($SYS_FLOW_REDIRECTIONPATH.'_flow_last_' . SYS_FLOW_PROTECTED, $router->current_url);
+		expSession::set($SYS_FLOW_REDIRECTIONPATH.'_flow_' . SYS_FLOW_PROTECTED . '_' . $url_type, $router->current_url);
+		expSession::set($SYS_FLOW_REDIRECTIONPATH.'_flow_last_' . SYS_FLOW_PROTECTED, $router->current_url);
 	}
-	exponent_sessions_set($SYS_FLOW_REDIRECTIONPATH.'_flow_' . $access_level . '_' . $url_type, $router->current_url);
-	exponent_sessions_set($SYS_FLOW_REDIRECTIONPATH.'_flow_last_' . $access_level, $router->current_url);
+	expSession::set($SYS_FLOW_REDIRECTIONPATH.'_flow_' . $access_level . '_' . $url_type, $router->current_url);
+	expSession::set($SYS_FLOW_REDIRECTIONPATH.'_flow_last_' . $access_level, $router->current_url);
 	
 	//FIXME:  Glue code to try to get new history and old flow to play nicely together.
 	expHistory::set('viewable', $router->params);
@@ -92,14 +92,14 @@ function exponent_flow_set($access_level,$url_type) {
  */
 function exponent_flow_get($url_type = SYS_FLOW_NONE) {
 #	global $SYS_FLOW_REDIRECTIONPATH;
-#	$access_level = (exponent_sessions_loggedIn() ? SYS_FLOW_PROTECTED : SYS_FLOW_PUBLIC);
-#	if (!exponent_sessions_isset($SYS_FLOW_REDIRECTIONPATH.'_flow_last_'.$access_level)) return URL_FULL;
+#	$access_level = (expSession::loggedIn() ? SYS_FLOW_PROTECTED : SYS_FLOW_PUBLIC);
+#	if (!expSession::is_set($SYS_FLOW_REDIRECTIONPATH.'_flow_last_'.$access_level)) return URL_FULL;
 #	switch ($url_type) {
 #		case SYS_FLOW_NONE:
-#			return exponent_sessions_get($SYS_FLOW_REDIRECTIONPATH.'_flow_last_' . $access_level);
+#			return expSession::get($SYS_FLOW_REDIRECTIONPATH.'_flow_last_' . $access_level);
 #		case SYS_FLOW_SECTIONAL:
 #		case SYS_FLOW_ACTION:
-#			return exponent_sessions_get($SYS_FLOW_REDIRECTIONPATH.'_flow_' . $access_level . '_' . $url_type);
+#			return expSession::get($SYS_FLOW_REDIRECTIONPATH.'_flow_' . $access_level . '_' . $url_type);
 #	}
 	
 	return expHistory::getLastNotEditable();
@@ -116,18 +116,18 @@ function exponent_flow_get($url_type = SYS_FLOW_NONE) {
  */
 function exponent_flow_redirect($url_type = SYS_FLOW_NONE) {
 #	global $SYS_FLOW_REDIRECTIONPATH;
-#	$access_level = (exponent_sessions_loggedIn() ? SYS_FLOW_PROTECTED : SYS_FLOW_PUBLIC);
+#	$access_level = (expSession::loggedIn() ? SYS_FLOW_PROTECTED : SYS_FLOW_PUBLIC);
 #	// Fallback to the default redirection path in strange edge cases.
-#	if (!exponent_sessions_isset($SYS_FLOW_REDIRECTIONPATH.'_flow_last_'.$access_level)) $SYS_FLOW_REDIRECTIONPATH='exponent_default';
+#	if (!expSession::is_set($SYS_FLOW_REDIRECTIONPATH.'_flow_last_'.$access_level)) $SYS_FLOW_REDIRECTIONPATH='exponent_default';
 #	$url = '';
 #	//die(eDebug($_SESSION));
 #	switch ($url_type) {
 #		case SYS_FLOW_NONE:
-#			$url = exponent_sessions_get($SYS_FLOW_REDIRECTIONPATH . '_flow_last_' . $access_level);
+#			$url = expSession::get($SYS_FLOW_REDIRECTIONPATH . '_flow_last_' . $access_level);
 #			break;
 #		case SYS_FLOW_SECTIONAL:
 #		case SYS_FLOW_ACTION:
-#			$url = exponent_sessions_get($SYS_FLOW_REDIRECTIONPATH . '_flow_' . $access_level . '_' . $url_type);
+#			$url = expSession::get($SYS_FLOW_REDIRECTIONPATH . '_flow_' . $access_level . '_' . $url_type);
 #			break;
 #	}
 
@@ -146,7 +146,7 @@ function exponent_flow_redirect($url_type = SYS_FLOW_NONE) {
 
 function exponent_flow_redirecto_login($redirecturl) {
 	$redirecturl = empty($redirecturl) ? exponent_flow_get() : $redirecturl;
-	exponent_sessions_set('redirecturl',$redirecturl);
+	expSession::set('redirecturl',$redirecturl);
 	redirect_to(array('module'=>'loginmodule', 'action'=>'loginredirect'));
 }
 

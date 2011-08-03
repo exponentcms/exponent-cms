@@ -68,7 +68,7 @@ class container {
         $internal = unserialize($object->internal);
         
         global $db;
-        $section = exponent_sessions_get("last_section");
+        $section = expSession::get("last_section");
 //        $locref = $db->selectObject("locationref","module='".$internal->mod."' AND source='".$internal->src."' AND internal='".$internal->int."'");
         $secref = $db->selectObject("sectionref", "module='".$internal->mod."' AND source='".$internal->src."' AND internal='".$internal->int."' AND section=$section");
         

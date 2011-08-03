@@ -79,7 +79,7 @@ class antispamcontrol extends formcontrol {
 			$i18n = exponent_lang_loadFile('subsystems/forms/controls/textcontrol.php');
 			$post = $_POST;
 			$post['_formError'] = $i18n['id_req'];
-			exponent_sessions_set("last_POST",$post);
+			expSession::set("last_POST",$post);
 			return null;
 		}
 		$object->identifier = $values['identifier'];

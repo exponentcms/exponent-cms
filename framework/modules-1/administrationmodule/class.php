@@ -80,11 +80,11 @@ class administrationmodule {
 		$template = new template('administrationmodule',$view,$loc);
 		
 		$level = 99;
-		if (exponent_sessions_isset('uilevel')) {
-			$level = exponent_sessions_get('uilevel');
+		if (expSession::is_set('uilevel')) {
+			$level = expSession::get('uilevel');
 		}
 		$template->assign('can_manage_nav', exponent_permissions_checkOnModule("manage","navigationmodule"));
-		$template->assign('editMode',exponent_sessions_loggedIn() && $level != UILEVEL_PREVIEW);
+		$template->assign('editMode',expSession::loggedIn() && $level != UILEVEL_PREVIEW);
 		$template->assign('title',$title);
 		$template->assign('previewMode',($level == UILEVEL_PREVIEW));
 		

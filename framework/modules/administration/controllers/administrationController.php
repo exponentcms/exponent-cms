@@ -128,7 +128,7 @@ class administrationController extends expController {
 				}
 			}
 		}
-    	exponent_sessions_clearCurrentUserSessionCache();
+    	expSession::clearCurrentUserSessionCache();
 		ksort($tables);
         assign_to_template(array('status'=>$tables));
 	}

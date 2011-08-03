@@ -82,7 +82,7 @@ class expHistory {
 	 * @return \expHistory
 	 */
 	public function __construct() {
-		$history = exponent_sessions_get('history');
+		$history = expSession::get('history');
 		if (empty($history)) {
 		    $this->history = array('viewable'=>array(), 'editable'=>array(), 'managable'=>array(), 'lasts'=>array('not_editable'=>array()));
 		} else {
@@ -136,12 +136,12 @@ class expHistory {
             if ($url_type != 'editable') $this->history['lasts']['not_editable'] = $url_type;
   	    }
   	    
-        exponent_sessions_set('history', $this->history);
+        expSession::set('history', $this->history);
     }
     
     public static function flush() {
         $history = array('viewable'=>array(), 'editable'=>array(), 'managable'=>array(), 'lasts'=>array());
-        exponent_sessions_set('history', $history);
+        expSession::set('history', $history);
     }
     
   	public static function set($url_type, $params) {

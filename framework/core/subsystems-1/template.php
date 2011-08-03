@@ -173,7 +173,7 @@ class template extends BaseTemplate {
 		// View Config
 		global $db;
 		$container_key = serialize($loc);
-		$cache = exponent_sessions_getCacheValue('containermodule');
+		$cache = expSession::getCacheValue('containermodule');
 		if (isset($cache[$container_key])){
 			$container = $cache[$container_key];
 		}else{

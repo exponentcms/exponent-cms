@@ -36,7 +36,7 @@ if (exponent_permissions_check('order_modules',$loc)) {
 			$db->updateObject($object_b,'container');
 		}
 	}
-   	exponent_sessions_clearAllUsersSessionCache('containermodule');
+   	expSession::clearAllUsersSessionCache('containermodule');
     exponent_flow_redirect();
 } else {
 	echo SITE_403_HTML;

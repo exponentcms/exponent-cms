@@ -174,9 +174,9 @@ class form extends baseform {
 	
 		// Persistent Form Data extension
 		$formError = "";
-		if (exponent_sessions_isset("last_POST")) {
+		if (expSession::is_set("last_POST")) {
 			// We have cached POST data.  Use it to update defaults.
-			$last_POST = exponent_sessions_get("last_POST");
+			$last_POST = expSession::get("last_POST");
 			
 			foreach (array_keys($this->controls) as $name) {
 				// may need to look to control a la parseData
@@ -186,7 +186,7 @@ class form extends baseform {
 			
 			$formError = @$last_POST['_formError'];
 			
-			//exponent_sessions_unset("last_POST");
+			//expSession::un_set("last_POST");
 		}
 		
 		$html = "<!-- Form Object '" . $this->name . "' -->\r\n";

@@ -41,10 +41,10 @@ class expQueue {
 	}
 
 	static function flash($name, $msg) {
-        	$flash = exponent_sessions_get('flash');
+        	$flash = expSession::get('flash');
 	        if(empty($flash[$name])) $flash[$name]  = $msg;           
 	        else $flash[$name] .= "<br/><br/>" . $msg;
-	        exponent_sessions_set('flash', $flash);
+	        expSession::set('flash', $flash);
     	}
 
 	static function flashAndFlow($name, $msg) {
@@ -58,18 +58,18 @@ class expQueue {
 	}
 	
 	static function isQueueEmpty($name) {
-		$flash = exponent_sessions_get('flash');
+		$flash = expSession::get('flash');
 		return empty($flash[$name]);	
 	}
 
 	static function flushQueue($name) {
-		$flash = exponent_sessions_get('flash');
+		$flash = expSession::get('flash');
 		$flash[$name] = array();
-		exponent_sessions_set('flash', $flash);
+		expSession::set('flash', $flash);
 	}
 
 	static function flushAllQueues() {
-		exponent_sessions_set('flash', array());
+		expSession::set('flash', array());
 	}
 }
 

@@ -211,8 +211,8 @@ class expRouter {
         global $db,$user;
         // if its not already set
         // configurable tracking length
-        setcookie('UserUID',exponent_sessions_getTicketString(),86400 * TRACKING_COOKIE_EXPIRES);
-        $cookieID = (empty($_COOKIE['UserUID'])) ? exponent_sessions_getTicketString() : $_COOKIE['UserUID'];
+        setcookie('UserUID',expSession::getTicketString(),86400 * TRACKING_COOKIE_EXPIRES);
+        $cookieID = (empty($_COOKIE['UserUID'])) ? expSession::getTicketString() : $_COOKIE['UserUID'];
         // Build out the object to insert into the db.
         // Get our parameters.
         $tmpParams = array();
@@ -640,7 +640,7 @@ class expRouter {
             if (isset($_REQUEST['section'])) {
                 $section = $this->url_type=="sef" ? $this->getPageByName($_REQUEST['section']) : $_REQUEST['section'] ;
             } else {
-                $section = (exponent_sessions_isset('last_section') ? exponent_sessions_get('last_section') : SITE_DEFAULT_SECTION);
+                $section = (expSession::is_set('last_section') ? expSession::get('last_section') : SITE_DEFAULT_SECTION);
             }
         } else {
             $section = (isset($_REQUEST['section']) ? $_REQUEST['section'] : SITE_DEFAULT_SECTION);
@@ -669,9 +669,9 @@ class expRouter {
         }
     
         if (isset($_REQUEST['section'])) {
-                exponent_sessions_set('last_section', intval($_REQUEST['section']));
+                expSession::set('last_section', intval($_REQUEST['section']));
         } else {
-                //exponent_sessions_unset('last_section');
+                //expSession::unset('last_section');
         }
         return $sectionObj;
     }

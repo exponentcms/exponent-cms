@@ -70,7 +70,7 @@ if (MAINTENANCE_MODE && !exponent_users_isAdmin() && ( !isset($_REQUEST['module'
 } else {
 	if (MAINTENANCE_MODE > 0) flash('error', "Maintenance Mode is Enabled");
 	//the default user is anonymous
-	if (!exponent_sessions_loggedIn()) {
+	if (!expSession::loggedIn()) {
 		// Initialize the users subsystem
 //		require_once(BASE.'framework/core/subsystems-1/users.php');  // FIXME users.php is already loaded from within exponent.php above
 		//TODO: Maxims initial anonymous user implementation
@@ -85,7 +85,7 @@ if (MAINTENANCE_MODE && !exponent_users_isAdmin() && ( !isset($_REQUEST['module'
 
 	// If we are in a printer friendly request then we need to change to our printer friendly subtheme
 	if (PRINTER_FRIENDLY == 1) {
-		exponent_sessions_set("uilevel",0);
+		expSession::set("uilevel",0);
 		$pftheme = expTheme::getPrinterFriendlyTheme();  	// get the printer friendly theme
 		$page = $pftheme == null ? $page : $pftheme;		// if there was no theme found then just use the current subtheme
 	}
@@ -104,9 +104,9 @@ if (MAINTENANCE_MODE && !exponent_users_isAdmin() && ( !isset($_REQUEST['module'
 	}
 
 	if (PRINTER_FRIENDLY == 1) {
-		//$levels = exponent_sessions_get('uilevels');
-		//if (!empty($levels)) exponent_sessions_set('uilevel',max(array_keys($levels)));
-		exponent_sessions_unset('uilevel');
+		//$levels = expSession::get('uilevels');
+		//if (!empty($levels)) expSession::set('uilevel',max(array_keys($levels)));
+		expSession::un_set('uilevel');
 	}
 }
 

@@ -81,7 +81,7 @@ if (!isset($_POST['data_id']) || (isset($_POST['data_id']) && exponent_permissio
         } 
         else {
             $db_data->ip = $_SERVER['REMOTE_ADDR'];
-            if (exponent_sessions_loggedIn()) {
+            if (expSession::loggedIn()) {
                 $db_data->user_id = $user->id;
 				$from = $user->email;
 				$from_name = $user->firstname." ".$user->lastname." (".$user->username.")";
@@ -151,7 +151,7 @@ if (!isset($_POST['data_id']) || (isset($_POST['data_id']) && exponent_permissio
     }
 
     // clear the users post data from the session.
-    exponent_sessions_unset('formmodule_data_'.$f->id);
+    expSession::un_set('formmodule_data_'.$f->id);
 
     //If is a new post show response, otherwise redirect to the flow.
     if (!isset($_POST['data_id'])) {

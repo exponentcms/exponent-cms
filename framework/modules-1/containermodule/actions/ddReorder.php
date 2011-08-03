@@ -35,7 +35,7 @@ if (exponent_permissions_check('administrate',$loc)) {
 			$module->rank = $rank;
 			$rank++;
 			$db->updateObject($module,"container") or die($db->error());
-		   	exponent_sessions_clearAllUsersSessionCache('containermodule');
+		   	expSession::clearAllUsersSessionCache('containermodule');
 		}
 	}
 } else {

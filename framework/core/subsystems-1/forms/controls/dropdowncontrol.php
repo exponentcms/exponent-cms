@@ -123,7 +123,7 @@ class dropdowncontrol extends formcontrol {
             $i18n = exponent_lang_loadFile('subsystems/forms/controls/dropdowncontrol.php');
             $post = $_POST;
             $post['_formError'] = $i18n['id_req'];
-            exponent_sessions_set("last_POST",$post);
+            expSession::set("last_POST",$post);
             return null;
         }
 //        if (!defined("SYS_FORMS")) require_once(BASE."framework/core/subsystems-1/forms.php");

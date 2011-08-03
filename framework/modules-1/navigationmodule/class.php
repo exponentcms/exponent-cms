@@ -40,7 +40,7 @@ class navigationmodule {
 	
 	function show($view,$loc = null,$title = '') {
 		global $db;
-		//$id = exponent_sessions_get('last_section');
+		//$id = expSession::get('last_section');
 		global $sectionObj;
 		$id = $sectionObj->id;
 		$current = null;
@@ -303,11 +303,11 @@ class navigationmodule {
 		if ($parent != 0) $parents[] = $parent;
 		global $db, $user;
 		$nodes = array();
-		$cache = exponent_sessions_getCacheValue('navigationmodule');
+		$cache = expSession::getCacheValue('navigationmodule');
 		if (!isset($cache['kids'][$parent])) {
 			$kids = $db->selectObjects('section','parent='.$parent);
 			$cache['kids'][$parent] = $kids;			
-			exponent_sessions_setCacheValue('navigationmodule', $cache);
+			expSession::setCacheValue('navigationmodule', $cache);
 		} else {
 			$kids = $cache['kids'][$parent];
 		}		

@@ -19,7 +19,7 @@
 
 if (!defined('EXPONENT')) exit('');
 
-exponent_sessions_clearAllUsersSessionCache('containermodule');
+expSession::clearAllUsersSessionCache('containermodule');
 
 $items = $db->selectObjects("clipboard",null, "module");
 

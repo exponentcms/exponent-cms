@@ -418,7 +418,7 @@ class storeController extends expController {
         $sql  = 'SELECT p.* FROM '.DB_TABLE_PREFIX.'_product p JOIN '.DB_TABLE_PREFIX.'_product_storeCategories ';
         $sql .= 'sc ON p.id = sc.product_id WHERE sc.storecategories_id = 0 AND parent_id=0';
         
-        exponent_sessions_set('product_export_query',$sql);
+        expSession::set('product_export_query',$sql);
         
         $page = new expPaginator(array(
             'model_field'=>'product_type',
@@ -449,7 +449,7 @@ class storeController extends expController {
         $sql .= 'JOIN exponent_storeCategories sc ON psc.storecategories_id = sc.parent_id WHERE ';
         $sql .= 'p.parent_id=0 AND sc.parent_id != 0';
                               
-        exponent_sessions_set('product_export_query',$sql);
+        expSession::set('product_export_query',$sql);
         
         $page = new expPaginator(array(
             'model_field'=>'product_type',
@@ -596,7 +596,7 @@ class storeController extends expController {
         global $db;
         
         expHistory::set('viewable', $this->params);
-        $parent = isset($_REQUEST['cat']) ? $_REQUEST['cat'] : exponent_sessions_get('last_ecomm_category');
+        $parent = isset($_REQUEST['cat']) ? $_REQUEST['cat'] : expSession::get('last_ecomm_category');
         $category = new storeCategory($parent);
         $categories = $category->getEcomSubcategories();
         $ancestors = $category->pathToNode();

@@ -456,7 +456,7 @@ class paypalExpressCheckout extends billingcalculator {
         //exponent_javascript_toFoot('creditcard',"",null,'', URL_FULL.'subsystems/forms/js/AuthorizeNet.validate.js');
         //$opts->first_name = isset($this->opts->first_name) ? $this->opts->first_name : null;
         //$opts->last_name = isset($this->opts->last_name) ? $this->opts->last_name : null;
-        $this->opts = exponent_sessions_get('billing_options');
+        $this->opts = expSession::get('billing_options');
         $opts->cc_type = isset($this->opts->cc_type) ? $this->opts->cc_type : null;
         $opts->cc_number = isset($this->opts->cc_number) ? $this->opts->cc_number : null;
         $opts->exp_month = isset($this->opts->exp_month) ? $this->opts->exp_month : null;

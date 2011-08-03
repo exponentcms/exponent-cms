@@ -58,7 +58,7 @@ if (exponent_permissions_check("add_module",$loc) ||
     define('SOURCE_SELECTOR',0);
     define('PREVIEW_READONLY',0); // for mods
 	
-    exponent_sessions_clearAllUsersSessionCache('containermodule');
+    expSession::clearAllUsersSessionCache('containermodule');
 	exponent_flow_redirect();
 } else {
 	echo SITE_403_HTML;

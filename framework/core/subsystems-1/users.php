@@ -70,7 +70,7 @@ function exponent_users_authenticate($user, $password) {
  * custom code to handle a login.
  *
  * This function is expected to generate the appropriate user object, run authentication
- * checks, and then call exponent_sessions_login($user) to initialize login session data.
+ * checks, and then call expSession::login($user) to initialize login session data.
  *
  * @param string $username The username that the visitor is logging in with.
  * @param string $password The password that the visitor has supplied as credentials
@@ -100,7 +100,7 @@ function exponent_users_login($username, $password) {
 
 	if($authenticated) {		
 		// Call on the Sessions subsystem to log the user into the site.
-		exponent_sessions_login($user);
+		expSession::login($user);
 		//Update the last login timestamp for this user.
 		$user->updateLastLogin();
         
@@ -121,12 +121,12 @@ function exponent_users_login($username, $password) {
  * 'unconventional') implementaitons of the Users Subsystem can run some
  * custom code to handle a login.
  *
- * This function is expected to call exponent_sessions_logout(), so that the session
+ * This function is expected to call expSession::logout(), so that the session
  * can be cleaned up for the next user.
  * @node Subsystems:Users
  */
 function exponent_users_logout() {
-	exponent_sessions_logout();
+	expSession::logout();
 }
 
 /* exdoc

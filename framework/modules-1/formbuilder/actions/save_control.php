@@ -58,12 +58,12 @@ if ($f) {
 			if (!isset($_POST['id']) && $db->countObjects('formbuilder_control',"name='".$name."' and form_id=".intval($_POST['form_id'])) > 0) {
 				$post = $_POST;
 				$post['_formError'] = $i18n['bad_id'];
-				exponent_sessions_set('last_POST',$post);
+				expSession::set('last_POST',$post);
 			} 
 			elseif ($name=='id' || $name=='ip' || $name=='user_id' || $name=='timestamp') {
 				$post = $_POST;
 				$post['_formError'] = sprintf($i18n['reserved_id'],$name);
-				exponent_sessions_set('last_POST',$post);
+				expSession::set('last_POST',$post);
 			} else {
 				if (!isset($_POST['id'])) {
 					$control->name =  $name;

@@ -36,7 +36,7 @@ if (exponent_permissions_check('user_management',exponent_core_makeLocation('adm
 			$i18n = exponent_lang_loadFile('modules/administrationmodule/actions/gmgr_savegroup.php');
 			$post = $_POST;
 			$post['_formError'] = $i18n['name_taken'];
-			exponent_sessions_set('last_POST',$post);
+			expSession::set('last_POST',$post);
 			header('Location: ' . $_SERVER['HTTP_REFERER']);
 		} else {
 			$g = exponent_users_groupUpdate($_POST,null);

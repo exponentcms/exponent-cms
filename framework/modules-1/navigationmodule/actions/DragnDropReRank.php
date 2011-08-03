@@ -158,7 +158,7 @@ if (exponent_permissions_check('manage',exponent_core_makeLocation('navigationmo
 	}
 
 	navigationmodule::checkForSectionalAdmins($move);	
-	exponent_sessions_clearAllUsersSessionCache('navigationmodule');
+	expSession::clearAllUsersSessionCache('navigationmodule');
 	
 } else {
 	echo SITE_403_HTML;

@@ -56,7 +56,7 @@ if (exponent_permissions_check('edit_module',$loc) || exponent_permissions_check
 		$secref = $db->selectObject('sectionref',"module='".$container->internal->mod."' AND source='".$container->internal->src."'");
 	}
 
-   	exponent_sessions_clearAllUsersSessionCache('containermodule');
+   	expSession::clearAllUsersSessionCache('containermodule');
 
 	$template = new template('containermodule','_form_edit',$loc);
 //	$template->assign('rerank', (isset($_GET['rerank']) ? 1 : 0) );
@@ -65,7 +65,7 @@ if (exponent_permissions_check('edit_module',$loc) || exponent_permissions_check
 	$template->assign('locref',$secref);
 	$template->assign('is_edit', (isset($container->id) ? 1 : 0) );
 	$template->assign('can_activate_modules',$user->is_acting_admin);
-	$template->assign('current_section',exponent_sessions_get('last_section'));
+	$template->assign('current_section',expSession::get('last_section'));
 	
 //	if (!defined('SYS_JAVASCRIPT')) include_once(BASE.'framework/core/subsystems-1/javascript.php');
 	include_once(BASE.'framework/core/subsystems-1/javascript.php');

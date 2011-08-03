@@ -42,7 +42,7 @@ if (exponent_permissions_check('manage',exponent_core_makeLocation('navigationmo
 	// Process the pageset, to add sections and subsections, as well as default content
 	// that the pageset writer added to each element of the set.
 	
-	exponent_sessions_clearAllUsersSessionCache('navigationmodule');
+	expSession::clearAllUsersSessionCache('navigationmodule');
 			
 	navigationmodule::process_section($section,$_POST['pageset']);
 	

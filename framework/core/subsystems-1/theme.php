@@ -411,14 +411,14 @@ function exponent_theme_showSectionalModule($module,$view,$title,$prefix = null,
 
     $src = $prefix;
 
-    if (exponent_sessions_isset("themeopt_override")) {
-        $config = exponent_sessions_get("themeopt_override");
+    if (expSession::is_set("themeopt_override")) {
+        $config = expSession::get("themeopt_override");
         if (in_array($module,$config['ignore_mods'])) return;
         $src = $config['src_prefix'].$prefix;
         $section = null;
     } else {
         global $sectionObj;
-        //$last_section = exponent_sessions_get("last_section");
+        //$last_section = expSession::get("last_section");
         //$section = $db->selectObject("section","id=".$last_section);
         $src .= $sectionObj->id;
     }
@@ -443,7 +443,7 @@ function exponent_theme_showTopSectionalModule($module,$view,$title,$prefix = nu
     global $db;
 
     if ($prefix == null) $prefix = "@section";
-    $last_section = exponent_sessions_get("last_section");
+    $last_section = expSession::get("last_section");
 
     $section = $db->selectObject("section","id=".$last_section);
     // Loop until we find the top level parent.
@@ -469,7 +469,7 @@ function exponent_theme_showModule($module,$view="Default",$title="",$source=nul
     // Ensure that we have a section
     //FJD - changed to $sectionObj
     if ($sectionObj == null) {
-        $section_id = exponent_sessions_get('last_section');
+        $section_id = expSession::get('last_section');
         if ($section_id == null) {
             $section_id = SITE_DEFAULT_SECTION;
         }
@@ -478,8 +478,8 @@ function exponent_theme_showModule($module,$view="Default",$title="",$source=nul
     }
     if ($module == "loginmodule" && defined("PREVIEW_READONLY") && PREVIEW_READONLY == 1) return;
 
-    if (exponent_sessions_isset("themeopt_override")) {
-        $config = exponent_sessions_get("themeopt_override");
+    if (expSession::is_set("themeopt_override")) {
+        $config = expSession::get("themeopt_override");
         if (in_array($module,$config['ignore_mods'])) return;
     }
     $loc = exponent_core_makeLocation($module,$source."");
@@ -611,7 +611,7 @@ function exponent_theme_canViewPage() {
     return AUTHORIZED_SECTION;
     /*
     global $db;
-    $last_section = exponent_sessions_get("last_section");
+    $last_section = expSession::get("last_section");
     $section = $db->selectObject("section","id=".$last_section);
     if ($section && navigationModule::canView($section)) {
         $sloc = exponent_core_makeLocation("navigationmodule","",$section->id);
@@ -627,7 +627,7 @@ function exponent_theme_canViewPage() {
 function exponent_theme_setFlow() {
     if ((!defined("SOURCE_SELECTOR") || SOURCE_SELECTOR == 1) && (!defined("CONTENT_SELECTOR") || CONTENT_SELECTOR == 1)) {
         global $db;
-        $last_section = exponent_sessions_get("last_section");
+        $last_section = expSession::get("last_section");
         $section = $db->selectObject("section","id=".$last_section);
 
         if ($section && $section->public == 0) {
@@ -647,7 +647,7 @@ function exponent_theme_main() {
 
     echo show_msg_queue();
     if ((!defined("SOURCE_SELECTOR") || SOURCE_SELECTOR == 1) && (!defined("CONTENT_SELECTOR") || CONTENT_SELECTOR == 1)) {
-        $last_section = exponent_sessions_get("last_section");
+        $last_section = expSession::get("last_section");
         $section = $db->selectObject("section","id=".$last_section);
         // View authorization will be taken care of by the runAction and mainContainer functions
         if (exponent_theme_inAction()) {
@@ -676,8 +676,8 @@ function exponent_theme_runAction() {
         if (!AUTHORIZED_SECTION) {
             echo SITE_403_HTML;
         }
-        if (exponent_sessions_isset("themeopt_override")) {
-            $config = exponent_sessions_get("themeopt_override");
+        if (expSession::is_set("themeopt_override")) {
+            $config = expSession::get("themeopt_override");
             echo "<a class='mngmntlink sitetemplate_mngmntlink' href='".$config['mainpage']."'>".$config['backlinktext']."</a><br /><br />";
         }
 
@@ -764,7 +764,7 @@ function exponent_theme_showAction($module, $action, $src="", $params="") {
  * @node Subsystems:Theme
  */
 function exponent_theme_goDefaultSection() {
-    $last_section = exponent_sessions_get("last_section");
+    $last_section = expSession::get("last_section");
     if (defined("SITE_DEFAULT_SECTION") && SITE_DEFAULT_SECTION != $last_section) {
         header("Location: ".URL_FULL."index.php?section=".SITE_DEFAULT_SECTION);
         exit();
@@ -797,8 +797,8 @@ function exponent_theme_mainContainer() {
     if (PUBLIC_SECTION) exponent_flow_set(SYS_FLOW_PUBLIC,SYS_FLOW_SECTIONAL);
     else exponent_flow_set(SYS_FLOW_PROTECTED,SYS_FLOW_SECTIONAL);
 
-#   if (exponent_sessions_isset("themeopt_override")) {
-#       $config = exponent_sessions_get("themeopt_override");
+#   if (expSession::is_set("themeopt_override")) {
+#       $config = expSession::get("themeopt_override");
         exponent_theme_showSectionalModule("containermodule","Default","","@section",false,true);
 #   } else {
 #       exponent_theme_showSectionalModule("containermodule","Default","","@section");

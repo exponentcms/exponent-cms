@@ -376,7 +376,7 @@ function exponent_workflow_post($object,$table,$loc,$userdata = null) {
 	$db->insertObject($object,$table."_wf_revision");
 	
 	exponent_workflow_deleteOldRevisions($table,$object->wf_original);
-	exponent_sessions_clearAllUsersSessionCache(); 
+	expSession::clearAllUsersSessionCache();
 	
 	// Now that we are almost done, we need to call the onWorkflow stuff.
 	if (is_callable(array($table,'onWorkflowPost'))) {

@@ -20,8 +20,8 @@
 
 if (!defined('EXPONENT')) exit('');
 
-$dest_dir = exponent_sessions_get('dest_dir');
-$files = exponent_sessions_get('files_data');
+$dest_dir = expSession::get('dest_dir');
+$files = expSession::get('files_data');
 //if (!defined('SYS_FILES')) require_once(BASE.'framework/core/subsystems-1/files.php');
 require_once(BASE.'framework/core/subsystems-1/files.php');
 if (!file_exists(BASE.'files')) {
@@ -34,8 +34,8 @@ foreach (array_keys($files) as $mod) {
 	}
 }
 
-exponent_sessions_unset('dest_dir');
-exponent_sessions_unset('files_data');
+expSession::un_set('dest_dir');
+expSession::un_set('files_data');
 
 exponent_files_removeDirectory($dest_dir);
 

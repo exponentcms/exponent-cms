@@ -20,7 +20,7 @@
 if (!defined('EXPONENT')) exit('');
 
 // PERM CHECK
-   	exponent_sessions_clearAllUsersSessionCache('containermodule');
+   	expSession::clearAllUsersSessionCache('containermodule');
 
 	$orphan_mods = array();
 //	$orph = $db->selectObjects('locationref','refcount = 0 AND module='.$_GET['module']);

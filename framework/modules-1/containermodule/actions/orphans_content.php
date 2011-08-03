@@ -26,8 +26,8 @@ if (!defined('EXPONENT')) exit('');
 	$clickable_mods = null; // Show all
 	$dest = null;
 	
-	if (exponent_sessions_isset("source_select") && (defined("SOURCE_SELECTOR") || defined("CONTENT_SELECTOR"))) {
-		$source_select = exponent_sessions_get("source_select");
+	if (expSession::is_set("source_select") && (defined("SOURCE_SELECTOR") || defined("CONTENT_SELECTOR"))) {
+		$source_select = expSession::get("source_select");
 		$view = $source_select["view"];
 		$module = $source_select["module"];
 		$clickable_mods = $source_select["showmodules"];
@@ -35,7 +35,7 @@ if (!defined('EXPONENT')) exit('');
 		
 	}
 
-   exponent_sessions_clearAllUsersSessionCache('containermodule');
+   expSession::clearAllUsersSessionCache('containermodule');
 
 	$orphans = array();
 //	foreach ($db->selectObjects("locationref","module='".preg_replace('/[^A-Za-z0-9_]/','',$_GET['module'])."' AND refcount=0") as $orphan) {

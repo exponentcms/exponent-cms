@@ -32,7 +32,7 @@ $post = $_POST;
 if (!is_numeric($_POST["rowstart"])){
 	unset($post['rowstart']);
 	$post['_formError'] = $i18n['need_number'];
-	exponent_sessions_set("last_POST",$post);
+	expSession::set("last_POST",$post);
 	header("Location: " . $_SERVER['HTTP_REFERER']);
 	exit('Redirecting...');
 }
@@ -59,7 +59,7 @@ if ($_FILES["upload"]["error"] == UPLOAD_ERR_OK) {
 				$post['_formError'] = $i18n['err_file_unknown'];
 				break;
 		}
-		exponent_sessions_set("last_POST",$post);
+		expSession::set("last_POST",$post);
 		header("Location: " . $_SERVER['HTTP_REFERER']);
 		exit("");
 	}
@@ -67,7 +67,7 @@ if ($_FILES["upload"]["error"] == UPLOAD_ERR_OK) {
 /*
 if (mime_content_type(BASE.$directory."/".$file->filename) != "text/plain"){
 	$post['_formError'] = "File is not a delimited text file.";
-	exponent_sessions_set("last_POST",$post);
+	expSession::set("last_POST",$post);
 	header("Location: " . $_SERVER['HTTP_REFERER']);
 	exit("");
 }
@@ -91,7 +91,7 @@ $colNames = array(
 //Check to see if the line got split, otherwise throw an error
 if ($lineInfo == null) {
 	$post['_formError'] = sprintf($i18n['delimiter_error'], $_POST["delimiter"]); 
-	exponent_sessions_set("last_POST",$post);
+	expSession::set("last_POST",$post);
 	header("Location: " . $_SERVER['HTTP_REFERER']);
 	exit("");
 }else{

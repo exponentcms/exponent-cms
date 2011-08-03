@@ -144,7 +144,7 @@ class radiocontrol extends formcontrol {
             $i18n = exponent_lang_loadFile('subsystems/forms/controls/radiocontrol.php');
             $post = $_POST;
             $post['_formError'] = $i18n['groupname_req'];
-            exponent_sessions_set("last_POST",$post);
+            expSession::set("last_POST",$post);
             return null;
         }
         $object->identifier = uniqid("");

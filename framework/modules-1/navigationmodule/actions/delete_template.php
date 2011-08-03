@@ -39,7 +39,7 @@ if ($page) {
 		if ($page->parent != 0) {
 			$db->decrement('section_template','rank',1,'parent='.$page->parent.' AND rank >= '.$page->rank);
 		}
-		exponent_sessions_clearAllUsersSessionCache('navigationmodule');
+		expSession::clearAllUsersSessionCache('navigationmodule');
 		tmp_deleteLevel($page->id);
 
 		exponent_flow_redirect();

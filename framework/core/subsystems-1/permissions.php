@@ -111,8 +111,7 @@ function exponent_permissions_load($user) {
 		}*/
 	}
 
-	exponent_sessions_set('permissions',$exponent_permissions_r);
-	
+	expSession::set('permissions',$exponent_permissions_r);
 
 	// Check perm stats for UI levels
 	$ui_levels = array();
@@ -139,7 +138,7 @@ function exponent_permissions_load($user) {
 			$ui_levels[] = $i18n['structure'];
 		}
 	}
-	exponent_sessions_set('uilevels',$ui_levels);
+	expSession::set('uilevels',$ui_levels);
 }
 
 /** exdoc
@@ -148,7 +147,7 @@ function exponent_permissions_load($user) {
  * @node Subsystems:Permissions
  */
 function exponent_permissions_clear() {
-	exponent_sessions_unset("permissions");
+	expSession::un_set("permissions");
 }
 
 /** exdoc
@@ -159,7 +158,7 @@ function exponent_permissions_clear() {
  */
 function exponent_permissions_initialize() {
 	global $exponent_permissions_r;
-	$exponent_permissions_r = exponent_sessions_get("permissions");
+	$exponent_permissions_r = expSession::get("permissions");
 }
 
 /** exdoc

@@ -28,8 +28,8 @@ $secref = $db->selectObject("sectionref","module='".$iloc->mod."' AND source='".
 if ($secref && $secref->refcount == 0 && exponent_permissions_check("administrate",$iloc)) {
 	// delete in location.
 	$modclass = $iloc->mod;
-    exponent_sessions_clearAllUsersSessionCache('containermodule');
-    exponent_sessions_clearAllUsersSessionCache($iloc);
+    expSession::clearAllUsersSessionCache('containermodule');
+    expSession::clearAllUsersSessionCache($iloc);
 	
 	//FIXME: more module/controller glue code
 	if (controllerExists($modclass)) {

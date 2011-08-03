@@ -44,7 +44,7 @@ class expTheme {
 
 		echo show_msg_queue();
 		if ((!defined("SOURCE_SELECTOR") || SOURCE_SELECTOR == 1) && (!defined("CONTENT_SELECTOR") || CONTENT_SELECTOR == 1)) {
-			$last_section = exponent_sessions_get("last_section");
+			$last_section = expSession::get("last_section");
 			$section = $db->selectObject("section","id=".$last_section);
 			// View authorization will be taken care of by the runAction and mainContainer functions
 			if (self::inAction()) {
@@ -437,8 +437,8 @@ class expTheme {
 			if (!AUTHORIZED_SECTION) {
 				echo SITE_403_HTML;
 			}
-			if (exponent_sessions_isset("themeopt_override")) {
-				$config = exponent_sessions_get("themeopt_override");
+			if (expSession::is_set("themeopt_override")) {
+				$config = expSession::get("themeopt_override");
 				echo "<a class='mngmntlink sitetemplate_mngmntlink' href='".$config['mainpage']."'>".$config['backlinktext']."</a><br /><br />";
 			}
 
@@ -509,7 +509,7 @@ class expTheme {
 		// Ensure that we have a section
 		//FJD - changed to $sectionObj
 		if ($sectionObj == null) {
-			$section_id = exponent_sessions_get('last_section');
+			$section_id = expSession::get('last_section');
 			if ($section_id == null) {
 				$section_id = SITE_DEFAULT_SECTION;
 			}
@@ -518,8 +518,8 @@ class expTheme {
 		}
 		if ($module == "loginmodule" && defined("PREVIEW_READONLY") && PREVIEW_READONLY == 1) return;
 
-		if (exponent_sessions_isset("themeopt_override")) {
-			$config = exponent_sessions_get("themeopt_override");
+		if (expSession::is_set("themeopt_override")) {
+			$config = expSession::get("themeopt_override");
 			if (in_array($module,$config['ignore_mods'])) return;
 		}
 		$loc = exponent_core_makeLocation($module,$source."");
@@ -627,8 +627,8 @@ class expTheme {
 	//        if (!AUTHORIZED_SECTION) {
 	//            echo SITE_403_HTML;
 	//        }
-	//        if (exponent_sessions_isset("themeopt_override")) {
-	//            $config = exponent_sessions_get("themeopt_override");
+	//        if (expSession::is_set("themeopt_override")) {
+	//            $config = expSession::get("themeopt_override");
 	//            echo "<a class='mngmntlink sitetemplate_mngmntlink' href='".$config['mainpage']."'>".$config['backlinktext']."</a><br /><br />";
 	//        }
 	//
@@ -758,7 +758,7 @@ class expTheme {
 		global $db;
 
 		if ($prefix == null) $prefix = "@section";
-		$last_section = exponent_sessions_get("last_section");
+		$last_section = expSession::get("last_section");
 
 		$section = $db->selectObject("section","id=".$last_section);
 		// Loop until we find the top level parent.
@@ -784,14 +784,14 @@ class expTheme {
 
 		$src = $prefix;
 
-		if (exponent_sessions_isset("themeopt_override")) {
-			$config = exponent_sessions_get("themeopt_override");
+		if (expSession::is_set("themeopt_override")) {
+			$config = expSession::get("themeopt_override");
 			if (in_array($module,$config['ignore_mods'])) return;
 			$src = $config['src_prefix'].$prefix;
 			$section = null;
 		} else {
 			global $sectionObj;
-			//$last_section = exponent_sessions_get("last_section");
+			//$last_section = expSession::get("last_section");
 			//$section = $db->selectObject("section","id=".$last_section);
 			$src .= $sectionObj->id;
 		}
@@ -805,7 +805,7 @@ class expTheme {
 	 * @node Subsystems:Theme
 	 */
 	function goDefaultSection() {
-		$last_section = exponent_sessions_get("last_section");
+		$last_section = expSession::get("last_section");
 		if (defined("SITE_DEFAULT_SECTION") && SITE_DEFAULT_SECTION != $last_section) {
 			header("Location: ".URL_FULL."index.php?section=".SITE_DEFAULT_SECTION);
 			exit();
@@ -838,8 +838,8 @@ class expTheme {
 		if (PUBLIC_SECTION) exponent_flow_set(SYS_FLOW_PUBLIC,SYS_FLOW_SECTIONAL);
 		else exponent_flow_set(SYS_FLOW_PROTECTED,SYS_FLOW_SECTIONAL);
 
-	#   if (exponent_sessions_isset("themeopt_override")) {
-	#       $config = exponent_sessions_get("themeopt_override");
+	#   if (expSession::is_set("themeopt_override")) {
+	#       $config = expSession::get("themeopt_override");
 			self::showSectionalModule("containermodule","Default","","@section",false,true);
 	#   } else {
 	#       self::showSectionalModule("containermodule","Default","","@section");

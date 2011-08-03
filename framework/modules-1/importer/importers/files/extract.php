@@ -37,8 +37,8 @@ foreach (array_keys($_POST['mods']) as $mod) {
 	}
 }
 
-exponent_sessions_set('dest_dir',$dest_dir);
-exponent_sessions_set('files_data',$files);
+expSession::set('dest_dir',$dest_dir);
+expSession::set('files_data',$files);
 
 $template = new template('importer','_files_verifyFiles');
 $template->assign('files_data',$files);

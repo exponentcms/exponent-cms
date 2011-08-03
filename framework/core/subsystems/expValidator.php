@@ -384,7 +384,7 @@ class expValidator {
             switch($validate_type) {
 //                case 'captcha':
 //                case 'capcha':
-//                    $captcha_real = exponent_sessions_get('captcha_string');
+//                    $captcha_real = expSession::get('captcha_string');
 //                    if (SITE_USE_ANTI_SPAM && strtoupper($post[$param]) != $captcha_real) {
 //                            unset($post[$param]);
 //                            $post['_formError'][] = exponent_lang_getText('Captcha Verification Failed');
@@ -439,7 +439,7 @@ class expValidator {
 	public static function flashAndReturnToForm($queue='message', $msg, $post=null) {
         if (!is_array($msg)) $msg = array($msg);
         flash($queue, $msg);
-        if (!empty($post)) exponent_sessions_set('last_POST',$post);
+        if (!empty($post)) expSession::set('last_POST',$post);
         header('Location: ' . $_SERVER['HTTP_REFERER']);
         exit();
     }
@@ -495,7 +495,7 @@ class expValidator {
             $post = $_POST;
             $post['_formError'] = $file;
             flash('error',$file);
-            exponent_sessions_set('last_POST',$post);
+            expSession::set('last_POST',$post);
             header('Location: ' . $_SERVER['HTTP_REFERER']);
             exit();
         }

@@ -423,6 +423,4 @@ function exponent_sessions_db_gc($maxlifetime) {
 
 }
 
-
-
 ?>

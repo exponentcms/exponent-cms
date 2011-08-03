@@ -167,7 +167,7 @@ class datetimecontrol extends formcontrol {
 			
 			$post = $_POST;
 			$post['_formError'] = $i18n['id_req'];
-			exponent_sessions_set("last_POST",$post);
+			expSession::set("last_POST",$post);
 			return null;
 		}
 		$object->identifier = $values['identifier'];

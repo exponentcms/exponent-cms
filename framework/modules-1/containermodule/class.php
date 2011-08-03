@@ -64,8 +64,8 @@ class containermodule {
 		
 		$singleview = '_container';
 		$singlemodule = 'containermodule';
-		if (exponent_sessions_isset('source_select') && defined('SELECTOR')) {
-			$source_select = exponent_sessions_get('source_select');
+		if (expSession::is_set('source_select') && defined('SELECTOR')) {
+			$source_select = expSession::get('source_select');
 			$singleview = $source_select['view'];
 			$singlemodule = $source_select['module'];
 			$clickable_mods = $source_select['showmodules'];
@@ -77,7 +77,7 @@ class containermodule {
 		
 		$container = null;
 		$container_key = serialize( $loc );
-		$cache = exponent_sessions_getCacheValue('containermodule');		
+		$cache = expSession::getCacheValue('containermodule');
 		if (!isset($this) || !isset($this->_hasParent) || $this->_hasParent == 0) {
 			// Top level container.			
 			if(!isset($cache['top'][$container_key])) {        		
@@ -91,7 +91,7 @@ class containermodule {
 					$container->id = $db->insertObject($container,'container');
 				}
 				$cache['top'][$container_key] = $container;
-				exponent_sessions_setCacheValue('containermodule', $cache);
+				expSession::setCacheValue('containermodule', $cache);
         	}else{
         		$container = $cache['top'][$container_key];
         	}
@@ -115,7 +115,7 @@ class containermodule {
 			    	}
 		    	}
         		$cache[$container_key] = $containers;
-        		exponent_sessions_setCacheValue('containermodule', $cache);
+        		expSession::setCacheValue('containermodule', $cache);
         	} else {
             		$containers = $cache[$container_key];            
         	}
@@ -250,7 +250,7 @@ class containermodule {
 			ob_end_clean();
 			
 			
-			$source_select = exponent_sessions_get('source_select');
+			$source_select = expSession::get('source_select');
 			$c_view = $source_select['view'];
 			$c_module = $source_select['module'];
 			$clickable_mods = $source_select['showmodules'];

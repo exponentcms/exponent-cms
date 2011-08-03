@@ -51,7 +51,7 @@ class loginmodule {
 		$template->assign('oicount',($order?$order->item_count:0));
 		
 		//eDebug($order);
-		if (exponent_sessions_loggedIn() && $user->username != "anonymous") {
+		if (expSession::loggedIn() && $user->username != "anonymous") {
 			global $db;
 			$template->assign('loggedin',1);
 			$template->assign('user',$user);

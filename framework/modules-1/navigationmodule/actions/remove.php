@@ -27,7 +27,7 @@ if (exponent_permissions_check('manage',exponent_core_makeLocation('navigationmo
 		$db->decrement('section','rank',1,'rank > ' . $section->rank . ' AND parent='.$section->parent);
 		$section->parent = -1;
 		$db->updateObject($section,'section');
-		exponent_sessions_clearAllUsersSessionCache('navigationmodule');
+		expSession::clearAllUsersSessionCache('navigationmodule');
 			
 		exponent_flow_redirect();
 	} else {

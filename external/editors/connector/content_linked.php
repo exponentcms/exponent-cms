@@ -11,7 +11,7 @@ global $router;
 		<script type="text/javascript">
 		/* <![CDATA[ */
 			var f_url = window.opener.document.getElementById("f_href");
-			f_url.value = "<?php echo $router->buildUrlByPageId(exponent_sessions_get("last_section")); ?>#mod_<?php echo $_GET['cid']; ?>";
+			f_url.value = "<?php echo $router->buildUrlByPageId(expSession::get("last_section")); ?>#mod_<?php echo $_GET['cid']; ?>";
 			var f_extern = window.opener.document.getElementById("f_extern");
 			f_extern.checked = false;
 			//TODO: find a way(maybe via containermod:_source_picker.tpl) to pass the title of the contained module to the Link Picker

@@ -105,7 +105,7 @@ class formmodule {
 			$controls = expSorter::sort(array('array'=>$controls,'sortby'=>'rank', 'order'=>'ASC'));
 
 			$form = new form();
-			$data = exponent_sessions_get('formmodule_data_'.$f->id);
+			$data = expSession::get('formmodule_data_'.$f->id);
 			foreach ($controls as $c) {
 				$ctl = unserialize($c->data);
 				$ctl->_id = $c->id;

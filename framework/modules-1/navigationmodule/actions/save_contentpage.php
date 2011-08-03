@@ -70,7 +70,7 @@ if (($check_id != -1 &&
 		$section->id = $db->insertObject($section,'section');
 	}
 	
-	exponent_sessions_clearAllUsersSessionCache('navigationmodule');
+	expSession::clearAllUsersSessionCache('navigationmodule');
 	navigationmodule::checkForSectionalAdmins($section->id);
 	// Go back to where we came from.  Probably the navigation manager.
 	exponent_flow_redirect();

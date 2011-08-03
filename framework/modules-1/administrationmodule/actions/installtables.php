@@ -104,7 +104,7 @@ if (exponent_permissions_check('configuration',exponent_core_makeLocation('admin
 		}
 	}
 
-	exponent_sessions_clearCurrentUserSessionCache();
+	expSession::clearCurrentUserSessionCache();
 	ksort($tables);
 	$template = new template("administrationmodule","_tableInstallSummary",$loc);
 	$template->assign("status",$tables);	

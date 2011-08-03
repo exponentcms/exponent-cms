@@ -26,7 +26,7 @@ if ($user->is_acting_admin == 1) {
 		$db->delete('section','id=' . $section->id);
 		$db->decrement('section','rank',1,'rank > ' . $section->rank . ' AND parent='.$section->parent);
 		
-		exponent_sessions_clearAllUsersSessionCache('navigationmodule');
+		expSession::clearAllUsersSessionCache('navigationmodule');
 			
 		exponent_flow_redirect();
 	} else {

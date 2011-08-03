@@ -326,7 +326,7 @@ function smarty_function_control($params,&$smarty) {
             }
         }
         
-        if (exponent_sessions_isset('last_POST')) {            
+        if (expSession::is_set('last_POST')) {
             $post = expSession::get('last_POST');
             $post_errors = expSession::get('last_post_errors');
             // flag this field as having errors if it failed validation

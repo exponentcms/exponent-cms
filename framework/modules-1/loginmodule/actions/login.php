@@ -28,9 +28,9 @@ $user = exponent_users_login($_POST['username'],$_POST['password']);
 
 if (!isset($_SESSION[SYS_SESSION_KEY]['user'])) {
 	flash('error', $i18n['login_error']);	
-	if (exponent_sessions_isset('redirecturl_error')) {
-		$url = exponent_sessions_get('redirecturl_error');
-		exponent_sessions_unset('redirecturl_error');
+	if (expSession::is_set('redirecturl_error')) {
+		$url = expSession::get('redirecturl_error');
+		expSession::un_set('redirecturl_error');
 		header("Location: ".$url);
 	} else {
 		exponent_flow_redirect();

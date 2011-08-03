@@ -78,7 +78,7 @@ class user extends expRecord {
 
 	    if($authenticated) {		
 		    // Call on the Sessions subsystem to log the user into the site.
-		    exponent_sessions_login($user);
+		    expSession::login($user);
 		    //Update the last login timestamp for this user.
 		    $user->updateLastLogin();
 	    }

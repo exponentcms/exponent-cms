@@ -25,7 +25,7 @@ include_once(BASE.'framework/core/subsystems-1/backup.php');
 $errors = null;
 $continue = URL_FULL.'index.php?section='.SITE_DEFAULT_SECTION;
 
-exponent_sessions_clearAllUsersSessionCache();
+expSession::clearAllUsersSessionCache();
 
 $template = new template('importer','_eql_results',$loc);
 //GREP:UPLOADCHECK

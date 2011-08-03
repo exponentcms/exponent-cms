@@ -123,7 +123,7 @@ class bbextension {
 					// If file::update() returns a non-object, it should be a string.  That string is the error message.
 					$post = $_POST;
 					$post['_formError'] = $file;
-					exponent_sessions_set('last_POST',$post);
+					expSession::set('last_POST',$post);
 					header('Location: ' . $_SERVER['HTTP_REFERER']);
 					exit();
 				}
@@ -131,7 +131,7 @@ class bbextension {
 			} else {
 				$post = $_POST;
 				$post['_formError'] = "Your avatar file is too large to upload.";
-				exponent_sessions_set('last_POST',$post);
+				expSession::set('last_POST',$post);
 				header('Location: '.$_SERVER['HTTP_REFERER']);
 				exit();
 			}

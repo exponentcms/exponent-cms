@@ -63,7 +63,7 @@ foreach ($_POST as $k=>$v)
 //    $_POST[$k]=htmlentities(htmlspecialchars($v,ENT_COMPAT,LANG_CHARSET));
     $_POST[$k]=htmlspecialchars($v,ENT_COMPAT,LANG_CHARSET);
 }
-exponent_sessions_set('formmodule_data_'.$_POST['id'], $_POST);
+expSession::set('formmodule_data_'.$_POST['id'], $_POST);
 
 $template = new template("formbuilder","_confirm_form");
 $template->assign('recaptcha_theme', RECAPTCHA_THEME);

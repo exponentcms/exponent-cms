@@ -22,11 +22,11 @@ ob_start();
 
 
 if ($user->isLoggedIn()) {
-	header('Location: ' . exponent_sessions_get('redirecturl'));
+	header('Location: ' . expSession::get('redirecturl'));
 } else {
-	//exponent_sessions_set('redirecturl', exponent_flow_get());	
-	exponent_sessions_set('redirecturl', expHistory::getLast());
-	exponent_sessions_set('redirecturl_error', makeLink(array('module'=>'loginmodule', 'action'=>'loginredirect')));
+	//expSession::set('redirecturl', exponent_flow_get());
+	expSession::set('redirecturl', expHistory::getLast());
+	expSession::set('redirecturl_error', makeLink(array('module'=>'loginmodule', 'action'=>'loginredirect')));
 	exponent_flow_set(SYS_FLOW_PUBLIC,SYS_FLOW_ACTION);
 }
 

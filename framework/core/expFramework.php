@@ -212,10 +212,10 @@ function handleErrors($errno, $errstr, $errfile, $errline) {
 }
 
 function show_msg_queue() {
-    $queues = exponent_sessions_get('flash');
+    $queues = expSession::get('flash');
 #    if (!empty($queues)) {
         $template = new template('common','_msg_queue');
-        $template->assign('queues', exponent_sessions_get('flash'));
+        $template->assign('queues', expSession::get('flash'));
         $html = $template->render();
 #    } else {
 #        $html = '';

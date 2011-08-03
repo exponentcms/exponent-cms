@@ -48,7 +48,7 @@ if ($check_id != -1 && exponent_permissions_check('manage',exponent_core_makeLoc
 	
 		// Existing section.  Update the database record.
 		// The 'id=x' where clause is implicit with an updateObject
-		exponent_sessions_clearAllUsersSessionCache('navigationmodule');
+		expSession::clearAllUsersSessionCache('navigationmodule');
 			
 		$db->updateObject($section,'section');
 	} else {
@@ -57,7 +57,7 @@ if ($check_id != -1 && exponent_permissions_check('manage',exponent_core_makeLoc
 		$db->increment('section','rank',1,'rank >= ' . $section->rank . ' AND parent=' . $section->parent);
 		// New section.  Insert a new database record.
 		
-		exponent_sessions_clearAllUsersSessionCache('navigationmodule');
+		expSession::clearAllUsersSessionCache('navigationmodule');
 			
 		$db->insertObject($section,'section');
 	}

@@ -121,7 +121,7 @@ class external_address extends expRecord {
             //$user-> = $_POST['first_name'];          
             //eDebug($this,true);  
             //set this back since we now have a logged in user and we don't want things going goofy if they logout and log back in and such
-            exponent_sessions_unset("ALLOW_ANONYMOUS_CHECKOUT");
+            expSession::un_set("ALLOW_ANONYMOUS_CHECKOUT");
         }
     }
 }

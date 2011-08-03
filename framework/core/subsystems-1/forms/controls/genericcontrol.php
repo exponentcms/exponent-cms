@@ -154,7 +154,7 @@ class genericcontrol extends formcontrol {
             $i18n = exponent_lang_loadFile('subsystems/forms/controls/checkboxcontrol.php');
             $post = $_POST;
             $post['_formError'] = $i18n['id_required'];
-            exponent_sessions_set("last_POST",$post);
+            expSession::set("last_POST",$post);
             return null;
         }
         if (empty($object->type)) {

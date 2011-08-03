@@ -43,8 +43,9 @@ require_once(BASE.'framework/core/expFramework.php');
 $available_controllers = intializeControllers();
 
 // Initialize the Sessions Subsystem
-require_once(BASE.'framework/core/subsystems-1/sessions.php');
-exponent_sessions_initialize();
+//require_once(BASE.'framework/core/subsystems-1/sessions.php');
+//exponent_sessions_initialize();
+expSession::initialize();
 
 // Initialize the theme subsystem
 //if (!defined('SYS_THEME')) require_once(BASE.'framework/core/subsystems-1/theme.php');
@@ -110,7 +111,7 @@ if (exponent_javascript_inAjaxAction()) set_error_handler('handleErrors');
  * @name $user
  */
 $user = new user();
-exponent_sessions_validate();
+expSession::validate();
 
 // Initialize permissions variables
 exponent_permissions_initialize();

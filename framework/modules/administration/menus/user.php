@@ -24,8 +24,8 @@ global $user;
 // FIGURE OUT IF WE"RE IN PREVIEW MODE OR NOT
 /////////////////////////////////////////////////////////////////////////
 $level = 99;
-if (exponent_sessions_isset('uilevel')) {
-	$level = exponent_sessions_get('uilevel');
+if (expSession::is_set('uilevel')) {
+	$level = expSession::get('uilevel');
 }	
 
 if ($level == UILEVEL_PREVIEW) {

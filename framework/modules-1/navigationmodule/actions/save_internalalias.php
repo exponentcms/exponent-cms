@@ -46,7 +46,7 @@ if ($check_id != -1 && exponent_permissions_check('manage',exponent_core_makeLoc
 		// User tried to link to an inactive section.  This makes little or no sense in
 		// this context, so throw them back to the edit form, with an error message.
 		$_POST['_formError'] = $i18n['internal_link_err'];
-		exponent_sessions_set('last_POST',$_POST);
+		expSession::set('last_POST',$_POST);
 		header('Location: ' . $_SERVER['HTTP_REFERER']);
 		exit('');
 	}
@@ -60,7 +60,7 @@ if ($check_id != -1 && exponent_permissions_check('manage',exponent_core_makeLoc
 	
 		// Existing section.  Update the database record.
 		// The 'id=x' WHERE clause is implicit with an updateObject
-		exponent_sessions_clearAllUsersSessionCache('navigationmodule');
+		expSession::clearAllUsersSessionCache('navigationmodule');
 			
 		$db->updateObject($section,'section');
 	} else {
@@ -69,7 +69,7 @@ if ($check_id != -1 && exponent_permissions_check('manage',exponent_core_makeLoc
 		$db->increment('section','rank',1,'rank >= ' . $section->rank . ' AND parent=' . $section->parent);
 		// New section.  Insert a new database record.
 		
-		exponent_sessions_clearAllUsersSessionCache('navigationmodule');
+		expSession::clearAllUsersSessionCache('navigationmodule');
 			
 		$db->insertObject($section,'section');
 	}

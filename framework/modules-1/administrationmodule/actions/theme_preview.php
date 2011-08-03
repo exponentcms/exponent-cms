@@ -22,9 +22,9 @@
 if (!defined('EXPONENT')) exit('');
 
 if (exponent_permissions_check('extensions',exponent_core_makeLocation('administrationmodule'))) {
-	exponent_sessions_set('display_theme',$_GET['theme']);
+	expSession::set('display_theme',$_GET['theme']);
 	if (DISPLAY_THEME_REAL == $_GET['theme']){
-		exponent_sessions_set('display_theme',$_GET['theme']);
+		expSession::set('display_theme',$_GET['theme']);
 	}
 	exponent_flow_redirect();
 } else {

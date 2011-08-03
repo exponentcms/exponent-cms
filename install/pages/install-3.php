@@ -56,7 +56,7 @@ function isAllGood($str) {
 	return !preg_match("/[^A-Za-z0-9]/",$str);
 }
 
-//exponent_sessions_set("installer_config",$_POST['sc']);
+//expSession::set("installer_config",$_POST['sc']);
 $config = $_POST['sc'];
 //$config['sef_urls'] = empty($_POST['c']['sef_urls']) ? 0 : 1;
 

@@ -30,7 +30,7 @@ define('SELECTOR',1);
 $SYS_FLOW_REDIRECTIONPATH='source_selector';
 
 $source_select = array();
-if (exponent_sessions_isset('source_select')) $source_select = exponent_sessions_get('source_select');
+if (expSession::is_set('source_select')) $source_select = expSession::get('source_select');
 $count_orig = count($source_select);
 
 if (isset($_REQUEST['vview'])) {
@@ -65,7 +65,7 @@ if (isset($_REQUEST['hideOthers'])) {
 	$source_select['hideOthers'] = 0;
 }
 
-exponent_sessions_set('source_select',$source_select);
+expSession::set('source_select',$source_select);
 
 $thistemplate = new standalonetemplate('orphaned_content');
 

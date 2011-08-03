@@ -138,7 +138,7 @@ class order extends expRecord {
 	static function getUserCart() {
 		global $db,$user,$router;
         
-        $sessAr = exponent_sessions_get('verify_shopper');
+        $sessAr = expSession::get('verify_shopper');
         // initialize this users cart if they have ecomm installed.
         $active = $db->selectValue('modstate', 'active', 'module="storeController"');
         if (!controllerExists('cart') || empty($active)) 
@@ -160,7 +160,7 @@ class order extends expRecord {
 		    //$active = ;            
             if (empty($active)) return null;
 		    $order = new order(); //initialize a new order object to use the find function from.
-		    $ticket = exponent_sessions_getTicketString();  //get this users session ticket. this is how we track anonymous users.
+		    $ticket = expSession::getTicketString();  //get this users session ticket. this is how we track anonymous users.
             // grab the origional referrer from the session table so that we can transfer it into the cart where it will be used for reporting purposes
             // sessions are temporary so we can't report on the referrer in the session table itsef because it may not be there
             // and we can't just get the referrer ar this point becaues the user likely navigated the site a bit and we want the origional referring site
@@ -244,9 +244,9 @@ class order extends expRecord {
                                             //update the session ticket and return count                              
                                             $cart->update(array('sessionticket_ticket'=>$ticket,'return_count'=>$cart->mergeReturnCount($sessioncart->return_count), 'orig_referrer'=>$sessioncart->orig_referrer));                                                      
                                             order::setCartCookie($cart);
-                                            exponent_sessions_unset('verify_shopper');
+                                            expSession::un_set('verify_shopper');
                                             $user = new user($cart->user_id);
-                                            exponent_sessions_login($user);
+                                            expSession::login($user);
                                             //Update the last login timestamp for this user.
                                             $user->updateLastLogin();                                        
                                             flash('message','Welcome back ' . $sessAr['firstname'] . '! Your shopping cart has been restored - you may continue shopping or <a href="'.makelink(array("controller"=>"cart","action"=>"checkout")).'">checkout</a> at your convenience.');                                             
@@ -257,7 +257,7 @@ class order extends expRecord {
                                           //eDebug($_SESSION);
                                           if(isset($sessAr['awaiting_choice']) && $sessAr['awaiting_choice'] == true)
                                           {
-                                            /*exponent_sessions_set('verify_shopper',array('au'=>1,'orig_path'=>$router->current_url, 'firstname'=>$u->firstname, 'cid'=>$cookie_cart_id));
+                                            /*expSession::set('verify_shopper',array('au'=>1,'orig_path'=>$router->current_url, 'firstname'=>$u->firstname, 'cid'=>$cookie_cart_id));
                                             redirect_to(array("controller"=>"order",'action'=>'verifyReturnShopper'));                                                                     
                                             orderController::verifyReturnShopper();*/
                                             //just give em the sessioncart
@@ -265,14 +265,14 @@ class order extends expRecord {
                                             if(count($cart->orderitem) > 0)
                                             {
                                                 //added items to current cart, so we'll assume they do not want to restore the previous at this point
-                                                exponent_sessions_unset('verify_shopper');
+                                                expSession::un_set('verify_shopper');
                                                 order::setCartCookie($cart);
                                             }
                                             else
                                             {
                                                 flash('message','Welcome back ' . $u->firstname . '! We see that you have shopped with us before.<br><br><a id="submit-verify" href="'.makelink(array("controller"=>"order","action"=>"verifyReturnShopper")).'" rel="nofollow">Click Here to Restore Your Previous Shopping Cart</a><br><br><a class="exp-ecom-link" href="'.makelink(array("controller"=>"order","action"=>"clearCart","id"=>$cookie_cart_id)).'">Click Here To Start a New Shopping Cart</a>');                                             
                                                 $sessAr['orig_path'] = $router->current_url;
-                                                exponent_sessions_set('verify_shopper',$sessAr);
+                                                expSession::set('verify_shopper',$sessAr);
                                             }                                                                                                                                                                                                                                                                                                                           
                                           } 
                                           else
@@ -280,7 +280,7 @@ class order extends expRecord {
                                             //first time...create a default cart, issue message, set session, rinse, repeat 
                                             $cart = new order();
                                             $cart->update(array("sessionticket_ticket"=>$ticket, 'return_count'=>$cart->setReturnCount($orig_referrer)));                                             
-                                            exponent_sessions_set('verify_shopper',array('au'=>1,'orig_path'=>$router->current_url, 'firstname'=>$u->firstname, 'cid'=>$cookie_cart_id, 'awaiting_choice'=>true));
+                                            expSession::set('verify_shopper',array('au'=>1,'orig_path'=>$router->current_url, 'firstname'=>$u->firstname, 'cid'=>$cookie_cart_id, 'awaiting_choice'=>true));
                                             //order::setCartCookie($cart);                                            
                                             flash('message','Welcome back ' . $u->firstname . '! We see that you have shopped with us before.<br><br><a id="submit-verify" href="'.makelink(array("controller"=>"order","action"=>"verifyReturnShopper")).'" rel="nofollow">Click Here to Restore Your Previous Shopping Cart</a><br><br><a class="exp-ecom-link" href="'.makelink(array("controller"=>"order","action"=>"clearCart","id"=>$cookie_cart_id)).'">Click Here To Start a New Shopping Cart</a>');                                             
                                           }                                         
@@ -353,7 +353,7 @@ class order extends expRecord {
 				    $sessioncart->delete();
 			    }
                 order::setCartCookie($cart);
-                exponent_sessions_unset('verify_shopper');
+                expSession::un_set('verify_shopper');
             // the user doesn't have a cart with his/her user id in it. this probably means they just 
             // logged in so we need to update the cart with the new user id information.
 		    } elseif (!empty($sessioncart->id) && (empty($usercart->id) && $user->isLoggedIn())) {
@@ -370,7 +370,7 @@ class order extends expRecord {
                 $cart->item_count += $items->quantity;  
 	        } 
             
-            $cart->lastcat = exponent_sessions_get('last_ecomm_category');	
+            $cart->lastcat = expSession::get('last_ecomm_category');
 		    $cart->total = $cart->getCartTotal();	
             //eDebug($cart,true);
 		    return $cart;

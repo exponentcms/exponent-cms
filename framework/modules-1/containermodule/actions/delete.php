@@ -35,7 +35,7 @@ if ($container != null) {
 		container::delete($container,(isset($_GET['rerank']) ? $_GET['rerank'] : 0));
 		$db->delete('container','id='.$container->id);
 
-        exponent_sessions_clearAllUsersSessionCache('containermodule');
+        expSession::clearAllUsersSessionCache('containermodule');
 
 		// Check to see if its the last reference
 //		$locref = $db->selectObject('locationref',"module='".$iloc->mod."' AND source='".$iloc->src."' AND internal='".$iloc->int."'");

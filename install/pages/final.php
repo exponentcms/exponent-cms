@@ -19,8 +19,8 @@
 
 if (!defined('EXPONENT')) exit('');
 
-exponent_sessions_unset('installer_config');
-exponent_sessions_clearAllSessionData();
+expSession::un_set('installer_config');
+expSession::clearAllSessionData();
 
 global $user;
 
