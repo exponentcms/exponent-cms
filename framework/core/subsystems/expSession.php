@@ -394,7 +394,10 @@ class expSession {
 		return $ticket;
 	}
 
-
+	public static function setCacheValue($module, $val){
+		//should always be an array, even if single index
+		$_SESSION[SYS_SESSION_KEY]['cache'][$module] = $val;
+	}
 
 }
 
