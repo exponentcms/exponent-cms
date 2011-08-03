@@ -51,7 +51,7 @@ exponent_sessions_set('themeopt_override',array(
 		'navigationmodule',
 		'loginmodule'
 	),
-	'mainpage'=>PATH_RELATIVE.'modules/navigationmodule/actions/edit_page.php',
+	'mainpage'=>PATH_RELATIVE.'framework/modules-1/navigationmodule/actions/edit_page.php',
 	'backlinktext'=>$i18n['back']
 ));
 

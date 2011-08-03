@@ -1,12 +1,12 @@
 .calendarmodule .addevent {
-	background-image: url(../../../modules/calendarmodule/assets/images/addevent.png);
+	background-image: url(../../../framework/modules-1/calendarmodule/assets/images/addevent.png);
 	background-repeat: no-repeat;
 	background-position: 0% 50%;
 	padding-left: 18px;
 }
 
 .calendarmodule .listviewlink {
-	background-image: url(../../../modules/calendarmodule/assets/images/list.gif);
+	background-image: url(../../../framework/modules-1/calendarmodule/assets/images/list.gif);
 	background-repeat: no-repeat;
 	background-position: 0% 50%;
 	padding-left: 18px;

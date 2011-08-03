@@ -15,7 +15,7 @@
 # GPL: http://www.gnu.org/licenses/gpl.txt
 #
 ##################################################
-/** @define "BASE" ".." */
+/** @define "BASE" "../.." */
 
 function smarty_function_yuilogger($params,&$smarty) {
 //	if (!defined('SYS_JAVASCRIPT')) require_once(BASE.'framework/core/subsystems-1/javascript.php');

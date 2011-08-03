@@ -30,11 +30,11 @@
  * @node Subsystems:Modules
  */
 function exponent_modules_initialize() {
-	if (is_readable(BASE.'modules')) {
-		$dh = opendir(BASE.'modules');
+	if (is_readable(BASE.'framework/modules-1')) {
+		$dh = opendir(BASE.'framework/modules-1');
 		while (($file = readdir($dh)) !== false) {
-			if (is_dir(BASE.'modules/'.$file) && is_readable(BASE.'modules/'.$file.'/class.php')) {
-				include_once(BASE.'modules/'.$file.'/class.php');
+			if (is_dir(BASE.'framework/modules-1/'.$file) && is_readable(BASE.'framework/modules-1/'.$file.'/class.php')) {
+				include_once(BASE.'framework/modules-1/'.$file.'/class.php');
 			}
 		}
 	}
@@ -49,10 +49,10 @@ function exponent_modules_initialize() {
  */
 function exponent_modules_list() {
 	$mods = array();
-	if (is_readable(BASE."modules")) {
-		$dh = opendir(BASE."modules");
+	if (is_readable(BASE."framework/modules-1")) {
+		$dh = opendir(BASE."framework/modules-1");
 		while (($file = readdir($dh)) !== false) {
-			if (substr($file,-6,6) == "module") $mods[] = $file;
+			if (substr($file,-6,6) == "framework/module-1") $mods[] = $file;
 		}
 	}
 	return $mods;
@@ -86,7 +86,7 @@ function exponent_modules_listActive() {
  */
 function exponent_modules_getJSValidationFile($module,$formname) {
 	if (is_readable(BASE."themes/".DISPLAY_THEME."/modules/$module/js/$formname.validate.js")) return PATH_RELATIVE . "themes/".DISPLAY_THEME."/modules/$module/js/$formname.validate.js";
-	else if (is_readable(BASE."modules/$module/js/$formname.validate.js")) return PATH_RELATIVE."modules/$module/js/$formname.validate.js";
+	else if (is_readable(BASE."framework/modules-1/$module/js/$formname.validate.js")) return PATH_RELATIVE."framework/modules-1/$module/js/$formname.validate.js";
 	return "";
 }
 
@@ -165,7 +165,7 @@ function exponent_modules_verifyModule($basedir) {
  * @node Subsystems:Modules
  */
 function exponent_modules_moduleExists($name) {
-	return (file_exists(BASE."modules/$name") && is_dir(BASE."modules/$name") && is_readable(BASE."modules/$name/class.php"));
+	return (file_exists(BASE."framework/modules-1/$name") && is_dir(BASE."framework/modules-1/$name") && is_readable(BASE."framework/modules-1/$name/class.php"));
 }
 
 function exponent_modules_getModuleInstancesByType($type=null) {

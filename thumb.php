@@ -24,7 +24,7 @@ include_once('exponent_bootstrap.php');
 // otherwise the expFile can't find it's table desc from cache.
 if (!defined('SYS_SESSION_KEY')) define('SYS_SESSION_KEY',PATH_RELATIVE);                                                                       
     if (isset($_GET['id'])) {        
-    	include_once('subsystems/autoloader.php');
+    	include_once('framework/core/subsystems-1/autoloader.php');
 //    	include_once('subsystems/config/load.php');  // FIXME already loaded in exponent_bootstrap.php
     	// Initialize the Database Subsystem
     	include_once(BASE.'framework/core/subsystems-1/database.php');

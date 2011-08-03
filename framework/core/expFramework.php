@@ -244,7 +244,7 @@ function get_model_for_controller($controller_name) {
 
 function get_common_template($view, $loc, $controllername='') {
     $controller->baseclassname = empty($controllername) ? 'common' : $controllername;
-    $controller->relative_viewpath = 'modules/common/views'.$controller->baseclassname;
+    $controller->relative_viewpath = 'framework/modules-1/common/views'.$controller->baseclassname;
     $controller->loc = $loc;
     
     $basepath = BASE.'framework/modules/common/views/'.$controllername.'/'.$view.'.tpl';

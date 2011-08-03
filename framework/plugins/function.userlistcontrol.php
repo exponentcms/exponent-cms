@@ -16,7 +16,7 @@
 # GPL: http://www.gnu.org/licenses/gpl.txt
 #
 ##################################################
-/** @define "BASE" ".." */
+/** @define "BASE" "../.." */
 
 function smarty_function_userlistcontrol($params,&$smarty) {
 	echo '<script src="'.PATH_RELATIVE.'subsystems/forms/controls/listbuildercontrol.js" language="javascript"></script>';

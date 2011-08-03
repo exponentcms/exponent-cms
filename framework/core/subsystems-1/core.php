@@ -437,14 +437,14 @@ function exponent_core_resolveFilePaths($type, $name, $subtype, $subname) {
 	// convert types into paths
 	$relpath = '';
 	if ($type == "modules" || $type == 'profileextension') {
-			$relpath .= "modules/";
+			$relpath .= "framework/modules-1/";
 		} elseif($type == "controllers") {
 			$relpath .= "framework/views/";
 		} elseif($type == "forms") {
 			if ($name != "forms/email") {
 				$relpath .= "subsystems/forms/";
 			} else {  //TODO  forms/email only used by calendarmodule
-				$relpath .= "modules/calendarmodule/";
+				$relpath .= "framework/modules-1/calendarmodule/";
 			}
 		} elseif($type == "themes") {
 			$relpath .= "themes/";

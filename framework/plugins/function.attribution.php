@@ -16,7 +16,7 @@
 # GPL: http://www.gnu.org/licenses/gpl.txt
 #
 ##################################################
-/** @define "BASE" ".." */
+/** @define "BASE" "../.." */
 
 function smarty_function_attribution($params,&$smarty) {
 	if (isset($params['user_id'])) {

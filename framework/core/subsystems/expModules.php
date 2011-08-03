@@ -72,8 +72,8 @@ class expModules {
     
     public function exponent_modules_list() {
     	$mods = array();
-    	if (is_readable(BASE."modules")) {
-    		$dh = opendir(BASE."modules");
+    	if (is_readable(BASE."framework/modules-1")) {
+    		$dh = opendir(BASE."framework/modules-1");
     		while (($file = readdir($dh)) !== false) {
     			if (substr($file,-6,6) == "module") $mods[] = $file;
     		}

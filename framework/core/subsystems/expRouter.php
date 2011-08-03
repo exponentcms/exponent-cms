@@ -423,7 +423,7 @@ class expRouter {
         // Figure out if this is module or controller request - WE ONLY NEED THIS CODE UNTIL WE PULL OUT THE OLD MODULES
         if (controllerExists($return_params['controller'])) {
             $requestType = 'controller';
-        } elseif (is_dir(BASE.'modules/'.$return_params['controller'])) {
+        } elseif (is_dir(BASE.'framework/modules-1/'.$return_params['controller'])) {
             $requestType = 'module';
         } else {
             return false;  //this is an invalid url return an let the calling function deal with it.

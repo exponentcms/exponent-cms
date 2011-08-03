@@ -24,7 +24,7 @@ function (refreshRSS()) in a datatype ($datatype)
 
 if (!defined('MAGPIE_DIR')) {
 	define('MAGPIE_DIR', BASE.'/external/magpierss/');
-	/** @define "MAGPIE_DIR" "../../external/magpierss/" */
+	/** @define "MAGPIE_DIR" "../../../../external/magpierss/" */
 }
 
 if (!defined('MAGPIE_OUTPUT_ENCODING')) {

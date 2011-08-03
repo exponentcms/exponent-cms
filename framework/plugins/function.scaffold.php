@@ -16,7 +16,7 @@
 # GPL: http://www.gnu.org/licenses/gpl.txt
 #
 ##################################################
-/** @define "BASE" ".." */
+/** @define "BASE" "../.." */
 
 function smarty_function_scaffold($params,&$smarty) {
 	if (isset($params['model']) ) {

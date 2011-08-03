@@ -16,7 +16,7 @@
 # GPL: http://www.gnu.org/licenses/gpl.txt
 #
 ##################################################
-/** @define "BASE" ".." */
+/** @define "BASE" "../.." */
 
 function smarty_function_get_user($params,&$smarty) {
 //	if (!defined("SYS_SESSIONS")) include_once(BASE."framework/core/subsystems-1/sessions.php");

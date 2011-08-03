@@ -39,7 +39,7 @@ if (isset($_REQUEST['module'])) {
 //echo "module: ".$module;
 if (isset($module)) {
 	//get the RSS Items from the module	
-	include_once('modules/'.$module.'/class.php');
+	include_once('framework/modules-1/'.$module.'/class.php');
 	$obj = new $module();	
 	$rss_items = $obj->getRSSContent($location);
 	$itemdate = array();

@@ -659,7 +659,7 @@ function exponent_theme_main() {
         }
     } else {
         if (isset($_REQUEST['module'])) {
-            include_once(BASE."modules/containermodule/actions/orphans_content.php");
+            include_once(BASE."framework/modules-1/containermodule/actions/orphans_content.php");
         } else {
             $i18n = exponent_lang_loadFile('subsystems/theme.php');
             echo $i18n['select_module'];
@@ -719,8 +719,8 @@ function exponent_theme_runAction() {
 
             if (is_readable(BASE."themes/".DISPLAY_THEME_REAL."/modules".$actfile)) {
                 include_once(BASE."themes/".DISPLAY_THEME_REAL."/modules".$actfile);
-            } elseif (is_readable(BASE.'modules/'.$actfile)) {
-                include_once(BASE.'modules/'.$actfile);
+            } elseif (is_readable(BASE.'framework/modules-1/'.$actfile)) {
+                include_once(BASE.'framework/modules-1/'.$actfile);
             } else {
                 $i18n = exponent_lang_loadFile('subsystems/theme.php');
                 echo SITE_404_HTML . '<br /><br /><hr size="1" />';
@@ -749,8 +749,8 @@ function exponent_theme_showAction($module, $action, $src="", $params="") {
 
     if (is_readable(BASE."themes/".DISPLAY_THEME_REAL."/modules".$actfile)) {
         include(BASE."themes/".DISPLAY_THEME_REAL."/modules".$actfile);
-    } elseif (is_readable(BASE.'modules/'.$actfile)) {
-		include(BASE.'modules/'.$actfile);
+    } elseif (is_readable(BASE.'framework/modules-1/'.$actfile)) {
+		include(BASE.'framework/modules-1/'.$actfile);
     } else {
 		$i18n = exponent_lang_loadFile('subsystems/theme.php');
 		echo SITE_404_HTML . '<br /><br /><hr size="1" />';
