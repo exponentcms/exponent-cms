@@ -32,7 +32,7 @@ $i_start = $microtime_str[0] + $microtime_str[1];
 
 // Initialize the Theme Subsystem
 //if (!defined('SYS_THEME')) require_once(BASE.'framework/core/subsystems-1/theme.php');
-require_once(BASE.'framework/core/subsystems-1/theme.php');
+//require_once(BASE.'framework/core/subsystems-1/theme.php');
 
 $section = (expSession::is_set('last_section') ? expSession::get('last_section') : SITE_DEFAULT_SECTION);
 $section = $db->selectObject('section','id='.$section);

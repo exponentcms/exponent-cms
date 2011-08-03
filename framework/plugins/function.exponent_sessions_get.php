@@ -18,9 +18,9 @@
 ##################################################
 /** @define "BASE" "../.." */
 
-function smarty_function_expSession::get($params,&$smarty) {
+function smarty_function_sessions_get($params,&$smarty) {
 //	if (!defined("SYS_SESSIONS")) include_once(BASE."framework/core/subsystems-1/sessions.php");
-	include_once(BASE."framework/core/subsystems-1/sessions.php");
+//	include_once(BASE."framework/core/subsystems-1/sessions.php");
 	$smarty->assign($params['var'], expSession::get($params['var']));
 }
 
