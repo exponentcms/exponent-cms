@@ -162,6 +162,16 @@ class expTheme {
         return (isset($_REQUEST['action']) && (isset($_REQUEST['module']) || isset($_REQUEST['controller'])));
     }
     
+    function reRoutActionTo($theme = "") {
+        if (empty($theme)) {
+            return false;
+        }
+        if (self::inAction()) {
+            include_once(BASE."themes/".DISPLAY_THEME_REAL."/".$theme);
+            exit;
+        }
+    }
+
     public function grabView($path,$filename) {        
         $dirs = array(
             BASE.'themes/'.DISPLAY_THEME_REAL.'/'.$path,
