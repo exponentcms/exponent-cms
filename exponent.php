@@ -30,8 +30,17 @@
 
 require_once('exponent_bootstrap.php');
 
-// Initialize the AutoLoader Subsystem
+// Initialize the AutoLoader subsystem - for objects we want loaded on the fly
 require_once(BASE.'framework/core/subsystems-1/autoloader.php');
+
+// Initialize the MVC framework - for objects we need loaded now
+require_once(BASE.'framework/core/expFramework.php');
+/**
+ * the list of available/active controllers
+ * @global array $available_controllers
+ * @name $available_controllers
+ */
+$available_controllers = intializeControllers();
 
 // Initialize the Sessions Subsystem
 require_once(BASE.'framework/core/subsystems-1/sessions.php');
@@ -88,13 +97,9 @@ require_once(BASE.'framework/core/subsystems-1/users.php');
 require_once(BASE.'framework/core/subsystems-1/javascript.php');
 
 // Initialize the MVC framework
-require_once(BASE.'framework/core/expFramework.php');
-/**
- * the list of available/active controllers
- * @global array $available_controllers
- * @name $available_controllers
- */
-$available_controllers = intializeControllers();
+//require_once(BASE.'framework/core/expFramework.php');
+//$available_controllers = intializeControllers();
+
 if (exponent_javascript_inAjaxAction()) set_error_handler('handleErrors');
 
 // Validate the session.  This will populate the $user variable

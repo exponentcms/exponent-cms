@@ -34,7 +34,7 @@ if (!defined('MAGPIE_OUTPUT_ENCODING')) {
 require_once(MAGPIE_DIR.'rss_fetch.inc');
 require_once(MAGPIE_DIR.'rss_utils.inc');
 define('MAGPIE_CACHE_DIR', BASE.'tmp/rsscache');
-if (!defined('MAGPIE_CACHE_AGE')) define('MAGPIE_CACHE_AGE', 3600);
+//if (!defined('MAGPIE_CACHE_AGE')) define('MAGPIE_CACHE_AGE', 3600);
 
 class rssfeed extends expRecord {
 	private $url = null;

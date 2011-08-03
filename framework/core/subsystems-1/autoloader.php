@@ -35,7 +35,7 @@ if (!defined('EXPONENT')) exit('');
 			BASE.'framework/core/subsystems-1/forms/controls',
 //			BASE.'framework/datatypes',  // moved to framework/core/models
 			BASE.'framework/core/controllers',
-			BASE.'framework/core/models',  // old framework/core/datatypes & framework/datatypes
+			BASE.'framework/core/models',  // used to be framework/core/datatypes & framework/datatypes
 			BASE.'framework/core/subsystems',
 			BASE.'framework/modules/ecommerce/billingcalculators',
 			BASE.'framework/modules/ecommerce/shippingcalculators',
@@ -53,34 +53,16 @@ if (!defined('EXPONENT')) exit('');
 	 * @node Subsystems:Autoloader
 	 */
 	function __autoload($class) {
+//		global $auto_dirs1, $auto_dirs2, $controllers;
 		global $auto_dirs;
-		
-		// check the standard directories for class files.
+
+		// check the directories for class files.
 		foreach ($auto_dirs as $auto_dir) {
 			if (is_readable($auto_dir.'/'.$class.'.php')) {
 				include_once($auto_dir.'/'.$class.'.php');
 				return;
 			}
 		}
-	
-		// load any classes under the framework/modules directory	
-		//loadModulesDir('framework/modules', $class);
 	}
-	
-	// recursive function used for autoloading class files.
-	/*function loadModulesDir($dir, $class) {
-		if (is_readable($dir)) {
-			$dh = opendir($dir);
-			while (($file = readdir($dh)) !== false) {
-				if (is_dir($dir.'/'.$file) && ($file != '..' && $file != '.')) {
-					loadModulesDir($dir.'/'.$file, $class);
-				} elseif (is_readable($dir.'/'.$class.'.php')) {
-					include_once($dir.'/'.$class.'.php');
-					return true;
-				}
-			}
-		}
-		return false;
-	}*/
 
 ?>
