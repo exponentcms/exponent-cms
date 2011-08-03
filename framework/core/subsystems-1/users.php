@@ -309,7 +309,7 @@ function exponent_users_userManagerFormTemplate($template) {
 	$users = $db->selectObjects('user');
 
 //	if (!defined('SYS_SORTING')) require_once(BASE.'framework/core/subsystems-1/sorting.php');
-	require_once(BASE.'framework/core/subsystems-1/sorting.php');
+//	require_once(BASE.'framework/core/subsystems-1/sorting.php');
 	if (!function_exists('exponent_sorting_byLastFirstAscending')) {
 		function exponent_sorting_byLastFirstAscending($a,$b) {
 			return strnatcmp($a->lastname . ', '. $a->firstname,$b->lastname . ', '. $b->firstname);
@@ -343,8 +343,9 @@ function exponent_users_groupManagerFormTemplate($template) {
 	$groups = $db->selectObjects('group');
 
 //	if (!defined('SYS_SORTING')) require_once(BASE.'framework/core/subsystems-1/sorting.php');
-	require_once(BASE.'framework/core/subsystems-1/sorting.php');
-	usort($groups,'exponent_sorting_byNameAscending');
+//	require_once(BASE.'framework/core/subsystems-1/sorting.php');
+//	usort($groups,'exponent_sorting_byNameAscending');
+	$groups = expSorter::sort(array('array'=>$groups,'sortby'=>'name', 'order'=>'ASC'));
 
 	$template->assign('groups',$groups);
 

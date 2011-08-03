@@ -125,7 +125,7 @@ class section {
 		}
 
 //		if (!defined('SYS_SORTING')) include_once(BASE.'framework/core/subsystems-1/sorting.php');
-		include_once(BASE.'framework/core/subsystems-1/sorting.php');
+//		include_once(BASE.'framework/core/subsystems-1/sorting.php');
 		$form->register('page',$i18n['standalone_page'],new dropdowncontrol(0,$standalones));
 		$form->register('submit','',new buttongroupcontrol($i18n['save'],'',$i18n['cancel']));
 		return $form;
