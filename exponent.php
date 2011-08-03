@@ -47,9 +47,9 @@ $available_controllers = intializeControllers();
 //exponent_sessions_initialize();
 expSession::initialize();
 
-// Initialize the theme subsystem
+// Initialize the theme subsystem 1.0 compatibility layer
 //if (!defined('SYS_THEME')) require_once(BASE.'framework/core/subsystems-1/theme.php');
-//require_once(BASE.'framework/core/subsystems-1/theme.php');
+require_once(BASE.'framework/core/subsystems-1/theme.php');
 $validateTheme = array("headerinfo"=>false,"footerinfo"=>false);
 
 // Initialize the language subsystem

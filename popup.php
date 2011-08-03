@@ -26,9 +26,9 @@ ob_start();
 // Initialize the Exponent Framework
 require_once('exponent.php');
 
-// Initialize the Theme Subsystem
+// Initialize the theme subsystem 1.0 compatibility layer
 //if (!defined('SYS_THEME')) require_once(BASE.'framework/core/subsystems-1/theme.php');
-//require_once(BASE.'framework/core/subsystems-1/theme.php');
+require_once(BASE.'framework/core/subsystems-1/theme.php');
 
 $loc = exponent_core_makeLocation(
 	(isset($_GET['module'])?$_GET['module']:''),

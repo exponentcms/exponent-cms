@@ -26,8 +26,9 @@ ob_start();
 include_once('exponent.php');
 if (!defined('EXPONENT')) exit('');
 
+// Initialize the theme subsystem 1.0 compatibility layer
 //if (!defined('SYS_THEME')) include_once(BASE.'framework/core/subsystems-1/theme.php');
-//include_once(BASE.'framework/core/subsystems-1/theme.php');
+include_once(BASE.'framework/core/subsystems-1/theme.php');
 
 $id = -1;
 if (isset($_GET['sitetemplate_id'])) {

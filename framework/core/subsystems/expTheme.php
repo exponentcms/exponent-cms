@@ -814,7 +814,7 @@ class expTheme {
 	 * Redirect User to Default Section
 	 * @node Subsystems:Theme
 	 */
-	function goDefaultSection() {
+	public static function goDefaultSection() {
 		$last_section = expSession::get("last_section");
 		if (defined("SITE_DEFAULT_SECTION") && SITE_DEFAULT_SECTION != $last_section) {
 			header("Location: ".URL_FULL."index.php?section=".SITE_DEFAULT_SECTION);
@@ -837,7 +837,7 @@ class expTheme {
 	 * @param bool $public Whether or not the page is public.
 	 * @node Subsystems:Theme
 	 */
-	function mainContainer() {
+	public static function mainContainer() {
 		if (!AUTHORIZED_SECTION) {
 			// Set this so that a login on an Auth Denied page takes them back to the previously Auth-Denied page
 			exponent_flow_set(SYS_FLOW_PROTECTED,SYS_FLOW_SECTIONAL);
@@ -856,7 +856,7 @@ class expTheme {
 	#   }
 	}
 
-	function loadActionMaps() {
+	public static function loadActionMaps() {
 		if (is_readable(BASE.'themes/'.DISPLAY_THEME.'/action_maps.php')) {
 			return include(BASE.'themes/'.DISPLAY_THEME.'/action_maps.php');
 		} else {
