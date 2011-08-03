@@ -162,7 +162,7 @@ class expTheme {
         return (isset($_REQUEST['action']) && (isset($_REQUEST['module']) || isset($_REQUEST['controller'])));
     }
     
-    function reRoutActionTo($theme = "") {
+    public static function reRoutActionTo($theme = "") {
         if (empty($theme)) {
             return false;
         }
