@@ -123,7 +123,6 @@ class yuicalendarcontrol extends formcontrol {
             "src"=>""
          ));
         return $html;
-        return $html;
     }
 
     static function parseData($original_name,$formvalues) {
