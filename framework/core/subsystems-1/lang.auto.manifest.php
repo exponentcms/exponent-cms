@@ -1,5 +1,5 @@
 <?php
-/** @define "BASE" ".." */
+/** @define "BASE" "../../.." */
 
 if (!defined('EXPONENT')) exit('');
 

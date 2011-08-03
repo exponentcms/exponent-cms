@@ -16,7 +16,7 @@
 # GPL: http://www.gnu.org/licenses/gpl.txt
 #
 ##################################################
-/** @define "BASE" ".." */
+/** @define "BASE" "../../.." */
 
 class file {
 	static function update($name,$dest,$object,$destname = null,$force=false) {

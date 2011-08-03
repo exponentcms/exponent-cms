@@ -17,7 +17,7 @@
 #
 ##################################################
 
-include_once(realpath(dirname(__FILE__).'/../compat/gd_info.php'));
+//include_once(realpath(dirname(__FILE__).'/../compat/gd_info.php'));
 
 /* exdoc
  * The definition of this constant lets other parts of the subsystem know

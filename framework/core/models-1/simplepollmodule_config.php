@@ -30,7 +30,7 @@
 #
 # $Id: simplepollmodule_config.php,v 1.2 2005/04/25 19:02:17 filetreefrog Exp $
 ##################################################
-/** @define "BASE" ".." */
+/** @define "BASE" "../../.." */
 
 class simplepollmodule_config {
 	function form($object) {

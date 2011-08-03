@@ -16,7 +16,7 @@
 # GPL: http://www.gnu.org/licenses/gpl.txt
 #
 ##################################################
-/** @define "BASE" "../../../.." */
+/** @define "BASE" "../../../../.." */
 
 //Sanity check
 if (!defined('EXPONENT')) exit('');

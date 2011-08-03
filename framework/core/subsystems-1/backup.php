@@ -16,7 +16,7 @@
 # GPL: http://www.gnu.org/licenses/gpl.txt
 #
 ##################################################
-/** @define "BASE" ".." */
+/** @define "BASE" "../../.." */
 
 /* exdoc
  * SYS Flag for Backup Subsystem.
@@ -145,13 +145,13 @@ function exponent_backup_restoreDatabase($db,$file,&$errors,$force_version = nul
 							$clear_function($db,$table);
 						}
 					} else {
-						if (!file_exists(BASE.'datatypes/definitions/'.$table.'.php')) {
+						if (!file_exists(BASE.'framework/core/definitions/'.$table.'.php')) {
 							$errors[] = sprintf($i18n['no_definition'],$table,$line_number);
-						} else if (!is_readable(BASE.'datatypes/definitions/'.$table.'.php')) {
-							$errors[] = sprintf($i18n['unreadable_definition'],$table,'datatypes/definitions/'.$table.'.php',$line_number);
+						} else if (!is_readable(BASE.'framework/core/definitions/'.$table.'.php')) {
+							$errors[] = sprintf($i18n['unreadable_definition'],$table,'framework/core/definitions/'.$table.'.php',$line_number);
 						} else {
-							$dd = include(BASE.'datatypes/definitions/'.$table.'.php');
-							$info = (is_readable(BASE.'datatypes/definitions/'.$table.'.info.php') ? include(BASE.'datatypes/definitions/'.$table.'.info.php') : array());
+							$dd = include(BASE.'framework/core/definitions/'.$table.'.php');
+							$info = (is_readable(BASE.'framework/core/definitions/'.$table.'.info.php') ? include(BASE.'framework/core/definitions/'.$table.'.info.php') : array());
 							$db->createTable($table,$dd,$info);
 						}
 					}

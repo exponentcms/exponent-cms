@@ -33,13 +33,7 @@ define("DATABASE_TABLE_ALTERED",		4);
  * @subpackage	Database
  *
  * @author		James Hunt
- * @copyright		2004-2011
-
-
-
-
-
- OIC Group, Inc.
+ * @copyright		2004-2011 OIC Group, Inc.
  * @version		0.95
  */
 

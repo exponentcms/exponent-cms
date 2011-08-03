@@ -16,7 +16,7 @@
 # GPL: http://www.gnu.org/licenses/gpl.txt
 #
 ##################################################
-/** @define "BASE" "../../.." */
+/** @define "BASE" "../../../../.." */
 
 // GREP:HARDCODEDTEXT - 3am-6am is not i18n!
 
