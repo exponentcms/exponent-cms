@@ -102,7 +102,7 @@ if (exponent_permissions_check('configuration',exponent_core_makeLocation('admin
 	}
 
 	//blow away the css files incase the theme was changed.
-	exponent_theme_remove_css();
+	expTheme::removeCss();
 	//delete the slingbar session
 	expSession::deleteVar("slingbar_top");
 	

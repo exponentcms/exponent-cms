@@ -30,7 +30,7 @@ if (exponent_permissions_check('extensions',exponent_core_makeLocation('administ
 		exponent_sessions_set('display_theme',$_GET['theme']);
 	}
 	exponent_config_change('DISPLAY_THEME_REAL', $_GET['theme']);
-	exponent_theme_remove_css();
+	expTheme::removeCss();
 	exponent_flow_redirect();
 } else {
 	echo SITE_403_HTML;

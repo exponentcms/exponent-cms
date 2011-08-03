@@ -86,7 +86,7 @@ if (is_readable(BASE.$page)) {
 	exponent_sessions_set('source_select',$source_select);
 	// Include the rendering page.
 	include_once(BASE.$page);
-	exponent_theme_satisfyThemeRequirements();
+	expTheme::satisfyThemeRequirements();
 } else {
 	$i18n = exponent_lang_loadFile('selector.php');
 	echo sprintf($i18n['not_readable'],BASE.$page);

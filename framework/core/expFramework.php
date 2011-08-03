@@ -87,7 +87,7 @@ function renderAction(array $parms=array()) {
 
     if (array_key_exists($permaction, $perms)) {
         if (!exponent_permissions_check($permaction, $controller->loc)) {
-            if (exponent_theme_inAction()) {
+            if (expTheme::inAction()) {
                 flash('error', "You don't have permission to ".$perms[$permaction]);
                 expHistory::returnTo('viewable');
             } else {
@@ -96,7 +96,7 @@ function renderAction(array $parms=array()) {
         }
     } elseif (array_key_exists($common_action_name, $perms)) {
         if (!exponent_permissions_check($common_action_name, $controller->loc)) {
-            if (exponent_theme_inAction()) {
+            if (expTheme::inAction()) {
                 flash('error', "You don't have permission to ".$perms[$common_action_name]);
                 expHistory::returnTo('viewable');
             } else {

@@ -3,7 +3,6 @@
 ##################################################
 #
 # Copyright (c) 2004-2011 OIC Group, Inc.
-# Copyright (c) 2006 Maxim Mueller
 # Written and Designed by James Hunt
 #
 # This file is part of Exponent
@@ -17,197 +16,153 @@
 # GPL: http://www.gnu.org/licenses/gpl.txt
 #
 ##################################################
-/** @define "BASE" "../.." */
 
-//define('SYS_LANG',1);
+/* exdoc
+ * The definition of this constant lets other parts
+ * of the system know that the Info Subsystem
+ * has been included for use.
+ * @node Subsystems:Info
+ */
+//define("SYS_INFO",1);
 
-/*
-define('SYS_LANG_MODULE',	1);
-define('SYS_LANG_VIEW',		2);
-define('SYS_LANG_ACTION',	3);
-*/
+/* exdoc
+ * Looks through the subsystems/ directory for a *.info.php for
+ * a given subsystem, and returns the metadata stored in that file.
+ * Returns an array of meta tag/values for the subsystem.  Returns
+ * null if no information file was found.
+ *
+ * @param string $subsystem The name of the subsystem to retrieve information about.
+ * @node Subsystems:Info
+ */
+function exponent_info_subsystemInfo($subsys) {
+	if (!is_readable(BASE."subsystems/$subsystem.info.php")) return null;
+	return include(BASE."subsystems/$subsystem.info.php");
+}
 
-function exponent_lang_list() {
-	$dir = BASE.'framework/core/subsystems-1/lang';
-	$langs = array();
+/* exdoc
+ * Looks through the subsystems/ directory for all subsystems currently installed,
+ * and retrieves their information. Returns an array of all subsystems, with meta
+ * tags/values for each.
+ * @node Subsystems:Info
+ */
+function exponent_info_subsystems() {
+	$info = array();
+	
+	$dir = BASE."subsystems";
 	if (is_readable($dir)) {
 		$dh = opendir($dir);
-		while (($f = readdir($dh)) !== false) {
-			if (substr($f,-4,4) == '.php') {
-				$info = include($dir.'/'.$f);
-				$langs[substr($f,0,-4)] = $info['name'] . ' -- ' . $info['author'];
+		while (($file = readdir($dh)) !== false) {
+			if (is_readable("$dir/$file") && substr($file,-9,9) == ".info.php") {
+				$info[substr($file,0,-9)] = include("$dir/$file");
 			}
 		}
 	}
-	return $langs;
+	return $info;
 }
 
-function exponent_lang_initialize() {
-	if (!defined('LANG')) {
-		if ((is_readable(BASE . 'framework/core/subsystems-1/lang/' . USE_LANG . '.php')) && (USE_LANG != 'en')) {
-			define('LANG', USE_LANG); // Lang file exists.
-		} else {
-			define('LANG', 'eng_US'); // Fallback to 'eng_US' if language file not present.
-		}
-	}
-
-	$info = include(BASE . 'framework/core/subsystems-1/lang/' . LANG.'.php');
-	setlocale(LC_ALL, $info['locale']);
-	//DEPRECATED: we no longer use views for i18n
-	define('DEFAULT_VIEW', $info['default_view']);
-	// For anything related to character sets:
-	define('LANG_CHARSET', $info['charset']);
-}
-
-function exponent_lang_loadLangs() {
-	$ret = array();
-	if (is_readable(BASE.'framework/core/subsystems-1/lang')) {		
-		while (($lang_file = readfile(BASE . 'framework/core/subsystems-1/lang/*.php')) !== false) {
-			if (is_readable($lang_file)) {
-				$ret = include($lang_file);
-			}
-		}
-	}	
-	return $ret;
-}
-
-/*
- * Load a set of language keys.
+/* exdoc
+ * Looks for a manifest file, which contains a list of all files
+ * claimed by the given extension.  This list also contains the
+ * cached file checksums, for verification purpses.  Returns an
+ * array or a string.  If no manifest file is found, or the specified
+ * extension was not found, a string error is returned. otherwise an
+ * array of files information is returned.
  *
- * @param string $filename The name of the file that should be internationalized.  This should
- * not start with a forward slash and well be taken relative to framework/core/subsystems-1/lang/
+ * MD5 checksums are used to verify file integrity.
  *
- * @return Array The language set found, or an empty array if no set file was found.
+ * @param integer $type The type of extension.
+ * @param string $name The name of the extension
+ * @node Subsystems:Info
  */
- //TODO: change api to use a global location object, which tells us module(/other types) and view, then we can do overriding cleanly
-function exponent_lang_loadFile($filename) {
-
-
-	//so much for having a private function :(
-	//we should convert REALLY convert our API to be OO
-	if (!function_exists("loadStrings")) {
-		//pass-by-reference to shave off a copy operation
-		function loadStrings(&$tr_array, $filepath) {
-			//TODO: use GPR to allow for local overrides/extensions
-			//remove $lang_dir
-			//$filepath = array_pop(exponent_core_resolveFilePaths());
-			if (is_readable($filepath)) {
-				$tr_array = array_merge($tr_array, include($filepath));
-			}
-		}
-	}
-	
-
-	//initialize the array to be returned
-	$_TR = array();
-
-
-	//set the language directory
-	$lang_dir = BASE . 'framework/core/subsystems-1/lang/' . LANG;
-	
-	// check if the requested language file is installed
-	// in that specific language
-	// (an incomplete translation)
-	if (!file_exists($lang_dir . "/" . $filename)) {
-
-		// If we get to this point,
-		// the preferred language file does not exist.  Try english.
-		$lang_dir = BASE . 'framework/core/subsystems-1/lang/eng_US';
-	}
-
-
-	//load the most common strings
-	loadStrings($_TR, $lang_dir . "/modules/modules.php");
-
-
-	//load module specific strings
-	$path_components = explode("/", $filename);
-	//as the typical path will be something like modules/somemodule/views/someview.php it must be 1
-	$module = array();
-	if (count($path_components) > 1) {
-		$module = $path_components[1];
-	}
-	
-	loadStrings($_TR, $lang_dir . "/modules/" . $module . "/" . $module . ".php");
-	
-
-	//load the view specific strings
-	loadStrings($_TR, $lang_dir . "/" . $filename);
-
-	return $_TR;
-}
-
-
-/*
- * Return a single key from a language set.
- *
- * @param string $filename The name of the file that should be internationalized.  This should
- * not start with a forward slash and well be taken relative to framework/core/subsystems-1/lang/
- * @param string $key The name of the language key to return.
- *
- * @return Array The language set found, or an empty array if no set file was found.
- */
-function exponent_lang_loadKey($filename, $key) {
-	// First we load the full set.
-	$keys = exponent_lang_loadFile($filename);
-
-	// return either the looked-up value
-	// or if non-existent
-	// the key itself, so there is a visual indicator
-	// of a missing translation
-	if($keys[$key] != null) {
-		$return_value = $keys[$key];
-	} else {
-		$return_value = $key;
-	}
-		
-	return $return_value;
-}
-
-/*
- * Return a short language code from a long one, many external programs use the short ones
- * its a dumb, straight table lookup function, no fancy regexp rules.
- * It should rather be replaced by introducing a short lang code to the language descriptor files
- * and replacing the site wide CONSTANTS by global objects, which then in return
- * could have a multitude of subobjects and properties, such as long and short codes
- * 
- * @param string $long_code something like "eng_US"
- *
- * @return string the short version of the lang code
- */
-function exponent_lang_convertLangCode($long_code, $target = "iso639-1") {
-	//TODO: auto-guess the incoming type of lang code from the input format
-	//TODO: breakout the data into a xml file in framework/core/subsystems-1/lang/
-
-	//assume that we are getting an iso639-2_Country code for now(standard for eXp's i18n)
-	switch ($long_code) {
-		case "deu_DE":
-			$iso639_1 = "de";
-			$iso639_2 = "deu";
+function exponent_info_files($type,$name) {
+	$dir = '';
+	$file = 'manifest.php';
+	$autofile = 'manifest.auto.php';
+	switch ($type) {
+		case CORE_EXT_MODULE:
+			$dir = BASE.'modules/'.$name;
 			break;
-		case "eng_US":
-			$iso639_1 = "en";
-			$iso639_2 = "eng";
-		break;
+		case CORE_EXT_THEME:
+			$dir = BASE.'themes/'.$name;
+			break;
+		case CORE_EXT_SUBSYSTEM:
+			$dir = BASE."subsystems";
+			$file = $name.'.manifest.php';
+			$autofile = $name.'.auto.manifest.php';
+			break;
 		default:
-			$iso639_1 = "en";
-			$iso639_2 = "eng";
+			echo 'Bad type: '.$type;
 	}
 	
-	//resist the temptation to do eval()
-	switch ($target) {
-		case "iso639-1":
-			$converted_code = $iso639_1;
-			break;
-		case "iso639-2":
-			$converted_code = $iso639_2;
-			break;
+	if (is_readable($dir.'/'.$autofile)) {
+		return include($dir.'/'.$autofile);
+	} else if (is_readable($dir.'/'.$file)) {
+		return include($dir.'/'.$file);
+	} else if (!is_readable($dir)) {
+		return 'No such extensions ('.$name.')';
+	} else {
+		return 'Manifest file not found.';
 	}
-
-	return $converted_code;
 }
 
-function exponent_lang_getText($text) {
-	return $text;
+/* exdoc
+ * Generates an MD5 file checksum of each file in the passed array,
+ * and returns a new array of the checksums.  Returns the checksums
+ * for the passed files.  Each checksum is indexed by the file it belongs to.
+ *
+ * @param array $files An array of file names to generate checksums for
+ * @node Subsystems:Info
+ */
+function exponent_info_fileChecksums($files) {
+	$newfiles = array();
+	foreach (array_keys($files) as $file) {
+        if (file_exists($file)) 
+        {
+		    if (is_int($files[$file])) 
+                $newfiles[$file] = "";
+		    else 
+                $newfiles[$file] = md5_file(BASE.$file);
+        }
+    }
+	return $newfiles;
 }
+
+/* exdoc
+ * Highlight a file and show line numbering.  Slightly bastardized by James, for Exponent
+ *
+ * @param        string  $data       The string to add line numbers to
+ * @param        bool    $funclink   Automatically link functions to the manual
+ * @param        bool    $return     return or echo the data
+ * @author       Aidan Lister <aidan@php.net>
+ * @node Subsystems:Info
+ */
+function exponent_info_highlightPHP($data, $return = true)
+{
+    // Init
+	ob_start();
+	highlight_string($data); // for better compat with PHP < 4 . 20
+	$contents = ob_get_contents();
+	ob_end_clean();
+	
+    $data = explode ('<br />', $contents);
+    $start = '<span style="color: black;">';
+    $end   = '</span>';
+    $i = 1;
+    $text = '';
+
+    // Loop
+    foreach ($data as $line) {
+		$spacer = str_replace(" ","&nbsp;",str_pad("",5-strlen($i."")));
+    	$text .= $start . $i . $spacer . $end . str_replace("\n", '', $line) . "<br />\n";
+	    ++$i;
+    }
+	
+    // Return mode
+    if ($return === false) {
+        echo $text;
+    } else {
+        return $text;
+    }
+}
+
 ?>

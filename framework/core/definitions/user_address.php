@@ -17,18 +17,30 @@
 #
 ##################################################
 
-// Part of Extensions category
-
 if (!defined('EXPONENT')) exit('');
 
-if (exponent_permissions_check('development',exponent_core_makeLocation('administrationmodule'))) {
-	$files = expTheme::removeCss();
-	$template = new template('administrationmodule','_remove_css',$loc);
-	$template->assign('file_type', exponent_lang_getText('CSS Files'));
-	$template->assign('files',$files);
-	$template->output();
-} else {
-	echo SITE_403_HTML;
-}
+return array(
+	'uid'=>array(
+		DB_FIELD_TYPE=>DB_DEF_ID,
+		DB_PRIMARY=>true),
+	'address1'=>array(
+		DB_FIELD_TYPE=>DB_DEF_STRING,
+		DB_FIELD_LEN=>150),
+	'address2'=>array(
+		DB_FIELD_TYPE=>DB_DEF_STRING,
+		DB_FIELD_LEN=>150),
+	'city'=>array(
+		DB_FIELD_TYPE=>DB_DEF_STRING,
+		DB_FIELD_LEN=>100),
+	'state'=>array(
+		DB_FIELD_TYPE=>DB_DEF_STRING,
+		DB_FIELD_LEN=>2),
+	'zip'=>array(
+		DB_FIELD_TYPE=>DB_DEF_STRING,
+		DB_FIELD_LEN=>10),
+	'country'=>array(
+		DB_FIELD_TYPE=>DB_DEF_STRING,
+		DB_FIELD_LEN=>100)
+);
 
 ?>

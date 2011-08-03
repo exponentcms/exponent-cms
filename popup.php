@@ -38,8 +38,8 @@ $loc = exponent_core_makeLocation(
 
 $SYS_FLOW_REDIRECTIONPATH='popup';
 
-if (exponent_theme_inAction()) {
-	exponent_theme_runAction();
+if (expTheme::inAction()) {
+	expTheme::runAction();
 } else if (isset($_GET['module']) && isset($_GET['view'])) {
 	exponent_flow_set(SYS_FLOW_PUBLIC,SYS_FLOW_SECTIONAL);
 

@@ -360,7 +360,7 @@ class administrationController extends expController {
 	    include_once(BASE.'framework/core/subsystems-1/config.php');
 	    $value = (DEVELOPMENT == 1) ? 0 : 1;
 	    exponent_config_change('DEVELOPMENT', $value);
-	    exponent_theme_remove_css();
+	    expTheme::removeCss();
 		$message = (DEVELOPMENT != 1) ? "Exponent is now in 'Development' mode" : "Exponent is no longer in 'Development' mode" ;
 		flash('message',$message);
 		expHistory::back();
@@ -376,14 +376,14 @@ class administrationController extends expController {
 	}
 
 	public function clear_smarty_cache() {
-		exponent_theme_remove_smarty_cache();
+		expTheme::removeSmartyCache();
 		$message = "Smarty Cache has been cleared" ;
 		flash('message',$message);
 		expHistory::back();
 	}
 
 	public function clear_css_cache() {
-		exponent_theme_remove_css();
+		expTheme::removeCss();
 		$message = "CSS/Minfy Cache has been cleared" ;
 		flash('message',$message);
 		expHistory::back();
@@ -413,8 +413,8 @@ class administrationController extends expController {
 	public function clear_all_caches() {
 //		if (!defined('SYS_FILES')) include_once(BASE.'framework/core/subsystems-1/files.php');
 		include_once(BASE.'framework/core/subsystems-1/files.php');
-		exponent_theme_remove_smarty_cache();
-		exponent_theme_remove_css();
+		expTheme::removeSmartyCache();
+		expTheme::removeCss();
 //		exponent_files_remove_files_in_directory(BASE.'tmp/pixidou');  // alt location for pixidou cache
 		exponent_files_remove_files_in_directory(BASE.'framework/modules/pixidou/images');  // location for pixidou cache
 		if (file_exists(BASE.'tmp/img_cache')) exponent_files_remove_files_in_directory(BASE.'tmp/img_cache');

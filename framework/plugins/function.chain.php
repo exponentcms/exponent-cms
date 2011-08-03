@@ -36,9 +36,9 @@ function smarty_function_chain($params,&$smarty) {
 		    $parms = $new_parms;
 		}
         if (empty($action)) {
-            echo exponent_theme_showModule($params['module'], $view, $title, $src, false, null, $chrome);
+            echo expTheme::showModule($params['module'], $view, $title, $src, false, null, $chrome);
         } else {
-            echo exponent_theme_showAction($params['module'], $action, $src, $parms);
+            echo expTheme::showAction($params['module'], $action, $src, $parms);
         }
     } elseif (isset($params['controller'])) {
         $view = isset($params['view']) ? $params['view'] : $params['action'];

@@ -48,7 +48,8 @@ exponent_sessions_initialize();
 
 // Initialize the theme subsystem
 //if (!defined('SYS_THEME')) require_once(BASE.'framework/core/subsystems-1/theme.php');
-require_once(BASE.'framework/core/subsystems-1/theme.php');
+//require_once(BASE.'framework/core/subsystems-1/theme.php');
+$validateTheme = array("headerinfo"=>false,"footerinfo"=>false);
 
 // Initialize the language subsystem
 require_once(BASE.'framework/core/subsystems-1/lang.php');

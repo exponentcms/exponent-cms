@@ -81,12 +81,12 @@ if (MAINTENANCE_MODE && !exponent_users_isAdmin() && ( !isset($_REQUEST['module'
 	expVersion::checkVersion();
 
 	// Handle sub themes
-	$page = exponent_theme_getTheme();
+	$page = expTheme::getTheme();
 
 	// If we are in a printer friendly request then we need to change to our printer friendly subtheme
 	if (PRINTER_FRIENDLY == 1) {
 		exponent_sessions_set("uilevel",0);
-		$pftheme = exponent_theme_getPrinterFriendlyTheme();  	// get the printer friendly theme 
+		$pftheme = expTheme::getPrinterFriendlyTheme();  	// get the printer friendly theme
 		$page = $pftheme == null ? $page : $pftheme;		// if there was no theme found then just use the current subtheme
 	}
  
@@ -95,9 +95,9 @@ if (MAINTENANCE_MODE && !exponent_users_isAdmin() && ( !isset($_REQUEST['module'
 	if (is_readable($page)) {
 		if (!exponent_javascript_inAjaxAction()) {
 			include_once($page);
-			exponent_theme_satisfyThemeRequirements();
+			expTheme::satisfyThemeRequirements();
 		} else {
-			exponent_theme_runAction();
+			expTheme::runAction();
 		}
 	} else {
 		echo sprintf($base_i18n['not_readable'], $page);

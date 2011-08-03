@@ -160,7 +160,7 @@ class section {
 		$form->register('public',$i18n['public'],new checkboxcontrol($object->public));
 
 		// Register the sub themes dropdown.
-		$form->register('subtheme',$i18n['subtheme'],new dropdowncontrol($object->subtheme,exponent_theme_getSubThemes()));
+		$form->register('subtheme',$i18n['subtheme'],new dropdowncontrol($object->subtheme,expTheme::getSubThemes()));
 
 		// Register the 'Secured?' checkboxes for SSL pages
 		if(ENABLE_SSL) {

@@ -636,7 +636,7 @@ class expRouter {
     }
 
     public function getSection() {
-        if (exponent_theme_inAction()) {
+        if (expTheme::inAction()) {
             if (isset($_REQUEST['section'])) {
                 $section = $this->url_type=="sef" ? $this->getPageByName($_REQUEST['section']) : $_REQUEST['section'] ;
             } else {

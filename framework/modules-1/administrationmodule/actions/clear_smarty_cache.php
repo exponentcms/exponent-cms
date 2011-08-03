@@ -22,7 +22,7 @@
 if (!defined('EXPONENT')) exit('');
 
 if (exponent_permissions_check('development',exponent_core_makeLocation('administrationmodule'))) {
-	$files = exponent_theme_remove_smarty_cache();
+	$files = expTheme::removeSmartyCache();
 	$template = new template('administrationmodule','_remove_css',$loc);
 	$template->assign('file_type', exponent_lang_getText('Smarty Cache Files'));
 	$template->assign('files',$files);

@@ -17,18 +17,15 @@
 #
 ##################################################
 
-// Part of Extensions category
-
 if (!defined('EXPONENT')) exit('');
 
-if (exponent_permissions_check('development',exponent_core_makeLocation('administrationmodule'))) {
-	$files = expTheme::removeCss();
-	$template = new template('administrationmodule','_remove_css',$loc);
-	$template->assign('file_type', exponent_lang_getText('CSS Files'));
-	$template->assign('files',$files);
-	$template->output();
-} else {
-	echo SITE_403_HTML;
-}
+return array(
+	'member_id'=>array(
+		DB_FIELD_TYPE=>DB_DEF_ID),
+	'group_id'=>array(
+		DB_FIELD_TYPE=>DB_DEF_ID),
+	'is_admin'=>array(
+		DB_FIELD_TYPE=>DB_DEF_BOOLEAN)
+);
 
 ?>

@@ -63,7 +63,7 @@ class section_template {
 		} else $form->meta('rank',0);
 		
 		if (is_readable(THEME_ABSOLUTE.'subthemes')) { // grab sub themes
-			$form->register('subtheme',$i18n['subtheme'],new dropdowncontrol($object->subtheme,exponent_theme_getSubThemes()));
+			$form->register('subtheme',$i18n['subtheme'],new dropdowncontrol($object->subtheme,expTheme::getSubThemes()));
 		}
 		
 		$form->register('active',$i18n['active'],new checkboxcontrol($object->active));

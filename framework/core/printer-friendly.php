@@ -33,7 +33,7 @@
 	<div class="printer-button-bar">
 	    <a href="#" onclick="window.print();return false;" class="awesome small blue" title="Print this page"><?php echo gt("Print This Page"); ?></a>
 	</div>
-	<?php exponent_theme_main(); ?>
+	<?php expTheme::main(); ?>
 </body>
-<?php echo exponent_theme_footerInfo(); ?>
+<?php echo expTheme::foot(); ?>
 </html>

@@ -59,7 +59,7 @@ class keywords {
 					foreach($db->selectObjects('container', "external='".serialize($loc)."'") as $mod) {
 						$mods[] = $mod;
 						$modloc = unserialize($mod->internal);
-						exponent_theme_showAction($modloc->mod, 'index', $modloc->src, array('view'=>$mod->view, 'title'=>$mod->title));
+						expTheme::showAction($modloc->mod, 'index', $modloc->src, array('view'=>$mod->view, 'title'=>$mod->title));
 					}
 				} else {
 					foreach($db->selectObjects('container', "internal='".serialize($loc)."'") as $mod) {

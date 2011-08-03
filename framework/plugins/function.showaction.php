@@ -19,7 +19,7 @@
 
 function smarty_function_showaction($params,&$smarty) {
 		//echo $params['module']."|".$params['action']."|".$params['source'];
-        exponent_theme_showAction($params['module'], $params['action'], $params['source'], $params['params']);
+        expTheme::showAction($params['module'], $params['action'], $params['source'], $params['params']);
 }
 
 ?>
