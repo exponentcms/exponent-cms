@@ -418,7 +418,10 @@ function glob2keyedArray($workArray){
 function exponent_core_resolveFilePaths($type, $name, $subtype, $subname) {
 	//TODO: implement caching
 	//TODO: optimization - walk the tree backwards and stop on the first match
-	
+   // eDebug($type);
+   // eDebug($name);
+   // eDebug($subtype);
+   // eDebug($subname);
 	//once baseclasses are in place, simply lookup the baseclass name of an object
 	if($type == "guess") {
 		// new style name processing
@@ -511,16 +514,21 @@ function exponent_core_resolveFilePaths($type, $name, $subtype, $subname) {
 	//latter override the precursors
 	$locations = array(BASE, THEME_ABSOLUTE);
 	foreach($locations as $location) {
-		//TODO: add a check for Default in common path here
 		$checkpaths[] = $location . $typepath . "common/" . $relpath2;
-		//TODO: add a check for Default in main path here
-		$checkpaths[] = $location . $relpath;
+		if (strstr($location,DISPLAY_THEME_REAL) && strstr($relpath,"framework/modules-1")) {
+   		$checkpaths[] = $location . str_replace("framework/modules-1", "modules", $relpath);
+		} else {
+   		$checkpaths[] = $location . $relpath;
+		}
+		//eDebug($relpath);
 	}
+	//eDebug($checkpaths);
 
 	//TODO: handle the - currently unused - case where there is 
 	//the same file in different $type categories 
 	$myFiles = array();
 	foreach($checkpaths as $checkpath) {
+   	//eDebug($checkpath);
 		$tempFiles = glob2keyedArray(glob($checkpath));
 		if ($tempFiles != false) {
 			$myFiles = array_merge($myFiles, $tempFiles);
