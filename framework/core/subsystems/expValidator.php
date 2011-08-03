@@ -336,7 +336,8 @@ class expValidator {
 	 * @return bool
 	 */
 	public static function check_antispam($params, $msg="") {
-		if (SITE_USE_ANTI_SPAM == 0 || (exponent_users_isLoggedIn() && ANTI_SPAM_USERS_SKIP == 1)) {
+		global $user;
+		if (SITE_USE_ANTI_SPAM == 0 || ($user->isLoggedIn() && ANTI_SPAM_USERS_SKIP == 1)) {
 			return true;
 		}
         $msg = empty($msg) ? 'Anti-spam verification failed.' : $msg;

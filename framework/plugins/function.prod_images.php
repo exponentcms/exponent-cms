@@ -168,7 +168,14 @@ function smarty_function_prod_images($params,&$smarty) {
                 
                 });
             ";
-            exponent_javascript_toFoot('imgswatches', null, null, $js, null);
+//            exponent_javascript_toFoot('imgswatches', null, null, $js, null);
+            expJavascript::pushToFoot(array(
+                "unique"=>'imgswatches',
+                "yui2mods"=>null,
+                "yui3mods"=>null,
+                "content"=>$js,
+                "src"=>""
+             ));
         break;
         case 'swatches':
             $html = '<ul class="swatches">';

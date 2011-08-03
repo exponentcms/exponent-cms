@@ -176,7 +176,7 @@ function smarty_function_control($params,&$smarty) {
                     echo '<h2 style="color:red">reCaptcha configuration is missing the public key.</h2>';
                     return;
                 }
-				if (exponent_users_isLoggedIn() && ANTI_SPAM_USERS_SKIP == 1) {
+				if ($user->isLoggedIn() && ANTI_SPAM_USERS_SKIP == 1) {
 					// skip it for logged on users based on config
 				} else {
 					// include the library and show the form control

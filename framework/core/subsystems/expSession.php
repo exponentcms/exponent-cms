@@ -16,7 +16,7 @@
  * @version 2.0.0
  */
 /**
- * This is the class expSessionr
+ * This is the class expSession
  *
  * @subpackage Core-Subsytems
  * @package Framework

@@ -127,7 +127,7 @@ class cartController extends expController {
 	    
 	function updateQuantity() {
 		global $order;
-		if (exponent_javascript_inAjaxAction()) {
+		if (expJavascript::inAjaxAction()) {
 			$id = str_replace('quantity-', '', $this->params['id']);
             $item = new orderitem($id);
             if (!empty($item->id)) {

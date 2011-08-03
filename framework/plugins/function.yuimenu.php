@@ -48,8 +48,14 @@ function smarty_function_yuimenu($params,&$smarty) {
 		YAHOO.util.Event.onDOMReady(buildmenu);
     ';
 	
-	exponent_javascript_toFoot("yuimenu-".$params['buildon'],"menu",$smarty->_tpl_vars[__name],$menu);
-	
+//	exponent_javascript_toFoot("yuimenu-".$params['buildon'],"menu",$smarty->_tpl_vars[__name],$menu);
+	expJavascript::pushToFoot(array(
+	    "unique"=>"yuimenubar-".$params['buildon'],
+	    "yui2mods"=>"menu",
+	    "yui3mods"=>$smarty->_tpl_vars[__name],
+	    "content"=>$menu,
+	    "src"=>""
+	 ));
 	
 }
 	

@@ -37,7 +37,14 @@ $script = "
 
     YAHOO.util.Event.on('reportabug','click',reportbugwindow);
 ";
-exponent_javascript_toFoot('zreportabug', '', null, $script);
+//exponent_javascript_toFoot('zreportabug', '', null, $script);
+expJavascript::pushToFoot(array(
+    "unique"=>'zreportabug',
+    "yui2mods"=>'',
+    "yui3mods"=>null,
+    "content"=>$script,
+    "src"=>""
+ ));
 
 if ($user->isAdmin()) {
 	$expAdminMenu = array(

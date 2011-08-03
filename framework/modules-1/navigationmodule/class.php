@@ -520,7 +520,8 @@ class navigationmodule {
     }
 
 	static function canManageStandalones() {
-		if (exponent_users_isAdmin()) return true;
+		global $user;
+		if ($user->isAdmin()) return true;
 		$standalones = navigationmodule::levelTemplate(-1,0);
 		$canmanage = false;
 		foreach ($standalones as $standalone) {

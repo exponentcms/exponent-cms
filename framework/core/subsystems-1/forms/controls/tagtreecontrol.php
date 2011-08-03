@@ -92,7 +92,14 @@ class tagtreecontrol extends formcontrol {
 				expTree.init("'.$this->id.'",obj2json,"'.$this->modelname.'",'.$this->menu.','.$this->expandonstart.');
 			});
 		';
-		exponent_javascript_toFoot('expddtree', 'treeview,menu,animation,dragdrop,json,container,connection', null, $script, PATH_RELATIVE.'framework/core/assets/js/exp-tree.js');
+//		exponent_javascript_toFoot('expddtree', 'treeview,menu,animation,dragdrop,json,container,connection', null, $script, PATH_RELATIVE.'framework/core/assets/js/exp-tree.js');
+		expJavascript::pushToFoot(array(
+		    "unique"=>'expddtree',
+		    "yui2mods"=>'treeview,menu,animation,dragdrop,json,container,connection',
+		    "yui3mods"=>null,
+		    "content"=>$script,
+		    "src"=>PATH_RELATIVE.'framework/core/assets/js/exp-tree.js'
+		 ));
 		return $html;
 	}
 	

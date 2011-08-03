@@ -63,7 +63,7 @@ if (ENABLE_TRACKING) $router->updateHistory($section);
 header("Content-Type: text/html; charset=".LANG_CHARSET);
 
 // Check to see if we are in maintenance mode.
-if (MAINTENANCE_MODE && !exponent_users_isAdmin() && ( !isset($_REQUEST['module']) || $_REQUEST['module'] != 'loginmodule')) {
+if (MAINTENANCE_MODE && !$user->isAdmin() && ( !isset($_REQUEST['module']) || $_REQUEST['module'] != 'loginmodule')) {
 	//only admins/acting_admins are allowed to get to the site, all others get the maintenance view
 	$template = new standalonetemplate('_maintenance');
 	$template->output();
@@ -71,8 +71,6 @@ if (MAINTENANCE_MODE && !exponent_users_isAdmin() && ( !isset($_REQUEST['module'
 	if (MAINTENANCE_MODE > 0) flash('error', "Maintenance Mode is Enabled");
 	//the default user is anonymous
 	if (!expSession::loggedIn()) {
-		// Initialize the users subsystem
-//		require_once(BASE.'framework/core/subsystems-1/users.php');  // FIXME users.php is already loaded from within exponent.php above
 		//TODO: Maxims initial anonymous user implementation
 		//exponent_users_login("anonymous", "anonymous");
 	}
@@ -93,7 +91,7 @@ if (MAINTENANCE_MODE && !exponent_users_isAdmin() && ( !isset($_REQUEST['module'
 	$base_i18n = exponent_lang_loadFile('index.php');
 
 	if (is_readable($page)) {
-		if (!exponent_javascript_inAjaxAction()) {
+		if (!expJavascript::inAjaxAction()) {
 			include_once($page);
 			expTheme::satisfyThemeRequirements();
 		} else {

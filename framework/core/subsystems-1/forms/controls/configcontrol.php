@@ -58,8 +58,15 @@ class configcontrol extends formcontrol {
 			var cp = new configPanel(".$this->title.", 'leftopts', '".$this->welcome."', 750, 450);
 		        cp.fire();
 		";	
-		exponent_javascript_toFoot('cfgmgr', 'dragdrop,element,animation,resize,layout', null, '//comment', PATH_RELATIVE.'framework/core/assets/js/exp-layout.js');
-                return $html;
+//		exponent_javascript_toFoot('cfgmgr', 'dragdrop,element,animation,resize,layout', null, '//comment', PATH_RELATIVE.'framework/core/assets/js/exp-layout.js');
+		expJavascript::pushToFoot(array(
+		    "unique"=>'cfgmgr',
+		    "yui2mods"=>'dragdrop,element,animation,resize,layout',
+		    "yui3mods"=>null,
+		    "content"=>'//comment',
+		    "src"=>PATH_RELATIVE.'framework/core/assets/js/exp-layout.js'
+		 ));
+        return $html;
 	}
 	
 	function form($object) {

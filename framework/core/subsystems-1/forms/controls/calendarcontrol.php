@@ -246,9 +246,15 @@ class calendarcontrol extends formcontrol {
     	    )
     	);
 	
-       
-        exponent_javascript_toFoot('calpop'.$name, "button,calendar,container,dragdrop,slider", null, $script);
-        return $html;
+//        exponent_javascript_toFoot('calpop'.$name, "button,calendar,container,dragdrop,slider", null, $script);
+        expJavascript::pushToFoot(array(
+            "unique"=>'calpop'.$name,
+            "yui2mods"=>"button,calendar,container,dragdrop,slider",
+            "yui3mods"=>null,
+            "content"=>$script,
+            "src"=>""
+         ));
+         return $html;
     }
 
     static function parseData($original_name,$formvalues) {

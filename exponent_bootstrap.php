@@ -75,9 +75,7 @@ define('EXPONENT', '1');
 require_once(BASE . 'framework/core/subsystems-1/config/load.php');
 
 // Set the default timezone.
-if (function_exists('date_default_timezone_set')) {
-    @date_default_timezone_set(DISPLAY_DEFAULT_TIMEZONE);
-}
+@date_default_timezone_set(DISPLAY_DEFAULT_TIMEZONE);
 
 if (!defined('DISPLAY_THEME')) {
 	/* exdoc

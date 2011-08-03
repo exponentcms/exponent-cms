@@ -405,8 +405,15 @@ class expPaginator {
                     });
                     ";
                     
-                    exponent_javascript_toFoot('select-all', '', null, $js, null);
-                    
+//                    exponent_javascript_toFoot('select-all', '', null, $js, null);
+                    expJavascript::pushToFoot(array(
+                        "unique"=>'select-all',
+                        "yui2mods"=>'',
+                        "yui3mods"=>null,
+                        "content"=>$js,
+                        "src"=>""
+                     ));
+
                 } else {
                     $this->header_columns .= '<a href="'.$router->makeLink($params, null, null, true).'" alt="sort by '.$colname.'" rel="nofollow">'.$colname.'</a>';
                 }

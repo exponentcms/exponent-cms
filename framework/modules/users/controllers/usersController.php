@@ -96,7 +96,7 @@ class usersController extends expController {
         if ((($user->id == $id) || $user->isAdmin()) && $this->params['userkey'] != expSession::get("userkey")) expHistory::back();
         
         // make sure this user should be updating user accounts
-        if (!exponent_users_isLoggedIn() && SITE_ALLOW_REGISTRATION == 0){
+        if (!$user->isLoggedIn() && SITE_ALLOW_REGISTRATION == 0){
             flash('error', 'This site does not allow user registrations');
             expHistory::back();
         } elseif (!$user->isAdmin() && ($user->isLoggedIn() && $user->id != $id)) {

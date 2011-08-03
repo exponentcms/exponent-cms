@@ -43,12 +43,9 @@ require_once(BASE.'framework/core/expFramework.php');
 $available_controllers = intializeControllers();
 
 // Initialize the Sessions Subsystem
-//require_once(BASE.'framework/core/subsystems-1/sessions.php');
-//exponent_sessions_initialize();
 expSession::initialize();
 
 // Initialize the theme subsystem 1.0 compatibility layer
-//if (!defined('SYS_THEME')) require_once(BASE.'framework/core/subsystems-1/theme.php');
 require_once(BASE.'framework/core/subsystems-1/theme.php');
 $validateTheme = array("headerinfo"=>false,"footerinfo"=>false);
 
@@ -102,7 +99,7 @@ require_once(BASE.'framework/core/subsystems-1/javascript.php');
 //require_once(BASE.'framework/core/expFramework.php');
 //$available_controllers = intializeControllers();
 
-if (exponent_javascript_inAjaxAction()) set_error_handler('handleErrors');
+if (expJavascript::inAjaxAction()) set_error_handler('handleErrors');
 
 // Validate the session.  This will populate the $user variable
 /**
