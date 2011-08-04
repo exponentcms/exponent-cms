@@ -24,7 +24,7 @@ function smarty_function_control($params,&$smarty) {
     if ( (isset($params['type']) && isset($params['name'])) || $params['type'] == 'buttongroup' 
 //    || $params['type'] == 'captcha' || $params['type'] == 'recaptcha' || $params['type'] == 'antispam') {
 	  || $params['type'] == 'recaptcha' || $params['type'] == 'antispam') {
-        $i18n = exponent_lang_loadFile('plugins/function_control.php');
+//        $i18n = exponent_lang_loadFile('plugins/function_control.php');
 
 //        if (!defined('SYS_FORMS')) require_once(BASE.'framework/core/subsystems-1/forms.php');
         require_once(BASE.'framework/core/subsystems-1/forms.php');

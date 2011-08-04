@@ -20,8 +20,6 @@
 if (!defined('EXPONENT')) exit('');
 if (!$user->isAdmin()) return false;
 
-$i18n = exponent_lang_loadFile('modules/administrationmodule/tasks/coretasks.php');
-
 global $db;
 // hide the menu if the store controller isn't activated
 $active = $db->selectValue('modstate', 'active', 'module="storeController"');
@@ -36,98 +34,98 @@ if ($new_orders>0) {
 };
 
 $ecom = array(
-    'text'=>'Ecommerce'.$newo.'<form id="orderQuickfinder" method="POST" action="'.URL_FULL.'index.php" enctype="multipart/form-data"><input type="hidden" name="controller" value="order"><input type="hidden" name="action" value="quickfinder"><input style="padding-top: 3px;" type="text" name="ordernum" id="ordernum" size="25" value="Order Quickfinder" onclick="this.value=\'\';"></form>',
+    'text'=>gt('Ecommerce').$newo.'<form id="orderQuickfinder" method="POST" action="'.URL_FULL.'index.php" enctype="multipart/form-data"><input type="hidden" name="controller" value="order"><input type="hidden" name="action" value="quickfinder"><input style="padding-top: 3px;" type="text" name="ordernum" id="ordernum" size="25" value="'.gt("Order Quickfinder").'" onclick="this.value=\'\';"></form>',
     'classname'=>'ecom',
     'submenu'=>array(
         'id'=>'ecomm',
         'itemdata'=>array(
             array(
-                'text'=>"View Orders <em>(".$new_orders."  New Orders)",
+                'text'=>gt("View Orders")." <em>(".$new_orders."  ".gt("New Orders").")",
                 'url'=>makeLink(array('controller'=>'order','action'=>'showall')),
             ),
             array(
-                'text'=>"Create Order",
+                'text'=>gt("Create Order"),
                 'url'=>makeLink(array('controller'=>'order','action'=>'create_new_order')),
             ),            
             array(
-                'text'=>"Dashboard",
+                'text'=>gt("Dashboard"),
                 'url'=>makeLink(array('controller'=>'report','action'=>'dashboard')),
             ),
             array(
-                'text'=>"Store Settings",
+                'text'=>gt("Store Settings"),
                 'submenu'=>array(
                     'id'=>'store',
                     'itemdata'=>array(                        
                         array(
-                            'text'=>"General Store Settings",
+                            'text'=>gt("General Store Settings"),
                             'url'=>makeLink(array('controller'=>'ecomconfig','action'=>'configure')),
                         ),
                         array(
-                            'text'=>"General Cart Settings",
+                            'text'=>gt("General Cart Settings"),
                             'url'=>makeLink(array('controller'=>'cart','action'=>'configure')),
                         ),
                         array(
-                            'text'=>"Address/Geo Settings",
+                            'text'=>gt("Address/Geo Settings"),
                             'url'=>makeLink(array('controller'=>'address','action'=>'manage')),
                         ),
 						array(
-                            'text'=>"Manage Up Charge Rate",
+                            'text'=>gt("Manage Up Charge Rate"),
                             'url'=>makeLink(array('controller'=>'ecomconfig','action'=>'manage_upcharge')),
                         ),
                         array(
-                            'text'=>"Manage Tax Classes",
+                            'text'=>gt("Manage Tax Classes"),
                             'url'=>makeLink(array('controller'=>'tax','action'=>'manage')),
                         ),
                         array(
-                            'text'=>"Manage Status Codes",
+                            'text'=>gt("Manage Status Codes"),
                             'url'=>makeLink(array('controller'=>'order_status','action'=>'manage')),
                         ),
                         array(
-                            'text'=>"Manage Status Messages",
+                            'text'=>gt("Manage Status Messages"),
                             'url'=>makeLink(array('controller'=>'order_status','action'=>'manage_messages')),
                         ),
                         array(
-                            'text'=>"Manage Order Types",
+                            'text'=>gt("Manage Order Types"),
                             'url'=>makeLink(array('controller'=>'order_type','action'=>'manage')),
                         ),
                         array(
-                            'text'=>"Manage Sales Reps",
+                            'text'=>gt("Manage Sales Reps"),
                             'url'=>makeLink(array('controller'=>'sales_rep','action'=>'manage')),
                         ),
                     ),                        
                 ),
             ),
             array(
-                'text'=>"Products, Categories, & Manufacturers",
+                'text'=>gt("Products, Categories, & Manufacturers"),
                 'submenu'=>array(
                     'id'=>'prodscats',
                     'itemdata'=>array(
                         array(
-                            'text'=>"Add a Product",
+                            'text'=>gt("Add a Product"),
                             'url'=>makeLink(array('controller'=>'store','action'=>'create')),
                         ),
                         array(
-                            'text'=>"Manage Products",
+                            'text'=>gt("Manage Products"),
                             'url'=>makeLink(array('controller'=>'store','action'=>'manage')),
                         ),
                         array(
-                            'text'=>"Import Products",
+                            'text'=>gt("Import Products"),
                             'url'=>makeLink(array('controller'=>'importexport','action'=>'manage')),
                         ),
                         array(
-                            'text'=>"Manage Product Statuses",
+                            'text'=>gt("Manage Product Statuses"),
                             'url'=>makeLink(array('controller'=>'product_status','action'=>'manage')),
                         ),
                         array(
-                            'text'=>"Manage Product Options",
+                            'text'=>gt("Manage Product Options"),
                             'url'=>makeLink(array('controller'=>'ecomconfig','action'=>'options')),
                         ),
                         array(
-                            'text'=>"Manage Store Categories",
+                            'text'=>gt("Manage Store Categories"),
                             'url'=>makeLink(array('controller'=>'storeCategoryController','action'=>'manage')),
                         ),
                         array(
-                            'text'=>"Manage Manufacturers",
+                            'text'=>gt("Manage Manufacturers"),
                             'url'=>makeLink(array('controller'=>'companyController','action'=>'manage')),
                         ),
                         
@@ -135,72 +133,72 @@ $ecom = array(
                 ),
             ),
             array(
-                'text'=>"Payment & Shipping Settings",
+                'text'=>gt("Payment & Shipping Settings"),
                 'submenu'=>array(
                     'id'=>'pay',
                     'itemdata'=>array(
                         array(
-                            'text'=>"Manage Payment Options",
+                            'text'=>gt("Manage Payment Options"),
                             'url'=>makeLink(array('controller'=>'billing','action'=>'manage')),
                         ),
                         array(
-                            'text'=>"Manage Shipping Options",
+                            'text'=>gt("Manage Shipping Options"),
                             'url'=>makeLink(array('controller'=>'shipping','action'=>'manage')),
                         ),
                     ),                        
                 ),
             ),
 			array(
-                'text'=>"Email Messages",
+                'text'=>gt("Email Messages"),
                 'submenu'=>array(
                     'id'=>'emailmessages',
                     'itemdata'=>array(
                         array(
-                            'text'=>"Manage Email",
+                            'text'=>gt("Manage Email"),
                             'url'=>makeLink(array('controller'=>'order_status','action'=>'manage_messages')),
                         ),
                     ),                        
                 ),
             ),
             array(
-                'text'=>"Discounts & Promos",
+                'text'=>gt("Discounts & Promos"),
                 'submenu'=>array(
                     'id'=>'discount',
                     'itemdata'=>array(
                         array(
-                            'text'=>"Manage Discounts",
+                            'text'=>gt("Manage Discounts"),
                             'url'=>makeLink(array('controller'=>'ecomconfig','action'=>'manage_discounts')),
                         ),
                     ),                        
                 ),
             ),
             array(
-                'text'=>"Reports & Activities",
+                'text'=>gt("Reports & Activities"),
                 'submenu'=>array(
                     'id'=>'reports',
                     'itemdata'=>array(
                         array(
-                            'text'=>"View Uncategorized Products",
+                            'text'=>gt("View Uncategorized Products"),
                             'url'=>makeLink(array('controller'=>'store','action'=>'showallUncategorized')),
                         ),
                         array(
-                            'text'=>"View Improperly Categorized Products",
+                            'text'=>gt("View Improperly Categorized Products"),
                             'url'=>makeLink(array('controller'=>'store','action'=>'showallImpropercategorized')),
                         ),
                         array(
-                            'text'=>"Build an Order Report",
+                            'text'=>gt("Build an Order Report"),
                             'url'=>makeLink(array('controller'=>'report','action'=>'order_report')),
                         ),
                         array(
-                            'text'=>"Build a Product Report",
+                            'text'=>gt("Build a Product Report"),
                             'url'=>makeLink(array('controller'=>'report','action'=>'product_report')),
                         ),
                         array(
-                            'text'=>"Batch Process Orders",
+                            'text'=>gt("Batch Process Orders"),
                             'url'=>makeLink(array('controller'=>'store','action'=>'batch_process')),
                         ),
                          array(
-                            'text'=>"Import External Addresses",
+                            'text'=>gt("Import External Addresses"),
                             'url'=>makeLink(array('controller'=>'store','action'=>'import_external_addresses')),
                         ),
                     ),                        

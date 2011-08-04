@@ -24,7 +24,7 @@ if (!defined('EXPONENT')) exit('');
 if (exponent_permissions_check('development',exponent_core_makeLocation('administrationmodule'))) {
 	$files = expTheme::removeCss();
 	$template = new template('administrationmodule','_remove_css',$loc);
-	$template->assign('file_type', exponent_lang_getText('CSS Files'));
+	$template->assign('file_type', gt('CSS Files'));
 	$template->assign('files',$files);
 	$template->output();
 } else {

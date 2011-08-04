@@ -20,35 +20,33 @@
 
 if (!defined('EXPONENT')) exit('');
 
-$i18n = exponent_lang_loadFile('install/pages/dbcheck.php');
-
 ?>
 
 <form method="post" action="index.php">
 <input type="hidden" name="page" value="install-5" />
 
 <div id="tab1" class="">
-  <h2>Site Configuration</h2>
+  <h2><?php echo gt('Site Configuration'); ?></h2>
   <div class="text-control control  ">
-    <label class="label">Organization Name</label>
+    <label class="label"><?php echo gt('Organization Name'); ?></label>
     <input type="text" name="sc[ORGANIZATION_NAME]" value="Exponent CMS" size="40" class="text ">
   </div>
   <div class="text-control control  ">
-    <label class="label">Site Title</label>
+    <label class="label"><?php echo gt('Site Title'); ?></label>
     <input type="text" name="sc[SITE_TITLE]" value="Exponent CMS - A Powerful, Flexible, and Intuitive Web Solution." size="40" class="text ">
   </div>
   
   <div class="text-control control ">
-    <label class="label">Site Header</label>
+    <label class="label"><?php echo gt('Site Header'); ?></label>
     <input type="text" name="sc[SITE_HEADER]" value="Exponent CMS" size="40" class="text ">
   </div>
   
   <div class="text-control control ">
-    <label class="label">Meta Keywords</label>
+    <label class="label"><?php echo gt('Meta Keywords'); ?></label>
     <textarea class="textarea" id="sc[SITE_KEYWORDS]" name="sc[SITE_KEYWORDS]" rows="5" cols="38">exponent cms</textarea>
   </div>
   <div class="text-control control ">
-    <label class="label">Meta Description</label>
+    <label class="label"><?php echo gt('Meta Description'); ?></label>
     <textarea class="textarea" id="sc[SITE_DESCRIPTION]" name="sc[SITE_DESCRIPTION]" rows="5" cols="38">exponent</textarea>
   </div>
   <div class="control checkbox">
@@ -60,7 +58,7 @@ $i18n = exponent_lang_loadFile('install/pages/dbcheck.php');
             <input type="checkbox" name="sc[SEF_URLS]" value="1" checked="checked" class="checkbox">
           </td>
           <td>
-            <label class="label ">Enable Search Engine Friendly URLSs</label>
+            <label class="label "><?php echo gt('Enable Search Engine Friendly URLSs'); ?></label>
           </td>
         </tr>
       </tbody>

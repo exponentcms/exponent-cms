@@ -388,7 +388,7 @@ class expValidator {
 //                    $captcha_real = expSession::get('captcha_string');
 //                    if (SITE_USE_ANTI_SPAM && strtoupper($post[$param]) != $captcha_real) {
 //                            unset($post[$param]);
-//                            $post['_formError'][] = exponent_lang_getText('Captcha Verification Failed');
+//                            $post['_formError'][] = gt('Captcha Verification Failed');
 //                    }
 //                break;
                 case 'presence_of':
@@ -503,26 +503,24 @@ class expValidator {
     }
 
 	public static function checkPasswordStrength($username,$password) {
-		$i18n = exponent_lang_loadFile('subsystems/security.php');
 		// Return blank string on success, error message on failure.
 		// The error message should let the user know why their password is wrong.
 		if (strcasecmp($username,$password) == 0) {
-			return $i18n['not_username'];
+			return gt('Password cannot be equal to the username.');
 		}
 		# For example purposes, the next line forces passwords to be over 8 characters long.
 		if (strlen($password) < 8) {
-			return $i18n['pass_len'];
+			return gt('Passwords must be at least 8 letters long.');
 		}
 
 		return ""; // by default, accept any passwords
 	}
 
 	public static function checkUsername($username) {
-		$i18n = exponent_lang_loadFile('subsystems/security.php');
 		// Return blank string on success, error message on failure.
 		// The error message should let the user know why their username is wrong.
 		if (strlen($username) < 3) {
-			return $i18n['username_length'];
+			return gt('Your username must be at least 3 characters.');
 		}
 		//echo "<xmp>";
 		//print_r(preg_match("/^[a-zA-Z0-9]/",$username));
@@ -530,7 +528,7 @@ class expValidator {
 		//exit;
 
 		//if (!preg_match("/[a-zA-Z0-9]/",$username)){
-		//	return $i18n['username_illegal'];
+		//	return gt('Your username contains illegal characters.');
 		//}
 		return ""; // by default, accept any passwords
 	}

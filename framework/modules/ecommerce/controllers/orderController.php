@@ -1628,7 +1628,7 @@ class orderController extends expController {
         $sql .= "order by match (a.firstname,a.lastname,a.email,a.organization)  against ('" . $this->params['query'] . "*') ASC LIMIT 12";
         $res = $db->selectObjectsBySql($sql);
         //eDebug($sql);
-        $ar = new expAjaxReply(200, gettext('Here\'s the items you wanted'), $res);
+        $ar = new expAjaxReply(200, gt('Here\'s the items you wanted'), $res);
         $ar->send();
     }    
     
@@ -1642,7 +1642,7 @@ class orderController extends expController {
         $sql .= "order by match (a.firstname,a.lastname,a.email,a.organization)  against ('" . $this->params['query'] . "*') ASC LIMIT 12";
         $res = $db->selectObjectsBySql($sql);
         //eDebug($sql);
-        $ar = new expAjaxReply(200, gettext('Here\'s the items you wanted'), $res);
+        $ar = new expAjaxReply(200, gt('Here\'s the items you wanted'), $res);
         $ar->send();
     }
     

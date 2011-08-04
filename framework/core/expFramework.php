@@ -590,7 +590,7 @@ function expUnserialize($serial_str) {
 
 // callback when the buffer gets flushed. Any processing on the page output
 // just before it gets rendered to the screen should happen here.
- function expProcessBuffer($buffer, $mode=null) {
+function expProcessBuffer($buffer, $mode=null) {
      global $jsForHead, $cssForHead;
      return (str_replace("<!-- MMINIFY REPLACE -->", $cssForHead.$jsForHead, $buffer));
 }

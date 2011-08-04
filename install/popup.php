@@ -19,13 +19,11 @@
 
 include_once('../exponent.php');
 
-$i18n = exponent_lang_loadFile('install/popup.php');
-
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
-	<title><?php echo $i18n['title']; ?></title>
+	<title><?php echo gt('Exponent CMS : Install Wizard'); ?></title>
 	<link rel="stylesheet" title="exponent" href="style.css" />
 	<link rel="stylesheet" href="<?php echo PATH_RELATIVE; ?>framework/core/assets/css/tables.css" />
 	<meta http-equiv="Content-Type" content="text/html; charset=<?php echo LANG_CHARSET; ?>" />

@@ -35,7 +35,7 @@ class clear_cache extends upgradescript {
 	 * name/title of upgrade script
 	 * @return string
 	 */
-	function name() { return "Clear the Caches"; }
+	function name() { return gt("Clear the Caches"); }
 
 	/**
 	 * additional test(s) to see if upgrade script should be run
@@ -76,7 +76,7 @@ class clear_cache extends upgradescript {
 				$errors += count($files['not_removed']);
 			}
 		}
-		return "All Caches were cleared.<br>".$errors." files could not be removed.";
+		return gt("All Caches were cleared.")."<br>".$errors." ".gt("files could not be removed.");
 	}
 
 	/**

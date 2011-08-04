@@ -26,7 +26,7 @@ $events = $db->selectObjects('eventregistration', 'event_starttime > '.time());
 
 $items = array();
 $items[] = array(
-    'text'=>"<strong><u>View All Event Registrations</u><strong>",
+    'text'=>"<strong><u>".gt('View All Event Registrations')."</u><strong>",
     'url'=>makeLink(array('controller'=>'eventregistration','action'=>'showall')),
 );
 
@@ -41,12 +41,11 @@ foreach ($events as $event) {
 }
 
 return array(
-    'text'=>'Upcoming Events',
+    'text'=>gt('Upcoming Events'),
     'classname'=>'events',
     'submenu'=>array(
         'id'=>'events',
         'itemdata'=>$items,
-        
     )
 );
 

@@ -1258,7 +1258,7 @@ class storeController extends expController {
         $sql .= "order by p.model ASC LIMIT 30";
         $res = $db->selectObjectsBySql($sql);
         //eDebug($sql);
-        $ar = new expAjaxReply(200, gettext('Here\'s the items you wanted'), $res);
+        $ar = new expAjaxReply(200, gt('Here\'s the items you wanted'), $res);
         $ar->send();
     }
     
@@ -1306,7 +1306,7 @@ class storeController extends expController {
             $res[0]->result = "No results found, please try again.";
         }*/
         //eDebug($sql);
-        $ar = new expAjaxReply(200, gettext('Here\'s the items you wanted'), $res);
+        $ar = new expAjaxReply(200, gt('Here\'s the items you wanted'), $res);
         $ar->send();
     }
     
@@ -1329,7 +1329,7 @@ class storeController extends expController {
         eDebug($sql);
         $res = $db->selectObjectsBySql($sql);
         eDebug($res,true);
-        $ar = new expAjaxReply(200, gettext('Here\'s the items you wanted'), $res);
+        $ar = new expAjaxReply(200, gt('Here\'s the items you wanted'), $res);
         $ar->send();
     }
     

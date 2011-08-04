@@ -21,19 +21,17 @@ if (!defined('EXPONENT')) exit('');
 
 include_once('include/sanity.php');
 
-$i18n = exponent_lang_loadFile('install/pages/sanity.php');
-
 $status = sanity_checkFiles();
 // Run sanity checks
 $errcount = count($status);
 $warncount = 0; // No warnings with permissions
 ?>
-<h1><?php echo $i18n['subtitle']; ?></h1>
+<h1><?php echo gt('System Requirements Check'); ?></h1>
 <table cellspacing="0" cellpadding="0" rules="all" border="0" width="100%" class="exp-skin-table">
     <thead>
         <tr>
             <th colspan="2">
-                <?php echo $i18n['filedir_tests']; ?>
+                <?php echo gt('File and Directory Permission Tests'); ?>
             </th>
         </tr>
     </thead>
@@ -46,17 +44,17 @@ foreach ($status as $file=>$stat) {
 	else echo ' class="bodytext success">';
 	switch ($stat) {
 		case SANITY_NOT_E:
-			echo $i18n['file_not_found'];
+			echo gt('File Not Found');
 			break;
 		case SANITY_NOT_R:
-			echo $i18n['not_r'];
+			echo gt('Not Readable');
 			break;
 		case SANITY_NOT_RW:
-			echo $i18n['not_rw'];
+			echo gt('Not Readable / Writable');
 			break;
 		case SANITY_FINE:
 			$errcount--;
-			echo $i18n['okay'];
+			echo gt('Okay');
 			break;
 		default:
 			echo '????';
@@ -71,7 +69,7 @@ foreach ($status as $file=>$stat) {
     <thead>
         <tr>
             <th colspan="2">
-                <?php echo $i18n['other_tests']; ?>
+                <?php echo gt('Other Tests'); ?>
             </th>
         </tr>
     </thead>
@@ -110,21 +108,21 @@ $write_file = 0;
 
 if ($errcount > 0) {
 	// Had errors.  Force halt and fix.
-	echo $i18n['found_major'];
+	echo gt('The Exponent Install Wizard found some major problems with the server environment, which you must fix before you can continue.');
 	
 	if (ini_get('safe_mode') == true) {
-		echo '<br /><br /><div style="font-weight: bold; color: red;">'.$i18n['safe_mode'].'</div>';
+		echo '<br /><br /><div style="font-weight: bold; color: red;">'.gt('SAFE MODE IS ENABLED.  You may encounter many strange errors unless you give the web server user ownership of ALL Exponent files.  On UNIX, this can be done with a "chown -R" command').'</div>';
 	}
 	?>
 	<br /><br />
 <?php
 	if (isset($_REQUEST['type']) && $_REQUEST['type'] == 'new'){
 		?>
-		<a href="index.php?page=sanity&type=new"><?php echo $i18n['rerun']; ?></a>
+		<a href="index.php?page=sanity&type=new"><?php echo gt('Re-run Environment Checks'); ?></a>
 		<?php
 	} else {
 		?>
-		<a href="index.php?page=sanity"><?php echo $i18n['rerun']; ?></a>
+		<a href="index.php?page=sanity"><?php echo gt('Re-run Environment Checks'); ?></a>
 		<?php
 	} ?>
 

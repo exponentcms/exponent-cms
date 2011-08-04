@@ -471,7 +471,7 @@ class usersController extends expController {
             $isuser = ($user->id == $id) ? 1 : 0 ;
             $u = new user($id);
         } else {
-            flash('error', expLang::gettext('You do not have the proper permissions to do that'));
+            flash('error', gt('You do not have the proper permissions to do that'));
             expHistory::back();
         }
         assign_to_template(array('u'=>$u,'isuser'=>$isuser));

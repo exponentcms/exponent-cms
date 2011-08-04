@@ -167,7 +167,7 @@ foreach ($tables as $table => $statusnum) {
 </table>
 <?php
 if ($line == 0) {
-	echo "<p class=\"success\">No Tables Were Changed!</p>";
+	echo "<p class=\"success\">".gt("No Tables Were Changed!")."</p>";
 }
 ?>
 

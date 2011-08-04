@@ -28,11 +28,8 @@ include_once('../exponent.php');
 
 if (!file_exists('not_configured') && file_exists(BASE.'conf/config.php')) {
 	header('Location: ../index.php');
-	exit('This Exponent Site has already been configured.');
+	exit(gt('This Exponent Site has already been configured.'));
 }
-
-// Load i18n values
-$i18n = exponent_lang_loadFile('install/index.php');
 
 //if (!defined('SYS_CONFIG')) include_once(BASE . 'framework/core/subsystems-1/config.php');
 include_once(BASE . 'framework/core/subsystems-1/config.php');
@@ -73,23 +70,23 @@ $page_text = '';
 
 switch ($page) {
 	case 'upgrade-1':
-	    $masthead = "Upgrade";
+	    $masthead = gt("Upgrade");
 		$page_text = gt("It appears you've upgraded your Exponent code.");
 		break;
 	case 'upgrade-2':
-	    $masthead = "Upgrade";
+	    $masthead = gt("Upgrade");
 		$page_text = gt("Installing Tables adds any new fields to existing tables, and adds any additional tables Exponent needs to be awesome.");
 		break;
 	case 'upgrade-3':
-	    $masthead = "Upgrade";
+	    $masthead = gt("Upgrade");
 		$page_text = gt("We'll now run any upgrade scripts needed for this version of Exponent.");
 		break;
 	case 'setlang':
 		$page_image = 'setlang';
-		$page_text = $i18n['setlang'];
+		$page_text = gt('Please choose which language you would like to use for this install.');
 		break;
 	case 'install-1':
-        $masthead = "New Installation";
+        $masthead = gt("New Installation");
 		$page_text = gt('
         Exponent requires that several file permissions be set correctly in order to operate.
         Sanity checks are being run right now to ensure that the web server directory you wish to install Exponent in, is suitable.
@@ -100,61 +97,61 @@ switch ($page) {
 		');
 		break;
 	case 'install-2':
-        $masthead = "New Installation";
+        $masthead = gt("New Installation");
 		$page_text = gt('
         Exponent requires a database to store and manage content. Simply create a database using your database tool of of choice, and fill in the information on this page.
 		');
 		break;
 	case 'install-3':
-        $masthead = "New Installation";
+        $masthead = gt("New Installation");
 		$page_text = gt('
             Exponent is now checking to make sure that the database configuration information you provided is valid.
  		');
 		break;
 	case 'install-4':
-        $masthead = "New Installation";
+        $masthead = gt("New Installation");
 		$page_text = gt('
             Please enter some basic information for your site.
  		');
 		break;
 	case 'install-5':
-        $masthead = "New Installation";
+        $masthead = gt("New Installation");
 		$page_text = gt('
             Your theme is your site\'s look and feel. Select what you\'d like you site to look like from the list of themes.
  		');
 		break;
 	case 'install-6':
-        $masthead = "New Installation";
+        $masthead = gt("New Installation");
 		$page_text = gt('
             The user you\'re about to create will be the <b>Super Administrator</b> for the entire system. This level of administration has un-restricted access and abilities throughout the entire website.
  		');
 		break;
 	case 'install-7':
-        $masthead = "New Installation";
+        $masthead = gt("New Installation");
 		$page_text = gt('
             The user you\'re about to create will be the <b>Super Administrator</b> for the entire system. This level of administration has un-restricted access and abilities throughout the entire website.
  		');
 		break;
 	case 'admin_user':
 		$page_image = 'account';
-		$page_text = $i18n['admin_user'];
+		$page_text = gt('The Exponent Administrator account is the most important account in the whole installation.  The Administrator has access to every feature of the software, and controls all content and configuration.');
 		break;
 	case 'upgrade_version':
 		$page_image = 'system';
-		$page_text = $i18n['upgrade_version'];
+		$page_text = gt('Choose which version you want to upgrade.');
 		break;
 	case 'upgrade':
 		$page_image = 'system';
-		$page_text = $i18n['upgrade'];
+		$page_text = gt('Exponent is now upgrading the database definitions.');
 		break;
 	case 'final':
         $masthead = (isset($_REQUEST['upgrade']))?"Upgrade":"New Installation";
         $page_text = (isset($_REQUEST['upgrade']))?gt("Your upgrade is complete!"):gt("Your installation is complete!");
 		break;
 	default:
-        $masthead = "New Installation";
+        $masthead = gt("New Installation");
 		$page = 'welcome';
-		$page_text = $i18n['guide'];
+		$page_text = gt('This installation wizard will guide you step by step through the configuration and setup of your new Exponent-powered website.');
 		break;
 }
 
@@ -162,7 +159,7 @@ switch ($page) {
 <!DOCTYPE>
 <html>
 <head>
-	<title><?php echo $i18n['page_title']; ?></title>
+	<title><?php echo gt('Exponent Install Wizard'); ?></title>
 	<meta http-equiv="Content-Type" content="text/html; charset=<?php echo LANG_CHARSET; ?>" />
 	<link rel="stylesheet" href="<?php echo YUI3_PATH; ?>cssreset/reset.css" />
 	<link rel="stylesheet" href="<?php echo YUI3_PATH; ?>cssfonts/fonts.css" />

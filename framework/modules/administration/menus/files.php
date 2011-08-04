@@ -50,19 +50,19 @@ expJavascript::pushToFoot(array(
  ));
 
 return array(
-    'text'=>'Files',
+    'text'=>gt('Files'),
     'classname'=>'files',
     'submenu'=>array(
         'id'=>'file-functions',
         'itemdata'=>array(
             array(
-                'text'=>"File Manager",
+                'text'=>gt("File Manager"),
                 'url'=>'#',
                 'classname'=>'filemanager',
                 'id'=>'filemanager',
             ),
             array(
-                'text'=>"Upload Files",
+                'text'=>gt("Upload Files"),
                 'url'=>'#',
                 'classname'=>'fileuploader',
                 'id'=>'fileuploader',

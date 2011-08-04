@@ -19,18 +19,16 @@
 
 if (!defined('EXPONENT')) exit('');
 
-$i18n = exponent_lang_loadFile('install/pages/admin_user.php');
-
 ?>
-<h2 id="subtitle"><?php echo $i18n['subtitle']; ?></h2>
+<h2 id="subtitle"><?php echo gt('Set up an Administrator Account'); ?></h2>
 <span style="color: red; font-weight: bold; padding-top: 8px;" id="errorMessage">
-<?php echo isset($_GET['erremail']) == 'true' ? 'You must supply a valid email address.' : ''; ?>
+<?php echo isset($_GET['erremail']) == 'true' ? gt('You must supply a valid email address.') : ''; ?>
 </span>
 <script>
 function checkPassword(f){	
 	if (f.password.value != f.password2.value) {
-		//alert('<?php echo $i18n['bad_password_message']; ?>');
-		document.getElementById("errorMessage").innerHTML = "<?php echo $i18n['bad_password_message']; ?>";
+		//alert('<?php echo gt('Your passwords do not match. Please check your entries.'); ?>');
+		document.getElementById("errorMessage").innerHTML = "<?php echo gt('Your passwords do not match. Please check your entries.'); ?>";
 		return false;
 	}else{
 		f.submit();
@@ -42,38 +40,38 @@ function checkPassword(f){
 <input type="hidden" name="page" value="save_admin" />
 <div class="form_section">
 	<div class="control">
-		<span class="label"><?php echo $i18n['username']; ?>: </span>
-		<input class="text" type="text" name="username" value="<?php echo $i18n['username_default']; ?>" />
+		<span class="label"><?php echo gt('Username'); ?>: </span>
+		<input class="text" type="text" name="username" value="<?php echo gt('admin'); ?>" />
 		<div class="control_help">
-			<?php echo $i18n['username_desc']; ?>
+			<?php echo gt('The username of your administrator account.  You should change this to something other than the default of "admin".'); ?>
 		</div>
 	</div>
 	<div class="control">
-		<span class="label"><?php echo $i18n['password']; ?>: </span>
+		<span class="label"><?php echo gt('Password'); ?>: </span>
 		<input class="text" type="password" name="password" value="" />
 		<div class="control_help">
-			<?php echo $i18n['password_desc']; ?>
+			<?php echo gt('The password of your administrator account.'); ?>
 		</div>
 	</div>
 		<div class="control">
-		<span class="label"><?php echo $i18n['password2']; ?>: </span>
+		<span class="label"><?php echo gt('Password Again'); ?>: </span>
 		<input class="text" type="password" name="password2" value="" />
 		<div class="control_help">
-			<?php echo $i18n['password_desc2']; ?>
+			<?php echo gt('Type your password again.'); ?>
 		</div>
 	</div>
 	<div class="control">
-		<span class="label"><?php echo $i18n['firstname']; ?>: </span>
-		<input class="text" type="text" name="firstname" value="<?php echo $i18n['firstname_default']; ?>" />
+		<span class="label"><?php echo gt('First Name'); ?>: </span>
+		<input class="text" type="text" name="firstname" value="<?php echo gt('System'); ?>" />
 	</div>
 	<div class="control">
-		<span class="label"><?php echo $i18n['lastname']; ?>: </span>
-		<input class="text" type="text" name="lastname" value="<?php echo $i18n['lastname_default']; ?>" />
+		<span class="label"><?php echo gt('Last Name'); ?>: </span>
+		<input class="text" type="text" name="lastname" value="<?php echo gt('Administrator'); ?>" />
 	</div>
 	<div class="control">
-		<span class="label"><?php echo $i18n['email']; ?>: </span>
+		<span class="label"><?php echo gt('Email Address'); ?>: </span>
 		<input class="text" type="text" name="email" value="" />
 	</div>
 </div>
-<input type="submit" value="<?php echo $i18n['continue']; ?>" class="text" />
+<input type="submit" value="<?php echo gt('Continue'); ?>" class="text" />
 </form>

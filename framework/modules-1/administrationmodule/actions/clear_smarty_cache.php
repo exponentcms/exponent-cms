@@ -24,7 +24,7 @@ if (!defined('EXPONENT')) exit('');
 if (exponent_permissions_check('development',exponent_core_makeLocation('administrationmodule'))) {
 	$files = expTheme::removeSmartyCache();
 	$template = new template('administrationmodule','_remove_css',$loc);
-	$template->assign('file_type', exponent_lang_getText('Smarty Cache Files'));
+	$template->assign('file_type', gt('Smarty Cache Files'));
 	$template->assign('files',$files);
 	$template->output();
 } else {

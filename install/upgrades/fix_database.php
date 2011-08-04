@@ -33,7 +33,7 @@ class fix_database extends upgradescript {
 	 * name/title of upgrade script
 	 * @return string
 	 */
-	function name() { return "Replace Missing Database Table Entries"; }
+	function name() { return gt("Replace Missing Database Table Entries"); }
 
 	/**
 	 * generic description of upgrade script

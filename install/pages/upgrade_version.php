@@ -25,11 +25,9 @@ $versions = array(
 	'2.0.0 Beta 1.1'=>'Extremely Efficient Entropy',
 );
 
-$i18n = exponent_lang_loadFile('install/pages/upgrade_version.php');
-
 ?>
 
-<h1><?php echo $i18n['select_ver']; ?></h1>
+<h1><?php echo gt('Select Version to Upgrade From'); ?></h1>
 
 <form method="post" action="index.php">
 <input type="hidden" name="page" value="upgrade" />
@@ -40,7 +38,7 @@ $i18n = exponent_lang_loadFile('install/pages/upgrade_version.php');
 				echo '<option value="'.$version.'">';
 				echo $version . ' ' . $release;
 				if ($version == EXPONENT) {
-					echo ' - '.$i18n['prev_rel'];
+					echo ' - '.gt('Previous Release');
 				}
 				echo '</option>';
 				
@@ -52,10 +50,10 @@ $i18n = exponent_lang_loadFile('install/pages/upgrade_version.php');
 		</select>
 	</div>
 	<p>
-		<?php echo $i18n['select_version']; ?>
+		<?php echo gt('Select the version of Exponent that you are upgrading from.'); ?>
 	</p>
 	<p>
-		<?php echo $i18n['choose_correct']; ?>
+		<?php echo gt('Make sure that you choose the correct version.  Picking an incorrect version can destroy the data in your database.'); ?>
 	</p>
-	<button class="awesome large green"><?php echo $i18n['upgrade']; ?></button>
+	<button class="awesome large green"><?php echo gt('Upgrade'); ?></button>
 </form>

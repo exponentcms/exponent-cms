@@ -46,22 +46,22 @@ return array(
         'id'=>'user',
         'itemdata'=>array(
             array(
-                'text'=>"Edit My Profile",
+                'text'=>gt("Edit My Profile"),
                 'url'=>makeLink(array('controller'=>'users','action'=>'edituser','id'=>$user->id)),
                 'classname'=>'edit',
             ),
             array(
-                'text'=>"Change My Password",
+                'text'=>gt("Change My Password"),
                 'url'=>makeLink(array('controller'=>'users','action'=>'change_password','ud'=>$user->id)),
                 'classname'=>'password',
             ),
             array(
-                'text'=>"Log Out",
+                'text'=>gt("Log Out"),
                 'url'=>makeLink(array('module'=>'loginmodule','action'=>'logout')),
                 'classname'=>'logout',
             ),
             array(
-                'text'=>'Preview Mode',
+                'text'=>gt('Preview Mode'),
                 'classname'=>$preview_class,
                 'url'=>$preview_url
             ),

@@ -39,7 +39,7 @@ class upgradescript {
 	 * generic description of upgrade script
 	 * @return string
 	 */
-	function description() { return "This Script attempts to ".$this->name(); }
+	function description() { return gt("This Script attempts to ").$this->name(); }
 
 	/**
 	 * test version number (code vs database) to see if upgrade script should be run
