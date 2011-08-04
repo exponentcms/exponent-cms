@@ -47,8 +47,8 @@ if (exponent_permissions_check('user_management',exponent_core_makeLocation('adm
 	                unset($_POST['pass2']);
 	                expValidator::failAndReturnToForm($i18n['unmatched_passwords'], $_POST);
 		} else {
-			$username_error = exponent_security_checkUsername($_POST['username']);
-			$strength_error = exponent_security_checkPasswordStrength($_POST['username'],$_POST['pass1']);
+			$username_error = expValidator::checkUsername($_POST['username']);
+			$strength_error = expValidator::checkPasswordStrength($_POST['username'],$_POST['pass1']);
 			
 			if ($username_error != ''){
 				unset($_POST['username']);

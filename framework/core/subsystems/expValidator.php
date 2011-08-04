@@ -501,8 +501,39 @@ class expValidator {
             exit();
         }
     }
+
+	public static function checkPasswordStrength($username,$password) {
+		$i18n = exponent_lang_loadFile('subsystems/security.php');
+		// Return blank string on success, error message on failure.
+		// The error message should let the user know why their password is wrong.
+		if (strcasecmp($username,$password) == 0) {
+			return $i18n['not_username'];
+		}
+		# For example purposes, the next line forces passwords to be over 8 characters long.
+		if (strlen($password) < 8) {
+			return $i18n['pass_len'];
+		}
+
+		return ""; // by default, accept any passwords
+	}
+
+	public static function checkUsername($username) {
+		$i18n = exponent_lang_loadFile('subsystems/security.php');
+		// Return blank string on success, error message on failure.
+		// The error message should let the user know why their username is wrong.
+		if (strlen($username) < 3) {
+			return $i18n['username_length'];
+		}
+		//echo "<xmp>";
+		//print_r(preg_match("/^[a-zA-Z0-9]/",$username));
+		//echo "</xmp>";
+		//exit;
+
+		//if (!preg_match("/[a-zA-Z0-9]/",$username)){
+		//	return $i18n['username_illegal'];
+		//}
+		return ""; // by default, accept any passwords
+	}
 }
+
 ?>
-
-
-

@@ -191,7 +191,7 @@ function exponent_users_checkUsername($formvalues) {
 		expValidator::validate(array('valid_email'=>'email'), $formvalues);
 		$username = $formvalues['email'];
 	} else {
-		$ret = exponent_security_checkUsername($formvalues['username']);
+		$ret = expValidator::checkUsername($formvalues['username']);
 		if (!empty($ret)) expValidator::failAndReturnToForm($ret, $formvalues);
 		$username = $formvalues['username'];
 	}
