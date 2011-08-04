@@ -134,4 +134,20 @@ class expUtil {
 		}
 	}
 
+	public static function getOrigReferrer($ticket=null) {
+		global $db;
+
+		// if they didn't pass in a specific ticket
+		if (empty($ticket)) {
+			// see if there is a ticket in the session to use
+			if (isset($_SESSION[SYS_SESSION_KEY]['ticket'])) {
+				$ticket = $_SESSION[SYS_SESSION_KEY]['ticket'];
+			} else {
+				return null;
+			}
+		}
+
+		return $db->selectValue('sessionticket', 'referrer', "ticket='".$ticket."'" );
+	}
+
 }
