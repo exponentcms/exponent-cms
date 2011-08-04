@@ -105,7 +105,7 @@ class bbextension {
 				$fname = null;
 				$file = null;
 					//if the avatars directory is not there, create it.
-				if (exponent_files_uploadDestinationFileExists($directory,'file')) {
+				if (expFile::uploadDestinationFileExists($directory,'file')) {
 					// Auto-uniqify Logic here
 					$fileinfo = pathinfo($_FILES['file']['name']);
 					$fileinfo['extension'] = '.'.$fileinfo['extension'];

@@ -53,7 +53,7 @@ class file {
 		}
 		
 		// Fix the filename, so that we don't have funky characters screwing with out attempt to create the destination file.
-		$object->filename = exponent_files_fixName($object->filename);
+		$object->filename = expFile::fixName($object->filename);
 	
 			
 		if (file_exists(BASE.$dest.'/'.$object->filename) && $force == false) {
@@ -62,11 +62,11 @@ class file {
 	
 		//Check to see if the directory exists.  If not, create the directory structure.
 		if (!file_exists(BASE.$dest)) {
-			exponent_files_makeDirectory($dest);
+			expFile::makeDirectory($dest);
 		}	
 
 		// Move the temporary uploaded file into the destination directory, and change the name.
-		exponent_files_moveUploadedFile($_FILES[$name]['tmp_name'],BASE.$dest.'/'.$object->filename);
+		expFile::moveUploadedFile($_FILES[$name]['tmp_name'],BASE.$dest.'/'.$object->filename);
 		
 		if (!file_exists(BASE.$dest.'/'.$object->filename)) {
 			return $err.$i18n['cant_move'];

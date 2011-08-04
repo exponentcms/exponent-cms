@@ -71,7 +71,7 @@ class clear_cache extends upgradescript {
         $errors = 0;
 		foreach ($files as $file) {
 			if (file_exists($file)) {
-				$files = exponent_files_remove_files_in_directory($file);
+				$files = expFile::removeFilesInDirectory($file);
 				$removed += count($files['removed']);
 				$errors += count($files['not_removed']);
 			}

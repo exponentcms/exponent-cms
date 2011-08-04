@@ -7,7 +7,7 @@
  *  Software Foundation; either version 2 of the
  *  License, or (at your option) any later version.
  *
- * The file that holds the expFile class
+ * The file that holds the self::getImageInfo class
  *
  * @link http://www.gnu.org/licenses/gpl.txt GPL http://www.gnu.org/licenses/gpl.txt
  * @package Exponent-CMS
@@ -300,7 +300,7 @@ class expFile extends expRecord {
         // basic file information is needed
         if (empty($this->id) && !empty($this->filename)) {
             // File info
-            $_fileInfo = expFile::getImageInfo($this->path);
+            $_fileInfo = self::getImageInfo($this->path);
             // Assign info back to class
             $this->is_image      = $_fileInfo['is_image'];
             $this->filesize      = $_fileInfo['fileSize'];
@@ -390,11 +390,11 @@ class expFile extends expRecord {
 
 		// If $_destFile is defined, use that name as an override for the
         // uploaded file name
-		$_destFile = ($_destFile == null) ? expFile::fixFileName( $_FILES[$_postName]['name']) : $_destFile;
+		$_destFile = ($_destFile == null) ? self::fixFileName( $_FILES[$_postName]['name']) : $_destFile;
 
         // Fix the filename, so that we don't have funky characters screwing
         // with our attempt to create the destination file.
-        // $_destFile = expFile::fixFileName( $_FILES[$_postName]['name']);
+        // $_destFile = self::fixFileName( $_FILES[$_postName]['name']);
         // eDebug($_destFile,1);
 		
         // Build destination fille path for future use
@@ -402,13 +402,13 @@ class expFile extends expRecord {
 		
 		//if the file exists and we don't want to overwrite it, create a new one			
 		if (file_exists($_destFullPath) && $_force == false) {
-			$_destFile = expFile::resolveDuplicateFilename($_destFullPath);
+			$_destFile = self::resolveDuplicateFilename($_destFullPath);
             $_destFullPath = $_destDir . $_destFile;
 		}
         
 		//Check to see if the directory exists.  If not, create the directory structure.
         // if (!file_exists(BASE . $_destDir)) {
-        //  exponent_files_makeDirectory(BASE . $_destDir);
+        //  self::makeDirectory(BASE . $_destDir);
         // }    
 
 		// Move the temporary uploaded file into the destination directory,
@@ -600,8 +600,8 @@ class expFile extends expRecord {
         
         $_path = __realpath($_path);
 
-		if (!file_exists($_path)) return expFile::IMAGE_ERR_FILENOTFOUND;
-		if (!is_readable($_path)) return expFile::IMAGE_ERR_PERMISSIONDENIED;
+		if (!file_exists($_path)) return self::IMAGE_ERR_FILENOTFOUND;
+		if (!is_readable($_path)) return self::IMAGE_ERR_PERMISSIONDENIED;
 
         if ( $_sizeinfo = @getimagesize($_path) ) {
             $_sizeinfo['is_image'] = true;
@@ -623,7 +623,7 @@ class expFile extends expRecord {
             $_sizeinfo['is_image'] = false;
 		}
 
-        $_sizeinfo['fileSize'] = expFile::fileSize($_path);
+        $_sizeinfo['fileSize'] = self::fileSize($_path);
 
 		return $_sizeinfo;
 	}
@@ -635,7 +635,7 @@ class expFile extends expRecord {
 	 * programmers a single point of entry.  It also handles situations where
 	 * there is no GD support compiled into the server.  (In this case, null is returned).
 	 *
-	 * At this point, the user should have called exponent_image_sizeInfo on the filename
+	 * At this point, the user should have called self::getImageInfo on the filename
 	 * and verified that the file does indeed exist, and is readable.  A safeguard check
 	 * is in place, however.
 	 *
@@ -676,7 +676,7 @@ class expFile extends expRecord {
 	 * @param integer $h Height of the image resource to create (in pixels)
 	 * @node Subsystems:Image
 	 */
-	function exponent_image_create($w,$h) {
+	public static function imageCreate($w,$h) {
 		if (!EXPONENT_HAS_GD) {
 			return null;
 		}
@@ -709,7 +709,7 @@ class expFile extends expRecord {
         copy($this->path,$destination.$this->filename);
 	}
 
-	function exponent_image_copyresized($dest,$src,$dst_x, $dst_y, $src_x, $src_y, $dst_w, $dst_h, $src_w, $src_h) {
+	public static function imageCopyresized($dest,$src,$dst_x, $dst_y, $src_x, $src_y, $dst_w, $dst_h, $src_w, $src_h) {
 		if (!EXPONENT_HAS_GD) {
 			return null;
 		}
@@ -731,13 +731,13 @@ class expFile extends expRecord {
 	 * @param decimal $scale The scaling factor, as a decimal (i.e. 0.5 for 50%)
 	 * @node Subsystems:Image
 	 */
-	function exponent_image_scaleByPercent($filename,$scale) {
-		$sizeinfo = exponent_image_sizeinfo($filename);
+	public static function imageScaleByPercent($filename,$scale) {
+		$sizeinfo = self::getImageInfo($filename);
 		if (!is_array($sizeinfo)) {
 			return $sizeinfo;
 		}
 
-		$original = exponent_image_createFromFile($filename,$sizeinfo);
+		$original = self::openImageFile($filename,$sizeinfo);
 		if (!is_resource($original)) {
 			return $original;
 		}
@@ -749,9 +749,9 @@ class expFile extends expRecord {
 		$w = $scale * $sizeinfo[0];
 		$h = $scale * $sizeinfo[1];
 
-		$thumb = exponent_image_create($w,$h);
+		$thumb = self::imageCreate($w,$h);
 		if (!$thumb) return null;
-		exponent_image_copyresized($thumb,$original,0,0,0,0,$w,$h,$sizeinfo[0],$sizeinfo[1]);
+		self::imageCopyresized($thumb,$original,0,0,0,0,$w,$h,$sizeinfo[0],$sizeinfo[1]);
 
 		return $thumb;
 	}
@@ -766,12 +766,12 @@ class expFile extends expRecord {
 	 * @param integer $width The desired width of the scaled image, in pixels.
 	 * @node Subsystems:Image
 	 */
-	function exponent_image_scaleToWidth($filename,$width) {
-		$sizeinfo = exponent_image_sizeinfo($filename);
+	public static function imageScaleToWidth($filename,$width) {
+		$sizeinfo = self::getImageInfo($filename);
 		if (!is_array($sizeinfo)) {
 			return $sizeinfo;
 		}
-		$original = exponent_image_createFromFile($filename,$sizeinfo);
+		$original = self::openImageFile($filename,$sizeinfo);
 		if (!is_resource($original)) {
 			return $sizeinfo;
 		}
@@ -783,9 +783,9 @@ class expFile extends expRecord {
 		$w = $width;
 		$h = ($width / $sizeinfo[0]) * $sizeinfo[1];
 
-		$thumb = exponent_image_create($w,$h);
+		$thumb = self::imageCreate($w,$h);
 		if (!$thumb) return null;
-		exponent_image_copyresized($thumb,$original,0,0,0,0,$w,$h,$sizeinfo[0],$sizeinfo[1]);
+		self::imageCopyresized($thumb,$original,0,0,0,0,$w,$h,$sizeinfo[0],$sizeinfo[1]);
 
 		return $thumb;
 	}
@@ -799,13 +799,14 @@ class expFile extends expRecord {
 	 * @param string $filename The path/filename of the image to scale.
 	 * @param integer $height The desired height of the scaled image, in pixels.
 	 * @node Subsystems:Image
-	 */function exponent_image_scaleToHeight($filename,$height) {
-		$sizeinfo = exponent_image_sizeinfo($filename);
+	 */
+	public static function imageScaleToHeight($filename,$height) {
+		$sizeinfo = self::getImageInfo($filename);
 		if (!is_array($sizeinfo)) {
 			return $sizeinfo;
 		}
 
-		$original = exponent_image_createFromFile($filename,$sizeinfo);
+		$original = self::openImageFile($filename,$sizeinfo);
 		if (!is_resource($original)) {
 			return $original;
 		}
@@ -817,9 +818,9 @@ class expFile extends expRecord {
 		$w = ($height / $sizeinfo[1]) * $sizeinfo[0];
 		$h = $height;
 
-		$thumb = exponent_image_create($w,$h);
+		$thumb = self::imageCreate($w,$h);
 		if (!$thumb) return null;
-		exponent_image_copyresized($thumb,$original,0,0,0,0,$w,$h,$sizeinfo[0],$sizeinfo[1]);
+		self::imageCopyresized($thumb,$original,0,0,0,0,$w,$h,$sizeinfo[0],$sizeinfo[1]);
 
 		return $thumb;
 	}
@@ -835,13 +836,13 @@ class expFile extends expRecord {
 	 * @param integer $height The maximum height of the scaled image, in pixels.
 	 * @node Subsystems:Image
 	 */
-	function exponent_image_scaleToConstraint($filename,$width,$height) {
-		$sizeinfo = exponent_image_sizeinfo($filename);
+	public static function imageScaleToConstraint($filename,$width,$height) {
+		$sizeinfo = self::getImageInfo($filename);
 		if (!is_array($sizeinfo)) {
 			return $sizeinfo;
 		}
 
-		$original = exponent_image_createFromFile($filename,$sizeinfo);
+		$original = self::openImageFile($filename,$sizeinfo);
 		if (!is_resource($original)) {
 			return $original;
 		}
@@ -858,9 +859,9 @@ class expFile extends expRecord {
 			$h = $height;
 		}
 
-		$thumb = exponent_image_create($w,$h);
+		$thumb = self::imageCreate($w,$h);
 		if (!$thumb) return null;
-		exponent_image_copyresized($thumb,$original,0,0,0,0,$w,$h,$sizeinfo[0],$sizeinfo[1]);
+		self::imageCopyresized($thumb,$original,0,0,0,0,$w,$h,$sizeinfo[0],$sizeinfo[1]);
 
 		return $thumb;
 	}
@@ -876,13 +877,13 @@ class expFile extends expRecord {
 	 * @param integer $size The desired side length of the scaled image, in pixels.
 	 * @node Subsystems:Image
 	 */
-	function exponent_image_scaleToSquare($filename,$side) {
-		$sizeinfo = exponent_image_sizeinfo($filename);
+	public static function imageScaleToSquare($filename,$side) {
+		$sizeinfo = self::getImageInfo($filename);
 		if (!is_array($sizeinfo)) {
 			return $sizeinfo;
 		}
 
-		$original = exponent_image_createFromFile($filename,$sizeinfo);
+		$original = self::openImageFile($filename,$sizeinfo);
 		if (!is_resource($original)) {
 			return $original;
 		}
@@ -914,9 +915,9 @@ class expFile extends expRecord {
 		$w = $side;
 		$h = $side;
 
-		$thumb = exponent_image_create($w,$h);
+		$thumb = self::imageCreate($w,$h);
 		if (!$thumb) return null;
-	   exponent_image_copyresized($thumb,$original,0,0,$src_x,$src_y,$w,$h,$width,$height);
+	   self::imageCopyresized($thumb,$original,0,0,$src_x,$src_y,$w,$h,$width,$height);
 
 		return $thumb;
 	}
@@ -932,13 +933,13 @@ class expFile extends expRecord {
 	 * @param integer $height The desired height of the scaled image, in pixels.
 	 * @node Subsystems:Image
 	 */
-	function exponent_image_scaleManually($filename,$width,$height) {
-		$sizeinfo = exponent_image_sizeinfo($filename);
+	public static function imageScaleManually($filename,$width,$height) {
+		$sizeinfo = self::getImageInfo($filename);
 		if (!is_array($sizeinfo)) {
 			return $sizeinfo;
 		}
 
-		$original = exponent_image_createFromFile($filename,$sizeinfo);
+		$original = self::openImageFile($filename,$sizeinfo);
 		if (!is_resource($original)) {
 			return $original;
 		}
@@ -947,20 +948,20 @@ class expFile extends expRecord {
 			return $original;
 		}
 
-		$thumb = exponent_image_create($width,$height);
+		$thumb = self::imageCreate($width,$height);
 		if (!$thumb) return null;
-		exponent_image_copyresized($thumb,$original,0,0,0,0,$width,$height,$sizeinfo[0],$sizeinfo[1]);
+		self::imageCopyresized($thumb,$original,0,0,0,0,$width,$height,$sizeinfo[0],$sizeinfo[1]);
 
 		return $thumb;
 	}
 
-	function exponent_image_rotate($filename,$degrees) {
-		$sizeinfo = exponent_image_sizeinfo($filename);
+	public static function imageRotate($filename,$degrees) {
+		$sizeinfo = self::getImageInfo($filename);
 		if (!is_array($sizeinfo)) {
 			return $sizeinfo;
 		}
 
-		$original = exponent_image_createFromFile($filename,$sizeinfo);
+		$original = self::openImageFile($filename,$sizeinfo);
 		if (!is_resource($original)) {
 			return $original;
 		}
@@ -970,13 +971,13 @@ class expFile extends expRecord {
 		return imagerotate($original,$degrees,$color);
 	}
 
-	function exponent_image_flip($filename,$is_horizontal) {
-		$sizeinfo = exponent_image_sizeinfo($filename);
+	public static function imageFlip($filename,$is_horizontal) {
+		$sizeinfo = self::getImageInfo($filename);
 		if (!is_array($sizeinfo)) {
 			return $sizeinfo;
 		}
 
-		$original = exponent_image_createFromFile($filename,$sizeinfo);
+		$original = self::openImageFile($filename,$sizeinfo);
 		if (!is_resource($original)) {
 			return $original;
 		}
@@ -986,7 +987,7 @@ class expFile extends expRecord {
 
 		$w = $sizeinfo[0];
 		$h = $sizeinfo[1];
-		$new = exponent_image_create($w,$h);
+		$new = self::imageCreate($w,$h);
 
 		if ($is_horizontal) {
 			// Copy column by column
@@ -1015,7 +1016,7 @@ class expFile extends expRecord {
 	 * @state <b>UNDOCUMENTED</b>
 	 * @node Undocumented
 	 */
-	function exponent_image_output($img, $sizeinfo, $filename=null,  $quality=75) {
+	public static function imageOutput($img, $sizeinfo, $filename=null,  $quality=75) {
 		header('Content-type: ' . $sizeinfo['mime']);
 		if ($sizeinfo['mime'] == 'image/jpeg') {
 			($filename != null) ? imagejpeg($img, $filename, $quality) : imagejpeg($img, null, $quality);
@@ -1030,8 +1031,8 @@ class expFile extends expRecord {
 	 * @state <b>UNDOCUMENTED</b>
 	 * @node Undocumented
 	 */
-	function exponent_image_captcha($w,$h,$string) {
-		$img = exponent_image_create($w,$h);
+	public static function imageCaptcha($w,$h,$string) {
+		$img = self::imageCreate($w,$h);
 		if ($img) {
 			// We were able to create an image.
 			$bg = 		imagecolorallocate($img,250,255,225);
@@ -1067,7 +1068,7 @@ class expFile extends expRecord {
         while(false !== ( $file = readdir($dir)) ) { 
             if (( $file != '.' ) && ( $file != '..' )) { 
                 if ( is_dir($src . '/' . $file) ) { 
-                    expFile::recurse_copy($src . '/' . $file,$dst . '/' . $file); 
+                    self::recurse_copy($src . '/' . $file,$dst . '/' . $file);
                 } 
                 else { 
                     if(!copy($src . '/' . $file,$dst . '/' . $file)){
@@ -1079,6 +1080,252 @@ class expFile extends expRecord {
         closedir($dir); 
         return true;
     }
+
+	/**
+	 * Recursively removes all files in a given directory, and all
+	 * the files and directories underneath it.
+	 * Optionally can skip dotfiles
+	 *
+	 * @param string $dir directory to work with
+	 * @param bool $dot_files should dotfiles be removed?
+	 * @return array
+	 */
+	public static function removeFilesInDirectory($dir, $dot_files = false) {
+		$results['removed'] = array();
+		$results['not_removed'] = array();
+
+		$files = scandir($dir);
+		array_shift($files);    // remove '.' from array
+		array_shift($files);    // remove '..' from array
+		foreach ($files as $file) {
+			if ($dot_files || substr($file, 0, 1) != '.') {  // don't remove dot files
+				$file = $dir . '/' . $file;
+				if (is_dir($file)) {
+					self::removeFilesInDirectory($file);
+					rmdir($file);
+				} else {
+					if (is_writeable($file) && !is_dir($file)) {
+						unlink($file);
+						$results['removed'][] = $file;
+					} else {
+						$results['not_removed'][] = $file;
+					}
+				}
+			}
+		}
+
+	/*	old routine
+		if (is_readable($dir)) {
+			$dh = opendir($dir);
+			while (($file = readdir($dh)) !== false) {
+				$filepath = $dir.'/'.$file;
+				if (substr($file,0,1) != '.') {
+					if (is_writeable($filepath) && !is_dir($filepath)) {
+						unlink($filepath);
+						$results['removed'][] = $filepath;
+					} else {
+						$results['not_removed'][] = $filepath;
+					}
+				}
+			}
+		}*/
+
+		return $results;
+	}
+
+	/* exdoc
+	 * This method creates a directory and all of its parent directories, if they do not exist,
+	 * emulating the behavior of the -p option to mkdir on UNIX systems.  Returns
+	 * a SYS_FILES_* constant, indicating its status.
+	 *
+	 * @param string $dir The directory to create.  This path must be relative to BASE
+	 * @node Subsystems:Files
+	 */
+	public static function makeDirectory($dir,$mode=null,$is_full=false) {
+		$__oldumask = umask(0);
+		$parentdir = ($is_full ? "/" : BASE); // we will add to parentdir with each directory
+		foreach (explode("/",$dir) as $part) {
+			if ($part != "" && !is_dir($parentdir.$part)) {
+				// No parent directory.  Create it.
+				if (is_file($parentdir.$part)) return SYS_FILES_FOUNDFILE;
+				if (expUtil::isReallyWritable($parentdir)) {
+					if ($mode == null) $mode = DIR_DEFAULT_MODE+0;
+					mkdir($parentdir.$part,$mode);
+					chmod($parentdir.$part,$mode);
+				} else return SYS_FILES_NOTWRITABLE;
+			}
+			$parentdir .= $part."/";
+		}
+		umask($__oldumask);
+		return SYS_FILES_SUCCESS;
+	}
+
+	/**
+	 * Recursively removes the given directory, and all
+	 * of the files and directories underneath it.
+	 *
+	 * @param string $dir The path of the directory to remove
+	 * @node Subsystems:Files
+	 * @param string $dir directory to work with
+	 * @return int
+	 */
+	public static function removeDirectory($dir) {
+		if (strpos($dir,BASE) != 0) $dir = BASE.$dir;
+		$dh = opendir($dir);
+		if ($dh) {
+			while (($file = readdir($dh)) !== false) {
+				if ($file != "." && $file != ".." && is_dir("$dir/$file")) {
+					if (self::removeDirectory("$dir/$file") == SYS_FILES_NOTDELETABLE) return SYS_FILES_NOTDELETABLE;
+				} else if (is_file("$dir/$file") || is_link(is_file("$dir/$file"))) {
+					unlink("$dir/$file");
+					if (file_exists("$dir/$file")) {
+						return SYS_FILES_NOTDELETABLE;
+					}
+				}
+				else if ($file != "." && $file != "..") {
+					echo "BAD STUFF HAPPENED<br />";
+					echo "--------Don't know what to do with $dir/$file<br />";
+					echo "<xmp>";
+					print_r(stat("$dir/$file"));
+					echo filetype("$dir/$file");
+					echo "</xmp>";
+				}
+			}
+		}
+		rmdir($dir);
+	}
+
+	public static function fixName($name) {
+		return preg_replace('/[^A-Za-z0-9\.]/','_',$name);
+	}
+
+	/* exdoc
+	* Move an uploaded temporary file to a more permanent home inside of the Exponent files/ directory.
+	* This function takes into account the default file modes specified in the site configuration.
+	 * @param string $tmp_name The temporary path of the uploaded file.
+	 * @param string $dest The full path to the destination file (including the destination filename).
+	 * @node Subsystems:Files
+	 */
+	public static function moveUploadedFile($tmp_name,$dest) {
+		move_uploaded_file($tmp_name,$dest);
+		if (file_exists($dest)) {
+			$__oldumask = umask(0);
+			chmod($dest,FILE_DEFAULT_MODE);
+			umask($__oldumask);
+		}
+	}
+
+	/* exdoc
+	 * Checks to see if the upload destination file exists.  This is to prevent
+	 * accidentally uploading over the top of another file.
+	 * Returns true if the file already exists, and false if it does not.
+	 *
+	 * @param string $dir The directory to contain the existing directory.
+	 * @param string $name The name of the file control used to upload the
+	 *  file.  The files subsystem will look to the $_FILES array
+	 *  to get the filename of the uploaded file.
+	 * @node Subsystems:Files
+	 */
+	public static function uploadDestinationFileExists($dir,$name) {
+		return (file_exists(BASE.$dir."/".self::fixName($_FILES[$name]['name'])));
+	}
+
+	/* exdoc
+	 * Lists files and directories under a given parent directory. Returns an
+	 * associative, flat array of files and directories.  The key is the full file
+	 * or directory name, and the value is the file or directory name.
+	 *
+	 * @param string $dir The path of the directory to look at.
+	 * @param boolean $recurse A boolean dictating whether to descend into subdirectories
+	 * 	recursviely, and list files and subdirectories.
+	 * @param string $ext An optional file extension.  If specified, only files ending with
+	 * 	that file extension will show up in the list.  Directories are not affected.
+	 * @param array $exclude_dirs An array of directory names to exclude.  These names are
+	 * 	path-independent.  Specifying "dir" will ignore all directories and
+	 * 	sub-directories named "dir", regardless of their parent.
+	 * @node Subsystems:Files
+	 */
+	public static function listFlat($dir, $recurse = false, $ext=null, $exclude_dirs = array(), $relative = "") {
+		$files = array();
+		if (is_readable($dir)) {
+			$dh = opendir($dir);
+			while (($file = readdir($dh)) !== false) {
+				if (is_dir("$dir/$file") && !in_array($file,$exclude_dirs) && $recurse && $file != "." && $file != ".." && $file != "CVS") {
+					$files = array_merge($files,self::listFlat("$dir/$file",$recurse,$ext,$exclude_dirs,$relative));
+				}
+				if (is_file("$dir/$file") && ($ext == null || substr($file,-1*strlen($ext),strlen($ext)) == $ext)) {
+					$files[str_replace($relative,"","$dir/$file")] = $file;
+				}
+			}
+		}
+		return $files;
+	}
+
+	/* exdoc
+	 * Looks at the filesystem strucutre surrounding the destination
+	 * and determines if the web server can create a new file there.
+	 * Returns one of the following:
+	 *	<br>SYS_FILES_NOTWRITABLE - unable to create files in destination
+	 *	<br>SYS_FILES_SUCCESS - A file or directory can be created in destination
+	 *	<br>SYS_FILES_FOUNDFILE - Found destination to be a file, not a directory
+	 *
+	 * @param string $dest Path to the directory to check
+	 * @node Subsystems:Files
+	 */
+	public static function canCreate($dest) {
+		if (substr($dest,0,1) == '/') $dest = str_replace(BASE,'',$dest);
+		$parts = explode('/',$dest);
+		$working = BASE;
+		for ($i = 0; $i < count($parts); $i++) {
+			if ($parts[$i] != '') {
+				if (!file_exists($working.$parts[$i])) {
+					return (expUtil::isReallyWritable($working) ? SYS_FILES_SUCCESS : SYS_FILES_NOTWRITABLE);
+				}
+				$working .= $parts[$i].'/';
+			}
+		}
+		// If we got this far, then the file we are asking about already exists.
+		// Check to see if we can overrwrite this file.
+		// First however, we need to strip off the '/' that was added a few lines up as the last part of the for loop.
+		$working = substr($working,0,-1);
+
+		if (!expUtil::isReallyWritable($working)) {
+			return SYS_FILES_NOTWRITABLE;
+		} else {
+			if (is_file($working)) {
+				return SYS_FILES_FOUNDFILE;
+			} else {
+				return SYS_FILES_FOUNDDIR;
+			}
+		}
+	}
+
+	/* exdoc
+	 * Copies just the directory structure (including subdirectories) of a given directory.
+	 * Any files in the source directory are ignore, and duplicate copies are made (no symlinks).
+	 *
+	 * @param string $src The directory to copy structure from.  This must be a full path.
+	 * @param string $dest The directory to create duplicate structure in.  If this directory is not empty,
+	 * 	you may run into some problems, because of file/directory conflicts.
+	 * @param $exclude_dirs An array of directory names to exclude.  These names are
+	 * 	path-independent.  Specifying "dir" will ignore all directories and
+	 * 	sub-directories named "dir", regardless of their parent.
+	 * @node Subsystems:Files
+	 */
+	public static function copyDirectoryStructure($src,$dest,$exclude_dirs = array()) {
+		$__oldumask = umask(0);
+		if (!file_exists($dest)) mkdir($dest,fileperms($src));
+		$dh = opendir($src);
+		while (($file = readdir($dh)) !== false) {
+			if (is_dir("$src/$file") && !in_array($file,$exclude_dirs) && substr($file,0,1) != "." && $file != "CVS") {
+				if (!file_exists("$dest/$file")) mkdir("$dest/$file",fileperms("$src/$file"));
+				if (is_dir("$dest/$file")) {
+					self::copyDirectoryStructure("$src/$file","$dest/$file");
+				}
+			}
+		}
+		umask($__oldumask);
+	}
 
 }
 ?>

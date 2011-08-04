@@ -215,8 +215,8 @@ class expTheme {
 
 	public static function removeCss() {
 		include_once(BASE.'framework/core/subsystems-1/files.php');
-		exponent_files_remove_files_in_directory(BASE.'tmp/minify');  // also clear the minify engine's cache
-		return exponent_files_remove_files_in_directory(BASE.'tmp/css');
+		expFile::removeFilesInDirectory(BASE.'tmp/minify');  // also clear the minify engine's cache
+		return expFile::removeFilesInDirectory(BASE.'tmp/css');
 	}
 
 	public static function clearSmartyCache() {
@@ -228,8 +228,8 @@ class expTheme {
 
 	public static function removeSmartyCache() {
 		include_once(BASE.'framework/core/subsystems-1/files.php');
-		exponent_files_remove_files_in_directory(BASE.'tmp/cache');  // alt location for cache
-		return exponent_files_remove_files_in_directory(BASE.'tmp/views_c');
+		expFile::removeFilesInDirectory(BASE.'tmp/cache');  // alt location for cache
+		return expFile::removeFilesInDirectory(BASE.'tmp/views_c');
 	}
 
 	/* exdoc

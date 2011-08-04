@@ -28,12 +28,12 @@ if (exponent_permissions_check('extensions',exponent_core_makeLocation('administ
 
 	$sessid = session_id();
 	$files = array();
-	foreach (exponent_files_listFlat(BASE.'extensionuploads/'.$sessid,true,null,array(),BASE.'extensionuploads/'.$sessid) as $key=>$f) {
+	foreach (expFile::listFlat(BASE.'extensionuploads/'.$sessid,true,null,array(),BASE.'extensionuploads/'.$sessid) as $key=>$f) {
 		if ($key != '/archive.tar' && $key != '/archive.tar.gz' && $key != '/archive.tar.bz2' && $key != '/archive.zip') {
 			$files[] = array(
 				'absolute'=>$key,
 				'relative'=>$f,
-				'canCreate'=>exponent_files_canCreate(BASE.substr($key,1)),
+				'canCreate'=>expFile::canCreate(BASE.substr($key,1)),
 				'ext'=>substr($f,-3,3)
 			);
 		}

@@ -392,10 +392,10 @@ class administrationController extends expController {
 	public function clear_image_cache() {
 //		if (!defined('SYS_FILES')) include_once(BASE.'framework/core/subsystems-1/files.php');
 		include_once(BASE.'framework/core/subsystems-1/files.php');
-//		exponent_files_remove_files_in_directory(BASE.'tmp/pixidou');  // alt location for pixidou cache
-		exponent_files_remove_files_in_directory(BASE.'framework/modules/pixidou/images');  // location for pixidou cache
+//		expFile::removeFilesInDirectory(BASE.'tmp/pixidou');  // alt location for pixidou cache
+		expFile::removeFilesInDirectory(BASE.'framework/modules/pixidou/images');  // location for pixidou cache
 		// phpThumb cache includes subfolders
-		if (file_exists(BASE.'tmp/img_cache')) exponent_files_remove_files_in_directory(BASE.'tmp/img_cache');
+		if (file_exists(BASE.'tmp/img_cache')) expFile::removeFilesInDirectory(BASE.'tmp/img_cache');
 		$message = "Image/Pixidou Cache has been cleared" ;
 		flash('message',$message);
 		expHistory::back();
@@ -404,7 +404,7 @@ class administrationController extends expController {
 	public function clear_rss_cache() {
 //		if (!defined('SYS_FILES')) include_once(BASE.'framework/core/subsystems-1/files.php');
 		include_once(BASE.'framework/core/subsystems-1/files.php');
-		exponent_files_remove_files_in_directory(BASE.'tmp/rsscache');
+		expFile::removeFilesInDirectory(BASE.'tmp/rsscache');
 		$message = "RSS/Podcast Cache has been cleared" ;
 		flash('message',$message);
 		expHistory::back();
@@ -415,10 +415,10 @@ class administrationController extends expController {
 		include_once(BASE.'framework/core/subsystems-1/files.php');
 		expTheme::removeSmartyCache();
 		expTheme::removeCss();
-//		exponent_files_remove_files_in_directory(BASE.'tmp/pixidou');  // alt location for pixidou cache
-		exponent_files_remove_files_in_directory(BASE.'framework/modules/pixidou/images');  // location for pixidou cache
-		if (file_exists(BASE.'tmp/img_cache')) exponent_files_remove_files_in_directory(BASE.'tmp/img_cache');
-		exponent_files_remove_files_in_directory(BASE.'tmp/rsscache');
+//		expFile::removeFilesInDirectory(BASE.'tmp/pixidou');  // alt location for pixidou cache
+		expFile::removeFilesInDirectory(BASE.'framework/modules/pixidou/images');  // location for pixidou cache
+		if (file_exists(BASE.'tmp/img_cache')) expFile::removeFilesInDirectory(BASE.'tmp/img_cache');
+		expFile::removeFilesInDirectory(BASE.'tmp/rsscache');
 		$message = "All the System Caches have been cleared" ;
 		flash('message',$message);
 		expHistory::back();
@@ -485,8 +485,8 @@ class administrationController extends expController {
 
 				// Look for stale sessid directories:
 				$sessid = session_id();
-				if (file_exists(BASE."extensionuploads/$sessid") && is_dir(BASE."extensionuploads/$sessid")) exponent_files_removeDirectory("extensionuploads/$sessid");
-				$return = exponent_files_makeDirectory("extensionuploads/$sessid");
+				if (file_exists(BASE."extensionuploads/$sessid") && is_dir(BASE."extensionuploads/$sessid")) expFile::removeDirectory("extensionuploads/$sessid");
+				$return = expFile::makeDirectory("extensionuploads/$sessid");
 				if ($return != SYS_FILES_SUCCESS) {
 					switch ($return) {
 						case SYS_FILES_FOUNDFILE:

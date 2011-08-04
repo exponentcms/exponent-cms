@@ -28,7 +28,7 @@ if (!file_exists(BASE.'files')) {
 	mkdir(BASE.'files',0777);
 }
 foreach (array_keys($files) as $mod) {
-	exponent_files_copyDirectoryStructure($dest_dir.'/files/'.$mod,BASE.'files/'.$mod);
+	expFile::copyDirectoryStructure($dest_dir.'/files/'.$mod,BASE.'files/'.$mod);
 	foreach (array_keys($files[$mod][1]) as $file) {
 		copy($dest_dir.'/files/'.$mod.'/'.$file,BASE.'files/'.$mod.'/'.$file);
 	}
@@ -37,7 +37,7 @@ foreach (array_keys($files) as $mod) {
 expSession::un_set('dest_dir');
 expSession::un_set('files_data');
 
-exponent_files_removeDirectory($dest_dir);
+expFile::removeDirectory($dest_dir);
 
 $template = new template('importer','_files_final');
 $template->output();

@@ -93,12 +93,12 @@ class uploadcontrol extends formcontrol {
 //		if (!defined('SYS_FILES')) include_once(BASE.'framework/core/subsystems-1/files.php');
 		include_once(BASE.'framework/core/subsystems-1/files.php');
 		$dir = 'files/uploads';
-		$filename = exponent_files_fixName(time().'_'.$formvalues[$original_name]['name']);
+		$filename = expFile::fixName(time().'_'.$formvalues[$original_name]['name']);
 		$dest = $dir.'/'.$filename;
         //Check to see if the directory exists.  If not, create the directory structure.
-        if (!file_exists(BASE.$dir)) exponent_files_makeDirectory($dir);
+        if (!file_exists(BASE.$dir)) expFile::makeDirectory($dir);
         // Move the temporary uploaded file into the destination directory, and change the name.
-        exponent_files_moveUploadedFile($formvalues[$original_name]['tmp_name'],BASE.$dest);
+        expFile::moveUploadedFile($formvalues[$original_name]['tmp_name'],BASE.$dest);
 		return $dest;
 	}
 

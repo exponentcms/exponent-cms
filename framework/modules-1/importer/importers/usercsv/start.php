@@ -27,7 +27,7 @@ require_once(BASE."framework/core/subsystems-1/files.php");
 
 $template = New template("importer", "_usercsv_form_start");
 
-if (exponent_files_canCreate(BASE."framework/modules-1/importer/importers/usercsv/tmp/test") != SYS_FILES_SUCCESS) {
+if (expFile::canCreate(BASE."framework/modules-1/importer/importers/usercsv/tmp/test") != SYS_FILES_SUCCESS) {
 	$template->assign("error", "The modules/importer/importers/usercsv/tmp directory is not writable.  Please contact your administrator.");
 	$template->output();
 }else{

@@ -71,8 +71,8 @@ if (exponent_permissions_check('extensions',exponent_core_makeLocation('administ
 
 			// Look for stale sessid directories:
 			$sessid = session_id();
-			if (file_exists(BASE."extensionuploads/$sessid") && is_dir(BASE."extensionuploads/$sessid")) exponent_files_removeDirectory("extensionuploads/$sessid");
-			$return = exponent_files_makeDirectory("extensionuploads/$sessid");
+			if (file_exists(BASE."extensionuploads/$sessid") && is_dir(BASE."extensionuploads/$sessid")) expFile::removeDirectory("extensionuploads/$sessid");
+			$return = expFile::makeDirectory("extensionuploads/$sessid");
 			if ($return != SYS_FILES_SUCCESS) {
 				switch ($return) {
 					case SYS_FILES_FOUNDFILE:
