@@ -88,8 +88,7 @@ if (is_readable(BASE.$page)) {
 	include_once(BASE.$page);
 	expTheme::satisfyThemeRequirements();
 } else {
-	$i18n = exponent_lang_loadFile('selector.php');
-	echo sprintf($i18n['not_readable'],BASE.$page);
+	echo sprintf(gt('Page').' "%s" '.gt('not readable.'),BASE.$page);
 }
 
 ob_end_flush();

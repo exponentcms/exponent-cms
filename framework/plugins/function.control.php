@@ -24,7 +24,6 @@ function smarty_function_control($params,&$smarty) {
     if ( (isset($params['type']) && isset($params['name'])) || $params['type'] == 'buttongroup' 
 //    || $params['type'] == 'captcha' || $params['type'] == 'recaptcha' || $params['type'] == 'antispam') {
 	  || $params['type'] == 'recaptcha' || $params['type'] == 'antispam') {
-//        $i18n = exponent_lang_loadFile('plugins/function_control.php');
 
 //        if (!defined('SYS_FORMS')) require_once(BASE.'framework/core/subsystems-1/forms.php');
         require_once(BASE.'framework/core/subsystems-1/forms.php');
@@ -155,19 +154,6 @@ function smarty_function_control($params,&$smarty) {
             return;
         } elseif ($params['type'] == 'list') {
             $control = new listcontrol();
-//        } elseif ($params['type'] == 'captcha') {
-//            if (SITE_USE_ANTI_SPAM && EXPONENT_HAS_GD) {
-//                echo '<div id="'.$params['name'].'Control" class="control"><label class="label" for="'.$params['name'].'">'.$params['label'].'</label>';
-//                echo '<div class="captcha">'.sprintf($i18n['captcha_description'],'<img class="captcha-img" src="'.PATH_RELATIVE.'captcha.php" />');
-//                echo '<a href="javascript:void(0)" class="captcha-why" onclick="window.open(\''.URL_FULL.'/captcha_why.php\',\'mywindow\',\'width=450,height=300\')">'.$i18n['why_do_this'].'</a></div>';
-//                unset($params['label']);
-//                $params['name'] = 'captcha_string';
-//                $control = new textcontrol();
-//                $control->size = 5;
-//                echo '</div>';
-//            } else {
-//                return false;
-//            }
         } elseif ($params['type'] == 'antispam') {
             //eDebug(ANTI_SPAM_CONTROL, true);
 			if (SITE_USE_ANTI_SPAM && ANTI_SPAM_CONTROL == 'recaptcha') {                

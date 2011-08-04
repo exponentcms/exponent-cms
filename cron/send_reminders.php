@@ -24,7 +24,6 @@ define('SCRIPT_FILENAME','index.php');  // we need to force the links to build c
 require_once('../exponent.php');
 global $user;
 global $db;
-$i18n = exponent_lang_loadFile('modules/calendarmodule/class.php');
 
 // let's select a calendar by its source to make it easier to find and harder to spoof	
 $src = $_GET['src'];
@@ -354,7 +353,7 @@ if ($count == 0) {
 //$cats = $db->selectObjectsIndexedArray("category","location_data='".serialize($loc)."'");
 $cats = $db->selectObjectsIndexedArray("category");
 $cats[0] = null;
-$cats[0]->name = '<i>'.$i18n['no_category'].'</i>';
+$cats[0]->name = '<i>'.gt('No Category').'</i>';
 $cats[0]->color = "#000000";
 $template->assign("categories",$cats);
 
