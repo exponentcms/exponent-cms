@@ -17,8 +17,8 @@
 <body>
 	<div id="doc2">
 		<div id="hd">
-			<a id="logo" href="<?php echo URL_FULL; ?>" title="Welcome to Exponent CMS - Retro Theme">
-                <img alt="Exponent CMS Retro Theme" src="<?php echo THEME_RELATIVE; ?>images/logo.png">
+			<a id="logo" href="<?php echo URL_FULL; ?>" title="<?php echo SITE_TITLE; ?>">
+                <img alt="<?php echo SITE_HEADER; ?>" src="<?php echo THEME_RELATIVE; ?>images/logo.png">
 			</a>
 			<?php expTheme::module(array("module"=>"navigation","view"=>"YUI Top Nav","source"=>"@top")); ?>
 			<?php expTheme::module(array("controller"=>"links","action"=>"showall","view"=>"showall_quicklinks","source"=>"top")) ?>
