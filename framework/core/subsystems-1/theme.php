@@ -54,15 +54,15 @@ function exponent_theme_sourceSelectorInfo() {
 }
 
 function exponent_theme_showSectionalModule($module,$view,$title,$prefix = null, $pickable = false, $hide_menu=false) {
-	expTheme::showSectionalModule($module,$view,$title,$prefix = null, $pickable = false, $hide_menu=false);
+	expTheme::showSectionalModule($module,$view,$title,$prefix, $pickable, $hide_menu);
 }
 
 function exponent_theme_showTopSectionalModule($module,$view,$title,$prefix = null, $pickable = false, $hide_menu=false) {
-	expTheme::showTopSectionalModule($module,$view,$title,$prefix = null, $pickable = false, $hide_menu=false);
+	expTheme::showTopSectionalModule($module,$view,$title,$prefix, $pickable, $hide_menu);
 }
 
 function exponent_theme_showModule($module,$view="Default",$title="",$source=null,$pickable=false,$section=null,$hide_menu=false,$params=array()) {
-	expTheme::showModule($module,$view="Default",$title="",$source=null,$pickable=false,$section=null,$hide_menu=false,$params=array());
+	expTheme::showModule($module,$view,$title,$source,$pickable,$section,$hide_menu,$params);
 }
 
 function exponent_theme_inAction() {
@@ -70,7 +70,7 @@ function exponent_theme_inAction() {
 }
 
 function exponent_theme_reRoutActionTo($theme = "") {
-    return expTheme::reRoutActionTo($theme = "");
+    return expTheme::reRoutActionTo($theme);
 }
 
 function exponent_theme_main() {
@@ -82,7 +82,7 @@ function exponent_theme_runAction() {
 }
 
 function exponent_theme_showAction($module, $action, $src="", $params="") {
-	expTheme::showAction($module, $action, $src="", $params="");
+	expTheme::showAction($module, $action, $src, $params);
 }
 
 function exponent_theme_goDefaultSection() {
@@ -94,7 +94,7 @@ function exponent_theme_mainContainer() {
 }
 
 function exponent_theme_getSubthemes($include_default = true,$theme = DISPLAY_THEME) {
-    return expTheme::getSubthemes($include_default = true,$theme = DISPLAY_THEME);
+    return expTheme::getSubthemes($include_default,$theme);
 }
 
 function exponent_theme_getPrinterFriendlyTheme() {
