@@ -92,9 +92,9 @@ class formmodule {
 				$f->id = $frmid;
 			}
 			global $SYS_FLOW_REDIRECTIONPATH;
-			//exponent_flow_set(SYS_FLOW_PUBLIC,SYS_FLOW_ACTION);
+			//expHistory::flowSet(SYS_FLOW_PUBLIC,SYS_FLOW_ACTION);
 			$SYS_FLOW_REDIRECTIONPATH = "editfallback";
-			//exponent_flow_set(SYS_FLOW_PUBLIC,SYS_FLOW_ACTION);
+			//expHistory::flowSet(SYS_FLOW_PUBLIC,SYS_FLOW_ACTION);
 			$SYS_FLOW_REDIRECTIONPATH = "exponent_default";
 			
 			$floc = unserialize($f->location_data);

@@ -23,7 +23,7 @@ if ($user && $user->is_acting_admin == 1) {
 	$db->switchValues('section_template','rank',intval($_GET['a']),intval($_GET['b']),'parent='.intval($_GET['parent']));
 	
 	expSession::clearAllUsersSessionCache('navigationmodule');
-	exponent_flow_redirect();
+	expHistory::back();
 } else {
 	echo SITE_403_HTML;
 }

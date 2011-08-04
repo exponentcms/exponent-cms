@@ -45,7 +45,7 @@ if (exponent_permissions_check('extensions',exponent_core_makeLocation('administ
 			$db->updateObject($modstate,'modstate',"module='".$_GET['mod']."'");
 		}
 	}
-	exponent_flow_redirect();
+	expHistory::back();
 } else {
 	echo SITE_403_HTML;
 }

@@ -23,7 +23,7 @@
 if (!defined('EXPONENT')) exit('');
 
 if (exponent_permissions_check('user_management',exponent_core_makeLocation('administrationmodule'))) {
-	exponent_flow_set(SYS_FLOW_PROTECTED,SYS_FLOW_ACTION);
+	expHistory::flowSet(SYS_FLOW_PROTECTED,SYS_FLOW_ACTION);
 
 //	if (!defined('SYS_USERS')) require_once(BASE.'framework/core/subsystems-1/users.php');
 	require_once(BASE.'framework/core/subsystems-1/users.php');

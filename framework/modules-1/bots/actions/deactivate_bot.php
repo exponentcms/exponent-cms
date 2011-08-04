@@ -25,7 +25,7 @@ if (exponent_permissions_check('extensions',exponent_core_makeLocation('administ
 	$bot = $db->selectObject('bots', 'id='.$_REQUEST['id']);
 	$bot->state = 0;
 	$db->updateObject($bot, 'bots');
-	exponent_flow_redirect();
+	expHistory::back();
 } else {
 	echo SITE_403_HTML;
 }

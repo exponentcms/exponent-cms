@@ -25,7 +25,7 @@ $post = $_POST;
 $post['manual_redirect'] = true;
 if (!expValidator::check_antispam($post)) {
     flash('error', 'Security Validation Failed');
-    exponent_flow_redirect();
+    expHistory::back();
 }
 
 //if (!defined("SYS_USER")) require_once(BASE."framework/core/subsystems-1/users.php");
@@ -158,13 +158,13 @@ if (!isset($_POST['data_id']) || (isset($_POST['data_id']) && exponent_permissio
         $template = new template("formbuilder","_view_response");
 //        global $SYS_FLOW_REDIRECTIONPATH;
 //        $SYS_FLOW_REDIRECTIONPATH = "editfallback";
-        $template->assign("backlink",exponent_flow_get());
+        $template->assign("backlink",expHistory::getLastNotEditable());
 //        $SYS_FLOW_REDIRECTIONPATH = "exponent_default";
         $template->assign("response_html",$f->response);
         $template->output();
     } else {
 		flash ('message', 'Record was updated!');
-        exponent_flow_redirect();
+        expHistory::back();
     }
 } else {
     echo SITE_403_HTML;

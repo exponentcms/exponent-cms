@@ -44,7 +44,7 @@ if (isset($_GET['id'])) {
 
 if ($question) {
 	if (exponent_permissions_check('manage_question',$loc) || exponent_permissions_check('manage_answer',$loc)) {
-		exponent_flow_set(SYS_FLOW_PROTECTED,SYS_FLOW_ACTION);
+		expHistory::flowSet(SYS_FLOW_PROTECTED,SYS_FLOW_ACTION);
 	
 		$answers = $db->selectObjects('poll_answer','question_id='.$question->id);
 //		if (!defined('SYS_SORTING')) require_once(BASE.'framework/core/subsystems-1/sorting.php');

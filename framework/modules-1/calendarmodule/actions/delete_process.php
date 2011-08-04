@@ -36,7 +36,7 @@ if ($item && $item->is_recurring == 1) {
 		//Delete search entries
 		$db->delete('search',"ref_module='calendarmodule' AND ref_type='calendar' AND original_id=".$item->id);
 	}
-	exponent_flow_redirect();
+	expHistory::back();
 } else {
 	echo SITE_404_HTML;
 }

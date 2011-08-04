@@ -40,7 +40,7 @@ if (exponent_permissions_check('configure',$loc)) {
 	}
 	$container->view_data = serialize($vconfig);
 	$db->updateObject($container,'container');
-	exponent_flow_redirect();
+	expHistory::back();
 } else {
 	echo SITE_403_HTML;
 }

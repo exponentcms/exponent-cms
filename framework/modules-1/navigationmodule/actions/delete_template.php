@@ -42,7 +42,7 @@ if ($page) {
 		expSession::clearAllUsersSessionCache('navigationmodule');
 		tmp_deleteLevel($page->id);
 
-		exponent_flow_redirect();
+		expHistory::back();
 	} else {
 		echo SITE_403_HTML;
 	}

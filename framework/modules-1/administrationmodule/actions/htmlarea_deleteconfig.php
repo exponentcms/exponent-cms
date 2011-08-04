@@ -24,7 +24,7 @@ if (!defined('EXPONENT')) exit('');
 
 if (isset($_GET['id']) && exponent_permissions_check('htmlarea',exponent_core_makeLocation('administrationmodule'))) {
 	$db->delete('toolbar_' . SITE_WYSIWYG_EDITOR, 'id='.intval($_GET['id']));
-	exponent_flow_redirect();
+	expHistory::back();
 } else {
 	echo SITE_403_HTML;
 }

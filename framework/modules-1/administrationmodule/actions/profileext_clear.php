@@ -30,7 +30,7 @@ if (exponent_permissions_check('user_management',exponent_core_makeLocation('adm
 	if ($existing == null) {
 		call_user_func(array($_GET['ext'],'clear'));
 	}
-	exponent_flow_redirect();
+	expHistory::back();
 } else {
 	echo SITE_403_HTML;
 }

@@ -73,7 +73,7 @@ if (exponent_permissions_check('editform',unserialize($f->location_data))) {
 		$db->insertObject($data,'formbuilder_address');
 	}
 
-	exponent_flow_redirect();
+	expHistory::back();
 } else {
 	echo SITE_403_HTML;
 }

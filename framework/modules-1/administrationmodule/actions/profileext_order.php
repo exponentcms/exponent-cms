@@ -23,7 +23,7 @@ if (!defined('EXPONENT')) exit('');
 
 if (exponent_permissions_check('user_management',exponent_core_makeLocation('administrationmodule'))) {
 	$db->switchValues('profileextension','rank',$_GET['a'],$_GET['b']);
-	exponent_flow_redirect();
+	expHistory::back();
 } else {
 	echo SITE_403_HTML;
 }

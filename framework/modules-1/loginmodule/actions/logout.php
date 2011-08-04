@@ -28,6 +28,6 @@ expSession::un_set('uilevel');
 expSession::clearCurrentUserSessionCache();
 flash('message', 'You have been logged out');
 redirect_to(array("section"=>SITE_DEFAULT_SECTION));
-//exponent_flow_redirect();
+//expHistory::back();
 
 ?>

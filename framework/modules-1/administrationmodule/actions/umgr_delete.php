@@ -29,7 +29,7 @@ if (isset($_GET['id']) && exponent_permissions_check('user_management',exponent_
 	$u = new user(intval($_GET['id']));
 	$u->delete();
 	flash('message', 'User '.$u->username.' was successfully deleted.');
-	exponent_flow_redirect();
+	expHistory::back();
 } else {
 	echo SITE_403_HTML;
 }

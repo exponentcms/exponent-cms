@@ -41,7 +41,7 @@ $SYS_FLOW_REDIRECTIONPATH='popup';
 if (expTheme::inAction()) {
 	expTheme::runAction();
 } else if (isset($_GET['module']) && isset($_GET['view'])) {
-	exponent_flow_set(SYS_FLOW_PUBLIC,SYS_FLOW_SECTIONAL);
+	expHistory::flowSet(SYS_FLOW_PUBLIC,SYS_FLOW_SECTIONAL);
 
 	$mod = new $_GET['module']();
 	$mod->show($_GET['view'],$loc,(isset($_GET['title'])?$_GET['title']:''));

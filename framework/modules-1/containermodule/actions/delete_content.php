@@ -45,6 +45,6 @@ if ($secref && $secref->refcount == 0 && exponent_permissions_check("administrat
 	exponent_permissions_revokeComplete($iloc);
 }
 
-exponent_flow_redirect();
+expHistory::back();
 
 ?>

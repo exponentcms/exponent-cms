@@ -63,7 +63,7 @@ if ($check_id != -1 && exponent_permissions_check('manage',exponent_core_makeLoc
 	}
 	
 	// Go back to where we came from.  Probably the navigation manager.
-	exponent_flow_redirect();
+	expHistory::back();
 } else {
 	echo SITE_403_HTML;
 }

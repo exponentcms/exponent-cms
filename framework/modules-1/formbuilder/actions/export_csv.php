@@ -29,7 +29,7 @@ include_once(BASE.'framework/core/subsystems-1/users.php');
 //exponent_forms_initialize();
 
 $template = new template('formbuilder','_data_view');
-exponent_flow_set(SYS_FLOW_PUBLIC,SYS_FLOW_ACTION);
+expHistory::flowSet(SYS_FLOW_PUBLIC,SYS_FLOW_ACTION);
 
 if (isset($_GET['id'])) {
 	$_GET['id'] = intval($_GET['id']);

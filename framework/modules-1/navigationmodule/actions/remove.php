@@ -29,7 +29,7 @@ if (exponent_permissions_check('manage',exponent_core_makeLocation('navigationmo
 		$db->updateObject($section,'section');
 		expSession::clearAllUsersSessionCache('navigationmodule');
 			
-		exponent_flow_redirect();
+		expHistory::back();
 	} else {
 		echo SITE_403_HTML;
 	}

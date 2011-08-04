@@ -26,7 +26,7 @@ if (isset($_GET['id']) && exponent_permissions_check('user_management',exponent_
 //	if (!defined('SYS_USERS')) require_once(BASE.'framework/core/subsystems-1/users.php');
 	require_once(BASE.'framework/core/subsystems-1/users.php');
 	exponent_users_clearPassword(intval($_GET['id']));
-	exponent_flow_redirect();
+	expHistory::back();
 } else {
 	echo SITE_403_HTML;
 }

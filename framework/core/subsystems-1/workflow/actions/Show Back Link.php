@@ -22,7 +22,7 @@
 if (!defined('EXPONENT')) exit('');
 
 echo '<a class="mngmntlink workflow_mngmntlink" href="';
-echo exponent_flow_get();
+echo expHistory::getLastNotEditable();
 echo '">Back</a> to approval manager.';
 
 ?>

@@ -97,7 +97,7 @@ class BaseTemplate {
 		$this->tpl->compile_id = md5($this->viewfile);
 		
 		$this->tpl->assign("__view", $this->view);
-		$this->tpl->assign("__redirect", exponent_flow_get());
+		$this->tpl->assign("__redirect", expHistory::getLastNotEditable());
 		
 		// Load language constants
 		$this->tpl->assign('_TR',exponent_lang_loadFile($this->langdir . $this->view . '.php'));
@@ -221,7 +221,7 @@ class controllerTemplate extends baseTemplate {
 		$this->tpl->compile_id = md5($this->viewfile);
 		
 		$this->tpl->assign("__view", $this->view);
-		$this->tpl->assign("__redirect", exponent_flow_get());
+		$this->tpl->assign("__redirect", expHistory::getLastNotEditable());
 		
 		// Load language constants
 		$this->tpl->assign('_TR',exponent_lang_loadFile($this->langdir . $this->view . '.php'));

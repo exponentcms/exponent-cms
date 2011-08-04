@@ -41,7 +41,7 @@ if (exponent_permissions_check('user_management',exponent_core_makeLocation('adm
 		$db->updateObject($ext,'profileextension');
 	}
 	
-	exponent_flow_redirect();
+	expHistory::back();
 } else {
 	echo SITE_403_HTML;
 }

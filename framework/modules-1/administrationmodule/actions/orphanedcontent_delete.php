@@ -32,7 +32,7 @@ if (exponent_permissions_check('database',exponent_core_makeLocation('administra
 //	$db->delete('locationref',"module='" . $_GET['mod'] . "' AND source='$src' AND refcount=0");
 	$db->delete('sectionref',"module='" . $_GET['mod'] . "' AND source='$src' AND refcount=0");
 	
-	exponent_flow_redirect();
+	expHistory::back();
 } else {
 	echo SITE_403_HTML;
 }

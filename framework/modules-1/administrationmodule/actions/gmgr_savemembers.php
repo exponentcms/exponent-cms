@@ -41,7 +41,7 @@ if (exponent_permissions_check('user_management',exponent_core_makeLocation('adm
 			}
 		}
 		exponent_permissions_triggerRefresh();
-		exponent_flow_redirect();
+		expHistory::back();
 	} else echo SITE_404_HTML;
 } else {
 	echo SITE_403_HTML;

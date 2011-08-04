@@ -34,7 +34,7 @@ if ($ctl) {
 		$f = $db->selectObject('formbuilder_form','id='.$ctl->form_id);
 		formbuilder_form::updateTable($f);
 		
-		exponent_flow_redirect();
+		expHistory::back();
 	} else {
 		echo SITE_403_HTML;
 	}

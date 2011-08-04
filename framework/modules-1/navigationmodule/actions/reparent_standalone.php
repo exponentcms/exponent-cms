@@ -28,7 +28,7 @@ if ($user && $user->is_acting_admin == 1) {
 		$db->updateObject($standalone,'section');
 		expSession::clearAllUsersSessionCache('navigationmodule');
 			
-		exponent_flow_redirect();
+		expHistory::back();
 	} else {
 		echo SITE_404_HTML;
 	}

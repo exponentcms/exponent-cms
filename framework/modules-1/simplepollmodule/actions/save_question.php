@@ -55,7 +55,7 @@ if (exponent_permissions_check('manage_question',$loc)) {
 		$db->insertObject($question,'poll_question');
 	}
 	
-	exponent_flow_redirect();
+	expHistory::back();
 } else {
 	echo SITE_403_HTML;
 }

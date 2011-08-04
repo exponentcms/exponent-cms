@@ -73,7 +73,7 @@ if (($check_id != -1 &&
 	expSession::clearAllUsersSessionCache('navigationmodule');
 	navigationmodule::checkForSectionalAdmins($section->id);
 	// Go back to where we came from.  Probably the navigation manager.
-	exponent_flow_redirect();
+	expHistory::back();
 } else {
 	echo SITE_403_HTML;
 }

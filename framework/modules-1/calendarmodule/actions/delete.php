@@ -33,7 +33,7 @@ if ($item) {
 		$db->delete("calendar_revision","wf_original=".$_GET['id']);		
 		//Delete search entries
 		$db->delete('search',"ref_module='calendarmodule' AND ref_type='calendar' AND original_id=".$item->id);
-		exponent_flow_redirect();
+		expHistory::back();
 	} else {
 		echo SITE_403_HTML;
 	}

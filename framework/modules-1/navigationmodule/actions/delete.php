@@ -28,7 +28,7 @@ if ($user->is_acting_admin == 1) {
 		
 		expSession::clearAllUsersSessionCache('navigationmodule');
 			
-		exponent_flow_redirect();
+		expHistory::back();
 	} else {
 		echo SITE_403_HTML;
 	}

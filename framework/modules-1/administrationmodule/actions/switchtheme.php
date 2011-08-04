@@ -31,7 +31,7 @@ if (exponent_permissions_check('extensions',exponent_core_makeLocation('administ
 	}
 	exponent_config_change('DISPLAY_THEME_REAL', $_GET['theme']);
 	expTheme::removeCss();
-	exponent_flow_redirect();
+	expHistory::back();
 } else {
 	echo SITE_403_HTML;
 }

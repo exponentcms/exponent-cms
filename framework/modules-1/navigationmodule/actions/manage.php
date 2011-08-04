@@ -21,7 +21,7 @@ if (!defined('EXPONENT')) exit('');
 
 if (exponent_permissions_checkOnModule('manage','navigationmodule')) {
     global $user;
-	exponent_flow_set(SYS_FLOW_PROTECTED, SYS_FLOW_ACTION);
+	expHistory::flowSet(SYS_FLOW_PROTECTED, SYS_FLOW_ACTION);
 	
 	$template = new template('navigationmodule','_manager',$loc);
 	

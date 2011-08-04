@@ -20,6 +20,6 @@
 if (!defined('EXPONENT')) exit('');
 
 expSession::set("uilevel",0);
-exponent_flow_redirect();
+expHistory::back();
 
 ?>

@@ -23,7 +23,7 @@
 if (!defined('EXPONENT')) exit('');
 
 if (exponent_permissions_check('htmlarea',exponent_core_makeLocation('administrationmodule'))) {
-	exponent_flow_set(SYS_FLOW_PROTECTED,SYS_FLOW_ACTION);
+	expHistory::flowSet(SYS_FLOW_PROTECTED,SYS_FLOW_ACTION);
 
 	$template = new template('administrationmodule','_htmlareaconfigs',$loc);
 	$configs = $db->selectObjects('toolbar_' . SITE_WYSIWYG_EDITOR);

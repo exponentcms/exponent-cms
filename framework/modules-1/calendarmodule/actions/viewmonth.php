@@ -19,7 +19,7 @@
 
 if (!defined('EXPONENT')) exit('');
 
-exponent_flow_set(SYS_FLOW_PUBLIC,SYS_FLOW_ACTION);
+expHistory::flowSet(SYS_FLOW_PUBLIC,SYS_FLOW_ACTION);
 
 $view = (isset($_GET['view']) ? $_GET['view'] : "Default");
 $title = $db->selectValue('container', 'title', "internal='".serialize($loc)."'");

@@ -30,7 +30,7 @@ if (exponent_permissions_check('user_management',exponent_core_makeLocation('adm
 		$g = exponent_users_groupUpdate($_POST,$g);
 		exponent_users_saveGroup($g);
 		
-		exponent_flow_redirect();
+		expHistory::back();
 	} else {
 		if (exponent_users_getGroupByName($_POST['name']) != null) {
 			$i18n = exponent_lang_loadFile('modules/administrationmodule/actions/gmgr_savegroup.php');
@@ -41,7 +41,7 @@ if (exponent_permissions_check('user_management',exponent_core_makeLocation('adm
 		} else {
 			$g = exponent_users_groupUpdate($_POST,null);
 			exponent_users_saveGroup($g);
-			exponent_flow_redirect();
+			expHistory::back();
 		}
 	}
 } else {

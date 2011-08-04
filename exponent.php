@@ -80,13 +80,14 @@ require_once(BASE.'framework/core/subsystems-1/permissions.php');
 
 // Initialize the Flow/History Subsystem.
 //if (!defined('SYS_FLOW')) require_once(BASE.'framework/core/subsystems-1/flow.php');
-require_once(BASE.'framework/core/subsystems-1/flow.php');
+//require_once(BASE.'framework/core/subsystems-1/flow.php');
 /**
  * the browsing history object
  * @global expHistory $history
  * @name $history
  */
 $history = new expHistory(); //<--This is the new flow subsystem and will be replacing the above.
+$SYS_FLOW_REDIRECTIONPATH = 'exponent_default';
 
 // Initialize the User Subsystem.
 require_once(BASE.'framework/core/subsystems-1/users.php');

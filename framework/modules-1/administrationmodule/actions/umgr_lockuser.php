@@ -30,7 +30,7 @@ if (isset($_GET['id']) && exponent_permissions_check('user_management',exponent_
 		$u->is_locked = $_GET['value'];
 		exponent_users_saveUser($u);
 	}
-	exponent_flow_redirect();
+	expHistory::back();
 } else {
 	echo SITE_403_HTML;
 }

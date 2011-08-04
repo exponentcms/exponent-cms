@@ -49,7 +49,7 @@ if ($question) {
 	if (exponent_permissions_check('manage_answer',$loc)) {
 		$db->delete('poll_answer','id='.$answer->id);
 		$db->decrement('poll_answer','rank',1,'question_id='.$question->id.' AND rank > '.$answer->rank);
-		exponent_flow_redirect();
+		expHistory::back();
 	} else {
 		echo SITE_403_HTML;
 	}

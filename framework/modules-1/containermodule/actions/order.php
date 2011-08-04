@@ -37,7 +37,7 @@ if (exponent_permissions_check('order_modules',$loc)) {
 		}
 	}
    	expSession::clearAllUsersSessionCache('containermodule');
-    exponent_flow_redirect();
+    expHistory::back();
 } else {
 	echo SITE_403_HTML;
 }

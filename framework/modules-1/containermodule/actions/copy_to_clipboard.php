@@ -38,6 +38,6 @@ $clipboard_object->refcount = $db->selectValue('sectionref', 'refcount', 'module
 //eDebug($clipboard_object);
 $db->insertObject($clipboard_object, 'clipboard');
 flash('message', 'Module copied to clipboard');
-exponent_flow_redirect();
+expHistory::back();
 
 ?>

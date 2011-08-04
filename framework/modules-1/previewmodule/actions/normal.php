@@ -23,6 +23,6 @@ if (!defined('EXPONENT')) exit('');
 //expSession::set('uilevel',max(array_keys($levels)));
 //unsetting to fix weirdness by setting to 'normal'. FJD
 expSession::un_set('uilevel');
-exponent_flow_redirect();
+expHistory::back();
 
 ?>

@@ -79,7 +79,7 @@ class buttongroupcontrol extends formcontrol {
 		}
 		//if ($this->reset != "") $html .= '<input class="button" type="reset" value="' . $this->reset . '"' . ($this->disabled?" disabled":"") . ' />';
 		if ($this->cancel != "") {
-			$html .= '<button type="cancel" class="cancel button awesome '.BTN_SIZE.' '.BTN_COLOR.'" onclick="document.location.href=\''.exponent_flow_get().'\'; return false;"';
+			$html .= '<button type="cancel" class="cancel button awesome '.BTN_SIZE.' '.BTN_COLOR.'" onclick="document.location.href=\''.expHistory::getLastNotEditable().'\'; return false;"';
 			$html .= '>';
 			$html .= $this->cancel;
 			$html .= '</button>';

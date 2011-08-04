@@ -71,7 +71,7 @@ if ($f && $controls && $data && $rpt) {
 		$template->assign('title',$rpt->name);
 		$template->assign('fields',$fields);
 		$template->assign('captions',$captions);
-		$template->assign('backlink',exponent_flow_get());
+		$template->assign('backlink',expHistory::getLastNotEditable());
 		$template->assign('is_email',0);
 		$template->output();
 	} else {

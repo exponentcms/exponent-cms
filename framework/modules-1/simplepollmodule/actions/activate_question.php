@@ -48,7 +48,7 @@ if ($question) {
 		//$question->is_active = 1;
 		$question->is_active = $_GET['activate'];
 		$db->updateObject($question,'poll_question');
-		exponent_flow_redirect();
+		expHistory::back();
 	} else {
 		echo SITE_403_HTML;
 	}

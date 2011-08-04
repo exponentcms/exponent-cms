@@ -59,7 +59,7 @@ if (exponent_permissions_check("add_module",$loc) ||
     define('PREVIEW_READONLY',0); // for mods
 	
     expSession::clearAllUsersSessionCache('containermodule');
-	exponent_flow_redirect();
+	expHistory::back();
 } else {
 	echo SITE_403_HTML;
 }

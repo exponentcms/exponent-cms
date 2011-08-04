@@ -19,7 +19,7 @@
  
 if (!defined('EXPONENT')) exit('');
 
-exponent_flow_set(SYS_FLOW_PUBLIC,SYS_FLOW_ACTION);
+expHistory::flowSet(SYS_FLOW_PUBLIC,SYS_FLOW_ACTION);
 
 $time = (isset($_GET['time']) ? $_GET['time'] : time());
 $info = getdate(intval($time));

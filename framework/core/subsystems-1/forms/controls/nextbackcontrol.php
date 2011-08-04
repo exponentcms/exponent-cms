@@ -77,7 +77,7 @@ class nextbackcontrol extends formcontrol {
 		}
 		if ($this->cancel != "") {
 			$html .= '<input type="button" value="' . $this->cancel . '"';
-			$html .= ' onclick="document.location.href=\''.exponent_flow_get().'\'"';
+			$html .= ' onclick="document.location.href=\''.expHistory::getLastNotEditable().'\'"';
 			$html .= ' />';
 		}
 		return $html;

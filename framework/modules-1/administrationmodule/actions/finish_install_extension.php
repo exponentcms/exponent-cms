@@ -47,7 +47,7 @@ if (exponent_permissions_check('extensions',exponent_core_makeLocation('administ
 		$template->assign('nofiles',0);
 		$template->assign('success',$success);
 		
-		$template->assign('redirect',exponent_flow_get());
+		$template->assign('redirect',expHistory::getLastNotEditable());
 		
 		ob_start();
 		include(BASE . 'framework/modules-1/administrationmodule/actions/installtables.php');

@@ -48,7 +48,7 @@ if (exponent_permissions_check('extensions',exponent_core_makeLocation('administ
     }
 
 	// go back to the manager
-	exponent_flow_redirect();
+	expHistory::back();
 } else {
 	echo SITE_403_HTML;
 }

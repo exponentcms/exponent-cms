@@ -138,8 +138,8 @@ if (($item == null && exponent_permissions_check('post',$loc)) ||
 		$buttons .= "Save as New Event";
 		$buttons .= ' </button>';
 
-//		$buttons .= "<input class=\"button\" type=\"button\" value=\"Cancel\" onclick=\"document.location.href='".exponent_flow_get()."'\" /> ";
-		$buttons .= '<button type="cancel" class="cancel button awesome '.BTN_SIZE.' '.BTN_COLOR.'" onclick="document.location.href=\''.exponent_flow_get().'\'; return false;"';
+//		$buttons .= "<input class=\"button\" type=\"button\" value=\"Cancel\" onclick=\"document.location.href='".expHistory::getLastNotEditable()."'\" /> ";
+		$buttons .= '<button type="cancel" class="cancel button awesome '.BTN_SIZE.' '.BTN_COLOR.'" onclick="document.location.href=\''.expHistory::getLastNotEditable().'\'; return false;"';
 		$buttons .= '>';
 		$buttons .= "Cancel";
 		$buttons .= '</button>';

@@ -34,7 +34,7 @@ if ($rpt) {
 			$db->insertObject($rpt,'formbuilder_report');
 		}
 		
-		exponent_flow_redirect();
+		expHistory::back();
 	} else {
 		echo SITE_403_HTML;
 	}

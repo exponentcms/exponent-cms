@@ -26,7 +26,7 @@ if ($user && $user->is_acting_admin == 1) {
 	}
 	
 	if ($page) {
-		exponent_flow_set(SYS_FLOW_PROTECTED,SYS_FLOW_ACTION);
+		expHistory::flowSet(SYS_FLOW_PROTECTED,SYS_FLOW_ACTION);
 	
 		$template = new template('navigationmodule','_view_template',$loc);
 		$template->assign('template',$page);

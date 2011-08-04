@@ -22,7 +22,7 @@
 if (!defined('EXPONENT')) exit('');
 
 if (exponent_permissions_check('database',exponent_core_makeLocation('administrationmodule'))) {
-	exponent_flow_set(SYS_FLOW_PROTECTED,SYS_FLOW_ACTION);
+	expHistory::flowSet(SYS_FLOW_PROTECTED,SYS_FLOW_ACTION);
 
 //	$nullrefs = $db->selectObjects('locationref','refcount=0');
 	$nullrefs = $db->selectObjects('sectionref','refcount=0');

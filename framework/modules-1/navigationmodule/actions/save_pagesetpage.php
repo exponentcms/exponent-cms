@@ -47,7 +47,7 @@ if (exponent_permissions_check('manage',exponent_core_makeLocation('navigationmo
 	navigationmodule::process_section($section,$_POST['pageset']);
 	
 	// Go back to where we came from.  Probably the navigation manager.
-	exponent_flow_redirect();
+	expHistory::back();
 } else {
 	echo SITE_403_HTML;
 }

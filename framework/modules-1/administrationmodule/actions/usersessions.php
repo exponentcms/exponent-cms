@@ -23,7 +23,7 @@
 if (!defined('EXPONENT')) exit('');
 
 if (exponent_permissions_check('user_management',exponent_core_makeLocation('administrationmodule'))) {
-	exponent_flow_set(SYS_FLOW_PROTECTED, SYS_FLOW_ACTION);
+	expHistory::flowSet(SYS_FLOW_PROTECTED, SYS_FLOW_ACTION);
 
 	//cleans up any old sections
 	$db->delete('sessionticket','last_active < ' . (time() - SESSION_TIMEOUT));

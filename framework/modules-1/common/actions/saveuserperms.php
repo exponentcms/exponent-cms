@@ -56,7 +56,7 @@ if (exponent_permissions_check('administrate',$loc)) {
 		}
 	}
 	exponent_permissions_triggerRefresh();
-    exponent_flow_redirect();
+    expHistory::back();
 } else {
 	echo SITE_403_HTML;
 }

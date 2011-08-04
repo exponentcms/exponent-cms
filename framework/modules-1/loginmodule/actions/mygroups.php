@@ -20,7 +20,7 @@
 
 if (!defined('EXPONENT')) exit('');
 
-exponent_flow_set(SYS_FLOW_PROTECTED,SYS_FLOW_ACTION);
+expHistory::flowSet(SYS_FLOW_PROTECTED,SYS_FLOW_ACTION);
 
 if ($user) {
 	$template = new template('administrationmodule','_groupmanager',$loc);

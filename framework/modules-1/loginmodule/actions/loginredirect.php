@@ -24,10 +24,10 @@ ob_start();
 if ($user->isLoggedIn()) {
 	header('Location: ' . expSession::get('redirecturl'));
 } else {
-	//expSession::set('redirecturl', exponent_flow_get());
+	//expSession::set('redirecturl', expHistory::getLastNotEditable());
 	expSession::set('redirecturl', expHistory::getLast());
 	expSession::set('redirecturl_error', makeLink(array('module'=>'loginmodule', 'action'=>'loginredirect')));
-	exponent_flow_set(SYS_FLOW_PUBLIC,SYS_FLOW_ACTION);
+	expHistory::flowSet(SYS_FLOW_PUBLIC,SYS_FLOW_ACTION);
 }
 
 $i18n = exponent_lang_loadFile('modules/loginmodule/actions/loginredirect.php');

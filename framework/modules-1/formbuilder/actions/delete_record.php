@@ -23,7 +23,7 @@ $f = $db->selectObject('formbuilder_form','id='.intval($_GET['form_id']));
 if ($f) {
 	if (exponent_permissions_check('deletedata',unserialize($f->location_data))) {
 		$db->delete('formbuilder_'.$f->table_name,'id='.intval($_GET['id']));
-		exponent_flow_redirect();
+		expHistory::back();
 	} else {
 		echo SITE_403_HTML;
 	}

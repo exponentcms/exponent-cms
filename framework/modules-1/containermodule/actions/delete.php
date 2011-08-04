@@ -49,14 +49,14 @@ if ($container != null) {
 			    $controller->delete_search();
 			}
 
-			exponent_flow_redirect();
-            eDebug(exponent_flow_get());
+			expHistory::back();
+            eDebug(expHistory::getLastNotEditable());
             // $template = new template('containermodule','_lastreferencedelete',$loc);
             // $template->assign('iloc',$iloc);
-            // $template->assign('redirect',exponent_flow_get());
+            // $template->assign('redirect',expHistory::getLastNotEditable());
             // $template->output();
 		} else {
-			exponent_flow_redirect();
+			expHistory::back();
 		}
 	} else {
 		echo SITE_403_HTML;

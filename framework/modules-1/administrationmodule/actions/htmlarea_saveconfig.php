@@ -41,7 +41,7 @@ if (exponent_permissions_check('htmlarea',exponent_core_makeLocation('administra
 		$db->insertObject($config,'toolbar_' . SITE_WYSIWYG_EDITOR);
 	}
 	
-	exponent_flow_redirect();
+	expHistory::back();
 } else {
 	echo SITE_403_HTML;
 }

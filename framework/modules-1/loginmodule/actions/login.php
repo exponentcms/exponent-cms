@@ -33,7 +33,7 @@ if (!isset($_SESSION[SYS_SESSION_KEY]['user'])) {
 		expSession::un_set('redirecturl_error');
 		header("Location: ".$url);
 	} else {
-		exponent_flow_redirect();
+		expHistory::back();
 	}
 } else {
     global $user;
@@ -47,7 +47,7 @@ if (!isset($_SESSION[SYS_SESSION_KEY]['user'])) {
 	if (isset($url)) {
 		header("Location: ".$url);
 	} else {
-		exponent_flow_redirect();
+		expHistory::back();
 	}
 }
 

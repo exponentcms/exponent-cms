@@ -41,7 +41,7 @@ if ($user && $user->is_acting_admin == 1) {
 		$db->insertObject($page,'section_template');
 	}
 	
-	exponent_flow_redirect();
+	expHistory::back();
 } else {
 	echo SITE_403_HTML;
 }

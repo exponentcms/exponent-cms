@@ -35,7 +35,7 @@ if ($a && $b) {
 		$db->updateObject($a,'formbuilder_control');
 		$db->updateObject($b,'formbuilder_control');
 		
-		exponent_flow_redirect();
+		expHistory::back();
 	} else {
 		echo SITE_403_HTML;
 	}

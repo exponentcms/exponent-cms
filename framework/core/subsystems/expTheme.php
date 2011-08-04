@@ -58,8 +58,7 @@ class expTheme {
 			if (isset($_REQUEST['module'])) {
 				include_once(BASE."framework/modules-1/containermodule/actions/orphans_content.php");
 			} else {
-				$i18n = exponent_lang_loadFile('subsystems/theme.php');
-				echo $i18n['select_module'];
+				echo gt('Select a module');
 			}
 		}
     }
@@ -493,9 +492,8 @@ class expTheme {
 				} elseif (is_readable(BASE.'framework/modules-1/'.$actfile)) {
 					include_once(BASE.'framework/modules-1/'.$actfile);
 				} else {
-					$i18n = exponent_lang_loadFile('subsystems/theme.php');
 					echo SITE_404_HTML . '<br /><br /><hr size="1" />';
-					echo sprintf($i18n['no_action'],strip_tags($module),strip_tags($_REQUEST['action']));
+					echo sprintf(gt('No such module action').' : %1 : %2',strip_tags($module),strip_tags($_REQUEST['action']));
 					echo '<br />';
 				}
 			}
@@ -622,8 +620,7 @@ class expTheme {
 					call_user_func(array($module,"show"),$view,$loc,$title);
 				}
 			} else {
-				$i18n = exponent_lang_loadFile('subsystems/theme.php');
-				echo sprintf($i18n['mod_not_found'],$module);
+				echo sprintf(gt('The module "%s" was not found in the system.'),$module);
 			}
 		}
 	}
@@ -683,9 +680,8 @@ class expTheme {
 	//            } elseif (is_readable(BASE.'framework/modules-1/'.$actfile)) {
 	//                include_once(BASE.'framework/modules-1/'.$actfile);
 	//            } else {
-	//                $i18n = exponent_lang_loadFile('subsystems/theme.php');
 	//                echo SITE_404_HTML . '<br /><br /><hr size="1" />';
-	//                echo sprintf($i18n['no_action'],strip_tags($module),strip_tags($_REQUEST['action']));
+	//                echo sprintf(gt('No such module action').' : %1 : %2',strip_tags($module),strip_tags($_REQUEST['action']));
 	//                echo '<br />';
 	//            }
 	//        }
@@ -713,9 +709,8 @@ class expTheme {
 		} elseif (is_readable(BASE.'framework/modules-1/'.$actfile)) {
 			include(BASE.'framework/modules-1/'.$actfile);
 		} else {
-			$i18n = exponent_lang_loadFile('subsystems/theme.php');
 			echo SITE_404_HTML . '<br /><br /><hr size="1" />';
-			echo sprintf($i18n['no_action'],strip_tags($_REQUEST['module']),strip_tags($_REQUEST['action']));
+			echo sprintf(gt('No such module action').' : %1 : %2',strip_tags($_REQUEST['module']),strip_tags($_REQUEST['action']));
 			echo '<br />';
 		}
 	}
@@ -840,13 +835,13 @@ class expTheme {
 	public static function mainContainer() {
 		if (!AUTHORIZED_SECTION) {
 			// Set this so that a login on an Auth Denied page takes them back to the previously Auth-Denied page
-			exponent_flow_set(SYS_FLOW_PROTECTED,SYS_FLOW_SECTIONAL);
+			expHistory::flowSet(SYS_FLOW_PROTECTED,SYS_FLOW_SECTIONAL);
 			echo SITE_403_HTML;
 			return;
 		}
 
-		if (PUBLIC_SECTION) exponent_flow_set(SYS_FLOW_PUBLIC,SYS_FLOW_SECTIONAL);
-		else exponent_flow_set(SYS_FLOW_PROTECTED,SYS_FLOW_SECTIONAL);
+		if (PUBLIC_SECTION) expHistory::flowSet(SYS_FLOW_PUBLIC,SYS_FLOW_SECTIONAL);
+		else expHistory::flowSet(SYS_FLOW_PROTECTED,SYS_FLOW_SECTIONAL);
 
 	#   if (expSession::is_set("themeopt_override")) {
 	#       $config = expSession::get("themeopt_override");

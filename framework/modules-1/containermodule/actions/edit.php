@@ -123,13 +123,13 @@ if (exponent_permissions_check('edit_module',$loc) || exponent_permissions_check
 	
 	asort($mods);
 	if (!key_exists($container->internal->mod, $mods) && !empty($container->id)) {
-        $template->assign('error',expLang::gettext('The module you are trying to edit is inactive. Please contact your administrator to activate this module.'));
+        $template->assign('error',gt('The module you are trying to edit is inactive. Please contact your administrator to activate this module.'));
 	}
 	$template->assign('user',$user);
 	$template->assign('json_obj',json_encode($modules));
 	$template->assign('modules',$mods);
 	$template->assign('loc',$loc);
-	$template->assign('back',exponent_flow_get());
+	$template->assign('back',expHistory::getLastNotEditable());
 	$template->output();
 } else {
 	echo SITE_403_HTML;

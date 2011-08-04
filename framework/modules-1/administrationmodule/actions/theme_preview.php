@@ -26,7 +26,7 @@ if (exponent_permissions_check('extensions',exponent_core_makeLocation('administ
 	if (DISPLAY_THEME_REAL == $_GET['theme']){
 		expSession::set('display_theme',$_GET['theme']);
 	}
-	exponent_flow_redirect();
+	expHistory::back();
 } else {
 	echo SITE_403_HTML;
 }

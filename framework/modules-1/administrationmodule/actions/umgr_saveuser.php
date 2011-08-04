@@ -27,7 +27,7 @@ if (exponent_permissions_check('user_management',exponent_core_makeLocation('adm
 //	if (!defined('SYS_USERS')) require_once(BASE.'framework/core/subsystems-1/users.php');
 //	if (!defined('SYS_SECURITY')) require_once(BASE.'framework/core/subsystems-1/security.php');
 	require_once(BASE.'framework/core/subsystems-1/users.php');
-	require_once(BASE.'framework/core/subsystems-1/security.php');
+//	require_once(BASE.'framework/core/subsystems-1/security.php');
 	if (isset($_POST['id'])) { // Existing user profile edit
 		$_POST['id'] = intval($_POST['id']);
 		$u = exponent_users_getUserById(intval($_POST['id']));
@@ -35,7 +35,7 @@ if (exponent_permissions_check('user_management',exponent_core_makeLocation('adm
 		//save extensions
 		exponent_users_saveProfileExtensions($_POST,$u,false);
 		exponent_users_saveUser($u);
-		exponent_flow_redirect();
+		expHistory::back();
 	} else {
 		$i18n = exponent_lang_loadFile('modules/administrationmodule/actions/umgr_saveuser.php');
 		$_POST['username'] = trim($_POST['username']);
@@ -60,7 +60,7 @@ if (exponent_permissions_check('user_management',exponent_core_makeLocation('adm
 			} else {
 				$u = exponent_users_create($_POST,null);
 				$u = exponent_users_saveProfileExtensions($_POST,$u,true);
-				exponent_flow_redirect();
+				expHistory::back();
 			}
 		}
 	}

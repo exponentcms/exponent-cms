@@ -27,7 +27,7 @@ if (exponent_permissions_check('user_management',exponent_core_makeLocation('adm
 	require_once(BASE.'framework/core/subsystems-1/users.php');
 	exponent_users_includeProfileExtensions();
 	
-	exponent_flow_set(SYS_FLOW_PROTECTED,SYS_FLOW_ACTION);
+	expHistory::flowSet(SYS_FLOW_PROTECTED,SYS_FLOW_ACTION);
 	
 	$template = new template('administrationmodule','_profileextManager',$loc);
 	

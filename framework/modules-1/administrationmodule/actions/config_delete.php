@@ -25,7 +25,7 @@ if (exponent_permissions_check('configuration',exponent_core_makeLocation('admin
 //	if (!defined('SYS_CONFIG')) require_once(BASE.'framework/core/subsystems-1/config.php');
 	require_once(BASE.'framework/core/subsystems-1/config.php');
 	exponent_config_deleteProfile($_GET['configname']);
-	exponent_flow_redirect();
+	expHistory::back();
 } else {
 	echo SITE_403_HTML;
 }

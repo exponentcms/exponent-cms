@@ -44,7 +44,7 @@ if (isset($_GET['qid'])) {
 if ($question) {
 	if (exponent_permissions_check('manage_answer',$loc)) {
 		$db->switchValues('poll_answer','rank',$_GET['a'],$_GET['b'],'question_id='.$question->id);
-		exponent_flow_redirect();
+		expHistory::back();
 	} else {
 		echo SITE_403_HTML;
 	}

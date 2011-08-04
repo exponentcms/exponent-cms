@@ -43,7 +43,7 @@ if ($question) {
 	if (exponent_permissions_check('manage_question',$loc)) {
 		$db->delete('poll_answer','question_id='.$question->id);
 		$db->delete('poll_question','id='.$question->id);
-		exponent_flow_redirect();
+		expHistory::back();
 	} else {
 		echo SITE_403_HTML;
 	}

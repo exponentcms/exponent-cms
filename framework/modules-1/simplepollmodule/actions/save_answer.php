@@ -66,7 +66,7 @@ if ($question) {
 			}
 			$db->insertObject($answer,'poll_answer');
 		}
-		exponent_flow_redirect();
+		expHistory::back();
 	} else {
 		echo SITE_403_HTML;
 	}

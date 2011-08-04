@@ -170,7 +170,7 @@ if (($item == null && exponent_permissions_check("post",$loc)) ||
 	}
 
 //	exponent_workflow_post($item,'calendar',$loc);
-	exponent_flow_redirect();
+	expHistory::back();
 } else {
 	echo SITE_403_HTML;
 }

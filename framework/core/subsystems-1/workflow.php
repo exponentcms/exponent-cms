@@ -392,7 +392,7 @@ function exponent_workflow_post($object,$table,$loc,$userdata = null) {
 		exponent_workflow_runActions($policy,$object->wf_type,$object);
 	} else {
 		// Catch-all redirect - in case its a new post, implicitly approved, with no policy
-		exponent_flow_redirect();
+		expHistory::back();
 	}
 }
 
