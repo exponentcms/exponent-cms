@@ -37,6 +37,12 @@ $i18n = exponent_lang_loadFile('install/pages/dbcheck.php');
     <label class="label">Site Title</label>
     <input type="text" name="sc[SITE_TITLE]" value="Exponent CMS - A Powerful, Flexible, and Intuitive Web Solution." size="40" class="text ">
   </div>
+  
+  <div class="text-control control ">
+    <label class="label">Site Header</label>
+    <input type="text" name="sc[SITE_HEADER]" value="Exponent CMS" size="40" class="text ">
+  </div>
+  
   <div class="text-control control ">
     <label class="label">Meta Keywords</label>
     <textarea class="textarea" id="sc[SITE_KEYWORDS]" name="sc[SITE_KEYWORDS]" rows="5" cols="38">exponent cms</textarea>
