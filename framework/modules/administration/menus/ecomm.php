@@ -153,7 +153,7 @@ $ecom = array(
 			array(
                 'text'=>"Email Messages",
                 'submenu'=>array(
-                    'id'=>'discount',
+                    'id'=>'emailmessages',
                     'itemdata'=>array(
                         array(
                             'text'=>"Manage Email",
