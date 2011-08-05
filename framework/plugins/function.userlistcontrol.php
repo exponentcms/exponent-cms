@@ -19,7 +19,7 @@
 /** @define "BASE" "../.." */
 
 function smarty_function_userlistcontrol($params,&$smarty) {
-	echo '<script src="'.PATH_RELATIVE.'subsystems/forms/controls/listbuildercontrol.js" language="javascript"></script>';
+	echo '<script src="'.PATH_RELATIVE.'framework/core/subsystems-1/forms/controls/listbuildercontrol.js" language="javascript"></script>';
 //	if (!defined('SYS_FORMS')) require_once(BASE.'framework/core/subsystems-1/forms.php');
 //	if (!defined('SYS_USERS')) require_once(BASE.'framework/core/subsystems-1/users.php');
 	require_once(BASE.'framework/core/subsystems-1/forms.php');

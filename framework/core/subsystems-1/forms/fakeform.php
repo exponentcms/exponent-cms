@@ -56,7 +56,7 @@ class fakeform extends form {
 
 		global $router;
 		$html = "<!-- Form Object '" . $this->name . "' -->\r\n";
-		$html .= "<script type=\"text/javascript\" src=\"" .PATH_RELATIVE."subsystems/forms/js/inputfilters.js.php\"></script>\r\n";
+		$html .= "<script type=\"text/javascript\" src=\"" .PATH_RELATIVE."framework/core/subsystems-1/forms/js/inputfilters.js.php\"></script>\r\n";
 		foreach ($this->scripts as $name=>$script) $html .= "<script type=\"text/javascript\" src=\"$script\"></script>\r\n";
 		$html .= $formError;
 		$html .= "<form name=\"" . $this->name . "\" method=\"" . $this->method . "\" action=\"" . $this->action . "\" enctype=\"".$this->enctype."\">\r\n";

@@ -41,7 +41,7 @@ class filemanagercontrol extends formcontrol {
     }
 
     function toHTML($label,$name) {
-    	$assets_path = SCRIPT_RELATIVE.'subsystems/forms/controls/assets/';
+    	$assets_path = SCRIPT_RELATIVE.'framework/core/subsystems-1/forms/controls/assets/';
         $subTypeName = empty($this->subtype) ? "expFile[]" : "expFile[".$this->subtype."][]";
         $files = $this->buildImages();
         $html = '<div id="filemanager'.$name.'" class="filemanager control'.(empty($this->class)?"":" ".$this->class).'">';
@@ -297,7 +297,7 @@ class filemanagercontrol extends formcontrol {
     }
     
     function buildImages() {
-    	$assets_path = SCRIPT_RELATIVE.'subsystems/forms/controls/assets/';
+    	$assets_path = SCRIPT_RELATIVE.'framework/core/subsystems-1/forms/controls/assets/';
         if (empty($this->value)) return null;
 
         //get the array of files

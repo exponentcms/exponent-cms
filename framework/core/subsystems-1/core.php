@@ -445,7 +445,7 @@ function exponent_core_resolveFilePaths($type, $name, $subtype, $subname) {
 			$relpath .= "framework/views/";
 		} elseif($type == "forms") {
 			if ($name != "forms/email") {
-				$relpath .= "subsystems/forms/";
+				$relpath .= "framework/core/subsystems-1/forms/";
 			} else {  //TODO  forms/email only used by calendarmodule
 				$relpath .= "framework/modules-1/calendarmodule/";
 			}
@@ -458,7 +458,7 @@ function exponent_core_resolveFilePaths($type, $name, $subtype, $subname) {
 		} elseif($type == "Control") {
 			$relpath .= "themes/";
 		} elseif($type == "Form") {
-			$relpath .= "subsystems/forms/";
+			$relpath .= "framework/core/subsystems-1/forms/";
 		} elseif($type == "Module") {
 			$relpath .= "modules/";
 		} elseif($type == "Controller" || $type=='controllers') {

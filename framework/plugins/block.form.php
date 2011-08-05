@@ -46,8 +46,8 @@ function smarty_block_form($params,$content,&$smarty, &$repeat) {
 
 		echo "<!-- Form Object 'form' -->\r\n";
 		echo '<script type="text/javascript" src="'.PATH_RELATIVE.'framework/core/subsystems-1/forms/js/inputfilters.js.php"></script>'."\r\n";
-		// echo '<script type="text/javascript" src="'.PATH_RELATIVE.'subsystems/forms/controls/listbuildercontrol.js"></script>'."\r\n";
-		// echo '<script type="text/javascript" src="'.PATH_RELATIVE.'subsystems/forms/js/required.js"></script>'."\r\n";
+		// echo '<script type="text/javascript" src="'.PATH_RELATIVE.'framework/core/subsystems-1/forms/controls/listbuildercontrol.js"></script>'."\r\n";
+		// echo '<script type="text/javascript" src="'.PATH_RELATIVE.'framework/core/subsystems-1/forms/js/required.js"></script>'."\r\n";
 		// echo '<script type="text/javascript" src="'.PATH_RELATIVE.'external/jscalendar/calendar.js"></script>'."\r\n";
 		// echo '<script type="text/javascript" src="'.PATH_RELATIVE.'external/jscalendar/lang/calendar-en.js"></script>'."\r\n";
 		// echo '<script type="text/javascript" src="'.PATH_RELATIVE.'external/jscalendar/calendar-setup.js"></script>'."\r\n";

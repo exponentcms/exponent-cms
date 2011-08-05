@@ -78,7 +78,7 @@ class calendarcontrol extends formcontrol {
 	}
 
     function controlToHTML($name,$label) {
-    	$assets_path = SCRIPT_RELATIVE.'subsystems/forms/controls/assets/';
+    	$assets_path = SCRIPT_RELATIVE.'framework/core/subsystems-1/forms/controls/assets/';
         $html = "
         <div id=\"cal-container-".$name."\" class=\"yui-skin-sam control calendar-control\">
             <label for=\"".$name."\" class=\"label\">".$label."</label><input size=26 type=\"text\" id=\"date-".$name."\" name=\"date-".$name."\" value=\"\" class=\"text datebox\" /> 

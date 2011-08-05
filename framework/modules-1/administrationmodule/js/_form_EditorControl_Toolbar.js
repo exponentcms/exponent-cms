@@ -253,7 +253,7 @@ eXp.WYSIWYG.save = function(frm) {
 	frm.submit();
 }
 
-// used to build a toolbox of available buttons, the array eXp.WYSIWYG_toolbar in /subsystems/forms/controls/EditorControl/js/<currenteditor>_toolbar.js has to be maintened manually(for now)
+// used to build a toolbox of available buttons, the array eXp.WYSIWYG_toolbar in /framework/core/subsystems/forms/controls/EditorControl/js/<currenteditor>_toolbar.js has to be maintened manually(for now)
 eXp.WYSIWYG.buildToolbox = function(Buttons) {
 	myButtonPanel = document.getElementById("editorcontrol_toolbox");
 	
