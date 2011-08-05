@@ -45,7 +45,7 @@
 
     //Pull in the mysqli helper class form exponet. 
     // Sure, we could have used mysqli directly but we have this nice friendly class so why not use it
-    require_once(EXP_PATH . "subsystems/database/mysqli.php");
+    require_once(EXP_PATH . "framework/core/subsystems-1/database/mysqli.php");
     
 //TODO Swift 3.x is no longer available, but expMail is already waiting
 // $mail - new expMail(); $mail->quickSend();
