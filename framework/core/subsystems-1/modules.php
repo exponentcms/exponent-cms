@@ -52,7 +52,7 @@ function exponent_modules_list() {
 	if (is_readable(BASE."framework/modules-1")) {
 		$dh = opendir(BASE."framework/modules-1");
 		while (($file = readdir($dh)) !== false) {
-			if (substr($file,-6,6) == "framework/module-1") $mods[] = $file;
+			if (substr($file,-6,6) == "module") $mods[] = $file;
 		}
 	}
 	return $mods;

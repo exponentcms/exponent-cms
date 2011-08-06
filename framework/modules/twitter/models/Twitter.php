@@ -39,7 +39,7 @@
  * @copyright	Copyright (c) 2010, Tijs Verkoyen. All rights reserved.
  * @license		BSD License
  */
-class Twitter
+class Twitter extends expRecord
 {
 	// internal constant to enable/disable debugging
 	const DEBUG = false;
