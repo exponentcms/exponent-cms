@@ -67,7 +67,7 @@ if (exponent_permissions_check('extensions',exponent_core_makeLocation('administ
 			echo $i18n['bad_archive'].'<br />';
 		} else {
 //			if (!defined('SYS_FILES')) require_once(BASE.'framework/core/subsystems-1/files.php');
-			require_once(BASE.'framework/core/subsystems-1/files.php');
+//			require_once(BASE.'framework/core/subsystems-1/files.php');
 
 			// Look for stale sessid directories:
 			$sessid = session_id();

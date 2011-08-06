@@ -23,7 +23,7 @@ if (!defined('EXPONENT')) exit('');
 $dest_dir = expSession::get('dest_dir');
 $files = expSession::get('files_data');
 //if (!defined('SYS_FILES')) require_once(BASE.'framework/core/subsystems-1/files.php');
-require_once(BASE.'framework/core/subsystems-1/files.php');
+//require_once(BASE.'framework/core/subsystems-1/files.php');
 if (!file_exists(BASE.'files')) {
 	mkdir(BASE.'files',0777);
 }

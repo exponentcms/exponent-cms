@@ -99,7 +99,7 @@ class bbextension {
 		if ($fileup[2] > 0 && $fileup[1] > 0) {
 			if ($fileup[0] <= 80 && $fileup[1] <= 80) {
 //				if (!defined('SYS_FILES')) include_once(BASE.'framework/core/subsystems-1/files.php');
-				include_once(BASE.'framework/core/subsystems-1/files.php');
+//				include_once(BASE.'framework/core/subsystems-1/files.php');
 
 				$directory = 'files/bbmodule/avatars';
 				$fname = null;

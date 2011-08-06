@@ -424,7 +424,7 @@ class administrationController extends expController {
 
 	public function clear_image_cache() {
 //		if (!defined('SYS_FILES')) include_once(BASE.'framework/core/subsystems-1/files.php');
-		include_once(BASE.'framework/core/subsystems-1/files.php');
+//		include_once(BASE.'framework/core/subsystems-1/files.php');
 //		expFile::removeFilesInDirectory(BASE.'tmp/pixidou');  // alt location for pixidou cache
 		expFile::removeFilesInDirectory(BASE.'framework/modules/pixidou/images');  // location for pixidou cache
 		// phpThumb cache includes subfolders
@@ -436,7 +436,7 @@ class administrationController extends expController {
 
 	public function clear_rss_cache() {
 //		if (!defined('SYS_FILES')) include_once(BASE.'framework/core/subsystems-1/files.php');
-		include_once(BASE.'framework/core/subsystems-1/files.php');
+//		include_once(BASE.'framework/core/subsystems-1/files.php');
 		expFile::removeFilesInDirectory(BASE.'tmp/rsscache');
 		$message = "RSS/Podcast Cache has been cleared" ;
 		flash('message',$message);
@@ -445,7 +445,7 @@ class administrationController extends expController {
 
 	public function clear_all_caches() {
 //		if (!defined('SYS_FILES')) include_once(BASE.'framework/core/subsystems-1/files.php');
-		include_once(BASE.'framework/core/subsystems-1/files.php');
+//		include_once(BASE.'framework/core/subsystems-1/files.php');
 		expTheme::removeSmartyCache();
 		expTheme::removeCss();
 //		expFile::removeFilesInDirectory(BASE.'tmp/pixidou');  // alt location for pixidou cache
@@ -513,7 +513,7 @@ class administrationController extends expController {
 				echo gt('Unknown archive format. Archives must either be regular ZIP files, TAR files, Gzipped Tarballs, or Bzipped Tarballs.').'<br />';
 			} else {
 //				if (!defined('SYS_FILES')) require_once(BASE.'framework/core/subsystems-1/files.php');
-				require_once(BASE.'framework/core/subsystems-1/files.php');
+//				require_once(BASE.'framework/core/subsystems-1/files.php');
 
 				// Look for stale sessid directories:
 				$sessid = session_id();
