@@ -9,7 +9,7 @@
 error_reporting(E_ALL);
 
 include("../loader.php");
-define("YUI_VERSION_TO_TEST", "2.8.0r4");
+define("YUI_VERSION_TO_TEST", "2.9.0");
 
 function verify($name, $url)  {
 
