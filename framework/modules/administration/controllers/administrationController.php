@@ -58,38 +58,39 @@ class administrationController extends expController {
 		$tables = array();
 
 		// first the core and 1.0 definitions
-		$dirs = array(
-//			BASE."datatypes/definitions",
-			BASE."framework/core/definitions",
-			);
-		foreach ($dirs as $dir) {
-			if (is_readable($dir)) {
-				$dh = opendir($dir);
-				while (($file = readdir($dh)) !== false) {
-					if (is_readable("$dir/$file") && is_file("$dir/$file") && substr($file,-4,4) == ".php" && substr($file,-9,9) != ".info.php") {
-						$tablename = substr($file,0,-4);
-						$dd = include("$dir/$file");
-						$info = null;
-						if (is_readable("$dir/$tablename.info.php")) $info = include("$dir/$tablename.info.php");
-						if (!$db->tableExists($tablename)) {
-							foreach ($db->createTable($tablename,$dd,$info) as $key=>$status) {
+//		$dirs = array(
+////			BASE."datatypes/definitions",
+//			BASE."framework/core/definitions",
+//			);
+//		foreach ($dirs as $dir) {
+		$dir = BASE.'framework/core/definitions';
+		if (is_readable($dir)) {
+			$dh = opendir($dir);
+			while (($file = readdir($dh)) !== false) {
+				if (is_readable("$dir/$file") && is_file("$dir/$file") && substr($file,-4,4) == ".php" && substr($file,-9,9) != ".info.php") {
+					$tablename = substr($file,0,-4);
+					$dd = include("$dir/$file");
+					$info = null;
+					if (is_readable("$dir/$tablename.info.php")) $info = include("$dir/$tablename.info.php");
+					if (!$db->tableExists($tablename)) {
+						foreach ($db->createTable($tablename,$dd,$info) as $key=>$status) {
+							$tables[$key] = $status;
+						}
+					} else {
+						foreach ($db->alterTable($tablename,$dd,$info) as $key=>$status) {
+							if (isset($tables[$key])) echo "$tablename, $key<br>";
+							if ($status == TABLE_ALTER_FAILED){
 								$tables[$key] = $status;
+							}else{
+								$tables[$key] = ($status == TABLE_ALTER_NOT_NEEDED ? DATABASE_TABLE_EXISTED : DATABASE_TABLE_ALTERED);
 							}
-						} else {
-							foreach ($db->alterTable($tablename,$dd,$info) as $key=>$status) {
-								if (isset($tables[$key])) echo "$tablename, $key<br>";
-								if ($status == TABLE_ALTER_FAILED){
-									$tables[$key] = $status;
-								}else{
-									$tables[$key] = ($status == TABLE_ALTER_NOT_NEEDED ? DATABASE_TABLE_EXISTED : DATABASE_TABLE_ALTERED);
-								}
 
-							}
 						}
 					}
 				}
 			}
 		}
+//		}
 
 		// then search for module definitions
 		$newdef = BASE."framework/modules";
@@ -138,14 +139,46 @@ class administrationController extends expController {
         
         expHistory::set('managable', $this->params);
         $unused_tables = array();
+        $used_tables = array();
         $tables = $db->getTables();
         //eDebug($tables);
-	    //FIXME Need to update for definitions moving into controller folders
+
+		$dir = BASE.'framework/core/definitions';
+		if (is_readable($dir)) {
+			$dh = opendir($dir);
+			while (($file = readdir($dh)) !== false) {
+				if (is_readable("$dir/$file") && is_file("$dir/$file") && substr($file,-4,4) == ".php" && substr($file,-9,9) != ".info.php") {
+					$used_tables[]= strtolower(substr($file,0,-4));
+				}
+			}
+		}
+
+		// then search for module definitions
+		$newdef = BASE."framework/modules";
+		if (is_readable($newdef)) {
+			$dh = opendir($newdef);
+			while (($file = readdir($dh)) !== false) {
+				if (is_dir($newdef.'/'.$file) && ($file != '..' && $file != '.')) {
+					$dirpath = $newdef.'/'.$file.'/definitions';
+					if (file_exists($dirpath)) {
+						$def_dir = opendir($dirpath);
+						while (($def = readdir($def_dir)) !== false) {
+//							eDebug("$dirpath/$def");
+							if (is_readable("$dirpath/$def") && is_file("$dirpath/$def") && substr($def,-4,4) == ".php" && substr($def,-9,9) != ".info.php") {
+								if ((!in_array(substr($def,0,-4), $used_tables))) {
+									$used_tables[] = strtolower(substr($def,0,-4));
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+        // eDebug($used_tables);
+
         foreach($tables as $table) {
             $basename = str_replace(DB_TABLE_PREFIX.'_', '', $table);
-            $oldpath = BASE.'datatypes/definitions/'.$basename.'.php';
-            $mvcpath = BASE.'framework/core/definitions/'.$basename.'.php';
-            if (!file_exists($oldpath) && !file_exists($mvcpath) && !stristr($basename, 'formbuilder')) {
+            if (!in_array($basename, $used_tables) && !stristr($basename, 'formbuilder')) {
                 $unused_tables[$basename]->name = $table;
                 $unused_tables[$basename]->rows = $db->countObjects($basename);
             }

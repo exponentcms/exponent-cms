@@ -113,8 +113,8 @@ class remove_headlinecontroller extends upgradescript {
 
 		// check if the headline controller files are there and remove them
 		$files = array(
-		    BASE."framework/core/database/definitions/headline.php",
-		    BASE."framework/datatypes/headline.php",
+		    BASE."framework/modules/definitions/headline.php",
+		    BASE."framework/modules/models/headline.php",
 		    BASE."framework/modules/headline/"
 		);
 

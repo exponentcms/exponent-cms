@@ -206,38 +206,39 @@ if ($passed) {
 	$tables = array();
 
 	// first the core and 1.0 definitions
-	$dirs = array(
-//			BASE."datatypes/definitions",
-		BASE."framework/core/definitions",
-		);
-	foreach ($dirs as $dir) {
-		if (is_readable($dir)) {
-			$dh = opendir($dir);
-			while (($file = readdir($dh)) !== false) {
-				if (is_readable("$dir/$file") && is_file("$dir/$file") && substr($file,-4,4) == ".php" && substr($file,-9,9) != ".info.php") {
-					$tablename = substr($file,0,-4);
-					$dd = include("$dir/$file");
-					$info = null;
-					if (is_readable("$dir/$tablename.info.php")) $info = include("$dir/$tablename.info.php");
-					if (!$db->tableExists($tablename)) {
-						foreach ($db->createTable($tablename,$dd,$info) as $key=>$status) {
+//	$dirs = array(
+////			BASE."datatypes/definitions",
+//		BASE."framework/core/definitions",
+//		);
+//	foreach ($dirs as $dir) {
+	$dir = BASE.'framework/core/definitions';
+	if (is_readable($dir)) {
+		$dh = opendir($dir);
+		while (($file = readdir($dh)) !== false) {
+			if (is_readable("$dir/$file") && is_file("$dir/$file") && substr($file,-4,4) == ".php" && substr($file,-9,9) != ".info.php") {
+				$tablename = substr($file,0,-4);
+				$dd = include("$dir/$file");
+				$info = null;
+				if (is_readable("$dir/$tablename.info.php")) $info = include("$dir/$tablename.info.php");
+				if (!$db->tableExists($tablename)) {
+					foreach ($db->createTable($tablename,$dd,$info) as $key=>$status) {
+						$tables[$key] = $status;
+					}
+				} else {
+					foreach ($db->alterTable($tablename,$dd,$info) as $key=>$status) {
+						if (isset($tables[$key])) echo "$tablename, $key<br>";
+						if ($status == TABLE_ALTER_FAILED){
 							$tables[$key] = $status;
+						}else{
+							$tables[$key] = ($status == TABLE_ALTER_NOT_NEEDED ? DATABASE_TABLE_EXISTED : DATABASE_TABLE_ALTERED);
 						}
-					} else {
-						foreach ($db->alterTable($tablename,$dd,$info) as $key=>$status) {
-							if (isset($tables[$key])) echo "$tablename, $key<br>";
-							if ($status == TABLE_ALTER_FAILED){
-								$tables[$key] = $status;
-							}else{
-								$tables[$key] = ($status == TABLE_ALTER_NOT_NEEDED ? DATABASE_TABLE_EXISTED : DATABASE_TABLE_ALTERED);
-							}
 
-						}
 					}
 				}
 			}
 		}
 	}
+//	}
 
 	// then search for module definitions
 	$newdef = BASE."framework/modules";
