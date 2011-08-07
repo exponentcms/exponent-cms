@@ -131,7 +131,7 @@ function getModuleNames($mods) {
 	$mod_list = array();
 
 	if(!isset($mods) || $mods == null) {
-		$mods = exponent_modules_list();
+		$mods = expModules::exponent_modules_list();
 	}
 	
         foreach ($mods as $mod) {

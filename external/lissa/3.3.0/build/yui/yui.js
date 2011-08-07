@@ -1358,7 +1358,7 @@ proto = {
 /**
  * A hash of module group definitions.  It for each group you
  * can specify a list of modules and the base path and
- * combo spec to use when dynamically loading the modules.  @see
+ * combo spec to use when dynamically loading the modules.
  * @see modules for the details about the modules part of the
  * group definition.
  * <code>

@@ -64,6 +64,10 @@ class BaseTemplate {
 		//Some (crappy) wysiwyg editors use php as their default initializer
 		//FJD - this might break some editors...we'll see.
 		$this->tpl->php_handling = SMARTY_PHP_REMOVE;
+
+		$this->tpl->caching = false;
+		$this->tpl->cache_dir = BASE . 'tmp/cache';
+
 		//$this->tpl->plugins_dir[] = BASE . 'framework/core/subsystems-1/template/Smarty/plugins';
 		$this->tpl->plugins_dir[] = BASE . 'framework/plugins';
 		// now reverse the array so we can bypass looking in our root folder for old plugins
@@ -76,7 +80,7 @@ class BaseTemplate {
 		$this->viewdir = realpath(dirname($this->viewfile));
 
 		$this->module = $item_dir;
-		
+
 		$this->view = substr(basename($this->viewfile),0,-4);
 		
 		//fix for the wamp/lamp issue
@@ -196,6 +200,10 @@ class controllerTemplate extends baseTemplate {
 		//Some (crappy) wysiwyg editors use php as their default initializer
 		//FJD - this might break some editors...we'll see.
 		$this->tpl->php_handling = SMARTY_PHP_REMOVE;
+
+		$this->tpl->caching = false;
+		$this->tpl->cache_dir = BASE . 'tmp/cache';
+
 		//$this->tpl->plugins_dir[] = BASE . 'framework/core/subsystems-1/template/Smarty/plugins';
 		$this->tpl->plugins_dir[] = BASE . 'framework/plugins';
 		// now reverse the array so we can bypass looking in our root folder for old plugins

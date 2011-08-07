@@ -45,7 +45,7 @@ if (exponent_permissions_check('configuration',exponent_core_makeLocation('admin
 
 	$mods = array();
 	
-	foreach (exponent_modules_list() as $m) {
+	foreach (expModules::exponent_modules_list() as $m) {
 		if (class_exists($m)) {
 			$mobj = new $m();
 			$mods[$m] = array(

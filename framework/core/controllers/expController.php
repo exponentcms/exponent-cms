@@ -609,6 +609,7 @@ class expController {
             $search_record->original_id = $origid;
             $search_record->posted = empty($cnt['created_at']) ? null : $cnt['created_at'];
             $link = str_replace(URL_FULL,'', makeLink(array('controller'=>$this->baseclassname, 'action'=>'show', 'id'=>$origid, 'src'=>$src)));
+//	        if (empty($search_record->title)) $search_record->title = 'Untitled';
             $search_record->view_link = $link;
             $search_record->ref_module = $this->classname;
             $search_record->category = $this->searchName();
