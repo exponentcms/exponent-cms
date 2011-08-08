@@ -30,7 +30,7 @@
 	
 	{/if}
 	{/permissions}
-	{chain module=previewmodule view=Default}		
+{*	{chain module=previewmodule view=Default}		*}
 	</div>
 
 

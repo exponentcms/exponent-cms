@@ -408,6 +408,21 @@ class administrationController extends expController {
 		expHistory::back();
 	}
 
+	public function toggle_preview() {
+		$level = 99;
+		if (expSession::is_set('uilevel')) {
+			$level = expSession::get('uilevel');
+		}
+		if ($level == UILEVEL_PREVIEW) {
+			expSession::un_set('uilevel');
+		} else { //edit mode
+			expSession::set("uilevel",0);
+		}
+		$message = ($level == UILEVEL_PREVIEW) ? "Exponent is no longer in 'Preview' mode" : "Exponent is now in 'Preview' mode" ;
+		flash('message',$message);
+		expHistory::back();
+	}
+
 	public function clear_smarty_cache() {
 		expTheme::removeSmartyCache();
 		$message = "Smarty Cache has been cleared" ;

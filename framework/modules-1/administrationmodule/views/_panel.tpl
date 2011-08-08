@@ -35,7 +35,7 @@
 				<a class="editprofile" href="{link module=loginmodule action=editprofile}">Edit Profile</a>
 				<a class="logout" href="{link module=loginmodule action=logout}">Log Out</a>
 				{/permissions}
-				{chain module=previewmodule view=Default}
+{*				{chain module=previewmodule view=Default}*}
 			{/if}
 		</div>
 	</div>

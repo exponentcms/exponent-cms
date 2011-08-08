@@ -28,13 +28,13 @@ if (expSession::is_set('uilevel')) {
 	$level = expSession::get('uilevel');
 }	
 
-if ($level == UILEVEL_PREVIEW) {
-    $preview_url = makeLink(array('module'=>'previewmodule','action'=>'normal'));
-    $preview_class = 'preview_on';
-} else {
-    $preview_url = makeLink(array('module'=>'previewmodule','action'=>'preview'));
-    $preview_class = 'preview_off';
-}
+//if ($level == UILEVEL_PREVIEW) {
+//    $preview_url = makeLink(array('module'=>'previewmodule','action'=>'normal'));
+//    $preview_class = 'preview_on';
+//} else {
+//    $preview_url = makeLink(array('module'=>'previewmodule','action'=>'preview'));
+//    $preview_class = 'preview_off';
+//}
 /////////////////////////////////////////////////////////////////////////
 // BUILD THE MENU
 /////////////////////////////////////////////////////////////////////////
@@ -62,8 +62,12 @@ return array(
             ),
             array(
                 'text'=>gt('Preview Mode'),
-                'classname'=>$preview_class,
-                'url'=>$preview_url
+                'text' => ($level == UILEVEL_PREVIEW)?gt('Turn Preview Mode off'):gt('Turn Preview Mode on'),
+                'classname' => ($level == UILEVEL_PREVIEW)?'preview_on':'preview_off',
+				'url' => makeLink(array(
+					'module' => 'administration',
+					'action' => 'toggle_preview'
+				))
             ),
         ),
     )
