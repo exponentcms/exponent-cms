@@ -19,7 +19,7 @@ time - time/date to start from (defaults to now)
 days - number of days of events to pull (defaults to 7)
 
 Currently this script:
-- adhere's to aggregated/merged calendars
+- adheres to aggregated/merged calendars
 - uses the default (weekly) template of "_reminder" which pulls the next 7 days of events.  I may add a daily template
 - sends an html/text formatted message, but the text message isn't formatted very well, it's just the html less the tags
 - only sends to the addresses selected in module settings which are selected from web site user profiles (think of it as the calendar owner).  I may add the ability to address groups and freestyle address just like in private messages and forms.  Not planning on adding a subscription option, but anything's possible.
