@@ -1262,20 +1262,24 @@ class storeController extends expController {
         $ar->send();
     }
     
-     public function search() {
+    public function search() {
         global $db, $user;
         //$this->params['query'] = str_ireplace('-','\-',$this->params['query']);
-        $sql = "select DISTINCT(p.id) as id, p.title, model, sef_url, f.id as fileid  from " . $db->prefix . "product as p INNER JOIN " . 
+        $terms = explode(" ",$this->params['query']);
+        $sql = "select DISTINCT(p.id) as id, p.title, model, sef_url, f.id as fileid, match (p.title,p.body) against ('" . $this->params['query'] .  "*' IN BOOLEAN MODE) as score ";
+        $sql .= "  from " . $db->prefix . "product as p INNER JOIN " . 
         $db->prefix . "content_expFiles as cef ON p.id=cef.content_id INNER JOIN " . $db->prefix . 
         "expFiles as f ON cef.expFiles_id = f.id WHERE ";
         if ( !($user->is_admin || $user->is_acting_admin) ) $sql .= '(p.active_type=0 OR p.active_type=1) AND ' ;
-        $sql .= " match (p.title,p.model,p.body) against ('" . $this->params['query'] . 
-        "*' IN BOOLEAN MODE) AND p.parent_id=0  GROUP BY p.id "; 
-        $sql .= "order by match (p.title,p.model,p.body) against ('" . $this->params['query'] . "*') desc LIMIT 50";
+        $sql .= " match (p.title,p.body) against ('" . $this->params['query'] .  "*' IN BOOLEAN MODE) AND p.parent_id=0  GROUP BY p.id "; 
+        $sql .= "order by score desc LIMIT 10";
         
-        foreach($db->selectObjectsBySql($sql) as $set)
+        $firstObs = $db->selectObjectsBySql($sql);        
+        foreach($firstObs as $set)
         {
-            $set->weight = 1;            
+            $set->weight = 1;     
+            
+            unset($set->score);       
             $res[$set->model] = $set;    
         }
         
@@ -1283,32 +1287,53 @@ class storeController extends expController {
         $db->prefix . "content_expFiles as cef ON p.id=cef.content_id INNER JOIN " . $db->prefix . 
         "expFiles as f ON cef.expFiles_id = f.id WHERE ";
         if ( !($user->is_admin || $user->is_acting_admin) ) $sql .= '(p.active_type=0 OR p.active_type=1) AND ' ;
-        $sql .= " model like '" . $this->params['query'] . "%' ";
-        //$sql .= " OR title like '" . $this->params['query'] . "%') ";
-        $sql .= " AND p.parent_id=0  GROUP BY p.id LIMIT 50"; 
-        //$sql .= "order by match (p.title,p.model,p.body) against ('" . $this->params['query'] . "*') desc LIMIT 50";
-        //eDebug($sql);
-        foreach($db->selectObjectsBySql($sql) as $set)
+        $sql .= " (p.model like '%" . $this->params['query'] . "%' ";
+        $sql .= " OR p.title like '%" . $this->params['query'] . "%') ";
+        $sql .= " AND p.parent_id=0 GROUP BY p.id LIMIT 10"; 
+        
+        $secondObs = $db->selectObjectsBySql($sql);        
+        foreach($secondObs as $set)
+        { 
+            $set->weight = 2;
+            $res[$set->model] = $set;    
+        }
+                               
+        $sql = "select DISTINCT(p.id) as id, p.title, model, sef_url, f.id as fileid  from " . $db->prefix . "product as p INNER JOIN " . 
+        $db->prefix . "content_expFiles as cef ON p.id=cef.content_id INNER JOIN " . $db->prefix . 
+        "expFiles as f ON cef.expFiles_id = f.id WHERE ";
+        if ( !($user->is_admin || $user->is_acting_admin) ) $sql .= '(p.active_type=0 OR p.active_type=1) AND ' ;
+        $sql .= " (p.model like '" . $this->params['query'] . "%' ";
+        $sql .= " OR p.title like '" . $this->params['query'] . "%') ";
+        $sql .= " AND p.parent_id=0 GROUP BY p.id LIMIT 10"; 
+        
+        $thirdObs = $db->selectObjectsBySql($sql);        
+        foreach($thirdObs as $set)
         {
-            if(strcmp(strtolower(trim($this->params['query'])),strtolower(trim($set->model))) ) $set->weight = 2;         
+            if(strcmp(strtolower(trim($this->params['query'])),strtolower(trim($set->model))) == 0 ) $set->weight = 10;         
+            else if(strcmp(strtolower(trim($this->params['query'])),strtolower(trim($set->title))) == 0 ) $set->weight = 9;
             else $set->weight = 3;
             $res[$set->model] = $set;    
         }
-        
+     
         function sortSearch($a,$b) {
             return ($a->weight == $b->weight ? 0 : ($a->weight < $b->weight) ? 1  : -1);
         }
-        
+                
+        if(count($terms))
+        {        
+            foreach($res as $r)
+            {        
+                foreach($terms as $term)
+                {        
+                    if(stristr($r->title,$term)) $res[$r->model]->weight = $res[$r->model]->weight + 1;    
+                }  
+            }
+        }        
         usort($res,'sortSearch');        
         
-        /*if(count($res)==0)
-        {
-            $res[0]->result = "No results found, please try again.";
-        }*/
-        //eDebug($sql);
-        $ar = new expAjaxReply(200, gt('Here\'s the items you wanted'), $res);
+        $ar = new expAjaxReply(200, gettext('Here\'s the items you wanted'), $res);
         $ar->send();
-    }
+    } 
     
      public function searchNew() {
         global $db, $user;
