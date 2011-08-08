@@ -71,8 +71,10 @@ if (exponent_permissions_check('extensions',exponent_core_makeLocation('administ
 
 			// Look for stale sessid directories:
 			$sessid = session_id();
-			if (file_exists(BASE."extensionuploads/$sessid") && is_dir(BASE."extensionuploads/$sessid")) expFile::removeDirectory("extensionuploads/$sessid");
-			$return = expFile::makeDirectory("extensionuploads/$sessid");
+//			if (file_exists(BASE."extensionuploads/$sessid") && is_dir(BASE."extensionuploads/$sessid")) expFile::removeDirectory("extensionuploads/$sessid");
+			if (file_exists(BASE."tmp/extensionuploads/$sessid") && is_dir(BASE."tmp/extensionuploads/$sessid")) expFile::removeDirectory("tmp/extensionuploads/$sessid");
+//			$return = expFile::makeDirectory("extensionuploads/$sessid");
+			$return = expFile::makeDirectory("tmp/extensionuploads/$sessid");
 			if ($return != SYS_FILES_SUCCESS) {
 				switch ($return) {
 					case SYS_FILES_FOUNDFILE:
@@ -88,7 +90,8 @@ if (exponent_permissions_check('extensions',exponent_core_makeLocation('administ
 				}
 			}
 			
-			$dest = BASE."extensionuploads/$sessid/archive$ext";
+//			$dest = BASE."extensionuploads/$sessid/archive$ext";
+			$dest = BASE."tmp/extensionuploads/$sessid/archive$ext";
 			move_uploaded_file($_FILES['mod_archive']['tmp_name'],$dest);
 			
 			if ($compression != 'zip') {// If not zip, must be tar
