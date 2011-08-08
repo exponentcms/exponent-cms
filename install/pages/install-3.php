@@ -314,7 +314,7 @@ if ($passed) {
 
     $config = $_POST['sc'];
     foreach ($config as $key => $value) {
-        exponent_config_change($key, stripslashes($value));
+        exponent_config_change($key, addslashes($value));
     }
 
     // version tracking
