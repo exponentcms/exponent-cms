@@ -23,7 +23,7 @@ class file {
 		$i18n = exponent_lang_loadFile('datatypes/file.php');
 		
 //		if (!defined('SYS_FILES')) include_once(BASE.'framework/core/subsystems-1/files.php');
-		include_once(BASE.'framework/core/subsystems-1/files.php');
+//		include_once(BASE.'framework/core/subsystems-1/files.php');
 
 		// Get the filename, if it was passed in the update() call.  Otherwise, fallback
 		if ($destname == null) {

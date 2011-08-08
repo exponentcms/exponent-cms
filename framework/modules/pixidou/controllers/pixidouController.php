@@ -32,9 +32,13 @@ class pixidouController extends expController {
         $file = new expFile($this->params['id']);
         
         $canSaveOg = $user->id==$file->poster || $user->is_admin ? 1 : 0 ;
-        
-        $file->copyToDirectory(BASE.$this->cacheDir);
-        assign_to_template(array('image'=>$file,'update'=>$_GET['update'],'saveog'=>$canSaveOg));
+	    if (file_exists(BASE.$file->directory.$file->filename)) {
+			$file->copyToDirectory(BASE.$this->cacheDir);
+			assign_to_template(array('image'=>$file,'update'=>$_GET['update'],'saveog'=>$canSaveOg));
+	    } else {
+		    flash('error','The file "'.BASE.$file->directory.$file->filename.'" does not exist on the server.');
+		    redirect_to(array("controller"=>'file',"action"=>'picker',"ajax_action"=>1,"update"=>$this->params['update'],"fck"=>$this->params['fck']));
+	    }
     }
     
     public function exitEditor() {

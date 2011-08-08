@@ -91,7 +91,7 @@ class uploadcontrol extends formcontrol {
 
 	function moveFile($original_name,$formvalues) {
 //		if (!defined('SYS_FILES')) include_once(BASE.'framework/core/subsystems-1/files.php');
-		include_once(BASE.'framework/core/subsystems-1/files.php');
+//		include_once(BASE.'framework/core/subsystems-1/files.php');
 		$dir = 'files/uploads';
 		$filename = expFile::fixName(time().'_'.$formvalues[$original_name]['name']);
 		$dest = $dir.'/'.$filename;

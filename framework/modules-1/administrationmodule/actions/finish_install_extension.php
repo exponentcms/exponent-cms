@@ -31,7 +31,7 @@ if (exponent_permissions_check('extensions',exponent_core_makeLocation('administ
 		$template->assign('nofiles',1);
 	} else {
 //		if (!defined('SYS_FILES')) require_once(BASE.'framework/core/subsystems-1/files.php');
-		require_once(BASE.'framework/core/subsystems-1/files.php');
+//		require_once(BASE.'framework/core/subsystems-1/files.php');
 		$success = array();
 		foreach (array_keys(expFile::listFlat(BASE."extensionuploads/$sessid",true,null,array(),BASE."extensionuploads/$sessid")) as $file) {
 			if ($file != '/archive.tar' && $file != '/archive.tar.gz' && $file != 'archive.tar.bz2' && $file != '/archive.zip') {

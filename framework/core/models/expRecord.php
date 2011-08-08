@@ -59,6 +59,12 @@ class expRecord {
     );*/
 
 	/**
+	 * is model content searchable?
+	 * @return bool
+	 */
+	function isSearchable() { return false; }
+
+	/**
 	 * @param null $params
 	 * @param bool $get_assoc
 	 * @param bool $get_attached

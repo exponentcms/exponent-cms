@@ -67,8 +67,7 @@ class searchController extends expController {
 	    $searchable_mods = array();
 	    $unsearchable_mod = array();
 
-	    //FIXME: Old school module code!
-	    foreach (exponent_modules_list() as $mod) {
+	    foreach (expModules::exponent_modules_list() as $mod) {
 		    $name = @call_user_func(array($mod,'name'));
 		    if (class_exists($mod) && is_callable(array($mod,'spiderContent'))) {
 			    if (call_user_func(array($mod,'spiderContent'))) {

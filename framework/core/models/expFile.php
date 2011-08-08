@@ -354,7 +354,7 @@ class expFile extends expRecord {
                                       ) {
 
 //        if (!defined('SYS_FILES')) include_once(BASE.'framework/core/subsystems-1/files.php');
-        include_once(BASE.'framework/core/subsystems-1/files.php');
+//        include_once(BASE.'framework/core/subsystems-1/files.php');
 
         // Make sure something was sent first off...
         if ( ( !isset($_SERVER['CONTENT_TYPE'] )) ||

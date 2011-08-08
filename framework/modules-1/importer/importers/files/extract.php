@@ -23,7 +23,7 @@ if (!defined('EXPONENT')) exit('');
 $dest_dir = $_POST['dest_dir'];
 $files = array();
 //if (!defined('SYS_FILES')) require_once(BASE.'framework/core/subsystems-1/files.php');
-require_once(BASE.'framework/core/subsystems-1/files.php');
+//require_once(BASE.'framework/core/subsystems-1/files.php');
 foreach (array_keys($_POST['mods']) as $mod) {
 	$files[$mod] = array(
 		'',

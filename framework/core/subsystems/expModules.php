@@ -70,7 +70,7 @@ class expModules {
     }
     
     
-    public function exponent_modules_list() {
+    public static function exponent_modules_list() {
     	$mods = array();
     	if (is_readable(BASE."framework/modules-1")) {
     		$dh = opendir(BASE."framework/modules-1");

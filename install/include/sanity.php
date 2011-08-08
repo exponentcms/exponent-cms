@@ -122,10 +122,12 @@ function sanity_checkFiles() {
 		'tmp/views_c'=>sanity_checkDirectory('tmp/views_c',SANITY_READWRITE),
 		'tmp/cache'=>sanity_checkDirectory('tmp/cache',SANITY_READWRITE),
 		'tmp/minify'=>sanity_checkDirectory('tmp/minify',SANITY_READWRITE),
-		'tmp/pods'=>sanity_checkDirectory('tmp/pods',SANITY_READWRITE),
+		'tmp/css'=>sanity_checkDirectory('tmp/css',SANITY_READWRITE),
+//		'tmp/pods'=>sanity_checkDirectory('tmp/pods',SANITY_READWRITE),
 		'tmp/rsscache'=>sanity_checkDirectory('tmp/rsscache',SANITY_READWRITE),
-		'tmp/mail'=>sanity_checkDirectory('tmp/mail',SANITY_READWRITE),
-		'tmp/img_cache'=>sanity_checkDirectory('tmp/img_cache',SANITY_READWRITE)
+//		'tmp/mail'=>sanity_checkDirectory('tmp/mail',SANITY_READWRITE),
+		'tmp/img_cache'=>sanity_checkDirectory('tmp/img_cache',SANITY_READWRITE),
+		'framework/modules/pixidou/images'=>sanity_checkDirectory('framework/modules/pixidou/images',SANITY_READWRITE)
 	);
 	
 	return $status;

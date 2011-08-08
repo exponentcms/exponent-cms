@@ -9,9 +9,9 @@
 }
 
 .ygtvspacer { height: 10px; width: 18px; }
-.ygtvcheck0 { background: url(../../../../external/lissa/2.8.0r4/build/treeview/assets/skins/sam/check0.gif) 0 0 no-repeat; width:16px; height:22px; cursor:pointer }
-.ygtvcheck1 { background: url(../../../../external/lissa/2.8.0r4/build/treeview/assets/skins/sam/check1.gif) 0 0 no-repeat; width:16px; height:22px; cursor:pointer }
-.ygtvcheck2 { background: url(../../../../external/lissa/2.8.0r4/build/treeview/assets/skins/sam/check2.gif) 0 0 no-repeat; width:16px; height:22px; cursor:pointer }
+.ygtvcheck0 { background: url(../../../../external/lissa/2.9.0/build/treeview/assets/skins/sam/check0.gif) 0 0 no-repeat; width:16px; height:22px; cursor:pointer }
+.ygtvcheck1 { background: url(../../../../external/lissa/2.9.0/build/treeview/assets/skins/sam/check1.gif) 0 0 no-repeat; width:16px; height:22px; cursor:pointer }
+.ygtvcheck2 { background: url(../../../../external/lissa/2.9.0/build/treeview/assets/skins/sam/check2.gif) 0 0 no-repeat; width:16px; height:22px; cursor:pointer }
 
 .nodetree .nodeDragHandle {
 	background-image:url(../images/exp1icons.png);

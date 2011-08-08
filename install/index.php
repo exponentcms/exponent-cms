@@ -41,7 +41,7 @@ if (isset($_POST['sc'])) {
         // Update the config
         $config = $_POST['sc'];
         foreach ($config as $key => $value) {
-            exponent_config_change($key, stripslashes($value));
+            exponent_config_change($key, addslashes($value));
         }
     } else {
         // Update init the config

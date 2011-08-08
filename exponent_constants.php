@@ -123,6 +123,42 @@ if (!defined('SCRIPT_FILENAME')) {
 	define('SCRIPT_FILENAME', 'index.php');
 }
 
+/* exdoc
+ * Filesystem Error Response: Success
+ * @node Subsystems:Files
+ */
+define("SYS_FILES_SUCCESS",		0);
+
+/* exdoc
+ * Filesystem Error Response: Found File at Destination
+ * @node Subsystems:Files
+ */
+define("SYS_FILES_FOUNDFILE",	1);
+
+/* exdoc
+ * Filesystem Error Response: Found Directory at Destination
+ * @node Subsystems:Files
+ */
+define("SYS_FILES_FOUNDDIR",	2);
+
+/* exdoc
+ * Filesystem Error Response: Destination not writable
+ * @node Subsystems:Files
+ */
+define("SYS_FILES_NOTWRITABLE",	3);
+
+/* exdoc
+ * Filesystem Error Response: Destination not readable
+ * @node Subsystems:Files
+ */
+define("SYS_FILES_NOTREADABLE",	4);
+
+/* exdoc
+ * Filesystem Error Response: Destination not deletable
+ * @node Subsystems:Files
+ */
+define("SYS_FILES_NOTDELETABLE",	5);
+
 // Determines platform (OS), browser and version of the user
 // Based on a phpBuilder article:
 //   see http://www.phpbuilder.net/columns/tim20000821.php
