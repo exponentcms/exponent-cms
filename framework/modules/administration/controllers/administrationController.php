@@ -408,6 +408,21 @@ class administrationController extends expController {
 		expHistory::back();
 	}
 
+	public function toggle_preview() {
+		$level = 99;
+		if (expSession::is_set('uilevel')) {
+			$level = expSession::get('uilevel');
+		}
+		if ($level == UILEVEL_PREVIEW) {
+			expSession::un_set('uilevel');
+		} else { //edit mode
+			expSession::set("uilevel",0);
+		}
+		$message = ($level == UILEVEL_PREVIEW) ? "Exponent is no longer in 'Preview' mode" : "Exponent is now in 'Preview' mode" ;
+		flash('message',$message);
+		expHistory::back();
+	}
+
 	public function clear_smarty_cache() {
 		expTheme::removeSmartyCache();
 		$message = "Smarty Cache has been cleared" ;
@@ -425,8 +440,8 @@ class administrationController extends expController {
 	public function clear_image_cache() {
 //		if (!defined('SYS_FILES')) include_once(BASE.'framework/core/subsystems-1/files.php');
 //		include_once(BASE.'framework/core/subsystems-1/files.php');
-//		expFile::removeFilesInDirectory(BASE.'tmp/pixidou');  // alt location for pixidou cache
-		expFile::removeFilesInDirectory(BASE.'framework/modules/pixidou/images');  // location for pixidou cache
+		expFile::removeFilesInDirectory(BASE.'tmp/pixidou');  // alt location for pixidou cache
+//		expFile::removeFilesInDirectory(BASE.'framework/modules/pixidou/images');  // location for pixidou cache
 		// phpThumb cache includes subfolders
 		if (file_exists(BASE.'tmp/img_cache')) expFile::removeFilesInDirectory(BASE.'tmp/img_cache');
 		$message = "Image/Pixidou Cache has been cleared" ;
@@ -448,8 +463,8 @@ class administrationController extends expController {
 //		include_once(BASE.'framework/core/subsystems-1/files.php');
 		expTheme::removeSmartyCache();
 		expTheme::removeCss();
-//		expFile::removeFilesInDirectory(BASE.'tmp/pixidou');  // alt location for pixidou cache
-		expFile::removeFilesInDirectory(BASE.'framework/modules/pixidou/images');  // location for pixidou cache
+		expFile::removeFilesInDirectory(BASE.'tmp/pixidou');  // alt location for pixidou cache
+//		expFile::removeFilesInDirectory(BASE.'framework/modules/pixidou/images');  // location for pixidou cache
 		if (file_exists(BASE.'tmp/img_cache')) expFile::removeFilesInDirectory(BASE.'tmp/img_cache');
 		expFile::removeFilesInDirectory(BASE.'tmp/rsscache');
 		$message = "All the System Caches have been cleared" ;
@@ -517,8 +532,10 @@ class administrationController extends expController {
 
 				// Look for stale sessid directories:
 				$sessid = session_id();
-				if (file_exists(BASE."extensionuploads/$sessid") && is_dir(BASE."extensionuploads/$sessid")) expFile::removeDirectory("extensionuploads/$sessid");
-				$return = expFile::makeDirectory("extensionuploads/$sessid");
+//				if (file_exists(BASE."extensionuploads/$sessid") && is_dir(BASE."extensionuploads/$sessid")) expFile::removeDirectory("extensionuploads/$sessid");
+				if (file_exists(BASE."tmp/extensionuploads/$sessid") && is_dir(BASE."tmp/extensionuploads/$sessid")) expFile::removeDirectory("tmp/extensionuploads/$sessid");
+//				$return = expFile::makeDirectory("extensionuploads/$sessid");
+				$return = expFile::makeDirectory("tmp/extensionuploads/$sessid");
 				if ($return != SYS_FILES_SUCCESS) {
 					switch ($return) {
 						case SYS_FILES_FOUNDFILE:
@@ -534,7 +551,8 @@ class administrationController extends expController {
 					}
 				}
 
-				$dest = BASE."extensionuploads/$sessid/archive$ext";
+//				$dest = BASE."extensionuploads/$sessid/archive$ext";
+				$dest = BASE."tmp/extensionuploads/$sessid/archive$ext";
 				move_uploaded_file($_FILES['mod_archive']['tmp_name'],$dest);
 
 				if ($compression != 'zip') {// If not zip, must be tar

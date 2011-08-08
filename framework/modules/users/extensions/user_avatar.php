@@ -51,8 +51,9 @@ class user_avatar extends expRecord {
         
         // check for a previous avatar otherwise set the default
         $this->image = $params['current_avatar'];
-        if (empty($this->image)) $this->image = URL_FULL.'framework/modules/users/avatars/avatar_not_found.jpg';
-        
+//        if (empty($this->image)) $this->image = URL_FULL.'framework/modules/users/avatars/avatar_not_found.jpg';
+        if (empty($this->image)) $this->image = URL_FULL.'framework/modules/users/assets/images/avatar_not_found.jpg';
+
         // if the user chose gravatar, create the link and save it!
         if (!empty($params['use_gravatar'])) {
 	        $this->use_gravatar = $params['use_gravatar'];
@@ -67,8 +68,9 @@ class user_avatar extends expRecord {
                 $avatar_name = $this->user_id.'.'.$extension;
                 
                 // save the file to the filesystem
-                $file = expFile::fileUpload('avatar', true, false, $avatar_name, 'framework/modules/users/avatars/');
-                
+//                $file = expFile::fileUpload('avatar', true, false, $avatar_name, 'framework/modules/users/avatars/');
+                $file = expFile::fileUpload('avatar', true, false, $avatar_name, 'files/avatars/');
+
                 //save the file to the database                
                 $this->image = $file->url;
             }

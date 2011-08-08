@@ -110,7 +110,6 @@ function sanity_checkDirectory($dir,$flag) {
 function sanity_checkFiles() {
 	$status = array(
 		'conf/config.php'=>sanity_checkFile(BASE.'conf/config.php',1,SANITY_CREATEFILE),
-		'extensionuploads/'=>sanity_checkFile(BASE.'extensionuploads',0,SANITY_READWRITE),
 		'files/'=>sanity_checkDirectory('files',SANITY_READWRITE),
 		'framework/modules/'=>sanity_checkDirectory('framework/modules',SANITY_READWRITE),
 		//'framework/datatypes/'=>sanity_checkDirectory('framework/datatypes',SANITY_READWRITE),
@@ -119,6 +118,7 @@ function sanity_checkFiles() {
 		'install/'=>sanity_checkFile(BASE.'install',0,SANITY_READWRITE),
 		'framework/modules-1/'=>sanity_checkFile(BASE.'modules',0,SANITY_READONLY),
 		'tmp/'=>sanity_checkDirectory('tmp',SANITY_READWRITE),
+		'tmp/extensionuploads/'=>sanity_checkFile(BASE.'tmp/extensionuploads',0,SANITY_READWRITE),
 		'tmp/views_c'=>sanity_checkDirectory('tmp/views_c',SANITY_READWRITE),
 		'tmp/cache'=>sanity_checkDirectory('tmp/cache',SANITY_READWRITE),
 		'tmp/minify'=>sanity_checkDirectory('tmp/minify',SANITY_READWRITE),
@@ -127,7 +127,8 @@ function sanity_checkFiles() {
 		'tmp/rsscache'=>sanity_checkDirectory('tmp/rsscache',SANITY_READWRITE),
 //		'tmp/mail'=>sanity_checkDirectory('tmp/mail',SANITY_READWRITE),
 		'tmp/img_cache'=>sanity_checkDirectory('tmp/img_cache',SANITY_READWRITE),
-		'framework/modules/pixidou/images'=>sanity_checkDirectory('framework/modules/pixidou/images',SANITY_READWRITE)
+//		'framework/modules/pixidou/images'=>sanity_checkDirectory('framework/modules/pixidou/images',SANITY_READWRITE)
+		'tmp/pixidou'=>sanity_checkDirectory('tmp/pixidou',SANITY_READWRITE)
 	);
 	
 	return $status;

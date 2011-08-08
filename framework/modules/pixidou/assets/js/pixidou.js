@@ -499,7 +499,8 @@ pixidou = {
 		pixidou.imageWidth = width;
 		pixidou.imageHeight = height;
 		
-		YAHOO.util.Dom.get('imageContainer').innerHTML = '<img id="yuiImg" src="'+EXPONENT.URL_FULL+'framework/modules/pixidou/images/' + image + '" width="' + width + '" height="' + height + '" alt="" style="width:' + width + 'px;height:' + height + 'px;" />';
+//		YAHOO.util.Dom.get('imageContainer').innerHTML = '<img id="yuiImg" src="'+EXPONENT.URL_FULL+'framework/modules/pixidou/images/' + image + '" width="' + width + '" height="' + height + '" alt="" style="width:' + width + 'px;height:' + height + 'px;" />';
+		YAHOO.util.Dom.get('imageContainer').innerHTML = '<img id="yuiImg" src="'+EXPONENT.URL_FULL+'tmp/pixidou/' + image + '" width="' + width + '" height="' + height + '" alt="" style="width:' + width + 'px;height:' + height + 'px;" />';
 
 		// add it to our history
 		var imageObject = new Object;
