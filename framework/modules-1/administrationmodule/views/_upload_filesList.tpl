@@ -68,7 +68,7 @@
 {*		<hr size="1" />*}
 		{if $failed == 0}
 			{if $warn == 1}{$_TR.overwrite_warning}<br /><br />{/if}
-			<a class="awesome {$smarty.config.BTN_SIZE} {$smarty.const.BTN_COLOR}" href="{link action=finish_install_extension}">{$_TR.install}</a>
+			<a class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" href="{link action=finish_install_extension}">{$_TR.install}</a>
 		{else}
 			{$_TR.bad_permissions}
 		{/if}

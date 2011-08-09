@@ -56,6 +56,22 @@ if (isset($_POST['sc'])) {
     }
 }
 
+	if (isset($_POST['install_sample'])) {
+		include_once(BASE.'framework/core/subsystems-1/backup.php');
+
+		$eql = BASE . "themes/".DISPLAY_THEME_REAL."/sample.eql";
+		if (file_exists($eql)) {
+			$errors = array();
+			exponent_backup_restoreDatabase($db,$eql,$errors,0);
+//			if (count($errors)) {
+//				echo gt('Errors were encountered populating the site database.').'<br /><br />';
+//				foreach ($errors as $e) echo $e . '<br />';
+//			} else {
+//				echo gt('Sample content has been inserted into your database.  This content structure should help you to learn how Exponent works, and how to use it for your website.');
+//			}
+		}
+	}
+
 if (file_exists("../conf/config.php") && !isset($_REQUEST['page'])) {
 	$_REQUEST['page'] = 'upgrade-1';
 }
@@ -161,6 +177,7 @@ switch ($page) {
 <head>
 	<title><?php echo gt('Exponent Install Wizard'); ?></title>
 	<meta http-equiv="Content-Type" content="text/html; charset=<?php echo LANG_CHARSET; ?>" />
+	<meta name="Generator" value="Exponent Content Management System" />
 	<link rel="stylesheet" href="<?php echo YUI3_PATH; ?>cssreset/reset.css" />
 	<link rel="stylesheet" href="<?php echo YUI3_PATH; ?>cssfonts/fonts.css" />
 	<link rel="stylesheet" href="<?php echo PATH_RELATIVE; ?>framework/core/assets/css/forms.css" />

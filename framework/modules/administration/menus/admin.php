@@ -232,10 +232,10 @@ if ($user->isSuperAdmin()) {
                                     'action' => 'install_tables'
                                 ))
                             ),
-//                             array(
-//                             'text'=>gt('Import Data'),
-//                             'url'=>makeLink(array('module'=>'importer','action'=>'list_importers')),
-//                             ),
+                             array(
+                             'text'=>gt('Import Data'),
+                             'url'=>makeLink(array('module'=>'importer','action'=>'list_importers')),
+                             ),
                              array(
                              'text'=>gt('Export Data'),
                              'url'=>makeLink(array('module'=>'exporter','action'=>'list_exporters')),

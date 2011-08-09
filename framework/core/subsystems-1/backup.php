@@ -232,7 +232,7 @@ function exponent_backup_restoreDatabase($db,$file,&$errors,$force_version = nul
 				} else if ($pair[0] == 'RECORD') {
 					// Here we need to check the conversion scripts.
 					$pair[1] = str_replace('\r\n',"\r\n",$pair[1]);
-					$object = expUnserialize($pair[1]);
+					$object = unserialize($pair[1]);
 					if (function_exists($table_function)) {
 						$table_function($db,$object);
 					} else {

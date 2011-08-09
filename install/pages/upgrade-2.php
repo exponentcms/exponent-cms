@@ -34,11 +34,6 @@ define("TMP_TABLE_ALTERED",		4);
 $tables = array();
 
 // first the core and 1.0 definitions
-//$dirs = array(
-////	BASE."datatypes/definitions",
-//	BASE."framework/core/definitions",
-//	);
-//foreach ($dirs as $dir) {
 $dir = BASE.'framework/core/definitions';
 if (is_readable($dir)) {
 	$dh = opendir($dir);
@@ -65,7 +60,6 @@ if (is_readable($dir)) {
 			}
 		}
 	}
-//	}
 }
 
 // then search for module definitions

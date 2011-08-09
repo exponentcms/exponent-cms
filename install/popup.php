@@ -24,10 +24,15 @@ include_once('../exponent.php');
 <html>
 <head>
 	<title><?php echo gt('Exponent CMS : Install Wizard'); ?></title>
-	<link rel="stylesheet" title="exponent" href="style.css" />
-	<link rel="stylesheet" href="<?php echo PATH_RELATIVE; ?>framework/core/assets/css/tables.css" />
 	<meta http-equiv="Content-Type" content="text/html; charset=<?php echo LANG_CHARSET; ?>" />
 	<meta name="Generator" value="Exponent Content Management System" />
+	<link rel="stylesheet" href="<?php echo YUI3_PATH; ?>cssreset/reset.css" />
+	<link rel="stylesheet" href="<?php echo YUI3_PATH; ?>cssfonts/fonts.css" />
+	<link rel="stylesheet" href="<?php echo PATH_RELATIVE; ?>framework/core/assets/css/forms.css" />
+	<link rel="stylesheet" href="<?php echo PATH_RELATIVE; ?>framework/core/assets/css/button.css" />
+	<link rel="stylesheet" href="<?php echo PATH_RELATIVE; ?>framework/core/assets/css/tables.css" />
+	<link rel="stylesheet" href="<?php echo PATH_RELATIVE; ?>framework/core/assets/css/common.css" />
+	<link rel="stylesheet" title="exponent" href="style.css" />
 </head>
 <body>
 	<div class="popup_content_area">

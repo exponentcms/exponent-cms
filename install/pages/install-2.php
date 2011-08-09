@@ -140,13 +140,6 @@ $config = array(
 				<?php echo gt('<b>Note:</b> A table prefix may only contain numbers and letters.  Spaces and symbols (including "_") are not allowed.  An underscore will be added for you, by Exponent.'); ?>
 			</div>
 		</div>
-<!--		<div class="control">-->
-<!--			<span class="label">--><?php //echo gt('Install Example Content'); ?><!--</span>-->
-<!--			<input type="checkbox" name="install_default" checked="checked" />-->
-<!--			<div class="control_help">-->
-<!--				--><?php //echo gt('To help you understand how Exponent works, and how everything fits together, we suggest that you install the packaged example content.  If you are new to Exponent, you are highly encouraged to do so.'); ?>
-<!--			</div>-->
-<!--		</div>-->
 	</div>
 	<button class="awesome large green"><?php echo gt('Install Database'); ?></button>
 </form>

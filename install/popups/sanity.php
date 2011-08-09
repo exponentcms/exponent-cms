@@ -18,11 +18,13 @@
 ##################################################
 
 ?>
-<b><?php echo gt('System Requirements Explained'); ?></b>
-<div class="bodytext"><?php echo gt('The sanity checks are in place to ensure that problems with the server environment (file permissions, PHP extensions, etc) are suitable for installing Exponent.  This page explains each of the sanity checks, why it is performed, and how to reconfigure your web server if the check fails.<br /><br />Note: In all of the solutions, <span class="var">WEBUSER</span> is used for the username of the user running the web server, and <span class="var">EXPONENT</span> is used as the full path to the Exponent directory.'); ?></div>
-<br /><br />
-
-<table cellspacing="0" cellpadding="3" rules="all" border="0" style="border:1px solid grey;" width="100%">
+<div id="hd">
+   <h1><?php echo gt('System Requirements Explained'); ?></h1>
+</div>
+<div id="bd">
+<!--<div id="leftcol">-->
+<p><?php echo gt('The sanity checks are in place to ensure that problems with the server environment (file permissions, PHP extensions, etc) are suitable for installing Exponent.  This page explains each of the sanity checks, why it is performed, and how to reconfigure your web server if the check fails.<br /><br />Note: In all of the solutions, <span class="var">WEBUSER</span> is used for the username of the user running the web server, and <span class="var">EXPONENT</span> is used as the full path to the Exponent directory.'); ?></p>
+<table cellspacing="0" cellpadding="3" rules="all" border="0" style="border:1px solid grey;" width="100%" class="exp-skin-table">
 <tr><td colspan="2" style="background-color: lightgrey;"><b><?php echo gt('File and Directory Permission Tests'); ?></b></td></tr>
 <tr>
 	<td class="bodytext" style="font-weight: bold;" valign="top"><a name="fdp_conf-configphp" />conf/config.php</td>
@@ -39,36 +41,51 @@
 		</div>
 	</td>
 </tr>
-<tr>
-	<td class="bodytext" style="font-weight: bold;" valign="top"><a name="fdp_conf-profiles" />conf/profiles</td>
-	<td class="bodytext" valign="top">
-		<div class="sanity_req"><?php echo gt('Must be readable and writable by web server'); ?></div>
-		<br />
-		<?php echo gt('The conf/profiles directory stores the saved configurations for the site.  Even if you do not use more than one profile, the web server must be able to create files in this directory.'); ?>
-		<br />
-		<br />
-		<b><?php echo gt('UNIX Solution'); ?>:</b>
-		<div class="sanity_shell">
-			chown -R <span class="var">WEBUSER</span> <span class="var">EXPONENT</span>/conf/profiles/
-		</div>
-	</td>
-</tr>
+
+<!--<tr>-->
+<!--	<td class="bodytext" style="font-weight: bold;" valign="top"><a name="fdp_conf-profiles" />conf/profiles</td>-->
+<!--	<td class="bodytext" valign="top">-->
+<!--		<div class="sanity_req">--><?php //echo gt('Must be readable and writable by web server'); ?><!--</div>-->
+<!--		<br />-->
+<!--		--><?php //echo gt('The conf/profiles directory stores the saved configurations for the site.  Even if you do not use more than one profile, the web server must be able to create files in this directory.'); ?>
+<!--		<br />-->
+<!--		<br />-->
+<!--		<b>--><?php //echo gt('UNIX Solution'); ?><!--:</b>-->
+<!--		<div class="sanity_shell">-->
+<!--			chown -R <span class="var">WEBUSER</span> <span class="var">EXPONENT</span>/conf/profiles/-->
+<!--		</div>-->
+<!--	</td>-->
+<!--</tr>-->
+<!--<tr>-->
+<!--	<td class="bodytext" style="font-weight: bold;" valign="top"><a name="fdp_overridesphp" />overrides.php</td>-->
+<!--	<td class="bodytext" valign="top">-->
+<!--		<div class="sanity_req">--><?php //echo gt('Must be readable and writable by web server'); ?><!--</div>-->
+<!--		<br />-->
+<!--		--><?php //echo gt('The overrides.php file is used to override constants that are automagically detected by Exponent.  If the installer finds a problem with some auto-detected values, it will write the correct values out to this file before completing the installation.  After you have installed Exponent, this file only needs to be readable by the web server.'); ?>
+<!--		<br />-->
+<!--		<br />-->
+<!--		<b>--><?php //echo gt('UNIX Solution'); ?><!--:</b>-->
+<!--		<div class="sanity_shell">-->
+<!--			chown <span class="var">WEBUSER</span> <span class="var">EXPONENT</span>/overrides.php-->
+<!--		</div>-->
+<!--	</td>-->
+<!--</tr>-->
+<!--	-->
 
 <tr>
-	<td class="bodytext" style="font-weight: bold;" valign="top"><a name="fdp_overridesphp" />overrides.php</td>
+	<td class="bodytext" style="font-weight: bold;" valign="top"><a name="fdp_files" />files/</td>
 	<td class="bodytext" valign="top">
 		<div class="sanity_req"><?php echo gt('Must be readable and writable by web server'); ?></div>
 		<br />
-		<?php echo gt('The overrides.php file is used to override constants that are automagically detected by Exponent.  If the installer finds a problem with some auto-detected values, it will write the correct values out to this file before completing the installation.  After you have installed Exponent, this file only needs to be readable by the web server.'); ?>
+		<?php echo gt('All uploaded content files (resources, importer data, images, etc.) are stored in the site files/ directory, which the web server needs fill read and write access to.  If this test is failing and you think it shouldn\'t be, remember that you must recursively assign read and write permissions to the web server user.'); ?>
 		<br />
 		<br />
 		<b><?php echo gt('UNIX Solution'); ?>:</b>
 		<div class="sanity_shell">
-			chown <span class="var">WEBUSER</span> <span class="var">EXPONENT</span>/overrides.php
+			chown <span class="var">WEBUSER</span> <span class="var">EXPONENT</span>/files
 		</div>
 	</td>
 </tr>
-	
 <tr>
 	<td class="bodytext" style="font-weight: bold;" valign="top"><a name="fdp_install" />install/</td>
 	<td class="bodytext" valign="top">
@@ -85,54 +102,15 @@
 </tr>
 
 <tr>
-	<td class="bodytext" style="font-weight: bold;" valign="top"><a name="fdp_modules" />modules/</td>
+	<td class="bodytext" style="font-weight: bold;" valign="top"><a name="fdp_modules" />framework/modules/</td>
 	<td class="bodytext" valign="top">
-		<?php echo gt('Exponent runs a few checks against the installed modules to make sure that nothing strange is encountered.  If this test fails, please post a Support Request on the SourceForge project page for Exponent (<a href="http://www.sourceforge.net/projects/exponent/" target="_blank">http://www.sourceforge.net/projects/exponent/</a>).'); ?>
+		<?php echo gt('Exponent runs a few checks against the installed modules to make sure that nothing strange is encountered.  If this test fails, please Create a Ticket on the <a href="http://exponentcms.lighthouseapp.com/projects/61783-exponent-cms/tickets/new" target="_blank">Exponent Lighthouse page</a>.'); ?>
 	</td>
 </tr>
-
 <tr>
-	<td class="bodytext" style="font-weight: bold;" valign="top"><a name="fdp_views_c" />views_c/</td>
+	<td class="bodytext" style="font-weight: bold;" valign="top"><a name="fdp_modules1" />framework/modules-1/</td>
 	<td class="bodytext" valign="top">
-		<div class="sanity_req"><?php echo gt('Must be readable and writable by web server'); ?></div>
-		<br />
-		<?php echo gt('Exponent uses Smarty to separate its data processing logic from its display logic.  Smarty templates are compiled from Smarty syntax into raw PHP for speed, and the compiled templates all go in the views_c directory, which must be writable by the web server.'); ?>
-		<br />
-		<br />
-		<b><?php echo gt('UNIX Solution'); ?>:</b>
-		<div class="sanity_shell">
-			chown <span class="var">WEBUSER</span> <span class="var">EXPONENT</span>/views_c
-		</div>
-	</td>
-</tr>
-
-<tr>
-	<td class="bodytext" style="font-weight: bold;" valign="top"><a name="fdp_extensionuploads" />extensionuploads/</td>
-	<td class="bodytext" valign="top">
-		<div class="sanity_req"><?php echo gt('Must be readable and writable by web server'); ?></div>
-		<br />
-		<?php echo gt('When you use the Upload Extension feature of the Administrator Control Panel, the uploaded archive is placed in extensionuploads directory temporarily.  Therefore, the web server needs full access to this.'); ?>
-		<br />
-		<br />
-		<b><?php echo gt('UNIX Solution'); ?>:</b>
-		<div class="sanity_shell">
-			chown <span class="var">WEBUSER</span> <span class="var">EXPONENT</span>/extensionuploads
-		</div>
-	</td>
-</tr>
-
-<tr>
-	<td class="bodytext" style="font-weight: bold;" valign="top"><a name="fdp_files" />files/</td>
-	<td class="bodytext" valign="top">
-		<div class="sanity_req"><?php echo gt('Must be readable and writable by web server'); ?></div>
-		<br />
-		<?php echo gt('All uploaded content files (resources, importer data, images, etc.) are stored in the site files/ directory, which the web server needs fill read and write access to.  If this test is failing and you think it shouldn\'t be, remember that you must recursively assign read and write permissions to the web server user.'); ?>
-		<br />
-		<br />
-		<b><?php echo gt('UNIX Solution'); ?>:</b>
-		<div class="sanity_shell">
-			chown <span class="var">WEBUSER</span> <span class="var">EXPONENT</span>/files
-		</div>
+		<?php echo gt('Exponent runs a few checks against the installed (old-school) modules to make sure that nothing strange is encountered.  If this test fails, please Create a Ticket on the <a href="http://exponentcms.lighthouseapp.com/projects/61783-exponent-cms/tickets/new" target="_blank">Exponent Lighthouse page</a>.'); ?>
 	</td>
 </tr>
 
@@ -150,11 +128,111 @@
 		</div>
 	</td>
 </tr>
+
+<tr>
+	<td class="bodytext" style="font-weight: bold;" valign="top"><a name="fdp_extensionuploads" />tmp/extensionuploads/</td>
+	<td class="bodytext" valign="top">
+		<div class="sanity_req"><?php echo gt('Must be readable and writable by web server'); ?></div>
+		<br />
+		<?php echo gt('When you use the Upload Extension feature of the Administrator Control Panel, the uploaded archive is placed in tmp/extensionuploads directory temporarily.  Therefore, the web server needs full access to this.'); ?>
+		<br />
+		<br />
+		<b><?php echo gt('UNIX Solution'); ?>:</b>
+		<div class="sanity_shell">
+			chown <span class="var">WEBUSER</span> <span class="var">EXPONENT</span>/tmp/extensionuploads
+		</div>
+	</td>
+</tr>
+<tr>
+	<td class="bodytext" style="font-weight: bold;" valign="top"><a name="fdp_views_c" />tmp/views_c/</td>
+	<td class="bodytext" valign="top">
+		<div class="sanity_req"><?php echo gt('Must be readable and writable by web server'); ?></div>
+		<br />
+		<?php echo gt('Exponent uses Smarty to separate its data processing logic from its display logic.  Smarty templates are compiled from Smarty syntax into raw PHP for speed, and the compiled templates all go in the tmp/views_c directory, which must be writable by the web server.'); ?>
+		<br />
+		<br />
+		<b><?php echo gt('UNIX Solution'); ?>:</b>
+		<div class="sanity_shell">
+			chown <span class="var">WEBUSER</span> <span class="var">EXPONENT</span>/tmp/views_c
+		</div>
+	</td>
+</tr>
+<tr>
+	<td class="bodytext" style="font-weight: bold;" valign="top"><a name="fdp_cache" />tmp/cache/</td>
+	<td class="bodytext" valign="top">
+		<div class="sanity_req"><?php echo gt('Must be readable and writable by web server'); ?></div>
+		<br />
+		<?php echo gt('Exponent Smarty templates can be cached for speed, and the cached templates all go in the tmp/cache directory, which must be writable by the web server.'); ?>
+		<br />
+		<br />
+		<b><?php echo gt('UNIX Solution'); ?>:</b>
+		<div class="sanity_shell">
+			chown <span class="var">WEBUSER</span> <span class="var">EXPONENT</span>/tmp/cache
+		</div>
+	</td>
+</tr>
+<tr>
+	<td class="bodytext" style="font-weight: bold;" valign="top"><a name="fdp_minify" />tmp/minify/ <br /> tmp/css/</td>
+	<td class="bodytext" valign="top">
+		<div class="sanity_req"><?php echo gt('Must be readable and writable by web server'); ?></div>
+		<br />
+		<?php echo gt('Exponent can use "Minification" for speed by compressing and compiling stylesheets in the tmp/minfy directory, which must be writable by the web server.'); ?>
+		<br />
+		<br />
+		<b><?php echo gt('UNIX Solution'); ?>:</b>
+		<div class="sanity_shell">
+			chown <span class="var">WEBUSER</span> <span class="var">EXPONENT</span>/tmp/minfy<br>
+			chown <span class="var">WEBUSER</span> <span class="var">EXPONENT</span>/tmp/css
+		</div>
+	</td>
+</tr>
+<tr>
+	<td class="bodytext" style="font-weight: bold;" valign="top"><a name="fdp_rss" />tmp/rsscache/</td>
+	<td class="bodytext" valign="top">
+		<div class="sanity_req"><?php echo gt('Must be readable and writable by web server'); ?></div>
+		<br />
+		<?php echo gt('Exponent can pull rss feeds into the news module.  These pulled feeds are cached in the tmp/rsscache directory, which must be writable by the web server.'); ?>
+		<br />
+		<br />
+		<b><?php echo gt('UNIX Solution'); ?>:</b>
+		<div class="sanity_shell">
+			chown <span class="var">WEBUSER</span> <span class="var">EXPONENT</span>/tmp/rsscache
+		</div>
+	</td>
+</tr>
+<tr>
+	<td class="bodytext" style="font-weight: bold;" valign="top"><a name="fdp_image_cache" />tmp/image_cache/</td>
+	<td class="bodytext" valign="top">
+		<div class="sanity_req"><?php echo gt('Must be readable and writable by web server'); ?></div>
+		<br />
+		<?php echo gt('Exponent creates image thumbnails "on the fly".  These thumbnails are cached in the tmp/image_cache directory, which must be writable by the web server.'); ?>
+		<br />
+		<br />
+		<b><?php echo gt('UNIX Solution'); ?>:</b>
+		<div class="sanity_shell">
+			chown <span class="var">WEBUSER</span> <span class="var">EXPONENT</span>/tmp/image_cache
+		</div>
+	</td>
+</tr>
+<tr>
+	<td class="bodytext" style="font-weight: bold;" valign="top"><a name="fdp_pixidou" />tmp/pixidou/</td>
+	<td class="bodytext" valign="top">
+		<div class="sanity_req"><?php echo gt('Must be readable and writable by web server'); ?></div>
+		<br />
+		<?php echo gt('Exponent includes the Pixidou image editor which can be used from the included File Manager.  Pixidou uses the tmp/pixidou directory for editing files, which must be writable by the web server.'); ?>
+		<br />
+		<br />
+		<b><?php echo gt('UNIX Solution'); ?>:</b>
+		<div class="sanity_shell">
+			chown <span class="var">WEBUSER</span> <span class="var">EXPONENT</span>/tmp/pixidou
+		</div>
+	</td>
+</tr>
 </table>
 
 <br /><br />
 
-<table cellspacing="0" cellpadding="3" rules="all" border="0" style="border:1px solid grey;" width="100%">
+<table cellspacing="0" cellpadding="3" rules="all" border="0" style="border:1px solid grey;" width="100%" class="exp-skin-table">
 <tr><td colspan="2" style="background-color: lightgrey;"><b><?php echo gt('Other Tests'); ?></b></td></tr>
 <tr>
 	<td class="bodytext" style="font-weight: bold;" valign="top"><a name="o_db" /><?php echo gt('Database Backend'); ?></td>
@@ -181,7 +259,7 @@
 	</td>
 </tr>
 <tr>
-	<td class="bodytext" style="font-weight: bold;" valign="top"><a name="o_xml" /><?php echo gt('XML (Expat Library)'); ?></td>
+	<td class="bodytext" style="font-weight: bold;" valign="top"><a name="o_xml" /><?php echo gt('XML (Expat) Library Support)'); ?></td>
 	<td class="bodytext" valign="top">
 		<?php echo gt('The web services extensions for Exponent require the Expat Library.  If you are not using web services or module that are dependent on web services, this is a safe warning to ignore.'); ?>
 	</td>
@@ -215,3 +293,5 @@
 	</td>
 </tr>
 </table>
+<!--</div>-->
+</div>

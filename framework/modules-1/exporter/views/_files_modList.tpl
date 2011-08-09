@@ -63,7 +63,7 @@
 			<tr>
 				<td>&nbsp;</td>
 				<td>
-					<input class="awesome {$smarty.config.BTN_SIZE} {$smarty.const.BTN_COLOR}" type="submit" value="{$_TR.export_files}" />
+					<input class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" type="submit" value="{$_TR.export_files}" />
 				</td>
 			</tr>
 		</table>

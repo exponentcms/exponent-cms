@@ -78,22 +78,31 @@
 				</td>
 			</tr>
 			<tr>
-				<td colspan="5"><br /></td>
+				<td colspan="5"><hr></td>
+			</tr>
+				<td colspan="1">
+					<input type="checkbox" name="save_sample" value="1" class="checkbox">
+				</td>
+				<td colspan="4" valign="top">
+					<b><label class="label ">Save as Sample Content for the '{$smarty.const.DISPLAY_THEME}' Theme?</label></b>
+				</td>
 			</tr>
 			<tr>
-				<td colspan="2" valign="top"><b>{$_TR.file_template}</b></td>
-				<td colspan="3">
+				<td colspan="3" valign="top"><b>{$_TR.file_template}</b></td>
+				<td colspan="2">
 					<input type="text" name="filename" size="20" value="database" />
 				</td>
 			</tr>
+			<tr>
 				<td colspan="5">
 					<div style="border-top: 1px solid #CCCC;">{$_TR.template_description}<br /></div>
 				</td>
 			</tr>
 			<tr>
+			<tr>
 				<td colspan="2">&nbsp;</td>
 				<td colspan="3">
-					<input class="awesome {$smarty.config.BTN_SIZE} {$smarty.const.BTN_COLOR}" type="submit" value="{$_TR.export_data}" onclick="return isOneSelected();" />
+					<input class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" type="submit" value="{$_TR.export_data}" onclick="return isOneSelected();" />
 				</td>
 			</tr>
 		</table>
