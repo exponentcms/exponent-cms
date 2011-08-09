@@ -508,7 +508,7 @@ class calendarmodule {
 		$i18n = exponent_lang_loadFile('modules/calendarmodule/class.php');
 
 //		if (!defined('SYS_SEARCH')) include_once(BASE.'framework/core/subsystems-1/search.php');
-		include_once(BASE.'framework/core/subsystems-1/search.php');
+//		include_once(BASE.'framework/core/subsystems-1/search.php');
 
 		$search = null;
 		$search->category = $i18n['search_category'];
@@ -519,7 +519,7 @@ class calendarmodule {
 		if ($item) {
 			$db->delete('search',"ref_module='calendarmodule' AND ref_type='calendar' AND original_id=" . $item->id);
 			$search->original_id = $item->id;
-			$search->body = ' ' . exponent_search_removeHTML($item->body) . ' ';
+			$search->body = ' ' . search::removeHTML($item->body) . ' ';
 			$search->title = ' ' . $item->title . ' ';
 			$search->location_data = $item->location_data;
 			$db->insertObject($search,'search');
@@ -527,7 +527,7 @@ class calendarmodule {
 			$db->delete('search',"ref_module='calendarmodule' AND ref_type='calendar'");
 			foreach ($db->selectObjects('calendar') as $item) {
 				$search->original_id = $item->id;
-				$search->body = ' ' . exponent_search_removeHTML($item->body) . ' ';
+				$search->body = ' ' . search::removeHTML($item->body) . ' ';
 				$search->title = ' ' . $item->title . ' ';
 				$search->location_data = $item->location_data;
 				$db->insertObject($search,'search');

@@ -182,7 +182,7 @@ class navigationmodule {
 		global $router;
 		
 //        if (!defined('SYS_SEARCH')) include_once(BASE.'framework/core/subsystems-1/search.php');
-        include_once(BASE.'framework/core/subsystems-1/search.php');
+//        include_once(BASE.'framework/core/subsystems-1/search.php');
 
 	 	$db->delete('search',"ref_module='navigationmodule' AND ref_type='section'");
         
@@ -215,7 +215,7 @@ class navigationmodule {
 				    $textitems = $db->selectObjects($controller->model_table, "location_data='".serialize($loc)."'");
 				    foreach ($textitems as $textitem) {
 				        if (!empty($textitem)) {
-					        $search->body .= ' ' . exponent_search_removeHTML($textitem->body) . ' ';
+					        $search->body .= ' ' . search::removeHTML($textitem->body) . ' ';
 					        $search->keywords .= " ".$textitem->title;
 				        }
 				    }

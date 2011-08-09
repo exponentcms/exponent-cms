@@ -684,7 +684,7 @@ class product extends expRecord {
         if ($this->parent_id != 0 ) return true;
         
 //        if (!defined('SYS_SEARCH')) include_once(BASE.'framework/core/subsystems-1/search.php');
-        include_once(BASE.'framework/core/subsystems-1/search.php');
+//        include_once(BASE.'framework/core/subsystems-1/search.php');
 
         $exists = $db->selectObject('search',"category='Products' AND ref_module='store' AND original_id = " . $this->id);
         

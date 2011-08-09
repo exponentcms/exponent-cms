@@ -23,7 +23,7 @@ class search extends expRecord {
 	    $this->body = $this->removeHTML($this->body);
 	}
 	
-	private function removeHTML($str) {
+	public static function removeHTML($str) {
 	    $str = str_replace(array("\r\n","\n")," ",$str);
     	return strip_tags(str_replace(array("<br/>","<br>","<br />","</div>"),"\n",$str));
 	}
