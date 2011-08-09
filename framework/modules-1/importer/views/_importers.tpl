@@ -28,7 +28,7 @@
 				<td class="administration_modmgrbody">
 					{$importer.description}
 					<hr size='1'/>
-					<a class="mngmntlink administration_mngmntlink" href="{link module=importer action=page page=start importer=$impname}">{$_TR.run}{$importer.name}</a>
+					<a class="mngmntlink administration_mngmntlink" href="{link module=importer action=page page=start importer=$impname}">{$_TR.run} {$importer.name}</a>
 				</td>
 			</tr>
 			<tr><td></td></tr>

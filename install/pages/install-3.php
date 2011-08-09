@@ -358,20 +358,20 @@ if ($passed) {
 	echo gt('Database tests passed.');
 	echo '</p>';
 
-	if (isset($_POST['install_default'])) {
-//		if (!defined('SYS_BACKUP')) include_once(BASE.'framework/core/subsystems-1/backup.php');
-		include_once(BASE.'framework/core/subsystems-1/backup.php');
+//	if (isset($_POST['install_default'])) {
+//		include_once(BASE.'framework/core/subsystems-1/backup.php');
+//
+//		$eql = BASE.'install/sitetypes/db/_default.eql';
+//		$errors = array();
+//		exponent_backup_restoreDatabase($db,$eql,$errors,0);
+//		if (count($errors)) {
+//			echo gt('Errors were encountered populating the site database.').'<br /><br />';
+//			foreach ($errors as $e) echo $e . '<br />';
+//		} else {
+//			echo gt('Default content has been inserted into your database.  This content structure should help you to learn how Exponent works, and how to use it for your website.');
+//		}
+//	}
 
-		$eql = BASE.'install/sitetypes/db/_default.eql';
-		$errors = array();
-		exponent_backup_restoreDatabase($db,$eql,$errors,0);
-		if (count($errors)) {
-			echo gt('Errors were encountered populating the site database.').'<br /><br />';
-			foreach ($errors as $e) echo $e . '<br />';
-		} else {
-			echo gt('Default content has been inserted into your database.  This content structure should help you to learn how Exponent works, and how to use it for your website.');
-		}
-	}
 	?>
 	<a class="awesome green large" href='?page=install-4'><?php echo gt('Continue Installation'); ?></a>
 	<?php
