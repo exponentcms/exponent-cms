@@ -554,7 +554,8 @@ class expFile extends expRecord {
     *
     */
     public static function fixFileName($name) {
-        return preg_replace('/[^A-Za-z0-9\.]/','_',$name);
+//        return preg_replace('/[^A-Za-z0-9\.]/','_',$name);
+        return preg_replace('/[^A-Za-z0-9\.]/','-',$name);
     }
 
 // ==========================================================
