@@ -117,10 +117,10 @@ class storeCategoryController extends expNestedNodeController {
             $chldcat->is_active = $this->params['is_active'];
             $chldcat->save();
         }
-
-		$category_type = isset($this->params['category_type']) ? $this->params['category_type'] : 'google_product_types';
-        $record = new $category_type();
-		$record->saveCategories($this->params['google_product_types'], $curcat->id); 
+		
+		$category_type = 'google_product_types';
+		$google_product_type = new $category_type();
+		$google_product_type->saveCategories($this->params['google_product_types'], $curcat->id); 
 		
          parent::update();
     }
