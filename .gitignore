@@ -1,5 +1,5 @@
 # Excludes all files within the ./ files directory
-/files/*
+#/files/*
 
 # Excludes the site's configuration file
 /conf/config.php

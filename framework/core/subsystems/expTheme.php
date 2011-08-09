@@ -156,6 +156,7 @@ class expTheme {
 	 * Checks to see if the page is currently in an action.  Useful only if the theme does not use the self::main() function
 	 * Returns whether or not an action should be run.
 	 * @node Subsystems:Theme
+	 * @return bool
 	 */
     public static function inAction() {
         return (isset($_REQUEST['action']) && (isset($_REQUEST['module']) || isset($_REQUEST['controller'])));
@@ -440,6 +441,7 @@ class expTheme {
 	/** exdoc
 	 * Runs the approriate action, by looking at the $_REQUEST variable.
 	 * @node Subsystems:Theme
+	 * @return bool
 	 */
 	public static function runAction() {
 		if (self::inAction()) {

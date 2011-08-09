@@ -172,7 +172,7 @@ function exponent_users_saveProfileExtensions($formvalues,$user,$is_new) {
  */
 function exponent_users_groupUpdate($formvalues, $group = null) {
 	// DEPRECATE
-	//FIXME this is not a static function and probably won't work?
+	//FIXME this is NOT a static function and probably won't work?
 	return group::update($formvalues,$group);
 }
 
