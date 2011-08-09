@@ -25,7 +25,7 @@
 	</tr>
 	<tr>
 		<td colspan="3" style="padding-left: 10px; border: 1px solid lightgrey;">
-			<a class="mngmntlink administration_mngmntlink" href="{link module=info action=showfiles type=$smarty.const.CORE_EXT_SUBSYSTEM name=$subsys}">
+{*			<a class="mngmntlink administration_mngmntlink" href="{link module=info action=showfiles type=$smarty.const.CORE_EXT_SUBSYSTEM name=$subsys}">*}
 				{$_TR.view_files}
 			</a>
 			<hr size="1" />

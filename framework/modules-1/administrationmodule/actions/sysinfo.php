@@ -41,7 +41,7 @@ if (exponent_permissions_check('configuration',exponent_core_makeLocation('admin
 //	if (!defined('SYS_MODULES')) require_once(BASE.'framework/core/subsystems-1/modules.php');
 //	if (!defined('SYS_INFO')) require_once(BASE.'framework/core/subsystems-1/info.php');
 	require_once(BASE.'framework/core/subsystems-1/modules.php');
-	require_once(BASE.'framework/core/subsystems-1/info.php');
+//	require_once(BASE.'framework/core/subsystems-1/info.php');
 
 	$mods = array();
 	
@@ -57,7 +57,7 @@ if (exponent_permissions_check('configuration',exponent_core_makeLocation('admin
 	}
 	
 	$template->assign('modules',$mods);
-	$template->assign('subsystems',exponent_info_subsystems());
+//	$template->assign('subsystems',exponent_info_subsystems());
 	
 	$template->assign('override_style',1);
 	
