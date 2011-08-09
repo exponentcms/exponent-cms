@@ -109,7 +109,7 @@ class storeCategoryController extends expNestedNodeController {
     }
     
     public function update() {
-        parent::update();
+
         $curcat = new storeCategory($this->params);
         $children = $curcat->getChildren();
         foreach ($children as $key=>$child) {
@@ -122,7 +122,7 @@ class storeCategoryController extends expNestedNodeController {
         $record = new $category_type();
 		$record->saveCategories($this->params['google_product_types'], $curcat->id); 
 		
-        expHistory::back();
+         parent::update();
     }
     
     function fix_categories() {
