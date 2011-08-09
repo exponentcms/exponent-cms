@@ -13,22 +13,27 @@
  * GPL: http://www.gnu.org/licenses/gpl.txt
  *
  *}
-<div class="form_title">{$_TR.form_title}</div>
-<div class="form_header">{$_TR.form_header}</div>
-<table cellpadding="4" cellspacing="0" border="0" width="100%">
-	{foreach from=$importers item=importer key=impname}
-	<tr>
-		<td class="administration_modmgrheader"><b>{$importer.name}</b> {$_TR.by|sprintf:$importer.author}</td>
-	</tr>
-	<tr>
-		<td class="administration_modmgrbody">
-			{$importer.description}
-			<hr size='1'/>
-			<a class="mngmntlink administration_mngmntlink" href="{link module=importer action=page page=start importer=$impname}">{$_TR.run}</a>
-		</td>
-	</tr>
-	<tr><td></td></tr>
-	{foreachelse}
-	<tr><td align="center"><i>{$_TR.no_importers}</i></td></tr>
-	{/foreach}
-</table>
+
+<div class="importer importers">
+	<div class="form_header">
+		<h2>{$_TR.form_title}</h2>
+		<p>{$_TR.form_header}</p>
+	</div>
+	<table cellpadding="4" cellspacing="0" border="0" width="100%">
+		{foreach from=$importers item=importer key=impname}
+			<tr>
+				<td class="administration_modmgrheader"><b>{$importer.name}</b> {$_TR.by|sprintf:$importer.author}</td>
+			</tr>
+			<tr>
+				<td class="administration_modmgrbody">
+					{$importer.description}
+					<hr size='1'/>
+					<a class="mngmntlink administration_mngmntlink" href="{link module=importer action=page page=start importer=$impname}">{$_TR.run}{$importer.name}</a>
+				</td>
+			</tr>
+			<tr><td></td></tr>
+		{foreachelse}
+			<tr><td align="center"><i>{$_TR.no_importers}</i></td></tr>
+		{/foreach}
+	</table>
+</div>

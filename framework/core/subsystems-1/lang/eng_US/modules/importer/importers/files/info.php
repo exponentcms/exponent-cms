@@ -2,7 +2,7 @@
 
 return array(
 	'importer_name'=>'Uploaded Files Importer',
-	'importer_description'=>'This importer allows you to restore the uploaded files that were backed up with the Uploaded Files Exporter.',
+	'importer_description'=>'Restores the uploaded files which were exported with the Uploaded Files Exporter.',
 );
 
 ?>
