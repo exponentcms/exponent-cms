@@ -1192,6 +1192,7 @@ class expFile extends expRecord {
 				}
 			}
 		}
+		closedir($dh);
 		rmdir($dir);
 	}
 
@@ -1257,6 +1258,7 @@ class expFile extends expRecord {
 					$files[str_replace($relative,"","$dir/$file")] = $file;
 				}
 			}
+			closedir($dh);
 		}
 		return $files;
 	}
@@ -1324,6 +1326,7 @@ class expFile extends expRecord {
 				}
 			}
 		}
+		closedir($dh);
 		umask($__oldumask);
 	}
 
