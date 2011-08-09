@@ -550,8 +550,8 @@ class navigationmodule {
 			$sloc = exponent_core_makeLocation('navigationmodule', null, $section->id);
 
 			// remove any manage permissions for this page and it's children
-			$db->delete('userpermission', "module='navigationmodule' AND internal=".$section->id);
-			$db->delete('grouppermission', "module='navigationmodule' AND internal=".$section->id);
+            // $db->delete('userpermission', "module='navigationmodule' AND internal=".$section->id);
+            // $db->delete('grouppermission', "module='navigationmodule' AND internal=".$section->id);
 
 			foreach ($allusers as $uid) {
 				$u = exponent_users_getUserById($uid);
