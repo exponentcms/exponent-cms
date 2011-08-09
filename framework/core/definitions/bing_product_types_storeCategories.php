@@ -24,7 +24,7 @@ return array(
 		DB_FIELD_TYPE=>DB_DEF_ID,
         DB_PRIMARY=>true,
         DB_INCREMENT=>false),
-	'google_product_types_id'=>array(
+	'bing_product_types_id'=>array(
 		DB_FIELD_TYPE=>DB_DEF_ID,
         DB_PRIMARY=>true,
         DB_INCREMENT=>false)
