@@ -478,8 +478,8 @@ class administrationController extends expController {
 //		exponent_forms_initialize();
 		$form = new form();
 		$form->register(null,'',new htmlcontrol(exponent_core_maxUploadSizeMessage()));
-		$form->register('mod_archive','Module Archive',new uploadcontrol());
-		$form->register('submit','',new buttongroupcontrol('Install'));
+		$form->register('mod_archive','Extension Archive',new uploadcontrol());
+		$form->register('submit','',new buttongroupcontrol(gt('Upload Extension')));
 		$form->meta('module','administration');
 		$form->meta('action','install_extension');
 

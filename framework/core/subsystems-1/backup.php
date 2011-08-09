@@ -116,11 +116,85 @@ function exponent_backup_restoreDatabase($db,$file,&$errors,$force_version = nul
 		$clear_function = '';
 		$fprefix = '';
 		// Check version and include necessary converters
+		//FIXME We reject v1.0 eql files
 		if ($eql_version != $current_version) {
+			$errors[] = $i18n['wrong_ver'];
+			return false;
 			include_once(BASE.'framework/core/subsystems-1/backup/'.$eql_version.'.php');
 			$fprefix = 'exponent_backup_'.implode('',explode('.',$eql_version)).'_';
 			if (function_exists($fprefix.'clearedTable')) {
 				$clear_function = $fprefix.'clearedTable';
+			}
+		}
+
+		// make sure the database tables are up to date
+		define("TMP_TABLE_EXISTED",		1);
+		define("TMP_TABLE_INSTALLED",	2);
+		define("TMP_TABLE_FAILED",		3);
+		define("TMP_TABLE_ALTERED",		4);
+
+		$tables = array();
+		$dir = BASE.'framework/core/definitions';
+		if (is_readable($dir)) {
+			$dh = opendir($dir);
+			while (($file = readdir($dh)) !== false) {
+				if (is_readable("$dir/$file") && is_file("$dir/$file") && substr($file,-4,4) == ".php" && substr($file,-9,9) != ".info.php") {
+					$tablename = substr($file,0,-4);
+					$dd = include("$dir/$file");
+					$info = null;
+					if (is_readable("$dir/$tablename.info.php")) $info = include("$dir/$tablename.info.php");
+					if (!$db->tableExists($tablename)) {
+						foreach ($db->createTable($tablename,$dd,$info) as $key=>$status) {
+							$tables[$key] = $status;
+						}
+					} else {
+						foreach ($db->alterTable($tablename,$dd,$info) as $key=>$status) {
+							if (isset($tables[$key])) echo "$tablename, $key<br>";
+							if ($status == TABLE_ALTER_FAILED){
+								$tables[$key] = $status;
+							}else{
+								$tables[$key] = ($status == TABLE_ALTER_NOT_NEEDED ? DATABASE_TABLE_EXISTED : DATABASE_TABLE_ALTERED);
+							}
+
+						}
+					}
+				}
+			}
+		}
+
+		$newdef = BASE."framework/modules";
+		if (is_readable($newdef)) {
+			$dh = opendir($newdef);
+			while (($file = readdir($dh)) !== false) {
+				if (is_dir($newdef.'/'.$file) && ($file != '..' && $file != '.')) {
+					$dirpath = $newdef.'/'.$file.'/definitions';
+					if (file_exists($dirpath)) {
+						$def_dir = opendir($dirpath);
+						while (($def = readdir($def_dir)) !== false) {
+							if (is_readable("$dirpath/$def") && is_file("$dirpath/$def") && substr($def,-4,4) == ".php" && substr($def,-9,9) != ".info.php") {
+								$tablename = substr($def,0,-4);
+								$dd = include("$dirpath/$def");
+								$info = null;
+								if (is_readable("$dirpath/$tablename.info.php")) $info = include("$dirpath/$tablename.info.php");
+								if (!$db->tableExists($tablename)) {
+									foreach ($db->createTable($tablename,$dd,$info) as $key=>$status) {
+										$tables[$key] = $status;
+									}
+								} else {
+									foreach ($db->alterTable($tablename,$dd,$info) as $key=>$status) {
+										if (isset($tables[$key])) echo "$tablename, $key<br>";
+										if ($status == TABLE_ALTER_FAILED){
+											$tables[$key] = $status;
+										}else{
+											$tables[$key] = ($status == TABLE_ALTER_NOT_NEEDED ? DATABASE_TABLE_EXISTED : DATABASE_TABLE_ALTERED);
+										}
+
+									}
+								}
+							}
+						}
+					}
+				}
 			}
 		}
 
@@ -145,15 +219,15 @@ function exponent_backup_restoreDatabase($db,$file,&$errors,$force_version = nul
 							$clear_function($db,$table);
 						}
 					} else {
-						if (!file_exists(BASE.'framework/core/definitions/'.$table.'.php')) {
+//						if (!file_exists(BASE.'framework/core/definitions/'.$table.'.php')) {
 							$errors[] = sprintf($i18n['no_definition'],$table,$line_number);
-						} else if (!is_readable(BASE.'framework/core/definitions/'.$table.'.php')) {
-							$errors[] = sprintf($i18n['unreadable_definition'],$table,'framework/core/definitions/'.$table.'.php',$line_number);
-						} else {
-							$dd = include(BASE.'framework/core/definitions/'.$table.'.php');
-							$info = (is_readable(BASE.'framework/core/definitions/'.$table.'.info.php') ? include(BASE.'framework/core/definitions/'.$table.'.info.php') : array());
-							$db->createTable($table,$dd,$info);
-						}
+//						} else if (!is_readable(BASE.'framework/core/definitions/'.$table.'.php')) {
+//							$errors[] = sprintf($i18n['unreadable_definition'],$table,'framework/core/definitions/'.$table.'.php',$line_number);
+//						} else {
+//							$dd = include(BASE.'framework/core/definitions/'.$table.'.php');
+//							$info = (is_readable(BASE.'framework/core/definitions/'.$table.'.info.php') ? include(BASE.'framework/core/definitions/'.$table.'.info.php') : array());
+//							$db->createTable($table,$dd,$info);
+//						}
 					}
 				} else if ($pair[0] == 'RECORD') {
 					// Here we need to check the conversion scripts.
@@ -170,6 +244,8 @@ function exponent_backup_restoreDatabase($db,$file,&$errors,$force_version = nul
 			}
 		}
 		if ($eql_version != $current_version) {
+			$errors[] = $i18n['wrong_ver'];
+			return false;
 			include_once(BASE.'framework/core/subsystems-1/backup/normalize.php');
 		}
 		return true;

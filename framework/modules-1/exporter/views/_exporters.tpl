@@ -13,22 +13,27 @@
  * GPL: http://www.gnu.org/licenses/gpl.txt
  *
  *}
-<div class="form_title">{$_TR.form_title}</div>
-<div class="form_header">{$_TR.form_header}</div>
-<table cellpadding="4" cellspacing="0" border="0" width="100%">
-	{foreach from=$exporters item=exporter key=impname}
-	<tr>
-		<td class="administration_modmgrheader"><b>{$exporter.name}</b> {$_TR.by|sprintf:$exporter.author}</td>
-	</tr>
-	<tr>
-		<td class="administration_modmgrbody">
-			{$exporter.description}
-			<hr size='1'/>
-			<a class="mngmntlink administration_mngmntlink" href="{link module=exporter action=page page=start exporter=$impname}">{$_TR.run}</a>
-		</td>
-	</tr>
-	<tr><td></td></tr>
-	{foreachelse}
-	<tr><td align="center"><i>{$_TR.no_exporters}</i></td></tr>
-	{/foreach}
-</table>
+
+<div class="exporter exporters">
+	<div class="form_header">
+		<h2>{$_TR.form_title}</h2>
+		<p>{$_TR.form_header}</p>
+	</DIV>
+	<table cellpadding="4" cellspacing="0" border="0" width="100%">
+		{foreach from=$exporters item=exporter key=impname}
+			<tr>
+				<td class="administration_modmgrheader"><b>{$exporter.name}</b> {$_TR.by|sprintf:$exporter.author}</td>
+			</tr>
+			<tr>
+				<td class="administration_modmgrbody">
+					{$exporter.description}
+					<hr size='1'/>
+					<a class="mngmntlink administration_mngmntlink" href="{link module=exporter action=page page=start exporter=$impname}">{$_TR.run} {$exporter.name}</a>
+				</td>
+			</tr>
+			<tr><td></td></tr>
+		{foreachelse}
+			<tr><td align="center"><i>{$_TR.no_exporters}</i></td></tr>
+		{/foreach}
+	</table>
+</div>

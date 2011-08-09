@@ -24,11 +24,10 @@ if (!defined('EXPONENT')) exit('');
 
 if (exponent_permissions_check('extensions',exponent_core_makeLocation('administrationmodule'))) {
 
-	$template = new template('administrationmodule','_upload_finalSummary',$loc);
-
 	$sessid = session_id();
 //	if (!file_exists(BASE."extensionuploads/$sessid") || !is_dir(BASE."extensionuploads/$sessid")) {
 	if (!file_exists(BASE."tmp/extensionuploads/$sessid") || !is_dir(BASE."tmp/extensionuploads/$sessid")) {
+		$template = new template('administrationmodule','_upload_finalSummary',$loc);
 		$template->assign('nofiles',1);
 	} else {
 //		if (!defined('SYS_FILES')) require_once(BASE.'framework/core/subsystems-1/files.php');
@@ -47,15 +46,15 @@ if (exponent_permissions_check('extensions',exponent_core_makeLocation('administ
 //		$del_return = expFile::removeDirectory(BASE."extensionuploads/$sessid");
 		$del_return = expFile::removeDirectory(BASE."tmp/extensionuploads/$sessid");
 		echo $del_return;
-		
-		$template->assign('nofiles',0);
-		$template->assign('success',$success);
-		
-		$template->assign('redirect',expHistory::getLastNotEditable());
-		
+
 		ob_start();
 		include(BASE . 'framework/modules-1/administrationmodule/actions/installtables.php');
 		ob_end_clean();
+
+		$template = new template('administrationmodule','_upload_finalSummary',$loc);
+		$template->assign('nofiles',0);
+		$template->assign('success',$success);
+		$template->assign('redirect',expHistory::getLastNotEditable());
 	}
 	
 	$template->output();

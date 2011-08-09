@@ -8,7 +8,7 @@ return array(
 	
 	'delimiter'=>'Delimiter Character',
 	'upload'=>'CSV File to Upload',
-	'rowstart'=>'CSV File to Upload',
+	'rowstart'=>'Row to Begin at',
 	
 	'submit'=>'Next',
 	'cancel'=>'Cancel',
