@@ -47,6 +47,10 @@ return array(
         DB_FIELD_TYPE=>DB_DEF_STRING,
         DB_FIELD_LEN=>100,
         DB_INDEX=>10), 
+	"bing_product_type"=>array(
+        DB_FIELD_TYPE=>DB_DEF_STRING,
+        DB_FIELD_LEN=>100,
+        DB_INDEX=>10), 
 	'sef_url'=>array(
 		DB_FIELD_TYPE=>DB_DEF_STRING,
 		DB_FIELD_LEN=>150,
