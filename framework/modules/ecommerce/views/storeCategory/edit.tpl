@@ -61,6 +61,7 @@
             <li><a href="#seo"><em>Meta Info</em></a></li>
             <li><a href="#events"><em>Events</em></a></li>
 			<li><a href="#google_product_types"><em>Google Product Types</em></a></li>
+			<li><a href="#bing_product_types"><em>Bing Product Types</em></a></li>
             </ul>            
             <div class="yui-content">
                 <div id="general">   
@@ -81,6 +82,8 @@
                 </div>  
 				<div id="google_product_types">	
 					{control type="tagtree" name="managecats" id="managecats" model="google_product_types" draggable=false addable=false menu=true checkable=true expandonstart=false values=`$record->google_product_types`}
+				</div>
+				<div id="bing_product_types">	
 				</div>
             </div>    
         </div>
