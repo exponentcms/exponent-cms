@@ -268,6 +268,8 @@
     </p>
     {/if}    
     
+    {chain controller="snippet" action="showall" source="prodsnip`$product->id`"}
+    
     {if $product->minimum_order_quantity > 1}
     {br}
     <p>
