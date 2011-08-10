@@ -57,18 +57,18 @@
         {control type=hidden name=lft value=$node->lft}                
         <div id="demo" class="yui-navset">
             <ul class="yui-nav">
-            <li class="selected"><a href="#general"><em>General</em></a></li>
-            <li><a href="#seo"><em>Meta Info</em></a></li>
-            <li><a href="#events"><em>Events</em></a></li>
-			<li><a href="#google_product_types"><em>Google Product Types</em></a></li>
-			<li><a href="#bing_product_types"><em>Bing Product Types</em></a></li>
+				<li class="selected"><a href="#general"><em>General</em></a></li>
+				<li><a href="#seo"><em>Meta Info</em></a></li>
+				<li><a href="#events"><em>Events</em></a></li>
+				<li><a href="#bing_product_types"><em>Bing Product Types</em></a></li>
+				<li><a href="#google_product_types"><em>Google Product Types</em></a></li>
             </ul>            
             <div class="yui-content">
                 <div id="general">   
-                        {control type=text name=title label="Category Name" value=$node->title}
-		                {control type="checkbox" name="is_active" label="This category is active" value=1 checked=$node->is_active|default:1}                                                
-                        {control type="files" name="image" label="Category Image" value=$node->expFile}
-		                {control type=editor name=body label="Category Description" value=$node->body}
+					{control type=text name=title label="Category Name" value=$node->title}
+					{control type="checkbox" name="is_active" label="This category is active" value=1 checked=$node->is_active|default:1}                                                
+					{control type="files" name="image" label="Category Image" value=$node->expFile}
+					{control type=editor name=body label="Category Description" value=$node->body}
 	            </div>
                 <div id="seo">
                     {control type=text name=sef_url label="SEF URL" value=$node->sef_url}                                                                                 
@@ -80,10 +80,13 @@
                     {control type="checkbox" name="is_events" label="This category is used for events" value=1 checked=$node->is_events}                        
                     {control type="checkbox" name="hide_closed_events" label="Don't Show Closed Events" value=1 checked=$node->hide_closed_events}
                 </div>  
-				<div id="google_product_types">	
-					{control type="tagtree" name="managecats" id="managecats" model="google_product_types" draggable=false addable=false menu=true checkable=true expandonstart=false values=`$record->google_product_types`}
-				</div>
 				<div id="bing_product_types">	
+					<h1>Bing Product Types</h1>
+					{control type="tagtree" name="manage_bing_product_types" id="manage_bing_product_types" model="bing_product_types" draggable=false addable=false menu=true checkable=true expandonstart=false values=`$record->bing_product_types`}
+				</div>
+				<div id="google_product_types">	
+					<h1>Google Product Types</h1>
+					{control type="tagtree" name="manage_google_product_types" id="manage_google_product_types" model="google_product_types" draggable=false addable=false menu=true checkable=true expandonstart=false values=`$record->google_product_types`}
 				</div>
             </div>    
         </div>
