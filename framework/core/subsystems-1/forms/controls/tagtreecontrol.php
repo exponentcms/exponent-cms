@@ -61,7 +61,7 @@ class tagtreecontrol extends formcontrol {
 		
 		// get all the tags.
 		$this->tags = $this->model->getFullTree();
-		//eDebug($this->tags);
+		// eDebug($this->controller_classname);	
 	}
 	
 	function toHTML($label,$name) {
@@ -76,6 +76,7 @@ class tagtreecontrol extends formcontrol {
 		$html .= '<div id="'.$this->id.'" class="nodetree loading">Loading Data</div>';
 		
 		foreach($this->tags as $i=>$val){
+			
 			if (!empty($this->values) && in_array($val->id,$this->values)) {
 				$this->tags[$i]->value = true;
 			} else {
@@ -84,7 +85,7 @@ class tagtreecontrol extends formcontrol {
 			$this->tags[$i]->draggable = $this->draggable; 
 			$this->tags[$i]->checkable = $this->checkable; 
 		}
-        
+       
 		$obj = json_encode($this->tags);
 		$script = '
 			var obj2json = '.$obj.';
@@ -92,9 +93,10 @@ class tagtreecontrol extends formcontrol {
 				expTree.init("'.$this->id.'",obj2json,"'.$this->modelname.'",'.$this->menu.','.$this->expandonstart.');
 			});
 		';
+		
 //		exponent_javascript_toFoot('expddtree', 'treeview,menu,animation,dragdrop,json,container,connection', null, $script, PATH_RELATIVE.'framework/core/assets/js/exp-tree.js');
 		expJavascript::pushToFoot(array(
-		    "unique"=>'expddtree',
+		    "unique"=>'expddtree' . mt_rand(),
 		    "yui2mods"=>'treeview,menu,animation,dragdrop,json,container,connection',
 		    "yui3mods"=>null,
 		    "content"=>$script,
