@@ -19,11 +19,9 @@
 
 if (!defined('EXPONENT')) exit('');
 
-$i18n = exponent_lang_loadFile('modules/importer/importers/files/info.php');
-
 return array(
-	'name'=>$i18n['importer_name'],
-	'description'=>$i18n['importer_description'],
+	'name'=>gt('Uploaded Files Importer'),
+	'description'=>gt('Restores the uploaded files which were exported with the Uploaded Files Exporter.'),
 	'author'=>'James Hunt'
 );
 

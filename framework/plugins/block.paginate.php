@@ -20,7 +20,6 @@
 
 function smarty_block_paginate($params,$content,&$smarty) {
 	if ($content) {
-//		if (!defined("SYS_JAVASCRIPT")) require_once(BASE."framework/core/subsystems-1/javascript.php");
 		require_once(BASE."framework/core/subsystems-1/javascript.php");
 ?>
 

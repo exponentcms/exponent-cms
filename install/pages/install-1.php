@@ -149,9 +149,11 @@ if ($errcount > 0) {
 	$write_file = 1;
 }
 
+$lang = (defined('LANGUAGE')) ? "&lang='".LANGUAGE."'" : '';
+
 if ($errcount == 0) {
 ?>
-    <a class="awesome large green" href="index.php?page=install-2"><?php echo gt('Configure Your Database'); ?></a>
+    <a class="awesome large green" href="index.php?page=install-2<?php echo $lang; ?>"><?php echo gt('Configure Your Database'); ?></a>
 <?php
 }
 

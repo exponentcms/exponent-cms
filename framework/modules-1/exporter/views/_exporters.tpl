@@ -16,24 +16,24 @@
 
 <div class="exporter exporters">
 	<div class="form_header">
-		<h2>{$_TR.form_title}</h2>
-		<p>{$_TR.form_header}</p>
+		<h2>{'Data Exporters'|gettext}</h2>
+		<p>{'This page lists all installed exporters that Exponent recognizes and gives some information about each.'|gettext}</p>
 	</DIV>
 	<table cellpadding="4" cellspacing="0" border="0" width="100%">
 		{foreach from=$exporters item=exporter key=impname}
 			<tr>
-				<td class="administration_modmgrheader"><b>{$exporter.name}</b> {$_TR.by|sprintf:$exporter.author}</td>
+				<td class="administration_modmgrheader"><b>{$exporter.name}</b> {'by %s'|gettext|sprintf:$exporter.author}</td>
 			</tr>
 			<tr>
 				<td class="administration_modmgrbody">
 					{$exporter.description}
 					<hr size='1'/>
-					<a class="mngmntlink administration_mngmntlink" href="{link module=exporter action=page page=start exporter=$impname}">{$_TR.run} {$exporter.name}</a>
+					<a class="mngmntlink administration_mngmntlink" href="{link module=exporter action=page page=start exporter=$impname}">{'Run'|gettext} {$exporter.name}</a>
 				</td>
 			</tr>
 			<tr><td></td></tr>
 		{foreachelse}
-			<tr><td align="center"><i>{$_TR.no_exporters}</i></td></tr>
+			<tr><td align="center"><i>{'No exporters are installed.'|gettext}</i></td></tr>
 		{/foreach}
 	</table>
 </div>

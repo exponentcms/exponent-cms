@@ -23,8 +23,6 @@
 if (!defined('EXPONENT')) exit('');
 
 if (exponent_permissions_check('extensions',exponent_core_makeLocation('administrationmodule'))) {
-//	if (!defined('SYS_FILES')) require_once(BASE.'framework/core/subsystems-1/files.php');
-//	require_once(BASE.'framework/core/subsystems-1/files.php');
 
 	$sessid = session_id();
 	$files = array();

@@ -16,8 +16,8 @@
 
 <div class="importer usercsv-form-starter">
 	<div class="form_header">
-		<h2>{$_TR.form_title}</h2>
-		<p>{$_TR.form_header}</p>
+		<h2>{'Import User - Enter CSV Options'|gettext}</h2>
+		<p>{'Please enter the delimiter character of the csv file, the csv file to be uploaded, and the row within the csv file to start at. The start row is for files that have  column headers, or if you just want to skip records in the csv file.'|gettext}</p>
 	</div>
 	<span style="color:red;">{$error}</span>
 	{$form_html}

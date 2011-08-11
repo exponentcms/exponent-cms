@@ -68,5 +68,6 @@
 			{/foreach}
 		</tbody>
 	</table>
-	<a class="admin" href="{link module=migration action=manage_content}">Next Step -> Migrate Content</a>
+	{br}<hr>{br}
+	<a class="admin" href="{link module=migration action=manage_content}"><b>Next Step -> Migrate Content</b></a>
 </div>

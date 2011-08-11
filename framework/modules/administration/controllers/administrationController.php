@@ -353,14 +353,12 @@ class administrationController extends expController {
 		$sorted = array();
 		foreach($menu as $m) $sorted[] = $m;
         
-        
         //slingbar position
         if (expSession::exists("slingbar_top")){
             $top = expSession::get("slingbar_top");
         } else {
             $top = SLINGBAR_TOP;
         }
-        
         
 		assign_to_template(array('menu'=>json_encode($sorted),"top"=>$top));
     }
@@ -379,7 +377,6 @@ class administrationController extends expController {
 	}
 
     public function toggle_minify() {
-//        if (!defined('SYS_CONFIG')) include_once(BASE.'framework/core/subsystems-1/config.php');
         include_once(BASE.'framework/core/subsystems-1/config.php');
     	$value = (MINIFY == 1) ? 0 : 1;
     	exponent_config_change('MINIFY', $value);
@@ -389,7 +386,6 @@ class administrationController extends expController {
     }
     
 	public function toggle_dev() {
-//	    if (!defined('SYS_CONFIG')) include_once(BASE.'framework/core/subsystems-1/config.php');
 	    include_once(BASE.'framework/core/subsystems-1/config.php');
 	    $value = (DEVELOPMENT == 1) ? 0 : 1;
 	    exponent_config_change('DEVELOPMENT', $value);
@@ -400,7 +396,6 @@ class administrationController extends expController {
 	}
 
 	public function toggle_maintenance() {
-//		if (!defined('SYS_CONFIG')) include_once(BASE.'framework/core/subsystems-1/config.php');
 		include_once(BASE.'framework/core/subsystems-1/config.php');
 		$value = (MAINTENANCE_MODE == 1) ? 0 : 1;
 		exponent_config_change('MAINTENANCE_MODE', $value);
@@ -438,11 +433,7 @@ class administrationController extends expController {
 	}
 
 	public function clear_image_cache() {
-//		if (!defined('SYS_FILES')) include_once(BASE.'framework/core/subsystems-1/files.php');
-//		include_once(BASE.'framework/core/subsystems-1/files.php');
 		expFile::removeFilesInDirectory(BASE.'tmp/pixidou');  // alt location for pixidou cache
-//		expFile::removeFilesInDirectory(BASE.'framework/modules/pixidou/images');  // location for pixidou cache
-		// phpThumb cache includes subfolders
 		if (file_exists(BASE.'tmp/img_cache')) expFile::removeFilesInDirectory(BASE.'tmp/img_cache');
 		$message = "Image/Pixidou Cache has been cleared" ;
 		flash('message',$message);
@@ -450,8 +441,6 @@ class administrationController extends expController {
 	}
 
 	public function clear_rss_cache() {
-//		if (!defined('SYS_FILES')) include_once(BASE.'framework/core/subsystems-1/files.php');
-//		include_once(BASE.'framework/core/subsystems-1/files.php');
 		expFile::removeFilesInDirectory(BASE.'tmp/rsscache');
 		$message = "RSS/Podcast Cache has been cleared" ;
 		flash('message',$message);
@@ -459,12 +448,9 @@ class administrationController extends expController {
 	}
 
 	public function clear_all_caches() {
-//		if (!defined('SYS_FILES')) include_once(BASE.'framework/core/subsystems-1/files.php');
-//		include_once(BASE.'framework/core/subsystems-1/files.php');
 		expTheme::removeSmartyCache();
 		expTheme::removeCss();
 		expFile::removeFilesInDirectory(BASE.'tmp/pixidou');  // alt location for pixidou cache
-//		expFile::removeFilesInDirectory(BASE.'framework/modules/pixidou/images');  // location for pixidou cache
 		if (file_exists(BASE.'tmp/img_cache')) expFile::removeFilesInDirectory(BASE.'tmp/img_cache');
 		expFile::removeFilesInDirectory(BASE.'tmp/rsscache');
 		$message = "All the System Caches have been cleared" ;
@@ -473,9 +459,7 @@ class administrationController extends expController {
 	}
 
 	public function upload_extension() {
-//		if (!defined('SYS_FORMS')) require_once(BASE.'framework/core/subsystems-1/forms.php');
 		require_once(BASE.'framework/core/subsystems-1/forms.php');
-//		exponent_forms_initialize();
 		$form = new form();
 		$form->register(null,'',new htmlcontrol(exponent_core_maxUploadSizeMessage()));
 		$form->register('mod_archive','Extension Archive',new uploadcontrol());
@@ -527,14 +511,10 @@ class administrationController extends expController {
 			if ($ext == '') {
 				echo gt('Unknown archive format. Archives must either be regular ZIP files, TAR files, Gzipped Tarballs, or Bzipped Tarballs.').'<br />';
 			} else {
-//				if (!defined('SYS_FILES')) require_once(BASE.'framework/core/subsystems-1/files.php');
-//				require_once(BASE.'framework/core/subsystems-1/files.php');
 
 				// Look for stale sessid directories:
 				$sessid = session_id();
-//				if (file_exists(BASE."extensionuploads/$sessid") && is_dir(BASE."extensionuploads/$sessid")) expFile::removeDirectory("extensionuploads/$sessid");
 				if (file_exists(BASE."tmp/extensionuploads/$sessid") && is_dir(BASE."tmp/extensionuploads/$sessid")) expFile::removeDirectory("tmp/extensionuploads/$sessid");
-//				$return = expFile::makeDirectory("extensionuploads/$sessid");
 				$return = expFile::makeDirectory("tmp/extensionuploads/$sessid");
 				if ($return != SYS_FILES_SUCCESS) {
 					switch ($return) {
@@ -551,7 +531,6 @@ class administrationController extends expController {
 					}
 				}
 
-//				$dest = BASE."extensionuploads/$sessid/archive$ext";
 				$dest = BASE."tmp/extensionuploads/$sessid/archive$ext";
 				move_uploaded_file($_FILES['mod_archive']['tmp_name'],$dest);
 
@@ -615,7 +594,6 @@ class administrationController extends expController {
     }
     
     public function switch_themes() {
-//        if (!defined('SYS_CONFIG')) include_once(BASE.'framework/core/subsystems-1/config.php');
         include_once(BASE.'framework/core/subsystems-1/config.php');
 
     	exponent_config_change('DISPLAY_THEME_REAL', $this->params['theme']);
@@ -647,7 +625,6 @@ class administrationController extends expController {
     
     public function configure_site () {
         // little glue to help things move along
-//        if (!defined('SYS_CONFIG')) require_once(BASE.'framework/core/subsystems-1/config.php');
         require_once(BASE.'framework/core/subsystems-1/config.php');
 
         // TYPES OF ANTISPAM CONTROLS... CURRENTLY ONLY ReCAPTCHA
@@ -687,17 +664,9 @@ class administrationController extends expController {
         uasort($themes,'strnatcmp');
         
         // Available Languages
-        $langs = array();
-        if (is_readable(BASE.'framework/core/lang')) {
-        	$lang_dh = opendir(BASE.'framework/core/lang');
-        	while (($lang_file = readdir($lang_dh)) !== false) {
-    			if (substr($lang_file, -4) == '.php') {
-    				$langs[str_replace(".php","",$lang_file)] = str_replace(".php","",$lang_file);
-    			}
-        	}
-        }
-        ksort($langs);
-        
+	    $langs = expLang::langList();
+//        ksort($langs);
+
         // attribution 
         $attribution = array('firstlast'=>'John Doe','lastfirst'=>'Doe, John','first'=>'John','username'=>'jdoe');
         
@@ -736,7 +705,6 @@ class administrationController extends expController {
     }
     
     public function update_siteconfig () {
-//        if (!defined('SYS_CONFIG')) include_once(BASE.'framework/core/subsystems-1/config.php');
         include_once(BASE.'framework/core/subsystems-1/config.php');
 
         foreach ($this->params['sc'] as $key => $value) {

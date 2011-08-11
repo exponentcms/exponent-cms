@@ -20,13 +20,8 @@
 
 if (!defined('EXPONENT')) exit('');
 
-$i18n = exponent_lang_loadFile('modules/formbuilder/actions/view_record.php');
-
-//if (!defined('SYS_FORMS')) include_once(BASE.'framework/core/subsystems-1/forms.php');
-//if (!defined('SYS_USERS')) include_once(BASE.'framework/core/subsystems-1/users.php');
 include_once(BASE.'framework/core/subsystems-1/forms.php');
 include_once(BASE.'framework/core/subsystems-1/users.php');
-//exponent_forms_initialize();
 
 // Sanitize required _GET variables.
 $_GET['id'] = intval($_GET['id']);
@@ -39,8 +34,6 @@ $rpt = $db->selectObject('formbuilder_report','form_id='.$_GET['form_id']);
 
 if ($f && $controls && $data && $rpt) {
 	if (exponent_permissions_check('viewdata',unserialize($f->location_data))) {
-//		if (!defined('SYS_SORTING')) include_once(BASE.'framework/core/subsystems-1/sorting.php');
-//		include_once(BASE.'framework/core/subsystems-1/sorting.php');
 //		usort($controls,'exponent_sorting_byRankAscending');
 		$controls = expSorter::sort(array('array'=>$controls,'sortby'=>'rank', 'order'=>'ASC'));
 		
@@ -54,9 +47,9 @@ if ($f && $controls && $data && $rpt) {
 			$captions[$name] = $c->caption;
 		}
 		
-		$captions['ip'] = $i18n['ip'];
-		$captions['timestamp'] = $i18n['timestamp'];
-		$captions['user_id'] = $i18n['username'];
+		$captions['ip'] = gt('IP Address');
+		$captions['timestamp'] = gt('Timestamp');
+		$captions['user_id'] = gt('Username');
 		$fields['ip'] = $data->ip;
 		$locUser =  exponent_users_getUserById($data->user_id);
 		$fields['user_id'] =  isset($locUser->username)?$locUser->username:'';

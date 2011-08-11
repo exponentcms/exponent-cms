@@ -42,7 +42,7 @@ function exponent_lang_list() {
 	return $langs;
 }
 
-function exponent_lang_initialize() {
+function exponent_lang_initialize() {  //FIXME same as expLang::loadLang?
 	if (!defined('LANG')) {
 		if ((is_readable(BASE . 'framework/core/subsystems-1/lang/' . USE_LANG . '.php')) && (USE_LANG != 'en')) {
 			define('LANG', USE_LANG); // Lang file exists.
@@ -59,7 +59,7 @@ function exponent_lang_initialize() {
 	define('LANG_CHARSET', $info['charset']);
 }
 
-function exponent_lang_loadLangs() {
+function exponent_lang_loadLangs() {  //FIXME moved to expLang::loadLang
 	$ret = array();
 	if (is_readable(BASE.'framework/core/subsystems-1/lang')) {
 		while (($lang_file = readfile(BASE . 'framework/core/subsystems-1/lang/*.php')) !== false) {
@@ -147,7 +147,7 @@ function exponent_lang_loadFile($filename) {
  *
  * @return Array The language set found, or an empty array if no set file was found.
  */
-function exponent_lang_loadKey($filename, $key) {
+function exponent_lang_loadKey($filename, $key) {  //FIXME deprecated by using expFramework gt
 	// First we load the full set.
 	$keys = exponent_lang_loadFile($filename);
 
@@ -175,7 +175,7 @@ function exponent_lang_loadKey($filename, $key) {
  *
  * @return string the short version of the lang code
  */
-function exponent_lang_convertLangCode($long_code, $target = "iso639-1") {
+function exponent_lang_convertLangCode($long_code, $target = "iso639-1") {  //FIXME deprecate?
 	//TODO: auto-guess the incoming type of lang code from the input format
 	//TODO: breakout the data into a xml file in subsystems/lang/
 
@@ -207,7 +207,7 @@ function exponent_lang_convertLangCode($long_code, $target = "iso639-1") {
 	return $converted_code;
 }
 
-function exponent_lang_getText($text) {
+function exponent_lang_getText($text) {  //FIXME moved to expFramework gt
 	return $text;
 }
 ?>

@@ -13,6 +13,6 @@
  * GPL: http://www.gnu.org/licenses/gpl.txt
  *
  *}
-<div class="form_title">{$_TR.form_title}</div>
-<div class="form_header">{$_TR.form_caption}</div>
+<div class="form_title">{'Configure Exponent'|gettext}</div>
+<div class="form_header">{'This form lets you determine site-wide behavior.  Be especially careful when dealing with database settings, as you can quite easily lock yourself out of the site by switching databases.'|gettext}</div>
 {$form_html}

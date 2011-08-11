@@ -20,9 +20,6 @@
 
 if (!defined('EXPONENT')) exit('');
 
-$i18n = exponent_lang_loadFile('modules/loginmodule/actions/login.php');
-
-//if (!defined('SYS_USERS')) require_once(BASE.'framework/core/subsystems-1/users.php');
 require_once(BASE.'framework/core/subsystems-1/users.php');
 
 $user_profile = null;

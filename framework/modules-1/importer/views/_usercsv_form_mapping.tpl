@@ -16,8 +16,8 @@
 
 <div class="importer usercsv-form-mapping">
 	<div class="form_header">
-		<h2>{$_TR.form_title}</h2>
-		<p>{$_TR.form_header}</p>
+		<h2>{'Mapping CSV Columns'|gettext}</h2>
+		<p>{'Below is some sample data from your csv file broken out by fields. Map the columns from the csv file to the corresponding user property in the database.'|gettext}</p>
 	</div>
 	{$form_html}
 </div>

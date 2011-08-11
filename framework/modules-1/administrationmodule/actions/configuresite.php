@@ -25,16 +25,11 @@ if (!defined('EXPONENT')) exit('');
 if (exponent_permissions_check('configuration',exponent_core_makeLocation('administrationmodule'))) {
 	expHistory::flowSet(SYS_FLOW_PROTECTED,SYS_FLOW_ACTION);
 	
-	$i18n = exponent_lang_loadFile('modules/administrationmodule/actions/configuresite.php');
-
 	$configname = (isset($_GET['configname']) ? $_GET['configname'] : "");
 	
-//	if (!defined('SYS_CONFIG')) require_once(BASE.'framework/core/subsystems-1/config.php');
-//	if (!defined('SYS_FORMS')) require_once(BASE.'framework/core/subsystems-1/forms.php');
 	require_once(BASE.'framework/core/subsystems-1/config.php');
 	require_once(BASE.'framework/core/subsystems-1/forms.php');
-//	exponent_forms_initialize();
-	
+
 	$profiles = exponent_config_profiles();
 	if (count($profiles) == 0) $profiles = array(''=>'[No Profiles]');
 	if (!array_key_exists($configname,$profiles) || $configname == '') {
@@ -54,7 +49,7 @@ if (exponent_permissions_check('configuration',exponent_core_makeLocation('admin
 	$dd = new dropdowncontrol($configname,$profiles);
 	$href = preg_replace("/&configname.*/",'',$_SERVER['REQUEST_URI']);
 	$dd->jsHooks['onchange'] = "document.location.href = eXp.makeLink('module', 'administrationmodule', 'action', 'configuresite', 'configname', this.options[this.selectedIndex].value);";
-	$form->register('configname',$i18n['profile'],$dd);
+	$form->register('configname',gt('Profile'),$dd);
 	$template->assign('form_html',$form->toHTML());
 	
 	$template = exponent_config_outputConfigurationTemplate($template,$configname);

@@ -25,7 +25,7 @@ if(! eXp.WYSIWYG) {
 
 //translation file
 //TODO: move to separate file
-eXp._TR = {};
+//eXp._TR = {};
 
 var used = new Array();
 var rows = new Array();

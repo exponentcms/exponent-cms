@@ -20,5 +20,5 @@
 		{$response_html}
 		{clear}
 	</div>
-	{br}<a href="{$backlink}">{$_TR.back}</a>
+	{br}<a href="{$backlink}">{'Back'|gettext}</a>
 </div>

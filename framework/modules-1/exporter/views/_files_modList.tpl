@@ -16,8 +16,8 @@
 
 <div class="exporter files-modlist">
 	<div class="form_header">
-		<h2>{$_TR.form_title}</h2>
-		<p>{$_TR.form_header}</p>
+		<h2>{'Select Which Modules'|gettext}</h2>
+		<p>{'Listed below are the module types that have uploaded files.  Select which type of modules you want to export the files for.'|gettext}</p>
 	</div>
 	<script type="text/javascript">
 	{literal}
@@ -37,7 +37,7 @@
 		<input type="hidden" name="exporter" value="files" />
 		<input type="hidden" name="page" value="export" />
 		<table cellspacing="0" cellpadding="2" border="0">
-			<tr><td class="header">&nbsp;</td><td class="header">{$_TR.module}</td></tr>
+			<tr><td class="header">&nbsp;</td><td class="header">{'Module'|gettext}</td></tr>
 			{foreach from=$mods key=modname item=modulename}
 				<tr>
 					<td>
@@ -49,21 +49,21 @@
 				</tr>
 			{/foreach}
 			<tr><td colspan="2">
-				<a href="#" onclick="mods_selectUnselectAll(true); return false;">{$_TR.select_all}</a>&nbsp;|&nbsp;<a href="#" onclick="mods_selectUnselectAll(false); return false;">{$_TR.deselect_all}</a>
+				<a href="#" onclick="mods_selectUnselectAll(true); return false;">{'Select All'|gettext}</a>&nbsp;|&nbsp;<a href="#" onclick="mods_selectUnselectAll(false); return false;">{'Unselect All'|gettext}</a>
 			</td></tr>
 			<tr>
-				<td colspan="2" valign="top"><b>{$_TR.file_template}</b>
+				<td colspan="2" valign="top"><b>{'File Name Template:'|gettext}</b>
 					<input type="text" name="filename" size="20" value="files" />
 				</td>
 			</tr>
 				<td colspan="2">
-					<div style="border-top: 1px solid #CCCC;">{$_TR.template_description}<br /></div>
+					<div style="border-top: 1px solid #CCCC;">{'Use __DOMAIN__ for this website\'s domain name and any strftime options for time specification. The extension will be added for you. Any other text will be preserved.'|gettext}<br /></div>
 				</td>
 			</tr>
 			<tr>
 				<td>&nbsp;</td>
 				<td>
-					<input class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" type="submit" value="{$_TR.export_files}" />
+					<input class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" type="submit" value="{'Export Files'|gettext}" />
 				</td>
 			</tr>
 		</table>

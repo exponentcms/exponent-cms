@@ -16,7 +16,7 @@
 DEPRECATED
 {*
 <div style="margin-bottom: 5px; border-bottom: 1px solid darkblue">
-{$_TR.pick_section}
+{'Pick a section to see the images that have been uploaded for use.'|gettext}
 </div>
 
 <table cellpadding="1" cellspacing="0" border="0" width="100%">

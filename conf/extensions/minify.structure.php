@@ -19,30 +19,27 @@
 
 if (!defined('EXPONENT')) exit('');
 
-
-$i18n = exponent_lang_loadFile('conf/extensions/minify.structure.php');
-
 return array(
-	$i18n['title'],
+	gt('Minify Configuration'),
 	array(
 		'MINIFY_MAXAGE'=>array(
-			'title'=>$i18n['minify_maxage'],
-			'description'=>$i18n['minify_maxage_desc'],
+			'title'=>gt('Minify Max Age'),
+			'description'=>gt('Maximum age of browser cache in seconds'),
 			'control'=>new textcontrol()
 		),
 		'MINIFY_MAX_FILES'=>array(
-			'title'=>$i18n['minify_max_files'],
-			'description'=>$i18n['minify_max_files_desc'],
+			'title'=>gt('Minify Max Files'),
+			'description'=>gt('Maximum # of files that can be specified in the "f" GET parameter'),
 			'control'=>new textcontrol()
 		),
 		'MINIFY_URL_LENGTH'=>array(
-			'title'=>$i18n['minify_url_length'],
-			'description'=>$i18n['minify_url_length_desc'],
+			'title'=>gt('Minify URL Length'),
+			'description'=>gt('The length of minification url'),
 			'control'=>new textcontrol()
 		),
 		'MINIFY_ERROR_LOGGER'=>array(
-			'title'=>$i18n['minify_error_logger'],
-			'description'=>$i18n['minify_error_logger_desc'],
+			'title'=>gt('Minify Error Logger'),
+			'description'=>gt('Set to true to log error messages to FirePHP'),
 			'control'=>new checkboxcontrol()
 		)
 		

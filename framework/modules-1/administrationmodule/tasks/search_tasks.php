@@ -19,12 +19,10 @@
 
 if (!defined('EXPONENT')) exit('');
 
-$i18n = exponent_lang_loadFile('modules/administrationmodule/tasks/search_tasks.php');
-
 return array(
-	$i18n['searching']=>array(
+	gt('Searching')=>array(
 		'spider'=>array(
-			'title'=>$i18n['spider_site'],
+			'title'=>gt('Spider Site'),
 			'module'=>'search',
 			'action'=>'spider'
 		),

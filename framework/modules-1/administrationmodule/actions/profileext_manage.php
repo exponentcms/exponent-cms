@@ -23,7 +23,6 @@
 if (!defined('EXPONENT')) exit('');
 
 if (exponent_permissions_check('user_management',exponent_core_makeLocation('administrationmodule'))) {
-//	if (!defined('SYS_USERS')) require_once(BASE.'framework/core/subsystems-1/users.php');
 	require_once(BASE.'framework/core/subsystems-1/users.php');
 	exponent_users_includeProfileExtensions();
 	
@@ -35,8 +34,6 @@ if (exponent_permissions_check('user_management',exponent_core_makeLocation('adm
 	
 	$exts = $db->selectObjects('profileextension');
 	
-//	if (!defined('SYS_SORTING')) require_once(BASE.'framework/core/subsystems-1/sorting.php');
-//	require_once(BASE.'framework/core/subsystems-1/sorting.php');
 //	usort($exts,'exponent_sorting_byRankAscending');
 	$exts = expSorter::sort(array('array'=>$exts,'sortby'=>'rank', 'order'=>'ASC'));
 

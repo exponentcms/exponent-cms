@@ -17,8 +17,8 @@
 <div class="calendar module">
 	{messagequeue}
 	{if $success == 0}
-		{$_TR.error}
+		{'There was an error with the mail server.  Please contact your administrator.'|gettext}
 	{else}
-		{$_TR.success}
+		{'Your feedback was successfully sent.'|gettext}
 	{/if}
 </div>

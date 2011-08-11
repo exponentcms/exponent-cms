@@ -13,24 +13,24 @@
  * GPL: http://www.gnu.org/licenses/gpl.txt
  *
  *}
-<div class="form_title">{$_TR.form_title}</div>
-<div class="form_header">{$_TR.form_header}</div>
+<div class="form_title">{'Trim Database'|gettext}</div>
+<div class="form_header">'Exponent is removing tables that are no longer used from its database.  Shown below is a summay of the actions that occured.'|gettext}</div>
 <table cellpadding="2" cellspacing="0" width="100%" border="0">
 {foreach from=$dropped_tables item=table}
 <tr class="row {cycle values='odd,even'}_row"><td>
 {$table}
 </td><td>
-<div style="color: red; font-weight: bold">{$_TR.dropped}</div>
+<div style="color: red; font-weight: bold">{'Dropped'|gettext}</div>
 </td></tr>
 {foreachelse}
-<b>{$_TR.no_unused}</b>
+<b>{'No unused tables were found.'|gettext}</b>
 {/foreach}
 </table>
 {if $real_dropped != 0}
 <hr size="1">
-{$_TR.dropped_total|sprintf:$dropped}<br />
+{'Dropped a total of {$dropped} tables.'|gettext|sprintf:$dropped}<br />
 {math assign=diff equation="x-y" x=$dropped y=$real_dropped}
 {if $diff != 0}
-{$diff} {if $diff == 1}{$_TR.recreated_single}{/if}{if $diff != 1}{$_TR.recreated_multiple}{/if}<br />
+{$diff} {if $diff == 1}{'empty table was re-created.'|gettext}{/if}{if $diff != 1}{'empty tables were re-created.'|gettext}{/if}<br />
 {/if}
 {/if}

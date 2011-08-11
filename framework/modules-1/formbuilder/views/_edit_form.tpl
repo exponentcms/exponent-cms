@@ -15,7 +15,7 @@
 
 <div class="module formbuilder edit-form">
 	<div class="form_title">
-		<h1>{$_TR.form_title_edit}</h1>
+		<h1>{'Edit Form Settings'|gettext}</h1>
 	</div>
 	{$form_html}
 </div>

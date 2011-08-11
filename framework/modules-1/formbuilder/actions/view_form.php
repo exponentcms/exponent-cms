@@ -20,11 +20,7 @@
 
 if (!defined('EXPONENT')) exit('');
 
-$i18n = exponent_lang_loadFile('modules/formbuilder/actions/view_form.php');
-
-//if (!defined("SYS_FORMS")) require_once(BASE."framework/core/subsystems-1/forms.php");
 require_once(BASE."framework/core/subsystems-1/forms.php");
-//exponent_forms_initialize();
 
 $f = null;
 if (isset($_GET['id'])) {
@@ -36,8 +32,6 @@ if ($f) {
 		expHistory::set('editable', $_GET);
 		$loc = unserialize($f->location_data);
 		$controls = $db->selectObjects("formbuilder_control","form_id=".$f->id);
-//		if (!defined("SYS_SORTING")) require_once(BASE."framework/core/subsystems-1/sorting.php");
-//		require_once(BASE."framework/core/subsystems-1/sorting.php");
 //		usort($controls,"exponent_sorting_byRankAscending");
 		$controls = expSorter::sort(array('array'=>$controls,'sortby'=>'rank', 'order'=>'ASC'));
 
@@ -59,10 +53,10 @@ if ($f) {
 		$SYS_FLOW_REDIRECTIONPATH = "exponent_default";
 		
 		$types = exponent_forms_listControlTypes();
-		$types[".break"] = $i18n['spacer'];
-		$types[".line"] = $i18n['line'];
+		$types[".break"] = gt('Spacer');
+		$types[".line"] = gt('Horizontal Line');
 		uasort($types,"strnatcmp");
-		array_unshift($types,$i18n['select']);
+		array_unshift($types,gt('[Please Select]'));
 		$template->assign("types",$types);
 		$template->assign("pickerurl",URL_FULL."source_selector.php?showmodules=formmodule&dest='+escape(\"".PATH_RELATIVE."?module=formbuilder&action=picked_source&form_id=".$f->id."&s=".$loc->src."&m=".$loc->mod ."\")+'&vmod=containermodule&vview=_sourcePicker");
 		$template->output();

@@ -31,7 +31,6 @@ $microtime_str = explode(' ',microtime());
 $i_start = $microtime_str[0] + $microtime_str[1];
 
 // Initialize the theme subsystem 1.0 compatibility layer
-//if (!defined('SYS_THEME')) require_once(BASE.'framework/core/subsystems-1/theme.php');
 require_once(BASE.'framework/core/subsystems-1/theme.php');
 
 $section = (expSession::is_set('last_section') ? expSession::get('last_section') : SITE_DEFAULT_SECTION);

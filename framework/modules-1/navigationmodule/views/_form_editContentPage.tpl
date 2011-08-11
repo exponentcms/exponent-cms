@@ -22,9 +22,9 @@
         <div class="related-actions">
 			{help text="Get Help Editing Content Pages" module="edit-page"}
         </div>
-		<h1>{if $is_edit == 1}{$_TR.form_title_edit}{else}{$_TR.form_title_new}{/if}</h1>
+		<h1>{if $is_edit == 1}{'Edit Existing Content Page'|gettext}{else}{'Create New Content Page'|gettext}{/if}</h1>
 	</div>
-    <p>{if $is_edit == 1}{$_TR.form_header_edit}{else}{$_TR.form_header_new}{/if}</p>
+    <p>{if $is_edit == 1}{'Use the form below to change the details of this content page.'|gettext}{else}{'Use the form below to enter the information about your new content page.'|gettext}{/if}</p>
 
     {$form_html}
 </div>

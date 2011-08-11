@@ -114,10 +114,7 @@ class radiocontrol extends formcontrol {
     }
     
     function form($object) {
-//        if (!defined("SYS_FORMS")) require_once(BASE."framework/core/subsystems-1/forms.php");
         require_once(BASE."framework/core/subsystems-1/forms.php");
-//        exponent_forms_initialize();
-    
         $form = new form();
         if (!isset($object->identifier)) {
             $object->identifier = "";
@@ -126,14 +123,12 @@ class radiocontrol extends formcontrol {
             $object->default = false;
             $object->flip = false;
         } 
-        $i18n = exponent_lang_loadFile('subsystems/forms/controls/radiocontrol.php');
+        $form->register("groupname",gt('Group Name'),new textcontrol($object->groupname));
+        $form->register("caption",gt('Caption'), new textcontrol($object->caption));
+        $form->register("default",gt('Default'), new checkboxcontrol($object->default,false));
+        $form->register("flip",gt('Caption on Right'), new checkboxcontrol($object->flip,false));
         
-        $form->register("groupname",$i18n['groupname'],new textcontrol($object->groupname));
-        $form->register("caption",$i18n['caption'], new textcontrol($object->caption));
-        $form->register("default",$i18n['default'], new checkboxcontrol($object->default,false));
-        $form->register("flip",$i18n['flip'], new checkboxcontrol($object->flip,false));
-        
-        $form->register("submit","",new buttongroupcontrol($i18n['save'],'',$i18n['cancel']));
+        $form->register("submit","",new buttongroupcontrol(gt('Save'),'',gt('Cancel')));
         
         return $form;
     }
@@ -141,9 +136,8 @@ class radiocontrol extends formcontrol {
     function update($values, $object) {
         if ($object == null) $object = new radiocontrol();
         if ($values['groupname'] == "") {
-            $i18n = exponent_lang_loadFile('subsystems/forms/controls/radiocontrol.php');
             $post = $_POST;
-            $post['_formError'] = $i18n['groupname_req'];
+            $post['_formError'] = gt('Group name is required.');
             expSession::set("last_POST",$post);
             return null;
         }

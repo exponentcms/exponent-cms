@@ -13,4 +13,4 @@
  * GPL: http://www.gnu.org/licenses/gpl.txt
  *
  *}
-{$_TR.success}
+{'Successfully restored uploaded files from backup.'|gettext}

@@ -13,28 +13,28 @@
  * GPL: http://www.gnu.org/licenses/gpl.txt
  *
  *}
-<div class="form_title">{$_TR.form_title}</div>
-<div class="form_header">{$_TR.form_caption}</div>
+<div class="form_title">{'Configure Exponent'|gettext}</div>
+<div class="form_header">{'This form lets you determine site-wide behavior.  Be especially careful when dealing with database settings, as you can quite easily lock yourself out of the site by switching databases.'|gettext}</div>
 {$form_html}
 {if $smarty.const.CURRENTCONFIGNAME == $configname}
-	[ {$_TR.activate} ]
-	[ {$_TR.delete} ]
+	[ {'Activate'|gettext} ]
+	[ {'Delete'|gettext} ]
 {else}
 	{if $canactivate == 1}
-	[ <a class="mngmntlink administration_mngmntlink" href="{link action=config_activate configname=$configname}">{$_TR.activate}</a> ]
+	[ <a class="mngmntlink administration_mngmntlink" href="{link action=config_activate configname=$configname}">{'Activate'|gettext}</a> ]
 	{elseif $configname != ""}
-		<i>{$_TR.cannot_activate}</i><br />
+		<i>{'(You cannot activate this profile - the active configuration file is unwritable.)'|gettext}</i><br />
 	{/if}
 	{if $candelete == 1}
-		[ <a class="mngmntlink administration_mngmntlink" href="{link action=config_delete configname=$configname}">{$_TR.delete}</a> ]
+		[ <a class="mngmntlink administration_mngmntlink" href="{link action=config_delete configname=$configname}">{'Delete'|gettext}</a> ]
 	{elseif $configname != ""}
-		<i>{$_TR.cannot_delete}</i><br />
+		<i>{'(You cannot delete this profile - the profile configuration file is unwritable.)'|gettext}</i><br />
 	{/if}
 {/if}
 {if $canedit == 1}
-	[ <a class="mngmntlink administration_mngmntlink" href="{link action=config_configuresite configname=$configname}">{$_TR.edit}</a> ]
+	[ <a class="mngmntlink administration_mngmntlink" href="{link action=config_configuresite configname=$configname}">{'Edit'|gettext}</a> ]
 {elseif $configname != ""}
-	<i>{$_TR.cannot_edit}</i>
+	<i>{'(You cannot edit or delete this profile - the profile\'s configuration file is unwritable.)'|gettext}</i>
 {/if}
 <table cellpadding="4" cellspacing="0" border="0" width="">
 {foreach from=$configuration key=category item=opts}

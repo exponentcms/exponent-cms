@@ -14,7 +14,7 @@
  *
  *}
 <h1>Manage Bots</h1>
-<div class="form_header">{$_TR.form_header}</div><br /><br />
+<div class="form_header">{'Mange Bots'|gettext}</div><br /><br />
 <hr size="1" />
 <ul>
 	{foreach from=$bots item=bot}

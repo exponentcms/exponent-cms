@@ -196,7 +196,7 @@ class user extends expRecord {
 	    if (!$this->isLoggedIn()) return array();	    
 	    
 	    // For administrators, we synthesize group memberships - they effectively belong to all groups.  
-	    if ($this->isAdmin()) return exponent_users_getAllGroups(true, true);
+	    if ($this->isAdmin()) return user::getAllGroups(true, true);
         
         $groups = array(); // Holding array for the groups.
 	    foreach ($db->selectObjects('groupmembership','member_id='.$this->id) as $m) {
@@ -232,6 +232,104 @@ class user extends expRecord {
     {
         return is_numeric(expUtil::right($this->username,10)) ? true : false;
     }
+
+	public static function getEmailById($id) {
+		global $db;
+		return $db->selectValue('user','email','id='.$id);
+	}
+
+	/** exdoc
+	 * Gets a list of all user accounts in the system.  By giving different
+	 * combinations of the two boolean arguments. threee different lists
+	 * of users can be returned.  Returns alist of users, according to the two parameters passed in.
+	 *
+	 * @param bool|int $allow_admin Whether or not to include admin accounts in the returned list.
+	 * @param bool|int $allow_normal Whether or not to include normal accounts in the returned list.
+	 * @return array
+	 */
+	public static function getAllUsers($allow_admin=1,$allow_normal=1) {
+		global $db;
+		if ($allow_admin && $allow_normal) return $db->selectObjects('user');
+		else if ($allow_admin) return $db->selectObjects('user','is_admin=1 OR is_acting_admin = 1');
+		else if ($allow_normal) return $db->selectObjects('user','is_admin=0 AND is_acting_admin = 0');
+		else return array();
+	}
+
+	/** exdoc
+	 * This function pulls a user object from the subsystem's storage mechanism,
+	 * according to the username.  For the default implementation, this is equivalent
+	 * to a $db->selectObject() call, but it may not be the same for other implementations.
+	 * Returns a basic user object, and null if no user was found.
+	 *
+	 * This function does NOT perform user caching like the exponent_users_getUserById
+	 * function does.  Multiple calls to retrieve the same user result in multiple calls
+	 * to the database.
+	 *
+	 * @param string $name The username of the user account to retrieve.
+	 * @return array
+	 * @node Subsystems:Users
+	 */
+	public static function getUserByName($name) {
+		global $db;
+		$tmpu = $db->selectObject('user',"username='$name'");
+		if ($tmpu && $tmpu->is_admin == 1) {
+			// User is an admin.  Update is_acting_admin, just in case.
+			// This can be removed as soon as 0.95 is deprecated.
+			$tmpu->is_acting_admin = 1;
+		}
+		return $tmpu;
+	}
+
+	/** exdoc
+	 * This function pulls a group object from the subsystem's storage mechanism,
+	 * according to the group name.  For the default implementation, this is equivalent
+	 * to a $db->selectObject() call, but it may not be the same for other implementations.
+	 * Returns a group object, and null if no group was found.
+	 *
+	 * This function does NOT perform group caching like the exponent_users_getUserById
+	 * function does.  Multiple calls to retrieve the same group result in multiple calls
+	 * to the database.
+	 *
+	 * @param integer $name The name of the group account to retrieve.
+	 * @return array
+	 * @node Subsystems:Users
+	 */
+	public static function getGroupByName($name) {
+		global $db;
+		return $db->selectObject('group',"name='$name'");
+	}
+
+	/** exdoc
+	 * Gets a list of all group in the system.  By giving different
+	 * combinations of the two boolean arguments. threee different lists
+	 * of groups can be returned.  Returns a list of groups, according to
+	 *  the two parameters passed in.
+	 *
+	 * @param bool $allow_exclusive Whether or not to include exclusive groups in the returned list.
+	 * @param bool $allow_inclusive Whether or not to include inclusive groups in the returned list.
+	 * @return array
+	 * @node Subsystems:Users
+	 */
+	public static function getAllGroups($allow_exclusive=1,$allow_inclusive=1) {
+		global $db;
+		if ($allow_exclusive && $allow_inclusive) {
+			// For both, just do a straight selectObjects call, with no WHERE criteria.
+			return $db->selectObjects('group');
+		} else if ($allow_exclusive) {
+			// At this point, we know that $allow_inclusive was passed as false
+			// So, we need to retrieve groups that are not inclusive.
+			return $db->selectObjects('group','inclusive = 0');
+		} else if ($allow_inclusive) {
+			// At this point, we know that $allow_exclusive was passed as false
+			// So, we need to retrieve groups that are inclusive.
+			return $db->selectObjects('group','inclusive = 1');
+		} else {
+			// Both arguments were passed as false.  This is nonsensical, but why not
+			// let the programmer shoot themselves in the foot.  Return an empty array.
+			return array();
+		}
+	}
+
 }
 
 ?>

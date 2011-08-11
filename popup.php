@@ -27,7 +27,6 @@ ob_start();
 require_once('exponent.php');
 
 // Initialize the theme subsystem 1.0 compatibility layer
-//if (!defined('SYS_THEME')) require_once(BASE.'framework/core/subsystems-1/theme.php');
 require_once(BASE.'framework/core/subsystems-1/theme.php');
 
 $loc = exponent_core_makeLocation(

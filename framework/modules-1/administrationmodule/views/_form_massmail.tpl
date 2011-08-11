@@ -13,6 +13,6 @@
  * GPL: http://www.gnu.org/licenses/gpl.txt
  *
  *}
-<div class="form_title">{$_TR.form_title}</div>
-<div class="form_header">{$_TR.form_header}</div>
+<div class="form_title">{'Email All Users'|gettext}</div>
+<div class="form_header">{'Use this form to email all users.'|gettext}</div>
 {$form_html}

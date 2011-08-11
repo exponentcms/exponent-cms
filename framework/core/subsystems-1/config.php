@@ -40,9 +40,7 @@ function exponent_config_parse($configname,$site_root = null) {
 // Last argument added in 0.96, for shared core.  Default it to the old hard-coded value
 	if ($site_root == null) $site_root = BASE;
 	
-//	if (!defined('SYS_FORMS')) require_once(BASE.'framework/core/subsystems-1/forms.php');
 	require_once(BASE.'framework/core/subsystems-1/forms.php');
-//	exponent_forms_initialize();
 	// We don't actually use the forms subsystem, but the .structure.php files do.
 	
 	if ($configname == '') $file = $site_root.'conf/config.php';
@@ -119,22 +117,17 @@ function exponent_config_parseFile($file) {
  */
 function exponent_config_configurationForm($configname,$database=false) {
 	// $configname = "" for active config
-	
-	$this_i18n = exponent_lang_loadFile('subsystems/config.php');
-	
 	if (is_readable(BASE."conf/extensions")) {
 		global $user;
 		$options = exponent_config_parse($configname);
 		
-//		if (!defined('SYS_FORMS')) require_once(BASE.'framework/core/subsystems-1/forms.php');
 		require_once(BASE.'framework/core/subsystems-1/forms.php');
-//		exponent_forms_initialize();
-		
+
 		$form = new form();
 	
-		$form->register(null,'',new htmlcontrol('<a name="config_top"></a><h3>'.$this_i18n['form_title'].'</h3>'));
-		$form->register('configname',$this_i18n['profile'],new textcontrol($configname));
-		$form->register('activate',$this_i18n['activate'],new checkboxcontrol((!defined('CURRENTCONFIGNAME') || CURRENTCONFIGNAME==$configname)));
+		$form->register(null,'',new htmlcontrol('<a name="config_top"></a><h3>'.gt('Configuration Options').'</h3>'));
+		$form->register('configname',gt('Profile Name'),new textcontrol($configname));
+		$form->register('activate',gt('Activate'),new checkboxcontrol((!defined('CURRENTCONFIGNAME') || CURRENTCONFIGNAME==$configname)));
 	
 		$sections = array();
 	
@@ -161,14 +154,12 @@ function exponent_config_configurationForm($configname,$database=false) {
 							$form->register("c[$directive]",'<b>'.$info['title'].'</b>',$info['control'],$info['description']);
 						}
 					}
-					//$form->register(null,'',new buttongroupcontrol($this_i18n['save'],'',$this_i18n['cancel']));
+					//$form->register(null,'',new buttongroupcontrol(gt('Save'),'',gt('Cancel')));
 				}
 			}
 		}
 		$form->registerAfter('activate',null,'',new htmlcontrol('<hr size="1" />'.implode('&nbsp;&nbsp;|&nbsp;&nbsp;',$sections)));
-		$form->register('submit','',new buttongroupcontrol($this_i18n['save'],'',$this_i18n['cancel']));
-		
-//		exponent_forms_cleanup();
+		$form->register('submit','',new buttongroupcontrol(gt('Save'),'',gt('Cancel')));
 		
 		return $form;
 	}
@@ -213,26 +204,26 @@ function exponent_config_change($var, $val) {
 
 function exponent_config_writeFile($str, $configname="") {
     // if ($configname != "") {
-    //                 // Wishing to save
-    //                 if ((file_exists(BASE."conf/profiles/$configname.php") && expUtil::isReallyWritable(BASE."conf/profiles/$configname.php")) ||
-    //                         expUtil::isReallyWritable($BASE."conf/profiles")) {
-    // 
-    //                         $fh = fopen(BASE."conf/profiles/$configname.php","w");
-    //                         fwrite($fh,$str);
-    //                         fclose($fh);
-    //                 } else {
-    //                         echo $i18n['profile_not_writable'].'<br />';
-    //                 }
-    //         }
+//                 // Wishing to save
+//                 if ((file_exists(BASE."conf/profiles/$configname.php") && expUtil::isReallyWritable(BASE."conf/profiles/$configname.php")) ||
+//                         expUtil::isReallyWritable($BASE."conf/profiles")) {
+//
+//                         $fh = fopen(BASE."conf/profiles/$configname.php","w");
+//                          fwrite($fh,$str);
+//                         fclose($fh);
+//                 } else {
+//                         echo gt('Unable to write profile configuration').'<br />';
+//                 }
+//         }
 
         //if (isset($values['activate']) || $configname == "") {
                 if ((file_exists(BASE."conf/config.php") && expUtil::isReallyWritable(BASE."conf/config.php")) || expUtil::isReallyWritable(BASE."conf")) {
-                        $fh = fopen(BASE."conf/config.php","w");
-                        fwrite($fh,$str);
-                        /*fwrite($fh,"\n<?php\ndefine(\"CURRENTCONFIGNAME\",\"$configname\");\n?>\n");*/
-                        fclose($fh);
+					$fh = fopen(BASE."conf/config.php","w");
+					fwrite($fh,$str);
+					/*fwrite($fh,"\n<?php\ndefine(\"CURRENTCONFIGNAME\",\"$configname\");\n?>\n");*/
+					fclose($fh);
                 } else {
-                        echo $i18n['active_not_writable'].'<br />';
+					echo gt('Unable to write active configuration').'<br />';
                 }
         //}
 }
@@ -249,8 +240,6 @@ function exponent_config_saveConfiguration($values,$site_root=null) {
 	if ($site_root == null) {
 		$site_root = BASE;
 	}
-
-	$i18n = exponent_lang_loadFile('subsystems/config.php');
 
 	$configname = str_replace(" ","_",$values['configname']);
 
@@ -315,7 +304,7 @@ function exponent_config_saveConfiguration($values,$site_root=null) {
     //      fwrite($fh,$str);
     //      fclose($fh);
     //  } else {
-    //      echo $i18n['profile_not_writable'].'<br />';
+    //      echo gt('Unable to write profile configuration').'<br />';
     //  }
     // }
 	
@@ -332,7 +321,7 @@ function exponent_config_saveConfiguration($values,$site_root=null) {
 			/*fwrite($fh,"\n<?php\ndefine(\"CURRENTCONFIGNAME\",\"$configname\");\n?>\n");*/
 			fclose($fh);
 		} else {
-			echo $i18n['active_not_writable'].'<br />';
+			echo gt('Unable to write profile configuration').'<br />';
 		}
 	}
 }
@@ -347,9 +336,6 @@ function exponent_config_saveConfiguration($values,$site_root=null) {
  * @node Subsystems:Config
  */
 function exponent_config_outputConfigurationTemplate($template,$configname) {
-	// $i18n variable gets overwritten by included files.
-	$this_i18n = exponent_lang_loadFile('subsystems/config.php');
-	
 	if (is_readable(BASE."conf/extensions")) {
 		$categorized = array();
 		$options = exponent_config_parse($configname);
@@ -361,7 +347,7 @@ function exponent_config_outputConfigurationTemplate($template,$configname) {
 				$categorized[$arr[0]] = array();
 				foreach ($arr[1] as $directive=>$info) {
 					if (is_a($info["control"],"passwordcontrol")) {
-						$info["value"] = '&lt;'.$this_i18n['hidden'].'&gt;';
+						$info["value"] = '&lt;'.gt('hidden').'&gt;';
 					} else if (is_a($info["control"],"checkboxcontrol")) {
 						$info["value"] = (isset($options[$directive]) ? ($options[$directive]?"yes":"no") : "no");
 					} else if (is_a($info["control"],"dropdowncontrol") && isset($options[$directive])) {

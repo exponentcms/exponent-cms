@@ -20,9 +20,9 @@
 			<div class="related-actions">
 				{help text="Get Help Managing Group Permissions" module="manage-group-permissions"}
 			</div>
-			<h1>{$_TR.form_title}</h1>
+			<h1>{'Assign Group Permissions'|gettext}</h1>
 		</div>
-        <p>{$_TR.form_header}</p>
+        <p>{'This form allows you to assign permissions to an entire group of users.'|gettext}</p>
     </div>
 	{capture assign="file"}{$smarty.const.BASE}framework/modules-1/common/views/_permissions.tpl{/capture}
 	{include file=$file}

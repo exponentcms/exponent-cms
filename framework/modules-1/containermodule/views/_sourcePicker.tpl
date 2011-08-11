@@ -21,7 +21,7 @@
 		<a style="text-align:center;display:block;text-decoration:none;font-weight:bold;text-transform:uppercase;font-size:11px;
 					text-shadow: 0px -1px 0px #374683;padding:1px 15px 0 5px;top:0px; left:5px;line-height:15px;color:#fff;"
 					href="{$dest}&ss={$container->info.source}&sm={$container->info.class}">
-			* {$container->info.module} - {$_TR.use_this_content} *
+			* {$container->info.module} - {'Use this Module\'s Content'|gettext} *
 		</a>
 	</div>	
 	{$container->output}

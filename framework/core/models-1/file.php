@@ -20,11 +20,6 @@
 
 class file {
 	static function update($name,$dest,$object,$destname = null,$force=false) {
-		$i18n = exponent_lang_loadFile('datatypes/file.php');
-		
-//		if (!defined('SYS_FILES')) include_once(BASE.'framework/core/subsystems-1/files.php');
-//		include_once(BASE.'framework/core/subsystems-1/files.php');
-
 		// Get the filename, if it was passed in the update() call.  Otherwise, fallback
 		if ($destname == null) {
 			$object->filename = $_FILES[$name]['name'];
@@ -32,7 +27,7 @@ class file {
 			$object->filename = $destname;
 		}
 		// General error message.  This will be made more explicit later on.
-		$err = sprintf($i18n['cant_upload'],$object->filename) .'<br />';
+		$err = sprintf(gt('Unable to upload "%s" to the server'),$object->filename) .'<br />';
 		
 		switch($_FILES[$name]['error']) {
 			case UPLOAD_ERR_OK:
@@ -42,13 +37,13 @@ class file {
 			case UPLOAD_ERR_FORM_SIZE:
 				// This is a tricky one to catch.  If the file is too large for POST, then the script won't even run.
 				// But if its between post_max_size and upload_file_max_size, we will get here.
-				return $err.$i18n['file_too_large'];
+				return $err.gt('The file you uploaded exceeded the size limits for the server.');
 			case UPLOAD_ERR_PARTIAL:
-				return $err.$i18n['partial_file'];
+				return $err.gt('The file you uploaded was only partially uploaded.');
 			case UPLOAD_ERR_NO_FILE:
-				return $err.$i18n['no_file_uploaded'];
+				return $err.gt('No file was uploaded.');
 			default:
-				return $err.$i18n['unknown'];
+				return $err.gt('An unknown error has occurred.');
 				break;
 		}
 		
@@ -57,7 +52,7 @@ class file {
 	
 			
 		if (file_exists(BASE.$dest.'/'.$object->filename) && $force == false) {
-			return $err.$i18n['file_exists'];
+			return $err.gt('The file already exists on the server');
 		}
 	
 		//Check to see if the directory exists.  If not, create the directory structure.
@@ -69,7 +64,7 @@ class file {
 		expFile::moveUploadedFile($_FILES[$name]['tmp_name'],BASE.$dest.'/'.$object->filename);
 		
 		if (!file_exists(BASE.$dest.'/'.$object->filename)) {
-			return $err.$i18n['cant_move'];
+			return $err.gt('The destination file could not be created.');
 		}
 		
 		// At this point, we are good to go.

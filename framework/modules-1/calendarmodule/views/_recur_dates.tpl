@@ -39,9 +39,9 @@
 			}
 			</script>
 		{/literal}
-			<a class="mngmntlink calendar_mngmntlink" href="#" onclick="recur_selectUnselectAll(true); return false;">{$_TR.select_all}</a>
+			<a class="mngmntlink calendar_mngmntlink" href="#" onclick="recur_selectUnselectAll(true); return false;">{'Select All'|gettext}</a>
 			&nbsp;/&nbsp;
-			<a class="mngmntlink calendar_mngmntlink" href="#" onclick="recur_selectUnselectAll(false); return false;">{$_TR.deselect_all}</a>
+			<a class="mngmntlink calendar_mngmntlink" href="#" onclick="recur_selectUnselectAll(false); return false;">{'Unselect All'|gettext}</a>
 		</td>
 	</tr>
 </div>

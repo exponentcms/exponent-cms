@@ -60,5 +60,6 @@
         {control type="checkbox" name="wipe_content" label="Erase all current content before import?" value=1 checked=false}
         {control type="buttongroup" submit="Migrate Content" cancel="Cancel"}
     {/form}
-	<div class="admin">This is the Final Migration Step</div>
+	{br}<hr>{br}
+	<div class="admin"><b>This is the Final Migration Step</b></div>
 </div>

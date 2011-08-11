@@ -69,5 +69,6 @@
         {control type="checkbox" name="wipe_pages" label="Erase all current pages and then try again?" value=1 checked=false}
         {control type="buttongroup" submit="Migrate Pages" cancel="Cancel"}
     {/form}
-	<a class="admin" href="{link module=migration action=manage_files}">Next Step -> Migrate Files</a>
+	{br}<hr>{br}
+	<a class="admin" href="{link module=migration action=manage_files}"><b>Next Step -> Migrate Files</b></a>
 </div>

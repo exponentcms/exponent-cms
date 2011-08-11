@@ -20,7 +20,6 @@
 
 if (!defined('EXPONENT')) exit('');
 
-//if (!defined('SYS_USERS')) require_once(BASE.'framework/core/subsystems-1/users.php');
 require_once(BASE.'framework/core/subsystems-1/users.php');
 exponent_users_logout();
 exponent_permissions_clear();

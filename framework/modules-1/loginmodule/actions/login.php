@@ -20,14 +20,11 @@
 
 if (!defined('EXPONENT')) exit('');
 
-$i18n = exponent_lang_loadFile('modules/loginmodule/actions/login.php');
-
-//if (!defined('SYS_USERS')) require_once(BASE.'framework/core/subsystems-1/users.php');
 require_once(BASE.'framework/core/subsystems-1/users.php');
 $user = exponent_users_login($_POST['username'],$_POST['password']);
 
 if (!isset($_SESSION[SYS_SESSION_KEY]['user'])) {
-	flash('error', $i18n['login_error']);	
+	flash('error', gt('Invalid Username / Password'));
 	if (expSession::is_set('redirecturl_error')) {
 		$url = expSession::get('redirecturl_error');
 		expSession::un_set('redirecturl_error');

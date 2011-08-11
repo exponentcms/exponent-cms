@@ -42,7 +42,12 @@ if (!defined('EXPONENT')) exit('');
 			BASE.'framework/modules/ecommerce/products/controllers',  //FIXME does NOT exist
 			BASE.'framework/modules/ecommerce/products/datatypes',  // models
 	);
-	
+
+	$auto_dirs2 = array(
+			BASE.'themes/'.DISPLAY_THEME_REAL.'/modules',
+			BASE.'framework/modules'
+	);
+
 	/* exdoc
 	 * This function overrides the default PHP5 autoloader,
 	 * and instead looks at the $auto_dirs global to look
@@ -53,9 +58,8 @@ if (!defined('EXPONENT')) exit('');
 	 * @node Subsystems:Autoloader
 	 */
 	function __autoload($class) {
-//		global $auto_dirs1, $auto_dirs2, $controllers;
-		global $auto_dirs;
-
+		global $auto_dirs, $auto_dirs2;
+//
 		// check the directories for class files.
 		foreach ($auto_dirs as $auto_dir) {
 			if (is_readable($auto_dir.'/'.$class.'.php')) {
@@ -63,6 +67,51 @@ if (!defined('EXPONENT')) exit('');
 				return;
 			}
 		}
+
+//		// recursive function used for (auto?)loading 2.0 modules controllers & models instead of using initializeControllers()
+//		foreach ($auto_dirs2 as $dir) {
+//			if (is_readable($dir)) {
+//				$dh = opendir($dir);
+//				while (($file = readdir($dh)) !== false) {
+//					if (is_dir($dir.'/'.$file) && ($file != '..' && $file != '.')) {
+//						// load controllers
+//						$dirpath = $dir.'/'.$file.'/controllers';
+//						if (file_exists($dirpath)) {
+//							$controller_dir = opendir($dirpath);
+//							while (($ctl_file = readdir($controller_dir)) !== false) {
+//								if (substr($ctl_file,0,-4) == $class && substr($ctl_file,-4,4) == ".php") {
+//									include_once($dirpath.'/'.$ctl_file);
+//									return;
+//								}
+//							}
+//						}
+//						// load models
+//						$dirpath = $dir.'/'.$file.'/models';
+//						if (file_exists($dirpath)) {
+//							$controller_dir = opendir($dirpath);
+//							while (($ctl_file = readdir($controller_dir)) !== false) {
+//								if (substr($ctl_file,0,-4) == $class && substr($ctl_file,-4,4) == ".php") {
+//									include_once($dirpath.'/'.$ctl_file);
+//									return;
+//								}
+//							}
+//						}
+//					}
+//				}
+//			}
+//		}
+//
+//		// autoload the old school modules instead of using exponent_modules_initialize()
+//		if (is_readable(BASE.'framework/modules-1')) {
+//			$dh = opendir(BASE.'framework/modules-1');
+//			while (($file = readdir($dh)) !== false) {
+//				if ($file == $class && is_dir(BASE.'framework/modules-1/'.$file) && is_readable(BASE.'framework/modules-1/'.$file.'/class.php')) {
+//					include_once(BASE.'framework/modules-1/'.$file.'/class.php');
+//					return;
+//				}
+//			}
+//		}
+
 	}
 
 ?>

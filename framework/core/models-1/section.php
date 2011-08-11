@@ -27,8 +27,6 @@ class section {
 	 * meta field (hidden input) or a rank dropdown.
 	 */
 	function _commonForm(&$object) {
-		$i18n = exponent_lang_loadFile('datatypes/section.php');
-		
 		// Create a new blank form.
 		$form = new form();
 		
@@ -61,8 +59,8 @@ class section {
 		}
 		
 		// The name of the section, as it will be linked in the section hierarchy.
-		$form->register('name',$i18n['name'],new textcontrol($object->name));
-		$form->register('sef_name',$i18n['sef_name'].'<p class="sefinfo">If you don\'t put in an SEF Name one will be generated based on the title provided. SEF names can only contain alpha-numeric characters, hyphens and underscores.</p>',new textcontrol($object->sef_name));
+		$form->register('name',gt('name'),new textcontrol($object->name));
+		$form->register('sef_name',gt('SEF Name').'<p class="sefinfo">If you don\'t put in an SEF Name one will be generated based on the title provided. SEF names can only contain alpha-numeric characters, hyphens and underscores.</p>',new textcontrol($object->sef_name));
 		
 		if (!isset($object->id)) {
 			// This is a new section, so we can add the positional dropdown
@@ -74,18 +72,16 @@ class section {
 			if (count($sections) && $object->parent >= 0) {
 				// Initialize the sorting subsystem so that we can order the sections
 				// by rank, ascending, and get the proper ordering.
-//				if (!defined('SYS_SORTING')) require_once(BASE.'framework/core/subsystems-1/sorting.php');
-//				require_once(BASE.'framework/core/subsystems-1/sorting.php');
 //				usort($sections,'exponent_sorting_byRankAscending');
 				$sections = expSorter::sort(array('array'=>$sections,'sortby'=>'rank', 'order'=>'ASC'));
 
 				// Generate the Position dropdown array.
-				$positions = array($i18n['position_top']);
+				$positions = array(gt('At the Top'));
 				foreach ($sections as $section) {
-					$positions[] = sprintf($i18n['position_after'],$section->name);
+					$positions[] = sprintf(gt('After "%s"'),$section->name);
 				}
     			$form->meta('rank',count($positions)-1);
-				//$form->register('rank',$i18n['rank'],new dropdowncontrol(count($positions)-1,$positions));
+				//$form->register('rank',gt('Rank'),new dropdowncontrol(count($positions)-1,$positions));
 			} else {
 				// If there are no siblings, the new section gets the first
 				// slot, with a rank of 0.
@@ -96,9 +92,9 @@ class section {
 			$form->meta('parent',$object->parent);
 		} else if ($object->parent >= 0) {
 			// Allow them to change parents, but not if the section is outside of the hiearchy (parent > 0)
-			$form->register('parent',$i18n['parent'],new dropdowncontrol($object->parent,navigationmodule::levelDropdownControlArray(0,0,array($object->id),1)));
+			$form->register('parent',gt('Parent Page'),new dropdowncontrol($object->parent,navigationmodule::levelDropdownControlArray(0,0,array($object->id),1)));
 		}
-		$form->register('new_window',$i18n['new_window'],new checkboxcontrol($object->new_window,false));
+		$form->register('new_window',gt('Open in New Window'),new checkboxcontrol($object->new_window,false));
 		
 		// Return the form to the calling scope, which should always be a
 		// member method of this class.
@@ -106,13 +102,8 @@ class section {
 	}
 	
 	static function moveStandaloneForm($object = null) {
-		$i18n = exponent_lang_loadFile('datatypes/section.php');
-		
 		// Initialize the forms subsystem for use.
-//		if (!defined('SYS_FORMS')) require_once(BASE.'framework/core/subsystems-1/forms.php');
 		require_once(BASE.'framework/core/subsystems-1/forms.php');
-//		exponent_forms_initialize();
-		
 		$form = section::_commonForm($object);
 		// the name and sef_name are already set in the stand-alone page
 		$form->unregister('name');
@@ -124,10 +115,8 @@ class section {
 			$standalones[$s->id] = $s->name;
 		}
 
-//		if (!defined('SYS_SORTING')) include_once(BASE.'framework/core/subsystems-1/sorting.php');
-//		include_once(BASE.'framework/core/subsystems-1/sorting.php');
-		$form->register('page',$i18n['standalone_page'],new dropdowncontrol(0,$standalones));
-		$form->register('submit','',new buttongroupcontrol($i18n['save'],'',$i18n['cancel']));
+		$form->register('page',gt('Standalone Page'),new dropdowncontrol(0,$standalones));
+		$form->register('submit','',new buttongroupcontrol(gt('Save'),'',gt('Cancel')));
 		return $form;
 	}
 
@@ -143,24 +132,20 @@ class section {
 	 *    edit an existing one.
 	 */
 	static function form($object = null) {
-		$i18n = exponent_lang_loadFile('datatypes/section.php');
-		
 		// Initialize the forms subsystem for use.
-//		if (!defined('SYS_FORMS')) require_once(BASE.'framework/core/subsystems-1/forms.php');
 		require_once(BASE.'framework/core/subsystems-1/forms.php');
-//		exponent_forms_initialize();
-		
+
 		// Grab the basic form that all page types share
 		// This has the name and positional dropdowns registered.
 		// This call also initializes the section object, if it is not an existing section.
 		$form = section::_commonForm($object);
 		
 		// Register the 'Active?' and 'Public?' checkboxes.
-		$form->register('active',$i18n['active'],new checkboxcontrol($object->active));
-		$form->register('public',$i18n['public'],new checkboxcontrol($object->public));
+		$form->register('active',gt('Active'),new checkboxcontrol($object->active));
+		$form->register('public',gt('Public'),new checkboxcontrol($object->public));
 
 		// Register the sub themes dropdown.
-		$form->register('subtheme',$i18n['subtheme'],new dropdowncontrol($object->subtheme,expTheme::getSubThemes()));
+		$form->register('subtheme',gt('Theme Variation'),new dropdowncontrol($object->subtheme,expTheme::getSubThemes()));
 
 		// Register the 'Secured?' checkboxes for SSL pages
 		if(ENABLE_SSL) {
@@ -170,12 +155,12 @@ class section {
 		$form->register(null,'',new htmlcontrol('<h2>SEO Information</h2>'));
 
 		// Register the Page Meta Data controls.
-		$form->register('page_title',$i18n['page_title'],new textcontrol($object->page_title));
-		$form->register('keywords',$i18n['keywords'],new texteditorcontrol($object->keywords,5));
-		$form->register('description',$i18n['description'],new texteditorcontrol($object->description,5));
+		$form->register('page_title',gt('Page Title'),new textcontrol($object->page_title));
+		$form->register('keywords',gt('Keywords'),new texteditorcontrol($object->keywords,5));
+		$form->register('description',gt('Page Description'),new texteditorcontrol($object->description,5));
 		
 		// Add a Submit / Cancel button.
-		$form->register('submit','',new buttongroupcontrol($i18n['save'],'',$i18n['cancel']));
+		$form->register('submit','',new buttongroupcontrol(gt('Save'),'',gt('Cancel')));
 		
 		// Return the form to the calling scope (usually an action in the navigation module).
 		return $form;
@@ -194,13 +179,9 @@ class section {
 	 *    edit an existing one.
 	 */
 	static function externalAliasForm($object = null) {
-		$i18n = exponent_lang_loadFile('datatypes/section.php');
-		
 		// Initialize the forms subsystem for use.
-//		if (!defined('SYS_FORMS')) require_once(BASE.'framework/core/subsystems-1/forms.php');
 		require_once(BASE.'framework/core/subsystems-1/forms.php');
-//		exponent_forms_initialize();
-		
+
 		// Grab the basic form that all page types share
 		// This has the name and positional dropdowns registered.
 		// This call also initializes the section object, if it is not an existing section.
@@ -210,13 +191,13 @@ class section {
 		
 		if (!isset($object->external_link)) $object->external_link = '';
 		// Add a textbox the user can enter the external website's URL into.
-		$form->register('external_link',$i18n['external_link'],new textcontrol($object->external_link));
+		$form->register('external_link',gt('Page'),new textcontrol($object->external_link));
 		
 		// Add the'Public?' checkbox.  The 'Active?' checkbox is omitted, because it makes no sense.
-		$form->register('public',$i18n['public'],new checkboxcontrol($object->public));
+		$form->register('public',gt('Public'),new checkboxcontrol($object->public));
 		
 		// Add a Submit / Cancel button.
-		$form->register('submit','',new buttongroupcontrol($i18n['save'],'',$i18n['cancel']));
+		$form->register('submit','',new buttongroupcontrol(gt('Save'),'',gt('Cancel')));
 		
 		// Return the form to the calling scope (usually an action in the navigation module).
 		return $form;
@@ -235,13 +216,9 @@ class section {
 	 *    edit an existing one.
 	 */
 	static function internalAliasForm($object = null) {
-		$i18n = exponent_lang_loadFile('datatypes/section.php');
-		
 		// Initialize the forms subsystem for use.
-//		if (!defined('SYS_FORMS')) require_once(BASE.'framework/core/subsystems-1/forms.php');
 		require_once(BASE.'framework/core/subsystems-1/forms.php');
-//		exponent_forms_initialize();
-		
+
 		// Initialization
 		if (!isset($object->id)) {
 			$object->internal_id = 0;
@@ -255,13 +232,13 @@ class section {
 		$form->unregister('sef_name');
 		
 		// Add a dropdown to allow the user to choose an internal page.
-		$form->register('internal_id',$i18n['internal_link'],new dropdowncontrol($object->internal_id,navigationmodule::levelDropDownControlArray(0,0)));
+		$form->register('internal_id',gt('Page'),new dropdowncontrol($object->internal_id,navigationmodule::levelDropDownControlArray(0,0)));
 		
 		// Add the'Public?' checkbox.  The 'Active?' checkbox is omitted, because it makes no sense.
-		$form->register('public',$i18n['public'],new checkboxcontrol($object->public));
+		$form->register('public',gt('Public'),new checkboxcontrol($object->public));
 		
 		// Add a Submit / Cancel button.
-		$form->register('submit','',new buttongroupcontrol($i18n['save'],'',$i18n['cancel']));
+		$form->register('submit','',new buttongroupcontrol(gt('Save'),'',gt('Cancel')));
 		
 		// Return the form to the calling scope (usually an action in the navigation module).
 		return $form;
@@ -279,13 +256,9 @@ class section {
 	 *    edit an existing one.
 	 */
 	static function pagesetForm($object = null) {
-		$i18n = exponent_lang_loadFile('datatypes/section.php');
-		
 		// Initialize the forms subsystem for use.
-//		if (!defined('SYS_FORMS')) require_once(BASE.'framework/core/subsystems-1/forms.php');
 		require_once(BASE.'framework/core/subsystems-1/forms.php');
-//		exponent_forms_initialize();
-		
+
 		// Grab the basic form that all page types share
 		// This has the name and positional dropdowns registered.
 		// This call also initializes the section object, if it is not an existing section.
@@ -300,13 +273,13 @@ class section {
 			// Grab each pageset and store its name and id.  The id will be used when updating.
 			$pagesets[$pageset->id] = $pageset->name;
 		}
-		$form->register('pageset',$i18n['pageset'],new dropdowncontrol(0,$pagesets));
+		$form->register('pageset',gt('Pageset'),new dropdowncontrol(0,$pagesets));
 		
 		// Add the'Public?' checkbox.  The 'Active?' checkbox is omitted, because it makes no sense.
-		$form->register('public',$i18n['public'],new checkboxcontrol($object->public));
+		$form->register('public',gt('Public'),new checkboxcontrol($object->public));
 		
 		// Add a Submit / Cancel button.
-		$form->register('submit','',new buttongroupcontrol($i18n['save'],'',$i18n['cancel']));
+		$form->register('submit','',new buttongroupcontrol(gt('Save'),'',gt('Cancel')));
 		
 		// Return the form to the calling scope (usually an action in the navigation module).
 		return $form;

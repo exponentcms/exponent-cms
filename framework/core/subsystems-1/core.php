@@ -371,8 +371,7 @@ function exponent_core_maxUploadSizeMessage() {
 				$size_msg = $size . " bytes";
 			}
 	}
-	$i18n = exponent_lang_loadFile('subsystems/core.php');
-	return sprintf($i18n['max_upload'],$size_msg);
+	return sprintf(gt('The maximum size of uploaded files is %s.  Uploading files larger than that may result in erratic behavior.'),$size_msg);
 }
 
 /* exdoc

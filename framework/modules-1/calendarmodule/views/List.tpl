@@ -18,12 +18,12 @@
 {/css}
 
 <div class="module calendar list"> 
-	<a class="monthviewlink" href="{link _common=1 view=Default action=show_view time=$time}">{$_TR.calendar_view}</a>&nbsp;&nbsp;|&nbsp;&nbsp;<span class="listviewlink">{$_TR.list_view}</span><br />
-	<a href="#" onclick="window.open('popup.php?module=calendarmodule&src={$__loc->src}&view=Monthly List&template=printerfriendly&time={$time}','printer','title=no,scrollbars=no,width=800,height=600'); return false">{$_TR.printer_friendly}</a>
+	<a class="monthviewlink" href="{link _common=1 view=Default action=show_view time=$time}">{'Month View'|gettext}</a>&nbsp;&nbsp;|&nbsp;&nbsp;<span class="listviewlink">{'List View'|gettext}</span><br />
+	<a href="#" onclick="window.open('popup.php?module=calendarmodule&src={$__loc->src}&view=Monthly List&template=printerfriendly&time={$time}','printer','title=no,scrollbars=no,width=800,height=600'); return false">{'Printer-friendly'|gettext}</a>
 	{br}{br}
-	<a class="mngmntlink calendar_mngmntlink" href="{link action=show_view _common=1 view='Monthly List' time=$prev_timestamp}"><img class="mngmnt_icon" style="border:none;" src="{$smarty.const.ICON_RELATIVE}left.png" title="{$_TR.previous}" alt="{$_TR.previous}" /></a>
+	<a class="mngmntlink calendar_mngmntlink" href="{link action=show_view _common=1 view='Monthly List' time=$prev_timestamp}"><img class="mngmnt_icon" style="border:none;" src="{$smarty.const.ICON_RELATIVE}left.png" title="{'Prev'|gettext}" alt="{'Prev'|gettext}" /></a>
 	<b>{$time|format_date:"%B %Y"}</b>
-	<a class="mngmntlink calendar_mngmntlink" href="{link action=show_view _common=1 view='Monthly List' time=$next_timestamp}"><img class="mngmnt_icon" style="border:none;" src="{$smarty.const.ICON_RELATIVE}right.png" title="{$_TR.next}" alt="{$_TR.next}" /></a>
+	<a class="mngmntlink calendar_mngmntlink" href="{link action=show_view _common=1 view='Monthly List' time=$next_timestamp}"><img class="mngmnt_icon" style="border:none;" src="{$smarty.const.ICON_RELATIVE}right.png" title="{'Next'|gettext}" alt="{'next'|gettext}" /></a>
 	{br}{br}
 	{foreach from=$days item=items key=ts}
 		{if_elements array=$items}
@@ -57,7 +57,7 @@
 				{br}
 			{/foreach}
 			{if $none == 1}
-				<div class="paragraph"><strong>{$_TR.no_events}</strong></div>
+				<div class="paragraph"><strong>{'No Events'|gettext}</strong></div>
 			{/if}
 			{br}
 		{/if_elements}

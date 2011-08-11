@@ -17,12 +17,12 @@
 #
 ##################################################
 
-// GREP:HARDCODEDTEXT
-
-if (!defined('EXPONENT')) exit('');
-
-echo '<a class="mngmntlink workflow_mngmntlink" href="';
-echo expHistory::getLastNotEditable();
-echo '">Back</a> to approval manager.';
+return array(
+	'name'=>'English - US',
+	'charset'=>'UTF-8', // Used in the META.  Very important.
+	'author'=>'OIC Group, Inc.',
+	'locale'=>'en-us', // See RFC 1766 and ISO 639-2
+	'default_view'=>'Default' // For recursion in view resolution
+);
 
 ?>

@@ -13,6 +13,6 @@
  * GPL: http://www.gnu.org/licenses/gpl.txt
  *
  *}
-<div class="form_title">{if $is_edit}{$_TR.form_title_edit}{else}{$_TR.form_title_new}{/if}</div>
-<div class="form_header">{$_TR.form_header}</div>
+<div class="form_title">{if $is_edit}{'Edit Group Account'|gettext}{else}{'Create Group Account'|gettext}{/if}</div>
+<div class="form_header">{'If you check the "Default?" checkbox, user accounts created after this group is saved will be added to it.  This will not retro-actively add existing users to this group.'|gettext}</div>
 {$form_html}

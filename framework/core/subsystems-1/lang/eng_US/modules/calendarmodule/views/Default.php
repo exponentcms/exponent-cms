@@ -44,7 +44,7 @@ return array(
 	'sunday'=>'Sunday',
 	'monday'=>'Monday',
 	'tuesday'=>'Tuesday',
-	'wednesday'=>'Wednesday',
+	'wednesday'=>'Tuesday',
 	'thursday'=>'Thursday',
 	'friday'=>'Friday',
 	'saturday'=>'Saturday',

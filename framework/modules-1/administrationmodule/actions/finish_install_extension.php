@@ -30,8 +30,6 @@ if (exponent_permissions_check('extensions',exponent_core_makeLocation('administ
 		$template = new template('administrationmodule','_upload_finalSummary',$loc);
 		$template->assign('nofiles',1);
 	} else {
-//		if (!defined('SYS_FILES')) require_once(BASE.'framework/core/subsystems-1/files.php');
-//		require_once(BASE.'framework/core/subsystems-1/files.php');
 		$success = array();
 //		foreach (array_keys(expFile::listFlat(BASE."extensionuploads/$sessid",true,null,array(),BASE."extensionuploads/$sessid")) as $file) {
 		foreach (array_keys(expFile::listFlat(BASE."tmp/extensionuploads/$sessid",true,null,array(),BASE."tmp/extensionuploads/$sessid")) as $file) {

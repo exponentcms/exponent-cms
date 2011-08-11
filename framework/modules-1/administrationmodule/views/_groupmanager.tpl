@@ -15,10 +15,10 @@
  *}
 <div class="administrationmodule groupmanager">
 <div class="form_header">
-        <h1>{$_TR.form_title}</h1>
-        <p>{$_TR.form_header}</p>
+        <h1>{'Manage Group Accounts'|gettext}</h1>
+        <p>{'Groups are used to treat a set of users as a single entity, mostly for permission management.  This form allows you to determine which users belong to which groups, create new groups, modify existing groups, and remove groups.<br /><br />When a new user account is created, it will be automatically added to all groups with a Type of "Default"'|gettext}</p>
 	{if $perm_level == 2}
-		<a class="mngmntlink administration_mngmntlink" href="{link action=gmgr_editprofile id=0}">{$_TR.new_group}</a>
+		<a class="mngmntlink administration_mngmntlink" href="{link action=gmgr_editprofile id=0}">{'New Group Account'|gettext}</a>
 	{/if}
 </div>
 
@@ -36,7 +36,7 @@
         {foreach from=$groups item=group}
                 <tr>
                 <td>{$group->name}</td>
-                <td>{if $group->inclusive}<b>{$_TR.default}</b>{else}Normal{/if}</td>
+                <td>{if $group->inclusive}<b>{'Default'|gettext}</b>{else}Normal{/if}</td>
                 <td>
                         {if $perm_level == 2}
                                 {icon class=edit action=gmgr_editprofile record=$group title="Edit Group `$group->name`"}

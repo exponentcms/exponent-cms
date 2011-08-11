@@ -22,14 +22,12 @@ if (!defined('EXPONENT')) exit('');
 $ctl = new checkboxcontrol(false,true);
 $ctl->disabled = 0;
 
-$i18n = exponent_lang_loadFile('conf/extensions/search.structure.php');
-
 return array(
-    $i18n['title'],
+    gt('Track Search Queries'),
     array(
         'SAVE_SEARCH_QUERIES'=>array(
-            'title'=>$i18n['save_search_queries'],
-            'description'=>$i18n['save_search_queries_desc'],
+            'title'=>gt('Save Search Queries'),
+            'description'=>gt('It can be advantageous to know what your users are looking for. Take note that there is no user interface to see this data yet, you will need to query the database directly to see what your users are searching for.'),
             'control'=>$ctl
         )
     )

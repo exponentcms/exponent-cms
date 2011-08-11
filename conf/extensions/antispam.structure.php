@@ -33,39 +33,37 @@ $as_themes = array(
 	//"custom"=>'Custom' --> THIS MAY BE COOL TO ADD LATER...
 );
 
-$i18n = exponent_lang_loadFile('conf/extensions/antispam.structure.php');
-
 return array(
-	$i18n['title'],
+	gt('Anti-Spam Measures'),
 	array(
 		'SITE_USE_ANTI_SPAM'=>array(
-			'title'=>$i18n['use_captcha'],
-			'description'=>$i18n['use_captcha_desc'],
+			'title'=>gt('Use CAPTCHA Test?'),
+			'description'=>gt('A CAPTCHA (Computer Automated Public Turing Test to Tell Computers and Humans Apart) is a means to prevent massive account registration.  When registering a new user account, the visitor will be required to enter a series of letters and numbers appearing in an image.  This prevents scripted bots from registering a large quantity of accounts.'),
 			'control'=>new checkboxcontrol()
 		),
 		'ANTI_SPAM_USERS_SKIP'=>array(
-			'title'=>$i18n['antispam_users_skip'],
-			'description'=>$i18n['antispam_users_skip_desc'],
+			'title'=>gt('Skip using Anti-Spam measures for Logged-In Users?'),
+			'description'=>gt('If a user is logged-in, do not display anti-spam control.<br />'),
 			'control'=>new checkboxcontrol()
 		),
 		'ANTI_SPAM_CONTROL'=>array(
-			'title'=>$i18n['antispam_control'],
-			'description'=>$i18n['antispam_control_desc'],
+			'title'=>gt('Choose an Anti-Spam Control'),
+			'description'=>gt('Spam on forms, like comments and contact forms can be a big issue for admins. If you would like to try to combat spam on your site, choose an anti-spam control to use.<br />'),
 			'control'=>new dropdowncontrol('',$as_types)
 		),
 		'RECAPTCHA_THEME'=>array(
-			'title'=>$i18n['recaptcha_theme'],
-			'description'=>$i18n['recaptcha_theme'],
+			'title'=>gt('reCAPTCHA Theme.'),
+			'description'=>gt('reCAPTCHA Theme.'),
 			'control'=>new dropdowncontrol('',$as_themes)
 		),
 		'RECAPTCHA_PUB_KEY'=>array(
-			'title'=>$i18n['recaptcha_pub_key'],
-			'description'=>$i18n['recaptcha_pub_key_desc'],
+			'title'=>gt('reCAPTCHA Public Key.'),
+			'description'=>gt('If you are using reCAPTCHA please enter the public key here.'),
 			'control'=>new textcontrol()
 		),
 		'RECAPTCHA_PRIVATE_KEY'=>array(
-			'title'=>$i18n['recaptcha_private_key'],
-			'description'=>$i18n['recaptcha_private_key_desc'],
+			'title'=>gt('reCAPTCHA Private Key.'),
+			'description'=>gt('If you are using reCAPTCHA please enter the private key here.'),
 			'control'=>new textcontrol()
 		),
 		
@@ -74,7 +72,8 @@ return array(
 
 $info = gd_info();
 if (!EXPONENT_HAS_GD) {
-	$stuff[1]['SITE_USE_ANTI_SPAM']['description'] = $i18n['use_captcha_desc'].'<br /><br />'.$i18n['no_gd_support'];
+	$stuff[1]['SITE_USE_ANTI_SPAM']['description'] = gt('A CAPTCHA (Computer Automated Public Turing Test to Tell Computers and Humans Apart) is a means to prevent massive account registration.  When registering a new user account, the visitor will be required to enter a series of letters and numbers appearing in an image.  This prevents scripted bots from registering a large quantity of accounts.').'<br /><br />'.
+	                                                 gt('<div class="error">The server\'s version and/or configuration of PHP does not include GD support, so you will not be able to activate or use the CAPTCHA test.</div>');
 	$stuff[1]['SITE_USE_ANTI_SPAM']['control']->disabled = true;
 }
 

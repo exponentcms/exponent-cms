@@ -250,10 +250,7 @@ class storeController extends expController {
         
         expHistory::set('viewable', $this->params);
         
-//        if (!defined("SYS_DATETIME")) include_once(BASE."framework/core/subsystems-1/datetime.php");
         include_once(BASE."framework/core/subsystems-1/datetime.php");
-//        if (!defined('SYS_SORTING')) include_once(BASE.'framework/core/subsystems-1/sorting.php');
-//        include_once(BASE.'framework/core/subsystems-1/sorting.php');
 
         $time = isset($this->params['time']) ? $this->params['time'] : time();
         assign_to_template(array('time'=>$time));
@@ -322,8 +319,6 @@ class storeController extends expController {
      * Helper function for the Calendar view
      */
     function _getEventsForDates($edates,$sort_asc = true) {        
-//        if (!defined('SYS_SORTING')) include_once(BASE.'framework/core/subsystems-1/sorting.php');
-//        include_once(BASE.'framework/core/subsystems-1/sorting.php');
 //        if ($sort_asc && !function_exists('exponent_sorting_byEventStartAscending')) {
 //            function exponent_sorting_byEventStartAscending($a,$b) {
 //                return ($a->eventstart < $b->eventstart ? 1 : -1);

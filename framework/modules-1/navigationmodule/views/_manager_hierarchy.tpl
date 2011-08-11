@@ -32,13 +32,13 @@
 			<div class="related-actions">
 				{help text="Get Help Managing the Menu Hierarchy" module="manage-all-pages"}
 			</div>
-			<h1>{$_TR.form_title}</h1>
+			<h1>{'Manage Menu Hierarchy Pages'|gettext}</h1>
 		</div>
-		<p>{$_TR.form_header}</p>
+		<p>{'<strong>Drag and drop</strong> tree items to re-order your site\'s hierarchy (main menu). <strong>Right click on any tree item</strong> for a context menu of options for that item.'|gettext}</p>
 	</div>
 	{permissions}
 		{if $user->isAdmin()}
-			<a class="add" href="{link action=add_section parent=0}">{$_TR.new_top_level}</a>
+			<a class="add" href="{link action=add_section parent=0}">{'Create a New Top Level Page'|gettext}</a>
 		{/if}
 	{/permissions}
 	<div id="navtree"><img src="{$smarty.const.ICON_RELATIVE}ajax-loader.gif">	<strong>Loading Navigation</strong></div>

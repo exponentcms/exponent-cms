@@ -22,12 +22,7 @@ class calendar {
 	static function form($object) {
 		global $user;
 
-		$i18n = exponent_lang_loadFile('datatypes/calendar.php');
-
-//		if (!defined('SYS_FORMS')) require_once(BASE.'framework/core/subsystems-1/forms.php');
 		require_once(BASE.'framework/core/subsystems-1/forms.php');
-//		exponent_forms_initialize();
-
 		$form = new form();
 		if (!isset($object->id)) {
 			$object->title = '';
@@ -44,36 +39,34 @@ class calendar {
 			$form->meta('id',$object->id);
 		}
 
-		$form->register('title',$i18n['title'],new textcontrol($object->title));
-		$form->register('body',$i18n['body'],new htmleditorcontrol($object->body));
+		$form->register('title',gt('Title'),new textcontrol($object->title));
+		$form->register('body',gt('Body'),new htmleditorcontrol($object->body));
 
 		$form->register(null,'', new htmlcontrol('<hr size="1" />'));
 
 		if ($object->is_recurring == 1) {
-			$form->register(null,'',new htmlcontrol($i18n['remove_warning'],false));
+			$form->register(null,'',new htmlcontrol(gt('Warning: If you change the date below, it will only affect this specific events.  All other changes can be applied to this and other events.'),false));
 		}
-		//$form->register('eventdate',$i18n['eventdate'],new popupdatetimecontrol($object->eventdate->date,'',false));
-		$form->register('eventdate',$i18n['eventdate'],new yuicalendarcontrol($object->eventdate->date,'',false));
+		//$form->register('eventdate',gt('Event Date'),new popupdatetimecontrol($object->eventdate->date,'',false));
+		$form->register('eventdate',gt('Event Date'),new yuicalendarcontrol($object->eventdate->date,'',false));
 
 		$cb = new checkboxcontrol($object->is_allday,false);
 		$cb->jsHooks = array('onclick'=>'exponent_forms_disable_datetime(\'eventstart\',this.form,this.checked); exponent_forms_disable_datetime(\'eventend\',this.form,this.checked);');
-		$form->register('is_allday',$i18n['is_allday'],$cb);
-		$form->register('eventstart',$i18n['eventstart'],new datetimecontrol($object->eventstart,false));
-		$form->register('eventend',$i18n['eventend'],new datetimecontrol($object->eventend,false));
+		$form->register('is_allday',gt('All Day Event'),$cb);
+		$form->register('eventstart',gt('Start Time'),new datetimecontrol($object->eventstart,false));
+		$form->register('eventend',gt('End Time'),new datetimecontrol($object->eventend,false));
 
 		if (!isset($object->id)) {
 			$customctl = file_get_contents(BASE.'framework/modules-1/calendarmodule/form.part');
 			//$datectl = new popupdatetimecontrol($object->eventstart+365*86400,'',false);
 			$datectl = new yuicalendarcontrol($object->eventdate->date+365*86400,'',false);
 			$customctl = str_replace('%%UNTILDATEPICKER%%',$datectl->controlToHTML('untildate'),$customctl);
-			$form->register('recur',$i18n['recurrence'],new customcontrol($customctl));
+			$form->register('recur',gt('Recurrence'),new customcontrol($customctl));
 		} else if ($object->is_recurring == 1) {
 			// Edit applies to one or more...
 			$template = new template('calendarmodule','_recur_dates');
 			global $db;
 			$eventdates = $db->selectObjects('eventdate','event_id='.$object->id);
-//			if (!defined('SYS_SORTING')) require_once(BASE.'framework/core/subsystems-1/sorting.php');
-//			require_once(BASE.'framework/core/subsystems-1/sorting.php');
 //			if (!function_exists('exponent_sorting_byDateAscending')) {
 //				function exponent_sorting_byDateAscending($a,$b) {
 //					return ($a->date > $b->date ? 1 : -1);
@@ -83,29 +76,26 @@ class calendar {
 			$eventdates = expSorter::sort(array('array'=>$eventdates,'sortby'=>'date', 'order'=>'ASC'));
 			if (isset($object->eventdate)) $template->assign('checked_date',$object->eventdate);
 			$template->assign('dates',$eventdates);
-			$form->register(null,'',new htmlcontrol('<hr size="1"/>'.$i18n['recurrence_warning']));
+			$form->register(null,'',new htmlcontrol('<hr size="1"/>'.gt('This event is a recurring event, and occurs on the dates below.  Select which dates you wish to apply these edits to.')));
 			$form->register(null,'',new htmlcontrol('<table cellspacing="0" cellpadding="2" width="100%">'.$template->render().'</table>'));
 
 			$form->meta('date_id',$object->eventdate->id); // Will be 0 if we are creating.
 		}
 
-		$form->register('featured_header','',new htmlcontrol('<h3>'.$i18n['featured_event_info'].'</h3><hr size="1" />'));
-		$form->register('is_featured',$i18n['feature_this_event'],new checkboxcontrol($object->is_featured,false));
+		$form->register('featured_header','',new htmlcontrol('<h3>'.gt('Featured Event Info').'</h3><hr size="1" />'));
+		$form->register('is_featured',gt('Feature this event'),new checkboxcontrol($object->is_featured,false));
 /* Why was this even here?  No views have it. 6/23/09 Time to implement it - Maia*/
-		// $form->register('image_header','',new htmlcontrol('<h3>'.$i18n['upload_file'].'</h3><hr size="1" />'));
-		// $form->register('file',$i18n['upload_image'],new uploadcontrol());
+		// $form->register('image_header','',new htmlcontrol('<h3>'.gt('Upload Image File').'</h3><hr size="1" />'));
+		// $form->register('file',gt('Upload Image'),new uploadcontrol());
 
-		// $form->register('tag_header','',new htmlcontrol('<h3>'.$i18n['tags'].'</h3><hr size="1" />'));
-		$form->register('submit','',new buttongroupcontrol($i18n['save'],'',$i18n['cancel']));
+		// $form->register('tag_header','',new htmlcontrol('<h3>'.gt('Tags').'</h3><hr size="1" />'));
+		$form->register('submit','',new buttongroupcontrol(gt('Save'),'',gt('Cancel')));
 
 		return $form;
 	}
 
 	static function update($values,$object) {
-//		if (!defined('SYS_FORMS')) require_once(BASE.'framework/core/subsystems-1/forms.php');
 		require_once(BASE.'framework/core/subsystems-1/forms.php');
-//		exponent_forms_initialize();
-
 		$object->title = $values['title'];
 
 		$object->body = preg_replace('/<br ?\/>$/','',trim($values['body']));

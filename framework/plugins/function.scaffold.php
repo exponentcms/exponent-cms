@@ -20,9 +20,7 @@
 
 function smarty_function_scaffold($params,&$smarty) {
 	if (isset($params['model']) ) {
-//		if (!defined('SYS_FORMS')) require_once(BASE.'framework/core/subsystems-1/forms.php');
 		require_once(BASE.'framework/core/subsystems-1/forms.php');
-        //exponent_forms_initialize();
 		global $db;
 		require_once $smarty->_get_plugin_filepath('function','control');
 

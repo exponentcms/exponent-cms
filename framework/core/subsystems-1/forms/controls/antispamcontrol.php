@@ -50,10 +50,7 @@ class antispamcontrol extends formcontrol {
 	}
 
 	function form($object) {
-//		if (!defined("SYS_FORMS")) require_once(BASE."framework/core/subsystems-1/forms.php");
 		require_once(BASE."framework/core/subsystems-1/forms.php");
-//		exponent_forms_initialize();
-
 		$form = new form();
 		if (!isset($object->identifier)) {
 			$object->identifier = "";
@@ -63,22 +60,19 @@ class antispamcontrol extends formcontrol {
 			$object->maxlength = 0;
 			$object->required = false;
 		}
-		$i18n = exponent_lang_loadFile('subsystems/forms/controls/textcontrol.php');
-
-		$form->register("identifier",$i18n['identifier'],new textcontrol($object->identifier));
-		$form->register("caption",$i18n['caption'], new textcontrol($object->caption));
+		$form->register("identifier",gt('Iidentifier'),new textcontrol($object->identifier));
+		$form->register("caption",gt('Caption'), new textcontrol($object->caption));
 		$form->register(null, null, new htmlcontrol('<br />'));
 		$form->register(null, null, new htmlcontrol('<br />'));
-		$form->register("submit","",new buttongroupcontrol($i18n['save'],'',$i18n['cancel']));
+		$form->register("submit","",new buttongroupcontrol(gt('Save'),'',gt('Cancel')));
 		return $form;
 	}
 
 	function update($values, $object) {
 		if ($object == null) $object = new antispamcontrol();
 		if ($values['identifier'] == "") {
-			$i18n = exponent_lang_loadFile('subsystems/forms/controls/textcontrol.php');
 			$post = $_POST;
-			$post['_formError'] = $i18n['id_req'];
+			$post['_formError'] = gt('Identifier is required.');
 			expSession::set("last_POST",$post);
 			return null;
 		}

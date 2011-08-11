@@ -27,10 +27,10 @@
 
 <div class="module calendar edit">
 	<div class="form_title">
-		<h1>{if $is_edit == 1}{$_TR.form_title_edit}{else}{$_TR.form_title_new}{/if}</h1>
+		<h1>{if $is_edit == 1}{'Edit Calendar Event'|gettext}{else}{'Create New Calendar Event'|gettext}{/if}</h1>
 	</div>
 	<div class="form_header">
-		<p>{$_TR.form_header}</p>
+		<p>{'Enter the information about the calendar event (the date and times) below.<br /><br />Note: multiple day events are not supported.'|gettext}</p>
 	</div>
 	{$form_html}
 </div>

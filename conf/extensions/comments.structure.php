@@ -19,29 +19,27 @@
 
 if (!defined('EXPONENT')) exit('');
 
-$i18n = exponent_lang_loadFile('conf/extensions/comments.structure.php');
-
 return array(
-	$i18n['title'],
+	gt('User Comment Policies'),
 	array(
 		'COMMENTS_REQUIRE_LOGIN'=>array(
-			'title'=>$i18n['comments_require_login'],
-			'description'=>$i18n['comments_require_login_desc'],
+			'title'=>gt('Require Login to Post Comments'),
+			'description'=>gt('Checking this option will force user to create an account and be logged in before they can post comments on your site.'),
 			'control'=>new checkboxcontrol()
 		),
 		'COMMENTS_REQUIRE_APPROVAL'=>array(
-			'title'=>$i18n['comments_require_approval'],
-			'description'=>$i18n['comments_require_approval_desc'],
+			'title'=>gt('I Want to Approve All Comments'),
+			'description'=>gt('If this option is selected, comments will not be published to your site until you approve them.'),
 			'control'=>new checkboxcontrol()
 		),
 		'COMMENTS_REQUIRE_NOTIFICATION'=>array(
-			'title'=>$i18n['comments_require_notification'],
-			'description'=>$i18n['comments_require_notification_desc'],
+			'title'=>gt('Notify Me of New Comments'),
+			'description'=>gt('An email notification will be sent to the email address specificed below to notify you of new comments on your site.'),
 			'control'=>new checkboxcontrol()
 		),
 		'COMMENTS_NOTIFICATION_EMAIL'=>array(
-			'title'=>$i18n['comments_require_notification_email'],
-			'description'=>$i18n['comments_require_notification_email_desc'],
+			'title'=>gt('Notification Email Address(es) (Enter multiple addresses by using a comma to separate them)'),
+			'description'=>gt('If you have indicated you would like to be notified of new comments on your site, please enter the email address of all the people you would like to get the notificaiton email addresses.'),
 			'control'=>new textcontrol()
 		),
 	)

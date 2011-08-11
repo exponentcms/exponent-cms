@@ -173,24 +173,18 @@ class popupdatetimecontrol extends formcontrol {
 	}
 
 	function form($object) {
-//		if (!defined("SYS_FORMS")) require_once(BASE."framework/core/subsystems-1/forms.php");
 		require_once(BASE."framework/core/subsystems-1/forms.php");
-//		exponent_forms_initialize();
-
 		$form = new form();
 		if (!isset($object->identifier)) {
 			$object->identifier = "";
 			$object->caption = "";
 			$object->showtime = true;
 		}
+		$form->register("identifier",gt('Identifier'),new textcontrol($object->identifier));
+		$form->register("caption",gt('Caption'), new textcontrol($object->caption));
+		$form->register("showtime",gt('Show Time'), new checkboxcontrol($object->showtime,false));
 
-		$i18n = exponent_lang_loadFile('subsystems/forms/controls/popupdatetimecontrol.php');
-
-		$form->register("identifier",$i18n['identifier'],new textcontrol($object->identifier));
-		$form->register("caption",$i18n['caption'], new textcontrol($object->caption));
-		$form->register("showtime",$i18n['showtime'], new checkboxcontrol($object->showtime,false));
-
-		$form->register("submit","",new buttongroupcontrol($i18n['save'],"",$i18n['cancel']));
+		$form->register("submit","",new buttongroupcontrol(gt('Save'),"",gt('Cancel')));
 		return $form;
 	}
 
@@ -200,9 +194,8 @@ class popupdatetimecontrol extends formcontrol {
 			$object->default = 0;
 		}
 		if ($values['identifier'] == "") {
-			$i18n = exponent_lang_loadFile('subsystems/forms/controls/popupdatetimecontrol.php');
 			$post = $_POST;
-			$post['_formError'] = $i18n['id_req'];
+			$post['_formError'] = gt('Identifier is required.');
 			expSession::set("last_POST",$post);
 			return null;
 		}

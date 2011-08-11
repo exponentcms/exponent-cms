@@ -90,10 +90,7 @@ class dropdowncontrol extends formcontrol {
     }
     
     function form($object) {
-//        if (!defined("SYS_FORMS")) require_once(BASE."framework/core/subsystems-1/forms.php");
         require_once(BASE."framework/core/subsystems-1/forms.php");
-//        exponent_forms_initialize();
-    
         $form = new form();
         if (!isset($object->identifier)) {
             $object->identifier = "";
@@ -103,32 +100,26 @@ class dropdowncontrol extends formcontrol {
             $object->items = array();
             $object->required = false;
         } 
-        
-        $i18n = exponent_lang_loadFile('subsystems/forms/controls/dropdowncontrol.php');
-        
-        $form->register("identifier",$i18n['identifier'],new textcontrol($object->identifier));
-        $form->register("caption",$i18n['caption'], new textcontrol($object->caption));
-        $form->register("items",$i18n['items'], new listbuildercontrol($object->items,null));
-        $form->register("default",$i18n['default'], new textcontrol($object->default));
-        $form->register("size",$i18n['size'], new textcontrol($object->size,3,false,2,"integer"));
+        $form->register("identifier",gt('Identifier'),new textcontrol($object->identifier));
+        $form->register("caption",gt('Caption'), new textcontrol($object->caption));
+        $form->register("items",gt('Items'), new listbuildercontrol($object->items,null));
+        $form->register("default",gt('Default'), new textcontrol($object->default));
+        $form->register("size",gt('Size'), new textcontrol($object->size,3,false,2,"integer"));
         $form->register(null, null, new htmlcontrol('<br />'));
-                $form->register("required", $i18n['required'], new checkboxcontrol($object->required,true));
+                $form->register("required", gt('Make this a required field.'), new checkboxcontrol($object->required,true));
                 $form->register(null, null, new htmlcontrol('<br />')); 
-        $form->register("submit","",new buttongroupcontrol($i18n['save'],'',$i18n['cancel']));
+        $form->register("submit","",new buttongroupcontrol(gt('Save'),'',gt('Cancel')));
         return $form;
     }
     
     function update($values, $object) {
         if ($values['identifier'] == "") {
-            $i18n = exponent_lang_loadFile('subsystems/forms/controls/dropdowncontrol.php');
             $post = $_POST;
-            $post['_formError'] = $i18n['id_req'];
+            $post['_formError'] = gt('Identifier is required.');
             expSession::set("last_POST",$post);
             return null;
         }
-//        if (!defined("SYS_FORMS")) require_once(BASE."framework/core/subsystems-1/forms.php");
         require_once(BASE."framework/core/subsystems-1/forms.php");
-//        exponent_forms_initialize();
         if ($object == null) $object = new dropdowncontrol();
         $object->identifier = $values['identifier'];
         $object->caption = $values['caption'];

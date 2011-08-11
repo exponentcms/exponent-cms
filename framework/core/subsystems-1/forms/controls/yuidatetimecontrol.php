@@ -38,7 +38,6 @@ class yuidatetimecontrol extends formcontrol {
     }
     
     function __construct($default = 0, $edit_text = "", $showdate = true, $showtime = true, $display_only=false, $checked=false) {
-//        if (!defined("SYS_DATETIME")) include_once(BASE."framework/core/subsystems-1/datetime.php");
         include_once(BASE."framework/core/subsystems-1/datetime.php");
         $this->default = ($default == 0) ? time() : $default;
         $this->edit_text = $edit_text;
@@ -144,9 +143,6 @@ class yuidatetimecontrol extends formcontrol {
     
     function form($object) {
         /*
-        if (!defined("SYS_FORMS")) require_once(BASE."framework/core/subsystems-1/forms.php");
-        exponent_forms_initialize();
-    
         $form = new form();
         if (!isset($object->identifier)) {
             $object->identifier = "";
@@ -154,15 +150,12 @@ class yuidatetimecontrol extends formcontrol {
             $object->showdate = true;
             $object->showtime = true;
         } 
+        $form->register("identifier",gt('Identifier'),new textcontrol($object->identifier));
+        $form->register("caption",gt('Caption'), new textcontrol($object->caption));
+        $form->register("showdate",gt('Show Date'), new checkboxcontrol($object->showdate,false));
+        $form->register("showtime",gt('Show tTme'), new checkboxcontrol($object->showtime,false));
         
-        $i18n = exponent_lang_loadFile('subsystems/forms/controls/datetimecontrol.php');
-        
-        $form->register("identifier",$i18n['identifier'],new textcontrol($object->identifier));
-        $form->register("caption",$i18n['caption'], new textcontrol($object->caption));
-        $form->register("showdate",$i18n['showdate'], new checkboxcontrol($object->showdate,false));
-        $form->register("showtime",$i18n['showtime'], new checkboxcontrol($object->showtime,false));
-        
-        $form->register("submit","",new buttongroupcontrol($i18n['save'],"",$i18n['cancel']));
+        $form->register("submit","",new buttongroupcontrol(gt('Save'),"",gt('Cancel')));
         return $form;
         */
     }
@@ -174,10 +167,8 @@ class yuidatetimecontrol extends formcontrol {
             $object->default = 0; //This will force the control to always show the current time as default
         }
         if ($values['identifier'] == "") {
-            $i18n = exponent_lang_loadFile('subsystems/forms/controls/datetimecontrol.php');
-            
             $post = $_POST;
-            $post['_formError'] = $i18n['id_req'];
+            $post['_formError'] = gt('Identifier is required.');
             expSession::set("last_POST",$post);
             return null;
         }

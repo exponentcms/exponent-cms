@@ -37,20 +37,20 @@
 				{$answer->answer}
 				</td><td>
 				{if $permissions.manage_answer == 1}
-					<a href="{link action=edit_answer id=$answer->id}"><img class="mngmnt_icon" style="border:none;" src="{$smarty.const.ICON_RELATIVE}edit.png" title="{$_TR.alt_edit}" alt="{$_TR.alt_edit}" /></a>
-					<a href="{link action=delete_answer id=$answer->id}"><img class="mngmnt_icon" style="border:none;" src="{$smarty.const.ICON_RELATIVE}delete.png" title="{$_TR.alt_delete}" alt="{$_TR.alt_delete}" /></a>
+					<a href="{link action=edit_answer id=$answer->id}"><img class="mngmnt_icon" style="border:none;" src="{$smarty.const.ICON_RELATIVE}edit.png" title="{'Edit'|gettext}" alt="{'Edit'|gettext}" /></a>
+					<a href="{link action=delete_answer id=$answer->id}"><img class="mngmnt_icon" style="border:none;" src="{$smarty.const.ICON_RELATIVE}delete.png" title="{'Delete'|gettext}" alt="{'Delete'|gettext}" /></a>
 					{if $smarty.foreach.loop.first}
-						<img class="mngmnt_icon" style="border:none;" src="{$smarty.const.ICON_RELATIVE}up.disabled.png" title="{$_TR.alt_up_disabled}" alt="{$_TR.alt_up_disabled}" />
+						<img class="mngmnt_icon" style="border:none;" src="{$smarty.const.ICON_RELATIVE}up.disabled.png" title="{''|gettext}" alt="{''|gettext}" />
 					{else}
 						{math assign=prev equation="x-1" x=$answer->rank}
-						<a href="{link action=order_switch a=$answer->rank b=$prev qid=$question->id}"><img class="mngmnt_icon" style="border:none;" src="{$smarty.const.ICON_RELATIVE}up.png" title="{$_TR.alt_up}" alt="{$_TR.alt_up}" /></a>
+						<a href="{link action=order_switch a=$answer->rank b=$prev qid=$question->id}"><img class="mngmnt_icon" style="border:none;" src="{$smarty.const.ICON_RELATIVE}up.png" title="{'Move Item Up'|gettext}" alt="{'Move Item Up'|gettext}" /></a>
 					{/if}
 
 					{if $smarty.foreach.loop.last}
-						<img class="mngmnt_icon" style="border:none;" src="{$smarty.const.ICON_RELATIVE}down.disabled.png" title="{$_TR.alt_down_disabled}" alt="{$_TR.alt_down_disabled}" />
+						<img class="mngmnt_icon" style="border:none;" src="{$smarty.const.ICON_RELATIVE}down.disabled.png" title="{''|gettext}" alt="{''|gettext}" />
 					{else}
 						{math assign=next equation="x+1" x=$answer->rank}
-						<a href="{link action=order_switch a=$answer->rank b=$next qid=$question->id}"><img style="border:none;" src="{$smarty.const.ICON_RELATIVE}down.png" title="{$_TR.alt_down}" alt="{$_TR.alt_down}" /></a>
+						<a href="{link action=order_switch a=$answer->rank b=$next qid=$question->id}"><img style="border:none;" src="{$smarty.const.ICON_RELATIVE}down.png" title="{'Move Item Down'|gettext}" alt="{'Move Item Down'|gettext}" /></a>
 					{/if}
 				{/if}
 			</td></tr>

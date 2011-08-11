@@ -19,49 +19,47 @@
 
 if (!defined('EXPONENT')) exit('');
 
-$i18n = exponent_lang_loadFile('conf/extensions/smtp.structure.php');
-
 return array(
-	$i18n['title'],
+	gt('SMTP Server Settings'),
 	array(
 		'SMTP_FROMADDRESS'=>array(
-			'title'=>$i18n['from_address'],
-			'description'=>$i18n['from_address_desc'],
+			'title'=>gt('From Address'),
+			'description'=>gt('The from address to use when talking to the SMTP server.  This is important for people using ISP SMTP servers, which may restrict access to certain email addresses.'),
 			'control'=>new textcontrol()
 		),
 		'SMTP_USE_PHP_MAIL'=>array(
-			'title'=>$i18n['php_mail'],
-			'description'=>$i18n['php_mail_desc'],
+			'title'=>gt('Use PHP mail() Function?'),
+			'description'=>gt('If the Exponent implementation of raw SMTP does not work for you, either because of server issues or hosting configurations, check this option to use the standard mail() function provided by PHP.  NOTE: If you do so, you will not have to modify any other SMTP settings, as they will be ignored.'),
 			'control'=>new checkboxcontrol()
 		),
 		'SMTP_SERVER'=>array(
-			'title'=>$i18n['server'],
-			'description'=>$i18n['server_desc'],
+			'title'=>gt('SMTP Server'),
+			'description'=>gt('The IP address or host/domain name of the server to connect to for sending email through SMTP.'),
 			'control'=>new textcontrol()
 		),
 		'SMTP_PORT'=>array(
-			'title'=>$i18n['port'],
-			'description'=>$i18n['port_desc'],
+			'title'=>gt('Port'),
+			'description'=>gt('The port that the SMTP server is listening to for SMTP connections.  If you do not know what this is, leave it as the default of 25.'),
 			'control'=>new textcontrol()
 		),
 		'SMTP_AUTHTYPE'=>array(
-			'title'=>$i18n['auth'],
-			'description'=>$i18n['auth_desc'],
-			'control'=>new dropdowncontrol('',array('NONE'=>$i18n['auth_none'],'LOGIN'=>$i18n['auth_login'],'PLAIN'=>$i18n['auth_plain']))
+			'title'=>gt('Authentication Method'),
+			'description'=>gt('Here, you can specify what type of authentication your SMTP server requires (if any).  Please consult your mailserver administrator for this information.'),
+			'control'=>new dropdowncontrol('',array('NONE'=>gt('No Authentication'),'LOGIN'=>gt('PLAIN'),'PLAIN'=>gt('LOGIN')))
 		),
 		'SMTP_USERNAME'=>array(
-			'title'=>$i18n['username'],
-			'description'=>$i18n['username_desc'],
+			'title'=>gt('SMTP Username'),
+			'description'=>gt('The username to use when connecting to an SMTP server that requires some form of authentication'),
 			'control'=>new textcontrol()
 		),
 		'SMTP_PASSWORD'=>array(
-			'title'=>$i18n['password'],
-			'description'=>$i18n['password'],
+			'title'=>gt('SMTP Password'),
+			'description'=>gt('The password to use when connecting to an SMTP server that requires some form of authentication'),
 			'control'=>new passwordcontrol()
 		),
 		'SMTP_DEBUGGING'=>array(
-			'title'=>$i18n['smtp_debug'],
-			'description'=>$i18n['smtp_debug_desc'],
+			'title'=>gt('Turn SMTP Debugging On?'),
+			'description'=>gt('Turns on additional debugging output for all email system use.'),
 			'control'=>new checkboxcontrol()
 		),
 	)

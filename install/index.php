@@ -24,6 +24,12 @@ ob_start();
 
 define('SCRIPT_EXP_RELATIVE','install/');
 define('SCRIPT_FILENAME','index.php');
+
+// Initialize the language
+if (isset($_REQUEST['lang'])) {
+	if (!defined('LANGUAGE')) define('LANGUAGE', trim($_REQUEST['lang'],"'"));
+}
+
 include_once('../exponent.php');
 
 if (!file_exists('not_configured') && file_exists(BASE.'conf/config.php')) {
@@ -31,10 +37,8 @@ if (!file_exists('not_configured') && file_exists(BASE.'conf/config.php')) {
 	exit(gt('This Exponent Site has already been configured.'));
 }
 
-//if (!defined('SYS_CONFIG')) include_once(BASE . 'framework/core/subsystems-1/config.php');
 include_once(BASE . 'framework/core/subsystems-1/config.php');
 
-// Initialize the language
 if (isset($_POST['sc'])) {
 
     if (file_exists("../conf/config.php")) {

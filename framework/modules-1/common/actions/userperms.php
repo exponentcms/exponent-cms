@@ -35,7 +35,6 @@ if ($user->isAdmin()) {
 	}
 	$template->assign('user_form',1);
 	
-//	if (!defined('SYS_USERS')) include_once(BASE.'framework/core/subsystems-1/users.php');
 	include_once(BASE.'framework/core/subsystems-1/users.php');
 	$users = array();
 	$modulename = controllerExists($loc->mod) ? getControllerClassName($loc->mod) : $loc->mod;
@@ -43,7 +42,7 @@ if ($user->isAdmin()) {
 	$mod = new $modclass();
 	$perms = $mod->permissions($loc->int);
 	$have_users = 0;
-	foreach (exponent_users_getAllUsers(0) as $u) {
+	foreach (user::getAllUsers(0) as $u) {
 		$have_users = 1;
 		foreach ($perms as $perm=>$name) {
 			$var = 'perms_'.$perm;
