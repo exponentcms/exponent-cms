@@ -19,7 +19,7 @@
 /** @define "BASE" "../.." */
 
 function smarty_function_control($params,&$smarty) { 
-    global $db;
+    global $db,$user;
     
     if ( (isset($params['type']) && isset($params['name'])) || $params['type'] == 'buttongroup' 
 //    || $params['type'] == 'captcha' || $params['type'] == 'recaptcha' || $params['type'] == 'antispam') {
