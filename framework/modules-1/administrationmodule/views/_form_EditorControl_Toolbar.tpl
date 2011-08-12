@@ -22,7 +22,7 @@
 
 *}
 {* the header include contains the starting <div> tag*}	
-	{include file="../../../themes/common/editors/_header.inc" toolbar="`$content->data`"}
+	{include file="../../../../external/editors/_header.tpl" toolbar="`$content->data`"}
 	
 	<h2>{$smarty.const.SITE_WYSIWYG_EDITOR}</h2>
 	<!--a href="http://www.xinha.com" target="_blank"><img style="border:0px solid none;" src="{$smarty.const.PATH_RELATIVE}external/editors/Xinha/images/xinha_logo.gif" /></a-->
