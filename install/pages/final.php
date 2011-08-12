@@ -42,8 +42,8 @@ if (isset($_REQUEST['upgrade'])) {
     
     if (isset($_POST['username'])) {
         $user = exponent_users_login($_POST['username'],$_POST['password']);
-
-        if (unlink(BASE.'install/not_configured')) { 
+        $leaveinstaller = (unlink(BASE.'install/not_configured')||!file_exists(BASE.'install/not_configured'));
+        if ($leaveinstaller) { 
             if ($user->id!=0) {
                 switch ($_POST['next']) {
                     case 'migration':

@@ -13,12 +13,12 @@
 
 /* top elements */
 html{
+	background: #caced1;
 	padding:0;
 	margin:0;
 }
 
 body {
-	background: #caced1;
 	font: 70%/1.5em Verdana, Tahoma, arial, sans-serif;
 	color: #777;
 	text-align: center;
@@ -136,6 +136,9 @@ div.bodycopy ul, ol {
 	padding: 0;	
 	color: #fff;
 	z-index:1;	
+}
+#header h1#logo-text {
+    margin:0;
 }
 #header h1#logo-text a {
 	position: absolute;
