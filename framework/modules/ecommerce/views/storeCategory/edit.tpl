@@ -82,11 +82,14 @@
                 </div>  
 				<div id="bing_product_types">	
 					<h1>Bing Product Types</h1>
-					{control type="tagtree" name="manage_bing_product_types" id="manage_bing_product_types" model="bing_product_types" draggable=false addable=false menu=true checkable=true expandonstart=false values=`$record->bing_product_types`}
+					{* control type="tagtree" name="manage_bing_product_types" id="manage_bing_product_types" model="bing_product_types" draggable=false addable=false menu=true checkable=true expandonstart=false values=`$record->bing_product_types` *}
+                    Coming soon....
 				</div>
 				<div id="google_product_types">	
 					<h1>Google Product Types</h1>
-					{control type="tagtree" name="manage_google_product_types" id="manage_google_product_types" model="google_product_types" draggable=false addable=false menu=true checkable=true expandonstart=false values=`$record->google_product_types`}
+					{* control type="tagtree" name="manage_google_product_types" id="manage_google_product_types" model="google_product_types" draggable=false addable=false menu=true checkable=true expandonstart=false values=`$record->google_product_types` *}
+                    {* control type="dropdown" multiple=true items=$google_product_types size=20 *}
+                    Coming soon....
 				</div>
             </div>    
         </div>

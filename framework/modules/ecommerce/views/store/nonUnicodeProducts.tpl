@@ -1,5 +1,5 @@
 {br}
-<p>There are {$count} products that has non-unicode characters in it.</p>
+<p>There are {$count} products that have non-unicode characters in it.</p>
 
  <div id="products">
 	<table id="prods" class="exp-skin-table" style="width:95%">
@@ -29,5 +29,5 @@
 	</tbody>
 	</table>
 	{br}
-	<a href={link controller=store action=cleanNonUnicodeProducts} onclick="return confirm('Are you sure you want clean all the products record?');">Clean Data</a>
+	<a href={link controller=store action=cleanNonUnicodeProducts} onclick="return confirm('Are you sure you want to clean all of the products shown above?');">Clean Data</a>
 </div>

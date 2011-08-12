@@ -39,6 +39,17 @@ class storeCategoryController extends expNestedNodeController {
 		$record = new storeCategoryFeeds($this->params['id']);
         $site_page_default = ecomconfig::getConfig('pagination_default');
         assign_to_template(array('site_page_default'=>$site_page_default, 'record'=>$record));
+    
+        /*$google_product_types = new google_product_types();
+        eDebug($google_product_types->getFullTree(),true);
+        $last = 0;
+        $lastcrumb = '';
+        foreach ($google_product_types->getFullTree() as $node)
+        {
+            if ($node->parent_id == $last)
+            $last = $node->id;            
+        }*/
+    
         parent::edit();
     }
     
