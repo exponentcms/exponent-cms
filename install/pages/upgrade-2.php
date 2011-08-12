@@ -34,15 +34,15 @@ define("TMP_TABLE_ALTERED",		4);
 $tables = array();
 
 // first the core and 1.0 definitions
-$dir = BASE.'framework/core/definitions';
-if (is_readable($dir)) {
-	$dh = opendir($dir);
+$coredefs = BASE.'framework/core/definitions';
+if (is_readable($coredefs)) {
+	$dh = opendir($coredefs);
 	while (($file = readdir($dh)) !== false) {
-		if (is_readable("$dir/$file") && is_file("$dir/$file") && substr($file,-4,4) == ".php" && substr($file,-9,9) != ".info.php") {
+		if (is_readable("$coredefs/$file") && is_file("$coredefs/$file") && substr($file,-4,4) == ".php" && substr($file,-9,9) != ".info.php") {
 			$tablename = substr($file,0,-4);
-			$dd = include("$dir/$file");
+			$dd = include("$coredefs/$file");
 			$info = null;
-			if (is_readable("$dir/$tablename.info.php")) $info = include("$dir/$tablename.info.php");
+			if (is_readable("$coredefs/$tablename.info.php")) $info = include("$coredefs/$tablename.info.php");
 			if (!$db->tableExists($tablename)) {
 				foreach ($db->createTable($tablename,$dd,$info) as $key=>$status) {
 					$tables[$key] = $status;
@@ -63,41 +63,46 @@ if (is_readable($dir)) {
 }
 
 // then search for module definitions
-$newdef = BASE."framework/modules";
-if (is_readable($newdef)) {
-    $dh = opendir($newdef);
-    while (($file = readdir($dh)) !== false) {
-        if (is_dir($newdef.'/'.$file) && ($file != '..' && $file != '.')) {
-            $dirpath = $newdef.'/'.$file.'/definitions';
-            if (file_exists($dirpath)) {
-                $def_dir = opendir($dirpath);
-                while (($def = readdir($def_dir)) !== false) {
-//                    eDebug("$dirpath/$def");
-    				if (is_readable("$dirpath/$def") && is_file("$dirpath/$def") && substr($def,-4,4) == ".php" && substr($def,-9,9) != ".info.php") {
-    					$tablename = substr($def,0,-4);
-    					$dd = include("$dirpath/$def");
-    					$info = null;
-    					if (is_readable("$dirpath/$tablename.info.php")) $info = include("$dirpath/$tablename.info.php");
-    					if (!$db->tableExists($tablename)) {
-    						foreach ($db->createTable($tablename,$dd,$info) as $key=>$status) {
-    							$tables[$key] = $status;
-    						}
-    					} else {
-    						foreach ($db->alterTable($tablename,$dd,$info) as $key=>$status) {
-    							if (isset($tables[$key])) echo "$tablename, $key<br>";
-    							if ($status == TABLE_ALTER_FAILED){
-    								$tables[$key] = $status;
-    							}else{
-    								$tables[$key] = ($status == TABLE_ALTER_NOT_NEEDED ? DATABASE_TABLE_EXISTED : DATABASE_TABLE_ALTERED);						
-    							}
+$moddefs = array(
+	BASE.'themes/'.DISPLAY_THEME_REAL.'/modules',
+	BASE."framework/modules",
+	);
+foreach ($moddefs as $moddef) {
+	if (is_readable($moddef)) {
+		$dh = opendir($moddef);
+		while (($file = readdir($dh)) !== false) {
+			if (is_dir($moddef.'/'.$file) && ($file != '..' && $file != '.')) {
+				$dirpath = $moddef.'/'.$file.'/definitions';
+				if (file_exists($dirpath)) {
+					$def_dir = opendir($dirpath);
+					while (($def = readdir($def_dir)) !== false) {
+	//                    eDebug("$dirpath/$def");
+						if (is_readable("$dirpath/$def") && is_file("$dirpath/$def") && substr($def,-4,4) == ".php" && substr($def,-9,9) != ".info.php") {
+							$tablename = substr($def,0,-4);
+							$dd = include("$dirpath/$def");
+							$info = null;
+							if (is_readable("$dirpath/$tablename.info.php")) $info = include("$dirpath/$tablename.info.php");
+							if (!$db->tableExists($tablename)) {
+								foreach ($db->createTable($tablename,$dd,$info) as $key=>$status) {
+									$tables[$key] = $status;
+								}
+							} else {
+								foreach ($db->alterTable($tablename,$dd,$info) as $key=>$status) {
+									if (isset($tables[$key])) echo "$tablename, $key<br>";
+									if ($status == TABLE_ALTER_FAILED){
+										$tables[$key] = $status;
+									}else{
+										$tables[$key] = ($status == TABLE_ALTER_NOT_NEEDED ? DATABASE_TABLE_EXISTED : DATABASE_TABLE_ALTERED);
+									}
 
-    						}
-    					}
-    				} 
-                }
-            }
-        }
-    }
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
 }
 ksort($tables);
 
