@@ -27,7 +27,7 @@
 
 class expLang {
     
-    function loadLang() {
+    static function loadLang() {
         if (!defined('LANGUAGE')) return false;
 	    
 	    global $cur_lang, $default_lang, $defualt_lang_file;
@@ -36,11 +36,11 @@ class expLang {
         $cur_lang = include(BASE."framework/core/lang/".LANGUAGE.".php");
     }
     
-	public function gettext($str) {	
+	public static function gettext($str) {
 	    if (!defined('LANGUAGE')) return $str;
 
 	    global $cur_lang;
-	    expLang::writeTemplate($str);
+	    self::writeTemplate($str);
 	    $str = LANGUAGE!="English - US" && array_key_exists($str,$cur_lang) ? $cur_lang[$str] : $str;
 		return $str;
 	}

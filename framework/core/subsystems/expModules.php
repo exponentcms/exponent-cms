@@ -24,7 +24,7 @@
 
 class expModules {
 
-    public function listActiveControllers() {
+    public static function listActiveControllers() {
         global $db;
         
         $controllers = listUserRunnableControllers();
@@ -46,10 +46,10 @@ class expModules {
     	return $moduleInfo;
     }
     
-    public function listActiveOSMods() {
+    public static function listActiveOSMods() {
         global $db;
         
-        $osmods = expModules::exponent_modules_list();
+        $osmods = self::exponent_modules_list();
 
         foreach ($osmods as $module) {
             if (class_exists($module)) {
@@ -70,10 +70,10 @@ class expModules {
     }
     
     
-    public function exponent_modules_list() {
+    public static function exponent_modules_list() {
     	$mods = array();
-    	if (is_readable(BASE."modules")) {
-    		$dh = opendir(BASE."modules");
+    	if (is_readable(BASE."framework/modules-1")) {
+    		$dh = opendir(BASE."framework/modules-1");
     		while (($file = readdir($dh)) !== false) {
     			if (substr($file,-6,6) == "module") $mods[] = $file;
     		}

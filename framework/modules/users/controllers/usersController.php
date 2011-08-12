@@ -96,7 +96,7 @@ class usersController extends expController {
         if ((($user->id == $id) || $user->isAdmin()) && $this->params['userkey'] != expSession::get("userkey")) expHistory::back();
         
         // make sure this user should be updating user accounts
-        if (!exponent_users_isLoggedIn() && SITE_ALLOW_REGISTRATION == 0){
+        if (!$user->isLoggedIn() && SITE_ALLOW_REGISTRATION == 0){
             flash('error', 'This site does not allow user registrations');
             expHistory::back();
         } elseif (!$user->isAdmin() && ($user->isLoggedIn() && $user->id != $id)) {
@@ -242,7 +242,8 @@ class usersController extends expController {
 			$db->delete('sessionticket','last_active < ' . (time() - SESSION_TIMEOUT));
 		}
 		
-	    if (!defined('SYS_DATETIME')) require_once(BASE.'subsystems/datetime.php');
+//	    if (!defined('SYS_DATETIME')) require_once(BASE.'framework/core/subsystems-1/datetime.php');
+	    require_once(BASE.'framework/core/subsystems-1/datetime.php');
 
 		if (isset($_GET['id']) && $_GET['id'] == 0) {
 			$sessions = $db->selectObjects('sessionticket', "uid<>0");
@@ -470,7 +471,7 @@ class usersController extends expController {
             $isuser = ($user->id == $id) ? 1 : 0 ;
             $u = new user($id);
         } else {
-            flash('error', expLang::gettext('You do not have the proper permissions to do that'));
+            flash('error', gt('You do not have the proper permissions to do that'));
             expHistory::back();
         }
         assign_to_template(array('u'=>$u,'isuser'=>$isuser));
@@ -559,8 +560,9 @@ class usersController extends expController {
     public function manage_group_memberships() {
         global $db, $user;
         expHistory::set('manageable', $this->params);
-        if (!defined('SYS_USERS')) require_once(BASE.'subsystems/users.php');
-		
+//        if (!defined('SYS_USERS')) require_once(BASE.'framework/core/subsystems-1/users.php');
+        require_once(BASE.'framework/core/subsystems-1/users.php');
+
         $memb = $db->selectObject('groupmembership','member_id='.$user->id.' AND group_id='.$this->params['id'].' AND is_admin=1');
 
         $perm_level = 0;

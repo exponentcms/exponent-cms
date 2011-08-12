@@ -23,15 +23,15 @@ if (!defined('EXPONENT_VERSION_MAJOR')) {
 	if (RELEASE != '%%RELEASE%%') {
 
 		/* exdoc
-		 * This is the major version number of Exponent; the 0 in 0.96.2-beta3
+		 * This is the major version number of Exponent; the 1 in 1.96.2-beta3
 		 */
 		define('EXPONENT_VERSION_MAJOR','2');
 		/* exdoc
-		 * This is the minor version number of Exponent; the 96 in 0.96.2-beta3
+		 * This is the minor version number of Exponent; the 96 in 1.96.2-beta3
 		 */
 		define('EXPONENT_VERSION_MINOR','0');
 		/* exdoc
-		 * This is the revision version number of Exponent; the 2 in 0.96.2-beta3
+		 * This is the revision version number of Exponent; the 2 in 1.96.2-beta3
 		 */
 		define('EXPONENT_VERSION_REVISION','0');
 		/* exdoc
@@ -42,11 +42,11 @@ if (!defined('EXPONENT_VERSION_MAJOR')) {
 		 * This number is bumped each time a distribution of a single version is
 		 * released.  For instance, the 3rd beta has an version type iteration of 3.
 		 */
-		define('EXPONENT_VERSION_ITERATION','1'); // only applies to betas, alphas, or release candidates
+		define('EXPONENT_VERSION_ITERATION','2'); // only applies to betas, alphas, or release candidates
 		/* exdoc
-		 * This is the date that this version of Exponent was exported from BZR and built.
+		 * This is the date that this version of Exponent was released.
 		 */
-		define('EXPONENT_VERSION_BUILDDATE','1311961235');
+		define('EXPONENT_VERSION_BUILDDATE','1313169350');
 	} else {
 		// the info for the "next" version if we are a pre-release from the repository
 		define('EXPONENT_VERSION_MAJOR','2');
@@ -55,6 +55,7 @@ if (!defined('EXPONENT_VERSION_MAJOR')) {
 		define('EXPONENT_VERSION_TYPE','develop');
 		define('EXPONENT_VERSION_ITERATION','');
 		define('EXPONENT_VERSION_BUILDDATE',time());
+		define("DEVELOPMENT",'1');
 	}
 }
 

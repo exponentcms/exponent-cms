@@ -19,12 +19,10 @@
 
 if (!defined('EXPONENT')) exit('');
 
-$i18n = exponent_lang_loadFile('install/pages/setlang.php');
-
 ?>
-<h1 id="subtitle"><?php echo $i18n['title']; ?></h1>
+<h1 id="subtitle"><?php echo gt('Please select a language'); ?></h1>
 <p>
-<?php echo $i18n['guide']; ?>
+<?php echo gt('This will set the default Language for the installation process as well as your new Exponent website.'); ?>
 </p>
 
 <form method="post" action="index.php">
@@ -41,5 +39,5 @@ $i18n = exponent_lang_loadFile('install/pages/setlang.php');
 		<?PHP }?>
 	</select> 
 	</div>
-	<button class="awesome large green" /><?php echo $i18n['setlang']; ?></button>
+	<button class="awesome large green" /><?php echo gt('Set Language'); ?></button>
 </form>

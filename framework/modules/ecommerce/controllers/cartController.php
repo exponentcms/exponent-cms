@@ -127,7 +127,7 @@ class cartController extends expController {
 	    
 	function updateQuantity() {
 		global $order;
-		if (exponent_javascript_inAjaxAction()) {
+		if (expJavascript::inAjaxAction()) {
 			$id = str_replace('quantity-', '', $this->params['id']);
             $item = new orderitem($id);
             if (!empty($item->id)) {
@@ -320,7 +320,7 @@ class cartController extends expController {
 		if (!expSession::get('customer-signup') && !$user->isLoggedin()) {
 		    expHistory::set('viewable', $this->params);
 			flash('message', "Please select how you would like to continue with the checkout process.");
-			exponent_flow_redirecto_login(makeLink(array('module'=>'cart','action'=>'checkout'), 'secure'));
+			expHistory::redirecto_login(makeLink(array('module'=>'cart','action'=>'checkout'), 'secure'));
 		}
 
         if($order->total<intval($config->config['min_order'])){
@@ -432,7 +432,7 @@ class cartController extends expController {
         if (!$user->isLoggedIn()) 
         {
             flash('message', "It appears that your session has expired. Please log in to continue the checkout process.");
-            exponent_flow_redirecto_login(makeLink(array('module'=>'cart','action'=>'checkout'), 'secure'));
+            expHistory::redirecto_login(makeLink(array('module'=>'cart','action'=>'checkout'), 'secure'));
         }
         
         // Make sure all the pertanent data is there...otherwise flash an error and redirect to the checkout form.
@@ -481,8 +481,8 @@ class cartController extends expController {
         //$billing->calculator->preprocess($this->params);
         
         //eDebug($opts);
-        exponent_sessions_set('billing_options', $opts);
-        //$o = exponent_sessions_get('billing_options');
+        expSession::set('billing_options', $opts);
+        //$o = expSession::get('billing_options');
         //eDebug($o,true);
         //eDebug($this->params,true);
         
@@ -524,7 +524,7 @@ class cartController extends expController {
         $shipping = new shipping();
         $billing = new billing();
         
-        $opts = exponent_sessions_get('billing_options');
+        $opts = expSession::get('billing_options');
         //eDebug($opts,true);
 		assign_to_template(array(
 		    'shipping'=>$shipping, 
@@ -543,7 +543,7 @@ class cartController extends expController {
             flash('message', "It appears that your session has expired. Please log in to continue the checkout process.");
             expHistory::back();
             
-            //exponent_flow_redirecto_login(makeLink(array('module'=>'cart','action'=>'checkout'), 'secure'));
+            //expHistory::redirecto_login(makeLink(array('module'=>'cart','action'=>'checkout'), 'secure'));
         }
 		// if this error hits then something went horribly wrong or the user has tried to hit this 
 		// action themselves before the cart was ready or is refreshing the page after they've confirmed the 
@@ -564,7 +564,7 @@ class cartController extends expController {
         $invNum = $order->getInvoiceNumber();
         
 		// call the billing calculators process method - this will handle saving the billing options to the database.
-		$result = $billing->calculator->process($billing->billingmethod, exponent_sessions_get('billing_options'), $this->params, $invNum);
+		$result = $billing->calculator->process($billing->billingmethod, expSession::get('billing_options'), $this->params, $invNum);
         //eDebug($result,true);
         if ($result->errorCode == 0) {
             // save out the cart total to the database		
@@ -661,7 +661,7 @@ class cartController extends expController {
 		
 		$opts = $billing->calculator->userFormUpdate($this->params);
 		$order->calculateGrandTotal();
-		exponent_sessions_set('billing_options', $opts);
+		expSession::set('billing_options', $opts);
 		assign_to_template(array(
 		    'billing'=>$billing, 
 		    'order'=>$order,

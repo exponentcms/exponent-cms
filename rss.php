@@ -17,10 +17,12 @@
 ##################################################
 /** @define "BASE" "." */
 
-if (!defined("EXPONENT")) require_once('exponent.php');
+//if (!defined('EXPONENT')) require_once('exponent.php');
+require_once('exponent.php');
 //if (!defined('SYS_RSS')) include_once('core_rss.php');
 /** @define "__realpath(dirname(__FILE__))/" "." */
-if (!defined('SYS_RSS')) require_once(BASE.'external/feedcreator.class.php');
+//if (!defined('SYS_RSS')) require_once(BASE.'external/feedcreator.class.php');
+require_once(BASE.'external/feedcreator.class.php');
 
 //$location = new Location($_REQUEST['module'],$_REQUEST['identifier'],$_REQUEST['internal']);
 $location->mod = "";
@@ -37,7 +39,7 @@ if (isset($_REQUEST['module'])) {
 //echo "module: ".$module;
 if (isset($module)) {
 	//get the RSS Items from the module	
-	include_once('modules/'.$module.'/class.php');
+	include_once('framework/modules-1/'.$module.'/class.php');
 	$obj = new $module();	
 	$rss_items = $obj->getRSSContent($location);
 	$itemdate = array();

@@ -34,22 +34,27 @@ class expRouter {
     function __construct() {
         $this->map = $this->getRouterMaps();
     }
-    
-    /**
-    * Will build url to a module/page/etc (determined by what is passed to the $params array).
-    * 
-    * @param array $params The params that are passed will determine what link is make
-    *               section
-    *               action
-    *               sef_name
-    *               module
-    *               controller
-    *               action
-    * @param boolean $force_old_school Old School as in not SEF.
-    * @param boolean $secure If you set $secure true but ENABLE_SSL is not turned on in the config this will be forced false
-    * @param boolean $no_map Ignore router_maps
-    * @return string A url
-    */
+
+	/**
+	 * Will build url to a module/page/etc (determined by what is passed to the $params array).
+	 *
+	 * @param $fulllink
+	 *
+	 * @internal param array $params The params that are passed will determine what link is make
+	 *               section
+	 *               action
+	 *               sef_name
+	 *               module
+	 *               controller
+	 *               action
+	 *
+	 * @internal param bool $force_old_school Old School as in not SEF.
+	 *
+	 * @internal param bool $secure If you set $secure true but ENABLE_SSL is not turned on in the config this will be forced false
+	 *
+	 * @internal param bool $no_map Ignore router_maps
+	 * @return string A url
+	 */
     
     //remove trailing links
     public static function cleanLink($fulllink)
@@ -64,7 +69,7 @@ class expRouter {
         $linkbase .= SCRIPT_RELATIVE;
                 
         if (isset($params['section']) && $params['section'] == SITE_DEFAULT_SECTION) {            
-                return expRouter::cleanLink($linkbase);
+                return self::cleanLink($linkbase);
         }
 
         // Check to see if SEF_URLS have been turned on in the site config
@@ -75,7 +80,7 @@ class expRouter {
                     global $db;
                     $params['sef_name'] = $db->selectValue('section', 'sef_name', 'id='.intval($params['section']));
                 }                               
-                return expRouter::cleanLink($linkbase.$params['sef_name']);
+                return self::cleanLink($linkbase.$params['sef_name']);
             } else {                
                 // initialize the link
                 $link = '';               
@@ -88,7 +93,8 @@ class expRouter {
                 if (empty($no_map)){
                     for($i=0; $i < count($this->maps); $i++) {
                         $missing_params = array("dump");
-                        if(in_array($params['controller'], $this->maps[$i]) && in_array($params['action'], $this->maps[$i])) {
+
+                        if(in_array($params['controller'], $this->maps[$i]) && in_array($params['action'], $this->maps[$i]) && (!isset($this->maps[$i]['src']) || in_array($params['src'], $this->maps[$i]))) {
                             $missing_params = array_diff_key($this->maps[$i]['url_parts'], $params);
                         }
 
@@ -107,7 +113,7 @@ class expRouter {
 
                 // if we found a mapping for this link then we can return it now.
                 //if ($link != '') return expRouter::encode($linkbase.$link);
-                if ($link != '') return expRouter::cleanLink($linkbase.$link);        
+                if ($link != '') return self::cleanLink($linkbase.$link);
                 
                 $link .= $params['controller'].'/';
                 $link .= $params['action'].'/';
@@ -128,7 +134,7 @@ class expRouter {
                     }
                 }
                 //trim last / off                 
-                return expRouter::cleanLink($linkbase.$link);        
+                return self::cleanLink($linkbase.$link);
                 }
         } else {
             // if the users don't have SEF URL's turned on then we make the link the old school way.
@@ -206,8 +212,8 @@ class expRouter {
         global $db,$user;
         // if its not already set
         // configurable tracking length
-        setcookie('UserUID',exponent_sessions_getTicketString(),86400 * TRACKING_COOKIE_EXPIRES);
-        $cookieID = (empty($_COOKIE['UserUID'])) ? exponent_sessions_getTicketString() : $_COOKIE['UserUID'];
+        setcookie('UserUID',expSession::getTicketString(),86400 * TRACKING_COOKIE_EXPIRES);
+        $cookieID = (empty($_COOKIE['UserUID'])) ? expSession::getTicketString() : $_COOKIE['UserUID'];
         // Build out the object to insert into the db.
         // Get our parameters.
         $tmpParams = array();
@@ -418,7 +424,7 @@ class expRouter {
         // Figure out if this is module or controller request - WE ONLY NEED THIS CODE UNTIL WE PULL OUT THE OLD MODULES
         if (controllerExists($return_params['controller'])) {
             $requestType = 'controller';
-        } elseif (is_dir(BASE.'modules/'.$return_params['controller'])) {
+        } elseif (is_dir(BASE.'framework/modules-1/'.$return_params['controller'])) {
             $requestType = 'module';
         } else {
             return false;  //this is an invalid url return an let the calling function deal with it.
@@ -631,11 +637,11 @@ class expRouter {
     }
 
     public function getSection() {
-        if (exponent_theme_inAction()) {
+        if (expTheme::inAction()) {
             if (isset($_REQUEST['section'])) {
                 $section = $this->url_type=="sef" ? $this->getPageByName($_REQUEST['section']) : $_REQUEST['section'] ;
             } else {
-                $section = (exponent_sessions_isset('last_section') ? exponent_sessions_get('last_section') : SITE_DEFAULT_SECTION);
+                $section = (expSession::is_set('last_section') ? expSession::get('last_section') : SITE_DEFAULT_SECTION);
             }
         } else {
             $section = (isset($_REQUEST['section']) ? $_REQUEST['section'] : SITE_DEFAULT_SECTION);
@@ -664,9 +670,9 @@ class expRouter {
         }
     
         if (isset($_REQUEST['section'])) {
-                exponent_sessions_set('last_section', intval($_REQUEST['section']));
+                expSession::set('last_section', intval($_REQUEST['section']));
         } else {
-                //exponent_sessions_unset('last_section');
+                //expSession::unset('last_section');
         }
         return $sectionObj;
     }

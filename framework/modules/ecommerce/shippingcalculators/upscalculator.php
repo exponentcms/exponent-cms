@@ -23,8 +23,8 @@ class upscalculator extends shippingcalculator {
 	 * Returns the name of the shipping calculator, for use in the Shipping Administration Module
 	 */
 	//overridden methods:
-	public function name() { return exponent_lang_getText('UPS Shipping'); }
-	public function description() { return exponent_lang_getText('Shipping calculator for dynamically calculating shipping rates using the UPS XML Rate API.'); }
+	public function name() { return gt('UPS Shipping'); }
+	public function description() { return gt('Shipping calculator for dynamically calculating shipping rates using the UPS XML Rate API.'); }
 	public function hasUserForm() { return true; }
 	public function hasConfig() { return true; }
 	public function addressRequired() { return true; }

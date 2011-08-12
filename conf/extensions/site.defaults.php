@@ -19,6 +19,7 @@
 ##################################################
 
 if (!defined('SITE_TITLE')) define('SITE_TITLE','My New Exponent Site');
+if (!defined('SITE_HEADER')) define('SITE_HEADER','My New Exponent Header');
 //if (!defined('SITE_ALLOW_REGISTRATION')) define('SITE_ALLOW_REGISTRATION',1);
 //if (!defined('SITE_USE_ANTI_SPAM')) define('SITE_USE_ANTI_SPAM',1);
 
@@ -30,6 +31,8 @@ if (!defined('SITE_403_REAL_HTML')) define('SITE_403_REAL_HTML',exponent_unhtmle
 if (!defined('SITE_KEYWORDS')) define('SITE_KEYWORDS','');
 if (!defined('SITE_DESCRIPTION')) define('SITE_DESCRIPTION','');
 if (!defined('SITE_DEFAULT_SECTION')) define('SITE_DEFAULT_SECTION',1);
+
+if (!defined('ADVERTISE_RSS')) define('ADVERTISE_RSS',0);
 
 if (!defined('SAVE_SEARCH_QUERIES')) define('SAVE_SEARCH_QUERIES',1);
 if (!defined('SITE_WYSIWYG_EDITOR')) define('SITE_WYSIWYG_EDITOR','ckeditor');

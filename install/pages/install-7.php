@@ -24,11 +24,10 @@ $user = $db->selectObject('user','is_admin=1');
 
 $user->username = $_POST['username'];
 if ($user->username == '') {  //FIXME Shouldn't get this because of check in install-6.php
-	$i18n = exponent_lang_loadFile('install/pages/save_admin.php');
-	echo $i18n['bad_username'];
+	echo gt('You must specify a valid username.');
 } else {
     if (expValidator::validate_email_address($_POST['email']) == false) {
-        flash('error','You must supply a valid email address.');
+        flash('error',gt('You must supply a valid email address.'));
         header('Location: index.php?page=install-6&erremail=true');
         exit();
     }

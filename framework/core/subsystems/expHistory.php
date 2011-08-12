@@ -73,17 +73,51 @@ class expHistory {
      */
     public $history = array();
 
-    /**
-     * expHistory Constructor
-     *
-     * The constructor will grab the users history from the session.  If it is not present in the session 
-     * it will be initialized and saved later.
-     * 
-     * @return void
-     *
-     */
+	/**
+	 * expHistory Constructor
+	 *
+	 * The constructor will grab the users history from the session.  If it is not present in the session
+	 * it will be initialized and saved later.
+	 *
+	 * @return \expHistory
+	 */
 	public function __construct() {
-		$history = exponent_sessions_get('history');
+		/** exdoc
+		 * Flow Type Specifier : None
+	     * Old flow subsystem code
+		 * @node Subsystems:Flow
+		 */
+		define('SYS_FLOW_NONE',	 0);
+
+		/** exdoc
+		 * Flow Type Specifier : Public Access
+		 * Old flow subsystem code
+		 * @node Subsystems:Flow
+		 */
+		define('SYS_FLOW_PUBLIC',	 1);
+
+		/** exdoc
+		 * Flow Type Specifier : Protected Access
+		 * Old flow subsystem code
+		 * @node Subsystems:Flow
+		 */
+		define('SYS_FLOW_PROTECTED', 2);
+
+		/** exdoc
+		 * Flow Type Specifier : Sectional Page
+		 * Old flow subsystem code
+		 * @node Subsystems:Flow
+		 */
+		define('SYS_FLOW_SECTIONAL', 1);
+
+		/** exdoc
+		 * Flow Type Specifier : Action Page
+		 * Old flow subsystem code
+		 * @node Subsystems:Flow
+		 */
+		define('SYS_FLOW_ACTION',	 2);
+
+		$history = expSession::get('history');
 		if (empty($history)) {
 		    $this->history = array('viewable'=>array(), 'editable'=>array(), 'managable'=>array(), 'lasts'=>array('not_editable'=>array()));
 		} else {
@@ -109,7 +143,7 @@ class expHistory {
 
         $url = '';
         if (stristr($router->current_url,'EXPONENT.')) return false;
-        if (exponent_theme_inAction()) {
+        if (expTheme::inAction()) {
             // we don't want to save history for these action...it screws up the flow when loging in
             if (!isset($router->params['action']) || $router->params['action'] == 'loginredirect' || $router->params['action'] == 'logout') return false;
             
@@ -137,12 +171,37 @@ class expHistory {
             if ($url_type != 'editable') $this->history['lasts']['not_editable'] = $url_type;
   	    }
   	    
-        exponent_sessions_set('history', $this->history);
+        expSession::set('history', $this->history);
     }
-    
+
+	/** exdoc
+	 * Old flow subsystem code
+	 * Saves the current URL in a persistent session, to be used later.
+	 *
+	 * @param integer $access_level The access level of the current page.
+	 *  Either SYS_FLOW_PUBLIC or SYS_FLOW_PROTECTED
+	 * @param integer $url_type The type of URSL being set.  Either
+	 *  SYS_FLOW_SECTIONAL or SYS_FLOW_ACTION
+	 * @node Subsystems:Flow
+	 */
+	public static function flowSet($access_level,$url_type) {
+		global $SYS_FLOW_REDIRECTIONPATH;
+		global $router;
+		//echo '<h1>setting flow</h1>'.$router->current_url;
+		if ($access_level == SYS_FLOW_PUBLIC) {
+			expSession::set($SYS_FLOW_REDIRECTIONPATH.'_flow_' . SYS_FLOW_PROTECTED . '_' . $url_type, $router->current_url);
+			expSession::set($SYS_FLOW_REDIRECTIONPATH.'_flow_last_' . SYS_FLOW_PROTECTED, $router->current_url);
+		}
+		expSession::set($SYS_FLOW_REDIRECTIONPATH.'_flow_' . $access_level . '_' . $url_type, $router->current_url);
+		expSession::set($SYS_FLOW_REDIRECTIONPATH.'_flow_last_' . $access_level, $router->current_url);
+
+		//FIXME:  Glue code to try to get new history and old flow to play nicely together.
+		expHistory::set('viewable', $router->params);
+	}
+
     public static function flush() {
         $history = array('viewable'=>array(), 'editable'=>array(), 'managable'=>array(), 'lasts'=>array());
-        exponent_sessions_set('history', $history);
+        expSession::set('history', $history);
     }
     
   	public static function set($url_type, $params) {
@@ -217,8 +276,8 @@ class expHistory {
         return $link;
     }
     
-	public function redirecto_login($redirecturl) {
-    	$redirecturl = empty($redirecturl) ? expHistory::getLastNotEditable() : $redirecturl;
+	public static function redirecto_login($redirecturl = null) {
+    	$redirecturl = empty($redirecturl) ? self::getLastNotEditable() : $redirecturl;
         expSession::set('redirecturl',$redirecturl);
     	redirect_to(array('module'=>'loginmodule', 'action'=>'loginredirect'));
 	}

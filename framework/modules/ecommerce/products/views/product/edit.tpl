@@ -244,7 +244,7 @@
 
 
                     var onRequestData = function( oSelf , sQuery , oRequest) {
-                        tagInput.setStyles({'border':'1px solid green','background':'#fff url('+EXPONENT.PATH_RELATIVE+'subsystems/forms/controls/assets/autocomplete/loader.gif) no-repeat 100% 50%'});
+                        tagInput.setStyles({'border':'1px solid green','background':'#fff url('+EXPONENT.PATH_RELATIVE+'framework/core/subsystems-1/forms/controls/assets/autocomplete/loader.gif) no-repeat 100% 50%'});
                     }
                     
                     var onRGetDataBack = function( oSelf , sQuery , oRequest) {

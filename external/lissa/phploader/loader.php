@@ -354,9 +354,9 @@ class YAHOO_util_Loader
         * attempt to find and parse the YUI json dependency file.
         */
         $parentDir = dirname(dirname(__FILE__));
-        $phpConfigFile = $parentDir . '/meta/config_' . $yuiVersion . 
+        $phpConfigFile = $parentDir . '/lib/meta/config_' . $yuiVersion . 
             '.php';
-        $jsonConfigFile = $parentDir . '/meta/json_' . $yuiVersion . '.txt';
+        $jsonConfigFile = $parentDir . '/lib/meta/json_' . $yuiVersion . '.txt';
         
         if (file_exists($phpConfigFile) && is_readable($phpConfigFile)) {
             require($phpConfigFile);

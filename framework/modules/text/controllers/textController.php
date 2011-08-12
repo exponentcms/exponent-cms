@@ -66,10 +66,10 @@ class textController extends expController {
         expHistory::back();
     }
     
-	public function addContentToSearch() {
-	    // do nothing...this is handled by the section for now.
-	    return false;
-	}
+//	public function addContentToSearch() {
+//	    // do nothing...this is handled by the section for now.
+//	    return false;
+//	}
 }
 
 ?>

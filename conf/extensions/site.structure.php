@@ -44,6 +44,11 @@ $stuff = array(
 			'description'=>$i18n['site_title_desc'],
 			'control'=>new textcontrol()
 		),
+		'SITE_HEADER'=>array(
+			'title'=>$i18n['site_header'],
+			'description'=>$i18n['site_header_desc'],
+			'control'=>new textcontrol()
+		),
 		'USE_LANG'=>array(
 			'title'=>$i18n['use_lang'],
 			'description'=>$i18n['use_lang_desc'],

@@ -87,7 +87,7 @@ function renderAction(array $parms=array()) {
 
     if (array_key_exists($permaction, $perms)) {
         if (!exponent_permissions_check($permaction, $controller->loc)) {
-            if (exponent_theme_inAction()) {
+            if (expTheme::inAction()) {
                 flash('error', "You don't have permission to ".$perms[$permaction]);
                 expHistory::returnTo('viewable');
             } else {
@@ -96,7 +96,7 @@ function renderAction(array $parms=array()) {
         }
     } elseif (array_key_exists($common_action_name, $perms)) {
         if (!exponent_permissions_check($common_action_name, $controller->loc)) {
-            if (exponent_theme_inAction()) {
+            if (expTheme::inAction()) {
                 flash('error', "You don't have permission to ".$perms[$common_action_name]);
                 expHistory::returnTo('viewable');
             } else {
@@ -148,6 +148,7 @@ function renderAction(array $parms=array()) {
 function hotspot($source = null) {
     if (!empty($source)) {
         global $sectionObj;
+	    //FIXME there is NO page object written
         $page = new page($sectionObj->id);
         $modules = $page->getModulesBySource($source);
         //eDebug($modules);exit();
@@ -211,10 +212,10 @@ function handleErrors($errno, $errstr, $errfile, $errline) {
 }
 
 function show_msg_queue() {
-    $queues = exponent_sessions_get('flash');
+    $queues = expSession::get('flash');
 #    if (!empty($queues)) {
         $template = new template('common','_msg_queue');
-        $template->assign('queues', exponent_sessions_get('flash'));
+        $template->assign('queues', expSession::get('flash'));
         $html = $template->render();
 #    } else {
 #        $html = '';
@@ -243,7 +244,7 @@ function get_model_for_controller($controller_name) {
 
 function get_common_template($view, $loc, $controllername='') {
     $controller->baseclassname = empty($controllername) ? 'common' : $controllername;
-    $controller->relative_viewpath = 'modules/common/views'.$controller->baseclassname;
+    $controller->relative_viewpath = 'framework/modules-1/common/views'.$controller->baseclassname;
     $controller->loc = $loc;
     
     $basepath = BASE.'framework/modules/common/views/'.$controllername.'/'.$view.'.tpl';
@@ -429,7 +430,7 @@ function intializeControllers() {
     return $controllers;
 }
 
-// recursive function used for autoloading class files.
+// recursive function used for (auto?)loading 2.0 modules controllers & models
 function loadModulesDir($dir, &$controllers) {
     if (is_readable($dir)) {
         $dh = opendir($dir);
@@ -446,8 +447,8 @@ function loadModulesDir($dir, &$controllers) {
                         }
                     }
                 }
-                // load datatypes
-                $dirpath = $dir.'/'.$file.'/datatypes';
+                // load models
+                $dirpath = $dir.'/'.$file.'/models';
                 if (file_exists($dirpath)) {
                     $controller_dir = opendir($dirpath);
                     while (($ctl_file = readdir($controller_dir)) !== false) {
@@ -558,8 +559,8 @@ function listInstalledControllers($type=null, $loc=null) {
 }
 
 function getModulesAndControllers() {
-    $mods = exponent_modules_listActive();
-    $ctls = listActiveControllers();
+    $mods = exponent_modules_listActive();  // 1.0 modules
+    $ctls = listActiveControllers();        // 2.0 modules
     return array_merge($ctls, $mods);
 }
 
@@ -589,7 +590,7 @@ function expUnserialize($serial_str) {
 
 // callback when the buffer gets flushed. Any processing on the page output
 // just before it gets rendered to the screen should happen here.
- function expProcessBuffer($buffer, $mode=null) {
+function expProcessBuffer($buffer, $mode=null) {
      global $jsForHead, $cssForHead;
      return (str_replace("<!-- MMINIFY REPLACE -->", $cssForHead.$jsForHead, $buffer));
 }

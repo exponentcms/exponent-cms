@@ -21,7 +21,6 @@
 if (!defined('EXPONENT'))
     exit('');
 
-
 ?>
 <h1><?php
 echo gt('Pick Your Theme');

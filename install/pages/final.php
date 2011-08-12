@@ -19,8 +19,8 @@
 
 if (!defined('EXPONENT')) exit('');
 
-exponent_sessions_unset('installer_config');
-exponent_sessions_clearAllSessionData();
+expSession::un_set('installer_config');
+expSession::clearAllSessionData();
 
 global $user;
 
@@ -42,8 +42,8 @@ if (isset($_REQUEST['upgrade'])) {
     
     if (isset($_POST['username'])) {
         $user = exponent_users_login($_POST['username'],$_POST['password']);
-
-        if (unlink(BASE.'install/not_configured')) { 
+        $leaveinstaller = (unlink(BASE.'install/not_configured')||!file_exists(BASE.'install/not_configured'));
+        if ($leaveinstaller) { 
             if ($user->id!=0) {
                 switch ($_POST['next']) {
                     case 'migration':
@@ -79,28 +79,28 @@ if (isset($_REQUEST['upgrade'])) {
 ?>
 	<form action="index.php?page=final" method="POST">
 		<div class="text-control control ">
-			<label class="label">Username:</label><input type="text" class="text " size="25" value="" name="username">
+			<label class="label"><?php echo gt("Username:"); ?></label><input type="text" class="text " size="25" value="" name="username">
 		</div>
 		<div class="password-control control ">
-			<label class="label">Password:</label><input type="password" class="password " size="25" value="" name="password">
+			<label class="label"><?php echo gt("Password:"); ?></label><input type="password" class="password " size="25" value="" name="password">
 		</div>
         <div class="formcontrol radiogroup">
             <span class="label">And:</span>
             <div class="formcontrol radiobutton">
                 <input type="radio" id="radiocontrol-1" class="radiobutton" value="migration" name="next">
-				<label for="radiocontrol-1">I want to begin transferring an existing Exponent v0.9x site</label>
+				<label for="radiocontrol-1"><?php echo gt("I want to begin transferring an existing Exponent v0.9x site"); ?></label>
             </div>
             <div class="formcontrol radiobutton">
                 <input type="radio" id="radiocontrol-2" class="radiobutton" value="configsite" name="next">
-				<label for="radiocontrol-2">I want to start configuring my new site</label>
+				<label for="radiocontrol-2"><?php echo gt("I want to start configuring my new site"); ?></label>
             </div>
             <div class="formcontrol radiobutton">
                 <input type="radio" id="radiocontrol-3" class="radiobutton" value="homepage" name="next">
-				<label for="radiocontrol-3">Just take me to my home page</label>
+				<label for="radiocontrol-3"><?php echo gt("Just take me to my home page"); ?></label>
             </div>
         </div>
 		<div class="control buttongroup">
-			<button class="awesome large green">Log In</button>
+			<button class="awesome large green"><?php echo gt("Log In"); ?></button>
 		</div>
 	</form>
     
@@ -111,5 +111,5 @@ if (isset($_REQUEST['upgrade'])) {
 
 <?php if (isset($_REQUEST['upgrade'])) { ?>
 <p><?php echo gt('Log back in to start using all your fancy new enhancements!') ?></p>
-<a class="awesome large green" href="<?php echo URL_FULL; ?>login.php">Log In Screen</a>
+<a class="awesome large green" href="<?php echo URL_FULL; ?>login.php"><?php echo gt("Log In Screen"); ?></a>
 <?php } ?>

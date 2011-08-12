@@ -1,26 +1,31 @@
 <?php
+
+##################################################
+#
+# Copyright (c) 2004-2011 OIC Group, Inc.
+# Written and Designed by James Hunt
+#
+# This file is part of Exponent
+#
+# Exponent is free software; you can redistribute
+# it and/or modify it under the terms of the GNU
+# General Public License as published by the Free
+# Software Foundation; either version 2 of the
+# License, or (at your option) any later version.
+#
+# GPL: http://www.gnu.org/licenses/gpl.txt
+#
+##################################################
+
 /**
- *  This file is part of Exponent
- *  Exponent is free software; you can redistribute
- *  it and/or modify it under the terms of the GNU
- *  General Public License as published by the Free
- *  Software Foundation; either version 2 of the
- *  License, or (at your option) any later version.
+ * Upgrade Script
  *
- * The file that holds the clear_cache class
- *
- * @link http://www.gnu.org/licenses/gpl.txt GPL http://www.gnu.org/licenses/gpl.txt
- * @package Exponent-CMS
- * @copyright 2004-2011 OIC Group, Inc.
- * @author Adam Kessler <adam@oicgroup.net>
- * @version 2.0.0
+ * @package Installation
+ * @subpackage Upgrade
  */
 
 /**
  * This is the class clear_cache
- *
- * @subpackage Upgrade
- * @package Installation
  */
 class clear_cache extends upgradescript {
 	protected $from_version = '1.99.0';
@@ -30,7 +35,7 @@ class clear_cache extends upgradescript {
 	 * name/title of upgrade script
 	 * @return string
 	 */
-	function name() { return "Clear the Caches"; }
+	function name() { return gt("Clear the Caches"); }
 
 	/**
 	 * additional test(s) to see if upgrade script should be run
@@ -46,10 +51,11 @@ class clear_cache extends upgradescript {
 	 */
 	function upgrade() {
 		// work our way through all the tmp files and remove them
-		if (!defined('SYS_FILES')) include_once(BASE.'subsystems/files.php');
+//		if (!defined('SYS_FILES')) include_once(BASE.'framework/core/subsystems-1/files.php');
+//		include_once(BASE.'framework/core/subsystems-1/files.php');
 		$files = array(
-			BASE.'tmp/mail',  // not used??  FIXME
-			BASE.'tmp/pods',  // not used??  FIXME
+//			BASE.'tmp/mail',  // not used??  FIXME
+//			BASE.'tmp/pods',  // not used??  FIXME
 			BASE.'tmp/css',  // exponent minified css cache
 			BASE.'tmp/minify', // minify cache
 //			BASE.'tmp/pixidou', // (new) pixidou cache
@@ -65,12 +71,12 @@ class clear_cache extends upgradescript {
         $errors = 0;
 		foreach ($files as $file) {
 			if (file_exists($file)) {
-				$files = exponent_files_remove_files_in_directory($file);
+				$files = expFile::removeFilesInDirectory($file);
 				$removed += count($files['removed']);
 				$errors += count($files['not_removed']);
 			}
 		}
-		return "All Caches were cleared.<br>".$errors." files could not be removed.";
+		return gt("All Caches were cleared.")."<br>".$errors." ".gt("files could not be removed.");
 	}
 
 	/**

@@ -18,7 +18,7 @@
 		<title>{$smarty.const.SITE_TITLE}</title>
 		<meta http-equiv="Content-Type" content="text/html; charset={$smarty.const.LANG_CHARSET}" />
 		<meta name="Generator" value="Exponent Content Management System" />
-		<link rel="stylesheet" title="default" href="{$smarty.const.THEME_RELATIVE}style.css" />
+		<link rel="stylesheet" title="default" href="{$smarty.const.THEME_RELATIVE}style.css" <?php echo(XHTML_CLOSING); ?>/>
 		<script type="text/javascript" src="{$smarty.const.PATH_RELATIVE}exponent.js.php"></script>
 		<style type="text/css">
 		{literal}

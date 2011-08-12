@@ -58,7 +58,7 @@ if (is_readable($upgrade_dir)) {
     if ($i==0) {
         echo '<li>
         <h3>None</h3>
-        <p>You\'re good to go. Click next to finish up.</p>
+        <p>'.gt('You\'re good to go. Click next to finish up.').'</p>
         </li>';
     }
     echo '</ol>';

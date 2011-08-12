@@ -1,26 +1,29 @@
 <?php
+
+##################################################
+#
+# Copyright (c) 2004-2011 OIC Group, Inc.
+# Written and Designed by James Hunt
+#
+# This file is part of Exponent
+#
+# Exponent is free software; you can redistribute
+# it and/or modify it under the terms of the GNU
+# General Public License as published by the Free
+# Software Foundation; either version 2 of the
+# License, or (at your option) any later version.
+#
+# GPL: http://www.gnu.org/licenses/gpl.txt
+#
+##################################################
+
 /**
- *  This file is part of Exponent
- *  Exponent is free software; you can redistribute
- *  it and/or modify it under the terms of the GNU
- *  General Public License as published by the Free
- *  Software Foundation; either version 2 of the
- *  License, or (at your option) any later version.
- *
- * The file that holds the fix_database class
- *
- * @link http://www.gnu.org/licenses/gpl.txt GPL http://www.gnu.org/licenses/gpl.txt
- * @package Exponent-CMS
- * @copyright 2004-2011 OIC Group, Inc.
- * @author Adam Kessler <adam@oicgroup.net>
- * @version 2.0.0
+ * @subpackage Upgrade
+ * @package Installation
  */
 
 /**
  * This is the class fix_database
- *
- * @subpackage Upgrade
- * @package Installation
  */
 class fix_database extends upgradescript {
 	protected $from_version = '0.96.3';
@@ -30,7 +33,7 @@ class fix_database extends upgradescript {
 	 * name/title of upgrade script
 	 * @return string
 	 */
-	function name() { return "Replace Missing Database Table Entries"; }
+	function name() { return gt("Replace Missing Database Table Entries"); }
 
 	/**
 	 * generic description of upgrade script

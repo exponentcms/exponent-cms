@@ -1,22 +1,23 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html>
 <head>
-    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <title>File Uploader  |  Exponent CMS</title>
-    <link rel="stylesheet" type="text/css" href="{$smarty.const.URL_FULL}framework/core/assets/css/msgq.css"> 
-    <link rel="stylesheet" type="text/css" href="{$smarty.const.URL_FULL}framework/core/assets/css/button.css"> 
-    <link rel="stylesheet" type="text/css" href="{$smarty.const.URL_FULL}framework/core/assets/css/admin-global.css"> 
-    <link rel="stylesheet" type="text/css" href="{$smarty.const.URL_FULL}framework/modules/file/assets/css/filemanager.css"> 
+    <link rel="stylesheet" type="text/css" href="{$smarty.const.URL_FULL}framework/core/assets/css/msgq.css" />
+    <link rel="stylesheet" type="text/css" href="{$smarty.const.URL_FULL}framework/core/assets/css/button.css" />
+    <link rel="stylesheet" type="text/css" href="{$smarty.const.URL_FULL}framework/core/assets/css/admin-global.css" />
+    <link rel="stylesheet" type="text/css" href="{$smarty.const.URL_FULL}framework/modules/file/assets/css/filemanager.css" />
 
     <script type="text/javascript" src="{$smarty.const.YUI2_PATH}yahoo-dom-event/yahoo-dom-event.js"></script>
     <script type="text/javascript" src="{$smarty.const.YUI2_PATH}element/element-min.js"></script>
     <script type="text/javascript" src="{$smarty.const.YUI2_PATH}uploader/uploader.js"></script>
     <script type="text/javascript" src="{$smarty.const.YUI2_PATH}datasource/datasource-min.js"></script>
     <script type="text/javascript" src="{$smarty.const.YUI2_PATH}datatable/datatable-min.js"></script>
+
     <script type="text/javascript" src="{$smarty.const.URL_FULL}exponent.js.php"></script>
 
     <script type="text/javascript" src="{$smarty.const.YUI3_PATH}yui/yui-min.js"></script>
-
+	<script type="text/javascript" src="{$smarty.const.URL_FULL}framework/core/assets/js/exp-flashdetector.js"></script>
 </head>
 <body class="exp-skin">
 <div id="exp-uploader">
@@ -28,6 +29,8 @@
         <a id="backlink" class="back awesome small green" href="{link action=picker update=$smarty.get.update fck=$smarty.get.fck ajax_action=1}?CKEditor={$smarty.get.CKEditor}&amp;CKEditorFuncNum={$smarty.get.CKEditorFuncNum}&amp;langCode={$smarty.get.langCode}"><span>Back to Manager</span></a>
     </div>
 	<div class="info-header">
+		<div id="noflash"></div>
+		
 		<div class="related-actions">
 			{help text="Get Help with Uploading Files" module="upload-files"}
 		</div>
@@ -232,6 +235,11 @@ YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
         e.halt();
         e.target.get('parentNode').remove();
     });
+	
+	if(!FlashDetect.installed) { 
+		Y.one('#noflash').append('You need to have Adobe Flash Player installed in your browser to upload files.<br /><a href="http://get.adobe.com/flashplayer/" target="_blank">Download it from Adobe.</a>');   
+	}
+	
 });
 
 {/literal}

@@ -60,18 +60,19 @@ class paypalExpressCheckout extends billingcalculator {
     function pre_process($config_object,$order,$billaddress,$shippingaddress) {
         return true;
     }
-    
-    /**
-    * For paypal this will call out to the PP api and get a token then redirect to PP.
-    * PP then redirects back the site with token in the url. We can pick up that token 
-    * from the url such that if we already have it we'll ccall another PP api to get the
-    * details and make it match up to the order.
-    * 
-    * @param mixed $method The billing method information for this user
-    * @param mixed $opts 
-    * @param array $params The url prameters, as if sef was off. 
-    * @return mixed An object indicating pass of failure. 
-    */
+
+	/**
+	 * For paypal this will call out to the PP api and get a token then redirect to PP.
+	 * PP then redirects back the site with token in the url. We can pick up that token
+	 * from the url such that if we already have it we'll ccall another PP api to get the
+	 * details and make it match up to the order.
+	 *
+	 * @param mixed $method The billing method information for this user
+	 * @param mixed $opts
+	 * @param array $params The url prameters, as if sef was off.
+	 * @param $order
+	 * @return mixed An object indicating pass of failure.
+	 */
     function preprocess($method, $opts, $params, $order)
     {
 	
@@ -452,10 +453,10 @@ class paypalExpressCheckout extends billingcalculator {
         // make sure we have some billing options saved.
         //if (empty($this->opts)) return false;
         
-        //exponent_javascript_toFoot('creditcard',"",null,'', URL_FULL.'subsystems/forms/js/AuthorizeNet.validate.js');
+        //exponent_javascript_toFoot('creditcard',"",null,'', URL_FULL.'framework/core/subsystems-1/forms/js/AuthorizeNet.validate.js');
         //$opts->first_name = isset($this->opts->first_name) ? $this->opts->first_name : null;
         //$opts->last_name = isset($this->opts->last_name) ? $this->opts->last_name : null;
-        $this->opts = exponent_sessions_get('billing_options');
+        $this->opts = expSession::get('billing_options');
         $opts->cc_type = isset($this->opts->cc_type) ? $this->opts->cc_type : null;
         $opts->cc_number = isset($this->opts->cc_number) ? $this->opts->cc_number : null;
         $opts->exp_month = isset($this->opts->exp_month) ? $this->opts->exp_month : null;
@@ -764,12 +765,16 @@ class paypalExpressCheckout extends billingcalculator {
 			exit('RefundTransaction failed: ' . $httpParsedResponseAr["L_LONGMESSAGE0"]);
 		}
     }
-	
+
 	/**
 	 * Send HTTP POST Request
 	 *
-	 * @param	string	The API method name
-	 * @param	string	The POST Message fields in &name=value pair format
+	 * @param $methodName_
+	 * @param $nvpStr_
+	 *
+	 * @internal param \The $string API method name
+	 *
+	 * @internal param \The $string POST Message fields in &name=value pair format
 	 * @return	array	Parsed HTTP Response body
 	 */
 	 function PPHttpPost($methodName_, $nvpStr_) {

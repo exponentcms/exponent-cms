@@ -24,7 +24,6 @@ define('SCRIPT_FILENAME','index.php');  // we need to force the links to build c
 require_once('../exponent.php');
 global $user;
 global $db;
-$i18n = exponent_lang_loadFile('modules/calendarmodule/class.php');
 
 // let's select a calendar by its source to make it easier to find and harder to spoof	
 $src = $_GET['src'];
@@ -68,16 +67,6 @@ if ($title == '') {
 }
 $template->assign('moduletitle',$title);
 
-// $canviewapproval = false;
-// $inapproval = false;
-// if ($user) $canviewapproval = (exponent_permissions_check("approve",$loc) || exponent_permissions_check("manage_approval",$loc));
-// if ($db->countObjects("calendar","location_data='".serialize($loc)."' AND approved!=1")) {
-	// foreach ($db->selectObjects("calendar","location_data='".serialize($loc)."' AND approved!=1") as $c) {
-		// if ($c->poster == $user->id) $canviewapproval = true;
-	// }
-	// $inapproval = true;
-// }
-
 $time = (isset($_GET['time']) ? $_GET['time'] : time());
 $time = intval($time);
 
@@ -88,14 +77,15 @@ $template->assign("time",$time);
 	// $viewparams = array("type"=>"byday", "range"=>"week");
 // }
 
-if (!defined("SYS_DATETIME")) include_once(BASE . "subsystems/datetime.php");
-if (!defined('SYS_SORTING')) include_once(BASE . 'subsystems/sorting.php');
-
-if (!function_exists("exponent_sorting_byEventStartAscending")) {
-	function exponent_sorting_byEventStartAscending($a,$b) {
-		return ($a->eventstart < $b->eventstart ? -1 : 1);
-	}
-}
+//if (!defined("SYS_DATETIME")) include_once(BASE . "framework/core/subsystems-1/datetime.php");
+include_once(BASE . "framework/core/subsystems-1/datetime.php");
+//if (!defined('SYS_SORTING')) include_once(BASE . 'framework/core/subsystems-1/sorting.php');
+//include_once(BASE . 'framework/core/subsystems-1/sorting.php');
+//if (!function_exists("exponent_sorting_byEventStartAscending")) {
+//	function exponent_sorting_byEventStartAscending($a,$b) {
+//		return ($a->eventstart < $b->eventstart ? -1 : 1);
+//	}
+//}
 
 
 
@@ -178,7 +168,8 @@ for ($i = 0; $i < $totaldays; $i++) {
 	}
 	$counts[$start] = count($days[$start]);
 	$count += count($days[$start]);
-	usort($days[$start],"exponent_sorting_byEventStartAscending");
+//	usort($days[$start],"exponent_sorting_byEventStartAscending");
+	$days[$start] = expSorter::sort(array('array'=>$days[$start],'sortby'=>'eventstart', 'order'=>'ASC'));
 }
 $template->assign("days",$days);
 $template->assign("counts",$counts);
@@ -279,6 +270,7 @@ $template->assign("totaldays",$totaldays);
 		// );
 	// }
 	// usort($items,"exponent_sorting_byEventStartAscending");
+	// $items = expSorter::sort(array('array'=>$items,'sortby'=>'eventstart', 'order'=>'ASC'));
 	// $template->assign("items",$items);
 // } else if ($viewparams['type'] == "default") {
 	// if (!isset($viewparams['range'])) $viewparams['range'] = "all";
@@ -361,7 +353,7 @@ if ($count == 0) {
 //$cats = $db->selectObjectsIndexedArray("category","location_data='".serialize($loc)."'");
 $cats = $db->selectObjectsIndexedArray("category");
 $cats[0] = null;
-$cats[0]->name = '<i>'.$i18n['no_category'].'</i>';
+$cats[0]->name = '<i>'.gt('No Category').'</i>';
 $cats[0]->color = "#000000";
 $template->assign("categories",$cats);
 
@@ -398,14 +390,14 @@ $template->assign("config",$config);
 
 // format and send email
 
-//$subject = $config->email_title_thread;
 $subject = $config->email_title_reminder." - $title";
 $from_addr = $config->email_address_reminder;
 $headers = array(
 	"From"=>$from = $config->email_from_reminder,
 	"Reply-to"=>$reply = $config->email_reply_reminder
 	);
-if (!defined("SYS_USERS")) require_once(BASE . "subsystems/users.php");
+//if (!defined("SYS_USERS")) require_once(BASE . "framework/core/subsystems-1/users.php");
+require_once(BASE . "framework/core/subsystems-1/users.php");
 
 // set up the html message
 $template->assign("showdetail",$config->email_showdetail);
@@ -416,14 +408,7 @@ $msg = chop(strip_tags(str_replace(array("<br />","<br>","br/>"),"\n",$htmlmsg))
 
 // Saved.  do notifs
 $notifs = unserialize($config->reminder_notify);
-
 $emails = array();
-//foreach ($notifs as $n) {
-//	if ($n->user_id != $user->id) {
-//		$u = exponent_users_getUserById($n);
-//		if ($u->email != "" && !in_array($u->email,$emails)) $emails[] = $u->email;
-//	}
-//}
 foreach ($db->selectObjects('calendar_reminder_address',"calendar_id='".$config->id."'") as $c) {
 	if ($c->user_id != 0) {
 		$u = exponent_users_getUserById($c->user_id);
@@ -437,7 +422,6 @@ foreach ($db->selectObjects('calendar_reminder_address',"calendar_id='".$config-
 		$emails[] = $c->email;
 	}
 }
-
 if (empty($emails)) {
 	print_r("<br><b><i>Exponent - No One to Send Reminders to!</i></b><br>");	
 	exit();
@@ -445,42 +429,19 @@ if (empty($emails)) {
 
 $emails = array_flip(array_flip($emails));
 $emails = array_map('trim', $emails);
-
-// old mail method
-//require_once(BASE . "subsystems/mail.php");
-//$mail = new exponentMail();
-//$mail->subject($subject);
-//$mail->addText($msg);
-//$mail->addHTML($htmlmsg);
-//$mail->addFrom($config->email_address_reminder,$config->email_from_reminder);
-//foreach($emails as $recip) {	// to keep other recepients hidden
-//	try {
-//		$mail->addTo($recip);
-//		$mail->send();
-//	} catch (Exception $e) {
-//	}
-//	$mail->flushRecipients();
-//}
-
-// new mail method
 $headers = array(
 	"MIME-Version"=>"1.0",
 	"Content-type"=>"text/html; charset=".LANG_CHARSET
 );
-//foreach ($emails as $recip) {
-	$mail = new expMail();
-	$mail->quickSend(array(
-			'headers'=>$headers,
-			'html_message'=>$htmlmsg,
-			"text_message"=>$msg,
-//			'to'=>trim($recip),
-			'to'=>trim($emails),
-//			'from'=>trim($config->email_address_reminder),
-//			'from_name'=>$config->email_from_reminder,
-			'from'=>array(trim($config->email_address_reminder)=>$config->email_from_reminder),
-			'subject'=>$subject,
-	));
-//}
+$mail = new expMail();
+$mail->quickSend(array(
+		'headers'=>$headers,
+		'html_message'=>$htmlmsg,
+		"text_message"=>$msg,
+		'to'=>trim($emails),
+		'from'=>array(trim($config->email_address_reminder)=>$config->email_from_reminder),
+		'subject'=>$subject,
+));
 
 print_r("<p>The following reminder was sent via email:</p><br>");	
 print_r($htmlmsg);

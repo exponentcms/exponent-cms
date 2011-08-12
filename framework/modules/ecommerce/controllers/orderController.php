@@ -213,9 +213,9 @@ class orderController extends expController {
         $trackMe = false;
         if (isset($this->params['tc']) && $this->params['tc'] == 1)
         {
-            if(exponent_sessions_isset('orders_tracked'))
+            if(expSession::is_set('orders_tracked'))
             {
-                $trackingArray = exponent_sessions_get('orders_tracked');    
+                $trackingArray = expSession::get('orders_tracked');
                 if(in_array($order->invoice_id,$trackingArray)) 
                 {
                     $trackMe = false;
@@ -223,14 +223,14 @@ class orderController extends expController {
                 else {
                     $trackMe = true;
                     $trackingArray[] = $order->invoice_id;
-                    exponent_sessions_set('orders_tracked',$trackingArray);    
+                    expSession::set('orders_tracked',$trackingArray);
                 }
             }
             else
             {
                 $trackMe = true;
                 $trackingArray[] = $order->invoice_id;
-                exponent_sessions_set('orders_tracked',$trackingArray);        
+                expSession::set('orders_tracked',$trackingArray);
             }
         }
         if(DEVELOPMENT != 0)$trackMe = false;
@@ -611,6 +611,7 @@ class orderController extends expController {
             }
             
             $mail = new expMail();
+	        //FIXME Unless you need each mail sent separately, you can now set 'to'=>$email_addys and let expMail send a single email to all addresses
             foreach($email_addys as $email_addy)
             {
                 $mail->quickSend(array(
@@ -1544,11 +1545,11 @@ class orderController extends expController {
     public function verifyReturnShopper()
     {
         global $user,$order;        
-        $sessAr = exponent_sessions_get('verify_shopper');
+        $sessAr = expSession::get('verify_shopper');
         if(isset($sessAr))
         {
             assign_to_template(array('firstname'=>$sessAr['firstname']));
-            /*eDebug(exponent_sessions_get('verify_shopper'));
+            /*eDebug(expSession::get('verify_shopper'));
             eDebug($this->params);
             eDebug("here");
             eDebug($user);
@@ -1559,7 +1560,7 @@ class orderController extends expController {
     public function verifyAndRestoreCart()
     {
         global $user,$order;
-        $sessAr = exponent_sessions_get('verify_shopper');        
+        $sessAr = expSession::get('verify_shopper');
         if(isset($sessAr) && isset($this->params['cid']) && $this->params['cid'] == $sessAr['cid'])        
         {
             $tmpCart = new order($sessAr['cid']);
@@ -1576,7 +1577,7 @@ class orderController extends expController {
                     //validatio succeed, so restore order, login user and continue on to orig_path
                     //eDebug("Validated",true);
                     $sessAr['validated'] = true;
-                    exponent_sessions_set('verify_shopper',$sessAr); 
+                    expSession::set('verify_shopper',$sessAr);
                     redirect_to($sessAr['orig_path']);  
                 }
                 else
@@ -1595,21 +1596,21 @@ class orderController extends expController {
         }        
     }
     
-    public function clearCartCookie()
+    public static function clearCartCookie()
     {
-         exponent_sessions_unset('verify_shopper');
+         expSession::un_set('verify_shopper');
          order::setCartCookie(null);
     }
 
     public function clearCart()
     {   
         global $order;
-        $sessAr = exponent_sessions_get('verify_shopper');
+        $sessAr = expSession::get('verify_shopper');
         if(isset($sessAr))       
         {               
             order::setCartCookie($order);            
             $orig_path = $sessAr['orig_path'];
-            exponent_sessions_unset('verify_shopper');
+            expSession::un_set('verify_shopper');
             redirect_to($orig_path);
         }else
         {
@@ -1627,7 +1628,7 @@ class orderController extends expController {
         $sql .= "order by match (a.firstname,a.lastname,a.email,a.organization)  against ('" . $this->params['query'] . "*') ASC LIMIT 12";
         $res = $db->selectObjectsBySql($sql);
         //eDebug($sql);
-        $ar = new expAjaxReply(200, gettext('Here\'s the items you wanted'), $res);
+        $ar = new expAjaxReply(200, gt('Here\'s the items you wanted'), $res);
         $ar->send();
     }    
     
@@ -1641,7 +1642,7 @@ class orderController extends expController {
         $sql .= "order by match (a.firstname,a.lastname,a.email,a.organization)  against ('" . $this->params['query'] . "*') ASC LIMIT 12";
         $res = $db->selectObjectsBySql($sql);
         //eDebug($sql);
-        $ar = new expAjaxReply(200, gettext('Here\'s the items you wanted'), $res);
+        $ar = new expAjaxReply(200, gt('Here\'s the items you wanted'), $res);
         $ar->send();
     }
     

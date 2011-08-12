@@ -35,7 +35,7 @@ class user_avatar extends expRecord {
 	/**
 	 * @return string
 	 */
-	public function description() { return 'The extension allows users to upload avatar images.'; }
+	public function description() { return 'The extension allows users to use avatar images.'; }
 
 	/**
 	 * @param array $params
@@ -43,7 +43,8 @@ class user_avatar extends expRecord {
 	 */
 	public function update($params=array()) {
         global $db;
-        
+        global $user;
+
         // if not user id then we should not be doing anything here
         if (empty($params['user_id'])) return false;
         $this->user_id = $params['user_id'];
@@ -52,8 +53,12 @@ class user_avatar extends expRecord {
         $this->image = $params['current_avatar'];
         if (empty($this->image)) $this->image = URL_FULL.'framework/modules/users/avatars/avatar_not_found.jpg';
         
-        // if the user uploaded a new avatar lets save it!
-        if (!empty($_FILES['avatar']['tmp_name'])) {
+        // if the user chose gravatar, create the link and save it!
+        if (!empty($params['use_gravatar'])) {
+	        $this->use_gravatar = $params['use_gravatar'];
+	        $emailMD5 = md5(strtolower(trim(exponent_users_getEmailById($params['user_id']))));
+	        $this->image = "http://www.gravatar.com/avatar/" . $emailMD5 .  ".jpg";
+        } elseif (!empty($_FILES['avatar']['tmp_name'])) {  // if the user uploaded a new avatar lets save it!
             $info = expFile::getImageInfo($_FILES['avatar']['tmp_name']);
             if ($info['is_image']) {
                 // figure out the mime type and set the file extension and name

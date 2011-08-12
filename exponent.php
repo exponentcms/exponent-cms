@@ -28,32 +28,38 @@
  * @version 2.0.0
  */
 
-//require_once('exponent_common.php');  // incorporated into exponent_bootstrap.php
 require_once('exponent_bootstrap.php');
 
-// Initialize the AutoLoader Subsystem
-require_once(BASE.'subsystems/autoloader.php');
+// Initialize the AutoLoader subsystem - for objects we want loaded on the fly
+require_once(BASE.'framework/core/subsystems-1/autoloader.php');
+
+// Initialize the MVC framework - for objects we need loaded now
+require_once(BASE.'framework/core/expFramework.php');
+/**
+ * the list of available/active controllers
+ * @global array $available_controllers
+ * @name $available_controllers
+ */
+$available_controllers = intializeControllers();
 
 // Initialize the Sessions Subsystem
-require_once(BASE.'subsystems/sessions.php');
-exponent_sessions_initialize();
+expSession::initialize();
 
-// initialize useful/needed constants throughout the system
-//require_once(BASE.'exponent_constants.php');
-// Initialize the theme subsystem
-if (!defined('SYS_THEME')) require_once(BASE.'subsystems/theme.php');
+// Initialize the theme subsystem 1.0 compatibility layer
+require_once(BASE.'framework/core/subsystems-1/theme.php');
+$validateTheme = array("headerinfo"=>false,"footerinfo"=>false);
 
 // Initialize the language subsystem
-require_once(BASE.'subsystems/lang.php');
+require_once(BASE.'framework/core/subsystems-1/lang.php');
 exponent_lang_initialize();
 // Load 2.0 lang
 expLang::loadLang();
 
 // Initialize the Core Subsystem
-require_once(BASE.'subsystems/core.php');
+require_once(BASE.'framework/core/subsystems-1/core.php');
 
 // Initialize the Database Subsystem
-require_once(BASE.'subsystems/database.php');
+require_once(BASE.'framework/core/subsystems-1/database.php');
 /**
  * The exponent database object
  *
@@ -63,39 +69,38 @@ require_once(BASE.'subsystems/database.php');
 $db = exponent_database_connect(DB_USER,DB_PASS,DB_HOST.':'.DB_PORT,DB_NAME);
 
 // Initialize the old school Modules Subsystem.
-require_once(BASE.'subsystems/modules.php');
+require_once(BASE.'framework/core/subsystems-1/modules.php');
 exponent_modules_initialize();
 
 // Initialize the Template Subsystem.
-require_once(BASE.'subsystems/template.php');
+require_once(BASE.'framework/core/subsystems-1/template.php');
 
 // Initialize the Permissions Subsystem.
-require_once(BASE.'subsystems/permissions.php');
+require_once(BASE.'framework/core/subsystems-1/permissions.php');
 
 // Initialize the Flow/History Subsystem.
-if (!defined('SYS_FLOW')) require_once(BASE.'subsystems/flow.php');
+//if (!defined('SYS_FLOW')) require_once(BASE.'framework/core/subsystems-1/flow.php');
+//require_once(BASE.'framework/core/subsystems-1/flow.php');
 /**
  * the browsing history object
  * @global expHistory $history
  * @name $history
  */
 $history = new expHistory(); //<--This is the new flow subsystem and will be replacing the above.
+$SYS_FLOW_REDIRECTIONPATH = 'exponent_default';
 
 // Initialize the User Subsystem.
-require_once(BASE.'subsystems/users.php');
+require_once(BASE.'framework/core/subsystems-1/users.php');
 
 // Initialize the javascript subsystem
-if (!defined('SYS_JAVASCRIPT')) require_once(BASE.'subsystems/javascript.php');
+//if (!defined('SYS_JAVASCRIPT')) require_once(BASE.'framework/core/subsystems-1/javascript.php');
+require_once(BASE.'framework/core/subsystems-1/javascript.php');
 
 // Initialize the MVC framework
-require_once(BASE.'framework/core/expFramework.php');
-/**
- * the list of available/active controllers
- * @global array $available_controllers
- * @name $available_controllers
- */
-$available_controllers = intializeControllers();
-if (exponent_javascript_inAjaxAction()) set_error_handler('handleErrors');
+//require_once(BASE.'framework/core/expFramework.php');
+//$available_controllers = intializeControllers();
+
+if (expJavascript::inAjaxAction()) set_error_handler('handleErrors');
 
 // Validate the session.  This will populate the $user variable
 /**
@@ -104,7 +109,7 @@ if (exponent_javascript_inAjaxAction()) set_error_handler('handleErrors');
  * @name $user
  */
 $user = new user();
-exponent_sessions_validate();
+expSession::validate();
 
 // Initialize permissions variables
 exponent_permissions_initialize();

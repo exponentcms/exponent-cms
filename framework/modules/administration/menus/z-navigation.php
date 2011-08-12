@@ -31,11 +31,11 @@ $info = array(
     'itemdata'=>array(
         array(
             'classname'=>'info',
-            'text'=>'Information',
+            'text'=>gt('Information'),
             "submenu"=>array(
                 'id'=>'pginfo',
                 'itemdata'=>array(
-                    array('classname'=>'moreinfo','text'=>"Name : ".$page->name."<br />ID : ".$page->id."<br />SEF Name : ".$page->sef_name."<br />Subtheme : ".$subtheme,"disabled"=>true)
+                    array('classname'=>'moreinfo','text'=>gt("Name")." : ".$page->name."<br />ID : ".$page->id."<br />".gt("SEF Name")." : ".$page->sef_name."<br />".gt("Subtheme")." : ".$subtheme,"disabled"=>true)
                 )
             )
         )
@@ -43,14 +43,16 @@ $info = array(
 );
 
 if ($db->selectValue('userpermission','uid','uid=\''.$user->id.'\' AND permission!=\'view\' AND internal='.$section.'') || $user->isAdmin()) {
-    $info['itemdata'][] = array('text'=>'Edit this page','classname'=>'edit', 'url'=>makeLink(array('module'=>'navigationmodule', 'action'=>'edit_contentpage', 'id'=>$page->id)));
-    $info['itemdata'][] = array('text'=>'Manage User Permissions','classname'=>'user', 'url'=>makeLink(array('module'=>'navigationmodule','action'=>'userperms',"_common"=>"1","int"=>$page->id)));
-    $info['itemdata'][] = array('text'=>'Manage Group Permissions','classname'=>'group', 'url'=>makeLink(array('module'=>'navigationmodule','action'=>'groupperms',"_common"=>"1","int"=>$page->id)));
+    $info['itemdata'][] = array('text'=>gt('Edit this page'),'classname'=>'edit', 'url'=>makeLink(array('module'=>'navigationmodule', 'action'=>'edit_contentpage', 'id'=>$page->id)));
 }
-$info['itemdata'][] = array('text'=>'Manage all pages','classname'=>'sitetree', 'url'=>makeLink(array('module'=>'navigationmodule','action'=>'manage')));
+if ($user->isAdmin()) {
+    $info['itemdata'][] = array('text'=>gt('Manage User Permissions'),'classname'=>'user', 'url'=>makeLink(array('module'=>'navigationmodule','action'=>'userperms',"_common"=>"1","int"=>$page->id)));
+    $info['itemdata'][] = array('text'=>gt('Manage Group Permissions'),'classname'=>'group', 'url'=>makeLink(array('module'=>'navigationmodule','action'=>'groupperms',"_common"=>"1","int"=>$page->id)));
+}
+$info['itemdata'][] = array('text'=>gt('Manage all pages'),'classname'=>'sitetree', 'url'=>makeLink(array('module'=>'navigationmodule','action'=>'manage')));
 
 return array(
-    'text'=>'Pages',
+    'text'=>gt('Pages'),
     'classname'=>'thispage',
     'submenu'=>$info
 );

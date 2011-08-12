@@ -4,13 +4,18 @@
 # Excludes the site's configuration file
 /conf/config.php
 
-#excludes cache files
+# Excludes cache files
 /tmp/*
 
+# Excludes Eclipse Project files
 .buildpath
 .project
-index.html
+
+# Excludes NetBeans Project files
+/.settings/
+
+# Excludes PHPStorm Project files
+/.idea/
+
 .gitignore
 .mailmap
-/.settings/
-/.idea/

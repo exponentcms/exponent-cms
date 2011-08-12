@@ -1,26 +1,29 @@
 <?php
+
+##################################################
+#
+# Copyright (c) 2004-2011 OIC Group, Inc.
+# Written and Designed by James Hunt
+#
+# This file is part of Exponent
+#
+# Exponent is free software; you can redistribute
+# it and/or modify it under the terms of the GNU
+# General Public License as published by the Free
+# Software Foundation; either version 2 of the
+# License, or (at your option) any later version.
+#
+# GPL: http://www.gnu.org/licenses/gpl.txt
+#
+##################################################
+
 /**
- *  This file is part of Exponent
- *  Exponent is free software; you can redistribute
- *  it and/or modify it under the terms of the GNU
- *  General Public License as published by the Free
- *  Software Foundation; either version 2 of the
- *  License, or (at your option) any later version.
- *
- * The file that holds the version_tracking class
- *
- * @link http://www.gnu.org/licenses/gpl.txt GPL http://www.gnu.org/licenses/gpl.txt
- * @package Exponent-CMS
- * @copyright 2004-2011 OIC Group, Inc.
- * @author Adam Kessler <adam@oicgroup.net>
- * @version 2.0.0
+ * @subpackage Upgrade
+ * @package Installation
  */
 
 /**
  * This is the class version_tracking
- *
- * @subpackage Upgrade
- * @package Installation
  */
 class version_tracking extends upgradescript {
 	protected $from_version = '1.99.0';
@@ -30,7 +33,7 @@ class version_tracking extends upgradescript {
 	 * name/title of upgrade script
 	 * @return string
 	 */
-	function name() { return "Install Version Tracking"; }
+	function name() { return gt("Install Version Tracking"); }
 
 	/**
 	 * generic description of upgrade script
@@ -40,7 +43,9 @@ class version_tracking extends upgradescript {
 
 	/**
 	 * additional test(s) to see if upgrade script should be run
-	 * @param $version
+	 * @param $ver
+	 *
+	 * @internal param $version
 	 * @return bool
 	 */
 	function needed($ver) {

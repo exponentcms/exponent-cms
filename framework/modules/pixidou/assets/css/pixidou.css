@@ -1,0 +1,96 @@
+@CHARSET "UTF-8";
+
+*html .yui-picker-bg {
+	/*filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='http://yui.yahooapis.com/2.6.0/build/assets/skins/sam/picker_mask.png', sizingMethod='scale');*/
+	filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../../../../external/lissa/2.9.0/build/assets/skins/sam/picker_mask.png', sizingMethod='scale');
+}
+a:link, a:active, a:visited{
+	color: #7D98B8;
+	text-decoration: none;
+}
+
+a:hover{
+	color: #000;
+	text-decoration: underline;
+}
+
+#bd{
+	font-size: 11px;	
+}
+
+#imageContainer{
+	margin: 20px 0px 20px 0;
+}
+
+#yuiImg{
+	position: relative;
+}
+
+.yui-skin-sam .yui-layout .yui-layout-unit div.yui-layout-bd {
+	border: 0px;
+	text-align: left;
+	background:transparent url(../images/background.gif) repeat scroll 0pt 0px;
+}
+
+.yui-skin-sam .yui-layout .yui-layout-hd {
+	/*background:transparent url(http://yui.yahooapis.com/2.6.0/build/assets/skins/sam/sprite.png) repeat-x scroll 0pt 0px;*/
+	background:transparent url(../../../../external/lissa/2.9.0/build/assets/skins/sam/sprite.png) repeat-x scroll 0pt 0px;
+}
+
+.yui-skin-sam .yui-layout { 
+	background-color: #fff;
+}
+
+.yui-skin-sam .yui-h-slider {
+	background:transparent url(../images/bg-h.gif) repeat-x scroll 5px 0;
+	height:28px;
+	width:254px;
+}
+
+#infoPanel{
+	float: left;
+	width: 50%;
+}
+
+#actionsPanel{
+	float: right;
+	width: 50%;
+}
+
+#applyTool, #cancelTool{
+	width: 60px;
+	float: right;
+	margin-right: 10px;
+}
+
+#zoomInTool, #zoomOutTool{
+	width: 70px;
+	float: left;
+	margin-right: 10px;
+}
+
+.yui-skin-sam .yui-navset .yui-content, .yui-skin-sam .yui-navset .yui-navset-top .yui-content {
+	border:0;
+	padding:0.25em 0.5em;
+}
+.yui-skin-sam .yui-navset .yui-content {
+	background:#fff none repeat scroll 0 0;
+}
+
+#ft{
+	text-align: center;
+	background-color: #e4e4e4;
+	border-top:1px solid #ccc;
+	border-left:1px solid #ccc;
+	border-right:1px solid #ccc;
+	height: 35px;
+	line-height: 35px;
+	padding-top: 5px;
+}
+
+/****************  Exponent Styles  ***********************/
+
+.hide {
+    display:none;
+}
+

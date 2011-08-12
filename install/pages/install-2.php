@@ -31,8 +31,6 @@ $config = array(
 	'DB_ENCODING'=>'utf8'
 );
 
-$i18n = exponent_lang_loadFile('install/pages/dbconfig.php');
-
 ?>
 <script language="javascript">
 	function hideAllOptions() {
@@ -57,10 +55,10 @@ $i18n = exponent_lang_loadFile('install/pages/dbconfig.php');
     <input type="hidden" name="page" value="install-3" />
 
 	<div class="control">
-        <span class="label"><?php echo $i18n['backend']; ?>: </span>
+        <span class="label"><?php echo gt('Backend'); ?>: </span>
         <select name="sc[db_engine]" onchange="showOptions(this.value);">
 		<?php
-		require_once(BASE.'subsystems/database.php');
+		require_once(BASE.'framework/core/subsystems-1/database.php');
 		foreach (exponent_database_backends(1) as $name=>$display) {
             echo '<option value="'.$name.'"';
             if ($config['db_engine'] == $name) {
@@ -71,19 +69,19 @@ $i18n = exponent_lang_loadFile('install/pages/dbconfig.php');
 		?>
 		</select>
 		<div class="control_help">
-			<?php echo $i18n['backend_desc']; ?>
+			<?php echo gt('Select which database server software package your web server is running.  If the software is not listed, it is not supported by Exponent.'); ?>
 			<br /><br />
-			<?php echo $i18n['in_doubt']; ?>
+			<?php echo gt('If in doubt, contact your system administrator or hosting provider.'); ?>
 		</div>
 	</div>
 
 
 	<div class="control" id="mysql_options">
-		 <span class="label"><?php echo $i18n['DB_ENCODING']; ?>: </span>
+		 <span class="label"><?php echo gt('Database Encoding'); ?>: </span>
 		<select name="sc[DB_ENCODING]" value="<?php echo $config['DB_ENCODING']; ?>" >
 <?PHP
 	if (!defined('SYS_CONFIG')) {
-		include_once(BASE.'subsystems/config.php');
+		include_once(BASE.'framework/core/subsystems-1/config.php');
 	}
 
 	foreach(exponent_config_dropdownData("DB_ENCODING") as $key=>$value){
@@ -92,62 +90,62 @@ $i18n = exponent_lang_loadFile('install/pages/dbconfig.php');
 ?>
 		</select>
 		<div class="control_help">
-			<?php echo $i18n['DB_ENCODING_desc']; ?>
+			<?php echo gt('Dont change that unless you know what you are doing. This setting is currently only respected on MySQL 4.1.2+'); ?>
 			<br /><br />
-			<?php echo $i18n['in_doubt']; ?>
+			<?php echo gt('If in doubt, contact your system administrator or hosting provider.'); ?>
 		</div>
 	</div>
 
 	<div class="control">
-		 <span class="label"><?php echo $i18n['address']; ?>: </span>
+		 <span class="label"><?php echo gt('Address'); ?>: </span>
 		<input class="text" type="text" name="sc[db_host]" value="<?php echo $config['db_host']; ?>" />
 		<div class="control_help">
-			<?php echo $i18n['address_desc']; ?>
+			<?php echo gt('If your database server software runs on a different physical machine than the web server, enter the address of the database server machine.  Either an IP address (like 1.2.3.4) or an internet domain name (such as example.com) will work.<br /><br />If your database server software runs on the same machine as the web server, use the default setting, "localhost".'); ?>
 			<br /><br />
-			<?php echo $i18n['in_doubt']; ?>
+			<?php echo gt('If in doubt, contact your system administrator or hosting provider.'); ?>
 		</div>
 	</div>
 
 	<div class="control">
-		 <span class="label"><?php echo $i18n['port'];?>: </span>
+		 <span class="label"><?php echo gt('Port');?>: </span>
 		<input class="text" type="text" name="sc[db_port]" value="<?php echo $config['db_port']; ?>" size="5" />
 		<div class="control_help">
-			<?php echo $i18n['port_desc']; ?>
+			<?php echo gt('If you are using a database server that supports TCP or other network connection protocols, and that database software runs on a different physical machine than the web server, enter the connection port.<br /><br />If you entered "localhost" in the Address field, you should leave this as the default setting.'); ?>
 			<br /><br />
-			<?php echo $i18n['in_doubt']; ?>
+			<?php echo gt('If in doubt, contact your system administrator or hosting provider.'); ?>
 		</div>
 	</div>
 
 	<div class="control">
-		 <span class="label"><?php echo $i18n['dbname']; ?>: </span>
+		 <span class="label"><?php echo gt('Database Name'); ?>: </span>
 		<input class="text" type="text" name="sc[db_name]" value="<?php echo $config['db_name']; ?>" />
 
 	</div>
 
 	<div class="control">
-		 <span class="label"><?php echo $i18n['username']; ?>: </span>
+		 <span class="label"><?php echo gt('Username'); ?>: </span>
 		<input class="text" type="text" name="sc[db_user]" value="<?php echo $config['db_user']; ?>" />
 		<div class="control_help">
-			<?php echo $i18n['username_desc']; ?>
+			<?php echo gt('All database server software supported by Exponent require some sort of authentication.  Enter the name of the user account to use for logging into the database server.'); ?>
 			<br /><br />
-			<?php echo $i18n['username_desc2']; ?>  (<a href="" onclick="return pop('db_priv');"><?php echo $i18n['more_info']; ?></a>)
+			<?php echo gt('Make sure that this user has the proper database user privileges.'); ?>  (<a href="" onclick="return pop('db_priv');"><?php echo gt('More Information'); ?></a>)
 		</div>
 	</div>
 	<div class="control">
-		 <span class="label"><?php echo $i18n['password']; ?>: </span>
+		 <span class="label"><?php echo gt('Password'); ?>: </span>
 		<input class="text" type="password" name="sc[db_pass]" value="<?php echo $config['db_pass']; ?>" />
 		<div class="control_help">
-			<?php echo $i18n['password_desc']; ?>
+			<?php echo gt('Enter the password for the username you entered above.  The password will <b>not</b> be obscured, because it cannot be obscured in the configuration file.  The Exponent developers urge you to use a completely new password, unlike any of your others, for security reasons.'); ?>
 		</div>
 	</div>
 
 	<div class="control">
-		 <span class="label"><?php echo $i18n['prefix']; ?>: </span>
+		 <span class="label"><?php echo gt('Table Prefix'); ?>: </span>
 		<input class="text" type="text" name="sc[db_table_prefix]" value="<?php echo $config['db_table_prefix']; ?>" />
 		<div class="control_help">
-			<?php echo $i18n['prefix_desc']; ?>
+			<?php echo gt('A table prefix helps Exponent differentiate tables for this site from other tables that may already exist (or eventually be created by other scripts).  If you are using an existing database, you may want to change this.'); ?>
 			<br /><br />
-			<?php echo $i18n['prefix_note']; ?>
+			<?php echo gt('<b>Note:</b> A table prefix may only contain numbers and letters.  Spaces and symbols (including "_") are not allowed.  An underscore will be added for you, by Exponent.'); ?>
 		</div>
 	</div>
 <button class="awesome large green"><?php echo gt('Install Database'); ?></button>

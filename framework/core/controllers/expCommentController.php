@@ -149,7 +149,7 @@ class expCommentController extends expController {
         $notification_email = empty($this->params['notification_email']) ? COMMENTS_NOTIFICATION_EMAIL : $this->params['notification_email'];
         
         // check the anti-spam control
-        if (!exponent_users_isLoggedIn())
+        if (!$user->isLoggedIn())
         {
             expValidator::check_antispam($this->params, "Your comment could not be posted because anti-spam verification failed.  Please try again.");
         }

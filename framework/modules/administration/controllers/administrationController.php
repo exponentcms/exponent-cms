@@ -55,43 +55,45 @@ class administrationController extends expController {
 		define("TMP_TABLE_FAILED",		3);
 		define("TMP_TABLE_ALTERED",		4);
 
-		$dirs = array(
-			BASE."datatypes/definitions",
-			BASE."framework/core/database/definitions",
-			);
-
 		$tables = array();
-		foreach ($dirs as $dir) {
-			if (is_readable($dir)) {
-				$dh = opendir($dir);
-				while (($file = readdir($dh)) !== false) {
-					if (is_readable("$dir/$file") && is_file("$dir/$file") && substr($file,-4,4) == ".php" && substr($file,-9,9) != ".info.php") {
-						$tablename = substr($file,0,-4);
-						$dd = include("$dir/$file");
-						$info = null;
-						if (is_readable("$dir/$tablename.info.php")) $info = include("$dir/$tablename.info.php");
-						if (!$db->tableExists($tablename)) {
-							foreach ($db->createTable($tablename,$dd,$info) as $key=>$status) {
-								$tables[$key] = $status;
-							}
-						} else {
-							foreach ($db->alterTable($tablename,$dd,$info) as $key=>$status) {
-								if (isset($tables[$key])) echo "$tablename, $key<br>";
-								if ($status == TABLE_ALTER_FAILED){
-									$tables[$key] = $status;
-								}else{
-									$tables[$key] = ($status == TABLE_ALTER_NOT_NEEDED ? DATABASE_TABLE_EXISTED : DATABASE_TABLE_ALTERED);
-								}
 
+		// first the core and 1.0 definitions
+//		$dirs = array(
+////			BASE."datatypes/definitions",
+//			BASE."framework/core/definitions",
+//			);
+//		foreach ($dirs as $dir) {
+		$dir = BASE.'framework/core/definitions';
+		if (is_readable($dir)) {
+			$dh = opendir($dir);
+			while (($file = readdir($dh)) !== false) {
+				if (is_readable("$dir/$file") && is_file("$dir/$file") && substr($file,-4,4) == ".php" && substr($file,-9,9) != ".info.php") {
+					$tablename = substr($file,0,-4);
+					$dd = include("$dir/$file");
+					$info = null;
+					if (is_readable("$dir/$tablename.info.php")) $info = include("$dir/$tablename.info.php");
+					if (!$db->tableExists($tablename)) {
+						foreach ($db->createTable($tablename,$dd,$info) as $key=>$status) {
+							$tables[$key] = $status;
+						}
+					} else {
+						foreach ($db->alterTable($tablename,$dd,$info) as $key=>$status) {
+							if (isset($tables[$key])) echo "$tablename, $key<br>";
+							if ($status == TABLE_ALTER_FAILED){
+								$tables[$key] = $status;
+							}else{
+								$tables[$key] = ($status == TABLE_ALTER_NOT_NEEDED ? DATABASE_TABLE_EXISTED : DATABASE_TABLE_ALTERED);
 							}
+
 						}
 					}
 				}
 			}
 		}
+//		}
 
+		// then search for module definitions
 		$newdef = BASE."framework/modules";
-
 		if (is_readable($newdef)) {
 			$dh = opendir($newdef);
 			while (($file = readdir($dh)) !== false) {
@@ -100,7 +102,7 @@ class administrationController extends expController {
 					if (file_exists($dirpath)) {
 						$def_dir = opendir($dirpath);
 						while (($def = readdir($def_dir)) !== false) {
-							eDebug("$dirpath/$def");
+//							eDebug("$dirpath/$def");
 							if (is_readable("$dirpath/$def") && is_file("$dirpath/$def") && substr($def,-4,4) == ".php" && substr($def,-9,9) != ".info.php") {
 								$tablename = substr($def,0,-4);
 								$dd = include("$dirpath/$def");
@@ -127,9 +129,9 @@ class administrationController extends expController {
 				}
 			}
 		}
-    	exponent_sessions_clearCurrentUserSessionCache();
+    	expSession::clearCurrentUserSessionCache();
 		ksort($tables);
-      assign_to_template(array('status'=>$tables));
+        assign_to_template(array('status'=>$tables));
 	}
 
     public function manage_unused_tables() {
@@ -137,14 +139,46 @@ class administrationController extends expController {
         
         expHistory::set('managable', $this->params);
         $unused_tables = array();
+        $used_tables = array();
         $tables = $db->getTables();
         //eDebug($tables);
-	    //FIXME Need to update for definitions moving into controller folder
+
+		$dir = BASE.'framework/core/definitions';
+		if (is_readable($dir)) {
+			$dh = opendir($dir);
+			while (($file = readdir($dh)) !== false) {
+				if (is_readable("$dir/$file") && is_file("$dir/$file") && substr($file,-4,4) == ".php" && substr($file,-9,9) != ".info.php") {
+					$used_tables[]= strtolower(substr($file,0,-4));
+				}
+			}
+		}
+
+		// then search for module definitions
+		$newdef = BASE."framework/modules";
+		if (is_readable($newdef)) {
+			$dh = opendir($newdef);
+			while (($file = readdir($dh)) !== false) {
+				if (is_dir($newdef.'/'.$file) && ($file != '..' && $file != '.')) {
+					$dirpath = $newdef.'/'.$file.'/definitions';
+					if (file_exists($dirpath)) {
+						$def_dir = opendir($dirpath);
+						while (($def = readdir($def_dir)) !== false) {
+//							eDebug("$dirpath/$def");
+							if (is_readable("$dirpath/$def") && is_file("$dirpath/$def") && substr($def,-4,4) == ".php" && substr($def,-9,9) != ".info.php") {
+								if ((!in_array(substr($def,0,-4), $used_tables))) {
+									$used_tables[] = strtolower(substr($def,0,-4));
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+        // eDebug($used_tables);
+
         foreach($tables as $table) {
-            $basename = str_replace(DB_TABLE_PREFIX.'_', '', $table);
-            $oldpath = BASE.'datatypes/definitions/'.$basename.'.php';
-            $mvcpath = BASE.'framework/core/database/definitions/'.$basename.'.php';
-            if (!file_exists($oldpath) && !file_exists($mvcpath) && !stristr($basename, 'formbuilder')) {
+            $basename = strtolower(str_replace(DB_TABLE_PREFIX.'_', '', $table));
+            if (!in_array($basename, $used_tables) && !stristr($basename, 'formbuilder')) {
                 $unused_tables[$basename]->name = $table;
                 $unused_tables[$basename]->rows = $db->countObjects($basename);
             }
@@ -345,7 +379,8 @@ class administrationController extends expController {
 	}
 
     public function toggle_minify() {
-        if (!defined('SYS_CONFIG')) include_once(BASE.'subsystems/config.php');
+//        if (!defined('SYS_CONFIG')) include_once(BASE.'framework/core/subsystems-1/config.php');
+        include_once(BASE.'framework/core/subsystems-1/config.php');
     	$value = (MINIFY == 1) ? 0 : 1;
     	exponent_config_change('MINIFY', $value);
     	$message = (MINIFY != 1) ? "Exponent is now minifying Javascript and CSS" : "Exponent is no longer minifying Javascript and CSS" ;
@@ -354,17 +389,19 @@ class administrationController extends expController {
     }
     
 	public function toggle_dev() {
-	    if (!defined('SYS_CONFIG')) include_once(BASE.'subsystems/config.php');
+//	    if (!defined('SYS_CONFIG')) include_once(BASE.'framework/core/subsystems-1/config.php');
+	    include_once(BASE.'framework/core/subsystems-1/config.php');
 	    $value = (DEVELOPMENT == 1) ? 0 : 1;
 	    exponent_config_change('DEVELOPMENT', $value);
-	    exponent_theme_remove_css();
+	    expTheme::removeCss();
 		$message = (DEVELOPMENT != 1) ? "Exponent is now in 'Development' mode" : "Exponent is no longer in 'Development' mode" ;
 		flash('message',$message);
 		expHistory::back();
 	}
 
 	public function toggle_maintenance() {
-		if (!defined('SYS_CONFIG')) include_once(BASE.'subsystems/config.php');
+//		if (!defined('SYS_CONFIG')) include_once(BASE.'framework/core/subsystems-1/config.php');
+		include_once(BASE.'framework/core/subsystems-1/config.php');
 		$value = (MAINTENANCE_MODE == 1) ? 0 : 1;
 		exponent_config_change('MAINTENANCE_MODE', $value);
 		MAINTENANCE_MODE == 1 ? flash('message',"Exponent is no longer in 'Maintenance' mode") : "" ;
@@ -372,54 +409,58 @@ class administrationController extends expController {
 	}
 
 	public function clear_smarty_cache() {
-		exponent_theme_remove_smarty_cache();
+		expTheme::removeSmartyCache();
 		$message = "Smarty Cache has been cleared" ;
 		flash('message',$message);
 		expHistory::back();
 	}
 
 	public function clear_css_cache() {
-		exponent_theme_remove_css();
+		expTheme::removeCss();
 		$message = "CSS/Minfy Cache has been cleared" ;
 		flash('message',$message);
 		expHistory::back();
 	}
 
 	public function clear_image_cache() {
-		if (!defined('SYS_FILES')) include_once(BASE.'subsystems/files.php');
-//		exponent_files_remove_files_in_directory(BASE.'tmp/pixidou');  // alt location for pixidou cache
-		exponent_files_remove_files_in_directory(BASE.'framework/modules/pixidou/images');  // location for pixidou cache
+//		if (!defined('SYS_FILES')) include_once(BASE.'framework/core/subsystems-1/files.php');
+//		include_once(BASE.'framework/core/subsystems-1/files.php');
+//		expFile::removeFilesInDirectory(BASE.'tmp/pixidou');  // alt location for pixidou cache
+		expFile::removeFilesInDirectory(BASE.'framework/modules/pixidou/images');  // location for pixidou cache
 		// phpThumb cache includes subfolders
-		if (file_exists(BASE.'tmp/img_cache')) exponent_files_remove_files_in_directory(BASE.'tmp/img_cache');
+		if (file_exists(BASE.'tmp/img_cache')) expFile::removeFilesInDirectory(BASE.'tmp/img_cache');
 		$message = "Image/Pixidou Cache has been cleared" ;
 		flash('message',$message);
 		expHistory::back();
 	}
 
 	public function clear_rss_cache() {
-		if (!defined('SYS_FILES')) include_once(BASE.'subsystems/files.php');
-		exponent_files_remove_files_in_directory(BASE.'tmp/rsscache');
+//		if (!defined('SYS_FILES')) include_once(BASE.'framework/core/subsystems-1/files.php');
+//		include_once(BASE.'framework/core/subsystems-1/files.php');
+		expFile::removeFilesInDirectory(BASE.'tmp/rsscache');
 		$message = "RSS/Podcast Cache has been cleared" ;
 		flash('message',$message);
 		expHistory::back();
 	}
 
 	public function clear_all_caches() {
-		if (!defined('SYS_FILES')) include_once(BASE.'subsystems/files.php');
-		exponent_theme_remove_smarty_cache();
-		exponent_theme_remove_css();
-//		exponent_files_remove_files_in_directory(BASE.'tmp/pixidou');  // alt location for pixidou cache
-		exponent_files_remove_files_in_directory(BASE.'framework/modules/pixidou/images');  // location for pixidou cache
-		if (file_exists(BASE.'tmp/img_cache')) exponent_files_remove_files_in_directory(BASE.'tmp/img_cache');
-		exponent_files_remove_files_in_directory(BASE.'tmp/rsscache');
+//		if (!defined('SYS_FILES')) include_once(BASE.'framework/core/subsystems-1/files.php');
+//		include_once(BASE.'framework/core/subsystems-1/files.php');
+		expTheme::removeSmartyCache();
+		expTheme::removeCss();
+//		expFile::removeFilesInDirectory(BASE.'tmp/pixidou');  // alt location for pixidou cache
+		expFile::removeFilesInDirectory(BASE.'framework/modules/pixidou/images');  // location for pixidou cache
+		if (file_exists(BASE.'tmp/img_cache')) expFile::removeFilesInDirectory(BASE.'tmp/img_cache');
+		expFile::removeFilesInDirectory(BASE.'tmp/rsscache');
 		$message = "All the System Caches have been cleared" ;
 		flash('message',$message);
 		expHistory::back();
 	}
 
 	public function upload_extension() {
-		if (!defined('SYS_FORMS')) require_once(BASE.'subsystems/forms.php');
-		exponent_forms_initialize();
+//		if (!defined('SYS_FORMS')) require_once(BASE.'framework/core/subsystems-1/forms.php');
+		require_once(BASE.'framework/core/subsystems-1/forms.php');
+//		exponent_forms_initialize();
 		$form = new form();
 		$form->register(null,'',new htmlcontrol(exponent_core_maxUploadSizeMessage()));
 		$form->register('mod_archive','Module Archive',new uploadcontrol());
@@ -432,18 +473,17 @@ class administrationController extends expController {
 
 	public function install_extension() {
 
-		$i18n = exponent_lang_loadFile('modules/administrationmodule/actions/install_extension.php');
 		if ($_FILES['mod_archive']['error'] != UPLOAD_ERR_OK) {
 			switch($_FILES['mod_archive']['error']) {
 				case UPLOAD_ERR_INI_SIZE:
 				case UPLOAD_ERR_FORM_SIZE:
-					echo $i18n['file_too_large'].'<br />';
+					echo gt('The file you uploaded exceeded the size limits for the server.').'<br />';
 					break;
 				case UPLOAD_ERR_PARTIAL:
-					echo $i18n['partial_file'].'<br />';
+					echo gt('The file you uploaded was only partially uploaded.').'<br />';
 					break;
 				case UPLOAD_ERR_NO_FILE:
-					echo $i18n['no_file'].'<br />';
+					echo gt('No file was uploaded.').'<br />';
 					break;
 			}
 		} else {
@@ -470,25 +510,26 @@ class administrationController extends expController {
 			}
 
 			if ($ext == '') {
-				echo $i18n['bad_archive'].'<br />';
+				echo gt('Unknown archive format. Archives must either be regular ZIP files, TAR files, Gzipped Tarballs, or Bzipped Tarballs.').'<br />';
 			} else {
-				if (!defined('SYS_FILES')) require_once(BASE.'subsystems/files.php');
+//				if (!defined('SYS_FILES')) require_once(BASE.'framework/core/subsystems-1/files.php');
+//				require_once(BASE.'framework/core/subsystems-1/files.php');
 
 				// Look for stale sessid directories:
 				$sessid = session_id();
-				if (file_exists(BASE."extensionuploads/$sessid") && is_dir(BASE."extensionuploads/$sessid")) exponent_files_removeDirectory("extensionuploads/$sessid");
-				$return = exponent_files_makeDirectory("extensionuploads/$sessid");
+				if (file_exists(BASE."extensionuploads/$sessid") && is_dir(BASE."extensionuploads/$sessid")) expFile::removeDirectory("extensionuploads/$sessid");
+				$return = expFile::makeDirectory("extensionuploads/$sessid");
 				if ($return != SYS_FILES_SUCCESS) {
 					switch ($return) {
 						case SYS_FILES_FOUNDFILE:
 						case SYS_FILES_FOUNDDIR:
-							echo $i18n['file_in_parh'].'<br />';
+							echo gt('Found a file in the directory path when creating the directory to store the files in.').'<br />';
 							break;
 						case SYS_FILES_NOTWRITABLE:
-							echo $i18n['dest_not_w'].'<br />';
+							echo gt('Destination parent is not writable.').'<br />';
 							break;
 						case SYS_FILES_NOTREADABLE:
-							echo $i18n['dest_not_r'].'<br />';
+							echo gt('Destination parent is not readable.').'<br />';
 							break;
 					}
 				}
@@ -504,7 +545,7 @@ class administrationController extends expController {
 					PEAR::setErrorHandling(PEAR_ERROR_PRINT);
 					$return = $tar->extract(dirname($dest));
 					if (!$return) {
-						echo '<br />'.$i18n['error_tar'].'<br />';
+						echo '<br />'.gt('Error extracting TAR archive').'<br />';
 					} else {
 						header('Location: ' . URL_FULL . 'index.php?module=administrationmodule&action=verify_extension&type=tar');
 					}
@@ -515,7 +556,7 @@ class administrationController extends expController {
 
 					PEAR::setErrorHandling(PEAR_ERROR_PRINT);
 					if ($zip->extract(array('add_path'=>dirname($dest))) == 0) {
-						echo '<br />'.$i18n['error_zip'].':<br />';
+						echo '<br />'.gt('Error extracting ZIP archive').':<br />';
 						echo $zip->_error_code . ' : ' . $zip->_error_string . '<br />';
 					} else {
 						header('Location: ' . URL_FULL . 'index.php?module=administrationmodule&action=verify_extension&type=zip');
@@ -556,7 +597,8 @@ class administrationController extends expController {
     }
     
     public function switch_themes() {
-        if (!defined('SYS_CONFIG')) include_once(BASE.'subsystems/config.php');
+//        if (!defined('SYS_CONFIG')) include_once(BASE.'framework/core/subsystems-1/config.php');
+        include_once(BASE.'framework/core/subsystems-1/config.php');
 
     	exponent_config_change('DISPLAY_THEME_REAL', $this->params['theme']);
     	
@@ -566,15 +608,15 @@ class administrationController extends expController {
     	        && expFile::recurse_copy(BASE."themes/".$this->params['theme']."/images", BASE."themes/".$this->params['theme']."/styles_backup/images")) {
 
         	    if (!expFile::recurse_copy(BASE."themes/".$this->params['theme']."/css_".$this->params['sv'], BASE."themes/".$this->params['theme']."/css")) {
-                    flash('error',expLang::gettext('Couldn\'t copy') . "css_".$this->params['sv']);
+                    flash('error',gt('Couldn\'t copy') . "css_".$this->params['sv']);
         	    }
         	    if (!expFile::recurse_copy(BASE."themes/".$this->params['theme']."/images_".$this->params['sv'], BASE."themes/".$this->params['theme']."/images")) {
-                    flash('error',expLang::gettext('Couldn\'t copy') . "images_".$this->params['sv']);
+                    flash('error',gt('Couldn\'t copy') . "images_".$this->params['sv']);
         	    }
 
-                flash('message',expLang::gettext('Your website\'s theme has been updated'));
+                flash('message',gt('Your website\'s theme has been updated'));
     	    } else {
-                flash('error',expLang::gettext('Exponent could not not switch your theme style variation because it wasn unable to cak up your current css and images directories. Create a directory called styles_backup within your theme, and try again.'));
+                flash('error',gt('Exponent could not not switch your theme style variation because it wasn unable to cak up your current css and images directories. Create a directory called styles_backup within your theme, and try again.'));
     	    }
             //copy(BASE."themes/".DISPLAY_THEME_REAL."/css_".$this->params['sv'], BASE."themes/".DISPLAY_THEME_REAL."/css");
             //copy(BASE."themes/".DISPLAY_THEME_REAL."css_".$this->params['sv'], BASE."themes/".DISPLAY_THEME_REAL."css")
@@ -587,8 +629,9 @@ class administrationController extends expController {
     
     public function configure_site () {
         // little glue to help things move along
-        if (!defined('SYS_CONFIG')) require_once(BASE.'subsystems/config.php');
-        
+//        if (!defined('SYS_CONFIG')) require_once(BASE.'framework/core/subsystems-1/config.php');
+        require_once(BASE.'framework/core/subsystems-1/config.php');
+
         // TYPES OF ANTISPAM CONTROLS... CURRENTLY ONLY ReCAPTCHA
         $as_types = array(
             '0'=>'-- Please Select an Anti-Spam Control --',
@@ -675,10 +718,11 @@ class administrationController extends expController {
     }
     
     public function update_siteconfig () {
-        if (!defined('SYS_CONFIG')) include_once(BASE.'subsystems/config.php');
+//        if (!defined('SYS_CONFIG')) include_once(BASE.'framework/core/subsystems-1/config.php');
+        include_once(BASE.'framework/core/subsystems-1/config.php');
 
         foreach ($this->params['sc'] as $key => $value) {
-            exponent_config_change($key, $value);
+            exponent_config_change($key, addslashes($value));
         }
         
         flash('message', "Your Website Configuration has been updated");

@@ -117,15 +117,17 @@ function sanity_checkFiles() {
 		//'conf/profiles/'=>sanity_checkFile(BASE.'conf/profiles',0,SANITY_READWRITE),
 		//'overrides.php'=>sanity_checkFile(BASE.'overrides.php',1,SANITY_READWRITE),
 		'install/'=>sanity_checkFile(BASE.'install',0,SANITY_READWRITE),
-		'modules/'=>sanity_checkFile(BASE.'modules',0,SANITY_READONLY),		
+		'framework/modules-1/'=>sanity_checkFile(BASE.'modules',0,SANITY_READONLY),
 		'tmp/'=>sanity_checkDirectory('tmp',SANITY_READWRITE),
 		'tmp/views_c'=>sanity_checkDirectory('tmp/views_c',SANITY_READWRITE),
 		'tmp/cache'=>sanity_checkDirectory('tmp/cache',SANITY_READWRITE),
 		'tmp/minify'=>sanity_checkDirectory('tmp/minify',SANITY_READWRITE),
-		'tmp/pods'=>sanity_checkDirectory('tmp/pods',SANITY_READWRITE),
+		'tmp/css'=>sanity_checkDirectory('tmp/css',SANITY_READWRITE),
+//		'tmp/pods'=>sanity_checkDirectory('tmp/pods',SANITY_READWRITE),
 		'tmp/rsscache'=>sanity_checkDirectory('tmp/rsscache',SANITY_READWRITE),
-		'tmp/mail'=>sanity_checkDirectory('tmp/mail',SANITY_READWRITE),
-		'tmp/img_cache'=>sanity_checkDirectory('tmp/img_cache',SANITY_READWRITE)
+//		'tmp/mail'=>sanity_checkDirectory('tmp/mail',SANITY_READWRITE),
+		'tmp/img_cache'=>sanity_checkDirectory('tmp/img_cache',SANITY_READWRITE),
+		'framework/modules/pixidou/images'=>sanity_checkDirectory('framework/modules/pixidou/images',SANITY_READWRITE)
 	);
 	
 	return $status;
@@ -216,7 +218,8 @@ function _sanity_checkTemp($dir) {
 }
 
 function _sanity_checkDB() {
-	if (!defined('SYS_DATABASE')) require_once(BASE.'subsystems/database.php');
+//	if (!defined('SYS_DATABASE')) require_once(BASE.'framework/core/subsystems-1/database.php');
+	require_once(BASE.'framework/core/subsystems-1/database.php');
 //	$have_good = false;
 	
 	global $global_i18n;

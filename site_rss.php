@@ -17,13 +17,15 @@
 ##################################################
 /** @define "BASE" "." */
 
-if (!defined("EXPONENT")) require_once('exponent.php');
+//if (!defined('EXPONENT')) require_once('exponent.php');
+require_once('exponent.php');
 //if (!defined('SYS_PODCASTING')) include_once('core_podcast.php');
 //if (!defined('SYS_RSS')) define('SYS_RSS', 1); // This is an ugly way of getting around accidentally loading core_rss.php
 											   // What can we do to minimize code duplication and make this a lot better?
 											   // How about this?
 //if (!defined('SYS_RSS')) include_once('core_rss.php');
-if (!defined('SYS_RSS')) require_once(BASE.'external/feedcreator.class.php');
+//if (!defined('SYS_RSS')) require_once(BASE.'external/feedcreator.class.php');
+require_once(BASE.'external/feedcreator.class.php');
 
 $site_rss = new expRss($_REQUEST);
 $site_rss->feed_title = empty($site_rss->feed_title) ? 'RSS for '.URL_FULL : $site_rss->feed_title;

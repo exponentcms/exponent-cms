@@ -17,25 +17,22 @@
 #
 ##################################################
 
-$i18n = exponent_lang_loadFile('install/popups/sanity.php');
-
 ?>
-<b><?php echo $i18n['title']; ?></b>
-<div class="bodytext"><?php echo $i18n['header']; ?></div>
+<b><?php echo gt('System Requirements Explained'); ?></b>
+<div class="bodytext"><?php echo gt('The sanity checks are in place to ensure that problems with the server environment (file permissions, PHP extensions, etc) are suitable for installing Exponent.  This page explains each of the sanity checks, why it is performed, and how to reconfigure your web server if the check fails.<br /><br />Note: In all of the solutions, <span class="var">WEBUSER</span> is used for the username of the user running the web server, and <span class="var">EXPONENT</span> is used as the full path to the Exponent directory.'); ?></div>
 <br /><br />
 
-
 <table cellspacing="0" cellpadding="3" rules="all" border="0" style="border:1px solid grey;" width="100%">
-<tr><td colspan="2" style="background-color: lightgrey;"><b><?php echo $i18n['filedir_tests']; ?></b></td></tr>
+<tr><td colspan="2" style="background-color: lightgrey;"><b><?php echo gt('File and Directory Permission Tests'); ?></b></td></tr>
 <tr>
 	<td class="bodytext" style="font-weight: bold;" valign="top"><a name="fdp_conf-configphp" />conf/config.php</td>
 	<td class="bodytext" valign="top">
-		<div class="sanity_req"><?php echo $i18n['rw_server']; ?></div>
+		<div class="sanity_req"><?php echo gt('Must be readable and writable by web server'); ?></div>
 		<br />
-		<?php echo $i18n['config.php']; ?>
+		<?php echo gt('The conf/config.php file stores the active configuration for the site, including database connection settings and choice of theme.'); ?>
 		<br />
 		<br />
-		<b><?php echo $i18n['unix_solution']; ?>:</b>
+		<b><?php echo gt('UNIX Solution'); ?>:</b>
 		<div class="sanity_shell">
 			chown <span class="var">WEBUSER</span> <span class="var">EXPONENT</span>/conf/<br />
 			chown <span class="var">WEBUSER</span> <span class="var">EXPONENT</span>/conf/config.php
@@ -45,12 +42,12 @@ $i18n = exponent_lang_loadFile('install/popups/sanity.php');
 <tr>
 	<td class="bodytext" style="font-weight: bold;" valign="top"><a name="fdp_conf-profiles" />conf/profiles</td>
 	<td class="bodytext" valign="top">
-		<div class="sanity_req"><?php echo $i18n['rw_server']; ?></div>
+		<div class="sanity_req"><?php echo gt('Must be readable and writable by web server'); ?></div>
 		<br />
-		<?php echo $i18n['profiles']; ?>
+		<?php echo gt('The conf/profiles directory stores the saved configurations for the site.  Even if you do not use more than one profile, the web server must be able to create files in this directory.'); ?>
 		<br />
 		<br />
-		<b><?php echo $i18n['unix_solution']; ?>:</b>
+		<b><?php echo gt('UNIX Solution'); ?>:</b>
 		<div class="sanity_shell">
 			chown -R <span class="var">WEBUSER</span> <span class="var">EXPONENT</span>/conf/profiles/
 		</div>
@@ -60,12 +57,12 @@ $i18n = exponent_lang_loadFile('install/popups/sanity.php');
 <tr>
 	<td class="bodytext" style="font-weight: bold;" valign="top"><a name="fdp_overridesphp" />overrides.php</td>
 	<td class="bodytext" valign="top">
-		<div class="sanity_req"><?php echo $i18n['rw_server']; ?></div>
+		<div class="sanity_req"><?php echo gt('Must be readable and writable by web server'); ?></div>
 		<br />
-		<?php echo $i18n['overrides.php']; ?>
+		<?php echo gt('The overrides.php file is used to override constants that are automagically detected by Exponent.  If the installer finds a problem with some auto-detected values, it will write the correct values out to this file before completing the installation.  After you have installed Exponent, this file only needs to be readable by the web server.'); ?>
 		<br />
 		<br />
-		<b><?php echo $i18n['unix_solution']; ?>:</b>
+		<b><?php echo gt('UNIX Solution'); ?>:</b>
 		<div class="sanity_shell">
 			chown <span class="var">WEBUSER</span> <span class="var">EXPONENT</span>/overrides.php
 		</div>
@@ -75,12 +72,12 @@ $i18n = exponent_lang_loadFile('install/popups/sanity.php');
 <tr>
 	<td class="bodytext" style="font-weight: bold;" valign="top"><a name="fdp_install" />install/</td>
 	<td class="bodytext" valign="top">
-		<div class="sanity_req"><?php echo $i18n['rw_server']; ?></div>
+		<div class="sanity_req"><?php echo gt('Must be readable and writable by web server'); ?></div>
 		<br />
-		<?php echo $i18n['install']; ?>
+		<?php echo gt('The install directory contains all of the files for the Exponent Install Wizard.  Once you have gone through the wizard once, it disables itself automatically (by removing the install/not_configured file).  To do this, it needs write permission on the install directory.  After installation, this directory isn\'t even needed, so you can remove it or set the permissions such that the web server cannot read it.'); ?>
 		<br />
 		<br />
-		<b><?php echo $i18n['unix_solution']; ?>:</b>
+		<b><?php echo gt('UNIX Solution'); ?>:</b>
 		<div class="sanity_shell">
 			chown <span class="var">WEBUSER</span> <span class="var">EXPONENT</span>/install
 		</div>
@@ -90,19 +87,19 @@ $i18n = exponent_lang_loadFile('install/popups/sanity.php');
 <tr>
 	<td class="bodytext" style="font-weight: bold;" valign="top"><a name="fdp_modules" />modules/</td>
 	<td class="bodytext" valign="top">
-		<?php echo $i18n['modules']; ?>
+		<?php echo gt('Exponent runs a few checks against the installed modules to make sure that nothing strange is encountered.  If this test fails, please post a Support Request on the SourceForge project page for Exponent (<a href="http://www.sourceforge.net/projects/exponent/" target="_blank">http://www.sourceforge.net/projects/exponent/</a>).'); ?>
 	</td>
 </tr>
 
 <tr>
 	<td class="bodytext" style="font-weight: bold;" valign="top"><a name="fdp_views_c" />views_c/</td>
 	<td class="bodytext" valign="top">
-		<div class="sanity_req"><?php echo $i18n['rw_server']; ?></div>
+		<div class="sanity_req"><?php echo gt('Must be readable and writable by web server'); ?></div>
 		<br />
-		<?php echo $i18n['views_c']; ?>
+		<?php echo gt('Exponent uses Smarty to separate its data processing logic from its display logic.  Smarty templates are compiled from Smarty syntax into raw PHP for speed, and the compiled templates all go in the views_c directory, which must be writable by the web server.'); ?>
 		<br />
 		<br />
-		<b><?php echo $i18n['unix_solution']; ?>:</b>
+		<b><?php echo gt('UNIX Solution'); ?>:</b>
 		<div class="sanity_shell">
 			chown <span class="var">WEBUSER</span> <span class="var">EXPONENT</span>/views_c
 		</div>
@@ -112,12 +109,12 @@ $i18n = exponent_lang_loadFile('install/popups/sanity.php');
 <tr>
 	<td class="bodytext" style="font-weight: bold;" valign="top"><a name="fdp_extensionuploads" />extensionuploads/</td>
 	<td class="bodytext" valign="top">
-		<div class="sanity_req"><?php echo $i18n['rw_server']; ?></div>
+		<div class="sanity_req"><?php echo gt('Must be readable and writable by web server'); ?></div>
 		<br />
-		<?php echo $i18n['extensionuploads']; ?>
+		<?php echo gt('When you use the Upload Extension feature of the Administrator Control Panel, the uploaded archive is placed in extensionuploads directory temporarily.  Therefore, the web server needs full access to this.'); ?>
 		<br />
 		<br />
-		<b><?php echo $i18n['unix_solution']; ?>:</b>
+		<b><?php echo gt('UNIX Solution'); ?>:</b>
 		<div class="sanity_shell">
 			chown <span class="var">WEBUSER</span> <span class="var">EXPONENT</span>/extensionuploads
 		</div>
@@ -127,12 +124,12 @@ $i18n = exponent_lang_loadFile('install/popups/sanity.php');
 <tr>
 	<td class="bodytext" style="font-weight: bold;" valign="top"><a name="fdp_files" />files/</td>
 	<td class="bodytext" valign="top">
-		<div class="sanity_req"><?php echo $i18n['rw_server']; ?></div>
+		<div class="sanity_req"><?php echo gt('Must be readable and writable by web server'); ?></div>
 		<br />
-		<?php echo $i18n['files']; ?>
+		<?php echo gt('All uploaded content files (resources, importer data, images, etc.) are stored in the site files/ directory, which the web server needs fill read and write access to.  If this test is failing and you think it shouldn\'t be, remember that you must recursively assign read and write permissions to the web server user.'); ?>
 		<br />
 		<br />
-		<b><?php echo $i18n['unix_solution']; ?>:</b>
+		<b><?php echo gt('UNIX Solution'); ?>:</b>
 		<div class="sanity_shell">
 			chown <span class="var">WEBUSER</span> <span class="var">EXPONENT</span>/files
 		</div>
@@ -142,12 +139,12 @@ $i18n = exponent_lang_loadFile('install/popups/sanity.php');
 <tr>
 	<td class="bodytext" style="font-weight: bold;" valign="top"><a name="fdp_tmp" />tmp/</td>
 	<td class="bodytext" valign="top">
-		<div class="sanity_req"><?php echo $i18n['rw_server']; ?></div>
+		<div class="sanity_req"><?php echo gt('Must be readable and writable by web server'); ?></div>
 		<br />
-		<?php echo $i18n['tmp']; ?>
+		<?php echo gt('The tmp directory is used by various parts of Exponent for temporary files.'); ?>
 		<br />
 		<br />
-		<b><?php echo $i18n['unix_solution']; ?>:</b>
+		<b><?php echo gt('UNIX Solution'); ?>:</b>
 		<div class="sanity_shell">
 			chown <span class="var">WEBUSER</span> <span class="var">EXPONENT</span>/tmp
 		</div>
@@ -158,63 +155,63 @@ $i18n = exponent_lang_loadFile('install/popups/sanity.php');
 <br /><br />
 
 <table cellspacing="0" cellpadding="3" rules="all" border="0" style="border:1px solid grey;" width="100%">
-<tr><td colspan="2" style="background-color: lightgrey;"><b><?php echo $i18n['other_tests']; ?></b></td></tr>
+<tr><td colspan="2" style="background-color: lightgrey;"><b><?php echo gt('Other Tests'); ?></b></td></tr>
 <tr>
-	<td class="bodytext" style="font-weight: bold;" valign="top"><a name="o_db" /><?php echo $i18n['db_backend']; ?></td>
+	<td class="bodytext" style="font-weight: bold;" valign="top"><a name="o_db" /><?php echo gt('Database Backend'); ?></td>
 	<td class="bodytext" valign="top">
-		<?php echo $i18n['db_backend_desc']; ?>
+		<?php echo gt('Exponent stores all the content for your website in a relational database.  For portability reasons, a custom database abstraction layer is used.  Currently, this abstraction layer only supports MySQL.  If this test fails, then PHP support for these database engines was not detected.'); ?>
 	</td>
 </tr>
 <tr>
-	<td class="bodytext" style="font-weight: bold;" valign="top"><a name="o_gd" /><?php echo $i18n['gd']; ?></td>
+	<td class="bodytext" style="font-weight: bold;" valign="top"><a name="o_gd" /><?php echo gt('GD Graphics Library'); ?></td>
 	<td class="bodytext" valign="top">
-		<?php echo $i18n['gd_desc']; ?>
+		<?php echo gt('Various parts of Exponent utilize the GD Graphics library for imaging functions.  Exponent can operate without GD, but you will lose such features as Captcha tests and automatic thumbnails.  A version of GD that is 2.0.x compatible will give you sharper and crisper thumbnails.'); ?>
 	</td>
 </tr>
 <tr>
 	<td class="bodytext" style="font-weight: bold;" valign="top"><a name="o_php" />PHP 5.2.1+</td>
 	<td class="bodytext" valign="top">
-		<?php echo $i18n['php_desc']; ?>
+		<?php echo gt('Because of some of the functions that Exponent uses, versions of PHP prior to 5.2.1 are not suitable.  Most functions that are supported in later versions have workarounds, but there are a few major bugs, and functions that can\'t be re-implemented in PHP prior to 5.2.1.'); ?>
 	</td>
 </tr>
 <tr>
-	<td class="bodytext" style="font-weight: bold;" valign="top"><a name="o_zlib" /><?php echo $i18n['zlib']; ?></td>
+	<td class="bodytext" style="font-weight: bold;" valign="top"><a name="o_zlib" /><?php echo gt('ZLib Support'); ?></td>
 	<td class="bodytext" valign="top">
-		<?php echo $i18n['zlib_desc']; ?>
+		<?php echo gt('ZLib is used for archive support, which Exponent uses for uncompressing Tar and Zip archives.'); ?>
 	</td>
 </tr>
 <tr>
-	<td class="bodytext" style="font-weight: bold;" valign="top"><a name="o_xml" /><?php echo $i18n['xml']; ?></td>
+	<td class="bodytext" style="font-weight: bold;" valign="top"><a name="o_xml" /><?php echo gt('XML (Expat Library)'); ?></td>
 	<td class="bodytext" valign="top">
-		<?php echo $i18n['xml_desc']; ?>
+		<?php echo gt('The web services extensions for Exponent require the Expat Library.  If you are not using web services or module that are dependent on web services, this is a safe warning to ignore.'); ?>
 	</td>
 </tr>
 <tr>
-	<td class="bodytext" style="font-weight: bold;" valign="top"><a name="o_safemode" /><?php echo $i18n['safemode']; ?></td>
+	<td class="bodytext" style="font-weight: bold;" valign="top"><a name="o_safemode" /><?php echo gt('Safe Mode Not Enabled'); ?></td>
 	<td class="bodytext" valign="top">
-		<div class="sanity_req"><?php echo $i18n['safemode_req']; ?></div>
+		<div class="sanity_req"><?php echo gt('Safe Mode is a security measure present in some Shared Hosting Environments.  It limits a PHP scripts from including or modifying files that are not owned by that script\'s owner.  This can cause serious and subtle problems that look like bugs if Exponent\'s files are not properly set up.<br /><br />If you decide to ignore this warning, make sure that ALL files included in the Exponent package are owned by the same system user.'); ?></div>
 		<br />
-		<?php echo $i18n['safemode_desc']; ?>
+		<?php echo gt('Exponent works best when Safe Mode is disabled'); ?>
 	</td>
 </tr>
 <tr>
-	<td class="bodytext" style="font-weight: bold;" valign="top"><a name="o_openbasedir" /><?php echo $i18n['basedir']; ?></td>
+	<td class="bodytext" style="font-weight: bold;" valign="top"><a name="o_openbasedir" /><?php echo gt('Open BaseDir Not Enabled'); ?></td>
 	<td class="bodytext" valign="top">
-		<div class="sanity_req"><?php echo $i18n['basedir_req']; ?></div>
+		<div class="sanity_req"><?php echo gt('Exponent works best when Open BaseDir is disabled'); ?></div>
 		<br />
-		<?php echo $i18n['basedir_desc']; ?>
+		<?php echo gt('The open_basedir restriction is a security measure present in some Shared Hosting Environments.  It limits PHP scripts from dealing with files outside of a given directory.  This may cause some problems with some of Exponent\'s file operations, including the Multi-Site manager.  Ignore this error at your own risk.'); ?>
 	</td>
 </tr>
 <tr>
-	<td class="bodytext" style="font-weight: bold;" valign="top"><a name="o_upload" /><?php echo $i18n['upload']; ?></td>
+	<td class="bodytext" style="font-weight: bold;" valign="top"><a name="o_upload" /><?php echo gt('File Uploads Enabled'); ?></td>
 	<td class="bodytext" valign="top">
-		<?php echo $i18n['upload_desc']; ?>
+		<?php echo gt('Server administrators have the option of disabling PHP uploads.  Additionally, misconfigured servers may have problems processing uploaded files.  Without the ability to upload files, your experience with Exponent will be severely limited, since you will be unable to upload new code, patches, or images and resources.'); ?>
 	</td>
 </tr>
 <tr>
-	<td class="bodytext" style="font-weight: bold;" valign="top"><a name="o_tmpfile" /><?php echo $i18n['tempfile']; ?></td>
+	<td class="bodytext" style="font-weight: bold;" valign="top"><a name="o_tmpfile" /><?php echo gt('Temporary File Creation'); ?></td>
 	<td class="bodytext" valign="top">
-		<?php echo $i18n['tempfile_desc']; ?>
+		<?php echo gt('Various parts of Exponent have to create temporary files to accomplish a given task.  Usually, this error is related to the "tmp/" file and directory permission test, above.'); ?>
 	</td>
 </tr>
 </table>

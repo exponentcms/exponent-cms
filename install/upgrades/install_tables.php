@@ -1,26 +1,29 @@
 <?php
+
+##################################################
+#
+# Copyright (c) 2004-2011 OIC Group, Inc.
+# Written and Designed by James Hunt
+#
+# This file is part of Exponent
+#
+# Exponent is free software; you can redistribute
+# it and/or modify it under the terms of the GNU
+# General Public License as published by the Free
+# Software Foundation; either version 2 of the
+# License, or (at your option) any later version.
+#
+# GPL: http://www.gnu.org/licenses/gpl.txt
+#
+##################################################
+
 /**
- *  This file is part of Exponent
- *  Exponent is free software; you can redistribute
- *  it and/or modify it under the terms of the GNU
- *  General Public License as published by the Free
- *  Software Foundation; either version 2 of the
- *  License, or (at your option) any later version.
- *
- * The file that holds the install_tables class
- *
- * @link http://www.gnu.org/licenses/gpl.txt GPL http://www.gnu.org/licenses/gpl.txt
- * @package Exponent-CMS
- * @copyright 2004-2011 OIC Group, Inc.
- * @author Adam Kessler <adam@oicgroup.net>
- * @version 2.0.0
+ * @subpackage Upgrade
+ * @package Installation
  */
 
 /**
  * This is the class install_tables
- *
- * @subpackage Upgrade
- * @package Installation
  */
 class install_tables extends upgradescript {
 //	protected $from_version = '0.96.3';
@@ -56,43 +59,43 @@ define("TMP_TABLE_INSTALLED",	2);
 define("TMP_TABLE_FAILED",		3);
 define("TMP_TABLE_ALTERED",		4);
 
-$dirs = array(
-	BASE."datatypes/definitions",
-	BASE."framework/core/database/definitions",
-	);
-
 $tables = array();
-foreach ($dirs as $dir) {
-	if (is_readable($dir)) {
-		$dh = opendir($dir);
-		while (($file = readdir($dh)) !== false) {
-			if (is_readable("$dir/$file") && is_file("$dir/$file") && substr($file,-4,4) == ".php" && substr($file,-9,9) != ".info.php") {
-				$tablename = substr($file,0,-4);
-				$dd = include("$dir/$file");
-				$info = null;
-				if (is_readable("$dir/$tablename.info.php")) $info = include("$dir/$tablename.info.php");
-				if (!$db->tableExists($tablename)) {
-					foreach ($db->createTable($tablename,$dd,$info) as $key=>$status) {
+//$dirs = array(
+//	BASE."datatypes/definitions",
+//	BASE."framework/core/definitions",
+//	);
+//
+//foreach ($dirs as $dir) {
+$dir = BASE.'framework/core/definitions';
+if (is_readable($dir)) {
+	$dh = opendir($dir);
+	while (($file = readdir($dh)) !== false) {
+		if (is_readable("$dir/$file") && is_file("$dir/$file") && substr($file,-4,4) == ".php" && substr($file,-9,9) != ".info.php") {
+			$tablename = substr($file,0,-4);
+			$dd = include("$dir/$file");
+			$info = null;
+			if (is_readable("$dir/$tablename.info.php")) $info = include("$dir/$tablename.info.php");
+			if (!$db->tableExists($tablename)) {
+				foreach ($db->createTable($tablename,$dd,$info) as $key=>$status) {
+					$tables[$key] = $status;
+				}
+			} else {
+				foreach ($db->alterTable($tablename,$dd,$info) as $key=>$status) {
+					if (isset($tables[$key])) echo "$tablename, $key<br>";
+					if ($status == TABLE_ALTER_FAILED){
 						$tables[$key] = $status;
+					}else{
+						$tables[$key] = ($status == TABLE_ALTER_NOT_NEEDED ? DATABASE_TABLE_EXISTED : DATABASE_TABLE_ALTERED);
 					}
-				} else {
-					foreach ($db->alterTable($tablename,$dd,$info) as $key=>$status) {
-						if (isset($tables[$key])) echo "$tablename, $key<br>";
-						if ($status == TABLE_ALTER_FAILED){
-							$tables[$key] = $status;
-						}else{
-							$tables[$key] = ($status == TABLE_ALTER_NOT_NEEDED ? DATABASE_TABLE_EXISTED : DATABASE_TABLE_ALTERED);
-						}
 
-					}
 				}
 			}
 		}
 	}
 }
+//}
 
 $newdef = BASE."framework/modules";
-
 if (is_readable($newdef)) {
     $dh = opendir($newdef);
     while (($file = readdir($dh)) !== false) {

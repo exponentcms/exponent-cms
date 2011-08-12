@@ -63,7 +63,6 @@ EXPONENT.YUI3_CONFIG = {};
 }
 ?>
 
-
 // YUI 2 ajax helper method. This is much easier in YUI 3. Should also migrate.
 
 EXPONENT.AjaxEvent = function() {

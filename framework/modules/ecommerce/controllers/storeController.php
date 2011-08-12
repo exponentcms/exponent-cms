@@ -250,9 +250,11 @@ class storeController extends expController {
         
         expHistory::set('viewable', $this->params);
         
-        if (!defined("SYS_DATETIME")) include_once(BASE."subsystems/datetime.php");
-        if (!defined('SYS_SORTING')) include_once(BASE.'subsystems/sorting.php');
-        
+//        if (!defined("SYS_DATETIME")) include_once(BASE."framework/core/subsystems-1/datetime.php");
+        include_once(BASE."framework/core/subsystems-1/datetime.php");
+//        if (!defined('SYS_SORTING')) include_once(BASE.'framework/core/subsystems-1/sorting.php');
+//        include_once(BASE.'framework/core/subsystems-1/sorting.php');
+
         $time = isset($this->params['time']) ? $this->params['time'] : time();
         assign_to_template(array('time'=>$time));
         
@@ -320,17 +322,18 @@ class storeController extends expController {
      * Helper function for the Calendar view
      */
     function _getEventsForDates($edates,$sort_asc = true) {        
-        if (!defined('SYS_SORTING')) include_once(BASE.'subsystems/sorting.php');
-        if ($sort_asc && !function_exists('exponent_sorting_byEventStartAscending')) {
-            function exponent_sorting_byEventStartAscending($a,$b) {
-                return ($a->eventstart < $b->eventstart ? 1 : -1);
-            }
-        }
-        if (!$sort_asc && !function_exists('exponent_sorting_byEventStartDescending')) {
-            function exponent_sorting_byEventStartDescending($a,$b) {
-                return ($a->eventstart < $b->eventstart ? 1 : -1);
-            }
-        }
+//        if (!defined('SYS_SORTING')) include_once(BASE.'framework/core/subsystems-1/sorting.php');
+//        include_once(BASE.'framework/core/subsystems-1/sorting.php');
+//        if ($sort_asc && !function_exists('exponent_sorting_byEventStartAscending')) {
+//            function exponent_sorting_byEventStartAscending($a,$b) {
+//                return ($a->eventstart < $b->eventstart ? 1 : -1);
+//            }
+//        }
+//        if (!$sort_asc && !function_exists('exponent_sorting_byEventStartDescending')) {
+//            function exponent_sorting_byEventStartDescending($a,$b) {
+//                return ($a->eventstart < $b->eventstart ? 1 : -1);
+//            }
+//        }
         
         global $db;
         $events = array();
@@ -370,11 +373,12 @@ class storeController extends expController {
             $o->eventend += $edate->event_endtime;
             $events[] = $o;
         }
-        if ($sort_asc == true) {
-            usort($events,'exponent_sorting_byEventStartAscending');
-        } else {
-            usort($events,'exponent_sorting_byEventStartDescending');
-        }
+//        if ($sort_asc == true) {
+//            usort($events,'exponent_sorting_byEventStartAscending');
+//        } else {
+//            usort($events,'exponent_sorting_byEventStartDescending');
+//        }
+        $events = expSorter::sort(array('array'=>$events,'sortby'=>'eventstart', 'order'=>$sort_asc ? 'ASC' : 'DESC'));
         return $events;
     }
     
@@ -414,7 +418,7 @@ class storeController extends expController {
         $sql  = 'SELECT p.* FROM '.DB_TABLE_PREFIX.'_product p JOIN '.DB_TABLE_PREFIX.'_product_storeCategories ';
         $sql .= 'sc ON p.id = sc.product_id WHERE sc.storecategories_id = 0 AND parent_id=0';
         
-        exponent_sessions_set('product_export_query',$sql);
+        expSession::set('product_export_query',$sql);
         
         $page = new expPaginator(array(
             'model_field'=>'product_type',
@@ -445,7 +449,7 @@ class storeController extends expController {
         $sql .= 'JOIN exponent_storeCategories sc ON psc.storecategories_id = sc.parent_id WHERE ';
         $sql .= 'p.parent_id=0 AND sc.parent_id != 0';
                               
-        exponent_sessions_set('product_export_query',$sql);
+        expSession::set('product_export_query',$sql);
         
         $page = new expPaginator(array(
             'model_field'=>'product_type',
@@ -592,7 +596,7 @@ class storeController extends expController {
         global $db;
         
         expHistory::set('viewable', $this->params);
-        $parent = isset($_REQUEST['cat']) ? $_REQUEST['cat'] : exponent_sessions_get('last_ecomm_category');
+        $parent = isset($_REQUEST['cat']) ? $_REQUEST['cat'] : expSession::get('last_ecomm_category');
         $category = new storeCategory($parent);
         $categories = $category->getEcomSubcategories();
         $ancestors = $category->pathToNode();
@@ -1254,7 +1258,7 @@ class storeController extends expController {
         $sql .= "order by p.model ASC LIMIT 30";
         $res = $db->selectObjectsBySql($sql);
         //eDebug($sql);
-        $ar = new expAjaxReply(200, gettext('Here\'s the items you wanted'), $res);
+        $ar = new expAjaxReply(200, gt('Here\'s the items you wanted'), $res);
         $ar->send();
     }
     
@@ -1302,7 +1306,7 @@ class storeController extends expController {
             $res[0]->result = "No results found, please try again.";
         }*/
         //eDebug($sql);
-        $ar = new expAjaxReply(200, gettext('Here\'s the items you wanted'), $res);
+        $ar = new expAjaxReply(200, gt('Here\'s the items you wanted'), $res);
         $ar->send();
     }
     
@@ -1325,7 +1329,7 @@ class storeController extends expController {
         eDebug($sql);
         $res = $db->selectObjectsBySql($sql);
         eDebug($res,true);
-        $ar = new expAjaxReply(200, gettext('Here\'s the items you wanted'), $res);
+        $ar = new expAjaxReply(200, gt('Here\'s the items you wanted'), $res);
         $ar->send();
     }
     

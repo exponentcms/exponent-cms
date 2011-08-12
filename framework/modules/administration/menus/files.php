@@ -21,14 +21,14 @@ if (!defined('EXPONENT')) exit('');
 $script = "
     
     var filepickerwindow = function (){
-        win = window.open('".makeLink($params=array('controller'=>'file','action'=>'picker','ajax_action'=>'1','update'=>'noupdate'))."', 'IMAGE_BROWSER','left=0,top=0,scrollbars=yes,width=800,height=600,toolbar=no,resizable=yes,status=0');
+        win = window.open('".makeLink($params=array('controller'=>'file','action'=>'picker','ajax_action'=>'1','update'=>'noupdate'))."', 'IMAGE_BROWSER','left=0,top=0,scrollbars=yes,width=1024,height=600,toolbar=no,resizable=yes,status=0');
         if (!win) {
             //Catch the popup blocker
             alert(\"Your popup blocker has prevented the file manager from opening\");
         }
     }
     var fileuploaderwindow = function (){
-        win = window.open('".makeLink($params=array('controller'=>'file','action'=>'uploader','ajax_action'=>'1','update'=>'noupdate'))."', 'IMAGE_BROWSER','left=0,top=0,scrollbars=yes,width=800,height=600,toolbar=no,resizable=yes,status=0');
+        win = window.open('".makeLink($params=array('controller'=>'file','action'=>'uploader','ajax_action'=>'1','update'=>'noupdate'))."', 'IMAGE_BROWSER','left=0,top=0,scrollbars=yes,width=1024,height=600,toolbar=no,resizable=yes,status=0');
         if (!win) {
             //Catch the popup blocker
             alert(\"Your popup blocker has prevented the file manager from opening\");
@@ -40,22 +40,29 @@ $script = "
     
 ";
 
-exponent_javascript_toFoot('zadminfilemanager', '', null, $script);
+//exponent_javascript_toFoot('zadminfilemanager', '', null, $script);
+expJavascript::pushToFoot(array(
+    "unique"=>'zadminfilemanager',
+    "yui2mods"=>'',
+    "yui3mods"=>null,
+    "content"=>$script,
+    "src"=>""
+ ));
 
 return array(
-    'text'=>'Files',
+    'text'=>gt('Files'),
     'classname'=>'files',
     'submenu'=>array(
         'id'=>'file-functions',
         'itemdata'=>array(
             array(
-                'text'=>"File Manager",
+                'text'=>gt("File Manager"),
                 'url'=>'#',
                 'classname'=>'filemanager',
                 'id'=>'filemanager',
             ),
             array(
-                'text'=>"Upload Files",
+                'text'=>gt("Upload Files"),
                 'url'=>'#',
                 'classname'=>'fileuploader',
                 'id'=>'fileuploader',

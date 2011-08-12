@@ -82,15 +82,14 @@ class expPaginator {
      */	
 	public $pages = array();
 	public $records = array();
-	
+
 	/**
 	 * expPaginator Constructor
 	 *
 	 * This is the main entry point for using the expPaginator.  See example above.
 	 *
 	 * @param array $params Use this to set any of the class variables. Ones not passed will be set to a default.
-	 * @return void
-	 *
+	 * @return \expPaginator
 	 */
 	public function __construct($params=array()) {
 		global $router,$db;		
@@ -406,8 +405,15 @@ class expPaginator {
                     });
                     ";
                     
-                    exponent_javascript_toFoot('select-all', '', null, $js, null);
-                    
+//                    exponent_javascript_toFoot('select-all', '', null, $js, null);
+                    expJavascript::pushToFoot(array(
+                        "unique"=>'select-all',
+                        "yui2mods"=>'',
+                        "yui3mods"=>null,
+                        "content"=>$js,
+                        "src"=>""
+                     ));
+
                 } else {
                     $this->header_columns .= '<a href="'.$router->makeLink($params, null, null, true).'" alt="sort by '.$colname.'" rel="nofollow">'.$colname.'</a>';
                 }

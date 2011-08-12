@@ -54,7 +54,7 @@
     {foreach from=$extensions item=extension}
         {include file="`$smarty.const.BASE`framework/modules/users/views/extensions/`$extension`.tpl"}
     {/foreach}
-    {if exponent_users_isAdmin() == 0}
+    {if $user->isAdmin() == 0}
 		{control type=antispam}
 	{/if}
     {control type="buttongroup" submit="Submit" cancel="Cancel"}

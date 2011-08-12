@@ -20,7 +20,7 @@
 class pixidouController extends expController {
     public $cacheDir = "framework/modules/pixidou/images/";
     public $requires_login = array('editor','exitEditor');
-	public $codequality = 'beta';
+	public $codequality = 'stable';
 
     function displayname() { return "Pixidou Image Editor"; }
     function description() { return "Add and manage Exponent Files"; }
@@ -32,9 +32,13 @@ class pixidouController extends expController {
         $file = new expFile($this->params['id']);
         
         $canSaveOg = $user->id==$file->poster || $user->is_admin ? 1 : 0 ;
-        
-        $file->copyToDirectory(BASE.$this->cacheDir);
-        assign_to_template(array('image'=>$file,'update'=>$_GET['update'],'saveog'=>$canSaveOg));
+	    if (file_exists(BASE.$file->directory.$file->filename)) {
+			$file->copyToDirectory(BASE.$this->cacheDir);
+			assign_to_template(array('image'=>$file,'update'=>$_GET['update'],'saveog'=>$canSaveOg));
+	    } else {
+		    flash('error','The file "'.BASE.$file->directory.$file->filename.'" does not exist on the server.');
+		    redirect_to(array("controller"=>'file',"action"=>'picker',"ajax_action"=>1,"update"=>$this->params['update'],"fck"=>$this->params['fck']));
+	    }
     }
     
     public function exitEditor() {
@@ -46,6 +50,17 @@ class pixidouController extends expController {
                 $copyname = expFile::resolveDuplicateFilename($oldimage->path); 
                 copy(BASE.$this->cacheDir."/".$this->params['cpi'],$oldimage->directory.$copyname); //copy the edited file over to the files dir
                 $newFile = new expFile(array("filename"=>$copyname)); //construct a new expFile
+                $newFile->directory = $oldimage->directory;
+                $newFile->title = $oldimage->title;
+                $newFile->shared = $oldimage->shared;
+                $newFile->mimetype = $oldimage->mimetype;
+                $newFile->posted = time();
+                $newFile->filesize = filesize(BASE.$this->cacheDir."/".$this->params['cpi']);
+                $resized = getimagesize(BASE.$this->cacheDir."/".$this->params['cpi']);
+                $newFile->image_width = $resized[0];
+                $newFile->image_height = $resized[1];
+                $newFile->alt = $oldimage->alt;
+                $newFile->is_image = $oldimage->is_image;
                 $newFile->save(); //Save it to the database
 
                 break;
@@ -63,10 +78,10 @@ class pixidouController extends expController {
                 # code...
                 break;
         }
-        // propper file types to look for
+        // proper file types to look for
         $types = array(".jpg",".gif",".png");
         
-        //Pinidou images directory, the editor's cache
+        //Pixidou images directory, the editor's cache
         $cachedir = BASE.$this->cacheDir;
         
         if (is_dir($cachedir) && is_readable($cachedir) ) {
@@ -78,7 +93,6 @@ class pixidouController extends expController {
                 }
             }
         }
-        
         
         redirect_to(array("controller"=>'file',"action"=>'picker',"ajax_action"=>1,"update"=>$this->params['update'],"fck"=>$this->params['fck']));
     }

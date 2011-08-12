@@ -21,5 +21,7 @@ if (!defined('SITE_USE_ANTI_SPAM')) define('SITE_USE_ANTI_SPAM',1);
 if (!defined('ANTI_SPAM_USERS_SKIP')) define('ANTI_SPAM_USERS_SKIP','0');
 if (!defined('ANTI_SPAM_CONTROL')) define('ANTI_SPAM_CONTROL','0');
 if (!defined('RECAPTCHA_THEME')) define('RECAPTCHA_THEME','clean');
+if (!defined('RECAPTCHA_PUB_KEY')) define('RECAPTCHA_PUB_KEY','');
+if (!defined('RECAPTCHA_PRIVATE_KEY')) define('RECAPTCHA_PRIVATE_KEY','');
 
 ?>

@@ -58,7 +58,8 @@ class motdController extends expController {
     }
     
     function update() {
-        if (!defined("SYS_DATETIME")) include_once(BASE."subsystems/datetime.php");
+//        if (!defined("SYS_DATETIME")) include_once(BASE."framework/core/subsystems-1/datetime.php");
+        include_once(BASE."framework/core/subsystems-1/datetime.php");
         $timestamp = mktime(0, 0, 0, $this->params['month'], 1);
         $endday = exponent_datetime_endOfMonthDay($timestamp);
         if ($this->params['day'] > $endday) {

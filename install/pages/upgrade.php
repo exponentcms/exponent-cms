@@ -22,19 +22,18 @@ if (!defined('EXPONENT'))
     exit('');
 
 $errors = array();
-$i18n   = exponent_lang_loadFile('install/pages/upgrade.php');
 
 ?>
 <h2 id="subtitle"><?php
-echo $i18n['subtitle'];
+echo gt('Running the Upgrade Scripts');
 ?></h2>
 <table cellspacing="0" cellpadding="3" rules="all" border="0" style="border:1px solid grey;" width="425">
 <tr>
 	<td style="background-color: lightgrey;"><b><?php
-echo $i18n['scriptname'];
+echo gt('Upgrade Performed');
 ?></b></td>
 	<td style="background-color: lightgrey;"><b><?php
-echo $i18n['scriptstatus'];
+echo gt('Status');
 ?></b></td>
 </tr>
 <?php
@@ -61,13 +60,13 @@ if (is_readable($upgrade_dir)) {
 echo '</table>';
 
 if (count($errors)) {
-    echo $i18n['errors'] . '<br /><br /><br />';
+    echo gt('Errors were encountered upgrading the site database.') . '<br /><br /><br />';
     foreach ($errors as $e)
         echo $e . '<br />';
 } else {
-    echo $i18n['success'];
+    echo gt('Upgrade Successful!');
     ;
-    echo '<br /><br /><a class="awesome large green" href="?page=final">' . $i18n['complete'] . '</a>';
+    echo '<br /><br /><a class="awesome large green" href="?page=final">' . gt('Complete the Upgrade') . '</a>';
 }
 
 ?>

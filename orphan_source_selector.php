@@ -30,7 +30,7 @@ define('SELECTOR',1);
 $SYS_FLOW_REDIRECTIONPATH='source_selector';
 
 $source_select = array();
-if (exponent_sessions_isset('source_select')) $source_select = exponent_sessions_get('source_select');
+if (expSession::is_set('source_select')) $source_select = expSession::get('source_select');
 $count_orig = count($source_select);
 
 if (isset($_REQUEST['vview'])) {
@@ -65,13 +65,13 @@ if (isset($_REQUEST['hideOthers'])) {
 	$source_select['hideOthers'] = 0;
 }
 
-exponent_sessions_set('source_select',$source_select);
+expSession::set('source_select',$source_select);
 
 $thistemplate = new standalonetemplate('orphaned_content');
 
 ob_start();
 // Include the orphans_modules action of the container, to get a list of modules types with orhpans.
-include_once(BASE.'modules/containermodule/actions/orphans_modules.php');
+include_once(BASE . 'framework/modules-1/containermodule/actions/orphans_modules.php');
 $thistemplate->assign('modules_output',ob_get_contents());
 ob_end_clean();
 
@@ -79,7 +79,7 @@ ob_end_clean();
 if (isset($_GET['module'])) {
 	ob_start();
 	// Include the orphans_content action of the container module, to show all modules of the specified type.
-	include_once(BASE.'modules/containermodule/actions/orphans_content.php');
+	include_once(BASE . 'framework/modules-1/containermodule/actions/orphans_content.php');
 	$thistemplate->assign('main_output',ob_get_contents());
 	$thistemplate->assign('error','');
 	ob_end_clean();

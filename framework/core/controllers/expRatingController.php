@@ -56,7 +56,7 @@ class expRatingController extends expController {
 		if(isset($this->params['subtype'])) $obj->subtype = $this->params['subtype'];
 		$db->insertObject($obj, $rating->attachable_table);
 
-        $ar = new expAjaxReply(200, gettext('Thank you for your rating'));
+        $ar = new expAjaxReply(200, gt('Thank you for your rating'));
         $ar->send();
 		
         // flash('message', $msg);

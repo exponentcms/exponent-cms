@@ -1,4 +1,5 @@
 <?php
+
 ##################################################
 #
 # Copyright (c) 2007-2008 OIC Group, Inc.
@@ -24,8 +25,8 @@ class convert_db_trim extends upgradescript {
 
 	function upgrade() {
 		// check if the files are there and remove them
-		$file1 = BASE."/modules/administrationmodule/actions/trimdatabase.php";
-		$file2 = BASE."/modules/administrationmodule/actions/trimdatabase_final.php";
+		$file1 = BASE."/framework/modules-1/administrationmodule/actions/trimdatabase.php";
+		$file2 = BASE."/framework/modules-1/administrationmodule/actions/trimdatabase_final.php";
 		if (expUtil::isReallyWritable($file1) && expUtil::isReallyWritable($file2)) {
 			unlink ($file1);
 			unlink ($file2);

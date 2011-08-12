@@ -25,8 +25,8 @@ class tablebasedcalculator extends shippingcalculator {
 	// public $table = 'table_based_shipping_charges';
 	public $has_many = array('shippingspeeds');
 	
-    public function name() { return exponent_lang_getText('Table Based Shipping'); }
-    public function description() { return exponent_lang_getText('Table Based Shipping calculator'); }
+    public function name() { return gt('Table Based Shipping'); }
+    public function description() { return gt('Table Based Shipping calculator'); }
     public function hasUserForm() { return true; }
     public function hasConfig() { return true; }
     public function addressRequired() { return false; }

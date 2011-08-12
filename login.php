@@ -22,8 +22,9 @@
 require_once('exponent.php');
 
 //Fire off the login form via an exponent action.
-if (!defined('SYS_SESSIONS')) require_once(BASE.'subsystems/sessions.php');
-exponent_sessions_set('redirecturl', exponent_flow_get());
+//if (!defined('SYS_SESSIONS')) require_once(BASE.'framework/core/subsystems-1/sessions.php');
+//require_once(BASE.'framework/core/subsystems-1/sessions.php');
+expSession::set('redirecturl', expHistory::getLastNotEditable());
 redirect_to(array("module"=>"loginmodule","action"=>"loginredirect"));
 
 ?>

@@ -41,10 +41,10 @@ uasort($themes,'strnatcmp');
 
 /*
 $languages = array();
-if (is_readable(BASE.'subsystems/lang')) {
-	$lang_dir = opendir(BASE.'subsystems/lang');
+if (is_readable(BASE.'framework/core/subsystems-1/lang')) {
+	$lang_dir = opendir(BASE.'framework/core/subsystems-1/lang');
 	while (($lang_file = readdir($lang_dir)) !== false) {
-		$lang_file = realpath(BASE.'subsystems/lang/'.$lang_file);
+		$lang_file = realpath(BASE.'framework/core/subsystems-1/lang/'.$lang_file);
 			if (is_readable($lang_file) && is_file($lang_file)) {
 				$thislang = include($lang_file);
 				$languages[$thislang['locale']] = $thislang['name'];				

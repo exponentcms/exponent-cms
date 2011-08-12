@@ -334,7 +334,7 @@ class reportController extends expController {
 
         )
         */
-        exponent_sessions_set('order_print_query',  $sql . $sqlwhere);
+        expSession::set('order_print_query',  $sql . $sqlwhere);
         //$where = 1;//$this->aggregateWhereClause();
         //$order = 'id';
         $limit = empty($this->config['limit']) ? 25 : $this->config['limit'];
@@ -698,11 +698,11 @@ class reportController extends expController {
         */
         
         //$sqlwhere .= " ORDER BY purchased_date DESC";
-        exponent_sessions_set('order_print_query',  $sql . $sqlwhere);
+        expSession::set('order_print_query',  $sql . $sqlwhere);
         $reportRecords = $db->selectObjectsBySql($sql . $sqlwhere);
-        exponent_sessions_set('order_export_values',  $reportRecords);
+        expSession::set('order_export_values',  $reportRecords);
         
-        //eDebug(exponent_sessions_get('order_export_values'));
+        //eDebug(expSession::get('order_export_values'));
         //$where = 1;//$this->aggregateWhereClause();
         //$order = 'id';
         $limit = empty($this->config['limit']) ? 350 : $this->config['limit'];
@@ -742,7 +742,7 @@ class reportController extends expController {
         $order_ids = array();
         if (isset($this->params['applytoall']) && $this->params['applytoall']==1)
         {
-            $obs = exponent_sessions_get('order_export_values');
+            $obs = expSession::get('order_export_values');
             foreach ($obs as $ob)
             {
                 $order_ids[] = $ob->id;
@@ -813,7 +813,7 @@ class reportController extends expController {
         $order_ids = array();
         if (isset($this->params['applytoall']) && $this->params['applytoall']==1)
         {
-            $obs = exponent_sessions_get('order_export_values');
+            $obs = expSession::get('order_export_values');
             foreach ($obs as $ob)
             {
                 $order_ids[] = $ob->id;
@@ -1022,8 +1022,8 @@ class reportController extends expController {
         eDebug($sqlstart . $sql . $sqlwhere );
         eDebug ($sqlcount . $sql . $sqlwhere );
         eDebug("Stored:" . $exportSQL);
-        exponent_sessions_set('product_export_query', $exportSQL);
-        //exponent_sessions_set('product_export_query', "SELECT  DISTINCT(p.id) FROM `exponent_product` p WHERE (title like '%Velcro%' OR feed_title like '%Velcro%' OR title like '%Multicam%' OR feed_title like '%Multicam%') AND parent_id = 0");
+        expSession::set('product_export_query', $exportSQL);
+        //expSession::set('product_export_query', "SELECT  DISTINCT(p.id) FROM `exponent_product` p WHERE (title like '%Velcro%' OR feed_title like '%Velcro%' OR title like '%Multicam%' OR feed_title like '%Multicam%') AND parent_id = 0");
         
         $order = 'id';
         $limit = empty($this->config['limit']) ? 350 : $this->config['limit'];
@@ -1185,14 +1185,14 @@ class reportController extends expController {
     {
         global $db;
         //eDebug($this->params);
-        eDebug( exponent_sessions_get('order_print_query'));
+        eDebug( expSession::get('order_print_query'));
         if (isset($this->params['applytoall']) && $this->params['applytoall']==1)
         {
-            //$sql = exponent_sessions_get('order_print_query');
+            //$sql = expSession::get('order_print_query');
             //eDebug($sql);
-            //exponent_sessions_set('product_export_query','');
+            //expSession::set('product_export_query','');
             //$orders = $db->selectArraysBySql($sql);
-            $obs = exponent_sessions_get('order_export_values');
+            $obs = expSession::get('order_export_values');
             usort($obs,array("reportController","sortPrintOrders"));            
             foreach ($obs as $ob)
             {
@@ -1226,7 +1226,7 @@ class reportController extends expController {
         $order_ids = array();
         if (isset($this->params['applytoall']) && $this->params['applytoall']==1)
         {
-            $obs = exponent_sessions_get('order_export_values');
+            $obs = expSession::get('order_export_values');
             foreach ($obs as $ob)
             {
                 $order_ids[] = $ob->id;
@@ -1283,7 +1283,7 @@ class reportController extends expController {
         $order_ids = array();
         if (isset($this->params['applytoall']) && $this->params['applytoall']==1)
         {
-            $obs = exponent_sessions_get('order_export_values');
+            $obs = expSession::get('order_export_values');
             foreach ($obs as $ob)
             {
                 $order_ids[] = $ob->id;
@@ -1450,9 +1450,9 @@ class reportController extends expController {
         $out = '"id","parent_id","child_rank","title","body","model","warehouse_location","sef_url","meta_title","meta_keywords","meta_description","tax_class_id","quantity","availability_type","base_price","special_price","use_special_price","active_type","product_status_id","category1","category2","category3","category4","surcharge","category_rank","feed_title","feed_body"' . chr(13) . chr(10); 
         if (isset($this->params['applytoall']) && $this->params['applytoall']==1)
         {
-            $sql = exponent_sessions_get('product_export_query');
+            $sql = expSession::get('product_export_query');
             //eDebug($sql);
-            //exponent_sessions_set('product_export_query','');
+            //expSession::set('product_export_query','');
             $prods = $db->selectArraysBySql($sql);
             //eDebug($prods);
         }else{
@@ -1566,14 +1566,14 @@ class reportController extends expController {
         
         $oids = "(";
                         
-        eDebug( exponent_sessions_get('order_print_query'));
+        eDebug( expSession::get('order_print_query'));
         if (isset($this->params['applytoall']) && $this->params['applytoall']==1)
         {
-            //$sql = exponent_sessions_get('order_print_query');
+            //$sql = expSession::get('order_print_query');
             //eDebug($sql);
-            //exponent_sessions_set('product_export_query','');
+            //expSession::set('product_export_query','');
             //$orders = $db->selectArraysBySql($sql);
-            $obs = exponent_sessions_get('order_export_values');
+            $obs = expSession::get('order_export_values');
             usort($obs,array("reportController","sortPrintOrders"));            
             foreach ($obs as $ob)
             {
@@ -1605,9 +1605,9 @@ class reportController extends expController {
         $out = '"id","parent_id","model","warehouse_location","title","vendor","product_status","notes"' . chr(13) . chr(10); 
         if (isset($this->params['applytoall']) && $this->params['applytoall']==1)
         {
-            $sql = exponent_sessions_get('product_export_query');
+            $sql = expSession::get('product_export_query');
             //eDebug($sql);
-            //exponent_sessions_set('product_export_query','');
+            //expSession::set('product_export_query','');
             $prods = $db->selectArraysBySql($sql);
             //eDebug($prods);
         }else{

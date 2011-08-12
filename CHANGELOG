@@ -2,16 +2,43 @@ Exponent Content Management System
 Copyright (c) 2004-2011 OIC Group, Inc.
 ===============================================
 
+Added / Fixed / changed for 2.0.0 release candidate 2
+-----------------------
+# This release focuses on bug fixing
+# Major revision of actual folder layout to better conform to 2.0 design goals
+	• 'datatypes' (folders) are now 'models' and also allowed within module folders (along w/ definitions)
+	• old-school (1.0) modules moved to framework folder and given a '-1' suffix
+	• old-school (1.0) models & subsystems moved inside framework/core folder and given a '-1' suffix
+	• framework/models (2.0) moved inside and combined with framework/core/models folder
+	• Smarty /plugins, /themes/common, and global /views files moved various places inside framework folder
+	• 'page loading' process streamlined; several root folder files consolidated/merged
+# Many old-school (1.0) items were deprecated and/or updated to 2.0 format
+	• Several old-school (1.0) subsystems were deprecated and/or migrated to 2.0 format
+	• Many old-school (1.0) unused files and code (PHP4) was deprecated and/or deleted
+	• 3rd party libraries (/external) updated to latest stable versions
+	• New language system more completely implemented, esp in slingbar, site configuration, & install/upgrade
+	• FCKeditor now fully deprecated as a WYSIWYG editor option
+# Gravatar.com option added to user profile avatars
+# Many, many other tweaks and fixes
+
 Added / Fixed / changed for 2.0.0 release candidate 1
 -----------------------
 # This release focuses on stabilization and fixing brokenness
+	• Many tweaks to Ecommerce
+	• Permissions (cascading) problems fixed
+	• Adds a new 'Data' view to form module
+	• Minor updates to the install/upgrade process
+	• Page-loading process streamlined
+	• 3rd party libraries updated - Minfy, Swiftmail, MagpieRSS, SWFObject
+	• Many deprecated (1.0) files and functions removed from package
+	• Many, many other tweaks and fixes
 
 Added / Fixed / changed for 2.0.0 beta 4
 -----------------------
 # This release includes an emphasis on the permission system and a major update to the Ecommerce system
 # Notable Module fixes and improvements
-	• Massive work done on the Ecommerce system, bringing it very close to being stable and usable out of the box.
-	• Blog module updated; also better use of tags and comments
+    • Massive work done on the Ecommerce system, bringing it very close to being stable and usable out of the box.
+    • Blog module updated; also better use of tags and comments
     • Better implementation of database interaction (mysqli only @tt)
     • More robust api documentation - new api.exponentcms.org site is now online
     • Changes to promote better internationalization (utf8) support, esp. in forms

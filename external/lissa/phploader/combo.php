@@ -27,10 +27,9 @@
 */
 
 require "./combo_functions.inc.php";
-require "../../../exponent_bootstrap.php";
 
 //Web accessible path to the YUI PHP loader lib directory (Override as needed)
-define("PATH_TO_LIB", server() . PATH_RELATIVE . "external/lissa/"); 
+define("PATH_TO_LIB", server() . "/phploader/lib/"); 
 
 //APC Configuration
 define("APC_AVAIL", function_exists('apc_fetch') ? true : false);
@@ -80,7 +79,7 @@ if (isset($queryString) && !empty($queryString)) {
         }
         
         //Verify this version of the library exists locally
-        $localPathToBuild = "../" . $yuiVersion . "/build/";
+        $localPathToBuild = "../lib/" . $yuiVersion . "/build/";
         if (
             file_exists($localPathToBuild) === false || 
             is_readable($localPathToBuild) === false

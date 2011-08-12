@@ -63,17 +63,14 @@ if (ENABLE_TRACKING) $router->updateHistory($section);
 header("Content-Type: text/html; charset=".LANG_CHARSET);
 
 // Check to see if we are in maintenance mode.
-if (MAINTENANCE_MODE && !exponent_users_isAdmin() && ( !isset($_REQUEST['module']) || $_REQUEST['module'] != 'loginmodule')) {
+if (MAINTENANCE_MODE && !$user->isAdmin() && ( !isset($_REQUEST['module']) || $_REQUEST['module'] != 'loginmodule')) {
 	//only admins/acting_admins are allowed to get to the site, all others get the maintenance view
 	$template = new standalonetemplate('_maintenance');
 	$template->output();
 } else {
 	if (MAINTENANCE_MODE > 0) flash('error', "Maintenance Mode is Enabled");
 	//the default user is anonymous
-	if (!exponent_sessions_loggedIn()) {
-		// Initialize the users subsystem
-		require_once(BASE.'subsystems/users.php');  // FIXME users.php is already loaded from within exponent.php above
-
+	if (!expSession::loggedIn()) {
 		//TODO: Maxims initial anonymous user implementation
 		//exponent_users_login("anonymous", "anonymous");
 	}
@@ -82,32 +79,32 @@ if (MAINTENANCE_MODE && !exponent_users_isAdmin() && ( !isset($_REQUEST['module'
 	expVersion::checkVersion();
 
 	// Handle sub themes
-	$page = exponent_theme_getTheme();
+	$page = expTheme::getTheme();
 
 	// If we are in a printer friendly request then we need to change to our printer friendly subtheme
 	if (PRINTER_FRIENDLY == 1) {
-		exponent_sessions_set("uilevel",0);
-		$pftheme = exponent_theme_getPrinterFriendlyTheme();  	// get the printer friendly theme 
+		expSession::set("uilevel",0);
+		$pftheme = expTheme::getPrinterFriendlyTheme();  	// get the printer friendly theme
 		$page = $pftheme == null ? $page : $pftheme;		// if there was no theme found then just use the current subtheme
 	}
  
 	$base_i18n = exponent_lang_loadFile('index.php');
 
 	if (is_readable($page)) {
-		if (!exponent_javascript_inAjaxAction()) {
+		if (!expJavascript::inAjaxAction()) {
 			include_once($page);
-			exponent_theme_satisfyThemeRequirements();
+			expTheme::satisfyThemeRequirements();
 		} else {
-			exponent_theme_runAction();
+			expTheme::runAction();
 		}
 	} else {
 		echo sprintf($base_i18n['not_readable'], $page);
 	}
 
 	if (PRINTER_FRIENDLY == 1) {
-		//$levels = exponent_sessions_get('uilevels');
-		//if (!empty($levels)) exponent_sessions_set('uilevel',max(array_keys($levels)));
-		exponent_sessions_unset('uilevel');
+		//$levels = expSession::get('uilevels');
+		//if (!empty($levels)) expSession::set('uilevel',max(array_keys($levels)));
+		expSession::un_set('uilevel');
 	}
 }
 

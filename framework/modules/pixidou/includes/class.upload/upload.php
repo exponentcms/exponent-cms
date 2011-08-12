@@ -9,7 +9,7 @@
         }
         fieldset {
             width: 50%;
-            background: url(bg.gif);
+            background: url(../../assets/images/background.gif);
             margin: 15px 0px 25px 0px;
             padding: 15px;
         }
@@ -91,7 +91,7 @@ if (!array_key_exists('action', $_POST) || $_POST['action'] == 'simple') {
             echo '  link to the file just uploaded: <a href="test/' . $handle->file_dst_name . '">' . $handle->file_dst_name . '</a>';
             echo '</fieldset>';
         } else {
-            // one error occured
+            // one error occurred
             echo '<fieldset>';
             echo '  <legend>file not uploaded to the wanted location</legend>';
             echo '  Error: ' . $handle->error . '';
@@ -231,7 +231,7 @@ if (!array_key_exists('action', $_POST) || $_POST['action'] == 'simple') {
                 echo '  link to the file just uploaded: <a href="test/' . $handle->file_dst_name . '">' . $handle->file_dst_name . '</a>';
                 echo '</fieldset>';
             } else {
-                // one error occured
+                // one error occurred
                 echo '<fieldset>';
                 echo '  <legend>file not uploaded to the wanted location</legend>';
                 echo '  Error: ' . $handle->error . '';
@@ -264,8 +264,8 @@ if (!array_key_exists('action', $_POST) || $_POST['action'] == 'simple') {
     // in our case, it means if the file is present on the local file system
     if ($handle->uploaded) {
 
-        // now, we start a serie of processes, with different parameters
-        // we use a little function TestProcess() to avoid repeting the same code too many times
+        // now, we start a series of processes, with different parameters
+        // we use a little function TestProcess() to avoid repeating the same code too many times
         function TestProcess(&$handle, $title = 'test', $details='') {
 
             $handle->Process('./test/');
@@ -690,20 +690,20 @@ if (!array_key_exists('action', $_POST) || $_POST['action'] == 'simple') {
         TestProcess($handle, '50% reflection, pink background, into GIF', "\$foo->image_convert         = 'gif';\n\$foo->image_reflection_height = '50%';\n\$foo->image_default_color    = '#000000';");
 
         // -----------
-        $handle->image_watermark       = "watermark.png"; 
-        TestProcess($handle, 'overlayed watermark (alpha transparent PNG)', "\$foo->image_watermark       = 'watermark.png';");
+        $handle->image_watermark       = "../../assets/images/watermark.png";
+        TestProcess($handle, 'overlayed watermark (alpha transparent PNG)', "\$foo->image_watermark       = '../../assets/images/watermark.png';");
 
         // -----------
-        $handle->image_watermark       = "watermark.png"; 
+        $handle->image_watermark       = "../../assets/images/watermark.png";
         $handle->image_watermark_position = 'R'; 
-        TestProcess($handle, 'overlayed watermark, right position', "\$foo->image_watermark       = 'watermark.png';\n\$foo->image_watermark_position = 'R;");
+        TestProcess($handle, 'overlayed watermark, right position', "\$foo->image_watermark       = '../../assets/images/watermark.png';\n\$foo->image_watermark_position = 'R;");
 
         // -----------
-        $handle->image_watermark       = "watermark.png"; 
+        $handle->image_watermark       = "../../assets/images/watermark.png";
         $handle->image_watermark_x     = 10; 
         $handle->image_watermark_y     = 10; 
         $handle->image_greyscale       = true;
-        TestProcess($handle, 'watermark on greyscale pic, absolute position', "\$foo->image_watermark       = 'watermark.png';\n\$foo->image_watermark_x     = 10;\n\$foo->image_watermark_y     = 10;\n\$foo->image_greyscale       = true;");
+        TestProcess($handle, 'watermark on greyscale pic, absolute position', "\$foo->image_watermark       = '../../assets/images/watermark.png';\n\$foo->image_watermark_x     = 10;\n\$foo->image_watermark_y     = 10;\n\$foo->image_greyscale       = true;");
 
         // -----------
         $handle->image_convert         = 'jpg';

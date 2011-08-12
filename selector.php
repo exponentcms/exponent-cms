@@ -30,10 +30,11 @@ ob_start('epb');
 $microtime_str = explode(' ',microtime());
 $i_start = $microtime_str[0] + $microtime_str[1];
 
-// Initialize the Theme Subsystem
-if (!defined('SYS_THEME')) require_once(BASE.'subsystems/theme.php');
+// Initialize the theme subsystem 1.0 compatibility layer
+//if (!defined('SYS_THEME')) require_once(BASE.'framework/core/subsystems-1/theme.php');
+require_once(BASE.'framework/core/subsystems-1/theme.php');
 
-$section = (exponent_sessions_isset('last_section') ? exponent_sessions_get('last_section') : SITE_DEFAULT_SECTION);
+$section = (expSession::is_set('last_section') ? expSession::get('last_section') : SITE_DEFAULT_SECTION);
 $section = $db->selectObject('section','id='.$section);
 
 // Handle sub themes
@@ -47,7 +48,7 @@ if (is_readable(BASE.$page)) {
 	$SYS_FLOW_REDIRECTIONPATH='source_selector';
 
 	$source_select = array();
-	if (exponent_sessions_isset('source_select')) $source_select = exponent_sessions_get('source_select');
+	if (expSession::is_set('source_select')) $source_select = expSession::get('source_select');
 	$count_orig = count($source_select);
 	
 	if (isset($_REQUEST['vview'])) {
@@ -82,13 +83,12 @@ if (is_readable(BASE.$page)) {
 		$source_select['hideOthers'] = 0;
 	}
 	
-	exponent_sessions_set('source_select',$source_select);
+	expSession::set('source_select',$source_select);
 	// Include the rendering page.
 	include_once(BASE.$page);
-	exponent_theme_satisfyThemeRequirements();
+	expTheme::satisfyThemeRequirements();
 } else {
-	$i18n = exponent_lang_loadFile('selector.php');
-	echo sprintf($i18n['not_readable'],BASE.$page);
+	echo sprintf(gt('Page').' "%s" '.gt('not readable.'),BASE.$page);
 }
 
 ob_end_flush();

@@ -164,9 +164,9 @@
  *  <pre>$handle->file_auto_rename = true;</pre></li>
  *  <li><b>auto_create_dir</b> automatically creates destination directory if missing (default: true)<br>
  *  <pre>$handle->auto_create_dir = true;</pre></li>
- *  <li><b>dir_auto_chmod</b> automatically attempts to chmod the destination directory if not writeable (default: true)<br>
+ *  <li><b>dir_auto_chmod</b> automatically attempts to chmod the destination directory if not writable (default: true)<br>
  *  <pre>$handle->dir_auto_chmod = true;</pre></li>
- *  <li><b>dir_chmod</b> chmod used when creating directory or if directory not writeable (default: 0777)<br>
+ *  <li><b>dir_chmod</b> chmod used when creating directory or if directory not wrateable(default: 0777)<br>
  *  <pre>$handle->dir_chmod = 0777;</pre></li>
  *  <li><b>file_max_size</b> sets maximum upload size (default: upload_max_filesize from php.ini)<br>
  *  <pre>$handle->file_max_size = '1024'; // 1KB</pre></li>
@@ -319,7 +319,7 @@
  * </ul>
  * <ul>
  *  <li><b>image_watermark</b> adds a watermark on the image, value is a local filename. accepted files are GIF, JPG, BMP, PNG and PNG alpha (default: null)<br>
- *  <pre>$handle->image_watermark = 'watermark.png';</pre></li>
+ *  <pre>$handle->image_watermark = '../../assets/images/watermark.png';</pre></li>
  *  <li><b>image_watermark_x</b> absolute watermark position, in pixels from the left border. can be negative (default: null)<br>
  *  <pre>$handle->image_watermark_x = 5;</pre></li>
  *  <li><b>image_watermark_y</b> absolute watermark position, in pixels from the top border. can be negative (default: null)<br>
@@ -453,8 +453,8 @@
  *   - the class can mow manipulate local files, not only uploaded files (instanciate the class with a local filename).<br>
  *   - {@link file_safe_name} has been improved a bit.<br>
  *   - added {@link image_brightness}, {@link image_contrast}, {@link image_tint_color}, {@link image_overlay_color} and {@link image_overlay_percent} to do color manipulation on the images.<br>
- *   - added {@link image_text} and all derivated settings to add a text label on the image.<br>
- *   - added {@link image_watermark} and all derivated settings to add a watermark image on the image.<br>
+ *   - added {@link image_text} and all derivative settings to add a text label on the image.<br>
+ *   - added {@link image_watermark} and all derivative settings to add a watermark image on the image.<br>
  *   - added {@link image_flip} and {@link image_rotate} for more image manipulations<br>
  *   - added {@link jpeg_size} to calculate the JPG compression quality in order to fit within one filesize.</li>
  *  <li><b>v 0.18</b> 02/02/2006<br>
@@ -733,7 +733,7 @@ class upload {
     var $file_new_name_body;
 
     /**
-     * Set this variable to add a string to the faile name body
+     * Set this variable to add a string to the file name body
      *
      * @access public
      * @var string
@@ -812,7 +812,7 @@ class upload {
 
     /**
      * Set this variable to true to allow automatic chmod of the destination 
-     * directory if it is not writeable
+     * directory if it is not writable
      *
      * Default value is true
      *
@@ -910,7 +910,7 @@ class upload {
     /**
      * Set this variable to keep the original size ratio to fit within {@link image_x} x {@link image_y}
      * 
-     * The image will be resized as to fill the whole space, and excedent will be cropped
+     * The image will be resized as to fill the whole space, and excellent will be cropped
      *
      * Value can also be a string, one or more character from 'TBLR' (top, bottom, left and right)
      * If set as a string, it determines which side of the image is kept while cropping.
@@ -943,7 +943,7 @@ class upload {
     /**
      * Set this variable to a number of pixels so that {@link image_x} and {@link image_y} are the best match possible
      * 
-     * The image will be resized to have approximatively the number of pixels
+     * The image will be resized to have approximately the number of pixels
      * The aspect ratio wil be conserved
      *
      * Default value is false
@@ -1421,7 +1421,7 @@ class upload {
      *     
      * Default value is 0
      *
-     * This setting can be overriden by {@link image_text_padding_x} and {@link image_text_padding_y}
+     * This setting can be overridden by {@link image_text_padding_x} and {@link image_text_padding_y}
      *
      * @access public
      * @var integer
@@ -1498,7 +1498,7 @@ class upload {
     var $image_reflection_height;
 
     /**
-     * Sets the space between the source image and its relection
+     * Sets the space between the source image and its reflection
      *
      * Value is an integer in pixels, which can be negative
      *     
@@ -1674,7 +1674,7 @@ class upload {
      *
      * Value is an integer. Two values are possible for now:
      * 1 for flat border, meaning that the frame is mirrored horizontally and vertically
-     * 2 for crossed border, meaning that the frame will be inversed, as in a bevel effect
+     * 2 for crossed border, meaning that the frame will be inverted, as in a bevel effect
      *
      * The frame will be composed of colored lines set in {@link image_frame_colors}
      *
@@ -1725,7 +1725,7 @@ class upload {
     var $image_watermark;
 
     /**
-     * Sets the watermarkposition within the image
+     * Sets the watermark position within the image
      *
      * Value is one or two out of 'TBLR' (top, bottom, left, right)
      *
@@ -1828,10 +1828,10 @@ class upload {
         $this->file_name_body_add       = '';       // append to the name body
         $this->file_new_name_ext        = '';       // replace the file extension
         $this->file_safe_name           = true;     // format safely the filename
-        $this->file_overwrite           = false;    // allows overwritting if the file already exists
+        $this->file_overwrite           = false;    // allows overwriting if the file already exists
         $this->file_auto_rename         = true;     // auto-rename if the file already exists
         $this->dir_auto_create          = true;     // auto-creates directory if missing
-        $this->dir_auto_chmod           = true;     // auto-chmod directory if not writeable
+        $this->dir_auto_chmod           = true;     // auto-chmod directory if not writable
         $this->dir_chmod                = 0777;     // default chmod to use
         
         $this->mime_check               = true;     // don't check the mime type against the allowed list
@@ -2080,8 +2080,8 @@ class upload {
         $this->translation['destination_dir']             = 'Destination directory can\'t be created. Can\'t carry on a process.';
         $this->translation['destination_dir_missing']     = 'Destination directory doesn\'t exist. Can\'t carry on a process.';
         $this->translation['destination_path_not_dir']    = 'Destination path is not a directory. Can\'t carry on a process.';
-        $this->translation['destination_dir_write']       = 'Destination directory can\'t be made writeable. Can\'t carry on a process.';
-        $this->translation['destination_path_write']      = 'Destination path is not a writeable. Can\'t carry on a process.';
+        $this->translation['destination_dir_write']       = 'Destination directory can\'t be made writable. Can\'t carry on a process.';
+        $this->translation['destination_path_write']      = 'Destination path is not a writable. Can\'t carry on a process.';
         $this->translation['temp_file']                   = 'Can\'t create the temporary file. Can\'t carry on a process.';
         $this->translation['source_not_readable']         = 'Source file is not readable. Can\'t carry on a process.';
         $this->translation['no_create_support']           = 'No create from %s support.';
@@ -2173,7 +2173,7 @@ class upload {
                     $this->file_src_pathname   = $file;
                     $this->file_src_name       = basename($file);
                     $this->log .= '- local file name OK<br />';
-                    ereg('\.([^\.]*$)', $this->file_src_name, $extension);
+                    preg_match('/\.([^\.]*$)/', $this->file_src_name, $extension);
                     if (is_array($extension)) {
                         $this->file_src_name_ext      = strtolower($extension[1]);
                         $this->file_src_name_body     = substr($this->file_src_name, 0, ((strlen($this->file_src_name) - strlen($this->file_src_name_ext)))-1);
@@ -2245,7 +2245,7 @@ class upload {
 
             if ($this->uploaded) {
                 $this->log .= '- file name OK<br />';
-                ereg('\.([^\.]*$)', $this->file_src_name, $extension);
+                preg_match('/\.([^\.]*$)/', $this->file_src_name, $extension);
                 if (is_array($extension)) {
                     $this->file_src_name_ext      = strtolower($extension[1]);
                     $this->file_src_name_body     = substr($this->file_src_name, 0, ((strlen($this->file_src_name) - strlen($this->file_src_name_ext)))-1);
@@ -2431,23 +2431,27 @@ class upload {
         return $dst_im;
     }
 
-    /**
-     * Merges two images
-     *
-     * If the output format is PNG, then we do it pixel per pixel to retain the alpha channel
-     *
-     * @access private
-     * @param  resource $dst_img Destination image
-     * @param  resource $src_img Overlay image
-     * @param  int      $dst_x   x-coordinate of destination point 
-     * @param  int      $dst_y   y-coordinate of destination point 
-     * @param  int      $src_x   x-coordinate of source point 
-     * @param  int      $src_y   y-coordinate of source point 
-     * @param  int      $src_w   Source width 
-     * @param  int      $src_h   Source height 
-     * @param  int      $pct     Optional percentage of the overlay, between 0 and 100 (default: 100)
-     * @return resource Destination image
-     */
+	/**
+	 * Merges two images
+	 *
+	 * If the output format is PNG, then we do it pixel per pixel to retain the alpha channel
+	 *
+	 * @access private
+	 * @param $dst_im
+	 * @param $src_im
+	 * @param  int      $dst_x   x-coordinate of destination point
+	 * @param  int      $dst_y   y-coordinate of destination point
+	 * @param  int      $src_x   x-coordinate of source point
+	 * @param  int      $src_y   y-coordinate of source point
+	 * @param  int      $src_w   Source width
+	 * @param  int      $src_h   Source height
+	 * @param  int      $pct     Optional percentage of the overlay, between 0 and 100 (default: 100)
+	 *
+	 * @internal param \resource $dst_img Destination image
+	 *
+	 * @internal param \resource $src_img Overlay image
+	 * @return resource Destination image
+	 */
     function imagecopymergealpha(&$dst_im, &$src_im, $dst_x, $dst_y, $src_x, $src_y, $src_w, $src_h, $pct = 0) {
         $dst_x = (int) $dst_x;
         $dst_y = (int) $dst_y;
@@ -2574,7 +2578,7 @@ class upload {
             } else if ($this->mime_check && !empty($this->file_src_mime) && strpos($this->file_src_mime, '/') !== false) {
                 list($m1, $m2) = explode('/', $this->file_src_mime);
                 $allowed = false;
-                // check wether the mime type is allowed
+                // check whether the mime type is allowed
                 foreach($this->allowed as $k => $v) {
                     list($v1, $v2) = explode('/', $v);
                     if (($v1 == '*' && $v2 == '*') || ($v1 == $m1 && ($v2 == $m2 || $v2 == '*'))) {
@@ -2582,7 +2586,7 @@ class upload {
                         break;
                     }
                 }
-                // check wether the mime type is forbidden
+                // check whether the mime type is forbidden
                 foreach($this->forbidden as $k => $v) {
                     list($v1, $v2) = explode('/', $v);
                     if (($v1 == '*' && $v2 == '*') || ($v1 == $m1 && ($v2 == $m2 || $v2 == '*'))) {
@@ -2803,11 +2807,11 @@ class upload {
                 $this->error = $this->translate('destination_path_not_dir');
             }
 
-            // checks if the destination directory is writeable, and attempt to make it writeable  
+            // checks if the destination directory is writable, and attempt to make it writable
             $hash = md5($this->file_dst_name_body . rand(1, 1000));
             if ($this->processed && !($f = @fopen($this->file_dst_path . $hash . '.' . $this->file_dst_name_ext, 'a+'))) {
                 if ($this->dir_auto_chmod) {
-                    $this->log .= '- ' . $this->file_dst_path . ' is not writeable. Attempting chmod:';
+                    $this->log .= '- ' . $this->file_dst_path . ' is not writable. Attempting chmod:';
                     if (!@chmod($this->file_dst_path, $this->dir_chmod)) {
                         $this->log .= ' failed<br />';
                         $this->processed = false;
@@ -3167,7 +3171,7 @@ class upload {
                         if ($this->image_dst_y < 1) $this->image_dst_y = 1;
                         $tmp = $this->imagecreatenew($this->image_dst_x, $this->image_dst_y);
 
-                        // we copy the image into the recieving image
+                        // we copy the image into the receiving image
                         imagecopy($tmp, $image_dst, 0, 0, $cl, $ct, $this->image_dst_x, $this->image_dst_y);
                       	echo $cl.'<br/>';
                       	echo $ct.'<br/>';
@@ -3189,7 +3193,7 @@ class upload {
                             if ($cl < 0) imagefilledrectangle($tmp, 0, 0, -$cl, $this->image_dst_y, $fill);
                         }
 
-                        // we transfert tmp into image_dst
+                        // we transfer tmp into image_dst
                         $image_dst = $this->imagetransfer($tmp, $image_dst);                     
                     }
                     
@@ -3208,7 +3212,7 @@ class upload {
                                 }
                             }
                         }
-                        // we transfert tmp into image_dst
+                        // we transfer tmp into image_dst
                         $image_dst = $this->imagetransfer($tmp, $image_dst);  
                     }
 
@@ -3240,7 +3244,7 @@ class upload {
                                 $this->image_dst_y = $this->image_dst_x;
                                 $this->image_dst_x = $t;
                             }
-                            // we transfert tmp into image_dst
+                            // we transfer tmp into image_dst
                             $image_dst = $this->imagetransfer($tmp, $image_dst);    
                         }                        
                     }
@@ -3349,7 +3353,7 @@ class upload {
                         imagefilledrectangle($tmp, 0, 0, $this->image_dst_x, $this->image_dst_y, $background);
                         // we then copy the source image into the new image, without merging so that only the border is actually kept
                         imagecopy($tmp, $image_dst, $cl, $ct, 0, 0, $this->image_dst_x - $cr - $cl, $this->image_dst_y - $cb - $ct);
-                        // we transfert tmp into image_dst
+                        // we transfer tmp into image_dst
                         $image_dst = $this->imagetransfer($tmp, $image_dst);     
                     }
                     
@@ -3382,7 +3386,7 @@ class upload {
                                 imageline($tmp, $i, $i, $i, $this->image_dst_y - $i -1, $c);
                             }
                         }
-                        // we transfert tmp into image_dst
+                        // we transfer tmp into image_dst
                         $image_dst = $this->imagetransfer($tmp, $image_dst); 
                     }
 
@@ -3404,7 +3408,7 @@ class upload {
                             imageline($tmp, $this->image_dst_x - $i -1, $this->image_dst_y - $i -1, $i, $this->image_dst_y - $i -1, $c2);
                             imageline($tmp, $i, $i, $i, $this->image_dst_y - $i -1, $c1);
                         }
-                        // we transfert tmp into image_dst
+                        // we transfer tmp into image_dst
                         $image_dst = $this->imagetransfer($tmp, $image_dst);                       
                     }
 
@@ -3846,7 +3850,7 @@ class upload {
                                     // make the transparent areas transparent
                                     for ($x = 0; $x < $this->image_dst_x; $x++) {
                                         for ($y = 0; $y < $this->image_dst_y; $y++) {
-                                            // we test wether we have enough opacity to justify keeping the color
+                                            // we test whether we have enough opacity to justify keeping the color
                                             if ($mask[$x][$y] > 120) imagesetpixel($image_dst, $x, $y, $transparency);
                                         }
                                     }
@@ -3860,7 +3864,7 @@ class upload {
                             $this->log .= '&nbsp;&nbsp;&nbsp;&nbsp;fills in transparency with default color<br />';
                                 sscanf($this->image_default_color, "#%2x%2x%2x", $red, $green, $blue);
                                 $transparency = imagecolorallocate($image_dst, $red, $green, $blue);
-                                // make the transaparent areas transparent
+                                // make the transparent areas transparent
                                 for ($x = 0; $x < $this->image_dst_x; $x++) {
                                     for ($y = 0; $y < $this->image_dst_y; $y++) {
                                         // we test wether we have some transparency, in which case we will merge the colors
@@ -4019,13 +4023,15 @@ class upload {
     }
 
 
-    /**
-     * Opens a BMP image
-     *
-     * This function has been written by DHKold, and is used with permission of the author
-     *
-     * @access public
-     */
+	/**
+	 * Opens a BMP image
+	 *
+	 * This function has been written by DHKold, and is used with permission of the author
+	 *
+	 * @access public
+	 * @param $filename
+	 * @return bool
+	 */
     function imagecreatefrombmp($filename) {
         if (! $f1 = fopen($filename,"rb")) return false;
 
@@ -4093,14 +4099,17 @@ class upload {
         fclose($f1);
         return $res;
     }
-    
-    /**
-     * Saves a BMP image
-     *
-     * This function has been published on the PHP website, and can be used freely
-     *
-     * @access public
-     */    
+
+	/**
+	 * Saves a BMP image
+	 *
+	 * This function has been published on the PHP website, and can be used freely
+	 *
+	 * @access public
+	 * @param $im
+	 * @param string $filename
+	 * @return bool
+	 */
     function imagebmp(&$im, $filename = "") {      
         
         if (!$im) return false;

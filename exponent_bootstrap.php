@@ -67,21 +67,15 @@ require_once(BASE.'exponent_version.php');
  * EXPONENT Constant
  *
  * The EXPONENT Constant signals to other parts of the system that they are operating within the confines
- * of the Exponent Framework.  (Module actions check this -- if it is not defined, they must abort).
+ * of the Exponent v2 Framework.  (Module actions check this -- if it is not defined, they must abort).
  */
-define('EXPONENT', '1');
+define('EXPONENT', '2');
 
 // load the constants from the global config, theme config, and then default config settings
-require_once(BASE . 'subsystems/config/load.php');
-
-// define remaining constants throughout the system based on loaded configuration constants
-
-//require_once(BASE.'exponent_constants2.php'); // moved to below
+require_once(BASE . 'framework/core/subsystems-1/config/load.php');
 
 // Set the default timezone.
-if (function_exists('date_default_timezone_set')) {
-    @date_default_timezone_set(DISPLAY_DEFAULT_TIMEZONE);
-}
+@date_default_timezone_set(DISPLAY_DEFAULT_TIMEZONE);
 
 if (!defined('DISPLAY_THEME')) {
 	/* exdoc
@@ -108,7 +102,7 @@ if (!defined('THEME_RELATIVE')) {
 // Process PHP-wrapper settings (ini_sets and setting detectors)
 require_once(BASE . 'exponent_php_setup.php');
 
-// Initialize the PHP4 Compatibility Layer
-//include(BASE.'compat.php');  // deprecated in Exp 2.0
+$info = gd_info();
+define('EXPONENT_HAS_GD',($info['GD Version'] == 'Not Supported' ? 0 : 1));
 
 ?>

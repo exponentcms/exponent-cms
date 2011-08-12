@@ -27,19 +27,29 @@ class expSorter {
     public $sort_object_property = null;
     public $sort_order = 'ASC';
     public $ignore_case = false;
-    
+	public $sort_type = '';  // ''=usort, 'a'=uasort, 'k'=uksort
+
     
     public function __construct($params) {
         if (isset($params['array'])) $this->sort_array = $params['array']; 
         if (isset($params['sortby'])) $this->sort_object_property = $params['sortby'];
         if (isset($params['order'])) $this->sort_order = $params['order'];
         if (isset($params['ignore_case'])) $this->ignore_case = $params['ignore_case'];   
-        
+        if (isset($params['type'])) $this->sort_type = $params['type'];
+
         if ($this->sort_order == 'ASC') {
-            usort($this->sort_array, array($this,'sortASC'));
+            $dir = 'sortASC';
         } else {
-            usort($this->sort_array, array($this,'sortDESC'));
+            $dir ='sortDESC';
         }
+        if ($this->sort_type == 'a') {
+            uasort($this->sort_array, array($this,$dir));
+        } elseif ($this->sort_type == 'k') {
+            uksort($this->sort_array, array($this,$dir));
+        } else {
+	        usort($this->sort_array, array($this,$dir));
+        }
+
     }
     
     public function sortASC($a,$b) {
@@ -75,13 +85,20 @@ class expSorter {
         
         return ($aval > $bval ? -1 : 1);
     }
-    
-    public static function sort($params) {
+
+	/**
+	 * Main static function to sort arrays based on parameters
+	 *
+	 * @param $params
+	 * @return array
+	 */
+	public static function sort($params) {
         if (empty($params['array'])) return array();
         $sortby = empty($params['sortby']) ? NULL : $params['sortby']; 
         $order = empty($params['order']) ? NULL : $params['order'];
         $ic = empty($params['ignore_case']) ? NULL : $params['ignore_case'];
-        $sorter = new expSorter(array('array'=>$params['array'],'sortby'=>$sortby,'order'=>$order, 'ignore_case'=>$ic));
+        $type = empty($params['type']) ? NULL : $params['type'];
+        $sorter = new expSorter(array('array'=>$params['array'],'sortby'=>$sortby,'order'=>$order, 'ignore_case'=>$ic,'type'=>$type));
         return $sorter->sort_array;
     }
 }

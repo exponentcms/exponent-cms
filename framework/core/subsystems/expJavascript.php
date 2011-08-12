@@ -110,7 +110,7 @@ class expJavascript {
         
 	}
 	
-    public function pushToFoot($params) {
+    public static function pushToFoot($params) {
     	global $js2foot,$yui2js,$yui3js,$expJS;
 
     	if (!empty($params['src'])) {

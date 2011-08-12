@@ -62,7 +62,7 @@
 <div id="mod-manager" class="module administrationmodule modulemanager exp-skin-tabview hide">
     <div class="info-header">
         <div class="related-actions">
-            {help text="Get Help Managing Modules" module="manage-modules"}
+            {help text="Get Help Managing Modules"|gettext module="manage-modules"}
         </div>
         <h1>{"Module Manager"|gettext}</h1>
     </div>
@@ -71,7 +71,7 @@
     <div id="mods" class="yui-navset">
         <ul class="yui-nav">
             <li class="selected"><a href="#tab1"><em>Exponent 2</em></a></li>
-            <li><a href="#tab2"><em>Old School</em></a></li>
+            <li><a href="#tab2"><em>{gettext str="Old School"}</em></a></li>
         </ul>            
         <div class="yui-content">
             <div id="tab1">
@@ -134,7 +134,7 @@
             </div>
         </div>
     </div>
-    {control type="buttongroup" submit="Update Active Modules"}
+    {control type="buttongroup" submit="Update Active Modules"|gettext}
     {/form}
 </div>
 <div class="loadingdiv">{"Loading"|gettext}</div>

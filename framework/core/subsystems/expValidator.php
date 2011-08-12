@@ -206,7 +206,7 @@ class expValidator {
 //        if (!ereg("^[^@]{1,64}@[^@]{1,255}$", $email)) {
 
         //
-        if(expValidator::isValidEmail($email))
+        if(self::isValidEmail($email))
         {
             return true; 
         }
@@ -336,7 +336,8 @@ class expValidator {
 	 * @return bool
 	 */
 	public static function check_antispam($params, $msg="") {
-		if (SITE_USE_ANTI_SPAM == 0 || (exponent_users_isLoggedIn() && ANTI_SPAM_USERS_SKIP == 1)) {
+		global $user;
+		if (SITE_USE_ANTI_SPAM == 0 || ($user->isLoggedIn() && ANTI_SPAM_USERS_SKIP == 1)) {
 			return true;
 		}
         $msg = empty($msg) ? 'Anti-spam verification failed.' : $msg;
@@ -384,10 +385,10 @@ class expValidator {
             switch($validate_type) {
 //                case 'captcha':
 //                case 'capcha':
-//                    $captcha_real = exponent_sessions_get('captcha_string');
+//                    $captcha_real = expSession::get('captcha_string');
 //                    if (SITE_USE_ANTI_SPAM && strtoupper($post[$param]) != $captcha_real) {
 //                            unset($post[$param]);
-//                            $post['_formError'][] = exponent_lang_getText('Captcha Verification Failed');
+//                            $post['_formError'][] = gt('Captcha Verification Failed');
 //                    }
 //                break;
                 case 'presence_of':
@@ -439,7 +440,7 @@ class expValidator {
 	public static function flashAndReturnToForm($queue='message', $msg, $post=null) {
         if (!is_array($msg)) $msg = array($msg);
         flash($queue, $msg);
-        if (!empty($post)) exponent_sessions_set('last_POST',$post);
+        if (!empty($post)) expSession::set('last_POST',$post);
         header('Location: ' . $_SERVER['HTTP_REFERER']);
         exit();
     }
@@ -449,7 +450,7 @@ class expValidator {
 	 * @return bool
 	 */
 	public static function validate_email_address($email) {
-		return expValidator::isValidEmail($email);
+		return self::isValidEmail($email);
 
 		// old code
         // First, we check that there's one @ symbol, and that the lengths are right
@@ -495,13 +496,42 @@ class expValidator {
             $post = $_POST;
             $post['_formError'] = $file;
             flash('error',$file);
-            exponent_sessions_set('last_POST',$post);
+            expSession::set('last_POST',$post);
             header('Location: ' . $_SERVER['HTTP_REFERER']);
             exit();
         }
     }
+
+	public static function checkPasswordStrength($username,$password) {
+		// Return blank string on success, error message on failure.
+		// The error message should let the user know why their password is wrong.
+		if (strcasecmp($username,$password) == 0) {
+			return gt('Password cannot be equal to the username.');
+		}
+		# For example purposes, the next line forces passwords to be over 8 characters long.
+		if (strlen($password) < 8) {
+			return gt('Passwords must be at least 8 letters long.');
+		}
+
+		return ""; // by default, accept any passwords
+	}
+
+	public static function checkUsername($username) {
+		// Return blank string on success, error message on failure.
+		// The error message should let the user know why their username is wrong.
+		if (strlen($username) < 3) {
+			return gt('Your username must be at least 3 characters.');
+		}
+		//echo "<xmp>";
+		//print_r(preg_match("/^[a-zA-Z0-9]/",$username));
+		//echo "</xmp>";
+		//exit;
+
+		//if (!preg_match("/[a-zA-Z0-9]/",$username)){
+		//	return gt('Your username contains illegal characters.');
+		//}
+		return ""; // by default, accept any passwords
+	}
 }
+
 ?>
-
-
-

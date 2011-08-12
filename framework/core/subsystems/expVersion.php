@@ -52,7 +52,7 @@ class expVersion {
 		global $db;
 
 		if (@file_exists(BASE.'install/not_configured') || !(@file_exists(BASE.'conf/config.php'))) {
-			expVersion::launchInstaller();
+			self::launchInstaller();
 		}
 
 		// version checking routine, check database version against software version
@@ -65,13 +65,13 @@ class expVersion {
 			$version->iteration = '';
 		}
 		if ($version->major < EXPONENT_VERSION_MAJOR) {
-			expVersion::launchInstaller();
+			self::launchInstaller();
 		} elseif ($version->minor < EXPONENT_VERSION_MINOR) {
-			expVersion::launchInstaller();
+			self::launchInstaller();
 		} elseif ($version->revision < EXPONENT_VERSION_REVISION) {
-			expVersion::launchInstaller();
+			self::launchInstaller();
 		} elseif ($version->minor < EXPONENT_VERSION_MINOR) {
-			expVersion::launchInstaller();
+			self::launchInstaller();
 		} else {
 			switch ($version->type) {
 				case 'alpha':
@@ -114,9 +114,9 @@ class expVersion {
 					break;
 			}
 			if ($dbtype < $swtype) {
-				expVersion::launchInstaller();
+				self::launchInstaller();
 			} elseif ($dbtype == $swtype && $version->type < EXPONENT_VERSION_ITERATION) {
-				expVersion::launchInstaller();
+				self::launchInstaller();
 			}
 		}
 	}

@@ -60,15 +60,14 @@ class searchController extends expController {
         assign_to_template(array('page'=>$page, 'terms'=>$terms));
     }
     
-    public function spider() {
+    public static function spider() {
         global $db;
 	    $db->delete('search');
 	    
 	    $searchable_mods = array();
 	    $unsearchable_mod = array();
 
-	    //FIXME: Old school module code!
-	    foreach (exponent_modules_list() as $mod) {
+	    foreach (expModules::exponent_modules_list() as $mod) {
 		    $name = @call_user_func(array($mod,'name'));
 		    if (class_exists($mod) && is_callable(array($mod,'spiderContent'))) {
 			    if (call_user_func(array($mod,'spiderContent'))) {
@@ -118,7 +117,7 @@ class searchController extends expController {
         //$res = $db->selectObjectsBySql($sql);
         //$res = $db->selectObjectBySql('SELECT * FROM `exponent_product`');
         
-        $ar = new expAjaxReply(200, gettext('Here\'s the items you wanted'), $res);
+        $ar = new expAjaxReply(200, gt('Here\'s the items you wanted'), $res);
         $ar->send();
     }
     

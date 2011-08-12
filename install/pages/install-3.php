@@ -21,10 +21,8 @@
 if (!defined('EXPONENT')) exit('');
 global $db;
 
-$i18n = exponent_lang_loadFile('install/pages/dbcheck.php');
-
 ?>
-<h1><?php echo $i18n['subtitle']; ?></h1>
+<h1><?php echo gt('Checking Database Configuration'); ?></h1>
 <table class="exp-skin-table">
     <thead>
         <tr>
@@ -39,15 +37,13 @@ function echoStart($msg) {
 }
 
 function echoSuccess($msg = "") {
-	global $i18n;
-	echo '<span class="success">'.$i18n['succeeded'].'</span>';
+	echo '<span class="success">'.gt('Succeeded').'</span>';
 	if ($msg != "") echo ' : ' . $msg;
 	echo '</td></tr>';
 }
 
 function echoFailure($msg = "") {
-	global $i18n;
-	echo '<span class="failed">'.$i18n['failed'].'</span>';
+	echo '<span class="failed">'.gt('Failed').'</span>';
 	if ($msg != "") echo ' : ' . $msg;
 	echo '</td></tr>';
 }
@@ -56,14 +52,14 @@ function isAllGood($str) {
 	return !preg_match("/[^A-Za-z0-9]/",$str);
 }
 
-//exponent_sessions_set("installer_config",$_POST['sc']);
+//expSession::set("installer_config",$_POST['sc']);
 $config = $_POST['sc'];
 //$config['sef_urls'] = empty($_POST['c']['sef_urls']) ? 0 : 1;
 
 $passed = true;
 
 if (preg_match('/[^A-Za-z0-9]/',$config['db_table_prefix'])) {
-	echoFailure($i18n['bad_prefix']);
+	echoFailure(gt('Invalid table prefix.  The table prefix can only contain alphanumeric characters.'));
 	$passed = false;
 }
 
@@ -78,10 +74,10 @@ if ($passed) {
 
 	$status = array();
 
-	echoStart($i18n['connecting'].':');
+	echoStart(gt('Connecting').':');
 
 	if ($db->connection == null) {
-		echoFailure("Trying to Connect to Database (".$db->error().")");
+		echoFailure(gt("Trying to Connect to Database")." (".$db->error().")");
 		// FIXME:BETTER ERROR CHECKING
 		$passed = false;
 	}
@@ -90,7 +86,7 @@ if ($passed) {
 if ($passed) {
 	$tables = $db->getTables();
 	if ($db->inError()) {
-		echoFailure("Trying to Get Tables (".$db->error().")");
+		echoFailure(gt("Trying to Get Tables")." (".$db->error().")");
 		$passed = false;
 	} else {
 		echoSuccess();
@@ -112,11 +108,11 @@ $dd = array(
 if ($passed) {
 	$db->createTable($tablename,$dd,array());
 
-	echoStart($i18n['check_create'].':');
+	echoStart(gt('Checking CREATE TABLE privilege').':');
 	if ($db->tableExists($tablename)) {
 		echoSuccess();
 	} else {
-		echoFailure("Trying to Create Tables");
+		echoFailure(gt("Trying to Create Tables"));
 		$passed = false;
 	}
 }
@@ -125,47 +121,47 @@ $insert_id = null;
 $obj = null;
 
 if ($passed) {
-	echoStart($i18n['check_insert'].':');
+	echoStart(gt('Checking INSERT privilege').':');
 	$obj->installer_test = "Exponent Installer Wizard";
 	$insert_id = $db->insertObject($obj,$tablename);
 	if ($insert_id == 0) {
 		$passed = false;
-		echoFailure("Trying to Insert Items (".$db->error().")");
+		echoFailure(gt("Trying to Insert Items")." (".$db->error().")");
 	} else {
 		echoSuccess();
 	}
 }
 
 if ($passed) {
-	echoStart($i18n['check_select'].':');
+	echoStart(gt('Checking SELECT privilege').':');
 	$obj = $db->selectObject($tablename,"id=".$insert_id);
 	if ($obj == null || $obj->installer_test != "Exponent Installer Wizard") {
 		$passed = false;
-		echoFailure("Trying to Select Items (".$db->error().")");
+		echoFailure(gt("Trying to Select Items")." (".$db->error().")");
 	} else {
 		echoSuccess();
 	}
 }
 
 if ($passed) {
-	echoStart($i18n['check_update'].':');
+	echoStart(gt('Checking UPDATE privilege').':');
 	$obj->installer_test = "Exponent 2";
 	if (!$db->updateObject($obj,$tablename)) {
 		$passed = false;
-		echoFailure("Trying to Update Items (".$db->error().")");
+		echoFailure(gt("Trying to Update Items")." (".$db->error().")");
 	} else {
 		echoSuccess();
 	}
 }
 
 if ($passed) {
-	echoStart($i18n['check_delete'].':');
+	echoStart(gt('Checking DELETE privilege').':');
 	$db->delete($tablename,"id=".$insert_id);
 	$error = $db->error();
 	$obj = $db->selectObject($tablename,"id=".$insert_id);
 	if ($obj != null) {
 		$passed = false;
-		echoFailure("Trying to Delete Items (".$error.")");
+		echoFailure(gt("Trying to Delete Items")." (".$error.")");
 	} else {
 		echoSuccess();
 	}
@@ -176,7 +172,7 @@ if ($passed) {
 		DB_FIELD_TYPE=>DB_DEF_STRING,
 		DB_FIELD_LEN=>8);
 
-	echoStart($i18n['check_alter'].':');
+	echoStart(gt('Checking ALTER TABLE privilege').':');
 	$db->alterTable($tablename,$dd,array());
 	$error = $db->error();
 
@@ -186,50 +182,100 @@ if ($passed) {
 
 	if (!$db->insertObject($obj,$tablename)) {
 		$passed = false;
-		echoFailure("Trying to Alter Tables (".$error.")");
+		echoFailure(gt("Trying to Alter Tables")." (".$error.")");
 	} else {
 		echoSuccess();
 	}
 }
 
 if ($passed) {
-	echoStart($i18n['check_drop'].':');
+	echoStart(gt('Checking DROP TABLE privilege').':');
 	$db->dropTable($tablename);
 	$error = $db->error();
 	if ($db->tableExists($tablename)) {
 		$passed = false;
-		echoFailure("Trying to Drop Tables (".$error.")");
+		echoFailure(gt("Trying to Drop Tables")." (".$error.")");
 	} else {
 		echoSuccess();
 	}
 }
 
-//FIXME needs to be updated for definitions in controller/module folders
 if ($passed) {
-	echoStart($i18n['installing_tables'].':');
+	echoStart(gt('Installing Tables').':');
 
-	$dirs = array(
-			BASE."datatypes/definitions",
-			BASE."framework/core/database/definitions",
-		);
-	
-	foreach ($dirs as $dir) {
-	    if (is_readable($dir)) {
-		    $dh = opendir($dir);
-		    while (($file = readdir($dh)) !== false) {
-			    if (is_readable("$dir/$file") && is_file("$dir/$file") && substr($file,-4,4) == ".php" && substr($file,-9,9) != ".info.php") {
-				    $tablename = substr($file,0,-4);
-				    $dd = include("$dir/$file");
-				    $info = array();
-				    if (is_readable("$dir/$tablename.info.php")) $info = include("$dir/$tablename.info.php");
-				    if (!$db->tableExists($tablename)) {
-					    $db->createTable($tablename,$dd,$info);
-				    } else {
-					    $db->alterTable($tablename,$dd,$info);
-				    }
-			    }
-		    }
-	    }
+	$tables = array();
+
+	// first the core and 1.0 definitions
+//	$dirs = array(
+////			BASE."datatypes/definitions",
+//		BASE."framework/core/definitions",
+//		);
+//	foreach ($dirs as $dir) {
+	$dir = BASE.'framework/core/definitions';
+	if (is_readable($dir)) {
+		$dh = opendir($dir);
+		while (($file = readdir($dh)) !== false) {
+			if (is_readable("$dir/$file") && is_file("$dir/$file") && substr($file,-4,4) == ".php" && substr($file,-9,9) != ".info.php") {
+				$tablename = substr($file,0,-4);
+				$dd = include("$dir/$file");
+				$info = null;
+				if (is_readable("$dir/$tablename.info.php")) $info = include("$dir/$tablename.info.php");
+				if (!$db->tableExists($tablename)) {
+					foreach ($db->createTable($tablename,$dd,$info) as $key=>$status) {
+						$tables[$key] = $status;
+					}
+				} else {
+					foreach ($db->alterTable($tablename,$dd,$info) as $key=>$status) {
+						if (isset($tables[$key])) echo "$tablename, $key<br>";
+						if ($status == TABLE_ALTER_FAILED){
+							$tables[$key] = $status;
+						}else{
+							$tables[$key] = ($status == TABLE_ALTER_NOT_NEEDED ? DATABASE_TABLE_EXISTED : DATABASE_TABLE_ALTERED);
+						}
+
+					}
+				}
+			}
+		}
+	}
+//	}
+
+	// then search for module definitions
+	$newdef = BASE."framework/modules";
+	if (is_readable($newdef)) {
+		$dh = opendir($newdef);
+		while (($file = readdir($dh)) !== false) {
+			if (is_dir($newdef.'/'.$file) && ($file != '..' && $file != '.')) {
+				$dirpath = $newdef.'/'.$file.'/definitions';
+				if (file_exists($dirpath)) {
+					$def_dir = opendir($dirpath);
+					while (($def = readdir($def_dir)) !== false) {
+//							eDebug("$dirpath/$def");
+						if (is_readable("$dirpath/$def") && is_file("$dirpath/$def") && substr($def,-4,4) == ".php" && substr($def,-9,9) != ".info.php") {
+							$tablename = substr($def,0,-4);
+							$dd = include("$dirpath/$def");
+							$info = null;
+							if (is_readable("$dirpath/$tablename.info.php")) $info = include("$dirpath/$tablename.info.php");
+							if (!$db->tableExists($tablename)) {
+								foreach ($db->createTable($tablename,$dd,$info) as $key=>$status) {
+									$tables[$key] = $status;
+								}
+							} else {
+								foreach ($db->alterTable($tablename,$dd,$info) as $key=>$status) {
+									if (isset($tables[$key])) echo "$tablename, $key<br>";
+									if ($status == TABLE_ALTER_FAILED){
+										$tables[$key] = $status;
+									}else{
+										$tables[$key] = ($status == TABLE_ALTER_NOT_NEEDED ? DATABASE_TABLE_EXISTED : DATABASE_TABLE_ALTERED);
+									}
+
+								}
+							}
+						}
+					}
+				}
+			}
+		}
 	}
 
 	if ($db->tableIsEmpty('user')) {
@@ -264,11 +310,11 @@ if ($passed) {
 }
 
 if ($passed) {
-	echoStart($i18n['saving_config']);
+	echoStart(gt('Saving Configuration'));
 
     $config = $_POST['sc'];
     foreach ($config as $key => $value) {
-        exponent_config_change($key, stripslashes($value));
+        exponent_config_change($key, addslashes($value));
     }
 
     // version tracking
@@ -309,20 +355,21 @@ if ($passed) {
 		}
 	}
 	echo '<p>';
-	echo $i18n['passed'];
+	echo gt('Database tests passed.');
 	echo '</p>';
 
 	if (isset($_POST['install_default'])) {
-		if (!defined('SYS_BACKUP')) include_once(BASE.'subsystems/backup.php');
+//		if (!defined('SYS_BACKUP')) include_once(BASE.'framework/core/subsystems-1/backup.php');
+		include_once(BASE.'framework/core/subsystems-1/backup.php');
 
 		$eql = BASE.'install/sitetypes/db/_default.eql';
 		$errors = array();
 		exponent_backup_restoreDatabase($db,$eql,$errors,0);
 		if (count($errors)) {
-			echo $i18n['errors_encountered_eql'].'<br /><br />';
+			echo gt('Errors were encountered populating the site database.').'<br /><br />';
 			foreach ($errors as $e) echo $e . '<br />';
 		} else {
-			echo $i18n['eql_success'];
+			echo gt('Default content has been inserted into your database.  This content structure should help you to learn how Exponent works, and how to use it for your website.');
 		}
 	}
 	?>
@@ -330,7 +377,7 @@ if ($passed) {
 	<?php
 } else {
 	?>
-	<a class="awesome red large" href="?page=install-2" onclick="history.go(-1); return false;"><?php echo $i18n['back']; ?></a>
+	<a class="awesome red large" href="?page=install-2" onclick="history.go(-1); return false;"><?php echo gt('Edit Your Database Settings'); ?></a>
 	<?php
 }
 ?>

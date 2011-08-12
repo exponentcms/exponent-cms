@@ -31,43 +31,45 @@ define("TMP_TABLE_INSTALLED",	2);
 define("TMP_TABLE_FAILED",		3);
 define("TMP_TABLE_ALTERED",		4);
 
-$dirs = array(
-	BASE."datatypes/definitions",
-	BASE."framework/core/database/definitions",
-	);
-
 $tables = array();
-foreach ($dirs as $dir) {
-	if (is_readable($dir)) {		
-		$dh = opendir($dir);
-		while (($file = readdir($dh)) !== false) {
-			if (is_readable("$dir/$file") && is_file("$dir/$file") && substr($file,-4,4) == ".php" && substr($file,-9,9) != ".info.php") {
-				$tablename = substr($file,0,-4);
-				$dd = include("$dir/$file");
-				$info = null;
-				if (is_readable("$dir/$tablename.info.php")) $info = include("$dir/$tablename.info.php");
-				if (!$db->tableExists($tablename)) {
-					foreach ($db->createTable($tablename,$dd,$info) as $key=>$status) {
-						$tables[$key] = $status;
-					}
-				} else {
-					foreach ($db->alterTable($tablename,$dd,$info) as $key=>$status) {
-						if (isset($tables[$key])) echo "$tablename, $key<br>";
-						if ($status == TABLE_ALTER_FAILED){
-							$tables[$key] = $status;
-						}else{
-							$tables[$key] = ($status == TABLE_ALTER_NOT_NEEDED ? DATABASE_TABLE_EXISTED : DATABASE_TABLE_ALTERED);						
-						}
 
-					}
+// first the core and 1.0 definitions
+//$dirs = array(
+////	BASE."datatypes/definitions",
+//	BASE."framework/core/definitions",
+//	);
+//foreach ($dirs as $dir) {
+$dir = BASE.'framework/core/definitions';
+if (is_readable($dir)) {
+	$dh = opendir($dir);
+	while (($file = readdir($dh)) !== false) {
+		if (is_readable("$dir/$file") && is_file("$dir/$file") && substr($file,-4,4) == ".php" && substr($file,-9,9) != ".info.php") {
+			$tablename = substr($file,0,-4);
+			$dd = include("$dir/$file");
+			$info = null;
+			if (is_readable("$dir/$tablename.info.php")) $info = include("$dir/$tablename.info.php");
+			if (!$db->tableExists($tablename)) {
+				foreach ($db->createTable($tablename,$dd,$info) as $key=>$status) {
+					$tables[$key] = $status;
 				}
-			} 
+			} else {
+				foreach ($db->alterTable($tablename,$dd,$info) as $key=>$status) {
+					if (isset($tables[$key])) echo "$tablename, $key<br>";
+					if ($status == TABLE_ALTER_FAILED){
+						$tables[$key] = $status;
+					}else{
+						$tables[$key] = ($status == TABLE_ALTER_NOT_NEEDED ? DATABASE_TABLE_EXISTED : DATABASE_TABLE_ALTERED);
+					}
+
+				}
+			}
 		}
 	}
+//	}
 }
 
+// then search for module definitions
 $newdef = BASE."framework/modules";
-
 if (is_readable($newdef)) {
     $dh = opendir($newdef);
     while (($file = readdir($dh)) !== false) {
@@ -103,7 +105,6 @@ if (is_readable($newdef)) {
         }
     }
 }
-
 ksort($tables);
 
 ?>
@@ -167,7 +168,7 @@ foreach ($tables as $table => $statusnum) {
 </table>
 <?php
 if ($line == 0) {
-	echo "<p class=\"success\">No Tables Were Changed!</p>";
+	echo "<p class=\"success\">".gt("No Tables Were Changed!")."</p>";
 }
 ?>
 
