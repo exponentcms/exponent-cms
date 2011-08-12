@@ -20,7 +20,7 @@
 # it's based on James Hunt's code for that original class
 *}
 {* the header include contains the starting <div> tag*}	
-	{include file="_header.inc" toolbar="`$view->toolbar`"}
+	{include file="_header.tpl" toolbar="`$view->toolbar`"}
 
 	<script type="text/javascript" src="{$view->path_to_editor}fckeditor.js"></script>
 	
