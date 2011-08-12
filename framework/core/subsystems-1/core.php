@@ -453,7 +453,8 @@ function exponent_core_resolveFilePaths($type, $name, $subtype, $subname) {
 		} elseif($type == "models") {
 			$relpath .= "models/";
 		} elseif($type == "controls") {
-			$relpath .= "themes/";
+//			$relpath .= "themes/";
+			$relpath .= "external/";
 		} elseif($type == "Control") {
 			$relpath .= "themes/";
 		} elseif($type == "Form") {
@@ -512,12 +513,13 @@ function exponent_core_resolveFilePaths($type, $name, $subtype, $subname) {
 	//TODO: now that glob is used build a syntax for it instead of calling it repeatedly
 	//latter override the precursors
 	$locations = array(BASE, THEME_ABSOLUTE);
+	$checkpaths = array();
 	foreach($locations as $location) {
-		$checkpaths[] = $location . $typepath . "common/" . $relpath2;
+		$checkpaths[] = $location . $typepath . $relpath2;
 		if (strstr($location,DISPLAY_THEME_REAL) && strstr($relpath,"framework/modules-1")) {
-   		$checkpaths[] = $location . str_replace("framework/modules-1", "modules", $relpath);
+   		    $checkpaths[] = $location . str_replace("framework/modules-1", "modules", $relpath);
 		} else {
-   		$checkpaths[] = $location . $relpath;
+   		    $checkpaths[] = $location . $relpath;
 		}
 		//eDebug($relpath);
 	}

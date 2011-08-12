@@ -22,7 +22,7 @@ if (!defined('EXPONENT')) exit('');
 
 $installed_editors = array();
 
-foreach (glob(BASE . "themes/common/editors/*.tpl") as $installed_glue_file) {
+foreach (glob(BASE . "external/editors/*.tpl") as $installed_glue_file) {
    $installed_editor = basename($installed_glue_file, ".tpl");
    //also check if the editor is actually installed, not just its view file
    if (file_exists("external/editors/" . $installed_editor)) {
