@@ -36,19 +36,48 @@ class storeCategoryController extends expNestedNodeController {
     );
 
     public function edit() {
+		global $db;
 		$record = new storeCategoryFeeds($this->params['id']);
         $site_page_default = ecomconfig::getConfig('pagination_default');
-        assign_to_template(array('site_page_default'=>$site_page_default, 'record'=>$record));
-    
-        /*$google_product_types = new google_product_types();
-        eDebug($google_product_types->getFullTree(),true);
-        $last = 0;
-        $lastcrumb = '';
-        foreach ($google_product_types->getFullTree() as $node)
-        {
-            if ($node->parent_id == $last)
-            $last = $node->id;            
-        }*/
+		//TODO: 
+		/*
+		Create a central table for the external product types to minimized table redundancy as fred mentioned it will be more than 10 more.
+		
+		*/
+		//Declaration of array variables for product types bing and google
+		$product_types = ''; //A Multi-dimentional array to be passed in the view that contains the html of listbuildercontrol for product types like bing and google
+		
+		$google_product_types = new google_product_types(); //Store all the google product types
+		$google_types = ''; //An array being indexed by the id of product type to be passed as the source of the listbuildercontrol for google
+		$google_recorded_product_types = ''; //An array being indexed by the id of product type to be passed as the default of the listbuildercontrol for google
+		
+		$bing_product_types = new bing_product_types(); //Store all the bing product types
+		$bing_types = ''; //An array being indexed by the id of bing and has a value of the bing product type to be passed as the source of the listbuildercontrol
+		$bing_recorded_product_types = ''; //An array being indexed by the id of product type to be passed as the default of the listbuildercontrol for bing
+		
+		//Google product types getting the source and destination for the listbuilder control
+		$google_recorded_types = $db->selectObjectsBySql("SELECT google_product_types_id, title FROM " . DB_TABLE_PREFIX . "_google_product_types_storeCategories, " . DB_TABLE_PREFIX . "_google_product_types WHERE google_product_types_id = id and storecategories_id = " . $this->params['id']);
+		foreach ($google_product_types->getFullTree() as $item) {
+			$google_types[$item->id] = $item->title;
+		}
+		foreach ($google_recorded_types as $item) {
+			$google_recorded_product_types[$item->google_product_types_id] = $item->title;
+		}
+		$control = new listbuildercontrol($google_recorded_product_types, $google_types);
+		$product_types['google'] = $control->controlToHTML('google_product_types_list');
+		
+		//Bing product types getting the source and destination for the listbuilder control
+		$bing_recorded_types   = $db->selectObjectsBySql("SELECT bing_product_types_id, title FROM " . DB_TABLE_PREFIX . "_bing_product_types_storeCategories, " . DB_TABLE_PREFIX . "_bing_product_types WHERE bing_product_types_id = id and storecategories_id = " . $this->params['id']);
+		foreach ($bing_product_types->getFullTree() as $item) {
+			$bing_types[$item->id] = $item->title;
+		}
+		foreach ($bing_recorded_types as $item) {
+			$bing_recorded_product_types[$item->bing_product_types_id] = $item->title;
+		}
+		$control = new listbuildercontrol($bing_recorded_product_types, $bing_types);
+		$product_types['bing'] = $control->controlToHTML('bing_product_types_list');
+		
+        assign_to_template(array('site_page_default'=>$site_page_default, 'record'=>$record, 'product_types' => $product_types));
     
         parent::edit();
     }
@@ -120,7 +149,10 @@ class storeCategoryController extends expNestedNodeController {
     }
     
     public function update() {
-
+		// eDebug($this->params['google_product_types'], true);
+		// eDebug($this->params, true);
+		$this->params['google_product_types'] = listbuildercontrol::parseData($this->params,'google_product_types_list');
+		$this->params['bing_product_types']   = listbuildercontrol::parseData($this->params,'bing_product_types_list');
         $curcat = new storeCategory($this->params);
         $children = $curcat->getChildren();
         foreach ($children as $key=>$child) {
@@ -132,6 +164,10 @@ class storeCategoryController extends expNestedNodeController {
 		$category_type = 'google_product_types';
 		$google_product_type = new $category_type();
 		$google_product_type->saveCategories($this->params['google_product_types'], $curcat->id); 
+		
+		$category_type = 'bing_product_types';
+		$bing_product_type = new $category_type();
+		$bing_product_type->saveCategories($this->params['bing_product_types'], $curcat->id); 
 		
          parent::update();
     }
