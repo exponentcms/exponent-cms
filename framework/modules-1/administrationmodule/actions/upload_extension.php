@@ -23,16 +23,11 @@
 if (!defined('EXPONENT')) exit('');
 
 if (exponent_permissions_check('extensions',exponent_core_makeLocation('administrationmodule'))) {
-//	if (!defined('SYS_FORMS')) require_once(BASE.'framework/core/subsystems-1/forms.php');
 	require_once(BASE.'framework/core/subsystems-1/forms.php');
-//	exponent_forms_initialize();
 	$form = new form();
-	
-	$i18n = exponent_lang_loadFile('modules/administrationmodule/actions/upload_extension.php');
-	
 	$form->register(null,'',new htmlcontrol(exponent_core_maxUploadSizeMessage()));
-	$form->register('mod_archive',$i18n['mod_archive'],new uploadcontrol());
-	$form->register('submit','',new buttongroupcontrol($i18n['install']));
+	$form->register('mod_archive',gt('Module Archive'),new uploadcontrol());
+	$form->register('submit','',new buttongroupcontrol(gt('Install')));
 	$form->meta('module','administrationmodule');
 	$form->meta('action','install_extension');
 

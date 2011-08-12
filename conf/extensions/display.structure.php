@@ -39,73 +39,62 @@ if (is_readable(BASE.'themes')) {
 }
 uasort($themes,'strnatcmp');
 
-/*
-$languages = array();
-if (is_readable(BASE.'framework/core/subsystems-1/lang')) {
-	$lang_dir = opendir(BASE.'framework/core/subsystems-1/lang');
-	while (($lang_file = readdir($lang_dir)) !== false) {
-		$lang_file = realpath(BASE.'framework/core/subsystems-1/lang/'.$lang_file);
-			if (is_readable($lang_file) && is_file($lang_file)) {
-				$thislang = include($lang_file);
-				$languages[$thislang['locale']] = $thislang['name'];				
-			}
-	}
-}
+$languages = expLang::langList();
+ksort($langs);
 
+/*
 echo "<xmp>";
 print_r($languages);
 print_r($themes);
 echo "</xmp>";
 */
-$i18n = exponent_lang_loadFile('conf/extensions/display.structure.php');
-
 return array(
-	$i18n['title'],
+	gt('Display Settings'),
 	array(
-		/*'DISPLAY_LANGUAGE'=>array(
-			'title'=>$i18n['language'],
-			'description'=>$i18n['language_desc'],
+//		'DISPLAY_LANGUAGE'=>array(
+		'LANGUAGE'=>array(
+			'title'=>gt('Language'),
+			'description'=>gt('The language to use.'),
 			'control'=>new dropdowncontrol(null,$languages)
 		),
-		*/		
 		'SLINGBAR_TOP'=>array(
-			'title'=>$i18n['slingbar_top'],
-			'description'=>$i18n['slingbar_top_desc'],
+			'title'=>gt('Slingbar at Top'),
+			'description'=>gt('Should the slingbar display at the top of the page? Unchecking will place the slingbar at the bottom of the page.'),
 			'control'=>new checkboxcontrol(false,true)
 		),
 		'DISPLAY_THEME_REAL'=>array(
-			'title'=>$i18n['theme_real'],
-			'description'=>$i18n['theme_real_desc'],
+			'title'=>gt('Theme'),
+			'description'=>gt('The current theme layout'),
 			'control'=>new dropdowncontrol(null,$themes)
 		),
 		'DISPLAY_ATTRIBUTION'=>array(
-			'title'=>$i18n['attribution'],
-			'description'=>$i18n['attribution_desc'],
+			'title'=>gt('Attribution'),
+			'description'=>gt('How credit is given to authors for their posts.'),
 			'control'=>new dropdowncontrol(null,array('firstlast'=>'John Doe','lastfirst'=>'Doe, John','first'=>'John','username'=>'jdoe'))
 		),
 		'DISPLAY_DATETIME_FORMAT'=>array(
-			'title'=>$i18n['datetime_format'],
-			'description'=>$i18n['datetime_format_desc'],
+			'title'=>gt('Date and Time Format'),
+			'description'=>gt('Default system-wide date format, displaying both date and time.'),
 			'control'=>new dropdowncontrol(null,exponent_config_dropdownData('datetime_format'))
 		),
 		'DISPLAY_DATE_FORMAT'=>array(
-			'title'=>$i18n['date_format'],
-			'description'=>$i18n['date_format_desc'],
+			'title'=>gt('Date Format'),
+			'description'=>gt('Default system-wide date format, displaying date only.'),
 			'control'=>new dropdowncontrol(null,exponent_config_dropdownData('date_format'))
 		),
 		'DISPLAY_TIME_FORMAT'=>array(
-			'title'=>$i18n['time_format'],
-			'description'=>$i18n['time_format_desc'],
+			'title'=>gt('Time Format'),
+			'description'=>gt('Default system-wide date format, displaying time only.'),
 			'control'=>new dropdowncontrol(null,exponent_config_dropdownData('time_format'))
 		),
 		'DISPLAY_START_OF_WEEK'=>array(
-			'title'=>$i18n['start_of_week'],
-			'description'=>$i18n['start_of_week_desc'],
+			'title'=>gt('Start of Week'),
+			'description'=>gt('Default day to start the week.'),
 			'control'=>new dropdowncontrol(null,exponent_config_dropdownData('start_of_week'))
 		),
 		'DISPLAY_DEFAULT_TIMEZONE'=>array(
-			'title'=>$i18n['default_timezone'],
-			'description'=>$i18n['default_timezone_desc'],
+			'title'=>gt('Default timezone for this site.'),
+			'description'=>gt('Select the default timezone for this site.  CAUTION:  This may break calendars and other features that use date functions if you change this after entering data.  Must be in a format shown here:  <a href="http://www.php.net/manual/en/timezones.php" target="_blank">http://www.php.net/manual/en/timezones.php</a>'),
 			'control'=>new textcontrol()
 		)
 	)

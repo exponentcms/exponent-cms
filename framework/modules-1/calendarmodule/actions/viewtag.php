@@ -22,7 +22,6 @@ if (!defined('EXPONENT')) exit('');
 
 expHistory::flowSet(SYS_FLOW_PUBLIC,SYS_FLOW_ACTION);
 
-//if (!defined("SYS_DATETIME")) include_once(BASE."framework/core/subsystems-1/datetime.php");
 include_once(BASE."framework/core/subsystems-1/datetime.php");
 
 $locsql = "(location_data='".serialize($loc)."'";

@@ -19,9 +19,9 @@
 /** @define "BASE" "../../.." */
 
 class formmodule {
-	function name() { return exponent_lang_loadKey('modules/formmodule/class.php','module_name'); }
+	function name() { return 'Form'; }
     function displayname() { return '(old school) form'; } //for forwards compat with new modules
-	function description() { return exponent_lang_loadKey('modules/formmodule/class.php','module_description'); }
+	function description() { return 'Allows the creation of forms that can be emailed and/or stored in the database.'; }
 	function author() { return 'OIC Group, Inc'; }
 	
 	function hasSources() { return true; }
@@ -31,38 +31,33 @@ class formmodule {
 	function supportsWorkflow() { return false; }
 	
 	function permissions($internal = "") {
-		$i18n = exponent_lang_loadFile('modules/formmodule/class.php');
 		if ($internal == "") {
 			return array(
-				"administrate"=>$i18n['perm_administrate'],
-				"editform"=>$i18n['perm_editform'],
-				"editformsettings"=>$i18n['perm_editformsettings'],
-				"editreport"=>$i18n['perm_editformreport'],
-				"viewdata"=>$i18n['perm_viewdata'],
-				"editdata"=>$i18n['perm_editdata'],
-				"deletedata"=>$i18n['perm_deletedata']
+				"administrate"=>gt('Administrate'),
+				"editform"=>gt('Edit Form'),
+				"editformsettings"=>gt('Edit Form Settings'),
+				"editreport"=>gt('Edit Form Report'),
+				"viewdata"=>gt('View Posts'),
+				"editdata"=>gt('Edit Posts'),
+				"deletedata"=>gt('Delete Posts')
 			);
 		} else {
 			return array(
-				"administrate"=>$i18n['perm_administrate'],
-				"editform"=>$i18n['perm_editform'],
-				"editformsettings"=>$i18n['perm_editformsettings'],
-				"editreport"=>$i18n['perm_edit_formreport'],
-				"viewdata"=>$i18n['perm_viewdata'],
-				"editdata"=>$i18n['perm_editdata'],
-				"deletedata"=>$i18n['perm_deletedata']
+				"administrate"=>gt('Administrate'),
+				"editform"=>gt('Edit Form'),
+				"editformsettings"=>gt('Edit Form Settings'),
+				"editreport"=>gt('Edit Form Report'),
+				"viewdata"=>gt('View Posts'),
+				"editdata"=>gt('Edit Posts'),
+				"deletedata"=>gt('Delete Posts')
 			);
 		}
 	}
 	
 	function show($view,$loc = null) {
 		global $db;
-//		if (!defined("SYS_FORMS")) require_once(BASE."framework/core/subsystems-1/forms.php");
 		require_once(BASE."framework/core/subsystems-1/forms.php");
-//		exponent_forms_initialize();
-		
-		$i18n = exponent_lang_loadFile('modules/formmodule/class.php');
-		
+
 		if (defined("PREVIEW_READONLY") && !defined("SELECTOR")) {
 			// Pass
 		}  else {
@@ -76,13 +71,13 @@ class formmodule {
 				$f->table_name = "";
 				$f->is_email = 0;
 				$f->is_saved = 0;
-				$f->submitbtn = $i18n['default_submit'];
-				$f->resetbtn = $i18n['default_reset'];
-				$f->response = $i18n['default_response'];
-				$f->subject = $i18n['default_subject'];
+				$f->submitbtn = gt('Submit');
+				$f->resetbtn = gt('Reset');
+				$f->response = gt('Your form has been submitted');
+				$f->subject = gt('Submitted form from site');
 				$frmid = $db->insertObject($f,"formbuilder_form");
 				//Create Default Report;
-				$rpt->name = $i18n['default_report'];
+				$rpt->name = gt('Default Report');
 				$rpt->description = "";
 				$rpt->location_data = $f->location_data;
 				$rpt->text = "";
@@ -99,8 +94,6 @@ class formmodule {
 			
 			$floc = unserialize($f->location_data);
 			$controls = $db->selectObjects("formbuilder_control","form_id=".$f->id);
-//			if (!defined("SYS_SORTING")) require_once(BASE."framework/core/subsystems-1/sorting.php");
-//			require_once(BASE."framework/core/subsystems-1/sorting.php");
 //			usort($controls,"exponent_sorting_byRankAscending");
 			$controls = expSorter::sort(array('array'=>$controls,'sortby'=>'rank', 'order'=>'ASC'));
 
@@ -125,11 +118,11 @@ class formmodule {
 			$form->location(exponent_core_makeLocation("formbuilder",$floc->src,$floc->int));
 			if (count($controls) == 0) {
 				$form->controls['submit']->disabled = true;
-				$formmsg .= $i18n['blank_form'].'<br>';
+				$formmsg .= gt('This form is blank. Select "Edit Form" to add input fields.').'<br>';
 			}
 			if ($f->is_saved == 0 && $f->is_email == 0) {
 				$form->controls['submit']->disabled = true;
-				$formmsg .= $i18n['no_actions']; 
+				$formmsg .= gt('There are no actions assigned to this form. Select "Edit Form Settings" then select "Email Form" and/or "Save to Database".');
 			}
 			$count = $db->countObjects("formbuilder_".$f->table_name);
 			$template = new template("formmodule",$view,$loc);

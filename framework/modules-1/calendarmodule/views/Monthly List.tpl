@@ -19,19 +19,19 @@
 
 <div class="module calendar monthly">
 	<div class="module-actions">
-		<a class="monthviewlink" href="{link action=viewmonth time=$time}">{$_TR.calendar_view}</a>&nbsp;&nbsp;|&nbsp;&nbsp;<span class="listviewlink"></span>{$_TR.list_view}
+		<a class="monthviewlink" href="{link action=viewmonth time=$time}">{'Calendar View'|gettext}</a>&nbsp;&nbsp;|&nbsp;&nbsp;<span class="listviewlink"></span>{'List View'|gettext}
 		{permissions}
 			{if $permissions.administrate == 1}
-				&nbsp;&nbsp;|&nbsp;&nbsp;<a class="adminviewlink mngmntlink" href="{link _common=1 view='Administration' action='show_view' time=$time}">{$_TR.administration_view}</a>
+				&nbsp;&nbsp;|&nbsp;&nbsp;<a class="adminviewlink mngmntlink" href="{link _common=1 view='Administration' action='show_view' time=$time}">{'Administration View'|gettext}</a>
 			{/if}
 			&nbsp;&nbsp;|&nbsp;&nbsp;
-			{printer_friendly_link class="printer-friendly-link" text=$_TR.printer_friendly}
+			{printer_friendly_link class="printer-friendly-link" text='Printer-friendly'|gettext}
 			{br}
 		{/permissions}
 	</div>
 	<h2>
 		{if $enable_ical == true}
-			<a class="icallink module-actions" href="{link action=ical}" title="{$_TR.alt_ical}" alt="{$_TR.alt_ical}">{$_TR.ical}</a>
+			<a class="icallink module-actions" href="{link action=ical}" title="{'iCalendar Feed'|gettext}" alt="{'iCalendar Feed'|gettext}">{'iCalendar Feed'|gettext}</a>
 		{/if}
 		{if $moduletitle != ""}{$moduletitle}{/if}
 	</h2>
@@ -95,7 +95,7 @@
 					{/foreach}
 				</dd>
 				{if $none == 1}
-					<div class="paragraph"><dd><strong>{$_TR.no_events}</strong></dd></div>
+					<div class="paragraph"><dd><strong>{'No Events.'|gettext}</strong></dd></div>
 				{/if}
 				{br}
 			{/if_elements}

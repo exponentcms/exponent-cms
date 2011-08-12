@@ -30,8 +30,7 @@ if ($user->isLoggedIn()) {
 	expHistory::flowSet(SYS_FLOW_PUBLIC,SYS_FLOW_ACTION);
 }
 
-$i18n = exponent_lang_loadFile('modules/loginmodule/actions/loginredirect.php');
-loginmodule::show('Default',null,$i18n['login']);
+loginmodule::show('Default',null,gt('Log In'));
 
 
 $template = new template('loginmodule','_login_redirect');

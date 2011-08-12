@@ -20,11 +20,8 @@
 
 function smarty_function_userlistcontrol($params,&$smarty) {
 	echo '<script src="'.PATH_RELATIVE.'framework/core/subsystems-1/forms/controls/listbuildercontrol.js" language="javascript"></script>';
-//	if (!defined('SYS_FORMS')) require_once(BASE.'framework/core/subsystems-1/forms.php');
-//	if (!defined('SYS_USERS')) require_once(BASE.'framework/core/subsystems-1/users.php');
 	require_once(BASE.'framework/core/subsystems-1/forms.php');
 	require_once(BASE.'framework/core/subsystems-1/users.php');
-//    exponent_forms_initialize();
 
 	global $db;
 	$users = $db->selectObjects("user",null,"username");

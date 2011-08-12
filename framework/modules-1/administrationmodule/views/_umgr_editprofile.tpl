@@ -15,12 +15,12 @@
  *}
 <div class="administrationmodule edit-profile">
 	<div class="form_header">
-        	<h1>{if $is_edit}{$_TR.form_title_edit}{else}{$_TR.form_title_new}{/if}</h1>
+        	<h1>{if $is_edit}{'Edit User Account'|gettext}{else}{'New User Account'|gettext}{/if}</h1>
 	        <p>
 			{if $is_edit}
-				{$_TR.form_header_edit}
+				{'Use this form to modify a user\'s profile.'|gettext}
 			{else}
-				{$_TR.form_header_new}
+				{'Use this form to create a new user.'|gettext}
 			{/if}
 		</p>
 	</div>

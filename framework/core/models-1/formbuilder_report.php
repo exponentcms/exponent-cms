@@ -20,13 +20,8 @@
 
 class formbuilder_report {
 	static function form($object) {
-		$i18n = exponent_lang_loadFile('datatypes/formbuilder_report.php');
-	
 		global $db;
-//		if (!defined('SYS_FORMS')) require_once(BASE.'framework/core/subsystems-1/forms.php');
 		require_once(BASE.'framework/core/subsystems-1/forms.php');
-//		exponent_forms_initialize();
-		
 		$form = new form();
 		if (!isset($object->id)) {
 			$object->name = '';
@@ -36,10 +31,10 @@ class formbuilder_report {
 		}
 		
 		
-		$form->register('name',$i18n['name'],new textcontrol($object->name));
-		$form->register('description',$i18n['description'],new texteditorcontrol($object->description));
-		$form->register(null,'', new htmlcontrol($i18n['blank_report_message']));
-		$form->register('text',$i18n['text'],new htmleditorcontrol($object->text));
+		$form->register('name',gt('Name'),new textcontrol($object->name));
+		$form->register('description',gt('Description'),new texteditorcontrol($object->description));
+		$form->register(null,'', new htmlcontrol(gt('Leave the below custom definition blank to use the default "all fields" e-mail report and record view.')));
+		$form->register('text',gt('Custom E-Mail Report and View Record Definition'),new htmleditorcontrol($object->text));
 		
 		$fields = array();
 		$column_names = array();
@@ -59,28 +54,26 @@ class formbuilder_report {
 					}
 				}
 			}
-			$fields['ip'] = $i18n['field_ip'];
-			if (in_array('ip',$cols)) $column_names['ip'] = $i18n['field_id'];
+			$fields['ip'] = gt('IP Address');
+			if (in_array('ip',$cols)) $column_names['ip'] = gt('IP Address');
 	        
             if (isset($field['field_user_id']))
                 $fields['user_id'] = $field['field_user_id'];
 
-            if (in_array('user_id',$cols)) $column_names['user_id'] = $i18n['field_user_id'];
-			$fields['timestamp'] = $i18n['field_timestamp'];
-			if (in_array('timestamp',$cols)) $column_names['timestamp'] = $i18n['field_timestamp'];
+            if (in_array('user_id',$cols)) $column_names['user_id'] = gt('Username');
+			$fields['timestamp'] = gt('Timestamp');
+			if (in_array('timestamp',$cols)) $column_names['timestamp'] = gt('Timestamp');
 		}
 
-		$form->register('column_names',$i18n['column_names'], new listbuildercontrol($column_names,$fields));
-		$form->register(null,'', new htmlcontrol($i18n['note']));
+		$form->register('column_names',gt('Columns shown in View Data/Export CSV'), new listbuildercontrol($column_names,$fields));
+		$form->register(null,'', new htmlcontrol(gt('Selecting NO columns is equal to selecting all columns')));
 //		$form->register(null,'', new htmlcontrol('<br /><br /><br />'));
-		$form->register('submit','',new buttongroupcontrol($i18n['save'],'',$i18n['cancel']));
+		$form->register('submit','',new buttongroupcontrol(gt('Save'),'',gt('Cancel')));
 		return $form;
 	}
 	
 	static function update($values, $object) {
-//		if (!defined('SYS_FORMS')) require_once(BASE.'framework/core/subsystems-1/forms.php');
 		require_once(BASE.'framework/core/subsystems-1/forms.php');
-//		exponent_forms_initialize();
 		$object->name = $values['name'];
 		$object->description = $values['description'];
 		$object->text = htmleditorcontrol::parseData('text',$values);

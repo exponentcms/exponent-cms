@@ -135,19 +135,13 @@ class listcontrol extends formcontrol {
     }
     
     function form($object) {
-//        if (!defined("SYS_FORMS")) require_once(BASE."framework/core/subsystems-1/forms.php");
         require_once(BASE."framework/core/subsystems-1/forms.php");
-//        exponent_forms_initialize();
-    
         $form = new form();
         if (!isset($object->html)) {
             $object->html = "";
         } 
-        
-        $i18n = exponent_lang_loadFile('subsystems/forms/controls/htmlcontrol.php');
-        
         $form->register("html",'',new htmleditorcontrol($object->html));
-        $form->register("submit","",new buttongroupcontrol($i18n['save'],'',$i18n['cancel']));
+        $form->register("submit","",new buttongroupcontrol(gt('Save'),'',gt('Cancel')));
         return $form;
     }
     

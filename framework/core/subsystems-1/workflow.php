@@ -763,8 +763,6 @@ function exponent_workflow_form($datatype,$id) {
 function exponent_workflow_runActions($policy,$action_type,$revision) {
 	global $db;
 	$actions = $db->selectObjects("workflowaction","policy_id=".$policy->id." AND type=$action_type");
-//	if (!defined('SYS_SORTING')) include_once(BASE.'framework/core/subsystems-1/sorting.php');
-//	include_once(BASE.'framework/core/subsystems-1/sorting.php');
 //	usort($actions,"exponent_sorting_byRankAscending");
 	$actions = expSorter::sort(array('array'=>$actions,'sortby'=>'rank', 'order'=>'ASC'));
 	foreach ($actions as $action) {

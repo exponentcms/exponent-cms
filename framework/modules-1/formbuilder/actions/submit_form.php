@@ -28,17 +28,12 @@ if (!expValidator::check_antispam($post)) {
     expHistory::back();
 }
 
-//if (!defined("SYS_USER")) require_once(BASE."framework/core/subsystems-1/users.php");
-//if (!defined("SYS_FORMS")) require_once(BASE."framework/core/subsystems-1/forms.php");
 require_once(BASE."framework/core/subsystems-1/users.php");
 require_once(BASE."framework/core/subsystems-1/forms.php");
-//exponent_forms_initialize();
 global $db, $user;
 $f = $db->selectObject("formbuilder_form","id=".intval($_POST['id']));
 $rpt = $db->selectObject("formbuilder_report","form_id=".intval($_POST['id']));
 $controls = $db->selectObjects("formbuilder_control","form_id=".$f->id." and is_readonly=0");
-//if (!defined("SYS_SORTING")) require_once(BASE."framework/core/subsystems-1/sorting.php");
-//require_once(BASE."framework/core/subsystems-1/sorting.php");
 //usort($controls,"exponent_sorting_byRankAscending");
 $controls = expSorter::sort(array('array'=>$controls,'sortby'=>'rank', 'order'=>'ASC'));
 

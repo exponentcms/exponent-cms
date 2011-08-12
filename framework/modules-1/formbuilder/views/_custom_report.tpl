@@ -18,5 +18,5 @@
 
 {if $is_email == 0}
 	{br}
-	<a href="{$backlink}">{$_TR.back}</a>
+	<a href="{$backlink}">{'Back'|gettext}</a>
 {/if}

@@ -22,19 +22,15 @@ if (!defined('EXPONENT')) exit('');
 
 $template = new template('importer','_files_uploadForm');
 
-//if (!defined('SYS_FORMS')) require_once(BASE.'framework/core/subsystems-1/forms.php');
 require_once(BASE.'framework/core/subsystems-1/forms.php');
-//exponent_forms_initialize();
-
-$i18n = exponent_lang_loadFile('modules/importer/importers/files/start.php');
 
 $form = new form();
 $form->meta('module','importer');
 $form->meta('action','page');
 $form->meta('importer','files');
 $form->meta('page','process');
-$form->register('file',$i18n['file'],new uploadcontrol());
-$form->register('submit','',new buttongroupcontrol($i18n['restore']));
+$form->register('file',gt('Files Archive'),new uploadcontrol());
+$form->register('submit','',new buttongroupcontrol(gt('Restore')));
 
 $template->assign('form_html',$form->toHTML());
 $template->output();

@@ -24,17 +24,22 @@ ob_start();
 
 define('SCRIPT_EXP_RELATIVE','install/');
 define('SCRIPT_FILENAME','index.php');
+
+// Jumpstart to Initialize the installer language
+if (isset($_REQUEST['lang'])) {
+	if (!defined('LANGUAGE')) define('LANGUAGE', trim($_REQUEST['lang'],"'"));
+}
+
 include_once('../exponent.php');
 
 if (!file_exists('not_configured') && file_exists(BASE.'conf/config.php')) {
+	flash('notice',gt('This Exponent Site has already been configured.'));
 	header('Location: ../index.php');
 	exit(gt('This Exponent Site has already been configured.'));
 }
 
-//if (!defined('SYS_CONFIG')) include_once(BASE . 'framework/core/subsystems-1/config.php');
-include_once(BASE . 'framework/core/subsystems-1/config.php');
+include_once(BASE . 'framework/core/subsystems-1/config.php');  // FIXME loaded by config/load in exponent.php above
 
-// Initialize the language
 if (isset($_POST['sc'])) {
 
     if (file_exists("../conf/config.php")) {
@@ -56,21 +61,20 @@ if (isset($_POST['sc'])) {
     }
 }
 
-	if (isset($_POST['install_sample'])) {
+if (isset($_POST['install_sample'])) {
+	$eql = BASE . "themes/".DISPLAY_THEME_REAL."/sample.eql";
+	if (file_exists($eql)) {
 		include_once(BASE.'framework/core/subsystems-1/backup.php');
-
-		$eql = BASE . "themes/".DISPLAY_THEME_REAL."/sample.eql";
-		if (file_exists($eql)) {
-			$errors = array();
-			exponent_backup_restoreDatabase($db,$eql,$errors,0);
-//			if (count($errors)) {
-//				echo gt('Errors were encountered populating the site database.').'<br /><br />';
-//				foreach ($errors as $e) echo $e . '<br />';
-//			} else {
-//				echo gt('Sample content has been inserted into your database.  This content structure should help you to learn how Exponent works, and how to use it for your website.');
-//			}
-		}
+		$errors = array();
+		exponent_backup_restoreDatabase($db,$eql,$errors,0);
+//		if (count($errors)) {
+//			echo gt('Errors were encountered populating the site database.').'<br /><br />';
+//			foreach ($errors as $e) echo $e . '<br />';
+//		} else {
+//			echo gt('Sample content has been inserted into your database.  This content structure should help you to learn how Exponent works, and how to use it for your website.');
+//		}
 	}
+}
 
 if (file_exists("../conf/config.php") && !isset($_REQUEST['page'])) {
 	$_REQUEST['page'] = 'upgrade-1';

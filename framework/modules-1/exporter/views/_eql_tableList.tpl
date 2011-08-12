@@ -16,8 +16,8 @@
 
 <div class="exporter eql-tablelist">
 	<div class="form_header">
-		<h2>{$_TR.form_title}</h2>
-		<p>{$_TR.form_header}</p>
+		<h2>{'Backup Current Database'|gettext}</h2>
+		<p>{'Listed below are all of the tables in your site\'s database.  Select which tables you wish to backup, and then click the "Export Data" button.  Doing so will generate an EQL file (which you must save) that contains the data in the selected tables.  This file can be used later to restore the database to the current state.'|gettext}</p>
 	</div>
 	<script type="text/javascript">
 	{literal}
@@ -37,7 +37,7 @@
 				if (elems[key].checked) return true;
 			}
 		}
-		alert("{/literal}{$_TR.at_least_one}{literal}");
+		alert("{/literal}{'You must select at least one table to export.'|gettext}{literal}");
 		return false;
 	}
 
@@ -70,11 +70,11 @@
 			{/section}
 			<tr>
 				<td colspan="2">
-					<a href="#" onclick="selectAll(true); return false">{$_TR.select_all}</a>
+					<a href="#" onclick="selectAll(true); return false">{'Select All'|gettext}</a>
 				</td>
 				<td></td>
 				<td colspan="2">
-					<a href="#" onclick="selectAll(false); return false">{$_TR.deselect_all}</a>
+					<a href="#" onclick="selectAll(false); return false">{'Unselect All'|gettext}</a>
 				</td>
 			</tr>
 			<tr>
@@ -88,21 +88,21 @@
 				</td>
 			</tr>
 			<tr>
-				<td colspan="3" valign="top"><b>{$_TR.file_template}</b></td>
+				<td colspan="3" valign="top"><b>{'File Name Template:'|gettext}</b></td>
 				<td colspan="2">
 					<input type="text" name="filename" size="20" value="database" />
 				</td>
 			</tr>
 			<tr>
 				<td colspan="5">
-					<div style="border-top: 1px solid #CCCC;">{$_TR.template_description}<br /></div>
+					<div style="border-top: 1px solid #CCCC;">{'Use __DOMAIN__ for this website\'s domain name, __DB__ for the site\'s database name and any strftime options for time specification. The EQL extension will be added for you. Any other text will be preserved.'|gettext}<br /></div>
 				</td>
 			</tr>
 			<tr>
 			<tr>
 				<td colspan="2">&nbsp;</td>
 				<td colspan="3">
-					<input class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" type="submit" value="{$_TR.export_data}" onclick="return isOneSelected();" />
+					<input class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" type="submit" value="{'Export Data'|gettext}" onclick="return isOneSelected();" />
 				</td>
 			</tr>
 		</table>

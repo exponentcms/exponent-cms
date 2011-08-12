@@ -16,8 +16,8 @@
 
 <div class="importer importers">
 	<div class="form_header">
-		<h2>{$_TR.form_title}</h2>
-		<p>{$_TR.form_header}</p>
+		<h2>{'Import File Archive'|gettext}</h2>
+		<p>{'To restore your uploaded files, simply select and upload the files archive using this form.'|gettext}</p>
 	</div>
 	{$form_html}
 </div>

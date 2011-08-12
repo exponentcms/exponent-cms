@@ -23,7 +23,6 @@
 if (!defined('EXPONENT')) exit('');
 
 if (exponent_permissions_check('extensions',exponent_core_makeLocation('administrationmodule'))) {
-//	if (!defined('SYS_CONFIG')) include_once(BASE.'framework/core/subsystems-1/config.php');
 	include_once(BASE.'framework/core/subsystems-1/config.php');
 	expSession::set('display_theme',$_GET['theme']);
 	if (DISPLAY_THEME_REAL == $_GET['theme']){

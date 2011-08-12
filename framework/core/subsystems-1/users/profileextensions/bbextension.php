@@ -21,49 +21,46 @@
 // GREP:HARDCODEDTEXT - 3am-6am is not i18n!
 
 class bbextension {
-	function name() { return exponent_lang_loadKey('subsystems/users/profileextensions/bbextension.php','extension_name'); }
+	function name() { return 'Bulletin Board Module Extension'; }
 	function author() { return 'Adam Kessler'; }
-	function description() { return exponent_lang_loadKey('subsystems/users/profileextensions/bbextension.php','extension_description'); }
+	function description() { return 'User profile extension for the Bulletin Board Module.  Include things like avatars files, number of post, etc.'; }
 
 	function modifyForm($form,$user) { // new if !isset($user->id)
-	
-		$i18n = exponent_lang_loadFile('subsystems/users/profileextensions/bbextension.php');
-	
 		if (!isset($user->bb_user) || $user->bb_user == null) {
 			$user->bb_user = bbextension::_blankBBUser();
 		}
 
-    if (!isset($user->bb_user->website) || $user->bb_user->website == "" ) {
-      $user->bb_user->website = 'http://';
-    }  
-		$yesno = array(1=>$i18n['Yes'], 0=>$i18n['No']);	
-		$form->register(null,"",new htmlcontrol('<hr size="1" /><b>'.$i18n['header'].'</b>'));
-		$form->register("icq_num",$i18n['icq_num'], new textcontrol($user->bb_user->icq_num,16,false,15));
-		$form->register("aim_addy",$i18n['aim_addy'], new textcontrol($user->bb_user->aim_addy,26,false,25));
-		$form->register("msn_addy",$i18n['msn_addy'], new textcontrol($user->bb_user->msn_addy,26,false,25));
-		$form->register("yahoo_addy",$i18n['yahoo_addy'], new textcontrol($user->bb_user->yahoo_addy,26,false,25));
-		$form->register("skype_addy",$i18n['skype_addy'], new textcontrol($user->bb_user->skype_addy,26,false,25));
-		$form->register("gtalk_addy",$i18n['gtalk_addy'], new textcontrol($user->bb_user->gtalk_addy,26,false,25));
-		$form->register("website",$i18n['website'], new textcontrol($user->bb_user->website,46,false,55));
-		$form->register("location",$i18n['location'], new textcontrol($user->bb_user->location,46,false,55));
-		$form->register("occupation",$i18n['occupation'], new textcontrol($user->bb_user->occupation,46,false,55));
-		$form->register("interests",$i18n['interests'], new texteditorcontrol($user->bb_user->interests,7,45));
-		$form->register("signature",$i18n['signature'], new texteditorcontrol($user->bb_user->signature,7,45));
-		$form->register("show_email_addy",$i18n['show_email_addy'], new radiogroupcontrol($user->bb_user->show_email_addy,$yesno,false,100,3));
-		$form->register("hide_online_status",$i18n['hide_online_status'], new radiogroupcontrol($user->bb_user->hide_online_status,$yesno,false,100,3));
-		$form->register("notify_of_replies",$i18n['notify_of_replies'], new radiogroupcontrol($user->bb_user->notify_of_replies,$yesno,false,100,3));
-		$form->register("notify_of_pvt_msg",$i18n['notify_of_pvt_msg'], new radiogroupcontrol($user->bb_user->notify_of_pvt_msg,$yesno,false,100,3));
-		$form->register("attach_signature",$i18n['attach_signature'], new radiogroupcontrol($user->bb_user->attach_signature,$yesno,false,100,3));
+		if (!isset($user->bb_user->website) || $user->bb_user->website == "" ) {
+		  $user->bb_user->website = 'http://';
+		}
+		$yesno = array(1=>gt('Yes'), 0=>gt('No'));
+		$form->register(null,"",new htmlcontrol('<hr size="1" /><b>'.gt('Bulletin Board Info').'</b>'));
+		$form->register("icq_num",gt('ICQ Number: '), new textcontrol($user->bb_user->icq_num,16,false,15));
+		$form->register("aim_addy",gt('AIM Address: '), new textcontrol($user->bb_user->aim_addy,26,false,25));
+		$form->register("msn_addy",gt('MSN Messenger: '), new textcontrol($user->bb_user->msn_addy,26,false,25));
+		$form->register("yahoo_addy",gt('Yahoo Messenger: '), new textcontrol($user->bb_user->yahoo_addy,26,false,25));
+		$form->register("skype_addy",gt('Skype Username: '), new textcontrol($user->bb_user->skype_addy,26,false,25));
+		$form->register("gtalk_addy",gt('Google Talk: '), new textcontrol($user->bb_user->gtalk_addy,26,false,25));
+		$form->register("website",gt('Website: '), new textcontrol($user->bb_user->website,46,false,55));
+		$form->register("location",gt('Location: '), new textcontrol($user->bb_user->location,46,false,55));
+		$form->register("occupation",gt('Occupation: '), new textcontrol($user->bb_user->occupation,46,false,55));
+		$form->register("interests",gt('Interests: '), new texteditorcontrol($user->bb_user->interests,7,45));
+		$form->register("signature",gt('Signature: '), new texteditorcontrol($user->bb_user->signature,7,45));
+		$form->register("show_email_addy",gt('Always show my email address: '), new radiogroupcontrol($user->bb_user->show_email_addy,$yesno,false,100,3));
+		$form->register("hide_online_status",gt('Hide online status: '), new radiogroupcontrol($user->bb_user->hide_online_status,$yesno,false,100,3));
+		$form->register("notify_of_replies",gt('Notify me of replies:  '), new radiogroupcontrol($user->bb_user->notify_of_replies,$yesno,false,100,3));
+		$form->register("notify_of_pvt_msg",gt('Notify me of private messages:  '), new radiogroupcontrol($user->bb_user->notify_of_pvt_msg,$yesno,false,100,3));
+		$form->register("attach_signature",gt('Always attach my signature:  '), new radiogroupcontrol($user->bb_user->attach_signature,$yesno,false,100,3));
 		
 		//Show the avatar pic if there is one available.
 		if ($user->bb_user->file_id != 0) {
 			global $db;
 			$file = $db->selectObject('file', 'id='.$user->bb_user->file_id);
 			$form->register(null,"",new htmlcontrol('<hr size="1" />'));
-			$form->register('file',$i18n['changefile'],new uploadcontrol());		
+			$form->register('file',gt('Change your Avatar File: <br>(Avatar Pictures may be no larger than 80x80)'),new uploadcontrol());
 			$form->register(null,"",new htmlcontrol('<img src='.$file->directory.'/'.$file->filename.' border="0" />'));
 		} else {
-			$form->register('file',$i18n['file'],new uploadcontrol());		
+			$form->register('file',gt('Avatar File: <br>(Avatar Pictures may be no larger than 80x80)'),new uploadcontrol());
 		}
 
 		return $form;
@@ -98,9 +95,6 @@ class bbextension {
 		$fileup = getimagesize ( $filenew );
 		if ($fileup[2] > 0 && $fileup[1] > 0) {
 			if ($fileup[0] <= 80 && $fileup[1] <= 80) {
-//				if (!defined('SYS_FILES')) include_once(BASE.'framework/core/subsystems-1/files.php');
-//				include_once(BASE.'framework/core/subsystems-1/files.php');
-
 				$directory = 'files/bbmodule/avatars';
 				$fname = null;
 				$file = null;

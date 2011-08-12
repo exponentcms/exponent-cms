@@ -15,6 +15,6 @@
  *}
 {if $loggedin == true || $smarty.const.PREVIEW_READONLY == 1}
 	<div class="loginmodule logout-only">
-		<a href="{link action=logout}">{$_TR.logout}</a>
+		<a href="{link action=logout}">{'Logout'|gettext}</a>
 	</div>
 {/if}	

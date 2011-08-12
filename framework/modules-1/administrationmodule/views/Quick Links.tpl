@@ -17,16 +17,16 @@
 {if $user->id != '' && $user->id != 0} 
 <div class="administrationmodule quicklinks yui-panel">
 	<div class="hd">
-			{gettext str=$_TR.quicklinks}
+			{gettext str='Administration Quicklinks'|gettext}
 	</div>
 	<div class="bd">		
 	{permissions}
-	{if $can_manage_nav == 1}<a class="sitetree" href="{link module=navigationmodule action=manage}">{$_TR.manage_site}</a>{/if}
+	{if $can_manage_nav == 1}<a class="sitetree" href="{link module=navigationmodule action=manage}">{'Manage Site Navigation'|gettext}</a>{/if}
 		{if $permissions.administrate == 1}
-		<a class="files" href="{$smarty.const.URL_FULL}framework/modules-1/filemanagermodule/actions/picker.php">{$_TR.manage_files}</a>
-		<a class="admin" href="{link module=administrationmodule action=index}">{$_TR.site_administration}</a>
-		{*<a id="addmodulelink" class="clicktoaddmodule" href="#">{$_TR.add_module}</a>*}
-		<a class="recycle" href="{link module=administrationmodule action=orphanedcontent}">{$_TR.recycle_bin}</a>
+		<a class="files" href="{$smarty.const.URL_FULL}framework/modules-1/filemanagermodule/actions/picker.php">{'Manage Files'|gettext}</a>
+		<a class="admin" href="{link module=administrationmodule action=index}">{'Site Administration'|gettext}</a>
+		{*<a id="addmodulelink" class="clicktoaddmodule" href="#">{'Add Module'|gettext}</a>*}
+		<a class="recycle" href="{link module=administrationmodule action=orphanedcontent}">{'Recycle Bin'|gettext}</a>
 	
 	{/if}
 	{/permissions}
@@ -41,9 +41,9 @@
 	<div class="bd">
 	{permissions}
 	{get_user assign=user}
-	<a class="changepassword" href="{link controller=users action=change_password}">{$_TR.change_password}</a>
-	<a class="editprofile" href="{link controller=users action=edituser id=$user->id}">{$_TR.edit_profile}</a>
-	<a class="logout" href="{link module=loginmodule action=logout}">{$_TR.logout}</a>
+	<a class="changepassword" href="{link controller=users action=change_password}">{'Change Password'|gettext}</a>
+	<a class="editprofile" href="{link controller=users action=edituser id=$user->id}">{'Edit Profile'|gettext}</a>
+	<a class="logout" href="{link module=loginmodule action=logout}">{'Logout'|gettext}</a>
 	{/permissions}
 	</div>
 </div>

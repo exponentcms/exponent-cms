@@ -23,11 +23,8 @@
 if (!defined('EXPONENT')) exit('');
 
 if (exponent_permissions_check('user_management',exponent_core_makeLocation('administrationmodule'))) {
-//	if (!defined('SYS_USERS')) require_once(BASE.'framework/core/subsystems-1/users.php');
-//	if (!defined('SYS_FORMS')) require_once(BASE.'framework/core/subsystems-1/forms.php');
 	require_once(BASE.'framework/core/subsystems-1/users.php');
 	require_once(BASE.'framework/core/subsystems-1/forms.php');
-//	exponent_forms_initialize();
 
 	$g = exponent_users_getGroupById(intval($_GET['id']));
 	$form = exponent_users_groupForm($g);

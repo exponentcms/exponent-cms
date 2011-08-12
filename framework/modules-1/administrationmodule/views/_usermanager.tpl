@@ -16,12 +16,12 @@
 
 <div class="administrationmodule usermanager">
 <div class="form_header">
-        <h1>{$_TR.form_title}</h1>
-        <p>{$_TR.form_header}</p>
+        <h1>{'Manage User Accounts'|gettext}</h1>
+        <p>{'From here, you can create, modify and remove normal user accounts.  You will not be able to create, modify or remove administrator accounts (these options will be disabled).'|gettext}</p>
 	{if $smarty.const.SITE_ALLOW_REGISTRATION == 0}
-		<blockquote class="error"><i>{$_TR.no_registration}</i></blockquote>
+		<blockquote class="error"><i>{'Note: Since user registration has been disallowed in the global site configuration, this is the only way to create new user accounts.'|gettext}</i></blockquote>
 	{/if}
-	<a href="{link module=userprofilemodule action=edit id=0}">{$_TR.new_user}</a>
+	<a href="{link module=userprofilemodule action=edit id=0}">{'Create a New User'|gettext}</a>
 </div>
 <div class="datatable">
         <div id="userdt">

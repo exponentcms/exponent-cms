@@ -344,9 +344,6 @@ class expFile extends expRecord {
                                        $_destDir  = null
                                       ) {
 
-//        if (!defined('SYS_FILES')) include_once(BASE.'framework/core/subsystems-1/files.php');
-//        include_once(BASE.'framework/core/subsystems-1/files.php');
-
         // Make sure something was sent first off...
         if ( ( !isset($_SERVER['CONTENT_TYPE'] )) ||
              ( strpos($_SERVER['CONTENT_TYPE'], 'multipart/form-data') !== 0) )

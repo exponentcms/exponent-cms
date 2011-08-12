@@ -47,8 +47,6 @@ if ($question) {
 			$total += $answers[$i]->vote_count;
 		}
 		
-//		if (!defined('SYS_SORTING')) require_once(BASE.'framework/core/subsystems-1/sorting.php');
-//		require_once(BASE.'framework/core/subsystems-1/sorting.php');
 //		if (!function_exists('exponent_sorting_byVoteCountDescending')) {
 //			function exponent_sorting_byVoteCountDescending($a,$b) {
 //				return ($a->vote_count > $b->vote_count ? -1 : 1);

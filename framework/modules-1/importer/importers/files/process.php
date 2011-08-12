@@ -20,19 +20,17 @@
 
 if (!defined('EXPONENT')) exit('');
 
-$i18n = exponent_lang_loadFile('modules/importer/importers/files/process.php');
-
 if ($_FILES['file']['error'] != UPLOAD_ERR_OK) {
 	switch($_FILES['file']['error']) {
 		case UPLOAD_ERR_INI_SIZE:
 		case UPLOAD_ERR_FORM_SIZE:
-			echo $i18n['file_too_large'].'<br />';
+			echo gt('The file you uploaded exceeded the size limits for the server.').'<br />';
 			break;
 		case UPLOAD_ERR_PARTIAL:
-			echo $i18n['partial_file'].'<br />';
+			echo gt('The file you uploaded was only partially uploaded.').'<br />';
 			break;
 		case UPLOAD_ERR_NO_FILE:
-			echo $i18n['no_file'].'<br />';
+			echo gt('No file was uploaded.').'<br />';
 			break;
 	}
 } else {
@@ -44,21 +42,18 @@ if ($_FILES['file']['error'] != UPLOAD_ERR_OK) {
 	$dest_dir = BASE.'tmp/'.uniqid('');
 	@mkdir($dest_dir);
 	if (!file_exists($dest_dir)) {
-		echo $i18n['file_cant_mkdir'];
+		echo gt('Unable to create temporary directory to extract files archive.');
 	} else {
 		$return = $tar->extract($dest_dir);
 		if (!$return) {
-			echo '<br />'.$i18n['error_tar'].'<br />';
+			echo '<br />'.gt('Error extracting TAR archive').'<br />';
 		} else if (!file_exists($dest_dir.'/files') || !is_dir($dest_dir.'/files')) {
-			echo '<br />'.$i18n['bad_archive'].'<br />';
+			echo '<br />'.gt('Invalid archive format').'<br />';
 		} else {
 			// Show the form for specifying which mod types to 'extract'
 			
 			$mods = array(); // Stores the mod classname, the files list, and the module's real name
 			
-//			if (!defined('SYS_FILES')) require_once(BASE.'framework/core/subsystems-1/files.php');
-//			require_once(BASE.'framework/core/subsystems-1/files.php');
-
 			$dh = opendir($dest_dir.'/files');
 			while (($file = readdir($dh)) !== false) {
 				if ($file{0} != '.' && is_dir($dest_dir.'/files/'.$file)) {

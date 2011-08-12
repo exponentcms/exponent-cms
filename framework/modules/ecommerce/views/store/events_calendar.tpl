@@ -19,17 +19,17 @@
 	
 <h1>{if $moduletitle}{$moduletitle}{/if}</h1>
 
-<table id="calendar" cellspacing="0" cellpadding="0" summary="{$moduletitle|default:$_TR.default_summery}">
-<caption><a href="{link action=events_calendar time=$prevmonth}" title="{$_TR.alt_previous}" class="nav">&laquo;</a> {$now|format_date:"%B %Y"} <a href="{link action=events_calendar time=$nextmonth}" title="{$_TR.alt_next}" class="nav">&raquo;</a></caption>
+<table id="calendar" cellspacing="0" cellpadding="0" summary="{$moduletitle|default:'Subscribe to this Event RSS Feed'|gettext}">
+<caption><a href="{link action=events_calendar time=$prevmonth}" title="{'Previous Month'|gettext}" class="nav">&laquo;</a> {$now|format_date:"%B %Y"} <a href="{link action=events_calendar time=$nextmonth}" title="{'Next Month'|gettext}" class="nav">&raquo;</a></caption>
 
         <tr class="daysoftheweek">
-            <th scope="col" abbr="{$_TR.sunday}" title="{$_TR.sunday}">{$_TR.sunday}</th>
-            <th scope="col" abbr="{$_TR.monday}" title="{$_TR.monday}">{$_TR.monday}</th>
-            <th scope="col" abbr="{$_TR.tuesday}" title="{$_TR.tuesday}">{$_TR.tuesday}</th>
-            <th scope="col" abbr="{$_TR.wednesday}" title="{$_TR.wednesday}">{$_TR.wednesday}</th>
-            <th scope="col" abbr="{$_TR.thursday}" title="{$_TR.thursday}">{$_TR.thursday}</th>
-            <th scope="col" abbr="{$_TR.friday}" title="{$_TR.friday}">{$_TR.friday}</th>
-            <th scope="col" abbr="{$_TR.saturday}" title="{$_TR.saturday}">{$_TR.saturday}</th>
+            <th scope="col" abbr="{'Sunday'|gettext}" title="{'Sunday'|gettext}">{'Sunday'|gettext}</th>
+            <th scope="col" abbr="{'Monday'|gettext}" title="{'Monday'|gettext}">{'Monday'|gettext}</th>
+            <th scope="col" abbr="{'Tuesday'|gettext}" title="{'Tuesday'|gettext}">{'Tuesday'|gettext}</th>
+            <th scope="col" abbr="{'Tuesday'|gettext}" title="{'Tuesday'|gettext}">{'Tuesday'|gettext}</th>
+            <th scope="col" abbr="{'Thursday'|gettext}" title="{'Thursday'|gettext}">{'Thursday'|gettext}</th>
+            <th scope="col" abbr="{Friday|gettext}" title="{Friday|gettext}">{Friday|gettext}</th>
+            <th scope="col" abbr="{'Saturday'|gettext}" title="{'Saturday'|gettext}">{'Saturday'|gettext}</th>
         </tr>
     {math equation="x-86400" x=$now assign=dayts}
     {foreach from=$monthly item=week key=weeknum}

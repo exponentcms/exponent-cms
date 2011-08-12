@@ -21,8 +21,7 @@
 if (!defined('EXPONENT')) exit('');
 
 if (!isset($_POST['mods'])) {
-	$i18n = exponent_lang_loadFile('modules/exporter/exporters/files/export.php');
-	echo $i18n['need_one'];
+	echo gt('You must select at least one module to export files for.');
 	return;
 }
 

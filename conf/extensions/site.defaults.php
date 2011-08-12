@@ -50,9 +50,9 @@ if (!defined('FILE_DEFAULT_MODE')) define('FILE_DEFAULT_MODE',octdec(FILE_DEFAUL
 if (!defined('DIR_DEFAULT_MODE_STR')) define('DIR_DEFAULT_MODE_STR','0770');
 if (!defined('DIR_DEFAULT_MODE')) define('DIR_DEFAULT_MODE',octdec(DIR_DEFAULT_MODE_STR+0));
 
-if (!defined('USE_LANG')) define('USE_LANG','eng_US');
-if (!defined('ENABLE_WORKFLOW')) define('ENABLE_WORKFLOW',0);
-if (!defined('WORKFLOW_REVISION_LIMIT')) define('WORKFLOW_REVIOSION_LIMIT',0);
+//if (!defined('USE_LANG')) define('USE_LANG','eng_US');
+//if (!defined('ENABLE_WORKFLOW')) define('ENABLE_WORKFLOW',0);
+//if (!defined('WORKFLOW_REVISION_LIMIT')) define('WORKFLOW_REVIOSION_LIMIT',0);
 if (!defined('ORGANIZATION_NAME')) define('ORGANIZATION_NAME',URL_BASE);
 if (!defined('HELP_ACTIVE')) define('HELP_ACTIVE',1);
 if (!defined('HELP_URL')) define('HELP_URL','http://docs.exponentcms.org/');

@@ -19,11 +19,9 @@
 
 if (!defined('EXPONENT')) exit('');
 
-$i18n = exponent_lang_loadFile('modules/exporter/exporters/files/info.php');
-
 return array(
-	'name'=>$i18n['exporter_name'],
-	'description'=>$i18n['exporter_description'],
+	'name'=>gt('Uploaded Files Exporter'),
+	'description'=>gt('Allows you to export all of the files that have been uploaded to the site as a tar.gz archive, which can be re-imported through the Uploaded Files Importer'),
 	'author'=>'James Hunt'
 );
 

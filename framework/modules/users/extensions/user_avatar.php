@@ -57,7 +57,7 @@ class user_avatar extends expRecord {
         // if the user chose gravatar, create the link and save it!
         if (!empty($params['use_gravatar'])) {
 	        $this->use_gravatar = $params['use_gravatar'];
-	        $emailMD5 = md5(strtolower(trim(exponent_users_getEmailById($params['user_id']))));
+	        $emailMD5 = md5(strtolower(trim(user::getEmailById($params['user_id']))));
 	        $this->image = "http://www.gravatar.com/avatar/" . $emailMD5 .  ".jpg";
         } elseif (!empty($_FILES['avatar']['tmp_name'])) {  // if the user uploaded a new avatar lets save it!
             $info = expFile::getImageInfo($_FILES['avatar']['tmp_name']);

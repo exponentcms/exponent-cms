@@ -15,9 +15,9 @@
  *}
 
 {if $success == 1}
-	<h2>{$_TR.success}</h2>
+	<h2>{'Data was restored successfully from backup.'|gettext}</h2>
 {else}
-	<h2>{$_TR.failure}</h2>
+	<h2>{'Errors were encountered trying to restore the database'|gettext}</h2>
 	<div style='padding-left: 25px;'>
 		{foreach from=$errors item=error}
 			{$error}<br />

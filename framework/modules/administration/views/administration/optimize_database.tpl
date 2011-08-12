@@ -30,7 +30,7 @@
 		{foreach from=$before key=table item=info}
 			<tr class="{cycle values="even, odd"}">
 				<td>{$table}</td>
-				<td align="right">{math format="%.3f" equation="x / 1024" x=$info->data_total} {$_TR.kb}</td>
+				<td align="right">{math format="%.3f" equation="x / 1024" x=$info->data_total} {'kb'|gettext}</td>
 			</tr>
 		{/foreach}
 	</tbody>

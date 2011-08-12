@@ -57,8 +57,6 @@ function exponent_geo_listCountriesAndRegions() {
 		}
 		uasort($countries[$c->id]->regions,"strnatcasecmp");
 	}
-//	if (!defined("SYS_SORTING")) require_once(BASE."framework/core/subsystems-1/sorting.php");
-//	require_once(BASE."framework/core/subsystems-1/sorting.php");
 //	uasort($countries,"exponent_sorting_byNameAscending");
 	$countries = expSorter::sort(array('array'=>$countries,'sortby'=>'name', 'order'=>'ASC', 'ignore_case'=>true, 'type'=>'a'));
 	return $countries;

@@ -20,8 +20,6 @@
 //TODO: bring back icon selector, this time based on the filebrowser engine
 class mimetype {
 	function form($object) {
-		$i18n = exponent_lang_loadFile('datatypes/mimetype.php');
-		
 		$form = new form();
 		if (!isset($object->mimetype)) {
 			$object->mimetype = '';
@@ -31,14 +29,14 @@ class mimetype {
 			$form->meta('oldmime',$object->mimetype);
 		}
 		
-		$form->register('mimetype',$i18n['mimetype'], new textcontrol($object->mimetype));
-		$form->register('name',$i18n['name'],new textcontrol($object->name));
+		$form->register('mimetype',gt('MIME Type'), new textcontrol($object->mimetype));
+		$form->register('name',gt('Name'),new textcontrol($object->name));
 		
 		$icodir = MIMEICON_RELATIVE;
 		$htmlimg = ($object->icon == '' ? '' : '<img src="'.MIMEICON_RELATIVE.$object->icon.'"/>');
 		// Replace this with something a little better.
 
-		$form->register('submit','',new buttongroupcontrol($i18n['save'],'',$i18n['cancel']));
+		$form->register('submit','',new buttongroupcontrol(gt('Save'),'',gt('Cancel')));
 		return $form;
 	}
 	

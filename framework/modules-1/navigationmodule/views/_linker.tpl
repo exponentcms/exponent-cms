@@ -26,7 +26,7 @@
 		</style>
 	</head>
 	<body> *}
-	<b>{$_TR.hier}</b><hr size="1" />
+	<b>{'Site Hierarchy'|gettext}</b><hr size="1" />
 		<table cellpadding="1" cellspacing="0" border="0" width="100%">
 		{foreach from=$sections item=section}
 		<tr><td style="padding-left: {math equation="x*20" x=$section->depth}px">
@@ -41,7 +41,7 @@
 		</table>
 	{if $haveStandalones}
 	<br /><br /><br />
-	<b>{$_TR.pages}</b><hr size="1" />
+	<b>{'Standalone Pages'|gettext}</b><hr size="1" />
 		<table cellpadding="1" cellspacing="0" border="0" width="100%">
 		{foreach from=$standalones item=section}
 		<tr><td style="padding-left: 20px">

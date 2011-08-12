@@ -34,5 +34,5 @@
                 </ul>
         {/if}
 
-	<a href="{link module=administrationmodule action=index}">{$_TR.back}</a>
+	<a href="{link module=administrationmodule action=index}">{'Back'|gettext}</a>
 </div>

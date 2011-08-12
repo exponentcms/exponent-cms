@@ -19,20 +19,17 @@
 
 if (!defined('EXPONENT')) exit('');
 
-
-$i18n = exponent_lang_loadFile('conf/extensions/htmltopdf.structure.php');
-
 return array(
-	$i18n['title'],
+	gt('HtmlToPdf Paths'),
 	array(
 		'HTMLTOPDF_PATH'=>array(
-			'title'=>$i18n['htmltopdf_path'],
-			'description'=>$i18n['htmltopdf_path_desc'],
+			'title'=>gt('HTML to PDF Path'),
+			'description'=>gt('The actual path of the binary html to pdf library'),
 			'control'=>new textcontrol()
 		),
 		'HTMLTOPDF_PATH_TMP'=>array(
-			'title'=>$i18n['htmltopdf_tmp'],
-			'description'=>$i18n['htmltopdf_tmp_desc'],
+			'title'=>gt('Html to PDF Tmp Directory'),
+			'description'=>gt('The tmp directory to be used by htmltopdf library'),
 			'control'=>new textcontrol()
 		)
 	)

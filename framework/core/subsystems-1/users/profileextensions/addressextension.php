@@ -18,24 +18,21 @@
 ##################################################
 
 class addressextension {
-	function name() { return exponent_lang_loadKey('subsystems/users/profileextensions/addressextension.php','extension_name'); }
+	function name() { return 'Address Extension'; }
 	function author() { return "James Hunt"; }
-	function description() { return exponent_lang_loadKey('subsystems/users/profileextensions/addressextension.php','extension_description'); }
+	function description() { return 'Stores an address for the user.'; }
 
 	function modifyForm($form,$user) { // new if !isset($user->id)
-	
-		$i18n = exponent_lang_loadFile('subsystems/users/profileextensions/addressextension.php');
-	
 		if (!isset($user->user_address) || $user->user_address == null) {
 			$user->user_address = addressextension::_blankAddress();
 		}
-		$form->register(null,"",new htmlcontrol('<hr size="1" /><b>'.$i18n['header'].'</b>'));
-		$form->register("address1",$i18n['address1'], new textcontrol($user->user_address->address1));
-		$form->register("address2",$i18n['address2'], new textcontrol($user->user_address->address2));
-		$form->register("city",$i18n['city'], new textcontrol($user->user_address->city));
-		$form->register("state",$i18n['state'], new textcontrol($user->user_address->state));
-		$form->register("zip",$i18n['zip'], new textcontrol($user->user_address->zip));
-		$form->register("country",$i18n['country'], new textcontrol($user->user_address->country));
+		$form->register(null,"",new htmlcontrol('<hr size="1" /><b>'.gt('Address Information').'</b>'));
+		$form->register("address1",gt('Address'), new textcontrol($user->user_address->address1));
+		$form->register("address2",gt(''), new textcontrol($user->user_address->address2));
+		$form->register("city",gt('City'), new textcontrol($user->user_address->city));
+		$form->register("state",gt('State'), new textcontrol($user->user_address->state));
+		$form->register("zip",gt('Zip Code'), new textcontrol($user->user_address->zip));
+		$form->register("country",gt('Country'), new textcontrol($user->user_address->country));
 		
 		return $form;
 	}

@@ -242,7 +242,6 @@ class usersController extends expController {
 			$db->delete('sessionticket','last_active < ' . (time() - SESSION_TIMEOUT));
 		}
 		
-//	    if (!defined('SYS_DATETIME')) require_once(BASE.'framework/core/subsystems-1/datetime.php');
 	    require_once(BASE.'framework/core/subsystems-1/datetime.php');
 
 		if (isset($_GET['id']) && $_GET['id'] == 0) {
@@ -560,7 +559,6 @@ class usersController extends expController {
     public function manage_group_memberships() {
         global $db, $user;
         expHistory::set('manageable', $this->params);
-//        if (!defined('SYS_USERS')) require_once(BASE.'framework/core/subsystems-1/users.php');
         require_once(BASE.'framework/core/subsystems-1/users.php');
 
         $memb = $db->selectObject('groupmembership','member_id='.$user->id.' AND group_id='.$this->params['id'].' AND is_admin=1');
@@ -570,7 +568,7 @@ class usersController extends expController {
         if (exponent_permissions_check('user_management',exponent_core_makeLocation('administrationmodule'))) $perm_level = 2;
 
         $group = $db->selectObject('group','id='.$this->params['id']);
-		$users = exponent_users_getAllUsers(0);
+		$users = user::getAllUsers(0);
 		
 		$members = array();
 		$admins = array();

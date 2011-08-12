@@ -23,10 +23,7 @@ class database_importer {
 		
 		exponent_lang_loadDictionary('modules','database');
 	
-//		if (!defined('SYS_FORMS')) require_once(BASE.'framework/core/subsystems-1/forms.php');
 		require_once(BASE.'framework/core/subsystems-1/forms.php');
-//		exponent_forms_initialize();
-
 		$form = new form();
 		//Form is created to collect information from the user
 		//Values set previously (defaults or user-entered) are displayed

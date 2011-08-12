@@ -20,13 +20,8 @@
 
 if (!defined('EXPONENT')) exit('');
 
-$i18n = exponent_lang_loadFile('modules/formbuilder/actions/view_data.php');
-
-//if (!defined('SYS_FORMS')) include_once(BASE.'framework/core/subsystems-1/forms.php');
-//if (!defined('SYS_USERS')) include_once(BASE.'framework/core/subsystems-1/users.php');
 include_once(BASE.'framework/core/subsystems-1/forms.php');
 include_once(BASE.'framework/core/subsystems-1/users.php');
-//exponent_forms_initialize();
 
 $template = new template('formbuilder','_data_view');
 expHistory::flowSet(SYS_FLOW_PUBLIC,SYS_FLOW_ACTION);
@@ -45,8 +40,6 @@ if (isset($_GET['id'])) {
 		if ($rpt->column_names == '') {
 			//define some default columns...
 			$controls = $db->selectObjects("formbuilder_control","form_id=".$f->id." and is_readonly = 0 and is_static = 0");
-//			if (!defined("SYS_SORTING")) include_once(BASE."framework/core/subsystems-1/sorting.php");
-//			include_once(BASE."framework/core/subsystems-1/sorting.php");
 //			usort($controls,"exponent_sorting_byRankAscending");
 			$controls = expSorter::sort(array('array'=>$controls,'sortby'=>'rank', 'order'=>'ASC'));
 
@@ -58,7 +51,7 @@ if (isset($_GET['id'])) {
 			
 		foreach (explode("|!|",$rpt->column_names) as $column_name) {
 			if ($column_name == "ip") {
-				$columndef .= 'new cColumn("'.$i18n['ip'].'","ip",null,null),';
+				$columndef .= 'new cColumn("'.gt('IP Address').'","ip",null,null),';
 			} elseif ($column_name == "user_id") {
 				foreach ($items as $key=>$item) {
 					if ($item->$column_name != 0) {
@@ -69,7 +62,7 @@ if (isset($_GET['id'])) {
 					}
 					$items[$key] = $item;
 				}
-				$columndef .= 'new cColumn("'.$i18n['username'].'","user_id",null,null),';
+				$columndef .= 'new cColumn("'.gt('Username').'","user_id",null,null),';
 			} elseif ($column_name == "timestamp") {
 				$srt = $column_name."_srt";
 				foreach ($items as $key=>$item) {
@@ -78,7 +71,7 @@ if (isset($_GET['id'])) {
 					$item->$column_name = strftime(DISPLAY_DATETIME_FORMAT,$item->$column_name);
 					$items[$key] = $item;
 				}
-				$columndef .= 'new cColumn("'.$i18n['timestamp'].'","timestamp",null,f'.$srt.'),';
+				$columndef .= 'new cColumn("'.gt('Timestamp').'","timestamp",null,f'.$srt.'),';
 				$sortfuncts .= 'function f'.$srt.'(a,b) {return (a.var_'.$srt.'<b.var_'.$srt.')?1:-1;}';
 			} else {
 				$control = $db->selectObject("formbuilder_control","name='".$column_name."' and form_id=".$_GET['id']);

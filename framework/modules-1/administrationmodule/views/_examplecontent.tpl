@@ -15,7 +15,7 @@
  *}
 {foreach from=$views item=view}
 <div style="border-top: 2px dashed #DDD">
-<b>{$view->view} {$_TR.viewname_view}</b><br />
+<b>{$view->view} {'View'|gettext}</b><br />
 {$view->content}
 </div>
 {/foreach}

@@ -13,11 +13,11 @@
  * GPL: http://www.gnu.org/licenses/gpl.txt
  *
  *}
-<div class="form_title">{$_TR.form_title}</div>
-<div class="form_header">{$_TR.form_header}</div>
+<div class="form_title">{'Profile Extensions'|gettext}</div>
+<div class="form_header">{'Profile Extensions let users store more information in their profile.  Users will only be able to manage information governed by the active extensions listed below.'|gettext}</div>
 <table cellpadding="2" cellspacing="0" border="0" width="100%">
 <tr>
-	<td class="header administration_header">{$_TR.extension_name}</td>
+	<td class="header administration_header">{'Extension Name'|gettext}</td>
 	<td class="header administration_header">&nbsp;</td>
 </tr>
 {foreach name=e from=$extensions item=extension}
@@ -26,49 +26,48 @@
 	<tr class="row {cycle values='odd,even'}_row">
 		<td>{$extension->name}</td>
 		<td>
-			<a class="mngmntlink administration_mngmntlink" href="{link action=profileext_delete id=$extension->id}" onclick="return confirm('{$_TR.deactivate_confirm}');">
-				<img class="mngmnt_icon" style="border:none;" src="{$smarty.const.ICON_RELATIVE}delete.png" title="{$_TR.alt_delete}" alt="{$_TR.alt_delete}" />
+			<a class="mngmntlink administration_mngmntlink" href="{link action=profileext_delete id=$extension->id}" onclick="return confirm('{'Are you sure you want to deactivate this profile extension?'|gettext'Delete'|gettext}" alt="{'Delete'|gettext}" />
 			</a>
 			{if $smarty.foreach.e.first != 1}
 			<a class="mngmntlink administration_mngmntlink" href="{link action=profileext_order a=$extension->rank b=$prevrank}">
-				<img class="mngmnt_icon" style="border:none;" src="{$smarty.const.ICON_RELATIVE}up.png" title="{$_TR.alt_up}" alt="{$_TR.alt_up}" />
+				<img class="mngmnt_icon" style="border:none;" src="{$smarty.const.ICON_RELATIVE}up.png" title="{'Move Item Up'|gettext}" alt="{'Move Item Up'|gettext}" />
 			</a>
 			{else}
-			<img class="mngmnt_icon" style="border:none;" src="{$smarty.const.ICON_RELATIVE}up.disabled.png" title="{$_TR.alt_up_disabled}" alt="{$_TR.alt_up_disabled}" />
+			<img class="mngmnt_icon" style="border:none;" src="{$smarty.const.ICON_RELATIVE}up.disabled.png" title="{''|gettext}" alt="{''|gettext}" />
 			{/if}
 			{if $smarty.foreach.e.last != 1}
 			<a class="mngmntlink administration_mngmntlink" href="{link action=profileext_order a=$extension->rank b=$nextrank}">
-				<img class="mngmnt_icon" style="border:none;" src="{$smarty.const.ICON_RELATIVE}down.png" title="{$_TR.alt_down}" alt="{$_TR.alt_down}" />
+				<img class="mngmnt_icon" style="border:none;" src="{$smarty.const.ICON_RELATIVE}down.png" title="{'Move Item Down'|gettext}" alt="{'Move Item Down'|gettext}" />
 			</a>
 			{else}
-			<img class="mngmnt_icon" style="border:none;" src="{$smarty.const.ICON_RELATIVE}down.disabled.png" title="{$_TR.alt_down_disabled}" alt="{$_TR.alt_down_disabled}" />
+			<img class="mngmnt_icon" style="border:none;" src="{$smarty.const.ICON_RELATIVE}down.disabled.png" title="{''|gettext}" alt="{''|gettext}" />
 			{/if}
 		</td>
 	</tr>
 {foreachelse}
 	<tr>
 		<td colspan="2" align="center">
-			<i>{$_TR.no_active}</i>
+			<i>{'No Active Profile Extensions'|gettext}</i>
 		</td>
 	</tr>
 {/foreach}
 </table>
 <br /><br />
 <hr size="1" />
-<div class="form_title">{$_TR.form_title_inactive}</div>
-<div class="form_header">{$_TR.form_header_inactive}</div>
+<div class="form_title">{'Inactive Profile Extensions'|gettext}</div>
+<div class="form_header">{'The extensions listed below have been deactivated.  They will not show up as part of user profiles until they are activated.'|gettext}</div>
 <table cellpadding="2" cellspacing="0" border="0" width="100%">
 <tr>
-	<td class="header administration_header">{$_TR.extension_name}</td>
+	<td class="header administration_header">{'Extension Name'|gettext}</td>
 	<td class="header administration_header">&nbsp;</td>
 </tr>
 {foreach from=$unused key=extclass item=extension}
 <tr class="row {cycle values='odd,even'}_row">
 	<td>{$extension->name}</td>
 	<td>
-		<a class="mngmntlink administration_mngmntlink" href="{link action=profileext_save ext=$extclass}">{$_TR.activate}</a>
+		<a class="mngmntlink administration_mngmntlink" href="{link action=profileext_save ext=$extclass}">{'Activate'|gettext}</a>
 		{if $extension->hasData == 1}
-		<a class="mngmntlink administration_mngmntlink" href="{link action=profileext_clear ext=$extclass}">{$_TR.clear_data}</a>
+		<a class="mngmntlink administration_mngmntlink" href="{link action=profileext_clear ext=$extclass}">{'Clear Data'|gettext}</a>
 		{else}
 		{/if}
 	</td>
@@ -76,7 +75,7 @@
 {foreachelse}
 	<tr>
 		<td colspan="2" align="center">
-			<i>{$_TR.no_inactive}</i>
+			<i>{'All Profile Extensions have been activated.'|gettext}</i>
 		</td>
 	</tr>
 {/foreach}

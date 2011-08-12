@@ -106,9 +106,9 @@
 	}
 
 	paginate.columns = new Array(
-		new cColumn("{/literal}{$_TR.user}{literal}","username",null,null),
-		new cColumn("{/literal}{$_TR.is_member}{literal}","",isMember,sortMember),
-		new cColumn("{/literal}{$_TR.group_admin}{literal}","",isAdmin,sortAdmin)
+		new cColumn("{/literal}{'User'|gettext}{literal}","username",null,null),
+		new cColumn("{/literal}{'Is Member?'|gettext}{literal}","",isMember,sortMember),
+		new cColumn("{/literal}{'Group Admin'|gettext}{literal}","",isAdmin,sortAdmin)
 	);
 
 	{/literal}
@@ -141,11 +141,11 @@
 <input type="hidden" name="action" value="gmgr_savemembers" />
 <input type="hidden" name="id" value="{$group->id}"/>
 <input type="hidden" id="membdata" name="membdata" value="" />
-<input type="submit" value="{$_TR.save}" onclick="serializeData(); return true;" />
-<input type="button" value="{$_TR.cancel}" onclick="document.location.href = '{$__redirect}';" />
+<input type="submit" value="{'Save'|gettext}" onclick="serializeData(); return true;" />
+<input type="button" value="{'Cancel'|gettext}" onclick="document.location.href = '{$__redirect}';" />
 </form>
 <br />
 
-<a class="mngmntlink administration_mngmntlink" href="#" onclick="changeAll(true); return false;">{$_TR.select_all}</a>
+<a class="mngmntlink administration_mngmntlink" href="#" onclick="changeAll(true); return false;">{'Select All'|gettext}</a>
 &nbsp;&nbsp;|&nbsp;&nbsp;
-<a class="mngmntlink administration_mngmntlink" href="#" onclick="changeAll(false); return false;">{$_TR.unselect_all}</a>
+<a class="mngmntlink administration_mngmntlink" href="#" onclick="changeAll(false); return false;">{'Unselect All'|gettext}</a>

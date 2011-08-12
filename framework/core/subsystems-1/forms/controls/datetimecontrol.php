@@ -39,7 +39,6 @@ class datetimecontrol extends formcontrol {
 	}
 	
 	function __construct($default = 0, $showdate = true, $showtime = true) {
-//		if (!defined("SYS_DATETIME")) include_once(BASE."framework/core/subsystems-1/datetime.php");
 		include_once(BASE."framework/core/subsystems-1/datetime.php");
 		if ($default == 0) $default = time();
 		$this->default = $default;
@@ -76,7 +75,6 @@ class datetimecontrol extends formcontrol {
 		if ($minute < 10) $minute = "0".$minute;
 		$html = "<input type='hidden' id='__".$name."' name='__".$name."' value='".($this->showdate?"1":"0").($this->showtime?"1":"0")."' />";
 		if ($this->showdate) {
-//			if (!defined("SYS_DATETIME")) require_once(BASE."framework/core/subsystems-1/datetime.php");
 			require_once(BASE."framework/core/subsystems-1/datetime.php");
 			$html .= '<div class="datetime date"><label>Date: </label>';
 			$html .= exponent_datetime_monthsDropdown($name . "_month",$default_date['mon']);
@@ -134,10 +132,7 @@ class datetimecontrol extends formcontrol {
 	}
 	
 	function form($object) {
-//		if (!defined("SYS_FORMS")) require_once(BASE."framework/core/subsystems-1/forms.php");
 		require_once(BASE."framework/core/subsystems-1/forms.php");
-//		exponent_forms_initialize();
-	
 		$form = new form();
 		if (!isset($object->identifier)) {
 			$object->identifier = "";
@@ -145,15 +140,12 @@ class datetimecontrol extends formcontrol {
 			$object->showdate = true;
 			$object->showtime = true;
 		} 
+		$form->register("identifier",gt('Identifier'),new textcontrol($object->identifier));
+		$form->register("caption",gt('Caption'), new textcontrol($object->caption));
+		$form->register("showdate",gt('Show Date'), new checkboxcontrol($object->showdate,false));
+		$form->register("showtime",gt('Show Time'), new checkboxcontrol($object->showtime,false));
 		
-		$i18n = exponent_lang_loadFile('subsystems/forms/controls/datetimecontrol.php');
-		
-		$form->register("identifier",$i18n['identifier'],new textcontrol($object->identifier));
-		$form->register("caption",$i18n['caption'], new textcontrol($object->caption));
-		$form->register("showdate",$i18n['showdate'], new checkboxcontrol($object->showdate,false));
-		$form->register("showtime",$i18n['showtime'], new checkboxcontrol($object->showtime,false));
-		
-		$form->register("submit","",new buttongroupcontrol($i18n['save'],"",$i18n['cancel']));
+		$form->register("submit","",new buttongroupcontrol(gt('Save'),"",gt('Cancel')));
 		return $form;
 	}
 	
@@ -163,10 +155,8 @@ class datetimecontrol extends formcontrol {
 			$object->default = 0; //This will force the control to always show the current time as default
 		}
 		if ($values['identifier'] == "") {
-			$i18n = exponent_lang_loadFile('subsystems/forms/controls/datetimecontrol.php');
-			
 			$post = $_POST;
-			$post['_formError'] = $i18n['id_req'];
+			$post['_formError'] = gt('Identifier is required.');
 			expSession::set("last_POST",$post);
 			return null;
 		}

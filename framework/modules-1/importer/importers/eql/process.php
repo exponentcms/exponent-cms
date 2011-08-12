@@ -20,7 +20,6 @@
 
 if (!defined('EXPONENT')) exit('');
 
-//if (!defined('SYS_BACKUP')) include_once(BASE.'framework/core/subsystems-1/backup.php');
 include_once(BASE.'framework/core/subsystems-1/backup.php');
 $errors = null;
 $continue = URL_FULL.'index.php?section='.SITE_DEFAULT_SECTION;

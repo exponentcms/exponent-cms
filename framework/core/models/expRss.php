@@ -62,8 +62,6 @@ class expRss extends expRecord {
     }
     
     public function getFeedItems() {
-//        if (!defined('SYS_RSS')) include_once('core_rss.php');
-//        if (!defined('SYS_RSS')) require_once(BASE.'external/feedcreator.class.php');
         require_once(BASE.'external/feedcreator.class.php');
 
         // get all the feeds available to this expRss object

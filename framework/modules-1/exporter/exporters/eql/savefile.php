@@ -21,8 +21,7 @@
 if (!defined('EXPONENT')) exit('');
 
 if (!isset($_POST['tables'])) { // No checkboxes clicked, and got past the JS check
-	$i18n = exponent_lang_loadFile('modules/exporters/exporter/eql/savefile.php');
-	echo $i18n['need_one'];
+	echo gt('You must choose at least one table to export.');
 } else { // All good
 //	if (!defined('SYS_BACKUP')) require_once(BASE.'framework/core/subsystems-1/backup.php');
 	require_once(BASE.'framework/core/subsystems-1/backup.php');

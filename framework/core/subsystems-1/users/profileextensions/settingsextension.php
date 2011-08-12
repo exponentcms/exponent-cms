@@ -19,21 +19,18 @@
 ##################################################
 
 class settingsextension {
-	function name() { return exponent_lang_loadKey('subsystems/users/profileextensions/settingsextension.php', 'extension_name'); }
+	function name() { return 'Settings Extension'; }
 	function author() { return 'Maxim Mueller'; }
-	function description() { return exponent_lang_loadKey('subsystems/users/profileextensions/settingsextension.php', 'extension_description'); }
+	function description() { return "Stores a user's preferences for certain site settings."; }
 
 	function modifyForm($form, $user) { // new if !isset($user->id)
-	
-		$i18n = exponent_lang_loadFile('subsystems/users/profileextensions/settingsextension.php');
-	
 		if (!isset($user->user_settings) || $user->user_settings == null) {
 			$user->user_settings = settingsextension::_setDefaults();
 		}
 		
-		$form->register(null, "", new htmlcontrol('<hr/><b>' . $i18n['header'] . '</b>'));
-		$form->register("SITE_WYSIWYG_EDITOR", $i18n["SITE_WYSIWYG_EDITOR"], new textcontrol($user->user_settings->WYSIWYG_EDITOR, 16, false, 15));
-		$form->register("USE_LANG", $i18n["USE_LANG"], new textcontrol($user->user_setings->USE_LANG, 16, false, 15));
+		$form->register(null, "", new htmlcontrol('<hr/><b>' . gt('User Settings') . '</b>'));
+		$form->register("SITE_WYSIWYG_EDITOR", gt('Preferred Editor'), new textcontrol($user->user_settings->WYSIWYG_EDITOR, 16, false, 15));
+		$form->register("USE_LANG", gt('Preferred Language'), new textcontrol($user->user_setings->USE_LANG, 16, false, 15));
 		
 		return $form;
 	}

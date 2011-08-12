@@ -55,9 +55,7 @@ class uploadcontrol extends formcontrol {
 	}
 
 	function form($object) {
-//		if (!defined("SYS_FORMS")) require_once(BASE."framework/core/subsystems-1/forms.php");
 		require_once(BASE."framework/core/subsystems-1/forms.php");
-//		exponent_forms_initialize();
 
 		$form = new form();
 		if (!isset($object->identifier)) {
@@ -65,21 +63,18 @@ class uploadcontrol extends formcontrol {
 			$object->caption = "";
 			$object->default = "";
 		}
-		$i18n = exponent_lang_loadFile('subsystems/forms/controls/textcontrol.php');
-
-		$form->register("identifier",$i18n['identifier'],new textcontrol($object->identifier));
-		$form->register("caption",$i18n['caption'], new textcontrol($object->caption));
-		$form->register("default",$i18n['default'], new textcontrol($object->default));
-		$form->register("submit","",new buttongroupcontrol($i18n['save'],'',$i18n['cancel']));
+		$form->register("identifier",gt('Identifier'),new textcontrol($object->identifier));
+		$form->register("caption",gt('Caption'), new textcontrol($object->caption));
+		$form->register("default",gt('Default'), new textcontrol($object->default));
+		$form->register("submit","",new buttongroupcontrol(gt('Save'),'',gt('Cancel')));
 		return $form;
 	}
 
 	function update($values, $object) {
         if ($object == null) $object = new uploadcontrol();
         if ($values['identifier'] == "") {
-            $i18n = exponent_lang_loadFile('subsystems/forms/controls/textcontrol.php');
             $post = $_POST;
-            $post['_formError'] = $i18n['id_req'];
+            $post['_formError'] = gt('Identifier is required.');
             expSession::set("last_POST",$post);
             return null;
         }
@@ -90,8 +85,6 @@ class uploadcontrol extends formcontrol {
     }
 
 	function moveFile($original_name,$formvalues) {
-//		if (!defined('SYS_FILES')) include_once(BASE.'framework/core/subsystems-1/files.php');
-//		include_once(BASE.'framework/core/subsystems-1/files.php');
 		$dir = 'files/uploads';
 		$filename = expFile::fixName(time().'_'.$formvalues[$original_name]['name']);
 		$dest = $dir.'/'.$filename;

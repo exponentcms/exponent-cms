@@ -59,8 +59,6 @@ class simplepollmodule {
 		if ($question) {
 			$answers = $db->selectObjects('poll_answer','question_id='.$question->id);
 		}
-//		if (!defined('SYS_SORTING')) require_once(BASE.'framework/core/subsystems-1/sorting.php');
-//		require_once(BASE.'framework/core/subsystems-1/sorting.php');
 //		usort($answers,'exponent_sorting_byRankAscending');
 		$answers = expSorter::sort(array('array'=>$answers,'sortby'=>'rank', 'order'=>'ASC'));
 

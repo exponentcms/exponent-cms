@@ -19,11 +19,9 @@
 
 if (!defined('EXPONENT')) exit('');
 
-$i18n = exponent_lang_loadFile('modules/importer/importers/usercsv/info.php');
-
 return array(
-	'name'=>$i18n['importer_name'],
-	'description'=>$i18n['importer_description'],
+	'name'=>gt('User CSV Importer'),
+	'description'=>gt('This is an extension to import users from a csv (comma separated values) file.'),
 	'author'=>'Adam Kessler'
 );
 

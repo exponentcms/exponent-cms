@@ -15,10 +15,10 @@
  *}
 <div class="navigationmodule add-pageset-page">
        <div class="form_header">
-                <h1>{$_TR.form_title}</h1>
-                <p>{$_TR.form_header}</p>
+                <h1>{'Create a new Section from a Pageset'|gettext}</h1>
+                <p>{'Please select the pageset from the list below.'|gettext}</p>
         </div>
 
-	{$_TR.note}
+	{'Note: once you save, you will not be able to edit this information.  Using pagesets is a shortcut for creating a number of sections and giving them default content.'|gettext}
 	{$form_html}
 </div>

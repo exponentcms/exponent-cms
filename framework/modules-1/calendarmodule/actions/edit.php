@@ -51,8 +51,6 @@ if (($item == null && exponent_permissions_check('post',$loc)) ||
 		$config->enable_feedback = 0;
 	}
 	
-	$i18n = exponent_lang_loadFile('modules/calendarmodule/actions/edit.php');
-
 	// if (isset($config->enable_tags)) {
 		// $cols = array();
 		// $tags = array();
@@ -64,7 +62,6 @@ if (($item == null && exponent_permissions_check('post',$loc)) ||
 				// $tags = array_merge($tags, $available_tags);
 			// }
 
-			// if (!defined('SYS_SORTING')) include_once(BASE.'framework/core/subsystems-1/sorting.php');
 			// usort($tags, "exponent_sorting_byNameAscending");
 			//$tags = expSorter::sort(array('array'=>$tags,'sortby'=>'name', 'order'=>'ASC', 'ignore_case'=>true));
 			// $tag_list = array();
@@ -86,7 +83,7 @@ if (($item == null && exponent_permissions_check('post',$loc)) ||
 			// }
 
 			// if (count($tag_list) > 0) {
-				// $form->registerAfter('tag_header','tags',$i18n['tags'],new listbuildercontrol($used_tags,$tag_list));
+				// $form->registerAfter('tag_header','tags',gt('Tags'),new listbuildercontrol($used_tags,$tag_list));
 			// } else {
 				// $form->registerAfter('tag_header','tags', '',new htmlcontrol('<br /><div>There are no tags assigned to the collection(s) available to this module.</div>'));
 			// }
@@ -103,19 +100,19 @@ if (($item == null && exponent_permissions_check('post',$loc)) ||
 // //		uasort($ddopts,'strnatcmp');
 
 		// if (!isset($item->category_id)) $item->category_id = null;
-		// $form->registerAfter('eventend','category',$i18n['categories'],new dropdowncontrol($item->category_id,$ddopts));
+		// $form->registerAfter('eventend','category',gt('Category'),new dropdowncontrol($item->category_id,$ddopts));
 		// $form->registerBefore('category', null, '', new htmlcontrol('<hr size="1" />'));
 	// }
 	
 	if ($config->enable_feedback == 1) {
 		$form->registerBefore('submit', null,'', new htmlcontrol('<hr size="1" />'));
 		$allforms = array();
-		$allforms[''] = $i18n['no_feedback'];
+		$allforms[''] = gt('Disallow Feedback');
 		$allforms = array_merge($allforms, exponent_template_listFormTemplates("forms/email"));
 		$feedback_form = ($item == null ? 0 : $item->feedback_form);
 		$feedback_email = ($item == null ? '' : $item->feedback_email);
-		$form->registerAfter('eventend', 'feedback_form', $i18n['feedback_form'], new dropdowncontrol($feedback_form, $allforms));
-		$form->registerAfter('feedback_form', 'feedback_email', $i18n['feedback_email'], new textcontrol($feedback_email, 20));
+		$form->registerAfter('eventend', 'feedback_form', gt('Feedback Form'), new dropdowncontrol($feedback_form, $allforms));
+		$form->registerAfter('feedback_form', 'feedback_email', gt('Feedback Email'), new textcontrol($feedback_email, 20));
 		$form->registerBefore('feedback_form', null, '', new htmlcontrol('<hr size="1" />'));
 	}
 
@@ -148,7 +145,6 @@ if (($item == null && exponent_permissions_check('post',$loc)) ||
 		$form->register(null,'',new htmlcontrol($buttons));
 	}
 	
-//	if (!defined('SYS_MODULES')) include_once(BASE.'framework/core/subsystems-1/modules.php');
 	include_once(BASE.'framework/core/subsystems-1/modules.php');
 	$form->validationScript = exponent_modules_getJSValidationFile('calendarmodule','postedit');
 	

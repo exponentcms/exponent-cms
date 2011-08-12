@@ -15,15 +15,15 @@
 
 <div class="navigationmodule manager-pagesets">
         <div class="form_header">
-                <h1>{$_TR.form_title}</h1>
-                <p>{$_TR.form_header}</p>
-		<a class="newpage" href="{link action=edit_template}">{$_TR.new}</a>
+                <h1>{'Manage Pagesets'|gettext}</h1>
+                <p>{'Pagesets are powerful tools to help you manage your site hierarchy.  A pageset is sort of like a sectional template layout - it allows you to define a commonly repeated structure as a miniature navigation hierarchy.  When you add a new section, you can set the page type to one of your Pagesets, and the sectional structure will be created for you, automatically.<br /><br />Another benefit of pagesets is default page content.  Any page in the page set can have modules on it, and the content of those modules is then copied to the newly created sections.'|gettext}</p>
+		<a class="newpage" href="{link action=edit_template}">{'Create a New Pageset'|gettext}</a>
         </div>
 
 	<table cellpadding="2" cellspacing="0" border="0" width="100%">
 	<tr>
-		<th><strong>{$_TR.pageset_title}</strong></th>
-		<th><strong>{$_TR.actions}</strong></th>
+		<th><strong>{'Pageset Title'|gettext}</strong></th>
+		<th><strong>{'Actions'|gettext}</strong></th>
 	</tr>
 	{foreach from=$templates item=t}
 	<tr class="row {cycle values='odd,even'}_row">
@@ -31,13 +31,13 @@
 			<b>{$t->name}</b>
 		</td>
 		<td>
-			[ <a href="{link action=view_template id=$t->id}">{$_TR.view}</a> ]
-			[ <a href="{link action=edit_template id=$t->id}">{$_TR.properties}</a> ]
-			[ <a href="{link action=delete_template id=$t->id}" onclick="return confirm('{$_TR.delete_confirm}');">{$_TR.delete}</a> ]
+			[ <a href="{link action=view_template id=$t->id}">{'View'|gettext}</a> ]
+			[ <a href="{link action=edit_template id=$t->id}">{'Properties'|gettext}</a> ]
+			[ <a href="{link action=delete_template id=$t->id}" onclick="return confirm('{'Are you sure you want to delete this template?'|gettext}');">{'Delete'|gettext}</a> ]
 		</td>
 	</tr>
 	{foreachelse}
-		<tr><td><i>{$_TR.no_pagesets}</i></td></tr>
+		<tr><td><i>{'No pagesets found'|gettext}</i></td></tr>
 	{/foreach}
 	</table>
 </div>

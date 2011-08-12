@@ -15,12 +15,12 @@
  *}
 <div class="navigationmodule edit-template">
 	<div class="form_header">
-		<h1>{$_TR.form_title}</h1>
-              	<p>{$_TR.form_header}</p>
+		<h1>{'Pageset Properties'|gettext}</h1>
+              	<p>{'Pageset Properties are mapped onto section properties when a Pageset is selected as the Page Type.'|gettext}</p>
 	</div>
 	{if $is_top == 1}
 	{br}{br}
-	{$_TR.is_top}
+	{'The name you specify for this Pageset will be used for reference only.  It will be replaced by whatever is entered into the name field of the "Add Section" form.'|gettext}
 	{/if}
 	{$form_html}
 </div>

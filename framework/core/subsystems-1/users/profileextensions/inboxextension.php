@@ -18,18 +18,16 @@
 ##################################################
 
 class inboxextension {
-	function name() { return exponent_lang_loadKey('subsystems/users/profileextensions/inboxextension.php','extension_name'); }
+	function name() { return 'Private Message Center Extension'; }
 	function author() { return 'James Hunt'; }
-	function description() { return exponent_lang_loadKey('subsystems/users/profileextensions/inboxextension.php','extension_description'); }
+	function description() { return 'Allow users to configure email forwarding, and view their private messages from their profile.'; }
 
 	function modifyForm($form,$u) { // new if !isset($user->id)
-		$i18n = exponent_lang_loadFile('subsystems/users/profileextensions/inboxextension.php');
-		
 		if (!isset($u->_inbox_config) || $u->_inbox_config == null) {
 			$u->_inbox_config = inboxextension::_blank();
 		}
-		$form->register(null,'',new htmlcontrol('<hr size="1" /><b>'.$i18n['header'].'</b>'));
-		$form->register('inbox_forward',$i18n['forward'], new checkboxcontrol($u->_inbox_config->forward,true));
+		$form->register(null,'',new htmlcontrol('<hr size="1" /><b>'.gt('Private Message Center Options').'</b>'));
+		$form->register('inbox_forward',gt('Forward All Private Messages to my Email Address'), new checkboxcontrol($u->_inbox_config->forward,true));
 		
 		return $form;
 	}

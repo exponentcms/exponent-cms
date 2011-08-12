@@ -23,10 +23,10 @@
     {permissions}
     <div class="module-actions">
         {if $permissions.create == true || $permissions.edit == true}
-            <a class="add" href="{link action=create}">{$_TR.create_news|default:"Add a news post"}</a>
+            <a class="add" href="{link action=create}">{"Add a news post"|gettext}</a>
         {/if}
         {if $permissions.showUnpublished == 1 }
-              |  <a class="view" href="{link action=showUnpublished}">{$_TR.view_expired|default:"View Expired/Unpublished News"}</a>
+              |  <a class="view" href="{link action=showUnpublished}">{"View Expired/Unpublished News"|gettext}</a>
         {/if}
     </div>
     {/permissions}

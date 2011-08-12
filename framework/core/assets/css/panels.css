@@ -109,6 +109,7 @@
     padding: 5px 10px;
 }
 .yui-panel-container.focused .yui-panel .hd {
+    z-index:1;
 }
 .container-close {
     background: url(../images/panel/sprite.png) no-repeat 0 -300px;
@@ -118,6 +119,7 @@
     right: 6px;
     top: 5px;
     width: 25px;
+    z-index:2;
 }
 .yui-panel-container .underlay {
     left: -1px;

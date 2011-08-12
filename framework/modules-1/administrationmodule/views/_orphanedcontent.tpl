@@ -14,14 +14,14 @@
  *
  *}
 <div class="administrationmodule orphanedcontent">
-	<h1>{$_TR.form_title}</h1>
+	<h1>{'Recycle Bin'|gettext}</h1>
 	{foreach from=$modules key=class item=data}
 		<div style="padding-left: 5px; border-top: 1px dashed #DDD; margin-top: 1em;">
 			{$data.name}
 			{foreach from=$data.modules key=src item=output}
 			<div style="margin-left: 10px;" class="container_editbox">
 				<div class="container_editheader" align="right">
-					<a href="{link action=orphanedcontent_delete mod=$class delsrc=$src}">{$_TR.delete_content}</a>
+					<a href="{link action=orphanedcontent_delete mod=$class delsrc=$src}">{'Delete Content'|gettext}</a>
 				</div>
 				<div class="container_box">
 					<div style="width: 100%">
@@ -32,11 +32,11 @@
 			{/foreach}
 		</div>
 	{foreachelse}
-		<i>{$_TR.no_orphans}</i>
+		<i>{'You have nothing in your Recycle Bin.'|gettext}</i>
 	{/foreach}
 
 	{if $have_bad_orphans == 1}
 	<br /><br />
-	<b><i>{$_TR.uninstalled_orphans}</i></b>
+	<b><i>{'Archived Content for Uninstalled Modules was found'|gettext}</i></b>
 	{/if}
 </div>

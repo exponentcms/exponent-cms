@@ -19,8 +19,6 @@
 /** @define "BASE" "../.." */
 
 function smarty_function_get_user($params,&$smarty) {
-//	if (!defined("SYS_SESSIONS")) include_once(BASE."framework/core/subsystems-1/sessions.php");
-//	include_once(BASE."framework/core/subsystems-1/sessions.php");
 	if (expSession::loggedIn()) {
 		global $user;
 		if (isset($params['assign'])) $smarty->assign($params['assign'],$user);

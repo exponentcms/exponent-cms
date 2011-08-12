@@ -15,9 +15,9 @@
 
 <div class="module formbuilder edit-control">
 	<div class="form_title">
-		<h1>{if $is_edit == 1}{$_TR.form_title_edit}{else}{$_TR.form_title_new}{/if} - {$type}</h1>
+		<h1>{if $is_edit == 1}{'Edit Control'|gettext}{else}{'Create a New Control'|gettext}{/if} - {$type}</h1>
 	</div>
 	{$form_html}
-	{if $is_edit != 1 && $type != "htmlcontrol"}{br}<i><b>** {$_TR.reset_report} **</b></i>{/if}
+	{if $is_edit != 1 && $type != "htmlcontrol"}{br}<i><b>** {'Adding this control will reset the default report to all fields'|gettext} **</b></i>{/if}
 </div>
 

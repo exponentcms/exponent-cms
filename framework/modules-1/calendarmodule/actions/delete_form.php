@@ -31,8 +31,6 @@ if ($item) {
 		$template->assign('checked_date',$eventdate);
 		
 		$eventdates = $db->selectObjects('eventdate','event_id='.$item->id);
-//		if (!defined('SYS_SORTING')) include_once(BASE.'framework/core/subsystems-1/sorting.php');
-//		include_once(BASE.'framework/core/subsystems-1/sorting.php');
 //		if (!function_exists('exponent_sorting_byDateAscending')) {
 //			function exponent_sorting_byDateAscending($a,$b) {
 //				return ($a->date > $b->date ? 1 : -1);

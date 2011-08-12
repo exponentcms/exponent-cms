@@ -17,7 +17,7 @@
 {foreach from=$sections item=section}
 <tr><td style="padding-left: {math equation="x*20" x=$section->depth}px">
 {if $section->id == $current->id}
-<img src="{$smarty.const.ICON_RELATIVE}mark.gif" title="{$_TR.alt_mark}" alt="{$_TR.alt_mark}" />
+<img src="{$smarty.const.ICON_RELATIVE}mark.gif" title="{'Mark'|gettext}" alt="{'Mark'|gettext}" />
 {/if}
 {if $section->active == 1}
 <a href="{$section->link}" class="navlink"{if $section->new_window} target="_blank"{/if}>{$section->name}</a>&nbsp;
@@ -29,6 +29,6 @@
 </table>
 {permissions}
 {if $canManage == 1}
-[ <a class="navlink" href="{link action=manage}">{$_TR.manage}</a> ]
+[ <a class="navlink" href="{link action=manage}">{'Manage'|gettext}</a> ]
 {/if}
 {/permissions}

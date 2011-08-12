@@ -19,9 +19,9 @@
 /** @define "BASE" "../../.." */
 
 class containermodule {
-	function name() { return exponent_lang_loadKey('modules/containermodule/class.php','module_name'); }
+	function name() { return 'Container Module'; }
 	function author() { return 'James Hunt'; }
-	function description() { return exponent_lang_loadKey('modules/containermodule/class.php','module_description'); }
+	function description() { return 'Contains other modules'; }
 	
 	function hasContent() { return true; }
 	function hasSources() { return true; }
@@ -30,12 +30,11 @@ class containermodule {
 	function supportsWorkflow() { return false; }
 	
 	function permissions($internal = '') {
-		$i18n = exponent_lang_loadFile('modules/containermodule/class.php');
 		return array(
 			'administrate'=>gt('Manage'),
-			'add_module'=>$i18n['perm_add_module'],
-			'edit_module'=>$i18n['perm_edit_module'],
-			'delete_module'=>$i18n['perm_delete_module'],
+			'add_module'=>gt('Add'),
+			'edit_module'=>gt('Edit'),
+			'delete_module'=>gt('Delete'),
 			'order_modules'=>gt('Reorder'),
 		);
 	}
@@ -56,7 +55,6 @@ class containermodule {
 	}
 	
 	function show($view,$loc = null,$title = '') {
-		$i18n = exponent_lang_loadFile('modules/containermodule/class.php');
 		if (empty($view)) $view = "Default";
 		$source_select = array();
 		$clickable_mods = null; // Show all
@@ -120,7 +118,6 @@ class containermodule {
             		$containers = $cache[$container_key];            
         	}
  
-//		if (!defined('SYS_WORKFLOW')) include_once(BASE.'framework/core/subsystems-1/workflow.php');
 		include_once(BASE.'framework/core/subsystems-1/workflow.php');
 		ksort($containers);
 		foreach (array_keys($containers) as $i) {
@@ -162,9 +159,9 @@ class containermodule {
 					'hasConfig'=>$db->tableExists($modclass."_config")
 				);
 			} else {
-				$containers[$i]->output = sprintf($i18n['mod_not_found'],$location->mod);
+				$containers[$i]->output = sprintf(gt('The module "%s" was not found in the system'),$location->mod);
 				$containers[$i]->info = array(
-					'module'=>sprintf($i18n['unknown'],$location->mod),
+					'module'=>sprintf(gt('Unknown: %s'),$location->mod),
 					'source'=>$location->src,
 					'hasContent'=>0,
 					'hasSources'=>0,

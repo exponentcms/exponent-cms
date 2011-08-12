@@ -106,7 +106,7 @@ class BaseTemplate {
 		$this->tpl->assign("__redirect", expHistory::getLastNotEditable());
 		
 		// Load language constants
-		$this->tpl->assign('_TR',exponent_lang_loadFile($this->langdir . $this->view . '.php'));
+		//$this->tpl->assign('_TR',exponent_lang_loadFile($this->langdir . $this->view . '.php'));
 		
 	}
 	
@@ -126,7 +126,7 @@ class BaseTemplate {
 	function output() {
 		// javascript registration
 		
-		$this->tpl->assign('_TR',exponent_lang_loadFile($this->langdir."".$this->view.'.php')); //fix lamp issue
+		//$this->tpl->assign('_TR',exponent_lang_loadFile($this->langdir."".$this->view.'.php')); //fix lamp issue
 		$this->tpl->display($this->view.'.tpl');
 	}
 	
@@ -148,7 +148,7 @@ class BaseTemplate {
 	function render() { // Caching support?
 		// Load language constants
 		//$this->tpl->assign('_TR',exponent_lang_loadFile($this->viewdir.'/'.$this->view.'.php'));
-		$this->tpl->assign('_TR', exponent_lang_loadFile($this->langdir . $this->view . '.php')); //fix lamp issue
+		//$this->tpl->assign('_TR', exponent_lang_loadFile($this->langdir . $this->view . '.php')); //fix lamp issue
 		return $this->tpl->fetch($this->view.'.tpl');
 	}
 }
@@ -236,7 +236,7 @@ class controllerTemplate extends baseTemplate {
 		$this->tpl->assign("__redirect", expHistory::getLastNotEditable());
 		
 		// Load language constants
-		$this->tpl->assign('_TR',exponent_lang_loadFile($this->langdir . $this->view . '.php'));
+		//$this->tpl->assign('_TR',exponent_lang_loadFile($this->langdir . $this->view . '.php'));
 		$this->tpl->assign("__loc",$controller->loc);
 		$this->tpl->assign("__name", $controller->baseclassname);
 		
@@ -354,10 +354,7 @@ function exponent_template_getViewConfigForm($module,$view,$form,$values) {
 		$form_file = $filepath;
 	}
 	
-//	if (!defined("SYS_FORMS")) require_once(BASE."framework/core/subsystems-1/forms.php");
 	require_once(BASE."framework/core/subsystems-1/forms.php");
-//	exponent_forms_initialize();
-	
 	if ($form == null) $form = new form();
 	if ($form_file == "") return $form;
 	
@@ -450,7 +447,6 @@ function exponent_template_listFormTemplates($type) {
  */
 function exponent_template_listModuleViews($module, $lang = LANG) {
 	return exponent_core_buildNameList("modules", $module, "tpl", "[!_]*");
-
 }
 
 function exponent_template_getViewParams($viewfile) {

@@ -53,11 +53,11 @@ function exponent_users_getFullProfile($user) {
 	return $user;
 }
 
-function exponent_users_listExtensions() {
+function exponent_users_listExtensions() {  //FIXME moved into profileextension model w/ code from 1.0
     return profileextension::listExtensions();
 }
 
-function exponent_users_authenticate($user, $password) {
+function exponent_users_authenticate($user, $password) {  //FIXME moved into user model
 	if (MAINTENANCE_MODE && $user->is_acting_admin == 0 ) return false;  // if MAINTENANCE_MODE only allow admins
 	if (empty($user)) return false;  // if the user object is null then fail the login
 	// check password, if account is locked, or is admin(account locking doesn't to administrators)
@@ -76,7 +76,7 @@ function exponent_users_authenticate($user, $password) {
  * @param string $password The password that the visitor has supplied as credentials
  * @node Subsystems:Users
  */
-function exponent_users_login($username, $password) {
+function exponent_users_login($username, $password) {  //FIXME moved into user model & expSession
 	global $db;
 
 	// Retrieve the user object from the database.  This may be null, if the username is non-existent.
@@ -125,7 +125,7 @@ function exponent_users_login($username, $password) {
  * can be cleaned up for the next user.
  * @node Subsystems:Users
  */
-function exponent_users_logout() {
+function exponent_users_logout() {  //FIXME moved into expSession
 	expSession::logout();
 }
 
@@ -185,7 +185,6 @@ function exponent_users_groupUpdate($formvalues, $group = null) {
  */
 function exponent_users_checkUsername($formvalues) {
 	global $db;
-	$i18n = exponent_lang_loadFile('subsystems/users.php');
 	$username = '';
 	if (USER_REGISTRATION_USE_EMAIL == 1) {
 		expValidator::validate(array('valid_email'=>'email'), $formvalues);
@@ -198,7 +197,7 @@ function exponent_users_checkUsername($formvalues) {
 
 	// check to make sure this username/email is unique.  If this is an update we make sure the id isn't
 	// the same as the user trying to update their own account.
-	$unametaken = (USER_REGISTRATION_USE_EMAIL == 1) ? $i18n['email_taken'] : $i18n['username_taken'];
+	$unametaken = (USER_REGISTRATION_USE_EMAIL == 1) ? gt('That email address is already in use.') : gt('That username is already taken.');
 	$where = "username = '".$username."'";
 	if (!empty($formvalues['id'])) $where .= ' AND id != '.$formvalues['id'];
 	if (count($db->selectObjects('user', $where)) > 0) expValidator::failAndReturnToForm($unametaken, $formvalues);
@@ -308,8 +307,6 @@ function exponent_users_userManagerFormTemplate($template) {
 	global $user;
 	$users = $db->selectObjects('user');
 
-//	if (!defined('SYS_SORTING')) require_once(BASE.'framework/core/subsystems-1/sorting.php');
-//	require_once(BASE.'framework/core/subsystems-1/sorting.php');
 	if (!function_exists('exponent_sorting_byLastFirstAscending')) {
 		function exponent_sorting_byLastFirstAscending($a,$b) {
 			return strnatcmp($a->lastname . ', '. $a->firstname,$b->lastname . ', '. $b->firstname);
@@ -342,8 +339,6 @@ function exponent_users_groupManagerFormTemplate($template) {
 	global $db;
 	$groups = $db->selectObjects('group');
 
-//	if (!defined('SYS_SORTING')) require_once(BASE.'framework/core/subsystems-1/sorting.php');
-//	require_once(BASE.'framework/core/subsystems-1/sorting.php');
 //	usort($groups,'exponent_sorting_byNameAscending');
 	$groups = expSorter::sort(array('array'=>$groups,'sortby'=>'name', 'order'=>'ASC'));
 
@@ -452,7 +447,7 @@ function exponent_users_getUsersByEmail($email) {
     return $tmpus;
 }
 
-function exponent_users_getEmailById($id) {
+function exponent_users_getEmailById($id) {  //FIXME moved to user model
 	global $db;
 	return $db->selectValue('user','email','id='.$id);
 }
@@ -466,7 +461,7 @@ function exponent_users_getEmailById($id) {
  * @param bool $allow_normal Whether or not to include normal accounts in the returned list.
  * @node Subsystems:Users
  */
-function exponent_users_getAllUsers($allow_admin=1,$allow_normal=1) {
+function exponent_users_getAllUsers($allow_admin=1,$allow_normal=1) {  //FIXME moved to user model
 	global $db;
 	if ($allow_admin && $allow_normal) return $db->selectObjects('user');
 	else if ($allow_admin) return $db->selectObjects('user','is_admin=1 OR is_acting_admin = 1');
@@ -490,12 +485,11 @@ function exponent_users_getAllUsers($allow_admin=1,$allow_normal=1) {
 function exponent_users_getGroupById($gid) {
 //anonymous group -- NOT YET IMPLEMENTED
 /*    global $db;
-    $i18n = exponent_lang_loadFile('subsystems/users.php');
     if ($gid == 0){
        //anonymous group
        $g->id = 0;
-       $g->name = $i18n['anonymous_group_name'];
-       $g->description = $i18n['anonymous_group_description'];
+       $g->name = gt('Anonymous Users - NOT YET WORKING');
+       $g->description = gt('This is a default system group for all non-logged in users. NOT YET WORKING');
        $g->inclusive = 1;
        return $g;
     } else {
@@ -519,7 +513,7 @@ function exponent_users_getGroupById($gid) {
  * @param string $name The username of the user account to retrieve.
  * @node Subsystems:Users
  */
-function exponent_users_getUserByName($name) {
+function exponent_users_getUserByName($name) {  //FIXME moved to user model
 	global $db;
 	$tmpu = $db->selectObject('user',"username='$name'");
 	if ($tmpu && $tmpu->is_admin == 1) {
@@ -531,7 +525,7 @@ function exponent_users_getUserByName($name) {
 }
 
 /* exdoc
- * This funciton pulls a group object from the subsystem's storage mechanism,
+ * This function pulls a group object from the subsystem's storage mechanism,
  * according to the group name.  For the default implementation, this is equivalent
  * to a $db->selectObject() call, but it may not be the same for other implementations.
  * Returns a group object, and null if no group was found.
@@ -558,7 +552,7 @@ function exponent_users_getGroupByName($name) {
  * @param bool $allow_inclusive Whether or not to include inclusive groups in the returned list.
  * @node Subsystems:Users
  */
-function exponent_users_getAllGroups($allow_exclusive=1,$allow_inclusive=1) {
+function exponent_users_getAllGroups($allow_exclusive=1,$allow_inclusive=1) {  //FIXME moved to user model
 	global $db;
 	if ($allow_exclusive && $allow_inclusive) {
 		// For both, just do a straight selectObjects call, with no WHERE criteria.
@@ -600,9 +594,9 @@ function exponent_users_getGroupsForUser($u, $allow_exclusive=1, $allow_inclusiv
 	$groups = array();
 	if ( (!empty($u->is_admin) && $u->is_admin == 1) || (!empty($u->is_acting_admin) && $u->is_acting_admin == 1) ) {
 		// For administrators, we synthesize group memberships - they effectively
-		// belong to all groups.  So, we call exponent_users_getAllGroups, and pass the
+		// belong to all groups.  So, we call user::getAllGroups, and pass the
 		// filtration criteria arguments (2 and 3) to it.
-		return exponent_users_getAllGroups($allow_exclusive,$allow_inclusive);
+		return user::getAllGroups($allow_exclusive,$allow_inclusive);
 	}
 	foreach ($db->selectObjects('groupmembership','member_id='.$u->id) as $m) {
 		// Loop over the membership records for this user, and select the full
@@ -769,7 +763,7 @@ function exponent_users_changepass($pass, $user = null) {
 	$db->updateObject($u,'user');
 }
 
-function exponent_users_isLoggedIn() {
+function exponent_users_isLoggedIn() {  //FIXME moved to user model
         global $user;
         if (!empty($user) && !empty($user->id) && $user->id != 0) {
                 return true;
@@ -778,7 +772,7 @@ function exponent_users_isLoggedIn() {
         }
 }
 
-function exponent_users_isAdmin() {
+function exponent_users_isAdmin() {  //FIXME moved to user model
 	global $user;
 	return (!empty($user->is_acting_admin) || !empty($user->is_admin)) ? true : false;
 }

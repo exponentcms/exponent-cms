@@ -29,8 +29,6 @@ define('SANITY_CREATEFILE',			4); // Read write, without the need for the file t
 define('SANITY_WARNING',			1);
 define('SANITY_ERROR',				2);
 
-$global_i18n = exponent_lang_loadFile('install/include/sanity.php');
-
 function sanity_checkFile($file,$as_file,$flags) {
 	$__oldumask = umask(0);
 	if (!file_exists($file)) {
@@ -135,99 +133,89 @@ function sanity_checkFiles() {
 }
 
 function sanity_checkServer() {
-	global $global_i18n;
 	$status = array(
-		$global_i18n['check_db']=>_sanity_checkDB(),
-		$global_i18n['check_gd']=>_sanity_checkGD(),
-		'PHP 5.2.1+'=>_sanity_checkPHPVersion(),
-		$global_i18n['check_zlib']=>_sanity_checkZlib(),
-		$global_i18n['check_xml']=>_sanity_checkXML(),
-		$global_i18n['check_safemode']=>_sanity_CheckSafeMode(),
-		$global_i18n['check_basedir']=>_sanity_checkOpenBaseDir(),
-		$global_i18n['check_upload']=>_sanity_checkTemp(ini_get('upload_tmp_dir')),
-		$global_i18n['check_temp']=>_sanity_checkTemp(BASE.'tmp'),
+		gt('Database Backend')=>_sanity_checkDB(),
+		gt('GD Graphics Library 2.0+')=>_sanity_checkGD(),
+		gt('PHP 5.2.1+')=>_sanity_checkPHPVersion(),
+		gt('ZLib Support')=>_sanity_checkZlib(),
+		gt('XML (Expat) Library Support')=>_sanity_checkXML(),
+		gt('Safe Mode Not Enabled')=>_sanity_CheckSafeMode(),
+		gt('Open BaseDir Not Enabled')=>_sanity_checkOpenBaseDir(),
+		gt('File Uploads Enabled')=>_sanity_checkTemp(ini_get('upload_tmp_dir')),
+		gt('Temporary File Creation')=>_sanity_checkTemp(BASE.'tmp'),
 	);
 	return $status;
 }
 
 function _sanity_checkGD() {
-	global $global_i18n;
 	$info = gd_info();
 	if ($info['GD Version'] == 'Not Supported') {
-		return array(SANITY_WARNING,$global_i18n['no_gd']);
+		return array(SANITY_WARNING,gt('No GD Support'));
 	} else if (strpos($info['GD Version'],'2.0') === false) {
-		return array(SANITY_WARNING,sprintf($global_i18n['old_gd'],$info['GD Version']));
+		return array(SANITY_WARNING,sprintf(gt('Older Version Installed (%s)'),$info['GD Version']));
 	}
 	return array(SANITY_FINE,$info['GD Version']);
 }
 
 function _sanity_checkPHPVersion() {
-	global $global_i18n;
 	if (version_compare(phpversion(),'5.2.1','>=')) {
 		return array(SANITY_FINE,phpversion());
 	} else {
-		return array(SANITY_ERROR,'This version of ExponentCMS requires PHP 5.2.1 or higher. You are running PHP '.phpversion().'<br>'.$global_i18n['not_supported']);
+		return array(SANITY_ERROR,'This version of ExponentCMS requires PHP 5.2.1 or higher. You are running PHP '.phpversion().'<br>'.gt('(not supported)'));
 	}
 }
 
 function _sanity_checkZlib() {
-	global $global_i18n;
 	if (function_exists('gzdeflate')) {
-		return array(SANITY_FINE,$global_i18n['passed']);
+		return array(SANITY_FINE,gt('Passed'));
 	} else {
-		return array(SANITY_ERROR,$global_i18n['failed']);
+		return array(SANITY_ERROR,gt('Failed'));
 	}
 }
 
 function _sanity_checkSafeMode() {
-	global $global_i18n;
 	if (ini_get('safe_mode') == 1) {
-		return array(SANITY_WARNING,$global_i18n['failed']);
+		return array(SANITY_WARNING,gt('Failed'));
 	} else {
-		return array(SANITY_FINE,$global_i18n['passed']);
+		return array(SANITY_FINE,gt('Passed'));
 	}
 }
 
 function _sanity_checkXML() {
-	global $global_i18n;
 	if (function_exists('xml_parser_create')) {
-		return array(SANITY_FINE,$global_i18n['passed']);
+		return array(SANITY_FINE,gt('Passed'));
 	} else {
-		return array(SANITY_WARNING,$global_i18n['failed']);
+		return array(SANITY_WARNING,gt('Failed'));
 	}
 }
 
 function _sanity_checkOpenBaseDir() {
-	global $global_i18n;
 	$path = ini_get('open_basedir');
 	if ($path == '') {
-		return array(SANITY_FINE,$global_i18n['passed']);
+		return array(SANITY_FINE,gt('Passed'));
 	} else {
-		return array(SANITY_WARNING,$global_i18n['failed']);
+		return array(SANITY_WARNING,gt('Failed'));
 	}
 }
 
 function _sanity_checkTemp($dir) {
-	global $global_i18n;
 	$file = tempnam($dir,'temp');
 	if (is_readable($file) && expUtil::isReallyWritable($file)) {
 		unlink($file);
-		return array(SANITY_FINE,$global_i18n['passed']);
+		return array(SANITY_FINE,gt('Passed'));
 	} else {
-		return array(SANITY_ERROR,$global_i18n['failed']);
+		return array(SANITY_ERROR,gt('Failed'));
 	}
 }
 
 function _sanity_checkDB() {
-//	if (!defined('SYS_DATABASE')) require_once(BASE.'framework/core/subsystems-1/database.php');
 	require_once(BASE.'framework/core/subsystems-1/database.php');
 //	$have_good = false;
 	
-	global $global_i18n;
 	if (count(exponent_database_backends(1)) > 0) {
-		return array(SANITY_FINE,$global_i18n['supported']);
+		return array(SANITY_FINE,gt('Supported'));
 	} else {
-		return array(SANITY_ERROR,$global_i18n['no_db_support']);
+		return array(SANITY_ERROR,gt('No Databases Supported'));
 	}
 }
 

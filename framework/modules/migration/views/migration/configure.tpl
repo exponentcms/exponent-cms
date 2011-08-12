@@ -35,5 +35,6 @@
 		{control type="text" name="prefix" label="Exponent Table Prefix" value=$config.prefix|default:'exponent'}
         {control type=buttongroup submit="Save Config" cancel="Cancel"}
     {/form}
-	<a class="admin" href="{link module=migration action=manage_users}">Next Step -> Migrate Users & Groups</a>
+	{br}<hr>{br}
+	<a class="admin" href="{link module=migration action=manage_users}"><b>Next Step -> Migrate Users & Groups</b></a>
 </div>

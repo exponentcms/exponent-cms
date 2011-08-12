@@ -37,7 +37,7 @@ class expSession {
     public static function set($var, $val) {
         $_SESSION[SYS_SESSION_KEY]['vars'][$var] = $val;
     }
-    
+
 	/** exdoc
 	* This retrieves the value of a persistent session variable. Returns
 	* null if the variable is not set in the session, or the value of the stored variable.
@@ -46,6 +46,7 @@ class expSession {
 	* cannot be changed using this call (for security / sanity reason)
 	*
 	* @param string $var The name of the variable to retrieve.
+	* @return mixed
 	* @node Subsystems:Sessions
 	*/
     public static function get($var) {
@@ -167,8 +168,9 @@ class expSession {
 			$timeoutval = SESSION_TIMEOUT;
 			if ($timeoutval < 300) $timeoutval = 300;
 			if ($ticket == null || $ticket->last_active < time() - $timeoutval) {
-				self::logout();
 				define('SITE_403_HTML',SESSION_TIMEOUT_HTML);
+				self::logout();
+				flash('notice',gt('Your user session has expired.  Please log in again.'));
 				return;
 			}
 		}

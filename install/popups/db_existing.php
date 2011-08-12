@@ -17,16 +17,14 @@
 #
 ##################################################
 
-$i18n = exponent_lang_loadFile('install/popups/db_existing.php');
-
 ?>
-<b><?php echo $i18n['title']; ?></b>
+<b><?php echo gt('Using an Existing Database'); ?></b>
 <div class="bodytext">
-<?php echo $i18n['p1']; ?>
+<?php echo gt('A pre-existing database can be used to store the content of your website, however a few issues must be dealt with.'); ?>
 <br /><br />
-<?php echo $i18n['p2']; ?>
+<?php echo gt('Exponent needs its own set of tables within a pre-existing database in order to function properly.  This can be accomplished by specifying a new table prefix.'); ?>
 <br /><br />
-<?php echo $i18n['p3']; ?>
+<?php echo gt('The table prefix is used to make each table\'s name in the database unique.  It is prepended to the name of each table.  This means that two Exponent sites can use the database "db" if one has a table prefix of "exponent" and the other uses "cms".'); ?>
 <br /><br />
-<?php echo $i18n['p4']; ?>
+<?php echo gt('Exponent will prepend your table prefix with an underscore.  This improves database readability, and helps with troubleshooting.'); ?>
 </div>

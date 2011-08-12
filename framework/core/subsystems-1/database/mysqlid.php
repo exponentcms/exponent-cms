@@ -208,7 +208,6 @@ class mysqlid_database {
 
 //		if (isset($info[DB_TABLE_WORKFLOW]) && $info[DB_TABLE_WORKFLOW]) {
 //			// Initialize workflow tables:
-//			if (!defined("SYS_WORKFLOW")) require_once(BASE."framework/core/subsystems-1/workflow.php");
 //			$wf = exponent_workflow_installWorkflowTables($tablename,$datadef);
 //			foreach ($wf as $key=>$status) {
 //				$return[$key] = $status;
@@ -482,7 +481,6 @@ class mysqlid_database {
 		
 //		if (isset($info[DB_TABLE_WORKFLOW]) && $info[DB_TABLE_WORKFLOW]) {
 //			// Initialize workflow tables:
-//			if (!defined("SYS_WORKFLOW")) require_once(BASE."framework/core/subsystems-1/workflow.php");
 //			$wf = exponent_workflow_alterWorkflowTables($tablename,$newdatadef,$aggressive);
 //			foreach ($wf as $key=>$status) {
 //				$return[$key] = $status;

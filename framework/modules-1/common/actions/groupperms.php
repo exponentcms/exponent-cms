@@ -22,7 +22,6 @@ if (!defined('EXPONENT')) exit('');
 
 if (exponent_permissions_check('administrate',$loc)) {
 	global $router;
-	$i18n = exponent_lang_loadFile('subsystems/users.php');
 	if (exponent_template_getModuleViewFile($loc->mod,'_grouppermissions',false) == TEMPLATE_FALLBACK_VIEW) {
 		$template = new template('common','_grouppermissions',$loc);
 	} else {
@@ -31,7 +30,6 @@ if (exponent_permissions_check('administrate',$loc)) {
 	}
 	$template->assign('user_form',0);
 
-//	if (!defined('SYS_USERS')) include_once(BASE.'framework/core/subsystems-1/users.php');
 	include_once(BASE.'framework/core/subsystems-1/users.php');
 
 	$users = array(); // users = groups
@@ -41,7 +39,7 @@ if (exponent_permissions_check('administrate',$loc)) {
 	$mod = new $modclass();
 	$perms = $mod->permissions($loc->int);
 
-	foreach (exponent_users_getAllGroups() as $g) {
+	foreach (user::getAllGroups() as $g) {
 		foreach ($perms as $perm=>$name) {
 			$var = 'perms_'.$perm;
 			if (exponent_permissions_checkGroup($g,$perm,$loc,true)) {

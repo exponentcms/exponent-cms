@@ -31,7 +31,7 @@
 require_once('exponent_bootstrap.php');
 
 // Initialize the AutoLoader subsystem - for objects we want loaded on the fly
-require_once(BASE.'framework/core/subsystems-1/autoloader.php');
+require_once(BASE.'framework/core/subsystems/autoloader.php');
 
 // Initialize the MVC framework - for objects we need loaded now
 require_once(BASE.'framework/core/expFramework.php');
@@ -40,7 +40,8 @@ require_once(BASE.'framework/core/expFramework.php');
  * @global array $available_controllers
  * @name $available_controllers
  */
-$available_controllers = intializeControllers();
+$available_controllers = initializeControllers();  //original position
+//$available_controllers = array();
 
 // Initialize the Sessions Subsystem
 expSession::initialize();
@@ -50,9 +51,12 @@ require_once(BASE.'framework/core/subsystems-1/theme.php');
 $validateTheme = array("headerinfo"=>false,"footerinfo"=>false);
 
 // Initialize the language subsystem
-require_once(BASE.'framework/core/subsystems-1/lang.php');
-exponent_lang_initialize();
-// Load 2.0 lang
+//require_once(BASE.'framework/core/subsystems-1/lang.php');
+//exponent_lang_initialize();
+// Load 2.0 language
+$cur_lang = array();
+$default_lang = array();
+$target_lang_file = '';
 expLang::loadLang();
 
 // Initialize the Core Subsystem
@@ -67,10 +71,14 @@ require_once(BASE.'framework/core/subsystems-1/database.php');
  * @name $db
  */
 $db = exponent_database_connect(DB_USER,DB_PASS,DB_HOST.':'.DB_PORT,DB_NAME);
+//$available_controllers = initializeControllers();
+//foreach ($db->selectObjects('modstate',1) as $mod) {
+//	if (!empty($mod->path)) $available_controllers[$mod->module] = $mod->path;  //FIXME test location
+//}
 
 // Initialize the old school Modules Subsystem.
 require_once(BASE.'framework/core/subsystems-1/modules.php');
-exponent_modules_initialize();
+exponent_modules_initialize(); // now in the autoloader, if used
 
 // Initialize the Template Subsystem.
 require_once(BASE.'framework/core/subsystems-1/template.php');
@@ -78,9 +86,7 @@ require_once(BASE.'framework/core/subsystems-1/template.php');
 // Initialize the Permissions Subsystem.
 require_once(BASE.'framework/core/subsystems-1/permissions.php');
 
-// Initialize the Flow/History Subsystem.
-//if (!defined('SYS_FLOW')) require_once(BASE.'framework/core/subsystems-1/flow.php');
-//require_once(BASE.'framework/core/subsystems-1/flow.php');
+// Initialize the History (Flow) Subsystem.
 /**
  * the browsing history object
  * @global expHistory $history
@@ -93,12 +99,7 @@ $SYS_FLOW_REDIRECTIONPATH = 'exponent_default';
 require_once(BASE.'framework/core/subsystems-1/users.php');
 
 // Initialize the javascript subsystem
-//if (!defined('SYS_JAVASCRIPT')) require_once(BASE.'framework/core/subsystems-1/javascript.php');
 require_once(BASE.'framework/core/subsystems-1/javascript.php');
-
-// Initialize the MVC framework
-//require_once(BASE.'framework/core/expFramework.php');
-//$available_controllers = intializeControllers();
 
 if (expJavascript::inAjaxAction()) set_error_handler('handleErrors');
 

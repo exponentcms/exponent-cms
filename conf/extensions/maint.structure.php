@@ -20,25 +20,23 @@
 
 if (!defined('EXPONENT')) exit('');
 
-$i18n = exponent_lang_loadFile('conf/extensions/maint.structure.php');
-
 return array(
-	$i18n['title'],
+	gt('Site Maintenance Settings'),
 	array(
 		'MAINTENANCE_MODE'=>array(
-			'title'=>$i18n['maint_mode'],
-			'description'=>$i18n['maint_mode_desc'],
+			'title'=>gt('Maintenance Mode?'),
+			'description'=>gt('Whether or not the site is in maintenance mode.  While in maintenance mode, only administrators and acting administrators will be allowed to login.'),
 			'control'=>new checkboxcontrol(false,true)
 		),
 		'MAINTENANCE_MSG_HTML'=>array(
-			'title'=>$i18n['maint_msg'],
-			'description'=>$i18n['maint_msg_desc'],
+			'title'=>gt('Maintenance Mode Message'),
+			'description'=>gt('A message to display to all non-administrators visiting the site.'),
 			'control'=>new htmleditorcontrol()
 		),
 		'DEVELOPMENT'=>array(
-			'title'=>exponent_lang_getText('Enable Error Reporting'),
-                        'description'=>exponent_lang_getText('This option enables error reporting. This is useful for developement, but should be turned off for a live site.'),
-                        'control'=>new checkboxcontrol(false,true)
+			'title'=>gt('Enable Error Reporting'),
+			'description'=>gt('This option enables error reporting. This is useful for developement, but should be turned off for a live site.'),
+			'control'=>new checkboxcontrol(false,true)
 		),
 	)
 );

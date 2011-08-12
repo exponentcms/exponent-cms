@@ -22,21 +22,21 @@
 		<tbody>
 			<tr>
 				<td>
-					<a class="mngmntlink calendar_mngmntlink" href="{link action=viewmonth time=$prevmonth}"><img class="mngmnt_icon" style="border:none;" src="{$smarty.const.ICON_RELATIVE}left.png" title="{$_TR.alt_previous}" alt="{$_TR.alt_previous}" /></a>
+					<a class="mngmntlink calendar_mngmntlink" href="{link action=viewmonth time=$prevmonth}"><img class="mngmnt_icon" style="border:none;" src="{$smarty.const.ICON_RELATIVE}left.png" title="{'Previous Month'|gettext}" alt="{'Previous Month'|gettext}" /></a>
 				</td>
 				<td colspan="5">{if $moduletitle != ""}{$moduletitle} {/if}{$now|format_date:"%B %Y"}</td>
 				<td>
-					<a class="mngmntlink calendar_mngmntlink" href="{link action=viewmonth time=$nextmonth}"><img class="mngmnt_icon" style="border:none;" src="{$smarty.const.ICON_RELATIVE}right.png" title="{$_TR.alt_next}" alt="{$_TR.alt_next}" /></a>
+					<a class="mngmntlink calendar_mngmntlink" href="{link action=viewmonth time=$nextmonth}"><img class="mngmnt_icon" style="border:none;" src="{$smarty.const.ICON_RELATIVE}right.png" title="{'Next Month'|gettext}" alt="{'Next Month'|gettext}" /></a>
 				</td>
 			</tr>
 			<tr>
-				<td>{$_TR.sunday}</td>
-				<td>{$_TR.monday}</td>
-				<td>{$_TR.tuesday}</td>
-				<td>{$_TR.wednesday}</td>
-				<td>{$_TR.thursday}</td>
-				<td>{$_TR.friday}</td>
-				<td>{$_TR.saturday}</td>
+				<td>{'Sunday'|gettext}</td>
+				<td>{'Monday'|gettext}</td>
+				<td>{'Tuesday'|gettext}</td>
+				<td>{'Wednesday'|gettext}</td>
+				<td>{'Thursday'|gettext}</td>
+				<td>{'Friday'|gettext}</td>
+				<td>{'Saturday'|gettext}</td>
 			</tr>
 			{math equation="x-86400" x=$now assign=dayts}
 			{foreach from=$monthly item=week key=weeknum}

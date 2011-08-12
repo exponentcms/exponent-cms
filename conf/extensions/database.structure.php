@@ -19,49 +19,47 @@
 
 if (!defined('EXPONENT')) exit('');
 
-$i18n = exponent_lang_loadFile('conf/extensions/database.structure.php');
-
 return array(
-	$i18n['title'],
+	gt('Database Options'),
 	array(
 		'DB_ENGINE'=>array(
-			'title'=>$i18n['db_engine'],
-			'description'=>$i18n['db_engine_desc'],
+			'title'=>gt('Backend Software'),
+			'description'=>gt('The database server software package.'),
 			'control'=>new dropdowncontrol('',exponent_database_backends())
 		),
 		'DB_NAME'=>array(
-			'title'=>$i18n['db_name'],
-			'description'=>$i18n['db_name_desc'],
+			'title'=>gt('Database Name'),
+			'description'=>gt('The name of the database to store the site tables in.'),
 			'control'=>new textcontrol()
 		),
 		'DB_USER'=>array(
-			'title'=>$i18n['db_user'],
-			'description'=>$i18n['db_user_desc'],
+			'title'=>gt('Username'),
+			'description'=>gt('The name of the user to connect to the database server as'),
 			'control'=>new textcontrol()
 		),
 		'DB_PASS'=>array(
-			'title'=>$i18n['db_pass'],
-			'description'=>$i18n['db_pass_desc'],
+			'title'=>gt('Password'),
+			'description'=>gt('Password of the user above.'),
 			'control'=>new passwordcontrol()
 		),
 		'DB_HOST'=>array(
-			'title'=>$i18n['db_host'],
-			'description'=>$i18n['db_host_desc'],
+			'title'=>gt('Server Address'),
+			'description'=>gt('The domain name or IP address of the database server.  If this is a local server, use "localhost"'),
 			'control'=>new textcontrol()
 		),
 		'DB_PORT'=>array(
-			'title'=>$i18n['db_port'],
-			'description'=>$i18n['db_port_desc'],
+			'title'=>gt('Server Port'),
+			'description'=>gt('The port that the database server runs on.  For MySQL, this is 3306.'),
 			'control'=>new textcontrol()
 		),
 		'DB_TABLE_PREFIX'=>array(
-			'title'=>$i18n['db_table_prefix'],
-			'description'=>$i18n['db_table_prefix_desc'],
+			'title'=>gt('Table Prefix'),
+			'description'=>gt('A prefix to prepend to all table names.'),
 			'control'=>new textcontrol()
 		),
 		'DB_ENCODING'=>array(
-			'title'=>$i18n['db_encoding'],
-			'description'=>$i18n['db_encoding_desc'],
+			'title'=>gt('Database Connection Encoding'),
+			'description'=>gt('Sets the encoding of a connection. Supported on mySQL higher 4.1.12.'),
 			'control'=>new dropdowncontrol('', exponent_config_dropdownData('DB_ENCODING'))
 		)
 	)

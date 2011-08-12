@@ -20,10 +20,7 @@
 
 //Sanity check
 if (!defined('EXPONENT')) exit('');
-//if (!defined("SYS_FORMS")) require_once(BASE."framework/core/subsystems-1/forms.php");
 require_once(BASE."framework/core/subsystems-1/forms.php");
-
-$i18n = exponent_lang_loadFile('modules/importer/importers/usercsv/mapper.php');
 
 //Get the post data for future massaging
 $post = $_POST;
@@ -31,7 +28,7 @@ $post = $_POST;
 //Check to make sure the user filled out the required input.
 if (!is_numeric($_POST["rowstart"])){
 	unset($post['rowstart']);
-	$post['_formError'] = $i18n['need_number'];
+	$post['_formError'] = gt('The starting row must be a number.');
 	expSession::set("last_POST",$post);
 	header("Location: " . $_SERVER['HTTP_REFERER']);
 	exit('Redirecting...');
@@ -47,16 +44,16 @@ if ($_FILES["upload"]["error"] == UPLOAD_ERR_OK) {
 		switch($_FILES["upload"]["error"]) {
 			case UPLOAD_ERR_INI_SIZE:
 			case UPLOAD_ERR_FORM_SIZE:
-				$post['_formError'] = $i18n['err_file_toolarge'];
+				$post['_formError'] = gt('The file you attempted to upload is too large.  Contact your system administrator if this is a problem.');
 				break;
 			case UPLOAD_ERR_PARTIAL:
-				$post['_formError'] = $i18n['err_file_partial'];
+				$post['_formError'] = gt('The file was only partially uploaded.');
 				break;
 			case UPLOAD_ERR_NO_FILE:
-				$post['_formError'] = $i18n['err_file_none'];
+				$post['_formError'] = gt('No file was uploaded.');
 				break;
 			default:
-				$post['_formError'] = $i18n['err_file_unknown'];
+				$post['_formError'] = gt('A strange internal error has occurred.  Please contact the Exponent Developers.');
 				break;
 		}
 		expSession::set("last_POST",$post);
@@ -80,23 +77,21 @@ for ($x=0; $x<$_POST["rowstart"]; $x++){
 }
 
 $colNames = array(
-	"none"=>$i18n['col_none'],
-	"username"=>$i18n['col_username'],
-	"password"=>$i18n['col_password'],
-	"firstname"=>$i18n['col_firstname'],
-	"lastname"=>$i18n['col_lastname'],
-	"email"=>$i18n['col_email']
+	"none"=>gt('--Disregard this column--'),
+	"username"=>gt('Username'),
+	"password"=>gt('Password'),
+	"firstname"=>gt('First Name'),
+	"lastname"=>gt('Last Name'),
+	"email"=>gt('Email Address')
 );
 
 //Check to see if the line got split, otherwise throw an error
 if ($lineInfo == null) {
-	$post['_formError'] = sprintf($i18n['delimiter_error'], $_POST["delimiter"]); 
+	$post['_formError'] = sprintf(gt('This file does not appear to be delimited by "%s". <br />Please specify a different delimiter.<br /><br />'), $_POST["delimiter"]);
 	expSession::set("last_POST",$post);
 	header("Location: " . $_SERVER['HTTP_REFERER']);
 	exit("");
 }else{
-	//initialize the for stuff
-//	exponent_forms_initialize();
 	//Setup the mete data (hidden values)
 	$form = new form();
 	$form->meta("module","importer");
@@ -109,7 +104,7 @@ if ($lineInfo == null) {
 	for ($i=0; $i< count($lineInfo); $i++) {
 		$form->register("column[$i]", $lineInfo[$i], new dropdowncontrol("none", $colNames));
 	}
-	$form->register("submit", "", new buttongroupcontrol($i18n['submit'],"", $i18n['cancel']));
+	$form->register("submit", "", new buttongroupcontrol(gt('Next'),"", gt('Cancel')));
 	$template = New Template("importer", "_usercsv_form_mapping");
 	$template->assign("form_html", $form->tohtml());
 	$template->output();
