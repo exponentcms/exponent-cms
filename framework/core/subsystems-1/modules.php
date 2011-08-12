@@ -86,7 +86,7 @@ function exponent_modules_listActive() {
  */
 function exponent_modules_getJSValidationFile($module,$formname) {
 	if (is_readable(BASE."themes/".DISPLAY_THEME."/modules/$module/js/$formname.validate.js")) return PATH_RELATIVE . "themes/".DISPLAY_THEME."/modules/$module/js/$formname.validate.js";
-	else if (is_readable(BASE."framework/modules-1/$module/js/$formname.validate.js")) return PATH_RELATIVE."framework/modules-1/$module/js/$formname.validate.js";
+	else if (is_readable(BASE."framework/modules-1/$module/assets/js/$formname.validate.js")) return PATH_RELATIVE."framework/modules-1/$module/assets/js/$formname.validate.js";
 	return "";
 }
 

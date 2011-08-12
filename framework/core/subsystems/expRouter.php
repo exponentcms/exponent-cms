@@ -590,7 +590,8 @@ class expRouter {
     
     private function buildSEFPath () {
         // Apache
-        if (strpos($_SERVER['SERVER_SOFTWARE'],'Apache') === 0 || strpos($_SERVER['SERVER_SOFTWARE'],'WebServerX') === 0) {
+//        if (strpos($_SERVER['SERVER_SOFTWARE'],'Apache') === 0 || strpos($_SERVER['SERVER_SOFTWARE'],'WebServerX') === 0) {
+        if (strpos($_SERVER['SERVER_SOFTWARE'],'Apache') !== false || strpos($_SERVER['SERVER_SOFTWARE'],'WebServerX') !== false) {
             switch(php_sapi_name()) {
                 case "cgi":
                     $this->sefPath = !empty($_SERVER['REQUEST_URI']) ? urldecode($_SERVER['REQUEST_URI']): null;
@@ -609,7 +610,8 @@ class expRouter {
                     break;
             }
         // Lighty
-        } elseif (strpos($_SERVER['SERVER_SOFTWARE'],'lighttpd') === 0) {
+//        } elseif (strpos($_SERVER['SERVER_SOFTWARE'],'lighttpd') === 0) {
+        } elseif (strpos($_SERVER['SERVER_SOFTWARE'],'lighttpd') !== false) {
             if (isset($_SERVER['ORIG_PATH_INFO'])) {
                 $this->sefPath = urldecode($_SERVER['ORIG_PATH_INFO']);
             } elseif (isset($_SERVER['REDIRECT_URI'])){

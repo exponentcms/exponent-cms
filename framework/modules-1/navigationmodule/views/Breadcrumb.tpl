@@ -13,6 +13,11 @@
  * GPL: http://www.gnu.org/licenses/gpl.txt
  *
  *}
+
+{css unique="breadcrumb" link="`$smarty.const.PATH_RELATIVE`framework/modules-1/navigationmodule/assets/css/breadcrumb.css"}
+
+{/css}
+
 {assign var=i value=0}
 
 <div class="module navigationmodule breadcrumb">

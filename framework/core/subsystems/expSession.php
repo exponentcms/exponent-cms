@@ -168,8 +168,9 @@ class expSession {
 			$timeoutval = SESSION_TIMEOUT;
 			if ($timeoutval < 300) $timeoutval = 300;
 			if ($ticket == null || $ticket->last_active < time() - $timeoutval) {
-				self::logout();
 				define('SITE_403_HTML',SESSION_TIMEOUT_HTML);
+				self::logout();
+				flash('notice',gt('Your user session has expired.  Please log in again.'));
 				return;
 			}
 		}
