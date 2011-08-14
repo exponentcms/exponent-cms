@@ -38,7 +38,7 @@ if (!file_exists('not_configured') && file_exists(BASE.'conf/config.php')) {
 	exit(gt('This Exponent Site has already been configured.'));
 }
 
-include_once(BASE . 'framework/core/subsystems-1/config.php');  // FIXME loaded by config/load in exponent.php above
+//include_once(BASE . 'framework/core/subsystems-1/config.php');  // FIXME loaded by config/load in exponent.php above
 
 if (isset($_POST['sc'])) {
 
@@ -46,7 +46,7 @@ if (isset($_POST['sc'])) {
         // Update the config
         $config = $_POST['sc'];
         foreach ($config as $key => $value) {
-            exponent_config_change($key, addslashes($value));
+            expSettings::change($key, addslashes($value));
         }
     } else {
         // Update init the config
@@ -57,7 +57,7 @@ if (isset($_POST['sc'])) {
     		'configname'=>'Default',
     		'activate'=>1
     	);
-    	exponent_config_saveConfiguration($values);
+    	expSettings::saveConfiguration($values);
     }
 }
 

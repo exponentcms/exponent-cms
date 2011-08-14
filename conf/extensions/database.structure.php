@@ -60,7 +60,7 @@ return array(
 		'DB_ENCODING'=>array(
 			'title'=>gt('Database Connection Encoding'),
 			'description'=>gt('Sets the encoding of a connection. Supported on mySQL higher 4.1.12.'),
-			'control'=>new dropdowncontrol('', exponent_config_dropdownData('DB_ENCODING'))
+			'control'=>new dropdowncontrol('', expSettings::dropdownData('DB_ENCODING'))
 		)
 	)
 );

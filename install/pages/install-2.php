@@ -78,11 +78,11 @@ $config = array(
 
 		<select name="sc[DB_ENCODING]" value="<?php echo $config['DB_ENCODING']; ?>" >
 			<?PHP
-				if (!defined('SYS_CONFIG')) {
-					include_once(BASE.'framework/core/subsystems-1/config.php');
-				}
+//				if (!defined('SYS_CONFIG')) {
+//					include_once(BASE.'framework/core/subsystems-1/config.php');
+//				}
 
-				foreach(exponent_config_dropdownData("DB_ENCODING") as $key=>$value){
+				foreach(expSettings::dropdownData("DB_ENCODING") as $key=>$value){
 					echo '<option value="' . $key . '">' . $value . '</option>';
 				}
 			?>

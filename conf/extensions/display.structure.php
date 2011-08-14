@@ -75,22 +75,22 @@ return array(
 		'DISPLAY_DATETIME_FORMAT'=>array(
 			'title'=>gt('Date and Time Format'),
 			'description'=>gt('Default system-wide date format, displaying both date and time.'),
-			'control'=>new dropdowncontrol(null,exponent_config_dropdownData('datetime_format'))
+			'control'=>new dropdowncontrol(null,expSettings::dropdownData('datetime_format'))
 		),
 		'DISPLAY_DATE_FORMAT'=>array(
 			'title'=>gt('Date Format'),
 			'description'=>gt('Default system-wide date format, displaying date only.'),
-			'control'=>new dropdowncontrol(null,exponent_config_dropdownData('date_format'))
+			'control'=>new dropdowncontrol(null,expSettings::dropdownData('date_format'))
 		),
 		'DISPLAY_TIME_FORMAT'=>array(
 			'title'=>gt('Time Format'),
 			'description'=>gt('Default system-wide date format, displaying time only.'),
-			'control'=>new dropdowncontrol(null,exponent_config_dropdownData('time_format'))
+			'control'=>new dropdowncontrol(null,expSettings::dropdownData('time_format'))
 		),
 		'DISPLAY_START_OF_WEEK'=>array(
 			'title'=>gt('Start of Week'),
 			'description'=>gt('Default day to start the week.'),
-			'control'=>new dropdowncontrol(null,exponent_config_dropdownData('start_of_week'))
+			'control'=>new dropdowncontrol(null,expSettings::dropdownData('start_of_week'))
 		),
 		'DISPLAY_DEFAULT_TIMEZONE'=>array(
 			'title'=>gt('Default timezone for this site.'),

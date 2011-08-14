@@ -27,10 +27,10 @@ if (exponent_permissions_check('configuration',exponent_core_makeLocation('admin
 	
 	$configname = (isset($_GET['configname']) ? $_GET['configname'] : "");
 	
-	require_once(BASE.'framework/core/subsystems-1/config.php');
+//	require_once(BASE.'framework/core/subsystems-1/config.php');
 	require_once(BASE.'framework/core/subsystems-1/forms.php');
 
-	$profiles = exponent_config_profiles();
+	$profiles = expSettings::profiles();
 	if (count($profiles) == 0) $profiles = array(''=>'[No Profiles]');
 	if (!array_key_exists($configname,$profiles) || $configname == '') {
 		if (defined('CURRENTCONFIGNAME')) $configname = CURRENTCONFIGNAME;
@@ -52,7 +52,7 @@ if (exponent_permissions_check('configuration',exponent_core_makeLocation('admin
 	$form->register('configname',gt('Profile'),$dd);
 	$template->assign('form_html',$form->toHTML());
 	
-	$template = exponent_config_outputConfigurationTemplate($template,$configname);
+	$template = expSettings::outputConfigurationTemplate($template,$configname);
 	$template->assign('configname',$configname);
 	
 	$canactivate = ($configname != '' && is_readable(BASE."conf/profiles/$configname.php"));

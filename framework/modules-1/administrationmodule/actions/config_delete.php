@@ -22,8 +22,8 @@
 if (!defined('EXPONENT')) exit('');
 
 if (exponent_permissions_check('configuration',exponent_core_makeLocation('administrationmodule'))) {
-	require_once(BASE.'framework/core/subsystems-1/config.php');
-	exponent_config_deleteProfile($_GET['configname']);
+//	require_once(BASE.'framework/core/subsystems-1/config.php');
+	expSettings::deleteProfile($_GET['configname']);
 	expHistory::back();
 } else {
 	echo SITE_403_HTML;

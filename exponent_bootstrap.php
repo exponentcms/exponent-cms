@@ -72,10 +72,9 @@ require_once(BASE.'exponent_version.php');
 define('EXPONENT', '2');
 
 // load the constants from the global config, theme config, and then default config settings
-require_once(BASE . 'framework/core/subsystems-1/config/load.php');
-
-// Set the default timezone.
-@date_default_timezone_set(DISPLAY_DEFAULT_TIMEZONE);
+//require_once(BASE . 'framework/core/subsystems-1/config/load.php');
+require_once(BASE . 'framework/core/subsystems/expSettings.php');  // we don't have our autoloader loaded yet
+expSettings::initialize();
 
 if (!defined('DISPLAY_THEME')) {
 	/* exdoc
@@ -99,7 +98,7 @@ if (!defined('THEME_RELATIVE')) {
 	define('THEME_RELATIVE',PATH_RELATIVE.'themes/'.DISPLAY_THEME.'/');
 }
 
-// Process PHP-wrapper settings (ini_sets and setting detectors)
+// Process PHP-wrapper settings (ini_sets and setting and eventually the autoloader)
 require_once(BASE . 'exponent_php_setup.php');
 
 $info = gd_info();

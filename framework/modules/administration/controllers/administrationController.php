@@ -382,18 +382,18 @@ class administrationController extends expController {
 	}
 
     public function toggle_minify() {
-        include_once(BASE.'framework/core/subsystems-1/config.php');
+//        include_once(BASE.'framework/core/subsystems-1/config.php');
     	$value = (MINIFY == 1) ? 0 : 1;
-    	exponent_config_change('MINIFY', $value);
+    	expSettings::change('MINIFY', $value);
     	$message = (MINIFY != 1) ? "Exponent is now minifying Javascript and CSS" : "Exponent is no longer minifying Javascript and CSS" ;
     	flash('message',$message);
     	expHistory::back();
     }
     
 	public function toggle_dev() {
-	    include_once(BASE.'framework/core/subsystems-1/config.php');
+//	    include_once(BASE.'framework/core/subsystems-1/config.php');
 	    $value = (DEVELOPMENT == 1) ? 0 : 1;
-	    exponent_config_change('DEVELOPMENT', $value);
+	    expSettings::change('DEVELOPMENT', $value);
 	    expTheme::removeCss();
 		$message = (DEVELOPMENT != 1) ? "Exponent is now in 'Development' mode" : "Exponent is no longer in 'Development' mode" ;
 		flash('message',$message);
@@ -401,9 +401,9 @@ class administrationController extends expController {
 	}
 
 	public function toggle_maintenance() {
-		include_once(BASE.'framework/core/subsystems-1/config.php');
+//		include_once(BASE.'framework/core/subsystems-1/config.php');
 		$value = (MAINTENANCE_MODE == 1) ? 0 : 1;
-		exponent_config_change('MAINTENANCE_MODE', $value);
+		expSettings::change('MAINTENANCE_MODE', $value);
 		MAINTENANCE_MODE == 1 ? flash('message',"Exponent is no longer in 'Maintenance' mode") : "" ;
 		expHistory::back();
 	}
@@ -599,12 +599,12 @@ class administrationController extends expController {
     }
     
     public function switch_themes() {
-        include_once(BASE.'framework/core/subsystems-1/config.php');
+//        include_once(BASE.'framework/core/subsystems-1/config.php');
 
-    	exponent_config_change('DISPLAY_THEME_REAL', $this->params['theme']);
+    	expSettings::change('DISPLAY_THEME_REAL', $this->params['theme']);
     	
     	if (isset($this->params['sv']) && THEME_STYLE!=$this->params['sv']) {
-            exponent_config_change('THEME_STYLE', $this->params['sv']);
+            expSettings::change('THEME_STYLE', $this->params['sv']);
     	    if (expFile::recurse_copy(BASE."themes/".$this->params['theme']."/css", BASE."themes/".$this->params['theme']."/styles_backup/css")
     	        && expFile::recurse_copy(BASE."themes/".$this->params['theme']."/images", BASE."themes/".$this->params['theme']."/styles_backup/images")) {
 
@@ -630,7 +630,7 @@ class administrationController extends expController {
     
     public function configure_site () {
         // little glue to help things move along
-        require_once(BASE.'framework/core/subsystems-1/config.php');
+//        require_once(BASE.'framework/core/subsystems-1/config.php');
 
         // TYPES OF ANTISPAM CONTROLS... CURRENTLY ONLY ReCAPTCHA
         $as_types = array(
@@ -678,19 +678,19 @@ class administrationController extends expController {
         // These funcs need to be moved up in to new subsystems
         
         // Date Format
-        $date_format = exponent_config_dropdownData('date_format');
+        $date_format = expSettings::dropdownData('date_format');
         
         // Time Format
-        $time_format = exponent_config_dropdownData('time_format');
+        $time_format = expSettings::dropdownData('time_format');
         
         // Start of Week
-        $start_of_week = exponent_config_dropdownData('start_of_week');
+        $start_of_week = expSettings::dropdownData('start_of_week');
 
         // File Permissions
-        $file_permisions = exponent_config_dropdownData('file_permissions');
+        $file_permisions = expSettings::dropdownData('file_permissions');
         
         // File Permissions
-        $dir_permissions = exponent_config_dropdownData('dir_permissions');
+        $dir_permissions = expSettings::dropdownData('dir_permissions');
 
         // Homepage Dropdown
         $section_dropdown = navigationmodule::levelDropDownControlArray(0);
@@ -710,10 +710,10 @@ class administrationController extends expController {
     }
     
     public function update_siteconfig () {
-        include_once(BASE.'framework/core/subsystems-1/config.php');
+//        include_once(BASE.'framework/core/subsystems-1/config.php');
 
         foreach ($this->params['sc'] as $key => $value) {
-            exponent_config_change($key, addslashes($value));
+            expSettings::change($key, addslashes($value));
         }
         
         flash('message', "Your Website Configuration has been updated");

@@ -116,12 +116,12 @@ $stuff = array(
 		'FILE_DEFAULT_MODE_STR'=>array(
 			'title'=>gt('Default File Permissions'),
 			'description'=>gt('The readability / writability of uploaded files, for users other than the web server user.'),
-			'control'=>new dropdowncontrol(null,exponent_config_dropdownData('file_permissions'))
+			'control'=>new dropdowncontrol(null,expSettings::dropdownData('file_permissions'))
 		),
 		'DIR_DEFAULT_MODE_STR'=>array(
 			'title'=>gt('Default Directory Permissions'),
 			'description'=>gt('The readability / writability of created directories, for users other than the web server user.'),
-			'control'=>new dropdowncontrol(null,exponent_config_dropdownData('dir_permissions'))
+			'control'=>new dropdowncontrol(null,expSettings::dropdownData('dir_permissions'))
 		),
 		'ENABLE_SSL'=>array(
 			'title'=>gt('Enable SSL Support'),

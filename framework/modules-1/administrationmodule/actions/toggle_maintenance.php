@@ -23,9 +23,9 @@
 if (!defined('EXPONENT')) exit('');
 
 if (exponent_permissions_check('development',exponent_core_makeLocation('administrationmodule'))) {
-	include_once(BASE.'framework/core/subsystems-1/config.php');
+//	include_once(BASE.'framework/core/subsystems-1/config.php');
 	$value = (MAINTENANCE_MODE == 1) ? 0 : 1;
-	exponent_config_change('MAINTENANCE_MODE', $value);
+	expSettings::change('MAINTENANCE_MODE', $value);
 	redirect_to(array('module'=>'administrationmodule', 'action'=>'index'));
 } else {
 	echo SITE_403_HTML;

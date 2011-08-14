@@ -23,7 +23,7 @@
 if (!defined('EXPONENT')) exit('');
 
 if (exponent_permissions_check('configuration',exponent_core_makeLocation('administrationmodule'))) {
-	require_once(BASE.'framework/core/subsystems-1/config.php');
+//	require_once(BASE.'framework/core/subsystems-1/config.php');
 
 	$continue = true;
 	if ($user->is_admin == 1) { // Only do the database stuff if we are a super admin
@@ -58,7 +58,7 @@ if (exponent_permissions_check('configuration',exponent_core_makeLocation('admin
 	$template = new template('administrationmodule','_config_results');
 	
 	if ($continue) {
-		exponent_config_saveConfiguration($_POST);
+		expSettings::saveConfiguration($_POST);
 		$ob = "";
 		if ($user->is_admin == 1) {
 			$db = $newdb;
