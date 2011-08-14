@@ -18,7 +18,7 @@
 ##################################################
 
 function smarty_modifier_convertLangCode($lang_code, $target = "iso639-1") {
-	
+	return $lang_code; // this plugin isn't used, but this will at least return something
 	return exponent_lang_convertLangCode($lang_code, $target);
 }
 

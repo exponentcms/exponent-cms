@@ -12,7 +12,8 @@
 
 		<script type="text/javascript" src="../../../exponent.js.php"></script>
 		<script type="text/javascript" src="popup.js"></script>
-		<script type="text/javascript" src="<?PHP echo PATH_RELATIVE . 'external/editors/connector/lang/' . exponent_lang_convertLangCode(LANG) . '.js'?>"></script>
+<!--		<script type="text/javascript" src="--><?PHP //echo PATH_RELATIVE . 'external/editors/connector/lang/' . exponent_lang_convertLangCode(LANG) . '.js'?><!--"></script>-->
+		<script type="text/javascript" src="<?PHP echo PATH_RELATIVE . 'external/editors/connector/lang/en.js'?>"></script>
   		<script type="text/javascript">
 		/* <![CDATA[ */
 			var I18N = eXp.I18N;
