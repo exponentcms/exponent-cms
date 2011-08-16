@@ -31,6 +31,7 @@ class listbuildercontrol extends formcontrol {
 	var $source = null;
 	var $size = 8;
 	var $newList = false;
+	var $process = null;
 
 	function name() { return "List Builder"; }
 
@@ -48,9 +49,10 @@ class listbuildercontrol extends formcontrol {
 		}
 	}
 
-	function controlToHTML($name) {
+	function controlToHTML($name, $process = null) {
+		$this->process = $process;
 		$this->_normalize();
-
+		// eDebug($this->source, true);
 		$html = '<input type="hidden" name="'.$name.'" id="'.$name.'" value="'.implode("|!|",array_keys($this->default)).'" />';
 		$html .= '<table cellpadding="9" border="0" width="30"><tr><td width="10">';
 		if (!$this->newList) {
@@ -64,9 +66,17 @@ class listbuildercontrol extends formcontrol {
 		}
 		$html .= "</td>";
 		$html .= "<td valign='middle' width='10'>";
-		$html .= "<input type='image' onclick='addSelectedItem(&quot;$name&quot;); return false' src='".ICON_RELATIVE."right.png' />";
+		if($process == "copy") {
+			$html .= "<input type='image' onclick='addSelectedItem(&quot;$name&quot;,&quot;copy&quot;); return false' src='".ICON_RELATIVE."right.png' />";
+		} else {
+			$html .= "<input type='image' onclick='addSelectedItem(&quot;$name&quot;); return false' src='".ICON_RELATIVE."right.png' />";
+		}
 		$html .= "<br />";
-		$html .= "<input type='image' onclick='removeSelectedItem(&quot;$name&quot;); return false;' src='".ICON_RELATIVE."left.png' />";
+		if($process == "copy") {
+			$html .= "<input type='image' onclick='removeSelectedItem(&quot;$name&quot;,&quot;copy&quot); return false;' src='".ICON_RELATIVE."left.png' />";
+		} else {
+			$html .= "<input type='image' onclick='removeSelectedItem(&quot;$name&quot;); return false;' src='".ICON_RELATIVE."left.png' />";
+		}
 		$html .= "</td>";
 		$html .= "<td width='10' valign='top'><select id='dest_$name' size='".$this->size."'>";
 		foreach ($this->default as $key=>$value) {
@@ -78,7 +88,7 @@ class listbuildercontrol extends formcontrol {
 		$html .= "<script>newList.$name = ".($this->newList?"true":"false").";</script>";
 		return $html;
 	}
-
+	
 	// Normalizes the $this->source and $this->defaults array
 	// This allows us to gracefully recover from _formErrors and programmer error
 	function _normalize() {
@@ -95,7 +105,9 @@ class listbuildercontrol extends formcontrol {
 				$this->default = $default;
 			} else {
 				// No form Error.  Just normalize $this->source
-				$this->source = array_diff_assoc($this->source,$this->default);
+				if($this->process != 'copy') {
+					$this->source = array_diff_assoc($this->source,$this->default);
+				}
 			}
 		}
 	}

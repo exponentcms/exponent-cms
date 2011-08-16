@@ -57,25 +57,25 @@ class storeCategoryController extends expNestedNodeController {
 		
 		//Google product types getting the source and destination for the listbuilder control
 		$google_recorded_types = $db->selectObjectsBySql("SELECT google_product_types_id, title FROM " . DB_TABLE_PREFIX . "_google_product_types_storeCategories, " . DB_TABLE_PREFIX . "_google_product_types WHERE google_product_types_id = id and storecategories_id = " . $this->params['id']);
-		foreach ($google_product_types->getFullTree() as $item) {
+		foreach ($db->selectFormattedNestedTree('google_product_types') as $item) {
 			$google_types[$item->id] = $item->title;
 		}
 		foreach ($google_recorded_types as $item) {
-			$google_recorded_product_types[$item->google_product_types_id] = $item->title;
+			$google_recorded_product_types[$item->google_product_types_id] = trim($item->title);
 		}
 		$control = new listbuildercontrol($google_recorded_product_types, $google_types);
-		$product_types['google'] = $control->controlToHTML('google_product_types_list');
-		
+		$product_types['google'] = $control->controlToHTML('google_product_types_list','copy');
+		// eDebug($db->selectFormattedNestedTree('bing_product_types'), true);
 		//Bing product types getting the source and destination for the listbuilder control
 		$bing_recorded_types   = $db->selectObjectsBySql("SELECT bing_product_types_id, title FROM " . DB_TABLE_PREFIX . "_bing_product_types_storeCategories, " . DB_TABLE_PREFIX . "_bing_product_types WHERE bing_product_types_id = id and storecategories_id = " . $this->params['id']);
-		foreach ($bing_product_types->getFullTree() as $item) {
+		foreach ($db->selectFormattedNestedTree('bing_product_types') as $item) {
 			$bing_types[$item->id] = $item->title;
 		}
 		foreach ($bing_recorded_types as $item) {
 			$bing_recorded_product_types[$item->bing_product_types_id] = $item->title;
 		}
 		$control = new listbuildercontrol($bing_recorded_product_types, $bing_types);
-		$product_types['bing'] = $control->controlToHTML('bing_product_types_list');
+		$product_types['bing'] = $control->controlToHTML('bing_product_types_list','copy');
 		
         assign_to_template(array('site_page_default'=>$site_page_default, 'record'=>$record, 'product_types' => $product_types));
     
