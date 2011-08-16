@@ -1323,6 +1323,16 @@ class mysqlid_database {
 		return $res;
 		
 	}
+	
+	function selectFormattedNestedTree($table) {
+		$sql = "SELECT CONCAT( REPEAT( '&nbsp;&nbsp;&nbsp;', (COUNT(parent.title) -1) ), node.title) AS title, node.id 
+				FROM " .$this->prefix . $table. " as node, " .$this->prefix . $table. " as parent 
+				WHERE node.lft BETWEEN parent.lft and parent.rgt 
+				GROUP BY node.title, node.id 
+				ORDER BY node.lft";
+				
+		return $this->selectObjectsBySql($sql);
+	}
 
 	function adjustNestedTreeFrom($table, $start, $width) {
 		$table = $this->prefix.$table;		
