@@ -275,8 +275,6 @@ abstract class expNestedNode extends expRecord {
             $obj->depth = $node->depth;
 			$tree[] = $obj;
 		}
-//eDebug($tree);
 		return $tree;
 	}
-	
 }
