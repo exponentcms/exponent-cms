@@ -113,7 +113,7 @@ class listbuildercontrol extends formcontrol {
 	}
 
 	function onRegister(&$form) {
-		$form->addScript("listbuilder",PATH_RELATIVE."subsystems/forms/controls/listbuildercontrol.js");
+		$form->addScript("listbuilder",PATH_RELATIVE."framework/core/subsystems-1/forms/controls/listbuildercontrol.js");
 	}
 
 	static function parseData($formvalues, $name, $forceindex = false) {
