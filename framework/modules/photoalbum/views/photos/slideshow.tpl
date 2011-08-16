@@ -76,7 +76,8 @@
                 <li>{"No slides yet"|gettext}</li>
             {/foreach}
         </ul>
-
+        
+        {if !$config.hidecontrols}
         <div class="slideshow-buttons">
             <a id="prev{$name}" href="javascript:void(0);" class="prev_slide" title="Prevous Slide">
                 &lt;&lt; Previous
@@ -98,6 +99,7 @@
                 Next &gt;&gt;
             </a>
         </div>
+        {/if}
     
     </div>
 </div>
