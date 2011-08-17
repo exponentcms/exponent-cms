@@ -56,8 +56,8 @@ class formmodule {
 	
 	function show($view,$loc = null) {
 		global $db;
-		require_once(BASE."framework/core/subsystems-1/forms/baseform.php");
-		require_once(BASE."framework/core/subsystems-1/forms/form.php");
+        // require_once(BASE."framework/core/subsystems-1/forms/baseform.php");
+        // require_once(BASE."framework/core/subsystems-1/forms/form.php");
 
 		if (defined("PREVIEW_READONLY") && !defined("SELECTOR")) {
 			// Pass
