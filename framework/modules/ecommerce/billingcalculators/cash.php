@@ -70,7 +70,7 @@ class cash extends billingcalculator{
 	}
 	
 	//Should return html to display user data.
-	function userView($config_object,$user_data) {
+	function userView($config_object,$user_data=null) {
 		return "Cash: $". number_format($user_data->cash_amount,2,".",",");
 	}
 }

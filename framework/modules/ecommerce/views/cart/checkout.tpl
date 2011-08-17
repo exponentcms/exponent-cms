@@ -251,8 +251,8 @@
         <div class="separate">
             <h2>Payment Information</h2>
             <div>
-                {foreach from=$billing->calculator_views item=cviews name=calcs}                  
-                    {include file=$cviews.view key=$cviews.id}
+                {foreach from=$billing->calculator_views item=cviews name=calcs}
+                    {include file=$cviews.view calcid=$cviews.id}
                     {if $smarty.foreach.calcs.last!=1}
                         <strong>- OR -</strong>
                     {/if}

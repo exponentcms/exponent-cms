@@ -3,12 +3,12 @@
 {/css}
 
 
-<div class="billing-method authorized creditcard-form">
+<div class="billing-method splitcreditcard creditcard-form">
     <h4>Pay By Credit Card</h4>
     {form name="ccinfoform" id="ccinfoform" controller=cart action=preprocess}
         {control type="hidden" name="billingcalculator_id" value=$calcid}
         {$billing->form}
-        <button id="continue-checkout" type="submit" class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}">Continue Checkout</button>  
+        <button id="continue-checkout" class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}">Continue Checkout</button>  
     {/form}
 </div>
 
