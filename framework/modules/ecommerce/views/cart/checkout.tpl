@@ -145,38 +145,50 @@
                 {if $shipping->selectable_calculators|@count > 1}{assign var=multicalc value=1}{/if}
                 {if !$shipping->address->id}{assign var=noShippingPrices value=1}{/if}
                 
-                <h3>Shipping Method{if multicalc}s{/if}</h3>
                 {if $multicalc}
+                    <h3>{"Available Shipping Methods"|gettext}</h3>
+                    <div class="separate">
+                        {foreach key=key from=$shipping->selectable_calculators item=calc}
+                        {if $shipping->calculator->id!=$key}
+                            <a rel="{$key}" href="{link shippingcalculator_id=$key controller=shipping action=selectShippingCalculator}" class="servopt">
+                            {$calc}
+                            </a>
+                        {else}
+                            <span class="servopt">{$calc}</span>
+                        {/if}
+                        {/foreach}
+                    </div>
                 
                 
-                {if $order->forced_shipping == true}
-                    <p>Your order requires <strong>{$shipping->shippingmethod->option_title}</strong></p>
-                {else}
-                {*
-                    <p{if $noShippingPrices} class="hide"{/if}><strong id="cur-calc">{if $shipping->calculator->id}{$shipping->calculator->title}{else}No service selected{/if}</strong>  -  <a href="#" id="servicepicker">Select a Service</a></p>
-                    <div id="calculators" class="exp-dropmenu">
-                        <div class="hd"><span class="type-icon"></span>Select a Shipping Service</div>
-                        <div class="bd">
-                            <div>
-                                <ul>
-                                {foreach key=key from=$shipping->selectable_calculators item=calc}
-                                    <li><a rel="{$key}" href="#" class="servopt">{$calc}</a></li>
-                                {/foreach}
-                                </ul>
-                                {form name=SelShpCal controller=shipping action=selectShippingCalculator}
-                                    {control type=hidden name=shippingcalculator_id id=shipcalc_id value=$shipping->calculator->id}
-                                {/form}
+                    {if $order->forced_shipping == true}
+                        <p>Your order requires <strong>{$shipping->shippingmethod->option_title}</strong></p>
+                    {else}
+                    {*
+                        <p{if $noShippingPrices} class="hide"{/if}><strong id="cur-calc">{if $shipping->calculator->id}{$shipping->calculator->title}{else}No service selected{/if}</strong>  -  <a href="#" id="servicepicker">Select a Service</a></p>
+                        <div id="calculators" class="exp-dropmenu">
+                            <div class="hd"><span class="type-icon"></span>Select a Shipping Service</div>
+                            <div class="bd">
+                                <div>
+                                    <ul>
+                                    {foreach key=key from=$shipping->selectable_calculators item=calc}
+                                        <li><a rel="{$key}" href="#" class="servopt">{$calc}</a></li>
+                                    {/foreach}
+                                    </ul>
+                                    {form name=SelShpCal controller=shipping action=selectShippingCalculator}
+                                        {control type=hidden name=shippingcalculator_id id=shipcalc_id value=$shipping->calculator->id}
+                                    {/form}
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    *}
-                {/if}
+                        *}
+                    {/if}
                 {/if}
                 {if $shipping->splitshipping == false}
 
                 <div style="clear:both"></div>
                 
                 <div id="shipping-services">
+                    <h3>{"Selected Shipping Method"|gettext}</h3>
                     {include file="`$smarty.const.BASE`framework/modules/ecommerce/views/shipping/renderOptions.tpl"}
                 </div>
 
