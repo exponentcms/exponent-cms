@@ -58,6 +58,9 @@ class formmodule {
 		global $db;
 		require_once(BASE."framework/core/subsystems-1/forms/baseform.php");
 		require_once(BASE."framework/core/subsystems-1/forms/form.php");
+		require_once(BASE."framework/core/subsystems-1/forms.php");
+		
+		exponent_forms_initialize();
 
 		if (defined("PREVIEW_READONLY") && !defined("SELECTOR")) {
 			// Pass
