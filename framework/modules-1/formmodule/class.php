@@ -56,12 +56,18 @@ class formmodule {
 	
 	function show($view,$loc = null) {
 		global $db;
+		
+		require_once(BASE."framework/core/subsystems-1/forms.php");
+			
+		/*
+			Below are the three files that are not being loaded when the email system is turn on. 
+			Still investigating the root cause for it but for the meantime this will 
+			be a temporary fix for it. 
+		*/
 		require_once(BASE."framework/core/subsystems-1/forms/baseform.php");
 		require_once(BASE."framework/core/subsystems-1/forms/form.php");
-		require_once(BASE."framework/core/subsystems-1/forms.php");
+		require_once(BASE."framework/core/subsystems-1/forms/controls/buttongroupcontrol.php");
 		
-		exponent_forms_initialize();
-
 		if (defined("PREVIEW_READONLY") && !defined("SELECTOR")) {
 			// Pass
 		}  else {
