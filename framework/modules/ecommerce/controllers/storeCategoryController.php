@@ -55,6 +55,10 @@ class storeCategoryController extends expNestedNodeController {
 		$bing_types = ''; //An array being indexed by the id of bing and has a value of the bing product type to be passed as the source of the listbuildercontrol
 		$bing_recorded_product_types = ''; //An array being indexed by the id of product type to be passed as the default of the listbuildercontrol for bing
 		
+		$nextag_product_types = new nextag_product_types(); //Store all the nextag product types
+		$nextag_types = ''; //An array being indexed by the id of nextag and has a value of the nextag product type to be passed as the source of the listbuildercontrol
+		$nextag_recorded_product_types = ''; //An array being indexed by the id of product type to be passed as the default of the listbuildercontrol for nextag
+		
 		//Google product types getting the source and destination for the listbuilder control
 		$google_recorded_types = $db->selectObjectsBySql("SELECT google_product_types_id, title FROM " . DB_TABLE_PREFIX . "_google_product_types_storeCategories, " . DB_TABLE_PREFIX . "_google_product_types WHERE google_product_types_id = id and storecategories_id = " . $this->params['id']);
 		foreach ($db->selectFormattedNestedTree('google_product_types') as $item) {
@@ -66,6 +70,7 @@ class storeCategoryController extends expNestedNodeController {
 		$control = new listbuildercontrol($google_recorded_product_types, $google_types);
 		$product_types['google'] = $control->controlToHTML('google_product_types_list','copy');
 		// eDebug($db->selectFormattedNestedTree('bing_product_types'), true);
+	
 		//Bing product types getting the source and destination for the listbuilder control
 		$bing_recorded_types   = $db->selectObjectsBySql("SELECT bing_product_types_id, title FROM " . DB_TABLE_PREFIX . "_bing_product_types_storeCategories, " . DB_TABLE_PREFIX . "_bing_product_types WHERE bing_product_types_id = id and storecategories_id = " . $this->params['id']);
 		foreach ($db->selectFormattedNestedTree('bing_product_types') as $item) {
@@ -76,6 +81,17 @@ class storeCategoryController extends expNestedNodeController {
 		}
 		$control = new listbuildercontrol($bing_recorded_product_types, $bing_types);
 		$product_types['bing'] = $control->controlToHTML('bing_product_types_list','copy');
+		
+		//Nextag product types getting the source and destination for the listbuilder control
+		$nextag_recorded_types   = $db->selectObjectsBySql("SELECT nextag_product_types_id, title FROM " . DB_TABLE_PREFIX . "_nextag_product_types_storeCategories, " . DB_TABLE_PREFIX . "_nextag_product_types WHERE nextag_product_types_id = id and storecategories_id = " . $this->params['id']);
+		foreach ($db->selectFormattedNestedTree('nextag_product_types') as $item) {
+			$nextag_types[$item->id] = $item->title;
+		}
+		foreach ($nextag_recorded_types as $item) {
+			$nextag_recorded_product_types[$item->nextag_product_types_id] = $item->title;
+		}
+		$control = new listbuildercontrol($nextag_recorded_product_types, $nextag_types);
+		$product_types['nextag'] = $control->controlToHTML('nextag_product_types_list','copy');
 		
         assign_to_template(array('site_page_default'=>$site_page_default, 'record'=>$record, 'product_types' => $product_types));
     
