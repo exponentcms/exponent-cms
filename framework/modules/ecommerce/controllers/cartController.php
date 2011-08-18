@@ -503,7 +503,7 @@ class cartController extends expController {
         // adding the === will specifically test for a 0 and only a 0, which is what we want
 
         //if (empty($result->errorCode)) 
-        if ($result->errorCode === "0" || $result->errorCode === 0) {
+        if ($result->errorCode === "0" || $result->errorCode === 0) 
         {
             redirect_to(array('controller'=>'cart', 'action'=>'confirm'));
         } 
