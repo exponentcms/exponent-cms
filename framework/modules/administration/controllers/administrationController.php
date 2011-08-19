@@ -92,7 +92,6 @@ class administrationController extends expController {
 			BASE."framework/modules",
 			);
 		foreach ($moddefs as $moddef) {
-			$moddef = BASE."framework/modules";
 			if (is_readable($moddef)) {
 				$dh = opendir($moddef);
 				while (($file = readdir($dh)) !== false) {
