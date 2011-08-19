@@ -169,6 +169,7 @@ class storeCategoryController extends expNestedNodeController {
 		// eDebug($this->params, true);
 		$this->params['google_product_types'] = listbuildercontrol::parseData($this->params,'google_product_types_list');
 		$this->params['bing_product_types']   = listbuildercontrol::parseData($this->params,'bing_product_types_list');
+		$this->params['nextag_product_types']   = listbuildercontrol::parseData($this->params,'nextag_product_types_list');
         $curcat = new storeCategory($this->params);
         $children = $curcat->getChildren();
         foreach ($children as $key=>$child) {
@@ -184,6 +185,10 @@ class storeCategoryController extends expNestedNodeController {
 		$category_type = 'bing_product_types';
 		$bing_product_type = new $category_type();
 		$bing_product_type->saveCategories($this->params['bing_product_types'], $curcat->id); 
+		
+		$category_type = 'nextag_product_types';
+		$nextag_product_type = new $category_type();
+		$nextag_product_type->saveCategories($this->params['nextag_product_types'], $curcat->id);
 		
          parent::update();
     }

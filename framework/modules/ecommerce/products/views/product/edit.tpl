@@ -84,6 +84,7 @@
                     {control type="textarea" name="feed_body" label="Product Description for Data Feeds (Description ONLY! - no HTML, no promotional language, no email addresses, phone numbers, or references to this website.)" rows=5 cols=85 value=$record->feed_body}
                     {control type="text" class="title" name="google_product_type" label="Google Product Type" value=$record->google_product_type}
 					{control type="text" class="title" name="bing_product_type" label="Bing Product Type" value=$record->bing_product_type}
+					{control type="text" class="title" name="nextag_product_type" label="Nextag Product Type" value=$record->nextag_product_type}
                 </div>
                 <div id="pricing">
                     <fieldset>
