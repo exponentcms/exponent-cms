@@ -39,7 +39,7 @@ if (expFile::canCreate(BASE."framework/modules-1/importer/importers/usercsv/tmp/
 	//Setup the arrays with the name/value pairs for the dropdown menus
 	$delimiterArray = Array(
 		','=>gt('Comma'),
-		';'=>gt(Semicolon),
+		';'=>gt('Semicolon'),
 		':'=>gt('Colon'),
 		' '=>gt('Space'));
 

@@ -37,7 +37,7 @@ class expTagController extends expController {
 	 * description of module
 	 * @return string
 	 */
-	function description() { return "This module is for manageing your tags"; }
+	function description() { return "This module is for manag	ing your tags"; }
 
 	/**
 	 * does module have sources available?

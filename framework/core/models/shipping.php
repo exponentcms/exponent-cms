@@ -135,6 +135,7 @@ class shipping extends expRecord {
     }
     
     public static function listAllCalculators() {
+	    global $db;
 	    $calcs = array();
 	    foreach ($db->selectObjects('shippingcalculator') as $calc) {
 	        $calcs[$calc->id] = $calc->calculator_name;
