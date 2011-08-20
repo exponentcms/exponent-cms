@@ -20,7 +20,8 @@
 function smarty_block_pop($params,$content,&$smarty, &$repeat) {
 	if($content){
 		$params['content'] = $content;
-		exponent_javascript_panel($params);
+//		exponent_javascript_panel($params);
+		expJavascript::panel($params);
 	}
 	
 }

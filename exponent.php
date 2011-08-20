@@ -98,8 +98,7 @@ $SYS_FLOW_REDIRECTIONPATH = 'exponent_default';
 require_once(BASE.'framework/core/subsystems-1/users.php');
 
 // Initialize the javascript subsystem
-require_once(BASE.'framework/core/subsystems-1/javascript.php');
-
+//require_once(BASE.'framework/core/subsystems-1/javascript.php');
 if (expJavascript::inAjaxAction()) set_error_handler('handleErrors');
 
 // Validate the session.  This will populate the $user variable
