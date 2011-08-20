@@ -36,4 +36,101 @@ if (DEVELOPMENT) {
 	ini_set('ignore_repeated_errors',1);
 }
 
+// Set the default timezone.
+@date_default_timezone_set(DISPLAY_DEFAULT_TIMEZONE);
+
+// Initialize the AutoLoader subsystem - for objects we want loaded on the fly
+	/* exdoc
+	 * In PHP5, the autoloader function will check these
+	 * directories when it tries to load a class definition
+	 * file.  Other parts of the system should append to this
+	 * directory as needed, in order to take full advantage
+	 * of autoloading
+	 * @node Subsystems:Autoloader
+	 */
+	//$auto_dirs = array(BASE.'datatypes', BASE.'framework/core/subsystems-1/forms', BASE.'framework/core/subsystems-1/forms/controls');
+	$auto_dirs = array(
+			BASE.'framework/core/models-1',  // old 1.0 /datatypes
+			BASE.'framework/core/subsystems-1/forms',
+			BASE.'framework/core/subsystems-1/forms/controls',
+			BASE.'framework/core/controllers',
+			BASE.'framework/core/models',  // used to be framework/core/datatypes & framework/datatypes
+			BASE.'framework/core/subsystems',
+			BASE.'framework/modules/ecommerce/billingcalculators',
+			BASE.'framework/modules/ecommerce/shippingcalculators',
+			BASE.'framework/modules/ecommerce/products/controllers',  //FIXME does NOT exist
+			BASE.'framework/modules/ecommerce/products/datatypes',  // models
+	);
+
+	$auto_dirs2 = array(
+			BASE.'themes/'.DISPLAY_THEME_REAL.'/modules',
+			BASE.'framework/modules'
+	);
+
+	/* exdoc
+	 * This function overrides the default PHP5 autoloader,
+	 * and instead looks at the $auto_dirs global to look
+	 * for class files.  This function is automatically
+	 * invoked in PHP5
+	 *
+	 * @param string $class The name of the class to look for.
+	 * @node Subsystems:Autoloader
+	 */
+	function expLoadClasses($class) {
+		global $auto_dirs, $auto_dirs2;
+		foreach ($auto_dirs as $auto_dir) {
+			if (is_readable($auto_dir.'/'.$class.'.php')) {
+				include_once($auto_dir.'/'.$class.'.php');
+				return;
+			}
+		}
+
+		// recursive function used for (auto?)loading 2.0 modules controllers & models instead of using initializeControllers()
+//		foreach ($auto_dirs2 as $dir) {
+//			if (is_readable($dir)) {
+//				$dh = opendir($dir);
+//				while (($file = readdir($dh)) !== false) {
+//					if (is_dir($dir.'/'.$file) && ($file != '..' && $file != '.')) {
+//						// load controllers
+//						$dirpath = $dir.'/'.$file.'/controllers';
+//						if (file_exists($dirpath)) {
+//							$controller_dir = opendir($dirpath);
+//							while (($ctl_file = readdir($controller_dir)) !== false) {
+//								if (substr($ctl_file,0,-4) == $class && substr($ctl_file,-4,4) == ".php") {
+//									include_once($dirpath.'/'.$ctl_file);
+//									return;
+//								}
+//							}
+//						}
+//						// load models
+//						$dirpath = $dir.'/'.$file.'/models';
+//						if (file_exists($dirpath)) {
+//							$controller_dir = opendir($dirpath);
+//							while (($ctl_file = readdir($controller_dir)) !== false) {
+//								if (substr($ctl_file,0,-4) == $class && substr($ctl_file,-4,4) == ".php") {
+//									include_once($dirpath.'/'.$ctl_file);
+//									return;
+//								}
+//							}
+//						}
+//					}
+//				}
+//			}
+//		}
+//
+//		// autoload the old school modules instead of using exponent_modules_initialize()
+//		if (is_readable(BASE.'framework/modules-1')) {
+//			$dh = opendir(BASE.'framework/modules-1');
+//			while (($file = readdir($dh)) !== false) {
+//				if ($file == $class && is_dir(BASE.'framework/modules-1/'.$file) && is_readable(BASE.'framework/modules-1/'.$file.'/class.php')) {
+//					include_once(BASE.'framework/modules-1/'.$file.'/class.php');
+//					return;
+//				}
+//			}
+//		}
+		
+	}
+
+	spl_autoload_register('expLoadClasses');
+
 ?>
