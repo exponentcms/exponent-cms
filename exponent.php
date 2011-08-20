@@ -29,7 +29,6 @@
  */
 
 require_once('exponent_bootstrap.php');
-
 // Initialize the AutoLoader subsystem - for objects we want loaded on the fly
 require_once(BASE.'framework/core/subsystems/autoloader.php');
 
