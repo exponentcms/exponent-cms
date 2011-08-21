@@ -40,52 +40,52 @@ if (DEVELOPMENT) {
 @date_default_timezone_set(DISPLAY_DEFAULT_TIMEZONE);
 
 // Initialize the AutoLoader subsystem - for objects we want loaded on the fly
-	/* exdoc
-	 * In PHP5, the autoloader function will check these
-	 * directories when it tries to load a class definition
-	 * file.  Other parts of the system should append to this
-	 * directory as needed, in order to take full advantage
-	 * of autoloading
-	 * @node Subsystems:Autoloader
-	 */
-	//$auto_dirs = array(BASE.'datatypes', BASE.'framework/core/subsystems-1/forms', BASE.'framework/core/subsystems-1/forms/controls');
-	$auto_dirs = array(
-			BASE.'framework/core/models-1',  // old 1.0 /datatypes
-			BASE.'framework/core/subsystems-1/forms',
-			BASE.'framework/core/subsystems-1/forms/controls',
-			BASE.'framework/core/controllers',
-			BASE.'framework/core/models',  // used to be framework/core/datatypes & framework/datatypes
-			BASE.'framework/core/subsystems',
-			BASE.'framework/modules/ecommerce/billingcalculators',
-			BASE.'framework/modules/ecommerce/shippingcalculators',
-			BASE.'framework/modules/ecommerce/products/controllers',  //FIXME does NOT exist
-			BASE.'framework/modules/ecommerce/products/datatypes',  // models
-	);
+/** exdoc
+ * In PHP5, the autoloader function will check these
+ * directories when it tries to load a class definition
+ * file.  Other parts of the system should append to this
+ * directory as needed, in order to take full advantage
+ * of autoloading
+ * @node Subsystems:Autoloader
+ */
+//$auto_dirs = array(BASE.'datatypes', BASE.'framework/core/subsystems-1/forms', BASE.'framework/core/subsystems-1/forms/controls');
+$auto_dirs = array(
+		BASE.'framework/core/models-1',  // old 1.0 /datatypes
+		BASE.'framework/core/subsystems-1/forms',
+		BASE.'framework/core/subsystems-1/forms/controls',
+		BASE.'framework/core/controllers',
+		BASE.'framework/core/models',  // used to be framework/core/datatypes & framework/datatypes
+		BASE.'framework/core/subsystems',
+		BASE.'framework/modules/ecommerce/billingcalculators',
+		BASE.'framework/modules/ecommerce/shippingcalculators',
+		BASE.'framework/modules/ecommerce/products/controllers',  //FIXME does NOT exist
+		BASE.'framework/modules/ecommerce/products/datatypes',  // models
+);
 
-	$auto_dirs2 = array(
-			BASE.'themes/'.DISPLAY_THEME_REAL.'/modules',
-			BASE.'framework/modules'
-	);
+$auto_dirs2 = array(
+		BASE.'themes/'.DISPLAY_THEME_REAL.'/modules',
+		BASE.'framework/modules'
+);
 
-	/* exdoc
-	 * This function overrides the default PHP5 autoloader,
-	 * and instead looks at the $auto_dirs global to look
-	 * for class files.  This function is automatically
-	 * invoked in PHP5
-	 *
-	 * @param string $class The name of the class to look for.
-	 * @node Subsystems:Autoloader
-	 */
-	function expLoadClasses($class) {
-		global $auto_dirs, $auto_dirs2;
-		foreach ($auto_dirs as $auto_dir) {
-			if (is_readable($auto_dir.'/'.$class.'.php')) {
-				include_once($auto_dir.'/'.$class.'.php');
-				return;
-			}
+/** exdoc
+ * This function overrides the default PHP5 autoloader,
+ * and instead looks at the $auto_dirs global to look
+ * for class files.  This function is automatically
+ * invoked in PHP5
+ *
+ * @param string $class The name of the class to look for.
+ * @node Autoloader
+ */
+function expLoadClasses($class) {
+	global $auto_dirs, $auto_dirs2;
+	foreach ($auto_dirs as $auto_dir) {
+		if (is_readable($auto_dir.'/'.$class.'.php')) {
+			include_once($auto_dir.'/'.$class.'.php');
+			return;
 		}
+	}
 
-		// recursive function used for (auto?)loading 2.0 modules controllers & models instead of using initializeControllers()
+	// recursive function used for (auto?)loading 2.0 modules controllers & models instead of using initializeControllers()
 //		foreach ($auto_dirs2 as $dir) {
 //			if (is_readable($dir)) {
 //				$dh = opendir($dir);
@@ -118,7 +118,7 @@ if (DEVELOPMENT) {
 //			}
 //		}
 //
-//		// autoload the old school modules instead of using exponent_modules_initialize()
+		// autoload the old school modules instead of using exponent_modules_initialize()
 //		if (is_readable(BASE.'framework/modules-1')) {
 //			$dh = opendir(BASE.'framework/modules-1');
 //			while (($file = readdir($dh)) !== false) {
@@ -128,9 +128,9 @@ if (DEVELOPMENT) {
 //				}
 //			}
 //		}
-		
-	}
 
-	spl_autoload_register('expLoadClasses');
+}
+
+spl_autoload_register('expLoadClasses');
 
 ?>
