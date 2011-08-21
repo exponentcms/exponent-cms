@@ -1914,9 +1914,10 @@ class migrationController extends expController {
         $config->update(array('config'=>$this->params));
 		// update our object config
 		$this->config = expUnserialize($config->config);
-        flash('message', 'Migration Configuration Saved');
+//        flash('message', 'Migration Configuration Saved');
 //        expHistory::back();
-		$this->fix_database();
+		if (isset($this->params['fix_database'])) $this->fix_database();
+		echo '<h2>Migration Configuration Saved</h2><br />';
 		echo "<a class=\"admin\" href=\"migration/manage_users\">Next Step -> Migrate Users & Groups</a>";
     }
 	
