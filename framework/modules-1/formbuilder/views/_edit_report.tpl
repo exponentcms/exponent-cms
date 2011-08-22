@@ -13,6 +13,10 @@
  *
  *}
 
+{css unique="edit-report" corecss="forms"}
+
+{/css}
+
 <div class="module formbuilder edit-report">
 	<div class="form_title">
 		<h1>{'Edit Report Settings'|gettext}</h1>
