@@ -33,6 +33,7 @@
 		{control type="password" name="password" label="Password" value=$config.password}
 		{control type="text" name="port" label="Port" value=$config.port|default:3306}
 		{control type="text" name="prefix" label="Exponent Table Prefix" value=$config.prefix|default:'exponent'}
+	    {control type="checkbox" name="fix_database" label="Attempt to fix tables in old database? (may cause a timeout on slow connection)" value=1 checked=false}
         {control type=buttongroup submit="Save Config" cancel="Cancel"}
     {/form}
 	{br}<hr>{br}

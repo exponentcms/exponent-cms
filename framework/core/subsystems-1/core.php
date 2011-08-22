@@ -195,7 +195,7 @@ function exponent_core_makeSecureLink($params) {
 
         // this is here for compatability with the navigation module and the old way make link used prior
         // to having the router class
-        $params['sef_name'] = $sef_name;
+        $params['sef_name'] = $sef_name;  //FIXME $sef_name isn't set??
 
         // now that we have the router class we'll use it to build the link and then return it.
         return $router->makeLink($params, false, true);

@@ -638,7 +638,7 @@ class expFile extends expRecord {
 			$img = imagecreatefromgif($filename);
 		} else {
 			// Either we have an unknown image type, or an unsupported image type.
-			return IMAGE_ERR_NOTSUPPORTED;
+			return self::IMAGE_ERR_NOTSUPPORTED;
 		}
 
 		if (function_exists('imagesavealpha')) {
