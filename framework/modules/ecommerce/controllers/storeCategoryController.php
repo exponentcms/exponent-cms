@@ -59,6 +59,10 @@ class storeCategoryController extends expNestedNodeController {
 		$nextag_types = ''; //An array being indexed by the id of nextag and has a value of the nextag product type to be passed as the source of the listbuildercontrol
 		$nextag_recorded_product_types = ''; //An array being indexed by the id of product type to be passed as the default of the listbuildercontrol for nextag
 		
+		$shopzilla_product_types = new shopzilla_product_types(); //Store all the shopzilla product types
+		$shopzilla_types = ''; //An array being indexed by the id of shopzilla and has a value of the shopzilla product type to be passed as the source of the listbuildercontrol
+		$shopzilla_recorded_product_types = ''; //An array being indexed by the id of product type to be passed as the default of the listbuildercontrol for shopzilla
+		
 		//Google product types getting the source and destination for the listbuilder control
 		$google_recorded_types = $db->selectObjectsBySql("SELECT google_product_types_id, title FROM " . DB_TABLE_PREFIX . "_google_product_types_storeCategories, " . DB_TABLE_PREFIX . "_google_product_types WHERE google_product_types_id = id and storecategories_id = " . $this->params['id']);
 		foreach ($db->selectFormattedNestedTree('google_product_types') as $item) {
@@ -92,6 +96,17 @@ class storeCategoryController extends expNestedNodeController {
 		}
 		$control = new listbuildercontrol($nextag_recorded_product_types, $nextag_types);
 		$product_types['nextag'] = $control->controlToHTML('nextag_product_types_list','copy');
+		
+		//Shopzilla product types getting the source and destination for the listbuilder control
+		$shopzilla_recorded_types   = $db->selectObjectsBySql("SELECT shopzilla_product_types_id, title FROM " . DB_TABLE_PREFIX . "_shopzilla_product_types_storeCategories, " . DB_TABLE_PREFIX . "_shopzilla_product_types WHERE shopzilla_product_types_id = id and storecategories_id = " . $this->params['id']);
+		foreach ($db->selectFormattedNestedTree('shopzilla_product_types') as $item) {
+			$shopzilla_types[$item->id] = $item->title;
+		}
+		foreach ($shopzilla_recorded_types as $item) {
+			$shopzilla_recorded_product_types[$item->shopzilla_product_types_id] = $item->title;
+		}
+		$control = new listbuildercontrol($shopzilla_recorded_product_types, $shopzilla_types);
+		$product_types['shopzilla'] = $control->controlToHTML('shopzilla_product_types_list','copy');
 		
         assign_to_template(array('site_page_default'=>$site_page_default, 'record'=>$record, 'product_types' => $product_types));
     
@@ -170,6 +185,7 @@ class storeCategoryController extends expNestedNodeController {
 		$this->params['google_product_types'] = listbuildercontrol::parseData($this->params,'google_product_types_list');
 		$this->params['bing_product_types']   = listbuildercontrol::parseData($this->params,'bing_product_types_list');
 		$this->params['nextag_product_types']   = listbuildercontrol::parseData($this->params,'nextag_product_types_list');
+		$this->params['shopzilla_product_types']  = listbuildercontrol::parseData($this->params,'shopzilla_product_types_list');
         $curcat = new storeCategory($this->params);
         $children = $curcat->getChildren();
         foreach ($children as $key=>$child) {
@@ -189,6 +205,10 @@ class storeCategoryController extends expNestedNodeController {
 		$category_type = 'nextag_product_types';
 		$nextag_product_type = new $category_type();
 		$nextag_product_type->saveCategories($this->params['nextag_product_types'], $curcat->id);
+		
+		$category_type = 'shopzilla_product_types';
+		$shopzilla_product_type = new $category_type();
+		$shopzilla_product_type->saveCategories($this->params['shopzilla_product_types'], $curcat->id);
 		
          parent::update();
     }
