@@ -137,7 +137,7 @@ class expJavascript {
             }
         }
 
-		if (stristr($params['content'],"use('*',") && isset($params['yui3mods'])) {
+		if (isset($params['content']) && stristr($params['content'],"use('*',") && isset($params['yui3mods'])) {
             $params['content'] = str_replace("use('*',",('use(\''.str_replace(',','\',\'',$params['yui3mods']).'\','),$params['content']);
             $yui3js["yui"] = "yui";
 		}
@@ -152,7 +152,7 @@ class expJavascript {
             }
         }
 
-    	$js2foot[$params['unique']] = $params['content'];
+    	if (isset($params['content'])) $js2foot[$params['unique']] = $params['content'];
     }
 
 	public static function ajaxReply($replyCode=200, $replyText='Ok', $data) {

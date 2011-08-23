@@ -169,6 +169,17 @@ foreach ($tables as $table => $statusnum) {
 if ($line == 0) {
 	echo "<p class=\"success\">".gt("No Tables Were Changed!")."</p>";
 }
+
+$emptydb = 'upgrade-3';
+$emptydbstr = gt('Continue Upgrade');
+// check to see if we are really upgrading a database
+if ($db->tableIsEmpty('user') || $db->tableIsEmpty('modstate') || $db->tableIsEmpty('section')) {
+	echo '<div style="color: red; font-weight: bold">';
+	echo 'No Database Entries Were Found!';
+	echo '</div>';
+	$emptydb = 'install-3';
+	$emptydbstr = gt('Switching to Installer');
+}
 ?>
 
-<a class="awesome large green" href="?page=upgrade-3"><?php echo gt('Continue Upgrade') ?></a>
+<a class="awesome large green" href="?page=".$emptydb><?php echo $emptydbstr ?></a>

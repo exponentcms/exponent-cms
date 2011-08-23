@@ -7,7 +7,7 @@
     	"xhtml"=>true,
     	"css_primer"=>array(
     	    YUI2_PATH."reset-fonts-grids/reset-fonts-grids.css"),
-    	"css_core"=>array("common"), 
+    	"css_core"=>array("common"),
     	"css_links"=>true,
     	"css_theme"=>true
         )

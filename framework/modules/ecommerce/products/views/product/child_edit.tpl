@@ -158,7 +158,7 @@
 
                     {script unique="mainimagefunctionality"}
                     {literal}
-                    YUI({base:EXPONENT.URL_FULL+'external/yui3/build/'}).use('node','node-event-simulate', function(Y) {
+                    YUI({base:EXPONENT.YUI3_PATH}).use('node','node-event-simulate', function(Y) {
                         var radioSwitchers = Y.all('#main_image_functionalityControl input[name="main_image_functionality"]');
                         radioSwitchers.on('click',function(e){
                             Y.all(".imngfuncbody").setStyle('display','none');
