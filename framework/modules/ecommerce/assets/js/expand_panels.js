@@ -1,4 +1,4 @@
-YUI({ base:EXPONENT.URL_FULL+'external/yui3/build/',loadOptional: true}).use('node','cookie','anim', function(Y) {
+YUI({ base:EXPONENT.YUI3_PATH,loadOptional: true}).use('node','cookie','anim', function(Y) {
         var panels = Y.all(".dashboard .panel");
         var expandHeight = [];
         var action = function(e){

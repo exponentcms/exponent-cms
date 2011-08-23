@@ -130,7 +130,7 @@
     
     {*script unique="sort-submit"}
     {literal}
-    YUI({ base:EXPONENT.URL_FULL+'external/yui3/build/',loadOptional: true}).use('node', function(Y) {
+    YUI({ base:EXPONENT.YUI3_PATH,loadOptional: true}).use('node', function(Y) {
         Y.all('select[name="sortme"]').on('change',function(e){
             window.location = e.target.get('value');
         });
