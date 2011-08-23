@@ -27,7 +27,6 @@ if (exponent_permissions_check('configuration',exponent_core_makeLocation('admin
 	
 	$configname = (isset($_GET['configname']) ? $_GET['configname'] : "");
 	
-//	require_once(BASE.'framework/core/subsystems-1/config.php');
 	require_once(BASE.'framework/core/subsystems-1/forms.php');
 
 	$profiles = expSettings::profiles();

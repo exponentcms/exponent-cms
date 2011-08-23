@@ -18,7 +18,6 @@
 /** @define "BASE" "../.." */
 
 function smarty_function_yuilogger($params,&$smarty) {
-//	require_once(BASE.'framework/core/subsystems-1/javascript.php');
 	global $userjsfiles;
 		$logger =  "
 		

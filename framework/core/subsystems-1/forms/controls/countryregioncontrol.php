@@ -80,7 +80,7 @@ class countryregioncontrol extends formcontrol {
 			$html .= "		r_select.appendChild(o);";
 			$html .= "	}";
 			$html .= "}";
-//			require_once(BASE."framework/core/subsystems-1/javascript.php");
+
 			$region = null;
 			$region->parent_id = 0;
 			$region->id = 0;

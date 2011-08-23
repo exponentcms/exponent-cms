@@ -23,8 +23,6 @@
 if (!defined('EXPONENT')) exit('');
 
 if (exponent_permissions_check('configuration',exponent_core_makeLocation('administrationmodule'))) {
-//	require_once(BASE.'framework/core/subsystems-1/config.php');
-
 	$continue = true;
 	if ($user->is_admin == 1) { // Only do the database stuff if we are a super admin
 		$errors = '';

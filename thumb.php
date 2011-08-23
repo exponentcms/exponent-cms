@@ -24,7 +24,6 @@ include_once('exponent_bootstrap.php');
 // otherwise the expFile can't find it's table desc from cache.
 if (!defined('SYS_SESSION_KEY')) define('SYS_SESSION_KEY',PATH_RELATIVE);                                                                       
     if (isset($_GET['id'])) {        
-//    	include_once('framework/core/subsystems/autoloader.php');  // now included in bootstrap
     	// Initialize the Database Subsystem
     	include_once(BASE.'framework/core/subsystems-1/database.php');
     	$db = exponent_database_connect(DB_USER,DB_PASS,DB_HOST.':'.DB_PORT,DB_NAME);

@@ -122,7 +122,7 @@
 </div>
 {script unique="children-submit"}
         {literal}
-        YUI({ base:EXPONENT.YUI3_PATH,loadOptional: true}).use('node', function(Y) {
+        YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
             Y.one('#submit_order_item_form').on('click',function(e){
                 e.halt();
                 var frm = Y.one('#order_item_form');

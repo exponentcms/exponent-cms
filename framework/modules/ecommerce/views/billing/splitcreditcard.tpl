@@ -15,7 +15,7 @@
 {*script unique="continue-checkout"}
 {literal}
     
-    YUI({ base:EXPONENT.YUI3_PATH,loadOptional: true}).use('node', function(Y) {
+    YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
         //Y.one('#cont-checkout').setStyle('display','none');
         Y.one('#continue-checkout').on('click',function(e){
             e.halt();
