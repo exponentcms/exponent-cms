@@ -52,7 +52,6 @@ if (($item == null && exponent_permissions_check("post",$loc)) ||
 		$item->feedback_email = "";
 	}
 
-//	require_once(BASE."framework/core/subsystems-1/workflow.php");
 	require_once(BASE."framework/core/subsystems-1/datetime.php");
 	require_once(BASE."framework/core/subsystems-1/forms.php");
 

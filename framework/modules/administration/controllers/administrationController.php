@@ -381,7 +381,6 @@ class administrationController extends expController {
 	}
 
     public function toggle_minify() {
-//        include_once(BASE.'framework/core/subsystems-1/config.php');
     	$value = (MINIFY == 1) ? 0 : 1;
     	expSettings::change('MINIFY', $value);
     	$message = (MINIFY != 1) ? "Exponent is now minifying Javascript and CSS" : "Exponent is no longer minifying Javascript and CSS" ;
@@ -390,7 +389,6 @@ class administrationController extends expController {
     }
     
 	public function toggle_dev() {
-//	    include_once(BASE.'framework/core/subsystems-1/config.php');
 	    $value = (DEVELOPMENT == 1) ? 0 : 1;
 	    expSettings::change('DEVELOPMENT', $value);
 	    expTheme::removeCss();
@@ -400,7 +398,6 @@ class administrationController extends expController {
 	}
 
 	public function toggle_maintenance() {
-//		include_once(BASE.'framework/core/subsystems-1/config.php');
 		$value = (MAINTENANCE_MODE == 1) ? 0 : 1;
 		expSettings::change('MAINTENANCE_MODE', $value);
 		MAINTENANCE_MODE == 1 ? flash('message',"Exponent is no longer in 'Maintenance' mode") : "" ;
@@ -598,10 +595,7 @@ class administrationController extends expController {
     }
     
     public function switch_themes() {
-//        include_once(BASE.'framework/core/subsystems-1/config.php');
-
     	expSettings::change('DISPLAY_THEME_REAL', $this->params['theme']);
-    	
     	if (isset($this->params['sv']) && THEME_STYLE!=$this->params['sv']) {
             expSettings::change('THEME_STYLE', $this->params['sv']);
     	    if (expFile::recurse_copy(BASE."themes/".$this->params['theme']."/css", BASE."themes/".$this->params['theme']."/styles_backup/css")
@@ -628,9 +622,6 @@ class administrationController extends expController {
     }	
     
     public function configure_site () {
-        // little glue to help things move along
-//        require_once(BASE.'framework/core/subsystems-1/config.php');
-
         // TYPES OF ANTISPAM CONTROLS... CURRENTLY ONLY ReCAPTCHA
         $as_types = array(
             '0'=>'-- Please Select an Anti-Spam Control --',
@@ -709,8 +700,6 @@ class administrationController extends expController {
     }
     
     public function update_siteconfig () {
-//        include_once(BASE.'framework/core/subsystems-1/config.php');
-
         foreach ($this->params['sc'] as $key => $value) {
             expSettings::change($key, addslashes($value));
         }

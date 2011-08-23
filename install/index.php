@@ -38,8 +38,6 @@ if (!file_exists('not_configured') && file_exists(BASE.'conf/config.php')) {
 	exit(gt('This Exponent Site has already been configured.'));
 }
 
-//include_once(BASE . 'framework/core/subsystems-1/config.php');  // FIXME loaded by config/load in exponent.php above
-
 if (isset($_POST['sc'])) {
 
     if (file_exists("../conf/config.php")) {

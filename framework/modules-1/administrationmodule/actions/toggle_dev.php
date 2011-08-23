@@ -23,7 +23,6 @@
 if (!defined('EXPONENT')) exit('');
 
 if (exponent_permissions_check('development',exponent_core_makeLocation('administrationmodule'))) {
-//	include_once(BASE.'framework/core/subsystems-1/config.php');
 	$value = (DEVELOPMENT == 1) ? 0 : 1;
 	expSettings::change('DEVELOPMENT', $value);
 	expTheme::removeCss();

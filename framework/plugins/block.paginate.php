@@ -20,7 +20,6 @@
 
 function smarty_block_paginate($params,$content,&$smarty) {
 	if ($content) {
-//		require_once(BASE."framework/core/subsystems-1/javascript.php");
 ?>
 
 	<script language="JavaScript">
@@ -91,8 +90,6 @@ function smarty_block_paginate($params,$content,&$smarty) {
 
 	}
 
-
-
 	//This is the main Sorting/Filtering/Paging class
 	var paginate = new function() {
 
@@ -116,7 +113,6 @@ function smarty_block_paginate($params,$content,&$smarty) {
 
 		//This is an array of cColumn Objects
 		this.columns = new Array();
-
 
 		//This is an array of cFilter Objects.
 		this.filters = new Array();
@@ -214,8 +210,6 @@ function smarty_block_paginate($params,$content,&$smarty) {
 			}
 		}
 
-
-
 		this.sort = function(index,doNotDraw) {
 			for (var data in this.columns) {
 				if (data == index) {
@@ -265,7 +259,6 @@ function smarty_block_paginate($params,$content,&$smarty) {
 		this.selectedPage = function(select) {
 			this.gotoPage(parseInt(select.options[select.selectedIndex].value) + 1);
 		}
-
 
 		this.drawTable = function() {
 			var ptTable = document.getElementById(this.tableName);
@@ -490,7 +483,6 @@ function smarty_block_paginate($params,$content,&$smarty) {
 					}
 				}
 
-
 				var cell = document.createElement("span");
 				for (key1 in this.filters) {
 					var filter = this.filters[key1];
@@ -564,7 +556,6 @@ function smarty_block_paginate($params,$content,&$smarty) {
 			paginate.columns.push(new cColumn(attribute,attribute,null));
 		}
 
-
 	<?php
 
 		//This will load up the data...
@@ -587,7 +578,6 @@ function smarty_block_paginate($params,$content,&$smarty) {
 	var sortcolumn = getCookie(paginate.name + "_sortcolumn");
 	var sortdirection = getCookie(paginate.name + "_sortdirection");
 	paginate.applyFilter("fromcookie");
-
 
 	</script>
 <?php
