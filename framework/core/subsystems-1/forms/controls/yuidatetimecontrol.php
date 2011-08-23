@@ -90,7 +90,7 @@ class yuidatetimecontrol extends formcontrol {
         }
         
         $script = "
-        YUI({ base:EXPONENT.YUI3_PATH,loadOptional: true}).use('*', function(Y) {
+        YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
             Y.on('click',function(e){
                 var cal = Y.one('#datetime-".$name."');
                 if (cal.getStyle('display')=='none') {
@@ -104,7 +104,7 @@ class yuidatetimecontrol extends formcontrol {
         
         expJavascript::pushToFoot(array(
             "unique"=>"newsmod-".$name,
-            "yui3mods"=>"node",
+            "yui3mods"=>"1",
             "content"=>$script,
          ));
              

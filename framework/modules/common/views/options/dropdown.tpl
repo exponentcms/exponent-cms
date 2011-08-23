@@ -25,7 +25,7 @@
 
 {*script unique="optionselector"}
 {literal}
-YUI({base:EXPONENT.YUI3_PATH}).use('*',function(Y) {
+YUI(EXPONENT.YUI3_CONFIG).use('node',function(Y) {
     
     Y.on('domready',function(){
     
