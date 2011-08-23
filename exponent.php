@@ -29,9 +29,8 @@
  */
 
 require_once('exponent_bootstrap.php');
-
 // Initialize the AutoLoader subsystem - for objects we want loaded on the fly
-require_once(BASE.'framework/core/subsystems/autoloader.php');
+//require_once(BASE.'framework/core/subsystems/autoloader.php');
 
 // Initialize the MVC framework - for objects we need loaded now
 require_once(BASE.'framework/core/expFramework.php');
@@ -48,15 +47,15 @@ expSession::initialize();
 
 // Initialize the theme subsystem 1.0 compatibility layer
 require_once(BASE.'framework/core/subsystems-1/theme.php');
-$validateTheme = array("headerinfo"=>false,"footerinfo"=>false);
+//$validateTheme = array("headerinfo"=>false,"footerinfo"=>false);
 
 // Initialize the language subsystem
 //require_once(BASE.'framework/core/subsystems-1/lang.php');
 //exponent_lang_initialize();
 // Load 2.0 language
-$cur_lang = array();
-$default_lang = array();
-$target_lang_file = '';
+//$cur_lang = array();
+//$default_lang = array();
+//$target_lang_file = '';
 expLang::loadLang();
 
 // Initialize the Core Subsystem
@@ -99,8 +98,7 @@ $SYS_FLOW_REDIRECTIONPATH = 'exponent_default';
 require_once(BASE.'framework/core/subsystems-1/users.php');
 
 // Initialize the javascript subsystem
-require_once(BASE.'framework/core/subsystems-1/javascript.php');
-
+//require_once(BASE.'framework/core/subsystems-1/javascript.php');
 if (expJavascript::inAjaxAction()) set_error_handler('handleErrors');
 
 // Validate the session.  This will populate the $user variable

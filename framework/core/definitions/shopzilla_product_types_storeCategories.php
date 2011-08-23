@@ -2,8 +2,8 @@
 
 ##################################################
 #
-# Copyright (c) 2007-2008 OIC Group, Inc.
-# Written and Designed by Adam Kessler, Phillip Ball, Ron Miller
+# Copyright (c) 2004-2008 OIC Group, Inc.
+# Written and Designed by Adam Kessler`
 #
 # This file is part of Exponent
 #
@@ -17,14 +17,18 @@
 #
 ##################################################
 
-function smarty_block_pop($params,$content,&$smarty, &$repeat) {
-	if($content){
-		$params['content'] = $content;
-//		exponent_javascript_panel($params);
-		expJavascript::panel($params);
-	}
-	
-}
+if (!defined('EXPONENT')) exit('');
+
+return array(
+	'storecategories_id'=>array(
+		DB_FIELD_TYPE=>DB_DEF_ID,
+        DB_PRIMARY=>true,
+        DB_INCREMENT=>false),
+	'shopzilla_product_types_id'=>array(
+		DB_FIELD_TYPE=>DB_DEF_ID,
+        DB_PRIMARY=>true,
+        DB_INCREMENT=>false)
+		
+);
 
 ?>
-

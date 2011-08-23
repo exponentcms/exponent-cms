@@ -26,7 +26,7 @@
 
 {script unique="continue-passthru-checkout"}
 {literal}
-    YUI({ base:EXPONENT.URL_FULL+'external/yui3/build/',loadOptional: true}).use('node', function(Y) {
+    YUI({ base:EXPONENT.YUI3_PATH,loadOptional: true}).use('node', function(Y) {
         //Y.one('#cont-checkout').setStyle('display','none');
         Y.one('#continue-passthru-checkout').on('click',function(e){
             e.halt();

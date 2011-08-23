@@ -16,7 +16,7 @@
  
 <div class="formmodule view-form">
 	<div align="center">
-		<h1>'Form Editor'|gettext}</h1>
+		<h1>{'Form Editor'|gettext}</h1>
 		{if $edit_mode != 1}
 			{'Use the drop down to add fields to this form.'|gettext}
 		{/if}

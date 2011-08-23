@@ -179,7 +179,7 @@ class expTheme {
         );
         
         foreach ($dirs as $dir) {
-            if (file_exists($dir.$filename.'.tpl')) return $dir.$form.'.tpl';    
+            if (file_exists($dir.$filename.'.tpl')) return $dir.$form.'.tpl';  //FIXME $form is not set??
         }
         
         return false;

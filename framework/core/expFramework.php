@@ -15,6 +15,33 @@
 #
 ##################################################
 
+//Global Variables
+$available_controllers = array();
+
+//expTheme
+$validateTheme = array("headerinfo"=>false,"footerinfo"=>false);
+
+// expLang
+$cur_lang = array();
+$default_lang = array();
+$target_lang_file = '';
+
+// database subsystem
+$db = null;
+
+// expHistory
+$history = null;
+$SYS_FLOW_REDIRECTIONPATH = '';
+
+// user subsystem
+$user = null;
+
+// expRouter
+$router = null;
+
+// core subsystem
+$sections = array();
+
 function renderAction(array $parms=array()) {
     //because we love you
     global $user;
@@ -448,7 +475,7 @@ function loadModulesDir($dir, &$controllers) {
 //	                        $module->module = substr($ctl_file,0,-4);
 //	                        $module->active = 1;
 //	                        $module->path = $dirpath.'/'.$ctl_file;
-//	                        $db->insertObject($module,'modstate');
+//	                        if (($db->selectObject('modstate','module = "'.substr($ctl_file,0,-4).'"')) == null) $db->insertObject($module,'modstate');
                         }
                     }
                 }
@@ -463,7 +490,7 @@ function loadModulesDir($dir, &$controllers) {
 //                            $module->module = substr($ctl_file,0,-4);
 //                            $module->active = 1;
 //                            $module->path = $dirpath.'/'.$ctl_file;
-//                            $db->insertObject($module,'modstate');
+//	                          if (($db->selectObject('modstate','module = "'.substr($ctl_file,0,-4).'"')) == null) $db->insertObject($module,'modstate');
                         }
                     }
                 }

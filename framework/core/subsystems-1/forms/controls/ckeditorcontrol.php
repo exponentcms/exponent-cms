@@ -96,6 +96,7 @@ class ckeditorcontrol extends formcontrol {
 					filebrowserImageBrowseLinkUrl : '".PATH_RELATIVE."external/editors/connector/CKeditor_link.php',
 					extraPlugins : '".$plugins."',
 					entities_additional : '',
+					contentsCSS : '".THEME_RELATIVE."css/base-styles.css',
 					uiColor : '#dedede'
                 });
 				

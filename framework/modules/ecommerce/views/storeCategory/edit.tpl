@@ -63,6 +63,7 @@
 				<li><a href="#bing_product_types"><em>Bing Product Types</em></a></li>
 				<li><a href="#google_product_types"><em>Google Product Types</em></a></li>
 				<li><a href="#nextag_product_types"><em>Nextag Product Types</em></a></li>
+				<li><a href="#shopzilla_product_types"><em>Shopzilla Product Types</em></a></li>
             </ul>            
             <div class="yui-content">
                 <div id="general">   
@@ -92,6 +93,10 @@
 				<div id="nextag_product_types">	
 					<h1>Nextag Product Types</h1>
 					{$product_types.nextag}
+				</div>
+				<div id="shopzilla_product_types">	
+					<h1>Shopzilla Product Types</h1>
+					{$product_types.shopzilla}
 				</div>
             </div>    
         </div>
