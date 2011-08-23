@@ -230,7 +230,14 @@ class expMail {
 
 //		$to = isset($params['to']) ? $params['to'] : SMTP_FROMADDRESS;
 //		$this->addTo($params['to']);
-		$this->message->setTo(isset($params['to']) ? $params['to'] : SMTP_FROMADDRESS);
+		if (is_array($params['to'])) {
+			$params['to'] = array_filter($params['to']);
+		} elseif (empty($params['to'])) {
+			$params['to'] = SMTP_FROMADDRESS;
+		} else {
+			trim($params['to']);
+		}
+		$this->message->setTo($params['to']);
 
 //		if (!empty($params['from'])) {
 //			if (stristr('^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$', $params['from'])) {
@@ -239,7 +246,14 @@ class expMail {
 //		$from = isset($params['from']) ? $params['from'] : SMTP_FROMADDRESS;
 //		$fromname = isset($params['from_name']) ? $params['from_name'] : null;
 //		$this->message->setFrom($from, $fromname);
-		$this->message->setFrom(isset($params['from']) ? $params['from'] : SMTP_FROMADDRESS);
+		if (is_array($params['from'])) {
+			$params['from'] = array_filter($params['from']);
+		} elseif (empty($params['to'])) {
+			$params['from'] = SMTP_FROMADDRESS;
+		} else {
+			trim($params['from']);
+		}
+		$this->message->setFrom($params['from']);
 //		}
 
 		$this->message->setSubject($params['subject'] = !empty($params['subject']) ? $params['subject'] : 'Message from '.SITE_TITLE);

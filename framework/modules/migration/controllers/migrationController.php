@@ -583,6 +583,10 @@ class migrationController extends expController {
 					}
 					if ($item && $db->selectObject('container',"internal = '".serialize($loc)."'")) {
 						$db->insertObject($item,'userpermission');
+						if ($item->permission == 'edit') {  // if they had edit permission, we'll also give them create permission
+							$item->permission = 'create';
+							@$db->insertObject($item,'userpermission');
+						}
 					}
 				}
 			}
@@ -601,6 +605,10 @@ class migrationController extends expController {
 					}
 					if ($item && $db->selectObject('container',"internal = '".serialize($loc)."'")) {
 						$db->insertObject($item,'grouppermission');
+						if ($item->permission == 'edit') {  // if they had edit permission, we'll also give them create permission
+							$item->permission = 'create';
+							@$db->insertObject($item,'grouppermission');
+						}
 					}
 				}
 			}
@@ -1006,6 +1014,9 @@ class migrationController extends expController {
 				break;
             case 'newsmodule':
 
+	            if ($module->view == 'Featured News') {
+		            $only_featured = true;
+	            }
 				switch ($module->view) {
 					case 'Headlines':
 						$module->view = 'showall_headlines';
@@ -1077,6 +1088,9 @@ class migrationController extends expController {
 						$newrss->rss_limit = isset($oldconfig->rss_limit) ? $oldconfig->rss_limit : 24;
 						$newrss->rss_cachetime = isset($oldconfig->rss_cachetime) ? $oldconfig->rss_cachetime : 1440;
 						$newrss->save();
+					}
+					if ($only_featured) {
+						$newconfig->config[only_featured] = true;
 					}
 					if ($newconfig != null) {
 						$newconfig->location_data = $loc;
@@ -1335,12 +1349,33 @@ class migrationController extends expController {
                             // $file = new expFile($bi['file_id']);
                             // $post->attachitem($file,'downloadable');
                         // }
-						$comments = $old_db->selectObjects('weblog_comment', "location_data='".serialize($iloc)."'");
+
+                        if (isset($oldconfig->enable_tags) && $oldconfig->enable_tags = true) {
+	                        $params = null;;
+							$oldtags = expUnserialize($bi['tags']);
+							foreach ($oldtags as $oldtag){
+								$tagtitle = strtolower(trim($old_db->selectValue('tags','name','id = '.$oldtag)));
+								$tag = new expTag($tagtitle);
+//								$tag->title = $old_db->selectValue('tags','name','id = '.$oldtag);
+								if (empty($tag->id)) $tag->update(array('title'=>$tagtitle));
+								$params['expTag'][] = $tag->id;
+							}
+							$post->update($params);
+                        }
+
+						$comments = $old_db->selectArrays('weblog_comment', "parent_id='".$post->id."'");
 						foreach($comments as $comment) {
+							unset($comment['id']);
 							$newcomment = new expComment($comment);
 							$newcomment->created_at = $comment['posted'];
 							$newcomment->edited_at = $comment['edited'];
-							$post->attachitem($newcomment,'');
+							$newcomment->update();
+							// attach the comment to the blog post it belongs to
+							$obj->content_type = 'blog';
+							$obj->content_id = $post->id;
+							$obj->expcomments_id = $newcomment->id;
+							if(isset($this->params['subtype'])) $obj->subtype = $this->params['subtype'];
+							$db->insertObject($obj, $newcomment->attachable_table);
 						}
                     }
                     $newconfig = new expConfig();

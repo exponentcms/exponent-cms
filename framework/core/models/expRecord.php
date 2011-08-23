@@ -49,14 +49,16 @@ class expRecord {
     public $supports_revisions = false;
 
     //changed to nothing by default to speed things up. FJD
-    protected $attachable_item_types = array(); 
-   /* protected $attachable_item_types = array(
-        'content_expFiles'=>'expFile', 
-        'content_expTags'=>'expTag', 
-        'content_expComments'=>'expComment',
-        'content_expSimpleNote'=>'expSimpleNote',
-        //'content_expEventdate'=>'expEventdate', 
-    );*/
+    protected $attachable_item_types = array();
+	public $attachable_items_to_save;
+
+	/* protected $attachable_item_types = array(
+			'content_expFiles'=>'expFile',
+			'content_expTags'=>'expTag',
+			'content_expComments'=>'expComment',
+			'content_expSimpleNote'=>'expSimpleNote',
+			//'content_expEventdate'=>'expEventdate',
+		);*/
 
 	/**
 	 * is model content searchable?
@@ -324,7 +326,6 @@ class expRecord {
         
         // make sure we have the info we need..otherwise return
         if (empty($item->id) && empty($this->id)) return false;
-        global $db;
         // save the attachable items
         $refname = strtolower($item->classname).'s_id';
         $db->delete($item->attachable_table, 'content_type="'.$this->classname.'" AND content_id='.$this->id.' AND '.$refname.'='.$item->id);
