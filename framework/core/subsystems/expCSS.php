@@ -144,9 +144,8 @@ class expCSS {
                 }
             }
         }
-
-        //return $css_theme;
-        //eDebug($css_files);
+        // return the theme files in alphabetical order
+        ksort($css_theme);
     }
 
 }
