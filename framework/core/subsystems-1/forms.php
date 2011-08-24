@@ -82,10 +82,6 @@ function exponent_forms_initialize() {
  * This function complements exponent_forms_cleanup, by properly
  * cleaning up AutoLoader modifications made by the initialization.
  *
- * While this only benefits servers running PHP5, it does not adversely
- * affect PHP4 servers.  For best practices, always call exponent_forms_cleanup
- * if you have called exponent_forms_initialize.
- *
  * @node Subsystems:Forms
  */
 function exponent_forms_cleanup() {

@@ -51,7 +51,6 @@ echo "</xmp>";
 return array(
 	gt('Display Settings'),
 	array(
-//		'DISPLAY_LANGUAGE'=>array(
 		'LANGUAGE'=>array(
 			'title'=>gt('Language'),
 			'description'=>gt('The language to use.'),

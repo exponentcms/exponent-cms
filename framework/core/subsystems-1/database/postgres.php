@@ -143,10 +143,6 @@ class postgres_database {
 			pg_query($indexes_sql);
 		}
 		
-//		if (isset($info[DB_TABLE_WORKFLOW]) && $info[DB_TABLE_WORKFLOW]) {
-//			// Initialize workflow tables:
-//			exponent_workflow_installWorkflowTables($tablename,$datadef);
-//		}
 	}
 	
 	function fieldSQL($name,$def) {
@@ -204,11 +200,6 @@ class postgres_database {
 				pg_query($this->connection,$sql);
 			}
 		}
-		
-//		if (isset($info[DB_TABLE_WORKFLOW]) && $info[DB_TABLE_WORKFLOW]) {
-//			// Initialize workflow tables:
-//			exponent_workflow_alterWorkflowTables($tablename,$newdatadef);
-//		}
 		
 		if ($modified) {
 			return TABLE_ALTER_SUCCEEDED;

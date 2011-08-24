@@ -80,7 +80,6 @@ class yuieditorcontrol extends formcontrol {
 
 		})();";
 		
-//		exponent_javascript_toFoot('editor-'.$name,'editor', null, $script);
 		expJavascript::pushToFoot(array(
 		    "unique"=>'editor-'.$name,
 		    "yui2mods"=>'editor',

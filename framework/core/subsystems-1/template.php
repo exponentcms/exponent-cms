@@ -104,10 +104,6 @@ class BaseTemplate {
 		
 		$this->tpl->assign("__view", $this->view);
 		$this->tpl->assign("__redirect", expHistory::getLastNotEditable());
-		
-		// Load language constants
-		//$this->tpl->assign('_TR',exponent_lang_loadFile($this->langdir . $this->view . '.php'));
-		
 	}
 	
 	/*
@@ -126,7 +122,6 @@ class BaseTemplate {
 	function output() {
 		// javascript registration
 		
-		//$this->tpl->assign('_TR',exponent_lang_loadFile($this->langdir."".$this->view.'.php')); //fix lamp issue
 		$this->tpl->display($this->view.'.tpl');
 	}
 	
@@ -146,9 +141,6 @@ class BaseTemplate {
 	 * Render the template and return the result to the caller.
 	 */
 	function render() { // Caching support?
-		// Load language constants
-		//$this->tpl->assign('_TR',exponent_lang_loadFile($this->viewdir.'/'.$this->view.'.php'));
-		//$this->tpl->assign('_TR', exponent_lang_loadFile($this->langdir . $this->view . '.php')); //fix lamp issue
 		return $this->tpl->fetch($this->view.'.tpl');
 	}
 }
@@ -235,8 +227,6 @@ class controllerTemplate extends baseTemplate {
 		$this->tpl->assign("__view", $this->view);
 		$this->tpl->assign("__redirect", expHistory::getLastNotEditable());
 		
-		// Load language constants
-		//$this->tpl->assign('_TR',exponent_lang_loadFile($this->langdir . $this->view . '.php'));
 		$this->tpl->assign("__loc",$controller->loc);
 		$this->tpl->assign("__name", $controller->baseclassname);
 		

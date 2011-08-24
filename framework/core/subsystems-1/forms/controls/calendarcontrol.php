@@ -246,7 +246,6 @@ class calendarcontrol extends formcontrol {
     	    )
     	);
 	
-//        exponent_javascript_toFoot('calpop'.$name, "button,calendar,container,dragdrop,slider", null, $script);
         expJavascript::pushToFoot(array(
             "unique"=>'calpop'.$name,
             "yui2mods"=>"button,calendar,container,dragdrop,slider",

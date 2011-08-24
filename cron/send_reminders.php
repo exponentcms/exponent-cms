@@ -78,11 +78,6 @@ $template->assign("time",$time);
 // }
 
 include_once(BASE . "framework/core/subsystems-1/datetime.php");
-//if (!function_exists("exponent_sorting_byEventStartAscending")) {
-//	function exponent_sorting_byEventStartAscending($a,$b) {
-//		return ($a->eventstart < $b->eventstart ? -1 : 1);
-//	}
-//}
 
 
 
@@ -165,7 +160,6 @@ for ($i = 0; $i < $totaldays; $i++) {
 	}
 	$counts[$start] = count($days[$start]);
 	$count += count($days[$start]);
-//	usort($days[$start],"exponent_sorting_byEventStartAscending");
 	$days[$start] = expSorter::sort(array('array'=>$days[$start],'sortby'=>'eventstart', 'order'=>'ASC'));
 }
 $template->assign("days",$days);
@@ -266,7 +260,6 @@ $template->assign("totaldays",$totaldays);
 			// "delete"=>(exponent_permissions_check("delete",$thisloc) || exponent_permissions_check("delete",$loc))
 		// );
 	// }
-	// usort($items,"exponent_sorting_byEventStartAscending");
 	// $items = expSorter::sort(array('array'=>$items,'sortby'=>'eventstart', 'order'=>'ASC'));
 	// $template->assign("items",$items);
 // } else if ($viewparams['type'] == "default") {

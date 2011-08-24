@@ -285,7 +285,6 @@ class filemanagercontrol extends formcontrol {
         	    )
         	);
 
-//        exponent_javascript_toFoot("filepicker".$name,"json,connection","dd-constrain,dd-proxy,dd-drop",$js,"");
             expJavascript::pushToFoot(array(
                 "unique"=>"filepicker".$name,
                 "yui2mods"=>"json,connection",

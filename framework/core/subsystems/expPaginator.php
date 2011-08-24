@@ -405,7 +405,6 @@ class expPaginator {
                     });
                     ";
                     
-//                    exponent_javascript_toFoot('select-all', '', null, $js, null);
                     expJavascript::pushToFoot(array(
                         "unique"=>'select-all',
                         "yui2mods"=>'',

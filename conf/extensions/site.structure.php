@@ -34,7 +34,7 @@ $stuff = array(
 	gt('General Site Configuration'),
 	array(
 		'ORGANIZATION_NAME'=>array(
-            'title'=>gt('Organization Name'),
+            'title'=>gt('Site/Organization Name'),
             'description'=>gt('The name of your company or organization.  This is used in several places in the system.'),
             'control'=>new textcontrol()
         ),
@@ -53,16 +53,6 @@ $stuff = array(
 //			'description'=>gt('What language should be used for the Exponent interface?'),
 //			'control'=>new dropdowncontrol(0,exponent_lang_list())
 //		),
-		/*'SITE_ALLOW_REGISTRATION'=>array(
-			'title'=>gt('Allow Registration?'),
-			'description'=>gt('Whether or not new users should be allowed to create accounts for themselves.'),
-			'control'=>new checkboxcontrol()
-		),
-		'SITE_USE_ANTI_SPAM'=>array(
-			'title'=>gt('Use CAPTCHA Test?'),
-			'description'=>gt('A CAPTCHA (Computer Automated Public Turing Test to Tell Computers and Humans Apart) is a means to prevent massive account registration.  When registering a new user account, the visitor will be required to enter a series of letters and numbers appearing in an image.  This prevents scripted bots from registering a large quantity of accounts.'),
-			'control'=>new checkboxcontrol()
-		),*/
 		'SITE_KEYWORDS'=>array(
 			'title'=>gt('Keywords'),
 			'description'=>gt('Search engine keywords for the site.'),
@@ -138,16 +128,6 @@ $stuff = array(
 			'description'=>gt('Full URL of the website with SSL support (usually starting with "https://")'),
 			'control'=>new textcontrol()
 		),
-//		'ENABLE_WORKFLOW'=>array(
-//			'title'=>gt('Enable Workflow'),
-//			'description'=>gt('Turns workflow on and off.  Leave off unless you are specifically using it, as workflow will effect system performance.'),
-//			'control'=>new checkboxcontrol()
-//		),
-//		'WORKFLOW_REVISION_LIMIT'=>array(
-//			'title'=>gt('Revision History Limit'),
-//			'description'=>gt('The maximum number of major revisions (excluding the "current" revision) to keep per item of content.  A limit of 0 (zero) means that all revisions will be kept.'),
-//			'control'=>new textcontrol()
-//		),
 		'HELP_URL'=>array(
 			'title'=>gt('URL For Help Documentation'),
 			'description'=>gt('This is where Exponent will look for help docs.  If unsure, leave the defaults unchanged.'),

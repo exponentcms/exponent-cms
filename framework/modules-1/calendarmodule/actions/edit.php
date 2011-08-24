@@ -62,7 +62,6 @@ if (($item == null && exponent_permissions_check('post',$loc)) ||
 				// $tags = array_merge($tags, $available_tags);
 			// }
 
-			// usort($tags, "exponent_sorting_byNameAscending");
 			//$tags = expSorter::sort(array('array'=>$tags,'sortby'=>'name', 'order'=>'ASC', 'ignore_case'=>true));
 			// $tag_list = array();
 			// foreach ($tags as $tag) {

@@ -336,7 +336,6 @@ class expJavascript {
 				break;
 		}
 
-//		exponent_javascript_toFoot('pop-'.$params['name'], 'animation,container', null, $script);
 		expJavascript::pushToFoot(array(
 		    "unique"=>'pop-'.$params['name'],
 		    "yui2mods"=>'animation,container',

@@ -337,7 +337,6 @@ function exponent_users_groupManagerFormTemplate($template) {
 	global $db;
 	$groups = $db->selectObjects('group');
 
-//	usort($groups,'exponent_sorting_byNameAscending');
 	$groups = expSorter::sort(array('array'=>$groups,'sortby'=>'name', 'order'=>'ASC'));
 
 	$template->assign('groups',$groups);

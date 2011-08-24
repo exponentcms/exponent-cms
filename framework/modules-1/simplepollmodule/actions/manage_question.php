@@ -47,7 +47,6 @@ if ($question) {
 		expHistory::flowSet(SYS_FLOW_PROTECTED,SYS_FLOW_ACTION);
 	
 		$answers = $db->selectObjects('poll_answer','question_id='.$question->id);
-//		uasort($answers,'exponent_sorting_byRankAscending');
 		$answers = expSorter::sort(array('array'=>$answers,'sortby'=>'rank', 'order'=>'ASC', 'type'=>'a'));
 
 		$template = new template('simplepollmodule','_manageQuestion',$loc);

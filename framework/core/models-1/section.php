@@ -72,7 +72,6 @@ class section {
 			if (count($sections) && $object->parent >= 0) {
 				// Initialize the sorting subsystem so that we can order the sections
 				// by rank, ascending, and get the proper ordering.
-//				usort($sections,'exponent_sorting_byRankAscending');
 				$sections = expSorter::sort(array('array'=>$sections,'sortby'=>'rank', 'order'=>'ASC'));
 
 				// Generate the Position dropdown array.

@@ -31,12 +31,6 @@ if ($item) {
 		$template->assign('checked_date',$eventdate);
 		
 		$eventdates = $db->selectObjects('eventdate','event_id='.$item->id);
-//		if (!function_exists('exponent_sorting_byDateAscending')) {
-//			function exponent_sorting_byDateAscending($a,$b) {
-//				return ($a->date > $b->date ? 1 : -1);
-//			}
-//		}
-//		usort($eventdates,'exponent_sorting_byDateAscending');
 		$eventdates = expSorter::sort(array('array'=>$eventdates,'sortby'=>'date', 'order'=>'ASC'));
 
 		$template->assign('dates',$eventdates);
