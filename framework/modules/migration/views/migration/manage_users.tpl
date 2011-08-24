@@ -126,5 +126,5 @@
         {control type="buttongroup" submit="Migrate Users/Groups" cancel="Cancel"}
     {/form}
 	{br}<hr>{br}
-	<a class="admin" href="{link module=migration action=manage_pages}"><b>Next Step -> Migrate Pages</b></a>
+	<a class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" href="{link module=migration action=manage_pages}"><b>Next Step -> Migrate Pages</b></a>
 </div>
