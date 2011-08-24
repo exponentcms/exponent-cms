@@ -52,16 +52,14 @@ class clear_cache extends upgradescript {
 	function upgrade() {
 		// work our way through all the tmp files and remove them
 		$files = array(
-//			BASE.'tmp/mail',  // not used??  FIXME
-//			BASE.'tmp/pods',  // not used??  FIXME
 			BASE.'tmp/css',  // exponent minified css cache
 			BASE.'tmp/minify', // minify cache
 			BASE.'tmp/pixidou', // (new) pixidou cache
-//			BASE.'framework/modules/pixidou/images', // (old) pixidou cache
 		    BASE.'tmp/rsscache',  // magpierss cache
 		    BASE.'tmp/views_c',  // smarty cache
 		    BASE.'tmp/cache',  // alternate smarty cache
 			BASE.'tmp/img_cache', // phpThumb cache includes subfolders
+			BASE.'tmp/extensionuploads', // extensions are uploaded here, includes subfolders
 		);
 
         // delete the files.

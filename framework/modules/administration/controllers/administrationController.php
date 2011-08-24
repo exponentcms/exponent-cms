@@ -434,7 +434,7 @@ class administrationController extends expController {
 	}
 
 	public function clear_image_cache() {
-		expFile::removeFilesInDirectory(BASE.'tmp/pixidou');  // alt location for pixidou cache
+		expFile::removeFilesInDirectory(BASE.'tmp/pixidou');
 		if (file_exists(BASE.'tmp/img_cache')) expFile::removeFilesInDirectory(BASE.'tmp/img_cache');
 		$message = "Image/Pixidou Cache has been cleared" ;
 		flash('message',$message);
@@ -451,8 +451,9 @@ class administrationController extends expController {
 	public function clear_all_caches() {
 		expTheme::removeSmartyCache();
 		expTheme::removeCss();
-		expFile::removeFilesInDirectory(BASE.'tmp/pixidou');  // alt location for pixidou cache
+		expFile::removeFilesInDirectory(BASE.'tmp/pixidou');
 		if (file_exists(BASE.'tmp/img_cache')) expFile::removeFilesInDirectory(BASE.'tmp/img_cache');
+		if (file_exists(BASE.'tmp/extensionuploads')) expFile::removeFilesInDirectory(BASE.'tmp/extensionuploads');
 		expFile::removeFilesInDirectory(BASE.'tmp/rsscache');
 		$message = "All the System Caches have been cleared" ;
 		flash('message',$message);
