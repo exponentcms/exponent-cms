@@ -19,18 +19,17 @@
 
 if (!defined('EXPONENT')) exit('');
 
-$mods = array();
-$dh = opendir(BASE.'files');
-while (($file = readdir($dh)) !== false) {
-	if (is_dir(BASE.'files/'.$file) && $file{0} != '.' && class_exists($file)) {
-		$mods[$file] = call_user_func(array($file,'name'));
-	}
-}
-
-uasort($mods,'strnatcmp');
+//$mods = array();
+//$dh = opendir(BASE.'files');
+//while (($file = readdir($dh)) !== false) {
+//	if (is_dir(BASE.'files/'.$file) && $file{0} != '.' && class_exists($file)) {
+//		$mods[$file] = call_user_func(array($file,'name'));
+//	}
+//}
+//uasort($mods,'strnatcmp');
 
 $template = new template('exporter','_files_modList',$loc);
-$template->assign('mods',$mods);
+//$template->assign('mods',$mods);
 $template->output();
 
 ?>

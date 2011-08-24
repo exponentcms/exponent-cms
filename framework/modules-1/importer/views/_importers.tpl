@@ -28,7 +28,7 @@
 				<td class="administration_modmgrbody">
 					{$importer.description}
 					<hr size='1'/>
-					<a class="mngmntlink administration_mngmntlink" href="{link module=importer action=page page=start importer=$impname}">{'Run'|gettext} {$importer.name}</a>
+					<a class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" href="{link module=importer action=page page=start importer=$impname}">{'Run'|gettext} {$importer.name}</a>
 				</td>
 			</tr>
 			<tr><td></td></tr>
