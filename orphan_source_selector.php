@@ -24,6 +24,8 @@ define('SCRIPT_FILENAME','orphan_source_selector.php');
 // Initialize the Exponent Framework
 include_once('exponent.php');
 
+if (!$user->isLoggedIn()) exit();
+
 define('PREVIEW_READONLY',1); // for mods
 define('SOURCE_SELECTOR',2);
 define('SELECTOR',1);
