@@ -658,7 +658,7 @@ class cartController extends expController {
 		}
 		
 		if (!empty($this->params['shipping'])) {
-		    die('NEED TO IMPLEMENT THE SHIPPING PIECE!!');
+		    die('NEED TO IMPLEMENT THE SHIPPING PIECE!!'); //TODO
 		    $shipping = new shipping();
     		$shipping->shippingingmethod->setAddress($this->params['shipping']);
     		assign_to_template(array('shipping'=>$shipping));

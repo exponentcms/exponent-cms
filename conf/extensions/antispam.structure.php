@@ -70,13 +70,13 @@ return array(
 	)
 );
 
-$info = gd_info();
-if (!EXPONENT_HAS_GD) {
-	$stuff[1]['SITE_USE_ANTI_SPAM']['description'] = gt('A CAPTCHA (Computer Automated Public Turing Test to Tell Computers and Humans Apart) is a means to prevent massive account registration.  When registering a new user account, the visitor will be required to enter a series of letters and numbers appearing in an image.  This prevents scripted bots from registering a large quantity of accounts.').'<br /><br />'.
-	                                                 gt('<div class="error">The server\'s version and/or configuration of PHP does not include GD support, so you will not be able to activate or use the CAPTCHA test.</div>');
-	$stuff[1]['SITE_USE_ANTI_SPAM']['control']->disabled = true;
-}
-
-return $stuff;
+//$info = gd_info();
+//if (!EXPONENT_HAS_GD) {
+//	$stuff[1]['SITE_USE_ANTI_SPAM']['description'] = gt('A CAPTCHA (Computer Automated Public Turing Test to Tell Computers and Humans Apart) is a means to prevent massive account registration.  When registering a new user account, the visitor will be required to enter a series of letters and numbers appearing in an image.  This prevents scripted bots from registering a large quantity of accounts.').'<br /><br />'.
+//	                                                 gt('<div class="error">The server\'s version and/or configuration of PHP does not include GD support, so you will not be able to activate or use the CAPTCHA test.</div>');
+//	$stuff[1]['SITE_USE_ANTI_SPAM']['control']->disabled = true;
+//}
+//
+//return $stuff;
 
 ?>
