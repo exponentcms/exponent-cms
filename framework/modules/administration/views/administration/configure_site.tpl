@@ -52,14 +52,14 @@
                 <div id="tab1">
                     <h2>{"General Site Configuration"|gettext}</h2>
 					{help text="Learn More about general site configuration"|gettext module="general-configuration"}
-                    {control type="text" name="sc[ORGANIZATION_NAME]" label="Organization Name"|gettext value=$smarty.const.ORGANIZATION_NAME}
+                    {control type="text" name="sc[ORGANIZATION_NAME]" label="Site/Organization Name"|gettext value=$smarty.const.ORGANIZATION_NAME}
                     {control type="text" name="sc[SITE_TITLE]" label="Site Title"|gettext value=$smarty.const.SITE_TITLE}
 					{control type="text" name="sc[SITE_HEADER]" label="Site Header"|gettext value=$smarty.const.SITE_HEADER}
-                    {control type="checkbox" postfalse=1 name="sc[SEF_URLS]" label="Search Engine Friendly URLSs"|gettext checked=$smarty.const.SEF_URLS value=1}
+                    {control type="checkbox" postfalse=1 name="sc[SEF_URLS]" label="Search Engine Friendly URLs"|gettext checked=$smarty.const.SEF_URLS value=1}
 					{control type="checkbox" postfalse=1 name="sc[ADVERTISE_RSS]" label="Advertise all RSS Feeds to Web Browsers"|gettext checked=$smarty.const.ADVERTISE_RSS value=1}
                     {control type="dropdown" name="sc[SITE_DEFAULT_SECTION]" label="Default Section (Home Page)"|gettext items=$section_dropdown default=$smarty.const.SITE_DEFAULT_SECTION}
-                    {control type="textarea" name="sc[SITE_KEYWORDS]" label="Meta Keywords"|gettext value=$smarty.const.SITE_KEYWORDS}
-                    {control type="textarea" name="sc[SITE_DESCRIPTION]" label="Meta Description"|gettext value=$smarty.const.SITE_DESCRIPTION}
+                    {control type="textarea" name="sc[SITE_KEYWORDS]" label="(Meta) Keywords"|gettext value=$smarty.const.SITE_KEYWORDS}
+                    {control type="textarea" name="sc[SITE_DESCRIPTION]" label="(Meta) Description"|gettext value=$smarty.const.SITE_DESCRIPTION}
                 </div>
                 <div id="tab2">
 					<h2>{gettext str="Anti-Spam Measures"}</h2>

@@ -35,7 +35,6 @@ $script = "
 
     YAHOO.util.Event.on('reportabug','click',reportbugwindow);
 ";
-//exponent_javascript_toFoot('zreportabug', '', null, $script);
 expJavascript::pushToFoot(array(
     "unique"=>'zreportabug',
     "yui2mods"=>'',

@@ -240,7 +240,6 @@ class navigationmodule {
 		$html = '';
 		global $db;
 		$nodes = $db->selectObjects('section','parent='.$parent);
-//		usort($nodes,'exponent_sorting_byRankAscending');
 		$nodes = expSorter::sort(array('array'=>$nodes,'sortby'=>'rank', 'order'=>'ASC'));
 		foreach ($nodes as $node) {
 			if (($node->public == 1 || exponent_permissions_check('view',exponent_core_makeLocation('navigationmodule','',$node->id))) && !in_array($node->id,$ignore_ids)) {
@@ -269,7 +268,6 @@ class navigationmodule {
 		}
 		global $db;
 		$nodes = $db->selectObjects('section','parent='.$parent);
-//		usort($nodes,'exponent_sorting_byRankAscending');
 		$nodes = expSorter::sort(array('array'=>$nodes,'sortby'=>'rank', 'order'=>'ASC'));
 		foreach ($nodes as $node) {
 			if (($node->public == 1 || exponent_permissions_check('view',exponent_core_makeLocation('navigationmodule','',$node->id))) && !in_array($node->id,$ignore_ids)) {
@@ -301,7 +299,6 @@ class navigationmodule {
 			$kids = $cache['kids'][$parent];
 		}		
 			
-//		usort($kids,'exponent_sorting_byRankAscending');
 		$kids = expSorter::sort(array('array'=>$kids,'sortby'=>'rank', 'order'=>'ASC'));
 		for ($i = 0; $i < count($kids); $i++) {
 			$child = $kids[$i];
@@ -361,7 +358,6 @@ class navigationmodule {
 		
 		$arr = array();
 		$kids = $db->selectObjects('section_template','parent='.$parent);
-//		usort($kids,'exponent_sorting_byRankAscending');
 		$kids = expSorter::sort(array('array'=>$kids,'sortby'=>'rank', 'order'=>'ASC'));
 
 		for ($i = 0; $i < count($kids); $i++) {

@@ -20,19 +20,20 @@
 
 if (!defined('EXPONENT')) exit('');
 
-if (!isset($_POST['mods'])) {
-	echo gt('You must select at least one module to export files for.');
-	return;
-}
+//if (!isset($_POST['mods'])) {
+//	echo gt('You must select at least one module to export files for.');
+//	return;
+//}
 
 include_once(BASE.'external/Tar.php');
 
 $files = array();
-foreach (array_keys($_POST['mods']) as $mod) {
-	foreach ($db->selectObjects('file',"directory LIKE 'files/".$mod."%'") as $file) {
+//foreach (array_keys($_POST['mods']) as $mod) {
+//	foreach ($db->selectObjects('file',"directory LIKE 'files/".$mod."%'") as $file) {
+	foreach ($db->selectObjects('expFiles',1) as $file) {
 		$files[] = BASE.$file->directory.'/'.$file->filename;
 	}
-}
+//}
 
 $fname = tempnam(BASE.'/tmp','exporter_files_');
 $tar = new Archive_Tar($fname,'gz');

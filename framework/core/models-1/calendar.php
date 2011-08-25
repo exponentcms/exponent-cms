@@ -67,12 +67,6 @@ class calendar {
 			$template = new template('calendarmodule','_recur_dates');
 			global $db;
 			$eventdates = $db->selectObjects('eventdate','event_id='.$object->id);
-//			if (!function_exists('exponent_sorting_byDateAscending')) {
-//				function exponent_sorting_byDateAscending($a,$b) {
-//					return ($a->date > $b->date ? 1 : -1);
-//				}
-//			}
-//			usort($eventdates,'exponent_sorting_byDateAscending');
 			$eventdates = expSorter::sort(array('array'=>$eventdates,'sortby'=>'date', 'order'=>'ASC'));
 			if (isset($object->eventdate)) $template->assign('checked_date',$object->eventdate);
 			$template->assign('dates',$eventdates);

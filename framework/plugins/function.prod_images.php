@@ -168,7 +168,6 @@ function smarty_function_prod_images($params,&$smarty) {
                 
                 });
             ";
-//            exponent_javascript_toFoot('imgswatches', null, null, $js, null);
             expJavascript::pushToFoot(array(
                 "unique"=>'imgswatches',
                 "yui2mods"=>null,

@@ -85,7 +85,6 @@ class countryregioncontrol extends formcontrol {
 			$region->parent_id = 0;
 			$region->id = 0;
 			$region->name = "";
-//			$html .= exponent_javascript_class($region,"geoRegion");
 			$html .= expJavascript::jClass($region,"geoRegion");
 			$html .= "var geo_regions = new Array();\n";
 			foreach ($countries as $cid=>$cname) {
@@ -95,7 +94,6 @@ class countryregioncontrol extends formcontrol {
 					$region->id = $rid;
 					$region->name = $rname;
 					$html .= "geo_regions.push(";
-//					$html .= exponent_javascript_object($region,"geoRegion");
 					$html .= expJavascript::jObject($region,"geoRegion");
 					$html .= ");\n";
 				}

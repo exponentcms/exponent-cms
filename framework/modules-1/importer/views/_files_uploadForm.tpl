@@ -16,7 +16,7 @@
 
 <div class="importer importers">
 	<div class="form_header">
-		<h2>{'Import File Archive'|gettext}</h2>
+		<h2>{'Restore Uploaded Files from Archive'|gettext}</h2>
 		<p>{'To restore your uploaded files, simply select and upload the files archive using this form.'|gettext}</p>
 	</div>
 	{$form_html}

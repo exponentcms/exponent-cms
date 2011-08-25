@@ -54,10 +54,7 @@ if (exponent_permissions_check('configuration',exponent_core_makeLocation('admin
 	}
 	
 	$template->assign('modules',$mods);
-//	$template->assign('subsystems',exponent_info_subsystems());
-	
 	$template->assign('override_style',0);
-	
 	$template->output();
 	
 	exit(''); // Exit, since we are exporting.

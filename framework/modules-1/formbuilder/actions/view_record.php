@@ -34,7 +34,6 @@ $rpt = $db->selectObject('formbuilder_report','form_id='.$_GET['form_id']);
 
 if ($f && $controls && $data && $rpt) {
 	if (exponent_permissions_check('viewdata',unserialize($f->location_data))) {
-//		usort($controls,'exponent_sorting_byRankAscending');
 		$controls = expSorter::sort(array('array'=>$controls,'sortby'=>'rank', 'order'=>'ASC'));
 		
 		$fields = array();

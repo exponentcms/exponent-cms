@@ -14,17 +14,27 @@
  *
  *}
 
+{css unique="cal1" corecss="tables"}
+
+{/css}
+
 <div class="importer files-verifyfiles">
+	<div class="form_header">
+		<h2>{'Selected Files to Import'|gettext}</h2>
+	</div>
 	{assign var=haveFiles value=0}
 	{assign var=failed value=0}
 	{assign var=warn value=0}
-	<table cellspacing="0" cellpadding="0" border="0" width="100%">
-		{foreach from=$files_data item=mod_data key=modname }
-			<tr><td colspan="2"><b>{if $mod_data[0] != ''}{$mod_data[0]}{else}{'Unknown module'|gettext} : {$modname}{/if}</b></td></tr>
-			{foreach from=$mod_data[1] key=file item=status}
+	<table cellspacing="0" cellpadding="0" border="0" width="100%" class="exp-skin-table">
+		<thead>
+			<th>Filename</th>
+			<th></th>
+		</thead>
+		<tbody>
+			{foreach from=$files_data item=status key=filename }
 				{assign var=haveFiles value=1}
-				<tr>
-					<td style="padding-left: 2.5em;">{$file}</td>
+				<tr class="row {cycle values=even_row,odd_row}">
+					<td>{$filename}</td>
 					<td>
 						{if $status == $smarty.const.SYS_FILES_SUCCESS}
 							<span style="color: green;">{'passed'|gettext}</span>
@@ -37,19 +47,16 @@
 						{/if}
 					</td>
 				</tr>
-			{foreachelse}<tr><td colspan="2"><i>{'No Files found'|gettext}</i></td></tr>
+			{foreachelse}<tr><td colspan="2"><i>{'No Files Selected'|gettext}</i></td></tr>
 			{/foreach}
-		{foreachelse}<tr><td colspan="2"><i>{'No Module Types Selected'|gettext}</i></td></tr>
-		{/foreach}
+		</tbody>
 	</table>
 	{if $haveFiles == 1}
-		<br />
-		<hr size="1" />
 		{if $failed == 0}
 			{if $warn == 1}{'<b>Note:</b> Continuing with the installation will overwrite existing files.  It is <b>highly recommended</b> that you ensure that you want to do this.'|gettext}<br /><br />{/if}
-			<a class="mngmntlink" href="{link action=page page=finish importer=files}">{'Restore Files'|gettext}</a>
+			<a class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" href="{link action=page page=finish importer=files}">{'Restore Files'|gettext}</a>
 		{else}
-			{$'Permissions on the webserver are preventing the restoration of these files.  Please make the necessary directories and/or files writable, and then reload this page to continue.'|gettext}
+			{'Permissions on the webserver are preventing the restoration of these files.  Please make the necessary directories and/or files writable, and then reload this page to continue.'|gettext}
 		{/if}
 	{/if}
 </div>

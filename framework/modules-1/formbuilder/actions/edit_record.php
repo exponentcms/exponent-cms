@@ -32,7 +32,6 @@ $controls = $db->selectObjects('formbuilder_control','form_id='.$_GET['form_id']
 
 if ($f && $data && $controls) {
 	if (exponent_permissions_check('editdata',unserialize($f->location_data))) {
-//		usort($controls,'exponent_sorting_byRankAscending');
 		$controls = expSorter::sort(array('array'=>$controls,'sortby'=>'rank', 'order'=>'ASC'));
 
 		$form = new form();

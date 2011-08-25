@@ -26,7 +26,6 @@ if (!defined('EXPONENT')) exit('');
 // Normalize Section Rankings
 function exponent_backup_normalize_sections($db,$parent = 0) {
 	$sections = $db->selectObjects('section','parent='.$parent);
-//	usort($sections,'exponent_sorting_byRankAscending');
 	$sections = expSorter::sort(array('array'=>$sections,'sortby'=>'rank', 'order'=>'ASC'));
 
 	for ($i = 0; $i < count($sections); $i++) {

@@ -34,7 +34,6 @@ if (exponent_permissions_check('user_management',exponent_core_makeLocation('adm
 	
 	$exts = $db->selectObjects('profileextension');
 	
-//	usort($exts,'exponent_sorting_byRankAscending');
 	$exts = expSorter::sort(array('array'=>$exts,'sortby'=>'rank', 'order'=>'ASC'));
 
 	for ($i = 0; $i < count($exts); $i++) {

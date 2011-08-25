@@ -79,7 +79,6 @@ if (exponent_permissions_check('edit_module',$loc) || exponent_permissions_check
 		$template->assign('nomodules',0);
 	}
 	
-	//usort($modules_list,'exponent_sorting_moduleClassByNameAscending');
 	//sort($modules_list);
 	
 	$js_init = '<script type="text/javascript">';

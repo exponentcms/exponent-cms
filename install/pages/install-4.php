@@ -28,7 +28,7 @@ if (!defined('EXPONENT')) exit('');
 <div id="tab1" class="">
   <h2><?php echo gt('Site Configuration'); ?></h2>
   <div class="text-control control  ">
-    <label class="label"><?php echo gt('Organization Name'); ?></label>
+    <label class="label"><?php echo gt('Site/Organization Name'); ?></label>
     <input type="text" name="sc[ORGANIZATION_NAME]" value="Exponent CMS" size="40" class="text ">
   </div>
   <div class="text-control control  ">
@@ -42,11 +42,11 @@ if (!defined('EXPONENT')) exit('');
   </div>
   
   <div class="text-control control ">
-    <label class="label"><?php echo gt('Meta Keywords'); ?></label>
+    <label class="label"><?php echo gt('(Meta) Keywords'); ?></label>
     <textarea class="textarea" id="sc[SITE_KEYWORDS]" name="sc[SITE_KEYWORDS]" rows="5" cols="38">exponent cms</textarea>
   </div>
   <div class="text-control control ">
-    <label class="label"><?php echo gt('Meta Description'); ?></label>
+    <label class="label"><?php echo gt('(Meta) Description'); ?></label>
     <textarea class="textarea" id="sc[SITE_DESCRIPTION]" name="sc[SITE_DESCRIPTION]" rows="5" cols="38">exponent</textarea>
   </div>
   <div class="control checkbox">
@@ -58,7 +58,7 @@ if (!defined('EXPONENT')) exit('');
             <input type="checkbox" name="sc[SEF_URLS]" value="1" checked="checked" class="checkbox">
           </td>
           <td>
-            <label class="label "><?php echo gt('Enable Search Engine Friendly URLSs'); ?></label>
+            <label class="label "><?php echo gt('Enable Search Engine Friendly URLs'); ?></label>
           </td>
         </tr>
       </tbody>

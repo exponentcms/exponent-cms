@@ -65,13 +65,23 @@ if (isset($_POST['install_sample'])) {
 		include_once(BASE.'framework/core/subsystems-1/backup.php');
 		$errors = array();
 		exponent_backup_restoreDatabase($db,$eql,$errors,0);
+		$files = BASE . "themes/".DISPLAY_THEME_REAL."/sample.tar.gz";  // only install if there was an eql file
+		if (file_exists($files)) {
+			include_once(BASE.'external/Tar.php');
+			$tar = new Archive_Tar($files);
+			$dest_dir = BASE.'files/';
+			@mkdir($dest_dir);
+			if (file_exists($dest_dir)) {
+				$return = $tar->extract($dest_dir);
+			}
+		}
+	}
 //		if (count($errors)) {
 //			echo gt('Errors were encountered populating the site database.').'<br /><br />';
 //			foreach ($errors as $e) echo $e . '<br />';
 //		} else {
 //			echo gt('Sample content has been inserted into your database.  This content structure should help you to learn how Exponent works, and how to use it for your website.');
 //		}
-	}
 }
 
 if (file_exists("../conf/config.php") && !isset($_REQUEST['page'])) {

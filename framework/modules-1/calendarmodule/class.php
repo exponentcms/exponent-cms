@@ -164,11 +164,6 @@ class calendarmodule {
 		}
 
 		include_once(BASE."framework/core/subsystems-1/datetime.php");
-//		if (!function_exists("exponent_sorting_byEventStartAscending")) {
-//			function exponent_sorting_byEventStartAscending($a,$b) {
-//				return ($a->eventstart < $b->eventstart ? -1 : 1);
-//			}
-//		}
 		if ($viewparams['type'] == "minical") {
 			$monthly = exponent_datetime_monthlyDaysTimestamp($time);
 			$info = getdate($time);
@@ -254,7 +249,6 @@ class calendarmodule {
 						"delete"=>(exponent_permissions_check("delete",$thisloc) || exponent_permissions_check("delete",$loc))
 					);
 				}
-//				usort($days[$start],"exponent_sorting_byEventStartAscending");
 				$days[$start] = expSorter::sort(array('array'=>$days[$start],'sortby'=>'eventstart', 'order'=>'ASC'));
 			}
 			$template->assign("days",$days);
@@ -352,7 +346,6 @@ class calendarmodule {
 					"delete"=>(exponent_permissions_check("delete",$thisloc) || exponent_permissions_check("delete",$loc))
 				);
 			}
-//			usort($items,"exponent_sorting_byEventStartAscending");
 			$items = expSorter::sort(array('array'=>$items,'sortby'=>'eventstart', 'order'=>'ASC'));
 			$template->assign("items",$items);
 		} else if ($viewparams['type'] == "default") {
@@ -526,17 +519,6 @@ class calendarmodule {
 	// The following functions are internal helper functions
 
 	static function _getEventsForDates($edates,$sort_asc = true,$featuredonly = false) {
-//		if ($sort_asc && !function_exists('exponent_sorting_byEventStartAscending')) {
-//			function exponent_sorting_byEventStartAscending($a,$b) {
-//				return ($a->eventstart < $b->eventstart ? -1 : 1);
-//			}
-//		}
-//		if (!$sort_asc && !function_exists('exponent_sorting_byEventStartDescending')) {
-//			function exponent_sorting_byEventStartDescending($a,$b) {
-//				return ($a->eventstart > $b->eventstart ? -1 : 1);
-//			}
-//		}
-
 		global $db;
 		$events = array();
 		$featuresql = "";
@@ -550,11 +532,6 @@ class calendarmodule {
 				$events[] = $o;
 			}
 		}
-//		if ($sort_asc == true) {
-//			usort($events,'exponent_sorting_byEventStartAscending');
-//		} else {
-//			usort($events,'exponent_sorting_byEventStartDescending');
-//		}
 		$events = expSorter::sort(array('array'=>$events,'sortby'=>'eventstart', 'order'=>$sort_asc ? 'ASC' : 'DESC'));
 		return $events;
 	}
