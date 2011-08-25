@@ -268,25 +268,6 @@ class administrationController extends expController {
 		}
 		print_r("</pre>");
 
-// FIXME Not needed when locationrefs are removed
-//		 print_r("<pre>");
-//	 // add missing locationref's based on existing sectionref's
-//		 print_r("<b>Searching for detached modules with no original (no matching locationref)</b><br><br>");
-//		 $sectionrefs = $db->selectObjects('sectionref',1);
-//		 foreach ($sectionrefs as $sectionref) {
-//			 if ($db->selectObject('locationref',"module='".$sectionref->module."' AND source='".$sectionref->source."'") == null) {
-//			 // There is no locationref for sectionref.  Populate reference
-//				 $newLocRef = null;
-//				 $newLocRef->module   = $sectionref->module;
-//				 $newLocRef->source   = $sectionref->source;
-//				 $newLocRef->internal = $sectionref->internal;
-//				 $newLocRef->refcount = $sectionref->refcount;
-//				 $db->insertObject($newLocRef,'locationref');
-//				 print_r("Copied: ".$sectionref->module." - ".$sectionref->source."<br>");
-//			 }
-//		 }
-//		 print_r("</pre>");
-
 		 print_r("<pre>");
 	 // delete sectionref's & locationref's that have empty sources since they are dead
 		 print_r("<b>Searching for unassigned modules (no source)</b><br><br>");
@@ -297,15 +278,6 @@ class administrationController extends expController {
 		 } else {
 			 print_r("No Empties Found: Good!<br>");
 		 }
-// FIXME Not needed when locationrefs are removed
-//		 $locationrefs = $db->selectObjects('locationref','source=""');
-//		 if ($locationrefs != null) {
-//			 print_r("Removing: ".count($locationrefs)." empty locationref's (no source)<br>");
-//			 $db->delete('locationref','source=""');
-//		 } else {
-//			 print_r("No Empties Found: Good!<br>");
-//		 }
-//		 print_r("</pre>");
 
 		print_r("<pre>");
 	// add missing sectionrefs based on existing containers (fixes aggregation problem)
