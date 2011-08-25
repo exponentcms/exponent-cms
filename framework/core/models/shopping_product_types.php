@@ -37,8 +37,8 @@ class shopping_product_types extends expNestedNode {
 			foreach($catArray as $item) {
 				if($item <> 0) {
 					$assoc->storecategories_id  = $cat_id;
-					$assoc->shopzilla_product_types_id = $item;
-					$db->insertObject($assoc, 'shopzilla_product_types_storeCategories');    
+					$assoc->shopping_product_types_id = $item;
+					$db->insertObject($assoc, 'shopping_product_types_storeCategories');    
 				}
 			}
 		}
