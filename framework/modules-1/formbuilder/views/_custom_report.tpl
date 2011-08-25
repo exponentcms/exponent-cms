@@ -17,6 +17,5 @@
 {eval var=$template}
 
 {if $is_email == 0}
-	{br}
-	<a href="{$backlink}">{'Back'|gettext}</a>
+	<a class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" href="{$backlink}">{'Back'|gettext}</a>
 {/if}
