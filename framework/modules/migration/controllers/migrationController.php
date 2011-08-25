@@ -1090,7 +1090,7 @@ class migrationController extends expController {
 						$newrss->save();
 					}
 					if ($only_featured) {
-						$newconfig->config[only_featured] = true;
+						$newconfig->config['only_featured'] = true;
 					}
 					if ($newconfig != null) {
 						$newconfig->location_data = $loc;

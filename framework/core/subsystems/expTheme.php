@@ -508,6 +508,10 @@ class expTheme {
 	 * @param string $title The title of the module (support is view-dependent)
 	 * @param string $source The source of the module.
 	 * @param bool $pickable Whether or not the module is pickable in the Source Picer.
+	 * @param null $section
+	 * @param bool $hide_menu
+	 * @param array $params
+	 * @return
 	 * @node Subsystems:Theme
 	 */
 	public static function showModule($module,$view="Default",$title="",$source=null,$pickable=false,$section=null,$hide_menu=false,$params=array()) {
