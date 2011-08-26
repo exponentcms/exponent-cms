@@ -502,8 +502,8 @@ class cartController extends expController {
         // which the previous check takes as a TRUE, as 0, null, and empty will all equate out the same using the ==
         // adding the === will specifically test for a 0 and only a 0, which is what we want
 
-        //if (empty($result->errorCode)) 
-        if ($result->errorCode === "0" || $result->errorCode === 0) 
+        if (empty($result->errorCode)) 
+        //if ($result->errorCode === "0" || $result->errorCode === 0) 
         {
             redirect_to(array('controller'=>'cart', 'action'=>'confirm'));
         } 
@@ -571,7 +571,9 @@ class cartController extends expController {
 		// call the billing calculators process method - this will handle saving the billing options to the database.
 		$result = $billing->calculator->process($billing->billingmethod, expSession::get('billing_options'), $this->params, $invNum);
         //eDebug($result,true);
-        if ($result->errorCode == 0) {
+        //if ($result->errorCode == 0) {
+        if ($result->errorCode === "0" || $result->errorCode === 0) 
+        {
             // save out the cart total to the database		
 		    $billing->billingmethod->update(array('billing_cost'=>$order->grand_total));
 
