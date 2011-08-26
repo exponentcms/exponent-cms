@@ -64,9 +64,9 @@ class faqController extends expController {
         global $user;
         
         expHistory::set('editable', $this->params);
-        if ($user->isAdmin()) {
-            redirect_to(array('controller'=>'faq', 'action'=>'edit', 'src'=>$this->loc->src));
-        }
+//        if ($user->isAdmin()) {
+//            redirect_to(array('controller'=>'faq', 'action'=>'edit', 'src'=>$this->loc->src));
+//        }
     }
     
     public function submit_question() {
