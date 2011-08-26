@@ -26,10 +26,8 @@ function percent_filter_class() {
 		}
 		var strNewVal = GetResultingValue(ptObject, String.fromCharCode(sChar));
 		
-		if (this.isValueIllegal(strNewVal)) {
-			return false;
-		}
-		return true;
+		return !this.isValueIllegal(strNewVal);
+
 	}
 	
 	this.onblur = function(ptObject) {
@@ -44,10 +42,8 @@ function percent_filter_class() {
 	this.onpaste = function(ptObject, evt) {
 		var strNewVal = GetResultingValue(ptObject, String.fromCharCode(evt.charCode));
 		alert(strNewVal);
-		if (this.isValueIllegal(strNewVal)) {
-			return false;
-		}
-		return true;
+		return !this.isValueIllegal(strNewVal);
+
 	}
 	
 	this.isValueIllegal = function(strValue) {
@@ -58,7 +54,7 @@ function percent_filter_class() {
 		else if (strValue.match(/\..*\./) != null) bIsIllegal = true;
 		else if (parseInt(strValue) > 999) bIsIllegal = true;
 		else if (strValue.match(/\.+\d{5}/) != null) bIsIllegal = true;
-		else if (IsNotNumber(strValue.replace("%", "").replace(" ", "")) == true) bIsIllegal = true;
+		else if (IsNotNumber(strValue.replace("%", "").replace(" ", ""))) bIsIllegal = true;
 		
 		return bIsIllegal;
 	}

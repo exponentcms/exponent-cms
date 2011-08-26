@@ -26,10 +26,8 @@ function decimal_filter_class() {
 		}
 		var strNewVal = GetResultingValue(ptObject, String.fromCharCode(sChar));
 		
-		if (this.isValueIllegal(strNewVal)) {
-			return false;
-		}
-		return true;
+		return !this.isValueIllegal(strNewVal);
+
 	}
 	
 	this.onblur = function(ptObject) {
@@ -59,15 +57,13 @@ function decimal_filter_class() {
 	this.onpaste = function(ptObject, evt) {
 		var strNewVal = GetResultingValue(ptObject, String.fromCharCode(evt.charCode));
 		alert(strNewVal);
-		if (this.isValueIllegal(strNewVal)) {
-			return false;
-		}
-		return true;
+		return !this.isValueIllegal(strNewVal);
+
 	}
 	
 	this.isValueIllegal = function(strValue) {
 		bIsIllegal = IsNotNumber(strValue);
-		if (bIsIllegal == false) {
+		if (!bIsIllegal) {
 			if (strValue.match(/\..*\./) != null) bIsIllegal = true;
 		}
 		return bIsIllegal;

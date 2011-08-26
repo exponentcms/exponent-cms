@@ -74,7 +74,7 @@ function checkRequired(locForm) {
 					}
 				}
 			}
-			if (locForm.elements[field].name == "checker" && locForm.elements[field].checked == true && locForm.elements[field].value != 0 ) {
+			if (locForm.elements[field].name == "checker" && locForm.elements[field].checked && locForm.elements[field].value != 0 ) {
 				alert ("You must choose the correct answer in the anti-spam question to proceed");
 				return false;
 			}
@@ -82,7 +82,7 @@ function checkRequired(locForm) {
 	}
   }
 
-  if (!checkRG()) return false;
-  return true;
+  return checkRG();
+
 }
 
