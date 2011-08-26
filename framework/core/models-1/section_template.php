@@ -45,7 +45,6 @@ class section_template {
 			$sections = $db->selectObjects('section_template','parent='.$object->parent);
 			
 			if (count($sections)) {
-//				usort($sections,'exponent_sorting_byRankAscending');
 				$sections = expSorter::sort(array('array'=>$sections,'sortby'=>'rank', 'order'=>'ASC'));
 
 				$dd = array(gt('At the Top'));

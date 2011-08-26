@@ -40,7 +40,6 @@ $script = "
     
 ";
 
-//exponent_javascript_toFoot('zadminfilemanager', '', null, $script);
 expJavascript::pushToFoot(array(
     "unique"=>'zadminfilemanager',
     "yui2mods"=>'',

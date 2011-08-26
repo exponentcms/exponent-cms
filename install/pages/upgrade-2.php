@@ -182,4 +182,4 @@ if ($db->tableIsEmpty('user') || $db->tableIsEmpty('modstate') || $db->tableIsEm
 }
 ?>
 
-<a class="awesome large green" href="?page=".$emptydb><?php echo $emptydbstr ?></a>
+<a class="awesome large green" href="?page=<?php echo $emptydb ?>"><?php echo $emptydbstr ?></a>

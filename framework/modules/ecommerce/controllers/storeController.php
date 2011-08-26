@@ -319,17 +319,6 @@ class storeController extends expController {
      * Helper function for the Calendar view
      */
     function _getEventsForDates($edates,$sort_asc = true) {        
-//        if ($sort_asc && !function_exists('exponent_sorting_byEventStartAscending')) {
-//            function exponent_sorting_byEventStartAscending($a,$b) {
-//                return ($a->eventstart < $b->eventstart ? 1 : -1);
-//            }
-//        }
-//        if (!$sort_asc && !function_exists('exponent_sorting_byEventStartDescending')) {
-//            function exponent_sorting_byEventStartDescending($a,$b) {
-//                return ($a->eventstart < $b->eventstart ? 1 : -1);
-//            }
-//        }
-        
         global $db;
         $events = array();
         foreach ($edates as $edate) {
@@ -368,11 +357,6 @@ class storeController extends expController {
             $o->eventend += $edate->event_endtime;
             $events[] = $o;
         }
-//        if ($sort_asc == true) {
-//            usort($events,'exponent_sorting_byEventStartAscending');
-//        } else {
-//            usort($events,'exponent_sorting_byEventStartDescending');
-//        }
         $events = expSorter::sort(array('array'=>$events,'sortby'=>'eventstart', 'order'=>$sort_asc ? 'ASC' : 'DESC'));
         return $events;
     }

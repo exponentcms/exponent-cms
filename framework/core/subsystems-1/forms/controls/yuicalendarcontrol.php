@@ -114,7 +114,6 @@ class yuicalendarcontrol extends formcontrol {
             YAHOO.util.Event.onDOMReady(YAHOO.example.calendar.init);
         
         ";
-//        exponent_javascript_toFoot('calpop'.$name, 'calendar', null, $script);
         expJavascript::pushToFoot(array(
             "unique"=>'calpop-'.$name,
             "yui2mods"=>'calendar',

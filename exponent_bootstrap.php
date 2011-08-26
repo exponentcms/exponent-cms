@@ -72,7 +72,6 @@ require_once(BASE.'exponent_version.php');
 define('EXPONENT', EXPONENT_VERSION_MAJOR);
 
 // load the constants from the global config, theme config, and then default config settings
-//require_once(BASE . 'framework/core/subsystems-1/config/load.php');
 require_once(BASE . 'framework/core/subsystems/expSettings.php');  // we don't have our autoloader loaded yet
 expSettings::initialize();
 

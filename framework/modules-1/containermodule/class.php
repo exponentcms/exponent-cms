@@ -118,7 +118,6 @@ class containermodule {
             		$containers = $cache[$container_key];            
         	}
  
-//		include_once(BASE.'framework/core/subsystems-1/workflow.php');
 		ksort($containers);
 		foreach (array_keys($containers) as $i) {
 			$location = unserialize($containers[$i]->internal);
@@ -141,8 +140,6 @@ class containermodule {
 				$containers[$i]->output = trim(ob_get_contents());
 				ob_end_clean();
 				
-//				$policy = exponent_workflow_getPolicy($modclass,$location->src);
-
 				$containers[$i]->info = array(
 					'module'=>$mod->name(),
 					'source'=>$location->src,
@@ -151,9 +148,7 @@ class containermodule {
 					'hasViews'=>$mod->hasViews(),
 					'class'=>$modclass,
 					'supportsWorkflow'=>($mod->supportsWorkflow()?1:0),
-//					'workflowPolicy'=>($policy ? $policy->name : ''),
 					'workflowPolicy'=>'',
-//					'workflowUsesDefault'=>(exponent_workflow_moduleUsesDefaultPolicy($location->mod,$location->src) ? 1 : 0),
 					'workflowUsesDefault'=>0,
 					'clickable'=>($clickable_mods == null || in_array($modclass,$clickable_mods)),
 					'hasConfig'=>$db->tableExists($modclass."_config")

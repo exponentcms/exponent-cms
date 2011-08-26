@@ -39,7 +39,7 @@ if ($_FILES['file']['error'] != UPLOAD_ERR_OK) {
 	include_once(BASE.'external/Tar.php');
 	$tar = new Archive_Tar($_FILES['file']['tmp_name'],'gz');
 	
-	$dest_dir = BASE.'tmp/'.uniqid('');
+	$dest_dir = BASE.'tmp/extensionuploads/'.uniqid('');
 	@mkdir($dest_dir);
 	if (!file_exists($dest_dir)) {
 		echo gt('Unable to create temporary directory to extract files archive.');
@@ -59,11 +59,16 @@ if ($_FILES['file']['error'] != UPLOAD_ERR_OK) {
 				if ($file{0} != '.' && is_dir($dest_dir.'/files/'.$file)) {
 					$mods[$file] = array(
 						'',
-						array_keys(expFile::listFlat($dest_dir.'/files/'.$file,1,null,array(),$dest_dir.'/files/'.$file.'/'))
+						array_keys(expFile::listFlat($dest_dir.'/files/'.$file,1,null,array(),$dest_dir.'/files/'))
 					);
-					if (class_exists($file)) {
-						$mods[$file][0] = call_user_func(array($file,'name')); // $file is the class name of the module
-					}
+//					if (class_exists($file)) {
+//						$mods[$file][0] = call_user_func(array($file,'name')); // $file is the class name of the module
+//					}
+				} elseif ($file != '.' && $file != '..') {
+					$mods[$file] = array(
+						'',
+						$file
+					);
 				}
 			}
 			

@@ -37,7 +37,7 @@
     <div style="clear:both"></div>
     {script unique="children-submit"}
         {literal}
-        YUI({ base:EXPONENT.YUI3_PATH,loadOptional: true}).use('node', function(Y) {
+        YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
             Y.one('#submit-chiprods').on('click',function(e){
                 e.halt();
                 var frm = Y.one('#child-products-form');

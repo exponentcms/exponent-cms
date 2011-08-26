@@ -261,7 +261,7 @@ class user extends expRecord {
 	 * to a $db->selectObject() call, but it may not be the same for other implementations.
 	 * Returns a basic user object, and null if no user was found.
 	 *
-	 * This function does NOT perform user caching like the exponent_users_getUserById
+	 * This function does NOT perform user caching like the getUserById
 	 * function does.  Multiple calls to retrieve the same user result in multiple calls
 	 * to the database.
 	 *
@@ -286,7 +286,7 @@ class user extends expRecord {
 	 * to a $db->selectObject() call, but it may not be the same for other implementations.
 	 * Returns a group object, and null if no group was found.
 	 *
-	 * This function does NOT perform group caching like the exponent_users_getUserById
+	 * This function does NOT perform group caching like the getUserById
 	 * function does.  Multiple calls to retrieve the same group result in multiple calls
 	 * to the database.
 	 *

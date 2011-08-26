@@ -28,7 +28,7 @@
 				<td class="administration_modmgrbody">
 					{$exporter.description}
 					<hr size='1'/>
-					<a class="mngmntlink administration_mngmntlink" href="{link module=exporter action=page page=start exporter=$impname}">{'Run'|gettext} {$exporter.name}</a>
+					<a class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" href="{link module=exporter action=page page=start exporter=$impname}">{'Run'|gettext} {$exporter.name}</a>
 				</td>
 			</tr>
 			<tr><td></td></tr>

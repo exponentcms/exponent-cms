@@ -307,12 +307,10 @@ function exponent_users_userManagerFormTemplate($template) {
 	global $user;
 	$users = $db->selectObjects('user');
 
-	if (!function_exists('exponent_sorting_byLastFirstAscending')) {
-		function exponent_sorting_byLastFirstAscending($a,$b) {
-			return strnatcmp($a->lastname . ', '. $a->firstname,$b->lastname . ', '. $b->firstname);
-		}
+	function sortByLastFirstAscending($a,$b) {
+		return strnatcmp($a->lastname . ', '. $a->firstname,$b->lastname . ', '. $b->firstname);
 	}
-	usort($users,'exponent_sorting_byLastFirstAscending');
+	usort($users,'sortByLastFirstAscending');
 	for ($i = 0; $i < count($users); $i++) {
 		$users[$i] = exponent_users_getUserById($users[$i]->id);
 		if ($users[$i]->is_acting_admin && $user->is_admin == 0) {
@@ -339,7 +337,6 @@ function exponent_users_groupManagerFormTemplate($template) {
 	global $db;
 	$groups = $db->selectObjects('group');
 
-//	usort($groups,'exponent_sorting_byNameAscending');
 	$groups = expSorter::sort(array('array'=>$groups,'sortby'=>'name', 'order'=>'ASC'));
 
 	$template->assign('groups',$groups);

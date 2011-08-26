@@ -65,7 +65,7 @@ class filemanagercontrol extends formcontrol {
         $html .= '<input type="hidden" name="'.$subTypeName.'" value="'.$subTypeName.'">';
         $html .= '</div>';
         $js = "
-            YUI({base:EXPONENT.YUI3_PATH}).use('*', function(Y) {
+            YUI(EXPONENT.YUI3_CONFIG).use('dd-constrain','dd-proxy','dd-drop', function(Y) {
                 var limit = ".$this->limit.";
                 var filesAdded = ".$this->count.";
                 var fl = Y.one('#filelist".$name."');
@@ -285,7 +285,6 @@ class filemanagercontrol extends formcontrol {
         	    )
         	);
 
-//        exponent_javascript_toFoot("filepicker".$name,"json,connection","dd-constrain,dd-proxy,dd-drop",$js,"");
             expJavascript::pushToFoot(array(
                 "unique"=>"filepicker".$name,
                 "yui2mods"=>"json,connection",

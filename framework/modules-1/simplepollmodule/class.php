@@ -59,7 +59,6 @@ class simplepollmodule {
 		if ($question) {
 			$answers = $db->selectObjects('poll_answer','question_id='.$question->id);
 		}
-//		usort($answers,'exponent_sorting_byRankAscending');
 		$answers = expSorter::sort(array('array'=>$answers,'sortby'=>'rank', 'order'=>'ASC'));
 
 		$template = new template('simplepollmodule',$view,$loc);

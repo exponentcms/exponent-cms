@@ -90,7 +90,6 @@ class listcontrol extends formcontrol {
                 list.removeChild(lItem);
             });
         "; // END PHP STRING LITERAL
-//        exponent_javascript_toFoot("listcontrol".$name,"json,connection","listcontrol-".$name,$js,"");
         expJavascript::pushToFoot(array(
             "unique"=>"listcontrol".$name,
             "yui2mods"=>"json,connection",

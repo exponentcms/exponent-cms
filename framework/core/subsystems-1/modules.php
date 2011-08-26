@@ -116,7 +116,6 @@ function exponent_modules_moduleManagerFormTemplate($template) {
 			$moduleInfo[$module]->active = ($modstate != null ? $modstate->active : 0);
 		}
 	}
-//	uasort($moduleInfo,"exponent_sorting_byNameAscending");
 	$moduleInfo = expSorter::sort(array('array'=>$moduleInfo,'sortby'=>'name', 'order'=>'ASC', 'ignore_case'=>true, 'type'=>'a'));
 
 	$template->assign("modules",$moduleInfo);

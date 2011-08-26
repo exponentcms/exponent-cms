@@ -20,7 +20,6 @@
 
 function smarty_block_paginate($params,$content,&$smarty) {
 	if ($content) {
-//		require_once(BASE."framework/core/subsystems-1/javascript.php");
 ?>
 
 	<script language="JavaScript">
@@ -91,8 +90,6 @@ function smarty_block_paginate($params,$content,&$smarty) {
 
 	}
 
-
-
 	//This is the main Sorting/Filtering/Paging class
 	var paginate = new function() {
 
@@ -116,7 +113,6 @@ function smarty_block_paginate($params,$content,&$smarty) {
 
 		//This is an array of cColumn Objects
 		this.columns = new Array();
-
 
 		//This is an array of cFilter Objects.
 		this.filters = new Array();
@@ -214,8 +210,6 @@ function smarty_block_paginate($params,$content,&$smarty) {
 			}
 		}
 
-
-
 		this.sort = function(index,doNotDraw) {
 			for (var data in this.columns) {
 				if (data == index) {
@@ -265,7 +259,6 @@ function smarty_block_paginate($params,$content,&$smarty) {
 		this.selectedPage = function(select) {
 			this.gotoPage(parseInt(select.options[select.selectedIndex].value) + 1);
 		}
-
 
 		this.drawTable = function() {
 			var ptTable = document.getElementById(this.tableName);
@@ -490,7 +483,6 @@ function smarty_block_paginate($params,$content,&$smarty) {
 					}
 				}
 
-
 				var cell = document.createElement("span");
 				for (key1 in this.filters) {
 					var filter = this.filters[key1];
@@ -554,7 +546,6 @@ function smarty_block_paginate($params,$content,&$smarty) {
 	<?php
 	if (isset($params['objects']) && count($params['objects']) > 0) {
 		//Write Out DataClass. This is generated from the data object.
-//		echo exponent_javascript_class($params['objects'][0],'paginateDataClass');
 		echo expJavascript::jClass($params['objects'][0],'paginateDataClass');
 	?>
 
@@ -564,12 +555,10 @@ function smarty_block_paginate($params,$content,&$smarty) {
 			paginate.columns.push(new cColumn(attribute,attribute,null));
 		}
 
-
 	<?php
 
 		//This will load up the data...
 		foreach ($params['objects'] as $object) {
-//			echo "paginate.allData.push(".exponent_javascript_object($object,'paginateDataClass').");\r\n";
 			echo "paginate.allData.push(".expJavascript::jObject($object,'paginateDataClass').");\r\n";
 			echo "paginate.allData[paginate.allData.length-1].__ID = paginate.allData.length-1;\r\n";
 		}
@@ -587,7 +576,6 @@ function smarty_block_paginate($params,$content,&$smarty) {
 	var sortcolumn = getCookie(paginate.name + "_sortcolumn");
 	var sortdirection = getCookie(paginate.name + "_sortdirection");
 	paginate.applyFilter("fromcookie");
-
 
 	</script>
 <?php

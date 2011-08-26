@@ -98,7 +98,6 @@ class autocompletecontrol extends formcontrol {
             "src"=>$params['src']
          ));
        
-        //exponent_javascript_toFoot('ac'.$name, "animation,autocomplete,connection,datasource", null, $script);
         return $html;
     }
 

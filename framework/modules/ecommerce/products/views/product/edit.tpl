@@ -86,7 +86,8 @@
 					{control type="text" class="title" name="bing_product_type" label="Bing Product Type" value=$record->bing_product_type}
 					{control type="text" class="title" name="nextag_product_type" label="Nextag Product Type" value=$record->nextag_product_type}
 					{control type="text" class="title" name="shopzilla_product_type" label="Shopzilla Product Type" value=$record->shopzilla_product_type}
-                </div>
+					{control type="text" class="title" name="shopping_product_type" label="Shopping Product Type" value=$record->shopping_product_type}
+			   </div>
                 <div id="pricing">
                     <fieldset>
                     <h2>General Pricing</h2>
