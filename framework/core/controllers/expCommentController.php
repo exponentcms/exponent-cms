@@ -52,7 +52,7 @@ class expCommentController extends expController {
 	}	
 	
 	function manage() {
-	    expHistory::set('managable', $this->params);
+	    expHistory::set('manageable', $this->params);
         
         /* The global constants can be overriden by passing appropriate params */ 
         //sure wish I could do this once in the constructor. sadly $this->params[] isn't set yet

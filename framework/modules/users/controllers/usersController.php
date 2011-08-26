@@ -37,7 +37,7 @@ class usersController extends expController {
     function hasContent() { return false; }
     
     public function manage() {
-        expHistory::set('managable', $this->params);
+        expHistory::set('manageable', $this->params);
         $limit = empty($this->config['limit']) ? 10 : $this->config['limit'];
         $order = empty($this->config['order']) ? 'username' : $this->config['order'];
         $page = new expPaginator(array(
@@ -235,7 +235,7 @@ class usersController extends expController {
     public function manage_sessions() {
         global $db, $user;
         
-        expHistory::set('managable', $this->params);
+        expHistory::set('manageable', $this->params);
         
         //cleans up any old sessions
 		if(SESSION_TIMEOUT_ENABLE == true){	
@@ -303,7 +303,7 @@ class usersController extends expController {
         global $db;
         
         // set history
-        expHistory::set('managable', $this->params);
+        expHistory::set('manageable', $this->params);
         
         // Lets find all the user profiles availabe and then see if they are
         // in the database yet.  If not we will add them.
@@ -349,7 +349,7 @@ class usersController extends expController {
     }
 
     public function manage_groups() {
-        expHistory::set('managable', $this->params);
+        expHistory::set('manageable', $this->params);
         $limit = empty($this->config['limit']) ? 10 : $this->config['limit'];
         $order = empty($this->config['order']) ? 'name' : $this->config['order'];
         $page = new expPaginator(array(

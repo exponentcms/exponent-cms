@@ -136,7 +136,7 @@ class administrationController extends expController {
     public function manage_unused_tables() {
         global $db;
         
-        expHistory::set('managable', $this->params);
+        expHistory::set('manageable', $this->params);
         $unused_tables = array();
         $used_tables = array();
         $tables = $db->getTables();
@@ -538,7 +538,7 @@ class administrationController extends expController {
 	}
 
     public function manage_themes() {
-        expHistory::set('managable', $this->params);
+        expHistory::set('manageable', $this->params);
     	$themes = array();
     	if (is_readable(BASE.'themes')) {
     		$dh = opendir(BASE.'themes');
@@ -591,7 +591,7 @@ class administrationController extends expController {
      
         // $message = (MINIFY != 1) ? "Exponent is now minifying Javascript and CSS" : "Exponent is no longer minifying Javascript and CSS" ;
         // flash('message',$message);
-    	expHistory::returnTo('managable');
+    	expHistory::returnTo('manageable');
     }	
     
     public function configure_site () {

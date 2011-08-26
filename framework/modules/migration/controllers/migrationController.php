@@ -132,7 +132,7 @@ class migrationController extends expController {
     public function manage_pages() {
         global $db;
 
-        expHistory::set('managable', $this->params);
+        expHistory::set('manageable', $this->params);
         $old_db = $this->connect();
         $pages = $old_db->selectObjects('section','id > 1');
         foreach($pages as $page) {
@@ -255,7 +255,7 @@ class migrationController extends expController {
 	 * @return void
 	 */
     public function manage_files() {
-        expHistory::set('managable', $this->params);
+        expHistory::set('manageable', $this->params);
         $old_db = $this->connect();
         $files = $old_db->selectObjects('file');
         assign_to_template(array('count'=>count($files)));
@@ -269,7 +269,7 @@ class migrationController extends expController {
     public function migrate_files() {
         global $db;
 
-        expHistory::set('managable', $this->params);
+        expHistory::set('manageable', $this->params);
         $old_db = $this->connect();
         $db->delete('expFiles');
 
@@ -610,7 +610,7 @@ class migrationController extends expController {
 	public function manage_users() {
         global $db;
 
-        expHistory::set('managable', $this->params);
+        expHistory::set('manageable', $this->params);
         $old_db = $this->connect();
         $users = $old_db->selectObjects('user','id > 1');
         foreach($users as $user) {

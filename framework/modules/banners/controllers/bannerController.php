@@ -67,7 +67,7 @@ class bannerController extends expController {
     }
     
     public function manage() {
-        expHistory::set('managable', $this->params);
+        expHistory::set('manageable', $this->params);
         
         // build out a SQL query that gets all the data we need and is sortable.
         $sql  = 'SELECT b.*, c.title as companyname, f.expfiles_id as file_id ';

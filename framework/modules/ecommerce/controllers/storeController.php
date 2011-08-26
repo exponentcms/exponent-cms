@@ -411,7 +411,7 @@ class storeController extends expController {
     }
     
     function manage() {
-        expHistory::set('managable', $this->params);
+        expHistory::set('manageable', $this->params);
         $page = new expPaginator(array(
             'model'=>'product',
             'where'=>'parent_id=0',
