@@ -46,7 +46,7 @@ class billingController extends expController {
 	function manage() {
 	    global $db;
 	    
-	    expHistory::set('managable', $this->params);
+	    expHistory::set('manageable', $this->params);
 	    $classes = array();
         $dir = BASE."framework/modules/ecommerce/billingcalculators";
         if (is_readable($dir)) {

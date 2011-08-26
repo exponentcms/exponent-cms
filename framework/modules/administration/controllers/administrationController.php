@@ -136,7 +136,7 @@ class administrationController extends expController {
     public function manage_unused_tables() {
         global $db;
         
-        expHistory::set('managable', $this->params);
+        expHistory::set('manageable', $this->params);
         $unused_tables = array();
         $used_tables = array();
         $tables = $db->getTables();
@@ -566,7 +566,7 @@ class administrationController extends expController {
 	}
 
     public function manage_themes() {
-        expHistory::set('managable', $this->params);
+        expHistory::set('manageable', $this->params);
     	$themes = array();
     	if (is_readable(BASE.'themes')) {
     		$dh = opendir(BASE.'themes');
@@ -597,7 +597,7 @@ class administrationController extends expController {
     
     public function switch_themes() {
     	expSettings::change('DISPLAY_THEME_REAL', $this->params['theme']);
-    	if (isset($this->params['sv']) && THEME_STYLE!=$this->params['sv']) {
+    	if (isset($this->params['sv']) && THEME_STYLE!=$this->params['sv']) {  //FIXME we aren't saving the new theme style, why???
             expSettings::change('THEME_STYLE', $this->params['sv']);
     	    if (expFile::recurse_copy(BASE."themes/".$this->params['theme']."/css", BASE."themes/".$this->params['theme']."/styles_backup/css")
     	        && expFile::recurse_copy(BASE."themes/".$this->params['theme']."/images", BASE."themes/".$this->params['theme']."/styles_backup/images")) {
@@ -619,9 +619,17 @@ class administrationController extends expController {
      
         // $message = (MINIFY != 1) ? "Exponent is now minifying Javascript and CSS" : "Exponent is no longer minifying Javascript and CSS" ;
         // flash('message',$message);
-    	expHistory::returnTo('managable');
+    	expHistory::returnTo('manageable');
     }	
     
+	public function preview_theme() {
+		expSession::set('display_theme',$this->params['theme']);
+		if (DISPLAY_THEME_REAL == $this->params['theme']){
+			expSession::set('display_theme',$this->params['theme']);
+		}
+		expHistory::returnTo('manageable');
+	}
+
     public function configure_site () {
         // TYPES OF ANTISPAM CONTROLS... CURRENTLY ONLY ReCAPTCHA
         $as_types = array(
