@@ -47,8 +47,8 @@
                 {if $oi->product->model != ""}{$oi->product->model}{else}N/A{/if}
             </td>
             <td>{$oi->quantity}</td>
-            <td>${$oi->products_price|number_format:2}</td>
-            <td>${$oi->getTotal()|number_format:2}</td>
+            <td>{currency_symbol}{$oi->products_price|number_format:2}</td>
+            <td>{currency_symbol}{$oi->getTotal()|number_format:2}</td>
         </tr>
         {/foreach}
         {if $show_totals == 1}
