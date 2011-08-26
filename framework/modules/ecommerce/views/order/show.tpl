@@ -183,7 +183,7 @@
                         </td>
                     </tr> 
                     <tr>
-                        <td>Amount: ${$bt->billing_cost|number_format:2}
+                        <td>Amount: {currency_symbol}{$bt->billing_cost|number_format:2}
                         </td>
                     </tr>
                     {if $permissions.manage == 1}
