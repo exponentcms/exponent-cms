@@ -36,8 +36,8 @@
              {get_cart_summary item=$item}
         </td>
         <!--td class="prodrow price" id="price-{$item->id}">${$item->products_price*$item->quantity|number_format:2}</td-->
-        <td class="prodrow price" id="price-{$item->id}">${$item->products_price|number_format:2}</td>
-        <td class="prodrow price" id="amount-{$item->id}">${$item->getTotal()|number_format:2}</td>
+        <td class="prodrow price" id="price-{$item->id}">{currency_symbol}{$item->products_price|number_format:2}</td>
+        <td class="prodrow price" id="amount-{$item->id}">{currency_symbol}{$item->getTotal()|number_format:2}</td>
         <td class="prodrow quantity">
             {if $item->product->isQuantityAdjustable}
             {form action="updateQuantity" controller=cart}
