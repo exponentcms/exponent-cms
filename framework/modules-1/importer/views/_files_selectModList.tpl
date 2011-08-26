@@ -26,7 +26,7 @@
 	{literal}
 	function mods_selectUnselectAll(setChecked) {
 		var elems = document.getElementsByTagName("input");
-		for (key = 0; key < elems.length; key++) {
+		for (var key = 0; key < elems.length; key++) {
 			if (elems[key].type == "checkbox" && elems[key].name.substr(0,5) == "mods[") {
 				elems[key].checked = setChecked;
 			}

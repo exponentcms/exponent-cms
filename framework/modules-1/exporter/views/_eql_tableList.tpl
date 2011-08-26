@@ -22,7 +22,7 @@
 	<script type="text/javascript">
 	{literal}
 	function selectAll(checked) {
-		elems = document.getElementsByTagName("input");
+		var elems = document.getElementsByTagName("input");
 		for (var key in elems) {
 			if (elems[key].type == "checkbox" && elems[key].name.substr(0,7) == "tables[") {
 				elems[key].checked = checked;
@@ -31,7 +31,7 @@
 	}
 
 	function isOneSelected() {
-		elems = document.getElementsByTagName("input");
+		var elems = document.getElementsByTagName("input");
 		for (var key in elems) {
 			if (elems[key].type == "checkbox" && elems[key].name.substr(0,7) == "tables[") {
 				if (elems[key].checked) return true;

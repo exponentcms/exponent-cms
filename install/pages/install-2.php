@@ -34,8 +34,9 @@ $config = array(
 ?>
 <script language="javascript">
 	function hideAllOptions() {
-		allEngines = new Array("mysql");
-		for(option in allEngines) {
+		var allEngines = new Array("mysql");
+		var optionObj;
+		for (var option in allEngines) {
 			optionObj = document.getElementById(allEngines[option] + "_options");
 			optionObj.style.display = "none";
 		}
@@ -43,7 +44,7 @@ $config = array(
 	function showOptions(engine) {
 		hideAllOptions();
 
-		myOptions = document.getElementById(engine + "_options");
+		var myOptions = document.getElementById(engine + "_options");
 		if(myOptions) {
 			myOptions.style.display = "block";
 		}

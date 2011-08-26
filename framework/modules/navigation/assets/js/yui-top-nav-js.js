@@ -14,7 +14,7 @@ var buildmenu = function (elem,cfg) {
     oMenuBar.subscribe("beforeRender", function () {
 
         if (this.getRoot() == this) {
-            for (i=0; i<=this.getItems().length; i++){
+            for (var i=0; i<=this.getItems().length; i++){
                 var j=i;
                 if (aSubmenuData[j].itemdata.length>0){
                     this.getItem(i).cfg.setProperty("submenu", aSubmenuData[j]);

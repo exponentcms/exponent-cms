@@ -144,6 +144,7 @@ function smarty_block_paginate($params,$content,&$smarty) {
 				any = document.getElementById(sID + "_any").checked;
 			}
 
+			var bHaveFilter;
 			for (var dataKey in this.allData) {
 				bInclude = false;
 				bHaveFilter = false;
@@ -380,7 +381,7 @@ function smarty_block_paginate($params,$content,&$smarty) {
 							break;
 						case "tp_":
 							//Text based page picker
-							iPad = this.controls[key];
+							var iPad = this.controls[key];
 
 							var totalPages = Math.ceil(this.filteredData.length/this.rowsPerPage);
 
@@ -484,7 +485,7 @@ function smarty_block_paginate($params,$content,&$smarty) {
 				}
 
 				var cell = document.createElement("span");
-				for (key1 in this.filters) {
+				for (var key1 in this.filters) {
 					var filter = this.filters[key1];
 					var cb = document.createElement("input");
 					cb.setAttribute("type","checkbox");
