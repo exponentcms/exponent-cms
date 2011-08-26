@@ -32,6 +32,37 @@ require_once('exponent_bootstrap.php');
 
 // Initialize the MVC framework - for objects we need loaded now
 require_once(BASE.'framework/core/expFramework.php');
+
+// Initialize the Sessions Subsystem
+expSession::initialize();
+
+// Initialize the theme subsystem 1.0 compatibility layer
+require_once(BASE.'framework/core/subsystems-1/theme.php');
+if (!defined('DISPLAY_THEME')) {
+	/* exdoc
+	 * The directory and class name of the current active theme.  This may be different
+	 * than the configure theme (DISPLAY_THEME_REAL) due to previewing.
+	 */
+	define('DISPLAY_THEME',DISPLAY_THEME_REAL);
+}
+
+if (!defined('THEME_ABSOLUTE')) {
+	/* exdoc
+	 * The absolute path to the current active theme's files.  This is similar to the BASE constant
+	 */
+	define('THEME_ABSOLUTE',BASE.'themes/'.DISPLAY_THEME.'/'); // This is the recommended way
+}
+
+if (!defined('THEME_RELATIVE')) {
+	/* exdoc
+	 * The relative web path to the current active theme.  This is similar to the PATH_RELATIVE constant.
+	 */
+	define('THEME_RELATIVE',PATH_RELATIVE.'themes/'.DISPLAY_THEME.'/');
+}
+// add our theme folder to autoload and place it first
+$auto_dirs2[] = BASE.'themes/'.DISPLAY_THEME_REAL.'/modules';
+$auto_dirs2 = array_reverse($auto_dirs2);
+
 /**
  * the list of available/active controllers
  * @global array $available_controllers
@@ -40,17 +71,7 @@ require_once(BASE.'framework/core/expFramework.php');
 $available_controllers = initializeControllers();  //original position
 //$available_controllers = array();
 
-// Initialize the Sessions Subsystem
-expSession::initialize();
-
-// Initialize the theme subsystem 1.0 compatibility layer
-require_once(BASE.'framework/core/subsystems-1/theme.php');
-//$validateTheme = array("headerinfo"=>false,"footerinfo"=>false);
-
 // Initialize the language subsystem
-//$cur_lang = array();
-//$default_lang = array();
-//$target_lang_file = '';
 expLang::loadLang();
 
 // Initialize the Core Subsystem

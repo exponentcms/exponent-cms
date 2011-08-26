@@ -87,7 +87,7 @@ class expSession {
         self::clearCurrentUserSessionCache();
     }
 
-	/* exdoc
+	/** exdoc
 	 * Runs necessary code to initialize sessions for use.
 	 * This sends the session cookie header (via the session_start
 	 * PHP function) and sets up session variables needed by the
@@ -98,7 +98,7 @@ class expSession {
 
 	// session key may be overridden
 	if (!defined('SYS_SESSION_KEY')) {
-		/* exdoc
+		/** exdoc
 		 * @state <b>UNDOCUMENTED</b>
 		 * @node Undocumented
 		 */
@@ -110,10 +110,10 @@ class expSession {
 		define('SYS_SESSION_COOKIE','PHPSESSID');
 	}
 
-	$sessid  = '';
+//	$sessid  = '';
 		if (isset($_GET['expid']))
 		{
-		  $sessid = $_GET['expid'];
+			$sessid = $_GET['expid'];
 		}
 		else if (isset($_POST['expid']))
 		{
@@ -147,7 +147,7 @@ class expSession {
 		}
 	}
 
-	/* exdoc
+	/** exdoc
 	 * Validates the stored session ticket against the database.  This is used
 	 * to force refreshes and force logouts.  It also updates activity time.
 	 * @node Subsystems:Sessions
@@ -195,10 +195,12 @@ class expSession {
 		define('SITE_403_HTML', SITE_403_REAL_HTML);
 	}
 
-	/* exdoc
+	/** exdoc
 	 * Creates user ticket in sessionticket table and session
 	 *
+	 * @param $ticket
 	 * @param User $user The user object of the newly logged-in user. Uses id of 0 if not supplied.
+	 * @return
 	 * @node Subsystems:Sessions
 	 */
 	public static function updateTicket($ticket, $user){
@@ -211,12 +213,14 @@ class expSession {
 		return $ticket;
 	}
 
-	/* exdoc
+	/** exdoc
 	 * Checks to see if the session holds a set variable of the given name.
 	 *
 	 * Note that some session variables (like the user object and the ticket)
 	 * cannot be changed using this call (for security / sanity reason)
 	 * @node Subsystems:Sessions
+	 * @param $var
+	 * @return bool
 	 */
 	public static function is_set($var) {
 		return isset($_SESSION[SYS_SESSION_KEY]['vars'][$var]);
@@ -241,7 +245,7 @@ class expSession {
 		}
 	}
 
-	/* exdoc
+	/** exdoc
 	 * Removes a variable from the session.
 	 *
 	 * Note that some session variables (like the user object and the ticket)
@@ -270,7 +274,7 @@ class expSession {
 		exponent_permissions_load($user);
 	}
 
-	/* exdoc
+	/** exdoc
 	 * Clears the session of all user data, used when a user logs out.
 	 * This gets rid of stale session tickets, and resets the session
 	 * to a blank state.
@@ -286,11 +290,12 @@ class expSession {
 		//redirect_to(array('section'=>SITE_DEFAULT_SECTION));
 	}
 
-	/* exdoc
+	/** exdoc
 	 * Looks at the session data to see if the current session is
 	 * that of a logged in user. Returns true if the viewer is logged
 	 * in, and false if it is not
 	 * @node Subsystems:Sessions
+	 * @return bool
 	 */
 	public static function loggedIn() {
 		//if ($anon){
@@ -301,7 +306,7 @@ class expSession {
 		//}
 	}
 
-	/* exdoc
+	/** exdoc
 	 * Clears global users session cache
 	 *
 	 * @param Modules $modules If not set, applies to all modules.  If set, will only clear cache for that module
@@ -342,11 +347,12 @@ class expSession {
 		*/
 	}
 
-	/* exdoc
+	/** exdoc
 	 * Clears current users session cache
 	 *
 	 * @param Modules $modules Array or string. If not set, applies to all modules.  If set, will only clear cache for that module
-	 * @param User $user if not set,applies to all users. If set, will only clear for that user
+	 *
+	 * @internal param \User $user if not set,applies to all users. If set, will only clear for that user
 	 * @node Subsystems:Sessions
 	 */
 	public static function clearCurrentUserSessionCache($modules = null) {
@@ -364,17 +370,21 @@ class expSession {
 		}
 	}
 
-	//Clears entire user session data and truncates the sessionticket table
+	/**
+	 * Clears entire user session data and truncates the sessionticket table
+	 *
+	 */
 	public static function clearAllSessionData(){
 		global $db;
 		$db->delete('sessionticket',"1");
 		unset($_SESSION[SYS_SESSION_KEY]);
 	}
 
-	/* exdoc
+	/** exdoc
 	 * Creates user ticket in sessionticket table and session
 	 *
 	 * @param User $user The user object of the newly logged-in user. Uses id of 0 if not supplied.
+	 * @return null
 	 * @node Subsystems:Sessions
 	 */
 	static function createTicket($user = null){
