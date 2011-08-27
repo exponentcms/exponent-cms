@@ -314,7 +314,7 @@ class Twitter extends expRecord
 		$options[CURLOPT_URL] = self::SECURE_API_URL . '/oauth/' . $method;
 		$options[CURLOPT_PORT] = self::SECURE_API_PORT;
 		$options[CURLOPT_USERAGENT] = $this->getUserAgent();
-		if(ini_get('open_basedir') == '' && ini_get('safe_mode' == 'Off')) $options[CURLOPT_FOLLOWLOCATION] = true;
+		if(ini_get('open_basedir') == '' && ini_get('safe_mode') == 'Off') $options[CURLOPT_FOLLOWLOCATION] = true;
 		$options[CURLOPT_RETURNTRANSFER] = true;
 		$options[CURLOPT_TIMEOUT] = (int) $this->getTimeOut();
 		$options[CURLOPT_SSL_VERIFYPEER] = false;
