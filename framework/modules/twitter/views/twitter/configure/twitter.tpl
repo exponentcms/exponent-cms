@@ -33,3 +33,4 @@ Then you create an Access Token which will give you the Access settings.</p>
 {control type="text" name="oauth_token_secret" label="Access Token Secret" value=$config.oauth_token_secret class=title}
 
 {control type="text" name="limit" label="Number tweets to show" size=3 filter=integer value=$config.limit|default:20}
+{control type="radiogroup" name="typestatus" label="Pull Tweets from:"|gettext value=$config.typestatus|default:0 items="User,Home,Friends,Mentions,Public" values="0,1,2,3,4"}

@@ -44,13 +44,34 @@ class twitterController extends expController {
             $twitter->setOAuthToken($this->config['oauth_token']);
             $twitter->setOAuthTokenSecret($this->config['oauth_token_secret']);
 
-            // get users timeline
-            $tweets = $twitter->statusesUserTimeline();
+	        switch ($this->config['typestatus']) {
+		        case 1:
+					// get home  timeline
+					$tweets = $twitter->statusesHomeTimeline();
+			        break;
+		        case 2:
+					// get friends timeline
+					$tweets = $twitter->statusesFriendsTimeline();
+			        break;
+		        case 3:
+					// get public timeline
+					$tweets = $twitter->statusesPublicTimeline();
+			        break;
+		        case 4:
+					// get mentions
+					$tweets = $twitter->statusesMentions();
+			        break;
+		        default:
+			        // get users timeline
+			        $tweets = $twitter->statusesUserTimeline();
+	                break;
+	        }
 
     		if ($this->config['limit']) $tweets = array_slice($tweets,0,$this->config['limit'],true);
 		
     		foreach ($tweets as $key => $value) {
                 $tweets[$key]['text'] = $this->twitterify($value['text']);
+                $tweets[$key]['screen_name'] = $value['user']['screen_name'];
     		}
 
             assign_to_template(array('items'=>$tweets));

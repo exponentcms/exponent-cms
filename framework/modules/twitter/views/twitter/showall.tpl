@@ -18,8 +18,8 @@
 	<dl>
 	{foreach from=$items item=tweet}
 		<div class="item">
-			<dt><em class="date">{$tweet.created_at|date_format:"%A, %B %e, %Y %l:%M %p"}</em></dt>
-			<dd>{$tweet.text}</dd>
+			<p></p><dt><em class="date">At {$tweet.created_at|date_format:"%A, %B %e, %Y %l:%M %p"}, {$tweet.screen_name} wrote:</em></dt>
+			<dd>{$tweet.text}</dd></p>
 		</div>
 	{/foreach}
 	</dl>
