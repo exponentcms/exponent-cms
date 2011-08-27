@@ -47,11 +47,11 @@ class twitterController extends expController {
 	        switch ($this->config['typestatus']) {
 		        case 1:
 					// get home  timeline
-					$tweets = $twitter->statusesHomeTimeline();
+					$tweets = $twitter->statusesHomeTimeline(null,null,$this->config['twlimit']);
 			        break;
 		        case 2:
 					// get friends timeline
-					$tweets = $twitter->statusesFriendsTimeline();
+					$tweets = $twitter->statusesFriendsTimeline(null,null,$this->config['twlimit']);
 			        break;
 		        case 3:
 					// get public timeline
@@ -59,15 +59,15 @@ class twitterController extends expController {
 			        break;
 		        case 4:
 					// get mentions
-					$tweets = $twitter->statusesMentions();
+					$tweets = $twitter->statusesMentions(null,null,$this->config['twlimit']);
 			        break;
 		        default:
 			        // get users timeline
-			        $tweets = $twitter->statusesUserTimeline();
+			        $tweets = $twitter->statusesUserTimeline(null,null,null,null,null,$this->config['twlimit']);
 	                break;
 	        }
 
-    		if ($this->config['limit']) $tweets = array_slice($tweets,0,$this->config['limit'],true);
+    		if ($this->config['twlimit']) $tweets = array_slice($tweets,0,$this->config['twlimit'],true);
 		
     		foreach ($tweets as $key => $value) {
                 $tweets[$key]['text'] = $this->twitterify($value['text']);
