@@ -146,7 +146,6 @@ class Twitter extends expRecord
 		$this->setConsumerSecret($consumerSecret);
 	}
 
-
 	/**
 	 * Default destructor
 	 *
@@ -291,6 +290,7 @@ class Twitter extends expRecord
 	 */
 	private function doOAuthCall($method, array $parameters = null)
 	{
+		try {
 		// redefine
 		$method = (string) $method;
 
@@ -348,6 +348,9 @@ class Twitter extends expRecord
 
 		// return
 		return $return;
+		} catch (TwitterException $e) {
+			flash('error','Twitter: '.$e->getMessage());
+		}
 	}
 
 
@@ -365,6 +368,7 @@ class Twitter extends expRecord
 	 */
 	private function doCall($url, array $parameters = null, $authenticate = false, $method = 'GET', $filePath = null, $expectJSON = true, $returnHeaders = false)
 	{
+		try {
 		// allowed methods
 		$allowedMethods = array('GET', 'POST');
 
@@ -570,6 +574,9 @@ class Twitter extends expRecord
 
 		// return
 		return $json;
+		} catch (TwitterException $e) {
+			flash('error','Twitter: '.$e->getMessage());
+		}
 	}
 
 
@@ -582,6 +589,7 @@ class Twitter extends expRecord
 	 */
 	private function doSearchCall($url, array $parameters = null)
 	{
+		try {
 		// redefine
 		$url = (string) $url;
 		$parameters = (array) $parameters;
@@ -700,6 +708,9 @@ class Twitter extends expRecord
 
 		// return
 		return $json;
+		} catch (TwitterException $e) {
+			flash('error','Twitter: '.$e->getMessage());
+		}
 	}
 
 
@@ -1007,6 +1018,7 @@ class Twitter extends expRecord
 	 */
 	public function statusesMentions($sinceId = null, $maxId = null, $count = null, $page = null, $trimUser = false, $includeRts = false, $includeEntities = false)
 	{
+		try {
 		// validate
 		if($count != null && $count > 200) throw new TwitterException('Count may not be greater than 200.');
 
@@ -1022,6 +1034,9 @@ class Twitter extends expRecord
 
 		// make the call
 		return (array) $this->doCall('statuses/mentions.json', $parameters, true);
+		} catch (TwitterException $e) {
+			flash('error','Twitter: '.$e->getMessage());
+		}
 	}
 
 
@@ -1038,6 +1053,7 @@ class Twitter extends expRecord
 	 */
 	public function statusesRetweetedByMe($sinceId = null, $maxId = null, $count = null, $page = null, $trimUser = false, $includeEntities = false)
 	{
+		try{
 		// validate
 		if($count != null && $count > 200) throw new TwitterException('Count may not be greater than 200.');
 
@@ -1052,6 +1068,9 @@ class Twitter extends expRecord
 
 		// make the call
 		return (array) $this->doCall('statuses/retweeted_by_me.json', $parameters, true);
+		} catch (TwitterException $e) {
+			flash('error','Twitter: '.$e->getMessage());
+		}
 	}
 
 
@@ -1068,6 +1087,7 @@ class Twitter extends expRecord
 	 */
 	public function statusesRetweetedToMe($sinceId = null, $maxId = null, $count = null, $page = null, $trimUser = false, $includeEntities = false)
 	{
+		try{
 		// validate
 		if($count != null && $count > 200) throw new TwitterException('Count may not be greater than 200.');
 
@@ -1082,6 +1102,9 @@ class Twitter extends expRecord
 
 		// make the call
 		return (array) $this->doCall('statuses/retweeted_by_me.json', $parameters, true);
+		} catch (TwitterException $e) {
+			flash('error','Twitter: '.$e->getMessage());
+		}
 	}
 
 
@@ -1098,6 +1121,7 @@ class Twitter extends expRecord
 	 */
 	public function statusesReweetsOfMe($sinceId = null, $maxId = null, $count = null, $page = null, $trimUser = false, $includeEntities = false)
 	{
+		try {
 		// validate
 		if($count != null && $count > 200) throw new TwitterException('Count may not be greater than 200.');
 
@@ -1112,6 +1136,9 @@ class Twitter extends expRecord
 
 		// make the call
 		return (array) $this->doCall('statuses/retweets_of_me.json', $parameters, true);
+		} catch (TwitterException $e) {
+			flash('error','Twitter: '.$e->getMessage());
+		}
 	}
 
 
@@ -1217,6 +1244,7 @@ class Twitter extends expRecord
 	 */
 	public function statusesRetweets($id, $count = null, $trimUser = false, $includeEntities = false)
 	{
+		try {
 		// validate
 		if($count != null && $count > 100) throw new TwitterException('Count may not be greater than 100.');
 
@@ -1228,6 +1256,9 @@ class Twitter extends expRecord
 
 		// make the call
 		return (array) $this->doCall('statuses/retweets/' . $id . '.json', $parameters);
+		} catch (TwitterException $e) {
+			flash('error','Twitter: '.$e->getMessage());
+		}
 	}
 
 
@@ -1243,6 +1274,7 @@ class Twitter extends expRecord
 	 */
 	public function statusesIdRetweetedBy($id, $count = null, $page = null, $trimUser = false, $includeEntities = false)
 	{
+		try {
 		// validate
 		if($count != null && $count > 200) throw new TwitterException('Count may not be greater than 200.');
 
@@ -1255,6 +1287,9 @@ class Twitter extends expRecord
 
 		// make the call
 		return (array) $this->doCall('statuses/' . (string) $id . '/retweeted_by.json', $parameters, true);
+		} catch (TwitterException $e) {
+			flash('error','Twitter: '.$e->getMessage());
+		}
 	}
 
 
@@ -1270,6 +1305,7 @@ class Twitter extends expRecord
 	 */
 	public function statusesIdRetweetedByIds($id, $count = null, $page = null, $trimUser = false, $includeEntities = false)
 	{
+		try {
 		// validate
 		if($count != null && $count > 200) throw new TwitterException('Count may not be greater than 200.');
 
@@ -1282,6 +1318,9 @@ class Twitter extends expRecord
 
 		// make the call
 		return (array) $this->doCall('statuses/' . (string) $id . '/retweeted_by/ids.json', $parameters, true);
+		} catch (TwitterException $e) {
+			flash('error','Twitter: '.$e->getMessage());
+		}
 	}
 
 
@@ -1297,6 +1336,7 @@ class Twitter extends expRecord
 	 */
 	public function usersShow($userId = null, $screenName = null, $includeEntities = false)
 	{
+		try {
 		// validate
 		if($userId == '' && $screenName == '') throw new TwitterException('Specify an userId or a screenName.');
 
@@ -1308,6 +1348,9 @@ class Twitter extends expRecord
 
 		// make the call
 		return (array) $this->doCall('users/show.json', $parameters);
+		} catch (TwitterException $e) {
+			flash('error','Twitter: '.$e->getMessage());
+		}
 	}
 
 
@@ -1322,6 +1365,7 @@ class Twitter extends expRecord
 	 */
 	public function usersLookup($userIds = null, $screenNames = null, $includeEntities = false)
 	{
+		try {
 		// redefine
 		$userIds = (array) $userIds;
 		$screenNames = (array) $screenNames;
@@ -1337,7 +1381,9 @@ class Twitter extends expRecord
 
 		// make the call
 		return (array) $this->doCall('users/lookup.json', $parameters, true);
-
+		} catch (TwitterException $e) {
+			flash('error','Twitter: '.$e->getMessage());
+		}
 	}
 
 
@@ -1400,6 +1446,7 @@ class Twitter extends expRecord
 	 */
 	public function usersProfileImage($screenName, $size = 'normal')
 	{
+		try {
 		// possible modes
 		$allowedSizes = array('normal', 'bigger', 'mini');
 
@@ -1416,6 +1463,9 @@ class Twitter extends expRecord
 
 		// fallback
 		return false;
+		} catch (TwitterException $e) {
+			flash('error','Twitter: '.$e->getMessage());
+		}
 	}
 
 
@@ -1551,6 +1601,7 @@ class Twitter extends expRecord
 	 */
 	public function userListsCreate($user, $name, $mode = null, $description = null)
 	{
+		try {
 		// possible modes
 		$allowedModes = array('public', 'private');
 
@@ -1564,6 +1615,9 @@ class Twitter extends expRecord
 
 		// make the call
 		return (array) $this->doCall((string) $user . '/lists.json', $parameters, true, 'POST');
+		} catch (TwitterException $e) {
+			flash('error','Twitter: '.$e->getMessage());
+		}
 	}
 
 
@@ -1610,6 +1664,7 @@ class Twitter extends expRecord
 	 */
 	public function userListsIdUpdate($user, $id, $name = null, $mode = null, $description = null)
 	{
+		try {
 		// possible modes
 		$allowedModes = array('public', 'private');
 
@@ -1623,6 +1678,9 @@ class Twitter extends expRecord
 
 		// make the call
 		return (array) $this->doCall((string) $user . '/lists/' . (string) $id . '.json', $parameters, true, 'POST');
+		} catch (TwitterException $e) {
+			flash('error','Twitter: '.$e->getMessage());
+		}
 	}
 
 
@@ -1640,6 +1698,7 @@ class Twitter extends expRecord
 	 */
 	public function userListsIdStatuses($user, $id, $sinceId = null, $maxId = null, $count = null, $page = null, $includeEntities = false)
 	{
+		try {
 		// validate
 		if($count != null && $count > 200) throw new TwitterException('Count may not be greater than 200.');
 
@@ -1653,6 +1712,9 @@ class Twitter extends expRecord
 
 		// make the call
 		return (array) $this->doCall((string) $user . '/lists/' . (string) $id . '/statuses.json', $parameters);
+		} catch (TwitterException $e) {
+			flash('error','Twitter: '.$e->getMessage());
+		}
 	}
 
 
@@ -1743,6 +1805,7 @@ class Twitter extends expRecord
 	 */
 	public function userListMembersCreateAll($user, $id, $userIds = null, $screenNames = null)
 	{
+		try {
 		// redefine
 		$userIds = (array) $userIds;
 		$screenNames = (array) $screenNames;
@@ -1757,6 +1820,9 @@ class Twitter extends expRecord
 
 		// make the call
 		return (array) $this->doCall((string) $user . '/' . (string) $id . '/create_all.json', $parameters, true, 'POST');
+		} catch (TwitterException $e) {
+			flash('error','Twitter: '.$e->getMessage());
+		}
 	}
 
 
@@ -1906,6 +1972,7 @@ class Twitter extends expRecord
 	 */
 	public function directMessages($sinceId = null, $maxId = null, $count = null, $page = null, $includeEntities = false)
 	{
+		try {
 		// validate
 		if($count != null && $count > 200) throw new TwitterException('Count may not be greater than 200.');
 
@@ -1919,6 +1986,9 @@ class Twitter extends expRecord
 
 		// make the call
 		return (array) $this->doCall('direct_messages.json', $parameters, true);
+		} catch (TwitterException $e) {
+			flash('error','Twitter: '.$e->getMessage());
+		}
 	}
 
 
@@ -1934,6 +2004,7 @@ class Twitter extends expRecord
 	 */
 	public function directMessagesSent($sinceId = null, $maxId = null, $count = null, $page = null, $includeEntities = false)
 	{
+		try {
 		// validate
 		if($count != null && $count > 200) throw new TwitterException('Count may not be greater than 200.');
 
@@ -1947,6 +2018,9 @@ class Twitter extends expRecord
 
 		// make the call
 		return (array) $this->doCall('direct_messages/sent.json', $parameters, true);
+		} catch (TwitterException $e) {
+			flash('error','Twitter: '.$e->getMessage());
+		}
 	}
 
 
@@ -1962,6 +2036,7 @@ class Twitter extends expRecord
 	 */
 	public function directMessagesNew($text, $userId = null, $screenName = null, $includeEntities = false)
 	{
+		try {
 		// validate
 		if($userId == '' && $screenName == '') throw new TwitterException('Specify an userId or a screenName.');
 
@@ -1973,6 +2048,9 @@ class Twitter extends expRecord
 
 		// make the call
 		return (array) $this->doCall('direct_messages/new.json', $parameters, true, 'POST');
+		} catch (TwitterException $e) {
+			flash('error','Twitter: '.$e->getMessage());
+		}
 	}
 
 
@@ -2008,6 +2086,7 @@ class Twitter extends expRecord
 	 */
 	public function friendshipsCreate($userId = null, $screenName = null, $follow = false, $includeEntities = false)
 	{
+		try {
 		// validate
 		if($userId == '' && $screenName == '') throw new TwitterException('Specify an userId or a screenName.');
 
@@ -2020,6 +2099,9 @@ class Twitter extends expRecord
 
 		// make the call
 		return (array) $this->doCall('friendships/create.json', $parameters, true, 'POST');
+		} catch (TwitterException $e) {
+			flash('error','Twitter: '.$e->getMessage());
+		}
 	}
 
 
@@ -2034,6 +2116,7 @@ class Twitter extends expRecord
 	 */
 	public function friendshipsDestroy($userId = null, $screenName = null, $includeEntities = false)
 	{
+		try {
 		// validate
 		if($userId == '' && $screenName == '') throw new TwitterException('Specify an userId or a screenName.');
 
@@ -2044,6 +2127,9 @@ class Twitter extends expRecord
 
 		// make the call
 		return (array) $this->doCall('friendships/destroy.json', $parameters, true, 'POST');
+		} catch (TwitterException $e) {
+			flash('error','Twitter: '.$e->getMessage());
+		}
 	}
 
 
@@ -2076,6 +2162,7 @@ class Twitter extends expRecord
 	 */
 	public function friendshipsShow($sourceId = null, $sourceScreenName = null, $targetId = null, $targetScreenName = null)
 	{
+		try {
 		// validate
 		if($sourceId == '' && $sourceScreenName == '') throw new TwitterException('Specify an sourceId or a sourceScreenName.');
 		if($targetId == '' && $targetScreenName == '') throw new TwitterException('Specify an targetId or a targetScreenName.');
@@ -2088,6 +2175,9 @@ class Twitter extends expRecord
 
 		// make the call
 		return (array) $this->doCall('friendships/show.json', $parameters);
+		} catch (TwitterException $e) {
+			flash('error','Twitter: '.$e->getMessage());
+		}
 	}
 
 
@@ -2136,6 +2226,7 @@ class Twitter extends expRecord
 	 */
 	public function friendsIds($userId = null, $screenName = null, $cursor = null)
 	{
+		try {
 		// validate
 		if($userId == '' && $screenName == '') throw new TwitterException('Specify an userId or a screenName.');
 
@@ -2147,6 +2238,9 @@ class Twitter extends expRecord
 
 		// make the call
 		return (array) $this->doCall('friends/ids.json', $parameters, true);
+		} catch (TwitterException $e) {
+			flash('error','Twitter: '.$e->getMessage());
+		}
 	}
 
 
@@ -2160,6 +2254,7 @@ class Twitter extends expRecord
 	 */
 	public function followersIds($userId = null, $screenName = null, $cursor = null)
 	{
+		try {
 		// validate
 		if($userId == '' && $screenName == '') throw new TwitterException('Specify an userId or a screenName.');
 
@@ -2170,6 +2265,9 @@ class Twitter extends expRecord
 
 		// make the call
 		return (array) $this->doCall('followers/ids.json', $parameters, true);
+		} catch (TwitterException $e) {
+			flash('error','Twitter: '.$e->getMessage());
+		}
 	}
 
 
@@ -2258,6 +2356,7 @@ class Twitter extends expRecord
 	 */
 	public function accountUpdateProfileColors($profileBackgroundColor = null, $profileTextColor = null, $profileLinkColor = null, $profileSidebarFillColor = null, $profileSidebarBorderColor = null, $includeEntities = false)
 	{
+		try {
 		// validate
 		if($profileBackgroundColor == '' && $profileTextColor == '' && $profileLinkColor == '' && $profileSidebarFillColor == '' && $profileSidebarBorderColor == '') throw new TwitterException('Specify a profileBackgroundColor, profileTextColor, profileLinkColor, profileSidebarFillColor or a profileSidebarBorderColor.');
 
@@ -2271,6 +2370,9 @@ class Twitter extends expRecord
 
 		// make the call
 		return (array) $this->doCall('account/update_profile_colors.json', $parameters, true, 'POST');
+		} catch (TwitterException $e) {
+			flash('error','Twitter: '.$e->getMessage());
+		}
 	}
 
 
@@ -2283,6 +2385,7 @@ class Twitter extends expRecord
 	 */
 	public function accountUpdateProfileImage($image, $includeEntities = false)
 	{
+		try {
 		// validate
 		if(!file_exists($image)) throw new TwitterException('Image (' . $image . ') doesn\'t exists.');
 
@@ -2292,6 +2395,9 @@ class Twitter extends expRecord
 
 		// make the call
 		return (array) $this->doCall('account/update_profile_image.json', $parameters, true, 'POST', $image);
+		} catch (TwitterException $e) {
+			flash('error','Twitter: '.$e->getMessage());
+		}
 	}
 
 
@@ -2305,6 +2411,7 @@ class Twitter extends expRecord
 	 */
 	public function accountUpdateProfileBackgroundImage($image, $tile = false, $includeEntities = false)
 	{
+		try {
 		// validate
 		if(!file_exists($image)) throw new TwitterException('Image (' . $image . ') doesn\'t exists.');
 
@@ -2315,6 +2422,9 @@ class Twitter extends expRecord
 
 		// make the call
 		return (array) $this->doCall('account/update_profile_background_image.json', $parameters, true, 'POST', $image);
+		} catch (TwitterException $e) {
+			flash('error','Twitter: '.$e->getMessage());
+		}
 	}
 
 
@@ -2435,6 +2545,7 @@ class Twitter extends expRecord
 	 */
 	public function notificationsLeave($userId = null, $screenName = null, $includeEntities = false)
 	{
+		try {
 		// validate
 		if($userId == '' && $screenName == '') throw new TwitterException('Specify an userId or a screenName.');
 
@@ -2445,6 +2556,9 @@ class Twitter extends expRecord
 
 		// make the call
 		return (array) $this->doCall('notifications/leave.json', $parameters, true, 'POST');
+		} catch (TwitterException $e) {
+			flash('error','Twitter: '.$e->getMessage());
+		}
 	}
 
 
@@ -2459,6 +2573,7 @@ class Twitter extends expRecord
 	 */
 	public function blocksCreate($userId = null, $screenName = null, $includeEntities = false)
 	{
+		try {
 		// validate
 		if($userId == '' && $screenName == '') throw new TwitterException('Specify an userId or a screenName.');
 
@@ -2469,6 +2584,9 @@ class Twitter extends expRecord
 
 		// make the call
 		return (array) $this->doCall('blocks/create.json', $parameters, true, 'POST');
+		} catch (TwitterException $e) {
+			flash('error','Twitter: '.$e->getMessage());
+		}
 	}
 
 
@@ -2482,6 +2600,7 @@ class Twitter extends expRecord
 	 */
 	public function blocksDestroy($userId = null, $screenName = null, $includeEntities = false)
 	{
+		try {
 		// validate
 		if($userId == '' && $screenName == '') throw new TwitterException('Specify an userId or a screenName.');
 
@@ -2492,6 +2611,9 @@ class Twitter extends expRecord
 
 		// make the call
 		return (array) $this->doCall('blocks/destroy.json', $parameters, true, 'POST');
+		} catch (TwitterException $e) {
+			flash('error','Twitter: '.$e->getMessage());
+		}
 	}
 
 
@@ -2569,6 +2691,7 @@ class Twitter extends expRecord
 	 */
 	public function reportSpam($userId = null, $screenName = null, $includeEntities = false)
 	{
+		try {
 		// validate
 		if($userId == '' && $screenName == '') throw new TwitterException('Specify an userId or a screenName.');
 
@@ -2579,6 +2702,9 @@ class Twitter extends expRecord
 
 		// make the call
 		return (array) $this->doCall('report_spam.json', $parameters, true, 'POST');
+		} catch (TwitterException $e) {
+			flash('error','Twitter: '.$e->getMessage());
+		}
 	}
 
 
@@ -2679,6 +2805,7 @@ class Twitter extends expRecord
 	 */
 	public function oAuthRequestToken($callbackURL = null)
 	{
+		try {
 		// init var
 		$parameters = null;
 
@@ -2697,6 +2824,9 @@ class Twitter extends expRecord
 
 		// return
 		return $response;
+		} catch (TwitterException $e) {
+			flash('error','Twitter: '.$e->getMessage());
+		}
 	}
 
 
@@ -2748,6 +2878,7 @@ class Twitter extends expRecord
 	 */
 	public function oAuthAuthenticate($force = false)
 	{
+		try {
 		throw new TwitterException('Not implemented');
 
 		// build parameters
@@ -2756,6 +2887,9 @@ class Twitter extends expRecord
 
 		// make the call
 		return $this->doCall('/oauth/authenticate.oauth', $parameters);
+		} catch (TwitterException $e) {
+			flash('error','Twitter: '.$e->getMessage());
+		}
 	}
 
 
