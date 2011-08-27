@@ -24,6 +24,9 @@
 
 
 <h2>{"Configure this Module"|gettext}</h2>
+<p>Log in to the Twitter Developer's website with your twitter account <a href="https://dev.twitter.com/apps" target="_blank">https://dev.twitter.com/apps</a>{br}
+Create an application which will give you the Consumer Key and Secret.{br}
+Then you create an Access Token which will give you the Access settings.</p>
 {control type="text" name="consumer_key" label="Consumer key" value=$config.consumer_key class=title}
 {control type="text" name="consumer_secret" label="Consumer secret" value=$config.consumer_secret class=title}
 {control type="text" name="oauth_token" label="Access Token" value=$config.oauth_token class=title}
