@@ -18,7 +18,7 @@
 	<dl>
 	{foreach from=$items item=tweet}
 		<div class="item">
-			<dt><span class="date">{$tweet.created_at|date_format:"%A, %B %e, %Y %l:%M %p"}</span></dt>
+			<dt><em class="date">{$tweet.created_at|date_format:"%A, %B %e, %Y %l:%M %p"}</em></dt>
 			<dd>{$tweet.text}</dd>
 		</div>
 	{/foreach}
