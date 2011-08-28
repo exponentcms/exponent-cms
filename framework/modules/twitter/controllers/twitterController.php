@@ -72,6 +72,8 @@ class twitterController extends expController {
     		foreach ($tweets as $key => $value) {
                 $tweets[$key]['text'] = $this->twitterify($value['text']);
                 $tweets[$key]['screen_name'] = $value['user']['screen_name'];
+                $tweets[$key]['image'] = $value['user']['profile_image_url'];
+                $tweets[$key]['via'] = $value['source'];
     		}
 
             assign_to_template(array('items'=>$tweets));
