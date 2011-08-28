@@ -26,4 +26,5 @@
 			</div>
 		{/foreach}
 	</dl>
+	{br}
 </div>
