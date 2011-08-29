@@ -17,7 +17,7 @@
 # a date format that isn't listed here, and you tell me, I
 # will put it in the standard distribution.
 
-%l:%M%P
+%l:%M%p
 	6:45pm
 	
 %T
