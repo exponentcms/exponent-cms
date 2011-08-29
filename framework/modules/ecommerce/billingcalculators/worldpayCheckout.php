@@ -259,6 +259,18 @@ class worldpayCheckout extends billingcalculator {
 	
 	}
 	
+	function getAVSAddressVerified($billingmethod) {
+        return 'X';
+    }
+    
+    function getAVSZipVerified($billingmethod) {
+        return 'X';
+    }
+    
+    function getCVVMatched($billingmethod) {
+        return 'X';
+    }
+	
 	
 }
 
