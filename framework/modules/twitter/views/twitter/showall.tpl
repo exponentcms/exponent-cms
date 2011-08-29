@@ -16,11 +16,15 @@
 <div class="module twitter showall">
 	{if $moduletitle}<h2>{$moduletitle}</h2>{/if}
 	<dl>
-	{foreach from=$items item=tweet}
-		<div class="item">
-			<dt>{$tweet.created_at|date_format:"%A, %B %e, %Y %l:%M %p"}</dt>
-			<dd>{$tweet.text}</dd>
-		</div>
-	{/foreach}
+		{foreach from=$items item=tweet}
+			<div class="item">
+				<p>
+					{if $config.showimage}{img src=`$tweet.image` style="float:left;;margin:0 5px 0 0;"}{/if}
+					<dt><em class="date">On {$tweet.created_at|format_date:$smarty.const.DISPLAY_DATETIME_FORMAT}{if $config.showattrib} via {$tweet.via}, {$tweet.screen_name} wrote:{/if}</em></dt>
+					<dd>{$tweet.text}</dd>
+				</p>
+			</div>
+		{/foreach}
 	</dl>
+	{br}
 </div>
