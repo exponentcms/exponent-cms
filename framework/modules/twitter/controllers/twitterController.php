@@ -70,10 +70,19 @@ class twitterController extends expController {
     		if ($this->config['twlimit']) $tweets = array_slice($tweets,0,$this->config['twlimit'],true);
 		
     		foreach ($tweets as $key => $value) {
-                $tweets[$key]['text'] = $this->twitterify($value['text']);
-                $tweets[$key]['screen_name'] = $value['user']['screen_name'];
-                $tweets[$key]['image'] = $value['user']['profile_image_url'];
-                $tweets[$key]['via'] = $value['source'];
+			    if (strpos($value['text'],'RT ') === false) {
+				    $tweets[$key]['text'] = $this->twitterify($value['text']);
+				    $tweets[$key]['screen_name'] = $value['user']['screen_name'];
+				    $tweets[$key]['image'] = $value['user']['profile_image_url'];
+				    $tweets[$key]['via'] = $value['source'];
+			    } else {
+				    // we're a retweet
+				    $tweets[$key]['text'] = $this->twitterify(substr($value['text'],strpos($value['text'],':')+2));
+				    $tweets[$key]['screen_name'] = $value['retweeted_status']['user']['screen_name'];
+				    $tweets[$key]['image'] = $value['retweeted_status']['user']['profile_image_url'];
+				    $tweets[$key]['via'] = $value['source'].' (RT by '.$value['user']['screen_name'].')';
+			    }
+			    $tweets[$key]['created_at'] = strtotime($value['created_at']); // convert to unix time
     		}
 
             assign_to_template(array('items'=>$tweets));
@@ -82,9 +91,10 @@ class twitterController extends expController {
     
     function twitterify($ret) {
         $ret = preg_replace('/\\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|]/i', "<a href=\"\\0\" class=\"twitterlink\">\\0</a>", $ret);
-        $ret = preg_replace('/(^|[^\w])(@[\d\w\-]+)/', '\\1<a href="http://twitter.com/$2" class=\"twitteruser\">$2</a>', $ret);
-        $ret = preg_replace('/(^|[^\w])(#[\d\w\-]+)/', '\\1<a href="http://twitter.com/search?q=$2" class=\"twittertopic\">$2</a>' , $ret);
-        //$ret = preg_replace("/(^| )#(\w+)/", "\\1#\\2", $ret);
+        $ret = preg_replace('/(^|[^\w])(@[\d\w\-]+)/', '\\1<a href="http://twitter.com/#!/$2" class=\"twitteruser\">$2</a>', $ret);
+        //$ret = preg_replace('/(^|[^\w])(#[\d\w\-]+)/', '\\1<a href="http://twitter.com/#!/search/$2" class=\"twittertopic\">$2</a>' , $ret);
+		$ret = preg_replace('/\s+#(\w+)/',' <a href="http://search.twitter.com/search?q=%23$1">#$1</a>',$ret);
+		//$ret = preg_replace("/(^| )#(\w+)/", "\\1#\\2", $ret);
         return $ret;
     }
     
