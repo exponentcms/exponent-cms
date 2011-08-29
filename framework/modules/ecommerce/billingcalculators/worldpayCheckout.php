@@ -89,9 +89,9 @@ class worldpayCheckout extends billingcalculator {
 			'amount'    => number_format($order->grand_total, 2, '.', ''),
 			'testMode'  => '100',
 			'currency'  => 'USD',
-			'cartId'    => $order->id
+			'cartId'    => $order->id,
+			'MC_callback' => URL_FULL . 'external/worldpay/callback.php'
 		);
-		
 		 // convert the api params to a name value pair string
         $datapost = "";
         while(list($key, $value) = each($data)) 
@@ -123,10 +123,7 @@ class worldpayCheckout extends billingcalculator {
         $response = curl_exec($ch);
 		curl_close($ch);
 		echo $response;
-        // eDebug('trassel');
-		// eDebug($response, true);
         exit();
-        // return $resposssnse;
     }
     
     
