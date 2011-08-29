@@ -76,7 +76,7 @@
                 <div id="general">
                     {control type="hidden" name="parent_id" value=$record->parent_id}   
                     {control type="text" name="model" label="Model # / SKU" value=$record->model}
-                    {control type="text" class="title" name="title" label="Product Name" value=$record->title}
+                    {control type="text" class="title" name="title" label="Product Name" value=$record->title|escape:"htmlall"}
                     {control type="dropdown" name="companies_id" label="Manufacturer" includeblank=true frommodel=company value=$record->companies_id}<a href='{link controller="company" action="manage"}'>Manage Manufacturers</a>{br}
                     {control type="textarea" name="summary" label="Product Summary" rows=5 cols=85 value=$record->summary}
                     {control type="editor" name="body" label="Product Description" height=450 value=$record->body}
@@ -484,7 +484,7 @@
                 <div id="meta">
                     <h2>Meta Info</h2>
                     {control type="text" name="sef_url" label="SEF URL" value=$record->sef_url}
-                    {control type="text" name="meta_title" label="Meta Title" value=$record->meta_title}
+                    {control type="text" name="meta_title" label="Meta Title" value=$record->meta_title|escape:"htmlall"}
                     {control type="textarea" name="meta_description" label="Meta Description" value=$record->meta_description}
                     {control type="textarea" name="meta_keywords" label="Meta Keywords" value=$record->meta_keywords}
                 </div>
