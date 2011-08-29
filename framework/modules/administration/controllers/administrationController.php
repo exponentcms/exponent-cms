@@ -88,7 +88,8 @@ class administrationController extends expController {
 
 		// then search for module definitions
 		$moddefs = array(
-			BASE.'themes/'.DISPLAY_THEME_REAL.'/modules',
+//			BASE.'themes/'.DISPLAY_THEME_REAL.'/modules',
+			BASE.'themes/'.DISPLAY_THEME.'/modules',
 			BASE."framework/modules",
 			);
 		foreach ($moddefs as $moddef) {
@@ -154,7 +155,8 @@ class administrationController extends expController {
 
 		// then search for module definitions
 		$moddefs = array(
-			BASE.'themes/'.DISPLAY_THEME_REAL.'/modules',
+//			BASE.'themes/'.DISPLAY_THEME_REAL.'/modules',
+			BASE.'themes/'.DISPLAY_THEME.'/modules',
 			BASE."framework/modules",
 			);
 		foreach ($moddefs as $moddef) {
@@ -340,7 +342,11 @@ class administrationController extends expController {
     public function toolbar() {
         global $user;
         $menu = array();
-		$dirs = array(BASE.'framework/modules/administration/menus', BASE.'themes/'.DISPLAY_THEME_REAL.'/modules/administration/menus');
+		$dirs = array(
+			BASE.'framework/modules/administration/menus',
+//			BASE.'themes/'.DISPLAY_THEME_REAL.'/modules/administration/menus'
+			BASE.'themes/'.DISPLAY_THEME.'/modules/administration/menus'
+		);
 		foreach ($dirs as $dir) {
 		    if (is_readable($dir)) {
 			    $dh = opendir($dir);
@@ -420,31 +426,25 @@ class administrationController extends expController {
 	}
 
 	public function clear_smarty_cache() {
-		expTheme::removeSmartyCache();
-		$message = "Smarty Cache has been cleared" ;
-		flash('message',$message);
-		expHistory::back();
+		expTheme::clearSmartyCache();
 	}
 
 	public function clear_css_cache() {
 		expTheme::removeCss();
-		$message = "CSS/Minfy Cache has been cleared" ;
-		flash('message',$message);
+		flash('message',"CSS/Minfy Cache has been cleared");
 		expHistory::back();
 	}
 
 	public function clear_image_cache() {
 		expFile::removeFilesInDirectory(BASE.'tmp/pixidou');
 		if (file_exists(BASE.'tmp/img_cache')) expFile::removeFilesInDirectory(BASE.'tmp/img_cache');
-		$message = "Image/Pixidou Cache has been cleared" ;
-		flash('message',$message);
+		flash('message',"Image/Pixidou Cache has been cleared");
 		expHistory::back();
 	}
 
 	public function clear_rss_cache() {
 		expFile::removeFilesInDirectory(BASE.'tmp/rsscache');
-		$message = "RSS/Podcast Cache has been cleared" ;
-		flash('message',$message);
+		flash('message',"RSS/Podcast Cache has been cleared");
 		expHistory::back();
 	}
 
@@ -597,16 +597,16 @@ class administrationController extends expController {
     
     public function switch_themes() {
     	expSettings::change('DISPLAY_THEME_REAL', $this->params['theme']);
-    	if (isset($this->params['sv']) && THEME_STYLE!=$this->params['sv']) {  //FIXME we aren't saving the new theme style, why???
+    	if (isset($this->params['sv']) && THEME_STYLE!=$this->params['sv']) {
             expSettings::change('THEME_STYLE', $this->params['sv']);
     	    if (expFile::recurse_copy(BASE."themes/".$this->params['theme']."/css", BASE."themes/".$this->params['theme']."/styles_backup/css")
     	        && expFile::recurse_copy(BASE."themes/".$this->params['theme']."/images", BASE."themes/".$this->params['theme']."/styles_backup/images")) {
 
         	    if (!expFile::recurse_copy(BASE."themes/".$this->params['theme']."/css_".$this->params['sv'], BASE."themes/".$this->params['theme']."/css")) {
-                    flash('error',gt('Couldn\'t copy') . "css_".$this->params['sv']);
+                    flash('error',gt('Couldn\'t copy ') . "css_".$this->params['sv']);
         	    }
         	    if (!expFile::recurse_copy(BASE."themes/".$this->params['theme']."/images_".$this->params['sv'], BASE."themes/".$this->params['theme']."/images")) {
-                    flash('error',gt('Couldn\'t copy') . "images_".$this->params['sv']);
+                    flash('error',gt('Couldn\'t copy ') . "images_".$this->params['sv']);
         	    }
 
                 flash('message',gt('Your website\'s theme has been updated'));
@@ -624,10 +624,14 @@ class administrationController extends expController {
     
 	public function preview_theme() {
 		expSession::set('display_theme',$this->params['theme']);
-		if (DISPLAY_THEME_REAL == $this->params['theme']){
-			expSession::set('display_theme',$this->params['theme']);
+//		if (DISPLAY_THEME_REAL == $this->params['theme']){
+//			expSession::set('display_theme',$this->params['theme']);
+//		}
+		if ($this->params['theme'] != DISPLAY_THEME_REAL) {
+			flash('notice', "You are previewing the '".$this->params['theme']."' theme.");
 		}
-		expHistory::returnTo('manageable');
+		expTheme::removeSmartyCache();
+		expHistory::back();
 	}
 
     public function configure_site () {
@@ -676,6 +680,9 @@ class administrationController extends expController {
         
         // These funcs need to be moved up in to new subsystems
         
+        // Date/Time Format
+        $datetime_format = expSettings::dropdownData('datetime_format');
+
         // Date Format
         $date_format = expSettings::dropdownData('date_format');
         
@@ -699,6 +706,7 @@ class administrationController extends expController {
                                 'themes'=>$themes,
                                 'langs'=>$langs,
                                 'attribution'=>$attribution,
+                                'datetime_format'=>$datetime_format,
                                 'date_format'=>$date_format,
                                 'time_format'=>$time_format,
                                 'start_of_week'=>$start_of_week,
