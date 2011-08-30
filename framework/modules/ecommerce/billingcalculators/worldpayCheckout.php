@@ -77,7 +77,7 @@ class worldpayCheckout extends billingcalculator {
 				'amount'    => number_format($order->grand_total, 2, '.', ''),
 				'currency'  => 'USD',
 				'cartId'    => $order->id,
-				'MC_callback' => 'http://www.tee-noy.com/sample.php'
+				'MC_callback' => URL_FULL . 'external/worldpay/callback.php'
 			);
 			
 			 // convert the api params to a name value pair string
@@ -115,18 +115,18 @@ class worldpayCheckout extends billingcalculator {
 			return 'noredirect';
 		} else {
 			$object = expUnserialize($method->billing_options);
-            //eDebug($object,true);
             if ($params['transStatus'] == 'Y') {
-                $object->result->errorCode = 0;
+				$object->result->errorCode = 0;
                 $object->result->message = "User has approved the payment at Worldpay";
                 $object->result->transId = $params['transId'];                
-                $method->update(array('billing_options'=>serialize($object)));                
+                $method->update(array('billing_options'=>serialize($object), 'transaction_state' => "Cancelled"));    
+				$this->createBillingTransaction($method, number_format($order->grand_total, 2, '.', ''),$object, 'complete');				
                 return $object; 
-            } else{
+            } else {
                 $object->result->errorCode = 1;
                 $object->result->message = "User transaction has been cancelled";
                  $object->result->transId = $params['transId'];                 
-                $method->update(array('billing_options'=>serialize($object)));                 
+                $method->update(array('billing_options'=>serialize($object), 'transaction_state' => "Cancelled"));       
                 return $object;   
             }
         }        
