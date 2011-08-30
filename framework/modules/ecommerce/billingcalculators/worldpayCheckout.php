@@ -51,17 +51,6 @@ class worldpayCheckout extends billingcalculator {
         return true;
     }
     
-    /**
-    * For paypal this will call out to the PP api and get a token then redirect to PP.
-    * PP then redirects back the site with token in the url. We can pick up that token 
-    * from the url such that if we already have it we'll ccall another PP api to get the
-    * details and make it match up to the order.
-    * 
-    * @param mixed $method The billing method information for this user
-    * @param mixed $opts 
-    * @param array $params The url prameters, as if sef was off. 
-    * @return mixed An object indicating pass of failure. 
-    */
     function preprocess($method, $opts, $params, $order) {
 	
         global $db, $user;
@@ -71,26 +60,25 @@ class worldpayCheckout extends billingcalculator {
 			return false;
 		}
             
-		// get a shipping address to display in the invoice email.
-		$shippingaddress = $order->getCurrentShippingMethod();
-		$shipping_state = new geoRegion($shippingaddress->state);
-		$shipping_country = new geoCountry($shipping_state->country_id);
-            
-		$state = new geoRegion($method->state);
-		$country = new geoCountry($state->country_id);
-            
 		$config = unserialize($this->config);
 		$worldpay_url = 'https://secure-test.wp3.rbsworldpay.com/wcc/purchase';
-		                                                                                    
+
+		if ($config['testmode']) {
+			$testmode = 100;
+		} else {
+			$testmode = 0;
+		}
+
 		$data = array(
 			// required parameters
+			'testMode'  => $testmode,
 			'instId'    => $config['installationid'],
 			'amount'    => number_format($order->grand_total, 2, '.', ''),
-			'testMode'  => '100',
 			'currency'  => 'USD',
 			'cartId'    => $order->id,
 			'MC_callback' => URL_FULL . 'external/worldpay/callback.php'
 		);
+		
 		 // convert the api params to a name value pair string
         $datapost = "";
         while(list($key, $value) = each($data)) 
@@ -203,52 +191,8 @@ class worldpayCheckout extends billingcalculator {
     );
 	
 	function userForm() {
-        // make sure we have some billing options saved.
-        //if (empty($this->opts)) return false;
-        
-        //exponent_javascript_toFoot('creditcard',"",null,'', URL_FULL.'subsystems/forms/js/AuthorizeNet.validate.js');
-        //$opts->first_name = isset($this->opts->first_name) ? $this->opts->first_name : null;
-        //$opts->last_name = isset($this->opts->last_name) ? $this->opts->last_name : null;
-        $this->opts = expSession::get('billing_options');
-        $opts->cc_type = isset($this->opts->cc_type) ? $this->opts->cc_type : null;
-        $opts->cc_number = isset($this->opts->cc_number) ? $this->opts->cc_number : null;
-        $opts->exp_month = isset($this->opts->exp_month) ? $this->opts->exp_month : null;
-        $opts->exp_year = isset($this->opts->exp_year) ? $this->opts->exp_year : null;
-        $opts->cvv = isset($this->opts->cvv) ? $this->opts->cvv : null;
 
-        $form = '';
-        /* FIXME: hard coded options!!
-          if ($config_object->accept_amex) $cards["AmExCard"] = "American Express";
-        if ($config_object->accept_discover) $cards["DiscoverCard"] = "Discover";
-        if ($config_object->accept_mastercard) $cards["MasterCard"] = "MasterCard";
-        if ($config_object->accept_visa) $cards["VisaCard"] = "Visa";
-        */
-        //$fname = new textcontrol($opts->first_name);
-        //$lname = new textcontrol($opts->last_name);
-        
-        $cardtypes = new dropdowncontrol($opts->cc_type,$this->cards);
-        $cardnumber = new textcontrol($opts->cc_number,20,false,20,"integer", true);
-        $expiration = new monthyearcontrol($opts->exp_month, $opts->exp_year);
-        $cvv = new textcontrol($opts->cvv,4,false,4,"integer", true);
-        $cvvhelp = new htmlcontrol("<a href='http://en.wikipedia.org/wiki/Card_Verification_Value' target='_blank'>What's this?</a>");
-
-        $cardtypes->id = "cc_type";
-        $cardnumber->id = "cc_number";
-        $expiration->id = "expiration";
-        $cvv->id = "cvv";
-        $cvv->size = 5;
-        $cvvhelp->id = "cvvhelp";
-
-        //$form .= $fname->toHTML("First Name", "first_name");
-        //$form .= $lname->toHTML("Last Name", "last_name");
-        $form .= $cardtypes->toHTML("Card Type", "cc_type");
-        $form .= $cardnumber->toHTML("Card #", "cc_number");
-        //$form .= "<strong class=\"example\">Example: 1234567890987654</strong>";
-        $form .= $expiration->toHTML("Expiration", "expiration");
-        $form .= $cvv->toHTML("CVV #", 'cvv');
-        $form .= $cvvhelp->toHTML('', 'cvvhelp');
-        
-        return $form;    
+		return '';    
     }
 	
 	function userView($opts) {
