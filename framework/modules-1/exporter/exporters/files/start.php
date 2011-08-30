@@ -30,6 +30,7 @@ if (!defined('EXPONENT')) exit('');
 
 $template = new template('exporter','_files_modList',$loc);
 //$template->assign('mods',$mods);
+$template->assign('user',$user);
 $template->output();
 
 ?>

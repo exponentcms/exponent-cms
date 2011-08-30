@@ -45,32 +45,38 @@ $filename = str_replace(
 	$_POST['filename']);
 $filename = preg_replace('/[^A-Za-z0-9_.-]/','-',strftime($filename,time()).'.tar.gz');
 
-ob_end_clean();
-
-// This code was lifted from phpMyAdmin, but this is Open Source, right?
-
-// 'application/octet-stream' is the registered IANA type but
-//        MSIE and Opera seems to prefer 'application/octetstream'
-$mime_type = (EXPONENT_USER_BROWSER == 'IE' || EXPONENT_USER_BROWSER == 'OPERA') ? 'application/octetstream' : 'application/octet-stream';
-
-header('Content-Type: ' . $mime_type);
-header('Expires: ' . gmdate('D, d M Y H:i:s') . ' GMT');
-// IE need specific headers
-if (EXPONENT_USER_BROWSER == 'IE') {
-	header('Content-Disposition: inline; filename="' . $filename . '"');
-	header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
-	header('Pragma: public');
+if (isset($_POST['save_sample'])) { // Save as a theme sample is checked off
+	copy($fname,BASE . "themes/".DISPLAY_THEME_REAL."/sample.tar.gz");
+	unlink($fname);
+	flash('message',"Sample uploaded files archive saved to '".DISPLAY_THEME_REAL."' theme.");
+	expHistory::back();
 } else {
-	header('Content-Disposition: attachment; filename="' . $filename . '"');
-	header('Pragma: no-cache');
+	ob_end_clean();
+	// This code was lifted from phpMyAdmin, but this is Open Source, right?
+
+	// 'application/octet-stream' is the registered IANA type but
+	//        MSIE and Opera seems to prefer 'application/octetstream'
+	$mime_type = (EXPONENT_USER_BROWSER == 'IE' || EXPONENT_USER_BROWSER == 'OPERA') ? 'application/octetstream' : 'application/octet-stream';
+
+	header('Content-Type: ' . $mime_type);
+	header('Expires: ' . gmdate('D, d M Y H:i:s') . ' GMT');
+	// IE need specific headers
+	if (EXPONENT_USER_BROWSER == 'IE') {
+		header('Content-Disposition: inline; filename="' . $filename . '"');
+		header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+		header('Pragma: public');
+	} else {
+		header('Content-Disposition: attachment; filename="' . $filename . '"');
+		header('Pragma: no-cache');
+	}
+
+	$fh = fopen($fname,'rb');
+	while (!feof($fh)) {
+		echo fread($fh,8192);
+	}
+	fclose($fh);
+	unlink($fname);
 }
-	
-$fh = fopen($fname,'rb');
-while (!feof($fh)) {
-	echo fread($fh,8192);
-}
-fclose($fh);
-unlink($fname);
 
 exit(''); // Exit, since we are exporting.
 

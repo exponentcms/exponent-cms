@@ -24,6 +24,14 @@
 		<input type="hidden" name="exporter" value="files" />
 		<input type="hidden" name="page" value="export" />
 		<table cellspacing="0" cellpadding="2" border="0">
+			{if $user->isAdmin()}
+			<tr>
+				<td>
+					<input type="checkbox" name="save_sample" value="1" class="checkbox">
+					<b><label class="label ">Save as Sample Content for the '{$smarty.const.DISPLAY_THEME}' Theme?</label></b>
+				</td>
+			</tr>
+			{/if}
 			<tr>
 				<td valign="top"><b>{'File Name Template:'|gettext}</b>
 					<input type="text" name="filename" size="20" value="files" />
