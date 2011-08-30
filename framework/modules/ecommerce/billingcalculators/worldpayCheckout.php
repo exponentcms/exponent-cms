@@ -118,14 +118,15 @@ class worldpayCheckout extends billingcalculator {
             if ($params['transStatus'] == 'Y') {
 				$object->result->errorCode = 0;
                 $object->result->message = "User has approved the payment at Worldpay";
-                $object->result->transId = $params['transId'];                
-                $method->update(array('billing_options'=>serialize($object), 'transaction_state' => "Cancelled"));    
-				$this->createBillingTransaction($method, number_format($order->grand_total, 2, '.', ''),$object, 'complete');				
+                $object->result->transId = $params['transId'];    
+				$object->result->payment_status = "Pending"; 				
+                $method->update(array('billing_options'=>serialize($object), 'transaction_state' => "Pending"));    
+				$this->createBillingTransaction($method, number_format($order->grand_total, 2, '.', ''),$object, 'success');				
                 return $object; 
             } else {
                 $object->result->errorCode = 1;
                 $object->result->message = "User transaction has been cancelled";
-                 $object->result->transId = $params['transId'];                 
+                $object->result->transId = $params['transId'];                 
                 $method->update(array('billing_options'=>serialize($object), 'transaction_state' => "Cancelled"));       
                 return $object;   
             }
@@ -175,11 +176,11 @@ class worldpayCheckout extends billingcalculator {
         $ret = expUnserialize($opts);
         if (isset($ret->result))
         {
-            return $ret->result->correlationID;
+            return $ret->result->transId;
         }
         else
         {
-            return $ret->correlationID;
+            return $ret->transId;
         }
     }
     

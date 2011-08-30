@@ -3,6 +3,6 @@
     
     {form controller=cart action=preprocess}
         {control type="hidden" name="billingcalculator_id" value=7}
-		<input type="submit" value="Worldpay Checkout" name="submit" />
+		<input type="image" name="submit" value="1" src="{$smarty.const.PATH_RELATIVE}framework/modules/ecommerce/assets/images/worldpay.gif">
     {/form}
 </div>
