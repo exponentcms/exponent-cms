@@ -81,8 +81,7 @@ class worldpayCheckout extends billingcalculator {
             
 		$config = unserialize($this->config);
 		$worldpay_url = 'https://secure-test.wp3.rbsworldpay.com/wcc/purchase';
-            
-                                                                                                  
+		                                                                                    
 		$data = array(
 			// required parameters
 			'instId'    => $config['installationid'],
@@ -122,8 +121,9 @@ class worldpayCheckout extends billingcalculator {
         //getting response from server
         $response = curl_exec($ch);
 		curl_close($ch);
+		
 		echo $response;
-        exit();
+		return 'noredirect';
     }
     
     
