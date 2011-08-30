@@ -55,63 +55,82 @@ class worldpayCheckout extends billingcalculator {
 	
         global $db, $user;
         
-		// make sure we have some billing options saved.
-		if (empty($method)) {
-			return false;
-		}
-            
-		$config = unserialize($this->config);
-		$worldpay_url = 'https://secure-test.wp3.rbsworldpay.com/wcc/purchase';
+		if(!isset($params['transStatus'])) {
+			// make sure we have some billing options saved.
+			if (empty($method)) {
+				return false;
+			}
+				
+			$config = unserialize($this->config);
+			$worldpay_url = 'https://secure-test.wp3.rbsworldpay.com/wcc/purchase';
 
-		if ($config['testmode']) {
-			$testmode = 100;
+			if ($config['testmode']) {
+				$testmode = 100;
+			} else {
+				$testmode = 0;
+			}
+
+			$data = array(
+				// required parameters
+				'testMode'  => $testmode,
+				'instId'    => $config['installationid'],
+				'amount'    => number_format($order->grand_total, 2, '.', ''),
+				'currency'  => 'USD',
+				'cartId'    => $order->id,
+				'MC_callback' => 'http://www.tee-noy.com/sample.php'
+			);
+			
+			 // convert the api params to a name value pair string
+			$datapost = "";
+			while(list($key, $value) = each($data)) 
+			{
+				$datapost .= $key . '=' . urlencode(str_replace(',', '', $value)) . '&';
+			}
+				
+			// take the last & out for the string
+			$datapost = substr($datapost, 0, -1);
+			
+			//setting the curl parameters.
+			$ch = curl_init();
+			curl_setopt($ch, CURLOPT_URL, $worldpay_url);
+			curl_setopt($ch, CURLOPT_VERBOSE, 1);
+
+			//turning off the server and peer verification(TrustManager Concept).
+			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+			curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
+
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER,1);
+			curl_setopt($ch, CURLOPT_POST, 1);
+			curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+			curl_setopt($ch, CURLOPT_HEADER, 1); 
+			//setting the datapost as POST FIELD to curl
+			
+			curl_setopt($ch,CURLOPT_POSTFIELDS, $datapost);
+			
+			//getting response from server
+			$response = curl_exec($ch);
+			curl_close($ch);
+			
+			echo $response;
+			return 'noredirect';
 		} else {
-			$testmode = 0;
-		}
-
-		$data = array(
-			// required parameters
-			'testMode'  => $testmode,
-			'instId'    => $config['installationid'],
-			'amount'    => number_format($order->grand_total, 2, '.', ''),
-			'currency'  => 'USD',
-			'cartId'    => $order->id,
-			'MC_callback' => URL_FULL . 'external/worldpay/callback.php'
-		);
-		
-		 // convert the api params to a name value pair string
-        $datapost = "";
-        while(list($key, $value) = each($data)) 
-        {
-            $datapost .= $key . '=' . urlencode(str_replace(',', '', $value)) . '&';
-        }
-            
-        // take the last & out for the string
-        $datapost = substr($datapost, 0, -1);
-		
-		//setting the curl parameters.
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $worldpay_url);
-        curl_setopt($ch, CURLOPT_VERBOSE, 1);
-
-        //turning off the server and peer verification(TrustManager Concept).
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
-
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER,1);
-        curl_setopt($ch, CURLOPT_POST, 1);
-        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
-		curl_setopt($ch, CURLOPT_HEADER, 1); 
-        //setting the datapost as POST FIELD to curl
-		
-        curl_setopt($ch,CURLOPT_POSTFIELDS, $datapost);
-        
-        //getting response from server
-        $response = curl_exec($ch);
-		curl_close($ch);
-		
-		echo $response;
-		return 'noredirect';
+			$object = expUnserialize($method->billing_options);
+            //eDebug($object,true);
+            if ($params['transStatus'] == 'Y') {
+                $object->result->errorCode = 0;
+                $object->result->message = "User has approved the payment at Worldpay";
+                $object->result->transId = $params['transId'];                
+                $method->update(array('billing_options'=>serialize($object)));                
+                return $object; 
+            } else{
+                $object->result->errorCode = 1;
+                $object->result->message = "User transaction has been cancelled";
+                 $object->result->transId = $params['transId'];                 
+                $method->update(array('billing_options'=>serialize($object)));                 
+                return $object;   
+            }
+        }        
+      
     }
     
     
