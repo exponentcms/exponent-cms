@@ -67,7 +67,7 @@
                     {control type="checkbox" postfalse=1 name="sc[SITE_USE_ANTI_SPAM]" label="Use Anti-Spam measures?"|gettext checked=$smarty.const.SITE_USE_ANTI_SPAM value=1}
                     {control type="checkbox" postfalse=1 name="sc[ANTI_SPAM_USERS_SKIP]" label="Skip using Anti-Spam measures for Logged-In Users?"|gettext checked=$smarty.const.ANTI_SPAM_USERS_SKIP value=1}
                     {control type="dropdown" name="sc[ANTI_SPAM_CONTROL]" label="Anti-Spam Method"|gettext items=$as_types default=$smarty.const.ANTI_SPAM_CONTROL}
-	                <p>To obtain the reCAPTCHA 'keys', you'll need to first have a <b>Google account</b> to log in, then setup up a reCAPTCHA account for your domain(s) <a href="http://www.google.com/recaptcha/whyrecaptcha" target="_blank">here</a></p>
+	                <p>{gettext str="To obtain the reCAPTCHA 'keys', you'll need to first have a <b>Google account</b> to log in, then setup up a reCAPTCHA account for your domain(s)"} <a href="http://www.google.com/recaptcha/whyrecaptcha" target="_blank">here</a></p>
                     {control type="dropdown" name="sc[RECAPTCHA_THEME]" label="re-Captcha Theme"|gettext items=$as_themes default=$smarty.const.RECAPTCHA_THEME}
                     {control type="text" name="sc[RECAPTCHA_PUB_KEY]" label="reCAPTCHA Public Key"|gettext value=$smarty.const.RECAPTCHA_PUB_KEY}
                     {control type="text" name="sc[RECAPTCHA_PRIVATE_KEY]" label="reCAPTCHA Private Key"|gettext value=$smarty.const.RECAPTCHA_PRIVATE_KEY}
