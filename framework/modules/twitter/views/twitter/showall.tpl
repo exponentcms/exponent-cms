@@ -26,7 +26,7 @@
 		{foreach from=$items item=tweet}
 			<div class="item">
 				<p>
-					{if $config.showimage}{img src=`$tweet.image` style="float:left;;margin:0 5px 0 0;"}{/if}
+					{if $config.showimage}{img src=`$tweet.image` style="float:left;margin:0 5px 0 0;"}{/if}
 					<dt><em class="date">On {$tweet.created_at|format_date:$smarty.const.DISPLAY_DATETIME_FORMAT}{if $config.showattrib} via {$tweet.via}, {$tweet.screen_name} wrote:{/if}</em></dt>
 					<dd>{$tweet.text}</dd>
 				</p>
