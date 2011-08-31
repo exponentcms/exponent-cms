@@ -1,0 +1,109 @@
+/*
+Original design: Multi Options (v1.0 - April 6th, 2011) - A free xhtml/css website template by Andreas Viklund.
+For more information, see http://andreasviklund.com/templates/multi-options/
+*/
+
+/* Main containers */
+body {margin:0; padding:0; font:92% Tahoma,sans-serif; background:#fefefe url(images/background.jpg) top left repeat-x; color:#555; text-align:center; line-height:1.6em;}
+#wrap {width:980px; text-align:left; margin:0 auto;}
+
+/* Header */
+#header {width:980px; margin-top:20px; margin-bottom:20px;}
+#headerimage {float:right; width:500px; height:160px; margin:0 0 15px 0; overflow:hidden; border:1px solid #aaa;}
+#title {width:460px; text-align:center;}
+h1 {margin:0 auto; padding:0; font-size:2.4em; font-weight:700; letter-spacing:-1px; line-height:2.2em; text-shadow:#ccc 2px 2px 8px;}
+h1 a {font-weight:700; text-decoration:none;}
+h1 a:hover {color:#222; text-decoration:none;}
+.slogan {color:#555; font-size:1.4em; margin:0 0 15px 0; padding:0; text-shadow:#ccc 2px 2px 8px;}
+
+/* HTML Tags */
+a {font-weight:400;}
+a:hover {color:#333 !important;}
+a img {border:0;}
+h2 {clear:left; margin:0 0 12px 0; padding:0 0 8px; font-size:1.8em; font-weight:700; border-bottom:1px solid #ddd; text-shadow:#ccc 2px 2px 8px;}
+h3 {clear:left; font-size:1.4em; font-weight:700; margin:0 0 10px 0; padding:2px 0; border-bottom:1px solid #ddd; text-shadow:#ccc 2px 2px 6px;}
+p {margin:0 0 15px 0;}
+ul {margin:0 0 15px 20px; padding:0;}
+li {margin:0 0 5px 0; padding:0 0 0 5px;}
+
+/* Sidebar area */
+#sidebar {width:260px; margin:0; padding:0; color:#555; float:right}
+#sidebar h2 {font-size:1.5em; padding-bottom:5px; border-bottom:1px solid #ddd; margin:15px 0 10px;}
+#sidebar ul {list-style:none; margin:0 0 15px 0;}
+#sidebar li {padding:0; margin:0;}
+#sidebar ul.sidemenu {width:260px; padding:0; margin:0 0 20px 0; border-top:1px solid #ddd;}
+#sidebar ul.sidemenu li a {display:block; text-decoration:none; padding:7px 0 7px 15px; margin:0; font-size:1.1em; border-bottom: 1px solid #ddd; font-weight:700; text-shadow:#ddd 2px 2px 4px;}
+#sidebar ul.sidemenu li a:hover {color:#333; text-decoration:none; border-bottom: 1px solid #ddd;}
+#sidebar ul.sidemenu li a.active {color:#333;}
+#sidebar ul.sidemenu ul {width:240px; padding:0; margin:0 0 0 20px;}
+#sidebar ul.sidemenu ul li a {padding:2px 0 2px 15px; margin:0; font-size:0.9em; font-weight:400;}
+
+/* Content area */
+#content {margin:0 0 15px 0; width:680px; float:left;}
+
+/* Footer */
+#footer{font-size:0.9em; clear:both; width:980px; line-height:1.4em; color:#777; font-weight:400; margin-bottom:10px;}
+#footer a {color:#777; font-weight:400; text-decoration:none; border-bottom: 1px dotted #888;}
+
+/* Image alignment classes */
+#content img.alignleft {display:inline; float:left; margin:5px 15px 5px 0;}
+#content img.alignright {float:right; margin:5px 0 5px 15px;}
+#content img.aligncenter {display:block; margin:10px auto;}
+#content img.border {border:1px solid #ccc;}
+
+/* Various classes */
+.centered {text-align:center;}
+.hide {display:none;}
+.clear {clear:both; width:980px; visibility:hidden;}
+
+/* Font options */
+.georgia {font: 92% Georgia,serif;}
+.times {font: 92% Times New Roman,serif;}
+.helvetica {font:84% Helvetica,sans-serif;}
+.verdana {font:84% Verdana,sans-serif;}
+.arial {font:84% Arial,sans-serif;}
+.courier {font:84% Courier,monospace;}
+
+/* Width options */
+.w1200px #wrap, .w1200px #header, .w1200px #footer {width:1200px;}
+.w1200px #title {width:650px;}
+.w1200px #headerimage {width:500px;}
+.w1200px #sidebar, .w1200px #sidebar ul.sidemenu {width:300px;}
+.w1200px #sidebar ul.sidemenu ul {width:280px;}
+.w1200px #content {width:860px; margin:0 315px 15px 0;}
+
+.w760px #wrap, .w760px #header, .w760px #footer {width:760px;}
+.w760px #title {width:340px;}
+.w760px #headerimage {width:400px;}
+.w760px #sidebar, .w760px #sidebar ul.sidemenu {width:200px;}
+.w760px #sidebar ul.sidemenu ul {width:180px;}
+.w760px #content {width:520px; margin:0 215px 15px 0;}
+
+.w600px #wrap, .w600px #header, .w600px #title, .w600px #footer {width:600px;}
+.w600px #header {height:auto; margin-bottom:40px;}
+.w600px #headerimage {width:600px; float:none; margin:0 0 10px; text-align:center; border:none;}
+.w600px #sidebar, .w600px #sidebar ul.sidemenu {width:170px;}
+.w600px #sidebar ul.sidemenu ul {width:150px;}
+.w600px #content {width:400px; margin:0 190px 15px 0;}
+
+/* Color options */
+.orange h1, .orange h1 a, .orange a, .orange h2, .orange h3, .orange ul.sidemenu li a, .orange ul.sidemenu li a.active {color:#e09010;}
+.blue h1, .blue h1 a, .blue a, .blue h2, .blue h3, .blue ul.sidemenu li a, .blue ul.sidemenu li a.active {color:#467aa7;}
+.red h1, .red h1 a, .red a, .red h2, .red h3, .red ul.sidemenu li a, .red ul.sidemenu li a.active {color:#c71e3a;}
+.green h1, .green h1 a, .green a, .green h2, .green h3, .green ul.sidemenu li a, .green ul.sidemenu li a.active {color:#108618;}
+.purple h1, .purple h1 a, .purple a, .purple h2, .purple h3, .purple ul.sidemenu li a, .purple ul.sidemenu li a.active {color:#8e1f8f;}
+.black h1, .black h1 a, .black a, .black h2, .black h3, .black ul.sidemenu li a, .black ul.sidemenu li a.active {color:#111;}
+.yellow h1, .yellow h1 a, .yellow a, .yellow h2, .yellow h3, .yellow ul.sidemenu li a, .yellow ul.sidemenu li a.active {color:#cac300;}
+.pink h1, .pink h1 a, .pink a, .pink h2, .pink h3, .pink ul.sidemenu li a, .pink ul.sidemenu li a.active {color:#ef6fd8;}
+
+#content-wrap {
+	clear: both;
+	position:relative;
+	z-index:2;
+}
+
+#header, #bd, #footer {position:relative;}
+#header {z-index:3;}
+#header .top-nav {position:relative;z-index:5;}
+#bd {z-index:2;}
+#footer {z-index:1;}

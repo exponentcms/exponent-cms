@@ -37,7 +37,7 @@ if (!isset($_POST['tables'])) { // No checkboxes clicked, and got past the JS ch
 	if (isset($_POST['save_sample'])) { // Save as a theme sample is checked off
 //		$path = BASE . "themes/".DISPLAY_THEME_REAL."/sample.eql";
 		$path = BASE . "themes/".DISPLAY_THEME."/sample.eql";
-		if (!$eql = fopen ($path, "ab")) {
+		if (!$eql = fopen ($path, "w")) {
 			flash('error',"Error opening eql file for writing ($path).");
 		} else {
 			$eqlfile = exponent_backup_dumpDatabase($db,array_keys($_POST['tables']));
