@@ -8,10 +8,10 @@ Added / Fixed / changed for 2.0.0 (stable)
 # Adds database and file import/export; includes installation with optional sample content
 # Updates several modules including Ecommerce
 	• Fixes RC2 bugs, and completes implementation of style changes
-	• On-screen instructions for obtaining needed external settings (keys) w/ links to obtain them
+	• New on-screen instructions for obtaining needed external settings (keys) w/ links to obtain them
 	• Now places all temp files in 'tmp' folder and all uploads in 'files' folder
-	• Revised Twitter view with many options; can now send tweets
-	• More subsystems migrated to 2.0 format deprecating the 1.0 module, including language support
+	• Revised and configurable Twitter view with many options; can now send tweets
+	• More subsystems migrated to 2.0 format deprecating the 1.0 version, including language support
 	• Better error checking in 3rd party libraries (mail & twitter)
 	• Better migration of 0.9x data
 

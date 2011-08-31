@@ -80,7 +80,7 @@
                     {control type="checkbox" postfalse=1 name="sc[USER_REGISTRATION_SEND_NOTIF]" label="Send an email to a site administrator when a new user registers on your website?"|gettext checked=$smarty.const.USER_REGISTRATION_SEND_NOTIF value=1}
                     {control type="text" name="sc[USER_REGISTRATION_NOTIF_SUBJECT]" label="Administrator's New User notification subject"|gettext value=$smarty.const.USER_REGISTRATION_NOTIF_SUBJECT}
                     {control type="text" name="sc[USER_REGISTRATION_ADMIN_EMAIL]" label="The email address that should be notified when a user signs up"|gettext value=$smarty.const.USER_REGISTRATION_ADMIN_EMAIL}
-                    {control type="checkbox" postfalse=1 name="sc[USER_REGISTRATION_SEND_WELCOME]" label="Send an welcome email to the user after signing up?"|gettext checked=$smarty.const.USER_REGISTRATION_SEND_WELCOME value=1}
+                    {control type="checkbox" postfalse=1 name="sc[USER_REGISTRATION_SEND_WELCOME]" label="Send a welcome email to the user after signing up?"|gettext checked=$smarty.const.USER_REGISTRATION_SEND_WELCOME value=1}
                     {control type="text" name="sc[USER_REGISTRATION_WELCOME_SUBJECT]" label="The subject of the Welcome Email to the user"|gettext value=$smarty.const.USER_REGISTRATION_WELCOME_SUBJECT}
                     {control type="textarea" name="sc[USER_REGISTRATION_WELCOME_MSG]" label="The content of the email sent to the user upon completing registration"|gettext value=$smarty.const.USER_REGISTRATION_WELCOME_MSG}
                 </div>
