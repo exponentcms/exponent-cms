@@ -162,7 +162,8 @@ function exponent_backup_restoreDatabase($db,$file,&$errors,$force_version = nul
 
 		// then search for module definitions
 		$moddefs = array(
-			BASE.'themes/'.DISPLAY_THEME_REAL.'/modules',
+//			BASE.'themes/'.DISPLAY_THEME_REAL.'/modules',
+			BASE.'themes/'.DISPLAY_THEME.'/modules',
 			BASE."framework/modules",
 			);
 		foreach ($moddefs as $moddef) {

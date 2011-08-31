@@ -123,14 +123,17 @@ a.manage {
 }
 
 a.reranklink {
+	text-transform:capitalize;
     background: url(../images/rerank.png) no-repeat 0 50%;
 }
 
 a.revisions {
+	text-transform:capitalize;
     background: url(../images/revisions.png) no-repeat 0 50%;
 }
 
 a.view {
+	text-transform:capitalize;
     background: url(../images/view.png) no-repeat 0 50%;
 }
 

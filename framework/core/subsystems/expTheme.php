@@ -26,6 +26,42 @@
 
 class expTheme {
 
+	public static function initialize() {
+		global $auto_dirs2;
+		// Initialize the theme subsystem 1.0 compatibility layer
+		require_once(BASE.'framework/core/subsystems-1/theme.php');
+		if (!defined('DISPLAY_THEME')) {
+			/* exdoc
+			 * The directory and class name of the current active theme.  This may be different
+			 * than the configure theme (DISPLAY_THEME_REAL) due to previewing.
+			 */
+			define('DISPLAY_THEME',DISPLAY_THEME_REAL);
+		}
+
+		if (!defined('THEME_ABSOLUTE')) {
+			/* exdoc
+			 * The absolute path to the current active theme's files.  This is similar to the BASE constant
+			 */
+			define('THEME_ABSOLUTE',BASE.'themes/'.DISPLAY_THEME.'/'); // This is the recommended way
+		}
+
+		if (!defined('THEME_RELATIVE')) {
+			/* exdoc
+			 * The relative web path to the current active theme.  This is similar to the PATH_RELATIVE constant.
+			 */
+			define('THEME_RELATIVE',PATH_RELATIVE.'themes/'.DISPLAY_THEME.'/');
+		}
+		if (defined('DISPLAY_THEME')) {
+			if (file_exists(BASE.'themes/'.DISPLAY_THEME.'/config.php')) @include_once(BASE.'themes/'.DISPLAY_THEME.'/config.php');
+		}
+		if (!defined('BTN_SIZE')) define('BTN_SIZE','medium');
+		if (!defined('BTN_COLOR')) define('BTN_COLOR','black');
+		// add our theme folder to autoload and place it first
+		//$auto_dirs2[] = BASE.'themes/'.DISPLAY_THEME_REAL.'/modules';
+		$auto_dirs2[] = BASE.'themes/'.DISPLAY_THEME.'/modules';
+		$auto_dirs2 = array_reverse($auto_dirs2);
+	}
+
     public static function head($config = array()){
     	echo self::headerInfo($config);
 		echo self::advertiseRSS();
@@ -167,14 +203,16 @@ class expTheme {
             return false;
         }
         if (self::inAction()) {
-            include_once(BASE."themes/".DISPLAY_THEME_REAL."/".$theme);
+//            include_once(BASE."themes/".DISPLAY_THEME_REAL."/".$theme);
+            include_once(BASE."themes/".DISPLAY_THEME."/".$theme);
             exit;
         }
     }
 
     public function grabView($path,$filename) {        
         $dirs = array(
-            BASE.'themes/'.DISPLAY_THEME_REAL.'/'.$path,
+//            BASE.'themes/'.DISPLAY_THEME_REAL.'/'.$path,
+            BASE.'themes/'.DISPLAY_THEME.'/'.$path,
             BASE.'framework/'.$path,
         );
         
@@ -187,7 +225,8 @@ class expTheme {
     
     public function grabViews($path,$filter='') {        
         $dirs = array(
-            BASE.'themes/'.DISPLAY_THEME_REAL.'/'.$path,
+//            BASE.'themes/'.DISPLAY_THEME_REAL.'/'.$path,
+            BASE.'themes/'.DISPLAY_THEME.'/'.$path,
             BASE.'framework/'.$path,
         );
                 
@@ -220,8 +259,7 @@ class expTheme {
 
 	public static function clearSmartyCache() {
 		self::removeSmartyCache();
-		$message = "Smarty Cache has been cleared" ;
-		flash('message',$message);
+		flash('message',"Smarty Cache has been cleared");
 		expHistory::back();
 	}
 
@@ -349,8 +387,10 @@ class expTheme {
 		// when minification is used, the comment below gets replaced when the buffer is dumped
 		$str .= '<!-- MMINIFY REPLACE -->';
 
-		if(file_exists(BASE.'themes/'.DISPLAY_THEME_REAL.'/favicon.ico')) {
-			$str .= "\t".'<link rel="shortcut icon" href="'.URL_FULL.'themes/'.DISPLAY_THEME_REAL.'/favicon.ico" type="image/x-icon" />'."\r\n";
+//		if(file_exists(BASE.'themes/'.DISPLAY_THEME_REAL.'/favicon.ico')) {
+//			$str .= "\t".'<link rel="shortcut icon" href="'.URL_FULL.'themes/'.DISPLAY_THEME_REAL.'/favicon.ico" type="image/x-icon" />'."\r\n";
+		if(file_exists(BASE.'themes/'.DISPLAY_THEME.'/favicon.ico')) {
+			$str .= "\t".'<link rel="shortcut icon" href="'.URL_FULL.'themes/'.DISPLAY_THEME.'/favicon.ico" type="image/x-icon" />'."\r\n";
 		}
 
 		return $str;
@@ -487,8 +527,10 @@ class expTheme {
 					$actfile = "/" . $module . "/actions/" . $_REQUEST['action'] . ".php";
 				}
 
-				if (is_readable(BASE."themes/".DISPLAY_THEME_REAL."/modules".$actfile)) {
-					include_once(BASE."themes/".DISPLAY_THEME_REAL."/modules".$actfile);
+//				if (is_readable(BASE."themes/".DISPLAY_THEME_REAL."/modules".$actfile)) {
+//					include_once(BASE."themes/".DISPLAY_THEME_REAL."/modules".$actfile);
+				if (is_readable(BASE."themes/".DISPLAY_THEME."/modules".$actfile)) {
+						include_once(BASE."themes/".DISPLAY_THEME."/modules".$actfile);
 				} elseif (is_readable(BASE.'framework/modules-1/'.$actfile)) {
 					include_once(BASE.'framework/modules-1/'.$actfile);
 				} else {
@@ -704,8 +746,10 @@ class expTheme {
 		}
 		//if (isset($['_common'])) $actfile = "/common/actions/" . $_REQUEST['action'] . ".php";
 
-		if (is_readable(BASE."themes/".DISPLAY_THEME_REAL."/modules".$actfile)) {
-			include(BASE."themes/".DISPLAY_THEME_REAL."/modules".$actfile);
+//		if (is_readable(BASE."themes/".DISPLAY_THEME_REAL."/modules".$actfile)) {
+//			include(BASE."themes/".DISPLAY_THEME_REAL."/modules".$actfile);
+		if (is_readable(BASE."themes/".DISPLAY_THEME."/modules".$actfile)) {
+				include(BASE."themes/".DISPLAY_THEME."/modules".$actfile);
 		} elseif (is_readable(BASE.'framework/modules-1/'.$actfile)) {
 			include(BASE.'framework/modules-1/'.$actfile);
 		} else {

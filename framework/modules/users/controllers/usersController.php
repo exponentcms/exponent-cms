@@ -307,8 +307,11 @@ class usersController extends expController {
         
         // Lets find all the user profiles availabe and then see if they are
         // in the database yet.  If not we will add them.
-		$extdirs = array(BASE.'framework/modules/users/extensions', 
-		BASE.'themes/'.DISPLAY_THEME_REAL.'framework/modules/users/extensions');
+		$extdirs = array(
+			BASE.'framework/modules/users/extensions',
+//			BASE.'themes/'.DISPLAY_THEME_REAL.'framework/modules/users/extensions'  //FIXME change to allow preview
+			BASE.'themes/'.DISPLAY_THEME.'framework/modules/users/extensions'
+		);
 		foreach ($extdirs as $dir) {
 			if (is_readable($dir)) {
 	        	$dh = opendir($dir);

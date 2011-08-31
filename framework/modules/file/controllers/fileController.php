@@ -74,8 +74,9 @@ class fileController extends expController {
         
         // set paths we will search in for the view
         $paths = array(
-            BASE.'themes/'.DISPLAY_THEME_REAL.'/modules/common/views/file/configure',
-            BASE.'framework/modules/common/views/file/configure',            
+//            BASE.'themes/'.DISPLAY_THEME_REAL.'/modules/common/views/file/configure',  //FIXME change to allow preview
+            BASE.'themes/'.DISPLAY_THEME.'/modules/common/views/file/configure',
+            BASE.'framework/modules/common/views/file/configure',
         );        
         
         foreach ($paths as $path) {

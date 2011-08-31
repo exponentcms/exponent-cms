@@ -516,7 +516,8 @@ function exponent_core_resolveFilePaths($type, $name, $subtype, $subname) {
 	$checkpaths = array();
 	foreach($locations as $location) {
 		$checkpaths[] = $location . $typepath . $relpath2;
-		if (strstr($location,DISPLAY_THEME_REAL) && strstr($relpath,"framework/modules-1")) {
+//		if (strstr($location,DISPLAY_THEME_REAL) && strstr($relpath,"framework/modules-1")) {
+		if (strstr($location,DISPLAY_THEME) && strstr($relpath,"framework/modules-1")) {
    		    $checkpaths[] = $location . str_replace("framework/modules-1", "modules", $relpath);
 		} else {
    		    $checkpaths[] = $location . $relpath;

@@ -283,6 +283,7 @@ class expSession {
 	public static function logout() {
 		global $db, $user;
 		$ticket = $db->delete('sessionticket', "ticket='" . $_SESSION[SYS_SESSION_KEY]['ticket'] . "'");
+		self::set('display_theme',DISPLAY_THEME_REAL);
 		unset($_SESSION[SYS_SESSION_KEY]['user']);
 		unset($_SESSION[SYS_SESSION_KEY]['ticket']);
 		//unset($_SESSION[SYS_SESSION_KEY]['vars']);
