@@ -33,8 +33,7 @@ if ($ctl) {
 		
 		$f = $db->selectObject('formbuilder_form','id='.$ctl->form_id);
 		formbuilder_form::updateTable($f);
-		
-		expHistory::back();
+		expHistory::returnTo('editable');
 	} else {
 		echo SITE_403_HTML;
 	}

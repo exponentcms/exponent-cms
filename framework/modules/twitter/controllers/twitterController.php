@@ -114,6 +114,21 @@ class twitterController extends expController {
         //         assign_to_template(array('items'=>$tweets));
         //     }
     
+	/**
+	 * Send the Tweet
+	 */
+	public function update() {
+		if (!empty($this->config['consumer_key']) && !empty($this->params['body'])) {
+		    // create instance
+		    $twitter = new Twitter($this->config['consumer_key'], $this->config['consumer_secret']);
+		    // set tokens
+		    $twitter->setOAuthToken($this->config['oauth_token']);
+		    $twitter->setOAuthTokenSecret($this->config['oauth_token_secret']);
+			$twitter->statusesUpdate($this->params['body']);
+		}
+		expHistory::back();
+	}
+
 }
 
 ?>

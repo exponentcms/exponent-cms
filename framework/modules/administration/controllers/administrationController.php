@@ -23,7 +23,7 @@ class administrationController extends expController {
     public $useractions = array();
     public $add_permissions = array(
 	    'administrate'=>'Manage Administration',
-	    'clear_all_cache'=>'Clear All Caches',
+	    'clear_all_caches'=>'Clear All Caches',
 	    'clear_css_cache'=>'Clear CSS Cache',
 	    'clear_image_cache'=>'Clear Image Cache',
 	    'clear_rss_cache'=>'Clear RSS Cache',
@@ -32,13 +32,18 @@ class administrationController extends expController {
 	    'delete_unused_tables'=>'Delete Unused Tables',
 	    "fix_database"=>"Fix Database",
 	    "fix_sessions"=>"Fix Sessions",
-	    "install_tables"=>"Install Tables",
+	    "install_extenstions"=>"Install Tables",
+	    "install_tables"=>"Install Extension",
+	    'manage_themes'=>'Manage Themes',
 	    'manage_unused_tables'=>'Manage Unused Tables',
 	    'optimize_database'=>'Optimize Database',
+	    'preview_theme'=>'Preview Theme',
+	    "switch_themes"=>"Change Themes",
+	    'test_smtp'=>'Test SMTP Server Settings',
 	    'toggle_dev'=>'Toggle Development Mode',
 	    'toggle_maintenance'=>'Toggle Maintenance Mode',
 	    'toggle_minify'=>'Toggle Minify Mode',
-	    "switch_themes"=>"Change Themes",
+	    'toggle_preview'=>'Toggle Preview Mode',
 	    "upload_extension"=>"Upload Extension",
         );
 	public $codequality = 'beta';
@@ -270,25 +275,6 @@ class administrationController extends expController {
 		}
 		print_r("</pre>");
 
-// FIXME Not needed when locationrefs are removed
-//		 print_r("<pre>");
-//	 // add missing locationref's based on existing sectionref's
-//		 print_r("<b>Searching for detached modules with no original (no matching locationref)</b><br><br>");
-//		 $sectionrefs = $db->selectObjects('sectionref',1);
-//		 foreach ($sectionrefs as $sectionref) {
-//			 if ($db->selectObject('locationref',"module='".$sectionref->module."' AND source='".$sectionref->source."'") == null) {
-//			 // There is no locationref for sectionref.  Populate reference
-//				 $newLocRef = null;
-//				 $newLocRef->module   = $sectionref->module;
-//				 $newLocRef->source   = $sectionref->source;
-//				 $newLocRef->internal = $sectionref->internal;
-//				 $newLocRef->refcount = $sectionref->refcount;
-//				 $db->insertObject($newLocRef,'locationref');
-//				 print_r("Copied: ".$sectionref->module." - ".$sectionref->source."<br>");
-//			 }
-//		 }
-//		 print_r("</pre>");
-
 		 print_r("<pre>");
 	 // delete sectionref's & locationref's that have empty sources since they are dead
 		 print_r("<b>Searching for unassigned modules (no source)</b><br><br>");
@@ -299,15 +285,6 @@ class administrationController extends expController {
 		 } else {
 			 print_r("No Empties Found: Good!<br>");
 		 }
-// FIXME Not needed when locationrefs are removed
-//		 $locationrefs = $db->selectObjects('locationref','source=""');
-//		 if ($locationrefs != null) {
-//			 print_r("Removing: ".count($locationrefs)." empty locationref's (no source)<br>");
-//			 $db->delete('locationref','source=""');
-//		 } else {
-//			 print_r("No Empties Found: Good!<br>");
-//		 }
-//		 print_r("</pre>");
 
 		print_r("<pre>");
 	// add missing sectionrefs based on existing containers (fixes aggregation problem)
@@ -701,6 +678,34 @@ class administrationController extends expController {
         // Homepage Dropdown
         $section_dropdown = navigationmodule::levelDropDownControlArray(0);
 
+        // Timezone Dropdown
+        $list = DateTimeZone::listAbbreviations();
+        $idents = DateTimeZone::listIdentifiers();
+        $data = $offset = $added = array();
+        foreach ($list as $abbr => $info) {
+            foreach ($info as $zone) {
+                if ( ! empty($zone['timezone_id'])
+                    AND
+                    ! in_array($zone['timezone_id'], $added)
+                    AND
+                      in_array($zone['timezone_id'], $idents)) {
+                    $z = new DateTimeZone($zone['timezone_id']);
+                    $c = new DateTime(null, $z);
+                    $zone['time'] = $c->format('H:i a');
+                    $data[] = $zone;
+                    $offset[] = $z->getOffset($c);
+                    $added[] = $zone['timezone_id'];
+                }
+            }
+        }
+
+        array_multisort($offset, SORT_ASC, $data);
+        $tzoptions = array();
+        foreach ($data as $key => $row) {
+            $tzoptions[$row['timezone_id']] = self::formatOffset($row['offset'])
+                                            . ' ' . $row['timezone_id'];
+        }
+
         assign_to_template(array('as_types'=>$as_types,
                                 'as_themes'=>$as_themes,
                                 'themes'=>$themes,
@@ -710,12 +715,29 @@ class administrationController extends expController {
                                 'date_format'=>$date_format,
                                 'time_format'=>$time_format,
                                 'start_of_week'=>$start_of_week,
+                                'timezones'=>$tzoptions,
                                 'file_permisions'=>$file_permisions,
                                 'dir_permissions'=>$dir_permissions,
                                 'section_dropdown'=>$section_dropdown
                                 ));
     }
-    
+
+	// now you can use $options;
+	function formatOffset($offset) {
+			$hours = $offset / 3600;
+			$remainder = $offset % 3600;
+			$sign = $hours > 0 ? '+' : '-';
+			$hour = (int) abs($hours);
+			$minutes = (int) abs($remainder / 60);
+
+			if ($hour == 0 AND $minutes == 0) {
+				$sign = ' ';
+			}
+			return 'GMT' . $sign . str_pad($hour, 2, '0', STR_PAD_LEFT)
+					.':'. str_pad($minutes,2, '0');
+
+	}
+
     public function update_siteconfig () {
         foreach ($this->params['sc'] as $key => $value) {
             expSettings::change($key, addslashes($value));

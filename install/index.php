@@ -69,11 +69,11 @@ if (isset($_POST['install_sample'])) {
 		if (file_exists($files)) {
 			include_once(BASE.'external/Tar.php');
 			$tar = new Archive_Tar($files);
-			$dest_dir = BASE.'files/';
-			@mkdir($dest_dir);
-			if (file_exists($dest_dir)) {
-				$return = $tar->extract($dest_dir);
-			}
+            // $dest_dir = BASE.'files/';
+            // @mkdir($dest_dir);
+            // if (file_exists($dest_dir)) {
+			$return = $tar->extract(BASE);
+            // }
 		}
 	}
 //		if (count($errors)) {

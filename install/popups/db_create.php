@@ -26,14 +26,15 @@ var tpls = new Array();
 var base_url = document.location.href;
 
 function buildHelp(dbname,username,password,target) {
+	var str;
 	for (var i = 0; i < ids.length; i++) {
 		var elem = document.getElementById(ids[i]);
 		elem.removeChild(elem.firstChild);
 
 		str = tpls[i];
-		str = str.replace("__DBNAME__",dbname);
-		str = str.replace("__USERNAME__",username);
-		str = str.replace("__PASSWORD__",password);
+		str = str.replace("__DBNAME__", dbname);
+		str = str.replace("__USERNAME__", username);
+		str = str.replace("__PASSWORD__", password);
 
 		elem.appendChild(document.createTextNode(str));
 	}

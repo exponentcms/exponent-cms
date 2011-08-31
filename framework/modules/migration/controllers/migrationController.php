@@ -328,7 +328,6 @@ class migrationController extends expController {
         $old_db = $this->connect();
         if (isset($this->params['wipe_content'])) {
             $db->delete('sectionref');
-//			$db->delete('locationref');  //TODO Remove this locationref, uneeded in future
             $db->delete('container');
             $db->delete('text');
             $db->delete('snippet');
@@ -461,22 +460,6 @@ class migrationController extends expController {
 				$where .= " module='".$key."'";
 			}
 		}
-
-		// TODO Remove this locationref in future
-//        $locref = $old_db->selectObjects('locationref',$where);
-//        foreach ($locref as $lr) {
-//            if (array_key_exists($lr->module, $this->new_modules)) {
-//                $lr->module = $this->new_modules[$lr->module];
-//            }
-//
-//            if (!in_array($lr->module, $this->deprecated_modules)) {
-//                if (!$db->selectObject('locationref',"source='".$lr->source."'")) {
-//                    $db->insertObject($lr, 'locationref');
-//                    @$this->msg['locationref']++;
-//                }
-//            }
-//        }
-		// Remove to here
 
         // pull the sectionref data for selected modules
         $secref = $old_db->selectObjects('sectionref',$where);
@@ -1090,7 +1073,7 @@ class migrationController extends expController {
 						$newrss->save();
 					}
 					if ($only_featured) {
-						$newconfig->config[only_featured] = true;
+						$newconfig->config['only_featured'] = true;
 					}
 					if ($newconfig != null) {
 						$newconfig->location_data = $loc;

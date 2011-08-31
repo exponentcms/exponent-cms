@@ -45,7 +45,7 @@
 			
 			<div class="actions">
 				{if $question->open_voting}
-					<input class="button" type="submit" value="Vote!" />
+					<input class="awesome button {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" type="submit" value="Vote!" />
 				{else}
 					Voting has closed for this poll.
 				{/if}
@@ -60,7 +60,7 @@
 	{permissions level=$smarty.const.UILEVEL_NORMAL}
 		{if $permissions.manage_question == 1 || $permissions.manage_answer == 1}
 			<div class="module-actions">
-				<a href="{link action=manage_questions}">Manage Questions</a>
+				{icon class=manage action=manage_questions text="Manage Questions"}
 			</div>
 		{/if}
 	{/permissions}

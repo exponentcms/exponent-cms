@@ -60,8 +60,7 @@
 	</table>
 	<br />
 	{if $permissions.manage_answer == 1}
-		<a href="{link action=edit_answer question_id=$question->id}">New Answer</a>
-		<br />
+		{icon class=add action=edit_answer question_id=$question->id text="New Answer"}
 	{/if}
 	<br />
 	<a href="{link action=manage_questions}">Back to Manager</a>

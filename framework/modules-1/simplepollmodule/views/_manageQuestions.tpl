@@ -30,5 +30,5 @@
 		{/foreach}
 	</table>
 	<br />
-	<a href="{link action=edit_question}">New Question</a>
+	{icon class=add action=edit_question text="New Question"}
 </div>

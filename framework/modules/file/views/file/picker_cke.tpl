@@ -72,19 +72,19 @@ EXPONENT.fileManager = function() {
 
         return (match && match.length > 1) ? match[1] : '' ;
     }
-    
-    routBackToSource = function (fo,fi) {
-        var funcNum = getUrlParam('CKEditorFuncNum');
-        var fileUrl = fo;
-        var ck = getUrlParam('ck');
-        {/literal}
-        {if $update|strstr:"fck"}
-        window.opener.CKEDITOR.tools.callFunction(funcNum, fileUrl);
-        {else}
-        window.opener.EXPONENT.passBackFile{$update}(fi);
-        {/if}
-        {literal}
-    }
+
+	var routBackToSource = function (fo, fi) {
+		var funcNum = getUrlParam('CKEditorFuncNum');
+		var fileUrl = fo;
+		var ck = getUrlParam('ck');
+		{/literal}
+		{if $update|strstr:"fck"}
+		window.opener.CKEDITOR.tools.callFunction(funcNum, fileUrl);
+		{else}
+		window.opener.EXPONENT.passBackFile{$update}(fi);
+		{/if}
+		{literal}
+	}
     
     // set up the info panel
     var infopanel =  new YAHOO.widget.Panel(

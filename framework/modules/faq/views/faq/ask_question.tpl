@@ -16,7 +16,18 @@
 
 <div class="module faq ask-question">
     <h1>{$moduletitle|default:"Ask a Question"}</h1>
-    
+	{permissions}
+		<div class="module-actions">
+			{if $permissions.create == 1}
+				{icon class=add action=create title="Add a new FAQ" text="Add a New FAQ"}
+			{/if}
+			{br}
+			{if $permissions.manage == 1}
+				{icon action=manage title="Manage FAQs" text="Manage FAQs"}
+			{/if}
+		</div>
+	{/permissions}
+
     {form action=submit_question}
         {control type="text" name="submitter_name" label="Your Name" value=$record->submitter_name}
         {control type="text" name="submitter_email" label="Your Email Address" value=$record->submitter_email}      

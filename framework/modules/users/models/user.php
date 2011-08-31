@@ -305,8 +305,8 @@ class user extends expRecord {
 	 * of groups can be returned.  Returns a list of groups, according to
 	 *  the two parameters passed in.
 	 *
-	 * @param bool $allow_exclusive Whether or not to include exclusive groups in the returned list.
-	 * @param bool $allow_inclusive Whether or not to include inclusive groups in the returned list.
+	 * @param bool|int $allow_exclusive Whether or not to include exclusive groups in the returned list.
+	 * @param bool|int $allow_inclusive Whether or not to include inclusive groups in the returned list.
 	 * @return array
 	 * @node Subsystems:Users
 	 */

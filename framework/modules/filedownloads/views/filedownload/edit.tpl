@@ -56,7 +56,7 @@
 			{/if}
             <div id="tab3">
                 {control id="downloadable" type="files" name="downloadable" label="File for Download" subtype=downloadable value=$record->expFile}
-                {control id="preview" type="files" name="preview" label="Preview Image" subtype=preview value=$record->expFile}
+                {control id="preview" type="files" name="preview" label="Preview Image to display with above 'File for Download'" subtype=preview value=$record->expFile}
             </div>
             <div id="tab4">
                  <h2>SEO Settings</h2>
