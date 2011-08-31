@@ -106,27 +106,27 @@ function smarty_function_control($params,&$smarty) {
                 }
             }
         } elseif ($params['type'] == 'radiogroup') {
-                $control = new radiogroupcontrol();
-                // differentiate it from the old school forms
-                $control->newschool = true;
-                $control->default = $params['default'];
-                $control->cols = $params['columns'];
+			$control = new radiogroupcontrol();
+			// differentiate it from the old school forms
+			$control->newschool = true;
+			$control->default = $params['default'];
+			$control->cols = $params['columns'];
 
-                // get the items to use as the radio button labels
-                $items = is_array($params['items']) ? $params['items'] : explode(',', $params['items']);
-                // check if we have a list of values.  if not we can assume they are passed in via the items
-                // array as the keys.
-                if (isset($params['values'])) {
-                    $values = is_array($params['values']) ? $params['values'] : explode(',', $params['values']);
-                    $control->items = array_combine($values, $items);
-                } else {
-                    $control->items = $items;//array_combine($items, $items);
-                }       
-            } elseif ($params['type'] == 'radio') {
-                $control = new radiocontrol();
-                $control->value = $params['value'];
-                $control->newschool = true;
-            } elseif ($params['type'] == 'textarea') {
+			// get the items to use as the radio button labels
+			$items = is_array($params['items']) ? $params['items'] : explode(',', $params['items']);
+			// check if we have a list of values.  if not we can assume they are passed in via the items
+			// array as the keys.
+			if (isset($params['values'])) {
+				$values = is_array($params['values']) ? $params['values'] : explode(',', $params['values']);
+				$control->items = array_combine($values, $items);
+			} else {
+				$control->items = $items;//array_combine($items, $items);
+			}
+		} elseif ($params['type'] == 'radio') {
+			$control = new radiocontrol();
+			$control->value = $params['value'];
+			$control->newschool = true;
+		} elseif ($params['type'] == 'textarea') {
             $control = new texteditorcontrol();
             if (isset($params['module'])) $control->module = $params['module'];
             if (isset($params['rows'])) $control->rows = $params['rows'];
