@@ -15,6 +15,13 @@
 
 <div class="module twitter showall">
 	{if $moduletitle}<h2>{$moduletitle}</h2>{/if}
+	{permissions}
+	    <div class="module-actions">
+	        {if $permissions.create == 1}
+	            {icon class=add action=edit title="Add a Tweet" text="Add a Tweet"|gettext}
+	        {/if}
+	    </div>
+	{/permissions}
 	<dl>
 		{foreach from=$items item=tweet}
 			<div class="item">
