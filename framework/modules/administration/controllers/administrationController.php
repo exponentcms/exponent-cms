@@ -23,7 +23,7 @@ class administrationController extends expController {
     public $useractions = array();
     public $add_permissions = array(
 	    'administrate'=>'Manage Administration',
-	    'clear_all_cache'=>'Clear All Caches',
+	    'clear_all_caches'=>'Clear All Caches',
 	    'clear_css_cache'=>'Clear CSS Cache',
 	    'clear_image_cache'=>'Clear Image Cache',
 	    'clear_rss_cache'=>'Clear RSS Cache',
@@ -32,13 +32,18 @@ class administrationController extends expController {
 	    'delete_unused_tables'=>'Delete Unused Tables',
 	    "fix_database"=>"Fix Database",
 	    "fix_sessions"=>"Fix Sessions",
-	    "install_tables"=>"Install Tables",
+	    "install_extenstions"=>"Install Tables",
+	    "install_tables"=>"Install Extension",
+	    'manage_themes'=>'Manage Themes',
 	    'manage_unused_tables'=>'Manage Unused Tables',
 	    'optimize_database'=>'Optimize Database',
+	    'preview_theme'=>'Preview Theme',
+	    "switch_themes"=>"Change Themes",
+	    'test_smtp'=>'Test SMTP Server Settings',
 	    'toggle_dev'=>'Toggle Development Mode',
 	    'toggle_maintenance'=>'Toggle Maintenance Mode',
 	    'toggle_minify'=>'Toggle Minify Mode',
-	    "switch_themes"=>"Change Themes",
+	    'toggle_preview'=>'Toggle Preview Mode',
 	    "upload_extension"=>"Upload Extension",
         );
 	public $codequality = 'beta';
