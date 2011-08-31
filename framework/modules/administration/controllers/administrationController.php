@@ -678,6 +678,34 @@ class administrationController extends expController {
         // Homepage Dropdown
         $section_dropdown = navigationmodule::levelDropDownControlArray(0);
 
+        // Timezone Dropdown
+        $list = DateTimeZone::listAbbreviations();
+        $idents = DateTimeZone::listIdentifiers();
+        $data = $offset = $added = array();
+        foreach ($list as $abbr => $info) {
+            foreach ($info as $zone) {
+                if ( ! empty($zone['timezone_id'])
+                    AND
+                    ! in_array($zone['timezone_id'], $added)
+                    AND
+                      in_array($zone['timezone_id'], $idents)) {
+                    $z = new DateTimeZone($zone['timezone_id']);
+                    $c = new DateTime(null, $z);
+                    $zone['time'] = $c->format('H:i a');
+                    $data[] = $zone;
+                    $offset[] = $z->getOffset($c);
+                    $added[] = $zone['timezone_id'];
+                }
+            }
+        }
+
+        array_multisort($offset, SORT_ASC, $data);
+        $tzoptions = array();
+        foreach ($data as $key => $row) {
+            $tzoptions[$row['timezone_id']] = self::formatOffset($row['offset'])
+                                            . ' ' . $row['timezone_id'];
+        }
+
         assign_to_template(array('as_types'=>$as_types,
                                 'as_themes'=>$as_themes,
                                 'themes'=>$themes,
@@ -687,12 +715,29 @@ class administrationController extends expController {
                                 'date_format'=>$date_format,
                                 'time_format'=>$time_format,
                                 'start_of_week'=>$start_of_week,
+                                'timezones'=>$tzoptions,
                                 'file_permisions'=>$file_permisions,
                                 'dir_permissions'=>$dir_permissions,
                                 'section_dropdown'=>$section_dropdown
                                 ));
     }
-    
+
+	// now you can use $options;
+	function formatOffset($offset) {
+			$hours = $offset / 3600;
+			$remainder = $offset % 3600;
+			$sign = $hours > 0 ? '+' : '-';
+			$hour = (int) abs($hours);
+			$minutes = (int) abs($remainder / 60);
+
+			if ($hour == 0 AND $minutes == 0) {
+				$sign = ' ';
+			}
+			return 'GMT' . $sign . str_pad($hour, 2, '0', STR_PAD_LEFT)
+					.':'. str_pad($minutes,2, '0');
+
+	}
+
     public function update_siteconfig () {
         foreach ($this->params['sc'] as $key => $value) {
             expSettings::change($key, addslashes($value));
