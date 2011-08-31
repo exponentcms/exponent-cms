@@ -39,13 +39,14 @@ class storeCategoryController extends expNestedNodeController {
 		global $db;
 		$record = new storeCategoryFeeds($this->params['id']);
         $site_page_default = ecomconfig::getConfig('pagination_default');
+		$product_types = ecomconfig::getConfig('product_types');
 		//TODO: 
 		/*
 		Create a central table for the external product types to minimized table redundancy as fred mentioned it will be more than 10 more.
 		
 		*/
 		//Declaration of array variables for product types bing and google
-		$product_types = ''; //A Multi-dimentional array to be passed in the view that contains the html of listbuildercontrol for product types like bing and google
+		$product_type = ''; //A Multi-dimentional array to be passed in the view that contains the html of listbuildercontrol for product types like bing and google
 		
 		$google_product_types = new google_product_types(); //Store all the google product types
 		$google_types = ''; //An array being indexed by the id of product type to be passed as the source of the listbuildercontrol for google
@@ -76,7 +77,7 @@ class storeCategoryController extends expNestedNodeController {
 			$google_recorded_product_types[$item->google_product_types_id] = trim($item->title);
 		}
 		$control = new listbuildercontrol($google_recorded_product_types, $google_types);
-		$product_types['google'] = $control->controlToHTML('google_product_types_list','copy');
+		$product_type['google_product_type'] = $control->controlToHTML('google_product_types_list','copy');
 		// eDebug($db->selectFormattedNestedTree('bing_product_types'), true);
 	
 		//Bing product types getting the source and destination for the listbuilder control
@@ -88,7 +89,7 @@ class storeCategoryController extends expNestedNodeController {
 			$bing_recorded_product_types[$item->bing_product_types_id] = $item->title;
 		}
 		$control = new listbuildercontrol($bing_recorded_product_types, $bing_types);
-		$product_types['bing'] = $control->controlToHTML('bing_product_types_list','copy');
+		$product_type['bing_product_type'] = $control->controlToHTML('bing_product_types_list','copy');
 		
 		//Nextag product types getting the source and destination for the listbuilder control
 		$nextag_recorded_types   = $db->selectObjectsBySql("SELECT nextag_product_types_id, title FROM " . DB_TABLE_PREFIX . "_nextag_product_types_storeCategories, " . DB_TABLE_PREFIX . "_nextag_product_types WHERE nextag_product_types_id = id and storecategories_id = " . $this->params['id']);
@@ -99,7 +100,7 @@ class storeCategoryController extends expNestedNodeController {
 			$nextag_recorded_product_types[$item->nextag_product_types_id] = $item->title;
 		}
 		$control = new listbuildercontrol($nextag_recorded_product_types, $nextag_types);
-		$product_types['nextag'] = $control->controlToHTML('nextag_product_types_list','copy');
+		$product_type['nextag_product_type'] = $control->controlToHTML('nextag_product_types_list','copy');
 		
 		//Shopzilla product types getting the source and destination for the listbuilder control
 		$shopzilla_recorded_types   = $db->selectObjectsBySql("SELECT shopzilla_product_types_id, title FROM " . DB_TABLE_PREFIX . "_shopzilla_product_types_storeCategories, " . DB_TABLE_PREFIX . "_shopzilla_product_types WHERE shopzilla_product_types_id = id and storecategories_id = " . $this->params['id']);
@@ -110,7 +111,7 @@ class storeCategoryController extends expNestedNodeController {
 			$shopzilla_recorded_product_types[$item->shopzilla_product_types_id] = $item->title;
 		}
 		$control = new listbuildercontrol($shopzilla_recorded_product_types, $shopzilla_types);
-		$product_types['shopzilla'] = $control->controlToHTML('shopzilla_product_types_list','copy');
+		$product_type['shopzilla_product_type'] = $control->controlToHTML('shopzilla_product_types_list','copy');
 		
 		//Shopping.com product types getting the source and destination for the listbuilder control
 		$shopping_recorded_types   = $db->selectObjectsBySql("SELECT shopping_product_types_id, title FROM " . DB_TABLE_PREFIX . "_shopping_product_types_storeCategories, " . DB_TABLE_PREFIX . "_shopping_product_types WHERE shopping_product_types_id = id and storecategories_id = " . $this->params['id']);
@@ -121,10 +122,10 @@ class storeCategoryController extends expNestedNodeController {
 			$shopping_recorded_product_types[$item->shopping_product_types_id] = $item->title;
 		}
 		$control = new listbuildercontrol($shopping_recorded_product_types, $shopping_types);
-		$product_types['shopping'] = $control->controlToHTML('shopping_product_types_list','copy');
+		$product_type['shopping_product_type'] = $control->controlToHTML('shopping_product_types_list','copy');
 		
-        assign_to_template(array('site_page_default'=>$site_page_default, 'record'=>$record, 'product_types' => $product_types));
-    
+        assign_to_template(array('product_types'=>$product_types, 'site_page_default'=>$site_page_default, 'record'=>$record, 'product_type' => $product_type));
+		
         parent::edit();
     }
     
