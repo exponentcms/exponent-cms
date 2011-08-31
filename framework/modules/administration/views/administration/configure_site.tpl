@@ -52,14 +52,14 @@
                 <div id="tab1">
                     <h2>{"General Site Configuration"|gettext}</h2>
 					{help text="Learn More about general site configuration"|gettext module="general-configuration"}
-                    {control type="text" name="sc[ORGANIZATION_NAME]" label="Organization Name"|gettext value=$smarty.const.ORGANIZATION_NAME}
+                    {control type="text" name="sc[ORGANIZATION_NAME]" label="Site/Organization Name"|gettext value=$smarty.const.ORGANIZATION_NAME}
                     {control type="text" name="sc[SITE_TITLE]" label="Site Title"|gettext value=$smarty.const.SITE_TITLE}
 					{control type="text" name="sc[SITE_HEADER]" label="Site Header"|gettext value=$smarty.const.SITE_HEADER}
-                    {control type="checkbox" postfalse=1 name="sc[SEF_URLS]" label="Search Engine Friendly URLSs"|gettext checked=$smarty.const.SEF_URLS value=1}
+                    {control type="checkbox" postfalse=1 name="sc[SEF_URLS]" label="Search Engine Friendly URLs"|gettext checked=$smarty.const.SEF_URLS value=1}
 					{control type="checkbox" postfalse=1 name="sc[ADVERTISE_RSS]" label="Advertise all RSS Feeds to Web Browsers"|gettext checked=$smarty.const.ADVERTISE_RSS value=1}
                     {control type="dropdown" name="sc[SITE_DEFAULT_SECTION]" label="Default Section (Home Page)"|gettext items=$section_dropdown default=$smarty.const.SITE_DEFAULT_SECTION}
-                    {control type="textarea" name="sc[SITE_KEYWORDS]" label="Meta Keywords"|gettext value=$smarty.const.SITE_KEYWORDS}
-                    {control type="textarea" name="sc[SITE_DESCRIPTION]" label="Meta Description"|gettext value=$smarty.const.SITE_DESCRIPTION}
+                    {control type="textarea" name="sc[SITE_KEYWORDS]" label="(Meta) Keywords"|gettext value=$smarty.const.SITE_KEYWORDS}
+                    {control type="textarea" name="sc[SITE_DESCRIPTION]" label="(Meta) Description"|gettext value=$smarty.const.SITE_DESCRIPTION}
                 </div>
                 <div id="tab2">
 					<h2>{gettext str="Anti-Spam Measures"}</h2>
@@ -67,6 +67,7 @@
                     {control type="checkbox" postfalse=1 name="sc[SITE_USE_ANTI_SPAM]" label="Use Anti-Spam measures?"|gettext checked=$smarty.const.SITE_USE_ANTI_SPAM value=1}
                     {control type="checkbox" postfalse=1 name="sc[ANTI_SPAM_USERS_SKIP]" label="Skip using Anti-Spam measures for Logged-In Users?"|gettext checked=$smarty.const.ANTI_SPAM_USERS_SKIP value=1}
                     {control type="dropdown" name="sc[ANTI_SPAM_CONTROL]" label="Anti-Spam Method"|gettext items=$as_types default=$smarty.const.ANTI_SPAM_CONTROL}
+	                <p>{gettext str="To obtain the reCAPTCHA 'keys', you'll need to first have a <a href="http://www.google.com/" target="_blank">Google account</a> to log in, then setup up a reCAPTCHA account for your domain(s)"} <a href="http://www.google.com/recaptcha/whyrecaptcha" target="_blank">here</a></p>
                     {control type="dropdown" name="sc[RECAPTCHA_THEME]" label="re-Captcha Theme"|gettext items=$as_themes default=$smarty.const.RECAPTCHA_THEME}
                     {control type="text" name="sc[RECAPTCHA_PUB_KEY]" label="reCAPTCHA Public Key"|gettext value=$smarty.const.RECAPTCHA_PUB_KEY}
                     {control type="text" name="sc[RECAPTCHA_PRIVATE_KEY]" label="reCAPTCHA Private Key"|gettext value=$smarty.const.RECAPTCHA_PRIVATE_KEY}
@@ -79,7 +80,7 @@
                     {control type="checkbox" postfalse=1 name="sc[USER_REGISTRATION_SEND_NOTIF]" label="Send an email to a site administrator when a new user registers on your website?"|gettext checked=$smarty.const.USER_REGISTRATION_SEND_NOTIF value=1}
                     {control type="text" name="sc[USER_REGISTRATION_NOTIF_SUBJECT]" label="Administrator's New User notification subject"|gettext value=$smarty.const.USER_REGISTRATION_NOTIF_SUBJECT}
                     {control type="text" name="sc[USER_REGISTRATION_ADMIN_EMAIL]" label="The email address that should be notified when a user signs up"|gettext value=$smarty.const.USER_REGISTRATION_ADMIN_EMAIL}
-                    {control type="checkbox" postfalse=1 name="sc[USER_REGISTRATION_SEND_WELCOME]" label="Send an welcome email to the user after signing up?"|gettext checked=$smarty.const.USER_REGISTRATION_SEND_WELCOME value=1}
+                    {control type="checkbox" postfalse=1 name="sc[USER_REGISTRATION_SEND_WELCOME]" label="Send a welcome email to the user after signing up?"|gettext checked=$smarty.const.USER_REGISTRATION_SEND_WELCOME value=1}
                     {control type="text" name="sc[USER_REGISTRATION_WELCOME_SUBJECT]" label="The subject of the Welcome Email to the user"|gettext value=$smarty.const.USER_REGISTRATION_WELCOME_SUBJECT}
                     {control type="textarea" name="sc[USER_REGISTRATION_WELCOME_MSG]" label="The content of the email sent to the user upon completing registration"|gettext value=$smarty.const.USER_REGISTRATION_WELCOME_MSG}
                 </div>
@@ -97,10 +98,11 @@
                     {control type="dropdown" name="sc[LANGUAGE]" label="Language"|gettext items=$langs default=$smarty.const.LANGUAGE}
                     {control type="dropdown" name="sc[DISPLAY_THEME_REAL]" label="Theme"|gettext items=$themes default=$smarty.const.DISPLAY_THEME_REAL}
                     {control type="dropdown" name="sc[DISPLAY_ATTRIBUTION]" label="Attribution Display"|gettext items=$attribution default=$smarty.const.DISPLAY_ATTRIBUTION}
+	                {control type="dropdown" name="sc[DISPLAY_DATETIME_FORMAT]" label="Date/Time Format"|gettext items=$datetime_format default=$smarty.const.DISPLAY_DATETIME_FORMAT}
                     {control type="dropdown" name="sc[DISPLAY_DATE_FORMAT]" label="Date Format"|gettext items=$date_format default=$smarty.const.DISPLAY_DATE_FORMAT}
                     {control type="dropdown" name="sc[DISPLAY_TIME_FORMAT]" label="Time Format"|gettext items=$time_format default=$smarty.const.DISPLAY_TIME_FORMAT}
                     {control type="dropdown" name="sc[DISPLAY_START_OF_WEEK]" label="Start of Week"|gettext items=$start_of_week default=$smarty.const.DISPLAY_START_OF_WEEK}
-                    {control type="text" name="sc[DISPLAY_DEFAULT_TIMEZONE]" label="Enter the default timezone for this site. CAUTION: This may break calendars and other features that use date functions if you change this after entering data. Must be in a format shown here: <a href='http://www.php.net/manual/en/timezones.php' target='_blank'>http://www.php.net/manual/en/timezones.php</a>"|gettext value=$smarty.const.DISPLAY_DEFAULT_TIMEZONE}
+	                {control type="dropdown" name="sc[DISPLAY_DEFAULT_TIMEZONE]" label="Select the default timezone for this site. CAUTION: This may break calendars and other features that use date functions if you change this after entering data."|gettext items=$timezones default=$smarty.const.DISPLAY_DEFAULT_TIMEZONE}
                     {control type="radiogroup" name="sc[SLINGBAR_TOP]" label="Default Admin Slingbar Position" items="Top of Viewport,Bottom of Viewport"|gettext values="1,0" default=$smarty.const.SLINGBAR_TOP}
 					{control type="text" name="sc[THUMB_QUALITY]" label="Thumbnail JPEG Quality (1 - 95)"|gettext value=$smarty.const.THUMB_QUALITY|default:75 size="5"}
                 </div>

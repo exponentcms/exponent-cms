@@ -18,10 +18,10 @@
 
 {/css}
 <div class="form_header">
-	<h1>{$_TR.form_title}</h1>
-	<p>{$_TR.form_header}</p>	
+	<h1>{'Module Configuration'|gettext}</h1>
+	<p>{'Use this form to configure the behavior of the module.'|gettext}</p>
 </div>
 {$form_html}
 {else}
-{$_TR.no_config}
+{'No Configuration Data Found.  This module cannot be configured.'|gettext}
 {/if}

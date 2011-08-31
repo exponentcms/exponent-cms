@@ -47,5 +47,5 @@
 			{/foreach}
 		</tbody>
 	</table>
-	<div class="admin">This is the Final Migration Step</div>
+	<div class="admin"><b>This is the Final Migration Step</b></div>
 </div>

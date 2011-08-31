@@ -32,12 +32,12 @@ class instorepickupcalculator extends shippingcalculator {
     public $shippingmethods = array("01"=>"In Store Pickup");
 
     public function getRates($order) {        
-	    $rates = array('01'=>array('id' =>01,'title'=>$this->shippingmethods['01'],'cost'=>$this->configdata['rate']));
+	    $rates = array('01'=>array('id'=>'01','title'=>$this->shippingmethods['01'],'cost'=>$this->configdata['rate']));
 	    return $rates;
     }	
     
    	public function configForm() { 
-   	    return BASE.'framework/modules/ecommerce/shippingcalculators/views/flatratecalculator/configure.tpl';
+   	    return BASE.'framework/modules/ecommerce/shippingcalculators/views/instorepickupcalculator/configure.tpl';
    	}
 	
 	//process config form

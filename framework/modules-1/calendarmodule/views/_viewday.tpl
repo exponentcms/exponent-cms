@@ -19,13 +19,13 @@
 
 <div class="module calendar viewday"> 
 	<div class="module-actions">
-		<a class="weekviewlink" href="{link action=viewweek time=$now view=_viewweek}" title="{$_TR.alt_view_week}">{$_TR.view_week}</a>&nbsp;&nbsp;|&nbsp;&nbsp;
-		<a class="monthviewlink" href="{link action=viewmonth time=$item->eventstart}" title="{$_TR.alt_view_month}" alt="{$_TR.alt_view_month}">{$_TR.view_month}</a>&nbsp;&nbsp;|&nbsp;&nbsp;
-		{printer_friendly_link class="printer-friendly-link" text=$_TR.printer_friendly}
+		<a class="weekviewlink" href="{link action=viewweek time=$now view=_viewweek}" title="{'View Entire Week'|gettext}">{'View Week'|gettext}</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+		<a class="monthviewlink" href="{link action=viewmonth time=$item->eventstart}" title="{'View Entire Month'|gettext}" alt="{'View Entire Month'|gettext}">{'View Month'|gettext}</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+		{printer_friendly_link class="printer-friendly-link" text='Printer-friendly'|gettext}
 	</div>
 	<h2>
 		{if $enable_ical == true}
-			<a class="icallink module-actions" href="{link action=ical}" title="{$_TR.alt_ical}" alt="{$_TR.alt_ical}">{$_TR.ical}</a>
+			<a class="icallink module-actions" href="{link action=ical}" title="{'iCalendar Feed'|gettext}" alt="{'iCalendar Feed'|gettext}"></a>
 		{/if}
 		{if $moduletitle != ""}{$moduletitle}{/if}
 	</h2>
@@ -73,7 +73,7 @@
 			<dd>
 				<p>
 					<span><b>
-						{if $item->is_allday == 1}{$_TR.all_day}{else}
+						{if $item->is_allday == 1}{'All Day'|gettext}{else}
 							{if $item->eventstart != $item->eventend}
 								{$item->eventstart|format_date:$smarty.const.DISPLAY_TIME_FORMAT} to {$item->eventend|format_date:$smarty.const.DISPLAY_TIME_FORMAT}
 							{else}
@@ -87,7 +87,7 @@
 			</dd>
 		{/foreach}
 		{if $count == 0}
-			<dd><em>{$_TR.no_events}</em></dd>
+			<dd><em>{'No Events'|gettext}</em></dd>
 		{/if}
 	</dl>
 </div>

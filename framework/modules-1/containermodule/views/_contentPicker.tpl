@@ -23,13 +23,13 @@
 			<tr>
 				<td valign="top" class="info">
 					{$container->info.module}
-					{if $container->view != ""}<br />{$_TR.shown_in_view|sprintf:$container->view}{/if}
+					{if $container->view != ""}<br />{'Shown in %s view'|gettext|sprintf:$container->view}{/if}
 				</td>
 				<td align="right" valign="top">
 					{if $container->info.clickable && $container->info.hasContent}
 					{*<a class="mngmntlink container_mngmntlink" href="{$dest}&amp;ss={$container->info.source}&amp;sm={$container->info.class}">*}
 					<a class="mngmntlink container_mngmntlink" href="{link action=content_selector module=$container->info.class src=$container->info.source channel_id=$dest}">
-						<img class="mngmnt_icon" style="border:none;" src="{$smarty.const.ICON_RELATIVE}add.png" title="{$_TR.select_content}" alt="{$_TR.select_content}" />
+						<img class="mngmnt_icon" style="border:none;" src="{$smarty.const.ICON_RELATIVE}add.png" title="{'Select Content from this Module'|gettext}" alt="{'Select Content from this Module'|gettext}" />
 					</a>
 					{/if}
 				</td>

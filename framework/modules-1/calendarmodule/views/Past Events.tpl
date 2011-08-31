@@ -23,28 +23,28 @@
 
 <div class="module calendar cal-admin"> 
 	<div class="module-actions">
-		<a class="monthviewlink" href="{link action=viewmonth time=$time}">{$_TR.calendar_view}</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a class="listviewlink" href="{link _common=1 view='Monthly List' action='show_view' time=$time}">{$_TR.list_view}</a>
+		<a class="monthviewlink" href="{link action=viewmonth time=$time}">{'Calendar View'|gettext}</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a class="listviewlink" href="{link _common=1 view='Monthly List' action='show_view' time=$time}">{'List View'|gettext}</a>
 		{permissions}
 			{if $permissions.administrate == 1}
-				&nbsp;&nbsp;|&nbsp;&nbsp;<a class="adminviewlink mngmntlink" href="{link _common=1 view='Administration' action='show_view' time=$time}">{$_TR.administration_view}</a>
+				&nbsp;&nbsp;|&nbsp;&nbsp;<a class="adminviewlink mngmntlink" href="{link _common=1 view='Administration' action='show_view' time=$time}">{'Administration View'|gettext}</a>
 			{/if}
 			&nbsp;&nbsp;|&nbsp;&nbsp;
-			{printer_friendly_link class="printer-friendly-link" text=$_TR.printer_friendly}
+			{printer_friendly_link class="printer-friendly-link" text='Printer-friendly'|gettext}
 			{br}
-			<span class="listviewlink">{$_TR.past_events}{$config->colorize}</span>
+			<span class="listviewlink">{'Past Events View'|gettext}{$config->colorize}</span>
 			{if $permissions.administrate == 1}
 				&nbsp;&nbsp;|&nbsp;&nbsp;
-				<img class="mngmnt_icon" style="border:none;" src="{$smarty.const.ICON_RELATIVE}delete.png" title="{$_TR.delete_past}" alt="{$_TR.delete_past}" />
-				<a class="mngmntlink" href="{link action=delete_all_past}" onclick="return confirm('{$_TR.delete_all_confirm}');" title="{$_TR.delete_past}">{$_TR.delete_all_past}</a>
+				<img class="mngmnt_icon" style="border:none;" src="{$smarty.const.ICON_RELATIVE}delete.png" title="{'Delete All Past Events'|gettext}" alt="{'Delete All Past Events'|gettext}" />
+				<a class="mngmntlink" href="{link action=delete_all_past}" onclick="return confirm('{'Delete All Past Events?'|gettext}');" title="{'Delete All Past Events'|gettext}">{'Purge All Past Events'|gettext}</a>
 				{br}
 			{/if}
 		{/permissions}
 	</div>
 	<h2>
 		{if $enable_ical == true}
-			<a class="icallink module-actions" href="{link action=ical}" title="{$_TR.alt_ical}" alt="{$_TR.alt_ical}">{$_TR.ical}</a>
+			<a class="icallink module-actions" href="{link action=ical}" title="{'iCalendar Feed'|gettext}" alt="{'iCalendar Feed'|gettext}"></a>
 		{/if}
-		{if $moduletitle != ""}{$moduletitle} - {$_TR.past_events}{/if}
+		{if $moduletitle != ""}{$moduletitle} - {'Past Events View'|gettext}{/if}
 	</h2>
 	{permissions}
 		<div class="module-actions">
@@ -56,8 +56,8 @@
 	<table cellspacing="0" cellpadding="4" border="0" width="100%" class="exp-skin-table">
 		<thead>
 			<tr>
-				<th class="header calendarcontentheader">{$_TR.event_title}</th>
-				<th class="header calendarcontentheader">{$_TR.when}</th>
+				<th class="header calendarcontentheader">{'Event Title'|gettext}</th>
+				<th class="header calendarcontentheader">{'When'|gettext}</th>
 				<th class="header calendarcontentheader">&nbsp;</th>
 			</tr>
 		</thead>
@@ -94,7 +94,7 @@
 				</td>
 			</tr>
 		{foreachelse}
-			<tr><td colspan="2" align="center"><i>{$_TR.no_events}</a></td></tr>
+			<tr><td colspan="2" align="center"><i>{'No past events.'|gettext}</a></td></tr>
 		{/foreach}
 		</tbody>
 	</table>

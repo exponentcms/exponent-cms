@@ -13,7 +13,12 @@
  * GPL: http://www.gnu.org/licenses/gpl.txt
  *
  *}
-<div class="form_title">{$_TR.form_title}</div>
-<div class="form_header">{$_TR.form_header}</div>
-<span style="color:red;">{$error}</span>
-{$form_html}
+
+<div class="importer usercsv-form-starter">
+	<div class="form_header">
+		<h2>{'Import User - Enter CSV Options'|gettext}</h2>
+		<p>{'Please enter the delimiter character of the csv file, the csv file to be uploaded, and the row within the csv file to start at. The start row is for files that have  column headers, or if you just want to skip records in the csv file.'|gettext}</p>
+	</div>
+	<span style="color:red;">{$error}</span>
+	{$form_html}
+</div>

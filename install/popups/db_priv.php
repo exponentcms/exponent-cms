@@ -17,38 +17,36 @@
 #
 ##################################################
 
-$i18n = exponent_lang_loadFile('install/popups/db_priv.php');
-
 ?>
-<b><?php echo $i18n['title']; ?></b>
+<b><?php echo gt('Database User Privileges'); ?></b>
 <div class="bodytext">
-<?php echo $i18n['header']; ?>
+<?php echo gt('When Exponent connects to the database, it needs to be able to run the following types of queries:'); ?>
 <br /><br />
 
-<tt><?php echo $i18n['create']; ?></tt><br />
-&nbsp;&nbsp;-&nbsp;<?php echo $i18n['create_desc']; ?>
+<tt><?php echo gt('CREATE TABLE'); ?></tt><br />
+&nbsp;&nbsp;-&nbsp;<?php echo gt('These queries create new table structures inside the database.  Exponent needs this when you install it for the first time.  CREATE TABLE queries are also run after new modules are uploaded to the site.'); ?>
 <br /><br />
 
-<tt><?php echo $i18n['alter']; ?></tt><br />
-&nbsp;&nbsp;-&nbsp;<?php echo $i18n['alter_desc']; ?>
+<tt><?php echo gt('ALTER TABLE'); ?></tt><br />
+&nbsp;&nbsp;-&nbsp;<?php echo gt('If you upgrade any module in Exponent, these queries will be run to change table structures in the database.'); ?>
 <br /><br />
 
-<tt><?php echo $i18n['drop']; ?></tt><br />
-&nbsp;&nbsp;-&nbsp;<?php echo $i18n['drop_desc']; ?>
+<tt><?php echo gt('DROP TABLE'); ?></tt><br />
+&nbsp;&nbsp;-&nbsp;<?php echo gt('These queries are executed on the database whenever an administrator trims it to remove tables that are no longer used.'); ?>
 <br /><br />
 
-<tt><?php echo $i18n['select']; ?></tt><br />
-&nbsp;&nbsp;-&nbsp;<?php echo $i18n['select_desc']; ?>
+<tt><?php echo gt('SELECT'); ?></tt><br />
+&nbsp;&nbsp;-&nbsp;<?php echo gt('Queries of this type are very important to the basic operation of Exponent.  All data stored in the database is read back through the use of SELECT queries.'); ?>
 <br /><br />
 
-<tt><?php echo $i18n['insert']; ?></tt><br />
-&nbsp;&nbsp;-&nbsp;<?php echo $i18n['insert_desc']; ?>
+<tt><?php echo gt('INSERT'); ?></tt><br />
+&nbsp;&nbsp;-&nbsp;<?php echo gt('Whenever new content is added to the site, new permissions are assigned, users and/or groups are created and configuration data is saved, Exponent runs INSERT queries.'); ?>
 <br /><br />
 
-<tt><?php echo $i18n['update']; ?></tt><br />
-&nbsp;&nbsp;-&nbsp;<?php echo $i18n['update_desc']; ?>
+<tt><?php echo gt('UPDATE'); ?></tt><br />
+&nbsp;&nbsp;-&nbsp;<?php echo gt('When content or configurations are updated, Exponent modifies the data in its tables by issuing UPDATE queries.'); ?>
 <br /><br />
 
-<tt><?php echo $i18n['delete']; ?></tt><br />
-&nbsp;&nbsp;-&nbsp;<?php echo $i18n['delete_desc']; ?>
+<tt><?php echo gt('DELETE'); ?></tt><br />
+&nbsp;&nbsp;-&nbsp;<?php echo gt('These queries remove content and configuration from the tables in the site database.  They are also executed whenever users and groups are removed, and permissions are revoked.'); ?>
 </div>

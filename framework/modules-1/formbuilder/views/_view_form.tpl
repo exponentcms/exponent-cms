@@ -16,9 +16,9 @@
  
 <div class="formmodule view-form">
 	<div align="center">
-		<h1>{$_TR.form_title}</h1>
+		<h1>{'Form Editor'|gettext}</h1>
 		{if $edit_mode != 1}
-			{$_TR.form_header}
+			{'Use the drop down to add fields to this form.'|gettext}
 		{/if}
 	</div>
 	{if $edit_mode != 1} 
@@ -41,7 +41,7 @@
 						<input type="hidden" name="module" value="formbuilder" />
 						<input type="hidden" name="action" value="edit_control" />
 						<input type="hidden" name="form_id" value="{$form->id}" />
-						{$_TR.add_a} <select name="control_type" onchange="this.form.submit()">
+						{'Add a'|gettext} <select name="control_type" onchange="this.form.submit()">
 							{foreach from=$types key=value item=caption}
 								<option value="{$value}">{$caption}</option>
 							{/foreach}
@@ -50,7 +50,7 @@
 				</td>
 			</tr>
 		</table>
-		<p><a href="JavaScript: pickSource();">{$_TR.append_existing}</a></p>
-		<p><a href="{$backlink}">{$_TR.done}</a></p>
+		<p><a class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" href="JavaScript: pickSource();">{'Append fields from existing form'|gettext}</a></p>
+		<p><a class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" href="{$backlink}">{'Done'|gettext}</a></p>
 	{/if}
 </div>

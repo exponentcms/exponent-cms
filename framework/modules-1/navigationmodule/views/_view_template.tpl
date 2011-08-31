@@ -17,11 +17,11 @@
 <hr size="1" />
 <table cellpadding="0" cellspacing="0" border="0" width="100%">
 <tr>
-<td><b>&lt;{$_TR.name}&gt;</b></td>
+<td><b>&lt;{'Name of Section'|gettext}&gt;</b></td>
 <td>
-[ <a class="mngmntlink sitetemplate_mngmntlink" href="{link action=edit_template parent=$template->id}">{$_TR.subpage}</a> ]
-[ <a class="mngmntlink sitetemplate_mngmntlink" href="{link action=edit_template id=$template->id}">{$_TR.properties}</a> ]
-[ <a class="mngmntlink sitetemplate_mngmntlink" href="#" onclick="window.open('{$smarty.const.URL_FULL}edit_page.php?sitetemplate_id={$template->id}'); return false">{$_TR.content}</a> ]
+[ <a class="mngmntlink sitetemplate_mngmntlink" href="{link action=edit_template parent=$template->id}">{'Add Subpage'|gettext}</a> ]
+[ <a class="mngmntlink sitetemplate_mngmntlink" href="{link action=edit_template id=$template->id}">{'Properties'|gettext}</a> ]
+[ <a class="mngmntlink sitetemplate_mngmntlink" href="#" onclick="window.open('{$smarty.const.URL_FULL}edit_page.php?sitetemplate_id={$template->id}'); return false">{'Page Content'|gettext}</a> ]
 </td>
 {foreach from=$subs item=sub}
 {math equation="x+1" x=$sub->rank assign=nextrank}
@@ -31,19 +31,19 @@
 <b>{$sub->name}</b>
 </td>
 <td>
-[ <a class="mngmntlink sitetemplate_mngmntlink" href="{link action=edit_template parent=$sub->id}">{$_TR.subpage}</a> ]
-[ <a class="mngmntlink sitetemplate_mngmntlink" href="{link action=edit_template id=$sub->id}">{$_TR.properties}</a> ]
-[ <a class="mngmntlink sitetemplate_mngmntlink" href="#" onclick="window.open('{$smarty.const.URL_FULL}edit_page.php?sitetemplate_id={$sub->id}'); return false">{$_TR.content}</a> ]
-[ <a class="mngmntlink sitetemplate_mngmntlink" href="{link action=delete_template id=$sub->id}">{$_TR.delete}</a> ]
+[ <a class="mngmntlink sitetemplate_mngmntlink" href="{link action=edit_template parent=$sub->id}">{'Add Subpage'|gettext}</a> ]
+[ <a class="mngmntlink sitetemplate_mngmntlink" href="{link action=edit_template id=$sub->id}">{'Properties'|gettext}</a> ]
+[ <a class="mngmntlink sitetemplate_mngmntlink" href="#" onclick="window.open('{$smarty.const.URL_FULL}edit_page.php?sitetemplate_id={$sub->id}'); return false">{'Page Content'|gettext}</a> ]
+[ <a class="mngmntlink sitetemplate_mngmntlink" href="{link action=delete_template id=$sub->id}">{'Delete'|gettext}</a> ]
 {if $sub->last == 0}
-	<a href="{link action=order_templates parent=$sub->parent a=$sub->rank b=$nextrank}"><img class="mngmnt_icon" style="border:none;" src="{$smarty.const.ICON_RELATIVE}down.png" title="{$_TR.alt_down}" alt="{$_TR.alt_down}" /></a>
+	<a href="{link action=order_templates parent=$sub->parent a=$sub->rank b=$nextrank}"><img class="mngmnt_icon" style="border:none;" src="{$smarty.const.ICON_RELATIVE}down.png" title="{'Move Item Down'|gettext}" alt="{'Move Item Down'|gettext}" /></a>
 {else}
-	<img class="mngmnt_icon" style="border:none;" src="{$smarty.const.ICON_RELATIVE}down.disabled.png" title="{$_TR.alt_down_disabled}" alt="{$_TR.alt_down_disabled}" />
+	<img class="mngmnt_icon" style="border:none;" src="{$smarty.const.ICON_RELATIVE}down.disabled.png" title="{''|gettext}" alt="{''|gettext}" />
 {/if}
 {if $sub->first == 0}
-	<a href="{link action=order_templates parent=$sub->parent a=$sub->rank b=$prevrank}"><img class="mngmnt_icon" style="border:none;" src="{$smarty.const.ICON_RELATIVE}up.png" title="{$_TR.alt_up}" alt="{$_TR.alt_up}" /></a>
+	<a href="{link action=order_templates parent=$sub->parent a=$sub->rank b=$prevrank}"><img class="mngmnt_icon" style="border:none;" src="{$smarty.const.ICON_RELATIVE}up.png" title="{'Move Item Up'|gettext}" alt="{'Move Item Up'|gettext}" /></a>
 {else}
-	<img class="mngmnt_icon" style="border:none;" src="{$smarty.const.ICON_RELATIVE}up.disabled.png" title="{$_TR.alt_up_disabled}" alt="{$_TR.alt_up_disabled}" />
+	<img class="mngmnt_icon" style="border:none;" src="{$smarty.const.ICON_RELATIVE}up.disabled.png" title="{''|gettext}" alt="{''|gettext}" />
 {/if}
 </td>
 </tr>
@@ -51,4 +51,4 @@
 </table>
 <br />
 <br />
-<a class="mngmntlink navigation_mngmntlink" href="{link action=manage}">{$_TR.back}</a>
+<a class="mngmntlink navigation_mngmntlink" href="{link action=manage}">{'Back To Manager'|gettext}</a>

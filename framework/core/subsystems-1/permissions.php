@@ -115,27 +115,26 @@ function exponent_permissions_load($user) {
 
 	// Check perm stats for UI levels
 	$ui_levels = array();
-	$i18n = exponent_lang_loadFile('subsystems/permissions.php');
 
 	if ($user->is_acting_admin == 1) {
 		$ui_levels = array(
-			$i18n['preview'],
-			$i18n['normal'],
-			$i18n['perms'],
-			$i18n['structure']
+			gt('Preview'),
+			gt('Normal'),
+			gt('Permission Management'),
+			gt('Structure Management')
 		);
 	} else {
 		if (count($exponent_permissions_r)) {
 			$ui_levels = array(
-				$i18n['preview'],
-				$i18n['normal']
+				gt('Preview'),
+				gt('Normal')
 			);
 		}
 		if ($has_admin) {
-			$ui_levels[] = $i18n['perms'];
+			$ui_levels[] = gt('Permission Management');
 		}
 		if (isset($exponent_permissions_r['containermodule']) && count($exponent_permissions_r['containermodule'])) {
-			$ui_levels[] = $i18n['structure'];
+			$ui_levels[] = gt('Structure Management');
 		}
 	}
 	expSession::set('uilevels',$ui_levels);

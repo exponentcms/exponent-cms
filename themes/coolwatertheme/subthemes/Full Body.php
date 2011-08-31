@@ -5,7 +5,8 @@
     <?php 
     expTheme::head(array(
     	"xhtml"=>true,
-    	"css_primer"=>false,
+	    "css_primer"=>array(
+    	    YUI2_PATH."reset-fonts-grids/reset-fonts-grids.css"),
     	"css_core"=>array("common"), 
     	"css_links"=>true,
     	"css_theme"=>true
@@ -18,7 +19,7 @@
 <div id="wrap" class="fullbody">
 	<!--header -->
 	<div id="header">			
-		<h1 id="logo-text"><a href="<?php echo URL_FULL; ?>index.php">ex<span class="green">ponent</span> <sup>CMS</sup></a></h1>		
+		<h1 id="logo-text"><a href="<?php echo URL_FULL; ?>index.php" title="<?php echo SITE_TITLE; ?>"><span class="green"><?php echo ORGANIZATION_NAME; ?></span> <sup></sup></a></h1>
 		<p id="slogan"><?php echo SITE_HEADER; ?></p>		
 			<div id="header-links">
 				<a href="<?php echo exponent_core_makeLink(array('section'=>SITE_DEFAULT_SECTION)); ?>">Home</a> | 

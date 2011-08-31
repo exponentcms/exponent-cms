@@ -20,9 +20,7 @@
 
 function smarty_function_control($params,&$smarty) {
 	if (isset($params['name']) ) {
-//		if (!defined('SYS_FORMS')) require_once(BASE.'framework/core/subsystems-1/forms.php');
 		require_once(BASE.'framework/core/subsystems-1/forms.php');
-//        exponent_forms_initialize();
 		$control = new $params['type'];
 		echo $control->controlToHTML($params['name']);
 	}

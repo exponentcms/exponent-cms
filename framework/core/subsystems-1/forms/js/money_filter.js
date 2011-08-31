@@ -48,10 +48,8 @@ function money_filter_class() {
 	this.onpaste = function(ptObject, evt) {
 		var strNewVal = GetResultingValue(ptObject, String.fromCharCode(evt.charCode));
 		alert(strNewVal);
-		if (this.isValueIllegal(strNewVal)) {
-			return false;
-		}
-		return true;
+		return !this.isValueIllegal(strNewVal);
+
 	}
 	
 	this.isValueIllegal = function(strValue) {
@@ -61,7 +59,7 @@ function money_filter_class() {
 		else if (strValue.match(/\..*\./) != null) bIsIllegal = true;
 		else if (strValue.match(/\.+\d{3}/) != null) bIsIllegal = true;
 		else if (parseInt(temp.substr(1)) > 9999999999) bIsIllegal = true;
-		else if (IsNotNumber(strValue.replace(/\$/g, "").replace(/,/g, "")) == true) bIsIllegal = true;
+		else if (IsNotNumber(strValue.replace(/\$/g, "").replace(/,/g, ""))) bIsIllegal = true;
 		
 		return bIsIllegal;
 	}

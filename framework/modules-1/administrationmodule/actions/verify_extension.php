@@ -23,12 +23,11 @@
 if (!defined('EXPONENT')) exit('');
 
 if (exponent_permissions_check('extensions',exponent_core_makeLocation('administrationmodule'))) {
-//	if (!defined('SYS_FILES')) require_once(BASE.'framework/core/subsystems-1/files.php');
-//	require_once(BASE.'framework/core/subsystems-1/files.php');
 
 	$sessid = session_id();
 	$files = array();
-	foreach (expFile::listFlat(BASE.'extensionuploads/'.$sessid,true,null,array(),BASE.'extensionuploads/'.$sessid) as $key=>$f) {
+//	foreach (expFile::listFlat(BASE.'extensionuploads/'.$sessid,true,null,array(),BASE.'extensionuploads/'.$sessid) as $key=>$f) {
+	foreach (expFile::listFlat(BASE.'tmp/extensionuploads/'.$sessid,true,null,array(),BASE.'tmp/extensionuploads/'.$sessid) as $key=>$f) {
 		if ($key != '/archive.tar' && $key != '/archive.tar.gz' && $key != '/archive.tar.bz2' && $key != '/archive.zip') {
 			$files[] = array(
 				'absolute'=>$key,
@@ -40,7 +39,8 @@ if (exponent_permissions_check('extensions',exponent_core_makeLocation('administ
 	}
 	
 	$template = new template('administrationmodule','_upload_filesList',$loc);
-	$template->assign('relative','extensionuploads/'.$sessid);
+//	$template->assign('relative','extensionuploads/'.$sessid);
+	$template->assign('relative','tmp/extensionuploads/'.$sessid);
 	$template->assign('files',$files);
 	$template->output();
 } else {

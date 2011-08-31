@@ -29,15 +29,15 @@ if (!defined('EXPONENT')) exit('');
 	<!-- send us to the next page -->
 	<input type="hidden" name="page" value="welcome" />
 	<div class="control">
-	<select name="lang">
-		<?PHP foreach(exponent_lang_list() as $currid=>$currlang) {?>
-			<?php if ($currid == "eng_US") { ?>
-			<option value="<?PHP echo $currid?>" selected><?PHP echo $currlang?></option>
-			<?php } else { ?>
-			<option value="<?PHP echo $currid?>"><?PHP echo $currlang?></option>
-			<?php } ?>
-		<?PHP }?>
-	</select> 
+		<select name="lang">
+			<?PHP foreach(expLang::langList() as $currid=>$currlang) {?>
+				<?php if ($currid == "English - US") { ?>
+				<option value="<?PHP echo $currid?>" selected><?PHP echo $currlang?></option>
+				<?php } else { ?>
+				<option value="<?PHP echo $currid?>"><?PHP echo $currlang?></option>
+				<?php } ?>
+			<?PHP }?>
+		</select>
 	</div>
 	<button class="awesome large green" /><?php echo gt('Set Language'); ?></button>
 </form>

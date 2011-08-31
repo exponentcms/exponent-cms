@@ -42,8 +42,7 @@ class keywords {
 
 	public function getTextBySection($section) {
 		global $db;
-		if (!defined('SYS_SEARCH')) include_once(BASE.'framework/core/subsystems-1/search.php');
-	
+
 		$id = is_object($section) ? $section->id : $section;
 		$refs = $db->selectObjects('sectionref', 'section='.$id);
 	
@@ -69,7 +68,7 @@ class keywords {
 			}
 		}
 
-		$text = exponent_search_removeHTML(ob_get_contents());
+		$text = search::removeHTML(ob_get_contents());
 		ob_end_clean();
 		return $text;
 	}

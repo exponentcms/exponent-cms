@@ -13,6 +13,11 @@
  * GPL: http://www.gnu.org/licenses/gpl.txt
  *
  *}
-<div class="form_title">{$_TR.form_title}</div>
-<div class="form_header">{$_TR.form_header}</div>
-{$form_html}
+
+<div class="importer usercsv-form-mapping">
+	<div class="form_header">
+		<h2>{'Mapping CSV Columns'|gettext}</h2>
+		<p>{'Below is some sample data from your csv file broken out by fields. Map the columns from the csv file to the corresponding user property in the database.'|gettext}</p>
+	</div>
+	{$form_html}
+</div>

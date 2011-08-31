@@ -14,11 +14,11 @@
  *
  *}
 {if $success == 1}
-<br /><br />{$_TR.configuration_saved} <br /><a class="mngmntlink" href="{$backlink}">{$_TR.continue}</a><hr size="1" />
+<br /><br />{'Configuration Saved!'|gettext} <br /><a class="mngmntlink" href="{$backlink}">{'Continue'|gettext}</a><hr size="1" />
 {else}
-<div class="error">{$_TR.errors}:</div>
+<div class="error">{'Errors were encountered with your database connection settings'|gettext}:</div>
 <div style="padding-left: 15px;">
 {$errors}
-<br /><br />{$_TR.not_saved}<br /><a class="mngmntlink" href="{$smarty.server.HTTP_REFERER}">{$_TR.reconfigure}</a><br /><br />
+<br /><br />{'Site configuration changes were not saved.'|gettext}<br /><a class="mngmntlink" href="{$smarty.server.HTTP_REFERER}">{'Reconfigure'|gettext}</a><br /><br />
 </div>
 {/if}

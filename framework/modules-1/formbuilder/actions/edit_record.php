@@ -20,11 +20,7 @@
 
 if (!defined('EXPONENT')) exit('');
 
-$i18n = exponent_lang_loadFile('modules/formbuilder/actions/edit_record.php');
-
-//if (!defined('SYS_FORMS')) include_once(BASE.'framework/core/subsystems-1/forms.php');
 include_once(BASE.'framework/core/subsystems-1/forms.php');
-//exponent_forms_initialize();
 
 // Sanitize required _GET parameters
 $_GET['id'] = intval($_GET['id']);
@@ -36,9 +32,6 @@ $controls = $db->selectObjects('formbuilder_control','form_id='.$_GET['form_id']
 
 if ($f && $data && $controls) {
 	if (exponent_permissions_check('editdata',unserialize($f->location_data))) {
-//		if (!defined('SYS_SORTING')) include_once(BASE.'framework/core/subsystems-1/sorting.php');
-//		include_once(BASE.'framework/core/subsystems-1/sorting.php');
-//		usort($controls,'exponent_sorting_byRankAscending');
 		$controls = expSorter::sort(array('array'=>$controls,'sortby'=>'rank', 'order'=>'ASC'));
 
 		$form = new form();
@@ -73,7 +66,7 @@ if ($f && $data && $controls) {
 		
 //		$form->register(uniqid(''),'', new htmlcontrol('<br /><br />'));
 		$form->register(uniqid(''),'', new htmlcontrol($antispam));
-		$form->register('submit','',new buttongroupcontrol($i18n['save'],'',$i18n['cancel']));
+		$form->register('submit','',new buttongroupcontrol(gt('Save'),'',gt('Cancel')));
 		$form->meta('action','submit_form');
 		$form->meta('m',$loc->mod);
 		$form->meta('s',$loc->src);

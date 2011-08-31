@@ -497,8 +497,13 @@ class cartController extends expController {
         // call the billing mehod's preprocess in case it needs to prepare things.
        // eDebug($billing);
         $result = $billing->calculator->preprocess($billing->billingmethod, $opts, $this->params, $order);
-        //eDebug($result, true);
-        if (empty($result->errorCode)) 
+        
+        // once in a while it appears the payment processor will return a nullo value in the errorCode field
+        // which the previous check takes as a TRUE, as 0, null, and empty will all equate out the same using the ==
+        // adding the === will specifically test for a 0 and only a 0, which is what we want
+
+        //if (empty($result->errorCode)) 
+        if ($result->errorCode === "0" || $result->errorCode === 0) 
         {
             redirect_to(array('controller'=>'cart', 'action'=>'confirm'));
         } 
@@ -653,7 +658,7 @@ class cartController extends expController {
 		}
 		
 		if (!empty($this->params['shipping'])) {
-		    die('NEED TO IMPLEMENT THE SHIPPING PIECE!!');
+		    die('NEED TO IMPLEMENT THE SHIPPING PIECE!!'); //TODO
 		    $shipping = new shipping();
     		$shipping->shippingingmethod->setAddress($this->params['shipping']);
     		assign_to_template(array('shipping'=>$shipping));

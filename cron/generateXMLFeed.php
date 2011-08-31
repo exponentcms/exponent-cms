@@ -30,17 +30,21 @@
     
     $count=0;
     $columns = '';
-    
-    $products = $db->selectObjectsBySql('SELECT DISTINCT(p.id),active_type,availability_type,quantity, model,feed_title,feed_body,google_product_type,sef_url,base_price,use_special_price, special_price,f.directory,f.filename, c.title as company FROM exponent_product p
+    $sql = 'SELECT DISTINCT(p.id),active_type,availability_type,quantity, model,feed_title,feed_body,google_product_type,p.sef_url,base_price,use_special_price, special_price,f.directory,f.filename, c.title as company, sc.id as storeCategoryId FROM exponent_product p
     LEFT JOIN exponent_content_expFiles cf ON
          p.id = cf.content_id 
     LEFT JOIN exponent_expFiles f ON
         cf.expfiles_id = f.id 
     LEFT JOIN exponent_companies c ON
         c.id = p.companies_id
-    WHERE parent_id=0 AND (availability_type=0 OR availability_type=1 OR availability_type=2) AND(active_type=0 OR active_type=1) AND sef_url != "" AND cf.subtype="mainimage" ORDER BY p.title ASC');
-
-	$counter = array();
+    LEFT JOIN exponent_product_storeCategories psc ON
+        p.id = psc.product_id
+    LEFT JOIN exponent_storeCategories sc ON
+        psc.storeCategories_id = sc.id
+    WHERE p.parent_id=0 AND (availability_type=0 OR availability_type=1 OR availability_type=2) AND(active_type=0 OR active_type=1) AND p.sef_url != "" AND cf.subtype="mainimage" ORDER BY p.title ASC';
+    
+    $products = $db->selectObjectsBySql($sql);
+    $counter = array();
 	$prodflipper[] = array();
 	$prodflipper2[] = array();
 	$prodflipper3[] = array();
@@ -61,6 +65,7 @@
 	}
 	echo "Flip Count 3: " . count($prodflipper3). "\r\n";;  
 	
+    //Google
 	foreach ($prodflipper3 as $prod) {
 	
 		if (empty($prod->sef_url) || empty($prod->feed_title) || empty($prod->model) || empty($prod->feed_body)) continue;
@@ -74,21 +79,33 @@
 			
 		$count++;
 		//Get the google type categories, I used selectArraysBySql since a product can have more than 1 google taxonomy
-		$google_types_res = $db->selectArraysBySql("SELECT exponent_google_product_types.title FROM exponent_google_product_types, exponent_product, exponent_product_storeCategories, exponent_google_product_types_storeCategories 
+		/*$google_types_res = $db->selectArraysBySql("SELECT exponent_google_product_types.title FROM exponent_google_product_types, exponent_product, exponent_product_storeCategories, exponent_google_product_types_storeCategories 
 													WHERE exponent_google_product_types.id = google_product_types_id and exponent_google_product_types_storeCategories.storecategories_id = exponent_product_storeCategories.storecategories_id and 
 													exponent_product.id = exponent_product_storeCategories.product_id and exponent_product.id = {$prod->id}");
+                                                    */
 		$google_types = '';
 
-		if(count($google_types_res) > 0) {
+		/*if(count($google_types_res) > 0) {
 			$google_types_array = array();
 			foreach($google_types_res as $item) {
 				$google_types_array[] = $item['title'];
 			}
 			$google_types = implode(' > ', $google_types_array);
 			$google_types = expString::convertXMLFeedSafeChar($google_types);
-		}
-	
-		
+		}*/
+        
+        //temporary hack in
+        $gpath = $db->selectPathToNestedNode('storeCategories',$prod->storeCategoryId);
+            
+        $gsql = 'SELECT title FROM exponent_google_product_types bpt
+            INNER JOIN exponent_google_product_types_storeCategories bptsc ON
+                bptsc.google_product_types_id = bpt.id
+            WHERE bptsc.storecategories_id = ' . $gpath[0]->id;                     
+        $g_catObj = $db->selectObjectBySql($gsql);              
+       
+        if(isset($g_catObj->title))$google_types = $g_catObj->title;                
+        //hack
+       	
 		$columns = '<item>'.chr(13).chr(10);
 
 		$columns.='<title>';            
@@ -164,11 +181,11 @@
 	   
 		if(!empty($prod->google_product_type)) {
 			$columns.='<g:product_type>';
-			$columns.= $prod->google_product_type;
+			$columns.= str_ireplace('&','<![CDATA[&]]>',$prod->google_product_type);
 			$columns.='</g:product_type>'.chr(13).chr(10);
 		} elseif(!empty($google_types)) {
 			$columns.='<g:product_type>';
-			$columns.= $google_types;
+			$columns.= str_ireplace('&','<![CDATA[&]]>',$google_types);
 			$columns.='</g:product_type>'.chr(13).chr(10);
 		}
 		$columns.='</item>'.chr(13).chr(10);
@@ -181,13 +198,140 @@
             
     $content='</channel>'.chr(13).chr(10);
     $content.='</rss>'.chr(13).chr(10);
-
+    
     // Write the footer data to our opened file.
     if (fwrite($handle, $content) == FALSE) {
         $action_msg = "ER";
     }
     $action_msg = "SC";
-    fclose($handle);        
-    echo "\r\nGenerated $count products in the feed.\r\n";       
+    fclose($handle); 
+    
+    echo "\r\nGenerated $count products in the Google feed.\r\n";       
+    
+    //end Google 
+     
+    //Bing
+           
+    //Get the filename to be use
+    $filename = EXP_PATH . 'bingshopping.txt';    
+    
+    //Header of the xml file
+    $header="MPID".chr(9)."Title".chr(9)."ProductURL".chr(9)."Description".chr(9)."ImageURL".chr(9)."Brand".chr(9)."SKU".chr(9)."Price".chr(9);
+    $header.="Availability".chr(9)."Condition".chr(9)."MerchantCategory".chr(9)."B_Category".chr(13).chr(10);
+    
+    //Check if the file exist
+    if (!$handle = fopen($filename, 'w')) {
+        echo "Cannot open file ($filename)";
+        exit;
+    }
+    
+    //Check if the file is writable
+    if (fwrite($handle, $header) == FALSE) {
+        $action_msg = "ER";
+    }
+    
+    $count=0;
+    $counter = array();
+    $columns = '';    
+    reset($prodflipper3);
+    
+    foreach ($prodflipper3 as $prod) {
+        if (empty($prod->sef_url) || empty($prod->feed_title) || empty($prod->model) || empty($prod->feed_body)) continue;
+        
+        if(in_array($prod->sef_url,$counter) || isset($counter[$prod->id])) {
+            echo "No no..." . $prod->id . "\r\n";
+            continue;
+        }
+        else
+            $counter[$prod->id]  = $prod->sef_url;
+            
+        $count++;
+        
+        $columns = $prod->id . chr(9);
+        
+        $prod->feed_title = expString::convertXMLFeedSafeChar(html_entity_decode(strip_tags($prod->feed_title)));
+        $prod->feed_title = htmlspecialchars($prod->feed_title);
+        $prod->feed_title = expString::onlyReadables($prod->feed_title);
+        
+        $columns .= $prod->feed_title . chr(9);
+        
+        $columns.="http://www.militaryuniformsupply.com/".strip_tags($prod->sef_url) . chr(9);
+        
+        $columns.= expString::onlyReadables($prod->feed_body) . chr(9);
+        
+        $columns.= "http://www.militaryuniformsupply.com/".$prod->directory . $prod->filename . chr(9);
+        
+        if(!empty($prod->company)) {           
+            $columns.=$prod->company . chr(9);            
+        }else{
+            $columns.= chr(9);  
+        }
+        
+        $columns .= $prod->model . chr(9);            
+        
+        if($prod->use_special_price && !empty($prod->special_price)) {            
+            $columns.= $prod->special_price . chr(9);           
+        } else {
+            $columns.= $prod->base_price . chr(9);
+        }
+        
+        if($prod->active_type == 0) {
+        
+            if ($prod->availability_type == 0) {
+                $columns.='In Stock'.chr(9);                
+            }
+            else if ($prod->availability_type == 1) {
+                $columns.='Back-Order'.chr(9);                                              
+            }
+            else if ($prod->availability_type == 2 && $prod->quantity <= 0) {
+                $columns.='Out of Stock'.chr(9);                                              
+            }
+            else if ($prod->availability_type == 2 && $prod->quantity > 0) {                
+                $columns.='In Stock'.chr(9);       
+            }
+        }
+        else if ($prod->active_type == 1) {
+            $columns.='Out of Stock'.chr(9);           
+        }
+        
+        $columns.='New' . chr(9);
+        
+        //merchant category
+        $crumb = '';
+        $path_titles = array();
+        $path = $db->selectPathToNestedNode('storeCategories',$prod->storeCategoryId);
+        $path_count = 0;
+        $b_cat = '';
+        foreach($path as $cat)
+        {
+            $path_titles[] = $cat->title;
+            if($path_count == 0)
+            {
+                //first one, so get the root b_category''
+                $sql = 'SELECT title FROM exponent_bing_product_types bpt
+                    INNER JOIN exponent_bing_product_types_storeCategories bptsc ON
+                        bptsc.bing_product_types_id = bpt.id
+                    WHERE bptsc.storecategories_id = ' . $cat->id;                     
+                $b_catObj = $db->selectObjectBySql($sql);              
+                if(isset($b_catObj->title))$b_cat = $b_catObj->title;                
+            }
+            $path_count ++;            
+        }
+        $crumb = implode('>',$path_titles);
+        $columns.=$crumb . chr(9);
+        
+        //b_category
+        if(empty($b_cat)) $columns .= '';
+        else $columns .= $b_cat; 
+        
+        // Write the body data to our opened file.
+        if (fwrite($handle, $columns.chr(13).chr(10)) == FALSE) {
+            $action_msg = "ER";
+        }
+    }
+           
+    //end Bing
+    
+    echo "\r\nGenerated $count products in the Bing feed.\r\n";       
          
 ?>

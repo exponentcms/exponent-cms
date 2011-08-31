@@ -24,18 +24,18 @@
 			<div class="related-actions">
 				{help text="Get Help Managing Pages" module="manage-all-pages"}
 			</div>
-			<h1>{$_TR.form_title}</h1>
+			<h1>{'Manage Standalone Pages'|gettext}</h1>
 		</div>
-		<p>{$_TR.form_header}</p>
-		<a class="add" href="{link action=edit_contentpage parent=-1}">{$_TR.new}</a>
+		<p>{'Standalone pages do not appear in the site hierarchy, but still have their own content and act just like other pages.'|gettext}</p>
+		<a class="add" href="{link action=edit_contentpage parent=-1}">{'Create a New Standalone Page'|gettext}</a>
 	</div>
 
 	<table cellpadding="2" cellspacing="0" border="0" width="100%" class="exp-skin-table">
     <thead>
         <tr>
-    		<th><strong>{$_TR.page_title}</strong></th>
-    		<th><strong>{$_TR.actions}</strong></th>
-    		<th><strong>{$_TR.permissions}</strong></th>
+    		<th><strong>{'Page Title'|gettext}</strong></th>
+    		<th><strong>{'Actions'|gettext}</strong></th>
+    		<th><strong>{'Permissions'|gettext}</strong></th>
     	</tr>
 	</thead>
 	<tbody>
@@ -49,14 +49,14 @@
 			{$section->name}&nbsp;
 		{/if}
 	</td><td>
-		{icon class=edit action=edit_contentpage record=$section title=$_TR.alt_edit}
-        {icon action=delete record=$section title=$_TR.alt_delete onclick="return confirm('`$_TR.delete_confirm`');"}
+		{icon class=edit action=edit_contentpage record=$section title='Edit'|gettext}
+        {icon action=delete record=$section title='Delete'|gettext onclick="return confirm('Delete this page?');"}
 	</td><td>
-		{icon int=$section->id action=userperms _common=1 img=userperms.png title=$_TR.alt_userperm text="User"}
-		{icon int=$section->id action=groupperms _common=1 img=groupperms.png title=$_TR.alt_groupperm text="Group"}
+		{icon int=$section->id action=userperms _common=1 img=userperms.png title='Assign user permissions for this page'|gettext text="User"}
+		{icon int=$section->id action=groupperms _common=1 img=groupperms.png title='Assign group permissions for this page'|gettext text="Group"}
 	</td></tr>
 	{foreachelse}
-		<tr><td colspan=3><i>{$_TR.no_pages}</i></td></tr>
+		<tr><td colspan=3><i>{'No standalone pages found'|gettext}</i></td></tr>
 	{/foreach}
 	</tbody>
 	</table>

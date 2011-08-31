@@ -80,7 +80,6 @@ class yuieditorcontrol extends formcontrol {
 
 		})();";
 		
-//		exponent_javascript_toFoot('editor-'.$name,'editor', null, $script);
 		expJavascript::pushToFoot(array(
 		    "unique"=>'editor-'.$name,
 		    "yui2mods"=>'editor',
@@ -92,10 +91,8 @@ class yuieditorcontrol extends formcontrol {
 	}
 	
 	function form($object) {
-//		if (!defined("SYS_FORMS")) require_once(BASE."framework/core/subsystems-1/forms.php");
 		require_once(BASE."framework/core/subsystems-1/forms.php");
-//		exponent_forms_initialize();
-	
+
 		$form = new form();
 		
 		if (!isset($object->identifier)) {
@@ -106,24 +103,20 @@ class yuieditorcontrol extends formcontrol {
 			$object->cols = 60;
 			$object->maxchars = 0;
 		} 
-		
-		$i18n = exponent_lang_loadFile('subsystems/forms/controls/texteditorcontrol.php');
-		
-		$form->register("identifier",$i18n['identifier'],new textcontrol($object->identifier));
-		$form->register("caption",$i18n['caption'], new textcontrol($object->caption));
-		$form->register("default",$i18n['default'],  new texteditorcontrol($object->default));
-		$form->register("rows",$i18n['rows'], new textcontrol($object->rows,4,false,3,"integer"));
-		$form->register("cols",$i18n['cols'], new textcontrol($object->cols,4, false,3,"integer"));
-		$form->register("submit","",new buttongroupcontrol($i18n['save'],'',$i18n['cancel']));
+		$form->register("identifier",gt('Identifier'),new textcontrol($object->identifier));
+		$form->register("caption",gt('Caption'), new textcontrol($object->caption));
+		$form->register("default",gt('Default'),  new texteditorcontrol($object->default));
+		$form->register("rows",gt('Rows'), new textcontrol($object->rows,4,false,3,"integer"));
+		$form->register("cols",gt('Columns'), new textcontrol($object->cols,4, false,3,"integer"));
+		$form->register("submit","",new buttongroupcontrol(gt('Save'),'',gt('Cancel')));
 		return $form;
 	}
 	
 	function update($values, $object) {
 		if ($object == null) $object = new texteditorcontrol();
 		if ($values['identifier'] == "") {
-			$i18n = exponent_lang_loadFile('subsystems/forms/controls/texteditorcontrol.php');
 			$post = $_POST;
-			$post['_formError'] = $i18n['id_req'];
+			$post['_formError'] = gt('Identifier is required.');
 			expSession::set("last_POST",$post);
 			return null;
 		}

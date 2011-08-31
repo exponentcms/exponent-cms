@@ -46,7 +46,6 @@ class expFile extends expRecord {
 	const IMAGE_ERR_FILENOTFOUND = '_notfound';
 	const IMAGE_ERR_PERMISSIONDENIED = '_denied';
 	
-
 // ===========================================================
 // File Access Control Values
 
@@ -101,7 +100,6 @@ class expFile extends expRecord {
     *
     */
     const FILE_LOCK_EXCLUSIVE = LOCK_EX;
-
 
   // ==========================================================
   // Class Properties and their default values
@@ -187,7 +185,6 @@ class expFile extends expRecord {
     */
     public $is_image = false;
 
-
    /**
     * Determines if this file can be overwritten.
     * Also if it can be "moved" or "renamed" over
@@ -200,8 +197,6 @@ class expFile extends expRecord {
     * @since 1.1
     */
     protected $fileOverWrite = false;
-
-
 
    /**
     * Web based Path for current File
@@ -229,8 +224,6 @@ class expFile extends expRecord {
     *
     */
     public $path_relative = null;
-
-
 
 // ==========================================================
 // Class Methods
@@ -312,10 +305,8 @@ class expFile extends expRecord {
         }
 	}
 
-
 // =========================================================================
 // Static Methods
-
 
 	/**
 	 * File UPLOAD that also inserts File info into datbase.
@@ -353,9 +344,6 @@ class expFile extends expRecord {
                                        $_destDir  = null
                                       ) {
 
-//        if (!defined('SYS_FILES')) include_once(BASE.'framework/core/subsystems-1/files.php');
-//        include_once(BASE.'framework/core/subsystems-1/files.php');
-
         // Make sure something was sent first off...
         if ( ( !isset($_SERVER['CONTENT_TYPE'] )) ||
              ( strpos($_SERVER['CONTENT_TYPE'], 'multipart/form-data') !== 0) )
@@ -383,7 +371,6 @@ class expFile extends expRecord {
 				return 'unknown';
 				break;
 		}
-        
 
         // If $_destDir is not defined, use the default Files directory
         $_destDir = ( $_destDir == null ) ? UPLOAD_DIRECTORY : $_destDir;
@@ -437,7 +424,6 @@ class expFile extends expRecord {
 		return $_objFile;
     }
 
-
 	/**
 	 * Performs a system level check on the file and retrieves its size
 	 *
@@ -453,7 +439,6 @@ class expFile extends expRecord {
 	 * @throws void
 	 *
 	 */
-
      public static function fileSize($_path = false)
      {
          if ( $_path )
@@ -463,7 +448,6 @@ class expFile extends expRecord {
 
          return $_fileSize;
      }
-
 
      /**
       * check for duplicate files and returns a file name that's not already in the system
@@ -495,7 +479,6 @@ class expFile extends expRecord {
           //already got the path we want on the other side
           return $filnameWoExt.$inc.$extention;
       }
-
 
    /**
     * prompts the user to download a file
@@ -568,9 +551,9 @@ class expFile extends expRecord {
     *
     */
     public static function fixFileName($name) {
-        return preg_replace('/[^A-Za-z0-9\.]/','_',$name);
+//        return preg_replace('/[^A-Za-z0-9\.]/','_',$name);
+        return preg_replace('/[^A-Za-z0-9\.]/','-',$name);
     }
-
 
 // ==========================================================
 // Class Image Processing Methods
@@ -628,7 +611,6 @@ class expFile extends expRecord {
 		return $_sizeinfo;
 	}
 
-
 	/* exdoc
 	 * Create an image resource handle (from GD) for a given filename.
 	 * This is a wrapper around various GD functions, to provide Exponent
@@ -656,7 +638,7 @@ class expFile extends expRecord {
 			$img = imagecreatefromgif($filename);
 		} else {
 			// Either we have an unknown image type, or an unsupported image type.
-			return IMAGE_ERR_NOTSUPPORTED;
+			return self::IMAGE_ERR_NOTSUPPORTED;
 		}
 
 		if (function_exists('imagesavealpha')) {
@@ -694,6 +676,7 @@ class expFile extends expRecord {
 			return imagecreate($w,$h);
 		}
 	}
+
 	/* exdoc
 	 * Create a new blank image resource, with the specified width and height.
 	 * This is a wrapper around various GD functions, to provide Exponent
@@ -865,6 +848,7 @@ class expFile extends expRecord {
 
 		return $thumb;
 	}
+
 	/* exdoc
 	 * Scale an image to a square keeping the image aspect ratio.
 	 * If the image is smaller in either dimension than request square side original is returned.
@@ -1059,9 +1043,7 @@ class expFile extends expRecord {
 			return null;
 		}
 	}
-    
-    
-    
+
     static function recurse_copy($src,$dst) {
         $dir = opendir($src); 
         @mkdir($dst); 
@@ -1192,6 +1174,7 @@ class expFile extends expRecord {
 				}
 			}
 		}
+		closedir($dh);
 		rmdir($dir);
 	}
 
@@ -1257,6 +1240,7 @@ class expFile extends expRecord {
 					$files[str_replace($relative,"","$dir/$file")] = $file;
 				}
 			}
+			closedir($dh);
 		}
 		return $files;
 	}
@@ -1324,6 +1308,7 @@ class expFile extends expRecord {
 				}
 			}
 		}
+		closedir($dh);
 		umask($__oldumask);
 	}
 

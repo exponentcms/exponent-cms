@@ -22,14 +22,12 @@ if (!defined('EXPONENT')) exit('');
 $ctl = new checkboxcontrol(false,true);
 $ctl->disabled = 0;
 
-$i18n = exponent_lang_loadFile('conf/extensions/sef.structure.php');
-
 return array(
-	$i18n['title'],
+	gt('Search Engine Friendly URLs'),
 	array(
 		'SEF_URLS'=>array(
-			'title'=>$i18n['sef_urls'],
-			'description'=>$i18n['sef_urls_desc'],
+			'title'=>gt('Enable SEF URLs'),
+			'description'=>gt('Enabling SEF URLs will make your URL strings easier to read and more attractive to the search engines.<br />'),
 			'control'=>$ctl
 		)
 	)

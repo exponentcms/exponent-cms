@@ -33,7 +33,9 @@
 		{control type="password" name="password" label="Password" value=$config.password}
 		{control type="text" name="port" label="Port" value=$config.port|default:3306}
 		{control type="text" name="prefix" label="Exponent Table Prefix" value=$config.prefix|default:'exponent'}
+	    {control type="checkbox" name="fix_database" label="Attempt to fix tables in old database? (may cause a timeout on slow connection)" value=1 checked=false}
         {control type=buttongroup submit="Save Config" cancel="Cancel"}
     {/form}
-	<a class="admin" href="{link module=migration action=manage_users}">Next Step -> Migrate Users & Groups</a>
+	{br}<hr>{br}
+	<a class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" href="{link module=migration action=manage_users}"><b>Next Step -> Migrate Users & Groups</b></a>
 </div>

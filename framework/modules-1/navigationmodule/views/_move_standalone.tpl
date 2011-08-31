@@ -13,6 +13,6 @@
  * GPL: http://www.gnu.org/licenses/gpl.txt
  *
  *}
-<div class="form_title">{$_TR.form_title}</div>
-<div class="form_header">{$_TR.form_header}</div>
+<div class="form_title">{'Move Standalone Page'|gettext}</div>
+<div class="form_header">{'Select the standalone page you wish to move into the Site Hierarchy, and click "Save"'|gettext}</div>
 {$form_html}

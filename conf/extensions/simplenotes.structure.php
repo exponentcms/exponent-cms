@@ -19,29 +19,27 @@
 
 if (!defined('EXPONENT')) exit('');
 
-$i18n = exponent_lang_loadFile('conf/extensions/simplenote.structure.php');
-
 return array(
-	$i18n['title'],
+	gt('Simple Admin notes'),
 	array(
 		'SIMPLENOTE_REQUIRE_LOGIN'=>array(
-			'title'=>$i18n['simplenote_require_login'],
-			'description'=>$i18n['simplenote_require_login_desc'],
+			'title'=>gt('Require Login to Add Notes'),
+			'description'=>gt('Checking this option will force user to create an account and be logged in before they can addn notes. Theoreticall this will rarely be an issue as simple notes are generall added to edit forms (products for example) and thus the user would need to be logged in anyway.'),
 			'control'=>new checkboxcontrol()
 		),
 		'SIMPLENOTE_REQUIRE_APPROVAL'=>array(
-			'title'=>$i18n['simplenote_require_approval'],
-			'description'=>$i18n['simplenote_require_approval_desc'],
+			'title'=>gt('I Want to Approve All Notes'),
+			'description'=>gt('If this option is selected, notes will not be displayed until you approve them.'),
 			'control'=>new checkboxcontrol()
 		),
 		'SIMPLENOTE_REQUIRE_NOTIFICATION'=>array(
-			'title'=>$i18n['simplenote_require_notification'],
-			'description'=>$i18n['simplenote_require_notification_desc'],
+			'title'=>gt('Notify Me of New Notes'),
+			'description'=>gt('An email notification will be sent to the email address specificed below to notify you of new notes.'),
 			'control'=>new checkboxcontrol()
 		),
 		'SIMPLENOTE_NOTIFICATION_EMAIL'=>array(
-			'title'=>$i18n['simplenote_require_notification_email'],
-			'description'=>$i18n['simplenote_require_notification_email_desc'],
+			'title'=>gt('Notification Email Address(es) (Enter multiple addresses by using a comma to separate them)'),
+			'description'=>gt('If you have indicated you would like to be notified of new notes, please enter the email address of all the people you would like to get the notificaiton email addresses.'),
 			'control'=>new textcontrol()
 		),
 	)

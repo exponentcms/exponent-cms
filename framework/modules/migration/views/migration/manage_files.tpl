@@ -38,5 +38,6 @@
         </table>
         {control type="buttongroup" submit="Migrate Files" cancel="Cancel"}
     {/form}
-	<a class="admin" href="{link module=migration action=manage_content}">Next Step -> Migrate Content</a>
+	{br}<hr>{br}
+	<a class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" href="{link module=migration action=manage_content}"><b>Next Step -> Migrate Content</b></a>
 </div>

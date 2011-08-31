@@ -13,8 +13,8 @@
  * GPL: http://www.gnu.org/licenses/gpl.txt
  *
  *}
-<div class="form_title">{$_TR.form_title}: {$user->firstname} {$user->lastname} ({$user->username})</div>
-<div class="form_header">{$_TR.form_header}</div>
+<div class="form_title">{'Group Membership'|gettext}: {$user->firstname} {$user->lastname} ({$user->username})</div>
+<div class="form_header">{'Use this form to manage which groups this user belongs to.'|gettext}</div>
 
 
 {paginate objects=$groups}
@@ -89,9 +89,9 @@
 	}
 
 	paginate.columns = new Array(
-		new cColumn("{/literal}{$_TR.group}{literal}","name",null,null),
-		new cColumn("{/literal}{$_TR.is_member}{literal}","",isMember,sortMember),
-		new cColumn("{/literal}{$_TR.group_admin}{literal}","",isAdmin,sortAdmin)
+		new cColumn("{/literal}{'Group'|gettext}{literal}","name",null,null),
+		new cColumn("{/literal}{'Is Member?'|gettext}{literal}","",isMember,sortMember),
+		new cColumn("{/literal}{'Group Admin'}{literal}","",isAdmin,sortAdmin)
 	);
 
 	{/literal}
@@ -118,11 +118,11 @@
 <input type="hidden" name="action" value="umgr_savemembers" />
 <input type="hidden" name="id" value="{$user->id}"/>
 <input type="hidden" id="membdata" name="membdata" value="" />
-<input type="submit" value="{$_TR.save}" onclick="serializeData(); return true;" />
-<input type="button" value="{$_TR.cancel}" onclick="document.location.href = '{$__redirect}';" />
+<input type="submit" value="{'Save'|gettext}" onclick="serializeData(); return true;" />
+<input type="button" value="{'Cancel'|gettext}" onclick="document.location.href = '{$__redirect}';" />
 </form>
 <br />
 
-<a class="mngmntlink administration_mngmntlink" href="#" onclick="changeAll(true); return false;">{$_TR.select_all}</a>
+<a class="mngmntlink administration_mngmntlink" href="#" onclick="changeAll(true); return false;">{'Select All'|gettext}</a>
 &nbsp;&nbsp;|&nbsp;&nbsp;
-<a class="mngmntlink administration_mngmntlink" href="#" onclick="changeAll(false); return false;">{$_TR.unselect_all}</a>
+<a class="mngmntlink administration_mngmntlink" href="#" onclick="changeAll(false); return false;">{'Unselect All'|gettext}</a>

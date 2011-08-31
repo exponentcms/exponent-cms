@@ -63,9 +63,6 @@ function IsNotNumber(strValue) {
 	return false;
 }
 
-
-
-
 <?php 
 	$dh = opendir(".");
 	while (($file=readdir($dh)) !== false) {

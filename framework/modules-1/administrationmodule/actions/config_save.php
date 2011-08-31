@@ -23,19 +23,14 @@
 if (!defined('EXPONENT')) exit('');
 
 if (exponent_permissions_check('configuration',exponent_core_makeLocation('administrationmodule'))) {
-//	if (!defined('SYS_CONFIG')) require_once(BASE.'framework/core/subsystems-1/config.php');
-	require_once(BASE.'framework/core/subsystems-1/config.php');
-
 	$continue = true;
 	if ($user->is_admin == 1) { // Only do the database stuff if we are a super admin
 		$errors = '';
 		
-		$i18n = exponent_lang_loadFile('modules/administrationmodule/actions/config_save.php');
-
 		// Test the prefix
 		if (preg_match("/[^A-Za-z0-9]/",$_POST['c']['DB_TABLE_PREFIX'])) {
 			$continue = false;
-			$errors .= $i18n['bad_prefix'];
+			$errors .= gt('Invalid table prefix.  The table prefix can only contain alphanumeric characters.');
 		}
 		
 		// Test the database connection
@@ -44,7 +39,7 @@ if (exponent_permissions_check('configuration',exponent_core_makeLocation('admin
 		
 		if (!$newdb->isValid()) {
 			$continue = false;
-			$errors .= $i18n['cant_connect'];
+			$errors .= gt('Unable to connect to database server.  Make sure that the database specified exists, and the user account specified has access to the server.');
 		}
 		
 		if ($continue) {
@@ -52,7 +47,7 @@ if (exponent_permissions_check('configuration',exponent_core_makeLocation('admin
 			foreach ($status as $type=>$flag) {
 				if (!$flag) {
 					$continue = false;
-					$errors .= sprintf($i18n['perm_denied'],$type);
+					$errors .= sprintf(gt('Unable to run %s commands.'),$type);
 				}
 			}
 		}
@@ -61,7 +56,7 @@ if (exponent_permissions_check('configuration',exponent_core_makeLocation('admin
 	$template = new template('administrationmodule','_config_results');
 	
 	if ($continue) {
-		exponent_config_saveConfiguration($_POST);
+		expSettings::saveConfiguration($_POST);
 		$ob = "";
 		if ($user->is_admin == 1) {
 			$db = $newdb;
@@ -87,7 +82,7 @@ if (exponent_permissions_check('configuration',exponent_core_makeLocation('admin
 			
 			if ($db->tableIsEmpty('section')) {
 				$section = null;
-				$section->name = $i18n['home'];
+				$section->name = gt('Home');
 				$section->public = 1;
 				$section->active = 1;
 				$section->rank = 0;

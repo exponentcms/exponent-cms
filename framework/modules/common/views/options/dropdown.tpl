@@ -25,7 +25,7 @@
 
 {*script unique="optionselector"}
 {literal}
-YUI({base:EXPONENT.URL_FULL+'external/lissa/3.0.0/build/'}).use('*',function(Y) {
+YUI(EXPONENT.YUI3_CONFIG).use('node',function(Y) {
     
     Y.on('domready',function(){
     

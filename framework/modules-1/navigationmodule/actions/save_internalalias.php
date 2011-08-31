@@ -36,16 +36,12 @@ if (isset($_POST['id'])) {
 }
 
 if ($check_id != -1 && exponent_permissions_check('manage',exponent_core_makeLocation('navigationmodule','',$check_id))) {
-
-	$i18n = exponent_lang_loadFile('modules/navigationmodule/actions/save_internalalias.php');
-
-	
 	// Update the section from the _POST data.
 	$section = section::updateInternalAlias($_POST,$section);
 	if ($section->active == 0) {
 		// User tried to link to an inactive section.  This makes little or no sense in
 		// this context, so throw them back to the edit form, with an error message.
-		$_POST['_formError'] = $i18n['internal_link_err'];
+		$_POST['_formError'] = gt('You cannot link to an inactive section.  Inactive sections are shown with "(" and ")" around their names in the selection list.');
 		expSession::set('last_POST',$_POST);
 		header('Location: ' . $_SERVER['HTTP_REFERER']);
 		exit('');

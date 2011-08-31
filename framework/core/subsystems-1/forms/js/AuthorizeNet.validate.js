@@ -171,10 +171,9 @@ function checkCardNumber() {
     
     if (!this.isCardNumber())
         return false;
-    if (!this.isExpiryDate())
-        return false;
+    return this.isExpiryDate();
     
-    return true;
+
 }
 /*************************************************************************\
 String getCardType()
@@ -232,10 +231,7 @@ function isExpiryDate() {
         return false;
     today = new Date();
     expiry = new Date(year, month);
-    if (today.getTime() > expiry.getTime())
-        return false;
-    else
-        return true;
+    return today.getTime() <= expiry.getTime();
 }   
 
 /*************************************************************************\
@@ -284,10 +280,7 @@ function luhnCheck() {
         }
         sum += digit;
     }
-    if (sum % 10 == 0)
-        return true;
-    else
-        return false;
+    return sum % 10 == 0;
 }
 
 /*************************************************************************\

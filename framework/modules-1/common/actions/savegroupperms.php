@@ -24,7 +24,6 @@ if (exponent_permissions_check('administrate',$loc)) {
 
  	//$groups = explode(';',$_POST['permdata']);
     
-//	if (!defined('SYS_USERS')) include_once(BASE.'framework/core/subsystems-1/users.php');
 	include_once(BASE.'framework/core/subsystems-1/users.php');
 
 	$locarray = array();
@@ -37,7 +36,7 @@ if (exponent_permissions_check('administrate',$loc)) {
 	} else {
 		$locarray[] = $loc;
 	}
-	$groups = exponent_users_getAllGroups();
+	$groups = user::getAllGroups();
 	foreach ($locarray as $location) {
 		foreach ($groups as $g) {
 			exponent_permissions_revokeAllGroup($g,$location);

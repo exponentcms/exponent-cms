@@ -23,18 +23,18 @@
 	
 <div class="module calendar cal-admin"> 
 	<div class="module-actions">
-		<a class="monthviewlink" href="{link action=viewmonth time=$time}">{$_TR.calendar_view}</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a class="listviewlink" href="{link _common=1 view='Monthly List' action='show_view' time=$time}">{$_TR.list_view}</a>
-		&nbsp;&nbsp;|&nbsp;&nbsp;<span class="adminviewlink">{$_TR.administration_view}</span>
+		<a class="monthviewlink" href="{link action=viewmonth time=$time}">{'Calendar View'|gettext}</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a class="listviewlink" href="{link _common=1 view='Monthly List' action='show_view' time=$time}">{'List View'|gettext}</a>
+		&nbsp;&nbsp;|&nbsp;&nbsp;<span class="adminviewlink">{'Administration View'|gettext}</span>
 		&nbsp;&nbsp;|&nbsp;&nbsp;
-		{printer_friendly_link class="printer-friendly-link" text=$_TR.printer_friendly}
+		{printer_friendly_link class="printer-friendly-link" text='Printer-friendly'|gettext}
 		{br}
-		<a class="listviewlink" href="{link _common=1 view='Past Events' action='show_view' time=$time}">{$_TR.past_events}</a>{br}
+		<a class="listviewlink" href="{link _common=1 view='Past Events' action='show_view' time=$time}">{'Past Events View'|gettext}</a>{br}
 	</div>
 	<h2>
 		{if $enable_ical == true}
-			<a class="icallink module-actions" href="{link action=ical}" title="{$_TR.alt_ical}" alt="{$_TR.alt_ical}">{$_TR.ical}</a>
+			<a class="icallink module-actions" href="{link action=ical}" title="{'iCalendar Feed'|gettext}" alt="{'iCalendar Feed'|gettext}"></a>
 		{/if}
-		{if $moduletitle != ""}{$moduletitle} - {$_TR.administration_view}{/if}
+		{if $moduletitle != ""}{$moduletitle} - {'Administration View'}{/if}
 	</h2>
 	{permissions}
 		<div class="module-actions">
@@ -47,8 +47,8 @@
 		<thead>
 			<tr>
 				<strong><em>
-				<th class="header calendarcontentheader">{$_TR.event_title}</th>
-				<th class="header calendarcontentheader">{$_TR.when}</th>
+				<th class="header calendarcontentheader">{'Event Title'|gettext}</th>
+				<th class="header calendarcontentheader">{'When'|gettext}</th>
 				<th class="header calendarcontentheader">&nbsp;</th>
 				</em></strong>
 			 </tr>
@@ -86,7 +86,7 @@
 				</td>
 			</tr>
 		{foreachelse}
-			<tr><td colspan="2" align="center"><i>{$_TR.no_events}</a></td></tr>
+			<tr><td colspan="2" align="center"><i>{'No Events'|gettext}</a></td></tr>
 		{/foreach}
 		</tbody>
 	</table>

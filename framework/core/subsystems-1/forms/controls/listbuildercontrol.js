@@ -1,12 +1,16 @@
 var newList = new Array();
 
-function addSelectedItem(name) {
+function addSelectedItem(name, process) {
 	var key;
 	var srccontrol = document.getElementById("source_"+name);
 	
 	//if (!newList[name]) {
 	if (srccontrol.type == 'select-one') {
-		key = moveItem(name,"source_","dest_");
+		if (process == 'copy') {
+			key = moveItem(name,"source_","dest_", "copyonly");
+		} else {
+			key = moveItem(name,"source_","dest_");
+		}
 	} else {
 		var sText = document.getElementById("source_" + name).value;
 		var ptChoices = document.getElementById("dest_" + name);
@@ -26,14 +30,18 @@ function addSelectedItem(name) {
 	dataElem.value = arr.join("|!|");
 }
 
-function removeSelectedItem(name) {
+function removeSelectedItem(name, process) {
 	var key;
 	var ptChoices = document.getElementById("dest_" + name);
 	if (ptChoices.selectedIndex >= 0) {
 		var srccontrol = document.getElementById("source_"+name);
 		if (srccontrol.type == 'select-one') {		
 		//if (!newList[name]) {
-			key = moveItem(name,"dest_","source_");
+			if (process == 'copy') {
+				key = moveItem(name,"dest_","source_", "copyonly");
+			} else {
+				key = moveItem(name,"dest_","source_");
+			}
 		} else {
 			key = ptChoices.options[ptChoices.selectedIndex].text;
 			ptChoices.remove(ptChoices.selectedIndex);
@@ -51,18 +59,35 @@ function removeSelectedItem(name) {
 	}
 }
 
-function moveItem(name,from,to) {
+function moveItem(name,from,to, process) {
+
 	var g_src = document.getElementById(from+name);
 	var g_dst = document.getElementById(to+name);
+	var i=0;
+
 	
 	if (g_src.selectedIndex < 0) return;
 	
 	var key = g_src.options[g_src.selectedIndex].value;
 	var value = g_src.options[g_src.selectedIndex].text;
 	
+	if(process == "copyonly" && from == "dest_") {
+		g_src.options[g_src.selectedIndex] = null;
+		return;
+	}
+	
+	for (i = 0;i < g_dst.length; i++) {
+		// alert(g_dst.options[i].value);
+		// alert(value);
+		if (g_dst.options[i].value == key) {
+			return;
+		}
+	}
+	
 	g_dst.options[g_dst.options.length] = new Option(value,key,false,true);
 	
-	g_src.options[g_src.selectedIndex] = null;
-	
+	if (process != "copyonly") {
+		g_src.options[g_src.selectedIndex] = null;
+	}
 	return key;
 }

@@ -33,8 +33,4 @@ Next, we'll <a href=\"http://docs.exponentcms.org/docs/current/install-tables\" 
 "); ?>
 </p>
 <a class="awesome large green" href="?page=upgrade-2"><?php echo gt("Continue to Install Tables"); ?></a>
-<?php //echo gt("
-//Next, we'll run through any upgrade scripts needed to bring your code and database up to date.
-//"); ?>
-<!--</p>-->
-<!--<a class="awesome large green" href="?page=upgrade-3">--><?php //echo gt('Continue Upgrade') ?><!--</a>-->
+<?php

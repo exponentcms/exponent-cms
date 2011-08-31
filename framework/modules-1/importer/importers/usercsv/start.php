@@ -20,10 +20,7 @@
 
 if (!defined('EXPONENT')) exit('');
 
-//if (!defined("SYS_FORMS")) require_once(BASE."framework/core/subsystems-1/forms.php");
-//if (!defined("SYS_FILES")) require_once(BASE."framework/core/subsystems-1/files.php");
 require_once(BASE."framework/core/subsystems-1/forms.php");
-//require_once(BASE."framework/core/subsystems-1/files.php");
 
 $template = New template("importer", "_usercsv_form_start");
 
@@ -31,11 +28,7 @@ if (expFile::canCreate(BASE."framework/modules-1/importer/importers/usercsv/tmp/
 	$template->assign("error", "The modules/importer/importers/usercsv/tmp directory is not writable.  Please contact your administrator.");
 	$template->output();
 }else{
-	//initialize the for stuff
-//	exponent_forms_initialize();
-	
-	$i18n = exponent_lang_loadFile('modules/importer/importers/usercsv/start.php');
-	
+
 	//Setup the mete data (hidden values)
 	$form = new form();
 	$form->meta("module","importer");
@@ -45,16 +38,16 @@ if (expFile::canCreate(BASE."framework/modules-1/importer/importers/usercsv/tmp/
 
 	//Setup the arrays with the name/value pairs for the dropdown menus
 	$delimiterArray = Array(
-		','=>$i18n['comma'],
-		';'=>$i18n['semicolon'],
-		':'=>$i18n['colon'],
-		' '=>$i18n['space']);
+		','=>gt('Comma'),
+		';'=>gt('Semicolon'),
+		':'=>gt('Colon'),
+		' '=>gt('Space'));
 
 	//Register the dropdown menus
-	$form->register("delimiter", $i18n['delimiter'], New dropdowncontrol(",", $delimiterArray));
-	$form->register("upload", $i18n['upload'], New uploadcontrol());
-	$form->register("rowstart", $i18n['rowstart'], New textcontrol("1",1,0,6));
-	$form->register("submit", "", New buttongroupcontrol($i18n['submit'],"", $i18n['cancel']));
+	$form->register("delimiter", gt('Delimiter Character'), New dropdowncontrol(",", $delimiterArray));
+	$form->register("upload", gt('CSV File to Upload'), New uploadcontrol());
+	$form->register("rowstart", gt('Row to Begin at'), New textcontrol("1",1,0,6));
+	$form->register("submit", "", New buttongroupcontrol(gt('Next'),"", gt('Cancel')));
 	$template->assign("form_html",$form->tohtml());
 	$template->output();
 }

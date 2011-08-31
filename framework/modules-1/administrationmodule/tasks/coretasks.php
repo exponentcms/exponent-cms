@@ -19,56 +19,54 @@
 
 if (!defined('EXPONENT')) exit('');
 
-$i18n = exponent_lang_loadFile('modules/administrationmodule/tasks/coretasks.php');
-
 $stuff = array(
-	$i18n['user_management']=>array(
+	gt('User Management')=>array(
 		'useraccounts'=>array(
-			'title'=>$i18n['user_accounts'],
+			'title'=>gt('User Accounts'),
 			'module'=>'administrationmodule',
 			'action'=>'useraccounts',
 			'icon'=>ICON_RELATIVE."userperms.png"),
 		'usersessions'=>array(
-			'title'=>$i18n['user_sessions'],
+			'title'=>gt('User Sessions'),
 			'module'=>'administrationmodule',
 			'action'=>'usersessions'),
 		'groupaccounts'=>array(
-			'title'=>$i18n['group_accounts'],
+			'title'=>gt('Group Accounts'),
 			'module'=>'administrationmodule',
 			'action'=>'groupaccounts',
 			'icon'=>ICON_RELATIVE."groupperms.png"),
 		'profiledefinitions'=>array(
-			'title'=>$i18n['profile_definitions'],
+			'title'=>gt('Profile Extensions'),
 			'module'=>'userprofilemodule',
 			'action'=>'index'),
 		'icon'=>ICON_RELATIVE."admin/users.png"
 	),
-	$i18n['extensions']=>array(
+	gt('Extensions')=>array(
 		'managemodules'=>array(
-			'title'=>$i18n['manage_modules'],
+			'title'=>gt('Manage Modules'),
 			'module'=>'administrationmodule',
 			'action'=>'managemodules',
 			'icon'=>ICON_RELATIVE."modules.jpg"),
 		'managethemes'=>array(
-			'title'=>$i18n['manage_themes'],
+			'title'=>gt('Manage Themes'),
 			'module'=>'administrationmodule',
 			'action'=>'managethemes'),
 		'tags'=>array(
-			'title'=>$i18n['manage_tags'],
+			'title'=>gt('Manage Tags'),
 			'module'=>'expTag',
 			'action'=>'manage'),
 			//'module'=>'expTagCollection',
 			//'action'=>'showall'),
 		'wizards'=>array(
-			'title'=>$i18n['manage_wizards'],
+			'title'=>gt('Manage Wizards'),
 			'module'=>'wizardmodule',
 			'action'=>'manage_wizards'),
-		'managesubsystems'=>array(
-			'title'=>$i18n['manage_subsystems'],
-			'module'=>'administrationmodule',
-			'action'=>'managesubsystems'),
+//		'managesubsystems'=>array(
+//			'title'=>gt('Subsystems'),
+//			'module'=>'administrationmodule',
+//			'action'=>'managesubsystems'),
 		'upload_extension'=>array(
-			'title'=>$i18n['upload_extension'],
+			'title'=>gt('Upload New Extension'),
 			'module'=>'administrationmodule',
 			'action'=>'upload_extension'),
 			'icon'=>ICON_RELATIVE."admin/extensions.png",
@@ -78,83 +76,83 @@ $stuff = array(
 		 	'action'=>'manage_bots'),
 		   
 	),
-	$i18n['database']=>array(
+	gt('Database')=>array(
 		'orphanedcontent'=>array(
-			'title'=>$i18n['archived_modules'],
+			'title'=>gt('Archived Modules'),
 			'module'=>'administrationmodule',
 			'action'=>'orphanedcontent'),
 		'installdatabase'=>array(
-			'title'=>$i18n['install_tables'],
+			'title'=>gt('Install Tables'),
 			'module'=>'administrationmodule',
 			'action'=>'installtables'),
 		'trimdatabase'=>array(
-			'title'=>$i18n['trim_database'],
+			'title'=>gt('Trim Database'),
 			'module'=>'administrationmodule',
 			'action'=>'trimdatabase'),
 		'optimizedatabase'=>array(
-			'title'=>$i18n['optimize_database'],
+			'title'=>gt('Optimize Database'),
 			'module'=>'administrationmodule',
 			'action'=>'optimizedatabase'),
 		'import'=>array(
-			'title'=>$i18n['import_data'],
+			'title'=>gt('Import Data'),
 			'module'=>'importer',
 			'action'=>'list_importers'),
 		'export'=>array(
-			'title'=>$i18n['export_data'],
+			'title'=>gt('Export Data'),
 			'module'=>'exporter',
 			'action'=>'list_exporters'),
 		'icon'=>ICON_RELATIVE."admin/database.png",
 	),
-	$i18n['configuration']=>array(
+	gt('Configuration')=>array(
 		'configuresite'=>array(
-			'title'=>$i18n['configure_site'],
+			'title'=>gt('Configure Site'),
 			'module'=>'administrationmodule',
 			'action'=>'configuresite',
 			'icon'=>ICON_RELATIVE."configure.png"),
 		'mimetypes'=>array(
-			'title'=>$i18n['file_types'],
+			'title'=>gt('File Types'),
 			'module'=>'filemanager',
 			'action'=>'admin_mimetypes',
 			'icon'=>ICON_RELATIVE."filetypes.png"),
 		'manage_policies'=>array(
-			'title'=>$i18n['workflow_policies'],
+			'title'=>gt('Workflow Policies'),
 			'module'=>'workflow',
 			'action'=>'admin_manage_policies',
 			'icon'=>ICON_RELATIVE."workflow.png"),
 		'sysinfo'=>array(
-			'title'=>$i18n['system_info'],
+			'title'=>gt('System Info'),
 			'module'=>'administrationmodule',
 			'action'=>'sysinfo',
 			'icon'=>ICON_RELATIVE."system-info.png"),
 		'icon'=>ICON_RELATIVE."admin/config.png",
 	),
-	$i18n['development']=>array(
-                'toggledev'=>array(
-                        'title'=>$i18n['toggle_dev'],
-                        'module'=>'administrationmodule',
-                        'action'=>'toggle_dev',
-                        'icon'=>ICON_RELATIVE."filetypes.png"),
-                'rebuildcss'=>array(
-                        'title'=>$i18n['rebuild_css'],
-                        'module'=>'administrationmodule',
-                        'action'=>'remove_css',
-                        'icon'=>ICON_RELATIVE."configure.png"),
-                'clearsmarty'=>array(
-                        'title'=>$i18n['clear_smarty'],
-                        'module'=>'administrationmodule',
-                        'action'=>'clear_smarty_cache',
-                        'icon'=>ICON_RELATIVE."filetypes.png"),
-                'maintmode'=>array(
-                        'title'=>$i18n['toggle_maint'],
-                        'module'=>'administrationmodule',
-                        'action'=>'toggle_maintenance',
-                        'icon'=>ICON_RELATIVE."filetypes.png"),
-                'icon'=>ICON_RELATIVE."admin/developer.png",
-        ),
+	gt('Development')=>array(
+		'toggledev'=>array(
+				'title'=>(DEVELOPMENT == 0) ? gt('Turn Error Reporting On') : gt('Turn Error Reporting Off'),
+				'module'=>'administrationmodule',
+				'action'=>'toggle_dev',
+				'icon'=>ICON_RELATIVE."filetypes.png"),
+		'rebuildcss'=>array(
+				'title'=>gt('Rebuild CSS File'),
+				'module'=>'administrationmodule',
+				'action'=>'remove_css',
+				'icon'=>ICON_RELATIVE."configure.png"),
+		'clearsmarty'=>array(
+				'title'=>gt('Clear Smarty Cache'),
+				'module'=>'administrationmodule',
+				'action'=>'clear_smarty_cache',
+				'icon'=>ICON_RELATIVE."filetypes.png"),
+		'maintmode'=>array(
+				'title'=>(MAINTENANCE_MODE == 0) ? gt('Turn Maintenance Mode On') : gt('Turn Maintenance Mode Off'),
+				'module'=>'administrationmodule',
+				'action'=>'toggle_maintenance',
+				'icon'=>ICON_RELATIVE."filetypes.png"),
+		'icon'=>ICON_RELATIVE."admin/developer.png",
+	),
 );
 global $user;
 if (!isset($user) || (isset($user->is_admin) && $user->is_admin == 0) ) {
- unset($stuff[$i18n['database']]['import']);
+ unset($stuff[gt('Database')]['import']);
 }
 return $stuff;
 

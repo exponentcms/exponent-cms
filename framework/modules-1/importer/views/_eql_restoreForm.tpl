@@ -13,6 +13,11 @@
  * GPL: http://www.gnu.org/licenses/gpl.txt
  *
  *}
-<div class="form_title">{$_TR.form_title}</div>
-<div class="form_header">{$_TR.form_header}</div>
-{$form_html}
+
+<div class="importer eql-restoreform">
+	<div class="form_header">
+		<h2>{'Restore Database from Archive'|gettext}</h2>
+		<p>{'This form lets you upload a database backup (in EQL format) to the server.  Doing so will restore the database table to the state stored in that backup file.'|gettext}</p>
+	</div>
+	{$form_html}
+</div>

@@ -20,8 +20,8 @@
 function smarty_function_editorinclude($params,&$smarty) {
 	if (file_exists(BASE.'themes/'.DISPLAY_THEME.'/editors/'.$params['filename'])) {
         echo ( URL_FULL.'themes/'.DISPLAY_THEME.'/editors/'.$params['filename'] );
-    } elseif (file_exists(BASE.'themes/common/editors/'.$params['filename'])) {
-        echo ( URL_FULL.'themes/common/editors/'.$params['filename'] );
+    } elseif (file_exists(BASE.'external/editors/'.$params['filename'])) {
+        echo ( URL_FULL.'external/editors/'.$params['filename'] );
     } else {
         echo ($params['filename']);
     }

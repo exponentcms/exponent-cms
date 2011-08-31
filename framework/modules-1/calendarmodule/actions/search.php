@@ -38,7 +38,6 @@ expHistory::flowSet(SYS_FLOW_PUBLIC,SYS_FLOW_ACTION);
 
 $template = new template("calendarmodule","_search",$loc,false);
 $time = (isset($_GET['time']) ? $_GET['time'] : time());
-//if (!defined("SYS_DATETIME")) include_once(BASE."framework/core/subsystems-1/datetime.php");
 include_once(BASE."framework/core/subsystems-1/datetime.php");
 if (isset($_GET['categoryid'])) $xsearch = " AND category_id='" . $_GET['categoryid'] ."'";
 //$o = $db->selectObjects("calendar","title='".mysql_escape_string(trim($_GET['title']))."'" . $xsearch);

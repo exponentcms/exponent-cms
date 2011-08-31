@@ -20,11 +20,7 @@
 
 if (!defined('EXPONENT')) exit('');
 
-$i18n = exponent_lang_loadFile('modules/formbuilder/actions/save_control.php');
-
-//if (!defined('SYS_FORMS')) include_once(BASE.'framework/core/subsystems-1/forms.php');
 include_once(BASE.'framework/core/subsystems-1/forms.php');
-//exponent_forms_initialize();
 $f = $db->selectObject('formbuilder_form','id='.intval($_POST['form_id']));
 if ($f) {
 	if (exponent_permissions_check('editform',unserialize($f->location_data))) {	
@@ -57,12 +53,12 @@ if ($f) {
 			$name = substr(preg_replace('/[^A-Za-z0-9]/','_',$ctl->identifier),0,20);
 			if (!isset($_POST['id']) && $db->countObjects('formbuilder_control',"name='".$name."' and form_id=".intval($_POST['form_id'])) > 0) {
 				$post = $_POST;
-				$post['_formError'] = $i18n['bad_id'];
+				$post['_formError'] = gt('Identifier must be unique.');
 				expSession::set('last_POST',$post);
 			} 
 			elseif ($name=='id' || $name=='ip' || $name=='user_id' || $name=='timestamp') {
 				$post = $_POST;
-				$post['_formError'] = sprintf($i18n['reserved_id'],$name);
+				$post['_formError'] = sprintf(gt('Identifier cannot be "%s".'),$name);
 				expSession::set('last_POST',$post);
 			} else {
 				if (!isset($_POST['id'])) {

@@ -56,16 +56,16 @@
         {if $module->active == 1}{assign var=active value=active}{else}{assign var=active value=inactive}{/if}
         <div class="moduleitem {cycle values='odd,even'} {$active}">
             <h2>{$module->name} </h2>
-            <h3>{$_TR.by} {$module->author}</h3>
-            <!-- a href="{link module=info action=showfiles type=$smarty.const.CORE_EXT_MODULE name=$module->class}">{$_TR.view_files}</a>
-            <a href="{link action=examplecontent name=$module->class}">{$_TR.example_content}</a -->
+            <h3>{'by'|gettext} {$module->author}</h3>
+            <!-- a href="{link module=info action=showfiles type=$smarty.const.CORE_EXT_MODULE name=$module->class}">{'View Files'|gettext}</a>
+            <a href="{link action=examplecontent name=$module->class}">{'Manage Example Content'|gettext}</a -->
             <p>
             {$module->description}
             </p>
             {if $module->active == 1}
-                <a class="activation" title="{$_TR.deactivate_reason}" href="{link action=modmgr_activate mod=$module->class activate=0}">{$_TR.deactivate}</a>
+                <a class="activation" title="{'This will keep people from creating new ones.'|gettext}" href="{link action=modmgr_activate mod=$module->class activate=0}">{'Deactivate Module'|gettext}</a>
             {else}
-                <a class="activation" title="{$_TR.activate_reason}" href="{link action=modmgr_activate mod=$module->class activate=1}">{$_TR.activate}</a>
+                <a class="activation" title="{'This will make it available to the Container module.'|gettext}" href="{link action=modmgr_activate mod=$module->class activate=1}">{'Activate Module'|gettext}</a>
             {/if}
         </div>
         {/foreach}

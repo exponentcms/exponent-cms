@@ -22,7 +22,11 @@ if (!defined('EXPONENT'))
 global $user, $db;
 
 $my_version = EXPONENT_VERSION_MAJOR.".".EXPONENT_VERSION_MINOR.".".EXPONENT_VERSION_REVISION;
-$my_type = EXPONENT_VERSION_TYPE.EXPONENT_VERSION_ITERATION;
+if (EXPONENT_VERSION_TYPE != '') {
+	$my_type = gt("Release level")." : ".EXPONENT_VERSION_TYPE.EXPONENT_VERSION_ITERATION."<br />";
+} else {
+	$my_type = '';
+}
 
 $script = "
     var reportbugwindow = function (){
@@ -35,7 +39,6 @@ $script = "
 
     YAHOO.util.Event.on('reportabug','click',reportbugwindow);
 ";
-//exponent_javascript_toFoot('zreportabug', '', null, $script);
 expJavascript::pushToFoot(array(
     "unique"=>'zreportabug',
     "yui2mods"=>'',
@@ -59,7 +62,7 @@ if ($user->isAdmin()) {
 						'itemdata'=>array(
 							array(
 								'classname' => 'moreinfo',
-								'text'=>gt("Exponent Version")." : ".$my_version."<br />".gt("Release level")." : ".$my_type."<br />".gt("Release date")." : ".date("F-d-Y",EXPONENT_VERSION_BUILDDATE)."<br />".gt("PHP Version")." : ".phpversion(),"disabled"=>true
+								'text'=>gt("Exponent Version")." : ".$my_version."<br />".$my_type.gt("Release date")." : ".date("F-d-Y",EXPONENT_VERSION_BUILDDATE)."<br />".gt("PHP Version")." : ".phpversion(),"disabled"=>true
 							),
 							array(
 								'text' => gt("Report a bug"),
@@ -232,18 +235,18 @@ if ($user->isSuperAdmin()) {
                                     'action' => 'install_tables'
                                 ))
                             ),
-                            // array(
-                            // 'text'=>gt('Import Data'),
-                            // 'url'=>makeLink(array('module'=>'importer','action'=>'list_importers')),
-                            // ),
-                            // array(
-                            // 'text'=>gt('Export Data'),
-                            // 'url'=>makeLink(array('module'=>'exporter','action'=>'list_exporters')),
-                            // ),
-                            // array(
-                            // 'text'=>gt('Archived Modules'),
-                            // 'url'=>makeLink(array('module'=>'administrationmodule','action'=>'orphanedcontent')),
-                            // ),
+                             array(
+                             'text'=>gt('Import Data'),
+                             'url'=>makeLink(array('module'=>'importer','action'=>'list_importers')),
+                             ),
+                             array(
+                             'text'=>gt('Export Data'),
+                             'url'=>makeLink(array('module'=>'exporter','action'=>'list_exporters')),
+                             ),
+//                             array(
+//                             'text'=>gt('Archived Modules'),
+//                             'url'=>makeLink(array('module'=>'administrationmodule','action'=>'orphanedcontent')),
+//                             ),
                             array(
                                 'text' => gt('Optimize Database'),
                                 'url' => makeLink(array(

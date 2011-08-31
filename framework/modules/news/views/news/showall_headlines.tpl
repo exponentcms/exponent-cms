@@ -45,7 +45,7 @@
             </a>
             
             {if !$config.hidedate}
-                <span class="date">{$item->publish_date|format_date}</span>
+                <em class="date">{$item->publish_date|format_date}</em>
             {/if}
             
             {if $item->isRss != true}

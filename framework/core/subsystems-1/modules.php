@@ -47,7 +47,7 @@ function exponent_modules_initialize() {
  * Returns the list of module class names.
  * @node Subsystems:Modules
  */
-function exponent_modules_list() {
+function exponent_modules_list() { //FIXME already in expModules
 	$mods = array();
 	if (is_readable(BASE."framework/modules-1")) {
 		$dh = opendir(BASE."framework/modules-1");
@@ -86,7 +86,7 @@ function exponent_modules_listActive() {
  */
 function exponent_modules_getJSValidationFile($module,$formname) {
 	if (is_readable(BASE."themes/".DISPLAY_THEME."/modules/$module/js/$formname.validate.js")) return PATH_RELATIVE . "themes/".DISPLAY_THEME."/modules/$module/js/$formname.validate.js";
-	else if (is_readable(BASE."framework/modules-1/$module/js/$formname.validate.js")) return PATH_RELATIVE."framework/modules-1/$module/js/$formname.validate.js";
+	else if (is_readable(BASE."framework/modules-1/$module/assets/js/$formname.validate.js")) return PATH_RELATIVE."framework/modules-1/$module/assets/js/$formname.validate.js";
 	return "";
 }
 
@@ -116,9 +116,6 @@ function exponent_modules_moduleManagerFormTemplate($template) {
 			$moduleInfo[$module]->active = ($modstate != null ? $modstate->active : 0);
 		}
 	}
-//	if (!defined('SYS_SORTING')) include_once(BASE.'framework/core/subsystems-1/sorting.php');
-//	include_once(BASE.'framework/core/subsystems-1/sorting.php');
-//	uasort($moduleInfo,"exponent_sorting_byNameAscending");
 	$moduleInfo = expSorter::sort(array('array'=>$moduleInfo,'sortby'=>'name', 'order'=>'ASC', 'ignore_case'=>true, 'type'=>'a'));
 
 	$template->assign("modules",$moduleInfo);

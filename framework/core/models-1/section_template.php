@@ -20,12 +20,7 @@
 
 class section_template {
 	static function form($object = null) {
-		$i18n = exponent_lang_loadFile('datatypes/section_template.php');
-	
-//		if (!defined('SYS_FORMS')) require_once(BASE.'framework/core/subsystems-1/forms.php');
 		require_once(BASE.'framework/core/subsystems-1/forms.php');
-//		exponent_forms_initialize();
-		
 		$form = new form();
 		if (!isset($object->id)) {
 			$object->name = '';
@@ -43,37 +38,34 @@ class section_template {
 			$form->meta('id',$object->id);
 		}
 		$form->meta('parent',$object->parent);
-		$form->register('name',$i18n['name'],new textcontrol($object->name));
+		$form->register('name',gt('Name'),new textcontrol($object->name));
 		
 		if (!isset($object->id) && $object->parent != 0) { // Add the 'Add' drop down if not a top level
 			global $db;
 			$sections = $db->selectObjects('section_template','parent='.$object->parent);
 			
 			if (count($sections)) {
-//				if (!defined('SYS_SORTING')) require_once(BASE.'framework/core/subsystems-1/sorting.php');
-//				require_once(BASE.'framework/core/subsystems-1/sorting.php');
-//				usort($sections,'exponent_sorting_byRankAscending');
 				$sections = expSorter::sort(array('array'=>$sections,'sortby'=>'rank', 'order'=>'ASC'));
 
-				$dd = array($i18n['position_top']);
-				foreach ($sections as $s) $dd[] = sprintf($i18n['position_after'],$s->name);
+				$dd = array(gt('At the Top'));
+				foreach ($sections as $s) $dd[] = sprintf(gt('After "%s"'),$s->name);
 				
-				$form->register('rank',$i18n['rank'],new dropdowncontrol(count($dd)-1,$dd));
+				$form->register('rank',gt('Position'),new dropdowncontrol(count($dd)-1,$dd));
 			} else $form->meta('rank',0);
 		} else $form->meta('rank',0);
 		
 		if (is_readable(THEME_ABSOLUTE.'subthemes')) { // grab sub themes
-			$form->register('subtheme',$i18n['subtheme'],new dropdowncontrol($object->subtheme,expTheme::getSubThemes()));
+			$form->register('subtheme',gt('Theme Variation'),new dropdowncontrol($object->subtheme,expTheme::getSubThemes()));
 		}
 		
-		$form->register('active',$i18n['active'],new checkboxcontrol($object->active));
-		$form->register('public',$i18n['public'],new checkboxcontrol($object->public));
+		$form->register('active',gt('Active'),new checkboxcontrol($object->active));
+		$form->register('public',gt('Public'),new checkboxcontrol($object->public));
 		// Register the Page Meta Data controls.
-		$form->register('page_title',$i18n['page_title'],new textcontrol($object->page_title));
-		$form->register('keywords',$i18n['keywords'],new texteditorcontrol($object->keywords,5,25));
-		$form->register('description',$i18n['description'],new texteditorcontrol($object->keywords,5,25));
+		$form->register('page_title',gt('Page Title'),new textcontrol($object->page_title));
+		$form->register('keywords',gt('keywords'),new texteditorcontrol($object->keywords,5,25));
+		$form->register('description',gt('Page Description'),new texteditorcontrol($object->keywords,5,25));
 		
-		$form->register('submit','',new buttongroupcontrol($i18n['save'],'',$i18n['cancel']));
+		$form->register('submit','',new buttongroupcontrol(gt('Save'),'',gt('Cancel')));
 		return $form;
 	}
 	

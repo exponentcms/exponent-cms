@@ -42,7 +42,7 @@ class expLDAP {
 		$search_context = empty($context) ? LDAP_BASE_DN : $context;
 
 		// look up the LDAP user object
-		$results = @ldap_search($this->connection,$seach_context, "cn=".$username);
+		$results = @ldap_search($this->connection,$search_context, "cn=".$username);
 		$info = @ldap_get_entries($this->connection, $results);
 
 		return ($info['count'] > 0) ? $info[0] : array();

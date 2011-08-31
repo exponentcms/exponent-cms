@@ -20,7 +20,6 @@
 
 //Sanity Check
 if (!defined('EXPONENT')) exit('');
-//if (!defined("SYS_USERS")) require_once(BASE."framework/core/subsystems-1/users.php");
 require_once(BASE."framework/core/subsystems-1/users.php");
 
 
@@ -124,13 +123,13 @@ if ($linenum >= $post["rowstart"]){
 		$userinfo->password = md5($userinfo->clearpassword);
 
 		$suffix = "";
-		while (exponent_users_getUserByName($userinfo->username.$suffix) != null) {//username already exists
+		while (user::getUserByName($userinfo->username.$suffix) != null) {//username already exists
 			if (isset($_POST["update"]) == 1 ) {
 				if (in_array($userinfo->username, $usersdone)) {
 					$suffix = rand(100,999);
 					$userinfo->changed = 1;	
 				}else{
-					$tmp = exponent_users_getUserByName($userinfo->username.$suffix);
+					$tmp = user::getUserByName($userinfo->username.$suffix);
 					$userinfo->id = $tmp->id;
 					break;
 				}

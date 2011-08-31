@@ -24,20 +24,18 @@ if (!defined('EXPONENT')) exit('');
 
 if (exponent_permissions_check('extensions',exponent_core_makeLocation('administrationmodule'))) {
 	
-	$i18n = exponent_lang_loadFile('modules/administrationmodule/actions/install_extension.php');
-		
 	if ($_FILES['mod_archive']['error'] != UPLOAD_ERR_OK) {
 		
 		switch($_FILES['mod_archive']['error']) {
 			case UPLOAD_ERR_INI_SIZE:
 			case UPLOAD_ERR_FORM_SIZE:
-				echo $i18n['file_too_large'].'<br />';
+				echo gt('The file you uploaded exceeded the size limits for the server.').'<br />';
 				break;
 			case UPLOAD_ERR_PARTIAL:
-				echo $i18n['partial_file'].'<br />';
+				echo gt('The file you uploaded was only partially uploaded.').'<br />';
 				break;
 			case UPLOAD_ERR_NO_FILE:
-				echo $i18n['no_file'].'<br />';
+				echo gt('No file was uploaded.').'<br />';
 				break;
 		}
 	} else {
@@ -64,31 +62,31 @@ if (exponent_permissions_check('extensions',exponent_core_makeLocation('administ
 		}
 		
 		if ($ext == '') {
-			echo $i18n['bad_archive'].'<br />';
+			echo gt('Unknown archive format. Archives must either be regular ZIP files, TAR files, Gzipped Tarballs, or Bzipped Tarballs.').'<br />';
 		} else {
-//			if (!defined('SYS_FILES')) require_once(BASE.'framework/core/subsystems-1/files.php');
-//			require_once(BASE.'framework/core/subsystems-1/files.php');
-
 			// Look for stale sessid directories:
 			$sessid = session_id();
-			if (file_exists(BASE."extensionuploads/$sessid") && is_dir(BASE."extensionuploads/$sessid")) expFile::removeDirectory("extensionuploads/$sessid");
-			$return = expFile::makeDirectory("extensionuploads/$sessid");
+//			if (file_exists(BASE."extensionuploads/$sessid") && is_dir(BASE."extensionuploads/$sessid")) expFile::removeDirectory("extensionuploads/$sessid");
+			if (file_exists(BASE."tmp/extensionuploads/$sessid") && is_dir(BASE."tmp/extensionuploads/$sessid")) expFile::removeDirectory("tmp/extensionuploads/$sessid");
+//			$return = expFile::makeDirectory("extensionuploads/$sessid");
+			$return = expFile::makeDirectory("tmp/extensionuploads/$sessid");
 			if ($return != SYS_FILES_SUCCESS) {
 				switch ($return) {
 					case SYS_FILES_FOUNDFILE:
 					case SYS_FILES_FOUNDDIR:
-						echo $i18n['file_in_parh'].'<br />';
+						echo gt('Found a file in the directory path when creating the directory to store the files in.').'<br />';
 						break;
 					case SYS_FILES_NOTWRITABLE:
-						echo $i18n['dest_not_w'].'<br />';
+						echo gt('Destination parent is not writable.').'<br />';
 						break;
 					case SYS_FILES_NOTREADABLE:
-						echo $i18n['dest_not_r'].'<br />';
+						echo gt('Destination parent is not readable.').'<br />';
 						break;
 				}
 			}
 			
-			$dest = BASE."extensionuploads/$sessid/archive$ext";
+//			$dest = BASE."extensionuploads/$sessid/archive$ext";
+			$dest = BASE."tmp/extensionuploads/$sessid/archive$ext";
 			move_uploaded_file($_FILES['mod_archive']['tmp_name'],$dest);
 			
 			if ($compression != 'zip') {// If not zip, must be tar
@@ -99,7 +97,7 @@ if (exponent_permissions_check('extensions',exponent_core_makeLocation('administ
 				PEAR::setErrorHandling(PEAR_ERROR_PRINT);
 				$return = $tar->extract(dirname($dest));
 				if (!$return) {
-					echo '<br />'.$i18n['error_tar'].'<br />';
+					echo '<br />'.gt('Error extracting TAR archive').'<br />';
 				} else {
 					header('Location: ' . URL_FULL . 'index.php?module=administrationmodule&action=verify_extension&type=tar');
 				}
@@ -110,7 +108,7 @@ if (exponent_permissions_check('extensions',exponent_core_makeLocation('administ
 				
 				PEAR::setErrorHandling(PEAR_ERROR_PRINT);
 				if ($zip->extract(array('add_path'=>dirname($dest))) == 0) {
-					echo '<br />'.$i18n['error_zip'].':<br />';
+					echo '<br />'.gt('Error extracting ZIP archive').':<br />';
 					echo $zip->_error_code . ' : ' . $zip->_error_string . '<br />';
 				} else {
 					header('Location: ' . URL_FULL . 'index.php?module=administrationmodule&action=verify_extension&type=zip');

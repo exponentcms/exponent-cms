@@ -20,11 +20,7 @@
 
 if (!defined('EXPONENT')) exit('');
 
-//if (!defined('SYS_FORMS')) include_once(BASE.'framework/core/subsystems-1/forms.php');
 include_once(BASE.'framework/core/subsystems-1/forms.php');
-//exponent_forms_initialize();
-
-$i18n = exponent_lang_loadFile('modules/importer/importers/eql/start.php');
 
 $form = new form();
 $form->meta('module','importer');
@@ -32,8 +28,8 @@ $form->meta('action','page');
 $form->meta('importer','eql');
 $form->meta('page','process');
 
-$form->register('file',$i18n['file'],new uploadcontrol());
-$form->register('submit','',new buttongroupcontrol($i18n['restore'],'',''));
+$form->register('file',gt('EQL File'),new uploadcontrol());
+$form->register('submit','',new buttongroupcontrol(gt('Restore'),'',''));
 
 $template = new template('importer','_eql_restoreForm',$loc);
 $template->assign('form_html',$form->toHTML());

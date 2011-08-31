@@ -28,7 +28,6 @@ if (exponent_permissions_check('extensions',exponent_core_makeLocation('administ
 	if (isset($_GET['all'])) {
 		$db->delete('modstate');
 		$modstate->active = $_GET['activate'];
-//		if (!defined('SYS_MODULES')) require_once(BASE.'framework/core/subsystems-1/modules.php');
 		require_once(BASE.'framework/core/subsystems-1/modules.php');
 		foreach (expModules::exponent_modules_list() as $mod) {
 			$modstate->module = $mod;

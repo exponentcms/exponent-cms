@@ -18,9 +18,9 @@
 /** @define "BASE" "../../.." */
 
 class calendarmodule {
-	function name() { return exponent_lang_loadKey('modules/calendarmodule/class.php','module_name'); }
+	function name() { return 'Calendar'; }
 	function author() { return 'OIC Group, Inc'; }
-	function description() { return exponent_lang_loadKey('modules/calendarmodule/class.php','module_description'); }
+	function description() { return 'Allows posting of content to a calendar.'; }
 
 	function hasContent() { return true; }
 	function hasSources() { return true; }
@@ -49,7 +49,6 @@ class calendarmodule {
 		$locsql .= ')';
 							
 		if (!function_exists("exponent_datetime_startOfDayTimestamp")) {
-//			if (!defined("SYS_DATETIME")) include_once(BASE."framework/core/subsystems-1/datetime.php");
 			include_once(BASE."framework/core/subsystems-1/datetime.php");
 		}
 		$day = exponent_datetime_startOfDayTimestamp(time());
@@ -94,24 +93,22 @@ class calendarmodule {
 	}
 
 	function permissions($internal = '') {
-		$i18n = exponent_lang_loadFile('modules/calendarmodule/class.php');
-
 		if ($internal == '') {
 			return array(
-				'administrate'=>$i18n['perm_administrate'],
-				'configure'=>$i18n['perm_configure'],
-				'post'=>$i18n['perm_post'],
-				'edit'=>$i18n['perm_edit'],
-				'delete'=>$i18n['perm_delete'],
-				'approve'=>$i18n['perm_approve'],
-				'manage_approval'=>$i18n['perm_manage_approval'],
-				'manage_categories'=>$i18n['perm_manage_categories']
+				'administrate'=>gt('Administrate'),
+				'configure'=>gt('Configure'),
+				'post'=>gt('Create'),
+				'edit'=>gt('Edit'),
+				'delete'=>gt('Delete'),
+				'approve'=>gt('Approve'),
+				'manage_approval'=>gt('Manage Approval'),
+				'manage_categories'=>gt('Manage Categories')
 			);
 		} else {
 			return array(
-				'administrate'=>$i18n['perm_administrate'],
-				'edit'=>$i18n['perm_edit'],
-				'delete'=>$i18n['perm_delete']
+				'administrate'=>gt('Administrate'),
+				'edit'=>gt('Edit'),
+				'delete'=>gt('Delete')
 			);
 		}
 	}
@@ -124,8 +121,6 @@ class calendarmodule {
 	static function show($view,$loc = null, $title = '') {
 		global $user;
 		global $db;
-
-		$i18n = exponent_lang_loadFile('modules/calendarmodule/class.php');
 
 		$locsql = "(location_data='".serialize($loc)."'";
 		$config = $db->selectObject("calendarmodule_config","location_data='".serialize($loc)."'");
@@ -168,15 +163,7 @@ class calendarmodule {
 			$viewparams = array("type"=>"default");
 		}
 
-//		if (!defined("SYS_DATETIME")) include_once(BASE."framework/core/subsystems-1/datetime.php");
 		include_once(BASE."framework/core/subsystems-1/datetime.php");
-//		if (!defined('SYS_SORTING')) include_once(BASE.'framework/core/subsystems-1/sorting.php');
-//		include_once(BASE.'framework/core/subsystems-1/sorting.php');
-//		if (!function_exists("exponent_sorting_byEventStartAscending")) {
-//			function exponent_sorting_byEventStartAscending($a,$b) {
-//				return ($a->eventstart < $b->eventstart ? -1 : 1);
-//			}
-//		}
 		if ($viewparams['type'] == "minical") {
 			$monthly = exponent_datetime_monthlyDaysTimestamp($time);
 			$info = getdate($time);
@@ -262,7 +249,6 @@ class calendarmodule {
 						"delete"=>(exponent_permissions_check("delete",$thisloc) || exponent_permissions_check("delete",$loc))
 					);
 				}
-//				usort($days[$start],"exponent_sorting_byEventStartAscending");
 				$days[$start] = expSorter::sort(array('array'=>$days[$start],'sortby'=>'eventstart', 'order'=>'ASC'));
 			}
 			$template->assign("days",$days);
@@ -360,7 +346,6 @@ class calendarmodule {
 					"delete"=>(exponent_permissions_check("delete",$thisloc) || exponent_permissions_check("delete",$loc))
 				);
 			}
-//			usort($items,"exponent_sorting_byEventStartAscending");
 			$items = expSorter::sort(array('array'=>$items,'sortby'=>'eventstart', 'order'=>'ASC'));
 			$template->assign("items",$items);
 		} else if ($viewparams['type'] == "default") {
@@ -442,7 +427,7 @@ class calendarmodule {
 //		$cats = $db->selectObjectsIndexedArray("category","location_data='".serialize($loc)."'");
 		// $cats = $db->selectObjectsIndexedArray("category");
 		// $cats[0] = null;
-		// $cats[0]->name = '<i>'.$i18n['no_category'].'</i>';
+		// $cats[0]->name = '<i>'.gt('No category').'</i>';
 		// $cats[0]->color = "#000000";
 		// $template->assign("categories",$cats);
 
@@ -505,13 +490,8 @@ class calendarmodule {
 	function spiderContent($item = null) {
 		global $db;
 
-		$i18n = exponent_lang_loadFile('modules/calendarmodule/class.php');
-
-//		if (!defined('SYS_SEARCH')) include_once(BASE.'framework/core/subsystems-1/search.php');
-		include_once(BASE.'framework/core/subsystems-1/search.php');
-
 		$search = null;
-		$search->category = $i18n['search_category'];
+		$search->category = gt('Events');
 		$search->view_link = ''; // FIXME : need a view action
 		$search->ref_module = 'calendarmodule';
 		$search->ref_type = 'calendar';
@@ -519,7 +499,7 @@ class calendarmodule {
 		if ($item) {
 			$db->delete('search',"ref_module='calendarmodule' AND ref_type='calendar' AND original_id=" . $item->id);
 			$search->original_id = $item->id;
-			$search->body = ' ' . exponent_search_removeHTML($item->body) . ' ';
+			$search->body = ' ' . search::removeHTML($item->body) . ' ';
 			$search->title = ' ' . $item->title . ' ';
 			$search->location_data = $item->location_data;
 			$db->insertObject($search,'search');
@@ -527,7 +507,7 @@ class calendarmodule {
 			$db->delete('search',"ref_module='calendarmodule' AND ref_type='calendar'");
 			foreach ($db->selectObjects('calendar') as $item) {
 				$search->original_id = $item->id;
-				$search->body = ' ' . exponent_search_removeHTML($item->body) . ' ';
+				$search->body = ' ' . search::removeHTML($item->body) . ' ';
 				$search->title = ' ' . $item->title . ' ';
 				$search->location_data = $item->location_data;
 				$db->insertObject($search,'search');
@@ -539,19 +519,6 @@ class calendarmodule {
 	// The following functions are internal helper functions
 
 	static function _getEventsForDates($edates,$sort_asc = true,$featuredonly = false) {
-//		if (!defined('SYS_SORTING')) include_once(BASE.'framework/core/subsystems-1/sorting.php');
-//		include_once(BASE.'framework/core/subsystems-1/sorting.php');
-//		if ($sort_asc && !function_exists('exponent_sorting_byEventStartAscending')) {
-//			function exponent_sorting_byEventStartAscending($a,$b) {
-//				return ($a->eventstart < $b->eventstart ? -1 : 1);
-//			}
-//		}
-//		if (!$sort_asc && !function_exists('exponent_sorting_byEventStartDescending')) {
-//			function exponent_sorting_byEventStartDescending($a,$b) {
-//				return ($a->eventstart > $b->eventstart ? -1 : 1);
-//			}
-//		}
-
 		global $db;
 		$events = array();
 		$featuresql = "";
@@ -565,11 +532,6 @@ class calendarmodule {
 				$events[] = $o;
 			}
 		}
-//		if ($sort_asc == true) {
-//			usort($events,'exponent_sorting_byEventStartAscending');
-//		} else {
-//			usort($events,'exponent_sorting_byEventStartDescending');
-//		}
 		$events = expSorter::sort(array('array'=>$events,'sortby'=>'eventstart', 'order'=>$sort_asc ? 'ASC' : 'DESC'));
 		return $events;
 	}

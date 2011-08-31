@@ -76,7 +76,8 @@
                 <li>{"No slides yet"|gettext}</li>
             {/foreach}
         </ul>
-
+        
+        {if !$config.hidecontrols}
         <div class="slideshow-buttons">
             <a id="prev{$name}" href="javascript:void(0);" class="prev_slide" title="Prevous Slide">
                 &lt;&lt; Previous
@@ -98,6 +99,7 @@
                 Next &gt;&gt;
             </a>
         </div>
+        {/if}
     
     </div>
 </div>
@@ -106,18 +108,14 @@
 {script unique="slideshow" yui3mods="anim"}
 {literal}
 
-YUI({   
-base:EXPONENT.YUI3_PATH,
-loadOptional: true,
-modules: {
-		'gallery-yui-slideshow': {
-			fullpath: '{/literal}{$asset_path}js/yui3-slideshow.js{literal}',
-			requires: ['anim'],
-			optional: [],
-			supersedes: []
-		}
+EXPONENT.YUI3_CONFIG.modules = {
+	'gallery-yui-slideshow': {
+		fullpath: '{/literal}{$asset_path}js/yui3-slideshow.js{literal}',
+		requires: ['anim']
 	}
-}).use('gallery-yui-slideshow', function(Y) {
+}
+
+YUI(EXPONENT.YUI3_CONFIG).use('gallery-yui-slideshow', function(Y) {
     var oSlideshow = new Y.Slideshow('#ss-{/literal}{$name}{literal} .slideshow-frame',
     {
         interval:{/literal}{$config.speed|default:5}000{literal},

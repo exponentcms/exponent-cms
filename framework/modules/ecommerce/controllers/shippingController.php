@@ -103,7 +103,7 @@ class shippingController extends expController {
 	function manage() {
 	    global $db;
 	    
-	    expHistory::set('managable', $this->params);
+	    expHistory::set('manageable', $this->params);
 	    $calculators = array();
         $dir = BASE."framework/modules/ecommerce/shippingcalculators";
         if (is_readable($dir)) {

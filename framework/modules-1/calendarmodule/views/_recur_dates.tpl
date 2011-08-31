@@ -30,8 +30,8 @@
 		{literal}
 			<script type="text/javascript">
 			function recur_selectUnselectAll(setChecked) {
-				var elems = document.getElementsByTagName("input")
-				for (key = 0; key < elems.length; key++) {
+				var elems = document.getElementsByTagName("input");
+				for (var key = 0; key < elems.length; key++) {
 					if (elems[key].type == "checkbox" && elems[key].name.substr(0,6) == "dates[") {
 						elems[key].checked = setChecked;
 					}
@@ -39,9 +39,9 @@
 			}
 			</script>
 		{/literal}
-			<a class="mngmntlink calendar_mngmntlink" href="#" onclick="recur_selectUnselectAll(true); return false;">{$_TR.select_all}</a>
+			<a class="mngmntlink calendar_mngmntlink" href="#" onclick="recur_selectUnselectAll(true); return false;">{'Select All'|gettext}</a>
 			&nbsp;/&nbsp;
-			<a class="mngmntlink calendar_mngmntlink" href="#" onclick="recur_selectUnselectAll(false); return false;">{$_TR.deselect_all}</a>
+			<a class="mngmntlink calendar_mngmntlink" href="#" onclick="recur_selectUnselectAll(false); return false;">{'Unselect All'|gettext}</a>
 		</td>
 	</tr>
 </div>

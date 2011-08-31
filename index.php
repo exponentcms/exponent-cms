@@ -88,8 +88,6 @@ if (MAINTENANCE_MODE && !$user->isAdmin() && ( !isset($_REQUEST['module']) || $_
 		$page = $pftheme == null ? $page : $pftheme;		// if there was no theme found then just use the current subtheme
 	}
  
-	$base_i18n = exponent_lang_loadFile('index.php');
-
 	if (is_readable($page)) {
 		if (!expJavascript::inAjaxAction()) {
 			include_once($page);
@@ -98,7 +96,7 @@ if (MAINTENANCE_MODE && !$user->isAdmin() && ( !isset($_REQUEST['module']) || $_
 			expTheme::runAction();
 		}
 	} else {
-		echo sprintf($base_i18n['not_readable'], $page);
+		echo sprintf(gt('Page "%s" not readable.'), $page);
 	}
 
 	if (PRINTER_FRIENDLY == 1) {
@@ -110,7 +108,7 @@ if (MAINTENANCE_MODE && !$user->isAdmin() && ( !isset($_REQUEST['module']) || $_
 
 //$microtime_str = explode(' ',microtime());
 //$i_end = $microtime_str[0] + $microtime_str[1];
-//echo "\r\n<!--".sprintf($base_i18n['exec_time'],round($i_end - $i_start,4)).'-->';
+//echo "\r\n<!--".sprintf(gt('Execution time : %d seconds'),round($i_end - $i_start,4)).'-->';
 
 ob_end_flush();
 

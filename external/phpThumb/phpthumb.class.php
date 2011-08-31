@@ -1220,7 +1220,7 @@ class phpthumb {
 			// $UnAllowedParameters contains options that can only be processed in GD, not ImageMagick
 			// note: 'fltr' *may* need to be processed by GD, but we'll check that in more detail below
 			$UnAllowedParameters = array('xto', 'ar', 'bg', 'bc');
-			// 'ra' may be part of this list, if not a multiple of 90°
+			// 'ra' may be part of this list, if not a multiple of 90ï¿½
 			foreach ($UnAllowedParameters as $parameter) {
 				if (isset($this->$parameter)) {
 					$this->DebugMessage('$this->useRawIMoutput=false because "'.$parameter.'" is set', __FILE__, __LINE__);
@@ -1969,21 +1969,18 @@ class phpthumb {
 		}
 		$this->thumbnail_width  = $this->w;
 		$this->thumbnail_height = $this->h;
+		$aspectratio = $this->thumbnail_image_height / $this->thumbnail_image_width;
 		$this->is_alpha = true;
 		if ($this->thumbnail_image_width >= $this->thumbnail_width) {
-
 			if ($this->w) {
-				$aspectratio = $this->thumbnail_image_height / $this->thumbnail_image_width;
 				$this->thumbnail_image_height = round($this->thumbnail_image_width * $aspectratio);
 				$this->thumbnail_height = ($this->h ? $this->h : $this->thumbnail_image_height);
 			} elseif ($this->thumbnail_image_height < $this->thumbnail_height) {
 				$this->thumbnail_image_height = $this->thumbnail_height;
 				$this->thumbnail_image_width  = round($this->thumbnail_image_height / $aspectratio);
 			}
-
 		} else {
 			if ($this->h) {
-				$aspectratio = $this->thumbnail_image_width / $this->thumbnail_image_height;
 				$this->thumbnail_image_width = round($this->thumbnail_image_height * $aspectratio);
 			} elseif ($this->thumbnail_image_width < $this->thumbnail_width) {
 				$this->thumbnail_image_width = $this->thumbnail_width;

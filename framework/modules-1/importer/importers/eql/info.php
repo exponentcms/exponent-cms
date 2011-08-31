@@ -19,11 +19,9 @@
 
 if (!defined('EXPONENT')) exit('');
 
-$i18n = exponent_lang_loadFile('modules/importer/importers/eql/info.php');
-
 return array(
-	'name'=>$i18n['importer_name'],
-	'description'=>$i18n['importer_description'],
+	'name'=>gt('EQL File Importer'),
+	'description'=>gt('Restore tables in the site database which were exported as an EQL (Exponent Query Language) file.'),
 	'author'=>'James Hunt'
 );
 

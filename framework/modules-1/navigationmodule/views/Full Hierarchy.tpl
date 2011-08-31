@@ -26,6 +26,6 @@
 </table>
 {permissions}
 {if $canManage == 1}
-[ <a class="navlink" href="{link action=manage}">{$_TR.manage}</a> ]
+[ <a class="navlink" href="{link action=manage}">{'Manage'|gettext}</a> ]
 {/if}
 {/permissions}

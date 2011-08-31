@@ -121,12 +121,7 @@ class genericcontrol extends formcontrol {
     }
     
     function form($object) {
-        $i18n = exponent_lang_loadFile('subsystems/forms/controls/checkboxcontrol.php');
-    
-//        if (!defined("SYS_FORMS")) require_once(BASE."framework/core/subsystems-1/forms.php");
         require_once(BASE."framework/core/subsystems-1/forms.php");
-//        exponent_forms_initialize();
-    
         $form = new form();
         if (!isset($object->identifier)) {
             $object->identifier = "";
@@ -136,14 +131,14 @@ class genericcontrol extends formcontrol {
             $object->required = false;
         } 
         
-        $form->register("identifier",$i18n['identifier'],new textcontrol($object->identifier));
-        $form->register("caption",$i18n['caption'], new textcontrol($object->caption));
-        $form->register("default",$i18n['default'], new checkboxcontrol($object->default,false));
-        $form->register("flip",$i18n['caption_right'], new checkboxcontrol($object->flip,false));
+        $form->register("identifier",gt('Identifier'),new textcontrol($object->identifier));
+        $form->register("caption",gt('Caption'), new textcontrol($object->caption));
+        $form->register("default",gt('Default'), new checkboxcontrol($object->default,false));
+        $form->register("flip",gt('Caption on Right'), new checkboxcontrol($object->flip,false));
         $form->register(null, null, new htmlcontrol('<br />'));
-        $form->register("required", $i18n['required'], new checkboxcontrol($object->required,true));
+        $form->register("required", gt('Required'), new checkboxcontrol($object->required,true));
         $form->register(null, null, new htmlcontrol('<br />')); 
-        $form->register("submit","",new buttongroupcontrol($i18n['save'],'',$i18n['cancel']));
+        $form->register("submit","",new buttongroupcontrol(gt('Save'),'',gt('Cancel')));
         
         return $form;
     }
@@ -151,9 +146,8 @@ class genericcontrol extends formcontrol {
     function update($values, $object) {
         if ($object == null) $object = new genericcontrol();;
         if ($values['identifier'] == "") {
-            $i18n = exponent_lang_loadFile('subsystems/forms/controls/checkboxcontrol.php');
             $post = $_POST;
-            $post['_formError'] = $i18n['id_required'];
+            $post['_formError'] = gt('Identifier is required.');
             expSession::set("last_POST",$post);
             return null;
         }

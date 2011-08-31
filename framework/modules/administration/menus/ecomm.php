@@ -186,6 +186,10 @@ $ecom = array(
                             'url'=>makeLink(array('controller'=>'store','action'=>'showallImpropercategorized')),
                         ),
                         array(
+                            'text'=>gt("View Products with Data Issues"),
+                            'url'=>makeLink(array('controller'=>'store','action'=>'nonUnicodeProducts')),
+                        ),
+                        array(
                             'text'=>gt("Build an Order Report"),
                             'url'=>makeLink(array('controller'=>'report','action'=>'order_report')),
                         ),

@@ -26,10 +26,8 @@ function alphanum_filter_class() {
 				console.debug(sChar);
 		var strNewVal = GetResultingValue(ptObject, String.fromCharCode(sChar));
 		
-		if (this.isValueIllegal(strNewVal)) {
-			return false;
-		}
-		return true;
+		return !this.isValueIllegal(strNewVal);
+
 	}
 	
 	this.onblur = function(ptObject) {
@@ -43,22 +41,14 @@ function alphanum_filter_class() {
 	this.onpaste = function(ptObject, evt) {
 		var strNewVal = GetResultingValue(ptObject, String.fromCharCode(evt.charCode));
 		alert(strNewVal);
-		if (this.isValueIllegal(strNewVal)) {
-			return false;
-		}
-		return true;
+		return !this.isValueIllegal(strNewVal);
+
 	}
 	
 	this.isValueIllegal = function(strValue) {
 	    //console.debug(strValue);
 	    var regex=/^[0-9A-Za-z]+$/; //^[a-zA-z]+$/
-        if(regex.test(strValue)){
-            //console.debug(strValue + ' is good');
-            return false;
-        } else {
-            //console.debug(strValue + ' is bad');
-            return true;
-        }
+        return !regex.test(strValue);
 	}
 }
 

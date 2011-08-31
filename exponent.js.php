@@ -126,7 +126,7 @@ EXPONENT.AjaxEvent = function() {
                             //if not, it's probably HTML we're going to update a view with
                             var oParse = o.responseText;
                         }
-                        //fire off the custome event to do some more stuff with
+                        //fire off the custom event to do some more stuff with
                         this.oEvent.fire(oParse);
                     }
                 },

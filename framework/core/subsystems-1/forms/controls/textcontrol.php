@@ -75,10 +75,7 @@ class textcontrol extends formcontrol {
     }
 
     function form($object) {
-//        if (!defined("SYS_FORMS")) require_once(BASE."framework/core/subsystems-1/forms.php");
         require_once(BASE."framework/core/subsystems-1/forms.php");
-//        exponent_forms_initialize();
-
         $form = new form();
         if (!isset($object->identifier)) {
             $object->identifier = "";
@@ -88,24 +85,21 @@ class textcontrol extends formcontrol {
             $object->maxlength = 0;
             $object->required = false;
         }
-        $i18n = exponent_lang_loadFile('subsystems/forms/controls/textcontrol.php');
-
-        $form->register("identifier",$i18n['identifier'],new textcontrol($object->identifier));
-        $form->register("caption",$i18n['caption'], new textcontrol($object->caption));
-        $form->register("default",$i18n['default'], new textcontrol($object->default));
-        $form->register("size",$i18n['size'], new textcontrol((($object->size==0)?"":$object->size),4,false,3,"integer"));
-        $form->register("maxlength",$i18n['maxlength'], new textcontrol((($object->maxlength==0)?"":$object->maxlength),4,false,3,"integer"));
-        $form->register("required", $i18n['required'], new checkboxcontrol($object->required,false));
-        $form->register("submit","",new buttongroupcontrol($i18n['save'],'',$i18n['cancel']));
+        $form->register("identifier",gt('Identifier'),new textcontrol($object->identifier));
+        $form->register("caption",gt('Caption'), new textcontrol($object->caption));
+        $form->register("default",gt('Default'), new textcontrol($object->default));
+        $form->register("size",gt('Size'), new textcontrol((($object->size==0)?"":$object->size),4,false,3,"integer"));
+        $form->register("maxlength",gt('Maximum Length'), new textcontrol((($object->maxlength==0)?"":$object->maxlength),4,false,3,"integer"));
+        $form->register("required", gt('Make this a required field.'), new checkboxcontrol($object->required,false));
+        $form->register("submit","",new buttongroupcontrol(gt('Save'),'',gt('Cancel')));
         return $form;
     }
 
     function update($values, $object) {
         if ($object == null) $object = new textcontrol();
         if ($values['identifier'] == "") {
-            $i18n = exponent_lang_loadFile('subsystems/forms/controls/textcontrol.php');
             $post = $_POST;
-            $post['_formError'] = $i18n['id_req'];
+            $post['_formError'] = gt('Identifier is required.');
             expSession::set("last_POST",$post);
             return null;
         }

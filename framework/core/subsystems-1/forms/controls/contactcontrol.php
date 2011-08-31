@@ -39,11 +39,10 @@ class contactcontrol extends formcontrol {
 
 	function controlToHTML($name) {
 		// First, grab the data for the users
-//		if (!defined("SYS_USERS")) require_once(BASE."framework/core/subsystems-1/users.php");
 		require_once(BASE."framework/core/subsystems-1/users.php");
 		$users = array();
 
-		foreach (exponent_users_getAllUsers() as $u) {
+		foreach (user::getAllUsers() as $u) {
 			$users[$u->id] = $u->firstname." ".$u->lastname.' ('.$u->username.')';
 		}
 

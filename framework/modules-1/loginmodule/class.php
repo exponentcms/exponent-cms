@@ -18,9 +18,9 @@
 ##################################################
 
 class loginmodule {
-	function name() { return exponent_lang_loadKey('modules/loginmodule/class.php','module_name'); }
+	function name() { return 'Login Module'; }
 	function author() { return 'OIC Group, Inc'; } 
-	function description() { return exponent_lang_loadKey('modules/loginmodule/class.php','module_description'); }
+	function description() { return 'Allows users to login to the site.'; }
 	
 	function hasContent() { return false; }
 	function hasSources() { return false; }

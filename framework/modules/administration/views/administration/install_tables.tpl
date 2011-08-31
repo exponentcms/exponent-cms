@@ -21,7 +21,7 @@
  <div class="form_header">
  	<h1>Installing and Upgrading Database Tables</h1>
  	<p>
- 		{$_TR.form_header}
+ 		{'Exponent is currently updating existing tables in its database, and installing new tables that it needs.  Shown below is a summary of the actions that occured.'|gettext}
  	</p>
  </div>
  <table cellpadding="2" cellspacing="0" width="100%" border="0" class="exp-skin-table">

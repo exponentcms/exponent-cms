@@ -22,18 +22,18 @@
 
 *}
 {* the header include contains the starting <div> tag*}	
-	{include file="../../../themes/common/editors/_header.inc" toolbar="`$content->data`"}
+	{include file="../../../../external/editors/_header.tpl" toolbar="`$content->data`"}
 	
 	<h2>{$smarty.const.SITE_WYSIWYG_EDITOR}</h2>
 	<!--a href="http://www.xinha.com" target="_blank"><img style="border:0px solid none;" src="{$smarty.const.PATH_RELATIVE}external/editors/Xinha/images/xinha_logo.gif" /></a-->
-	<p>{$_TR.desc}</p>
+	<p>{'This forms allows you to define a custom toolbar for the selected editor.'|gettext}</p>
 	<div>
 		<div id="editorcontrol_toolbox" class="clearfloat"></div>
 		<div id="msgTD"></div>
 	</div>
 	<div class="clearfloat">
 		<hr/>
-		<a class="mngmntlink administration_mngmntlink" href="#" onclick="eXp.WYSIWYG.createRow();">{$_TR.create}</a><hr/>
+		<a class="mngmntlink administration_mngmntlink" href="#" onclick="eXp.WYSIWYG.createRow();">{'New Row'|gettext}</a><hr/>
 	</div>
 	<div id="editorcontrol_toolbar" class="clearfloat"></div>
 
@@ -42,10 +42,10 @@
 		// populate the button panel
 		eXp.WYSIWYG.buildToolbox(eXp.WYSIWYG.toolbox);
 {literal}				
-		for(currRow = 0; currRow < eXp.WYSIWYG.toolbar.length; currRow++) {
+		for(var currRow = 0; currRow < eXp.WYSIWYG.toolbar.length; currRow++) {
 			rows.push(new Array());
 		
-			for(currButton = 0; currButton < eXp.WYSIWYG.toolbar[currRow].length; currButton++) {
+			for(var currButton = 0; currButton < eXp.WYSIWYG.toolbar[currRow].length; currButton++) {
 
 				if (eXp.WYSIWYG.toolbar[currRow][currButton] != "") {
 					rows[currRow].push(eXp.WYSIWYG.toolbar[currRow][currButton]);
@@ -69,12 +69,12 @@
 			<input type="hidden" name="id" value="{$content->id}"/>
 {/if}
 			<input type="hidden" name="config" value="" id="config_htmlarea" />
-			{$_TR.item}:<br />
+			{'Configuration'|gettext}:<br />
 			<input type="text" name="config_name" value="{$content->name}" /><br />
-			<input type="checkbox" name="config_activate" {if $content->active == 1}checked="checked"{/if}/> {$_TR.activate}?<br />
+			<input type="checkbox" name="config_activate" {if $content->active == 1}checked="checked"{/if}/> {'Activate'|gettext}?<br />
 
-			<input type="submit" value="{$_TR.submit}" onclick="eXp.WYSIWYG.save(this.form); return false;"/>
-			<input type="button" value="{$_TR.back}" onclick="window.location='{$__redirect}';"/>
+			<input type="submit" value="{'Submit'|gettext}" onclick="eXp.WYSIWYG.save(this.form); return false;"/>
+			<input type="button" value="{'Back'|gettext}" onclick="window.location='{$__redirect}';"/>
 		</form>
 	</div>
 </div>

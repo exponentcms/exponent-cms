@@ -19,9 +19,9 @@
 /** @define "BASE" "../../.." */
 
 class navigationmodule {
-	function name() { return exponent_lang_loadKey('modules/navigationmodule/class.php','module_name'); }
+	function name() { return 'Navigator'; }
 	function author() { return 'OIC Group, Inc'; }
-	function description() { return exponent_lang_loadKey('modules/navigationmodule/class.php','module_description'); }
+	function description() { return 'Allows users to navigate through pages on the site, and allows Administrators to manage the site page structure / hierarchy.'; }
 	
 	function hasContent() { return false; }
 	function hasSources() { return false; }
@@ -30,8 +30,6 @@ class navigationmodule {
 	function supportsWorkflow() { return false; }
 	
 	function permissions($internal = '') {
-		$i18n = exponent_lang_loadFile('modules/navigationmodule/class.php');
-		
 		return array(
 			'manage'=>gt('Administrate'),
 			'view'=>gt('View Page'),
@@ -181,9 +179,6 @@ class navigationmodule {
 		//global $sections;
 		global $router;
 		
-//        if (!defined('SYS_SEARCH')) include_once(BASE.'framework/core/subsystems-1/search.php');
-        include_once(BASE.'framework/core/subsystems-1/search.php');
-
 	 	$db->delete('search',"ref_module='navigationmodule' AND ref_type='section'");
         
         // this now ensures we get internal pages, instead of relying on the global $sections, which does not.
@@ -215,7 +210,7 @@ class navigationmodule {
 				    $textitems = $db->selectObjects($controller->model_table, "location_data='".serialize($loc)."'");
 				    foreach ($textitems as $textitem) {
 				        if (!empty($textitem)) {
-					        $search->body .= ' ' . exponent_search_removeHTML($textitem->body) . ' ';
+					        $search->body .= ' ' . search::removeHTML($textitem->body) . ' ';
 					        $search->keywords .= " ".$textitem->title;
 				        }
 				    }
@@ -245,9 +240,6 @@ class navigationmodule {
 		$html = '';
 		global $db;
 		$nodes = $db->selectObjects('section','parent='.$parent);
-//		if (!defined('SYS_SORTING')) include_once(BASE.'framework/core/subsystems-1/sorting.php');
-//		include_once(BASE.'framework/core/subsystems-1/sorting.php');
-//		usort($nodes,'exponent_sorting_byRankAscending');
 		$nodes = expSorter::sort(array('array'=>$nodes,'sortby'=>'rank', 'order'=>'ASC'));
 		foreach ($nodes as $node) {
 			if (($node->public == 1 || exponent_permissions_check('view',exponent_core_makeLocation('navigationmodule','',$node->id))) && !in_array($node->id,$ignore_ids)) {
@@ -270,17 +262,12 @@ class navigationmodule {
 	 * Returns a flat representation of the full site hierarchy.
 	 */
 	static function levelDropDownControlArray($parent,$depth = 0,$ignore_ids = array(),$full=false) {
-		$i18n = exponent_lang_loadFile('modules/navigationmodule/class.php');
-
 		$ar = array();
 		if ($parent == 0 && $full) {
-			$ar[0] = '&lt;'.$i18n['top_of_hierarchy'].'&gt;';
+			$ar[0] = '&lt;'.gt('Top of Hierarchy').'&gt;';
 		}
 		global $db;
 		$nodes = $db->selectObjects('section','parent='.$parent);
-//		if (!defined('SYS_SORTING')) include_once(BASE.'framework/core/subsystems-1/sorting.php');
-//		include_once(BASE.'framework/core/subsystems-1/sorting.php');
-//		usort($nodes,'exponent_sorting_byRankAscending');
 		$nodes = expSorter::sort(array('array'=>$nodes,'sortby'=>'rank', 'order'=>'ASC'));
 		foreach ($nodes as $node) {
 			if (($node->public == 1 || exponent_permissions_check('view',exponent_core_makeLocation('navigationmodule','',$node->id))) && !in_array($node->id,$ignore_ids)) {
@@ -312,9 +299,6 @@ class navigationmodule {
 			$kids = $cache['kids'][$parent];
 		}		
 			
-//        if (!defined('SYS_SORTING')) include_once(BASE.'framework/core/subsystems-1/sorting.php');
-//        include_once(BASE.'framework/core/subsystems-1/sorting.php');
-//		usort($kids,'exponent_sorting_byRankAscending');
 		$kids = expSorter::sort(array('array'=>$kids,'sortby'=>'rank', 'order'=>'ASC'));
 		for ($i = 0; $i < count($kids); $i++) {
 			$child = $kids[$i];
@@ -374,9 +358,6 @@ class navigationmodule {
 		
 		$arr = array();
 		$kids = $db->selectObjects('section_template','parent='.$parent);
-//		if (!defined('SYS_SORTING')) include_once(BASE.'framework/core/subsystems-1/sorting.php');
-//		include_once(BASE.'framework/core/subsystems-1/sorting.php');
-//		usort($kids,'exponent_sorting_byRankAscending');
 		$kids = expSorter::sort(array('array'=>$kids,'sortby'=>'rank', 'order'=>'ASC'));
 
 		for ($i = 0; $i < count($kids); $i++) {

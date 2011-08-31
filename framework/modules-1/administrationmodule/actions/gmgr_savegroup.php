@@ -23,7 +23,6 @@
 if (!defined('EXPONENT')) exit('');
 
 if (exponent_permissions_check('user_management',exponent_core_makeLocation('administrationmodule'))) {
-//	if (!defined('SYS_USERS')) require_once(BASE.'framework/core/subsystems-1/users.php');
 	require_once(BASE.'framework/core/subsystems-1/users.php');
 	if (isset($_POST['id'])) { // Existing user profile edit
 		$g = exponent_users_getGroupById($_POST['id']);
@@ -33,9 +32,8 @@ if (exponent_permissions_check('user_management',exponent_core_makeLocation('adm
 		expHistory::back();
 	} else {
 		if (exponent_users_getGroupByName($_POST['name']) != null) {
-			$i18n = exponent_lang_loadFile('modules/administrationmodule/actions/gmgr_savegroup.php');
 			$post = $_POST;
-			$post['_formError'] = $i18n['name_taken'];
+			$post['_formError'] = gt('The group name name is already taken.');
 			expSession::set('last_POST',$post);
 			header('Location: ' . $_SERVER['HTTP_REFERER']);
 		} else {

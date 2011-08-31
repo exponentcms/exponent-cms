@@ -42,7 +42,7 @@ class order_statusController extends expController {
     }
     
     public function manage_messages() {
-        expHistory::set('managable', $this->params);
+        expHistory::set('manageable', $this->params);
         
         $page = new expPaginator(array(
 			'model'=>'order_status_messages',

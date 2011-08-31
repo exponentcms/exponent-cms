@@ -94,14 +94,12 @@ function exponent_backup_dumpDatabase($db,$tables = null,$force_version = null) 
 function exponent_backup_restoreDatabase($db,$file,&$errors,$force_version = null) {
 	$errors = array();
 
-	$i18n = exponent_lang_loadFile('subsystems/backup.php');
-
 	if (is_readable($file)) {
 		$lines = @file($file);
 
 		// Sanity check
 		if (count($lines) < 2 || trim($lines[0]) != EQL_HEADER) {
-			$errors[] = $i18n['bad_eql'];
+			$errors[] = gt('Not a valid EQL file');
 			return false;
 		}
 
@@ -116,11 +114,91 @@ function exponent_backup_restoreDatabase($db,$file,&$errors,$force_version = nul
 		$clear_function = '';
 		$fprefix = '';
 		// Check version and include necessary converters
+		//FIXME We reject v1.0 eql files
 		if ($eql_version != $current_version) {
-			include_once(BASE.'framework/core/subsystems-1/backup/'.$eql_version.'.php');
-			$fprefix = 'exponent_backup_'.implode('',explode('.',$eql_version)).'_';
-			if (function_exists($fprefix.'clearedTable')) {
-				$clear_function = $fprefix.'clearedTable';
+			$errors[] = gt('EQL file was Not a valid EQL version');
+			return false;
+//			include_once(BASE.'framework/core/subsystems-1/backup/'.$eql_version.'.php');
+//			$fprefix = 'exponent_backup_'.implode('',explode('.',$eql_version)).'_';
+//			if (function_exists($fprefix.'clearedTable')) {
+//				$clear_function = $fprefix.'clearedTable';
+//			}
+		}
+
+		// make sure the database tables are up to date
+		define("TMP_TABLE_EXISTED",		1);
+		define("TMP_TABLE_INSTALLED",	2);
+		define("TMP_TABLE_FAILED",		3);
+		define("TMP_TABLE_ALTERED",		4);
+
+		$tables = array();
+		$dir = BASE.'framework/core/definitions';
+		if (is_readable($dir)) {
+			$dh = opendir($dir);
+			while (($file = readdir($dh)) !== false) {
+				if (is_readable("$dir/$file") && is_file("$dir/$file") && substr($file,-4,4) == ".php" && substr($file,-9,9) != ".info.php") {
+					$tablename = substr($file,0,-4);
+					$dd = include("$dir/$file");
+					$info = null;
+					if (is_readable("$dir/$tablename.info.php")) $info = include("$dir/$tablename.info.php");
+					if (!$db->tableExists($tablename)) {
+						foreach ($db->createTable($tablename,$dd,$info) as $key=>$status) {
+							$tables[$key] = $status;
+						}
+					} else {
+						foreach ($db->alterTable($tablename,$dd,$info) as $key=>$status) {
+							if (isset($tables[$key])) echo "$tablename, $key<br>";
+							if ($status == TABLE_ALTER_FAILED){
+								$tables[$key] = $status;
+							}else{
+								$tables[$key] = ($status == TABLE_ALTER_NOT_NEEDED ? DATABASE_TABLE_EXISTED : DATABASE_TABLE_ALTERED);
+							}
+
+						}
+					}
+				}
+			}
+		}
+
+		// then search for module definitions
+		$moddefs = array(
+			BASE.'themes/'.DISPLAY_THEME_REAL.'/modules',
+			BASE."framework/modules",
+			);
+		foreach ($moddefs as $moddef) {
+			if (is_readable($moddef)) {
+				$dh = opendir($moddef);
+				while (($file = readdir($dh)) !== false) {
+					if (is_dir($moddef.'/'.$file) && ($file != '..' && $file != '.')) {
+						$dirpath = $moddef.'/'.$file.'/definitions';
+						if (file_exists($dirpath)) {
+							$def_dir = opendir($dirpath);
+							while (($def = readdir($def_dir)) !== false) {
+								if (is_readable("$dirpath/$def") && is_file("$dirpath/$def") && substr($def,-4,4) == ".php" && substr($def,-9,9) != ".info.php") {
+									$tablename = substr($def,0,-4);
+									$dd = include("$dirpath/$def");
+									$info = null;
+									if (is_readable("$dirpath/$tablename.info.php")) $info = include("$dirpath/$tablename.info.php");
+									if (!$db->tableExists($tablename)) {
+										foreach ($db->createTable($tablename,$dd,$info) as $key=>$status) {
+											$tables[$key] = $status;
+										}
+									} else {
+										foreach ($db->alterTable($tablename,$dd,$info) as $key=>$status) {
+											if (isset($tables[$key])) echo "$tablename, $key<br>";
+											if ($status == TABLE_ALTER_FAILED){
+												$tables[$key] = $status;
+											}else{
+												$tables[$key] = ($status == TABLE_ALTER_NOT_NEEDED ? DATABASE_TABLE_EXISTED : DATABASE_TABLE_ALTERED);
+											}
+
+										}
+									}
+								}
+							}
+						}
+					}
+				}
 			}
 		}
 
@@ -145,15 +223,15 @@ function exponent_backup_restoreDatabase($db,$file,&$errors,$force_version = nul
 							$clear_function($db,$table);
 						}
 					} else {
-						if (!file_exists(BASE.'framework/core/definitions/'.$table.'.php')) {
-							$errors[] = sprintf($i18n['no_definition'],$table,$line_number);
-						} else if (!is_readable(BASE.'framework/core/definitions/'.$table.'.php')) {
-							$errors[] = sprintf($i18n['unreadable_definition'],$table,'framework/core/definitions/'.$table.'.php',$line_number);
-						} else {
-							$dd = include(BASE.'framework/core/definitions/'.$table.'.php');
-							$info = (is_readable(BASE.'framework/core/definitions/'.$table.'.info.php') ? include(BASE.'framework/core/definitions/'.$table.'.info.php') : array());
-							$db->createTable($table,$dd,$info);
-						}
+//						if (!file_exists(BASE.'framework/core/definitions/'.$table.'.php')) {
+							$errors[] = sprintf(gt('Table "%s" not found in the system (line %d)'),$table,$line_number);
+//						} else if (!is_readable(BASE.'framework/core/definitions/'.$table.'.php')) {
+//							$errors[] = sprintf(gt('Data definition file for %s (%s) is not readable (line %d)'),$table,'framework/core/definitions/'.$table.'.php',$line_number);
+//						} else {
+//							$dd = include(BASE.'framework/core/definitions/'.$table.'.php');
+//							$info = (is_readable(BASE.'framework/core/definitions/'.$table.'.info.php') ? include(BASE.'framework/core/definitions/'.$table.'.info.php') : array());
+//							$db->createTable($table,$dd,$info);
+//						}
 					}
 				} else if ($pair[0] == 'RECORD') {
 					// Here we need to check the conversion scripts.
@@ -165,16 +243,18 @@ function exponent_backup_restoreDatabase($db,$file,&$errors,$force_version = nul
 						$db->insertObject($object,$table);
 					}
 				} else {
-					$errors[] = sprintf($i18n['invalid_type'],$pair[0],$line_number);
+					$errors[] = sprintf(gt('Invalid specifier type "%s" (line %d)'),$pair[0],$line_number);
 				}
 			}
 		}
 		if ($eql_version != $current_version) {
-			include_once(BASE.'framework/core/subsystems-1/backup/normalize.php');
+			$errors[] = gt('EQL file was Not a valid EQL version');
+			return false;
+//			include_once(BASE.'framework/core/subsystems-1/backup/normalize.php');
 		}
 		return true;
 	} else {
-		$errors[] = $i18n['eql_not_r'];
+		$errors[] = gt('Unable to read EQL file');
 		return false;
 	}
 }

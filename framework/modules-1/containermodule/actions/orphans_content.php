@@ -67,8 +67,7 @@ if (!defined('EXPONENT')) exit('');
 				"clickable"=>(($clickable_mods == null || in_array($modclass,$clickable_mods))?1:0)
 			);
 		} else {
-			$i18n = exponent_lang_loadFile('modules/containermodule/class.php');
-			$obj->output = sprintf($i18n['mod_not_found'],$orphan->module);
+			$obj->output = sprintf(gt('The module "%s" was not found in the system'),$orphan->module);
 			$containers[$i]->info = array(
 					"module"=>"Unknown:".$location->mod,
 					"source"=>$orphan->source,

@@ -20,9 +20,9 @@
 			<div class="related-actions">
 				{help text="Get Help Managing User Permissions" module="manage-user-permissions"}
 			</div>
-        	<h1>{$_TR.form_title}</h1>
+        	<h1>{'Assign User Permissions'|gettext}</h1>
 		</div>
-		<p>{$_TR.form_header}</p>
+		<p>{'This form allows you to assign permissions on this module to a specific user.'|gettext}</p>
 	</div>
 	{capture assign="file"}{$smarty.const.BASE}framework/modules-1/common/views/_permissions.tpl{/capture}
 	{include file=$file}

@@ -18,9 +18,9 @@
 ##################################################
 
 class administrationmodule {
-	function name() { return exponent_lang_loadKey('modules/administrationmodule/class.php','module_name'); }
+	function name() { return 'Administration Control Panel'; }
 	function author() { return 'OIC Group, Inc'; }
-	function description() { return exponent_lang_loadKey('modules/administrationmodule/class.php','module_description'); }
+	function description() { return 'A control panel that gives administrators easy access to administrative tasks.'; }
 	
 	function hasContent() { return false; }
 	function hasSources() { return false; }
@@ -30,9 +30,7 @@ class administrationmodule {
 	function dontShowInModManager() { return true; }
 	
 	function permissions($internal = "") {
-		$i18n = exponent_lang_loadFile('modules/administrationmodule/class.php');
-		
-		$permissions = array('administrate'=>$i18n['perm_admin']);
+		$permissions = array('administrate'=>gt('Administrate'));
 		
 		$menu = array();
 		$dir = BASE.'framework/modules-1/administrationmodule/tasks';

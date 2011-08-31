@@ -19,19 +19,19 @@
 {/css}
 
  <div class="form_header">
- 	<h1>{$_TR.form_title}</h1>
+ 	<h1>{'Install and Update Tables'|gettext}</h1>
  	<p>
- 		{$_TR.form_header}
+ 		{'Exponent is currently updating existing tables in its database, and installing new tables that it needs.  Shown below is a summary of the actions that occured.'|gettext}
  	</p>
  </div>
  <table cellpadding="2" cellspacing="0" width="100%" border="0" class="exp-skin-table">
  <thead>
  <tr>
  	<th>
- 		{$_TR.table_name}
+ 		{'Table Name'|gettext}
  	</th>
  	<th>
- 		{$_TR.status}
+ 		{'Status'|gettext}
  	</th>
  </tr>
  </thead>
@@ -44,23 +44,23 @@
  	<td>
  		 {if $statusnum == $smarty.const.TMP_TABLE_EXISTED}
  		<div style="color: blue; font-weight: bold">
- 			{$_TR.table_exists}
+ 			{'Table Exists'|gettext}
  		</div>
  		 {elseif $statusnum == $smarty.const.TMP_TABLE_INSTALLED}
  		<div style="color: green; font-weight: bold">
- 			{$_TR.succeeded}
+ 			{'Succeeded'|gettext}
  		</div>
  		 {elseif $statusnum == $smarty.const.TMP_TABLE_FAILED}
  		<div style="color: red; font-weight: bold">
- 			{$_TR.failed}
+ 			{'Failed'|gettext}
  		</div>
  		 {elseif $statusnum == $smarty.const.TMP_TABLE_ALTERED}
  		<div style="color: green; font-weight: bold">
- 			{$_TR.altered_existing}
+ 			{'Altered Existing Table'|gettext}
  		</div>
  		 {elseif $statusnum == $smarty.const.TABLE_ALTER_FAILED}
  		<div style="color: red; font-weight: bold">
- 			{$_TR.alter_failed}
+ 			{'Alter Table Failed'|gettext}
  		</div>
  		 {/if}
  	</td>

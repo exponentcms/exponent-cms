@@ -20,11 +20,7 @@
 
 if (!defined('EXPONENT')) exit('');
 
-$i18n = exponent_lang_loadFile('modules/formbuilder/actions/save_form.php');
-
-//if (!defined('SYS_FORMS')) include_once(BASE.'framework/core/subsystems-1/forms.php');
 include_once(BASE.'framework/core/subsystems-1/forms.php');
-//exponent_forms_initialize();
 
 $f = null;
 if (isset($_POST['id'])) {
@@ -41,8 +37,8 @@ if (exponent_permissions_check('editform',unserialize($f->location_data))) {
 		$f->location_data = serialize(exponent_core_makeLocation($_POST['m'],$_POST['s'],$_POST['i']));
 		$f->id = $db->insertObject($f,'formbuilder_form');
 		//Create Default Report;
-		$rpt->name = $i18n['default_report'];
-		$rpt->description = $i18n['auto_generated'];
+		$rpt->name = gt('Default Report');
+		$rpt->description = gt('This is the auto generated default report. Leave the report definition blank to use the default "all fields" report.');
 		$rpt->location_data = $f->location_data;
 		$rpt->text = '';
 		$rpt->column_names = '';

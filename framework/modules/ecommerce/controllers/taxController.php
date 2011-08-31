@@ -38,7 +38,7 @@ class taxController extends expController {
     function manage() {
         global $db;
         
-        expHistory::set('managable', $this->params);
+        expHistory::set('manageable', $this->params);
         
         $sql = "
 
@@ -157,7 +157,7 @@ class taxController extends expController {
     function manage_zones() {
         global $db;
         
-        expHistory::set('managable', $this->params);
+        expHistory::set('manageable', $this->params);
         $zones = $db->selectObjects('tax_zone', null, 'name');
 
         assign_to_template(array('zones'=>$zones));

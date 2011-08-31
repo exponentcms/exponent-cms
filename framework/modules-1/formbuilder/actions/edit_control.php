@@ -20,9 +20,7 @@
 
 if (!defined('EXPONENT')) exit('');
 
-//if (!defined("SYS_FORMS")) require_once(BASE."framework/core/subsystems-1/forms.php");
 require_once(BASE."framework/core/subsystems-1/forms.php");
-//exponent_forms_initialize();
 
 $f = $db->selectObject("formbuilder_form","id=".(isset($_REQUEST['form_id'])?intval($_REQUEST['form_id']):0));
 if ($f) {
@@ -54,7 +52,7 @@ if ($f) {
 			if (!$db->countObjects("formbuilder_control","form_id=".$f->id)) $ctl->rank = 0;
 			else $ctl->rank = $db->max("formbuilder_control","rank","form_id","form_id=".$f->id)+1;
 			$db->insertObject($ctl,"formbuilder_control");
-			expHistory::back();
+			expHistory::returnTo('editable');
 		} else {
 			$control_type = "";
 			$ctl = null;

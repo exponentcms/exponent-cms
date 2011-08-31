@@ -21,7 +21,7 @@
 	<a href="{link _common=1 view=Default action=show_view}">Month View</a>{br}
 	<h2>
 		{if $enable_rss == true}
-			<a href="{rsslink}"><img src="{$smarty.const.ICON_RELATIVE}rss-feed.gif" title="{$_TR.alt_rssfeed}" alt="{$_TR.alt_rssfeed}" /></a>
+			<a href="{rsslink}"><img src="{$smarty.const.ICON_RELATIVE}rss-feed.gif" title="{'RSS Feed'|gettext}" alt="{'Link to RSS Feed'|gettext}" /></a>
 		{/if}
 		{if $moduletitle != ""}{$moduletitle}{/if}
 	</h2>
@@ -72,7 +72,7 @@
 			{/if}
 		{foreachelse}
 			<table cellspacing="0" cellpadding="4" border="1" width="100%">
-				<tr><td align="center"><i>{$_TR.no_event}</i></td></tr>
+				<tr><td align="center"><i>{'No Events'|gettext}</i></td></tr>
 			</table>
 		{/foreach}
 	</table>

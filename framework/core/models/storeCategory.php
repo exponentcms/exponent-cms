@@ -98,8 +98,8 @@ class storeCategory extends expNestedNode {
 				return $item->expfiles_id;
 			} 
 		}
-    }             
-
+    }    
+    
 }
 
 ?>

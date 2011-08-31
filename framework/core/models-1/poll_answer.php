@@ -34,10 +34,7 @@
 
 class poll_answer {
 	static function form($object) {
-//		if (!defined('SYS_FORMS')) require_once(BASE.'framework/core/subsystems-1/forms.php');
 		require_once(BASE.'framework/core/subsystems-1/forms.php');
-//		exponent_forms_initialize();
-		
 		$form = new form();
 		if (!isset($object->id)) {
 			$object->answer = '';

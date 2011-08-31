@@ -258,7 +258,7 @@ class blogController extends expController {
                 // look up the record.
                 if (isset($_REQUEST['author'])) {
                     // set the meta info
-                    $u = exponent_users_getUserByName($_REQUEST['author']);
+                    $u = user::getUserByName($_REQUEST['author']);
                     
             		switch (DISPLAY_ATTRIBUTION) {
             			case "firstlast":

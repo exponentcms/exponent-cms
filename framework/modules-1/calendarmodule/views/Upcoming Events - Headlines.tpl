@@ -19,14 +19,14 @@
 
 <div class="module calendar upcoming-events-headlines">
 	{if $enable_ical == true}
-		<a class="icallink module-actions" href="{link action=ical}" title="{$_TR.alt_ical}" alt="{$_TR.alt_ical}">{$_TR.ical}</a>
+		<a class="icallink module-actions" href="{link action=ical}" title="{'iCalendar Feed'|gettext}" alt="{'iCalendar Feed'|gettext}"></a>
 	{/if}
     {if $moduletitle != ""}<h2>{$moduletitle}</h2>{/if}
 	{permissions}
 		<div class="module-actions">
 			<p>
 			{if $permissions.administrate == 1}
-				<a class="adminviewlink mngmntlink" href="{link _common=1 view='Administration' action='show_view' time=$time}">{$_TR.administration_view}</a>{br}
+				<a class="adminviewlink mngmntlink" href="{link _common=1 view='Administration' action='show_view' time=$time}">{'Administration View'|gettext}</a>{br}
 			{/if}
 			{if $permissions.post == 1}
 				{icon class=add action=edit title="Add a New Event"|gettext text="Add an Event"|gettext}
@@ -68,12 +68,12 @@
 				{assign var=more_events value=1}	
 			{/if}
 		{foreachelse}
-			<li align="center"><i>{$_TR.no_event}</i></li>
+			<li align="center"><i>{'No upcoming events.'|gettext}</i></li>
 		{/foreach}
     </ul>
 	<p>
 		{if $more_events == 1}
-			<a class="mngmntlink monthviewlink module-actions" href="{link _common=1 view='Upcoming Events' action='show_view' time=$time}">{$_TR.more_events}</a>{br}
+			<a class="mngmntlink monthviewlink module-actions" href="{link _common=1 view='Upcoming Events' action='show_view' time=$time}">{'More Events...'|gettext}</a>{br}
 		{/if}
 	</p>
 </div>

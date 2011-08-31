@@ -13,8 +13,8 @@
  * GPL: http://www.gnu.org/licenses/gpl.txt
  *
  *}
-<div class="form_title">{if $is_edit == 1}{$_TR.form_title_edit}{else}{$_TR.form_title_new}{/if}</div>
+<div class="form_title">{if $is_edit == 1}{'Edit Existing External Alias'|gettext}{else}{'New External Alias'|gettext}{/if}</div>
 <div class="form_header">
-{$_TR.form_header}
+{'Below, enter the web address you want this section to link to.'|gettext}
 </div>
 {$form_html}

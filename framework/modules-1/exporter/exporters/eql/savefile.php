@@ -21,10 +21,8 @@
 if (!defined('EXPONENT')) exit('');
 
 if (!isset($_POST['tables'])) { // No checkboxes clicked, and got past the JS check
-	$i18n = exponent_lang_loadFile('modules/exporters/exporter/eql/savefile.php');
-	echo $i18n['need_one'];
+	echo gt('You must choose at least one table to export.');
 } else { // All good
-//	if (!defined('SYS_BACKUP')) require_once(BASE.'framework/core/subsystems-1/backup.php');
 	require_once(BASE.'framework/core/subsystems-1/backup.php');
 
 	$filename = str_replace(
@@ -35,28 +33,41 @@ if (!isset($_POST['tables'])) { // No checkboxes clicked, and got past the JS ch
 	
 	ob_end_clean();
 	ob_start("ob_gzhandler");
-	
-	// This code was lifted from phpMyAdmin, but this is Open Source, right?
-	
-	// 'application/octet-stream' is the registered IANA type but
-	//        MSIE and Opera seems to prefer 'application/octetstream'
-	$mime_type = (EXPONENT_USER_BROWSER == 'IE' || EXPONENT_USER_BROWSER == 'OPERA') ? 'application/octetstream' : 'application/octet-stream';
-	
-	header('Content-Type: ' . $mime_type);
-	header('Expires: ' . gmdate('D, d M Y H:i:s') . ' GMT');
-	// IE need specific headers
-	if (EXPONENT_USER_BROWSER == 'IE') {
-		header('Content-Disposition: inline; filename="' . $filename . '"');
-		header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
-		header('Pragma: public');
+
+	if (isset($_POST['save_sample'])) { // Save as a theme sample is checked off
+		$path = BASE . "themes/".DISPLAY_THEME_REAL."/sample.eql";
+		if (!$eql = fopen ($path, "w")) {
+			flash('error',"Error opening eql file for writing ($path).");
+		} else {
+			$eqlfile = exponent_backup_dumpDatabase($db,array_keys($_POST['tables']));
+			if (fwrite ($eql, $eqlfile)  === FALSE) {
+				flash('error',"Error writing to eql file ($path).");
+			}
+			fclose ($eql);
+			flash('message',"Sample database (eql file) saved to '".DISPLAY_THEME."' theme.");
+			expHistory::back();
+		}
 	} else {
-		header('Content-Disposition: attachment; filename="' . $filename . '"');
-		header('Pragma: no-cache');
+		// This code was lifted from phpMyAdmin, but this is Open Source, right?
+
+		// 'application/octet-stream' is the registered IANA type but
+		//        MSIE and Opera seems to prefer 'application/octetstream'
+		$mime_type = (EXPONENT_USER_BROWSER == 'IE' || EXPONENT_USER_BROWSER == 'OPERA') ? 'application/octetstream' : 'application/octet-stream';
+
+		header('Content-Type: ' . $mime_type);
+		header('Expires: ' . gmdate('D, d M Y H:i:s') . ' GMT');
+		// IE need specific headers
+		if (EXPONENT_USER_BROWSER == 'IE') {
+			header('Content-Disposition: inline; filename="' . $filename . '"');
+			header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+			header('Pragma: public');
+		} else {
+			header('Content-Disposition: attachment; filename="' . $filename . '"');
+			header('Pragma: no-cache');
+		}
+		echo exponent_backup_dumpDatabase($db,array_keys($_POST['tables']));
+		exit(''); // Exit, since we are exporting
 	}
-	
-	echo exponent_backup_dumpDatabase($db,array_keys($_POST['tables']));
-	
-	exit(''); // Exit, since we are exporting
 }
 
 ?>

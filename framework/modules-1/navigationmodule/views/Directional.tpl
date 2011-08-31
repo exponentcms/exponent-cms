@@ -16,11 +16,11 @@
  <div class="navigationmodule directional">
     {math equation="x-1" x=$current->rank assign="prevrank"}
     {if $prevrank < 0}
-    	{$_TR.previous}
+    	{'&lt; Prev Page'|gettext}
     {else}
     	{foreach from=$sections item=section}
     	{if $section->parent ==$current->parent && $section->rank==$prevrank}
-    	<a href="{$section->link}"{if $section->new_window} target="_blank"{/if}>{$_TR.previous}</a>
+    	<a href="{$section->link}"{if $section->new_window} target="_blank"{/if}>{'&lt; Prev Page'|gettext}</a>
     	{/if}
     	{/foreach}
     {/if}
@@ -28,11 +28,11 @@
     &nbsp;|&nbsp;
 
     {*if $current->parent == 0}
-    	{$_TR.up}
+    	{'Up'|gettext}
     {else}
-    	<a href="?section={$current->parent}">{$_TR.up}</a>
+    	<a href="?section={$current->parent}">{'Up'|gettext}</a>
     	&nbsp;|&nbsp;
-    	<a href="?section={$current->parents[0]}">{$_TR.top}</a>
+    	<a href="?section={$current->parents[0]}">{'Top'|gettext}</a>
     {/if*}
 
     &nbsp;|&nbsp;
@@ -41,11 +41,11 @@
     {assign var=gotlink value=0}
     {foreach from=$sections item=section }
     {if $section->parent == $current->parent && $section->rank == $nextrank}
-    <a href="{$section->link}"{if $section->new_window} target="_blank"{/if}>{$_TR.next}</a>
+    <a href="{$section->link}"{if $section->new_window} target="_blank"{/if}>{'Next Page &gt;'|gettext}</a>
     {assign var=gotlink value=1}
     {/if}
     {/foreach}
     {if $gotlink == 0}
-    {$_TR.next}
+    {'Next Page &gt;'|gettext}
     {/if}
 </div>

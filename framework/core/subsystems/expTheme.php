@@ -156,6 +156,7 @@ class expTheme {
 	 * Checks to see if the page is currently in an action.  Useful only if the theme does not use the self::main() function
 	 * Returns whether or not an action should be run.
 	 * @node Subsystems:Theme
+	 * @return bool
 	 */
     public static function inAction() {
         return (isset($_REQUEST['action']) && (isset($_REQUEST['module']) || isset($_REQUEST['controller'])));
@@ -178,7 +179,7 @@ class expTheme {
         );
         
         foreach ($dirs as $dir) {
-            if (file_exists($dir.$filename.'.tpl')) return $dir.$form.'.tpl';    
+            if (file_exists($dir.$filename.'.tpl')) return $dir.$form.'.tpl';  //FIXME $form is not set??
         }
         
         return false;
@@ -213,7 +214,6 @@ class expTheme {
     }
 
 	public static function removeCss() {
-//		include_once(BASE.'framework/core/subsystems-1/files.php');
 		expFile::removeFilesInDirectory(BASE.'tmp/minify');  // also clear the minify engine's cache
 		return expFile::removeFilesInDirectory(BASE.'tmp/css');
 	}
@@ -226,7 +226,6 @@ class expTheme {
 	}
 
 	public static function removeSmartyCache() {
-//		include_once(BASE.'framework/core/subsystems-1/files.php');
 		expFile::removeFilesInDirectory(BASE.'tmp/cache');  // alt location for cache
 		return expFile::removeFilesInDirectory(BASE.'tmp/views_c');
 	}
@@ -440,6 +439,7 @@ class expTheme {
 	/** exdoc
 	 * Runs the approriate action, by looking at the $_REQUEST variable.
 	 * @node Subsystems:Theme
+	 * @return bool
 	 */
 	public static function runAction() {
 		if (self::inAction()) {
@@ -508,6 +508,10 @@ class expTheme {
 	 * @param string $title The title of the module (support is view-dependent)
 	 * @param string $source The source of the module.
 	 * @param bool $pickable Whether or not the module is pickable in the Source Picer.
+	 * @param null $section
+	 * @param bool $hide_menu
+	 * @param array $params
+	 * @return
 	 * @node Subsystems:Theme
 	 */
 	public static function showModule($module,$view="Default",$title="",$source=null,$pickable=false,$section=null,$hide_menu=false,$params=array()) {

@@ -132,7 +132,7 @@ class migrationController extends expController {
     public function manage_pages() {
         global $db;
 
-        expHistory::set('managable', $this->params);
+        expHistory::set('manageable', $this->params);
         $old_db = $this->connect();
         $pages = $old_db->selectObjects('section','id > 1');
         foreach($pages as $page) {
@@ -255,7 +255,7 @@ class migrationController extends expController {
 	 * @return void
 	 */
     public function manage_files() {
-        expHistory::set('managable', $this->params);
+        expHistory::set('manageable', $this->params);
         $old_db = $this->connect();
         $files = $old_db->selectObjects('file');
         assign_to_template(array('count'=>count($files)));
@@ -269,7 +269,7 @@ class migrationController extends expController {
     public function migrate_files() {
         global $db;
 
-        expHistory::set('managable', $this->params);
+        expHistory::set('manageable', $this->params);
         $old_db = $this->connect();
         $db->delete('expFiles');
 
@@ -328,7 +328,6 @@ class migrationController extends expController {
         $old_db = $this->connect();
         if (isset($this->params['wipe_content'])) {
             $db->delete('sectionref');
-//			$db->delete('locationref');  //TODO Remove this locationref, uneeded in future
             $db->delete('container');
             $db->delete('text');
             $db->delete('snippet');
@@ -462,22 +461,6 @@ class migrationController extends expController {
 			}
 		}
 
-		// TODO Remove this locationref in future
-//        $locref = $old_db->selectObjects('locationref',$where);
-//        foreach ($locref as $lr) {
-//            if (array_key_exists($lr->module, $this->new_modules)) {
-//                $lr->module = $this->new_modules[$lr->module];
-//            }
-//
-//            if (!in_array($lr->module, $this->deprecated_modules)) {
-//                if (!$db->selectObject('locationref',"source='".$lr->source."'")) {
-//                    $db->insertObject($lr, 'locationref');
-//                    @$this->msg['locationref']++;
-//                }
-//            }
-//        }
-		// Remove to here
-
         // pull the sectionref data for selected modules
         $secref = $old_db->selectObjects('sectionref',$where);
         foreach ($secref as $sr) {
@@ -583,6 +566,10 @@ class migrationController extends expController {
 					}
 					if ($item && $db->selectObject('container',"internal = '".serialize($loc)."'")) {
 						$db->insertObject($item,'userpermission');
+						if ($item->permission == 'edit') {  // if they had edit permission, we'll also give them create permission
+							$item->permission = 'create';
+							@$db->insertObject($item,'userpermission');
+						}
 					}
 				}
 			}
@@ -601,6 +588,10 @@ class migrationController extends expController {
 					}
 					if ($item && $db->selectObject('container',"internal = '".serialize($loc)."'")) {
 						$db->insertObject($item,'grouppermission');
+						if ($item->permission == 'edit') {  // if they had edit permission, we'll also give them create permission
+							$item->permission = 'create';
+							@$db->insertObject($item,'grouppermission');
+						}
 					}
 				}
 			}
@@ -619,7 +610,7 @@ class migrationController extends expController {
 	public function manage_users() {
         global $db;
 
-        expHistory::set('managable', $this->params);
+        expHistory::set('manageable', $this->params);
         $old_db = $this->connect();
         $users = $old_db->selectObjects('user','id > 1');
         foreach($users as $user) {
@@ -1006,6 +997,9 @@ class migrationController extends expController {
 				break;
             case 'newsmodule':
 
+	            if ($module->view == 'Featured News') {
+		            $only_featured = true;
+	            }
 				switch ($module->view) {
 					case 'Headlines':
 						$module->view = 'showall_headlines';
@@ -1077,6 +1071,9 @@ class migrationController extends expController {
 						$newrss->rss_limit = isset($oldconfig->rss_limit) ? $oldconfig->rss_limit : 24;
 						$newrss->rss_cachetime = isset($oldconfig->rss_cachetime) ? $oldconfig->rss_cachetime : 1440;
 						$newrss->save();
+					}
+					if ($only_featured) {
+						$newconfig->config['only_featured'] = true;
 					}
 					if ($newconfig != null) {
 						$newconfig->location_data = $loc;
@@ -1335,12 +1332,33 @@ class migrationController extends expController {
                             // $file = new expFile($bi['file_id']);
                             // $post->attachitem($file,'downloadable');
                         // }
-						$comments = $old_db->selectObjects('weblog_comment', "location_data='".serialize($iloc)."'");
+
+                        if (isset($oldconfig->enable_tags) && $oldconfig->enable_tags = true) {
+	                        $params = null;;
+							$oldtags = expUnserialize($bi['tags']);
+							foreach ($oldtags as $oldtag){
+								$tagtitle = strtolower(trim($old_db->selectValue('tags','name','id = '.$oldtag)));
+								$tag = new expTag($tagtitle);
+//								$tag->title = $old_db->selectValue('tags','name','id = '.$oldtag);
+								if (empty($tag->id)) $tag->update(array('title'=>$tagtitle));
+								$params['expTag'][] = $tag->id;
+							}
+							$post->update($params);
+                        }
+
+						$comments = $old_db->selectArrays('weblog_comment', "parent_id='".$post->id."'");
 						foreach($comments as $comment) {
+							unset($comment['id']);
 							$newcomment = new expComment($comment);
 							$newcomment->created_at = $comment['posted'];
 							$newcomment->edited_at = $comment['edited'];
-							$post->attachitem($newcomment,'');
+							$newcomment->update();
+							// attach the comment to the blog post it belongs to
+							$obj->content_type = 'blog';
+							$obj->content_id = $post->id;
+							$obj->expcomments_id = $newcomment->id;
+							if(isset($this->params['subtype'])) $obj->subtype = $this->params['subtype'];
+							$db->insertObject($obj, $newcomment->attachable_table);
 						}
                     }
                     $newconfig = new expConfig();
@@ -1914,10 +1932,12 @@ class migrationController extends expController {
         $config->update(array('config'=>$this->params));
 		// update our object config
 		$this->config = expUnserialize($config->config);
-        flash('message', 'Migration Configuration Saved');
+//        flash('message', 'Migration Configuration Saved');
 //        expHistory::back();
-		$this->fix_database();
-		echo "<a class=\"admin\" href=\"migration/manage_users\">Next Step -> Migrate Users & Groups</a>";
+		if (isset($this->params['fix_database'])) $this->fix_database();
+		echo '<h2>Migration Configuration Saved</h2><br />';
+		echo '<p>We\'ve successfully connected to the Old database</p><br />';
+		echo "<a class=\"awesome ".BTN_SIZE." ".BTN_COLOR."\" href=\"migration/manage_users\">Next Step -> Migrate Users & Groups</a>";
     }
 	
 	/**

@@ -14,18 +14,20 @@
  *
  *}
 
-{if $record->id != ""}
-	<h1>Edit Information for {$modelname}</h1>
-{else}
-	<h1>New {$modelname}</h1>
-{/if}
+<div class="module links edit">
+    {if $record->id != ""}
+    	<h1>Edit Information for {$modelname}</h1>
+    {else}
+    	<h1>New {$modelname}</h1>
+    {/if}
 
-{form action=update}
-	{control name=id type=hidden value=$record->id}
-    {control type="text" name="title" label="Title" value=$record->title}
-    {control type="text" name="url" label="URL" value=$record->url}
-    {control type="checkbox" name="new_window" label="Open in New Window" checked=$record->new_window value="1"}
-    {control type="files" name="image" label="Image" value=$record->expFile limit=2}
-    {control type="editor" name="body" label="URL Description" value=$record->body}
-    {control type="buttongroup" submit="Save" cancel="Cancel"}
-{/form}
+    {form action=update}
+    	{control name=id type=hidden value=$record->id}
+        {control type="text" name="title" label="Title" value=$record->title}
+        {control type="text" name="url" label="URL" value=$record->url}
+        {control type="checkbox" name="new_window" label="Open in New Window" checked=$record->new_window value="1"}
+        {control type="files" name="image" label="Image" value=$record->expFile limit=2}
+        {control type="editor" name="body" label="URL Description" value=$record->body}
+        {control type="buttongroup" submit="Save" cancel="Cancel"}
+    {/form}
+</div>

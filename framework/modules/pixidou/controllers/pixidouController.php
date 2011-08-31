@@ -18,7 +18,8 @@
 ##################################################
 
 class pixidouController extends expController {
-    public $cacheDir = "framework/modules/pixidou/images/";
+//    public $cacheDir = "framework/modules/pixidou/images/";
+	public $cacheDir = "tmp/pixidou/";
     public $requires_login = array('editor','exitEditor');
 	public $codequality = 'stable';
 

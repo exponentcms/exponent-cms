@@ -21,7 +21,6 @@
 if (!defined('EXPONENT')) exit('');
 
 if (exponent_permissions_check('administrate',$loc)) {
-//	if (!defined('SYS_USERS')) include_once(BASE.'framework/core/subsystems-1/users.php');
 	include_once(BASE.'framework/core/subsystems-1/users.php');
 
 	$locarray = array();
@@ -34,7 +33,7 @@ if (exponent_permissions_check('administrate',$loc)) {
 	} else {
 		$locarray[] = $loc;
 	}
-	$users = exponent_users_getAllUsers();
+	$users = user::getAllUsers();
 	foreach ($locarray as $location) {
 		foreach ($users as $u) {
 			exponent_permissions_revokeAll($u,$location);

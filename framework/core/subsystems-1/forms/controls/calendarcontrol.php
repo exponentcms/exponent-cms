@@ -230,13 +230,13 @@ class calendarcontrol extends formcontrol {
         // css
         expCSS::pushToHead(array(
 		    "unique"=>"cal0",
-		    "link"=>PATH_RELATIVE."external/yui2/build/button/assets/skins/sam/button.css"
+		    "link"=>YUI2_PATH."button/assets/skins/sam/button.css"
 		    )
 		);
 		
         expCSS::pushToHead(array(
 		    "unique"=>"cal1",
-		    "link"=>PATH_RELATIVE."external/yui2/build/calendar/assets/skins/sam/calendar.css"
+		    "link"=>YUI2_PATH."calendar/assets/skins/sam/calendar.css"
 		    )
 		);
 		
@@ -246,7 +246,6 @@ class calendarcontrol extends formcontrol {
     	    )
     	);
 	
-//        exponent_javascript_toFoot('calpop'.$name, "button,calendar,container,dragdrop,slider", null, $script);
         expJavascript::pushToFoot(array(
             "unique"=>'calpop'.$name,
             "yui2mods"=>"button,calendar,container,dragdrop,slider",
@@ -274,9 +273,6 @@ class calendarcontrol extends formcontrol {
 
 
     // function form($object) {
-    //  if (!defined("SYS_FORMS")) require_once(BASE."framework/core/subsystems-1/forms.php");
-    //  exponent_forms_initialize();
-    // 
     //  $form = new form();
     //  if (!isset($object->identifier)) {
     //      $object->identifier = "";
@@ -284,13 +280,11 @@ class calendarcontrol extends formcontrol {
     //      $object->showtime = true;
     //  }
     // 
-    //  $i18n = exponent_lang_loadFile('subsystems/forms/controls/popupdatetimecontrol.php');
+    //  $form->register("identifier",gt('Identifier'),new textcontrol($object->identifier));
+    //  $form->register("caption",gt('Caption'), new textcontrol($object->caption));
+    //  $form->register("showtime",gt('Show Time'), new checkboxcontrol($object->showtime,false));
     // 
-    //  $form->register("identifier",$i18n['identifier'],new textcontrol($object->identifier));
-    //  $form->register("caption",$i18n['caption'], new textcontrol($object->caption));
-    //  $form->register("showtime",$i18n['showtime'], new checkboxcontrol($object->showtime,false));
-    // 
-    //  $form->register("submit","",new buttongroupcontrol($i18n['save'],"",$i18n['cancel']));
+    //  $form->register("submit","",new buttongroupcontrol(gt('Save'),"",bt'Cancel')));
     //  return $form;
     // }
 
@@ -300,9 +294,8 @@ class calendarcontrol extends formcontrol {
             $object->default = 0;
         }
         if ($values['identifier'] == "") {
-            $i18n = exponent_lang_loadFile('subsystems/forms/controls/popupdatetimecontrol.php');
             $post = $_POST;
-            $post['_formError'] = $i18n['id_req'];
+            $post['_formError'] = gt('Identifier is required.');
             expSession::set("last_POST",$post);
             return null;
         }

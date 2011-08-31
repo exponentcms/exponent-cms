@@ -31,6 +31,7 @@ $tables = array_map('tmp_removePrefix',$tables);
 usort($tables,'strnatcmp');
 
 $template = new template('exporter','_eql_tableList',$loc);
+$template->assign('user',$user);
 $template->assign('tables',$tables);
 $template->output();
 

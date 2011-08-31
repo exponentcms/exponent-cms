@@ -20,12 +20,9 @@
 
 if (!defined('SITE_TITLE')) define('SITE_TITLE','My New Exponent Site');
 if (!defined('SITE_HEADER')) define('SITE_HEADER','My New Exponent Header');
-//if (!defined('SITE_ALLOW_REGISTRATION')) define('SITE_ALLOW_REGISTRATION',1);
-//if (!defined('SITE_USE_ANTI_SPAM')) define('SITE_USE_ANTI_SPAM',1);
 
 if (!defined('SITE_404_TITLE')) define('SITE_404_TITLE','Page Not Found');
 if (!defined('SITE_404_HTML')) define('SITE_404_HTML',exponent_unhtmlentities('The page you were looking for wasn&apos;t found.  It may have been moved or deleted.'));
-// SITE_403_HTML will be set by sessions, to be either the timeout html, or forbidden
 if (!defined('SITE_403_REAL_HTML')) define('SITE_403_REAL_HTML',exponent_unhtmlentities('<h3>Authorization Failed</h3>You are not allowed to perform this operation.'));
 
 if (!defined('SITE_KEYWORDS')) define('SITE_KEYWORDS','');
@@ -50,9 +47,7 @@ if (!defined('FILE_DEFAULT_MODE')) define('FILE_DEFAULT_MODE',octdec(FILE_DEFAUL
 if (!defined('DIR_DEFAULT_MODE_STR')) define('DIR_DEFAULT_MODE_STR','0770');
 if (!defined('DIR_DEFAULT_MODE')) define('DIR_DEFAULT_MODE',octdec(DIR_DEFAULT_MODE_STR+0));
 
-if (!defined('USE_LANG')) define('USE_LANG','eng_US');
-if (!defined('ENABLE_WORKFLOW')) define('ENABLE_WORKFLOW',0);
-if (!defined('WORKFLOW_REVISION_LIMIT')) define('WORKFLOW_REVIOSION_LIMIT',0);
+//if (!defined('USE_LANG')) define('USE_LANG','eng_US');
 if (!defined('ORGANIZATION_NAME')) define('ORGANIZATION_NAME',URL_BASE);
 if (!defined('HELP_ACTIVE')) define('HELP_ACTIVE',1);
 if (!defined('HELP_URL')) define('HELP_URL','http://docs.exponentcms.org/');

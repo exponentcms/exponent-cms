@@ -34,7 +34,7 @@
 {else}
 	{permissions level=$smarty.const.UILEVEL_STRUCTURE}
 		{if $permissions.add_module == 1 && $hidebox == 0}
-			<a class="addmodule" href="{link action=edit rank=$i}"><span class="addtext">{$_TR.add_new}</span></a>
+			<a class="addmodule" href="{link action=edit rank=$i}"><span class="addtext">{'Add New Module'|gettext}</span></a>
 		{/if}
 	{/permissions}
 {/if}

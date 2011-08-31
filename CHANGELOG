@@ -2,6 +2,19 @@ Exponent Content Management System
 Copyright (c) 2004-2011 OIC Group, Inc.
 ===============================================
 
+Added / Fixed / changed for 2.0.0 (stable)
+-----------------------
+# This release focuses on final distribution of a stable version
+# Adds database and file import/export; includes installation with optional sample content
+# Updates several modules including Ecommerce
+	• Fixes RC2 bugs, and completes implementation of style changes
+	• New on-screen instructions for obtaining needed external settings (keys) w/ links to obtain them
+	• Now places all temp files in 'tmp' folder and all uploads in 'files' folder
+	• Revised and configurable Twitter view with many options; can now send tweets
+	• More subsystems migrated to 2.0 format deprecating the 1.0 version, including language support
+	• Better error checking in 3rd party libraries (mail & twitter)
+	• Better migration of 0.9x data
+
 Added / Fixed / changed for 2.0.0 release candidate 2
 -----------------------
 # This release focuses on bug fixing

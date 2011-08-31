@@ -28,8 +28,6 @@ if (exponent_permissions_check('user_management',exponent_core_makeLocation('adm
 	//cleans up any old sections
 	$db->delete('sessionticket','last_active < ' . (time() - SESSION_TIMEOUT));
 	
-//	if (!defined('SYS_USERS')) require_once(BASE.'framework/core/subsystems-1/users.php');
-//	if (!defined('SYS_DATETIME')) require_once(BASE.'framework/core/subsystems-1/datetime.php');
 	require_once(BASE.'framework/core/subsystems-1/users.php');
 	require_once(BASE.'framework/core/subsystems-1/datetime.php');
 

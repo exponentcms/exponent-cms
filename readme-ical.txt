@@ -10,7 +10,7 @@ The script responds with either an error or displays a copy of the sent e-mail c
 
 Currently this action
 - requires either an event id or calendar src as a parameter
-- adhere's to aggregated/merged calendars
+- adheres to aggregated/merged calendars
 - passes a single event when a event id is passed
 - passes all future events if a calendar module src is passed
 - passes "month's" events if a calendar src is passed with a time, defaults to now

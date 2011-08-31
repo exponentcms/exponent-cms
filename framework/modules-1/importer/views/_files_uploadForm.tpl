@@ -13,6 +13,11 @@
  * GPL: http://www.gnu.org/licenses/gpl.txt
  *
  *}
-<div class="form_title">{$_TR.form_title}</div>
-<div class="form_header">{$_TR.form_header}</div>
-{$form_html}
+
+<div class="importer importers">
+	<div class="form_header">
+		<h2>{'Restore Uploaded Files from Archive'|gettext}</h2>
+		<p>{'To restore your uploaded files, simply select and upload the files archive using this form.'|gettext}</p>
+	</div>
+	{$form_html}
+</div>

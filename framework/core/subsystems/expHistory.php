@@ -119,7 +119,7 @@ class expHistory {
 
 		$history = expSession::get('history');
 		if (empty($history)) {
-		    $this->history = array('viewable'=>array(), 'editable'=>array(), 'managable'=>array(), 'lasts'=>array('not_editable'=>array()));
+		    $this->history = array('viewable'=>array(), 'editable'=>array(), 'manageable'=>array(), 'lasts'=>array('not_editable'=>array()));
 		} else {
 		    $this->history = $history;
 		}
@@ -200,7 +200,7 @@ class expHistory {
 	}
 
     public static function flush() {
-        $history = array('viewable'=>array(), 'editable'=>array(), 'managable'=>array(), 'lasts'=>array());
+        $history = array('viewable'=>array(), 'editable'=>array(), 'manageable'=>array(), 'lasts'=>array());
         expSession::set('history', $history);
     }
     

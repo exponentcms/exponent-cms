@@ -206,20 +206,15 @@ if ($passed) {
 	$tables = array();
 
 	// first the core and 1.0 definitions
-//	$dirs = array(
-////			BASE."datatypes/definitions",
-//		BASE."framework/core/definitions",
-//		);
-//	foreach ($dirs as $dir) {
-	$dir = BASE.'framework/core/definitions';
-	if (is_readable($dir)) {
-		$dh = opendir($dir);
+	$coredefs = BASE.'framework/core/definitions';
+	if (is_readable($coredefs)) {
+		$dh = opendir($coredefs);
 		while (($file = readdir($dh)) !== false) {
-			if (is_readable("$dir/$file") && is_file("$dir/$file") && substr($file,-4,4) == ".php" && substr($file,-9,9) != ".info.php") {
+			if (is_readable("$coredefs/$file") && is_file("$coredefs/$file") && substr($file,-4,4) == ".php" && substr($file,-9,9) != ".info.php") {
 				$tablename = substr($file,0,-4);
-				$dd = include("$dir/$file");
+				$dd = include("$coredefs/$file");
 				$info = null;
-				if (is_readable("$dir/$tablename.info.php")) $info = include("$dir/$tablename.info.php");
+				if (is_readable("$coredefs/$tablename.info.php")) $info = include("$coredefs/$tablename.info.php");
 				if (!$db->tableExists($tablename)) {
 					foreach ($db->createTable($tablename,$dd,$info) as $key=>$status) {
 						$tables[$key] = $status;
@@ -238,37 +233,41 @@ if ($passed) {
 			}
 		}
 	}
-//	}
 
 	// then search for module definitions
-	$newdef = BASE."framework/modules";
-	if (is_readable($newdef)) {
-		$dh = opendir($newdef);
-		while (($file = readdir($dh)) !== false) {
-			if (is_dir($newdef.'/'.$file) && ($file != '..' && $file != '.')) {
-				$dirpath = $newdef.'/'.$file.'/definitions';
-				if (file_exists($dirpath)) {
-					$def_dir = opendir($dirpath);
-					while (($def = readdir($def_dir)) !== false) {
-//							eDebug("$dirpath/$def");
-						if (is_readable("$dirpath/$def") && is_file("$dirpath/$def") && substr($def,-4,4) == ".php" && substr($def,-9,9) != ".info.php") {
-							$tablename = substr($def,0,-4);
-							$dd = include("$dirpath/$def");
-							$info = null;
-							if (is_readable("$dirpath/$tablename.info.php")) $info = include("$dirpath/$tablename.info.php");
-							if (!$db->tableExists($tablename)) {
-								foreach ($db->createTable($tablename,$dd,$info) as $key=>$status) {
-									$tables[$key] = $status;
-								}
-							} else {
-								foreach ($db->alterTable($tablename,$dd,$info) as $key=>$status) {
-									if (isset($tables[$key])) echo "$tablename, $key<br>";
-									if ($status == TABLE_ALTER_FAILED){
+	$moddefs = array(
+		BASE.'themes/'.DISPLAY_THEME_REAL.'/modules',
+		BASE."framework/modules",
+		);
+	foreach ($moddefs as $moddef) {
+		if (is_readable($moddef)) {
+			$dh = opendir($moddef);
+			while (($file = readdir($dh)) !== false) {
+				if (is_dir($moddef.'/'.$file) && ($file != '..' && $file != '.')) {
+					$dirpath = $moddef.'/'.$file.'/definitions';
+					if (file_exists($dirpath)) {
+						$def_dir = opendir($dirpath);
+						while (($def = readdir($def_dir)) !== false) {
+	//							eDebug("$dirpath/$def");
+							if (is_readable("$dirpath/$def") && is_file("$dirpath/$def") && substr($def,-4,4) == ".php" && substr($def,-9,9) != ".info.php") {
+								$tablename = substr($def,0,-4);
+								$dd = include("$dirpath/$def");
+								$info = null;
+								if (is_readable("$dirpath/$tablename.info.php")) $info = include("$dirpath/$tablename.info.php");
+								if (!$db->tableExists($tablename)) {
+									foreach ($db->createTable($tablename,$dd,$info) as $key=>$status) {
 										$tables[$key] = $status;
-									}else{
-										$tables[$key] = ($status == TABLE_ALTER_NOT_NEEDED ? DATABASE_TABLE_EXISTED : DATABASE_TABLE_ALTERED);
 									}
+								} else {
+									foreach ($db->alterTable($tablename,$dd,$info) as $key=>$status) {
+										if (isset($tables[$key])) echo "$tablename, $key<br>";
+										if ($status == TABLE_ALTER_FAILED){
+											$tables[$key] = $status;
+										}else{
+											$tables[$key] = ($status == TABLE_ALTER_NOT_NEEDED ? DATABASE_TABLE_EXISTED : DATABASE_TABLE_ALTERED);
+										}
 
+									}
 								}
 							}
 						}
@@ -277,7 +276,6 @@ if ($passed) {
 			}
 		}
 	}
-
 	if ($db->tableIsEmpty('user')) {
 		$user = null;
 		$user->username = 'admin';
@@ -314,7 +312,7 @@ if ($passed) {
 
     $config = $_POST['sc'];
     foreach ($config as $key => $value) {
-        exponent_config_change($key, addslashes($value));
+        expSettings::change($key, addslashes($value));
     }
 
     // version tracking
@@ -335,7 +333,7 @@ if ($passed) {
 	echoSuccess();
 }
 
-// create the not_configured file
+// create the not_configured file since we're in the installer
 if (!@file_exists(BASE.'install/not_configured')) {
 	$nc_file = fopen(BASE.'install/not_configured', "w");
 	fclose($nc_file);
@@ -358,20 +356,6 @@ if ($passed) {
 	echo gt('Database tests passed.');
 	echo '</p>';
 
-	if (isset($_POST['install_default'])) {
-//		if (!defined('SYS_BACKUP')) include_once(BASE.'framework/core/subsystems-1/backup.php');
-		include_once(BASE.'framework/core/subsystems-1/backup.php');
-
-		$eql = BASE.'install/sitetypes/db/_default.eql';
-		$errors = array();
-		exponent_backup_restoreDatabase($db,$eql,$errors,0);
-		if (count($errors)) {
-			echo gt('Errors were encountered populating the site database.').'<br /><br />';
-			foreach ($errors as $e) echo $e . '<br />';
-		} else {
-			echo gt('Default content has been inserted into your database.  This content structure should help you to learn how Exponent works, and how to use it for your website.');
-		}
-	}
 	?>
 	<a class="awesome green large" href='?page=install-4'><?php echo gt('Continue Installation'); ?></a>
 	<?php

@@ -52,7 +52,7 @@ class expCommentController extends expController {
 	}	
 	
 	function manage() {
-	    expHistory::set('managable', $this->params);
+	    expHistory::set('manageable', $this->params);
         
         /* The global constants can be overriden by passing appropriate params */ 
         //sure wish I could do this once in the constructor. sadly $this->params[] isn't set yet
@@ -141,7 +141,7 @@ class expCommentController extends expController {
     function update() {
         global $db, $user;
         
-        /* The global constants can be overriden by passing appropriate params */ 
+        /* The global constants can be overridden by passing appropriate params */
         //sure wish I could do this once in the constructor. sadly $this->params[] isn't set yet
         $require_login = empty($this->params['require_login']) ? COMMENTS_REQUIRE_LOGIN : $this->params['require_login'];
         $require_approval = empty($this->params['require_approval']) ? COMMENTS_REQUIRE_APPROVAL : $this->params['require_approval'];
@@ -292,7 +292,9 @@ class expCommentController extends expController {
 	    // setup some email variables.
 	    $subject = 'Notification of a New Comment Posted to '.URL_BASE;
         $tos = explode(',', str_replace(' ', '', $notification_email));
-        
+        $tos = array_filter($tos);
+        if (empty($tos)) return false;
+
         $model = new $params['content_type']($params['content_id']);
 	    $loc = expUnserialize($model->location_data);
 
@@ -341,6 +343,8 @@ class expCommentController extends expController {
 	    $subject = 'Notification of Comment Approval on '.URL_BASE;
         $tos = explode(',', str_replace(' ', '', $notification_email));
         $tos[] = $comment->email;
+		$tos = array_filter($tos);
+		if (empty($tos)) return false;
 
         $model = new $params['content_type']($params['content_id']);
 	    $loc = expUnserialize($model->location_data);

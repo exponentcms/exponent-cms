@@ -16,9 +16,9 @@
 
 <div class="administrationmodule thememanager">
 	<div class="form_header">
-		<h1>{$_TR.form_title}</h1>
-		<p>{$_TR.form_header}</p>
-		<a class="mngmntlink administration_mngmntlink" href="{link action=upload_extension}">{$_TR.new_theme}</a>.
+		<h1>{'Manage Themes'|gettext}</h1>
+		<p>{'This page lists all installed themes that are recognized by Exponent.  When you click the "Preview" link, the site layout will be switched to that theme for the duration of your session.  Other uses will still see the configured theme.  If you log out or close your browser window, the previewing will stop.'|gettext}</p>
+		<a class="mngmntlink administration_mngmntlink" href="{link action=upload_extension}">{'Upload New Theme'|gettext}</a>.
 	</div>
 
 	{foreach name=t from=$themes key=class item=theme}
@@ -28,23 +28,23 @@
 		<div class="themeinfo">
 			<h2>
 			{$theme->name}
-			{if $smarty.const.DISPLAY_THEME_REAL == $class}<span class="current">{$_TR.current}</span>{/if}
+			{if $smarty.const.DISPLAY_THEME_REAL == $class}<span class="current">{'Active Theme'|gettext}</span>{/if}
 			{if $smarty.const.DISPLAY_THEME == $class and $smarty.const.DISPLAY_THEME != $smarty.const.DISPLAY_THEME_REAL}
-				<em class="previewing"> {$_TR.previewing} </em>
+				<em class="previewing"> {'Previewing'|gettext} </em>
 			{/if}
 			</h2>
 			
-			<h3 class="author">{$_TR.by} {$theme->author}</h3>
+			<h3 class="author">{'by'|gettext} {$theme->author}</h3>
 
 			<p>
 				{$theme->description}		
 			</p>
 
 			{if $class != $smarty.const.DISPLAY_THEME}
-				<a class="previewtheme" href="{link action=theme_preview theme=$class}">{$_TR.preview}</a>
+				<a class="previewtheme" href="{link action=theme_preview theme=$class}">{'Preview Theme'|gettext}</a>
 			{/if}
 			{if $smarty.const.DISPLAY_THEME_REAL != $class}
-				<a class="switchtheme" href="{link action=switchtheme theme=$class}">{$_TR.switch_theme}</a>
+				<a class="switchtheme" href="{link action=switchtheme theme=$class}">{'Use This Theme'|gettext}</a>
 			{/if}
 		</div>
 

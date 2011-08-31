@@ -97,10 +97,7 @@ class radiogroupcontrol extends formcontrol {
 	}
 	
 	function form($object) {
-//		if (!defined("SYS_FORMS")) require_once(BASE."framework/core/subsystems-1/forms.php");
 		require_once(BASE."framework/core/subsystems-1/forms.php");
-//		exponent_forms_initialize();
-	
 		$form = new form();
 		if (!isset($object->identifier)) {
 			$object->identifier = "";
@@ -111,18 +108,15 @@ class radiogroupcontrol extends formcontrol {
 			$object->cols = 1;
 			$object->items = array();
 		} 
-		
-		$i18n = exponent_lang_loadFile('subsystems/forms/controls/radiogroupcontrol.php');
-		
-		$form->register("identifier",$i18n['identifier'],new textcontrol($object->identifier));
-		$form->register("caption",$i18n['caption'], new textcontrol($object->caption));
-		$form->register("items",$i18n['items'], new listbuildercontrol($object->items,null));
-		$form->register("default",$i18n['default'], new textcontrol($object->default));
+		$form->register("identifier",gt('Identifier'),new textcontrol($object->identifier));
+		$form->register("caption",gt('Caption'), new textcontrol($object->caption));
+		$form->register("items",gt('Items'), new listbuildercontrol($object->items,null));
+		$form->register("default",gt('Default'), new textcontrol($object->default));
 		$form->register("flip","Caption on Left", new checkboxcontrol($object->flip,false));
-		$form->register("cols",$i18n['cols'], new textcontrol($object->cols,4,false,2,"integer"));
-		$form->register(null,"", new htmlcontrol($i18n['spacing_msg']));
-		$form->register("spacing",$i18n['spacing'], new textcontrol($object->spacing,5,false,4,"integer"));
-		$form->register("submit","",new buttongroupcontrol($i18n['save'],'',$i18n['cancel']));
+		$form->register("cols",gt('Columns'), new textcontrol($object->cols,4,false,2,"integer"));
+		$form->register(null,"", new htmlcontrol(gt('Setting Number of Columns to zero will put all items on one row.')));
+		$form->register("spacing",gt('Column Spacing'), new textcontrol($object->spacing,5,false,4,"integer"));
+		$form->register("submit","",new buttongroupcontrol(gt('Save'),'',gt('Cancel')));
 		
 		return $form;
 	}
@@ -130,15 +124,12 @@ class radiogroupcontrol extends formcontrol {
 	function update($values, $object) {
 		if ($object == null) $object = new radiogroupcontrol();
 		if ($values['identifier'] == "") {
-			$i18n = exponent_lang_loadFile('subsystems/forms/controls/radiogroupcontrol.php');
 			$post = $_POST;
-			$post['_formError'] = $i18n['id_req'];
+			$post['_formError'] = gt('Identifier is required.');
 			expSession::set("last_POST",$post);
 			return null;
 		}
-//		if (!defined("SYS_FORMS")) require_once(BASE."framework/core/subsystems-1/forms.php");
 		require_once(BASE."framework/core/subsystems-1/forms.php");
-//		exponent_forms_initialize();
 		$object->identifier = $values['identifier'];
 		$object->caption = $values['caption'];
 		$object->default = $values['default'];

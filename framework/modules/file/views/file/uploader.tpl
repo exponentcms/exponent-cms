@@ -134,7 +134,7 @@
 	// and clicks "Ok".
 	function onFileSelect(event) {
 	    
-        for (i in event.fileList) {
+        for (var i in event.fileList) {
  	       if (event.fileList[i].size > {/literal}{$bmax}{literal}) {
  	           delete event.fileList[i];
                // alert(event.fileList[i].name+" cannot be uploaded as it's file size is greater than the mximum limit.");
@@ -149,7 +149,7 @@
 	}
 
 	function createDataTable(entries) {
-	  rowCounter = 0;
+	  var rowCounter = 0;
 	  this.fileIdHash = {};
 	  this.dataArr = [];
 	  for(var i in entries) {
@@ -195,17 +195,17 @@
 	
 	// Do something on each file's upload progress event.
 	function onUploadProgress(event) {
-		rowNum = fileIdHash[event["id"]];
-		prog = Math.round(100*(event["bytesLoaded"]/event["bytesTotal"]));
-		progbar = "<div style='width:100%;background-color:#CCC;'><div style='height:12px;padding:3px;font-size:10px;color:#fff;background-color:#f00;width:" + prog + "%;'>"+prog+"%</div></div>";
+		var rowNum = fileIdHash[event["id"]];
+		var prog = Math.round(100 * (event["bytesLoaded"] / event["bytesTotal"]));
+		var progbar = "<div style='width:100%;background-color:#CCC;'><div style='height:12px;padding:3px;font-size:10px;color:#fff;background-color:#f00;width:" + prog + "%;'>" + prog + "%</div></div>";
 		singleSelectDataTable.updateRow(rowNum, {name: dataArr[rowNum]["name"], size: dataArr[rowNum]["size"], progress: progbar});	
 	}
 	
 	// Do something when each file's upload is complete.
 	function onUploadComplete(event) {
-		rowNum = fileIdHash[event["id"]];
-		prog = Math.round(100*(event["bytesLoaded"]/event["bytesTotal"]));
-		progbar = "<div style='width:100%;background-color:#CCC;'><div style='height:12px;padding:3px;font-size:10px;color:#fff;background-color:#090;width:100%;'>100%</div></div>";
+		var rowNum = fileIdHash[event["id"]];
+		var prog = Math.round(100 * (event["bytesLoaded"] / event["bytesTotal"]));
+		var progbar = "<div style='width:100%;background-color:#CCC;'><div style='height:12px;padding:3px;font-size:10px;color:#fff;background-color:#090;width:100%;'>100%</div></div>";
 		singleSelectDataTable.updateRow(rowNum, {name: dataArr[rowNum]["name"], size: dataArr[rowNum]["size"], progress: progbar});
 	    uploader.removeFile(event["id"]);
 	    fileList = event.fileList;

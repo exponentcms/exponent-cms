@@ -44,8 +44,6 @@
  */
 function exponent_forms_initialize() {
 }
-//	$i18n = exponent_lang_loadFile('subsystems/forms.php');
-//
 //	$forms_dir = BASE."framework/core/subsystems-1/forms";
 //	$controls_dir = BASE."framework/core/subsystems-1/forms/controls";
 //	if (phpversion() < 5) {
@@ -57,7 +55,7 @@ function exponent_forms_initialize() {
 //				}
 //			}
 //		} else {
-//			echo $i18n['forms_dir_unreadable'];
+//			echo gt('The framework/core/subsystems-1/forms/ directory is not readable.');
 //		}
 //		if (is_readable($controls_dir)) {
 //			$dh = opendir($controls_dir);
@@ -67,7 +65,7 @@ function exponent_forms_initialize() {
 //				}
 //			}
 //		} else {
-//			echo $i18n['controls_dir_unreadable'];
+//			echo gt('The framework/core/subsystems-1/forms/controls directory is not readable.');
 //		}
 //	} else {
 //		if (is_readable($controls_dir)) {
@@ -75,7 +73,7 @@ function exponent_forms_initialize() {
 //			$auto_dirs["forms_forms"] = $forms_dir;
 //			$auto_dirs["forms_controls"] = $controls_dir;
 //		} else {
-//			echo $i18n['controls_dir_unreadable'];
+//			echo gt('The framework/core/subsystems-1/forms/controls directory is not readable.');
 //		}
 //	}
 //}
@@ -83,10 +81,6 @@ function exponent_forms_initialize() {
 /* exdoc
  * This function complements exponent_forms_cleanup, by properly
  * cleaning up AutoLoader modifications made by the initialization.
- *
- * While this only benefits servers running PHP5, it does not adversely
- * affect PHP4 servers.  For best practices, always call exponent_forms_cleanup
- * if you have called exponent_forms_initialize.
  *
  * @node Subsystems:Forms
  */

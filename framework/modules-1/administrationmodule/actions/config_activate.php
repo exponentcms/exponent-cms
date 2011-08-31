@@ -23,9 +23,7 @@
 if (!defined('EXPONENT')) exit('');
 
 if (exponent_permissions_check('configuration',exponent_core_makeLocation('administrationmodule'))) {
-//	if (!defined('SYS_CONFIG')) require_once(BASE.'framework/core/subsystems-1/config.php');
-	require_once(BASE.'framework/core/subsystems-1/config.php');
-	exponent_config_activateProfile($_GET['configname']);
+	expSettings::activateProfile($_GET['configname']);
 	expHistory::back();
 } else {
 	echo SITE_403_HTML;

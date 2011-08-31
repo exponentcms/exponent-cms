@@ -35,5 +35,5 @@ if (!defined('EXPONENT')) exit('');
 		$nav[$i]->link = exponent_core_makeLink(array('section'=>$nav[$i]->id),'',$nav[$i]->sef_name);
 	}
 	$nav[$navcount-1]->last=true;
-	echo exponent_javascript_ajaxReply(201, '', $nav);
+	echo expJavascript::ajaxReply(201, '', $nav);
 ?>

@@ -35,9 +35,11 @@ class google_product_types extends expNestedNode {
 			
 		if(count($catArray) > 0) {
 			foreach($catArray as $item) {
-				$assoc->storecategories_id  = $cat_id;
-				$assoc->google_product_types_id = $item;
-				$db->insertObject($assoc, 'google_product_types_storeCategories');    
+				if($item <> 0) {
+					$assoc->storecategories_id  = $cat_id;
+					$assoc->google_product_types_id = $item;
+					$db->insertObject($assoc, 'google_product_types_storeCategories');    
+				}
 			}
 		}
 		

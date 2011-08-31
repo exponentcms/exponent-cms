@@ -26,6 +26,8 @@ define('CONTENT_SELECTOR',2);
 // Initialize the Exponent Framework
 include_once('exponent.php');
 
+if (!$user->isLoggedIn()) exit();
+
 // Include the real selector script, which does all of the heavy lifting.
 include_once('selector.php');
 

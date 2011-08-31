@@ -23,14 +23,10 @@
 if (!defined('EXPONENT')) exit('');
 
 if (exponent_permissions_check('configuration',exponent_core_makeLocation('administrationmodule'))) {
-//	if (!defined('SYS_FORMS')) require_once(BASE.'framework/core/subsystems-1/forms.php');
 	require_once(BASE.'framework/core/subsystems-1/forms.php');
-//	exponent_forms_initialize();
-//	if (!defined('SYS_CONFIG')) require_once(BASE.'framework/core/subsystems-1/config.php');
-	require_once(BASE.'framework/core/subsystems-1/config.php');
 
 	$configname = (isset($_GET['configname']) ? $_GET['configname'] : "");
-	$form = exponent_config_configurationForm($configname);
+	$form = expSettings::configurationForm($configname);
 	$form->meta('module','administrationmodule');
 	$form->meta('action','config_save');
 	

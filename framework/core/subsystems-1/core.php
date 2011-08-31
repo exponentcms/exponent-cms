@@ -195,7 +195,7 @@ function exponent_core_makeSecureLink($params) {
 
         // this is here for compatability with the navigation module and the old way make link used prior
         // to having the router class
-        $params['sef_name'] = $sef_name;
+        $params['sef_name'] = $sef_name;  //FIXME $sef_name isn't set??
 
         // now that we have the router class we'll use it to build the link and then return it.
         return $router->makeLink($params, false, true);
@@ -371,8 +371,7 @@ function exponent_core_maxUploadSizeMessage() {
 				$size_msg = $size . " bytes";
 			}
 	}
-	$i18n = exponent_lang_loadFile('subsystems/core.php');
-	return sprintf($i18n['max_upload'],$size_msg);
+	return sprintf(gt('The maximum size of uploaded files is %s.  Uploading files larger than that may result in erratic behavior.'),$size_msg);
 }
 
 /* exdoc
@@ -454,7 +453,8 @@ function exponent_core_resolveFilePaths($type, $name, $subtype, $subname) {
 		} elseif($type == "models") {
 			$relpath .= "models/";
 		} elseif($type == "controls") {
-			$relpath .= "themes/";
+//			$relpath .= "themes/";
+			$relpath .= "external/";
 		} elseif($type == "Control") {
 			$relpath .= "themes/";
 		} elseif($type == "Form") {
@@ -513,12 +513,13 @@ function exponent_core_resolveFilePaths($type, $name, $subtype, $subname) {
 	//TODO: now that glob is used build a syntax for it instead of calling it repeatedly
 	//latter override the precursors
 	$locations = array(BASE, THEME_ABSOLUTE);
+	$checkpaths = array();
 	foreach($locations as $location) {
-		$checkpaths[] = $location . $typepath . "common/" . $relpath2;
+		$checkpaths[] = $location . $typepath . $relpath2;
 		if (strstr($location,DISPLAY_THEME_REAL) && strstr($relpath,"framework/modules-1")) {
-   		$checkpaths[] = $location . str_replace("framework/modules-1", "modules", $relpath);
+   		    $checkpaths[] = $location . str_replace("framework/modules-1", "modules", $relpath);
 		} else {
-   		$checkpaths[] = $location . $relpath;
+   		    $checkpaths[] = $location . $relpath;
 		}
 		//eDebug($relpath);
 	}

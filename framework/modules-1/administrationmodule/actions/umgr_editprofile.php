@@ -23,11 +23,8 @@
 if (!defined('EXPONENT')) exit('');
 
 if (exponent_permissions_check('user_management',exponent_core_makeLocation('administrationmodule'))) {
-//	if (!defined('SYS_USERS')) require_once(BASE.'framework/core/subsystems-1/users.php');
-//	if (!defined('SYS_FORMS')) require_once(BASE.'framework/core/subsystems-1/forms.php');
 	require_once(BASE.'framework/core/subsystems-1/users.php');
 	require_once(BASE.'framework/core/subsystems-1/forms.php');
-//	exponent_forms_initialize();
 
 	$u = exponent_users_getUserById(intval($_GET['id']));
 	if ($u == null) {
@@ -40,9 +37,8 @@ if (exponent_permissions_check('user_management',exponent_core_makeLocation('adm
 	$form->meta('action','umgr_saveuser');
 	
 	if ($user->is_admin == 1 && $u->is_admin == 0) {
-		// Super user editting a 'lesser' user.
-		$i18n = exponent_lang_loadFile('modules/administrationmodule/actions/umgr_editprofile.php');
-		$form->registerBefore('submit','is_acting_admin',$i18n['is_admin'],new checkboxcontrol($u->is_acting_admin,true));
+		// Super user editing a 'lesser' user.
+		$form->registerBefore('submit','is_acting_admin',gt('Administrator?'),new checkboxcontrol($u->is_acting_admin,true));
 	}
 	
 	$template = new template('administrationmodule','_umgr_editprofile',$loc);
