@@ -53,7 +53,6 @@ if ($f) {
 			else $ctl->rank = $db->max("formbuilder_control","rank","form_id","form_id=".$f->id)+1;
 			$db->insertObject($ctl,"formbuilder_control");
 			expHistory::returnTo('editable');
-//			expHistory::back();
 		} else {
 			$control_type = "";
 			$ctl = null;
