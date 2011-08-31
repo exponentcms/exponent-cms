@@ -839,6 +839,7 @@ class storeController extends expController {
             'optiongroups'=>$editable_options, 
             'shipping_services'=> isset($shipping_services) ? $shipping_services : '', // Added implication since the shipping_services default value is a null
             'shipping_methods' => isset($shipping_methods)  ? $shipping_methods  : '',   // Added implication since the shipping_methods default value is a null
+			'product_types' => isset($this->config['product_types']) ? $this->config['product_types'] : ''
             //'status_display'=>$status_display->getStatusArray()
         ));
     }
