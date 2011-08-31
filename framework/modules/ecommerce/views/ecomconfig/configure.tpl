@@ -51,6 +51,7 @@
                 <li><a href="#tab6"><em>Geography</em></a></li>
 				<li><a href="#tab7"><em>Invoice</em></a></li>
 				<li><a href="#tab8"><em>Display & Feature Settings</em></a></li>
+				<li><a href="#tab9"><em>Product Types</em></a></li>
 			</ul>            
 	    	<div class="yui-content">
 	        	<div id="tab1">
@@ -134,6 +135,15 @@
                     {control type="checkbox" name="enable_ratings_and_reviews" label="Enable Ratings & Reviews?" value=1 checked=$config.enable_ratings_and_reviews}
                     {control type="checkbox" name="enable_lightbox" label="Enable Lightbox Image Viewer?" value=1 checked=$config.enable_lightbox}
                 </div>  
+				
+				<div id="tab9">
+					<h2>{"Product Type Settings"|gettext}</h2>
+					{control type="checkbox" name="product_type['google']" label="Google Feed" value=1 checked=$config.product_type.google}
+					{control type="checkbox" name="product_type['bing']" label="Bing Feed" value=1 checked=$config.product_type.bing}
+					{control type="checkbox" name="product_type['nextag']" label="NexTag Feed" value=1 checked=$config.product_type.nextag}
+					{control type="checkbox" name="product_type['shopzilla']" label="Shopzilla Feed" value=1 checked=$config.product_type.shopzilla}
+					{control type="checkbox" name="product_type['shopping']" label="Shopping Feed" value=1 checked=$config.product_type.shopping}
+				</div>
             </div>
         </div>
         {control type=buttongroup submit="Save Config" cancel="Cancel"}
