@@ -681,8 +681,10 @@ class expRouter {
     
     public function getRouterMaps() {
         $mapfile = BASE.'framework/core/router_maps.php';
-        if (file_exists(BASE.'themes/'.DISPLAY_THEME_REAL.'/router_maps.php')) {
-            $mapfile = BASE.'themes/'.DISPLAY_THEME_REAL.'/router_maps.php';
+//        if (file_exists(BASE.'themes/'.DISPLAY_THEME_REAL.'/router_maps.php')) {
+//            $mapfile = BASE.'themes/'.DISPLAY_THEME_REAL.'/router_maps.php';
+		if (file_exists(BASE.'themes/'.DISPLAY_THEME.'/router_maps.php')) {
+			$mapfile = BASE.'themes/'.DISPLAY_THEME.'/router_maps.php';
         }
 
         include_once($mapfile);

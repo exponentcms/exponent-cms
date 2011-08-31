@@ -71,6 +71,13 @@ class loginmodule {
 			//$template->assign('isecom',in_array('storeController',listActiveControllers()));
 			$template->assign('loggedin',0);
 		}
+		// FIGURE OUT IF WE"RE IN PREVIEW MODE OR NOT
+		$level = 99;
+		if (expSession::is_set('uilevel')) {
+			$level = expSession::get('uilevel');
+		}
+		$template->assign('previewtext', $level == UILEVEL_PREVIEW ? gt('Turn Preview Mode off') : gt('Turn Preview Mode on'));
+		$template->assign('previewclass', $level == UILEVEL_PREVIEW ? 'preview_on' : 'preview_off');
 		$template->output($view);
 	}
 	

@@ -502,9 +502,11 @@ class product extends expRecord {
     
     public function getForm($form) {        
         $dirs = array(
-            BASE.'themes/'.DISPLAY_THEME_REAL.'/modules/ecommerce/products/views/'.$this->product_type.'/',
+//            BASE.'themes/'.DISPLAY_THEME_REAL.'/modules/ecommerce/products/views/'.$this->product_type.'/',
+            BASE.'themes/'.DISPLAY_THEME.'/modules/ecommerce/products/views/'.$this->product_type.'/',
             BASE.'framework/modules/ecommerce/products/views/'.$this->product_type.'/',
-            BASE.'themes/'.DISPLAY_THEME_REAL.'/modules/ecommerce/products/views/product/',
+//            BASE.'themes/'.DISPLAY_THEME_REAL.'/modules/ecommerce/products/views/product/',
+            BASE.'themes/'.DISPLAY_THEME.'/modules/ecommerce/products/views/product/',
             BASE.'framework/modules/ecommerce/products/views/product/',
         );
         

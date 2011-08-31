@@ -128,7 +128,8 @@ class billing extends expRecord {
     
     public function getCalcViews() {        
         $dirs = array(
-            BASE.'themes/'.DISPLAY_THEME_REAL.'/modules/ecommerce/views/billing/',
+//            BASE.'themes/'.DISPLAY_THEME_REAL.'/modules/ecommerce/views/billing/',
+            BASE.'themes/'.DISPLAY_THEME.'/modules/ecommerce/views/billing/',
             BASE.'framework/modules/ecommerce/views/billing/',
         );
         

@@ -25,7 +25,8 @@
 <div id="fileViewConfig">
     {if $config.filedisplay != ""}
         {assign var=presaved value=1}
-        {assign var=themefileview value="`$smarty.const.BASE`themes/`$smarty.const.DISPLAY_THEME_REAL`/modules/common/views/file/configure/`$config.filedisplay`.tpl"}
+{*        {assign var=themefileview value="`$smarty.const.BASE`themes/`$smarty.const.DISPLAY_THEME_REAL`/modules/common/views/file/configure/`$config.filedisplay`.tpl"}*}
+	    {assign var=themefileview value="`$smarty.const.BASE`themes/`$smarty.const.DISPLAY_THEME`/modules/common/views/file/configure/`$config.filedisplay`.tpl"}
         {if file_exists($themefileview)}
             {include file=$themefileview}
         {else}

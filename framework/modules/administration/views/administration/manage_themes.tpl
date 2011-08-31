@@ -41,7 +41,6 @@ a.switchtheme.current {
         <thead>
             <tr>
                 <th>
-                {"Preview"|gettext}
                 </th>
                 <th>
                 {"Description"|gettext}
@@ -49,6 +48,8 @@ a.switchtheme.current {
                 <th>
                 {"Style Variations"|gettext}
                 </th>
+	            <th>
+	            </th>
             </tr>
         </thead>
         <tbody>
@@ -65,15 +66,37 @@ a.switchtheme.current {
         				{$theme->description}		
         			</p>
                 </td>
-                <td>
-                    {if $theme->style_variations}
-                        {foreach from=$theme->style_variations item=sv key=svkey name=styles}
-        				    <a class="switchtheme{if $smarty.const.DISPLAY_THEME_REAL == $class && $smarty.const.THEME_STYLE == $sv} current{/if}" href="{link action=switch_themes theme=$class sv=$sv}">{$sv}</a>
-                        {/foreach}
-                    {else}
-        				<a class="switchtheme{if $smarty.const.DISPLAY_THEME_REAL == $class} current{/if}" href="{link action=switch_themes theme=$class}">Default</a>
-        			{/if}
-                </td>
+				{if $theme->style_variations}
+					<td colspan="2">
+					<table border-bottom-style="transparent">
+						{foreach from=$theme->style_variations item=sv key=svkey name=styles}
+							<tr>
+								<td>
+									<a class="switchtheme{if $smarty.const.DISPLAY_THEME_REAL == $class && $smarty.const.THEME_STYLE == $sv} current{/if}" href="{link action=switch_themes theme=$class sv=$sv}" title='Select this Style'>{$sv}</a>
+								</td>
+								<td>
+									{if $smarty.const.DISPLAY_THEME != $class}
+										{icon img=view.png action=preview_theme theme=$class sv=$sv title="Preview this Style"}
+									{elseif $smarty.const.DISPLAY_THEME_REAL != $smarty.const.DISPLAY_THEME}
+										(<em>Previewing</em>)
+									{/if}
+								</td>
+							</tr>
+						{/foreach}
+					</table>
+					</td>
+				{else}
+					<td>
+						<a class="switchtheme{if $smarty.const.DISPLAY_THEME_REAL == $class} current{/if}" href="{link action=switch_themes theme=$class}" title='Select this Theme'>Default</a>
+					</td>
+					<td>
+						{if $smarty.const.DISPLAY_THEME != $class}
+							{icon img=view.png action=preview_theme theme=$class title="Preview this Theme"}
+						{elseif $smarty.const.DISPLAY_THEME_REAL != $smarty.const.DISPLAY_THEME}
+							(<em>Previewing</em>)
+						{/if}
+					</td>
+				{/if}
             </tr>
         	{/foreach}
         </tbody>
