@@ -776,15 +776,25 @@ class theme {
 	function author() { return ""; }
 	function description() { return "The theme shell"; }
 
-	function configureTheme ($form) {
-		assign_to_template(array('form_html'=>$form->tohtml()));
+	function configureTheme () {
+		$settings = expSettings::parseFile(BASE."themes/".$_GET['theme']."/config.php");
+		$form = new form();
+		$form->meta('controller','administration');
+		$form->meta('action','update_theme');
+		$form->meta('theme',$_GET['theme']);
+		foreach ($settings as $setting=>$key) {
+			$form->register($setting,$setting.': ',new textcontrol($key,20));
+		}
+		$form->register(null,'',new htmlcontrol('<br>'));
+		$form->register('submit','',new buttongroupcontrol(gt('Save'),'',gt('Cancel')));
+		assign_to_template(array('name'=>self::name(),'form_html'=>$form->tohtml()));
 	}
 
-	function getThemeConfig ($theme) {
-		return expSettings::parseFile(BASE."themes/".$theme."/config.php");
-	}
-	
-	function saveThemeConfig ($params, $theme) {
+	function saveThemeConfig ($params) {
+		$theme = $params['theme'];
+		unset ($params['theme']);
+		unset ($params['controller']);
+		unset ($params['action']);
 		expSettings::saveValues($params, BASE."themes/".$theme."/config.php");
 		expHistory::back();
 	}

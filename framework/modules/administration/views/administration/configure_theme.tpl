@@ -17,7 +17,7 @@
 
 {/css}
 
-<div class="theme edit">
+<div class="theme configure">
 	<div class="form_title">
 		<h1>Configure {$name}</h1>
 	</div>

@@ -21,6 +21,7 @@ if (class_exists('multioptionstheme')) return;
 
 class multioptionstheme extends theme {
 	public $user_configured = true;
+
 	function name() { return "Multi-Options Theme"; }
 	function author() { return "David Leffler"; }
 	function description() { return "A user configurable simple theme from <a href=\"http://andreasviklund.com/\" target=\"_blank\">andreasviklund.com</a>"; }
@@ -77,15 +78,7 @@ class multioptionstheme extends theme {
 		$form->register('submit','',new buttongroupcontrol(gt('Save'),'',gt('Cancel')));
 		assign_to_template(array('name'=>self::name(),'form_html'=>$form->tohtml()));
 	}
-	
-	function saveThemeConfig($params) {
-		$theme = $params['theme'];
-		unset ($params['theme']);
-		unset ($params['controller']);
-		unset ($params['action']);
-		expSettings::saveValues($params, BASE."themes/".$theme."/config.php");
-		expHistory::back();
-	}
+
 }
 
 ?>
