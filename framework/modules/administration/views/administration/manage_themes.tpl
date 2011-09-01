@@ -46,10 +46,8 @@ a.switchtheme.current {
                 {"Description"|gettext}
                 </th>
                 <th>
-                {"Style Variations"|gettext}
+                {"Actions"|gettext}
                 </th>
-	            <th>
-	            </th>
             </tr>
         </thead>
         <tbody>
@@ -88,10 +86,11 @@ a.switchtheme.current {
 				{else}
 					<td>
 						<a class="switchtheme{if $smarty.const.DISPLAY_THEME_REAL == $class} current{/if}" href="{link action=switch_themes theme=$class}" title='Select this Theme'>Default</a>
-					</td>
-					<td>
+						{if ($theme->user_configured)}
+							{icon class=configure action=configure_theme theme=$class title="Configure this Theme" text="Configure"}
+						{/if}
 						{if $smarty.const.DISPLAY_THEME != $class}
-							{icon img=view.png action=preview_theme theme=$class title="Preview this Theme"}
+							{icon class=view action=preview_theme theme=$class title="Preview this Theme" text="Preview"}
 						{elseif $smarty.const.DISPLAY_THEME_REAL != $smarty.const.DISPLAY_THEME}
 							(<em>Previewing</em>)
 						{/if}

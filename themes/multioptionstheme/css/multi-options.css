@@ -4,7 +4,7 @@ For more information, see http://andreasviklund.com/templates/multi-options/
 */
 
 /* Main containers */
-body {margin:0; padding:0; font:92% Tahoma,sans-serif; background:#fefefe url(images/background.jpg) top left repeat-x; color:#555; text-align:center; line-height:1.6em;}
+body {margin:0; padding:0; font:92% Tahoma,sans-serif; background:#fefefe url(../images/background.jpg) top left repeat-x; color:#555; text-align:center; line-height:1.6em;}
 #wrap {width:980px; text-align:left; margin:0 auto;}
 
 /* Header */
@@ -68,23 +68,23 @@ li {margin:0 0 5px 0; padding:0 0 0 5px;}
 .w1200px #wrap, .w1200px #header, .w1200px #footer {width:1200px;}
 .w1200px #title {width:650px;}
 .w1200px #headerimage {width:500px;}
-.w1200px #sidebar, .w1200px #sidebar ul.sidemenu {width:300px;}
+.w1200px #sidebar, .w1200px #sidebar ul.sidemenu {width:300px;; float:right}
 .w1200px #sidebar ul.sidemenu ul {width:280px;}
-.w1200px #content {width:860px; margin:0 315px 15px 0;}
+.w1200px #content {width:860px; margin:0 0 15px 0; float:left;}
 
 .w760px #wrap, .w760px #header, .w760px #footer {width:760px;}
 .w760px #title {width:340px;}
 .w760px #headerimage {width:400px;}
-.w760px #sidebar, .w760px #sidebar ul.sidemenu {width:200px;}
+.w760px #sidebar, .w760px #sidebar ul.sidemenu {width:200px;; float:right}
 .w760px #sidebar ul.sidemenu ul {width:180px;}
-.w760px #content {width:520px; margin:0 215px 15px 0;}
+.w760px #content {width:520px; margin:0 0 15px 0; float:left;}
 
 .w600px #wrap, .w600px #header, .w600px #title, .w600px #footer {width:600px;}
-.w600px #header {height:auto; margin-bottom:40px;}
+.w600px #header {height:auto; margin-bottom:40px}
 .w600px #headerimage {width:600px; float:none; margin:0 0 10px; text-align:center; border:none;}
-.w600px #sidebar, .w600px #sidebar ul.sidemenu {width:170px;}
+.w600px #sidebar, .w600px #sidebar ul.sidemenu {width:170px;; float:right}
 .w600px #sidebar ul.sidemenu ul {width:150px;}
-.w600px #content {width:400px; margin:0 190px 15px 0;}
+.w600px #content {width:400px; margin:0 0 15px 0; float:left;}
 
 /* Color options */
 .orange h1, .orange h1 a, .orange a, .orange h2, .orange h3, .orange ul.sidemenu li a, .orange ul.sidemenu li a.active {color:#e09010;}
@@ -95,6 +95,8 @@ li {margin:0 0 5px 0; padding:0 0 0 5px;}
 .black h1, .black h1 a, .black a, .black h2, .black h3, .black ul.sidemenu li a, .black ul.sidemenu li a.active {color:#111;}
 .yellow h1, .yellow h1 a, .yellow a, .yellow h2, .yellow h3, .yellow ul.sidemenu li a, .yellow ul.sidemenu li a.active {color:#cac300;}
 .pink h1, .pink h1 a, .pink a, .pink h2, .pink h3, .pink ul.sidemenu li a, .pink ul.sidemenu li a.active {color:#ef6fd8;}
+.grey h1, .grey h1 a, .grey a, .grey h2, .grey h3, .grey ul.sidemenu li a, .grey ul.sidemenu li a.active {color:#c1c1c1;}
+.magenta h1, .magenta h1 a, .magenta a, .magenta h2, .magenta h3, .magenta ul.sidemenu li a, .magenta ul.sidemenu li a.active {color:#a9014b;}
 
 #content-wrap {
 	clear: both;

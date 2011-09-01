@@ -201,34 +201,29 @@ class expSettings {
 		}
 	}
 
-	public static function saveValues($values) {
+	public static function saveValues($values, $configname='') {
 		$str = "<?php\n";
 			foreach ($values as $directive=>$value) {
 			$directive = strtoupper($directive);
-
-					$str .= "define(\"$directive\",";
-					if (substr($directive,-5,5) == "_HTML") {
-							$value = htmlentities(stripslashes($value),ENT_QUOTES,LANG_CHARSET); // slashes added by POST
-	//                        $value = str_replace(array("\r\n","\r","\n"),"<br />",$value);
-							$value = str_replace(array("\r\n","\r","\n"),"",$value);
-							$str .= "exponent_unhtmlentities('$value')";
-
-					} elseif (is_int($value)) {
-							$str .= $value;
-
-					} else {
-
-							if ($directive != 'SESSION_TIMEOUT')
-									$str .= "'".str_replace("'","\'",$value)."'";
-							else
-									$str .= str_replace("'",'', $value);
-
-					}
-					$str .= ");\n";
+			$str .= "define(\"$directive\",";
+			if (substr($directive,-5,5) == "_HTML") {
+				$value = htmlentities(stripslashes($value),ENT_QUOTES,LANG_CHARSET); // slashes added by POST
+//              $value = str_replace(array("\r\n","\r","\n"),"<br />",$value);
+				$value = str_replace(array("\r\n","\r","\n"),"",$value);
+				$str .= "exponent_unhtmlentities('$value')";
+			} elseif (is_int($value)) {
+				$str .= $value;
+			} else {
+				if ($directive != 'SESSION_TIMEOUT')
+					$str .= "'".str_replace("'","\'",$value)."'";
+				else
+					$str .= str_replace("'",'', $value);
+			}
+			$str .= ");\n";
 		}
 
 		$str .= '?>';
-		$configname = empty($values['CURRENTCONFIGNAME']) ? '' : $values['CURRENTCONFIGNAME'];
+//		$configname = empty($values['CURRENTCONFIGNAME']) ? '' : $values['CURRENTCONFIGNAME'];
 		self::writeFile($str, $configname);
 	}
 
@@ -238,7 +233,7 @@ class expSettings {
 		self::saveValues($conf);
 	}
 
-	public static function writeFile($str, $configname="") {
+	public static function writeFile($str, $configname='') {
 		// if ($configname != "") {
 	//                 // Wishing to save
 	//                 if ((file_exists(BASE."conf/profiles/$configname.php") && expUtil::isReallyWritable(BASE."conf/profiles/$configname.php")) ||
@@ -253,14 +248,16 @@ class expSettings {
 	//         }
 
 			//if (isset($values['activate']) || $configname == "") {
-					if ((file_exists(BASE."conf/config.php") && expUtil::isReallyWritable(BASE."conf/config.php")) || expUtil::isReallyWritable(BASE."conf")) {
-						$fh = fopen(BASE."conf/config.php","w");
-						fwrite($fh,$str);
-						/*fwrite($fh,"\n<?php\ndefine(\"CURRENTCONFIGNAME\",\"$configname\");\n?>\n");*/
-						fclose($fh);
-					} else {
-						echo gt('Unable to write active configuration').'<br />';
-					}
+		if ($configname == "") { $configname = BASE."conf/config.php"; }
+//		if ((file_exists(BASE."conf/config.php") && expUtil::isReallyWritable(BASE."conf/config.php")) || expUtil::isReallyWritable(BASE."conf")) {
+		if ((file_exists($configname) && expUtil::isReallyWritable($configname))) {
+			$fh = fopen($configname,"w");
+			fwrite($fh,$str);
+			/*fwrite($fh,"\n<?php\ndefine(\"CURRENTCONFIGNAME\",\"$configname\");\n?>\n");*/
+			fclose($fh);
+		} else {
+			echo gt('Unable to write configuration').'<br />';
+		}
 			//}
 	}
 

@@ -96,6 +96,28 @@
     background-color: #d4d4d4;
     color: #6d6d6d;
 }
+.purple.awesome,
+.purple.awesome:visited {
+    background-color: #8e1f8f
+}
+.purple.awesome:hover {
+    background-color: #660066
+}
+.black.awesome,
+.black.awesome:visited {
+    background-color: #111
+}
+.black.awesome:hover {
+    background-color: #666666
+}
+.pink.awesome,
+.pink.awesome:visited {
+    background-color: #ef6fd8
+}
+.pink.awesome:hover {
+    background-color: #cc0099
+}
+
 /****************  dissabled  ***********************/
 .disabled.awesome,
 .disabled.awesome:visited {

@@ -20,6 +20,7 @@
 			<h1 id="logo">
 				<a href="<?php echo URL_FULL; ?>" title="<?php echo SITE_TITLE; ?>"><?php echo ORGANIZATION_NAME; ?></a> <sub><?php echo SITE_HEADER; ?></sub>
 			</h1>
+			<?php expTheme::module(array("module"=>"login","view"=>"Flyout")); ?>
 			<?php expTheme::module(array("module"=>"navigation","view"=>"YUI Top Nav","source"=>"@top")); ?>
 		</div>
 		<div id="content-wrap">

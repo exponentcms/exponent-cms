@@ -552,6 +552,7 @@ class administrationController extends expController {
     				include_once(BASE."themes/$file/class.php");
     				$theme = new $file();
     				$t = null;
+				    $t->user_configured = $theme->user_configured;
     				$t->name = $theme->name();
     				$t->description = $theme->description();
     				$t->author = $theme->author();
@@ -574,6 +575,7 @@ class administrationController extends expController {
     
     public function switch_themes() {
     	expSettings::change('DISPLAY_THEME_REAL', $this->params['theme']);
+	    expSession::set('display_theme',$this->params['theme']);
     	if (isset($this->params['sv']) && THEME_STYLE!=$this->params['sv']) {
             expSettings::change('THEME_STYLE', $this->params['sv']);
     	    if (expFile::recurse_copy(BASE."themes/".$this->params['theme']."/css", BASE."themes/".$this->params['theme']."/styles_backup/css")
@@ -609,6 +611,22 @@ class administrationController extends expController {
 		}
 		expTheme::removeSmartyCache();
 		expHistory::back();
+	}
+
+	public function configure_theme() {
+		if (is_readable(BASE."themes/".$this->params['theme']."/class.php")) {
+			include_once(BASE."themes/".$this->params['theme']."/class.php");
+			$theme = new $this->params['theme']();
+			$theme->configureTheme();
+		}
+	}
+
+	public function update_theme() {
+		if (is_readable(BASE."themes/".$this->params['theme']."/class.php")) {
+			include_once(BASE."themes/".$this->params['theme']."/class.php");
+			$theme = new $this->params['theme']();
+			$theme->saveThemeConfig($this->params);
+		}
 	}
 
     public function configure_site () {
@@ -746,6 +764,30 @@ class administrationController extends expController {
         flash('message', "Your Website Configuration has been updated");
         expHistory::back();
     }    
+}
+
+/**
+ * The base theme class
+ */
+class theme {
+	public $user_configured = false;
+
+	function name() { return "Theme"; }
+	function author() { return ""; }
+	function description() { return "The theme shell"; }
+
+	function configureTheme ($form) {
+		assign_to_template(array('form_html'=>$form->tohtml()));
+	}
+
+	function getThemeConfig ($theme) {
+		return expSettings::parseFile(BASE."themes/".$theme."/config.php");
+	}
+	
+	function saveThemeConfig ($params, $theme) {
+		expSettings::saveValues($params, BASE."themes/".$theme."/config.php");
+		expHistory::back();
+	}
 }
 
 ?>
