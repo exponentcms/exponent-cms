@@ -64,7 +64,7 @@ class storeCategoryController extends expNestedNodeController {
 			foreach ($recorded_product_type as $item) {
 				$f_recorded_product_types[$item->$product_type_id] = trim($item->title);
 			}
-			$control = new listbuildercontrol($f_recorded_product_types, $f_types);
+			$control = new listbuildercontrol(@$f_recorded_product_types, $f_types);
 			$arr_product_type[$value] = $control->controlToHTML($product_type_list,"copy");
 			
 		}
