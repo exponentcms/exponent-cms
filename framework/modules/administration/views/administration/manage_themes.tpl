@@ -22,9 +22,10 @@ a.switchtheme {
     text-transform:capitalize;
     padding:3px 0 3px 20px
 }
-a.switchtheme.current {
+span.switchtheme.current {
     font-weight:bold;
     background:url({/literal}{$smarty.const.URL_FULL}{literal}framework/core/assets/images/exp-admin-sprite.png) no-repeat 5px -610px;
+	padding:5px 22px 0
 }
 {/literal}
 {/css}
@@ -76,7 +77,7 @@ a.switchtheme.current {
 									{if $smarty.const.DISPLAY_THEME != $class}
 										{icon img=view.png action=preview_theme theme=$class sv=$sv title="Preview this Style"}
 									{elseif $smarty.const.DISPLAY_THEME_REAL != $smarty.const.DISPLAY_THEME}
-										(<em>Previewing</em>)
+										(<em><b>Previewing</b></em>)
 									{/if}
 								</td>
 							</tr>
@@ -85,9 +86,13 @@ a.switchtheme.current {
 					</td>
 				{else}
 					<td>
-						<a class="switchtheme{if $smarty.const.DISPLAY_THEME_REAL == $class} current{/if}" href="{link action=switch_themes theme=$class}" title='Select this Theme'>Default</a>
+						{if $smarty.const.DISPLAY_THEME_REAL != $class}
+							<a class="switchtheme current" href="{link action=switch_themes theme=$class}" title='Select this Theme'>Select</a>
+						{else}
+							<span class="switchtheme current"><b>Current</b>{br}</span>
+						{/if}
 						{if ($theme->user_configured)}
-							{icon class=configure action=configure_theme theme=$class title="Configure this Theme" text="Configure"}
+							{icon class=configure action=configure_theme theme=$class title="Configure this Theme" text="Configure"}{br}
 						{/if}
 						{if $smarty.const.DISPLAY_THEME != $class}
 							{icon class=view action=preview_theme theme=$class title="Preview this Theme" text="Preview"}
