@@ -44,7 +44,7 @@
 	</div>
 	<!--footer starts here-->
 	<div id="footer">
-		<?php expTheme::showController(array("controller"=>"text","action"=>"showall","view"=>"showall","source"=>"textmodulesrc1")) ?>				
+		<?php expTheme::showController(array("controller"=>"text","action"=>"showall","view"=>"showall","source"=>"@footer")) ?>
 	</div>	
 
 	<?php echo expTheme::foot(); ?>

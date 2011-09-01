@@ -21,7 +21,7 @@
                 <img alt="<?php echo SITE_HEADER; ?>" src="<?php echo THEME_RELATIVE; ?>images/logo.png">
 			</a>
 			<?php expTheme::module(array("module"=>"navigation","view"=>"YUI Top Nav","source"=>"@top")); ?>
-			<?php expTheme::module(array("controller"=>"links","action"=>"showall","view"=>"showall_quicklinks","source"=>"top")) ?>
+			<?php expTheme::module(array("controller"=>"links","action"=>"showall","view"=>"showall_quicklinks","source"=>"@top")) ?>
 			<?php expTheme::module(array("controller"=>"search","action"=>"show")) ?>
 		</div>
 		<div id="bd">
