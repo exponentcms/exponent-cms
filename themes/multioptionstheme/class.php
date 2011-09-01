@@ -69,11 +69,11 @@ class multioptionstheme extends theme {
 		$form->meta('controller','administration');
 		$form->meta('action','update_theme');
 		$form->meta('theme',$_GET['theme']);
-		$form->register('multi_size',gt('Theme Width'),new dropdowncontrol($settings['MULTI_SIZE'],$theme_widths));
-		$form->register('multi_font',gt('Theme Font'),new dropdowncontrol($settings['MULTI_FONT'],$theme_fonts));
-		$form->register('multi_color',gt('Theme Color'),new dropdowncontrol($settings['MULTI_COLOR'],$theme_colors));
-		$form->register('btn_color',gt('Button Color'),new dropdowncontrol($settings['BTN_COLOR'],$theme_colors));
-		$form->register('btn_size',gt('Button Size'),new dropdowncontrol($settings['BTN_SIZE'],$button_sizes));
+		$form->register('multi_size',gt('Theme Width: '),new dropdowncontrol($settings['MULTI_SIZE'],$theme_widths));
+		$form->register('multi_font',gt('Theme Font: '),new dropdowncontrol($settings['MULTI_FONT'],$theme_fonts));
+		$form->register('multi_color',gt('Theme Color: '),new dropdowncontrol($settings['MULTI_COLOR'],$theme_colors));
+		$form->register('btn_color',gt('Button Color: '),new dropdowncontrol($settings['BTN_COLOR'],$theme_colors));
+		$form->register('btn_size',gt('Button Size: '),new dropdowncontrol($settings['BTN_SIZE'],$button_sizes));
 		$form->register(null,'',new htmlcontrol('<br>'));
 		$form->register('submit','',new buttongroupcontrol(gt('Save'),'',gt('Cancel')));
 		assign_to_template(array('name'=>self::name(),'form_html'=>$form->tohtml()));
