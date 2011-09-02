@@ -143,6 +143,7 @@
 					{control type="checkbox" name="product_types[NexTag]" label="NexTag Feed" value="nextag_product_type" checked=$config.product_type.nextag}
 					{control type="checkbox" name="product_types[Shopzilla]" label="Shopzilla Feed" value="shopzilla_product_type" checked=$config.product_type.shopzilla}
 					{control type="checkbox" name="product_types[Shopping]" label="Shopping Feed" value="shopping_product_type" checked=$config.product_type.shopping}
+					{control type="checkbox" name="product_types[PriceGrabber]" label="Price Grabber Feed" value="pricegrabber_product_type" checked=$config.product_type.pricegrabber}
 				</div>
             </div>
         </div>
