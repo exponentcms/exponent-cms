@@ -156,6 +156,7 @@ class helpController extends expController {
 //	        $doc->sef_url = "";
 //	        $doc->save();
 //	        $doc->sef_url = $tmpsef;
+//	        $doc->do_not_validate = array('sef_url');
 	        $doc->save();
 		    
 //	        $doc->sef_url = $doc->makeSefUrl();
