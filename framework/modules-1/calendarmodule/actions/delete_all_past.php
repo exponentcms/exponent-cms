@@ -19,7 +19,6 @@
 /** @define "BASE" "../../../.." */
 
 if (!defined('EXPONENT')) exit('');
-	expHistory::back();
 
 //$item = $db->selectObject('calendar','id='.intval($_POST['id']));
 
