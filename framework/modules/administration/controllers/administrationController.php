@@ -795,6 +795,11 @@ class theme {
 		unset ($params['theme']);
 		unset ($params['controller']);
 		unset ($params['action']);
+		foreach ($params as $key=>$value) {
+			if (strpos($key,'_' == 1)) {
+				unset ($params[$key]);
+			}
+		}
 		expSettings::saveValues($params, BASE."themes/".$theme."/config.php");
 		expHistory::back();
 	}

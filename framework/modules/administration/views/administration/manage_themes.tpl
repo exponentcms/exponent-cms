@@ -30,7 +30,7 @@ span.switchtheme.current {
 {/literal}
 {/css}
 
-<div class="administrationmodule thememanager">
+<div class="administration thememanager">
     <div class="info-header">
         <div class="related-actions">
             {help text="Get Help Managing Themes" module="manage-themes"}
