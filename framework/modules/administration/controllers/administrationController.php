@@ -52,7 +52,7 @@ class administrationController extends expController {
     function description() { return "This is the beginnings of the new Administration Module"; }
     function author() { return "OIC Group, Inc"; }
 
-	public function install_tables() {
+	public static function installTables() {
 	    global $db;
 
 		define("TMP_TABLE_EXISTED",		1);
@@ -134,7 +134,12 @@ class administrationController extends expController {
 				}
 			}
 		}
+		return $tables;
+	}
+
+	public function install_tables() {
     	expSession::clearCurrentUserSessionCache();
+		$tables = self::installTables();
 		ksort($tables);
         assign_to_template(array('status'=>$tables));
 	}
