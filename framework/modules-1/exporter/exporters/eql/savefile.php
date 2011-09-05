@@ -23,8 +23,6 @@ if (!defined('EXPONENT')) exit('');
 if (!isset($_POST['tables'])) { // No checkboxes clicked, and got past the JS check
 	echo gt('You must choose at least one table to export.');
 } else { // All good
-	require_once(BASE.'framework/core/subsystems-1/backup.php');
-
 	$filename = str_replace(
 		array('__DOMAIN__','__DB__'),
 		array(str_replace('.','_',HOSTNAME),DB_NAME),
