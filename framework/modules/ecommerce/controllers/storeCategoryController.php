@@ -54,6 +54,8 @@ class storeCategoryController extends expNestedNodeController {
 			$product_type_id = $value . 's_id';
 			$product_type_list = $value . 's_list';
 			$new_product_type = new $product_type;
+			$f_recorded_product_types = '';
+			$f_types = '';
 			
 			$recorded_product_type = $db->selectObjectsBySql("SELECT {$product_type_id}, title FROM " . DB_TABLE_PREFIX . "_{$value}s_storeCategories, " . DB_TABLE_PREFIX . "_{$product_type} WHERE {$product_type_id} = id and storecategories_id = " . $this->params['id']);
 			
@@ -66,7 +68,6 @@ class storeCategoryController extends expNestedNodeController {
 			}
 			$control = new listbuildercontrol(@$f_recorded_product_types, $f_types);
 			$arr_product_type[$value] = $control->controlToHTML($product_type_list,"copy");
-			
 		}
 		
 		/*
