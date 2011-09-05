@@ -64,7 +64,7 @@ $(document).ready(function(){
 			<b>{'Welcome, %s'|gettext|sprintf:$displayname}</b>{br}{br}
 			<a class="profile" href="{link controller=users action=edituser id=$user->id}">{'Edit Profile'|gettext}</a>{br}
 			{if $is_group_admin}
-				<a class="groups" href="{link action=mygroups}">{'My Groups'|gettext}</a>{br}
+				<a class="groups" href="{link controller=users action=manage_group_memberships}">{'My Groups'|gettext}</a>{br}
 			{/if}
 			<a class="password" href="{link controller=users action=change_password}">{'Change Password'|gettext}</a>{br}
 			<a class="logout" href="{link action=logout}">{'Logout'|gettext}</a>{br}

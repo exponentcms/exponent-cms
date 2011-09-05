@@ -22,7 +22,7 @@
 {'Welcome, %s'|gettext|sprintf:$displayname}<br />
 <a href="{link controller=users action=edituser id=$user->id}">{'Edit Profile'|gettext}</a>&nbsp;|&nbsp;
 {if $is_group_admin}
-<a href="{link action=mygroups}">{'My Groups'|gettext}</a>&nbsp;|&nbsp;
+<a href="{link controller=users action=manage_group_memberships}">{'My Groups'|gettext}</a>&nbsp;|&nbsp;
 {/if}
 <a href="{link controller=users action=change_password}">{'Change Password'|gettext}</a>&nbsp;|&nbsp;
 <a href="{link action=logout}">{'Logout'|gettext}</a><br />

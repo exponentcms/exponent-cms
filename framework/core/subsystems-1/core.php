@@ -557,7 +557,7 @@ function exponent_core_resolveFilePaths($type, $name, $subtype, $subname) {
  * 
  * @node Subsystems:Core
  */
-function exponent_core_buildNameList($type, $name, $subtype, $subname) {
+function exponent_core_buildNameList($type, $name, $subtype, $subname) {  //FIXME only used by exponent_template_listFormTemplates & exponent_template_listModuleViews (total of 3 calls)
 	$nameList = array();
 	$fileList = exponent_core_resolveFilePaths($type, $name, $subtype, $subname);
 	if ($fileList != false) {

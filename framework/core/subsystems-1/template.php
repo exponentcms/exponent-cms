@@ -440,7 +440,7 @@ function exponent_template_listFormTemplates($type) {  //FIXME only used by cale
  * @param string $lang deprecated, was used to list language specific templates
  * @node Subsystems:Template
  */
-function exponent_template_listModuleViews($module, $lang = LANG) {  //FIXME only used by conainermodule edit action and administrationmodule examplecontent action
+function exponent_template_listModuleViews($module, $lang = LANG) {  //FIXME only used by containermodule edit action and administrationmodule examplecontent action
 	return exponent_core_buildNameList("modules", $module, "tpl", "[!_]*");
 }
 

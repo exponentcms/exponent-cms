@@ -455,18 +455,20 @@ class administrationController extends expController {
 	}
 
 	public function install_extension() {
-
 		if ($_FILES['mod_archive']['error'] != UPLOAD_ERR_OK) {
 			switch($_FILES['mod_archive']['error']) {
 				case UPLOAD_ERR_INI_SIZE:
 				case UPLOAD_ERR_FORM_SIZE:
-					echo gt('The file you uploaded exceeded the size limits for the server.').'<br />';
+//					echo gt('The file you uploaded exceeded the size limits for the server.').'<br />';
+					flash('error', gt('The file you uploaded exceeded the size limits for the server.'));
 					break;
 				case UPLOAD_ERR_PARTIAL:
-					echo gt('The file you uploaded was only partially uploaded.').'<br />';
+//					echo gt('The file you uploaded was only partially uploaded.').'<br />';
+					flash('error', gt('The file you uploaded was only partially uploaded.'));
 					break;
 				case UPLOAD_ERR_NO_FILE:
-					echo gt('No file was uploaded.').'<br />';
+//					echo gt('No file was uploaded.').'<br />';
+					flash('error', gt('No file was uploaded.'));
 					break;
 			}
 		} else {
@@ -493,7 +495,8 @@ class administrationController extends expController {
 			}
 
 			if ($ext == '') {
-				echo gt('Unknown archive format. Archives must either be regular ZIP files, TAR files, Gzipped Tarballs, or Bzipped Tarballs.').'<br />';
+//				echo gt('Unknown archive format. Archives must either be regular ZIP files, TAR files, Gzipped Tarballs, or Bzipped Tarballs.').'<br />';
+				flash('error', gt('Unknown archive format. Archives must either be regular ZIP files, TAR files, Gzipped Tarballs, or Bzipped Tarballs.'));
 			} else {
 
 				// Look for stale sessid directories:
@@ -504,13 +507,16 @@ class administrationController extends expController {
 					switch ($return) {
 						case SYS_FILES_FOUNDFILE:
 						case SYS_FILES_FOUNDDIR:
-							echo gt('Found a file in the directory path when creating the directory to store the files in.').'<br />';
+//							echo gt('Found a file in the directory path when creating the directory to store the files in.').'<br />';
+							flash('error', gt('Found a file in the directory path when creating the directory to store the files in.'));
 							break;
 						case SYS_FILES_NOTWRITABLE:
-							echo gt('Destination parent is not writable.').'<br />';
+//							echo gt('Destination parent is not writable.').'<br />';
+							flash('error', gt('Destination parent is not writable.'));
 							break;
 						case SYS_FILES_NOTREADABLE:
-							echo gt('Destination parent is not readable.').'<br />';
+//							echo gt('Destination parent is not readable.').'<br />';
+							flash('error', gt('Destination parent is not readable.'));
 							break;
 					}
 				}
@@ -526,9 +532,11 @@ class administrationController extends expController {
 					PEAR::setErrorHandling(PEAR_ERROR_PRINT);
 					$return = $tar->extract(dirname($dest));
 					if (!$return) {
-						echo '<br />'.gt('Error extracting TAR archive').'<br />';
+//						echo '<br />'.gt('Error extracting TAR archive').'<br />';
+						flash('error',gt('Error extracting TAR archive'));
 					} else {
-						header('Location: ' . URL_FULL . 'index.php?module=administrationmodule&action=verify_extension&type=tar');
+//						header('Location: ' . URL_FULL . 'index.php?module=administrationmodule&action=verify_extension&type=tar');
+//						self::verify_extension('tar');
 					}
 				} else { // must be zip
 					include_once(BASE.'external/Zip.php');
@@ -537,14 +545,64 @@ class administrationController extends expController {
 
 					PEAR::setErrorHandling(PEAR_ERROR_PRINT);
 					if ($zip->extract(array('add_path'=>dirname($dest))) == 0) {
-						echo '<br />'.gt('Error extracting ZIP archive').':<br />';
-						echo $zip->_error_code . ' : ' . $zip->_error_string . '<br />';
+//						echo '<br />'.gt('Error extracting ZIP archive').':<br />';
+//						echo $zip->_error_code . ' : ' . $zip->_error_string . '<br />';
+						flash('error',gt('Error extracting ZIP archive: ').$zip->_error_code . ' : ' . $zip->_error_string . '<br />');
 					} else {
-						header('Location: ' . URL_FULL . 'index.php?module=administrationmodule&action=verify_extension&type=zip');
+//						header('Location: ' . URL_FULL . 'index.php?module=administrationmodule&action=verify_extension&type=zip');
+//						self::verify_extension('zip');
 					}
 				}
+				$sessid = session_id();
+				$files = array();
+				foreach (expFile::listFlat(BASE.'tmp/extensionuploads/'.$sessid,true,null,array(),BASE.'tmp/extensionuploads/'.$sessid) as $key=>$f) {
+					if ($key != '/archive.tar' && $key != '/archive.tar.gz' && $key != '/archive.tar.bz2' && $key != '/archive.zip') {
+						$files[] = array(
+							'absolute'=>$key,
+							'relative'=>$f,
+							'canCreate'=>expFile::canCreate(BASE.substr($key,1)),
+							'ext'=>substr($f,-3,3)
+						);
+					}
+				}
+				assign_to_template(array('relative'=>'tmp/extensionuploads/'.$sessid,'files'=>$files));
 			}
 		}
+	}
+
+	public function finish_install_extension() {
+		$sessid = session_id();
+		if (!file_exists(BASE."tmp/extensionuploads/$sessid") || !is_dir(BASE."tmp/extensionuploads/$sessid")) {
+//				$template = new template('administrationmodule','_upload_finalSummary',$loc);
+//				$template->assign('nofiles',1);
+			$nofiles = 1;
+		} else {
+			$success = array();
+			foreach (array_keys(expFile::listFlat(BASE."tmp/extensionuploads/$sessid",true,null,array(),BASE."tmp/extensionuploads/$sessid")) as $file) {
+				if ($file != '/archive.tar' && $file != '/archive.tar.gz' && $file != 'archive.tar.bz2' && $file != '/archive.zip') {
+					expFile::makeDirectory(dirname($file));
+					$success[$file] = copy(BASE."tmp/extensionuploads/$sessid".$file,BASE.substr($file,1));
+					if (basename($file) == 'views_c') chmod(BASE.substr($file,1),0777);
+				}
+			}
+
+			$del_return = expFile::removeDirectory(BASE."tmp/extensionuploads/$sessid");  //FIXME shouldn't use echo
+			echo $del_return;
+
+//			ob_start();
+//			include(BASE . 'framework/modules-1/administrationmodule/actions/installtables.php');
+//			ob_end_clean();
+			self::installTables();
+
+//				$template = new template('administrationmodule','_upload_finalSummary',$loc);
+//				$template->assign('nofiles',0);
+			$nofiles = 0;
+//				$template->assign('success',$success);
+//				$template->assign('redirect',expHistory::getLastNotEditable());
+		}
+
+//			$template->output();
+		assign_to_template(array('nofiles'=>$nofiles,'success'=>$success,'redirect'=>expHistory::getLastNotEditable()));
 	}
 
     public function manage_themes() {
@@ -777,7 +835,7 @@ class administrationController extends expController {
 class theme {
 	public $user_configured = false;
 
-	function name() { return "Theme"; }
+	function name() { return "theme"; }
 	function author() { return ""; }
 	function description() { return "The theme shell"; }
 
