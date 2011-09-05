@@ -4,7 +4,7 @@ var DDM = YAHOO.util.DragDropMgr;
 
 var expTree = function() {
 
-	var expddtree = function(id, sGroup, config) {
+	expddtree = function(id, sGroup, config) {
 		//console.debug(id.replace('ygtv',''))
 		if (id) {
 			//new YAHOO.util.DDTarget("addafter"+id,sGroup);
@@ -43,7 +43,7 @@ var expTree = function() {
             YAHOO.util.Dom.addClass("dragtable"+tree.root.children[0].index, 'topoflist');
             YAHOO.util.Dom.addClass("dragtable"+tree.root.children[tree.root.children.length-1].index, 'bottomoflist');
 
-            for (var n in tree._nodes){
+            for (n in tree._nodes){
                 if (tree._nodes[n].children.length != 0) {
                     // console.debug("dragtable"+tree._nodes[n].children[0].index);
                     // console.debug("dragtable"+tree._nodes[n].children[tree._nodes[n].children.length-1].index);
@@ -529,8 +529,8 @@ var expTree = function() {
          
     });
 
-	var refreshDD = function () {
-		var dds = YAHOO.util.Dom.getElementsByClassName("dragtable");
+	refreshDD = function () {
+		dds = YAHOO.util.Dom.getElementsByClassName("dragtable");
 
 		for (var i = 0; i < dds.length; i++) {
 			//console.debug(dds[i].id);
@@ -627,8 +627,8 @@ var expTree = function() {
 
     return {
         init:function(div,obj,mod,menu,expandonstart){
-	        var applicationModule = mod;
-	        var tree = new YAHOO.widget.TreeView(div);
+	        applicationModule = mod;
+	        tree = new YAHOO.widget.TreeView(div);
             var root = tree.getRoot();
             var node = [];
             node[0]=root;
