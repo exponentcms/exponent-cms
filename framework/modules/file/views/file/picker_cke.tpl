@@ -73,7 +73,7 @@ EXPONENT.fileManager = function() {
         return (match && match.length > 1) ? match[1] : '' ;
     }
 
-	var routBackToSource = function (fo, fi) {
+	routBackToSource = function (fo, fi) {
 		var funcNum = getUrlParam('CKEditorFuncNum');
 		var fileUrl = fo;
 		var ck = getUrlParam('ck');
