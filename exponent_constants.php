@@ -159,6 +159,14 @@ define("SYS_FILES_NOTREADABLE",	4);
  */
 define("SYS_FILES_NOTDELETABLE",	5);
 
+/* exdoc
+ * The EQL header string for object dump file formats.
+ * This header defines the version of EQL native to
+ * the current implementation of the Backup Subsystem.
+ * @node Subsystems:Backup
+ */
+define('EQL_HEADER','EQL-Exponent Query Language');
+
 // Determines platform (OS), browser and version of the user
 // Based on a phpBuilder article:
 //   see http://www.phpbuilder.net/columns/tim20000821.php

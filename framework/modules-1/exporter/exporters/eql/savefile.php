@@ -40,7 +40,7 @@ if (!isset($_POST['tables'])) { // No checkboxes clicked, and got past the JS ch
 		if (!$eql = fopen ($path, "w")) {
 			flash('error',"Error opening eql file for writing ($path).");
 		} else {
-			$eqlfile = exponent_backup_dumpDatabase($db,array_keys($_POST['tables']));
+			$eqlfile = expFile::dumpDatabase($db,array_keys($_POST['tables']));
 			if (fwrite ($eql, $eqlfile)  === FALSE) {
 				flash('error',"Error writing to eql file ($path).");
 			}
@@ -66,7 +66,7 @@ if (!isset($_POST['tables'])) { // No checkboxes clicked, and got past the JS ch
 			header('Content-Disposition: attachment; filename="' . $filename . '"');
 			header('Pragma: no-cache');
 		}
-		echo exponent_backup_dumpDatabase($db,array_keys($_POST['tables']));
+		echo expFile::dumpDatabase($db,array_keys($_POST['tables']));
 		exit(''); // Exit, since we are exporting
 	}
 }
