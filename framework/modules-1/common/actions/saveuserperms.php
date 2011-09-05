@@ -21,7 +21,7 @@
 if (!defined('EXPONENT')) exit('');
 
 if (exponent_permissions_check('administrate',$loc)) {
-	include_once(BASE.'framework/core/subsystems-1/users.php');
+//	include_once(BASE.'framework/core/subsystems-1/users.php');
 
 	$locarray = array();
 	if ($loc->mod == 'navigationmodule' && !empty($perms[1]) && $perms[1] == 'manage') {
@@ -42,7 +42,7 @@ if (exponent_permissions_check('administrate',$loc)) {
 	
 	foreach ($_POST['permdata'] as $k => $user_str) {
 		$perms = array_keys($user_str);
-		$u = exponent_users_getUserById($k);
+		$u = user::getUserById($k);
 
 		foreach ($locarray as $location) {
 			for ($i = 0; $i < count($perms); $i++) {

@@ -23,8 +23,7 @@ if (!defined('EXPONENT')) exit('');
 if (exponent_permissions_check('administrate',$loc)) {
 
  	//$groups = explode(';',$_POST['permdata']);
-    
-	include_once(BASE.'framework/core/subsystems-1/users.php');
+//	include_once(BASE.'framework/core/subsystems-1/users.php');
 
 	$locarray = array();
 	if ($loc->mod == 'navigationmodule' && !empty($perms[1]) && $perms[1] == 'manage') {
@@ -36,7 +35,7 @@ if (exponent_permissions_check('administrate',$loc)) {
 	} else {
 		$locarray[] = $loc;
 	}
-	$groups = user::getAllGroups();
+	$groups = group::getAllGroups();
 	foreach ($locarray as $location) {
 		foreach ($groups as $g) {
 			exponent_permissions_revokeAllGroup($g,$location);
@@ -45,7 +44,7 @@ if (exponent_permissions_check('administrate',$loc)) {
 	
 	foreach ($_POST['permdata'] as $k => $group_str) {
 		$perms = array_keys($group_str);
-		$g = exponent_users_getGroupById($k);
+		$g = group::getGroupById($k);
 
 		foreach ($locarray as $location) {
 			for ($i = 0; $i < count($perms); $i++) {

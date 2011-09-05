@@ -26,7 +26,7 @@ $user_profile = null;
 $user_profile->id = $_GET['id'];
 $user_profile = exponent_users_getFullProfile($user_profile);
 
-$exts = exponent_users_listExtensions();
+$exts = profileextension::listExtensions();
 
 
 $user_temp = $db->selectObject("user", "id=".$_GET['id']);

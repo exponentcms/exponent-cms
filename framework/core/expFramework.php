@@ -71,6 +71,16 @@ $router = null;
  */
 $sections = array();
 
+/**
+ *
+ * This global array belongs exclusively to the Users subsystem, and is used to cache
+ *  users as they are retrieved, to help out with performance when doing a lot of
+ * work with user accounts and profile information.
+ * @global array $SYS_USERS_CACHE
+ * @name $SYS_USERS_CACHE
+ */
+$SYS_USERS_CACHE = array();
+
 function renderAction(array $parms=array()) {
     //because we love you
     global $user;

@@ -20,8 +20,8 @@
 
 if (!defined('EXPONENT')) exit('');
 
-require_once(BASE.'framework/core/subsystems-1/users.php');
-$user = exponent_users_login($_POST['username'],$_POST['password']);
+//require_once(BASE.'framework/core/subsystems-1/users.php');
+$user = user::login($_POST['username'],$_POST['password']);
 
 if (!isset($_SESSION[SYS_SESSION_KEY]['user'])) {
 	flash('error', gt('Invalid Username / Password'));

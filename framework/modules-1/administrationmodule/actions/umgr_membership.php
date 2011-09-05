@@ -26,7 +26,7 @@ if (isset($_GET['id']) && exponent_permissions_check('user_management',exponent_
 	require_once(BASE.'framework/core/subsystems-1/users.php');
 	$u = exponent_users_getUserById(intval($_GET['id']));
 	if ($u) {
-		$groups = user::getAllGroups();
+		$groups = group::getAllGroups();
 		
 		$admin = array();
 		$membership = array();

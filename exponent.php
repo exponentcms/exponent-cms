@@ -73,7 +73,7 @@ $history = new expHistory(); //<--This is the new flow subsystem and will be rep
 $SYS_FLOW_REDIRECTIONPATH = 'exponent_default';
 
 // Initialize the User subsystem.
-require_once(BASE.'framework/core/subsystems-1/users.php');
+//require_once(BASE.'framework/core/subsystems-1/users.php');
 
 // Initialize the javascript subsystem
 if (expJavascript::inAjaxAction()) set_error_handler('handleErrors');

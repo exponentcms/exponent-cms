@@ -535,12 +535,12 @@ class navigationmodule {
             // $db->delete('grouppermission', "module='navigationmodule' AND internal=".$section->id);
 
 			foreach ($allusers as $uid) {
-				$u = exponent_users_getUserById($uid);
+				$u = user::getUserById($uid);
 				exponent_permissions_grant($u, 'manage', $sloc);
 			}
 			
 			foreach ($allgroups as $gid) {
-				$g = exponent_users_getGroupById($gid);
+				$g = group::getGroupById($gid);
 				exponent_permissions_grantGroup($g, 'manage', $sloc);
 			}
 		}	

@@ -384,7 +384,7 @@ $headers = array(
 	"From"=>$from = $config->email_from_reminder,
 	"Reply-to"=>$reply = $config->email_reply_reminder
 	);
-require_once(BASE . "framework/core/subsystems-1/users.php");
+//require_once(BASE . "framework/core/subsystems-1/users.php");
 
 // set up the html message
 $template->assign("showdetail",$config->email_showdetail);
@@ -398,10 +398,10 @@ $notifs = unserialize($config->reminder_notify);
 $emails = array();
 foreach ($db->selectObjects('calendar_reminder_address',"calendar_id='".$config->id."'") as $c) {
 	if ($c->user_id != 0) {
-		$u = exponent_users_getUserById($c->user_id);
+		$u = user::getUserById($c->user_id);
 		$emails[] = $u->email;
 	} else if ($c->group_id != 0) {
-		$grpusers = exponent_users_getUsersInGroup($c->group_id);
+		$grpusers = group::getUsersInGroup($c->group_id);
 		foreach ($grpusers as $u) {
 			$emails[] = $u->email;
 		}

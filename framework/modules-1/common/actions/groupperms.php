@@ -29,8 +29,7 @@ if (exponent_permissions_check('administrate',$loc)) {
 		//$template = new template($loc->mod,'_grouppermissions',$loc);
 	}
 	$template->assign('user_form',0);
-
-	include_once(BASE.'framework/core/subsystems-1/users.php');
+//	include_once(BASE.'framework/core/subsystems-1/users.php');
 
 	$users = array(); // users = groups
     $modulename = controllerExists($loc->mod) ? getControllerClassName($loc->mod) : $loc->mod;    
@@ -39,7 +38,7 @@ if (exponent_permissions_check('administrate',$loc)) {
 	$mod = new $modclass();
 	$perms = $mod->permissions($loc->int);
 
-	foreach (user::getAllGroups() as $g) {
+	foreach (group::getAllGroups() as $g) {
 		foreach ($perms as $perm=>$name) {
 			$var = 'perms_'.$perm;
 			if (exponent_permissions_checkGroup($g,$perm,$loc,true)) {

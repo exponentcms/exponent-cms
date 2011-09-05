@@ -21,7 +21,7 @@
 if (!defined('EXPONENT')) exit('');
 
 include_once(BASE.'framework/core/subsystems-1/forms.php');
-include_once(BASE.'framework/core/subsystems-1/users.php');
+//include_once(BASE.'framework/core/subsystems-1/users.php');
 
 // Sanitize required _GET variables.
 $_GET['id'] = intval($_GET['id']);
@@ -50,7 +50,7 @@ if ($f && $controls && $data && $rpt) {
 		$captions['timestamp'] = gt('Timestamp');
 		$captions['user_id'] = gt('Username');
 		$fields['ip'] = $data->ip;
-		$locUser =  exponent_users_getUserById($data->user_id);
+		$locUser =  user::getUserById($data->user_id);
 		$fields['user_id'] =  isset($locUser->username)?$locUser->username:'';
 		$fields['timestamp'] = strftime(DISPLAY_DATETIME_FORMAT,$data->timestamp);
 	

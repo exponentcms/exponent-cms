@@ -149,8 +149,8 @@ class ecomconfigController extends expController {
         //loop our groups and append them to the array
        // foreach ($group->find() as $g){
        //this is a workaround for older code. Use the previous line if possible:
-       include_once(BASE.'framework/core/subsystems-1/users.php');
-       $allGroups = user::getAllGroups();
+//       include_once(BASE.'framework/core/subsystems-1/users.php');
+       $allGroups = group::getAllGroups();
        if (count($allGroups))
        {
            foreach ($allGroups as $g)
@@ -234,7 +234,7 @@ class ecomconfigController extends expController {
 	public function manage_groupdiscounts() {
 		global $db;
 		expHistory::set('manageable', $this->params);
-		$groups = user::getAllGroups();
+		$groups = group::getAllGroups();
 		$discounts = $db->selectObjects('discounts');
 		$group_discounts = $db->selectObjects('groupdiscounts', null, 'rank');
 		assign_to_template(array('groups'=>$groups,'discounts'=>$discounts,'group_discounts'=>$group_discounts));

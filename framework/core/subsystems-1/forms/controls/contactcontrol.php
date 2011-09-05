@@ -39,7 +39,7 @@ class contactcontrol extends formcontrol {
 
 	function controlToHTML($name) {
 		// First, grab the data for the users
-		require_once(BASE."framework/core/subsystems-1/users.php");
+//		require_once(BASE."framework/core/subsystems-1/users.php");
 		$users = array();
 
 		foreach (user::getAllUsers() as $u) {
