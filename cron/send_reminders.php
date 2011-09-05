@@ -77,12 +77,10 @@ $template->assign("time",$time);
 	// $viewparams = array("type"=>"byday", "range"=>"week");
 // }
 
-include_once(BASE . "framework/core/subsystems-1/datetime.php");
-
 
 
 // if ($viewparams['type'] == "minical") {
-	// $monthly = exponent_datetime_monthlyDaysTimestamp($time);
+	// $monthly = expDateTime::monthlyDaysTimestamp($time);
 	// $info = getdate($time);
 	// $timefirst = mktime(12,0,0,$info['mon'],1,$info['year']);
 	// $now = getdate(time());
@@ -114,20 +112,20 @@ include_once(BASE . "framework/core/subsystems-1/datetime.php");
 // } else if ($viewparams['type'] == "byday") {
 // Remember this is the code for weekly view and monthly listview
 // Test your fixes on both views before submitting your changes to cvs
-$startperiod = exponent_datetime_startOfDayTimestamp($time);
+$startperiod = expDateTime::startOfDayTimestamp($time);
 $totaldays = $_GET['days'];
 if ($totaldays == "") {
 	$totaldays = 7;	// default 7 days of events
 }
 
 //	if ($viewparams['range'] == "week") {
-//		$startperiod = exponent_datetime_startOfWeekTimestamp($time);
+//		$startperiod = expDateTime::startOfWeekTimestamp($time);
 //		$totaldays = 7;
 //	} else if ($viewparams['range'] == "twoweek") {
-//		$startperiod = exponent_datetime_startOfWeekTimestamp($time);
+//		$startperiod = expDateTime::startOfWeekTimestamp($time);
 //		$totaldays = 14;				
 //	} else {  // range = month
-//		$startperiod = exponent_datetime_startOfMonthTimestamp($time);
+//		$startperiod = expDateTime::startOfMonthTimestamp($time);
 //		$totaldays  = date('t', $time);
 //	}
 //	$template->assign("prev_timestamp",$startperiod - 3600);
@@ -196,7 +194,7 @@ $template->assign("totaldays",$totaldays);
 		// $weekday = $infofirst['wday']; // day number in grid.  if 7+, switch weeks
 	// }
 	// // Grab day counts (deprecated, handled by the date function)
-	// // $endofmonth = exponent_datetime_endOfMonthDay($time);
+	// // $endofmonth = expDateTime::endOfMonthDay($time);
 	// $endofmonth = date('t', $time);
 	// for ($i = 1; $i <= $endofmonth; $i++) {
 		// $start = mktime(0,0,0,$info['mon'],$i,$info['year']);
@@ -266,7 +264,7 @@ $template->assign("totaldays",$totaldays);
 	// if (!isset($viewparams['range'])) $viewparams['range'] = "all";
 	// $items = null;
 	// $dates = null;
-	// $day = exponent_datetime_startOfDayTimestamp(time());
+	// $day = expDateTime::startOfDayTimestamp(time());
 	// $sort_asc = true; // For the getEventsForDates call
 	// $moreevents = false;
 	// switch ($viewparams['range']) {
@@ -289,7 +287,7 @@ $template->assign("totaldays",$totaldays);
 			// $dates = array($db->selectObject("eventdate",$locsql." AND date >= $day"));
 			// break;
 		// case "month":
-			// $dates = $db->selectObjects("eventdate",$locsql." AND date >= ".exponent_datetime_startOfMonthTimestamp(time()) . " AND date <= " . exponent_datetime_endOfMonthTimestamp(time()));
+			// $dates = $db->selectObjects("eventdate",$locsql." AND date >= ".expDateTime::startOfMonthTimestamp(time()) . " AND date <= " . expDateTime::endOfMonthTimestamp(time()));
 			// break;
 	// }
 	// $items = calendarmodule::_getEventsForDates($dates,$sort_asc,$template->viewconfig['featured_only'] ? true : false);

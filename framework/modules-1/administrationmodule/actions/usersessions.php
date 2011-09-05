@@ -29,12 +29,11 @@ if (exponent_permissions_check('user_management',exponent_core_makeLocation('adm
 	$db->delete('sessionticket','last_active < ' . (time() - SESSION_TIMEOUT));
 	
 	require_once(BASE.'framework/core/subsystems-1/users.php');
-	require_once(BASE.'framework/core/subsystems-1/datetime.php');
 
 	$sessions = $db->selectObjects('sessionticket');
 	for ($i = 0; $i < count($sessions); $i++) {
 		$sessions[$i]->user = exponent_users_getUserById($sessions[$i]->uid);
-		$sessions[$i]->duration = exponent_datetime_duration($sessions[$i]->last_active,$sessions[$i]->start_time);
+		$sessions[$i]->duration = expDateTime::duration($sessions[$i]->last_active,$sessions[$i]->start_time);
 	}
 	
 	$template = new template('administrationmodule','_sessionmanager',$loc);

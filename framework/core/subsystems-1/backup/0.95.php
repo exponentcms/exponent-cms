@@ -42,7 +42,6 @@ function exponent_backup_095_addressbook_contact($db,$object) {
 // Field 'feedback_form' was added to 'calendar' in 0.96
 // Field 'feedback_email' was added to 'calendar' in 0.96
 function exponent_backup_095_calendar($db,$object) {
-	include(BASE.'framework/core/subsystems-1/datetime.php');
 
 	// Pull edited / editor from posted / poster
 	$object->editor = $object->poster;
@@ -57,7 +56,7 @@ function exponent_backup_095_calendar($db,$object) {
 	$eventdate->location_data = $object->location_data;
 	// Get the time in seconds since midnight, first for event start
 	
-	$eventdate->date = exponent_datetime_startOfDayTimestamp($object->eventstart);
+	$eventdate->date = expDateTime::startOfDayTimestamp($object->eventstart);
 	$object->eventstart -= $eventdate->date;
 	$object->eventend -= $eventdate->date;
 	

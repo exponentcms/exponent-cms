@@ -250,8 +250,6 @@ class storeController extends expController {
         
         expHistory::set('viewable', $this->params);
         
-        include_once(BASE."framework/core/subsystems-1/datetime.php");
-
         $time = isset($this->params['time']) ? $this->params['time'] : time();
         assign_to_template(array('time'=>$time));
         
@@ -279,7 +277,7 @@ class storeController extends expController {
         $weekday = $infofirst['wday']; // day number in grid.  if 7+, switch weeks
         
         // Grab day counts (deprecated, handled by the date function)
-        // $endofmonth = exponent_datetime_endOfMonthDay($time);
+        // $endofmonth = expDateTime::endOfMonthDay($time);
         
         $endofmonth = date('t', $time);
         

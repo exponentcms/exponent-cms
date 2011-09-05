@@ -22,8 +22,6 @@ if (!defined('EXPONENT')) exit('');
 
 expHistory::flowSet(SYS_FLOW_PUBLIC,SYS_FLOW_ACTION);
 
-include_once(BASE."framework/core/subsystems-1/datetime.php");
-
 $locsql = "(location_data='".serialize($loc)."'";
 // look for possible aggregate
 $config = $db->selectObject("calendarmodule_config","location_data='".serialize($loc)."'");
@@ -49,7 +47,7 @@ if (isset($config->rss_limit) && ($config->rss_limit > 0)) {
 	$rsslimit = "";
 }
 
-$dates = $db->selectObjects("eventdate",$locsql." AND date >= ".exponent_datetime_startOfDayTimestamp(time()).$rsslimit);
+$dates = $db->selectObjects("eventdate",$locsql." AND date >= ".expDateTime::startOfDayTimestamp(time()).$rsslimit);
 $all_events = calendarmodule::_getEventsForDates($dates);
 $viewing_tag = $db->selectObject('tags', "id=".intval($_REQUEST['id']));
 $events = array();

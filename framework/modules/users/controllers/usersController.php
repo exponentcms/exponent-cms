@@ -242,8 +242,6 @@ class usersController extends expController {
 			$db->delete('sessionticket','last_active < ' . (time() - SESSION_TIMEOUT));
 		}
 		
-	    require_once(BASE.'framework/core/subsystems-1/datetime.php');
-
 		if (isset($_GET['id']) && $_GET['id'] == 0) {
 			$sessions = $db->selectObjects('sessionticket', "uid<>0");
 			$filtered = 1;
@@ -258,7 +256,7 @@ class usersController extends expController {
 			if ($sessions[$i]->uid == 0) {
 				$sessions[$i]->user->id = 0;
 			}
-		    $sessions[$i]->duration = exponent_datetime_duration($sessions[$i]->last_active,$sessions[$i]->start_time);
+		    $sessions[$i]->duration = expDateTime::duration($sessions[$i]->last_active,$sessions[$i]->start_time);
 	    }
 
 	    assign_to_template(array('sessions'=>$sessions, 'filter'=>$filtered));
