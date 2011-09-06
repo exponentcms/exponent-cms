@@ -19,7 +19,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
                 var thr = YAHOO.util.Dom.getRegion(this.cart);
                 this.ogCartWrapH = Math.ceil(thr.bottom - thr.top);
                 YAHOO.util.Event.stopEvent(e);
-                if(this.expanded==false){
+                if(!this.expanded){
                     this.expanded=true;
                     this.expand();
                 }else{
@@ -129,7 +129,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
                 var opts = YAHOO.util.Dom.getElementsByClassName('shpmthdopswtch', 'a');
                 var curop = YAHOO.util.Dom.get('shippingmethodoptionslink');
                 var i=0;
-                for (val in o.data.methods){
+                for (var val in o.data.methods){
                     
                     if (YAHOO.util.Dom.hasClass(curop, o.data.methods[val].id)) {
                         curop.innerHTML = o.data.methods[val].title+" ($"+o.data.methods[val].cost+")<span></span>";

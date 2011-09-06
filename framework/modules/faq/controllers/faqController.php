@@ -46,7 +46,7 @@ class faqController extends expController {
 	 *    will let you edit each individual module's FAQs and the ranks associated with them.
 	 */
     public function manage() {
-        expHistory::set('managable', $this->params);
+        expHistory::set('manageable', $this->params);
         $page = new expPaginator(array(
             'model'=>'faq',
             'where' => "location_data='".serialize($this->loc)."'",
@@ -64,9 +64,9 @@ class faqController extends expController {
         global $user;
         
         expHistory::set('editable', $this->params);
-        if ($user->isAdmin()) {
-            redirect_to(array('controller'=>'faq', 'action'=>'edit', 'src'=>$this->loc->src));
-        }
+//        if ($user->isAdmin()) {
+//            redirect_to(array('controller'=>'faq', 'action'=>'edit', 'src'=>$this->loc->src));
+//        }
     }
     
     public function submit_question() {

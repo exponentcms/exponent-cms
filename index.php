@@ -72,7 +72,7 @@ if (MAINTENANCE_MODE && !$user->isAdmin() && ( !isset($_REQUEST['module']) || $_
 	//the default user is anonymous
 	if (!expSession::loggedIn()) {
 		//TODO: Maxims initial anonymous user implementation
-		//exponent_users_login("anonymous", "anonymous");
+		//user::login("anonymous", "anonymous");
 	}
 
 	// check to see if we need to install or upgrade the system

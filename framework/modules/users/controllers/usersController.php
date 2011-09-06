@@ -37,7 +37,7 @@ class usersController extends expController {
     function hasContent() { return false; }
     
     public function manage() {
-        expHistory::set('managable', $this->params);
+        expHistory::set('manageable', $this->params);
         $limit = empty($this->config['limit']) ? 10 : $this->config['limit'];
         $order = empty($this->config['order']) ? 'username' : $this->config['order'];
         $page = new expPaginator(array(
@@ -235,15 +235,13 @@ class usersController extends expController {
     public function manage_sessions() {
         global $db, $user;
         
-        expHistory::set('managable', $this->params);
+        expHistory::set('manageable', $this->params);
         
         //cleans up any old sessions
 		if(SESSION_TIMEOUT_ENABLE == true){	
 			$db->delete('sessionticket','last_active < ' . (time() - SESSION_TIMEOUT));
 		}
 		
-	    require_once(BASE.'framework/core/subsystems-1/datetime.php');
-
 		if (isset($_GET['id']) && $_GET['id'] == 0) {
 			$sessions = $db->selectObjects('sessionticket', "uid<>0");
 			$filtered = 1;
@@ -258,7 +256,7 @@ class usersController extends expController {
 			if ($sessions[$i]->uid == 0) {
 				$sessions[$i]->user->id = 0;
 			}
-		    $sessions[$i]->duration = exponent_datetime_duration($sessions[$i]->last_active,$sessions[$i]->start_time);
+		    $sessions[$i]->duration = expDateTime::duration($sessions[$i]->last_active,$sessions[$i]->start_time);
 	    }
 
 	    assign_to_template(array('sessions'=>$sessions, 'filter'=>$filtered));
@@ -303,12 +301,15 @@ class usersController extends expController {
         global $db;
         
         // set history
-        expHistory::set('managable', $this->params);
+        expHistory::set('manageable', $this->params);
         
         // Lets find all the user profiles availabe and then see if they are
         // in the database yet.  If not we will add them.
-		$extdirs = array(BASE.'framework/modules/users/extensions', 
-		BASE.'themes/'.DISPLAY_THEME_REAL.'framework/modules/users/extensions');
+		$extdirs = array(
+			BASE.'framework/modules/users/extensions',
+//			BASE.'themes/'.DISPLAY_THEME_REAL.'framework/modules/users/extensions'  //FIXME change to allow preview
+			BASE.'themes/'.DISPLAY_THEME.'framework/modules/users/extensions'
+		);
 		foreach ($extdirs as $dir) {
 			if (is_readable($dir)) {
 	        	$dh = opendir($dir);
@@ -349,7 +350,7 @@ class usersController extends expController {
     }
 
     public function manage_groups() {
-        expHistory::set('managable', $this->params);
+        expHistory::set('manageable', $this->params);
         $limit = empty($this->config['limit']) ? 10 : $this->config['limit'];
         $order = empty($this->config['order']) ? 'name' : $this->config['order'];
         $page = new expPaginator(array(
@@ -559,7 +560,7 @@ class usersController extends expController {
     public function manage_group_memberships() {
         global $db, $user;
         expHistory::set('manageable', $this->params);
-        require_once(BASE.'framework/core/subsystems-1/users.php');
+//        require_once(BASE.'framework/core/subsystems-1/users.php');
 
         $memb = $db->selectObject('groupmembership','member_id='.$user->id.' AND group_id='.$this->params['id'].' AND is_admin=1');
 

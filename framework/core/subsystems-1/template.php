@@ -74,7 +74,7 @@ class BaseTemplate {
 		$this->tpl->plugins_dir = array_reverse($this->tpl->plugins_dir);
 		
 		//autoload filters
-		$this->tpl->autoload_filters = array('post' => array('includeMiscFiles'));
+		$this->tpl->autoload_filters = array('post' => array('includemiscfiles'));
 		
 		$this->viewfile = exponent_template_getViewFile($item_type, $item_dir, $view);
 		$this->viewdir = realpath(dirname($this->viewfile));
@@ -202,7 +202,7 @@ class controllerTemplate extends baseTemplate {
 		$this->tpl->plugins_dir = array_reverse($this->tpl->plugins_dir);
 
 		//autoload filters
-		$this->tpl->autoload_filters = array('post' => array('includeMiscFiles'));
+		$this->tpl->autoload_filters = array('post' => array('includemiscfiles'));
 		
 		$this->viewfile = $viewfile;
 		$this->viewdir = realpath(dirname($this->viewfile));
@@ -420,7 +420,12 @@ function exponent_template_getFormTemplates($type) {
     return $forms;
 }
 
-function exponent_template_listFormTemplates($type) {
+/**
+ * Generates a list of email templates/forms
+ * @param $type
+ * @return #Fexponent_core_buildNameList|?
+ */
+function exponent_template_listFormTemplates($type) {  //FIXME only used by calendarmodule edit action
 	return exponent_core_buildNameList("forms", $type, "tpl", "[!_]*");
 }
 
@@ -435,7 +440,7 @@ function exponent_template_listFormTemplates($type) {
  * @param string $lang deprecated, was used to list language specific templates
  * @node Subsystems:Template
  */
-function exponent_template_listModuleViews($module, $lang = LANG) {
+function exponent_template_listModuleViews($module, $lang = LANG) {  //FIXME only used by containermodule edit action and administrationmodule examplecontent action
 	return exponent_core_buildNameList("modules", $module, "tpl", "[!_]*");
 }
 

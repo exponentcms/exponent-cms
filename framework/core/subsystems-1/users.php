@@ -42,7 +42,7 @@ $SYS_USERS_CACHE = array();
  * @param Object $user The user object to get a full profile for.
  * @node Subsystems:Users
  */
-function exponent_users_getFullProfile($user) {
+function exponent_users_getFullProfile($user) {  //FIXME Not used
 	$user = profileextension::getUserProfile($user);
 	
 	// let's also return what groups they are in as well so we don't have to hunt for them later <- Phillip Ball : sept 3 2007
@@ -53,16 +53,16 @@ function exponent_users_getFullProfile($user) {
 	return $user;
 }
 
-function exponent_users_listExtensions() {  //FIXME moved into profileextension model w/ code from 1.0
-    return profileextension::listExtensions();
-}
+//function exponent_users_listExtensions() {  //FIXME moved into profileextension model w/ code from 1.0
+//    return profileextension::listExtensions();
+//}
 
-function exponent_users_authenticate($user, $password) {  //FIXME moved into user model
-	if (MAINTENANCE_MODE && $user->is_acting_admin == 0 ) return false;  // if MAINTENANCE_MODE only allow admins
-	if (empty($user)) return false;  // if the user object is null then fail the login
-	// check password, if account is locked, or is admin(account locking doesn't to administrators)
-	return (($user->is_admin == 1 || $user->is_locked == 0) && $user->password == md5($password)) ? true : false;
-}
+//function exponent_users_authenticate($user, $password) {  //FIXME moved into user model
+//	if (MAINTENANCE_MODE && $user->is_acting_admin == 0 ) return false;  // if MAINTENANCE_MODE only allow admins
+//	if (empty($user)) return false;  // if the user object is null then fail the login
+//	// check password, if account is locked, or is admin(account locking doesn't to administrators)
+//	return (($user->is_admin == 1 || $user->is_locked == 0) && $user->password == md5($password)) ? true : false;
+//}
 
 /* exdoc
  * This function is in place as a login hook, so that future (more advanced and
@@ -76,45 +76,45 @@ function exponent_users_authenticate($user, $password) {  //FIXME moved into use
  * @param string $password The password that the visitor has supplied as credentials
  * @node Subsystems:Users
  */
-function exponent_users_login($username, $password) {  //FIXME moved into user model & expSession
-	global $db;
-
-	// Retrieve the user object from the database.  This may be null, if the username is non-existent.
-	$user = new user($db->selectValue('user', 'id', "username='" . $username . "'"));
-	
-	// if the user object doesn't have an id then we didn't find a valid user accout with this username
-	if (empty($user->id)) return false; 
-	
-	// try to authenticate the user - use the authentication type specified in the site config
-	if ( USE_LDAP == 1 && (empty($user) || $user->is_ldap ==1)) {
-		$ldap = new expLDAP();
-		$ldap->connect();
-		$authenticated = $ldap->authenticate($ldap->getLdapUserDN($username), $password);
-		if ($authenticated) {
-			if (empty($user)) $user = $ldap->addLdapUserToDatabase($username, $password);
-		}
-		$ldap->close();
-	} else {
-		$authenticated = exponent_users_authenticate($user, $password);
-	}
-
-	if($authenticated) {		
-		// Call on the Sessions subsystem to log the user into the site.
-		expSession::login($user);
-		//Update the last login timestamp for this user.
-		$user->updateLastLogin();
-        
-    }
-    
-    $obj = new stdClass();
-    $obj->user_id = $user->id;
-    $obj->timestamp = time();
-    $obj->ip_address = exponent_users_getRealIpAddr();
-    $obj->authenticated = $authenticated;
-    $db->insertObject($obj, "user_loginAttempts");
-    
-    return $user;
-}
+//function exponent_users_login($username, $password) {  //FIXME moved into user model & expSession
+//	global $db;
+//
+//	// Retrieve the user object from the database.  This may be null, if the username is non-existent.
+//	$user = new user($db->selectValue('user', 'id', "username='" . $username . "'"));
+//
+//	// if the user object doesn't have an id then we didn't find a valid user accout with this username
+//	if (empty($user->id)) return false;
+//
+//	// try to authenticate the user - use the authentication type specified in the site config
+//	if ( USE_LDAP == 1 && (empty($user) || $user->is_ldap ==1)) {
+//		$ldap = new expLDAP();
+//		$ldap->connect();
+//		$authenticated = $ldap->authenticate($ldap->getLdapUserDN($username), $password);
+//		if ($authenticated) {
+//			if (empty($user)) $user = $ldap->addLdapUserToDatabase($username, $password);
+//		}
+//		$ldap->close();
+//	} else {
+//		$authenticated = exponent_users_authenticate($user, $password);
+//	}
+//
+//	if($authenticated) {
+//		// Call on the Sessions subsystem to log the user into the site.
+//		expSession::login($user);
+//		//Update the last login timestamp for this user.
+//		$user->updateLastLogin();
+//
+//    }
+//
+//    $obj = new stdClass();
+//    $obj->user_id = $user->id;
+//    $obj->timestamp = time();
+//    $obj->ip_address = exponent_users_getRealIpAddr();
+//    $obj->authenticated = $authenticated;
+//    $db->insertObject($obj, "user_loginAttempts");
+//
+//    return $user;
+//}
 
 /* exdoc
  * This function is in place as a logout hook, so that future (more advanced and
@@ -125,9 +125,9 @@ function exponent_users_login($username, $password) {  //FIXME moved into user m
  * can be cleaned up for the next user.
  * @node Subsystems:Users
  */
-function exponent_users_logout() {  //FIXME moved into expSession
-	expSession::logout();
-}
+//function exponent_users_logout() {  //FIXME moved into expSession
+//	expSession::logout();
+//}
 
 /* exdoc
  * This function returns a form for creating a new group or
@@ -138,7 +138,7 @@ function exponent_users_logout() {  //FIXME moved into expSession
  *    null for a new group form.
  * @node Subsystems:Users
  */
-function exponent_users_groupForm($group = null) {
+function exponent_users_groupForm($group = null) {  //FIXME only used in old administrationmodule
 	// DEPRECATE
 	return group::form($group);
 }
@@ -156,7 +156,7 @@ function exponent_users_groupForm($group = null) {
  *    and false if the account already existed prior to the edit.
  * @node Subsystems:Users
  */
-function exponent_users_saveProfileExtensions($formvalues,$user,$is_new) {
+function exponent_users_saveProfileExtensions($formvalues,$user,$is_new) {  //FIXME only used in old administrationmodule
 	profileextension::saveProfile($formvalues);
 	// Return the full user object to the caller.
 	return profileextension::getUserProfile($user);
@@ -170,7 +170,7 @@ function exponent_users_saveProfileExtensions($formvalues,$user,$is_new) {
  * @param Object $group The group object to update.  This can be null.
  * @node Subsystems:Users
  */
-function exponent_users_groupUpdate($formvalues, $group = null) {
+function exponent_users_groupUpdate($formvalues, $group = null) {  //FIXME only used in old administrationmodule
 	// DEPRECATE
 	//FIXME this is NOT a static function and probably won't work?
 	return group::update($formvalues,$group);
@@ -183,26 +183,26 @@ function exponent_users_groupUpdate($formvalues, $group = null) {
  * @param Array $formvalues The POSTed data received from the New User form.
  * @node Subsystems:Users
  */
-function exponent_users_checkUsername($formvalues) {
-	global $db;
-	$username = '';
-	if (USER_REGISTRATION_USE_EMAIL == 1) {
-		expValidator::validate(array('valid_email'=>'email'), $formvalues);
-		$username = $formvalues['email'];
-	} else {
-		$ret = expValidator::checkUsername($formvalues['username']);
-		if (!empty($ret)) expValidator::failAndReturnToForm($ret, $formvalues);
-		$username = $formvalues['username'];
-	}
-
-	// check to make sure this username/email is unique.  If this is an update we make sure the id isn't
-	// the same as the user trying to update their own account.
-	$unametaken = (USER_REGISTRATION_USE_EMAIL == 1) ? gt('That email address is already in use.') : gt('That username is already taken.');
-	$where = "username = '".$username."'";
-	if (!empty($formvalues['id'])) $where .= ' AND id != '.$formvalues['id'];
-	if (count($db->selectObjects('user', $where)) > 0) expValidator::failAndReturnToForm($unametaken, $formvalues);
-	return $username;
-}
+//function exponent_users_checkUsername($formvalues) {
+//	global $db;
+//	$username = '';
+//	if (USER_REGISTRATION_USE_EMAIL == 1) {
+//		expValidator::validate(array('valid_email'=>'email'), $formvalues);
+//		$username = $formvalues['email'];
+//	} else {
+//		$ret = expValidator::checkUsername($formvalues['username']);
+//		if (!empty($ret)) expValidator::failAndReturnToForm($ret, $formvalues);
+//		$username = $formvalues['username'];
+//	}
+//
+//	// check to make sure this username/email is unique.  If this is an update we make sure the id isn't
+//	// the same as the user trying to update their own account.
+//	$unametaken = (USER_REGISTRATION_USE_EMAIL == 1) ? gt('That email address is already in use.') : gt('That username is already taken.');
+//	$where = "username = '".$username."'";
+//	if (!empty($formvalues['id'])) $where .= ' AND id != '.$formvalues['id'];
+//	if (count($db->selectObjects('user', $where)) > 0) expValidator::failAndReturnToForm($unametaken, $formvalues);
+//	return $username;
+//}
 
 /* exdoc
  * This function saves a user to whatever storage medium the subsystem uses.
@@ -213,7 +213,7 @@ function exponent_users_checkUsername($formvalues) {
  * @param Array $formvalues The POSTed data received from the New User form.
  * @node Subsystems:Users
  */
-function exponent_users_create($formvalues) {
+function exponent_users_create($formvalues) {  //FIXME replaced by usersController::update
 	global $db;
 	global $user;
 
@@ -302,7 +302,7 @@ function exponent_users_create($formvalues) {
  * @state <b>UNDOCUMENTED</b>
  * @node Undocumented
  */
-function exponent_users_userManagerFormTemplate($template) {
+function exponent_users_userManagerFormTemplate($template) {  //FIXME only used in old administrationmodule
 	global $db;
 	global $user;
 	$users = $db->selectObjects('user');
@@ -312,7 +312,7 @@ function exponent_users_userManagerFormTemplate($template) {
 	}
 	usort($users,'sortByLastFirstAscending');
 	for ($i = 0; $i < count($users); $i++) {
-		$users[$i] = exponent_users_getUserById($users[$i]->id);
+		$users[$i] = user::getUserById($users[$i]->id);
 		if ($users[$i]->is_acting_admin && $user->is_admin == 0) {
 			// Dealing with an acting admin, and the current user is not a super user
 			// Fake the is_admin parameter to disable editting.
@@ -333,16 +333,16 @@ function exponent_users_userManagerFormTemplate($template) {
  * @state <b>UNDOCUMENTED</b>
  * @node Undocumented
  */
-function exponent_users_groupManagerFormTemplate($template) {
-	global $db;
-	$groups = $db->selectObjects('group');
-
-	$groups = expSorter::sort(array('array'=>$groups,'sortby'=>'name', 'order'=>'ASC'));
-
-	$template->assign('groups',$groups);
-
-	return $template;
-}
+//function exponent_users_groupManagerFormTemplate($template) {
+//	global $db;
+//	$groups = $db->selectObjects('group');
+//
+//	$groups = expSorter::sort(array('array'=>$groups,'sortby'=>'name', 'order'=>'ASC'));
+//
+//	$template->assign('groups',$groups);
+//
+//	return $template;
+//}
 
 /* exdoc
  * This function will clear a user's password, but only if they are
@@ -351,7 +351,7 @@ function exponent_users_groupManagerFormTemplate($template) {
  * @param integer $uid The ID of the user to clear the password for.
  * @node Subsystems:Users
  */
-function exponent_users_clearPassword($uid) {
+function exponent_users_clearPassword($uid) {  //FIXME only used in old administrationmodule
 	global $db;
 	$user = null;
 	// Calculate the md5 of a blank
@@ -366,23 +366,23 @@ function exponent_users_clearPassword($uid) {
  * @param integer $uid The id of the account to delete.
  * @node Subsystems:Users
  */
-function exponent_users_delete($uid) {
-	global $db;
-	global $user;
-	$u = $db->selectObject('user','id='.$uid);
-	if ($u && $u->is_admin == 0 && ($u->is_acting_admin == 0 || $user->is_admin == 1)) {
-		$db->delete('user','id='.$uid);
-		$db->delete('groupmembership','member_id='.$uid);
-		$db->delete('userpermission','uid='.$uid);
-
-		// clean up profile extensions
-		exponent_users_includeProfileExtensions();
-		$extensions = $db->selectObjects('profileextension');
-		foreach ($extensions as $ext) {
-			call_user_func(array($ext->extension,'cleanup'),$u);
-		}
-	}
-}
+//function exponent_users_delete($uid) {
+//	global $db;
+//	global $user;
+//	$u = $db->selectObject('user','id='.$uid);
+//	if ($u && $u->is_admin == 0 && ($u->is_acting_admin == 0 || $user->is_admin == 1)) {
+//		$db->delete('user','id='.$uid);
+//		$db->delete('groupmembership','member_id='.$uid);
+//		$db->delete('userpermission','uid='.$uid);
+//
+//		// clean up profile extensions
+//		exponent_users_includeProfileExtensions();
+//		$extensions = $db->selectObjects('profileextension');
+//		foreach ($extensions as $ext) {
+//			call_user_func(array($ext->extension,'cleanup'),$u);
+//		}
+//	}
+//}
 
 /* exdoc
  * This function removes the group object, and all group memberships
@@ -391,7 +391,7 @@ function exponent_users_delete($uid) {
  * @param integer $gid The id of the group account to delete.
  * @node Subsystems:Users
  */
-function exponent_users_groupDelete($gid) {
+function exponent_users_groupDelete($gid) {  //FIXME only used in old administrationmodule
 	global $db;
 	$db->delete('group','id='.$gid);
 	$db->delete('groupmembership','group_id='.$gid);
@@ -411,27 +411,27 @@ function exponent_users_groupDelete($gid) {
  * @param integer $uid The id of the user account to retrieve.
  * @node Subsystems:Users
  */
-function exponent_users_getUserById($uid) {
-	// Pull in the exclusive global variable $SYS_USERS_CACHE
-	global $SYS_USERS_CACHE;
-	if (!isset($SYS_USERS_CACHE[$uid])) {
-		// If we haven't previously retrieved an object for this ID, pull it out from
-		// the database and stick it in the cache array, for future calls.
-		global $db;
-		$tmpu = $db->selectObject('user','id='.$uid);
-		if ($tmpu && $tmpu->is_admin == 1) {
-			// User is an admin.  Update is_acting_admin, just in case.
-			// This can be removed as soon as 0.95 is deprecated.
-			$tmpu->is_acting_admin = 1;
-		}
-		$SYS_USERS_CACHE[$uid] = $tmpu;
-	}
-	// Regardless of whether or not the user had been retrieved prior to the calling of
-	// this function, it is now in the cache array.
-	return $SYS_USERS_CACHE[$uid];
-}
+//function exponent_users_getUserById($uid) {
+//	// Pull in the exclusive global variable $SYS_USERS_CACHE
+//	global $SYS_USERS_CACHE;
+//	if (!isset($SYS_USERS_CACHE[$uid])) {
+//		// If we haven't previously retrieved an object for this ID, pull it out from
+//		// the database and stick it in the cache array, for future calls.
+//		global $db;
+//		$tmpu = $db->selectObject('user','id='.$uid);
+//		if ($tmpu && $tmpu->is_admin == 1) {
+//			// User is an admin.  Update is_acting_admin, just in case.
+//			// This can be removed as soon as 0.95 is deprecated.
+//			$tmpu->is_acting_admin = 1;
+//		}
+//		$SYS_USERS_CACHE[$uid] = $tmpu;
+//	}
+//	// Regardless of whether or not the user had been retrieved prior to the calling of
+//	// this function, it is now in the cache array.
+//	return $SYS_USERS_CACHE[$uid];
+//}
 
-function exponent_users_getUsersByEmail($email) {
+function exponent_users_getUsersByEmail($email) {  //FIXME not used
     global $db;
     $tmpus = $db->selectObjects('user',"email='$email'");
     foreach ($tmpus as $key=>$tmpu) {
@@ -444,10 +444,10 @@ function exponent_users_getUsersByEmail($email) {
     return $tmpus;
 }
 
-function exponent_users_getEmailById($id) {  //FIXME moved to user model
-	global $db;
-	return $db->selectValue('user','email','id='.$id);
-}
+//function exponent_users_getEmailById($id) {  //FIXME moved to user model
+//	global $db;
+//	return $db->selectValue('user','email','id='.$id);
+//}
 
 /* exdoc
  * Gets a list of all user accounts in the system.  By giving different
@@ -458,13 +458,13 @@ function exponent_users_getEmailById($id) {  //FIXME moved to user model
  * @param bool $allow_normal Whether or not to include normal accounts in the returned list.
  * @node Subsystems:Users
  */
-function exponent_users_getAllUsers($allow_admin=1,$allow_normal=1) {  //FIXME moved to user model
-	global $db;
-	if ($allow_admin && $allow_normal) return $db->selectObjects('user');
-	else if ($allow_admin) return $db->selectObjects('user','is_admin=1 OR is_acting_admin = 1');
-	else if ($allow_normal) return $db->selectObjects('user','is_admin=0 AND is_acting_admin = 0');
-	else return array();
-}
+//function exponent_users_getAllUsers($allow_admin=1,$allow_normal=1) {  //FIXME moved to user model
+//	global $db;
+//	if ($allow_admin && $allow_normal) return $db->selectObjects('user');
+//	else if ($allow_admin) return $db->selectObjects('user','is_admin=1 OR is_acting_admin = 1');
+//	else if ($allow_normal) return $db->selectObjects('user','is_admin=0 AND is_acting_admin = 0');
+//	else return array();
+//}
 
 /* exdoc
  * This function pulls a group object form the subsystem's storage mechanism,
@@ -479,7 +479,7 @@ function exponent_users_getAllUsers($allow_admin=1,$allow_normal=1) {  //FIXME m
  * @param integer $gid The id of the group account to retrieve.
  * @node Subsystems:Users
  */
-function exponent_users_getGroupById($gid) {
+function exponent_users_getGroupById($gid) {  //FIXME only used in old administrationmodule
 //anonymous group -- NOT YET IMPLEMENTED
 /*    global $db;
     if ($gid == 0){
@@ -510,16 +510,16 @@ function exponent_users_getGroupById($gid) {
  * @param string $name The username of the user account to retrieve.
  * @node Subsystems:Users
  */
-function exponent_users_getUserByName($name) {  //FIXME moved to user model
-	global $db;
-	$tmpu = $db->selectObject('user',"username='$name'");
-	if ($tmpu && $tmpu->is_admin == 1) {
-		// User is an admin.  Update is_acting_admin, just in case.
-		// This can be removed as soon as 0.95 is deprecated.
-		$tmpu->is_acting_admin = 1;
-	}
-	return $tmpu;
-}
+//function exponent_users_getUserByName($name) {  //FIXME moved to user model
+//	global $db;
+//	$tmpu = $db->selectObject('user',"username='$name'");
+//	if ($tmpu && $tmpu->is_admin == 1) {
+//		// User is an admin.  Update is_acting_admin, just in case.
+//		// This can be removed as soon as 0.95 is deprecated.
+//		$tmpu->is_acting_admin = 1;
+//	}
+//	return $tmpu;
+//}
 
 /* exdoc
  * This function pulls a group object from the subsystem's storage mechanism,
@@ -534,7 +534,7 @@ function exponent_users_getUserByName($name) {  //FIXME moved to user model
  * @param integer $name The name of the group account to retrieve.
  * @node Subsystems:Users
  */
-function exponent_users_getGroupByName($name) {
+function exponent_users_getGroupByName($name) {  //FIXME only used in old administrationmodule
 	global $db;
 	return $db->selectObject('group',"name='$name'");
 }
@@ -549,25 +549,25 @@ function exponent_users_getGroupByName($name) {
  * @param bool $allow_inclusive Whether or not to include inclusive groups in the returned list.
  * @node Subsystems:Users
  */
-function exponent_users_getAllGroups($allow_exclusive=1,$allow_inclusive=1) {  //FIXME moved to user model
-	global $db;
-	if ($allow_exclusive && $allow_inclusive) {
-		// For both, just do a straight selectObjects call, with no WHERE criteria.
-		return $db->selectObjects('group');
-	} else if ($allow_exclusive) {
-		// At this point, we know that $allow_inclusive was passed as false
-		// So, we need to retrieve groups that are not inclusive.
-		return $db->selectObjects('group','inclusive = 0');
-	} else if ($allow_inclusive) {
-		// At this point, we know that $allow_exclusive was passed as false
-		// So, we need to retrieve groups that are inclusive.
-		return $db->selectObjects('group','inclusive = 1');
-	} else {
-		// Both arguments were passed as false.  This is nonsensical, but why not
-		// let the programmer shoot themselves in the foot.  Return an empty array.
-		return array();
-	}
-}
+//function exponent_users_getAllGroups($allow_exclusive=1,$allow_inclusive=1) {  //FIXME moved to user model
+//	global $db;
+//	if ($allow_exclusive && $allow_inclusive) {
+//		// For both, just do a straight selectObjects call, with no WHERE criteria.
+//		return $db->selectObjects('group');
+//	} else if ($allow_exclusive) {
+//		// At this point, we know that $allow_inclusive was passed as false
+//		// So, we need to retrieve groups that are not inclusive.
+//		return $db->selectObjects('group','inclusive = 0');
+//	} else if ($allow_inclusive) {
+//		// At this point, we know that $allow_exclusive was passed as false
+//		// So, we need to retrieve groups that are inclusive.
+//		return $db->selectObjects('group','inclusive = 1');
+//	} else {
+//		// Both arguments were passed as false.  This is nonsensical, but why not
+//		// let the programmer shoot themselves in the foot.  Return an empty array.
+//		return array();
+//	}
+//}
 
 /* exdoc
  * This function consults the group membership data and returns a
@@ -580,7 +580,7 @@ function exponent_users_getAllGroups($allow_exclusive=1,$allow_inclusive=1) {  /
  * @param bool $allow_inclusive Whether or not to include inclusive groups in the returned list.
  * @node Subsystems:Users
  */
-function exponent_users_getGroupsForUser($u, $allow_exclusive=1, $allow_inclusive=1) {
+function exponent_users_getGroupsForUser($u, $allow_exclusive=1, $allow_inclusive=1) {  //FIXME only used in getFullProfile above
 	global $db;
 	if ($u == null || !isset($u->id)) {
 		// Don't have enough information to consult the membership tables.
@@ -591,9 +591,9 @@ function exponent_users_getGroupsForUser($u, $allow_exclusive=1, $allow_inclusiv
 	$groups = array();
 	if ( (!empty($u->is_admin) && $u->is_admin == 1) || (!empty($u->is_acting_admin) && $u->is_acting_admin == 1) ) {
 		// For administrators, we synthesize group memberships - they effectively
-		// belong to all groups.  So, we call user::getAllGroups, and pass the
+		// belong to all groups.  So, we call group::getAllGroups, and pass the
 		// filtration criteria arguments (2 and 3) to it.
-		return user::getAllGroups($allow_exclusive,$allow_inclusive);
+		return group::getAllGroups($allow_exclusive,$allow_inclusive);
 	}
 	foreach ($db->selectObjects('groupmembership','member_id='.$u->id) as $m) {
 		// Loop over the membership records for this user, and select the full
@@ -614,16 +614,16 @@ function exponent_users_getGroupsForUser($u, $allow_exclusive=1, $allow_inclusiv
 	return $groups;
 }
 
-function exponent_user_getGroupById($id=null) {
-	global $db;
-	if ($id == null || !isset($id)) {
-		return array();
-	}
-	
-	$group = null;
-	$group = $db->selectObject("group", "id=".$id);
-	return $group;
-}
+//function exponent_user_getGroupById($id=null) {
+//	global $db;
+//	if ($id == null || !isset($id)) {
+//		return array();
+//	}
+//
+//	$group = null;
+//	$group = $db->selectObject("group", "id=".$id);
+//	return $group;
+//}
 
 /* exdoc
  * This function consults the group membership data and returns a
@@ -633,22 +633,22 @@ function exponent_user_getGroupById($id=null) {
  * @param Object $g The group object to obtain a member list for.
  * @node Subsystems:Users
  */
-function exponent_users_getUsersInGroup($g) {
-	global $db;
-	if ($g == null || !isset($g->id)) {
-		// Don't have enough information to consult the membership tables.
-		// Return an empty array.
-		return array();
-	}
-	// Holding array for the member users.
-	$users = array();
-	foreach ($db->selectObjects('groupmembership','group_id='.$g->id) as $m) {
-		// Loop over the membership records for this group, and append a basic user object to the holding array.
-		$users[] = $db->selectObject('user','id='.$m->member_id);
-	}
-	// Return the list of user objects to the caller.
-	return $users;
-}
+//function exponent_users_getUsersInGroup($g) {
+//	global $db;
+//	if ($g == null || !isset($g->id)) {
+//		// Don't have enough information to consult the membership tables.
+//		// Return an empty array.
+//		return array();
+//	}
+//	// Holding array for the member users.
+//	$users = array();
+//	foreach ($db->selectObjects('groupmembership','group_id='.$g->id) as $m) {
+//		// Loop over the membership records for this group, and append a basic user object to the holding array.
+//		$users[] = $db->selectObject('user','id='.$m->member_id);
+//	}
+//	// Return the list of user objects to the caller.
+//	return $users;
+//}
 
 /* exdoc
  * Saves a user account to the subsystem's storage mechanism.  This function
@@ -661,7 +661,7 @@ function exponent_users_getUsersInGroup($g) {
  *    is set, an update is performed.  Otherwise, a new record is created.
  * @node Subsystems:Users
  */
-function exponent_users_saveUser($u) {
+function exponent_users_saveUser($u) {  //FIXME only used in old administrationmodule & importers/usercsv
 	if ($u == null) {
 		// If the passed user is null, then we need to bail.
 		return null;
@@ -710,7 +710,7 @@ function exponent_users_saveUser($u) {
  * @param Object $group The group account to update / create.
  * @node Subsystems:Users
  */
-function exponent_users_saveGroup($group) {
+function exponent_users_saveGroup($group) {  //FIXME only used in old administrationmodule
 	if ($group == null) {
 		// No group to save.  Need to bail.
 		return null;
@@ -737,59 +737,59 @@ function exponent_users_saveGroup($group) {
  *     logged in, then it exits immediately.
  * @node Subsystems:Users
  */
-function exponent_users_changepass($pass, $user = null) {
-	if ($user == null) {
-		// If a valid user object was not passed, try to fall back to the current user.
-		global $user;
-	}
-	if ($user == null || !isset($user->id)) {
-		// This will only be reached if:
-		//	A) The second argument was null
-		//	B) The current visitor is not logged in.
-		// We need to bail, because there isn't enough information to change the password.
-		return;
-	}
-	// Set up a partial object for doing the update (since we don't want to change other
-	// attributes that may be set for the user.)
-	$u = null;
-	$u->id = $user->id;
-	$u->password = md5($pass);
-	// Pull the database object in from the global scope.
-	global $db;
-	// Update the user object with the new password.
-	$db->updateObject($u,'user');
-}
+//function exponent_users_changepass($pass, $user = null) {
+//	if ($user == null) {
+//		// If a valid user object was not passed, try to fall back to the current user.
+//		global $user;
+//	}
+//	if ($user == null || !isset($user->id)) {
+//		// This will only be reached if:
+//		//	A) The second argument was null
+//		//	B) The current visitor is not logged in.
+//		// We need to bail, because there isn't enough information to change the password.
+//		return;
+//	}
+//	// Set up a partial object for doing the update (since we don't want to change other
+//	// attributes that may be set for the user.)
+//	$u = null;
+//	$u->id = $user->id;
+//	$u->password = md5($pass);
+//	// Pull the database object in from the global scope.
+//	global $db;
+//	// Update the user object with the new password.
+//	$db->updateObject($u,'user');
+//}
 
-function exponent_users_isLoggedIn() {  //FIXME moved to user model
-        global $user;
-        if (!empty($user) && !empty($user->id) && $user->id != 0) {
-                return true;
-        } else {
-                return false;
-        }
-}
+//function exponent_users_isLoggedIn() {  //FIXME moved to user model
+//        global $user;
+//        if (!empty($user) && !empty($user->id) && $user->id != 0) {
+//                return true;
+//        } else {
+//                return false;
+//        }
+//}
 
-function exponent_users_isAdmin() {  //FIXME moved to user model
-	global $user;
-	return (!empty($user->is_acting_admin) || !empty($user->is_admin)) ? true : false;
-}
+//function exponent_users_isAdmin() {  //FIXME moved to user model
+//	global $user;
+//	return (!empty($user->is_acting_admin) || !empty($user->is_admin)) ? true : false;
+//}
 
 
-function exponent_users_getRealIpAddr()
-{
-    if (!empty($_SERVER['HTTP_CLIENT_IP']))   //check ip from share internet
-    {
-      $ip=$_SERVER['HTTP_CLIENT_IP'];
-    }
-    elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR']))   //to check ip is pass from proxy
-    {
-      $ip=$_SERVER['HTTP_X_FORWARDED_FOR'];
-    }
-    else
-    {
-      $ip=$_SERVER['REMOTE_ADDR'];
-    }
-    return $ip;
-}
+//function exponent_users_getRealIpAddr()
+//{
+//    if (!empty($_SERVER['HTTP_CLIENT_IP']))   //check ip from share internet
+//    {
+//      $ip=$_SERVER['HTTP_CLIENT_IP'];
+//    }
+//    elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR']))   //to check ip is pass from proxy
+//    {
+//      $ip=$_SERVER['HTTP_X_FORWARDED_FOR'];
+//    }
+//    else
+//    {
+//      $ip=$_SERVER['REMOTE_ADDR'];
+//    }
+//    return $ip;
+//}
 
 ?>

@@ -42,10 +42,10 @@
 		// populate the button panel
 		eXp.WYSIWYG.buildToolbox(eXp.WYSIWYG.toolbox);
 {literal}				
-		for(currRow = 0; currRow < eXp.WYSIWYG.toolbar.length; currRow++) {
+		for(var currRow = 0; currRow < eXp.WYSIWYG.toolbar.length; currRow++) {
 			rows.push(new Array());
 		
-			for(currButton = 0; currButton < eXp.WYSIWYG.toolbar[currRow].length; currButton++) {
+			for(var currButton = 0; currButton < eXp.WYSIWYG.toolbar[currRow].length; currButton++) {
 
 				if (eXp.WYSIWYG.toolbar[currRow][currButton] != "") {
 					rows[currRow].push(eXp.WYSIWYG.toolbar[currRow][currButton]);

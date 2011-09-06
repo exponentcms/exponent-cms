@@ -25,23 +25,19 @@ if (!defined('EXPONENT')) exit('');
 if (exponent_permissions_check('extensions',exponent_core_makeLocation('administrationmodule'))) {
 
 	$sessid = session_id();
-//	if (!file_exists(BASE."extensionuploads/$sessid") || !is_dir(BASE."extensionuploads/$sessid")) {
 	if (!file_exists(BASE."tmp/extensionuploads/$sessid") || !is_dir(BASE."tmp/extensionuploads/$sessid")) {
 		$template = new template('administrationmodule','_upload_finalSummary',$loc);
 		$template->assign('nofiles',1);
 	} else {
 		$success = array();
-//		foreach (array_keys(expFile::listFlat(BASE."extensionuploads/$sessid",true,null,array(),BASE."extensionuploads/$sessid")) as $file) {
 		foreach (array_keys(expFile::listFlat(BASE."tmp/extensionuploads/$sessid",true,null,array(),BASE."tmp/extensionuploads/$sessid")) as $file) {
 			if ($file != '/archive.tar' && $file != '/archive.tar.gz' && $file != 'archive.tar.bz2' && $file != '/archive.zip') {
 				expFile::makeDirectory(dirname($file));
-//				$success[$file] = copy(BASE."extensionuploads/$sessid".$file,BASE.substr($file,1));
 				$success[$file] = copy(BASE."tmp/extensionuploads/$sessid".$file,BASE.substr($file,1));
 				if (basename($file) == 'views_c') chmod(BASE.substr($file,1),0777);
 			}
 		}
 		
-//		$del_return = expFile::removeDirectory(BASE."extensionuploads/$sessid");
 		$del_return = expFile::removeDirectory(BASE."tmp/extensionuploads/$sessid");
 		echo $del_return;
 

@@ -1,0 +1,15 @@
+.textmodule.default .modulepermissions {
+	float:left;
+	border:none;
+	padding:0;
+}
+
+.textmodule.default .itemactions {
+	float:left;
+}
+
+.textmodule.default .moduleactions {
+	border:none;
+}
+
+

@@ -34,10 +34,10 @@ class expVersion {
 	 */
 	static function getVersion($full = false, $build = false) {
 		if (!defined("EXPONENT_VERSION_MAJOR")) include_once(BASE."exponent_version.php");
-		$vers = EXPONENT_VERSION_MAJOR.".".EXPONENT_VERSION_MINOR;
+		$vers = EXPONENT_VERSION_MAJOR.".".EXPONENT_VERSION_MINOR;  // can be used for numerical comparison
 		if ($full) {
 			$vers .= ".".EXPONENT_VERSION_REVISION;
-			if (EXPONENT_VERSION_TYPE != "") $vers .= "-".EXPONENT_VERSION_TYPE.EXPONENT_VERSION_ITERATION;
+			if (EXPONENT_VERSION_TYPE != '') $vers .= "-".EXPONENT_VERSION_TYPE.EXPONENT_VERSION_ITERATION;
 		}
 		if ($build) {
 			$vers .= " (Build Date: ".strftime("%D",EXPONENT_VERSION_BUILDDATE).")";
@@ -51,71 +51,34 @@ class expVersion {
 	static function checkVersion() {
 		global $db;
 
+		// we're not up and running yet, so fix that first
 		if (@file_exists(BASE.'install/not_configured') || !(@file_exists(BASE.'conf/config.php'))) {
 			self::launchInstaller();
 		}
 
 		// version checking routine, check database version against software version
-		$version = $db->selectObject('version',1);
-		if (empty($version)) {
-			$version->major = 0;
-			$version->minor = 0;
-			$version->revision = 0;
-			$version->type = '';
-			$version->iteration = '';
+		$dbversion = $db->selectObject('version',1);
+		if (empty($dbversion)) {
+			$dbversion->major = 0;
+			$dbversion->minor = 0;
+			$dbversion->revision = 0;
+			$dbversion->type = '';
+			$dbversion->iteration = '';
 		}
-		if ($version->major < EXPONENT_VERSION_MAJOR) {
+		if ($dbversion->major < EXPONENT_VERSION_MAJOR) {
 			self::launchInstaller();
-		} elseif ($version->minor < EXPONENT_VERSION_MINOR) {
+		} elseif ($dbversion->minor < EXPONENT_VERSION_MINOR) {
 			self::launchInstaller();
-		} elseif ($version->revision < EXPONENT_VERSION_REVISION) {
+		} elseif ($dbversion->revision < EXPONENT_VERSION_REVISION) {
 			self::launchInstaller();
-		} elseif ($version->minor < EXPONENT_VERSION_MINOR) {
+		} elseif ($dbversion->minor < EXPONENT_VERSION_MINOR) {
 			self::launchInstaller();
 		} else {
-			switch ($version->type) {
-				case 'alpha':
-					$dbtype = 1;
-					break;
-				case 'beta':
-					$dbtype = 2;
-					break;
-				case 'release-candidate':
-					$dbtype = 3;
-					break;
-				case 'develop':
-					$dbtype = 5;
-					break;
-				case '': // stable
-					$dbtype = 10;
-					break;
-				default:
-					$dbtype = 0;
-					break;
-			}
-			switch (EXPONENT_VERSION_TYPE) {
-				case 'alpha':
-					$swtype = 1;
-					break;
-				case 'beta':
-					$swtype = 2;
-					break;
-				case 'release-candidate':
-					$swtype = 3;
-					break;
-				case 'develop':
-					$swtype = 5;
-					break;
-				case '': // stable
-					$swtype = 10;
-					break;
-				default:
-					$swtype = 0;
-					break;
-			}
+			$dbtype = self::iterateType($dbversion->type);
+			$swtype = self::iterateType(EXPONENT_VERSION_TYPE);
 			if ($dbtype < $swtype) {
 				self::launchInstaller();
-			} elseif ($dbtype == $swtype && $version->type < EXPONENT_VERSION_ITERATION) {
+			} elseif ($dbtype == $swtype && $dbversion->iteration < EXPONENT_VERSION_ITERATION) {
 				self::launchInstaller();
 			}
 		}
@@ -133,6 +96,36 @@ class expVersion {
 
 		header('Location: '.URL_FULL.'install/index.php');
 		exit('Redirecting to the Exponent Install Wizard');
+	}
+
+	/**
+	 * Routine to convert iteration type to a number
+	 * 
+	 * @param string $type
+	 * @return int
+	 */
+	static function iterateType($type) {
+		switch ($type) {
+			case 'alpha':
+				$typenum = 1;
+				break;
+			case 'beta':
+				$typenum = 2;
+				break;
+			case 'release-candidate':
+				$typenum = 3;
+				break;
+			case 'develop':
+				$typenum = 5;
+				break;
+			case '': // stable
+				$typenum = 10;
+				break;
+			default:
+				$typenum = 0;
+				break;
+		}
+		return $typenum;
 	}
 
 }

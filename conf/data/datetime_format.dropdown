@@ -32,11 +32,23 @@
 %b %d %Y %H:%M
 	Nov 01 2010 18:45
 	
+%b %d %Y %l:%M%p
+	Nov 01 2010 6:45pm
+
 %b %d, %Y %H:%M
 	Nov 01, 2010 18:45
+
+%b %d, %Y %l:%M%p
+	Nov 01, 2010 6:45pm
 
 %a %b %d %Y %H:%M
 	Mon Nov 01 2010 18:45
 
+%a %b %d %Y %l:%M%p
+	Mon Nov 01 2010 6:45pm
+
 %a, %b %d, %Y %H:%M
 	Mon, Nov 01, 2010 18:45
+
+%a, %b %d, %Y %l:%M%p
+	Mon, Nov 01, 2010 6:45pm

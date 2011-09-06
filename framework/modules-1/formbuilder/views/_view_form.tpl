@@ -50,7 +50,7 @@
 				</td>
 			</tr>
 		</table>
-		<p><a href="JavaScript: pickSource();">{'Append fields from existing form'|gettext}</a></p>
-		<p><a href="{$backlink}">{'Done'|gettext}</a></p>
+		<p><a class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" href="JavaScript: pickSource();">{'Append fields from existing form'|gettext}</a></p>
+		<p><a class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" href="{$backlink}">{'Done'|gettext}</a></p>
 	{/if}
 </div>

@@ -213,7 +213,7 @@ class postgres_database {
 		pg_query($this->connection,$sql);
 	}
 	
-	function sql($sql) {
+	function sql($sql, $escape = true) {
 		$res = pg_query($sql);
 		return $res;
 	}

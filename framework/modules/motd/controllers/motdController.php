@@ -58,9 +58,8 @@ class motdController extends expController {
     }
     
     function update() {
-        include_once(BASE."framework/core/subsystems-1/datetime.php");
         $timestamp = mktime(0, 0, 0, $this->params['month'], 1);
-        $endday = exponent_datetime_endOfMonthDay($timestamp);
+        $endday = expDateTime::endOfMonthDay($timestamp);
         if ($this->params['day'] > $endday) {
             expValidator::failAndReturnToForm('There are only '.$endday.' days in '.$this->motd->months[$this->params['month']], $this->params);
         }

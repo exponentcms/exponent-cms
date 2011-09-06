@@ -132,7 +132,7 @@ class migrationController extends expController {
     public function manage_pages() {
         global $db;
 
-        expHistory::set('managable', $this->params);
+        expHistory::set('manageable', $this->params);
         $old_db = $this->connect();
         $pages = $old_db->selectObjects('section','id > 1');
         foreach($pages as $page) {
@@ -255,7 +255,7 @@ class migrationController extends expController {
 	 * @return void
 	 */
     public function manage_files() {
-        expHistory::set('managable', $this->params);
+        expHistory::set('manageable', $this->params);
         $old_db = $this->connect();
         $files = $old_db->selectObjects('file');
         assign_to_template(array('count'=>count($files)));
@@ -269,7 +269,7 @@ class migrationController extends expController {
     public function migrate_files() {
         global $db;
 
-        expHistory::set('managable', $this->params);
+        expHistory::set('manageable', $this->params);
         $old_db = $this->connect();
         $db->delete('expFiles');
 
@@ -328,7 +328,6 @@ class migrationController extends expController {
         $old_db = $this->connect();
         if (isset($this->params['wipe_content'])) {
             $db->delete('sectionref');
-//			$db->delete('locationref');  //TODO Remove this locationref, uneeded in future
             $db->delete('container');
             $db->delete('text');
             $db->delete('snippet');
@@ -461,22 +460,6 @@ class migrationController extends expController {
 				$where .= " module='".$key."'";
 			}
 		}
-
-		// TODO Remove this locationref in future
-//        $locref = $old_db->selectObjects('locationref',$where);
-//        foreach ($locref as $lr) {
-//            if (array_key_exists($lr->module, $this->new_modules)) {
-//                $lr->module = $this->new_modules[$lr->module];
-//            }
-//
-//            if (!in_array($lr->module, $this->deprecated_modules)) {
-//                if (!$db->selectObject('locationref',"source='".$lr->source."'")) {
-//                    $db->insertObject($lr, 'locationref');
-//                    @$this->msg['locationref']++;
-//                }
-//            }
-//        }
-		// Remove to here
 
         // pull the sectionref data for selected modules
         $secref = $old_db->selectObjects('sectionref',$where);
@@ -627,7 +610,7 @@ class migrationController extends expController {
 	public function manage_users() {
         global $db;
 
-        expHistory::set('managable', $this->params);
+        expHistory::set('manageable', $this->params);
         $old_db = $this->connect();
         $users = $old_db->selectObjects('user','id > 1');
         foreach($users as $user) {
@@ -1090,7 +1073,7 @@ class migrationController extends expController {
 						$newrss->save();
 					}
 					if ($only_featured) {
-						$newconfig->config[only_featured] = true;
+						$newconfig->config['only_featured'] = true;
 					}
 					if ($newconfig != null) {
 						$newconfig->location_data = $loc;

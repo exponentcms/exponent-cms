@@ -4,19 +4,19 @@ var DDM = YAHOO.util.DragDropMgr;
 
 var expTree = function() {
 
-    expddtree = function(id, sGroup, config) {
-        //console.debug(id.replace('ygtv',''))
-        if (id) {
-            //new YAHOO.util.DDTarget("addafter"+id,sGroup);
-            //new YAHOO.util.DDTarget("addbefore"+id,sGroup);
-            // bind this drag drop object to the
-            // drag source object
-            this.init("dragtable"+id, sGroup, config);
-            this.initFrame();
-            this.setHandleElId("nodeDragHandle"+id);
-            this.resizeFrame = false;
-        }
-    };
+	expddtree = function(id, sGroup, config) {
+		//console.debug(id.replace('ygtv',''))
+		if (id) {
+			//new YAHOO.util.DDTarget("addafter"+id,sGroup);
+			//new YAHOO.util.DDTarget("addbefore"+id,sGroup);
+			// bind this drag drop object to the
+			// drag source object
+			this.init("dragtable" + id, sGroup, config);
+			this.initFrame();
+			this.setHandleElId("nodeDragHandle" + id);
+			this.resizeFrame = false;
+		}
+	};
 
     YAHOO.extend(expddtree, YAHOO.util.DDProxy, {
         startDrag: function(x, y) {
@@ -473,7 +473,7 @@ var expTree = function() {
              sb[sb.length] = (this.nowrap) ? ' nowrap="nowrap" ' : '';
              sb[sb.length] = ' >';
              // Dragdrop
-             if(this.draggable == true){
+             if(this.draggable){
                  sb[sb.length] = '<td';
                  //sb[sb.length] = '';
                  sb[sb.length] = ' class="nodeDragHandle"';
@@ -485,7 +485,7 @@ var expTree = function() {
              }
 
              // check box
-             if(this.checkable == true){
+             if(this.checkable){
                  var input = this.buildInput(this.id,this.checked);
                  sb[sb.length] = '<td>';
                  // sb[sb.length] = ' id="' + this.getCheckElId() + '"';
@@ -528,15 +528,15 @@ var expTree = function() {
          
          
     });
-    
-    refreshDD = function () {
-        dds = YAHOO.util.Dom.getElementsByClassName("dragtable");
-        
-        for (var i=0; i<dds.length; i++ ){
-            //console.debug(dds[i].id);
-            new expddtree(dds[i].id.replace("dragtable",""));
-        }
-    }
+
+	refreshDD = function () {
+		dds = YAHOO.util.Dom.getElementsByClassName("dragtable");
+
+		for (var i = 0; i < dds.length; i++) {
+			//console.debug(dds[i].id);
+			new expddtree(dds[i].id.replace("dragtable", ""));
+		}
+	}
 
 
     function buildContextMenu(div){
@@ -627,8 +627,8 @@ var expTree = function() {
 
     return {
         init:function(div,obj,mod,menu,expandonstart){
-            applicationModule = mod;
-            tree = new YAHOO.widget.TreeView(div);
+	        applicationModule = mod;
+	        tree = new YAHOO.widget.TreeView(div);
             var root = tree.getRoot();
             var node = [];
             node[0]=root;

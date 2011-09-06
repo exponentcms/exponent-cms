@@ -19,10 +19,10 @@
 
 if (class_exists('basetheme')) return;
 
-class basetheme {
+class basetheme extends theme {
 	function name() { return "Base Theme"; }
 	function author() { return "Phillip Ball"; }
-	function description() { return "A good base theme to get Themers started"; }
+	function description() { return "A bare-bones theme based off <a href=\"http://developer.yahoo.com/yui/grids/\" target=\"_blank\">YUI 2 Gids</a>"; }
 }
 
 ?>

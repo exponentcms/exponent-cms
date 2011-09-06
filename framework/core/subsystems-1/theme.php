@@ -17,7 +17,7 @@
 #
 ##################################################
 
-/* exdoc
+/** exdoc
  * This is the expTheme 1.0 compatibility layer
  */
 
@@ -108,7 +108,6 @@ function exponent_theme_getTheme() {
 function exponent_theme_loadActionMaps() {
    return expTheme::loadActionMaps();
 }
-
 
 function exponent_theme_satisfyThemeRequirements() {
 	expTheme::satisfyThemeRequirements();

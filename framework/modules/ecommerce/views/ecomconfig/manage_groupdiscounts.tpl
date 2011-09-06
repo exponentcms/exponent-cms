@@ -25,7 +25,7 @@
 	</div>
 	
 	{br}
-	<a class="add" href="{link module=administrationmodule action=gmgr_editprofile id=0}">Add a new group</a>
+	<a class="add" href="{link controller=user action=edit_group id=0}">Add a new group</a>
 	<a class="add" href="{link controller=ecomconfig action=manage_discounts}">Manage a Discount Rules</a>
 	{br}{br}
 	<h2>Add a new group discount</h2>

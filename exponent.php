@@ -28,99 +28,67 @@
  * @version 2.0.0
  */
 
+// Initialize the exponent environment
 require_once('exponent_bootstrap.php');
 
 // Initialize the MVC framework - for objects we need loaded now
 require_once(BASE.'framework/core/expFramework.php');
-/**
- * the list of available/active controllers
- * @global array $available_controllers
- * @name $available_controllers
- */
+
+// Initialize the Sessions subsystem
+expSession::initialize();
+
+// Initialize the Theme subsystem
+expTheme::initialize();
+
+// Create the list of available/active controllers
 $available_controllers = initializeControllers();  //original position
 //$available_controllers = array();
 
-// Initialize the Sessions Subsystem
-expSession::initialize();
-
-// Initialize the theme subsystem 1.0 compatibility layer
-require_once(BASE.'framework/core/subsystems-1/theme.php');
-//$validateTheme = array("headerinfo"=>false,"footerinfo"=>false);
-
 // Initialize the language subsystem
-//$cur_lang = array();
-//$default_lang = array();
-//$target_lang_file = '';
 expLang::loadLang();
 
-// Initialize the Core Subsystem
+// Initialize the Core subsystem
 require_once(BASE.'framework/core/subsystems-1/core.php');
 
-// Initialize the Database Subsystem
+// Initialize the Database subsystem
 require_once(BASE.'framework/core/subsystems-1/database.php');
-/**
- * The exponent database object
- *
- * @global mysqli_database $db the exponent database object
- * @name $db
- */
 $db = exponent_database_connect(DB_USER,DB_PASS,DB_HOST.':'.DB_PORT,DB_NAME);
 //$available_controllers = initializeControllers();
 //foreach ($db->selectObjects('modstate',1) as $mod) {
 //	if (!empty($mod->path)) $available_controllers[$mod->module] = $mod->path;  //FIXME test location
 //}
 
-// Initialize the old school Modules Subsystem.
+// Initialize the old school Modules subsystem.
 require_once(BASE.'framework/core/subsystems-1/modules.php');
 exponent_modules_initialize(); // now in the autoloader, if used
 
-// Initialize the Template Subsystem.
+// Initialize the Template subsystem.
 require_once(BASE.'framework/core/subsystems-1/template.php');
 
-// Initialize the Permissions Subsystem.
+// Initialize the Permissions subsystem.
 require_once(BASE.'framework/core/subsystems-1/permissions.php');
 
-// Initialize the History (Flow) Subsystem.
-/**
- * the browsing history object
- * @global expHistory $history
- * @name $history
- */
+// Initialize the History (Flow) subsystem.
 $history = new expHistory(); //<--This is the new flow subsystem and will be replacing the above.
 $SYS_FLOW_REDIRECTIONPATH = 'exponent_default';
 
-// Initialize the User Subsystem.
-require_once(BASE.'framework/core/subsystems-1/users.php');
+// Initialize the User subsystem.
+//require_once(BASE.'framework/core/subsystems-1/users.php');
 
 // Initialize the javascript subsystem
 if (expJavascript::inAjaxAction()) set_error_handler('handleErrors');
 
-// Validate the session.  This will populate the $user variable
-/**
- * the current user object
- * @global user $user
- * @name $user
- */
+// Validate the session and populate the $user variable
 $user = new user();
 expSession::validate();
 
 // Initialize permissions variables
 exponent_permissions_initialize();
 
-/**
- * initialize the expRouter
- * the routing/link/url object
- * @global expRouter $router
- * @name $router
- */
+// initialize the expRouter
 $router = new expRouter();
 
-/**
- * Initialize the navigation hierarchy
- * the list of sections/pages for the site
- * @global array $sections
- * @name $sections
- */
+// Initialize the navigation hierarchy
 $sections = exponent_core_initializeNavigation();
 
 /**

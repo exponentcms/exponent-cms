@@ -62,18 +62,17 @@ if (isset($_POST['sc'])) {
 if (isset($_POST['install_sample'])) {
 	$eql = BASE . "themes/".DISPLAY_THEME_REAL."/sample.eql";
 	if (file_exists($eql)) {
-		include_once(BASE.'framework/core/subsystems-1/backup.php');
 		$errors = array();
-		exponent_backup_restoreDatabase($db,$eql,$errors,0);
+		expFile::restoreDatabase($db,$eql,$errors,0);
 		$files = BASE . "themes/".DISPLAY_THEME_REAL."/sample.tar.gz";  // only install if there was an eql file
 		if (file_exists($files)) {
 			include_once(BASE.'external/Tar.php');
 			$tar = new Archive_Tar($files);
-			$dest_dir = BASE.'files/';
-			@mkdir($dest_dir);
-			if (file_exists($dest_dir)) {
-				$return = $tar->extract($dest_dir);
-			}
+            // $dest_dir = BASE.'files/';
+            // @mkdir($dest_dir);
+            // if (file_exists($dest_dir)) {
+			$return = $tar->extract(BASE);
+            // }
 		}
 	}
 //		if (count($errors)) {

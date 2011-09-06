@@ -59,7 +59,7 @@
 
  
 
-<div id="mod-manager" class="module administrationmodule modulemanager exp-skin-tabview hide">
+<div id="mod-manager" class="module administration modulemanager exp-skin-tabview hide">
     <div class="info-header">
         <div class="related-actions">
             {help text="Get Help Managing Modules"|gettext module="manage-modules"}

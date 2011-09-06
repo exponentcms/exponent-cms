@@ -250,8 +250,6 @@ class storeController extends expController {
         
         expHistory::set('viewable', $this->params);
         
-        include_once(BASE."framework/core/subsystems-1/datetime.php");
-
         $time = isset($this->params['time']) ? $this->params['time'] : time();
         assign_to_template(array('time'=>$time));
         
@@ -279,7 +277,7 @@ class storeController extends expController {
         $weekday = $infofirst['wday']; // day number in grid.  if 7+, switch weeks
         
         // Grab day counts (deprecated, handled by the date function)
-        // $endofmonth = exponent_datetime_endOfMonthDay($time);
+        // $endofmonth = expDateTime::endOfMonthDay($time);
         
         $endofmonth = date('t', $time);
         
@@ -411,7 +409,7 @@ class storeController extends expController {
     }
     
     function manage() {
-        expHistory::set('managable', $this->params);
+        expHistory::set('manageable', $this->params);
         $page = new expPaginator(array(
             'model'=>'product',
             'where'=>'parent_id=0',
@@ -839,6 +837,7 @@ class storeController extends expController {
             'optiongroups'=>$editable_options, 
             'shipping_services'=> isset($shipping_services) ? $shipping_services : '', // Added implication since the shipping_services default value is a null
             'shipping_methods' => isset($shipping_methods)  ? $shipping_methods  : '',   // Added implication since the shipping_methods default value is a null
+			'product_types' => isset($this->config['product_types']) ? $this->config['product_types'] : ''
             //'status_display'=>$status_display->getStatusArray()
         ));
     }

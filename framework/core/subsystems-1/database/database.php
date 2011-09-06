@@ -308,7 +308,7 @@ abstract class database {
      * @param string $sql The SQL query to run
      * @return mixed
      */
-    function sql($sql) {
+    function sql($sql, $escape = true) {
     }
 
 	/**

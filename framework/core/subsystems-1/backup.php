@@ -118,11 +118,11 @@ function exponent_backup_restoreDatabase($db,$file,&$errors,$force_version = nul
 		if ($eql_version != $current_version) {
 			$errors[] = gt('EQL file was Not a valid EQL version');
 			return false;
-			include_once(BASE.'framework/core/subsystems-1/backup/'.$eql_version.'.php');
-			$fprefix = 'exponent_backup_'.implode('',explode('.',$eql_version)).'_';
-			if (function_exists($fprefix.'clearedTable')) {
-				$clear_function = $fprefix.'clearedTable';
-			}
+//			include_once(BASE.'framework/core/subsystems-1/backup/'.$eql_version.'.php');
+//			$fprefix = 'exponent_backup_'.implode('',explode('.',$eql_version)).'_';
+//			if (function_exists($fprefix.'clearedTable')) {
+//				$clear_function = $fprefix.'clearedTable';
+//			}
 		}
 
 		// make sure the database tables are up to date
@@ -162,7 +162,8 @@ function exponent_backup_restoreDatabase($db,$file,&$errors,$force_version = nul
 
 		// then search for module definitions
 		$moddefs = array(
-			BASE.'themes/'.DISPLAY_THEME_REAL.'/modules',
+//			BASE.'themes/'.DISPLAY_THEME_REAL.'/modules',
+			BASE.'themes/'.DISPLAY_THEME.'/modules',
 			BASE."framework/modules",
 			);
 		foreach ($moddefs as $moddef) {
@@ -250,7 +251,7 @@ function exponent_backup_restoreDatabase($db,$file,&$errors,$force_version = nul
 		if ($eql_version != $current_version) {
 			$errors[] = gt('EQL file was Not a valid EQL version');
 			return false;
-			include_once(BASE.'framework/core/subsystems-1/backup/normalize.php');
+//			include_once(BASE.'framework/core/subsystems-1/backup/normalize.php');
 		}
 		return true;
 	} else {

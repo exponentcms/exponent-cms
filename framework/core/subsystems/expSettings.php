@@ -21,7 +21,11 @@
 class expSettings {
 
 	public static function initialize() {
-		//overides function html entity decode
+		/**
+		 * overides function html entity decode
+		 * @param $str
+		 * @return string
+		 */
 		function exponent_unhtmlentities( $str ) {
 			$trans = get_html_translation_table(HTML_ENTITIES);
 			$trans['&apos;'] = '\'';
@@ -35,10 +39,12 @@ class expSettings {
 		// include global constants
 		@include_once(BASE."conf/config.php");
 
-		// include constants defined in the current theme (if theme is defined)
-		if (defined('DISPLAY_THEME_REAL')) {
-			if (file_exists(BASE.'themes/'.DISPLAY_THEME_REAL.'/config.php')) @include_once(BASE.'themes/'.DISPLAY_THEME_REAL.'/config.php');
-		}
+		// include constants defined in the current theme (if theme is defined)  //FIXME, we don't have theme info yet
+//		if (defined('DISPLAY_THEME_REAL')) {
+//			if (file_exists(BASE.'themes/'.DISPLAY_THEME_REAL.'/config.php')) @include_once(BASE.'themes/'.DISPLAY_THEME_REAL.'/config.php');
+//		if (defined('DISPLAY_THEME')) {
+//			if (file_exists(BASE.'themes/'.DISPLAY_THEME.'/config.php')) @include_once(BASE.'themes/'.DISPLAY_THEME.'/config.php');
+//		}
 
 		// include default constants, fill in missing pieces
 		if (is_readable(BASE."conf/extensions")) {
@@ -51,7 +57,7 @@ class expSettings {
 		}
 	}
 
-	/* exdoc
+	/** exdoc
 	 * Uses magical regular expressions voodoo to pull the
 	 * actuall define() calls out of a configuration PHP file,
 	 * and return them in an associative array, for use in
@@ -59,6 +65,8 @@ class expSettings {
 	 * array of constant names => values
 	 *
 	 * @param string $configname Configuration Profile name
+	 * @param null $site_root
+	 * @return array
 	 * @node Subsystems:Config
 	 */
 	public static function parse($configname,$site_root = null) {
@@ -94,13 +102,14 @@ class expSettings {
 		return $options;
 	}
 
-	/* exdoc
+	/** exdoc
 	 * Looks through the source of a given configuration PHP file,
 	 * and pulls out (by mysterious regular expressions) the define()
 	 * calls and returns those values.  Returns an associative array
 	 * of constant names => values
 	 *
 	 * @param string $file The full path to the file to parse.
+	 * @return array
 	 * @node Subsystems:Config
 	 */
 	public static function parseFile($file) {
@@ -130,7 +139,7 @@ class expSettings {
 		return $options;
 	}
 
-	/* exdoc
+	/** exdoc
 	 * This function looks through all of the available configuration
 	 * extensions, and generates a form object consisting of each
 	 * extension's form part.  This can then be used to edit the full
@@ -138,6 +147,8 @@ class expSettings {
 	 *
 	 * @param string $configname The name of the configuration profile,
 	 *    for filling in default values.
+	 * @param bool $database
+	 * @return \form
 	 * @node Subsystems:Config
 	 */
 	public static function configurationForm($configname,$database=false) {
@@ -190,34 +201,29 @@ class expSettings {
 		}
 	}
 
-	public static function saveValues($values) {
+	public static function saveValues($values, $configname='') {
 		$str = "<?php\n";
 			foreach ($values as $directive=>$value) {
 			$directive = strtoupper($directive);
-
-					$str .= "define(\"$directive\",";
-					if (substr($directive,-5,5) == "_HTML") {
-							$value = htmlentities(stripslashes($value),ENT_QUOTES,LANG_CHARSET); // slashes added by POST
-	//                        $value = str_replace(array("\r\n","\r","\n"),"<br />",$value);
-							$value = str_replace(array("\r\n","\r","\n"),"",$value);
-							$str .= "exponent_unhtmlentities('$value')";
-
-					} elseif (is_int($value)) {
-							$str .= $value;
-
-					} else {
-
-							if ($directive != 'SESSION_TIMEOUT')
-									$str .= "'".str_replace("'","\'",$value)."'";
-							else
-									$str .= str_replace("'",'', $value);
-
-					}
-					$str .= ");\n";
+			$str .= "define(\"$directive\",";
+			if (substr($directive,-5,5) == "_HTML") {
+				$value = htmlentities(stripslashes($value),ENT_QUOTES,LANG_CHARSET); // slashes added by POST
+//              $value = str_replace(array("\r\n","\r","\n"),"<br />",$value);
+				$value = str_replace(array("\r\n","\r","\n"),"",$value);
+				$str .= "exponent_unhtmlentities('$value')";
+			} elseif (is_int($value)) {
+				$str .= $value;
+			} else {
+				if ($directive != 'SESSION_TIMEOUT')
+					$str .= "'".str_replace("'","\'",$value)."'";
+				else
+					$str .= str_replace("'",'', $value);
+			}
+			$str .= ");\n";
 		}
 
 		$str .= '?>';
-		$configname = empty($values['CURRENTCONFIGNAME']) ? '' : $values['CURRENTCONFIGNAME'];
+//		$configname = empty($values['CURRENTCONFIGNAME']) ? '' : $values['CURRENTCONFIGNAME'];
 		self::writeFile($str, $configname);
 	}
 
@@ -227,7 +233,7 @@ class expSettings {
 		self::saveValues($conf);
 	}
 
-	public static function writeFile($str, $configname="") {
+	public static function writeFile($str, $configname='') {
 		// if ($configname != "") {
 	//                 // Wishing to save
 	//                 if ((file_exists(BASE."conf/profiles/$configname.php") && expUtil::isReallyWritable(BASE."conf/profiles/$configname.php")) ||
@@ -242,23 +248,26 @@ class expSettings {
 	//         }
 
 			//if (isset($values['activate']) || $configname == "") {
-					if ((file_exists(BASE."conf/config.php") && expUtil::isReallyWritable(BASE."conf/config.php")) || expUtil::isReallyWritable(BASE."conf")) {
-						$fh = fopen(BASE."conf/config.php","w");
-						fwrite($fh,$str);
-						/*fwrite($fh,"\n<?php\ndefine(\"CURRENTCONFIGNAME\",\"$configname\");\n?>\n");*/
-						fclose($fh);
-					} else {
-						echo gt('Unable to write active configuration').'<br />';
-					}
+		if ($configname == "") { $configname = BASE."conf/config.php"; }
+//		if ((file_exists(BASE."conf/config.php") && expUtil::isReallyWritable(BASE."conf/config.php")) || expUtil::isReallyWritable(BASE."conf")) {
+		if ((file_exists($configname) && expUtil::isReallyWritable($configname))) {
+			$fh = fopen($configname,"w");
+			fwrite($fh,$str);
+			/*fwrite($fh,"\n<?php\ndefine(\"CURRENTCONFIGNAME\",\"$configname\");\n?>\n");*/
+			fclose($fh);
+		} else {
+			echo gt('Unable to write configuration').'<br />';
+		}
 			//}
 	}
 
-	/* exdoc
+	/** exdoc
 	 * Processes the POSTed data from the configuration form
 	 * object generated by self::configurationForm, and writes
 	 * a bunch of define() statements to the profiles config file.
 	 *
 	 * @param array $values The _POST array to pull configuration data from.
+	 * @param null $site_root
 	 * @node Subsystems:Config
 	 */
 	public static function saveConfiguration($values,$site_root=null) {
@@ -351,13 +360,14 @@ class expSettings {
 		}
 	}
 
-	/* exdoc
+	/** exdoc
 	 * Takes care of setting the appropriate template variables
 	 * to be used when viewing a profile or set of profiles.
 	 * Returns the initializes template.
 	 *
 	 * @param template $template The template object to assign to.
 	 * @param string $configname The name of the configuration profile.
+	 * @return \template
 	 * @node Subsystems:Config
 	 */
 	public static function outputConfigurationTemplate($template,$configname) {
@@ -389,13 +399,14 @@ class expSettings {
 		return $template;
 	}
 
-	/* exdoc
+	/** exdoc
 	 * Looks through the conf/profiles directory, and finds all of
 	 * the configuration profiles in existence.  This function also
 	 * performs some minor name-mangling, to make the Profile Names
 	 * more user friendly. Returns an array of Profile names.
 	 *
 	 * @node Subsystems:Config
+	 * @return array
 	 */
 	public static function profiles() {
 		$profiles = array();
@@ -411,7 +422,7 @@ class expSettings {
 		return $profiles;
 	}
 
-	/* exdoc
+	/** exdoc
 	 * Deletes a configuration profile from the conf/profiles
 	 * directory.
 	 *
@@ -425,7 +436,7 @@ class expSettings {
 		}
 	}
 
-	/* exdoc
+	/** exdoc
 	 * Activates a Configuration Profile.
 	 *
 	 * @param string $profile The name of the Profile to activate.
@@ -440,10 +451,11 @@ class expSettings {
 		}
 	}
 
-	/* exdoc
+	/** exdoc
 	 * Parse Drop Down options from a file.
 	 * @param string $dropdown_name The name of the dropdown type.  The name of the
 	 *   file will be retrieved by adding .dropdown as a suffix, and searching the conf/data directory.
+	 * @return array
 	 * @node Subsystems:Config
 	 */
 	public static function dropdownData($dropdown_name) {

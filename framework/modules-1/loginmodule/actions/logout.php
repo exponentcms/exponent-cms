@@ -20,8 +20,8 @@
 
 if (!defined('EXPONENT')) exit('');
 
-require_once(BASE.'framework/core/subsystems-1/users.php');
-exponent_users_logout();
+//require_once(BASE.'framework/core/subsystems-1/users.php');
+expSession::logout();
 exponent_permissions_clear();
 expSession::un_set('uilevel');
 expSession::clearCurrentUserSessionCache();

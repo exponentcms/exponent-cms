@@ -31,6 +31,10 @@ if (!defined('MAGPIE_OUTPUT_ENCODING')) {
     define('MAGPIE_OUTPUT_ENCODING', 'UTF-8');
 }
 
+if ( !defined('MAGPIE_FETCH_TIME_OUT') ) {
+    define('MAGPIE_FETCH_TIME_OUT', 20); // 20 second timeout
+}
+
 require_once(MAGPIE_DIR.'rss_fetch.inc');
 require_once(MAGPIE_DIR.'rss_utils.inc');
 define('MAGPIE_CACHE_DIR', BASE.'tmp/rsscache');

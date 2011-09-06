@@ -13,7 +13,6 @@
  * GPL: http://www.gnu.org/licenses/gpl.txt
  *
  *}
-
 <div id="storeconfig" class="module ecomconfig configure hide exp-skin-tabview">
     <h1>Store Configuration</h1>
     
@@ -51,6 +50,7 @@
                 <li><a href="#tab6"><em>Geography</em></a></li>
 				<li><a href="#tab7"><em>Invoice</em></a></li>
 				<li><a href="#tab8"><em>Display & Feature Settings</em></a></li>
+				<li><a href="#tab9"><em>Product Types</em></a></li>
 			</ul>            
 	    	<div class="yui-content">
 	        	<div id="tab1">
@@ -134,6 +134,16 @@
                     {control type="checkbox" name="enable_ratings_and_reviews" label="Enable Ratings & Reviews?" value=1 checked=$config.enable_ratings_and_reviews}
                     {control type="checkbox" name="enable_lightbox" label="Enable Lightbox Image Viewer?" value=1 checked=$config.enable_lightbox}
                 </div>  
+				
+				<div id="tab9">
+					<h2>{"Product Type Settings"|gettext}</h2>
+					{control type="checkbox" name="product_types[Google]" label="Google Feed" value="google_product_type" checked=$config.product_types.Google}
+					{control type="checkbox" name="product_types[Bing]" label="Bing Feed" value="bing_product_type" checked=$config.product_types.Bing}
+					{control type="checkbox" name="product_types[NexTag]" label="NexTag Feed" value="nextag_product_type" checked=$config.product_types.NexTag}
+					{control type="checkbox" name="product_types[Shopzilla]" label="Shopzilla Feed" value="shopzilla_product_type" checked=$config.product_types.Shopzilla}
+					{control type="checkbox" name="product_types[Shopping]" label="Shopping Feed" value="shopping_product_type" checked=$config.product_types.Shopping}
+					{control type="checkbox" name="product_types[PriceGrabber]" label="Price Grabber Feed" value="pricegrabber_product_type" checked=$config.product_types.PriceGrabber}
+				</div>
             </div>
         </div>
         {control type=buttongroup submit="Save Config" cancel="Cancel"}

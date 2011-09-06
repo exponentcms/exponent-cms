@@ -19,6 +19,8 @@
 
 function smarty_function_chain($params,&$smarty) {
     if (empty($params['module']) && empty($params['controller']))  return false;
+    
+    if (isset($params['source'])) $params['src'] = $params['source'];
 
     $src = isset($params['src']) ? $params['src'] : $smarty->_tpl_vars['__loc']->src;
 

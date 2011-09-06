@@ -33,7 +33,7 @@ class version_tracking extends upgradescript {
 	 * name/title of upgrade script
 	 * @return string
 	 */
-	function name() { return gt("Install Version Tracking"); }
+	function name() { return gt("Update Version Information"); }
 
 	/**
 	 * generic description of upgrade script

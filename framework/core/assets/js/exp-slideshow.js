@@ -89,7 +89,7 @@ YAHOO.myowndb.slideshow.prototype = {
         },
     choose_next_frame : function( reverse )
         {
-            var reverse = (reverse ==null) ? false : true ;
+            var reverse = (reverse!=null) ;
             var current_index = this.get_frame_index(this.get_active_frame());
             if (current_index<0)
                 current_index=0;

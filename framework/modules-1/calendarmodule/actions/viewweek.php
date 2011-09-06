@@ -29,8 +29,7 @@ $template = new template("calendarmodule","_viewweek",$loc,false);
 $time = (isset($_GET['time']) ? $_GET['time'] : time());
 $time = intval($time);
 
-include_once(BASE."framework/core/subsystems-1/datetime.php");
-$startweek = exponent_datetime_startOfWeekTimestamp($time);
+$startweek = expDateTime::startOfWeekTimestamp($time);
 $days = array();
 $counts = array();
 $startinfo = getdate($startweek);

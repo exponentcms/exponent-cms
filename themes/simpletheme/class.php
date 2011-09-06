@@ -17,16 +17,13 @@
 #
 ##################################################
 
-define('SCRIPT_EXP_RELATIVE','');
-define('SCRIPT_FILENAME','orphan_content_selector.php');
+if (class_exists('simpletheme')) return;
 
-// Define Content Selector constant as 2, since we are selecting orphaned content.
-define('CONTENT_SELECTOR',2);
-
-// Initialize the Exponent Framework
-include_once('exponent.php');
-
-// Include the real selector script, which does all of the heavy lifting.
-include_once('selector.php');
+class simpletheme extends theme {
+	public $user_configured = true;
+	function name() { return "Simple Theme"; }
+	function author() { return "Phillip Ball - Online Innovative Creations"; }
+	function description() { return "A minimal, slick theme based on the <a href=\"http://yuilibrary.com/yui/docs/cssgrids/\" target=\"_blank\">YUI 3 Gridding System</a>"; }
+}
 
 ?>

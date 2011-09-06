@@ -23,8 +23,6 @@ if (!defined('EXPONENT')) exit('');
 if (!isset($_POST['tables'])) { // No checkboxes clicked, and got past the JS check
 	echo gt('You must choose at least one table to export.');
 } else { // All good
-	require_once(BASE.'framework/core/subsystems-1/backup.php');
-
 	$filename = str_replace(
 		array('__DOMAIN__','__DB__'),
 		array(str_replace('.','_',HOSTNAME),DB_NAME),
@@ -35,11 +33,12 @@ if (!isset($_POST['tables'])) { // No checkboxes clicked, and got past the JS ch
 	ob_start("ob_gzhandler");
 
 	if (isset($_POST['save_sample'])) { // Save as a theme sample is checked off
-		$path = BASE . "themes/".DISPLAY_THEME_REAL."/sample.eql";
-		if (!$eql = fopen ($path, "ab")) {
+//		$path = BASE . "themes/".DISPLAY_THEME_REAL."/sample.eql";
+		$path = BASE . "themes/".DISPLAY_THEME."/sample.eql";
+		if (!$eql = fopen ($path, "w")) {
 			flash('error',"Error opening eql file for writing ($path).");
 		} else {
-			$eqlfile = exponent_backup_dumpDatabase($db,array_keys($_POST['tables']));
+			$eqlfile = expFile::dumpDatabase($db,array_keys($_POST['tables']));
 			if (fwrite ($eql, $eqlfile)  === FALSE) {
 				flash('error',"Error writing to eql file ($path).");
 			}
@@ -65,7 +64,7 @@ if (!isset($_POST['tables'])) { // No checkboxes clicked, and got past the JS ch
 			header('Content-Disposition: attachment; filename="' . $filename . '"');
 			header('Pragma: no-cache');
 		}
-		echo exponent_backup_dumpDatabase($db,array_keys($_POST['tables']));
+		echo expFile::dumpDatabase($db,array_keys($_POST['tables']));
 		exit(''); // Exit, since we are exporting
 	}
 }

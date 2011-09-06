@@ -60,11 +60,9 @@
 				<li class="selected"><a href="#general"><em>General</em></a></li>
 				<li><a href="#seo"><em>Meta Info</em></a></li>
 				<li><a href="#events"><em>Events</em></a></li>
-				<li><a href="#bing_product_types"><em>Bing Product Types</em></a></li>
-				<li><a href="#google_product_types"><em>Google Product Types</em></a></li>
-				<li><a href="#nextag_product_types"><em>Nextag Product Types</em></a></li>
-				<li><a href="#shopzilla_product_types"><em>Shopzilla Product Types</em></a></li>
-				<li><a href="#shopping_product_types"><em>Shopping Product Types</em></a></li>
+				{foreach from=$product_types key=key item=item}
+					<li><a href="#{$item}"><em>{$key} Product Types</em></a></li>
+				{/foreach}
             </ul>            
             <div class="yui-content">
                 <div id="general">   
@@ -83,26 +81,12 @@
                     {control type="checkbox" name="is_events" label="This category is used for events" value=1 checked=$node->is_events}                        
                     {control type="checkbox" name="hide_closed_events" label="Don't Show Closed Events" value=1 checked=$node->hide_closed_events}
                 </div>  
-				<div id="bing_product_types">	
-					<h1>Bing Product Types</h1>
-					{$product_types.bing}
+				{foreach from=$product_types key=key item=item}
+				<div id="{$item}">	
+					<h1>{$key} Product Types</h1>
+					{$product_type.$item}
 				</div>
-				<div id="google_product_types">	
-					<h1>Google Product Types</h1>
-					{$product_types.google}
-				</div>
-				<div id="nextag_product_types">	
-					<h1>Nextag Product Types</h1>
-					{$product_types.nextag}
-				</div>
-				<div id="shopzilla_product_types">	
-					<h1>Shopzilla Product Types</h1>
-					{$product_types.shopzilla}
-				</div>
-				<div id="shopping_product_types">	
-					<h1>Shopping Product Types</h1>
-					{$product_types.shopping}
-				</div>
+				{/foreach}
             </div>    
         </div>
         {control type=buttongroup submit=Save cancel=Cancel}

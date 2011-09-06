@@ -29,7 +29,7 @@ class ecomconfigController extends expController {
     function hasSources() { return false; }
 
     function show() {
-        expHistory::set('managable', $this->params);
+        expHistory::set('manageable', $this->params);
     }
     
     /*****************************************************************/
@@ -128,7 +128,7 @@ class ecomconfigController extends expController {
     /***************  DISCOUNTS        *******************************/
     /*****************************************************************/
     public function manage_discounts() {
-        expHistory::set('managable', $this->params);
+        expHistory::set('manageable', $this->params);
         $discountObj = new discounts();
         $discounts = $discountObj->find('all');
         assign_to_template(array(/*'apply_rules'=>$discountObj->apply_rules, 'discount_types'=>$discountObj->discount_types,*/'discounts'=>$discounts));
@@ -149,8 +149,8 @@ class ecomconfigController extends expController {
         //loop our groups and append them to the array
        // foreach ($group->find() as $g){
        //this is a workaround for older code. Use the previous line if possible:
-       include_once(BASE.'framework/core/subsystems-1/users.php');
-       $allGroups = user::getAllGroups();
+//       include_once(BASE.'framework/core/subsystems-1/users.php');
+       $allGroups = group::getAllGroups();
        if (count($allGroups))
        {
            foreach ($allGroups as $g)
@@ -212,7 +212,7 @@ class ecomconfigController extends expController {
     /***************  PROMO CODE       *******************************/
     /*****************************************************************/
 	public function manage_promocodes() {
-		expHistory::set('managable', $this->params);
+		expHistory::set('manageable', $this->params);
         $pc = new promocodes();
         $do = new discounts();
         $promo_codes = $pc->find('all');
@@ -233,8 +233,8 @@ class ecomconfigController extends expController {
     /*****************************************************************/
 	public function manage_groupdiscounts() {
 		global $db;
-		expHistory::set('managable', $this->params);
-		$groups = user::getAllGroups();
+		expHistory::set('manageable', $this->params);
+		$groups = group::getAllGroups();
 		$discounts = $db->selectObjects('discounts');
 		$group_discounts = $db->selectObjects('groupdiscounts', null, 'rank');
 		assign_to_template(array('groups'=>$groups,'discounts'=>$discounts,'group_discounts'=>$group_discounts));

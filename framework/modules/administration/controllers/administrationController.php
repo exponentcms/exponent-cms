@@ -23,7 +23,7 @@ class administrationController extends expController {
     public $useractions = array();
     public $add_permissions = array(
 	    'administrate'=>'Manage Administration',
-	    'clear_all_cache'=>'Clear All Caches',
+	    'clear_all_caches'=>'Clear All Caches',
 	    'clear_css_cache'=>'Clear CSS Cache',
 	    'clear_image_cache'=>'Clear Image Cache',
 	    'clear_rss_cache'=>'Clear RSS Cache',
@@ -32,13 +32,18 @@ class administrationController extends expController {
 	    'delete_unused_tables'=>'Delete Unused Tables',
 	    "fix_database"=>"Fix Database",
 	    "fix_sessions"=>"Fix Sessions",
-	    "install_tables"=>"Install Tables",
+	    "install_extenstions"=>"Install Tables",
+	    "install_tables"=>"Install Extension",
+	    'manage_themes'=>'Manage Themes',
 	    'manage_unused_tables'=>'Manage Unused Tables',
 	    'optimize_database'=>'Optimize Database',
+	    'preview_theme'=>'Preview Theme',
+	    "switch_themes"=>"Change Themes",
+	    'test_smtp'=>'Test SMTP Server Settings',
 	    'toggle_dev'=>'Toggle Development Mode',
 	    'toggle_maintenance'=>'Toggle Maintenance Mode',
 	    'toggle_minify'=>'Toggle Minify Mode',
-	    "switch_themes"=>"Change Themes",
+	    'toggle_preview'=>'Toggle Preview Mode',
 	    "upload_extension"=>"Upload Extension",
         );
 	public $codequality = 'beta';
@@ -47,7 +52,7 @@ class administrationController extends expController {
     function description() { return "This is the beginnings of the new Administration Module"; }
     function author() { return "OIC Group, Inc"; }
 
-	public function install_tables() {
+	public static function installTables() {
 	    global $db;
 
 		define("TMP_TABLE_EXISTED",		1);
@@ -88,7 +93,8 @@ class administrationController extends expController {
 
 		// then search for module definitions
 		$moddefs = array(
-			BASE.'themes/'.DISPLAY_THEME_REAL.'/modules',
+//			BASE.'themes/'.DISPLAY_THEME_REAL.'/modules',
+			BASE.'themes/'.DISPLAY_THEME.'/modules',
 			BASE."framework/modules",
 			);
 		foreach ($moddefs as $moddef) {
@@ -128,7 +134,12 @@ class administrationController extends expController {
 				}
 			}
 		}
+		return $tables;
+	}
+
+	public function install_tables() {
     	expSession::clearCurrentUserSessionCache();
+		$tables = self::installTables();
 		ksort($tables);
         assign_to_template(array('status'=>$tables));
 	}
@@ -136,7 +147,7 @@ class administrationController extends expController {
     public function manage_unused_tables() {
         global $db;
         
-        expHistory::set('managable', $this->params);
+        expHistory::set('manageable', $this->params);
         $unused_tables = array();
         $used_tables = array();
         $tables = $db->getTables();
@@ -154,7 +165,8 @@ class administrationController extends expController {
 
 		// then search for module definitions
 		$moddefs = array(
-			BASE.'themes/'.DISPLAY_THEME_REAL.'/modules',
+//			BASE.'themes/'.DISPLAY_THEME_REAL.'/modules',
+			BASE.'themes/'.DISPLAY_THEME.'/modules',
 			BASE."framework/modules",
 			);
 		foreach ($moddefs as $moddef) {
@@ -268,25 +280,6 @@ class administrationController extends expController {
 		}
 		print_r("</pre>");
 
-// FIXME Not needed when locationrefs are removed
-//		 print_r("<pre>");
-//	 // add missing locationref's based on existing sectionref's
-//		 print_r("<b>Searching for detached modules with no original (no matching locationref)</b><br><br>");
-//		 $sectionrefs = $db->selectObjects('sectionref',1);
-//		 foreach ($sectionrefs as $sectionref) {
-//			 if ($db->selectObject('locationref',"module='".$sectionref->module."' AND source='".$sectionref->source."'") == null) {
-//			 // There is no locationref for sectionref.  Populate reference
-//				 $newLocRef = null;
-//				 $newLocRef->module   = $sectionref->module;
-//				 $newLocRef->source   = $sectionref->source;
-//				 $newLocRef->internal = $sectionref->internal;
-//				 $newLocRef->refcount = $sectionref->refcount;
-//				 $db->insertObject($newLocRef,'locationref');
-//				 print_r("Copied: ".$sectionref->module." - ".$sectionref->source."<br>");
-//			 }
-//		 }
-//		 print_r("</pre>");
-
 		 print_r("<pre>");
 	 // delete sectionref's & locationref's that have empty sources since they are dead
 		 print_r("<b>Searching for unassigned modules (no source)</b><br><br>");
@@ -297,15 +290,6 @@ class administrationController extends expController {
 		 } else {
 			 print_r("No Empties Found: Good!<br>");
 		 }
-// FIXME Not needed when locationrefs are removed
-//		 $locationrefs = $db->selectObjects('locationref','source=""');
-//		 if ($locationrefs != null) {
-//			 print_r("Removing: ".count($locationrefs)." empty locationref's (no source)<br>");
-//			 $db->delete('locationref','source=""');
-//		 } else {
-//			 print_r("No Empties Found: Good!<br>");
-//		 }
-//		 print_r("</pre>");
 
 		print_r("<pre>");
 	// add missing sectionrefs based on existing containers (fixes aggregation problem)
@@ -340,7 +324,11 @@ class administrationController extends expController {
     public function toolbar() {
         global $user;
         $menu = array();
-		$dirs = array(BASE.'framework/modules/administration/menus', BASE.'themes/'.DISPLAY_THEME_REAL.'/modules/administration/menus');
+		$dirs = array(
+			BASE.'framework/modules/administration/menus',
+//			BASE.'themes/'.DISPLAY_THEME_REAL.'/modules/administration/menus'
+			BASE.'themes/'.DISPLAY_THEME.'/modules/administration/menus'
+		);
 		foreach ($dirs as $dir) {
 		    if (is_readable($dir)) {
 			    $dh = opendir($dir);
@@ -420,31 +408,25 @@ class administrationController extends expController {
 	}
 
 	public function clear_smarty_cache() {
-		expTheme::removeSmartyCache();
-		$message = "Smarty Cache has been cleared" ;
-		flash('message',$message);
-		expHistory::back();
+		expTheme::clearSmartyCache();
 	}
 
 	public function clear_css_cache() {
 		expTheme::removeCss();
-		$message = "CSS/Minfy Cache has been cleared" ;
-		flash('message',$message);
+		flash('message',"CSS/Minfy Cache has been cleared");
 		expHistory::back();
 	}
 
 	public function clear_image_cache() {
 		expFile::removeFilesInDirectory(BASE.'tmp/pixidou');
 		if (file_exists(BASE.'tmp/img_cache')) expFile::removeFilesInDirectory(BASE.'tmp/img_cache');
-		$message = "Image/Pixidou Cache has been cleared" ;
-		flash('message',$message);
+		flash('message',"Image/Pixidou Cache has been cleared");
 		expHistory::back();
 	}
 
 	public function clear_rss_cache() {
 		expFile::removeFilesInDirectory(BASE.'tmp/rsscache');
-		$message = "RSS/Podcast Cache has been cleared" ;
-		flash('message',$message);
+		flash('message',"RSS/Podcast Cache has been cleared");
 		expHistory::back();
 	}
 
@@ -473,18 +455,20 @@ class administrationController extends expController {
 	}
 
 	public function install_extension() {
-
 		if ($_FILES['mod_archive']['error'] != UPLOAD_ERR_OK) {
 			switch($_FILES['mod_archive']['error']) {
 				case UPLOAD_ERR_INI_SIZE:
 				case UPLOAD_ERR_FORM_SIZE:
-					echo gt('The file you uploaded exceeded the size limits for the server.').'<br />';
+//					echo gt('The file you uploaded exceeded the size limits for the server.').'<br />';
+					flash('error', gt('The file you uploaded exceeded the size limits for the server.'));
 					break;
 				case UPLOAD_ERR_PARTIAL:
-					echo gt('The file you uploaded was only partially uploaded.').'<br />';
+//					echo gt('The file you uploaded was only partially uploaded.').'<br />';
+					flash('error', gt('The file you uploaded was only partially uploaded.'));
 					break;
 				case UPLOAD_ERR_NO_FILE:
-					echo gt('No file was uploaded.').'<br />';
+//					echo gt('No file was uploaded.').'<br />';
+					flash('error', gt('No file was uploaded.'));
 					break;
 			}
 		} else {
@@ -511,7 +495,8 @@ class administrationController extends expController {
 			}
 
 			if ($ext == '') {
-				echo gt('Unknown archive format. Archives must either be regular ZIP files, TAR files, Gzipped Tarballs, or Bzipped Tarballs.').'<br />';
+//				echo gt('Unknown archive format. Archives must either be regular ZIP files, TAR files, Gzipped Tarballs, or Bzipped Tarballs.').'<br />';
+				flash('error', gt('Unknown archive format. Archives must either be regular ZIP files, TAR files, Gzipped Tarballs, or Bzipped Tarballs.'));
 			} else {
 
 				// Look for stale sessid directories:
@@ -522,13 +507,16 @@ class administrationController extends expController {
 					switch ($return) {
 						case SYS_FILES_FOUNDFILE:
 						case SYS_FILES_FOUNDDIR:
-							echo gt('Found a file in the directory path when creating the directory to store the files in.').'<br />';
+//							echo gt('Found a file in the directory path when creating the directory to store the files in.').'<br />';
+							flash('error', gt('Found a file in the directory path when creating the directory to store the files in.'));
 							break;
 						case SYS_FILES_NOTWRITABLE:
-							echo gt('Destination parent is not writable.').'<br />';
+//							echo gt('Destination parent is not writable.').'<br />';
+							flash('error', gt('Destination parent is not writable.'));
 							break;
 						case SYS_FILES_NOTREADABLE:
-							echo gt('Destination parent is not readable.').'<br />';
+//							echo gt('Destination parent is not readable.').'<br />';
+							flash('error', gt('Destination parent is not readable.'));
 							break;
 					}
 				}
@@ -544,9 +532,11 @@ class administrationController extends expController {
 					PEAR::setErrorHandling(PEAR_ERROR_PRINT);
 					$return = $tar->extract(dirname($dest));
 					if (!$return) {
-						echo '<br />'.gt('Error extracting TAR archive').'<br />';
+//						echo '<br />'.gt('Error extracting TAR archive').'<br />';
+						flash('error',gt('Error extracting TAR archive'));
 					} else {
-						header('Location: ' . URL_FULL . 'index.php?module=administrationmodule&action=verify_extension&type=tar');
+//						header('Location: ' . URL_FULL . 'index.php?module=administrationmodule&action=verify_extension&type=tar');
+//						self::verify_extension('tar');
 					}
 				} else { // must be zip
 					include_once(BASE.'external/Zip.php');
@@ -555,18 +545,68 @@ class administrationController extends expController {
 
 					PEAR::setErrorHandling(PEAR_ERROR_PRINT);
 					if ($zip->extract(array('add_path'=>dirname($dest))) == 0) {
-						echo '<br />'.gt('Error extracting ZIP archive').':<br />';
-						echo $zip->_error_code . ' : ' . $zip->_error_string . '<br />';
+//						echo '<br />'.gt('Error extracting ZIP archive').':<br />';
+//						echo $zip->_error_code . ' : ' . $zip->_error_string . '<br />';
+						flash('error',gt('Error extracting ZIP archive: ').$zip->_error_code . ' : ' . $zip->_error_string . '<br />');
 					} else {
-						header('Location: ' . URL_FULL . 'index.php?module=administrationmodule&action=verify_extension&type=zip');
+//						header('Location: ' . URL_FULL . 'index.php?module=administrationmodule&action=verify_extension&type=zip');
+//						self::verify_extension('zip');
 					}
 				}
+				$sessid = session_id();
+				$files = array();
+				foreach (expFile::listFlat(BASE.'tmp/extensionuploads/'.$sessid,true,null,array(),BASE.'tmp/extensionuploads/'.$sessid) as $key=>$f) {
+					if ($key != '/archive.tar' && $key != '/archive.tar.gz' && $key != '/archive.tar.bz2' && $key != '/archive.zip') {
+						$files[] = array(
+							'absolute'=>$key,
+							'relative'=>$f,
+							'canCreate'=>expFile::canCreate(BASE.substr($key,1)),
+							'ext'=>substr($f,-3,3)
+						);
+					}
+				}
+				assign_to_template(array('relative'=>'tmp/extensionuploads/'.$sessid,'files'=>$files));
 			}
 		}
 	}
 
+	public function finish_install_extension() {
+		$sessid = session_id();
+		if (!file_exists(BASE."tmp/extensionuploads/$sessid") || !is_dir(BASE."tmp/extensionuploads/$sessid")) {
+//				$template = new template('administrationmodule','_upload_finalSummary',$loc);
+//				$template->assign('nofiles',1);
+			$nofiles = 1;
+		} else {
+			$success = array();
+			foreach (array_keys(expFile::listFlat(BASE."tmp/extensionuploads/$sessid",true,null,array(),BASE."tmp/extensionuploads/$sessid")) as $file) {
+				if ($file != '/archive.tar' && $file != '/archive.tar.gz' && $file != 'archive.tar.bz2' && $file != '/archive.zip') {
+					expFile::makeDirectory(dirname($file));
+					$success[$file] = copy(BASE."tmp/extensionuploads/$sessid".$file,BASE.substr($file,1));
+					if (basename($file) == 'views_c') chmod(BASE.substr($file,1),0777);
+				}
+			}
+
+			$del_return = expFile::removeDirectory(BASE."tmp/extensionuploads/$sessid");  //FIXME shouldn't use echo
+			echo $del_return;
+
+//			ob_start();
+//			include(BASE . 'framework/modules-1/administrationmodule/actions/installtables.php');
+//			ob_end_clean();
+			self::installTables();
+
+//				$template = new template('administrationmodule','_upload_finalSummary',$loc);
+//				$template->assign('nofiles',0);
+			$nofiles = 0;
+//				$template->assign('success',$success);
+//				$template->assign('redirect',expHistory::getLastNotEditable());
+		}
+
+//			$template->output();
+		assign_to_template(array('nofiles'=>$nofiles,'success'=>$success,'redirect'=>expHistory::getLastNotEditable()));
+	}
+
     public function manage_themes() {
-        expHistory::set('managable', $this->params);
+        expHistory::set('manageable', $this->params);
     	$themes = array();
     	if (is_readable(BASE.'themes')) {
     		$dh = opendir(BASE.'themes');
@@ -575,6 +615,7 @@ class administrationController extends expController {
     				include_once(BASE."themes/$file/class.php");
     				$theme = new $file();
     				$t = null;
+				    $t->user_configured = $theme->user_configured;
     				$t->name = $theme->name();
     				$t->description = $theme->description();
     				$t->author = $theme->author();
@@ -597,16 +638,17 @@ class administrationController extends expController {
     
     public function switch_themes() {
     	expSettings::change('DISPLAY_THEME_REAL', $this->params['theme']);
+	    expSession::set('display_theme',$this->params['theme']);
     	if (isset($this->params['sv']) && THEME_STYLE!=$this->params['sv']) {
             expSettings::change('THEME_STYLE', $this->params['sv']);
     	    if (expFile::recurse_copy(BASE."themes/".$this->params['theme']."/css", BASE."themes/".$this->params['theme']."/styles_backup/css")
     	        && expFile::recurse_copy(BASE."themes/".$this->params['theme']."/images", BASE."themes/".$this->params['theme']."/styles_backup/images")) {
 
         	    if (!expFile::recurse_copy(BASE."themes/".$this->params['theme']."/css_".$this->params['sv'], BASE."themes/".$this->params['theme']."/css")) {
-                    flash('error',gt('Couldn\'t copy') . "css_".$this->params['sv']);
+                    flash('error',gt('Couldn\'t copy ') . "css_".$this->params['sv']);
         	    }
         	    if (!expFile::recurse_copy(BASE."themes/".$this->params['theme']."/images_".$this->params['sv'], BASE."themes/".$this->params['theme']."/images")) {
-                    flash('error',gt('Couldn\'t copy') . "images_".$this->params['sv']);
+                    flash('error',gt('Couldn\'t copy ') . "images_".$this->params['sv']);
         	    }
 
                 flash('message',gt('Your website\'s theme has been updated'));
@@ -619,9 +661,37 @@ class administrationController extends expController {
      
         // $message = (MINIFY != 1) ? "Exponent is now minifying Javascript and CSS" : "Exponent is no longer minifying Javascript and CSS" ;
         // flash('message',$message);
-    	expHistory::returnTo('managable');
+    	expHistory::returnTo('manageable');
     }	
     
+	public function preview_theme() {
+		expSession::set('display_theme',$this->params['theme']);
+//		if (DISPLAY_THEME_REAL == $this->params['theme']){
+//			expSession::set('display_theme',$this->params['theme']);
+//		}
+		if ($this->params['theme'] != DISPLAY_THEME_REAL) {
+			flash('notice', "You are previewing the '".$this->params['theme']."' theme.");
+		}
+		expTheme::removeSmartyCache();
+		expHistory::back();
+	}
+
+	public function configure_theme() {
+		if (is_readable(BASE."themes/".$this->params['theme']."/class.php")) {
+			include_once(BASE."themes/".$this->params['theme']."/class.php");
+			$theme = new $this->params['theme']();
+			$theme->configureTheme();
+		}
+	}
+
+	public function update_theme() {
+		if (is_readable(BASE."themes/".$this->params['theme']."/class.php")) {
+			include_once(BASE."themes/".$this->params['theme']."/class.php");
+			$theme = new $this->params['theme']();
+			$theme->saveThemeConfig($this->params);
+		}
+	}
+
     public function configure_site () {
         // TYPES OF ANTISPAM CONTROLS... CURRENTLY ONLY ReCAPTCHA
         $as_types = array(
@@ -668,6 +738,9 @@ class administrationController extends expController {
         
         // These funcs need to be moved up in to new subsystems
         
+        // Date/Time Format
+        $datetime_format = expSettings::dropdownData('datetime_format');
+
         // Date Format
         $date_format = expSettings::dropdownData('date_format');
         
@@ -686,20 +759,66 @@ class administrationController extends expController {
         // Homepage Dropdown
         $section_dropdown = navigationmodule::levelDropDownControlArray(0);
 
+        // Timezone Dropdown
+        $list = DateTimeZone::listAbbreviations();
+        $idents = DateTimeZone::listIdentifiers();
+        $data = $offset = $added = array();
+        foreach ($list as $abbr => $info) {
+            foreach ($info as $zone) {
+                if ( ! empty($zone['timezone_id'])
+                    AND
+                    ! in_array($zone['timezone_id'], $added)
+                    AND
+                      in_array($zone['timezone_id'], $idents)) {
+                    $z = new DateTimeZone($zone['timezone_id']);
+                    $c = new DateTime(null, $z);
+                    $zone['time'] = $c->format('H:i a');
+                    $data[] = $zone;
+                    $offset[] = $z->getOffset($c);
+                    $added[] = $zone['timezone_id'];
+                }
+            }
+        }
+
+        array_multisort($offset, SORT_ASC, $data);
+        $tzoptions = array();
+        foreach ($data as $key => $row) {
+            $tzoptions[$row['timezone_id']] = self::formatOffset($row['offset'])
+                                            . ' ' . $row['timezone_id'];
+        }
+
         assign_to_template(array('as_types'=>$as_types,
                                 'as_themes'=>$as_themes,
                                 'themes'=>$themes,
                                 'langs'=>$langs,
                                 'attribution'=>$attribution,
+                                'datetime_format'=>$datetime_format,
                                 'date_format'=>$date_format,
                                 'time_format'=>$time_format,
                                 'start_of_week'=>$start_of_week,
+                                'timezones'=>$tzoptions,
                                 'file_permisions'=>$file_permisions,
                                 'dir_permissions'=>$dir_permissions,
                                 'section_dropdown'=>$section_dropdown
                                 ));
     }
-    
+
+	// now you can use $options;
+	function formatOffset($offset) {
+			$hours = $offset / 3600;
+			$remainder = $offset % 3600;
+			$sign = $hours > 0 ? '+' : '-';
+			$hour = (int) abs($hours);
+			$minutes = (int) abs($remainder / 60);
+
+			if ($hour == 0 AND $minutes == 0) {
+				$sign = ' ';
+			}
+			return 'GMT' . $sign . str_pad($hour, 2, '0', STR_PAD_LEFT)
+					.':'. str_pad($minutes,2, '0');
+
+	}
+
     public function update_siteconfig () {
         foreach ($this->params['sc'] as $key => $value) {
             expSettings::change($key, addslashes($value));
@@ -708,6 +827,45 @@ class administrationController extends expController {
         flash('message', "Your Website Configuration has been updated");
         expHistory::back();
     }    
+}
+
+/**
+ * The base theme class
+ */
+class theme {
+	public $user_configured = false;
+
+	function name() { return "theme"; }
+	function author() { return ""; }
+	function description() { return "The theme shell"; }
+
+	function configureTheme () {
+		$settings = expSettings::parseFile(BASE."themes/".$_GET['theme']."/config.php");
+		$form = new form();
+		$form->meta('controller','administration');
+		$form->meta('action','update_theme');
+		$form->meta('theme',$_GET['theme']);
+		foreach ($settings as $setting=>$key) {
+			$form->register($setting,$setting.': ',new textcontrol($key,20));
+		}
+		$form->register(null,'',new htmlcontrol('<br>'));
+		$form->register('submit','',new buttongroupcontrol(gt('Save'),'',gt('Cancel')));
+		assign_to_template(array('name'=>self::name(),'form_html'=>$form->tohtml()));
+	}
+
+	function saveThemeConfig ($params) {
+		$theme = $params['theme'];
+		unset ($params['theme']);
+		unset ($params['controller']);
+		unset ($params['action']);
+		foreach ($params as $key=>$value) {
+			if (strpos($key,'_' == 1)) {
+				unset ($params[$key]);
+			}
+		}
+		expSettings::saveValues($params, BASE."themes/".$theme."/config.php");
+		expHistory::back();
+	}
 }
 
 ?>

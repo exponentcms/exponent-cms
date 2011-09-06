@@ -22,7 +22,7 @@
 	<script type="text/javascript">
 	{literal}
 	function selectAll(checked) {
-		elems = document.getElementsByTagName("input");
+		var elems = document.getElementsByTagName("input");
 		for (var key in elems) {
 			if (elems[key].type == "checkbox" && elems[key].name.substr(0,7) == "tables[") {
 				elems[key].checked = checked;
@@ -31,7 +31,7 @@
 	}
 
 	function isOneSelected() {
-		elems = document.getElementsByTagName("input");
+		var elems = document.getElementsByTagName("input");
 		for (var key in elems) {
 			if (elems[key].type == "checkbox" && elems[key].name.substr(0,7) == "tables[") {
 				if (elems[key].checked) return true;
@@ -80,6 +80,8 @@
 			<tr>
 				<td colspan="5"><hr></td>
 			</tr>
+			{if $user->isAdmin()}
+			<tr>
 				<td colspan="1">
 					<input type="checkbox" name="save_sample" value="1" class="checkbox">
 				</td>
@@ -87,6 +89,7 @@
 					<b><label class="label ">Save as Sample Content for the '{$smarty.const.DISPLAY_THEME}' Theme?</label></b>
 				</td>
 			</tr>
+			{/if}
 			<tr>
 				<td colspan="3" valign="top"><b>{'File Name Template:'|gettext}</b></td>
 				<td colspan="2">
@@ -98,7 +101,6 @@
 					<div style="border-top: 1px solid #CCCC;">{'Use __DOMAIN__ for this website\'s domain name, __DB__ for the site\'s database name and any strftime options for time specification. The EQL extension will be added for you. Any other text will be preserved.'|gettext}<br /></div>
 				</td>
 			</tr>
-			<tr>
 			<tr>
 				<td colspan="2">&nbsp;</td>
 				<td colspan="3">

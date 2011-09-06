@@ -35,10 +35,13 @@ class expHTMLEditorController extends expController {
     function manage () {
         global $db;
         // yet more gluecode
-        if (SITE_WYSIWYG_EDITOR=="FCKeditor") redirect_to(array("module"=>"","administrationmodule"=>"htmlarea_configs"));
-        
+        if (SITE_WYSIWYG_EDITOR=="FCKeditor") {
+	        flash('error','FCKeditor is deprecated!');
+	        redirect_to(array("module"=>"administration","action"=>"configure_site"));
+        }
+
         expHistory::set('manageable',$this->params);
-        
+
         // otherwise, on to cke
         $configs = $db->selectObjects('htmleditor_ckeditor',1);
         
