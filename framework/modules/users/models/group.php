@@ -17,6 +17,9 @@
 #
 ##################################################
 
+/**
+ *
+ */
 class group extends expRecord {
     public $table = 'group';
     public $validates = array(
@@ -29,7 +32,7 @@ class group extends expRecord {
 	);
 
 	/** exdoc
-	 * This function pulls a group object form the subsystem's storage mechanism,
+	 * This function pulls a group object form the subsystems storage mechanism,
 	 * according to its ID.  For the default implementation, this is equivalent to a
 	 * $db->selectObject() call, but it may not be the same for other implementations.
 	 * Returns a group object, and null if no group was found.
@@ -39,6 +42,7 @@ class group extends expRecord {
 	 * to the database.
 	 *
 	 * @param integer $gid The id of the group account to retrieve.
+	 * @return object
 	 * @node Subsystems:Users
 	 */
 	public static function getGroupById($gid) {
@@ -65,6 +69,7 @@ class group extends expRecord {
 	 * an array of all user objects that belong to the specified group.
 	 *
 	 * @param Object $g The group object to obtain a member list for.
+	 * @return array
 	 * @node Subsystems:Users
 	 */
 	public static function getUsersInGroup($g) {
@@ -85,7 +90,7 @@ class group extends expRecord {
 	}
 
 	/** exdoc
-	 * This function pulls a group object from the subsystem's storage mechanism,
+	 * This function pulls a group object from the subsystems storage mechanism,
 	 * according to the group name.  For the default implementation, this is equivalent
 	 * to a $db->selectObject() call, but it may not be the same for other implementations.
 	 * Returns a group object, and null if no group was found.
@@ -105,7 +110,7 @@ class group extends expRecord {
 
 	/** exdoc
 	 * Gets a list of all group in the system.  By giving different
-	 * combinations of the two boolean arguments. threee different lists
+	 * combinations of the two boolean arguments. three different lists
 	 * of groups can be returned.  Returns a list of groups, according to
 	 *  the two parameters passed in.
 	 *

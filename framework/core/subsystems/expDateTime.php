@@ -20,10 +20,13 @@
 /** @define "BASE" "../../.." */
 
 class expDateTime {
-          
+
 	/** exdoc
 	 * @state <b>UNDOCUMENTED</b>
 	 * @node To Be Deprecated
+	 * @param $controlName
+	 * @param $default_month
+	 * @return string
 	 */
 	public static function monthsDropdown($controlName,$default_month) {
 		$months = array(
@@ -60,6 +63,7 @@ class expDateTime {
 	 *
 	 * @param timestamp $time_a The first timestamp
 	 * @param timestamp $time_b The second timestamp
+	 * @return array
 	 * @node Subsystems:DateTime
 	 */
 	public static function duration($time_a,$time_b) {
@@ -90,6 +94,7 @@ class expDateTime {
 	 * would return a timestamp representing January 1st 1984, at 12:00am.
 	 *
 	 * @param timestamp $timestamp The original timestamp to use when calculating.
+	 * @return int
 	 * @node Subsystems:DateTime
 	 */
 	public static function startOfMonthTimestamp($timestamp) {
@@ -107,6 +112,7 @@ class expDateTime {
 	 * would return a timestamp representing January 31st 1984, at 11:59pm.
 	 *
 	 * @param timestamp $timestamp The original timestamp to use when calculating.
+	 * @return int
 	 * @node Subsystems:DateTime
 	 */
 	public static function endOfMonthTimestamp($timestamp) {
@@ -129,6 +135,7 @@ class expDateTime {
 	 * this function would return 31.  Leap year is taken into account.
 	 *
 	 * @param timestamp $timestamp The timestamp to check.
+	 * @return int
 	 * @node Subsystems:DateTime
 	 */
 	public static function endOfMonthDay($timestamp) {
@@ -147,6 +154,7 @@ class expDateTime {
 	 * 12:00:01 am of the same day.
 	 *
 	 * @param timestamp $timestamp The timestamp to check.
+	 * @return int
 	 * @node Subsystems:DateTime
 	 */
 	public static function startOfDayTimestamp($timestamp) {
@@ -162,17 +170,18 @@ class expDateTime {
 	 * 12:00:01 am of the Sunday of the same week.
 	 *
 	 * @param timestamp $timestamp The timestamp to check.
+	 * @return int
 	 * @node Subsystems:DateTime
 	 */
 	public static function startOfWeekTimestamp($timestamp) {
 		$info = getdate($timestamp);
 		// FIXME: The following line will sometimes calculate negative dates,
 		// FIXME: which will not work on Windows platforms.
-		$firstOfWeek = $info['mday'] - $info['wday'];
+//		$firstOfWeek = $info['mday'] - $info['wday'];
 		// Calculate the timestamp at 8am, and then subtract 8 hours, for Daylight Savings
 		// Time.  If we are in those strange edge cases of DST, 12:00am can turn out to be
 		// of the previous day.
-		$ts = self::startOfDayTimestamp($timestamp - ($info['wday'] * 86400));;
+//		$ts = self::startOfDayTimestamp($timestamp - ($info['wday'] * 86400));;
 		return self::startOfDayTimestamp($timestamp - ($info['wday'] * 86400));
 	}
 
@@ -187,6 +196,7 @@ class expDateTime {
 	 * @param timestamp $end The end of the recurrence range
 	 * @param integer $freq Frequency of recurrence - 2 means every 2 days, and 1
 	 * 	means every day.
+	 * @return array
 	 * @node Subsystems:DateTime
 	 */
 	public static function recurringDailyDates($start,$end,$freq) {
@@ -213,6 +223,7 @@ class expDateTime {
 	 * @param array $days The weekdays (in integer notation, 0 = Sunday, etc.) that
 	 *   should be matched.  A MWF recurrence rotation would contain the values
 	 *  1,3 and 5.
+	 * @return array
 	 * @node Subsystems:DateTime
 	 */
 	public static function recurringWeeklyDates($start,$end,$freq,$days) {
@@ -231,7 +242,7 @@ class expDateTime {
 		//
 		// So, if we start on a Tuesday, and want to recur weekly for a MWF rotation,
 		// This would check Monday, then Wednesday and stop, using wednesday for the
-		// recacluated start date ($curdate)
+		// recalculated start date ($curdate)
 		for ($counter = 0; $counter < count($days); $counter++) {
 			if ($days[$counter] >= $dateinfo['wday']) {
 				// exit loop, we found the weekday to use ($days[$counter])
@@ -273,7 +284,7 @@ class expDateTime {
 				// Went off the end of the week.  Reset the pointer to the beginning
 				$counter = 0;
 				// Difference in number of days between the last day in the rotation
-				// and the first day (for recacluating the $curdate value)
+				// and the first day (for recalculating the $curdate value)
 				#$daydiff = $days[count($days)-1]-$days[0];
 
 				$daydiff = 7 + $days[0] - $days[count($days)-1];
@@ -314,6 +325,7 @@ class expDateTime {
 	 *   other month, etc.
 	 * @param bool $by_day Whether or not to recur by the weekday and week offset
 	 * (in case of true), or by the date (in case of false).
+	 * @return array
 	 * @node Subsystems:DateTime
 	 */
 	public static function recurringMonthlyDates($start,$end,$freq,$by_day=false) {
@@ -433,6 +445,7 @@ class expDateTime {
 	 * @param timestamp $end The end of the recurrence range
 	 * @param integer $freq Yearly frequency - 1 means every year, 2 means every
 	 *   other year, etc.
+	 * @return array
 	 * @node Subsystems:DateTime
 	 */
 	public static function recurringYearlyDates($start,$end,$freq) {
@@ -450,9 +463,10 @@ class expDateTime {
 	/** exdoc
 	 * Adapted from calendar module's minical view to be more modular.
 	 *
+	 * @return array
 	 */
 	public static function monthlyDaysTimestamp() {
-		global $db;
+//		global $db;
 		$monthly = array();
 		$info = getdate(time());
 		// Grab non-day numbers only (before end of month)

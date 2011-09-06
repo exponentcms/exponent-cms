@@ -60,7 +60,7 @@ class user extends expRecord {
 	    // Retrieve the user object from the database.  This may be null, if the username is non-existent.
 	    $user = new user($db->selectValue('user', 'id', "username='" . $username . "'"));
 	
-	    // if the user object doesn't have an id then we didn't find a valid user accout with this username
+	    // if the user object doesn't have an id then we didn't find a valid user account with this username
 	    if (empty($user->id)) return false; 
 	
 	    // try to authenticate the user - use the authentication type specified in the site config
@@ -248,8 +248,8 @@ class user extends expRecord {
 
 	/** exdoc
 	 * Gets a list of all user accounts in the system.  By giving different
-	 * combinations of the two boolean arguments. threee different lists
-	 * of users can be returned.  Returns alist of users, according to the two parameters passed in.
+	 * combinations of the two boolean arguments. three different lists
+	 * of users can be returned.  Returns a list of users, according to the two parameters passed in.
 	 *
 	 * @param bool|int $allow_admin Whether or not to include admin accounts in the returned list.
 	 * @param bool|int $allow_normal Whether or not to include normal accounts in the returned list.
@@ -264,7 +264,7 @@ class user extends expRecord {
 	}
 
 	/** exdoc
-	 * This function pulls a user object from the subsystem's storage mechanism,
+	 * This function pulls a user object from the subsystems storage mechanism,
 	 * according to the username.  For the default implementation, this is equivalent
 	 * to a $db->selectObject() call, but it may not be the same for other implementations.
 	 * Returns a basic user object, and null if no user was found.
@@ -289,7 +289,7 @@ class user extends expRecord {
 	}
 
 	/** exdoc
-	 * This function pulls a user object from the subsystem's storage mechanism
+	 * This function pulls a user object from the subsystems storage mechanism
 	 * according to its ID.  For the default implementation, this is equivalent to a
 	 * $db->selectObject() call, but it may not be the same for other implementations.
 	 * Returns a basic user object, and null if no user was found.
@@ -299,6 +299,7 @@ class user extends expRecord {
 	 * object do not result in another trip to the database engine.
 	 *
 	 * @param integer $uid The id of the user account to retrieve.
+	 * @return array
 	 * @node Subsystems:Users
 	 */
 	public static function getUserById($uid) {

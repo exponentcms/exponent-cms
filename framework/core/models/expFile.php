@@ -22,9 +22,9 @@
   * the record for each file.
   *
   * expFile is an extension of expRecord because File information is stored
-  * in the database for future access and retrival. This class also handles
+  * in the database for future access and retrieval. This class also handles
   * and and all File System handling as well: copy, move, delete, upload,
-  * and importing of data in preperation of data importation. Upload and
+  * and importing of data in preparation of data importation. Upload and
   * import via child classes.
   *
  * @subpackage Core-Datatypes
@@ -177,7 +177,7 @@ class expFile extends expRecord {
 
    /**
     * Is this file an image.
-    # Defaultes to FALSE
+    # Defaults to FALSE
     *
     * @public
     * @property string $is_image   Is this file an image
@@ -246,10 +246,10 @@ class expFile extends expRecord {
 	 * @PHPUnit Not Defined
 	 *
 	 * @param mixed $params  - If an INT is given, this assumes that it needs to
-	 *                         load an exisiting File Record.
+	 *                         load an existing File Record.
 	 *                       - If an ARRAY is given, this assumes that the elements
 	 *                         of the array are values to the File table that need
-	 *                         to be modifiy or other processing.
+	 *                         to be modified or other processing.
 	 *                       - If NULL is given, an empty File Object is created
 	 *
 	 * @param bool $get_assoc
@@ -280,7 +280,7 @@ class expFile extends expRecord {
             // Place system OS relative path
             $this->path_relative  = PATH_RELATIVE.$this->directory.$this->filename;
 	    } else {
-            // Otherwise, the URL is not set since we can't use it, niether is
+            // Otherwise, the URL is not set since we can't use it, nether is
             // RELATIVE, as 'directory' must be an absolute path in this instance
             // Place system level OS root
             $relpath = str_replace(BASE, '', $this->directory);
@@ -311,7 +311,7 @@ class expFile extends expRecord {
 	/**
 	 * File UPLOAD that also inserts File info into datbase.
 	 *
-	 * File UPLOAD is a straight forward uploader and processer. It can accept
+	 * File UPLOAD is a straight forward uploader and processor. It can accept
 	 * filename and destination directory overrides as well. It has an additional
 	 * pair of flags that allow for an upload NOT to be inserted into the database
 	 * (default to INSERT) and if it previous file, with the same name, should be
@@ -459,25 +459,26 @@ class expFile extends expRecord {
       *
       * @PHPUnit Not Defined|Implement|Completed
       *
-      * @param string $filepath    direct path of the file to check againsts 
+      * @param string $filepath    direct path of the file to check against
       * @return int $newFileName   Name of the file that isn't a duplicate
       * @throws void
       *
       */
       public static function resolveDuplicateFilename($filepath) {
-          $extention = strrchr($filepath, "."); // grab the file extention by looking for the last dot in the string
-          $filnameWoExt = str_replace($extention,"",str_replace("/","",strrchr($filepath, "/"))); // filename sans extention
-          $pathToFile = str_replace($filnameWoExt.$extention,"",$filepath); // path sans filename
+          $extension = strrchr($filepath, "."); // grab the file extention by looking for the last dot in the string
+          $filnameWoExt = str_replace($extension,"",str_replace("/","",strrchr($filepath, "/"))); // filename sans extention
+          $pathToFile = str_replace($filnameWoExt.$extension,"",$filepath); // path sans filename
           
           $i = "";
-          while (file_exists($pathToFile.$filnameWoExt.$inc.$extention)) {
+          $inc = "";
+          while (file_exists($pathToFile.$filnameWoExt.$inc.$extension)) {
               $i++;
               $inc = "-".$i;
           }
           
           //we'll just return the new filename assuming we've 
           //already got the path we want on the other side
-          return $filnameWoExt.$inc.$extention;
+          return $filnameWoExt.$inc.$extension;
       }
 
    /**
@@ -1220,7 +1221,7 @@ class expFile extends expRecord {
 	 *
 	 * @param string $dir The path of the directory to look at.
 	 * @param boolean $recurse A boolean dictating whether to descend into subdirectories
-	 * 	recursviely, and list files and subdirectories.
+	 * 	recursively, and list files and subdirectories.
 	 * @param string $ext An optional file extension.  If specified, only files ending with
 	 * 	that file extension will show up in the list.  Directories are not affected.
 	 * @param array $exclude_dirs An array of directory names to exclude.  These names are
@@ -1246,7 +1247,7 @@ class expFile extends expRecord {
 	}
 
 	/* exdoc
-	 * Looks at the filesystem strucutre surrounding the destination
+	 * Looks at the filesystem structure surrounding the destination
 	 * and determines if the web server can create a new file there.
 	 * Returns one of the following:
 	 *	<br>SYS_FILES_NOTWRITABLE - unable to create files in destination
@@ -1269,7 +1270,7 @@ class expFile extends expRecord {
 			}
 		}
 		// If we got this far, then the file we are asking about already exists.
-		// Check to see if we can overrwrite this file.
+		// Check to see if we can overwrite this file.
 		// First however, we need to strip off the '/' that was added a few lines up as the last part of the for loop.
 		$working = substr($working,0,-1);
 
@@ -1317,10 +1318,13 @@ class expFile extends expRecord {
 	 * all of the records in all of the tables into a string.
 	 * The contents of the string are suitable for storage
 	 * in a file or other permanent mechanism, and is in
-	 * the EQL format natively handled by the current
+	 * the EQL format naively handled by the current
 	 * implementation.
 	 *
 	 * @param Database $db The database object to dump to EQL.
+	 * @param null $tables
+	 * @param null $force_version
+	 * @return string
 	 * @node Subsystems:Backup
 	 */
 	public static function dumpDatabase($db,$tables = null,$force_version = null) {
@@ -1364,8 +1368,10 @@ class expFile extends expRecord {
 	 * @param Database $db The database to restore to
 	 * @param string $file The filename of the EQL file to restore from
 	 * @param array $errors A referenced array that stores errors.  Whatever
-	 * 	variable is passed in this argument will contain all errors encounterd
+	 *	 variable is passed in this argument will contain all errors encountered
 	 *	during the parse/restore.
+	 * @param null $force_version
+	 * @return bool
 	 * @node Subsystems:Backup
 	 */
 	public static function restoreDatabase($db,$file,&$errors,$force_version = null) {
