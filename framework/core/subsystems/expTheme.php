@@ -20,7 +20,7 @@
 /**
  * This is the class expTheme
  *
- * @subpackage Core-Subsytems
+ * @subpackage Core-Subsystems
  * @package Framework
  */
 

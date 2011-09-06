@@ -64,7 +64,7 @@ class expDateTime {
 	 * @param timestamp $time_a The first timestamp
 	 * @param timestamp $time_b The second timestamp
 	 * @return array
-	 * @node Subsystems:DateTime
+	 * @node Subsystems:expDateTime
 	 */
 	public static function duration($time_a,$time_b) {
 		$d = abs($time_b-$time_a);
@@ -95,7 +95,7 @@ class expDateTime {
 	 *
 	 * @param timestamp $timestamp The original timestamp to use when calculating.
 	 * @return int
-	 * @node Subsystems:DateTime
+	 * @node Subsystems:expDateTime
 	 */
 	public static function startOfMonthTimestamp($timestamp) {
 		$info = getdate($timestamp);
@@ -113,7 +113,7 @@ class expDateTime {
 	 *
 	 * @param timestamp $timestamp The original timestamp to use when calculating.
 	 * @return int
-	 * @node Subsystems:DateTime
+	 * @node Subsystems:expDateTime
 	 */
 	public static function endOfMonthTimestamp($timestamp) {
 		$info = getdate($timestamp);
@@ -136,7 +136,7 @@ class expDateTime {
 	 *
 	 * @param timestamp $timestamp The timestamp to check.
 	 * @return int
-	 * @node Subsystems:DateTime
+	 * @node Subsystems:expDateTime
 	 */
 	public static function endOfMonthDay($timestamp) {
 		$info = getdate($timestamp);
@@ -155,7 +155,7 @@ class expDateTime {
 	 *
 	 * @param timestamp $timestamp The timestamp to check.
 	 * @return int
-	 * @node Subsystems:DateTime
+	 * @node Subsystems:expDateTime
 	 */
 	public static function startOfDayTimestamp($timestamp) {
 		$info = getdate($timestamp);
@@ -171,7 +171,7 @@ class expDateTime {
 	 *
 	 * @param timestamp $timestamp The timestamp to check.
 	 * @return int
-	 * @node Subsystems:DateTime
+	 * @node Subsystems:expDateTime
 	 */
 	public static function startOfWeekTimestamp($timestamp) {
 		$info = getdate($timestamp);
@@ -197,7 +197,7 @@ class expDateTime {
 	 * @param integer $freq Frequency of recurrence - 2 means every 2 days, and 1
 	 * 	means every day.
 	 * @return array
-	 * @node Subsystems:DateTime
+	 * @node Subsystems:expDateTime
 	 */
 	public static function recurringDailyDates($start,$end,$freq) {
 		$dates = array();
@@ -224,7 +224,7 @@ class expDateTime {
 	 *   should be matched.  A MWF recurrence rotation would contain the values
 	 *  1,3 and 5.
 	 * @return array
-	 * @node Subsystems:DateTime
+	 * @node Subsystems:expDateTime
 	 */
 	public static function recurringWeeklyDates($start,$end,$freq,$days) {
 		// Holding array, for keeping the timestamps of applicable dates.
@@ -326,7 +326,7 @@ class expDateTime {
 	 * @param bool $by_day Whether or not to recur by the weekday and week offset
 	 * (in case of true), or by the date (in case of false).
 	 * @return array
-	 * @node Subsystems:DateTime
+	 * @node Subsystems:expDateTime
 	 */
 	public static function recurringMonthlyDates($start,$end,$freq,$by_day=false) {
 		// Holding array, for keeping all of the matching timestamps
@@ -446,7 +446,7 @@ class expDateTime {
 	 * @param integer $freq Yearly frequency - 1 means every year, 2 means every
 	 *   other year, etc.
 	 * @return array
-	 * @node Subsystems:DateTime
+	 * @node Subsystems:expDateTime
 	 */
 	public static function recurringYearlyDates($start,$end,$freq) {
 		$dates = array();

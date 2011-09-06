@@ -27,7 +27,7 @@ class expVersion {
 	 * @param bool $full Whether or not to return a full version number.  If passed as true,
 	 *	a string in the form of '0.96.3-beta5' will be returned.  Otherwise, '0.96' would be returned.
 	 * @param bool $build Whether or not to return the build date in the string.
-	 * @node Subsystems:Util
+	 * @node Subsystems:expVersion
 	 * @param bool $full
 	 * @param bool $build
 	 * @return string

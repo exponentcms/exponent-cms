@@ -21,7 +21,7 @@
 /**
  * This is the class expJavascript
  *
- * @subpackage Core-Subsytems
+ * @subpackage Core-Subsystems
  * @package Framework
  */
 

@@ -27,7 +27,7 @@
   * and importing of data in preparation of data importation. Upload and
   * import via child classes.
   *
- * @subpackage Core-Datatypes
+ * @subpackage Core-Models
  * @package Framework
   *
   */
@@ -623,7 +623,7 @@ class expFile extends expRecord {
 	 * is in place, however.
 	 *
 	 * @param string $filename The path/filename of the image.
-	 * @node Subsystems:expFile
+	 * @node Model:expFile
 	 */
 	public static function openImageFile($filename) {
 		if (!EXPONENT_HAS_GD) return null;
@@ -657,7 +657,7 @@ class expFile extends expRecord {
 	 *
 	 * @param integer $w Width of the image resource to create (in pixels)
 	 * @param integer $h Height of the image resource to create (in pixels)
-	 * @node Subsystems:Image
+	 * @node Model:expFile
 	 */
 	public static function imageCreate($w,$h) {
 		if (!EXPONENT_HAS_GD) {
@@ -686,7 +686,7 @@ class expFile extends expRecord {
 	 *
 	 * @param integer $w Width of the image resource to create (in pixels)
 	 * @param integer $h Height of the image resource to create (in pixels)
-	 * @node Subsystems:Image
+	 * @node Model:expFile
 	 */
 	function copyToDirectory($destination) {
 	    //eDebug($this,true);
@@ -713,7 +713,7 @@ class expFile extends expRecord {
 	 *
 	 * @param string $filename The path/filename of the image to scale.
 	 * @param decimal $scale The scaling factor, as a decimal (i.e. 0.5 for 50%)
-	 * @node Subsystems:Image
+	 * @node Model:expFile
 	 */
 	public static function imageScaleByPercent($filename,$scale) {
 		$sizeinfo = self::getImageInfo($filename);
@@ -748,7 +748,7 @@ class expFile extends expRecord {
 	 *
 	 * @param string $filename The path/filename of the image to scale.
 	 * @param integer $width The desired width of the scaled image, in pixels.
-	 * @node Subsystems:Image
+	 * @node Model:expFile
 	 */
 	public static function imageScaleToWidth($filename,$width) {
 		$sizeinfo = self::getImageInfo($filename);
@@ -782,7 +782,7 @@ class expFile extends expRecord {
 	 *
 	 * @param string $filename The path/filename of the image to scale.
 	 * @param integer $height The desired height of the scaled image, in pixels.
-	 * @node Subsystems:Image
+	 * @node Model:expFile
 	 */
 	public static function imageScaleToHeight($filename,$height) {
 		$sizeinfo = self::getImageInfo($filename);
@@ -818,7 +818,7 @@ class expFile extends expRecord {
 	 * @param string $filename The path/filename of the image to scale.
 	 * @param integer $width The maximum width of the scaled image, in pixels.
 	 * @param integer $height The maximum height of the scaled image, in pixels.
-	 * @node Subsystems:Image
+	 * @node Model:expFile
 	 */
 	public static function imageScaleToConstraint($filename,$width,$height) {
 		$sizeinfo = self::getImageInfo($filename);
@@ -860,7 +860,7 @@ class expFile extends expRecord {
 	 *
 	 * @param string $filename The path/filename of the image to scale.
 	 * @param integer $size The desired side length of the scaled image, in pixels.
-	 * @node Subsystems:Image
+	 * @node Model:expFile
 	 */
 	public static function imageScaleToSquare($filename,$side) {
 		$sizeinfo = self::getImageInfo($filename);
@@ -916,7 +916,7 @@ class expFile extends expRecord {
 	 * @param string $filename The path/filename of the image to scale.
 	 * @param integer $width The desired width of the scaled image, in pixels.
 	 * @param integer $height The desired height of the scaled image, in pixels.
-	 * @node Subsystems:Image
+	 * @node Model:expFile
 	 */
 	public static function imageScaleManually($filename,$width,$height) {
 		$sizeinfo = self::getImageInfo($filename);
@@ -1122,7 +1122,7 @@ class expFile extends expRecord {
 	 * a SYS_FILES_* constant, indicating its status.
 	 *
 	 * @param string $dir The directory to create.  This path must be relative to BASE
-	 * @node Subsystems:Files
+	 * @node Model:expFile
 	 */
 	public static function makeDirectory($dir,$mode=null,$is_full=false) {
 		$__oldumask = umask(0);
@@ -1148,7 +1148,7 @@ class expFile extends expRecord {
 	 * of the files and directories underneath it.
 	 *
 	 * @param string $dir The path of the directory to remove
-	 * @node Subsystems:Files
+	 * @node Model:expFile
 	 * @param string $dir directory to work with
 	 * @return int
 	 */
@@ -1188,7 +1188,7 @@ class expFile extends expRecord {
 	* This function takes into account the default file modes specified in the site configuration.
 	 * @param string $tmp_name The temporary path of the uploaded file.
 	 * @param string $dest The full path to the destination file (including the destination filename).
-	 * @node Subsystems:Files
+	 * @node Model:expFile
 	 */
 	public static function moveUploadedFile($tmp_name,$dest) {
 		move_uploaded_file($tmp_name,$dest);
@@ -1208,7 +1208,7 @@ class expFile extends expRecord {
 	 * @param string $name The name of the file control used to upload the
 	 *  file.  The files subsystem will look to the $_FILES array
 	 *  to get the filename of the uploaded file.
-	 * @node Subsystems:Files
+	 * @node Model:expFile
 	 */
 	public static function uploadDestinationFileExists($dir,$name) {
 		return (file_exists(BASE.$dir."/".self::fixName($_FILES[$name]['name'])));
@@ -1227,7 +1227,7 @@ class expFile extends expRecord {
 	 * @param array $exclude_dirs An array of directory names to exclude.  These names are
 	 * 	path-independent.  Specifying "dir" will ignore all directories and
 	 * 	sub-directories named "dir", regardless of their parent.
-	 * @node Subsystems:Files
+	 * @node Model:expFile
 	 */
 	public static function listFlat($dir, $recurse = false, $ext=null, $exclude_dirs = array(), $relative = "") {
 		$files = array();
@@ -1255,7 +1255,7 @@ class expFile extends expRecord {
 	 *	<br>SYS_FILES_FOUNDFILE - Found destination to be a file, not a directory
 	 *
 	 * @param string $dest Path to the directory to check
-	 * @node Subsystems:Files
+	 * @node Model:expFile
 	 */
 	public static function canCreate($dest) {
 		if (substr($dest,0,1) == '/') $dest = str_replace(BASE,'',$dest);
@@ -1295,7 +1295,7 @@ class expFile extends expRecord {
 	 * @param $exclude_dirs An array of directory names to exclude.  These names are
 	 * 	path-independent.  Specifying "dir" will ignore all directories and
 	 * 	sub-directories named "dir", regardless of their parent.
-	 * @node Subsystems:Files
+	 * @node Model:expFile
 	 */
 	public static function copyDirectoryStructure($src,$dest,$exclude_dirs = array()) {
 		$__oldumask = umask(0);
@@ -1325,7 +1325,7 @@ class expFile extends expRecord {
 	 * @param null $tables
 	 * @param null $force_version
 	 * @return string
-	 * @node Subsystems:Backup
+	 * @node Model:expFile
 	 */
 	public static function dumpDatabase($db,$tables = null,$force_version = null) {
 		$dump = EQL_HEADER."\r\n";
@@ -1372,7 +1372,7 @@ class expFile extends expRecord {
 	 *	during the parse/restore.
 	 * @param null $force_version
 	 * @return bool
-	 * @node Subsystems:Backup
+	 * @node Model:expFile
 	 */
 	public static function restoreDatabase($db,$file,&$errors,$force_version = null) {
 		$errors = array();

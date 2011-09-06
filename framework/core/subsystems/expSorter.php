@@ -18,7 +18,7 @@
 /**
  * This is the class expSorter
  *
- * @subpackage Core-Subsytems
+ * @subpackage Core-Subsystems
  * @package Framework
  */
  

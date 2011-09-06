@@ -37,7 +37,7 @@
  *  ));
  * </code>
  * 
- * @subpackage Core-Subsytems
+ * @subpackage Core-Subsystems
  * @package Framework
  */ 
 class expPaginator {

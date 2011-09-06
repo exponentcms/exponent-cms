@@ -22,21 +22,10 @@
 class expPermissions {
 
 	/** exdoc
-	 * Initialize Permissions Subsystems
-	 * Pulls in the permission data from the session, for faster
-	 * access later.
-	 * @node Subsystems:Permissions
-	 */
-	public static function initialize() {  //FIXME not really needed?
-		global $exponent_permissions_r;
-		$exponent_permissions_r = expSession::get("permissions");
-	}
-
-	/** exdoc
 	 * Loads permission data from the database for the specified user.
 	 *
 	 * @param User $user THe user to load permissions for.
-	 * @node Subsystems:Permissions
+	 * @node Subsystems:expPermissions
 	 */
 	public static function load($user) {
 		global $db, $exponent_permissions_r;
@@ -136,7 +125,7 @@ class expPermissions {
 	 *	to getLocationHierarchy (defined by the module) for a full hierarchy
 	 *	of permissions.
 	 * @return bool
-	 * @node Subsystems:Permissions
+	 * @node Subsystems:expPermissions
 	 */
 	public static function check($permission,$location) {
 		global $exponent_permissions_r, $user, $db;
@@ -211,7 +200,7 @@ class expPermissions {
 	 * @param boolean $explicitOnly Whether to check for explit assignment or implicit.
 	 *
 	 * @return bool
-	 * @node Subsystems:Permissions
+	 * @node Subsystems:expPermissions
 	 */
 	public static function checkUser($user,$permission,$location,$explicitOnly = false) {
 		global $db;
@@ -280,7 +269,7 @@ class expPermissions {
 	 * @param User $user The user to grant the permission to
 	 * @param string $permission The name of the permission to grant
 	 * @param Object $location The location to grant the permission on
-	 * @node Subsystems:Permissions
+	 * @node Subsystems:expPermissions
 	 */
 	public static function grant($user,$permission,$location) {
 		if ($user !== null) {
@@ -308,7 +297,7 @@ class expPermissions {
 	 *
 	 * @param bool $explicitOnly
 	 * @return bool
-	 * @node Subsystems:Permissions
+	 * @node Subsystems:expPermissions
 	 */
 	public static function checkGroup($group,$permission,$location,$explicitOnly = false) {
 		global $db;
@@ -335,7 +324,7 @@ class expPermissions {
 	 * @param Object $group The group to grant the permission to
 	 * @param string $permission The name of the permission to grant
 	 * @param Object $location The location to grant the permission on
-	 * @node Subsystems:Permissions
+	 * @node Subsystems:expPermissions
 	 */
 	public static function grantGroup($group,$permission,$location) {
 		if ($group !== null) {
@@ -362,7 +351,7 @@ class expPermissions {
 	 * @param User $user The user to remove all permissions from
 	 * @param Object $location The location to remove all permission on
 	 * @return mixed
-	 * @node Subsystems:Permissions
+	 * @node Subsystems:expPermissions
 	 */
 	public static function revokeAll($user,$location) {
 		global $db;
@@ -388,7 +377,7 @@ class expPermissions {
 	 * @param Object $group The group to remove all permissions from
 	 * @param Object $location The location to remove all permission on
 	 * @return mixed
-	 * @node Subsystems:Permissions
+	 * @node Subsystems:expPermissions
 	 */
 	public static function revokeAllGroup($group,$location) {
 		global $db;
@@ -399,7 +388,7 @@ class expPermissions {
 	 * This call will force all active session to reload their
 	 * permission data.  This is useful if permissions are assigned
 	 * or revoked, and is required to see these changes.
-	 * @node Subsystems:Permissions
+	 * @node Subsystems:expPermissions
 	 */
 	public static function triggerRefresh() {
 		global $db;
@@ -412,7 +401,7 @@ class expPermissions {
 	 * This call will force all active sessions for the given user to
 	 * reload their permission data.  This is useful if permissions
 	 * are assigned or revoked, and is required to see these changes.
-	 * @node Subsystems:Permissions
+	 * @node Subsystems:expPermissions
 	 * @param $user
 	 */
 	public static function triggerSingleRefresh($user) {  //FIXME not currently used

@@ -30,7 +30,7 @@ class expCore {
 	 *
 	 * @internal param \The $int internal component of the location.
 	 * @return array
-	 * @node Subsystems:Core
+	 * @node Subsystems:expCore
 	 */
 	public static function initializeNavigation () {
 		$sections = array();
@@ -52,7 +52,7 @@ class expCore {
 	 * This function does take into account the SEF URLs settings and the SSL urls in the site config.
 	 *
 	 * @param Array $params An associative array of the desired querystring parameters.
-	 * @node Subsystems:Core
+	 * @node Subsystems:expCore
 	 */
 	public static function makeLink($params,$type='',$sef_name='') {
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -118,7 +118,7 @@ class expCore {
 	 *
 	 * @param Array $params An associative array of the desired querystring parameters.
 	 * @return string
-	 * @node Subsystems:Core
+	 * @node Subsystems:expCore
 	 */
 	public static function makeSecureLink($params) {
 		global $router;
@@ -148,7 +148,7 @@ class expCore {
 	 *
 	 * @param Location $loc The location object to decrement references for.
 	 * @param integer $section The id of the section that the location exists in.
-	 * @node Subsystems:Core
+	 * @node Subsystems:expCore
 	 */
 	public static function decrementLocationReference($loc,$section) {
 		global $db;
@@ -168,7 +168,7 @@ class expCore {
 	 *
 	 * @param Location $loc The location object to increment references for.
 	 * @param integer $section The id of the section that the location exists in.
-	 * @node Subsystems:Core
+	 * @node Subsystems:expCore
 	 */
 	public static function incrementLocationReference($loc,$section) {
 		global $db;
@@ -226,7 +226,7 @@ class expCore {
 	 *
 	 * @param string $url The URL to test for validity
 	 * @return bool
-	 * @node Subsystems:Core
+	 * @node Subsystems:expCore
 	 */
 	public static function URLisValid($url) {
 		return (
@@ -241,7 +241,7 @@ class expCore {
 	 * Generates and returns a message stating the current maximum accepted size of
 	 * uploaded files.  It intelligently parses the php.ini configuration, so that settings of
 	 * 2K and 2048 are treated identically.
-	 * @node Subsystems:Core
+	 * @node Subsystems:expCore
 	 * @return string
 	 */
 	public static function maxUploadSizeMessage() {
@@ -282,7 +282,7 @@ class expCore {
 	 *
 	 * @param string $inPath The absolute file path
 	 * @return string
-	 * @node Subsystems:Core
+	 * @node Subsystems:expCore
 	 */
 	public static function abs2rel($inPath) {
 		//TODO: Investigate the chances of BASE occurring more than once
@@ -316,7 +316,7 @@ class expCore {
 	 * @param string $subname name of the actual file (= filename name without extension)
 	 *
 	 * @return mixed
-	 * @node Subsystems:Core
+	 * @node Subsystems:expCore
 	 */
 	public static function resolveFilePaths($type, $name, $subtype, $subname) {
 		//TODO: implement caching
@@ -459,7 +459,7 @@ class expCore {
 	 * @param string $subtype type of the actual file (= file extension = (future) directory name)
 	 * @param string $subname name of the actual file (= filename name without extension)
 	 *
-	 * @node Subsystems:Core
+	 * @node Subsystems:expCore
 	 */
 	public static function buildNameList($type, $name, $subtype, $subname) {  //FIXME only used by exponent_template_listFormTemplates & exponent_template_listModuleViews (total of 3 calls)
 		$nameList = array();

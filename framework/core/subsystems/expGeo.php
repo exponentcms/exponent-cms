@@ -24,7 +24,7 @@ class expGeo {
 	/** exdoc
 	 * List all Countries in the Geo Database.  Returns an array of country objects.
 	 *
-	 * @node Subsystems:Geo
+	 * @node Subsystems:expGeo
 	 * @return array
 	 */
 	public static function listCountriesOnly() {
@@ -41,7 +41,7 @@ class expGeo {
 	 * List Regions for a specific Country. Returns an array of regions.
 	 *
 	 * @param integer $country_id The id of the country to get regions for
-	 * @node Subsystems:Geo
+	 * @node Subsystems:expGeo
 	 * @return array
 	 */
 	public static function listRegions($country_id) {
@@ -56,7 +56,7 @@ class expGeo {
 
 	/** exdoc
 	 * List Countries and Regions in the Geo Database.  Returns a two-tiered array of countries and regions.
-	 * @node Subsystems:Geo
+	 * @node Subsystems:expGeo
 	 * @return array
 	 */
 	public static function listCountriesAndRegions() {
@@ -78,7 +78,7 @@ class expGeo {
 
 	/** exdoc
 	 * List all Regions in the Geo Database.  Returns an array of regions
-	 * @node Subsystems:Geo
+	 * @node Subsystems:expGeo
 	 * @return array
 	 */
 	public static function listAllRegions() {

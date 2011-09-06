@@ -18,7 +18,7 @@
 /**
  * This is the class expSession
  *
- * @subpackage Core-Subsytems
+ * @subpackage Core-Subssytems
  * @package Framework
  */
 
