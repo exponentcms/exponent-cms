@@ -27,14 +27,14 @@ if (isset($_POST['id'])) {
 	$f = $db->selectObject('formbuilder_form','id='.intval($_POST['id']));
 }
 
-if (exponent_permissions_check('editform',unserialize($f->location_data))) {
+if (expPermissions::check('editform',unserialize($f->location_data))) {
 	$f = formbuilder_form::update($_POST,$f);
 	$f->table_name = formbuilder_form::updateTable($f);
 	
 	if (isset($f->id)) {
 		$db->updateObject($f,'formbuilder_form');
 	} else {
-		$f->location_data = serialize(exponent_core_makeLocation($_POST['m'],$_POST['s'],$_POST['i']));
+		$f->location_data = serialize(expCore::makeLocation($_POST['m'],$_POST['s'],$_POST['i']));
 		$f->id = $db->insertObject($f,'formbuilder_form');
 		//Create Default Report;
 		$rpt->name = gt('Default Report');

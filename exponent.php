@@ -48,7 +48,7 @@ $available_controllers = initializeControllers();  //original position
 expLang::loadLang();
 
 // Initialize the Core subsystem
-require_once(BASE.'framework/core/subsystems-1/core.php');
+//require_once(BASE.'framework/core/subsystems-1/core.php');
 
 // Initialize the Database subsystem
 require_once(BASE.'framework/core/subsystems-1/database.php');
@@ -66,7 +66,7 @@ exponent_modules_initialize(); // now in the autoloader, if used
 require_once(BASE.'framework/core/subsystems-1/template.php');
 
 // Initialize the Permissions subsystem.
-require_once(BASE.'framework/core/subsystems-1/permissions.php');
+//require_once(BASE.'framework/core/subsystems-1/permissions.php');
 
 // Initialize the History (Flow) subsystem.
 $history = new expHistory(); //<--This is the new flow subsystem and will be replacing the above.
@@ -83,13 +83,14 @@ $user = new user();
 expSession::validate();
 
 // Initialize permissions variables
-exponent_permissions_initialize();
+//expPermissions::initialize();
+$exponent_permissions_r = expSession::get("permissions");
 
 // initialize the expRouter
 $router = new expRouter();
 
 // Initialize the navigation hierarchy
-$sections = exponent_core_initializeNavigation();
+$sections = expCore::initializeNavigation();
 
 /**
  * dumps the passed variable to screen, but only if in development mode

@@ -20,7 +20,7 @@
 
 if (!defined('EXPONENT')) exit('');
 
-//if (exponent_permissions_check('administrate',$loc)) {
+//if (expPermissions::check('administrate',$loc)) {
 if ($user->isAdmin()) {
 	global $router;
 	if (exponent_template_getModuleViewFile($loc->mod,'_userpermissions',false) == TEMPLATE_FALLBACK_VIEW) {
@@ -46,9 +46,9 @@ if ($user->isAdmin()) {
 		$have_users = 1;
 		foreach ($perms as $perm=>$name) {
 			$var = 'perms_'.$perm;
-			if (exponent_permissions_checkUser($u,$perm,$loc,true)) {
+			if (expPermissions::check($u,$perm,$loc,true)) {
 				$u->$perm = 1;
-			} else if (exponent_permissions_checkUser($u,$perm,$loc)) {
+			} else if (expPermissions::check($u,$perm,$loc)) {
 				$u->$perm = 2;
 			} else {
 				$u->$perm = 0;

@@ -76,7 +76,7 @@ class calendarmodule {
 			$rss_item->date = date('r', $item->eventstart);
 //          $rss_item->date = date('r', $item->posted);
 //			$rss_item->link = "http://".HOSTNAME.PATH_RELATIVE."index.php?module=calendarmodule&action=view&id=".$item->id."&src=".$loc->src;
-			$rss_item->link = exponent_core_makeLink(array('module'=>'calendarmodule', 'action'=>'view', 'id'=>$item->id, 'date_id'=>$item->eventdate->id));
+			$rss_item->link = expCore::makeLink(array('module'=>'calendarmodule', 'action'=>'view', 'id'=>$item->id, 'date_id'=>$item->eventdate->id));
 			if ($config->enable_categories == 1) {
 				$rss_item->category = array($cats[$item->category_id]->name);
 			}
@@ -112,7 +112,7 @@ class calendarmodule {
 
 	function getLocationHierarchy($loc) {
 		if ($loc->int == '') return array($loc);
-		else return array($loc,exponent_core_makelocation($loc->mod,$loc->src));
+		else return array($loc,expCore::makeLocation($loc->mod,$loc->src));
 	}
 
 	static function show($view,$loc = null, $title = '') {
@@ -143,7 +143,7 @@ class calendarmodule {
 		$inapproval = false;
 
 		global $user;
-		if ($user) $canviewapproval = (exponent_permissions_check("approve",$loc) || exponent_permissions_check("manage_approval",$loc));
+		if ($user) $canviewapproval = (expPermissions::check("approve",$loc) || expPermissions::check("manage_approval",$loc));
 		if ($db->countObjects("calendar","location_data='".serialize($loc)."' AND approved!=1")) {
 			foreach ($db->selectObjects("calendar","location_data='".serialize($loc)."' AND approved!=1") as $c) {
 				if ($c->poster == $user->id) $canviewapproval = true;
@@ -238,11 +238,11 @@ class calendarmodule {
 				$edates = $db->selectObjects("eventdate",$locsql." AND date = '".$start."'");
 				$days[$start] = calendarmodule::_getEventsForDates($edates);
 				for ($j = 0; $j < count($days[$start]); $j++) {
-					$thisloc = exponent_core_makeLocation($loc->mod,$loc->src,$days[$start][$j]->id);
+					$thisloc = expCore::makeLocation($loc->mod,$loc->src,$days[$start][$j]->id);
 					$days[$start][$j]->permissions = array(
-						"administrate"=>(exponent_permissions_check("administrate",$thisloc) || exponent_permissions_check("administrate",$loc)),
-						"edit"=>(exponent_permissions_check("edit",$thisloc) || exponent_permissions_check("edit",$loc)),
-						"delete"=>(exponent_permissions_check("delete",$thisloc) || exponent_permissions_check("delete",$loc))
+						"administrate"=>(expPermissions::check("administrate",$thisloc) || expPermissions::check("administrate",$loc)),
+						"edit"=>(expPermissions::check("edit",$thisloc) || expPermissions::check("edit",$loc)),
+						"delete"=>(expPermissions::check("delete",$thisloc) || expPermissions::check("delete",$loc))
 					);
 				}
 				$days[$start] = expSorter::sort(array('array'=>$days[$start],'sortby'=>'eventstart', 'order'=>'ASC'));
@@ -312,21 +312,21 @@ class calendarmodule {
 		} else if ($viewparams['type'] == "administration") {
 			// Check perms and return if cant view
 			if ($viewparams['type'] == "administration" && !$user) return;
-			$continue = (exponent_permissions_check("administrate",$loc) ||
-						exponent_permissions_check("post",$loc) ||
-						exponent_permissions_check("edit",$loc) ||
-						exponent_permissions_check("delete",$loc) ||
-						exponent_permissions_check("approve",$loc) ||
-						exponent_permissions_check("manage_approval",$loc)
+			$continue = (expPermissions::check("administrate",$loc) ||
+						expPermissions::check("post",$loc) ||
+						expPermissions::check("edit",$loc) ||
+						expPermissions::check("delete",$loc) ||
+						expPermissions::check("approve",$loc) ||
+						expPermissions::check("manage_approval",$loc)
 				) ? 1 : 0;
 			$dates = $db->selectObjects("eventdate",$locsql." AND date >= '".expDateTime::startOfDayTimestamp(time())."'");
 			$items = calendarmodule::_getEventsForDates($dates);
 			if (!$continue) {
 				foreach ($items as $i) {
-					$iloc = exponent_core_makeLocation($loc->mod,$loc->src,$i->id);
-					if (exponent_permissions_check("edit",$iloc) ||
-						exponent_permissions_check("delete",$iloc) ||
-						exponent_permissions_check("administrate",$iloc)
+					$iloc = expCore::makeLocation($loc->mod,$loc->src,$i->id);
+					if (expPermissions::check("edit",$iloc) ||
+						expPermissions::check("delete",$iloc) ||
+						expPermissions::check("administrate",$iloc)
 					) {
 						$continue = true;
 					}
@@ -334,12 +334,12 @@ class calendarmodule {
 			}
 			if (!$continue) return;
 			for ($i = 0; $i < count($items); $i++) {
-				$thisloc = exponent_core_makeLocation($loc->mod,$loc->src,$items[$i]->id);
+				$thisloc = expCore::makeLocation($loc->mod,$loc->src,$items[$i]->id);
 				if ($user && $items[$i]->poster == $user->id) $canviewapproval = 1;
 				$items[$i]->permissions = array(
-					"administrate"=>(exponent_permissions_check("administrate",$thisloc) || exponent_permissions_check("administrate",$loc)),
-					"edit"=>(exponent_permissions_check("edit",$thisloc) || exponent_permissions_check("edit",$loc)),
-					"delete"=>(exponent_permissions_check("delete",$thisloc) || exponent_permissions_check("delete",$loc))
+					"administrate"=>(expPermissions::check("administrate",$thisloc) || expPermissions::check("administrate",$loc)),
+					"edit"=>(expPermissions::check("edit",$thisloc) || expPermissions::check("edit",$loc)),
+					"delete"=>(expPermissions::check("delete",$thisloc) || expPermissions::check("delete",$loc))
 				);
 			}
 			$items = expSorter::sort(array('array'=>$items,'sortby'=>'eventstart', 'order'=>'ASC'));
@@ -394,12 +394,12 @@ class calendarmodule {
 //eDebug($items);
 //			}			
 			for ($i = 0; $i < count($items); $i++) {
-				$thisloc = exponent_core_makeLocation($loc->mod,$loc->src,$items[$i]->id);
+				$thisloc = expCore::makeLocation($loc->mod,$loc->src,$items[$i]->id);
 				if ($user && $items[$i]->poster == $user->id) $canviewapproval = 1;
 				$items[$i]->permissions = array(
-					'administrate'=>(exponent_permissions_check('administrate',$thisloc) || exponent_permissions_check('administrate',$loc)),
-					'edit'=>(exponent_permissions_check('edit',$thisloc) || exponent_permissions_check('edit',$loc)),
-					'delete'=>(exponent_permissions_check('delete',$thisloc) || exponent_permissions_check('delete',$loc))
+					'administrate'=>(expPermissions::check('administrate',$thisloc) || expPermissions::check('administrate',$loc)),
+					'edit'=>(expPermissions::check('edit',$thisloc) || expPermissions::check('edit',$loc)),
+					'delete'=>(expPermissions::check('delete',$thisloc) || expPermissions::check('delete',$loc))
 				);
 			}
 			//Get the image file if there is one.

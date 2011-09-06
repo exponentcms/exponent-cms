@@ -115,7 +115,7 @@ class formmodule {
 			$form->meta("i",$floc->int);
 			$form->meta("id",$f->id);
 			$formmsg = '';
-			$form->location(exponent_core_makeLocation("formbuilder",$floc->src,$floc->int));
+			$form->location(expCore::makeLocation("formbuilder",$floc->src,$floc->int));
 			if (count($controls) == 0) {
 				$form->controls['submit']->disabled = true;
 				$formmsg .= gt('This form is blank. Select "Edit Form" to add input fields.').'<br>';

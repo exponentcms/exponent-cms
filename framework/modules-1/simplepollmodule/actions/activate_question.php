@@ -40,7 +40,7 @@ if (isset($_GET['id'])) {
 
 if ($question) {
 	$loc = unserialize($question->location_data);
-	if (exponent_permissions_check('manage_question',$loc)) {
+	if (expPermissions::check('manage_question',$loc)) {
 		$update_obj = null;
 		$update_obj->is_active = 0;
 		$db->updateObject($update_obj,'poll_question',"location_data='".$question->location_data."'");

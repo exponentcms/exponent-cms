@@ -24,7 +24,7 @@ if (!defined('EXPONENT')) exit('');
 // id & date_id set if single event, else
 //   src & time (opt?) set for longer list/month, etc...
 if (isset($_GET['date_id']) || isset($_GET['src'])) {
-	$loc = exponent_core_makeLocation('calendarmodule',$_GET['src'],'');
+	$loc = expCore::makeLocation('calendarmodule',$_GET['src'],'');
 	$locsql = "(location_data='".serialize($loc)."'";
 	$config = $db->selectObject("calendarmodule_config","location_data='".serialize($loc)."'");
 	if (!$config) {

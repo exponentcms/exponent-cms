@@ -19,13 +19,13 @@
 
 if (!defined('EXPONENT')) exit('');
 
-$iloc = exponent_core_makeLocation($_GET['m'],@$_GET['s'],@$_GET['i']);
+$iloc = expCore::makeLocation($_GET['m'],@$_GET['s'],@$_GET['i']);
 
 // Make sure that locref refcount is indeed 0.
 //$locref = $db->selectObject("locationref","module='".$iloc->mod."' AND source='".$iloc->src."' AND internal='".$iloc->int."'");
-//if ($locref && $locref->refcount == 0 && exponent_permissions_check("administrate",$iloc)) {
+//if ($locref && $locref->refcount == 0 && expPermissions::check("administrate",$iloc)) {
 $secref = $db->selectObject("sectionref","module='".$iloc->mod."' AND source='".$iloc->src."' AND internal='".$iloc->int."'");
-if ($secref && $secref->refcount == 0 && exponent_permissions_check("administrate",$iloc)) {
+if ($secref && $secref->refcount == 0 && expPermissions::check("administrate",$iloc)) {
 	// delete in location.
 	$modclass = $iloc->mod;
     expSession::clearAllUsersSessionCache('containermodule');
@@ -42,7 +42,7 @@ if ($secref && $secref->refcount == 0 && exponent_permissions_check("administrat
 	
 //	$db->delete("locationref","module='".$iloc->mod."' AND source='".$iloc->src."' AND internal='".$iloc->int."'");
 	$db->delete("sectionref","module='".$iloc->mod."' AND source='".$iloc->src."' AND internal='".$iloc->int."'");
-	exponent_permissions_revokeComplete($iloc);
+	expPermissions::revokeComplete($iloc);
 }
 
 expHistory::back();

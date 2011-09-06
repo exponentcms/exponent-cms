@@ -19,7 +19,7 @@
 
 if (!defined('EXPONENT')) exit('');
 
-if (exponent_permissions_check('database',exponent_core_makeLocation('administrationmodule'))) {
+if (expPermissions::check('database',expCore::makeLocation('administrationmodule'))) {
 	$page = (isset($_REQUEST['page']) ? $_REQUEST['page'] : 'start');
 	$exporter = (isset($_REQUEST['exporter']) ? $_REQUEST['exporter'] : '');
 	$file = BASE.'framework/modules-1/exporter/exporters/'.$exporter.'/'.$page.'.php';

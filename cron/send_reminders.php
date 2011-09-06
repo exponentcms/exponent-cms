@@ -149,11 +149,11 @@ for ($i = 0; $i < $totaldays; $i++) {
 	$days[$start] = array();			
 	$days[$start] = calendarmodule::_getEventsForDates($edates);
 	for ($j = 0; $j < count($days[$start]); $j++) {
-		$thisloc = exponent_core_makeLocation($loc->mod,$loc->src,$days[$start][$j]->id);
+		$thisloc = expCore::makeLocation($loc->mod,$loc->src,$days[$start][$j]->id);
 		$days[$start][$j]->permissions = array(
-			"administrate"=>(exponent_permissions_check("administrate",$thisloc) || exponent_permissions_check("administrate",$loc)),
-			"edit"=>(exponent_permissions_check("edit",$thisloc) || exponent_permissions_check("edit",$loc)),
-			"delete"=>(exponent_permissions_check("delete",$thisloc) || exponent_permissions_check("delete",$loc))
+			"administrate"=>(expPermissions::check("administrate",$thisloc) || expPermissions::check("administrate",$loc)),
+			"edit"=>(expPermissions::check("edit",$thisloc) || expPermissions::check("edit",$loc)),
+			"delete"=>(expPermissions::check("delete",$thisloc) || expPermissions::check("delete",$loc))
 		);
 	}
 	$counts[$start] = count($days[$start]);
@@ -228,21 +228,21 @@ $template->assign("totaldays",$totaldays);
 	// // Check perms and return if cant view
 	// if ($viewparams['type'] == "administration" && !$user) return;
 	// $continue = (
-		// exponent_permissions_check("administrate",$loc) ||
-		// exponent_permissions_check("post",$loc) ||
-		// exponent_permissions_check("edit",$loc) ||
-		// exponent_permissions_check("delete",$loc) ||
-		// exponent_permissions_check("approve",$loc) ||
-		// exponent_permissions_check("manage_approval",$loc)
+		// expPermissions::check("administrate",$loc) ||
+		// expPermissions::check("post",$loc) ||
+		// expPermissions::check("edit",$loc) ||
+		// expPermissions::check("delete",$loc) ||
+		// expPermissions::check("approve",$loc) ||
+		// expPermissions::check("manage_approval",$loc)
 		// ) ? 1 : 0;
 	// $dates = $db->selectObjects("eventdate",$locsql);
 	// $items = calendarmodule::_getEventsForDates($dates);
 	// if (!$continue) {
 		// foreach ($items as $i) {
-			// $iloc = exponent_core_makeLocation($loc->mod,$loc->src,$i->id);
-			// if (exponent_permissions_check("edit",$iloc) ||
-				// exponent_permissions_check("delete",$iloc) ||
-				// exponent_permissions_check("administrate",$iloc)
+			// $iloc = expCore::makeLocation($loc->mod,$loc->src,$i->id);
+			// if (expPermissions::check("edit",$iloc) ||
+				// expPermissions::check("delete",$iloc) ||
+				// expPermissions::check("administrate",$iloc)
 			// ) {
 				// $continue = true;
 			// }
@@ -250,12 +250,12 @@ $template->assign("totaldays",$totaldays);
 	// }
 	// if (!$continue) return;
 	// for ($i = 0; $i < count($items); $i++) {
-		// $thisloc = exponent_core_makeLocation($loc->mod,$loc->src,$items[$i]->id);
+		// $thisloc = expCore::makeLocation($loc->mod,$loc->src,$items[$i]->id);
 		// if ($user && $items[$i]->poster == $user->id) $canviewapproval = 1;
 		// $items[$i]->permissions = array(
-			// "administrate"=>(exponent_permissions_check("administrate",$thisloc) || exponent_permissions_check("administrate",$loc)),
-			// "edit"=>(exponent_permissions_check("edit",$thisloc) || exponent_permissions_check("edit",$loc)),
-			// "delete"=>(exponent_permissions_check("delete",$thisloc) || exponent_permissions_check("delete",$loc))
+			// "administrate"=>(expPermissions::check("administrate",$thisloc) || expPermissions::check("administrate",$loc)),
+			// "edit"=>(expPermissions::check("edit",$thisloc) || expPermissions::check("edit",$loc)),
+			// "delete"=>(expPermissions::check("delete",$thisloc) || expPermissions::check("delete",$loc))
 		// );
 	// }
 	// $items = expSorter::sort(array('array'=>$items,'sortby'=>'eventstart', 'order'=>'ASC'));
@@ -305,12 +305,12 @@ $template->assign("totaldays",$totaldays);
 // //eDebug($items);
 // //			}			
 	// for ($i = 0; $i < count($items); $i++) {
-		// $thisloc = exponent_core_makeLocation($loc->mod,$loc->src,$items[$i]->id);
+		// $thisloc = expCore::makeLocation($loc->mod,$loc->src,$items[$i]->id);
 		// if ($user && $items[$i]->poster == $user->id) $canviewapproval = 1;
 		// $items[$i]->permissions = array(
-			// 'administrate'=>(exponent_permissions_check('administrate',$thisloc) || exponent_permissions_check('administrate',$loc)),
-			// 'edit'=>(exponent_permissions_check('edit',$thisloc) || exponent_permissions_check('edit',$loc)),
-			// 'delete'=>(exponent_permissions_check('delete',$thisloc) || exponent_permissions_check('delete',$loc))
+			// 'administrate'=>(expPermissions::check('administrate',$thisloc) || expPermissions::check('administrate',$loc)),
+			// 'edit'=>(expPermissions::check('edit',$thisloc) || expPermissions::check('edit',$loc)),
+			// 'delete'=>(expPermissions::check('delete',$thisloc) || expPermissions::check('delete',$loc))
 		// );
 	// }
 	// //Get the image file if there is one.

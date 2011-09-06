@@ -51,11 +51,11 @@ foreach ($dates as $d) {
 		$o->eventdate = $d;
 		$o->eventstart += $d->date;
 		$o->eventend += $d->date;
-		$thisloc = exponent_core_makeLocation($loc->mod,$loc->src,$o->id);
+		$thisloc = expCore::makeLocation($loc->mod,$loc->src,$o->id);
 		$o->permissions = array(
-			"administrate"=>(exponent_permissions_check("administrate",$thisloc) || exponent_permissions_check("administrate",$loc)),
-			"edit"=>(exponent_permissions_check("edit",$thisloc) || exponent_permissions_check("edit",$loc)),
-			"delete"=>(exponent_permissions_check("delete",$thisloc) || exponent_permissions_check("delete",$loc))
+			"administrate"=>(expPermissions::check("administrate",$thisloc) || expPermissions::check("administrate",$loc)),
+			"edit"=>(expPermissions::check("edit",$thisloc) || expPermissions::check("edit",$loc)),
+			"delete"=>(expPermissions::check("delete",$thisloc) || expPermissions::check("delete",$loc))
 		);
 		//Get the image file if there is one.
 		if (isset($o->file_id) && $o->file_id > 0) {

@@ -28,7 +28,7 @@ if (isset($_GET['id'])) {
 }
 
 if ($f) {
-	if (exponent_permissions_check("editform",unserialize($f->location_data))) {
+	if (expPermissions::check("editform",unserialize($f->location_data))) {
 		expHistory::set('editable', $_GET);
 		$loc = unserialize($f->location_data);
 		$controls = $db->selectObjects("formbuilder_control","form_id=".$f->id);

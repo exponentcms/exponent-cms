@@ -19,7 +19,7 @@
 
 if (!defined('EXPONENT')) exit('');
 
-if (exponent_permissions_check('administrate',$loc)) {
+if (expPermissions::check('administrate',$loc)) {
 	
 	$json2php = json_decode(stripslashes($_REQUEST['neworder']));
 

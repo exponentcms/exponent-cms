@@ -35,9 +35,9 @@ if (isset($_GET['id'])) {
 }
 $loc->src = urldecode($loc->src);
 
-if (exponent_permissions_check('edit_module',$loc) || exponent_permissions_check('add_module',$loc) ||
-	($iloc != null && exponent_permissions_check('administrate',$iloc)) ||
-	($cloc != null && exponent_permissions_check('delete_module',$cloc))
+if (expPermissions::check('edit_module',$loc) || expPermissions::check('add_module',$loc) ||
+	($iloc != null && expPermissions::check('administrate',$iloc)) ||
+	($cloc != null && expPermissions::check('delete_module',$cloc))
 ) {
 	#
 	# Initialize Container, in case its null
@@ -46,7 +46,7 @@ if (exponent_permissions_check('edit_module',$loc) || exponent_permissions_check
 	if (!isset($container->id)) {
 		$secref->description = '';
 		$container->view = '';
-		$container->internal = exponent_core_makeLocation();
+		$container->internal = expCore::makeLocation();
 		$container->title = '';
 		$container->rank = $_GET['rank'];
 		$container->is_private = 0;

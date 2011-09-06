@@ -161,7 +161,7 @@ class usersController extends expController {
 	        }
 
             // if we added the user to any group than we need to reload their permissions
-            exponent_permissions_load($u);
+            expPermissions::load($u);
             
 	        //signup email stuff
           	if (USER_REGISTRATION_SEND_WELCOME){
@@ -566,7 +566,7 @@ class usersController extends expController {
 
         $perm_level = 0;
         if ($memb) $perm_level = 1;
-        if (exponent_permissions_check('user_management',exponent_core_makeLocation('administrationmodule'))) $perm_level = 2;
+        if (expPermissions::check('user_management',expCore::makeLocation('administrationmodule'))) $perm_level = 2;
 
         $group = $db->selectObject('group','id='.$this->params['id']);
 		$users = user::getAllUsers(0);
@@ -675,7 +675,7 @@ class usersController extends expController {
 				$db->insertObject($memb,'groupmembership');
 			}
 		}
-		exponent_permissions_triggerRefresh();
+		expPermissions::triggerRefresh();
         expHistory::back();
         
     }

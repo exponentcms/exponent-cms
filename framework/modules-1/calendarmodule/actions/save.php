@@ -26,12 +26,12 @@ $iloc = null;
 if (isset($_POST['id']) && !isset($_POST['submitNew'])) {
 	$item = $db->selectObject("calendar","id=".intval($_POST['id']));
 	$loc = unserialize($item->location_data);
-	$iloc = exponent_core_makeLocation($loc->mod,$loc->src,$item->id);
+	$iloc = expCore::makeLocation($loc->mod,$loc->src,$item->id);
 }
 
-if (($item == null && exponent_permissions_check("post",$loc)) ||
-	($item != null && exponent_permissions_check("edit",$loc)) ||
-	($iloc != null && exponent_permissions_check("edit",$iloc))
+if (($item == null && expPermissions::check("post",$loc)) ||
+	($item != null && expPermissions::check("edit",$loc)) ||
+	($iloc != null && expPermissions::check("edit",$iloc))
 ) {
 
 	$item = calendar::update($_POST,$item);

@@ -63,7 +63,7 @@ foreach ($controls as $c) {
     }
 }
 
-if (!isset($_POST['data_id']) || (isset($_POST['data_id']) && exponent_permissions_check("editdata",unserialize($f->location_data)))) {
+if (!isset($_POST['data_id']) || (isset($_POST['data_id']) && expPermissions::check("editdata",unserialize($f->location_data)))) {
     if ($f->is_saved == 1) {    
         if (isset($_POST['data_id'])) {
             //if this is an edit we remove the record and insert a new one.

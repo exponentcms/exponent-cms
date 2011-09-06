@@ -283,7 +283,7 @@ class expTheme {
 					$title = empty($feed->feed_title) ? 'RSS' : htmlspecialchars($feed->feed_title, ENT_QUOTES);
 					$params['module'] = $feed->module;
 					$params['src'] = $feed->src;
-					echo "\t".'<link rel="alternate" type="application/rss+xml" title="' . $title . '" href="' . exponent_core_makeRSSLink($params) . "\" />\n";
+					echo "\t".'<link rel="alternate" type="application/rss+xml" title="' . $title . '" href="' . expCore::makeRSSLink($params) . "\" />\n";
 				}
 			}
 
@@ -307,7 +307,7 @@ class expTheme {
 						$params['src'] = $module->source;
 						if (!empty($module->internal)) $params['int'] = $module->internal;
 
-						echo "\t".'<link rel="alternate" type="application/rss+xml" title="' . $title . '" href="' . exponent_core_makeRSSLink($params) . "\" />\n";
+						echo "\t".'<link rel="alternate" type="application/rss+xml" title="' . $title . '" href="' . expCore::makeRSSLink($params) . "\" />\n";
 						$feeds[$module->source] = $title;
 					}
 				}
@@ -576,7 +576,7 @@ class expTheme {
 			$config = expSession::get("themeopt_override");
 			if (in_array($module,$config['ignore_mods'])) return;
 		}
-		$loc = exponent_core_makeLocation($module,$source."");
+		$loc = expCore::makeLocation($module,$source."");
 
 		// if ($db->selectObject("locationref","module='$module' AND source='".$loc->src."'") == null) {
 			// $locref = null;
@@ -615,8 +615,8 @@ class expTheme {
 				if (!$iscontroller) {
 					if ((!$hide_menu && $loc->mod != "containermodule" && (call_user_func(array($module,"hasSources")) || $db->tableExists($loc->mod."_config")))) {
 						$container->permissions = array(
-							'administrate'=>(exponent_permissions_check('administrate',$loc) ? 1 : 0),
-							'configure'=>(exponent_permissions_check('configure',$loc) ? 1 : 0)
+							'administrate'=>(expPermissions::check('administrate',$loc) ? 1 : 0),
+							'configure'=>(expPermissions::check('configure',$loc) ? 1 : 0)
 						);
 
 						if ($container->permissions['administrate'] || $container->permissions['configure']) {
@@ -636,8 +636,8 @@ class expTheme {
 					if (!$hide_menu ) {
 						$controller = getController($module);
 						$container->permissions = array(
-							'administrate'=>(exponent_permissions_check('administrate',$loc) ? 1 : 0),
-							'configure'=>(exponent_permissions_check('configure',$loc) ? 1 : 0)
+							'administrate'=>(expPermissions::check('administrate',$loc) ? 1 : 0),
+							'configure'=>(expPermissions::check('configure',$loc) ? 1 : 0)
 						);
 
 						if ($container->permissions['administrate'] || $container->permissions['configure']) {

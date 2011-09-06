@@ -46,7 +46,7 @@ if (isset($_GET['id'])) {
 
 if ($question) {
 	$loc = unserialize($question->location_data);
-	if (exponent_permissions_check('manage_answer',$loc)) {
+	if (expPermissions::check('manage_answer',$loc)) {
 		$form = poll_answer::form($answer);
 		$form->location($loc);
 		$form->meta('action','save_answer');

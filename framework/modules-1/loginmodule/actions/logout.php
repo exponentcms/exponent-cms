@@ -22,7 +22,7 @@ if (!defined('EXPONENT')) exit('');
 
 //require_once(BASE.'framework/core/subsystems-1/users.php');
 expSession::logout();
-exponent_permissions_clear();
+expSession::un_set("permissions");
 expSession::un_set('uilevel');
 expSession::clearCurrentUserSessionCache();
 flash('message', 'You have been logged out');

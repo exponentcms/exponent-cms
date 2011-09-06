@@ -51,7 +51,7 @@ if (isset($_POST['id'])) {
 }
 
 if ($question) {
-	if (exponent_permissions_check('manage_answer',$loc)) {
+	if (expPermissions::check('manage_answer',$loc)) {
 		$answer = poll_answer::update($_POST,$answer);
 		
 		if (isset($answer->id)) {

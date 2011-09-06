@@ -44,7 +44,7 @@ if (isset($_GET['id'])) {
 	
 if ($check_id != -1 && $user && 
 	($user->is_acting_admin == 1 ||
-    exponent_permissions_check('manage',exponent_core_makeLocation('navigationmodule','',$check_id)))) {
+    expPermissions::check('manage',expCore::makeLocation('navigationmodule','',$check_id)))) {
 	$form = section::internalAliasForm($section);
 	$form->meta('module','navigationmodule');
 	$form->meta('action','save_internalalias');

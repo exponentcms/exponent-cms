@@ -41,7 +41,7 @@ if (isset($_GET['id'])) {
 	}
 }
 
-if (exponent_permissions_check('manage_question',$loc)) {
+if (expPermissions::check('manage_question',$loc)) {
 	$form = poll_question::form($question);
 	$form->location($loc);
 	$form->meta('action','save_question');

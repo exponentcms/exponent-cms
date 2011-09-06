@@ -38,7 +38,7 @@ if (isset($_POST['id'])) {
 // Update the section from the _POST data.
 $section = section::updateExternalAlias($_POST,$section);
 
-if ($check_id != -1 && exponent_permissions_check('manage',exponent_core_makeLocation('navigationmodule','',$check_id))) {
+if ($check_id != -1 && expPermissions::check('manage',expCore::makeLocation('navigationmodule','',$check_id))) {
 	if (isset($section->id)) {
 		if ($section->parent != $old_parent) {
 			// Old_parent id was different than the new parent id.  Need to decrement the ranks

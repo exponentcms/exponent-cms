@@ -72,7 +72,6 @@ $router = null;
 $sections = array();
 
 /**
- *
  * This global array belongs exclusively to the Users subsystem, and is used to cache
  *  users as they are retrieved, to help out with performance when doing a lot of
  * work with user accounts and profile information.
@@ -80,6 +79,14 @@ $sections = array();
  * @name $SYS_USERS_CACHE
  */
 $SYS_USERS_CACHE = array();
+
+/**
+ * Stores the permission data for the current user.  This should not be modified
+ * by anything outside of the permissions subsystem.
+ * @global array $exponent_permissions_r
+ * @name $exponent_permissions_r
+ */
+$exponent_permissions_r = array();
 
 function renderAction(array $parms=array()) {
     //because we love you
@@ -152,7 +159,7 @@ function renderAction(array $parms=array()) {
     }
 
     if (array_key_exists($permaction, $perms)) {
-        if (!exponent_permissions_check($permaction, $controller->loc)) {
+        if (!expPermissions::check($permaction, $controller->loc)) {
             if (expTheme::inAction()) {
                 flash('error', "You don't have permission to ".$perms[$permaction]);
                 expHistory::returnTo('viewable');
@@ -161,7 +168,7 @@ function renderAction(array $parms=array()) {
             }
         }
     } elseif (array_key_exists($common_action_name, $perms)) {
-        if (!exponent_permissions_check($common_action_name, $controller->loc)) {
+        if (!expPermissions::check($common_action_name, $controller->loc)) {
             if (expTheme::inAction()) {
                 flash('error', "You don't have permission to ".$perms[$common_action_name]);
                 expHistory::returnTo('viewable');

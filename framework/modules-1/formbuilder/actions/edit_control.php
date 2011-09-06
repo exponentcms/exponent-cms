@@ -24,7 +24,7 @@ require_once(BASE."framework/core/subsystems-1/forms.php");
 
 $f = $db->selectObject("formbuilder_form","id=".(isset($_REQUEST['form_id'])?intval($_REQUEST['form_id']):0));
 if ($f) {
-	if (exponent_permissions_check("editform",unserialize($f->location_data))) {
+	if (expPermissions::check("editform",unserialize($f->location_data))) {
 
         expCSS::pushToHead(array(
            "unique"=>"forms",

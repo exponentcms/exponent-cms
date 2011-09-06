@@ -21,7 +21,7 @@
 
 if (!defined('EXPONENT')) exit('');
 
-if (exponent_permissions_check('extensions',exponent_core_makeLocation('administrationmodule'))) {
+if (expPermissions::check('extensions',expCore::makeLocation('administrationmodule'))) {
 	$bot = $db->selectObject('bots', 'id='.$_REQUEST['id']);
 	$bot->state = 0;
 	$db->updateObject($bot, 'bots');
