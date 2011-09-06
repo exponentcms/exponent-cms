@@ -2,14 +2,16 @@
 
 {/css}
 
-{script unique="flyout" type="text/javascript" src="external/jquery-1.6.3.min.js"}
+{script unique="flyout" type="text/javascript" yui3mods="1"}
 {literal}
-$(document).ready(function(){
-	$(".triggerlogin").click(function(){
-		$(".panel").toggle("fast");
-		$(this).toggleClass("active");
+YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
+ Y.on('domready', function() {
+	Y.one('.triggerlogin').on('click', function() {
+		Y.one('.panel').toggleView();
+		Y.one(this).toggleClass('active');
 		return false;
 	});
+ });
 });
 {/literal}
 {/script}

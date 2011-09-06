@@ -3,7 +3,7 @@ position: fixed;
 z-index:10;
 top: 30px;
 right: 0;
-display: none;
+/*display: none;*/
 background: #000000;
 color: #cccccc;
 border:1px solid #111111;
