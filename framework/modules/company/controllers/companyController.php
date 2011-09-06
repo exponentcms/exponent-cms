@@ -22,7 +22,7 @@ class companyController extends expController {
 	public $codequality = 'beta';
 
 	public $remove_configs = array(
-        'aggregretion',
+        'aggregation',
         'comments',
         //'files',
         'rss',

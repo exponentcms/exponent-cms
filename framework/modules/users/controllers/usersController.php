@@ -22,11 +22,11 @@ class usersController extends expController {
     public $basemodel_name = 'user';
     public $add_permissions = array(
         'toggle_extension'=>'Activate Extensions', 
-        'edit_user'=>'Edit Users',
+        'edituser'=>'Edit Users',
         'kill_session'=>'End Sessions',
         'boot_user'=>'Boot Users',
     );
-    public $remove_permissions = array('create', 'edit_user');
+    public $remove_permissions = array('create', 'edituser');
 	public $codequality = 'beta';
     
     //public $useractions = array('showall'=>'Show all');
@@ -459,7 +459,7 @@ class usersController extends expController {
         flash ('message', 'Your new password has been emailed to your email account.');
 
         // send the user the login page.
-        redirect_to(array('module'=>'loginmodule', 'action'=>'loginredirect'));
+        redirect_to(array('controller'=>'login', 'action'=>'loginredirect'));
     }
     
     public function change_password() {

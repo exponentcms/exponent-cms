@@ -27,7 +27,7 @@
 				<a href="<?php echo expCore::makeLink(array('section'=>10)); ?>">Site-map</a>
 			</div>
 		<div id="header-login">
-			<?php expTheme::module(array("module"=>"login","view"=>"Expanded")); ?>
+			<?php expTheme::showController(array("controller"=>"login","action"=>"showlogin","view"=>"showlogin_expanded")); ?>
 		</div>
 	</div>
 	<!-- navigation -->

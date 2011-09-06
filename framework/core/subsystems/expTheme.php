@@ -100,9 +100,11 @@ class expTheme {
     }
     
     public static function module($params) {
-        if (isset($params['controller'])) {
+	    if (empty($params)) {
+		    return false;
+	    } elseif (isset($params['controller'])) {
             self::showController($params);
-        } else if (isset($params['module'])) {
+        } elseif (isset($params['module'])) {
             $moduletitle = (isset($params['moduletitle'])) ? $params['moduletitle'] : "";
             $source = (isset($params['source'])) ? $params['source'] : "";
             $chrome = (isset($params['chrome'])) ? $params['chrome'] : false;
@@ -131,37 +133,45 @@ class expTheme {
                                                     $chrome // Show chrome
                                                     );
             }
-        }
+        } else {
+		    return false;
+	    }
     }
     
     public static function showController($params=array()) {
         global $sectionObj, $db;
-        if (empty($params)) return false;
-        $params['view'] = isset($params['view']) ? $params['view'] : $params['action'];
-        $params['title'] = isset($params['moduletitle']) ? $params['moduletitle'] : '';
-        $params['chrome'] = (!isset($params['chrome']) || (isset($params['chrome'])&&empty($params['chrome']))) ? true : false;
-        $params['scope'] = isset($params['scope']) ? $params['scope'] : 'global';
+        if (empty($params)) {
+	        return false;
+        } elseif (isset($params['module'])) {
+            self::module($params);
+        } else if (isset($params['controller'])) {
+			$params['view'] = isset($params['view']) ? $params['view'] : $params['action'];
+			$params['title'] = isset($params['moduletitle']) ? $params['moduletitle'] : '';
+			$params['chrome'] = (!isset($params['chrome']) || (isset($params['chrome'])&&empty($params['chrome']))) ? true : false;
+			$params['scope'] = isset($params['scope']) ? $params['scope'] : 'global';
 
-        // set the controller and action to the one called via the function params
-        $requestvars = isset($params['params']) ? $params['params'] : array();
-        $requestvars['controller'] = $params['controller'];
-        $requestvars['action'] = isset($params['action']) ? $params['action'] : null;
-        $requestvars['view'] = isset($params['view']) ? $params['view'] : null;
+			// set the controller and action to the one called via the function params
+			$requestvars = isset($params['params']) ? $params['params'] : array();
+			$requestvars['controller'] = $params['controller'];
+			$requestvars['action'] = isset($params['action']) ? $params['action'] : null;
+			$requestvars['view'] = isset($params['view']) ? $params['view'] : null;
 
-        // figure out the scope of the module and set the source accordingly
-        if ($params['scope'] == 'global') {
-            $params['source'] = isset($params['source']) ? $params['source'] : null;
-        } elseif ($params['scope'] == 'sectional') {
-            $params['source']  = isset($params['source']) ? $params['source'] : '@section';
-            $params['source'] .= $sectionObj->id;
-        } elseif ($params['scope'] == 'top-sectional') {
-            $params['source']  = isset($params['source']) ? $params['source'] : '@section';
-            $section = $sectionObj;
-            while ($section->parent > 0) $section = $db->selectObject("section","id=".$section->parent);
-            $params['source'] .= $section->id;            
+			// figure out the scope of the module and set the source accordingly
+			if ($params['scope'] == 'global') {
+				$params['source'] = isset($params['source']) ? $params['source'] : null;
+			} elseif ($params['scope'] == 'sectional') {
+				$params['source']  = isset($params['source']) ? $params['source'] : '@section';
+				$params['source'] .= $sectionObj->id;
+			} elseif ($params['scope'] == 'top-sectional') {
+				$params['source']  = isset($params['source']) ? $params['source'] : '@section';
+				$section = $sectionObj;
+				while ($section->parent > 0) $section = $db->selectObject("section","id=".$section->parent);
+				$params['source'] .= $section->id;
+			}
+			self::showModule(getControllerClassName($params['controller']),$params['view'],$params['title'],$params['source'],false,null,$params['chrome'],$requestvars);
+        } else {
+	        return false;
         }
-
-        self::showModule(getControllerClassName($params['controller']),$params['view'],$params['title'],$params['source'],false,null,$params['chrome'],$requestvars);
     }
 
     public function showSectionalController($params=array()) {

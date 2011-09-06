@@ -47,9 +47,6 @@ $available_controllers = initializeControllers();  //original position
 // Initialize the language subsystem
 expLang::loadLang();
 
-// Initialize the Core subsystem
-//require_once(BASE.'framework/core/subsystems-1/core.php');
-
 // Initialize the Database subsystem
 require_once(BASE.'framework/core/subsystems-1/database.php');
 $db = exponent_database_connect(DB_USER,DB_PASS,DB_HOST.':'.DB_PORT,DB_NAME);
@@ -65,15 +62,9 @@ exponent_modules_initialize(); // now in the autoloader, if used
 // Initialize the Template subsystem.
 require_once(BASE.'framework/core/subsystems-1/template.php');
 
-// Initialize the Permissions subsystem.
-//require_once(BASE.'framework/core/subsystems-1/permissions.php');
-
 // Initialize the History (Flow) subsystem.
 $history = new expHistory(); //<--This is the new flow subsystem and will be replacing the above.
 $SYS_FLOW_REDIRECTIONPATH = 'exponent_default';
-
-// Initialize the User subsystem.
-//require_once(BASE.'framework/core/subsystems-1/users.php');
 
 // Initialize the javascript subsystem
 if (expJavascript::inAjaxAction()) set_error_handler('handleErrors');
@@ -83,7 +74,6 @@ $user = new user();
 expSession::validate();
 
 // Initialize permissions variables
-//expPermissions::initialize();
 $exponent_permissions_r = expSession::get("permissions");
 
 // initialize the expRouter

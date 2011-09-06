@@ -39,9 +39,9 @@
         <li><a class="addressbook" href="{link module=address action=myaddressbook}">Manage My Addresses</a></li>
         <li><a class="vieworders" href="{link module=order action=ordersbyuser}">View My Orders</a></li>
         <li><a class="password" href="{link controller=users action=change_password}">Change My Password</a></li>
-        <li><a class="logout" href="{link module=loginmodule action=logout}">Log Out</a></li>
+        <li><a class="logout" href="{link controller=login action=logout}">Log Out</a></li>
     {else}
-        <li><a class="login" href="{link module=loginmodule action=loginredirect}" rel="nofollow">Login</a></li>
+        <li><a class="login" href="{link controller=login action=loginredirect}" rel="nofollow">Login</a></li>
     {/if}
     </ul>
 </div>
