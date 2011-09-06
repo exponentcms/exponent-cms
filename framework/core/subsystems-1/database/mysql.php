@@ -446,8 +446,8 @@ class mysql_database {
 	 *
 	 * @param string $sql The SQL query to run
 	 */
-	function sql($sql) {
-		return @mysql_query($sql,$this->connection);
+	function sql($sql, $escape = true) {
+		return @mysql_query($sql, $this->connection);
 	}
 
 	function toggle($table, $col, $where=null) {
