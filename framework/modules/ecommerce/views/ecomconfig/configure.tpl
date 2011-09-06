@@ -13,7 +13,6 @@
  * GPL: http://www.gnu.org/licenses/gpl.txt
  *
  *}
-
 <div id="storeconfig" class="module ecomconfig configure hide exp-skin-tabview">
     <h1>Store Configuration</h1>
     
@@ -138,12 +137,12 @@
 				
 				<div id="tab9">
 					<h2>{"Product Type Settings"|gettext}</h2>
-					{control type="checkbox" name="product_types[Google]" label="Google Feed" value="google_product_type" checked=$config.product_type.google}
-					{control type="checkbox" name="product_types[Bing]" label="Bing Feed" value="bing_product_type" checked=$config.product_type.bing}
-					{control type="checkbox" name="product_types[NexTag]" label="NexTag Feed" value="nextag_product_type" checked=$config.product_type.nextag}
-					{control type="checkbox" name="product_types[Shopzilla]" label="Shopzilla Feed" value="shopzilla_product_type" checked=$config.product_type.shopzilla}
-					{control type="checkbox" name="product_types[Shopping]" label="Shopping Feed" value="shopping_product_type" checked=$config.product_type.shopping}
-					{control type="checkbox" name="product_types[PriceGrabber]" label="Price Grabber Feed" value="pricegrabber_product_type" checked=$config.product_type.pricegrabber}
+					{control type="checkbox" name="product_types[Google]" label="Google Feed" value="google_product_type" checked=$config.product_types.Google}
+					{control type="checkbox" name="product_types[Bing]" label="Bing Feed" value="bing_product_type" checked=$config.product_types.Bing}
+					{control type="checkbox" name="product_types[NexTag]" label="NexTag Feed" value="nextag_product_type" checked=$config.product_types.NexTag}
+					{control type="checkbox" name="product_types[Shopzilla]" label="Shopzilla Feed" value="shopzilla_product_type" checked=$config.product_types.Shopzilla}
+					{control type="checkbox" name="product_types[Shopping]" label="Shopping Feed" value="shopping_product_type" checked=$config.product_types.Shopping}
+					{control type="checkbox" name="product_types[PriceGrabber]" label="Price Grabber Feed" value="pricegrabber_product_type" checked=$config.product_types.PriceGrabber}
 				</div>
             </div>
         </div>
