@@ -82,9 +82,11 @@
                     {control type="editor" name="body" label="Product Description" height=450 value=$record->body}
                     {control type="text" class="title" name="feed_title" label="Product Title for Data Feeds" value=$record->feed_title}
                     {control type="textarea" name="feed_body" label="Product Description for Data Feeds (Description ONLY! - no HTML, no promotional language, no email addresses, phone numbers, or references to this website.)" rows=5 cols=85 value=$record->feed_body}
+                    {if $product_types}
 					{foreach from=$product_types key=key item=item}
 						{control type="text" class="title" name="`$item`" label="`$key` Product Type" value=$record->$item}
 					{/foreach}
+                    {/if}
 			   </div>
                 <div id="pricing">
                     <fieldset>
