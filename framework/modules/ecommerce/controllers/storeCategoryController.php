@@ -40,26 +40,46 @@ class storeCategoryController extends expNestedNodeController {
 		$record = new storeCategoryFeeds($this->params['id']);
         $site_page_default = ecomconfig::getConfig('pagination_default');
 		$product_types = ecomconfig::getConfig('product_types');
-		
-		//TODO: 
-		/*
-		Create a central table for the external product types to minimized table redundancy as fred mentioned it will be more than 10 more.
-		
-		*/
+	
 		//Declaration of array variables for product types bing and google
 		$arr_product_type = ''; //A Multi-dimentional array to be passed in the view that contains the html of listbuildercontrol for product types like bing and google
 		
 		foreach($product_types as $key => $value) {
+		
 			$product_type = $value . 's';
 			$product_type_id = $value . 's_id';
 			$product_type_list = $value . 's_list';
 			$new_product_type = new $product_type;
 			$f_recorded_product_types = '';
 			$f_types = '';
+			//Import product type records if it is empty
+			if($db->tableIsEmpty($product_type)) {
+				$file = BASE."framework/modules/ecommerce/assets/sql/exponent_{$product_type}.sql";
+				if (is_readable($file)) {
+					$templine = '';
+					// Read in entire file
+					$lines = file($file);
+					// Loop through each line
+					foreach ($lines as $line_num => $line) {
+						// Only continue if it's not a comment
+						if (substr($line, 0, 2) != '--' && $line != '') {
+							// Add this line to the current segment
+							$templine .= $line;
+							// If it has a semicolon at the end, it's the end of the query
+							if (substr(trim($line), -1, 1) == ';') {
+								//Query the sql statement making sure that it will not be escape since we are dummping data
+								$db->sql($templine, false);
+								// Reset temp variable to empty
+								$templine = '';
+							}
+						}
+					}
+				}
+			}
 			
 			$recorded_product_type = $db->selectObjectsBySql("SELECT {$product_type_id}, title FROM " . DB_TABLE_PREFIX . "_{$value}s_storeCategories, " . DB_TABLE_PREFIX . "_{$product_type} WHERE {$product_type_id} = id and storecategories_id = " . $this->params['id']);
 			
-			foreach ($db->selectFormattedNestedTree("{$value}s") as $item) {
+			foreach ($db->selectFormattedNestedTree("{$product_type}") as $item) {
 				$f_types[$item->id] = $item->title;
 			}
 			
@@ -70,83 +90,7 @@ class storeCategoryController extends expNestedNodeController {
 			$arr_product_type[$value] = $control->controlToHTML($product_type_list,"copy");
 		}
 		
-		/*
-		$google_product_types = new google_product_types(); //Store all the google product types
-		$google_types = ''; //An array being indexed by the id of product type to be passed as the source of the listbuildercontrol for google
-		$google_recorded_product_types = ''; //An array being indexed by the id of product type to be passed as the default of the listbuildercontrol for google
 		
-		$bing_product_types = new bing_product_types(); //Store all the bing product types
-		$bing_types = ''; //An array being indexed by the id of bing and has a value of the bing product type to be passed as the source of the listbuildercontrol
-		$bing_recorded_product_types = ''; //An array being indexed by the id of product type to be passed as the default of the listbuildercontrol for bing
-		
-		$nextag_product_types = new nextag_product_types(); //Store all the nextag product types
-		$nextag_types = ''; //An array being indexed by the id of nextag and has a value of the nextag product type to be passed as the source of the listbuildercontrol
-		$nextag_recorded_product_types = ''; //An array being indexed by the id of product type to be passed as the default of the listbuildercontrol for nextag
-		
-		$shopzilla_product_types = new shopzilla_product_types(); //Store all the shopzilla product types
-		$shopzilla_types = ''; //An array being indexed by the id of shopzilla and has a value of the shopzilla product type to be passed as the source of the listbuildercontrol
-		$shopzilla_recorded_product_types = ''; //An array being indexed by the id of product type to be passed as the default of the listbuildercontrol for shopzilla
-		
-		$shopping_product_types = new shopping_product_types(); //Store all the shopping product types
-		$shopping_types = ''; //An array being indexed by the id of shopping and has a value of the shopping product type to be passed as the source of the listbuildercontrol
-		$shopping_recorded_product_types = ''; //An array being indexed by the id of product type to be passed as the default of the listbuildercontrol for shopping
-		
-		//Google product types getting the source and destination for the listbuilder control
-		$google_recorded_types = $db->selectObjectsBySql("SELECT google_product_types_id, title FROM " . DB_TABLE_PREFIX . "_google_product_types_storeCategories, " . DB_TABLE_PREFIX . "_google_product_types WHERE google_product_types_id = id and storecategories_id = " . $this->params['id']);
-		foreach ($db->selectFormattedNestedTree('google_product_types') as $item) {
-			$google_types[$item->id] = $item->title;
-		}
-		foreach ($google_recorded_types as $item) {
-			$google_recorded_product_types[$item->google_product_types_id] = trim($item->title);
-		}
-		$control = new listbuildercontrol($google_recorded_product_types, $google_types);
-		$arr_product_type['google_product_type'] = $control->controlToHTML('google_product_types_list','copy');
-		// eDebug($db->selectFormattedNestedTree('bing_product_types'), true);
-	
-		//Bing product types getting the source and destination for the listbuilder control
-		$bing_recorded_types   = $db->selectObjectsBySql("SELECT bing_product_types_id, title FROM " . DB_TABLE_PREFIX . "_bing_product_types_storeCategories, " . DB_TABLE_PREFIX . "_bing_product_types WHERE bing_product_types_id = id and storecategories_id = " . $this->params['id']);
-		foreach ($db->selectFormattedNestedTree('bing_product_types') as $item) {
-			$bing_types[$item->id] = $item->title;
-		}
-		foreach ($bing_recorded_types as $item) {
-			$bing_recorded_product_types[$item->bing_product_types_id] = $item->title;
-		}
-		$control = new listbuildercontrol($bing_recorded_product_types, $bing_types);
-		$arr_product_type['bing_product_type'] = $control->controlToHTML('bing_product_types_list','copy');
-		
-		//Nextag product types getting the source and destination for the listbuilder control
-		$nextag_recorded_types   = $db->selectObjectsBySql("SELECT nextag_product_types_id, title FROM " . DB_TABLE_PREFIX . "_nextag_product_types_storeCategories, " . DB_TABLE_PREFIX . "_nextag_product_types WHERE nextag_product_types_id = id and storecategories_id = " . $this->params['id']);
-		foreach ($db->selectFormattedNestedTree('nextag_product_types') as $item) {
-			$nextag_types[$item->id] = $item->title;
-		}
-		foreach ($nextag_recorded_types as $item) {
-			$nextag_recorded_product_types[$item->nextag_product_types_id] = $item->title;
-		}
-		$control = new listbuildercontrol($nextag_recorded_product_types, $nextag_types);
-		$arr_product_type['nextag_product_type'] = $control->controlToHTML('nextag_product_types_list','copy');
-		
-		//Shopzilla product types getting the source and destination for the listbuilder control
-		$shopzilla_recorded_types   = $db->selectObjectsBySql("SELECT shopzilla_product_types_id, title FROM " . DB_TABLE_PREFIX . "_shopzilla_product_types_storeCategories, " . DB_TABLE_PREFIX . "_shopzilla_product_types WHERE shopzilla_product_types_id = id and storecategories_id = " . $this->params['id']);
-		foreach ($db->selectFormattedNestedTree('shopzilla_product_types') as $item) {
-			$shopzilla_types[$item->id] = $item->title;
-		}
-		foreach ($shopzilla_recorded_types as $item) {
-			$shopzilla_recorded_product_types[$item->shopzilla_product_types_id] = $item->title;
-		}
-		$control = new listbuildercontrol($shopzilla_recorded_product_types, $shopzilla_types);
-		$arr_product_type['shopzilla_product_type'] = $control->controlToHTML('shopzilla_product_types_list','copy');
-		
-		//Shopping.com product types getting the source and destination for the listbuilder control
-		$shopping_recorded_types   = $db->selectObjectsBySql("SELECT shopping_product_types_id, title FROM " . DB_TABLE_PREFIX . "_shopping_product_types_storeCategories, " . DB_TABLE_PREFIX . "_shopping_product_types WHERE shopping_product_types_id = id and storecategories_id = " . $this->params['id']);
-		foreach ($db->selectFormattedNestedTree('shopping_product_types') as $item) {
-			$shopping_types[$item->id] = $item->title;
-		}
-		foreach ($shopping_recorded_types as $item) {
-			$shopping_recorded_product_types[$item->shopping_product_types_id] = $item->title;
-		}
-		$control = new listbuildercontrol($shopping_recorded_product_types, $shopping_types);
-		$arr_product_type['shopping_product_type'] = $control->controlToHTML('shopping_product_types_list','copy');
-		*/
         assign_to_template(array('product_types'=>$product_types, 'site_page_default'=>$site_page_default, 'record'=>$record, 'product_type' => $arr_product_type));
 		
         parent::edit();
