@@ -190,7 +190,7 @@ function renderAction(array $parms=array()) {
             flash('error', $msg);
             expHistory::redirecto_login();
         }
-    }
+    } 
     
     // run the action 
     $controller->$action();

@@ -46,6 +46,9 @@ class loginController extends expController {
     function displayname() { return "Login Manager"; }
     function description() { return "This is the login management module. It allows for logging in, logging out, etc."; }
 
+	/**
+	 * Display a login view
+	 */
 	function showlogin() {
 		global $db, $user, $order;
 
@@ -80,6 +83,9 @@ class loginController extends expController {
 		}
 	}
 
+	/**
+	 * main logout method
+	 */
 	public static function logout() {
 		expSession::logout();
 		expSession::un_set("permissions");
@@ -89,6 +95,9 @@ class loginController extends expController {
 		redirect_to(array("section"=>SITE_DEFAULT_SECTION));
 	}
 
+	/**
+	 * main login method
+	 */
 	public static function login() {
 		global $user;
 
@@ -119,6 +128,9 @@ class loginController extends expController {
 		}
 	}
 
+	/**
+	 * method to redirect to a login if needed
+	 */
 	public static function loginredirect() {
 		global $user;
 
