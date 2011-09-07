@@ -62,7 +62,7 @@ class worldpayCheckout extends billingcalculator {
 			}
 				
 			$config = unserialize($this->config);
-			$worldpay_url = 'https://secure-test.wp3.rbsworldpay.com/wcc/purchase';
+			$worldpay_url = 'https://secure-test.worldpay.com/wcc/dispatcher';
 
 			if ($config['testmode']) {
 				$testmode = 100;
@@ -89,7 +89,9 @@ class worldpayCheckout extends billingcalculator {
 				
 			// take the last & out for the string
 			$datapost = substr($datapost, 0, -1);
-			
+			$url = $worldpay_url . '?' . $datapost;
+			// eDebug($url, true);
+			/*
 			//setting the curl parameters.
 			$ch = curl_init();
 			curl_setopt($ch, CURLOPT_URL, $worldpay_url);
@@ -102,17 +104,18 @@ class worldpayCheckout extends billingcalculator {
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER,1);
 			curl_setopt($ch, CURLOPT_POST, 1);
 			curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
-			curl_setopt($ch, CURLOPT_HEADER, 1); 
 			//setting the datapost as POST FIELD to curl
 			
 			curl_setopt($ch,CURLOPT_POSTFIELDS, $datapost);
 			
 			//getting response from server
 			$response = curl_exec($ch);
+		
 			curl_close($ch);
-			
-			echo $response;
-			return 'noredirect';
+			*/
+			// echo $response;
+			header('location: ' . $url);
+			exit();
 		} else {
 			$object = expUnserialize($method->billing_options);
             if ($params['transStatus'] == 'Y') {
