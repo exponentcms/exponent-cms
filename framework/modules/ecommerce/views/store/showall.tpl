@@ -69,6 +69,7 @@
             <h2>Categories Under {$current_category->title}</h2>
             
             {counter assign="ipcr" name="ipcr" start=1}
+            {assign var=open_c_row value=1}
             {foreach name="cats" from=$categories item="cat"}
             {if $cat->is_active==1 || $user->isAdmin()}
             
