@@ -90,32 +90,9 @@ class worldpayCheckout extends billingcalculator {
 			// take the last & out for the string
 			$datapost = substr($datapost, 0, -1);
 			$url = $worldpay_url . '?' . $datapost;
-			// eDebug($url, true);
-			/*
-			//setting the curl parameters.
-			$ch = curl_init();
-			curl_setopt($ch, CURLOPT_URL, $worldpay_url);
-			curl_setopt($ch, CURLOPT_VERBOSE, 1);
-
-			//turning off the server and peer verification(TrustManager Concept).
-			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
-			curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
-
-			curl_setopt($ch, CURLOPT_RETURNTRANSFER,1);
-			curl_setopt($ch, CURLOPT_POST, 1);
-			curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
-			//setting the datapost as POST FIELD to curl
-			
-			curl_setopt($ch,CURLOPT_POSTFIELDS, $datapost);
-			
-			//getting response from server
-			$response = curl_exec($ch);
-		
-			curl_close($ch);
-			*/
-			// echo $response;
 			header('location: ' . $url);
 			exit();
+			
 		} else {
 		
 			if ($params['transStatus'] == 'C') {
@@ -138,6 +115,7 @@ class worldpayCheckout extends billingcalculator {
                 $method->update(array('billing_options'=>serialize($object), 'transaction_state' => "Cancelled"));       
                 return $object;   
             }
+			redirect_to(array('controller'=>'cart', 'action'=>'process'));
         }        
       
     }
