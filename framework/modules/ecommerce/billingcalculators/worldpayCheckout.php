@@ -64,10 +64,16 @@ class worldpayCheckout extends billingcalculator {
 			$config = unserialize($this->config);
 			$worldpay_url = 'https://secure-test.worldpay.com/wcc/dispatcher';
 
-			if ($config['testmode']) {
+			if (isset($config['testmode'])) {
 				$testmode = 100;
 			} else {
 				$testmode = 0;
+			}
+			
+			if (isset($config['authCurrency'])) {
+				$authCurrency = $config['authCurrency'];
+			} else {
+				$authCurrency = "USD";
 			}
 
 			$data = array(
@@ -75,11 +81,10 @@ class worldpayCheckout extends billingcalculator {
 				'testMode'  => $testmode,
 				'instId'    => $config['installationid'],
 				'amount'    => number_format($order->grand_total, 2, '.', ''),
-				'currency'  => 'USD',
+				'currency'  => $authCurrency,
 				'cartId'    => $order->id,
 				'MC_callback' => URL_FULL . 'external/worldpay/callback.php'
 			);
-			
 			 // convert the api params to a name value pair string
 			$datapost = "";
 			while(list($key, $value) = each($data)) 
@@ -125,7 +130,7 @@ class worldpayCheckout extends billingcalculator {
     * @param mixed $values
     */
 	function parseConfig($values) {
-	    $config_vars = array('username', 'password', 'installationid', 'testmode', 'email_customer', 'email_admin', 'notification_addy');
+	    $config_vars = array('username', 'password', 'installationid', 'authCurrency', 'testmode', 'email_customer', 'email_admin', 'notification_addy');
 	    foreach ($config_vars as $varname) {
 	        $config[$varname] = isset($values[$varname]) ? $values[$varname] : null;
 	    }
