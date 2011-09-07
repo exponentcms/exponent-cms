@@ -95,10 +95,6 @@ class worldpayCheckout extends billingcalculator {
 			
 		} else {
 		
-			if ($params['transStatus'] == 'C') {
-				redirect_to(array('controller'=>'cart', 'action'=>'checkout'));
-			}
-			
 			$object = expUnserialize($method->billing_options);
             if ($params['transStatus'] == 'Y') {
 				$object->result->errorCode = 0;
@@ -107,19 +103,12 @@ class worldpayCheckout extends billingcalculator {
 				$object->result->payment_status = "Pending"; 				
                 $method->update(array('billing_options'=>serialize($object), 'transaction_state' => "Pending"));    
 				$this->createBillingTransaction($method, number_format($order->grand_total, 2, '.', ''),$object, 'success');				
-                return $object; 
+                redirect_to(array('controller'=>'cart', 'action'=>'process'));
             } else {
-                $object->result->errorCode = 1;
-                $object->result->message = "User transaction has been cancelled";
-                $object->result->transId = $params['transId'];                 
-                $method->update(array('billing_options'=>serialize($object), 'transaction_state' => "Cancelled"));       
-                return $object;   
+                redirect_to(array('controller'=>'cart', 'action'=>'checkout'));
             }
-			redirect_to(array('controller'=>'cart', 'action'=>'process'));
         }        
-      
     }
-    
     
 	function process($method, $opts, $params, $invoice_number) {
 		
