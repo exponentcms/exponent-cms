@@ -117,6 +117,11 @@ class worldpayCheckout extends billingcalculator {
 			header('location: ' . $url);
 			exit();
 		} else {
+		
+			if ($params['transStatus'] == 'C') {
+				redirect_to(array('controller'=>'cart', 'action'=>'checkout'));
+			}
+			
 			$object = expUnserialize($method->billing_options);
             if ($params['transStatus'] == 'Y') {
 				$object->result->errorCode = 0;
