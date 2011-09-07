@@ -64,10 +64,16 @@ class worldpayCheckout extends billingcalculator {
 			$config = unserialize($this->config);
 			$worldpay_url = 'https://secure-test.worldpay.com/wcc/dispatcher';
 
-			if ($config['testmode']) {
+			if (isset($config['testmode'])) {
 				$testmode = 100;
 			} else {
 				$testmode = 0;
+			}
+			
+			if (isset($config['authCurrency'])) {
+				$authCurrency = $config['authCurrency'];
+			} else {
+				$authCurrency = "USD";
 			}
 
 			$data = array(
@@ -75,11 +81,10 @@ class worldpayCheckout extends billingcalculator {
 				'testMode'  => $testmode,
 				'instId'    => $config['installationid'],
 				'amount'    => number_format($order->grand_total, 2, '.', ''),
-				'currency'  => 'USD',
+				'currency'  => $authCurrency,
 				'cartId'    => $order->id,
 				'MC_callback' => URL_FULL . 'external/worldpay/callback.php'
 			);
-			
 			 // convert the api params to a name value pair string
 			$datapost = "";
 			while(list($key, $value) = each($data)) 
@@ -90,38 +95,11 @@ class worldpayCheckout extends billingcalculator {
 			// take the last & out for the string
 			$datapost = substr($datapost, 0, -1);
 			$url = $worldpay_url . '?' . $datapost;
-			// eDebug($url, true);
-			/*
-			//setting the curl parameters.
-			$ch = curl_init();
-			curl_setopt($ch, CURLOPT_URL, $worldpay_url);
-			curl_setopt($ch, CURLOPT_VERBOSE, 1);
-
-			//turning off the server and peer verification(TrustManager Concept).
-			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
-			curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
-
-			curl_setopt($ch, CURLOPT_RETURNTRANSFER,1);
-			curl_setopt($ch, CURLOPT_POST, 1);
-			curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
-			//setting the datapost as POST FIELD to curl
-			
-			curl_setopt($ch,CURLOPT_POSTFIELDS, $datapost);
-			
-			//getting response from server
-			$response = curl_exec($ch);
-		
-			curl_close($ch);
-			*/
-			// echo $response;
 			header('location: ' . $url);
 			exit();
+			
 		} else {
 		
-			if ($params['transStatus'] == 'C') {
-				redirect_to(array('controller'=>'cart', 'action'=>'checkout'));
-			}
-			
 			$object = expUnserialize($method->billing_options);
             if ($params['transStatus'] == 'Y') {
 				$object->result->errorCode = 0;
@@ -130,18 +108,12 @@ class worldpayCheckout extends billingcalculator {
 				$object->result->payment_status = "Pending"; 				
                 $method->update(array('billing_options'=>serialize($object), 'transaction_state' => "Pending"));    
 				$this->createBillingTransaction($method, number_format($order->grand_total, 2, '.', ''),$object, 'success');				
-                return $object; 
+                redirect_to(array('controller'=>'cart', 'action'=>'process'));
             } else {
-                $object->result->errorCode = 1;
-                $object->result->message = "User transaction has been cancelled";
-                $object->result->transId = $params['transId'];                 
-                $method->update(array('billing_options'=>serialize($object), 'transaction_state' => "Cancelled"));       
-                return $object;   
+                redirect_to(array('controller'=>'cart', 'action'=>'checkout'));
             }
         }        
-      
     }
-    
     
 	function process($method, $opts, $params, $invoice_number) {
 		
@@ -158,7 +130,7 @@ class worldpayCheckout extends billingcalculator {
     * @param mixed $values
     */
 	function parseConfig($values) {
-	    $config_vars = array('username', 'password', 'installationid', 'testmode', 'email_customer', 'email_admin', 'notification_addy');
+	    $config_vars = array('username', 'password', 'installationid', 'authCurrency', 'testmode', 'email_customer', 'email_admin', 'notification_addy');
 	    foreach ($config_vars as $varname) {
 	        $config[$varname] = isset($values[$varname]) ? $values[$varname] : null;
 	    }

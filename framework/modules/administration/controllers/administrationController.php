@@ -806,7 +806,7 @@ class administrationController extends expController {
     }
 
 	// now you can use $options;
-	function formatOffset($offset) {
+	private function formatOffset($offset) {
 			$hours = $offset / 3600;
 			$remainder = $offset % 3600;
 			$sign = $hours > 0 ? '+' : '-';
@@ -832,7 +832,10 @@ class administrationController extends expController {
 }
 
 /**
- * The base theme class
+ * This is the base theme class
+ *
+ * @subpackage Core-Controllers
+ * @package Framework
  */
 class theme {
 	public $user_configured = false;
@@ -841,6 +844,11 @@ class theme {
 	function author() { return ""; }
 	function description() { return "The theme shell"; }
 
+	/**
+	 * Method to Configure theme settings
+	 * This generic routine parses the theme's config.php file
+	 * and presents the values as text boxes.
+	 */
 	function configureTheme () {
 		$settings = expSettings::parseFile(BASE."themes/".$_GET['theme']."/config.php");
 		$form = new form();
@@ -855,6 +863,14 @@ class theme {
 		assign_to_template(array('name'=>self::name(),'form_html'=>$form->tohtml()));
 	}
 
+	/**
+	 * Method to save/update theme settings
+	 * This generic routine parses the passed params
+	 * and saves them to the theme's config.php file
+	 * It attempts to remove non-theme params such as analytics, etc..
+	 *
+	 * @param $params theme configuration parameters
+	 */
 	function saveThemeConfig ($params) {
 		$theme = $params['theme'];
 		unset ($params['theme']);

@@ -502,19 +502,18 @@ class cartController extends expController {
         // which the previous check takes as a TRUE, as 0, null, and empty will all equate out the same using the ==
         // adding the === will specifically test for a 0 and only a 0, which is what we want
 		
-		if($result != 'noredirect') 
+		
+		if (empty($result->errorCode)) 
+		//if ($result->errorCode === "0" || $result->errorCode === 0) 
 		{
-			if (empty($result->errorCode)) 
-			//if ($result->errorCode === "0" || $result->errorCode === 0) 
-			{
-				redirect_to(array('controller'=>'cart', 'action'=>'confirm'));
-			} 
-			else 
-			{
-				flash('error', 'An error was encountered while processing your transaction.<br /><br />'.$result->message);
-				expHistory::back();
-			}
+			redirect_to(array('controller'=>'cart', 'action'=>'confirm'));
+		} 
+		else 
+		{
+			flash('error', 'An error was encountered while processing your transaction.<br /><br />'.$result->message);
+			expHistory::back();
 		}
+		
     }
 
 	public function confirm() 
