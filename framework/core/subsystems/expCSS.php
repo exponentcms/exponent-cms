@@ -129,7 +129,7 @@ class expCSS {
         }
 
         foreach($cssdirs as $key=>$cssdir){
-            $variation = (THEME_STYLE!='')?"_".THEME_STYLE:"";
+            $variation = (THEME_STYLE!=''&&$key!=0)?"_".THEME_STYLE:"";
             
             if (is_dir($cssdir) && is_readable($cssdir)) {
 
