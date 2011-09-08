@@ -158,7 +158,8 @@ if (!isset($_POST['data_id']) || (isset($_POST['data_id']) && exponent_permissio
         $template->output();
     } else {
 		flash ('message', 'Record was updated!');
-        expHistory::back();
+//        expHistory::back();
+        expHistory::returnTo('editable');
     }
 } else {
     echo SITE_403_HTML;

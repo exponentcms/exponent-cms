@@ -31,6 +31,7 @@ if (isset($_GET['id'])) {
 	$rpt = $db->selectObject("formbuilder_report","form_id=".$_GET['id']);
 	$items = $db->selectObjects("formbuilder_".$f->table_name);
 	if (exponent_permissions_check("viewdata",unserialize($f->location_data))) {
+		expHistory::set('editable', $_GET);
 		$columndef = "paginate.columns = new Array(";
 		$columns = array();
 		$sortfuncts = "";
@@ -105,6 +106,7 @@ if (isset($_GET['id'])) {
 		global $SYS_FLOW_REDIRECTIONPATH;
 		$SYS_FLOW_REDIRECTIONPATH = "editfallback";
 		$template->assign("backlink",expHistory::getLastNotEditable());
+//		$template->assign("backlink",expHistory::getLast('viewable'));
 		$template->register_permissions(array("administrate","editform","editformsettings","editreport","viewdata","editdata","deletedata"),unserialize($f->location_data));
 		$SYS_FLOW_REDIRECTIONPATH = "exponent_default";
 		$columndef .= 'new cColumn("Links","",links,null)';

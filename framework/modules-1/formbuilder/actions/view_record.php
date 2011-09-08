@@ -63,7 +63,8 @@ if ($f && $controls && $data && $rpt) {
 		$template->assign('title',$rpt->name);
 		$template->assign('fields',$fields);
 		$template->assign('captions',$captions);
-		$template->assign('backlink',expHistory::getLastNotEditable());
+//		$template->assign('backlink',expHistory::getLastNotEditable());
+		$template->assign('backlink',expHistory::getLast('editable'));
 		$template->assign('is_email',0);
 		$template->output();
 	} else {
