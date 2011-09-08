@@ -1,0 +1,26 @@
+a.switchtheme {
+    display:inline-block;
+    *display:inline;
+    zoom:1;
+    vertical-align:top;
+    padding:3px 0 3px 20px;
+}
+span.switchtheme.current {
+    font-weight:bold;
+    background:url(../../../../core/assets/images/exp-admin-sprite.png) no-repeat 5px -610px;
+	padding:5px 22px 0
+}
+
+.actions h5 {
+    margin:1em 0;
+}
+
+a.switchtheme.variation {
+    display:block;
+    padding:1px 3px;
+}
+a.switchtheme.variation.current {
+    font-weight:bold;
+    font-style:italic;
+    padding:1px 3px;
+}

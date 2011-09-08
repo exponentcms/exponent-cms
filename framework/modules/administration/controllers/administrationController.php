@@ -615,18 +615,22 @@ class administrationController extends expController {
     				include_once(BASE."themes/$file/class.php");
     				$theme = new $file();
     				$t = null;
-				    $t->user_configured = $theme->user_configured;
+				    $t->user_configured = isset($theme->user_configured) ? $theme->user_configured : '';
     				$t->name = $theme->name();
     				$t->description = $theme->description();
     				$t->author = $theme->author();
-    				if (is_dir(BASE."themes/$file/css_default")) {
-                		$sv = opendir(BASE.'themes/'.$file);
-                		while (($s = readdir($sv)) !== false) {
-                            if (substr($s,0,4) == "css_") {
-                                $t->style_variations[str_replace("css_","",$s)] = str_replace("css_","",$s);
-                            }
+
+				    $t->style_variations = array();
+            		$sv = opendir(BASE.'themes/'.$file);
+            		while (($s = readdir($sv)) !== false) {
+                        if (substr($s,0,4) == "css_") {
+                            $t->style_variations[str_replace("css_","",$s)] = str_replace("css_","",$s);
                         }
-        			}
+                    }
+                    if(count($t->style_variations)>0){
+                        $t->style_variations = array_merge(array('Default'=>'Default'),$t->style_variations);
+                    }
+
     				$t->preview = is_readable(BASE."themes/$file/preview.jpg") ? "themes/$file/preview.jpg" : "themes/" . DISPLAY_THEME . "/noprev.jpg";
     				$themes[$file] = $t;
     			}
@@ -640,21 +644,24 @@ class administrationController extends expController {
     	expSettings::change('DISPLAY_THEME_REAL', $this->params['theme']);
 	    expSession::set('display_theme',$this->params['theme']);
     	if (isset($this->params['sv']) && THEME_STYLE!=$this->params['sv']) {
-            expSettings::change('THEME_STYLE', $this->params['sv']);
-    	    if (expFile::recurse_copy(BASE."themes/".$this->params['theme']."/css", BASE."themes/".$this->params['theme']."/styles_backup/css")
-    	        && expFile::recurse_copy(BASE."themes/".$this->params['theme']."/images", BASE."themes/".$this->params['theme']."/styles_backup/images")) {
-
-        	    if (!expFile::recurse_copy(BASE."themes/".$this->params['theme']."/css_".$this->params['sv'], BASE."themes/".$this->params['theme']."/css")) {
-                    flash('error',gt('Couldn\'t copy ') . "css_".$this->params['sv']);
-        	    }
-        	    if (!expFile::recurse_copy(BASE."themes/".$this->params['theme']."/images_".$this->params['sv'], BASE."themes/".$this->params['theme']."/images")) {
-                    flash('error',gt('Couldn\'t copy ') . "images_".$this->params['sv']);
-        	    }
-
-                flash('message',gt('Your website\'s theme has been updated'));
-    	    } else {
-                flash('error',gt('Exponent could not not switch your theme style variation because it was unable to back up your current css and images directories. Create a directory called styles_backup within your theme, and try again.'));
+    	    if (strtolower($this->params['sv'])=='default') {
+    	       $this->params['sv']='';
     	    }
+            expSettings::change('THEME_STYLE', $this->params['sv']);
+            // if (expFile::recurse_copy(BASE."themes/".$this->params['theme']."/css", BASE."themes/".$this->params['theme']."/styles_backup/css")
+            //     && expFile::recurse_copy(BASE."themes/".$this->params['theme']."/images", BASE."themes/".$this->params['theme']."/styles_backup/images")) {
+            // 
+            //              if (!expFile::recurse_copy(BASE."themes/".$this->params['theme']."/css_".$this->params['sv'], BASE."themes/".$this->params['theme']."/css")) {
+            //                     flash('error',gt('Couldn\'t copy ') . "css_".$this->params['sv']);
+            //              }
+            //              if (!expFile::recurse_copy(BASE."themes/".$this->params['theme']."/images_".$this->params['sv'], BASE."themes/".$this->params['theme']."/images")) {
+            //                     flash('error',gt('Couldn\'t copy ') . "images_".$this->params['sv']);
+            //              }
+            // 
+            //                 flash('message',gt('Your website\'s theme has been updated'));
+            // } else {
+            //                 flash('error',gt('Exponent could not not switch your theme style variation because it was unable to back up your current css and images directories. Create a directory called styles_backup within your theme, and try again.'));
+            // }
             //copy(BASE."themes/".DISPLAY_THEME_REAL."/css_".$this->params['sv'], BASE."themes/".DISPLAY_THEME_REAL."/css");
             //copy(BASE."themes/".DISPLAY_THEME_REAL."css_".$this->params['sv'], BASE."themes/".DISPLAY_THEME_REAL."css")
     	}

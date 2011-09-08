@@ -15,22 +15,12 @@
  *}
  
  
-{css unique="themes" corecss="tables"}
-{literal}
-a.switchtheme {
-    display:block;
-    text-transform:capitalize;
-    padding:3px 0 3px 20px
-}
-span.switchtheme.current {
-    font-weight:bold;
-    background:url({/literal}{$smarty.const.URL_FULL}{literal}framework/core/assets/images/exp-admin-sprite.png) no-repeat 5px -610px;
-	padding:5px 22px 0
-}
-{/literal}
+{css unique="themes" corecss="tables" link="`$asset_path`css/managethemes.css"}
+
 {/css}
 
-<div class="administration thememanager">
+<div class="module administration manage-themes">
+
     <div class="info-header">
         <div class="related-actions">
             {help text="Get Help Managing Themes" module="manage-themes"}
@@ -53,7 +43,7 @@ span.switchtheme.current {
         </thead>
         <tbody>
         	{foreach name=t from=$themes key=class item=theme}
-            <tr>
+            <tr class="{cycle values='odd,even'}">
                 <td>
                     {img class="themepreview" src=$theme->preview w=100}
                 </td>
@@ -65,42 +55,44 @@ span.switchtheme.current {
         				{$theme->description}		
         			</p>
                 </td>
-				{if $theme->style_variations}
-					<td colspan="2">
-					<table border-bottom-style="transparent">
-						{foreach from=$theme->style_variations item=sv key=svkey name=styles}
-							<tr>
-								<td>
-									<a class="switchtheme{if $smarty.const.DISPLAY_THEME_REAL == $class && $smarty.const.THEME_STYLE == $sv} current{/if}" href="{link action=switch_themes theme=$class sv=$sv}" title='Select this Style'>{$sv}</a>
-								</td>
-								<td>
-									{if $smarty.const.DISPLAY_THEME != $class}
-										{icon img=view.png action=preview_theme theme=$class sv=$sv title="Preview this Style"}
-									{elseif $smarty.const.DISPLAY_THEME_REAL != $smarty.const.DISPLAY_THEME}
-										(<em><b>Previewing</b></em>)
-									{/if}
-								</td>
-							</tr>
-						{/foreach}
-					</table>
-					</td>
-				{else}
-					<td>
-						{if $smarty.const.DISPLAY_THEME_REAL != $class}
-							<a class="switchtheme current" href="{link action=switch_themes theme=$class}" title='Select this Theme'>Select</a>
-						{else}
-							<span class="switchtheme current"><b>Current</b>{br}</span>
-						{/if}
-						{if ($theme->user_configured)}
-							{icon class=configure action=configure_theme theme=$class title="Configure this Theme" text="Configure"}{br}
-						{/if}
-						{if $smarty.const.DISPLAY_THEME != $class}
-							{icon class=view action=preview_theme theme=$class title="Preview this Theme" text="Preview"}
-						{elseif $smarty.const.DISPLAY_THEME_REAL != $smarty.const.DISPLAY_THEME}
-							(<em>Previewing</em>)
-						{/if}
-					</td>
-				{/if}
+				<td class="actions">
+					{if $smarty.const.DISPLAY_THEME_REAL != $class}
+						<a class="switchtheme add" href="{link action=switch_themes theme=$class}" title='Select this Theme'>{"Use"|gettext}</a>
+					{else}
+					    <span class="switchtheme current">{"Current"|gettext}</span>
+					{/if}
+					
+					{if ($theme->user_configured)}
+						{icon class=configure action=configure_theme theme=$class title="Configure this Theme" text="Configure"}{br}
+					{/if}
+					
+					{if $smarty.const.DISPLAY_THEME != $class}
+						{icon class=view action=preview_theme theme=$class title="Preview this Theme" text="Preview"}
+					{elseif $smarty.const.DISPLAY_THEME_REAL != $smarty.const.DISPLAY_THEME}
+						(<em>{"Previewing"|gettext}</em>)
+					{/if}
+					
+                    {if $theme->style_variations|@count>0}
+                        <h5>{"Style Variations"|gettext}</h5>
+				    
+					    {foreach from=$theme->style_variations item=sv key=svkey name=styles}
+					        {if $smarty.const.DISPLAY_THEME_REAL == $class && ($smarty.const.THEME_STYLE == $sv || ($smarty.const.THEME_STYLE=="" && $sv=="Default"))}
+							<span>
+                                &raquo; {$sv}
+							</span>
+
+					        {else}
+					        <a class="switchtheme variation" href="{link action=switch_themes theme=$class sv=$sv}" title='Select this Style'>
+							    {$sv}
+							</a>
+							
+					        {/if}
+					    
+					    {/foreach}
+                        
+                    {/if}
+					
+				</td>
             </tr>
         	{/foreach}
         </tbody>
