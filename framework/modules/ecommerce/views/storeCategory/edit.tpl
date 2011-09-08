@@ -60,9 +60,11 @@
 				<li class="selected"><a href="#general"><em>General</em></a></li>
 				<li><a href="#seo"><em>Meta Info</em></a></li>
 				<li><a href="#events"><em>Events</em></a></li>
-				{foreach from=$product_types key=key item=item}
-					<li><a href="#{$item}"><em>{$key} Product Types</em></a></li>
-				{/foreach}
+				{if $product_types}
+					{foreach from=$product_types key=key item=item}
+						<li><a href="#{$item}"><em>{$key} Product Types</em></a></li>
+					{/foreach}
+				{/if}
             </ul>            
             <div class="yui-content">
                 <div id="general">   
@@ -81,12 +83,14 @@
                     {control type="checkbox" name="is_events" label="This category is used for events" value=1 checked=$node->is_events}                        
                     {control type="checkbox" name="hide_closed_events" label="Don't Show Closed Events" value=1 checked=$node->hide_closed_events}
                 </div>  
-				{foreach from=$product_types key=key item=item}
-				<div id="{$item}">	
-					<h1>{$key} Product Types</h1>
-					{$product_type.$item}
-				</div>
-				{/foreach}
+				{if $product_types}
+					{foreach from=$product_types key=key item=item}
+					<div id="{$item}">	
+						<h1>{$key} Product Types</h1>
+						{$product_type.$item}
+					</div>
+					{/foreach}
+				{/if}
             </div>    
         </div>
         {control type=buttongroup submit=Save cancel=Cancel}
