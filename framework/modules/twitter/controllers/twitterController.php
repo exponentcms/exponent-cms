@@ -80,7 +80,7 @@ class twitterController extends expController {
 				    $tweets[$key]['text'] = $this->twitterify(substr($value['text'],strpos($value['text'],':')+2));
 				    $tweets[$key]['screen_name'] = $value['retweeted_status']['user']['screen_name'];
 				    $tweets[$key]['image'] = $value['retweeted_status']['user']['profile_image_url'];
-				    $tweets[$key]['via'] = $value['source'].' (RT by '.$value['user']['screen_name'].')';
+				    $tweets[$key]['via'] = $value['source'].' (<img src="framework/modules/twitter/assets/images/arrow-retweet.png" alt="RT by"/> '.$value['user']['screen_name'].')';
 			    }
 			    $tweets[$key]['created_at'] = strtotime($value['created_at']); // convert to unix time
     		}

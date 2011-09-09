@@ -31,6 +31,7 @@
 					<dd>{$tweet.text}</dd>
 				</p>
 			</div>
+			{clear}
 		{/foreach}
 	</dl>
 	{br}
