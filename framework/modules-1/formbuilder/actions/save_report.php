@@ -25,7 +25,7 @@ if (isset($_POST['id'])) {
 }
 
 if ($rpt) {
-	if (exponent_permissions_check('editreport',unserialize($f->location_data))) {
+	if (expPermissions::check('editreport',unserialize($f->location_data))) {
 		$rpt = formbuilder_report::update($_POST,$rpt);
 		
 		if (isset($rpt->id)) {

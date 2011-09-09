@@ -31,7 +31,7 @@ $data = $db->selectObject('formbuilder_'.$f->table_name,'id='.$_GET['id']);
 $controls = $db->selectObjects('formbuilder_control','form_id='.$_GET['form_id']);
 
 if ($f && $data && $controls) {
-	if (exponent_permissions_check('editdata',unserialize($f->location_data))) {
+	if (expPermissions::check('editdata',unserialize($f->location_data))) {
 		$controls = expSorter::sort(array('array'=>$controls,'sortby'=>'rank', 'order'=>'ASC'));
 
 		$form = new form();

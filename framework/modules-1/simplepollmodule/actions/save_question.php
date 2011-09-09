@@ -41,7 +41,7 @@ if (isset($_POST['id'])) {
 	}
 }
 
-if (exponent_permissions_check('manage_question',$loc)) {
+if (expPermissions::check('manage_question',$loc)) {
 	$question = poll_question::update($_POST,$question);
 	$question->location_data = serialize($loc);
 	

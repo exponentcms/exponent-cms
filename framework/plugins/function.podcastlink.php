@@ -23,7 +23,7 @@ function smarty_function_podcastlink($params,&$smarty) {
 	if (!isset($params['src'])) $params['src'] = $loc->src;
 	if (!isset($params['int'])) $params['int'] = $loc->int;
 	
-	echo exponent_core_makePodcastLink($params);
+	echo expCore::makePodcastLink($params);
 }
 
 ?>

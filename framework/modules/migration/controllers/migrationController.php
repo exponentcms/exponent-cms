@@ -59,14 +59,14 @@ class migrationController extends expController {
     // Not sure we need to note deprecated modules...
     public $deprecated_modules = array(
         'administrationmodule',
-//        'containermodule',  // not really deprecated, but must be in this list to skip processing?
-//        'navigationmodule',  // views are still used, so modules need to be imported?
+//        'containermodule',    // not really deprecated, but must be in this list to skip processing?
+//        'navigationmodule',   // views are still used, so modules need to be imported?
+        'loginmodule',
+        'searchmodule',  
         'imagemanagermodule',
         'imageworkshopmodule',
         'inboxmodule',
-        'loginmodule',
         'rssmodule',
-        'searchmodule',
 // the following 0.97/98 modules were added to this list
 //   based on lack of info showing they will exist in 2.0
         'articlemodule',
@@ -79,7 +79,6 @@ class migrationController extends expController {
         'cataloguemodule',
         'codemapmodule',
         'extendedlistingmodule',
-        'feedlistmodule',
         'googlemapmodule',
         'greekingmodule',
         'guestbookmodule',
@@ -90,7 +89,6 @@ class migrationController extends expController {
 
     public $needs_written = array(
 //        'categories',  // no controller and not in old school ???
-//        'tags',	 // no controller and not in old school ???
     );
 
     // public $old_school = array(  // psuedo-variable isn't used, list of old school modules still in code base
@@ -470,7 +468,9 @@ class migrationController extends expController {
 	            $iloc->mod = $sr->module;
                 $iloc->src = $sr->source;
                 $iloc->int = $sr->internal;
-                $this->convert($iloc,$iloc->mod,1);
+	            $tmp->module = '';
+//                $this->convert($iloc,$iloc->mod,1);
+                $this->convert($iloc,$tmp,1);
 
                 // convert the source to new exp controller
                 $sr->module = $this->new_modules[$sr->module];

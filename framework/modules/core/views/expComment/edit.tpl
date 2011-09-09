@@ -44,7 +44,7 @@
     	{/form}
 	{else}
 		<p>
-			<a href="{link module=loginmodule action=loginredirect}">{"Log In to leave a comment"|gettext}</a>
+			<a href="{link controller=login action=loginredirect}">{"Log In to leave a comment"|gettext}</a>
 		</p> 
 	{/if}
 </div>

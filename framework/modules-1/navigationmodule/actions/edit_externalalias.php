@@ -43,7 +43,7 @@ if ($user && $user->is_acting_admin == 1) {
 	$check_id = $section->parent;
 }
 
-if ($check_id != -1 && exponent_permissions_check('manage',exponent_core_makeLocation('navigationmodule','',$check_id))) {
+if ($check_id != -1 && expPermissions::check('manage',expCore::makeLocation('navigationmodule','',$check_id))) {
 	$form = section::externalAliasForm($section);
 	$form->meta('module','navigationmodule');
 	$form->meta('action','save_externalalias');

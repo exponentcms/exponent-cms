@@ -348,7 +348,7 @@ class section {
 		
 		$object->alias_type = 1;
 		$object->external_link = $values['external_link'];
-		if (!exponent_core_URLisValid($object->external_link)) {
+		if (!expCore::URLisValid($object->external_link)) {
 			$object->external_link = 'http://' . $object->external_link;
 		}
 		return $object;

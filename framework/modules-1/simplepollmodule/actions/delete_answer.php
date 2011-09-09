@@ -46,7 +46,7 @@ if (isset($_GET['id'])) {
 }
 
 if ($question) {
-	if (exponent_permissions_check('manage_answer',$loc)) {
+	if (expPermissions::check('manage_answer',$loc)) {
 		$db->delete('poll_answer','id='.$answer->id);
 		$db->decrement('poll_answer','rank',1,'question_id='.$question->id.' AND rank > '.$answer->rank);
 		expHistory::back();

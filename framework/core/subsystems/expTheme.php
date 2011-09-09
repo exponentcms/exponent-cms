@@ -20,7 +20,7 @@
 /**
  * This is the class expTheme
  *
- * @subpackage Core-Subsytems
+ * @subpackage Core-Subsystems
  * @package Framework
  */
 
@@ -104,9 +104,11 @@ class expTheme {
     }
     
     public static function module($params) {
-        if (isset($params['controller'])) {
+	    if (empty($params)) {
+		    return false;
+	    } elseif (isset($params['controller'])) {
             self::showController($params);
-        } else if (isset($params['module'])) {
+        } elseif (isset($params['module'])) {
             $moduletitle = (isset($params['moduletitle'])) ? $params['moduletitle'] : "";
             $source = (isset($params['source'])) ? $params['source'] : "";
             $chrome = (isset($params['chrome'])) ? $params['chrome'] : false;
@@ -135,37 +137,45 @@ class expTheme {
                                                     $chrome // Show chrome
                                                     );
             }
-        }
+        } else {
+		    return false;
+	    }
     }
     
     public static function showController($params=array()) {
         global $sectionObj, $db;
-        if (empty($params)) return false;
-        $params['view'] = isset($params['view']) ? $params['view'] : $params['action'];
-        $params['title'] = isset($params['moduletitle']) ? $params['moduletitle'] : '';
-        $params['chrome'] = (!isset($params['chrome']) || (isset($params['chrome'])&&empty($params['chrome']))) ? true : false;
-        $params['scope'] = isset($params['scope']) ? $params['scope'] : 'global';
+        if (empty($params)) {
+	        return false;
+        } elseif (isset($params['module'])) {
+            self::module($params);
+        } else if (isset($params['controller'])) {
+			$params['view'] = isset($params['view']) ? $params['view'] : $params['action'];
+			$params['title'] = isset($params['moduletitle']) ? $params['moduletitle'] : '';
+			$params['chrome'] = (!isset($params['chrome']) || (isset($params['chrome'])&&empty($params['chrome']))) ? true : false;
+			$params['scope'] = isset($params['scope']) ? $params['scope'] : 'global';
 
-        // set the controller and action to the one called via the function params
-        $requestvars = isset($params['params']) ? $params['params'] : array();
-        $requestvars['controller'] = $params['controller'];
-        $requestvars['action'] = isset($params['action']) ? $params['action'] : null;
-        $requestvars['view'] = isset($params['view']) ? $params['view'] : null;
+			// set the controller and action to the one called via the function params
+			$requestvars = isset($params['params']) ? $params['params'] : array();
+			$requestvars['controller'] = $params['controller'];
+			$requestvars['action'] = isset($params['action']) ? $params['action'] : null;
+			$requestvars['view'] = isset($params['view']) ? $params['view'] : null;
 
-        // figure out the scope of the module and set the source accordingly
-        if ($params['scope'] == 'global') {
-            $params['source'] = isset($params['source']) ? $params['source'] : null;
-        } elseif ($params['scope'] == 'sectional') {
-            $params['source']  = isset($params['source']) ? $params['source'] : '@section';
-            $params['source'] .= $sectionObj->id;
-        } elseif ($params['scope'] == 'top-sectional') {
-            $params['source']  = isset($params['source']) ? $params['source'] : '@section';
-            $section = $sectionObj;
-            while ($section->parent > 0) $section = $db->selectObject("section","id=".$section->parent);
-            $params['source'] .= $section->id;            
+			// figure out the scope of the module and set the source accordingly
+			if ($params['scope'] == 'global') {
+				$params['source'] = isset($params['source']) ? $params['source'] : null;
+			} elseif ($params['scope'] == 'sectional') {
+				$params['source']  = isset($params['source']) ? $params['source'] : '@section';
+				$params['source'] .= $sectionObj->id;
+			} elseif ($params['scope'] == 'top-sectional') {
+				$params['source']  = isset($params['source']) ? $params['source'] : '@section';
+				$section = $sectionObj;
+				while ($section->parent > 0) $section = $db->selectObject("section","id=".$section->parent);
+				$params['source'] .= $section->id;
+			}
+			self::showModule(getControllerClassName($params['controller']),$params['view'],$params['title'],$params['source'],false,null,$params['chrome'],$requestvars);
+        } else {
+	        return false;
         }
-
-        self::showModule(getControllerClassName($params['controller']),$params['view'],$params['title'],$params['source'],false,null,$params['chrome'],$requestvars);
     }
 
     public function showSectionalController($params=array()) {
@@ -287,7 +297,7 @@ class expTheme {
 					$title = empty($feed->feed_title) ? 'RSS' : htmlspecialchars($feed->feed_title, ENT_QUOTES);
 					$params['module'] = $feed->module;
 					$params['src'] = $feed->src;
-					echo "\t".'<link rel="alternate" type="application/rss+xml" title="' . $title . '" href="' . exponent_core_makeRSSLink($params) . "\" />\n";
+					echo "\t".'<link rel="alternate" type="application/rss+xml" title="' . $title . '" href="' . expCore::makeRSSLink($params) . "\" />\n";
 				}
 			}
 
@@ -311,7 +321,7 @@ class expTheme {
 						$params['src'] = $module->source;
 						if (!empty($module->internal)) $params['int'] = $module->internal;
 
-						echo "\t".'<link rel="alternate" type="application/rss+xml" title="' . $title . '" href="' . exponent_core_makeRSSLink($params) . "\" />\n";
+						echo "\t".'<link rel="alternate" type="application/rss+xml" title="' . $title . '" href="' . expCore::makeRSSLink($params) . "\" />\n";
 						$feeds[$module->source] = $title;
 					}
 				}
@@ -580,7 +590,7 @@ class expTheme {
 			$config = expSession::get("themeopt_override");
 			if (in_array($module,$config['ignore_mods'])) return;
 		}
-		$loc = exponent_core_makeLocation($module,$source."");
+		$loc = expCore::makeLocation($module,$source."");
 
 		// if ($db->selectObject("locationref","module='$module' AND source='".$loc->src."'") == null) {
 			// $locref = null;
@@ -619,8 +629,8 @@ class expTheme {
 				if (!$iscontroller) {
 					if ((!$hide_menu && $loc->mod != "containermodule" && (call_user_func(array($module,"hasSources")) || $db->tableExists($loc->mod."_config")))) {
 						$container->permissions = array(
-							'administrate'=>(exponent_permissions_check('administrate',$loc) ? 1 : 0),
-							'configure'=>(exponent_permissions_check('configure',$loc) ? 1 : 0)
+							'administrate'=>(expPermissions::check('administrate',$loc) ? 1 : 0),
+							'configure'=>(expPermissions::check('configure',$loc) ? 1 : 0)
 						);
 
 						if ($container->permissions['administrate'] || $container->permissions['configure']) {
@@ -640,8 +650,8 @@ class expTheme {
 					if (!$hide_menu ) {
 						$controller = getController($module);
 						$container->permissions = array(
-							'administrate'=>(exponent_permissions_check('administrate',$loc) ? 1 : 0),
-							'configure'=>(exponent_permissions_check('configure',$loc) ? 1 : 0)
+							'administrate'=>(expPermissions::check('administrate',$loc) ? 1 : 0),
+							'configure'=>(expPermissions::check('configure',$loc) ? 1 : 0)
 						);
 
 						if ($container->permissions['administrate'] || $container->permissions['configure']) {

@@ -40,7 +40,7 @@ if (!defined('EXPONENT')) exit('');
 	$title = $_GET['title'];
 
 	$source = (isset($_GET['source']) ? $_GET['source'] : "@example");
-	$loc = exponent_core_makeLocation($module,$source,"");
+	$loc = expCore::makeLocation($module,$source,"");
 	$mod->show($view,$loc,$title);
 	?>
 	<script type="text/javascript">

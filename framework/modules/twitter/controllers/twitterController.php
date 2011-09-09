@@ -23,7 +23,7 @@ class twitterController extends expController {
     );
     
     public $remove_configs = array(
-        'aggregretion',
+        'aggregation',
         'comments',
         'files',
         'rss',

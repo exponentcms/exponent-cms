@@ -20,7 +20,7 @@
 			<!--a href="login.php">{'Administrator Login'|gettext}</a-->
 		</p>
 		<h3>{'Administrator Login'|gettext}</h3>
-		{chain module=loginmodule view=Default title="Administrators Login"|gettext}
+		{chain controller=login view=Default title="Administrators Login"|gettext}
 	</div>
 	</body>
 </html>

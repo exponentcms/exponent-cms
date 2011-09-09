@@ -65,7 +65,7 @@ class tagtreecontrol extends formcontrol {
 	}
 	
 	function toHTML($label,$name) {
-		$link = exponent_core_makeLink(array("module"=>$this->controller->baseclassname,"action"=>"edit","parent"=>0));
+		$link = expCore::makeLink(array("module"=>$this->controller->baseclassname,"action"=>"edit","parent"=>0));
 		$html = "";
         if ($this->menu == "true") {
             if ($this->addable) $html = '<a href="' . $link . '">Add a new tag</a> | ';        

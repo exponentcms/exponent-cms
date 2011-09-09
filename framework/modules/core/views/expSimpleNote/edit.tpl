@@ -41,7 +41,7 @@
 	    <div class="form_header">
     	<h1>{$formtitle}</h1>
 		<p>
-			<a href="{link module=loginmodule action=loginredirect}">You need to be logged in to add notes.</a>
+			<a href="{link controller=login action=loginredirect}">You need to be logged in to add notes.</a>
 		</p> 
 	</div>
 	{/if}

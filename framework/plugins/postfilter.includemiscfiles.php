@@ -38,20 +38,20 @@ function smarty_postfilter_includemiscfiles($compiledsource, &$smarty) {
 	ob_start();
 
 		//CSS	
-		$myCSS = exponent_core_resolveFilePaths("guess", $smarty->_tpl_vars['__name'], "css", $smarty->_tpl_vars['__view'] . "*");
+		$myCSS = expCore::resolveFilePaths("guess", $smarty->_tpl_vars['__name'], "css", $smarty->_tpl_vars['__view'] . "*");
 
 		if($myCSS != false) {
 			foreach($myCSS as $myCSSFile){
-				echo "<link rel='stylesheet' type='text/css' href='" . exponent_core_abs2rel($myCSSFile) . "'></link>\n";
+				echo "<link rel='stylesheet' type='text/css' href='" . expCore::abs2rel($myCSSFile) . "'></link>\n";
 			}
 		}
 		
 		//JavaScript
-		$myJS = exponent_core_resolveFilePaths("guess", $smarty->_tpl_vars['__name'], "js", $smarty->_tpl_vars['__view'] . "*");
+		$myJS = expCore::resolveFilePaths("guess", $smarty->_tpl_vars['__name'], "js", $smarty->_tpl_vars['__view'] . "*");
 		
 		if($myJS != false) {
 			foreach($myJS as $myJSFile){
-				echo "<script type='text/javascript' src='" . exponent_core_abs2rel($myJSFile) . "'></script>\n";
+				echo "<script type='text/javascript' src='" . expCore::abs2rel($myJSFile) . "'></script>\n";
 			}
 		}
 	

@@ -29,11 +29,13 @@ class administrationController extends expController {
 	    'clear_rss_cache'=>'Clear RSS Cache',
 	    'clear_smarty_cache'=>'Clear Smarty Cache',
 	    'configure_site'=>'Configure Site',
+	    'configure_theme'=>'Configure Theme',
 	    'delete_unused_tables'=>'Delete Unused Tables',
 	    "fix_database"=>"Fix Database",
 	    "fix_sessions"=>"Fix Sessions",
-	    "install_extenstions"=>"Install Tables",
-	    "install_tables"=>"Install Extension",
+	    "install_extension"=>"Install Extension",
+	    "install_tables"=>"Install Tables",
+	    "installTables"=>"Install Tables",
 	    'manage_themes'=>'Manage Themes',
 	    'manage_unused_tables'=>'Manage Unused Tables',
 	    'optimize_database'=>'Optimize Database',
@@ -445,7 +447,7 @@ class administrationController extends expController {
 	public function upload_extension() {
 		require_once(BASE.'framework/core/subsystems-1/forms.php');
 		$form = new form();
-		$form->register(null,'',new htmlcontrol(exponent_core_maxUploadSizeMessage()));
+		$form->register(null,'',new htmlcontrol(expCore::maxUploadSizeMessage()));
 		$form->register('mod_archive','Extension Archive',new uploadcontrol());
 		$form->register('submit','',new buttongroupcontrol(gt('Upload Extension')));
 		$form->meta('module','administration');

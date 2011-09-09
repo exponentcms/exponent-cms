@@ -43,7 +43,7 @@ if (isset($_GET['id'])) {
 }
 
 if ($question) {
-	if (exponent_permissions_check('manage_question',$loc) || exponent_permissions_check('manage_answer',$loc)) {
+	if (expPermissions::check('manage_question',$loc) || expPermissions::check('manage_answer',$loc)) {
 		expHistory::flowSet(SYS_FLOW_PROTECTED,SYS_FLOW_ACTION);
 	
 		$answers = $db->selectObjects('poll_answer','question_id='.$question->id);

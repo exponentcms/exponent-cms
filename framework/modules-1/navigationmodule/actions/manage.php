@@ -19,7 +19,7 @@
 
 if (!defined('EXPONENT')) exit('');
 
-if (exponent_permissions_checkOnModule('manage','navigationmodule')) {
+if (expPermissions::check('manage','navigationmodule')) {
     global $user;
 	expHistory::flowSet(SYS_FLOW_PROTECTED, SYS_FLOW_ACTION);
 	

@@ -20,7 +20,7 @@
 			<h1 id="logo">
 				<a href="<?php echo URL_FULL; ?>" title="<?php echo SITE_TITLE; ?>"><?php echo ORGANIZATION_NAME; ?></a> <sub><?php echo SITE_HEADER; ?></sub>
 			</h1>
-			<?php expTheme::module(array("module"=>"login","view"=>"FlyoutYUI")); ?>
+			<?php expTheme::showController(array("controller"=>"login","action"=>"showlogin","view"=>"showlogin_flyoutYUI")); ?>
 			<?php expTheme::module(array("module"=>"navigation","view"=>"YUI Top Nav","source"=>"@top")); ?>
 		</div>
 		<div id="content-wrap">
@@ -33,7 +33,7 @@
 		</div>
 	</div>
 	<div id="footer">
-		<?php expTheme::module(array("controller"=>"text","action"=>"showall","view"=>"single","source"=>"@footer","chrome"=>1)) ?>
+		<?php expTheme::showController(array("controller"=>"text","action"=>"showall","view"=>"single","source"=>"@footer","chrome"=>1)) ?>
 	</div>
     <?php expTheme::foot(); ?>
 </body>

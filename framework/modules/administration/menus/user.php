@@ -57,7 +57,7 @@ return array(
             ),
             array(
                 'text'=>gt("Log Out"),
-                'url'=>makeLink(array('module'=>'loginmodule','action'=>'logout')),
+                'url'=>makeLink(array('controller'=>'login','action'=>'logout')),
                 'classname'=>'logout',
             ),
             array(

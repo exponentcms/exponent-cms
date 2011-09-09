@@ -27,7 +27,7 @@ if (isset($_GET['id'])) {
 
 if ($ctl) {
 	$f = $db->selectObject('formbuilder_form','id='.$ctl->form_id);
-	if (exponent_permissions_check('editform',unserialize($f->location_data))) {
+	if (expPermissions::check('editform',unserialize($f->location_data))) {
 		$db->delete('formbuilder_control','id='.$ctl->id);
 		$db->decrement('formbuilder_control','rank',1,'form_id='.$ctl->form_id.' AND rank > ' . $ctl->rank);
 		

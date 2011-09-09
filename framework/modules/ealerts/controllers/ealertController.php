@@ -22,7 +22,7 @@ class ealertController extends expController {
     public $useractions = array('showall'=>'Show all modules available for signup');
 	
 	public $remove_configs = array(
-        'aggregretion',
+        'aggregation',
         'comments',
         'files',
         'rss',

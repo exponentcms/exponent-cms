@@ -275,7 +275,7 @@ class user extends expRecord {
 	 *
 	 * @param string $name The username of the user account to retrieve.
 	 * @return array
-	 * @node Subsystems:Users
+	 * @node Model:User
 	 */
 	public static function getUserByName($name) {
 		global $db;
@@ -300,7 +300,7 @@ class user extends expRecord {
 	 *
 	 * @param integer $uid The id of the user account to retrieve.
 	 * @return array
-	 * @node Subsystems:Users
+	 * @node Model:User
 	 */
 	public static function getUserById($uid) {
 		// Pull in the exclusive global variable $SYS_USERS_CACHE

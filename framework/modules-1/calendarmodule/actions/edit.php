@@ -33,13 +33,13 @@ if (isset($_GET['id'])) {
 		$item->eventstart += $item->eventdate->date;
 		$item->eventend += $item->eventdate->date;
 		$loc = unserialize($item->location_data);
-		$iloc = exponent_core_makeLocation($loc->mod,$loc->src,$item->id);
+		$iloc = expCore::makeLocation($loc->mod,$loc->src,$item->id);
 	}
 }
 
-if (($item == null && exponent_permissions_check('post',$loc)) ||
-	($item != null && exponent_permissions_check('edit',$loc)) ||
-	($iloc != null && exponent_permissions_check('edit',$iloc))
+if (($item == null && expPermissions::check('post',$loc)) ||
+	($item != null && expPermissions::check('edit',$loc)) ||
+	($iloc != null && expPermissions::check('edit',$iloc))
 ) {
 	$form = calendar::form($item);
 	$form->meta('action','save');

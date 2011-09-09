@@ -41,7 +41,7 @@ if (isset($_GET['parent'])) {
 
 // Check to see that A) a parent ID was passed in GET, and B) the id was valid
 if ($parent) {
-	if (exponent_permissions_check('manage',exponent_core_makeLocation('navigationmodule','',$parent->id))) {
+	if (expPermissions::check('manage',expCore::makeLocation('navigationmodule','',$parent->id))) {
 		// For this action, all we need to do is output a basically
 		// non-variable template the asks the user what type of page
 		// they want to add to the site Navigation.

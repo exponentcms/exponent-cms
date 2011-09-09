@@ -52,7 +52,7 @@ $all_events = calendarmodule::_getEventsForDates($dates);
 $viewing_tag = $db->selectObject('tags', "id=".intval($_REQUEST['id']));
 $events = array();
 for ($i = 0; $i < count($all_events); $i++) {
-	$ploc = exponent_core_makeLocation($loc->mod,$loc->src,$all_events[$i]->id);
+	$ploc = expCore::makeLocation($loc->mod,$loc->src,$all_events[$i]->id);
 	$not_there = true;
 	$tags = unserialize($all_events[$i]->tags);
 	$selected_tags = $db->selectObjectsInArray('tags', $tags);
@@ -64,9 +64,9 @@ for ($i = 0; $i < count($all_events); $i++) {
 		$event = $all_events[$i];
 		$event->selected_tags = $selected_tags;
 		$event->permissions = array(
-			"administrate"=>(exponent_permissions_check("administrate",$ploc) || exponent_permissions_check("administrate",$loc)),
-			"edit"=>(exponent_permissions_check("edit",$ploc) || exponent_permissions_check("edit",$loc)),
-			"delete"=>(exponent_permissions_check("delete",$ploc) || exponent_permissions_check("delete",$loc))
+			"administrate"=>(expPermissions::check("administrate",$ploc) || expPermissions::check("administrate",$loc)),
+			"edit"=>(expPermissions::check("edit",$ploc) || expPermissions::check("edit",$loc)),
+			"delete"=>(expPermissions::check("delete",$ploc) || expPermissions::check("delete",$loc))
 		);
 		array_push($events, $event);
 	}

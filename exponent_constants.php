@@ -167,6 +167,59 @@ define("SYS_FILES_NOTDELETABLE",	5);
  */
 define('EQL_HEADER','EQL-Exponent Query Language');
 
+/** exdoc
+ * UI Level of Preview - No management links of any kind should be shown.
+ * @node Subsystems:Permissions
+ */
+define('UILEVEL_PREVIEW',0);
+
+/** exdoc
+* UI Level of Normal - Only normal management links (edit, delete, etc.) should be shown.
+* @node Subsystems:Permissions
+*/
+define('UILEVEL_NORMAL',1);
+
+/** exdoc
+* UI Level of Permissions - Permission Management links (user and group perms) should be shown.
+* @node Subsystems:Permissions
+*/
+define('UILEVEL_PERMISSIONS',2);
+
+/** exdoc
+* UI Level of Structure - All management links are shown.
+* @node Subsystems:Permissions
+*/
+define('UILEVEL_STRUCTURE',3);
+
+/* exdoc
+ * This constant can (and should) be used by other parts of the system
+ * for defining and communicating an extension type of module.
+ * @node Subsystems:Core
+ */
+define("CORE_EXT_MODULE",1);
+
+/* exdoc
+ * This constant can (and should) be used by other parts of the system
+ * for defining and communicating an extension type of theme.
+ * @node Subsystems:Core
+ */
+define("CORE_EXT_THEME",2);
+
+/* exdoc
+ * This constant can (and should) be used by other parts of the system
+ * for defining and communicating an extension type of subsystem.
+ * @node Subsystems:Core
+ */
+define("CORE_EXT_SUBSYSTEM",3);
+
+/* exdoc
+ * This constant can (and should) be used by other parts of the system
+ * for defining and communicating an 'extension type' to represent the
+ * whole system
+ * @node Subsystems:Core
+ */
+define("CORE_EXT_SYSTEM",4);
+
 // Determines platform (OS), browser and version of the user
 // Based on a phpBuilder article:
 //   see http://www.phpbuilder.net/columns/tim20000821.php

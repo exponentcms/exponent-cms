@@ -22,7 +22,7 @@ class rssController extends expController {
     public $useractions = array('showall'=>'Show all RSS Feeds');
 
 	public $remove_configs = array(
-        'aggregretion',
+        'aggregation',
         'comments',
         'files',
         //'rss',

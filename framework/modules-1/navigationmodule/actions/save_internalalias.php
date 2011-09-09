@@ -35,7 +35,7 @@ if (isset($_POST['id'])) {
 	$check_id = $_POST['parent'];
 }
 
-if ($check_id != -1 && exponent_permissions_check('manage',exponent_core_makeLocation('navigationmodule','',$check_id))) {
+if ($check_id != -1 && expPermissions::check('manage',expCore::makeLocation('navigationmodule','',$check_id))) {
 	// Update the section from the _POST data.
 	$section = section::updateInternalAlias($_POST,$section);
 	if ($section->active == 0) {

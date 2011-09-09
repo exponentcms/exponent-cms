@@ -21,7 +21,7 @@
 
 if (!defined('EXPONENT')) exit('');
 
-if (exponent_permissions_check('extensions',exponent_core_makeLocation('administrationmodule'))) {
+if (expPermissions::check('extensions',expCore::makeLocation('administrationmodule'))) {
 	expHistory::flowSet(SYS_FLOW_PROTECTED,SYS_FLOW_ACTION);
 	
 	// get new bots into the database

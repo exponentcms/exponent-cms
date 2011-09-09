@@ -24,17 +24,17 @@ expHistory::flowSet(SYS_FLOW_PUBLIC,SYS_FLOW_ACTION);
 $item = $db->selectObject("calendar","id=" . intval($_GET['id']));
 if ($item) {
 	$loc = unserialize($item->location_data);
-	$iloc = exponent_core_makeLocation($loc->mod,$loc->src,$item->id);
+	$iloc = expCore::makeLocation($loc->mod,$loc->src,$item->id);
 	$item->permissions = array(
-		"edit"=>(exponent_permissions_check("edit",$iloc) || exponent_permissions_check("edit",$loc)),
-		"delete"=>(exponent_permissions_check("delete",$iloc) || exponent_permissions_check("delete",$loc)),
-		"administrate"=>(exponent_permissions_check("administrate",$iloc) || exponent_permissions_check("administrate",$loc)),
+		"edit"=>(expPermissions::check("edit",$iloc) || expPermissions::check("edit",$loc)),
+		"delete"=>(expPermissions::check("delete",$iloc) || expPermissions::check("delete",$loc)),
+		"administrate"=>(expPermissions::check("administrate",$iloc) || expPermissions::check("administrate",$loc)),
 	);
 	// Debugger test
 	$item->permissions = array(
-		"edit"=>exponent_permissions_check("edit",$iloc),
-		"delete"=>exponent_permissions_check("delete",$iloc),
-		"administrate"=>exponent_permissions_check("administrate",$iloc)
+		"edit"=>expPermissions::check("edit",$iloc),
+		"delete"=>expPermissions::check("delete",$iloc),
+		"administrate"=>expPermissions::check("administrate",$iloc)
 	);
 
 	$eventdate = $db->selectObject("eventdate","id=".intval($_GET['date_id']));

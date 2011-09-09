@@ -109,7 +109,7 @@ class expController {
         }
         
         // set the location data
-        $this->loc = exponent_core_makeLocation($this->baseclassname, $src, null);
+        $this->loc = expCore::makeLocation($this->baseclassname, $src, null);
 
         // get this controllers config data if there is any
         $config = new expConfig($this->loc);

@@ -25,7 +25,7 @@ $orphans = array();
 //foreach ($db->selectObjects("locationref","refcount=0", "module") as $orphan) {
 foreach ($db->selectObjects("sectionref","refcount=0", "module") as $orphan) {
 	$obj = null;
-	$loc = exponent_core_makeLocation($orphan->module,$orphan->source,$orphan->internal);
+	$loc = expCore::makeLocation($orphan->module,$orphan->source,$orphan->internal);
 	eDebug($orphan);	
 }
 

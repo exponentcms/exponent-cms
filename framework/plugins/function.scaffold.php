@@ -43,7 +43,7 @@ function smarty_function_scaffold($params,&$smarty) {
             		switch ($col[FORM_FIELD_FILTER]) {
 		            	case MONEY:
                			case DECIMAL_MONEY:
-            	    		$ctl['value'] = exponent_core_getCurrencySymbol('USD') . number_format($ctl['value'],2,'.',',');
+            	    		$ctl['value'] = expCore::getCurrencySymbol('USD') . number_format($ctl['value'],2,'.',',');
               	    		$ctl['filter'] = 'money';
                			break;
            			}

@@ -40,7 +40,7 @@ $check_id = -1;
 		//$section->parent = $db->selectObject('section','parent='.intval($_GET['parent']));
 	}
 
-	if (exponent_permissions_check('manage',exponent_core_makeLocation('navigationmodule','',$check_id))) {	
+	if (expPermissions::check('manage',expCore::makeLocation('navigationmodule','',$check_id))) {
 		$form = section::form($section);
 		$form->meta('module','navigationmodule');
 		$form->meta('action','save_contentpage');

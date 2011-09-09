@@ -43,7 +43,7 @@ class group extends expRecord {
 	 *
 	 * @param integer $gid The id of the group account to retrieve.
 	 * @return object
-	 * @node Subsystems:Users
+	 * @node Model:Group
 	 */
 	public static function getGroupById($gid) {
 	//anonymous group -- NOT YET IMPLEMENTED
@@ -70,7 +70,7 @@ class group extends expRecord {
 	 *
 	 * @param Object $g The group object to obtain a member list for.
 	 * @return array
-	 * @node Subsystems:Users
+	 * @node Model:Group
 	 */
 	public static function getUsersInGroup($g) {
 		global $db;
@@ -101,7 +101,7 @@ class group extends expRecord {
 	 *
 	 * @param integer $name The name of the group account to retrieve.
 	 * @return array
-	 * @node Subsystems:Users
+	 * @node Model:Group
 	 */
 	public static function getGroupByName($name) {
 		global $db;
@@ -117,7 +117,7 @@ class group extends expRecord {
 	 * @param bool|int $allow_exclusive Whether or not to include exclusive groups in the returned list.
 	 * @param bool|int $allow_inclusive Whether or not to include inclusive groups in the returned list.
 	 * @return array
-	 * @node Subsystems:Users
+	 * @node Model:Group
 	 */
 	public static function getAllGroups($allow_exclusive=1,$allow_inclusive=1) {
 		global $db;

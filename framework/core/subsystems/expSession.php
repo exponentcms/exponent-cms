@@ -18,7 +18,7 @@
 /**
  * This is the class expSession
  *
- * @subpackage Core-Subsytems
+ * @subpackage Core-Subssytems
  * @package Framework
  */
 
@@ -183,7 +183,7 @@ class expSession {
 		}
 
 		if (isset($ticket->refresh) && $ticket->refresh == 1) {
-			if (isset($user)) exponent_permissions_load($user);
+			if (isset($user)) expPermissions::load($user);
 			self::clearCurrentUserSessionCache();
 			$ticket->refresh = 0;
 		}
@@ -271,7 +271,7 @@ class expSession {
 		if (!isset($ticket)) $ticket = self::createTicket($user);
 		$_SESSION[SYS_SESSION_KEY]['user'] = $user;
 		self::updateTicket($ticket, $user);
-		exponent_permissions_load($user);
+		expPermissions::load($user);
 	}
 
 	/** exdoc
@@ -287,7 +287,7 @@ class expSession {
 		unset($_SESSION[SYS_SESSION_KEY]['user']);
 		unset($_SESSION[SYS_SESSION_KEY]['ticket']);
 		//unset($_SESSION[SYS_SESSION_KEY]['vars']);
-		exponent_permissions_clear();
+		self::un_set("permissions");
 		//redirect_to(array('section'=>SITE_DEFAULT_SECTION));
 	}
 

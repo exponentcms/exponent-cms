@@ -29,7 +29,7 @@ require_once('exponent.php');
 // Initialize the theme subsystem 1.0 compatibility layer
 require_once(BASE.'framework/core/subsystems-1/theme.php');
 
-$loc = exponent_core_makeLocation(
+$loc = expCore::makeLocation(
 	(isset($_GET['module'])?$_GET['module']:''),
 	(isset($_GET['src'])?$_GET['src']:''),
 	(isset($_GET['int'])?$_GET['int']:'')

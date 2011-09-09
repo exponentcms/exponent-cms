@@ -20,7 +20,7 @@
 if (!defined('EXPONENT')) exit('');
 
 //if ($user->is_acting_admin == 1) {
-if (exponent_permissions_check('manage',exponent_core_makeLocation('navigationmodule','',intval($_GET['id'])))) {
+if (expPermissions::check('manage',expCore::makeLocation('navigationmodule','',intval($_GET['id'])))) {
 	$section = $db->selectObject('section','id='.intval($_GET['id']));
 	if ($section) {
 		navigationmodule::removeLevel($section->id);

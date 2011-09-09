@@ -19,7 +19,7 @@
 
 if (!defined('EXPONENT')) exit('');
 
-if (exponent_permissions_check('manage',exponent_core_makeLocation('navigationmodule','',intval($_GET['parent'])))) {
+if (expPermissions::check('manage',expCore::makeLocation('navigationmodule','',intval($_GET['parent'])))) {
 	$db->switchValues('section','rank',intval($_GET['a']),intval($_GET['b']),'parent=' . intval($_GET['parent']));
 	expSession::clearAllUsersSessionCache('navigationmodule');
 	expHistory::back();

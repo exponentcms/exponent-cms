@@ -19,7 +19,7 @@
 
 if (!defined('EXPONENT')) exit('');
 
-if (exponent_permissions_check('configure',$loc)) {
+if (expPermissions::check('configure',$loc)) {
 	$config = $db->selectObject($_POST['module'].'_config',"location_data='".serialize($loc)."'");
 	$config = call_user_func(array($_POST['module'].'_config','update'),$_POST,$config);
 	$config->location_data = serialize($loc);

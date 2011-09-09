@@ -18,7 +18,7 @@
 /**
  * This is the class expModules
  *
- * @subpackage Core-Subsytems
+ * @subpackage Core-Subsystems
  * @package Framework
  */
 
