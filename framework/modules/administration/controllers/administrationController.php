@@ -740,7 +740,10 @@ class administrationController extends expController {
 	    $langs = expLang::langList();
 //        ksort($langs);
 
-        // attribution 
+        // smtp protocol
+        $protocol = array('ssl'=>'SSL','tls'=>'TLS');
+
+        // attribution
         $attribution = array('firstlast'=>'John Doe','lastfirst'=>'Doe, John','first'=>'John','username'=>'jdoe');
         
         // These funcs need to be moved up in to new subsystems
@@ -798,6 +801,7 @@ class administrationController extends expController {
                                 'as_themes'=>$as_themes,
                                 'themes'=>$themes,
                                 'langs'=>$langs,
+                                'protocol'=>$protocol,
                                 'attribution'=>$attribution,
                                 'datetime_format'=>$datetime_format,
                                 'date_format'=>$date_format,

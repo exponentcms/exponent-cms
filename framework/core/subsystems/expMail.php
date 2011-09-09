@@ -88,7 +88,7 @@ class expMail {
 							$this->transport = Swift_SmtpTransport::newInstance($params['connections']['host'], $params['connections']['port']);
 						}
 					} else {
-						$this->transport = Swift_SmtpTransport::newInstance(SMTP_SERVER, SMTP_PORT)
+						$this->transport = Swift_SmtpTransport::newInstance(SMTP_SERVER, SMTP_PORT, SMTP_PROTOCOL)
 								->setUsername(SMTP_USERNAME)
 								->setPassword(SMTP_PASSWORD);
 					}
@@ -139,7 +139,7 @@ class expMail {
 					$this->transport = Swift_SmtpTransport::newInstance($params['connections']['host'], $params['connections']['port']);
 				}
 			} else {
-				$this->transport = Swift_SmtpTransport::newInstance(SMTP_SERVER, SMTP_PORT)
+				$this->transport = Swift_SmtpTransport::newInstance(SMTP_SERVER, SMTP_PORT, SMTP_PROTOCOL)
 						->setUsername(SMTP_USERNAME)
 						->setPassword(SMTP_PASSWORD);
 			}
