@@ -3206,9 +3206,9 @@ class upload {
                         for ($x = 0; $x < $this->image_dst_x; $x++) {
                             for ($y = 0; $y < $this->image_dst_y; $y++){
                                 if (strpos($this->image_flip, 'v') !== false) {
-                                    imagecopy($tmp, $image_dst, $this->image_dst_x - $x - 1, $y, $x, $y, 1, 1);
+	                                imagecopy($tmp, $image_dst, $x, $this->image_dst_y - $y - 1, $x, $y, 1, 1);
                                 } else {
-                                    imagecopy($tmp, $image_dst, $x, $this->image_dst_y - $y - 1, $x, $y, 1, 1);
+	                                imagecopy($tmp, $image_dst, $this->image_dst_x - $x - 1, $y, $x, $y, 1, 1);
                                 }
                             }
                         }
