@@ -18,7 +18,7 @@
 #
 ##################################################
 
-class shopzilla_product_types extends expNestedNode {
+class shopzilla_product_types extends product_type {
 	public $table = 'shopzilla_product_types';
 	
 	public function __construct($params=array(), $get_assoc=true, $get_attached=true) {
@@ -27,24 +27,6 @@ class shopzilla_product_types extends expNestedNode {
 
 	}
 	
-	public function saveCategories($catArray, $cat_id) {
-	
-        global $db;
-        // We need to reset the current category
-		$db->delete('shopzilla_product_types_storeCategories', 'storecategories_id ='.$cat_id);
-			
-		if(count($catArray) > 0) {
-			foreach($catArray as $item) {
-				if($item <> 0) {
-					$assoc->storecategories_id  = $cat_id;
-					$assoc->shopzilla_product_types_id = $item;
-					$db->insertObject($assoc, 'shopzilla_product_types_storeCategories');    
-				}
-			}
-		}
-		
-    }
-
 }
 
 ?>

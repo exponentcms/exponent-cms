@@ -164,17 +164,11 @@ class storeCategoryController extends expNestedNodeController {
     
     public function update() {
 		$product_types = ecomconfig::getConfig('product_types');
-		// eDebug($this->params['google_product_types'], true);
-		// eDebug($this->params, true);
 		
 		foreach($product_types as $key => $value) {
 			$this->params["{$value}s"] = listbuildercontrol::parseData($this->params,"{$value}s_list");
 		}
-		// $this->params['bing_product_types']   = listbuildercontrol::parseData($this->params,'bing_product_types_list');
-		// $this->params['nextag_product_types']   = listbuildercontrol::parseData($this->params,'nextag_product_types_list');
-		// $this->params['shopzilla_product_types']  = listbuildercontrol::parseData($this->params,'shopzilla_product_types_list');
-		// $this->params['shopping_product_types']  = listbuildercontrol::parseData($this->params,'shopping_product_types_list');
-		
+
         $curcat = new storeCategory($this->params);
         $children = $curcat->getChildren();
         foreach ($children as $key=>$child) {
@@ -184,25 +178,11 @@ class storeCategoryController extends expNestedNodeController {
         }
 		
 		foreach($product_types as $key => $value) {
-			$category_type = $value . 's';
-			$product_type = new $category_type();
-			$product_type->saveCategories($this->params["{$value}s"], $curcat->id); 
+			$type = $value . 's';
+			$product_type = new $type();
+			$product_type->saveCategories($this->params["{$type}"], $curcat->id, $type); 
 		}
-		// $category_type = 'bing_product_types';
-		// $bing_product_type = new $category_type();
-		// $bing_product_type->saveCategories($this->params['bing_product_types'], $curcat->id); 
 		
-		// $category_type = 'nextag_product_types';
-		// $nextag_product_type = new $category_type();
-		// $nextag_product_type->saveCategories($this->params['nextag_product_types'], $curcat->id);
-		
-		// $category_type = 'shopzilla_product_types';
-		// $shopzilla_product_type = new $category_type();
-		// $shopzilla_product_type->saveCategories($this->params['shopzilla_product_types'], $curcat->id);
-		
-		// $category_type = 'shopping_product_types';
-		// $shopping_product_type = new $category_type();
-		// $shopping_product_type->saveCategories($this->params['shopping_product_types'], $curcat->id);
 		
          parent::update();
     }

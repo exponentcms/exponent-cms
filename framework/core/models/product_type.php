@@ -18,8 +18,7 @@
 #
 ##################################################
 
-class pricegrabber_product_types extends product_type {
-	public $table = 'pricegrabber_product_types';
+class product_type extends expNestedNode {
 	
 	public function __construct($params=array(), $get_assoc=true, $get_attached=true) {
 		global $db;
@@ -27,6 +26,25 @@ class pricegrabber_product_types extends product_type {
 
 	}
 	
+	public function saveCategories($catArray, $cat_id, $type) {
+	
+        global $db;
+		$product_type_id = $type . "_id";
+        // We need to reset the current category
+		$db->delete("{$type}_storeCategories", "storecategories_id =".$cat_id);
+			
+		if(count($catArray) > 0) {
+			foreach($catArray as $item) {
+				if($item <> 0) {
+					$assoc->storecategories_id  = $cat_id;
+					$assoc->$product_type_id    = $item;
+					$db->insertObject($assoc, "{$type}_storeCategories");    
+				}
+			}
+		}
+		
+    }
+
 }
 
 ?>
