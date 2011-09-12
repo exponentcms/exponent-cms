@@ -52,9 +52,14 @@ class expTheme {
 			define('THEME_RELATIVE',PATH_RELATIVE.'themes/'.DISPLAY_THEME.'/');
 		}
 		if (defined('DISPLAY_THEME')) {
-			if (THEME_STYLE!="" && file_exists(BASE.'themes/'.DISPLAY_THEME.'/config_'.THEME_STYLE.'.php')){
-  			  @include_once(BASE.'themes/'.DISPLAY_THEME.'/config_'.THEME_STYLE.'.php');  
-			} else if (file_exists(BASE.'themes/'.DISPLAY_THEME.'/config.php')) {
+			
+			if (defined('THEME_STYLE')) {
+				if (file_exists(BASE.'themes/'.DISPLAY_THEME.'/config_'.THEME_STYLE.'.php')){
+				  @include_once(BASE.'themes/'.DISPLAY_THEME.'/config_'.THEME_STYLE.'.php');  
+				}
+			}
+			
+			if (file_exists(BASE.'themes/'.DISPLAY_THEME.'/config.php')) {
   			  @include_once(BASE.'themes/'.DISPLAY_THEME.'/config.php');  
 			} 
 		}
