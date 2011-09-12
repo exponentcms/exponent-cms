@@ -1,4 +1,4 @@
-{css unique="login" link="../../assets/css/login.css"}
+{css unique="login" link="`$asset_path`css/login.css"}
 
 {/css}
 
