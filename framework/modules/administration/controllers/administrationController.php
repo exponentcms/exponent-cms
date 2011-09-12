@@ -645,35 +645,17 @@ class administrationController extends expController {
     public function switch_themes() {
     	expSettings::change('DISPLAY_THEME_REAL', $this->params['theme']);
 	    expSession::set('display_theme',$this->params['theme']);
-    	if (isset($this->params['sv'])) {
-    	    if (strtolower($this->params['sv'])=='default') {
-    	       $this->params['sv']='';
-    	    }
-            expSettings::change('THEME_STYLE_REAL', $this->params['sv']);
-            // if (expFile::recurse_copy(BASE."themes/".$this->params['theme']."/css", BASE."themes/".$this->params['theme']."/styles_backup/css")
-            //     && expFile::recurse_copy(BASE."themes/".$this->params['theme']."/images", BASE."themes/".$this->params['theme']."/styles_backup/images")) {
-            // 
-            //              if (!expFile::recurse_copy(BASE."themes/".$this->params['theme']."/css_".$this->params['sv'], BASE."themes/".$this->params['theme']."/css")) {
-            //                     flash('error',gt('Couldn\'t copy ') . "css_".$this->params['sv']);
-            //              }
-            //              if (!expFile::recurse_copy(BASE."themes/".$this->params['theme']."/images_".$this->params['sv'], BASE."themes/".$this->params['theme']."/images")) {
-            //                     flash('error',gt('Couldn\'t copy ') . "images_".$this->params['sv']);
-            //              }
-            // 
-            //                 flash('message',gt('Your website\'s theme has been updated'));
-            // } else {
-            //                 flash('error',gt('Exponent could not not switch your theme style variation because it was unable to back up your current css and images directories. Create a directory called styles_backup within your theme, and try again.'));
-            // }
-            //copy(BASE."themes/".DISPLAY_THEME_REAL."/css_".$this->params['sv'], BASE."themes/".DISPLAY_THEME_REAL."/css");
-            //copy(BASE."themes/".DISPLAY_THEME_REAL."css_".$this->params['sv'], BASE."themes/".DISPLAY_THEME_REAL."css")
-    	} else {
-		    expSettings::change('THEME_STYLE_REAL', '');
+	    $sv = isset($this->params['sv'])?$this->params['sv']:'';
+	    if (strtolower($sv)=='default') {
+	       $sv = '';
 	    }
-     
+	    expSettings::change('THEME_STYLE_REAL',$sv);
+	    expSession::set('theme_style',$sv);
+
         // $message = (MINIFY != 1) ? "Exponent is now minifying Javascript and CSS" : "Exponent is no longer minifying Javascript and CSS" ;
         // flash('message',$message);
 	    $message = "You have selected the '".$this->params['theme']."' theme";
-	    if ($this->params['sv']) {
+	    if ($sv != '') {
 		    $message .= ' with '.$this->params['sv'].' style variation';
 	    }
 	    flash('message',$message);
