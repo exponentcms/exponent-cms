@@ -145,6 +145,10 @@ class expSession {
 		{
 			define('DISPLAY_THEME',$_SESSION[SYS_SESSION_KEY]['vars']['display_theme']);
 		}
+		if (isset($_SESSION[SYS_SESSION_KEY]['vars']['theme_style']))
+		{
+			define('THEME_STYLE',$_SESSION[SYS_SESSION_KEY]['vars']['theme_style']);
+		}
 	}
 
 	/** exdoc

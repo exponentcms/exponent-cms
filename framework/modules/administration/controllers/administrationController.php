@@ -645,11 +645,11 @@ class administrationController extends expController {
     public function switch_themes() {
     	expSettings::change('DISPLAY_THEME_REAL', $this->params['theme']);
 	    expSession::set('display_theme',$this->params['theme']);
-    	if (isset($this->params['sv']) && THEME_STYLE!=$this->params['sv']) {
+    	if (isset($this->params['sv'])) {
     	    if (strtolower($this->params['sv'])=='default') {
     	       $this->params['sv']='';
     	    }
-            expSettings::change('THEME_STYLE', $this->params['sv']);
+            expSettings::change('THEME_STYLE_REAL', $this->params['sv']);
             // if (expFile::recurse_copy(BASE."themes/".$this->params['theme']."/css", BASE."themes/".$this->params['theme']."/styles_backup/css")
             //     && expFile::recurse_copy(BASE."themes/".$this->params['theme']."/images", BASE."themes/".$this->params['theme']."/styles_backup/images")) {
             // 
@@ -666,20 +666,33 @@ class administrationController extends expController {
             // }
             //copy(BASE."themes/".DISPLAY_THEME_REAL."/css_".$this->params['sv'], BASE."themes/".DISPLAY_THEME_REAL."/css");
             //copy(BASE."themes/".DISPLAY_THEME_REAL."css_".$this->params['sv'], BASE."themes/".DISPLAY_THEME_REAL."css")
-    	}
+    	} else {
+		    expSettings::change('THEME_STYLE_REAL', '');
+	    }
      
         // $message = (MINIFY != 1) ? "Exponent is now minifying Javascript and CSS" : "Exponent is no longer minifying Javascript and CSS" ;
         // flash('message',$message);
+	    $message = "You have selected the '".$this->params['theme']."' theme";
+	    if ($this->params['sv']) {
+		    $message .= ' with '.$this->params['sv'].' style variation';
+	    }
+	    flash('notice',$message);
     	expHistory::returnTo('manageable');
     }	
     
 	public function preview_theme() {
 		expSession::set('display_theme',$this->params['theme']);
-//		if (DISPLAY_THEME_REAL == $this->params['theme']){
-//			expSession::set('display_theme',$this->params['theme']);
-//		}
-		if ($this->params['theme'] != DISPLAY_THEME_REAL) {
-			flash('notice', "You are previewing the '".$this->params['theme']."' theme.");
+		$sv = isset($this->params['sv'])?$this->params['sv']:'';
+		if (strtolower($sv)=='default') {
+		   $sv = '';
+		}
+		expSession::set('theme_style',$sv);
+		$message = "You are previewing the '".$this->params['theme']."' theme";
+		if ($sv) {
+			$message .= ' with '.$sv.' style variation';
+		}
+		if ($this->params['theme'] != DISPLAY_THEME_REAL || $this->params['sv'] != THEME_STYLE_REAL) {
+			flash('notice',$message);
 		}
 		expTheme::removeSmartyCache();
 		expHistory::back();
@@ -861,11 +874,19 @@ class theme {
 	 * and presents the values as text boxes.
 	 */
 	function configureTheme () {
-		$settings = expSettings::parseFile(BASE."themes/".$_GET['theme']."/config.php");
+		if (isset($_GET['sv']) && $_GET['sv'] != '') {
+			if (strtolower($_GET['sv'])=='default') {
+			   $_GET['sv']='';
+			}
+			$settings = expSettings::parseFile(BASE."themes/".$_GET['theme']."/config_".$_GET['sv'].".php");
+		} else {
+			$settings = expSettings::parseFile(BASE."themes/".$_GET['theme']."/config.php");
+		}
 		$form = new form();
 		$form->meta('controller','administration');
 		$form->meta('action','update_theme');
 		$form->meta('theme',$_GET['theme']);
+		$form->meta('sv',isset($_GET['sv'])?$_GET['sv']:'');
 		foreach ($settings as $setting=>$key) {
 			$form->register($setting,$setting.': ',new textcontrol($key,20));
 		}
@@ -885,6 +906,11 @@ class theme {
 	function saveThemeConfig ($params) {
 		$theme = $params['theme'];
 		unset ($params['theme']);
+		$sv = $params['sv'];
+		if (strtolower($sv)=='default') {
+		   $sv='';
+		}
+		unset ($params['sv']);
 		unset ($params['controller']);
 		unset ($params['action']);
 		foreach ($params as $key=>$value) {
@@ -892,7 +918,11 @@ class theme {
 				unset ($params[$key]);
 			}
 		}
-		expSettings::saveValues($params, BASE."themes/".$theme."/config.php");
+		if ($params['sv'] != '') {
+			expSettings::saveValues($params, BASE."themes/".$theme."/config_".$sv.".php");
+		} else {
+			expSettings::saveValues($params, BASE."themes/".$theme."/config.php");
+		}
 		expHistory::back();
 	}
 }
