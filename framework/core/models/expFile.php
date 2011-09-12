@@ -414,7 +414,7 @@ class expFile extends expRecord {
 		// At this point, we are good to go.
 		
         // Create a new expFile Object for further processing
-        $_fileParams = array ('filename'  => $_destFile);
+        $_fileParams = array ('filename'  => $_destFile, 'directory' => $_destDir);
         $_objFile = new expFile ( $_fileParams);
 
         // Insert new File Record
