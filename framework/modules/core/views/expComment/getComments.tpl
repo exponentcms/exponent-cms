@@ -37,14 +37,19 @@
 			<li class="comment">
 				<cite>
 					<span class="attribution">
-						{*<a href="{link controller=users action=user_profile id=$cmt->poster}">{$cmt->name}</a> *}
-						{$cmt->name} says
+						
+						{if $cmt->name != ''}
+							<a href="{link controller=users action=user_profile id=$cmt->poster}">{$cmt->name}</a>
+						{else}
+							<a href="{link controller=users action=user_profile id=$cmt->poster}">{$cmt->username}</a>
+						{/if}
+						
+						{*$cmt->name *} says
 					</span>
 					<span class="comment-date">{$cmt->created_at|format_date:$smarty.const.DISPLAY_DATE_FORMAT}</span>
 				</cite>
 				<div class="comment-text bodycopy">	
-					{*avatar userid=$cmt->poster w=100  <-- we'll get back to you*}
-					
+					{img src=$cmt->image h=80}   
 					{permissions}
 					<div class="item-actions">
 						{if $permissions.manage == 1}
