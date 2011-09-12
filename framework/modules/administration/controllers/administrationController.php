@@ -676,7 +676,7 @@ class administrationController extends expController {
 	    if ($this->params['sv']) {
 		    $message .= ' with '.$this->params['sv'].' style variation';
 	    }
-	    flash('notice',$message);
+	    flash('message',$message);
     	expHistory::returnTo('manageable');
     }	
     
