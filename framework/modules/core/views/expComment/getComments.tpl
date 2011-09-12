@@ -39,9 +39,9 @@
 					<span class="attribution">
 						
 						{if $cmt->name != ''}
-							<a href="{link controller=users action=user_profile id=$cmt->poster}">{$cmt->name}</a>
+							{$cmt->name}
 						{else}
-							<a href="{link controller=users action=user_profile id=$cmt->poster}">{$cmt->username}</a>
+							{$cmt->username}
 						{/if}
 						
 						{*$cmt->name *} says
