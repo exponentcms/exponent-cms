@@ -172,15 +172,17 @@ class newsController extends expController {
     
     private function mergeRssData($items) {
         if (!empty($this->config['pull_rss'])) {    
-            if (isset($this->config['rss_cachetime']) && $this->config['rss_cachetime'] != 3600) {
-	            define('MAGPIE_CACHE_AGE', $this->config['rss_cachetime']);
-            } else {
-				if (!defined('MAGPIE_CACHE_AGE')) define('MAGPIE_CACHE_AGE', 3600);
-            }
-            
+//            if (isset($this->config['rss_cachetime']) && $this->config['rss_cachetime'] != 3600) {
+//	            define('MAGPIE_CACHE_AGE', $this->config['rss_cachetime']);
+//            } else {
+//				if (!defined('MAGPIE_CACHE_AGE')) define('MAGPIE_CACHE_AGE', 3600);
+//            }
 //            $RSS = new rssfeed();
             $RSS = new SimplePie();
-	        $RSS->set_cache_location(BASE.'/external/magpierss/');
+	        $RSS->set_cache_location(BASE.'tmp/rsscache');  // default is ./cache
+//	        $RSS->set_cache_duration(3600);  // default if 3600
+	        $RSS->set_timeout(20);  // default is 10
+//	        $RSS->set_output_encoding('UTF-8');  // which is the default
             $news = array();
             foreach($this->config['pull_rss'] as $url) {
 //                $RSS->setURL($url);
