@@ -166,6 +166,48 @@ class splitcreditcard extends creditcard {
 		return $message;
 	}
 	
+	function getPaymentAuthorizationNumber($billingmethod){
+        $ret = expUnserialize($billingmethod->billing_options);
+        return $ret->result->token;       
+    }
+    
+    function getPaymentReferenceNumber($opts) {
+        $ret = expUnserialize($opts);
+        if (isset($ret->result))
+        {
+            return $ret->result->transId;
+        }
+        else
+        {
+            return $ret->transId;
+        }
+    }
+    
+    function getPaymentStatus($billingmethod) {
+        $ret = expUnserialize($billingmethod->billing_options);
+        return $ret->result->payment_status;
+    }
+    
+    function getPaymentMethod($billingmethod) {
+        return $this->title;
+    }
+    
+    function showOptions() {
+        return;
+    }
+	
+	function getAVSAddressVerified($billingmethod) {
+        return 'X';
+    }
+    
+    function getAVSZipVerified($billingmethod) {
+        return 'X';
+    }
+    
+    function getCVVMatched($billingmethod) {
+        return 'X';
+    }
+	
 }
 
 ?>
