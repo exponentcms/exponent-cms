@@ -58,7 +58,7 @@ class radiogroupcontrol extends formcontrol {
 		$html = "<div id=\"".$this->id."Control\" class=\"radiogroup control";
 		$html .= (!empty($this->required)) ? ' required">' : '">';
 		$html .= "<table border=0 cellspacing=0 cellpadding=0><tr>";
-		$html .= "<td><span class=\"label\">".$label."</span></td></tr><tr>";
+		$html .= (!empty($label))?"<td><span class=\"label\">".$label."</span></td></tr><tr>":"";
 		$html .= "<td>".$this->controlToHTML($name, $label)."</td>";
 		$html .= "</tr></table>";
 		$html .= "</div>";			
