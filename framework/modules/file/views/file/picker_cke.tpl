@@ -100,14 +100,14 @@ EXPONENT.fileManager = function() {
         } 
     );
     infopanel.render();
-        
+
     // handler for showing file information
     var showFileInfo = function(oRecordData) {
         var owner = (oRecordData.user.username!="") ? ' owned by '+oRecordData.user.firstname+' '+oRecordData.user.lastname+' ('+oRecordData.user.username+')' : "";
 
         infopanel.setHeader(oRecordData.filename+owner);
         if (oRecordData.is_image==1) {
-            var oFile = '<img src="'+oRecordData.url+'">';
+	        var oFile = '<img src="'+oRecordData.url+'" onError="this.src=\''+EXPONENT.URL_FULL+'/framework/core/assets/images/default_preview_notfound.gif\'">';
         }else{
             var oFile = '<img src="'+EXPONENT.URL_FULL+'framework/modules/file/assets/images/general.png">' ;
         };
