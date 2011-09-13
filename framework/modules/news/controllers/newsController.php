@@ -172,12 +172,6 @@ class newsController extends expController {
     
     private function mergeRssData($items) {
         if (!empty($this->config['pull_rss'])) {    
-//            if (isset($this->config['rss_cachetime']) && $this->config['rss_cachetime'] != 3600) {
-//	            define('MAGPIE_CACHE_AGE', $this->config['rss_cachetime']);
-//            } else {
-//				if (!defined('MAGPIE_CACHE_AGE')) define('MAGPIE_CACHE_AGE', 3600);
-//            }
-//            $RSS = new rssfeed();
             $RSS = new SimplePie();
 	        $RSS->set_cache_location(BASE.'tmp/rsscache');  // default is ./cache
 //	        $RSS->set_cache_duration(3600);  // default if 3600
@@ -185,25 +179,18 @@ class newsController extends expController {
 //	        $RSS->set_output_encoding('UTF-8');  // which is the default
             $news = array();
             foreach($this->config['pull_rss'] as $url) {
-//                $RSS->setURL($url);
                 $RSS->set_feed_url($url);
-//                $feed = $RSS->fetch();
                 $feed = $RSS->init();
                 if (!$feed) {
                     // an error occurred in the rss.
                     continue;
                 }
 	            $RSS->handle_content_type();
-//                foreach ($feed->items as $rssItem) {
                 foreach ($RSS->get_items() as $rssItem) {
                     $rssObject = new stdClass();
-//                    $rssObject->title = !empty($rssItem['title']) ? $rssItem['title'] : "";
                     $rssObject->title = $rssItem->get_title();
-//                    $rssObject->body = !empty($rssItem['description']) ? $rssItem['description'] : "";
                     $rssObject->body = $rssItem->get_description();
-//                    $rssObject->rss_link = !empty($rssItem['link']) ? $rssItem['link'] : "";
                     $rssObject->rss_link = $rssItem->get_permalink();
-//                    $rssObject->publish = !empty($rssItem['date_timestamp']) ? $rssItem['date_timestamp'] : "";
                     $rssObject->publish = $rssItem->get_date('U');
                     $rssObject->publish_date = $rssItem->get_date('U');
                     $rssObject->isRss = true;
