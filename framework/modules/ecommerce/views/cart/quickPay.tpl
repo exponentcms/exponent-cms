@@ -38,7 +38,8 @@
             <div class="info" id="ccfs">
                 <h2>Credit Card</h2>
                 {if $billing->form != ""}
-                    {$billing->form}
+					{assign var='calcid' value=$billing->calculator->id}
+                    {$billing->form.$calcid}
                 {/if}
                 {clear}
             </div>
