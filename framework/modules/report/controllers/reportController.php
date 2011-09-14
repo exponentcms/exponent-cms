@@ -1183,9 +1183,10 @@ class reportController extends expController {
     
     function print_orders()
     {
-        global $db;
-        //eDebug($this->params);
-        eDebug( expSession::get('order_print_query'));
+        global $db, $timer;
+        //eDebug($this->params,true);
+        //eDebug($timer->mark());
+        //eDebug( expSession::get('order_print_query'));
         if (isset($this->params['applytoall']) && $this->params['applytoall']==1)
         {
             //$sql = expSession::get('order_print_query');
@@ -1205,6 +1206,8 @@ class reportController extends expController {
                 $orders[] = array('id'=>$order);
             }
         } 
+
+        //eDebug("Done with print_orders: " . $timer->mark());
         //eDebug($orders,true);
         $oc = new orderController();
         $oc->getPDF($orders);   
@@ -1274,6 +1277,61 @@ class reportController extends expController {
        // [firstname] => Fred [middlename] => J [lastname] => Dirkse [organization] => OIC Group, Inc. [address1] => PO Box 1111 [address2] => [city] => Peoria [state] => 23 [zip] => 61653 [country] => [phone] => 309-555-1212 begin_of_the_skype_highlighting              309-555-1212      end_of_the_skype_highlighting  [email] => fred@oicgroup.net [shippingcalculator_id] => 4 [option] => 01 [option_title] => 8-10 Day [shipping_cost] => 5.95
             
     }
+    
+    /*function export_dropship()
+    {             
+        global $order;          
+        $out = '"order_id","quantity","SKU","product_title","firstname","middlename","lastname","organization","address1","address2","city","state","zip"' . chr(13) . chr(10); 
+        //eDebug($this->params,true);
+        $order_ids = array();
+        if (isset($this->params['applytoall']) && $this->params['applytoall']==1)
+        {
+            $obs = expSession::get('order_export_values');
+            foreach ($obs as $ob)
+            {
+                $order_ids[] = $ob->id;
+            }
+        }
+        else
+        {
+            foreach ($this->params['act-upon'] as $order_id)
+            {
+                $order_ids[] = $order_id;
+            }   
+        }        
+        $order_ids = array_unique($order_ids);
+        $orders_string = implode(',', $order_ids);
+        $orders = $order->find('all','id IN (' . $orders_string . ')');
+        //eDebug($orders);
+        foreach ($orders as $order)
+        {
+            $line = $this->outputField($order->invoice_id);
+            $line.= $this->outputField($m->id);
+            $line.= $this->outputField($m->option_title);
+            $line.= $this->outputField($order->shipping_total + $order->surcharge_total);
+                
+            foreach ($order->shippingmethods as $m)
+            {         
+                $line.= $this->outputField($m->firstname);
+                $line.= $this->outputField($m->middlename);
+                $line.= $this->outputField($m->lastname);
+                $line.= $this->outputField($m->organization);
+                $line.= $this->outputField($m->address1);
+                $line.= $this->outputField($m->address2);
+                $line.= $this->outputField($m->city);
+                $state = new geoRegion($m->state);                
+                $line.= $this->outputField($state->code);
+                $line.= $this->outputField($m->zip);                
+                $line .= chr(13) . chr(10);     
+                break;
+            }
+            $out .= $line;
+        }
+        //eDebug($out,true);
+        $this->download($out,'Dropship_Export.csv', 'application/csv');
+       // [firstname] => Fred [middlename] => J [lastname] => Dirkse [organization] => OIC Group, Inc. [address1] => PO Box 1111 [address2] => [city] => Peoria [state] => 23 [zip] => 61653 [country] => [phone] => 309-555-1212 begin_of_the_skype_highlighting              309-555-1212      end_of_the_skype_highlighting  [email] => fred@oicgroup.net [shippingcalculator_id] => 4 [option] => 01 [option_title] => 8-10 Day [shipping_cost] => 5.95
+            
+    }*/
     
     function export_status_report()
     {
