@@ -421,7 +421,7 @@ class reportController extends expController {
     
 	function generateOrderReport (){
         global $db;
-        eDebug($this->params);
+        //eDebug($this->params);
         $p = $this->params;   
         
         //eDebug();
@@ -712,7 +712,7 @@ class reportController extends expController {
         //$items = $order->find('all', 1, 'id DESC',25);  
         //$res = $mod->find('all',$sql,'id',25);
         //eDebug($items);
-        eDebug($sql . $sqlwhere); 
+        //eDebug($sql . $sqlwhere); 
         
         $page = new expPaginator(array(
             //'model'=>'order',
