@@ -127,7 +127,7 @@ class storeController extends expController {
         expHistory::set('viewable', $this->params);
         
         if (empty($this->category->is_events)) {
-            $count_sql_start = 'SELECT COUNT(DISTINCT p.id) FROM '.DB_TABLE_PREFIX.'_product p ';
+            $count_sql_start = 'SELECT COUNT(DISTINCT p.id) as c FROM '.DB_TABLE_PREFIX.'_product p ';
             
             
             $sql_start  = 'SELECT DISTINCT p.*, IF(base_price > special_price AND use_special_price=1,special_price, base_price) as price FROM '.DB_TABLE_PREFIX.'_product p ';            
@@ -145,7 +145,7 @@ class storeController extends expController {
             //eDebug($this->config);
         } else {
             $sql_start  = 'SELECT DISTINCT p.*, er.event_starttime, er.signup_cutoff FROM '.DB_TABLE_PREFIX.'_product p ';
-            $count_sql_start = 'SELECT COUNT(DISTINCT p.id), er.event_starttime, er.signup_cutoff FROM '.DB_TABLE_PREFIX.'_product p ';
+            $count_sql_start = 'SELECT COUNT(DISTINCT p.id) as c, er.event_starttime, er.signup_cutoff FROM '.DB_TABLE_PREFIX.'_product p ';
             $sql .= 'JOIN '.DB_TABLE_PREFIX.'_product_storeCategories sc ON p.id = sc.product_id ';
             $sql .= 'JOIN '.DB_TABLE_PREFIX.'_eventregistration er ON p.product_type_id = er.id ';
             $sql .= 'WHERE sc.storecategories_id IN (';
@@ -631,7 +631,7 @@ class storeController extends expController {
     
     function showTopLevel_images() {
         global $user;
-        $count_sql_start = 'SELECT COUNT(DISTINCT p.id) FROM '.DB_TABLE_PREFIX.'_product p ';
+        $count_sql_start = 'SELECT COUNT(DISTINCT p.id) as c FROM '.DB_TABLE_PREFIX.'_product p ';
         $sql_start  = 'SELECT DISTINCT p.* FROM '.DB_TABLE_PREFIX.'_product p ';            
         $sql = 'JOIN '.DB_TABLE_PREFIX.'_product_storeCategories sc ON p.id = sc.product_id ';
         $sql .= 'WHERE ';
