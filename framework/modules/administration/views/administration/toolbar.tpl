@@ -20,19 +20,19 @@
                                                          itemdata: aItemData 
                                                          });
               oMenuBar.render("admintoolbar");
-             function onSubmenuShow() {
-
-                    var oIFrame,
-                        oElement,
-                     nOffsetWidth;
-                 if ((this.id == "filemenu" || this.id == "editmenu") && YAHOO.env.ua.ie) {
-
-                     oElement = this.element;
-                     nOffsetWidth = oElement.offsetWidth;
-                     oElement.style.width = nOffsetWidth + "px";
-                     oElement.style.width = (nOffsetWidth - (oElement.offsetWidth - nOffsetWidth)) + "px";
-                 }
-             }
+             // function onSubmenuShow() {
+             // 
+             //        var oIFrame,
+             //            oElement,
+             //         nOffsetWidth;
+             //     if ((this.id == "filemenu" || this.id == "editmenu") && YAHOO.env.ua.ie) {
+             // 
+             //         oElement = this.element;
+             //         nOffsetWidth = oElement.offsetWidth;
+             //         oElement.style.width = nOffsetWidth + "px";
+             //         oElement.style.width = (nOffsetWidth - (oElement.offsetWidth - nOffsetWidth)) + "px";
+             //     }
+             // }
              //oMenuBar.subscribe("show", onSubmenuShow);
              
          
