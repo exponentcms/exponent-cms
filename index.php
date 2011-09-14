@@ -41,6 +41,9 @@ $i_start = $microtime_str[0] + $microtime_str[1];
 // Initialize the Exponent Framework
 require_once('exponent.php');
 
+//active global timer if in DEVELOPMENT mode
+if(DEVELOPMENT) $timer = new expTimer();    
+
 // if the user has turned on sef_urls then we need to route the request, otherwise we can just 
 // skip it and default back to the old way of doing things.
 $router->routeRequest();
