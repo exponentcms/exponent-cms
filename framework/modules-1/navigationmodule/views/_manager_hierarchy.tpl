@@ -44,10 +44,12 @@
 	<div id="navtree"><img src="{$smarty.const.ICON_RELATIVE}ajax-loader.gif">	<strong>Loading Navigation</strong></div>
 </div>
 
-{script yui2mods="'treeview','menu','animation','dragdrop','json','container','connection'" unique="DDTreeNav" yuideptype="js"}
+{script yui3mods="1" unique="DDTreeNav" }
 {literal} 
 
-eXp.ddNavTree = function() {
+YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event','yui2-treeview','yui2-menu','yui2-animation','yui2-dragdrop','yui2-json','yui2-container','yui2-connection', function(Y) {
+var YAHOO = Y.YUI2;    
+
 //////////////////////////////////////////////////////////////////////////////
 // dragdrop
 //////////////////////////////////////////////////////////////////////////////
@@ -56,7 +58,7 @@ eXp.ddNavTree = function() {
 	var Event = YAHOO.util.Event;
 	var DDM = YAHOO.util.DragDropMgr;
 
-	DDSend = function(id, sGroup, config) {
+	var DDSend = function(id, sGroup, config) {
 		//////console.debug(id)
 		if (id) {
 			new YAHOO.util.DDTarget("addafter"+id,sGroup);
@@ -442,26 +444,24 @@ eXp.ddNavTree = function() {
 
 	
 
-	return {
-		init: function() {
-			YAHOO.util.Event.on(["mode0", "mode1"], "click", changeIconMode);
-			var el = document.getElementById("mode1");
-			if (el && el.checked) {
-				currentIconMode = parseInt(el.value);
-			} else {
-				currentIconMode = 0;
-			}
-
-			initTree();
+	DDSend.init = function() {
+		YAHOO.util.Event.on(["mode0", "mode1"], "click", changeIconMode);
+		var el = document.getElementById("mode1");
+		if (el && el.checked) {
+			currentIconMode = parseInt(el.value);
+		} else {
+			currentIconMode = 0;
 		}
+
+		initTree();
 	}
 	
 	
-} ();
-
+    DDSend.init();
 //once the DOM has loaded, we can go ahead and set up our tree:
-YAHOO.util.Event.onDOMReady(eXp.ddNavTree.init, eXp.ddNavTree,true);
 
+
+});
 
 
 {/literal}

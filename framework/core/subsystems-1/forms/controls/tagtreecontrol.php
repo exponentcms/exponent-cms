@@ -68,15 +68,16 @@ class tagtreecontrol extends formcontrol {
 		$link = expCore::makeLink(array("module"=>$this->controller->baseclassname,"action"=>"edit","parent"=>0));
 		$html = "";
         if ($this->menu == "true") {
-            if ($this->addable) $html = '<a href="' . $link . '">Add a new tag</a> | ';        
+            if ($this->addable) $html = '<a class="add" href="' . $link . '">Add a Category</a> | ';        
 		    $html .= '<a href="#" id="expandall">Expand All</a> | ';
             $html .= '<a href="#" id="collapseall">Collapse All</a>';
 		}
         
-		$html .= '<div id="'.$this->id.'" class="nodetree loading">Loading Data</div>';
+		$html .= '
+		<div id="'.$this->id.'" class="nodetree"></div>
+		<div class="loadingdiv">Loading Categories</div>';
 		
 		foreach($this->tags as $i=>$val){
-			
 			if (!empty($this->values) && in_array($val->id,$this->values)) {
 				$this->tags[$i]->value = true;
 			} else {
@@ -85,21 +86,31 @@ class tagtreecontrol extends formcontrol {
 			$this->tags[$i]->draggable = $this->draggable; 
 			$this->tags[$i]->checkable = $this->checkable; 
 		}
-       
+        
 		$obj = json_encode($this->tags);
-		$script = '
-			var obj2json = '.$obj.';
-			YAHOO.util.Event.onDOMReady(function(){
-				expTree.init("'.$this->id.'",obj2json,"'.$this->modelname.'",'.$this->menu.','.$this->expandonstart.');
+		$script = "
+		EXPONENT.YUI3_CONFIG.modules = {
+               'exp-tree' : {
+                   fullpath: EXPONENT.PATH_RELATIVE+'framework/core/assets/js/exp-tree.js',
+                   requires : ['node','yui2-container','yui2-menu','yui2-treeview','yui2-animation','yui2-dragdrop','yui2-json','yui2-connection']
+               }
+         }
+
+  		//EXPONENT.YUI3_CONFIG.filter = \".js\";
+
+            YUI(EXPONENT.YUI3_CONFIG).use('node','exp-tree', function(Y) {
+    			var obj2json = ".$obj.";
+				EXPONENT.DragDropTree.init('".$this->id."',obj2json,'".$this->modelname."','".$this->menu."','".$this->expandonstart."');
+				Y.one('.nodetree').next().remove();
 			});
-		';
-		
+		";
+//		exponent_javascript_toFoot('expddtree', 'treeview,menu,animation,dragdrop,json,container,connection', null, $script, PATH_RELATIVE.'framework/core/assets/js/exp-tree.js');
 		expJavascript::pushToFoot(array(
-		    "unique"=>'expddtree' . mt_rand(),
-		    "yui2mods"=>'treeview,menu,animation,dragdrop,json,container,connection',
-		    "yui3mods"=>null,
+		    "unique"=>'expddtree',
+		    //"yui2mods"=>'treeview,menu,animation,dragdrop,json,container,connection',
+		    "yui3mods"=>1,
 		    "content"=>$script,
-		    "src"=>PATH_RELATIVE.'framework/core/assets/js/exp-tree.js'
+		    //"src"=>PATH_RELATIVE.'framework/core/assets/js/exp-tree.js'
 		 ));
 		return $html;
 	}

@@ -4,41 +4,22 @@
 
 
 <div id="admintoolbar">
-    
-<table border="0" cellspacing="0" cellpadding="0">
-    <tr>
-        <td class="tc">&nbsp;</td>
-    </tr>
-    <tr>
-        <td class="mc">
-            <div id="admintoolbarmenus">
-
-            </div>
-        </td>
-    </tr>
-    <tr>
-        <td class="bc">&nbsp;</td>
-    </tr>
-</table>    
 
 </div>
 
-{script unique="adminmenubar" yui2mods="menu,connection" yui3mods="yui"}
+{script unique="admin99" yui3mods="yui"}
 {literal}
-/*
-              Initialize and render the MenuBar when the page's DOM is ready 
-              to be scripted.
-         */
 
-         YAHOO.util.Event.onDOMReady(function () {
+        YUI(EXPONENT.YUI3_CONFIG).use('node','dd','anim','event-custom','yui2-yahoo-dom-event','yui2-menu','yui2-connection','yui2-container', function(Y) {
+            var YAHOO=Y.YUI2;
+            
              var aItemData = [
                 {/literal}{$menu}{literal},
              ];
              var oMenuBar = new YAHOO.widget.MenuBar("mymenubar", { 
-                                                         lazyload: true, 
                                                          itemdata: aItemData 
                                                          });
-              oMenuBar.render("admintoolbarmenus");
+              oMenuBar.render("admintoolbar");
              function onSubmenuShow() {
 
                     var oIFrame,
@@ -55,10 +36,8 @@
              //oMenuBar.subscribe("show", onSubmenuShow);
              
          
-         });
-         YUI(EXPONENT.YUI3_CONFIG).use('node','dd','anim', function(Y) {
              var tb = Y.one('#admintoolbar');
-
+             
              //Selector of the node to make draggable
              var dd = new Y.DD.Drag({
                  node: tb
@@ -71,9 +50,9 @@
 
              //set the slingbar to either the top or bottom
              if (top==1){
-                 tb.setStyle("top","-5px");
+                 tb.setStyle("top","0");
              }else {
-                 tb.setStyle("bottom","-5px");
+                 tb.setStyle("bottom","0");
              }
              tb.setStyle("display","block");
              
@@ -85,9 +64,9 @@
                  //drop zone lattitude
                  var dz = e.pageY;
                  //toolbar height (counting shadow)
-                 var tbh = 36;
+                 var tbh = tb.getComputedStyle('height').replace('px','');
                  //shadow height 
-                 var sh = 5;
+                 var sh = 0;
                  //threshold - higher the number, the sooner the toolbar snaps to the other side
                  var threshold = 25;
                  //set up the animation                         
@@ -106,7 +85,7 @@
                      if ((h/threshold)<dz) {
                          top = 0;
                          anim.set('to', { xy: [0, h-tbh+sh] });
-                         recordPosition();
+                         //recordPosition();
                      } else {
                          anim.set('to', { xy: [0, scrollh-sh] });
                      }
@@ -116,7 +95,7 @@
                      if (((h/threshold)*(threshold-1))>dz) {
                          top = 1;
                          anim.set('to', { xy: [0, scrollh-sh] });
-                         recordPosition();
+                         //recordPosition();
                      } else {
                          anim.set('to', { xy: [0, h-tbh+sh] });
                      }
@@ -127,8 +106,41 @@
                  //anim.on("end",recordPosition);
                  
              });
+             
+             var err = function () {
+                 alert("Your popup blocker has prevented the file manager from opening");
+             }
+             
+             
+             var reportbugwindow = function (){
+                 var win = window.open('http://exponentcms.lighthouseapp.com/projects/61783-exponent-cms/tickets/new');
+                 if (!win) { err(); }
+             }
+
+             var filepickerwindow = function (){
+                 var win = window.open('{/literal}{link controller=file action=picker ajax_action=1 update=noupdate}{literal}', 'IMAGE_BROWSER','left=0,top=0,scrollbars=yes,width=1024,height=600,toolbar=no,resizable=yes,status=0');
+                 if (!win) { err(); }
+             }
+
+             var fileuploaderwindow = function (){
+                 var win = window.open('{/literal}{link controller=file action=uploader ajax_action=1 update=noupdate}{literal}', 'IMAGE_BROWSER','left=0,top=0,scrollbars=yes,width=1024,height=600,toolbar=no,resizable=yes,status=0');
+                 if (!win) { err(); }
+             }
+
+             Y.on('toolbar:loaded',function(){
+                 Y.one('#reportabug-toolbar').on('click', reportbugwindow);
+                 Y.one('#filemanager-toolbar').on('click',filepickerwindow);
+                 Y.one('#fileuploader-toolbar').on('click',fileuploaderwindow);
+                 // Y.later(900,this,function(){
+                 //     tb.setStyles({'opacity':'0.3'});
+                 // });
+             });
 
 
+             Y.fire('toolbar:loaded');
+             
+             
+             
          });
          
 

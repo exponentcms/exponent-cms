@@ -65,7 +65,7 @@ class filemanagercontrol extends formcontrol {
         $html .= '<input type="hidden" name="'.$subTypeName.'" value="'.$subTypeName.'">';
         $html .= '</div>';
         $js = "
-            YUI(EXPONENT.YUI3_CONFIG).use('dd-constrain','dd-proxy','dd-drop', function(Y) {
+            YUI(EXPONENT.YUI3_CONFIG).use('dd-constrain','dd-proxy','dd-drop','json','io', function(Y) {
                 var limit = ".$this->limit.";
                 var filesAdded = ".$this->count.";
                 var fl = Y.one('#filelist".$name."');
@@ -221,10 +221,11 @@ class filemanagercontrol extends formcontrol {
 
                 // calback function from open window
                 EXPONENT.passBackFile".$name." = function(id) {
-                    var ej = new EXPONENT.AjaxEvent();
-                    ej.subscribe(function (o) {
+
+                    var complete = function (ioId, o) {
                         var df = Y.one('#filelist".$name."');
-                        var obj = o.data;
+                        var objson = Y.JSON.parse(o.responseText);
+                        var obj = objson.data;
                         if (obj.mimetype!='image/png' && obj.mimetype!='image/gif' && obj.mimetype!='image/jpeg'){
                             var filepic = '<img class=\"filepic\" src=\"'+EXPONENT.ICON_RELATIVE+'\"attachableitems/generic_22x22.png\">';
                         } else {
@@ -272,8 +273,15 @@ class filemanagercontrol extends formcontrol {
                         }
 
                         initDragables();
-                    });
-                    ej.fetch({action:'getFile',controller:'fileController',json:1,params:'&id='+id});
+                    };
+                    
+                    var cfg = {
+                        on:{
+                            success:complete
+                        }
+                    };
+                    Y.io(EXPONENT.URL_FULL+'index.php.php?controller=file&action=getFile&ajax_action=1&json=1&id='+id, cfg);
+                    //ej.fetch({action:'getFile',controller:'fileController',json:1,params:'&id='+id});
                 }
 
             });
@@ -285,10 +293,10 @@ class filemanagercontrol extends formcontrol {
         	    )
         	);
 
+//        exponent_javascript_toFoot("filepicker".$name,"json,connection","dd-constrain,dd-proxy,dd-drop",$js,"");
             expJavascript::pushToFoot(array(
                 "unique"=>"filepicker".$name,
-                "yui2mods"=>"json,connection",
-                "yui3mods"=>"dd-constrain,dd-proxy,dd-drop",
+                "yui3mods"=>"1",
                 "content"=>$js,
                 "src"=>""
              ));

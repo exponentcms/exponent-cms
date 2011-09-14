@@ -19,33 +19,15 @@
 if (!defined('EXPONENT')) exit('');
 
 $script = "
-    
-    var filepickerwindow = function (){
-        win = window.open('".makeLink($params=array('controller'=>'file','action'=>'picker','ajax_action'=>'1','update'=>'noupdate'))."', 'IMAGE_BROWSER','left=0,top=0,scrollbars=yes,width=1024,height=600,toolbar=no,resizable=yes,status=0');
-        if (!win) {
-            //Catch the popup blocker
-            alert(\"Your popup blocker has prevented the file manager from opening\");
-        }
-    }
-    var fileuploaderwindow = function (){
-        win = window.open('".makeLink($params=array('controller'=>'file','action'=>'uploader','ajax_action'=>'1','update'=>'noupdate'))."', 'IMAGE_BROWSER','left=0,top=0,scrollbars=yes,width=1024,height=600,toolbar=no,resizable=yes,status=0');
-        if (!win) {
-            //Catch the popup blocker
-            alert(\"Your popup blocker has prevented the file manager from opening\");
-        }
-    }
-    
-    YAHOO.util.Event.on('filemanager','click',filepickerwindow);
-    YAHOO.util.Event.on('fileuploader','click',fileuploaderwindow);
-    
+// YUI(EXPONENT.YUI3_CONFIG).use('node','event-custom', function(Y) {
+// 
+// });    
 ";
 
 expJavascript::pushToFoot(array(
-    "unique"=>'zadminfilemanager',
-    "yui2mods"=>'',
-    "yui3mods"=>null,
+    "unique"=>'admin2',
+    "yui3mods"=>1,
     "content"=>$script,
-    "src"=>""
  ));
 
 return array(
@@ -58,13 +40,13 @@ return array(
                 'text'=>gt("File Manager"),
                 'url'=>'#',
                 'classname'=>'filemanager',
-                'id'=>'filemanager',
+                'id'=>'filemanager-toolbar',
             ),
             array(
                 'text'=>gt("Upload Files"),
                 'url'=>'#',
                 'classname'=>'fileuploader',
-                'id'=>'fileuploader',
+                'id'=>'fileuploader-toolbar',
             )
         ),
     )
