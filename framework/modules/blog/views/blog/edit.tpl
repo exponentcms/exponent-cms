@@ -57,7 +57,7 @@
 
 {script unique="blogtabs" yui3mods=1}
 {literal}
-    YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event','yui2-tabview','yui2-tabview', function(Y) {
+    YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event','yui2-tabview', function(Y) {
         var YAHOO=Y.YUI2;
         var tabView = new YAHOO.widget.TabView('demo');
         YAHOO.util.Dom.removeClass("editblog", 'hide');
