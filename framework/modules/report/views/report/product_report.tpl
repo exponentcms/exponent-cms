@@ -1,4 +1,4 @@
-{css unique="general-ecom" link="`$smarty.const.PATH_RELATIVE`framework/modules/ecommerce/assets/css/ecom.css"}
+{css unique="general-ecom" link="`$smarty.const.PATH_RELATIVE`framework/modules/ecommerce/assets/css/ecom.css" corecss="tree,button"}
 
 {/css}
 {css unique="report-builder" link="`$smarty.const.PATH_RELATIVE`framework/modules/ecommerce/assets/css/report-builder.css"}
@@ -31,7 +31,7 @@
                 <td>
                 <div>{control type="checkbox" name="uncategorized" flip=true label="Uncategorized Products Only" value=1}  </div>{br}
                     <div class="control"> 
-                        <span class="label">Select Categories</span><a href="#" id="showcats">Show Categories</a>
+                        <a href="#showcats" id="showcats"class=" awesome small black">Show Categories</a>
                     </div>
                     <div id="catpicker" class="hide">
                         <div class="hd">Select Categories</div>
@@ -41,9 +41,10 @@
                             </div>
                         </div>
                     </div>
-                    {script unique="pickerpopper" yuimodules="container"}
+                    {script unique="pickerpopper" yui3mods=1}
                     {literal}
-                    YAHOO.util.Event.onDOMReady(function(){
+                    YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event','yui2-container', function(Y) {
+                        var YAHOO=Y.YUI2;
                         var panel = new YAHOO.widget.Panel("catpicker", { width:"500px", zIndex:10, visible:false, draggable:false, close:true, context:['showcats','tl','tr'] } ); 
                         panel.render('create-prod-report');
                         YAHOO.util.Event.on('showcats', 'click', panel.show, panel, true);
@@ -89,7 +90,7 @@
             
             <tr class="odd">
                 <td>
-                    <a id="submit-report" href="#" onclick="document.reportform.submit(); return false;" class="btn"><strong><em>Generate Report</em></strong></a>
+                    <a id="submit-report" href="#" onclick="document.reportform.submit(); return false;" class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}"><strong><em>Generate Report</em></strong></a>
                 </td>
             </tr>
         </tbody>
