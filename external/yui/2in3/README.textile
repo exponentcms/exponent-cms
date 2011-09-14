@@ -1,0 +1,51 @@
+h1. YUI 2in3 Project
+
+This project contains the all of the supported versions of YUI 2 wrapped
+as first class YUI 3 modules, and deployed in a directory structure that
+can be intrinsically loaded by YUI 3.1.0+.
+
+h2. Serving the 2in3 files from your local server
+
+Copy all of the files in the dist directory to the location
+you wish to serve the files from.  Configure your YUI instance
+to pull from that location:
+
+<pre class="console">
+YUI({
+    groups: {
+        yui2: {
+            base: '/2in3/',
+
+            // If you have a combo service, you can configure that as well
+            // combine: true,
+            // comboBase: 'http://myserver.com/combo?',
+            // root: '/2in3/build/',
+
+            patterns:  {
+                'yui2-': {
+                    configFn: function(me) {
+                        if(/-skin|reset|fonts|grids|base/.test(me.name)) {
+                            me.type = 'css';
+                            me.path = me.path.replace(/\.js/, '.css');
+                            me.path = me.path.replace(/\/yui2-skin/, '/assets/skins/sam/yui2-skin');
+                        }
+                    }
+                }
+            }
+        }
+    }
+}).use('yui2-yahoo', 'yui2-event', function (Y) {
+    //
+};
+</pre>
+
+h2. Additional Notes
+
+* YUI 3.3.0 will try to pull the 2.8.2 version of YUI 2 by default.
+  The 'yui2' config can be passed to the instance to load one
+  of the other versions.
+
+* The files under src/script can be used to generate the 2in3 modules,
+  but this is lightly documented and there are some path assumptions
+  built in.
+
