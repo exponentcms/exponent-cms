@@ -113,6 +113,47 @@ class expJavascript {
     public static function pushToFoot($params) {
     	global $js2foot,$yui2js,$yui3js,$expJS;
 
+    	if (self::inAjaxAction()) {
+		    echo "<div class=\"io-execute-response\">";
+		    
+            if(!empty($params['yui2mods'])){
+                $toreplace = array('"',"'"," ");
+                $stripmodquotes = str_replace($toreplace, "", $params['yui2mods']);               
+                $splitmods = explode(",",$stripmodquotes);
+
+                 require_once(BASE.'external/lissa/class.lissa.php');        
+
+                // instantiate loader class for yui2
+                $yui2Loader = new Lissa(YUI2_VERSION, null);
+
+                // instantiate loader class for yui3
+                //$yui3Loader = new Lissa(YUI3_VERSION, null, $expJS);
+
+                // load yui2 modules called for via the scipt plugin
+                foreach ($splitmods as $key=>$mod) {
+                    $yui2Loader->load($mod);
+                }
+                $yui2Loader->combine = intval(MINIFY);
+                $scripts = "\r\n\t"."<!-- YUI2 Scripts -->"."\r\n";
+                $scripts .= $yui2Loader->scripts()."\r\n";
+                echo $scripts;
+            }
+            
+
+    	    if ($params['src']) {
+                echo '<script type="text/javascript" src="'.$params['src'].'"></script>';
+    	    }
+    	    
+		    echo "
+		    <script id=\"".$params['unique']."\" type=\"text/javascript\" charset=\"utf-8\">
+		      ".$params['content']."
+		    </script>
+		    </div>
+		    ";
+		    return true;
+    	}
+
+
     	if (!empty($params['src'])) {
     	    //$src = str_replace(URL_FULL,PATH_RELATIVE,$params['src']);
     	    $src = $params['src'];
@@ -127,15 +168,15 @@ class expJavascript {
             // }
     	}
 
-    	if(!empty($params['yui2mods'])){
-            $toreplace = array('"',"'"," ");
-            $stripmodquotes = str_replace($toreplace, "", $params['yui2mods']);               
-            $splitmods = explode(",",$stripmodquotes);
-
-            foreach ($splitmods as $key=>$val){
-                $yui2js[$val] = $val;
-            }
-        }
+        // if(!empty($params['yui2mods'])){
+        //             $toreplace = array('"',"'"," ");
+        //             $stripmodquotes = str_replace($toreplace, "", $params['yui2mods']);               
+        //             $splitmods = explode(",",$stripmodquotes);
+        // 
+        //             foreach ($splitmods as $key=>$val){
+        //                 $yui2js[$val] = $val;
+        //             }
+        //         }
 
 		if (isset($params['content']) && stristr($params['content'],"use('*',") && isset($params['yui3mods'])) {
             $params['content'] = str_replace("use('*',",('use(\''.str_replace(',','\',\'',$params['yui3mods']).'\','),$params['content']);
@@ -253,98 +294,5 @@ class expJavascript {
 		//close with ")"
 		return  $js . ")";
 	}
-
-	public static function panel($params) {
-		$content = "<div class=\"pnlmsg\">".htmlentities($params['content'])."</div>";
-		$id = "exppanel".$params['id'];
-		$width  = !empty($params['width']) ? $params['width'] : "300px";
-		$type  = !empty($params['type']) ? $params['type'] : "info";
-		$dialog  = !empty($params['dialog']) ? explode(":",$params['dialog']) : "";
-		$header  = !empty($params['header']) ? $params['header'] : "&nbsp;";
-		$renderto  = !empty($params['renderto']) ? $params['renderto'] : 'document.body';
-		$on  = !empty($params['on']) ? $params['on'] : 'load';
-		$onnogo  = !empty($params['onnogo']) ? $params['onnogo'] : '';
-		$onyesgo  = !empty($params['onyesgo']) ? $params['onyesgo'] : '';
-		$trigger  = !empty($params['trigger']) ? '"'.$params['trigger'].'"' : 'selfpop';
-		$zindex  = !empty($params['zindex']) ? $params['zindex'] : "50";
-		//$hide  = !empty($params['hide']) ? $params['hide'] : "hide";
-		$fixedcenter  = !empty($params['fixedcenter']) ? $params['fixedcenter'] : "true";
-		$fade  = !empty($params['fade']) ? $params['fade'] : null;
-		$modal  = !empty($params['modal']) ? $params['modal'] : "true";
-		$draggable  = empty($params['draggable']) ? "false" : $params['draggable'];
-		$constraintoviewport  = !empty($params['constraintoviewport']) ? $params['constraintoviewport'] : "true";
-		$fade  = !empty($params['fade']) ? "effect:{effect:YAHOO.widget.ContainerEffect.FADE,duration:".$params['fade']."}," : "";
-		$close  = !empty($params['close']) ? $params['close'] : "true";
-
-		$script = "";
-		if (is_array($dialog)) {
-			$script .= "
-				var handleYes = function(e,o) {
-					this.hide();";
-					if ($onyesgo!="") {
-						$script .= "document.location = '".trim($onyesgo)."'";
-					};
-			$script .= "};
-				var handleNo = function(e,o) {
-					this.hide();";
-					if ($onyesgo!="") {
-						$script .= "var textlink = '".trim($onnogo)."';";
-						$script .= 'document.location = textlink.replace(/&amp;/g,"&");';
-					};
-			$script .= "};";
-
-			$script .= "var ".$id." = new YAHOO.widget.SimpleDialog('".$id."', { ";
-			$script .= "buttons: [ { text:'".$dialog[0]."', handler:handleYes, isDefault:true },{ text:'".$dialog[1]."',  handler:handleNo } ],";
-			//$script .= "text: 'Do you want to continue?',";
-		} else {
-			$script .= "var ".$id." = new YAHOO.widget.Panel('".$id."', { ";
-		}
-
-		$script .= "fixedcenter:".$fixedcenter.",
-			draggable:".$draggable.",
-			modal:".$modal.",
-			class:'exp-".$type." ".$hide."',
-			zIndex:".$zindex.","
-			.$fade.
-			"width:'".$width."',
-			visible:false,
-			constraintoviewport:".$constraintoviewport.",
-			close:".$close." } );";
-
-		$script .= $id.".setHeader('".$header."');";
-		$script .= "var pnlcontent = ".$content.";";
-
-		$script .= $id.".setBody('<span class=\"type-icon\"></span>'+pnlcontent);";
-
-		$script .= $id.".setFooter('".$footer."</div>');";
-		$script .= $id.".render(".$renderto.");";
-		$script .= "YAHOO.util.Dom.addClass('".$id."','exp-".$type."');";
-		if ($hide==false) {
-			$script .= "YAHOO.util.Dom.addClass('".$id."','".$hide."');";
-		}
-
-		switch ($trigger) {
-			case 'selfpop':
-				$script .= "YAHOO.util.Event.onDOMReady(".$id.".show, ".$id.", true);";
-				break;
-
-			default:
-				$script .= "YAHOO.util.Event.on(".$trigger.", '".$on."', function(e,o){
-					YAHOO.util.Event.stopEvent(e);
-					o.show();
-					}, ".$id.", true);";
-				break;
-		}
-
-		expJavascript::pushToFoot(array(
-		    "unique"=>'pop-'.$params['name'],
-		    "yui2mods"=>'animation,container',
-		    "yui3mods"=>null,
-		    "content"=>$script,
-		    "src"=>""
-		 ));
-
-	}
-
 }
 ?>
