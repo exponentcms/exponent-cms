@@ -735,13 +735,8 @@ class reportController extends expController {
         //strftime("%a %d-%m-%Y", get_first_day(3, 1, 2007)); Thursday, 1 April 2010  
         //$d_month_previous = date('n', mktime(0,0,0,(strftime("%m")-1),1,strftime("%Y")));
         
-<<<<<<< HEAD
-        $action_items = array('print_orders'=>'Print','export_odbc'=>'Export ODBC File','export_status_report'=>'Export Status Report','export_inventory'=>'Export Inventory File','export_user_input_report'=>'Export User Input File' /*,'payment_report'=>'Show Payment Report'*/);
-        assign_to_template(array('page'=>$page, 'action_items'=>$action_items));        
-=======
         $action_items = array('print_orders'=>'Print','export_odbc'=>'Export ODBC File','export_status_report'=>'Export Status Report','export_inventory'=>'Export Inventory File','export_user_input_report'=>'Export User Input File', 'show_payment_summary'=>'Show Payment Summary');
         assign_to_template(array('page'=>$page, 'action_items'=>$action_items)); 
->>>>>>> 9906e9557460886cf5fb797bb7fd70ede665fa89
     }
 	
 	function show_payment_summary() {
