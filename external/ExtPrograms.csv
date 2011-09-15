@@ -8,14 +8,12 @@ swfobject,2.2,code.google.com/p/swfobject,2.2,
 Smarty,2.6.26,smarty.net,2.6.26/3.0.8,
 phpthumb,1.7.9,phpthumb.sourceforge.net,1.7.9,phpThumb.config.php - we set the cache folder
 minify,2.1.3,code.google.com/p/minify,2.1.3,
-magpierss,0.72,magpierss.sourceforge.net,0.72,
 YUI2,2.9.0,developer.yahoo.com/yui/2,2.9.0,
-YUI3,3.3.0,developer.yahoo.com/yui/3,3.4.0,
-lissa,,github.com/cauld/lissa,,
-,*,github.com/yui/phploader,,experimenting w/ upgrade to yui2in3
+YUI3,3.4.0,developer.yahoo.com/yui/3,3.4.0,
+yui2in3,,github.com/yui/2in3,,
 recaptchalib,1.11,code.google.com/p/recaptcha,1.11,
 feedcreator.class.php,1.72-itunes,sourceforge.net/projects/feedcreator/,1.80dev,"yes, blog.pothoven.net/2006/01/changing-feedcreatorclassphp-for.html"
 Twitter model,2.1.2,classes.verkoyen.eu/twitter_oauth,2.1.2,placed in Twitter module
-SimplePie,1.3dev,simplepie.org,,placed in News module/replace Magpierss
-pixidou,0.1,github.com/asvinb/pixidou,,placed in Pixidou module
-barcode,1 5/10/2005,www.sid6581.net/cs/php-scripts/barcode/,,
+SimplePie,1.3dev,simplepie.org,1.3def,compiled version placed in News module/replace Magpierss
+pixidou,0.1,github.com/asvinb/pixidou,0.1,placed in Pixidou module
+barcode,1 5/10/2005,www.sid6581.net/cs/php-scripts/barcode/,1 5/10/2005,
