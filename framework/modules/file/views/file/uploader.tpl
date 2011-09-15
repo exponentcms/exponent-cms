@@ -8,16 +8,10 @@
     <link rel="stylesheet" type="text/css" href="{$smarty.const.URL_FULL}framework/core/assets/css/admin-global.css" />
     <link rel="stylesheet" type="text/css" href="{$smarty.const.URL_FULL}framework/modules/file/assets/css/filemanager.css" />
 
-    <script type="text/javascript" src="{$smarty.const.YUI2_PATH}yahoo-dom-event/yahoo-dom-event.js"></script>
-    <script type="text/javascript" src="{$smarty.const.YUI2_PATH}element/element-min.js"></script>
-    <script type="text/javascript" src="{$smarty.const.YUI2_PATH}uploader/uploader.js"></script>
-    <script type="text/javascript" src="{$smarty.const.YUI2_PATH}datasource/datasource-min.js"></script>
-    <script type="text/javascript" src="{$smarty.const.YUI2_PATH}datatable/datatable-min.js"></script>
-
     <script type="text/javascript" src="{$smarty.const.URL_FULL}exponent.js.php"></script>
-
     <script type="text/javascript" src="{$smarty.const.YUI3_PATH}yui/yui-min.js"></script>
 	<script type="text/javascript" src="{$smarty.const.URL_FULL}framework/core/assets/js/exp-flashdetector.js"></script>
+
 </head>
 <body class="exp-skin">
 <div id="exp-uploader">
@@ -42,26 +36,29 @@
 
 <script type="text/javascript">
 {literal}
-(function () { 
+
+YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event','yui2-datasource','yui2-element','yui2-uploader','yui2-datatable', function(Y) {
+    var YAHOO=Y.YUI2;
+
     var uiLayer = YAHOO.util.Dom.getRegion('selectLink');
     var button = YAHOO.util.Dom.get('selectLink');
     var overlay = YAHOO.util.Dom.get('uploaderOverlay');
     var uploadlink = YAHOO.util.Dom.get('uploadLink');
-    YAHOO.util.Dom.setStyle(overlay, 'width', uiLayer.right-uiLayer.left + 20 + "px");
+    YAHOO.util.Dom.setStyle(overlay, 'width', uiLayer.right-uiLayer.left +  "px");
     YAHOO.util.Dom.setStyle(overlay, 'height', uiLayer.bottom-uiLayer.top + "px");
-    
+
     var usr = {/literal}{obj2json obj=$user}{literal}; //user
-    
+
 	// Custom URL for the uploader swf file (same folder).
-	YAHOO.widget.Uploader.SWFURL = EXPONENT.YUI2_PATH+"uploader/assets/uploader.swf";
+	YAHOO.widget.Uploader.SWFURL = EXPONENT.YUI2_PATH+"yui2-uploader/assets/uploader.swf";
 
     // Instantiate the uploader and write it to its placeholder div.
 	var uploader = new YAHOO.widget.Uploader( "uploaderOverlay" );
-	
+
 	// Add event listeners to various events on the uploader.
 	// Methods on the uploader should only be called once the 
 	// contentReady event has fired.
-	
+
 	uploader.addListener('contentReady', handleContentReady);
 	uploader.addListener('fileSelect', onFileSelect)
 	uploader.addListener('uploadStart', onUploadStart);
@@ -73,38 +70,38 @@
     uploader.addListener('rollOver', handleRollOver);
     uploader.addListener('rollOut', handleRollOut);
     uploader.addListener('click', handleClick);
-    
+
     YAHOO.util.Event.on(uploadlink, 'click', upload);
-    	
+	
     // Variable for holding the filelist.
 	var fileList;
-	
+
 	// When the mouse rolls over the uploader, this function
 	// is called in response to the rollOver event.
 	// It changes the appearance of the UI element below the Flash overlay.
 	function handleRollOver () {
 		YAHOO.util.Dom.addClass(button,'btn-selected');
 	}
-	
+
 	// On rollOut event, this function is called, which changes the appearance of the
 	// UI element below the Flash layer back to its original state.
 	function handleRollOut () {
 		YAHOO.util.Dom.removeClass(button,'btn-selected');
 	}
-	
+
 	// When the Flash layer is clicked, the "Browse" dialog is invoked.
 	// The click event handler allows you to do something else if you need to.
 	function handleClick () {
 	}
-	
+
 	// When contentReady event is fired, you can call methods on the uploader.
 	function handleContentReady () {
 	    // Allows the uploader to send log messages to trace, as well as to YAHOO.log
 		uploader.setAllowLogging(true);
-		
+	
 		// Allows multiple file selection in "Browse" dialog.
 		uploader.setAllowMultipleFiles(true);
-		
+	
 		// New set of file filters.
 		var ff = new Array({description:"All Files", extensions:"*.*;"});
 
@@ -113,7 +110,7 @@
         //                             {description:"Videos", extensions:"*.avi;*.mov;*.mpg"},
         //                             {description:"Documents", extensions:"*pdf;*.doc;*.odt;*.zip;*.psd;*.flv;*.csv;*.xls"},
         //                             {description:"All Files", extensions:"*.*;"}
-		                   
+	                   
 		// Apply new set of file filters to the uploader.
 		uploader.setFileFilters(ff);
 	}
@@ -133,15 +130,15 @@
 	// Fired when the user selects files in the "Browse" dialog
 	// and clicks "Ok".
 	function onFileSelect(event) {
-	    
+    
         for (var i in event.fileList) {
  	       if (event.fileList[i].size > {/literal}{$bmax}{literal}) {
  	           delete event.fileList[i];
                // alert(event.fileList[i].name+" cannot be uploaded as it's file size is greater than the mximum limit.");
  	       };
         }
-        
-                	    
+    
+            	    
 		if('fileList' in event && event.fileList != null) {
 			fileList = event.fileList;
 			createDataTable(fileList);
@@ -157,16 +154,16 @@
 		 entry["progress"] = "<div style='width:100%;background-color:#CCC;padding:3px;'><div style='height:12px;padding:0px;font-size:10px;color:#fff;background-color:#900;width:0;'>0%</div></div>";
 	     dataArr.unshift(entry);
 	  }
-	
+
 	  for (var j = 0; j < dataArr.length; j++) {
 	    this.fileIdHash[dataArr[j].id] = j;
 	  }
-	  
+  
 	  var sizeFormat = function (elCell, oRecord, oColumn, oData) {
           var newsize = Math.round(oData/1048576*100000)/100000;
           elCell.innerHTML = newsize.toFixed(2)+"mb";
       };
-	
+
 	    var myColumnDefs = [
 	        {key:"name", label: "File Name", sortable:false},
 	     	{key:"size", label: "Size", sortable:false,formatter: sizeFormat},
@@ -185,14 +182,14 @@
 	               selectionMode:"single"
 	           });
 	}
-	
+
 	createDataTable();
 
     // Do something on each file's upload start.
 	function onUploadStart(event) {
-	
+
 	}
-	
+
 	// Do something on each file's upload progress event.
 	function onUploadProgress(event) {
 		var rowNum = fileIdHash[event["id"]];
@@ -200,7 +197,7 @@
 		var progbar = "<div style='width:100%;background-color:#CCC;'><div style='height:12px;padding:3px;font-size:10px;color:#fff;background-color:#f00;width:" + prog + "%;'>" + prog + "%</div></div>";
 		singleSelectDataTable.updateRow(rowNum, {name: dataArr[rowNum]["name"], size: dataArr[rowNum]["size"], progress: progbar});	
 	}
-	
+
 	// Do something when each file's upload is complete.
 	function onUploadComplete(event) {
 		var rowNum = fileIdHash[event["id"]];
@@ -210,27 +207,25 @@
 	    uploader.removeFile(event["id"]);
 	    fileList = event.fileList;
 	}
-	
+
 	// Do something if a file upload throws an error.
 	// (When uploadAll() is used, the Uploader will
 	// attempt to continue uploading.
 	function onUploadError(event) {
 
 	}
-	
+
 	// Do something if an upload is cancelled.
 	function onUploadCancel(event) {
 
 	}
-	
+
 	// Do something when data is received back from the server.
 	function onUploadResponse(event) {
 	    //console.debug(event.data);
 	    //uploader.removeFile(event["id"]);
 	}
-})();
 
-YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
     Y.all('.msg-queue .close').on('click',function(e){
         e.halt();
         e.target.get('parentNode').remove();

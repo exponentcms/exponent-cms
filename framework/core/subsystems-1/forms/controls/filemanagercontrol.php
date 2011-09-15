@@ -239,8 +239,10 @@ class filemanagercontrol extends formcontrol {
                         html += '<span class=\"filename\">'+obj.filename+'<\/span>';
                         html += '<\/li>';
                         
-                        htmln = Y.Node.create(html);
+                        htmln = Y.Node.create(html);                        
                         
+                        df.append(htmln);
+
                         var dd = new Y.DD.Drag({
                             node: htmln,
                             proxy: true,
@@ -255,9 +257,6 @@ class filemanagercontrol extends formcontrol {
                             moveOnEnd: false,
                             borderStyle:'0'
                         });
-                        
-                        
-                        df.append(htmln);
 
                         
                         var af = Y.one('#addfiles-".$name."');
@@ -272,7 +271,7 @@ class filemanagercontrol extends formcontrol {
                             af.remove();
                         }
 
-                        initDragables();
+                        //initDragables();
                     };
                     
                     var cfg = {
