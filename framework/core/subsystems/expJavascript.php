@@ -38,43 +38,6 @@ class expJavascript {
         global $userjsfiles,$expJS,$yui2js,$yui3js;
         
     	$scripts = "";
-        if (!empty($yui2js)) {
-        	require_once(BASE.'external/lissa/class.lissa.php');        
-        
-            // instantiate loader class for yui2
-            $yui2Loader = new Lissa(YUI2_VERSION, null);
-
-            // instantiate loader class for yui3
-            //$yui3Loader = new Lissa(YUI3_VERSION, null, $expJS);
-
-            // load Exponent's yui2 dependencies
-            $yui2Loader->load("dom");
-            $yui2Loader->load("event");
-
-            // load yui2 modules called for via the scipt plugin
-            foreach ($yui2js as $key=>$mod) {
-                $yui2Loader->load($mod);
-            }
-            $yui2Loader->combine = intval(MINIFY);
-            $scripts = "\r\n\t"."<!-- YUI2 Scripts -->"."\r\n";
-            $scripts .= $yui2Loader->scripts()."\r\n";
-        }
-        
-        // load yui3 modules called for via the scipt plugin
-        // if (!empty($yui3js)) {
-        //     foreach ($yui3js as $key=>$mod) {
-        //         $yui3Loader->load($mod);
-        //     }
-        // }
-        
-        // load external (non-yui) scripts
-        // if (!empty($expJS)) {
-        //     foreach ($expJS as $key=>$mod) {
-        //         $yui3Loader->load($mod['name']);
-        //     }
-        // }
-                
-        // $yui3Loader->combine = intval(MINIFY);
         
         $scripts .= "\t"."<!-- EXPONENT namespace setup -->"."\r\n";
         $scripts .= "\t".'<script type="text/javascript" src="'.PATH_RELATIVE.'exponent.js.php"></script>'."\r\n";

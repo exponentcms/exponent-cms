@@ -682,7 +682,7 @@ function expUnserialize($serial_str) {
 // just before it gets rendered to the screen should happen here.
 function expProcessBuffer($buffer, $mode=null) {
      global $jsForHead, $cssForHead;
-     return (str_replace("<!-- MMINIFY REPLACE -->", $cssForHead.$jsForHead, $buffer));
+     return (str_replace("<!-- MINIFY REPLACE -->", $cssForHead.$jsForHead, $buffer));
 }
 
 function createValidId ($id) {

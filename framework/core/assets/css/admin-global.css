@@ -276,9 +276,7 @@ ul.exp-ajax-tabs li a {
     -webkit-border-radius: 3px; 
             border-radius: 3px; 
     border:1px solid #cdcdcd;
-    position:relative;
-    top:-4px;
-    z-index:2;
+    margin:0 0 2px 0;
 }
 
 ul.exp-ajax-tabs li a.current {

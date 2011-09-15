@@ -408,7 +408,7 @@ class expTheme {
 		$str .= "\t".'<!--[if IE 6]><style type="text/css">  body { behavior: url('.PATH_RELATIVE.'external/csshover.htc); }</style><![endif]-->'."\n";
 
 		// when minification is used, the comment below gets replaced when the buffer is dumped
-		$str .= '<!-- MMINIFY REPLACE -->';
+		$str .= '<!-- MINIFY REPLACE -->';
 
 //		if(file_exists(BASE.'themes/'.DISPLAY_THEME_REAL.'/favicon.ico')) {
 //			$str .= "\t".'<link rel="shortcut icon" href="'.URL_FULL.'themes/'.DISPLAY_THEME_REAL.'/favicon.ico" type="image/x-icon" />'."\r\n";
