@@ -17,9 +17,10 @@
     
     <h1>Configure Website</h1>
     
-    {script unique="siteconfig" yui2mods="tabview, element" yui3mods=1}
+    {script unique="siteconfig" yui3mods=1}
     {literal}
-    YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
+    YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-tabview','yui2-element', function(Y) {
+	    var YAHOO=Y.YUI2;
         var tabView = new YAHOO.widget.TabView('demo');
         Y.one('#siteconfig').removeClass('hide');
         Y.one('.loadingdiv').remove();
