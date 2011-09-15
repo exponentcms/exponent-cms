@@ -27,8 +27,15 @@
 			<div class="item">
 				<p>
 					{if $config.showimage}{img src=`$tweet.image` style="float:left;margin:0 5px 0 0;"}{/if}
-					<dt><em class="date">On {$tweet.created_at|format_date:$smarty.const.DISPLAY_DATETIME_FORMAT}{if $config.showattrib} via {$tweet.via}, {$tweet.screen_name} wrote:{/if}</em></dt>
-					<dd>{$tweet.text}</dd>
+					<dt><em class="date">{$tweet.created_at}{if $config.showattrib} via {$tweet.via}, {$tweet.screen_name} wrote:{/if}</em></dt>
+					<dd>
+						{$tweet.text}
+						{permissions}
+							{if $permissions.create == 1}
+								&nbsp;{icon img='retweet.png' id=`$tweet.id` action=create_retweet title="Retweet" onclick="return confirm('Are you sure you want to retweet this item?');"}
+							{/if}
+						{/permissions}
+					</dd>
 				</p>
 			</div>
 			{clear}

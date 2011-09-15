@@ -25,6 +25,7 @@ class twitterController extends expController {
     public $remove_configs = array(
         'aggregation',
         'comments',
+        'ealerts',
         'files',
         'rss',
         'tags'
@@ -32,7 +33,7 @@ class twitterController extends expController {
 	public $codequality = 'beta';
     
     function displayname() { return "Twitter"; }
-    function description() { return "For now you can only pull your tweets. Very soon you will be able have access to the entire Twitter API"; }
+    function description() { return "Display your tweets just like on Twitter"; }
     function author() { return "Jonathan Worent - OIC Group, Inc"; }
     
     public function showall() {
@@ -80,9 +81,10 @@ class twitterController extends expController {
 				    $tweets[$key]['text'] = $this->twitterify(substr($value['text'],strpos($value['text'],':')+2));
 				    $tweets[$key]['screen_name'] = $value['retweeted_status']['user']['screen_name'];
 				    $tweets[$key]['image'] = $value['retweeted_status']['user']['profile_image_url'];
-				    $tweets[$key]['via'] = $value['source'].' (<img src="framework/modules/twitter/assets/images/arrow-retweet.png" alt="RT by"/> '.$value['user']['screen_name'].')';
+				    $tweets[$key]['via'] = $value['source'].' (<img src="framework/modules/twitter/assets/images/rt.png" title="retweet by" alt="RT by"/> '.$value['user']['screen_name'].')';
 			    }
-			    $tweets[$key]['created_at'] = strtotime($value['created_at']); // convert to unix time
+//			    $tweets[$key]['created_at'] = strtotime($value['created_at']); // convert to unix time
+			    $tweets[$key]['created_at'] = expDateTime::relativeDate(strtotime($value['created_at'])); // convert to unix time
     		}
 
             assign_to_template(array('items'=>$tweets));
@@ -125,6 +127,21 @@ class twitterController extends expController {
 		    $twitter->setOAuthToken($this->config['oauth_token']);
 		    $twitter->setOAuthTokenSecret($this->config['oauth_token_secret']);
 			$twitter->statusesUpdate($this->params['body']);
+		}
+		expHistory::back();
+	}
+
+	/**
+	 * Retweet the Tweet
+	 */
+	public function create_retweet() {
+		if (!empty($this->config['consumer_key']) && !empty($this->params['id'])) {
+		    // create instance
+		    $twitter = new Twitter($this->config['consumer_key'], $this->config['consumer_secret']);
+		    // set tokens
+		    $twitter->setOAuthToken($this->config['oauth_token']);
+		    $twitter->setOAuthTokenSecret($this->config['oauth_token_secret']);
+			$twitter->statusesRetweet($this->params['id']);
 		}
 		expHistory::back();
 	}
