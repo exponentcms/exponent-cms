@@ -23,9 +23,10 @@
     
     <h1>Dashboard</h1>
     
-    {script unique="payment-summary" yui2mods="tabview, element" yui3mods=1}
+    {script unique="payment-summary" yui3mods=1}
     {literal}
-    YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
+    YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event','yui2-element','yui2-tabview', function(Y) {
+        var YAHOO=Y.YUI2;
         var tabView = new YAHOO.widget.TabView('demo');
         Y.one('#payment-summary').removeClass('hide');
         Y.one('.loadingdiv').remove();
