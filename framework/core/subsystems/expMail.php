@@ -149,23 +149,23 @@ class expMail {
 		$this->mailer = Swift_Mailer::newInstance($this->transport);
 		$this->message = new Swift_Message();
 
-		// use the eDebugLogger for Exponent
-		if (SMTP_DEBUGGING) {
-			$this->log = new Swift_Plugins_Loggers_eDebugLogger();
-			$this->mailer->registerPlugin(new Swift_Plugins_LoggerPlugin($this->log));
+		switch (SMTP_DEBUGGING) {
+			case 1:
+				//To use the eDebugLogger for Exponent
+				$this->log = new Swift_Plugins_Loggers_eDebugLogger();
+				$this->mailer->registerPlugin(new Swift_Plugins_LoggerPlugin($this->log));
+				break;
+			case 2:
+				//To use the ArrayLogger
+				$this->log = new Swift_Plugins_Loggers_ArrayLogger();
+				$this->mailer->registerPlugin(new Swift_Plugins_LoggerPlugin($this->log));
+				break;
+			case 3:
+				//Or to use the Echo Logger
+				$this->log = new Swift_Plugins_Loggers_EchoLogger();
+				$this->mailer->registerPlugin(new Swift_Plugins_LoggerPlugin($this->log));
+				break;
 		}
-//		switch (SMTP_DEBUGGING) {
-//			case 1:
-//				//To use the ArrayLogger
-//				$this->log = new Swift_Plugins_Loggers_ArrayLogger();
-//				$this->mailer->registerPlugin(new Swift_Plugins_LoggerPlugin($this->log));
-//				break;
-//			case 2:
-//				//Or to use the Echo Logger
-//				$this->log = new Swift_Plugins_Loggers_EchoLogger();
-//				$this->mailer->registerPlugin(new Swift_Plugins_LoggerPlugin($this->log));
-//				break;
-//		}
 	}
 
 	// End Constructor
@@ -228,8 +228,7 @@ class expMail {
 			return false;
 		}
 
-//		$to = isset($params['to']) ? $params['to'] : SMTP_FROMADDRESS;
-//		$this->addTo($params['to']);
+    	// set up the to address(es)
 		if (is_array($params['to'])) {
 			$params['to'] = array_filter($params['to']);
 		} elseif (empty($params['to'])) {
@@ -239,13 +238,7 @@ class expMail {
 		}
 		$this->message->setTo($params['to']);
 
-//		if (!empty($params['from'])) {
-//			if (stristr('^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$', $params['from'])) {
-//				$this->addFrom = $params['from'];
-//			}
-//		$from = isset($params['from']) ? $params['from'] : SMTP_FROMADDRESS;
-//		$fromname = isset($params['from_name']) ? $params['from_name'] : null;
-//		$this->message->setFrom($from, $fromname);
+    	// set up the from address(es)
 		if (is_array($params['from'])) {
 			$params['from'] = array_filter($params['from']);
 		} elseif (empty($params['to'])) {
@@ -254,14 +247,12 @@ class expMail {
 			trim($params['from']);
 		}
 		$this->message->setFrom($params['from']);
-//		}
 
 		$this->message->setSubject($params['subject'] = !empty($params['subject']) ? $params['subject'] : 'Message from '.SITE_TITLE);
 
 		if (!empty($params['headers'])) $this->addHeaders($params['headers']);
 
 		if (!empty($params['html_message'])) {
-//			$this->addHTML($params['html_message']);
 			$this->setHTMLBody($params['html_message']);
 			if (!empty($params['text_message'])) $this->addText($params['text_message']);
 		} elseif (!empty($params['text_message'])) {
@@ -343,38 +334,42 @@ class expMail {
 	}
 
 	/**
-	 *  quickBatchSend() - Does not seem to be working correctly.  Use at your own risk!
-	 *
-	 *  This should probably be taken out as it look like a failed attempt to use the old-school AntiFlood plugin
-	 *  This is leftover code from Swift 3.x
-	 *
-	 * @todo Update this section to use batch processing properly
+	 *  quickBatchSend() - a quick way to send a batch of emails one at a time
+	 * This function is similar to quickSend, but sends each email separately to protect others identity in the mailing
 	 *
 	 * @author Tyler Smart <tyleresmart@gmail.com>
 	 * @return array
 	 */
 	public function quickBatchSend() {
-		if (empty($params['to']) || (empty($params['html_message']) || empty($params['text_message']))) {
+		if (empty($params['html_message']) && empty($params['text_message'])) {
 			return false;
 		}
 
-    	// set up the to address
+    	// set up the to address(es)
 		$this->addTo($params['to']);
+		if (is_array($params['to'])) {
+			$params['to'] = array_filter($params['to']);
+		} elseif (empty($params['to'])) {
+			$params['to'] = array(SMTP_FROMADDRESS);
+		} else {
+			$params['to'] = array(trim($params['to']));
+		}
 
-    	// set up the from address
-//		if (!empty($params['from'])) {
-//			if (stristr('^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$', $params['from'])) {
-//				$this->addFrom = $params['from'];
-//			}
-			$from = isset($params['from']) ? $params['from'] : SMTP_FROMADDRESS;
-			$fromname = isset($params['from_name']) ? $params['from_name'] : null;
-			$this->addFrom($from, $fromname);
-//		}
+    	// set up the from address(es)
+		if (is_array($params['from'])) {
+			$params['from'] = array_filter($params['from']);
+		} elseif (empty($params['to'])) {
+			$params['from'] = SMTP_FROMADDRESS;
+		} else {
+			trim($params['from']);
+		}
+		$this->message->setFrom($params['from']);
 
 		$this->addSubject($params['subject'] = !empty($params['subject']) ? $params['subject'] : 'Message from '.SITE_TITLE);
+
 		if (!empty($params['headers'])) $this->addHeaders($params['headers']);
+
 		if (!empty($params['html_message'])) {
-//			$this->addHTML($params['html_message']);
 			$this->setHTMLBody($params['html_message']);
 			if (!empty($params['text_message'])) $this->addText($params['text_message']);
 		} elseif (!empty($params['text_message'])) {
@@ -382,10 +377,13 @@ class expMail {
 		}
 
 		$numsent = 0;
-		try {
-			$numsent = $this->send();
-		} catch (Swift_TransportException $e) {
-			flash('error','Sending Mail Failed! - '.$e->getMessage());
+		foreach ($params['to'] as $address=>$name) {
+			try {
+				$this->message->setTo(array($address=>$name));
+				$numsent += $this->send();
+			} catch (Swift_TransportException $e) {
+				flash('error','Batch Send Mail Failed! - '.$address.' - '.$e->getMessage());
+			}
 		}
 		return $numsent;
 	}
