@@ -730,9 +730,95 @@ class reportController extends expController {
         //strftime("%a %d-%m-%Y", get_first_day(3, 1, 2007)); Thursday, 1 April 2010  
         //$d_month_previous = date('n', mktime(0,0,0,(strftime("%m")-1),1,strftime("%Y")));
         
-        $action_items = array('print_orders'=>'Print','export_odbc'=>'Export ODBC File','export_status_report'=>'Export Status Report','export_inventory'=>'Export Inventory File','export_user_input_report'=>'Export User Input File' /*,'payment_report'=>'Show Payment Report'*/);
+        $action_items = array('print_orders'=>'Print','export_odbc'=>'Export ODBC File','export_status_report'=>'Export Status Report','export_inventory'=>'Export Inventory File','export_user_input_report'=>'Export User Input File', 'show_payment_summary'=>'Show Payment Summary');
         assign_to_template(array('page'=>$page, 'action_items'=>$action_items)); 
     }
+	
+	function show_payment_summary() {
+		global $order, $db;
+		
+		$payments = array (
+				'VisaCard' => 'Visa',  
+				'AmExCard' => 'American Express', 
+				'MasterCard' => 'Mastercard', 
+				'DiscoverCard' => 'Discover', 
+				'paypalExpressCheckout' => 'PayPal', 
+				'passthru' => 'Passthru', 
+				'worldpayCheckout' => 'WorldPay'
+			);
+			
+        $order_ids = array();
+        if (isset($this->params['applytoall']) && $this->params['applytoall']==1)
+        {
+            $obs = expSession::get('order_export_values');
+            foreach ($obs as $ob)
+            {
+                $order_ids[] = $ob->id;
+            }
+        }
+        else
+        {
+            foreach ($this->params['act-upon'] as $order_id)
+            {
+                $order_ids[] = $order_id;
+            }   
+        }        
+        $order_ids = array_unique($order_ids);
+        $orders_string = implode(',', $order_ids);
+		
+		$payment_summary = array();
+        // $Credit Cards
+        $sql = "SELECT billing_cost, billing_options, calculator_name, user_title FROM ".DB_TABLE_PREFIX."_billingmethods, ".DB_TABLE_PREFIX."_billingcalculator WHERE ".DB_TABLE_PREFIX."_billingcalculator.id = billingcalculator_id and orders_id IN (" . $orders_string . ")";
+		$res = $db->selectObjectsBySql($sql);
+		if(!empty($res)) {
+			foreach($res as $item) {
+				$options = unserialize($item->billing_options);
+				if(!empty($item->billing_cost)) {
+					if($item->user_title == 'Credit Card') {
+						if(!empty($options->cc_type)) {
+							@$payment_summary[$payments[$options->cc_type]] += $item->billing_cost;
+						}
+					} else {
+						@$payment_summary[$payments[$item->calculator_name]] += $item->billing_cost;
+					}
+				}
+			}
+		}	
+			/*
+		// $Paypal
+		$sql = "SELECT billing_cost, calculator_name FROM ".DB_TABLE_PREFIX."_billingmethods, ".DB_TABLE_PREFIX."_billingcalculator WHERE ".DB_TABLE_PREFIX."_billingcalculator.id = billingcalculator_id AND user_title = 'PayPal Express Checkout' and orders_id IN (" . $orders_string . ")";
+		$res = $db->selectObjectsBySql($sql);
+		if(!empty($res)) {
+			foreach($res as $item) {
+				if(!empty($item->billing_cost)) {
+					@$payment_summary[$payments[$item->calculator_name]] += $item->billing_cost;
+				}
+			}
+		}
+		// $Passthru Payment
+		$sql = "SELECT billing_cost, calculator_name FROM exponent_billingmethods, exponent_billingcalculator WHERE exponent_billingcalculator.id = billingcalculator_id AND user_title = 'Passthru Payment' and orders_id IN (" . $orders_string . ")";
+		$res = $db->selectObjectsBySql($sql);
+		if(!empty($res)) {
+			foreach($res as $item) {
+				if(!empty($item->billing_cost)) {
+					@$payment_summary[$payments[$item->calculator_name]] += $item->billing_cost;
+				}
+			}
+		}
+		
+		// $Worldpay Checkout
+		$sql = "SELECT billing_cost, calculator_name FROM exponent_billingmethods, exponent_billingcalculator WHERE exponent_billingcalculator.id = billingcalculator_id AND user_title = 'Worldpay Checkout' and orders_id IN (" . $orders_string . ")";
+		$res = $db->selectObjectsBySql($sql);
+		if(!empty($res)) {
+			foreach($res as $item) {
+				if(!empty($item->billing_cost)) {
+					@$payment_summary[$payments[$item->calculator_name]] += $item->billing_cost;
+				}
+			}
+		}
+		*/
+		assign_to_template(array('payment_summary'=>$payment_summary));
+	}
    
     function export_user_input_report()
     {
