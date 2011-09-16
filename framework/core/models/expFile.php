@@ -373,7 +373,8 @@ class expFile extends expRecord {
 		}
 
         // If $_destDir is not defined, use the default Files directory
-        $_destDir = ( $_destDir == null ) ? UPLOAD_DIRECTORY : $_destDir;
+//        $_destDir = ( $_destDir == null ) ? UPLOAD_DIRECTORY : $_destDir;
+        $_destDir = ( $_destDir == null ) ? UPLOAD_DIRECTORY_RELATIVE : $_destDir;
 
 		// If $_destFile is defined, use that name as an override for the
         // uploaded file name
@@ -385,7 +386,7 @@ class expFile extends expRecord {
         // eDebug($_destFile,1);
 		
         // Build destination fille path for future use
-        $_destFullPath = $_destDir . $_destFile;
+        $_destFullPath = BASE.$_destDir . $_destFile;
 		
 		//if the file exists and we don't want to overwrite it, create a new one			
 		if (file_exists($_destFullPath) && $_force == false) {

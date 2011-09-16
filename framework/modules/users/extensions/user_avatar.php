@@ -51,15 +51,9 @@ class user_avatar extends expRecord {
         
         // check for a previous avatar otherwise set the default
         $this->image = $params['current_avatar'];
-//        if (empty($this->image)) $this->image = URL_FULL.'framework/modules/users/avatars/avatar_not_found.jpg';
         if (empty($this->image)) $this->image = URL_FULL.'framework/modules/users/assets/images/avatar_not_found.jpg';
 
-        // if the user chose gravatar, create the link and save it!
-        if (!empty($params['use_gravatar'])) {
-	        $this->use_gravatar = $params['use_gravatar'];
-	        $emailMD5 = md5(strtolower(trim(user::getEmailById($params['user_id']))));
-	        $this->image = "http://www.gravatar.com/avatar/" . $emailMD5 .  ".jpg";
-        } elseif (!empty($_FILES['avatar']['tmp_name'])) {  // if the user uploaded a new avatar lets save it!
+        if (!empty($_FILES['avatar']['tmp_name'])) {  // if the user uploaded a new avatar lets save it!
             $info = expFile::getImageInfo($_FILES['avatar']['tmp_name']);
             if ($info['is_image']) {
                 // figure out the mime type and set the file extension and name
@@ -68,12 +62,16 @@ class user_avatar extends expRecord {
                 $avatar_name = $this->user_id.'.'.$extension;
                 
                 // save the file to the filesystem
-//                $file = expFile::fileUpload('avatar', true, false, $avatar_name, 'framework/modules/users/avatars/');
                 $file = expFile::fileUpload('avatar', true, false, $avatar_name, 'files/avatars/');
 
                 //save the file to the database                
                 $this->image = $file->url;
+                $this->use_gravatar = false;  // if we uploaded a file, we don't want to use gravatar
             }
+        } elseif (!empty($params['use_gravatar'])) {  // if the user chose gravatar, create the link and save it!
+	            $this->use_gravatar = $params['use_gravatar'];
+	            $emailMD5 = md5(strtolower(trim(user::getEmailById($params['user_id']))));
+	            $this->image = "http://www.gravatar.com/avatar/" . $emailMD5 .  ".jpg";
         }
         
         parent::update();
