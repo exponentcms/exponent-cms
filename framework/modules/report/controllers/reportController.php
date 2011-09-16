@@ -789,40 +789,15 @@ class reportController extends expController {
 				}
 			}
 		}	
-			/*
-		// $Paypal
-		$sql = "SELECT billing_cost, calculator_name FROM ".DB_TABLE_PREFIX."_billingmethods, ".DB_TABLE_PREFIX."_billingcalculator WHERE ".DB_TABLE_PREFIX."_billingcalculator.id = billingcalculator_id AND user_title = 'PayPal Express Checkout' and orders_id IN (" . $orders_string . ")";
-		$res = $db->selectObjectsBySql($sql);
-		if(!empty($res)) {
-			foreach($res as $item) {
-				if(!empty($item->billing_cost)) {
-					@$payment_summary[$payments[$item->calculator_name]] += $item->billing_cost;
-				}
-			}
-		}
-		// $Passthru Payment
-		$sql = "SELECT billing_cost, calculator_name FROM exponent_billingmethods, exponent_billingcalculator WHERE exponent_billingcalculator.id = billingcalculator_id AND user_title = 'Passthru Payment' and orders_id IN (" . $orders_string . ")";
-		$res = $db->selectObjectsBySql($sql);
-		if(!empty($res)) {
-			foreach($res as $item) {
-				if(!empty($item->billing_cost)) {
-					@$payment_summary[$payments[$item->calculator_name]] += $item->billing_cost;
-				}
-			}
-		}
 		
-		// $Worldpay Checkout
-		$sql = "SELECT billing_cost, calculator_name FROM exponent_billingmethods, exponent_billingcalculator WHERE exponent_billingcalculator.id = billingcalculator_id AND user_title = 'Worldpay Checkout' and orders_id IN (" . $orders_string . ")";
-		$res = $db->selectObjectsBySql($sql);
-		if(!empty($res)) {
-			foreach($res as $item) {
-				if(!empty($item->billing_cost)) {
-					@$payment_summary[$payments[$item->calculator_name]] += $item->billing_cost;
-				}
-			}
+		foreach($payment_summary as $key => $item) {
+			$payments_key_arr[] = '"' . $key . '"';
+			$payment_values_arr[] = '"' . $item . '"';
 		}
-		*/
-		assign_to_template(array('payment_summary'=>$payment_summary));
+		$payments_key   = implode(",", $payments_key_arr);
+		$payment_values = implode(",", $payment_values_arr);
+
+		assign_to_template(array('payment_summary'=>$payment_summary, 'payments_key' => $payments_key, 'payment_values' => $payment_values));
 	}
    
     function export_user_input_report()
