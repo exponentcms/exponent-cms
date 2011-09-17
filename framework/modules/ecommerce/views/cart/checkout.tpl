@@ -278,7 +278,7 @@
 </div>
 <!-- div id="loadingdiv" class="loadingdiv">Loading Checkout Page</div -->
 
-{* eDebug var=$order *}
+{* edebug var=$order *}
 {*  Kludged out while testing paypal *}
 {*script unique="shoppingcartcheckout" yuimodules="animation,container,json" src=`$smarty.const.JS_FULL`exp-ecomcheckout.js}
 //

@@ -17,7 +17,7 @@
 #
 ##################################################
 
-function smarty_function_selectValue($params,&$smarty) {
+function smarty_function_selectvalue($params,&$smarty) {
 	global $db;
 	
 	if (empty($params['field']) || empty($params['table'])) return false;

@@ -120,8 +120,8 @@
                     {foreach from=$order->order_status_changes item=change}
                     <tr style="border-bottom: 1px solid gray;"><td>
                     <strong>
-                    Status was changed from {selectValue table='order_status' field="title" where="id=`$change->from_status_id`"} 
-                    to {selectValue table='order_status' field="title" where="id=`$change->to_status_id`"} on {$change->getTimestamp()} by {$change->getPoster()}
+                    Status was changed from {selectvalue table='order_status' field="title" where="id=`$change->from_status_id`"}
+                    to {selectvalue table='order_status' field="title" where="id=`$change->to_status_id`"} on {$change->getTimestamp()} by {$change->getPoster()}
                     </strong>
                     {if $change->comment != ''}                        
                         <div style="border: 1px solid gray; margin-left: 10px; margin-top: 5px;">
@@ -169,7 +169,7 @@
             </div>
             <div id="billinfo">
                 <h2>Billing Information</h2>
-                {* eDebug var=$order->billingmethod[0] *}
+                {* edebug var=$order->billingmethod[0] *}
                 {foreach from=$order->billingmethod[0]->billingtransaction item=bt name=foo}
                     <table class="order-info">
                     <thead>

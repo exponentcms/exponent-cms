@@ -25,7 +25,7 @@
     {else}
         {br}<a href="{link action=showall showclosed=0}">Hide closed orders</a>{br}
     {/if}
-    {*eDebug var=$page->records[0]*}
+    {*edebug var=$page->records[0]*}
 	<div id="orders">
 		{pagelinks paginate=$page top=1}
 		<table id="prods" class="exp-skin-table">

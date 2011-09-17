@@ -17,7 +17,7 @@
 #
 ##################################################
 
-function smarty_function_selectObjects($params,&$smarty) {
+function smarty_function_selectobjects($params,&$smarty) {
 	global $db;
 	$where = isset($params['where']) ? $params['where'] : null;
 	$where = isset($params['orderby']) ? $params['orderby'] : null;

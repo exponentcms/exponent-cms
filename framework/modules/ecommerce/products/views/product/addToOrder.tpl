@@ -18,7 +18,7 @@
 {css unique="add-to-cart" link="`$smarty.const.PATH_RELATIVE`framework/modules/ecommerce/assets/css/addToCart.css"}
 
 {/css}
-{* eDebug var=$product *}
+{* edebug var=$product *}
 {if isset($params.error)}
       <div id="msg-queue" class="common msg-queue">
     <ul class="queue error"><li>{$params.error}</li></ul>
