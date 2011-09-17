@@ -22,7 +22,6 @@ class usersController extends expController {
     public $basemodel_name = 'user';
     public $add_permissions = array(
         'toggle_extension'=>'Activate Extensions', 
-        'edituser'=>'Edit Users',
         'kill_session'=>'End Sessions',
         'boot_user'=>'Boot Users',
     );
