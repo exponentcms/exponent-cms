@@ -25,7 +25,7 @@ class usersController extends expController {
         'kill_session'=>'End Sessions',
         'boot_user'=>'Boot Users',
     );
-    public $remove_permissions = array('create', 'edituser');
+    public $remove_permissions = array('create', 'edituser', 'edit');
 	public $codequality = 'beta';
     
     //public $useractions = array('showall'=>'Show all');
