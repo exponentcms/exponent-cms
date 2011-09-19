@@ -55,16 +55,16 @@ class twitterController extends expController {
 					$tweets = $twitter->statusesFriendsTimeline(null,null,$this->config['twlimit']);
 			        break;
 		        case 3:
-					// get public timeline
-					$tweets = $twitter->statusesPublicTimeline();
-			        break;
-		        case 4:
 					// get mentions
 					$tweets = $twitter->statusesMentions(null,null,$this->config['twlimit']);
 			        break;
+		        case 4:
+					// get public timeline
+					$tweets = $twitter->statusesPublicTimeline();
+			        break;
 		        default:
 			        // get users timeline
-			        $tweets = $twitter->statusesUserTimeline(null,null,null,null,null,$this->config['twlimit']);
+			        $tweets = $twitter->statusesUserTimeline(null,null,null,null,$this->config['twlimit']);
 	                break;
 	        }
 
