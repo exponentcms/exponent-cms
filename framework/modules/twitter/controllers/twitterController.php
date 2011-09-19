@@ -64,7 +64,7 @@ class twitterController extends expController {
 			        break;
 		        default:
 			        // get users timeline
-			        $tweets = $twitter->statusesUserTimeline(null,null,null,null,null,$this->config['twlimit']);
+			        $tweets = $twitter->statusesUserTimeline(null,null,null,null,$this->config['twlimit']);
 	                break;
 	        }
 
