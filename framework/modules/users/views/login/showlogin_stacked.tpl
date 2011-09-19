@@ -32,7 +32,7 @@
 		<h2>{$displayname}</h2>
 		<div class="bodycopy">
 			<ul>
-				<li><a href="{link action=logout}">{"Log Out"|gettext}</a></li>
+				<li><a class="awesome {$smarty.const.BTN_COLOR} {$smarty.const.BTN_SIZE}" href="{link action=logout}">{"Log Out"|gettext}</a></li>
 			</ul>
 		</div>
     {/if}
