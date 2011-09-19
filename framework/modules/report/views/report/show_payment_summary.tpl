@@ -29,16 +29,33 @@ YUI(EXPONENT.YUI3_CONFIG).use('node', 'charts', 'yui2-yahoo-dom-event','yui2-ele
 (function() {
     YUI().use('charts', function (Y) 
     { 
-        var myDataValues = [
+        var myDataValues = [ 
 			[{/literal}{$payments_key}{literal}],
 			[{/literal}{$payment_values}{literal}]
-		];
+        ];
+		
+		var myTooltip = {
+            styles: { 
+                backgroundColor: "#333",
+                color: "#eee",
+                borderColor: "#fff",
+                textAlign: "center"
+            },
+            markerLabelFunction: function(categoryItem, valueItem, itemIndex, series, seriesIndex)
+            {
+                var msg = "<span style=\"text-decoration:underline\">Total " + 
+                categoryItem.axis.get("labelFunction").apply(this, [categoryItem.value, categoryItem.axis.get("labelFormat")]) + 
+                " Payment</span><br/><div style=\"margin-top:5px;font-weight:bold\">" + valueItem.axis.get("labelFunction").apply(this, [valueItem.value, {prefix:"$", decimalPlaces:2}]) + "</div>";
+                return msg; 
+            }
+        };
         
-        var areachart     = new Y.Chart({dataProvider:myDataValues, render:"#areachart", type:"area"});
-		var barchart      = new Y.Chart({dataProvider:myDataValues, render:"#barchart", type:"bar"});
-		var columnchart   = new Y.Chart({dataProvider:myDataValues, render:"#columnchart", type:"column"});
-		var combochart    = new Y.Chart({dataProvider:myDataValues, render:"#combochart", type:"combo"});
-		var linechart     = new Y.Chart({dataProvider:myDataValues, render:"#linechart", type:"line"});
+        var areachart     = new Y.Chart({dataProvider:myDataValues, render:"#areachart", type:"area", tooltip: "myTooltip"});
+		var barchart      = new Y.Chart({dataProvider:myDataValues, render:"#barchart", type:"bar", tooltip: "myTooltip"});
+		var columnchart   = new Y.Chart({dataProvider:myDataValues, render:"#columnchart", type:"column", tooltip: "myTooltip"});
+		var combochart    = new Y.Chart({dataProvider:myDataValues, render:"#combochart", type:"combo", tooltip: "myTooltip"});
+		var linechart     = new Y.Chart({dataProvider:myDataValues, render:"#linechart", type:"line", tooltip: "myTooltip"});
+		var piechart     = new Y.Chart({dataProvider:myDataValues, render:"#piechart", type:"pie", tooltip: "myTooltip"});
     });
 })();
 {/literal}
@@ -56,6 +73,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('node', 'charts', 'yui2-yahoo-dom-event','yui2-ele
 		<li><a href="#tab4"><em>{gettext str="Column Chart"}</em></a></li>
 		<li><a href="#tab5"><em>{gettext str="Combo Chart"}</em></a></li>
 		<li><a href="#tab6"><em>{gettext str="Line Chart"}</em></a></li>
+		<li><a href="#tab7"><em>{gettext str="Pie Chart"}</em></a></li>
 		</ul>            
 		<div class="yui-content">
 			<div id="tab1">
@@ -95,6 +113,9 @@ YUI(EXPONENT.YUI3_CONFIG).use('node', 'charts', 'yui2-yahoo-dom-event','yui2-ele
 			<div id="tab6">
 				<div id="linechart"></div>
 			</div>
+			<div id="tab7">
+				<div id="piechart"></div>
+			</div>
 		</div>
 	</div>
 </div>
@@ -107,7 +128,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('node', 'charts', 'yui2-yahoo-dom-event','yui2-ele
     background:#F7F4EE;
 }
 
-#areachart, #barchart, #columnchart, #combochart, #linechart {
+#areachart, #barchart, #columnchart, #combochart, #linechart, #piechart {
     margin:10px 10px 10px 10px;
     width:90%;
     max-width: 800px;

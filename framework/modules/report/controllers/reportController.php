@@ -20,7 +20,7 @@
 class reportController extends expController {
 	//protected $basemodel_name = '';
 	//public $useractions = array('showall'=>'Show all');
-	protected $add_permissions = array('build_report'=>'Manage','cart_summary'=>'View Cart Summary Report', 'dashboard'=>'View the Ecommerce Dashboard', 'order_report'=>'Generate Order Report', 'product_report'=>'Generate Product Report','generateOrderReport'=>'View Order Report','generateProductReport'=>'View Product Report','print_orders'=>'Print Orders','batch_export'=>'Export Products');
+	protected $add_permissions = array('build_report'=>'Manage','cart_summary'=>'View Cart Summary Report', 'dashboard'=>'View the Ecommerce Dashboard', 'order_report'=>'Generate Order Report', 'product_report'=>'Generate Product Report','generateOrderReport'=>'View Order Report','generateProductReport'=>'View Product Report','print_orders'=>'Print Orders','batch_export'=>'Export Products', 'show_payment_summary'=>'Show Payment Summary');
 	
 	function displayname() { return "Ecom Report Builder"; }
 	function description() { return "Build reports based on store activity"; }
@@ -792,7 +792,7 @@ class reportController extends expController {
 		
 		foreach($payment_summary as $key => $item) {
 			$payments_key_arr[] = '"' . $key . '"';
-			$payment_values_arr[] = '"' . $item . '"';
+			$payment_values_arr[] =  round($item, 2);
 		}
 		$payments_key   = implode(",", $payments_key_arr);
 		$payment_values = implode(",", $payment_values_arr);
