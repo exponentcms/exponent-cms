@@ -66,7 +66,7 @@ $ecom = array(
                         ),
                         array(
                             'text'=>gt("Manage Vendors"),
-                            'url'=>makeLink(array('controller'=>'address','action'=>'manage')),
+                            'url'=>makeLink(array('controller'=>'purchaseOrder','action'=>'manage_vendors')),
                         ),
                     ),                        
                 ),
