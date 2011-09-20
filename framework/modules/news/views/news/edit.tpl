@@ -66,8 +66,7 @@
         var YAHOO=Y.YUI2;
 
         var tabView = new YAHOO.widget.TabView('newedfrm');
-        Y.one('#newedit').removeClass('hide');
-        Y.one('.loadingdiv').remove();
+        Y.one('#newedit').removeClass('hide').next().remove();
     });
 {/literal}
 {/script}
