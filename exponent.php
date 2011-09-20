@@ -73,6 +73,18 @@ if (expJavascript::inAjaxAction()) set_error_handler('handleErrors');
 $user = new user();
 expSession::validate();
 
+if (!defined('MOBILE')) {
+	/* exdoc
+	 * The flag to use a mobile theme variation.  This may be different
+	 * than the configured theme style (THEME_STYLE_REAL) due to previewing.
+	 */
+	if (defined('FORCE_MOBILE') && FORCE_MOBILE && $user->isAdmin()) {
+		define('MOBILE',true);
+	} else {
+		define('MOBILE',self::is_mobile());
+	}
+}
+
 // Initialize permissions variables
 $exponent_permissions_r = expSession::get("permissions");
 

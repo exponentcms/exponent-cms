@@ -18,44 +18,86 @@
 ##################################################
 
 class purchaseOrderController extends expController {
-	//protected $basemodel_name = '';
+	public $basemodel_name = 'purchase_order';
 	//public $useractions = array('showall'=>'Show all');
 	public $useractions = array();
 	protected $add_permissions = array(
-	//'showall'=>'Manage', 
-    // 'show'=>'View Orders', 
-    // 'setStatus'=>'Change Status', 
-    // 'edit_payment_info'=>'Edit Payment Info','save_payment_info'=>'Save Payment Info',
-    // 'edit_address'=>'Edit Address','save_address'=>'Save Address',
-    // 'edit_order_item'=>'Edit Order Item','save_order_item'=>'Save Order Item',
-    // 'add_order_item'=>'Add Order Item','save_new_order_item'=>'Save New Order Item',
-    // 'edit_totals'=>'Edit Totals','save_totals'=>'Save Totals',
-    // 'edit_invoice_id'=>'Edit Invoice Id','save_invoice_id'=>'Save Invoice Id', 
-    // 'update_sales_reps'=>'Manage Sales Reps', 'quickfinder'=>'Do a quick order lookup', 
-    // 'edit_shipping_method'=>'Edit Shipping Method', 'save_shipping_method'=>'Save Shipping Method',    
-    // 'create_new_order'=>'Create A New Order', 'save_new_order'=>'Save a new order', 
-    // 'createReferenceOrder'=>'Create Reference Order', 'save_reference_order'=>'Save Reference Order'      
+	'manage'=>'Manage Purchase Orders', 
+    'edit'=>'Edit Purchase Orders', 
+    'manage_vendors'=>'Manage Vendors', 
+    'show_vendor'=>'Show Vendor Details',
+    'edit_vendor'=>'Edit Vendor',
+    'update_vendor'=>'Update Vendor',
+    'delete_vendor'=>'Delete vendors',
+ 
     );
 	
 	function displayname() { return "Ecommerce Purchase Order Manager"; }
 	function description() { return "Use this module to create and manage purchase orders for your ecommerce store."; }
 	
 	function manage () {
-	    global $db;
-	    
 	    expHistory::set('viewable', $this->params);
+		
+		$purchase_orders = $this->purchase_order->find('all');
+		assign_to_template(array('purchase_orders'=>$purchase_orders));
 	}
-    
-	function manage_vendors () {
-	    global $db;
-	    
-	    expHistory::set('viewable', $this->params);
-	}
-    
+	
 	function edit () {
 	    global $db;
 	    assign_to_template(array('record'=>$this->params));
 	}
+    
+	function manage_vendors () {
+	    expHistory::set('viewable', $this->params);
+		$vendor = new vendor();
+		
+		$vendors = $vendor->find('all');
+		assign_to_template(array('vendors'=>$vendors));
+	}
+	
+	function show_vendor () {
+		$vendor = new vendor();
+		
+		if(isset($this->params['id'])) {
+			$vendor = $vendor->find('first', 'id =' .$this->params['id']);
+			$vendor_title = $vendor->title;
+			$state = new geoRegion($vendor->state);
+			$vendor->state = $state->name;
+			//Removed unnecessary fields
+			unset($vendor->title);
+			unset($vendor->table);
+			unset($vendor->tablename);
+			unset($vendor->classname);
+			unset($vendor->identifier);
+		
+			assign_to_template(array('vendor_title' => $vendor_title, 'vendor'=>$vendor));
+		}
+	}
+	
+	function edit_vendor() {
+		$vendor = new vendor();
+		
+		if(isset($this->params['id'])) {
+			$vendor = $vendor->find('first', 'id =' .$this->params['id']);
+			assign_to_template(array('vendor'=>$vendor));
+		}
+	}
+	
+	function update_vendor() {
+		$vendor = new vendor();
+		
+		$vendor->update($this->params['vendor']);
+        expHistory::back();
+    }
+	
+	function delete_vendor() {
+		global $db;
+		
+        if (!empty($this->params['id'])){
+			$db->delete('vendor', 'id =' .$this->params['id']);
+		}
+        expHistory::back();
+    }
     
 }
 
