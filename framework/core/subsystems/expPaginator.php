@@ -408,7 +408,6 @@ class expPaginator {
                     
                     expJavascript::pushToFoot(array(
                         "unique"=>'select-all',
-                        "yui2mods"=>'',
                         "yui3mods"=>null,
                         "content"=>$js,
                         "src"=>""

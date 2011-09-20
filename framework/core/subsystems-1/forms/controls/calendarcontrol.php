@@ -248,7 +248,6 @@ class calendarcontrol extends formcontrol {
 	
         expJavascript::pushToFoot(array(
             "unique"=>'calpop'.$name,
-            //"yui2mods"=>"button,calendar,container,dragdrop,slider",
             "yui3mods"=>1,
             "content"=>$script
          ));

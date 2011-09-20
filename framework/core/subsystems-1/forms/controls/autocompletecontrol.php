@@ -92,7 +92,6 @@ class autocompletecontrol extends formcontrol {
 	
         expJavascript::pushToFoot(array(
             "unique"=>'ac'.$name,
-            //"yui2mods"=>"animation,autocomplete,connection,datasource",
             "yui3mods"=>1,
             "content"=>$script,
             "src"=>$params['src']

@@ -14,20 +14,11 @@
  *
  *}
 
-{css unique="yui-side-nav" link="`$smarty.const.YUI2_PATH`assets/skins/sam/calendar.css"}
+{css unique="news-edit" link="`$smarty.const.YUI2_PATH`assets/skins/sam/calendar.css"}
 
 {/css}
 
 <div id="newedit" class="module news edit hide exp-skin-tabview">
-    {script unique="newed" yuimodules="tabview, element"}
-    {literal}
-        var tabView = new YAHOO.widget.TabView('newedfrm');     
-        YAHOO.util.Dom.removeClass("newedit", 'hide');
-        var loading = YAHOO.util.Dom.getElementsByClassName('loadingdiv', 'div');
-        YAHOO.util.Dom.setStyle(loading, 'display', 'none');
-    {/literal}
-    {/script}
-
     {if $record->id != ""}<h1>Editing {$record->title}</h1>{else}<h1>Create News Post</h1>{/if}
 
     {form action=update}
@@ -42,7 +33,7 @@
             <div class="yui-content">            
                 <div id="tab1">
                     {control type=text name=title label="Title" value=$record->title}
-                	{control type=html name=body label="Body" value=$record->body}                	
+                	{control type="editor" name="body" label="Body" value=$record->body}                	
                 	{control type="checkbox" name="is_featured" label="Feature this news post?" value=1 checked=$record->is_featured}
                 	{if $config.enable_ealerts}
                 	    {control type="checkbox" name="send_ealerts" label="Send E-Alerts?" value=1}
@@ -67,4 +58,17 @@
         {control type=buttongroup submit="Save News Post" cancel="Cancel"}
      {/form}
 </div>
-<div class="loadingdiv">Loading News Form</div>
+<div class="loadingdiv">{"Loading Edit Form"|gettext}</div>
+
+{script unique="newed" yui3mods=1}
+{literal}
+    YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-tabview','yui2-element', function(Y) {
+        var YAHOO=Y.YUI2;
+
+        var tabView = new YAHOO.widget.TabView('newedfrm');
+        Y.one('#newedit').removeClass('hide');
+        Y.one('.loadingdiv').remove();
+    });
+{/literal}
+{/script}
+
