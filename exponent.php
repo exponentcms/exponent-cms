@@ -37,9 +37,6 @@ require_once(BASE.'framework/core/expFramework.php');
 // Initialize the Sessions subsystem
 expSession::initialize();
 
-// Initialize the Theme subsystem
-expTheme::initialize();
-
 // Create the list of available/active controllers
 $available_controllers = initializeControllers();  //original position
 //$available_controllers = array();
@@ -72,6 +69,9 @@ if (expJavascript::inAjaxAction()) set_error_handler('handleErrors');
 // Validate the session and populate the $user variable
 $user = new user();
 expSession::validate();
+
+// Initialize the Theme subsystem
+expTheme::initialize();
 
 // Initialize permissions variables
 $exponent_permissions_r = expSession::get("permissions");

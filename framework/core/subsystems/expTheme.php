@@ -27,7 +27,7 @@
 class expTheme {
 
 	public static function initialize() {
-		global $auto_dirs2;
+		global $auto_dirs2, $user;
 		// Initialize the theme subsystem 1.0 compatibility layer
 		require_once(BASE.'framework/core/subsystems-1/theme.php');
 		if (!defined('DISPLAY_THEME')) {
@@ -62,7 +62,7 @@ class expTheme {
 			 * The flag to use a mobile theme variation.  This may be different
 			 * than the configured theme style (THEME_STYLE_REAL) due to previewing.
 			 */
-			if (defined('FORCE_MOBILE') && FORCE_MOBILE) {
+			if (defined('FORCE_MOBILE') && FORCE_MOBILE && $user->isAdmin()) {
 				define('MOBILE',true);
 			} else {
 				define('MOBILE',self::is_mobile());
@@ -439,6 +439,9 @@ class expTheme {
 			self::showController(array("controller"=>"administration","action"=>"toolbar","source"=>"admin"));
 		}
 
+		if (self::is_mobile() || FORCE_MOBILE) {
+			echo ('<a href="'.makeLink(array('module' => 'administration','action' => 'toggle_mobile')).'">View site in '.(MOBILE ? "Classic":"Mobile").' mode</a>');
+		}
 		//echo expJavascript::parseJSFiles();
 		echo self::processCSSandJS();
 		echo expJavascript::footJavascriptOutput();
