@@ -72,7 +72,7 @@ class filemanagercontrol extends formcontrol {
                 
                 // file picker window opener
                 function openFilePickerWindow(e){
-                    YAHOO.util.Event.stopEvent(e);
+                    e.halt();
                     win = window.open('".makeLink($params=array('controller'=>'file','action'=>'picker','ajax_action'=>"1",'update'=>$name))."', 'IMAGE_BROWSER','left=20,top=20,scrollbars=yes,width=800,height=600,toolbar=no,resizable=yes,status=0');
                     if (!win) {
                         //Catch the popup blocker

@@ -72,6 +72,9 @@ class yuicalendarcontrol extends formcontrol {
         ";
         
         $script = "
+        YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-calendar', function(Y) {
+            var YAHOO=Y.YUI2;
+        
         YAHOO.namespace(\"example.calendar\");
 
             YAHOO.example.calendar.init = function() {
@@ -112,12 +115,12 @@ class yuicalendarcontrol extends formcontrol {
             }
 
             YAHOO.util.Event.onDOMReady(YAHOO.example.calendar.init);
+        });
         
         ";
         expJavascript::pushToFoot(array(
             "unique"=>'calpop-'.$name,
-            "yui2mods"=>'calendar',
-            "yui3mods"=>null,
+            "yui3mods"=>1,
             "content"=>$script,
             "src"=>""
          ));
