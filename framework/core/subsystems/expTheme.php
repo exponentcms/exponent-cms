@@ -429,7 +429,7 @@ class expTheme {
 		}
 
 		if (self::is_mobile() || FORCE_MOBILE) {
-			echo ('<a href="'.makeLink(array('module' => 'administration','action' => 'toggle_mobile')).'">View site in '.(MOBILE ? "Classic":"Mobile").' mode</a>');
+			echo ('<div style="text-align:center"><a href="'.makeLink(array('module' => 'administration','action' => 'toggle_mobile')).'">View site in '.(MOBILE ? "Classic":"Mobile").' mode</a></div>');
 		}
 		//echo expJavascript::parseJSFiles();
 		echo self::processCSSandJS();
