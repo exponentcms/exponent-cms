@@ -42,9 +42,10 @@
             </tr>
         </thead>
         <tbody>
-            <tr class="even">
+			{foreach from=$vendors item=vendor key=key name=vendor}
+            <tr class='{cycle values="odd,even"}'>
                 <td>
-                <a href="{link action=show_vendor id=$vendor->id}">Name Tapes R Us</a>
+                <a href="{link action=show_vendor id=$vendor->id}">{$vendor->title}</a>
                 </td>
                 <td>
                     {permissions}
@@ -53,28 +54,7 @@
                     {/permissions}
                 </td>
             </tr>
-            <tr class="odd">
-                <td>
-                <a href="{link action=show_vendor id=$vendor->id}">Jim's Military Supply</a>
-                </td>
-                <td>
-                    {permissions}
-                        {icon action=edit_vendor class="edit" id=$vendor->id}
-                        {icon action=delete_vendor class="delete" id=$vendor->id}
-                    {/permissions}
-                </td>
-            </tr>
-            <tr class="even">
-                <td>
-                <a href="{link action=show_vendor id=$vendor->id}">Combat Boot Emporium</a>
-                </td>
-                <td>
-                    {permissions}
-                        {icon action=edit_vendor class="edit" id=$vendor->id}
-                        {icon action=delete_vendor class="delete" id=$vendor->id}
-                    {/permissions}
-                </td>
-            </tr>
+			{/foreach}
         </tbody>
     </table>
 </div>

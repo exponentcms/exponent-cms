@@ -44,7 +44,7 @@
                 {"Order Number"|gettext}
                 </th>
                 <th>
-                {"Vender"|gettext}
+                {"Vendor"|gettext}
                 </th>
                 <th>
                 {"Date"|gettext}
@@ -55,202 +55,22 @@
             </tr>
         </thead>
         <tbody>
+			{foreach from=$purchase_orders item=purchase_order key=key name=purchase_order}
             <tr class="even">
                 <td>
-                hsne-44-jh
+                {$purchase_order->purchase_order_number}
                 </td>
                 <td>
-                Name Tapes R Us
+               {$purchase_order->vendor->title}
                 </td>
                 <td>
-                09/01/2011
-                </td>
-                <td>
-                ordered
-                </td>
-            </tr>
-            <tr class="odd">
-                <td>
-                hsne-44-jh
-                </td>
-                <td>
-                Name Tapes R Us
-                </td>
-                <td>
-                09/01/2011
+                {$purchase_order->created_at|format_date:$smarty.const.DISPLAY_DATE_FORMAT}
                 </td>
                 <td>
                 ordered
                 </td>
             </tr>
-            <tr class="even">
-                <td>
-                hsne-44-jh
-                </td>
-                <td>
-                Name Tapes R Us
-                </td>
-                <td>
-                09/01/2011
-                </td>
-                <td>
-                ordered
-                </td>
-            </tr>
-            <tr class="odd">
-                <td>
-                hsne-44-jh
-                </td>
-                <td>
-                Name Tapes R Us
-                </td>
-                <td>
-                09/01/2011
-                </td>
-                <td>
-                ordered
-                </td>
-            </tr>
-            <tr class="even">
-                <td>
-                hsne-44-jh
-                </td>
-                <td>
-                Name Tapes R Us
-                </td>
-                <td>
-                09/01/2011
-                </td>
-                <td>
-                ordered
-                </td>
-            </tr>
-            <tr class="odd">
-                <td>
-                hsne-44-jh
-                </td>
-                <td>
-                Name Tapes R Us
-                </td>
-                <td>
-                09/01/2011
-                </td>
-                <td>
-                ordered
-                </td>
-            </tr>
-            <tr class="even">
-                <td>
-                hsne-44-jh
-                </td>
-                <td>
-                Name Tapes R Us
-                </td>
-                <td>
-                09/01/2011
-                </td>
-                <td>
-                ordered
-                </td>
-            </tr>
-            <tr class="odd">
-                <td>
-                hsne-44-jh
-                </td>
-                <td>
-                Name Tapes R Us
-                </td>
-                <td>
-                09/01/2011
-                </td>
-                <td>
-                ordered
-                </td>
-            </tr>
-            <tr class="even">
-                <td>
-                hsne-44-jh
-                </td>
-                <td>
-                Name Tapes R Us
-                </td>
-                <td>
-                09/01/2011
-                </td>
-                <td>
-                ordered
-                </td>
-            </tr>
-            <tr class="odd">
-                <td>
-                hsne-44-jh
-                </td>
-                <td>
-                Name Tapes R Us
-                </td>
-                <td>
-                09/01/2011
-                </td>
-                <td>
-                ordered
-                </td>
-            </tr>
-            <tr class="even">
-                <td>
-                hsne-44-jh
-                </td>
-                <td>
-                Name Tapes R Us
-                </td>
-                <td>
-                09/01/2011
-                </td>
-                <td>
-                ordered
-                </td>
-            </tr>
-            <tr class="odd">
-                <td>
-                hsne-44-jh
-                </td>
-                <td>
-                Name Tapes R Us
-                </td>
-                <td>
-                09/01/2011
-                </td>
-                <td>
-                ordered
-                </td>
-            </tr>
-            <tr class="even">
-                <td>
-                hsne-44-jh
-                </td>
-                <td>
-                Name Tapes R Us
-                </td>
-                <td>
-                09/01/2011
-                </td>
-                <td>
-                ordered
-                </td>
-            </tr>
-            <tr class="odd">
-                <td>
-                hsne-44-jh
-                </td>
-                <td>
-                Name Tapes R Us
-                </td>
-                <td>
-                09/01/2011
-                </td>
-                <td>
-                ordered
-                </td>
-            </tr>
+			{/foreach}
         </tbody>
     </table>
 </div>
