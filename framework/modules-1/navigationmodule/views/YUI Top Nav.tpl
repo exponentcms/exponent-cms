@@ -65,29 +65,6 @@
     </div>
 </div>
 
-
-{script yui2mods="menu" unique=$id}
-{literal}
-YAHOO.util.Event.onDOMReady( function () {
-	var menubar = new YAHOO.widget.MenuBar(
-						"{/literal}{$id}{literal}", 
-						{
-							hidedelay: 750, 
-							lazyload: true,
-							autosubmenudisplay: true
-						}
-					);
-
-
-	menubar.render(); 
-});
-
-
-{/literal}
-{/script}
-
-
-
 {script yui3mods=1 unique=$id}
 {literal}
 YUI(EXPONENT.YUI3_CONFIG).use('yui2-container','yui2-menu', function(Y) {

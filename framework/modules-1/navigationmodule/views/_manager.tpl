@@ -30,11 +30,14 @@
 </div>
 <div class="loadingdiv">Loading</div>
 
-{script unique="managenavtabs" yuimodules="tabview"}
+{script unique="editform" yui3mods=1}
 {literal}
-    var tabView = new YAHOO.widget.TabView('nav-tabs');
-    YAHOO.util.Dom.removeClass("navmanager", 'hide');
-    var loading = YAHOO.util.Dom.getElementsByClassName('loadingdiv', 'div');
-    YAHOO.util.Dom.setStyle(loading, 'display', 'none');
+    YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-tabview','yui2-element', function(Y) {
+        var YAHOO=Y.YUI2;
+
+        var tabView = new YAHOO.widget.TabView('nav-tabs');
+        Y.one('#navmanager').removeClass('hide').next().remove();
+    });
 {/literal}
 {/script}
+

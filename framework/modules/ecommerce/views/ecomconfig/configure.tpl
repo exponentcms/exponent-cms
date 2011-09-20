@@ -16,29 +16,6 @@
 <div id="storeconfig" class="module ecomconfig configure hide exp-skin-tabview">
     <h1>Store Configuration</h1>
     
-    {script unique="storeconf" yuimodules="tabview, element"}
-    {literal}
-        var tabView = new YAHOO.widget.TabView('storetabs');     
-        
-        var url = location.href.split('#');
-        if (url[1]) {
-            //We have a hash
-            var tabHash = url[1];
-            var tabs = tabView.get('tabs');
-            for (var i = 0; i < tabs.length; i++) {
-                if (tabs[i].get('href') == '#' + tabHash) {
-                    tabView.set('activeIndex', i);
-                    break;
-                }
-            }
-        }
-        
-        YAHOO.util.Dom.removeClass("storeconfig", 'hide');
-        var loading = YAHOO.util.Dom.getElementsByClassName('loadingdiv', 'div');
-        YAHOO.util.Dom.setStyle(loading, 'display', 'none');
-	{/literal}
-	{/script}
-	
 	{form action=saveconfig}
 		<div id="storetabs" class="yui-navset">
 			<ul class="yui-nav">
@@ -150,3 +127,30 @@
     {/form}
 </div>
 <div class="loadingdiv">Loading</div>
+
+{script unique="editform" yui3mods=1}
+{literal}
+    YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-tabview','yui2-element', function(Y) {
+        var YAHOO=Y.YUI2;
+
+        var tabView = new YAHOO.widget.TabView('storetabs');     
+
+        var url = location.href.split('#');
+        if (url[1]) {
+            //We have a hash
+            var tabHash = url[1];
+            var tabs = tabView.get('tabs');
+            for (var i = 0; i < tabs.length; i++) {
+                if (tabs[i].get('href') == '#' + tabHash) {
+                    tabView.set('activeIndex', i);
+                    break;
+                }
+            }
+        }
+
+        YAHOO.util.Dom.removeClass("storeconfig", 'hide');
+        var loading = YAHOO.util.Dom.getElementsByClassName('loadingdiv', 'div');
+        YAHOO.util.Dom.setStyle(loading, 'display', 'none');
+    });
+{/literal}
+{/script}

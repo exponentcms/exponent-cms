@@ -19,32 +19,7 @@
         	<h1>Edit Store Category</h1>
         	<p>Complete and save the form below to configure this store category</p>
 	</div>
-    
-    {script unique="cattabs" yuimodules="tabview, element"}
-    {literal}
-        var tabView = new YAHOO.widget.TabView('demo');
         
-        var url = location.href.split('#');
-        if (url[1]) {
-            //We have a hash
-            var tabHash = url[1];
-            var tabs = tabView.get('tabs');
-            for (var i = 0; i < tabs.length; i++) {
-                if (tabs[i].get('href') == '#' + tabHash) {
-                    tabView.set('activeIndex', i);
-                    break;
-                }
-            }
-        }
-        
-        
-        YAHOO.util.Dom.removeClass("editcategory", 'hide');
-        var loading = YAHOO.util.Dom.getElementsByClassName('loadingdiv', 'div');
-        YAHOO.util.Dom.setStyle(loading, 'display', 'none');
-        
-    {/literal}
-    {/script}
-    
 	{if $node->id == ""}
 		{assign var=action value=create}
 	{else}
@@ -97,6 +72,31 @@
         {/form}                      
 </div>
 <div class="loadingdiv">Loading</div> 
-{script unique="listbuilder" src="framework/core/subsystems-1/forms/controls/listbuildercontrol.js"}
-
+{script unique="cattabs" src="framework/core/subsystems-1/forms/controls/listbuildercontrol.js"}
+{literal}
+YUI(EXPONENT.YUI3_CONFIG).use('node','event','yui2-tabview','yui2-element', function(Y) {
+    var YAHOO=Y.YUI2;
+    var tabView = new YAHOO.widget.TabView('demo');
+    
+    var url = location.href.split('#');
+    if (url[1]) {
+        //We have a hash
+        var tabHash = url[1];
+        var tabs = tabView.get('tabs');
+        for (var i = 0; i < tabs.length; i++) {
+            if (tabs[i].get('href') == '#' + tabHash) {
+                tabView.set('activeIndex', i);
+                break;
+            }
+        }
+    }
+    
+    
+    YAHOO.util.Dom.removeClass("editcategory", 'hide');
+    var loading = YAHOO.util.Dom.getElementsByClassName('loadingdiv', 'div');
+    YAHOO.util.Dom.setStyle(loading, 'display', 'none');
+});    
+{/literal}
 {/script}
+
+

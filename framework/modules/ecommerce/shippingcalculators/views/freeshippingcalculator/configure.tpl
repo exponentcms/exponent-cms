@@ -15,15 +15,7 @@
  *}
 
 <div id="freeshippingcfg" class="hide exp-skin-tabview">
-    {script unique="authtabs" yuimodules="tabview, element"}
-    {literal}
-        var tabView = new YAHOO.widget.TabView('freeship');
-        YAHOO.util.Dom.removeClass("freeshippingcfg", 'hide');
-        var loading = YAHOO.util.Dom.getElementsByClassName('loadingdiv', 'div');
-        YAHOO.util.Dom.setStyle(loading, 'display', 'none');
-        
-    {/literal}
-    {/script}    
+
     <div id="freeship" class="yui-navset">
         <ul class="yui-nav">
         <li class="selected"><a href="#tab1"><em>Free Shipping Settings</em></a></li>        
@@ -37,3 +29,14 @@
     </div>
 </div>
 <div class="loadingdiv">Loading</div>
+
+{script unique="editform" yui3mods=1}
+{literal}
+    YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-tabview','yui2-element', function(Y) {
+        var YAHOO=Y.YUI2;
+
+        var tabView = new YAHOO.widget.TabView('freeship');
+        Y.one('#freeshippingcfg').removeClass('hide').next().remove();
+    });
+{/literal}
+{/script}
