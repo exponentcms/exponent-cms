@@ -37,6 +37,9 @@ require_once(BASE.'framework/core/expFramework.php');
 // Initialize the Sessions subsystem
 expSession::initialize();
 
+// Initialize the Theme subsystem
+expTheme::initialize();
+
 // Create the list of available/active controllers
 $available_controllers = initializeControllers();  //original position
 //$available_controllers = array();
@@ -70,8 +73,17 @@ if (expJavascript::inAjaxAction()) set_error_handler('handleErrors');
 $user = new user();
 expSession::validate();
 
-// Initialize the Theme subsystem
-expTheme::initialize();
+if (!defined('MOBILE')) {
+	/* exdoc
+	 * The flag to use a mobile theme variation.  This may be different
+	 * than the configured theme style (THEME_STYLE_REAL) due to previewing.
+	 */
+	if (defined('FORCE_MOBILE') && FORCE_MOBILE && $user->isAdmin()) {
+		define('MOBILE',true);
+	} else {
+		define('MOBILE',self::is_mobile());
+	}
+}
 
 // Initialize permissions variables
 $exponent_permissions_r = expSession::get("permissions");

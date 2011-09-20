@@ -57,17 +57,6 @@ class expTheme {
 			 */
 			define('THEME_STYLE',THEME_STYLE_REAL);
 		}
-		if (!defined('MOBILE')) {
-			/* exdoc
-			 * The flag to use a mobile theme variation.  This may be different
-			 * than the configured theme style (THEME_STYLE_REAL) due to previewing.
-			 */
-			if (defined('FORCE_MOBILE') && FORCE_MOBILE && $user->isAdmin()) {
-				define('MOBILE',true);
-			} else {
-				define('MOBILE',self::is_mobile());
-			}
-		}
 		if (THEME_STYLE != '') {
 			if (file_exists(BASE.'themes/'.DISPLAY_THEME.'/config_'.THEME_STYLE.'.php')){
 			  @include_once(BASE.'themes/'.DISPLAY_THEME.'/config_'.THEME_STYLE.'.php');
