@@ -696,6 +696,12 @@ class administrationController extends expController {
 		}
 	}
 
+	public function toggle_mobile() {
+		expSession::set('mobile',!expSession::get('mobile'));
+		expTheme::removeSmartyCache();
+		expHistory::back();
+	}
+
     public function configure_site () {
         // TYPES OF ANTISPAM CONTROLS... CURRENTLY ONLY ReCAPTCHA
         $as_types = array(

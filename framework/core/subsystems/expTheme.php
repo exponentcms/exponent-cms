@@ -53,10 +53,20 @@ class expTheme {
 		}
 		if (!defined('THEME_STYLE')) {
 			/* exdoc
-			 * The name of the current active theme style.  This may be different
-			 * than the configured theme style (THEME_STYLE_REAL) due to previewing.
+			 * The name of the current active theme style.
 			 */
 			define('THEME_STYLE',THEME_STYLE_REAL);
+		}
+		if (!defined('MOBILE')) {
+			/* exdoc
+			 * The flag to use a mobile theme variation.  This may be different
+			 * than the configured theme style (THEME_STYLE_REAL) due to previewing.
+			 */
+			if (defined('FORCE_MOBILE') && FORCE_MOBILE) {
+				define('MOBILE',true);
+			} else {
+				define('MOBILE',self::is_mobile());
+			}
 		}
 		if (THEME_STYLE != '') {
 			if (file_exists(BASE.'themes/'.DISPLAY_THEME.'/config_'.THEME_STYLE.'.php')){
@@ -459,7 +469,7 @@ class expTheme {
 		// Grabs the action maps files for theme overrides
 		$action_maps = self::loadActionMaps();
 
-		$mobile = self::is_mobile();
+//		$mobile = self::is_mobile();
 
 		// if we are in an action, get the particulars for the module
 		if (self::inAction()) $module = isset($_REQUEST['module']) ? $_REQUEST['module'] : $_REQUEST['controller'];
@@ -474,13 +484,13 @@ class expTheme {
 			if (!empty($actiontheme[1])) $sectionObj = @$router->getSectionObj($actiontheme[1]);
 
 			if ($actiontheme[0]=="default" || $actiontheme[0]=="Default" || $actiontheme[0]=="index") {
-				if ($mobile && is_readable(BASE.'themes/'.DISPLAY_THEME.'/mobile/index.php')) {
+				if (MOBILE && is_readable(BASE.'themes/'.DISPLAY_THEME.'/mobile/index.php')) {
 					$theme = BASE.'themes/'.DISPLAY_THEME.'/mobile/index.php';
 				} else {
 					$theme = BASE.'themes/'.DISPLAY_THEME.'/index.php';
 				}
 			} elseif (is_readable(BASE.'themes/'.DISPLAY_THEME.'/subthemes/'.$actiontheme[0].'.php')) {
-				if ($mobile && is_readable(BASE.'themes/'.DISPLAY_THEME.'/mobile/'.$actiontheme[0].'.php')) {
+				if (MOBILE && is_readable(BASE.'themes/'.DISPLAY_THEME.'/mobile/'.$actiontheme[0].'.php')) {
 					$theme = BASE.'themes/'.DISPLAY_THEME.'/mobile/'.$actiontheme[0].'.php';
 				} else {
 					$theme = BASE.'themes/'.DISPLAY_THEME.'/subthemes/'.$actiontheme[0].'.php';
@@ -489,15 +499,15 @@ class expTheme {
 				$theme =  BASE.'themes/'.DISPLAY_THEME.'/index.php';
 			}
 		} elseif ($sectionObj->subtheme != '' && is_readable(BASE.'themes/'.DISPLAY_THEME.'/subthemes/'.$sectionObj->subtheme.'.php')) {
-			if ($mobile && is_readable(BASE.'themes/'.DISPLAY_THEME.'/mobile/'.$sectionObj->subtheme.'.php')) {
+			if (MOBILE && is_readable(BASE.'themes/'.DISPLAY_THEME.'/mobile/'.$sectionObj->subtheme.'.php')) {
 				$theme = BASE.'themes/'.DISPLAY_THEME.'/mobile/'.$sectionObj->subtheme.'.php';
-			} elseif ($mobile && is_readable(BASE.'themes/'.DISPLAY_THEME.'/mobile/index.php')) {
+			} elseif (MOBILE && is_readable(BASE.'themes/'.DISPLAY_THEME.'/mobile/index.php')) {
 				$theme = BASE.'themes/'.DISPLAY_THEME.'/mobile/index.php';
 			} else {
 				$theme =  BASE.'themes/'.DISPLAY_THEME.'/subthemes/'.$sectionObj->subtheme.'.php';
 			}
 		} else {
-			if ($mobile && is_readable(BASE.'themes/'.DISPLAY_THEME.'/mobile/index.php')) {
+			if (MOBILE && is_readable(BASE.'themes/'.DISPLAY_THEME.'/mobile/index.php')) {
 				$theme = BASE.'themes/'.DISPLAY_THEME.'/mobile/index.php';
 			} else {
 				$theme =  BASE.'themes/'.DISPLAY_THEME.'/index.php';
