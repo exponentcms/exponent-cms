@@ -343,7 +343,15 @@ if ($user->isSuperAdmin()) {
                                 'url' => makeLink(array(
                                     'module' => 'administration',
                                     'action' => 'manage_themes'
-                                ))
+                                )),
+                            ),
+							array(
+								'text' => (MOBILE)?gt('Turn Mobile View off'):gt('Turn Mobile View on'),
+								'classname' => (MOBILE)?'develop_on_green':'develop_off',
+								'url' => makeLink(array(
+									'module' => 'administration',
+									'action' => 'toggle_mobile'
+								)),
                             ),
                         )
                     )
