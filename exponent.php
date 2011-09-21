@@ -81,7 +81,7 @@ if (!defined('MOBILE')) {
 	if (defined('FORCE_MOBILE') && FORCE_MOBILE && $user->isAdmin()) {
 		define('MOBILE',true);
 	} else {
-		define('MOBILE',self::is_mobile());
+		define('MOBILE',expTheme::is_mobile());
 	}
 }
 
