@@ -37,6 +37,9 @@ function smarty_function_control($params,&$smarty) {
             $edittext = isset($params['edit_text']) ? $params['edit_text'] : 'Change Date/Time';
             $control = new yuidatetimecontrol($params['value'],$edittext);
             if (empty($params['value'])) $params['value'] = time();
+        } elseif ($params['type'] == 'yuicalendarcontrol') {
+            $control = new yuicalendarcontrol($params['value']);
+            if (empty($params['value'])) $params['value'] = time();
         } elseif ($params['type'] == 'datetimecontrol' || $params['type'] == 'datetime') {
             if (empty($params['value'])) $params['value'] = time();
             $showdate = isset($params['showdate']) ? $params['showdate'] : true;
