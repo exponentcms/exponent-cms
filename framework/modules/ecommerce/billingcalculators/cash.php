@@ -13,12 +13,23 @@ class cash extends billingcalculator{
 	public $payment_type = 'Cash';
 	
 	//Called for billing medthod seletion screen, return true if it's a valid billing method.
-	function pre_process($config_object,$order,$billaddress,$shippingaddress) {
-		return true;
-	}
+	function preprocess($method, $opts, $params, $order)
+    {
+
+         //just save the opts        
+        $method->update(array('billing_options'=>serialize($opts)));
+        //eDebug($method,true);
+    }
 	
-	function post_process() {
-		return true;
+	function process($method, $opts, $params, $invoice_number) {
+		global $order, $db, $user;
+		$object->errorCode = 0;
+		
+		$opts->result = $object;  
+		$opts->result->payment_status = "Pending";
+        $method->update(array('billing_options'=>serialize($opts)));
+		$this->createBillingTransaction($method, number_format($order->grand_total, 2, '.', ''),$opts->result,'pending');
+		return $object;
 	}
 	
 	//Config Form
@@ -41,12 +52,14 @@ class cash extends billingcalculator{
 	
 	//Form for user input
 	function userForm($config_object=null, $user_data=null) {
-		include_once(BASE."framework/core/subsystems-1/forms.php");
-		$form = new form();
-		$htmlinfo = "You may place your order and pay with a check or money order.  If paying by check, your order will be held util we receive the check and it clears our bank account.  Money order orders will be processed upon our receipt of the money order.<br/><br/>";
-		$form->register(uniqid(""),"", new htmlcontrol($htmlinfo));
-	  	$form->register("cash_amount","Cash Amount:",new textcontrol());
-		return $form->toHTML();
+		$form = '';
+		
+		$cash_amount = new textcontrol("",20,false,20,"", true);
+		$cash_amount->id = "cash_amount";
+		
+		$form .= $cash_amount->toHTML("Cash Amount", "cash_amount");
+		
+		return $form;	
 	}
 	
 	//process user input. This function should return an object of the user input.
@@ -70,9 +83,65 @@ class cash extends billingcalculator{
 	}
 	
 	//Should return html to display user data.
-	function userView($config_object,$user_data=null) {
-		return "Cash: $". number_format($user_data->cash_amount,2,".",",");
+	function userView($opts) {
+		if (empty($opts)) return false;
+		  
+		return "Cash: $". number_format($opts->cash_amount,2,".",",");
 	}
+	
+	function userFormUpdate($params) {
+		global $order; 
+		if ($order->grand_total > $params["cash_amount"]) {
+			expValidator::failAndReturnToForm("The total amount of your order is greater than what the amount you have input. <br /> Please enter exact or greater amount of your total.");
+		}
+      
+		$this->opts = null;
+ 
+        $this->opts->cash_amount = $params["cash_amount"];
+		return $this->opts;
+	}
+	
+	function getPaymentAuthorizationNumber($billingmethod){
+        $ret = expUnserialize($billingmethod->billing_options);
+        return $ret->result->token;       
+    }
+    
+    function getPaymentReferenceNumber($opts) {
+        $ret = expUnserialize($opts);
+        if (isset($ret->result))
+        {
+            return $ret->result->transId;
+        }
+        else
+        {
+            return $ret->transId;
+        }
+    }
+	
+	function getPaymentStatus($billingmethod) {
+        $ret = expUnserialize($billingmethod->billing_options);
+        return $ret->result->payment_status;
+    }
+	
+	function getPaymentMethod($billingmethod) {
+        return $this->title;
+    }
+    
+    function showOptions() {
+        return;
+    }
+	
+	function getAVSAddressVerified($billingmethod) {
+        return 'X';
+    }
+    
+    function getAVSZipVerified($billingmethod) {
+        return 'X';
+    }
+    
+    function getCVVMatched($billingmethod) {
+        return 'X';
+    }
 }
 
 ?>
