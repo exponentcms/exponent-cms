@@ -167,8 +167,8 @@ class administrationController extends expController {
 
 		// then search for module definitions
 		$moddefs = array(
-//			BASE.'themes/'.DISPLAY_THEME_REAL.'/modules',
-			BASE.'themes/'.DISPLAY_THEME.'/modules',
+			BASE.'themes/'.DISPLAY_THEME_REAL.'/modules',
+//			BASE.'themes/'.DISPLAY_THEME.'/modules',
 			BASE."framework/modules",
 			);
 		foreach ($moddefs as $moddef) {
@@ -651,6 +651,7 @@ class administrationController extends expController {
 	    }
 	    expSettings::change('THEME_STYLE_REAL',$sv);
 	    expSession::set('theme_style',$sv);
+	    self::installTables();  // update tables to include any custom definitions in the new theme
 
         // $message = (MINIFY != 1) ? "Exponent is now minifying Javascript and CSS" : "Exponent is no longer minifying Javascript and CSS" ;
         // flash('message',$message);
