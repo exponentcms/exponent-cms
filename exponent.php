@@ -75,8 +75,7 @@ expSession::validate();
 
 if (!defined('MOBILE')) {
 	/* exdoc
-	 * The flag to use a mobile theme variation.  This may be different
-	 * than the configured theme style (THEME_STYLE_REAL) due to previewing.
+	 * The flag to use a mobile theme variation.
 	 */
 	if (defined('FORCE_MOBILE') && FORCE_MOBILE && $user->isAdmin()) {
 		define('MOBILE',true);

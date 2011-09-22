@@ -174,9 +174,9 @@ class newsController extends expController {
         if (!empty($this->config['pull_rss'])) {    
             $RSS = new SimplePie();
 	        $RSS->set_cache_location(BASE.'tmp/rsscache');  // default is ./cache
-//	        $RSS->set_cache_duration(3600);  // default if 3600
+//	        $RSS->set_cache_duration(3600);  // default is 3600
 	        $RSS->set_timeout(20);  // default is 10
-//	        $RSS->set_output_encoding('UTF-8');  // which is the default
+//	        $RSS->set_output_encoding('UTF-8');  // default is UTF-8
             $news = array();
             foreach($this->config['pull_rss'] as $url) {
                 $RSS->set_feed_url($url);
@@ -191,7 +191,7 @@ class newsController extends expController {
                     $rssObject->title = $rssItem->get_title();
                     $rssObject->body = $rssItem->get_description();
                     $rssObject->rss_link = $rssItem->get_permalink();
-                    $rssObject->publish = $rssItem->get_date('U');
+//                    $rssObject->publish = $rssItem->get_date('U');
                     $rssObject->publish_date = $rssItem->get_date('U');
                     $rssObject->isRss = true;
                     $news[] = $rssObject;

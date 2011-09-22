@@ -749,7 +749,8 @@ class reportController extends expController {
 				'DiscoverCard' => 'Discover', 
 				'paypalExpressCheckout' => 'PayPal', 
 				'passthru' => 'Passthru', 
-				'worldpayCheckout' => 'WorldPay'
+				'worldpayCheckout' => 'WorldPay',
+				'cash' => 'Cash'
 			);
 			
         $order_ids = array();

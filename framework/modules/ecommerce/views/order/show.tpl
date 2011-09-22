@@ -322,10 +322,10 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','event','yui2-tabview','yui2-element', func
     });
 
     var tabView = new YAHOO.widget.TabView('auth');
-    Y.one('#authcfg').removeClass('hide').next().remove();
-    });
+    //Y.one('#authcfg').removeClass('hide').next().remove();
+    
 
-    var tabView = new YAHOO.widget.TabView('ordertabs');
+    var tabView2 = new YAHOO.widget.TabView('ordertabs');
 
     var url = location.href.split('#');
     if (url[1]) {
@@ -343,6 +343,6 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','event','yui2-tabview','yui2-element', func
     YAHOO.util.Dom.removeClass("order", 'hide');
     var loading = YAHOO.util.Dom.getElementsByClassName('loadingdiv', 'div');
     YAHOO.util.Dom.setStyle(loading, 'display', 'none');
-
+	});
 {/literal}
 {/script}
