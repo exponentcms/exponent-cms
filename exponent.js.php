@@ -65,7 +65,7 @@ EXPONENT.YUI3_CONFIG = {
     // },
     groups: {
         yui2: {
-            combine:<?php echo (MINIFY==1)?1:0; ?>,
+            combine:false,
             base: EXPONENT.YUI2_PATH,
             root: EXPONENT.YUI2_VERSION+'/',
             comboBase:EXPONENT.PATH_RELATIVE+'external/minify/min/?b='+EXPONENT.PATH_RELATIVE.substr(1)+'external/yui/2in3/dist&f=',
