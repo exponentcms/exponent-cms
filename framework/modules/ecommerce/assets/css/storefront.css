@@ -123,7 +123,25 @@ em.unavailable {
 }
 
 /* quantity */
-.awesome input {
+.add-to-cart-btn {
+    position:relative;
+    display:inline-block;
+    *display:inline;
+    zoom:1;
+    vertical-align:top;
+}
+
+.add-to-cart-btn .awesome {
+    position:relative;
+    z-index:1;
+    padding-left:40px;
+}
+
+.add-to-cart-btn input {
+    z-index:2;
+    position:absolute;
+    left:12px;
+    top:5px;
     padding:1px 2px;
     text-align:center;
     border:1px solid #dedede;
@@ -136,7 +154,6 @@ em.unavailable {
 /*    background:#95B23F;*/
     box-shadow: 0 0 2px rgba(0,0,0,.5) inset;
     text-shadow:1px 1px 1px #565;
-    cursor:pointer;
     width:20px;
     margin-right:4px;
 }
