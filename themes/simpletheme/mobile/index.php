@@ -18,7 +18,12 @@
 <body>
 	<div id="doc">
 		<div id="hd">
-		    <h1><?php echo SITE_TITLE; ?>"><?php echo ORGANIZATION_NAME; ?></h1>
+		    <h1 id="logo">
+			<a href="<?php echo URL_FULL; ?>" title="<?php echo SITE_TITLE; ?>">
+                <?php echo ORGANIZATION_NAME; ?>
+			</a>
+			</h1>
+			<?php expTheme::showController(array("controller"=>"search","action"=>"show","src"=>"@top")) ?>
 		</div>
 		<div id="bd" class="yui3-g">
 			<div id="centercol" class="yui3-u-3-4">
@@ -28,6 +33,7 @@
 			</div>
 		</div>
 	</div>
-<?php echo expTheme::foot(); ?>
+	<?php expTheme::module(array("module"=>"navigation","view"=>"Top Nav","source"=>"@top")); ?>
+	<?php echo expTheme::foot(); ?>
 </body>
 </html>
