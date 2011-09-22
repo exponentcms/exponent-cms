@@ -26,10 +26,12 @@
 		{foreach from=$items item=tweet}
 			<div class="item">
 				<p>
-					<div style="float:left;margin:2px 5px 2px 0px;">
-						{if $config.showimage}{img src="`$tweet.image`"}{/if}
-						{if $tweet.retweetedbyme}{img src="`$smarty.const.URL_FULL`framework/modules/twitter/assets/images/tweeted.png" style="position: relative; top: -35px; left: -56px;"}{/if}
-					</div>
+					{if $config.showimage}
+						<div style="float:left;margin:2px 5px 2px 0px;">
+							{img src="`$tweet.image`"}
+							{if $tweet.retweetedbyme}{img src="`$smarty.const.URL_FULL`framework/modules/twitter/assets/images/tweeted.png" style="position: relative; top: -35px; left: -56px;"}{/if}
+						</div>
+					{/if}
 					<dt><em class="date">{$tweet.created_at}{if $config.showattrib} via {$tweet.via}, {$tweet.screen_name} wrote:{/if}</em></dt>
 					<dd>
 						{$tweet.text}
