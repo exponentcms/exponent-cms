@@ -3194,7 +3194,7 @@ class SimplePie_Core
 	}
 
 	
-	public function merge_items($urls, $start = 0, $end = 0, $limit = 0)
+	public static function merge_items($urls, $start = 0, $end = 0, $limit = 0)
 	{
 		if (is_array($urls) && sizeof($urls) > 0)
 		{
