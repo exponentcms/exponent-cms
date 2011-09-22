@@ -96,6 +96,7 @@ class twitterController extends expController {
 		        foreach ($retweets as $rekey => $revalue) {
 			        if ($tweets[$key]['id'] == $retweets[$rekey]['retweeted_status']['id']) {
 				        $tweets[$key]['retweetedbyme'] = true;
+			            break;
 			        }
 		        }
     		}
