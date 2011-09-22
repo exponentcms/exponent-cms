@@ -74,7 +74,7 @@ class expCSS {
                  $css_files = array_merge($css_files, $$key);
             };
         };
-        
+
         if (MINIFY!=1) {
             //eDebug($css_files);
             foreach ($css_files as $file) {
@@ -83,11 +83,12 @@ class expCSS {
         } else {
             // if we're minifying, we'll break our URLs apart at MINIFY_URL_LENGTH characters to allow it through 
             // browser string limits
+            $strlen = (ini_get("suhosin.get.max_value_length")==0) ? MINIFY_URL_LENGTH : ini_get("suhosin.get.max_value_length");
             $i = 0;
             $srt = array();
             $srt[$i] = "";
             foreach ($css_files as $file) {
-                if (strlen($srt[$i])+strlen($file)<= MINIFY_URL_LENGTH) {
+                if (strlen($srt[$i])+strlen($file)<= $strlen) {
                     $srt[$i] .= $file.",";
                 } else {
                     $i++;
