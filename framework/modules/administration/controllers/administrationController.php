@@ -698,6 +698,9 @@ class administrationController extends expController {
 	}
 
 	public function toggle_mobile() {
+		if (!expSession::is_set('mobile')) {  // account for FORCE_MOBILE initial state
+			expSession::set('mobile',MOBILE);
+		}
 		expSession::set('mobile',!expSession::get('mobile'));
 		expTheme::removeSmartyCache();
 		expHistory::back();
