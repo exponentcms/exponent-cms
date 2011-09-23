@@ -551,20 +551,22 @@ class reportController extends expController {
         }
         
         $inc = 0; $sqltmp = '';
-        foreach ($p['product_status'] as $pstat)
-        {
-            if ($pstat == -1) continue;
-            
-            $product_status = new product_status($pstat);            
-            if ($inc == 0)
-            {
-                $inc++;                
-                $sqltmp .= " AND (oi.products_status = '" . $product_status->title . "'";
-            }else
-            {                
-                $sqltmp .= " OR oi.products_status = '" . $product_status->title . "'";
-            }
-        }
+		if(isset($p['product_status'])) {
+			foreach ($p['product_status'] as $pstat)
+			{
+				if ($pstat == -1) continue;
+				
+				$product_status = new product_status($pstat);            
+				if ($inc == 0)
+				{
+					$inc++;                
+					$sqltmp .= " AND (oi.products_status = '" . $product_status->title . "'";
+				}else
+				{                
+					$sqltmp .= " OR oi.products_status = '" . $product_status->title . "'";
+				}
+			}
+		}
         if (!empty($sqltmp)) $sqlwhere .= $sqltmp .= ")";
         
         if (!empty($p['uidata']))

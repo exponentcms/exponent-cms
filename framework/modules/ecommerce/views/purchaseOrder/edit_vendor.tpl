@@ -13,7 +13,7 @@
  * GPL: http://www.gnu.org/licenses/gpl.txt
  *
  *}
-
+<h1>Vendor Information</h1>
 {form action=update_vendor}
     {control type="hidden" name="vendor[id]" value=$vendor->id}
     {control type="text" name="vendor[title]" label="Title" value=$vendor->title}
@@ -27,7 +27,6 @@
 	{control type="text" name="vendor[fax]" label="Fax" value=$vendor->email}
 	{control type="text" name="vendor[website]" label="Website" value=$vendor->website}
 	{control type="text" name="vendor[email]" label="Email Address" value=$vendor->email}
-	
 	
     {control type="buttongroup" submit="Submit" cancel="Cancel"}
 {/form}
