@@ -71,7 +71,7 @@ class calendar {
 			if (isset($object->eventdate)) $template->assign('checked_date',$object->eventdate);
 			$template->assign('dates',$eventdates);
 			$form->register(null,'',new htmlcontrol('<hr size="1"/>'.gt('This event is a recurring event, and occurs on the dates below.  Select which dates you wish to apply these edits to.')));
-			$form->register(null,'',new htmlcontrol('<table cellspacing="0" cellpadding="2" width="100%">'.$template->render().'</table>'));
+			$form->register(null,'',new htmlcontrol('<table cellspacing="0" cellpadding="2" width="100%" class="exp-skin-table">'.$template->render().'</table>'));
 
 			$form->meta('date_id',$object->eventdate->id); // Will be 0 if we are creating.
 		}

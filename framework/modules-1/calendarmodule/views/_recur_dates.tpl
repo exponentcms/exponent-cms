@@ -13,20 +13,20 @@
  * GPL: http://www.gnu.org/licenses/gpl.txt
  *
  *}
- 
+
 <div class="module calendar recur-dates">
 	{foreach from=$dates item=d}
 		<tr class="row {cycle values='even_row,odd_row'}">
-			<td width="10">
+			<td width="10" style="border:none;">
 				<input type="checkbox" name="dates[{$d->id}]" {if $d->id == $checked_date->id}checked="checked" {/if}/>
 			</td>
-			<td>
+			<td style="border:none;">
 				{$d->date|format_date:$smarty.const.DISPLAY_DATE_FORMAT}
 			</td>
 		</tr>
 	{/foreach}
 	<tr>
-		<td colspan="2">
+		<td style="border:none;" colspan="2">
 		{literal}
 			<script type="text/javascript">
 			function recur_selectUnselectAll(setChecked) {
