@@ -13,11 +13,11 @@
  *
  *}
 
-{css unique="nav-manager1" link="`$smarty.const.YUI2_PATH`treeview/assets/skins/sam/treeview.css" corecss="panels"}
+{css unique="nav-manager1" link="`$smarty.const.YUI2_PATH`assets/skins/sam/treeview.css" corecss="panels"}
 
 {/css}
 
-{css unique="nav-manager2" link="`$smarty.const.YUI2_PATH`menu/assets/skins/sam/menu.css"}
+{css unique="nav-manager2" link="`$smarty.const.YUI2_PATH`assets/skins/sam/menu.css"}
 
 {/css}
 
@@ -26,7 +26,6 @@
 {/css}
 
 <div class="navigationmodule manager-hierarchy">
-
 	<div class="form_header">
 		<div class="info-header">
 			<div class="related-actions">
@@ -41,7 +40,11 @@
 			<a class="add" href="{link action=add_section parent=0}">{'Create a New Top Level Page'|gettext}</a>
 		{/if}
 	{/permissions}
-	<div id="navtree"><img src="{$smarty.const.ICON_RELATIVE}ajax-loader.gif">	<strong>Loading Navigation</strong></div>
+	{*<a id="expand" href="#">Expand all</a>*}
+	<div><a id="collapse" href="#">Collapse all</a></div>
+	<div id="navtree">
+		<img src="{$smarty.const.ICON_RELATIVE}ajax-loader.gif">	<strong>Loading Navigation</strong>
+	</div>
 </div>
 
 {script yui3mods="1" unique="DDTreeNav" }
@@ -305,8 +308,7 @@ var YAHOO = Y.YUI2;
 			window.location="{/literal}{$smarty.const.URL_FULL}{literal}index.php?module=navigationmodule&action=groupperms&int="+currentMenuNode.data.id+"&_common=1";
 		{/literal} {/if} {literal}
 	}
-	
-	
+
 	function saveToDB(move,target,type) {
 		var iUrl = eXp.URL_FULL+"index.php?ajax_action=1&module=navigationmodule&action=DragnDropReRank";
 		YAHOO.util.Connect.asyncRequest('POST', iUrl, 
@@ -377,9 +379,18 @@ var YAHOO = Y.YUI2;
 	   
 		tree.draw();
 		refreshDD();
-		YAHOO.util.Event.on("expall","click",tree.expandAll,tree,true);
-		YAHOO.util.Event.on("colall","click",tree.collapseAll,tree,true);
-		
+
+		//handler for expanding all nodes, does NOT work for dynamic nodes
+		YAHOO.util.Event.on("expand", "click", function(e) {
+			tree.expandAll();
+			YAHOO.util.Event.preventDefault(e);
+		});
+
+		//handler for collapsing all nodes
+		YAHOO.util.Event.on("collapse", "click", function(e) {
+			tree.collapseAll();
+			YAHOO.util.Event.preventDefault(e);
+		});
 	}
 	
 	function buildHTML(section) {
@@ -442,8 +453,6 @@ var YAHOO = Y.YUI2;
 																	 });
 	oContextMenu.subscribe("triggerContextMenu", onTriggerContextMenu); 
 
-	
-
 	DDSend.init = function() {
 		YAHOO.util.Event.on(["mode0", "mode1"], "click", changeIconMode);
 		var el = document.getElementById("mode1");
@@ -460,13 +469,7 @@ var YAHOO = Y.YUI2;
     DDSend.init();
 //once the DOM has loaded, we can go ahead and set up our tree:
 
-
 });
-
 
 {/literal}
 {/script}
-
-
-
-
