@@ -3,7 +3,7 @@
 ##################################################
 #
 # Copyright (c) 2004-2011 OIC Group, Inc.
-# Created by Adam Kessler @ 05/28/2008
+# Written and Designed by OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -35,30 +35,33 @@ class taxController extends expController {
     function canImportData() { return true; }
     function canExportData() { return true; }
 
-    function manage() {
-        global $db;
-        
+    function manage() {               
         expHistory::set('manageable', $this->params);
-        
+        $taxes = taxController::getTaxClasses();
+        assign_to_template(array('taxes'=>$taxes));
+    }
+    
+    static function getTaxClasses()
+    {
+        global $db;
         $sql = "
 
             SELECT 
-            	".DB_TABLE_PREFIX."_tax_class.id, 
-            	".DB_TABLE_PREFIX."_tax_zone.`name` AS zonename, 
-            	".DB_TABLE_PREFIX."_tax_rate.rate as rate, 
-            	".DB_TABLE_PREFIX."_tax_class.`name` AS classname, 
-            	".DB_TABLE_PREFIX."_geo_country.`name` as country, 
-            	".DB_TABLE_PREFIX."_geo_region.`name` as state
+                ".DB_TABLE_PREFIX."_tax_class.id, 
+                ".DB_TABLE_PREFIX."_tax_zone.`name` AS zonename, 
+                ".DB_TABLE_PREFIX."_tax_rate.rate as rate, 
+                ".DB_TABLE_PREFIX."_tax_class.`name` AS classname, 
+                ".DB_TABLE_PREFIX."_geo_country.`name` as country, 
+                ".DB_TABLE_PREFIX."_geo_region.`name` as state
             FROM ".DB_TABLE_PREFIX."_tax_class INNER JOIN ".DB_TABLE_PREFIX."_tax_rate ON ".DB_TABLE_PREFIX."_tax_class.id = ".DB_TABLE_PREFIX."_tax_rate.class_id
-            	 INNER JOIN ".DB_TABLE_PREFIX."_tax_zone ON ".DB_TABLE_PREFIX."_tax_rate.zone_id = ".DB_TABLE_PREFIX."_tax_zone.id
-            	 INNER JOIN ".DB_TABLE_PREFIX."_tax_geo ON ".DB_TABLE_PREFIX."_tax_geo.zone_id = ".DB_TABLE_PREFIX."_tax_zone.id
-            	 INNER JOIN ".DB_TABLE_PREFIX."_geo_country ON ".DB_TABLE_PREFIX."_tax_geo.country_id = ".DB_TABLE_PREFIX."_geo_country.id
-            	 INNER JOIN ".DB_TABLE_PREFIX."_geo_region ON ".DB_TABLE_PREFIX."_tax_geo.region_id = ".DB_TABLE_PREFIX."_geo_region.id
+                 INNER JOIN ".DB_TABLE_PREFIX."_tax_zone ON ".DB_TABLE_PREFIX."_tax_rate.zone_id = ".DB_TABLE_PREFIX."_tax_zone.id
+                 INNER JOIN ".DB_TABLE_PREFIX."_tax_geo ON ".DB_TABLE_PREFIX."_tax_geo.zone_id = ".DB_TABLE_PREFIX."_tax_zone.id
+                 INNER JOIN ".DB_TABLE_PREFIX."_geo_country ON ".DB_TABLE_PREFIX."_tax_geo.country_id = ".DB_TABLE_PREFIX."_geo_country.id
+                 INNER JOIN ".DB_TABLE_PREFIX."_geo_region ON ".DB_TABLE_PREFIX."_tax_geo.region_id = ".DB_TABLE_PREFIX."_geo_region.id
 
             ";
 
-        $taxes = $db->selectObjectsBySql($sql);
-        assign_to_template(array('taxes'=>$taxes));
+        return $db->selectObjectsBySql($sql);
     }
 
 	function edit() {

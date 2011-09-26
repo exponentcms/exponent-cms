@@ -22,7 +22,7 @@
 {literal}
 YUI(EXPONENT.YUI3_CONFIG).use('node', 'charts', 'yui2-yahoo-dom-event','yui2-element','yui2-tabview', function(Y) {
 	var YAHOO=Y.YUI2;
-	var tabView = new YAHOO.widget.TabView('demo');
+	var tabView = new YAHOO.widget.TabView('payments');
 	
 });
 
@@ -50,12 +50,12 @@ YUI(EXPONENT.YUI3_CONFIG).use('node', 'charts', 'yui2-yahoo-dom-event','yui2-ele
             }
         };
         
-        var areachart     = new Y.Chart({dataProvider:myDataValues, render:"#areachart", type:"area", tooltip: "myTooltip"});
-		var barchart      = new Y.Chart({dataProvider:myDataValues, render:"#barchart", type:"bar", tooltip: "myTooltip"});
+        //var areachart     = new Y.Chart({dataProvider:myDataValues, render:"#areachart", type:"area", tooltip: "myTooltip"});
+		//var barchart      = new Y.Chart({dataProvider:myDataValues, render:"#barchart", type:"bar", tooltip: "myTooltip"});
 		var columnchart   = new Y.Chart({dataProvider:myDataValues, render:"#columnchart", type:"column", tooltip: "myTooltip"});
-		var combochart    = new Y.Chart({dataProvider:myDataValues, render:"#combochart", type:"combo", tooltip: "myTooltip"});
-		var linechart     = new Y.Chart({dataProvider:myDataValues, render:"#linechart", type:"line", tooltip: "myTooltip"});
-		var piechart     = new Y.Chart({dataProvider:myDataValues, render:"#piechart", type:"pie", tooltip: "myTooltip"});
+		//var combochart    = new Y.Chart({dataProvider:myDataValues, render:"#combochart", type:"combo", tooltip: "myTooltip"});
+		//var linechart     = new Y.Chart({dataProvider:myDataValues, render:"#linechart", type:"line", tooltip: "myTooltip"});
+		//var piechart     = new Y.Chart({dataProvider:myDataValues, render:"#piechart", type:"pie", tooltip: "myTooltip"});
     });
 })();
 {/literal}
@@ -63,17 +63,18 @@ YUI(EXPONENT.YUI3_CONFIG).use('node', 'charts', 'yui2-yahoo-dom-event','yui2-ele
 	
 <div id="payment-summary" class="module administration configure-site exp-skin-tabview">
     
-    <h1>Dashboard</h1>
+    <h1>Payment Summary</h1>
 
-	<div id="demo" class="yui-navset">
+	<div id="payments" class="yui-navset">
 		<ul class="yui-nav">
 		<li class="selected"><a href="#tab1"><em>{gettext str="Payment Summary"}</em></a></li>
-		<li><a href="#tab2"><em>{gettext str="Area Chart"}</em></a></li>
+        <li><a href="#tab2"><em>{gettext str="Column Chart"}</em></a></li>
+		<!--li><a href="#tab2"><em>{gettext str="Area Chart"}</em></a></li>
 		<li><a href="#tab3"><em>{gettext str="Bar Chart"}</em></a></li>
 		<li><a href="#tab4"><em>{gettext str="Column Chart"}</em></a></li>
 		<li><a href="#tab5"><em>{gettext str="Combo Chart"}</em></a></li>
 		<li><a href="#tab6"><em>{gettext str="Line Chart"}</em></a></li>
-		<li><a href="#tab7"><em>{gettext str="Pie Chart"}</em></a></li>
+		<li><a href="#tab7"><em>{gettext str="Pie Chart"}</em></a></li-->
 		</ul>            
 		<div class="yui-content">
 			<div id="tab1">
@@ -98,15 +99,16 @@ YUI(EXPONENT.YUI3_CONFIG).use('node', 'charts', 'yui2-yahoo-dom-event','yui2-ele
 					</table>
 				</div>
 			</div>
-			<div id="tab2">
+            <div id="tab2">
+                <div id="columnchart"></div>
+            </div>
+			<!--div id="tab2">
 				<div id="areachart"></div>
 			</div>
 			<div id="tab3">
 				<div id="barchart"></div>
 			</div>
-			<div id="tab4">
-				<div id="columnchart"></div>
-			</div>
+			
 			<div id="tab5">
 				<div id="combochart"></div>
 			</div>
@@ -115,13 +117,43 @@ YUI(EXPONENT.YUI3_CONFIG).use('node', 'charts', 'yui2-yahoo-dom-event','yui2-ele
 			</div>
 			<div id="tab7">
 				<div id="piechart"></div>
-			</div>
+			</div-->
 		</div>
 	</div>
 </div>
 
+<div id="tax-summary" class="module administration configure-site exp-skin-tabview">    
+    <h1>Tax Summary</h1>  
+    <div class="exp-ecom-table exp-skin-table">
+        <table border="0" cellspacing="0" cellpadding="0">
+            <thead>
+                <tr class="{cycle values='odd,even'}">
+                    <th colspan="2">
+                        <h1>{gettext str="Tax Summary"}</h1>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>                  
+                <tr>
+                    <th>{$tax_type}</th>
+                    <td>{currency_symbol}{$tax_total|number_format:2}</td>
+                </tr>               
+                
+            </tbody>
+        </table>                
+    </div>
+</div>
+
+
 <style type="text/css">
 {literal}
+.fullbody #centercol {
+    width: 422px;     
+}
+
+.exp-skin-table {
+    width:400px;
+}
 .exp-skin-table tbody tr.odd th,
 .exp-skin-table tbody tr.odd td {
     border-color:#EBE5D9;
@@ -131,7 +163,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('node', 'charts', 'yui2-yahoo-dom-event','yui2-ele
 #areachart, #barchart, #columnchart, #combochart, #linechart, #piechart {
     margin:10px 10px 10px 10px;
     width:90%;
-    max-width: 800px;
+    max-width: 400px;
     height:400px;
 }
 
