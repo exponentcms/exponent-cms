@@ -66,7 +66,7 @@ class taxController extends expController {
 
 	function edit() {
 		global $db;
-		
+		$record = '';
 		if(!empty($this->params['id'])) {
 			//Get the data from the 3 tables
 			$tax_class = $db->selectObject('tax_class', 'id =' .$this->params['id']);

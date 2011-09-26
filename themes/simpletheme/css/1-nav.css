@@ -1,8 +1,8 @@
 /****************  nav  ***********************/
 
-/* first element inside .top-nav. #yuimenubar will ALWAYS be the ID, since we'll 
+/* first element inside .top-nav. #hd .yui-top-nav .yuimenubar will ALWAYS be the ID, since we'll 
 never have more than one menubar on a single page */
-#yuimenubar {
+#hd .yui-top-nav .yuimenubar {
     padding-left:10px;
     background:#576157;
        -moz-border-radius: 5px; 
@@ -11,34 +11,34 @@ never have more than one menubar on a single page */
 }
 
 /* strip the padding placed by yui's style sheet*/
-#yuimenubar,
-#yuimenubar * {
+#hd .yui-top-nav .yuimenubar,
+#hd .yui-top-nav .yuimenubar * {
     border-width:0;
     margin:0;
 }
 
 /* the menu bar's <li> list item*/
-#yuimenubar .yuimenubaritem {
+#hd .yui-top-nav .yuimenubar .yuimenubaritem {
 
 }
 
-#yuimenubar .yuimenubaritem-hassubmenu {
+#hd .yui-top-nav .yuimenubar .yuimenubaritem-hassubmenu {
 
 }
 
 /* the hover state of the menu bar's <li>*/
-#yuimenubar .yuimenubaritem-selected {
+#hd .yui-top-nav .yuimenubar .yuimenubaritem-selected {
     background:#808f5d;
 }
 
-#yuimenubar .yuimenubaritemlabel-hassubmenu {
+#hd .yui-top-nav .yuimenubar .yuimenubaritemlabel-hassubmenu {
     background-image:url(../images/menubaritem_submenuindicator.png);
     background-position: 100% 50%;
     background-repeat:no-repeat;
 }
 
 /* the <a> inside the <li>*/
-#yuimenubar .yuimenubaritemlabel {
+#hd .yui-top-nav .yuimenubar .yuimenubaritemlabel {
     color:#ffffff;
     font-size:14px;
     font-weight:bold;
@@ -47,43 +47,43 @@ never have more than one menubar on a single page */
     text-transform:uppercase;
 }
 
-#yuimenubar .yuimenubaritemlabel-hassubmenu {
+#hd .yui-top-nav .yuimenubar .yuimenubaritemlabel-hassubmenu {
     background-image:url(../images/menubaritem_submenuindicator.png);
     background-position: 100% 50%;
     background-repeat:no-repeat;
 }
 
-#yuimenubar .yuimenubaritemlabel-hassubmenu-selected {
+#hd .yui-top-nav .yuimenubar .yuimenubaritemlabel-hassubmenu-selected {
     background-image:url(../images/menubaritem_submenuindicator_selected.png);
 }
 
 
 /* the hover state of the menu bar's <li>'s <a>*/
-#yuimenubar .yuimenubaritemlabel-selected {
+#hd .yui-top-nav .yuimenubar .yuimenubaritemlabel-selected {
     color:#302f30;
 }
 
 /*** the drop down menus ***/
 
 /* the drop down menu's sytlable wrapper*/
-#yuimenubar .yuimenu .bd {
+#hd .yui-top-nav .yuimenubar .yuimenu .bd {
     border:1px solid #576157;
     background:#98aa6f;
     
 }
 
 /* The drop menu's <li> (and all under it as well) */
-#yuimenubar .yuimenuitem {
+#hd .yui-top-nav .yuimenubar .yuimenuitem {
     background:none;
 }
 
 /* The hover state of the drop menu's <li> (and all under it as well) */
-#yuimenubar .yuimenuitem-selected {
+#hd .yui-top-nav .yuimenubar .yuimenuitem-selected {
     background-color:#ffffff;
 }
 
 /* The drop menu's <li>'s <a> (and all under it as well) */
-#yuimenubar .yuimenuitemlabel {
+#hd .yui-top-nav .yuimenubar .yuimenuitemlabel {
     padding-top:5px;
     padding-bottom:5px;
     text-transform:uppercase;
@@ -91,17 +91,17 @@ never have more than one menubar on a single page */
 }
 
 /* The hover state of the drop menu's <li>'s <a> (and all under it as well) */
-#yuimenubar .yuimenuitemlabel-selected {
+#hd .yui-top-nav .yuimenubar .yuimenuitemlabel-selected {
     color:#302f30;
 }
 
-#yuimenubar .yuimenuitemlabel-hassubmenu {
+#hd .yui-top-nav .yuimenubar .yuimenuitemlabel-hassubmenu {
     background-image:url(../images/menuitem_submenuindicator.png);
     background-position: 100% 50%;
     background-repeat:no-repeat;
 }
 
-#yuimenubar .yuimenuitemlabel-hassubmenu-selected {
+#hd .yui-top-nav .yuimenubar .yuimenuitemlabel-hassubmenu-selected {
     background-image:url(../images/menuitem_submenuindicator_selected.png);
 }
 

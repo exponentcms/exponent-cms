@@ -26,31 +26,6 @@
     {/if}
     
 
-    {script unique="prodtabs" yuimodules="tabview, element"}
-    {literal}
-        var tabView = new YAHOO.widget.TabView('demo');
-        
-        var url = location.href.split('#');
-        if (url[1]) {
-            //We have a hash
-            var tabHash = url[1];
-            var tabs = tabView.get('tabs');
-            for (var i = 0; i < tabs.length; i++) {
-                if (tabs[i].get('href') == '#' + tabHash) {
-                    tabView.set('activeIndex', i);
-                    break;
-                }
-            }
-        }
-        
-        
-        YAHOO.util.Dom.removeClass("editproduct", 'hide');
-        var loading = YAHOO.util.Dom.getElementsByClassName('loadingdiv', 'div');
-        YAHOO.util.Dom.setStyle(loading, 'display', 'none');
-        
-    {/literal}
-    {/script}
-
     {form action=update}
         {control type="hidden" name="id" value=$record->id}
         <div id="demo" class="yui-navset">
@@ -167,26 +142,6 @@
                         <p>{gettext str="Attach Product Brochures, Docs, Manuals, etc."}</p>
                         {control type=files name=brochures label="Additional Files" subtype="brochures" value=$record->expFile}
                     </div>
-
-                    {script unique="mainimagefunctionality" yui3mods="node,node-event-simulate"}
-                    {literal}
-                    YUI(EXPONENT.YUI3_CONFIG).use('node','node-event-simulate', function(Y) {
-                        var radioSwitchers = Y.all('#main_image_functionalityControl input[name="main_image_functionality"]');
-                        radioSwitchers.on('click',function(e){
-                            Y.all(".imngfuncbody").setStyle('display','none');
-                            var curdiv = Y.one("#" + e.target.get('value') + "-div");
-                            curdiv.setStyle('display','block');
-                        });
-
-                        radioSwitchers.each(function(node,k){
-                            if(node.get('checked')==true){
-                                node.simulate('click');
-                            }
-                        });
-                        
-                    });
-                    {/literal}
-                    {/script}
 
                 </div>
                 <div id="quantity">
@@ -567,26 +522,66 @@
 </div>
 <div class="loadingdiv">Loading</div>
 
-{script unique="prodedit"}
-{literal}
-    function switchMethods() {
-        var dd = YAHOO.util.Dom.get('required_shipping_calculator_id');
-        var methdd = YAHOO.util.Dom.get('dd-'+dd.value);
 
-        var otherdds = YAHOO.util.Dom.getElementsByClassName('methods', 'div');
-        
-        for(i=0; i<otherdds.length; i++) {
-            if (otherdds[i].id == 'dd-'+dd.value) {
-                YAHOO.util.Dom.setStyle(otherdds[i].id, 'display', 'block');
-            } else {
-                YAHOO.util.Dom.setStyle(otherdds[i].id, 'display', 'none');
+{script unique="editform" yui3mods=1}
+{literal}
+    YUI(EXPONENT.YUI3_CONFIG).use('node','node-event-simulate','yui2-yahoo-dom-event','yui2-tabview','yui2-element', function(Y) {
+        var YAHOO=Y.YUI2;
+
+        var tabView = new YAHOO.widget.TabView('demo');
+
+        var url = location.href.split('#');
+        if (url[1]) {
+            //We have a hash
+            var tabHash = url[1];
+            var tabs = tabView.get('tabs');
+            for (var i = 0; i < tabs.length; i++) {
+                if (tabs[i].get('href') == '#' + tabHash) {
+                    tabView.set('activeIndex', i);
+                    break;
+                }
             }
-            
         }
-        YAHOO.util.Dom.setStyle(methdd, 'display', 'block');
-        //console.debug(methdd);
-        //console.debug(dd.value);
-    }
-    YAHOO.util.Event.onDOMReady(switchMethods);
+
+
+        YAHOO.util.Dom.removeClass("editproduct", 'hide');
+        var loading = YAHOO.util.Dom.getElementsByClassName('loadingdiv', 'div');
+        YAHOO.util.Dom.setStyle(loading, 'display', 'none');
+
+        var radioSwitchers = Y.all('#main_image_functionalityControl input[name="main_image_functionality"]');
+        radioSwitchers.on('click',function(e){
+            Y.all(".imngfuncbody").setStyle('display','none');
+            var curdiv = Y.one("#" + e.target.get('value') + "-div");
+            curdiv.setStyle('display','block');
+        });
+
+        radioSwitchers.each(function(node,k){
+            if(node.get('checked')==true){
+                node.simulate('click');
+            }
+        });
+
+        function switchMethods() {
+            var dd = YAHOO.util.Dom.get('required_shipping_calculator_id');
+            var methdd = YAHOO.util.Dom.get('dd-'+dd.value);
+
+            var otherdds = YAHOO.util.Dom.getElementsByClassName('methods', 'div');
+
+            for(i=0; i<otherdds.length; i++) {
+                if (otherdds[i].id == 'dd-'+dd.value) {
+                    YAHOO.util.Dom.setStyle(otherdds[i].id, 'display', 'block');
+                } else {
+                    YAHOO.util.Dom.setStyle(otherdds[i].id, 'display', 'none');
+                }
+
+            }
+            YAHOO.util.Dom.setStyle(methdd, 'display', 'block');
+            //console.debug(methdd);
+            //console.debug(dd.value);
+        }
+        YAHOO.util.Event.onDOMReady(switchMethods);
+    });
 {/literal}
 {/script}
+
+

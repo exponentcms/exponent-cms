@@ -23,28 +23,6 @@
 {/css}
 
 <div id="order" class="module order show hide exp-skin-tabview">
-    {script unique="order" yuimodules="tabview, element"}
-    {literal}
-        var tabView = new YAHOO.widget.TabView('ordertabs');
-        
-        var url = location.href.split('#');
-        if (url[1]) {
-            //We have a hash
-            var tabHash = url[1];
-            var tabs = tabView.get('tabs');
-            for (var i = 0; i < tabs.length; i++) {
-                if (tabs[i].get('href') == '#' + tabHash) {
-                    tabView.set('activeIndex', i);
-                    break;
-                }
-            }
-        }
-        
-        YAHOO.util.Dom.removeClass("order", 'hide');
-        var loading = YAHOO.util.Dom.getElementsByClassName('loadingdiv', 'div');
-        YAHOO.util.Dom.setStyle(loading, 'display', 'none');
-    {/literal}
-    {/script}
     
     <div id="ordertabs" class="yui-navset">
         <ul class="yui-nav">
@@ -335,11 +313,36 @@
 
 {script unique="msgbox"}
 {literal}
-YUI(EXPONENT.YUI3_CONFIG).use('node','event', function(Y) {
+YUI(EXPONENT.YUI3_CONFIG).use('node','event','yui2-tabview','yui2-element', function(Y) {
+    var YAHOO=Y.YUI2;
+
     var selects = Y.all('#order_status_messages option');
     selects.on('click',function(e){
         EXPONENT.editoremail_message.setData(e.target.get('value'));
     });
-});
+
+    var tabView = new YAHOO.widget.TabView('auth');
+    //Y.one('#authcfg').removeClass('hide').next().remove();
+    
+
+    var tabView2 = new YAHOO.widget.TabView('ordertabs');
+
+    var url = location.href.split('#');
+    if (url[1]) {
+        //We have a hash
+        var tabHash = url[1];
+        var tabs = tabView.get('tabs');
+        for (var i = 0; i < tabs.length; i++) {
+            if (tabs[i].get('href') == '#' + tabHash) {
+                tabView.set('activeIndex', i);
+                break;
+            }
+        }
+    }
+
+    YAHOO.util.Dom.removeClass("order", 'hide');
+    var loading = YAHOO.util.Dom.getElementsByClassName('loadingdiv', 'div');
+    YAHOO.util.Dom.setStyle(loading, 'display', 'none');
+	});
 {/literal}
 {/script}

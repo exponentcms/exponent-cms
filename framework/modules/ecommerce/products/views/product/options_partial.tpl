@@ -14,27 +14,7 @@
  *
  *}
  
-{script unique="optionjs"}
- {literal}
- YAHOO.util.Event.onDOMReady(function(){
-     var toggles = YAHOO.util.Dom.getElementsByClassName('togglelink', 'a');
-     YAHOO.util.Event.on(toggles, 'click', function(e){
-         YAHOO.util.Event.stopEvent(e);
-        var targ = YAHOO.util.Event.getTarget(e);
-        if (YAHOO.util.Dom.getStyle(targ.rel, 'display')=="none") {
-            if (YAHOO.env.ua.ie > 0) {
-                YAHOO.util.Dom.setStyle(targ.rel, 'display', 'block');
-            } else {
-                YAHOO.util.Dom.setStyle(targ.rel, 'display', 'table-row');
-            }
-        } else {
-            YAHOO.util.Dom.setStyle(targ.rel, 'display',"none");
-        }
-     });
-     
- });
- {/literal}
- {/script}
+
 {css unique="option-styles" link="`$asset_path`css/options-edit.css" corecss="tables"}
 
 {/css}
@@ -105,9 +85,10 @@
     {/foreach}
 </div>
 
-{script unique="expand-panels"}
+{script unique="expand-panels" yui3mods=1}
 {literal}
-YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
+YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event', function(Y) {
+    var YAHOO=Y.YUI2;
 
         var action = function(e){
             e.halt();
@@ -139,7 +120,24 @@ YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
            }
         });
     
+    YAHOO.util.Event.onDOMReady(function(){
+        var toggles = YAHOO.util.Dom.getElementsByClassName('togglelink', 'a');
+        YAHOO.util.Event.on(toggles, 'click', function(e){
+            YAHOO.util.Event.stopEvent(e);
+           var targ = YAHOO.util.Event.getTarget(e);
+           if (YAHOO.util.Dom.getStyle(targ.rel, 'display')=="none") {
+               if (YAHOO.env.ua.ie > 0) {
+                   YAHOO.util.Dom.setStyle(targ.rel, 'display', 'block');
+               } else {
+                   YAHOO.util.Dom.setStyle(targ.rel, 'display', 'table-row');
+               }
+           } else {
+               YAHOO.util.Dom.setStyle(targ.rel, 'display',"none");
+           }
+        });
+
     });
+});
 {/literal}
 {/script}
 

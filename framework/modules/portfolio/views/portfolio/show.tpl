@@ -15,7 +15,7 @@
 
 <div class="module portfolio show">
 	<h1>{$record->title}</h1>
-
+    {eDebug var=$config}
 	{permissions}
 		<div class="item-actions">
 			{if $permissions.edit == 1}

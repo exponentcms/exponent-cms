@@ -39,40 +39,36 @@ EXPONENT.BASE = "<?php echo BASE; ?>";
 EXPONENT.THEME_RELATIVE = "<?php echo THEME_RELATIVE; ?>";
 EXPONENT.ICON_RELATIVE = "<?php echo ICON_RELATIVE; ?>";
 EXPONENT.JS_FULL = '<?php echo JS_FULL; ?>';
-EXPONENT.YUI2_VERSION = '<?php echo YUI2_VERSION; ?>';
 EXPONENT.YUI3_VERSION = '<?php echo YUI3_VERSION; ?>';
-EXPONENT.YUI2_PATH = '<?php echo YUI2_PATH; ?>';
 EXPONENT.YUI3_PATH = '<?php echo YUI3_PATH; ?>';
-EXPONENT.YUI2_URL = '<?php echo YUI2_URL; ?>';
 EXPONENT.YUI3_URL = '<?php echo YUI3_URL; ?>';
+EXPONENT.YUI2_VERSION = '<?php echo YUI2_VERSION; ?>';
+EXPONENT.YUI2_PATH = '<?php echo YUI2_PATH; ?>';
+EXPONENT.YUI2_URL = '<?php echo YUI2_URL; ?>';
 
-<?php 
-if (MINIFY==1) { 
-?>
+
+
+
 EXPONENT.YUI3_CONFIG = {
-    combine:1,
-    comboBase:EXPONENT.PATH_RELATIVE+'external/minify/min/?b='+EXPONENT.PATH_RELATIVE.substr(1)+'external/lissa&f=',
+    combine:<?php echo (MINIFY==1)?1:0; ?>,
+    // root:         EXPONENT.YUI3_PATH.substr(1),
+    // base:         EXPONENT.YUI3_PATH,
+    comboBase:    EXPONENT.PATH_RELATIVE+'external/minify/min/?b='+EXPONENT.PATH_RELATIVE.substr(1)+'external/yui&f=',
     filter: {
-        'searchExp': "&3", 
-        'replaceStr': ",3"
-    }
-};
-<?php 
-} else {
-?>
-EXPONENT.YUI3_CONFIG = {
-    combine: false,
-    //filter:   "raw",
-    onFailure: function (error) {
-      console.debug(error);  
+        'searchExp': ".js&", 
+        'replaceStr': ".js,"
     },
+    //combine: false,
+    //filter:   "debug",
+    // onFailure: function (error) {
+    //   console.debug(error);  
+    // },
     groups: {
         yui2: {
-            base:      EXPONENT.YUI2_PATH,
-            combine:   false,
-            comboBase: "/combo?",
-            fetchCSS: false,
-            root:      EXPONENT.YUI2_PATH,
+            combine:false,
+            base: EXPONENT.YUI2_PATH,
+            root: EXPONENT.YUI2_VERSION+'/',
+            comboBase:EXPONENT.PATH_RELATIVE+'external/minify/min/?b='+EXPONENT.PATH_RELATIVE.substr(1)+'external/yui/2in3/dist&f=',
             patterns:  {
                 "yui2-": {
                     configFn: function (me) {
@@ -89,9 +85,6 @@ EXPONENT.YUI3_CONFIG = {
     }
 };
 //console.debug(EXPONENT.YUI3_CONFIG);
-<?php 
-}
-?>
 
 // YUI 2 ajax helper method. This is much easier in YUI 3. Should also migrate.
 

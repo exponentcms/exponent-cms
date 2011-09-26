@@ -16,17 +16,8 @@
 
 <div id="editgallery" class="module imagegallery edit hide exp-skin-tabview">
     
-    {if $record->id != ""}<h1>Editing {$record->title}</h1>{else}<h1>New {$modelname|ucwords}</h1>{/if}
-    
-    {script unique="gallerytabs" yui2mods="tabview, element"}
-    {literal}
-        var tabView = new YAHOO.widget.TabView('demo');
-        YAHOO.util.Dom.removeClass("editgallery", 'hide');
-        var loading = YAHOO.util.Dom.getElementsByClassName('loadingdiv', 'div');
-        YAHOO.util.Dom.setStyle(loading, 'display', 'none');
-    {/literal}
-    {/script}
-    
+    {if $record->id}<h1>Editing {$record->title}</h1>{else}<h1>New {$modelname}</h1>{/if}
+        
     {form action=update}
         {control type=hidden name=id value=$record->id}
         <div id="demo" class="yui-navset">
@@ -58,4 +49,15 @@
     {/form}   
     
 </div>
-<div class="loadingdiv">Loading Form</div>
+<div class="loadingdiv">{"Loading Edit Form"|gettext}</div>
+
+{script unique="editform" yui3mods=1}
+{literal}
+    YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-tabview','yui2-element', function(Y) {
+        var YAHOO=Y.YUI2;
+
+        var tabView = new YAHOO.widget.TabView('demo');
+        Y.one('#editgallery').removeClass('hide').next().remove();
+    });
+{/literal}
+{/script}

@@ -80,7 +80,7 @@ class searchController extends expController {
 
 	    foreach (listControllers() as $ctlname=>$ctl) {
 		    $controller = new $ctlname();		    
-		    if ($controller->isSearchable()) {
+		    if (method_exists($controller,'isSearchable') && $controller->isSearchable()) {
 			    $mods[$controller->name()] = $controller->addContentToSearch();
 		    } else {
 		        //$mods[$controller->name()] = 0;

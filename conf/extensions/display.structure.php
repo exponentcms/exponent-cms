@@ -66,6 +66,11 @@ return array(
 			'description'=>gt('The current theme layout'),
 			'control'=>new dropdowncontrol(null,$themes)
 		),
+		'FORCE_MOBILE'=>array(
+			'title'=>gt('Force Display of the Mobile Theme Variation (if available)'),
+			'description'=>gt('Force the Display of the Mobile Theme Variation for Development (if available)'),
+			'control'=>new dropdowncontrol()
+		),
 		'DISPLAY_ATTRIBUTION'=>array(
 			'title'=>gt('Attribution'),
 			'description'=>gt('How credit is given to authors for their posts.'),

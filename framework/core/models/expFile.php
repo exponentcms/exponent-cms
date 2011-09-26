@@ -357,16 +357,24 @@ class expFile extends expRecord {
 				// Everything looks good.  Continue with the update.
 				break;
 			case UPLOAD_ERR_INI_SIZE:
-			case images:
+//			case images:
 				// This is a tricky one to catch.  If the file is too large for
                 // POST, then the script won't even run.
 				// But if its between post_max_size and upload_max_filesize,
                 // we will get here.
 				return 'file_too_large';
+			case UPLOAD_ERR_FORM_SIZE:
+				return 'file_exceeds_form_MAX_FILE_SIZ';
 			case UPLOAD_ERR_PARTIAL:
 				return 'partial_file';
 			case UPLOAD_ERR_NO_FILE:
 				return 'no_file_uploaded';
+			case UPLOAD_ERR_NO_TMP_DIR:
+				return 'missing_tmp_folder';
+			case UPLOAD_ERR_CANT_WRITE:
+				return 'failed_write_to_disk';
+			case UPLOAD_ERR_EXTENSION:
+				return 'upload_stopped_by_extension';
 			default:
 				return 'unknown';
 				break;

@@ -46,20 +46,6 @@ class paypalExpressCheckout extends billingcalculator {
     public $title = 'PayPal Express Checkout';
     public $payment_type = 'PayPal';
     
-    /**
-    * Called for billing method seletion screen, return true if it's a valid billing method.
-    * 
-    * TODO: not a clue what thi function is supposed to do. May not be used any more
-    * 
-    * @param mixed $config_object 
-    * @param mixed $order
-    * @param mixed $billaddress
-    * @param mixed $shippingaddress
-    * @return boolean
-    */
-    function pre_process($config_object,$order,$billaddress,$shippingaddress) {
-        return true;
-    }
 
 	/**
 	 * For paypal this will call out to the PP api and get a token then redirect to PP.
@@ -380,154 +366,24 @@ class paypalExpressCheckout extends billingcalculator {
 	function delete($config_object) {
 		return;
 	}
-	
-	/**
-    * This should return html to display config settings on the view billing method page
-    * @param mixed $config_object
-    * 
-    * TODO: Hasen't this been depricated in favor of the config.tpl?
-	 * @return string
-	 */
-	function view($config_object) {
-		$html = "<br>Settings:<br/><hr>";
-		$html .= "API Login ID: " . $config_object->username."<br>";
-		$html .= "Transaction Key: ". $config_object->transaction_key."<br>";
-		$html .= "Password: " . $config_object->password."<br>";
-		$html .= "Test Mode: ".(($config_object->test_mode)?"Yes":"No")."<br>";
-		$html .= "Process Mode: ";
-		if ($config_object->process_mode == ECOM_AUTHORIZENET_AUTH_CAPTURE) {
-			$html .="Authorize and Capture<br>";
-		}else if ($config_object->process_mode == ECOM_AUTHORIZENET_AUTH_ONLY) {
-			$html .="Authorize and Capture<br>";
-		}
-		$html .= "<br>Accepted Cards:<hr>";
-		$html .= "American Express: ".(($config_object->accept_amex)?"Yes":"No")."<br>";
-		$html .= "Discover: ".(($config_object->accept_discover)?"Yes":"No")."<br>";
-		$html .= "Mastercard: ".(($config_object->accept_mastercard)?"Yes":"No")."<br>";
-		$html .= "Visa: ".(($config_object->accept_visa)?"Yes":"No")."<br><br>";
-		//$html .= "Offer Tax Exempt Field: ".(($config_object->offer_tax_exempt_field)?"Yes":"No")."<br>";
-
-		return $html;
-	}
-    
-####
-#### These are commented out in favor of the ones that have the credit cards.
-#### This is meant only FOR TESTING
-####
-    
-    /**
-    * The html of the form that shows up in the "pop up" that the user enteres their info 
-    * @return string|boolean
-    */
-//    function userForm() {
-//        return false;
-//    }
-    
-    /**
-    * process user input. This function should return an object of the user input. the returnd object will be saved in the session and passed to post_process. If need be this could use another method of data storage, as long post_process can get the data.
-    * @param mixed $params The params array that gets passed around all over Exponent
-    */
-//    function userFormUpdate($params) {
-//        return false;
-//    }
-    
-    /**
-    * Should return html to display user data.
-    * @param mixed $opts
-    */
-//    function userView($opts) {
-//        $html = 'You will be redirected to Paypal to process the transaction. ';
-//        return $html;
-//    }
-    
-    
-    public $cards = array("AmExCard"=>"American Express","DiscoverCard"=>"Discover","MasterCard"=>"MasterCard", "VisaCard"=>"Visa");
-    public $card_images = array(
-        "AmExCard"=>"path/to/image.png",
-        "DiscoverCard"=>"path/to/image.png",
-        "MasterCard"=>"path/to/image.png", 
-        "VisaCard"=>"path/to/image.png"
-    );
+	    
     
     function userForm() {
-        // make sure we have some billing options saved.
-        //if (empty($this->opts)) return false;
-        
-        //exponent_javascript_toFoot('creditcard',"",null,'', URL_FULL.'framework/core/subsystems-1/forms/js/AuthorizeNet.validate.js');
-        //$opts->first_name = isset($this->opts->first_name) ? $this->opts->first_name : null;
-        //$opts->last_name = isset($this->opts->last_name) ? $this->opts->last_name : null;
-        $this->opts = expSession::get('billing_options');
-        $opts->cc_type = isset($this->opts->cc_type) ? $this->opts->cc_type : null;
-        $opts->cc_number = isset($this->opts->cc_number) ? $this->opts->cc_number : null;
-        $opts->exp_month = isset($this->opts->exp_month) ? $this->opts->exp_month : null;
-        $opts->exp_year = isset($this->opts->exp_year) ? $this->opts->exp_year : null;
-        $opts->cvv = isset($this->opts->cvv) ? $this->opts->cvv : null;
-
-        $form = '';
-        /* FIXME: hard coded options!!
-          if ($config_object->accept_amex) $cards["AmExCard"] = "American Express";
-        if ($config_object->accept_discover) $cards["DiscoverCard"] = "Discover";
-        if ($config_object->accept_mastercard) $cards["MasterCard"] = "MasterCard";
-        if ($config_object->accept_visa) $cards["VisaCard"] = "Visa";
-        */
-        //$fname = new textcontrol($opts->first_name);
-        //$lname = new textcontrol($opts->last_name);
-        
-        $cardtypes = new dropdowncontrol($opts->cc_type,$this->cards);
-        $cardnumber = new textcontrol($opts->cc_number,20,false,20,"integer", true);
-        $expiration = new monthyearcontrol($opts->exp_month, $opts->exp_year);
-        $cvv = new textcontrol($opts->cvv,4,false,4,"integer", true);
-        $cvvhelp = new htmlcontrol("<a href='http://en.wikipedia.org/wiki/Card_Verification_Value' target='_blank'>What's this?</a>");
-
-        $cardtypes->id = "cc_type";
-        $cardnumber->id = "cc_number";
-        $expiration->id = "expiration";
-        $cvv->id = "cvv";
-        $cvv->size = 5;
-        $cvvhelp->id = "cvvhelp";
-
-        //$form .= $fname->toHTML("First Name", "first_name");
-        //$form .= $lname->toHTML("Last Name", "last_name");
-        $form .= $cardtypes->toHTML("Card Type", "cc_type");
-        $form .= $cardnumber->toHTML("Card #", "cc_number");
-        //$form .= "<strong class=\"example\">Example: 1234567890987654</strong>";
-        $form .= $expiration->toHTML("Expiration", "expiration");
-        $form .= $cvv->toHTML("CVV #", 'cvv');
-        $form .= $cvvhelp->toHTML('', 'cvvhelp');
-        
-        return $form;    
+        return '';    
     }
     
     //process user input. This function should return an object of the user input.
     //the returnd object will be saved in the session and passed to post_process.
     //If need be this could use another method of data storage, as long post_process can get the data.
     function userFormUpdate($params) {
-        /*//expValidator::validate(array('presence_of'=>'cc_number','presence_of'=>'cvv'), $params);
-        $this->opts = null;
-        //$this->opts->first_name = $params["first_name"];
-        //$this->opts->last_name = $params["last_name"];
-        $this->opts->cc_type = $params["cc_type"];
-        $this->opts->cc_number = $params["cc_number"];
-        $this->opts->exp_month = $params["expiration_month"];
-        $this->opts->exp_year = $params["expiration_year"];
-        $this->opts->cvv = $params["cvv"];    
-        return $this->opts;  */
+      
     }
     
-    //Should return html to display user data.
+
     function userView($opts) {
-        /*if (empty($opts)) return false;
-        $html = '';
-        $html .= '<table id="ccinfo" border=0 cellspacing=0 cellpadding=0><tbody>';
-        $html .= '<tr class="odd"><td>Type of Credit Card: </td><td>'.$opts->cc_type.'</td></tr>';
-        $html .= '<tr class="even"><td>Credit Card Number: </td><td>'.'xxxx-xxxx-xxxx-'.substr($opts->cc_number, -4). '</td></tr>';
-        $html .= '<tr class="odd"><td>Expires on: </td><td>'.$opts->exp_month.'/'.$opts->exp_year.'</td></tr>';
-        $html .= '<tr class="even"><td>CVV/Security Number: </td><td>'.$opts->cvv.'</td></tr>';
-        $html .= '<tbody></table>';
-        return $html;*/
+
         return ''; 
     }
-    
     
     /**
     * A utility a call to Paypal's api CURL
@@ -837,4 +693,3 @@ class paypalExpressCheckout extends billingcalculator {
 }
 
 ?>
-

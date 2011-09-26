@@ -27,7 +27,7 @@
 class expTheme {
 
 	public static function initialize() {
-		global $auto_dirs2;
+		global $auto_dirs2, $user;
 		// Initialize the theme subsystem 1.0 compatibility layer
 		require_once(BASE.'framework/core/subsystems-1/theme.php');
 		if (!defined('DISPLAY_THEME')) {
@@ -53,8 +53,7 @@ class expTheme {
 		}
 		if (!defined('THEME_STYLE')) {
 			/* exdoc
-			 * The name of the current active theme style.  This may be different
-			 * than the configured theme style (THEME_STYLE_REAL) due to previewing.
+			 * The name of the current active theme style.
 			 */
 			define('THEME_STYLE',THEME_STYLE_REAL);
 		}
@@ -429,6 +428,9 @@ class expTheme {
 			self::showController(array("controller"=>"administration","action"=>"toolbar","source"=>"admin"));
 		}
 
+		if ((self::is_mobile() || FORCE_MOBILE) && is_readable(BASE.'themes/'.DISPLAY_THEME.'/mobile/index.php')) {
+			echo ('<div style="text-align:center"><a href="'.makeLink(array('module' => 'administration','action' => 'toggle_mobile')).'">View site in '.(MOBILE ? "Classic":"Mobile").' mode</a></div>');
+		}
 		//echo expJavascript::parseJSFiles();
 		echo self::processCSSandJS();
 		echo expJavascript::footJavascriptOutput();
@@ -459,6 +461,8 @@ class expTheme {
 		// Grabs the action maps files for theme overrides
 		$action_maps = self::loadActionMaps();
 
+//		$mobile = self::is_mobile();
+
 		// if we are in an action, get the particulars for the module
 		if (self::inAction()) $module = isset($_REQUEST['module']) ? $_REQUEST['module'] : $_REQUEST['controller'];
 
@@ -471,17 +475,37 @@ class expTheme {
 			// since this will be the second sime Exponent calls this function on the page load.
 			if (!empty($actiontheme[1])) $sectionObj = @$router->getSectionObj($actiontheme[1]);
 
-			if ($actiontheme[0]=="default" || $actiontheme[0]=="Default" || $actiontheme[0]=="index"){
-				$theme = BASE.'themes/'.DISPLAY_THEME.'/index.php';
+			if ($actiontheme[0]=="default" || $actiontheme[0]=="Default" || $actiontheme[0]=="index") {
+				if (MOBILE && is_readable(BASE.'themes/'.DISPLAY_THEME.'/mobile/index.php')) {
+					$theme = BASE.'themes/'.DISPLAY_THEME.'/mobile/index.php';
+				} else {
+					$theme = BASE.'themes/'.DISPLAY_THEME.'/index.php';
+				}
+			} elseif (is_readable(BASE.'themes/'.DISPLAY_THEME.'/subthemes/'.$actiontheme[0].'.php')) {
+				if (MOBILE && is_readable(BASE.'themes/'.DISPLAY_THEME.'/mobile/'.$actiontheme[0].'.php')) {
+					$theme = BASE.'themes/'.DISPLAY_THEME.'/mobile/'.$actiontheme[0].'.php';
+				} else {
+					$theme = BASE.'themes/'.DISPLAY_THEME.'/subthemes/'.$actiontheme[0].'.php';
+				}
 			} else {
-				$theme = BASE.'themes/'.DISPLAY_THEME.'/subthemes/'.$actiontheme[0].'.php';
+				$theme =  BASE.'themes/'.DISPLAY_THEME.'/index.php';
 			}
-			return $theme;
 		} elseif ($sectionObj->subtheme != '' && is_readable(BASE.'themes/'.DISPLAY_THEME.'/subthemes/'.$sectionObj->subtheme.'.php')) {
-			return BASE.'themes/'.DISPLAY_THEME.'/subthemes/'.$sectionObj->subtheme.'.php';
+			if (MOBILE && is_readable(BASE.'themes/'.DISPLAY_THEME.'/mobile/'.$sectionObj->subtheme.'.php')) {
+				$theme = BASE.'themes/'.DISPLAY_THEME.'/mobile/'.$sectionObj->subtheme.'.php';
+			} elseif (MOBILE && is_readable(BASE.'themes/'.DISPLAY_THEME.'/mobile/index.php')) {
+				$theme = BASE.'themes/'.DISPLAY_THEME.'/mobile/index.php';
+			} else {
+				$theme =  BASE.'themes/'.DISPLAY_THEME.'/subthemes/'.$sectionObj->subtheme.'.php';
+			}
 		} else {
-			return BASE.'themes/'.DISPLAY_THEME.'/index.php';
+			if (MOBILE && is_readable(BASE.'themes/'.DISPLAY_THEME.'/mobile/index.php')) {
+				$theme = BASE.'themes/'.DISPLAY_THEME.'/mobile/index.php';
+			} else {
+				$theme =  BASE.'themes/'.DISPLAY_THEME.'/index.php';
+			}
 		}
+		return $theme;
 	}
 
 	public static function getPrinterFriendlyTheme() {
@@ -928,6 +952,45 @@ class expTheme {
 		} else {
 			return array();
 		}
+	}
+
+	public static function is_mobile() {
+		//point the mobile browser to the right page
+		$mobile_browser = 0;
+
+		if (preg_match('/(up.browser|up.link|mmp|symbian|smartphone|midp|wap|phone|android)/i', strtolower($_SERVER['HTTP_USER_AGENT']))) {
+			$mobile_browser++;
+		}
+
+		if ((strpos(strtolower($_SERVER['HTTP_ACCEPT']),'application/vnd.wap.xhtml+xml') > 0) or ((isset($_SERVER['HTTP_X_WAP_PROFILE']) or isset($_SERVER['HTTP_PROFILE'])))) {
+			$mobile_browser++;
+		}
+
+		$mobile_ua = strtolower(substr($_SERVER['HTTP_USER_AGENT'], 0, 4));
+		$mobile_agents = array(
+			'w3c ','acs-','alav','alca','amoi','audi','avan','benq','bird','blac',
+			'blaz','brew','cell','cldc','cmd-','dang','doco','eric','hipt','inno',
+			'ipaq','java','jigs','kddi','keji','leno','lg-c','lg-d','lg-g','lge-',
+			'maui','maxo','midp','mits','mmef','mobi','mot-','moto','mwbp','nec-',
+			'newt','noki','oper','palm','pana','pant','phil','play','port','prox',
+			'qwap','sage','sams','sany','sch-','sec-','send','seri','sgh-','shar',
+			'sie-','siem','smal','smar','sony','sph-','symb','t-mo','teli','tim-',
+			'tosh','tsm-','upg1','upsi','vk-v','voda','wap-','wapa','wapi','wapp',
+			'wapr','webc','winw','winw','xda ','xda-');
+
+		if (in_array($mobile_ua,$mobile_agents)) {
+			$mobile_browser++;
+		}
+
+		//if (strpos(strtolower($_SERVER['ALL_HTTP']),'OperaMini') > 0) {
+		//    $mobile_browser++;
+		//}
+
+		if (strpos(strtolower($_SERVER['HTTP_USER_AGENT']),'windows') > 0) {
+			$mobile_browser = 0;
+		}
+
+		return $mobile_browser;
 	}
 
 }
