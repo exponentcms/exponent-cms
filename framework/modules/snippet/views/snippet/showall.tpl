@@ -45,7 +45,7 @@
         {permissions}
 			<div class="module-actions">
 				{if $permissions.create == 1}
-					{icon class=add action=edit rank=`$text->rank+1` title="Add a snippet here"|gettext text="Add a snippet here"|gettext}
+					{icon class=add action=edit rank=$text->rank+1 title="Add a snippet here"|gettext text="Add a snippet here"|gettext}
 				{/if}
 			</div>
         {/permissions}

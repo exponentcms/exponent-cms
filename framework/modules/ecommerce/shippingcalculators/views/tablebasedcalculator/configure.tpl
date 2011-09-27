@@ -29,7 +29,7 @@
 			<li>
 			{$calc->speed}{br}
 			{* icon controller=shipping action=editspeed id=$calc->id title="Edit `$calc->speed`" *}
-            {icon controller=shipping img=delete.png text="delete" action=deleteSpeed id=$calc->id title="Delete `$calc->speed`" onclick="return confirm('Are you sure you want to delete this speed?');"}
+            {icon controller=shipping img='delete.png' text="delete" action=deleteSpeed id=$calc->id title="Delete `$calc->speed`" onclick="return confirm('Are you sure you want to delete this speed?');"}
 			</li>
 		{/foreach}
     </ul>

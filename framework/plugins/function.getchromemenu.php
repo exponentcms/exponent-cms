@@ -19,7 +19,7 @@
 
 function smarty_function_getchromemenu($params,&$smarty) {
 	global $router, $user;
-	$cloc = $smarty->_tpl_vars['__loc'];
+	$cloc = $smarty->getTemplateVars('__loc');
 	$module = $params['module'];
 
 	$list = '<ul class="container-menu">';

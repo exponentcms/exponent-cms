@@ -38,8 +38,7 @@ function smarty_postfilter_includemiscfiles($compiledsource, &$smarty) {
 	ob_start();
 
 		//CSS	
-		$myCSS = expCore::resolveFilePaths("guess", $smarty->_tpl_vars['__name'], "css", $smarty->_tpl_vars['__view'] . "*");
-
+		$myCSS = expCore::resolveFilePaths("guess", $smarty->getTemplateVars('__name'), "css", $smarty->getTemplateVars('__view') . "*");
 		if($myCSS != false) {
 			foreach($myCSS as $myCSSFile){
 				echo "<link rel='stylesheet' type='text/css' href='" . expCore::abs2rel($myCSSFile) . "'></link>\n";
@@ -47,7 +46,7 @@ function smarty_postfilter_includemiscfiles($compiledsource, &$smarty) {
 		}
 		
 		//JavaScript
-		$myJS = expCore::resolveFilePaths("guess", $smarty->_tpl_vars['__name'], "js", $smarty->_tpl_vars['__view'] . "*");
+		$myJS = expCore::resolveFilePaths("guess", $smarty->getTemplateVars('__name'), "js", $smarty->getTemplateVars('__view') . "*");
 		
 		if($myJS != false) {
 			foreach($myJS as $myJSFile){

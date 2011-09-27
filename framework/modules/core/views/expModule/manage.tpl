@@ -139,26 +139,25 @@
 </div>
 <div class="loadingdiv">{"Loading"|gettext}</div>
 
-{script unique="filetabs" yui3mods="1"}
+{script unique="filetabs" yui3mods=1}
 {literal}
-YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event','yui2-tabview','yui2-element', function(Y) {
-    var YAHOO=Y.YUI2;
+    YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-tabview','yui2-element', function(Y) {
+        var YAHOO=Y.YUI2;
 
-    var tabView = new YAHOO.widget.TabView('mods');
-    Y.one('#mod-manager').removeClass('hide');
-    Y.one('.loadingdiv').remove();
-    
-    EXPONENT.selectAllCheckboxes = function (selector) {
-        Y.all(selector).each(function(n){
-            n.set('checked',1);
-        });
-    };
-    
-    EXPONENT.unSelectAllCheckboxes = function (selector) {
-        Y.all(selector).each(function(n){
-            n.set('checked',0);
-        });
-    };
-});    
+        var tabView = new YAHOO.widget.TabView('mods');
+        Y.one('#mod-manager').removeClass('hide').next().remove();
+
+		EXPONENT.selectAllCheckboxes = function (selector) {
+			Y.all(selector).each(function(n){
+				n.set('checked',1);
+			});
+		};
+
+		EXPONENT.unSelectAllCheckboxes = function (selector) {
+			Y.all(selector).each(function(n){
+				n.set('checked',0);
+			});
+		};
+	});
 {/literal}
 {/script}

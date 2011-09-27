@@ -32,7 +32,9 @@ $userjsfiles = array();
 
 define('TEMPLATE_FALLBACK_VIEW',BASE.'framework/core/views/viewnotfound.tpl');
 
-include_once(BASE.'external/Smarty-2/libs/Smarty.class.php');
+//include_once(BASE.'external/Smarty-2/libs/Smarty.class.php');
+//include_once(BASE.'external/Smarty-3/libs/Smarty.class.php');
+include_once(BASE.'external/Smarty-31/libs/SmartyBC.class.php');
 
 class BaseTemplate {
 	// Smarty template object.
@@ -57,22 +59,27 @@ class BaseTemplate {
 	
 	function __construct($item_type, $item_dir, $view = "Default") {
 		
-		include_once(BASE.'external/Smarty-2/libs/Smarty.class.php');
-		
+//		include_once(BASE.'external/Smarty-2/libs/Smarty.class.php');
+//		include_once(BASE.'external/Smarty-3/libs/Smarty.class.php');
+		include_once(BASE.'external/Smarty-31/libs/SmartyBC.class.php');
+
 		// Set up the Smarty template variable we wrap around.
-		$this->tpl = new Smarty();
+		$this->tpl = new SmartyBC();
+		$this->tpl->error_reporting = error_reporting() & ~E_NOTICE & ~E_WARNING;  //FIXME to disable bad template code reporting 3.x
 		//Some (crappy) wysiwyg editors use php as their default initializer
 		//FJD - this might break some editors...we'll see.
-		$this->tpl->php_handling = SMARTY_PHP_REMOVE;
+//		$this->tpl->php_handling = SMARTY_PHP_REMOVE;
+		$this->tpl->php_handling = SMARTY::PHP_REMOVE;
 
 		$this->tpl->caching = false;
 		$this->tpl->cache_dir = BASE . 'tmp/cache';
 
 		//$this->tpl->plugins_dir[] = BASE . 'framework/core/subsystems-1/template/Smarty/plugins';
-		$this->tpl->plugins_dir[] = BASE . 'framework/plugins';
+//		$this->tpl->plugins_dir[] = BASE . 'framework/plugins';
 		// now reverse the array so we can bypass looking in our root folder for old plugins
-		$this->tpl->plugins_dir = array_reverse($this->tpl->plugins_dir);
-		
+//		$this->tpl->plugins_dir = array_reverse($this->tpl->plugins_dir);
+		$this->tpl->setPluginsDir(array(BASE.'external/Smarty-3/libs/plugins',BASE . 'framework/plugins'));
+
 		//autoload filters
 		$this->tpl->autoload_filters = array('post' => array('includemiscfiles'));
 		
@@ -185,21 +192,26 @@ class template extends BaseTemplate {
 
 class controllerTemplate extends baseTemplate {
 	function __construct($controller, $viewfile) {
-		include_once(BASE.'external/Smarty-2/libs/Smarty.class.php');
-		
+//		include_once(BASE.'external/Smarty-2/libs/Smarty.class.php');
+//		include_once(BASE.'external/Smarty-3/libs/Smarty.class.php');
+		include_once(BASE.'external/Smarty-31/libs/SmartyBC.class.php');
+
 		// Set up the Smarty template variable we wrap around.
-		$this->tpl = new Smarty();
+		$this->tpl = new SmartyBC();
+		$this->tpl->error_reporting = error_reporting() & ~E_NOTICE & ~E_WARNING;  //FIXME to disable bad template code reporting 3.x
 		//Some (crappy) wysiwyg editors use php as their default initializer
 		//FJD - this might break some editors...we'll see.
-		$this->tpl->php_handling = SMARTY_PHP_REMOVE;
+//		$this->tpl->php_handling = SMARTY_PHP_REMOVE;
+		$this->tpl->php_handling = SMARTY::PHP_REMOVE;
 
 		$this->tpl->caching = false;
 		$this->tpl->cache_dir = BASE . 'tmp/cache';
 
 		//$this->tpl->plugins_dir[] = BASE . 'framework/core/subsystems-1/template/Smarty/plugins';
-		$this->tpl->plugins_dir[] = BASE . 'framework/plugins';
+//		$this->tpl->plugins_dir[] = BASE . 'framework/plugins';
 		// now reverse the array so we can bypass looking in our root folder for old plugins
-		$this->tpl->plugins_dir = array_reverse($this->tpl->plugins_dir);
+//		$this->tpl->plugins_dir = array_reverse($this->tpl->plugins_dir);
+		$this->tpl->setPluginsDir(array(BASE.'external/Smarty-3/libs/plugins',BASE . 'framework/plugins'));
 
 		//autoload filters
 		$this->tpl->autoload_filters = array('post' => array('includemiscfiles'));

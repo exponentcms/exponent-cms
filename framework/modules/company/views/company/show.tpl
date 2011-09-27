@@ -18,10 +18,10 @@
     <h1>Products from {$record->title}</h1>
     {permissions}
         {if $permissions.edit == 1}
-            {icon img=edit.png action=edit id=$record->id title="Edit `$record->title`"}
+            {icon img='edit.png' action=edit id=$record->id title="Edit `$record->title`"}
         {/if}
         {if $permissions.delete == 1}
-            {icon img=delete.png action=delete id=$record->id title="delete `$record->title`" onclick="return confirm('Are you sure you want to delete this `$modelname`?');"}
+            {icon img='delete.png' action=delete id=$record->id title="delete `$record->title`" onclick="return confirm('Are you sure you want to delete this `$modelname`?');"}
         {/if}
     {/permissions}
     {$page->links}

@@ -18,7 +18,7 @@
 ##################################################
 
 function smarty_function_icon($params,&$smarty) {
-	$loc = $smarty->_tpl_vars['__loc'];
+	$loc = $smarty->getTemplateVars('__loc');
 	if (isset($params['record'])) { 
 	    $record = $params['record'];
         $params['id'] = $record->id;
@@ -47,7 +47,7 @@ function smarty_function_icon($params,&$smarty) {
 		}
 	}
 	
-    if(!is_object($smarty->_tpl_vars['config']) && !empty($smarty->_tpl_vars['config']['noeditagg']) && ($smarty->_tpl_vars['__loc']->src != $params['src'])) return ; 
+    if(!is_object($smarty->getTemplateVars('config')) && !empty($smarty->getTemplateVars('config')->noeditagg) && ($smarty->getTemplateVars('__loc')->src != $params['src'])) return ;
 
 	if (!isset($params['int'])) $params['int'] = $loc->int;
 

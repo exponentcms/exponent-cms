@@ -41,13 +41,13 @@
 				{assign var=tabtitle value=$container->title}
 			{/if}
 			{if $smarty.section.contain.first}
-				<li class="selected"><a href="#tab{math equation="x + y" x=$smarty.section.contain.index y=1}"><em>{$tabtitle}</em></a></li>
+				<li class="selected"><a href="#tab{$smarty.section.contain.index+1}"><em>{$tabtitle}</em></a></li>
 			{elseif $container != null}
-				<li><a href="#tab{math equation="x + y" x=$smarty.section.contain.index y=1}"><em>{$tabtitle}</em></a></li>
+				<li><a href="#tab{$smarty.section.contain.index+1}"><em>{$tabtitle}</em></a></li>
 			{else}
 				{permissions level=$smarty.const.UILEVEL_STRUCTURE}
 					{if ($permissions.administrate == 1 || $permissions.edit_module == 1 || $permissions.delete_module == 1 || $permissions.add_module == 1)}
-						<li><a href="#tab{math equation="x + y" x=$smarty.section.contain.index y=1}"><em>{$tabtitle}</em></a></li>
+						<li><a href="#tab{$smarty.section.contain.index+1}"><em>{$tabtitle}</em></a></li>
 					{/if}
 				{/permissions}
 			{/if}
@@ -59,7 +59,7 @@
 				{else}
 					<li class="selected">
 				{/if}
-				<a href="#tab{math equation="x + y" x=$smarty.section.contain.index y=1}"><em>(Add New)</em></a></li>
+				<a href="#tab{$smarty.section.contain.index+1}"><em>(Add New)</em></a></li>
 			{/if}
 		{/permissions}		
 	</ul>            
@@ -70,7 +70,7 @@
 			{assign var=menurank value=$rank+1}
 			{assign var=index value=$smarty.section.contain.index}
 			{if $container != null}	
-				<div id="tab{math equation="x + y" x=$smarty.section.contain.index y=1}"{if !$smarty.section.contain.first}{/if}>
+				<div id="tab{$smarty.section.contain.index+1}"{if !$smarty.section.contain.first}{/if}>
 					{assign var=container value=$containers.$index}
 					{assign var=i value=$menurank}
 					{assign var=rerank value=0}
@@ -79,7 +79,7 @@
 			{else}
 				{permissions level=$smarty.const.UILEVEL_STRUCTURE}
 					{if $permissions.add_module == 1 && $hidebox == 0}
-						<div id="tab{math equation="x + y" x=$smarty.section.contain.index y=1}"{if !$smarty.section.contain.first}{/if}>
+						<div id="tab{$smarty.section.contain.index+1}"{if !$smarty.section.contain.first}{/if}>
 							<a class="addmodule" href="{link action=edit rerank=0 rank=$rank}"><span class="addtext">Add Module</span></a>
 						</div>
 					{/if}

@@ -46,7 +46,7 @@
                         <a href="{link action=toggle id=$calc->id}"><img src={$smarty.const.ICON_RELATIVE}toggle_off.png></a>
                     {/if}
                     {if $calc->hasConfig() == 1}
-                        {icon action=configure img=configure.png record=$calc title="Configure `$calc->title`"}
+                        {icon action=configure img='configure.png' record=$calc title="Configure `$calc->title`"}
                     {/if}
                 {/if}
                 {/permissions}

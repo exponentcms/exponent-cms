@@ -21,7 +21,7 @@ function smarty_function_help($params,&$smarty) {
 
     if (HELP_ACTIVE) {
         if (empty($params['module'])) {
-            $module = $smarty->_tpl_vars['__loc']->mod;
+            $module = $smarty->getTemplateVars('__loc')->mod;
         } else {
             $module = $params['module'];
         }

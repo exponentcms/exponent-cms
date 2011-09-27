@@ -19,7 +19,7 @@
 
 function smarty_function_ddrerank($params,&$smarty) {
     global $db;
-	$loc = $smarty->_tpl_vars['__loc'];
+	$loc = $smarty->getTemplateVars('__loc');
 	
     $badvals = array("[", "]", ",", " ", "'", "\"", "&", "#", "%", "@", "!", "$", "(", ")", "{", "}");
     $uniqueid = str_replace($badvals, "", $loc->src).$params['id'];

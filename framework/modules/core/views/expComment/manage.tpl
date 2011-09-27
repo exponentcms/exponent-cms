@@ -47,8 +47,8 @@
             <td>{$comment->body}</td>
             <td>
 				<div class="item-actions">
-					{icon img=edit.png action=edit record=$comment content_id=$content_id}
-					{icon img=delete.png action=delete record=$comment onclick="return confirm('Are you sure you want to delete this comment?');"}
+					{icon img='edit.png' action=edit record=$comment content_id=$content_id}
+					{icon img='delete.png' action=delete record=$comment onclick="return confirm('Are you sure you want to delete this comment?');"}
 				</div>
             </td>
         </tr>

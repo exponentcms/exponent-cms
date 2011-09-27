@@ -18,7 +18,7 @@
 ##################################################
 
 function smarty_function_pagelinks($params,&$smarty) {
-    $config = $smarty->_tpl_vars['config'];
+    $config = $smarty->getTemplateVars('config');
     if (!$config['pagelinks'] || $config['pagelinks']=="Top and Bottom") {
 		if ($params['paginate']->total_pages == 1 && $config['multipageonly']==1) {
 		} else {

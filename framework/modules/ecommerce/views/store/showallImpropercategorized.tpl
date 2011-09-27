@@ -36,10 +36,10 @@
                 <td>
                     {permissions level=$smarty.const.UILEVEL_NORMAL}
                         {if $permissions.edit == 1}
-                            {icon img=edit.png action=edit id=$listing->id title="Edit `$listing->title`"}
+                            {icon img='edit.png' action=edit id=$listing->id title="Edit `$listing->title`"}
                         {/if}
                         {if $permissions.delete == 1}
-                            {icon img=delete.png action=delete id=$listing->id title="Delete `$listing->title`"}
+                            {icon img='delete.png' action=delete id=$listing->id title="Delete `$listing->title`"}
                         {/if}
                     {/permissions}  
                 </td>                   

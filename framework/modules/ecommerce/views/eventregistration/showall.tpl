@@ -33,7 +33,7 @@
                     <td>{$listing->eventdate|date_format:"%b %d,'%y"} {$listing->event_starttime|date_format:"%l:%M %p"}</td>
                     <td>{$listing->number_of_registrants} of {$listing->quantity}</td>
                     <td>
-			{icon img=groupperms.png action=view_registrants record=$listing title="View Registrants"}		
+			{icon img='groupperms.png' action=view_registrants record=$listing title="View Registrants"}
                 </tr>
                 {/foreach}
 	    </tbody>

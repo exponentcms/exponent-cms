@@ -58,7 +58,7 @@
 					{permissions}
 						<div class="module-actions">
 							{if $permissions.create == 1}
-								{icon class=add action=edit rank=`$text->rank+1` title="Add tab" text="Add another tab after this one"}
+								{icon class=add action=edit rank=$text->rank+1 title="Add tab" text="Add another tab after this one"}
 							{/if}
 						</div>
 					{/permissions}

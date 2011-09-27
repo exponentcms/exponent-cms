@@ -69,7 +69,7 @@
 								{elseif $smarty.const.DISPLAY_THEME == $class && ($smarty.const.THEME_STYLE == $sv || ($smarty.const.THEME_STYLE == "" && $sv == "Default"))}
 									(<em>{"Previewing"|gettext}</em>)
 								{else}
-									{icon img=view.png action=preview_theme theme=$class sv=$sv title="Preview this Theme"}
+									{icon img="view.png" action=preview_theme theme=$class sv=$sv title="Preview this Theme"}
 								{/if}
 								{br}
 							{/foreach}
@@ -80,7 +80,7 @@
 								<span class="switchtheme current">({"Current"|gettext})</span>
 							{/if}
 							{if $smarty.const.DISPLAY_THEME != $class}
-								{icon img=view.png action=preview_theme theme=$class title="Preview this Theme"}
+								{icon img="view.png" action=preview_theme theme=$class title="Preview this Theme"}
 							{elseif $smarty.const.DISPLAY_THEME_REAL != $smarty.const.DISPLAY_THEME}
 								(<em>{"Previewing"|gettext}</em>)
 							{/if}

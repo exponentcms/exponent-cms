@@ -89,7 +89,6 @@ var YAHOO = Y.YUI2;
 		////console.debug(YAHOO.util.Dom.getStyle(proxy,"width"));
 		YAHOO.util.Dom.setStyle(proxy,"border","0");
 		DDM.refreshCache();
-
 	};
 
 	DDSend.prototype.onDragEnter = function(e, id) {
@@ -126,8 +125,6 @@ var YAHOO = Y.YUI2;
 		YAHOO.util.Dom.removeClass(destEl,"addbefore-h");
 		YAHOO.util.Dom.removeClass(destEl,"addafter-h");
 		YAHOO.util.Dom.removeClass(destEl,"hovered");
-
-		
 	}
 
 	DDSend.prototype.onDragDrop = function(e, id) {
@@ -182,7 +179,6 @@ var YAHOO = Y.YUI2;
 				YAHOO.util.Dom.removeClass(proxy,"ddnavproxiebeingdragged");
 			});
 		a.animate();
-
 	}
 	
 	refreshDD = function () {
@@ -198,7 +194,8 @@ var YAHOO = Y.YUI2;
 // tree
 //////////////////////////////////////////////////////////////////////////////
 	var tree, currentIconMode;
-	
+	var usr = {/literal}{obj2json obj=$user}{literal}; //user
+
 	ddarray = new Array;
 
 	function changeIconMode() {
@@ -238,7 +235,6 @@ var YAHOO = Y.YUI2;
 			//adjustFirstLast(moveMe,moveMeUnder);
 			tree.getRoot().refresh();
 		}
-		
 	}
 	
 	function addSubNode (){
@@ -290,7 +286,6 @@ var YAHOO = Y.YUI2;
 		// Render the Dialog
 		delpage.render(document.body);
 		delpage.show();
-
 	}
 
 	function editUserPerms (){
@@ -321,8 +316,6 @@ var YAHOO = Y.YUI2;
 			},
 			timeout : 50000
 		},"move="+move+"&target="+target+"&type="+type);
-
-
 	}
 
 	function loadNodeData(node, fnLoadComplete)	 {
@@ -433,16 +426,24 @@ var YAHOO = Y.YUI2;
 		}
 	}
 	
-	var navoptions = [
-			{ classname:"addsubpage", text: "Add A Subpage", onclick: { fn: addSubNode } },
-			{ classname:"viewpage", text: "View This Page", onclick: { fn: viewNode } },
-			{ classname:"editpage", text: "Edit This Page", onclick: { fn: editNode } },
-			{ classname:"deletepage", text: "Delete This Page", onclick: { fn: deleteNode } },
-			{ classname:"userperms", text: "Manage User Permissions", onclick: { fn: editUserPerms } },
-			{ classname:"groupperms", text: "Manage Group Permissions", onclick: { fn: editGroupPerms } }
-		];																	
-	
-	
+	if (usr.is_acting_admin==1 || usr.is_admin==1) {
+		var navoptions = [
+				{ classname:"addsubpage", text: "Add A Subpage", onclick: { fn: addSubNode } },
+				{ classname:"viewpage", text: "View This Page", onclick: { fn: viewNode } },
+				{ classname:"editpage", text: "Edit This Page", onclick: { fn: editNode } },
+				{ classname:"deletepage", text: "Delete This Page", onclick: { fn: deleteNode } },
+				{ classname:"userperms", text: "Manage User Permissions", onclick: { fn: editUserPerms } },
+				{ classname:"groupperms", text: "Manage Group Permissions", onclick: { fn: editGroupPerms } }
+			];
+	} else {
+		var navoptions = [
+				{ classname:"addsubpage", text: "Add A Subpage", onclick: { fn: addSubNode } },
+				{ classname:"viewpage", text: "View This Page", onclick: { fn: viewNode } },
+				{ classname:"editpage", text: "Edit This Page", onclick: { fn: editNode } },
+				{ classname:"deletepage", text: "Delete This Page", onclick: { fn: deleteNode } }
+			];
+	}
+
 	var oContextMenu = new YAHOO.widget.ContextMenu("navTreeContext", {
 																	trigger: "navtree",
 																	hidedelay:1000,
@@ -451,7 +452,7 @@ var YAHOO = Y.YUI2;
 																	itemdata:navoptions,
 																	lazyload: true
 																	 });
-	oContextMenu.subscribe("triggerContextMenu", onTriggerContextMenu); 
+	oContextMenu.subscribe("triggerContextMenu", onTriggerContextMenu);
 
 	DDSend.init = function() {
 		YAHOO.util.Event.on(["mode0", "mode1"], "click", changeIconMode);
@@ -464,7 +465,6 @@ var YAHOO = Y.YUI2;
 
 		initTree();
 	}
-	
 	
     DDSend.init();
 //once the DOM has loaded, we can go ahead and set up our tree:
