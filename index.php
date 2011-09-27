@@ -52,7 +52,13 @@ $router->routeRequest();
 // define whether or not ecom is enabled
 if ($db->selectValue('modstate', 'active', 'module="storeController"')) {
     define("ECOM",1);
-    $order = order::getUserCart();   
+    $order = order::getUserCart();      
+    // Create a globle store config
+    // We're forcing the location. Global store setting will always have this loc
+    $cfg->mod = "ecomconfig";
+    $cfg->src = "@globalstoresettings";
+    $cfg->int = "";
+    $storeConfig = new expConfig($cfg);
 } else {
     define("ECOM",0);
 }
