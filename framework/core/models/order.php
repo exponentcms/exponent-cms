@@ -42,7 +42,7 @@ class order extends expRecord {
         //'content_expSimpleNote'=>'expSimpleNote',
     );
     
-	public $status_codes = array(0=>'New', 1=>'Opened', 2=>'Processing', 3=>'Shipped');
+	//public $status_codes = array(0=>'New', 1=>'Opened', 2=>'Processing', 3=>'Shipped');
 	
 	function __construct($params=null, $get_assoc=true, $get_attached=true) {
 	    parent::__construct($params, $get_assoc, $get_attached);

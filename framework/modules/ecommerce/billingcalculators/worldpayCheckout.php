@@ -47,10 +47,6 @@ class worldpayCheckout extends billingcalculator {
     public $payment_type = 'Worldpay';
     
 
-    function pre_process($config_object,$order,$billaddress,$shippingaddress) {
-        return true;
-    }
-    
     function preprocess($method, $opts, $params, $order) {
 	
         global $db, $user;
@@ -181,14 +177,6 @@ class worldpayCheckout extends billingcalculator {
     function credit_transaction($method, $amount) {
 		
     }
-	
-	public $cards = array("AmExCard"=>"American Express","DiscoverCard"=>"Discover","MasterCard"=>"MasterCard", "VisaCard"=>"Visa");
-    public $card_images = array(
-        "AmExCard"=>"path/to/image.png",
-        "DiscoverCard"=>"path/to/image.png",
-        "MasterCard"=>"path/to/image.png", 
-        "VisaCard"=>"path/to/image.png"
-    );
 	
 	function userForm() {
 
