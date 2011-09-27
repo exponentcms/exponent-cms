@@ -348,8 +348,8 @@ class administrationController extends expController {
 		foreach($menu as $m) $sorted[] = $m;
         
         //slingbar position
-        if (expSession::exists("slingbar_top")){
-            $top = expSession::get("slingbar_top");
+        if (isset($_COOKIE['slingbar-top'])){
+            $top = $_COOKIE['slingbar-top'];
         } else {
             $top = SLINGBAR_TOP;
         }

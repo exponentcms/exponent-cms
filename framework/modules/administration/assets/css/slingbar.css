@@ -15,40 +15,6 @@
    cursor:move;
 }
 
-/*#admintoolbar table {
-    width:100%;
-    margin-bottom:0;
-    margin:0 0 0 0;
-}
-#admintoolbar tr {
-    height: 1%;
-}
-#admintoolbar td,
-#admintoolbar td ul li{
-    vertical-align: top;
-    margin:0;
-}
-
-#admintoolbar td.tl,
-#admintoolbar td.tc,
-#admintoolbar td.tr {
-    font-size:1px;
-    height:5px;
-    line-height:0;
-}
-
-#admintoolbar td.tl,
-#admintoolbar td.tr {
-    width:8px;
-}
-
-#admintoolbar td.bl,
-#admintoolbar td.bc,
-#admintoolbar td.br {
-    font-size:1px;
-    height:5px;
-    line-height:0;
-}*/
 #admintoolbar img {
 	background: none;
 	border: none;
@@ -56,48 +22,6 @@
 	margin: 0;
 }
 
-/****************  the shadow stylage  ***********************/
-
-/*#admintoolbar table td {
-    padding:0!important;
-    margin:0;
-    border:0!important;
-}
-
-#admintoolbar td.bl {
-    background : url(../images/admintoolbar/ltbs.png) 0 100%;
-}
-#admintoolbar td.ml {
-    background : url(../images/admintoolbar/ltbs.png) 0 50% ;
-}
-#admintoolbar td.tl {
-    background : url(../images/admintoolbar/ltbs.png) 0 0;
-}
-
-
-#admintoolbar td.tr {
-    background : url(../images/admintoolbar/rtbs.png) 0 0;
-}
-#admintoolbar td.mr {
-    background : url(../images/admintoolbar/rtbs.png) 100% 50% ;
-}
-#admintoolbar td.br {
-    background : url(../images/admintoolbar/rtbs.png) 100% 100%;
-}
-
-#admintoolbar td.bc {
-    background : url(../images/admintoolbar/tbshad.png) 0 100%;
-}
-#admintoolbar td.tc {
-    background : url(../images/admintoolbar/tbshad.png) 0 0;
-}
-
-#admintoolbar td.mc {
-    width:100%;
-    height:27px;
-    background:#dedede;
-}
-*/
 /**************** icon styles for slingbar  ***********************/
 
 /* menubar icons */
@@ -225,7 +149,7 @@
     background:url(../../../../core/assets/images/configure.png) no-repeat 5px 50%;
 }
 #admintoolbar li.info a.yuimenuitemlabel {
-    background:url(../images/admintoolbar/info.png) no-repeat 5px 50%;
+    background:url(../images/admintoolbar/info.png) no-repeat 5px 2px;
 }
 #admintoolbar li.edit a.yuimenuitemlabel {
     background:url(../images/admintoolbar/editpage.png) no-repeat 5px 50%;
@@ -280,8 +204,10 @@
 }
 
 #admintoolbar .yuimenubar .yuimenuitemlabel {
-    padding:3px 20px 3px 30px!important;
+    padding:4px 15px 4px 30px!important;
     background-position:3px 50%;
+    font-weight:bold;
+    line-height:16px;
 }
 
 #admintoolbar .yuimenu

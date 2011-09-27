@@ -10,7 +10,7 @@
 {script unique="admin99" yui3mods="yui"}
 {literal}
 
-        YUI(EXPONENT.YUI3_CONFIG).use('node','dd','anim','event-custom','yui2-yahoo-dom-event','yui2-menu','yui2-connection','yui2-container', function(Y) {
+        YUI(EXPONENT.YUI3_CONFIG).use('node','dd','anim','event-custom','cookie','yui2-yahoo-dom-event','yui2-menu','yui2-connection','yui2-container', function(Y) {
             var YAHOO=Y.YUI2;
             
              var aItemData = [
@@ -77,8 +77,7 @@
                  });
 
                  var recordPosition = function() {
-                     var ajx = new EXPONENT.AjaxEvent();                     
-                     ajx.fetch({action:"update_SetSlingbarPosition",controller:"administrationController",params:"&top="+top});
+                     Y.Cookie.set("slingbar-top", top);
                  };
 
                  if (top==1) {
@@ -103,7 +102,7 @@
                  }
                  
                  
-                 //anim.on("end",recordPosition);
+                 anim.on("end",recordPosition);
                  
              });
              
