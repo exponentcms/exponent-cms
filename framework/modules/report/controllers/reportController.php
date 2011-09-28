@@ -401,7 +401,10 @@ class reportController extends expController {
             $states[$skey] = $state->name;
         } */
         
-        $payment_methods = array('-1'=>'', 'V'=>'Visa','MC'=>'Mastercard','D'=>'Discover','AMEX'=>'American Express','PP'=>'PayPal','GC'=>'Google Checkout','Other'=>'Other');
+        $payment_methods = billingmethod::$payment_types;
+        $payment_methods[-1] = "";
+        ksort($payment_methods);
+        //array('-1'=>'', 'V'=>'Visa','MC'=>'Mastercard','D'=>'Discover','AMEX'=>'American Express','PP'=>'PayPal','GC'=>'Google Checkout','Other'=>'Other');
         
         //eDebug(mktime(0,0,0,(strftime("%m")-1),1,strftime("%Y")));
         $prev_month = strftime("%A, %d %B %Y", mktime(0,0,0,(strftime("%m")-1),1,strftime("%Y"))); 
@@ -632,17 +635,30 @@ class reportController extends expController {
         
         if (isset($p['payment_method'] )) 
         {
-            $inc = 0;  $sqltmp = '';  
+            $inc = 0;  $sqltmp = '';
+            //get each calculator's id  
+            
             foreach ($p['payment_method'] as $s)
-            {
-                if ($s == -1) continue;
-                else if ($inc == 0)
+            {                                  
+                if ($s == -1) continue;                
+                if ($s == 'VisaCard' || $s == 'AmExCard' || $s == 'MasterCard' || $s == 'DiscoverCard')
+                {
+                    $paymentQuery = 'b.billing_options LIKE "%' . $s . '%"';
+                }                   
+                else 
+                {
+                    $bc = new billingcalculator();
+                    $calc = $bc->findBy('calculator_name',$s);
+                    $paymentQuery = 'billingcalculator_id = ' . $calc->id; 
+                }
+                    
+                if ($inc == 0)
                 {
                     $inc++;
-                    $sqltmp .= " AND (o.order_status_id = " . $s;
+                    $sqltmp .= " AND ( " . $paymentQuery;
                 }else
                 {
-                    $sqltmp .= " OR o.order_status_id = " . $s;
+                    $sqltmp .= " OR " . $paymentQuery;
                 }
             }
             if (!empty($sqltmp)) $sqlwhere .= $sqltmp .= ")";
@@ -744,16 +760,7 @@ class reportController extends expController {
 	function show_payment_summary() {
 		global $order, $db;
 		
-		$payments = array (
-				'VisaCard' => 'Visa',  
-				'AmExCard' => 'American Express', 
-				'MasterCard' => 'Mastercard', 
-				'DiscoverCard' => 'Discover', 
-				'paypalExpressCheckout' => 'PayPal', 
-				'passthru' => 'Passthru', 
-				'worldpayCheckout' => 'WorldPay',
-				'cash' => 'Cash'
-			);
+		$payments = billingmethod::$payment_types;
 			
         $order_ids = array();
         if (isset($this->params['applytoall']) && $this->params['applytoall']==1)
@@ -776,15 +783,16 @@ class reportController extends expController {
 		
 		$payment_summary = array();
         // $Credit Cards
-        $sql = "SELECT billing_cost, billing_options, calculator_name, user_title FROM ".DB_TABLE_PREFIX."_billingmethods, ".DB_TABLE_PREFIX."_billingcalculator WHERE ".DB_TABLE_PREFIX."_billingcalculator.id = billingcalculator_id and orders_id IN (" . $orders_string . ")";
-		$res = $db->selectObjectsBySql($sql);
+        $sql = "SELECT orders_id, billing_cost, billing_options, calculator_name, user_title FROM ".DB_TABLE_PREFIX."_billingmethods, ".DB_TABLE_PREFIX."_billingcalculator WHERE ".DB_TABLE_PREFIX."_billingcalculator.id = billingcalculator_id and orders_id IN (" . $orders_string . ")";
+		$res = $db->selectObjectsBySql($sql);        
 		if(!empty($res)) {
-			foreach($res as $item) {
+			foreach($res as $item) {                
 				$options = unserialize($item->billing_options);
 				if(!empty($item->billing_cost)) {
 					if($item->user_title == 'Credit Card') {
 						if(!empty($options->cc_type)) {
-							@$payment_summary[$payments[$options->cc_type]] += $item->billing_cost;
+                            //@$payment_summary[$payments[$options->cc_type]] += $item->billing_cost;
+							@$payment_summary[$payments[$options->cc_type]] += $options->result->amount_captured;
 						}
 					} else {
 						@$payment_summary[$payments[$item->calculator_name]] += $item->billing_cost;

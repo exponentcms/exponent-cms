@@ -23,6 +23,17 @@ class billingmethod extends expRecord {
     public $get_assoc_for = array('billingtransaction');
     
 	public $table = 'billingmethods';
+    
+    static public $payment_types = array (
+                'VisaCard' => 'Visa',  
+                'AmExCard' => 'American Express', 
+                'MasterCard' => 'Mastercard', 
+                'DiscoverCard' => 'Discover', 
+                'paypalExpressCheckout' => 'PayPal', 
+                'passthru' => 'Passthru', 
+                'worldpayCheckout' => 'WorldPay',
+                'cash' => 'Cash'
+            );
 
     /*function __construct($params=null, $get_assoc=true, $get_attached=true) {
         global $db;
