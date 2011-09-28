@@ -126,8 +126,6 @@ var YAHOO = Y.YUI2;
 		YAHOO.util.Dom.removeClass(destEl,"addbefore-h");
 		YAHOO.util.Dom.removeClass(destEl,"addafter-h");
 		YAHOO.util.Dom.removeClass(destEl,"hovered");
-
-		
 	}
 
 	DDSend.prototype.onDragDrop = function(e, id) {
@@ -182,7 +180,6 @@ var YAHOO = Y.YUI2;
 				YAHOO.util.Dom.removeClass(proxy,"ddnavproxiebeingdragged");
 			});
 		a.animate();
-
 	}
 	
 	refreshDD = function () {
@@ -198,7 +195,8 @@ var YAHOO = Y.YUI2;
 // tree
 //////////////////////////////////////////////////////////////////////////////
 	var tree, currentIconMode;
-	
+	var usr = {/literal}{obj2json obj=$user}{literal}; //user
+
 	ddarray = new Array;
 
 	function changeIconMode() {
@@ -238,7 +236,6 @@ var YAHOO = Y.YUI2;
 			//adjustFirstLast(moveMe,moveMeUnder);
 			tree.getRoot().refresh();
 		}
-		
 	}
 	
 	function addSubNode (){
@@ -270,7 +267,6 @@ var YAHOO = Y.YUI2;
 
 		var message = "Deleting a page moves it to the Standalone Page Manager, removing it from the Site Hierarchy. If there are any sub-pages to this section, those will also be moved";
 
-
 		// Instantiate the Dialog
 		var delpage = new YAHOO.widget.SimpleDialog("simpledialog1",
 										{ width: "400px",
@@ -290,7 +286,6 @@ var YAHOO = Y.YUI2;
 		// Render the Dialog
 		delpage.render(document.body);
 		delpage.show();
-
 	}
 
 	function editUserPerms (){
@@ -321,8 +316,6 @@ var YAHOO = Y.YUI2;
 			},
 			timeout : 50000
 		},"move="+move+"&target="+target+"&type="+type);
-
-
 	}
 
 	function loadNodeData(node, fnLoadComplete)	 {
@@ -433,16 +426,24 @@ var YAHOO = Y.YUI2;
 		}
 	}
 	
-	var navoptions = [
-			{ classname:"addsubpage", text: "Add A Subpage", onclick: { fn: addSubNode } },
-			{ classname:"viewpage", text: "View This Page", onclick: { fn: viewNode } },
-			{ classname:"editpage", text: "Edit This Page", onclick: { fn: editNode } },
-			{ classname:"deletepage", text: "Delete This Page", onclick: { fn: deleteNode } },
-			{ classname:"userperms", text: "Manage User Permissions", onclick: { fn: editUserPerms } },
-			{ classname:"groupperms", text: "Manage Group Permissions", onclick: { fn: editGroupPerms } }
-		];																	
-	
-	
+	if (usr.is_acting_admin==1 || usr.is_admin==1) {
+		var navoptions = [
+				{ classname:"addsubpage", text: "Add A Subpage", onclick: { fn: addSubNode } },
+				{ classname:"viewpage", text: "View This Page", onclick: { fn: viewNode } },
+				{ classname:"editpage", text: "Edit This Page", onclick: { fn: editNode } },
+				{ classname:"deletepage", text: "Delete This Page", onclick: { fn: deleteNode } },
+				{ classname:"userperms", text: "Manage User Permissions", onclick: { fn: editUserPerms } },
+				{ classname:"groupperms", text: "Manage Group Permissions", onclick: { fn: editGroupPerms } }
+			];
+	} else {
+		var navoptions = [
+				{ classname:"addsubpage", text: "Add A Subpage", onclick: { fn: addSubNode } },
+				{ classname:"viewpage", text: "View This Page", onclick: { fn: viewNode } },
+				{ classname:"editpage", text: "Edit This Page", onclick: { fn: editNode } },
+				{ classname:"deletepage", text: "Delete This Page", onclick: { fn: deleteNode } }
+			];
+	}
+
 	var oContextMenu = new YAHOO.widget.ContextMenu("navTreeContext", {
 																	trigger: "navtree",
 																	hidedelay:1000,
@@ -464,7 +465,6 @@ var YAHOO = Y.YUI2;
 
 		initTree();
 	}
-	
 	
     DDSend.init();
 //once the DOM has loaded, we can go ahead and set up our tree:
