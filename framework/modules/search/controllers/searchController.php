@@ -44,7 +44,7 @@ class searchController extends expController {
         if (get_magic_quotes_gpc()) {
             $terms = stripslashes($terms);
         }
-        
+        $terms = htmlspecialchars($terms);
         
         $search = new search();
         $page = new expPaginator(array(

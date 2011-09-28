@@ -562,7 +562,8 @@ class expRouter {
                 $params[$name] = $val;
             }
         }
-
+        //TODO: fully sanitize all params values here for 
+        if (isset($params['src'])) $params['src'] = htmlspecialchars($params['src']);
         return $params;
     }
 
