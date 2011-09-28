@@ -32,7 +32,7 @@ class expRouter {
     public  $sefPath = null;
     
     function __construct() {
-        $this->map = $this->getRouterMaps();
+        self::getRouterMaps();
     }
 
 	/**
@@ -392,15 +392,15 @@ class expRouter {
                     $this->url_parts[3] = $map['view'];
                 }
 
-                foreach($pairs as $key=>$value) {
-                    if ($key != 'controller') {
+                foreach($map as $key=>$value) {
+                    if ($key != 'controller' && $key != 'action' && $key != 'view' && $key != 'url_parts') {
                         $this->url_parts[] = $key;
                         $this->url_parts[] = $value;
                     }
                 }
-                
-                foreach($map as $key=>$value) {
-                    if ($key != 'controller' && $key != 'action' && $key != 'view' && $key != 'url_parts') {
+
+                foreach($pairs as $key=>$value) {
+                    if ($key != 'controller') {
                         $this->url_parts[] = $key;
                         $this->url_parts[] = $value;
                     }
