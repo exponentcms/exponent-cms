@@ -33,8 +33,7 @@ $userjsfiles = array();
 define('TEMPLATE_FALLBACK_VIEW',BASE.'framework/core/views/viewnotfound.tpl');
 
 //include_once(BASE.'external/Smarty-2/libs/Smarty.class.php');
-//include_once(BASE.'external/Smarty-3/libs/Smarty.class.php');
-include_once(BASE.'external/Smarty-31/libs/SmartyBC.class.php');
+include_once(BASE.'external/Smarty-3/libs/Smarty.class.php');
 
 class BaseTemplate {
 	// Smarty template object.
@@ -60,11 +59,10 @@ class BaseTemplate {
 	function __construct($item_type, $item_dir, $view = "Default") {
 		
 //		include_once(BASE.'external/Smarty-2/libs/Smarty.class.php');
-//		include_once(BASE.'external/Smarty-3/libs/Smarty.class.php');
-		include_once(BASE.'external/Smarty-31/libs/SmartyBC.class.php');
+		include_once(BASE.'external/Smarty-3/libs/Smarty.class.php');
 
 		// Set up the Smarty template variable we wrap around.
-		$this->tpl = new SmartyBC();
+		$this->tpl = new Smarty();
 		$this->tpl->error_reporting = error_reporting() & ~E_NOTICE & ~E_WARNING;  //FIXME to disable bad template code reporting 3.x
 		//Some (crappy) wysiwyg editors use php as their default initializer
 		//FJD - this might break some editors...we'll see.
@@ -193,11 +191,10 @@ class template extends BaseTemplate {
 class controllerTemplate extends baseTemplate {
 	function __construct($controller, $viewfile) {
 //		include_once(BASE.'external/Smarty-2/libs/Smarty.class.php');
-//		include_once(BASE.'external/Smarty-3/libs/Smarty.class.php');
-		include_once(BASE.'external/Smarty-31/libs/SmartyBC.class.php');
+		include_once(BASE.'external/Smarty-3/libs/Smarty.class.php');
 
 		// Set up the Smarty template variable we wrap around.
-		$this->tpl = new SmartyBC();
+		$this->tpl = new Smarty();
 		$this->tpl->error_reporting = error_reporting() & ~E_NOTICE & ~E_WARNING;  //FIXME to disable bad template code reporting 3.x
 		//Some (crappy) wysiwyg editors use php as their default initializer
 		//FJD - this might break some editors...we'll see.
