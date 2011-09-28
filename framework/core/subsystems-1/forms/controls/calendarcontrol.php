@@ -30,6 +30,10 @@ class calendarcontrol extends formcontrol {
 
     var $disable_text = "";
     var $showtime = true;
+    var $default_date = '';
+    var $default_hour = '';
+    var $default_min = '';
+    var $default_ampm = '';
 
     function name() { return "YAHOO! UI Calendar"; }
     function isSimpleControl() { return false; }
@@ -81,12 +85,14 @@ class calendarcontrol extends formcontrol {
     	$assets_path = SCRIPT_RELATIVE.'framework/core/subsystems-1/forms/controls/assets/';
         $html = "
         <div id=\"cal-container-".$name."\" class=\"yui-skin-sam control calendar-control\">
-            <label for=\"".$name."\" class=\"label\">".$label."</label><input size=26 type=\"text\" id=\"date-".$name."\" name=\"date-".$name."\" value=\"\" class=\"text datebox\" /> 
-            @ <input size=3 type=\"text\" id=\"time-h-".$name."\" name=\"time-h-".$name."\" value=\"\" class=\"text timebox\" maxlength=2/>
-            : <input size=3 type=\"text\" id=\"time-m-".$name."\" name=\"time-m-".$name."\" value=\"\" class=\"text timebox\" maxlength=2/>
-            <select id=\"ampm-".$name."\" name=\"ampm-".$name."\">
-                <option>am</option>
-                <option>pm</option>
+            <label for=\"".$name."\" class=\"label\">".$label."</label><input size=26 type=\"text\" id=\"date-".$name."\" name=\"date-".$name."\" value=\"".$this->default_date."\" class=\"text datebox\" /> 
+            @ <input size=3 type=\"text\" id=\"time-h-".$name."\" name=\"time-h-".$name."\" value=\"".$this->default_hour."\" class=\"timebox\" maxlength=2/>
+            : <input size=3 type=\"text\" id=\"time-m-".$name."\" name=\"time-m-".$name."\" value=\"".$this->default_min."\" class=\"timebox\" maxlength=2/>
+            <select id=\"ampm-".$name."\" name=\"ampm-".$name."\">";
+            
+            if($this->default_ampm == "AM") $html .= "<option selected>am</option><option>pm</option>";
+            else $html .= "<option>am</option><option selected>pm</option>";
+         $html .= "       
             </select>
         </div>
         <div style=\"clear:both\"></div>

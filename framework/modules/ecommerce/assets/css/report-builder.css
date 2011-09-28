@@ -17,6 +17,7 @@
     width:200px;
     padding:5px 10px;
     text-align:right;
+    font-size:90%;
 }
 
 .build-report .control.radio .label {
