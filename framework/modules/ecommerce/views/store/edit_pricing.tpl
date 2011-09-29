@@ -1,3 +1,4 @@
+{control type="hidden" name="pricing_tab_loaded" value=1} 
 <fieldset>
 <h2>General Pricing</h2>
     <table>

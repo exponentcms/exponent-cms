@@ -1,3 +1,4 @@
+{control type="hidden" name="quantity_tab_loaded" value=1} 
 {control type="text" name="quantity" label="Quantity" value=$record->quantity}
 {control type="text" name="minimum_order_quantity" label="Minimum order quantity" value=$record->minimum_order_quantity|default:1}
 {control type="checkbox"  name="allow_partial" label="Allow partial quantities?" value=1 checked=$record->allow_partial}

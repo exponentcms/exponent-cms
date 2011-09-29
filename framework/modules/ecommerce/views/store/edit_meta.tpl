@@ -1,4 +1,5 @@
 <h2>Meta Info</h2>
+{control type="hidden" name="meta_tab_loaded" value=1} 
 {control type="text" name="sef_url" label="SEF URL" value=$record->sef_url}
 {control type="text" name="meta_title" label="Meta Title" value=$record->meta_title}
 {control type="textarea" name="meta_description" label="Meta Description" value=$record->meta_description}

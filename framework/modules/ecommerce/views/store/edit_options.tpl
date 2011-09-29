@@ -1,4 +1,5 @@
 <h2>Add options to your product.</h2>
+{control type="hidden" name="options_tab_loaded" value=1} 
 By simply selecting the checkbox in front of an option in an option group (the LABEL column), that option group and option will be added to the checkout process for this product.
 By default, the user is NOT required to make a selection.  However, if you select the Required checkbox, the user will be forced to make a selection from that option group. {br}
 Select Single presents the option group as a dropdown field where they may select one and only option.{br}

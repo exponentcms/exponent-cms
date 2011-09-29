@@ -1,3 +1,4 @@
+{control type="hidden" name="general_tab_loaded" value=1} 
 {control type="hidden" name="parent_id" value=$record->parent_id}   
 {control type="text" name="model" label="Model # / SKU" value=$record->model}
 {control type="text" class="title" name="title" label="Product Name" value=$record->title}
