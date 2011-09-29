@@ -61,9 +61,7 @@ class importexportController extends expController {
         
     }
     
-    function import()
-    {
-        eDebug($this->params);  
+    function import() {
         assign_to_template(array('type'=>$this->params['import_type']));
     }
     
@@ -318,6 +316,7 @@ class importexportController extends expController {
         while (($data = fgetcsv($handle, 10000, ",")) !== FALSE) {
             $count++;
                
+			//eDebug($data, true);
             if (isset($data[0]) && $data[0] != 0)
             {
                 $product = new product($data[0],false,false);
@@ -363,9 +362,9 @@ class importexportController extends expController {
             $product->active_type = $data[17];
             $product->product_status_id = $data[18];
             
-            $product->surcharge = $data[23];
-            $product->feed_title = stripslashes(stripslashes($data[25]));
-            $product->feed_body = stripslashes(stripslashes($data[26]));
+            $product->surcharge = $data[31];
+            $product->feed_title = stripslashes(stripslashes($data[33]));
+            $product->feed_body = stripslashes(stripslashes($data[34]));
             
             if(empty($product->id)) $product->minimum_order_quantity = 1;
              
@@ -373,7 +372,7 @@ class importexportController extends expController {
             {
                 $createCats = array();
                 $createCatsRank = array();            
-                for ($x=19; $x<=22; $x++)
+                for ($x=19; $x<=30; $x++)
                 {
                     if (!empty($data[$x])) $result = $this->parseCategory($data[$x]);
                     else continue;
@@ -381,7 +380,7 @@ class importexportController extends expController {
                     if (is_numeric($result)) 
                     {
                         $createCats[] = $result;
-                        $createCatsRank[$result] = $data[24];    
+                        $createCatsRank[$result] = $data[32];    
                     }else{
                         $errorSet[$count][] = $result;
                         continue 2;   
@@ -451,25 +450,22 @@ class importexportController extends expController {
         }    
     }
     
-    function export()
-    {
+    function export() {
         eDebug($this->params);        
     }
     
-    function manage()
-    {
+    function manage() {
+	
         global $available_controllers;
         $importDD = array();
         $exportDD = array();
-        
-        foreach ($available_controllers as $key=>$path)
-        {
-            $c = new $key();
-            if ($c->canImportData()) $importDD[$key] = $c->name(); 
-            if ($c->canExportData()) $exportDD[$key] = $c->name();
+        foreach ($available_controllers as $key=>$path) {
+			if(strpos($key, "Controller") !== false) {
+				$c = new $key();
+				if ($c->canImportData()) $importDD[$key] = $c->name(); 
+				if ($c->canExportData()) $exportDD[$key] = $c->name();
+			}
         }
-        //eDebug($importDD);       
-        //eDebug($exportDD);       
         
         assign_to_template(array(
             'importDD'=>$importDD, 
