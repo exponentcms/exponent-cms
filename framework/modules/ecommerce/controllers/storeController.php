@@ -946,7 +946,7 @@ class storeController extends expController {
 			unset($this->params['id']);
 		}
        // eDebug($this->params['optiongroups'],true);
-        //eDebug($this->params,true);
+        // eDebug($this->params['original_id'],true);
         $product_type = isset($this->params['product_type']) ? $this->params['product_type'] : 'product';
         $record = new $product_type();
         
@@ -983,13 +983,17 @@ class storeController extends expController {
         $originalModel = isset($this->params['original_model']) && isset($this->params['copy_children']) ? $this->params['original_model'] : 0;
         
         if (!empty($record->parent_id)) $record->sef_url = '';  //if child, set sef_url to nada
+		  // eDebug($record, true);
+		
         $record->update($this->params);
         //eDebug($this->params);
-        //eDebug($record, true);
+        // eDebug($record, true);
                
         if (isset($record->id)) {
             
-            $record->saveCategories($this->params['storeCategory']); 
+			if($this->params['categories_tab_loaded']) {
+				$record->saveCategories($this->params['storeCategory']); 
+			}
             //eDebug ($this->params['optiongroups'],true);
             if (!empty($this->params['optiongroups'])) {
                 //eDebug("OrigId:" . $originalId);
