@@ -448,10 +448,10 @@ var YAHOO = Y.YUI2;
 					submenu: {
 						id: "submenu1",
 						itemdata: [
-							{ classname:"addsubpage", text: "Add Content Page", onclick: { fn: addContentSubNode } },
-							{ classname:"addsubpage", text: "Add External Website Link", onclick: { fn: addInternalSubNode } },
-							{ classname:"addsubpage", text: "Add Internal Page Alias", onclick: { fn: addExternalSubNode } },
-							{ classname:"addsubpage", text: "Move Standalone Page", onclick: { fn: addStandaloneSubNode } }
+							{ classname:"addsubpage", text: "Add Content Page Here", onclick: { fn: addContentSubNode } },
+							{ classname:"addsubpage", text: "Add External Website Link Page Here", onclick: { fn: addInternalSubNode } },
+							{ classname:"addsubpage", text: "Add Internal Page Alias Page Here", onclick: { fn: addExternalSubNode } },
+							{ classname:"addsubpage", text: "Move Standalone Page to Here", onclick: { fn: addStandaloneSubNode } }
 						]
 					}
 				},

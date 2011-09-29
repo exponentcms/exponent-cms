@@ -43,8 +43,15 @@ $info = array(
 );
 
 if ($db->selectValue('userpermission','uid','uid=\''.$user->id.'\' AND permission!=\'view\' AND internal='.$section.'') || $user->isAdmin()) {
-    $info['itemdata'][] = array('text'=>gt('Edit this page'),'classname'=>'edit', 'url'=>makeLink(array('module'=>'navigationmodule', 'action'=>'edit_contentpage', 'id'=>$page->id)));
+	if ($page->alias_type == 0) {
+        $info['itemdata'][] = array('text'=>gt('Edit this page'),'classname'=>'edit', 'url'=>makeLink(array('module'=>'navigationmodule', 'action'=>'edit_contentpage', 'id'=>$page->id)));
+	} elseif ($page->alias_type==1) {
+	    $info['itemdata'][] = array('text'=>gt('Edit this page'),'classname'=>'edit', 'url'=>makeLink(array('module'=>'navigationmodule', 'action'=>'edit_externalalias', 'id'=>$page->id)));
+	} else {
+	    $info['itemdata'][] = array('text'=>gt('Edit this page'),'classname'=>'edit', 'url'=>makeLink(array('module'=>'navigationmodule', 'action'=>'edit_internalalias', 'id'=>$page->id)));
+	}
 }
+
 if ($user->isAdmin()) {
     $info['itemdata'][] = array('text'=>gt('Manage User Permissions'),'classname'=>'user', 'url'=>makeLink(array('module'=>'navigationmodule','action'=>'userperms',"_common"=>"1","int"=>$page->id)));
     $info['itemdata'][] = array('text'=>gt('Manage Group Permissions'),'classname'=>'group', 'url'=>makeLink(array('module'=>'navigationmodule','action'=>'groupperms',"_common"=>"1","int"=>$page->id)));
