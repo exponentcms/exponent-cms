@@ -53,6 +53,7 @@
 						</h2>
 						<p>
 							{$theme->description}
+							{if $theme->mobile}{br}<em>(mobile ready theme)</em>{/if}
 						</p>
 					</td>
 					<td class="actions">

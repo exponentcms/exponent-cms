@@ -32,7 +32,7 @@
 		<tr><td style="padding-left: {math equation="x*20" x=$section->depth}px">
 		{if $section->active}
 {*			<a href="{$smarty.get.linkbase}&section={$section->id}&section_name={$section->name|escape:url}" class="navlink">{$section->name|escape:"htmlall"}</a>&nbsp; *}
-			<a href="javascript:onPageSelect('/{$section->sef_name}')" class="navlink">{$section->name|escape:"htmlall"}</a>&nbsp;
+			<a href="javascript:onPageSelect('{$section->sef_name}')" class="navlink">{$section->name|escape:"htmlall"}</a>&nbsp;
 		{else}
 			{$section->name}
 		{/if}
@@ -46,7 +46,7 @@
 		{foreach from=$standalones item=section}
 		<tr><td style="padding-left: 20px">
 {*		<a href="{$smarty.get.linkbase}&section={$section->id}&section_name={$section->name|escape:url}" class="navlink">{$section->name|escape:"htmlall"}</a>&nbsp; *}
-		<a href="javascript:onPageSelect('/{$section->sef_name}')" class="navlink">{$section->name|escape:"htmlall"}</a>&nbsp;
+		<a href="javascript:onPageSelect('{$section->sef_name}')" class="navlink">{$section->name|escape:"htmlall"}</a>&nbsp;
 		</td></tr>
 		{/foreach}
 		</table>

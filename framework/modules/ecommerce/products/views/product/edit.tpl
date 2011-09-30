@@ -28,6 +28,10 @@
 
     {form action=update}
         {control type="hidden" name="id" value=$record->id}
+		<!-- if it copied -->
+		{if $record->original_id}
+		{control type="hidden" name="original_id" value=$record->original_id}
+		{/if}
         <div id="demo" class="yui-navset">
             <ul class="yui-nav">
             <li class="selected"><a href="#general"><em>General</em></a></li>

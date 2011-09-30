@@ -15,7 +15,7 @@
  *}
 
 {form action=update_model_alias}
-
+	{control type="hidden" name="model_alias_tab_loaded" value=1} 
 	{control type="hidden" name="product_id" value=$product_id}
     {control type="hidden" name="id" value=$model_alias->id}
     {control type="text" name="model" label="Model Alias:" value=$model_alias->model}

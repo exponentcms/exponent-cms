@@ -724,12 +724,12 @@ class storeController extends expController {
     function edit() {
         global $db;
         expHistory::set('editable', $this->params);
-        
         // first we need to figure out what type of ecomm product we are dealing with
         if (!empty($this->params['id'])) {
             // if we have an id lets pull the product type from the products table.
             $product_type = $db->selectValue('product', 'product_type', 'id='.$this->params['id']);
         } else {
+			
             if (empty($this->params['product_type'])) redirect_to(array('controller'=>'store', 'action'=>'picktype')); 
             $product_type = $this->params['product_type'];             
         }
@@ -910,9 +910,9 @@ class storeController extends expController {
         
         $record->original_id = $record->id;
         $record->original_model = $record->model;
-        $record->id = NULL;
         $record->sef_url = NULL;
         $record->previous_id = NULL; 
+		$record->editor = NULL; 
         
         if ($record->isChild()) 
         {            
@@ -941,8 +941,12 @@ class storeController extends expController {
     
     function update() {
         global $db;
+		
+		if(isset($this->params['original_id'])) {
+			unset($this->params['id']);
+		}
        // eDebug($this->params['optiongroups'],true);
-        //eDebug($this->params,true);
+        // eDebug($this->params['original_id'],true);
         $product_type = isset($this->params['product_type']) ? $this->params['product_type'] : 'product';
         $record = new $product_type();
         
@@ -979,13 +983,17 @@ class storeController extends expController {
         $originalModel = isset($this->params['original_model']) && isset($this->params['copy_children']) ? $this->params['original_model'] : 0;
         
         if (!empty($record->parent_id)) $record->sef_url = '';  //if child, set sef_url to nada
+		  // eDebug($record, true);
+		
         $record->update($this->params);
         //eDebug($this->params);
-        //eDebug($record, true);
+        // eDebug($record, true);
                
         if (isset($record->id)) {
             
-            $record->saveCategories($this->params['storeCategory']); 
+			if($this->params['categories_tab_loaded']) {
+				$record->saveCategories($this->params['storeCategory']); 
+			}
             //eDebug ($this->params['optiongroups'],true);
             if (!empty($this->params['optiongroups'])) {
                 //eDebug("OrigId:" . $originalId);

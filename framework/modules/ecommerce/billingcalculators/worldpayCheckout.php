@@ -124,7 +124,8 @@ class worldpayCheckout extends billingcalculator {
     * process config form
     * 
     * @param mixed $values
-    */
+	 * @return array
+	 */
 	function parseConfig($values) {
 	    $config_vars = array('username', 'password', 'installationid', 'authCurrency', 'testmode', 'email_customer', 'email_admin', 'notification_addy');
 	    foreach ($config_vars as $varname) {

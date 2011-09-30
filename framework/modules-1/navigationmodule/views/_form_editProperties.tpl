@@ -13,5 +13,5 @@
  * GPL: http://www.gnu.org/licenses/gpl.txt
  *
  *}
-<div class="form_title">{'Edit Page Properties'|gettext}</div>
+<h1>{'Edit Page Properties'|gettext}</h1>
 {$form_html}

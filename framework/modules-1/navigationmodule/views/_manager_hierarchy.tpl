@@ -89,6 +89,7 @@ var YAHOO = Y.YUI2;
 		////console.debug(YAHOO.util.Dom.getStyle(proxy,"width"));
 		YAHOO.util.Dom.setStyle(proxy,"border","0");
 		DDM.refreshCache();
+
 	};
 
 	DDSend.prototype.onDragEnter = function(e, id) {
@@ -237,10 +238,30 @@ var YAHOO = Y.YUI2;
 		}
 	}
 	
+	function addTopNode (){
+		window.location="{/literal}{$smarty.const.URL_FULL}{literal}index.php?module=navigationmodule&action=add_section&parent=0";
+	}
+
 	function addSubNode (){
 		window.location="{/literal}{$smarty.const.URL_FULL}{literal}index.php?module=navigationmodule&action=add_section&parent="+currentMenuNode.data.id;
 	}
 	
+	function addContentSubNode (){
+		window.location="{/literal}{$smarty.const.URL_FULL}{literal}index.php?module=navigationmodule&action=edit_contentpage&parent="+currentMenuNode.data.id;
+	}
+
+	function addExternalSubNode (){
+		window.location="{/literal}{$smarty.const.URL_FULL}{literal}index.php?module=navigationmodule&action=edit_externalalias&parent="+currentMenuNode.data.id;
+	}
+
+	function addInternalSubNode (){
+		window.location="{/literal}{$smarty.const.URL_FULL}{literal}index.php?module=navigationmodule&action=edit_internalalias&parent="+currentMenuNode.data.id;
+	}
+
+	function addStandaloneSubNode (){
+		window.location="{/literal}{$smarty.const.URL_FULL}{literal}index.php?module=navigationmodule&action=move_standalone&parent="+currentMenuNode.data.id;
+	}
+
 	function viewNode (){
 		window.location="{/literal}{$smarty.const.URL_FULL}{literal}index.php?section="+currentMenuNode.data.id;
 	}
@@ -265,7 +286,6 @@ var YAHOO = Y.YUI2;
 		};
 
 		var message = "Deleting a page moves it to the Standalone Page Manager, removing it from the Site Hierarchy. If there are any sub-pages to this section, those will also be moved";
-
 
 		// Instantiate the Dialog
 		var delpage = new YAHOO.widget.SimpleDialog("simpledialog1",
@@ -428,7 +448,17 @@ var YAHOO = Y.YUI2;
 	
 	if (usr.is_acting_admin==1 || usr.is_admin==1) {
 		var navoptions = [
-				{ classname:"addsubpage", text: "Add A Subpage", onclick: { fn: addSubNode } },
+				{ classname:"addsubpage", text: "Add A Subpage", onclick: { fn: addSubNode },
+					submenu: {
+						id: "submenu1",
+						itemdata: [
+							{ classname:"addsubpage", text: "Add Content Page Here", onclick: { fn: addContentSubNode } },
+							{ classname:"addsubpage", text: "Add External Website Link Page Here", onclick: { fn: addInternalSubNode } },
+							{ classname:"addsubpage", text: "Add Internal Page Alias Page Here", onclick: { fn: addExternalSubNode } },
+							{ classname:"addsubpage", text: "Move Standalone Page to Here", onclick: { fn: addStandaloneSubNode } }
+						]
+					}
+				},
 				{ classname:"viewpage", text: "View This Page", onclick: { fn: viewNode } },
 				{ classname:"editpage", text: "Edit This Page", onclick: { fn: editNode } },
 				{ classname:"deletepage", text: "Delete This Page", onclick: { fn: deleteNode } },
@@ -437,7 +467,17 @@ var YAHOO = Y.YUI2;
 			];
 	} else {
 		var navoptions = [
-				{ classname:"addsubpage", text: "Add A Subpage", onclick: { fn: addSubNode } },
+				{ classname:"addsubpage", text: "Add A Subpage", onclick: { fn: addSubNode },
+					submenu: {
+						id: "submenu1",
+						itemdata: [
+							{ classname:"addsubpage", text: "Add Content Page", onclick: { fn: addContentSubNode } },
+							{ classname:"addsubpage", text: "Add External Website Link", onclick: { fn: addInternalSubNode } },
+							{ classname:"addsubpage", text: "Add Internal Page Alias", onclick: { fn: addExternalSubNode } },
+							{ classname:"addsubpage", text: "Move Standalone Page", onclick: { fn: addStandaloneSubNode } }
+						]
+					}
+				},
 				{ classname:"viewpage", text: "View This Page", onclick: { fn: viewNode } },
 				{ classname:"editpage", text: "Edit This Page", onclick: { fn: editNode } },
 				{ classname:"deletepage", text: "Delete This Page", onclick: { fn: deleteNode } }
@@ -450,9 +490,10 @@ var YAHOO = Y.YUI2;
 																	zIndex:500,
 																	classname: "yui-skin-sam",
 																	itemdata:navoptions,
-																	lazyload: true
+																	lazyload: true,
+																	autosubmenudisplay: true
 																	 });
-	oContextMenu.subscribe("triggerContextMenu", onTriggerContextMenu);
+	oContextMenu.subscribe("triggerContextMenu", onTriggerContextMenu); 
 
 	DDSend.init = function() {
 		YAHOO.util.Event.on(["mode0", "mode1"], "click", changeIconMode);
