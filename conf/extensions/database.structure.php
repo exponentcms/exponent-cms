@@ -25,7 +25,7 @@ return array(
 		'DB_ENGINE'=>array(
 			'title'=>gt('Backend Software'),
 			'description'=>gt('The database server software package.'),
-			'control'=>new dropdowncontrol('',exponent_database_backends())
+			'control'=>new dropdowncontrol('',expDatabase::backends())
 		),
 		'DB_NAME'=>array(
 			'title'=>gt('Database Name'),

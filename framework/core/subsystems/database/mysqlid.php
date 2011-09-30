@@ -14,7 +14,6 @@
  */
 /** @define "BASE" "../.." */
 
-
 /**
  * This is the class mysqlid_database
  *
@@ -25,7 +24,7 @@
  * @subpackage Database = mysqlid
  * @package Subsystems
  */
-class mysqlid_database {
+class mysqlid_database extends database {
 	var $connection = null;
 	var $havedb = false;
 	var $prefix = "";  
@@ -41,8 +40,6 @@ class mysqlid_database {
 	 * Takes the supplied credentials (username / password) and tries to
 	 * connect to the server and select the given database.  All the rules
 	 * governing mysqli_connect also govern this method.
-	 *
-	 * This must be called before any other methods of database are invoked.
 	 *
 	 * @param null $log_file
 	 * @return \mysqlid_database
@@ -61,15 +58,15 @@ class mysqlid_database {
 	 *   a distinctly new connection handle to the server.
 	 */
    
-   function __construct($log_file = null){
-        //$log_file==null ? $this->$logFile = BASE . '/tmp/sql.log' : $log_file;
-        if ($log_file == null) $this->logFile = BASE . 'tmp/sql.log';
-        else $this->logFile = $log_file;  
-        //eDebug($log_file);
-        $this->logFH = fopen($this->logFile, 'a');
-        $this->writeLog("Starting...");
-        $this->startTime = microtime();      
-   }
+//   function __construct($log_file = null){
+//        //$log_file==null ? $this->$logFile = BASE . '/tmp/sql.log' : $log_file;
+//        if ($log_file == null) $this->logFile = BASE . 'tmp/sql.log';
+//        else $this->logFile = $log_file;
+//        //eDebug($log_file);
+//        $this->logFH = fopen($this->logFile, 'a');
+//        $this->writeLog("Starting...");
+//        $this->startTime = microtime();
+//   }
    
    function __destruct(){
         $totalTime = microtime() - $this->startTime;
@@ -109,8 +106,16 @@ class mysqlid_database {
         $this->writeLog("Duration: " . $sql_time['Duration']);
    }
 
-   function connect ($username, $password, $hostname, $database, $new=false) {
-		list ( $host, $port ) = @explode (":", $hostname);
+//   function connect ($username, $password, $hostname, $database, $new=false) {
+   function __construct($username, $password, $hostname, $database, $new=false) {
+		//$log_file==null ? $this->$logFile = BASE . '/tmp/sql.log' : $log_file;
+	    if ($log_file == null) $this->logFile = BASE . 'tmp/sql.log';
+	    else $this->logFile = $log_file;
+	    //eDebug($log_file);
+	    $this->logFH = fopen($this->logFile, 'a');
+	    $this->writeLog("Starting...");
+	    $this->startTime = microtime();
+	    list ( $host, $port ) = @explode (":", $hostname);
 		if ($this->connection = mysqli_connect($host, $username, $password, $database, $port)) {
 			$this->havedb = true;
 		}

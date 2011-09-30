@@ -23,7 +23,7 @@
                 <?php echo ORGANIZATION_NAME; ?>
 			</a>
 			</h1>
-			<?php expTheme::showController(array("controller"=>"login","action"=>"showlogin","view"=>"showlogin_flyoutYUI")); ?>
+			<?php //expTheme::showController(array("controller"=>"login","action"=>"showlogin","view"=>"showlogin_flyoutYUI")); ?>
 			<?php expTheme::module(array("module"=>"navigation","view"=>"YUI Top Nav","source"=>"@top")); ?>
 			<?php //expTheme::showController(array("controller"=>"links","action"=>"showall","view"=>"showall_quicklinks","source"=>"@top")) ?>
 			<?php expTheme::showController(array("controller"=>"search","action"=>"show","src"=>"@top")) ?>
