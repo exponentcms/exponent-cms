@@ -13,7 +13,6 @@
  * @package Exponent-CMS
  */
 /** @define "BASE" "../.." */
-include('database.php');
 
 /**
  * This is the class mysqlid_database
@@ -41,8 +40,6 @@ class mysqlid_database extends database {
 	 * Takes the supplied credentials (username / password) and tries to
 	 * connect to the server and select the given database.  All the rules
 	 * governing mysqli_connect also govern this method.
-	 *
-	 * This must be called before any other methods of database are invoked.
 	 *
 	 * @param null $log_file
 	 * @return \mysqlid_database
@@ -110,7 +107,7 @@ class mysqlid_database extends database {
    }
 
 //   function connect ($username, $password, $hostname, $database, $new=false) {
-   function connect ($username, $password, $hostname, $database, $new=false) {
+   function __construct($username, $password, $hostname, $database, $new=false) {
 		//$log_file==null ? $this->$logFile = BASE . '/tmp/sql.log' : $log_file;
 	    if ($log_file == null) $this->logFile = BASE . 'tmp/sql.log';
 	    else $this->logFile = $log_file;

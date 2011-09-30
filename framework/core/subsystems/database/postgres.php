@@ -13,7 +13,6 @@
  * @package Exponent-CMS
  */
 /** @define "BASE" "../.." */
-include('database.php');
 
 /**
  * This is the class postgres_database

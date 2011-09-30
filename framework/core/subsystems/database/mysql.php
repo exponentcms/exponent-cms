@@ -13,7 +13,6 @@
  * @package Exponent-CMS
  */
 /** @define "BASE" "../.." */
-include('database.php');
 
 /**
  * Database Class (MySQL)
@@ -36,8 +35,6 @@ class mysql_database extends database {
 	 * Takes the supplied credentials (username / password) and tries to
 	 * connect to the server and select the given database.  All the rules
 	 * governing mysql_connect also govern this method.
-	 *
-	 * This must be called before any other methods of database are invoked.
 	 *
 	 * @param string $username The username to connect to the server as.
 	 * @param string $password The password for $username

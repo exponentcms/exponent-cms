@@ -35,7 +35,7 @@ $target_lang_file = '';
 /**
  * The exponent database object
  *
- * @global mysqli_database $db the exponent database object
+ * @global \database $db the exponent database object
  * @name $db
  */
 $db = null;
