@@ -966,7 +966,7 @@ class reportController extends expController {
     
     function generateProductReport (){
         global $db;
-        //eDebug($this->params);
+        // eDebug($this->params);
         $p = $this->params;   
         $sqlids = "SELECT DISTINCT(p.id) from ";
         $sqlcount = "SELECT COUNT(DISTINCT(p.id)) from ";
@@ -1589,7 +1589,7 @@ class reportController extends expController {
         global $db;
         //eDebug($this->params);
         //$sql = "SELECT * INTO OUTFILE '" . BASE . "tmp/export.csv' FIELDS TERMINATED BY ','  FROM exponent_product WHERE 1 LIMIT 10";
-        $out = '"id","parent_id","child_rank","title","body","model","warehouse_location","sef_url","meta_title","meta_keywords","meta_description","tax_class_id","quantity","availability_type","base_price","special_price","use_special_price","active_type","product_status_id","category1","category2","category3","category4","surcharge","category_rank","feed_title","feed_body"' . chr(13) . chr(10); 
+        $out = '"id","parent_id","child_rank","title","body","model","warehouse_location","sef_url","meta_title","meta_keywords","meta_description","tax_class_id","quantity","availability_type","base_price","special_price","use_special_price","active_type","product_status_id","category1","category2","category3","category4","category5","category6","category7","category8","category9","category10","category11","category12","surcharge","category_rank","feed_title","feed_body"' . chr(13) . chr(10); 
         if (isset($this->params['applytoall']) && $this->params['applytoall']==1)
         {
             $sql = expSession::get('product_export_query');
@@ -1635,7 +1635,7 @@ class reportController extends expController {
             
             $rank=0;
             //eDebug($p);
-            for ($x=0; $x<4; $x++)
+            for ($x=0; $x<12; $x++)
             {
                 $this->catstring = '';
                 if (isset($p->storeCategory[$x])) 
@@ -1648,8 +1648,7 @@ class reportController extends expController {
             $out.= $this->outputField($p->surcharge); 
             $out.= $this->outputField($rank);
             $out.= $this->outputField($p->feed_title);
-            $out.= $this->outputField($p->feed_body)  . chr(13) . chr(10); 
-            
+            $out.= substr($this->outputField($p->feed_body), 0, -1) . chr(13) . chr(10); //Removed the extra "," in the last element
             foreach ($p->childProduct as $cp)
             {                            
                 //$p = new product($pid['id'], true, false);
@@ -1673,9 +1672,9 @@ class reportController extends expController {
                 $out.= $this->outputField($cp->use_special_price);
                 $out.= $this->outputField($cp->active_type);
                 $out.= $this->outputField($cp->product_status_id);
-                $out.= ',,,,';
+                $out.= ',,,,,,,,,,,,';
                 $out.= $this->outputField($cp->surcharge); 
-                $out.= ',,,';  //for rank, feed title, feed body
+                $out.= ',,';  //for rank, feed title, feed body
                 $out.= chr(13) . chr(10);                
                 
                 //echo($out);                  
