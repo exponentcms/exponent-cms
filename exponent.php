@@ -48,8 +48,6 @@ $available_controllers = initializeControllers();  //original position
 expLang::loadLang();
 
 // Initialize the Database subsystem
-//require_once(BASE.'framework/core/subsystems-1/database.php');
-//$db = exponent_database_connect(DB_USER,DB_PASS,DB_HOST.':'.DB_PORT,DB_NAME);
 $db = expDatabase::connect(DB_USER,DB_PASS,DB_HOST.':'.DB_PORT,DB_NAME);
 //$available_controllers = initializeControllers();
 //foreach ($db->selectObjects('modstate',1) as $mod) {

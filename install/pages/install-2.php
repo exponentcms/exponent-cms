@@ -58,7 +58,6 @@ $config = array(
         <span class="label"><?php echo gt('Backend'); ?>: </span>
         <select name="sc[db_engine]" onchange="showOptions(this.value);">
 		<?php
-//		require_once(BASE.'framework/core/subsystems-1/database.php');
 		foreach (expDatabase::backends(1) as $name=>$display) {
             echo '<option value="'.$name.'"';
             if ($config['db_engine'] == $name) {

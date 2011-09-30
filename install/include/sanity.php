@@ -209,7 +209,6 @@ function _sanity_checkTemp($dir) {
 }
 
 function _sanity_checkDB() {
-//	require_once(BASE.'framework/core/subsystems-1/database.php');
 //	$have_good = false;
 	
 	if (count(expDatabase::backends(1)) > 0) {
