@@ -13,7 +13,7 @@
  * @package Exponent-CMS
  */
 /** @define "BASE" "../.." */
-
+include(BASE.'framework/core/subsystems/database/database.php');
 
 /**
  * This is the class mysqlid_database
@@ -25,7 +25,7 @@
  * @subpackage Database = mysqlid
  * @package Subsystems
  */
-class mysqlid_database {
+class mysqlid_database extends database {
 	var $connection = null;
 	var $havedb = false;
 	var $prefix = "";  

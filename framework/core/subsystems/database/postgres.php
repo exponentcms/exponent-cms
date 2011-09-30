@@ -13,7 +13,7 @@
  * @package Exponent-CMS
  */
 /** @define "BASE" "../.." */
-
+include(BASE.'framework/core/subsystems/database/database.php');
 
 /**
  * This is the class postgres_database
@@ -26,7 +26,7 @@
  * @package Subsystems
  */
 
-class postgres_database {
+class postgres_database extends database {
     /**
      * @var string $connection Database connection string
      */

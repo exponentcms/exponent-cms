@@ -13,6 +13,7 @@
  * @package Exponent-CMS
  */
 /** @define "BASE" "../.." */
+include(BASE.'framework/core/subsystems/database/database.php');
 
 /**
  * Database Class (MySQL)
@@ -24,7 +25,7 @@
  * @subpackage Database
  * @package Subsystems
  */
-class mysql_database {
+class mysql_database extends database {
 	var $connection = null;
 	var $havedb = false;
 	var $prefix = "";
