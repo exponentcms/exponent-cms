@@ -209,10 +209,10 @@ function _sanity_checkTemp($dir) {
 }
 
 function _sanity_checkDB() {
-	require_once(BASE.'framework/core/subsystems-1/database.php');
+//	require_once(BASE.'framework/core/subsystems-1/database.php');
 //	$have_good = false;
 	
-	if (count(exponent_database_backends(1)) > 0) {
+	if (count(expDatabase::backends(1)) > 0) {
 		return array(SANITY_FINE,gt('Supported'));
 	} else {
 		return array(SANITY_ERROR,gt('No Databases Supported'));

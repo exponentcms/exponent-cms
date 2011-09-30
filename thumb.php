@@ -25,8 +25,8 @@ include_once('exponent_bootstrap.php');
 if (!defined('SYS_SESSION_KEY')) define('SYS_SESSION_KEY',PATH_RELATIVE);                                                                       
     if (isset($_GET['id'])) {        
     	// Initialize the Database Subsystem
-    	include_once(BASE.'framework/core/subsystems-1/database.php');
-    	$db = exponent_database_connect(DB_USER,DB_PASS,DB_HOST.':'.DB_PORT,DB_NAME);
+//    	include_once(BASE.'framework/core/subsystems-1/database.php');
+    	$db = expDatabase::connect(DB_USER,DB_PASS,DB_HOST.':'.DB_PORT,DB_NAME);
 
     	$file_obj = new expFile($_GET['id']);         
         //$_GET['src'] = "/" . $file_obj->directory.$file_obj->filename;

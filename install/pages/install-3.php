@@ -68,7 +68,7 @@ if ($passed) {
 	if($config["db_engine"] == "mysqli") {
 		if (!defined("DB_ENCODING")) define("DB_ENCODING", $config["DB_ENCODING"]);
 	}
-	$db = exponent_database_connect($config['db_user'],$config['db_pass'],$config['db_host'],$config['db_name'],$config['db_engine'],1);
+	$db = expDatabase::connect($config['db_user'],$config['db_pass'],$config['db_host'],$config['db_name'],$config['db_engine'],1);
 
 	$db->prefix = $config['db_table_prefix'] . '_';
 
