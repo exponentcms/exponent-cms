@@ -497,6 +497,8 @@ class mysqlid_database {
 	 * provided as a last resort.
 	 *
 	 * @param string $sql The SQL query to run
+	 * @param bool $escape
+	 * @return void
 	 */
 	function sql($sql, $escape = true) {        
 		if($escape == true) {

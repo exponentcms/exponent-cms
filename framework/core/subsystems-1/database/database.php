@@ -295,19 +295,20 @@ abstract class database {
     function dropTable($table) {
     }
 
-    /**
-     * Run raw SQL.  Returns true if the query succeeded, and false
-     *   if an error was returned from the database server.
-     *
-     * <div style="color:red">If you can help it, do not use this function.  It presents Database Portability Issues.</div>
-     *
-     * Runs a straight SQL query on the database.  This is not a
-     * very portable way of dealing with the database, and is only
-     * provided as a last resort.
-     *
-     * @param string $sql The SQL query to run
-     * @return mixed
-     */
+	/**
+	 * Run raw SQL.  Returns true if the query succeeded, and false
+	 *   if an error was returned from the database server.
+	 *
+	 * <div style="color:red">If you can help it, do not use this function.  It presents Database Portability Issues.</div>
+	 *
+	 * Runs a straight SQL query on the database.  This is not a
+	 * very portable way of dealing with the database, and is only
+	 * provided as a last resort.
+	 *
+	 * @param string $sql The SQL query to run
+	 * @param bool $escape
+	 * @return mixed
+	 */
     function sql($sql, $escape = true) {
     }
 

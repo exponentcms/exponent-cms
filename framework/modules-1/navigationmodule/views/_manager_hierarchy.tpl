@@ -13,11 +13,11 @@
  *
  *}
 
-{css unique="nav-manager1" link="`$smarty.const.YUI2_PATH`treeview/assets/skins/sam/treeview.css" corecss="panels"}
+{css unique="nav-manager1" link="`$smarty.const.YUI2_PATH`assets/skins/sam/treeview.css" corecss="panels"}
 
 {/css}
 
-{css unique="nav-manager2" link="`$smarty.const.YUI2_PATH`menu/assets/skins/sam/menu.css"}
+{css unique="nav-manager2" link="`$smarty.const.YUI2_PATH`assets/skins/sam/menu.css"}
 
 {/css}
 
@@ -26,7 +26,6 @@
 {/css}
 
 <div class="navigationmodule manager-hierarchy">
-
 	<div class="form_header">
 		<div class="info-header">
 			<div class="related-actions">
@@ -41,7 +40,11 @@
 			<a class="add" href="{link action=add_section parent=0}">{'Create a New Top Level Page'|gettext}</a>
 		{/if}
 	{/permissions}
-	<div id="navtree"><img src="{$smarty.const.ICON_RELATIVE}ajax-loader.gif">	<strong>Loading Navigation</strong></div>
+	{*<a id="expand" href="#">Expand all</a>*}
+	<div><a id="collapse" href="#">Collapse all</a></div>
+	<div id="navtree">
+		<img src="{$smarty.const.ICON_RELATIVE}ajax-loader.gif">	<strong>Loading Navigation</strong>
+	</div>
 </div>
 
 {script yui3mods="1" unique="DDTreeNav" }
@@ -195,7 +198,8 @@ var YAHOO = Y.YUI2;
 // tree
 //////////////////////////////////////////////////////////////////////////////
 	var tree, currentIconMode;
-	
+	var usr = {/literal}{obj2json obj=$user}{literal}; //user
+
 	ddarray = new Array;
 
 	function changeIconMode() {
@@ -238,10 +242,30 @@ var YAHOO = Y.YUI2;
 		
 	}
 	
+	function addTopNode (){
+		window.location="{/literal}{$smarty.const.URL_FULL}{literal}index.php?module=navigationmodule&action=add_section&parent=0";
+	}
+
 	function addSubNode (){
 		window.location="{/literal}{$smarty.const.URL_FULL}{literal}index.php?module=navigationmodule&action=add_section&parent="+currentMenuNode.data.id;
 	}
 	
+	function addContentSubNode (){
+		window.location="{/literal}{$smarty.const.URL_FULL}{literal}index.php?module=navigationmodule&action=edit_contentpage&parent="+currentMenuNode.data.id;
+	}
+
+	function addExternalSubNode (){
+		window.location="{/literal}{$smarty.const.URL_FULL}{literal}index.php?module=navigationmodule&action=edit_externalalias&parent="+currentMenuNode.data.id;
+	}
+
+	function addInternalSubNode (){
+		window.location="{/literal}{$smarty.const.URL_FULL}{literal}index.php?module=navigationmodule&action=edit_internalalias&parent="+currentMenuNode.data.id;
+	}
+
+	function addStandaloneSubNode (){
+		window.location="{/literal}{$smarty.const.URL_FULL}{literal}index.php?module=navigationmodule&action=move_standalone&parent="+currentMenuNode.data.id;
+	}
+
 	function viewNode (){
 		window.location="{/literal}{$smarty.const.URL_FULL}{literal}index.php?section="+currentMenuNode.data.id;
 	}
@@ -377,9 +401,18 @@ var YAHOO = Y.YUI2;
 	   
 		tree.draw();
 		refreshDD();
-		YAHOO.util.Event.on("expall","click",tree.expandAll,tree,true);
-		YAHOO.util.Event.on("colall","click",tree.collapseAll,tree,true);
-		
+
+		//handler for expanding all nodes, does NOT work for dynamic nodes
+		YAHOO.util.Event.on("expand", "click", function(e) {
+			tree.expandAll();
+			YAHOO.util.Event.preventDefault(e);
+		});
+
+		//handler for collapsing all nodes
+		YAHOO.util.Event.on("collapse", "click", function(e) {
+			tree.collapseAll();
+			YAHOO.util.Event.preventDefault(e);
+		});
 	}
 	
 	function buildHTML(section) {
@@ -422,16 +455,46 @@ var YAHOO = Y.YUI2;
 		}
 	}
 	
-	var navoptions = [
-			{ classname:"addsubpage", text: "Add A Subpage", onclick: { fn: addSubNode } },
-			{ classname:"viewpage", text: "View This Page", onclick: { fn: viewNode } },
-			{ classname:"editpage", text: "Edit This Page", onclick: { fn: editNode } },
-			{ classname:"deletepage", text: "Delete This Page", onclick: { fn: deleteNode } },
-			{ classname:"userperms", text: "Manage User Permissions", onclick: { fn: editUserPerms } },
-			{ classname:"groupperms", text: "Manage Group Permissions", onclick: { fn: editGroupPerms } }
-		];																	
-	
-	
+	if (usr.is_acting_admin==1 || usr.is_admin==1) {
+		var navoptions = [
+				{ classname:"addsubpage", text: "Add A Top Level Page", onclick: { fn: addTopNode } },
+				{ classname:"addsubpage", text: "Add A Subpage", onclick: { fn: addSubNode },
+					submenu: {
+						id: "submenu1",
+						itemdata: [
+							{ classname:"addsubpage", text: "Add Content Page Here", onclick: { fn: addContentSubNode } },
+							{ classname:"addsubpage", text: "Add External Website Link Page Here", onclick: { fn: addInternalSubNode } },
+							{ classname:"addsubpage", text: "Add Internal Page Alias Page Here", onclick: { fn: addExternalSubNode } },
+							{ classname:"addsubpage", text: "Move Standalone Page to Here", onclick: { fn: addStandaloneSubNode } }
+						]
+					}
+				},
+				{ classname:"viewpage", text: "View This Page", onclick: { fn: viewNode } },
+				{ classname:"editpage", text: "Edit This Page", onclick: { fn: editNode } },
+				{ classname:"deletepage", text: "Delete This Page", onclick: { fn: deleteNode } },
+				{ classname:"userperms", text: "Manage User Permissions", onclick: { fn: editUserPerms } },
+				{ classname:"groupperms", text: "Manage Group Permissions", onclick: { fn: editGroupPerms } }
+			];
+	} else {
+		var navoptions = [
+				{ classname:"addsubpage", text: "Add A Top Level Page", onclick: { fn: addTopNode } },
+				{ classname:"addsubpage", text: "Add A Subpage", onclick: { fn: addSubNode },
+					submenu: {
+						id: "submenu1",
+						itemdata: [
+							{ classname:"addsubpage", text: "Add Content Page", onclick: { fn: addContentSubNode } },
+							{ classname:"addsubpage", text: "Add External Website Link", onclick: { fn: addInternalSubNode } },
+							{ classname:"addsubpage", text: "Add Internal Page Alias", onclick: { fn: addExternalSubNode } },
+							{ classname:"addsubpage", text: "Move Standalone Page", onclick: { fn: addStandaloneSubNode } }
+						]
+					}
+				},
+				{ classname:"viewpage", text: "View This Page", onclick: { fn: viewNode } },
+				{ classname:"editpage", text: "Edit This Page", onclick: { fn: editNode } },
+				{ classname:"deletepage", text: "Delete This Page", onclick: { fn: deleteNode } }
+			];
+	}
+
 	var oContextMenu = new YAHOO.widget.ContextMenu("navTreeContext", {
 																	trigger: "navtree",
 																	hidedelay:1000,

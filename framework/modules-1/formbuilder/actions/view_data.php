@@ -30,7 +30,7 @@ if (isset($_GET['id'])) {
 	$f = $db->selectObject("formbuilder_form","id=".$_GET['id']);
 	$rpt = $db->selectObject("formbuilder_report","form_id=".$_GET['id']);
 	$items = $db->selectObjects("formbuilder_".$f->table_name);
-	if (exponent_permissions_check("viewdata",unserialize($f->location_data))) {
+	if (expPermissions::check("viewdata",unserialize($f->location_data))) {
 		expHistory::set('editable', $_GET);
 		$columndef = "paginate.columns = new Array(";
 		$columns = array();

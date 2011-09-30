@@ -52,6 +52,9 @@ class expCore {
 	 * This function does take into account the SEF URLs settings and the SSL urls in the site config.
 	 *
 	 * @param Array $params An associative array of the desired querystring parameters.
+	 * @param string $type
+	 * @param string $sef_name
+	 * @return string
 	 * @node Subsystems:expCore
 	 */
 	public static function makeLink($params,$type='',$sef_name='') {

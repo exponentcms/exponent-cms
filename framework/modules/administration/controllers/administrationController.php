@@ -634,6 +634,7 @@ class administrationController extends expController {
                     }
 
     				$t->preview = is_readable(BASE."themes/$file/preview.jpg") ? "themes/$file/preview.jpg" : "themes/" . DISPLAY_THEME . "/noprev.jpg";
+				    $t->mobile = is_readable(BASE."themes/$file/mobile/index.php") ? true : false;
     				$themes[$file] = $t;
     			}
     		}
@@ -698,6 +699,9 @@ class administrationController extends expController {
 	}
 
 	public function toggle_mobile() {
+		if (!expSession::is_set('mobile')) {  // account for FORCE_MOBILE initial state
+			expSession::set('mobile',MOBILE);
+		}
 		expSession::set('mobile',!expSession::get('mobile'));
 		expTheme::removeSmartyCache();
 		expHistory::back();
