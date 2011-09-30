@@ -13,6 +13,16 @@
  * GPL: http://www.gnu.org/licenses/gpl.txt
  *
  *}
-<div class="form_title">{if $is_edit == 1}{'Edit Existing Internal Alias'|gettext}{else}{'New Internal Alias'|gettext}{/if}</div>
-<div class="form_header">{'Select which internal page you want this section to link to.  If you link to another internal alias, the aliases will all be dereferenced, and the original destination used.  If you link to an external alias, then this section will point to the external aliases external web address.'|gettext}</div>
-{$form_html}
+
+<div class="navigationmodule form-editInternalAliasPage">
+    <div class="info-header">
+        <div class="related-actions">
+			{help text="Get Help Editing Internal Alias Pages" module="edit-internal-page"}
+        </div>
+	    <h1>{if $is_edit == 1}{'Edit Existing Internal Alias'|gettext}{else}{'New Internal Alias'|gettext}{/if}</h1>
+	</div>
+	<div class="form_header">
+		{'Select which internal page you want this section to link to.  If you link to another internal alias, the aliases will all be dereferenced, and the original destination used.  If you link to an external alias, then this section will point to the external aliases external web address.'|gettext}
+	</div>
+	{$form_html}
+</div>

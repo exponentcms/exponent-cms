@@ -25,6 +25,10 @@
 
 {/css}
 
+{css unique="calendar-edit4" corecss="tables"}
+
+{/css}
+
 <div class="module calendar edit">
 	<div class="form_title">
 		<h1>{if $is_edit == 1}{'Edit Calendar Event'|gettext}{else}{'Create New Calendar Event'|gettext}{/if}</h1>

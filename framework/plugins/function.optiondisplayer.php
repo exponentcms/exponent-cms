@@ -45,7 +45,7 @@ function smarty_function_optiondisplayer($params,&$smarty) {
     
     $includeblank = $og->required == false && !isset($params['includeblank']) ? '-- Please Select an Option --' : $params['includeblank'];
     
-    $template = get_common_template($view, $smarty->_tpl_vars[__loc], 'options');
+    $template = get_common_template($view, $smarty->_tpl_vars['__loc'], 'options');
     $template->assign('product', $product);
     $template->assign('options', $options);
     $template->assign('group', $group);

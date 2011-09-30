@@ -46,9 +46,9 @@ if ($user->isAdmin()) {
 		$have_users = 1;
 		foreach ($perms as $perm=>$name) {
 			$var = 'perms_'.$perm;
-			if (expPermissions::check($u,$perm,$loc,true)) {
+			if (expPermissions::checkUser($u,$perm,$loc,true)) {
 				$u->$perm = 1;
-			} else if (expPermissions::check($u,$perm,$loc)) {
+			} else if (expPermissions::checkUser($u,$perm,$loc)) {
 				$u->$perm = 2;
 			} else {
 				$u->$perm = 0;

@@ -20,7 +20,7 @@
 <div class="navigationmodule form-editContentPage"> 
     <div class="info-header">
         <div class="related-actions">
-			{help text="Get Help Editing Content Pages" module="edit-page"}
+			{help text="Get Help Editing Content Pages" module="edit-content-page"}
         </div>
 		<h1>{if $is_edit == 1}{'Edit Existing Content Page'|gettext}{else}{'Create New Content Page'|gettext}{/if}</h1>
 	</div>
