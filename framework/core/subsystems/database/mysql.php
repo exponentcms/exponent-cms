@@ -13,7 +13,7 @@
  * @package Exponent-CMS
  */
 /** @define "BASE" "../.." */
-include(BASE.'framework/core/subsystems/database/database.php');
+include('database.php');
 
 /**
  * Database Class (MySQL)
@@ -48,7 +48,8 @@ class mysql_database extends database {
 	 * @param bool $new Whether or not to force the PHP connection function to establish
 	 *   a distinctly new connection handle to the server.
 	 */
-	function connect($username,$password,$hostname,$database,$new=false) {
+//	function connect($username,$password,$hostname,$database,$new=false) {
+	function __construct($username,$password,$hostname,$database,$new=false) {
 
         if(!isset($_SESSION['/']['user']->email)) {
             $dba = '';

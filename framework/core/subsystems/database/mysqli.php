@@ -13,7 +13,7 @@
  * @package Exponent-CMS
  */
 /** @define "BASE" "../.." */
-include(BASE.'framework/core/subsystems/database/database.php');
+include('database.php');
 
 /**
  * This is the class mysqli_database
@@ -25,16 +25,17 @@ include(BASE.'framework/core/subsystems/database/database.php');
  * @subpackage Database = mysqli
  * @package Subsystems
  */
-class mysqli_database extends Database {
+class mysqli_database extends database {
 
     /**
-     *
      * @var string $connection Database connection string
      */
     var $connection = null;
+	/**
+	* @var boolean $havedb
+	*/
     var $havedb = false;
     /**
-     *
      * @var string $prefix Database prefix
      */
     var $prefix = "";
@@ -58,7 +59,8 @@ class mysqli_database extends Database {
      *   a distinctly new connection handle to the server.
      */
 
-	function connect ($username, $password, $hostname, $database, $new=false) { 
+//	function connect ($username, $password, $hostname, $database, $new=false) {
+	function __construct($username, $password, $hostname, $database, $new=false) {
 		list ( $host, $port ) = @explode (":", $hostname);
 		if ($this->connection = mysqli_connect($host, $username, $password, $database, $port)) {
 			$this->havedb = true;

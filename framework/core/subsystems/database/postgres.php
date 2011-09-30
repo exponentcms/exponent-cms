@@ -13,7 +13,7 @@
  * @package Exponent-CMS
  */
 /** @define "BASE" "../.." */
-include(BASE.'framework/core/subsystems/database/database.php');
+include('database.php');
 
 /**
  * This is the class postgres_database
@@ -57,7 +57,8 @@ class postgres_database extends database {
 		return ($this->connection != null);
 	}
 
-	function connect($username,$password,$hostname,$database,$new = false) {
+//	function connect($username,$password,$hostname,$database,$new = false) {
+	function __construct($username,$password,$hostname,$database,$new = false) {
   		if( function_exists( 'pg_connect')){
 			$host_data = explode(":",$hostname);
 			$hostname = $host_data[0];

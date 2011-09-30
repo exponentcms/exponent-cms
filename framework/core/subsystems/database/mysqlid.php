@@ -13,7 +13,7 @@
  * @package Exponent-CMS
  */
 /** @define "BASE" "../.." */
-include(BASE.'framework/core/subsystems/database/database.php');
+include('database.php');
 
 /**
  * This is the class mysqlid_database
@@ -61,15 +61,15 @@ class mysqlid_database extends database {
 	 *   a distinctly new connection handle to the server.
 	 */
    
-   function __construct($log_file = null){
-        //$log_file==null ? $this->$logFile = BASE . '/tmp/sql.log' : $log_file;
-        if ($log_file == null) $this->logFile = BASE . 'tmp/sql.log';
-        else $this->logFile = $log_file;  
-        //eDebug($log_file);
-        $this->logFH = fopen($this->logFile, 'a');
-        $this->writeLog("Starting...");
-        $this->startTime = microtime();      
-   }
+//   function __construct($log_file = null){
+//        //$log_file==null ? $this->$logFile = BASE . '/tmp/sql.log' : $log_file;
+//        if ($log_file == null) $this->logFile = BASE . 'tmp/sql.log';
+//        else $this->logFile = $log_file;
+//        //eDebug($log_file);
+//        $this->logFH = fopen($this->logFile, 'a');
+//        $this->writeLog("Starting...");
+//        $this->startTime = microtime();
+//   }
    
    function __destruct(){
         $totalTime = microtime() - $this->startTime;
@@ -109,8 +109,16 @@ class mysqlid_database extends database {
         $this->writeLog("Duration: " . $sql_time['Duration']);
    }
 
+//   function connect ($username, $password, $hostname, $database, $new=false) {
    function connect ($username, $password, $hostname, $database, $new=false) {
-		list ( $host, $port ) = @explode (":", $hostname);
+		//$log_file==null ? $this->$logFile = BASE . '/tmp/sql.log' : $log_file;
+	    if ($log_file == null) $this->logFile = BASE . 'tmp/sql.log';
+	    else $this->logFile = $log_file;
+	    //eDebug($log_file);
+	    $this->logFH = fopen($this->logFile, 'a');
+	    $this->writeLog("Starting...");
+	    $this->startTime = microtime();
+	    list ( $host, $port ) = @explode (":", $hostname);
 		if ($this->connection = mysqli_connect($host, $username, $password, $database, $port)) {
 			$this->havedb = true;
 		}

@@ -25,13 +25,14 @@
 abstract class database {
 
     /**
-     *
      * @var string $connection Database connection string
      */
     var $connection = null;
+	/**
+	* @var boolean $havedb
+	*/
     var $havedb = false;
     /**
-     *
      * @var string $prefix Database prefix
      */
     var $prefix = "";
@@ -55,7 +56,8 @@ abstract class database {
      *   a distinctly new connection handle to the server.
      */
 
-	function connect ($username, $password, $hostname, $database, $new=false) {
+//	function connect ($username, $password, $hostname, $database, $new=false) {
+	function __construct($username, $password, $hostname, $database, $new=false) {
 	}
 
     /**
