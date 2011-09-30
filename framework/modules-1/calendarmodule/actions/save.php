@@ -26,12 +26,12 @@ $iloc = null;
 if (isset($_POST['id']) && !isset($_POST['submitNew'])) {
 	$item = $db->selectObject("calendar","id=".intval($_POST['id']));
 	$loc = unserialize($item->location_data);
-	$iloc = exponent_core_makeLocation($loc->mod,$loc->src,$item->id);
+	$iloc = expCore::makeLocation($loc->mod,$loc->src,$item->id);
 }
 
-if (($item == null && exponent_permissions_check("post",$loc)) ||
-	($item != null && exponent_permissions_check("edit",$loc)) ||
-	($iloc != null && exponent_permissions_check("edit",$iloc))
+if (($item == null && expPermissions::check("post",$loc)) ||
+	($item != null && expPermissions::check("edit",$loc)) ||
+	($iloc != null && expPermissions::check("edit",$iloc))
 ) {
 
 	$item = calendar::update($_POST,$item);
@@ -52,7 +52,6 @@ if (($item == null && exponent_permissions_check("post",$loc)) ||
 		$item->feedback_email = "";
 	}
 
-	require_once(BASE."framework/core/subsystems-1/datetime.php");
 	require_once(BASE."framework/core/subsystems-1/forms.php");
 
 	//Get and save the image
@@ -99,8 +98,8 @@ if (($item == null && exponent_permissions_check("post",$loc)) ||
 				}
 			}
 			$eventdate = $db->selectObject('eventdate','id='.intval($_POST['date_id']));
-			//$eventdate->date = exponent_datetime_startOfDayTimestamp(popupdatetimecontrol::parseData("eventdate",$_POST));
-			$eventdate->date = exponent_datetime_startOfDayTimestamp(yuicalendarcontrol::parseData("eventdate",$_POST));
+			//$eventdate->date = expDateTime::startOfDayTimestamp(popupdatetimecontrol::parseData("eventdate",$_POST));
+			$eventdate->date = expDateTime::startOfDayTimestamp(yuicalendarcontrol::parseData("eventdate",$_POST));
 			$db->updateObject($eventdate,'eventdate');
 		} else {
 			$item->approved = 1;
@@ -108,16 +107,16 @@ if (($item == null && exponent_permissions_check("post",$loc)) ||
 			// There should be only one eventdate
 			$eventdate = $db->selectObject('eventdate','event_id = '.$item->id);
 
-			//$eventdate->date = exponent_datetime_startOfDayTimestamp(popupdatetimecontrol::parseData("eventdate",$_POST));
-			$eventdate->date = exponent_datetime_startOfDayTimestamp(yuicalendarcontrol::parseData("eventdate",$_POST));
+			//$eventdate->date = expDateTime::startOfDayTimestamp(popupdatetimecontrol::parseData("eventdate",$_POST));
+			$eventdate->date = expDateTime::startOfDayTimestamp(yuicalendarcontrol::parseData("eventdate",$_POST));
 			$db->updateObject($eventdate,'eventdate');
 		}
 //		calendarmodule::spiderContent($item);
 	} else {
-		//$start_recur = exponent_datetime_startOfDayTimestamp(popupdatetimecontrol::parseData("eventdate",$_POST));
-		$start_recur = exponent_datetime_startOfDayTimestamp(yuicalendarcontrol::parseData("eventdate",$_POST));
-		//$stop_recur  = exponent_datetime_startOfDayTimestamp(popupdatetimecontrol::parseData("untildate",$_POST));
-		$stop_recur  = exponent_datetime_startOfDayTimestamp(yuicalendarcontrol::parseData("untildate",$_POST));
+		//$start_recur = expDateTime::startOfDayTimestamp(popupdatetimecontrol::parseData("eventdate",$_POST));
+		$start_recur = expDateTime::startOfDayTimestamp(yuicalendarcontrol::parseData("eventdate",$_POST));
+		//$stop_recur  = expDateTime::startOfDayTimestamp(popupdatetimecontrol::parseData("untildate",$_POST));
+		$stop_recur  = expDateTime::startOfDayTimestamp(yuicalendarcontrol::parseData("untildate",$_POST));
 
 		if (($_POST['recur'] != "recur_none") && isset($_POST['recur'])) {
 			// Do recurrence
@@ -127,16 +126,16 @@ if (($item == null && exponent_permissions_check("post",$loc)) ||
 
 			switch ($_POST['recur']) {
 				case "recur_daily":
-					$dates = exponent_datetime_recurringDailyDates($start_recur,$stop_recur,$freq);
+					$dates = expDateTime::recurringDailyDates($start_recur,$stop_recur,$freq);
 					break;
 				case "recur_weekly":
-					$dates = exponent_datetime_recurringWeeklyDates($start_recur,$stop_recur,$freq,(isset($_POST['day']) ? array_keys($_POST['day']) : array($dateinfo['wday'])));
+					$dates = expDateTime::recurringWeeklyDates($start_recur,$stop_recur,$freq,(isset($_POST['day']) ? array_keys($_POST['day']) : array($dateinfo['wday'])));
 					break;
 				case "recur_monthly":
-					$dates = exponent_datetime_recurringMonthlyDates($start_recur,$stop_recur,$freq,$_POST['month_type']);
+					$dates = expDateTime::recurringMonthlyDates($start_recur,$stop_recur,$freq,$_POST['month_type']);
 					break;
 				case "recur_yearly":
-					$dates = exponent_datetime_recurringYearlyDates($start_recur,$stop_recur,$freq);
+					$dates = expDateTime::recurringYearlyDates($start_recur,$stop_recur,$freq);
 					break;
 				default:
 					$dates = array();

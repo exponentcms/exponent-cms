@@ -15,14 +15,6 @@
 
  <div id="discountconfig" class="module discountconfig configure hide exp-skin-tabview">
     <h1>Ecommerce Store Configuration</h1>
-    {script unique="storeconf" yuimodules="tabview, element"}
-    {literal}
-        var tabView = new YAHOO.widget.TabView('discounttabs');     
-        YAHOO.util.Dom.removeClass("discountconfig", 'hide');
-        var loading = YAHOO.util.Dom.getElementsByClassName('loadingdiv', 'div');
-        YAHOO.util.Dom.setStyle(loading, 'display', 'none');
-    {/literal}
-    {/script}
 
     {form action=update_discount}
         {control type="hidden" name="id" value=$discount->id}       
@@ -81,8 +73,10 @@
     {/form}
 </div>
 <div class="loadingdiv">Loading</div>
-{script unique="discountedit"}
+{script unique="discountedit" yui3mods=1}
 {literal}
+YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-tabview','yui2-element', function(Y) {
+    var YAHOO=Y.YUI2;
     function switchMethods() {
         var dd = YAHOO.util.Dom.get('required_shipping_calculator_id');
         var methdd = YAHOO.util.Dom.get('dd-'+dd.value);
@@ -102,5 +96,12 @@
         //console.debug(dd.value);
     }
     YAHOO.util.Event.onDOMReady(switchMethods);
+
+    var tabView = new YAHOO.widget.TabView('discounttabs');     
+    YAHOO.util.Dom.removeClass("discountconfig", 'hide');
+    var loading = YAHOO.util.Dom.getElementsByClassName('loadingdiv', 'div');
+    YAHOO.util.Dom.setStyle(loading, 'display', 'none');
+});
 {/literal}
 {/script}
+

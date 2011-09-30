@@ -20,7 +20,7 @@
 /**
  * This is the class expLang
  *
- * @subpackage Core-Subsytems
+ * @subpackage Core-Subsystems
  * @package Framework
  */
 class expLang {

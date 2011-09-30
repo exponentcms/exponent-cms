@@ -4,8 +4,8 @@
 
 <div class="billing-method">
     <h4>Passthru Billing</h4>
-    {* eDebug var=$default_order_type}
-    {eDebug var=$order_types *}
+    {* edebug var=$default_order_type}
+    {edebug var=$order_types *}
     {form name="passthruform" controller=cart action=preprocess}
         {control type="hidden" name="billingcalculator_id" value=6}
         {* control type=radiogroup columns=1 name="passthru_order_type" label="Select Order Type" items="Standard Order (your user),Phone Order (creates new user),Save as Quote (creates new user)" values="0,1,2" default=0 *}        

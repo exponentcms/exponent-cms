@@ -169,6 +169,9 @@ class mysql_database {
 	/**
 	 * This is an internal function for use only within the MySQL database class
 	 * @internal Internal
+	 * @param $name
+	 * @param $def
+	 * @return bool|string
 	 */
 	function fieldSQL($name,$def) {
 		$sql = "`$name`";
@@ -209,6 +212,12 @@ class mysql_database {
 	/**
 	 * This is an internal function for use only within the MySQL database class
 	 * @internal Internal
+	 * @param $table
+	 * @param $field
+	 * @param $a
+	 * @param $b
+	 * @param null $additional_where
+	 * @return bool
 	 */
 	function switchValues($table,$field,$a,$b,$additional_where = null) {
 		if ($additional_where == null) {
@@ -445,9 +454,11 @@ class mysql_database {
 	 * provided as a last resort.
 	 *
 	 * @param string $sql The SQL query to run
+	 * @param bool $escape
+	 * @return #Fmysql_query|?
 	 */
-	function sql($sql) {
-		return @mysql_query($sql,$this->connection);
+	function sql($sql, $escape = true) {
+		return @mysql_query($sql, $this->connection);
 	}
 
 	function toggle($table, $col, $where=null) {
@@ -468,6 +479,8 @@ class mysql_database {
 	 * @param string $where Criteria used to narrow the result set.  If this
 	 *   is specified as null, then no criteria is applied, and all objects are
 	 *   returned
+	 * @param null $orderby
+	 * @return array
 	 */
 	function selectObjects($table, $where = null,$orderby = null) {
 		if ($where == null) $where = "1";
@@ -608,8 +621,12 @@ class mysql_database {
         }
 
 	/**
-	* This function takes an array of indexes and returns an array with the objects associated with each id
-	*/
+	 * This function takes an array of indexes and returns an array with the objects associated with each id
+	 * @param $table
+	 * @param array $array
+	 * @param null $orderby
+	 * @return array
+	 */
 	function selectObjectsInArray($table, $array=array(), $orderby=null) {
 		$where = '';
 		foreach($array as $array_id) {
@@ -638,6 +655,8 @@ class mysql_database {
 	 * @param string $where Criteria used to narrow the result set.  If this
 	 *   is specified as null, then no criteria is applied, and all objects are
 	 *   returned
+	 * @param null $orderby
+	 * @return array
 	 */
 	function selectObjectsIndexedArray($table,$where = null,$orderby = null) {
 		if ($where == null) $where = "1";
@@ -913,6 +932,8 @@ class mysql_database {
 	 * <li><b>data_total</b> -- How much total disk space is used by the table.</li>
 	 * <li><b>data_overhead</b> -- How much storage space in the table is unused (for compacting purposes)</li>
 	 * </ul>
+	 * @param $table
+	 * @return null
 	 */
 	function tableInfo($table) {
 		$sql = "SHOW TABLE STATUS LIKE '" . $this->prefix . "$table'";
@@ -949,6 +970,8 @@ class mysql_database {
 	/**
 	 * This is an internal function for use only within the MySQL database class
 	 * @internal Internal
+	 * @param $status
+	 * @return null
 	 */
 	function translateTableStatus($status) {
 		$data = null;
@@ -1006,6 +1029,8 @@ class mysql_database {
 	/**
 	 * This is an internal function for use only within the MySQL database class
 	 * @internal Internal
+	 * @param $fieldObj
+	 * @return int
 	 */
 	function getDDFieldType($fieldObj) {
 		$type = strtolower($fieldObj->Type);
@@ -1023,6 +1048,8 @@ class mysql_database {
 	/**
 	 * This is an internal function for use only within the MySQL database class
 	 * @internal Internal
+	 * @param $fieldObj
+	 * @return int|mixed
 	 */
 	function getDDStringLen($fieldObj) {
 		$type = strtolower($fieldObj->Type);
@@ -1063,7 +1090,7 @@ class mysql_database {
 	function limit($num,$offset) {
 		return ' LIMIT '.$offset.','.$num.' ';
 	}
-	
+
 	/**
 	 * Select an array of arrays
 	 *
@@ -1076,6 +1103,8 @@ class mysql_database {
 	 * @param string $where Criteria used to narrow the result set.  If this
 	 *   is specified as null, then no criteria is applied, and all objects are
 	 *   returned
+	 * @param null $orderby
+	 * @return array
 	 */
 	function selectArrays($table, $where = null,$orderby = null) {
 		if ($where == null) $where = "1";

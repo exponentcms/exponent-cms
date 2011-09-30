@@ -32,9 +32,9 @@ if ($container != null) {
 
 
 
-if (exponent_permissions_check("add_module",$loc) || 
-	($iloc != null && exponent_permissions_check("administrate",$iloc)) ||
-	($cloc != null && exponent_permissions_check("edit_module",$cloc))
+if (expPermissions::check("add_module",$loc) ||
+	($iloc != null && expPermissions::check("administrate",$iloc)) ||
+	($cloc != null && expPermissions::check("edit_module",$cloc))
 	) {
 	
 	//eDebug($_POST,true);

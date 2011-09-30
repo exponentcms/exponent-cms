@@ -74,7 +74,7 @@ class BaseTemplate {
 		$this->tpl->plugins_dir = array_reverse($this->tpl->plugins_dir);
 		
 		//autoload filters
-		$this->tpl->autoload_filters = array('post' => array('includeMiscFiles'));
+		$this->tpl->autoload_filters = array('post' => array('includemiscfiles'));
 		
 		$this->viewfile = exponent_template_getViewFile($item_type, $item_dir, $view);
 		$this->viewdir = realpath(dirname($this->viewfile));
@@ -131,7 +131,7 @@ class BaseTemplate {
 		if (!is_array($locs)) $locs = array($locs);
 		foreach ($perms as $perm) {
 			foreach ($locs as $loc) {
-				$permissions_register[$perm] = (exponent_permissions_check($perm, $loc) ? 1 : 0);
+				$permissions_register[$perm] = (expPermissions::check($perm, $loc) ? 1 : 0);
 			}
 		}
 		$this->tpl->assign('permissions', $permissions_register);
@@ -162,7 +162,7 @@ class template extends BaseTemplate {
 		$this->viewparams = exponent_template_getViewParams($this->viewfile);
 				
 		if ($loc == null) {
-			$loc = exponent_core_makeLocation($module);
+			$loc = expCore::makeLocation($module);
 		}
 		
 		$this->tpl->assign("__loc",$loc);
@@ -202,7 +202,7 @@ class controllerTemplate extends baseTemplate {
 		$this->tpl->plugins_dir = array_reverse($this->tpl->plugins_dir);
 
 		//autoload filters
-		$this->tpl->autoload_filters = array('post' => array('includeMiscFiles'));
+		$this->tpl->autoload_filters = array('post' => array('includemiscfiles'));
 		
 		$this->viewfile = $viewfile;
 		$this->viewdir = realpath(dirname($this->viewfile));
@@ -314,7 +314,7 @@ class standalonetemplate extends BaseTemplate {
  * @return string The full filepath of the view template
  */
 function exponent_template_getViewFile($type="", $name="", $view="Default") {
-	$viewfilepath = exponent_core_resolveFilePaths($type, $name, "tpl", $view);
+	$viewfilepath = expCore::resolveFilePaths($type, $name, "tpl", $view);
 	// Something is really screwed up.
 	if ($viewfilepath == false) {
 		// Fall back to something that won't error.
@@ -333,9 +333,9 @@ function exponent_template_getModuleViewFile($name, $view, $recurse=true) {
 function exponent_template_getViewConfigForm($module,$view,$form,$values) {
 	$form_file = "";
 	$resolved_path = null;
-	$resolved_path = exponent_core_resolveFilePaths("modules", $module , "form" , $view);
+	$resolved_path = expCore::resolveFilePaths("modules", $module , "form" , $view);
 	if (isset($resolved_path) && $resolved_path != '') {
-		$filepath = array_shift(exponent_core_resolveFilePaths("modules", $module , "form" , $view));
+		$filepath = array_shift(expCore::resolveFilePaths("modules", $module , "form" , $view));
 	} else {
 		$filepath = false;
 	}
@@ -374,7 +374,7 @@ function exponent_template_getViewConfigForm($module,$view,$form,$values) {
 
 function exponent_template_getViewConfigOptions($module,$view) {
 	$form_file = "";
-	$filepath = array_shift(exponent_core_resolveFilePaths("modules", $module, "form", $view));
+	$filepath = array_shift(expCore::resolveFilePaths("modules", $module, "form", $view));
 	if ($filepath != false) {
 		$form_file = $filepath;
 	}
@@ -420,8 +420,13 @@ function exponent_template_getFormTemplates($type) {
     return $forms;
 }
 
-function exponent_template_listFormTemplates($type) {
-	return exponent_core_buildNameList("forms", $type, "tpl", "[!_]*");
+/**
+ * Generates a list of email templates/forms
+ * @param $type
+ * @return array
+ */
+function exponent_template_listFormTemplates($type) {  //FIXME only used by calendarmodule edit action
+	return expCore::buildNameList("forms", $type, "tpl", "[!_]*");
 }
 
 /* exdoc
@@ -435,8 +440,8 @@ function exponent_template_listFormTemplates($type) {
  * @param string $lang deprecated, was used to list language specific templates
  * @node Subsystems:Template
  */
-function exponent_template_listModuleViews($module, $lang = LANG) {
-	return exponent_core_buildNameList("modules", $module, "tpl", "[!_]*");
+function exponent_template_listModuleViews($module, $lang = LANG) {  //FIXME only used by containermodule edit action and administrationmodule examplecontent action
+	return expCore::buildNameList("modules", $module, "tpl", "[!_]*");
 }
 
 function exponent_template_getViewParams($viewfile) {

@@ -48,10 +48,7 @@ class calendarmodule {
 		}
 		$locsql .= ')';
 							
-		if (!function_exists("exponent_datetime_startOfDayTimestamp")) {
-			include_once(BASE."framework/core/subsystems-1/datetime.php");
-		}
-		$day = exponent_datetime_startOfDayTimestamp(time());
+		$day = expDateTime::startOfDayTimestamp(time());
 		
 		if ($config->rss_limit > 0) {
 			$rsslimit = " AND date <= " . ($day + ($config->rss_limit * 86400));
@@ -79,7 +76,7 @@ class calendarmodule {
 			$rss_item->date = date('r', $item->eventstart);
 //          $rss_item->date = date('r', $item->posted);
 //			$rss_item->link = "http://".HOSTNAME.PATH_RELATIVE."index.php?module=calendarmodule&action=view&id=".$item->id."&src=".$loc->src;
-			$rss_item->link = exponent_core_makeLink(array('module'=>'calendarmodule', 'action'=>'view', 'id'=>$item->id, 'date_id'=>$item->eventdate->id));
+			$rss_item->link = expCore::makeLink(array('module'=>'calendarmodule', 'action'=>'view', 'id'=>$item->id, 'date_id'=>$item->eventdate->id));
 			if ($config->enable_categories == 1) {
 				$rss_item->category = array($cats[$item->category_id]->name);
 			}
@@ -115,7 +112,7 @@ class calendarmodule {
 
 	function getLocationHierarchy($loc) {
 		if ($loc->int == '') return array($loc);
-		else return array($loc,exponent_core_makelocation($loc->mod,$loc->src));
+		else return array($loc,expCore::makeLocation($loc->mod,$loc->src));
 	}
 
 	static function show($view,$loc = null, $title = '') {
@@ -146,7 +143,7 @@ class calendarmodule {
 		$inapproval = false;
 
 		global $user;
-		if ($user) $canviewapproval = (exponent_permissions_check("approve",$loc) || exponent_permissions_check("manage_approval",$loc));
+		if ($user) $canviewapproval = (expPermissions::check("approve",$loc) || expPermissions::check("manage_approval",$loc));
 		if ($db->countObjects("calendar","location_data='".serialize($loc)."' AND approved!=1")) {
 			foreach ($db->selectObjects("calendar","location_data='".serialize($loc)."' AND approved!=1") as $c) {
 				if ($c->poster == $user->id) $canviewapproval = true;
@@ -163,9 +160,8 @@ class calendarmodule {
 			$viewparams = array("type"=>"default");
 		}
 
-		include_once(BASE."framework/core/subsystems-1/datetime.php");
 		if ($viewparams['type'] == "minical") {
-			$monthly = exponent_datetime_monthlyDaysTimestamp($time);
+			$monthly = expDateTime::monthlyDaysTimestamp($time);
 			$info = getdate($time);
 			$timefirst = mktime(12,0,0,$info['mon'],1,$info['year']);
 			$now = getdate(time());
@@ -197,7 +193,7 @@ class calendarmodule {
    			$startperiod = 0;
 			$totaldays = 0;
 			if ($viewparams['range'] == "week") {
-				$startperiod = exponent_datetime_startOfWeekTimestamp($time);
+				$startperiod = expDateTime::startOfWeekTimestamp($time);
 				$totaldays = 7;
 				$template->assign("prev_timestamp3",strtotime('-21 days',$startperiod));
 				$template->assign("prev_timestamp2",strtotime('-14 days',$startperiod));
@@ -207,7 +203,7 @@ class calendarmodule {
 				$template->assign("next_timestamp3",strtotime('+21 days',$startperiod));
 			} else if ($viewparams['range'] == "twoweek") {
 				$time= time();
-				$startperiod = exponent_datetime_startOfWeekTimestamp($time);
+				$startperiod = expDateTime::startOfWeekTimestamp($time);
 				$totaldays = 14;				
 				$template->assign("prev_timestamp3",strtotime('-42 days',$startperiod));
 				$template->assign("prev_timestamp2",strtotime('-28 days',$startperiod));
@@ -216,7 +212,7 @@ class calendarmodule {
 				$template->assign("next_timestamp2",strtotime('+28 days',$startperiod));
 				$template->assign("next_timestamp3",strtotime('+42 days',$startperiod));
 			} else {  // range = month
-				$startperiod = exponent_datetime_startOfMonthTimestamp($time);
+				$startperiod = expDateTime::startOfMonthTimestamp($time);
 				$totaldays  = date('t', $time);
 				$template->assign("prev_timestamp3",strtotime('-3 months',$startperiod));
 				$template->assign("prev_timestamp2",strtotime('-2 months',$startperiod));
@@ -242,11 +238,11 @@ class calendarmodule {
 				$edates = $db->selectObjects("eventdate",$locsql." AND date = '".$start."'");
 				$days[$start] = calendarmodule::_getEventsForDates($edates);
 				for ($j = 0; $j < count($days[$start]); $j++) {
-					$thisloc = exponent_core_makeLocation($loc->mod,$loc->src,$days[$start][$j]->id);
+					$thisloc = expCore::makeLocation($loc->mod,$loc->src,$days[$start][$j]->id);
 					$days[$start][$j]->permissions = array(
-						"administrate"=>(exponent_permissions_check("administrate",$thisloc) || exponent_permissions_check("administrate",$loc)),
-						"edit"=>(exponent_permissions_check("edit",$thisloc) || exponent_permissions_check("edit",$loc)),
-						"delete"=>(exponent_permissions_check("delete",$thisloc) || exponent_permissions_check("delete",$loc))
+						"administrate"=>(expPermissions::check("administrate",$thisloc) || expPermissions::check("administrate",$loc)),
+						"edit"=>(expPermissions::check("edit",$thisloc) || expPermissions::check("edit",$loc)),
+						"delete"=>(expPermissions::check("delete",$thisloc) || expPermissions::check("delete",$loc))
 					);
 				}
 				$days[$start] = expSorter::sort(array('array'=>$days[$start],'sortby'=>'eventstart', 'order'=>'ASC'));
@@ -279,7 +275,7 @@ class calendarmodule {
 				$weekday = $infofirst['wday']; // day number in grid.  if 7+, switch weeks
 			}
 			// Grab day counts (deprecated, handled by the date function)
-			// $endofmonth = exponent_datetime_endOfMonthDay($time);
+			// $endofmonth = expDateTime::endOfMonthDay($time);
 			$endofmonth = date('t', $time);
 			for ($i = 1; $i <= $endofmonth; $i++) {
 				$start = mktime(0,0,0,$info['mon'],$i,$info['year']);
@@ -316,21 +312,21 @@ class calendarmodule {
 		} else if ($viewparams['type'] == "administration") {
 			// Check perms and return if cant view
 			if ($viewparams['type'] == "administration" && !$user) return;
-			$continue = (exponent_permissions_check("administrate",$loc) ||
-						exponent_permissions_check("post",$loc) ||
-						exponent_permissions_check("edit",$loc) ||
-						exponent_permissions_check("delete",$loc) ||
-						exponent_permissions_check("approve",$loc) ||
-						exponent_permissions_check("manage_approval",$loc)
+			$continue = (expPermissions::check("administrate",$loc) ||
+						expPermissions::check("post",$loc) ||
+						expPermissions::check("edit",$loc) ||
+						expPermissions::check("delete",$loc) ||
+						expPermissions::check("approve",$loc) ||
+						expPermissions::check("manage_approval",$loc)
 				) ? 1 : 0;
-			$dates = $db->selectObjects("eventdate",$locsql." AND date >= '".exponent_datetime_startOfDayTimestamp(time())."'");
+			$dates = $db->selectObjects("eventdate",$locsql." AND date >= '".expDateTime::startOfDayTimestamp(time())."'");
 			$items = calendarmodule::_getEventsForDates($dates);
 			if (!$continue) {
 				foreach ($items as $i) {
-					$iloc = exponent_core_makeLocation($loc->mod,$loc->src,$i->id);
-					if (exponent_permissions_check("edit",$iloc) ||
-						exponent_permissions_check("delete",$iloc) ||
-						exponent_permissions_check("administrate",$iloc)
+					$iloc = expCore::makeLocation($loc->mod,$loc->src,$i->id);
+					if (expPermissions::check("edit",$iloc) ||
+						expPermissions::check("delete",$iloc) ||
+						expPermissions::check("administrate",$iloc)
 					) {
 						$continue = true;
 					}
@@ -338,12 +334,12 @@ class calendarmodule {
 			}
 			if (!$continue) return;
 			for ($i = 0; $i < count($items); $i++) {
-				$thisloc = exponent_core_makeLocation($loc->mod,$loc->src,$items[$i]->id);
+				$thisloc = expCore::makeLocation($loc->mod,$loc->src,$items[$i]->id);
 				if ($user && $items[$i]->poster == $user->id) $canviewapproval = 1;
 				$items[$i]->permissions = array(
-					"administrate"=>(exponent_permissions_check("administrate",$thisloc) || exponent_permissions_check("administrate",$loc)),
-					"edit"=>(exponent_permissions_check("edit",$thisloc) || exponent_permissions_check("edit",$loc)),
-					"delete"=>(exponent_permissions_check("delete",$thisloc) || exponent_permissions_check("delete",$loc))
+					"administrate"=>(expPermissions::check("administrate",$thisloc) || expPermissions::check("administrate",$loc)),
+					"edit"=>(expPermissions::check("edit",$thisloc) || expPermissions::check("edit",$loc)),
+					"delete"=>(expPermissions::check("delete",$thisloc) || expPermissions::check("delete",$loc))
 				);
 			}
 			$items = expSorter::sort(array('array'=>$items,'sortby'=>'eventstart', 'order'=>'ASC'));
@@ -352,7 +348,7 @@ class calendarmodule {
 			if (!isset($viewparams['range'])) $viewparams['range'] = "all";
 			$items = null;
 			$dates = null;
-			$day = exponent_datetime_startOfDayTimestamp(time());
+			$day = expDateTime::startOfDayTimestamp(time());
 			$sort_asc = true; // For the getEventsForDates call
 			$moreevents = false;
 			switch ($viewparams['range']) {
@@ -380,7 +376,7 @@ class calendarmodule {
 					$dates = array($db->selectObject("eventdate",$locsql." AND date >= $day"));
 					break;
 				case "month":
-					$dates = $db->selectObjects("eventdate",$locsql." AND date >= ".exponent_datetime_startOfMonthTimestamp(time()) . " AND date <= " . exponent_datetime_endOfMonthTimestamp(time()));
+					$dates = $db->selectObjects("eventdate",$locsql." AND date >= ".expDateTime::startOfMonthTimestamp(time()) . " AND date <= " . expDateTime::endOfMonthTimestamp(time()));
 					break;
 			}
 			$items = calendarmodule::_getEventsForDates($dates,$sort_asc,isset($template->viewconfig['featured_only']) ? true : false);
@@ -398,12 +394,12 @@ class calendarmodule {
 //eDebug($items);
 //			}			
 			for ($i = 0; $i < count($items); $i++) {
-				$thisloc = exponent_core_makeLocation($loc->mod,$loc->src,$items[$i]->id);
+				$thisloc = expCore::makeLocation($loc->mod,$loc->src,$items[$i]->id);
 				if ($user && $items[$i]->poster == $user->id) $canviewapproval = 1;
 				$items[$i]->permissions = array(
-					'administrate'=>(exponent_permissions_check('administrate',$thisloc) || exponent_permissions_check('administrate',$loc)),
-					'edit'=>(exponent_permissions_check('edit',$thisloc) || exponent_permissions_check('edit',$loc)),
-					'delete'=>(exponent_permissions_check('delete',$thisloc) || exponent_permissions_check('delete',$loc))
+					'administrate'=>(expPermissions::check('administrate',$thisloc) || expPermissions::check('administrate',$loc)),
+					'edit'=>(expPermissions::check('edit',$thisloc) || expPermissions::check('edit',$loc)),
+					'delete'=>(expPermissions::check('delete',$thisloc) || expPermissions::check('delete',$loc))
 				);
 			}
 			//Get the image file if there is one.

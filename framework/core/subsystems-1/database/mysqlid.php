@@ -497,9 +497,15 @@ class mysqlid_database {
 	 * provided as a last resort.
 	 *
 	 * @param string $sql The SQL query to run
+	 * @param bool $escape
+	 * @return void
 	 */
-	function sql($sql) {        
-		$res = @mysqli_query($this->connection, mysqli_real_escape_string($this->connection, $sql));
+	function sql($sql, $escape = true) {        
+		if($escape == true) {
+			$res = @mysqli_query($this->connection, mysqli_real_escape_string($this->connection, $sql));
+		} else {
+			$res = @mysqli_query($this->connection, $sql);
+		}
         $this->query_time('sql'); 
         return $res;
 	}

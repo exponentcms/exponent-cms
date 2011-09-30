@@ -21,7 +21,7 @@
 
 {/css}
 
-<div class="module administration htmleditoranager">
+<div class="module administration htmleditor">
     <div class="info-header">
         <div class="related-actions">
 			<a class="add" href="{link module="expHTMLEditor" action="edit"}">{"Create New Configuration"|gettext}</a>

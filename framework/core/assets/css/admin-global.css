@@ -123,14 +123,17 @@ a.manage {
 }
 
 a.reranklink {
+	text-transform:capitalize;
     background: url(../images/rerank.png) no-repeat 0 50%;
 }
 
 a.revisions {
+	text-transform:capitalize;
     background: url(../images/revisions.png) no-repeat 0 50%;
 }
 
 a.view {
+	text-transform:capitalize;
     background: url(../images/view.png) no-repeat 0 50%;
 }
 
@@ -156,6 +159,8 @@ a.view {
     border:0;
     margin-bottom:0;
     padding:0;
+    margin-right:0;
+    
 }
 .exp-skin-tabview .yui-navset-top .yui-nav li a {
     text-decoration:none;
@@ -239,6 +244,55 @@ a.view {
     display:none;
 }
 
+/* simple ajax tabs */
+
+ul.exp-ajax-tabs,
+ul.exp-ajax-tabs li {
+    list-style:none;
+    margin:0;
+    padding:0;
+    display:inline-block;
+    *display:inline;
+    zoom:1;
+    vertical-align:top;    
+}
+
+ul.exp-ajax-tabs li a {
+    display:inline-block;
+    *display:inline;
+    zoom:1;
+    vertical-align:top;
+    padding:5px 4px 4px 8px;
+    color:#333;
+    font-style:normal;
+    font-family:arial;
+    font-size:10px;
+    font-weight:bold;
+    text-align:center;
+    text-shadow:1px 1px 0px #fff;
+    text-decoration:none;
+	background: #eae6df url(../images/button/gradient.png) repeat-x; 
+       -moz-border-radius: 3px; 
+    -webkit-border-radius: 3px; 
+            border-radius: 3px; 
+    border:1px solid #cdcdcd;
+    margin:0 0 2px 0;
+}
+
+ul.exp-ajax-tabs li a.current {
+    color:#ffffff;
+	background-color:#081939; 
+    text-shadow:none;
+}
+
+div.exp-ajax-tabs-content {
+    padding:10px;
+    margin:0;
+    border:1px solid #888;
+       -moz-border-radius: 5px; 
+    -webkit-border-radius: 5px; 
+            border-radius: 5px; 
+}
 
 /****************  tables  ***********************/
 

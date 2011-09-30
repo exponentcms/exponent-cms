@@ -1,7 +1,7 @@
 {css unique="general-ecom" link="`$smarty.const.PATH_RELATIVE`framework/modules/ecommerce/assets/css/ecom.css"}
 
 {/css}
-{css unique="report-builder" link="`$smarty.const.PATH_RELATIVE`framework/modules/ecommerce/assets/css/report-builder.css"}
+{css unique="report-builder" link="`$smarty.const.PATH_RELATIVE`framework/modules/ecommerce/assets/css/report-builder.css" corecss="button"}
 
 {/css}
 
@@ -70,13 +70,13 @@
             <tr class="odd">
                 <td>
                     {control type="dropdown" name="order-range-op" label="An Order ID..." items="Equal to,Less than,Greater than" values="e,l,g"}
-                    {control type="text" name="order-range-num" label=" " value=$record->orn class="collapse orn"}
+                    {control type="text" name="order-range-num" value=$record->orn class="collapse orn"}
                 </td>
             </tr>
              <tr class="even">
                  <td>
                     {control type="dropdown" name="order-price-op" label="An Order Value..." items="Equal to,Less than,Greater than" values="e,l,g"}
-                    {control type="text" name="order-price-num" label=" " value=$record->opn class="collapse orn"}
+                    {control type="text" name="order-price-num" value=$record->opn class="collapse orn"}
                 </td> 
             </tr>
             <tr class="odd">
@@ -119,15 +119,15 @@
             </tr>
             <tr class="even">
                 <td>
-                    {control type=radiogroup columns=2 name="bl-sp-zip" label=" " items="By Billing,or Shipping Zipcode:" values="b,s"  default=$record->bl-sp-zip|default:"s"}
-                    {control type="text" name="zip" label=" " size=7 value=$record->zip class="collapse"}
+                    {control type=radiogroup columns=2 name="bl-sp-zip" items="By Billing,or Shipping Zipcode:" values="b,s"  default=$record->bl-sp-zip|default:"s"}
+                    {control type="text" name="zip" size=7 value=$record->zip class="collapse"}
                 </td>
             </tr>
             <tr class="odd">
                 <td>
-                    {control type=radiogroup columns=2 name="bl-sp-state" label=" " items="By Billing,or Shipping State:" values="b,s"  default=$record->bl-sp-zip|default:"s"}
-                    {*control type="dropdown" name="state" label=" " size=4 multiple=true items=$states class="collapse" include_blank=true*} 
-                    {control type="state" name="state" label=" " all_us_territories=true exclude="6,8,10,17,30,46,50" size=4 multiple=true class="collapse" includeblank=true} 
+                    {control type=radiogroup columns=2 name="bl-sp-state" items="By Billing,or Shipping State:" values="b,s"  default=$record->bl-sp-zip|default:"s"}
+                    {*control type="dropdown" name="state" size=4 multiple=true items=$states class="collapse" include_blank=true*} 
+                    {control type="state" name="state" all_us_territories=true exclude="6,8,10,17,30,46,50" size=4 multiple=true class="collapse" includeblank=true} 
                 </td>
             </tr>
            
@@ -143,7 +143,7 @@
             </tr>
             <tr class="even">
                 <td>
-                    <a id="submit-report" href="#" onclick="document.reportform.submit(); return false;" class="btn"><strong><em>Generate Report</em></strong></a>
+                    <a id="submit-report" href="#" onclick="document.reportform.submit(); return false;" class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}"><strong><em>Generate Report</em></strong></a>
                 </td>
             </tr>
         </tbody>

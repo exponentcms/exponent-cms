@@ -502,9 +502,11 @@ class product extends expRecord {
     
     public function getForm($form) {        
         $dirs = array(
-            BASE.'themes/'.DISPLAY_THEME_REAL.'/modules/ecommerce/products/views/'.$this->product_type.'/',
+//            BASE.'themes/'.DISPLAY_THEME_REAL.'/modules/ecommerce/products/views/'.$this->product_type.'/',
+            BASE.'themes/'.DISPLAY_THEME.'/modules/ecommerce/products/views/'.$this->product_type.'/',
             BASE.'framework/modules/ecommerce/products/views/'.$this->product_type.'/',
-            BASE.'themes/'.DISPLAY_THEME_REAL.'/modules/ecommerce/products/views/product/',
+//            BASE.'themes/'.DISPLAY_THEME_REAL.'/modules/ecommerce/products/views/product/',
+            BASE.'themes/'.DISPLAY_THEME.'/modules/ecommerce/products/views/product/',
             BASE.'framework/modules/ecommerce/products/views/product/',
         );
         
@@ -594,8 +596,10 @@ class product extends expRecord {
             if (!empty($this->childProduct) && count($this->childProduct) == 0) return false;
             else return true;    
         }else{
-            $sql = "SELECT id from " . DB_TABLE_PREFIX . "_product WHERE parent_id=" . $this->id;
-            $count = $db->queryRows($sql);
+            //$sql = "SELECT id from " . DB_TABLE_PREFIX . "_product WHERE parent_id=" . $this->id;           
+            $count = $db->countObjects("product","parent_id=" . $this->id);
+            //eDebug($count);
+            //$count = $db->queryRows($sql);
             if ($count > 0) return true;
             else return false;
         }   

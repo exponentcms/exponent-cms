@@ -19,7 +19,7 @@
 
 if (!defined('EXPONENT')) exit('');
 
-if (exponent_permissions_check('order_modules',$loc)) {
+if (expPermissions::check('order_modules',$loc)) {
 //	$db->switchValues('container','rank',$_GET['a'],$_GET['b'],"external='".serialize($loc)."'");
 	$object_a = $db->selectObject('container',"rank='".$_GET['a']."' AND external='".serialize($loc)."'");
 	$object_b = $db->selectObject('container',"rank='".$_GET['b']."' AND external='".serialize($loc)."'");

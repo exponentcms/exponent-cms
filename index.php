@@ -41,6 +41,9 @@ $i_start = $microtime_str[0] + $microtime_str[1];
 // Initialize the Exponent Framework
 require_once('exponent.php');
 
+//active global timer if in DEVELOPMENT mode
+if(DEVELOPMENT) $timer = new expTimer();    
+
 // if the user has turned on sef_urls then we need to route the request, otherwise we can just 
 // skip it and default back to the old way of doing things.
 $router->routeRequest();
@@ -63,7 +66,8 @@ if (ENABLE_TRACKING) $router->updateHistory($section);
 header("Content-Type: text/html; charset=".LANG_CHARSET);
 
 // Check to see if we are in maintenance mode.
-if (MAINTENANCE_MODE && !$user->isAdmin() && ( !isset($_REQUEST['module']) || $_REQUEST['module'] != 'loginmodule')) {
+//if (MAINTENANCE_MODE && !$user->isAdmin() && ( !isset($_REQUEST['module']) || $_REQUEST['module'] != 'loginmodule')) {
+if (MAINTENANCE_MODE && !$user->isAdmin() && ( !isset($_REQUEST['controller']) || $_REQUEST['controller'] != 'login')) {
 	//only admins/acting_admins are allowed to get to the site, all others get the maintenance view
 	$template = new standalonetemplate('_maintenance');
 	$template->output();
@@ -72,7 +76,7 @@ if (MAINTENANCE_MODE && !$user->isAdmin() && ( !isset($_REQUEST['module']) || $_
 	//the default user is anonymous
 	if (!expSession::loggedIn()) {
 		//TODO: Maxims initial anonymous user implementation
-		//exponent_users_login("anonymous", "anonymous");
+		//user::login("anonymous", "anonymous");
 	}
 
 	// check to see if we need to install or upgrade the system

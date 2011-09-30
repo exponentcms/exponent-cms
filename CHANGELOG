@@ -2,196 +2,27 @@ Exponent Content Management System
 Copyright (c) 2004-2011 OIC Group, Inc.
 ===============================================
 
+Added / Fixed / changed for 2.0.1
+-----------------------
+# This release focuses on adding new features to and fixing problems with the first stable release
+# (major change) YUI Loader changed to 'yui2in3', YUI3 updated to v3.4.0
+  - Custom themes/views must be updated to new YUI2 loading method
+# Several other 3rd party libraries updated
+  - SwiftMail v4.1.2 (adds secure connection protocol selection: SSL, TLS, or none)
+  - CKeditor v3.6.2 (adds iOS5 support)
+  - MagPieRSS feedreader class replaced by SimplePie class
+# Several critical issues and other bugs fixed
+  - Includes several file manager fixes and tweaks
+# Theme engine updated to include theme previewing, configuration, style variations, and mobile theme variations
+  - Adds new user configurable Multi-Options theme
+	-- Demonstrates the new FlyoutYUI Login view (note the green icon near the upper left corner)
+  - Adds selectable style variations to SimpleTheme
+	-- includes an example barebones Mobile theme variation (view the site on an iPhone or Android)
+# Twitter module updated to better mimic twitter.com view, includes retweet features
+# Many ecommerce updates
+# Deprecates several 1.0 style subsystems & modules including administration & login modules
+  - Custom themes/views must be updated to reference login controller instead of loginmodule
+
 Added / Fixed / changed for 2.0.0 (stable)
 -----------------------
-# This release focuses on final distribution of a stable version
-# Adds database and file import/export; includes installation with optional sample content
-# Updates several modules including Ecommerce
-	• Fixes RC2 bugs, and completes implementation of style changes
-	• New on-screen instructions for obtaining needed external settings (keys) w/ links to obtain them
-	• Now places all temp files in 'tmp' folder and all uploads in 'files' folder
-	• Revised and configurable Twitter view with many options; can now send tweets
-	• More subsystems migrated to 2.0 format deprecating the 1.0 version, including language support
-	• Better error checking in 3rd party libraries (mail & twitter)
-	• Better migration of 0.9x data
-
-Added / Fixed / changed for 2.0.0 release candidate 2
------------------------
-# This release focuses on bug fixing
-# Major revision of actual folder layout to better conform to 2.0 design goals
-	• 'datatypes' (folders) are now 'models' and also allowed within module folders (along w/ definitions)
-	• old-school (1.0) modules moved to framework folder and given a '-1' suffix
-	• old-school (1.0) models & subsystems moved inside framework/core folder and given a '-1' suffix
-	• framework/models (2.0) moved inside and combined with framework/core/models folder
-	• Smarty /plugins, /themes/common, and global /views files moved various places inside framework folder
-	• 'page loading' process streamlined; several root folder files consolidated/merged
-# Many old-school (1.0) items were deprecated and/or updated to 2.0 format
-	• Several old-school (1.0) subsystems were deprecated and/or migrated to 2.0 format
-	• Many old-school (1.0) unused files and code (PHP4) was deprecated and/or deleted
-	• 3rd party libraries (/external) updated to latest stable versions
-	• New language system more completely implemented, esp in slingbar, site configuration, & install/upgrade
-	• FCKeditor now fully deprecated as a WYSIWYG editor option
-# Gravatar.com option added to user profile avatars
-# Many, many other tweaks and fixes
-
-Added / Fixed / changed for 2.0.0 release candidate 1
------------------------
-# This release focuses on stabilization and fixing brokenness
-	• Many tweaks to Ecommerce
-	• Permissions (cascading) problems fixed
-	• Adds a new 'Data' view to form module
-	• Minor updates to the install/upgrade process
-	• Page-loading process streamlined
-	• 3rd party libraries updated - Minfy, Swiftmail, MagpieRSS, SWFObject
-	• Many deprecated (1.0) files and functions removed from package
-	• Many, many other tweaks and fixes
-
-Added / Fixed / changed for 2.0.0 beta 4
------------------------
-# This release includes an emphasis on the permission system and a major update to the Ecommerce system
-# Notable Module fixes and improvements
-    • Massive work done on the Ecommerce system, bringing it very close to being stable and usable out of the box.
-    • Blog module updated; also better use of tags and comments
-    • Better implementation of database interaction (mysqli only @tt)
-    • More robust api documentation - new api.exponentcms.org site is now online
-    • Changes to promote better internationalization (utf8) support, esp. in forms
-    • Added a new "showcase view" to the file displayer
-    • More consistent "asset" file organization
-    • Scrubbed code to be (more) fully php v5.3+ compliant
-    • Revised "Exponent" menu to be more intuitive & added some commands
-    • Migration now can import permissions from old site, and better handle pre-0.97 pages and missing data
-    • Headline module deprecated (still exists, but text module is better choice)
-    • Updates to the help module to allow better management of exponent doc site
-    • Fixed issue where "Flash" objects would cover drop-down menus
-    • Minor tweaks to the revised installation and upgrade process
-    • Cleaned up several page displays and "tabs" styling
-    • Added a minor "fix database" routine to the "Exponent" menu and during upgrades
-    • Many, many other tweaks and fixes
-
-Added / Fixed / changed for 2.0.0 beta 3
------------------------
-# Help: Added help links to most of the management screens with associated page implemented on the help/docs site.
-# Fixed a reported security vulnerability
-# Notable Module fixes and improvements
-    • Migration: Adds option to migrate page permissions. Changed migration of headlines to text items in preparation for headline controller deprecation. Added some error checking and fixes prior to migration of old database. Adds rss feedlistmodule migration.
-    • Photo Album: Upgraded code quality to Stable. Improvements to photo album gallery view.
-    • Code Snippet: Adds multiple item capability to module and new "highlight text" action
-    • Forms: Displays number of records next to View Data link. Resets report columns to "all" whenever a new control is added to keep new field from seeming hidden or not saved. Fixes error thrown by checkbox control.
-    • CKEditor (WYSIWYG): Upgraded to v3.6, fixes issues where dialogues won't close. Adds toolbar skin selection, spell-checking-as-you-type, and formatted pasting to CKEditor (site configuration controlled). Fixes several problems with custom toolbar manager. Moves toolbar configuration to the wysiwyg tab of site configuration.
-    • Added per-module thumbnail jpeg quality setting for files and photoalbums slideshows and galleries. Adds user adjusted thumbnail quality (jpeg compression level) to site configuration display tab.
-    • Adds horizontal scrolling to user/group permissions and form module view data.  Previously these tables flowed over the side of the column and looked ugly.
-    • Changes summaries to allow breaks and add links where applicable
-    • Fixed "Cannot delete items from recycle bin/archived modules"
-    • Removed button color and size settings from the site config, replaced by the ability to define constants in the theme.
-    • Swiftmailer now compatible with PHP v5.3 (after reverting to older version)
-    • Adds PHP version and preliminary 'report a bug' to Exponent menu
-    • Fixes checkbox control readonly (which is actually disabled)
-    • Fixes problem of removing all permissions from a user or group once a permission is assigned.
-    • Standardizes wording used on many pages
-    • Changes default content view type in blog, filedownloads, news, & portfolio to full body.  All selectable as full, summary, or none.
-
-Added / Fixed / changed for 2.0.0 beta 2.1
------------------------
-# Fixed an observed security vulnerability
-
-Added / Fixed / changed for 2.0.0 beta 2
------------------------
-# Notable improvements and additions
-    • Included version of YUI 3 upgraded to 3.3.0.
-    • Retrofitting of all module views.
-        - integration of pagination configuration.
-        - Integration of File Displayer to many modules to be configured by File Tab in Configuration.
-        - Style and class name consistency system-wide.
-    • Added visual styling for buttons based off "Super Awesome Buttons".
-        - http://www.zurb.com/playground/super-awesome-buttons.
-    • Major cosmetic cleanup to the installer.
-    • Major cosmetic cleanup to permission management system-wide.
-		- Note: Beta 3 will target definition and completion of permission management.
-    • More migration script enhancements.
-		- Adds banner, rss configuration, rss feedlist, and addressbook migration.
-		- Properly uses module aggregation replacing the "use existing" content method in pre-2.0 code
-    • Admin Slingbar additions.
-        - Added system Information under Exponent Menu.
-        - Re-arranged and permissioned for better administrative task grouping.
-    • Additional Antispam Re-captcha usage options in site configuration.
-    • Fixes bad file names containing invalid characters upon upload.
-    • File Manager window no longer automatically resizes itself upon opening.
-    • Message Queue stacking now supported.
-    • Many more bug fixes.
-
-Added / Fixed / changed for 2.0.0 beta 1.1
------------------------
-# Notable Module improvements and additions
-    • Fixed metas in <head> to output correct version
-    • Fixed help links for when the help system is enabled
-    • Youtube and Media Player Modules migration scripts added
-
-Added / Fixed / changed for 2.0.0 beta 1
------------------------
-# Security
-    • YUI SWF Replacement
-    • Podcast file vulnerability
-    • Recycle Bin properly permissioned
-
-# Performance
-    • Turned off user tracking for performance reasons and lack of full implementation.
-    • Removal of YUI PHP loader to calculate YUI JS dependencies, as YUI now has conditional loading
-      based on the browser that YUI PHP Loader cannot accomplish.
-    • Minification system enhanced
-
-# System
-    • Installer no longer allows the option for anything other than MySQLi as a database option.
-    • Migration scripts drastically enhanced.
-    • Added support for placing datatypes (and definitions partially) inside a module's directory.
-    • Ability to change your password, and other users as an admin, fixed.
-    • Added ability for users in a group to be directed to a specified page on login.
-    • Added message to edit form when attempting to change the view, but the module has since been deactivated.
-    • File Displayer plugin cleaned up and standardized
-
-# Notable Module improvements and additions
-    • Text
-        + Makes use of Files config for enabling and configuring attachable files
-        + YUI3 Tabs View added
-    • Container Module
-        + 2 and 3 column views fixed to display correctly.
-        + Container in Tabview Added
-    • Navigation Module
-        + "Siblings and Current Children" view added.
-    • Flow Player Module
-        + View cleanup
-    • Form Module
-        + CSV Export
-    • Calendar
-        + iCal Export added
-    • Blog
-        + Made sourceless by default so that aggregation isn't needed to display
-
-# Cross Browser Compatibility
-    • Many Internet Explorer bug fixes
-
-# Language
-    • Initial start for new Language system implemented
-
-Added / Fixed / changed for 2.0.0 Preview Release 2
------------------------
-# Attachable Items are no longer included “for free” when instantiating expRecord and subclasses (for speed and optimization). It’s now up to the developer to specify the particular attachable item types in the $attachable_item_types array.
-# No longer toggling magnification upon toggling upon toggling error reporting (DEVELOPMENT, 1). “Toggle Minify” is now located in the Slingbar under Exponent > Developer Tools > Toggle Minify.
-# Minified Style Sheets are no longer stored in tmp/css/exp-styles-min.css. Exponent now uses the built-in caching system built in to Minify.
-# No longer reading CSS files from themes/common/css
-# Core system assets (css, images, javascript) are now located in framework/core/assets
-# Module assets are kept in framework/modules/$module/assets/[css/javascript/images]
-# PHP YUI Loader is now used to calculate YUI 2 and 3 dependencies on the server-side, rather than the YUI JS Loader.
-# exponent_theme_headerInfo() has been deprecated for expTheme::head().
-# The $config array passed to expTheme::head($config) has changed.
-# exponent_theme_main() has been deprecated in favor of expTheme::main();
-# exponent_theme_showModule(), exponent_theme_showSectionalModule(), exponent_theme_showTopSectionalModule(), and expTheme::showController() have all been deprecated in favor of expTheme::module();
-# The Default WYSIWYG Editor has been changed to CKEditor.
-# The current toolbar builder isn’t GUI friendly, but moderately easy learning curve. look at : http://docs.cksource.com/CKEditor_3.x/Developers_Guide/Toolbar for creating your own editor configuration. You’ll only want what’s inside the initial square braces “[“.
-# A close button has been added to the message queue.
-# New Administrative Chrome styles.
-# The “This Page and This Modules” menu in the Slingbar has been renamed to “Pages” and is no longer context sensitive to alleviate confusion.
-# Many architectural adjustments within core-level code we made for speed, optimization, and overall compatibility reasons.
-# Many module’s views and styles have been adjusted as we continue to nail down module development patterns and best practices.
-# Many “old school” (1.0 codeline) modules have been removed from the distributed package for incompatibility reasons.
-# “Site Configuration” within the Slingbar’s Exponent > Configure > Configure Site option has been overhauled and made more user friendly.
-# The savability of site configurations has been removed (so back up conf/config.php manually if you ever used that feature).
+# The first stable release

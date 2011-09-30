@@ -37,7 +37,7 @@
  *  ));
  * </code>
  * 
- * @subpackage Core-Subsytems
+ * @subpackage Core-Subsystems
  * @package Framework
  */ 
 class expPaginator {
@@ -181,7 +181,8 @@ class expPaginator {
             //we'll run the standard sql and do a queryRows with it
             
 			//$this->total_records = $this->count_sql == '' ? $db->queryRows($this->sql) : $db->selectValueBySql($this->count_sql); //From Merge
-			$this->total_records = $db->queryRows($this->sql); //From most current Trunk
+                        
+			$this->total_records =  $db->countObjectsBySql($this->count_sql); //$db->queryRows($this->sql); //From most current Trunk            
 			if ($this->start > $this->total_records) {
 				$this->start = $this->total_records - $this->limit;
 			}
@@ -407,7 +408,6 @@ class expPaginator {
                     
                     expJavascript::pushToFoot(array(
                         "unique"=>'select-all',
-                        "yui2mods"=>'',
                         "yui3mods"=>null,
                         "content"=>$js,
                         "src"=>""

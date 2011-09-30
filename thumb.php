@@ -35,6 +35,6 @@ if (!defined('SYS_SESSION_KEY')) define('SYS_SESSION_KEY',PATH_RELATIVE);
         unset($_GET['id']);
         unset($_GET['square']);
     }                                                                                              
-    require(BASE."external/phpThumb/phpThumb.php");
+    require_once(BASE."external/phpThumb/phpThumb.php");
 
 ?>

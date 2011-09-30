@@ -23,7 +23,7 @@ class formbuilder_form {
 		global $db;
 		//global $user;
 		require_once(BASE.'framework/core/subsystems-1/forms.php');
-		require_once(BASE.'framework/core/subsystems-1/users.php');
+//		require_once(BASE.'framework/core/subsystems-1/users.php');
 
 		$form = new form();
 		if (!isset($object->id)) {
@@ -54,7 +54,7 @@ class formbuilder_form {
     	$defaults = array();
 		$users = user::getAllUsers();
 		foreach ($db->selectObjects('formbuilder_address','form_id='.$object->id.' and user_id != 0') as $address) {
-			$locuser =  exponent_users_getUserById($address->user_id);
+			$locuser =  user::getUserById($address->user_id);
 			$defaults[$locuser->id] = $locuser->firstname . ' ' . $locuser->lastname . ' (' . $locuser->username . ')';
 		}
 		foreach ($users as $locuser) {
@@ -67,10 +67,10 @@ class formbuilder_form {
 		// Get Group list
 		$grouplist = array();
 		$defaults = array();
-		$groups = user::getAllGroups();
+		$groups = group::getAllGroups();
 		if ($groups != null) {
 			foreach ($db->selectObjects('formbuilder_address','form_id='.$object->id.' and group_id != 0') as $address) {
-				$group =  exponent_users_getGroupById($address->group_id);
+				$group =  group::getGroupById($address->group_id);
 				$defaults[$group->id] = $group->name;
 			}
 			foreach ($groups as $group) {

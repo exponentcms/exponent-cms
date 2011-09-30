@@ -19,32 +19,7 @@
         	<h1>Edit Store Category</h1>
         	<p>Complete and save the form below to configure this store category</p>
 	</div>
-    
-    {script unique="cattabs" yuimodules="tabview, element"}
-    {literal}
-        var tabView = new YAHOO.widget.TabView('demo');
         
-        var url = location.href.split('#');
-        if (url[1]) {
-            //We have a hash
-            var tabHash = url[1];
-            var tabs = tabView.get('tabs');
-            for (var i = 0; i < tabs.length; i++) {
-                if (tabs[i].get('href') == '#' + tabHash) {
-                    tabView.set('activeIndex', i);
-                    break;
-                }
-            }
-        }
-        
-        
-        YAHOO.util.Dom.removeClass("editcategory", 'hide');
-        var loading = YAHOO.util.Dom.getElementsByClassName('loadingdiv', 'div');
-        YAHOO.util.Dom.setStyle(loading, 'display', 'none');
-        
-    {/literal}
-    {/script}
-    
 	{if $node->id == ""}
 		{assign var=action value=create}
 	{else}
@@ -60,10 +35,11 @@
 				<li class="selected"><a href="#general"><em>General</em></a></li>
 				<li><a href="#seo"><em>Meta Info</em></a></li>
 				<li><a href="#events"><em>Events</em></a></li>
-				<li><a href="#bing_product_types"><em>Bing Product Types</em></a></li>
-				<li><a href="#google_product_types"><em>Google Product Types</em></a></li>
-				<li><a href="#nextag_product_types"><em>Nextag Product Types</em></a></li>
-				<li><a href="#shopzilla_product_types"><em>Shopzilla Product Types</em></a></li>
+				{if $product_types}
+					{foreach from=$product_types key=key item=item}
+						<li><a href="#{$item}"><em>{$key} Product Types</em></a></li>
+					{/foreach}
+				{/if}
             </ul>            
             <div class="yui-content">
                 <div id="general">   
@@ -82,28 +58,45 @@
                     {control type="checkbox" name="is_events" label="This category is used for events" value=1 checked=$node->is_events}                        
                     {control type="checkbox" name="hide_closed_events" label="Don't Show Closed Events" value=1 checked=$node->hide_closed_events}
                 </div>  
-				<div id="bing_product_types">	
-					<h1>Bing Product Types</h1>
-					{$product_types.bing}
-				</div>
-				<div id="google_product_types">	
-					<h1>Google Product Types</h1>
-					{$product_types.google}
-				</div>
-				<div id="nextag_product_types">	
-					<h1>Nextag Product Types</h1>
-					{$product_types.nextag}
-				</div>
-				<div id="shopzilla_product_types">	
-					<h1>Shopzilla Product Types</h1>
-					{$product_types.shopzilla}
-				</div>
+				{if $product_types}
+					{foreach from=$product_types key=key item=item}
+					<div id="{$item}">	
+						<h1>{$key} Product Types</h1>
+						{$product_type.$item}
+					</div>
+					{/foreach}
+				{/if}
             </div>    
         </div>
         {control type=buttongroup submit=Save cancel=Cancel}
         {/form}                      
 </div>
 <div class="loadingdiv">Loading</div> 
-{script unique="listbuilder" src="framework/core/subsystems-1/forms/controls/listbuildercontrol.js"}
-
+{script unique="cattabs" src="framework/core/subsystems-1/forms/controls/listbuildercontrol.js"}
+{literal}
+YUI(EXPONENT.YUI3_CONFIG).use('node','event','yui2-tabview','yui2-element', function(Y) {
+    var YAHOO=Y.YUI2;
+    var tabView = new YAHOO.widget.TabView('demo');
+    
+    var url = location.href.split('#');
+    if (url[1]) {
+        //We have a hash
+        var tabHash = url[1];
+        var tabs = tabView.get('tabs');
+        for (var i = 0; i < tabs.length; i++) {
+            if (tabs[i].get('href') == '#' + tabHash) {
+                tabView.set('activeIndex', i);
+                break;
+            }
+        }
+    }
+    
+    
+    YAHOO.util.Dom.removeClass("editcategory", 'hide');
+    var loading = YAHOO.util.Dom.getElementsByClassName('loadingdiv', 'div');
+    YAHOO.util.Dom.setStyle(loading, 'display', 'none');
+});    
+{/literal}
 {/script}
+
+

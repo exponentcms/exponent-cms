@@ -23,6 +23,6 @@ require_once('exponent.php');
 
 //Fire off the login form via an exponent action.
 expSession::set('redirecturl', expHistory::getLastNotEditable());
-redirect_to(array("module"=>"loginmodule","action"=>"loginredirect"));
+redirect_to(array("controller"=>"login","action"=>"loginredirect"));
 
 ?>

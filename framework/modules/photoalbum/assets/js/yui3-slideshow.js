@@ -285,7 +285,7 @@ YUI.add('gallery-yui-slideshow', function(Y) {
 			
 			if (this.pagination!=false) {
 			    linkParent.get('children').removeClass('current');
-			    linkParent.one('[rel='+this.currentSlide+']').addClass('current');
+			    linkParent.one('[rel="'+this.currentSlide+'"]').addClass('current');
 			};
 			
 			var oOutAnim = new Y.Anim(oOutAnimObject);
@@ -386,7 +386,7 @@ YUI.add('gallery-yui-slideshow', function(Y) {
 		}
 		if(this.pagination !== false){
 		    var linkParent = Y.one(this.pagination).get('parentNode');
-            linkParent.one('[rel=0]').addClass('current');
+            linkParent.one('[rel="0"]').addClass('current');
             
 			Y.on('click', function(e){
 			    e.halt();

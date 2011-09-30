@@ -93,8 +93,8 @@ class calendarcontrol extends formcontrol {
         ";
         
         $script = "
-        YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
-
+        YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event','yui2-button','yui2-calendar','yui2-container','yui2-dragdrop','yui2-slider', function(Y) {
+            var YAHOO=Y.YUI2;
             var Event = YAHOO.util.Event,
                 Dom = YAHOO.util.Dom,
                 dialog,
@@ -132,9 +132,9 @@ class calendarcontrol extends formcontrol {
                     Event.on(document, \"click\", function(e) {
                         var el = Event.getTarget(e);
                         var dialogEl = dialog.element;
-                        if (el != dialogEl && !Dom.isAncestor(dialogEl, el) && el != showBtn && !Dom.isAncestor(showBtn, el)) {
-                            dialog.hide();
-                        }
+                        // if (el != dialogEl && !Dom.isAncestor(dialogEl, el) && el != showBtn && !Dom.isAncestor(showBtn, el)) {
+                        //     dialog.hide();
+                        // }
                     });
 
                     function resetHandler() {
@@ -248,10 +248,8 @@ class calendarcontrol extends formcontrol {
 	
         expJavascript::pushToFoot(array(
             "unique"=>'calpop'.$name,
-            "yui2mods"=>"button,calendar,container,dragdrop,slider",
-            "yui3mods"=>null,
-            "content"=>$script,
-            "src"=>""
+            "yui3mods"=>1,
+            "content"=>$script
          ));
          return $html;
     }

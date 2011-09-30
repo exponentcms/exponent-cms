@@ -43,7 +43,7 @@ if ($user && $user->is_acting_admin == 1) {
 	$check_id = $section->parent;
 }
 
-if ($check_id != -1 && exponent_permissions_check('manage',exponent_core_makeLocation('navigationmodule','',$check_id))) {
+if ($check_id != -1 && expPermissions::check('manage',expCore::makeLocation('navigationmodule','',$check_id))) {
 	$form = section::externalAliasForm($section);
 	$form->meta('module','navigationmodule');
 	$form->meta('action','save_externalalias');
@@ -53,7 +53,7 @@ if ($check_id != -1 && exponent_permissions_check('manage',exponent_core_makeLoc
 	// Assign the customary 'is_edit' flag with the template, so that the view can show different
 	// text to the user if they are creating a new alias or editing an existing one.
 	$template->assign('is_edit',isset($section->id));
-	// Assign the form's rendered HTML output to the tempalte using the
+	// Assign the form's rendered HTML output to the template using the
 	// conventional name of 'form_html'.
 	$template->assign('form_html',$form->toHTML());
 	$template->output();

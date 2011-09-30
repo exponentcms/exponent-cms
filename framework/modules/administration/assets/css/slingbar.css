@@ -4,20 +4,24 @@
     left:0px;
     right:0px;
     z-index:50;
-    height:35px;
     display:none;
+    
+    -webkit-box-shadow: 0px 0px 10px rgba(0,0,0,0.5); 
+       -moz-box-shadow: 0px 0px 10px rgba(0,0,0,0.5); 
+            box-shadow: 0px 0px 10px rgba(0,0,0,0.5); 
+
 }
-#admintoolbarmenus:hover {
+#admintoolbar:hover {
    cursor:move;
 }
 
-#admintoolbar table {
+/*#admintoolbar table {
     width:100%;
     margin-bottom:0;
     margin:0 0 0 0;
 }
 #admintoolbar tr {
-	height: 1%;
+    height: 1%;
 }
 #admintoolbar td,
 #admintoolbar td ul li{
@@ -44,7 +48,7 @@
     font-size:1px;
     height:5px;
     line-height:0;
-}
+}*/
 #admintoolbar img {
 	background: none;
 	border: none;
@@ -54,7 +58,7 @@
 
 /****************  the shadow stylage  ***********************/
 
-#admintoolbar table td {
+/*#admintoolbar table td {
     padding:0!important;
     margin:0;
     border:0!important;
@@ -93,7 +97,7 @@
     height:27px;
     background:#dedede;
 }
-
+*/
 /**************** icon styles for slingbar  ***********************/
 
 /* menubar icons */
@@ -104,7 +108,7 @@
 }
 #admintoolbar li.site a.yuimenubaritemlabel {
     padding:0;
-    height:29px;
+/*    height:29px;*/
 }
 
 #admintoolbar li.user a.yuimenubaritemlabel {
@@ -280,7 +284,7 @@
     background-position:3px 50%;
 }
 
-admintoolbar .yuimenu
+#admintoolbar .yuimenu
 {
 	left: -999em;
 	top: -999em;
@@ -442,12 +446,7 @@ admintoolbar .yuimenu
 {
 	background-image: url(../images/admintoolbar/menubaritem_submenuindicator_disabled.png);
 }
-#admintoolbar .yuimenu
-{
-	font-size: 93%;
-	line-height: 1.45;
-	line-height: 1.5;
-}
+
 #admintoolbar .yuimenubar .yuimenu,
 #admintoolbar .yuimenu .yuimenu
 {
@@ -455,15 +454,11 @@ admintoolbar .yuimenu
 }
 #admintoolbar .yuimenu .bd
 {
-	_zoom: normal;
 	background-color: #112971;
 	border: solid 1px #808080;
 	zoom: 1;
 }
-#admintoolbar .yuimenu .yuimenu .bd
-{
-	zoom: normal;
-}
+
 #admintoolbar .yuimenu ul
 {
 	border-color: #ccc;

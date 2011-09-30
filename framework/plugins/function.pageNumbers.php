@@ -17,7 +17,7 @@
 #
 ##################################################
 
-function smarty_function_pageNumbers($params,&$smarty) {
+function smarty_function_pagenumbers($params,&$smarty) {
 	// initialize a couple of variables
 	$page = $params['page']; //just for neater code :-)
 	$class = isset($params['class']) ? $params['class'] : 'page-number';

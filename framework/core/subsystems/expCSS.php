@@ -18,7 +18,7 @@
 /**
  * This is the class expCSS
  *
- * @subpackage Core-Subsytems
+ * @subpackage Core-Subsystems
  * @package Framework
  */
 
@@ -74,7 +74,7 @@ class expCSS {
                  $css_files = array_merge($css_files, $$key);
             };
         };
-        
+
         if (MINIFY!=1) {
             //eDebug($css_files);
             foreach ($css_files as $file) {
@@ -83,11 +83,12 @@ class expCSS {
         } else {
             // if we're minifying, we'll break our URLs apart at MINIFY_URL_LENGTH characters to allow it through 
             // browser string limits
+            $strlen = (ini_get("suhosin.get.max_value_length")==0) ? MINIFY_URL_LENGTH : ini_get("suhosin.get.max_value_length");
             $i = 0;
             $srt = array();
             $srt[$i] = "";
             foreach ($css_files as $file) {
-                if (strlen($srt[$i])+strlen($file)<= MINIFY_URL_LENGTH) {
+                if (strlen($srt[$i])+strlen($file)<= $strlen) {
                     $srt[$i] .= $file.",";
                 } else {
                     $i++;
@@ -123,23 +124,32 @@ class expCSS {
     public function themeCSS() {
         global $css_theme, $head_config;
 
-        $cssdir = BASE.'themes/'.DISPLAY_THEME.'/css/';
+        $cssdirs[] = BASE.'themes/'.DISPLAY_THEME.'/css/';
+        if (THEME_STYLE!="") {
+            $cssdirs[] = BASE.'themes/'.DISPLAY_THEME.'/css_'.THEME_STYLE.'/';
+        }
 
-        if (is_dir($cssdir) && is_readable($cssdir)) {
+        foreach($cssdirs as $key=>$cssdir){
+            $variation = (THEME_STYLE!=''&&$key!=0)?"_".THEME_STYLE:"";
+            
+            if (is_dir($cssdir) && is_readable($cssdir)) {
 
-            if (is_array($head_config['css_theme'])) {
-                foreach($head_config['css_theme'] as $filename){
-                    $cssfile = $filename.".css";
-                    $css_theme[reset(explode(".",end(explode("/",$filename))))."-theme"] = PATH_RELATIVE."themes/".DISPLAY_THEME_REAL."/css/".$cssfile;
-                }
-            } elseif(empty($head_config['css_theme'])) {
-                # do nothing. We're not including CSS from the theme
-            } else {
-                $dh = opendir($cssdir);
-                while (($cssfile = readdir($dh)) !== false) {
-                    $filename = $cssdir.$cssfile;
-                    if ( is_file($filename) && substr($filename,-4,4) == ".css") {
-                        $css_theme[reset(explode(".",end(explode("/",$filename))))."-theme"] = PATH_RELATIVE."themes/".DISPLAY_THEME_REAL."/css/".$cssfile;
+                if (is_array($head_config['css_theme'])) {
+                    foreach($head_config['css_theme'] as $filename){
+                        $cssfile = $filename.".css";
+    //                    $css_theme[reset(explode(".",end(explode("/",$filename))))."-theme"] = PATH_RELATIVE."themes/".DISPLAY_THEME_REAL."/css/".$cssfile;
+                        $css_theme[reset(explode(".",end(explode("/",$filename))))."-theme"] = PATH_RELATIVE."themes/".DISPLAY_THEME."/css/".$cssfile;
+                    }
+                } elseif(empty($head_config['css_theme'])) {
+                    # do nothing. We're not including CSS from the theme
+                } else {
+                    $dh = opendir($cssdir);
+                    while (($cssfile = readdir($dh)) !== false) {
+                        $filename = $cssdir.$cssfile;
+                        if ( is_file($filename) && substr($filename,-4,4) == ".css") {
+    //                        $css_theme[reset(explode(".",end(explode("/",$filename))))."-theme"] = PATH_RELATIVE."themes/".DISPLAY_THEME_REAL."/css/".$cssfile;
+                            $css_theme[$key.reset(explode(".",end(explode("/",$filename))))."-theme".$variation] = PATH_RELATIVE."themes/".DISPLAY_THEME."/css".$variation."/".$cssfile;
+                        }
                     }
                 }
             }

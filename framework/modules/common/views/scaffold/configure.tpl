@@ -16,15 +16,6 @@
 
 
 <div id="config" class="module scaffold configure hide exp-skin-tabview">
-	{script unique="conf" yuimodules="tabview, element"}
-	{literal}
-		var tabView = new YAHOO.widget.TabView('tabs');		
-        YAHOO.util.Dom.removeClass("config", 'hide');
-        var loading = YAHOO.util.Dom.getElementsByClassName('loadingdiv', 'div');
-        YAHOO.util.Dom.setStyle(loading, 'display', 'none');
-	{/literal}
-	{/script}
-	
 	{form action=saveconfig}
 		<div id="tabs" class="yui-navset">
 			<ul class="yui-nav">
@@ -46,3 +37,15 @@
 	{/form}
 </div>
 <div class="loadingdiv">Loading</div>
+
+{script unique="conf" yui3mods=1}
+{literal}
+    YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event','yui2-tabview', function(Y) {
+        var YAHOO=Y.YUI2;
+		var tabView = new YAHOO.widget.TabView('tabs');		
+        YAHOO.util.Dom.removeClass("config", 'hide');
+        var loading = YAHOO.util.Dom.getElementsByClassName('loadingdiv', 'div');
+        YAHOO.util.Dom.setStyle(loading, 'display', 'none');
+    });
+{/literal}
+{/script}

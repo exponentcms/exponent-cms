@@ -41,7 +41,7 @@ if ($user && $user->is_acting_admin == 1) {
 	}
 }
 
-if ($check_id != -1 && exponent_permissions_check('manage',exponent_core_makeLocation('navigationmodule','',$check_id))) {
+if ($check_id != -1 && expPermissions::check('manage',expCore::makeLocation('navigationmodule','',$check_id))) {
 	if (!isset($section->id)) {
 		// Adding pagesets only works for adding, not editting.
 		$form = section::pagesetForm($section);

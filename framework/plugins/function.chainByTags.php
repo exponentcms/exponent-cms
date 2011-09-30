@@ -17,7 +17,7 @@
 #
 ##################################################
 
-function smarty_function_chainByTags($params,&$smarty) {
+function smarty_function_chainbytags($params,&$smarty) {
 	if (empty($params['controller'])) return false;
 
 	// we're expecting these to come in as an array of expTags

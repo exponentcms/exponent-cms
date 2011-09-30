@@ -41,7 +41,7 @@ if (!defined('EXPONENT')) exit('');
 //	foreach ($db->selectObjects("locationref","module='".preg_replace('/[^A-Za-z0-9_]/','',$_GET['module'])."' AND refcount=0") as $orphan) {
 	foreach ($db->selectObjects("sectionref","module='".preg_replace('/[^A-Za-z0-9_]/','',$_GET['module'])."' AND refcount=0") as $orphan) {
 		$obj = null;
-		$loc = exponent_core_makeLocation($orphan->module,$orphan->source,$orphan->internal);
+		$loc = expCore::makeLocation($orphan->module,$orphan->source,$orphan->internal);
 		
 		if (class_exists($orphan->module)) {
 			$modclass = $orphan->module;

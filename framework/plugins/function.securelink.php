@@ -37,7 +37,7 @@ function smarty_function_securelink($params,&$smarty) {
                 }
         }
         if (!isset($params['int'])) $params['int'] = $loc->int;
-	echo exponent_core_makeSecureLink($params);
+	echo expCore::makeSecureLink($params);
 }
 
 ?>

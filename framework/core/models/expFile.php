@@ -22,12 +22,12 @@
   * the record for each file.
   *
   * expFile is an extension of expRecord because File information is stored
-  * in the database for future access and retrival. This class also handles
+  * in the database for future access and retrieval. This class also handles
   * and and all File System handling as well: copy, move, delete, upload,
-  * and importing of data in preperation of data importation. Upload and
+  * and importing of data in preparation of data importation. Upload and
   * import via child classes.
   *
- * @subpackage Core-Datatypes
+ * @subpackage Core-Models
  * @package Framework
   *
   */
@@ -177,7 +177,7 @@ class expFile extends expRecord {
 
    /**
     * Is this file an image.
-    # Defaultes to FALSE
+    # Defaults to FALSE
     *
     * @public
     * @property string $is_image   Is this file an image
@@ -246,10 +246,10 @@ class expFile extends expRecord {
 	 * @PHPUnit Not Defined
 	 *
 	 * @param mixed $params  - If an INT is given, this assumes that it needs to
-	 *                         load an exisiting File Record.
+	 *                         load an existing File Record.
 	 *                       - If an ARRAY is given, this assumes that the elements
 	 *                         of the array are values to the File table that need
-	 *                         to be modifiy or other processing.
+	 *                         to be modified or other processing.
 	 *                       - If NULL is given, an empty File Object is created
 	 *
 	 * @param bool $get_assoc
@@ -280,7 +280,7 @@ class expFile extends expRecord {
             // Place system OS relative path
             $this->path_relative  = PATH_RELATIVE.$this->directory.$this->filename;
 	    } else {
-            // Otherwise, the URL is not set since we can't use it, niether is
+            // Otherwise, the URL is not set since we can't use it, nether is
             // RELATIVE, as 'directory' must be an absolute path in this instance
             // Place system level OS root
             $relpath = str_replace(BASE, '', $this->directory);
@@ -311,7 +311,7 @@ class expFile extends expRecord {
 	/**
 	 * File UPLOAD that also inserts File info into datbase.
 	 *
-	 * File UPLOAD is a straight forward uploader and processer. It can accept
+	 * File UPLOAD is a straight forward uploader and processor. It can accept
 	 * filename and destination directory overrides as well. It has an additional
 	 * pair of flags that allow for an upload NOT to be inserted into the database
 	 * (default to INSERT) and if it previous file, with the same name, should be
@@ -357,23 +357,32 @@ class expFile extends expRecord {
 				// Everything looks good.  Continue with the update.
 				break;
 			case UPLOAD_ERR_INI_SIZE:
-			case images:
+//			case images:
 				// This is a tricky one to catch.  If the file is too large for
                 // POST, then the script won't even run.
 				// But if its between post_max_size and upload_max_filesize,
                 // we will get here.
 				return 'file_too_large';
+			case UPLOAD_ERR_FORM_SIZE:
+				return 'file_exceeds_form_MAX_FILE_SIZ';
 			case UPLOAD_ERR_PARTIAL:
 				return 'partial_file';
 			case UPLOAD_ERR_NO_FILE:
 				return 'no_file_uploaded';
+			case UPLOAD_ERR_NO_TMP_DIR:
+				return 'missing_tmp_folder';
+			case UPLOAD_ERR_CANT_WRITE:
+				return 'failed_write_to_disk';
+			case UPLOAD_ERR_EXTENSION:
+				return 'upload_stopped_by_extension';
 			default:
 				return 'unknown';
 				break;
 		}
 
         // If $_destDir is not defined, use the default Files directory
-        $_destDir = ( $_destDir == null ) ? UPLOAD_DIRECTORY : $_destDir;
+//        $_destDir = ( $_destDir == null ) ? UPLOAD_DIRECTORY : $_destDir;
+        $_destDir = ( $_destDir == null ) ? UPLOAD_DIRECTORY_RELATIVE : $_destDir;
 
 		// If $_destFile is defined, use that name as an override for the
         // uploaded file name
@@ -385,7 +394,7 @@ class expFile extends expRecord {
         // eDebug($_destFile,1);
 		
         // Build destination fille path for future use
-        $_destFullPath = $_destDir . $_destFile;
+        $_destFullPath = BASE.$_destDir . $_destFile;
 		
 		//if the file exists and we don't want to overwrite it, create a new one			
 		if (file_exists($_destFullPath) && $_force == false) {
@@ -414,7 +423,7 @@ class expFile extends expRecord {
 		// At this point, we are good to go.
 		
         // Create a new expFile Object for further processing
-        $_fileParams = array ('filename'  => $_destFile);
+        $_fileParams = array ('filename'  => $_destFile, 'directory' => $_destDir);
         $_objFile = new expFile ( $_fileParams);
 
         // Insert new File Record
@@ -459,25 +468,26 @@ class expFile extends expRecord {
       *
       * @PHPUnit Not Defined|Implement|Completed
       *
-      * @param string $filepath    direct path of the file to check againsts 
+      * @param string $filepath    direct path of the file to check against
       * @return int $newFileName   Name of the file that isn't a duplicate
       * @throws void
       *
       */
       public static function resolveDuplicateFilename($filepath) {
-          $extention = strrchr($filepath, "."); // grab the file extention by looking for the last dot in the string
-          $filnameWoExt = str_replace($extention,"",str_replace("/","",strrchr($filepath, "/"))); // filename sans extention
-          $pathToFile = str_replace($filnameWoExt.$extention,"",$filepath); // path sans filename
+          $extension = strrchr($filepath, "."); // grab the file extention by looking for the last dot in the string
+          $filnameWoExt = str_replace($extension,"",str_replace("/","",strrchr($filepath, "/"))); // filename sans extention
+          $pathToFile = str_replace($filnameWoExt.$extension,"",$filepath); // path sans filename
           
           $i = "";
-          while (file_exists($pathToFile.$filnameWoExt.$inc.$extention)) {
+          $inc = "";
+          while (file_exists($pathToFile.$filnameWoExt.$inc.$extension)) {
               $i++;
               $inc = "-".$i;
           }
           
           //we'll just return the new filename assuming we've 
           //already got the path we want on the other side
-          return $filnameWoExt.$inc.$extention;
+          return $filnameWoExt.$inc.$extension;
       }
 
    /**
@@ -622,7 +632,7 @@ class expFile extends expRecord {
 	 * is in place, however.
 	 *
 	 * @param string $filename The path/filename of the image.
-	 * @node Subsystems:expFile
+	 * @node Model:expFile
 	 */
 	public static function openImageFile($filename) {
 		if (!EXPONENT_HAS_GD) return null;
@@ -656,7 +666,7 @@ class expFile extends expRecord {
 	 *
 	 * @param integer $w Width of the image resource to create (in pixels)
 	 * @param integer $h Height of the image resource to create (in pixels)
-	 * @node Subsystems:Image
+	 * @node Model:expFile
 	 */
 	public static function imageCreate($w,$h) {
 		if (!EXPONENT_HAS_GD) {
@@ -685,7 +695,7 @@ class expFile extends expRecord {
 	 *
 	 * @param integer $w Width of the image resource to create (in pixels)
 	 * @param integer $h Height of the image resource to create (in pixels)
-	 * @node Subsystems:Image
+	 * @node Model:expFile
 	 */
 	function copyToDirectory($destination) {
 	    //eDebug($this,true);
@@ -712,7 +722,7 @@ class expFile extends expRecord {
 	 *
 	 * @param string $filename The path/filename of the image to scale.
 	 * @param decimal $scale The scaling factor, as a decimal (i.e. 0.5 for 50%)
-	 * @node Subsystems:Image
+	 * @node Model:expFile
 	 */
 	public static function imageScaleByPercent($filename,$scale) {
 		$sizeinfo = self::getImageInfo($filename);
@@ -747,7 +757,7 @@ class expFile extends expRecord {
 	 *
 	 * @param string $filename The path/filename of the image to scale.
 	 * @param integer $width The desired width of the scaled image, in pixels.
-	 * @node Subsystems:Image
+	 * @node Model:expFile
 	 */
 	public static function imageScaleToWidth($filename,$width) {
 		$sizeinfo = self::getImageInfo($filename);
@@ -781,7 +791,7 @@ class expFile extends expRecord {
 	 *
 	 * @param string $filename The path/filename of the image to scale.
 	 * @param integer $height The desired height of the scaled image, in pixels.
-	 * @node Subsystems:Image
+	 * @node Model:expFile
 	 */
 	public static function imageScaleToHeight($filename,$height) {
 		$sizeinfo = self::getImageInfo($filename);
@@ -817,7 +827,7 @@ class expFile extends expRecord {
 	 * @param string $filename The path/filename of the image to scale.
 	 * @param integer $width The maximum width of the scaled image, in pixels.
 	 * @param integer $height The maximum height of the scaled image, in pixels.
-	 * @node Subsystems:Image
+	 * @node Model:expFile
 	 */
 	public static function imageScaleToConstraint($filename,$width,$height) {
 		$sizeinfo = self::getImageInfo($filename);
@@ -859,7 +869,7 @@ class expFile extends expRecord {
 	 *
 	 * @param string $filename The path/filename of the image to scale.
 	 * @param integer $size The desired side length of the scaled image, in pixels.
-	 * @node Subsystems:Image
+	 * @node Model:expFile
 	 */
 	public static function imageScaleToSquare($filename,$side) {
 		$sizeinfo = self::getImageInfo($filename);
@@ -915,7 +925,7 @@ class expFile extends expRecord {
 	 * @param string $filename The path/filename of the image to scale.
 	 * @param integer $width The desired width of the scaled image, in pixels.
 	 * @param integer $height The desired height of the scaled image, in pixels.
-	 * @node Subsystems:Image
+	 * @node Model:expFile
 	 */
 	public static function imageScaleManually($filename,$width,$height) {
 		$sizeinfo = self::getImageInfo($filename);
@@ -1121,7 +1131,7 @@ class expFile extends expRecord {
 	 * a SYS_FILES_* constant, indicating its status.
 	 *
 	 * @param string $dir The directory to create.  This path must be relative to BASE
-	 * @node Subsystems:Files
+	 * @node Model:expFile
 	 */
 	public static function makeDirectory($dir,$mode=null,$is_full=false) {
 		$__oldumask = umask(0);
@@ -1147,7 +1157,7 @@ class expFile extends expRecord {
 	 * of the files and directories underneath it.
 	 *
 	 * @param string $dir The path of the directory to remove
-	 * @node Subsystems:Files
+	 * @node Model:expFile
 	 * @param string $dir directory to work with
 	 * @return int
 	 */
@@ -1187,7 +1197,7 @@ class expFile extends expRecord {
 	* This function takes into account the default file modes specified in the site configuration.
 	 * @param string $tmp_name The temporary path of the uploaded file.
 	 * @param string $dest The full path to the destination file (including the destination filename).
-	 * @node Subsystems:Files
+	 * @node Model:expFile
 	 */
 	public static function moveUploadedFile($tmp_name,$dest) {
 		move_uploaded_file($tmp_name,$dest);
@@ -1207,7 +1217,7 @@ class expFile extends expRecord {
 	 * @param string $name The name of the file control used to upload the
 	 *  file.  The files subsystem will look to the $_FILES array
 	 *  to get the filename of the uploaded file.
-	 * @node Subsystems:Files
+	 * @node Model:expFile
 	 */
 	public static function uploadDestinationFileExists($dir,$name) {
 		return (file_exists(BASE.$dir."/".self::fixName($_FILES[$name]['name'])));
@@ -1220,13 +1230,13 @@ class expFile extends expRecord {
 	 *
 	 * @param string $dir The path of the directory to look at.
 	 * @param boolean $recurse A boolean dictating whether to descend into subdirectories
-	 * 	recursviely, and list files and subdirectories.
+	 * 	recursively, and list files and subdirectories.
 	 * @param string $ext An optional file extension.  If specified, only files ending with
 	 * 	that file extension will show up in the list.  Directories are not affected.
 	 * @param array $exclude_dirs An array of directory names to exclude.  These names are
 	 * 	path-independent.  Specifying "dir" will ignore all directories and
 	 * 	sub-directories named "dir", regardless of their parent.
-	 * @node Subsystems:Files
+	 * @node Model:expFile
 	 */
 	public static function listFlat($dir, $recurse = false, $ext=null, $exclude_dirs = array(), $relative = "") {
 		$files = array();
@@ -1246,7 +1256,7 @@ class expFile extends expRecord {
 	}
 
 	/* exdoc
-	 * Looks at the filesystem strucutre surrounding the destination
+	 * Looks at the filesystem structure surrounding the destination
 	 * and determines if the web server can create a new file there.
 	 * Returns one of the following:
 	 *	<br>SYS_FILES_NOTWRITABLE - unable to create files in destination
@@ -1254,7 +1264,7 @@ class expFile extends expRecord {
 	 *	<br>SYS_FILES_FOUNDFILE - Found destination to be a file, not a directory
 	 *
 	 * @param string $dest Path to the directory to check
-	 * @node Subsystems:Files
+	 * @node Model:expFile
 	 */
 	public static function canCreate($dest) {
 		if (substr($dest,0,1) == '/') $dest = str_replace(BASE,'',$dest);
@@ -1269,7 +1279,7 @@ class expFile extends expRecord {
 			}
 		}
 		// If we got this far, then the file we are asking about already exists.
-		// Check to see if we can overrwrite this file.
+		// Check to see if we can overwrite this file.
 		// First however, we need to strip off the '/' that was added a few lines up as the last part of the for loop.
 		$working = substr($working,0,-1);
 
@@ -1294,7 +1304,7 @@ class expFile extends expRecord {
 	 * @param $exclude_dirs An array of directory names to exclude.  These names are
 	 * 	path-independent.  Specifying "dir" will ignore all directories and
 	 * 	sub-directories named "dir", regardless of their parent.
-	 * @node Subsystems:Files
+	 * @node Model:expFile
 	 */
 	public static function copyDirectoryStructure($src,$dest,$exclude_dirs = array()) {
 		$__oldumask = umask(0);
@@ -1310,6 +1320,236 @@ class expFile extends expRecord {
 		}
 		closedir($dh);
 		umask($__oldumask);
+	}
+
+	/** exdoc
+	 * This function takes a database object and dumps
+	 * all of the records in all of the tables into a string.
+	 * The contents of the string are suitable for storage
+	 * in a file or other permanent mechanism, and is in
+	 * the EQL format naively handled by the current
+	 * implementation.
+	 *
+	 * @param Database $db The database object to dump to EQL.
+	 * @param null $tables
+	 * @param null $force_version
+	 * @return string
+	 * @node Model:expFile
+	 */
+	public static function dumpDatabase($db,$tables = null,$force_version = null) {
+		$dump = EQL_HEADER."\r\n";
+		if ($force_version == null) {
+			$dump .= 'VERSION:'.EXPONENT."\r\n\r\n";
+		} else {
+			$dump .= 'VERSION:'.$force_version."\r\n\r\n";
+		}
+
+		if (!is_array($tables)) {
+			$tables = $db->getTables();
+			if (!function_exists('tmp_removePrefix')) {
+				function tmp_removePrefix($tbl) {
+					return substr($tbl,strlen(DB_TABLE_PREFIX)+1);
+					// we add 1, because DB_TABLE_PREFIX  no longer has the trailing
+					// '_' character - that is automatically added by the database class.
+				}
+			}
+			$tables = array_map('tmp_removePrefix',$tables);
+		}
+		usort($tables,'strnatcmp');
+		foreach ($tables as $table) {
+			$dump .= 'TABLE:'.$table."\r\n";
+			foreach ($db->selectObjects($table) as $obj) {
+				$dump .= 'RECORD:'.str_replace(array("\r","\n"),array('\r','\n'),serialize($obj))."\r\n";
+			}
+			$dump .= "\r\n";
+		}
+		return $dump;
+	}
+
+	/** exdoc
+	 * This function restores a database (overwriting all data in
+	 * any existing tables) from an EQL object dump.  Returns true if
+	 * the restore was a success and false if something went horribly wrong
+	 * (unable to read file, etc.)  Even if true is returned, there is a chance
+	 * that some errors were encountered.  Check $errors to be sure everything
+	 * was fine.
+	 *
+	 * @param Database $db The database to restore to
+	 * @param string $file The filename of the EQL file to restore from
+	 * @param array $errors A referenced array that stores errors.  Whatever
+	 *	 variable is passed in this argument will contain all errors encountered
+	 *	during the parse/restore.
+	 * @param null $force_version
+	 * @return bool
+	 * @node Model:expFile
+	 */
+	public static function restoreDatabase($db,$file,&$errors,$force_version = null) {
+		$errors = array();
+
+		if (is_readable($file)) {
+			$lines = @file($file);
+
+			// Sanity check
+			if (count($lines) < 2 || trim($lines[0]) != EQL_HEADER) {
+				$errors[] = gt('Not a valid EQL file');
+				return false;
+			}
+
+			if ($force_version == null) {
+				$version = explode(':',trim($lines[1]));
+				$eql_version = $version[1]+0;
+			} else {
+				$eql_version = $force_version;
+			}
+			$current_version = EXPONENT+0;
+
+			$clear_function = '';
+			$fprefix = '';
+			// Check version and include necessary converters
+			//FIXME We reject v1.0 eql files
+			if ($eql_version != $current_version) {
+				$errors[] = gt('EQL file was Not a valid EQL version');
+				return false;
+	//			include_once(BASE.'framework/core/subsystems-1/backup/'.$eql_version.'.php');
+	//			$fprefix = 'expFile::'.implode('',explode('.',$eql_version)).'_';
+	//			if (function_exists($fprefix.'clearedTable')) {
+	//				$clear_function = $fprefix.'clearedTable';
+	//			}
+			}
+
+			// make sure the database tables are up to date
+			define("TMP_TABLE_EXISTED",		1);
+			define("TMP_TABLE_INSTALLED",	2);
+			define("TMP_TABLE_FAILED",		3);
+			define("TMP_TABLE_ALTERED",		4);
+
+			$tables = array();
+			$dir = BASE.'framework/core/definitions';
+			if (is_readable($dir)) {
+				$dh = opendir($dir);
+				while (($file = readdir($dh)) !== false) {
+					if (is_readable("$dir/$file") && is_file("$dir/$file") && substr($file,-4,4) == ".php" && substr($file,-9,9) != ".info.php") {
+						$tablename = substr($file,0,-4);
+						$dd = include("$dir/$file");
+						$info = null;
+						if (is_readable("$dir/$tablename.info.php")) $info = include("$dir/$tablename.info.php");
+						if (!$db->tableExists($tablename)) {
+							foreach ($db->createTable($tablename,$dd,$info) as $key=>$status) {
+								$tables[$key] = $status;
+							}
+						} else {
+							foreach ($db->alterTable($tablename,$dd,$info) as $key=>$status) {
+								if (isset($tables[$key])) echo "$tablename, $key<br>";
+								if ($status == TABLE_ALTER_FAILED){
+									$tables[$key] = $status;
+								}else{
+									$tables[$key] = ($status == TABLE_ALTER_NOT_NEEDED ? DATABASE_TABLE_EXISTED : DATABASE_TABLE_ALTERED);
+								}
+
+							}
+						}
+					}
+				}
+			}
+
+			// then search for module definitions
+			$moddefs = array(
+	//			BASE.'themes/'.DISPLAY_THEME_REAL.'/modules',
+				BASE.'themes/'.DISPLAY_THEME.'/modules',
+				BASE."framework/modules",
+				);
+			foreach ($moddefs as $moddef) {
+				if (is_readable($moddef)) {
+					$dh = opendir($moddef);
+					while (($file = readdir($dh)) !== false) {
+						if (is_dir($moddef.'/'.$file) && ($file != '..' && $file != '.')) {
+							$dirpath = $moddef.'/'.$file.'/definitions';
+							if (file_exists($dirpath)) {
+								$def_dir = opendir($dirpath);
+								while (($def = readdir($def_dir)) !== false) {
+									if (is_readable("$dirpath/$def") && is_file("$dirpath/$def") && substr($def,-4,4) == ".php" && substr($def,-9,9) != ".info.php") {
+										$tablename = substr($def,0,-4);
+										$dd = include("$dirpath/$def");
+										$info = null;
+										if (is_readable("$dirpath/$tablename.info.php")) $info = include("$dirpath/$tablename.info.php");
+										if (!$db->tableExists($tablename)) {
+											foreach ($db->createTable($tablename,$dd,$info) as $key=>$status) {
+												$tables[$key] = $status;
+											}
+										} else {
+											foreach ($db->alterTable($tablename,$dd,$info) as $key=>$status) {
+												if (isset($tables[$key])) echo "$tablename, $key<br>";
+												if ($status == TABLE_ALTER_FAILED){
+													$tables[$key] = $status;
+												}else{
+													$tables[$key] = ($status == TABLE_ALTER_NOT_NEEDED ? DATABASE_TABLE_EXISTED : DATABASE_TABLE_ALTERED);
+												}
+
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+
+			$table = '';
+			$table_function = '';
+			for ($i = 2; $i < count($lines); $i++) {
+				$line_number = $i;
+				$line = trim($lines[$i]);
+				if ($line != '') {
+					$pair = explode(':',$line);
+					$pair[1] = implode(':',array_slice($pair,1));
+					$pair = array_slice($pair,0,2);
+
+					if ($pair[0] == 'TABLE') {
+						$table = $pair[1];
+						if ($fprefix != '') {
+							$table_function = $fprefix.$table;
+						}
+						if ($db->tableExists($table)) {
+							$db->delete($table);
+							if ($clear_function != '') {
+								$clear_function($db,$table);
+							}
+						} else {
+	//						if (!file_exists(BASE.'framework/core/definitions/'.$table.'.php')) {
+								$errors[] = sprintf(gt('Table "%s" not found in the system (line %d)'),$table,$line_number);
+	//						} else if (!is_readable(BASE.'framework/core/definitions/'.$table.'.php')) {
+	//							$errors[] = sprintf(gt('Data definition file for %s (%s) is not readable (line %d)'),$table,'framework/core/definitions/'.$table.'.php',$line_number);
+	//						} else {
+	//							$dd = include(BASE.'framework/core/definitions/'.$table.'.php');
+	//							$info = (is_readable(BASE.'framework/core/definitions/'.$table.'.info.php') ? include(BASE.'framework/core/definitions/'.$table.'.info.php') : array());
+	//							$db->createTable($table,$dd,$info);
+	//						}
+						}
+					} else if ($pair[0] == 'RECORD') {
+						// Here we need to check the conversion scripts.
+						$pair[1] = str_replace('\r\n',"\r\n",$pair[1]);
+						$object = unserialize($pair[1]);
+						if (function_exists($table_function)) {
+							$table_function($db,$object);
+						} else {
+							$db->insertObject($object,$table);
+						}
+					} else {
+						$errors[] = sprintf(gt('Invalid specifier type "%s" (line %d)'),$pair[0],$line_number);
+					}
+				}
+			}
+			if ($eql_version != $current_version) {
+				$errors[] = gt('EQL file was Not a valid EQL version');
+				return false;
+	//			include_once(BASE.'framework/core/subsystems-1/backup/normalize.php');
+			}
+			return true;
+		} else {
+			$errors[] = gt('Unable to read EQL file');
+			return false;
+		}
 	}
 
 }

@@ -21,7 +21,7 @@
 if (!defined('EXPONENT')) exit('');
 
 include_once(BASE.'framework/core/subsystems-1/forms.php');
-include_once(BASE.'framework/core/subsystems-1/users.php');
+//include_once(BASE.'framework/core/subsystems-1/users.php');
 
 $template = new template('formbuilder','_data_view');
 expHistory::flowSet(SYS_FLOW_PUBLIC,SYS_FLOW_ACTION);
@@ -34,7 +34,7 @@ if (isset($_GET['id'])) {
 		
 	$items = $db->selectObjects("formbuilder_".$f->table_name);
 		
-	if (exponent_permissions_check("viewdata",unserialize($f->location_data))) {
+	if (expPermissions::check("viewdata",unserialize($f->location_data))) {
 		$columndef = "paginate.columns = new Array(";
 		$sortfuncts = "";
 		if ($rpt->column_names == '') {
@@ -54,7 +54,7 @@ if (isset($_GET['id'])) {
 			} elseif ($column_name == "user_id") {
 				foreach ($items as $key=>$item) {
 					if ($item->$column_name != 0) {
-						 $locUser = exponent_users_getUserById($item->$column_name);
+						 $locUser = user::getUserById($item->$column_name);
 						 $item->$column_name = $locUser->username;
 					} else {
 						$item->$column_name = '';

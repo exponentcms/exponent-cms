@@ -40,6 +40,10 @@ $ecom = array(
         'id'=>'ecomm',
         'itemdata'=>array(
             array(
+                'text'=>gt("Dashboard"),
+                'url'=>makeLink(array('controller'=>'report','action'=>'dashboard')),
+            ),
+            array(
                 'text'=>gt("View Orders")." <em>(".$new_orders."  ".gt("New Orders").")",
                 'url'=>makeLink(array('controller'=>'order','action'=>'showall')),
             ),
@@ -48,8 +52,24 @@ $ecom = array(
                 'url'=>makeLink(array('controller'=>'order','action'=>'create_new_order')),
             ),            
             array(
-                'text'=>gt("Dashboard"),
-                'url'=>makeLink(array('controller'=>'report','action'=>'dashboard')),
+                'text'=>gt("Vendors & Purchase Orders"),
+                'submenu'=>array(
+                    'id'=>'purchase-order',
+                    'itemdata'=>array(                        
+                        array(
+                            'text'=>gt("Create Purchase Order"),
+                            'url'=>makeLink(array('controller'=>'purchaseOrder','action'=>'edit')),
+                        ),
+                        array(
+                            'text'=>gt("Manage Purchase Orders"),
+                            'url'=>makeLink(array('controller'=>'purchaseOrder','action'=>'manage')),
+                        ),
+                        array(
+                            'text'=>gt("Manage Vendors"),
+                            'url'=>makeLink(array('controller'=>'purchaseOrder','action'=>'manage_vendors')),
+                        ),
+                    ),                        
+                ),
             ),
             array(
                 'text'=>gt("Store Settings"),

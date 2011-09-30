@@ -19,7 +19,7 @@
 
 if (!defined('EXPONENT')) exit('');
 
-if (exponent_permissions_check('database',exponent_core_makeLocation('administrationmodule'))) {
+if (expPermissions::check('database',expCore::makeLocation('administrationmodule'))) {
 	$exporters = array();
 	$idh = opendir(BASE.'framework/modules-1/exporter/exporters');
 	while (($imp = readdir($idh)) !== false) {

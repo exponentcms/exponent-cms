@@ -33,16 +33,14 @@
 {*	{chain module=previewmodule view=Default}		*}
 	</div>
 
-
-
 	<div class="hd">
 			{$user->username}
 	</div>
 	<div class="bd">
 	{permissions}
-	<a class="changepassword" href="{link module=loginmodule action=changepass}">{'Change Password'|gettext}</a>
-	<a class="editprofile" href="{link module=loginmodule action=editprofile}">{'Edit Profile'|gettext}</a>
-	<a class="logout" href="{link module=loginmodule action=logout}">{'Log Out'|gettext}</a>
+	<a class="changepassword" href="{link controller=users action=change_password}">{'Change Password'|gettext}</a>
+	<a class="editprofile" href="{link controller=users action=edituser}">{'Edit Profile'|gettext}</a>
+	<a class="logout" href="{link controller=login action=logout}">{'Log Out'|gettext}</a>
 	{/permissions}
 	</div>
 </div>

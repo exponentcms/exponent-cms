@@ -20,14 +20,14 @@
 
 if (!defined('EXPONENT')) exit('');
 
-$f1_loc = exponent_core_makeLocation($_GET['sm'],$_GET['ss']);
+$f1_loc = expCore::makeLocation($_GET['sm'],$_GET['ss']);
 $f1 = $db->selectObject("formbuilder_form","location_data='".serialize($f1_loc)."'");
 
-$f2_loc = exponent_core_makeLocation($_GET['m'],$_GET['s']);
+$f2_loc = expCore::makeLocation($_GET['m'],$_GET['s']);
 $f2 = $db->selectObject("formbuilder_form","location_data='".serialize($f2_loc)."'");
 
 if ($f1 && $f2) {
-	if (exponent_permissions_check("editform",unserialize($f2->location_data))) {
+	if (expPermissions::check("editform",unserialize($f2->location_data))) {
 		$controls  = $db->selectObjects("formbuilder_control","form_id=".$f1->id);
 		$controls = expSorter::sort(array('array'=>$controls,'sortby'=>'rank', 'order'=>'ASC'));
 

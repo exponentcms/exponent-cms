@@ -33,7 +33,7 @@
 				
 				// CKeditor integration
 				var funcNum = getUrlParam('CKEditorFuncNum');
-				var fileUrl = section;
+				var fileUrl = EXPONENT.PATH_RELATIVE+section;
 				window.opener.CKEDITOR.tools.callFunction(funcNum, fileUrl);
 		
 				window.close();
@@ -44,7 +44,7 @@
 				
 				// CKeditor integration
 				var funcNum = getUrlParam('CKEditorFuncNum');
-				var fileUrl = '/'+document.getElementById("f_href").value;
+				var fileUrl = EXPONENT.PATH_RELATIVE+document.getElementById("f_href").value;
 				window.opener.CKEDITOR.tools.callFunction(funcNum, fileUrl);
 
 				window.close();

@@ -42,10 +42,10 @@ return array(
 			'description'=>gt('The port that the SMTP server is listening to for SMTP connections.  If you do not know what this is, leave it as the default of 25.'),
 			'control'=>new textcontrol()
 		),
-		'SMTP_AUTHTYPE'=>array(
-			'title'=>gt('Authentication Method'),
-			'description'=>gt('Here, you can specify what type of authentication your SMTP server requires (if any).  Please consult your mailserver administrator for this information.'),
-			'control'=>new dropdowncontrol('',array('NONE'=>gt('No Authentication'),'LOGIN'=>gt('PLAIN'),'PLAIN'=>gt('LOGIN')))
+		'SMTP_PROTOCOL'=>array(
+			'title'=>gt('Type of Encrypted Connection'),
+			'description'=>gt('Here, you can specify what type of encryption your SMTP server connection requires (if any).  Please consult your mailserver administrator for this information.'),
+			'control'=>new dropdowncontrol('',array(''=>gt('No Authentication'),'ssl'=>gt('SSL'),'tls'=>gt('TLS')))
 		),
 		'SMTP_USERNAME'=>array(
 			'title'=>gt('SMTP Username'),

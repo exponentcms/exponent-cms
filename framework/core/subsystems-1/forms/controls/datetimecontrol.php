@@ -39,7 +39,6 @@ class datetimecontrol extends formcontrol {
 	}
 	
 	function __construct($default = 0, $showdate = true, $showtime = true) {
-		include_once(BASE."framework/core/subsystems-1/datetime.php");
 		if ($default == 0) $default = time();
 		$this->default = $default;
 		$this->showdate = $showdate;
@@ -75,9 +74,8 @@ class datetimecontrol extends formcontrol {
 		if ($minute < 10) $minute = "0".$minute;
 		$html = "<input type='hidden' id='__".$name."' name='__".$name."' value='".($this->showdate?"1":"0").($this->showtime?"1":"0")."' />";
 		if ($this->showdate) {
-			require_once(BASE."framework/core/subsystems-1/datetime.php");
 			$html .= '<div class="datetime date"><label>Date: </label>';
-			$html .= exponent_datetime_monthsDropdown($name . "_month",$default_date['mon']);
+			$html .= expDateTime::monthsDropdown($name . "_month",$default_date['mon']);
 			$html .= '<input class="text" type="text" id="' . $name . '_day" name="' . $name . '_day" size="3" maxlength="2" value="' . $default_date['mday'] . '" />';
 			$html .= '<input class="text" id="' . $name . '_year" name="' . $name . '_year" size="5" maxlength="4" value="' . $default_date['year'] . '" />';
 			$html .= '</div>';

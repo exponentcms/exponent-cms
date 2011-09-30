@@ -22,11 +22,10 @@ class usersController extends expController {
     public $basemodel_name = 'user';
     public $add_permissions = array(
         'toggle_extension'=>'Activate Extensions', 
-        'edit_user'=>'Edit Users',
         'kill_session'=>'End Sessions',
         'boot_user'=>'Boot Users',
     );
-    public $remove_permissions = array('create', 'edit_user');
+    public $remove_permissions = array('create', 'edit');
 	public $codequality = 'beta';
     
     //public $useractions = array('showall'=>'Show all');
@@ -161,7 +160,7 @@ class usersController extends expController {
 	        }
 
             // if we added the user to any group than we need to reload their permissions
-            exponent_permissions_load($u);
+            expPermissions::load($u);
             
 	        //signup email stuff
           	if (USER_REGISTRATION_SEND_WELCOME){
@@ -242,8 +241,6 @@ class usersController extends expController {
 			$db->delete('sessionticket','last_active < ' . (time() - SESSION_TIMEOUT));
 		}
 		
-	    require_once(BASE.'framework/core/subsystems-1/datetime.php');
-
 		if (isset($_GET['id']) && $_GET['id'] == 0) {
 			$sessions = $db->selectObjects('sessionticket', "uid<>0");
 			$filtered = 1;
@@ -258,7 +255,7 @@ class usersController extends expController {
 			if ($sessions[$i]->uid == 0) {
 				$sessions[$i]->user->id = 0;
 			}
-		    $sessions[$i]->duration = exponent_datetime_duration($sessions[$i]->last_active,$sessions[$i]->start_time);
+		    $sessions[$i]->duration = expDateTime::duration($sessions[$i]->last_active,$sessions[$i]->start_time);
 	    }
 
 	    assign_to_template(array('sessions'=>$sessions, 'filter'=>$filtered));
@@ -307,8 +304,11 @@ class usersController extends expController {
         
         // Lets find all the user profiles availabe and then see if they are
         // in the database yet.  If not we will add them.
-		$extdirs = array(BASE.'framework/modules/users/extensions', 
-		BASE.'themes/'.DISPLAY_THEME_REAL.'framework/modules/users/extensions');
+		$extdirs = array(
+			BASE.'framework/modules/users/extensions',
+//			BASE.'themes/'.DISPLAY_THEME_REAL.'framework/modules/users/extensions'  //FIXME change to allow preview
+			BASE.'themes/'.DISPLAY_THEME.'framework/modules/users/extensions'
+		);
 		foreach ($extdirs as $dir) {
 			if (is_readable($dir)) {
 	        	$dh = opendir($dir);
@@ -458,7 +458,7 @@ class usersController extends expController {
         flash ('message', 'Your new password has been emailed to your email account.');
 
         // send the user the login page.
-        redirect_to(array('module'=>'loginmodule', 'action'=>'loginredirect'));
+        redirect_to(array('controller'=>'login', 'action'=>'loginredirect'));
     }
     
     public function change_password() {
@@ -559,13 +559,13 @@ class usersController extends expController {
     public function manage_group_memberships() {
         global $db, $user;
         expHistory::set('manageable', $this->params);
-        require_once(BASE.'framework/core/subsystems-1/users.php');
+//        require_once(BASE.'framework/core/subsystems-1/users.php');
 
         $memb = $db->selectObject('groupmembership','member_id='.$user->id.' AND group_id='.$this->params['id'].' AND is_admin=1');
 
         $perm_level = 0;
         if ($memb) $perm_level = 1;
-        if (exponent_permissions_check('user_management',exponent_core_makeLocation('administrationmodule'))) $perm_level = 2;
+        if (expPermissions::check('user_management',expCore::makeLocation('administrationmodule'))) $perm_level = 2;
 
         $group = $db->selectObject('group','id='.$this->params['id']);
 		$users = user::getAllUsers(0);
@@ -674,7 +674,7 @@ class usersController extends expController {
 				$db->insertObject($memb,'groupmembership');
 			}
 		}
-		exponent_permissions_triggerRefresh();
+		expPermissions::triggerRefresh();
         expHistory::back();
         
     }

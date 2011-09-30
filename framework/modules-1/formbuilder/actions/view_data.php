@@ -20,7 +20,7 @@
 if (!defined('EXPONENT')) exit('');
 
 include_once(BASE.'framework/core/subsystems-1/forms.php');
-include_once(BASE.'framework/core/subsystems-1/users.php');
+//include_once(BASE.'framework/core/subsystems-1/users.php');
 
 $template = new template('formbuilder','_data_view');
 
@@ -30,7 +30,8 @@ if (isset($_GET['id'])) {
 	$f = $db->selectObject("formbuilder_form","id=".$_GET['id']);
 	$rpt = $db->selectObject("formbuilder_report","form_id=".$_GET['id']);
 	$items = $db->selectObjects("formbuilder_".$f->table_name);
-	if (exponent_permissions_check("viewdata",unserialize($f->location_data))) {
+	if (expPermissions::check("viewdata",unserialize($f->location_data))) {
+		expHistory::set('editable', $_GET);
 		$columndef = "paginate.columns = new Array(";
 		$columns = array();
 		$sortfuncts = "";
@@ -52,7 +53,7 @@ if (isset($_GET['id'])) {
 			} elseif ($column_name == "user_id") {
 				foreach ($items as $key=>$item) {
 					if ($item->$column_name != 0) {
-						 $locUser = exponent_users_getUserById($item->$column_name);
+						 $locUser = user::getUserById($item->$column_name);
 						 $item->$column_name = $locUser->username;
 					} 
 					else {

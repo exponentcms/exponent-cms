@@ -74,12 +74,13 @@
 <div class="loadingdiv">Loading Content Creation Form</div>
 {* src="`$smarty.const.PATH_RELATIVE`js/ContainerSourceControl.js" *}
 
-{script unique="addmodule" yui2mods="connection,json"}
+{script unique="addmodule" yui3mods=1}
 {literal}
 
 
 
-YUI(EXPONENT.YUI_CONFIG).use("node","event",function(Y){
+YUI(EXPONENT.YUI_CONFIG).use("node","event","yui2-yahoo-dom-event","yui2-connection","yui2-json",function(Y){
+    var YAHOO=Y.YUI2;
     var osmv = {/literal}{$json_obj};{literal} //oldschool module views (in a JSON object)
     var modpicker = Y.one('#modcntrol'); // the module selection dropdown
     var is_edit = {/literal}{$is_edit}{literal} //are we editing?
@@ -89,6 +90,77 @@ YUI(EXPONENT.YUI_CONFIG).use("node","event",function(Y){
     var viewpicker = Y.one('#views'); // the views dropdown
     var recyclebin = Y.one('#browse-bin'); // the recyclebin link
     var recyclebinwrap = Y.one('#recyclebin'); // the recyclebin link
+    
+    // moving this func to here for now. Was in exponent.js.php, but this is the only place using it.
+    EXPONENT.forms = {
+
+        getSelectedRadio: function (formId, inputId){
+            var oForm = this.grabForm(formId);
+            for (var i=0; i<oForm.elements.length; i++){
+                oElement = oForm.elements[i];
+                oValue = oElement.value;
+
+                switch(oElement.type)
+                {
+                    case 'radio':
+                        if(oElement.checked && oElement.name==inputId){
+                            return oValue;
+                        }
+                        break;
+                }
+            }
+            return "no selected radios found";
+        },
+        setSelectedRadio: function (formId, inputId, rValue){
+            var oForm = this.grabForm(formId);
+            for (var i=0; i<oForm.elements.length; i++){
+                oElement = oForm.elements[i];
+                oValue = oElement.value;
+
+                switch(oElement.type)
+                {
+                    case 'radio':
+                        if(oElement.name==inputId && oElement.value==rValue){
+                            oElement.checked = true;
+                            return "Radio "+oElement.name+" set to value "+oElement.value;
+                        }
+                        break;
+                }
+            }
+            return "No value matching the one provided was found in this radio group";
+        },
+        getSelectValue: function (selectid) {
+            var selectmenu = YAHOO.util.Dom.get(selectid);
+            return selectmenu.options[selectmenu.selectedIndex].value;
+        },
+        setSelectValue: function (selectid,setVal) {
+            var selectmenu = YAHOO.util.Dom.get(selectid);
+            return selectmenu.value = setVal;
+        },
+        addSelectOption: function (selectid,oVal,text) {
+            var selectmenu = YAHOO.util.Dom.get(selectid);
+            selectmenu.options[selectmenu.length] = new Option(text, oVal);
+            return oVal;
+        },
+        grabForm: function (formId){
+            var oForm;
+            if(typeof formId == 'string'){
+                // Determine if the argument is a form id or a form name.
+                // Note form name usage is deprecated, but supported
+                // here for backward compatibility.
+                oForm = (document.getElementById(formId) || document.forms[formId]);
+            }
+            else if(typeof formId == 'object'){
+                // Treat argument as an HTML form object.
+                oForm = formId;
+            }
+            else{
+                return;
+            }
+            return oForm;
+        }
+    };
+    
     
     //listens for a change in the module dropdown
     modpicker.on('change',function(e){

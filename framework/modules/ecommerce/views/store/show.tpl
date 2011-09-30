@@ -196,36 +196,39 @@
                 {/foreach}
             </div>
         {/if}
-
-        {if $product->availability_type == 0 && $product->active_type == 0}
-            <button type="submit" class="awesome {$smarty.const.BTN_COLOR} {$smarty.const.BTN_SIZE}" rel="nofollow">
+        
+        <div class="add-to-cart-btn">
+            {if $product->availability_type == 0 && $product->active_type == 0}
                 <input type="text" class="text " size="5" value="{$product->minimum_order_quantity|default:1}" name="quantity">
-                {"Add to Cart"|gettext}
-            </button>
-        {elseif $product->availability_type == 1 && $product->active_type == 0}
-            <button type="submit" class="awesome {$smarty.const.BTN_COLOR} {$smarty.const.BTN_SIZE}" rel="nofollow">
-                <input type="text" class="text " size="5" value="{$product->minimum_order_quantity|default:1}" name="quantity">
-                {"Add to Cart"|gettext}
-            </button>
-            {if $product->quantity <= 0}<span class="error">{$product->availability_note}</span>{/if}   
-        {elseif $product->availability_type == 2}
-            {if $user->isAdmin()}
-                <button type="submit" class="awesome red {$smarty.const.BTN_SIZE}" rel="nofollow">
-                    <input type="text" class="text " size="5" value="{$product->minimum_order_quantity|default:1}" name="quantity">
+                <button type="submit" class="awesome {$smarty.const.BTN_COLOR} {$smarty.const.BTN_SIZE}" rel="nofollow">
                     {"Add to Cart"|gettext}
                 </button>
-            {/if}
-            {if $product->quantity <= 0}<span class="error">{$product->availability_note}</span>{/if}              
-        {elseif $product->active_type == 1}
-            {if $user->isAdmin()}
-                <button type="submit" class="awesome red {$smarty.const.BTN_SIZE}" rel="nofollow">
-                    <input type="text" class="text " size="5" value="{$product->minimum_order_quantity|default:1}" name="quantity">
+            {elseif $product->availability_type == 1 && $product->active_type == 0}
+                <input type="text" class="text " size="5" value="{$product->minimum_order_quantity|default:1}" name="quantity">
+                <button type="submit" class="awesome {$smarty.const.BTN_COLOR} {$smarty.const.BTN_SIZE}" rel="nofollow">
                     {"Add to Cart"|gettext}
                 </button>
-            {/if}
-            <em class="unavailable">{"Product currently unavailable for purchase"|gettext}</em>
-        {/if}    
+                {if $product->quantity <= 0}<span class="error">{$product->availability_note}</span>{/if}   
+            {elseif $product->availability_type == 2}
+                {if $user->isAdmin()}
+                    <input type="text" class="text " size="5" value="{$product->minimum_order_quantity|default:1}" name="quantity">
+                    <button type="submit" class="awesome red {$smarty.const.BTN_SIZE}" rel="nofollow">
+                        {"Add to Cart"|gettext}
+                    </button>
+                {/if}
+                {if $product->quantity <= 0}<span class="error">{$product->availability_note}</span>{/if}              
+            {elseif $product->active_type == 1}
+                {if $user->isAdmin()}
+                    <input type="text" class="text " size="5" value="{$product->minimum_order_quantity|default:1}" name="quantity">
+                    <button type="submit" class="awesome red {$smarty.const.BTN_SIZE}" rel="nofollow">
+                        {"Add to Cart"|gettext}
+                    </button>
+                {/if}
+                <em class="unavailable">{"Product currently unavailable for purchase"|gettext}</em>
+            {/if}    
+        </div>
         {/form}
+
     </div> 
     {/if}   
     
@@ -358,34 +361,36 @@
              </div>
          {/if}
 
-         {if $product->availability_type == 0 && $product->active_type == 0}
-             <button type="submit" class="awesome {$smarty.const.BTN_COLOR} {$smarty.const.BTN_SIZE}" rel="nofollow">
-                 <input type="text" class="text " size="5" value="{$product->minimum_order_quantity|default:1}" name="quantity">
-                 {"Add to Cart"|gettext}
-             </button>
-         {elseif $product->availability_type == 1 && $product->active_type == 0}
-             <button type="submit" class="awesome {$smarty.const.BTN_COLOR} {$smarty.const.BTN_SIZE}" rel="nofollow">
-                 <input type="text" class="text " size="5" value="{$product->minimum_order_quantity|default:1}" name="quantity">
-                 {"Add to Cart"|gettext}
-             </button>
-             {if $product->quantity <= 0}<span class="error">{$product->availability_note}</span>{/if}   
-         {elseif $product->availability_type == 2}
-             {if $user->isAdmin()}
-                 <button type="submit" class="awesome red {$smarty.const.BTN_SIZE}" rel="nofollow">
-                     <input type="text" class="text " size="5" value="{$product->minimum_order_quantity|default:1}" name="quantity">
-                     {"Add to Cart"|gettext}
-                 </button>
-             {/if}
-             {if $product->quantity <= 0}<span class="error">{$product->availability_note}</span>{/if}              
-         {elseif $product->active_type == 1}
-             {if $user->isAdmin()}
-                 <button type="submit" class="awesome red {$smarty.const.BTN_SIZE}" rel="nofollow">
-                     <input type="text" class="text " size="5" value="{$product->minimum_order_quantity|default:1}" name="quantity">
-                     {"Add to Cart"|gettext}
-                 </button>
-             {/if}
-             <em class="unavailable">{"Product currently unavailable for purchase"|gettext}</em>
-         {/if}    
+        <div class="add-to-cart-btn">
+            {if $product->availability_type == 0 && $product->active_type == 0}
+                <input type="text" class="text " size="5" value="{$product->minimum_order_quantity|default:1}" name="quantity">
+                <button type="submit" class="awesome {$smarty.const.BTN_COLOR} {$smarty.const.BTN_SIZE}" rel="nofollow">
+                    {"Add to Cart"|gettext}
+                </button>
+            {elseif $product->availability_type == 1 && $product->active_type == 0}
+                <input type="text" class="text " size="5" value="{$product->minimum_order_quantity|default:1}" name="quantity">
+                <button type="submit" class="awesome {$smarty.const.BTN_COLOR} {$smarty.const.BTN_SIZE}" rel="nofollow">
+                    {"Add to Cart"|gettext}
+                </button>
+                {if $product->quantity <= 0}<span class="error">{$product->availability_note}</span>{/if}   
+            {elseif $product->availability_type == 2}
+                {if $user->isAdmin()}
+                    <input type="text" class="text " size="5" value="{$product->minimum_order_quantity|default:1}" name="quantity">
+                    <button type="submit" class="awesome red {$smarty.const.BTN_SIZE}" rel="nofollow">
+                        {"Add to Cart"|gettext}
+                    </button>
+                {/if}
+                {if $product->quantity <= 0}<span class="error">{$product->availability_note}</span>{/if}              
+            {elseif $product->active_type == 1}
+                {if $user->isAdmin()}
+                    <input type="text" class="text " size="5" value="{$product->minimum_order_quantity|default:1}" name="quantity">
+                    <button type="submit" class="awesome red {$smarty.const.BTN_SIZE}" rel="nofollow">
+                        {"Add to Cart"|gettext}
+                    </button>
+                {/if}
+                <em class="unavailable">{"Product currently unavailable for purchase"|gettext}</em>
+            {/if}    
+        </div>
          {/form}
      </div> 
      {/if}   

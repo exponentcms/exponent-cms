@@ -15,15 +15,6 @@
  *}
 
 <div id="authcfg" class="hide exp-skin-tabview">
-    {script unique="authtabs" yuimodules="tabview, element"}
-    {literal}
-        var tabView = new YAHOO.widget.TabView('auth');
-        YAHOO.util.Dom.removeClass("authcfg", 'hide');
-        var loading = YAHOO.util.Dom.getElementsByClassName('loadingdiv', 'div');
-        YAHOO.util.Dom.setStyle(loading, 'display', 'none');
-        
-    {/literal}
-    {/script}
     
     <div id="auth" class="yui-navset">
         <ul class="yui-nav">
@@ -56,3 +47,16 @@
     </div>
 </div>
 <div class="loadingdiv">Loading</div>
+
+
+{script unique="authtabs" yui3mods=1}
+{literal}
+    YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event','yui2-tabview', function(Y) {
+        var YAHOO=Y.YUI2;
+        var tabView = new YAHOO.widget.TabView('auth');
+        YAHOO.util.Dom.removeClass("authcfg", 'hide');
+        var loading = YAHOO.util.Dom.getElementsByClassName('loadingdiv', 'div');
+        YAHOO.util.Dom.setStyle(loading, 'display', 'none');
+    });
+{/literal}
+{/script}

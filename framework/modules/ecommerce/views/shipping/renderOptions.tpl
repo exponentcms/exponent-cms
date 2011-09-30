@@ -3,7 +3,7 @@
     <img class="shippingmethodimg" src="{$shipping->calculator->icon}">
     <div class="sm-info">
         <strong class="selected-info">{$shipping->shippingmethod->option_title}
-            <em>${$shipping->shippingmethod->shipping_cost|number_format:2}</em></strong>
+            <em>{currency_symbol}{$shipping->shippingmethod->shipping_cost|number_format:2}</em></strong>
         {if $shipping->pricelist|@count >1}
         <h4>{"Avalable Options"|gettext}</h4>
         <div class="bd">

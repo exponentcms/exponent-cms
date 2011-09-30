@@ -18,17 +18,6 @@
 
 {/css}
 
-{script unique="cartview" yui2mods="dom"}
-{literal}
-YAHOO.util.Event.onDOMReady(function(){
- YAHOO.util.Dom.removeClass("myCart", 'hide');
- var loading = YAHOO.util.Dom.getElementsByClassName('loadingdiv', 'div');
- YAHOO.util.Dom.setStyle(loading, 'display', 'none');
-});
-{/literal}
-{/script}
-<div class="loadingdiv">Loading Cart</div>
-
 <div id="myCart" class="module cart show hide">
 	<h1>{ecomconfig var='cart_title_text' default="Your Secure Shopping Cart"}</h1>
     <div id="cart-message">{ecomconfig var='cart_description_text' default=""}</div>
@@ -176,3 +165,16 @@ YAHOO.util.Event.onDOMReady(function(){
         {/if}
     </div>
 </div>
+
+<div class="loadingdiv">{"Loading Cart"|gettext}</div>
+
+{script unique="editform" yui3mods=1}
+{literal}
+    YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-tabview','yui2-element', function(Y) {
+        var YAHOO=Y.YUI2;
+
+        var tabView = new YAHOO.widget.TabView('helpedit');
+        Y.one('#myCart').removeClass('hide').next().remove();
+    });
+{/literal}
+{/script}

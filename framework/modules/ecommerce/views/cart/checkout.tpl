@@ -30,25 +30,29 @@
                 {$cartConfig.policy}
             </div>
         </div>
-        {script unique="policypop" yui2mods="container"}
+        {script unique="policypop" yui3mods=1}
         {literal}
-            var policies = new YAHOO.widget.Panel("storepolicies", { 
-                width:"400px",
-                height:"350px",
-                modal:true,
-                visible:false,
-                zindex:57,
-                constraintoviewport:true,
-                close:true,
-                draggable:false
-                });
-            policies.render();
-            
-            YAHOO.util.Event.on('review-policy', 'click', function(e){
-                YAHOO.util.Event.stopEvent(e);
-                
-                policies.show();
-            }, policies, false);
+            YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event','yui2-container', function(Y) {
+                var YAHOO=Y.YUI2;
+
+                var policies = new YAHOO.widget.Panel("storepolicies", { 
+                    width:"400px",
+                    height:"350px",
+                    modal:true,
+                    visible:false,
+                    zindex:57,
+                    constraintoviewport:true,
+                    close:true,
+                    draggable:false
+                    });
+                policies.render();
+
+                YAHOO.util.Event.on('review-policy', 'click', function(e){
+                    YAHOO.util.Event.stopEvent(e);
+
+                    policies.show();
+                }, policies, false);
+            });
             
         {/literal}
         {/script}
@@ -278,7 +282,7 @@
 </div>
 <!-- div id="loadingdiv" class="loadingdiv">Loading Checkout Page</div -->
 
-{* eDebug var=$order *}
+{* edebug var=$order *}
 {*  Kludged out while testing paypal *}
 {*script unique="shoppingcartcheckout" yuimodules="animation,container,json" src=`$smarty.const.JS_FULL`exp-ecomcheckout.js}
 //

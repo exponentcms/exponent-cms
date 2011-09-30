@@ -108,7 +108,7 @@ class containermodule {
        
         	if(!isset($cache[$container_key])) {
 		    	foreach ($db->selectObjects('container',"external='" . $container_key . "'") as $c) {
-				if ($c->is_private == 0 || exponent_permissions_check('view',exponent_core_makeLocation($loc->mod,$loc->src,$c->id))) {
+				if ($c->is_private == 0 || expPermissions::check('view',expCore::makeLocation($loc->mod,$loc->src,$c->id))) {
 				    $containers[$c->rank] = $c;
 			    	}
 		    	}
@@ -177,8 +177,8 @@ class containermodule {
 			$cloc->int = $containers[$i]->id;
             $location->mod = str_replace('Controller','',$location->mod);
 			$containers[$i]->permissions = array(
-				'administrate'=>(exponent_permissions_check('administrate',$location) ? 1 : 0),
-				'configure'=>(exponent_permissions_check('configure',$location) ? 1 : 0)
+				'administrate'=>(expPermissions::check('administrate',$location) ? 1 : 0),
+				'configure'=>(expPermissions::check('configure',$location) ? 1 : 0)
 			);
 		}
 	
@@ -201,7 +201,7 @@ class containermodule {
 			
 			if (!$c->is_existing == 1) { // Copy over content to a new source
 				$oldinternal = unserialize($c->internal);
-				$iloc = exponent_core_makeLocation($oldinternal->mod,'@random'.uniqid(''));
+				$iloc = expCore::makeLocation($oldinternal->mod,'@random'.uniqid(''));
 				$c->internal = serialize($iloc);
 				$db->insertObject($c,'container');
 			
@@ -209,11 +209,11 @@ class containermodule {
 				if (call_user_func(array($oldinternal->mod,'hasContent')) == true) {
 					call_user_func(array($oldinternal->mod,'copyContent'),$oldinternal,$iloc);
 					// Incrementors!
-					exponent_core_incrementLocationReference($iloc,$section); // SECTION
+					expCore::incrementLocationReference($iloc,$section); // SECTION
 				}
 			} else {
 				$db->insertObject($c,'container');
-				exponent_core_incrementLocationReference($iloc,$section); // SECTION
+				expCore::incrementLocationReference($iloc,$section); // SECTION
 			}
 		}
 	}

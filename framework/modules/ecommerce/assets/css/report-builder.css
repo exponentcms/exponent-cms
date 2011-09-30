@@ -19,8 +19,13 @@
     text-align:right;
 }
 
+.build-report .control.radio .label {
+    display: inline;
+}
+
 .build-report .control .text {
-    width:300px;
+/*    width:300px;
+*/
 }
 
 .build-report .control .select {

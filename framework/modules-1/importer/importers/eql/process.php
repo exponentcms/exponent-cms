@@ -20,7 +20,6 @@
 
 if (!defined('EXPONENT')) exit('');
 
-include_once(BASE.'framework/core/subsystems-1/backup.php');
 $errors = null;
 $continue = URL_FULL.'index.php?section='.SITE_DEFAULT_SECTION;
 
@@ -28,7 +27,7 @@ expSession::clearAllUsersSessionCache();
 
 $template = new template('importer','_eql_results',$loc);
 //GREP:UPLOADCHECK
-if (!exponent_backup_restoreDatabase($db,$_FILES['file']['tmp_name'],$errors)) {
+if (!expFile::restoreDatabase($db,$_FILES['file']['tmp_name'],$errors)) {
 	$template->assign('success',0);
 	$template->assign('errors',$errors);
 } else {

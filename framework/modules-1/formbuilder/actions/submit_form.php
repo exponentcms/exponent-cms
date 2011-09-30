@@ -28,7 +28,7 @@ if (!expValidator::check_antispam($post)) {
     expHistory::back();
 }
 
-require_once(BASE."framework/core/subsystems-1/users.php");
+//require_once(BASE."framework/core/subsystems-1/users.php");
 require_once(BASE."framework/core/subsystems-1/forms.php");
 global $db, $user;
 $f = $db->selectObject("formbuilder_form","id=".intval($_POST['id']));
@@ -63,7 +63,7 @@ foreach ($controls as $c) {
     }
 }
 
-if (!isset($_POST['data_id']) || (isset($_POST['data_id']) && exponent_permissions_check("editdata",unserialize($f->location_data)))) {
+if (!isset($_POST['data_id']) || (isset($_POST['data_id']) && expPermissions::check("editdata",unserialize($f->location_data)))) {
     if ($f->is_saved == 1) {    
         if (isset($_POST['data_id'])) {
             //if this is an edit we remove the record and insert a new one.
@@ -94,11 +94,11 @@ if (!isset($_POST['data_id']) || (isset($_POST['data_id']) && exponent_permissio
         $emaillist = array();
         foreach ($db->selectObjects("formbuilder_address","form_id=".$f->id) as $address) {
             if ($address->group_id != 0) {
-                foreach (exponent_users_getUsersInGroup(exponent_user_getGroupById($address->group_id)) as $locUser){
+                foreach (group::getUsersInGroup(group::getGroupById($address->group_id)) as $locUser){
                     if ($locUser->email != '') $emaillist[] = $locUser->email;
                 }
             } else if ($address->user_id != 0) {
-                $locUser = exponent_users_getUserById($address->user_id);
+                $locUser = user::getUserById($address->user_id);
                 if ($locUser->email != '') $emaillist[] = $locUser->email;
             } else if ($address->email != '') {
                 $emaillist[] = $address->email;
@@ -158,7 +158,8 @@ if (!isset($_POST['data_id']) || (isset($_POST['data_id']) && exponent_permissio
         $template->output();
     } else {
 		flash ('message', 'Record was updated!');
-        expHistory::back();
+//        expHistory::back();
+        expHistory::returnTo('editable');
     }
 } else {
     echo SITE_403_HTML;

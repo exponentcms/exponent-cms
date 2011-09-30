@@ -29,22 +29,15 @@ if (EXPONENT_VERSION_TYPE != '') {
 }
 
 $script = "
-    var reportbugwindow = function (){
-        win = window.open('http://exponentcms.lighthouseapp.com/projects/61783-exponent-cms/tickets/new');
-        if (!win) {
-            //Catch the popup blocker
-            alert(\"Your popup blocker has prevented the file manager from opening\");
-        }
-    }
+// YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
+// 
+// });
 
-    YAHOO.util.Event.on('reportabug','click',reportbugwindow);
 ";
 expJavascript::pushToFoot(array(
-    "unique"=>'zreportabug',
-    "yui2mods"=>'',
+    "unique"=>'admin1',
     "yui3mods"=>null,
     "content"=>$script,
-    "src"=>""
  ));
 
 if ($user->isAdmin()) {
@@ -67,7 +60,7 @@ if ($user->isAdmin()) {
 							array(
 								'text' => gt("Report a bug"),
 								'url'=>'#',
-								'id'=>'reportabug',
+								'id'=>'reportabug-toolbar',
 								'classname' => 'reportbug',
 							)
 						)
@@ -350,7 +343,15 @@ if ($user->isSuperAdmin()) {
                                 'url' => makeLink(array(
                                     'module' => 'administration',
                                     'action' => 'manage_themes'
-                                ))
+                                )),
+                            ),
+							array(
+								'text' => (MOBILE)?gt('Turn Mobile View off'):gt('Turn Mobile View on'),
+								'classname' => (MOBILE)?'develop_on_green':'develop_off',
+								'url' => makeLink(array(
+									'module' => 'administration',
+									'action' => 'toggle_mobile'
+								)),
                             ),
                         )
                     )

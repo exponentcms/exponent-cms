@@ -63,7 +63,7 @@
  * }     
  * </code>
  * 
- * @subpackage Core-Subsytems
+ * @subpackage Core-Subsystems
  * @package Framework
  */ 
 class expHistory {
@@ -279,7 +279,7 @@ class expHistory {
 	public static function redirecto_login($redirecturl = null) {
     	$redirecturl = empty($redirecturl) ? self::getLastNotEditable() : $redirecturl;
         expSession::set('redirecturl',$redirecturl);
-    	redirect_to(array('module'=>'loginmodule', 'action'=>'loginredirect'));
+    	redirect_to(array('controller'=>'login', 'action'=>'loginredirect'));
 	}
 
 }

@@ -1,0 +1,20 @@
+.login .box {
+    display:inline-block;
+    *display:inline;
+    zoom:1;
+    vertical-align:top;
+    width:45%;
+    padding:5px;
+    margin:5px;
+    border-right:1px dotted #aaa;
+}
+
+.login .box.two {
+   border:0;
+}
+
+.login .box input.text,
+.login .box input.password {
+    max-width:90%;
+}
+

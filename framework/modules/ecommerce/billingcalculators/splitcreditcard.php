@@ -18,6 +18,9 @@
 
 class splitcreditcard extends creditcard {
 	function name() { return 'Split Credit Card'; }
+	public function captureEnabled() {return true; }
+    public function voidEnabled() {return true; }
+    public function creditEnabled() {return true; }
 	function description() {
 	    return "Enabling this payment option will allow your customers to use their credit card to make purchases on your site.  The credit card number
 	    will be split with part of it being stored in the database and the other part getting emailed to site administrator.";
@@ -37,34 +40,20 @@ class splitcreditcard extends creditcard {
 	
 	//called when the order is submitted. Should return an object...
 	function process($method, $opts) {
+		global $order, $db, $user;
+		 
+		$this->opts = $opts;
+
 		// make sure we have some billing options saved.
 		if (empty($opts)) return false;
 		
-		// get the configuration data
-		$config = unserialize($this->config);
-		
-		$txtmessage = "The following order requires your attention.\r\n\r\n";
-        $txtmessage .= $this->textmessage($this->opts);
-                
-		$htmlmessage = "The following order requires your attention.<br><br>";
-		$htmlmessage .= $this->htmlmessage($this->opts);
-		
-		$addresses = explode(',', $config['notification_addy']);
-        foreach ($addresses as $address) {
-		    $mail = new expMail();
-		    $mail->quickSend(array(
-		                'html_message'=>$htmlmessage,
-					    'text_message'=>$txtmessage,
-					    'to'=>trim($address),
-//					    'from'=>ecomconfig::getConfig('from_address'),
-//					    'from_name'=>ecomconfig::getConfig('from_name'),
-					    'from'=>array(ecomconfig::getConfig('from_address')=>ecomconfig::getConfig('from_name')),
-					    'subject'=>'Billing Information for an order placed on '.ecomconfig::getConfig('storename'),
-		    ));
-		}
-		
+			
 		$this->opts->cc_number = 'XXXX-XXXX-XXXX-'.substr($this->opts->cc_number,-4);
 		$method->update(array('billing_options'=>serialize($this->opts)));
+		
+		$object->errorCode = 0;
+		$this->opts->result = $object;      
+		$this->createBillingTransaction($method, number_format($order->grand_total, 2, '.', ''),$this->opts->result,"complete");
 		return true;
 	}	
 	
@@ -165,6 +154,48 @@ class splitcreditcard extends creditcard {
         $message .= 'Expires on: '.$opts->exp_month.'/'.$opts->exp_year."<br>";
 		return $message;
 	}
+	
+	function getPaymentAuthorizationNumber($billingmethod){
+        $ret = expUnserialize($billingmethod->billing_options);
+        return $ret->result->token;       
+    }
+    
+    function getPaymentReferenceNumber($opts) {
+        $ret = expUnserialize($opts);
+        if (isset($ret->result))
+        {
+            return $ret->result->transId;
+        }
+        else
+        {
+            return $ret->transId;
+        }
+    }
+    
+    function getPaymentStatus($billingmethod) {
+        $ret = expUnserialize($billingmethod->billing_options);
+        return $ret->result->payment_status;
+    }
+    
+    function getPaymentMethod($billingmethod) {
+        return $this->title;
+    }
+    
+    function showOptions() {
+        return;
+    }
+	
+	function getAVSAddressVerified($billingmethod) {
+        return 'X';
+    }
+    
+    function getAVSZipVerified($billingmethod) {
+        return 'X';
+    }
+    
+    function getCVVMatched($billingmethod) {
+        return 'X';
+    }
 	
 }
 

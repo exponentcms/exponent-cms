@@ -17,7 +17,7 @@
 #
 ##################################################
 
-function smarty_function_navToJson($params,&$smarty) {
+function smarty_function_navtojson($params,&$smarty) {
     echo navigationmodule::navtojson();
 }
 ?>

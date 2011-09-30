@@ -23,9 +23,10 @@
                 <?php echo ORGANIZATION_NAME; ?>
 			</a>
 			</h1>
+			<?php //expTheme::showController(array("controller"=>"login","action"=>"showlogin","view"=>"showlogin_flyoutYUI")); ?>
 			<?php expTheme::module(array("module"=>"navigation","view"=>"YUI Top Nav","source"=>"@top")); ?>
-			<?php //expTheme::module(array("controller"=>"links","action"=>"showall","view"=>"showall_quicklinks","source"=>"top")) ?>
-			<?php expTheme::module(array("controller"=>"search","action"=>"show","src"=>"@top")) ?>
+			<?php //expTheme::showController(array("controller"=>"links","action"=>"showall","view"=>"showall_quicklinks","source"=>"@top")) ?>
+			<?php expTheme::showController(array("controller"=>"search","action"=>"show","src"=>"@top")) ?>
 		</div>
 		<div id="bd" class="yui3-g">
 			<div id="leftcol" class="yui3-u-1-4">
@@ -40,7 +41,7 @@
 			</div>
 		</div>
 		<div id="ft">
-            <?php expTheme::module(array("controller"=>"text","action"=>"showall","view"=>"single","source"=>"@footer")) ?>
+            <?php expTheme::showController(array("controller"=>"text","action"=>"showall","view"=>"single","source"=>"@footer")) ?>
 		</div>
 	</div>
 <?php echo expTheme::foot(); ?>

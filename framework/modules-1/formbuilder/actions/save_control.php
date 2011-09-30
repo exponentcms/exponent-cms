@@ -23,7 +23,7 @@ if (!defined('EXPONENT')) exit('');
 include_once(BASE.'framework/core/subsystems-1/forms.php');
 $f = $db->selectObject('formbuilder_form','id='.intval($_POST['form_id']));
 if ($f) {
-	if (exponent_permissions_check('editform',unserialize($f->location_data))) {	
+	if (expPermissions::check('editform',unserialize($f->location_data))) {
 		$ctl = null;
 		$control = null;
 		if (isset($_POST['id'])) {

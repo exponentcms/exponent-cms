@@ -26,31 +26,6 @@
     {/if}
     
 
-    {script unique="prodtabs" yuimodules="tabview, element"}
-    {literal}
-        var tabView = new YAHOO.widget.TabView('demo');
-        
-        var url = location.href.split('#');
-        if (url[1]) {
-            //We have a hash
-            var tabHash = url[1];
-            var tabs = tabView.get('tabs');
-            for (var i = 0; i < tabs.length; i++) {
-                if (tabs[i].get('href') == '#' + tabHash) {
-                    tabView.set('activeIndex', i);
-                    break;
-                }
-            }
-        }
-        
-        
-        YAHOO.util.Dom.removeClass("editproduct", 'hide');
-        var loading = YAHOO.util.Dom.getElementsByClassName('loadingdiv', 'div');
-        YAHOO.util.Dom.setStyle(loading, 'display', 'none');
-        
-    {/literal}
-    {/script}
-
     {form action=update}
         {control type="hidden" name="id" value=$record->id}
         <div id="demo" class="yui-navset">
@@ -76,17 +51,18 @@
                 <div id="general">
                     {control type="hidden" name="parent_id" value=$record->parent_id}   
                     {control type="text" name="model" label="Model # / SKU" value=$record->model}
-                    {control type="text" class="title" name="title" label="Product Name" value=$record->title}
+                    {control type="text" class="title" name="title" label="Product Name" value=$record->title|escape:"htmlall"}
                     {control type="dropdown" name="companies_id" label="Manufacturer" includeblank=true frommodel=company value=$record->companies_id}<a href='{link controller="company" action="manage"}'>Manage Manufacturers</a>{br}
                     {control type="textarea" name="summary" label="Product Summary" rows=5 cols=85 value=$record->summary}
                     {control type="editor" name="body" label="Product Description" height=450 value=$record->body}
                     {control type="text" class="title" name="feed_title" label="Product Title for Data Feeds" value=$record->feed_title}
                     {control type="textarea" name="feed_body" label="Product Description for Data Feeds (Description ONLY! - no HTML, no promotional language, no email addresses, phone numbers, or references to this website.)" rows=5 cols=85 value=$record->feed_body}
-                    {control type="text" class="title" name="google_product_type" label="Google Product Type" value=$record->google_product_type}
-					{control type="text" class="title" name="bing_product_type" label="Bing Product Type" value=$record->bing_product_type}
-					{control type="text" class="title" name="nextag_product_type" label="Nextag Product Type" value=$record->nextag_product_type}
-					{control type="text" class="title" name="shopzilla_product_type" label="Shopzilla Product Type" value=$record->shopzilla_product_type}
-                </div>
+                    {if $product_types}
+					{foreach from=$product_types key=key item=item}
+						{control type="text" class="title" name="`$item`" label="`$key` Product Type" value=$record->$item}
+					{/foreach}
+                    {/if}
+			   </div>
                 <div id="pricing">
                     <fieldset>
                     <h2>General Pricing</h2>
@@ -166,26 +142,6 @@
                         <p>{gettext str="Attach Product Brochures, Docs, Manuals, etc."}</p>
                         {control type=files name=brochures label="Additional Files" subtype="brochures" value=$record->expFile}
                     </div>
-
-                    {script unique="mainimagefunctionality" yui3mods="node,node-event-simulate"}
-                    {literal}
-                    YUI(EXPONENT.YUI3_CONFIG).use('node','node-event-simulate', function(Y) {
-                        var radioSwitchers = Y.all('#main_image_functionalityControl input[name="main_image_functionality"]');
-                        radioSwitchers.on('click',function(e){
-                            Y.all(".imngfuncbody").setStyle('display','none');
-                            var curdiv = Y.one("#" + e.target.get('value') + "-div");
-                            curdiv.setStyle('display','block');
-                        });
-
-                        radioSwitchers.each(function(node,k){
-                            if(node.get('checked')==true){
-                                node.simulate('click');
-                            }
-                        });
-                        
-                    });
-                    {/literal}
-                    {/script}
 
                 </div>
                 <div id="quantity">
@@ -483,7 +439,7 @@
                 <div id="meta">
                     <h2>Meta Info</h2>
                     {control type="text" name="sef_url" label="SEF URL" value=$record->sef_url}
-                    {control type="text" name="meta_title" label="Meta Title" value=$record->meta_title}
+                    {control type="text" name="meta_title" label="Meta Title" value=$record->meta_title|escape:"htmlall"}
                     {control type="textarea" name="meta_description" label="Meta Description" value=$record->meta_description}
                     {control type="textarea" name="meta_keywords" label="Meta Keywords" value=$record->meta_keywords}
                 </div>
@@ -566,26 +522,66 @@
 </div>
 <div class="loadingdiv">Loading</div>
 
-{script unique="prodedit"}
-{literal}
-    function switchMethods() {
-        var dd = YAHOO.util.Dom.get('required_shipping_calculator_id');
-        var methdd = YAHOO.util.Dom.get('dd-'+dd.value);
 
-        var otherdds = YAHOO.util.Dom.getElementsByClassName('methods', 'div');
-        
-        for(i=0; i<otherdds.length; i++) {
-            if (otherdds[i].id == 'dd-'+dd.value) {
-                YAHOO.util.Dom.setStyle(otherdds[i].id, 'display', 'block');
-            } else {
-                YAHOO.util.Dom.setStyle(otherdds[i].id, 'display', 'none');
+{script unique="editform" yui3mods=1}
+{literal}
+    YUI(EXPONENT.YUI3_CONFIG).use('node','node-event-simulate','yui2-yahoo-dom-event','yui2-tabview','yui2-element', function(Y) {
+        var YAHOO=Y.YUI2;
+
+        var tabView = new YAHOO.widget.TabView('demo');
+
+        var url = location.href.split('#');
+        if (url[1]) {
+            //We have a hash
+            var tabHash = url[1];
+            var tabs = tabView.get('tabs');
+            for (var i = 0; i < tabs.length; i++) {
+                if (tabs[i].get('href') == '#' + tabHash) {
+                    tabView.set('activeIndex', i);
+                    break;
+                }
             }
-            
         }
-        YAHOO.util.Dom.setStyle(methdd, 'display', 'block');
-        //console.debug(methdd);
-        //console.debug(dd.value);
-    }
-    YAHOO.util.Event.onDOMReady(switchMethods);
+
+
+        YAHOO.util.Dom.removeClass("editproduct", 'hide');
+        var loading = YAHOO.util.Dom.getElementsByClassName('loadingdiv', 'div');
+        YAHOO.util.Dom.setStyle(loading, 'display', 'none');
+
+        var radioSwitchers = Y.all('#main_image_functionalityControl input[name="main_image_functionality"]');
+        radioSwitchers.on('click',function(e){
+            Y.all(".imngfuncbody").setStyle('display','none');
+            var curdiv = Y.one("#" + e.target.get('value') + "-div");
+            curdiv.setStyle('display','block');
+        });
+
+        radioSwitchers.each(function(node,k){
+            if(node.get('checked')==true){
+                node.simulate('click');
+            }
+        });
+
+        function switchMethods() {
+            var dd = YAHOO.util.Dom.get('required_shipping_calculator_id');
+            var methdd = YAHOO.util.Dom.get('dd-'+dd.value);
+
+            var otherdds = YAHOO.util.Dom.getElementsByClassName('methods', 'div');
+
+            for(i=0; i<otherdds.length; i++) {
+                if (otherdds[i].id == 'dd-'+dd.value) {
+                    YAHOO.util.Dom.setStyle(otherdds[i].id, 'display', 'block');
+                } else {
+                    YAHOO.util.Dom.setStyle(otherdds[i].id, 'display', 'none');
+                }
+
+            }
+            YAHOO.util.Dom.setStyle(methdd, 'display', 'block');
+            //console.debug(methdd);
+            //console.debug(dd.value);
+        }
+        YAHOO.util.Event.onDOMReady(switchMethods);
+    });
 {/literal}
 {/script}
+
+

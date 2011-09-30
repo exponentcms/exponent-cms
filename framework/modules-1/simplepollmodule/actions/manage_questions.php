@@ -33,7 +33,7 @@
 
 if (!defined('EXPONENT')) exit('');
 
-if (exponent_permissions_check('manage_question',$loc) || exponent_permissions_check('manage_answer',$loc)) {
+if (expPermissions::check('manage_question',$loc) || expPermissions::check('manage_answer',$loc)) {
 	expHistory::flowSet(SYS_FLOW_PROTECTED,SYS_FLOW_ACTION);
 	
 	$questions = $db->selectObjects('poll_question',"location_data='".serialize($loc)."'");

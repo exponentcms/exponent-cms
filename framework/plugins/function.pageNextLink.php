@@ -17,7 +17,7 @@
 #
 ##################################################
 
-function smarty_function_pageNextLink($params,&$smarty) {
+function smarty_function_pagenextlink($params,&$smarty) {
 	if ($params['page']->page < $params['page']->numberOfPages) {
 		// initialize a couple of variables
 		$class = isset($params['class']) ? $params['class'] : 'page-next';

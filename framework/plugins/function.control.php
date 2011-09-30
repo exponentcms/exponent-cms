@@ -37,6 +37,9 @@ function smarty_function_control($params,&$smarty) {
             $edittext = isset($params['edit_text']) ? $params['edit_text'] : 'Change Date/Time';
             $control = new yuidatetimecontrol($params['value'],$edittext);
             if (empty($params['value'])) $params['value'] = time();
+        } elseif ($params['type'] == 'yuicalendarcontrol') {
+            $control = new yuicalendarcontrol($params['value']);
+            if (empty($params['value'])) $params['value'] = time();
         } elseif ($params['type'] == 'datetimecontrol' || $params['type'] == 'datetime') {
             if (empty($params['value'])) $params['value'] = time();
             $showdate = isset($params['showdate']) ? $params['showdate'] : true;
@@ -106,27 +109,27 @@ function smarty_function_control($params,&$smarty) {
                 }
             }
         } elseif ($params['type'] == 'radiogroup') {
-                $control = new radiogroupcontrol();
-                // differentiate it from the old school forms
-                $control->newschool = true;
-                $control->default = $params['default'];
-                $control->cols = $params['columns'];
+			$control = new radiogroupcontrol();
+			// differentiate it from the old school forms
+			$control->newschool = true;
+			$control->default = $params['default'];
+			$control->cols = $params['columns'];
 
-                // get the items to use as the radio button labels
-                $items = is_array($params['items']) ? $params['items'] : explode(',', $params['items']);
-                // check if we have a list of values.  if not we can assume they are passed in via the items
-                // array as the keys.
-                if (isset($params['values'])) {
-                    $values = is_array($params['values']) ? $params['values'] : explode(',', $params['values']);
-                    $control->items = array_combine($values, $items);
-                } else {
-                    $control->items = $items;//array_combine($items, $items);
-                }       
-            } elseif ($params['type'] == 'radio') {
-                $control = new radiocontrol();
-                $control->value = $params['value'];
-                $control->newschool = true;
-            } elseif ($params['type'] == 'textarea') {
+			// get the items to use as the radio button labels
+			$items = is_array($params['items']) ? $params['items'] : explode(',', $params['items']);
+			// check if we have a list of values.  if not we can assume they are passed in via the items
+			// array as the keys.
+			if (isset($params['values'])) {
+				$values = is_array($params['values']) ? $params['values'] : explode(',', $params['values']);
+				$control->items = array_combine($values, $items);
+			} else {
+				$control->items = $items;//array_combine($items, $items);
+			}
+		} elseif ($params['type'] == 'radio') {
+			$control = new radiocontrol();
+			$control->value = $params['value'];
+			$control->newschool = true;
+		} elseif ($params['type'] == 'textarea') {
             $control = new texteditorcontrol();
             if (isset($params['module'])) $control->module = $params['module'];
             if (isset($params['rows'])) $control->rows = $params['rows'];
@@ -337,7 +340,7 @@ function smarty_function_control($params,&$smarty) {
         } elseif (isset($params['value'])) {
             // if this field is filtered than lets go ahead and format the data before we stick it in the field.
             if ($params['filter'] == 'money') {
-                $params['value'] = exponent_core_getCurrencySymbol('USD').number_format($params['value'],2,'.',',');
+                $params['value'] = expCore::getCurrencySymbol('USD').number_format($params['value'],2,'.',',');
             } elseif ($params['filter'] == 'integer') {
                 $params['value'] = number_format($params['value'],0,'.',',');
             }

@@ -39,11 +39,11 @@ class container {
             }
         
             // set the location data for the new module/controller
-            $newInternal = exponent_core_makeLocation($values['modcntrol'],$src);
+            $newInternal = expCore::makeLocation($values['modcntrol'],$src);
 
             // REFERENCES - Section and Location
             //$sect = $db->selectObject('section','id='.$_POST['current_section']);
-            exponent_core_incrementLocationReference($newInternal,intval($_POST['current_section']));
+            expCore::incrementLocationReference($newInternal,intval($_POST['current_section']));
             
             // Rank is only updateable from the order action
             $object->rank = $values['rank'];

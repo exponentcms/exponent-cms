@@ -75,29 +75,7 @@ define('EXPONENT', EXPONENT_VERSION_MAJOR);
 require_once(BASE . 'framework/core/subsystems/expSettings.php');  // we don't have our autoloader loaded yet
 expSettings::initialize();
 
-if (!defined('DISPLAY_THEME')) {
-	/* exdoc
-	 * The directory and class name of the current active theme.  This may be different
-	 * than the configure theme (DISPLAY_THEME_REAL) due to previewing.
-	 */
-	define('DISPLAY_THEME',DISPLAY_THEME_REAL);
-}
-
-if (!defined('THEME_ABSOLUTE')) {
-	/* exdoc
-	 * The absolute path to the current active theme's files.  This is similar to the BASE constant
-	 */
-	define('THEME_ABSOLUTE',BASE.'themes/'.DISPLAY_THEME.'/'); // This is the recommended way
-}
-
-if (!defined('THEME_RELATIVE')) {
-	/* exdoc
-	 * The relative web path to the current active theme.  This is similar to the PATH_RELATIVE constant.
-	 */
-	define('THEME_RELATIVE',PATH_RELATIVE.'themes/'.DISPLAY_THEME.'/');
-}
-
-// Process PHP-wrapper settings (ini_sets and setting and eventually the autoloader)
+// Process PHP-wrapper settings (ini_sets and settings, and autoloader)
 require_once(BASE . 'exponent_php_setup.php');
 
 $info = gd_info();

@@ -125,7 +125,7 @@ class calendarmodule_config {
 		$userlist = array();
 		$users = user::getAllUsers();
 		foreach ($db->selectObjects('calendar_reminder_address','calendar_id='.$object->id.' and user_id != 0') as $address) {
-			$locuser =  exponent_users_getUserById($address->user_id);
+			$locuser =  user::getUserById($address->user_id);
 			$defaults[$locuser->id] = $locuser->firstname . ' ' . $locuser->lastname . ' (' . $locuser->username . ')';
 		} 
 		foreach ($users as $locuser) {
@@ -138,10 +138,10 @@ class calendarmodule_config {
 		// Get Group list	
 		$defaults = array();
 		$grouplist = array();
-		$groups = user::getAllGroups();
+		$groups = group::getAllGroups();
 		if ($groups != null) {
 			foreach ($db->selectObjects('calendar_reminder_address','calendar_id='.$object->id.' and group_id != 0') as $address) {
-				$group =  exponent_users_getGroupById($address->group_id);
+				$group =  group::getGroupById($address->group_id);
 				$defaults[$group->id] = $group->name;
 			}
 			foreach ($groups as $group) {

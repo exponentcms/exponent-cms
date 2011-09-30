@@ -24,15 +24,13 @@ if (!defined('EXPONENT')) exit('');
 // id & date_id set if single event, else
 //   src & time (opt?) set for longer list/month, etc...
 if (isset($_GET['date_id']) || isset($_GET['src'])) {
-	$loc = exponent_core_makeLocation('calendarmodule',$_GET['src'],'');
+	$loc = expCore::makeLocation('calendarmodule',$_GET['src'],'');
 	$locsql = "(location_data='".serialize($loc)."'";
 	$config = $db->selectObject("calendarmodule_config","location_data='".serialize($loc)."'");
 	if (!$config) {
 		$config->enable_ical = 1;
 	}
 	if ($config->enable_ical) {
-		include_once(BASE."framework/core/subsystems-1/datetime.php");
-
 		if (isset($_GET['date_id'])) {  // get single specific event only
 			$dates = array($db->selectObject("eventdate","id=".intval($_GET['date_id'])));
 			$Filename = "Event-" . $_GET['date_id'];
@@ -49,10 +47,7 @@ if (isset($_GET['date_id']) || isset($_GET['src'])) {
 			}
 			$locsql .= ')';
 
-			if (!function_exists("exponent_datetime_startOfDayTimestamp")) {
-				include_once(BASE."framework/core/subsystems-1/datetime.php");
-			}
-			$day = exponent_datetime_startOfDayTimestamp(time());
+			$day = expDateTime::startOfDayTimestamp(time());
 			if (isset($config->rss_limit) && ($config->rss_limit > 0)) {
 				$rsslimit = " AND date <= " . ($day + ($config->rss_limit * 86400));
 			} else {
@@ -65,10 +60,10 @@ if (isset($_GET['date_id']) || isset($_GET['src'])) {
 			
 			if (isset($_GET['time'])) {
 				$time = $_GET['time'];  // get current month's events
-				$dates = $db->selectObjects("eventdate",$locsql." AND date >= ".exponent_datetime_startOfMonthTimestamp($time)." AND date <= ".exponent_datetime_endOfMonthTimestamp($time));
+				$dates = $db->selectObjects("eventdate",$locsql." AND date >= ".expDateTime::startOfMonthTimestamp($time)." AND date <= ".expDateTime::endOfMonthTimestamp($time));
 			} else {
 				$time = date('U',strtotime("midnight -1 month",time()));  // previous month also
-				$dates = $db->selectObjects("eventdate",$locsql." AND date >= ".exponent_datetime_startOfDayTimestamp($time).$rsslimit);
+				$dates = $db->selectObjects("eventdate",$locsql." AND date >= ".expDateTime::startOfDayTimestamp($time).$rsslimit);
 			}
 			$title = $db->selectValue('container', 'title', "internal='".serialize($loc)."'");
 			$Filename = preg_replace('/\s+/','',$title);  // without whitespace

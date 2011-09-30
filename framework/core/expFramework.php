@@ -16,6 +16,12 @@
 ##################################################
 
 //Global Variables
+
+/**
+ * the list of available/active controllers
+ * @global array $available_controllers
+ * @name $available_controllers
+ */
 $available_controllers = array();
 
 //expTheme
@@ -26,21 +32,61 @@ $cur_lang = array();
 $default_lang = array();
 $target_lang_file = '';
 
-// database subsystem
+/**
+ * The exponent database object
+ *
+ * @global mysqli_database $db the exponent database object
+ * @name $db
+ */
 $db = null;
 
-// expHistory
+/**
+ * the browsing history object
+ * @global expHistory $history
+ * @name $history
+ */
 $history = null;
 $SYS_FLOW_REDIRECTIONPATH = '';
 
-// user subsystem
+/**
+ * the current user object
+ * @global user $user
+ * @name $user
+ */
 $user = null;
 
-// expRouter
+/**
+ * initialize the expRouter
+ * the routing/link/url object
+ * @global expRouter $router
+ * @name $router
+ */
 $router = null;
 
-// core subsystem
+/**
+ * Initialize the navigation hierarchy
+ * the list of sections/pages for the site
+ * @global array $sections
+ * @name $sections
+ */
 $sections = array();
+
+/**
+ * This global array belongs exclusively to the Users subsystem, and is used to cache
+ *  users as they are retrieved, to help out with performance when doing a lot of
+ * work with user accounts and profile information.
+ * @global array $SYS_USERS_CACHE
+ * @name $SYS_USERS_CACHE
+ */
+$SYS_USERS_CACHE = array();
+
+/**
+ * Stores the permission data for the current user.  This should not be modified
+ * by anything outside of the permissions subsystem.
+ * @global array $exponent_permissions_r
+ * @name $exponent_permissions_r
+ */
+$exponent_permissions_r = array();
 
 function renderAction(array $parms=array()) {
     //because we love you
@@ -113,7 +159,7 @@ function renderAction(array $parms=array()) {
     }
 
     if (array_key_exists($permaction, $perms)) {
-        if (!exponent_permissions_check($permaction, $controller->loc)) {
+        if (!expPermissions::check($permaction, $controller->loc)) {
             if (expTheme::inAction()) {
                 flash('error', "You don't have permission to ".$perms[$permaction]);
                 expHistory::returnTo('viewable');
@@ -122,7 +168,7 @@ function renderAction(array $parms=array()) {
             }
         }
     } elseif (array_key_exists($common_action_name, $perms)) {
-        if (!exponent_permissions_check($common_action_name, $controller->loc)) {
+        if (!expPermissions::check($common_action_name, $controller->loc)) {
             if (expTheme::inAction()) {
                 flash('error', "You don't have permission to ".$perms[$common_action_name]);
                 expHistory::returnTo('viewable');
@@ -144,7 +190,7 @@ function renderAction(array $parms=array()) {
             flash('error', $msg);
             expHistory::redirecto_login();
         }
-    }
+    } 
     
     // run the action 
     $controller->$action();
@@ -275,8 +321,9 @@ function get_common_template($view, $loc, $controllername='') {
     $controller->loc = $loc;
     
     $basepath = BASE.'framework/modules/common/views/'.$controllername.'/'.$view.'.tpl';
-    $themepath = BASE.'themes/'.DISPLAY_THEME_REAL.'/modules/common/views/'.$controllername.'/'.$view.'.tpl';
-    
+//    $themepath = BASE.'themes/'.DISPLAY_THEME_REAL.'/modules/common/views/'.$controllername.'/'.$view.'.tpl';
+    $themepath = BASE.'themes/'.DISPLAY_THEME.'/modules/common/views/'.$controllername.'/'.$view.'.tpl';
+
     if (file_exists($themepath)) {
         return new controllerTemplate($controller,$themepath);
     } elseif(file_exists($basepath)) {
@@ -292,12 +339,14 @@ function get_config_templates($controller, $loc) {
     // set paths we will search in for the view
     $commonpaths = array(
         BASE.'framework/modules/common/views/configure',
-        BASE.'themes/'.DISPLAY_THEME_REAL.'/modules/common/views/configure',
+//        BASE.'themes/'.DISPLAY_THEME_REAL.'/modules/common/views/configure',
+        BASE.'themes/'.DISPLAY_THEME.'/modules/common/views/configure',
     );
     
     $modpaths = array(
         $controller->viewpath.'/configure',
-        BASE.'themes/'.DISPLAY_THEME_REAL.'/modules/'.$controller->relative_viewpath.'/configure'
+//        BASE.'themes/'.DISPLAY_THEME_REAL.'/modules/'.$controller->relative_viewpath.'/configure'
+	    BASE.'themes/'.DISPLAY_THEME.'/modules/'.$controller->relative_viewpath.'/configure'
     );
     
     // get the common configuration files    
@@ -361,15 +410,17 @@ function find_config_views($paths=array(), $excludes=array()) {
 function get_template_for_action($controller, $action, $loc) {
     // set paths we will search in for the view
     $basepath = $controller->viewpath.'/'.$action.'.tpl';
-    $themepath = BASE.'themes/'.DISPLAY_THEME_REAL.'/modules/'.$controller->relative_viewpath.'/'.$action.'.tpl';
-    
+//    $themepath = BASE.'themes/'.DISPLAY_THEME_REAL.'/modules/'.$controller->relative_viewpath.'/'.$action.'.tpl';
+    $themepath = BASE.'themes/'.DISPLAY_THEME.'/modules/'.$controller->relative_viewpath.'/'.$action.'.tpl';
+
     // the root action will be used if we don't find a view for this action and it is a derivitative of
     // action.  i.e. showall_by_tags would use the showall.tpl view if we do not have a view named
     // showall_by_tags.tpl
     $root_action = explode('_', $action);
     $rootbasepath = $controller->viewpath.'/'.$root_action[0].'.tpl';
-    $rootthemepath = BASE.'themes/'.DISPLAY_THEME_REAL.'/modules/'.$controller->relative_viewpath.'/'.$root_action[0].'.tpl';
-    
+//    $rootthemepath = BASE.'themes/'.DISPLAY_THEME_REAL.'/modules/'.$controller->relative_viewpath.'/'.$root_action[0].'.tpl';
+    $rootthemepath = BASE.'themes/'.DISPLAY_THEME.'/modules/'.$controller->relative_viewpath.'/'.$root_action[0].'.tpl';
+
     if (file_exists($themepath)) {
         return new controllerTemplate($controller, $themepath);
     } elseif (file_exists($basepath)) {     
@@ -401,7 +452,8 @@ function get_action_views($ctl, $action, $human_readable) {
     //$themepath = BASE.'themes/'.DISPLAY_THEME_REAL.'/modules/'.$controller->relative_viewpath;
     $paths = array(
         $controller->viewpath,
-        BASE.'themes/'.DISPLAY_THEME_REAL.'/modules/'.$controller->relative_viewpath,
+//        BASE.'themes/'.DISPLAY_THEME_REAL.'/modules/'.$controller->relative_viewpath,
+        BASE.'themes/'.DISPLAY_THEME.'/modules/'.$controller->relative_viewpath,
     );
     
     $views = array();
@@ -431,7 +483,8 @@ function get_action_views($ctl, $action, $human_readable) {
 function get_filedisplay_views() {
     $paths = array(
         BASE.'framework/modules/common/views/file/',
-        BASE.'themes/'.DISPLAY_THEME_REAL.'modules/common/views/file/',
+//        BASE.'themes/'.DISPLAY_THEME_REAL.'modules/common/views/file/',
+        BASE.'themes/'.DISPLAY_THEME.'modules/common/views/file/',
     );
     
     $views = array();
@@ -452,7 +505,8 @@ function get_filedisplay_views() {
 
 function initializeControllers() {
     $controllers = array();
-    loadModulesDir(BASE.'themes/'.DISPLAY_THEME_REAL.'/modules', $controllers);
+//    loadModulesDir(BASE.'themes/'.DISPLAY_THEME_REAL.'/modules', $controllers);
+    loadModulesDir(BASE.'themes/'.DISPLAY_THEME.'/modules', $controllers);
     loadModulesDir(BASE.'framework/modules', $controllers);
     return $controllers;
 }
@@ -628,7 +682,7 @@ function expUnserialize($serial_str) {
 // just before it gets rendered to the screen should happen here.
 function expProcessBuffer($buffer, $mode=null) {
      global $jsForHead, $cssForHead;
-     return (str_replace("<!-- MMINIFY REPLACE -->", $cssForHead.$jsForHead, $buffer));
+     return (str_replace("<!-- MINIFY REPLACE -->", $cssForHead.$jsForHead, $buffer));
 }
 
 function createValidId ($id) {

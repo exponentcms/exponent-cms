@@ -76,13 +76,15 @@ class billing extends expRecord {
         $number_of_calculators = count($this->available_calculators);
         
         if ($number_of_calculators == 1 || empty($order->billingmethod[0]->billingcalculator_id)) {
+			
             reset($this->available_calculators);
             $calcid = key($this->available_calculators);
             $order->billingmethod[0]->update(array('billingcalculator_id'=>$calcid));
         }           
 
 	    if ($number_of_calculators > 0) {
-            $calcname = $this->available_calculators[$order->billingmethod[0]->billingcalculator_id];            
+            $calcname = $this->available_calculators[$order->billingmethod[0]->billingcalculator_id];  
+		
             $this->calculator = new $calcname($order->billingmethod[0]->billingcalculator_id);
         } else {
             $this->calculator = null;
@@ -92,7 +94,13 @@ class billing extends expRecord {
         
         $options = unserialize($this->billingmethod->billing_options);
         $this->info = empty($this->calculator->id) ? '' : $this->calculator->userView($options);
-        $this->form = empty($this->calculator->id) ? '' : $this->calculator->userForm();
+		
+		foreach($this->available_calculators as $key => $item) {
+			$calc  = new $item($key);
+			$this->form[$key] = $calc->userForm();
+		}
+        
+		// eDebug($this->form, true);	
     }
 
     public static function listAvailableCalculators() {
@@ -128,7 +136,8 @@ class billing extends expRecord {
     
     public function getCalcViews() {        
         $dirs = array(
-            BASE.'themes/'.DISPLAY_THEME_REAL.'/modules/ecommerce/views/billing/',
+//            BASE.'themes/'.DISPLAY_THEME_REAL.'/modules/ecommerce/views/billing/',
+            BASE.'themes/'.DISPLAY_THEME.'/modules/ecommerce/views/billing/',
             BASE.'framework/modules/ecommerce/views/billing/',
         );
         

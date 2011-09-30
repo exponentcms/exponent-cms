@@ -26,7 +26,7 @@ if (isset($_GET['id'])) {
 }
 
 if ($f) {
-	if (exponent_permissions_check('editreport',unserialize($f->location_data))) {
+	if (expPermissions::check('editreport',unserialize($f->location_data))) {
 		$floc = unserialize($f->location_data);
 		$rept = $db->selectObject('formbuilder_report','form_id='.$f->id);
 	

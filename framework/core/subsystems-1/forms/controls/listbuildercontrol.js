@@ -46,7 +46,7 @@ function removeSelectedItem(name, process) {
 			key = ptChoices.options[ptChoices.selectedIndex].text;
 			ptChoices.remove(ptChoices.selectedIndex);
 		}
-		
+
 		var dataElem = document.getElementById(name);
 		var arr = dataElem.value.split("|!|");
 		for (i = 0; i < arr.length; i++) {
@@ -60,7 +60,6 @@ function removeSelectedItem(name, process) {
 }
 
 function moveItem(name,from,to, process) {
-
 	var g_src = document.getElementById(from+name);
 	var g_dst = document.getElementById(to+name);
 	var i=0;
@@ -73,7 +72,7 @@ function moveItem(name,from,to, process) {
 	
 	if(process == "copyonly" && from == "dest_") {
 		g_src.options[g_src.selectedIndex] = null;
-		return;
+		return key;
 	}
 	
 	for (i = 0;i < g_dst.length; i++) {

@@ -1,0 +1,45 @@
+.module.purchaseorder {
+    position:relative;
+}
+
+.module.purchaseorder .module-actions,
+.module.purchaseorder .filters {
+    margin-bottom:20px;
+}
+
+
+.module.purchaseorder .filters .control {
+    display:inline-block;
+    *display:inline;
+    zoom:1;
+    vertical-align:top;
+    padding-right:10px;
+}
+
+
+.module.purchaseorder #vendorinfo {
+    margin-bottom:20px;
+}
+
+.module.purchaseorder .controlrow {
+    background:#dedede;
+}
+
+
+.module.purchaseorder .loadingdiv {
+    background-position:50% 100%;
+    padding:0 0 20px 0;
+}
+
+#vendorSelectControl {
+    position:absolute;
+    right:0;
+    top:0;
+    text-align:right;
+}
+
+.module.purchaseorder #vendorinfo .loadingdiv {
+    background-position:0% 100%;
+    text-align:left;
+    padding:0 0 20px 10px;
+}

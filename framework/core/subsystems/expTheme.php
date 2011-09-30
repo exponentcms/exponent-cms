@@ -20,11 +20,59 @@
 /**
  * This is the class expTheme
  *
- * @subpackage Core-Subsytems
+ * @subpackage Core-Subsystems
  * @package Framework
  */
 
 class expTheme {
+
+	public static function initialize() {
+		global $auto_dirs2, $user;
+		// Initialize the theme subsystem 1.0 compatibility layer
+		require_once(BASE.'framework/core/subsystems-1/theme.php');
+		if (!defined('DISPLAY_THEME')) {
+			/* exdoc
+			 * The directory and class name of the current active theme.  This may be different
+			 * than the configured theme (DISPLAY_THEME_REAL) due to previewing.
+			 */
+			define('DISPLAY_THEME',DISPLAY_THEME_REAL);
+		}
+
+		if (!defined('THEME_ABSOLUTE')) {
+			/* exdoc
+			 * The absolute path to the current active theme's files.  This is similar to the BASE constant
+			 */
+			define('THEME_ABSOLUTE',BASE.'themes/'.DISPLAY_THEME.'/'); // This is the recommended way
+		}
+
+		if (!defined('THEME_RELATIVE')) {
+			/* exdoc
+			 * The relative web path to the current active theme.  This is similar to the PATH_RELATIVE constant.
+			 */
+			define('THEME_RELATIVE',PATH_RELATIVE.'themes/'.DISPLAY_THEME.'/');
+		}
+		if (!defined('THEME_STYLE')) {
+			/* exdoc
+			 * The name of the current active theme style.
+			 */
+			define('THEME_STYLE',THEME_STYLE_REAL);
+		}
+		if (THEME_STYLE != '') {
+			if (file_exists(BASE.'themes/'.DISPLAY_THEME.'/config_'.THEME_STYLE.'.php')){
+			  @include_once(BASE.'themes/'.DISPLAY_THEME.'/config_'.THEME_STYLE.'.php');
+			}
+		} else {
+			if (file_exists(BASE.'themes/'.DISPLAY_THEME.'/config.php')) {
+			  @include_once(BASE.'themes/'.DISPLAY_THEME.'/config.php');
+			}
+		}
+		if (!defined('BTN_SIZE')) define('BTN_SIZE','medium');
+		if (!defined('BTN_COLOR')) define('BTN_COLOR','black');
+		// add our theme folder to autoload and place it first
+		//$auto_dirs2[] = BASE.'themes/'.DISPLAY_THEME_REAL.'/modules';
+		$auto_dirs2[] = BASE.'themes/'.DISPLAY_THEME.'/modules';
+		$auto_dirs2 = array_reverse($auto_dirs2);
+	}
 
     public static function head($config = array()){
     	echo self::headerInfo($config);
@@ -64,9 +112,11 @@ class expTheme {
     }
     
     public static function module($params) {
-        if (isset($params['controller'])) {
+	    if (empty($params)) {
+		    return false;
+	    } elseif (isset($params['controller'])) {
             self::showController($params);
-        } else if (isset($params['module'])) {
+        } elseif (isset($params['module'])) {
             $moduletitle = (isset($params['moduletitle'])) ? $params['moduletitle'] : "";
             $source = (isset($params['source'])) ? $params['source'] : "";
             $chrome = (isset($params['chrome'])) ? $params['chrome'] : false;
@@ -95,37 +145,45 @@ class expTheme {
                                                     $chrome // Show chrome
                                                     );
             }
-        }
+        } else {
+		    return false;
+	    }
     }
     
     public static function showController($params=array()) {
         global $sectionObj, $db;
-        if (empty($params)) return false;
-        $params['view'] = isset($params['view']) ? $params['view'] : $params['action'];
-        $params['title'] = isset($params['moduletitle']) ? $params['moduletitle'] : '';
-        $params['chrome'] = (!isset($params['chrome']) || (isset($params['chrome'])&&empty($params['chrome']))) ? true : false;
-        $params['scope'] = isset($params['scope']) ? $params['scope'] : 'global';
+        if (empty($params)) {
+	        return false;
+        } elseif (isset($params['module'])) {
+            self::module($params);
+        } else if (isset($params['controller'])) {
+			$params['view'] = isset($params['view']) ? $params['view'] : $params['action'];
+			$params['title'] = isset($params['moduletitle']) ? $params['moduletitle'] : '';
+			$params['chrome'] = (!isset($params['chrome']) || (isset($params['chrome'])&&empty($params['chrome']))) ? true : false;
+			$params['scope'] = isset($params['scope']) ? $params['scope'] : 'global';
 
-        // set the controller and action to the one called via the function params
-        $requestvars = isset($params['params']) ? $params['params'] : array();
-        $requestvars['controller'] = $params['controller'];
-        $requestvars['action'] = isset($params['action']) ? $params['action'] : null;
-        $requestvars['view'] = isset($params['view']) ? $params['view'] : null;
+			// set the controller and action to the one called via the function params
+			$requestvars = isset($params['params']) ? $params['params'] : array();
+			$requestvars['controller'] = $params['controller'];
+			$requestvars['action'] = isset($params['action']) ? $params['action'] : null;
+			$requestvars['view'] = isset($params['view']) ? $params['view'] : null;
 
-        // figure out the scope of the module and set the source accordingly
-        if ($params['scope'] == 'global') {
-            $params['source'] = isset($params['source']) ? $params['source'] : null;
-        } elseif ($params['scope'] == 'sectional') {
-            $params['source']  = isset($params['source']) ? $params['source'] : '@section';
-            $params['source'] .= $sectionObj->id;
-        } elseif ($params['scope'] == 'top-sectional') {
-            $params['source']  = isset($params['source']) ? $params['source'] : '@section';
-            $section = $sectionObj;
-            while ($section->parent > 0) $section = $db->selectObject("section","id=".$section->parent);
-            $params['source'] .= $section->id;            
+			// figure out the scope of the module and set the source accordingly
+			if ($params['scope'] == 'global') {
+				$params['source'] = isset($params['source']) ? $params['source'] : null;
+			} elseif ($params['scope'] == 'sectional') {
+				$params['source']  = isset($params['source']) ? $params['source'] : '@section';
+				$params['source'] .= $sectionObj->id;
+			} elseif ($params['scope'] == 'top-sectional') {
+				$params['source']  = isset($params['source']) ? $params['source'] : '@section';
+				$section = $sectionObj;
+				while ($section->parent > 0) $section = $db->selectObject("section","id=".$section->parent);
+				$params['source'] .= $section->id;
+			}
+			self::showModule(getControllerClassName($params['controller']),$params['view'],$params['title'],$params['source'],false,null,$params['chrome'],$requestvars);
+        } else {
+	        return false;
         }
-
-        self::showModule(getControllerClassName($params['controller']),$params['view'],$params['title'],$params['source'],false,null,$params['chrome'],$requestvars);
     }
 
     public function showSectionalController($params=array()) {
@@ -167,14 +225,16 @@ class expTheme {
             return false;
         }
         if (self::inAction()) {
-            include_once(BASE."themes/".DISPLAY_THEME_REAL."/".$theme);
+//            include_once(BASE."themes/".DISPLAY_THEME_REAL."/".$theme);
+            include_once(BASE."themes/".DISPLAY_THEME."/".$theme);
             exit;
         }
     }
 
     public function grabView($path,$filename) {        
         $dirs = array(
-            BASE.'themes/'.DISPLAY_THEME_REAL.'/'.$path,
+//            BASE.'themes/'.DISPLAY_THEME_REAL.'/'.$path,
+            BASE.'themes/'.DISPLAY_THEME.'/'.$path,
             BASE.'framework/'.$path,
         );
         
@@ -187,7 +247,8 @@ class expTheme {
     
     public function grabViews($path,$filter='') {        
         $dirs = array(
-            BASE.'themes/'.DISPLAY_THEME_REAL.'/'.$path,
+//            BASE.'themes/'.DISPLAY_THEME_REAL.'/'.$path,
+            BASE.'themes/'.DISPLAY_THEME.'/'.$path,
             BASE.'framework/'.$path,
         );
                 
@@ -220,8 +281,7 @@ class expTheme {
 
 	public static function clearSmartyCache() {
 		self::removeSmartyCache();
-		$message = "Smarty Cache has been cleared" ;
-		flash('message',$message);
+		flash('message',"Smarty Cache has been cleared");
 		expHistory::back();
 	}
 
@@ -245,7 +305,7 @@ class expTheme {
 					$title = empty($feed->feed_title) ? 'RSS' : htmlspecialchars($feed->feed_title, ENT_QUOTES);
 					$params['module'] = $feed->module;
 					$params['src'] = $feed->src;
-					echo "\t".'<link rel="alternate" type="application/rss+xml" title="' . $title . '" href="' . exponent_core_makeRSSLink($params) . "\" />\n";
+					echo "\t".'<link rel="alternate" type="application/rss+xml" title="' . $title . '" href="' . expCore::makeRSSLink($params) . "\" />\n";
 				}
 			}
 
@@ -269,7 +329,7 @@ class expTheme {
 						$params['src'] = $module->source;
 						if (!empty($module->internal)) $params['int'] = $module->internal;
 
-						echo "\t".'<link rel="alternate" type="application/rss+xml" title="' . $title . '" href="' . exponent_core_makeRSSLink($params) . "\" />\n";
+						echo "\t".'<link rel="alternate" type="application/rss+xml" title="' . $title . '" href="' . expCore::makeRSSLink($params) . "\" />\n";
 						$feeds[$module->source] = $title;
 					}
 				}
@@ -347,10 +407,12 @@ class expTheme {
 		$str .= "\t".'<!--[if IE 6]><style type="text/css">  body { behavior: url('.PATH_RELATIVE.'external/csshover.htc); }</style><![endif]-->'."\n";
 
 		// when minification is used, the comment below gets replaced when the buffer is dumped
-		$str .= '<!-- MMINIFY REPLACE -->';
+		$str .= '<!-- MINIFY REPLACE -->';
 
-		if(file_exists(BASE.'themes/'.DISPLAY_THEME_REAL.'/favicon.ico')) {
-			$str .= "\t".'<link rel="shortcut icon" href="'.URL_FULL.'themes/'.DISPLAY_THEME_REAL.'/favicon.ico" type="image/x-icon" />'."\r\n";
+//		if(file_exists(BASE.'themes/'.DISPLAY_THEME_REAL.'/favicon.ico')) {
+//			$str .= "\t".'<link rel="shortcut icon" href="'.URL_FULL.'themes/'.DISPLAY_THEME_REAL.'/favicon.ico" type="image/x-icon" />'."\r\n";
+		if(file_exists(BASE.'themes/'.DISPLAY_THEME.'/favicon.ico')) {
+			$str .= "\t".'<link rel="shortcut icon" href="'.URL_FULL.'themes/'.DISPLAY_THEME.'/favicon.ico" type="image/x-icon" />'."\r\n";
 		}
 
 		return $str;
@@ -366,6 +428,9 @@ class expTheme {
 			self::showController(array("controller"=>"administration","action"=>"toolbar","source"=>"admin"));
 		}
 
+		if ((self::is_mobile() || FORCE_MOBILE) && is_readable(BASE.'themes/'.DISPLAY_THEME.'/mobile/index.php')) {
+			echo ('<div style="text-align:center"><a href="'.makeLink(array('module' => 'administration','action' => 'toggle_mobile')).'">View site in '.(MOBILE ? "Classic":"Mobile").' mode</a></div>');
+		}
 		//echo expJavascript::parseJSFiles();
 		echo self::processCSSandJS();
 		echo expJavascript::footJavascriptOutput();
@@ -396,6 +461,8 @@ class expTheme {
 		// Grabs the action maps files for theme overrides
 		$action_maps = self::loadActionMaps();
 
+//		$mobile = self::is_mobile();
+
 		// if we are in an action, get the particulars for the module
 		if (self::inAction()) $module = isset($_REQUEST['module']) ? $_REQUEST['module'] : $_REQUEST['controller'];
 
@@ -408,17 +475,37 @@ class expTheme {
 			// since this will be the second sime Exponent calls this function on the page load.
 			if (!empty($actiontheme[1])) $sectionObj = @$router->getSectionObj($actiontheme[1]);
 
-			if ($actiontheme[0]=="default" || $actiontheme[0]=="Default" || $actiontheme[0]=="index"){
-				$theme = BASE.'themes/'.DISPLAY_THEME.'/index.php';
+			if ($actiontheme[0]=="default" || $actiontheme[0]=="Default" || $actiontheme[0]=="index") {
+				if (MOBILE && is_readable(BASE.'themes/'.DISPLAY_THEME.'/mobile/index.php')) {
+					$theme = BASE.'themes/'.DISPLAY_THEME.'/mobile/index.php';
+				} else {
+					$theme = BASE.'themes/'.DISPLAY_THEME.'/index.php';
+				}
+			} elseif (is_readable(BASE.'themes/'.DISPLAY_THEME.'/subthemes/'.$actiontheme[0].'.php')) {
+				if (MOBILE && is_readable(BASE.'themes/'.DISPLAY_THEME.'/mobile/'.$actiontheme[0].'.php')) {
+					$theme = BASE.'themes/'.DISPLAY_THEME.'/mobile/'.$actiontheme[0].'.php';
+				} else {
+					$theme = BASE.'themes/'.DISPLAY_THEME.'/subthemes/'.$actiontheme[0].'.php';
+				}
 			} else {
-				$theme = BASE.'themes/'.DISPLAY_THEME.'/subthemes/'.$actiontheme[0].'.php';
+				$theme =  BASE.'themes/'.DISPLAY_THEME.'/index.php';
 			}
-			return $theme;
 		} elseif ($sectionObj->subtheme != '' && is_readable(BASE.'themes/'.DISPLAY_THEME.'/subthemes/'.$sectionObj->subtheme.'.php')) {
-			return BASE.'themes/'.DISPLAY_THEME.'/subthemes/'.$sectionObj->subtheme.'.php';
+			if (MOBILE && is_readable(BASE.'themes/'.DISPLAY_THEME.'/mobile/'.$sectionObj->subtheme.'.php')) {
+				$theme = BASE.'themes/'.DISPLAY_THEME.'/mobile/'.$sectionObj->subtheme.'.php';
+			} elseif (MOBILE && is_readable(BASE.'themes/'.DISPLAY_THEME.'/mobile/index.php')) {
+				$theme = BASE.'themes/'.DISPLAY_THEME.'/mobile/index.php';
+			} else {
+				$theme =  BASE.'themes/'.DISPLAY_THEME.'/subthemes/'.$sectionObj->subtheme.'.php';
+			}
 		} else {
-			return BASE.'themes/'.DISPLAY_THEME.'/index.php';
+			if (MOBILE && is_readable(BASE.'themes/'.DISPLAY_THEME.'/mobile/index.php')) {
+				$theme = BASE.'themes/'.DISPLAY_THEME.'/mobile/index.php';
+			} else {
+				$theme =  BASE.'themes/'.DISPLAY_THEME.'/index.php';
+			}
 		}
+		return $theme;
 	}
 
 	public static function getPrinterFriendlyTheme() {
@@ -487,8 +574,10 @@ class expTheme {
 					$actfile = "/" . $module . "/actions/" . $_REQUEST['action'] . ".php";
 				}
 
-				if (is_readable(BASE."themes/".DISPLAY_THEME_REAL."/modules".$actfile)) {
-					include_once(BASE."themes/".DISPLAY_THEME_REAL."/modules".$actfile);
+//				if (is_readable(BASE."themes/".DISPLAY_THEME_REAL."/modules".$actfile)) {
+//					include_once(BASE."themes/".DISPLAY_THEME_REAL."/modules".$actfile);
+				if (is_readable(BASE."themes/".DISPLAY_THEME."/modules".$actfile)) {
+						include_once(BASE."themes/".DISPLAY_THEME."/modules".$actfile);
 				} elseif (is_readable(BASE.'framework/modules-1/'.$actfile)) {
 					include_once(BASE.'framework/modules-1/'.$actfile);
 				} else {
@@ -534,7 +623,7 @@ class expTheme {
 			$config = expSession::get("themeopt_override");
 			if (in_array($module,$config['ignore_mods'])) return;
 		}
-		$loc = exponent_core_makeLocation($module,$source."");
+		$loc = expCore::makeLocation($module,$source."");
 
 		// if ($db->selectObject("locationref","module='$module' AND source='".$loc->src."'") == null) {
 			// $locref = null;
@@ -573,8 +662,8 @@ class expTheme {
 				if (!$iscontroller) {
 					if ((!$hide_menu && $loc->mod != "containermodule" && (call_user_func(array($module,"hasSources")) || $db->tableExists($loc->mod."_config")))) {
 						$container->permissions = array(
-							'administrate'=>(exponent_permissions_check('administrate',$loc) ? 1 : 0),
-							'configure'=>(exponent_permissions_check('configure',$loc) ? 1 : 0)
+							'administrate'=>(expPermissions::check('administrate',$loc) ? 1 : 0),
+							'configure'=>(expPermissions::check('configure',$loc) ? 1 : 0)
 						);
 
 						if ($container->permissions['administrate'] || $container->permissions['configure']) {
@@ -594,8 +683,8 @@ class expTheme {
 					if (!$hide_menu ) {
 						$controller = getController($module);
 						$container->permissions = array(
-							'administrate'=>(exponent_permissions_check('administrate',$loc) ? 1 : 0),
-							'configure'=>(exponent_permissions_check('configure',$loc) ? 1 : 0)
+							'administrate'=>(expPermissions::check('administrate',$loc) ? 1 : 0),
+							'configure'=>(expPermissions::check('configure',$loc) ? 1 : 0)
 						);
 
 						if ($container->permissions['administrate'] || $container->permissions['configure']) {
@@ -708,8 +797,10 @@ class expTheme {
 		}
 		//if (isset($['_common'])) $actfile = "/common/actions/" . $_REQUEST['action'] . ".php";
 
-		if (is_readable(BASE."themes/".DISPLAY_THEME_REAL."/modules".$actfile)) {
-			include(BASE."themes/".DISPLAY_THEME_REAL."/modules".$actfile);
+//		if (is_readable(BASE."themes/".DISPLAY_THEME_REAL."/modules".$actfile)) {
+//			include(BASE."themes/".DISPLAY_THEME_REAL."/modules".$actfile);
+		if (is_readable(BASE."themes/".DISPLAY_THEME."/modules".$actfile)) {
+				include(BASE."themes/".DISPLAY_THEME."/modules".$actfile);
 		} elseif (is_readable(BASE.'framework/modules-1/'.$actfile)) {
 			include(BASE.'framework/modules-1/'.$actfile);
 		} else {
@@ -861,6 +952,45 @@ class expTheme {
 		} else {
 			return array();
 		}
+	}
+
+	public static function is_mobile() {
+		//point the mobile browser to the right page
+		$mobile_browser = 0;
+
+		if (preg_match('/(up.browser|up.link|mmp|symbian|smartphone|midp|wap|phone|android)/i', strtolower($_SERVER['HTTP_USER_AGENT']))) {
+			$mobile_browser++;
+		}
+
+		if ((strpos(strtolower($_SERVER['HTTP_ACCEPT']),'application/vnd.wap.xhtml+xml') > 0) or ((isset($_SERVER['HTTP_X_WAP_PROFILE']) or isset($_SERVER['HTTP_PROFILE'])))) {
+			$mobile_browser++;
+		}
+
+		$mobile_ua = strtolower(substr($_SERVER['HTTP_USER_AGENT'], 0, 4));
+		$mobile_agents = array(
+			'w3c ','acs-','alav','alca','amoi','audi','avan','benq','bird','blac',
+			'blaz','brew','cell','cldc','cmd-','dang','doco','eric','hipt','inno',
+			'ipaq','java','jigs','kddi','keji','leno','lg-c','lg-d','lg-g','lge-',
+			'maui','maxo','midp','mits','mmef','mobi','mot-','moto','mwbp','nec-',
+			'newt','noki','oper','palm','pana','pant','phil','play','port','prox',
+			'qwap','sage','sams','sany','sch-','sec-','send','seri','sgh-','shar',
+			'sie-','siem','smal','smar','sony','sph-','symb','t-mo','teli','tim-',
+			'tosh','tsm-','upg1','upsi','vk-v','voda','wap-','wapa','wapi','wapp',
+			'wapr','webc','winw','winw','xda ','xda-');
+
+		if (in_array($mobile_ua,$mobile_agents)) {
+			$mobile_browser++;
+		}
+
+		//if (strpos(strtolower($_SERVER['ALL_HTTP']),'OperaMini') > 0) {
+		//    $mobile_browser++;
+		//}
+
+		if (strpos(strtolower($_SERVER['HTTP_USER_AGENT']),'windows') > 0) {
+			$mobile_browser = 0;
+		}
+
+		return $mobile_browser;
 	}
 
 }

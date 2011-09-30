@@ -53,7 +53,7 @@ function smarty_function_link($params,&$smarty) {
 	// greb the int value
 	if (!isset($params['int'])) $params['int'] = $loc->int;
 
-	echo exponent_core_makeLink($params);
+	echo expCore::makeLink($params);
 }
 
 ?>

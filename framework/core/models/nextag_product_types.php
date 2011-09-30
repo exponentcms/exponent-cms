@@ -18,7 +18,7 @@
 #
 ##################################################
 
-class nextag_product_types extends expNestedNode {
+class nextag_product_types extends product_type {
 	public $table = 'nextag_product_types';
 	
 	public function __construct($params=array(), $get_assoc=true, $get_attached=true) {
@@ -27,24 +27,6 @@ class nextag_product_types extends expNestedNode {
 
 	}
 	
-	public function saveCategories($catArray, $cat_id) {
-	
-        global $db;
-        // We need to reset the current category
-		$db->delete('nextag_product_types_storeCategories', 'storecategories_id ='.$cat_id);
-			
-		if(count($catArray) > 0) {
-			foreach($catArray as $item) {
-				if($item <> 0) {
-					$assoc->storecategories_id  = $cat_id;
-					$assoc->nextag_product_types_id = $item;
-					$db->insertObject($assoc, 'nextag_product_types_storeCategories');    
-				}
-			}
-		}
-		
-    }
-
 }
 
 ?>

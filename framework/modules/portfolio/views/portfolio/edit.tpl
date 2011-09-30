@@ -18,16 +18,6 @@
     
     {if $record->id != ""}<h1>Editing {$record->title}</h1>{else}<h1>New {$modelname}</h1>{/if}
     
-    {script unique="blogtabs" yuimodules="tabview, element"}
-    {literal}
-        var tabView = new YAHOO.widget.TabView('demo');
-        YAHOO.util.Dom.removeClass("editportfolio", 'hide');
-        var loading = YAHOO.util.Dom.getElementsByClassName('loadingdiv', 'div');
-        YAHOO.util.Dom.setStyle(loading, 'display', 'none');
-        
-    {/literal}
-    {/script}
-    
     {form action=update}
         {control type=hidden name=id value=$record->id}
         <div id="demo" class="yui-navset">
@@ -71,3 +61,15 @@
     
 </div>
 <div class="loadingdiv">Loading Form</div>
+
+
+{script unique="editform" yui3mods=1}
+{literal}
+    YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-tabview','yui2-element', function(Y) {
+        var YAHOO=Y.YUI2;
+
+        var tabView = new YAHOO.widget.TabView('demo');
+        Y.one('#editportfolio').removeClass('hide').next().remove();
+    });
+{/literal}
+{/script}

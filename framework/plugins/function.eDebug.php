@@ -17,7 +17,7 @@
 #
 ##################################################
 
-function smarty_function_eDebug($params,&$smarty) {
+function smarty_function_edebug($params,&$smarty) {
         echo eDebug($params['var']);
 }
 

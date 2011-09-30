@@ -17,7 +17,7 @@
 #
 ##################################################
 
-function smarty_function_pageBackLink($params,&$smarty) {
+function smarty_function_pagebacklink($params,&$smarty) {
 	if ($params['page']->page > 1) {
 		// initialize a couple of variables
 		$class = isset($params['class']) ? $params['class'] : 'page-back';

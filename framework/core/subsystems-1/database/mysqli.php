@@ -461,10 +461,15 @@ class mysqli_database {
      * provided as a last resort.
      *
      * @param string $sql The SQL query to run
+	 * @param bool $escape Indicates if the query will be escape
      * @return mixed
      */
-    function sql($sql) {
-        $res = @mysqli_query($this->connection, mysqli_real_escape_string($this->connection, $sql));
+    function sql($sql, $escape = true) {
+		if($escape == true) {
+			$res = @mysqli_query($this->connection, mysqli_real_escape_string($this->connection, $sql));
+		} else {
+			$res = @mysqli_query($this->connection, $sql);
+		}
         return $res;
     }
 

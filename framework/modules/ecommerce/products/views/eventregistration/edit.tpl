@@ -22,16 +22,6 @@
         <h1>New {$record->product_name}</h1>
     {/if}
 
-    {script unique="prodtabs" yuimodules="tabview, element"}
-    {literal}
-        var tabView = new YAHOO.widget.TabView('demo');
-        YAHOO.util.Dom.removeClass("editproduct", 'hide');
-        var loading = YAHOO.util.Dom.getElementsByClassName('loadingdiv', 'div');
-        YAHOO.util.Dom.setStyle(loading, 'display', 'none');
-        
-    {/literal}
-    {/script}
-
     {form action=update}
         {control type="hidden" name="id" value=$record->id}
         {control type="hidden" name="product_type" value=$record->product_type}
@@ -84,3 +74,16 @@
     {/form}
 </div>
 <div class="loadingdiv">Loading</div>
+
+
+{script unique="authtabs" yui3mods=1}
+{literal}
+    YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event','yui2-tabview', function(Y) {
+        var YAHOO=Y.YUI2;
+        var tabView = new YAHOO.widget.TabView('demo');
+        YAHOO.util.Dom.removeClass("editproduct", 'hide');
+        var loading = YAHOO.util.Dom.getElementsByClassName('loadingdiv', 'div');
+        YAHOO.util.Dom.setStyle(loading, 'display', 'none');
+    });
+{/literal}
+{/script}

@@ -127,7 +127,7 @@ class storeController extends expController {
         expHistory::set('viewable', $this->params);
         
         if (empty($this->category->is_events)) {
-            $count_sql_start = 'SELECT COUNT(DISTINCT p.id) FROM '.DB_TABLE_PREFIX.'_product p ';
+            $count_sql_start = 'SELECT COUNT(DISTINCT p.id) as c FROM '.DB_TABLE_PREFIX.'_product p ';
             
             
             $sql_start  = 'SELECT DISTINCT p.*, IF(base_price > special_price AND use_special_price=1,special_price, base_price) as price FROM '.DB_TABLE_PREFIX.'_product p ';            
@@ -145,7 +145,7 @@ class storeController extends expController {
             //eDebug($this->config);
         } else {
             $sql_start  = 'SELECT DISTINCT p.*, er.event_starttime, er.signup_cutoff FROM '.DB_TABLE_PREFIX.'_product p ';
-            $count_sql_start = 'SELECT COUNT(DISTINCT p.id), er.event_starttime, er.signup_cutoff FROM '.DB_TABLE_PREFIX.'_product p ';
+            $count_sql_start = 'SELECT COUNT(DISTINCT p.id) as c, er.event_starttime, er.signup_cutoff FROM '.DB_TABLE_PREFIX.'_product p ';
             $sql .= 'JOIN '.DB_TABLE_PREFIX.'_product_storeCategories sc ON p.id = sc.product_id ';
             $sql .= 'JOIN '.DB_TABLE_PREFIX.'_eventregistration er ON p.product_type_id = er.id ';
             $sql .= 'WHERE sc.storecategories_id IN (';
@@ -250,8 +250,6 @@ class storeController extends expController {
         
         expHistory::set('viewable', $this->params);
         
-        include_once(BASE."framework/core/subsystems-1/datetime.php");
-
         $time = isset($this->params['time']) ? $this->params['time'] : time();
         assign_to_template(array('time'=>$time));
         
@@ -279,7 +277,7 @@ class storeController extends expController {
         $weekday = $infofirst['wday']; // day number in grid.  if 7+, switch weeks
         
         // Grab day counts (deprecated, handled by the date function)
-        // $endofmonth = exponent_datetime_endOfMonthDay($time);
+        // $endofmonth = expDateTime::endOfMonthDay($time);
         
         $endofmonth = date('t', $time);
         
@@ -633,7 +631,7 @@ class storeController extends expController {
     
     function showTopLevel_images() {
         global $user;
-        $count_sql_start = 'SELECT COUNT(DISTINCT p.id) FROM '.DB_TABLE_PREFIX.'_product p ';
+        $count_sql_start = 'SELECT COUNT(DISTINCT p.id) as c FROM '.DB_TABLE_PREFIX.'_product p ';
         $sql_start  = 'SELECT DISTINCT p.* FROM '.DB_TABLE_PREFIX.'_product p ';            
         $sql = 'JOIN '.DB_TABLE_PREFIX.'_product_storeCategories sc ON p.id = sc.product_id ';
         $sql .= 'WHERE ';
@@ -839,6 +837,7 @@ class storeController extends expController {
             'optiongroups'=>$editable_options, 
             'shipping_services'=> isset($shipping_services) ? $shipping_services : '', // Added implication since the shipping_services default value is a null
             'shipping_methods' => isset($shipping_methods)  ? $shipping_methods  : '',   // Added implication since the shipping_methods default value is a null
+			'product_types' => isset($this->config['product_types']) ? $this->config['product_types'] : ''
             //'status_display'=>$status_display->getStatusArray()
         ));
     }

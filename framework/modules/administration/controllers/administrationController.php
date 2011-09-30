@@ -29,11 +29,13 @@ class administrationController extends expController {
 	    'clear_rss_cache'=>'Clear RSS Cache',
 	    'clear_smarty_cache'=>'Clear Smarty Cache',
 	    'configure_site'=>'Configure Site',
+	    'configure_theme'=>'Configure Theme',
 	    'delete_unused_tables'=>'Delete Unused Tables',
 	    "fix_database"=>"Fix Database",
 	    "fix_sessions"=>"Fix Sessions",
-	    "install_extenstions"=>"Install Tables",
-	    "install_tables"=>"Install Extension",
+	    "install_extension"=>"Install Extension",
+	    "install_tables"=>"Install Tables",
+	    "installTables"=>"Install Tables",
 	    'manage_themes'=>'Manage Themes',
 	    'manage_unused_tables'=>'Manage Unused Tables',
 	    'optimize_database'=>'Optimize Database',
@@ -52,7 +54,7 @@ class administrationController extends expController {
     function description() { return "This is the beginnings of the new Administration Module"; }
     function author() { return "OIC Group, Inc"; }
 
-	public function install_tables() {
+	public static function installTables() {
 	    global $db;
 
 		define("TMP_TABLE_EXISTED",		1);
@@ -134,7 +136,12 @@ class administrationController extends expController {
 				}
 			}
 		}
+		return $tables;
+	}
+
+	public function install_tables() {
     	expSession::clearCurrentUserSessionCache();
+		$tables = self::installTables();
 		ksort($tables);
         assign_to_template(array('status'=>$tables));
 	}
@@ -160,8 +167,8 @@ class administrationController extends expController {
 
 		// then search for module definitions
 		$moddefs = array(
-//			BASE.'themes/'.DISPLAY_THEME_REAL.'/modules',
-			BASE.'themes/'.DISPLAY_THEME.'/modules',
+			BASE.'themes/'.DISPLAY_THEME_REAL.'/modules',
+//			BASE.'themes/'.DISPLAY_THEME.'/modules',
 			BASE."framework/modules",
 			);
 		foreach ($moddefs as $moddef) {
@@ -440,7 +447,7 @@ class administrationController extends expController {
 	public function upload_extension() {
 		require_once(BASE.'framework/core/subsystems-1/forms.php');
 		$form = new form();
-		$form->register(null,'',new htmlcontrol(exponent_core_maxUploadSizeMessage()));
+		$form->register(null,'',new htmlcontrol(expCore::maxUploadSizeMessage()));
 		$form->register('mod_archive','Extension Archive',new uploadcontrol());
 		$form->register('submit','',new buttongroupcontrol(gt('Upload Extension')));
 		$form->meta('module','administration');
@@ -450,18 +457,20 @@ class administrationController extends expController {
 	}
 
 	public function install_extension() {
-
 		if ($_FILES['mod_archive']['error'] != UPLOAD_ERR_OK) {
 			switch($_FILES['mod_archive']['error']) {
 				case UPLOAD_ERR_INI_SIZE:
 				case UPLOAD_ERR_FORM_SIZE:
-					echo gt('The file you uploaded exceeded the size limits for the server.').'<br />';
+//					echo gt('The file you uploaded exceeded the size limits for the server.').'<br />';
+					flash('error', gt('The file you uploaded exceeded the size limits for the server.'));
 					break;
 				case UPLOAD_ERR_PARTIAL:
-					echo gt('The file you uploaded was only partially uploaded.').'<br />';
+//					echo gt('The file you uploaded was only partially uploaded.').'<br />';
+					flash('error', gt('The file you uploaded was only partially uploaded.'));
 					break;
 				case UPLOAD_ERR_NO_FILE:
-					echo gt('No file was uploaded.').'<br />';
+//					echo gt('No file was uploaded.').'<br />';
+					flash('error', gt('No file was uploaded.'));
 					break;
 			}
 		} else {
@@ -488,7 +497,8 @@ class administrationController extends expController {
 			}
 
 			if ($ext == '') {
-				echo gt('Unknown archive format. Archives must either be regular ZIP files, TAR files, Gzipped Tarballs, or Bzipped Tarballs.').'<br />';
+//				echo gt('Unknown archive format. Archives must either be regular ZIP files, TAR files, Gzipped Tarballs, or Bzipped Tarballs.').'<br />';
+				flash('error', gt('Unknown archive format. Archives must either be regular ZIP files, TAR files, Gzipped Tarballs, or Bzipped Tarballs.'));
 			} else {
 
 				// Look for stale sessid directories:
@@ -499,13 +509,16 @@ class administrationController extends expController {
 					switch ($return) {
 						case SYS_FILES_FOUNDFILE:
 						case SYS_FILES_FOUNDDIR:
-							echo gt('Found a file in the directory path when creating the directory to store the files in.').'<br />';
+//							echo gt('Found a file in the directory path when creating the directory to store the files in.').'<br />';
+							flash('error', gt('Found a file in the directory path when creating the directory to store the files in.'));
 							break;
 						case SYS_FILES_NOTWRITABLE:
-							echo gt('Destination parent is not writable.').'<br />';
+//							echo gt('Destination parent is not writable.').'<br />';
+							flash('error', gt('Destination parent is not writable.'));
 							break;
 						case SYS_FILES_NOTREADABLE:
-							echo gt('Destination parent is not readable.').'<br />';
+//							echo gt('Destination parent is not readable.').'<br />';
+							flash('error', gt('Destination parent is not readable.'));
 							break;
 					}
 				}
@@ -521,9 +534,11 @@ class administrationController extends expController {
 					PEAR::setErrorHandling(PEAR_ERROR_PRINT);
 					$return = $tar->extract(dirname($dest));
 					if (!$return) {
-						echo '<br />'.gt('Error extracting TAR archive').'<br />';
+//						echo '<br />'.gt('Error extracting TAR archive').'<br />';
+						flash('error',gt('Error extracting TAR archive'));
 					} else {
-						header('Location: ' . URL_FULL . 'index.php?module=administrationmodule&action=verify_extension&type=tar');
+//						header('Location: ' . URL_FULL . 'index.php?module=administrationmodule&action=verify_extension&type=tar');
+//						self::verify_extension('tar');
 					}
 				} else { // must be zip
 					include_once(BASE.'external/Zip.php');
@@ -532,14 +547,64 @@ class administrationController extends expController {
 
 					PEAR::setErrorHandling(PEAR_ERROR_PRINT);
 					if ($zip->extract(array('add_path'=>dirname($dest))) == 0) {
-						echo '<br />'.gt('Error extracting ZIP archive').':<br />';
-						echo $zip->_error_code . ' : ' . $zip->_error_string . '<br />';
+//						echo '<br />'.gt('Error extracting ZIP archive').':<br />';
+//						echo $zip->_error_code . ' : ' . $zip->_error_string . '<br />';
+						flash('error',gt('Error extracting ZIP archive: ').$zip->_error_code . ' : ' . $zip->_error_string . '<br />');
 					} else {
-						header('Location: ' . URL_FULL . 'index.php?module=administrationmodule&action=verify_extension&type=zip');
+//						header('Location: ' . URL_FULL . 'index.php?module=administrationmodule&action=verify_extension&type=zip');
+//						self::verify_extension('zip');
 					}
 				}
+				$sessid = session_id();
+				$files = array();
+				foreach (expFile::listFlat(BASE.'tmp/extensionuploads/'.$sessid,true,null,array(),BASE.'tmp/extensionuploads/'.$sessid) as $key=>$f) {
+					if ($key != '/archive.tar' && $key != '/archive.tar.gz' && $key != '/archive.tar.bz2' && $key != '/archive.zip') {
+						$files[] = array(
+							'absolute'=>$key,
+							'relative'=>$f,
+							'canCreate'=>expFile::canCreate(BASE.substr($key,1)),
+							'ext'=>substr($f,-3,3)
+						);
+					}
+				}
+				assign_to_template(array('relative'=>'tmp/extensionuploads/'.$sessid,'files'=>$files));
 			}
 		}
+	}
+
+	public function finish_install_extension() {
+		$sessid = session_id();
+		if (!file_exists(BASE."tmp/extensionuploads/$sessid") || !is_dir(BASE."tmp/extensionuploads/$sessid")) {
+//				$template = new template('administrationmodule','_upload_finalSummary',$loc);
+//				$template->assign('nofiles',1);
+			$nofiles = 1;
+		} else {
+			$success = array();
+			foreach (array_keys(expFile::listFlat(BASE."tmp/extensionuploads/$sessid",true,null,array(),BASE."tmp/extensionuploads/$sessid")) as $file) {
+				if ($file != '/archive.tar' && $file != '/archive.tar.gz' && $file != 'archive.tar.bz2' && $file != '/archive.zip') {
+					expFile::makeDirectory(dirname($file));
+					$success[$file] = copy(BASE."tmp/extensionuploads/$sessid".$file,BASE.substr($file,1));
+					if (basename($file) == 'views_c') chmod(BASE.substr($file,1),0777);
+				}
+			}
+
+			$del_return = expFile::removeDirectory(BASE."tmp/extensionuploads/$sessid");  //FIXME shouldn't use echo
+			echo $del_return;
+
+//			ob_start();
+//			include(BASE . 'framework/modules-1/administrationmodule/actions/installtables.php');
+//			ob_end_clean();
+			self::installTables();
+
+//				$template = new template('administrationmodule','_upload_finalSummary',$loc);
+//				$template->assign('nofiles',0);
+			$nofiles = 0;
+//				$template->assign('success',$success);
+//				$template->assign('redirect',expHistory::getLastNotEditable());
+		}
+
+//			$template->output();
+		assign_to_template(array('nofiles'=>$nofiles,'success'=>$success,'redirect'=>expHistory::getLastNotEditable()));
 	}
 
     public function manage_themes() {
@@ -552,18 +617,24 @@ class administrationController extends expController {
     				include_once(BASE."themes/$file/class.php");
     				$theme = new $file();
     				$t = null;
+				    $t->user_configured = isset($theme->user_configured) ? $theme->user_configured : '';
     				$t->name = $theme->name();
     				$t->description = $theme->description();
     				$t->author = $theme->author();
-    				if (is_dir(BASE."themes/$file/css_default")) {
-                		$sv = opendir(BASE.'themes/'.$file);
-                		while (($s = readdir($sv)) !== false) {
-                            if (substr($s,0,4) == "css_") {
-                                $t->style_variations[str_replace("css_","",$s)] = str_replace("css_","",$s);
-                            }
+
+				    $t->style_variations = array();
+            		$sv = opendir(BASE.'themes/'.$file);
+            		while (($s = readdir($sv)) !== false) {
+                        if (substr($s,0,4) == "css_") {
+                            $t->style_variations[str_replace("css_","",$s)] = str_replace("css_","",$s);
                         }
-        			}
+                    }
+                    if(count($t->style_variations)>0){
+                        $t->style_variations = array_merge(array('Default'=>'Default'),$t->style_variations);
+                    }
+
     				$t->preview = is_readable(BASE."themes/$file/preview.jpg") ? "themes/$file/preview.jpg" : "themes/" . DISPLAY_THEME . "/noprev.jpg";
+				    $t->mobile = is_readable(BASE."themes/$file/mobile/index.php") ? true : false;
     				$themes[$file] = $t;
     			}
     		}
@@ -574,39 +645,64 @@ class administrationController extends expController {
     
     public function switch_themes() {
     	expSettings::change('DISPLAY_THEME_REAL', $this->params['theme']);
-    	if (isset($this->params['sv']) && THEME_STYLE!=$this->params['sv']) {
-            expSettings::change('THEME_STYLE', $this->params['sv']);
-    	    if (expFile::recurse_copy(BASE."themes/".$this->params['theme']."/css", BASE."themes/".$this->params['theme']."/styles_backup/css")
-    	        && expFile::recurse_copy(BASE."themes/".$this->params['theme']."/images", BASE."themes/".$this->params['theme']."/styles_backup/images")) {
+	    expSession::set('display_theme',$this->params['theme']);
+	    $sv = isset($this->params['sv'])?$this->params['sv']:'';
+	    if (strtolower($sv)=='default') {
+	       $sv = '';
+	    }
+	    expSettings::change('THEME_STYLE_REAL',$sv);
+	    expSession::set('theme_style',$sv);
+	    self::installTables();  // update tables to include any custom definitions in the new theme
 
-        	    if (!expFile::recurse_copy(BASE."themes/".$this->params['theme']."/css_".$this->params['sv'], BASE."themes/".$this->params['theme']."/css")) {
-                    flash('error',gt('Couldn\'t copy ') . "css_".$this->params['sv']);
-        	    }
-        	    if (!expFile::recurse_copy(BASE."themes/".$this->params['theme']."/images_".$this->params['sv'], BASE."themes/".$this->params['theme']."/images")) {
-                    flash('error',gt('Couldn\'t copy ') . "images_".$this->params['sv']);
-        	    }
-
-                flash('message',gt('Your website\'s theme has been updated'));
-    	    } else {
-                flash('error',gt('Exponent could not not switch your theme style variation because it was unable to back up your current css and images directories. Create a directory called styles_backup within your theme, and try again.'));
-    	    }
-            //copy(BASE."themes/".DISPLAY_THEME_REAL."/css_".$this->params['sv'], BASE."themes/".DISPLAY_THEME_REAL."/css");
-            //copy(BASE."themes/".DISPLAY_THEME_REAL."css_".$this->params['sv'], BASE."themes/".DISPLAY_THEME_REAL."css")
-    	}
-     
         // $message = (MINIFY != 1) ? "Exponent is now minifying Javascript and CSS" : "Exponent is no longer minifying Javascript and CSS" ;
         // flash('message',$message);
+	    $message = "You have selected the '".$this->params['theme']."' theme";
+	    if ($sv != '') {
+		    $message .= ' with '.$this->params['sv'].' style variation';
+	    }
+	    flash('message',$message);
     	expHistory::returnTo('manageable');
     }	
     
 	public function preview_theme() {
 		expSession::set('display_theme',$this->params['theme']);
-//		if (DISPLAY_THEME_REAL == $this->params['theme']){
-//			expSession::set('display_theme',$this->params['theme']);
-//		}
-		if ($this->params['theme'] != DISPLAY_THEME_REAL) {
-			flash('notice', "You are previewing the '".$this->params['theme']."' theme.");
+		$sv = isset($this->params['sv'])?$this->params['sv']:'';
+		if (strtolower($sv)=='default') {
+		   $sv = '';
 		}
+		expSession::set('theme_style',$sv);
+		$message = "You are previewing the '".$this->params['theme']."' theme";
+		if ($sv) {
+			$message .= ' with '.$sv.' style variation';
+		}
+		if ($this->params['theme'] != DISPLAY_THEME_REAL || $this->params['sv'] != THEME_STYLE_REAL) {
+			flash('notice',$message);
+		}
+		expTheme::removeSmartyCache();
+		expHistory::back();
+	}
+
+	public function configure_theme() {
+		if (is_readable(BASE."themes/".$this->params['theme']."/class.php")) {
+			include_once(BASE."themes/".$this->params['theme']."/class.php");
+			$theme = new $this->params['theme']();
+			$theme->configureTheme();
+		}
+	}
+
+	public function update_theme() {
+		if (is_readable(BASE."themes/".$this->params['theme']."/class.php")) {
+			include_once(BASE."themes/".$this->params['theme']."/class.php");
+			$theme = new $this->params['theme']();
+			$theme->saveThemeConfig($this->params);
+		}
+	}
+
+	public function toggle_mobile() {
+		if (!expSession::is_set('mobile')) {  // account for FORCE_MOBILE initial state
+			expSession::set('mobile',MOBILE);
+		}
+		expSession::set('mobile',!expSession::get('mobile'));
 		expTheme::removeSmartyCache();
 		expHistory::back();
 	}
@@ -652,7 +748,10 @@ class administrationController extends expController {
 	    $langs = expLang::langList();
 //        ksort($langs);
 
-        // attribution 
+        // smtp protocol
+        $protocol = array('ssl'=>'SSL','tls'=>'TLS');
+
+        // attribution
         $attribution = array('firstlast'=>'John Doe','lastfirst'=>'Doe, John','first'=>'John','username'=>'jdoe');
         
         // These funcs need to be moved up in to new subsystems
@@ -710,6 +809,7 @@ class administrationController extends expController {
                                 'as_themes'=>$as_themes,
                                 'themes'=>$themes,
                                 'langs'=>$langs,
+                                'protocol'=>$protocol,
                                 'attribution'=>$attribution,
                                 'datetime_format'=>$datetime_format,
                                 'date_format'=>$date_format,
@@ -723,7 +823,7 @@ class administrationController extends expController {
     }
 
 	// now you can use $options;
-	function formatOffset($offset) {
+	private function formatOffset($offset) {
 			$hours = $offset / 3600;
 			$remainder = $offset % 3600;
 			$sign = $hours > 0 ? '+' : '-';
@@ -746,6 +846,78 @@ class administrationController extends expController {
         flash('message', "Your Website Configuration has been updated");
         expHistory::back();
     }    
+}
+
+/**
+ * This is the base theme class
+ *
+ * @subpackage Core-Controllers
+ * @package Framework
+ */
+class theme {
+	public $user_configured = false;
+
+	function name() { return "theme"; }
+	function author() { return ""; }
+	function description() { return "The theme shell"; }
+
+	/**
+	 * Method to Configure theme settings
+	 * This generic routine parses the theme's config.php file
+	 * and presents the values as text boxes.
+	 */
+	function configureTheme () {
+		if (isset($_GET['sv']) && $_GET['sv'] != '') {
+			if (strtolower($_GET['sv'])=='default') {
+			   $_GET['sv']='';
+			}
+			$settings = expSettings::parseFile(BASE."themes/".$_GET['theme']."/config_".$_GET['sv'].".php");
+		} else {
+			$settings = expSettings::parseFile(BASE."themes/".$_GET['theme']."/config.php");
+		}
+		$form = new form();
+		$form->meta('controller','administration');
+		$form->meta('action','update_theme');
+		$form->meta('theme',$_GET['theme']);
+		$form->meta('sv',isset($_GET['sv'])?$_GET['sv']:'');
+		foreach ($settings as $setting=>$key) {
+			$form->register($setting,$setting.': ',new textcontrol($key,20));
+		}
+		$form->register(null,'',new htmlcontrol('<br>'));
+		$form->register('submit','',new buttongroupcontrol(gt('Save'),'',gt('Cancel')));
+		assign_to_template(array('name'=>self::name(),'form_html'=>$form->tohtml()));
+	}
+
+	/**
+	 * Method to save/update theme settings
+	 * This generic routine parses the passed params
+	 * and saves them to the theme's config.php file
+	 * It attempts to remove non-theme params such as analytics, etc..
+	 *
+	 * @param $params theme configuration parameters
+	 */
+	function saveThemeConfig ($params) {
+		$theme = $params['theme'];
+		unset ($params['theme']);
+		$sv = $params['sv'];
+		if (strtolower($sv)=='default') {
+		   $sv='';
+		}
+		unset ($params['sv']);
+		unset ($params['controller']);
+		unset ($params['action']);
+		foreach ($params as $key=>$value) {
+			if (strpos($key,'_' == 1)) {
+				unset ($params[$key]);
+			}
+		}
+		if ($params['sv'] != '') {
+			expSettings::saveValues($params, BASE."themes/".$theme."/config_".$sv.".php");
+		} else {
+			expSettings::saveValues($params, BASE."themes/".$theme."/config.php");
+		}
+		expHistory::back();
+	}
 }
 
 ?>

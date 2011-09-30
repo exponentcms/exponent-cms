@@ -159,6 +159,67 @@ define("SYS_FILES_NOTREADABLE",	4);
  */
 define("SYS_FILES_NOTDELETABLE",	5);
 
+/* exdoc
+ * The EQL header string for object dump file formats.
+ * This header defines the version of EQL native to
+ * the current implementation of the Backup Subsystem.
+ * @node Subsystems:Backup
+ */
+define('EQL_HEADER','EQL-Exponent Query Language');
+
+/** exdoc
+ * UI Level of Preview - No management links of any kind should be shown.
+ * @node Subsystems:Permissions
+ */
+define('UILEVEL_PREVIEW',0);
+
+/** exdoc
+* UI Level of Normal - Only normal management links (edit, delete, etc.) should be shown.
+* @node Subsystems:Permissions
+*/
+define('UILEVEL_NORMAL',1);
+
+/** exdoc
+* UI Level of Permissions - Permission Management links (user and group perms) should be shown.
+* @node Subsystems:Permissions
+*/
+define('UILEVEL_PERMISSIONS',2);
+
+/** exdoc
+* UI Level of Structure - All management links are shown.
+* @node Subsystems:Permissions
+*/
+define('UILEVEL_STRUCTURE',3);
+
+/* exdoc
+ * This constant can (and should) be used by other parts of the system
+ * for defining and communicating an extension type of module.
+ * @node Subsystems:Core
+ */
+define("CORE_EXT_MODULE",1);
+
+/* exdoc
+ * This constant can (and should) be used by other parts of the system
+ * for defining and communicating an extension type of theme.
+ * @node Subsystems:Core
+ */
+define("CORE_EXT_THEME",2);
+
+/* exdoc
+ * This constant can (and should) be used by other parts of the system
+ * for defining and communicating an extension type of subsystem.
+ * @node Subsystems:Core
+ */
+define("CORE_EXT_SUBSYSTEM",3);
+
+/* exdoc
+ * This constant can (and should) be used by other parts of the system
+ * for defining and communicating an 'extension type' to represent the
+ * whole system
+ * @node Subsystems:Core
+ */
+define("CORE_EXT_SYSTEM",4);
+
 // Determines platform (OS), browser and version of the user
 // Based on a phpBuilder article:
 //   see http://www.phpbuilder.net/columns/tim20000821.php
@@ -227,9 +288,9 @@ if (!defined('YUI3_PATH')) {
 	 *
 	 * Changing the version here lets Exponent adjust where to look
 	 */
-	define('YUI3_VERSION', '3.3.0');
-	define('YUI3_PATH', PATH_RELATIVE.'external/lissa/'.YUI3_VERSION.'/build/');
-	define('YUI3_URL', URL_FULL.'external/lissa/'.YUI3_VERSION.'/build/');
+	define('YUI3_VERSION', '3.4.0');
+	define('YUI3_PATH', PATH_RELATIVE.'external/yui/'.YUI3_VERSION.'/build/');
+	define('YUI3_URL', URL_FULL.'external/yui/'.YUI3_VERSION.'/build/');
 }
 
 if (!defined('YUI2_PATH')) {
@@ -239,8 +300,8 @@ if (!defined('YUI2_PATH')) {
 	 * Changing the version here lets Exponent adjust where to look
 	 */
 	define('YUI2_VERSION', '2.9.0');
-	define('YUI2_PATH', PATH_RELATIVE.'external/lissa/'.YUI2_VERSION.'/build/');
-	define('YUI2_URL', URL_FULL.'external/lissa/'.YUI2_VERSION.'/build/');
+	define('YUI2_PATH', PATH_RELATIVE.'external/yui/2in3/dist/'.YUI2_VERSION.'/build/');
+	define('YUI2_URL', URL_FULL.'external/yui/2in3/dist/'.YUI2_VERSION.'/build/');
 }
 
 ?>

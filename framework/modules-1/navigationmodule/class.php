@@ -242,7 +242,7 @@ class navigationmodule {
 		$nodes = $db->selectObjects('section','parent='.$parent);
 		$nodes = expSorter::sort(array('array'=>$nodes,'sortby'=>'rank', 'order'=>'ASC'));
 		foreach ($nodes as $node) {
-			if (($node->public == 1 || exponent_permissions_check('view',exponent_core_makeLocation('navigationmodule','',$node->id))) && !in_array($node->id,$ignore_ids)) {
+			if (($node->public == 1 || expPermissions::check('view',expCore::makeLocation('navigationmodule','',$node->id))) && !in_array($node->id,$ignore_ids)) {
 				$html .= '<option value="' . $node->id . '" ';
 				if ($default == $node->id) $html .= 'selected';
 				$html .= '>';
@@ -270,7 +270,7 @@ class navigationmodule {
 		$nodes = $db->selectObjects('section','parent='.$parent);
 		$nodes = expSorter::sort(array('array'=>$nodes,'sortby'=>'rank', 'order'=>'ASC'));
 		foreach ($nodes as $node) {
-			if (($node->public == 1 || exponent_permissions_check('view',exponent_core_makeLocation('navigationmodule','',$node->id))) && !in_array($node->id,$ignore_ids)) {
+			if (($node->public == 1 || expPermissions::check('view',expCore::makeLocation('navigationmodule','',$node->id))) && !in_array($node->id,$ignore_ids)) {
 				if ($node->active == 1) {
 					$text = str_pad('',($depth+($full?1:0))*3,'.',STR_PAD_LEFT) . $node->name;
 				} else {
@@ -303,7 +303,7 @@ class navigationmodule {
 		for ($i = 0; $i < count($kids); $i++) {
 			$child = $kids[$i];
 			//foreach ($kids as $child) {
-			if ($child->public == 1 || exponent_permissions_check('view',exponent_core_makeLocation('navigationmodule','',$child->id))) {
+			if ($child->public == 1 || expPermissions::check('view',expCore::makeLocation('navigationmodule','',$child->id))) {
 				$child->numParents = count($parents);
 				$child->depth = $depth;
 				$child->first = ($i == 0 ? 1 : 0);
@@ -338,11 +338,11 @@ class navigationmodule {
 						//added by Tyler to pull the descriptions through for the children view
 						$child->description = $dest->description;
 						
-						$child->link = exponent_core_makeLink(array('section'=>$child->internal_id));
+						$child->link = expCore::makeLink(array('section'=>$child->internal_id));
 					}
 				} else {
 					// Normal link.  Just create the URL from the section's id.
-					$child->link = exponent_core_makeLink(array('section'=>$child->id),'',$child->sef_name);
+					$child->link = expCore::makeLink(array('section'=>$child->id),'',$child->sef_name);
 				}
 				//$child->numChildren = $db->countObjects('section','parent='.$child->id);
 				$nodes[] = $child;
@@ -390,8 +390,8 @@ class navigationmodule {
 			$src = substr($ref->source,strlen($prefix)) . $section->id;
 			
 			if (call_user_func(array($ref->module,'hasContent'))) {
-				$oloc = exponent_core_makeLocation($ref->module,$ref->source);
-				$nloc = exponent_core_makeLocation($ref->module,$src);
+				$oloc = expCore::makeLocation($ref->module,$ref->source);
+				$nloc = expCore::makeLocation($ref->module,$src);
 		
 				if ($ref->module != "containermodule") {	
 					call_user_func(array($ref->module,'copyContent'),$oloc,$nloc);
@@ -436,8 +436,8 @@ class navigationmodule {
 		}
 		$secrefs = $db->selectObjects('sectionref','section='.$parent);
 		foreach ($secrefs as $secref) {
-			$loc = exponent_core_makeLocation($secref->module,$secref->source,$secref->internal);
-			exponent_core_decrementLocationReference($loc,$parent);
+			$loc = expCore::makeLocation($secref->module,$secref->source,$secref->internal);
+			expCore::decrementLocationReference($loc,$parent);
 			
 //			foreach ($db->selectObjects('locationref',"module='".$secref->module."' AND source='".$secref->source."' AND internal='".$secref->internal."' AND refcount = 0") as $locref) {
 //				if (class_exists($locref->module)) {
@@ -451,7 +451,7 @@ class navigationmodule {
 	                    $mod->delete_instance();
 	                } else {
 	                    $mod = new $modclass();
-//	                    $mod->deleteIn(exponent_core_makeLocation($locref->module,$locref->source,$locref->internal));
+//	                    $mod->deleteIn(expCore::makeLocation($locref->module,$locref->source,$locref->internal));
 	                    $mod->deleteIn($loc);
 	                }
 				}
@@ -477,7 +477,7 @@ class navigationmodule {
 		if ($section == null) {return false;}
 		if ($section->public == 0) {
 			// Not a public section.  Check permissions.
-			return exponent_permissions_check('view',exponent_core_makeLocation('navigationmodule','',$section->id));
+			return expPermissions::check('view',expCore::makeLocation('navigationmodule','',$section->id));
 		} else { // Is public.  check parents.
 			if ($section->parent <= 0) {
 				// Out of parents, and since we are still checking, we haven't hit a private section.
@@ -506,8 +506,8 @@ class navigationmodule {
 		$standalones = navigationmodule::levelTemplate(-1,0);
 		$canmanage = false;
 		foreach ($standalones as $standalone) {
-			$loc = exponent_core_makeLocation('navigationmodule', '', $standalone->id);
-			if (exponent_permissions_check('manage', $loc)) return true;
+			$loc = expCore::makeLocation('navigationmodule', '', $standalone->id);
+			if (expPermissions::check('manage', $loc)) return true;
 		}
 	}
 
@@ -521,27 +521,27 @@ class navigationmodule {
 		$allusers = array();
 		$allgroups = array();
 		while ($section->parent > 0) {
-			$ploc = exponent_core_makeLocation('navigationmodule', null, $section);
+			$ploc = expCore::makeLocation('navigationmodule', null, $section);
 			$allusers = array_merge($allusers, $db->selectColumn('userpermission', 'uid', "permission='manage' AND module='navigationmodule' AND internal=".$section->parent));
 			$allgroups = array_merge($allgroups, $db->selectColumn('grouppermission', 'gid', "permission='manage' AND module='navigationmodule' AND internal=".$section->parent));
 			$section = $db->selectObject('section', 'id='.$section->parent);
 		}
 		
 		foreach ($branch as $section) {
-			$sloc = exponent_core_makeLocation('navigationmodule', null, $section->id);
+			$sloc = expCore::makeLocation('navigationmodule', null, $section->id);
 
 			// remove any manage permissions for this page and it's children
             // $db->delete('userpermission', "module='navigationmodule' AND internal=".$section->id);
             // $db->delete('grouppermission', "module='navigationmodule' AND internal=".$section->id);
 
 			foreach ($allusers as $uid) {
-				$u = exponent_users_getUserById($uid);
-				exponent_permissions_grant($u, 'manage', $sloc);
+				$u = user::getUserById($uid);
+				expPermissions::grant($u, 'manage', $sloc);
 			}
 			
 			foreach ($allgroups as $gid) {
-				$g = exponent_users_getGroupById($gid);
-				exponent_permissions_grantGroup($g, 'manage', $sloc);
+				$g = group::getGroupById($gid);
+				expPermissions::grantGroup($g, 'manage', $sloc);
 			}
 		}	
 	}

@@ -6,7 +6,7 @@
     expTheme::head(array(
     	"xhtml"=>false,
     	"css_primer"=>array(
-    	    YUI2_PATH."reset-fonts-grids/reset-fonts-grids.css"),
+    	    YUI2_PATH."yui2-reset-fonts-grids/yui2-reset-fonts-grids.css"),
     	"css_core"=>array("common"),
     	"css_links"=>true,
     	"css_theme"=>true
@@ -21,7 +21,7 @@
                 <img alt="<?php echo SITE_HEADER; ?>" src="<?php echo THEME_RELATIVE; ?>images/logo.png">
 			</a>
 			<?php expTheme::module(array("module"=>"navigation","view"=>"YUI Top Nav","source"=>"@top")); ?>
-			<?php expTheme::module(array("controller"=>"links","action"=>"showall","view"=>"showall_quicklinks","source"=>"top")) ?>
+			<?php expTheme::showController(array("controller"=>"links","action"=>"showall","view"=>"showall_quicklinks","source"=>"@top")) ?>
 			<?php expTheme::showController(array("controller"=>"search","action"=>"show")) ?>
 		</div>
 		<div id="bd">
@@ -32,7 +32,7 @@
 				<?php expTheme::main(); ?>
 			</div>
             <div id="rightcol">
-    			<?php expTheme::module(array("module"=>"container","view"=>"Default","source"=>"@right","scope"=>"sectional")); ?>
+    			<?php expTheme::showController(array("module"=>"container","view"=>"Default","source"=>"@right","scope"=>"sectional")); ?>
             </div>
 		</div>
 		<div id="ft">

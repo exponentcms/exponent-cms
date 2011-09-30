@@ -23,28 +23,6 @@
 {/css}
 
 <div id="order" class="module order show hide exp-skin-tabview">
-    {script unique="order" yuimodules="tabview, element"}
-    {literal}
-        var tabView = new YAHOO.widget.TabView('ordertabs');
-        
-        var url = location.href.split('#');
-        if (url[1]) {
-            //We have a hash
-            var tabHash = url[1];
-            var tabs = tabView.get('tabs');
-            for (var i = 0; i < tabs.length; i++) {
-                if (tabs[i].get('href') == '#' + tabHash) {
-                    tabView.set('activeIndex', i);
-                    break;
-                }
-            }
-        }
-        
-        YAHOO.util.Dom.removeClass("order", 'hide');
-        var loading = YAHOO.util.Dom.getElementsByClassName('loadingdiv', 'div');
-        YAHOO.util.Dom.setStyle(loading, 'display', 'none');
-    {/literal}
-    {/script}
     
     <div id="ordertabs" class="yui-navset">
         <ul class="yui-nav">
@@ -120,8 +98,8 @@
                     {foreach from=$order->order_status_changes item=change}
                     <tr style="border-bottom: 1px solid gray;"><td>
                     <strong>
-                    Status was changed from {selectValue table='order_status' field="title" where="id=`$change->from_status_id`"} 
-                    to {selectValue table='order_status' field="title" where="id=`$change->to_status_id`"} on {$change->getTimestamp()} by {$change->getPoster()}
+                    Status was changed from {selectvalue table='order_status' field="title" where="id=`$change->from_status_id`"}
+                    to {selectvalue table='order_status' field="title" where="id=`$change->to_status_id`"} on {$change->getTimestamp()} by {$change->getPoster()}
                     </strong>
                     {if $change->comment != ''}                        
                         <div style="border: 1px solid gray; margin-left: 10px; margin-top: 5px;">
@@ -169,7 +147,7 @@
             </div>
             <div id="billinfo">
                 <h2>Billing Information</h2>
-                {* eDebug var=$order->billingmethod[0] *}
+                {* edebug var=$order->billingmethod[0] *}
                 {foreach from=$order->billingmethod[0]->billingtransaction item=bt name=foo}
                     <table class="order-info">
                     <thead>
@@ -183,7 +161,7 @@
                         </td>
                     </tr> 
                     <tr>
-                        <td>Amount: ${$bt->billing_cost|number_format:2}
+                        <td>Amount: {currency_symbol}{$bt->billing_cost|number_format:2}
                         </td>
                     </tr>
                     {if $permissions.manage == 1}
@@ -335,11 +313,36 @@
 
 {script unique="msgbox"}
 {literal}
-YUI(EXPONENT.YUI3_CONFIG).use('node','event', function(Y) {
+YUI(EXPONENT.YUI3_CONFIG).use('node','event','yui2-tabview','yui2-element', function(Y) {
+    var YAHOO=Y.YUI2;
+
     var selects = Y.all('#order_status_messages option');
     selects.on('click',function(e){
         EXPONENT.editoremail_message.setData(e.target.get('value'));
     });
-});
+
+    var tabView = new YAHOO.widget.TabView('auth');
+    //Y.one('#authcfg').removeClass('hide').next().remove();
+    
+
+    var tabView2 = new YAHOO.widget.TabView('ordertabs');
+
+    var url = location.href.split('#');
+    if (url[1]) {
+        //We have a hash
+        var tabHash = url[1];
+        var tabs = tabView.get('tabs');
+        for (var i = 0; i < tabs.length; i++) {
+            if (tabs[i].get('href') == '#' + tabHash) {
+                tabView.set('activeIndex', i);
+                break;
+            }
+        }
+    }
+
+    YAHOO.util.Dom.removeClass("order", 'hide');
+    var loading = YAHOO.util.Dom.getElementsByClassName('loadingdiv', 'div');
+    YAHOO.util.Dom.setStyle(loading, 'display', 'none');
+	});
 {/literal}
 {/script}

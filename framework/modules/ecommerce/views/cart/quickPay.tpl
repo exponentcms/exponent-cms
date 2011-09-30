@@ -38,7 +38,8 @@
             <div class="info" id="ccfs">
                 <h2>Credit Card</h2>
                 {if $billing->form != ""}
-                    {$billing->form}
+					{assign var='calcid' value=$billing->calculator->id}
+                    {$billing->form.$calcid}
                 {/if}
                 {clear}
             </div>
@@ -62,8 +63,8 @@
     {/form}
     
 </div>
-{script unique="shoppingcartcheckout" yuimodules="animation,container,json" src=`$smarty.const.JS_FULL`exp-ecomcheckout.js}
+{*script unique="shoppingcartcheckout" yuimodules="animation,container,json" src=`$smarty.const.JS_FULL`exp-ecomcheckout.js}
 //
-{/script}
+{/script*}
 
 

@@ -19,7 +19,8 @@
 
 if (class_exists('simpletheme')) return;
 
-class simpletheme {
+class simpletheme extends theme {
+	public $user_configured = true;
 	function name() { return "Simple Theme"; }
 	function author() { return "Phillip Ball - Online Innovative Creations"; }
 	function description() { return "A minimal, slick theme based on the <a href=\"http://yuilibrary.com/yui/docs/cssgrids/\" target=\"_blank\">YUI 3 Gridding System</a>"; }

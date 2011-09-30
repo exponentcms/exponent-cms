@@ -3,14 +3,6 @@
 <div class="rightcol">
 
         <div id="dashboard-tabs" class="hide exp-skin-tabview">
-            {script unique="dashboard-tabs" yuimodules="tabview, element"}
-            {literal}
-                var tabView = new YAHOO.widget.TabView('dashboard-tabview');     
-                YAHOO.util.Dom.removeClass("dashboard-tabs", 'hide');
-                var loading = YAHOO.util.Dom.getElementsByClassName('loadingdiv', 'div');
-                YAHOO.util.Dom.setStyle(loading, 'display', 'none');
-            {/literal}
-            {/script}
 
             <div id="dashboard-tabview" class="yui-navset">
                 <ul class="yui-nav">
@@ -53,3 +45,16 @@
     </div>
     <div style="clear:both"></div>
 </div>
+
+
+{script unique="editform" yui3mods=1}
+{literal}
+    YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-tabview','yui2-element', function(Y) {
+        var YAHOO=Y.YUI2;
+
+        var tabView = new YAHOO.widget.TabView('dashboard-tabview');
+        Y.one('#dashboard-tabs').removeClass('hide').next().remove();
+    });
+{/literal}
+{/script}
+

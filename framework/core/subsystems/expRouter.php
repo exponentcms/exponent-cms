@@ -18,7 +18,7 @@
 /**
  * This is the class expRouter
  *
- * @subpackage Core-Subsytems
+ * @subpackage Core-Subsystems
  * @package Framework
  */
 
@@ -32,7 +32,7 @@ class expRouter {
     public  $sefPath = null;
     
     function __construct() {
-        $this->map = $this->getRouterMaps();
+        self::getRouterMaps();
     }
 
 	/**
@@ -392,15 +392,15 @@ class expRouter {
                     $this->url_parts[3] = $map['view'];
                 }
 
-                foreach($pairs as $key=>$value) {
-                    if ($key != 'controller') {
+                foreach($map as $key=>$value) {
+                    if ($key != 'controller' && $key != 'action' && $key != 'view' && $key != 'url_parts') {
                         $this->url_parts[] = $key;
                         $this->url_parts[] = $value;
                     }
                 }
-                
-                foreach($map as $key=>$value) {
-                    if ($key != 'controller' && $key != 'action' && $key != 'view' && $key != 'url_parts') {
+
+                foreach($pairs as $key=>$value) {
+                    if ($key != 'controller') {
                         $this->url_parts[] = $key;
                         $this->url_parts[] = $value;
                     }
@@ -681,8 +681,10 @@ class expRouter {
     
     public function getRouterMaps() {
         $mapfile = BASE.'framework/core/router_maps.php';
-        if (file_exists(BASE.'themes/'.DISPLAY_THEME_REAL.'/router_maps.php')) {
-            $mapfile = BASE.'themes/'.DISPLAY_THEME_REAL.'/router_maps.php';
+//        if (file_exists(BASE.'themes/'.DISPLAY_THEME_REAL.'/router_maps.php')) {
+//            $mapfile = BASE.'themes/'.DISPLAY_THEME_REAL.'/router_maps.php';
+		if (file_exists(BASE.'themes/'.DISPLAY_THEME.'/router_maps.php')) {
+			$mapfile = BASE.'themes/'.DISPLAY_THEME.'/router_maps.php';
         }
 
         include_once($mapfile);

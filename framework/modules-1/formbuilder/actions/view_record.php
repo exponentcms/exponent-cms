@@ -21,7 +21,7 @@
 if (!defined('EXPONENT')) exit('');
 
 include_once(BASE.'framework/core/subsystems-1/forms.php');
-include_once(BASE.'framework/core/subsystems-1/users.php');
+//include_once(BASE.'framework/core/subsystems-1/users.php');
 
 // Sanitize required _GET variables.
 $_GET['id'] = intval($_GET['id']);
@@ -33,7 +33,7 @@ $data = $db->selectObject('formbuilder_'.$f->table_name,'id='.$_GET['id']);
 $rpt = $db->selectObject('formbuilder_report','form_id='.$_GET['form_id']);
 
 if ($f && $controls && $data && $rpt) {
-	if (exponent_permissions_check('viewdata',unserialize($f->location_data))) {
+	if (expPermissions::check('viewdata',unserialize($f->location_data))) {
 		$controls = expSorter::sort(array('array'=>$controls,'sortby'=>'rank', 'order'=>'ASC'));
 		
 		$fields = array();
@@ -50,7 +50,7 @@ if ($f && $controls && $data && $rpt) {
 		$captions['timestamp'] = gt('Timestamp');
 		$captions['user_id'] = gt('Username');
 		$fields['ip'] = $data->ip;
-		$locUser =  exponent_users_getUserById($data->user_id);
+		$locUser =  user::getUserById($data->user_id);
 		$fields['user_id'] =  isset($locUser->username)?$locUser->username:'';
 		$fields['timestamp'] = strftime(DISPLAY_DATETIME_FORMAT,$data->timestamp);
 	
@@ -63,7 +63,8 @@ if ($f && $controls && $data && $rpt) {
 		$template->assign('title',$rpt->name);
 		$template->assign('fields',$fields);
 		$template->assign('captions',$captions);
-		$template->assign('backlink',expHistory::getLastNotEditable());
+//		$template->assign('backlink',expHistory::getLastNotEditable());
+		$template->assign('backlink',expHistory::getLast('editable'));
 		$template->assign('is_email',0);
 		$template->output();
 	} else {

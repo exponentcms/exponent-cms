@@ -1,0 +1,28 @@
+{
+    "name": "yui3-2in3",
+    "version": "0.0.5",
+    "description": "YUI 2in3 Source",
+    "author": "Dav Glass <davglass@gmail.com>",
+    "bugs": { "web" : "http://yuilibrary.com/projects/yui3/" },
+    "os": ["darwin", "linux"],
+    "engines": {
+        "node" : ">=0.2.0"
+    },
+    "directories": {
+        "lib" : "."
+    },
+    "main": "./2in3.js",
+    "dependencies": {
+        "yui3": ">=0.5.8"
+    },
+    "licenses":[
+        {
+            "type" : "BSD",
+            "url" : "http://developer.yahoo.com/yui/license.html"
+        }
+    ],
+    "repository": {
+        "type":"git",
+        "url":"http://github.com/yui/2in3.git"
+    }
+}

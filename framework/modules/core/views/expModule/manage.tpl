@@ -59,7 +59,7 @@
 
  
 
-<div id="mod-manager" class="module administrationmodule modulemanager exp-skin-tabview hide">
+<div id="mod-manager" class="module administration modulemanager exp-skin-tabview hide">
     <div class="info-header">
         <div class="related-actions">
             {help text="Get Help Managing Modules"|gettext module="manage-modules"}
@@ -139,9 +139,11 @@
 </div>
 <div class="loadingdiv">{"Loading"|gettext}</div>
 
-{script unique="filetabs" yui2mods="tabview,element" yui3mods="node"}
+{script unique="filetabs" yui3mods="1"}
 {literal}
-YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
+YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event','yui2-tabview','yui2-element', function(Y) {
+    var YAHOO=Y.YUI2;
+
     var tabView = new YAHOO.widget.TabView('mods');
     Y.one('#mod-manager').removeClass('hide');
     Y.one('.loadingdiv').remove();

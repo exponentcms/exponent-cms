@@ -20,32 +20,6 @@
         <h1>New {$modelname}</h1>
     {/if}
     
-
-    {script unique="prodtabs" yuimodules="tabview, element"}
-    {literal}
-        var tabView = new YAHOO.widget.TabView('demo');
-        
-        var url = location.href.split('#');
-        if (url[1]) {
-            //We have a hash
-            var tabHash = url[1];
-            var tabs = tabView.get('tabs');
-            for (var i = 0; i < tabs.length; i++) {
-                if (tabs[i].get('href') == '#' + tabHash) {
-                    tabView.set('activeIndex', i);
-                    break;
-                }
-            }
-        }
-        
-        
-        YAHOO.util.Dom.removeClass("editproduct", 'hide');
-        var loading = YAHOO.util.Dom.getElementsByClassName('loadingdiv', 'div');
-        YAHOO.util.Dom.setStyle(loading, 'display', 'none');
-        
-    {/literal}
-    {/script}
-
     {form action=update}
         {control type="hidden" name="id" value=$record->id}
         <div id="demo" class="yui-navset">
@@ -266,26 +240,50 @@
 </div>
 <div class="loadingdiv">Loading</div>
 
-{script unique="prodedit"}
+{script unique="editform" yui3mods=1}
 {literal}
-    function switchMethods() {
-        var dd = YAHOO.util.Dom.get('required_shipping_calculator_id');
-        var methdd = YAHOO.util.Dom.get('dd-'+dd.value);
+    YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-tabview','yui2-element', function(Y) {
+        var YAHOO=Y.YUI2;
 
-        var otherdds = YAHOO.util.Dom.getElementsByClassName('methods', 'div');
-        
-        for(i=0; i<otherdds.length; i++) {
-            if (otherdds[i].id == 'dd-'+dd.value) {
-                YAHOO.util.Dom.setStyle(otherdds[i].id, 'display', 'block');
-            } else {
-                YAHOO.util.Dom.setStyle(otherdds[i].id, 'display', 'none');
+        var tabView = new YAHOO.widget.TabView('demo');
+
+        var url = location.href.split('#');
+        if (url[1]) {
+            //We have a hash
+            var tabHash = url[1];
+            var tabs = tabView.get('tabs');
+            for (var i = 0; i < tabs.length; i++) {
+                if (tabs[i].get('href') == '#' + tabHash) {
+                    tabView.set('activeIndex', i);
+                    break;
+                }
             }
-            
         }
-        YAHOO.util.Dom.setStyle(methdd, 'display', 'block');
-        //console.debug(methdd);
-        //console.debug(dd.value);
-    }
-    YAHOO.util.Event.onDOMReady(switchMethods);
+
+
+        YAHOO.util.Dom.removeClass("editproduct", 'hide');
+        var loading = YAHOO.util.Dom.getElementsByClassName('loadingdiv', 'div');
+        YAHOO.util.Dom.setStyle(loading, 'display', 'none');
+
+        function switchMethods() {
+            var dd = YAHOO.util.Dom.get('required_shipping_calculator_id');
+            var methdd = YAHOO.util.Dom.get('dd-'+dd.value);
+
+            var otherdds = YAHOO.util.Dom.getElementsByClassName('methods', 'div');
+
+            for(i=0; i<otherdds.length; i++) {
+                if (otherdds[i].id == 'dd-'+dd.value) {
+                    YAHOO.util.Dom.setStyle(otherdds[i].id, 'display', 'block');
+                } else {
+                    YAHOO.util.Dom.setStyle(otherdds[i].id, 'display', 'none');
+                }
+
+            }
+            YAHOO.util.Dom.setStyle(methdd, 'display', 'block');
+            //console.debug(methdd);
+            //console.debug(dd.value);
+        }
+        YAHOO.util.Event.onDOMReady(switchMethods);
+    });
 {/literal}
 {/script}

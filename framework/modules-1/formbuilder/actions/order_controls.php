@@ -27,7 +27,7 @@ $a = $db->selectObject('formbuilder_control','form_id='.$_GET['p'].' AND rank='.
 $b = $db->selectObject('formbuilder_control','form_id='.$_GET['p'].' AND rank='.$_GET['b']);
 if ($a && $b) {
 	$f = $db->selectObject('formbuilder_form','id='.$a->form_id);
-	if (exponent_permissions_check('editform',unserialize($f->location_data))) {
+	if (expPermissions::check('editform',unserialize($f->location_data))) {
 		$tmp = $a->rank;
 		$a->rank = $b->rank;
 		$b->rank = $tmp;

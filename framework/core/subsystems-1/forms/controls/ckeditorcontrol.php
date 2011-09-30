@@ -81,43 +81,49 @@ class ckeditorcontrol extends formcontrol {
 	    }
 	    
 	    $content = "
-	    	EXPONENT.editor".createValidId($name)." = CKEDITOR.replace('".createValidId($name)."',
-				{
-					skin : '".$skin."',
-					toolbar : [".stripSlashes($tb)."],
-					".$paste_word."
-                    scayt_autoStartup : ".$scayt_on.",
-                    filebrowserBrowseUrl : '".makelink(array("controller"=>"file", "action"=>"picker", "ajax_action"=>1, "ck"=>1, "update"=>"fck"))."',
-                    filebrowserWindowWidth : '640',
-                    filebrowserWindowHeight : '480',
-					filebrowserLinkBrowseUrl : '".PATH_RELATIVE."external/editors/connector/CKeditor_link.php',
-                    filebrowserLinkWindowWidth : '320',
-                    filebrowserLinkWindowHeight : '600',
-					filebrowserImageBrowseLinkUrl : '".PATH_RELATIVE."external/editors/connector/CKeditor_link.php',
-					extraPlugins : '".$plugins."',
-					entities_additional : '',
-					contentsCSS : '".THEME_RELATIVE."css/base-styles.css',
-					uiColor : '#dedede'
-                });
-				
-				CKEDITOR.on( 'instanceReady', function( ev ) {
-					var blockTags = ['div','h1','h2','h3','h4','h5','h6','p','pre','ol','ul','li'];
-					var rules =  {
-						indent : false,
-						breakBeforeOpen : false,
-						breakAfterOpen : false,
-						breakBeforeClose : false,
-						breakAfterClose : true
-					};
-					for (var i=0; i<blockTags.length; i++) {
-						ev.editor.dataProcessor.writer.setRules( blockTags[i], rules );
-					}
-				});
+	    YUI(EXPONENT.YUI3_CONFIG).use('yui', function(Y) {
+	       // Y.on('readyforcke', function () {
+    	    	EXPONENT.editor".createValidId($name)." = CKEDITOR.replace('".createValidId($name)."',
+    				{
+    					skin : '".$skin."',
+    					toolbar : [".stripSlashes($tb)."],
+    					".$paste_word."
+                        scayt_autoStartup : ".$scayt_on.",
+                        filebrowserBrowseUrl : '".makelink(array("controller"=>"file", "action"=>"picker", "ajax_action"=>1, "ck"=>1, "update"=>"fck"))."',
+                        filebrowserWindowWidth : '640',
+                        filebrowserWindowHeight : '480',
+    					filebrowserLinkBrowseUrl : '".PATH_RELATIVE."external/editors/connector/CKeditor_link.php',
+                        filebrowserLinkWindowWidth : '320',
+                        filebrowserLinkWindowHeight : '600',
+    					filebrowserImageBrowseLinkUrl : '".PATH_RELATIVE."external/editors/connector/CKeditor_link.php',
+    					extraPlugins : '".$plugins."',
+    					entities_additional : '',
+    					contentsCSS : '".THEME_RELATIVE."css/base-styles.css',
+    					uiColor : '#dedede'
+                    });
+
+    				CKEDITOR.on( 'instanceReady', function( ev ) {
+    					var blockTags = ['div','h1','h2','h3','h4','h5','h6','p','pre','ol','ul','li'];
+    					var rules =  {
+    						indent : false,
+    						breakBeforeOpen : false,
+    						breakAfterOpen : false,
+    						breakBeforeClose : false,
+    						breakAfterClose : true
+    					};
+    					for (var i=0; i<blockTags.length; i++) {
+    						ev.editor.dataProcessor.writer.setRules( blockTags[i], rules );
+    					}
+    				});
+
+           // });
+	    });
    
 	    ";
 	    
 	    expJavascript::pushToFoot(array(
-            "unique"=>"cke".$name,
+            "unique"=>"zzz-cke".$name,
+            "yui3mods"=>"1",
             "content"=>$content,
             //"src"=>PATH_RELATIVE."external/ckeditor/ckeditor.js"
          ));

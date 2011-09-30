@@ -77,12 +77,10 @@ $template->assign("time",$time);
 	// $viewparams = array("type"=>"byday", "range"=>"week");
 // }
 
-include_once(BASE . "framework/core/subsystems-1/datetime.php");
-
 
 
 // if ($viewparams['type'] == "minical") {
-	// $monthly = exponent_datetime_monthlyDaysTimestamp($time);
+	// $monthly = expDateTime::monthlyDaysTimestamp($time);
 	// $info = getdate($time);
 	// $timefirst = mktime(12,0,0,$info['mon'],1,$info['year']);
 	// $now = getdate(time());
@@ -114,20 +112,20 @@ include_once(BASE . "framework/core/subsystems-1/datetime.php");
 // } else if ($viewparams['type'] == "byday") {
 // Remember this is the code for weekly view and monthly listview
 // Test your fixes on both views before submitting your changes to cvs
-$startperiod = exponent_datetime_startOfDayTimestamp($time);
+$startperiod = expDateTime::startOfDayTimestamp($time);
 $totaldays = $_GET['days'];
 if ($totaldays == "") {
 	$totaldays = 7;	// default 7 days of events
 }
 
 //	if ($viewparams['range'] == "week") {
-//		$startperiod = exponent_datetime_startOfWeekTimestamp($time);
+//		$startperiod = expDateTime::startOfWeekTimestamp($time);
 //		$totaldays = 7;
 //	} else if ($viewparams['range'] == "twoweek") {
-//		$startperiod = exponent_datetime_startOfWeekTimestamp($time);
+//		$startperiod = expDateTime::startOfWeekTimestamp($time);
 //		$totaldays = 14;				
 //	} else {  // range = month
-//		$startperiod = exponent_datetime_startOfMonthTimestamp($time);
+//		$startperiod = expDateTime::startOfMonthTimestamp($time);
 //		$totaldays  = date('t', $time);
 //	}
 //	$template->assign("prev_timestamp",$startperiod - 3600);
@@ -151,11 +149,11 @@ for ($i = 0; $i < $totaldays; $i++) {
 	$days[$start] = array();			
 	$days[$start] = calendarmodule::_getEventsForDates($edates);
 	for ($j = 0; $j < count($days[$start]); $j++) {
-		$thisloc = exponent_core_makeLocation($loc->mod,$loc->src,$days[$start][$j]->id);
+		$thisloc = expCore::makeLocation($loc->mod,$loc->src,$days[$start][$j]->id);
 		$days[$start][$j]->permissions = array(
-			"administrate"=>(exponent_permissions_check("administrate",$thisloc) || exponent_permissions_check("administrate",$loc)),
-			"edit"=>(exponent_permissions_check("edit",$thisloc) || exponent_permissions_check("edit",$loc)),
-			"delete"=>(exponent_permissions_check("delete",$thisloc) || exponent_permissions_check("delete",$loc))
+			"administrate"=>(expPermissions::check("administrate",$thisloc) || expPermissions::check("administrate",$loc)),
+			"edit"=>(expPermissions::check("edit",$thisloc) || expPermissions::check("edit",$loc)),
+			"delete"=>(expPermissions::check("delete",$thisloc) || expPermissions::check("delete",$loc))
 		);
 	}
 	$counts[$start] = count($days[$start]);
@@ -196,7 +194,7 @@ $template->assign("totaldays",$totaldays);
 		// $weekday = $infofirst['wday']; // day number in grid.  if 7+, switch weeks
 	// }
 	// // Grab day counts (deprecated, handled by the date function)
-	// // $endofmonth = exponent_datetime_endOfMonthDay($time);
+	// // $endofmonth = expDateTime::endOfMonthDay($time);
 	// $endofmonth = date('t', $time);
 	// for ($i = 1; $i <= $endofmonth; $i++) {
 		// $start = mktime(0,0,0,$info['mon'],$i,$info['year']);
@@ -230,21 +228,21 @@ $template->assign("totaldays",$totaldays);
 	// // Check perms and return if cant view
 	// if ($viewparams['type'] == "administration" && !$user) return;
 	// $continue = (
-		// exponent_permissions_check("administrate",$loc) ||
-		// exponent_permissions_check("post",$loc) ||
-		// exponent_permissions_check("edit",$loc) ||
-		// exponent_permissions_check("delete",$loc) ||
-		// exponent_permissions_check("approve",$loc) ||
-		// exponent_permissions_check("manage_approval",$loc)
+		// expPermissions::check("administrate",$loc) ||
+		// expPermissions::check("post",$loc) ||
+		// expPermissions::check("edit",$loc) ||
+		// expPermissions::check("delete",$loc) ||
+		// expPermissions::check("approve",$loc) ||
+		// expPermissions::check("manage_approval",$loc)
 		// ) ? 1 : 0;
 	// $dates = $db->selectObjects("eventdate",$locsql);
 	// $items = calendarmodule::_getEventsForDates($dates);
 	// if (!$continue) {
 		// foreach ($items as $i) {
-			// $iloc = exponent_core_makeLocation($loc->mod,$loc->src,$i->id);
-			// if (exponent_permissions_check("edit",$iloc) ||
-				// exponent_permissions_check("delete",$iloc) ||
-				// exponent_permissions_check("administrate",$iloc)
+			// $iloc = expCore::makeLocation($loc->mod,$loc->src,$i->id);
+			// if (expPermissions::check("edit",$iloc) ||
+				// expPermissions::check("delete",$iloc) ||
+				// expPermissions::check("administrate",$iloc)
 			// ) {
 				// $continue = true;
 			// }
@@ -252,12 +250,12 @@ $template->assign("totaldays",$totaldays);
 	// }
 	// if (!$continue) return;
 	// for ($i = 0; $i < count($items); $i++) {
-		// $thisloc = exponent_core_makeLocation($loc->mod,$loc->src,$items[$i]->id);
+		// $thisloc = expCore::makeLocation($loc->mod,$loc->src,$items[$i]->id);
 		// if ($user && $items[$i]->poster == $user->id) $canviewapproval = 1;
 		// $items[$i]->permissions = array(
-			// "administrate"=>(exponent_permissions_check("administrate",$thisloc) || exponent_permissions_check("administrate",$loc)),
-			// "edit"=>(exponent_permissions_check("edit",$thisloc) || exponent_permissions_check("edit",$loc)),
-			// "delete"=>(exponent_permissions_check("delete",$thisloc) || exponent_permissions_check("delete",$loc))
+			// "administrate"=>(expPermissions::check("administrate",$thisloc) || expPermissions::check("administrate",$loc)),
+			// "edit"=>(expPermissions::check("edit",$thisloc) || expPermissions::check("edit",$loc)),
+			// "delete"=>(expPermissions::check("delete",$thisloc) || expPermissions::check("delete",$loc))
 		// );
 	// }
 	// $items = expSorter::sort(array('array'=>$items,'sortby'=>'eventstart', 'order'=>'ASC'));
@@ -266,7 +264,7 @@ $template->assign("totaldays",$totaldays);
 	// if (!isset($viewparams['range'])) $viewparams['range'] = "all";
 	// $items = null;
 	// $dates = null;
-	// $day = exponent_datetime_startOfDayTimestamp(time());
+	// $day = expDateTime::startOfDayTimestamp(time());
 	// $sort_asc = true; // For the getEventsForDates call
 	// $moreevents = false;
 	// switch ($viewparams['range']) {
@@ -289,7 +287,7 @@ $template->assign("totaldays",$totaldays);
 			// $dates = array($db->selectObject("eventdate",$locsql." AND date >= $day"));
 			// break;
 		// case "month":
-			// $dates = $db->selectObjects("eventdate",$locsql." AND date >= ".exponent_datetime_startOfMonthTimestamp(time()) . " AND date <= " . exponent_datetime_endOfMonthTimestamp(time()));
+			// $dates = $db->selectObjects("eventdate",$locsql." AND date >= ".expDateTime::startOfMonthTimestamp(time()) . " AND date <= " . expDateTime::endOfMonthTimestamp(time()));
 			// break;
 	// }
 	// $items = calendarmodule::_getEventsForDates($dates,$sort_asc,$template->viewconfig['featured_only'] ? true : false);
@@ -307,12 +305,12 @@ $template->assign("totaldays",$totaldays);
 // //eDebug($items);
 // //			}			
 	// for ($i = 0; $i < count($items); $i++) {
-		// $thisloc = exponent_core_makeLocation($loc->mod,$loc->src,$items[$i]->id);
+		// $thisloc = expCore::makeLocation($loc->mod,$loc->src,$items[$i]->id);
 		// if ($user && $items[$i]->poster == $user->id) $canviewapproval = 1;
 		// $items[$i]->permissions = array(
-			// 'administrate'=>(exponent_permissions_check('administrate',$thisloc) || exponent_permissions_check('administrate',$loc)),
-			// 'edit'=>(exponent_permissions_check('edit',$thisloc) || exponent_permissions_check('edit',$loc)),
-			// 'delete'=>(exponent_permissions_check('delete',$thisloc) || exponent_permissions_check('delete',$loc))
+			// 'administrate'=>(expPermissions::check('administrate',$thisloc) || expPermissions::check('administrate',$loc)),
+			// 'edit'=>(expPermissions::check('edit',$thisloc) || expPermissions::check('edit',$loc)),
+			// 'delete'=>(expPermissions::check('delete',$thisloc) || expPermissions::check('delete',$loc))
 		// );
 	// }
 	// //Get the image file if there is one.
@@ -386,7 +384,7 @@ $headers = array(
 	"From"=>$from = $config->email_from_reminder,
 	"Reply-to"=>$reply = $config->email_reply_reminder
 	);
-require_once(BASE . "framework/core/subsystems-1/users.php");
+//require_once(BASE . "framework/core/subsystems-1/users.php");
 
 // set up the html message
 $template->assign("showdetail",$config->email_showdetail);
@@ -400,10 +398,10 @@ $notifs = unserialize($config->reminder_notify);
 $emails = array();
 foreach ($db->selectObjects('calendar_reminder_address',"calendar_id='".$config->id."'") as $c) {
 	if ($c->user_id != 0) {
-		$u = exponent_users_getUserById($c->user_id);
+		$u = user::getUserById($c->user_id);
 		$emails[] = $u->email;
 	} else if ($c->group_id != 0) {
-		$grpusers = exponent_users_getUsersInGroup($c->group_id);
+		$grpusers = group::getUsersInGroup($c->group_id);
 		foreach ($grpusers as $u) {
 			$emails[] = $u->email;
 		}
