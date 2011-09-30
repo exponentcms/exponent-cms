@@ -45,7 +45,7 @@
 function exponent_forms_initialize() {
 }
 //	$forms_dir = BASE."framework/core/subsystems-1/forms";
-//	$controls_dir = BASE."framework/core/subsystems-1/forms/controls";
+//	$controls_dir = BASE."framework/core/subsystems/forms/controls";
 //	if (phpversion() < 5) {
 //		if (is_readable($forms_dir)) {
 //			$dh = opendir($forms_dir);
@@ -55,7 +55,7 @@ function exponent_forms_initialize() {
 //				}
 //			}
 //		} else {
-//			echo gt('The framework/core/subsystems-1/forms/ directory is not readable.');
+//			echo gt('The framework/core/subsystems/forms/ directory is not readable.');
 //		}
 //		if (is_readable($controls_dir)) {
 //			$dh = opendir($controls_dir);
@@ -65,7 +65,7 @@ function exponent_forms_initialize() {
 //				}
 //			}
 //		} else {
-//			echo gt('The framework/core/subsystems-1/forms/controls directory is not readable.');
+//			echo gt('The framework/core/subsystems/forms/controls directory is not readable.');
 //		}
 //	} else {
 //		if (is_readable($controls_dir)) {
@@ -73,7 +73,7 @@ function exponent_forms_initialize() {
 //			$auto_dirs["forms_forms"] = $forms_dir;
 //			$auto_dirs["forms_controls"] = $controls_dir;
 //		} else {
-//			echo gt('The framework/core/subsystems-1/forms/controls directory is not readable.');
+//			echo gt('The framework/core/subsystems/forms/controls directory is not readable.');
 //		}
 //	}
 //}
@@ -92,10 +92,10 @@ function exponent_forms_cleanup() {
  * @node Undocumented
  */
 function exponent_forms_listControlTypes() {
-	$cdh = opendir(BASE."framework/core/subsystems-1/forms/controls");
+	$cdh = opendir(BASE."framework/core/subsystems/forms/controls");
 	$list = array();
 	while (($ctl = readdir($cdh)) !== false) {
-		if (substr($ctl,-4,4) == ".php" && is_readable(BASE."framework/core/subsystems-1/forms/controls/$ctl")) {
+		if (substr($ctl,-4,4) == ".php" && is_readable(BASE."framework/core/subsystems/forms/controls/$ctl")) {
 			if (call_user_func(array(substr($ctl,0,-4),"isSimpleControl"))) {
 				$list[substr($ctl,0,-4)] = call_user_func(array(substr($ctl,0,-4),"name"));
 			}

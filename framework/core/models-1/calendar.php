@@ -22,7 +22,7 @@ class calendar {
 	static function form($object) {
 		global $user;
 
-		require_once(BASE.'framework/core/subsystems-1/forms.php');
+//		require_once(BASE.'framework/core/subsystems-1/forms.php');
 		$form = new form();
 		if (!isset($object->id)) {
 			$object->title = '';
@@ -89,7 +89,7 @@ class calendar {
 	}
 
 	static function update($values,$object) {
-		require_once(BASE.'framework/core/subsystems-1/forms.php');
+//		require_once(BASE.'framework/core/subsystems-1/forms.php');
 		$object->title = $values['title'];
 
 		$object->body = preg_replace('/<br ?\/>$/','',trim($values['body']));

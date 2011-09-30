@@ -22,7 +22,7 @@ class formbuilder_form {
 	static function form($object) {
 		global $db;
 		//global $user;
-		require_once(BASE.'framework/core/subsystems-1/forms.php');
+//		require_once(BASE.'framework/core/subsystems-1/forms.php');
 //		require_once(BASE.'framework/core/subsystems-1/users.php');
 
 		$form = new form();
@@ -117,7 +117,7 @@ class formbuilder_form {
 	static function updateTable($object) {
 		global $db;
 		
-		require_once(BASE.'framework/core/subsystems-1/forms.php');
+//		require_once(BASE.'framework/core/subsystems-1/forms.php');
 		if ($object->is_saved == 1) {
 			$datadef =  array(
 				'id'=>array(

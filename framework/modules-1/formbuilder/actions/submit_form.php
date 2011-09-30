@@ -29,7 +29,7 @@ if (!expValidator::check_antispam($post)) {
 }
 
 //require_once(BASE."framework/core/subsystems-1/users.php");
-require_once(BASE."framework/core/subsystems-1/forms.php");
+//require_once(BASE."framework/core/subsystems-1/forms.php");
 global $db, $user;
 $f = $db->selectObject("formbuilder_form","id=".intval($_POST['id']));
 $rpt = $db->selectObject("formbuilder_report","form_id=".intval($_POST['id']));

@@ -372,7 +372,7 @@ class expCore {
 				$relpath .= "framework/views/";
 			} elseif($type == "forms") {
 				if ($name != "forms/email") {
-					$relpath .= "framework/core/subsystems-1/forms/";
+					$relpath .= "framework/core/subsystems/forms/";
 				} else {  //TODO  forms/email only used by calendarmodule
 					$relpath .= "framework/modules-1/calendarmodule/";
 				}
@@ -386,7 +386,7 @@ class expCore {
 			} elseif($type == "Control") {
 				$relpath .= "themes/";
 			} elseif($type == "Form") {
-				$relpath .= "framework/core/subsystems-1/forms/";
+				$relpath .= "framework/core/subsystems/forms/";
 			} elseif($type == "Module") {
 				$relpath .= "modules/";
 			} elseif($type == "Controller" || $type=='controllers') {

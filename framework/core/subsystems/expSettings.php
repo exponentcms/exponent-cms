@@ -73,7 +73,7 @@ class expSettings {
 	// Last argument added in 0.96, for shared core.  Default it to the old hard-coded value
 		if ($site_root == null) $site_root = BASE;
 
-		require_once(BASE.'framework/core/subsystems-1/forms.php');
+//		require_once(BASE.'framework/core/subsystems-1/forms.php');
 		// We don't actually use the forms subsystem, but the .structure.php files do.
 
 		if ($configname == '') $file = $site_root.'conf/config.php';
@@ -157,7 +157,7 @@ class expSettings {
 			global $user;
 			$options = self::parse($configname);
 
-			require_once(BASE.'framework/core/subsystems-1/forms.php');
+//			require_once(BASE.'framework/core/subsystems-1/forms.php');
 
 			$form = new form();
 

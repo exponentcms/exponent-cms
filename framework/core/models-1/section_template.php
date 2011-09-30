@@ -20,7 +20,7 @@
 
 class section_template {
 	static function form($object = null) {
-		require_once(BASE.'framework/core/subsystems-1/forms.php');
+//		require_once(BASE.'framework/core/subsystems-1/forms.php');
 		$form = new form();
 		if (!isset($object->id)) {
 			$object->name = '';

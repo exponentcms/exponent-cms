@@ -21,7 +21,7 @@
 class formbuilder_report {
 	static function form($object) {
 		global $db;
-		require_once(BASE.'framework/core/subsystems-1/forms.php');
+//		require_once(BASE.'framework/core/subsystems-1/forms.php');
 		$form = new form();
 		if (!isset($object->id)) {
 			$object->name = '';
@@ -73,7 +73,7 @@ class formbuilder_report {
 	}
 	
 	static function update($values, $object) {
-		require_once(BASE.'framework/core/subsystems-1/forms.php');
+//		require_once(BASE.'framework/core/subsystems-1/forms.php');
 		$object->name = $values['name'];
 		$object->description = $values['description'];
 		$object->text = htmleditorcontrol::parseData('text',$values);

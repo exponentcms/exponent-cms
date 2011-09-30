@@ -20,8 +20,6 @@
 
 if (!defined('EXPONENT')) exit('');
 
-require_once(BASE."framework/core/subsystems-1/forms.php");
-
 $f = $db->selectObject("formbuilder_form","id=".(isset($_REQUEST['form_id'])?intval($_REQUEST['form_id']):0));
 if ($f) {
 	if (expPermissions::check("editform",unserialize($f->location_data))) {
@@ -78,6 +76,7 @@ if ($f) {
 			$form->meta("action","save_control");
 			$form->meta('control_type',$control_type);
 			$form->meta('form_id',$f->id);
+			require_once(BASE."framework/core/subsystems-1/forms.php");
 			$types = exponent_forms_listControlTypes();
 			$template = new template('formbuilder','_edit_control');
 			$template->assign('form_html',$form->toHTML($f->id));

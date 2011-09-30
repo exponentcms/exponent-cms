@@ -19,8 +19,8 @@
 /** @define "BASE" "../.." */
 
 function smarty_function_userlistcontrol($params,&$smarty) {
-	echo '<script src="'.PATH_RELATIVE.'framework/core/subsystems-1/forms/controls/listbuildercontrol.js" language="javascript"></script>';
-	require_once(BASE.'framework/core/subsystems-1/forms.php');
+	echo '<script src="'.PATH_RELATIVE.'framework/core/subsystems/forms/controls/listbuildercontrol.js" language="javascript"></script>';
+//	require_once(BASE.'framework/core/subsystems-1/forms.php');
 //	require_once(BASE.'framework/core/subsystems-1/users.php');
 
 	global $db;

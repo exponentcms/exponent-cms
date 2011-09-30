@@ -353,7 +353,7 @@ function exponent_template_getViewConfigForm($module,$view,$form,$values) {
 		$form_file = $filepath;
 	}
 	
-	require_once(BASE."framework/core/subsystems-1/forms.php");
+//	require_once(BASE."framework/core/subsystems-1/forms.php");
 	if ($form == null) $form = new form();
 	if ($form_file == "") return $form;
 	

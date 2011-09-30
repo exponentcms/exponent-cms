@@ -102,7 +102,7 @@ class section {
 	
 	static function moveStandaloneForm($object = null) {
 		// Initialize the forms subsystem for use.
-		require_once(BASE.'framework/core/subsystems-1/forms.php');
+//		require_once(BASE.'framework/core/subsystems-1/forms.php');
 		$form = section::_commonForm($object);
 		// the name and sef_name are already set in the stand-alone page
 		$form->unregister('name');
@@ -132,7 +132,7 @@ class section {
 	 */
 	static function form($object = null) {
 		// Initialize the forms subsystem for use.
-		require_once(BASE.'framework/core/subsystems-1/forms.php');
+//		require_once(BASE.'framework/core/subsystems-1/forms.php');
 
 		// Grab the basic form that all page types share
 		// This has the name and positional dropdowns registered.
@@ -179,7 +179,7 @@ class section {
 	 */
 	static function externalAliasForm($object = null) {
 		// Initialize the forms subsystem for use.
-		require_once(BASE.'framework/core/subsystems-1/forms.php');
+//		require_once(BASE.'framework/core/subsystems-1/forms.php');
 
 		// Grab the basic form that all page types share
 		// This has the name and positional dropdowns registered.
@@ -216,7 +216,7 @@ class section {
 	 */
 	static function internalAliasForm($object = null) {
 		// Initialize the forms subsystem for use.
-		require_once(BASE.'framework/core/subsystems-1/forms.php');
+//		require_once(BASE.'framework/core/subsystems-1/forms.php');
 
 		// Initialization
 		if (!isset($object->id)) {
@@ -256,7 +256,7 @@ class section {
 	 */
 	static function pagesetForm($object = null) {
 		// Initialize the forms subsystem for use.
-		require_once(BASE.'framework/core/subsystems-1/forms.php');
+//		require_once(BASE.'framework/core/subsystems-1/forms.php');
 
 		// Grab the basic form that all page types share
 		// This has the name and positional dropdowns registered.
