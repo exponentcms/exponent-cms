@@ -28,7 +28,7 @@ function smarty_function_filedisplayer($params,&$smarty) {
 	$title = isset($params['title']) ? $params['title'] : '';
 
     $badvals = array("[", "]", ",", " ", "'", "\"", "&", "#", "%", "@", "!", "$", "(", ")", "{", "}");
-    $config['uniqueid'] = str_replace($badvals, "", $smarty->_tpl_vars[__loc]->src).$params['record']->id;
+    $config['uniqueid'] = str_replace($badvals, "", $smarty->_tpl_vars['__loc']->src).$params['record']->id;
     if ($config['pio'] && $params['is_listing']) {
         $tmp = reset($params['files']);
         unset($params['files']);
@@ -53,7 +53,7 @@ function smarty_function_filedisplayer($params,&$smarty) {
     }
     
     $html = '<div class="display-files" style="'.$float.'width:'.$width.'px;'.$margin.'">';
-    $template = get_common_template($view, $smarty->_tpl_vars[__loc], 'file');
+    $template = get_common_template($view, $smarty->_tpl_vars['__loc'], 'file');
 	$template->assign('files', $params['files']);
 	$template->assign('style', $params['style']);
 	$template->assign('config', $config);

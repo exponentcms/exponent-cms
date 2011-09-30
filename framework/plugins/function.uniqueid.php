@@ -20,7 +20,7 @@
 function smarty_function_uniqueid($params,&$smarty) {
     $badvals = array("[", "]", ",", " ", "'", "\"", "&", "#", "%", "@", "!", "$", "(", ")", "{", "}");
     $randstr  = 'exp';
-    $randstr .= empty($smarty->_tpl_vars[__loc]->src) ? mt_rand(1, 9999) : str_replace($badvals, "",$smarty->_tpl_vars[__loc]->src);
+    $randstr .= empty($smarty->_tpl_vars['__loc']->src) ? mt_rand(1, 9999) : str_replace($badvals, "",$smarty->_tpl_vars['__loc']->src);
     $id =  $randstr.$params['id'];
     
     if (!empty($params['prepend'])) $id = $params['prepend'].$id;

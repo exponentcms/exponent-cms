@@ -136,7 +136,7 @@ class Twitter extends expRecord
 	/**
 	 * Default constructor
 	 *
-	 * @return	void
+	 * @return \Twitter
 	 * @param	string $consumerKey		The consumer key to use.
 	 * @param	string $consumerSecret	The consumer secret to use.
 	 */
@@ -359,12 +359,18 @@ class Twitter extends expRecord
 	 *
 	 * @return	string
 	 * @param	string $url						The url to call.
-	 * @param	array[optional] $parameters		Optional parameters.
-	 * @param	bool[optional] $authenticate	Should we authenticate.
-	 * @param	bool[optional] $method			The method to use. Possible values are GET, POST.
-	 * @param	string[optional] $filePath		The path to the file to upload.
-	 * @param	bool[optional] $expectJSON		Do we expect JSON.
-	 * @param	bool[optional] $returnHeaders	Should the headers be returned?
+	 * @param array|null $parameters
+	 * @param bool $authenticate
+	 * @param string $method
+	 * @param null $filePath
+	 * @param bool $expectJSON
+	 * @param bool $returnHeaders
+	 * @internal param $array [optional] $parameters		Optional parameters.
+	 * @internal param $bool [optional] $authenticate	Should we authenticate.
+	 * @internal param $bool [optional] $method			The method to use. Possible values are GET, POST.
+	 * @internal param $string [optional] $filePath		The path to the file to upload.
+	 * @internal param $bool [optional] $expectJSON		Do we expect JSON.
+	 * @internal param $bool [optional] $returnHeaders	Should the headers be returned?
 	 */
 	private function doCall($url, array $parameters = null, $authenticate = false, $method = 'GET', $filePath = null, $expectJSON = true, $returnHeaders = false)
 	{
