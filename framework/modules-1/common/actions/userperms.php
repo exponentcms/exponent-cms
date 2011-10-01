@@ -23,7 +23,7 @@ if (!defined('EXPONENT')) exit('');
 //if (expPermissions::check('administrate',$loc)) {
 if ($user->isAdmin()) {
 	global $router;
-	if (exponent_template_getModuleViewFile($loc->mod,'_userpermissions',false) == TEMPLATE_FALLBACK_VIEW) {
+	if (expTemplate::getModuleViewFile($loc->mod,'_userpermissions',false) == TEMPLATE_FALLBACK_VIEW) {
 		$template = new template('common','_userpermissions',$loc);
 	} else {
 		//TODO

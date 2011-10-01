@@ -107,7 +107,7 @@ if (($item == null && expPermissions::check('post',$loc)) ||
 		$form->registerBefore('submit', null,'', new htmlcontrol('<hr size="1" />'));
 		$allforms = array();
 		$allforms[''] = gt('Disallow Feedback');
-		$allforms = array_merge($allforms, exponent_template_listFormTemplates("forms/email"));
+		$allforms = array_merge($allforms, expTemplate::listFormTemplates("forms/email"));
 		$feedback_form = ($item == null ? 0 : $item->feedback_form);
 		$feedback_email = ($item == null ? '' : $item->feedback_email);
 		$form->registerAfter('eventend', 'feedback_form', gt('Feedback Form'), new dropdowncontrol($feedback_form, $allforms));

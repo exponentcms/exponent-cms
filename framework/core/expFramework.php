@@ -88,6 +88,8 @@ $SYS_USERS_CACHE = array();
  */
 $exponent_permissions_r = array();
 
+$userjsfiles = array();
+
 function renderAction(array $parms=array()) {
     //because we love you
     global $user;

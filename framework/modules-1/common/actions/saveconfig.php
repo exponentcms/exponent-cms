@@ -33,7 +33,7 @@ if (expPermissions::check('configure',$loc)) {
 	$container = $db->selectObject('container',"internal='".serialize($loc)."'");
 	$vconfig = array();
 	if (isset($_POST['_viewconfig'])) {
-		$opts = exponent_template_getViewConfigOptions($loc->mod,$container->view);
+		$opts = expTemplate::getViewConfigOptions($loc->mod,$container->view);
 		foreach (array_keys($opts) as $o) {
 			$vconfig[$o] = (isset($_POST['_viewconfig'][$o]) ? $_POST['_viewconfig'][$o] : 0);
 		}

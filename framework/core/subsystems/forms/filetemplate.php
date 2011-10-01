@@ -3,6 +3,7 @@
 ##################################################
 #
 # Copyright (c) 2004-2011 OIC Group, Inc.
+# Copyright (c) 2006-2007 Maxim Mueller
 # Written and Designed by James Hunt
 #
 # This file is part of Exponent
@@ -16,8 +17,12 @@
 # GPL: http://www.gnu.org/licenses/gpl.txt
 #
 ##################################################
+/** @define "BASE" "../../.." */
 
-function smarty_function_viewfile($params,&$smarty) {
-	$view = expTemplate::getModuleViewFile($params['module'],$params['view']);
-	$smarty->assign($params['var'],$view);
+class filetemplate extends BaseTemplate {
+	function __construct($file) {
+		parent::__construct("", "", $file);
+	}
 }
+
+?>

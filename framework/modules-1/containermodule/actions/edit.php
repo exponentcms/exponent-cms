@@ -101,7 +101,7 @@ if (expPermissions::check('edit_module',$loc) || expPermissions::check('add_modu
 		$mod->supportsViews  = ($module->hasViews()   ? 1 : 0);
 		
 		// Get a list of views
-		$mod->views = exponent_template_listModuleViews($moduleclass);
+		$mod->views = expTemplate::listModuleViews($moduleclass);
 		natsort($mod->views);
 		
         // if (!$haveclass) {

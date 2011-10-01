@@ -59,7 +59,7 @@ require_once(BASE.'framework/core/subsystems-1/modules.php');
 exponent_modules_initialize(); // now in the autoloader, if used
 
 // Initialize the Template subsystem.
-require_once(BASE.'framework/core/subsystems-1/template.php');
+//require_once(BASE.'framework/core/subsystems-1/template.php');
 
 // Initialize the History (Flow) subsystem.
 $history = new expHistory(); //<--This is the new flow subsystem and will be replacing the above.

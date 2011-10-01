@@ -20,295 +20,295 @@
 /** @define "BASE" "../../.." */
 
 if (!defined('EXPONENT')) exit('');
-
-$userjsfiles = array();
-
-/* exdoc
- * The definition of this constant lets other parts of the system know 
- * that the subsystem has been included for use.
- * @node Subsystems:Template
- */
-//define('SYS_TEMPLATE',1);
-
-define('TEMPLATE_FALLBACK_VIEW',BASE.'framework/core/views/viewnotfound.tpl');
-
-//include_once(BASE.'external/Smarty-2/libs/Smarty.class.php');
-include_once(BASE.'external/Smarty-3/libs/Smarty.class.php');
-
-class BaseTemplate {
-	// Smarty template object.
-	var $tpl;
-	
-	// This is the directory of the particular module, used to identify the moduel
-	var $module = "";
-	
-	// The full server-side filename of the .tpl file being used.
-	// This will be used by modules on the outside, for retrieving view configs.
-	var $viewfile = "";
-	
-	// Name of the view (for instance, 'Default' for 'Default.tpl')
-	var $view = "";
-	
-	// Full server-side directory path of the .tpl file being used.
-	var $viewdir = "";
-	
-	//fix for the wamp/lamp issue
-	var $langdir = "";
-	//	
-	
-	function __construct($item_type, $item_dir, $view = "Default") {
-		
-//		include_once(BASE.'external/Smarty-2/libs/Smarty.class.php');
-		include_once(BASE.'external/Smarty-3/libs/Smarty.class.php');
-
-		// Set up the Smarty template variable we wrap around.
-		$this->tpl = new Smarty();
-		$this->tpl->error_reporting = error_reporting() & ~E_NOTICE & ~E_WARNING;  //FIXME to disable bad template code reporting 3.x
-		//Some (crappy) wysiwyg editors use php as their default initializer
-		//FJD - this might break some editors...we'll see.
-//		$this->tpl->php_handling = SMARTY_PHP_REMOVE;
-		$this->tpl->php_handling = SMARTY::PHP_REMOVE;
-
-		$this->tpl->caching = false;
-		$this->tpl->cache_dir = BASE . 'tmp/cache';
-
-		//$this->tpl->plugins_dir[] = BASE . 'framework/core/subsystems-1/template/Smarty/plugins';
-//		$this->tpl->plugins_dir[] = BASE . 'framework/plugins';
-		// now reverse the array so we can bypass looking in our root folder for old plugins
-//		$this->tpl->plugins_dir = array_reverse($this->tpl->plugins_dir);
-		$this->tpl->setPluginsDir(array(BASE.'external/Smarty-3/libs/plugins',BASE . 'framework/plugins'));
-
-		//autoload filters
-		$this->tpl->autoload_filters = array('post' => array('includemiscfiles'));
-		
-		$this->viewfile = exponent_template_getViewFile($item_type, $item_dir, $view);
-		$this->viewdir = realpath(dirname($this->viewfile));
-
-		$this->module = $item_dir;
-
-		$this->view = substr(basename($this->viewfile),0,-4);
-		
-		//fix for the wamp/lamp issue
-		//checks necessary in case a file from /views/ is used
-		//should go away, the stuff should be put into a CoreModule
-		//then this can be simplified
-		//TODO: generate this through $this->viewfile using find BASE/THEME_ABSOLUTE and replace with ""
-		if($item_type != "") {
-			$this->langdir .= $item_type . "/";
-		}
-		if($item_dir != "") {
-			$this->langdir .= $item_dir . "/";
-		}
-		$this->langdir .= "views/";
-		
-		
-		$this->tpl->template_dir = $this->viewdir;
-		
-		$this->tpl->compile_dir = BASE . 'tmp/views_c';
-		$this->tpl->compile_id = md5($this->viewfile);
-		
-		$this->tpl->assign("__view", $this->view);
-		$this->tpl->assign("__redirect", expHistory::getLastNotEditable());
-	}
-	
-	/*
-	 * Assign a variable to the template.
-	 *
-	 * @param string $var The name of the variable - how it will be referenced inside the Smarty code
-	 * @param mixed $val The value of the variable.
-	 */
-	function assign($var, $val) {
-		$this->tpl->assign($var, $val);
-	}
-	
-	/*
-	 * Render the template and echo it to the screen.
-	 */
-	function output() {
-		// javascript registration
-		
-		$this->tpl->display($this->view.'.tpl');
-	}
-	
-	function register_permissions($perms, $locs) {
-		$permissions_register = array();
-		if (!is_array($perms)) $perms = array($perms);
-		if (!is_array($locs)) $locs = array($locs);
-		foreach ($perms as $perm) {
-			foreach ($locs as $loc) {
-				$permissions_register[$perm] = (expPermissions::check($perm, $loc) ? 1 : 0);
-			}
-		}
-		$this->tpl->assign('permissions', $permissions_register);
-	}
-	
-	/*
-	 * Render the template and return the result to the caller.
-	 */
-	function render() { // Caching support?
-		return $this->tpl->fetch($this->view.'.tpl');
-	}
-}
-/*
- * Wraps the template system in use, to provide a uniform and consistent
- * interface to templates.
- */
-//TODO: prepare this class for multiple template systems
-class template extends BaseTemplate {	
-		
-	var $module = '';	
-	
-	function __construct($module, $view = null, $loc = null, $caching=false, $type=null) {
-		$type = !isset($type) ? 'modules' : $type;
-
-		//parent::__construct("modules", $module, $view);
-		parent::__construct($type, $module, $view);
-		
-		$this->viewparams = exponent_template_getViewParams($this->viewfile);
-				
-		if ($loc == null) {
-			$loc = expCore::makeLocation($module);
-		}
-		
-		$this->tpl->assign("__loc",$loc);
-		$this->tpl->assign("__name", $module);
-		
-		// View Config
-		global $db;
-		$container_key = serialize($loc);
-		$cache = expSession::getCacheValue('containermodule');
-		if (isset($cache[$container_key])){
-			$container = $cache[$container_key];
-		}else{
-			$container = $db->selectObject("container","internal='".$container_key."'");
-			$cache[$container_key] = $container;
-		}
-		$this->viewconfig = ($container && isset($container->view_data) && $container->view_data != "" ? unserialize($container->view_data) : array());
-		$this->tpl->assign("__viewconfig", $this->viewconfig);
-	}
-}
-
-class controllerTemplate extends baseTemplate {
-	function __construct($controller, $viewfile) {
-//		include_once(BASE.'external/Smarty-2/libs/Smarty.class.php');
-		include_once(BASE.'external/Smarty-3/libs/Smarty.class.php');
-
-		// Set up the Smarty template variable we wrap around.
-		$this->tpl = new Smarty();
-		$this->tpl->error_reporting = error_reporting() & ~E_NOTICE & ~E_WARNING;  //FIXME to disable bad template code reporting 3.x
-		//Some (crappy) wysiwyg editors use php as their default initializer
-		//FJD - this might break some editors...we'll see.
-//		$this->tpl->php_handling = SMARTY_PHP_REMOVE;
-		$this->tpl->php_handling = SMARTY::PHP_REMOVE;
-
-		$this->tpl->caching = false;
-		$this->tpl->cache_dir = BASE . 'tmp/cache';
-
-		//$this->tpl->plugins_dir[] = BASE . 'framework/core/subsystems-1/template/Smarty/plugins';
-//		$this->tpl->plugins_dir[] = BASE . 'framework/plugins';
-		// now reverse the array so we can bypass looking in our root folder for old plugins
-//		$this->tpl->plugins_dir = array_reverse($this->tpl->plugins_dir);
-		$this->tpl->setPluginsDir(array(BASE.'external/Smarty-3/libs/plugins',BASE . 'framework/plugins'));
-
-		//autoload filters
-		$this->tpl->autoload_filters = array('post' => array('includemiscfiles'));
-		
-		$this->viewfile = $viewfile;
-		$this->viewdir = realpath(dirname($this->viewfile));
-
-		$this->module = $controller->baseclassname;
-				
-		$this->view = substr(basename($this->viewfile),0,-4);
-		
-		//fix for the wamp/lamp issue
-		//checks necessary in case a file from /views/ is used
-		//should go away, the stuff should be put into a CoreModule
-		//then this can be simplified
-		//TODO: generate this through $this->viewfile using find BASE/THEME_ABSOLUTE and replace with ""
-		
-		$this->langdir .= 'framework/'.$controller->relative_viewpath . "/";
-		
-		$this->tpl->template_dir = $this->viewdir;
-		
-		$this->tpl->compile_dir = BASE . 'tmp/views_c';
-		$this->tpl->compile_id = md5($this->viewfile);
-		
-		$this->tpl->assign("__view", $this->view);
-		$this->tpl->assign("__redirect", expHistory::getLastNotEditable());
-		
-		$this->tpl->assign("__loc",$controller->loc);
-		$this->tpl->assign("__name", $controller->baseclassname);
-		
-	}
-}
-
-/* exdoc
- *
- * Control Template wrapper
- *
- */
-class ControlTemplate extends BaseTemplate {
-	
-	var $viewitem = "";
-
-	function __construct($control, $view = "Default", $loc = null) {
-		parent::__construct("controls", $control, $view);
-		$this->tpl->assign("__name", $control);
-	}
-
-	/*
-	 * Render the template and return the result to the caller.
-	 * temporary override for testing functionality
-	 */
-//	function render() {
-//		//pump the viewitem into the view layer
-//		
-//		$this->tpl->assign("vi", $this->viewitem);
-//		$this->tpl->assign("dm", $this->viewitem->datamodel);
-//		
-//		//call childobjects show() method recursively, based on render depth setting
-//		//assign output
-//		
+//
+//$userjsfiles = array();
+//
+///* exdoc
+// * The definition of this constant lets other parts of the system know
+// * that the subsystem has been included for use.
+// * @node Subsystems:Template
+// */
+////define('SYS_TEMPLATE',1);
+//
+//define('TEMPLATE_FALLBACK_VIEW',BASE.'framework/core/views/viewnotfound.tpl');
+//
+////include_once(BASE.'external/Smarty-2/libs/Smarty.class.php');
+//include_once(BASE.'external/Smarty-3/libs/Smarty.class.php');
+//
+//class BaseTemplate {
+//	// Smarty template object.
+//	var $tpl;
+//
+//	// This is the directory of the particular module, used to identify the moduel
+//	var $module = "";
+//
+//	// The full server-side filename of the .tpl file being used.
+//	// This will be used by modules on the outside, for retrieving view configs.
+//	var $viewfile = "";
+//
+//	// Name of the view (for instance, 'Default' for 'Default.tpl')
+//	var $view = "";
+//
+//	// Full server-side directory path of the .tpl file being used.
+//	var $viewdir = "";
+//
+//	//fix for the wamp/lamp issue
+//	var $langdir = "";
+//	//
+//
+//	function __construct($item_type, $item_dir, $view = "Default") {
+//
+////		include_once(BASE.'external/Smarty-2/libs/Smarty.class.php');
+//		include_once(BASE.'external/Smarty-3/libs/Smarty.class.php');
+//
+//		// Set up the Smarty template variable we wrap around.
+//		$this->tpl = new Smarty();
+//		$this->tpl->error_reporting = error_reporting() & ~E_NOTICE & ~E_WARNING;  //FIXME to disable bad template code reporting 3.x
+//		//Some (crappy) wysiwyg editors use php as their default initializer
+//		//FJD - this might break some editors...we'll see.
+////		$this->tpl->php_handling = SMARTY_PHP_REMOVE;
+//		$this->tpl->php_handling = SMARTY::PHP_REMOVE;
+//
+//		$this->tpl->caching = false;
+//		$this->tpl->cache_dir = BASE . 'tmp/cache';
+//
+//		//$this->tpl->plugins_dir[] = BASE . 'framework/core/subsystems-1/template/Smarty/plugins';
+////		$this->tpl->plugins_dir[] = BASE . 'framework/plugins';
+//		// now reverse the array so we can bypass looking in our root folder for old plugins
+////		$this->tpl->plugins_dir = array_reverse($this->tpl->plugins_dir);
+//		$this->tpl->setPluginsDir(array(BASE.'external/Smarty-3/libs/plugins',BASE . 'framework/plugins'));
+//
+//		//autoload filters
+//		$this->tpl->autoload_filters = array('post' => array('includemiscfiles'));
+//
+//		$this->viewfile = exponent_template_getViewFile($item_type, $item_dir, $view);
+//		$this->viewdir = realpath(dirname($this->viewfile));
+//
+//		$this->module = $item_dir;
+//
+//		$this->view = substr(basename($this->viewfile),0,-4);
+//
+//		//fix for the wamp/lamp issue
+//		//checks necessary in case a file from /views/ is used
+//		//should go away, the stuff should be put into a CoreModule
+//		//then this can be simplified
+//		//TODO: generate this through $this->viewfile using find BASE/THEME_ABSOLUTE and replace with ""
+//		if($item_type != "") {
+//			$this->langdir .= $item_type . "/";
+//		}
+//		if($item_dir != "") {
+//			$this->langdir .= $item_dir . "/";
+//		}
+//		$this->langdir .= "views/";
+//
+//
+//		$this->tpl->template_dir = $this->viewdir;
+//
+//		$this->tpl->compile_dir = BASE . 'tmp/views_c';
+//		$this->tpl->compile_id = md5($this->viewfile);
+//
+//		$this->tpl->assign("__view", $this->view);
+//		$this->tpl->assign("__redirect", expHistory::getLastNotEditable());
+//	}
+//
+//	/*
+//	 * Assign a variable to the template.
+//	 *
+//	 * @param string $var The name of the variable - how it will be referenced inside the Smarty code
+//	 * @param mixed $val The value of the variable.
+//	 */
+//	function assign($var, $val) {
+//		$this->tpl->assign($var, $val);
+//	}
+//
+//	/*
+//	 * Render the template and echo it to the screen.
+//	 */
+//	function output() {
+//		// javascript registration
+//
+//		$this->tpl->display($this->view.'.tpl');
+//	}
+//
+//	function register_permissions($perms, $locs) {
+//		$permissions_register = array();
+//		if (!is_array($perms)) $perms = array($perms);
+//		if (!is_array($locs)) $locs = array($locs);
+//		foreach ($perms as $perm) {
+//			foreach ($locs as $loc) {
+//				$permissions_register[$perm] = (expPermissions::check($perm, $loc) ? 1 : 0);
+//			}
+//		}
+//		$this->tpl->assign('permissions', $permissions_register);
+//	}
+//
+//	/*
+//	 * Render the template and return the result to the caller.
+//	 */
+//	function render() { // Caching support?
 //		return $this->tpl->fetch($this->view.'.tpl');
 //	}
-}
-
-/*
- * Form Template Wrapper
- *
- * This class is used for site wide forms.  
- *
- * @package Subsystems
- * @subpackage Template
- */
-class formtemplate extends BaseTemplate {
-
-	function __construct($form, $view) {
-		parent::__construct("forms", $form, $view);
-		$this->tpl->assign("__name", $form);
-	}
-}
-
-class filetemplate extends BaseTemplate {
-	function __construct($file) {
-		parent::__construct("", "", $file);
-	}
-}
-
-/*
- * Standalone Template Class
- *
- * A standalone template is a template (tpl) file found in either
- * THEME_ABSOLUTE/views or BASE/views, which uses
- * the corresponding views_c directory for compilation.
- * 
- * @param string $view The name of the standalone view.
- */
-class standalonetemplate extends BaseTemplate {
-	function __construct($view) {
-		parent::__construct("globalviews", "", $view);
-	}
-}
+//}
+///*
+// * Wraps the template system in use, to provide a uniform and consistent
+// * interface to templates.
+// */
+////TODO: prepare this class for multiple template systems
+//class template extends BaseTemplate {
+//
+//	var $module = '';
+//
+//	function __construct($module, $view = null, $loc = null, $caching=false, $type=null) {
+//		$type = !isset($type) ? 'modules' : $type;
+//
+//		//parent::__construct("modules", $module, $view);
+//		parent::__construct($type, $module, $view);
+//
+//		$this->viewparams = exponent_template_getViewParams($this->viewfile);
+//
+//		if ($loc == null) {
+//			$loc = expCore::makeLocation($module);
+//		}
+//
+//		$this->tpl->assign("__loc",$loc);
+//		$this->tpl->assign("__name", $module);
+//
+//		// View Config
+//		global $db;
+//		$container_key = serialize($loc);
+//		$cache = expSession::getCacheValue('containermodule');
+//		if (isset($cache[$container_key])){
+//			$container = $cache[$container_key];
+//		}else{
+//			$container = $db->selectObject("container","internal='".$container_key."'");
+//			$cache[$container_key] = $container;
+//		}
+//		$this->viewconfig = ($container && isset($container->view_data) && $container->view_data != "" ? unserialize($container->view_data) : array());
+//		$this->tpl->assign("__viewconfig", $this->viewconfig);
+//	}
+//}
+//
+//class controllerTemplate extends baseTemplate {
+//	function __construct($controller, $viewfile) {
+////		include_once(BASE.'external/Smarty-2/libs/Smarty.class.php');
+//		include_once(BASE.'external/Smarty-3/libs/Smarty.class.php');
+//
+//		// Set up the Smarty template variable we wrap around.
+//		$this->tpl = new Smarty();
+//		$this->tpl->error_reporting = error_reporting() & ~E_NOTICE & ~E_WARNING;  //FIXME to disable bad template code reporting 3.x
+//		//Some (crappy) wysiwyg editors use php as their default initializer
+//		//FJD - this might break some editors...we'll see.
+////		$this->tpl->php_handling = SMARTY_PHP_REMOVE;
+//		$this->tpl->php_handling = SMARTY::PHP_REMOVE;
+//
+//		$this->tpl->caching = false;
+//		$this->tpl->cache_dir = BASE . 'tmp/cache';
+//
+//		//$this->tpl->plugins_dir[] = BASE . 'framework/core/subsystems-1/template/Smarty/plugins';
+////		$this->tpl->plugins_dir[] = BASE . 'framework/plugins';
+//		// now reverse the array so we can bypass looking in our root folder for old plugins
+////		$this->tpl->plugins_dir = array_reverse($this->tpl->plugins_dir);
+//		$this->tpl->setPluginsDir(array(BASE.'external/Smarty-3/libs/plugins',BASE . 'framework/plugins'));
+//
+//		//autoload filters
+//		$this->tpl->autoload_filters = array('post' => array('includemiscfiles'));
+//
+//		$this->viewfile = $viewfile;
+//		$this->viewdir = realpath(dirname($this->viewfile));
+//
+//		$this->module = $controller->baseclassname;
+//
+//		$this->view = substr(basename($this->viewfile),0,-4);
+//
+//		//fix for the wamp/lamp issue
+//		//checks necessary in case a file from /views/ is used
+//		//should go away, the stuff should be put into a CoreModule
+//		//then this can be simplified
+//		//TODO: generate this through $this->viewfile using find BASE/THEME_ABSOLUTE and replace with ""
+//
+//		$this->langdir .= 'framework/'.$controller->relative_viewpath . "/";
+//
+//		$this->tpl->template_dir = $this->viewdir;
+//
+//		$this->tpl->compile_dir = BASE . 'tmp/views_c';
+//		$this->tpl->compile_id = md5($this->viewfile);
+//
+//		$this->tpl->assign("__view", $this->view);
+//		$this->tpl->assign("__redirect", expHistory::getLastNotEditable());
+//
+//		$this->tpl->assign("__loc",$controller->loc);
+//		$this->tpl->assign("__name", $controller->baseclassname);
+//
+//	}
+//}
+//
+///* exdoc
+// *
+// * Control Template wrapper
+// *
+// */
+//class ControlTemplate extends BaseTemplate {
+//
+//	var $viewitem = "";
+//
+//	function __construct($control, $view = "Default", $loc = null) {
+//		parent::__construct("controls", $control, $view);
+//		$this->tpl->assign("__name", $control);
+//	}
+//
+//	/*
+//	 * Render the template and return the result to the caller.
+//	 * temporary override for testing functionality
+//	 */
+////	function render() {
+////		//pump the viewitem into the view layer
+////
+////		$this->tpl->assign("vi", $this->viewitem);
+////		$this->tpl->assign("dm", $this->viewitem->datamodel);
+////
+////		//call childobjects show() method recursively, based on render depth setting
+////		//assign output
+////
+////		return $this->tpl->fetch($this->view.'.tpl');
+////	}
+//}
+//
+///*
+// * Form Template Wrapper
+// *
+// * This class is used for site wide forms.
+// *
+// * @package Subsystems
+// * @subpackage Template
+// */
+//class formtemplate extends BaseTemplate {
+//
+//	function __construct($form, $view) {
+//		parent::__construct("forms", $form, $view);
+//		$this->tpl->assign("__name", $form);
+//	}
+//}
+//
+//class filetemplate extends BaseTemplate {
+//	function __construct($file) {
+//		parent::__construct("", "", $file);
+//	}
+//}
+//
+///*
+// * Standalone Template Class
+// *
+// * A standalone template is a template (tpl) file found in either
+// * THEME_ABSOLUTE/views or BASE/views, which uses
+// * the corresponding views_c directory for compilation.
+// *
+// * @param string $view The name of the standalone view.
+// */
+//class standalonetemplate extends BaseTemplate {
+//	function __construct($view) {
+//		parent::__construct("globalviews", "", $view);
+//	}
+//}
 
 /*
  * Retrieve Module-Independent View File

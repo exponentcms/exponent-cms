@@ -404,6 +404,8 @@ define('FORM_FIELD_LABEL', 404);
 define('DECIMAL_MONEY', 405);
 define('MONEY', 406);
 
+define('TEMPLATE_FALLBACK_VIEW',BASE.'framework/core/views/viewnotfound.tpl');
+
 // Determines platform (OS), browser and version of the user
 // Based on a phpBuilder article:
 //   see http://www.phpbuilder.net/columns/tim20000821.php

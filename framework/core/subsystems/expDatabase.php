@@ -70,10 +70,10 @@ class expDatabase {
 	 */
 	public static function backends($valid_only = 1) {
 		$options = array();
-		$dh = opendir(BASE.'framework/core/subsystems-1/database');
+		$dh = opendir(BASE.'framework/core/subsystems/database');
 		while (($file = readdir($dh)) !== false) {
-			if (is_file(BASE.'framework/core/subsystems-1/database/'.$file) && is_readable(BASE.'framework/core/subsystems-1/database/'.$file) && substr($file,-9,9) == '.info.php') {
-				$info = include(BASE.'framework/core/subsystems-1/database/'.$file);
+			if (is_file(BASE.'framework/core/subsystems/database/'.$file) && is_readable(BASE.'framework/core/subsystems/database/'.$file) && substr($file,-9,9) == '.info.php') {
+				$info = include(BASE.'framework/core/subsystems/database/'.$file);
 				if ($info['is_valid'] == 1 || !$valid_only) {
 					$options[substr($file,0,-9)] = $info['name'];
 				}
