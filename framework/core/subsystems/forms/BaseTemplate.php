@@ -37,7 +37,7 @@ class BaseTemplate {
 	var $viewdir = "";
 	
 	//fix for the wamp/lamp issue
-	var $langdir = "";
+//	var $langdir = "";
 	//	
 	
 	function __construct($item_type, $item_dir, $view = "Default") {
@@ -47,7 +47,7 @@ class BaseTemplate {
 
 		// Set up the Smarty template variable we wrap around.
 		$this->tpl = new Smarty();
-		$this->tpl->error_reporting = error_reporting() & ~E_NOTICE & ~E_WARNING;  //FIXME to disable bad template code reporting 3.x
+		$this->tpl->error_reporting = error_reporting() & ~E_NOTICE & ~E_WARNING;  //FIXME this disables bad template code reporting 3.x
 		//Some (crappy) wysiwyg editors use php as their default initializer
 		//FJD - this might break some editors...we'll see.
 //		$this->tpl->php_handling = SMARTY_PHP_REMOVE;
@@ -77,15 +77,14 @@ class BaseTemplate {
 		//should go away, the stuff should be put into a CoreModule
 		//then this can be simplified
 		//TODO: generate this through $this->viewfile using find BASE/THEME_ABSOLUTE and replace with ""
-		if($item_type != "") {
-			$this->langdir .= $item_type . "/";
-		}
-		if($item_dir != "") {
-			$this->langdir .= $item_dir . "/";
-		}
-		$this->langdir .= "views/";
-		
-		
+//		if($item_type != "") {
+//			$this->langdir .= $item_type . "/";
+//		}
+//		if($item_dir != "") {
+//			$this->langdir .= $item_dir . "/";
+//		}
+//		$this->langdir .= "views/";
+
 		$this->tpl->template_dir = $this->viewdir;
 		
 		$this->tpl->compile_dir = BASE . 'tmp/views_c';
@@ -132,6 +131,7 @@ class BaseTemplate {
 	function render() { // Caching support?
 		return $this->tpl->fetch($this->view.'.tpl');
 	}
+
 }
 
 ?>

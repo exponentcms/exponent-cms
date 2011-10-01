@@ -223,7 +223,7 @@ function renderAction(array $parms=array()) {
 function hotspot($source = null) {
     if (!empty($source)) {
         global $sectionObj;
-	    //FIXME there is NO page object written
+	    //FIXME there is NO 'page' object
         $page = new page($sectionObj->id);
         $modules = $page->getModulesBySource($source);
         //eDebug($modules);exit();

@@ -29,9 +29,11 @@
  * @param string $view The name of the standalone view.
  */
 class standalonetemplate extends BaseTemplate {
+
 	function __construct($view) {
 		parent::__construct("globalviews", "", $view);
 	}
+
 }
 
 ?>

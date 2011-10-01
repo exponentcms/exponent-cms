@@ -24,7 +24,7 @@
  * Control Template wrapper
  *
  */
-class ControlTemplate extends BaseTemplate {
+class ControlTemplate extends BaseTemplate {  //FIXME only used by htmleditorcontrol for FCKeditor
 	
 	var $viewitem = "";
 
@@ -48,6 +48,7 @@ class ControlTemplate extends BaseTemplate {
 //		
 //		return $this->tpl->fetch($this->view.'.tpl');
 //	}
+
 }
 
 ?>

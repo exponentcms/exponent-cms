@@ -27,12 +27,13 @@
  * @package Subsystems
  * @subpackage Template
  */
-class formtemplate extends BaseTemplate {
+class formtemplate extends BaseTemplate {  //FIXME only used by calendarmodule for feedback forms
 
 	function __construct($form, $view) {
 		parent::__construct("forms", $form, $view);
 		$this->tpl->assign("__name", $form);
 	}
+
 }
 
 ?>

@@ -19,10 +19,12 @@
 ##################################################
 /** @define "BASE" "../../.." */
 
-class filetemplate extends BaseTemplate {
+class filetemplate extends BaseTemplate {  //FIXME Not used???
+
 	function __construct($file) {
 		parent::__construct("", "", $file);
 	}
+
 }
 
 ?>
