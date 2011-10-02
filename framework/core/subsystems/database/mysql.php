@@ -24,7 +24,7 @@
  * @subpackage Database
  * @package Subsystems
  */
-class mysql_database {
+class mysql_database extends database {
 	var $connection = null;
 	var $havedb = false;
 	var $prefix = "";
@@ -36,8 +36,6 @@ class mysql_database {
 	 * connect to the server and select the given database.  All the rules
 	 * governing mysql_connect also govern this method.
 	 *
-	 * This must be called before any other methods of database are invoked.
-	 *
 	 * @param string $username The username to connect to the server as.
 	 * @param string $password The password for $username
 	 * @param string $hostname The hostname of the database server.  If
@@ -47,7 +45,8 @@ class mysql_database {
 	 * @param bool $new Whether or not to force the PHP connection function to establish
 	 *   a distinctly new connection handle to the server.
 	 */
-	function connect($username,$password,$hostname,$database,$new=false) {
+//	function connect($username,$password,$hostname,$database,$new=false) {
+	function __construct($username,$password,$hostname,$database,$new=false) {
 
         if(!isset($_SESSION['/']['user']->email)) {
             $dba = '';

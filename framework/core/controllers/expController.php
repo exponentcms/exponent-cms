@@ -22,7 +22,7 @@
  * @package Framework
  */
 
-class expController {   
+abstract class expController {
     protected $basemodel = null;
     protected $classname = '';
     protected $permissions = array(

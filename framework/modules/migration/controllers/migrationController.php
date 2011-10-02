@@ -1955,11 +1955,11 @@ class migrationController extends expController {
             empty($this->config['prefix']) ||
             empty($this->config['port'])
         ) {
-            flash ('error', 'You are missing some required database connectin information.  Please enter DB information.');
+            flash ('error', 'You are missing some required database connection information.  Please enter DB information.');
             redirect_to (array('controller'=>'migration', 'action'=>'configure'));
         }
 
-       $database = exponent_database_connect($this->config['username'],$this->config['password'],$this->config['server'].':'.$this->config['port'],$this->config['database']);
+       $database = expDatabase::connect($this->config['username'],$this->config['password'],$this->config['server'].':'.$this->config['port'],$this->config['database']);
 
        if (empty($database->havedb)) {
             flash ('error', 'An error was encountered trying to connect to the database you specified. Please check your DB config.');
