@@ -1,4 +1,4 @@
-{control type="hidden" name="extrafields_tab_loaded" value=1} 
+{control type="hidden" name="tab_loaded[extrafields]" value=1} 
 <h2>Extra Fields</h2> 
 You may add up to four extra fields to your product here.  These field names are also picked up by your child products where you can assign values to them.
 <table> 
