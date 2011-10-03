@@ -89,7 +89,7 @@ class radiogroupcontrol extends formcontrol {
     			$html .= '</tr><tr>';
     			$i = 0;
             }
-			$html .= '<td style="padding:3px 3px 3px 5px">'.$radio->toHTML($rname, $name).'</td>';
+			$html .= '<td style="border:none; padding:3px 3px 3px 5px">'.$radio->toHTML($rname, $name).'</td>';
 			$i++; 
 		}	
 		$html .= '</tr></table>';

@@ -27,14 +27,6 @@ if (!defined('BASE')) {
 	define('BASE',__realpath(dirname(__FILE__)).'/');
 }
 
-/*
- * EXPONENT Constant
- *
- * The EXPONENT constant defines the current Major.Minor version of Exponent/Exponent (i.e. 0.95).
- * It's definition also signals to other parts of the system that they are operating within the confines
- * of the Exponent Framework.  (Module actions check this -- if it is not defined, they must abort).
- */
-
 if (!defined('PATH_RELATIVE')) {
 	if (isset($_SERVER['DOCUMENT_ROOT'])) {
 		/*
@@ -219,6 +211,198 @@ define("CORE_EXT_SUBSYSTEM",3);
  * @node Subsystems:Core
  */
 define("CORE_EXT_SYSTEM",4);
+
+define("DATABASE_TABLE_EXISTED",		1);
+define("DATABASE_TABLE_INSTALLED",		2);
+define("DATABASE_TABLE_FAILED",			3);
+define("DATABASE_TABLE_ALTERED",		4);
+
+/**
+ * Database Field Type specifier
+ *
+ * An index for the Exponent Data Definition Language.
+ * This index indicates what type of column should be created
+ * in the table.
+ */
+define('DB_FIELD_TYPE',	0);
+
+/**
+ * Database Field Length specifier
+ *
+ * An index for the Exponent Data Definition Language.
+ * This index indicates the length of the column.  Currently,
+ * this is only applicable to textual field types.
+ */
+define('DB_FIELD_LEN',	1);
+
+/**
+ * Database Field Default specifier
+ *
+ * An index for the Exponent Data Definition Language.
+ * This index indicates the default value of a field in the table.
+ */
+define('DB_DEFAULT',	2);
+
+/**
+ * Database Incremental Field specifier
+ *
+ * An index for the Exponent Data Definition Language.
+ * This index specifies that the field should automatically
+ * increment its value.  This is ONLY applicable to ID fields
+ * that are marked as PRIMARY.
+ *
+ * @see DB_PRIMARY
+ * @see DB_DEF_ID
+ */
+define('DB_INCREMENT',	3);
+
+/**
+ * Database Primary Key Field specifier
+ *
+ * An index for the Exponent Data Definition Language.
+ * This index specifies that the field should be treated as the
+ * primary key for the table.  There can only be one primary
+ * key field per table.
+ *
+ * @see DB_DEF_ID
+ * @see DB_INCREMENT
+ */
+define('DB_PRIMARY',	4);
+
+/**
+ * ????
+ */
+define('DB_UNIQUE',	5);
+
+/**
+ * ????
+ */
+define('DB_INDEX',		6);
+
+/**
+ * ??????
+ */
+define('DB_FULLTEXT',		7);
+
+/**
+ * ??????
+ */
+define('DB_DEF_IGNORE',	100);
+
+/**
+ * Field Type specifier: Numeric ID
+ *
+ * A value for the Exponent Data Definition Language.
+ * This value, specified for the DB_FIELD_TYPE index,
+ * denotes that the field should be a numeric ID.
+ */
+define('DB_DEF_ID',	101);
+
+/**
+ * Field Type specifier: Text
+ *
+ * A value for the Exponent Data Definition Language.
+ * This value, specified for the DB_FIELD_TYPE index,
+ * denotes that the field should be a string of characters.
+ * If used, the DB_FIELD_LEN index must also be specified.
+ *
+ * @see DB_FIELD_TYPE
+ * @see DB_FIELD_LEN
+ */
+define('DB_DEF_STRING',	102);
+
+/**
+ * Field Type specifier: Integer
+ *
+ * A value for the Exponent Data Definition Language.
+ * This value, specified for the DB_FIELD_TYPE index,
+ * denotes that the field should be an integer.
+ */
+define('DB_DEF_INTEGER',	103);
+
+/**
+ * Field Type specifier: Boolean
+ *
+ * A value for the Exponent Data Definition Language.
+ * This value, specified for the DB_FIELD_TYPE index,
+ * denotes that the field should be a boolean (1 or 0, true or
+ * false).
+ */
+define('DB_DEF_BOOLEAN',	104);
+
+/**
+ * Field Type specifier: Timestamp
+ *
+ * A value for the Exponent Data Definition Language.
+ * This value, specified for the DB_FIELD_TYPE index,
+ * denotes that the field should store a UNIX timestamp,
+ * in order to portably manage dates and/or times.
+ */
+define('DB_DEF_TIMESTAMP',	105);
+
+/**
+ * Field Type specifier: Decimal
+ *
+ * A value for the Exponent Data Definition Language.
+ * This value, specified for the DB_FIELD_TYPE index,
+ * denotes that the field should store a decimal number.
+ */
+define('DB_DEF_DECIMAL',	106);
+
+/**
+ * Table Alteration Error Message - 200 : Alter Not Needed
+ *
+ * A message constant returned by parts of the Database Subsystem
+ * indicating that a table alteration need not take place.
+ */
+define('TABLE_ALTER_NOT_NEEDED',	200);
+
+/**
+ * Table Alteration Error Message - 201 : Alter Succeeded
+ *
+ * A message constant returned by parts of the Database Subsystem
+ * indicating that a table alteration succeeded.
+ */
+define('TABLE_ALTER_SUCCEEDED',	201);
+
+/**
+ * Table Alteration Error Message - 201 : Alter Succeeded
+ *
+ * A message constant returned by parts of the Database Subsystem
+ * indicating that a table alteration failed.
+ */
+define('TABLE_ALTER_FAILED',	202);
+
+
+/**
+ * Table Meta Info : Workflow Table
+ *
+ * If specified as true in a table info array, the workflow tables will
+ * be created to match.
+ */
+define('DB_TABLE_WORKFLOW',	300);
+
+/**
+ * Table Meta Info : Table Comment
+ *
+ * If specified in a table info array, a comment will be inserted
+ * for the table (if the database engine in use supports table comments)
+ */
+define('DB_TABLE_COMMENT',	301);
+
+/**
+ * Form Meta Info : Form Field Type
+ *
+ * This will specify what field type to use for a form.  Handy for scaffolding
+ * when you have special needs for the form's input elements.
+ */
+define('FORM_FIELD_TYPE', 400);
+define('FORM_FIELD_FILTER', 401);
+define('FORM_FIELD_ONCLICK', 402);
+define('FORM_FIELD_NAME', 403);
+define('FORM_FIELD_LABEL', 404);
+define('DECIMAL_MONEY', 405);
+define('MONEY', 406);
 
 // Determines platform (OS), browser and version of the user
 // Based on a phpBuilder article:

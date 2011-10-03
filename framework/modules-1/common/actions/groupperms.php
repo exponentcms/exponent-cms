@@ -41,9 +41,9 @@ if (expPermissions::check('administrate',$loc)) {
 	foreach (group::getAllGroups() as $g) {
 		foreach ($perms as $perm=>$name) {
 			$var = 'perms_'.$perm;
-			if (expPermissions::check($g,$perm,$loc,true)) {
+			if (expPermissions::checkGroup($g,$perm,$loc,true)) {
 				$g->$perm = 1;
-			} else if (expPermissions::check($g,$perm,$loc)) {
+			} else if (expPermissions::checkGroup($g,$perm,$loc)) {
 				$g->$perm = 2;
 			} else {
 				$g->$perm = 0;

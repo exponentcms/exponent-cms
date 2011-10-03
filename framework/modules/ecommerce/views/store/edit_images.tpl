@@ -1,8 +1,8 @@
-{control type="hidden" name="images_tab_loaded" value=1} 
+{control type="hidden" name="tab_loaded[images]" value=1} 
 <div id="imagefunctionality">              
      The image alt tag will be created dynamically by the system, however you may supply a custom one here:
-    {control type="text" name="image_alt_tag" label="Image Alt Tag" value=$record->image_alt_tag}
-    {control type=radiogroup columns=2 name="main_image_functionality" label="Main Image Functionality" items="Single Image,Image with Swatches" values="si,iws"  default=$record->main_image_functionality|default:"si"}
+    {control type="text" name="images[image_alt_tag]" label="Image Alt Tag" value=$record->image_alt_tag}
+    {control type=radiogroup columns=2 name="images[main_image_functionality]" label="Main Image Functionality" items="Single Image,Image with Swatches" values="si,iws"  default=$record->main_image_functionality|default:"si"}
     
     <div id="si-div" class="imngfuncbody">
         <h3>Single Image</h3>

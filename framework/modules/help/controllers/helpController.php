@@ -232,7 +232,8 @@ class helpController extends expController {
 	    foreach ($docs as $doc) {
 	        $doc->delete();
 	    }
-	    
+	    expSession::un_set('help-version');
+
 	    flash('message', 'Deleted version '.$version->version.' and '.$num_docs.' documents that were in that version.');
 	    expHistory::back();	    
 	}
@@ -248,7 +249,8 @@ class helpController extends expController {
 	    if (!empty($this->params['is_current'])) {
 	        $db->sql('UPDATE '.DB_TABLE_PREFIX.'_help_version set is_current=0');
 	    }
-	    
+	    expSession::un_set('help-version');
+
 	    // save the version
 	    $id = empty($this->params['id']) ? null : $this->params['id'];
 	    $version = new help_version();
@@ -260,7 +262,6 @@ class helpController extends expController {
 	    if (empty($id)) {
 	        self::copydocs($current_version->id, $version->id);	        
 	    }
-	    expSession::set('help-version',$version->version);
 
 	    flash('message', 'Saved help version '.$version->version);
 	    expHistory::back();

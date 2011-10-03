@@ -735,6 +735,170 @@ class product extends expRecord {
         $item = $this;
         $item->score = $score;     
     }
+	
+	public function update($params=array()) {
+		// eDebug($params, true);
+		global $db;
+		$product = $db->selectObject('product', 'id =' . $params['id']);
+		
+		$tab_loaded = $params['tab_loaded'];
+		
+		//TODO: Make this whole stuff loop
+		if(isset($tab_loaded['general'])) {
+			foreach($params['general'] as $key => $item) {
+				$product->$key = $item;
+			}
+		}
+		
+		if(isset($tab_loaded['pricing'])) {
+			foreach($params['pricing'] as $key => $item) {
+				$product->$key = $item;
+			}
+			//TODO: Fix this hardcoded checkboxes, since they won't be in the params when they are submitted unchecked
+			$product->quantity_discount_apply = $params['pricing']['quantity_discount_apply'];
+			$product->use_special_price       = $params['pricing']['use_special_price'];
+		}
+		
+		if(isset($tab_loaded['images'])) {
+			foreach($params['images'] as $key => $item) {
+				$product->$key = $item;
+			}
+			// $this->checkForAttachableItems($params); 
+			//TODO: Images here
+		}
+		
+		if(isset($tab_loaded['quantity'])) {
+			foreach($params['quantity'] as $key => $item) {
+				$product->$key = $item;
+			}
+			//TODO: Fix this hardcoded checkboxes, since they won't be in the params when they are submitted unchecked
+			$product->allow_partial = $params['quantity']['allow_partial'];
+			$product->is_hidden = $params['quantity']['is_hidden'];
+		}
+		
+		if(isset($tab_loaded['shipping'])) {
+			foreach($params['shipping'] as $key => $item) {
+				$product->$key = $item;
+			}
+			//select shipping service here
+		}
+		
+		if(isset($tab_loaded['categories'])) {
+			$this->saveCategories($params['storeCategory']); 
+		}
+		
+		if(isset($tab_loaded['options'])) {
+			//Option Group Tab 
+			if (!empty($params['optiongroups'])) {
+	  
+				foreach ($params['optiongroups'] as $title=>$group) {
+					if (isset($this->params['original_id']) && $params['original_id'] != 0) $group['id'] = '';  //for copying products  
+				 
+					$optiongroup = new  optiongroup($group);
+					$optiongroup->product_id = $record->id;                                
+					$optiongroup->save();
+					
+					foreach ($params['optiongroups'][$title]['options'] as $opt_title=>$opt) {
+						if (isset($params['original_id']) && $params['original_id'] != 0) $opt['id'] = ''; //for copying products
+					   
+						$opt['product_id'] = $record->id;
+						$opt['is_default'] = false;
+						$opt['title'] = $opt_title;
+						$opt['optiongroup_id'] = $optiongroup->id;
+						if (isset($params['defaults'][$title]) && $params['defaults'][$title] == $opt['title']) {
+							$opt['is_default'] = true;
+						}
+						
+						$option = new option($opt);                    
+						$option->save();
+					}
+				}
+			}
+		}
+		
+		if(isset($tab_loaded['featured'])) {
+			foreach($params['featured'] as $key => $item) {
+				$product->$key = $item;
+			}
+			//TODO: Fix this hardcoded checkboxes, since they won't be in the params when they are submitted unchecked
+			$product->is_featured = $params['featured']['is_featured'];
+			//TODO: Featured image here
+		}
+		
+		if(isset($tab_loaded['related'])) {
+			//Related Products Tab
+			if (!empty($params['relatedProducts']) && (empty($originalId) || !empty($params['copy_related']))) {
+				$relprods = $db->selectObjects('crosssellItem_product',"product_id=".$record->id);
+				$db->delete('crosssellItem_product','product_id='.$record->id);
+				foreach ($params['relatedProducts'] as $key=>$prodid) {
+					$ptype = new product($prodid);
+					$tmp->product_id = $record->id;
+					$tmp->crosssellItem_id = $prodid;
+					$tmp->product_type = $ptype->product_type;
+					$db->insertObject($tmp,'crosssellItem_product');
+					
+					if (isset($params['relateBothWays'][$prodid])) {
+						$tmp->crosssellItem_id = $record->id;
+						$tmp->product_id = $prodid;
+						$tmp->product_type = $ptype->product_type;
+						$db->insertObject($tmp,'crosssellItem_product');
+					}
+				}
+			}
+		}
+		
+		if(isset($tab_loaded['userinput'])) {
+			//User Input fields Tab                                                                     
+			if (isset($params['user_input_use']) && is_array($params['user_input_use'])) {        
+				foreach ($params['user_input_use'] as $ukey=>$ufield) {  
+					$record->user_input_fields[] = array('use'=>$params['user_input_use'][$ukey], 'name'=>$params['user_input_name'][$ukey], 'is_required'=>$params['user_input_is_required'][$ukey], 'min_length'=>$params['user_input_min_length'][$ukey],'max_length'=>$params['user_input_max_length'][$ukey],'description'=>$params['user_input_description'][$ukey]);
+				}
+				$record->user_input_fields = serialize($record->user_input_fields);
+			} else {
+				$record->user_input_fields = serialize(array());    
+			}
+		}
+		
+		if(isset($tab_loaded['status'])) {
+			foreach($params['status'] as $key => $item) {
+				$product->$key = $item;
+			}
+		}
+		
+		if(isset($tab_loaded['meta'])) {
+			foreach($params['meta'] as $key => $item) {
+				$product->$key = $item;
+			}
+		}
+		
+		if(isset($tab_loaded['extrafields'])) {
+			//Extra Field Tab
+			foreach ($params['extra_fields_name'] as $xkey=>$xfield) {               
+				if (!empty($xfield)) {
+					$record->extra_fields[] = array('name'=>$xfield, 'value'=>$params['extra_fields_value'][$xkey]); 
+				}
+			}
+			if (is_array($record->extra_fields)) {
+				$record->extra_fields = serialize($record->extra_fields);
+			} else {
+				unset($record->extra_fields);
+			}
+		}
+		
+		if(isset($tab_loaded['misc'])) {
+			foreach($params['misc'] as $key => $item) {
+				$product->$key = $item;
+			}
+		}
+		
+		
+		if(isset($params['original_id'])) {
+			unset($params['id']);
+			$db->insertObject($product, 'product');
+		} else {
+			$db->updateObject($product, 'product');
+		}
+	}
 }
 
 ?>

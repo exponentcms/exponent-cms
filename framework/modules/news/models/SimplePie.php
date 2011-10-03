@@ -12062,6 +12062,7 @@ class SimplePie_Parse_Date
 	 * Parse dates using strtotime()
 	 *
 	 * @access protected
+	 * @param $date
 	 * @return int Timestamp
 	 */
 	public function date_strtotime($date)

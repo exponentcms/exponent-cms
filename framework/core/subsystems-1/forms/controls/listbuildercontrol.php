@@ -54,7 +54,7 @@ class listbuildercontrol extends formcontrol {
 		$this->_normalize();
 		// eDebug($this->source, true);
 		$html = '<input type="hidden" name="'.$name.'" id="'.$name.'" value="'.implode("|!|",array_keys($this->default)).'" />';
-		$html .= '<table cellpadding="9" border="0" width="30"><tr><td width="10">';
+		$html .= '<table cellpadding="9" border="0" width="30"><tr><td width="10" style="border:none;">';
 		if (!$this->newList) {
 			$html .= "<select id='source_$name' size='".$this->size."'>";
 			foreach ($this->source as $key=>$value) {
@@ -65,7 +65,7 @@ class listbuildercontrol extends formcontrol {
 			$html .= "<input id='source_$name' type='text' />";
 		}
 		$html .= "</td>";
-		$html .= "<td valign='middle' width='10'>";
+		$html .= '<td valign="middle" width="10" style="border:none;">';
 		if($process == "copy") {
 			$html .= "<input type='image' onclick='addSelectedItem(&quot;$name&quot;,&quot;copy&quot;); return false' src='".ICON_RELATIVE."right.png' />";
 		} else {
@@ -78,13 +78,13 @@ class listbuildercontrol extends formcontrol {
 			$html .= "<input type='image' onclick='removeSelectedItem(&quot;$name&quot;); return false;' src='".ICON_RELATIVE."left.png' />";
 		}
 		$html .= "</td>";
-		$html .= "<td width='10' valign='top'><select id='dest_$name' size='".$this->size."'>";
+		$html .= "<td width='10' valign='top' style='border:none;'><select id='dest_$name' size='".$this->size."'>";
 		foreach ($this->default as $key=>$value) {
 			if (isset($this->source[$key])) $value = $this->source[$key];
 			$html .= "<option value='$key'>$value</option>";
 		}
 		$html .= "</select>";
-		$html .= "</td><td width='100%'></td></tr></table>";
+		$html .= "</td><td width='100%' style='border:none;'></td></tr></table>";
 		$html .= "<script>newList.$name = ".($this->newList?"true":"false").";</script>";
 		return $html;
 	}

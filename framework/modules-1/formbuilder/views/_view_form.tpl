@@ -36,7 +36,7 @@
 	{if $edit_mode != 1}
 		<table cellpadding="5" cellspacing="0" border="0">
 			<tr>
-				<td>
+				<td style="border:none;">
 					<form method="post" action="{$smarty.const.URL_FULL}index.php">
 						<input type="hidden" name="module" value="formbuilder" />
 						<input type="hidden" name="action" value="edit_control" />

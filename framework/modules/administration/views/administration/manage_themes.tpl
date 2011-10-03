@@ -53,6 +53,7 @@
 						</h2>
 						<p>
 							{$theme->description}
+							{if $theme->mobile}{br}<em>(mobile ready theme)</em>{/if}
 						</p>
 					</td>
 					<td class="actions">
@@ -69,7 +70,7 @@
 								{elseif $smarty.const.DISPLAY_THEME == $class && ($smarty.const.THEME_STYLE == $sv || ($smarty.const.THEME_STYLE == "" && $sv == "Default"))}
 									(<em>{"Previewing"|gettext}</em>)
 								{else}
-									{icon img=view.png action=preview_theme theme=$class sv=$sv title="Preview this Theme"}
+									{icon img=view.png action=preview_theme theme=$class sv=$sv title="Preview this Style"}
 								{/if}
 								{br}
 							{/foreach}

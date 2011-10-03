@@ -7,31 +7,34 @@
  *  Software Foundation; either version 2 of the
  *  License, or (at your option) any later version.
  *
- * The file that holds the database class
+ * The file that holds the mysqli_database class
  *
  * @link http://www.gnu.org/licenses/gpl.txt GPL http://www.gnu.org/licenses/gpl.txt
  * @package Exponent-CMS
  */
+/** @define "BASE" "../.." */
+
 /**
- * This is the class database
+ * This is the class mysqli_database
  *
- * This is the generic implementation of the database class.
+ * This is the MySQLi-specific implementation of the database class.
  * @copyright 2004-2011 OIC Group, Inc.
  * @author Written and Designed by James Hunt
  * @version 2.0.0
- * @subpackage Database = database
+ * @subpackage Database = mysqli
  * @package Subsystems
  */
-abstract class database {
+class mysqli_database extends database {
 
     /**
-     *
      * @var string $connection Database connection string
      */
     var $connection = null;
+	/**
+	* @var boolean $havedb
+	*/
     var $havedb = false;
     /**
-     *
      * @var string $prefix Database prefix
      */
     var $prefix = "";
@@ -41,9 +44,7 @@ abstract class database {
      *
      * Takes the supplied credentials (username / password) and tries to
      * connect to the server and select the given database.  All the rules
-     * governing database connect also govern this method.
-     *
-     * This must be called before any other methods of database are invoked.
+     * governing mysqli_connect also govern this method.
      *
      * @param string $username The username to connect to the server as.
      * @param string $password The password for $username
@@ -55,7 +56,29 @@ abstract class database {
      *   a distinctly new connection handle to the server.
      */
 
-	function connect ($username, $password, $hostname, $database, $new=false) {
+//	function connect ($username, $password, $hostname, $database, $new=false) {
+	function __construct($username, $password, $hostname, $database, $new=false) {
+		list ( $host, $port ) = @explode (":", $hostname);
+		if ($this->connection = mysqli_connect($host, $username, $password, $database, $port)) {
+			$this->havedb = true;
+		}
+		//fix to support utf8, warning it only works from a certain mySQL version on
+		//needed on mySQL servers that don't have the default connection encoding setting to utf8
+
+		//As we do not have any setting for ISAM or InnoDB tables yet, i set the minimum specs
+		// for using this feature to 4.1.2, although isam tables got the support for utf8 already in 4.1
+		//anything else would result in an inconsistent user experience
+		//TODO: determine how to handle encoding on postgres
+
+		list($major, $minor, $micro) = sscanf(mysqli_get_server_info($this->connection), "%d.%d.%d-%s");
+		if(defined("DB_ENCODING")) {
+			//SET NAMES is possible since version 4.1
+			if(($major > 4) OR (($major == 4) AND ($minor >= 1))) {
+				@mysqli_query($this->connection, "SET NAMES " . DB_ENCODING);
+			}
+		}
+
+		$this->prefix = DB_TABLE_PREFIX . '_';
 	}
 
     /**
@@ -64,7 +87,7 @@ abstract class database {
      * Creates a new database table, according to the passed data definition.
      *
      * This function abides by the Exponent Data Definition Language, and interprets
-     * its general structure for databases.
+     * its general structure for MySQL.
      *
      * @param string $tablename The name of the table to create
      * @param array $datadef The data definition to create, expressed in
@@ -73,10 +96,67 @@ abstract class database {
      * @return array
 	 */
 	function createTable($tablename,$datadef,$info) {
+		if (!is_array($info)) $info = array(); // Initialize for later use.
+
+		$sql = "CREATE TABLE `" . $this->prefix . "$tablename` (";
+		$primary = array();
+		$fulltext = array();
+		$unique = array();
+		$index = array();
+		foreach ($datadef as $name=>$def) {
+			if ($def != null) {
+				$sql .= $this->fieldSQL($name,$def) . ",";
+				if (!empty($def[DB_PRIMARY]))  $primary[] = $name;
+				if (!empty($def[DB_FULLTEXT])) $fulltext[] = $name;
+				if (isset($def[DB_INDEX]) && ($def[DB_INDEX] > 0)) {
+					if ($def[DB_FIELD_TYPE] == DB_DEF_STRING) {
+						$index[$name] = $def[DB_INDEX];
+                    } else {
+                        $index[$name] = 0;
+                    }
+                }
+                if (isset($def[DB_UNIQUE])) {
+                    if (!isset($unique[$def[DB_UNIQUE]]))
+                        $unique[$def[DB_UNIQUE]] = array();
+                    $unique[$def[DB_UNIQUE]][] = $name;
+                }
+            }
+        }
+        $sql = substr($sql, 0, -1);
+        if (count($primary)) {
+            $sql .= ", PRIMARY KEY(`" . implode("`,`", $primary) . "`)";
+        }
+        if (count($fulltext)) {
+            $sql .= ", FULLTEXT(`" . implode("`,`", $fulltext) . "`)";
+        }
+        foreach ($unique as $key => $value) {
+            $sql .= ", UNIQUE `" . $key . "` ( `" . implode("`,`", $value) . "`)";
+        }
+        foreach ($index as $key => $value) {
+            $sql .= ", INDEX (`" . $key . "`" . (($value > 0) ? "(" . $value . ")" : "") . ")";
+        }
+        $sql .= ")";
+        if (defined(DB_ENCODING)) {
+            $sql .= " ENGINE = MYISAM CHARACTER SET " . DB_ENCODING;
+        } else {
+            $sql .= " ENGINE = MYISAM CHARACTER SET utf8 COLLATE utf8_unicode_ci";
+        }
+
+        if (isset($info[DB_TABLE_COMMENT])) {
+            $sql .= " COMMENT = '" . $info[DB_TABLE_COMMENT] . "'";
+        }
+
+        @mysqli_query($this->connection, $sql);
+
+        $return = array(
+            $tablename => ($this->tableExists($tablename) ? DATABASE_TABLE_INSTALLED : DATABASE_TABLE_FAILED)
+        );
+
+        return $return;
     }
 
     /**
-     * This is an internal function for use only within the database class
+     * This is an internal function for use only within the MySQL database class
      * @internal Internal
      * @param  $name
      * @param  $def
@@ -270,7 +350,7 @@ abstract class database {
      * data definition.
      *
      * This function abides by the Exponent Data Definition Language, and interprets
-     * its general structure for databases.
+     * its general structure for MySQL.
      *
      * @param string $tablename The name of the table to alter
      * @param array $newdatadef The new data definition for the table.
@@ -281,23 +361,98 @@ abstract class database {
      * @return array
      */
     function alterTable($tablename, $newdatadef, $info, $aggressive = false) {
+        $dd = $this->getDataDefinition($tablename);
+        $modified = false;
+
+        //Drop any old columns from the table if aggressive mode is set.
+        if ($aggressive) {
+            $oldcols = array_diff_assoc($dd, $newdatadef);
+            if (count($oldcols)) {
+                $modified = true;
+                $sql = "ALTER TABLE `" . $this->prefix . "$tablename` ";
+                foreach ($oldcols as $name => $def) {
+                    $sql .= " DROP COLUMN " . $name . ",";
+                }
+                $sql = substr($sql, 0, -1);
+
+                @mysqli_query($this->connection, $sql);
+            }
+        }
+
+        //Add any new columns to the table
+        $diff = array_diff_assoc($newdatadef, $dd);
+        if (count($diff)) {
+            $modified = true;
+            $sql = "ALTER TABLE `" . $this->prefix . "$tablename` ";
+            foreach ($diff as $name => $def) {
+                $sql .= " ADD COLUMN (" . $this->fieldSQL($name, $def) . "),";
+            }
+
+            $sql = substr($sql, 0, -1);
+            @mysqli_query($this->connection, $sql);
+        }
+
+        //Add any new indexes & keys to the table.
+        $index = array();
+        foreach ($newdatadef as $name => $def) {
+            if ($def != null) {
+                if (isset($def[DB_PRIMARY]) && $def[DB_PRIMARY] == true)
+                    $primary[] = $name;
+                if (isset($def[DB_INDEX]) && ($def[DB_INDEX] > 0)) {
+                    if ($def[DB_FIELD_TYPE] == DB_DEF_STRING) {
+                        $index[$name] = $def[DB_INDEX];
+                    } else {
+                        $index[$name] = 0;
+                    }
+                }
+                if (isset($def[DB_UNIQUE])) {
+                    if (!isset($unique[$def[DB_UNIQUE]]))
+                        $unique[$def[DB_UNIQUE]] = array();
+                    $unique[$def[DB_UNIQUE]][] = $name;
+                }
+            }
+        }
+        $sql = "ALTER TABLE `" . $this->prefix . "$tablename` ";
+        /* if (count($primary)) {
+          $sql .= ", PRIMARY KEY(`" . implode("`,`",$primary) . "`)";
+          }
+          foreach ($unique as $key=>$value) {
+          $sql .= ", UNIQUE `".$key."` ( `" . implode("`,`",$value) . "`)";
+          } */
+        foreach ($index as $key => $value) {
+            // drop the index first so we don't get dupes
+            $drop = "DROP INDEX " . $key . " ON " . $this->prefix . $tablename;
+            @mysqli_query($this->connection, $drop);
+
+            // readd the index.
+            $sql .= "ADD INDEX (" . $key . ")";
+            @mysqli_query($this->connection, $sql);
+        }
+
+        //Get the return code
+        $return = array(
+            $tablename => ($modified ? TABLE_ALTER_SUCCEEDED : TABLE_ALTER_NOT_NEEDED)
+        );
+
+        return $return;
     }
 
     /**
      * Drop a table from the database
      *
      * Removes an existing table from the database. Returns true if the table was dropped, false if there
-     * was an error returned by the database server.
+     * was an error returned by the MySQL server.
      *
      * @param string $table The name of the table to drop.
      * @return bool
      */
     function dropTable($table) {
+        return @mysqli_query($this->connection, "DROP TABLE `" . $this->prefix . "$table`") !== false;
     }
 
     /**
      * Run raw SQL.  Returns true if the query succeeded, and false
-     *   if an error was returned from the database server.
+     *   if an error was returned from the MySQL server.
      *
      * <div style="color:red">If you can help it, do not use this function.  It presents Database Portability Issues.</div>
      *
@@ -306,9 +461,16 @@ abstract class database {
      * provided as a last resort.
      *
      * @param string $sql The SQL query to run
+	 * @param bool $escape Indicates if the query will be escape
      * @return mixed
      */
     function sql($sql, $escape = true) {
+		if($escape == true) {
+			$res = @mysqli_query($this->connection, mysqli_real_escape_string($this->connection, $sql));
+		} else {
+			$res = @mysqli_query($this->connection, $sql);
+		}
+        return $res;
     }
 
 	/**
@@ -335,6 +497,13 @@ abstract class database {
 	 * @return void
 	 */
     function columnUpdate($table, $col, $val, $where=1) {         
+        $res = @mysqli_query($this->connection, "UPDATE `" . $this->prefix . "$table` SET `$col`='" . $val . "' WHERE $where");
+        /*if ($res == null)
+            return array();
+        $objects = array();
+        for ($i = 0; $i < mysqli_num_rows($res); $i++)
+            $objects[] = mysqli_fetch_object($res);*/
+        //return $objects;
     }
 
 	/**
@@ -369,6 +538,20 @@ abstract class database {
      * @return array
      */
     function selectObjects($table, $where = null, $orderby = null) {
+        if ($where == null)
+            $where = "1";
+        if ($orderby == null)
+            $orderby = '';
+        else
+            $orderby = "ORDER BY " . $orderby;
+
+        $res = @mysqli_query($this->connection, "SELECT * FROM `" . $this->prefix . "$table` WHERE $where $orderby");
+        if ($res == null)
+            return array();
+        $objects = array();
+        for ($i = 0; $i < mysqli_num_rows($res); $i++)
+            $objects[] = mysqli_fetch_object($res);
+        return $objects;
     }
 
 	/**
@@ -377,6 +560,18 @@ abstract class database {
 	 * @return array
 	 */
     function selectSearch($terms, $where = null) {
+        if ($where == null)
+            $where = "1";
+
+        $sql = "SELECT *, MATCH (title,body) AGAINST ('" . $terms . "') as score from " . $this->prefix . "search ";
+        $sql .= "WHERE MATCH(title,body) against ('" . $terms . "' IN BOOLEAN MODE) ORDER BY score DESC";
+        $res = @mysqli_query($this->connection, $sql);
+        if ($res == null)
+            return array();
+        $objects = array();
+        for ($i = 0; $i < mysqli_num_rows($res); $i++)
+            $objects[] = mysqli_fetch_object($res);
+        return $objects;
     }
 
 	/**
@@ -391,6 +586,52 @@ abstract class database {
 	 * @return array'
 	 */
     function selectAndJoinObjects($colsA=null, $colsB=null, $tableA, $tableB, $keyA, $keyB=null, $where = null, $orderby = null) {
+        $sql = 'SELECT ';
+        if ($colsA != null) {
+            if (!is_array($colsA)) {
+                $sql .= 'a.' . $colsA . ', ';
+            } else {
+                foreach ($colsA as $colA) {
+                    $sql .= 'a.' . $colA . ', ';
+                }
+            }
+        } else {
+            $sql .= ' a.*, ';
+        }
+
+        if ($colsB != null) {
+            if (!is_array($colsB)) {
+                $sql .= 'b.' . $colsB . ' ';
+            } else {
+                $i = 1;
+                foreach ($colsB as $colB) {
+                    $sql .= 'b.' . $colB;
+                    if ($i < count($colsB))
+                        $sql .= ', ';
+                    $i++;
+                }
+            }
+        } else {
+            $sql .= ' b.* ';
+        }
+
+        $sql .= ' FROM ' . $this->prefix . $tableA . ' a JOIN ' . $this->prefix . $tableB . ' b ';
+        $sql .= is_null($keyB) ? 'USING(' . $keyA . ')' : 'ON a.' . $keyA . ' = b.' . $keyB;
+
+        if ($where == null)
+            $where = "1";
+        if ($orderby == null)
+            $orderby = '';
+        else
+            $orderby = "ORDER BY " . $orderby;
+
+        $res = @mysqli_query($this->connection, $sql . " WHERE $where $orderby");
+        if ($res == null)
+            return array();
+        $objects = array();
+        for ($i = 0; $i < mysqli_num_rows($res); $i++)
+            $objects[] = mysqli_fetch_object($res);
+        return $objects;
     }
 
 	/**
@@ -398,6 +639,14 @@ abstract class database {
 	 * @return null|void
 	 */
     function selectObjectBySql($sql) {
+        //$logFile = "C:\\xampp\\htdocs\\supserg\\tmp\\queryLog.txt";
+        //$lfh = fopen($logFile, 'a');
+        //fwrite($lfh, $sql . "\n");    
+        //fclose($lfh);                 
+        $res = @mysqli_query($this->connection, $sql);
+        if ($res == null)
+            return null;
+        return mysqli_fetch_object($res);
     }
 
 	/**
@@ -405,6 +654,13 @@ abstract class database {
 	 * @return array
 	 */
     function selectObjectsBySql($sql) {
+        $res = @mysqli_query($this->connection, $sql);
+        if ($res == null)
+            return array();
+        $objects = array();
+        for ($i = 0; $i < mysqli_num_rows($res); $i++)
+            $objects[] = mysqli_fetch_object($res);
+        return $objects;
     }
 
 	/**
@@ -416,6 +672,23 @@ abstract class database {
 	 * @return array
 	 */
     function selectColumn($table, $col, $where = null, $orderby = null, $distinct=false) {
+        if ($where == null)
+            $where = "1";
+        if ($orderby == null)
+            $orderby = '';
+        else
+            $orderby = "ORDER BY " . $orderby;
+        $dist = empty($distinct) ? '' : 'DISTINCT ';
+
+        $res = @mysqli_query($this->connection, "SELECT " . $dist . $col . " FROM `" . $this->prefix . "$table` WHERE $where $orderby");
+        if ($res == null)
+            return array();
+        $resarray = array();
+        for ($i = 0; $i < mysqli_num_rows($res); $i++) {
+            $row = mysqli_fetch_array($res, MYSQLI_NUM);
+            $resarray[$i] = $row[0];
+        }
+        return $resarray;
     }
 
 	/**
@@ -425,6 +698,18 @@ abstract class database {
 	 * @return int
 	 */
     function selectSum($table, $col, $where = null) {
+        if ($where == null)
+            $where = "1";
+
+        $res = @mysqli_query($this->connection, "SELECT SUM(" . $col . ") FROM `" . $this->prefix . "$table` WHERE $where");
+        if ($res == null)
+            return 0;
+        $resarray = array();
+        for ($i = 0; $i < mysqli_num_rows($res); $i++) {
+            $row = mysqli_fetch_array($res, MYSQLI_NUM);
+            $resarray[$i] = $row[0];
+        }
+        return $resarray[0];
     }
 
 	/**
@@ -435,6 +720,22 @@ abstract class database {
 	 * @return array
 	 */
     function selectDropdown($table, $col, $where = null, $orderby = null) {
+        if ($where == null)
+            $where = "1";
+        if ($orderby == null)
+            $orderby = '';
+        else
+            $orderby = "ORDER BY " . $orderby;
+
+        $res = @mysqli_query($this->connection, "SELECT * FROM `" . $this->prefix . "$table` WHERE $where $orderby");
+        if ($res == null)
+            return array();
+        $resarray = array();
+        for ($i = 0; $i < mysqli_num_rows($res); $i++) {
+            $row = mysqli_fetch_object($res);
+            $resarray[$row->id] = $row->$col;
+        }
+        return $resarray;
     }
 
 	/**
@@ -444,6 +745,19 @@ abstract class database {
 	 * @return null
 	 */
     function selectValue($table, $col, $where=null) {
+        if ($where == null)
+            $where = "1";
+        $sql = "SELECT " . $col . " FROM `" . $this->prefix . "$table` WHERE $where LIMIT 0,1";
+        $res = @mysqli_query($this->connection, $sql);
+
+        if ($res == null)
+            return null;
+        $obj = mysqli_fetch_object($res);
+        if (is_object($obj)) {
+            return $obj->$col;
+        } else {
+            return null;
+        }
     }
 
 	/**
@@ -451,6 +765,15 @@ abstract class database {
 	 * @return null
 	 */
     function selectValueBySql($sql) {
+        $res = $this->sql($sql);
+        if ($res == null)
+            return null;
+        $r = mysqli_fetch_row($res);
+        if (is_array($r)) {
+            return $r[0];
+        } else {
+            return null;
+        }
     }
 
     /**
@@ -483,6 +806,22 @@ abstract class database {
      * @return array
      */
     function selectObjectsIndexedArray($table, $where = null, $orderby = null) {
+        if ($where == null)
+            $where = "1";
+        if ($orderby == null)
+            $orderby = '';
+        else
+            $orderby = "ORDER BY " . $orderby;
+        $res = @mysqli_query($this->connection, "SELECT * FROM `" . $this->prefix . "$table` WHERE $where $orderby");
+
+        if ($res == null)
+            return array();
+        $objects = array();
+        for ($i = 0; $i < mysqli_num_rows($res); $i++) {
+            $o = mysqli_fetch_object($res);
+            $objects[$o->id] = $o;
+        }
+        return $objects;
     }
 
     /**
@@ -493,6 +832,13 @@ abstract class database {
      * @return int
      */
     function countObjects($table, $where = null) {
+        if ($where == null)
+            $where = "1";
+        $res = @mysqli_query($this->connection, "SELECT COUNT(*) as c FROM `" . $this->prefix . "$table` WHERE $where");
+        if ($res == null)
+            return 0;
+        $obj = mysqli_fetch_object($res);
+        return $obj->c;
     }
 
     /**
@@ -502,6 +848,11 @@ abstract class database {
      * @return int
      */
     function countObjectsBySql($sql) {
+        $res = @mysqli_query($this->connection, $sql);
+        if ($res == null)
+            return 0;
+        $obj = mysqli_fetch_object($res);
+        return $obj->c;
     }
 
     /**
@@ -511,6 +862,8 @@ abstract class database {
      * @return int|void
      */
     function queryRows($sql) {
+        $res = @mysqli_query($this->connection, $sql);
+        return empty($res) ? 0 : mysqli_num_rows($res);
     }
 
     /**
@@ -528,6 +881,10 @@ abstract class database {
      * @return null|void
      */
     function selectObject($table, $where) {
+        $res = mysqli_query($this->connection, "SELECT * FROM `" . $this->prefix . "$table` WHERE $where LIMIT 0,1");
+        if ($res == null)
+            return null;
+        return mysqli_fetch_object($res);
     }
 
 	/**
@@ -536,18 +893,26 @@ abstract class database {
 	 * @return mixed
 	 */
 	function lockTable($table,$lockType="WRITE") {
+        $sql = "LOCK TABLES `" . $this->prefix . "$table` $lockType";
+       
+        $res = mysqli_query($this->connection, $sql); 
+        return $res;
     }
 
 	/**
 	 * @return mixed
 	 */
 	function unlockTables() {
+        $sql = "UNLOCK TABLES";
+        
+        $res = mysqli_query($this->connection, $sql);
+        return $res;
     }
     
 	/**
      * Insert an Object into some table in the Database
      *
-     * This method will return the ID assigned to the new record by database.  Note that
+     * This method will return the ID assigned to the new record by MySQL.  Note that
      * object attributes starting with an underscore ('_') will be ignored and NOT inserted
      * into the table as a field value.
      *
@@ -557,6 +922,26 @@ abstract class database {
      * @return int|void
      */
     function insertObject($object, $table) {
+        //if ($table=="text") eDebug($object,true); 
+        $sql = "INSERT INTO `" . $this->prefix . "$table` (";
+        $values = ") VALUES (";
+        foreach (get_object_vars($object) as $var => $val) {
+            //We do not want to save any fields that start with an '_'
+            if ($var{0} != '_') {
+                $sql .= "`$var`,";
+                if ($values != ") VALUES (") {
+                    $values .= ",";
+                }
+                $values .= "'" . mysqli_real_escape_string($this->connection, $val) . "'";
+            }
+        }
+        $sql = substr($sql, 0, -1) . substr($values, 0) . ")";
+        //if($table=='text')eDebug($sql,true);
+        if (@mysqli_query($this->connection, $sql) != false) {
+            $id = mysqli_insert_id($this->connection);
+            return $id;
+        } else
+            return 0;
     }
 
     /**
@@ -567,6 +952,13 @@ abstract class database {
      * @return mixed
      */
     function delete($table, $where = null) {
+        if ($where != null) {
+            $res = @mysqli_query($this->connection, "DELETE FROM `" . $this->prefix . "$table` WHERE $where");
+            return $res;
+        } else {
+            $res = @mysqli_query($this->connection, "TRUNCATE TABLE `" . $this->prefix . "$table`");
+            return $res;
+        }
     }
 
     /**
@@ -585,6 +977,37 @@ abstract class database {
      * @return bool|int|void
      */
     function updateObject($object, $table, $where=null, $identifier='id', $is_revisioned=false) {
+
+        if ($is_revisioned) {
+            $object->revision_id++;
+            //if ($table=="text") eDebug($object);
+            $res = $this->insertObject($object, $table);
+            //if ($table=="text") eDebug($object,true); 
+            return $res;
+        }
+        $sql = "UPDATE " . $this->prefix . "$table SET ";
+        foreach (get_object_vars($object) as $var => $val) {
+            //We do not want to save any fields that start with an '_'
+            //if($is_revisioned && $var=='revision_id') $val++;
+            if ($var{0} != '_') {
+                if (is_array($val) || is_object($val)) 
+                {            
+                    $val = serialize($val);   
+                    $sql .= "`$var`='".$val."',";
+                }else
+                {   
+                    $sql .= "`$var`='".mysqli_real_escape_string($this->connection,$val)."',";
+                }
+            }
+        }
+        $sql = substr($sql, 0, -1) . " WHERE ";
+        if ($where != null)
+            $sql .= $where;
+        else
+            $sql .= "`" . $identifier . "`=" . $object->$identifier;
+        //if ($table == 'text') eDebug($sql,true);        
+        $res = (@mysqli_query($this->connection, $sql) != false);
+        return $res;
     }
 
 	/**
@@ -599,6 +1022,21 @@ abstract class database {
 	 * @return mixed
 	 */
     function max($table, $attribute, $groupfields = null, $where = null) {
+        if (is_array($groupfields))
+            $groupfields = implode(",", $groupfields);
+        $sql = "SELECT MAX($attribute) as fieldmax FROM `" . $this->prefix . "$table`";
+        if ($where != null)
+            $sql .= " WHERE $where";
+        if ($groupfields != null)
+            $sql .= " GROUP BY $groupfields";
+
+        $res = @mysqli_query($this->connection, $sql);
+
+        if ($res != null)
+            $res = mysqli_fetch_object($res);
+        if (!$res)
+            return null;
+        return $res->fieldmax;
     }
 
 	/**
@@ -614,6 +1052,21 @@ abstract class database {
 	 * @return null
 	 */
     function min($table, $attribute, $groupfields = null, $where = null) {
+        if (is_array($groupfields))
+            $groupfields = implode(",", $groupfields);
+        $sql = "SELECT MIN($attribute) as fieldmin FROM `" . $this->prefix . "$table`";
+        if ($where != null)
+            $sql .= " WHERE $where";
+        if ($groupfields != null)
+            $sql .= " GROUP BY $groupfields";
+
+        $res = @mysqli_query($this->connection, $sql);
+
+        if ($res != null)
+            $res = mysqli_fetch_object($res);
+        if (!$res)
+            return null;
+        return $res->fieldmin;
     }
 
     /**
@@ -627,6 +1080,10 @@ abstract class database {
      * @return mixed
      */
     function increment($table, $field, $step, $where = null) {
+        if ($where == null)
+            $where = "1";
+        $sql = "UPDATE `" . $this->prefix . "$table` SET `$field`=`$field`+$step WHERE $where";
+        return @mysqli_query($this->connection, $sql);
     }
 
     /**
@@ -635,7 +1092,7 @@ abstract class database {
      * @param string $table The name of the table to decrement in.
      * @param string $field The field to decrement.
      * @param integer $step The step value.  Usually 1.  This can be negative, to
-     *    increment, but the increment() method is prefered, for readability.
+     *    increment, but the increment() method is preferred, for readability.
      * @param string $where Optional criteria to determine which records to update.
      */
 
@@ -651,11 +1108,13 @@ abstract class database {
      * @return bool
      */
     function tableExists($table) {
+        $res = @mysqli_query($this->connection, "SELECT * FROM `" . $this->prefix . "$table` LIMIT 0,1");
+        return ($res != null);
     }
 
     /**
      * Get a list of all tables in the database.  Optionally, only the tables
-     * in the corrent logcial database (tables with the same prefix) can
+     * in the current logical database (tables with the same prefix) can
      * be retrieved.
      *
      * @param bool $prefixed_only Whether to return only the tables
@@ -663,6 +1122,17 @@ abstract class database {
      * @return array
      */
     function getTables($prefixed_only=true) {
+        $res = @mysqli_query($this->connection, "SHOW TABLES");
+        $tables = array();
+        for ($i = 0; $res && $i < mysqli_num_rows($res); $i++) {
+            $tmp = mysqli_fetch_array($res);
+            if ($prefixed_only && substr($tmp[0], 0, strlen($this->prefix)) == $this->prefix) {
+                $tables[] = $tmp[0];
+            } else if (!$prefixed_only) {
+                $tables[] = $tmp[0];
+            }
+        }
+        return $tables;
     }
 
     /**
@@ -672,6 +1142,8 @@ abstract class database {
      * @return bool
      */
     function optimize($table) {
+        $res = (@mysqli_query($this->connection, "OPTIMIZE TABLE `" . $this->prefix . "$table`") != false);
+        return $res;
     }
 
     /**
@@ -687,6 +1159,11 @@ abstract class database {
      * @return null
      */
     function tableInfo($table) {
+        $sql = "SHOW TABLE STATUS LIKE '" . $this->prefix . "$table'";
+        $res = @mysqli_query($this->connection, $sql);
+        if (!$res)
+            return null;
+        return $this->translateTableStatus(mysqli_fetch_object($res));
     }
 
     /**
@@ -706,10 +1183,18 @@ abstract class database {
      * @return array
      */
     function databaseInfo() {
+        $sql = "SHOW TABLE STATUS";
+        $res = @mysqli_query($this->connection, "SHOW TABLE STATUS LIKE '" . $this->prefix . "%'");
+        $info = array();
+        for ($i = 0; $res && $i < mysqli_num_rows($res); $i++) {
+            $obj = mysqli_fetch_object($res);
+            $info[substr($obj->Name, strlen($this->prefix))] = $this->translateTableStatus($obj);
+        }
+        return $info;
     }
 
     /**
-     * This is an internal function for use only within the database database class
+     * This is an internal function for use only within the MySQL database class
      * @internal Internal
      * @param  $status
      * @return null
@@ -729,6 +1214,22 @@ abstract class database {
 	 * @return array
 	 */
     function describeTable($table) {
+        if (!$this->tableExists($table))
+            return array();
+        $res = @mysqli_query($this->connection, "DESCRIBE `" . $this->prefix . "$table`");
+        $dd = array();
+        for ($i = 0; $i < mysqli_num_rows($res); $i++) {
+            $fieldObj = mysqli_fetch_object($res);
+
+            $fieldObj->ExpFieldType = $this->getDDFieldType($fieldObj);
+            if ($fieldObj->ExpFieldType == DB_DEF_STRING) {
+                $fieldObj->ExpFieldLength = $this->getDDStringLen($fieldObj);
+            }
+
+            $dd[$fieldObj->Field] = $fieldObj;
+        }
+
+        return $dd;
     }
 
     /**
@@ -739,10 +1240,35 @@ abstract class database {
      * @return array|null
      */
     function getDataDefinition($table) {
+        // make sure the table exists
+        if (!$this->tableExists($table))
+            return array();
+
+        // check if we have a cached version of this table description.
+        if (expSession::issetTableCache($table))
+            return expSession::getTableCache($table);
+
+        $res = @mysqli_query($this->connection, "DESCRIBE `" . $this->prefix . "$table`");
+        $dd = array();
+        for ($i = 0; $i < mysqli_num_rows($res); $i++) {
+            $fieldObj = mysqli_fetch_object($res);
+
+            $field = array();
+            $field[DB_FIELD_TYPE] = $this->getDDFieldType($fieldObj);
+            if ($field[DB_FIELD_TYPE] == DB_DEF_STRING) {
+                $field[DB_FIELD_LEN] = $this->getDDStringLen($fieldObj);
+            }
+
+            $dd[$fieldObj->Field] = $field;
+        }
+
+        // save this table description to cache so we don't need to go the DB next time.
+        expSession::setTableCache($table, $dd);
+        return $dd;
     }
 
     /**
-     * This is an internal function for use only within the database class
+     * This is an internal function for use only within the MySQL database class
      * @internal Internal
      * @param  $fieldObj
      * @return int
@@ -768,7 +1294,7 @@ abstract class database {
     }
 
     /**
-     * This is an internal function for use only within the database class
+     * This is an internal function for use only within the MySQL database class
      * @internal Internal
      * @param  $fieldObj
      * @return int|mixed
@@ -793,6 +1319,18 @@ abstract class database {
      * @return string
      */
     function error() {
+        if ($this->connection && mysqli_errno($this->connection) != 0) {
+            $errno = mysqli_errno($this->connection);
+            switch ($errno) {
+                case 1046:
+                    return "1046 : Selected database does not exist";
+                default:
+                    return mysqli_errno($this->connection) . " : " . mysqli_error($this->connection);
+            }
+        } else if ($this->connection == false) {
+            return "Unable to connect to database server";
+        } else
+            return "";
     }
 
     /**
@@ -800,6 +1338,7 @@ abstract class database {
      * @return bool
      */
     function inError() {
+        return ($this->connection != null && mysqli_errno($this->connection) != 0);
     }
 
 	/**
@@ -808,6 +1347,7 @@ abstract class database {
 	 * @return string
 	 */
 	function escapeString($string) {
+	    return (mysqli_real_escape_string($this->connection, $string));
 	}
 
 	/**
@@ -837,6 +1377,20 @@ abstract class database {
      * @return array
      */
     function selectArrays($table, $where = null, $orderby = null) {
+        if ($where == null)
+            $where = "1";
+        if ($orderby == null)
+            $orderby = '';
+        else
+            $orderby = "ORDER BY " . $orderby;
+
+        $res = @mysqli_query($this->connection, "SELECT * FROM `" . $this->prefix . "$table` WHERE $where $orderby");
+        if ($res == null)
+            return array();
+        $arrays = array();
+        for ($i = 0; $i < mysqli_num_rows($res); $i++)
+            $arrays[] = mysqli_fetch_assoc($res);
+        return $arrays;
     }
 
     /**
@@ -851,6 +1405,13 @@ abstract class database {
      * @return array
      */
     function selectArraysBySql($sql) {        
+        $res = @mysqli_query($this->connection, $sql);
+        if ($res == null)
+            return array();
+        $arrays = array();
+        for ($i = 0; $i < mysqli_num_rows($res); $i++)
+            $arrays[] = mysqli_fetch_assoc($res);
+        return $arrays;
     }
 
     /**
@@ -870,6 +1431,16 @@ abstract class database {
      * @return array|void
      */
     function selectArray($table, $where = null, $orderby = null, $is_revisioned=false) {
+        if ($where == null)
+            $where = "1";
+        if ($is_revisioned)
+            $where.= " AND revision_id=(SELECT MAX(revision_id) FROM `" . $this->prefix . "$table` WHERE $where)";
+        $orderby = empty($orderby) ? '' : "ORDER BY " . $orderby;
+        $sql = "SELECT * FROM `" . $this->prefix . "$table` WHERE $where $orderby LIMIT 0,1";
+        $res = @mysqli_query($this->connection, $sql);
+        if ($res == null)
+            return array();
+        return mysqli_fetch_assoc($res);
     }
 
 	/**
@@ -887,6 +1458,20 @@ abstract class database {
 	 * @return array
 	 */
     function selectExpObjects($table, $where=null, $classname, $get_assoc=true, $get_attached=true, $except=array(), $cascade_except=false) {
+        if ($where == null) $where = "1";        
+        $sql = "SELECT * FROM `" . $this->prefix . "$table` WHERE $where";
+        $res = @mysqli_query($this->connection, $sql);
+        if ($res == null) return array();
+        $arrays = array();
+        $numrows = mysqli_num_rows($res);
+        for ($i = 0; $i < $numrows; $i++)
+        {
+            $assArr = mysqli_fetch_assoc($res);
+            $assArr['except'] = $except;
+            if($cascade_except) $assArr['cascade_except'] = $cascade_except;
+            $arrays[] = new $classname($assArr, $get_assoc, $get_attached);
+        }
+        return $arrays;
     }
 
     /**
@@ -898,6 +1483,14 @@ abstract class database {
      * @return array
      */
     function selectExpObjectsBySql($sql, $classname, $get_assoc=true, $get_attached=true) {
+        $res = @mysqli_query($this->connection, $sql);
+        if ($res == null)
+            return array();
+        $arrays = array();
+        $numrows = mysqli_num_rows($res);
+        for ($i = 0; $i < $numrows; $i++)
+            $arrays[] = new $classname(mysqli_fetch_assoc($res), true, true);
+        return $arrays;
     }
 
 	/**
@@ -1081,6 +1674,15 @@ abstract class database {
 	 * @return array
 	 */
 	function getTextColumns($table) {
+		$sql = "SHOW COLUMNS FROM " . $this->prefix.$table . " WHERE type = 'text' OR type like 'varchar%'";
+		$res = @mysqli_query($this->connection, $sql);
+		if ($res == null) return array();
+		$records = array();
+		while($row = mysqli_fetch_object($res)) {
+			$records[] = $row->Field;
+		}
+		
+		return $records;
 	}
 
 }

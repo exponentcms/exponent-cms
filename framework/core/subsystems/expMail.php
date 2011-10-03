@@ -24,9 +24,6 @@
  */
 /** @define "BASE" "../../.." */
 
-if (!defined('EXPONENT')) exit('');
-
-// Create the class.
 /**
  * The expMail class
  */
