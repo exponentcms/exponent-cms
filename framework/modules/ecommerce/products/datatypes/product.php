@@ -739,8 +739,9 @@ class product extends expRecord {
 	public function update($params=array()) {
 		// eDebug($params, true);
 		global $db;
+		//Get the product
 		$product = $db->selectObject('product', 'id =' . $params['id']);
-		
+
 		$tab_loaded = $params['tab_loaded'];
 		
 		//TODO: Make this whole stuff loop
@@ -763,8 +764,7 @@ class product extends expRecord {
 			foreach($params['images'] as $key => $item) {
 				$product->$key = $item;
 			}
-			// $this->checkForAttachableItems($params); 
-			//TODO: Images here
+			$product->expFile= $params['expFile'];
 		}
 		
 		if(isset($tab_loaded['quantity'])) {
@@ -795,13 +795,13 @@ class product extends expRecord {
 					if (isset($this->params['original_id']) && $params['original_id'] != 0) $group['id'] = '';  //for copying products  
 				 
 					$optiongroup = new  optiongroup($group);
-					$optiongroup->product_id = $record->id;                                
+					$optiongroup->product_id = $product->id;                                
 					$optiongroup->save();
 					
 					foreach ($params['optiongroups'][$title]['options'] as $opt_title=>$opt) {
 						if (isset($params['original_id']) && $params['original_id'] != 0) $opt['id'] = ''; //for copying products
 					   
-						$opt['product_id'] = $record->id;
+						$opt['product_id'] = $product->id;
 						$opt['is_default'] = false;
 						$opt['title'] = $opt_title;
 						$opt['optiongroup_id'] = $optiongroup->id;
@@ -814,6 +814,7 @@ class product extends expRecord {
 					}
 				}
 			}
+			// eDebug($option, true);s
 		}
 		
 		if(isset($tab_loaded['featured'])) {
@@ -822,23 +823,23 @@ class product extends expRecord {
 			}
 			//TODO: Fix this hardcoded checkboxes, since they won't be in the params when they are submitted unchecked
 			$product->is_featured = $params['featured']['is_featured'];
-			//TODO: Featured image here
+			$product->expFile['featured_image'] = $params['expFile']['featured_image'];
 		}
 		
 		if(isset($tab_loaded['related'])) {
 			//Related Products Tab
 			if (!empty($params['relatedProducts']) && (empty($originalId) || !empty($params['copy_related']))) {
-				$relprods = $db->selectObjects('crosssellItem_product',"product_id=".$record->id);
-				$db->delete('crosssellItem_product','product_id='.$record->id);
+				$relprods = $db->selectObjects('crosssellItem_product',"product_id=".$product->id);
+				$db->delete('crosssellItem_product','product_id='.$product->id);
 				foreach ($params['relatedProducts'] as $key=>$prodid) {
 					$ptype = new product($prodid);
-					$tmp->product_id = $record->id;
+					$tmp->product_id = $product->id;
 					$tmp->crosssellItem_id = $prodid;
 					$tmp->product_type = $ptype->product_type;
 					$db->insertObject($tmp,'crosssellItem_product');
 					
 					if (isset($params['relateBothWays'][$prodid])) {
-						$tmp->crosssellItem_id = $record->id;
+						$tmp->crosssellItem_id = $product->id;
 						$tmp->product_id = $prodid;
 						$tmp->product_type = $ptype->product_type;
 						$db->insertObject($tmp,'crosssellItem_product');
@@ -851,11 +852,11 @@ class product extends expRecord {
 			//User Input fields Tab                                                                     
 			if (isset($params['user_input_use']) && is_array($params['user_input_use'])) {        
 				foreach ($params['user_input_use'] as $ukey=>$ufield) {  
-					$record->user_input_fields[] = array('use'=>$params['user_input_use'][$ukey], 'name'=>$params['user_input_name'][$ukey], 'is_required'=>$params['user_input_is_required'][$ukey], 'min_length'=>$params['user_input_min_length'][$ukey],'max_length'=>$params['user_input_max_length'][$ukey],'description'=>$params['user_input_description'][$ukey]);
+					$user_input_fields[] = array('use'=>$params['user_input_use'][$ukey], 'name'=>$params['user_input_name'][$ukey], 'is_required'=>$params['user_input_is_required'][$ukey], 'min_length'=>$params['user_input_min_length'][$ukey],'max_length'=>$params['user_input_max_length'][$ukey],'description'=>$params['user_input_description'][$ukey]);
 				}
-				$record->user_input_fields = serialize($record->user_input_fields);
+				$product->user_input_fields = serialize($user_input_fields);
 			} else {
-				$record->user_input_fields = serialize(array());    
+				$product->user_input_fields = serialize(array());    
 			}
 		}
 		
@@ -875,13 +876,13 @@ class product extends expRecord {
 			//Extra Field Tab
 			foreach ($params['extra_fields_name'] as $xkey=>$xfield) {               
 				if (!empty($xfield)) {
-					$record->extra_fields[] = array('name'=>$xfield, 'value'=>$params['extra_fields_value'][$xkey]); 
+					$extra_fields[] = array('name'=>$xfield, 'value'=>$params['extra_fields_value'][$xkey]); 
 				}
 			}
-			if (is_array($record->extra_fields)) {
-				$record->extra_fields = serialize($record->extra_fields);
+			if (is_array($extra_fields)) {
+				$product->extra_fields = serialize($extra_fields);
 			} else {
-				unset($record->extra_fields);
+				unset($product->extra_fields);
 			}
 		}
 		
@@ -891,13 +892,15 @@ class product extends expRecord {
 			}
 		}
 		
-		
+		//Check if we are copying and not just editing product
 		if(isset($params['original_id'])) {
-			unset($params['id']);
-			$db->insertObject($product, 'product');
-		} else {
-			$db->updateObject($product, 'product');
-		}
+			// eDebug($product->id, true);
+			unset($product->id);
+			unset($product->sef_url);
+			$product->original_id = $params['original_id'];
+			// eDebug($product, true);
+		}	
+		parent::update($product); 
 	}
 }
 
