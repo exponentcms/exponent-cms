@@ -743,6 +743,13 @@ class product extends expRecord {
 		$product = $db->selectObject('product', 'id =' . $params['id']);
 
 		$tab_loaded = $params['tab_loaded'];
+		//check if we're saving a newly copied product and if we create children also
+		$originalId = isset($this->params['original_id']) && isset($this->params['copy_children']) ? $this->params['original_id'] : 0;
+		$originalModel = isset($this->params['original_model']) && isset($this->params['copy_children']) ? $this->params['original_model'] : 0;
+		
+		if (!empty($product->parent_id)) $product->sef_url = '';
+		
+		
 		
 		//TODO: Make this whole stuff loop
 		if(isset($tab_loaded['general'])) {
@@ -889,6 +896,28 @@ class product extends expRecord {
 		if(isset($tab_loaded['misc'])) {
 			foreach($params['misc'] as $key => $item) {
 				$product->$key = $item;
+			}
+		}
+		
+		//Adjusting Children Products
+		if (!empty($originalId) && !empty($this->params['copy_children'])) {
+			$origProd = new $product_type($originalId);
+			$children = $origProd->find('all', 'parent_id=' . $originalId);
+			foreach ($children as $child) {
+			
+				unset($child->id);
+				$child->parent_id = $product->id;
+				$child->title = $product->title;
+				$child->sef_url = '';
+				if (isset($this->params['adjust_child_price']) && isset($this->params['new_child_price']) && is_numeric($this->params['new_child_price'])) {
+					$child->base_price = $this->params['new_child_price'];
+				}
+				
+				if (!empty($originalModel)) {
+					$child->model = str_ireplace($originalModel, $product->model, $child->model);    
+				}              
+				
+				$child->save();
 			}
 		}
 		

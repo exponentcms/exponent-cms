@@ -945,8 +945,8 @@ class storeController extends expController {
 		//Get the product type
         $product_type = isset($this->params['product_type']) ? $this->params['product_type'] : 'product';
         
-		if($product_type == 'product' && isset($this->params['id'])) {
-			$record = new $product_type($this->params['id']);
+		if(($product_type == 'product' || $product_type == 'childProduct') && isset($this->params['id'])) {
+			$record = new $product_type();
 			$record->update($this->params);
 		} else {
 			$record = new $product_type();
