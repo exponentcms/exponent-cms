@@ -7,4 +7,8 @@
 {control type="editor" name="general[body]" label="Product Description" height=450 value=$record->body}
 {control type="text" class="title" name="general[feed_title]" label="Product Title for Data Feeds" value=$record->feed_title}
 {control type="textarea" name="general[feed_body]" label="Product Description for Data Feeds (Description ONLY! - no HTML, no promotional language, no email addresses, phone numbers, or references to this website.)" rows=5 cols=85 value=$record->feed_body}
-{control type="text" class="title" name="general[google_product_type]" label="Google Product Type" value=$record->google_product_type}
+{if $product_types}
+{foreach from=$product_types key=key item=item}
+	{control type="text" class="title" name="general[`$item`]" label="`$key` Product Type" value=$record->$item}
+{/foreach}
+{/if}

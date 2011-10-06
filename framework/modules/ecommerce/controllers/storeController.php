@@ -723,7 +723,12 @@ class storeController extends expController {
     
     function edit() {
         global $db;
-        expHistory::set('editable', $this->params);
+		
+		//Make sure that the view is the edit.tpl and not any ajax views
+		if(isset($this->params['view']) && $this->params['view'] == 'edit') {
+			expHistory::set('editable', $this->params);
+		}
+		
         // first we need to figure out what type of ecomm product we are dealing with
         if (!empty($this->params['id'])) {
             // if we have an id lets pull the product type from the products table.
