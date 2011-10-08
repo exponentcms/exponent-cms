@@ -762,9 +762,6 @@ class product extends expRecord {
 			foreach($params['pricing'] as $key => $item) {
 				$product->$key = $item;
 			}
-			//TODO: Fix this hardcoded checkboxes, since they won't be in the params when they are submitted unchecked
-			$product->quantity_discount_apply = $params['pricing']['quantity_discount_apply'];
-			$product->use_special_price       = $params['pricing']['use_special_price'];
 		}
 		
 		if(isset($tab_loaded['images'])) {
@@ -778,9 +775,6 @@ class product extends expRecord {
 			foreach($params['quantity'] as $key => $item) {
 				$product->$key = $item;
 			}
-			//TODO: Fix this hardcoded checkboxes, since they won't be in the params when they are submitted unchecked
-			$product->allow_partial = $params['quantity']['allow_partial'];
-			$product->is_hidden = $params['quantity']['is_hidden'];
 		}
 		
 		if(isset($tab_loaded['shipping'])) {
@@ -828,8 +822,6 @@ class product extends expRecord {
 			foreach($params['featured'] as $key => $item) {
 				$product->$key = $item;
 			}
-			//TODO: Fix this hardcoded checkboxes, since they won't be in the params when they are submitted unchecked
-			$product->is_featured = $params['featured']['is_featured'];
 			$product->expFile['featured_image'] = $params['expFile']['featured_image'];
 		}
 		

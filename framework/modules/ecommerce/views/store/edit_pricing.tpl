@@ -7,7 +7,7 @@
         <td>{control type="text" name="pricing[special_price]" label="Special Price" value=$record->special_price filter=decimal}</td>
     </tr>
     <tr>
-        <td colspan="2">{control type="checkbox" name="pricing[use_special_price]" label="Use Special Price" value=1 checked=$record->use_special_price}</td>
+        <td colspan="2">{control type="checkbox" name="pricing[use_special_price]" label="Use Special Price" value=1 checked=$record->use_special_price postfalse=1}</td>
     </tr>
     </table>
 </fieldset>
@@ -28,7 +28,7 @@
         <td>{control type="dropdown" name="pricing[quantity_discount_amount_mod]" label=" " items=$record->quantity_discount_amount_modifiers value=$record->quantity_discount_amount_mod}</td>
     </tr>
     <tr>
-        <td colspan="6">{control type="checkbox" name="pricing[quantity_discount_apply]" label="Only apply discount to the items over the discount limit" value=1 checked=$record->quantity_discount_apply}</td>
+        <td colspan="6">{control type="checkbox" name="pricing[quantity_discount_apply]" label="Only apply discount to the items over the discount limit" value=1 checked=$record->quantity_discount_apply postfalse=1}</td>
     </tr>
     </table>
 </fieldset>                 
