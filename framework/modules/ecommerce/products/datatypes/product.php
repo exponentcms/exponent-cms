@@ -747,45 +747,70 @@ class product extends expRecord {
 		$originalId = isset($this->params['original_id']) && isset($this->params['copy_children']) ? $this->params['original_id'] : 0;
 		$originalModel = isset($this->params['original_model']) && isset($this->params['copy_children']) ? $this->params['original_model'] : 0;
 		
-		if (!empty($product->parent_id)) $product->sef_url = '';
+		//Tabs with not directly being saved in the product table and need some special operations
+		$tab_exceptions = array(
+				'categories',
+				'options',
+				'related',
+				'userinput',
+				'extrafields',
+				'model',
+				'notes'
+			);
+			
+		foreach($tab_loaded as $tab_key => $tab_item) {
+			if(!in_array($tab_key, $tab_exceptions)) {
+				foreach($params[$tab_key] as $key => $item) {
+					$product->$key = $item;
+				}
+			}
+		}
 		
-		
-		
+		// eDebug($product, true);
+			
 		//TODO: Make this whole stuff loop
-		if(isset($tab_loaded['general'])) {
-			foreach($params['general'] as $key => $item) {
-				$product->$key = $item;
-			}
-		}
+		// if(isset($tab_loaded['general'])) {
+			// foreach($params['general'] as $key => $item) {
+				// $product->$key = $item;
+			// }
+		// }
 		
-		if(isset($tab_loaded['pricing'])) {
-			foreach($params['pricing'] as $key => $item) {
-				$product->$key = $item;
-			}
-		}
+		// if(isset($tab_loaded['pricing'])) {
+			// foreach($params['pricing'] as $key => $item) {
+				// $product->$key = $item;
+			// }
+		// }
+		
+		// if(isset($tab_loaded['images'])) {
+			// foreach($params['images'] as $key => $item) {
+				// $product->$key = $item;
+			// }
+			// $product->expFile= $params['expFile'];
+		// }
+		
+		// if(isset($tab_loaded['quantity'])) {
+			// foreach($params['quantity'] as $key => $item) {
+				// $product->$key = $item;
+			// }
+		// }
+		
+		// if(isset($tab_loaded['shipping'])) {
+			// foreach($params['shipping'] as $key => $item) {
+				// $product->$key = $item;
+			// }
+		// }
 		
 		if(isset($tab_loaded['images'])) {
-			foreach($params['images'] as $key => $item) {
-				$product->$key = $item;
-			}
 			$product->expFile= $params['expFile'];
 		}
 		
-		if(isset($tab_loaded['quantity'])) {
-			foreach($params['quantity'] as $key => $item) {
-				$product->$key = $item;
-			}
-		}
-		
-		if(isset($tab_loaded['shipping'])) {
-			foreach($params['shipping'] as $key => $item) {
-				$product->$key = $item;
-			}
-			//select shipping service here
+		if ($params['shipping']['required_shipping_calculator_id'] > 0) {
+			$product->required_shipping_method = $params['required_shipping_methods'][$params['shipping']['required_shipping_calculator_id']];
 		}
 		
 		if(isset($tab_loaded['categories'])) {
 			$this->saveCategories($params['storeCategory']); 
+			// eDebug($params['storeCategory'], true);
 		}
 		
 		if(isset($tab_loaded['options'])) {
@@ -815,15 +840,14 @@ class product extends expRecord {
 					}
 				}
 			}
-			// eDebug($option, true);s
+			// eDebug($option, true);
 		}
 		
-		if(isset($tab_loaded['featured'])) {
-			foreach($params['featured'] as $key => $item) {
-				$product->$key = $item;
-			}
-			$product->expFile['featured_image'] = $params['expFile']['featured_image'];
-		}
+		// if(isset($tab_loaded['featured'])) {
+			// foreach($params['featured'] as $key => $item) {
+				// $product->$key = $item;
+			// }
+		// }
 		
 		if(isset($tab_loaded['related'])) {
 			//Related Products Tab
@@ -859,17 +883,17 @@ class product extends expRecord {
 			}
 		}
 		
-		if(isset($tab_loaded['status'])) {
-			foreach($params['status'] as $key => $item) {
-				$product->$key = $item;
-			}
-		}
+		// if(isset($tab_loaded['status'])) {
+			// foreach($params['status'] as $key => $item) {
+				// $product->$key = $item;
+			// }
+		// }
 		
-		if(isset($tab_loaded['meta'])) {
-			foreach($params['meta'] as $key => $item) {
-				$product->$key = $item;
-			}
-		}
+		// if(isset($tab_loaded['meta'])) {
+			// foreach($params['meta'] as $key => $item) {
+				// $product->$key = $item;
+			// }
+		// }
 		
 		if(isset($tab_loaded['extrafields'])) {
 			//Extra Field Tab
@@ -885,11 +909,14 @@ class product extends expRecord {
 			}
 		}
 		
-		if(isset($tab_loaded['misc'])) {
-			foreach($params['misc'] as $key => $item) {
-				$product->$key = $item;
-			}
-		}
+		// if(isset($tab_loaded['misc'])) {
+			// foreach($params['misc'] as $key => $item) {
+				// $product->$key = $item;
+			// }
+		// }
+		
+		
+		
 		
 		//Adjusting Children Products
 		if (!empty($originalId) && !empty($this->params['copy_children'])) {

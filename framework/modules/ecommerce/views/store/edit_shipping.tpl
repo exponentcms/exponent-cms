@@ -1,9 +1,9 @@
 {control type="hidden" name="tab_loaded[shipping]" value=1} 
-{control type="checkbox" name="shipping[no_shipping]" label="This item doesn't require shipping" value=1 checked=$record->no_shipping}
+{control type="checkbox" name="shipping[no_shipping]" label="This item doesn't require shipping" value=1 checked=$record->no_shipping postfalse=1}
 {control type="dropdown" name="shipping[required_shipping_calculator_id]" id="required_shipping_calculator_id" label="Required Shipping Service" includeblank="--- Select a shipping service ---" items=$shipping_services value=$record->required_shipping_calculator_id onchange="switchMethods();"}
 {foreach from=$shipping_methods key=calcid item=methods name=sm}
     <div id="dd-{$calcid}" class="hide methods">
-    {control type="dropdown" name="required_shipping_methods[`$calcid`]" label="Shipping Methods" items=$methods value=$record->required_shippng_method}
+    {control type="dropdown" name="required_shipping_methods[`$calcid`]" label="Shipping Methods" items=$methods value=$record->required_shipping_method}
     </div>
 {/foreach}
 {control type="text" name="shipping[weight]" label="Item Weight" size=4 filter=decimal value=$record->weight}

@@ -39,6 +39,9 @@
     <h4>{gettext str="Additional File Attachments"}</h4>
     <p>{gettext str="Attach Product Brochures, Docs, Manuals, etc."}</p>
     {control type=files name=brochures label="Additional Files" subtype="brochures" value=$record->expFile}
+	
+	{control type=files name="featured_image" label="Featured Product Images" subtype="featured_image" value=$record->expFile}
+
 </div>
 
 {script unique="mainimagefunctionality" yui3mods="node,node-event-simulate"}
