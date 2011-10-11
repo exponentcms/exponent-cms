@@ -27,7 +27,7 @@
  * @package Subsystems
  * @subpackage Template
  */
-class formtemplate extends BaseTemplate {  //FIXME only used by calendarmodule for feedback forms
+class formtemplate extends basetemplate {  //FIXME only used by calendarmodule for feedback forms
 
 	function __construct($form, $view) {
 		parent::__construct("forms", $form, $view);

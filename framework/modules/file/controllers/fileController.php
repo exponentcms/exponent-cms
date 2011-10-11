@@ -82,7 +82,7 @@ class fileController extends expController {
         foreach ($paths as $path) {
             $view = $path.'/'.$this->params['view'].'.tpl';
             if (is_readable($view)) {
-                $template = new controllerTemplate($this, $view);
+                $template = new controllertemplate($this, $view);
                 $ar = new expAjaxReply(200, 'ok');
 		        $ar->send();
             }

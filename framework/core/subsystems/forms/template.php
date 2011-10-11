@@ -24,7 +24,7 @@
  * interface to templates.
  */
 //TODO: prepare this class for multiple template systems
-class template extends BaseTemplate {	
+class template extends basetemplate {
 		
 	var $module = '';	
 	

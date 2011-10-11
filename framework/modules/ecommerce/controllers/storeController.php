@@ -504,7 +504,7 @@ class storeController extends expController {
          
         $tpl = $product_type->getForm('show');
         
-        if (!empty($tpl)) $template = new controllerTemplate($this, $tpl);
+        if (!empty($tpl)) $template = new controllertemplate($this, $tpl);
         $this->grabConfig();     
 		
 		assign_to_template(array('config'=>$this->config, 'product'=>$product, 'last_category'=>$order->lastcat));
@@ -546,7 +546,7 @@ class storeController extends expController {
         
         $tpl = $product_type->getForm('show');
         //eDebug($product);
-        if (!empty($tpl)) $template = new controllerTemplate($this, $tpl);
+        if (!empty($tpl)) $template = new controllertemplate($this, $tpl);
         $this->grabConfig();     
 		
 		assign_to_template(array('config'=>$this->config, 'product'=>$product_type, 'last_category'=>$order->lastcat));
@@ -562,7 +562,7 @@ class storeController extends expController {
         $product_type = new $model->product_type($model->id);
         //eDebug($product_type);
         $tpl = $product_type->getForm('show');
-        if (!empty($tpl)) $template = new controllerTemplate($this, $tpl);
+        if (!empty($tpl)) $template = new controllertemplate($this, $tpl);
         //eDebug($template);
         $this->grabConfig();     
         assign_to_template(array('config'=>$this->config, 'product'=>$product_type, 'last_category'=>$order->lastcat));

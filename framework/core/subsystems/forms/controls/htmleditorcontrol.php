@@ -85,7 +85,7 @@ class htmleditorcontrol extends formcontrol {
 			//WARNING: automatic fallback to Default.tpl will not work
 			//until expCore::resolveFilePaths() gets an update
 			//waiting for switch to PHP5: strrpos() will take strings as needle
-			$viewObj = new ControlTemplate("EditorControl", SITE_WYSIWYG_EDITOR);
+			$viewObj = new controltemplate("EditorControl", SITE_WYSIWYG_EDITOR);
 	
 			//assign the data models to the view object
 			$viewObj->assign("view", $view);

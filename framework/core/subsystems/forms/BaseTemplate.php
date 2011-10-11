@@ -19,7 +19,7 @@
 ##################################################
 /** @define "BASE" "../../.." */
 
-class BaseTemplate {
+class basetemplate {
 	// Smarty template object.
 	var $tpl;
 	

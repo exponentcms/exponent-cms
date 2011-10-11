@@ -24,7 +24,7 @@
  * Control Template wrapper
  *
  */
-class ControlTemplate extends BaseTemplate {  //FIXME only used by htmleditorcontrol for FCKeditor
+class controltemplate extends basetemplate {  //FIXME only used by htmleditorcontrol for FCKeditor
 	
 	var $viewitem = "";
 

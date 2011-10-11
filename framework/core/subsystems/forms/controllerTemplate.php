@@ -19,7 +19,7 @@
 ##################################################
 /** @define "BASE" "../../.." */
 
-class controllerTemplate extends baseTemplate {
+class controllertemplate extends basetemplate {
 
 	function __construct($controller, $viewfile) {
 //		include_once(BASE.'external/Smarty-2/libs/Smarty.class.php');

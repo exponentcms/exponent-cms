@@ -327,11 +327,11 @@ function get_common_template($view, $loc, $controllername='') {
     $themepath = BASE.'themes/'.DISPLAY_THEME.'/modules/common/views/'.$controllername.'/'.$view.'.tpl';
 
     if (file_exists($themepath)) {
-        return new controllerTemplate($controller,$themepath);
+        return new controllertemplate($controller,$themepath);
     } elseif(file_exists($basepath)) {
-        return new controllerTemplate($controller,$basepath);
+        return new controllertemplate($controller,$basepath);
     } else {
-        return new controllerTemplate($controller, BASE.'framework/common/views/scaffold/blank.tpl');
+        return new controllertemplate($controller, BASE.'framework/common/views/scaffold/blank.tpl');
     }
 }
 
@@ -424,23 +424,23 @@ function get_template_for_action($controller, $action, $loc) {
     $rootthemepath = BASE.'themes/'.DISPLAY_THEME.'/modules/'.$controller->relative_viewpath.'/'.$root_action[0].'.tpl';
 
     if (file_exists($themepath)) {
-        return new controllerTemplate($controller, $themepath);
+        return new controllertemplate($controller, $themepath);
     } elseif (file_exists($basepath)) {     
-        return new controllerTemplate($controller, $basepath);
+        return new controllertemplate($controller, $basepath);
     } elseif ($root_action[0] != $action) {
         if (file_exists($rootthemepath)) {
-            return new controllerTemplate($controller, $rootthemepath);
+            return new controllertemplate($controller, $rootthemepath);
         } elseif (file_exists($rootbasepath)) {
-            return new controllerTemplate($controller, $rootbasepath);
+            return new controllertemplate($controller, $rootbasepath);
         }
     }
     
     // if we get here it means there were no views for the this action to be found.
     // we will check to see if we have a scaffolded version or else just grab a blank template.
     if (file_exists(BASE.'framework/modules/common/views/scaffold/'.$action.'.tpl')) {
-        return new controllerTemplate($controller, BASE.'framework/modules/common/views/scaffold/'.$action.'.tpl');
+        return new controllertemplate($controller, BASE.'framework/modules/common/views/scaffold/'.$action.'.tpl');
     } else {
-        return new controllerTemplate($controller, BASE.'framework/modules/common/views/scaffold/blank.tpl');
+        return new controllertemplate($controller, BASE.'framework/modules/common/views/scaffold/blank.tpl');
     }
 }
 
