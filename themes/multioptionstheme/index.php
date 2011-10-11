@@ -5,8 +5,8 @@
     <?php 
     expTheme::head(array(
     	"xhtml"=>false,
-    	"css_primer"=>array(
-    	    YUI2_PATH."reset-fonts-grids/reset-fonts-grids.css"),
+	    "css_primer"=>array(
+            YUI2_PATH."yui2-reset-fonts-grids/yui2-reset-fonts-grids.css"),
     	"css_core"=>array("common"),
     	"css_links"=>true,
     	"css_theme"=>true
