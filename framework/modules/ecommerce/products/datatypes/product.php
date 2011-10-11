@@ -735,6 +735,221 @@ class product extends expRecord {
         $item = $this;
         $item->score = $score;     
     }
+	
+	public function update($params=array()) {
+		// eDebug($params, true);
+		global $db;
+		//Get the product
+		$product = $db->selectObject('product', 'id =' . $params['id']);
+
+		$tab_loaded = $params['tab_loaded'];
+		//check if we're saving a newly copied product and if we create children also
+		$originalId = isset($this->params['original_id']) && isset($this->params['copy_children']) ? $this->params['original_id'] : 0;
+		$originalModel = isset($this->params['original_model']) && isset($this->params['copy_children']) ? $this->params['original_model'] : 0;
+		
+		//Tabs with not directly being saved in the product table and need some special operations
+		$tab_exceptions = array(
+				'categories',
+				'options',
+				'related',
+				'userinput',
+				'extrafields',
+				'model',
+				'notes'
+			);
+			
+		foreach($tab_loaded as $tab_key => $tab_item) {
+			if(!in_array($tab_key, $tab_exceptions)) {
+				foreach($params[$tab_key] as $key => $item) {
+					$product->$key = $item;
+				}
+			}
+		}
+		
+		// eDebug($product, true);
+			
+		//TODO: Make this whole stuff loop
+		// if(isset($tab_loaded['general'])) {
+			// foreach($params['general'] as $key => $item) {
+				// $product->$key = $item;
+			// }
+		// }
+		
+		// if(isset($tab_loaded['pricing'])) {
+			// foreach($params['pricing'] as $key => $item) {
+				// $product->$key = $item;
+			// }
+		// }
+		
+		// if(isset($tab_loaded['images'])) {
+			// foreach($params['images'] as $key => $item) {
+				// $product->$key = $item;
+			// }
+			// $product->expFile= $params['expFile'];
+		// }
+		
+		// if(isset($tab_loaded['quantity'])) {
+			// foreach($params['quantity'] as $key => $item) {
+				// $product->$key = $item;
+			// }
+		// }
+		
+		// if(isset($tab_loaded['shipping'])) {
+			// foreach($params['shipping'] as $key => $item) {
+				// $product->$key = $item;
+			// }
+		// }
+		
+		if(isset($tab_loaded['images'])) {
+			$product->expFile= $params['expFile'];
+		}
+		
+		if ($params['shipping']['required_shipping_calculator_id'] > 0) {
+			$product->required_shipping_method = $params['required_shipping_methods'][$params['shipping']['required_shipping_calculator_id']];
+		}
+		
+		if(isset($tab_loaded['categories'])) {
+			$this->saveCategories($params['storeCategory']); 
+			// eDebug($params['storeCategory'], true);
+		}
+		
+		if(isset($tab_loaded['options'])) {
+			//Option Group Tab 
+			if (!empty($params['optiongroups'])) {
+	  
+				foreach ($params['optiongroups'] as $title=>$group) {
+					if (isset($this->params['original_id']) && $params['original_id'] != 0) $group['id'] = '';  //for copying products  
+				 
+					$optiongroup = new  optiongroup($group);
+					$optiongroup->product_id = $product->id;                                
+					$optiongroup->save();
+					
+					foreach ($params['optiongroups'][$title]['options'] as $opt_title=>$opt) {
+						if (isset($params['original_id']) && $params['original_id'] != 0) $opt['id'] = ''; //for copying products
+					   
+						$opt['product_id'] = $product->id;
+						$opt['is_default'] = false;
+						$opt['title'] = $opt_title;
+						$opt['optiongroup_id'] = $optiongroup->id;
+						if (isset($params['defaults'][$title]) && $params['defaults'][$title] == $opt['title']) {
+							$opt['is_default'] = true;
+						}
+						
+						$option = new option($opt);                    
+						$option->save();
+					}
+				}
+			}
+			// eDebug($option, true);
+		}
+		
+		// if(isset($tab_loaded['featured'])) {
+			// foreach($params['featured'] as $key => $item) {
+				// $product->$key = $item;
+			// }
+		// }
+		
+		if(isset($tab_loaded['related'])) {
+			//Related Products Tab
+			if (!empty($params['relatedProducts']) && (empty($originalId) || !empty($params['copy_related']))) {
+				$relprods = $db->selectObjects('crosssellItem_product',"product_id=".$product->id);
+				$db->delete('crosssellItem_product','product_id='.$product->id);
+				foreach ($params['relatedProducts'] as $key=>$prodid) {
+					$ptype = new product($prodid);
+					$tmp->product_id = $product->id;
+					$tmp->crosssellItem_id = $prodid;
+					$tmp->product_type = $ptype->product_type;
+					$db->insertObject($tmp,'crosssellItem_product');
+					
+					if (isset($params['relateBothWays'][$prodid])) {
+						$tmp->crosssellItem_id = $product->id;
+						$tmp->product_id = $prodid;
+						$tmp->product_type = $ptype->product_type;
+						$db->insertObject($tmp,'crosssellItem_product');
+					}
+				}
+			}
+		}
+		
+		if(isset($tab_loaded['userinput'])) {
+			//User Input fields Tab                                                                     
+			if (isset($params['user_input_use']) && is_array($params['user_input_use'])) {        
+				foreach ($params['user_input_use'] as $ukey=>$ufield) {  
+					$user_input_fields[] = array('use'=>$params['user_input_use'][$ukey], 'name'=>$params['user_input_name'][$ukey], 'is_required'=>$params['user_input_is_required'][$ukey], 'min_length'=>$params['user_input_min_length'][$ukey],'max_length'=>$params['user_input_max_length'][$ukey],'description'=>$params['user_input_description'][$ukey]);
+				}
+				$product->user_input_fields = serialize($user_input_fields);
+			} else {
+				$product->user_input_fields = serialize(array());    
+			}
+		}
+		
+		// if(isset($tab_loaded['status'])) {
+			// foreach($params['status'] as $key => $item) {
+				// $product->$key = $item;
+			// }
+		// }
+		
+		// if(isset($tab_loaded['meta'])) {
+			// foreach($params['meta'] as $key => $item) {
+				// $product->$key = $item;
+			// }
+		// }
+		
+		if(isset($tab_loaded['extrafields'])) {
+			//Extra Field Tab
+			foreach ($params['extra_fields_name'] as $xkey=>$xfield) {               
+				if (!empty($xfield)) {
+					$extra_fields[] = array('name'=>$xfield, 'value'=>$params['extra_fields_value'][$xkey]); 
+				}
+			}
+			if (is_array($extra_fields)) {
+				$product->extra_fields = serialize($extra_fields);
+			} else {
+				unset($product->extra_fields);
+			}
+		}
+		
+		// if(isset($tab_loaded['misc'])) {
+			// foreach($params['misc'] as $key => $item) {
+				// $product->$key = $item;
+			// }
+		// }
+		
+		
+		
+		
+		//Adjusting Children Products
+		if (!empty($originalId) && !empty($this->params['copy_children'])) {
+			$origProd = new $product_type($originalId);
+			$children = $origProd->find('all', 'parent_id=' . $originalId);
+			foreach ($children as $child) {
+			
+				unset($child->id);
+				$child->parent_id = $product->id;
+				$child->title = $product->title;
+				$child->sef_url = '';
+				if (isset($this->params['adjust_child_price']) && isset($this->params['new_child_price']) && is_numeric($this->params['new_child_price'])) {
+					$child->base_price = $this->params['new_child_price'];
+				}
+				
+				if (!empty($originalModel)) {
+					$child->model = str_ireplace($originalModel, $product->model, $child->model);    
+				}              
+				
+				$child->save();
+			}
+		}
+		
+		//Check if we are copying and not just editing product
+		if(isset($params['original_id'])) {
+			// eDebug($product->id, true);
+			unset($product->id);
+			unset($product->sef_url);
+			$product->original_id = $params['original_id'];
+			// eDebug($product, true);
+		}	
+		parent::update($product); 
+	}
 }
 
 ?>

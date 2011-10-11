@@ -723,7 +723,12 @@ class storeController extends expController {
     
     function edit() {
         global $db;
-        expHistory::set('editable', $this->params);
+		
+		//Make sure that the view is the edit.tpl and not any ajax views
+		if(isset($this->params['view']) && $this->params['view'] == 'edit') {
+			expHistory::set('editable', $this->params);
+		}
+		
         // first we need to figure out what type of ecomm product we are dealing with
         if (!empty($this->params['id'])) {
             // if we have an id lets pull the product type from the products table.
@@ -942,149 +947,141 @@ class storeController extends expController {
     function update() {
         global $db;
 		
-		if(isset($this->params['original_id'])) {
-			unset($this->params['id']);
-		}
-       // eDebug($this->params['optiongroups'],true);
-        // eDebug($this->params['original_id'],true);
+		//Get the product type
         $product_type = isset($this->params['product_type']) ? $this->params['product_type'] : 'product';
-        $record = new $product_type();
         
-        
-        // find required shipping method if needed
-        if ($this->params['required_shipping_calculator_id'] > 0) {
-            $record->required_shipping_method = $this->params['required_shipping_methods'][$this->params['required_shipping_calculator_id']];
-        } else {
-            $this->params['required_shipping_calculator_id'] = 0;
-        }
-        
-        //extra fields
-        foreach ($this->params['extra_fields_name'] as $xkey=>$xfield)
-        {               
-            if (!empty($xfield) /*&& !empty($this->params['extra_fields_value'][$xkey])*/) $record->extra_fields[] = array('name'=>$xfield, 'value'=>$this->params['extra_fields_value'][$xkey]); 
-        }
-        if (is_array($record->extra_fields)) $record->extra_fields = serialize($record->extra_fields);
-        else unset($record->extra_fields);
-        
-        //user input fields                                                                     
-        if (isset($this->params['user_input_use']) && is_array($this->params['user_input_use'])){        
-            foreach ($this->params['user_input_use'] as $ukey=>$ufield)
-            {  
-                //eDebug($ufield);
-                $record->user_input_fields[] = array('use'=>$this->params['user_input_use'][$ukey], 'name'=>$this->params['user_input_name'][$ukey], 'is_required'=>$this->params['user_input_is_required'][$ukey], 'min_length'=>$this->params['user_input_min_length'][$ukey],'max_length'=>$this->params['user_input_max_length'][$ukey],'description'=>$this->params['user_input_description'][$ukey]);
-            }
-            $record->user_input_fields = serialize($record->user_input_fields);
-        }else{
-            $record->user_input_fields = serialize(array());    
-        }
-        
-        //check if we're saving a newly copied product and if we create children also
-        $originalId = isset($this->params['original_id']) && isset($this->params['copy_children']) ? $this->params['original_id'] : 0;
-        $originalModel = isset($this->params['original_model']) && isset($this->params['copy_children']) ? $this->params['original_model'] : 0;
-        
-        if (!empty($record->parent_id)) $record->sef_url = '';  //if child, set sef_url to nada
-		  // eDebug($record, true);
-		
-        $record->update($this->params);
-        //eDebug($this->params);
-        // eDebug($record, true);
-               
-        if (isset($record->id)) {
-            
-			if($this->params['categories_tab_loaded']) {
-				$record->saveCategories($this->params['storeCategory']); 
+		if(($product_type == 'product' || $product_type == 'childProduct') && isset($this->params['id'])) {
+			$record = new $product_type();
+			$record->update($this->params);
+		} else {
+			$record = new $product_type();
+			//Shipping Tab
+			// find required shipping method if needed
+			if ($this->params['required_shipping_calculator_id'] > 0) {
+				$record->required_shipping_method = $this->params['required_shipping_methods'][$this->params['required_shipping_calculator_id']];
+			} else {
+				$this->params['required_shipping_calculator_id'] = 0;
 			}
-            //eDebug ($this->params['optiongroups'],true);
-            if (!empty($this->params['optiongroups'])) {
-                //eDebug("OrigId:" . $originalId);
-                foreach ($this->params['optiongroups'] as $title=>$group) {
-                    if (isset($this->params['original_id']) && $this->params['original_id'] != 0) $group['id'] = '';  //for copying products  
-                    //eDebug($group);
-                    $optiongroup = new  optiongroup($group);
-                    $optiongroup->product_id = $record->id;                                
-                    $optiongroup->save();
-                    
-                    //eDebug($optiongroup,true);
-                    foreach ($this->params['optiongroups'][$title]['options'] as $opt_title=>$opt) {
-                        if (isset($this->params['original_id']) && $this->params['original_id'] != 0) $opt['id'] = ''; //for copying products
-                       // eDebug($opt);
-                        $opt['product_id'] = $record->id;
-                        $opt['is_default'] = false;
-                        $opt['title'] = $opt_title;
-                        $opt['optiongroup_id'] = $optiongroup->id;
-                        if (isset($this->params['defaults'][$title]) && $this->params['defaults'][$title] == $opt['title']) {
-                            $opt['is_default'] = true;
-                        }
-                        
-                        $option = new option($opt);                    
-                        $option->save();
-                    }
-                }
-            }
-            
-            if (!empty($this->params['relatedProducts']) && (empty($originalId) || !empty($this->params['copy_related']))) {
-                $relprods = $db->selectObjects('crosssellItem_product',"product_id=".$record->id);
-                $db->delete('crosssellItem_product','product_id='.$record->id);
-                foreach ($this->params['relatedProducts'] as $key=>$prodid) {
-                    $ptype = new product($prodid);
-                    $tmp->product_id = $record->id;
-                    $tmp->crosssellItem_id = $prodid;
-                    $tmp->product_type = $ptype->product_type;
-                    $db->insertObject($tmp,'crosssellItem_product');
-                    
-                   // if (isset($this->params['relateBothWays']) && in_array($prodid,$this->params['relateBothWays']))
-                    if (isset($this->params['relateBothWays'][$prodid])) {
-                        $tmp->crosssellItem_id = $record->id;
-                        $tmp->product_id = $prodid;
-                        $tmp->product_type = $ptype->product_type;
-                        $db->insertObject($tmp,'crosssellItem_product');
-                    }
-                    //}
-                }
-            }
-            
-            if (!empty($originalId) && !empty($this->params['copy_children']))
-            {
-                $origProd = new $product_type($originalId);
-                $children = $origProd->find('all', 'parent_id=' . $originalId);
-                foreach ($children as $child)
-                {
-                    unset($child->id);
-                    $child->parent_id = $record->id;
-                    $child->title = $record->title;
-                    $child->sef_url = '';
-                    if (isset($this->params['adjust_child_price']) && isset($this->params['new_child_price']) && is_numeric($this->params['new_child_price']))
-                    {
-                        $child->base_price = $this->params['new_child_price'];
-                    }
-                    if (!empty($originalModel))
-                    {
-                        /*eDebug($originalModel);
-                        eDebug($record->model);
-                        eDebug($child->model);*/
-                        $child->model = str_ireplace($originalModel, $record->model, $child->model);    
-                        //eDebug($child->model);  
-                    }                                                                           
-                    $child->save();
-                }
-            }
-        }        
-        
+			
+			//Extra Field Tab
+			foreach ($this->params['extra_fields_name'] as $xkey=>$xfield) {               
+				if (!empty($xfield)) {
+					$record->extra_fields[] = array('name'=>$xfield, 'value'=>$this->params['extra_fields_value'][$xkey]); 
+				}
+			}
+			if (is_array($record->extra_fields)) {
+				$record->extra_fields = serialize($record->extra_fields);
+			} else {
+				unset($record->extra_fields);
+			}
+			
+			//User Input fields Tab                                                                     
+			if (isset($this->params['user_input_use']) && is_array($this->params['user_input_use'])) {        
+				foreach ($this->params['user_input_use'] as $ukey=>$ufield) {  
+					$record->user_input_fields[] = array('use'=>$this->params['user_input_use'][$ukey], 'name'=>$this->params['user_input_name'][$ukey], 'is_required'=>$this->params['user_input_is_required'][$ukey], 'min_length'=>$this->params['user_input_min_length'][$ukey],'max_length'=>$this->params['user_input_max_length'][$ukey],'description'=>$this->params['user_input_description'][$ukey]);
+				}
+				$record->user_input_fields = serialize($record->user_input_fields);
+			} else {
+				$record->user_input_fields = serialize(array());    
+			}
+			
+			//check if we're saving a newly copied product and if we create children also
+			$originalId = isset($this->params['original_id']) && isset($this->params['copy_children']) ? $this->params['original_id'] : 0;
+			$originalModel = isset($this->params['original_model']) && isset($this->params['copy_children']) ? $this->params['original_model'] : 0;
+			
+			if (!empty($record->parent_id)) $record->sef_url = '';  //if child, set sef_url to nada
+			
+
+			$record->update($this->params);
+
+			if (isset($record->id)) {
+				
+				//Categories Tab 
+				if($this->params['categories_tab_loaded']) {
+					$record->saveCategories($this->params['storeCategory']); 
+				}
+
+				//Option Group Tab 
+				if (!empty($this->params['optiongroups'])) {
+		  
+					foreach ($this->params['optiongroups'] as $title=>$group) {
+						if (isset($this->params['original_id']) && $this->params['original_id'] != 0) $group['id'] = '';  //for copying products  
+					 
+						$optiongroup = new  optiongroup($group);
+						$optiongroup->product_id = $record->id;                                
+						$optiongroup->save();
+						
+						foreach ($this->params['optiongroups'][$title]['options'] as $opt_title=>$opt) {
+							if (isset($this->params['original_id']) && $this->params['original_id'] != 0) $opt['id'] = ''; //for copying products
+						   
+							$opt['product_id'] = $record->id;
+							$opt['is_default'] = false;
+							$opt['title'] = $opt_title;
+							$opt['optiongroup_id'] = $optiongroup->id;
+							if (isset($this->params['defaults'][$title]) && $this->params['defaults'][$title] == $opt['title']) {
+								$opt['is_default'] = true;
+							}
+							
+							$option = new option($opt);                    
+							$option->save();
+						}
+					}
+				}
+				
+				//Related Products Tab
+				if (!empty($this->params['relatedProducts']) && (empty($originalId) || !empty($this->params['copy_related']))) {
+					$relprods = $db->selectObjects('crosssellItem_product',"product_id=".$record->id);
+					$db->delete('crosssellItem_product','product_id='.$record->id);
+					foreach ($this->params['relatedProducts'] as $key=>$prodid) {
+						$ptype = new product($prodid);
+						$tmp->product_id = $record->id;
+						$tmp->crosssellItem_id = $prodid;
+						$tmp->product_type = $ptype->product_type;
+						$db->insertObject($tmp,'crosssellItem_product');
+						
+						if (isset($this->params['relateBothWays'][$prodid])) {
+							$tmp->crosssellItem_id = $record->id;
+							$tmp->product_id = $prodid;
+							$tmp->product_type = $ptype->product_type;
+							$db->insertObject($tmp,'crosssellItem_product');
+						}
+					}
+				}
+				
+				//Adjusting Children Products
+				if (!empty($originalId) && !empty($this->params['copy_children'])) {
+					$origProd = new $product_type($originalId);
+					$children = $origProd->find('all', 'parent_id=' . $originalId);
+					foreach ($children as $child) {
+					
+						unset($child->id);
+						$child->parent_id = $record->id;
+						$child->title = $record->title;
+						$child->sef_url = '';
+						if (isset($this->params['adjust_child_price']) && isset($this->params['new_child_price']) && is_numeric($this->params['new_child_price'])) {
+							$child->base_price = $this->params['new_child_price'];
+						}
+						
+						if (!empty($originalModel)) {
+							$child->model = str_ireplace($originalModel, $record->model, $child->model);    
+						}              
+						
+						$child->save();
+					}
+				}
+			}        
+        }
         $record->addContentToSearch();
-        
-        if($record->parent_id != 0 )
-        {
+		
+        //Create a flash message and redirect to the page accordingly
+        if($record->parent_id != 0 ) {
             $parent = new $product_type($record->parent_id,false,false);
             flash("message","Child product saved.");                
             redirect_to(array('controller'=>'store','action'=>'showByTitle','title'=>$parent->sef_url));
-        }
-        else if(isset($this->params['original_id']) )
-        {
+        } elseif(isset($this->params['original_id']) ) {
             flash("message","Product copied and saved. You are now viewing your new product.");                
             redirect_to(array('controller'=>'store','action'=>'showByTitle','title'=>$record->sef_url));
-        }
-        else
-        {            
+        } else {            
             flash("message","Product saved.");                
             redirect_to(array('controller'=>'store','action'=>'showByTitle','title'=>$record->sef_url));
         }        

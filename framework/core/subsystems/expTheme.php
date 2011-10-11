@@ -356,11 +356,12 @@ class expTheme {
 		$head_config = $config;
 
 		// check to see if we're in XHTML or HTML mode
-		if(empty($config['xhtml'])||($config['xhtml']==true)){
-			define("XHTML",1);define("XHTML_CLOSING",""); //default
+		if(isset($config['xhtml']) && $config['xhtml']==true){
+			define("XHTML",1);define("XHTML_CLOSING","/"); //default
 		} else {
-			define("XHTML",0); define("XHTML_CLOSING","/");
+			define("XHTML",0); define("XHTML_CLOSING","");
 		}
+
 
 		// Load primer CSS files, or default to false if not set.
 		if(!empty($config['css_primer'])){
@@ -412,7 +413,7 @@ class expTheme {
 //		if(file_exists(BASE.'themes/'.DISPLAY_THEME_REAL.'/favicon.ico')) {
 //			$str .= "\t".'<link rel="shortcut icon" href="'.URL_FULL.'themes/'.DISPLAY_THEME_REAL.'/favicon.ico" type="image/x-icon" />'."\r\n";
 		if(file_exists(BASE.'themes/'.DISPLAY_THEME.'/favicon.ico')) {
-			$str .= "\t".'<link rel="shortcut icon" href="'.URL_FULL.'themes/'.DISPLAY_THEME.'/favicon.ico" type="image/x-icon" />'."\r\n";
+			$str .= "\t".'<link rel="shortcut icon" href="'.URL_FULL.'themes/'.DISPLAY_THEME.'/favicon.ico" type="image/x-icon" '.XHTML_CLOSING.'>'."\r\n";
 		}
 
 		return $str;
@@ -962,9 +963,9 @@ class expTheme {
 			$mobile_browser++;
 		}
 
-		if ((strpos(strtolower($_SERVER['HTTP_ACCEPT']),'application/vnd.wap.xhtml+xml') > 0) or ((isset($_SERVER['HTTP_X_WAP_PROFILE']) or isset($_SERVER['HTTP_PROFILE'])))) {
-			$mobile_browser++;
-		}
+		if (isset($_SERVER['HTTP_ACCEPT']) && (strpos(strtolower($_SERVER['HTTP_ACCEPT']),'application/vnd.wap.xhtml+xml') > 0) or ((isset($_SERVER['HTTP_X_WAP_PROFILE']) or isset($_SERVER['HTTP_PROFILE'])))) {
+            $mobile_browser++;
+        }
 
 		$mobile_ua = strtolower(substr($_SERVER['HTTP_USER_AGENT'], 0, 4));
 		$mobile_agents = array(
@@ -972,7 +973,7 @@ class expTheme {
 			'blaz','brew','cell','cldc','cmd-','dang','doco','eric','hipt','inno',
 			'ipaq','java','jigs','kddi','keji','leno','lg-c','lg-d','lg-g','lge-',
 			'maui','maxo','midp','mits','mmef','mobi','mot-','moto','mwbp','nec-',
-			'newt','noki','oper','palm','pana','pant','phil','play','port','prox',
+			'newt','noki',/*'oper',*/'palm','pana','pant','phil','play','port','prox',
 			'qwap','sage','sams','sany','sch-','sec-','send','seri','sgh-','shar',
 			'sie-','siem','smal','smar','sony','sph-','symb','t-mo','teli','tim-',
 			'tosh','tsm-','upg1','upsi','vk-v','voda','wap-','wapa','wapi','wapp',
