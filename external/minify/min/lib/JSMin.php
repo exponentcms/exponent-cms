@@ -1,10 +1,6 @@
 <?php
 /**
- * jsmin.php - extended PHP implementation of Douglas Crockford's JSMin.
- *
- * <code>
- * $minifiedJs = JSMin::minify($js);
- * </code>
+ * jsmin.php - PHP implementation of Douglas Crockford's JSMin.
  *
  * This is a direct port of jsmin.c to PHP with a few PHP performance tweaks and
  * modifications to preserve some comments (see below). Also, rather than using
@@ -68,7 +64,7 @@ class JSMin {
     protected $inputLength = 0;
     protected $lookAhead   = null;
     protected $output      = '';
-
+    
     /**
      * Minify Javascript
      *
@@ -77,27 +73,17 @@ class JSMin {
      */
     public static function minify($js)
     {
-        // look out for syntax like "++ +" and "- ++"
-        $p = '\\+';
-        $m = '\\-';
-        if (preg_match("/([$p$m])(?:\\1 [$p$m]| (?:$p$p|$m$m))/", $js)) {
-            // likely pre-minified and would be broken by JSMin
-            return $js;
-        }
         $jsmin = new JSMin($js);
         return $jsmin->min();
     }
-
-    /*
-     * Don't create a JSMin instance, instead use the static function minify,
-     * which checks for mb_string function overloading and avoids errors
-     * trying to re-minify the output of Closure Compiler
-     *
-     * @private
+    
+    /**
+     * Setup process
      */
     public function __construct($input)
     {
-        $this->input = $input;
+        $this->input       = str_replace("\r\n", "\n", $input);
+        $this->inputLength = strlen($this->input);
     }
     
     /**
@@ -108,15 +94,6 @@ class JSMin {
         if ($this->output !== '') { // min already run
             return $this->output;
         }
-
-        $mbIntEnc = null;
-        if (function_exists('mb_strlen') && ((int)ini_get('mbstring.func_overload') & 2)) {
-            $mbIntEnc = mb_internal_encoding();
-            mb_internal_encoding('8bit');
-        }
-        $this->input = str_replace("\r\n", "\n", $this->input);
-        $this->inputLength = strlen($this->input);
-
         $this->action(self::ACTION_DELETE_A_B);
         
         while ($this->a !== null) {
@@ -129,11 +106,8 @@ class JSMin {
             } elseif ($this->a === "\n") {
                 if ($this->b === ' ') {
                     $command = self::ACTION_DELETE_A_B;
-                // in case of mbstring.func_overload & 2, must check for null b,
-                // otherwise mb_strpos will give WARNING
-                } elseif ($this->b === null
-                          || (false === strpos('{[(+-', $this->b)
-                              && ! $this->isAlphaNum($this->b))) {
+                } elseif (false === strpos('{[(+-', $this->b) 
+                          && ! $this->isAlphaNum($this->b)) {
                     $command = self::ACTION_DELETE_A;
                 }
             } elseif (! $this->isAlphaNum($this->a)) {
@@ -146,10 +120,6 @@ class JSMin {
             $this->action($command);
         }
         $this->output = trim($this->output);
-
-        if ($mbIntEnc !== null) {
-            mb_internal_encoding($mbIntEnc);
-        }
         return $this->output;
     }
     
@@ -176,8 +146,7 @@ class JSMin {
                         }
                         if (ord($this->a) <= self::ORD_LF) {
                             throw new JSMin_UnterminatedStringException(
-                                "JSMin: Unterminated String at byte "
-                                . $this->inputIndex . ": {$str}");
+                                'Unterminated String: ' . var_export($str, true));
                         }
                         $str .= $this->a;
                         if ($this->a === '\\') {
@@ -204,8 +173,7 @@ class JSMin {
                             $pattern      .= $this->a;
                         } elseif (ord($this->a) <= self::ORD_LF) {
                             throw new JSMin_UnterminatedRegExpException(
-                                "JSMin: Unterminated RegExp at byte "
-                                . $this->inputIndex .": {$pattern}");
+                                'Unterminated RegExp: '. var_export($pattern, true));
                         }
                         $this->output .= $this->a;
                     }
@@ -317,9 +285,7 @@ class JSMin {
                     return ' ';
                 }
             } elseif ($get === null) {
-                throw new JSMin_UnterminatedCommentException(
-                    "JSMin: Unterminated comment at byte "
-                    . $this->inputIndex . ": /*{$comment}");
+                throw new JSMin_UnterminatedCommentException('Unterminated Comment: ' . var_export('/*' . $comment, true));
             }
             $comment .= $get;
         }

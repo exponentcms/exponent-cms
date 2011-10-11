@@ -59,7 +59,7 @@ class HTTP_Encoder {
      * 
      * @var bool
      */
-    public static $encodeToIe6 = true;
+    public static $encodeToIe6 = false;
     
     
     /**
@@ -90,13 +90,8 @@ class HTTP_Encoder {
      */
     public function __construct($spec) 
     {
-        $this->_useMbStrlen = (function_exists('mb_strlen')
-                               && (ini_get('mbstring.func_overload') !== '')
-                               && ((int)ini_get('mbstring.func_overload') & 2));
         $this->_content = $spec['content'];
-        $this->_headers['Content-Length'] = $this->_useMbStrlen
-            ? (string)mb_strlen($this->_content, '8bit')
-            : (string)strlen($this->_content);
+        $this->_headers['Content-Length'] = (string)strlen($this->_content);
         if (isset($spec['type'])) {
             $this->_headers['Content-Type'] = $spec['type'];
         }
@@ -200,7 +195,7 @@ class HTTP_Encoder {
         // @link http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html
         
         if (! isset($_SERVER['HTTP_ACCEPT_ENCODING'])
-            || self::isBuggyIe())
+            || self::_isBuggyIe())
         {
             return array('', '');
         }
@@ -258,9 +253,7 @@ class HTTP_Encoder {
      */
     public function encode($compressionLevel = null)
     {
-        if (! self::isBuggyIe()) {
-            $this->_headers['Vary'] = 'Accept-Encoding';
-        }
+        $this->_headers['Vary'] = 'Accept-Encoding';
         if (null === $compressionLevel) {
             $compressionLevel = self::$compressionLevel;
         }
@@ -280,9 +273,7 @@ class HTTP_Encoder {
         if (false === $encoded) {
             return false;
         }
-        $this->_headers['Content-Length'] = $this->_useMbStrlen
-            ? (string)mb_strlen($encoded, '8bit')
-            : (string)strlen($encoded);
+        $this->_headers['Content-Length'] = strlen($encoded);
         $this->_headers['Content-Encoding'] = $this->_encodeMethod[1];
         $this->_content = $encoded;
         return true;
@@ -310,13 +301,15 @@ class HTTP_Encoder {
         $he->sendAll();
         return $ret;
     }
+    
+    protected $_content = '';
+    protected $_headers = array();
+    protected $_encodeMethod = array('', '');
 
     /**
-     * Is the browser an IE version earlier than 6 SP2?
-     *
-     * @return bool
+     * Is the browser an IE version earlier than 6 SP2?  
      */
-    public static function isBuggyIe()
+    protected static function _isBuggyIe()
     {
         $ua = $_SERVER['HTTP_USER_AGENT'];
         // quick escape for non-IEs
@@ -325,14 +318,9 @@ class HTTP_Encoder {
             return false;
         }
         // no regex = faaast
-        $version = (float)substr($ua, 30);
+        $version = (float)substr($ua, 30); 
         return self::$encodeToIe6
             ? ($version < 6 || ($version == 6 && false === strpos($ua, 'SV1')))
             : ($version < 7);
     }
-    
-    protected $_content = '';
-    protected $_headers = array();
-    protected $_encodeMethod = array('', '');
-    protected $_useMbStrlen = false;
 }
