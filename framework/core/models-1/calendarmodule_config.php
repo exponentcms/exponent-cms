@@ -84,7 +84,7 @@ class calendarmodule_config {
 
 		// setup the listbuilder arrays for calendar aggregation.	
 		$loc = unserialize($object->location_data);
-		$calendars = exponent_modules_getModuleInstancesByType('calendarmodule');
+		$calendars = expModules::getModuleInstancesByType('calendarmodule');
 		$saved_aggregates = empty($object->aggregate) ? array() : unserialize($object->aggregate);
 		$all_calendars = array();
 		$selected_calendars = array();

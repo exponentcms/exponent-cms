@@ -350,7 +350,7 @@ abstract class expController {
 
 	    // check for eAlerts
 	    if (!empty($this->params['send_ealerts'])) {
-            redirect_to(array('controller'=>'ealert','action'=>'send_confirm','model'=>$modelname,'id'=>$this->$modelname->id, 'src'=>$this->loc->src,'orig_controller'=>getControllerName($this->classname)));
+            redirect_to(array('controller'=>'ealert','action'=>'send_confirm','model'=>$modelname,'id'=>$this->$modelname->id, 'src'=>$this->loc->src,'orig_controller'=>expModules::getControllerName($this->classname)));
         } else {
             expHistory::back();
         }
@@ -434,7 +434,7 @@ abstract class expController {
 	 */
 	function configure() {
         expHistory::set('editable', $this->params);
-        $pullable_modules = listInstalledControllers($this->classname, $this->loc);
+        $pullable_modules = expModules::listInstalledControllers($this->classname, $this->loc);
         $views = get_config_templates($this, $this->loc);
         assign_to_template(array('config'=>$this->config, 'pullable_modules'=>$pullable_modules, 'views'=>$views));
     }

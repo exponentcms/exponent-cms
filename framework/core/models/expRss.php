@@ -35,7 +35,7 @@ class expRss extends expRecord {
     public function __construct($params=array()) {
         global $db;
         if (isset($params['module']) && isset($params['src'])) {
-            $id = $db->selectValue($this->table, 'id', "module='".getControllerName($params['module'])."' AND src='".$params['src']."'");
+            $id = $db->selectValue($this->table, 'id', "module='".expModules::getControllerName($params['module'])."' AND src='".$params['src']."'");
             parent::__construct($id, false, false);
         } else {
             parent::__construct($params, false, false);
@@ -46,7 +46,7 @@ class expRss extends expRecord {
     // make sure the name of the controller is in the right format
     public function build($params=array()) {
         parent::build($params);
-        $this->module = getControllerName($this->module);
+        $this->module = expModules::getControllerName($this->module);
     }
     
 	// override the update function in order to make sure we don't save duplicate entries
@@ -57,7 +57,7 @@ class expRss extends expRecord {
 	}
 	
     public function beforeSave() {
-        $this->module = getControllerName($this->module);
+        $this->module = expModules::getControllerName($this->module);
         parent::beforeSave();
     }
     
@@ -70,7 +70,7 @@ class expRss extends expRecord {
         $items = array();
         // loop over and build out a master list of rss items
         foreach ($feeds as $feed) {
-            $controllername = getControllerClassname($feed->module);
+            $controllername = expModules::getControllerClassname($feed->module);
             $controller = new $controllername($feed->src);
             $controller->loc = makeLocation($feed->module, $feed->src);
             $items = array_merge($items, $controller->getRSSContent());

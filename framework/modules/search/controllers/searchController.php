@@ -78,7 +78,7 @@ class searchController extends expController {
 		    }
 	    }
 
-	    foreach (listControllers() as $ctlname=>$ctl) {
+	    foreach (expModules::listControllers() as $ctlname=>$ctl) {
 		    $controller = new $ctlname();		    
 		    if (method_exists($controller,'isSearchable') && $controller->isSearchable()) {
 			    $mods[$controller->name()] = $controller->addContentToSearch();

@@ -41,7 +41,7 @@ expSession::initialize();
 expTheme::initialize();
 
 // Create the list of available/active controllers
-$available_controllers = initializeControllers();  //original position
+$available_controllers = expModules::initializeControllers();  //original position
 //$available_controllers = array();
 
 // Initialize the language subsystem
@@ -56,7 +56,7 @@ $db = expDatabase::connect(DB_USER,DB_PASS,DB_HOST.':'.DB_PORT,DB_NAME);
 
 // Initialize the old school Modules subsystem.
 require_once(BASE.'framework/core/subsystems-1/modules.php');
-exponent_modules_initialize(); // now in the autoloader, if used
+expModules::initializeModules(); // now in the autoloader, if used
 
 // Initialize the Template subsystem.
 //require_once(BASE.'framework/core/subsystems-1/template.php');

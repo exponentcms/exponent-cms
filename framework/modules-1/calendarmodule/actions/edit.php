@@ -145,7 +145,7 @@ if (($item == null && expPermissions::check('post',$loc)) ||
 	}
 	
 	include_once(BASE.'framework/core/subsystems-1/modules.php');
-	$form->validationScript = exponent_modules_getJSValidationFile('calendarmodule','postedit');
+	$form->validationScript = expModules::getJSValidationFile('calendarmodule','postedit');
 	
 	$template = new template('calendarmodule','_form_edit',$loc);
 	$template->assign('form_html',$form->toHTML());

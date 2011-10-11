@@ -32,7 +32,7 @@ if ($secref && $secref->refcount == 0 && expPermissions::check("administrate",$i
     expSession::clearAllUsersSessionCache($iloc);
 	
 	//FIXME: more module/controller glue code
-	if (controllerExists($modclass)) {
+	if (expModules::controllerExists($modclass)) {
 	    $mod = new $modclass($iloc->src);
 	    $mod->delete_instance();
 	} else {

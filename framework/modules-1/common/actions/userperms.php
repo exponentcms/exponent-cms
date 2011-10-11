@@ -37,7 +37,7 @@ if ($user->isAdmin()) {
 	
 //	include_once(BASE.'framework/core/subsystems-1/users.php');
 	$users = array();
-	$modulename = controllerExists($loc->mod) ? getControllerClassName($loc->mod) : $loc->mod;
+	$modulename = expModules::controllerExists($loc->mod) ? expModules::getControllerClassName($loc->mod) : $loc->mod;
 	$modclass = $modulename;
 	$mod = new $modclass();
 	$perms = $mod->permissions($loc->int);

@@ -270,7 +270,7 @@ class ecomconfigController extends expController {
         $this->loc->src = "@globalstoresettings";
         $config = new expConfig($this->loc);
         $this->config = $config->config;
-        $pullable_modules = listInstalledControllers($this->classname, $this->loc);
+        $pullable_modules = expModules::listInstalledControllers($this->classname, $this->loc);
         $views = get_config_templates($this, $this->loc);
         
         $gc = new geoCountry();             

@@ -32,7 +32,7 @@ if (expPermissions::check('administrate',$loc)) {
 //	include_once(BASE.'framework/core/subsystems-1/users.php');
 
 	$users = array(); // users = groups
-    $modulename = controllerExists($loc->mod) ? getControllerClassName($loc->mod) : $loc->mod;    
+    $modulename = expModules::controllerExists($loc->mod) ? expModules::getControllerClassName($loc->mod) : $loc->mod;
     //$modclass = $loc->mod;
 	$modclass = $modulename;
 	$mod = new $modclass();

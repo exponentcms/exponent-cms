@@ -30,7 +30,7 @@ function smarty_function_securelink($params,&$smarty) {
                 $params['module'] = empty($params['controller']) ? $loc->mod : $params['controller'];
         }
         if (!isset($params['src'])) {
-                 if (controllerExists($params['module'])) {
+                 if (expModules::controllerExists($params['module'])) {
                         $params['src'] = $loc->src;
                 } elseif (@call_user_func(array($loc->mod,'hasSources'))) {
                         $params['src'] = $loc->src;

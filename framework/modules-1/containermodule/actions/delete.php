@@ -44,7 +44,7 @@ if ($container != null) {
 		if ($secref->refcount == 0 && expPermissions::check('administrate',$iloc) && call_user_func(array($iloc->mod,'hasContent')) == 1) {
 			//FIXME: module/controller glue code
 			// remove this controllers data from the search table.			
-			if (controllerExists($iloc->mod)) {
+			if (expModules::controllerExists($iloc->mod)) {
 			    $controller = new $iloc->mod($iloc->src);
 			    $controller->delete_search();
 			}

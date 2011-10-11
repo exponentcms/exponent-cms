@@ -79,7 +79,7 @@ class search extends expRecord {
 	       } else {
                 $rloc = unserialize($records[$i]->location_data);
                 if (!empty($rloc)) {
-                    $sectionref = $db->selectObject("sectionref","module='".getControllerClassName($rloc->mod)."' AND source='".$rloc->src."'");
+                    $sectionref = $db->selectObject("sectionref","module='".expModules::getControllerClassName($rloc->mod)."' AND source='".$rloc->src."'");
                     if (!empty($sectionref)) {
                         $section = $db->selectObject("section","id=".$sectionref->section);
                         if (empty($section) || !navigationmodule::canView($section)) {

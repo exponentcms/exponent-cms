@@ -32,8 +32,8 @@ function smarty_function_icon($params,&$smarty) {
     if (!isset($params['controller']))
     {
 	    if (!isset($params['module'])) $params['module'] = $loc->mod;
-	    if (controllerExists($params['module'])) {
-	        $params['controller'] = getControllerName($params['module']);
+	    if (expModules::controllerExists($params['module'])) {
+	        $params['controller'] = expModules::getControllerName($params['module']);
 	        unset($params['module']);
 	    }
     }

@@ -117,7 +117,7 @@ class help extends expRecord {
 
     public static function makeHelpLink($module) {
         // make sure the module name is in the right format.
-        $module = getControllerName($module);
+        $module = expModules::getControllerName($module);
         
         // figure out which version we're on
         $full_version = EXPONENT_VERSION_MAJOR.'.'.EXPONENT_VERSION_MINOR.'.'.EXPONENT_VERSION_REVISION.EXPONENT_VERSION_TYPE;

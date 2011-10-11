@@ -48,7 +48,7 @@ if (!defined('EXPONENT')) exit('');
 			$mod = new $modclass();			
 			if (class_exists($modclass)) {			    
 			    ob_start();
-			    if (controllerExists($modclass)) {
+			    if (expModules::controllerExists($modclass)) {
                     renderAction(array('controller'=>$modclass, 'action'=>'showall','src'=>$orphan->source));                
                 } else {                    
 			        $mod->show("Default",$loc);

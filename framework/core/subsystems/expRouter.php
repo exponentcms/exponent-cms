@@ -184,7 +184,7 @@ class expRouter {
                 if (!empty($_POST['controller']) || !empty($_POST['module'])) {
                     $module = !empty($_POST['controller']) ? $_POST['controller'] : $_POST['module'];
                     // Figure out if this is module or controller request - WE ONLY NEED THIS CODE UNTIL WE PULL OUT THE OLD MODULES
-                    if (controllerExists($module)) {
+                    if (expModules::controllerExists($module)) {
                         $_POST['controller'] = $module;
                         $_REQUEST['controller'] = $module;
                     }
@@ -381,7 +381,7 @@ class expRouter {
               
             if ($matched) {
                 // safeguard against false matches when a real action was what the user really wanted.
-                if (method_exists(getController($this->url_parts[0]), $this->url_parts[1])) return false;
+                if (method_exists(expModules::getController($this->url_parts[0]), $this->url_parts[1])) return false;
 
                 $this->url_parts = array();
                 $this->url_parts[0] = $map['controller'];
@@ -422,7 +422,7 @@ class expRouter {
         $return_params['action'] = $this->url_parts[1];     // set the action
 
         // Figure out if this is module or controller request - WE ONLY NEED THIS CODE UNTIL WE PULL OUT THE OLD MODULES
-        if (controllerExists($return_params['controller'])) {
+        if (expModules::controllerExists($return_params['controller'])) {
             $requestType = 'controller';
         } elseif (is_dir(BASE.'framework/modules-1/'.$return_params['controller'])) {
             $requestType = 'module';

@@ -52,7 +52,7 @@ class tagtreecontrol extends formcontrol {
 		$this->expandonstart = empty($params['expandonstart']) ? "false" : "true";
 		
 		// setup the controller for this..if it wasn't passed in we'll default to expTag
-		$this->controller_classname = getControllerClassName(isset($params['controller']) ? $params['controller'] : 'expTag');
+		$this->controller_classname = expModules::getControllerClassName(isset($params['controller']) ? $params['controller'] : 'expTag');
 		$this->controller = new $this->controller_classname();
 		
 		// check if a model name was passed in..if not we'll guess it from the controller

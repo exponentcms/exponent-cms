@@ -94,7 +94,7 @@ class expCore {
 		$link = (ENABLE_SSL ? NONSSL_URL : URL_BASE);
 
 		//FIXME: Hardcoded controller stuff!!
-		if (controllerExists($params['module'])) {
+		if (expModules::controllerExists($params['module'])) {
 			$link .= SCRIPT_RELATIVE . "site_rss.php" . "?";
 		} else {
 			$link .= SCRIPT_RELATIVE . "rss.php" . "?";
@@ -119,7 +119,7 @@ class expCore {
 	public static function makePodcastLink($params) {
 		$link = (ENABLE_SSL ? NONSSL_URL : URL_BASE);
 		//FIXME: Hardcoded controller stuff!!
-		if (controllerExists($params['module'])) {
+		if (expModules::controllerExists($params['module'])) {
 			$link .= SCRIPT_RELATIVE . "site_rss.php" . "?";
 		} else {
 			$link .= SCRIPT_RELATIVE . "rss.php" . "?";

@@ -38,7 +38,7 @@ function smarty_function_link($params,&$smarty) {
 	} 
 	
 	// make sure the module isn't really a controller
-	if (controllerExists($params['module'])) {
+	if (expModules::controllerExists($params['module'])) {
 		$params['controller'] = $params['module'];
 		unset ($params['module']);
 	}
