@@ -49,7 +49,7 @@ class expModules {
     public static function listActiveOSMods() {
         global $db;
         
-        $osmods = self::exponent_modules_list();
+        $osmods = self::modules_list();
 
         foreach ($osmods as $module) {
             if (class_exists($module)) {
@@ -70,7 +70,7 @@ class expModules {
     }
     
     
-    public static function exponent_modules_list() {
+    public static function modules_list() {
     	$mods = array();
     	if (is_readable(BASE."framework/modules-1")) {
     		$dh = opendir(BASE."framework/modules-1");

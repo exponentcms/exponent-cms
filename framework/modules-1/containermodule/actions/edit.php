@@ -70,7 +70,7 @@ if (expPermissions::check('edit_module',$loc) || expPermissions::check('add_modu
 	$haveclass = false;
 	$mods = array();
 	
-	//$modules_list = (isset($container->id) ? expModules::exponent_modules_list() : exponent_modules_listActive());
+	//$modules_list = (isset($container->id) ? expModules::modules_list() : exponent_modules_listActive());
 	$modules_list = getModulesAndControllers();
 
 	if (!count($modules_list)) { // No active modules

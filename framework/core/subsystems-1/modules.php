@@ -47,16 +47,16 @@ function exponent_modules_initialize() {
  * Returns the list of module class names.
  * @node Subsystems:Modules
  */
-function exponent_modules_list() { //FIXME already in expModules
-	$mods = array();
-	if (is_readable(BASE."framework/modules-1")) {
-		$dh = opendir(BASE."framework/modules-1");
-		while (($file = readdir($dh)) !== false) {
-			if (substr($file,-6,6) == "module") $mods[] = $file;
-		}
-	}
-	return $mods;
-}
+//function exponent_modules_list() { //FIXME already in expModules
+//	$mods = array();
+//	if (is_readable(BASE."framework/modules-1")) {
+//		$dh = opendir(BASE."framework/modules-1");
+//		while (($file = readdir($dh)) !== false) {
+//			if (substr($file,-6,6) == "module") $mods[] = $file;
+//		}
+//	}
+//	return $mods;
+//}
 
 /* exdoc
  * Looks through the database returns a list of all module class
