@@ -56,7 +56,7 @@ class basetemplate {
 		$this->tpl->caching = false;
 		$this->tpl->cache_dir = BASE . 'tmp/cache';
 
-		//$this->tpl->plugins_dir[] = BASE . 'framework/core/subsystems-1/template/Smarty/plugins';
+//		$this->tpl->plugins_dir[] = BASE . 'framework/core/plugins';
 //		$this->tpl->plugins_dir[] = BASE . 'framework/plugins';
 		// now reverse the array so we can bypass looking in our root folder for old plugins
 //		$this->tpl->plugins_dir = array_reverse($this->tpl->plugins_dir);
