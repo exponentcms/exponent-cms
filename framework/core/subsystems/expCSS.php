@@ -99,7 +99,7 @@ class expCSS {
 
             foreach ($srt as $link) {
                 $link = rtrim($link,",");
-                $html .= "\t".'<link rel="stylesheet" type="text/css" href="'.PATH_RELATIVE.'external/minify/min/index.php?f=' . $link . '" />'."\r\n";
+                $html .= "\t".'<link rel="stylesheet" type="text/css" href="'.PATH_RELATIVE.'external/minify/min/index.php?f=' . $link . '"' . XHTML_CLOSING.'>'."\r\n";
             }
         }
         
