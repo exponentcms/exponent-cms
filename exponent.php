@@ -55,7 +55,7 @@ $db = expDatabase::connect(DB_USER,DB_PASS,DB_HOST.':'.DB_PORT,DB_NAME);
 //}
 
 // Initialize the old school Modules subsystem.
-require_once(BASE.'framework/core/subsystems-1/modules.php');
+//require_once(BASE.'framework/core/subsystems-1/modules.php');
 expModules::initializeModules(); // now in the autoloader, if used
 
 // Initialize the Template subsystem.
