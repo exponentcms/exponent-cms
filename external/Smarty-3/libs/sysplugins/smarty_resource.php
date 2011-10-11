@@ -399,7 +399,7 @@ abstract class Smarty_Resource {
         }
 
         // check runtime cache
-        $_cache_key_dir = join(DIRECTORY_SEPARATOR, $smarty->getTemplateDir());
+        $_cache_key_dir = $smarty->joined_template_dir;
         $_cache_key = 'template|' . $template_resource;
         if (!isset(self::$sources[$_cache_key_dir])) {
             self::$sources[$_cache_key_dir] = array();
@@ -440,6 +440,7 @@ abstract class Smarty_Resource {
      */
     public static function config(Smarty_Internal_Config $_config)
     {
+        static $_incompatible_resources = array('eval' => true, 'string' => true, 'extends' => true, 'php' => true);
         $config_resource = $_config->config_resource;
         $smarty = $_config->smarty;
 
@@ -457,8 +458,8 @@ abstract class Smarty_Resource {
                 $resource_name = $config_resource;
             }
         }
-
-        if (in_array($resource_type, array('eval', 'string', 'extends', 'php'))) {
+        
+        if (isset($_incompatible_resources[$resource_type])) {
             throw new SmartyException ("Unable to use resource '{$resource_type}' for config");
         }
 
@@ -598,7 +599,7 @@ class Smarty_Template_Source {
     public function getCompiled(Smarty_Internal_Template $_template)
     {
         // check runtime cache
-        $_cache_key_dir = join(DIRECTORY_SEPARATOR, $_template->smarty->getTemplateDir());
+        $_cache_key_dir = $_template->smarty->joined_template_dir;
         $_cache_key = $_template->template_resource . '#' . $_template->compile_id;
         if (!isset(Smarty_Resource::$compileds[$_cache_key_dir])) {
             Smarty_Resource::$compileds[$_cache_key_dir] = array();

@@ -240,7 +240,7 @@ class Smarty_Internal_Template extends Smarty_Internal_TemplateBase {
     public function getSubTemplate($template, $cache_id, $compile_id, $caching, $cache_lifetime, $data, $parent_scope)
     {
         // already in template cache?
-        $_templateId = sha1(join(DIRECTORY_SEPARATOR, $this->smarty->getTemplateDir()).$template . $cache_id . $compile_id);
+        $_templateId = sha1($this->smarty->joined_template_dir.$template . $cache_id . $compile_id);
         if (isset($this->smarty->template_objects[$_templateId])) {
             // clone cached template object because of possible recursive call
             $tpl = clone $this->smarty->template_objects[$_templateId];
@@ -360,7 +360,14 @@ class Smarty_Internal_Template extends Smarty_Internal_TemplateBase {
                 // copy code of {function} tags called in nocache mode
                 foreach ($this->smarty->template_functions as $name => $function_data) {
                     if (isset($function_data['called_nocache'])) {
-                        unset($function_data['called_nocache'], $this->smarty->template_functions[$name]['called_nocache']);
+                        foreach ($function_data['called_functions'] as $func_name) {
+                            $this->smarty->template_functions[$func_name]['called_nocache'] = true;
+                        }
+                    }
+                }
+                 foreach ($this->smarty->template_functions as $name => $function_data) {
+                    if (isset($function_data['called_nocache'])) {
+                        unset($function_data['called_nocache'], $function_data['called_functions'], $this->smarty->template_functions[$name]['called_nocache']);
                         $this->properties['function'][$name] = $function_data;
                     }
                 }
@@ -427,7 +434,7 @@ class Smarty_Internal_Template extends Smarty_Internal_TemplateBase {
                 } elseif ($_file_to_check[2] == 'string') {
                     continue;
                 } else {
-                    $source = Smarty_Resource::source($this, $this->smarty, $_file_to_check[0]);
+                    $source = Smarty_Resource::source(null, $this->smarty, $_file_to_check[0]);
                     $mtime = $source->timestamp;
                 }
                 if ($mtime > $_file_to_check[1]) {
@@ -586,7 +593,7 @@ class Smarty_Internal_Template extends Smarty_Internal_TemplateBase {
                 // cache template object under a unique ID
                 // do not cache eval resources
                 if ($this->source->type != 'eval') {
-                    $this->smarty->template_objects[sha1(join(DIRECTORY_SEPARATOR, $this->smarty->getTemplateDir()).$this->template_resource . $this->cache_id . $this->compile_id)] = $this;
+                    $this->smarty->template_objects[sha1($this->smarty->joined_template_dir.$this->template_resource . $this->cache_id . $this->compile_id)] = $this;
                 }
                 return $this->source;
 
