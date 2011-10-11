@@ -1,3 +1,12 @@
+THIS IS A BETA RELEASE OF MINIFY 2.1.4
+
+With it comes lots of new bug fixes and features (more details in
+HISTORY.txt), but potentially new bugs as well, so be on the lookout. 
+
+Please kick the tires, especially with the cookie-based debug mode 
+and combining multiple groups and files together.
+
+
 WELCOME TO MINIFY 2.1!
 
 Minify is an HTTP content server. It compresses sources of content 
@@ -8,6 +17,14 @@ and tell clients to cache the file for a period of time.
 More info: http://code.google.com/p/minify/
 
 
+WORDPRESS USER?
+
+These WP plugins integrate Minify into WordPress's style and script hooks to
+get you set up faster.
+  http://wordpress.org/extend/plugins/wp-minify/
+  http://wordpress.org/extend/plugins/w3-total-cache/
+
+
 UPGRADING
 
 See UPGRADING.txt for instructions.
@@ -16,11 +33,13 @@ See UPGRADING.txt for instructions.
 INSTALLATION AND USAGE:
 
 1. Place the /min/ directory as a child of your DOCUMENT_ROOT 
-directory: i.e. you will have: /home/user/www/public_html/min
+directory: i.e. you will have: /home/user/www/min
 
 2. Open http://yourdomain/min/ in a web browser. This will forward
 you to the Minify URI Builder application, which will help you
 quickly start using Minify to serve content on your site.
+
+See the User Guide: http://code.google.com/p/minify/wiki/UserGuide
 
 
 UNIT TESTING:
@@ -34,12 +53,6 @@ directory: i.e. you will have: /home/user/www/public_html/min_unit_tests
 components with more verbose output.)
 
 3. Remove /min_unit_tests/ from your DOCUMENT_ROOT when you are done.
-
-
-EXTRAS:
-
-The min_extras folder contains files for benchmarking using Apache ab on Windows
-and a couple single-use tools. DO NOT place this on your production server.
 
 
 FILE ENCODINGS
