@@ -24,7 +24,6 @@ class passthru extends billingcalculator {
 	
 	//Config Form
 	function form($config_object) {
-//		include_once(BASE."framework/core/subsystems-1/forms.php");
 		$form = new form();
 		if (!$config_object) {
 			$config_object->give_change = true;
@@ -42,7 +41,6 @@ class passthru extends billingcalculator {
 	
 	//Form for user input
 	function userForm($config_object=null, $user_data=null) {
-//		include_once(BASE."framework/core/subsystems-1/forms.php");
 		$form = new form();
 		$htmlinfo = "You may place your order and pay with a check or money order.  If paying by check, your order will be held util we receive the check and it clears our bank account.  Money order orders will be processed upon our receipt of the money order.<br/><br/>";
 		$form->register(uniqid(""),"", new htmlcontrol($htmlinfo));

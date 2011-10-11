@@ -20,7 +20,6 @@
 
 class calendarmodule_config {
 	function form($object) {
-//		require_once(BASE.'framework/core/subsystems-1/forms.php');
 		global $db;
 		$tag_collections = $db->selectObjects("tag_collections");
 		foreach ($tag_collections as $tag_collections => $collection) {

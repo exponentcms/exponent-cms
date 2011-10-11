@@ -35,7 +35,6 @@ if ($user->isAdmin()) {
 	}
 	$template->assign('user_form',1);
 	
-//	include_once(BASE.'framework/core/subsystems-1/users.php');
 	$users = array();
 	$modulename = expModules::controllerExists($loc->mod) ? expModules::getControllerClassName($loc->mod) : $loc->mod;
 	$modclass = $modulename;

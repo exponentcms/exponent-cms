@@ -20,7 +20,6 @@
 
 function smarty_function_control($params,&$smarty) {
 	if (isset($params['name']) ) {
-//		require_once(BASE.'framework/core/subsystems-1/forms.php');
 		$control = new $params['type'];
 		echo $control->controlToHTML($params['name']);
 	}

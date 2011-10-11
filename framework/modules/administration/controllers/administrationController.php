@@ -445,7 +445,6 @@ class administrationController extends expController {
 	}
 
 	public function upload_extension() {
-//		require_once(BASE.'framework/core/subsystems-1/forms.php');
 		$form = new form();
 		$form->register(null,'',new htmlcontrol(expCore::maxUploadSizeMessage()));
 		$form->register('mod_archive','Extension Archive',new uploadcontrol());

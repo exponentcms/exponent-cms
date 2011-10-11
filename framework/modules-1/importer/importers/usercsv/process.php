@@ -20,7 +20,6 @@
 
 //Sanity Check
 if (!defined('EXPONENT')) exit('');
-//require_once(BASE."framework/core/subsystems-1/forms.php");
 
 $form = new form();
 $form->meta("module","importer");

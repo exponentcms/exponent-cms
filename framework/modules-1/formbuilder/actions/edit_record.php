@@ -20,8 +20,6 @@
 
 if (!defined('EXPONENT')) exit('');
 
-//include_once(BASE.'framework/core/subsystems-1/forms.php');
-
 // Sanitize required _GET parameters
 $_GET['id'] = intval($_GET['id']);
 $_GET['form_id'] = intval($_GET['form_id']);

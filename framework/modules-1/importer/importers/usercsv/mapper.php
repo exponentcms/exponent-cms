@@ -20,7 +20,6 @@
 
 //Sanity check
 if (!defined('EXPONENT')) exit('');
-//require_once(BASE."framework/core/subsystems-1/forms.php");
 
 //Get the post data for future massaging
 $post = $_POST;

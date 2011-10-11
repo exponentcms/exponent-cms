@@ -1410,7 +1410,6 @@ class expFile extends expRecord {
 			if ($eql_version != $current_version) {
 				$errors[] = gt('EQL file was Not a valid EQL version');
 				return false;
-	//			include_once(BASE.'framework/core/subsystems-1/backup/'.$eql_version.'.php');
 	//			$fprefix = 'expFile::'.implode('',explode('.',$eql_version)).'_';
 	//			if (function_exists($fprefix.'clearedTable')) {
 	//				$clear_function = $fprefix.'clearedTable';
@@ -1543,7 +1542,6 @@ class expFile extends expRecord {
 			if ($eql_version != $current_version) {
 				$errors[] = gt('EQL file was Not a valid EQL version');
 				return false;
-	//			include_once(BASE.'framework/core/subsystems-1/backup/normalize.php');
 			}
 			return true;
 		} else {

@@ -50,7 +50,6 @@ class antispamcontrol extends formcontrol {
 	}
 
 	function form($object) {
-//		require_once(BASE."framework/core/subsystems-1/forms.php");
 		$form = new form();
 		if (!isset($object->identifier)) {
 			$object->identifier = "";

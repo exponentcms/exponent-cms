@@ -34,7 +34,6 @@ function smarty_function_scaffold($params,&$smarty) {
 		        if ($key == 'id') {
 			        $ctl['type'] = 'hidden';
 		        } else {
-//			        require_once(BASE.'framework/core/subsystems-1/forms.php');
 			        $ctl['type'] = expTemplate::guessControlType($col, $default_value, $key);
 		        }
 

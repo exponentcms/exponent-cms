@@ -90,7 +90,6 @@ class dropdowncontrol extends formcontrol {
     }
     
     function form($object) {
-//        require_once(BASE."framework/core/subsystems-1/forms.php");
         $form = new form();
         if (!isset($object->identifier)) {
             $object->identifier = "";
@@ -119,7 +118,6 @@ class dropdowncontrol extends formcontrol {
             expSession::set("last_POST",$post);
             return null;
         }
-//        require_once(BASE."framework/core/subsystems-1/forms.php");
         if ($object == null) $object = new dropdowncontrol();
         $object->identifier = $values['identifier'];
         $object->caption = $values['caption'];

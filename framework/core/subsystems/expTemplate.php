@@ -71,7 +71,6 @@ class expTemplate {
 			$form_file = $filepath;
 		}
 
-	//	require_once(BASE."framework/core/subsystems-1/forms.php");
 		if ($form == null) $form = new form();
 		if ($form_file == "") return $form;
 

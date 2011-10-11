@@ -97,7 +97,6 @@ class radiogroupcontrol extends formcontrol {
 	}
 	
 	function form($object) {
-//		require_once(BASE."framework/core/subsystems-1/forms.php");
 		$form = new form();
 		if (!isset($object->identifier)) {
 			$object->identifier = "";
@@ -129,7 +128,6 @@ class radiogroupcontrol extends formcontrol {
 			expSession::set("last_POST",$post);
 			return null;
 		}
-//		require_once(BASE."framework/core/subsystems-1/forms.php");
 		$object->identifier = $values['identifier'];
 		$object->caption = $values['caption'];
 		$object->default = $values['default'];

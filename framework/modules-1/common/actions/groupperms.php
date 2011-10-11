@@ -29,7 +29,6 @@ if (expPermissions::check('administrate',$loc)) {
 		//$template = new template($loc->mod,'_grouppermissions',$loc);
 	}
 	$template->assign('user_form',0);
-//	include_once(BASE.'framework/core/subsystems-1/users.php');
 
 	$users = array(); // users = groups
     $modulename = expModules::controllerExists($loc->mod) ? expModules::getControllerClassName($loc->mod) : $loc->mod;

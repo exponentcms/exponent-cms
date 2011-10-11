@@ -20,7 +20,6 @@
 
 //Sanity Check
 if (!defined('EXPONENT')) exit('');
-//require_once(BASE."framework/core/subsystems-1/users.php");
 
 $file = fopen(BASE.$_POST["filename"],"r");
 $post = null;

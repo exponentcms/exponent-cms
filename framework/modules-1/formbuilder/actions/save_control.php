@@ -20,7 +20,6 @@
 
 if (!defined('EXPONENT')) exit('');
 
-//include_once(BASE.'framework/core/subsystems-1/forms.php');
 $f = $db->selectObject('formbuilder_form','id='.intval($_POST['form_id']));
 if ($f) {
 	if (expPermissions::check('editform',unserialize($f->location_data))) {

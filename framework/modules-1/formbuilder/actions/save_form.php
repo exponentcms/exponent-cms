@@ -20,8 +20,6 @@
 
 if (!defined('EXPONENT')) exit('');
 
-//include_once(BASE.'framework/core/subsystems-1/forms.php');
-
 $f = null;
 if (isset($_POST['id'])) {
 	$f = $db->selectObject('formbuilder_form','id='.intval($_POST['id']));

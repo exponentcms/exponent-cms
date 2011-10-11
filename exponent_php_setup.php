@@ -42,9 +42,7 @@ if (DEVELOPMENT) {
 // Initialize the AutoLoader subsystem - for objects we want loaded on the fly
 $auto_dirs = array(
 	BASE.'framework/core/models-1',  // old 1.0 /datatypes
-//	BASE.'framework/core/subsystems-1/forms',
 	BASE.'framework/core/subsystems/forms',
-//	BASE.'framework/core/subsystems/forms/controls',
 	BASE.'framework/core/subsystems/forms/controls',
 	BASE.'framework/core/controllers',
 	BASE.'framework/core/models',  // used to be framework/core/datatypes & framework/datatypes
@@ -56,7 +54,6 @@ $auto_dirs = array(
 );
 
 $auto_dirs2 = array(
-//	BASE.'themes/'.DISPLAY_THEME_REAL.'/modules',  //FIXME add this dynamically
 	BASE.'framework/modules'
 );
 
