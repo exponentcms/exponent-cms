@@ -72,28 +72,21 @@ class htmleditorcontrol extends formcontrol {
 			
 			$content->name = $name;
 
-			if (SITE_WYSIWYG_EDITOR == "FCKeditor") {
-				//this belongs into the view layer, but as long we have PHP_REMOVE enabled on our templates...
+			$content->value = $this->default;
 
-				//$content->value = addslashes(str_replace(array("\n","\r"), "", $this->default));
-				$content->value = $this->default;
-			} else {
-				$content->value = $this->default;
-			}
-			
 			//create new view object
 			//WARNING: automatic fallback to Default.tpl will not work
 			//until expCore::resolveFilePaths() gets an update
 			//waiting for switch to PHP5: strrpos() will take strings as needle
-			$viewObj = new controltemplate("EditorControl", SITE_WYSIWYG_EDITOR);
-	
-			//assign the data models to the view object
-			$viewObj->assign("view", $view);
-			$viewObj->assign("content", $content);
-			$viewObj->assign('height', $this->height);
-			
-			//return the processed template to the caller for display
-			$html = $viewObj->render();
+//			$viewObj = new controltemplate("EditorControl", SITE_WYSIWYG_EDITOR);
+//
+//			//assign the data models to the view object
+//			$viewObj->assign("view", $view);
+//			$viewObj->assign("content", $content);
+//			$viewObj->assign('height', $this->height);
+//
+//			//return the processed template to the caller for display
+//			$html = $viewObj->render();
 			
 			//spares us to send the js editor init code more than once
 			//TODO: Convert to OO API and use eXp->EditorControl->doneInit instead
@@ -101,7 +94,7 @@ class htmleditorcontrol extends formcontrol {
 				define("SITE_WYSIWYG_INIT", 1);
 			}
 			
-			return $html;
+//			return $html;
 
 	}
 
