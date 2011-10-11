@@ -49,8 +49,8 @@ if ($f) {
 		$template->assign("backlink",expHistory::getLastNotEditable());
 		$SYS_FLOW_REDIRECTIONPATH = "exponent_default";
 		
-		require_once(BASE."framework/core/subsystems-1/forms.php");
-		$types = exponent_forms_listControlTypes();
+//		require_once(BASE."framework/core/subsystems-1/forms.php");
+		$types = expTemplate::listControlTypes();
 		$types[".break"] = gt('Spacer');
 		$types[".line"] = gt('Horizontal Line');
 		uasort($types,"strnatcmp");

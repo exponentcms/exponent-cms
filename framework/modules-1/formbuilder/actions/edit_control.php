@@ -76,8 +76,8 @@ if ($f) {
 			$form->meta("action","save_control");
 			$form->meta('control_type',$control_type);
 			$form->meta('form_id',$f->id);
-			require_once(BASE."framework/core/subsystems-1/forms.php");
-			$types = exponent_forms_listControlTypes();
+//			require_once(BASE."framework/core/subsystems-1/forms.php");
+			$types = expTemplate::listControlTypes();
 			$template = new template('formbuilder','_edit_control');
 			$template->assign('form_html',$form->toHTML($f->id));
 			$template->assign('type',$types[$control_type]);

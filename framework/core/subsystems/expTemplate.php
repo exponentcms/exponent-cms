@@ -179,6 +179,78 @@ class expTemplate {
 		}
 		return $vparam;
 	}
+
+	/** exdoc
+	 * @state <b>UNDOCUMENTED</b>
+	 * @node Undocumented
+	 * @return array
+	 */
+	public static function listControlTypes() {
+		$cdh = opendir(BASE."framework/core/subsystems/forms/controls");
+		$list = array();
+		while (($ctl = readdir($cdh)) !== false) {
+			if (substr($ctl,-4,4) == ".php" && is_readable(BASE."framework/core/subsystems/forms/controls/$ctl")) {
+				if (call_user_func(array(substr($ctl,0,-4),"isSimpleControl"))) {
+					$list[substr($ctl,0,-4)] = call_user_func(array(substr($ctl,0,-4),"name"));
+				}
+			}
+		}
+		return $list;
+	}
+
+	public static function guessControlType($ddcol, $default_value=null, $colname=null) {
+		$control = null;
+
+		if (array_key_exists('FORM_FIELD_TYPE', $ddcol)) {
+			new $ddcol['FORM_FIELD_TYPE']($default_value);
+		} else {
+			if ($ddcol[DB_FIELD_TYPE] == DB_DEF_ID && $colname != 'id') {
+			        //If the id field is a foreign key reference than we need to try to scaffold
+		            /*$field_str = array();
+			        if (stristr($col->Field, '_')) $field_str = split("_id", $col->Field);
+			        if ( (count($field_str) > 0) && ($db->tableExists($field_str[0])) ) {
+		                    $foreign_table = $db->describeTable($field_str[0]);
+		                    $fcolname = "";
+			                foreach ($foreign_table as $forcol) {
+			                        if ($forcol->Field == "title" || $forcol->Field == "name") {
+		                                    $fcolname = $forcol->Field;
+		                                    break;
+		                            }
+		                    }
+
+			                if ($fcolname != "") {
+			                        $foreign_key = $db->selectDropdown($field_str[0],$col->Field, null,$fcolname);
+		                            eDebug($foreign_key);
+		                            $control = new dropdowncontrol("", $foreign_key, true);
+		                    }
+		            }*/
+			} elseif ($ddcol[DB_FIELD_TYPE] == DB_DEF_ID && $colname == 'id' && $default_value != null) {
+			        //$control = new htmlcontrol('<input type="hidden" name="id" value="'.$default_value.'" />');
+				return 'editor';
+			} elseif ($ddcol[DB_FIELD_TYPE] == DB_DEF_INTEGER) {
+			        //$control = new genericcontrol($default_value);
+				return 'text';
+			} elseif ($ddcol[DB_FIELD_TYPE] == DB_DEF_BOOLEAN) {
+			        //$control = new genericcontrol($default_value);
+				return 'radio';
+			} elseif ($ddcol[DB_FIELD_TYPE] == DB_DEF_TIMESTAMP) {
+
+			} elseif ($ddcol[DB_FIELD_TYPE] == DB_DEF_DECIMAL) {
+		            //$control = new genericcontrol($default_value);
+				return 'text';
+			} elseif ($ddcol[DB_FIELD_TYPE] == DB_DEF_STRING) {
+			        if ($ddcol[DB_FIELD_LEN] > 255) {
+		                    //$control = new texteditorcontrol($default_value);
+					return 'html';
+			        } else {
+			                //$control = new genericcontrol($default_value);
+					return 'text';
+		            }
+			}
+		}
+		return 'text';
+	}
+
 }
 
 ?>
