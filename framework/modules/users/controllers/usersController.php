@@ -77,8 +77,9 @@ class usersController extends expController {
             flash('error', 'You do not have the proper permissions to edit this user');
             expHistory::back();
         }
-        $active_extensions = $db->selectColumn('profileextension','classname','active=1', 'rank');
-		
+//        $active_extensions = $db->selectColumn('profileextension','classname','active=1', 'rank');
+        $active_extensions = $db->selectObjects('profileextension','active=1','rank');
+
 		//If there is no image uploaded and the system is not in the development mode, use the default avatar
 		if(empty($u->image) && !DEVELOPMENT) {
 			$u->image = DEFAULT_AVATAR;
