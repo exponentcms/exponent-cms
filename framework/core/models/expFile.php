@@ -513,7 +513,11 @@ class expFile extends expRecord {
         // return false.
 		if (!is_object($file)) $file = new expFile($file); 
 		//if (empty($file->id) || !file_exists($file->path)) return false;
-        if (!file_exists($file->path)) return false;
+        if (!file_exists($file->path)) {
+	        flash('error', 'The file is unavailable for Download');
+	        expHistory::back();
+	        return false;
+        }
         
 		// NO buffering from here on out or things break unexpectedly. - RAM					
 		ob_end_clean();		

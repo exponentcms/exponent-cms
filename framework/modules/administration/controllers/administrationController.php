@@ -95,7 +95,6 @@ class administrationController extends expController {
 
 		// then search for module definitions
 		$moddefs = array(
-//			BASE.'themes/'.DISPLAY_THEME_REAL.'/modules',
 			BASE.'themes/'.DISPLAY_THEME.'/modules',
 			BASE."framework/modules",
 			);
@@ -328,7 +327,6 @@ class administrationController extends expController {
         $menu = array();
 		$dirs = array(
 			BASE.'framework/modules/administration/menus',
-//			BASE.'themes/'.DISPLAY_THEME_REAL.'/modules/administration/menus'
 			BASE.'themes/'.DISPLAY_THEME.'/modules/administration/menus'
 		);
 		foreach ($dirs as $dir) {

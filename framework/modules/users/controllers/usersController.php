@@ -306,7 +306,6 @@ class usersController extends expController {
         // in the database yet.  If not we will add them.
 		$extdirs = array(
 			BASE.'framework/modules/users/extensions',
-//			BASE.'themes/'.DISPLAY_THEME_REAL.'framework/modules/users/extensions'  //FIXME change to allow preview
 			BASE.'themes/'.DISPLAY_THEME.'framework/modules/users/extensions'
 		);
 		foreach ($extdirs as $dir) {
