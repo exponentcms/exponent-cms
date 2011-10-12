@@ -20,7 +20,7 @@
 if (!defined('EXPONENT')) exit('');
 
 return array(
-	'uid'=>array(
+	'user_id'=>array(
 		DB_FIELD_TYPE=>DB_DEF_ID,
 		DB_PRIMARY=>true),
 	'address1'=>array(
