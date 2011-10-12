@@ -19,7 +19,7 @@
 ##################################################
 /** @define "BASE" "../../.." */
 
-/*
+/**
  * Wraps the template system in use, to provide a uniform and consistent
  * interface to templates.
  */

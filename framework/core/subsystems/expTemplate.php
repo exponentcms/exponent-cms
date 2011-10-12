@@ -28,7 +28,7 @@
 
 class expTemplate {
 
-	/*
+	/**
 	 * Retrieve Module-Independent View File
 	 *
 	 * Looks in the theme and the /views directory for a .tpl file
@@ -121,7 +121,7 @@ class expTemplate {
 	public static function getFormTemplates($type) {  //FIXME Not Used???
 	    $forms = array();
 
-	    //Get the forms from the base form diretory
+	    //Get the forms from the base form directory
 	    if (is_dir(BASE.'forms/'.$type)) {
 	        if ($dh = opendir(BASE.'forms/'.$type)) {
 	             while (false !== ($file = readdir($dh))) {
@@ -155,7 +155,7 @@ class expTemplate {
 		return expCore::buildNameList("forms", $type, "tpl", "[!_]*");
 	}
 
-	/* exdoc
+	/** exdoc
 	 *
 	 * Looks through the module's views directory and returns
 	 * all non-internal views that are found there.
@@ -164,6 +164,7 @@ class expTemplate {
 	 *
 	 * @param string $module The classname of the module to get views for.
 	 * @param string $lang deprecated, was used to list language specific templates
+	 * @return array
 	 * @node Subsystems:Template
 	 */
 	public static function listModuleViews($module, $lang = LANG) {  //FIXME only used by containermodule edit action and administrationmodule examplecontent action

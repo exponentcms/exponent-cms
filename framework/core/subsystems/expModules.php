@@ -15,6 +15,7 @@
  * @author Phillip Ball <phillip@oicgroup.net>
  * @version 2.0.0
  */
+
 /**
  * This is the class expModules
  *
@@ -145,7 +146,6 @@ class expModules {
 	        return null;
 	    }
 	}
-
 
 	public static function controllerExists($controllername='') {
 	    global $available_controllers;

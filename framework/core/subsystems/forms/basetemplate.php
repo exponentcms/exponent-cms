@@ -94,7 +94,7 @@ class basetemplate {
 		$this->tpl->assign("__redirect", expHistory::getLastNotEditable());
 	}
 	
-	/*
+	/**
 	 * Assign a variable to the template.
 	 *
 	 * @param string $var The name of the variable - how it will be referenced inside the Smarty code
@@ -104,7 +104,7 @@ class basetemplate {
 		$this->tpl->assign($var, $val);
 	}
 	
-	/*
+	/**
 	 * Render the template and echo it to the screen.
 	 */
 	function output() {
@@ -125,8 +125,9 @@ class basetemplate {
 		$this->tpl->assign('permissions', $permissions_register);
 	}
 	
-	/*
+	/**
 	 * Render the template and return the result to the caller.
+	 * @return bool|mixed|string
 	 */
 	function render() { // Caching support?
 		return $this->tpl->fetch($this->view.'.tpl');

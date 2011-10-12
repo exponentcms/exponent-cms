@@ -19,7 +19,7 @@
 ##################################################
 /** @define "BASE" "../../.." */
 
-/*
+/**
  * Standalone Template Class
  *
  * A standalone template is a template (tpl) file found in either

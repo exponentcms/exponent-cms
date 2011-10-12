@@ -19,7 +19,7 @@
 ##################################################
 /** @define "BASE" "../../.." */
 
-/*
+/**
  * Form Template Wrapper
  *
  * This class is used for site wide forms.  
