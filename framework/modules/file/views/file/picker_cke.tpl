@@ -388,10 +388,10 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event','yui2-container','yu
 	                YAHOO.util.Connect.asyncRequest("POST", sUri, {
 	                success: function (o) {
 	                    //if we're just sending a request and not needing to do
-	                    //anything on the completion, we can skip firing the custtom event
+	                    //anything on the completion, we can skip firing the custom event
 	                    if (typeof(this.oEvent)!=="undefined") {
 
-	                        //otherwise, we check if we've got SJON coming back to parse
+	                        //otherwise, we check if we've got JSON coming back to parse
 	                        if (this.json!==false) {
 	                            //if so, parse it
 	                            var oParse = YAHOO.lang.JSON.parse(o.responseText);
