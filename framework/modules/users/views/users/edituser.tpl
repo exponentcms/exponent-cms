@@ -27,6 +27,7 @@
     {/script}
 
 
+    {form action=update}
     <div class="info-header">
         <div class="related-actions">
                 {help text="Get Help with User Accounts" module="edit-user"}
@@ -46,7 +47,6 @@
             {/foreach}
     </ul>
         <div class="yui-content">
-            {form action=update}
             <div id="tab1">
                 {if $edit_user->id == "" || $edit_user->id == 0}
                         {if $smarty.const.USER_REGISTRATION_USE_EMAIL == 0}
