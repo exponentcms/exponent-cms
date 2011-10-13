@@ -46,8 +46,8 @@
             {/foreach}
     </ul>
         <div class="yui-content">
-            <div id="tab1">
             {form action=update}
+            <div id="tab1">
                 {if $edit_user->id == "" || $edit_user->id == 0}
                         {if $smarty.const.USER_REGISTRATION_USE_EMAIL == 0}
                                 {control type=text name=username label="Username" value=$edit_user->username}
