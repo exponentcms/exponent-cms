@@ -13,7 +13,11 @@
  * GPL: http://www.gnu.org/licenses/gpl.txt
  *
  *}
- 
+
+{css unique="data-view-buttons" link="`$smarty.const.PATH_RELATIVE`framework/core/assets/css/button.css"}
+
+{/css}
+
 {css unique="data-view" corecss="tables"}
 
 {/css}

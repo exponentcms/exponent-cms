@@ -14,7 +14,11 @@
  *
  *}
 
-{css unique="cal1" corecss="tables"}
+{css unique="verifyfiles-buttons" link="`$smarty.const.PATH_RELATIVE`framework/core/assets/css/button.css"}
+
+{/css}
+
+{css unique="verifyfiles" corecss="tables"}
 
 {/css}
 
