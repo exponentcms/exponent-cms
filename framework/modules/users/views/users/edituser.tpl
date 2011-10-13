@@ -27,6 +27,7 @@
     {/script}
 
 
+    {form action=update}
     <div class="info-header">
         <div class="related-actions">
                 {help text="Get Help with User Accounts" module="edit-user"}
@@ -34,7 +35,7 @@
 		{if $edit_user->id == ""}
 			<h1>Create a New User Account</h1>
 		{else}
-			<span><h1>Edit User {$edit_user->username}.</h1> ( Date of last login {$edit_user->last_login|format_date})</span>
+			<span><h1>Edit User - '{$edit_user->username}'</h1> ( Date of last login {$edit_user->last_login|format_date})</span>
 		{/if}    
         </div>
     <div id="demo" class="yui-navset">
@@ -47,7 +48,6 @@
     </ul>
         <div class="yui-content">
             <div id="tab1">
-            {form action=update}
                 {if $edit_user->id == "" || $edit_user->id == 0}
                         {if $smarty.const.USER_REGISTRATION_USE_EMAIL == 0}
                                 {control type=text name=username label="Username" value=$edit_user->username}
@@ -68,7 +68,7 @@
                     {if $edit_user->id==$user->id || $user->isActingAdmin()}
                             {control type=checkbox readonly="readonly" name=is_acting_admin value=1 label="Make this user an Administrator?" checked=$edit_user->is_acting_admin}
                     {else}
-                        {control type=checkbox name=is_acting_admin value=1 label="Make this user an Administrator?." checked=$edit_user->is_acting_admin}
+                        {control type=checkbox name=is_acting_admin value=1 label="Make this user an Administrator?" checked=$edit_user->is_acting_admin}
                     {/if}
                 {/if}
             </div>
