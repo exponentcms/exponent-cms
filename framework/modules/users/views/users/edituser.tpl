@@ -68,7 +68,7 @@
                     {if $edit_user->id==$user->id || $user->isActingAdmin()}
                             {control type=checkbox readonly="readonly" name=is_acting_admin value=1 label="Make this user an Administrator?" checked=$edit_user->is_acting_admin}
                     {else}
-                        {control type=checkbox name=is_acting_admin value=1 label="Make this user an Administrator?." checked=$edit_user->is_acting_admin}
+                        {control type=checkbox name=is_acting_admin value=1 label="Make this user an Administrator?" checked=$edit_user->is_acting_admin}
                     {/if}
                 {/if}
             </div>
