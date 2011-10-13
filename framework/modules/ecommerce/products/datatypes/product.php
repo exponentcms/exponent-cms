@@ -610,23 +610,32 @@ class product extends expRecord {
         else if ($a->child_rank == $b->child_rank) return 0; 
     }
     
-    public function saveCategories($catArray,$catRankArray = null)
+    public function saveCategories($catArray, $catRankArray = null, $id = '', $product_type = '')
     {
         global $db;
+		
+		if(empty($id)) {
+			$id = $this->id;
+		}
+		
+		if(empty($product_type)) {
+			$product_type = $this->product_type;
+		}
+		
         // if there are no categories specified we'll set this to the 0 category..meaning uncategorized'
         //eDebug($this->params['storeCategory']); 
         if (empty($catArray)) 
         {
-            $db->delete('product_storeCategories', 'product_id='.$this->id);
+            $db->delete('product_storeCategories', 'product_id='.$id);
             $catArray = array(0);
             $assoc->storecategories_id = 0;
-            $assoc->product_id = $this->id;
-            $assoc->product_type = $this->product_type;
+            $assoc->product_id = $id;
+            $assoc->product_type = $product_type;
             $assoc->rank = 0;
             $db->insertObject($assoc, 'product_storeCategories');
         }else{
             //we need to preserve the rank, so we need to check if we are in cateogories:
-            $cats = $db->selectArrays('product_storeCategories', 'product_id='.$this->id);
+            $cats = $db->selectArrays('product_storeCategories', 'product_id='.$id);
             $curCats = array();
             foreach($cats as $c)
             {
@@ -640,8 +649,8 @@ class product extends expRecord {
                 {
                     //create new
                     $assoc->storecategories_id = $cat;
-                    $assoc->product_id = $this->id;
-                    $assoc->product_type = $this->product_type;
+                    $assoc->product_id = $id;
+                    $assoc->product_type = $product_type;
                     if($catRankArray != null && isset($catRankArray[$cat]) && $catRankArray[$cat]!='' && $catRankArray[$cat]!='0')
                     {
                         $assoc->rank = $catRankArray[$cat];
@@ -655,22 +664,22 @@ class product extends expRecord {
                 {
                     //update old
                     $assoc->storecategories_id = $cat;
-                    $assoc->product_id = $this->id;
-                    $assoc->product_type = $this->product_type;
+                    $assoc->product_id = $id;
+                    $assoc->product_type = $product_type;
                     if($catRankArray != null && isset($catRankArray[$cat]) && $catRankArray[$cat]!='' && $catRankArray[$cat]!='0')
                     {
                         $assoc->rank = $catRankArray[$cat];
                     }else{
-                        $assoc->rank = $db->selectValue('product_storeCategories','rank', 'storecategories_id=' . $cat . ' AND product_id=' . $this->id);    
+                        $assoc->rank = $db->selectValue('product_storeCategories','rank', 'storecategories_id=' . $cat . ' AND product_id=' . $id);    
                     }                    
-                    $db->updateObject($assoc, 'product_storeCategories','product_id=' . $this->id . ' AND storecategories_id=' . $cat);  
+                    $db->updateObject($assoc, 'product_storeCategories','product_id=' . $id . ' AND storecategories_id=' . $cat);  
                     //eDebug("Adding " . $cat);
                 }                    
             }
             foreach ($curCats as $delcat) {
                 if (!in_array($delcat,$catArray))
                 {
-                    $db->delete('product_storeCategories', 'product_id='.$this->id . ' AND storecategories_id=' . $delcat);
+                    $db->delete('product_storeCategories', 'product_id='.$id . ' AND storecategories_id=' . $delcat);
                     //$db->decrement('product_storeCategories', 'rank', 1, ' AND storecategories_id=' . $delcat);
                 }                    
             }     
@@ -735,11 +744,11 @@ class product extends expRecord {
     }
 	
 	public function update($params=array()) {
-		// eDebug($params, true);
 		global $db;
+		// eDebug($params, true);
 		//Get the product
 		$product = $db->selectObject('product', 'id =' . $params['id']);
-
+				
 		$tab_loaded = $params['tab_loaded'];
 		//check if we're saving a newly copied product and if we create children also
 		$originalId = isset($this->params['original_id']) && isset($this->params['copy_children']) ? $this->params['original_id'] : 0;
@@ -807,8 +816,9 @@ class product extends expRecord {
 		}
 		
 		if(isset($tab_loaded['categories'])) {
-			$this->saveCategories($params['storeCategory']); 
-			// eDebug($params['storeCategory'], true);
+			$this->saveCategories($params['storeCategory'], null, $params['id'], $this->classname); 
+			// $this->id = $params['id'];
+			// $this->product_type = $this->classname;
 		}
 		
 		if(isset($tab_loaded['options'])) {
@@ -913,7 +923,10 @@ class product extends expRecord {
 			// }
 		// }
 		
-		
+		//Removed this when we are integrating the child_edit and eit
+		if($params['parent_id']) {
+			$product->parent_id = $params['parent_id'];
+		}
 		
 		
 		//Adjusting Children Products

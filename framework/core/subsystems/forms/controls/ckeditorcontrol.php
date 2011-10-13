@@ -28,6 +28,11 @@ if (!defined('EXPONENT')) exit('');
  */
 class ckeditorcontrol extends formcontrol {
 
+	var $rows;
+	var $cols;
+	var $maxchars;
+	var $toolbar;
+
 	function name() { return "CKEditor"; }
 	
 	function __construct ($default="",$rows = 5,$cols = 45) {
@@ -42,7 +47,7 @@ class ckeditorcontrol extends formcontrol {
 	    global $db;
 		$toolbar = 'def';
 		if (empty($this->toolbar)) $toolbar = $db->selectObject('htmleditor_ckeditor','active=1');
-		if (empty($toolbar) || $this->toolbar=="default" || $this->toolbar->data=="default") {
+		if (empty($toolbar) || $this->toolbar=="default" || (isset($this->toolbar->data) && $this->toolbar->data=="default")) {
 			$tb = "
 	           ['Source','-','Preview','-','Templates'],
                ['Cut','Copy','Paste','PasteText','PasteFromWord','-','Print','SpellChecker','Scayt'],

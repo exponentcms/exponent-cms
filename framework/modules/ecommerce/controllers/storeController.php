@@ -824,12 +824,12 @@ class storeController extends expController {
         if ((isset($this->params['parent_id']) && empty($record->id)))
         {
             //NEW child product
-            $view = 'child_edit';
+            $view = 'edit';
             $parent = new $product_type($this->params['parent_id'], false, true); 
             $record->parent_id = $this->params['parent_id'];
         }elseif ((!empty($record->id) && $record->parent_id!=0)) {
              //EDIT child product
-            $view = 'child_edit';
+            $view = 'edit';
             $parent = new $product_type($record->parent_id, false, true); 
         }else{
             $view = 'edit';
@@ -950,7 +950,7 @@ class storeController extends expController {
 		//Get the product type
         $product_type = isset($this->params['product_type']) ? $this->params['product_type'] : 'product';
         
-		if(($product_type == 'product' || $product_type == 'childProduct') && isset($this->params['id'])) {
+		if(($product_type == 'product' || $product_type == 'childProduct') && isset($this->params['id']) && empty($this->params['parent_id'])) {
 			$record = new $product_type();
 			$record->update($this->params);
 		} else {
@@ -993,7 +993,7 @@ class storeController extends expController {
 			
 
 			$record->update($this->params);
-
+			// eDebug($record, true);
 			if (isset($record->id)) {
 				
 				//Categories Tab 
