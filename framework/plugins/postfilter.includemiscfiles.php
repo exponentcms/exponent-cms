@@ -32,7 +32,7 @@
 /* exdoc
  * 
  * This function creates html loaders for - currently - JS and CSS Files
- * Please note it wil only work for newtype __names (SomeModule, SomeForm, SomeTheme, SomeControl...)
+ * Please note it will only work for newtype __names (SomeModule, SomeForm, SomeTheme, SomeControl...)
  */
 function smarty_postfilter_includemiscfiles($compiledsource, &$smarty) {
 	ob_start();

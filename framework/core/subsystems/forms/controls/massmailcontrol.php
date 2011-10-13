@@ -30,7 +30,7 @@ class massmailcontrol extends formcontrol {
 
 	var $type = 0;
 
-	function name() { return "Mass-Mailling Control"; }
+	function name() { return "Mass-Mailing Control"; }
 
 	function __construct($default = "",$type = 0) {
 		$this->default = $default;

@@ -22,6 +22,7 @@ if (!defined('EXPONENT')) exit('');
 
 /**
  * Popup Date/Time Picker Control
+ * uses jscalendar //FIXME we don't include jscalendar for this to work
  *
  * @package Subsystems-Forms
  * @subpackage Control
