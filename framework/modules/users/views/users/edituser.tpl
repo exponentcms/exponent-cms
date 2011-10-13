@@ -34,7 +34,7 @@
 		{if $edit_user->id == ""}
 			<h1>Create a New User Account</h1>
 		{else}
-			<span><h1>Edit User {$edit_user->username}.</h1> ( Date of last login {$edit_user->last_login|format_date})</span>
+			<span><h1>Edit User - '{$edit_user->username}'</h1> ( Date of last login {$edit_user->last_login|format_date})</span>
 		{/if}    
         </div>
     <div id="demo" class="yui-navset">
