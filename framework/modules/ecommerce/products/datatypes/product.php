@@ -756,8 +756,10 @@ class product extends expRecord {
 		
 		$tab_loaded = $params['tab_loaded'];
 		//check if we're saving a newly copied product and if we create children also
-		$originalId = isset($this->params['original_id']) && isset($this->params['copy_children']) ? $this->params['original_id'] : 0;
-		$originalModel = isset($this->params['original_model']) && isset($this->params['copy_children']) ? $this->params['original_model'] : 0;
+		$originalId = isset($params['original_id']) && isset($params['copy_children']) ? $params['original_id'] : 0;
+		$originalModel = isset($params['original_model']) && isset($params['copy_children']) ? $params['original_model'] : 0;
+		
+		if (!empty($product->parent_id)) $product->sef_url = '';  //if child, set sef_url to nada
 		
 		//Tabs with not directly being saved in the product table and need some special operations
 		$tab_exceptions = array(
@@ -866,12 +868,6 @@ class product extends expRecord {
 				unset($product->extra_fields);
 			}
 		}
-		
-		//Removed this when we are integrating the child_edit and eit
-		if($params['parent_id']) {
-			$product->parent_id = $params['parent_id'];
-		}
-		
 		
 		//Adjusting Children Products
 		if (!empty($originalId) && !empty($this->params['copy_children'])) {
