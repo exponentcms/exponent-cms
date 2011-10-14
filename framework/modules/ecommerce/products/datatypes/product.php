@@ -745,14 +745,19 @@ class product extends expRecord {
 	
 	public function update($params=array()) {
 		global $db;
-		// eDebug($params, true);
+
 		//Get the product
 		$product = $db->selectObject('product', 'id =' . $params['id']);
-				
+		//Get product files
+		$product->expFile =  $this->getProductFiles($params['id']);
+		// eDebug($product, true);
+		
 		$tab_loaded = $params['tab_loaded'];
 		//check if we're saving a newly copied product and if we create children also
-		$originalId = isset($this->params['original_id']) && isset($this->params['copy_children']) ? $this->params['original_id'] : 0;
-		$originalModel = isset($this->params['original_model']) && isset($this->params['copy_children']) ? $this->params['original_model'] : 0;
+		$originalId = isset($params['original_id']) && isset($params['copy_children']) ? $params['original_id'] : 0;
+		$originalModel = isset($params['original_model']) && isset($params['copy_children']) ? $params['original_model'] : 0;
+		
+		if (!empty($product->parent_id)) $product->sef_url = '';  //if child, set sef_url to nada
 		
 		//Tabs with not directly being saved in the product table and need some special operations
 		$tab_exceptions = array(
@@ -773,40 +778,6 @@ class product extends expRecord {
 			}
 		}
 		
-		// eDebug($product, true);
-			
-		//TODO: Make this whole stuff loop
-		// if(isset($tab_loaded['general'])) {
-			// foreach($params['general'] as $key => $item) {
-				// $product->$key = $item;
-			// }
-		// }
-		
-		// if(isset($tab_loaded['pricing'])) {
-			// foreach($params['pricing'] as $key => $item) {
-				// $product->$key = $item;
-			// }
-		// }
-		
-		// if(isset($tab_loaded['images'])) {
-			// foreach($params['images'] as $key => $item) {
-				// $product->$key = $item;
-			// }
-			// $product->expFile= $params['expFile'];
-		// }
-		
-		// if(isset($tab_loaded['quantity'])) {
-			// foreach($params['quantity'] as $key => $item) {
-				// $product->$key = $item;
-			// }
-		// }
-		
-		// if(isset($tab_loaded['shipping'])) {
-			// foreach($params['shipping'] as $key => $item) {
-				// $product->$key = $item;
-			// }
-		// }
-		
 		if(isset($tab_loaded['images'])) {
 			$product->expFile= $params['expFile'];
 		}
@@ -817,8 +788,6 @@ class product extends expRecord {
 		
 		if(isset($tab_loaded['categories'])) {
 			$this->saveCategories($params['storeCategory'], null, $params['id'], $this->classname); 
-			// $this->id = $params['id'];
-			// $this->product_type = $this->classname;
 		}
 		
 		if(isset($tab_loaded['options'])) {
@@ -848,14 +817,7 @@ class product extends expRecord {
 					}
 				}
 			}
-			// eDebug($option, true);
 		}
-		
-		// if(isset($tab_loaded['featured'])) {
-			// foreach($params['featured'] as $key => $item) {
-				// $product->$key = $item;
-			// }
-		// }
 		
 		if(isset($tab_loaded['related'])) {
 			//Related Products Tab
@@ -891,18 +853,6 @@ class product extends expRecord {
 			}
 		}
 		
-		// if(isset($tab_loaded['status'])) {
-			// foreach($params['status'] as $key => $item) {
-				// $product->$key = $item;
-			// }
-		// }
-		
-		// if(isset($tab_loaded['meta'])) {
-			// foreach($params['meta'] as $key => $item) {
-				// $product->$key = $item;
-			// }
-		// }
-		
 		if(isset($tab_loaded['extrafields'])) {
 			//Extra Field Tab
 			foreach ($params['extra_fields_name'] as $xkey=>$xfield) {               
@@ -916,18 +866,6 @@ class product extends expRecord {
 				unset($product->extra_fields);
 			}
 		}
-		
-		// if(isset($tab_loaded['misc'])) {
-			// foreach($params['misc'] as $key => $item) {
-				// $product->$key = $item;
-			// }
-		// }
-		
-		//Removed this when we are integrating the child_edit and eit
-		if($params['parent_id']) {
-			$product->parent_id = $params['parent_id'];
-		}
-		
 		
 		//Adjusting Children Products
 		if (!empty($originalId) && !empty($this->params['copy_children'])) {
@@ -960,6 +898,22 @@ class product extends expRecord {
 			// eDebug($product, true);
 		}	
 		parent::update($product); 
+	}
+	
+	private function getProductFiles($id = '') {
+		global $db;
+		
+		if(empty($id)) return false;
+		
+		$expFilesObj = $db->selectObjects("content_expFiles", "content_id = {$id}");
+		
+		$files = array();
+		foreach($expFilesObj as $item) {
+			$files[$item->subtype][] = $item->expfiles_id;
+			$files[$item->subtype][] = "expFile[{$item->subtype}][]";
+		}
+		
+		return $files;
 	}
 }
 
