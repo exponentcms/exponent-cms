@@ -34,7 +34,7 @@
 			<span class="listviewlink">{'Past Events View'|gettext}{$config->colorize}</span>
 			{if $permissions.administrate == 1}
 				&nbsp;&nbsp;|&nbsp;&nbsp;
-				<img class="mngmnt_icon" style="border:none;" src="{$smarty.const.ICON_RELATIVE}delete.png" title="{'Delete All Past Events'|gettext}" alt="{'Delete All Past Events'|gettext}" />
+				<img class="mngmnt_icon" style="border:none;" src="{$smarty.const.ICON_RELATIVE|cat:'delete.png'}" title="{'Delete All Past Events'|gettext}" alt="{'Delete All Past Events'|gettext}" />
 				<a class="mngmntlink" href="{link action=delete_all_past}" onclick="return confirm('{'Delete All Past Events?'|gettext}');" title="{'Delete All Past Events'|gettext}">{'Purge All Past Events'|gettext}</a>
 				{br}
 			{/if}

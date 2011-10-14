@@ -72,7 +72,7 @@
     {/form}
 </div>
 <div class="loadingdiv">Loading Content Creation Form</div>
-{* src="`$smarty.const.PATH_RELATIVE`js/ContainerSourceControl.js" *}
+{* src="$smarty.const.PATH_RELATIVE|cat:'js/ContainerSourceControl.js'" *}
 
 {script unique="addmodule" yui3mods=1}
 {literal}

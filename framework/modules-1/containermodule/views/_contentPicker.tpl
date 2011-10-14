@@ -29,7 +29,7 @@
 					{if $container->info.clickable && $container->info.hasContent}
 					{*<a class="mngmntlink container_mngmntlink" href="{$dest}&amp;ss={$container->info.source}&amp;sm={$container->info.class}">*}
 					<a class="mngmntlink container_mngmntlink" href="{link action=content_selector module=$container->info.class src=$container->info.source channel_id=$dest}">
-						<img class="mngmnt_icon" style="border:none;" src="{$smarty.const.ICON_RELATIVE}add.png" title="{'Select Content from this Module'|gettext}" alt="{'Select Content from this Module'|gettext}" />
+						<img class="mngmnt_icon" style="border:none;" src="{$smarty.const.ICON_RELATIVE|cat:'add.png'}" title="{'Select Content from this Module'|gettext}" alt="{'Select Content from this Module'|gettext}" />
 					</a>
 					{/if}
 				</td>

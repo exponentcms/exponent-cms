@@ -21,7 +21,7 @@
 	<a href="{link _common=1 view=Default action=show_view}">Month View</a>{br}
 	<h2>
 		{if $enable_rss == true}
-			<a href="{rsslink}"><img src="{$smarty.const.ICON_RELATIVE}rss-feed.gif" title="{'RSS Feed'|gettext}" alt="{'Link to RSS Feed'|gettext}" /></a>
+			<a href="{rsslink}"><img src="{$smarty.const.ICON_RELATIVE|cat:'rss-feed.gif'}" title="{'RSS Feed'|gettext}" alt="{'Link to RSS Feed'|gettext}" /></a>
 		{/if}
 		{if $moduletitle != ""}{$moduletitle}{/if}
 	</h2>

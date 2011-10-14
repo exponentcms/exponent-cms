@@ -43,7 +43,7 @@
 	{*<a id="expand" href="#">Expand all</a>*}
 	<div><a id="collapse" href="#">Collapse all</a></div>
 	<div id="navtree">
-		<img src="{$smarty.const.ICON_RELATIVE}ajax-loader.gif">	<strong>Loading Navigation</strong>
+		<img src="{$smarty.const.ICON_RELATIVE|cat:'ajax-loader.gif'}">	<strong>Loading Navigation</strong>
 	</div>
 </div>
 
