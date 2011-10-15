@@ -309,7 +309,7 @@ class expFile extends expRecord {
 // Static Methods
 
 	/**
-	 * File UPLOAD that also inserts File info into datbase.
+	 * File UPLOAD that also inserts File info into database.
 	 *
 	 * File UPLOAD is a straight forward uploader and processor. It can accept
 	 * filename and destination directory overrides as well. It has an additional

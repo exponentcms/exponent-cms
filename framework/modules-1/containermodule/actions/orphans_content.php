@@ -26,7 +26,7 @@ if (!defined('EXPONENT')) exit('');
 	$clickable_mods = null; // Show all
 	$dest = null;
 	
-	if (expSession::is_set("source_select") && (defined("SOURCE_SELECTOR") || defined("CONTENT_SELECTOR"))) {
+	if (expSession::is_set("source_select") && (defined("SOURCE_SELECTOR"))) {
 		$source_select = expSession::get("source_select");
 		$view = $source_select["view"];
 		$module = $source_select["module"];

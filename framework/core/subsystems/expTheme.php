@@ -91,7 +91,7 @@ class expTheme {
 		global $db, $user;
 
 		echo show_msg_queue();
-		if ((!defined("SOURCE_SELECTOR") || SOURCE_SELECTOR == 1) && (!defined("CONTENT_SELECTOR") || CONTENT_SELECTOR == 1)) {
+		if ((!defined("SOURCE_SELECTOR") || SOURCE_SELECTOR == 1)) {
 			$last_section = expSession::get("last_section");
 			$section = $db->selectObject("section","id=".$last_section);
 			// View authorization will be taken care of by the runAction and mainContainer functions

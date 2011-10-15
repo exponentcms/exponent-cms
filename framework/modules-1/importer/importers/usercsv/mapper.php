@@ -38,7 +38,8 @@ $directory = "framework/modules-1/importer/importers/usercsv/tmp";
 
 //Get the file save it to the temp directory
 if ($_FILES["upload"]["error"] == UPLOAD_ERR_OK) {
-	$file = file::update("upload",$directory,null,time()."_".$_FILES['upload']['name']);
+//	$file = file::update("upload",$directory,null,time()."_".$_FILES['upload']['name']);
+	$file = expFile::fileUpload("upload",false,false,time()."_".$_FILES['upload']['name'],$directory);  //FIXME quick hack to remove file model
 	if ($file == null) {
 		switch($_FILES["upload"]["error"]) {
 			case UPLOAD_ERR_INI_SIZE:
