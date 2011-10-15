@@ -13,15 +13,24 @@
  *
  *}
 
-<div id="siteconfig" class="module administration configure-site exp-skin-tabview hide">
+{uniqueid assign="config"}
+
+{css unique="`id`" link="`$smarty.const.YUI3_PATH`tabview/assets/skins/sam/tabview.css"}
+
+{/css}
+
+<div id="siteconfig" class="module administration configure-site yui3-skin-sam exp-skin-tabview hide">
     
     <h1>Configure Website</h1>
     
-    {script unique="siteconfig" yui3mods=1}
+    {script unique="`$config`" yui3mods=1}
     {literal}
-    YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-tabview','yui2-element', function(Y) {
-	    var YAHOO=Y.YUI2;
-        var tabView = new YAHOO.widget.TabView('demo');
+//    YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-tabview','yui2-element', function(Y) {
+//	    var YAHOO=Y.YUI2;
+//        var tabView = new YAHOO.widget.TabView('{$config}');
+	YUI(EXPONENT.YUI3_CONFIG).use('tabview', function(Y) {
+        var tabview = new Y.TabView({srcNode:'#{/literal}{$config}{literal}'});
+        tabview.render();
         Y.one('#siteconfig').removeClass('hide');
         Y.one('.loadingdiv').remove();
     });
@@ -31,7 +40,7 @@
     {help text="Learn More about configuring your website"|gettext page="site-configuration"}
     
     {form controller="administration" action=update_siteconfig}
-        <div id="demo" class="yui-navset">
+        <div id="{$config}" class="yui-navset">
             <ul class="yui-nav">
             <li class="selected"><a href="#tab1"><em>{gettext str="General"}</em></a></li>
             <li><a href="#tab2"><em>{gettext str="Anti-Spam"}</em></a></li>
