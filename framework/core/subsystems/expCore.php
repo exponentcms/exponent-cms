@@ -462,6 +462,7 @@ class expCore {
 	 * @param string $subtype type of the actual file (= file extension = (future) directory name)
 	 * @param string $subname name of the actual file (= filename name without extension)
 	 *
+	 * @return array
 	 * @node Subsystems:expCore
 	 */
 	public static function buildNameList($type, $name, $subtype, $subname) {  //FIXME only used by exponent_template_listFormTemplates & exponent_template_listModuleViews (total of 3 calls)

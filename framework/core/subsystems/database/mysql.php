@@ -454,7 +454,7 @@ class mysql_database extends database {
 	 *
 	 * @param string $sql The SQL query to run
 	 * @param bool $escape
-	 * @return #Fmysql_query|?
+	 * @return \mysql_query
 	 */
 	function sql($sql, $escape = true) {
 		return @mysql_query($sql, $this->connection);
