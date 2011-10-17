@@ -90,11 +90,11 @@
 
 {script unique="`$tabs`" yui3mods="1"}
 {literal}
-YUI(EXPONENT.YUI3_CONFIG).use('tabview', function(Y) {
-    var tabview = new Y.TabView({srcNode:'#{/literal}{$tabs}{literal}'});
-    tabview.render();
-	Y.one('#{/literal}{$tabs}{literal}').removeClass('hide');
-	Y.one('.loadingdiv').remove();
-});
+	YUI(EXPONENT.YUI3_CONFIG).use('tabview', function(Y) {
+	    var tabview = new Y.TabView({srcNode:'#{/literal}{$tabs}{literal}'});
+	    tabview.render();
+		Y.one('#{/literal}{$tabs}{literal}').removeClass('hide');
+		Y.one('.loadingdiv').remove();
+	});
 {/literal}
 {/script}

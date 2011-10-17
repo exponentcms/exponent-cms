@@ -179,14 +179,11 @@
 
 {script unique="`$config`" yui3mods=1}
 {literal}
-//    YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-tabview','yui2-element', function(Y) {
-//	    var YAHOO=Y.YUI2;
-//        var tabView = new YAHOO.widget.TabView('{$config}');
-YUI(EXPONENT.YUI3_CONFIG).use('tabview', function(Y) {
-    var tabview = new Y.TabView({srcNode:'#{/literal}{$config}{literal}'});
-    tabview.render();
-    Y.one('#siteconfig').removeClass('hide');
-    Y.one('.loadingdiv').remove();
-});
+	YUI(EXPONENT.YUI3_CONFIG).use('tabview', function(Y) {
+	    var tabview = new Y.TabView({srcNode:'#{/literal}{$config}{literal}'});
+	    tabview.render();
+	    Y.one('#siteconfig').removeClass('hide');
+	    Y.one('.loadingdiv').remove();
+	});
 {/literal}
 {/script}

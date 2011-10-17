@@ -73,15 +73,11 @@
 
 {script unique="editform" yui3mods=1}
 {literal}
-//    YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-tabview','yui2-element', function(Y) {
-//        var YAHOO=Y.YUI2;
-//        var tabView = new YAHOO.widget.TabView('help-show');
 	YUI(EXPONENT.YUI3_CONFIG).use('tabview', function(Y) {
 	    var tabview = new Y.TabView({srcNode:'#help-show'});
 	    tabview.render();
 		Y.one('#showhelp').removeClass('hide');
 		Y.one('.loadingdiv').remove();
-//        Y.one('#showhelp').removeClass('hide').next().remove();
     });
 {/literal}
 {/script}

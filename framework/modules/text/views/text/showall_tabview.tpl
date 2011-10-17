@@ -67,11 +67,11 @@
 
 {script unique="`$id`" yui3mods="1"}
 {literal}
-YUI(EXPONENT.YUI3_CONFIG).use('tabview', function(Y) {
-    var tabview = new Y.TabView({srcNode:'#{/literal}{$id}{literal}'});
-    tabview.render();
-	Y.one('#{/literal}{$id}{literal}').removeClass('hide');
-	Y.one('.loadingdiv').remove();
-});
+	YUI(EXPONENT.YUI3_CONFIG).use('tabview', function(Y) {
+	    var tabview = new Y.TabView({srcNode:'#{/literal}{$id}{literal}'});
+	    tabview.render();
+		Y.one('#{/literal}{$id}{literal}').removeClass('hide');
+		Y.one('.loadingdiv').remove();
+	});
 {/literal}
 {/script}

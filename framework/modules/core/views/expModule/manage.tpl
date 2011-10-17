@@ -137,15 +137,11 @@
 
 {script unique="filetabs" yui3mods=1}
 {literal}
-//    YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-tabview','yui2-element', function(Y) {
-//        var YAHOO=Y.YUI2;
-//        var tabView = new YAHOO.widget.TabView('mods');
 	YUI(EXPONENT.YUI3_CONFIG).use('tabview', function(Y) {
 	    var tabview = new Y.TabView({srcNode:'#mods'});
 	    tabview.render();
 		Y.one('#mod-manager').removeClass('hide');
 		Y.one('.loadingdiv').remove();
-//        Y.one('#mod-manager').removeClass('hide').next().remove();
 
 		EXPONENT.selectAllCheckboxes = function (selector) {
 			Y.all(selector).each(function(n){
