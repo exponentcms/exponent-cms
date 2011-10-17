@@ -88,6 +88,9 @@ class ckeditorcontrol extends formcontrol {
 	    $content = "
 	    YUI(EXPONENT.YUI3_CONFIG).use('yui', function(Y) {
 	       // Y.on('readyforcke', function () {
+				if (CKEDITOR.instances['".createValidId($name)."']) {
+			        CKEDITOR.remove(CKEDITOR.instances['".createValidId($name)."']);
+				}
     	    	EXPONENT.editor".createValidId($name)." = CKEDITOR.replace('".createValidId($name)."',
     				{
     					skin : '".$skin."',
@@ -108,6 +111,7 @@ class ckeditorcontrol extends formcontrol {
                     });
 
     				CKEDITOR.on( 'instanceReady', function( ev ) {
+    					alert(CKEDITOR.editor.mode);
     					var blockTags = ['div','h1','h2','h3','h4','h5','h6','p','pre','ol','ul','li'];
     					var rules =  {
     						indent : false,

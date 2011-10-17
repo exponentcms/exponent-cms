@@ -138,7 +138,7 @@ if ($linenum >= $post["rowstart"]){
 		}
 
 		$userinfo->username = $userinfo->username.$suffix;	
-		$userarray[] = exponent_users_saveUser($userinfo);
+		$userarray[] = exponent_users_saveUser($userinfo);  //FIXME function was deprecated
 		$usersdone[] = $userinfo->username;
 	}else{
 		$userinfo->linenum = $linenum;

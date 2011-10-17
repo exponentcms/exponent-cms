@@ -10757,6 +10757,7 @@ function embed_wmedia(width, height, link) {
 	 *
 	 * Uses the git index if it exists, otherwise uses the modification time
 	 * of the newest file.
+	 * @return int
 	 */
 	public static function get_build()
 	{
@@ -10788,6 +10789,8 @@ function embed_wmedia(width, height, link) {
 
 	/**
 	 * Format debugging information
+	 * @param $sp
+	 * @return string
 	 */
 	public static function debug(&$sp)
 	{
@@ -11665,6 +11668,7 @@ class SimplePie_Parse_Date
 	 * Get the object
 	 *
 	 * @access public
+	 * @return \SimplePie_Parse_Date
 	 */
 	public static function get()
 	{
@@ -11730,6 +11734,7 @@ class SimplePie_Parse_Date
 	 * spaces to be used as the time seperator (including more than one))
 	 *
 	 * @access protected
+	 * @param $date
 	 * @return int Timestamp
 	 */
 	public function date_w3cdtf($date)
@@ -11801,7 +11806,8 @@ class SimplePie_Parse_Date
 	 * Remove RFC822 comments
 	 *
 	 * @access protected
-	 * @param string $data Data to strip comments from
+	 * @param $string
+	 * @internal param string $data Data to strip comments from
 	 * @return string Comment stripped string
 	 */
 	public function remove_rfc2822_comments($string)
@@ -11862,6 +11868,7 @@ class SimplePie_Parse_Date
 	 * Parse RFC2822's date format
 	 *
 	 * @access protected
+	 * @param $date
 	 * @return int Timestamp
 	 */
 	public function date_rfc2822($date)
@@ -11955,6 +11962,7 @@ class SimplePie_Parse_Date
 	 * Parse RFC850's date format
 	 *
 	 * @access protected
+	 * @param $date
 	 * @return int Timestamp
 	 */
 	public function date_rfc850($date)
@@ -12020,6 +12028,7 @@ class SimplePie_Parse_Date
 	 * Parse C99's asctime()'s date format
 	 *
 	 * @access protected
+	 * @param $date
 	 * @return int Timestamp
 	 */
 	public function date_asctime($date)
@@ -13420,6 +13429,7 @@ class SimplePie_Source
 
 	/**
 	 * Added for parity between the parent-level and the item/entry-level.
+	 * @return null
 	 */
 	public function get_permalink()
 	{
@@ -13826,6 +13836,7 @@ class SimplePie_XML_Declaration_Parser
 
 	/**
 	 * Read value
+	 * @return bool|string
 	 */
 	public function get_value()
 	{
