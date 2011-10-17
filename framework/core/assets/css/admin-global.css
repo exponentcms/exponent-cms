@@ -245,6 +245,7 @@ a.view {
 
 /* YUI3 Tabview */
 .yui3-widget, .yui3-tabview .yui3-tabview-content .yui3-tabview-list {
+	background: transparent !important;
     margin-right: 5px;
     border-color: #DDD;
     border-width: 0 0 1px;
@@ -285,7 +286,7 @@ a.view {
 }
 
 .yui3-widget, .yui3-tabview .yui3-tabview-content .yui3-tabview-panel {
-    background: #FFFFFF;
+	background: #FFFFFF;
     -moz-border-radius: 0 5px 5px 5px;
     -webkit-border-radius: 0 5px 5px 5px;
 	border-radius: 0 5px 5px 5px;
