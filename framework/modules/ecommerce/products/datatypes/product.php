@@ -823,7 +823,7 @@ class product extends expRecord {
 		
 		if(isset($tab_loaded['related'])) {
 			//Related Products Tab
-			if (!empty($params['relatedProducts']) && (empty($originalId) || !empty($params['copy_related']))) {
+			if (!empty($tab_loaded['related']) && (empty($originalId) || !empty($params['copy_related']))) {
 				$relprods = $db->selectObjects('crosssellItem_product',"product_id=".$product->id);
 				$db->delete('crosssellItem_product','product_id='.$product->id);
 				foreach ($params['relatedProducts'] as $key=>$prodid) {
