@@ -474,7 +474,7 @@ if (!defined('YUI3_PATH')) {
 	 *
 	 * Changing the version here lets Exponent adjust where to look
 	 */
-	define('YUI3_VERSION', '3.4.1');
+	define('YUI3_VERSION', '3.4.0');
 	define('YUI3_PATH', PATH_RELATIVE.'external/yui/'.YUI3_VERSION.'/build/');
 	define('YUI3_URL', URL_FULL.'external/yui/'.YUI3_VERSION.'/build/');
 }
