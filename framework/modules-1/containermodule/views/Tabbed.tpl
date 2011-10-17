@@ -19,13 +19,10 @@
 {/css}
 
 {uniqueid assign=tabs}
-{css unique="`tabs`" link="`$smarty.const.YUI3_PATH`tabview/assets/skins/sam/tabview.css"}
-
-{/css}
 
 <div class="containermodule tabbed yui3-skin-sam">
 {viewfile module=$singlemodule view=$singleview var=viewfile} 
-<div id="{$tabs}" class="yui-navset">
+<div id="{$tabs}" class="yui-navset hide">
 	<ul class="yui-nav">
 		{foreach from=$containers item=container key=tabnum name=contain}
 			{assign var=numcontainers value=$tabnum+1}
@@ -89,12 +86,15 @@
 	</div>
 </div>
 </div>
+<div class="loadingdiv">Loading</div>
 
 {script unique="`$tabs`" yui3mods="1"}
 {literal}
 YUI(EXPONENT.YUI3_CONFIG).use('tabview', function(Y) {
     var tabview = new Y.TabView({srcNode:'#{/literal}{$tabs}{literal}'});
     tabview.render();
+	Y.one('#{/literal}{$tabs}{literal}').removeClass('hide');
+	Y.one('.loadingdiv').remove();
 });
 {/literal}
 {/script}

@@ -14,19 +14,7 @@
  *
  *}
 
-<div id='userconfig' class="module users edit exp-skin-tabview">
-    {script unique="userconfig" yui3mods=1}
-    {literal}
-    YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-tabview','yui2-element', function(Y) {
-	    var YAHOO=Y.YUI2;
-        var tabView = new YAHOO.widget.TabView('demo');
-        Y.one('#userconfig').removeClass('hide');
-        Y.one('.loadingdiv').remove();
-    });
-    {/literal}
-    {/script}
-
-
+<div id='userconfig' class="module users edit yui3-skin-sam hide">
     {form action=update}
     <div class="info-header">
         <div class="related-actions">
@@ -88,3 +76,17 @@
 
 </div>
 <div class="loadingdiv">Loading</div>
+
+{script unique="userconfig" yui3mods=1}
+{literal}
+//    YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-tabview','yui2-element', function(Y) {
+//	    var YAHOO=Y.YUI2;
+//        var tabView = new YAHOO.widget.TabView('demo');
+YUI(EXPONENT.YUI3_CONFIG).use('tabview', function(Y) {
+   var tabview = new Y.TabView({srcNode:'#demo'});
+   tabview.render();
+    Y.one('#userconfig').removeClass('hide');
+    Y.one('.loadingdiv').remove();
+});
+{/literal}
+{/script}
