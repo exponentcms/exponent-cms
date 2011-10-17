@@ -37,7 +37,7 @@ function smarty_function_prod_images($params,&$smarty) {
     $addImgs = array_merge(array($mainthmb),$additionalImages);
     
     //pulling in store configs. This is a placeholder for now, so we'll manually set them til we get that worked in.
-    $config = $smarty->_tpl_vars['config'];
+    $config = $smarty->getTemplateVars('config');
     
     // $config = array(
     //     "listing-width"=>148,

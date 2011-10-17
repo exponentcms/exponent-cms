@@ -60,10 +60,10 @@
 					<td>
 					    {if $permissions.manage == true}
                             {if $smarty.foreach.listings.first == 0}
-                                {icon controller=order_status action=rerank img=up.png record=$listing push=up}    
+                                {icon controller=order_status action=rerank img='up.png' record=$listing push=up}
                             {/if}
                             {if $smarty.foreach.listings.last == 0}
-                                {icon controller=order_status action=rerank img=down.png record=$listing push=down}
+                                {icon controller=order_status action=rerank img='down.png' record=$listing push=down}
                             {/if}
                         {/if}
 					</td>

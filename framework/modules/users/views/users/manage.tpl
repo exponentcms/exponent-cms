@@ -48,7 +48,7 @@
 				<td>{$user->lastname}</td>
 				<td>
 				{if $user->is_acting_admin == 1}
-				    <img src="{$smarty.const.ICON_RELATIVE}toggle_on.png">
+				    <img src="{$smarty.const.ICON_RELATIVE|cat:'toggle_on.png'}">
 				{/if}
 				</td>
 			    <td>

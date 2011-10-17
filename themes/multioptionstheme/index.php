@@ -4,9 +4,10 @@
 <head>
     <?php 
     expTheme::head(array(
-    	"xhtml"=>false,
-	    "css_primer"=>array(
-            YUI2_PATH."yui2-reset-fonts-grids/yui2-reset-fonts-grids.css"),
+	    "xhtml"=>false,
+        "css_primer"=>array(YUI3_PATH."cssreset/reset-min.css",
+                            YUI3_PATH."cssfonts/fonts-min.css",
+                            YUI3_PATH."cssgrids/grids-min.css"),
     	"css_core"=>array("common"),
     	"css_links"=>true,
     	"css_theme"=>true

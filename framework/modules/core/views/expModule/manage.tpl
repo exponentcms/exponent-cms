@@ -52,14 +52,10 @@
     display:none;
 }
 
-
-
 {/literal}
 {/css}
 
- 
-
-<div id="mod-manager" class="module administration modulemanager exp-skin-tabview hide">
+<div id="mod-manager" class="module administration modulemanager yui3-skin-sam hide">
     <div class="info-header">
         <div class="related-actions">
             {help text="Get Help Managing Modules"|gettext module="manage-modules"}
@@ -139,26 +135,29 @@
 </div>
 <div class="loadingdiv">{"Loading"|gettext}</div>
 
-{script unique="filetabs" yui3mods="1"}
+{script unique="filetabs" yui3mods=1}
 {literal}
-YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event','yui2-tabview','yui2-element', function(Y) {
-    var YAHOO=Y.YUI2;
+//    YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-tabview','yui2-element', function(Y) {
+//        var YAHOO=Y.YUI2;
+//        var tabView = new YAHOO.widget.TabView('mods');
+	YUI(EXPONENT.YUI3_CONFIG).use('tabview', function(Y) {
+	    var tabview = new Y.TabView({srcNode:'#mods'});
+	    tabview.render();
+		Y.one('#mod-manager').removeClass('hide');
+		Y.one('.loadingdiv').remove();
+//        Y.one('#mod-manager').removeClass('hide').next().remove();
 
-    var tabView = new YAHOO.widget.TabView('mods');
-    Y.one('#mod-manager').removeClass('hide');
-    Y.one('.loadingdiv').remove();
-    
-    EXPONENT.selectAllCheckboxes = function (selector) {
-        Y.all(selector).each(function(n){
-            n.set('checked',1);
-        });
-    };
-    
-    EXPONENT.unSelectAllCheckboxes = function (selector) {
-        Y.all(selector).each(function(n){
-            n.set('checked',0);
-        });
-    };
-});    
+		EXPONENT.selectAllCheckboxes = function (selector) {
+			Y.all(selector).each(function(n){
+				n.set('checked',1);
+			});
+		};
+
+		EXPONENT.unSelectAllCheckboxes = function (selector) {
+			Y.all(selector).each(function(n){
+				n.set('checked',0);
+			});
+		};
+	});
 {/literal}
 {/script}

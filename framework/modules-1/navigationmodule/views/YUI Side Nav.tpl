@@ -21,8 +21,8 @@
 				<ul class="first-of-type">
 				{assign var=startdepth value=0}
 				{foreach name="children" key=key from=$sections item=section}
-				{assign var=nextkey value=`$key+1`}
-				{assign var=previouskey value=`$key-1`}
+				{assign var=nextkey value=$key+1}
+				{assign var=previouskey value=$key-1}
 	
 				{if $sections[$previouskey]->depth < $section->depth && $smarty.foreach.children.first!=true}
 

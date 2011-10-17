@@ -34,7 +34,6 @@
 
 class simplepollmodule_config {
 	function form($object) {
-		require_once(BASE.'framework/core/subsystems-1/forms.php');
 		$form = new form();
 		if (!isset($object->id)) {
 			$object->thank_you_message = 'Thank you for voting.';

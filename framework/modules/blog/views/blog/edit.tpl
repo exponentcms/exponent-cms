@@ -14,7 +14,7 @@
  *
  *}
 
-<div id="editblog" class="module blog edit hide exp-skin-tabview">
+<div id="editblog" class="module blog edit yui3-skin-sam hide">
     
     {if $record->id != ""}<h1>Editing {$record->title}</h1>{else}<h1>New {$modelname}</h1>{/if}
     
@@ -57,12 +57,17 @@
 
 {script unique="blogtabs" yui3mods=1}
 {literal}
-    YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event','yui2-tabview', function(Y) {
-        var YAHOO=Y.YUI2;
-        var tabView = new YAHOO.widget.TabView('demo');
-        YAHOO.util.Dom.removeClass("editblog", 'hide');
-        var loading = YAHOO.util.Dom.getElementsByClassName('loadingdiv', 'div');
-        YAHOO.util.Dom.setStyle(loading, 'display', 'none');
+//    YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event','yui2-tabview', function(Y) {
+//        var YAHOO=Y.YUI2;
+//        var tabView = new YAHOO.widget.TabView('demo');
+	YUI(EXPONENT.YUI3_CONFIG).use('tabview', function(Y) {
+	    var tabview = new Y.TabView({srcNode:'#demo'});
+	    tabview.render();
+		Y.one('#editblog').removeClass('hide');
+		Y.one('.loadingdiv').remove();
+//        YAHOO.util.Dom.removeClass("editblog", 'hide');
+//        var loading = YAHOO.util.Dom.getElementsByClassName('loadingdiv', 'div');
+//        YAHOO.util.Dom.setStyle(loading, 'display', 'none');
     });
 {/literal}
 {/script}

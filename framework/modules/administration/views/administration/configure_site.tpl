@@ -13,25 +13,16 @@
  *
  *}
 
-<div id="siteconfig" class="module administration configure-site exp-skin-tabview hide">
+{uniqueid assign="config"}
+
+<div id="siteconfig" class="module administration configure-site yui3-skin-sam hide">
     
     <h1>Configure Website</h1>
-    
-    {script unique="siteconfig" yui3mods=1}
-    {literal}
-    YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-tabview','yui2-element', function(Y) {
-	    var YAHOO=Y.YUI2;
-        var tabView = new YAHOO.widget.TabView('demo');
-        Y.one('#siteconfig').removeClass('hide');
-        Y.one('.loadingdiv').remove();
-    });
-    {/literal}
-    {/script}
 
     {help text="Learn More about configuring your website"|gettext page="site-configuration"}
     
     {form controller="administration" action=update_siteconfig}
-        <div id="demo" class="yui-navset">
+        <div id="{$config}" class="yui-navset">
             <ul class="yui-nav">
             <li class="selected"><a href="#tab1"><em>{gettext str="General"}</em></a></li>
             <li><a href="#tab2"><em>{gettext str="Anti-Spam"}</em></a></li>
@@ -68,7 +59,7 @@
                     {control type="checkbox" postfalse=1 name="sc[SITE_USE_ANTI_SPAM]" label="Use Anti-Spam measures?"|gettext checked=$smarty.const.SITE_USE_ANTI_SPAM value=1}
                     {control type="checkbox" postfalse=1 name="sc[ANTI_SPAM_USERS_SKIP]" label="Skip using Anti-Spam measures for Logged-In Users?"|gettext checked=$smarty.const.ANTI_SPAM_USERS_SKIP value=1}
                     {control type="dropdown" name="sc[ANTI_SPAM_CONTROL]" label="Anti-Spam Method"|gettext items=$as_types default=$smarty.const.ANTI_SPAM_CONTROL}
-	                <p>{gettext str="To obtain the reCAPTCHA 'keys', you'll need to first have a <a href="http://www.google.com/" target="_blank">Google account</a> to log in, then setup up a reCAPTCHA account for your domain(s)"} <a href="http://www.google.com/recaptcha/whyrecaptcha" target="_blank">here</a></p>
+	                <p>{gettext str="To obtain the reCAPTCHA 'keys', you'll need to first have a <a href=\"http://www.google.com/\" target=\"_blank\">Google account</a> to log in, then setup up a reCAPTCHA account for your domain(s)"} <a href="http://www.google.com/recaptcha/whyrecaptcha" target="_blank">here</a></p>
                     {control type="dropdown" name="sc[RECAPTCHA_THEME]" label="re-Captcha Theme"|gettext items=$as_themes default=$smarty.const.RECAPTCHA_THEME}
                     {control type="text" name="sc[RECAPTCHA_PUB_KEY]" label="reCAPTCHA Public Key"|gettext value=$smarty.const.RECAPTCHA_PUB_KEY}
                     {control type="text" name="sc[RECAPTCHA_PRIVATE_KEY]" label="reCAPTCHA Private Key"|gettext value=$smarty.const.RECAPTCHA_PRIVATE_KEY}
@@ -185,3 +176,17 @@
     {/form}
 </div>
 <div class="loadingdiv">Loading</div>
+
+{script unique="`$config`" yui3mods=1}
+{literal}
+//    YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-tabview','yui2-element', function(Y) {
+//	    var YAHOO=Y.YUI2;
+//        var tabView = new YAHOO.widget.TabView('{$config}');
+YUI(EXPONENT.YUI3_CONFIG).use('tabview', function(Y) {
+    var tabview = new Y.TabView({srcNode:'#{/literal}{$config}{literal}'});
+    tabview.render();
+    Y.one('#siteconfig').removeClass('hide');
+    Y.one('.loadingdiv').remove();
+});
+{/literal}
+{/script}

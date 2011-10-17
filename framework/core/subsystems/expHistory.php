@@ -152,7 +152,7 @@ class expHistory {
             $params_name = isset($params['controller']) ? $params['controller'] : $params['module'];
 
             // make sure the controller action is the one specified via the URL
-            if (getControllerName($router_name) == getControllerName($params_name) && $router->params['action'] == $params['action']) {
+            if (expModules::getControllerName($router_name) == expModules::getControllerName($params_name) && $router->params['action'] == $params['action']) {
                 $url = array('url_type'=>$router->url_type, 'params'=>$router->params);
             }        
         } else { //if we hit here it should be a page, not an action            

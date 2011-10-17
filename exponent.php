@@ -40,26 +40,21 @@ expSession::initialize();
 // Initialize the Theme subsystem
 expTheme::initialize();
 
-// Create the list of available/active controllers
-$available_controllers = initializeControllers();  //original position
-//$available_controllers = array();
-
 // Initialize the language subsystem
 expLang::loadLang();
 
 // Initialize the Database subsystem
 $db = expDatabase::connect(DB_USER,DB_PASS,DB_HOST.':'.DB_PORT,DB_NAME);
+
+// Create the list of available/active controllers
+$available_controllers = expModules::initializeControllers();  //original position
+//$available_controllers = array();
 //$available_controllers = initializeControllers();
 //foreach ($db->selectObjects('modstate',1) as $mod) {
 //	if (!empty($mod->path)) $available_controllers[$mod->module] = $mod->path;  //FIXME test location
 //}
-
 // Initialize the old school Modules subsystem.
-require_once(BASE.'framework/core/subsystems-1/modules.php');
-exponent_modules_initialize(); // now in the autoloader, if used
-
-// Initialize the Template subsystem.
-require_once(BASE.'framework/core/subsystems-1/template.php');
+expModules::initializeModules(); // now in the autoloader, if used
 
 // Initialize the History (Flow) subsystem.
 $history = new expHistory(); //<--This is the new flow subsystem and will be replacing the above.

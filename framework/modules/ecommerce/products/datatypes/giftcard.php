@@ -34,7 +34,7 @@ class giftcard extends product {
 	}
 
     public function cartSummary($item) {
-        $view = new controllerTemplate($this, $this->getForm('cartSummary'));
+        $view = new controllertemplate($this, $this->getForm('cartSummary'));
 	    $view->assign('product', $this);
 	    $view->assign('item', $item);
 	    

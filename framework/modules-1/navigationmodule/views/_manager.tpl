@@ -14,7 +14,7 @@
  *
  *}
 
-<div id="navmanager" class="navigationmodule manager hide exp-skin-tabview">
+<div id="navmanager" class="navigationmodule manager yui3-skin-sam hide">
 	<div id="nav-tabs" class="yui-navset">
 	    <ul class="yui-nav">
         	<li class="selected"><a href="#tab1"><em>Hierarchy</em></a></li>
@@ -32,11 +32,15 @@
 
 {script unique="editform" yui3mods=1}
 {literal}
-    YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-tabview','yui2-element', function(Y) {
-        var YAHOO=Y.YUI2;
-
-        var tabView = new YAHOO.widget.TabView('nav-tabs');
-        Y.one('#navmanager').removeClass('hide').next().remove();
+//    YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-tabview','yui2-element', function(Y) {
+//        var YAHOO=Y.YUI2;
+//        var tabView = new YAHOO.widget.TabView('nav-tabs');
+	YUI(EXPONENT.YUI3_CONFIG).use('tabview', function(Y) {
+       var tabview = new Y.TabView({srcNode:'#nav-tabs'});
+       tabview.render();
+       Y.one('#navmanager').removeClass('hide');
+       Y.one('.loadingdiv').remove();
+//        Y.one('#navmanager').removeClass('hide').next().remove();
     });
 {/literal}
 {/script}

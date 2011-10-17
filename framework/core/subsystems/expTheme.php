@@ -29,7 +29,7 @@ class expTheme {
 	public static function initialize() {
 		global $auto_dirs2, $user;
 		// Initialize the theme subsystem 1.0 compatibility layer
-		require_once(BASE.'framework/core/subsystems-1/theme.php');
+		require_once(BASE.'framework/core/compat/theme.php');
 		if (!defined('DISPLAY_THEME')) {
 			/* exdoc
 			 * The directory and class name of the current active theme.  This may be different
@@ -91,7 +91,7 @@ class expTheme {
 		global $db, $user;
 
 		echo show_msg_queue();
-		if ((!defined("SOURCE_SELECTOR") || SOURCE_SELECTOR == 1) && (!defined("CONTENT_SELECTOR") || CONTENT_SELECTOR == 1)) {
+		if ((!defined("SOURCE_SELECTOR") || SOURCE_SELECTOR == 1)) {
 			$last_section = expSession::get("last_section");
 			$section = $db->selectObject("section","id=".$last_section);
 			// View authorization will be taken care of by the runAction and mainContainer functions
@@ -180,7 +180,7 @@ class expTheme {
 				while ($section->parent > 0) $section = $db->selectObject("section","id=".$section->parent);
 				$params['source'] .= $section->id;
 			}
-			self::showModule(getControllerClassName($params['controller']),$params['view'],$params['title'],$params['source'],false,null,$params['chrome'],$requestvars);
+			self::showModule(expModules::getControllerClassName($params['controller']),$params['view'],$params['title'],$params['source'],false,null,$params['chrome'],$requestvars);
         } else {
 	        return false;
         }
@@ -197,8 +197,8 @@ class expTheme {
         global $sectionObj, $db, $router;
         
         $metainfo = array();
-        if (self::inAction() && (!empty($router->url_parts[0]) && controllerExists($router->url_parts[0]))) {
-            $classname = getControllerClassName($router->url_parts[0]);
+        if (self::inAction() && (!empty($router->url_parts[0]) && expModules::controllerExists($router->url_parts[0]))) {
+            $classname = expModules::getControllerClassName($router->url_parts[0]);
             $controller = new $classname();
             $metainfo = $controller->metainfo();
         } else {
@@ -320,7 +320,7 @@ class expTheme {
 				$location->src = $module->source;
 				$location->int = $module->internal;
 
-				if (!controllerExists($module->module)) {
+				if (!expModules::controllerExists($module->module)) {
 					//get the module's config data
 					$config = $db->selectObject($module->module."_config", "location_data='".serialize($location)."'");
 					if (!empty($config->enable_rss)) {
@@ -541,7 +541,7 @@ class expTheme {
 
 			//FIXME: module/controller glue code..remove ASAP
 			$module = empty($_REQUEST['controller']) ? $_REQUEST['module'] : $_REQUEST['controller'];
-			$isController = controllerExists($module);
+			$isController = expModules::controllerExists($module);
 
 			if ($isController && !isset($_REQUEST['_common'])) {
 				// this is being set just incase the url said module=modname instead of controller=modname
@@ -651,7 +651,7 @@ class expTheme {
 				$secref->is_original = 1;
 				$db->insertObject($secref,'sectionref');
 		}
-		$iscontroller = controllerExists($module);
+		$iscontroller = expModules::controllerExists($module);
 
 		if (defined("SELECTOR") && call_user_func(array($module,"hasSources"))) {
 			containermodule::wrapOutput($module,$view,$loc,$title);
@@ -682,7 +682,7 @@ class expTheme {
 				} else {
 					// if we hit here we're dealing with a controller...not a module
 					if (!$hide_menu ) {
-						$controller = getController($module);
+						$controller = expModules::getController($module);
 						$container->permissions = array(
 							'administrate'=>(expPermissions::check('administrate',$loc) ? 1 : 0),
 							'configure'=>(expPermissions::check('configure',$loc) ? 1 : 0)

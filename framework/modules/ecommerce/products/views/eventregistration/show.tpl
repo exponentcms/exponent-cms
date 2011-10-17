@@ -17,7 +17,7 @@
      <h1>{$product->title}</h1>
      <div class="image">
          {if $product->expFile.images[0]->url == ""}
-             {img src="`$smarty.const.ICON_RELATIVE`ecom/no-image.jpg"}
+             {img src="{$smarty.const.ICON_RELATIVE|cat:'ecom/no-image.jpg'}"}
          {else}
              {img file=$product->expFile.images[0]->path square=200}
          {/if}
@@ -29,7 +29,7 @@
          <div class="item-actions">
              {if $permissions.configure == 1 or $permissions.administrate == 1}
                  <a href="{link action=edit id=$product->id}" title="{"Edit this entry"|gettext}">
-                     <img src="{$smarty.const.ICON_RELATIVE}edit.png" title="{"Edit this entry"|gettext}" alt="{"Edit this entry"|gettext}" />
+                     <img src="{$smarty.const.ICON_RELATIVE|cat:'edit.png'}" title="{"Edit this entry"|gettext}" alt="{"Edit this entry"|gettext}" />
                  </a>
                  {icon action=delete record=$product title="Delete this product"}
              {/if}

@@ -13,7 +13,11 @@
  * GPL: http://www.gnu.org/licenses/gpl.txt
  *
  *}
- 
+
+{css unique="view-form-buttons" link="`$smarty.const.PATH_RELATIVE`framework/core/assets/css/button.css"}
+
+{/css}
+
 <div class="formmodule view-form">
 	<div align="center">
 		<h1>{'Form Editor'|gettext}</h1>

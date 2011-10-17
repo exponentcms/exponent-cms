@@ -34,7 +34,7 @@
 			<span class="listviewlink">{'Past Events View'|gettext}{$config->colorize}</span>
 			{if $permissions.administrate == 1}
 				&nbsp;&nbsp;|&nbsp;&nbsp;
-				<img class="mngmnt_icon" style="border:none;" src="{$smarty.const.ICON_RELATIVE}delete.png" title="{'Delete All Past Events'|gettext}" alt="{'Delete All Past Events'|gettext}" />
+				<img class="mngmnt_icon" style="border:none;" src="{$smarty.const.ICON_RELATIVE|cat:'delete.png'}" title="{'Delete All Past Events'|gettext}" alt="{'Delete All Past Events'|gettext}" />
 				<a class="mngmntlink" href="{link action=delete_all_past}" onclick="return confirm('{'Delete All Past Events?'|gettext}');" title="{'Delete All Past Events'|gettext}">{'Purge All Past Events'|gettext}</a>
 				{br}
 			{/if}
@@ -80,13 +80,13 @@
 					{permissions}
 						<div class="item-actions">
 							{if $permissions.edit == 1}
-								{icon img=edit.png action=edit record=$item date_id=$item->eventdate->id title="Edit this Event"|gettext}
+								{icon img='edit.png' action=edit record=$item date_id=$item->eventdate->id title="Edit this Event"|gettext}
 							{/if}
 							{if $permissions.delete == 1}
 								{if $item->is_recurring == 0}
-									{icon img=delete.png action=delete record=$item date_id=$item->eventdate->id title="Delete this Event"|gettext}
+									{icon img='delete.png' action=delete record=$item date_id=$item->eventdate->id title="Delete this Event"|gettext}
 								{else}
-									{icon img=delete.png action=delete_form record=$item date_id=$item->eventdate->id title="Delete this Event"|gettext}
+									{icon img='delete.png' action=delete_form record=$item date_id=$item->eventdate->id title="Delete this Event"|gettext}
 								{/if}
 							{/if}
 						</div>

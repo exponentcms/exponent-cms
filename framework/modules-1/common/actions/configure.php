@@ -20,7 +20,7 @@
 if (!defined('EXPONENT')) exit('');
 
 if (expPermissions::check('configure',$loc)) {
-	if (exponent_template_getModuleViewFile($loc->mod,'_configure',false) == TEMPLATE_FALLBACK_VIEW) {
+	if (expTemplate::getModuleViewFile($loc->mod,'_configure',false) == TEMPLATE_FALLBACK_VIEW) {
 		$template = new template('common','_configure',$loc);
 	} else {
 		$template = new template('common','_configure',$loc);
@@ -47,7 +47,7 @@ if (expPermissions::check('configure',$loc)) {
 	$container = $db->selectObject('container',"internal='".serialize($loc)."'");
 	if ($container) {
 		$values = ($container->view_data != '' ? unserialize($container->view_data) : array());
-		$form = exponent_template_getViewConfigForm($loc->mod,$container->view,$form,$values);
+		$form = expTemplate::getViewConfigForm($loc->mod,$container->view,$form,$values);
 		
 		if (isset($form->controls['submit'])) { // Still have a submit button.
 			$submit = $form->controls['submit'];
@@ -55,7 +55,7 @@ if (expPermissions::check('configure',$loc)) {
 		}
 		$hasConfig = 1; //We have a per-view, per-container configuration stored in the container data
 	}
-	//PLEASE EVALUATE: since exponent_template_getViewConfigForm is called only here, is it necessary to make it add
+	//FIXME PLEASE EVALUATE: since expTemplate::getViewConfigForm is called only here, is it necessary to make it add
 	//the submit button to the config form just to unregister and re-register it down here?
 
 	if ($hasConfig) {

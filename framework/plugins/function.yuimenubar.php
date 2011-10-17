@@ -57,7 +57,7 @@ function smarty_function_yuimenubar($params,&$smarty) {
 	expJavascript::pushToFoot(array(
 	    "unique"=>"yuimenubar-".$params['buildon'],
 	    "yui2mods"=>"menu",
-	    "yui3mods"=>$smarty->_tpl_vars['__name'],
+	    "yui3mods"=>$smarty->getTemplateVars('__name'),
 	    "content"=>$menu,
 	    "src"=>""
 	 ));

@@ -36,14 +36,14 @@
 [ <a class="mngmntlink sitetemplate_mngmntlink" href="#" onclick="window.open('{$smarty.const.URL_FULL}edit_page.php?sitetemplate_id={$sub->id}'); return false">{'Page Content'|gettext}</a> ]
 [ <a class="mngmntlink sitetemplate_mngmntlink" href="{link action=delete_template id=$sub->id}">{'Delete'|gettext}</a> ]
 {if $sub->last == 0}
-	<a href="{link action=order_templates parent=$sub->parent a=$sub->rank b=$nextrank}"><img class="mngmnt_icon" style="border:none;" src="{$smarty.const.ICON_RELATIVE}down.png" title="{'Move Item Down'|gettext}" alt="{'Move Item Down'|gettext}" /></a>
+	<a href="{link action=order_templates parent=$sub->parent a=$sub->rank b=$nextrank}"><img class="mngmnt_icon" style="border:none;" src="{$smarty.const.ICON_RELATIVE|cat:'down.png'}" title="{'Move Item Down'|gettext}" alt="{'Move Item Down'|gettext}" /></a>
 {else}
-	<img class="mngmnt_icon" style="border:none;" src="{$smarty.const.ICON_RELATIVE}down.disabled.png" title="{''|gettext}" alt="{''|gettext}" />
+	<img class="mngmnt_icon" style="border:none;" src="{$smarty.const.ICON_RELATIVE|cat:'down.disabled.png'}" title="{''|gettext}" alt="{''|gettext}" />
 {/if}
 {if $sub->first == 0}
-	<a href="{link action=order_templates parent=$sub->parent a=$sub->rank b=$prevrank}"><img class="mngmnt_icon" style="border:none;" src="{$smarty.const.ICON_RELATIVE}up.png" title="{'Move Item Up'|gettext}" alt="{'Move Item Up'|gettext}" /></a>
+	<a href="{link action=order_templates parent=$sub->parent a=$sub->rank b=$prevrank}"><img class="mngmnt_icon" style="border:none;" src="{$smarty.const.ICON_RELATIVE|cat:'up.png'}" title="{'Move Item Up'|gettext}" alt="{'Move Item Up'|gettext}" /></a>
 {else}
-	<img class="mngmnt_icon" style="border:none;" src="{$smarty.const.ICON_RELATIVE}up.disabled.png" title="{''|gettext}" alt="{''|gettext}" />
+	<img class="mngmnt_icon" style="border:none;" src="{$smarty.const.ICON_RELATIVE|cat:'up.disabled.png'}" title="{''|gettext}" alt="{''|gettext}" />
 {/if}
 </td>
 </tr>

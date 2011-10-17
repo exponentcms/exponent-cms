@@ -22,7 +22,7 @@ function smarty_function_chain($params,&$smarty) {
     
     if (isset($params['source'])) $params['src'] = $params['source'];
 
-    $src = isset($params['src']) ? $params['src'] : $smarty->_tpl_vars['__loc']->src;
+    $src = isset($params['src']) ? $params['src'] : $smarty->getTemplateVars('__loc')->src;
 
     if (isset($params['module'])) {
 //        $chrome = $params['chrome'] == "none" ? true : false;
@@ -47,7 +47,7 @@ function smarty_function_chain($params,&$smarty) {
         $action = isset($params['action']) ? $params['action'] : 'index';
         $scope = isset($params['scope']) ? $params['scope'] : 'global';
         //$chrome = isset($params['chrome']) ? '"chrome"=>true' : '';
-        $source = isset($params['source']) ? $params['source'] : $smarty->_tpl_vars['__loc']->src;
+        $source = isset($params['source']) ? $params['source'] : $smarty->getTemplateVars('__loc')->src;
         $cfg = array(
             "controller"=>$params['controller'],
             "action"=>$action,

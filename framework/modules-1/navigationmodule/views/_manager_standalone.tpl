@@ -41,7 +41,7 @@
 	<tbody>
 	{foreach from=$sections item=section}
 
-	<tr class="{cycle values=odd,even}">
+	<tr class="{cycle values='odd,even'}">
 	<td>
 		{if $section->active}
 			<a href="{link section=$section->id}" class="navlink">{$section->name}</a>&nbsp;
@@ -52,8 +52,8 @@
 		{icon class=edit action=edit_contentpage record=$section title='Edit'|gettext}
         {icon action=delete record=$section title='Delete'|gettext onclick="return confirm('Delete this page?');"}
 	</td><td>
-		{icon int=$section->id action=userperms _common=1 img=userperms.png title='Assign user permissions for this page'|gettext text="User"}
-		{icon int=$section->id action=groupperms _common=1 img=groupperms.png title='Assign group permissions for this page'|gettext text="Group"}
+		{icon int=$section->id action=userperms _common=1 img='userperms.png' title='Assign user permissions for this page'|gettext text="User"}
+		{icon int=$section->id action=groupperms _common=1 img='groupperms.png' title='Assign group permissions for this page'|gettext text="Group"}
 	</td></tr>
 	{foreachelse}
 		<tr><td colspan=3><i>{'No standalone pages found'|gettext}</i></td></tr>

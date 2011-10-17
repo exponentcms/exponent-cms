@@ -39,11 +39,11 @@ class expeAlerts extends expRecord {
     // make sure the name of the controller is in the right format
     public function build($params=array()) {
         parent::build($params);
-        $this->module = getControllerName($this->module);
+        $this->module = expModules::getControllerName($this->module);
     }
     
     public function beforeSave() {
-        $this->module = getControllerName($this->module);
+        $this->module = expModules::getControllerName($this->module);
         parent::beforeSave();
     }
     

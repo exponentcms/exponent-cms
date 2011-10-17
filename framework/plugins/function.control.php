@@ -25,8 +25,6 @@ function smarty_function_control($params,&$smarty) {
 //    || $params['type'] == 'captcha' || $params['type'] == 'recaptcha' || $params['type'] == 'antispam') {
 	  || $params['type'] == 'recaptcha' || $params['type'] == 'antispam') {
 
-        require_once(BASE.'framework/core/subsystems-1/forms.php');
-
         // if a label wasn't passed in then we need to set one.
         //if (empty($params['label'])) $params['label'] = $params['name'];
 
@@ -297,7 +295,7 @@ function smarty_function_control($params,&$smarty) {
             $control = new genericcontrol($params['type']);
         }
     
-        //eDebug($smarty->_tpl_vars['formError']);  
+        //eDebug($smarty->getTemplateVars('formError'));
         //Add the optional params in specified
         if (isset($params['class'])) $control->class = $params['class'];
         if (isset($params['required'])) $control->required = true;

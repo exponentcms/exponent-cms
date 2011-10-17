@@ -454,17 +454,17 @@ class mysql_database extends database {
 	 *
 	 * @param string $sql The SQL query to run
 	 * @param bool $escape
-	 * @return \mysql_query
+	 * @return mixed
 	 */
 	function sql($sql, $escape = true) {
 		return @mysql_query($sql, $this->connection);
 	}
 
 	function toggle($table, $col, $where=null) {
-                $obj = $this->selectObject($table, $where);
-                $obj->$col = ($obj->$col == 0) ? 1 : 0;
-                $this->updateObject($obj, $table);
-        }
+        $obj = $this->selectObject($table, $where);
+        $obj->$col = ($obj->$col == 0) ? 1 : 0;
+        $this->updateObject($obj, $table);
+    }
 
 	/**
 	 * Select a series of objects

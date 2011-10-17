@@ -70,8 +70,8 @@ if (expPermissions::check('edit_module',$loc) || expPermissions::check('add_modu
 	$haveclass = false;
 	$mods = array();
 	
-	//$modules_list = (isset($container->id) ? expModules::exponent_modules_list() : exponent_modules_listActive());
-	$modules_list = getModulesAndControllers();
+	//$modules_list = (isset($container->id) ? expModules::modules_list() : exponent_modules_listActive());
+	$modules_list = expModules::getActiveModulesAndControllersList();
 
 	if (!count($modules_list)) { // No active modules
 		$template->assign('nomodules',1);
@@ -101,7 +101,7 @@ if (expPermissions::check('edit_module',$loc) || expPermissions::check('add_modu
 		$mod->supportsViews  = ($module->hasViews()   ? 1 : 0);
 		
 		// Get a list of views
-		$mod->views = exponent_template_listModuleViews($moduleclass);
+		$mod->views = expTemplate::listModuleViews($moduleclass);
 		natsort($mod->views);
 		
         // if (!$haveclass) {

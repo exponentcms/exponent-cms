@@ -39,7 +39,7 @@ class creditcard extends billingcalculator {
 		// make sure we have some billing options saved.
 		//if (empty($this->opts)) return false;
 		
-		//exponent_javascript_toFoot('creditcard',"",null,'', URL_FULL.'framework/core/subsystems-1/forms/js/AuthorizeNet.validate.js');
+		//exponent_javascript_toFoot('creditcard',"",null,'', URL_FULL.'framework/core/subsystems/forms/js/AuthorizeNet.validate.js');
 		//$opts->first_name = isset($this->opts->first_name) ? $this->opts->first_name : null;
 		//$opts->last_name = isset($this->opts->last_name) ? $this->opts->last_name : null;
 		$this->opts = expSession::get('billing_options');

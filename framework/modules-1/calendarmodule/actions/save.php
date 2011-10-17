@@ -52,8 +52,6 @@ if (($item == null && expPermissions::check("post",$loc)) ||
 		$item->feedback_email = "";
 	}
 
-	require_once(BASE."framework/core/subsystems-1/forms.php");
-
 	//Get and save the image
 	/*  Yeah, no. Yeah, yes... Maia 6/23/09 */
 	// $file = null;

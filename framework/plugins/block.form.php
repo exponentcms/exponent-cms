@@ -39,15 +39,15 @@ function smarty_block_form($params,$content,&$smarty, &$repeat) {
 	if(empty($content)){
 		$name = isset($params['name']) ? $params['name'] : 'form';
 		$id = empty($params['id']) ? $name : $params['id'];
-		$module = isset($params['module']) ? $params['module'] : $smarty->_tpl_vars['__loc']->mod;
-		$controller = isset($params['controller']) ? $params['controller'] : $smarty->_tpl_vars['__loc']->con;
+		$module = isset($params['module']) ? $params['module'] : $smarty->getTemplateVars('__loc')->mod;
+		$controller = isset($params['controller']) ? $params['controller'] : $smarty->getTemplateVars('__loc')->con;
 		$method = isset($params['method']) ? $params['method'] : "POST";
 		$enctype = isset($params['enctype']) ? $params['enctype'] : 'multipart/form-data';
 
 		echo "<!-- Form Object 'form' -->\r\n";
-		echo '<script type="text/javascript" src="'.PATH_RELATIVE.'framework/core/subsystems-1/forms/js/inputfilters.js.php"></script>'."\r\n";
-		// echo '<script type="text/javascript" src="'.PATH_RELATIVE.'framework/core/subsystems-1/forms/controls/listbuildercontrol.js"></script>'."\r\n";
-		// echo '<script type="text/javascript" src="'.PATH_RELATIVE.'framework/core/subsystems-1/forms/js/required.js"></script>'."\r\n";
+		echo '<script type="text/javascript" src="'.PATH_RELATIVE.'framework/core/subsystems/forms/js/inputfilters.js.php"></script>'."\r\n";
+		// echo '<script type="text/javascript" src="'.PATH_RELATIVE.'framework/core/subsystems/forms/controls/listbuildercontrol.js"></script>'."\r\n";
+		// echo '<script type="text/javascript" src="'.PATH_RELATIVE.'framework/core/subsystems/forms/js/required.js"></script>'."\r\n";
 		// echo '<script type="text/javascript" src="'.PATH_RELATIVE.'external/jscalendar/calendar.js"></script>'."\r\n";
 		// echo '<script type="text/javascript" src="'.PATH_RELATIVE.'external/jscalendar/lang/calendar-en.js"></script>'."\r\n";
 		// echo '<script type="text/javascript" src="'.PATH_RELATIVE.'external/jscalendar/calendar-setup.js"></script>'."\r\n";
@@ -61,8 +61,8 @@ function smarty_block_form($params,$content,&$smarty, &$repeat) {
 		} else {
 			echo '<input type="hidden" name="module" id="module" value="'.$module.'" />'."\r\n";
 		}
-		echo '<input type="hidden" name="src" id="src" value="'.$smarty->_tpl_vars['__loc']->src.'" />'."\r\n";
-		echo '<input type="hidden" name="int" id="int" value="'.$smarty->_tpl_vars['__loc']->int.'" />'."\r\n";
+		echo '<input type="hidden" name="src" id="src" value="'.$smarty->getTemplateVars('__loc')->src.'" />'."\r\n";
+		echo '<input type="hidden" name="int" id="int" value="'.$smarty->getTemplateVars('__loc')->int.'" />'."\r\n";
 		if (isset($params['action']))  echo '<input type="hidden" name="action" id="action" value="'.$params['action'].'" />'."\r\n";
 
 		//echo the innards

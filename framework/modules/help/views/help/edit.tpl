@@ -14,7 +14,7 @@
  *
  *}
 
-<div id="edithelp" class="module help edit hide exp-skin-tabview">
+<div id="edithelp" class="module help edit yui3-skin-sam hide">
     
     {if $record->id != ""}<h1>Editing {$record->title}</h1>{else}<h1>New Help Document</h1>{/if}
     
@@ -70,11 +70,15 @@
 
 {script unique="editform" yui3mods=1}
 {literal}
-    YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-tabview','yui2-element', function(Y) {
-        var YAHOO=Y.YUI2;
-
-        var tabView = new YAHOO.widget.TabView('helpedit');
-        Y.one('#edithelp').removeClass('hide').next().remove();
+//    YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-tabview','yui2-element', function(Y) {
+//        var YAHOO=Y.YUI2;
+//        var tabView = new YAHOO.widget.TabView('helpedit');
+	YUI(EXPONENT.YUI3_CONFIG).use('tabview', function(Y) {
+	    var tabview = new Y.TabView({srcNode:'#helpedit'});
+	    tabview.render();
+		Y.one('#edithelp').removeClass('hide');
+		Y.one('.loadingdiv').remove();
+//        Y.one('#edithelp').removeClass('hide').next().remove();
     });
 {/literal}
 {/script}

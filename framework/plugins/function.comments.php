@@ -37,7 +37,7 @@ function smarty_function_comments($params,&$smarty) {
 			'hidecomments'=>$hidecomments,
 			'title'=>$title,
 			'formtitle'=>$formtitle,
-			'config'=>$smarty->_tpl_vars['config'],
+			'config'=>$smarty->getTemplateVars('config'),
             'require_login'=>$require_login,
             'require_approval'=>$require_approval,
             'require_notification'=>$require_notification,

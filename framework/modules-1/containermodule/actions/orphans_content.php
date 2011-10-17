@@ -26,7 +26,7 @@ if (!defined('EXPONENT')) exit('');
 	$clickable_mods = null; // Show all
 	$dest = null;
 	
-	if (expSession::is_set("source_select") && (defined("SOURCE_SELECTOR") || defined("CONTENT_SELECTOR"))) {
+	if (expSession::is_set("source_select") && (defined("SOURCE_SELECTOR"))) {
 		$source_select = expSession::get("source_select");
 		$view = $source_select["view"];
 		$module = $source_select["module"];
@@ -48,7 +48,7 @@ if (!defined('EXPONENT')) exit('');
 			$mod = new $modclass();			
 			if (class_exists($modclass)) {			    
 			    ob_start();
-			    if (controllerExists($modclass)) {
+			    if (expModules::controllerExists($modclass)) {
                     renderAction(array('controller'=>$modclass, 'action'=>'showall','src'=>$orphan->source));                
                 } else {                    
 			        $mod->show("Default",$loc);

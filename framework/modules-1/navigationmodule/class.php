@@ -201,8 +201,8 @@ class navigationmodule {
 			// of all the text module added together.
 			$modnames = array('text', 'textController');
 			foreach ($modnames as $mod) {
-			    $loc->mod = getControllerName($mod);
-			    $controllername = getControllerClassName($mod);    			
+			    $loc->mod = expModules::getControllerName($mod);
+			    $controllername = expModules::getControllerClassName($mod);
 			    foreach($db->selectObjects('sectionref', "module='".$controllername."' AND section=".$section->id) as $module) {
 				    $loc->src = $module->source;
 				    $loc->int = '';				    
@@ -446,7 +446,7 @@ class navigationmodule {
 				    $modclass = $secref->module;
 				    
 				    //FIXME: more module/controller glue code
-	                if (controllerExists($modclass)) {
+	                if (expModules::controllerExists($modclass)) {
 	                    $mod = new $modclass($iloc->src);
 	                    $mod->delete_instance();
 	                } else {

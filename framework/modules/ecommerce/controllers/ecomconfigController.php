@@ -149,7 +149,6 @@ class ecomconfigController extends expController {
         //loop our groups and append them to the array
        // foreach ($group->find() as $g){
        //this is a workaround for older code. Use the previous line if possible:
-//       include_once(BASE.'framework/core/subsystems-1/users.php');
        $allGroups = group::getAllGroups();
        if (count($allGroups))
        {
@@ -270,7 +269,7 @@ class ecomconfigController extends expController {
         $this->loc->src = "@globalstoresettings";
         $config = new expConfig($this->loc);
         $this->config = $config->config;
-        $pullable_modules = listInstalledControllers($this->classname, $this->loc);
+        $pullable_modules = expModules::listInstalledControllers($this->classname, $this->loc);
         $views = get_config_templates($this, $this->loc);
         
         $gc = new geoCountry();             

@@ -51,9 +51,9 @@
                             {control type="hidden" name="id" value=$discount->id}
                             <td style="text-align:center;">
                             {if $discount->enabled}
-                                <a href="{link action=activate_discount id=$discount->id enabled=0}">{img src=`$smarty.const.ICON_RELATIVE`toggle_on.png}</a>
+                                <a href="{link action=activate_discount id=$discount->id enabled=0}">{img src=$smarty.const.ICON_RELATIVE|cat:'toggle_on.png'}</a>
                             {else}
-                                <a href="{link action=activate_discount id=$discount->id enabled=1}">{img src=`$smarty.const.ICON_RELATIVE`toggle_off.png}</a>
+                                <a href="{link action=activate_discount id=$discount->id enabled=1}">{img src=$smarty.const.ICON_RELATIVE|cat:'toggle_off.png'}</a>
                             {/if}
                             </td>
                             <td>{$discount->title}</td>  

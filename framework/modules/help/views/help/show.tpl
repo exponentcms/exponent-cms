@@ -14,7 +14,7 @@
  *
  *}
 
-<div id="showhelp" class="module help show exp-skin-tabview">
+<div id="showhelp" class="module help show yui3-skin-sam hide">
 
     <h1>{$doc->title}</h1>
 
@@ -69,14 +69,19 @@
 		</div>
 	</div>
 </div>
+<div class="loadingdiv">Loading</div>
 
 {script unique="editform" yui3mods=1}
 {literal}
-    YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-tabview','yui2-element', function(Y) {
-        var YAHOO=Y.YUI2;
-
-        var tabView = new YAHOO.widget.TabView('help-show');
-        Y.one('#showhelp').removeClass('hide').next().remove();
+//    YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-tabview','yui2-element', function(Y) {
+//        var YAHOO=Y.YUI2;
+//        var tabView = new YAHOO.widget.TabView('help-show');
+	YUI(EXPONENT.YUI3_CONFIG).use('tabview', function(Y) {
+	    var tabview = new Y.TabView({srcNode:'#help-show'});
+	    tabview.render();
+		Y.one('#showhelp').removeClass('hide');
+		Y.one('.loadingdiv').remove();
+//        Y.one('#showhelp').removeClass('hide').next().remove();
     });
 {/literal}
 {/script}

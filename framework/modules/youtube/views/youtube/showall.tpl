@@ -49,7 +49,7 @@
 		{permissions}
 			<div class="module-actions">
 				{if $permissions.create == 1}
-					{icon class=add action=edit rank=`$ytv->rank+1` title="Add a YouTube Video Here"|gettext text="Add a YouTube Video"|gettext}
+					{icon class=add action=edit rank=$ytv->rank+1 title="Add a YouTube Video Here"|gettext text="Add a YouTube Video"|gettext}
 				{/if}
 			</div>
 		{/permissions}

@@ -307,7 +307,6 @@ class usersController extends expController {
         // in the database yet.  If not we will add them.
 		$extdirs = array(
 			BASE.'framework/modules/users/extensions',
-//			BASE.'themes/'.DISPLAY_THEME_REAL.'framework/modules/users/extensions'  //FIXME change to allow preview
 			BASE.'themes/'.DISPLAY_THEME.'framework/modules/users/extensions'
 		);
 		foreach ($extdirs as $dir) {
@@ -560,7 +559,6 @@ class usersController extends expController {
     public function manage_group_memberships() {
         global $db, $user;
         expHistory::set('manageable', $this->params);
-//        require_once(BASE.'framework/core/subsystems-1/users.php');
 
         $memb = $db->selectObject('groupmembership','member_id='.$user->id.' AND group_id='.$this->params['id'].' AND is_admin=1');
 

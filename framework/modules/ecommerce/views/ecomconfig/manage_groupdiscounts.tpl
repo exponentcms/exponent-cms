@@ -72,10 +72,10 @@
                     <td>
                         {if $permissions.manage == true}
                             {if $smarty.foreach.items.first == 0}
-                                {icon controller=ecomconfig action=rerank_groupdiscount img=up.png record=$discount push=up}    
+                                {icon controller=ecomconfig action=rerank_groupdiscount img='up.png' record=$discount push=up}
                             {/if}
                             {if $smarty.foreach.items.last == 0}
-                                {icon controller=ecomconfig action=rerank_groupdiscount img=down.png record=$discount push=down}
+                                {icon controller=ecomconfig action=rerank_groupdiscount img='down.png' record=$discount push=down}
                             {/if}
                         {/if}
                     </td>

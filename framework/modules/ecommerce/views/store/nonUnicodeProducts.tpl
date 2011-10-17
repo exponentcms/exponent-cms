@@ -20,7 +20,7 @@
 			<td>
 				{permissions level=$smarty.const.UILEVEL_NORMAL}
 					{if $permissions.edit == 1}
-						{icon img=edit.png action=edit id=$listing.id title="Edit `$listing.title`"}
+						{icon img='edit.png' action=edit id=$listing.id title="Edit `$listing.title`"}
 					{/if}
 				{/permissions}  
 			</td>                   

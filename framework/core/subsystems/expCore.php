@@ -38,6 +38,15 @@ class expCore {
 		return $sections;
 	}
 
+	/**
+	 * Return an exponent location object
+	 *
+	 * @static
+	 * @param null $mod
+	 * @param null $src
+	 * @param null $int
+	 * @return null
+	 */
 	public static function makeLocation($mod=null,$src=null,$int=null) {
 		$loc = null;
 		$loc->mod = ($mod ? $mod : "");
@@ -60,13 +69,13 @@ class expCore {
 	public static function makeLink($params,$type='',$sef_name='') {
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		//
-		//   Now that we have the router class, this function is here for compatability reasons only.
-		//   it will most likey be deprecated in newer releases of exponent.
+		//   Now that we have the router class, this function is here for compatibility reasons only.
+		//   it will most likely be deprecated in newer releases of exponent.
 		//
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		global $router;
 
-		// this is here for compatability with the navigation module and the old way make link used prior
+		// this is here for compatibility with the navigation module and the old way make link used prior
 		// to having the router class
 		$params['sef_name'] = $sef_name;
 
@@ -74,11 +83,18 @@ class expCore {
 		return $router->makeLink($params);
 	}
 
+	/**
+	 * Return an rss link
+	 *
+	 * @static
+	 * @param $params
+	 * @return string
+	 */
 	public static function makeRSSLink($params) {
 		$link = (ENABLE_SSL ? NONSSL_URL : URL_BASE);
 
 		//FIXME: Hardcoded controller stuff!!
-		if (controllerExists($params['module'])) {
+		if (expModules::controllerExists($params['module'])) {
 			$link .= SCRIPT_RELATIVE . "site_rss.php" . "?";
 		} else {
 			$link .= SCRIPT_RELATIVE . "rss.php" . "?";
@@ -93,14 +109,19 @@ class expCore {
 		return htmlspecialchars($link,ENT_QUOTES);
 	}
 
+	/**
+	 * Return a podcast link
+	 *
+	 * @static
+	 * @param $params
+	 * @return string
+	 */
 	public static function makePodcastLink($params) {
 		$link = (ENABLE_SSL ? NONSSL_URL : URL_BASE);
 		//FIXME: Hardcoded controller stuff!!
-		if (controllerExists($params['module'])) {
-	//	    $link .= SCRIPT_RELATIVE . "site_podcast.php" . "?";
+		if (expModules::controllerExists($params['module'])) {
 			$link .= SCRIPT_RELATIVE . "site_rss.php" . "?";
 		} else {
-	//	    $link .= SCRIPT_RELATIVE . "podcast.php" . "?";
 			$link .= SCRIPT_RELATIVE . "rss.php" . "?";
 		}
 		foreach ($params as $key=>$value) {
@@ -126,7 +147,7 @@ class expCore {
 	public static function makeSecureLink($params) {
 		global $router;
 
-			// this is here for compatability with the navigation module and the old way make link used prior
+			// this is here for compatibility with the navigation module and the old way make link used prior
 			// to having the router class
 			$params['sef_name'] = $sef_name;  //FIXME $sef_name isn't set??
 
@@ -351,7 +372,7 @@ class expCore {
 				$relpath .= "framework/views/";
 			} elseif($type == "forms") {
 				if ($name != "forms/email") {
-					$relpath .= "framework/core/subsystems-1/forms/";
+					$relpath .= "framework/core/subsystems/forms/";
 				} else {  //TODO  forms/email only used by calendarmodule
 					$relpath .= "framework/modules-1/calendarmodule/";
 				}
@@ -365,7 +386,7 @@ class expCore {
 			} elseif($type == "Control") {
 				$relpath .= "themes/";
 			} elseif($type == "Form") {
-				$relpath .= "framework/core/subsystems-1/forms/";
+				$relpath .= "framework/core/subsystems/forms/";
 			} elseif($type == "Module") {
 				$relpath .= "modules/";
 			} elseif($type == "Controller" || $type=='controllers') {
@@ -455,17 +476,17 @@ class expCore {
 
 	/** exdoc
 	 * This function is a wrapper around self::resolveFilePaths()
-	 * and returns a list of the basenames, minus the fileextensions - if any
+	 * and returns a list of the basenames, minus the file extensions - if any
 	 *
-	 * @param string $type (to be superceeded) type of base ressource (= directory name)
-	 * @param string $name (hopefully in the future type named) Ressource identifier (= class name = directory name)
+	 * @param string $type (to be superseded) type of base resource (= directory name)
+	 * @param string $name (hopefully in the future type named) Resource identifier (= class name = directory name)
 	 * @param string $subtype type of the actual file (= file extension = (future) directory name)
 	 * @param string $subname name of the actual file (= filename name without extension)
 	 *
 	 * @return array
 	 * @node Subsystems:expCore
 	 */
-	public static function buildNameList($type, $name, $subtype, $subname) {  //FIXME only used by exponent_template_listFormTemplates & exponent_template_listModuleViews (total of 3 calls)
+	public static function buildNameList($type, $name, $subtype, $subname) {  //FIXME only used by expTemplate::listFormTemplates & expTemplate::listModuleViews (total of 2 calls)
 		$nameList = array();
 		$fileList = self::resolveFilePaths($type, $name, $subtype, $subname);
 		if ($fileList != false) {
@@ -485,27 +506,34 @@ class expCore {
 		return $nameList;
 	}
 
+	/**
+	 * Return the appropriate currency symbol
+	 *
+	 * @static
+	 * @param $currency_type
+	 * @return string
+	 */
 	public static function getCurrencySymbol($currency_type) {
 		switch ($currency_type) {
-				case "USD":
-						return "$";
-							break;
-					case "CAD":
-					case "AUD":
-							return "$";
-							break;
-					case "EUR":
-							return "&euro;";
-							break;
-					case "GBP":
-							return "&#163;";
-							break;
-					case "JPY":
-							return "&#165;";
-					break;
-					default:
-							return "$";
-		   }
+			case "USD":
+				return "$";
+				break;
+			case "CAD":
+			case "AUD":
+				return "$";
+				break;
+			case "EUR":
+				return "&euro;";
+				break;
+			case "GBP":
+				return "&#163;";
+				break;
+			case "JPY":
+				return "&#165;";
+			break;
+			default:
+				return "$";
+	    }
 	}
 
 }

@@ -14,7 +14,7 @@
  *
  *}
 
-<div id="editfile" class="module filedownload edit hide exp-skin-tabview">
+<div id="editfile" class="module filedownload edit yui3-skin-sam hide">
     
     {if $record->id != ""}<h1>Editing {$record->title}</h1>{else}<h1>New File Download</h1>{/if}
     
@@ -65,11 +65,15 @@
 
 {script unique="editform" yui3mods=1}
 {literal}
-    YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-tabview','yui2-element', function(Y) {
-        var YAHOO=Y.YUI2;
-
-        var tabView = new YAHOO.widget.TabView('demo');
-        Y.one('#editfile').removeClass('hide').next().remove();
+//    YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-tabview','yui2-element', function(Y) {
+//        var YAHOO=Y.YUI2;
+//        var tabView = new YAHOO.widget.TabView('demo');
+	YUI(EXPONENT.YUI3_CONFIG).use('tabview', function(Y) {
+	    var tabview = new Y.TabView({srcNode:'#demo'});
+	    tabview.render();
+		Y.one('#editfile').removeClass('hide');
+		Y.one('.loadingdiv').remove();
+//        Y.one('#editfile').removeClass('hide').next().remove();
     });
 {/literal}
 {/script}

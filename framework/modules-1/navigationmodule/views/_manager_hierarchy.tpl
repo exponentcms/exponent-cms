@@ -43,7 +43,7 @@
 	{*<a id="expand" href="#">Expand all</a>*}
 	<div><a id="collapse" href="#">Collapse all</a></div>
 	<div id="navtree">
-		<img src="{$smarty.const.ICON_RELATIVE}ajax-loader.gif">	<strong>Loading Navigation</strong>
+		<img src="{$smarty.const.ICON_RELATIVE|cat:'ajax-loader.gif'}">	<strong>Loading Navigation</strong>
 	</div>
 </div>
 
@@ -126,8 +126,6 @@ var YAHOO = Y.YUI2;
 		YAHOO.util.Dom.removeClass(destEl,"addbefore-h");
 		YAHOO.util.Dom.removeClass(destEl,"addafter-h");
 		YAHOO.util.Dom.removeClass(destEl,"hovered");
-
-		
 	}
 
 	DDSend.prototype.onDragDrop = function(e, id) {
@@ -182,7 +180,6 @@ var YAHOO = Y.YUI2;
 				YAHOO.util.Dom.removeClass(proxy,"ddnavproxiebeingdragged");
 			});
 		a.animate();
-
 	}
 	
 	refreshDD = function () {
@@ -239,7 +236,6 @@ var YAHOO = Y.YUI2;
 			//adjustFirstLast(moveMe,moveMeUnder);
 			tree.getRoot().refresh();
 		}
-		
 	}
 	
 	function addTopNode (){
@@ -291,7 +287,6 @@ var YAHOO = Y.YUI2;
 
 		var message = "Deleting a page moves it to the Standalone Page Manager, removing it from the Site Hierarchy. If there are any sub-pages to this section, those will also be moved";
 
-
 		// Instantiate the Dialog
 		var delpage = new YAHOO.widget.SimpleDialog("simpledialog1",
 										{ width: "400px",
@@ -311,7 +306,6 @@ var YAHOO = Y.YUI2;
 		// Render the Dialog
 		delpage.render(document.body);
 		delpage.show();
-
 	}
 
 	function editUserPerms (){
@@ -329,8 +323,7 @@ var YAHOO = Y.YUI2;
 			window.location="{/literal}{$smarty.const.URL_FULL}{literal}index.php?module=navigationmodule&action=groupperms&int="+currentMenuNode.data.id+"&_common=1";
 		{/literal} {/if} {literal}
 	}
-	
-	
+
 	function saveToDB(move,target,type) {
 		var iUrl = eXp.URL_FULL+"index.php?ajax_action=1&module=navigationmodule&action=DragnDropReRank";
 		YAHOO.util.Connect.asyncRequest('POST', iUrl, 
@@ -343,8 +336,6 @@ var YAHOO = Y.YUI2;
 			},
 			timeout : 50000
 		},"move="+move+"&target="+target+"&type="+type);
-
-
 	}
 
 	function loadNodeData(node, fnLoadComplete)	 {
@@ -457,7 +448,6 @@ var YAHOO = Y.YUI2;
 	
 	if (usr.is_acting_admin==1 || usr.is_admin==1) {
 		var navoptions = [
-				{ classname:"addsubpage", text: "Add A Top Level Page", onclick: { fn: addTopNode } },
 				{ classname:"addsubpage", text: "Add A Subpage", onclick: { fn: addSubNode },
 					submenu: {
 						id: "submenu1",
@@ -477,7 +467,6 @@ var YAHOO = Y.YUI2;
 			];
 	} else {
 		var navoptions = [
-				{ classname:"addsubpage", text: "Add A Top Level Page", onclick: { fn: addTopNode } },
 				{ classname:"addsubpage", text: "Add A Subpage", onclick: { fn: addSubNode },
 					submenu: {
 						id: "submenu1",
@@ -501,11 +490,10 @@ var YAHOO = Y.YUI2;
 																	zIndex:500,
 																	classname: "yui-skin-sam",
 																	itemdata:navoptions,
-																	lazyload: true
+																	lazyload: true,
+																	autosubmenudisplay: true
 																	 });
 	oContextMenu.subscribe("triggerContextMenu", onTriggerContextMenu); 
-
-	
 
 	DDSend.init = function() {
 		YAHOO.util.Event.on(["mode0", "mode1"], "click", changeIconMode);
@@ -519,17 +507,10 @@ var YAHOO = Y.YUI2;
 		initTree();
 	}
 	
-	
     DDSend.init();
 //once the DOM has loaded, we can go ahead and set up our tree:
 
-
 });
-
 
 {/literal}
 {/script}
-
-
-
-

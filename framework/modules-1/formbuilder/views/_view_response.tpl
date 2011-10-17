@@ -14,6 +14,10 @@
  *
  *}
 
+{css unique="submit-form-buttons" link="`$smarty.const.PATH_RELATIVE`framework/core/assets/css/button.css"}
+
+{/css}
+
 <div class="formmodule submit-form">
 	{messagequeue}
 	<div style="padding: 1em;">

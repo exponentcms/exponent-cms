@@ -88,13 +88,15 @@ $SYS_USERS_CACHE = array();
  */
 $exponent_permissions_r = array();
 
+$userjsfiles = array();
+
 function renderAction(array $parms=array()) {
     //because we love you
     global $user;
     
     //Get some info about the controller
-    $baseControllerName = getControllerName($parms['controller']);
-    $fullControllerName = getControllerClassName($parms['controller']);
+    $baseControllerName = expModules::getControllerName($parms['controller']);
+    $fullControllerName = expModules::getControllerClassName($parms['controller']);
     $controllerClass = new ReflectionClass($fullControllerName);
     
     // Figure out the action to use...if the specified action doesn't exist then
@@ -221,7 +223,7 @@ function renderAction(array $parms=array()) {
 function hotspot($source = null) {
     if (!empty($source)) {
         global $sectionObj;
-	    //FIXME there is NO page object written
+	    //FIXME there is NO 'page' object
         $page = new page($sectionObj->id);
         $modules = $page->getModulesBySource($source);
         //eDebug($modules);exit();
@@ -325,11 +327,11 @@ function get_common_template($view, $loc, $controllername='') {
     $themepath = BASE.'themes/'.DISPLAY_THEME.'/modules/common/views/'.$controllername.'/'.$view.'.tpl';
 
     if (file_exists($themepath)) {
-        return new controllerTemplate($controller,$themepath);
+        return new controllertemplate($controller,$themepath);
     } elseif(file_exists($basepath)) {
-        return new controllerTemplate($controller,$basepath);
+        return new controllertemplate($controller,$basepath);
     } else {
-        return new controllerTemplate($controller, BASE.'framework/common/views/scaffold/blank.tpl');
+        return new controllertemplate($controller, BASE.'framework/common/views/scaffold/blank.tpl');
     }
 }
 
@@ -356,7 +358,7 @@ function get_config_templates($controller, $loc) {
     $module_views = find_config_views($modpaths);
     
     // look for a config form for this module's current view    
-    $controller->loc->mod = getControllerClassName($controller->loc->mod);
+    $controller->loc->mod = expModules::getControllerClassName($controller->loc->mod);
     //check to see if hcview was passed along, indicating a hard-coded module
     if (!empty($controller->params['hcview'])) {
         $viewname = $controller->params['hcview'];
@@ -422,29 +424,29 @@ function get_template_for_action($controller, $action, $loc) {
     $rootthemepath = BASE.'themes/'.DISPLAY_THEME.'/modules/'.$controller->relative_viewpath.'/'.$root_action[0].'.tpl';
 
     if (file_exists($themepath)) {
-        return new controllerTemplate($controller, $themepath);
+        return new controllertemplate($controller, $themepath);
     } elseif (file_exists($basepath)) {     
-        return new controllerTemplate($controller, $basepath);
+        return new controllertemplate($controller, $basepath);
     } elseif ($root_action[0] != $action) {
         if (file_exists($rootthemepath)) {
-            return new controllerTemplate($controller, $rootthemepath);
+            return new controllertemplate($controller, $rootthemepath);
         } elseif (file_exists($rootbasepath)) {
-            return new controllerTemplate($controller, $rootbasepath);
+            return new controllertemplate($controller, $rootbasepath);
         }
     }
     
     // if we get here it means there were no views for the this action to be found.
     // we will check to see if we have a scaffolded version or else just grab a blank template.
     if (file_exists(BASE.'framework/modules/common/views/scaffold/'.$action.'.tpl')) {
-        return new controllerTemplate($controller, BASE.'framework/modules/common/views/scaffold/'.$action.'.tpl');
+        return new controllertemplate($controller, BASE.'framework/modules/common/views/scaffold/'.$action.'.tpl');
     } else {
-        return new controllerTemplate($controller, BASE.'framework/modules/common/views/scaffold/blank.tpl');
+        return new controllertemplate($controller, BASE.'framework/modules/common/views/scaffold/blank.tpl');
     }
 }
 
 function get_action_views($ctl, $action, $human_readable) {
     // setup the controller
-    $controllerName = getControllerClassName($ctl);
+    $controllerName = expModules::getControllerClassName($ctl);
     $controller = new $controllerName();
     
     // set path information 
@@ -501,157 +503,6 @@ function get_filedisplay_views() {
     }
     
     return $views;
-}
-
-function initializeControllers() {
-    $controllers = array();
-//    loadModulesDir(BASE.'themes/'.DISPLAY_THEME_REAL.'/modules', $controllers);
-    loadModulesDir(BASE.'themes/'.DISPLAY_THEME.'/modules', $controllers);
-    loadModulesDir(BASE.'framework/modules', $controllers);
-    return $controllers;
-}
-
-// recursive function used for (auto?)loading 2.0 modules controllers & models
-function loadModulesDir($dir, &$controllers) {
-	global $db;
-    if (is_readable($dir)) {
-        $dh = opendir($dir);
-        while (($file = readdir($dh)) !== false) {
-            if (is_dir($dir.'/'.$file) && ($file != '..' && $file != '.')) {
-                // load controllers
-                $dirpath = $dir.'/'.$file.'/controllers';
-                if (file_exists($dirpath)) {
-                    $controller_dir = opendir($dirpath);
-                    while (($ctl_file = readdir($controller_dir)) !== false) {
-                        if (empty($controllers[substr($ctl_file,0,-4)]) && substr($ctl_file,-4,4) == ".php") {
-                            include_once($dirpath.'/'.$ctl_file);
-                            $controllers[substr($ctl_file,0,-4)] = $dirpath.'/'.$ctl_file;
-//	                        $module->module = substr($ctl_file,0,-4);
-//	                        $module->active = 1;
-//	                        $module->path = $dirpath.'/'.$ctl_file;
-//	                        if (($db->selectObject('modstate','module = "'.substr($ctl_file,0,-4).'"')) == null) $db->insertObject($module,'modstate');
-                        }
-                    }
-                }
-                // load models
-                $dirpath = $dir.'/'.$file.'/models';
-                if (file_exists($dirpath)) {
-                    $controller_dir = opendir($dirpath);
-                    while (($ctl_file = readdir($controller_dir)) !== false) {
-                        if (empty($controllers[substr($ctl_file,0,-4)]) && substr($ctl_file,-4,4) == ".php") {
-                            include_once($dirpath.'/'.$ctl_file);
-                            $controllers[substr($ctl_file,0,-4)] = $dirpath.'/'.$ctl_file;
-//                            $module->module = substr($ctl_file,0,-4);
-//                            $module->active = 1;
-//                            $module->path = $dirpath.'/'.$ctl_file;
-//	                          if (($db->selectObject('modstate','module = "'.substr($ctl_file,0,-4).'"')) == null) $db->insertObject($module,'modstate');
-                        }
-                    }
-                }
-            }
-        }
-    }
-}
-
-function controllerExists($controllername='') {
-    global $available_controllers;
-
-    // make sure the name is in the right format
-    $controllername = getControllerClassName($controllername);
-
-    // check for module based controllers
-    if (array_key_exists($controllername, $available_controllers)) {
-        if (is_readable($available_controllers[$controllername])) return true;
-    } else {
-        // check for core controllers
-        if (is_readable(BASE.'framework/core/controllers/'.getControllerClassName($controllername).'.php')) return true;
-    }
-    
-    // if we got here we didn't find any controllers matching the name
-    return false;
-}
-
-function getControllerClassName($controllername) {
-    if (empty($controllername)) return null;
-    return (substr($controllername, -10) == 'Controller') ? $controllername : $controllername.'Controller';
-}
-
-function getControllerName($controllername) {
-    if (empty($controllername)) return null;
-        return (substr($controllername, -10) == 'Controller') ? substr($controllername, 0, -10) : $controllername;
-}
-
-function getController($controllername='') {
-    $fullname = getControllerClassName($controllername);
-    if (controllerExists($controllername))  {
-        $controller = new $fullname();
-        return $controller;
-    } else {
-        return null;
-    }
-}
-
-function listControllers() {
-    global $available_controllers;
-    return $available_controllers;
-}
-
-function listUserRunnableControllers() {
-    global $available_controllers;
-    
-    $controllers = array();
-    foreach($available_controllers as $name=>$path) {
-        $controller = new $name();
-        if (!empty($controller->useractions)) $controllers[] = $name;
-    }
-        
-    return $controllers;
-}
-
-function listActiveControllers() {
-    global $db;
-
-    $controllers = array();
-    $modules = $db->selectObjects("modstate","active='1'");
-    foreach($modules as $mod) {
-        if (controllerExists($mod->module)) {
-            $controller = new $mod->module();
-            if (!empty($controller->useractions)) {
-                $controllers[] = $mod->module;
-            }
-        }
-    }
-    
-    return $controllers;
-}
-
-function listInstalledControllers($type=null, $loc=null) {
-    if (empty($type)) return array();
-        global $db;
-        
-        // setup the where clause
-        $where = 'module="'.$type.'"';
-        if (!empty($loc)) $where .= " AND source != '".$loc->src."'";
-
-        $refs = $db->selectObjects('sectionref', $where);
-        $modules = array();
-        foreach ($refs as $ref) {
-            if ($ref->refcount > 0) {
-                $instance = $db->selectObject('container', 'internal like "%'.$ref->source.'%"');
-                $mod = null;
-                $mod->title = !empty($instance->title) ? $instance->title : "Untitled";
-                $mod->section = $db->selectvalue('section', 'name', 'id='.$ref->section);
-                $modules[$ref->source] = $mod;
-            }
-        }
-
-        return $modules;
-}
-
-function getModulesAndControllers() {
-    $mods = exponent_modules_listActive();  // 1.0 modules
-    $ctls = listActiveControllers();        // 2.0 modules
-    return array_merge($ctls, $mods);
 }
 
 function makeLocation($mod=null,$src=null,$int=null) {

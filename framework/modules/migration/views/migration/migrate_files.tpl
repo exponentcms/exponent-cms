@@ -14,6 +14,10 @@
  *
  *}
 
+{css unique="migratefiles-buttons" link="`$smarty.const.PATH_RELATIVE`framework/core/assets/css/button.css"}
+
+{/css}
+
 {css unique="migratefiles" corecss="tables"}
 
 {/css}
@@ -59,7 +63,7 @@
 		<tbody>
 			{foreach from=$files item=file name=files}
 				<tr class="{cycle values="even,odd"}">            
-					<td width=5%>{if $file->exists}{img src=`$smarty.const.ICON_RELATIVE`clean.png}{else}<span style="color:red"><b>??</b></span>{/if}</td>
+					<td width=5%>{if $file->exists}{img src=$smarty.const.ICON_RELATIVE|cat:'clean.png'}{else}<span style="color:red"><b>??</b></span>{/if}</td>
 					<td width=30%>{$file->filename}</td>
 					<td width=65%>{$file->directory}</td>
 				</tr>

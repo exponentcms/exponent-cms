@@ -67,7 +67,7 @@ class searchController extends expController {
 	    $searchable_mods = array();
 	    $unsearchable_mod = array();
 
-	    foreach (expModules::exponent_modules_list() as $mod) {
+	    foreach (expModules::modules_list() as $mod) {
 		    $name = @call_user_func(array($mod,'name'));
 		    if (class_exists($mod) && is_callable(array($mod,'spiderContent'))) {
 			    if (call_user_func(array($mod,'spiderContent'))) {
@@ -78,7 +78,7 @@ class searchController extends expController {
 		    }
 	    }
 
-	    foreach (listControllers() as $ctlname=>$ctl) {
+	    foreach (expModules::listControllers() as $ctlname=>$ctl) {
 		    $controller = new $ctlname();		    
 		    if (method_exists($controller,'isSearchable') && $controller->isSearchable()) {
 			    $mods[$controller->name()] = $controller->addContentToSearch();

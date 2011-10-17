@@ -48,7 +48,7 @@
         <tbody>
         {foreach from=$countries item=country}                        
             <tr class="{cycle values="odd,even"}">
-                <td colspan="2">{control type="checkbox" name="country[`$country->id`]" label=`$country->name` value=1 checked=$country->active}
+                <td colspan="2">{control type="checkbox" name="country[`$country->id`]" label=$country->name value=1 checked=$country->active}
                 </td>
                 <td>{control type="radio" name="country_default" label="Default Country?" value=$country->id checked=$country->is_default}</td>
             </tr>                        
@@ -57,11 +57,11 @@
                 
                         <tr class="{cycle values="odd,even"}">
                             <td>&nbsp;</td>
-                            <td>{control type="checkbox" name="region[`$region->id`]" label=`$region->name` value=1 checked=$region->active}</td>
+                            <td>{control type="checkbox" name="region[`$region->id`]" label=$region->name value=1 checked=$region->active}</td>
                             <td>{control type="text" name="region_rank[`$region->id`]" label="Rank:" size="5" value=$region->rank}</td>                                        
                         </tr>                                
                     <!-- div>
-                        <div style="margin-left: 25px; width:49%;">{control type="checkbox" name="address_state[`$region->id`]" label=`$region->name` value=1 checked=$config.address_allow_admins_all}</div>
+                        <div style="margin-left: 25px; width:49%;">{control type="checkbox" name="address_state[`$region->id`]" label=$region->name value=1 checked=$config.address_allow_admins_all}</div>
                         <div style="float: right; width:49%;">{control type="text" name="address_state_rank[x]" label=" " size="10" value=$config.invoice_subject}</div>
                         <div style="clear:both;"></div>
                     </div -->

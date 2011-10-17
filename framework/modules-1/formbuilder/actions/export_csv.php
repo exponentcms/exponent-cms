@@ -20,9 +20,6 @@
 
 if (!defined('EXPONENT')) exit('');
 
-include_once(BASE.'framework/core/subsystems-1/forms.php');
-//include_once(BASE.'framework/core/subsystems-1/users.php');
-
 $template = new template('formbuilder','_data_view');
 expHistory::flowSet(SYS_FLOW_PUBLIC,SYS_FLOW_ACTION);
 

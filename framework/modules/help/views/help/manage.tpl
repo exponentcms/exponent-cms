@@ -43,10 +43,10 @@
             <td>
                 {permissions level=$smarty.const.UILEVEL_NORMAL}
                     {if $permissions.edit == 1}
-                        {icon img=edit.png action=edit record=$doc title="Edit Help Doc"}
+                        {icon img='edit.png' action=edit record=$doc title="Edit Help Doc"}
                     {/if}
                     {if $permissions.delete == 1}
-                        {icon action=delete img=delete.png record=$doc title="Delete this help doc" onclick="return confirm('Are you sure you want to delete this help document?');"}
+                        {icon action=delete img='delete.png' record=$doc title="Delete this help doc" onclick="return confirm('Are you sure you want to delete this help document?');"}
                     {/if}
                 {/permissions}
             </td>

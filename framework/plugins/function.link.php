@@ -18,8 +18,8 @@
 ##################################################
 
 function smarty_function_link($params,&$smarty) {
-	$loc = $smarty->_tpl_vars['__loc'];
-	
+	$loc = $smarty->getTemplateVars('__loc');
+
 	if ($params['parse_attrs']) {
 	    $record = $params['record'];
 	   foreach ($params['parse_attrs'] as $key => $value) {
@@ -38,7 +38,7 @@ function smarty_function_link($params,&$smarty) {
 	} 
 	
 	// make sure the module isn't really a controller
-	if (controllerExists($params['module'])) {
+	if (expModules::controllerExists($params['module'])) {
 		$params['controller'] = $params['module'];
 		unset ($params['module']);
 	}

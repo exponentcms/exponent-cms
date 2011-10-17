@@ -18,19 +18,19 @@
 ##################################################
 
 function smarty_function_securelink($params,&$smarty) {
-	/*$loc = $smarty->_tpl_vars['__loc'];
+	/*$loc = $smarty->getTemplateVars('__loc');
 	if (!isset($params['module'])) $params['module'] = $loc->mod;
 	if (!isset($params['src'])) $params['src'] = $loc->src;
 	if (!isset($params['int'])) $params['int'] = $loc->int;
 	
 	$params['expid'] = session_id();
 	*/
-        $loc = $smarty->_tpl_vars['__loc'];
+        $loc = $smarty->getTemplateVars('__loc');
         if (!isset($params['module'])) {
                 $params['module'] = empty($params['controller']) ? $loc->mod : $params['controller'];
         }
         if (!isset($params['src'])) {
-                 if (controllerExists($params['module'])) {
+                 if (expModules::controllerExists($params['module'])) {
                         $params['src'] = $loc->src;
                 } elseif (@call_user_func(array($loc->mod,'hasSources'))) {
                         $params['src'] = $loc->src;

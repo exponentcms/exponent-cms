@@ -308,7 +308,7 @@ class product extends expRecord {
         //eDebug($product);   
         //if (!empty($product->user_input_fields)) $product->user_input_fields = expUnserialize($product->user_input_fields);
         //eDebug($product);
-        $form = new controllerTemplate(new storeController(), $this->getForm($form));
+        $form = new controllertemplate(new storeController(), $this->getForm($form));
         $form->assign('params', $params);
         $form->assign('product', $this);
         if (!empty($params['children']))
@@ -467,7 +467,7 @@ class product extends expRecord {
         $viewname = $this->getForm('formatExtraData');
         if (!$viewname) return null;
 
-        $view = new controllerTemplate($this, $viewname);
+        $view = new controllertemplate($this, $viewname);
 	    $view->assign('extra_data', expUnserialize($item->extra_data));
         return $view->render();
     }
@@ -476,7 +476,7 @@ class product extends expRecord {
         $viewname = $this->getForm('storeListing');
         if (!$viewname) return null;
         
-        $view = new controllerTemplate($this, $viewname);
+        $view = new controllertemplate($this, $viewname);
 	    $view->assign('listing', $this);
         return $view->render();
     }
@@ -486,7 +486,7 @@ class product extends expRecord {
         if (!$viewname) return null;
         
         $options = expUnserialize($item->options);
-        $view = new controllerTemplate($this, $viewname);
+        $view = new controllertemplate($this, $viewname);
 	    $view->assign('product', $this);
 	    $view->assign('item', $item);
 	    $view->assign('options', $options);
@@ -502,10 +502,8 @@ class product extends expRecord {
     
     public function getForm($form) {        
         $dirs = array(
-//            BASE.'themes/'.DISPLAY_THEME_REAL.'/modules/ecommerce/products/views/'.$this->product_type.'/',
             BASE.'themes/'.DISPLAY_THEME.'/modules/ecommerce/products/views/'.$this->product_type.'/',
             BASE.'framework/modules/ecommerce/products/views/'.$this->product_type.'/',
-//            BASE.'themes/'.DISPLAY_THEME_REAL.'/modules/ecommerce/products/views/product/',
             BASE.'themes/'.DISPLAY_THEME.'/modules/ecommerce/products/views/product/',
             BASE.'framework/modules/ecommerce/products/views/product/',
         );

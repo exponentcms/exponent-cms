@@ -23,7 +23,6 @@ if (!defined('EXPONENT')) exit('');
 if (expPermissions::check('administrate',$loc)) {
 
  	//$groups = explode(';',$_POST['permdata']);
-//	include_once(BASE.'framework/core/subsystems-1/users.php');
 
 	$locarray = array();
 	if ($loc->mod == 'navigationmodule' && !empty($perms[1]) && $perms[1] == 'manage') {

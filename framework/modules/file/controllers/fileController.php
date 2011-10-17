@@ -74,7 +74,6 @@ class fileController extends expController {
         
         // set paths we will search in for the view
         $paths = array(
-//            BASE.'themes/'.DISPLAY_THEME_REAL.'/modules/common/views/file/configure',  //FIXME change to allow preview
             BASE.'themes/'.DISPLAY_THEME.'/modules/common/views/file/configure',
             BASE.'framework/modules/common/views/file/configure',
         );        
@@ -82,7 +81,7 @@ class fileController extends expController {
         foreach ($paths as $path) {
             $view = $path.'/'.$this->params['view'].'.tpl';
             if (is_readable($view)) {
-                $template = new controllerTemplate($this, $view);
+                $template = new controllertemplate($this, $view);
                 $ar = new expAjaxReply(200, 'ok');
 		        $ar->send();
             }

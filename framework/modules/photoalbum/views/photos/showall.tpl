@@ -63,7 +63,7 @@
                         {icon action=delete record=$record title="Delete `$modelname`"}
                     {/if}
                     {if $permissions.create == 1}
-						{icon class=add action=edit rank=`$text->rank+1` title="Add another `$modelname` after this one" text="Add After"}
+						{icon class=add action=edit rank=$text->rank+1 title="Add another `$modelname` after this one" text="Add After"}
                     {/if}
                 </div>
             {/permissions}
