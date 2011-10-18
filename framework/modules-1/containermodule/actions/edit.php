@@ -52,7 +52,6 @@ if (expPermissions::check('edit_module',$loc) || expPermissions::check('add_modu
 		$container->is_private = 0;
 	} else {
 		$container->internal = unserialize($container->internal);
-//		$locref = $db->selectObject('locationref',"module='".$container->internal->mod."' AND source='".$container->internal->src."'");
 		$secref = $db->selectObject('sectionref',"module='".$container->internal->mod."' AND source='".$container->internal->src."'");
 	}
 

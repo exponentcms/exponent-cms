@@ -37,14 +37,12 @@ define("SCRIPT_FILENAME","infopopup.php");
 include("../../../exponent.php");
 
 $template = new template("containermodule","_popup_info");
-//$locref = null;
 $secref = null;
 
 if (isset($_GET['id'])) {
 	$container = $db->selectObject("container","id=".$_GET['id']);
 	if ($container) {
 		$iloc = unserialize($container->internal);
-//		$locref = $db->selectObject("locationref","module='".$iloc->mod."' AND source='".$iloc->src."'");
 		$secref = $db->selectObject("sectionref","module='".$iloc->mod."' AND source='".$iloc->src."'");
 	
 		$template->assign("is_orphan",0);
@@ -54,18 +52,14 @@ if (isset($_GET['id'])) {
 		exit();
 	}
 } else {
-//	$locref = $db->selectObject("locationref","module='".$_GET['mod']."' AND source='".$_GET['src']."'");
 	$secref = $db->selectObject("sectionref","module='".$_GET['mod']."' AND source='".$_GET['src']."'");
 	$template->assign("is_orphan",1);
 }
 
-//if ($locref) {
-//	if (class_exists($locref->module)) $template->assign("name",call_user_func(array($locref->module,"name")));
 if ($secref) {
 	if (class_exists($secref->module)) $template->assign("name",call_user_func(array($secref->module,"name")));
 	else $template->assign("name","");
 	
-//	$template->assign("info",$locref->description);
 	$template->assign("info",$secref->description);
 } else {
 	$template->assign("name","");

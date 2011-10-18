@@ -33,7 +33,7 @@ EXPONENT.filemanager = function(cfg) {
         // } else {
         //     var editorstring = '<img width=16 height=16 style="border:none;" src="{/literal}{$smarty.const.ICON_RELATIVE}{literal}actions/cant-edit-image.png" />&nbsp;&nbsp;&nbsp;';
         // }
-        // var pickerstring = {/literal}{if $smarty.get.update != "noupdate"}'<a title="Use This Image" onclick="window.opener.{if $smarty.get.fck}SetUrl(\''+EXPONENT.PATH_RELATIVE+oRecord._oData.directory+'/'+oRecord._oData.filename+'\',\''+oRecord._oData.image_width+'\',\''+oRecord._oData.image_height+'\'){else}EXPONENT.passBackFile{$update}(' + oRecord._oData.id + '){/if}; window.close(); return false;" href="#"><img width=16 height=16 style="border:none;" src="{$smarty.const.ICON_RELATIVE}actions/use.png" /></a>&nbsp;&nbsp;&nbsp;'{else}''{/if}{literal}
+        // var pickerstring = {/literal}{if $smarty.get.update != "noupdate"}'<a title="Use This Image" onclick="window.opener.{if $smarty.get.fck}SetUrl(\''+EXPONENT.PATH_RELATIVE+oRecord._oData.directory+'/'+oRecord._oData.filename+'\',\''+oRecord._oData.image_width+'\',\''+oRecord._oData.image_height+'\'){else}EXPONENT.passBackFile{$update}(' + oRecord._oData.id + '){/if}; window.close(); return false;" href="#"><img width=16 height=16 style="border:none;" src="{$smarty.const.ICON_RELATIVE|cat:'actions/use.png'}" /></a>&nbsp;&nbsp;&nbsp;'{else}''{/if}{literal}
         // elCell.innerHTML =  pickerstring
         //                     +editorstring
         //                     +deletestring;

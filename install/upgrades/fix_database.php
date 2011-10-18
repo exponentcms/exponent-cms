@@ -39,7 +39,7 @@ class fix_database extends upgradescript {
 	 * generic description of upgrade script
 	 * @return string
 	 */
-	function description() { return "Update cross-referenced entries in the containers, locationref, and sectionref tables."; }
+	function description() { return "Update cross-referenced entries in the containers and sectionref tables."; }
 
 	/**
 	 * additional test(s) to see if upgrade script should be run
@@ -97,7 +97,7 @@ class fix_database extends upgradescript {
 		print_r("</pre>");
 
 		 print_r("<pre>");
-	 // delete sectionref's & locationref's that have empty sources since they are dead
+	 // delete sectionref's that have empty sources since they are dead
 		 print_r("<b>Searching for unassigned modules (no source)</b><br><br>");
 		 $sectionrefs = $db->selectObjects('sectionref','source=""');
 		 if ($sectionrefs != null) {

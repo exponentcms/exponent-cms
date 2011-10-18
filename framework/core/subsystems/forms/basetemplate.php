@@ -17,7 +17,7 @@
 # GPL: http://www.gnu.org/licenses/gpl.txt
 #
 ##################################################
-/** @define "BASE" "../../.." */
+/** @define "BASE" "../../../.." */
 
 class basetemplate {
 	// Smarty template object.
@@ -42,7 +42,6 @@ class basetemplate {
 	
 	function __construct($item_type, $item_dir, $view = "Default") {
 		
-//		include_once(BASE.'external/Smarty-2/libs/Smarty.class.php');
 		include_once(BASE.'external/Smarty-3/libs/Smarty.class.php');
 
 		// Set up the Smarty template variable we wrap around.
@@ -50,16 +49,11 @@ class basetemplate {
 		$this->tpl->error_reporting = error_reporting() & ~E_NOTICE & ~E_WARNING;  //FIXME this disables bad template code reporting 3.x
 		//Some (crappy) wysiwyg editors use php as their default initializer
 		//FJD - this might break some editors...we'll see.
-//		$this->tpl->php_handling = SMARTY_PHP_REMOVE;
 		$this->tpl->php_handling = SMARTY::PHP_REMOVE;
 
 		$this->tpl->caching = false;
 		$this->tpl->cache_dir = BASE . 'tmp/cache';
 
-//		$this->tpl->plugins_dir[] = BASE . 'framework/core/plugins';
-//		$this->tpl->plugins_dir[] = BASE . 'framework/plugins';
-		// now reverse the array so we can bypass looking in our root folder for old plugins
-//		$this->tpl->plugins_dir = array_reverse($this->tpl->plugins_dir);
 		$this->tpl->setPluginsDir(array(BASE.'external/Smarty-3/libs/plugins',BASE . 'framework/plugins'));
 
 		//autoload filters

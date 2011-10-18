@@ -282,7 +282,7 @@ class administrationController extends expController {
 		print_r("</pre>");
 
 		 print_r("<pre>");
-	 // delete sectionref's & locationref's that have empty sources since they are dead
+	 // delete sectionref's that have empty sources since they are dead
 		 print_r("<b>Searching for unassigned modules (no source)</b><br><br>");
 		 $sectionrefs = $db->selectObjects('sectionref','source=""');
 		 if ($sectionrefs != null) {

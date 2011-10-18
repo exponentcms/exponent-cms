@@ -5,6 +5,9 @@ Copyright (c) 2004-2011 OIC Group, Inc.
 Added / Fixed / changed for 2.0.2
 -----------------------
 # This release focuses on integrating Smarty v3
+  - Custom themes/views must be updated to follow Smarty syntax (v2 allowed sloppy syntax)
+# Fixes several bugs and other issues
+# All 1.0 subsystems fully deprecated at this point
 
 Added / Fixed / changed for 2.0.1
 -----------------------

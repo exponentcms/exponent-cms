@@ -176,13 +176,8 @@ class expCore {
 	 */
 	public static function decrementLocationReference($loc,$section) {
 		global $db;
-	//	$oldLocRef = $db->selectObject("locationref","module='".$loc->mod."' AND source='".$loc->src."' AND internal='".$loc->int."'");
 		$oldSecRef = $db->selectObject("sectionref", "module='".$loc->mod."' AND source='".$loc->src."' AND internal='".$loc->int."' AND section=$section");
-
-	//	$oldLocRef->refcount -= 1;
 		$oldSecRef->refcount -= 1;
-
-	//	$db->updateObject($oldLocRef,"locationref","module='".$loc->mod."' AND source='".$loc->src."' AND internal='".$loc->int."'");
 		$db->updateObject($oldSecRef,"sectionref","module='".$loc->mod."' AND source='".$loc->src."' AND internal='".$loc->int."' AND section=$section");
 	}
 

@@ -382,7 +382,6 @@ class navigationmodule {
 		}
 
 		$prefix = '@st'.$template->id;
-//		$refs = $db->selectObjects('locationref',"source LIKE '$prefix%'");
 		$refs = $db->selectObjects('sectionref',"source LIKE '$prefix%'");
 		
 		// Copy all modules and content for this section
@@ -438,25 +437,18 @@ class navigationmodule {
 		foreach ($secrefs as $secref) {
 			$loc = expCore::makeLocation($secref->module,$secref->source,$secref->internal);
 			expCore::decrementLocationReference($loc,$parent);
-			
-//			foreach ($db->selectObjects('locationref',"module='".$secref->module."' AND source='".$secref->source."' AND internal='".$secref->internal."' AND refcount = 0") as $locref) {
-//				if (class_exists($locref->module)) {
-//				    $modclass = $locref->module;
-				if (class_exists($secref->module)) {
-				    $modclass = $secref->module;
-				    
-				    //FIXME: more module/controller glue code
-	                if (expModules::controllerExists($modclass)) {
-	                    $mod = new $modclass($iloc->src);
-	                    $mod->delete_instance();
-	                } else {
-	                    $mod = new $modclass();
-//	                    $mod->deleteIn(expCore::makeLocation($locref->module,$locref->source,$locref->internal));
-	                    $mod->deleteIn($loc);
-	                }
-				}
-//			}
-//			$db->delete('locationref',"module='".$secref->module."' AND source='".$secref->source."' AND internal='".$secref->internal."' AND refcount = 0");
+			if (class_exists($secref->module)) {
+			    $modclass = $secref->module;
+
+			    //FIXME: more module/controller glue code
+                if (expModules::controllerExists($modclass)) {
+                    $mod = new $modclass($iloc->src);
+                    $mod->delete_instance();
+                } else {
+                    $mod = new $modclass();
+                    $mod->deleteIn($loc);
+                }
+			}
 		}
 		$db->delete('sectionref','section='.$parent);
 		$db->delete('section','parent='.$parent);

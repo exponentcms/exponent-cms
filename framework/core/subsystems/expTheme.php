@@ -626,19 +626,6 @@ class expTheme {
 		}
 		$loc = expCore::makeLocation($module,$source."");
 
-		// if ($db->selectObject("locationref","module='$module' AND source='".$loc->src."'") == null) {
-			// $locref = null;
-			// $locref->module = $module;
-			// $locref->source = $loc->src;
-			// $locref->internal = "";
-			// $locref->refcount = 1000;
-			// $db->insertObject($locref,"locationref");
-			// if ($sectionObj != null) {
-				// $locref->section = $sectionObj->id;
-				// $locref->is_original = 1;
-				// $db->insertObject($locref,'sectionref');
-			// }
-		// }
 		if ($db->selectObject("sectionref","module='$module' AND source='".$loc->src."'") == null) {
 				$secref = null;
 				$secref->module = $module;

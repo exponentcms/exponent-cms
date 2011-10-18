@@ -38,7 +38,6 @@ if (!defined('EXPONENT')) exit('');
    expSession::clearAllUsersSessionCache('containermodule');
 
 	$orphans = array();
-//	foreach ($db->selectObjects("locationref","module='".preg_replace('/[^A-Za-z0-9_]/','',$_GET['module'])."' AND refcount=0") as $orphan) {
 	foreach ($db->selectObjects("sectionref","module='".preg_replace('/[^A-Za-z0-9_]/','',$_GET['module'])."' AND refcount=0") as $orphan) {
 		$obj = null;
 		$loc = expCore::makeLocation($orphan->module,$orphan->source,$orphan->internal);

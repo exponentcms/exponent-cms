@@ -18,7 +18,6 @@
 ##################################################
 
 class recyclebin extends expRecord {
-//    public $table = 'locationref';
     public $table = 'sectionref';
     //public $validates = '';
     public function moduleOrphans($module) {
