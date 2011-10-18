@@ -34,24 +34,28 @@ class tablebasedcalculator extends shippingcalculator {
 
     public function getRates($order) {   
         $a = $order->total;        
+		
+		   
 		//get the rates
 		for($i = 0; $i < @count($this->configdata['from']); $i++) {
 			// We need to check if it is not the last in the array since we don't have a 'to' value in the last element            
             if(count($this->configdata['from']) != ($i + 1)) {                
-				if( expUtil::isNumberGreaterThanOrEqualTo($a,$this->configdata['from'][$i]) && expUtil::isNumberLessThanOrEqualTo($a,$this->configdata['to'][$i])) {                    
+				if( expUtil::isNumberGreaterThanOrEqualTo($a,$this->configdata['from'][$i]) && expUtil::isNumberLessThanOrEqualTo($a,$this->configdata['to'][$i])) {  
+					
 					foreach($this->shippingspeeds as $item) {
 						$c[] = @$this->configdata[str_replace(' ', '_', $item->speed)][$i];
 					}
+					break;
 				}
 			} else {
                 if( $a >= floatval($this->configdata['from'][$i]) ) {
 					foreach($this->shippingspeeds as $item) {
 						$c[] = @$this->configdata[str_replace(' ', '_', $item->speed)][$i];
 					}
+					break;
 				}
 			}            
 		}
-		
 		 //if certain states, add $$ from config
         $currentMethod = $order->getCurrentShippingMethod(); //third created shipping method
 		
@@ -70,12 +74,12 @@ class tablebasedcalculator extends shippingcalculator {
 				if (array_key_exists($currentMethod->state, $stateUpcharge)) { 
 					$c[$i] += $stateUpcharge[$currentMethod->state]; // $c[$i] += $stateUpcharge[$currentMethod->state]; Commented this though i'm not sure if this is done intentionally 
 				}
-                if($i > 9) $rates[($i+1)] = array('id' => 0 . ($i+1), 'title' => $this->shippingspeeds[$i]->speed, 'cost' => $c[$i]);
+                if($i > 9) $rates[($i+1)] = array('id' => 0 . ($i+1), 'title' => @$this->shippingspeeds[$i]->speed, 'cost' => $c[$i]);
                 else $rates[0 . ($i+1)] = array('id' => 0 . ($i+1), 'title' => @$this->shippingspeeds[$i]->speed, 'cost' => $c[$i]);
 				
 			}            
 		}
-		
+	     
         if(!count($rates)) $rates['01'] = array('id' => '01', 'title' => "Table Based Shipping is Currently NOT Configured", 'cost' => 0);
 		return $rates;
     }    
