@@ -441,6 +441,7 @@ pixidou = {
 			
 			// update our image container
 			pixidou.updateImage(imageObject.image, imageObject.width, imageObject.height);
+			pixidou.saveImage(/[^.]+$/.exec(pixidou.image));
 		}
 	},
 	

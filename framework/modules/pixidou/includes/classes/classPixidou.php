@@ -29,7 +29,14 @@
 	 */
 	
 	class Pixidou{
-	
+
+		private $imageFile;
+		private $uploadedFile;
+		private $allowedFiles = array('image/*');
+		private $imageQuality = 100;
+		private $destDirectory = PROCESS_DIR;
+		private $processedDirectory = PROCESS_DIR;
+
 		/**
 		 * Constructor
 		 *
@@ -206,7 +213,14 @@
 				echo json_encode(array('error' => $this->uploadedFile->error));
 			}
 		}
-	
+
+		/**
+		 * Updates an image
+		 */
+		public function update(){
+			$this->outputJsonData();
+		}
+
 		/**
 		 * Outputs json encoded data to the browser
 		 *
@@ -235,11 +249,5 @@
 			$this->uploadedFile->clean();
 		}
 	
-		private $imageFile;
-		private $uploadedFile;
-		private $allowedFiles = array('image/*');
-		private $imageQuality = 100;
-		private $destDirectory = PROCESS_DIR;
-		private $processedDirectory = PROCESS_DIR;
 	}
 ?>

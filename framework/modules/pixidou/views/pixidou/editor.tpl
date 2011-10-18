@@ -147,7 +147,7 @@
                     <div class="hd">Adjust contrast</div>
                     <div class="bd">
                         <div id="contrastSliderBg" class="yui-h-slider" title="Slider">
-                            <div id="contrastSliderThumb" class="yui-slider-thumb"><img src="assets/thumb-n.gif" alt="" /></div>
+                            <div id="contrastSliderThumb" class="yui-slider-thumb"><img src="{$smarty.const.URL_FULL|cat:'framework/modules/pixidou/assets/images/thumb-n.gif'}" alt="" /></div>
                         </div>
                         <p>Value : <span id="contrastSliderValue">0</span></p>
                     </div>
@@ -159,7 +159,7 @@
                     <div class="hd">Adjust brightness</div>
                     <div class="bd">
                         <div id="brightnessSliderBg" class="yui-h-slider" title="Slider">
-                            <div id="brightnessSliderThumb" class="yui-slider-thumb"><img src="assets/thumb-n.gif" alt="" /></div>
+                            <div id="brightnessSliderThumb" class="yui-slider-thumb"><img src="{$smarty.const.URL_FULL|cat:'framework/modules/pixidou/assets/images/thumb-n.gif'}" alt="" /></div>
                         </div>
                         <p>Value : <span id="brightnessSliderValue">0</span></p>
                     </div>
@@ -250,7 +250,6 @@
             YAHOO.util.Event.onDOMReady(function(){ldelim}
                 pixidou.updateImage('{$image->filename}',{$image->image_width},{$image->image_height});
             {rdelim});
-            
         </script>
         
         <input type=hidden id="update" value="{$update}">

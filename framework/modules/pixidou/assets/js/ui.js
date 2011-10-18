@@ -90,8 +90,8 @@ ui = {
         		ui.tintPicker = new YAHOO.widget.ColorPicker("tintPicker", {
 						container: ui.tintPickerPanel,
 						images: {
-							PICKER_THUMB: "assets/picker_thumb.png",
-							HUE_THUMB: "assets/hue_thumb.png"
+							PICKER_THUMB: EXPONENT.URL_FULL+"framework/modules/pixidou/assets/images/picker_thumb.png",
+							HUE_THUMB: EXPONENT.URL_FULL+"framework/modules/pixidou/assets/images/hue_thumb.png"
 						}
 				});
         	}

@@ -2,7 +2,7 @@
 
 *html .yui-picker-bg {
 	/*filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='http://yui.yahooapis.com/2.6.0/build/assets/skins/sam/picker_mask.png', sizingMethod='scale');*/
-	filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../../../../external/lissa/2.9.0/build/assets/skins/sam/picker_mask.png', sizingMethod='scale');
+	filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../../../../external/yui/2in3/dist/2.9.0/build/assets/skins/sam/picker_mask.png', sizingMethod='scale');
 }
 a:link, a:active, a:visited{
 	color: #7D98B8;
@@ -34,7 +34,7 @@ a:hover{
 
 .yui-skin-sam .yui-layout .yui-layout-hd {
 	/*background:transparent url(http://yui.yahooapis.com/2.6.0/build/assets/skins/sam/sprite.png) repeat-x scroll 0pt 0px;*/
-	background:transparent url(../../../../external/lissa/2.9.0/build/assets/skins/sam/sprite.png) repeat-x scroll 0pt 0px;
+	background:transparent url(../../../../../external/yui/2in3/dist/2.9.0/build/assets/skins/sam/sprite.png) repeat-x scroll 0pt 0px;
 }
 
 .yui-skin-sam .yui-layout { 
