@@ -26,14 +26,16 @@
 			<?php expTheme::showController(array("controller"=>"search","action"=>"show","src"=>"@top")) ?>
 		</div>
 		<div id="bd" class="yui3-g">
-			<div id="centercol" class="yui3-u-3-4">
+			<div id="centercol" class="yui3-u-1">
 		        <div class="content">
 				    <?php expTheme::main(); ?>
     			</div>
 			</div>
 		</div>
 	</div>
-	<?php expTheme::module(array("module"=>"navigation","view"=>"Top Nav","source"=>"@top")); ?>
+	<div align="center">
+		<b><?php expTheme::module(array("module"=>"navigation","view"=>"Top Nav","source"=>"@top")); ?></b>
+	</div>
 	<?php echo expTheme::foot(); ?>
 </body>
 </html>
