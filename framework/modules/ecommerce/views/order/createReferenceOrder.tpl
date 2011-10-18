@@ -52,13 +52,13 @@
             {foreach from=$order->orderitem item=oi}
                 <tr style="vertical-align: middle;" class="{cycle values="odd, even"}">   
                     <td>
-                        {control size=4 type=text name=quantity[`$oi->id`] label="" value=$oi->quantity}
+                        {control size=4 type=text name="quantity[`$oi->id`]" label="" value=$oi->quantity}
                     </td>
                     <td>
                         {$oi->products_model}
                     </td>
                     <td>
-                        {control type=textarea name=products_name[`$oi->id`] cols=40 rows=2 label="" value="`$oi->products_name` [ACTION] FROM ORIGINAL ORDER #`$order->invoice_id`"}                        
+                        {control type=textarea name="products_name[`$oi->id`]" cols=40 rows=2 label="" value="`$oi->products_name` [ACTION] FROM ORIGINAL ORDER #`$order->invoice_id`"}                        
                         {if $oi->opts[0]}
                             {br}                             
                             {foreach from=$oi->opts item=options}
@@ -70,11 +70,11 @@
                     </td>
                   
                     <td style="text-align:right;">
-                        {control size=4 type=text name=products_price[`$oi->id`] label="" value=$oi->products_price}
+                        {control size=4 type=text name="products_price[`$oi->id`]" label="" value=$oi->products_price}
                     </td>
                    
                     <td>
-                        {control type="checkbox" name=oi[`$oi->id`] label=" " value=1 checked=0}
+                        {control type="checkbox" name="oi[`$oi->id`]" label=" " value=1 checked=0}
                     </td>                    
                 </tr>
             {/foreach}
