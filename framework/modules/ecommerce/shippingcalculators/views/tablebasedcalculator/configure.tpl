@@ -33,7 +33,7 @@
 			</li>
 		{/foreach}
     </ul>
-    {icon class="add" action=editspeed/id/`$calculator->id` text="Create new Shipping Speed"}
+    {icon class="add" action="editspeed/id/`$calculator->id`" text="Create new Shipping Speed"}
     {br}{br}
 	<div class="{if !$calculator->shippingspeeds}hide{/if}">
     <hr>
