@@ -64,7 +64,7 @@ if ($f && $data && $controls) {
 		
 //		$form->register(uniqid(''),'', new htmlcontrol('<br /><br />'));
 		$form->register(uniqid(''),'', new htmlcontrol($antispam));
-		$form->register('submit','',new buttongroupcontrol(gt('Save'),'',gt('Cancel')));
+		$form->register('submit','',new buttongroupcontrol(gt('Save'),'',gt('Cancel'),"","",1));
 		$form->meta('action','submit_form');
 		$form->meta('m',$loc->mod);
 		$form->meta('s',$loc->src);

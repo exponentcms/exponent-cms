@@ -33,16 +33,18 @@ class buttongroupcontrol extends formcontrol {
 	var $submit = "Submit";
 	var $reset = "";
 	var $cancel = "";
+	var $returntype = "";
 	var $class = "";
 	var $validateJS = "";
 
 	function name() { return "Button Group"; }
 
-	function __construct($submit = "Submit", $reset = "", $cancel = "", $class="") {
+	function __construct($submit = "Submit", $reset = "", $cancel = "", $class="", $returntype="") {
 		$this->submit = $submit;
 		$this->reset = $reset;
 		$this->cancel = $cancel;
 		$this->class = $class;
+		$this->returntype = $returntype;
 	}
 
 	function toHTML($label,$name) {
@@ -79,8 +81,11 @@ class buttongroupcontrol extends formcontrol {
 		}
 		//if ($this->reset != "") $html .= '<input class="button" type="reset" value="' . $this->reset . '"' . ($this->disabled?" disabled":"") . ' />';
 		if ($this->cancel != "") {
-//			$html .= '<button type="cancel" class="cancel button awesome '.BTN_SIZE.' '.BTN_COLOR.'" onclick="document.location.href=\''.expHistory::getLastNotEditable().'\'; return false;"';
-			$html .= '<button type="cancel" class="cancel button awesome '.BTN_SIZE.' '.BTN_COLOR.'" onclick="document.location.href=\''.expHistory::getLast().'\'; return false;"';
+			if ($this->returntype == "") {
+				$html .= '<button type="cancel" class="cancel button awesome '.BTN_SIZE.' '.BTN_COLOR.'" onclick="document.location.href=\''.expHistory::getLastNotEditable().'\'; return false;"';
+			} else {
+			    $html .= '<button type="cancel" class="cancel button awesome '.BTN_SIZE.' '.BTN_COLOR.'" onclick="document.location.href=\''.expHistory::getLast().'\'; return false;"';
+			}
 			$html .= '>';
 			$html .= $this->cancel;
 			$html .= '</button>';
