@@ -705,6 +705,8 @@ class administrationController extends expController {
 	}
 
     public function configure_site () {
+	    expHistory::set('manageable',$this->params);
+
         // TYPES OF ANTISPAM CONTROLS... CURRENTLY ONLY ReCAPTCHA
         $as_types = array(
             '0'=>'-- Please Select an Anti-Spam Control --',

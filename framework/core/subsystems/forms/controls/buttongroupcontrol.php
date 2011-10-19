@@ -84,7 +84,7 @@ class buttongroupcontrol extends formcontrol {
 			if ($this->returntype == "") {
 				$html .= '<button type="cancel" class="cancel button awesome '.BTN_SIZE.' '.BTN_COLOR.'" onclick="document.location.href=\''.expHistory::getLastNotEditable().'\'; return false;"';
 			} else {
-			    $html .= '<button type="cancel" class="cancel button awesome '.BTN_SIZE.' '.BTN_COLOR.'" onclick="document.location.href=\''.expHistory::getLast().'\'; return false;"';
+			    $html .= '<button type="cancel" class="cancel button awesome '.BTN_SIZE.' '.BTN_COLOR.'" onclick="document.location.href=\''.expHistory::getLast($this->returntype).'\'; return false;"';
 			}
 			$html .= '>';
 			$html .= $this->cancel;

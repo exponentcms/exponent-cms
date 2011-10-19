@@ -40,8 +40,6 @@ class expHTMLEditorController extends expController {
 	        redirect_to(array("module"=>"administration","action"=>"configure_site"));
         }
 
-        expHistory::set('manageable',$this->params);
-
         // otherwise, on to cke
         $configs = $db->selectObjects('htmleditor_ckeditor',1);
         
@@ -65,7 +63,7 @@ class expHTMLEditorController extends expController {
 		if ($this->params['active']) {
 			$this->activate();
 		}
-        expHistory::back();
+	    expHistory::returnTo('manageable');
     }
 
     function edit() {
@@ -81,7 +79,7 @@ class expHTMLEditorController extends expController {
 	    expHistory::set('editable', $this->params);
 	    @$db->delete('htmleditor_ckeditor',"id=".$this->params['id']);
 
-	    expHistory::back();
+		expHistory::returnTo('manageable');
 	}
 
     function activate () {
@@ -95,7 +93,7 @@ class expHTMLEditorController extends expController {
             $db->updateObject($active,'htmleditor_ckeditor',null,'id');
         }
 
-        expHistory::back();
+	    expHistory::returnTo('manageable');
     }
 
     function preview () {

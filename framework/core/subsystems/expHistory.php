@@ -144,7 +144,7 @@ class expHistory {
         $url = '';
         if (stristr($router->current_url,'EXPONENT.')) return false;
         if (expTheme::inAction()) {
-            // we don't want to save history for these action...it screws up the flow when loging in
+            // we don't want to save history for these action...it screws up the flow when logging in
             if (!isset($router->params['action']) || $router->params['action'] == 'loginredirect' || $router->params['action'] == 'logout') return false;
             
             // figure out the module/controller names
