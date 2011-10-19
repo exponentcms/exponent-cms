@@ -27,12 +27,6 @@
 
 <div class="navigationmodule manager-hierarchy">
 	<div class="form_header">
-		<div class="info-header">
-			<div class="related-actions">
-				{help text="Get Help Managing the Menu Hierarchy" module="manage-all-pages"}
-			</div>
-			<h1>{'Manage Menu Hierarchy Pages'|gettext}</h1>
-		</div>
 		<p>{'<strong>Drag and drop</strong> tree items to re-order your site\'s hierarchy (main menu). <strong>Right click on any tree item</strong> for a context menu of options for that item.'|gettext}</p>
 	</div>
 	{permissions}

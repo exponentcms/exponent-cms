@@ -14,8 +14,16 @@
  *
  *}
 
-<div id="navmanager" class="navigationmodule manager yui3-skin-sam hide">
-	<div id="nav-tabs" class="yui-navset">
+<div id="navmanager" class="navigationmodule manager">
+	<div class="form_header">
+		<div class="info-header">
+			<div class="related-actions">
+				{help text="Get Help Managing Pages" module="manage-all-pages"}
+			</div>
+			<h1>{'Manage Pages'|gettext}</h1>
+		</div>
+	</div>
+	<div id="navmanager-tabs" class="yui-navset yui3-skin-sam hide">
 	    <ul class="yui-nav">
         	<li class="selected"><a href="#tab1"><em>Hierarchy</em></a></li>
 	        {if $canManageStandalones}<li><a href="#tab2"><em>Standalone</em></a></li>{/if}
@@ -27,15 +35,15 @@
         	{*if $canManagePagesets}<div id="tab3">{chain module=navigationmodule action=manage_pagesets}</div>{/if*}
 	    </div>
 	</div>
+	<div class="loadingdiv">{'Loading'|gettext}</div>
 </div>
-<div class="loadingdiv">{'Loading'|gettext}</div>
 
 {script unique="editform" yui3mods=1}
 {literal}
 	YUI(EXPONENT.YUI3_CONFIG).use('tabview', function(Y) {
-       var tabview = new Y.TabView({srcNode:'#nav-tabs'});
+       var tabview = new Y.TabView({srcNode:'#navmanager-tabs'});
        tabview.render();
-       Y.one('#navmanager').removeClass('hide');
+       Y.one('#navmanager-tabs').removeClass('hide');
        Y.one('.loadingdiv').remove();
     });
 {/literal}
