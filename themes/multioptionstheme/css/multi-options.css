@@ -8,19 +8,19 @@ body {margin:0; padding:0; font:92% Tahoma,sans-serif; background:#fefefe url(..
 #wrap {width:980px; text-align:left; margin:0 auto;}
 
 /* Header */
-#header {width:980px; margin-top:20px; margin-bottom:20px;}
-#headerimage {float:right; width:500px; height:160px; margin:0 0 15px 0; overflow:hidden; border:1px solid #aaa;}
-#header h1#logo a {
-	/*position: absolute;*/
-	/*margin: 0; padding: 0;*/
-	text-transform: none;
-	text-decoration: none;
-	padding:0 0 0 60px;
-	background-image: url(../images/logo.gif);
+#header {
+	width:980px;
+	margin-top:20px;
+	margin-bottom:20px;
+	background-image: url(../images/logo.png);
 	background-repeat: no-repeat ;
+	background-size: 64px;
 	/* change the values of top and left to adjust the position of the logo*/
-	top: 25px;
+	/*top: 25px;*/
+	/*left: 25px;*/
 }
+#headerimage {float:right; width:500px; height:160px; margin:0 0 15px 0; overflow:hidden; border:1px solid #aaa;}
+#header h1#logo a {padding:0 0 0 70px;}
 
 #title {width:460px; text-align:center;}
 h1 {margin:0 auto; padding:0; font-size:2.4em; font-weight:700; letter-spacing:-1px; line-height:2.2em; text-shadow:#ccc 2px 2px 8px;}

@@ -20,10 +20,16 @@
  * Exponent History Subsystem
  *
  * The expHistory class is responsible for keeping track of which pages a user
- * has visited while on the site. It also tracks what type of page each one is,
+ * has visited while on the site. It also tracks what type of page/view each one is,
  * viewable, manageable, editable and uses this information to intelligently route
  * the user to proper places.  A developer can also use the methods of this class
  * help Exponent know where to route users.
+ *
+ * <ul><b>Definitions</b>
+ * <li><b>viewable</b> = standard (public) page/view like that for showall, show, etc...</li>
+ * <li><b>manageable</b> = page/view with list of editable items for management like manage_tags, etc...  Typically you wouldn't edit in this view</li>
+ * <li><b>editable</b> = a page/view used to edit an item or settings</li>
+ * </ul>
  * 
  * <b>USAGE EXAMPLES:</b>
  * 
