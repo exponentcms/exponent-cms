@@ -250,7 +250,20 @@ class expHistory {
 	    global $history;
         $history->lastNotEditable();
 	}
-	
+
+	/**
+	 * Returns a history item further back in time than the most recent (last) one
+	 *
+	 * @static
+	 * @param $depth int How deep/far back in history to pull a link
+	 * @return mixed
+	 */
+	public static function getBack($depth) {
+	    global $history;
+        $d=$depth?$depth+1:2;
+		return $history->history[$history->history['lasts']['type']][count($history->history[$history->history['lasts']['type']])-$d]['params'];
+	}
+
     public static function returnTo($url_type=null, $params=array()) {
         global $history;
         $history->goHere($url_type, $params);
