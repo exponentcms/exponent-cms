@@ -238,7 +238,7 @@
         {control type="buttongroup" submit="Save Product" cancel="Cancel"}
     {/form}
 </div>
-<div class="loadingdiv">Loading</div>
+<div class="loadingdiv">{'Loading'|gettext}</div>
 
 {script unique="editform" yui3mods=1}
 {literal}

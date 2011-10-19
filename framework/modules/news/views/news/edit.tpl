@@ -18,12 +18,11 @@
 
 {/css}
 
-<div id="newedit" class="module news edit yui3-skin-sam hide">
+<div id="newsedit" class="module news edit">
     {if $record->id != ""}<h1>Editing {$record->title}</h1>{else}<h1>Create News Post</h1>{/if}
-
     {form action=update}
 	    {control type=hidden name=id value=$record->id}
-        <div id="newedfrm" class="yui-navset">
+        <div id="newsedit-tabs" class="yui-navset yui3-skin-sam hide">
             <ul class="yui-nav">
                 <li class="selected"><a href="#tab1"><em>Post</em></a></li>
                 <li><a href="#tab2"><em>Publish</em></a></li>
@@ -55,17 +54,17 @@
                 </div>
             </div>
         </div>
+	    <div class="loadingdiv">{"Loading News Item"|gettext}</div>
         {control type=buttongroup submit="Save News Post" cancel="Cancel"}
      {/form}
 </div>
-<div class="loadingdiv">{"Loading Edit Form"|gettext}</div>
 
 {script unique="newed" yui3mods=1}
 {literal}
 	YUI(EXPONENT.YUI3_CONFIG).use('tabview', function(Y) {
-       var tabview = new Y.TabView({srcNode:'#newedfrm'});
+       var tabview = new Y.TabView({srcNode:'#newsedit-tabs'});
        tabview.render();
-       Y.one('#newedit').removeClass('hide');
+       Y.one('#newsedit-tabs').removeClass('hide');
        Y.one('.loadingdiv').remove();
     });
 {/literal}

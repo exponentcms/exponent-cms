@@ -14,13 +14,11 @@
  *
  *}
 
-<div id="editgallery" class="module imagegallery edit yui3-skin-sam hide">
-    
+<div id="editgallery" class="module imagegallery edit">
     {if $record->id}<h1>Editing {$record->title}</h1>{else}<h1>New {$modelname}</h1>{/if}
-        
     {form action=update}
         {control type=hidden name=id value=$record->id}
-        <div id="demo" class="yui-navset">
+        <div id="editgallery-tabs" class="yui-navset yui3-skin-sam hide">
             <ul class="yui-nav">
                 <li class="selected"><a href="#tab1"><em>{"General"|gettext}</em></a></li>
                 <li><a href="#tab3"><em>{"Image"|gettext}</em></a></li>
@@ -45,18 +43,17 @@
             </div>
             </div>
         </div>
+	    <div class="loadingdiv">{"Loading Photo Item"|gettext}</div>
         {control type=buttongroup submit="Save Photo" cancel="Cancel"}
     {/form}   
-    
 </div>
-<div class="loadingdiv">{"Loading Edit Form"|gettext}</div>
 
 {script unique="editform" yui3mods=1}
 {literal}
 	YUI(EXPONENT.YUI3_CONFIG).use('tabview', function(Y) {
-	    var tabview = new Y.TabView({srcNode:'#demo'});
+	    var tabview = new Y.TabView({srcNode:'#editgallery-tabs'});
 	    tabview.render();
-		Y.one('#editgallery').removeClass('hide');
+		Y.one('#editgallery-tabs').removeClass('hide');
 		Y.one('.loadingdiv').remove();
     });
 {/literal}

@@ -15,30 +15,27 @@
 
 {uniqueid assign="config"}
 
-<div id="siteconfig" class="module administration configure-site yui3-skin-sam hide">
-    
+<div id="siteconfig" class="module administration configure-site">
     <h1>Configure Website</h1>
-
     {help text="Learn More about configuring your website"|gettext page="site-configuration"}
-    
     {form controller="administration" action=update_siteconfig}
-        <div id="{$config}" class="yui-navset">
+        <div id="{$config}" class="yui-navset yui3-skin-sam hide">
             <ul class="yui-nav">
-            <li class="selected"><a href="#tab1"><em>{gettext str="General"}</em></a></li>
-            <li><a href="#tab2"><em>{gettext str="Anti-Spam"}</em></a></li>
-            <li><a href="#tab3"><em>{gettext str="User Registration"}</em></a></li>
-            <li><a href="#tab4"><em>{gettext str="Comment Policies"}</em></a></li>
-            <li><a href="#tab5"><em>{gettext str="Display"}</em></a></li>
-            {if $user->is_admin==1}
-			<li><a href="#tab6"><em>{gettext str="Mail Server"}</em></a></li>
-            <li><a href="#tab7"><em>{gettext str="Maintenance"}</em></a></li>
-            <li><a href="#tab8"><em>{gettext str="Security"}</em></a></li>
-			<li><a href="#tab9"><em>{gettext str="Help Links"}</em></a></li>
-			<li><a href="#tab10"><em>{gettext str="WYSIWYG Editor"}</em></a></li>
-            <li><a href="#tab11"><em>{gettext str="Error Messages"}</em></a></li>
-            <li><a href="#tab12"><em>{gettext str="PDF Generation"}</em></a></li>
-			<li><a href="#tab13"><em>{gettext str="Minify"}</em></a></li>
-            {/if}
+	            <li class="selected"><a href="#tab1"><em>{gettext str="General"}</em></a></li>
+	            <li><a href="#tab2"><em>{gettext str="Anti-Spam"}</em></a></li>
+	            <li><a href="#tab3"><em>{gettext str="User Registration"}</em></a></li>
+	            <li><a href="#tab4"><em>{gettext str="Comment Policies"}</em></a></li>
+	            <li><a href="#tab5"><em>{gettext str="Display"}</em></a></li>
+	            {if $user->is_admin==1}
+					<li><a href="#tab6"><em>{gettext str="Mail Server"}</em></a></li>
+		            <li><a href="#tab7"><em>{gettext str="Maintenance"}</em></a></li>
+		            <li><a href="#tab8"><em>{gettext str="Security"}</em></a></li>
+					<li><a href="#tab9"><em>{gettext str="Help Links"}</em></a></li>
+					<li><a href="#tab10"><em>{gettext str="WYSIWYG Editor"}</em></a></li>
+		            <li><a href="#tab11"><em>{gettext str="Error Messages"}</em></a></li>
+		            <li><a href="#tab12"><em>{gettext str="PDF Generation"}</em></a></li>
+					<li><a href="#tab13"><em>{gettext str="Minify"}</em></a></li>
+	            {/if}
             </ul>            
             <div class="yui-content">
                 <div id="tab1">
@@ -173,10 +170,10 @@
                 {/if}
             </div>
         </div>
+	    <div class="loadingdiv">{"Loading Site Configuration"|gettext}</div>
         {control type="buttongroup" submit="Save Website Configuration"|gettext cancel="Cancel"|gettext}
     {/form}
 </div>
-<div class="loadingdiv">Loading</div>
 
 {script unique="`$config`" yui3mods=1}
 {literal}
@@ -184,7 +181,7 @@
 		var history = new Y.HistoryHash(),
 	        tabview = new Y.TabView({srcNode:'#{/literal}{$config}{literal}'});
 	    tabview.render();
-	    Y.one('#siteconfig').removeClass('hide');
+	    Y.one('#{/literal}{$config}{literal}').removeClass('hide');
 	    Y.one('.loadingdiv').remove();
 
 		// Set the selected tab to the bookmarked history state, or to

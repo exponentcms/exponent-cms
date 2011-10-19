@@ -14,13 +14,12 @@
  *
  *}
 
-<div id="editportfolio" class="module blog edit yui3-skin-sam hide">
-    
+<div id="editportfolio" class="module blog edit">
     {if $record->id != ""}<h1>Editing {$record->title}</h1>{else}<h1>New {$modelname}</h1>{/if}
     
     {form action=update}
         {control type=hidden name=id value=$record->id}
-        <div id="demo" class="yui-navset">
+        <div id="editportfolio-tabs" class="yui-navset yui3-skin-sam hide">
             <ul class="yui-nav">
                 <li class="selected"><a href="#tab1"><em>General</em></a></li>
                 <li><a href="#tab2"><em>Tags</em></a></li>
@@ -56,18 +55,17 @@
             </div>
             </div>
         </div>
+	    <div class="loadingdiv">{'Loading Portfolio Item'|gettext}</div>
         {control type=buttongroup submit="Save Text" cancel="Cancel"}
     {/form}   
-    
 </div>
-<div class="loadingdiv">Loading Form</div>
 
 {script unique="editform" yui3mods=1}
 {literal}
 	YUI(EXPONENT.YUI3_CONFIG).use('tabview', function(Y) {
-	    var tabview = new Y.TabView({srcNode:'#demo'});
+	    var tabview = new Y.TabView({srcNode:'#editportfolio-tabs'});
 	    tabview.render();
-		Y.one('#editportfolio').removeClass('hide');
+		Y.one('#editportfolio-tabs').removeClass('hide');
 		Y.one('.loadingdiv').remove();
     });
 {/literal}

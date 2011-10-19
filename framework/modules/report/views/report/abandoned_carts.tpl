@@ -5,11 +5,9 @@
 {css unique="report-builder" link="`$smarty.const.PATH_RELATIVE`framework/modules/ecommerce/assets/css/report-builder.css"}
 
 {/css}
-<div class="rightcol">
+	<div class="rightcol">
 
-        <div id="dashboard-tabs" class="hide exp-skin-tabview">
-
-            <div id="dashboard-tabview" class="yui-navset">
+        <div id="dashboard-tabs" class="yui-navset yui3-skin-sam hide">
                 <ul class="yui-nav">
                     <li class="selected"><a href="#tab1"><em>New Orders</em></a></li>
                     <!--li><a href="#tab2"><em>Top Selling Items</em></a></li>
@@ -89,21 +87,23 @@
                     <div id="tab5">
                     </div-->
                 </div>
-            </div>
+            <div class="loadingdiv">{"Loading Dashboard"|gettext}</div>
         </div>
-        <div class="loadingdiv">Loading Dashboard</div>
-        
     </div>
     <div style="clear:both"></div>
 </div>
 
 {script unique="editform" yui3mods=1}
 {literal}
-    YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-tabview','yui2-element', function(Y) {
-        var YAHOO=Y.YUI2;
-
-        var tabView = new YAHOO.widget.TabView('dashboard-tabview');
-        Y.one('#dashboard-tabs').removeClass('hide').next().remove();
+//    YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-tabview','yui2-element', function(Y) {
+//        var YAHOO=Y.YUI2;
+//        var tabView = new YAHOO.widget.TabView('dashboard-tabview');
+//        Y.one('#dashboard-tabs').removeClass('hide').next().remove();
+	YUI(EXPONENT.YUI3_CONFIG).use('tabview', function(Y) {
+		var tabview = new Y.TabView({srcNode:'#dashboard-tabs'});
+		tabview.render();
+		Y.one('#dashboard-tabs').removeClass('hide');
+		Y.one('.loadingdiv').remove();
     });
 {/literal}
 {/script}

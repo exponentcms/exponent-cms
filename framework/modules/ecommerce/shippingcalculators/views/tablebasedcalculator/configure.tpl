@@ -112,8 +112,7 @@
 	</div>
     {br}
 </div>
-<div class="loadingdiv">Loading</div>
-
+<div class="loadingdiv">{'Loading'|gettext}</div>
 
 {script unique="shipping-table" yui3mods=1}
 {literal}

@@ -14,49 +14,54 @@
  *
  *}
 
-<div id="authcfg" class="hide exp-skin-tabview">
-    <div id="auth" class="yui-navset">
+<div id="authcfg">
+    <div id="authcfg-tabs" class="yui-navset yui3-skin-sam hide">
         <ul class="yui-nav">
-        <li class="selected"><a href="#tab1"><em>Payflow Pro<br>Settings</em></a></li>
-        <li><a href="#tab2"><em>Accepted<br>Credit Cards</em></a></li>
-        <li><a href="#tab3"><em>Customer<br>Confirmations</em></a></li>
-        <li><a href="#tab4"><em>Administrator<br>Notifications</em></a></li>
+	        <li class="selected"><a href="#tab1"><em>Payflow Pro<br>Settings</em></a></li>
+	        <li><a href="#tab2"><em>Accepted<br>Credit Cards</em></a></li>
+	        <li><a href="#tab3"><em>Customer<br>Confirmations</em></a></li>
+	        <li><a href="#tab4"><em>Administrator<br>Notifications</em></a></li>
         </ul>            
         <div class="yui-content">
-        <div id="tab1">
-            {control type="text" name="vendor" label="Vendor (Merchant)" value=$calculator->configdata.vendor}
-            {control type="text" name="user" label="User" value=$calculator->configdata.user}
-            {control type="text" name="partner" label="Partner" value=$calculator->configdata.partner}
-            {control type="text" name="password" label="Password" value=$calculator->configdata.password}
-            {control type="checkbox" name="testmode" label="Enable Test Mode?" value=1 checked=$calculator->configdata.testmode}
-            {control type="radiogroup" name="process_mode" label="Processing Mode" items="Authorize and Capture, Authorize Only" values="S,A" default=$calculator->configdata.process_mode}
-        </div>
-        <div id="tab2">
-            {control type="checkbox" name="accepted_cards[]" label="Master Card" value="MasterCard" checked=$calculator->configdata.accepted_cards}
-            {control type="checkbox" name="accepted_cards[]" label="Visa" value="VisaCard" checked=$calculator->configdata.accepted_cards}
-            {control type="checkbox" name="accepted_cards[]" label="American Express" value="AmExCard" checked=$calculator->configdata.accepted_cards}
-            {control type="checkbox" name="accepted_cards[]" label="Discover Card" value="DiscoverCard" checked=$calculator->configdata.accepted_cards}
-        </div>
-        <div id="tab3">
-            {control type="checkbox" name="email_customer" label="Send customer an email confirmation?" value=1 checked=$calculator->configdata.email_customer}
-        </div>
-        <div id="tab4">
-            {control type="checkbox" name="email_admin" label="Send a notication that a new order was received?" value=1 checked=$calculator->configdata.email_admin}
-            {control type="text" name="notification_addy" label="Email addresses to send notifications to (comma separated list of email addresses)" value=$calculator->configdata.notification_addy}
-        </div>
+	        <div id="tab1">
+	            {control type="text" name="vendor" label="Vendor (Merchant)" value=$calculator->configdata.vendor}
+	            {control type="text" name="user" label="User" value=$calculator->configdata.user}
+	            {control type="text" name="partner" label="Partner" value=$calculator->configdata.partner}
+	            {control type="text" name="password" label="Password" value=$calculator->configdata.password}
+	            {control type="checkbox" name="testmode" label="Enable Test Mode?" value=1 checked=$calculator->configdata.testmode}
+	            {control type="radiogroup" name="process_mode" label="Processing Mode" items="Authorize and Capture, Authorize Only" values="S,A" default=$calculator->configdata.process_mode}
+	        </div>
+	        <div id="tab2">
+	            {control type="checkbox" name="accepted_cards[]" label="Master Card" value="MasterCard" checked=$calculator->configdata.accepted_cards}
+	            {control type="checkbox" name="accepted_cards[]" label="Visa" value="VisaCard" checked=$calculator->configdata.accepted_cards}
+	            {control type="checkbox" name="accepted_cards[]" label="American Express" value="AmExCard" checked=$calculator->configdata.accepted_cards}
+	            {control type="checkbox" name="accepted_cards[]" label="Discover Card" value="DiscoverCard" checked=$calculator->configdata.accepted_cards}
+	        </div>
+	        <div id="tab3">
+	            {control type="checkbox" name="email_customer" label="Send customer an email confirmation?" value=1 checked=$calculator->configdata.email_customer}
+	        </div>
+	        <div id="tab4">
+	            {control type="checkbox" name="email_admin" label="Send a notication that a new order was received?" value=1 checked=$calculator->configdata.email_admin}
+	            {control type="text" name="notification_addy" label="Email addresses to send notifications to (comma separated list of email addresses)" value=$calculator->configdata.notification_addy}
+	        </div>
         </div>
     </div>
+	<div class="loadingdiv">{'Loading'|gettext}</div>
 </div>
-<div class="loadingdiv">Loading</div>
 
 {script unique="authtabs" yui3mods=1}
 {literal}
-    YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event','yui2-tabview', function(Y) {
-        var YAHOO=Y.YUI2;
-        var tabView = new YAHOO.widget.TabView('auth');
-        YAHOO.util.Dom.removeClass("authcfg", 'hide');
-        var loading = YAHOO.util.Dom.getElementsByClassName('loadingdiv', 'div');
-        YAHOO.util.Dom.setStyle(loading, 'display', 'none');
+//    YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event','yui2-tabview', function(Y) {
+//        var YAHOO=Y.YUI2;
+//        var tabView = new YAHOO.widget.TabView('auth');
+//        YAHOO.util.Dom.removeClass("authcfg", 'hide');
+//        var loading = YAHOO.util.Dom.getElementsByClassName('loadingdiv', 'div');
+//        YAHOO.util.Dom.setStyle(loading, 'display', 'none');
+	YUI(EXPONENT.YUI3_CONFIG).use('tabview', function(Y) {
+		var tabview = new Y.TabView({srcNode:'#authcfg-tabs'});
+		tabview.render();
+		Y.one('#authcfg-tabs').removeClass('hide');
+		Y.one('.loadingdiv').remove();
     });
 {/literal}
 {/script}

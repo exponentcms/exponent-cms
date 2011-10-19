@@ -20,9 +20,9 @@
 
 {uniqueid assign=tabs}
 
-<div class="containermodule tabbed yui3-skin-sam">
+<div class="containermodule tabbed">
 {viewfile module=$singlemodule view=$singleview var=viewfile} 
-<div id="{$tabs}" class="yui-navset hide">
+<div id="{$tabs}" class="yui-navset yui3-skin-sam hide">
 	<ul class="yui-nav">
 		{foreach from=$containers item=container key=tabnum name=contain}
 			{assign var=numcontainers value=$tabnum+1}
@@ -86,7 +86,7 @@
 	</div>
 </div>
 </div>
-<div class="loadingdiv">Loading</div>
+<div class="loadingdiv">{'Loading'|gettext}</div>
 
 {script unique="`$tabs`" yui3mods="1"}
 {literal}

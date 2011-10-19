@@ -309,7 +309,7 @@
         </div>
     </div>
 </div>
-<div class="loadingdiv">Loading Order</div>
+<div class="loadingdiv">{'Loading Order'|gettext}</div>
 
 {script unique="msgbox"}
 {literal}

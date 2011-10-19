@@ -14,13 +14,11 @@
  *
  *}
 
-<div id="edithelp" class="module help edit yui3-skin-sam hide">
-    
+<div id="edithelp" class="module help edit">
     {if $record->id != ""}<h1>Editing {$record->title}</h1>{else}<h1>New Help Document</h1>{/if}
-    
     {form action=update record=$record}
         {control type=hidden name=id value=$record->id}
-        <div id="helpedit" class="yui-navset">
+        <div id="edithelp-tabs" class="yui-navset yui3-skin-sam hide">
             <ul class="yui-nav">
                 <li class="selected"><a href="#tab1"><em>General</em></a></li>
                 <li><a href="#tab2"><em>Actions and Views</em></a></li>
@@ -63,17 +61,17 @@
             </div>
             </div>
         </div>
+	    <div class="loadingdiv">{"Loading Help Item"|gettext}</div>
         {control type=buttongroup submit="Save Help Doc" cancel="Cancel"}
     {/form}     
 </div>
-<div class="loadingdiv">{"Loading Edit Form"|gettext}</div>
 
 {script unique="editform" yui3mods=1}
 {literal}
 	YUI(EXPONENT.YUI3_CONFIG).use('tabview', function(Y) {
-	    var tabview = new Y.TabView({srcNode:'#helpedit'});
+	    var tabview = new Y.TabView({srcNode:'#edithelp-tabs'});
 	    tabview.render();
-		Y.one('#edithelp').removeClass('hide');
+		Y.one('#edithelp-tabs').removeClass('hide');
 		Y.one('.loadingdiv').remove();
     });
 {/literal}

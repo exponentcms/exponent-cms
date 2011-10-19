@@ -14,9 +14,9 @@
  *
  *}
 
-<div id="config" class="module scaffold configure yui3-skin-sam hide">
+<div id="config" class="module scaffold configure">
 	{form action=saveconfig}
-		<div id="tabs" class="yui-navset">
+		<div id="config-tabs" class="yui-navset yui3-skin-sam hide">
 			<ul class="yui-nav">
 			    {foreach from=$views item=tab name=tabs}
 			        <li{if $smarty.foreach.tabs.first} class="selected"{/if}>
@@ -32,17 +32,17 @@
 		    	    {/foreach}
 			</div>
 		</div>
+		<div class="loadingdiv">{"Loading Settings"|gettext}</div>
 		{control type=buttongroup submit="Save Config" cancel="Cancel"}
 	{/form}
 </div>
-<div class="loadingdiv">Loading</div>
 
 {script unique="conf" yui3mods=1}
 {literal}
 	YUI(EXPONENT.YUI3_CONFIG).use('tabview', function(Y) {
-	    var tabview = new Y.TabView({srcNode:'#tabs'});
+	    var tabview = new Y.TabView({srcNode:'#config-tabs'});
 	    tabview.render();
-		Y.one('#config').removeClass('hide');
+		Y.one('#config-tabs').removeClass('hide');
 		Y.one('.loadingdiv').remove();
     });
 {/literal}

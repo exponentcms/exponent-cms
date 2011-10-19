@@ -16,7 +16,7 @@
  
 {uniqueid assign="id"}
 
-<div class="module text showall-tabview yui3-skin-sam">
+<div class="module text showall-tabview">
     {if $moduletitle}<h1>{$moduletitle}</h1>{/if}
     {permissions}
         <div class="module-actions">
@@ -28,7 +28,7 @@
             {/if}
         </div>
     {/permissions}
-    <div id="{$id}" class="hide">
+    <div id="{$id}" class="yui-navset yui3-skin-sam hide">
         <ul>
             {foreach from=$items item=tab name=tabs}
                 <li><a href="#tab{$smarty.foreach.items.iteration}">{$tab->title}</a></li>
@@ -62,8 +62,8 @@
             {/foreach}
         </div>
     </div>
+    <div class="loadingdiv">{'Loading'|gettext}</div>
 </div>
-<div class="loadingdiv">Loading</div>
 
 {script unique="`$id`" yui3mods="1"}
 {literal}

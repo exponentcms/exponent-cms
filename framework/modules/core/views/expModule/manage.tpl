@@ -55,7 +55,7 @@
 {/literal}
 {/css}
 
-<div id="mod-manager" class="module administration modulemanager yui3-skin-sam hide">
+<div id="mod-manager" class="module administration modulemanager">
     <div class="info-header">
         <div class="related-actions">
             {help text="Get Help Managing Modules"|gettext module="manage-modules"}
@@ -64,7 +64,7 @@
     </div>
 
     {form action="update"}
-    <div id="mods" class="yui-navset">
+    <div id="mod-manager-tabs" class="yui-navset yui3-skin-sam hide">
         <ul class="yui-nav">
             <li class="selected"><a href="#tab1"><em>Exponent 2</em></a></li>
             <li><a href="#tab2"><em>{gettext str="Old School"}</em></a></li>
@@ -130,17 +130,17 @@
             </div>
         </div>
     </div>
+    <div class="loadingdiv">{"Loading Modules"|gettext}</div>
     {control type="buttongroup" submit="Update Active Modules"|gettext}
     {/form}
 </div>
-<div class="loadingdiv">{"Loading"|gettext}</div>
 
 {script unique="filetabs" yui3mods=1}
 {literal}
 	YUI(EXPONENT.YUI3_CONFIG).use('tabview', function(Y) {
-	    var tabview = new Y.TabView({srcNode:'#mods'});
+	    var tabview = new Y.TabView({srcNode:'#mod-manager-tabs'});
 	    tabview.render();
-		Y.one('#mod-manager').removeClass('hide');
+		Y.one('#mod-manager-tabs').removeClass('hide');
 		Y.one('.loadingdiv').remove();
 
 		EXPONENT.selectAllCheckboxes = function (selector) {

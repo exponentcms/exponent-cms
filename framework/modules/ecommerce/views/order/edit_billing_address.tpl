@@ -14,11 +14,10 @@
  *
  *}
 
-<div id="authcfg" class="hide exp-skin-tabview">
-
+<div id="authcfg">
     {form action=save_payment_info}
         {control type="hidden" name="id" value=$orderid}    
-        <div id="auth" class="yui-navset">
+        <div id="authcfg-tabs" class="yui-navset yui3-skin-sam hide">
             <ul class="yui-nav">
             <li class="selected"><a href="#tab1"><em>Edit Payment Info</em></a></li>
             </ul>            
@@ -27,23 +26,26 @@
                     {foreach from=$opts item=field key=key}
                         {control type="text" name="result[`$key`]" label=$key value=$field}
                     {/foreach}
-                    
                     {control type="buttongroup" submit="Save Payment Info" cancel="Cancel"}
                 
                 </div>
             </div>
         </div>
+	    <div class="loadingdiv">{'Loading'|gettext}</div>
     {/form}
 </div>
-<div class="loadingdiv">Loading</div>
 
 {script unique="editform" yui3mods=1}
 {literal}
-    YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-tabview','yui2-element', function(Y) {
-        var YAHOO=Y.YUI2;
-
-        var tabView = new YAHOO.widget.TabView('auth');
-        Y.one('#authcfg').removeClass('hide').next().remove();
+//    YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-tabview','yui2-element', function(Y) {
+//        var YAHOO=Y.YUI2;
+//        var tabView = new YAHOO.widget.TabView('auth');
+//        Y.one('#authcfg').removeClass('hide').next().remove();
+	YUI(EXPONENT.YUI3_CONFIG).use('tabview', function(Y) {
+	    var tabview = new Y.TabView({srcNode:'#authcfg-tabs'});
+	    tabview.render();
+		Y.one('#authcfg-tabs').removeClass('hide');
+		Y.one('.loadingdiv').remove();
     });
 {/literal}
 {/script}
