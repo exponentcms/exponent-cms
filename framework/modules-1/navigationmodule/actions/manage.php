@@ -18,11 +18,13 @@
 ##################################################
 
 if (!defined('EXPONENT')) exit('');
+global $router;
 
 if (expPermissions::check('manage','navigationmodule')) {
     global $user;
-	expHistory::flowSet(SYS_FLOW_PROTECTED, SYS_FLOW_ACTION);
-	
+//	expHistory::flowSet(SYS_FLOW_PROTECTED, SYS_FLOW_ACTION);
+	expHistory::set('manageable', $router->params);
+
 	$template = new template('navigationmodule','_manager',$loc);
 	
 	$template->assign('sections',navigationmodule::levelTemplate(0,0));

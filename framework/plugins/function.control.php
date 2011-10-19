@@ -59,7 +59,8 @@ function smarty_function_control($params,&$smarty) {
             $submit = isset($params['submit']) ? $params['submit'] : null;
             $reset = isset($params['reset']) ? $params['reset'] : null;
             $cancel = isset($params['cancel']) ? $params['cancel'] : null;
-            $control = new buttongroupcontrol($submit, $reset, $cancel);
+	        $returntype = isset($params['returntype']) ? $params['returntype'] : null;
+            $control = new buttongroupcontrol($submit, $reset, $cancel, null, $returntype);
         } elseif ($params['type'] == 'files') {
             if(!empty($params['olduploader'])){
                 $control = new uploadcontrol();

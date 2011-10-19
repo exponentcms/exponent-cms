@@ -32,10 +32,12 @@
 ##################################################
 
 if (!defined('EXPONENT')) exit('');
+global $router;
 
 if (expPermissions::check('manage_question',$loc) || expPermissions::check('manage_answer',$loc)) {
-	expHistory::flowSet(SYS_FLOW_PROTECTED,SYS_FLOW_ACTION);
-	
+//	expHistory::flowSet(SYS_FLOW_PROTECTED,SYS_FLOW_ACTION);
+	expHistory::set('manageable', $router->params);
+
 	$questions = $db->selectObjects('poll_question',"location_data='".serialize($loc)."'");
 	for ($i = 0; $i < count($questions); $i++) {
 		$questions[$i]->answer_count = $db->countObjects('poll_answer','question_id='.$questions[$i]->id);

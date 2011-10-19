@@ -133,6 +133,7 @@ class loginController extends expController {
 	 */
 	public static function loginredirect() {
 		global $user;
+		global $router;
 
 		ob_start();
 		if ($user->isLoggedIn()) {
@@ -141,7 +142,8 @@ class loginController extends expController {
 			//expSession::set('redirecturl', expHistory::getLastNotEditable());
 			expSession::set('redirecturl', expHistory::getLast());
 			expSession::set('redirecturl_error', makeLink(array('controller'=>'login', 'action'=>'loginredirect')));
-			expHistory::flowSet(SYS_FLOW_PUBLIC,SYS_FLOW_ACTION);
+//			expHistory::flowSet(SYS_FLOW_PUBLIC,SYS_FLOW_ACTION);
+			expHistory::set('viewable', $router->params);
 		}
 		redirect_to(array('controller'=>'login', 'action'=>'showlogin'));
 	}

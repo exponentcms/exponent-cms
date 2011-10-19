@@ -13,6 +13,7 @@
  * GPL: http://www.gnu.org/licenses/gpl.txt
  *
  *}
+
 {css unique="managehtml1" link="`$smarty.const.PATH_RELATIVE`framework/core/assets/css/admin-global.css"}
 
 {/css}
@@ -29,7 +30,6 @@
         </div>
         <h1>{"CKEditor Toolbar Manager"|gettext}</h1>
     </div>
-    
     <table border="0" cellspacing="0" cellpadding="0" class="exp-skin-table">
         <thead>
             <tr>
@@ -136,5 +136,4 @@
             {/foreach}
         </tbody>
     </table>
-
 </div>

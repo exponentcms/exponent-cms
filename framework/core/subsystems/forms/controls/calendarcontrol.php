@@ -288,7 +288,7 @@ class calendarcontrol extends formcontrol {
     //  $form->register("caption",gt('Caption'), new textcontrol($object->caption));
     //  $form->register("showtime",gt('Show Time'), new checkboxcontrol($object->showtime,false));
     // 
-    //  $form->register("submit","",new buttongroupcontrol(gt('Save'),"",bt'Cancel')));
+    //  $form->register("submit","",new buttongroupcontrol(gt('Save'),"",bt'Cancel'),"",'editable'));
     //  return $form;
     // }
 

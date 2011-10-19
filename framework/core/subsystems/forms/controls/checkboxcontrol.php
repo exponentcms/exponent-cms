@@ -51,16 +51,16 @@ class checkboxcontrol extends formcontrol {
     }
     
      function toHTML($label,$name) {
-            if (!empty($this->id)) {
-		        $divID  = ' id="'.$this->id.'Control"';
-		        $for = ' for="'.$this->id.'"';
-		    } else {
-		        $divID  = '';
-		        $for = '';
-		    }
-            $html = "<div".$divID." class=\"control checkbox";
-            $html .= (!empty($this->required)) ? ' required">' : '">';
-            $html .= "<table border=0 cellpadding=0 cellspacing=0><tr>";
+        if (!empty($this->id)) {
+	        $divID  = ' id="'.$this->id.'Control"';
+	        $for = ' for="'.$this->id.'"';
+	    } else {
+	        $divID  = '';
+	        $for = '';
+	    }
+        $html = "<div".$divID." class=\"control checkbox";
+        $html .= (!empty($this->required)) ? ' required">' : '">';
+        $html .= "<table border=0 cellpadding=0 cellspacing=0><tr>";
         if(!empty($this->flip)){
             $html .= "<td class=\"input\">";
             $html .= "<label".$for." class=\"label ".$this->nowrap."\">".$label."</label>";
@@ -74,8 +74,8 @@ class checkboxcontrol extends formcontrol {
             $html .= "<label".$for." class=\"label ".$this->nowrap."\">".$label."</label>";
             $html .= "</td>";           
         }
-            $html .= "</tr></table>";
-            $html .= "</div>";                      
+        $html .= "</tr></table>";
+        $html .= "</div>";
         return $html;
      }
     
@@ -179,7 +179,7 @@ class checkboxcontrol extends formcontrol {
         $form->register("default",gt('Default'), new checkboxcontrol($object->default,false));
         $form->register("flip","Caption on Left", new checkboxcontrol($object->flip,false));
         $form->register("required", gt('Required'), new checkboxcontrol($object->required,false));
-        $form->register("submit","",new buttongroupcontrol(gt('Save'),'',gt('Cancel')));
+        $form->register("submit","",new buttongroupcontrol(gt('Save'),'',gt('Cancel'),"",'editable'));
         
         return $form;
     }

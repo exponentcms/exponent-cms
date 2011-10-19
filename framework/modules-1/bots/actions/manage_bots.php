@@ -20,10 +20,12 @@
 // Part of the Extensions category
 
 if (!defined('EXPONENT')) exit('');
+global $router;
 
 if (expPermissions::check('extensions',expCore::makeLocation('administrationmodule'))) {
-	expHistory::flowSet(SYS_FLOW_PROTECTED,SYS_FLOW_ACTION);
-	
+//	expHistory::flowSet(SYS_FLOW_PROTECTED,SYS_FLOW_ACTION);
+	expHistory::set('manageable', $router->params);
+
 	// get new bots into the database
 	if (is_readable(BASE.'framework/modules-1/bots/bots')) {
         $dh = opendir(BASE.'framework/modules-1/bots/bots');

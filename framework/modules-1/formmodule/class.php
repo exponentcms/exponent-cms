@@ -87,11 +87,11 @@ class formmodule {
 				$db->insertObject($rpt,"formbuilder_report");
 				$f->id = $frmid;
 			}
-			global $SYS_FLOW_REDIRECTIONPATH;
-			//expHistory::flowSet(SYS_FLOW_PUBLIC,SYS_FLOW_ACTION);
-			$SYS_FLOW_REDIRECTIONPATH = "editfallback";
-			//expHistory::flowSet(SYS_FLOW_PUBLIC,SYS_FLOW_ACTION);
-			$SYS_FLOW_REDIRECTIONPATH = "exponent_default";
+//			global $SYS_FLOW_REDIRECTIONPATH;
+//			expHistory::flowSet(SYS_FLOW_PUBLIC,SYS_FLOW_ACTION);
+//			$SYS_FLOW_REDIRECTIONPATH = "editfallback";
+//			expHistory::flowSet(SYS_FLOW_PUBLIC,SYS_FLOW_ACTION);
+//			$SYS_FLOW_REDIRECTIONPATH = "exponent_default";
 			
 			$floc = unserialize($f->location_data);
 			$controls = $db->selectObjects("formbuilder_control","form_id=".$f->id);

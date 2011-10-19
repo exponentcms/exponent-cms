@@ -137,7 +137,7 @@ class genericcontrol extends formcontrol {
         $form->register(null, null, new htmlcontrol('<br />'));
         $form->register("required", gt('Required'), new checkboxcontrol($object->required,true));
         $form->register(null, null, new htmlcontrol('<br />')); 
-        $form->register("submit","",new buttongroupcontrol(gt('Save'),'',gt('Cancel')));
+        $form->register("submit","",new buttongroupcontrol(gt('Save'),'',gt('Cancel'),"",'editable'));
         
         return $form;
     }

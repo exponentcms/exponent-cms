@@ -15,6 +15,7 @@
  * @author Adam Kessler <adam@oicgroup.net>
  * @version 2.0.0
  */
+
 /**
  * This is the class expHTMLEditorController
  *
@@ -31,7 +32,6 @@ class expHTMLEditorController extends expController {
 	function hasContent() { return false; }
 	protected $add_permissions = array('activate'=>"activate",'preview'=>"preview CKEditor toolbars");
     
-    
     function manage () {
         global $db;
         // yet more gluecode
@@ -39,8 +39,6 @@ class expHTMLEditorController extends expController {
 	        flash('error','FCKeditor is deprecated!');
 	        redirect_to(array("module"=>"administration","action"=>"configure_site"));
         }
-
-        expHistory::set('manageable',$this->params);
 
         // otherwise, on to cke
         $configs = $db->selectObjects('htmleditor_ckeditor',1);
@@ -62,8 +60,10 @@ class expHTMLEditorController extends expController {
         } else {
             $db->updateObject($obj,'htmleditor_ckeditor',null,'id');
         }
-
-        expHistory::back();
+		if ($this->params['active']) {
+			$this->activate();
+		}
+	    expHistory::returnTo('manageable');
     }
 
     function edit() {
@@ -79,7 +79,7 @@ class expHTMLEditorController extends expController {
 	    expHistory::set('editable', $this->params);
 	    @$db->delete('htmleditor_ckeditor',"id=".$this->params['id']);
 
-	    expHistory::back();
+		expHistory::returnTo('manageable');
 	}
 
     function activate () {
@@ -93,7 +93,7 @@ class expHTMLEditorController extends expController {
             $db->updateObject($active,'htmleditor_ckeditor',null,'id');
         }
 
-        expHistory::back();
+	    expHistory::returnTo('manageable');
     }
 
     function preview () {
