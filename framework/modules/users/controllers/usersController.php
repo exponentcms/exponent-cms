@@ -677,6 +677,76 @@ class usersController extends expController {
         expHistory::back();
         
     }
+	
+	public function getFilesByJSON() {
+		global $db,$user;
+        $modelname = $this->basemodel_name;
+        $results = 25; // default get all
+        $startIndex = 0; // default start at 0
+        $sort = null; // default don't sort
+        $dir = 'asc'; // default sort dir is asc
+        $sort_dir = SORT_ASC;
+
+        // How many records to get?
+        if(strlen($_GET['results']) > 0) {
+            $results = $_GET['results'];
+        }
+
+        // Start at which record?
+        if(strlen($_GET['startIndex']) > 0) {
+            $startIndex = $_GET['startIndex'];
+        }
+
+        // Sorted?
+        if(strlen($_GET['sort']) > 0) {
+            $sort = $_GET['sort'];
+        }
+
+        // Sort dir?
+        if((strlen($_GET['dir']) > 0) && ($_GET['dir'] == 'desc')) {
+            $dir = 'desc';
+            $sort_dir = SORT_DESC;
+        }
+        else {
+            $dir = 'asc';
+            $sort_dir = SORT_ASC;
+        }
+        
+        if (isset($_GET['query'])) {
+
+            $totalrecords = $this->$modelname->find('count','id!=0 '.$filter);
+            
+            $users = $this->$modelname->find('all',$filter."username LIKE '%".$_GET['query']."%' OR firstname LIKE '%".$_GET['query']."%' OR lastname LIKE '%".$_GET['query']."%' OR email LIKE '%".$_GET['query']."%'" ,$sort.' '.$dir, $results, $startIndex);
+
+            $returnValue = array(
+                'recordsReturned'=>count($users),
+                'totalRecords'=>count($users),
+                'startIndex'=>$startIndex,
+                'sort'=>$sort,
+                'dir'=>$dir,
+                'pageSize'=>$results,
+                'records'=>$users
+            );
+        } else {
+          
+            $totalrecords = $this->$modelname->find('count',$filter);
+
+            $users = $this->$modelname->find('all',$filter,$sort.' '.$dir, $results, $startIndex);
+            
+            $returnValue = array(
+                'recordsReturned'=>count($users),
+                'totalRecords'=>$totalrecords,
+                'startIndex'=>$startIndex,
+                'sort'=>$sort,
+                'dir'=>$dir,
+                'pageSize'=>$results,
+                'records'=>$users
+            );
+                  
+        }
+        
+        echo json_encode($returnValue);
+	}
 
 }
 

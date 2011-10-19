@@ -95,3 +95,21 @@ Modified by Online Innovative Creations for Exponent CMS
     color:#FFF;
     
 }
+
+/* styles for the user manage page */
+#user_autocomplete {
+    padding: 10px 0;
+}
+
+#user_autocomplete label {
+    color: #000;
+    display: block;
+}
+
+#user_dt_input {
+    background: none repeat scroll 0 0 #FFFFFF;
+    border: 2px solid #000;
+    height: 20px;
+    position: relative;
+    width: 500px;
+}
