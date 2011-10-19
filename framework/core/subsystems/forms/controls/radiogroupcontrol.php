@@ -115,7 +115,7 @@ class radiogroupcontrol extends formcontrol {
 		$form->register("cols",gt('Columns'), new textcontrol($object->cols,4,false,2,"integer"));
 		$form->register(null,"", new htmlcontrol(gt('Setting Number of Columns to zero will put all items on one row.')));
 		$form->register("spacing",gt('Column Spacing'), new textcontrol($object->spacing,5,false,4,"integer"));
-		$form->register("submit","",new buttongroupcontrol(gt('Save'),'',gt('Cancel')));
+		$form->register("submit","",new buttongroupcontrol(gt('Save'),'',gt('Cancel'),"",'editable'));
 		
 		return $form;
 	}

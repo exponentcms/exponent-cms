@@ -184,7 +184,7 @@ class expHistory {
 	 *  SYS_FLOW_SECTIONAL or SYS_FLOW_ACTION
 	 * @node Subsystems:Flow
 	 */
-	public static function flowSet($access_level,$url_type) {
+	public static function flowSet($access_level,$url_type) {  //FIXME - Needs to be deprecated now as it's not used!
 //		global $SYS_FLOW_REDIRECTIONPATH;
 		global $router;
 		//echo '<h1>setting flow</h1>'.$router->current_url;

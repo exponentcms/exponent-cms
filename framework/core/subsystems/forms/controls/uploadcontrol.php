@@ -65,7 +65,7 @@ class uploadcontrol extends formcontrol {
 		$form->register("identifier",gt('Identifier'),new textcontrol($object->identifier));
 		$form->register("caption",gt('Caption'), new textcontrol($object->caption));
 		$form->register("default",gt('Default'), new textcontrol($object->default));
-		$form->register("submit","",new buttongroupcontrol(gt('Save'),'',gt('Cancel')));
+		$form->register("submit","",new buttongroupcontrol(gt('Save'),'',gt('Cancel'),"",'editable'));
 		return $form;
 	}
 

@@ -107,7 +107,7 @@ class yuieditorcontrol extends formcontrol {
 		$form->register("default",gt('Default'),  new texteditorcontrol($object->default));
 		$form->register("rows",gt('Rows'), new textcontrol($object->rows,4,false,3,"integer"));
 		$form->register("cols",gt('Columns'), new textcontrol($object->cols,4, false,3,"integer"));
-		$form->register("submit","",new buttongroupcontrol(gt('Save'),'',gt('Cancel')));
+		$form->register("submit","",new buttongroupcontrol(gt('Save'),'',gt('Cancel'),"",'editable'));
 		return $form;
 	}
 	

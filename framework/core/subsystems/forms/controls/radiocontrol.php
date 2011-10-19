@@ -127,7 +127,7 @@ class radiocontrol extends formcontrol {
         $form->register("default",gt('Default'), new checkboxcontrol($object->default,false));
         $form->register("flip",gt('Caption on Right'), new checkboxcontrol($object->flip,false));
         
-        $form->register("submit","",new buttongroupcontrol(gt('Save'),'',gt('Cancel')));
+        $form->register("submit","",new buttongroupcontrol(gt('Save'),'',gt('Cancel'),"",'editable'));
         
         return $form;
     }

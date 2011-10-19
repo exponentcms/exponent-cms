@@ -63,7 +63,7 @@ class antispamcontrol extends formcontrol {
 		$form->register("caption",gt('Caption'), new textcontrol($object->caption));
 		$form->register(null, null, new htmlcontrol('<br />'));
 		$form->register(null, null, new htmlcontrol('<br />'));
-		$form->register("submit","",new buttongroupcontrol(gt('Save'),'',gt('Cancel')));
+		$form->register("submit","",new buttongroupcontrol(gt('Save'),'',gt('Cancel'),"",'editable'));
 		return $form;
 	}
 

@@ -139,7 +139,7 @@ class listcontrol extends formcontrol {
             $object->html = "";
         } 
         $form->register("html",'',new htmleditorcontrol($object->html));
-        $form->register("submit","",new buttongroupcontrol(gt('Save'),'',gt('Cancel')));
+        $form->register("submit","",new buttongroupcontrol(gt('Save'),'',gt('Cancel'),"",'editable'));
         return $form;
     }
     

@@ -142,7 +142,7 @@ class datetimecontrol extends formcontrol {
 		$form->register("showdate",gt('Show Date'), new checkboxcontrol($object->showdate,false));
 		$form->register("showtime",gt('Show Time'), new checkboxcontrol($object->showtime,false));
 		
-		$form->register("submit","",new buttongroupcontrol(gt('Save'),"",gt('Cancel')));
+		$form->register("submit","",new buttongroupcontrol(gt('Save'),"",gt('Cancel'),"",'editable'));
 		return $form;
 	}
 	
