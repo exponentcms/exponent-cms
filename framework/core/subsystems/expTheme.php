@@ -916,15 +916,23 @@ class expTheme {
 	 * @node Subsystems:Theme
 	 */
 	public static function mainContainer() {
+		global $router;
+
 		if (!AUTHORIZED_SECTION) {
 			// Set this so that a login on an Auth Denied page takes them back to the previously Auth-Denied page
-			expHistory::flowSet(SYS_FLOW_PROTECTED,SYS_FLOW_SECTIONAL);
+//			expHistory::flowSet(SYS_FLOW_PROTECTED,SYS_FLOW_SECTIONAL);
+			expHistory::set('manageable', $router->params);
 			echo SITE_403_HTML;
 			return;
 		}
 
-		if (PUBLIC_SECTION) expHistory::flowSet(SYS_FLOW_PUBLIC,SYS_FLOW_SECTIONAL);
-		else expHistory::flowSet(SYS_FLOW_PROTECTED,SYS_FLOW_SECTIONAL);
+		if (PUBLIC_SECTION) {
+//			expHistory::flowSet(SYS_FLOW_PUBLIC,SYS_FLOW_SECTIONAL);
+			expHistory::set('viewable', $router->params);
+		} else {
+//			expHistory::flowSet(SYS_FLOW_PROTECTED,SYS_FLOW_SECTIONAL);
+			expHistory::set('manageable', $router->params);
+		}
 
 	#   if (expSession::is_set("themeopt_override")) {
 	#       $config = expSession::get("themeopt_override");

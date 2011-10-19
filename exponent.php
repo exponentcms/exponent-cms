@@ -58,7 +58,7 @@ expModules::initializeModules(); // now in the autoloader, if used
 
 // Initialize the History (Flow) subsystem.
 $history = new expHistory(); //<--This is the new flow subsystem
-$SYS_FLOW_REDIRECTIONPATH = 'exponent_default';
+//$SYS_FLOW_REDIRECTIONPATH = 'exponent_default';
 
 // Initialize the javascript subsystem
 if (expJavascript::inAjaxAction()) set_error_handler('handleErrors');

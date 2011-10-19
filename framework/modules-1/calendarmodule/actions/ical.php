@@ -20,7 +20,7 @@
 
 if (!defined('EXPONENT')) exit('');
 
-//expHistory::flowSet(SYS_FLOW_PUBLIC,SYS_FLOW_ACTION);
+//expHistory::flowSet(SYS_FLOW_PUBLIC,SYS_FLOW_ACTION);  //FIXME we don't need to return here, do we?
 // id & date_id set if single event, else
 //   src & time (opt?) set for longer list/month, etc...
 if (isset($_GET['date_id']) || isset($_GET['src'])) {

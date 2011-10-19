@@ -18,10 +18,12 @@
 ##################################################
 
 if (!defined('EXPONENT')) exit('');
+global $router;
 
 if ($user && $user->is_acting_admin == 1) {
-	expHistory::flowSet(SYS_FLOW_PROTECTED, SYS_FLOW_ACTION);
-	
+//	expHistory::flowSet(SYS_FLOW_PROTECTED, SYS_FLOW_ACTION);
+	expHistory::set('manageable', $router->params);
+
 	$template = new template('navigationmodule','_manager_pagesets',$loc);
 	
 	$tpls = $db->selectObjects('section_template','parent=0');

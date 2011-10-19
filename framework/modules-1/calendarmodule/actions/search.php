@@ -33,8 +33,10 @@
 /** @define "BASE" "../../../.." */
 
 if (!defined('EXPONENT')) exit('');
+global $router;
 
-expHistory::flowSet(SYS_FLOW_PUBLIC,SYS_FLOW_ACTION);
+//expHistory::flowSet(SYS_FLOW_PUBLIC,SYS_FLOW_ACTION);
+expHistory::set('viewable', $router->params);
 
 $template = new template("calendarmodule","_search",$loc,false);
 $time = (isset($_GET['time']) ? $_GET['time'] : time());
