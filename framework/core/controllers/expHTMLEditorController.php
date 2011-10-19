@@ -15,6 +15,7 @@
  * @author Adam Kessler <adam@oicgroup.net>
  * @version 2.0.0
  */
+
 /**
  * This is the class expHTMLEditorController
  *
@@ -30,7 +31,6 @@ class expHTMLEditorController extends expController {
     function hasSources() { return false; }
 	function hasContent() { return false; }
 	protected $add_permissions = array('activate'=>"activate",'preview'=>"preview CKEditor toolbars");
-    
     
     function manage () {
         global $db;
@@ -62,7 +62,9 @@ class expHTMLEditorController extends expController {
         } else {
             $db->updateObject($obj,'htmleditor_ckeditor',null,'id');
         }
-
+		if ($this->params['active']) {
+			$this->activate();
+		}
         expHistory::back();
     }
 

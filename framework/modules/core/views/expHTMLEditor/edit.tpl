@@ -29,6 +29,7 @@
     {form action=update}
         {control type=hidden name=id value=$record->id}
         {control type=text name=name label="Configuration Name" value=$record->name}
+	    {control type="checkbox" postfalse=1 name=active label="Make this Configuration Active?" checked=$record->active value=1}
 		{control type=dropdown name=skin label="Toolbar Skin" items="Kama, Office 2003, Version 2" values="kama,office2003,v2" value=$record->skin}
 		{control type="checkbox" postfalse=1 name=scayt_on label="Autostart SpellCheck" checked=$record->scayt_on value=1}
 		{control type="checkbox" postfalse=1 name=paste_word label="Allow Formatted Pasting from MS Word" checked=$record->paste_word value=1}

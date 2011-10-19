@@ -46,18 +46,18 @@ expLang::loadLang();
 // Initialize the Database subsystem
 $db = expDatabase::connect(DB_USER,DB_PASS,DB_HOST.':'.DB_PORT,DB_NAME);
 
-// Create the list of available/active controllers
+// Initialize the Modules subsystem & Create the list of available/active controllers
 $available_controllers = expModules::initializeControllers();  //original position
 //$available_controllers = array();
 //$available_controllers = initializeControllers();
 //foreach ($db->selectObjects('modstate',1) as $mod) {
 //	if (!empty($mod->path)) $available_controllers[$mod->module] = $mod->path;  //FIXME test location
 //}
-// Initialize the old school Modules subsystem.
+// Initialize the old school Modules
 expModules::initializeModules(); // now in the autoloader, if used
 
 // Initialize the History (Flow) subsystem.
-$history = new expHistory(); //<--This is the new flow subsystem and will be replacing the above.
+$history = new expHistory(); //<--This is the new flow subsystem
 $SYS_FLOW_REDIRECTIONPATH = 'exponent_default';
 
 // Initialize the javascript subsystem
@@ -67,10 +67,10 @@ if (expJavascript::inAjaxAction()) set_error_handler('handleErrors');
 $user = new user();
 expSession::validate();
 
+/* exdoc
+ * The flag to use a mobile theme variation.
+ */
 if (!defined('MOBILE')) {
-	/* exdoc
-	 * The flag to use a mobile theme variation.
-	 */
 	if (defined('FORCE_MOBILE') && FORCE_MOBILE && $user->isAdmin()) {
 		define('MOBILE',true);
 	} else {

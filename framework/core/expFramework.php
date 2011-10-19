@@ -279,7 +279,7 @@ function handleErrors($errno, $errstr, $errfile, $errline) {
                 $msg = 'PHP Issue('.$errno.'): ';
                 break;  
             }
-                $msg .= $errstr;
+        $msg .= $errstr;
         $msg .= !empty($errfile) ? ' in file '.$errfile : "";
         $msg .= !empty($errline) ? ' on line '.$errline : "";
         // currently we are doing nothing with these error messages..we could in the future however.
