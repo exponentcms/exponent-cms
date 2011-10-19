@@ -23,6 +23,11 @@
 {/css}
 
 <h2>{$title}</h2>
+{permissions}
+	<div class="module-actions">
+		<a class="addnew mngmntlink" href="{link action=export_csv module=formbuilder id=$f->id}">{"Export as CSV"|gettext}</a>
+	</div>
+{/permissions}
 {$page->links}
 <div style="overflow : auto; overflow-y : hidden;">
 <table border="0" cellspacing="0" cellpadding="0" class="exp-skin-table">
