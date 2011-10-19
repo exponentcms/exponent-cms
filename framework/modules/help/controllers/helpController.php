@@ -247,7 +247,8 @@ class helpController extends expController {
 	    
 	    // check to see if the we have a new current version and unset the old current version.
 	    if (!empty($this->params['is_current'])) {
-	        $db->sql('UPDATE '.DB_TABLE_PREFIX.'_help_version set is_current=0');
+//	        $db->sql('UPDATE '.DB_TABLE_PREFIX.'_help_version set is_current=0');
+		    $db->toggle('help_version',"is_current",'is_current=1');
 	    }
 	    expSession::un_set('help-version');
 
@@ -266,7 +267,23 @@ class helpController extends expController {
 	    flash('message', 'Saved help version '.$version->version);
 	    expHistory::back();
 	}
-	
+
+	public function activate_version() {
+	    global $db;
+
+	    // unset the old current version.
+	    $db->toggle('help_version',"is_current",'is_current=1');
+	    expSession::un_set('help-version');
+
+		$id = $this->params['id'];
+	    $version = new help_version($id);
+	    $this->params['is_current'] = 1;
+	    $version->update($this->params);
+
+	    flash('message', 'Changed active help version to '.$version->version);
+	    expHistory::back();
+	}
+
 	public static function getSection($params) {
 	    global $db;
 	    $h = new help();

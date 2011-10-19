@@ -31,8 +31,9 @@ function smarty_function_ddrerank($params,&$smarty) {
     } else {
         if ($params['items'][0]->id) {
             $model = empty($params['model']) ? $params['items'][0]->classname : $params['model'] ;
+	        $only = !empty($params['only']) ? ' AND '.$params['only'] : '';
             $obj = new $model();
-            $params['items'] = $obj->find('all',"location_data='".serialize($loc)."'","rank");
+            $params['items'] = $obj->find('all',"location_data='".serialize($loc)."'".$only,"rank");
         } else {
             $params['items'] = array();
         }
