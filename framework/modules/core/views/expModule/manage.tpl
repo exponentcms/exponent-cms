@@ -62,7 +62,6 @@
         </div>
         <h1>{"Module Manager"|gettext}</h1>
     </div>
-
     {form action="update"}
     <div id="mod-manager-tabs" class="yui-navset yui3-skin-sam hide">
         <ul class="yui-nav">

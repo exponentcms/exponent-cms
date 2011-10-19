@@ -16,8 +16,14 @@
 {uniqueid assign="config"}
 
 <div id="siteconfig" class="module administration configure-site">
-    <h1>Configure Website</h1>
-    {help text="Learn More about configuring your website"|gettext page="site-configuration"}
+	<div class="form_header">
+		<div class="info-header">
+			<div class="related-actions">
+			    {help text="Learn More about configuring your website"|gettext page="site-configuration"}
+			</div>
+			<h1>{'Configure Website'|gettext}</h1>
+		</div>
+	</div>
     {form controller="administration" action=update_siteconfig}
         <div id="{$config}" class="yui-navset yui3-skin-sam hide">
             <ul class="yui-nav">

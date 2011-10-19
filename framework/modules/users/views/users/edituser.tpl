@@ -18,7 +18,7 @@
     {form action=update}
 	    <div class="info-header">
 	        <div class="related-actions">
-	                {help text="Get Help with User Accounts" module="edit-user"}
+                {help text="Get Help with User Accounts" module="edit-user"}
 	        </div>
 			{if $edit_user->id == ""}
 				<h1>Create a New User Account</h1>
