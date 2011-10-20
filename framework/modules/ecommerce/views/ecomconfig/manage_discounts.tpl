@@ -46,7 +46,7 @@
                 </tr>
                 </thead>
                 {foreach from=$discounts item=discount}
-                    <tr class="{cycle values=even,odd}"">
+                    <tr class="{cycle values='even,odd'}">
                         {form action=update_discount}
                             {control type="hidden" name="id" value=$discount->id}
                             <td style="text-align:center;">
