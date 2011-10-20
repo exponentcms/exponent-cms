@@ -747,6 +747,51 @@ class usersController extends expController {
         
         echo json_encode($returnValue);
 	}
+	
+	public function viewuser() {
+		
+		$u = new user($this->params['id']);
+		$address = new address();
+	
+		$billing = $address->find('first', 'user_id='.$u->id.' AND is_billing = 1');
+		$shipping = $address->find('first', 'user_id='.$u->id.' AND is_shipping = 1');	
+		
+		// build out a SQL query that gets all the data we need and is sortable.
+		$sql  = 'SELECT o.*, b.firstname as firstname, b.billing_cost as total, b.middlename as middlename, b.lastname as lastname, os.title as status, ot.title as order_type ';
+		$sql .= 'FROM '.DB_TABLE_PREFIX.'_orders o, '.DB_TABLE_PREFIX.'_billingmethods b, ';
+		$sql .= DB_TABLE_PREFIX.'_order_status os, ';                                          
+		$sql .= DB_TABLE_PREFIX.'_order_type ot ';                                          
+		$sql .= 'WHERE o.id = b.orders_id AND o.order_status_id = os.id AND o.order_type_id = ot.id AND o.purchased > 0 AND user_id =' . $u->id;     
+		
+		
+		$limit = empty($this->config['limit']) ? 50 : $this->config['limit'];
+		//eDebug($sql, true);
+		$orders = new expPaginator(array(
+			//'model'=>'order',
+			'controller'=>$this->params['controller'],
+			'action'=>$this->params['action'],
+			'sql'=>$sql,            
+			'order'=>'purchased',
+			'dir'=>'DESC',
+			'limit'=>$limit,
+			'columns'=>array(
+				'Order #'=>'invoice_id', 
+				'Total'=>'total',
+				'Date Purchased'=>'purchased',
+				'Type'=>'order_type_id',
+				'Status'=>'order_status_id',
+				'Ref'=>'orig_referrer',   
+				)
+			));
+		
+		 
+		 assign_to_template(array(
+			'u'=>$u,
+            'billing'=>$billing,
+			'shipping'=>$shipping,
+            'orders'=>$orders,
+        ));
+	}
 
 }
 
