@@ -490,4 +490,15 @@ if (!defined('YUI2_PATH')) {
 	define('YUI2_URL', URL_FULL.'external/yui/2in3/dist/'.YUI2_VERSION.'/build/');
 }
 
+if (!defined('SMARTY_PATH')) {
+    /*
+	 *  SMARTY Version Constant
+	 *
+	 * Changing the version here lets Exponent adjust where to look
+	 */
+	define('SMARTY_VERSION', '3.1.4');
+	define('SMARTY_PATH', BASE.'external/Smarty-'.SMARTY_VERSION.'/libs/');
+	define('SMARTY_URL', URL_FULL.'external/Smarty-'.SMARTY_VERSION.'/libs/');
+}
+
 ?>

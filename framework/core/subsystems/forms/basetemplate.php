@@ -41,20 +41,21 @@ class basetemplate {
 	//	
 	
 	function __construct($item_type, $item_dir, $view = "Default") {
-		
-		include_once(BASE.'external/Smarty-3/libs/Smarty.class.php');
+		include_once(SMARTY_PATH.'Smarty.class.php');
 
 		// Set up the Smarty template variable we wrap around.
 		$this->tpl = new Smarty();
 		$this->tpl->error_reporting = error_reporting() & ~E_NOTICE & ~E_WARNING;  //FIXME this disables bad template code reporting 3.x
+//		$this->tpl->debugging = DEVELOPMENT;  // Opens up the debug console
+
 		//Some (crappy) wysiwyg editors use php as their default initializer
 		//FJD - this might break some editors...we'll see.
 		$this->tpl->php_handling = SMARTY::PHP_REMOVE;
 
 		$this->tpl->caching = false;
-		$this->tpl->cache_dir = BASE . 'tmp/cache';
+		$this->tpl->cache_dir = BASE.'tmp/cache';
 
-		$this->tpl->setPluginsDir(array(BASE.'external/Smarty-3/libs/plugins',BASE . 'framework/plugins'));
+		$this->tpl->setPluginsDir(array(SMARTY_PATH.'plugins',BASE.'framework/plugins'));
 
 		//autoload filters
 		$this->tpl->autoload_filters = array('post' => array('includemiscfiles'));
