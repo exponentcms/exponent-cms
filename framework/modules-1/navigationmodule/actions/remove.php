@@ -27,6 +27,7 @@ if (expPermissions::check('manage',expCore::makeLocation('navigationmodule','',i
 		$db->decrement('section','rank',1,'rank > ' . $section->rank . ' AND parent='.$section->parent);
 		$section->parent = -1;
 		$db->updateObject($section,'section');
+
 		expSession::clearAllUsersSessionCache('navigationmodule');
 			
 		expHistory::back();

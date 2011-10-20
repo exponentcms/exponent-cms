@@ -45,8 +45,12 @@
             </ul>            
             <div class="yui-content">
                 <div id="tab1">
-                    <h2>{"General Site Configuration"|gettext}</h2>
-					{help text="Learn More about general site configuration"|gettext module="general-configuration"}
+	                <div class="info-header">
+                        <div class="related-actions">
+	                        {help text="Learn More about general site configuration"|gettext module="general-configuration"}
+                        </div>
+		                <h2>{"General Site Configuration"|gettext}</h2>
+                    </div>
                     {control type="text" name="sc[ORGANIZATION_NAME]" label="Site/Organization Name"|gettext value=$smarty.const.ORGANIZATION_NAME}
                     {control type="text" name="sc[SITE_TITLE]" label="Site Title"|gettext value=$smarty.const.SITE_TITLE}
 					{control type="text" name="sc[SITE_HEADER]" label="Site Header"|gettext value=$smarty.const.SITE_HEADER}
@@ -57,8 +61,12 @@
                     {control type="textarea" name="sc[SITE_DESCRIPTION]" label="(Meta) Description"|gettext value=$smarty.const.SITE_DESCRIPTION}
                 </div>
                 <div id="tab2">
-					<h2>{gettext str="Anti-Spam Measures"}</h2>
-					{help text="Learn More about anti-spam measures"|gettext module="anti-spam-measures"}
+	                <div class="info-header">
+                        <div class="related-actions">
+	                        {help text="Learn More about anti-spam measures"|gettext module="anti-spam-measures"}
+                        </div>
+		                <h2>{gettext str="Anti-Spam Measures"}</h2>
+                    </div>
                     {control type="checkbox" postfalse=1 name="sc[SITE_USE_ANTI_SPAM]" label="Use Anti-Spam measures?"|gettext checked=$smarty.const.SITE_USE_ANTI_SPAM value=1}
                     {control type="checkbox" postfalse=1 name="sc[ANTI_SPAM_USERS_SKIP]" label="Skip using Anti-Spam measures for Logged-In Users?"|gettext checked=$smarty.const.ANTI_SPAM_USERS_SKIP value=1}
                     {control type="dropdown" name="sc[ANTI_SPAM_CONTROL]" label="Anti-Spam Method"|gettext items=$as_types default=$smarty.const.ANTI_SPAM_CONTROL}
@@ -68,8 +76,12 @@
                     {control type="text" name="sc[RECAPTCHA_PRIVATE_KEY]" label="reCAPTCHA Private Key"|gettext value=$smarty.const.RECAPTCHA_PRIVATE_KEY}
                 </div>
                 <div id="tab3">
-					<h2>{gettext str="User Registration"}</h2>
-					{help text="Learn More about user registration"|gettext module="user-registration"}
+	                <div class="info-header">
+                        <div class="related-actions">
+	                        {help text="Learn More about user registration"|gettext module="user-registration"}
+                        </div>
+		                <h2>{gettext str="User Registration"}</h2>
+                    </div>
                     {control type="checkbox" postfalse=1 name="sc[SITE_ALLOW_REGISTRATION]" label="Should users be allowed to create accounts for themselves?"|gettext checked=$smarty.const.SITE_ALLOW_REGISTRATION value=1}
                     {control type="checkbox" postfalse=1 name="sc[USER_REGISTRATION_USE_EMAIL]" label="Use an email address instead of a username?"|gettext checked=$smarty.const.USER_REGISTRATION_USE_EMAIL value=1}
                     {control type="checkbox" postfalse=1 name="sc[USER_REGISTRATION_SEND_NOTIF]" label="Notify a site administrator by email when a new user registers on your website?"|gettext checked=$smarty.const.USER_REGISTRATION_SEND_NOTIF value=1}
@@ -80,16 +92,24 @@
                     {control type="textarea" name="sc[USER_REGISTRATION_WELCOME_MSG]" label="Content of email sent to the user upon completing registration"|gettext value=$smarty.const.USER_REGISTRATION_WELCOME_MSG}
                 </div>
                 <div id="tab4">
-					<h2>{gettext str="User Comment Policies"}</h2>
-					{help text="Learn More about user comment policies"|gettext module="user-comment-policies"}
+	                <div class="info-header">
+                        <div class="related-actions">
+	                        {help text="Learn More about user comment policies"|gettext module="user-comment-policies"}
+                        </div>
+		                <h2>{gettext str="User Comment Policies"}</h2>
+                    </div>
                     {control type="checkbox" postfalse=1 name="sc[COMMENTS_REQUIRE_LOGIN]" label="Require User Login to Post Comments?"|gettext checked=$smarty.const.COMMENTS_REQUIRE_LOGIN value=1}
                     {control type="checkbox" postfalse=1 name="sc[COMMENTS_REQUIRE_APPROVAL]" label="All Comments Must be Approved?"|gettext checked=$smarty.const.COMMENTS_REQUIRE_APPROVAL value=1}
                     {control type="checkbox" postfalse=1 name="sc[COMMENTS_REQUIRE_NOTIFICATION]" label="Notify a site administrator of New Comments?"|gettext checked=$smarty.const.COMMENTS_REQUIRE_NOTIFICATION value=1}
                     {control type="text" name="sc[COMMENTS_NOTIFICATION_EMAIL]" label="Email address(es) that should be notified of New Comments <br />(Enter multiple addresses by using a comma to separate them)"|gettext value=$smarty.const.COMMENTS_NOTIFICATION_EMAIL}
                 </div>
                 <div id="tab5">
-					<h2>{gettext str="Display Settings"}</h2>
-					{help text="Learn More about display settings"|gettext module="display-settings"}
+	                <div class="info-header">
+                        <div class="related-actions">
+	                        {help text="Learn More about display settings"|gettext module="display-settings"}
+                        </div>
+		                <h2>{gettext str="Display Settings"}</h2>
+                    </div>
                     {control type="dropdown" name="sc[LANGUAGE]" label="Language"|gettext items=$langs default=$smarty.const.LANGUAGE}
                     {*{control type="dropdown" name="sc[DISPLAY_THEME_REAL]" label="Theme <a href=\"manage_themes\">(More Theme Options)</a>"|gettext items=$themes default=$smarty.const.DISPLAY_THEME_REAL}*}
 	                <h3><a href=manage_themes>Display Theme Options</a></h3>
@@ -105,8 +125,12 @@
                 </div>
                 {if $user->is_admin==1}
                 <div id="tab6">
-                    <h2>{gettext str="Mail Server Settings"}</h2>
-					{help text="Learn More about mail server settings"|gettext module="mail-server-settings"}
+	                <div class="info-header">
+                        <div class="related-actions">
+	                        {help text="Learn More about mail server settings"|gettext module="mail-server-settings"}
+                        </div>
+		                <h2>{gettext str="Mail Server Settings"}</h2>
+                    </div>
 	                {control type="text" name="sc[SMTP_FROMADDRESS]" label="From Address"|gettext value=$smarty.const.SMTP_FROMADDRESS}
                     {br}{control type="checkbox" postfalse=1 name="sc[SMTP_USE_PHP_MAIL]" label="Use php's mail() function instead of SMTP?"|gettext checked=$smarty.const.SMTP_USE_PHP_MAIL value=1}
 	                (or)<h3>{gettext str="SMTP Server Settings"}</h3>
@@ -118,14 +142,22 @@
 	                {control type="checkbox" postfalse=1 name="sc[SMTP_DEBUGGING]" label="Turn SMTP Debugging On?"|gettext checked=$smarty.const.SMTP_DEBUGGING value=1}
                 </div>
                 <div id="tab7">
-                    <h2>{gettext str="Site Maintenance Mode Settings"}</h2>
-					{help text="Learn More about site maintenance mode settings"|gettext module="site-maintenance-mode-settings"}
+	                <div class="info-header">
+                        <div class="related-actions">
+	                        {help text="Learn More about site maintenance mode settings"|gettext module="site-maintenance-mode-settings"}
+                        </div>
+		                <h2>{gettext str="Site Maintenance Mode Settings"}</h2>
+                    </div>
                     {control type="checkbox" postfalse=1 name="sc[MAINTENANCE_MODE]" label="Enter Maintenance Mode?"|gettext checked=$smarty.const.MAINTENANCE_MODE value=1}
                     {control type="html" name="sc[MAINTENANCE_MSG_HTML]" label="Maintenance Mode Message"|gettext value=$smarty.const.MAINTENANCE_MSG_HTML}
                 </div>
                 <div id="tab8">
-                    <h2>{gettext str="Security Settings"}</h2>
-					{help text="Learn More about security settings"|gettext module="security-settings"}
+	                <div class="info-header">
+                        <div class="related-actions">
+	                        {help text="Learn More about security settings"|gettext module="security-settings"}
+                        </div>
+		                <h2>{gettext str="Security Settings"}</h2>
+                    </div>
                     {control type="checkbox" postfalse=1 name="sc[SESSION_TIMEOUT_ENABLE]" label="Enable Session Timeout?"|gettext checked=$smarty.const.SESSION_TIMEOUT_ENABLE value=1}
                     {control type="text" name="sc[SESSION_TIMEOUT]" label="Session Timeout in seconds"|gettext value=$smarty.const.SESSION_TIMEOUT}
                     {control type="dropdown" name="sc[FILE_DEFAULT_MODE_STR]" label="Default File Permissions"|gettext items=$file_permisions default=$smarty.const.FILE_DEFAULT_MODE_STR}
@@ -135,14 +167,22 @@
                     {control type="text" name="sc[SSL_URL]" label="SSL URL Base"|gettext value=$smarty.const.SSL_URL}
                 </div>
                 <div id="tab9">
-                    <h2>{gettext str="Help Link Settings"}</h2>
-					{help text="Learn More about help link settings"|gettext module="help-link-settings"}
+	                <div class="info-header">
+                        <div class="related-actions">
+	                        {help text="Learn More about help link settings"|gettext module="help-link-settings"}
+                        </div>
+		                <h2>{gettext str="Help Link Settings"}</h2>
+                    </div>
                     {control type="checkbox" postfalse=1 name="sc[HELP_ACTIVE]" label="Enable Help links for documentation?"|gettext checked=$smarty.const.HELP_ACTIVE value=1}
                     {control type="text" name="sc[HELP_URL]" label="URL for Help Documentation"|gettext value=$smarty.const.HELP_URL}
                 </div>
                 <div id="tab10">
-                    <h2>{gettext str="WYSIWYG Editor Settings"}</h2>
-					{help text="Learn More about WYSIWYG editor settings"|gettext module="wysiwyg-editor-settings"}
+	                <div class="info-header">
+                        <div class="related-actions">
+	                        {help text="Learn More about WYSIWYG editor settings"|gettext module="wysiwyg-editor-settings"}
+                        </div>
+		                <h2>{gettext str="WYSIWYG Editor Settings"}</h2>
+                    </div>
                     {control type="dropdown" name="sc[SITE_WYSIWYG_EDITOR]" label="HTML Editor"|gettext items="CKEditor" values="ckeditor" default=$smarty.const.SITE_WYSIWYG_EDITOR}
 	                {if $smarty.const.SITE_WYSIWYG_EDITOR == 'ckeditor'}
 						{br}<hr>
@@ -150,23 +190,34 @@
 	                {/if}
                 </div>
                 <div id="tab11">
-                    <h2>{gettext str="Error Messages"}</h2>
-					{help text="Learn More about error messages"|gettext module="error-messages"}
+	                <div class="info-header">
+                        <div class="related-actions">
+	                        {help text="Learn More about error messages"|gettext module="error-messages"}
+                        </div>
+		                <h2>{"Error Messages"|gettext}</h2>
+                    </div>
                     {control type="text" name="sc[SITE_404_TITLE]" label="Page Title For 'Not Found' (404) Error"|gettext value=$smarty.const.SITE_404_TITLE}
                     {control type="html" name="sc[SITE_404_HTML]" label="'Not Found' (404) Error Message"|gettext value=$smarty.const.SITE_404_HTML}
                     {control type="html" name="sc[SITE_403_REAL_HTML]" label="'Access Denied' (403) Error Message"|gettext value=$smarty.const.SITE_403_REAL_HTML}
                     {control type="html" name="sc[SESSION_TIMEOUT_HTML]" label="'Session Expired' Error  Message"|gettext value=$smarty.const.SESSION_TIMEOUT_HTML}
                 </div>
                 <div id="tab12">
-                    <h2>{gettext str="PDF Generation"}</h2>
-                    {help text="Learn More about generating PDF's"|gettext module="pdf-generation"}
+	                <div class="info-header">
+                        <div class="related-actions">
+	                        {help text="Learn More about generating PDF's"|gettext module="pdf-generation"}
+                        </div>
+		                <h2>{"PDF Generation"|gettext}</h2>
+                    </div>
                     {control type="text" name="sc[HTMLTOPDF_PATH]" label="Full Path to the WKHTMLtoPDF Binary Utility"|gettext value=$smarty.const.HTMLTOPDF_PATH}
                     {control type="text" name="sc[HTMLTOPDF_PATH_TMP]" label="Full Path to the WKHTMLtoPDF Temp Directory"|gettext value=$smarty.const.HTMLTOPDF_PATH_TMP}
                 </div>
-				
 				<div id="tab13">
-                    <h2>{gettext str="Minify Configuration"}</h2>
-					{help text="Learn More about minification"|gettext module="minify-configuration"}
+					<div class="info-header">
+			            <div class="related-actions">
+				            {help text="Learn More about minification"|gettext module="minify-configuration"}
+			            </div>
+			            <h2>{"Minify Configuration"|gettext}</h2>
+			        </div>
                     {control type="text" name="sc[MINIFY_MAXAGE]" label="Maximum age of browser cache in seconds"|gettext value=$smarty.const.MINIFY_MAXAGE}
 					{control type="text" name="sc[MINIFY_MAX_FILES]" label="Maximum # of files that can be specified in the 'f' GET parameter"|gettext value=$smarty.const.MINIFY_MAX_FILES}
 					{control type="text" name="sc[MINIFY_URL_LENGTH]" label="The length of minification url"|gettext value=$smarty.const.MINIFY_URL_LENGTH}
@@ -221,7 +272,6 @@
 		      // select the first tab by default.
 		      tabview.selectChild(0);
 		    }
-
 		  }
 		});
 	});
