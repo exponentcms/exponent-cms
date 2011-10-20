@@ -103,7 +103,9 @@
         // filename formatter
 		
 		var formatID = function(elCell, oRecord, oColumn, sData) {
-            elCell.innerHTML = '<a href="#" class="fileinfo">'+oRecord.getData().username+'</a>';
+            viewstring = '<a href="{/literal}{link action=viewuser id="replacewithid"}{literal}" class="fileinfo">'+oRecord.getData().username+'</a>';
+			viewstring = viewstring.replace('replacewithid',oRecord._oData.id);
+			elCell.innerHTML = viewstring;
         };
 		
 		var formatActingAdmin = function(elCell, oRecord, oColumn, sData) {
@@ -115,11 +117,17 @@
 		
         var formatactions = function(elCell, oRecord, oColumn, sData) {
            {/literal}{permissions level=$smarty.const.UILEVEL_PERMISSIONS}{literal}
-				elCell.innerHTML = '<div class="item-actions">';
-				elCell.innerHTML +=	'{/literal}{icon class="edit" action="edituser" record="`$user`"}{literal}';
-				elCell.innerHTML += '{/literal}{icon class="password" action=change_password record=$user title="Change this users password" text="Password"}{literal}';
-				elCell.innerHTML += '{/literal}{icon action=delete record=$user title="Delete" onclick="return confirm(\'Are you sure you want to delete this user?\');"}{literal}';
-				elCell.innerHTML += '</div>';
+		   
+				 elCell.innerHTML = '<div class="item-actions">';
+				 editstring       = '{/literal}{icon class="edit" action="edituser" id="editstringid"}{literal}';
+				 passwordstring   = '{/literal}{icon class="password" action=change_password id="passwordstringid" title="Change this users password" text="Password"}{literal}';
+				 deletestring     = '<a href="{/literal}{link action=delete id="deletestringid"}{literal}" onclick="return confirm(\'Are you sure you want to delete this user?\');"><img width=16 height=16 style="border:none;" src="{/literal}{$smarty.const.ICON_RELATIVE}{literal}delete.png" /> Delete</a>';
+				 editstring     = editstring.replace('editstringid',oRecord._oData.id);
+				 passwordstring = passwordstring.replace('passwordstringid',oRecord._oData.id);
+				 deletestring   = deletestring.replace('deletestringid',oRecord._oData.id);
+				 
+				elCell.innerHTML += editstring + passwordstring + deletestring +'</div>';
+				
 			{/literal}{/permissions}{literal}
         };
     
