@@ -129,7 +129,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event','yui2-container','yu
         var oACDS = new YAHOO.util.FunctionDataSource(getTerms);
         oACDS.queryMatchContains = true;
         var oAutoComp = new YAHOO.widget.AutoComplete("dt_input","dt_ac_container", oACDS);
-
+		oAutoComp.minQueryLength = 0;
 
         // Formatters for datatable columns
 

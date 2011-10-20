@@ -91,13 +91,13 @@
 			
 			 //set up autocomplete
 			var getTerms = function(query) {
-				myDataSource.sendRequest('sort=id&dir=desc&startIndex=0&results=25&query=' + query,myDataTable.onDataReturnInitializeTable, myDataTable);
+				myDataSource.sendRequest('sort=id&dir=asc&startIndex=0&results=10&query=' + query,myDataTable.onDataReturnInitializeTable, myDataTable);
 			};
 			
 			var oACDS = new YAHOO.util.FunctionDataSource(getTerms);
 			oACDS.queryMatchContains = true;
 			var oAutoComp = new YAHOO.widget.AutoComplete("user_dt_input","dt_ac_container", oACDS);
-			
+			oAutoComp.minQueryLength = 0;
 			// Formatters for datatable columns
 
         // filename formatter
