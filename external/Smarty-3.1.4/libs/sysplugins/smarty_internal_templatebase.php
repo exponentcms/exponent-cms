@@ -45,6 +45,10 @@ abstract class Smarty_Internal_TemplateBase extends Smarty_Internal_Data {
         $_template = ($template instanceof $this->template_class)
             ? $template
             : $this->smarty->createTemplate($template, $cache_id, $compile_id, $parent, false);
+        // if called by Smarty object make sure we use current caching status
+        if ($this instanceof Smarty) {
+            $_template->caching = $this->caching;
+        }
         // merge all variable scopes into template
         if ($merge_tpl_vars) {
             // save local variables
@@ -170,6 +174,9 @@ abstract class Smarty_Internal_TemplateBase extends Smarty_Internal_Data {
                             throw new SmartyException("Invalid compiled template for '{$_template->template_resource}'");
                         }
                         $_template->properties['unifunc']($_template);
+                        if (isset($_template->_capture_stack[0])) {
+                            $_template->capture_error();
+                        }
                     } catch (Exception $e) {
                         ob_get_clean();
                         throw $e;
@@ -249,10 +256,10 @@ abstract class Smarty_Internal_TemplateBase extends Smarty_Internal_Data {
                 }
             } else {
                 // var_dump('renderTemplate', $_template->has_nocache_code, $_template->template_resource, $_template->properties['nocache_hash'], $_template->parent->properties['nocache_hash'], $_output);
-                if ($_template->has_nocache_code && !empty($_template->properties['nocache_hash']) && !empty($_template->parent->properties['nocache_hash'])) {
+                if (!empty($_template->properties['nocache_hash']) && !empty($_template->parent->properties['nocache_hash'])) {
                     // replace nocache_hash
                     $_output = preg_replace("/{$_template->properties['nocache_hash']}/", $_template->parent->properties['nocache_hash'], $_output);
-                    $_template->parent->has_nocache_code = $_template->has_nocache_code;
+                    $_template->parent->has_nocache_code = $_template->parent->has_nocache_code || $_template->has_nocache_code;
                 }
             }
         } else {
@@ -262,6 +269,9 @@ abstract class Smarty_Internal_TemplateBase extends Smarty_Internal_Data {
             try {
                 ob_start();
                 $_template->properties['unifunc']($_template);
+                if (isset($_template->_capture_stack[0])) {
+                    $_template->capture_error();
+                }
                 $_output = ob_get_clean();
             } catch (Exception $e) {
                 ob_get_clean();

@@ -189,16 +189,19 @@ class Smarty_Internal_Utility {
             $smarty->caching = false;
             $tpl = new $smarty->template_class($resource_name, $smarty);
             $smarty->caching = $_save_stat;
+            
+            // remove from template cache
+            $tpl->source; // have the template registered before unset()
+            $_templateId = sha1($tpl->source->unique_resource . $tpl->cache_id . $tpl->compile_id);
+            unset($smarty->template_objects[$_templateId]);
+            
             if ($tpl->source->exists) {
                  $_resource_part_1 = basename(str_replace('^', '/', $tpl->compiled->filepath));
                  $_resource_part_1_length = strlen($_resource_part_1);
-                // remove from template cache
-                unset($smarty->template_objects[sha1($smarty->joined_template_dir.$tpl->template_resource . $tpl->cache_id . $tpl->compile_id)]);
             } else {
-                // remove from template cache
-                unset($smarty->template_objects[sha1($smarty->joined_template_dir.$tpl->template_resource . $tpl->cache_id . $tpl->compile_id)]);
                 return 0;
             }
+            
             $_resource_part_2 = str_replace('.php','.cache.php',$_resource_part_1);
             $_resource_part_2_length = strlen($_resource_part_2);
         } else {
@@ -356,7 +359,7 @@ class Smarty_Internal_Utility {
         // test if registered compile_dir is accessible
         $__compile_dir = $smarty->getCompileDir();
         $_compile_dir = realpath($__compile_dir);
-        if (!$__compile_dir) {
+        if (!$_compile_dir) {
             $status = false;
             $message = "FAILED: {$__compile_dir} does not exist";
             if ($errors === null) {
@@ -485,7 +488,7 @@ class Smarty_Internal_Utility {
         // test if all registered cache_dir is accessible
         $__cache_dir = $smarty->getCacheDir();
         $_cache_dir = realpath($__cache_dir);
-        if (!$__cache_dir) {
+        if (!$_cache_dir) {
             $status = false;
             $message = "FAILED: {$__cache_dir} does not exist";
             if ($errors === null) {
