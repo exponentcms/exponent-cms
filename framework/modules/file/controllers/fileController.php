@@ -137,7 +137,7 @@ class fileController extends expController {
                 $filter .= "is_image=1 AND ";
             }
 
-            $totalrecords = $this->$modelname->find('count','id!=0 '.$filter);
+            $totalrecords = $this->$modelname->find('count',"filename LIKE '%".$_GET['query']."%' OR title LIKE '%".$_GET['query']."%' OR alt LIKE '%".$_GET['query']."%'");
             
             $files = $this->$modelname->find('all',$filter."filename LIKE '%".$_GET['query']."%' OR title LIKE '%".$_GET['query']."%' OR alt LIKE '%".$_GET['query']."%'".$imagesOnly,$sort.' '.$dir, $results, $startIndex);
 
@@ -150,7 +150,7 @@ class fileController extends expController {
 
             $returnValue = array(
                 'recordsReturned'=>count($files),
-                'totalRecords'=>count($files),
+                'totalRecords'=>$totalrecords,
                 'startIndex'=>$startIndex,
                 'sort'=>$sort,
                 'dir'=>$dir,
