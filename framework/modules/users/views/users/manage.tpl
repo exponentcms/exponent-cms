@@ -135,10 +135,10 @@
 	
 			// Column definitions
 			var myColumnDefs = [ // sortable:true enables sorting
-			{ key:"id",label:"Username",formatter:formatID, sortable:true},
-			{ key:"firstname",label:"First Name",sortable:true},
-			{ key:"lastname",label:"Last Name",sortable:true},
-			{ key:"is_acting_admin",label:"Is Admin",formatter:formatActingAdmin, sortable:true},
+			{ key:"id",label:"Username",formatter:formatID},
+			{ key:"firstname",label:"First Name"},
+			{ key:"lastname",label:"Last Name"},
+			{ key:"is_acting_admin",label:"Is Admin",formatter:formatActingAdmin},
 			{ label:"Actions",label:"", sortable:false,formatter: formatactions}
 			];
 			// DataSource instance
