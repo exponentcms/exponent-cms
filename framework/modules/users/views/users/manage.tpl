@@ -34,7 +34,7 @@
 	</div>
 	
 	<div id="user_autocomplete">
-		<label for="user_dt_input">Filter by Firstname, Lastname, or Email Address:</label>
+		<label for="user_dt_input">Filter by First Name, Last Name, or Email Address:</label>
 		<input id="user_dt_input" type="text" />
 	</div>	
 	<div id="dt_ac_container"></div>
