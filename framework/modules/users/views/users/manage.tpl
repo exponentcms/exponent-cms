@@ -41,6 +41,7 @@
 	
     {* pagelinks paginate=$page top=1 *}
 	<div id="pagelinks">&nbsp;</div>
+	<div id="totalResult">&nbsp;</div>
 	<div id="manage_user_dynamicdata">
     
     </div>
@@ -171,13 +172,19 @@
 			
 			 // Update totalRecords on the fly with value from server
 			myDataTable.handleDataReturnPayload = function(oRequest, oResponse, oPayload) {
-
+		
 				if (oPayload == null) {
 					oPayload = {};
 				}
 				oPayload.totalRecords = oResponse.meta.totalRecords;
+				
+				var df = YAHOO.util.Dom.get('totalResult');
+				df.innerHTML = "Total Results: " + oResponse.meta.totalRecords;
+			
 				return oPayload;
 			}
+				
+			
 		});
 	{/literal}
 </script>
