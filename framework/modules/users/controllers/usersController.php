@@ -714,13 +714,12 @@ class usersController extends expController {
         
         if (isset($_GET['query'])) {
 
-            $totalrecords = $this->$modelname->find('count','id!=0 '.$filter);
+            $totalrecords = $this->$modelname->find('count',"username LIKE '%".$_GET['query']."%' OR firstname LIKE '%".$_GET['query']."%' OR lastname LIKE '%".$_GET['query']."%' OR email LIKE '%".$_GET['query']."%'");
             
             $users = $this->$modelname->find('all',$filter."username LIKE '%".$_GET['query']."%' OR firstname LIKE '%".$_GET['query']."%' OR lastname LIKE '%".$_GET['query']."%' OR email LIKE '%".$_GET['query']."%'" ,$sort.' '.$dir, $results, $startIndex);
-
             $returnValue = array(
                 'recordsReturned'=>count($users),
-                'totalRecords'=>count($users),
+                'totalRecords'=>$totalrecords,
                 'startIndex'=>$startIndex,
                 'sort'=>$sort,
                 'dir'=>$dir,
@@ -730,7 +729,7 @@ class usersController extends expController {
         } else {
           
             $totalrecords = $this->$modelname->find('count',$filter);
-
+			
             $users = $this->$modelname->find('all',$filter,$sort.' '.$dir, $results, $startIndex);
             
             $returnValue = array(
