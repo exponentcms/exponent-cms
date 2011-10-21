@@ -17,81 +17,110 @@
 
 //Global Variables
 
+// expModules
 /**
- * the list of available/active controllers
+ * Stores the list of available/active controllers
  * @global array $available_controllers
  * @name $available_controllers
  */
 $available_controllers = array();
 
-//expTheme
+// expTheme
+/**
+ * Stores the theme validation flags
+ * @global array $validateTheme does theme have header & footer
+ * @name $validateTheme
+ */
 $validateTheme = array("headerinfo"=>false,"footerinfo"=>false);
 
 // expLang
+/**
+ * Stores the list of language strings for the current language
+ * @global array $cur_lang
+ * @name $cur_lang
+ */
 $cur_lang = array();
+/**
+ * Stores the list of language strings for the default language (English - US)
+ * @global array $default_lang
+ * @name $default_lang
+ */
 $default_lang = array();
+/**
+ * Stores the name of the language file to be created
+ * @global array $target_lang_file
+ * @name $target_lang_file
+ */
 $target_lang_file = '';
 
+// expDatabase
 /**
- * The exponent database object
- *
+ * Stores the exponent database object
  * @global \database $db the exponent database object
  * @name $db
  */
 $db = null;
 
+// expHistory
 /**
- * the browsing history object
+ * Stores the browsing history object
  * @global expHistory $history
  * @name $history
  */
 $history = null;
 //$SYS_FLOW_REDIRECTIONPATH = '';
 
+// user model
 /**
- * the current user object
+ * Stores the current user object
  * @global user $user
  * @name $user
  */
 $user = null;
-
 /**
- * initialize the expRouter
- * the routing/link/url object
- * @global expRouter $router
- * @name $router
- */
-$router = null;
-
-/**
- * Initialize the navigation hierarchy
- * the list of sections/pages for the site
- * @global array $sections
- * @name $sections
- */
-$sections = array();
-
-/**
- * This global array belongs exclusively to the Users subsystem, and is used to cache
- *  users as they are retrieved, to help out with performance when doing a lot of
+ * This global array belongs exclusively to the user model, and is used to cache
+ * users as they are retrieved, to help out with performance when doing a lot of
  * work with user accounts and profile information.
  * @global array $SYS_USERS_CACHE
  * @name $SYS_USERS_CACHE
  */
 $SYS_USERS_CACHE = array();
 
+
+// expRouter
 /**
- * Stores the permission data for the current user.  This should not be modified
- * by anything outside of the permissions subsystem.
+ * Stores the routing/link/url object
+ * @global expRouter $router
+ * @name $router
+ */
+$router = null;
+
+// expCore
+/**
+ * Stores the list of sections/pages for the site
+ * @global array $sections
+ * @name $sections
+ */
+$sections = array();
+
+// expPermissions
+/**
+ * Stores the permission data for the current user.
+ * This should not be modified by anything outside of the permissions subsystem.
  * @global array $exponent_permissions_r
  * @name $exponent_permissions_r
  */
 $exponent_permissions_r = array();
 
+// expJavascript
+/**
+ * Stores the user's javascript files
+ * @global array $userjsfiles
+ * @name $userjsfiles
+ */
 $userjsfiles = array();
 
 function renderAction(array $parms=array()) {
-    //because we love you
     global $user;
     
     //Get some info about the controller
