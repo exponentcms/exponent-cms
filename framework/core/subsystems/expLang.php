@@ -31,7 +31,7 @@ class expLang {
 			if ((is_readable(BASE . 'framework/core/lang/' . LANGUAGE . '.php')) && (LANGUAGE != 'English - US')) {
 				define('LANG', LANGUAGE); // Lang file exists.
 			} else {
-				define('LANG', 'English - US'); // Fallback to 'eng_US' if language file not present.
+				define('LANG', 'English - US'); // Fallback to 'English - US' if language file not present.
 			}
 		}
 
@@ -60,8 +60,8 @@ class expLang {
 	    if (!defined('LANGUAGE')) return $str;
 
 	    global $cur_lang;
-	    self::writeTemplate($str);
-	    $str = LANGUAGE!="English - US" && array_key_exists($str,$cur_lang) ? $cur_lang[$str] : $str;
+		if (DEVELOPMENT) self::writeTemplate($str);
+	    $str = LANGUAGE!="English - US" && array_key_exists(addslashes($str),$cur_lang) ? stripslashes($cur_lang[addslashes($str)]) : $str;
 		return $str;
 	}
 	
@@ -70,9 +70,9 @@ class expLang {
 	    //!array_key_exists($str,$default_lang)
 		//TODO Probably should be able to build a language file even if you are using a non-English language
 		//TODO E.g., be able to dump all the new english stuff in the other language which isn't defined yet
-        if (DEVELOPMENT && (defined("WRITE_LANG_TEMPLATE") && WRITE_LANG_TEMPLATE!=0) && LANGUAGE=="English - US") {
+        if ((defined("WRITE_LANG_TEMPLATE") && WRITE_LANG_TEMPLATE!=0) && LANGUAGE=="English - US") {
             $fp = fopen($target_lang_file, 'w+') or die("I could not open $target_lang_file.");
-            $default_lang[$str] = $str;
+            $default_lang[addslashes($str)] = addslashes($str);
             ksort($default_lang);
             fwrite($fp,"<?php\n");
             fwrite($fp,"return array(\n");
