@@ -18,7 +18,7 @@
 {/css}
 <div id='viewuser' class="module users view">
 	<div id="general_account_info">
-		<h1>General Account Info</h1>
+		<h1>General Account Information</h1>
 		<table class="exp-skin-table">
 			<tr>
 				<th>Username:</th>
@@ -51,6 +51,7 @@
 	</div>
 	
 	<div id="addresses_info">
+		<h1>Addresses Information</h1>
 		<table class="exp-skin-table">
 			<thead>
 				<tr>
@@ -66,6 +67,7 @@
 						{else}
 							{foreach from=$billings item=billing}
 								{$billing|address}
+								{br}
 							{/foreach}
 						{/if}
 					</td>
@@ -75,6 +77,7 @@
 						{else}
 							{foreach from=$shippings item=shipping}
 								{$shipping|address}
+								{br}
 							{/foreach}	
 						{/if}
 					</td>
@@ -84,6 +87,7 @@
 	</div>
 	
 	<div id="orders">
+		<h1>Order Information</h1>
 		{pagelinks paginate=$orders top=1}
 		<table id="prods" class="exp-skin-table">
 			<thead>
