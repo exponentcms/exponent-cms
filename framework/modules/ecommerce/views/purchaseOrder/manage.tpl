@@ -29,50 +29,64 @@
         {icon action=manage_vendors class=manage text="Manage Vendors"|gettext}  |
         {icon action=edit_vendor class=add text="Add a new vendor"|gettext}
     </div>
-
+	<!--
     <div class="filters">
         {control type="text" name="dynamicfilter" id="dynamicfilter" label="Filter By Order ID"}
         {control type="text" name="perpage" label="Items per-page" size=5 value=$perpage|default:50}
         {control type="dropdown" name="status" label="Show" items="All Orders,Only Open Orders, Only Closed Orders"}
         {control type="dropdown" name="daterange" label="Within" items="The last Month,The Last 6 months,The Last Year,All Time"}
     </div>
-
-    <table border="0" cellspacing="0" cellpadding="0" class="exp-skin-table">
-        <thead>
-            <tr>
-                <th>
-                {"Order Number"|gettext}
-                </th>
-                <th>
-                {"Vendor"|gettext}
-                </th>
-                <th>
-                {"Date"|gettext}
-                </th>
-                <th>
-                {"Status"|gettext}
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-			{foreach from=$purchase_orders item=purchase_order key=key name=purchase_order}
-            <tr class="even">
-                <td>
-                {$purchase_order->purchase_order_number}
-                </td>
-                <td>
-               {$purchase_order->vendor->title}
-                </td>
-                <td>
-                {$purchase_order->created_at|format_date:$smarty.const.DISPLAY_DATE_FORMAT}
-                </td>
-                <td>
-                ordered
-                </td>
-            </tr>
-			{/foreach}
-        </tbody>
-    </table>
+	-->
+	<div class="leftcol">
+		<h2>Select a Vendor</h2>
+		<ul>
+		<li {if !$vendor_id}class="current"{/if}><a href="{link action='manage'}">All Vendors</a></li>
+		{foreach from=$vendors item=vendor}
+			<li {if $vendor_id == $vendor->id}class="current"{/if}>
+				<a href="{link action='manage' vendor=$vendor->id}">{$vendor->title}</a>
+			</li>
+		{/foreach}
+		</ul>
+	</div>
+	
+	<div class="rightcol">
+		<table border="0" cellspacing="0" cellpadding="0" class="exp-skin-table">
+			<thead>
+				<tr>
+					<th>
+					{"Order Number"|gettext}
+					</th>
+					<th>
+					{"Vendor"|gettext}
+					</th>
+					<th>
+					{"Date"|gettext}
+					</th>
+					<th>
+					{"Status"|gettext}
+					</th>
+				</tr>
+			</thead>
+			<tbody>
+				{foreach from=$purchase_orders item=purchase_order key=key name=purchase_order}
+				<tr class="even">
+					<td>
+					{$purchase_order->purchase_order_number}
+					</td>
+					<td>
+				   {$purchase_order->vendor->title}
+					</td>
+					<td>
+					{$purchase_order->created_at|format_date:$smarty.const.DISPLAY_DATE_FORMAT}
+					</td>
+					<td>
+					ordered
+					</td>
+				</tr>
+				{/foreach}
+			</tbody>
+		</table>
+	</div>
 </div>
 
 

@@ -43,3 +43,41 @@
     text-align:left;
     padding:0 0 20px 10px;
 }
+
+.purchaseorder.manage .leftcol {
+	float: left;
+    padding-top: 20px;
+    width: 20%;
+}
+
+.purchaseorder.manage .leftcol h2 {
+	margin: 0;
+}
+
+.purchaseorder.manage .leftcol ul {
+	margin: 10px 0;
+}
+
+.purchaseorder.manage .leftcol ul li {
+	margin: 5px 0;
+	list-style: none;
+	padding-left: 5px;
+}
+
+.purchaseorder.manage .leftcol ul li.current {
+	list-style: url("../images/bullet.gif");
+}
+
+.purchaseorder.manage .leftcol ul li a {
+	text-decoration: none;
+}
+
+.purchaseorder.manage .leftcol ul li a:hover, .purchaseorder.manage .leftcol ul li.current a{
+	text-decoration: underline;
+}
+
+.purchaseorder.manage .rightcol {
+	float: right;
+    padding-top: 20px;
+    width: 80%;
+}
