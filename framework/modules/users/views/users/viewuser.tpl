@@ -61,17 +61,21 @@
 			<tbody>
 				<tr>
 					<td>
-						{if $billing->id == ''}
+						{if $billings[0]->id == ''}
 							You have not selected an address yet.
 						{else}
-							{$billing|address}
+							{foreach from=$billings item=billing}
+								{$billing|address}
+							{/foreach}
 						{/if}
 					</td>
 					<td>
-						{if $shipping->id == ''}
+						{if $shippings[0]->id == ''}
 							No address yet
 						{else}
-							{$shipping|address}
+							{foreach from=$shippings item=shipping}
+								{$shipping|address}
+							{/foreach}	
 						{/if}
 					</td>
 				</tr>

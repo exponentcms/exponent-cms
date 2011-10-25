@@ -752,8 +752,8 @@ class usersController extends expController {
 		$u = new user($this->params['id']);
 		$address = new address();
 	
-		$billing = $address->find('first', 'user_id='.$u->id.' AND is_billing = 1');
-		$shipping = $address->find('first', 'user_id='.$u->id.' AND is_shipping = 1');	
+		$billings = $address->find('all', 'user_id='.$u->id.' AND is_billing = 1');
+		$shippings = $address->find('all', 'user_id='.$u->id.' AND is_shipping = 1');	
 		
 		// build out a SQL query that gets all the data we need and is sortable.
 		$sql  = 'SELECT o.*, b.firstname as firstname, b.billing_cost as total, b.middlename as middlename, b.lastname as lastname, os.title as status, ot.title as order_type ';
@@ -786,8 +786,8 @@ class usersController extends expController {
 		 
 		 assign_to_template(array(
 			'u'=>$u,
-            'billing'=>$billing,
-			'shipping'=>$shipping,
+            'billings'=>$billings,
+			'shippings'=>$shippings,
             'orders'=>$orders,
         ));
 	}
