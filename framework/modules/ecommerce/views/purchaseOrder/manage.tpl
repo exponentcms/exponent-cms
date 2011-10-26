@@ -40,10 +40,10 @@
 	<div class="leftcol">
 		<h2>Select a Vendor</h2>
 		<ul>
-		<li {if !$vendor_id}class="current"{/if}><a href="{link action='manage'}">All Vendors</a></li>
+		<li {if !$vendor_id}class="current"{/if}><a href="{link action='getPurchaseOrderByJSON' ajax_action=1}">All Vendors</a></li>
 		{foreach from=$vendors item=vendor}
 			<li {if $vendor_id == $vendor->id}class="current"{/if}>
-				<a href="{link action='manage' vendor=$vendor->id}">{$vendor->title}</a>
+				<a href="{link action='getPurchaseOrderByJSON' vendor=$vendor->id ajax_action=1}">{$vendor->title}</a>
 			</li>
 		{/foreach}
 		</ul>
@@ -67,9 +67,9 @@
 					</th>
 				</tr>
 			</thead>
-			<tbody>
+			<tbody id="purchaseOrderDynmicData">
 				{foreach from=$purchase_orders item=purchase_order key=key name=purchase_order}
-				<tr class="even">
+				<tr>
 					<td>
 					{$purchase_order->purchase_order_number}
 					</td>
@@ -92,8 +92,49 @@
 
 {script unique="purchase-orders" yui3mods=1}
 {literal}
-YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
-    
+YUI(EXPONENT.YUI3_CONFIG).use('node','io-base', 'json-parse', function(Y) {
+	var vendors = Y.all('.purchaseorder.manage .leftcol ul li a');
+	var purchaseOrderTable = Y.one("#purchaseOrderDynmicData");
+	var filterVendor = function (e) {
+		
+		//Altered the default event of the anchor tag
+		e.halt();
+		 
+		//Removed the previous current class
+		Y.all('.purchaseorder.manage .leftcol ul li').removeClass('current');
+		
+		//Add the current class 
+		e.currentTarget.ancestor('li').addClass('current');
+		
+		//Get the url for the request
+		var uri =  e.currentTarget.getAttribute('href');
+		
+		 // Define a function to handle the response data.
+		function onSuccess(transactionId, responseObject) {
+			var id = id; // Transaction ID.
+			var dataJson = responseObject.response; // Response data.
+			
+			
+			data = '';
+			var data = Y.JSON.parse(dataJson);
+			var rows = '';
+			Y.Array.each(data, function(v) {
+				 rows = rows + '<tr><td>' + v.purchase_order_number + '</td><td>' + v.vendor.title + '</td><td>' + v.created_at + '<td>ordered</td>';
+			});
+			purchaseOrderTable.set("innerHTML", rows);
+			responseObject = null;
+			
+		};
+
+		// Subscribe to event "io:success"
+		 Y.on('io:success', onSuccess, Y);
+
+		// Make an HTTP request
+		var request = Y.io(uri);
+    };
+	
+	vendors.on('click',filterVendor);
 });
 {/literal}
 {/script}
+

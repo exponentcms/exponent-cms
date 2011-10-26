@@ -105,6 +105,17 @@ class purchaseOrderController extends expController {
 		}
         expHistory::back();
     }
+	
+	public function getPurchaseOrderByJSON() {
+		
+		if(!empty($this->params['vendor'])) {
+			$purchase_orders = $this->purchase_order->find('all', 'vendor_id=' . $this->params['vendor']);
+		} else {
+			$purchase_orders = $this->purchase_order->find('all');
+		}
+		
+		echo json_encode($purchase_orders);
+	}
     
 }
 
