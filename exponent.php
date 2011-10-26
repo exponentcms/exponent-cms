@@ -53,8 +53,6 @@ $available_controllers = expModules::initializeControllers();  //original positi
 //foreach ($db->selectObjects('modstate',1) as $mod) {
 //	if (!empty($mod->path)) $available_controllers[$mod->module] = $mod->path;  //FIXME test location
 //}
-// Initialize the old school Modules
-expModules::initializeModules(); // now in the autoloader, if used
 
 // Initialize the History (Flow) subsystem.
 $history = new expHistory(); //<--This is the new flow subsystem

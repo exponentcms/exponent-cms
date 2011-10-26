@@ -217,21 +217,6 @@ class expModules {
     	return $mods;
     }
 
-	/** exdoc
-	 * This includes all modules available to the system, for use later.
-	 * @node Subsystems:Modules
-	 */
-	public static function initializeModules() {
-		if (is_readable(BASE.'framework/modules-1')) {
-			$dh = opendir(BASE.'framework/modules-1');
-			while (($file = readdir($dh)) !== false) {
-				if (is_dir(BASE.'framework/modules-1/'.$file) && is_readable(BASE.'framework/modules-1/'.$file.'/class.php')) {
-					include_once(BASE.'framework/modules-1/'.$file.'/class.php');
-				}
-			}
-		}
-	}
-
 	public static function listActiveOSMods() {
 		global $db;
 
