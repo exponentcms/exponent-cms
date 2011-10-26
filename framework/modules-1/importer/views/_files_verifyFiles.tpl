@@ -37,7 +37,7 @@
 		<tbody>
 			{foreach from=$files_data item=status key=filename }
 				{assign var=haveFiles value=1}
-				<tr class="row {cycle values=even_row,odd_row}">
+				<tr class="row {cycle values='even_row,odd_row'}">
 					<td>{$filename}</td>
 					<td>
 						{if $status == $smarty.const.SYS_FILES_SUCCESS}

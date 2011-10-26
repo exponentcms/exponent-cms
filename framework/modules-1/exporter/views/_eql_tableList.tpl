@@ -51,7 +51,7 @@
 		<input type="hidden" name="page" value="savefile" />
 		<table cellspacing="0" cellpadding="2">
 			{section name=tid loop=$tables step=2}
-				<tr class="row {cycle values=even_row,odd_row}">
+				<tr class="row {cycle values='even_row,odd_row'}">
 					<td>
 						<input type="checkbox" name="tables[{$tables[tid]}]" {if $tables[tid] != 'sessionticket'}checked {/if}/>
 					</td>

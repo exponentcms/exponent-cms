@@ -7,7 +7,7 @@
 			<th class="header"></th>
 		</tr>
 		{foreach from=$questions item=question}
-			<tr class="row {cycle values=odd_row,even_row}"><td>
+			<tr class="row {cycle values='odd_row,even_row'}"><td>
 				<a href="{link action=manage_question id=$question->id}">{$question->question}</a>
 				({$question->answer_count} {plural plural=answers singular=answer count=$question->answer_count})
 				</td><td>

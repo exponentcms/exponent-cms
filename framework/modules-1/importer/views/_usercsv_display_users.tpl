@@ -30,7 +30,7 @@
 			<td class="header importer_header">{'Email'|gettext}</td>
 		</tr>
 		{foreach from=$userarray item=user}
-			<tr class="row {cycle values=even_row,odd_row}">
+			<tr class="row {cycle values='even_row,odd_row'}">
 				<td style="background-color:inherit;">
 					{if $user->changed == 1}<span style="color:green;">{'Changed'|gettext}</span>
 					{elseif $user->changed == "skipped"}<span style="color:red;">{'Ignored&nbsp;(Line&nbsp;%s)'|gettext|sprintf:$user->linenum})</span>
