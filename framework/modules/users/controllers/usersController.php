@@ -717,7 +717,16 @@ class usersController extends expController {
             $totalrecords = $this->$modelname->find('count',"username LIKE '%".$_GET['query']."%' OR firstname LIKE '%".$_GET['query']."%' OR lastname LIKE '%".$_GET['query']."%' OR email LIKE '%".$_GET['query']."%'");
             
             $users = $this->$modelname->find('all',$filter."username LIKE '%".$_GET['query']."%' OR firstname LIKE '%".$_GET['query']."%' OR lastname LIKE '%".$_GET['query']."%' OR email LIKE '%".$_GET['query']."%'" ,$sort.' '.$dir, $results, $startIndex);
-            $returnValue = array(
+			
+			for($i = 0; $i < count($users); $i++) {
+				if(ECOM == 1) {
+					$users[$i]->usernamelabel = "<a href='viewuser/{$users[$i]->id}'  class='fileinfo'>{$users[$i]->username}</a>";
+				} else {
+					$users[$i]->usernamelabel = $users[$i]->username;
+				}
+			}
+			
+		   $returnValue = array(
                 'recordsReturned'=>count($users),
                 'totalRecords'=>$totalrecords,
                 'startIndex'=>$startIndex,
@@ -731,7 +740,15 @@ class usersController extends expController {
             $totalrecords = $this->$modelname->find('count',$filter);
 			
             $users = $this->$modelname->find('all',$filter,$sort.' '.$dir, $results, $startIndex);
-            
+			
+			for($i = 0; $i < count($users); $i++) {
+				if(ECOM == 1) {
+					$users[$i]->usernamelabel = "<a href='viewuser/{$users[$i]->id}'  class='fileinfo'>{$users[$i]->username}</a>";
+				} else {
+					$users[$i]->usernamelabel = $users[$i]->username;
+				}
+			}
+
             $returnValue = array(
                 'recordsReturned'=>count($users),
                 'totalRecords'=>$totalrecords,

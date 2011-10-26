@@ -104,9 +104,7 @@
         // filename formatter
 		
 		var formatID = function(elCell, oRecord, oColumn, sData) {
-            viewstring = '<a href="{/literal}{link action=viewuser id="replacewithid"}{literal}" class="fileinfo">'+oRecord.getData().username+'</a>';
-			viewstring = viewstring.replace('replacewithid',oRecord._oData.id);
-			elCell.innerHTML = viewstring;
+			elCell.innerHTML = oRecord.getData().usernamelabel;
         };
 		
 		var formatActingAdmin = function(elCell, oRecord, oColumn, sData) {
@@ -152,7 +150,8 @@
 					{key:"firstname"},
 					{key:"lastname"},
 					{key:"email"},
-					{key:"is_acting_admin"}
+					{key:"is_acting_admin"},
+					{key:"usernamelabel"}
 				],
 				metaFields: {
 					totalRecords: "totalRecords" // Access to value in the server response
