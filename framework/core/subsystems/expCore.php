@@ -481,7 +481,7 @@ class expCore {
 	 * @return array
 	 * @node Subsystems:expCore
 	 */
-	public static function buildNameList($type, $name, $subtype, $subname) {  //FIXME only used by expTemplate::listFormTemplates & expTemplate::listModuleViews (total of 2 calls)
+	public static function buildNameList($type, $name, $subtype, $subname) {  //FIXME only used by calendarmodule edit action & expTemplate::listModuleViews (total of 2 calls)
 		$nameList = array();
 		$fileList = self::resolveFilePaths($type, $name, $subtype, $subname);
 		if ($fileList != false) {
