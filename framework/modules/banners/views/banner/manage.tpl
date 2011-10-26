@@ -27,7 +27,8 @@
 	{icon class=add action=create title="Create a new banner" alt="Create a new banner" text="Create a new banner"}{br}
 	{icon action=export title="Export banner data" alt="Export banner data" text="Export banner data"}{br}
     {icon action=reset_stats title="Reset banner stats" alt="Reset banner stats" text="Reset banner stats" onclick="return confirm('Are you sure you want to reset the Impression and Click statistics of your banners?');"}{br}
-	{icon class=add module=company action=create title="Create a new company" alt="Create a new company" text="Create a new company"}{br}
+	{*{icon class=add module=company action=create title="Create a new company" alt="Create a new company" text="Create a new company"}{br}*}
+	{icon class=manage module=company action=showall title="Manage companies" alt="Manage companies" text="Manage companies"}{br}
     {pagelinks paginate=$page top=1}
 	<table class="exp-skin-table">
 	    <thead>

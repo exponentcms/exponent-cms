@@ -20,6 +20,10 @@
 class banner extends expRecord {
     public $table = 'banner';
     public $has_one = array('company');
+	protected $attachable_item_types = array(
+		'content_expFiles'=>'expFile',
+	);
+
     public $validates = array(
         'presence_of'=>array(
             'url'=>array('message'=>'Title is a required field.')
