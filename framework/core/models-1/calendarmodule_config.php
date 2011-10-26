@@ -83,12 +83,12 @@ class calendarmodule_config {
 
 		// setup the listbuilder arrays for calendar aggregation.	
 		$loc = unserialize($object->location_data);
-		$calendars = expModules::getModuleInstancesByType('calendarmodule');
+		$calendars = expModules::listInstalledControllers('calendarmodule');
 		$saved_aggregates = empty($object->aggregate) ? array() : unserialize($object->aggregate);
 		$all_calendars = array();
 		$selected_calendars = array();
 		foreach ($calendars as $src => $cal) {
-			$calendar_name = (empty($cal[0]->title) ? 'Untitled' : $cal[0]->title).' on page '.$cal[0]->section;
+			$calendar_name = (empty($cal->title) ? 'Untitled' : $cal->title).' on page '.$cal->section;
 			if ($src != $loc->src) {
 				if (in_array($src, $saved_aggregates)) {
 					$selected_calendars[$src] = $calendar_name;

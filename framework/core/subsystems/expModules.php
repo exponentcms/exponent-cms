@@ -256,23 +256,5 @@ class expModules {
 		return "";
 	}
 
-	public static function getModuleInstancesByType($type=null) {
-		if (empty($type)) return array();
-	        global $db;
-	        $refs = $db->selectObjects('sectionref', 'module="'.$type.'"');
-	        $modules = array();
-	        foreach ($refs as $ref) {
-			    if ($ref->refcount > 0) {
-	                    	$instance = $db->selectObject('container', 'internal like "%'.$ref->source.'%"');
-		                    $mod = null;
-	            	        $mod->title = !empty($instance->title) ? $instance->title : "Untitled";
-	                    	$mod->section = $db->selectvalue('section', 'name', 'id='.$ref->section);
-		                    $modules[$ref->source][] = $mod;
-			    }
-	        }
-
-	        return $modules;
-	}
-
 }
 ?>
