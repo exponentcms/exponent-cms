@@ -144,8 +144,8 @@ if (($item == null && expPermissions::check('post',$loc)) ||
 		$form->register(null,'',new htmlcontrol($buttons));
 	}
 	
-	$form->validationScript = expModules::getJSValidationFile('calendarmodule','postedit');
-	
+	$form->validationScript = PATH_RELATIVE.'framework/modules-1/calendarmodule/assets/js/postedit.validate.js';  //FIXME This is not working
+
 	$template = new template('calendarmodule','_form_edit',$loc);
 	$template->assign('form_html',$form->toHTML());
 	$template->assign('is_edit',($item == null ? 0 : 1));

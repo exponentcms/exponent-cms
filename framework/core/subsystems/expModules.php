@@ -240,21 +240,5 @@ class expModules {
 		return $moduleInfo;
 	}
 
-	/** exdoc
-	 * Looks through the current theme and standard js directories to find
-	 * the javascript form validation file for a given form in a module. Returns
-	 * he filename of the Javascript Validation script, or "" if one was not found.
-	 *
-	 * @param string $module The classname of the module.
-	 * @param string $formname The name of the form
-	 * @return string
-	 * @node Subsystems:Modules
-	 */
-	public static function getJSValidationFile($module,$formname) {
-		if (is_readable(BASE."themes/".DISPLAY_THEME."/modules/$module/js/$formname.validate.js")) return PATH_RELATIVE . "themes/".DISPLAY_THEME."/modules/$module/js/$formname.validate.js";
-		else if (is_readable(BASE."framework/modules-1/$module/assets/js/$formname.validate.js")) return PATH_RELATIVE."framework/modules-1/$module/assets/js/$formname.validate.js";
-		return "";
-	}
-
 }
 ?>
