@@ -146,15 +146,6 @@ class expTemplate {
 	    return $forms;
 	}
 
-	/**
-	 * Generates a list of email templates/forms
-	 * @param $type
-	 * @return array
-	 */
-	public static function listFormTemplates($type) {  //FIXME only used by calendarmodule edit action
-		return expCore::buildNameList("forms", $type, "tpl", "[!_]*");
-	}
-
 	/** exdoc
 	 *
 	 * Looks through the module's views directory and returns
