@@ -488,7 +488,6 @@ class calendarmodule {
 
 		$search = null;
 		$search->category = gt('Events');
-		$search->view_link = ''; // FIXME : need a view action
 		$search->ref_module = 'calendarmodule';
 		$search->ref_type = 'calendar';
 
@@ -497,6 +496,7 @@ class calendarmodule {
 			$search->original_id = $item->id;
 			$search->body = ' ' . search::removeHTML($item->body) . ' ';
 			$search->title = ' ' . $item->title . ' ';
+			$search->view_link = str_replace(URL_FULL,'', makeLink(array('module'=>'calendarmodule','action'=>'view','id'=>$item->id)));
 			$search->location_data = $item->location_data;
 			$db->insertObject($search,'search');
 		} else {
@@ -505,6 +505,7 @@ class calendarmodule {
 				$search->original_id = $item->id;
 				$search->body = ' ' . search::removeHTML($item->body) . ' ';
 				$search->title = ' ' . $item->title . ' ';
+				$search->view_link = str_replace(URL_FULL,'', makeLink(array('module'=>'calendarmodule','action'=>'view','id'=>$item->id)));
 				$search->location_data = $item->location_data;
 				$db->insertObject($search,'search');
 			}

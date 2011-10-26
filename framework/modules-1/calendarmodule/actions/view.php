@@ -39,7 +39,11 @@ if ($item) {
 		"administrate"=>expPermissions::check("administrate",$iloc)
 	);
 
-	$eventdate = $db->selectObject("eventdate","id=".intval($_GET['date_id']));
+	if (!isset($_GET['date_id'])) {
+		$eventdate = $db->selectObject("eventdate","event_id=".$item->id);
+	} else {
+		$eventdate = $db->selectObject("eventdate","id=".intval($_GET['date_id']));
+	}
 	$item->eventdate = $eventdate;
 
 	//Get the image file if there is one.
