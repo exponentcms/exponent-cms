@@ -62,6 +62,7 @@ class administrationController extends expController {
 		define("TMP_TABLE_FAILED",		3);
 		define("TMP_TABLE_ALTERED",		4);
 
+		expSession::clearCurrentUserSessionCache();
 		$tables = array();
 
 		// first the core and 1.0 definitions
@@ -139,7 +140,6 @@ class administrationController extends expController {
 	}
 
 	public function install_tables() {
-    	expSession::clearCurrentUserSessionCache();
 		$tables = self::installTables();
 		ksort($tables);
         assign_to_template(array('status'=>$tables));
