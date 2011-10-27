@@ -228,7 +228,7 @@
             </div>
         </div>
 	    <div class="loadingdiv">{"Loading Site Configuration"|gettext}</div>
-        {control type="buttongroup" submit="Save Website Configuration"|gettext cancel="Cancel"|gettext}
+        {control type="buttongroup" submit="Save Website Configuration"|gettext cancel="Cancel"|gettext returntype="viewable"}
     {/form}
 </div>
 
