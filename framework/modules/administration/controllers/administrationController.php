@@ -843,8 +843,9 @@ class administrationController extends expController {
         }
         
         flash('message', "Your Website Configuration has been updated");
-        expHistory::back();
-    }    
+//        expHistory::back();
+	    expHistory::returnTo('viewable');
+    }
 }
 
 /**
