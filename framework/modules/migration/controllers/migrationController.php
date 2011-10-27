@@ -244,7 +244,7 @@ class migrationController extends expController {
             flash('error', $failed.' pages could not be imported from '.$this->config['database'].' This is usually because a page with the same ID already exists in the database you importing to.');
         }
 
-        expSession::clearUserCache();
+        expSession::clearCurrentUserSessionCache();
         expHistory::back();
     }
 
@@ -598,7 +598,7 @@ class migrationController extends expController {
 		}
 		
 		searchController::spider();
-        expSession::clearUserCache();
+        expSession::clearCurrentUserSessionCache();
         assign_to_template(array('msg'=>@$this->msg));
     }
 
@@ -741,7 +741,7 @@ class migrationController extends expController {
 			}
             flash('error', $msg.' could not be imported from '.$this->config['database'].' This is usually because a user with the username or group with that name already exists in the database you importing to.');
         }
-        expSession::clearUserCache();
+        expSession::clearCurrentUserSessionCache();
         expHistory::back();
     }
 

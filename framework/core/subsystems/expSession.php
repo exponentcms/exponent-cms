@@ -82,10 +82,6 @@ class expSession {
     public static function issetTableCache($tablename) {
         return isset($_SESSION[SYS_SESSION_KEY]['cache']['table_descriptions'][$tablename]) ? true : false;
     }
-    
-    public static function clearUserCache() {
-        self::clearCurrentUserSessionCache();
-    }
 
 	/** exdoc
 	 * Runs necessary code to initialize sessions for use.
