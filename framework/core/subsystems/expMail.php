@@ -69,7 +69,8 @@ class expMail {
 	 * @todo add further documentation for using settings other than the system default
 	 */
 	function __construct($params = array()) {
-		require_once(BASE . 'external/Swift-4/lib/swift_required.php');
+//		require_once(BASE . 'external/Swift-4/lib/swift_required.php');
+		require_once(SWIFT_PATH . 'swift_required.php');
 
 		if (array_key_exists('method', $params)) {
 			switch ($params['method']) {

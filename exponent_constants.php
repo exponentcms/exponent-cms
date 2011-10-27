@@ -492,13 +492,22 @@ if (!defined('YUI2_PATH')) {
 
 if (!defined('SMARTY_PATH')) {
     /*
-	 *  SMARTY Version Constant
+	 *  Smarty Version Constant
 	 *
 	 * Changing the version here lets Exponent adjust where to look
 	 */
 	define('SMARTY_VERSION', '3.1.4');
 	define('SMARTY_PATH', BASE.'external/Smarty-'.SMARTY_VERSION.'/libs/');
-	define('SMARTY_URL', URL_FULL.'external/Smarty-'.SMARTY_VERSION.'/libs/');
+}
+
+if (!defined('SWIFT_PATH')) {
+    /*
+	 *  Swift Version Constant
+	 *
+	 * Changing the version here lets Exponent adjust where to look
+	 */
+	define('SWIFT_VERSION', '4.1.3');
+	define('SWIFT_PATH', BASE.'external/Swift-'.SWIFT_VERSION.'/lib/');
 }
 
 ?>
