@@ -36,15 +36,15 @@
 	        <div class="yui-content">
 	            <div id="tab1">
 	                {if $edit_user->id == "" || $edit_user->id == 0}
-	                        {if $smarty.const.USER_REGISTRATION_USE_EMAIL == 0}
-	                                {control type=text name=username label="Username" value=$edit_user->username}
-	                        {else}
-	                                {control type=text name=email label="Email Address" value=$edit_user->email}
-	                        {/if}
-	                        {control type=password name=pass1 label=Password}
-	                        {control type=password name=pass2 label="Confirm Password"}
-	                    {else}
-	                        {control type="hidden" name="id" value=$edit_user->id}
+                        {if $smarty.const.USER_REGISTRATION_USE_EMAIL == 0}
+                            {control type=text name=username label="Username" value=$edit_user->username}
+                        {else}
+                            {control type=text name=email label="Email Address" value=$edit_user->email}
+                        {/if}
+                        {control type=password name=pass1 label=Password}
+                        {control type=password name=pass2 label="Confirm Password"}
+                    {else}
+                        {control type="hidden" name="id" value=$edit_user->id}
 	                {/if}
 	                {control type="hidden" name="userkey" value=$userkey}
 	                {if $smarty.const.USER_REGISTRATION_USE_EMAIL == 0}{control type=text name=email label="Email Address" value=$edit_user->email}{/if}
@@ -53,7 +53,7 @@
 	                {*control type=checkbox name="recv_html" label="I prefer HTML Email" value=1 checked=$edit_user->recv_html*}
 	                {if $user->isAdmin() == 1}
 	                    {if $edit_user->id==$user->id || $user->isActingAdmin()}
-	                            {control type=checkbox readonly="readonly" name=is_acting_admin value=1 label="Make this user an Administrator?" checked=$edit_user->is_acting_admin}
+                            {control type=checkbox readonly="readonly" name=is_acting_admin value=1 label="Make this user an Administrator?" checked=$edit_user->is_acting_admin}
 	                    {else}
 	                        {control type=checkbox name=is_acting_admin value=1 label="Make this user an Administrator?" checked=$edit_user->is_acting_admin}
 	                    {/if}

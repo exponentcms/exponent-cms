@@ -66,7 +66,8 @@ class usersController extends expController {
         // set history
         expHistory::set('editable', $this->params);
         expSession::set("userkey",sha1(microtime()));
-        
+	    expSession::clearCurrentUserSessionCache();
+
         $id = isset($this->params['id']) ? $this->params['id'] : null;
         
         // check to see if we should be editing.  You either need to be an admin, or

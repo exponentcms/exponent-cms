@@ -17,7 +17,8 @@
 #
 ##################################################
 
-class user_instant_messenger extends expRecord {        
+class user_instant_messenger extends expRecord {
+
     public function name() { return 'Instant Messenger Info'; }
 	public function description() { return 'The extension allows users to enter their IM accounts for most IM services.'; }
 	
