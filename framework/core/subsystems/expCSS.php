@@ -58,6 +58,17 @@ class expCSS {
             $tcss = trim($params['css']);
             if (!empty($tcss)) $css_inline[$params['unique']] = $params['css'];
         }
+
+        if (expJavascript::inAjaxAction()) {
+		    echo "<div class=\"io-execute-response\">";
+            if (isset($params['corecss'])&&!empty($css_core)){
+                foreach ($css_core as $path) {
+                    echo '<link rel="stylesheet" type="text/css" href="'.$path.'">';
+                }
+            }
+            echo '<link rel="stylesheet" type="text/css" href="'.$params['link'].'">';
+		    echo "</div>";
+        }
     }    
 
     public static function parseCSSFiles() {
