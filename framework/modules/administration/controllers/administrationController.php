@@ -164,34 +164,32 @@ class administrationController extends expController {
 			}
 		}
 
-		// then search for module definitions
-		$moddefs = array(
-			BASE.'themes/'.DISPLAY_THEME_REAL.'/modules',
-//			BASE.'themes/'.DISPLAY_THEME.'/modules',
-			BASE."framework/modules",
-			);
-		foreach ($moddefs as $moddef) {
-			if (is_readable($moddefs)) {
-				$dh = opendir($moddefs);
-				while (($file = readdir($dh)) !== false) {
-					if (is_dir($moddefs.'/'.$file) && ($file != '..' && $file != '.')) {
-						$dirpath = $moddefs.'/'.$file.'/definitions';
-						if (file_exists($dirpath)) {
-							$def_dir = opendir($dirpath);
-							while (($def = readdir($def_dir)) !== false) {
-	//							eDebug("$dirpath/$def");
-								if (is_readable("$dirpath/$def") && is_file("$dirpath/$def") && substr($def,-4,4) == ".php" && substr($def,-9,9) != ".info.php") {
-									if ((!in_array(substr($def,0,-4), $used_tables))) {
-										$used_tables[] = strtolower(substr($def,0,-4));
-									}
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-        // eDebug($used_tables);
+	    // then search for module definitions
+        $moddefs = array(
+            BASE.'themes/'.DISPLAY_THEME_REAL.'/modules',
+//  			BASE.'themes/'.DISPLAY_THEME.'/modules',
+            BASE."framework/modules",
+            );
+        foreach ($moddefs as $moddef) {
+            if (is_readable($moddef)) {
+                $dh = opendir($moddef);
+                while (($file = readdir($dh)) !== false) {
+                    if (is_dir($moddef.'/'.$file) && ($file != '..' && $file != '.')) {
+                        $dirpath = $moddef.'/'.$file.'/definitions';
+                        if (file_exists($dirpath)) {
+                            $def_dir = opendir($dirpath);
+                            while (($def = readdir($def_dir)) !== false) {
+                                if (is_readable("$dirpath/$def") && is_file("$dirpath/$def") && substr($def,-4,4) == ".php" && substr($def,-9,9) != ".info.php") {
+                                    if ((!in_array(substr($def,0,-4), $used_tables))) {
+                                        $used_tables[] = strtolower(substr($def,0,-4));
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
 
         foreach($tables as $table) {
             $basename = strtolower(str_replace(DB_TABLE_PREFIX.'_', '', $table));
