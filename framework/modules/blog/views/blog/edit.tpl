@@ -93,17 +93,18 @@
 		  }]
 		});
 
-	  // When the input node receives focus, send an empty query to display the full
-	  // list of tag suggestions.
-	  inputNode.on('focus', function () {
-	    inputNode.ac.sendRequest('');
-	  });
+		// When the input node receives focus, send an empty query to display the full
+		// list of tag suggestions.
+		inputNode.on('focus', function () {
+			inputNode.ac.sendRequest('');
+		});
 
-	  // After a tag is selected, send an empty query to update the list of tags.
-	  inputNode.ac.after('select', function () {
-	    inputNode.ac.sendRequest('');
-	    inputNode.ac.show();
-	  });
+		// After a tag is selected, send an empty query to update the list of tags.
+		inputNode.ac.after('select', function () {
+			inputNode.ac.sendRequest('');
+			inputNode.ac.show();
+		});
+
     });
 {/literal}
 {/script}
