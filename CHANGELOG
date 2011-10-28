@@ -2,6 +2,10 @@ Exponent Content Management System
 Copyright (c) 2004-2011 OIC Group, Inc.
 ===============================================
 
+Added / Fixed / changed for 2.0.3
+-----------------------
+# This release focuses on refining the language system for general use, installation, and especially to simplify translation creation
+
 Added / Fixed / changed for 2.0.2
 -----------------------
 # This release focuses on integrating Smarty v3
