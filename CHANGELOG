@@ -6,8 +6,12 @@ Added / Fixed / changed for 2.0.2
 -----------------------
 # This release focuses on integrating Smarty v3
   - Custom themes/views must be updated to follow Smarty syntax (v2 allowed sloppy syntax)
-# Fixes several bugs and other issues
-# All 1.0 subsystems fully deprecated at this point
+# 3rd party libraries updated
+# E-commerce updates
+# Several new or enhanced features
+  - New auto-complete feature with 'tag' selection
+# Fixes numerous bugs and other issues; incorporates 3 patches to v2.0.1
+# All 1.0 subsystems & FCKeditor now fully deprecated
 
 Added / Fixed / changed for 2.0.1
 -----------------------
