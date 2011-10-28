@@ -41,7 +41,8 @@
                         {assign var=tags value=$tag->title}
                     {/if}                    
                 {/foreach}
-                {control type="textarea" name="expTag" label="Tags (comma separated)" value=$tags|cat:','}
+	            {if $tags != ""}{$tags=$tags|cat:','}{/if}
+                {control type="textarea" name="expTag" label="Tags (comma separated)" value=$tags}
             </div>
             <div id="tab3">
                 {control type="files" name="files" label="Files" value=$record->expFile}
