@@ -27,19 +27,6 @@
 class mysqli_database extends database {
 
     /**
-     * @var string $connection Database connection string
-     */
-    var $connection = null;
-	/**
-	* @var boolean $havedb
-	*/
-    var $havedb = false;
-    /**
-     * @var string $prefix Database prefix
-     */
-    var $prefix = "";
-
-    /**
      * Make a connection to the Database Server
      *
      * Takes the supplied credentials (username / password) and tries to
@@ -153,194 +140,6 @@ class mysqli_database extends database {
         );
 
         return $return;
-    }
-
-    /**
-     * This is an internal function for use only within the MySQL database class
-     * @internal Internal
-     * @param  $name
-     * @param  $def
-     * @return bool|string
-     */
-    function fieldSQL($name, $def) {
-        $sql = "`$name`";
-        if (!isset($def[DB_FIELD_TYPE])) {
-            return false;
-        }
-        $type = $def[DB_FIELD_TYPE];
-        if ($type == DB_DEF_ID) {
-            $sql .= " INT(11)";
-        } else if ($type == DB_DEF_BOOLEAN) {
-            $sql .= " TINYINT(1)";
-        } else if ($type == DB_DEF_TIMESTAMP) {
-            $sql .= " INT(14)";
-        } else if ($type == DB_DEF_INTEGER) {
-            $sql .= " INT(8)";
-        } else if ($type == DB_DEF_STRING) {
-            if (isset($def[DB_FIELD_LEN]) && is_int($def[DB_FIELD_LEN])) {
-                $len = $def[DB_FIELD_LEN];
-                if ($len < 256)
-                    $sql .= " VARCHAR($len)";
-                else if ($len < 65536)
-                    $sql .= " TEXT";
-                else if ($len < 16777216)
-                    $sql .= " MEDIUMTEXT";
-                else
-                    $sql .= "LONGTEXT";
-            } else {
-                return false; // must specify a field length as integer.  //FIXME need to have a default
-            }
-        } else if ($type == DB_DEF_DECIMAL) {
-            $sql .= " DOUBLE";
-        } else {
-            return false; // must specify known FIELD_TYPE
-        }
-        $sql .= " NOT NULL";
-        if (isset($def[DB_DEFAULT]))
-            $sql .= " DEFAULT '" . $def[DB_DEFAULT] . "'";
-
-        if (isset($def[DB_INCREMENT]) && $def[DB_INCREMENT])
-            $sql .= " AUTO_INCREMENT";
-        return $sql;
-    }
-
-    /**
-     * Switch field values between two entries in a  Table
-     *
-     * Switches values between two table entries for things like swapping rank, etc...
-     * @param  $table
-     * @param  $field
-     * @param  $a
-     * @param  $b
-     * @param null $additional_where
-     * @return bool
-     */
-    function switchValues($table, $field, $a, $b, $additional_where = null) {
-        if ($additional_where == null) {
-            $additional_where = '1';
-        }
-        $object_a = $this->selectObject($table, "$field='$a' AND $additional_where");
-        $object_b = $this->selectObject($table, "$field='$b' AND $additional_where");
-
-        if ($object_a && $object_b) {
-            $tmp = $object_a->$field;
-            $object_a->$field = $object_b->$field;
-            $object_b->$field = $tmp;
-
-            $this->updateObject($object_a, $table);
-            $this->updateObject($object_b, $table);
-
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    /**
-     * Checks to see if the connection for this database object is valid.
-     * @return bool True if the connection can be used to execute SQL queries.
-     */
-    function isValid() {
-        return ($this->connection != null && $this->havedb);
-    }
-
-    /**
-     * Test the privileges of the user account for the connection.
-     * Tests run include:
-     * <ul>
-     * <li>CREATE TABLE</li>
-     * <li>INSERT</li>
-     * <li>SELECT</li>
-     * <li>UPDATE</li>
-     * <li>DELETE</li>
-     * <li>ALTER TABLE</li>
-     * <li>DROP TABLE</li>
-     * </ul>
-     * These tests must be performed in order, for logical reasons.  Execution
-     * terminates when the first test fails, and the status flag array is returned then.
-     * Returns an array of status flags.  Key is the test name.  Value is a boolean,
-     * true if the test succeeded, and false if it failed.
-     * @return array
-     */
-    function testPrivileges() {
-
-        $status = array();
-
-        $tablename = "___testertable" . uniqid("");
-        $dd = array(
-            "id" => array(
-                DB_FIELD_TYPE => DB_DEF_ID,
-                DB_PRIMARY => true,
-                DB_INCREMENT => true),
-            "name" => array(
-                DB_FIELD_TYPE => DB_DEF_STRING,
-                DB_FIELD_LEN => 100)
-        );
-
-        $this->createTable($tablename, $dd, array());
-        if (!$this->tableExists($tablename)) {
-            $status["CREATE TABLE"] = false;
-            return $status;
-        } else
-            $status["CREATE TABLE"] = true;
-
-        $o = null;
-        $o->name = "Testing Name";
-        $insert_id = $this->insertObject($o, $tablename);
-        if ($insert_id == 0) {
-            $status["INSERT"] = false;
-            return $status;
-        } else
-            $status["INSERT"] = true;
-
-        $o = $this->selectObject($tablename, "id=" . $insert_id);
-        if ($o == null || $o->name != "Testing Name") {
-            $status["SELECT"] = false;
-            return $status;
-        } else
-            $status["SELECT"] = true;
-
-        $o->name = "Testing 2";
-        if (!$this->updateObject($o, $tablename)) {
-            $status["UPDATE"] = false;
-            return $status;
-        } else
-            $status["UPDATE"] = true;
-
-        $this->delete($tablename, "id=" . $insert_id);
-        $o = $this->selectObject($tablename, "id=" . $insert_id);
-        if ($o != null) {
-            $status["DELETE"] = false;
-            return $status;
-        } else
-            $status["DELETE"] = true;
-
-        $dd["thirdcol"] = array(
-            DB_FIELD_TYPE => DB_DEF_TIMESTAMP);
-
-        $this->alterTable($tablename, $dd, array());
-        $o = null;
-        $o->name = "Alter Test";
-        $o->thirdcol = "Third Column";
-        if (!$this->insertObject($o, $tablename)) {
-            $status["ALTER TABLE"] = false;
-            return $status;
-        } else
-            $status["ALTER TABLE"] = true;
-
-        $this->dropTable($tablename);
-        if ($this->tableExists($tablename)) {
-            $status["DROP TABLE"] = false;
-            return $status;
-        } else
-            $status["DROP TABLE"] = true;
-
-        foreach ($this->getTables() as $t) {
-            if (substr($t, 0, 14 + strlen($this->prefix)) == $this->prefix . "___testertable")
-                $this->dropTable($t);
-        }
-
-        return $status;
     }
 
     /**
@@ -474,20 +273,6 @@ class mysqli_database extends database {
     }
 
 	/**
-	 * Toggle a boolean value in a Table Entry
-	 *
-	 * @param  $table
-	 * @param  $col
-	 * @param null $where
-	 * @return void
-	 */
-    function toggle($table, $col, $where=null) {
-        $obj = $this->selectObject($table, $where);
-        $obj->$col = ($obj->$col == 0) ? 1 : 0;
-        $this->updateObject($obj, $table);
-    }
-
-	/**
 	 * Update a column in all records in a table
 	 *
 	 * @param  $table
@@ -504,22 +289,6 @@ class mysqli_database extends database {
         for ($i = 0; $i < mysqli_num_rows($res); $i++)
             $objects[] = mysqli_fetch_object($res);*/
         //return $objects;
-    }
-
-	/**
-	 * @param  $object
-	 * @param  $table
-	 * @param  $col
-	 * @param int|null $where
-	 * @return bool
-	 */
-    function setUniqueFlag($object, $table, $col, $where=1) {
-        if (isset($object->id)) {
-            $this->sql("UPDATE " . DB_TABLE_PREFIX . "_" . $table . " SET " . $col . "=0 WHERE " . $where);
-            $this->sql("UPDATE " . DB_TABLE_PREFIX . "_" . $table . " SET " . $col . "=1 WHERE id=" . $object->id);
-            return true;
-        }
-        return false;
     }
 
     /**
@@ -774,19 +543,6 @@ class mysqli_database extends database {
         } else {
             return null;
         }
-    }
-
-    /**
-     * This function takes an array of indexes and returns an array with the objects associated with each id
-     * @param  $table
-     * @param array $array
-     * @param null $orderby
-     * @return array
-     */
-    function selectObjectsInArray($table, $array=array(), $orderby=null) {
-        $where = 'id IN ' . implode(",", $array);
-        $res = $this->selectObjects($table, $where, $orderby);
-        return $res;
     }
 
     /**
@@ -1075,7 +831,7 @@ class mysqli_database extends database {
      * @param string $table The name of the table to increment in.
      * @param string $field The field to increment.
      * @param integer $step The step value.  Usually 1.  This can be negative, to
-     *    decrement, but the decrement() method is prefered, for readability.
+     *    decrement, but the decrement() method is preferred, for readability.
      * @param string $where Optional criteria to determine which records to update.
      * @return mixed
      */
@@ -1084,20 +840,6 @@ class mysqli_database extends database {
             $where = "1";
         $sql = "UPDATE `" . $this->prefix . "$table` SET `$field`=`$field`+$step WHERE $where";
         return @mysqli_query($this->connection, $sql);
-    }
-
-    /**
-     * Decrement a numeric table field in a table.
-     *
-     * @param string $table The name of the table to decrement in.
-     * @param string $field The field to decrement.
-     * @param integer $step The step value.  Usually 1.  This can be negative, to
-     *    increment, but the increment() method is preferred, for readability.
-     * @param string $where Optional criteria to determine which records to update.
-     */
-
-    function decrement($table, $field, $step, $where = null) {
-        $this->increment($table, $field, -1 * $step, $where);
     }
 
     /**
@@ -1167,17 +909,6 @@ class mysqli_database extends database {
     }
 
     /**
-     * Check whether or not a table in the database is empty (0 rows).
-     * Returns tue of the specified table has no rows, and false if otherwise.
-     *
-     * @param string $table Name of the table to check.
-     * @return bool
-     */
-    function tableIsEmpty($table) {
-        return ($this->countObjects($table) == 0);
-    }
-
-    /**
      * Returns table information for all tables in the database.
      * This function effectively calls tableInfo() on each table found.
      * @return array
@@ -1191,22 +922,6 @@ class mysqli_database extends database {
             $info[substr($obj->Name, strlen($this->prefix))] = $this->translateTableStatus($obj);
         }
         return $info;
-    }
-
-    /**
-     * This is an internal function for use only within the MySQL database class
-     * @internal Internal
-     * @param  $status
-     * @return null
-     */
-    function translateTableStatus($status) {
-        $data = null;
-        $data->rows = $status->Rows;
-        $data->average_row_lenth = $status->Avg_row_length;
-        $data->data_overhead = $status->Data_free;
-        $data->data_total = $status->Data_length;
-
-        return $data;
     }
 
 	/**
@@ -1268,51 +983,6 @@ class mysqli_database extends database {
     }
 
     /**
-     * This is an internal function for use only within the MySQL database class
-     * @internal Internal
-     * @param  $fieldObj
-     * @return int
-     */
-    function getDDFieldType($fieldObj) {
-        $type = strtolower($fieldObj->Type);
-
-        if ($type == "int(11)")
-            return DB_DEF_ID;
-        if ($type == "int(8)")
-            return DB_DEF_INTEGER;
-        elseif ($type == "tinyint(1)")
-            return DB_DEF_BOOLEAN;
-        elseif ($type == "int(14)")
-            return DB_DEF_TIMESTAMP;
-        //else if (substr($type,5) == "double") return DB_DEF_DECIMAL;
-        elseif ($type == "double")
-            return DB_DEF_DECIMAL;
-        // Strings
-        elseif ($type == "text" || $type == "mediumtext" || $type == "longtext" || strpos($type, "varchar(") !== false) {
-            return DB_DEF_STRING;
-        }
-    }
-
-    /**
-     * This is an internal function for use only within the MySQL database class
-     * @internal Internal
-     * @param  $fieldObj
-     * @return int|mixed
-     */
-    function getDDStringLen($fieldObj) {
-        $type = strtolower($fieldObj->Type);
-        if ($type == "text")
-            return 65535;
-        else if ($type == "mediumtext")
-            return 16777215;
-        else if ($type == "longtext")
-            return 16777216;
-        else if (strpos($type, "varchar(") !== false) {
-            return str_replace(array("varchar(", ")"), "", $type) + 0;
-        }
-    }
-
-    /**
      * Returns an error message from the database server.  This is intended to be
      * used by the implementers of the database wrapper, so that certain
      * cryptic error messages can be reworded.
@@ -1349,17 +1019,6 @@ class mysqli_database extends database {
 	function escapeString($string) {
 	    return (mysqli_real_escape_string($this->connection, $string));
 	}
-
-	/**
-	 * Create a SQL "limit" phrase
-	 *
-	 * @param  $num
-	 * @param  $offset
-	 * @return string
-	 */
-    function limit($num, $offset) {
-        return ' LIMIT ' . $offset . ',' . $num . ' ';
-    }
 
     /**
      * Select an array of arrays
@@ -1493,181 +1152,6 @@ class mysqli_database extends database {
         return $arrays;
     }
 
-	/**
-	 * @param  $table
-	 * @return array
-	 */
-    function selectNestedTree($table) {
-        $sql = 'SELECT node.*, (COUNT(parent.sef_url) - 1) AS depth
-			FROM `' . $this->prefix . $table . '` AS node,
-			`' . $this->prefix . $table . '` AS parent
-			WHERE node.lft BETWEEN parent.lft AND parent.rgt
-			GROUP BY node.sef_url
-			ORDER BY node.lft';
-        return $this->selectObjectsBySql($sql);
-    }
-	
-	function selectFormattedNestedTree($table) {
-		$sql = "SELECT CONCAT( REPEAT( '&nbsp;&nbsp;&nbsp;', (COUNT(parent.title) -1) ), node.title) AS title, node.id 
-				FROM " .$this->prefix . $table. " as node, " .$this->prefix . $table. " as parent 
-				WHERE node.lft BETWEEN parent.lft and parent.rgt 
-				GROUP BY node.title, node.id 
-				ORDER BY node.lft";
-				
-		return $this->selectObjectsBySql($sql);
-	}
-
-	/**
-	 * @param  $table
-	 * @param  $start
-	 * @param  $width
-	 * @return void
-	 */
-    function adjustNestedTreeFrom($table, $start, $width) {
-        $table = $this->prefix . $table;
-        $this->sql('UPDATE `' . $table . '` SET rgt = rgt + ' . $width . ' WHERE rgt >=' . $start);
-        $this->sql('UPDATE `' . $table . '` SET lft = lft + ' . $width . ' WHERE lft >=' . $start);
-        //eDebug('UPDATE `'.$table.'` SET rgt = rgt + '.$width.' WHERE rgt >='.$start);
-        //eDebug('UPDATE `'.$table.'` SET lft = lft + '.$width.' WHERE lft >='.$start);
-    }
-
-	/**
-	 * @param  $table
-	 * @param  $lft
-	 * @param  $rgt
-	 * @param  $width
-	 * @return void
-	 */
-    function adjustNestedTreeBetween($table, $lft, $rgt, $width) {
-        $table = $this->prefix . $table;
-        $this->sql('UPDATE `' . $table . '` SET rgt = rgt + ' . $width . ' WHERE rgt BETWEEN ' . $lft . ' AND ' . $rgt);
-        $this->sql('UPDATE `' . $table . '` SET lft = lft + ' . $width . ' WHERE lft BETWEEN ' . $lft . ' AND ' . $rgt);
-        //eDebug('UPDATE `'.$table.'` SET rgt = rgt + '.$width.' WHERE rgt BETWEEN '.$lft.' AND '.$rgt);
-        //eDebug('UPDATE `'.$table.'` SET lft = lft + '.$width.' WHERE lft BETWEEN '.$lft.' AND '.$rgt);
-    }
-
-	/**
-	 * @param  $table
-	 * @param null $node
-	 * @return array
-	 */
-    function selectNestedBranch($table, $node=null) {
-        if (empty($node))
-            return array();
-
-        $where = is_numeric($node) ? 'id=' . $node : 'title="' . $node . '"';
-        global $db;
-        $sql = 'SELECT node.*, 
-                (COUNT(parent.title) - (sub_tree.depth + 1)) AS depth 
-                FROM `' . $this->prefix . $table . '` AS node,
-                `' . $this->prefix . $table . '` AS parent,
-                `' . $this->prefix . $table . '` AS sub_parent,
-                        (       SELECT node.*, (COUNT(parent.title) - 1) AS depth 
-                                FROM `' . $this->prefix . $table . '` AS node,
-                                `' . $this->prefix . $table . '` AS parent
-                                WHERE node.lft BETWEEN parent.lft 
-                                AND parent.rgt AND node.' . $where . '
-                                GROUP BY node.title 
-                                ORDER BY node.lft )
-                AS sub_tree 
-                WHERE node.lft BETWEEN parent.lft AND parent.rgt 
-                AND node.lft BETWEEN sub_parent.lft AND sub_parent.rgt 
-                AND sub_parent.title = sub_tree.title 
-                GROUP BY node.title 
-                ORDER BY node.lft;';
-
-        return $this->selectObjectsBySql($sql);
-    }
-
-	/**
-	 * @param  $table
-	 * @param  $lft
-	 * @param  $rgt
-	 * @return void
-	 */
-    function deleteNestedNode($table, $lft, $rgt) {
-        $table = $this->prefix . $table;
-
-        $width = ($rgt - $lft) + 1;
-        $this->sql('DELETE FROM `' . $table . '` WHERE lft BETWEEN ' . $lft . ' AND ' . $rgt);
-        $this->sql('UPDATE `' . $table . '` SET rgt = rgt - ' . $width . ' WHERE rgt > ' . $rgt);
-        $this->sql('UPDATE `' . $table . '` SET lft = lft - ' . $width . ' WHERE lft > ' . $rgt);
-    }
-
-	/**
-	 * @param  $table
-	 * @param null $node
-	 * @return array
-	 */
-    function selectPathToNestedNode($table, $node=null) {
-        if (empty($node))
-            return array();
-
-        $where = is_numeric($node) ? 'id=' . $node : 'title="' . $node . '"';
-        $sql = 'SELECT parent.*
-			FROM `' . $this->prefix . $table . '` AS node,
-			`' . $this->prefix . $table . '` AS parent
-			WHERE node.lft BETWEEN parent.lft AND parent.rgt
-			AND node.' . $where . '
-			ORDER BY parent.lft;';
-        return $this->selectObjectsBySql($sql);
-    }
-
-	/**
-	 * @param  $table
-	 * @param null $node
-	 * @return array
-	 */
-    function selectNestedNodeParent($table, $node=null) {
-        if (empty($node))
-            return array();
-
-        $where = is_numeric($node) ? 'id=' . $node : 'title="' . $node . '"';
-        $sql = 'SELECT parent.*
-			FROM `' . $this->prefix . $table . '` AS node,
-			`' . $this->prefix . $table . '` AS parent
-			WHERE node.lft BETWEEN parent.lft AND parent.rgt
-			AND node.' . $where . '
-			ORDER BY parent.lft DESC
-			LIMIT 1, 1;';
-        $parent_array = $this->selectObjectsBySql($sql);
-        return $parent_array[0];
-    }
-
-	/**
-	 * @param  $table
-	 * @param null $node
-	 * @return array
-	 */
-    function selectNestedNodeChildren($table, $node=null) {
-        if (empty($node))
-            return array();
-
-        $where = is_numeric($node) ? 'node.id=' . $node : 'node.title="' . $node . '"';
-        $sql = '
-			SELECT node.*, (COUNT(parent.title) - (sub_tree.depth + 1)) AS depth
-			FROM ' . $this->prefix . $table . ' AS node,
-				' . $this->prefix . $table . ' AS parent,
-				' . $this->prefix . $table . ' AS sub_parent,
-				(
-					SELECT node.*, (COUNT(parent.title) - 1) AS depth
-					FROM ' . $this->prefix . $table . ' AS node,
-					' . $this->prefix . $table . ' AS parent
-					WHERE node.lft BETWEEN parent.lft AND parent.rgt
-					AND ' . $where . '
-					GROUP BY node.title
-					ORDER BY node.lft
-				)AS sub_tree
-			WHERE node.lft BETWEEN parent.lft AND parent.rgt
-				AND node.lft BETWEEN sub_parent.lft AND sub_parent.rgt
-				AND sub_parent.title = sub_tree.title
-			GROUP BY node.title
-			HAVING depth = 1
-			ORDER BY node.lft;';
-		$children = $this->selectObjectsBySql($sql);
-        return $children;
-	}
-	
 	/**
 	 * This function returns all the text columns in the given table
 	 * @param $table

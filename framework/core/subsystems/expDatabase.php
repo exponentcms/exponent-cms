@@ -144,8 +144,7 @@ abstract class database {
 	    * @param array $info Information about the table itself.
 	    * @return array
 	 */
-	function createTable($tablename,$datadef,$info) {
-	}
+	abstract function createTable($tablename,$datadef,$info);
 
 	/**
 	* This is an internal function for use only within the database class
@@ -352,8 +351,7 @@ abstract class database {
 	*   An aggressive update will drop columns in the table that are not in the Exponent definition.
 	* @return array
 	*/
-	function alterTable($tablename, $newdatadef, $info, $aggressive = false) {
-	}
+	abstract function alterTable($tablename, $newdatadef, $info, $aggressive = false);
 
 	/**
 	* Drop a table from the database
@@ -364,8 +362,7 @@ abstract class database {
 	* @param string $table The name of the table to drop.
 	* @return bool
 	*/
-	function dropTable($table) {
-	}
+	abstract function dropTable($table);
 
 	/**
 	 * Run raw SQL.  Returns true if the query succeeded, and false
@@ -381,8 +378,7 @@ abstract class database {
 	 * @param bool $escape
 	 * @return mixed
 	 */
-	function sql($sql, $escape = true) {
-	}
+	abstract function sql($sql, $escape = true);
 
 	/**
 	 * Toggle a boolean value in a Table Entry
@@ -407,8 +403,7 @@ abstract class database {
 	 * @param int|null $where
 	 * @return void
 	 */
-	function columnUpdate($table, $col, $val, $where=1) {
-	}
+	abstract function columnUpdate($table, $col, $val, $where=1);
 
 	/**
 	 * @param  $object
@@ -441,15 +436,15 @@ abstract class database {
 	* @param null $orderby
 	* @return array
 	*/
-	function selectObjects($table, $where = null, $orderby = null) {
-	}
+	abstract function selectObjects($table, $where = null, $orderby = null);
 
 	/**
 	 * @param  $terms
 	 * @param null $where
 	 * @return array
 	 */
-	function selectSearch($terms, $where = null) {
+	function selectSearch($terms, $where = null) {  //FIXME never used
+
 	}
 
 	/**
@@ -463,22 +458,21 @@ abstract class database {
 	 * @param null $orderby
 	 * @return array'
 	 */
-	function selectAndJoinObjects($colsA=null, $colsB=null, $tableA, $tableB, $keyA, $keyB=null, $where = null, $orderby = null) {
+	function selectAndJoinObjects($colsA=null, $colsB=null, $tableA, $tableB, $keyA, $keyB=null, $where = null, $orderby = null) {  //FIXME never used
+
 	}
 
 	/**
 	 * @param  $sql
 	 * @return null|void
 	 */
-	function selectObjectBySql($sql) {
-	}
+	abstract function selectObjectBySql($sql);
 
 	/**
 	 * @param  $sql
 	 * @return array
 	 */
-	function selectObjectsBySql($sql) {
-	}
+	abstract function selectObjectsBySql($sql);
 
 	/**
 	 * @param  $table
@@ -488,8 +482,7 @@ abstract class database {
 	 * @param bool $distinct
 	 * @return array
 	 */
-	function selectColumn($table, $col, $where = null, $orderby = null, $distinct=false) {
-	}
+	abstract function selectColumn($table, $col, $where = null, $orderby = null, $distinct=false);
 
 	/**
 	 * @param  $table
@@ -497,7 +490,8 @@ abstract class database {
 	 * @param null $where
 	 * @return int
 	 */
-	function selectSum($table, $col, $where = null) {
+	function selectSum($table, $col, $where = null) {  //FIXME never used
+
 	}
 
 	/**
@@ -507,8 +501,7 @@ abstract class database {
 	 * @param null $orderby
 	 * @return array
 	 */
-	function selectDropdown($table, $col, $where = null, $orderby = null) {
-	}
+	abstract function selectDropdown($table, $col, $where = null, $orderby = null);
 
 	/**
 	 * @param  $table
@@ -516,14 +509,14 @@ abstract class database {
 	 * @param null $where
 	 * @return null
 	 */
-	function selectValue($table, $col, $where=null) {
-	}
+	abstract function selectValue($table, $col, $where=null);
 
 	/**
 	 * @param  $sql
 	 * @return null
 	 */
-	function selectValueBySql($sql) {
+	function selectValueBySql($sql) {  //FIXME never used
+
 	}
 
 	/**
@@ -555,8 +548,7 @@ abstract class database {
 	* @param null $orderby
 	* @return array
 	*/
-	function selectObjectsIndexedArray($table, $where = null, $orderby = null) {
-	}
+	abstract function selectObjectsIndexedArray($table, $where = null, $orderby = null);
 
 	/**
 	* Count Objects matching a given criteria
@@ -565,8 +557,7 @@ abstract class database {
 	* @param string $where Criteria for counting.
 	* @return int
 	*/
-	function countObjects($table, $where = null) {
-	}
+	abstract function countObjects($table, $where = null);
 
 	/**
 	* Count Objects matching a given criteria using raw sql
@@ -574,8 +565,7 @@ abstract class database {
 	* @param string $sql The sql query to be run
 	* @return int
 	*/
-	function countObjectsBySql($sql) {
-	}
+	abstract function countObjectsBySql($sql);
 
 	/**
 	* Count Objects matching a given criteria using raw sql
@@ -583,7 +573,8 @@ abstract class database {
 	* @param string $sql The sql query to be run
 	* @return int|void
 	*/
-	function queryRows($sql) {
+	function queryRows($sql) { //FIXME never used
+
 	}
 
 	/**
@@ -600,22 +591,19 @@ abstract class database {
 	* @param string $where Criteria used to narrow the result set.
 	* @return null|void
 	*/
-	function selectObject($table, $where) {
-	}
+	abstract function selectObject($table, $where);
 
 	/**
 	 * @param $table
 	 * @param string $lockType
 	 * @return mixed
 	 */
-	function lockTable($table,$lockType="WRITE") {
-	}
+	abstract function lockTable($table,$lockType="WRITE");
 
 	/**
 	 * @return mixed
 	 */
-	function unlockTables() {
-	}
+	abstract function unlockTables();
 
 	/**
 	* Insert an Object into some table in the Database
@@ -629,8 +617,7 @@ abstract class database {
 	*    is automagically prepended for you.
 	* @return int|void
 	*/
-	function insertObject($object, $table) {
-	}
+	abstract function insertObject($object, $table);
 
 	/**
 	* Delete one or more objects from the given table.
@@ -639,8 +626,7 @@ abstract class database {
 	* @param string $where Criteria for determining which record(s) to delete.
 	* @return mixed
 	*/
-	function delete($table, $where = null) {
-	}
+	abstract function delete($table, $where = null);
 
 	/**
 	* Update one or more objects in the database.
@@ -657,8 +643,7 @@ abstract class database {
 	* @param bool $is_revisioned
 	* @return bool|int|void
 	*/
-	function updateObject($object, $table, $where=null, $identifier='id', $is_revisioned=false) {
-	}
+	abstract function updateObject($object, $table, $where=null, $identifier='id', $is_revisioned=false);
 
 	/**
 	 * Find the maximum value of a field.  This is similar to a standard
@@ -671,8 +656,7 @@ abstract class database {
 	 * @param string $where Optional criteria for narrowing the result set.
 	 * @return mixed
 	 */
-	function max($table, $attribute, $groupfields = null, $where = null) {
-	}
+	abstract function max($table, $attribute, $groupfields = null, $where = null);
 
 	/**
 	 * Find the minimum value of a field.  This is similar to a standard
@@ -686,8 +670,7 @@ abstract class database {
 	 * @param $where Optional criteria for narrowing the result set.
 	 * @return null
 	 */
-	function min($table, $attribute, $groupfields = null, $where = null) {
-	}
+	abstract function min($table, $attribute, $groupfields = null, $where = null);
 
 	/**
 	* Increment a numeric table field in a table.
@@ -695,12 +678,11 @@ abstract class database {
 	* @param string $table The name of the table to increment in.
 	* @param string $field The field to increment.
 	* @param integer $step The step value.  Usually 1.  This can be negative, to
-	*    decrement, but the decrement() method is prefered, for readability.
+	*    decrement, but the decrement() method is preferred, for readability.
 	* @param string $where Optional criteria to determine which records to update.
 	* @return mixed
 	*/
-	function increment($table, $field, $step, $where = null) {
-	}
+	abstract function increment($table, $field, $step, $where = null);
 
 	/**
 	* Decrement a numeric table field in a table.
@@ -708,7 +690,7 @@ abstract class database {
 	* @param string $table The name of the table to decrement in.
 	* @param string $field The field to decrement.
 	* @param integer $step The step value.  Usually 1.  This can be negative, to
-	*    increment, but the increment() method is prefered, for readability.
+	*    increment, but the increment() method is preferred, for readability.
 	* @param string $where Optional criteria to determine which records to update.
 	*/
 
@@ -723,20 +705,18 @@ abstract class database {
 	* @param string $table Name of the table to look for.
 	* @return bool
 	*/
-	function tableExists($table) {
-	}
+	abstract function tableExists($table);
 
 	/**
 	* Get a list of all tables in the database.  Optionally, only the tables
-	* in the corrent logcial database (tables with the same prefix) can
+	* in the current logical database (tables with the same prefix) can
 	* be retrieved.
 	*
 	* @param bool $prefixed_only Whether to return only the tables
 	*    for the logical database, or all tables in the physical database.
 	* @return array
 	*/
-	function getTables($prefixed_only=true) {
-	}
+	abstract function getTables($prefixed_only=true);
 
 	/**
 	* Runs whatever table optimization routines the database engine supports.
@@ -744,8 +724,7 @@ abstract class database {
 	* @param string $table The name of the table to optimize.
 	* @return bool
 	*/
-	function optimize($table) {
-	}
+	abstract function optimize($table);
 
 	/**
 	* Retrieve table information for a named table.
@@ -759,7 +738,8 @@ abstract class database {
 	* @param  $table
 	* @return null
 	*/
-	function tableInfo($table) {
+	function tableInfo($table) {  //FIXME never used
+
 	}
 
 	/**
@@ -778,8 +758,7 @@ abstract class database {
 	* This function effectively calls tableInfo() on each table found.
 	* @return array
 	*/
-	function databaseInfo() {
-	}
+	abstract function databaseInfo();
 
 	/**
 	* This is an internal function for use only within the database database class
@@ -801,7 +780,8 @@ abstract class database {
 	 * @param  $table
 	 * @return array
 	 */
-	function describeTable($table) {
+	function describeTable($table) { //FIXME never used
+
 	}
 
 	/**
@@ -811,8 +791,7 @@ abstract class database {
 	* @param string $table The name of the table to get a data definition for.
 	* @return array|null
 	*/
-	function getDataDefinition($table) {
-	}
+	abstract function getDataDefinition($table);
 
 	/**
 	* This is an internal function for use only within the database class
@@ -865,23 +844,20 @@ abstract class database {
 	* cryptic error messages can be reworded.
 	* @return string
 	*/
-	function error() {
-	}
+	abstract function error();
 
 	/**
 	* Checks whether the database connection has experienced an error.
 	* @return bool
 	*/
-	function inError() {
-	}
+	abstract function inError();
 
 	/**
 	 * Unescape a string based on the database connection
 	 * @param $string
 	 * @return string
 	 */
-	function escapeString($string) {
-	}
+	abstract function escapeString($string);
 
 	/**
 	 * Create a SQL "limit" phrase
@@ -909,8 +885,7 @@ abstract class database {
 	* @param string $orderby
 	* @return array
 	*/
-	function selectArrays($table, $where = null, $orderby = null) {
-	}
+	abstract function selectArrays($table, $where = null, $orderby = null);
 
 	/**
 	* Select an array of arrays
@@ -923,8 +898,7 @@ abstract class database {
 	* @param string $sql The name of the table/object to look at
 	* @return array
 	*/
-	function selectArraysBySql($sql) {
-	}
+	abstract function selectArraysBySql($sql);
 
 	/**
 	* Select a record from the database as an array
@@ -942,8 +916,7 @@ abstract class database {
 	* @param bool $is_revisioned
 	* @return array|void
 	*/
-	function selectArray($table, $where = null, $orderby = null, $is_revisioned=false) {
-	}
+	abstract function selectArray($table, $where = null, $orderby = null, $is_revisioned=false);
 
 	/**
 	 * Select a records from the database
@@ -959,8 +932,7 @@ abstract class database {
 
 	 * @return array
 	 */
-	function selectExpObjects($table, $where=null, $classname, $get_assoc=true, $get_attached=true, $except=array(), $cascade_except=false) {
-	}
+	abstract function selectExpObjects($table, $where=null, $classname, $get_assoc=true, $get_attached=true, $except=array(), $cascade_except=false);
 
 	/**
 	* @param string $sql The sql statement to run on the model/classname
@@ -970,7 +942,8 @@ abstract class database {
 	* @param bool $get_attached
 	* @return array
 	*/
-	function selectExpObjectsBySql($sql, $classname, $get_assoc=true, $get_attached=true) {
+	function selectExpObjectsBySql($sql, $classname, $get_assoc=true, $get_attached=true) {  //FIXME never used
+
 	}
 
 	/**
@@ -1153,8 +1126,7 @@ abstract class database {
 	 * @param $table
 	 * @return array
 	 */
-	function getTextColumns($table) {
-	}
+	abstract function getTextColumns($table);
 
 }
 

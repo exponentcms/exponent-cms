@@ -25,9 +25,6 @@
  * @package Subsystems
  */
 class mysql_database extends database {
-	var $connection = null;
-	var $havedb = false;
-	var $prefix = "";
 
 	/**
 	 * Make a connection to the Database Server
@@ -75,18 +72,18 @@ class mysql_database extends database {
             }
         }
 		//fix to support utf8, warning it only works from a certain mySQL version on
-		//needed on mySQL servers that dont have the default connection encoding setting to utf8
+		//needed on mySQL servers that don't have the default connection encoding setting to utf8
 
 		//As we do not have any setting for ISAM or InnoDB tables yet, i set the minimum specs
 		// for using this feature to 4.1.2, although isam tables got the support for utf8 already in 4.1
 
-		//anything else would result in an inconsitent user experience
+		//anything else would result in an inconsistent user experience
 
 		//TODO: determine how to handle encoding on postgres
 
 		list($major, $minor, $micro) = sscanf(mysql_get_server_info(), "%d.%d.%d-%s");
 		//in case the config was written before the constant was introduced
-		//TODO: we might need a general api/registry to make backward compatibility checks + automatic upgrade wizzard
+		//TODO: we might need a general api/registry to make backward compatibility checks + automatic upgrade wizard
 		if(defined("DB_ENCODING") && $database == DB_NAME) {
 			//SET NAMES is possible since version 4.1
 			if(($major > 4) OR (($major == 4) AND ($minor >= 1))) {
@@ -109,6 +106,7 @@ class mysql_database extends database {
 	 * @param array $datadef The data definition to create, expressed in
 	 *   the Exponent Data Definition Language.
 	 * @param array $info Information about the table itself.
+	 * @return array
 	 */
 	function createTable($tablename,$datadef,$info) {
 		if (!is_array($info)) $info = array(); // Initialize for later use.
@@ -263,6 +261,7 @@ class mysql_database extends database {
 	 * terminates when the first test fails, and the status flag array is returned then.
 	 * Returns an array of status flags.  Key is the test name.  Value is a boolean,
 	 * true if the test succeeded, and false if it failed.
+	 * @return array
 	 */
 	function testPrivileges() {
 
@@ -352,6 +351,7 @@ class mysql_database extends database {
 	 * @param array $info Information about the table itself.
 	 * @param bool $aggressive Whether or not to aggressively update the table definition.
 	 *   An aggressive update will drop columns in the table that are not in the Exponent definition.
+	 * @return array
 	 */
 	function alterTable($tablename,$newdatadef,$info,$aggressive = false) {
 		$dd = $this->getDataDefinition($tablename);
@@ -437,6 +437,7 @@ class mysql_database extends database {
 	 * was an error returned by the MySQL server.
 	 *
 	 * @param string $table The name of the table to drop.
+	 * @return bool
 	 */
 	function dropTable($table) {
 		return @mysql_query("DROP TABLE `".$this->prefix."$table`",$this->connection) !== false;
@@ -677,6 +678,7 @@ class mysql_database extends database {
 	 *
 	 * @param string $table The name of the table to count objects in.
 	 * @param string $where Criteria for counting.
+	 * @return int
 	 */
 	function countObjects($table,$where = null) {
 		if ($where == null) $where = "1";
@@ -693,10 +695,11 @@ class mysql_database extends database {
                 return $obj->c;
         }
 	
-	/* exdoc
+	/** exdoc
 	 * Count Objects matching a given criteria using raw sql
 	 *
 	 * @param string $sql The sql query to be run
+	 * @return int
 	 */
 	function queryRows($sql) {
         $res = @mysql_query($this->connection,$sql);
@@ -715,6 +718,7 @@ class mysql_database extends database {
 	 *
 	 * @param string $table The name of the table/object to look at
 	 * @param string $where Criteria used to narrow the result set.
+	 * @return null|object|\stdClass
 	 */
 	function selectObject($table,$where) {
 		$res = @mysql_query("SELECT * FROM `" . $this->prefix . "$table` WHERE $where LIMIT 0,1",$this->connection);
@@ -733,6 +737,7 @@ class mysql_database extends database {
 	 * @param Object $object The object to insert.
 	 * @param string $table The logical table name to insert into.  This does not include the table prefix, which
 	 *    is automagically prepended for you.
+	 * @return int
 	 */
 	function insertObject($object,$table) {
 		$sql = "INSERT INTO `" . $this->prefix . "$table` (";
@@ -762,6 +767,7 @@ class mysql_database extends database {
 	 *
 	 * @param string $table The name of the table to delete from.
 	 * @param string $where Criteria for determining which record(s) to delete.
+	 * @return \resource
 	 */
 	function delete($table,$where = null) {
 		if ($where != null) {
@@ -784,6 +790,7 @@ class mysql_database extends database {
 	 *    the select* methods.
 	 * @param string $table The table to update in.
 	 * @param string $where Optional criteria used to narrow the result set.
+	 * @return bool
 	 */
 	function updateObject($object,$table,$where=null) {
 		$sql = "UPDATE `" . $this->prefix . "$table` SET ";
@@ -814,6 +821,7 @@ class mysql_database extends database {
 	 * @param A comma-separated list of fields (or a single field) name, used
 	 *    for a GROUP BY clause.  This can also be passed as an array of fields.
 	 * @param $where Optional criteria for narrowing the result set.
+	 * @return null
 	 */
 	function max($table,$attribute,$groupfields = null,$where = null) {
 		if (is_array($groupfields)) $groupfields = implode(",",$groupfields);
@@ -837,6 +845,7 @@ class mysql_database extends database {
 	 * @param A comma-separated list of fields (or a single field) name, used
 	 *    for a GROUP BY clause.  This can also be passed as an array of fields.
 	 * @param $where Optional criteria for narrowing the result set.
+	 * @return null
 	 */
 	function min($table,$attribute,$groupfields = null,$where = null) {
 		if (is_array($groupfields)) $groupfields = implode(",",$groupfields);
@@ -857,8 +866,9 @@ class mysql_database extends database {
 	 * @param string $table The name of the table to increment in.
 	 * @param string $field The field to increment.
 	 * @param integer $step The step value.  Usually 1.  This can be negative, to
-	 *    decrement, but the decrement() method is prefered, for readability.
+	 *    decrement, but the decrement() method is preferred, for readability.
 	 * @param string $where Optional criteria to determine which records to update.
+	 * @return \resource
 	 */
 	function increment($table,$field,$step,$where = null) {
 		if ($where == null) $where = "1";
@@ -872,7 +882,7 @@ class mysql_database extends database {
 	 * @param string $table The name of the table to decrement in.
 	 * @param string $field The field to decrement.
 	 * @param integer $step The step value.  Usually 1.  This can be negative, to
-	 *    increment, but the increment() method is prefered, for readability.
+	 *    increment, but the increment() method is preferred, for readability.
 	 * @param string $where Optional criteria to determine which records to update.
 	 */
 	function decrement($table,$field,$step,$where = null) {
@@ -884,6 +894,7 @@ class mysql_database extends database {
 	 * Returns true if the table exists, and false if it doesn't.
 	 *
 	 * @param string $table Name of the table to look for.
+	 * @return bool
 	 */
 	function tableExists($table) {
 		$res = @mysql_query("SELECT * FROM `" . $this->prefix . "$table` LIMIT 0,1",$this->connection);
@@ -892,11 +903,12 @@ class mysql_database extends database {
 
 	/**
 	 * Get a list of all tables in the database.  Optionally, only the tables
-	 * in the corrent logcial database (tables with the same prefix) can
+	 * in the current logical database (tables with the same prefix) can
 	 * be retrieved.
 	 *
 	 * @param bool $prefixed_only Whether to return only the tables
 	 *    for the logical database, or all tables in the physical database.
+	 * @return array
 	 */
 	function getTables($prefixed_only=true) {
 		$res = @mysql_query("SHOW TABLES",$this->connection);
@@ -916,6 +928,7 @@ class mysql_database extends database {
 	 * Runs whatever table optimization routines the database engine supports.
 	 *
 	 * @param string $table The name of the table to optimize.
+	 * @return bool
 	 */
 	function optimize($table) {
 		$res = (mysql_query("OPTIMIZE TABLE `" . $this->prefix . "$table`",$this->connection) != false);
@@ -946,6 +959,7 @@ class mysql_database extends database {
 	 * Returns tue of the specified table has no rows, and false if otherwise.
 	 *
 	 * @param string $table Name of the table to check.
+	 * @return bool
 	 */
 	function tableIsEmpty($table) {
 		return ($this->countObjects($table) == 0);
@@ -954,6 +968,7 @@ class mysql_database extends database {
 	/**
 	 * Returns table information for all tables in the database.
 	 * This function effectively calls tableInfo() on each table found.
+	 * @return array
 	 */
 	function databaseInfo() {
 		$sql = "SHOW TABLE STATUS";
@@ -1005,6 +1020,7 @@ class mysql_database extends database {
 	 * to intelligently alter tables that have already been installed.
 	 *
 	 * @param string $table The name of the table to get a data definition for.
+	 * @return array
 	 */
 	function getDataDefinition($table) {
 		if (!$this->tableExists($table)) return array();
@@ -1062,8 +1078,9 @@ class mysql_database extends database {
 
 	/**
 	 * Returns an error message from the server.  This is intended to be
-	 * used by the implementors of the database wrapper, so that certain
+	 * used by the implementers of the database wrapper, so that certain
 	 * cryptic error messages can be reworded.
+	 * @return string
 	 */
 	function error() {
 		if ($this->connection && mysql_errno($this->connection) != 0) {
@@ -1081,6 +1098,7 @@ class mysql_database extends database {
 
 	/**
 	 * Checks whether the database connection has experienced an error.
+	 * @return bool
 	 */
 	function inError() {
 		return ($this->connection != null && mysql_errno($this->connection) != 0);
@@ -1115,8 +1133,8 @@ class mysql_database extends database {
 		for ($i = 0; $i < mysql_num_rows($res); $i++) $arrays[] = mysql_fetch_assoc($res);
 		return $arrays;
 	}
-	
-	/* exdoc
+
+	/** exdoc
 	 * Select an array of arrays
 	 *
 	 * Selects a set of arrays from the database.  Because of the way
@@ -1124,10 +1142,13 @@ class mysql_database extends database {
 	 * SELECTing a set of records from a database table.  Returns an
 	 * array of arrays, in any random order.
 	 *
-	 * @param string $table The name of the table/object to look at
-	 * @param string $where Criteria used to narrow the result set.  If this
+	 * @param $sql
+	 *
+	 * @internal param string $table The name of the table/object to look at
+	 * @internal param string $where Criteria used to narrow the result set.  If this
 	 *   is specified as null, then no criteria is applied, and all objects are
 	 *   returned
+	 * @return array
 	 */
 	function selectArraysBySql($sql) {
         /*$logFile = "C:\\xampp\\htdocs\\supserg\\tmp\\queryLog.txt";
@@ -1141,7 +1162,7 @@ class mysql_database extends database {
 		return $arrays;
 	}
 
-    /* exdoc
+	/** exdoc
 	 * Select a record from the database as an array
 	 *
 	 * Selects a set of arrays from the database.  Because of the way
@@ -1153,6 +1174,10 @@ class mysql_database extends database {
 	 * @param string $where Criteria used to narrow the result set.  If this
 	 *   is specified as null, then no criteria is applied, and all objects are
 	 *   returned
+	 * @param null   $orderby
+	 * @param bool   $is_revisioned
+	 *
+	 * @return array|null #Fmysql_fetch_assoc|null|?
 	 */
 	function selectArray($table, $where = null, $orderby = null, $is_revisioned=false) {
 		if ($where == null) $where = "1";

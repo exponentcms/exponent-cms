@@ -26,12 +26,6 @@
  */
 
 class postgres_database extends database {
-    /**
-     * @var string $connection Database connection string
-     */
-	var $connection = null;
-	var $prefix = "";
-	
 	var $error = "";
 	var $in_error = false;
 

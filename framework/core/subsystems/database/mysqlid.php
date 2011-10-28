@@ -21,13 +21,10 @@
  * @copyright 2004-2011 OIC Group, Inc.
  * @author Written and Designed by James Hunt
  * @version 2.0.0
- * @subpackage Database = mysqlid
+ * @subpackage Database = mysqlid (debug)
  * @package Subsystems
  */
-class mysqlid_database extends database {
-	var $connection = null;
-	var $havedb = false;
-	var $prefix = "";  
+class mysqlid_database extends mysqli_database {
     var $logFile;
     var $startTime;
     var $logFH;
@@ -98,7 +95,7 @@ class mysqlid_database extends database {
         }*/
         /*if ($displ == FALSE)
             return $qt;
-        else echo "$qn Querys&nbsp;in&nbsp;".$qt."&nbsp;sec.";
+        else echo "$qn Queries&nbsp;in&nbsp;".$qt."&nbsp;sec.";
         return ;*/
         $this->writeLog("------------------------------------------"); 
         $this->writeLog("Func: " . $func);
@@ -120,12 +117,12 @@ class mysqlid_database extends database {
 			$this->havedb = true;
 		}
 		//fix to support utf8, warning it only works from a certain mySQL version on
-		//needed on mySQL servers that dont have the default connection encoding setting to utf8
+		//needed on mySQL servers that don't have the default connection encoding setting to utf8
 
 		//As we do not have any setting for ISAM or InnoDB tables yet, i set the minimum specs
 		// for using this feature to 4.1.2, although isam tables got the support for utf8 already in 4.1
 
-		//anything else would result in an inconsitent user experience
+		//anything else would result in an inconsistent user experience
 
 		//TODO: determine how to handle encoding on postgres
 
@@ -153,6 +150,7 @@ class mysqlid_database extends database {
 	 * @param array $datadef The data definition to create, expressed in
 	 *   the Exponent Data Definition Language.
 	 * @param array $info Information about the table itself.
+	 * @return array
 	 */
 	function createTable($tablename,$datadef,$info) {
 		if (!is_array($info)) $info = array(); // Initialize for later use.
@@ -313,6 +311,7 @@ class mysqlid_database extends database {
 	 * terminates when the first test fails, and the status flag array is returned then.
 	 * Returns an array of status flags.  Key is the test name.  Value is a boolean,
 	 * true if the test succeeded, and false if it failed.
+	 * @return array
 	 */
 	function testPrivileges() {
 
@@ -402,6 +401,7 @@ class mysqlid_database extends database {
 	 * @param array $info Information about the table itself.
 	 * @param bool $aggressive Whether or not to aggressively update the table definition.
 	 *   An aggressive update will drop columns in the table that are not in the Exponent definition.
+	 * @return array
 	 */
 	function alterTable($tablename,$newdatadef,$info,$aggressive = false) {
 		$dd = $this->getDataDefinition($tablename);
@@ -486,6 +486,7 @@ class mysqlid_database extends database {
 	 * was an error returned by the MySQL server.
 	 *
 	 * @param string $table The name of the table to drop.
+	 * @return bool
 	 */
 	function dropTable($table) {
 		return @mysqli_query($this->connection, "DROP TABLE `".$this->prefix."$table`") !== false;
@@ -503,7 +504,7 @@ class mysqlid_database extends database {
 	 *
 	 * @param string $sql The SQL query to run
 	 * @param bool $escape
-	 * @return void
+	 * @return mixed
 	 */
 	function sql($sql, $escape = true) {        
 		if($escape == true) {
@@ -749,6 +750,7 @@ class mysqlid_database extends database {
 	 *
 	 * @param string $table The name of the table to count objects in.
 	 * @param string $where Criteria for counting.
+	 * @return int
 	 */
 	function countObjects($table,$where = null) {
 		if ($where == null) $where = "1";
@@ -763,7 +765,8 @@ class mysqlid_database extends database {
 	 * Count Objects matching a given criteria using raw sql
 	 *
 	 * @param string $sql The sql query to be run
-	 */
+     * @return int
+     */
 	function countObjectsBySql($sql) {
         $res = @mysqli_query($this->connection,$sql);
         if ($res == null) return 0;
@@ -776,6 +779,7 @@ class mysqlid_database extends database {
 	 * Count Objects matching a given criteria using raw sql
 	 *
 	 * @param string $sql The sql query to be run
+	 * @return int|void
 	 */
 	function queryRows($sql) {
         /*$logFile = "C:\\xampp\\htdocs\\supserg\\tmp\\queryLog.txt";
@@ -799,6 +803,7 @@ class mysqlid_database extends database {
 	 *
 	 * @param string $table The name of the table/object to look at
 	 * @param string $where Criteria used to narrow the result set.
+	 * @return null|void
 	 */
 	function selectObject($table,$where) {
 		$res = mysqli_query($this->connection, "SELECT * FROM `" . $this->prefix . "$table` WHERE $where LIMIT 0,1");
@@ -817,6 +822,7 @@ class mysqlid_database extends database {
 	 * @param Object $object The object to insert.
 	 * @param string $table The logical table name to insert into.  This does not include the table prefix, which
 	 *    is automagically prepended for you.
+	 * @return int|void
 	 */
 	function insertObject($object,$table) {
 		$sql = "INSERT INTO `" . $this->prefix . "$table` (";
@@ -845,6 +851,7 @@ class mysqlid_database extends database {
 	 *
 	 * @param string $table The name of the table to delete from.
 	 * @param string $where Criteria for determining which record(s) to delete.
+	 * @return void
 	 */
 	function delete($table,$where = null) {
 		if ($where != null) {
@@ -869,6 +876,7 @@ class mysqlid_database extends database {
 	 *    the select* methods.
 	 * @param string $table The table to update in.
 	 * @param string $where Optional criteria used to narrow the result set.
+	 * @return bool
 	 */
 	function updateObject($object,$table,$where=null) {
 		$sql = "UPDATE " . $this->prefix . "$table SET ";
@@ -946,8 +954,9 @@ class mysqlid_database extends database {
 	 * @param string $table The name of the table to increment in.
 	 * @param string $field The field to increment.
 	 * @param integer $step The step value.  Usually 1.  This can be negative, to
-	 *    decrement, but the decrement() method is prefered, for readability.
+	 *    decrement, but the decrement() method is preferred, for readability.
 	 * @param string $where Optional criteria to determine which records to update.
+	 * @return void
 	 */
 	function increment($table,$field,$step,$where = null) {
 		if ($where == null) $where = "1";
@@ -962,7 +971,7 @@ class mysqlid_database extends database {
 	 * @param string $table The name of the table to decrement in.
 	 * @param string $field The field to decrement.
 	 * @param integer $step The step value.  Usually 1.  This can be negative, to
-	 *    increment, but the increment() method is prefered, for readability.
+	 *    increment, but the increment() method is preferred, for readability.
 	 * @param string $where Optional criteria to determine which records to update.
 	 */
 	function decrement($table,$field,$step,$where = null) {
@@ -975,6 +984,7 @@ class mysqlid_database extends database {
 	 * Returns true if the table exists, and false if it doesn't.
 	 *
 	 * @param string $table Name of the table to look for.
+	 * @return bool
 	 */
 	function tableExists($table) {
 		$res = @mysqli_query($this->connection, "SELECT * FROM `" . $this->prefix . "$table` LIMIT 0,1");
@@ -984,11 +994,12 @@ class mysqlid_database extends database {
 
 	/**
 	 * Get a list of all tables in the database.  Optionally, only the tables
-	 * in the corrent logcial database (tables with the same prefix) can
+	 * in the current logical database (tables with the same prefix) can
 	 * be retrieved.
 	 *
 	 * @param bool $prefixed_only Whether to return only the tables
 	 *    for the logical database, or all tables in the physical database.
+	 * @return array
 	 */
 	function getTables($prefixed_only=true) {
 		$res = @mysqli_query($this->connection,"SHOW TABLES");
@@ -1009,6 +1020,7 @@ class mysqlid_database extends database {
 	 * Runs whatever table optimization routines the database engine supports.
 	 *
 	 * @param string $table The name of the table to optimize.
+	 * @return bool
 	 */
 	function optimize($table) {
 		$res = (@mysqli_query($this->connection,"OPTIMIZE TABLE `" . $this->prefix . "$table`") != false);
@@ -1040,6 +1052,7 @@ class mysqlid_database extends database {
 	 * Returns tue of the specified table has no rows, and false if otherwise.
 	 *
 	 * @param string $table Name of the table to check.
+	 * @return bool
 	 */
 	function tableIsEmpty($table) {
 		return ($this->countObjects($table) == 0);
@@ -1048,6 +1061,7 @@ class mysqlid_database extends database {
 	/**
 	 * Returns table information for all tables in the database.
 	 * This function effectively calls tableInfo() on each table found.
+	 * @return array
 	 */
 	function databaseInfo() {
 		$sql = "SHOW TABLE STATUS";
@@ -1099,6 +1113,7 @@ class mysqlid_database extends database {
 	 * to intelligently alter tables that have already been installed.
 	 *
 	 * @param string $table The name of the table to get a data definition for.
+	 * @return array|null
 	 */
 	function getDataDefinition($table) {
 	    // make sure the table exists
@@ -1123,7 +1138,7 @@ class mysqlid_database extends database {
 
         // save this table description to cache so we don't need to go the DB next time.
         expSession::setTableCache($table, $dd);
-        $this->query_time('getDataDefintion');
+        $this->query_time('getDataDefinition');
 		return $dd;
 	}
 
@@ -1166,8 +1181,9 @@ class mysqlid_database extends database {
 
 	/**
 	 * Returns an error message from the server.  This is intended to be
-	 * used by the implementors of the database wrapper, so that certain
+	 * used by the implementers of the database wrapper, so that certain
 	 * cryptic error messages can be reworded.
+	 * @return string
 	 */
 	function error() {
 		if ($this->connection && mysqli_errno($this->connection) != 0) {
@@ -1185,6 +1201,7 @@ class mysqlid_database extends database {
 
 	/**
 	 * Checks whether the database connection has experienced an error.
+	 * @return bool
 	 */
 	function inError() {
 		return ($this->connection != null && mysqli_errno($this->connection) != 0);

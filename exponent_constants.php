@@ -115,31 +115,31 @@ if (!defined('SCRIPT_FILENAME')) {
 	define('SCRIPT_FILENAME', 'index.php');
 }
 
-/* exdoc
+/** exdoc
  * Filesystem Error Response: Success
  * @node Subsystems:Files
  */
 define("SYS_FILES_SUCCESS",		0);
 
-/* exdoc
+/** exdoc
  * Filesystem Error Response: Found File at Destination
  * @node Subsystems:Files
  */
 define("SYS_FILES_FOUNDFILE",	1);
 
-/* exdoc
+/** exdoc
  * Filesystem Error Response: Found Directory at Destination
  * @node Subsystems:Files
  */
 define("SYS_FILES_FOUNDDIR",	2);
 
-/* exdoc
+/** exdoc
  * Filesystem Error Response: Destination not writable
  * @node Subsystems:Files
  */
 define("SYS_FILES_NOTWRITABLE",	3);
 
-/* exdoc
+/** exdoc
  * Filesystem Error Response: Destination not readable
  * @node Subsystems:Files
  */
@@ -151,7 +151,7 @@ define("SYS_FILES_NOTREADABLE",	4);
  */
 define("SYS_FILES_NOTDELETABLE",	5);
 
-/* exdoc
+/** exdoc
  * The EQL header string for object dump file formats.
  * This header defines the version of EQL native to
  * the current implementation of the Backup Subsystem.
@@ -183,34 +183,34 @@ define('UILEVEL_PERMISSIONS',2);
 */
 define('UILEVEL_STRUCTURE',3);
 
-/* exdoc
+/** exdoc
  * This constant can (and should) be used by other parts of the system
  * for defining and communicating an extension type of module.
  * @node Subsystems:Core
  */
-define("CORE_EXT_MODULE",1);
+//define("CORE_EXT_MODULE",1);
 
-/* exdoc
+/** exdoc
  * This constant can (and should) be used by other parts of the system
  * for defining and communicating an extension type of theme.
  * @node Subsystems:Core
  */
-define("CORE_EXT_THEME",2);
+//define("CORE_EXT_THEME",2);
 
-/* exdoc
+/** exdoc
  * This constant can (and should) be used by other parts of the system
  * for defining and communicating an extension type of subsystem.
  * @node Subsystems:Core
  */
-define("CORE_EXT_SUBSYSTEM",3);
+//define("CORE_EXT_SUBSYSTEM",3);
 
-/* exdoc
+/** exdoc
  * This constant can (and should) be used by other parts of the system
  * for defining and communicating an 'extension type' to represent the
  * whole system
  * @node Subsystems:Core
  */
-define("CORE_EXT_SYSTEM",4);
+//define("CORE_EXT_SYSTEM",4);
 
 define("DATABASE_TABLE_EXISTED",		1);
 define("DATABASE_TABLE_INSTALLED",		2);
@@ -287,7 +287,7 @@ define('DB_FULLTEXT',		7);
 /**
  * ??????
  */
-define('DB_DEF_IGNORE',	100);
+//define('DB_DEF_IGNORE',	100);
 
 /**
  * Field Type specifier: Numeric ID
@@ -380,7 +380,7 @@ define('TABLE_ALTER_FAILED',	202);
  * If specified as true in a table info array, the workflow tables will
  * be created to match.
  */
-define('DB_TABLE_WORKFLOW',	300);
+//define('DB_TABLE_WORKFLOW',	300);
 
 /**
  * Table Meta Info : Table Comment
@@ -454,7 +454,7 @@ if (!defined('EXPONENT_USER_OS')) {
 }
 
 if (!defined('JS_FULL')) {
-	/* exdoc
+	/** exdoc
 	 * The absolute path to Exponent's core javascript.
 	 */
 	define('JS_FULL',URL_FULL.'framework/core/js/');
