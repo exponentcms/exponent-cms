@@ -308,7 +308,7 @@ class product extends expRecord {
         //eDebug($product);   
         //if (!empty($product->user_input_fields)) $product->user_input_fields = expUnserialize($product->user_input_fields);
         //eDebug($product);
-        $form = new controllerTemplate(new storeController(), $this->getForm($form));
+        $form = new controllertemplate(new storeController(), $this->getForm($form));
         $form->assign('params', $params);
         $form->assign('product', $this);
         if (!empty($params['children']))
@@ -467,7 +467,7 @@ class product extends expRecord {
         $viewname = $this->getForm('formatExtraData');
         if (!$viewname) return null;
 
-        $view = new controllerTemplate($this, $viewname);
+        $view = new controllertemplate($this, $viewname);
 	    $view->assign('extra_data', expUnserialize($item->extra_data));
         return $view->render();
     }
@@ -476,7 +476,7 @@ class product extends expRecord {
         $viewname = $this->getForm('storeListing');
         if (!$viewname) return null;
         
-        $view = new controllerTemplate($this, $viewname);
+        $view = new controllertemplate($this, $viewname);
 	    $view->assign('listing', $this);
         return $view->render();
     }
@@ -486,7 +486,7 @@ class product extends expRecord {
         if (!$viewname) return null;
         
         $options = expUnserialize($item->options);
-        $view = new controllerTemplate($this, $viewname);
+        $view = new controllertemplate($this, $viewname);
 	    $view->assign('product', $this);
 	    $view->assign('item', $item);
 	    $view->assign('options', $options);
@@ -502,10 +502,8 @@ class product extends expRecord {
     
     public function getForm($form) {        
         $dirs = array(
-//            BASE.'themes/'.DISPLAY_THEME_REAL.'/modules/ecommerce/products/views/'.$this->product_type.'/',
             BASE.'themes/'.DISPLAY_THEME.'/modules/ecommerce/products/views/'.$this->product_type.'/',
             BASE.'framework/modules/ecommerce/products/views/'.$this->product_type.'/',
-//            BASE.'themes/'.DISPLAY_THEME_REAL.'/modules/ecommerce/products/views/product/',
             BASE.'themes/'.DISPLAY_THEME.'/modules/ecommerce/products/views/product/',
             BASE.'framework/modules/ecommerce/products/views/product/',
         );
@@ -612,23 +610,32 @@ class product extends expRecord {
         else if ($a->child_rank == $b->child_rank) return 0; 
     }
     
-    public function saveCategories($catArray,$catRankArray = null)
+    public function saveCategories($catArray, $catRankArray = null, $id = '', $product_type = '')
     {
         global $db;
+		
+		if(empty($id)) {
+			$id = $this->id;
+		}
+		
+		if(empty($product_type)) {
+			$product_type = $this->product_type;
+		}
+		
         // if there are no categories specified we'll set this to the 0 category..meaning uncategorized'
         //eDebug($this->params['storeCategory']); 
         if (empty($catArray)) 
         {
-            $db->delete('product_storeCategories', 'product_id='.$this->id);
+            $db->delete('product_storeCategories', 'product_id='.$id);
             $catArray = array(0);
             $assoc->storecategories_id = 0;
-            $assoc->product_id = $this->id;
-            $assoc->product_type = $this->product_type;
+            $assoc->product_id = $id;
+            $assoc->product_type = $product_type;
             $assoc->rank = 0;
             $db->insertObject($assoc, 'product_storeCategories');
         }else{
             //we need to preserve the rank, so we need to check if we are in cateogories:
-            $cats = $db->selectArrays('product_storeCategories', 'product_id='.$this->id);
+            $cats = $db->selectArrays('product_storeCategories', 'product_id='.$id);
             $curCats = array();
             foreach($cats as $c)
             {
@@ -642,8 +649,8 @@ class product extends expRecord {
                 {
                     //create new
                     $assoc->storecategories_id = $cat;
-                    $assoc->product_id = $this->id;
-                    $assoc->product_type = $this->product_type;
+                    $assoc->product_id = $id;
+                    $assoc->product_type = $product_type;
                     if($catRankArray != null && isset($catRankArray[$cat]) && $catRankArray[$cat]!='' && $catRankArray[$cat]!='0')
                     {
                         $assoc->rank = $catRankArray[$cat];
@@ -657,22 +664,22 @@ class product extends expRecord {
                 {
                     //update old
                     $assoc->storecategories_id = $cat;
-                    $assoc->product_id = $this->id;
-                    $assoc->product_type = $this->product_type;
+                    $assoc->product_id = $id;
+                    $assoc->product_type = $product_type;
                     if($catRankArray != null && isset($catRankArray[$cat]) && $catRankArray[$cat]!='' && $catRankArray[$cat]!='0')
                     {
                         $assoc->rank = $catRankArray[$cat];
                     }else{
-                        $assoc->rank = $db->selectValue('product_storeCategories','rank', 'storecategories_id=' . $cat . ' AND product_id=' . $this->id);    
+                        $assoc->rank = $db->selectValue('product_storeCategories','rank', 'storecategories_id=' . $cat . ' AND product_id=' . $id);    
                     }                    
-                    $db->updateObject($assoc, 'product_storeCategories','product_id=' . $this->id . ' AND storecategories_id=' . $cat);  
+                    $db->updateObject($assoc, 'product_storeCategories','product_id=' . $id . ' AND storecategories_id=' . $cat);  
                     //eDebug("Adding " . $cat);
                 }                    
             }
             foreach ($curCats as $delcat) {
                 if (!in_array($delcat,$catArray))
                 {
-                    $db->delete('product_storeCategories', 'product_id='.$this->id . ' AND storecategories_id=' . $delcat);
+                    $db->delete('product_storeCategories', 'product_id='.$id . ' AND storecategories_id=' . $delcat);
                     //$db->decrement('product_storeCategories', 'rank', 1, ' AND storecategories_id=' . $delcat);
                 }                    
             }     
@@ -735,6 +742,179 @@ class product extends expRecord {
         $item = $this;
         $item->score = $score;     
     }
+	
+	public function update($params=array()) {
+		global $db;
+
+		//Get the product
+		$product = $db->selectObject('product', 'id =' . $params['id']);
+		//Get product files
+		$product->expFile =  $this->getProductFiles($params['id']);
+		// eDebug($product, true);
+		
+		$tab_loaded = $params['tab_loaded'];
+		//check if we're saving a newly copied product and if we create children also
+		$originalId = isset($params['original_id']) && isset($params['copy_children']) ? $params['original_id'] : 0;
+		$originalModel = isset($params['original_model']) && isset($params['copy_children']) ? $params['original_model'] : 0;
+		
+		if (!empty($product->parent_id)) $product->sef_url = '';  //if child, set sef_url to nada
+		
+		//Tabs with not directly being saved in the product table and need some special operations
+		$tab_exceptions = array(
+				'categories',
+				'options',
+				'related',
+				'userinput',
+				'extrafields',
+				'model',
+				'notes'
+			);
+			
+		foreach($tab_loaded as $tab_key => $tab_item) {
+			if(!in_array($tab_key, $tab_exceptions)) {
+				foreach($params[$tab_key] as $key => $item) {
+					$product->$key = $item;
+				}
+			}
+		}
+		
+		if(isset($tab_loaded['images'])) {
+			$product->expFile= $params['expFile'];
+		}
+		
+		if ($params['shipping']['required_shipping_calculator_id'] > 0) {
+			$product->required_shipping_method = $params['required_shipping_methods'][$params['shipping']['required_shipping_calculator_id']];
+		}
+		
+		if(isset($tab_loaded['categories'])) {
+			$this->saveCategories($params['storeCategory'], null, $params['id'], $this->classname); 
+		}
+		
+		if(isset($tab_loaded['options'])) {
+			//Option Group Tab 
+			if (!empty($params['optiongroups'])) {
+	  
+				foreach ($params['optiongroups'] as $title=>$group) {
+					if (isset($this->params['original_id']) && $params['original_id'] != 0) $group['id'] = '';  //for copying products  
+				 
+					$optiongroup = new  optiongroup($group);
+					$optiongroup->product_id = $product->id;                                
+					$optiongroup->save();
+					
+					foreach ($params['optiongroups'][$title]['options'] as $opt_title=>$opt) {
+						if (isset($params['original_id']) && $params['original_id'] != 0) $opt['id'] = ''; //for copying products
+					   
+						$opt['product_id'] = $product->id;
+						$opt['is_default'] = false;
+						$opt['title'] = $opt_title;
+						$opt['optiongroup_id'] = $optiongroup->id;
+						if (isset($params['defaults'][$title]) && $params['defaults'][$title] == $opt['title']) {
+							$opt['is_default'] = true;
+						}
+						
+						$option = new option($opt);                    
+						$option->save();
+					}
+				}
+			}
+		}
+		
+		if(isset($tab_loaded['related'])) {
+			//Related Products Tab
+			if (!empty($tab_loaded['related']) && (empty($originalId) || !empty($params['copy_related']))) {
+				$relprods = $db->selectObjects('crosssellItem_product',"product_id=".$product->id);
+				$db->delete('crosssellItem_product','product_id='.$product->id);
+				foreach ($params['relatedProducts'] as $key=>$prodid) {
+					$ptype = new product($prodid);
+					$tmp->product_id = $product->id;
+					$tmp->crosssellItem_id = $prodid;
+					$tmp->product_type = $ptype->product_type;
+					$db->insertObject($tmp,'crosssellItem_product');
+					
+					if (isset($params['relateBothWays'][$prodid])) {
+						$tmp->crosssellItem_id = $product->id;
+						$tmp->product_id = $prodid;
+						$tmp->product_type = $ptype->product_type;
+						$db->insertObject($tmp,'crosssellItem_product');
+					}
+				}
+			}
+		}
+		
+		if(isset($tab_loaded['userinput'])) {
+			//User Input fields Tab                                                                     
+			if (isset($params['user_input_use']) && is_array($params['user_input_use'])) {        
+				foreach ($params['user_input_use'] as $ukey=>$ufield) {  
+					$user_input_fields[] = array('use'=>$params['user_input_use'][$ukey], 'name'=>$params['user_input_name'][$ukey], 'is_required'=>$params['user_input_is_required'][$ukey], 'min_length'=>$params['user_input_min_length'][$ukey],'max_length'=>$params['user_input_max_length'][$ukey],'description'=>$params['user_input_description'][$ukey]);
+				}
+				$product->user_input_fields = serialize($user_input_fields);
+			} else {
+				$product->user_input_fields = serialize(array());    
+			}
+		}
+		
+		if(isset($tab_loaded['extrafields'])) {
+			//Extra Field Tab
+			foreach ($params['extra_fields_name'] as $xkey=>$xfield) {               
+				if (!empty($xfield)) {
+					$extra_fields[] = array('name'=>$xfield, 'value'=>$params['extra_fields_value'][$xkey]); 
+				}
+			}
+			if (is_array($extra_fields)) {
+				$product->extra_fields = serialize($extra_fields);
+			} else {
+				unset($product->extra_fields);
+			}
+		}
+		
+		//Adjusting Children Products
+		if (!empty($originalId) && !empty($this->params['copy_children'])) {
+			$origProd = new $product_type($originalId);
+			$children = $origProd->find('all', 'parent_id=' . $originalId);
+			foreach ($children as $child) {
+			
+				unset($child->id);
+				$child->parent_id = $product->id;
+				$child->title = $product->title;
+				$child->sef_url = '';
+				if (isset($this->params['adjust_child_price']) && isset($this->params['new_child_price']) && is_numeric($this->params['new_child_price'])) {
+					$child->base_price = $this->params['new_child_price'];
+				}
+				
+				if (!empty($originalModel)) {
+					$child->model = str_ireplace($originalModel, $product->model, $child->model);    
+				}              
+				
+				$child->save();
+			}
+		}
+		
+		//Check if we are copying and not just editing product
+		if(isset($params['original_id'])) {
+			// eDebug($product->id, true);
+			unset($product->id);
+			unset($product->sef_url);
+			$product->original_id = $params['original_id'];
+			// eDebug($product, true);
+		}	
+		parent::update($product); 
+	}
+	
+	private function getProductFiles($id = '') {
+		global $db;
+		
+		if(empty($id)) return false;
+		
+		$expFilesObj = $db->selectObjects("content_expFiles", "content_id = {$id}");
+		
+		$files = array();
+		foreach($expFilesObj as $item) {
+			$files[$item->subtype][] = $item->expfiles_id;
+			$files[$item->subtype][] = "expFile[{$item->subtype}][]";
+		}
+		
+		return $files;
+	}
 }
 
 ?>

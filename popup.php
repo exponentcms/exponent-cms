@@ -26,21 +26,19 @@ ob_start();
 // Initialize the Exponent Framework
 require_once('exponent.php');
 
-// Initialize the theme subsystem 1.0 compatibility layer
-require_once(BASE.'framework/core/subsystems-1/theme.php');
-
 $loc = expCore::makeLocation(
 	(isset($_GET['module'])?$_GET['module']:''),
 	(isset($_GET['src'])?$_GET['src']:''),
 	(isset($_GET['int'])?$_GET['int']:'')
 );
 
-$SYS_FLOW_REDIRECTIONPATH='popup';
+//$SYS_FLOW_REDIRECTIONPATH='popup';
 
 if (expTheme::inAction()) {
 	expTheme::runAction();
 } else if (isset($_GET['module']) && isset($_GET['view'])) {
-	expHistory::flowSet(SYS_FLOW_PUBLIC,SYS_FLOW_SECTIONAL);
+//	expHistory::flowSet(SYS_FLOW_PUBLIC,SYS_FLOW_SECTIONAL);
+	expHistory::set('viewable', $router->params);
 
 	$mod = new $_GET['module']();
 	$mod->show($_GET['view'],$loc,(isset($_GET['title'])?$_GET['title']:''));

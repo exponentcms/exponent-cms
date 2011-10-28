@@ -201,8 +201,8 @@ class navigationmodule {
 			// of all the text module added together.
 			$modnames = array('text', 'textController');
 			foreach ($modnames as $mod) {
-			    $loc->mod = getControllerName($mod);
-			    $controllername = getControllerClassName($mod);    			
+			    $loc->mod = expModules::getControllerName($mod);
+			    $controllername = expModules::getControllerClassName($mod);
 			    foreach($db->selectObjects('sectionref', "module='".$controllername."' AND section=".$section->id) as $module) {
 				    $loc->src = $module->source;
 				    $loc->int = '';				    
@@ -382,7 +382,6 @@ class navigationmodule {
 		}
 
 		$prefix = '@st'.$template->id;
-//		$refs = $db->selectObjects('locationref',"source LIKE '$prefix%'");
 		$refs = $db->selectObjects('sectionref',"source LIKE '$prefix%'");
 		
 		// Copy all modules and content for this section
@@ -438,25 +437,18 @@ class navigationmodule {
 		foreach ($secrefs as $secref) {
 			$loc = expCore::makeLocation($secref->module,$secref->source,$secref->internal);
 			expCore::decrementLocationReference($loc,$parent);
-			
-//			foreach ($db->selectObjects('locationref',"module='".$secref->module."' AND source='".$secref->source."' AND internal='".$secref->internal."' AND refcount = 0") as $locref) {
-//				if (class_exists($locref->module)) {
-//				    $modclass = $locref->module;
-				if (class_exists($secref->module)) {
-				    $modclass = $secref->module;
-				    
-				    //FIXME: more module/controller glue code
-	                if (controllerExists($modclass)) {
-	                    $mod = new $modclass($iloc->src);
-	                    $mod->delete_instance();
-	                } else {
-	                    $mod = new $modclass();
-//	                    $mod->deleteIn(expCore::makeLocation($locref->module,$locref->source,$locref->internal));
-	                    $mod->deleteIn($loc);
-	                }
-				}
-//			}
-//			$db->delete('locationref',"module='".$secref->module."' AND source='".$secref->source."' AND internal='".$secref->internal."' AND refcount = 0");
+			if (class_exists($secref->module)) {
+			    $modclass = $secref->module;
+
+			    //FIXME: more module/controller glue code
+                if (expModules::controllerExists($modclass)) {
+                    $mod = new $modclass($iloc->src);
+                    $mod->delete_instance();
+                } else {
+                    $mod = new $modclass();
+                    $mod->deleteIn($loc);
+                }
+			}
 		}
 		$db->delete('sectionref','section='.$parent);
 		$db->delete('section','parent='.$parent);

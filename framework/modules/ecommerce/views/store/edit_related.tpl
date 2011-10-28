@@ -1,5 +1,5 @@
 <h2>Related Products</h2>                    
-
+{control type="hidden" name="tab_loaded[related]" value=1} 
 {capture assign="callbacks"}
 {literal}
 

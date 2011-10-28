@@ -19,10 +19,10 @@
 
 class donationController extends expController {
     public $basemodel_name = 'donation';
-    // public $useractions = array(
-    //     'showall'=>'Show all Donation Causes',
-    // );
-    public $useractions = array();
+    public $useractions = array(
+        'showall'=>'Show all Donation Causes',
+    );
+    // public $useractions = array();
     
     function displayname() { return "Online Donations"; }
     function description() { return "Use this module to accept donations on your website"; }

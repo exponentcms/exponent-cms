@@ -1,5 +1,6 @@
+{control type="hidden" name="tab_loaded[model]" value=1} 
 <h2>Product SKUS / Model</h2>
-<a href='{link controller="store" action="edit_model_alias" product_id=`$record->id`}' class="add">Add Model Alias</a>
+<a href='{link controller="store" action="edit_model_alias" product_id=$record->id}' class="add">Add Model Alias</a>
 <table border="0" cellspacing="0" cellpadding="0" class="exp-skin-table">
 	<thead>
 		<tr>

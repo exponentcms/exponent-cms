@@ -45,7 +45,7 @@
             <table class="quantity-controller" border="0" cellspacing="0" cellpadding="0">
                 <tr>
                     <td><input type="text" size="2" name="quantity" value="{$item->quantity}"></td>
-                    <td><input class="refresh-quantity" type="image" name="id" value="{$item->id}" src="{$smarty.const.URL_FULL}framework/modules/ecommerce/assets/images/update.png" alt="Update quantity of this item."></td>
+                    <td><input class="refresh-quantity" type="image" name="id" value="{$item->id}" src="{$smarty.const.URL_FULL|cat:'framework/modules/ecommerce/assets/images/update.png'}" alt="Update quantity of this item."></td>
                 </tr>
             </table>
              

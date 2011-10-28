@@ -20,11 +20,18 @@
  * Exponent History Subsystem
  *
  * The expHistory class is responsible for keeping track of which pages a user
- * has visited while on the site. It also tracks what type of page each one is,
+ * has visited while on the site. It also tracks what type of page/view each one is,
  * viewable, manageable, editable and uses this information to intelligently route
  * the user to proper places.  A developer can also use the methods of this class
  * help Exponent know where to route users.
- * 
+ *
+ *<b>DEFINITIONS</b>
+ * <ul>
+ * <li><b>viewable</b> - standard (public) page/view like that for showall, show, etc...</li>
+ * <li><b>manageable</b> - page/view with list of editable items for management like manage_tags, etc...  Typically you wouldn't edit in this view</li>
+ * <li><b>editable</b> - a page/view used to edit an item or settings</li>
+ * </ul>
+ *
  * <b>USAGE EXAMPLES:</b>
  * 
  * <b>Example: How to set a history WayPoint</b>
@@ -144,7 +151,7 @@ class expHistory {
         $url = '';
         if (stristr($router->current_url,'EXPONENT.')) return false;
         if (expTheme::inAction()) {
-            // we don't want to save history for these action...it screws up the flow when loging in
+            // we don't want to save history for these action...it screws up the flow when logging in
             if (!isset($router->params['action']) || $router->params['action'] == 'loginredirect' || $router->params['action'] == 'logout') return false;
             
             // figure out the module/controller names
@@ -152,7 +159,7 @@ class expHistory {
             $params_name = isset($params['controller']) ? $params['controller'] : $params['module'];
 
             // make sure the controller action is the one specified via the URL
-            if (getControllerName($router_name) == getControllerName($params_name) && $router->params['action'] == $params['action']) {
+            if (expModules::getControllerName($router_name) == expModules::getControllerName($params_name) && $router->params['action'] == $params['action']) {
                 $url = array('url_type'=>$router->url_type, 'params'=>$router->params);
             }        
         } else { //if we hit here it should be a page, not an action            
@@ -180,20 +187,20 @@ class expHistory {
 	 *
 	 * @param integer $access_level The access level of the current page.
 	 *  Either SYS_FLOW_PUBLIC or SYS_FLOW_PROTECTED
-	 * @param integer $url_type The type of URSL being set.  Either
+	 * @param integer $url_type The type of URL being set.  Either
 	 *  SYS_FLOW_SECTIONAL or SYS_FLOW_ACTION
 	 * @node Subsystems:Flow
 	 */
-	public static function flowSet($access_level,$url_type) {
-		global $SYS_FLOW_REDIRECTIONPATH;
+	public static function flowSet($access_level,$url_type) {  //FIXME - Needs to be deprecated now as it's not used!
+//		global $SYS_FLOW_REDIRECTIONPATH;
 		global $router;
 		//echo '<h1>setting flow</h1>'.$router->current_url;
-		if ($access_level == SYS_FLOW_PUBLIC) {
-			expSession::set($SYS_FLOW_REDIRECTIONPATH.'_flow_' . SYS_FLOW_PROTECTED . '_' . $url_type, $router->current_url);
-			expSession::set($SYS_FLOW_REDIRECTIONPATH.'_flow_last_' . SYS_FLOW_PROTECTED, $router->current_url);
-		}
-		expSession::set($SYS_FLOW_REDIRECTIONPATH.'_flow_' . $access_level . '_' . $url_type, $router->current_url);
-		expSession::set($SYS_FLOW_REDIRECTIONPATH.'_flow_last_' . $access_level, $router->current_url);
+//		if ($access_level == SYS_FLOW_PUBLIC) {
+//			expSession::set($SYS_FLOW_REDIRECTIONPATH.'_flow_' . SYS_FLOW_PROTECTED . '_' . $url_type, $router->current_url);
+//			expSession::set($SYS_FLOW_REDIRECTIONPATH.'_flow_last_' . SYS_FLOW_PROTECTED, $router->current_url);
+//		}
+//		expSession::set($SYS_FLOW_REDIRECTIONPATH.'_flow_' . $access_level . '_' . $url_type, $router->current_url);
+//		expSession::set($SYS_FLOW_REDIRECTIONPATH.'_flow_last_' . $access_level, $router->current_url);
 
 		//FIXME:  Glue code to try to get new history and old flow to play nicely together.
 		expHistory::set('viewable', $router->params);
@@ -244,7 +251,20 @@ class expHistory {
 	    global $history;
         $history->lastNotEditable();
 	}
-	
+
+	/**
+	 * Returns a history item further back in time than the most recent (last) one
+	 *
+	 * @static
+	 * @param $depth int How deep/far back in history to pull a link
+	 * @return mixed
+	 */
+	public static function getBack($depth) {
+	    global $history;
+        $d=$depth?$depth+1:2;
+		return $history->history[$history->history['lasts']['type']][count($history->history[$history->history['lasts']['type']])-$d]['params'];
+	}
+
     public static function returnTo($url_type=null, $params=array()) {
         global $history;
         $history->goHere($url_type, $params);

@@ -30,7 +30,7 @@
 /**
  * Class upload xxxxxx translation
  *
- * @version   0.25
+ * @version   0.28
  * @author    xxxxxxxx (xxx@xxx.xxx)
  * @license   http://opensource.org/licenses/gpl-license.php GNU Public License
  * @copyright xxxxxxxx
@@ -46,6 +46,9 @@
     $translation['uploaded_too_big_html']       = 'File upload error (the uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the html form).';
     $translation['uploaded_partial']            = 'File upload error (the uploaded file was only partially uploaded).';
     $translation['uploaded_missing']            = 'File upload error (no file was uploaded).';
+    $translation['uploaded_no_tmp_dir']         = 'File upload error (missing a temporary folder).';
+    $translation['uploaded_cant_write']         = 'File upload error (failed to write file to disk).';
+    $translation['uploaded_err_extension']      = 'File upload error (file upload stopped by extension).';
     $translation['uploaded_unknown']            = 'File upload error (unknown error code).';
     $translation['try_again']                   = 'File upload error. Please try again.';
     $translation['file_too_big']                = 'File too big.';
@@ -80,6 +83,6 @@
     $translation['file_create']                 = 'No %s create support.';
     $translation['no_conversion_type']          = 'No conversion type defined.';
     $translation['copy_failed']                 = 'Error copying file on the server. copy() failed.';
-    $translation['reading_failed']              = 'Error reading the file.';   
-        
+    $translation['reading_failed']              = 'Error reading the file.';
+
 ?>

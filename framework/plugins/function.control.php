@@ -25,8 +25,6 @@ function smarty_function_control($params,&$smarty) {
 //    || $params['type'] == 'captcha' || $params['type'] == 'recaptcha' || $params['type'] == 'antispam') {
 	  || $params['type'] == 'recaptcha' || $params['type'] == 'antispam') {
 
-        require_once(BASE.'framework/core/subsystems-1/forms.php');
-
         // if a label wasn't passed in then we need to set one.
         //if (empty($params['label'])) $params['label'] = $params['name'];
 
@@ -35,7 +33,17 @@ function smarty_function_control($params,&$smarty) {
             $control = new popupdatetimecontrol(null, "",false);
         } elseif ($params['type'] == 'yuidatetimecontrol') {
             $edittext = isset($params['edit_text']) ? $params['edit_text'] : 'Change Date/Time';
-            $control = new yuidatetimecontrol($params['value'],$edittext);
+            
+            $showdate=true;
+            if (isset($params['show_date']) && $params['show_date'] == false) {
+				$showdate = false;
+            }
+            
+            $showtime=true;
+            if (isset($params['show_time']) && $params['show_time'] == false) {
+				$showtime = false;
+            }
+            $control = new yuidatetimecontrol($params['value'],$edittext,$showdate,$showtime);
             if (empty($params['value'])) $params['value'] = time();
         } elseif ($params['type'] == 'yuicalendarcontrol') {
             $control = new yuicalendarcontrol($params['value']);
@@ -51,7 +59,8 @@ function smarty_function_control($params,&$smarty) {
             $submit = isset($params['submit']) ? $params['submit'] : null;
             $reset = isset($params['reset']) ? $params['reset'] : null;
             $cancel = isset($params['cancel']) ? $params['cancel'] : null;
-            $control = new buttongroupcontrol($submit, $reset, $cancel);
+	        $returntype = isset($params['returntype']) ? $params['returntype'] : null;
+            $control = new buttongroupcontrol($submit, $reset, $cancel, null, $returntype);
         } elseif ($params['type'] == 'files') {
             if(!empty($params['olduploader'])){
                 $control = new uploadcontrol();
@@ -287,7 +296,7 @@ function smarty_function_control($params,&$smarty) {
             $control = new genericcontrol($params['type']);
         }
     
-        //eDebug($smarty->_tpl_vars['formError']);  
+        //eDebug($smarty->getTemplateVars('formError'));
         //Add the optional params in specified
         if (isset($params['class'])) $control->class = $params['class'];
         if (isset($params['required'])) $control->required = true;

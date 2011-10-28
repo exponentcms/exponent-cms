@@ -20,7 +20,6 @@
 
 function smarty_function_attribution($params,&$smarty) {
 	if (isset($params['user_id'])) {
-//		require_once(BASE."framework/core/subsystems-1/users.php");
 		$u = user::getUserById($params['user_id']);
 	} elseif (isset($params['user'])) {
 		$u = $params['user'];

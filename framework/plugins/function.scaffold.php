@@ -20,7 +20,6 @@
 
 function smarty_function_scaffold($params,&$smarty) {
 	if (isset($params['model']) ) {
-		require_once(BASE.'framework/core/subsystems-1/forms.php');
 		global $db;
 		require_once $smarty->_get_plugin_filepath('function','control');
 
@@ -35,7 +34,7 @@ function smarty_function_scaffold($params,&$smarty) {
 		        if ($key == 'id') {
 			        $ctl['type'] = 'hidden';
 		        } else {
-			        $ctl['type'] = exponent_forms_guessControlType($col, $default_value, $key);
+			        $ctl['type'] = expTemplate::guessControlType($col, $default_value, $key);
 		        }
 
 		        //format the values if needed

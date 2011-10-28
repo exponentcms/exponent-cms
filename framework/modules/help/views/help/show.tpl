@@ -14,10 +14,8 @@
  *
  *}
 
-<div id="showhelp" class="module help show exp-skin-tabview">
-
+<div id="showhelp" class="module help show">
     <h1>{$doc->title}</h1>
-
     {permissions}
     <div class="item-actions">
         {if $permissions.edit == 1}
@@ -25,8 +23,7 @@
         {/if}
     </div>
     {/permissions}
-
-	<div id="show-help" class="yui-navset">
+	<div id="showhelp-tabs" class="yui-navset yui3-skin-sam hide">
 		<ul class="yui-nav">
 			<li class="selected"><a href="#tab1"><em>General Overview</em></a></li>
 			{if $doc->actions_views}
@@ -68,15 +65,16 @@
 			{/if}
 		</div>
 	</div>
+	<div class="loadingdiv">{"Loading Help"|gettext}</div>
 </div>
 
 {script unique="editform" yui3mods=1}
 {literal}
-    YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-tabview','yui2-element', function(Y) {
-        var YAHOO=Y.YUI2;
-
-        var tabView = new YAHOO.widget.TabView('help-show');
-        Y.one('#showhelp').removeClass('hide').next().remove();
+	YUI(EXPONENT.YUI3_CONFIG).use('tabview', function(Y) {
+	    var tabview = new Y.TabView({srcNode:'#showhelp-tabs'});
+	    tabview.render();
+		Y.one('#showhelp-tabs').removeClass('hide');
+		Y.one('.loadingdiv').remove();
     });
 {/literal}
 {/script}

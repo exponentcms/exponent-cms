@@ -64,10 +64,7 @@ return array(
                 'text'=>gt('Preview Mode'),
                 'text' => ($level == UILEVEL_PREVIEW)?gt('Turn Preview Mode off'):gt('Turn Preview Mode on'),
                 'classname' => ($level == UILEVEL_PREVIEW)?'preview_on':'preview_off',
-				'url' => makeLink(array(
-					'module' => 'administration',
-					'action' => 'toggle_preview'
-				))
+				'url' => makeLink(array('controller' => 'administration','action' => 'toggle_preview'))
             ),
         ),
     )

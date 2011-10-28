@@ -18,7 +18,6 @@
 ##################################################
 
 class recyclebin extends expRecord {
-//    public $table = 'locationref';
     public $table = 'sectionref';
     //public $validates = '';
     public function moduleOrphans($module) {
@@ -27,7 +26,7 @@ class recyclebin extends expRecord {
         
         //foreach ($orphans as $orphan) {
         for($i=0; $i<count($orphans); $i++) {
-            if (controllerExists($module)) {
+            if (expModules::controllerExists($module)) {
                 $orphans[$i]->html = renderAction(array('controller'=>$module, 'action'=>'showall','src'=>$orphans[$i]->source,"no_output"=>true));
             } else {
                 $mod = new $module();

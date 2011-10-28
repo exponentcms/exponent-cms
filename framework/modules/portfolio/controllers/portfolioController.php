@@ -32,7 +32,27 @@ class portfolioController extends expController {
     function displayname() { return "Portfolio"; }
     function description() { return "This module allows you to show off your work portfolio style."; }
     function isSearchable() { return true; }
-    
+
+	/**
+	 * edit item in module
+	 */
+	function edit() {
+		$ports = $this->portfolio->find('all');
+		$used_tags = array();
+		$taglist = '';
+		foreach ($ports as $port) {
+			foreach($port->expTag as $tag) {
+				$exptag = new expTag($tag->id);
+				if (!in_array($exptag->title,$used_tags)) {
+					$taglist .= "'".$exptag->title."',";
+					$used_tags[] = $exptag->title;
+				}
+			}
+		}
+		assign_to_template(array('taglist'=>$taglist));
+		parent::edit();
+    }
+
     public function showall() {
         $where = $this->aggregateWhereClause();
         $where .= (!empty($this->config['only_featured']))?"AND featured=1":"";

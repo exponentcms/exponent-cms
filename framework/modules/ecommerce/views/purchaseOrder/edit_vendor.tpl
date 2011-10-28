@@ -16,8 +16,8 @@
 <h1>Vendor Information</h1>
 {form action=update_vendor}
     {control type="hidden" name="vendor[id]" value=$vendor->id}
-    {control type="text" name="vendor[title]" label="Title" value=$vendor->title}
-	{control type="textarea" name="vendor[body]" label="Body" rows=5 cols=85 value=$vendor->body}
+    {control type="text" name="vendor[title]" label="Vendor Name" value=$vendor->title}
+	{control type="textarea" name="vendor[body]" label="Vendor Notes" rows=5 cols=85 value=$vendor->body}
 	{control type="text" name="vendor[address1]" label="Address 1" value=$vendor->address1}
 	{control type="text" name="vendor[address2]" label="Address 2" value=$vendor->address2}
 	{control type=text name="vendor[city]" label="City" value=$vendor->address1}

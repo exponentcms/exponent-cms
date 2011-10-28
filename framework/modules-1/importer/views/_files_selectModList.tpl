@@ -48,7 +48,7 @@
 			<tbody>
 				{foreach from=$file_data item=mod_data}
 					{foreach from=$mod_data[1] item=file}
-						<tr class="row {cycle values=even_row,odd_row}">
+						<tr class="row {cycle values='even_row,odd_row'}">
 							<td class="header" width="16"><input type="checkbox" checked="checked" name="mods[{$file}]" /></td>
 							<td>{$file}</td>
 						</tr>

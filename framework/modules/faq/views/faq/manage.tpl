@@ -14,6 +14,10 @@
  *
  *}
 
+{css unique="mangefaq-buttons" link="`$smarty.const.PATH_RELATIVE`framework/core/assets/css/button.css"}
+
+{/css}
+
 {css unique="managefaq" corecss="tables"}
 
 {/css}
@@ -45,15 +49,15 @@
 				<td>                
 					{if $question->include_in_faq == 1}
 						<a href="{link action=edit_toggle id=$question->id}" title="Remove this question from the FAQs">
-							{img src=`$smarty.const.ICON_RELATIVE`toggle_on.png}
+							{img src=$smarty.const.ICON_RELATIVE|cat:'toggle_on.png'}
 						</a>
 					{else}
 						<a href="{link action=edit_toggle id=$question->id}" title="Add this question to the FAQs">
-							{img src=`$smarty.const.ICON_RELATIVE`toggle_off.png}
+							{img src=$smarty.const.ICON_RELATIVE|cat:'toggle_off.png'}
 						</a>   
 					{/if}                
 				</td>
-				<td>{if $question->answer != ""}{img src=`$smarty.const.ICON_RELATIVE`clean.png}{/if}</td> 
+				<td>{if $question->answer != ""}{img src=$smarty.const.ICON_RELATIVE|cat:'clean.png'}{/if}</td>
 				<td>{$question->question}</td>
 				<td>{$question->created_at|format_date:$smarty.const.DISPLAY_DATE_FORMAT}</td>
 				<td>{$question->submitter_name}</td>

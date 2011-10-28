@@ -29,6 +29,7 @@ if ($user->is_acting_admin == 1) {
 		expSession::clearAllUsersSessionCache('navigationmodule');
 			
 		expHistory::back();
+//		redirect_to($_SERVER['HTTP_REFERER'].'#tab=1');
 	} else {
 		echo SITE_403_HTML;
 	}

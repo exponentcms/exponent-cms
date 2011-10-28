@@ -36,7 +36,7 @@ class textController extends expController {
 
 	function displayname() { return "Text"; }
 	function description() { return "Puts text on your webpages"; }
-	function isSearchable() { return true; }
+//	function isSearchable() { return true; }  // this content is pulled by the navigation module since we don't display individual text items
 	
 	public function showall() {
 	    expHistory::set('viewable', $this->params);

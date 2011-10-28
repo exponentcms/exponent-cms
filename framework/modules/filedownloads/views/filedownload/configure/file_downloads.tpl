@@ -19,7 +19,7 @@
     This is where you can configure the settings to be used by this File Download module. 
     These settings will only apply to this particular module.
 </p>
-{control type=dropdown name=order label="Sort By" items="Date Added, Order Manually" values="created_at,rank" value=$config.order|default:created_at}
+{control type=dropdown name=order label="Sort By" items="Date Added, Order Manually" values="created_at,rank" value=$config.order|default:rank}
 {control type=dropdown name=dir label="Sort Order" items="Newest First, Oldest First" values="DESC, ASC" value=$config.dir}
 {control type="radiogroup" name="usebody" label="Body Text"|gettext value=$config.usebody|default:0 items="Full,Summary,None" values="0,1,2"}
 {control type="checkbox" name="quick_download" label="Quick Download?" value=1 checked=$config.quick_download}

@@ -25,7 +25,7 @@
             {icon action=manage version=$current_version->id title="Manage Help Docs" text="Manage Help Docs for version `$current_version->version`"}{br}
             {icon class=manage action=manage_versions title="Manage Help Versions" text="Manage Help Versions"}{br}
 		    {if ($rank == 1)}
-	            {ddrerank items=$page->records model="help" label="Help Docs"}
+	            {ddrerank items=$page->records only="help_version_id=$current_version->id" model="help" label="Help Docs"}
 		    {/if}
         {/if}
     {/permissions}

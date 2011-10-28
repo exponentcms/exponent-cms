@@ -107,7 +107,8 @@ if (($item == null && expPermissions::check('post',$loc)) ||
 		$form->registerBefore('submit', null,'', new htmlcontrol('<hr size="1" />'));
 		$allforms = array();
 		$allforms[''] = gt('Disallow Feedback');
-		$allforms = array_merge($allforms, exponent_template_listFormTemplates("forms/email"));
+//		$allforms = array_merge($allforms, expTemplate::listFormTemplates("forms/email"));
+		$allforms = array_merge($allforms, expCore::buildNameList("forms", "forms/email", "tpl", "[!_]*"));
 		$feedback_form = ($item == null ? 0 : $item->feedback_form);
 		$feedback_email = ($item == null ? '' : $item->feedback_email);
 		$form->registerAfter('eventend', 'feedback_form', gt('Feedback Form'), new dropdowncontrol($feedback_form, $allforms));
@@ -144,9 +145,8 @@ if (($item == null && expPermissions::check('post',$loc)) ||
 		$form->register(null,'',new htmlcontrol($buttons));
 	}
 	
-	include_once(BASE.'framework/core/subsystems-1/modules.php');
-	$form->validationScript = exponent_modules_getJSValidationFile('calendarmodule','postedit');
-	
+	$form->validationScript = PATH_RELATIVE.'framework/modules-1/calendarmodule/assets/js/postedit.validate.js';  //FIXME This is not working
+
 	$template = new template('calendarmodule','_form_edit',$loc);
 	$template->assign('form_html',$form->toHTML());
 	$template->assign('is_edit',($item == null ? 0 : 1));

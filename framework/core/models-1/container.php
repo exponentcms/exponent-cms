@@ -25,7 +25,7 @@ class container {
         global $db;
         
         // check if this is a controller or module
-        $iscontroller = controllerExists($values['i_mod']);
+        $iscontroller = expModules::controllerExists($values['i_mod']);
         if (!isset($values['id'])) {
             // Only deal with the inc/dec stuff if adding a module.
             $src = "";
@@ -69,13 +69,7 @@ class container {
         
         global $db;
         $section = expSession::get("last_section");
-//        $locref = $db->selectObject("locationref","module='".$internal->mod."' AND source='".$internal->src."' AND internal='".$internal->int."'");
         $secref = $db->selectObject("sectionref", "module='".$internal->mod."' AND source='".$internal->src."' AND internal='".$internal->int."' AND section=$section");
-        
-        // if ($locref) {
-            // $locref->refcount -= 1;
-            // $db->updateObject($locref,"locationref","module='".$internal->mod."' AND source='".$internal->src."' AND internal='".$internal->int."'");
-        // }
         
         if ($secref) {
             $secref->refcount -= 1;

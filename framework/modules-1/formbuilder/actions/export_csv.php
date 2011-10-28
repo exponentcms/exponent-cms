@@ -20,11 +20,8 @@
 
 if (!defined('EXPONENT')) exit('');
 
-include_once(BASE.'framework/core/subsystems-1/forms.php');
-//include_once(BASE.'framework/core/subsystems-1/users.php');
-
 $template = new template('formbuilder','_data_view');
-expHistory::flowSet(SYS_FLOW_PUBLIC,SYS_FLOW_ACTION);
+//expHistory::flowSet(SYS_FLOW_PUBLIC,SYS_FLOW_ACTION);  //FIXME we shouldn't need to return here, right?
 
 if (isset($_GET['id'])) {
 	$_GET['id'] = intval($_GET['id']);
@@ -144,7 +141,7 @@ if (isset($_GET['id'])) {
 			//Read the file out directly
 
 			readfile($tmpfname);
-			exit();
+			if (DEVELOPMENT == 0) exit();
 
 			unlink($tmpfname);
 

@@ -18,9 +18,11 @@
 ##################################################
 
 function smarty_function_backlink($params,&$smarty) {
-	global $history;
-	$d=$params['distance']?$params['distance']+1:2;
-	echo makelink($history->history[$history->history['lasts']['type']][count($history->history[$history->history['lasts']['type']])-$d]['params']);
+//	global $history;
+//	$d=$params['distance']?$params['distance']+1:2;
+//	echo makelink($history->history[$history->history['lasts']['type']][count($history->history[$history->history['lasts']['type']])-$d]['params']);
+	$d=$params['distance']?$params['distance']:1;
+	echo makeLink(expHistory::getBack($d));
 }
 
 ?>

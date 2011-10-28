@@ -19,7 +19,7 @@
 
 function smarty_function_getchromemenu($params,&$smarty) {
 	global $router, $user;
-	$cloc = $smarty->_tpl_vars['__loc'];
+	$cloc = $smarty->getTemplateVars('__loc');
 	$module = $params['module'];
 
 	$list = '<ul class="container-menu">';
@@ -43,8 +43,8 @@ function smarty_function_getchromemenu($params,&$smarty) {
 	}
 	
 	if ($user->isAdmin()) {
-		$userlink = $router->makeLink(array('module'=>getControllerName($module->info['class']), 'src'=>$module->info['source'], 'action'=>'userperms', '_common'=>1));
-		$grouplink = $router->makeLink(array('module'=>getControllerName($module->info['class']), 'src'=>$module->info['source'], 'action'=>'groupperms', '_common'=>1));
+		$userlink = $router->makeLink(array('module'=>expModules::getControllerName($module->info['class']), 'src'=>$module->info['source'], 'action'=>'userperms', '_common'=>1));
+		$grouplink = $router->makeLink(array('module'=>expModules::getControllerName($module->info['class']), 'src'=>$module->info['source'], 'action'=>'groupperms', '_common'=>1));
 		$list .= '<li><a href="'.$userlink.'" class="user">'.gt("User Permissions").'</a></li>';
 		$list .= '<li><a href="'.$grouplink.'" class="group">'.gt("Group Permissions").'</a></li>';
 	}
@@ -55,8 +55,8 @@ function smarty_function_getchromemenu($params,&$smarty) {
 	}
 
 	if ($module->permissions['configure'] == 1) {
-		if (controllerExists($module->info['class'])) {
-			$configlink = $router->makeLink(array('module'=>getControllerName($module->info['class']), 'src'=>$module->info['source'], 'action'=>'configure', 'hcview'=>$module->view));
+		if (expModules::controllerExists($module->info['class'])) {
+			$configlink = $router->makeLink(array('module'=>expModules::getControllerName($module->info['class']), 'src'=>$module->info['source'], 'action'=>'configure', 'hcview'=>$module->view));
 			$list .= '<li><a href="'.$configlink.'" class="config-mod">'.gt("Configure Settings").'</a></li>';
 		} elseif ($module->info['hasConfig']) {
 			$configlink = $router->makeLink(array('module'=>$module->info['class'], 'src'=>$module->info['source'], 'action'=>'configure', '_common'=>1));
@@ -70,7 +70,7 @@ function smarty_function_getchromemenu($params,&$smarty) {
 	}
 	
 	if (HELP_ACTIVE) {
-		$helplink = help::makeHelpLink(getControllerName($module->info['class']));
+		$helplink = help::makeHelpLink(expModules::getControllerName($module->info['class']));
 		$list .= '<li><a href="'.$helplink.'" class="helplink" target="_blank">'.gt("Get Help").'</a></li>';
 	}
 	

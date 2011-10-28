@@ -77,7 +77,7 @@ class expLDAP {
 					'lastname'=>$user['sn'][0],
 					'email'=>$user['mail'][0],
 					'is_ldap'=>1);
-			return exponent_users_create($userdata);
+			return exponent_users_create($userdata); //FIXME function was deprecated
 		} else {
 			return null;
 		}

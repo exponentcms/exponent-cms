@@ -74,7 +74,6 @@ class fileController extends expController {
         
         // set paths we will search in for the view
         $paths = array(
-//            BASE.'themes/'.DISPLAY_THEME_REAL.'/modules/common/views/file/configure',  //FIXME change to allow preview
             BASE.'themes/'.DISPLAY_THEME.'/modules/common/views/file/configure',
             BASE.'framework/modules/common/views/file/configure',
         );        
@@ -82,7 +81,7 @@ class fileController extends expController {
         foreach ($paths as $path) {
             $view = $path.'/'.$this->params['view'].'.tpl';
             if (is_readable($view)) {
-                $template = new controllerTemplate($this, $view);
+                $template = new controllertemplate($this, $view);
                 $ar = new expAjaxReply(200, 'ok');
 		        $ar->send();
             }
@@ -138,7 +137,7 @@ class fileController extends expController {
                 $filter .= "is_image=1 AND ";
             }
 
-            $totalrecords = $this->$modelname->find('count','id!=0 '.$filter);
+            $totalrecords = $this->$modelname->find('count',"filename LIKE '%".$_GET['query']."%' OR title LIKE '%".$_GET['query']."%' OR alt LIKE '%".$_GET['query']."%'");
             
             $files = $this->$modelname->find('all',$filter."filename LIKE '%".$_GET['query']."%' OR title LIKE '%".$_GET['query']."%' OR alt LIKE '%".$_GET['query']."%'".$imagesOnly,$sort.' '.$dir, $results, $startIndex);
 
@@ -151,7 +150,7 @@ class fileController extends expController {
 
             $returnValue = array(
                 'recordsReturned'=>count($files),
-                'totalRecords'=>count($files),
+                'totalRecords'=>$totalrecords,
                 'startIndex'=>$startIndex,
                 'sort'=>$sort,
                 'dir'=>$dir,

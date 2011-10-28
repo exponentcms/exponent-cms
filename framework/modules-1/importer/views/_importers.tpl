@@ -14,6 +14,10 @@
  *
  *}
 
+{css unique="importers-buttons" link="`$smarty.const.PATH_RELATIVE`framework/core/assets/css/button.css"}
+
+{/css}
+
 <div class="importer importers">
 	<div class="form_header">
 		<h2>{'Data Importers'|gettext}</h2>

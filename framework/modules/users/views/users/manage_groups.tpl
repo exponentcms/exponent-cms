@@ -52,9 +52,9 @@
 			    <td>
 			        {permissions level=$smarty.const.UILEVEL_PERMISSIONS}
 						<div class="item-actions">
-							{icon img=groupperms.png controller=users action="manage_group_memberships" record=$group title="Add/Remove Members to Group `$group->name`"}
-							{icon img=edit.png controller=users action=edit_group record=$group title="Edit"}
-							{icon img=delete.png controller=users action=delete_group record=$group title="Delete" onclick="return confirm('Are you sure you want to delete this group?');"}
+							{icon img="groupperms.png" controller=users action="manage_group_memberships" record=$group title="Add/Remove Members to Group `$group->name`"}
+							{icon img="edit.png" controller=users action=edit_group record=$group title="Edit"}
+							{icon img="delete.png" controller=users action=delete_group record=$group title="Delete" onclick="return confirm('Are you sure you want to delete this group?');"}
 						</div>
                     {/permissions}
 			    </td>

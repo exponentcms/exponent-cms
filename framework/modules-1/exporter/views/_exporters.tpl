@@ -14,6 +14,10 @@
  *
  *}
 
+{css unique="exporters-buttons" link="`$smarty.const.PATH_RELATIVE`framework/core/assets/css/button.css"}
+
+{/css}
+
 <div class="exporter exporters">
 	<div class="form_header">
 		<h2>{'Data Exporters'|gettext}</h2>

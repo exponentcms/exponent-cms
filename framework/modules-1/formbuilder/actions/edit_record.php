@@ -20,8 +20,6 @@
 
 if (!defined('EXPONENT')) exit('');
 
-include_once(BASE.'framework/core/subsystems-1/forms.php');
-
 // Sanitize required _GET parameters
 $_GET['id'] = intval($_GET['id']);
 $_GET['form_id'] = intval($_GET['form_id']);
@@ -66,7 +64,7 @@ if ($f && $data && $controls) {
 		
 //		$form->register(uniqid(''),'', new htmlcontrol('<br /><br />'));
 		$form->register(uniqid(''),'', new htmlcontrol($antispam));
-		$form->register('submit','',new buttongroupcontrol(gt('Save'),'',gt('Cancel')));
+		$form->register('submit','',new buttongroupcontrol(gt('Save'),'',gt('Cancel'),"",'editable'));
 		$form->meta('action','submit_form');
 		$form->meta('m',$loc->mod);
 		$form->meta('s',$loc->src);
@@ -76,8 +74,8 @@ if ($f && $data && $controls) {
 		$form->meta('data_id',$data->id);
 		$form->location($loc);
 		
-		global $SYS_FLOW_REDIRECTIONPATH;
-		$SYS_FLOW_REDIRECTIONPATH = "editfallback";
+//		global $SYS_FLOW_REDIRECTIONPATH;
+//		$SYS_FLOW_REDIRECTIONPATH = "editfallback";
 		$template = new template('formbuilder','_view_form');
 		$template->assign('form_html',$form->toHTML($f->id));
 		$template->assign('form',$f);

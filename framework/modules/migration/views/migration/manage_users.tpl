@@ -70,7 +70,7 @@
 							{$user->email}
 						</td>
 						<td>
-							{if $user->is_acting_admin == 1}{img src=`$smarty.const.ICON_RELATIVE`toggle_on.png}{/if}
+							{if $user->is_acting_admin == 1}{img src=$smarty.const.ICON_RELATIVE|cat:'toggle_on.png'}{/if}
 						</td>            
 					</tr>
 				{foreachelse}

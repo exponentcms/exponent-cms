@@ -35,7 +35,7 @@ class user_avatar extends expRecord {
 	/**
 	 * @return string
 	 */
-	public function description() { return 'The extension allows users to use avatar images.'; }
+	public function description() { return 'The extension allows users to select their avatar image.'; }
 
 	/**
 	 * @param array $params

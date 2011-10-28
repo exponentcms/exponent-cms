@@ -14,7 +14,11 @@
  *
  *}
 
-{css unique="cal1" corecss="tables"}
+{css unique="verifyfiles-buttons" link="`$smarty.const.PATH_RELATIVE`framework/core/assets/css/button.css"}
+
+{/css}
+
+{css unique="verifyfiles" corecss="tables"}
 
 {/css}
 
@@ -33,7 +37,7 @@
 		<tbody>
 			{foreach from=$files_data item=status key=filename }
 				{assign var=haveFiles value=1}
-				<tr class="row {cycle values=even_row,odd_row}">
+				<tr class="row {cycle values='even_row,odd_row'}">
 					<td>{$filename}</td>
 					<td>
 						{if $status == $smarty.const.SYS_FILES_SUCCESS}

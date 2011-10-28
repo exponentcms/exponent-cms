@@ -14,7 +14,7 @@
  *
  *}
 
-<div id="editproduct" class="module store edit hide exp-skin-tabview">
+<div id="editproduct" class="module store edit">
 
     {if $record->id != ""}
         <h1>Edit Information for {$record->product_name}</h1>
@@ -27,14 +27,14 @@
         {control type="hidden" name="product_type" value=$record->product_type}
         {control type="hidden" name="product_type_id" value=$record->product_type_id}
         
-        <div id="demo" class="yui-navset">
+        <div id="editproduct-tabs" class="yui-navset yui3-skin-sam hide">
             <ul class="yui-nav">
-            <li class="selected"><a href="#tab1"><em>General Info</em></a></li>
-            <li><a href="#tab2"><em>Event Info</em></a></li>
-            <li><a href="#tab3"><em>Pricing</em></a></li>
-            <li><a href="#tab4"><em>Files & Images</em></a></li>
-            <li><a href="#tab5"><em>Categories</em></a></li>
-            <li><a href="#tab6"><em>SEO</em></a></li>
+	            <li class="selected"><a href="#tab1"><em>General Info</em></a></li>
+	            <li><a href="#tab2"><em>Event Info</em></a></li>
+	            <li><a href="#tab3"><em>Pricing</em></a></li>
+	            <li><a href="#tab4"><em>Files & Images</em></a></li>
+	            <li><a href="#tab5"><em>Categories</em></a></li>
+	            <li><a href="#tab6"><em>SEO</em></a></li>
             </ul>            
             <div class="yui-content">
                 <div id="tab1">
@@ -70,20 +70,24 @@
                 </div>
             </div>
         </div>
+	    <div class="loadingdiv">{'Loading'|gettext}</div>
         {control type="buttongroup" submit="Save Product" cancel="Cancel"}
     {/form}
 </div>
-<div class="loadingdiv">Loading</div>
-
 
 {script unique="authtabs" yui3mods=1}
 {literal}
-    YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event','yui2-tabview', function(Y) {
-        var YAHOO=Y.YUI2;
-        var tabView = new YAHOO.widget.TabView('demo');
-        YAHOO.util.Dom.removeClass("editproduct", 'hide');
-        var loading = YAHOO.util.Dom.getElementsByClassName('loadingdiv', 'div');
-        YAHOO.util.Dom.setStyle(loading, 'display', 'none');
+//    YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event','yui2-tabview', function(Y) {
+//        var YAHOO=Y.YUI2;
+//        var tabView = new YAHOO.widget.TabView('demo');
+//        YAHOO.util.Dom.removeClass("editproduct", 'hide');
+//        var loading = YAHOO.util.Dom.getElementsByClassName('loadingdiv', 'div');
+//        YAHOO.util.Dom.setStyle(loading, 'display', 'none');
+	YUI(EXPONENT.YUI3_CONFIG).use('tabview', function(Y) {
+		var tabview = new Y.TabView({srcNode:'#editproduct-tabs'});
+		tabview.render();
+		Y.one('#editproduct-tabs').removeClass('hide');
+		Y.one('.loadingdiv').remove();
     });
 {/literal}
 {/script}

@@ -14,13 +14,11 @@
  *
  *}
 
-<div id="editfile" class="module filedownload edit hide exp-skin-tabview">
-    
+<div id="editfile" class="module filedownload edit">
     {if $record->id != ""}<h1>Editing {$record->title}</h1>{else}<h1>New File Download</h1>{/if}
-    
     {form action=update}
         {control type=hidden name=id value=$record->id}
-        <div id="demo" class="yui-navset">
+        <div id="editfile-tabs" class="yui-navset yui3-skin-sam hide">
             <ul class="yui-nav">
                 <li class="selected"><a href="#tab1"><em>General</em></a></li>
 				{if $config.usestags}<li><a href="#tab2"><em>Tags</em></a></li>{/if}
@@ -57,19 +55,18 @@
             </div>
             </div>
         </div>
+	    <div class="loadingdiv">{"Loading File Download Item"|gettext}</div>
         {control type=buttongroup submit="Save File" cancel="Cancel"}
     {/form}   
-    
 </div>
-<div class="loadingdiv">Loading File Download Form</div>
 
 {script unique="editform" yui3mods=1}
 {literal}
-    YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-tabview','yui2-element', function(Y) {
-        var YAHOO=Y.YUI2;
-
-        var tabView = new YAHOO.widget.TabView('demo');
-        Y.one('#editfile').removeClass('hide').next().remove();
+	YUI(EXPONENT.YUI3_CONFIG).use('tabview', function(Y) {
+	    var tabview = new Y.TabView({srcNode:'#editfile-tabs'});
+	    tabview.render();
+		Y.one('#editfile-tabs').removeClass('hide');
+		Y.one('.loadingdiv').remove();
     });
 {/literal}
 {/script}

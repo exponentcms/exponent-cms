@@ -2,11 +2,9 @@
 // +------------------------------------------------------------------------+
 // | class.upload.de_DE.php                                                 |
 // +------------------------------------------------------------------------+
-// | Copyright (c) Felix Kuschnick 2007. All rights reserved.               |
+// | Copyright (c) some dude from Germany 2010. All rights reserved.        |
 // | Version       0.25                                                     |
-// | Last modified 27/11/2007                                               |
-// | Email         felix@paranoiaparadise.com                               |
-// | Web           http://www.paranoiaparadise.com                          |
+// | Last modified 09/10/2010                                               |
 // +------------------------------------------------------------------------+
 // | This program is free software; you can redistribute it and/or modify   |
 // | it under the terms of the GNU General Public License version 2 as      |
@@ -31,9 +29,9 @@
  * Class upload german translation
  *
  * @version   0.25
- * @author    Felix Kuschnick (felix@paranoiaparadise.com)
+ * @author    some dude from Germany
  * @license   http://opensource.org/licenses/gpl-license.php GNU Public License
- * @copyright Felix Kuschnick
+ * @copyright some dude from Germany
  * @package   cmf
  * @subpackage external
  */

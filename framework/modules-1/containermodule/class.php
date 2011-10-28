@@ -123,8 +123,8 @@ class containermodule {
 			$location = unserialize($containers[$i]->internal);
 
 			// check to see if this is a controller or module
-			$iscontroller = controllerExists($location->mod);
-			$modclass = $iscontroller ? getControllerClassName($location->mod) : $location->mod;
+			$iscontroller = expModules::controllerExists($location->mod);
+			$modclass = $iscontroller ? expModules::getControllerClassName($location->mod) : $location->mod;
 
 			if (class_exists($modclass)) {
 				$mod = new $modclass();
@@ -230,7 +230,7 @@ class containermodule {
 			$mod = new $modclass();
 			
 			ob_start();
-			if (controllerExists($modclass)) {
+			if (expModules::controllerExists($modclass)) {
 			    $action = $db->selectValue('container', 'action', "internal='".serialize($loc)."'");
 			    renderAction(array('controller'=>$modclass,'action'=>$action,'view'=>$view));
 			} else {

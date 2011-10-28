@@ -20,8 +20,6 @@
 
 if (!defined('EXPONENT')) exit('');
 
-require_once(BASE."framework/core/subsystems-1/forms.php");
-
 $f = null;
 if (isset($_GET['id'])) {
 	$f = $db->selectObject("formbuilder_form","id=".intval($_GET['id']));
@@ -46,12 +44,12 @@ if ($f) {
 		$template = new template("formbuilder","_view_form");
 		$template->assign("form_html",$form->toHTML($f->id));
 		$template->assign("form",$f);
-		global $SYS_FLOW_REDIRECTIONPATH;
-		$SYS_FLOW_REDIRECTIONPATH = "editfallback";
+//		global $SYS_FLOW_REDIRECTIONPATH;
+//		$SYS_FLOW_REDIRECTIONPATH = "editfallback";
 		$template->assign("backlink",expHistory::getLastNotEditable());
-		$SYS_FLOW_REDIRECTIONPATH = "exponent_default";
+//		$SYS_FLOW_REDIRECTIONPATH = "exponent_default";
 		
-		$types = exponent_forms_listControlTypes();
+		$types = expTemplate::listControlTypes();
 		$types[".break"] = gt('Spacer');
 		$types[".line"] = gt('Horizontal Line');
 		uasort($types,"strnatcmp");

@@ -35,7 +35,27 @@ class blogController extends expController {
     function author() { return "Phillip Ball - OIC Group, Inc"; }
     function hasSources() { return false; }  // must be explicitly added by config['add_source'] or config['aggregate']
     function isSearchable() { return true; }
-    
+
+	/**
+	 * edit item in module
+	 */
+	function edit() {
+		$blogs = $this->blog->find('all');
+		$used_tags = array();
+		$taglist = '';
+		foreach ($blogs as $blog) {
+			foreach($blog->expTag as $tag) {
+				$exptag = new expTag($tag->id);
+				if (!in_array($exptag->title,$used_tags)) {
+					$taglist .= "'".$exptag->title."',";
+					$used_tags[] = $exptag->title;
+				}
+			}
+		}
+		assign_to_template(array('taglist'=>$taglist));
+		parent::edit();
+    }
+
     public function showall() {
 	    expHistory::set('viewable', $this->params);
 		$where = $this->aggregateWhereClause();
@@ -70,7 +90,6 @@ class blogController extends expController {
                     $used_tags[$tag->id] = $exptag;
                     $used_tags[$tag->id]->count = 1;
                 }
-                
             }
         }
         
@@ -88,7 +107,6 @@ class blogController extends expController {
                 $users[$blog->poster] = new user($blog->poster);
                 $users[$blog->poster]->count = 1;
             }
-            
         }
         
 	    assign_to_template(array('authors'=>$users));
@@ -310,6 +328,5 @@ class blogController extends expController {
         return $metainfo;
     }
 	
-
 }
 ?>

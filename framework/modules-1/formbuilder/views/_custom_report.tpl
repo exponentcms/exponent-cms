@@ -13,7 +13,11 @@
  * GPL: http://www.gnu.org/licenses/gpl.txt
  *
  *}
- 
+
+{css unique="custom-report-buttons" link="`$smarty.const.PATH_RELATIVE`framework/core/assets/css/button.css"}
+
+{/css}
+
 {eval var=$template}
 
 {if $is_email == 0}

@@ -20,7 +20,6 @@
 
 //Sanity Check
 if (!defined('EXPONENT')) exit('');
-//require_once(BASE."framework/core/subsystems-1/users.php");
 
 $file = fopen(BASE.$_POST["filename"],"r");
 $post = null;
@@ -139,7 +138,7 @@ if ($linenum >= $post["rowstart"]){
 		}
 
 		$userinfo->username = $userinfo->username.$suffix;	
-		$userarray[] = exponent_users_saveUser($userinfo);
+		$userarray[] = exponent_users_saveUser($userinfo);  //FIXME function was deprecated
 		$usersdone[] = $userinfo->username;
 	}else{
 		$userinfo->linenum = $linenum;

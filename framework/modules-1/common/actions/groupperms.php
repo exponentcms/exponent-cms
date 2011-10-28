@@ -22,17 +22,16 @@ if (!defined('EXPONENT')) exit('');
 
 if (expPermissions::check('administrate',$loc)) {
 	global $router;
-	if (exponent_template_getModuleViewFile($loc->mod,'_grouppermissions',false) == TEMPLATE_FALLBACK_VIEW) {
+	if (expTemplate::getModuleViewFile($loc->mod,'_grouppermissions',false) == TEMPLATE_FALLBACK_VIEW) {
 		$template = new template('common','_grouppermissions',$loc);
 	} else {
 		$template = new template('common','_grouppermissions',$loc);
 		//$template = new template($loc->mod,'_grouppermissions',$loc);
 	}
 	$template->assign('user_form',0);
-//	include_once(BASE.'framework/core/subsystems-1/users.php');
 
 	$users = array(); // users = groups
-    $modulename = controllerExists($loc->mod) ? getControllerClassName($loc->mod) : $loc->mod;    
+    $modulename = expModules::controllerExists($loc->mod) ? expModules::getControllerClassName($loc->mod) : $loc->mod;
     //$modclass = $loc->mod;
 	$modclass = $modulename;
 	$mod = new $modclass();

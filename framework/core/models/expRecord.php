@@ -727,7 +727,7 @@ class expRecord {
 	 * @param $params
 	 * @return bool
 	 */
-	private function checkForAttachableItems($params) {
+	protected function checkForAttachableItems($params) {
         if (empty($params)) return false;
         foreach ($this->attachable_item_types as $type) {
             if (array_key_exists($type, $params)) {

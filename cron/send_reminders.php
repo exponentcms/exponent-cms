@@ -384,7 +384,6 @@ $headers = array(
 	"From"=>$from = $config->email_from_reminder,
 	"Reply-to"=>$reply = $config->email_reply_reminder
 	);
-//require_once(BASE . "framework/core/subsystems-1/users.php");
 
 // set up the html message
 $template->assign("showdetail",$config->email_showdetail);

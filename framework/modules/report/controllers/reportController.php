@@ -2,8 +2,8 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2008 OIC Group, Inc.
-# Written and Designed by Adam Kessler
+# Copyright (c) 2004-2011 OIC Group, Inc.
+# Written and Designed by OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -20,7 +20,7 @@
 class reportController extends expController {
 	//protected $basemodel_name = '';
 	//public $useractions = array('showall'=>'Show all');
-	protected $add_permissions = array('build_report'=>'Manage','cart_summary'=>'View Cart Summary Report', 'dashboard'=>'View the Ecommerce Dashboard', 'order_report'=>'Generate Order Report', 'product_report'=>'Generate Product Report','generateOrderReport'=>'View Order Report','generateProductReport'=>'View Product Report','print_orders'=>'Print Orders','batch_export'=>'Export Products', 'show_payment_summary'=>'Show Payment Summary');
+	protected $add_permissions = array('build_report'=>'Manage','cart_summary'=>'View Cart Summary Report', 'dashboard'=>'View the Ecommerce Dashboard', 'order_report'=>'Generate Order Report', 'product_report'=>'Generate Product Report','generateOrderReport'=>'View Order Report','generateProductReport'=>'View Product Report','print_orders'=>'Print Orders','batch_export'=>'Export Products', 'show_payment_summary'=>'Show Payment Summary','export_order_items'=>'Export Order Items File');
 	
 	function displayname() { return "Ecom Report Builder"; }
 	function description() { return "Build reports based on store activity"; }
@@ -401,7 +401,10 @@ class reportController extends expController {
             $states[$skey] = $state->name;
         } */
         
-        $payment_methods = array('-1'=>'', 'V'=>'Visa','MC'=>'Mastercard','D'=>'Discover','AMEX'=>'American Express','PP'=>'PayPal','GC'=>'Google Checkout','Other'=>'Other');
+        $payment_methods = billingmethod::$payment_types;
+        $payment_methods[-1] = "";
+        ksort($payment_methods);
+        //array('-1'=>'', 'V'=>'Visa','MC'=>'Mastercard','D'=>'Discover','AMEX'=>'American Express','PP'=>'PayPal','GC'=>'Google Checkout','Other'=>'Other');
         
         //eDebug(mktime(0,0,0,(strftime("%m")-1),1,strftime("%Y")));
         $prev_month = strftime("%A, %d %B %Y", mktime(0,0,0,(strftime("%m")-1),1,strftime("%Y"))); 
@@ -632,17 +635,30 @@ class reportController extends expController {
         
         if (isset($p['payment_method'] )) 
         {
-            $inc = 0;  $sqltmp = '';  
+            $inc = 0;  $sqltmp = '';
+            //get each calculator's id  
+            
             foreach ($p['payment_method'] as $s)
-            {
-                if ($s == -1) continue;
-                else if ($inc == 0)
+            {                                  
+                if ($s == -1) continue;                
+                if ($s == 'VisaCard' || $s == 'AmExCard' || $s == 'MasterCard' || $s == 'DiscoverCard')
+                {
+                    $paymentQuery = 'b.billing_options LIKE "%' . $s . '%"';
+                }                   
+                else 
+                {
+                    $bc = new billingcalculator();
+                    $calc = $bc->findBy('calculator_name',$s);
+                    $paymentQuery = 'billingcalculator_id = ' . $calc->id; 
+                }
+                    
+                if ($inc == 0)
                 {
                     $inc++;
-                    $sqltmp .= " AND (o.order_status_id = " . $s;
+                    $sqltmp .= " AND ( " . $paymentQuery;
                 }else
                 {
-                    $sqltmp .= " OR o.order_status_id = " . $s;
+                    $sqltmp .= " OR " . $paymentQuery;
                 }
             }
             if (!empty($sqltmp)) $sqlwhere .= $sqltmp .= ")";
@@ -737,23 +753,14 @@ class reportController extends expController {
         //strftime("%a %d-%m-%Y", get_first_day(3, 1, 2007)); Thursday, 1 April 2010  
         //$d_month_previous = date('n', mktime(0,0,0,(strftime("%m")-1),1,strftime("%Y")));
         
-        $action_items = array('print_orders'=>'Print','export_odbc'=>'Export ODBC File','export_status_report'=>'Export Status Report','export_inventory'=>'Export Inventory File','export_user_input_report'=>'Export User Input File', 'show_payment_summary'=>'Show Payment Summary');
+        $action_items = array('print_orders'=>'Print','export_odbc'=>'Export ODBC File','export_status_report'=>'Export Status Report','export_inventory'=>'Export Inventory File','export_user_input_report'=>'Export User Input File','export_order_items'=>'Export Order Items File', 'show_payment_summary'=>'Show Payment & Tax Summary');
         assign_to_template(array('page'=>$page, 'action_items'=>$action_items)); 
     }
 	
 	function show_payment_summary() {
 		global $order, $db;
 		
-		$payments = array (
-				'VisaCard' => 'Visa',  
-				'AmExCard' => 'American Express', 
-				'MasterCard' => 'Mastercard', 
-				'DiscoverCard' => 'Discover', 
-				'paypalExpressCheckout' => 'PayPal', 
-				'passthru' => 'Passthru', 
-				'worldpayCheckout' => 'WorldPay',
-				'cash' => 'Cash'
-			);
+		$payments = billingmethod::$payment_types;
 			
         $order_ids = array();
         if (isset($this->params['applytoall']) && $this->params['applytoall']==1)
@@ -776,15 +783,16 @@ class reportController extends expController {
 		
 		$payment_summary = array();
         // $Credit Cards
-        $sql = "SELECT billing_cost, billing_options, calculator_name, user_title FROM ".DB_TABLE_PREFIX."_billingmethods, ".DB_TABLE_PREFIX."_billingcalculator WHERE ".DB_TABLE_PREFIX."_billingcalculator.id = billingcalculator_id and orders_id IN (" . $orders_string . ")";
-		$res = $db->selectObjectsBySql($sql);
+        $sql = "SELECT orders_id, billing_cost, billing_options, calculator_name, user_title FROM ".DB_TABLE_PREFIX."_billingmethods, ".DB_TABLE_PREFIX."_billingcalculator WHERE ".DB_TABLE_PREFIX."_billingcalculator.id = billingcalculator_id and orders_id IN (" . $orders_string . ")";
+		$res = $db->selectObjectsBySql($sql);        
 		if(!empty($res)) {
-			foreach($res as $item) {
+			foreach($res as $item) {                
 				$options = unserialize($item->billing_options);
 				if(!empty($item->billing_cost)) {
 					if($item->user_title == 'Credit Card') {
 						if(!empty($options->cc_type)) {
-							@$payment_summary[$payments[$options->cc_type]] += $item->billing_cost;
+                            //@$payment_summary[$payments[$options->cc_type]] += $item->billing_cost;
+							@$payment_summary[$payments[$options->cc_type]] += $options->result->amount_captured;
 						}
 					} else {
 						@$payment_summary[$payments[$item->calculator_name]] += $item->billing_cost;
@@ -799,8 +807,15 @@ class reportController extends expController {
 		}
 		$payments_key   = implode(",", $payments_key_arr);
 		$payment_values = implode(",", $payment_values_arr);
-
-		assign_to_template(array('payment_summary'=>$payment_summary, 'payments_key' => $payments_key, 'payment_values' => $payment_values));
+        
+        //tax
+        $tax_sql = "SELECT SUM(tax) as tax_total FROM ".DB_TABLE_PREFIX."_orders WHERE id IN (" . $orders_string . ")";
+        $tax_res = $db->selectObjectBySql($tax_sql);
+        
+        $tax_types = taxController::getTaxClasses();       
+        $tax_type_formatted = $tax_types[0]->zonename . ' - ' . $tax_types[0]->classname . ' - ' . $tax_types[0]->rate . '%';
+        
+		assign_to_template(array('payment_summary'=>$payment_summary, 'payments_key' => $payments_key, 'payment_values' => $payment_values, 'tax_total'=>$tax_res->tax_total, 'tax_type'=>$tax_type_formatted));
 	}
    
     function export_user_input_report()
@@ -951,7 +966,7 @@ class reportController extends expController {
     
     function generateProductReport (){
         global $db;
-        //eDebug($this->params);
+        // eDebug($this->params);
         $p = $this->params;   
         $sqlids = "SELECT DISTINCT(p.id) from ";
         $sqlcount = "SELECT COUNT(DISTINCT(p.id)) from ";
@@ -1347,7 +1362,7 @@ class reportController extends expController {
             
     }
     
-    /*function export_dropship()
+    function export_order_items()
     {             
         global $order;          
         $out = '"order_id","quantity","SKU","product_title","firstname","middlename","lastname","organization","address1","address2","city","state","zip"' . chr(13) . chr(10); 
@@ -1372,15 +1387,16 @@ class reportController extends expController {
         $orders_string = implode(',', $order_ids);
         $orders = $order->find('all','id IN (' . $orders_string . ')');
         //eDebug($orders);
-        foreach ($orders as $order)
+        foreach ($orders as $order)        
         {
-            $line = $this->outputField($order->invoice_id);
-            $line.= $this->outputField($m->id);
-            $line.= $this->outputField($m->option_title);
-            $line.= $this->outputField($order->shipping_total + $order->surcharge_total);
-                
-            foreach ($order->shippingmethods as $m)
-            {         
+            $m = array_shift($order->shippingmethods);
+            foreach ($order->orderitem as $orderitem )
+            {
+                $line = $this->outputField($order->invoice_id);
+                $line.= $this->outputField($orderitem->quantity);
+                $line.= $this->outputField($orderitem->products_model);
+                $line.= $this->outputField($orderitem->products_name);                    
+                        
                 $line.= $this->outputField($m->firstname);
                 $line.= $this->outputField($m->middlename);
                 $line.= $this->outputField($m->lastname);
@@ -1391,16 +1407,15 @@ class reportController extends expController {
                 $state = new geoRegion($m->state);                
                 $line.= $this->outputField($state->code);
                 $line.= $this->outputField($m->zip);                
-                $line .= chr(13) . chr(10);     
-                break;
-            }
-            $out .= $line;
+                $line .= chr(13) . chr(10);       
+                $out .= $line;                              
+            }            
         }
         //eDebug($out,true);
-        $this->download($out,'Dropship_Export.csv', 'application/csv');
+        $this->download($out,'Order_Item_Export.csv', 'application/csv');
        // [firstname] => Fred [middlename] => J [lastname] => Dirkse [organization] => OIC Group, Inc. [address1] => PO Box 1111 [address2] => [city] => Peoria [state] => 23 [zip] => 61653 [country] => [phone] => 309-555-1212 begin_of_the_skype_highlighting              309-555-1212      end_of_the_skype_highlighting  [email] => fred@oicgroup.net [shippingcalculator_id] => 4 [option] => 01 [option_title] => 8-10 Day [shipping_cost] => 5.95
             
-    }*/
+    }
     
     function export_status_report()
     {
@@ -1574,7 +1589,7 @@ class reportController extends expController {
         global $db;
         //eDebug($this->params);
         //$sql = "SELECT * INTO OUTFILE '" . BASE . "tmp/export.csv' FIELDS TERMINATED BY ','  FROM exponent_product WHERE 1 LIMIT 10";
-        $out = '"id","parent_id","child_rank","title","body","model","warehouse_location","sef_url","meta_title","meta_keywords","meta_description","tax_class_id","quantity","availability_type","base_price","special_price","use_special_price","active_type","product_status_id","category1","category2","category3","category4","surcharge","category_rank","feed_title","feed_body"' . chr(13) . chr(10); 
+        $out = '"id","parent_id","child_rank","title","body","model","warehouse_location","sef_url","meta_title","meta_keywords","meta_description","tax_class_id","quantity","availability_type","base_price","special_price","use_special_price","active_type","product_status_id","category1","category2","category3","category4","category5","category6","category7","category8","category9","category10","category11","category12","surcharge","category_rank","feed_title","feed_body"' . chr(13) . chr(10); 
         if (isset($this->params['applytoall']) && $this->params['applytoall']==1)
         {
             $sql = expSession::get('product_export_query');
@@ -1620,7 +1635,7 @@ class reportController extends expController {
             
             $rank=0;
             //eDebug($p);
-            for ($x=0; $x<4; $x++)
+            for ($x=0; $x<12; $x++)
             {
                 $this->catstring = '';
                 if (isset($p->storeCategory[$x])) 
@@ -1633,8 +1648,7 @@ class reportController extends expController {
             $out.= $this->outputField($p->surcharge); 
             $out.= $this->outputField($rank);
             $out.= $this->outputField($p->feed_title);
-            $out.= $this->outputField($p->feed_body)  . chr(13) . chr(10); 
-            
+            $out.= substr($this->outputField($p->feed_body), 0, -1) . chr(13) . chr(10); //Removed the extra "," in the last element
             foreach ($p->childProduct as $cp)
             {                            
                 //$p = new product($pid['id'], true, false);
@@ -1658,9 +1672,9 @@ class reportController extends expController {
                 $out.= $this->outputField($cp->use_special_price);
                 $out.= $this->outputField($cp->active_type);
                 $out.= $this->outputField($cp->product_status_id);
-                $out.= ',,,,';
+                $out.= ',,,,,,,,,,,,';
                 $out.= $this->outputField($cp->surcharge); 
-                $out.= ',,,';  //for rank, feed title, feed body
+                $out.= ',,';  //for rank, feed title, feed body
                 $out.= chr(13) . chr(10);                
                 
                 //echo($out);                  

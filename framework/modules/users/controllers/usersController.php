@@ -66,7 +66,8 @@ class usersController extends expController {
         // set history
         expHistory::set('editable', $this->params);
         expSession::set("userkey",sha1(microtime()));
-        
+	    expSession::clearCurrentUserSessionCache();
+
         $id = isset($this->params['id']) ? $this->params['id'] : null;
         
         // check to see if we should be editing.  You either need to be an admin, or
@@ -77,8 +78,9 @@ class usersController extends expController {
             flash('error', 'You do not have the proper permissions to edit this user');
             expHistory::back();
         }
-        $active_extensions = $db->selectColumn('profileextension','classname','active=1', 'rank');
-		
+//        $active_extensions = $db->selectColumn('profileextension','classname','active=1', 'rank');
+        $active_extensions = $db->selectObjects('profileextension','active=1','rank');
+
 		//If there is no image uploaded and the system is not in the development mode, use the default avatar
 		if(empty($u->image) && !DEVELOPMENT) {
 			$u->image = DEFAULT_AVATAR;
@@ -306,7 +308,6 @@ class usersController extends expController {
         // in the database yet.  If not we will add them.
 		$extdirs = array(
 			BASE.'framework/modules/users/extensions',
-//			BASE.'themes/'.DISPLAY_THEME_REAL.'framework/modules/users/extensions'  //FIXME change to allow preview
 			BASE.'themes/'.DISPLAY_THEME.'framework/modules/users/extensions'
 		);
 		foreach ($extdirs as $dir) {
@@ -559,7 +560,6 @@ class usersController extends expController {
     public function manage_group_memberships() {
         global $db, $user;
         expHistory::set('manageable', $this->params);
-//        require_once(BASE.'framework/core/subsystems-1/users.php');
 
         $memb = $db->selectObject('groupmembership','member_id='.$user->id.' AND group_id='.$this->params['id'].' AND is_admin=1');
 
@@ -678,6 +678,137 @@ class usersController extends expController {
         expHistory::back();
         
     }
+	
+	public function getFilesByJSON() {
+		global $db,$user;
+        $modelname = $this->basemodel_name;
+        $results = 25; // default get all
+        $startIndex = 0; // default start at 0
+        $sort = null; // default don't sort
+        $dir = 'asc'; // default sort dir is asc
+        $sort_dir = SORT_ASC;
+
+        // How many records to get?
+        if(strlen($_GET['results']) > 0) {
+            $results = $_GET['results'];
+        }
+
+        // Start at which record?
+        if(strlen($_GET['startIndex']) > 0) {
+            $startIndex = $_GET['startIndex'];
+        }
+
+        // Sorted?
+        if(strlen($_GET['sort']) > 0) {
+            $sort = $_GET['sort'];
+        }
+
+        // Sort dir?
+        if((strlen($_GET['dir']) > 0) && ($_GET['dir'] == 'desc')) {
+            $dir = 'desc';
+            $sort_dir = SORT_DESC;
+        }
+        else {
+            $dir = 'asc';
+            $sort_dir = SORT_ASC;
+        }
+        
+        if (isset($_GET['query'])) {
+
+            $totalrecords = $this->$modelname->find('count',"username LIKE '%".$_GET['query']."%' OR firstname LIKE '%".$_GET['query']."%' OR lastname LIKE '%".$_GET['query']."%' OR email LIKE '%".$_GET['query']."%'");
+            
+            $users = $this->$modelname->find('all',$filter."username LIKE '%".$_GET['query']."%' OR firstname LIKE '%".$_GET['query']."%' OR lastname LIKE '%".$_GET['query']."%' OR email LIKE '%".$_GET['query']."%'" ,$sort.' '.$dir, $results, $startIndex);
+			
+			for($i = 0; $i < count($users); $i++) {
+				if(ECOM == 1) {
+					$users[$i]->usernamelabel = "<a href='viewuser/{$users[$i]->id}'  class='fileinfo'>{$users[$i]->username}</a>";
+				} else {
+					$users[$i]->usernamelabel = $users[$i]->username;
+				}
+			}
+			
+		   $returnValue = array(
+                'recordsReturned'=>count($users),
+                'totalRecords'=>$totalrecords,
+                'startIndex'=>$startIndex,
+                'sort'=>$sort,
+                'dir'=>$dir,
+                'pageSize'=>$results,
+                'records'=>$users
+            );
+        } else {
+          
+            $totalrecords = $this->$modelname->find('count',$filter);
+			
+            $users = $this->$modelname->find('all',$filter,$sort.' '.$dir, $results, $startIndex);
+			
+			for($i = 0; $i < count($users); $i++) {
+				if(ECOM == 1) {
+					$users[$i]->usernamelabel = "<a href='viewuser/{$users[$i]->id}'  class='fileinfo'>{$users[$i]->username}</a>";
+				} else {
+					$users[$i]->usernamelabel = $users[$i]->username;
+				}
+			}
+
+            $returnValue = array(
+                'recordsReturned'=>count($users),
+                'totalRecords'=>$totalrecords,
+                'startIndex'=>$startIndex,
+                'sort'=>$sort,
+                'dir'=>$dir,
+                'pageSize'=>$results,
+                'records'=>$users
+            );
+                  
+        }
+        
+        echo json_encode($returnValue);
+	}
+	
+	public function viewuser() {
+		
+		$u = new user($this->params['id']);
+		$address = new address();
+	
+		$billings = $address->find('all', 'user_id='.$u->id.' AND is_billing = 1');
+		$shippings = $address->find('all', 'user_id='.$u->id.' AND is_shipping = 1');	
+		
+		// build out a SQL query that gets all the data we need and is sortable.
+		$sql  = 'SELECT o.*, b.firstname as firstname, b.billing_cost as total, b.middlename as middlename, b.lastname as lastname, os.title as status, ot.title as order_type ';
+		$sql .= 'FROM '.DB_TABLE_PREFIX.'_orders o, '.DB_TABLE_PREFIX.'_billingmethods b, ';
+		$sql .= DB_TABLE_PREFIX.'_order_status os, ';                                          
+		$sql .= DB_TABLE_PREFIX.'_order_type ot ';                                          
+		$sql .= 'WHERE o.id = b.orders_id AND o.order_status_id = os.id AND o.order_type_id = ot.id AND o.purchased > 0 AND user_id =' . $u->id;     
+		
+		
+		$limit = empty($this->config['limit']) ? 50 : $this->config['limit'];
+		//eDebug($sql, true);
+		$orders = new expPaginator(array(
+			//'model'=>'order',
+			'controller'=>$this->params['controller'],
+			'action'=>$this->params['action'],
+			'sql'=>$sql,            
+			'order'=>'purchased',
+			'dir'=>'DESC',
+			'limit'=>$limit,
+			'columns'=>array(
+				'Order #'=>'invoice_id', 
+				'Total'=>'total',
+				'Date Purchased'=>'purchased',
+				'Type'=>'order_type_id',
+				'Status'=>'order_status_id',
+				'Ref'=>'orig_referrer',   
+				)
+			));
+		
+		 
+		 assign_to_template(array(
+			'u'=>$u,
+            'billings'=>$billings,
+			'shippings'=>$shippings,
+            'orders'=>$orders,
+        ));
+	}
 
 }
 

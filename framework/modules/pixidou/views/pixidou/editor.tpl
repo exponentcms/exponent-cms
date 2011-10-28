@@ -34,11 +34,11 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" >
         <title>Pixidou - Open Source AJAX Image Editor</title>
         <!-- Combo-handled YUI CSS files: -->
-        <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/combo?2.6.0/build/reset-fonts/reset-fonts.css&2.6.0/build/assets/skins/sam/skin.css" >
-{*	    <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/combo?2.9.0/build/reset-fonts/reset-fonts.css&2.9.0/build/assets/skins/sam/skin.css">*}
+        {*<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/combo?2.6.0/build/reset-fonts/reset-fonts.css&2.6.0/build/assets/skins/sam/skin.css" >*}
+	    {*<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/combo?2.9.0/build/reset-fonts/reset-fonts.css&2.9.0/build/assets/skins/sam/skin.css">*}
 	    <!-- Using Local YUI CSS files: -->
-{*	    <link rel="stylesheet" type="text/css" href="{$smarty.const.YUI2_URL}reset-fonts/reset-fonts.css" >*}
-{*	    <link rel="stylesheet" type="text/css" href="{$smarty.const.YUI2_URL}assets/skins/sam/skin.css" >*}
+	    <link rel="stylesheet" type="text/css" href="{$smarty.const.YUI2_URL}yui2-reset-fonts/yui2-reset-fonts.css" >
+	    <link rel="stylesheet" type="text/css" href="{$smarty.const.YUI2_URL}assets/skins/sam/skin.css" >
 
         <link rel="stylesheet" type="text/css" href="{$smarty.const.URL_FULL}framework/modules/pixidou/assets/css/pixidou.css" >
     </head>
@@ -147,7 +147,7 @@
                     <div class="hd">Adjust contrast</div>
                     <div class="bd">
                         <div id="contrastSliderBg" class="yui-h-slider" title="Slider">
-                            <div id="contrastSliderThumb" class="yui-slider-thumb"><img src="assets/thumb-n.gif" alt="" /></div>
+                            <div id="contrastSliderThumb" class="yui-slider-thumb"><img src="{$smarty.const.URL_FULL|cat:'framework/modules/pixidou/assets/images/thumb-n.gif'}" alt="" /></div>
                         </div>
                         <p>Value : <span id="contrastSliderValue">0</span></p>
                     </div>
@@ -159,7 +159,7 @@
                     <div class="hd">Adjust brightness</div>
                     <div class="bd">
                         <div id="brightnessSliderBg" class="yui-h-slider" title="Slider">
-                            <div id="brightnessSliderThumb" class="yui-slider-thumb"><img src="assets/thumb-n.gif" alt="" /></div>
+                            <div id="brightnessSliderThumb" class="yui-slider-thumb"><img src="{$smarty.const.URL_FULL|cat:'framework/modules/pixidou/assets/images/thumb-n.gif'}" alt="" /></div>
                         </div>
                         <p>Value : <span id="brightnessSliderValue">0</span></p>
                     </div>
@@ -221,20 +221,20 @@
         
         <!-- Combo-handled YUI JS files: -->
         <script type="text/javascript" src="http://yui.yahooapis.com/combo?2.6.0/build/utilities/utilities.js&2.6.0/build/container/container-min.js&2.6.0/build/menu/menu-min.js&2.6.0/build/button/button-min.js&2.6.0/build/slider/slider-min.js&2.6.0/build/colorpicker/colorpicker-min.js&2.6.0/build/resize/resize-min.js&2.6.0/build/imagecropper/imagecropper-beta-min.js&2.6.0/build/json/json-min.js&2.6.0/build/selector/selector-beta-min.js&2.6.0/build/layout/layout-min.js&2.6.0/build/tabview/tabview-min.js"></script>
-{*        <script type="text/javascript" src="http://yui.yahooapis.com/combo?2.9.0/build/utilities/utilities.js&2.9.0/build/container/container-min.js&2.9.0/build/menu/menu-min.js&2.9.0/build/button/button-min.js&2.9.0/build/slider/slider-min.js&2.9.0/build/colorpicker/colorpicker-min.js&2.9.0/build/resize/resize-min.js&2.9.0/build/imagecropper/imagecropper-min.js&2.9.0/build/json/json-min.js&2.9.0/build/selector/selector-min.js&2.9.0/build/layout/layout-min.js&2.9.0/build/tabview/tabview-min.js"></script>*}
+        {*<script type="text/javascript" src="http://yui.yahooapis.com/combo?2.9.0/build/utilities/utilities.js&2.9.0/build/container/container-min.js&2.9.0/build/menu/menu-min.js&2.9.0/build/button/button-min.js&2.9.0/build/slider/slider-min.js&2.9.0/build/colorpicker/colorpicker-min.js&2.9.0/build/resize/resize-min.js&2.9.0/build/imagecropper/imagecropper-min.js&2.9.0/build/json/json-min.js&2.9.0/build/selector/selector-min.js&2.9.0/build/layout/layout-min.js&2.9.0/build/tabview/tabview-min.js"></script>*}
         <!-- Using Local YUI JS files: -->
-{*      <script type="text/javascript" src="{$smarty.const.YUI2_URL}utilities/utilities.js"></script>
-        <script type="text/javascript" src="{$smarty.const.YUI2_URL}container/container-min.js"></script>
-        <script type="text/javascript" src="{$smarty.const.YUI2_URL}menu/menu-min.js"></script>
-        <script type="text/javascript" src="{$smarty.const.YUI2_URL}button/button-min.js"></script>
-        <script type="text/javascript" src="{$smarty.const.YUI2_URL}slider/slider-min.js"></script>
-        <script type="text/javascript" src="{$smarty.const.YUI2_URL}colorpicker/colorpicker-min.js"></script>
-        <script type="text/javascript" src="{$smarty.const.YUI2_URL}resize/resize-min.js"></script>
-        <script type="text/javascript" src="{$smarty.const.YUI2_URL}imagecropper/imagecropper-min.js"></script>
-        <script type="text/javascript" src="{$smarty.const.YUI2_URL}json/json-min.js"></script>
-        <script type="text/javascript" src="{$smarty.const.YUI2_URL}selector/selector-min.js"></script>
-        <script type="text/javascript" src="{$smarty.const.YUI2_URL}layout/layout-min.js"></script>
-        <script type="text/javascript" src="{$smarty.const.YUI2_URL}tabview/tabview-min.js"></script> *}
+{*		<script type="text/javascript" src="{$smarty.const.YUI2_URL}yui2-utilities/yui2-utilities-min.js"></script>
+        <script type="text/javascript" src="{$smarty.const.YUI2_URL}yui2-container/yui2-container-min.js"></script>
+        <script type="text/javascript" src="{$smarty.const.YUI2_URL}yui2-menu/yui2-menu-min.js"></script>
+        <script type="text/javascript" src="{$smarty.const.YUI2_URL}yui2-button/yui2-button-min.js"></script>
+        <script type="text/javascript" src="{$smarty.const.YUI2_URL}yui2-slider/yui2-slider-min.js"></script>
+        <script type="text/javascript" src="{$smarty.const.YUI2_URL}yui2-colorpicker/yui2-colorpicker-min.js"></script>
+        <script type="text/javascript" src="{$smarty.const.YUI2_URL}yui2-resize/yui2-resize-min.js"></script>
+        <script type="text/javascript" src="{$smarty.const.YUI2_URL}yui2-imagecropper/yui2-imagecropper-min.js"></script>
+        <script type="text/javascript" src="{$smarty.const.YUI2_URL}yui2-json/yui2-json-min.js"></script>
+        <script type="text/javascript" src="{$smarty.const.YUI2_URL}yui2-selector/yui2-selector-min.js"></script>
+        <script type="text/javascript" src="{$smarty.const.YUI2_URL}yui2-layout/yui2-layout-min.js"></script>
+        <script type="text/javascript" src="{$smarty.const.YUI2_URL}yui2-tabview/yui2-tabview-min.js"></script> *}
 
         <script type="text/javascript" src="{$smarty.const.URL_FULL}exponent.js.php"></script>
        
@@ -250,7 +250,6 @@
             YAHOO.util.Event.onDOMReady(function(){ldelim}
                 pixidou.updateImage('{$image->filename}',{$image->image_width},{$image->image_height});
             {rdelim});
-            
         </script>
         
         <input type=hidden id="update" value="{$update}">

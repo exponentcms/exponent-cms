@@ -20,12 +20,6 @@
 
 <div class="navigationmodule manager-standalone">
 	<div class="form_header">
-		<div class="info-header">
-			<div class="related-actions">
-				{help text="Get Help Managing Pages" module="manage-all-pages"}
-			</div>
-			<h1>{'Manage Standalone Pages'|gettext}</h1>
-		</div>
 		<p>{'Standalone pages do not appear in the site hierarchy, but still have their own content and act just like other pages.'|gettext}</p>
 		<a class="add" href="{link action=edit_contentpage parent=-1}">{'Create a New Standalone Page'|gettext}</a>
 	</div>
@@ -41,7 +35,7 @@
 	<tbody>
 	{foreach from=$sections item=section}
 
-	<tr class="{cycle values=odd,even}">
+	<tr class="{cycle values='odd,even'}">
 	<td>
 		{if $section->active}
 			<a href="{link section=$section->id}" class="navlink">{$section->name}</a>&nbsp;
@@ -52,8 +46,8 @@
 		{icon class=edit action=edit_contentpage record=$section title='Edit'|gettext}
         {icon action=delete record=$section title='Delete'|gettext onclick="return confirm('Delete this page?');"}
 	</td><td>
-		{icon int=$section->id action=userperms _common=1 img=userperms.png title='Assign user permissions for this page'|gettext text="User"}
-		{icon int=$section->id action=groupperms _common=1 img=groupperms.png title='Assign group permissions for this page'|gettext text="Group"}
+		{icon int=$section->id action=userperms _common=1 img='userperms.png' title='Assign user permissions for this page'|gettext text="User"}
+		{icon int=$section->id action=groupperms _common=1 img='groupperms.png' title='Assign group permissions for this page'|gettext text="Group"}
 	</td></tr>
 	{foreachelse}
 		<tr><td colspan=3><i>{'No standalone pages found'|gettext}</i></td></tr>

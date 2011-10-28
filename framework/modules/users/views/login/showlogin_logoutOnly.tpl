@@ -14,6 +14,10 @@
  *
  *}
 
+{css unique="showlogin-logoutonly" link="`$smarty.const.PATH_RELATIVE`framework/core/assets/css/button.css"}
+
+{/css}
+
 {if $loggedin == true || $smarty.const.PREVIEW_READONLY == 1}
 	<div class="login logout-only">
 		<a class="awesome {$smarty.const.BTN_COLOR} {$smarty.const.BTN_SIZE}" href="{link action=logout}">{'Logout'|gettext}</a>

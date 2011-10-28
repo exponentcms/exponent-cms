@@ -25,7 +25,7 @@
 		<td class="header">Description</td>
 	</tr>
 	{foreach name=a from=$items item=item}
-                <tr class="row {cycle values=odd_row,even_row}">
+                <tr class="row {cycle values='odd_row,even_row'}">
                         <td>{$item->module}</td>
                         <td><b>{$item->title}</b></td>
                         <td>{$item->copied_from}</td>

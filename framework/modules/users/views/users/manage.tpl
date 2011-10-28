@@ -32,7 +32,21 @@
 	<div class="module-actions">
 		{icon class=add module=users action=create text="Create a New User"|gettext title="Create a New User"|gettext alt="Create a New User"|gettext}
 	</div>
-    {pagelinks paginate=$page top=1}
+	
+	<div id="user_autocomplete">
+		<label for="user_dt_input">Filter by First Name, Last Name, or Email Address:</label>
+		<input id="user_dt_input" type="text" />
+	</div>	
+	<div id="dt_ac_container"></div>
+	
+    {* pagelinks paginate=$page top=1 *}
+	<div id="pagelinks">&nbsp;</div>
+	<div id="totalResult">&nbsp;</div>
+	<div id="manage_user_dynamicdata">
+    
+    </div>
+	
+	<!--
 	<table class="exp-skin-table">
 	    <thead>
 			<tr>
@@ -48,7 +62,7 @@
 				<td>{$user->lastname}</td>
 				<td>
 				{if $user->is_acting_admin == 1}
-				    <img src="{$smarty.const.ICON_RELATIVE}toggle_on.png">
+				    <img src="{$smarty.const.ICON_RELATIVE|cat:'toggle_on.png'}">
 				{/if}
 				</td>
 			    <td>
@@ -66,5 +80,110 @@
 			{/foreach}
 		</tbody>
 	</table>
-    {pagelinks paginate=$page bottom=1}
+    {* pagelinks paginate=$page bottom=1 *}
+	-->
 </div>
+<script type="text/javascript">
+	{literal}
+		YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event','yui2-container','yui2-json','yui2-datasource','yui2-connection','yui2-autocomplete','yui2-element','yui2-paginator','yui2-datatable', function(Y) {
+			var YAHOO=Y.YUI2;
+			var myDataSource = null;
+			var myDataTable = null;
+			
+			 //set up autocomplete
+			var getTerms = function(query) {
+				myDataSource.sendRequest('sort=id&dir=asc&startIndex=0&results=10&query=' + query,myDataTable.onDataReturnInitializeTable, myDataTable);
+			};
+			
+			var oACDS = new YAHOO.util.FunctionDataSource(getTerms);
+			oACDS.queryMatchContains = true;
+			var oAutoComp = new YAHOO.widget.AutoComplete("user_dt_input","dt_ac_container", oACDS);
+			oAutoComp.minQueryLength = 0;
+			// Formatters for datatable columns
+
+        // filename formatter
+		
+		var formatID = function(elCell, oRecord, oColumn, sData) {
+			elCell.innerHTML = oRecord.getData().usernamelabel;
+        };
+		
+		var formatActingAdmin = function(elCell, oRecord, oColumn, sData) {
+			if(oRecord.getData().is_acting_admin == "1") {
+				 elCell.innerHTML ='<img src="{/literal}{$smarty.const.ICON_RELATIVE|cat:'toggle_on.png'}{literal}">'
+			}
+        };
+		
+		
+        var formatactions = function(elCell, oRecord, oColumn, sData) {
+           {/literal}{permissions level=$smarty.const.UILEVEL_PERMISSIONS}{literal}
+		   
+				 elCell.innerHTML = '<div class="item-actions">';
+				 editstring       = '{/literal}{icon class="edit" action="edituser" id="editstringid"}{literal}';
+				 passwordstring   = '{/literal}{icon class="password" action=change_password id="passwordstringid" title="Change this users password" text="Password"}{literal}';
+				 deletestring     = '<a href="{/literal}{link action=delete id="deletestringid"}{literal}" onclick="return confirm(\'Are you sure you want to delete this user?\');"><img width=16 height=16 style="border:none;" src="{/literal}{$smarty.const.ICON_RELATIVE}{literal}delete.png" /> Delete</a>';
+				 editstring     = editstring.replace('editstringid',oRecord._oData.id);
+				 passwordstring = passwordstring.replace('passwordstringid',oRecord._oData.id);
+				 deletestring   = deletestring.replace('deletestringid',oRecord._oData.id);
+				 
+				elCell.innerHTML += editstring + passwordstring + deletestring +'</div>';
+				
+			{/literal}{/permissions}{literal}
+        };
+    
+	
+			// Column definitions
+			var myColumnDefs = [ // sortable:true enables sorting
+			{ key:"id",label:"Username",formatter:formatID},
+			{ key:"firstname",label:"First Name"},
+			{ key:"lastname",label:"Last Name"},
+			{ key:"is_acting_admin",label:"Is Admin",formatter:formatActingAdmin},
+			{ label:"Actions",label:"", sortable:false,formatter: formatactions}
+			];
+			// DataSource instance
+			var myDataSource = new YAHOO.util.DataSource(EXPONENT.URL_FULL+"index.php?controller=users&action=getFilesByJSON&json=1&ajax_action=1&");
+			myDataSource.responseType = YAHOO.util.DataSource.TYPE_JSON;
+			myDataSource.responseSchema = {
+				resultsList: "records",
+				fields: [
+					"id",
+					{key:"username"},
+					{key:"firstname"},
+					{key:"lastname"},
+					{key:"email"},
+					{key:"is_acting_admin"},
+					{key:"usernamelabel"}
+				],
+				metaFields: {
+					totalRecords: "totalRecords" // Access to value in the server response
+				}
+			};
+			
+			 // DataTable configuration
+			var myConfigs = {
+				initialRequest: "sort=id&dir=asc&startIndex=0&results=10", // Initial request for first page of data
+				dynamicData: true, // Enables dynamic server-driven data
+				sortedBy : {key:"id", dir:YAHOO.widget.DataTable.CLASS_DESC}, // Sets UI initial sort arrow
+				paginator: new YAHOO.widget.Paginator({rowsPerPage:10,containers:"pagelinks"}) // Enables pagination 
+			};
+		
+			// DataTable instance
+			var myDataTable = new YAHOO.widget.DataTable("manage_user_dynamicdata", myColumnDefs, myDataSource, myConfigs);
+			
+			 // Update totalRecords on the fly with value from server
+			myDataTable.handleDataReturnPayload = function(oRequest, oResponse, oPayload) {
+		
+				if (oPayload == null) {
+					oPayload = {};
+				}
+				oPayload.totalRecords = oResponse.meta.totalRecords;
+				
+				var df = YAHOO.util.Dom.get('totalResult');
+				df.innerHTML = "Total Results: " + oResponse.meta.totalRecords;
+			
+				return oPayload;
+			}
+				
+			
+		});
+	{/literal}
+</script>

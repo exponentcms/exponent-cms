@@ -16,7 +16,7 @@
 
 <h2>Configure this Banner Module</h2>
 <p>
-    This is where you can configure the settings to be used by this news module. 
+    This is where you can configure the settings to be used by this banner module.
     These settings will only apply to this particular banner module.
 </p>
 <h2>Number of Banners to Display</h2>

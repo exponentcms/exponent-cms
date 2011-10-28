@@ -40,8 +40,8 @@
 
     $translation = array();
     $translation['file_error']                  = 'Błąd pliku. Spróbuj ponownie.';
-    $translation['local_file_missing']          = 'Plik lokalny nie istnieje.';
-    $translation['local_file_not_readable']     = 'Plik lokalny nie może zostać odczytany.';
+    $translation['local_file_missing']          = 'Wskazany plik nie istnieje.';
+    $translation['local_file_not_readable']     = 'Wskazany plik nie może zostać odczytany';
     $translation['uploaded_too_big_ini']        = 'Błąd przy wgrywaniu pliku (rozmiar pliku przekracza ustawienia dyrektywy upload_max_filesize w php.ini).';
     $translation['uploaded_too_big_html']       = 'Błąd przy wgrywaniu pliku (rozmiar pliku przekracza wartość pola MAX_FILE_SIZE ustawionego w formularzu HTML).';
     $translation['uploaded_partial']            = 'Błąd przy wgrywaniu pliku (plik został jedynie częściowo wgrany na serwer).';
@@ -81,5 +81,5 @@
     $translation['no_conversion_type']          = 'Nie zdefiniowano typu konwersji.';
     $translation['copy_failed']                 = 'Błąd przy kopiowaniu pliku na serwerze. Funkcja copy() nie powiodła się.';
     $translation['reading_failed']              = 'Błąd przy odczytywaniu pliku.';   
-        
+         
 ?>

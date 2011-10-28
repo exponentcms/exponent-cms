@@ -20,8 +20,6 @@
 
 if (!defined('EXPONENT')) exit('');
 
-require_once(BASE."framework/core/subsystems-1/forms.php");
-
 $template = New template("importer", "_usercsv_form_start");
 
 if (expFile::canCreate(BASE."framework/modules-1/importer/importers/usercsv/tmp/test") != SYS_FILES_SUCCESS) {

@@ -31,8 +31,6 @@ $clipboard_object->view = $container->view;
 $clipboard_object->copied_from = $db->selectValue('section', 'name', 'id='.expSession::get('last_section'));
 $clipboard_object->section_id = expSession::get('last_section');
 $clipboard_object->operation = $_REQUEST['op'];
-//$clipboard_object->description = $db->selectValue('locationref', 'description', 'module="'.$clipboard_object->module.'" AND source="'.$clipboard_object->source.'"');
-//$clipboard_object->refcount = $db->selectValue('locationref', 'refcount', 'module="'.$clipboard_object->module.'" AND source="'.$clipboard_object->source.'"');
 $clipboard_object->description = $db->selectValue('sectionref', 'description', 'module="'.$clipboard_object->module.'" AND source="'.$clipboard_object->source.'"');
 $clipboard_object->refcount = $db->selectValue('sectionref', 'refcount', 'module="'.$clipboard_object->module.'" AND source="'.$clipboard_object->source.'"');
 //eDebug($clipboard_object);

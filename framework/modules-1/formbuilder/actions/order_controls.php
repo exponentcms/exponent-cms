@@ -35,7 +35,8 @@ if ($a && $b) {
 		$db->updateObject($a,'formbuilder_control');
 		$db->updateObject($b,'formbuilder_control');
 		
-		expHistory::back();
+//		expHistory::back();
+		expHistory::returnTo('editable');
 	} else {
 		echo SITE_403_HTML;
 	}

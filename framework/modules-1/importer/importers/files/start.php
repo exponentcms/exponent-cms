@@ -22,8 +22,6 @@ if (!defined('EXPONENT')) exit('');
 
 $template = new template('importer','_files_uploadForm');
 
-require_once(BASE.'framework/core/subsystems-1/forms.php');
-
 $form = new form();
 $form->meta('module','importer');
 $form->meta('action','page');

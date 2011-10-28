@@ -23,7 +23,7 @@ if (!defined('EXPONENT')) exit('');
 //if (expPermissions::check('administrate',$loc)) {
 if ($user->isAdmin()) {
 	global $router;
-	if (exponent_template_getModuleViewFile($loc->mod,'_userpermissions',false) == TEMPLATE_FALLBACK_VIEW) {
+	if (expTemplate::getModuleViewFile($loc->mod,'_userpermissions',false) == TEMPLATE_FALLBACK_VIEW) {
 		$template = new template('common','_userpermissions',$loc);
 	} else {
 		//TODO
@@ -35,9 +35,8 @@ if ($user->isAdmin()) {
 	}
 	$template->assign('user_form',1);
 	
-//	include_once(BASE.'framework/core/subsystems-1/users.php');
 	$users = array();
-	$modulename = controllerExists($loc->mod) ? getControllerClassName($loc->mod) : $loc->mod;
+	$modulename = expModules::controllerExists($loc->mod) ? expModules::getControllerClassName($loc->mod) : $loc->mod;
 	$modclass = $modulename;
 	$mod = new $modclass();
 	$perms = $mod->permissions($loc->int);

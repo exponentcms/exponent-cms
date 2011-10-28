@@ -62,6 +62,7 @@ class administrationController extends expController {
 		define("TMP_TABLE_FAILED",		3);
 		define("TMP_TABLE_ALTERED",		4);
 
+		expSession::clearCurrentUserSessionCache();
 		$tables = array();
 
 		// first the core and 1.0 definitions
@@ -95,7 +96,6 @@ class administrationController extends expController {
 
 		// then search for module definitions
 		$moddefs = array(
-//			BASE.'themes/'.DISPLAY_THEME_REAL.'/modules',
 			BASE.'themes/'.DISPLAY_THEME.'/modules',
 			BASE."framework/modules",
 			);
@@ -140,7 +140,6 @@ class administrationController extends expController {
 	}
 
 	public function install_tables() {
-    	expSession::clearCurrentUserSessionCache();
 		$tables = self::installTables();
 		ksort($tables);
         assign_to_template(array('status'=>$tables));
@@ -283,7 +282,7 @@ class administrationController extends expController {
 		print_r("</pre>");
 
 		 print_r("<pre>");
-	 // delete sectionref's & locationref's that have empty sources since they are dead
+	 // delete sectionref's that have empty sources since they are dead
 		 print_r("<b>Searching for unassigned modules (no source)</b><br><br>");
 		 $sectionrefs = $db->selectObjects('sectionref','source=""');
 		 if ($sectionrefs != null) {
@@ -328,7 +327,6 @@ class administrationController extends expController {
         $menu = array();
 		$dirs = array(
 			BASE.'framework/modules/administration/menus',
-//			BASE.'themes/'.DISPLAY_THEME_REAL.'/modules/administration/menus'
 			BASE.'themes/'.DISPLAY_THEME.'/modules/administration/menus'
 		);
 		foreach ($dirs as $dir) {
@@ -348,8 +346,8 @@ class administrationController extends expController {
 		foreach($menu as $m) $sorted[] = $m;
         
         //slingbar position
-        if (expSession::exists("slingbar_top")){
-            $top = expSession::get("slingbar_top");
+        if (isset($_COOKIE['slingbar-top'])){
+            $top = $_COOKIE['slingbar-top'];
         } else {
             $top = SLINGBAR_TOP;
         }
@@ -445,7 +443,6 @@ class administrationController extends expController {
 	}
 
 	public function upload_extension() {
-		require_once(BASE.'framework/core/subsystems-1/forms.php');
 		$form = new form();
 		$form->register(null,'',new htmlcontrol(expCore::maxUploadSizeMessage()));
 		$form->register('mod_archive','Extension Archive',new uploadcontrol());
@@ -708,6 +705,8 @@ class administrationController extends expController {
 	}
 
     public function configure_site () {
+	    expHistory::set('manageable',$this->params);
+
         // TYPES OF ANTISPAM CONTROLS... CURRENTLY ONLY ReCAPTCHA
         $as_types = array(
             '0'=>'-- Please Select an Anti-Spam Control --',
@@ -844,8 +843,9 @@ class administrationController extends expController {
         }
         
         flash('message', "Your Website Configuration has been updated");
-        expHistory::back();
-    }    
+//        expHistory::back();
+	    expHistory::returnTo('viewable');
+    }
 }
 
 /**

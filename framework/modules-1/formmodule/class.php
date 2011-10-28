@@ -56,8 +56,8 @@ class formmodule {
 	
 	function show($view,$loc = null) {
 		global $db;
-        // require_once(BASE."framework/core/subsystems-1/forms/baseform.php");
-        // require_once(BASE."framework/core/subsystems-1/forms/form.php");
+        // require_once(BASE."framework/core/subsystems/forms/baseform.php");
+        // require_once(BASE."framework/core/subsystems/forms/form.php");
 
 		if (defined("PREVIEW_READONLY") && !defined("SELECTOR")) {
 			// Pass
@@ -87,11 +87,11 @@ class formmodule {
 				$db->insertObject($rpt,"formbuilder_report");
 				$f->id = $frmid;
 			}
-			global $SYS_FLOW_REDIRECTIONPATH;
-			//expHistory::flowSet(SYS_FLOW_PUBLIC,SYS_FLOW_ACTION);
-			$SYS_FLOW_REDIRECTIONPATH = "editfallback";
-			//expHistory::flowSet(SYS_FLOW_PUBLIC,SYS_FLOW_ACTION);
-			$SYS_FLOW_REDIRECTIONPATH = "exponent_default";
+//			global $SYS_FLOW_REDIRECTIONPATH;
+//			expHistory::flowSet(SYS_FLOW_PUBLIC,SYS_FLOW_ACTION);
+//			$SYS_FLOW_REDIRECTIONPATH = "editfallback";
+//			expHistory::flowSet(SYS_FLOW_PUBLIC,SYS_FLOW_ACTION);
+//			$SYS_FLOW_REDIRECTIONPATH = "exponent_default";
 			
 			$floc = unserialize($f->location_data);
 			$controls = $db->selectObjects("formbuilder_control","form_id=".$f->id);

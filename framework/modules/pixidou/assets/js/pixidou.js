@@ -441,6 +441,10 @@ pixidou = {
 			
 			// update our image container
 			pixidou.updateImage(imageObject.image, imageObject.width, imageObject.height);
+
+			//FIXME we must update the image on disk to be able to continue working since most operations do a file check first
+			// this method completely reverts image to original rather than one step though
+			pixidou.saveImage(/[^.]+$/.exec(pixidou.image));
 		}
 	},
 	

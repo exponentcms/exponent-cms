@@ -42,7 +42,7 @@ class order extends expRecord {
         //'content_expSimpleNote'=>'expSimpleNote',
     );
     
-	public $status_codes = array(0=>'New', 1=>'Opened', 2=>'Processing', 3=>'Shipped');
+	//public $status_codes = array(0=>'New', 1=>'Opened', 2=>'Processing', 3=>'Shipped');
 	
 	function __construct($params=null, $get_assoc=true, $get_attached=true) {
 	    parent::__construct($params, $get_assoc, $get_attached);
@@ -141,7 +141,7 @@ class order extends expRecord {
         $sessAr = expSession::get('verify_shopper');
         // initialize this users cart if they have ecomm installed.
         $active = $db->selectValue('modstate', 'active', 'module="storeController"');
-        if (!controllerExists('cart') || empty($active)) 
+        if (!expModules::controllerExists('cart') || empty($active))
         {
             // if ecomm is turned off, no cart.
             return null;   

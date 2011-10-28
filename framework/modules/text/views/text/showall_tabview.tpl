@@ -16,11 +16,7 @@
  
 {uniqueid assign="id"}
 
-{css unique="`id`" link="`$smarty.const.YUI3_PATH`tabview/assets/skins/sam/tabview.css"}
-
-{/css}
-
-<div class="module text showall-tabview yui3-skin-sam">
+<div class="module text showall-tabview">
     {if $moduletitle}<h1>{$moduletitle}</h1>{/if}
     {permissions}
         <div class="module-actions">
@@ -32,7 +28,7 @@
             {/if}
         </div>
     {/permissions}
-    <div id="{$id}">
+    <div id="{$id}" class="yui-navset yui3-skin-sam hide">
         <ul>
             {foreach from=$items item=tab name=tabs}
                 <li><a href="#tab{$smarty.foreach.items.iteration}">{$tab->title}</a></li>
@@ -58,7 +54,7 @@
 					{permissions}
 						<div class="module-actions">
 							{if $permissions.create == 1}
-								{icon class=add action=edit rank=`$text->rank+1` title="Add tab" text="Add another tab after this one"}
+								{icon class=add action=edit rank=$text->rank+1 title="Add tab" text="Add another tab after this one"}
 							{/if}
 						</div>
 					{/permissions}
@@ -66,13 +62,16 @@
             {/foreach}
         </div>
     </div>
+    <div class="loadingdiv">{'Loading'|gettext}</div>
 </div>
 
 {script unique="`$id`" yui3mods="1"}
 {literal}
-YUI(EXPONENT.YUI3_CONFIG).use('tabview', function(Y) {
-    var tabview = new Y.TabView({srcNode:'#{/literal}{$id}{literal}'});
-    tabview.render();
-});
+	YUI(EXPONENT.YUI3_CONFIG).use('tabview', function(Y) {
+	    var tabview = new Y.TabView({srcNode:'#{/literal}{$id}{literal}'});
+	    tabview.render();
+		Y.one('#{/literal}{$id}{literal}').removeClass('hide');
+		Y.one('.loadingdiv').remove();
+	});
 {/literal}
 {/script}

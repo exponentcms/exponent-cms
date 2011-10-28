@@ -309,7 +309,7 @@ class expFile extends expRecord {
 // Static Methods
 
 	/**
-	 * File UPLOAD that also inserts File info into datbase.
+	 * File UPLOAD that also inserts File info into database.
 	 *
 	 * File UPLOAD is a straight forward uploader and processor. It can accept
 	 * filename and destination directory overrides as well. It has an additional
@@ -513,7 +513,11 @@ class expFile extends expRecord {
         // return false.
 		if (!is_object($file)) $file = new expFile($file); 
 		//if (empty($file->id) || !file_exists($file->path)) return false;
-        if (!file_exists($file->path)) return false;
+        if (!file_exists($file->path)) {
+	        flash('error', 'The file is unavailable for Download');
+	        expHistory::back();
+	        return false;
+        }
         
 		// NO buffering from here on out or things break unexpectedly. - RAM					
 		ob_end_clean();		
@@ -1410,7 +1414,6 @@ class expFile extends expRecord {
 			if ($eql_version != $current_version) {
 				$errors[] = gt('EQL file was Not a valid EQL version');
 				return false;
-	//			include_once(BASE.'framework/core/subsystems-1/backup/'.$eql_version.'.php');
 	//			$fprefix = 'expFile::'.implode('',explode('.',$eql_version)).'_';
 	//			if (function_exists($fprefix.'clearedTable')) {
 	//				$clear_function = $fprefix.'clearedTable';
@@ -1418,82 +1421,7 @@ class expFile extends expRecord {
 			}
 
 			// make sure the database tables are up to date
-			define("TMP_TABLE_EXISTED",		1);
-			define("TMP_TABLE_INSTALLED",	2);
-			define("TMP_TABLE_FAILED",		3);
-			define("TMP_TABLE_ALTERED",		4);
-
-			$tables = array();
-			$dir = BASE.'framework/core/definitions';
-			if (is_readable($dir)) {
-				$dh = opendir($dir);
-				while (($file = readdir($dh)) !== false) {
-					if (is_readable("$dir/$file") && is_file("$dir/$file") && substr($file,-4,4) == ".php" && substr($file,-9,9) != ".info.php") {
-						$tablename = substr($file,0,-4);
-						$dd = include("$dir/$file");
-						$info = null;
-						if (is_readable("$dir/$tablename.info.php")) $info = include("$dir/$tablename.info.php");
-						if (!$db->tableExists($tablename)) {
-							foreach ($db->createTable($tablename,$dd,$info) as $key=>$status) {
-								$tables[$key] = $status;
-							}
-						} else {
-							foreach ($db->alterTable($tablename,$dd,$info) as $key=>$status) {
-								if (isset($tables[$key])) echo "$tablename, $key<br>";
-								if ($status == TABLE_ALTER_FAILED){
-									$tables[$key] = $status;
-								}else{
-									$tables[$key] = ($status == TABLE_ALTER_NOT_NEEDED ? DATABASE_TABLE_EXISTED : DATABASE_TABLE_ALTERED);
-								}
-
-							}
-						}
-					}
-				}
-			}
-
-			// then search for module definitions
-			$moddefs = array(
-	//			BASE.'themes/'.DISPLAY_THEME_REAL.'/modules',
-				BASE.'themes/'.DISPLAY_THEME.'/modules',
-				BASE."framework/modules",
-				);
-			foreach ($moddefs as $moddef) {
-				if (is_readable($moddef)) {
-					$dh = opendir($moddef);
-					while (($file = readdir($dh)) !== false) {
-						if (is_dir($moddef.'/'.$file) && ($file != '..' && $file != '.')) {
-							$dirpath = $moddef.'/'.$file.'/definitions';
-							if (file_exists($dirpath)) {
-								$def_dir = opendir($dirpath);
-								while (($def = readdir($def_dir)) !== false) {
-									if (is_readable("$dirpath/$def") && is_file("$dirpath/$def") && substr($def,-4,4) == ".php" && substr($def,-9,9) != ".info.php") {
-										$tablename = substr($def,0,-4);
-										$dd = include("$dirpath/$def");
-										$info = null;
-										if (is_readable("$dirpath/$tablename.info.php")) $info = include("$dirpath/$tablename.info.php");
-										if (!$db->tableExists($tablename)) {
-											foreach ($db->createTable($tablename,$dd,$info) as $key=>$status) {
-												$tables[$key] = $status;
-											}
-										} else {
-											foreach ($db->alterTable($tablename,$dd,$info) as $key=>$status) {
-												if (isset($tables[$key])) echo "$tablename, $key<br>";
-												if ($status == TABLE_ALTER_FAILED){
-													$tables[$key] = $status;
-												}else{
-													$tables[$key] = ($status == TABLE_ALTER_NOT_NEEDED ? DATABASE_TABLE_EXISTED : DATABASE_TABLE_ALTERED);
-												}
-
-											}
-										}
-									}
-								}
-							}
-						}
-					}
-				}
-			}
+		    administrationController::installTables();
 
 			$table = '';
 			$table_function = '';
@@ -1543,7 +1471,6 @@ class expFile extends expRecord {
 			if ($eql_version != $current_version) {
 				$errors[] = gt('EQL file was Not a valid EQL version');
 				return false;
-	//			include_once(BASE.'framework/core/subsystems-1/backup/normalize.php');
 			}
 			return true;
 		} else {

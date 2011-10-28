@@ -71,8 +71,8 @@
     {control type=buttongroup submit="Save" disabled=1 cancel="Cancel" name="buttons"}
     {/form}
 </div>
-<div class="loadingdiv">Loading Content Creation Form</div>
-{* src="`$smarty.const.PATH_RELATIVE`js/ContainerSourceControl.js" *}
+<div class="loadingdiv">{'Loading Content Creation Form'|gettext}</div>
+{* src="$smarty.const.PATH_RELATIVE|cat:'js/ContainerSourceControl.js'" *}
 
 {script unique="addmodule" yui3mods=1}
 {literal}

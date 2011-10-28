@@ -129,7 +129,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event','yui2-container','yu
         var oACDS = new YAHOO.util.FunctionDataSource(getTerms);
         oACDS.queryMatchContains = true;
         var oAutoComp = new YAHOO.widget.AutoComplete("dt_input","dt_ac_container", oACDS);
-
+		oAutoComp.minQueryLength = 0;
 
         // Formatters for datatable columns
 
@@ -165,7 +165,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event','yui2-container','yu
             } else {
                 var editorstring = '<img width=16 height=16 style="border:none;" src="{/literal}{$smarty.const.ICON_RELATIVE}{literal}cant-edit-image.png" />&nbsp;&nbsp;&nbsp;';
             }
-            var pickerstring = {/literal}{if $smarty.get.update != "noupdate"}'<a title="Use This Image" onclick="routBackToSource(\''+EXPONENT.PATH_RELATIVE+oRecord._oData.directory+oRecord._oData.filename+'\','+oRecord._oData.id+'); window.close(); return false;" href="#"><img width=16 height=16 style="border:none;" src="{$smarty.const.ICON_RELATIVE}use.png" /></a>&nbsp;&nbsp;&nbsp;'{else}''{/if}{literal}
+            var pickerstring = {/literal}{if $smarty.get.update != "noupdate"}'<a title="Use This Image" onclick="routBackToSource(\''+EXPONENT.PATH_RELATIVE+oRecord._oData.directory+oRecord._oData.filename+'\','+oRecord._oData.id+'); window.close(); return false;" href="#"><img width=16 height=16 style="border:none;" src="{$smarty.const.ICON_RELATIVE|cat:'use.png'}" /></a>&nbsp;&nbsp;&nbsp;'{else}''{/if}{literal};
             elCell.innerHTML =  pickerstring
                                 +editorstring
                                 +deletestring;
@@ -388,10 +388,10 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event','yui2-container','yu
 	                YAHOO.util.Connect.asyncRequest("POST", sUri, {
 	                success: function (o) {
 	                    //if we're just sending a request and not needing to do
-	                    //anything on the completion, we can skip firing the custtom event
+	                    //anything on the completion, we can skip firing the custom event
 	                    if (typeof(this.oEvent)!=="undefined") {
 
-	                        //otherwise, we check if we've got SJON coming back to parse
+	                        //otherwise, we check if we've got JSON coming back to parse
 	                        if (this.json!==false) {
 	                            //if so, parse it
 	                            var oParse = YAHOO.lang.JSON.parse(o.responseText);

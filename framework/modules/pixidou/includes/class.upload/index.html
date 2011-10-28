@@ -2,8 +2,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 
 <head>
-    <title>class.php.upload test forms</title>
-    
+    <title>class.upload.php test forms</title>
+
     <style>
         fieldset {
             width: 50%;
@@ -19,15 +19,15 @@
         .button input {
             font-weight: bold;
         }
-    
+
     </style>
-    
+
 </head>
 
 <body>
-  
+
     <h1>class.upload.php test forms</h1>
-  
+
     <fieldset>
         <legend>Simple upload</legend>
         <p>Pick up a file to upload, and press 'upload' </p>
@@ -37,7 +37,7 @@
             <input type="submit" name="Submit" value="upload" /></p>
         </form>
     </fieldset>
-    
+
     <fieldset>
         <legend>Image upload</legend>
         <p>Pick up an image to upload, and press 'upload' </p>
@@ -47,7 +47,7 @@
             <input type="submit" name="Submit" value="upload" /></p>
         </form>
     </fieldset>
-    
+
     <fieldset>
         <legend>Multiple upload</legend>
         <p>Pick up some files to upload, and press 'upload' </p>
@@ -64,12 +64,12 @@
         <legend>Image local manipulation</legend>
         <p>Enter a local file name (absolute or relative) for a small image, and press 'process' </p>
         <form name="form4" enctype="multipart/form-data" method="post" action="upload.php" />
-            <p><input type="text" size="32" name="my_field" value="../../assets/images/test.png" /></p>
+            <p><input type="text" size="32" name="my_field" value="test.png" /></p>
             <p class="button"><input type="hidden" name="action" value="local" />
             <input type="submit" name="Submit" value="process" /></p>
         </form>
     </fieldset>
-    
+
 
 </body>
 

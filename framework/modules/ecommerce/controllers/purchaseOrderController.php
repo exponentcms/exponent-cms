@@ -38,8 +38,15 @@ class purchaseOrderController extends expController {
 	function manage () {
 	    expHistory::set('viewable', $this->params);
 		
-		$purchase_orders = $this->purchase_order->find('all');
-		assign_to_template(array('purchase_orders'=>$purchase_orders));
+		$vendor = new vendor();
+		$vendors = $vendor->find('all');
+		if(!empty($this->params['vendor'])) {
+			$purchase_orders = $this->purchase_order->find('all', 'vendor_id=' . $this->params['vendor']);
+		} else {
+			$purchase_orders = $this->purchase_order->find('all');
+		}
+		
+		assign_to_template(array('purchase_orders'=>$purchase_orders, 'vendors' => $vendors, 'vendor_id' => @$this->params['vendor']));
 	}
 	
 	function edit () {
@@ -98,6 +105,17 @@ class purchaseOrderController extends expController {
 		}
         expHistory::back();
     }
+	
+	public function getPurchaseOrderByJSON() {
+		
+		if(!empty($this->params['vendor'])) {
+			$purchase_orders = $this->purchase_order->find('all', 'vendor_id=' . $this->params['vendor']);
+		} else {
+			$purchase_orders = $this->purchase_order->find('all');
+		}
+		
+		echo json_encode($purchase_orders);
+	}
     
 }
 

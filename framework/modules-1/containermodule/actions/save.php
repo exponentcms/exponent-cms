@@ -48,9 +48,6 @@ if (expPermissions::check("add_module",$loc) ||
 	
 	if ($container->is_existing == 0) {
 		$iloc = unserialize($container->internal);
-//		$locref = $db->selectObject("locationref","module='".$iloc->mod."' AND source='".$iloc->src."'");
-//		$locref->description = (isset($_POST['description'])?$_POST['description']:'');
-//		$db->updateObject($locref,"locationref","module='".$iloc->mod."' AND source='".$iloc->src."'");
 		$secref = $db->selectObject("sectionref","module='".$iloc->mod."' AND source='".$iloc->src."'");
 		$secref->description = (isset($_POST['description'])?$_POST['description']:'');
 		$db->updateObject($secref,"sectionref","module='".$iloc->mod."' AND source='".$iloc->src."'");

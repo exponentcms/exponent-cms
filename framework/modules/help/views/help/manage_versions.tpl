@@ -37,15 +37,21 @@
         <tr class="{cycle values="odd,even"}">
             <td><a href="{link action=manage version=$version->id}">{$version->version}</a></td>
             <td>{$version->title}</td>
-            <td>{if $version->is_current == 1}{img src=`$smarty.const.ICON_RELATIVE`toggle_on.png}{/if}</td>
+            <td>
+	            {if $version->is_current == 1}
+		            <span class="active">Active</span>
+		        {else}
+		            <a class="inactive" href="{link action=activate_version id=$version->id}" title="Activate this Version"|gettext>Activate</a>
+	            {/if}
+            </td>
             <td>{$version->num_docs}</td>
             <td>
                 {permissions level=$smarty.const.UILEVEL_NORMAL}
                     {if $permissions.edit == 1}
-                        {icon img=edit.png action=edit_version record=$version title="Edit Help Version"}
+                        {icon img='edit.png' action=edit_version record=$version title="Edit Help Version"}
                     {/if}
                     {if $permissions.delete == 1}
-                        {icon action=delete_version img=delete.png record=$version title="Delete this version" onclick="return confirm('Are you sure you want to delete this help version and all the documentation that goes along with it?');"}
+                        {icon action=delete_version img='delete.png' record=$version title="Delete this version" onclick="return confirm('Are you sure you want to delete this help version and all the documentation that goes along with it?');"}
                     {/if}
                 {/permissions}
             </td>

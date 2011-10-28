@@ -73,7 +73,6 @@ class expSettings {
 	// Last argument added in 0.96, for shared core.  Default it to the old hard-coded value
 		if ($site_root == null) $site_root = BASE;
 
-		require_once(BASE.'framework/core/subsystems-1/forms.php');
 		// We don't actually use the forms subsystem, but the .structure.php files do.
 
 		if ($configname == '') $file = $site_root.'conf/config.php';
@@ -151,13 +150,11 @@ class expSettings {
 	 * @return \form
 	 * @node Subsystems:Config
 	 */
-	public static function configurationForm($configname,$database=false) {
+	public static function configurationForm($configname,$database=false) {  //FIXME this method is never used
 		// $configname = "" for active config
 		if (is_readable(BASE."conf/extensions")) {
 			global $user;
 			$options = self::parse($configname);
-
-			require_once(BASE.'framework/core/subsystems-1/forms.php');
 
 			$form = new form();
 
@@ -270,7 +267,7 @@ class expSettings {
 	 * @param null $site_root
 	 * @node Subsystems:Config
 	 */
-	public static function saveConfiguration($values,$site_root=null) {
+	public static function saveConfiguration($values,$site_root=null) {  //FIXME this method is only used in install and doesn't deal with profiles
 		if ($site_root == null) {
 			$site_root = BASE;
 		}
@@ -370,7 +367,7 @@ class expSettings {
 	 * @return \template
 	 * @node Subsystems:Config
 	 */
-	public static function outputConfigurationTemplate($template,$configname) {
+	public static function outputConfigurationTemplate($template,$configname) {  //FIXME this method is never used
 		if (is_readable(BASE."conf/extensions")) {
 			$categorized = array();
 			$options = self::parse($configname);
@@ -408,7 +405,7 @@ class expSettings {
 	 * @node Subsystems:Config
 	 * @return array
 	 */
-	public static function profiles() {
+	public static function profiles() {  //FIXME this method is never used
 		$profiles = array();
 		if (is_readable(BASE."conf/profiles")) {
 			$dh = opendir(BASE."conf/profiles");
@@ -429,7 +426,7 @@ class expSettings {
 	 * @param string $profile The name of the Profile to remove.
 	 * @node Subsystems:Config
 	 */
-	public static function deleteProfile($profile) {
+	public static function deleteProfile($profile) {  //FIXME this method is never used
 		if (file_exists(BASE."conf/profiles/$profile.php")) {
 			// do checking with realpath
 			unlink(BASE."conf/profiles/$profile.php");
@@ -442,7 +439,7 @@ class expSettings {
 	 * @param string $profile The name of the Profile to activate.
 	 * @node Subsystems:Config
 	 */
-	public static function activateProfile($profile) {
+	public static function activateProfile($profile) {  //FIXME this method is never used
 		if (is_readable(BASE."conf/profiles/$profile.php") && expUtil::isReallyWritable(BASE."conf/config.php")) {
 			copy(BASE."conf/profiles/$profile.php",BASE."conf/config.php");
 			$fh = fopen(BASE."conf/config.php","a");

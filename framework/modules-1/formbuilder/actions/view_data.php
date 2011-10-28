@@ -19,9 +19,6 @@
 /** @define "BASE" "../../../.." */
 if (!defined('EXPONENT')) exit('');
 
-include_once(BASE.'framework/core/subsystems-1/forms.php');
-//include_once(BASE.'framework/core/subsystems-1/users.php');
-
 $template = new template('formbuilder','_data_view');
 
 if (isset($_GET['id'])) {
@@ -103,11 +100,11 @@ if (isset($_GET['id'])) {
 		
 //		$template->assign("items",$items);
 		$template->assign("f",$f);
-		global $SYS_FLOW_REDIRECTIONPATH;
-		$SYS_FLOW_REDIRECTIONPATH = "editfallback";
+//		global $SYS_FLOW_REDIRECTIONPATH;
+//		$SYS_FLOW_REDIRECTIONPATH = "editfallback";
 		$template->assign("backlink",expHistory::getLastNotEditable());
 		$template->register_permissions(array("administrate","editform","editformsettings","editreport","viewdata","editdata","deletedata"),unserialize($f->location_data));
-		$SYS_FLOW_REDIRECTIONPATH = "exponent_default";
+//		$SYS_FLOW_REDIRECTIONPATH = "exponent_default";
 		$columndef .= 'new cColumn("Links","",links,null)';
 		$columndef .= ');';
 		

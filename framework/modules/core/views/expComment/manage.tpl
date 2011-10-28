@@ -35,11 +35,11 @@
             <td>
                 {if $comment->approved == 1}
                     <a href="{link action=approve_toggle id=$comment->id content_type=$content_type content_id=$content_id}" title="Disable this comment">
-                        <img src="{$smarty.const.ICON_RELATIVE}toggle_on.png">
+                        <img src="{$smarty.const.ICON_RELATIVE|cat:'toggle_on.png'}">
                     </a>
                 {else}
                     <a href="{link action=approve_toggle id=$comment->id content_type=$content_type content_id=$content_id}" title="Approve this comment">
-                        <img src="{$smarty.const.ICON_RELATIVE}toggle_off.png">
+                        <img src="{$smarty.const.ICON_RELATIVE|cat:'toggle_off.png'}">
                     </a>   
                 {/if}  
             </td>
@@ -47,8 +47,8 @@
             <td>{$comment->body}</td>
             <td>
 				<div class="item-actions">
-					{icon img=edit.png action=edit record=$comment content_id=$content_id}
-					{icon img=delete.png action=delete record=$comment onclick="return confirm('Are you sure you want to delete this comment?');"}
+					{icon img='edit.png' action=edit record=$comment content_id=$content_id}
+					{icon img='delete.png' action=delete record=$comment onclick="return confirm('Are you sure you want to delete this comment?');"}
 				</div>
             </td>
         </tr>

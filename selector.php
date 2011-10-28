@@ -30,9 +30,6 @@ ob_start('epb');
 $microtime_str = explode(' ',microtime());
 $i_start = $microtime_str[0] + $microtime_str[1];
 
-// Initialize the theme subsystem 1.0 compatibility layer
-require_once(BASE.'framework/core/subsystems-1/theme.php');
-
 $section = (expSession::is_set('last_section') ? expSession::get('last_section') : SITE_DEFAULT_SECTION);
 $section = $db->selectObject('section','id='.$section);
 
@@ -44,7 +41,7 @@ $page = ($section && $section->subtheme != '' && is_readable('themes/'.DISPLAY_T
 if (is_readable(BASE.$page)) {
 	define('PREVIEW_READONLY',1); // for mods
 	define('SELECTOR',1);
-	$SYS_FLOW_REDIRECTIONPATH='source_selector';
+//	$SYS_FLOW_REDIRECTIONPATH='source_selector';
 
 	$source_select = array();
 	if (expSession::is_set('source_select')) $source_select = expSession::get('source_select');

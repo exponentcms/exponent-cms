@@ -18,6 +18,6 @@
 ##################################################
 
 function smarty_function_viewfile($params,&$smarty) {
-	$view = exponent_template_getModuleViewFile($params['module'],$params['view']);
+	$view = expTemplate::getModuleViewFile($params['module'],$params['view']);
 	$smarty->assign($params['var'],$view);
 }

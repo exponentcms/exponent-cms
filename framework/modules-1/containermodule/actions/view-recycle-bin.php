@@ -22,7 +22,6 @@ if (!defined('EXPONENT')) exit('');
 expSession::clearAllUsersSessionCache('containermodule');
 
 $orphans = array();
-//foreach ($db->selectObjects("locationref","refcount=0", "module") as $orphan) {
 foreach ($db->selectObjects("sectionref","refcount=0", "module") as $orphan) {
 	$obj = null;
 	$loc = expCore::makeLocation($orphan->module,$orphan->source,$orphan->internal);

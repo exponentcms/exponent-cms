@@ -63,7 +63,7 @@
 	    </tr>
 	    </thead>
 	    {foreach from=$group_discounts item=discount name=items}
-			<tr class="{cycle values=even,odd}"">
+			<tr class="{cycle values='even,odd'}"">
 			    {form action=update_groupdiscounts}
 	                {control type="hidden" name="id" value=$discount->id}
                     <td>{control type=dropdown name=group_id items=$groups key=id display=name label=" " includeblank="-- Select a group --" value=$discount->group_id}</td>
@@ -72,10 +72,10 @@
                     <td>
                         {if $permissions.manage == true}
                             {if $smarty.foreach.items.first == 0}
-                                {icon controller=ecomconfig action=rerank_groupdiscount img=up.png record=$discount push=up}    
+                                {icon controller=ecomconfig action=rerank_groupdiscount img='up.png' record=$discount push=up}
                             {/if}
                             {if $smarty.foreach.items.last == 0}
-                                {icon controller=ecomconfig action=rerank_groupdiscount img=down.png record=$discount push=down}
+                                {icon controller=ecomconfig action=rerank_groupdiscount img='down.png' record=$discount push=down}
                             {/if}
                         {/if}
                     </td>

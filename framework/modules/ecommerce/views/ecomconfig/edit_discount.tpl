@@ -72,7 +72,7 @@
         {control type=buttongroup submit="Save Discount"|gettext cancel="Cancel"|gettext}
     {/form}
 </div>
-<div class="loadingdiv">Loading</div>
+<div class="loadingdiv">{'Loading'|gettext}</div>
 {script unique="discountedit" yui3mods=1}
 {literal}
 YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-tabview','yui2-element', function(Y) {
