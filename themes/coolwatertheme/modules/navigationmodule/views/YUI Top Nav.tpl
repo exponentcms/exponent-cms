@@ -62,13 +62,11 @@
 	</div>
 </div>
 
-
 {script yuimodules='"menu","animation"' unique="yuimenubar"}
 {literal}
 YAHOO.util.Event.onContentReady("yuimenubar", function () {
     var ua = YAHOO.env.ua,
         oAnim;  // Animation instance
-
 
     /*
          "beforeshow" event handler for each submenu of the MenuBar
@@ -83,7 +81,6 @@ YAHOO.util.Event.onContentReady("yuimenubar", function () {
             oShadow,
             oUL;
     
-
         if (this.parent) {
 
             oElement = this.element;
@@ -97,7 +94,6 @@ YAHOO.util.Event.onContentReady("yuimenubar", function () {
             oShadow = oElement.lastChild;
             oShadow.style.height = "0px";
 
-            
             /*
                 Stop the Animation instance if it is currently 
                 animating a Menu.
@@ -110,7 +106,6 @@ YAHOO.util.Event.onContentReady("yuimenubar", function () {
             
             }
 
-
             /*
                 Set the body element's "overflow" property to 
                 "hidden" to clip the display of its negatively 
@@ -119,13 +114,11 @@ YAHOO.util.Event.onContentReady("yuimenubar", function () {
 
             oBody = this.body;
 
-
             //  Check if the menu is a submenu of a submenu.
 
             if (this.parent && 
                 !(this.parent instanceof YAHOO.widget.MenuBarItem)) {
             
-
                 /*
                     There is a bug in gecko-based browsers where 
                     an element whose "position" property is set to 
@@ -143,7 +136,6 @@ YAHOO.util.Event.onContentReady("yuimenubar", function () {
                 
                 }
                 
-                
                 /*
                     Set a width on the submenu to prevent its 
                     width from growing when the animation 
@@ -158,9 +150,7 @@ YAHOO.util.Event.onContentReady("yuimenubar", function () {
             
             }
 
-
             oBody.style.overflow = "hidden";
-
 
             /*
                 Set the <ul> element's "marginTop" property 
@@ -175,7 +165,6 @@ YAHOO.util.Event.onContentReady("yuimenubar", function () {
         }
 
     }
-
 
     /*
         "tween" event handler for the Anim instance, used to 
@@ -200,7 +189,6 @@ YAHOO.util.Event.onContentReady("yuimenubar", function () {
     
     }
 
-
     /*
         "complete" event handler for the Anim instance, used to 
         remove style properties that were animated so that the 
@@ -218,16 +206,13 @@ YAHOO.util.Event.onContentReady("yuimenubar", function () {
         
         }
 
-
         oUL.style.marginTop = "";
         oBody.style.overflow = "";
         
-
         //  Check if the menu is a submenu of a submenu.
 
         if (this.parent && 
             !(this.parent instanceof YAHOO.widget.MenuBarItem)) {
-
 
             // Clear widths set by the "beforeshow" event handler
 
@@ -247,7 +232,6 @@ YAHOO.util.Event.onContentReady("yuimenubar", function () {
         
     }
 
-
     /*
          "show" event handler for each submenu of the MenuBar 
          instance - used to kick off the animation of the 
@@ -266,7 +250,6 @@ YAHOO.util.Event.onContentReady("yuimenubar", function () {
             oShadow = oElement.lastChild;
             oUL = this.body.getElementsByTagName("ul")[0];
         
-
             /*
                  Animate the <ul> element's "marginTop" style 
                  property to a value of 0.
@@ -283,13 +266,11 @@ YAHOO.util.Event.onContentReady("yuimenubar", function () {
             
             });
 
-
             oAnim.animate();
        
         }
     
     }
-
 
     /*
          Instantiate a MenuBar:  The first argument passed to the 
@@ -303,7 +284,6 @@ YAHOO.util.Event.onContentReady("yuimenubar", function () {
                                                 hidedelay: 750, 
                                                 lazyload: true });
 
-
     /*
          Subscribe to the "beforeShow" and "show" events for 
          each submenu of the MenuBar instance.
@@ -315,7 +295,6 @@ YAHOO.util.Event.onContentReady("yuimenubar", function () {
 
 	yuimenubar.render(); 
 });
-
 
 {/literal}
 {/script}
