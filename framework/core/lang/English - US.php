@@ -1,7 +1,5 @@
 <?php
 return array(
-	"(Meta) Description"=>"(Meta) Description",
-	"(Meta) Keywords"=>"(Meta) Keywords",
 	"A CAPTCHA (Computer Automated Public Turing Test to Tell Computers and Humans Apart) is a means to prevent massive account registration.  When registering a new user account, the visitor will be required to enter a series of letters and numbers appearing in an image.  This prevents scripted bots from registering a large quantity of accounts."=>"A CAPTCHA (Computer Automated Public Turing Test to Tell Computers and Humans Apart) is a means to prevent massive account registration.  When registering a new user account, the visitor will be required to enter a series of letters and numbers appearing in an image.  This prevents scripted bots from registering a large quantity of accounts.",
 	"A description of what the site is about."=>"A description of what the site is about.",
 	"A message to display to all non-administrators visiting the site."=>"A message to display to all non-administrators visiting the site.",
@@ -199,7 +197,6 @@ return array(
 	"Password"=>"Password",
 	"Password Again"=>"Password Again",
 	"Password of the user above."=>"Password of the user above.",
-	"Password:"=>"Password:",
 	"Permission Management"=>"Permission Management",
 	"Pick Your Theme"=>"Pick Your Theme",
 	"Please enter some basic information for your site."=>"Please enter some basic information for your site.",
@@ -330,7 +327,6 @@ return array(
 	"User Registration"=>"User Registration",
 	"User Tracking"=>"User Tracking",
 	"Username"=>"Username",
-	"Username:"=>"Username:",
 	"We fervently hope that you will enjoy the power, flexibility, and ease-of-use that Exponent has to offer."=>"We fervently hope that you will enjoy the power, flexibility, and ease-of-use that Exponent has to offer.",
 	"We weren\'t able to remove /install/not_configured. Remove this file manually to complete your installation."=>"We weren\'t able to remove /install/not_configured. Remove this file manually to complete your installation.",
 	"We\'ll now run any upgrade scripts needed for this version of Exponent."=>"We\'ll now run any upgrade scripts needed for this version of Exponent.",

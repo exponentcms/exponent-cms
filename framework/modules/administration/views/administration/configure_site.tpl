@@ -57,8 +57,8 @@
                     {control type="checkbox" postfalse=1 name="sc[SEF_URLS]" label="Search Engine Friendly URLs?"|gettext checked=$smarty.const.SEF_URLS value=1}
 					{control type="checkbox" postfalse=1 name="sc[ADVERTISE_RSS]" label="Advertise all RSS Feeds to Web Browsers?"|gettext checked=$smarty.const.ADVERTISE_RSS value=1}
                     {control type="dropdown" name="sc[SITE_DEFAULT_SECTION]" label="Default Section (Home Page)"|gettext items=$section_dropdown default=$smarty.const.SITE_DEFAULT_SECTION}
-                    {control type="textarea" name="sc[SITE_KEYWORDS]" label="(Meta) Keywords"|gettext value=$smarty.const.SITE_KEYWORDS}
-                    {control type="textarea" name="sc[SITE_DESCRIPTION]" label="(Meta) Description"|gettext value=$smarty.const.SITE_DESCRIPTION}
+                    {control type="textarea" name="sc[SITE_KEYWORDS]" label='('|cat:'Meta'|gettext|cat:') '|cat:'Keywords'|gettext value=$smarty.const.SITE_KEYWORDS}
+	                {control type="textarea" name="sc[SITE_DESCRIPTION]" label='('|cat:'Meta'|gettext|cat:') '|cat:'Description'|gettext value=$smarty.const.SITE_DESCRIPTION}
                 </div>
                 <div id="tab2">
 	                <div class="info-header">
