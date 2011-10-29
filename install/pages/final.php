@@ -27,19 +27,13 @@ global $user;
 if (isset($_REQUEST['upgrade'])) { 
 // upgrades hit this
     if (unlink(BASE.'install/not_configured')) { 
-    
-            echo '<h2>' . gt('You\'re all set!') ."</h2>";
-            echo '<p>' . gt('Take me to your leader') ."</p>";
-
-        } else {
-
-            echo '<h2>' . gt('Hmmmm....') ."</h2>";
-            echo '<p>' . gt('We weren\'t able to remove /install/not_configured. Remove this file manually to complete your installation.') ."</p>";
-
-    } 
-
+        echo '<h2>' . gt('You\'re all set!') ."</h2>";
+        echo '<p>' . gt('Take me to your leader') ."</p>";
+    } else {
+        echo '<h2>' . gt('Hmmmm....') ."</h2>";
+        echo '<p>' . gt('We weren\'t able to remove /install/not_configured. Remove this file manually to complete your upgrade.') ."</p>";
+    }
 } else {
-    
     if (isset($_POST['username'])) {
         $user = user::login($_POST['username'],$_POST['password']);
         $leaveinstaller = (unlink(BASE.'install/not_configured')||!file_exists(BASE.'install/not_configured'));
@@ -50,14 +44,14 @@ if (isset($_REQUEST['upgrade'])) {
                         if (SEF_URLS) {
                     	    header('Location: '.URL_FULL."migration/configure/");
                         } else {
-                    	    header('Location: '.URL_FULL."index.php?module=migration&action=configure");
+                    	    header('Location: '.URL_FULL."index.php?controller=migration&action=configure");
                         }
                         break;
                     case 'configsite':
                         if (SEF_URLS) {
                     	    header('Location: '.URL_FULL."administration/configure_site/");
                         } else {
-                    	    header('Location: '.URL_FULL."index.php?module=administration&action=configure_site");
+                    	    header('Location: '.URL_FULL."index.php?controller=administration&action=configure_site");
                         }
                         break;
                     default:
@@ -65,11 +59,10 @@ if (isset($_REQUEST['upgrade'])) {
                         break;
                 }
             } else {
-                    
                 echo '<h2>' . gt('Hmmmm....') ."</h2>";
+	            echo '<p>' . gt('Either we weren\'t able to log in or ') ."</p>";
                 echo '<p>' . gt('We weren\'t able to remove /install/not_configured. Remove this file manually to complete your installation.') ."</p>";
-            
-            } 
+            }
         }
     }
 
