@@ -70,33 +70,31 @@ class expSettings {
 	 * @node Subsystems:Config
 	 */
 	public static function parse($configname,$site_root = null) {
-	// Last argument added in 0.96, for shared core.  Default it to the old hard-coded value
 		if ($site_root == null) $site_root = BASE;
-
-		// We don't actually use the forms subsystem, but the .structure.php files do.
 
 		if ($configname == '') $file = $site_root.'conf/config.php';
 		else $file = $site_root."conf/profiles/$configname.php";
 		$options = array();
-		$valid = array();
+//		$valid = array();
 		if (is_readable($file)) $options = self::parseFile($file);
 		if (is_readable($site_root.'conf/extensions')) {
 			$dh = opendir($site_root.'conf/extensions');
 			while (($file = readdir($dh)) !== false) {
 				if (substr($file,-13,13) == '.defaults.php') {
 					$options = array_merge(self::parseFile($site_root.'conf/extensions/'.$file),$options);
-				} else if (substr($file,-14,14) == '.structure.php') {
-					$tmp = include($site_root.'conf/extensions/'.$file);
-					$valid = array_merge($valid,array_keys($tmp[1]));
 				}
+//				else if (substr($file,-14,14) == '.structure.php') {
+//					$tmp = include($site_root.'conf/extensions/'.$file);
+//					$valid = array_merge($valid,array_keys($tmp[1]));
+//				}
 			}
 		}
 
-		$valid = array_flip($valid);
+//		$valid = array_flip($valid);
 
-		foreach ($options as $key=>$value) {
-			if (!isset($valid[$key])) unset($options[$key]);
-		}
+//		foreach ($options as $key=>$value) {
+//			if (!isset($valid[$key])) unset($options[$key]);
+//		}
 
 		return $options;
 	}
