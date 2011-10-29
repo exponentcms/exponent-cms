@@ -27,9 +27,7 @@ $num_version = expVersion::getVersion();
 <h2><?php echo gt('Upgrade Scripts'); ?></h2>
 <p>
 <?php 
-echo gt("
-Exponent will perform the following upgrades:
-"); 
+echo gt("Exponent will perform the following upgrades:");
 
 //display the upgrade scripts
 $upgrade_dir = 'upgrades';

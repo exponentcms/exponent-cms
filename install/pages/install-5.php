@@ -44,6 +44,7 @@ if (is_readable(BASE . 'themes')) {
             echo "<em>".$theme->author()."</em>";
             echo "<p>".$theme->description().'<br /><br />
                 <input type="hidden" name="page" value="install-6">
+			  	<input type="hidden" name="lang" value="'.LANGUAGE.'" />
                 <input type="hidden" name="sc[DISPLAY_THEME_REAL]" value="'.$file.'" id="sc[DISPLAY_THEME_REAL]">';
 			echo file_exists(BASE . "themes/$file/sample.eql") ? '<input type="checkbox" name="install_sample" value="1" class="checkbox"><label class="label ">Install Sample Content</label><br /><br />' : '';
             echo '<button class="awesome green small">'. gt('Use') .' '.$theme->name().'</button>'.

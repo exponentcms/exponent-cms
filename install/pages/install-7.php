@@ -43,8 +43,9 @@ if ($user->username == '') {  //FIXME Shouldn't get this because of check in ins
 	}else{
 		$db->insertObject($user,'user');
 	}
-	
-	header('Location: '.'index.php?page=final');
+	$lang = (defined('LANGUAGE')) ? "&lang='".LANGUAGE."'" : '';
+
+	header('Location: '.'index.php?page=final'.$lang);
 }
 
 ?>

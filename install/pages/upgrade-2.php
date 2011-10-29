@@ -20,7 +20,6 @@
 
 if (!defined('EXPONENT')) exit('');
 
-
 ?>
 <h2><?php echo gt('Installing and Upgrading tables'); ?></h2>
 

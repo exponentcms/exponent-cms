@@ -78,6 +78,7 @@ if (isset($_REQUEST['upgrade'])) {
 
 ?>
 	<form action="index.php?page=final" method="POST">
+		<input type="hidden" name="lang" value="<?php echo LANGUAGE; ?>" />
 		<div class="text-control control ">
 			<label class="label"><?php echo gt("Username:"); ?></label><input type="text" class="text " size="25" value="" name="username">
 		</div>

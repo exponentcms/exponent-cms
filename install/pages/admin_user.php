@@ -43,7 +43,7 @@ function checkPassword(f){
 		<span class="label"><?php echo gt('Username'); ?>: </span>
 		<input class="text" type="text" name="username" value="<?php echo gt('admin'); ?>" />
 		<div class="control_help">
-			<?php echo gt('The username of your administrator account.  You should change this to something other than the default of "admin".'); ?>
+			<?php echo gt('The username of your administrator account.  You should change this to something other than the default of \'admin\'.'); ?>
 		</div>
 	</div>
 	<div class="control">

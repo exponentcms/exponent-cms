@@ -54,6 +54,7 @@ $config = array(
 <h1><?php echo gt('Configure Database'); ?></h1>
 <form method="post" action="index.php">
     <input type="hidden" name="page" value="install-3" />
+	<input type="hidden" name="lang" value="<?php echo LANGUAGE; ?>" />
 	<div class="control">
         <span class="label"><?php echo gt('Backend'); ?>: </span>
         <select name="sc[db_engine]" onchange="showOptions(this.value);">
@@ -93,7 +94,9 @@ $config = array(
 			<span class="label"><?php echo gt('Address'); ?>: </span>
 			<input class="text" type="text" name="sc[db_host]" value="<?php echo $config['db_host']; ?>" />
 			<div class="control_help">
-				<?php echo gt('If your database server software runs on a different physical machine than the web server, enter the address of the database server machine.  Either an IP address (like 1.2.3.4) or an internet domain name (such as example.com) will work.<br /><br />If your database server software runs on the same machine as the web server, use the default setting, "localhost".'); ?>
+				<?php echo gt('If your database server software runs on a different physical machine than the web server, enter the address of the database server machine.').
+					gt('Either an IP address (like 1.2.3.4) or an internet domain name (such as example.com) will work.').'<br /><br />'.
+					gt('If your database server software runs on the same machine as the web server, use the default setting, \'localhost\'.'); ?>
 				<br /><br />
 				<?php echo gt('If in doubt, contact your system administrator or hosting provider.'); ?>
 			</div>
@@ -102,7 +105,8 @@ $config = array(
 			<span class="label"><?php echo gt('Port');?>: </span>
 			<input class="text" type="text" name="sc[db_port]" value="<?php echo $config['db_port']; ?>" size="5" />
 			<div class="control_help">
-				<?php echo gt('If you are using a database server that supports TCP or other network connection protocols, and that database software runs on a different physical machine than the web server, enter the connection port.<br /><br />If you entered "localhost" in the Address field, you should leave this as the default setting.'); ?>
+				<?php echo gt('If you are using a database server that supports TCP or other network connection protocols, and that database software runs on a different physical machine than the web server,').
+					gt('enter the connection port.').'<br /><br />'.gt('If you entered \'localhost\' in the Address field, you should leave this as the default setting.'); ?>
 				<br /><br />
 				<?php echo gt('If in doubt, contact your system administrator or hosting provider.'); ?>
 			</div>
@@ -124,7 +128,7 @@ $config = array(
 			<span class="label"><?php echo gt('Password'); ?>: </span>
 			<input class="text" type="password" name="sc[db_pass]" value="<?php echo $config['db_pass']; ?>" />
 			<div class="control_help">
-				<?php echo gt('Enter the password for the username you entered above.  The password will <b>not</b> be obscured, because it cannot be obscured in the configuration file.  The Exponent developers urge you to use a completely new password, unlike any of your others, for security reasons.'); ?>
+				<?php echo gt('Enter the password for the username you entered above.  The password will').'<b>'.gt('not').'</b>'.gt('be obscured, because it cannot be obscured in the configuration file.  The Exponent developers urge you to use a completely new password, unlike any of your others, for security reasons.'); ?>
 			</div>
 		</div>
 		<div class="control">
@@ -133,7 +137,7 @@ $config = array(
 			<div class="control_help">
 				<?php echo gt('A table prefix helps Exponent differentiate tables for this site from other tables that may already exist (or eventually be created by other scripts).  If you are using an existing database, you may want to change this.'); ?>
 				<br /><br />
-				<?php echo gt('<b>Note:</b> A table prefix may only contain numbers and letters.  Spaces and symbols (including "_") are not allowed.  An underscore will be added for you, by Exponent.'); ?>
+				<?php echo '<b>'.gt('Note:').'</b>'.gt('A table prefix may only contain numbers and letters.  Spaces and symbols (including \'_\') are not allowed.  An underscore will be added for you, by Exponent.'); ?>
 			</div>
 		</div>
 	</div>
