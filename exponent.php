@@ -62,8 +62,10 @@ $history = new expHistory(); //<--This is the new flow subsystem
 if (expJavascript::inAjaxAction()) set_error_handler('handleErrors');
 
 // Validate the session and populate the $user variable
-$user = new user();
-expSession::validate();
+if ($db->havedb) {
+	$user = new user();
+	expSession::validate();
+}
 
 /* exdoc
  * The flag to use a mobile theme variation.
@@ -83,7 +85,8 @@ $exponent_permissions_r = expSession::get("permissions");
 $router = new expRouter();
 
 // Initialize the navigation hierarchy
-$sections = expCore::initializeNavigation();
+if ($db->havedb)
+	$sections = expCore::initializeNavigation();
 
 /**
  * dumps the passed variable to screen, but only if in development mode

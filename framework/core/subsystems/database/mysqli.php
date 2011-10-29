@@ -45,8 +45,10 @@ class mysqli_database extends database {
 
 //	function connect ($username, $password, $hostname, $database, $new=false) {
 	function __construct($username, $password, $hostname, $database, $new=false) {
-		list ( $host, $port ) = @explode (":", $hostname);
-		if ($this->connection = mysqli_connect($host, $username, $password, $database, $port)) {
+		if (strstr($hostname,':')) {
+			list ( $host, $port ) = @explode (":", $hostname);
+		}
+		if ($this->connection = @mysqli_connect($host, $username, $password, $database, $port)) {
 			$this->havedb = true;
 		}
 		//fix to support utf8, warning it only works from a certain mySQL version on
@@ -57,7 +59,7 @@ class mysqli_database extends database {
 		//anything else would result in an inconsistent user experience
 		//TODO: determine how to handle encoding on postgres
 
-		list($major, $minor, $micro) = sscanf(mysqli_get_server_info($this->connection), "%d.%d.%d-%s");
+		list($major, $minor, $micro) = sscanf(@mysqli_get_server_info($this->connection), "%d.%d.%d-%s");
 		if(defined("DB_ENCODING")) {
 			//SET NAMES is possible since version 4.1
 			if(($major > 4) OR (($major == 4) AND ($minor >= 1))) {
