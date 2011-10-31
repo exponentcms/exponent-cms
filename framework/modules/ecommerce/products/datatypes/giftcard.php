@@ -17,7 +17,7 @@
 #
 ##################################################
 
-class giftcard extends product {
+class giftcard extends expRecord {
 	public $table = 'product';
 	public $has_one = array('company');
 	public $has_and_belongs_to_many = array('storeCategory');
@@ -28,6 +28,10 @@ class giftcard extends product {
 	public $requiresBilling = true; 
     public $isQuantityAdjustable = true;
     
+	protected $attachable_item_types = array(
+        'content_expFiles'=>'expFile', 
+    );
+	
 	public function __construct($params=array(), $get_assoc=true, $get_attached=true) {
 		parent::__construct($params, $get_assoc, $get_attached);
 		$this->price = '';
@@ -73,6 +77,26 @@ class giftcard extends product {
 		    $item->save();
 		    return true;
 	    }
+	}
+	
+	 public function getForm($form) {        
+        $dirs = array(
+            BASE.'themes/'.DISPLAY_THEME.'/modules/ecommerce/products/views/'.$this->product_type.'/',
+            BASE.'framework/modules/ecommerce/products/views/'.$this->product_type.'/',
+            BASE.'themes/'.DISPLAY_THEME.'/modules/ecommerce/products/views/product/',
+            BASE.'framework/modules/ecommerce/products/views/product/',
+        );
+        
+        foreach ($dirs as $dir) {
+            if (file_exists($dir.$form.'.tpl')) return $dir.$form.'.tpl';    
+        }
+        
+        return false;
+    }
+	
+	public function update($params=array()) {
+		// eDebug($params, true);
+		parent::update($params); 
 	}
 }
 ?>

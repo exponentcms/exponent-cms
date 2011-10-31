@@ -578,8 +578,7 @@ class product extends expRecord {
         else return false;   
     }
     
-    public function isChild()
-    {
+    public function isChild() {
          if ($this->parent_id == 0 ) return false;
          else return true;
     }

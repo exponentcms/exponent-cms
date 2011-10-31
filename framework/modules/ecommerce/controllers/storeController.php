@@ -811,14 +811,14 @@ class storeController extends expController {
 #        eDebug($shipping_services);
 #        eDebug($shipping_methods);
 
-//eDebug($record);
-        //if new record and it's a child, then well set the child rank to be at the end
-        if (empty($record->id) && $record->isChild()) 
-        {               
-            $record->child_rank = $db->max('product','child_rank',null,'parent_id=' . $record->parent_id) + 1;
+		if($this->params['product_type'] == "product" || $this->params['product_type'] == "childProduct") {
+			//if new record and it's a child, then well set the child rank to be at the end
+			if (empty($record->id) && $record->isChild()) 
+			{               
+				$record->child_rank = $db->max('product','child_rank',null,'parent_id=' . $record->parent_id) + 1;
+			}
+			//eDebug($record,true);
         }
-        //eDebug($record,true);
-        
         $view='';
         $parent = null;
         if ((isset($this->params['parent_id']) && empty($record->id)))
@@ -949,24 +949,30 @@ class storeController extends expController {
 		
 		//Get the product type
         $product_type = isset($this->params['product_type']) ? $this->params['product_type'] : 'product';
-        
+      
 		$record = new $product_type();
+		
 		$record->update($this->params);
 		
-        $record->addContentToSearch();
+		if($product_type == "childProduct" || $product_type =="product") {
+			$record->addContentToSearch();
+			//Create a flash message and redirect to the page accordingly
+			if($record->parent_id != 0 ) {
+				$parent = new $product_type($record->parent_id,false,false);
+				flash("message","Child product saved.");                
+				redirect_to(array('controller'=>'store','action'=>'showByTitle','title'=>$parent->sef_url));
+			} elseif(isset($this->params['original_id']) ) {
+				flash("message","Product copied and saved. You are now viewing your new product.");                
+				redirect_to(array('controller'=>'store','action'=>'showByTitle','title'=>$record->sef_url));
+			} else {            
+				flash("message","Product saved.");                
+				redirect_to(array('controller'=>'store','action'=>'showByTitle','title'=>$record->sef_url));
+			}
+		} elseif($product_type == "giftcard") {
 		
-        //Create a flash message and redirect to the page accordingly
-        if($record->parent_id != 0 ) {
-            $parent = new $product_type($record->parent_id,false,false);
-            flash("message","Child product saved.");                
-            redirect_to(array('controller'=>'store','action'=>'showByTitle','title'=>$parent->sef_url));
-        } elseif(isset($this->params['original_id']) ) {
-            flash("message","Product copied and saved. You are now viewing your new product.");                
-            redirect_to(array('controller'=>'store','action'=>'showByTitle','title'=>$record->sef_url));
-        } else {            
-            flash("message","Product saved.");                
-            redirect_to(array('controller'=>'store','action'=>'showByTitle','title'=>$record->sef_url));
-        }        
+			flash("message","Giftcard saved.");                
+			redirect_to(array('controller'=>'store','action'=>'manage'));
+		}
     }
     
     function delete() {
