@@ -46,9 +46,6 @@ EXPONENT.YUI2_VERSION = '<?php echo YUI2_VERSION; ?>';
 EXPONENT.YUI2_PATH = '<?php echo YUI2_PATH; ?>';
 EXPONENT.YUI2_URL = '<?php echo YUI2_URL; ?>';
 
-
-
-
 EXPONENT.YUI3_CONFIG = {
     combine:<?php echo (MINIFY==1)?1:0; ?>,
     // root:         EXPONENT.YUI3_PATH.substr(1),
@@ -85,4 +82,3 @@ EXPONENT.YUI3_CONFIG = {
     }
 };
 //console.debug(EXPONENT.YUI3_CONFIG);
-

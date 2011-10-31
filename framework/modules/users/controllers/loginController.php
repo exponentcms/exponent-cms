@@ -99,9 +99,7 @@ class loginController extends expController {
 	 * main login method
 	 */
 	public static function login() {
-		global $user;
-
-		$user = user::login($_POST['username'],$_POST['password']);
+		user::login($_POST['username'],$_POST['password']);
 		if (!isset($_SESSION[SYS_SESSION_KEY]['user'])) {
 			flash('error', gt('Invalid Username / Password'));
 			if (expSession::is_set('redirecturl_error')) {

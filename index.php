@@ -72,7 +72,6 @@ if (ENABLE_TRACKING) $router->updateHistory($section);
 header("Content-Type: text/html; charset=".LANG_CHARSET);
 
 // Check to see if we are in maintenance mode.
-//if (MAINTENANCE_MODE && !$user->isAdmin() && ( !isset($_REQUEST['module']) || $_REQUEST['module'] != 'loginmodule')) {
 if (MAINTENANCE_MODE && !$user->isAdmin() && ( !isset($_REQUEST['controller']) || $_REQUEST['controller'] != 'login')) {
 	//only admins/acting_admins are allowed to get to the site, all others get the maintenance view
 	$template = new standalonetemplate('_maintenance');
