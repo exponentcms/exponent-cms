@@ -991,11 +991,14 @@ class storeController extends expController {
         $db->delete('optiongroup', 'product_id='.$product->id);
         //die();
         $db->delete('product_storeCategories', 'product_id='.$product->id.' AND product_type="'.$product_type.'"');
-        if ($product->hasChildren())
-        {
-            $this->deleteChildren();    
-        }    
-        
+		
+		if($product->product_type == "product") {
+			if ($product->hasChildren())
+			{
+				$this->deleteChildren();    
+			}    
+        }
+		
         $product->delete();
         
         flash('message', 'Product deleted successfully.');

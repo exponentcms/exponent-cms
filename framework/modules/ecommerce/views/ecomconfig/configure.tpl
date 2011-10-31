@@ -28,6 +28,7 @@
 				<li><a href="#tab7"><em>Invoice</em></a></li>
 				<li><a href="#tab8"><em>Display & Feature Settings</em></a></li>
 				<li><a href="#tab9"><em>Product Types</em></a></li>
+				<li><a href="#tab10"><em>Gift Cards</em></a></li>
 			</ul>            
 	    	<div class="yui-content">
 	        	<div id="tab1">
@@ -120,6 +121,12 @@
 					{control type="checkbox" name="product_types[Shopzilla]" label="Shopzilla Feed" value="shopzilla_product_type" checked=$config.product_types.Shopzilla}
 					{control type="checkbox" name="product_types[Shopping]" label="Shopping Feed" value="shopping_product_type" checked=$config.product_types.Shopping}
 					{control type="checkbox" name="product_types[PriceGrabber]" label="Price Grabber Feed" value="pricegrabber_product_type" checked=$config.product_types.PriceGrabber}
+				</div>
+				
+				<div id="tab10">
+					<h2>{"Gift Card Settings"|gettext}</h2>
+					{control type="text" name="minimum_gift_card_purchase" label="Minimum Gift Card Puchase" value=$config.minimum_gift_card_purchase filter=money}
+					{control type="text" name="custom_message_product" label="Custom Message Price" value=$config.custom_message_product filter=money}
 				</div>
             </div>
         </div>

@@ -318,6 +318,12 @@ class ecomconfigController extends expController {
         flash('message', 'Configuration updated');
         expHistory::back();
     }
+	
+	function saveconfig() {
+		$this->params['minimum_gift_card_purchase'] = substr($this->params['minimum_gift_card_purchase'], 1) ;
+		$this->params['custom_message_product']     = substr($this->params['custom_message_product'], 1) ;
+		parent::saveconfig();
+	}
 }
 
 ?>
