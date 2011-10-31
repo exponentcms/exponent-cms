@@ -58,7 +58,7 @@
 <div id="mod-manager" class="module administration modulemanager">
     <div class="info-header">
         <div class="related-actions">
-            {help text="Get Help Managing Modules"|gettext module="manage-modules"}
+            {help text="Get Help"|gettext|cat:" "|cat:("Managing Modules"|gettext) module="manage-modules"}
         </div>
         <h1>{"Module Manager"|gettext}</h1>
     </div>

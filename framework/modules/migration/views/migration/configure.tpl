@@ -17,7 +17,7 @@
 <div id="migrationconfig" class="module migration configure">
     <div class="info-header">
         <div class="related-actions">
-			{help text="Get Help with Migration Database Settings" module="configure-migration-settings"}
+			{help text="Get Help"|gettext|cat:" "|cat:("Migration Database Settings"|gettext) module="configure-migration-settings"}
         </div>
 		<h1>{"Database Settings to Migrate Your Old Site"|gettext}</h1>	    
     </div>

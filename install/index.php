@@ -20,7 +20,7 @@
 
 ob_start();
 
-define('DEVELOPMENT', 0);
+define('DEVELOPMENT', 1);
 define('WRITE_LANG_TEMPLATE', DEVELOPMENT);
 
 define('SCRIPT_EXP_RELATIVE','install/');
@@ -163,7 +163,7 @@ switch ($page) {
 		$page_text = gt('Exponent is now upgrading the database definitions.');
 		break;
 	case 'final':
-        $masthead = (isset($_REQUEST['upgrade']))?"Upgrade":"New Installation";
+        $masthead = (isset($_REQUEST['upgrade']))?gt("Upgrade"):gt("New Installation");
         $page_text = (isset($_REQUEST['upgrade']))?gt("Your upgrade is complete!"):gt("Your installation is complete!");
 		break;
 	default:

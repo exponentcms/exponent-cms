@@ -21,7 +21,7 @@
 <div class="module migration manage-pages">
     <div class="info-header">
         <div class="related-actions">
-			{help text="Get Help with Migrating Pages" module="migrate-pages"}
+			{help text="Get Help"|gettext|cat:" "|cat:("Migrating Pages"|gettext) module="migrate-pages"}
         </div>
 		<h1>{"Migrate Pages"|gettext}</h1>	    
     </div>

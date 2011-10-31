@@ -20,7 +20,7 @@
 <div class="module users manage-group-memberships">
     <div class="info-header">
         <div class="related-actions">
-			{help text="Get Help with Managing Group Memberships" module="manage-group-members"}
+			{help text="Get Help"|gettext|cat:" "|cat:("Managing Group Memberships"|gettext) module="manage-group-members"}
         </div>
 		<h1>{"Manage Group Memberships"|gettext}</h1>	    
     </div>

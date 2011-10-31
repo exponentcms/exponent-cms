@@ -29,7 +29,7 @@
 		<div id="noflash"></div>
 		
 		<div class="related-actions">
-			{help text="Get Help with Uploading Files" module="upload-files"}
+			{help text="Get Help"|gettext|cat:" "|cat:("Uploading Files"|gettext) module="upload-files"}
 		</div>
 
 	</div>    

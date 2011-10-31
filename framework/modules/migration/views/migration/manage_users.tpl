@@ -21,7 +21,7 @@
 <div class="module migration manage-users">
     <div class="info-header">
         <div class="related-actions">
-			{help text="Get Help with Migrating Users and Groups" module="migrate-users"}
+			{help text="Get Help"|gettext|cat:" "|cat:("Migrating Users and Groups"|gettext) module="migrate-users"}
         </div>
 		<h1>{"Migrate Users and Groups"|gettext}</h1>	    
     </div>

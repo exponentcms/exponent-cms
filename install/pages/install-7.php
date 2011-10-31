@@ -20,17 +20,33 @@
 if (!defined('EXPONENT')) exit('');
 global $db;
 
+$error = false;
+$lang = (defined('LANGUAGE')) ? "&lang='".LANGUAGE."'" : '';
 $user = $db->selectObject('user','is_admin=1');
 
 $user->username = $_POST['username'];
-if ($user->username == '') {  //FIXME Shouldn't get this because of check in install-6.php
-	echo gt('You must specify a valid username.');
+if ($user->username == '') {
+    $error = true;
+	$errorstr = gt('You must specify a valid username.');
+    $errorflag = '&errusername=true';
+    echo $errorstr;
+} elseif ($_POST['password'] != $_POST['password2']) {
+    $error = true;
+    $errorstr = gt('Your passwords do not match. Please check your entries.');
+    $errorflag = '&errpassword=true';
+    echo $errorstr;
+} elseif (!expValidator::validate_email_address($_POST['email'])) {
+    $error = true;
+    $errorstr = gt('Your email address is invalid. Please check your entry.');
+    $errorflag = '&erremail=true';
+    echo $errorstr;
+}
+
+if ($error) {  //FIXME Shouldn't get this because of check in install-6.php unless browser jscript disabled
+    flash('error',$errorstr);
+    header('Location: index.php?page=install-6'.$errorflag.$lang);
+    exit();
 } else {
-    if (expValidator::validate_email_address($_POST['email']) == false) {
-        flash('error',gt('You must supply a valid email address.'));
-        header('Location: index.php?page=install-6&erremail=true');
-        exit();
-    }
 	$user->password = md5($_POST['password']);
 	$user->firstname = $_POST['firstname'];
 	$user->lastname = $_POST['lastname'];
@@ -43,8 +59,6 @@ if ($user->username == '') {  //FIXME Shouldn't get this because of check in ins
 	}else{
 		$db->insertObject($user,'user');
 	}
-	$lang = (defined('LANGUAGE')) ? "&lang='".LANGUAGE."'" : '';
-
 	header('Location: '.'index.php?page=final'.$lang);
 }
 

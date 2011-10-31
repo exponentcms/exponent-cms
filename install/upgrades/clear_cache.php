@@ -55,9 +55,9 @@ class clear_cache extends upgradescript {
 			BASE.'tmp/css',  // exponent minified css cache
 			BASE.'tmp/minify', // minify cache
 			BASE.'tmp/pixidou', // (new) pixidou cache
-		    BASE.'tmp/rsscache',  // magpierss cache
-		    BASE.'tmp/views_c',  // smarty cache
-		    BASE.'tmp/cache',  // alternate smarty cache
+		    BASE.'tmp/rsscache',  // SimplePie cache
+		    BASE.'tmp/views_c',  // smarty compiler cache
+		    BASE.'tmp/cache',  // smarty rendering cache (not currently active)
 			BASE.'tmp/img_cache', // phpThumb cache includes subfolders
 			BASE.'tmp/extensionuploads', // extensions are uploaded here, includes subfolders
 		);

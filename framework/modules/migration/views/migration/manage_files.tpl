@@ -17,7 +17,7 @@
 <div class="module migration manage-files">
     <div class="info-header">
         <div class="related-actions">
-			{help text="Get Help with Migrating Files" module="migrate-files"}
+			{help text="Get Help"|gettext|cat:" "|cat:("Migrating Files"|gettext) module="migrate-files"}
         </div>
 		<h1>{"Migrate Files"|gettext}</h1>	    
     </div>

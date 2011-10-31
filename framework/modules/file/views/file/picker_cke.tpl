@@ -20,7 +20,7 @@
     {messagequeue}
 	<div class="info-header">
 		<div class="related-actions">
-			{help text="Get Help with the File Manager" module="file-manager"}
+			{help text="Get Help"|gettext|cat:" "|cat:("Managing Files"|gettext) module="file-manager"}
 		</div>
 		<div id="autocomplete">
 			<label for="dt_input">Filter by Filename, title, or alt:</label>

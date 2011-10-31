@@ -21,7 +21,7 @@
 <div class="module users manage-extensions">
     <div class="info-header">
         <div class="related-actions">
-			{help text="Get Help Managing User Profile Extensions" module="manage-extensions"}
+			{help text="Get Help"|gettext|cat:" "|cat:("Managing User Profile Extensions"|gettext) module="manage-extensions"}
         </div>
         <h1>{"Manage User Profile Extensions"|gettext}</h1>
     </div>

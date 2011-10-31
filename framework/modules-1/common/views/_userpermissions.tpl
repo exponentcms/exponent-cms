@@ -18,7 +18,7 @@
 	<div class="form_header">
 		<div class="info-header">
 			<div class="related-actions">
-				{help text="Get Help Managing User Permissions" module="manage-user-permissions"}
+				{help text="Get Help"|gettext|cat:" "|cat:("Managing User Permissions"|gettext) module="manage-user-permissions"}
 			</div>
         	<h1>{'Assign User Permissions'|gettext}</h1>
 		</div>

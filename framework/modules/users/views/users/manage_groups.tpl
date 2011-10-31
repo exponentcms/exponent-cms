@@ -21,7 +21,7 @@
 <div class="module users manage-group">
     <div class="info-header">
         <div class="related-actions">
-			{help text="Get Help Managing User Groups" module="manage-groups"}
+			{help text="Get Help"|gettext|cat:" "|cat:("Managing User Groups"|gettext) module="manage-groups"}
         </div>
         <h1>{$moduletitle|default:"Manage User Groups"}</h1>
     </div>
