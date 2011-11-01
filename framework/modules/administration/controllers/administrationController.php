@@ -363,7 +363,7 @@ class administrationController extends expController {
     }
 
     public function manage_lang() {
-
+        // straight & simple, just display the form
    	}
 
     public function save_newlangfile() {
@@ -387,7 +387,9 @@ class administrationController extends expController {
 
     public function update_lang() {
    		$changes = expLang::updateCurrLangFile();
-        assign_to_template(array('changes'=>$changes));
+        $changes = $changes?$changes:'No';
+        flash('message',$changes." ".gt('New Phases were Added to the')." ".LANG.gt('Translation'));
+        expHistory::back();
    	}
 
 	public function test_smtp() {
