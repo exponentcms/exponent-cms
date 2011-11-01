@@ -20,7 +20,8 @@
 
 ob_start();
 
-define('DEVELOPMENT', 1);
+// set DEVELOPMENT to 1 to force dump the language used during an install/upgrade
+define('DEVELOPMENT', 0);
 define('WRITE_LANG_TEMPLATE', DEVELOPMENT);
 
 define('SCRIPT_EXP_RELATIVE','install/');
@@ -29,8 +30,6 @@ define('SCRIPT_FILENAME','index.php');
 // Jumpstart to Initialize the installer language before it's set to default
 if (isset($_REQUEST['lang'])) {
 	if (!defined('LANGUAGE')) define('LANGUAGE', trim($_REQUEST['lang'],"'"));
-//} else {
-//	if (!defined('LANGUAGE')) define('LANGUAGE', 'English - US');
 }
 
 include_once('../exponent.php');
@@ -192,8 +191,8 @@ switch ($page) {
     
 	<script type="text/javascript">	
 	function pop(page) {
-    		var url = "popup.php?page="+page;
-    		window.open(url,"pop","height=400,width=600,title=no,titlebar=no,scrollbars=yes");
+        var url = "popup.php?page="+page;
+        window.open(url,"pop","height=400,width=600,title=no,titlebar=no,scrollbars=yes");
 	}
 	
 	</script>
