@@ -19,7 +19,7 @@
         <div class="related-actions">
             {help text="Get Help"|gettext|cat:" "|cat:("Managing Translations"|gettext) module="manage-language"}
         </div>
-        <h1>{gettext str="Manage Translation"}</h1>
+        <h1>{gettext str="Manage Translations"}</h1>
     </div>
     {gettext str="Current Display Language is"}: {$smarty.const.LANG}
     {if $smarty.const.LANG != 'English - US'}
@@ -27,9 +27,9 @@
         <a class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" href="{link action=update_lang}"><b>{gettext str="Add missing phrases to"|cat:" "|cat:($smarty.const.LANG)}</b></a>
     {/if}
     {br}{br}<hr>
-    <h2>{gettext str="Add Phrases to Default Translation File"}</h2>
+    <h2>{gettext str="Add Phrases to the Default Translation File"}</h2>
+    <h3 style="color:red">{gettext str='WARNING! Turning this on will SLOW down the site and also turn on error reporting'}!</h3>
     {form action=update_langtemplate}
-        <h3 style="color:red">{gettext str='WARNING! Turning this on will SLOW down the site and also turn on error reporting'}!</h3>
         {control type="checkbox" postfalse=1 name=writetemplate label="Build Phrase Library?"|gettext checked=$smarty.const.WRITE_LANG_TEMPLATE value=1}
         {control type=buttongroup submit="Change Setting"}
     {/form}

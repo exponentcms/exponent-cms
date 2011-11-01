@@ -338,6 +338,14 @@ if ($user->isSuperAdmin()) {
                                 ))
                             ),
                             array(
+                                'text' => gt('Manage Translations'),
+                                'classname' => 'manage',
+                                'url' => makeLink(array(
+                                    'module' => 'administration',
+                                    'action' => 'manage_lang'
+                                )),
+                            ),
+                            array(
                                 'text' => gt('Manage Themes'),
                                 'classname' => 'manage',
                                 'url' => makeLink(array(
@@ -352,14 +360,6 @@ if ($user->isSuperAdmin()) {
 									'module' => 'administration',
 									'action' => 'toggle_mobile'
 								)),
-                            ),
-                            array(
-                                'text' => gt('Manage Translation'),
-                                'classname' => 'manage',
-                                'url' => makeLink(array(
-                                    'module' => 'administration',
-                                    'action' => 'manage_lang'
-                                )),
                             ),
                         )
                     )

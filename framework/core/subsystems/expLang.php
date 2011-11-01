@@ -134,7 +134,7 @@ class expLang {
             }
         } else {
             $error = true;
-            $result['message'] = gt('Bad Language Filename');
+            $result['message'] = gt('New Language').' "'.$newlang.'" '.gt('Cannot be Created').'!';
         }
         $result['type'] = $error ? 'error' : 'message';
         return $result;

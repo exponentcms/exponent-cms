@@ -368,8 +368,8 @@ class administrationController extends expController {
 
     public function save_newlangfile() {
 		$result = expLang::createNewLangFile($_POST['newlang']);
-        if (!empty($result)) {
-            flash($result['type'],$result['message']);
+        flash($result['type'],$result['message']);
+        if ($result['type'] != 'error') {
             expSettings::change('LANGUAGE', $_POST['newlang']);
             flash('message',gt('Display Language changed to:')." ".$_POST['newlang']);
         }
