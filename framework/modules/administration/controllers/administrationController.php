@@ -358,8 +358,37 @@ class administrationController extends expController {
     }
     
     public function update_SetSlingbarPosition() {
-       expSession::set("slingbar_top",$this->params['top']);
+        expSession::set("slingbar_top",$this->params['top']);
+        expHistory::back();
     }
+
+    public function manage_lang() {
+
+   	}
+
+    public function save_newlangfile() {
+		$result = expLang::createNewLangFile($_POST['newlang']);
+        if (!empty($result)) {
+            flash($result['type'],$result['message']);
+            expSettings::change('LANGUAGE', $_POST['newlang']);
+            flash('message',gt('Display Language changed to:')." ".$_POST['newlang']);
+        }
+        expHistory::back();
+   	}
+
+    public function update_langtemplate() {
+        expSettings::change('WRITE_LANG_TEMPLATE', $_POST['writetemplate']);
+        if (!empty($_POST['writetemplate'])) {
+            expSettings::change('DEVELOPMENT', $_POST['writetemplate']);
+        }
+        flash('message',gt('Language Phrase Building Feature Turned')." ".($_POST['writetemplate']?"On":"Off"));
+        expHistory::back();
+   	}
+
+    public function update_lang() {
+   		$changes = expLang::updateCurrLangFile();
+        assign_to_template(array('changes'=>$changes));
+   	}
 
 	public function test_smtp() {
 		$smtp = new expMail();

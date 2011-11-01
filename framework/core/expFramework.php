@@ -47,6 +47,12 @@ $cur_lang = array();
  */
 $default_lang = array();
 /**
+ * Stores the name of the default language file
+ * @global array $default_lang_file
+ * @name $default_lang_file
+ */
+$default_lang_file = '';
+/**
  * Stores the name of the language file to be created
  * @global array $target_lang_file
  * @name $target_lang_file

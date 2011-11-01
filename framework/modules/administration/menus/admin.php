@@ -353,6 +353,14 @@ if ($user->isSuperAdmin()) {
 									'action' => 'toggle_mobile'
 								)),
                             ),
+                            array(
+                                'text' => gt('Manage Translation'),
+                                'classname' => 'manage',
+                                'url' => makeLink(array(
+                                    'module' => 'administration',
+                                    'action' => 'manage_lang'
+                                )),
+                            ),
                         )
                     )
                 ),
