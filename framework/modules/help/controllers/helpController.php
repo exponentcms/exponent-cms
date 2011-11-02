@@ -102,7 +102,7 @@ class helpController extends expController {
 	    expHistory::set('viewable', $this->params);
 
 	    $help = new help();
-	    if (empty($this->params['version'])) {
+        if (empty($this->params['version']) || $this->params['version'] == 'current') {
 	        $version_id = $db->selectValue('help_version', 'id', 'is_current=1');
 	    } else {
 	        $version_id = $db->selectValue('help_version', 'id', 'version=\''.$this->params['version'].'\'');
