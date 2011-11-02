@@ -18,7 +18,7 @@
 {css unique="add-to-cart" link="`$smarty.const.PATH_RELATIVE`framework/modules/ecommerce/assets/css/addToCart.css"}
 
 {/css}
-{* edebug var=$product *}
+{* eDebug var=$params *}
 {if isset($params.error)}
       <div id="msg-queue" class="common msg-queue">
     <ul class="queue error"><li>{$params.error}</li></ul>
@@ -41,10 +41,10 @@
         {control type=hidden name=product_id value=$product->id}
         {control type=hidden name=product_type value=$product->classname}			        
         {control type=hidden name=options_shown value=$product->id}                    
-        {control type=hidden name=qty value=$params.qty} 
+        {control type=hidden name=qty value=$params.quantity} 
         {if isset($children)}
             {foreach from=$children key=child_id item=child}
-                {control type=hidden name=children[$child_id] value=$child}
+                {control type=hidden name="children[`$child_id`]" value=$child}
             {/foreach}
         {/if}
         {if $product->hasOptions()}
@@ -78,9 +78,9 @@
                 <div class="user-input {cycle values="odd,even"}">
                     {if $uif.use}                   
                          {if $uif.is_required}
-                             {control type=text name=user_input_fields[$uifkey] size=50 maxlength=$uif.max_length label='* '|cat:$uif.name|cat:':' required=$uif.is_required value=$params.user_input_fields.$uifkey}
+                             {control type=text name="user_input_fields[`$uifkey`]" size=50 maxlength=$uif.max_length label='* '|cat:$uif.name|cat:':' required=$uif.is_required value=$params.user_input_fields.$uifkey}
                          {else}
-                             {control type=text name=user_input_fields[$uifkey] size=50 maxlength=$uif.max_length label=$uif.name|cat:':' required=$uif.is_required value=$params.user_input_fields.$uifkey}
+                             {control type=text name="user_input_fields[`$uifkey`]" size=50 maxlength=$uif.max_length label=$uif.name|cat:':' required=$uif.is_required value=$params.user_input_fields.$uifkey}
                          {/if}
                          {if $uif.description != ''}{$uif.description}{/if}
                     {/if}
