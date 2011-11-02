@@ -23,7 +23,7 @@
 	</div>
 
 	<div class="form_header">
-		{'Select the standalone page you wish to move into the Site Hierarchy, and click "Save"'|gettext}
+		{'Select the standalone page you wish to move into the Site Hierarchy, and click \'Save\''|gettext}
 	</div>
 	{$form_html}
 </div>

@@ -77,7 +77,7 @@ class section {
 				// Generate the Position dropdown array.
 				$positions = array(gt('At the Top'));
 				foreach ($sections as $section) {
-					$positions[] = sprintf(gt('After "%s"'),$section->name);
+					$positions[] = sprintf(gt('After')." %s",$section->name);
 				}
     			$form->meta('rank',count($positions)-1);
 				//$form->register('rank',gt('Rank'),new dropdowncontrol(count($positions)-1,$positions));

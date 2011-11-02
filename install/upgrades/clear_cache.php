@@ -79,7 +79,7 @@ class clear_cache extends upgradescript {
 	 * recursively clear a directories contents, but leave the directory
 	 * @param $dir
 	 */
-	function cleardir_recursive($dir) {
+	function cleardir_recursive($dir) {  //FIXME No longer used
 		$files = scandir($dir);
 		array_shift($files);    // remove '.' from array
 		array_shift($files);    // remove '..' from array

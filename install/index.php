@@ -20,10 +20,6 @@
 
 ob_start();
 
-// set DEVELOPMENT to 1 to force dump the language used during an install/upgrade
-define('DEVELOPMENT', 0);
-define('WRITE_LANG_TEMPLATE', DEVELOPMENT);
-
 define('SCRIPT_EXP_RELATIVE','install/');
 define('SCRIPT_FILENAME','index.php');
 
@@ -110,10 +106,6 @@ switch ($page) {
 	    $masthead = gt("Upgrade");
 		$page_text = gt("We'll now run any upgrade scripts needed for this version of Exponent.");
 		break;
-	case 'setlang':
-		$page_image = 'setlang';
-		$page_text = gt('Please choose which language you would like to use for this install.');
-		break;
 	case 'install-1':
         $masthead = gt("New Installation");
 		$page_text = gt('Exponent requires that several file permissions be set correctly in order to operate. ').
@@ -147,19 +139,6 @@ switch ($page) {
         $masthead = gt("New Installation");
 		$page_text = gt('The user you\'re about to create will be the').' <b>'.gt('Super Administrator').'</b> '.gt('for the entire system. ').
 			gt('This level of administration has un-restricted access and abilities throughout the entire website.');
-		break;
-	case 'admin_user':
-		$page_image = 'account';
-		$page_text = gt('The Exponent Administrator account is the most important account in the whole installation. ').
-			gt('The Administrator has access to every feature of the software, and controls all content and configuration.');
-		break;
-	case 'upgrade_version':
-		$page_image = 'system';
-		$page_text = gt('Choose which version you want to upgrade.');
-		break;
-	case 'upgrade':
-		$page_image = 'system';
-		$page_text = gt('Exponent is now upgrading the database definitions.');
 		break;
 	case 'final':
         $masthead = (isset($_REQUEST['upgrade']))?gt("Upgrade"):gt("New Installation");

@@ -47,7 +47,7 @@ class section_template {
 				$sections = expSorter::sort(array('array'=>$sections,'sortby'=>'rank', 'order'=>'ASC'));
 
 				$dd = array(gt('At the Top'));
-				foreach ($sections as $s) $dd[] = sprintf(gt('After "%s"'),$s->name);
+				foreach ($sections as $s) $dd[] = sprintf(gt('After')." %s",$s->name);
 				
 				$form->register('rank',gt('Position'),new dropdowncontrol(count($dd)-1,$dd));
 			} else $form->meta('rank',0);

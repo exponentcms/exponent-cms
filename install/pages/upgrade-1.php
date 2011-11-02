@@ -26,7 +26,7 @@ if (!defined('EXPONENT')) exit('');
 <?php echo gt("Since your website has a configuration file already in place, we're going to perform a couple simple tasks to ensure you're up and running in no time."); ?>
 </p>
 <p>
-<?php echo gt("Next, we'll ").'<a href=\"http://docs.exponentcms.org/docs/current/install-tables\" target=\"_blank\">'.
+<?php echo gt("Next, we'll ").'<a href="http://docs.exponentcms.org/docs/current/install-tables" target="_blank">'.
 	gt('Install Tables').'</a>, '.gt("and then run through any upgrade scripts needed to bring your code and database up to date."); ?>
 </p>
 <a class="awesome large green" href="?page=upgrade-2"><?php echo gt("Continue to Install Tables"); ?></a>

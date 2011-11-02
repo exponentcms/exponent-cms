@@ -176,7 +176,7 @@
 	<td class="bodytext" valign="top">
 		<div class="sanity_req"><?php echo gt('Must be readable and writable by web server'); ?></div>
 		<br />
-		<?php echo gt('Exponent can use "Minification" for speed by compressing and compiling stylesheets in the tmp/minfy directory, which must be writable by the web server.'); ?>
+		<?php echo gt('Exponent can use \'Minification\' for speed by compressing and compiling stylesheets in the tmp/minfy directory, which must be writable by the web server.'); ?>
 		<br />
 		<br />
 		<b><?php echo gt('UNIX Solution'); ?>:</b>
@@ -205,7 +205,7 @@
 	<td class="bodytext" valign="top">
 		<div class="sanity_req"><?php echo gt('Must be readable and writable by web server'); ?></div>
 		<br />
-		<?php echo gt('Exponent creates image thumbnails "on the fly".  These thumbnails are cached in the tmp/image_cache directory, which must be writable by the web server.'); ?>
+		<?php echo gt('Exponent creates image thumbnails \'on the fly\'.  These thumbnails are cached in the tmp/image_cache directory, which must be writable by the web server.'); ?>
 		<br />
 		<br />
 		<b><?php echo gt('UNIX Solution'); ?>:</b>
@@ -289,7 +289,7 @@
 <tr>
 	<td class="bodytext" style="font-weight: bold;" valign="top"><a name="o_tmpfile" /><?php echo gt('Temporary File Creation'); ?></td>
 	<td class="bodytext" valign="top">
-		<?php echo gt('Various parts of Exponent have to create temporary files to accomplish a given task.  Usually, this error is related to the "tmp/" file and directory permission test, above.'); ?>
+		<?php echo gt('Various parts of Exponent have to create temporary files to accomplish a given task.  Usually, this error is related to the \'tmp/\' file and directory permission test, above.'); ?>
 	</td>
 </tr>
 </table>

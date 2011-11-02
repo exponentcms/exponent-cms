@@ -69,7 +69,7 @@ class expLang {
 	public function writeTemplate($str) {
 	    global $default_lang, $default_lang_file;
 
-        if (defined("WRITE_LANG_TEMPLATE") && WRITE_LANG_TEMPLATE!=0 && !array_key_exists(addslashes(strip_tags($str)),$default_lang)) {
+        if (defined('WRITE_LANG_TEMPLATE') && WRITE_LANG_TEMPLATE && !array_key_exists(addslashes(strip_tags($str)),$default_lang)) {
             $fp = fopen($default_lang_file, 'w+') or die("I could not open $default_lang_file.");
             $default_lang[addslashes(strip_tags($str))] = addslashes(strip_tags($str));
             ksort($default_lang);
