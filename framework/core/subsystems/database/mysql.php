@@ -84,7 +84,7 @@ class mysql_database extends database {
 		list($major, $minor, $micro) = sscanf(mysql_get_server_info(), "%d.%d.%d-%s");
 		//in case the config was written before the constant was introduced
 		//TODO: we might need a general api/registry to make backward compatibility checks + automatic upgrade wizard
-		if(defined("DB_ENCODING") && $database == DB_NAME) {
+		if(defined('DB_ENCODING') && $database == DB_NAME) {
 			//SET NAMES is possible since version 4.1
 			if(($major > 4) OR (($major == 4) AND ($minor >= 1))) {
 				@mysql_query("SET NAMES " . DB_ENCODING, $this->connection);

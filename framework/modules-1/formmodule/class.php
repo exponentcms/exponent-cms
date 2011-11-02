@@ -59,7 +59,7 @@ class formmodule {
         // require_once(BASE."framework/core/subsystems/forms/baseform.php");
         // require_once(BASE."framework/core/subsystems/forms/form.php");
 
-		if (defined("PREVIEW_READONLY") && !defined("SELECTOR")) {
+		if (defined('PREVIEW_READONLY') && !defined('SELECTOR')) {
 			// Pass
 		}  else {
 			$f = null;

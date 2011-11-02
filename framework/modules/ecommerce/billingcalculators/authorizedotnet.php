@@ -1,7 +1,7 @@
 <?php
 
-define("ECOM_AUTHORIZENET_AUTH_CAPTURE",0);
-define("ECOM_AUTHORIZENET_AUTH_ONLY",1);
+define('ECOM_AUTHORIZENET_AUTH_CAPTURE',0);
+define('ECOM_AUTHORIZENET_AUTH_ONLY',1);
 
 class authorizedotnet extends creditcard {
 	function name() { return "Authorize.net Payment Gateway"; }

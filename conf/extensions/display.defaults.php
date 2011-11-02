@@ -17,7 +17,7 @@
 #
 ##################################################
 
-if (!defined('LANGUAGE')) define("LANGUAGE",'English - US');
+if (!defined('LANGUAGE')) define('LANGUAGE','English - US');
 if (!defined('SLINGBAR_TOP')) define('SLINGBAR_TOP','1');
 if (!defined('DISPLAY_THEME_REAL')) define('DISPLAY_THEME_REAL','retrotheme');
 if (!defined('FORCE_MOBILE')) define('FORCE_MOBILE','0');

@@ -119,37 +119,37 @@ if (!defined('SCRIPT_FILENAME')) {
  * Filesystem Error Response: Success
  * @node Subsystems:Files
  */
-define("SYS_FILES_SUCCESS",		0);
+define('SYS_FILES_SUCCESS',		0);
 
 /** exdoc
  * Filesystem Error Response: Found File at Destination
  * @node Subsystems:Files
  */
-define("SYS_FILES_FOUNDFILE",	1);
+define('SYS_FILES_FOUNDFILE',	1);
 
 /** exdoc
  * Filesystem Error Response: Found Directory at Destination
  * @node Subsystems:Files
  */
-define("SYS_FILES_FOUNDDIR",	2);
+define('SYS_FILES_FOUNDDIR',	2);
 
 /** exdoc
  * Filesystem Error Response: Destination not writable
  * @node Subsystems:Files
  */
-define("SYS_FILES_NOTWRITABLE",	3);
+define('SYS_FILES_NOTWRITABLE',	3);
 
 /** exdoc
  * Filesystem Error Response: Destination not readable
  * @node Subsystems:Files
  */
-define("SYS_FILES_NOTREADABLE",	4);
+define('SYS_FILES_NOTREADABLE',	4);
 
 /* exdoc
  * Filesystem Error Response: Destination not deletable
  * @node Subsystems:Files
  */
-define("SYS_FILES_NOTDELETABLE",	5);
+define('SYS_FILES_NOTDELETABLE',	5);
 
 /** exdoc
  * The EQL header string for object dump file formats.
@@ -183,39 +183,10 @@ define('UILEVEL_PERMISSIONS',2);
 */
 define('UILEVEL_STRUCTURE',3);
 
-/** exdoc
- * This constant can (and should) be used by other parts of the system
- * for defining and communicating an extension type of module.
- * @node Subsystems:Core
- */
-//define("CORE_EXT_MODULE",1);
-
-/** exdoc
- * This constant can (and should) be used by other parts of the system
- * for defining and communicating an extension type of theme.
- * @node Subsystems:Core
- */
-//define("CORE_EXT_THEME",2);
-
-/** exdoc
- * This constant can (and should) be used by other parts of the system
- * for defining and communicating an extension type of subsystem.
- * @node Subsystems:Core
- */
-//define("CORE_EXT_SUBSYSTEM",3);
-
-/** exdoc
- * This constant can (and should) be used by other parts of the system
- * for defining and communicating an 'extension type' to represent the
- * whole system
- * @node Subsystems:Core
- */
-//define("CORE_EXT_SYSTEM",4);
-
-define("DATABASE_TABLE_EXISTED",		1);
-define("DATABASE_TABLE_INSTALLED",		2);
-define("DATABASE_TABLE_FAILED",			3);
-define("DATABASE_TABLE_ALTERED",		4);
+define('DATABASE_TABLE_EXISTED',		1);
+define('DATABASE_TABLE_INSTALLED',		2);
+define('DATABASE_TABLE_FAILED',			3);
+define('DATABASE_TABLE_ALTERED',		4);
 
 /**
  * Database Field Type specifier

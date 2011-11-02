@@ -32,7 +32,7 @@ if (!defined('EXPONENT')) exit('');
 
 	<body onload="exponentJSinitialize()">
 	<?php
-	define("PREVIEW_READONLY",1);
+	define('PREVIEW_READONLY',1);
 
 	$module = $_GET['module'];
 	$view = $_GET['view'];

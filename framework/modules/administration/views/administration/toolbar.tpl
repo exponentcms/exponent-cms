@@ -35,7 +35,6 @@
              // }
              //oMenuBar.subscribe("show", onSubmenuShow);
              
-         
              var tb = Y.one('#admintoolbar');
              
              //Selector of the node to make draggable
@@ -101,7 +100,6 @@
                      anim.run();
                  }
                  
-                 
                  anim.on("end",recordPosition);
                  
              });
@@ -109,7 +107,6 @@
              var err = function () {
                  alert("Your popup blocker has prevented the file manager from opening");
              }
-             
              
              var reportbugwindow = function (){
                  var win = window.open('http://exponentcms.lighthouseapp.com/projects/61783-exponent-cms/tickets/new');
@@ -127,7 +124,7 @@
              }
 
              Y.on('toolbar:loaded',function(){
-                 Y.one('#reportabug-toolbar').on('click', reportbugwindow);
+                 if (document.getElementById("#reportabug-toolbar")) Y.one('#reportabug-toolbar').on('click', reportbugwindow);
                  Y.one('#filemanager-toolbar').on('click',filepickerwindow);
                  Y.one('#fileuploader-toolbar').on('click',fileuploaderwindow);
                  // Y.later(900,this,function(){
@@ -135,13 +132,9 @@
                  // });
              });
 
-
              Y.fire('toolbar:loaded');
-             
-             
              
          });
          
-
 {/literal}
 {/script}

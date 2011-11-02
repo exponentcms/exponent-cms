@@ -66,7 +66,7 @@ if (preg_match('/[^A-Za-z0-9]/',$config['db_table_prefix'])) {
 if ($passed) {
 	//set connection encoding, works only on mySQL > 4.1
 	if($config["db_engine"] == "mysqli") {
-		if (!defined("DB_ENCODING")) define("DB_ENCODING", $config["DB_ENCODING"]);
+		if (!defined('DB_ENCODING')) define('DB_ENCODING', $config["DB_ENCODING"]);
 	}
 	$db = expDatabase::connect($config['db_user'],$config['db_pass'],$config['db_host'].':'.$config['db_port'],$config['db_name'],$config['db_engine'],1);
 

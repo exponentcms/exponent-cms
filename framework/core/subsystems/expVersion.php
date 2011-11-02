@@ -33,7 +33,7 @@ class expVersion {
 	 * @return string
 	 */
 	static function getVersion($full = false, $build = false) {
-		if (!defined("EXPONENT_VERSION_MAJOR")) include_once(BASE."exponent_version.php");
+		if (!defined('EXPONENT_VERSION_MAJOR')) include_once(BASE."exponent_version.php");
 		$vers = EXPONENT_VERSION_MAJOR.".".EXPONENT_VERSION_MINOR;  // can be used for numerical comparison
 		if ($full) {
 			$vers .= ".".EXPONENT_VERSION_REVISION;

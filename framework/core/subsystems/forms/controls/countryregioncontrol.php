@@ -48,8 +48,8 @@ class countryregioncontrol extends formcontrol {
 		$c_dd->jsHooks["onchange"] = "geo_rebuildRegions(this,'".$name."_region_id'," . (($this->allow_entire_country)?'true':'false') . ");";
 
 
-		if (!defined("GEO_JS_INCLUDED")) {
-			define("GEO_JS_INCLUDED",1);
+		if (!defined('GEO_JS_INCLUDED')) {
+			define('GEO_JS_INCLUDED',1);
 			$html .= "<script language='JavaScript'>function geo_rebuildRegions(c_select,r_id,allow_all) {";
 			$html .= "	var r_select = document.getElementById(r_id);";
 			$html .= "	while (r_select.childNodes.length) r_select.removeChild(r_select.firstChild);";

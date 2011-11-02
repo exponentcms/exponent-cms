@@ -40,7 +40,7 @@
 //    require_once('../conf/config.php');  // now pulled in by exponent.php
     
     //define('BASE',str_ireplace('/cron','',__realpath(dirname(__FILE__))));
-    define("EXP_PATH", BASE);
+    define('EXP_PATH', BASE);
 /** @define "EXP_PATH" ".." */
 
     //Pull in the mysqli helper class form exponet. 
