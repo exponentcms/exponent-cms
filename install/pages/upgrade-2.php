@@ -99,7 +99,7 @@ if ($db->tableIsEmpty('user') || $db->tableIsEmpty('modstate') || $db->tableIsEm
 	echo '<div style="color: red; font-weight: bold">';
 	echo 'No Database Entries Were Found!';
 	echo '</div>';
-	$emptydb = 'install-3';
+	$emptydb = 'install-2';
 	$emptydbstr = gt('Switching to Installer');
 }
 ?>
