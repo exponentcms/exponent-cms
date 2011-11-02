@@ -138,9 +138,10 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','uploader', function(Y) {
 
     	//if (selectedFiles != null) {
     		//uploader.setSimUploadLimit(parseInt(3));
-    		console.debug(EXPONENT.URL_FULL+"index.php?controller=file&action=upload&ajax_action=1");
-            uploader.uploadAll(EXPONENT.URL_FULL+"index.php?controller=file&action=upload&ajax_action=1");
-    	//}	
+//    		console.debug(EXPONENT.URL_FULL+"index.php?controller=file&action=upload&ajax_action=1");
+//            uploader.uploadAll(EXPONENT.URL_FULL+"index.php?controller=file&action=upload&ajax_action=1");
+            console.debug(EXPONENT.URL_FULL+"index.php?controller=file&action=upload&ajax_action=1&usrid=" + usr['id']);
+            uploader.uploadAll(EXPONENT.URL_FULL+"index.php?controller=file&action=upload&ajax_action=1&usrid=" + usr['id']);    	//}
         //uploader.uploadAll("http://www.yswfblog.com/upload/upload_simple.php");
     }
 
