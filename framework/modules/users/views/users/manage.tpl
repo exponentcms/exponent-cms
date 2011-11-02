@@ -89,10 +89,12 @@
 			var YAHOO=Y.YUI2;
 			var myDataSource = null;
 			var myDataTable = null;
+			var at = YAHOO.util.Dom.get('user_dt_input');
 			
 			 //set up autocomplete
 			var getTerms = function(query) {
 				myDataSource.sendRequest('sort=id&dir=asc&startIndex=0&results=10&query=' + query,myDataTable.onDataReturnInitializeTable, myDataTable);
+		
 			};
 			
 			var oACDS = new YAHOO.util.FunctionDataSource(getTerms);
@@ -158,8 +160,34 @@
 				}
 			};
 			
+			var requestBuilder = function (oState, oSelf) {
+				/* We aren't initializing sort and dir variables. If you are
+				using column sorting built into the DataTable, use this
+				set of variable initializers.
+				var sort, dir, startIndex, results; */
+				
+				var startIndex, results;
+				
+				oState = oState || {pagination: null, sortedBy: null};
+				
+				/* If using column sorting built into DataTable, these next two lines
+				will properly set the current _sortedBy_ column and the _sortDirection_
+				sort = (oState.sortedBy) ? oState.sortedBy.key : oSelf.getColumnSet().keys[0].getKey();
+				dir = (oState.sortedBy && oState.sortedBy.dir === DataTable.CLASS_DESC) ? "desc" : "asc"; */
+				
+				startIndex = (oState.pagination) ? oState.pagination.recordOffset : 0;
+				results = (oState.pagination) ? oState.pagination.rowsPerPage : null;
+				
+				
+				return  "results=" 	+ results +
+						"&startIndex=" 	+ startIndex +
+						"&sort=id&dir=asc" +
+						"&query=" + at.value;
+			}
+			
 			 // DataTable configuration
 			var myConfigs = {
+				generateRequest: requestBuilder,
 				initialRequest: "sort=id&dir=asc&startIndex=0&results=10", // Initial request for first page of data
 				dynamicData: true, // Enables dynamic server-driven data
 				sortedBy : {key:"id", dir:YAHOO.widget.DataTable.CLASS_DESC}, // Sets UI initial sort arrow
