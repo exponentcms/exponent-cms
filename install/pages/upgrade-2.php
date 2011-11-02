@@ -25,11 +25,6 @@ if (!defined('EXPONENT')) exit('');
 
 <?php
 
-//define("TMP_TABLE_EXISTED",		1);
-//define("TMP_TABLE_INSTALLED",	2);
-//define("TMP_TABLE_FAILED",		3);
-//define("TMP_TABLE_ALTERED",		4);
-
 $tables = administrationController::installTables();
 ksort($tables);
 

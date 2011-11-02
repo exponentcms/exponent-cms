@@ -57,10 +57,10 @@ class administrationController extends expController {
 	public static function installTables() {
 	    global $db;
 
-		define("TMP_TABLE_EXISTED",		1);
-		define("TMP_TABLE_INSTALLED",	2);
-		define("TMP_TABLE_FAILED",		3);
-		define("TMP_TABLE_ALTERED",		4);
+		define('TMP_TABLE_EXISTED',		1);
+		define('TMP_TABLE_INSTALLED',	2);
+		define('TMP_TABLE_FAILED',		3);
+		define('TMP_TABLE_ALTERED',		4);
 
 		expSession::clearCurrentUserSessionCache();
 		$tables = array();

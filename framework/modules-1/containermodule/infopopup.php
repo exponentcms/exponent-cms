@@ -31,8 +31,8 @@ exit();
 # $Id: infopopup.php,v 1.1.1.1 2005/07/14 18:34:04 cvs Exp $
 ##################################################
 
-define("SCRIPT_EXP_RELATIVE","framework/modules-1/containermodule/");
-define("SCRIPT_FILENAME","infopopup.php");
+define('SCRIPT_EXP_RELATIVE',"framework/modules-1/containermodule/");
+define('SCRIPT_FILENAME',"infopopup.php");
 
 include("../../../exponent.php");
 

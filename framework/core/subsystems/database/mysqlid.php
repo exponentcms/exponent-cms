@@ -127,7 +127,7 @@ class mysqlid_database extends mysqli_database {
 		//TODO: determine how to handle encoding on postgres
 
 		list($major, $minor, $micro) = sscanf(mysqli_get_server_info($this->connection), "%d.%d.%d-%s");
-		if(defined("DB_ENCODING")) {
+		if(defined('DB_ENCODING')) {
 			//SET NAMES is possible since version 4.1
 			if(($major > 4) OR (($major == 4) AND ($minor >= 1))) {
 				@mysqli_query($this->connection, "SET NAMES " . DB_ENCODING);

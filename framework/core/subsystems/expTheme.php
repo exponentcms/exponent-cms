@@ -91,7 +91,7 @@ class expTheme {
 		global $db, $user;
 
 		echo show_msg_queue();
-		if ((!defined("SOURCE_SELECTOR") || SOURCE_SELECTOR == 1)) {
+		if ((!defined('SOURCE_SELECTOR') || SOURCE_SELECTOR == 1)) {
 			$last_section = expSession::get("last_section");
 			$section = $db->selectObject("section","id=".$last_section);
 			// View authorization will be taken care of by the runAction and mainContainer functions
@@ -296,7 +296,7 @@ class expTheme {
 	 * @node Subsystems:Theme
 	 */
 	public static function advertiseRSS() {
-		if (defined("ADVERTISE_RSS") && ADVERTISE_RSS == 1) {
+		if (defined('ADVERTISE_RSS') && ADVERTISE_RSS == 1) {
 			echo "\n\t<!-- RSS Feeds -->\n";
 			$rss = new expRss();
 			$feeds = $rss->getFeeds();
@@ -357,9 +357,9 @@ class expTheme {
 
 		// check to see if we're in XHTML or HTML mode
 		if(isset($config['xhtml']) && $config['xhtml']==true){
-			define("XHTML",1);define("XHTML_CLOSING","/"); //default
+			define('XHTML',1);define('XHTML_CLOSING',"/"); //default
 		} else {
-			define("XHTML",0); define("XHTML_CLOSING","");
+			define('XHTML',0); define('XHTML_CLOSING',"");
 		}
 
 
@@ -618,7 +618,7 @@ class expTheme {
 			$sectionObj = $db->selectObject('section','id='.$section_id);
 			//$section->id = $section_id;
 		}
-		if ($module == "loginmodule" && defined("PREVIEW_READONLY") && PREVIEW_READONLY == 1) return;
+		if ($module == "loginmodule" && defined('PREVIEW_READONLY') && PREVIEW_READONLY == 1) return;
 
 		if (expSession::is_set("themeopt_override")) {
 			$config = expSession::get("themeopt_override");
@@ -640,7 +640,7 @@ class expTheme {
 		}
 		$iscontroller = expModules::controllerExists($module);
 
-		if (defined("SELECTOR") && call_user_func(array($module,"hasSources"))) {
+		if (defined('SELECTOR') && call_user_func(array($module,"hasSources"))) {
 			containermodule::wrapOutput($module,$view,$loc,$title);
 		} else {
 			if (is_callable(array($module,"show")) || $iscontroller) {
@@ -894,7 +894,7 @@ class expTheme {
 	 */
 	public static function goDefaultSection() {
 		$last_section = expSession::get("last_section");
-		if (defined("SITE_DEFAULT_SECTION") && SITE_DEFAULT_SECTION != $last_section) {
+		if (defined('SITE_DEFAULT_SECTION') && SITE_DEFAULT_SECTION != $last_section) {
 			header("Location: ".URL_FULL."index.php?section=".SITE_DEFAULT_SECTION);
 			exit();
 		} else {
