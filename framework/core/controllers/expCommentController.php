@@ -86,7 +86,7 @@ class expCommentController extends expController {
 	
 	function getComments() {
 		global $user, $db;
-                
+
         /* The global constants can be overriden by passing appropriate params */ 
         //sure wish I could do this once in the constructor. sadly $this->params[] isn't set yet
         $require_login = empty($this->params['require_login']) ? COMMENTS_REQUIRE_LOGIN : $this->params['require_login'];
@@ -95,12 +95,18 @@ class expCommentController extends expController {
         $notification_email = empty($this->params['notification_email']) ? COMMENTS_NOTIFICATION_EMAIL : $this->params['notification_email'];
         
         
-        $sql  = 'SELECT c.*, ua.image, u.username FROM '.DB_TABLE_PREFIX.'_expComments c ';
+        // $sql  = 'SELECT c.*, ua.image, u.username FROM '.DB_TABLE_PREFIX.'_expComments c ';
+        // $sql .= 'JOIN '.DB_TABLE_PREFIX.'_content_expComments cnt ON c.id=cnt.expcomments_id ';
+        // $sql .= 'JOIN '.DB_TABLE_PREFIX.'_user_avatar ua ON c.poster=ua.user_id ';
+        // $sql .= 'JOIN '.DB_TABLE_PREFIX.'_user u ON c.poster=u.id ';
+        // $sql .= 'WHERE cnt.content_id='.$this->params['content_id']." AND cnt.content_type='".$this->params['content_type']."' ";
+        // $sql .= 'AND c.approved=1';
+        
+        $sql  = 'SELECT c.* FROM '.DB_TABLE_PREFIX.'_expComments c ';
         $sql .= 'JOIN '.DB_TABLE_PREFIX.'_content_expComments cnt ON c.id=cnt.expcomments_id ';
-		$sql .= 'JOIN '.DB_TABLE_PREFIX.'_user_avatar ua ON c.poster=ua.user_id ';
-		$sql .= 'JOIN '.DB_TABLE_PREFIX.'_user u ON c.poster=u.id ';
         $sql .= 'WHERE cnt.content_id='.$this->params['content_id']." AND cnt.content_type='".$this->params['content_type']."' ";
         $sql .= 'AND c.approved=1';
+        
 
         $comments = new expPaginator(array(
             //'model'=>'expComment',
@@ -112,7 +118,7 @@ class expCommentController extends expController {
             'columns'=>array('Readable Column Name'=>'Column Name'),
         ));
         
-        // eDebug($comments, true);
+        // eDebug($sql, true);
         
         // count the unapproved comments
         if ($require_approval == 1 && $user->isAdmin()) {
