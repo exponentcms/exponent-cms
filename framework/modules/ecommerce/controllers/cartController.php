@@ -83,24 +83,26 @@ class cartController extends expController {
 			}
 		}
 		
-        if (($product->hasOptions() || $product->hasUserInputFields()) && (!isset($this->params['options_shown']) || $this->params['options_shown']!= $product->id)) 
-        {
-            
-            // if we hit here it means this product type was missing some
-            // information it needs to add the item to the cart..so we need to help
-            // it display its addToCart form
-            /*redirect_to(array(
-                    'controller'=>'cart',
-                    'action'=>'displayForm',
-                    'form'=>'addToCart',
-                    'product_id'=>$this->params['product_id'],
-                    'product_type'=>$this->params['product_type'],
-                    'children'=>serialize($this->params['children']), 
-            ));*/
-            $product->displayForm('addToCart', $this->params);
-            return false;
-        } 
-                
+		if ($product->product_type == "product" || $product->product_type == "childProduct") {
+		
+			if (($product->hasOptions() || $product->hasUserInputFields()) && (!isset($this->params['options_shown']) || $this->params['options_shown']!= $product->id)) 
+			{
+				
+				// if we hit here it means this product type was missing some
+				// information it needs to add the item to the cart..so we need to help
+				// it display its addToCart form
+				/*redirect_to(array(
+						'controller'=>'cart',
+						'action'=>'displayForm',
+						'form'=>'addToCart',
+						'product_id'=>$this->params['product_id'],
+						'product_type'=>$this->params['product_type'],
+						'children'=>serialize($this->params['children']), 
+				));*/
+				$product->displayForm('addToCart', $this->params);
+				return false;
+			} 
+         }       
         //product either has no options, user input fields, or has already seen and passed the options page, so we try adding to cart
         //it will validate and fail back to the options page if data is incorrect for whatever reason (eg, bad form post)
         //eDebug($this->params, true);

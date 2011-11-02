@@ -267,7 +267,7 @@
                         {$oi->quantity}
                     </td>
                     <td>
-                        {$oi->products_model}
+						{if $oi->products_model != ""}{$oi->products_model}{else}N/A{/if}
                     </td>
                     <td>
                         {$oi->getProductsName()}
@@ -278,7 +278,11 @@
                             {/foreach}                            
                         {/if}
                         {$oi->getUserInputFields('br')} 
-                        {$oi->getExtraData()}
+						{if $oi->product_type == "product" || $oi->product_type == "childProduct"}
+							{$oi->getExtraData()}
+						{else}
+							{$oi->getFormattedExtraData('list')}
+						{/if}
                     </td>
                     <td>
                         {$oi->products_warehouse_location}

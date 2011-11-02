@@ -147,7 +147,7 @@ class product extends expRecord {
     } */
     
 	function addToCart($params, $orderid = null) {
-        //eDebug("OID: " . $orderid,true);
+        // eDebug($params,true);
         if ($orderid == null) global $order;
         else $order = new order($orderid);
         //eDebug($this);
@@ -302,7 +302,7 @@ class product extends expRecord {
 	}
 
     function displayForm($form, $params) {
-        //eDebug($this->params);
+        // eDebug($form, true);
         //$product_type = isset($this->params['product_type']) ? $this->params['product_type'] : 'product';
         //$product = new $product_type($this->params['product_id'],true,true);     
         //eDebug($product);   
@@ -321,7 +321,6 @@ class product extends expRecord {
         {
             $form->assign('children', expUnserialize($this->params['children']));   
         }*/
-        
         echo $form->render();
     }
     

@@ -54,20 +54,23 @@ class giftcard extends expRecord {
 	}
 	
 	function addToCart($params) {
+	
 	    global $order;
 	    
-	    if (empty($params['dollar_amount'])) {
+	    if (empty($params['card_amount'])) {
+			
 	        return false;
 	    } else {
+			// eDebug($params, true);
 	        $item = new orderitem($params);	        
 	        $sm = $order->getCurrentShippingMethod();
 	        
 	        $item->shippingmethods_id = $sm->id;
-	        $item->products_price = preg_replace("/[^0-9.]/","",$params['dollar_amount']);
-	        $item->products_name = $params['dollar_amount'].' '.$this->product_name;
-	        $ed['to'] = isset($params['to']) ? $params['to'] : '';
-	        $ed['from'] = isset($params['from']) ? $params['from'] : '';
-	        $ed['msg'] = isset($params['msg']) ? $params['msg'] : '';
+	        $item->products_price = preg_replace("/[^0-9.]/","",$params['card_amount']);
+	        $item->products_name = expCore::getCurrencySymbol() . $params['card_amount'].' '. $this->title . " Style Gift Card";
+	        $ed['To'] = isset($params['toname']) ? $params['toname'] : '';
+	        $ed['From'] = isset($params['fromname']) ? $params['fromname'] : '';
+	        $ed['Message'] = isset($params['msg']) ? $params['msg'] : '';
 	        $item->extra_data = serialize($ed);
 
 	        // we need to unset the orderitem's ID to force a new entry..other wise we will overwrite any
@@ -77,6 +80,15 @@ class giftcard extends expRecord {
 		    $item->save();
 		    return true;
 	    }
+	}
+	
+	public function hasUserInputFields()  {
+      
+		return true;
+    }
+	
+	public function hasOptions() {
+		return false;
 	}
 	
 	 public function getForm($form) {        
@@ -94,9 +106,40 @@ class giftcard extends expRecord {
         return false;
     }
 	
+	function getBasePrice($orderitem=null) {
+		return $this->products_price;
+    }
+	
 	public function update($params=array()) {
 		// eDebug($params, true);
 		parent::update($params); 
 	}
+	
+	function getDefaultQuantity() {
+		//TMP: Make this actually do something.
+		return 1;
+	}
+	
+	function getSurcharge() {   
+		return '';
+	}
+	
+	 public function removeItem($item) {
+        return true;
+    }
+	
+	function updateCart() {
+		// nothing to do for this callback.
+	}
+
+	function checkout() {
+		// nothing to do for this callback.
+	}
+	
+	public function process($item) {
+		
+	}
+	
+	
 }
 ?>

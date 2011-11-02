@@ -167,6 +167,18 @@ class orderitem extends expRecord {
 	    //$product = new $this->product_type($this->product_id);
 	    //return $product->formatExtraData($this);
 	}
+	
+	public function getFormattedExtraData($style='list') {
+		$ret = '';
+		if ($style == 'list') {
+			$ret ='<ul>';
+			foreach(expUnserialize($this->extra_data) as $key => $item) {
+				$ret .= "<li>{$key} : {$item}</li>";
+			}
+			$ret .='<ul>';
+		}
+		return $ret;
+	}
     
     public function getProductsName()
     {

@@ -29,11 +29,12 @@ class storeController extends expController {
         'showFullTree'=>'Categories - Show Full Tree',
         'showallSubcategories'=>'Categories - Subcategories of current category',
         'upcoming_events'=>'Event Registration - Upcomming Events',
-		  'events_calendar'=>'Event Registration - Calendar View',
+		 'events_calendar'=>'Event Registration - Calendar View',
         'ecom_search'=>'Search - Autocomplete',
         'search_by_model_form'=>'Search - By Model',
         'quicklinks'=>'Links - Users Links',
-		  'showall_category_featured_products' => 'Show Featured Products under the current category'
+		'showall_category_featured_products' => 'Show Featured Products under the current category',
+		'showGiftCards'=>'Gift Cards UI',
     );
     
     // hide the configs we don't need
@@ -58,7 +59,8 @@ class storeController extends expController {
 	'deleteProcessedModelAliases'=>'Delete processed uploaded model aliases',
 	'delete_model_alias'=>'Process model aliases',
 	'update_model_alias'=>'Save model aliases',
-	'edit_model_alias'=>'Delete model aliases'
+	'edit_model_alias'=>'Delete model aliases',
+	'showGiftCards' => 'Show Gift Cards UI'
     );
      
     function displayname() { return "e-Commerce Store Front"; }
@@ -469,6 +471,23 @@ class storeController extends expController {
         $manufacturers = $db->selectObjectsBySql($sql);
         assign_to_template(array('manufacturers'=>$manufacturers));
     }
+	
+	function showGiftCards() {
+		
+		//Get all giftcards
+		$product_type = 'giftcard';
+		$giftcard  = new $product_type();
+		$giftcards = $giftcard->find("all", "product_type = 'giftcard'");
+		
+		//Grab the config
+		$this->grabConfig();
+		
+		//Set the needed config for the view
+		$config['custom_message_product'] = $this->config['custom_message_product'];
+		$config['minimum_gift_card_purchase'] = $this->config['minimum_gift_card_purchase'];
+		
+		assign_to_template(array('giftcards' => $giftcards, 'config' => $config));
+	}
     
     function show() {
         global $db, $order, $template, $user;
