@@ -16,16 +16,16 @@
 
 <div class="module text edit yui-skin-sam">
     {if $record->id != ""}
-        <h1>Editing {$record->title}</h1>
+        <h1>{'Editing'|gettext} {$record->title}</h1>
     {else}
-		<h1>New YouTube Video</h1>
+		<h1>{'New YouTube Video'|gettext}</h1>
     {/if}
 
     {form action=update}
         {control type=hidden name=id value=$record->id}
-        {control type=text name=title label="Title" value=$record->title class="title"}
-        {control type=textarea name=embed_code label="Embed Code" value=$record->embed_code}
-        {control type=html name=description label="Description" value=$record->description}
-        {control type=buttongroup submit="Save Text" cancel="Cancel"}
+        {control type=text name=title label="Title"|gettext value=$record->title class="title"}
+        {control type=textarea name=embed_code label="Embed Code"|gettext value=$record->embed_code}
+        {control type=html name=description label="Description"|gettext value=$record->description}
+        {control type=buttongroup submit="Save Text"|gettext cancel="Cancel"|gettext}
     {/form}   
 </div>
