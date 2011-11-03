@@ -20,10 +20,9 @@
 class textController extends expController {
 	//protected $basemodel_name = '';
 	public $useractions = array(
-			'showall'=>'Show all',
-			'showRandom'=>'Show Random Text',
+        'showall'=>'Show all',
+        'showRandom'=>'Show Random Text',
 	);
-	
 	public $remove_configs = array(
 		'comments',
 		'rss',
@@ -31,8 +30,6 @@ class textController extends expController {
 		'tags'
 	); // all options: ('aggregation','files','comments','rss','ealerts','tags')
     public $codequality = 'stable';
-
-
 
 	function displayname() { return "Text"; }
 	function description() { return "Puts text on your webpages"; }

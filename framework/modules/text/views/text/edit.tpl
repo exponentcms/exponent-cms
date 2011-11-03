@@ -16,9 +16,9 @@
 
 <div class="module text edit">
     {if $record->id != ""}
-        <h1>Editing: {$record->title}</h1>
+        <h1>{'Editing'|gettext}: {$record->title}</h1>
     {else}
-        <h1>New {$modelname}</h1>
+        <h1>{'New'|gettext} {$modelname}</h1>
     {/if}
 
     {form action=update}
