@@ -353,7 +353,7 @@ class administrationController extends expController {
         flash($result['type'],$result['message']);
         if ($result['type'] != 'error') {
             expSettings::change('LANGUAGE', $_POST['newlang']);
-            flash('message',gt('Display Language changed to:')." ".$_POST['newlang']);
+            flash('message',gt('Display Language changed to').": ".$_POST['newlang']);
         }
         expHistory::back();
    	}

@@ -19,7 +19,7 @@
 		<i>{$logged_in_users}:</i><br />
 	{/if}
 	{if $loggedin == true || $smarty.const.PREVIEW_READONLY == 1}
-		{'Welcome, %s'|gettext|sprintf:$displayname}<br />
+		{'Welcome'|gettext|cat:', %s'|sprintf:$displayname}<br />
 		<a href="{link controller=users action=edituser id=$user->id}">{'Edit Profile'|gettext}</a>&nbsp;|&nbsp;
 		{if $is_group_admin}
 			<a href="{link controller=users action=manage_group_memberships}">{'My Groups'|gettext}</a>&nbsp;|&nbsp;

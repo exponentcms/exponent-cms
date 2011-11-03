@@ -91,7 +91,7 @@
 			</tr>
 			{/if}
 			<tr>
-				<td colspan="3" valign="top"><b>{'File Name Template:'|gettext}</b></td>
+				<td colspan="3" valign="top"><b>{'File Name Template'|gettext}:</b></td>
 				<td colspan="2">
 					<input type="text" name="filename" size="20" value="database" />
 				</td>

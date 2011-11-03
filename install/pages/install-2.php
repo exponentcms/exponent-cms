@@ -137,7 +137,7 @@ $config = array(
 			<div class="control_help">
 				<?php echo gt('A table prefix helps Exponent differentiate tables for this site from other tables that may already exist (or eventually be created by other scripts).  If you are using an existing database, you may want to change this.'); ?>
 				<br /><br />
-				<?php echo '<b>'.gt('Note:').'</b>'.gt('A table prefix may only contain numbers and letters.  Spaces and symbols (including \'_\') are not allowed.  An underscore will be added for you, by Exponent.'); ?>
+				<?php echo '<b>'.gt('Note').':</b>'.gt('A table prefix may only contain numbers and letters.  Spaces and symbols (including \'_\') are not allowed.  An underscore will be added for you, by Exponent.'); ?>
 			</div>
 		</div>
 	</div>

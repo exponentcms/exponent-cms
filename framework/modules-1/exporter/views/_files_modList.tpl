@@ -33,7 +33,7 @@
 			</tr>
 			{/if}
 			<tr>
-				<td valign="top"><b>{'File Name Template:'|gettext}</b>
+				<td valign="top"><b>{'File Name Template'|gettext}:</b>
 					<input type="text" name="filename" size="20" value="files" />
 				</td>
 			</tr>

@@ -259,7 +259,7 @@
 	</td>
 </tr>
 <tr>
-	<td class="bodytext" style="font-weight: bold;" valign="top"><a name="o_xml" /><?php echo gt('XML (Expat) Library Support)'); ?></td>
+	<td class="bodytext" style="font-weight: bold;" valign="top"><a name="o_xml" /><?php echo gt('XML (Expat) Library Support'); ?>)</td>
 	<td class="bodytext" valign="top">
 		<?php echo gt('The web services extensions for Exponent require the Expat Library.  If you are not using web services or module that are dependent on web services, this is a safe warning to ignore.'); ?>
 	</td>
