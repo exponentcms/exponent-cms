@@ -21,11 +21,11 @@
 		{/if}
 		<div>
 			{assign var=usertype value="Users"}
-			{assign var=label value="Username:"}
+			{assign var=label value="Username"|gettext|cat:"!"}
 			{form action=login}
 				{control type="text" name="username" label=$label size=25}
-				{control type="password" name="password" label="Password:" size=25}
-				{control type="buttongroup" submit="Login Now!"}
+				{control type="password" name="password" label="Password"|gettext|cat:":" size=25}
+				{control type="buttongroup" submit="Login Now"|gettext|cat:"!"}
 			{/form}
 		</div>
 	{else}

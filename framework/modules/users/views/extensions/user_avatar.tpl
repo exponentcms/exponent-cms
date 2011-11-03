@@ -18,7 +18,7 @@
     {img src=$edit_user->image h=80}     
     {control type="hidden" name="current_avatar" value=$edit_user->image}
 	{control type=checkbox name=use_gravatar value=1 label="Use <a href=\"http://gravatar.com/\" target=\"_blank\">Gravatar.com</a> Avatar Image (using above e-mail)?" checked=$edit_user->use_gravatar}
-    {control type="file" name="avatar" label="or Upload a Custom Avatar Image"}
+    {control type="file" name="avatar" label="or Upload a Custom Avatar Image"|gettext}
 </div>
 
 

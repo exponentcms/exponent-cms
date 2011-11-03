@@ -26,15 +26,15 @@
         <h1>{$moduletitle|default:"Manage Users"}</h1>
     </div>
 	<p>
-        From here, you can create, modify and remove normal user accounts. 
-        You will not be able to create, modify or remove administrator accounts (these options will be disabled).
+        {'From here, you can create, modify and remove normal user accounts.
+        You will not be able to create, modify or remove administrator accounts (these options will be disabled).'|gettext}
     </p>
 	<div class="module-actions">
-		{icon class=add module=users action=create text="Create a New User"|gettext title="Create a New User"|gettext alt="Create a New User"|gettext}
+		{icon class=add module=users action=create text="Create a New User"|gettext}
 	</div>
 	
 	<div id="user_autocomplete">
-		<label for="user_dt_input">Filter by First Name, Last Name, or Email Address:</label>
+		<label for="user_dt_input">{'Filter by First Name, Last Name, or Email Address:'|gettext}</label>
 		<input id="user_dt_input" type="text" />
 	</div>	
 	<div id="dt_ac_container"></div>

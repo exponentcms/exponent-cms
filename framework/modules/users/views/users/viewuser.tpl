@@ -18,32 +18,32 @@
 {/css}
 <div id='viewuser' class="module users view">
 	<div id="general_account_info">
-		<h1>General Account Information</h1>
+		<h1>{'General Account Information'|gettext}</h1>
 		<table class="exp-skin-table">
 			<tr>
-				<th>Username:</th>
+				<th>{'Username'|gettext}:</th>
 				<td>{$u->username}</td>
 			</tr>
 			<tr>
-				<th>Name:</th>
+				<th>{'Name'|gettext}:</th>
 				<td>{$u->firstname} {$u->lastname}</td>
 			</tr>
 			<tr>
-				<th>Email:</th>
+				<th>{'Email'|gettext}:</th>
 				<td>{$u->email}</td>
 			</tr>
 			<tr>
-				<th>Is Admin:</th>
+				<th>{'Is Admin'|gettext}:</th>
 				<td>
 				{if $u->is_acting_admin == 1}	
-					Yes
+					{'Yes'|gettext}
 				{else}
-					No
+					{'No'|gettext}
 				{/if}
 				</td>
 			</tr>
 			<tr>
-				<th>Last Login:</th>
+				<th>{'Last Login'|gettext}:</th>
 				<td>{$u->last_login|format_date}</td>
 			</tr>
 		
@@ -51,19 +51,19 @@
 	</div>
 	
 	<div id="addresses_info">
-		<h1>Addresses Information</h1>
+		<h1>{'Addresses Information'|gettext}</h1>
 		<table class="exp-skin-table">
 			<thead>
 				<tr>
-					<th><h3>Billing Address</h3></th>
-					<th><h3>Shipping Address</h3></th>
+					<th><h3>{'Billing Address'|gettext}</h3></th>
+					<th><h3>{'Shipping Address'|gettext}</h3></th>
 				</tr>
 			</thead>
 			<tbody>
 				<tr>
 					<td>
 						{if $billings[0]->id == ''}
-							You have not selected an address yet.
+							{'You have not selected an address yet'|gettext}.
 						{else}
 							{foreach from=$billings item=billing}
 								{$billing|address}
@@ -73,7 +73,7 @@
 					</td>
 					<td>
 						{if $shippings[0]->id == ''}
-							No address yet
+							{'No address yet'|gettext}
 						{else}
 							{foreach from=$shippings item=shipping}
 								{$shipping|address}
@@ -87,7 +87,7 @@
 	</div>
 	
 	<div id="orders">
-		<h1>Order Information</h1>
+		<h1>{'Order Information'|gettext}</h1>
 		{pagelinks paginate=$orders top=1}
 		<table id="prods" class="exp-skin-table">
 			<thead>
@@ -109,7 +109,7 @@
 				</tr>
 				{foreachelse}
 				    <tr class="{cycle values="odd,even"}">
-				        <td colspan="4">No orders have been placed yet</td>
+				        <td colspan="4">{'No orders have been placed yet'|gettext}</td>
 				    </tr>
 				{/foreach}
 		</tbody>

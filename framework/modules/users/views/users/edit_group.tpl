@@ -15,18 +15,18 @@
  *}
 
 <div class="module module action">
-    <h1>Create User Group</h1>
+    <h1>{'Create User Group'|gettext}</h1>
     <p>
-        If you check the "Default?" checkbox, user accounts created after this group is saved 
-        will be added to it. This will not retro-actively add existing users to this group.
+        {'If you check the \'Default?\' checkbox, user accounts created after this group is saved
+        will be added to it. This will not retro-actively add existing users to this group.'|gettext}
     </p>
     
     {form action=update_group}
         {control type="hidden" name="id" value=$record->id}
-        {control type="text" name="name" label="Name" value=$record->name}
-        {control type="textarea" name="description" label="Description" value=$record->description}
-        {control type="text" name="redirect" label="Login Landing Page" value=$record->redirect}
-        {control type="checkbox" name="inclusive" label="Default Group?" value=1 checked=$record->inclusive}
-        {control type="buttongroup" submit="Submit" cancel="Cancel"}
+        {control type="text" name="name" label="Name"|gettext value=$record->name}
+        {control type="textarea" name="description" label="Description"|gettext value=$record->description}
+        {control type="text" name="redirect" label="Login Landing Page"|gettext value=$record->redirect}
+        {control type="checkbox" name="inclusive" label="Default Group"|gettext:cat:'?' value=1 checked=$record->inclusive}
+        {control type="buttongroup" submit="Submit"|gettext cancel="Cancel"|gettext}
     {/form}
 </div>

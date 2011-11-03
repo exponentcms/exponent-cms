@@ -48,12 +48,12 @@
 					</td>
 				</tr>
 			{foreachelse}
-				<td colspan="{$page->columns|count}">No Data.</td>
+				<td colspan="{$page->columns|count}">{'No Data'|gettext}.</td>
 			{/foreach}
 		</tbody>
 	</table>
     {pagelinks paginate=$page bottom=1}
-    {control type="buttongroup" submit="Save Memberships" cancel="Cancel"}
+    {control type="buttongroup" submit="Save Memberships"|gettext cancel="Cancel"|gettext}
     {/form}
 </div>
 

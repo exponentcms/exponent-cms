@@ -21,14 +21,14 @@
                 {help text="Get Help"|gettext|cat:" "|cat:("Editing User Accounts"|gettext) module="edit-user"}
 	        </div>
 			{if $edit_user->id == ""}
-				<h1>Create a New User Account</h1>
+				<h1>{'Create a New User Account'|gettext}</h1>
 			{else}
-				<h1>Edit User - '{$edit_user->username}'</h1> ( Date of last login {$edit_user->last_login|format_date})
+				<h1>{'Edit User'|gettext} - '{$edit_user->username}'</h1> ( {'Date of last login'|gettext} {$edit_user->last_login|format_date})
 			{/if}
 	    </div>
 	    <div id="edituser-tabs" class="yui-navset yui3-skin-sam hide">
 		    <ul class="yui-nav">
-		        <li class="selected"><a href="#tab1"><em>{gettext str="General"}</em></a></li>
+		        <li class="selected"><a href="#tab1"><em>{"General"|gettext}</em></a></li>
 		            {foreach from=$extensions item=extension}
 		        <li><a href="#tab{$extension->id}"><em>{$extension->title}</em></a></li>
 		            {/foreach}
@@ -37,25 +37,25 @@
 	            <div id="tab1">
 	                {if $edit_user->id == "" || $edit_user->id == 0}
                         {if $smarty.const.USER_REGISTRATION_USE_EMAIL == 0}
-                            {control type=text name=username label="Username" value=$edit_user->username}
+                            {control type=text name=username label="Username"|gettext value=$edit_user->username}
                         {else}
-                            {control type=text name=email label="Email Address" value=$edit_user->email}
+                            {control type=text name=email label="Email Address"|gettext value=$edit_user->email}
                         {/if}
-                        {control type=password name=pass1 label=Password}
-                        {control type=password name=pass2 label="Confirm Password"}
+                        {control type=password name=pass1 label="Password"|gettext}
+                        {control type=password name=pass2 label="Confirm Password"|gettext}
                     {else}
                         {control type="hidden" name="id" value=$edit_user->id}
 	                {/if}
 	                {control type="hidden" name="userkey" value=$userkey}
-	                {if $smarty.const.USER_REGISTRATION_USE_EMAIL == 0}{control type=text name=email label="Email Address" value=$edit_user->email}{/if}
-	                {control type=text name=firstname label="First Name" value=$edit_user->firstname}
-	                {control type=text name=lastname label="Last Name" value=$edit_user->lastname}
+	                {if $smarty.const.USER_REGISTRATION_USE_EMAIL == 0}{control type=text name=email label="Email Address"|gettext value=$edit_user->email}{/if}
+	                {control type=text name=firstname label="First Name"|gettext value=$edit_user->firstname}
+	                {control type=text name=lastname label="Last Name"|gettext value=$edit_user->lastname}
 	                {*control type=checkbox name="recv_html" label="I prefer HTML Email" value=1 checked=$edit_user->recv_html*}
 	                {if $user->isAdmin() == 1}
 	                    {if $edit_user->id==$user->id || $user->isActingAdmin()}
-                            {control type=checkbox readonly="readonly" name=is_acting_admin value=1 label="Make this user an Administrator?" checked=$edit_user->is_acting_admin}
+                            {control type=checkbox readonly="readonly" name=is_acting_admin value=1 label="Make this user an Administrator?"|gettext checked=$edit_user->is_acting_admin}
 	                    {else}
-	                        {control type=checkbox name=is_acting_admin value=1 label="Make this user an Administrator?" checked=$edit_user->is_acting_admin}
+	                        {control type=checkbox name=is_acting_admin value=1 label="Make this user an Administrator?"|gettext checked=$edit_user->is_acting_admin}
 	                    {/if}
 	                {/if}
 	            </div>
@@ -70,7 +70,7 @@
 	    {if $user->isAdmin() == 0}
 			{control type=antispam}
 		{/if}
-	    {control type="buttongroup" submit="Submit" cancel="Cancel"}
+	    {control type="buttongroup" submit="Submit"|gettext cancel="Cancel"|gettext}
 	{/form}
 </div>
 
