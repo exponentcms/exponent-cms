@@ -23,30 +23,12 @@ class administrationController extends expController {
     public $useractions = array();
     public $add_permissions = array(
 	    'administrate'=>'Manage Administration',
-	    'clear_all_caches'=>'Clear All Caches',
-	    'clear_css_cache'=>'Clear CSS Cache',
-	    'clear_image_cache'=>'Clear Image Cache',
-	    'clear_rss_cache'=>'Clear RSS Cache',
-	    'clear_smarty_cache'=>'Clear Smarty Cache',
-	    'configure_site'=>'Configure Site',
-	    'configure_theme'=>'Configure Theme',
-	    'delete_unused_tables'=>'Delete Unused Tables',
-	    "fix_database"=>"Fix Database",
-	    "fix_sessions"=>"Fix Sessions",
-	    "install_extension"=>"Install Extension",
-	    "install_tables"=>"Install Tables",
-	    "installTables"=>"Install Tables",
-	    'manage_themes'=>'Manage Themes',
-	    'manage_unused_tables'=>'Manage Unused Tables',
-	    'optimize_database'=>'Optimize Database',
-	    'preview_theme'=>'Preview Theme',
-	    "switch_themes"=>"Change Themes",
+	    'clear'=>'Clear Caches',
+	    "fix"=>"Fix Database",
+	    "install"=>"Installation",
+	    "theme"=>"Manage Themes",
 	    'test_smtp'=>'Test SMTP Server Settings',
-	    'toggle_dev'=>'Toggle Development Mode',
-	    'toggle_maintenance'=>'Toggle Maintenance Mode',
-	    'toggle_minify'=>'Toggle Minify Mode',
-	    'toggle_preview'=>'Toggle Preview Mode',
-	    "upload_extension"=>"Upload Extension",
+	    'toggle'=>'Toggle Settings',
         );
 	public $codequality = 'beta';
     
@@ -54,7 +36,7 @@ class administrationController extends expController {
     function description() { return "This is the beginnings of the new Administration Module"; }
     function author() { return "OIC Group, Inc"; }
 
-	public static function installTables() {
+	public static function install_dbtables() {
 	    global $db;
 
 		define('TMP_TABLE_EXISTED',		1);
@@ -140,7 +122,7 @@ class administrationController extends expController {
 	}
 
 	public function install_tables() {
-		$tables = self::installTables();
+		$tables = self::install_dbtables();
 		ksort($tables);
         assign_to_template(array('status'=>$tables));
 	}
@@ -215,7 +197,7 @@ class administrationController extends expController {
         expHistory::back();
     }
 
-	public function optimize_database() {
+	public function fix_optimize_database() {
 	    global $db;
 
 		$before = $db->databaseInfo();
@@ -471,18 +453,18 @@ class administrationController extends expController {
 		expHistory::back();
 	}
 
-	public function upload_extension() {
+	public function install_extension() {
 		$form = new form();
 		$form->register(null,'',new htmlcontrol(expCore::maxUploadSizeMessage()));
 		$form->register('mod_archive','Extension Archive',new uploadcontrol());
 		$form->register('submit','',new buttongroupcontrol(gt('Upload Extension')));
 		$form->meta('module','administration');
-		$form->meta('action','install_extension');
+		$form->meta('action','install_extension_confirm');
 
 		assign_to_template(array('form_html'=>$form->toHTML()));
 	}
 
-	public function install_extension() {
+	public function install_extension_confirm() {
 		if ($_FILES['mod_archive']['error'] != UPLOAD_ERR_OK) {
 			switch($_FILES['mod_archive']['error']) {
 				case UPLOAD_ERR_INI_SIZE:
@@ -598,7 +580,7 @@ class administrationController extends expController {
 		}
 	}
 
-	public function finish_install_extension() {
+	public function install_extension_finish() {
 		$sessid = session_id();
 		if (!file_exists(BASE."tmp/extensionuploads/$sessid") || !is_dir(BASE."tmp/extensionuploads/$sessid")) {
 //				$template = new template('administrationmodule','_upload_finalSummary',$loc);
@@ -620,7 +602,7 @@ class administrationController extends expController {
 //			ob_start();
 //			include(BASE . 'framework/modules-1/administrationmodule/actions/installtables.php');
 //			ob_end_clean();
-			self::installTables();
+			self::install_dbtables();
 
 //				$template = new template('administrationmodule','_upload_finalSummary',$loc);
 //				$template->assign('nofiles',0);
@@ -669,7 +651,7 @@ class administrationController extends expController {
         assign_to_template(array('themes'=>$themes));
     }
     
-    public function switch_themes() {
+    public function theme_switch() {
     	expSettings::change('DISPLAY_THEME_REAL', $this->params['theme']);
 	    expSession::set('display_theme',$this->params['theme']);
 	    $sv = isset($this->params['sv'])?$this->params['sv']:'';
@@ -678,7 +660,7 @@ class administrationController extends expController {
 	    }
 	    expSettings::change('THEME_STYLE_REAL',$sv);
 	    expSession::set('theme_style',$sv);
-	    self::installTables();  // update tables to include any custom definitions in the new theme
+	    self::install_dbtables();  // update tables to include any custom definitions in the new theme
 
         // $message = (MINIFY != 1) ? "Exponent is now minifying Javascript and CSS" : "Exponent is no longer minifying Javascript and CSS" ;
         // flash('message',$message);
@@ -690,7 +672,7 @@ class administrationController extends expController {
     	expHistory::returnTo('manageable');
     }	
     
-	public function preview_theme() {
+	public function theme_preview() {
 		expSession::set('display_theme',$this->params['theme']);
 		$sv = isset($this->params['sv'])?$this->params['sv']:'';
 		if (strtolower($sv)=='default') {

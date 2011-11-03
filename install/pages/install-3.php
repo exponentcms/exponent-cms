@@ -203,7 +203,7 @@ if ($passed) {
 if ($passed) {
 	echoStart(gt('Installing Tables').':');
 
-	$tables = administrationController::installTables();
+	$tables = administrationController::install_dbtables();
 
 	if ($db->tableIsEmpty('user')) {
 		$user = null;

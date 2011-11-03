@@ -244,7 +244,7 @@ if ($user->isSuperAdmin()) {
                                 'text' => gt('Optimize Database'),
                                 'url' => makeLink(array(
                                     'module' => 'administration',
-                                    'action' => 'optimize_database'
+                                    'action' => 'fix_optimize_database'
                                 ))
                             ),
                             array(
@@ -322,11 +322,11 @@ if ($user->isSuperAdmin()) {
                         'id' => 'extensions',
                         'itemdata' => array(
                             array(
-                                'text' => gt('Upload Extension'),
+                                'text' => gt('Install Extension'),
                                 'classname'=>'fileuploader',
                                 'url' => makeLink(array(
                                     'module' => 'administration',
-                                    'action' => 'upload_extension'
+                                    'action' => 'install_extension'
                                 ))
                             ),
                             array(

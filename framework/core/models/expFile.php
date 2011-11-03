@@ -1421,7 +1421,7 @@ class expFile extends expRecord {
 			}
 
 			// make sure the database tables are up to date
-		    administrationController::installTables();
+		    administrationController::install_dbtables();
 
 			$table = '';
 			$table_function = '';
