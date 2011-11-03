@@ -19,10 +19,10 @@
 	    {permissions}
     	    <div class="module-actions">
 				{if $permissions.create == 1}
-					{icon class=add action=edit title="Add Text"|gettext text="Add Text"|gettext}
+					{icon class=add action=edit text="Add Text"|gettext}
 				{/if}
 				{if $permissions.edit == 1}
-					{br}{icon class=manage action=showall title="Manage Text Items"|gettext text="Manage Text Items"|gettext}
+					{br}{icon class=manage action=showall text="Manage Text Items"|gettext}
 				{/if}
             </div>
         {/permissions}
@@ -31,10 +31,10 @@
 			{permissions}
 				<div class="item-actions">
 					{if $permissions.edit == 1}
-						{icon action=edit record=$listing title="Edit this `$modelname`"}
+						{icon action=edit record=$listing}
 					{/if}
 					{if $permissions.delete == 1}
-						{icon action=delete record=$listing title="Delete this `$modelname`" onclick="return confirm('Are you sure you want to delete this `$modelname`?');"}
+						{icon action=delete record=$listing}
 					{/if}
 				</div>
 			{/permissions}
