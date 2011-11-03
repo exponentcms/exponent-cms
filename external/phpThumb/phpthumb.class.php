@@ -1068,8 +1068,8 @@ class phpthumb {
 		} else {
 
 			// relative to current directory (any OS)
-			//$AbsoluteFilename = $this->config_document_root.preg_replace('#[/\\\\]#', DIRECTORY_SEPARATOR, dirname(@$_SERVER['PHP_SELF'])).DIRECTORY_SEPARATOR.preg_replace('#[/\\\\]#', DIRECTORY_SEPARATOR, $filename);
-			$AbsoluteFilename = dirname(__FILE__).DIRECTORY_SEPARATOR.preg_replace('#[/\\\\]#', DIRECTORY_SEPARATOR, $filename);
+			$AbsoluteFilename = $this->config_document_root.preg_replace('#[/\\\\]#', DIRECTORY_SEPARATOR, dirname(@$_SERVER['PHP_SELF'])).DIRECTORY_SEPARATOR.preg_replace('#[/\\\\]#', DIRECTORY_SEPARATOR, $filename);
+			//$AbsoluteFilename = dirname(__FILE__).DIRECTORY_SEPARATOR.preg_replace('#[/\\\\]#', DIRECTORY_SEPARATOR, $filename);
 
 			//if (!@file_exists($AbsoluteFilename) && @file_exists(realpath($this->DotPadRelativeDirectoryPath($filename)))) {
 			//	$AbsoluteFilename = realpath($this->DotPadRelativeDirectoryPath($filename));
@@ -1303,7 +1303,7 @@ class phpthumb {
 			// $UnAllowedParameters contains options that can only be processed in GD, not ImageMagick
 			// note: 'fltr' *may* need to be processed by GD, but we'll check that in more detail below
 			$UnAllowedParameters = array('xto', 'ar', 'bg', 'bc');
-			// 'ra' may be part of this list, if not a multiple of 90°
+			// 'ra' may be part of this list, if not a multiple of 90ï¿½
 			foreach ($UnAllowedParameters as $parameter) {
 				if (isset($this->$parameter)) {
 					$this->DebugMessage('$this->useRawIMoutput=false because "'.$parameter.'" is set', __FILE__, __LINE__);
