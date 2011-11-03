@@ -15,10 +15,10 @@
  *}
 
 <div class="module twitter edit">
-    <h1>Creating a Tweet</h1>
+    <h1>{'Creating a Tweet'|gettext}</h1>
     {form action=update}
         {control type=hidden name=id value=$record->id}
-	    {control type=textarea cols="60" rows=5 name=body label="Tweet (trimmed to 140 characters)" value=''}
-        {control type=buttongroup submit="Send Tweet" cancel="Cancel"}
+	    {control type=textarea cols="60" rows=5 name=body label="Tweet (trimmed to 140 characters)"|gettext value=''}
+        {control type=buttongroup submit="Send Tweet"|gettext cancel="Cancel"|gettext}
     {/form}   
 </div>
