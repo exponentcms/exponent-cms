@@ -18,12 +18,12 @@
 
 {/css}
 
-<h1>Optimized the Database Tables</h1>
+<h1>{'Optimized the Database Tables'|gettext}</h1>
 <table  class="exp-skin-table" cellspacing="0" cellpadding="0" border="0" width="100%">
 	<thead>
 		<tr>
-			<th>Table Name</th>
-			<th>Size of Data (kb)</th>
+			<th>{'Table Name'|gettext}</th>
+			<th>{'Size of Data'|gettext} ({'kb'|gettext})</th>
 		</tr>
 	</thead>
 	<tbody>

@@ -61,7 +61,7 @@ class expLang {
         global $cur_lang;
 
 	    if (!defined('LANG')) return $str;
-        str_replace('"', "", $str);  // remove the killer double-quotes
+        str_replace('"', "\'", $str);  // remove the killer double-quotes
 		if (DEVELOPMENT) self::writeTemplate($str);
 	    $str = LANG!="English - US" && array_key_exists(addslashes($str),$cur_lang) ? stripslashes($cur_lang[addslashes($str)]) : $str;
 		return $str;

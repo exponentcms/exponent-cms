@@ -18,7 +18,7 @@
 	<div class="related-actions">
 		{help text="Get Help"|gettext|cat:" "|cat:("Uploading New Extensions"|gettext) module="upload-extension"}
 	</div>
-	<h1>Upload new Extension</h1>
+	<h1>{'Upload new Extension'|gettext}</h1>
 </div>
-<div class="form_header"><h3>This form allows you to upload modules, themes, plugins, and views to the website.  After you upload an archive containing an extension (or more) you will be shown a pre-installation summary page, outlining exactly what files will be installed where, and what each file contains (for security reasons).</h3></div>
+<div class="form_header"><h3>{'This form allows you to upload modules, themes, plugins, and views to the website.  After you upload an archive containing an extension (or more) you will be shown a pre-installation summary page, outlining exactly what files will be installed where, and what each file contains (for security reasons)'|gettext}.</h3></div>
 {$form_html}

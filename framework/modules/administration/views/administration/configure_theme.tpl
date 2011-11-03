@@ -19,10 +19,10 @@
 
 <div class="theme configure">
 	<div class="form_title">
-		<h1>Configure {$name}</h1>
+		<h1>{"Configure"|gettext} {$name}</h1>
 	</div>
 	<div class="form_header">
-		<p>Select the settings for the {$name}.</p>
+		<p>{"Select the settings for the"|gettext} {$name}.</p>
 	</div>
 	{$form_html}
 </div>
