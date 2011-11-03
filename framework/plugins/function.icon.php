@@ -56,7 +56,7 @@ function smarty_function_icon($params,&$smarty) {
 	$alt 	= (empty($params['alt'])) ? '' : $params['alt'];
 	$class 	= (empty($params['class'])&&empty($params['img'])) ? $params['action'] : $params['class'];
 	$text 	= (empty($params['text'])) ? '' : $params['text'];
-	$title 	= (empty($params['title'])) ? $text : $params['title'];
+	$title 	= (empty($params['title'])) ? (empty($text) ? ucfirst($class).' '.gt('this').' '.$smarty->getTemplateVars('modelname').' '.gt('item') : $text) : $params['title'];
 	if (!empty($params['hash'])){
 	    $hash = $params['hash'];
 	    unset($params['hash']);
@@ -80,8 +80,10 @@ function smarty_function_icon($params,&$smarty) {
 	//eDebug($params);
 	if (!empty($params['action'])) {
 		echo '<a href="'.expCore::makeLink($params).'" title="'.$title.'" class="'.$class.'"';
-		if ($params['action']=="delete"&&!isset($params['onclick'])) echo ' onclick="return confirm(\'Are you sure you want to delete this item?\');"';
-		if (isset($params['onclick'])) echo ' onclick="'.$params['onclick'].'"';
+		if ($params['action']=="delete"&&!isset($params['onclick']))
+            echo ' onclick="return confirm(\''.gt('Are you sure you want to delete this').' '.$smarty->getTemplateVars('modelname').' '.gt('item').'?\');"';
+		if (isset($params['onclick']))
+            echo ' onclick="'.$params['onclick'].'"';
 		echo '>'.$linktext.'</a>';
 	} else {
 		echo $linktext;
