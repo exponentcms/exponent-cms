@@ -47,8 +47,8 @@
             <td>{$simplenote->body}</td>
             <td>
 				<div class="item-actions">
-					{icon class=edit action=approve record=$simplenote tab=$tab}
-					{icon action=delete record=$simplenote tab=$tab}
+					{icon class=edit action=approve record=$simplenote tab=$tab title="Edit this note"|gettext}
+					{icon action=delete record=$simplenote tab=$tab title="Delete this note"|gettext onclick="return confirm('Are you sure you want to delete this note?');"}
 				</div>
             </td>
         </tr>

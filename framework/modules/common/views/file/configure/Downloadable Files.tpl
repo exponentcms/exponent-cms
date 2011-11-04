@@ -15,4 +15,4 @@
  *}
 
 <h2>{"Downloadable Files"|gettext}</h2>
-{control type=text name="title" label="File list title" value=$config.title}
+{control type=text name="title" label="File list title"|gettext value=$config.title}

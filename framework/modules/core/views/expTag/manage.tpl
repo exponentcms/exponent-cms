@@ -63,10 +63,10 @@
                 <td>
     				{permissions}
     					{if $permissions.edit == 1}
-    						{icon controller=$controller action=edit record=$listing}
+    						{icon controller=$controller action=edit record=$listing title="Edit this tag"|gettext}
     					{/if}
     					{if $permissions.delete == 1}
-    						{icon controller=$controller action=delete record=$listing}
+    						{icon controller=$controller action=delete record=$listing title="Delete this tag"|gettext onclick="return confirm('Are you sure you want to delete this tag?');"}
     					{/if}
     				{/permissions}
                 </td>

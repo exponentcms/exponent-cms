@@ -24,16 +24,16 @@
 			        </li>
 			    {/foreach}
 			</ul>            
-		    	<div class="yui-content">
-		    	    {foreach from=$views item=body name=body}
-		    	        <div id="tab{$smarty.foreach.body.iteration}">
-		    	            {include file=$body.file}
-		    	        </div>
-		    	    {/foreach}
+            <div class="yui-content">
+                {foreach from=$views item=body name=body}
+                    <div id="tab{$smarty.foreach.body.iteration}">
+                        {include file=$body.file}
+                    </div>
+                {/foreach}
 			</div>
 		</div>
 		<div class="loadingdiv">{"Loading Settings"|gettext}</div>
-		{control type=buttongroup submit="Save Config" cancel="Cancel"}
+		{control type=buttongroup submit="Save Config"|gettext cancel="Cancel"|gettext}
 	{/form}
 </div>
 

@@ -46,10 +46,10 @@
                     {permissions}
                         <div class="item-actions">
                             {if $permissions.manage == 1}
-                                {icon action=edit record=$note tab=$tab content_id=$content_id content_type=$content_type}
+                                {icon action=edit record=$note tab=$tab content_id=$content_id content_type=$content_type title="Edit this note"|gettext}
                             {/if}
                             {if $permissions.delete == 1}
-                                {icon action=delete record=$note tab=$tab content_id=$content_id content_type=$content_type}
+                                {icon action=delete record=$note tab=$tab content_id=$content_id content_type=$content_type title="Delete this note"|gettext onclick="return confirm('Are you sure you want to delete this note?');"}
                             {/if}
                         </div>
                     {/permissions}

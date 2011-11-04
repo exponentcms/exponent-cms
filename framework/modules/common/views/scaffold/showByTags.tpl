@@ -15,12 +15,12 @@
  *}
 
 <div class="scaffold showByTags">
-	<h1>{$moduletitle|default:"Listings for `$modelname`"}</h1>
+	<h1>{$moduletitle|default:"Listings for"|gettext|cat:" `$modelname`"}</h1>
 
 	{permissions}
 		<div class="module-actions">
         	{if $permissions.create == 1}
-        		{icon controller=$model_name action=create text="Create a new `$modelname`"}{br}
+        		{icon controller=$model_name action=create text="Create a new"|gettext|cat:" `$modelname`"}{br}
         	{/if}
 		</div>
     {/permissions}
@@ -34,10 +34,10 @@
 			{permissions}
 				<div class="item-actions">
 					{if $permissions.edit == 1}
-						{icon controller=$controller action=edit record=$listing title="Edit this `$modelname`"}
+						{icon controller=$controller action=edit record=$listing}
 					{/if}
 					{if $permissions.delete == 1}
-						{icon controller=$controller action=delete record=$listing title="Delete this `$modelname`" onclick="return confirm('Are you sure you want to delete this `$modelname`?');"}
+						{icon controller=$controller action=delete record=$listing}
 					{/if}
 				</div>
 			{/permissions}
