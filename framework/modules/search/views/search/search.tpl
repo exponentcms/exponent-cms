@@ -33,7 +33,7 @@
 		{/foreach}
 	{else}{* categorized, list of crap is two levels deep *}
 		{foreach from=$results key=category item=subresults}
-			<h2><a name="#{$category}">{$category} matching "{$query}":</a></h2>
+			<h2><a name="#{$category}">{$category} {'matching'|gettext} "{$query}":</a></h2>
 			{foreach from=$subresults item=result}
 				<div class="item {cycle values="odd,even"}">
 					<a href="{$smarty.const.URL_FULL}{$result->view_link}">{$result->title}</a>

@@ -120,9 +120,9 @@
            {/literal}{permissions level=$smarty.const.UILEVEL_PERMISSIONS}{literal}
 		   
 				 elCell.innerHTML = '<div class="item-actions">';
-				 editstring       = '{/literal}{icon class="edit" action="edituser" id="editstringid"}{literal}';
-				 passwordstring   = '{/literal}{icon class="password" action=change_password id="passwordstringid" title="Change this users password" text="Password"}{literal}';
-				 deletestring     = '<a href="{/literal}{link action=delete id="deletestringid"}{literal}" onclick="return confirm(\'Are you sure you want to delete this user?\');"><img width=16 height=16 style="border:none;" src="{/literal}{$smarty.const.ICON_RELATIVE}{literal}delete.png" /> Delete</a>';
+				 editstring       = '{/literal}{icon class="edit" action="edituser" id="editstringid" title="Edit this user"}{literal}';
+				 passwordstring   = '{/literal}{icon class="password" action="change_password" id="passwordstringid" title="Change this users password" text="Password"}{literal}';
+				 deletestring     = '{/literal}{icon action="delete" id="deletestringid" title="Delete this user" onclick="return confirm(\'Are you sure you want to delete this user?\');"}{literal}';
 				 editstring     = editstring.replace('editstringid',oRecord._oData.id);
 				 passwordstring = passwordstring.replace('passwordstringid',oRecord._oData.id);
 				 deletestring   = deletestring.replace('deletestringid',oRecord._oData.id);
