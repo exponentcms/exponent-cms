@@ -66,7 +66,7 @@
 						{/if}
 					{/foreach}
                     {if !$active}
-                        <span class="active">Active</span>
+                        <span class="active">{'Active'|gettext}</span>
                     {else}
 						<a class="inactive" href="{link module="expHTMLEditor" action=activate id="default"}" title="Activate this Toolbar"|gettext>Activate</a>
                     {/if}

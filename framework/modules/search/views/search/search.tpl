@@ -16,10 +16,10 @@
 
 <div class="module search search-results">
 	
-	<h1>Search Results</h1>
+	<h1>{'Search Results'|gettext}</h1>
     {pagelinks paginate=$page top=1}
 	<span class="searched_for">
-	Your search for <span class="terms">"{$terms}"</span> returned <span class="result-count">{$page->total_records}</span> results<br />
+	{'Your search for'|gettext} <span class="terms">"{$terms}"</span> {'returned'|gettext} <span class="result-count">{$page->total_records}</span> {'results'|gettext}<br />
 	</span>
 	{if $config->is_categorized == 0}
 		{foreach from=$page->records item=result}

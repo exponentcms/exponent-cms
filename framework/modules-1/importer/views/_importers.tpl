@@ -26,7 +26,7 @@
 	<table cellpadding="4" cellspacing="0" border="0" width="100%">
 		{foreach from=$importers item=importer key=impname}
 			<tr>
-				<td class="administration_modmgrheader"><b>{$importer.name}</b> {'by %s'|gettext|sprintf:$importer.author}</td>
+				<td class="administration_modmgrheader"><b>{$importer.name}</b> {'by'|gettext|cat:' %s'|sprintf:$importer.author}</td>
 			</tr>
 			<tr>
 				<td class="administration_modmgrbody">

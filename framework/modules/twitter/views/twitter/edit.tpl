@@ -15,7 +15,7 @@
  *}
 
 <div class="module twitter edit">
-    <h1>{'Creating a Tweet'|gettext}</h1>
+    <h1>{'Create a Tweet'|gettext}</h1>
     {form action=update}
         {control type=hidden name=id value=$record->id}
 	    {control type=textarea cols="60" rows=5 name=body label="Tweet (trimmed to 140 characters)"|gettext value=''}

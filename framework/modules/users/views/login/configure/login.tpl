@@ -14,6 +14,6 @@
  *
  *}
 
-<h2>{"Configure this Module"|gettext}</h2>
-{control type="text" name="inputtext" label="Input Text"|gettext value=$config.inputtext|default:"Keywords"}
-{control type="text" name="buttontext" label="Button Text"|gettext value=$config.buttontext|default:"Search"}
+<h2>{'Configure this Module'|gettext}</h2>
+
+<p>{'There is nothing to configure for this module'|gettext}.</p>

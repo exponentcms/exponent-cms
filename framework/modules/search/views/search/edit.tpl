@@ -15,16 +15,16 @@
  *}
 
 {if $record->id != ""}
-	<h1>Edit Information for {$modelname}</h1>
+	<h1>{'Edit Information for'|gettext} {$modelname}</h1>
 {else}
-	<h1>New {$modelname}</h1>
+	<h1>{'New'|gettext} {$modelname}</h1>
 {/if}
 
 {form action=update}
 	{control name=id type=hidden value=$record->id}
-    {control type="text" name="title" label="Title" value=$record->title}
-    {control type="text" name="url" label="URL" value=$record->url}
-    {control type="files" name="image" label="Image" value=$record->expFile}
-    {control type="editor" name="body" label="URL Description" value=$record->body}
-    {control type="buttongroup" submit="Save" cancel="Uh.. Nevermind..."}
+    {control type="text" name="title" label="Title"|gettext value=$record->title}
+    {control type="text" name="url" label="URL"|gettext value=$record->url}
+    {control type="files" name="image" label="Image"|gettext value=$record->expFile}
+    {control type="editor" name="body" label="URL Description"|gettext value=$record->body}
+    {control type="buttongroup" submit="Save"|gettext cancel="Uh.. Nevermind..."|gettext}
 {/form}

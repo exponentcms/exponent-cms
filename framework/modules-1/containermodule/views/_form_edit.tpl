@@ -14,7 +14,6 @@
  *
  *}
 
-
 {css unique="addmodule1" link="`$smarty.const.PATH_RELATIVE`framework/modules/container/assets/css/add-content.css" corecss="admin-global"}
 
 {/css}
@@ -27,7 +26,7 @@
             {/if}
             {help text="Get Help"|gettext|cat:" "|cat:("Adding Page Content"|gettext) module="how-to-add-modules-to-a-page"}
         </div>
-        <h1>{if $is_edit}Edit Module{else}Add New Content{/if}</h1>
+        <h1>{if $is_edit}{'Edit Module'|gettext}{else}{'Add New Content'|gettext}{/if}</h1>
     </div>
     
     {if $error}
@@ -51,24 +50,24 @@
 
     {control type=text size=31 label="Module Title" name=title value=$container->title}
 
-    {control type=dropdown id="modcntrol" name=modcntrol items=$modules includeblank="Select a Module" label="Type of Content" disabled=1 value=$container->internal->mod}
+    {control type=dropdown id="modcntrol" name=modcntrol items=$modules includeblank="Select a Module"|gettext label="Type of Content"|gettext disabled=1 value=$container->internal->mod}
     {if $is_edit}{control type=hidden id="modcntrol" name=modcntrol value=$container->internal->mod}{/if}
 
     {if $is_edit == 0}
     <div id="recyclebin" class="control disabled">
-        <label>Recycle Bin</label>
-        <a id="browse-bin" href="#" >Browse Recycled Content</a>
+        <label>{'Recycle Bin'|gettext}</label>
+        <a id="browse-bin" href="#" >{'Browse Recycled Content'|gettext}</a>
         <input type="hidden" id="existing_source" name="existing_source" value="" />
     </div>
     {/if}
 
-    {control type=dropdown id="actions" name=actions includeblank="No Module Selected" disabled=1 label="Content Action"}
+    {control type=dropdown id="actions" name=actions includeblank="No Module Selected"|gettext disabled=1 label="Content Action"|gettext}
 
-    {control type=dropdown id="views" name=views includeblank="No Action Selected" disabled=1 label="Content Display"}
+    {control type=dropdown id="views" name=views includeblank="No Action Selected"|gettext disabled=1 label="Content Display"|gettext}
     
     {*control type=dropdown id=ctlview name=ctlview label=" "*}
     
-    {control type=buttongroup submit="Save" disabled=1 cancel="Cancel" name="buttons"}
+    {control type=buttongroup submit="Save"|gettext disabled=1 cancel="Cancel"|gettext name="buttons"}
     {/form}
 </div>
 <div class="loadingdiv">{'Loading Content Creation Form'|gettext}</div>
@@ -76,8 +75,6 @@
 
 {script unique="addmodule" yui3mods=1}
 {literal}
-
-
 
 YUI(EXPONENT.YUI_CONFIG).use("node","event","yui2-yahoo-dom-event","yui2-connection","yui2-json",function(Y){
     var YAHOO=Y.YUI2;
@@ -161,7 +158,6 @@ YUI(EXPONENT.YUI_CONFIG).use("node","event","yui2-yahoo-dom-event","yui2-connect
         }
     };
     
-    
     //listens for a change in the module dropdown
     modpicker.on('change',function(e){
         EXPONENT.disableSave();
@@ -207,7 +203,6 @@ YUI(EXPONENT.YUI_CONFIG).use("node","event","yui2-yahoo-dom-event","yui2-connect
             EXPONENT.disableSave();
         };
     }
-    
     
     //listens for a change in the view dropdown
     viewpicker.on('change', EXPONENT.handleViewChange);
@@ -263,7 +258,6 @@ YUI(EXPONENT.YUI_CONFIG).use("node","event","yui2-yahoo-dom-event","yui2-connect
     EXPONENT.disableSave = function() {
         Y.one('#buttonsSubmit').set('disabled',1).addClass('disabled').ancestor('.buttongroup').addClass('disabled');
     }
-    
     
     //makes the recycle bin link clickable
     EXPONENT.enableRecycleBin = function() {
@@ -400,7 +394,6 @@ YUI(EXPONENT.YUI_CONFIG).use("node","event","yui2-yahoo-dom-event","yui2-connect
     Y.one('.containermodule.hide').removeClass('hide');
     
 });
-
 
 {/literal}
 {/script}

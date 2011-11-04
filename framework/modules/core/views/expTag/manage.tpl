@@ -63,10 +63,10 @@
                 <td>
     				{permissions}
     					{if $permissions.edit == 1}
-    						{icon controller=$controller action=edit record=$listing title="Edit this `$modelname`"}
+    						{icon controller=$controller action=edit record=$listing}
     					{/if}
     					{if $permissions.delete == 1}
-    						{icon controller=$controller action=delete record=$listing title="Delete this `$modelname`" onclick="return confirm('Are you sure you want to delete this `$modelname`?');"}
+    						{icon controller=$controller action=delete record=$listing}
     					{/if}
     				{/permissions}
                 </td>

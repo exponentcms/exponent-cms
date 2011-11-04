@@ -28,7 +28,6 @@ class loginController extends expController {
 //    );
 //    public $remove_permissions = array('create', 'edituser');
 	public $codequality = 'beta';
-
 	public $remove_configs = array(
         'aggregation',
         'comments',
