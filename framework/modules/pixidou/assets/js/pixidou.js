@@ -14,7 +14,7 @@ pixidou = {
 	imageHistoryIndex: 0, // index to know where we are in our image history
 	savedState: true, // whether the image must be saved or not in order to continue (useful for resize/crop)
 	currentTool: null, // current tool, currently resize/crop
-	
+
 	/**
 	*	Initializes the whole thing to get going
 	*	@params image String
@@ -26,6 +26,7 @@ pixidou = {
 		pixidou.image = image;
 		pixidou.imageWidth = width;
 		pixidou.imageHeight = height;
+
 	},
 	
 	/**
@@ -176,9 +177,16 @@ pixidou = {
 	            proxy: true,
 	            ghost: true,
 	            status: true,
-	            draggable: false
+	            draggable: false,
+                animate: true,
+                animateDuration: .25,
+                animateEasing: YAHOO.util.Easing.backBoth
 	        });
-			
+            pixidou.resize.on('startResize', function() {
+                this.getProxyEl().innerHTML = '<img src="' + this.get('element').src + '" style="height: 100%; width: 100%;">';
+                Dom.setStyle(this.getProxyEl().firstChild, 'opacity', '.25');
+            }, pixidou.resize, true);
+
 			// remove any listeners for the apply/cancel button
 			YAHOO.util.Event.removeListener('applyTool', 'click');
 			YAHOO.util.Event.removeListener('cancelTool', 'click');
@@ -186,7 +194,7 @@ pixidou = {
 			// set new listeners
 			YAHOO.util.Event.addListener('applyTool', 'click', pixidou.applyResizeTool);
 			YAHOO.util.Event.addListener('cancelTool', 'click', pixidou.disableResizeTool);
-			
+
 			// show the buttons in the footer
 			ui.enableApplyButton();
 			
