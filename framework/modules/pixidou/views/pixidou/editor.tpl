@@ -28,6 +28,7 @@
      +------------------------------------------------------------------------+
      */
 *}
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr" lang="fr">
     <head>
@@ -45,8 +46,7 @@
     <body class="yui-skin-sam">
         <div id="doc3" class="yui-t7 hide">
             <div id="hd">
-            
-                <!-- Top menu -->               
+                <!-- Top menu -->
                 <div id="nav-menu" class="yuimenubar yuimenubarnav">
                     <div class="bd">
                         <ul class="first-of-type">
@@ -178,9 +178,10 @@
                             </ul>           
                             <div class="yui-content">
                                 <div id="aboutAbout">
-                                    <h1>Pixidou 0.1 - an open source AJAX image editor</h1>
+                                    <h1>Pixidou 0.1-exp - an open source AJAX image editor</h1>
                                     <br/>
                                     <p>(c) 2008 - Asvin Balloo</p>
+                                    <p>(c) 2011 - Extensively modified to work within Exponent CMS</p>
                                 </div>
                                 <div id="aboutJoin">
                                     <p>I'm currently looking for some collaborators to take Pixidou a level higher. </p>
@@ -203,8 +204,8 @@
                 <!-- Info panel -->
                 <div id="infoPanel">
                     <div class="infoZoom">
-                        <button type="button" id="zoomInTool" name="zoomInTool" value="Zoom In">Zoom In</button>
-                        <button type="button" id="zoomOutTool" name="zoomOutTool" value="Zoom Out">Zoom Out</button>
+                        <button type="button" id="zoomInTool" name="zoomInTool" value="Zoom In">Zoom +</button>
+                        <button type="button" id="zoomOutTool" name="zoomOutTool" value="Zoom Out">Zoom -</button>
                         <span id="zoomValue">100</span>%
                     </div>
                 </div>
@@ -246,7 +247,6 @@
         <script type="text/javascript" src="{$smarty.const.URL_FULL}framework/modules/pixidou/assets/js/app.js"></script>
         
         <script type="text/javascript" charset="utf-8">
-
             YAHOO.util.Event.onDOMReady(function(){ldelim}
                 pixidou.updateImage('{$image->filename}',{$image->image_width},{$image->image_height});
             {rdelim});

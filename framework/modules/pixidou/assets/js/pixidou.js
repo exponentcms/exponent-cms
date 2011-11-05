@@ -67,8 +67,12 @@ pixidou = {
 	*	Disables our crop tool
 	*/
 	disableCropTool: function(){
+//        pixidou.crop.reset();
 		pixidou.crop.destroy();
-		// set current tool to null
+
+        // hide apply/cancel buttons
+        ui.disableApplyButton();
+        pixidou.savedState = true;
 		pixidou.currentTool = null;
 	},
 	
@@ -170,17 +174,14 @@ pixidou = {
 			
 			// init our control
 			pixidou.resize = new YAHOO.util.Resize('yuiImg', {
-	        	handles: 'all',
+//	        	handles: 'all',
 	            knobHandles: true,
 	            height: pixidou.imageHeight + 'px',
 	            width: pixidou.imageWidth + 'px',
 	            proxy: true,
 	            ghost: true,
 	            status: true,
-	            draggable: false,
-                animate: true,
-                animateDuration: .25,
-                animateEasing: YAHOO.util.Easing.backBoth
+	            draggable: false
 	        });
             pixidou.resize.on('startResize', function() {
                 this.getProxyEl().innerHTML = '<img src="' + this.get('element').src + '" style="height: 100%; width: 100%;">';
@@ -213,9 +214,11 @@ pixidou = {
 		pixidou.resize.reset();
 		pixidou.resize.destroy();
 	
+        // hide apply/cancel buttons
+        ui.disableApplyButton();
 		pixidou.savedState = true;
+        pixidou.zoomTo(100);
 		pixidou.currentTool = null;
-		
 	},
 	
 	/**
@@ -450,9 +453,6 @@ pixidou = {
 			// update our image container
 			pixidou.updateImage(imageObject.image, imageObject.width, imageObject.height);
 
-			//FIXME we must update the image on disk to be able to continue working since most operations do a file check first
-			// this method completely reverts image to original rather than one step though
-			pixidou.saveImage(/[^.]+$/.exec(pixidou.image));
 		}
 	},
 	
