@@ -67,7 +67,7 @@ class expLang {
 		return $str;
 	}
 	
-	public function writeTemplate($str) {
+	public static function writeTemplate($str) {
 	    global $default_lang, $default_lang_file;
 
         if (defined('WRITE_LANG_TEMPLATE') && WRITE_LANG_TEMPLATE && !array_key_exists(addslashes(strip_tags($str)),$default_lang)) {
