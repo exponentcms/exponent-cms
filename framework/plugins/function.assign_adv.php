@@ -23,6 +23,7 @@ function smarty_function_assign_adv($params, &$smarty)
         $smarty->trigger_error("assign_adv: missing 'value' parameter");
         return;
     }
+    $value = isset($params['value']) ? $params['value'] : null;
     if (preg_match('/^\s*array\s*\(\s*(.*)\s*\)\s*$/s',$value,$match)){
         eval('$value=array('.str_replace("\n", "", $match[1]).');');
     }

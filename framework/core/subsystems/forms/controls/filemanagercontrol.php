@@ -330,7 +330,7 @@ class filemanagercontrol extends formcontrol {
             } else {
                 $filepic = "<img class=\"filepic\" src=\"".URL_FULL."thumb.php?id=".$val->id."&amp;w=24&amp;h=24&amp;zc=1\">";
             }
-            $html .= "<li>";
+            $html = "<li>";
             $html .= "<input type=\"hidden\" name=\"".$subTypeName."\" value=\"".$val->id."\">";
             //$html .= "<div class=\"fpdrag\"></div>";
             $html .= "<a class=\"delete\" rel=\"imgdiv".$val->id."\" href='javascript:{}'>Delete</a>";

@@ -44,7 +44,7 @@ function smarty_function_rating($params,&$smarty) {
         $total_average = 0;
     }
     $avg_percent = round($total_average*100/5)+1;
-    $html .= '
+    $html = '
     <div class="star-rating">
         <div id="rating-total-'.$params['subtype'].'" class="star-stats">
             <strong>'.$params['label'].'</strong>

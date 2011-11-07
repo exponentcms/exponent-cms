@@ -268,6 +268,7 @@ function smarty_function_control($params,&$smarty) {
             $max = isset($params['max']) ? $params['max'] : 99999;
             $control = new quantitycontrol($value, $min, $max);
         } elseif ($params['type'] == 'checkbox') {
+            $value = isset($params['value']) ? $params['value'] : null;
             $control = new checkboxcontrol($value);
             $control->postfalse = isset($params['postfalse']) ? 1 : 0;
             $control->newschool = true;
