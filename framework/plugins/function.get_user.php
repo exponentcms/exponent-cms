@@ -18,6 +18,17 @@
 ##################################################
 /** @define "BASE" "../.." */
 
+/**
+ * Smarty {get_user} function plugin
+ *
+ * Type:     function<br>
+ * Name:     get_user<br>
+ * Purpose:  get user name
+ *
+ * @param         $params
+ * @param \Smarty $smarty
+ * @return bool
+ */
 function smarty_function_get_user($params,&$smarty) {
 	if (expSession::loggedIn()) {
 		global $user;

@@ -18,7 +18,18 @@
 ##################################################
 /** @define "BASE" "../.." */
 
-function smarty_function_control($params,&$smarty) {
+/**
+ * Smarty {popupdatetimecontrol} function plugin
+ *
+ * Type:     function<br>
+ * Name:     popupdatetimecontrol<br>
+ * Purpose:  ???
+ *
+ * @param         $params
+ * @param \Smarty $smarty
+ * @return bool
+ */
+function smarty_function_popupdatetimecontrol($params,&$smarty) {  //FIXME this seems like a empty copy of something else
 	if (isset($params['name']) ) {
 		$control = new $params['type'];
 		echo $control->controlToHTML($params['name']);

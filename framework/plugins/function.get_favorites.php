@@ -17,6 +17,17 @@
 #
 ##################################################
 
+/**
+ * Smarty {get_favorites} function plugin
+ *
+ * Type:     function<br>
+ * Name:     get_favorites<br>
+ * Purpose:  get and assign favorites
+ *
+ * @param         $params
+ * @param \Smarty $smarty
+ * @return bool
+ */
 function smarty_function_get_favorites($params,&$smarty) {
 
 	global $user;

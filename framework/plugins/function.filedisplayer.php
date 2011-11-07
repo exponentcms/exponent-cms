@@ -17,6 +17,17 @@
 #
 ##################################################
 
+/**
+ * Smarty {filedisplayer} function plugin
+ *
+ * Type:     function<br>
+ * Name:     filedisplayer<br>
+ * Purpose:  display files
+ *
+ * @param         $params
+ * @param \Smarty $smarty
+ * @return bool
+ */
 function smarty_function_filedisplayer($params,&$smarty) {
     $config = $smarty->getTemplateVars('config');
     

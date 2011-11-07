@@ -17,6 +17,17 @@
 #
 ##################################################
 
+/**
+ * Smarty {securelink} function plugin
+ *
+ * Type:     function<br>
+ * Name:     securelink<br>
+ * Purpose:  create a secure link
+ *
+ * @param         $params
+ * @param \Smarty $smarty
+ * @return bool
+ */
 function smarty_function_securelink($params,&$smarty) {
 	/*$loc = $smarty->getTemplateVars('__loc');
 	if (!isset($params['module'])) $params['module'] = $loc->mod;

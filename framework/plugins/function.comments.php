@@ -17,6 +17,17 @@
 #
 ##################################################
 
+/**
+ * Smarty {comments} function plugin
+ *
+ * Type:     function<br>
+ * Name:     comments<br>
+ * Purpose:  Get comments
+ *
+ * @param         $params
+ * @param \Smarty $smarty
+ * @return bool
+ */
 function smarty_function_comments($params,&$smarty) {
 	$hideform = empty($params['hideform']) ? false : true;
 	$hidecomments = empty($params['hidecomments']) ? false : true;

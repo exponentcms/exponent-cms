@@ -17,6 +17,17 @@
 #
 ##################################################
 
+/**
+ * Smarty {ddrerank} function plugin
+ *
+ * Type:     function<br>
+ * Name:     ddrerank<br>
+ * Purpose:  display item re-ranking popup
+ *
+ * @param         $params
+ * @param \Smarty $smarty
+ * @return bool
+ */
 function smarty_function_ddrerank($params,&$smarty) {
     global $db;
 	$loc = $smarty->getTemplateVars('__loc');

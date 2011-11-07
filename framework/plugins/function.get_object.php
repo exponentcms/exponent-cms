@@ -17,6 +17,17 @@
 #
 ##################################################
 
+/**
+ * Smarty {get_object} function plugin
+ *
+ * Type:     function<br>
+ * Name:     get_object<br>
+ * Purpose:  get and assign object
+ *
+ * @param         $params
+ * @param \Smarty $smarty
+ * @return bool
+ */
 function smarty_function_get_object($params,&$smarty) {
 	$obj = new $params['object'];
 	$smarty->assign($params['assign'],$obj);

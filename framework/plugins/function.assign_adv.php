@@ -1,6 +1,15 @@
 <?php
 
-
+/**
+ * Smarty {assign_adv} function plugin
+ *
+ * Type:     function<br>
+ * Name:     assign_adv<br>
+ * Purpose:  Advanced assign variable to template
+ *
+ * @param         $params
+ * @param \Smarty $smarty
+ */
 function smarty_function_assign_adv($params, &$smarty)
 {
     extract($params);

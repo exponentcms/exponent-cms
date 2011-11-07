@@ -17,6 +17,17 @@
 #
 ##################################################
 
+/**
+ * Smarty {time_duration} function plugin
+ *
+ * Type:     function<br>
+ * Name:     time_duration<br>
+ * Purpose:  calculate and assign a duration
+ *
+ * @param         $params
+ * @param \Smarty $smarty
+ * @return bool
+ */
 function smarty_function_time_duration($params,&$smarty) {
 	$duration = null;
 	if (isset($params['duration'])) {

@@ -17,6 +17,18 @@
 #
 ##################################################
 
+/**
+ * Smarty {pop} block plugin
+ *
+ * Type:     block<br>
+ * Name:     pop<br>
+ * Purpose:  Set up a pop block
+ *
+ * @param $params
+ * @param $content
+ * @param \Smarty $smarty
+ * @param $repeat
+ */
 function smarty_block_pop($params,$content,&$smarty, &$repeat) {
 	if($content){
 		$params['content'] = $content;

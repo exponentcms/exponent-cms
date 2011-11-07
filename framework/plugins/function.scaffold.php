@@ -18,6 +18,17 @@
 ##################################################
 /** @define "BASE" "../.." */
 
+/**
+ * Smarty {scaffold} function plugin
+ *
+ * Type:     function<br>
+ * Name:     scaffold<br>
+ * Purpose:  scaffold
+ *
+ * @param         $params
+ * @param \Smarty $smarty
+ * @return bool
+ */
 function smarty_function_scaffold($params,&$smarty) {
 	if (isset($params['model']) ) {
 		global $db;

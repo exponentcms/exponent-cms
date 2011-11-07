@@ -17,6 +17,17 @@
 #
 ##################################################
 
+/**
+ * Smarty {link} function plugin
+ *
+ * Type:     function<br>
+ * Name:     link<br>
+ * Purpose:  create a link
+ *
+ * @param         $params
+ * @param \Smarty $smarty
+ * @return bool
+ */
 function smarty_function_link($params,&$smarty) {
 	$loc = $smarty->getTemplateVars('__loc');
 

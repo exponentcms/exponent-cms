@@ -17,6 +17,17 @@
 #
 ##################################################
 
+/**
+ * Smarty {getnav} function plugin
+ *
+ * Type:     function<br>
+ * Name:     getnav<br>
+ * Purpose:  get and assign navigation structure
+ *
+ * @param         $params
+ * @param \Smarty $smarty
+ * @return bool
+ */
 function smarty_function_getnav($params,&$smarty) {
 	global $sections;
 

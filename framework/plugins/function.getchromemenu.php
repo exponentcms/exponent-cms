@@ -17,6 +17,17 @@
 #
 ##################################################
 
+/**
+ * Smarty {getchromemenu} function plugin
+ *
+ * Type:     function<br>
+ * Name:     getchromemenu<br>
+ * Purpose:  display the chrome menu
+ *
+ * @param         $params
+ * @param \Smarty $smarty
+ * @return bool
+ */
 function smarty_function_getchromemenu($params,&$smarty) {
 	global $router, $user;
 	$cloc = $smarty->getTemplateVars('__loc');

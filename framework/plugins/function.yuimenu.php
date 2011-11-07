@@ -17,6 +17,17 @@
 #
 ##################################################
 
+/**
+ * Smarty {yuimenu} function plugin
+ *
+ * Type:     function<br>
+ * Name:     yuimenu<br>
+ * Purpose:  display a yui menu
+ *
+ * @param         $params
+ * @param \Smarty $smarty
+ * @return bool
+ */
 function smarty_function_yuimenu($params,&$smarty) {
 
 	$menu = '
