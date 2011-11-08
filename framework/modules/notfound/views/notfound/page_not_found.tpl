@@ -19,9 +19,9 @@
     <p>{$smarty.const.SITE_404_HTML}</p>
     
     {if $page->records|@count > 0}
-        <h2>Could this be what you are looking for?</h2>
+        <h2>{'Could this be what you are looking for'|gettext}?</h2>
         <span class="searched_for">
-        We found the following pages which are similar to the page <span class="terms">"{$terms}"</span> you were looking for
+        {'We found the following pages which are similar to the page'|gettext} <span class="terms">"{$terms}"</span> {'you were looking for'|gettext}
 	    </span>
 		{foreach from=$page->records item=result}
 			<div class="item {cycle values="odd,even"}">

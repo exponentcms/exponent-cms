@@ -24,7 +24,7 @@
     {permissions}
     <div class="item-actions">
         {if $permissions.edit == 1}
-            {icon action=edit record=$record title="Edit `$record->title`"}
+            {icon action=edit record=$record title="Edit"|gettext|cat:" `$record->title`"}
         {/if}
     </div>
     {/permissions}

@@ -29,7 +29,7 @@
             {icon class=add action=edit rank=1 title="Add a Slide"|gettext text="Add a Slide"|gettext}
         {/if}
         {if $permissions.manage == 1 && $slides|@count>1}
-            {ddrerank items=$slides model="photo" label="Slides"}
+            {ddrerank items=$slides model="photo" label="Slides"|gettext}
         {/if}
     </div>
     {/permissions}
@@ -42,13 +42,13 @@
                 {permissions}
                     <div class="item-actions">
                         {if $permissions.edit == 1}
-                            {icon action=edit record=$slide title="Edit `$item->title`"}
+                            {icon action=edit record=$slide title="Edit"|gettext|cat:" `$item->title`"}
                         {/if}
                         {if $permissions.delete == 1}
-                            {icon action=delete record=$slide title="Delete `$item->title`" onclick="return confirm('Are you sure you want to delete this `$modelname`?');"}
+                            {icon action=delete record=$slide title="Delete"|gettext|cat:" `$item->title`" onclick="return confirm('Are you sure you want to delete this `$modelname`?');"}
                         {/if}
                         {if $permissions.create == 1}
-                            {icon class=add action=edit rank=$slide->rank+1 title="Add another slide here"  text="Add After"}
+                            {icon class=add action=edit rank=$slide->rank+1 title="Add another slide here"|gettext  text="Add After"|gettext}
                         {/if}
                     </div>
                 {/permissions}
@@ -80,7 +80,7 @@
         {if !$config.hidecontrols}
         <div class="slideshow-buttons">
             <a id="prev{$name}" href="javascript:void(0);" class="prev_slide" title="Prevous Slide">
-                &lt;&lt; Previous
+                &lt;&lt; {'Previous'|gettext}
             </a>
             <span class="slideshow-pagination">
                 {foreach key=key from=$slides item=slide name=slides}
@@ -89,14 +89,14 @@
                 </a>
                 {/foreach}
             </span>
-            <a id="plps{$name}" href="javascript:void(0);" class="pause_slide" title="Pause Slideshow">
-                Pause
+            <a id="plps{$name}" href="javascript:void(0);" class="pause_slide" title="Pause Slideshow"|gettext>
+                {'Pause'|gettext}
             </a>
-            <a id="plps{$name}" href="javascript:void(0);" class="play_slide hide" title="Play Slideshow">
-                Play
+            <a id="plps{$name}" href="javascript:void(0);" class="play_slide hide" title="Play Slideshow"|gettext>
+                {'Play'|gettext}
             </a>
-            <a id="next{$name}" href="javascript:void(0);" class="next_slide" title="Next Slide">
-                Next &gt;&gt;
+            <a id="next{$name}" href="javascript:void(0);" class="next_slide" title="Next Slide"|gettext>
+                {'Next'|gettext} &gt;&gt;
             </a>
         </div>
         {/if}
