@@ -1936,7 +1936,7 @@ class migrationController extends expController {
 //        expHistory::back();
 		if (isset($this->params['fix_database'])) $this->fix_database();
 		echo '<h2>Migration Configuration Saved</h2><br />';
-		echo '<p>We\'ve successfully connected to the Old database</p><br />';
+		echo '<p>gt(We\'ve successfully connected to the Old database</p><br />';
 		echo "<a class=\"awesome ".BTN_SIZE." ".BTN_COLOR."\" href=\"migration/manage_users\">Next Step -> Migrate Users & Groups</a>";
     }
 	

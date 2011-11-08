@@ -16,7 +16,7 @@
 
 {clear}
 <div class="module motd show">
-    <h1>{$moduletitle|default:"Message of the Day"}</h1>
+    <h1>{$moduletitle|default:"Message of the Day"|gettext}</h1>
     <div class="motd-message">
         <div class="motd-date">
             <span class="date-header">{$smarty.now|expdate:"M, y"}</span>
@@ -30,12 +30,12 @@
             {$message->body}
         </div>
         {clear}
-        <a class="link" href="{link action=showall}">View Previous Tips</a>
+        <a class="link" href="{link action=showall}">{'View Previous Tips'|gettext}</a>
     
         {permissions}
 			<div class="module-actions">
 				{if $permissions.edit == 1}
-					{icon class=add action=create text="Add a tip"}
+					{icon class=add action=create text="Add a tip"|gettext}
 			  {/if}
 			 </div>
         {/permissions}    

@@ -15,14 +15,14 @@
  *}
 
 <div class="module motd edit">
-    <h1>{if $record->id == ''}New Message of the Day{else}Edit Message of the Day{/if}</h1>
+    <h1>{if $record->id == ''}{'New Message of the Day'|gettext}{else}{'Edit Message of the Day'|gettext}{/if}</h1>
     <p>{$record->body}</p>
     
     {form action='update'}
         {control type="hidden" name="id" value=$record->id}
-        {control type="text" name="body" label="Message" size=35 value=$record->body}
-        {control type="dropdown" name="month" label="Month" items=$record->months value=$record->month}
-        {control type="dropdown" name="day" label="Day" from=1 to=31 value=$record->day}
-        {control type="buttongroup" submit="Submit" cancel="Cancel"}
+        {control type="text" name="body" label="Message"|gettext size=35 value=$record->body}
+        {control type="dropdown" name="month" label="Month"|gettext items=$record->months value=$record->month}
+        {control type="dropdown" name="day" label="Day"|gettext from=1 to=31 value=$record->day}
+        {control type="buttongroup" submit="Submit"|gettext cancel="Cancel"|gettext}
     {/form}
 </div>
