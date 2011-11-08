@@ -19,11 +19,7 @@
     <h1>{$moduletitle|default:"Message of the Day"|gettext}</h1>
     <div class="motd-message">
         <div class="motd-date">
-            <span class="date-header">{$smarty.now|expdate:"M, y"}</span>
-            <span class="date-day">
-                <!--span class="day-name">{$smarty.now|expdate:"D"}{br}</span-->
-                {$smarty.now|expdate:"j"}
-            </span>
+            <span class="date-header">{$smarty.now|expdate:"D, M j, Y"}</span>
             {clear}
         </div>
         <div class="bodycopy">

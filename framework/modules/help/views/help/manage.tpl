@@ -15,22 +15,22 @@
  *}
 
 <div class="module help manage">
-    <h1>Manage Help Documents</h1>
+    <h1>{'Manage Help Documents'|gettext}</h1>
     <p>
-        This page allows you to manage help documents for Exponent CMS.
+        {'This page allows you to manage help documents for Exponent CMS'|gettext}.
         {br}
-        <em>The current version is {$current_version->version}</em>
+        <em>{'The current version is'|gettext} {$current_version->version}</em>
     </p>
     
-    {icon class=add action=edit_version title="Add new help version" text="Add a New Help Version"}{br}
-    {icon class=add action=edit title="Add a New Help Document" text="Add a New Help Document"}{br}
-    {icon class=manage action=manage_versions title="Manage Help Versions" text="Manage Help Versions"}{br}
+    {icon class=add action=edit_version title="Add new help version"|gettext text="Add a New Help Version"|gettext}{br}
+    {icon class=add action=edit title="Add a New Help Document"|gettext text="Add a New Help Document"|gettext}{br}
+    {icon class=manage action=manage_versions title="Manage Help Versions"|gettext text="Manage Help Versions"|gettext}{br}
     {$page->links}
     <table class="exp-skin-table">
         <thead>
         <tr>
             {$page->header_columns}
-            <th>Actions</th>
+            <th>{'Actions'|gettext}</th>
         </tr>
         </thead>
         <tbody>
@@ -43,16 +43,16 @@
             <td>
                 {permissions level=$smarty.const.UILEVEL_NORMAL}
                     {if $permissions.edit == 1}
-                        {icon img='edit.png' action=edit record=$doc title="Edit Help Doc"}
+                        {icon img='edit.png' action=edit record=$doc title="Edit Help Doc"|gettext}
                     {/if}
                     {if $permissions.delete == 1}
-                        {icon action=delete img='delete.png' record=$doc title="Delete this help doc" onclick="return confirm('Are you sure you want to delete this help document?');"}
+                        {icon action=delete img='delete.png' record=$doc title="Delete this help doc"|gettext onclick="return confirm('Are you sure you want to delete this help document?');"}
                     {/if}
                 {/permissions}
             </td>
         </tr>
         {foreachelse}
-            <td colspan=4>No documents created yet</td>
+            <td colspan=4>{'No documents created yet'|gettext}</td>
         {/foreach}
         </tbody>
     </table>

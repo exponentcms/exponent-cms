@@ -19,24 +19,24 @@
     {permissions}
     <div class="item-actions">
         {if $permissions.edit == 1}
-            {icon action=edit record=$doc title="Edit this `$modelname`"}
+            {icon action=edit record=$doc}
         {/if}
     </div>
     {/permissions}
 	<div id="showhelp-tabs" class="yui-navset yui3-skin-sam hide">
 		<ul class="yui-nav">
-			<li class="selected"><a href="#tab1"><em>General Overview</em></a></li>
+			<li class="selected"><a href="#tab1"><em>{'General Overview'|gettext}</em></a></li>
 			{if $doc->actions_views}
-				<li><a href="#tab2"><em>Actions and Views</em></a></li>
+				<li><a href="#tab2"><em>{'Actions and Views'|gettext}</em></a></li>
 			{/if}
 			{if $doc->configuration}
-				<li><a href="#tab3"><em>Configuration</em></a></li>
+				<li><a href="#tab3"><em>{'Configuration'|gettext}</em></a></li>
 			{/if}
 			{if $doc->youtube_vid_code}
-				<li><a href="#tab4"><em>Videos</em></a></li>
+				<li><a href="#tab4"><em>{'Videos'|gettext}</em></a></li>
 			{/if}
 			{if $doc->additional}
-				<li><a href="#tab5"><em>Additional Info</em></a></li>
+				<li><a href="#tab5"><em>{'Additional Info'|gettext}</em></a></li>
 			{/if}
 		</ul>
 		<div class="yui-content bodycopy">
