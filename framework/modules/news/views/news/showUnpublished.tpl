@@ -19,13 +19,13 @@
 {/css}
 
 <div class="module news show-expired">
-	<h1>{$moduletitle|default:"Expired News"}</h1>
+	<h1>{$moduletitle|default:"Expired News"|gettext}</h1>
     {pagelinks paginate=$page top=1}
 	<table id="prods" class="exp-skin-table" width="95%">
 	    <thead>
 		<tr>
 		    {$page->header_columns}
-			<th>Actions</th>
+			<th>{'Actions'|gettext}</th>
 		</tr>
 		</thead>
 		<tbody>
@@ -35,26 +35,26 @@
 				<td>{$listing->publish|format_date:"%B %e, %Y"}</td>
 				<td>
 				    {if $listing->unpublish == 0}
-				        Unpublished
+				        {'Unpublished'|gettext}
 				    {else}
-				        Expired - {$listing->unpublish|format_date:"%B %e, %Y"}
+				        {'Expired'|gettext} - {$listing->unpublish|format_date:"%B %e, %Y"}
 				    {/if}
 				</td>
 				<td>
 				    {permissions level=$smarty.const.UILEVEL_PERMISSIONS}
 						<div class="item-actions">
 							{if $permissions.edit == true}
-								{icon action=edit record=$listing title="Edit this news post"}
+								{icon action=edit record=$listing}
 							{/if}
 							{if $permissions.delete == true}
-								{icon action=delete record=$listing title="Delete this news post" onclick="return confirm('Are you sure you want to delete `$item->title`?');"}
+								{icon action=delete record=$listing}
 							{/if}
 						</div>
                     {/permissions}
 				</td>
 			</tr>
 			{foreachelse}
-			    <td colspan=3>There is no expired news.</td>
+			    <td colspan=3>{'There is no expired news'|gettext}.</td>
 			{/foreach}
 		</tbody>
 	</table>

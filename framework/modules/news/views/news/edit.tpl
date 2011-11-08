@@ -19,43 +19,43 @@
 {/css}
 
 <div id="newsedit" class="module news edit">
-    {if $record->id != ""}<h1>Editing {$record->title}</h1>{else}<h1>Create News Post</h1>{/if}
+    {if $record->id != ""}<h1>{'Editing'|gettext} {$record->title}</h1>{else}<h1>{'New'|gettext} {$modelname}</h1>{/if}
     {form action=update}
 	    {control type=hidden name=id value=$record->id}
         <div id="newsedit-tabs" class="yui-navset yui3-skin-sam hide">
             <ul class="yui-nav">
-                <li class="selected"><a href="#tab1"><em>Post</em></a></li>
-                <li><a href="#tab2"><em>Publish</em></a></li>
-                <li><a href="#tab3"><em>Files</em></a></li>
-                <li><a href="#tab5"><em>SEO</em></a></li>
+                <li class="selected"><a href="#tab1"><em>{'Post'|gettext}</em></a></li>
+                <li><a href="#tab2"><em>{'Publish'|gettext}</em></a></li>
+                <li><a href="#tab3"><em>{'Files'|gettext}</em></a></li>
+                <li><a href="#tab5"><em>{'SEO'|gettext}</em></a></li>
             </ul>            
             <div class="yui-content">            
                 <div id="tab1">
-                    {control type=text name=title label="Title" value=$record->title}
-                	{control type="editor" name="body" label="Body" value=$record->body}                	
-                	{control type="checkbox" name="is_featured" label="Feature this news post?" value=1 checked=$record->is_featured}
+                    {control type=text name=title label="Title"|gettext value=$record->title}
+                	{control type="editor" name="body" label="Body"|gettext value=$record->body}
+                	{control type="checkbox" name="is_featured" label="Feature this news post"|gettext|cat:"?" value=1 checked=$record->is_featured}
                 	{if $config.enable_ealerts}
-                	    {control type="checkbox" name="send_ealerts" label="Send E-Alerts?" value=1}
+                	    {control type="checkbox" name="send_ealerts" label="Send E-Alerts"|gettext|cat:"?" value=1}
                 	{/if}
                 </div>
                 <div id="tab2">
-                    {control type="yuidatetimecontrol" name="publish" label="Publish Date" edit_text="Publish Immediately" value=$record->publish}
-                    {control type="yuidatetimecontrol" name="unpublish" label="Un-publish Date" edit_text="Do Not Un-Publish" value=$record->unpublish}
+                    {control type="yuidatetimecontrol" name="publish" label="Publish Date"|gettext edit_text="Publish Immediately" value=$record->publish}
+                    {control type="yuidatetimecontrol" name="unpublish" label="Un-publish Date"|gettext edit_text="Do Not Un-Publish" value=$record->unpublish}
                 </div>          
                 <div id="tab3">
-                    {control type=files name=images label="Attachable Files" value=$record->expFile}
+                    {control type=files name=images label="Attachable Files"|gettext value=$record->expFile}
                 </div>
                 <div id="tab5">
-                    <h2>SEO Settings</h2>
-                    {control type="text" name="sef_url" label="SEF URL" value=$record->sef_url}
-                    {control type="text" name="meta_title" label="Meta Title" value=$record->meta_title}
-                    {control type="textarea" name="meta_keywords" label="Meta Keywords" rows=5 cols=35 value=$record->meta_keywords}
-                    {control type="textarea" name="meta_description" label="Meta Description" rows=5 cols=35 value=$record->meta_description}
+                    <h2>{'SEO Settings'|gettext}</h2>
+                    {control type="text" name="sef_url" label="SEF URL"|gettext value=$record->sef_url}
+                    {control type="text" name="meta_title" label="Meta Title"|gettext value=$record->meta_title}
+                    {control type="textarea" name="meta_keywords" label="Meta Keywords"|gettext rows=5 cols=35 value=$record->meta_keywords}
+                    {control type="textarea" name="meta_description" label="Meta Description"|gettext rows=5 cols=35 value=$record->meta_description}
                 </div>
             </div>
         </div>
 	    <div class="loadingdiv">{"Loading News Item"|gettext}</div>
-        {control type=buttongroup submit="Save News Post" cancel="Cancel"}
+        {control type=buttongroup submit="Save News Post"|gettext cancel="Cancel"|gettext}
      {/form}
 </div>
 

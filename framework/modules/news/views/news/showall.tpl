@@ -16,7 +16,7 @@
 
 <div class="module news showall">
     {if $enable_rss == true}
-        <a class="rsslink" href="{rsslink}">Subscribe to {$config.feed_title}</a>
+        <a class="rsslink" href="{rsslink}">{'Subscribe to'|gettext} {$config.feed_title}</a>
     {/if}
     {if $moduletitle}<h1>{$moduletitle}</h1>{/if}
 
@@ -26,7 +26,7 @@
             <a class="add" href="{link action=create}">{"Add a news post"|gettext}</a>
         {/if}
         {if $permissions.showUnpublished == 1 }
-              |  <a class="view" href="{link action=showUnpublished}">{"View Expired/Unpublished News"|gettext}</a>
+             |  <a class="view" href="{link action=showUnpublished}">{"View Expired/Unpublished News"|gettext}</a>
         {/if}
     </div>
     {/permissions}
@@ -43,10 +43,10 @@
                 {permissions}
                 <div class="item-actions">
                     {if $permissions.edit == true}
-                        {icon action=edit record=$item title="Edit News Post"}
+                        {icon action=edit record=$item}
                     {/if}
                     {if $permissions.delete == true}
-                        {icon action=delete record=$item title="Delete News Post" onclick="return confirm('Are you sure you want to delete `$item->title`?');"}
+                        {icon action=delete record=$item}
                     {/if}
                 </div>
                 {/permissions}
