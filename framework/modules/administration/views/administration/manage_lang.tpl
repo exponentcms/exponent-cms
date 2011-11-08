@@ -19,24 +19,23 @@
         <div class="related-actions">
             {help text="Get Help"|gettext|cat:" "|cat:("Managing Translations"|gettext) module="manage-language"}
         </div>
-        <h1>{"Manage Translations"|gettext}}</h1>
+        <h1>{"Manage Translations"|gettext}</h1>
     </div>
-    {"Current Display Language is"|gettext}}: {$smarty.const.LANG}
+    <h4>{"Current Display Language is"|gettext}: {$smarty.const.LANG}</h4>
     {if $smarty.const.LANG != 'English - US'}
-        {br}{br}
         <a class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" href="{link action=update_lang}"><b>{gettext str="Add missing phrases to"|cat:" "|cat:($smarty.const.LANG)}</b></a>
     {/if}
-    {br}{br}<hr>
-    <h2>{"Add Phrases to the Default Translation File"|gettext}}</h2>
-    <h3 style="color:red">{'WARNING! Turning this on will SLOW down the site and also turn on error reporting'|gettext}}!</h3>
+    <hr>
+    <h2>{"Add Phrases to the Default Translation File"|gettext}</h2>
+    <h3 style="color:red">{'WARNING! Turning this on will SLOW down the site and also turn on error reporting'|gettext}!</h3>
     {form action=update_langtemplate}
         {control type="checkbox" postfalse=1 name=writetemplate label="Build Phrase Library?"|gettext checked=$smarty.const.WRITE_LANG_TEMPLATE value=1}
-        {control type=buttongroup submit="Change Setting"|gettext}}
+        {control type=buttongroup submit="Change Setting"|gettext}
     {/form}
     <hr>
-    <h2>{"Create a New Translation based on the Current Translation"|gettext}} - {$smarty.const.LANG}</h2>
+    <h2>{"Create a New Translation based on the Current Translation"|gettext} - {$smarty.const.LANG}</h2>
     {form action=save_newlangfile}
         {control type=text name=newlang label="New Translation Name"|gettext}
-        {control type=buttongroup submit="Create and Begin Using a New Translation"|gettext}}
+        {control type=buttongroup submit="Create and Begin Using a New Translation"|gettext}
     {/form}
 </div>

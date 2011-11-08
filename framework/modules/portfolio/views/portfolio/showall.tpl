@@ -22,7 +22,7 @@
     {permissions}
         <div class="module-actions">
 			{if $permissions.create == 1}
-				{icon class=add action=edit title="Add to the top" text="Add a Portfolio Piece"}
+				{icon class=add action=edit title="Add to the top"|gettext text="Add a Portfolio Piece"|gettext}
 			{/if}
 			{if $permissions.manage == 1}
 				{ddrerank items=$page->records model="portfolio" label="Portfolio Pieces"|gettext}
@@ -47,7 +47,7 @@
 			
 			{if $record->expTag|@count>0}
 				<div class="tag">
-					Tags: 
+					{'Tags'|gettext}:
 					{foreach from=$record->expTag item=tag name=tags}
 						<a href="{link action=showall_by_tags tag=$tag->sef_url}">{$tag->title}</a>{if $smarty.foreach.tags.last != 1},{/if}
 					{/foreach}
@@ -68,7 +68,7 @@
 		</div>
         {permissions}
 			{if $permissions.create == 1}
-				{icon class="add addhere" action=edit rank=$record->rank+1 title="Add another here"|gettext  text="Add a portfolio piece here"}
+				{icon class="add addhere" action=edit rank=$record->rank+1 title="Add another here"|gettext  text="Add a portfolio piece here"|gettext}
 			{/if}
         {/permissions}
     {/foreach}   

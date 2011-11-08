@@ -48,6 +48,6 @@
             {/foreach}
         </tbody>
         </table>
-        {control type="buttongroup" submit="Delete Tables"|gettext} cancel="Cancel"|gettext}}
+        {control type="buttongroup" submit="Delete Tables"|gettext} cancel="Cancel"|gettext}
     {/form}
 </div>

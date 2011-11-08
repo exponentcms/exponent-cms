@@ -36,7 +36,6 @@ flowplayer("a.flowplayer-video", EXPONENT.PATH_RELATIVE+"external/flowplayer3/fl
     }
 );
 {/literal}
-
 {/script}
 
 <div class="module flowplayer showall">

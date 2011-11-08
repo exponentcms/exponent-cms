@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-    <title>File Uploader  |  Exponent CMS</title>
+    <title>{'File Uploader'|gettext}  |  Exponent CMS</title>
     <link rel="stylesheet" type="text/css" href="{$smarty.const.URL_FULL}framework/core/assets/css/msgq.css" />
     <link rel="stylesheet" type="text/css" href="{$smarty.const.URL_FULL}framework/core/assets/css/button.css" />
     <link rel="stylesheet" type="text/css" href="{$smarty.const.URL_FULL}framework/core/assets/css/tables.css" />
@@ -13,15 +13,13 @@
     <script type="text/javascript" src="{$smarty.const.URL_FULL}exponent.js.php"></script>
     <script type="text/javascript" src="{$smarty.const.YUI3_PATH}yui/yui-min.js"></script>
 	<script type="text/javascript" src="{$smarty.const.URL_FULL}framework/core/assets/js/exp-flashdetector.js"></script>
-    
-    
 </head>
 <body class="exp-skin">
 <div id="exp-uploader">
     <h1>{"Upload Files"|gettext}</h1>
     <div id="actionbar">
     	<div id="uploaderOverlay" style="position:absolute; z-index:2"></div> 
-    	<a class="select awesome small green" style="z-index:1" id="selectLink" href="#"><span>Select Files</span></a>
+    	<a class="select awesome small green" style="z-index:1" id="selectLink" href="#"><span>{'Select Files'|gettext}</span></a>
         <a id="uploadLink" class="upload awesome small green" href="#"><span>{"Upload Files"|gettext}</span></a>
         <a id="backlink" class="back awesome small green" href="{link action=picker update=$smarty.get.update fck=$smarty.get.fck CKEditor=$smarty.get.CKEditor CKEditorFuncNum=$smarty.get.CKEditorFuncNum langCode=$smarty.get.langCode ajax_action=1}"><span>Back to Manager</span></a>
     </div>
@@ -35,11 +33,10 @@
 	</div>    
     {messagequeue}
 
-
     <div id="dataTableContainer">
       <table id="filenames" class="exp-skin-table">
         <thead>
-    	   <tr><th>Filename</th><th>File size</th><th>Percent uploaded</th></tr>
+    	   <tr><th>{'Filename'|gettext}</th><th>{'File size'|gettext}</th><th>{'Percent uploaded'|gettext}</th></tr>
     	</thead>
     	<tbody>
     	</tbody>
@@ -78,7 +75,6 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','uploader', function(Y) {
     }
 
     Y.on("domready", init);
-
 
     function setupUploader (event) {
     	uploader.set("multiFiles", true);

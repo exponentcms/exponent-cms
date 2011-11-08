@@ -136,7 +136,7 @@ function sanity_checkServer() {
 	$status = array(
 		gt('Database Backend')=>_sanity_checkDB(),
 		gt('GD Graphics Library 2.0+')=>_sanity_checkGD(),
-		gt('PHP 5.2.1+')=>_sanity_checkPHPVersion(),
+		'PHP 5.2.1+'=>_sanity_checkPHPVersion(),
 		gt('ZLib Support')=>_sanity_checkZlib(),
 		gt('XML (Expat) Library Support')=>_sanity_checkXML(),
 		gt('Safe Mode Not Enabled')=>_sanity_CheckSafeMode(),
