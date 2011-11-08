@@ -22,7 +22,8 @@ flowplayer("a.flowplayer-video", EXPONENT.PATH_RELATIVE+"external/flowplayer3/fl
 			autoPlay:{/literal}{if $config.autoplay}true{else}false{/if}{literal},
 			},		  
         plugins:  { 
-            controls: { 
+            controls: {
+                url: '{/literal}{if $config.video_style == 1}flowplayer.controls-air-3.2.5.swf{elseif $config.video_style == 2}flowplayer.controls-tube-3.2.5.swf{else}flowplayer.controls-3.2.5.swf{/if}{literal}',
                 play: true,  
                 scrubber: true 
             }         

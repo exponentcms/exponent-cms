@@ -75,7 +75,8 @@
                 }, 
                 plugins: {
                     controls: { 
-                        play: true,  
+                        url: '{/literal}{if $config.video_style == 1}flowplayer.controls-air-3.2.5.swf{elseif $config.video_style == 2}flowplayer.controls-tube-3.2.5.swf{else}flowplayer.controls-3.2.5.swf{/if}{literal}',
+                        play: true,
                         scrubber: true 
                     }         
                 } 
