@@ -18,6 +18,6 @@
     {if $moduletitle != ""}<h1>{$moduletitle}</h1>{/if}
     {form action=search_by_model}
         {control type="text" name="search_string" label=" "}
-        {control type="buttongroup" submit="Search"}
+        {control type="buttongroup" submit="Search"|gettext}
     {/form}
 </div>

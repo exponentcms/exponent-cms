@@ -15,16 +15,16 @@
  *}
 
 <div class="module faq edit">
-    <h1>{if $record->id}Edit {$record->question}{else}Create new FAQ{/if}</h1>
+    <h1>{if $record->id}{'Edit'|gettext} {$record->question}{else}{'Create new FAQ'|gettext}{/if}</h1>
 
     {form action="update"}
         {control type="hidden" name="id" value=$record->id}
-        {control type="text" name="submitter_name" label="Name of submitter" value=$record->submitter_name|default:$user->username}
-        {control type="text" name="submitter_email" label="Submitter's Email" value=$record->submitter_email|default:$user->email}
-        {control type="checkbox" name="send_email" label="Send email to user?" value=1}
-        {control type="textarea" name="question" label="Question" value=$record->question}
-        {control type="html" name="answer" label="Answer" value=$record->answer}
-        {control type="checkbox" name="include_in_faq" label="Post to FAQs?" value=1 checked=$record->include_in_faq}
-        {control type="buttongroup" submit="Save FAQ" cancel="Cancel"}
+        {control type="text" name="submitter_name" label="Name of submitter"|gettext value=$record->submitter_name|default:$user->username}
+        {control type="text" name="submitter_email" label="Submitter\'s Email"|gettext value=$record->submitter_email|default:$user->email}
+        {control type="checkbox" name="send_email" label="Send email to user"|gettext|cat:"?" value=1}
+        {control type="textarea" name="question" label="Question"|gettext value=$record->question}
+        {control type="html" name="answer" label="Answer"|gettext value=$record->answer}
+        {control type="checkbox" name="include_in_faq" label="Post to FAQs"|gettext|cat:"?" value=1 checked=$record->include_in_faq}
+        {control type="buttongroup" submit="Save FAQ"|gettext cancel="Cancel"|gettext}
     {/form} 
 </div>

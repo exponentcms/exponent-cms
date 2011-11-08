@@ -5,5 +5,5 @@
 	<h4>{gettext str="Upload model aliases"}</h4>
 	<p>{gettext str="Excel File for the model/skus aliases"}</p>
 	<input type="file" name="modelaliases" size="50">{br}{br}
-	{control type="buttongroup" submit="Upload Aliases" cancel="Cancel"}
+	{control type="buttongroup" submit="Upload Aliases"|gettext cancel="Cancel"|gettext}
 {/form}

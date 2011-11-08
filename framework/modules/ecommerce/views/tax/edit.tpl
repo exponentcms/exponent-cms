@@ -21,5 +21,5 @@
     {control type=state name=state label="State/Province" value=$record->state}
     {control type=country name=country label="Country" value=$record->country} 
 
-    {control type="buttongroup" submit="Submit" cancel="Cancel"}
+    {control type="buttongroup" submit="Submit"|gettext cancel="Cancel"|gettext}
 {/form}

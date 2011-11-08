@@ -19,6 +19,6 @@
     {form action=save_invoice_id}
         {control type="hidden" name="id" value=$orderid}                     
         {control type="text" name="invoice_id" label='Invoice #:' value=$invoice_id} 
-        {control type="buttongroup" submit="Save Invoice Id" cancel="Cancel"}
+        {control type="buttongroup" submit="Save Invoice Id"|gettext cancel="Cancel"|gettext}
     {/form}
 </div>

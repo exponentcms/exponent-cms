@@ -24,6 +24,6 @@
         {control type="text" name="first_name" label="First Name" value=$record->first_name}
         {control type="text" name="last_name" label="Last Name" value=$record->last_name}
         {control type="text" name="initials" label="Initials" value=$record->initials}        
-        {control type="buttongroup" submit="Submit" cancel="Cancel"}
+        {control type="buttongroup" submit="Submit"|gettext cancel="Cancel"|gettext}
     {/form}
 </div>

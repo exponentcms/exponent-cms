@@ -16,15 +16,15 @@
 
 <div class="module headline edit">
     {if $record->id != ""}
-        <h1>Editing {$record->title}</h1>
+        <h1>{'Editing'|gettext} {$record->title}</h1>
     {else}
-        <h1>New {$modelname}</h1>
+        <h1>{'New'|gettext} {$modelname}</h1>
     {/if}
 
     {form action=update}
         {control type=hidden name=id value=$record->id}
         {control type=hidden name=rank value=$record->rank}
-        {control type=text class="title" name=title label="Headline" value=$record->title|escape:"html"}
-        {control type=buttongroup submit="Save Text" cancel="Cancel"}
+        {control type=text class="title" name=title label="Headline"|gettext value=$record->title|escape:"html"}
+        {control type=buttongroup submit="Save Text"|gettext cancel="Cancel"|gettext}
     {/form}   
 </div>

@@ -48,7 +48,7 @@
                 </table>
             {/if}
             {/foreach}
-            {control type="buttongroup" submit="Submit" cancel="Cancel"}
+            {control type="buttongroup" submit="Submit"|gettext cancel="Cancel"|gettext}
         {/form}
     {/if}
 </div>

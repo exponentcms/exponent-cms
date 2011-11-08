@@ -31,5 +31,5 @@
     {control type="files" name="image" label="Banner Image" value=$record->expFile}
     {control type="dropdown" name="companies_id" label="Company" frommodel=company key=id display=title value=$record->companies_id}
     {control type="editor" name="body" label="URL Description" value=$record->body}
-    {control type="buttongroup" submit="Save" cancel="Cancel"}
+    {control type="buttongroup" submit="Save"|gettext cancel="Cancel"|gettext}
 {/form}

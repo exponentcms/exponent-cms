@@ -24,7 +24,7 @@
         {control type="text" name="to" label="To:" value=$record->to}
         {control type="text" name="from" label="From:" value=$record->from}
         {control type="textarea" name="msg" label="Message:" rows=3 value=$record->msg}
-        {control type="buttongroup" name="add2cart" submit="Add to cart"}
+        {control type="buttongroup" name="add2cart" submit="Add to cart"|gettext}
     {/form}
     
 </div>

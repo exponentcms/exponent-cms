@@ -18,5 +18,5 @@
     {control type="hidden" name="id" value=$zone->id}
     {control type="text" name="name" label="Zone Name" value=$zone->name}
 
-    {control type="buttongroup" submit="Submit" cancel="Cancel"}
+    {control type="buttongroup" submit="Submit"|gettext cancel="Cancel"|gettext}
 {/form}

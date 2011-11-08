@@ -26,7 +26,7 @@
                     {foreach from=$opts item=field key=key}
                         {control type="text" name="result[`$key`]" label=$key value=$field}
                     {/foreach}
-                    {control type="buttongroup" submit="Save Payment Info" cancel="Cancel"}
+                    {control type="buttongroup" submit="Save Payment Info"|gettext cancel="Cancel"|gettext}
                 </div>
             </div>
         </div>

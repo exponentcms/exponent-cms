@@ -90,7 +90,7 @@
 
 
     {/foreach}    
-    {control type="buttongroup" submit="Continue"}
+    {control type="buttongroup" submit="Continue"|gettext}
     {/form}
 </div>
 

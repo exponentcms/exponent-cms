@@ -51,6 +51,6 @@
     </tbody>
     </table>
     {control type="antispam"}    
-    {control type="buttongroup" submit="Sign up now" cancel="Cancel"}    
+    {control type="buttongroup" submit="Sign up now"|gettext cancel="Cancel"|gettext}
     {/form}
 </div>

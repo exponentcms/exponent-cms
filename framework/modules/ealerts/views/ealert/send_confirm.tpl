@@ -29,7 +29,7 @@
         {control type="hidden" name="id" value=$ealert->id}
         {control type="text" name="subject" label="Subject" size="50" value=$record->title}
         {control type="html" name="body" label="Message" value=$record->body}
-        {control type="buttongroup" submit="Send Email" cancel="Cancel"}
+        {control type="buttongroup" submit="Send Email"|gettext cancel="Cancel"|gettext}
     {/form}
             
 </div>

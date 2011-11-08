@@ -147,7 +147,7 @@
                             <div class="input-code">
                                 {form action="addDiscountToCart"}
                                     {control type="text" name="coupon_code" label="Enter a Discount Code"}
-                                    {control type="buttongroup" submit="Apply Code"}
+                                    {control type="buttongroup" submit="Apply Code"|gettext}
                                 {/form}
                             </div>                
                             <div style="clear:both"></div>

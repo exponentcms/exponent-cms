@@ -17,7 +17,7 @@
            {control type="text" name="lastname" id="lastname" label="Last Name:"}
            {control type="text" name="email" id="email" label="Email Address:"}
            {control type="text" name="zip_code" id="zip_code" label="Zip Code:"}
-           {control type="buttongroup" submit="Verify"}
+           {control type="buttongroup" submit="Verify"|gettext}
         {/form}
     </div>
 

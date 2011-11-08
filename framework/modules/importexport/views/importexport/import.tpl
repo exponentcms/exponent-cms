@@ -20,7 +20,7 @@
         {control type="hidden" name="import_type" value=$type}
         {* control type=files name=import_file label="Upload .csv File to Import" limit=1 subtype="import_file" *}
         <input type="file" name="import_file" size="50">
-        {control type="buttongroup" submit="Import!" cancel="Cancel"}
+        {control type="buttongroup" submit="Import"|gettext|cat:"!" cancel="Cancel"|gettext}
     {/form}
     {br}
 </div>

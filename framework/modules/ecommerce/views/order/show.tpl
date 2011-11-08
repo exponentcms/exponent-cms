@@ -131,7 +131,7 @@
                             {control type="hidden" name="id" value=$order->id}
                             {control type="text" name="shipping_tracking_number" label="Tracking #" value=$order->shipping_tracking_number}
                             {control type="datetimecontrol" name="shipped" showtime=false label="Date Shipped" value=$order->shipped}
-                            {control type="buttongroup" submit="Save Shipping Info"}
+                            {control type="buttongroup" submit="Save Shipping Info"|gettext}
                         {/form}
                         </td>
                         </tr>
@@ -178,13 +178,13 @@
                                     {form action=captureAuthorization}
                                         {control type="hidden" name="id" value=$order->id}
                                         {control type="text" name="capture_amt" label="Amount to Capture" value=$order->grand_total}
-                                        {control type="buttongroup" submit="Capture Transaction"}
+                                        {control type="buttongroup" submit="Capture Transaction"|gettext}
                                     {/form}
                                 {/if}
                                 {if $bt->voidEnabled() == true}
                                     {form action=voidAuthorization}
                                         {control type="hidden" name="id" value=$order->id}
-                                        {control type="buttongroup" submit="Void Authorization"}
+                                        {control type="buttongroup" submit="Void Authorization"|gettext}
                                     {/form}
                                 {/if}
                             {/if}                            
@@ -193,7 +193,7 @@
                                     {form action=creditTransaction}
                                         {control type="hidden" name="id" value=$order->id}
                                         {control type="text" name="capture_amt" label="Amount to Refund" value=$order->grand_total}
-                                        {control type="buttongroup" submit="Credit "}
+                                        {control type="buttongroup" submit="Credit "|gettext}
                                     {/form}
                                 {/if}
                             {/if}
@@ -226,7 +226,7 @@
                                     {control type="dropdown" name="sales_rep_1_id" label="Sales Rep 1 (Initial Order)" includeblank=true items=$sales_reps value=$order->sales_rep_1_id}
                                     {control type="dropdown" name="sales_rep_2_id" label="Sales Rep 2 (Completed Order)" includeblank=true items=$sales_reps value=$order->sales_rep_2_id}
                                     {control type="dropdown" name="sales_rep_3_id" label="Sales Rep 3 (Other)" includeblank=true items=$sales_reps value=$order->sales_rep_3_id}
-                                    {control type="buttongroup" submit="Update Sales Reps"}
+                                    {control type="buttongroup" submit="Update Sales Reps"|gettext}
                                 {/form}
                             </td>
                         </tr>

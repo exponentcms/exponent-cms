@@ -27,7 +27,7 @@
 	{form action=update_optiongroup_master}
 	    {control type="hidden" name=id value=$record->id}
 	    {control type="text" name="title" label="Name" value=$record->title}
-	    {control type="buttongroup" submit="Submit" cancel="Cancel"}
+	    {control type="buttongroup" submit="Submit"|gettext cancel="Cancel"|gettext}
 	{/form}
 </div>
 {/if}

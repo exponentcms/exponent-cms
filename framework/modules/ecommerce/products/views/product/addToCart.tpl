@@ -88,7 +88,7 @@
             {/foreach}
             </div>
         {/if}
-        {control type="buttongroup" submit="Add to cart"}
+        {control type="buttongroup" submit="Add to cart"|gettext}
     {/form}
 </div>
 
