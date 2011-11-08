@@ -15,11 +15,11 @@
  *}
 
 <div class="module ealerts pending">
-    <h1>Account Settings Pending</h1>
+    <h1>{'Account Settings Pending'|gettext}</h1>
     <p>
-        Your request to modify your e-Alert settings has been received. A confirmation 
+        {'Your request to modify your e-Alert settings has been received. A confirmation
         email has been sent to {$subscriber->email}. Once you have followed the instructions 
-        listed in the email you will start receiving email alerts for the following topics:
+        listed in the email you will start receiving email alerts for the following topics:'|gettext}
     </p>
     
     <ul>

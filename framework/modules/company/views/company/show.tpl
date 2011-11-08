@@ -15,13 +15,13 @@
  *}
 
 <div class="module company show">
-    <h1>Products from {$record->title}</h1>
+    <h1>{'Products from'|gettext} {$record->title}</h1>
     {permissions}
         {if $permissions.edit == 1}
-            {icon img='edit.png' action=edit id=$record->id title="Edit `$record->title`"}
+            {icon img='edit.png' action=edit id=$record->id title="Edit"|gettext|cat:" `$record->title`"}
         {/if}
         {if $permissions.delete == 1}
-            {icon img='delete.png' action=delete id=$record->id title="delete `$record->title`" onclick="return confirm('Are you sure you want to delete this `$modelname`?');"}
+            {icon img='delete.png' action=delete id=$record->id title="Delete"|gettext|cat:" `$record->title`" onclick="return confirm('Are you sure you want to delete this `$modelname`?');"}
         {/if}
     {/permissions}
     {$page->links}
@@ -39,7 +39,7 @@
             <div class="showrightcol"> 
                 <div class="showprice">
                 {if $result->availability_type == 3}       
-                    Call for Price
+                    {'Call for Price'|gettext}
                 {else}                   
                     {if $result->use_special_price}
                         <span style="font-size:14px; text-decoration: line-through;">{currency_symbol}{$result->base_price|number_format:2}</span>
@@ -50,7 +50,7 @@
                 {/if}
                 </div>
                 <div style="text-align: right;">
-                    <a href="{link controller=store action=showByTitle title=$result->sef_url}" class="exp-ecom-link view-item" rel="nofollow"><strong><em>View Item</em></strong></a>   
+                    <a href="{link controller=store action=showByTitle title=$result->sef_url}" class="exp-ecom-link view-item" rel="nofollow"><strong><em>{'View Item'|gettext}</em></strong></a>
                 </div> 
             </div>
             {clear}

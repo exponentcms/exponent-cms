@@ -51,7 +51,7 @@
         {control type="text" name="address[phone]" label="*Phone Number (xxx-xxx-xxxx)" value=$record->phone}
         {control type="text" name="address[email]" label="*Email Address" value=$record->email}
        
-        {control type=buttongroup submit="Save Address Change" cancel="Cancel"}            
+        {control type=buttongroup submit="Save Address Change"|gettext cancel="Cancel"|gettext}
         
     {/form}
 </div>

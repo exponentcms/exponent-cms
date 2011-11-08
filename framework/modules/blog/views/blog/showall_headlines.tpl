@@ -16,14 +16,14 @@
 
 <div class="module blog showall-headlines">
     {if $config.enable_rss == true}
-        <a class="rsslink" href="{rsslink}">Subscribe to {$config.feed_title}</a>
+        <a class="rsslink" href="{rsslink}">{'Subscribe to'|gettext} {$config.feed_title}</a>
     {/if}
     {if $moduletitle}<h2>{$moduletitle}</h2>{/if}
     
     {permissions}
 		<div clas="module-actions">
 			{if $permissions.edit == 1}
-				{icon class=add action=edit title="Add a new blog article" text="Add a new blog article"}
+				{icon class=add action=edit text="Add a new blog article"|gettext}
 			{/if}
 		</div>
     {/permissions}
@@ -35,10 +35,10 @@
             {permissions}
                 <div class="item-actions">
                     {if $permissions.edit == 1}
-                        {icon action=edit record=$record title="Edit this `$modelname`"}
+                        {icon action=edit record=$record}
                     {/if}
                     {if $permissions.delete == 1}
-                        {icon action=delete record=$record title="Delete this `$modelname`" onclick="return confirm('Are you sure you want to delete this `$modelname`?');"}
+                        {icon action=delete record=$record}
                     {/if}
                 </div>
             {/permissions}

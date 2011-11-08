@@ -14,7 +14,7 @@
  *
  *}
 
-<h2>Show these banners</h2>
+<h2>{'Show these banners'|gettext}</h2>
 <table>
 {foreach from=$banners item=banner}
     <tr>    					        

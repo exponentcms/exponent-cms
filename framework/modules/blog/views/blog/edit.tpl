@@ -14,41 +14,41 @@
  *
  *}
 <div id="editblog" class="module blog edit">
-    {if $record->id != ""}<h1>Editing {$record->title}</h1>{else}<h1>New {$modelname}</h1>{/if}
+    {if $record->id != ""}<h1>{'Editing'|gettext} {$record->title}</h1>{else}<h1>{'New'|gettext} {$modelname}</h1>{/if}
     {form action=update}
         {control type=hidden name=id value=$record->id}
         <div id="editblog-tabs" class="yui-navset yui3-skin-sam hide">
             <ul class="yui-nav">
-                <li class="selected"><a href="#tab1"><em>General</em></a></li>
-                <li><a href="#tab2"><em>SEO</em></a></li>
+                <li class="selected"><a href="#tab1"><em>{'General'|gettext}</em></a></li>
+                <li><a href="#tab2"><em>{'SEO'|gettext}</em></a></li>
             </ul>            
             <div class="yui-content">
-            <div id="tab1">
-                {control type=text name=title label="Title" value=$record->title}
-                {control type=html name=body label="Body Content" value=$record->body}
-                {*control type="checkbox" name="private" label="Save as draft" value=1 checked=$record->private*}
-                {control type="files" name="files" label="Files" value=$record->expFile}
-                {foreach from=$record->expTag item=tag name=tags}
-                    {if $smarty.foreach.tags.first == false}
-                        {assign var=tags value="`$tags`,`$tag->title`"}
-                    {else}
-                        {assign var=tags value=$tag->title}
-                    {/if}                    
-                {/foreach}
-	            {if $tags != ""}{$tags=$tags|cat:','}{/if}
-                {control type="textarea" name="expTag" label="Tags (comma separated)" value=$tags}
-            </div>
-            <div id="tab2">
-                <h2>SEO Settings</h2>
-                {control type="text" name="sef_url" label="SEF URL" value=$record->sef_url}
-                {control type="text" name="meta_title" label="Meta Title" value=$record->meta_title}
-                {control type="textarea" name="meta_description" label="Meta Description" rows=5 cols=35 value=$record->meta_description}
-                {control type="textarea" name="meta_keywords" label="Meta Keywords" rows=5 cols=35 value=$record->meta_keywords}
-            </div>
+                <div id="tab1">
+                    {control type=text name=title label="Title"|gettext value=$record->title}
+                    {control type=html name=body label="Body Content"|gettext value=$record->body}
+                    {*control type="checkbox" name="private" label="Save as draft"|gettext value=1 checked=$record->private*}
+                    {control type="files" name="files" label="Files"|gettext value=$record->expFile}
+                    {foreach from=$record->expTag item=tag name=tags}
+                        {if $smarty.foreach.tags.first == false}
+                            {assign var=tags value="`$tags`,`$tag->title`"}
+                        {else}
+                            {assign var=tags value=$tag->title}
+                        {/if}
+                    {/foreach}
+                    {if $tags != ""}{$tags=$tags|cat:','}{/if}
+                    {control type="textarea" name="expTag" label="Tags (comma separated)"|gettext value=$tags}
+                </div>
+                <div id="tab2">
+                    <h2>{'SEO Settings'|gettext}</h2>
+                    {control type="text" name="sef_url" label="SEF URL"|gettext value=$record->sef_url}
+                    {control type="text" name="meta_title" label="Meta Title"|gettext value=$record->meta_title}
+                    {control type="textarea" name="meta_description" label="Meta Description"|gettext rows=5 cols=35 value=$record->meta_description}
+                    {control type="textarea" name="meta_keywords" label="Meta Keywords"|gettext rows=5 cols=35 value=$record->meta_keywords}
+                </div>
             </div>
         </div>
 	    <div class="loadingdiv">{"Loading Blog Item"|gettext}</div>
-        {control type=buttongroup submit="Save Text" cancel="Cancel"}
+        {control type=buttongroup submit="Save Text"|gettext cancel="Cancel"|gettext}
     {/form}   
 </div>
 

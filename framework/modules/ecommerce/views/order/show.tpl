@@ -81,7 +81,7 @@
                                     </select>
                                     {control id=msgbox type="textarea" name="comment" label="Comment" rows=6 cols=45}
                                     {control type="checkbox" name="save_message" label="Save this message to use in the future?" value=1}
-                                    {control type=buttongroup submit="Save change"}
+                                    {control type=buttongroup submit="Save change"|gettext}
                                 {/form}                 
                             </td></tr>
                     </table>
@@ -293,7 +293,7 @@
                                     {control type="checkbox" name="include_invoice" label="Attach invoice to this email?" value=1}
                                     {control type=radiogroup columns=1 name="from_address" label="Select From Address" items=$from_addresses default=$from_default flip=false}        
                                     {control type=text name="other_from_address" label="Other From Address" value=''}
-                                    {control type=buttongroup submit="Email Customer"}
+                                    {control type=buttongroup submit="Email Customer"|gettext}
                                 {/form}
                             {/if}
                             {/permissions}                        

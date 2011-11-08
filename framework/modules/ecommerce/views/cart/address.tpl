@@ -36,7 +36,7 @@
                         {control type=text name=city label="City}
                         {control type=state name=state label="State"}
                         {control type=text name=zip label="Zip Code"}
-                        {control type=buttongroup submit="Save Address"}
+                        {control type=buttongroup submit="Save Address"|gettext}
                 {/form}
         </div>
 </div>

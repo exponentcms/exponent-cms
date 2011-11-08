@@ -130,7 +130,7 @@
 				</div>
             </div>
         </div>
-        {control type=buttongroup submit="Save Config" cancel="Cancel"}
+        {control type=buttongroup submit="Save Config"|gettext cancel="Cancel"|gettext}
     {/form}
 </div>
 <div class="loadingdiv">{'Loading'|gettext}</div>

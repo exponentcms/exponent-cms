@@ -15,21 +15,21 @@
  *}
 
 {if $record->id != ""}
-	<h1>Edit Information for {$modelname}</h1>
+	<h1>{'Edit Information for'|gettext} {$modelname}</h1>
 {else}
-	<h1>New {$modelname}</h1>
+	<h1>{'New'|gettext} {$modelname}</h1>
 {/if}
 
 {form action=update}
 	{control name=id type=hidden value=$record->id}
 	{control name=impressions type=hidden value=$record->impressions}
 	{control name=clicks type=hidden value=$record->clicks}
-    {control type="text" name="title" label="Banner Name" value=$record->title}
-    {control type="text" name="url" label="URL" value=$record->url}
-    {control type="text" name="impression_limit" label="Impression Limit" size=5 filter=integer value=$record->impression_limit}
-    {control type="text" name="click_limit" label="Click Limit" size=5 filter=integer value=$record->click_limit}
-    {control type="files" name="image" label="Banner Image" value=$record->expFile}
-    {control type="dropdown" name="companies_id" label="Company" frommodel=company key=id display=title value=$record->companies_id}
-    {control type="editor" name="body" label="URL Description" value=$record->body}
+    {control type="text" name="title" label="Banner Name"|gettext value=$record->title}
+    {control type="text" name="url" label="URL"|gettext value=$record->url}
+    {control type="text" name="impression_limit" label="Impression Limit"|gettext size=5 filter=integer value=$record->impression_limit}
+    {control type="text" name="click_limit" label="Click Limit"|gettext size=5 filter=integer value=$record->click_limit}
+    {control type="files" name="image" label="Banner Image"|gettext value=$record->expFile}
+    {control type="dropdown" name="companies_id" label="Company"|gettext frommodel=company key=id display=title value=$record->companies_id}
+    {control type="editor" name="body" label="URL Description"|gettext value=$record->body}
     {control type="buttongroup" submit="Save"|gettext cancel="Cancel"|gettext}
 {/form}

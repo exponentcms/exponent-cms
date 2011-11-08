@@ -14,13 +14,13 @@
  *
  *}
 
-<h2>Configure this Banner Module</h2>
+<h2>{'Configure this Banner Module'|gettext}</h2>
 <p>
-    This is where you can configure the settings to be used by this banner module.
-    These settings will only apply to this particular banner module.
+    {'This is where you can configure the settings to be used by this banner module.
+    These settings will only apply to this particular banner module.'|gettext}
 </p>
-<h2>Number of Banners to Display</h2>
-{control type="text" name="limit" label="Number of banners" size=3 filter=integer value=$config.limit}
+<h2>{'Number of Banners to Display'|gettext}</h2>
+{control type="text" name="limit" label="Number of banners"|gettext size=3 filter=integer value=$config.limit}
 <h2>Banner Size</h2>
-{control type="text" name="width" label="Width" size=4 filter=integer value=$config.width}
-{control type="text" name="height" label="Height" size=4 filter=integer value=$config.height}
+{control type="text" name="width" label="Width"|gettext size=4 filter=integer value=$config.width}
+{control type="text" name="height" label="Height"|gettext size=4 filter=integer value=$config.height}

@@ -24,21 +24,21 @@
 
 <div class="module address myaddressbook">
     <h1>{$moduletitle|default:"My address book"}</h1>
-    <div>Click the <strong>Add New Address</strong> link below if you'd like to add a new address to use for either your billing or shipping address.{br}
-    To change your billing or shipping address for this order, simply select the button next to the address you'd like to set in either the billing or shipping address column. {br}
-    A green button indicates your selection.{br}{br}
-    When you are done, simply click the <strong>Return to Checkout</strong> button below to go back to the checkout process.
-    {br}    {br}    
+    <div>{'Click the'|gettext} <strong>{'Add New Address'|gettext}</strong> {'link below if you\'d like to add a new address to use for either your billing or shipping address'|gettext}.{br}
+    {'To change your billing or shipping address for this order, simply select the button next to the address you\'d like to set in either the billing or shipping address column'|gettext}.{br}
+    {'A green button indicates your selection'|gettext}.{br}{br}
+    {'When you are done, simply click the <strong>Return to Checkout'|gettext}</strong> {'button below to go back to the checkout process'|gettext}.
+    {br}{br}
     </div>
     <p>
-        {icon class=add action=create title="Add New Address" text="Add New Address"|gettext}
+        {icon class=add action=create text="Add New Address"|gettext}
     </p>
     {br}    
     <table class="exp-skin-table">
     <thead>
-    <th>Use as Billing</th>
-    <th>Use as Shipping</th>
-    <th>Address</th>
+    <th>{'Use as Billing'|gettext}</th>
+    <th>{'Use as Shipping'|gettext}</th>
+    <th>{'Address'|gettext}</th>
     <th>&nbsp;</th>
     </thead>
     <tbody>
@@ -56,7 +56,7 @@
                 {if $address->is_shipping}
                     <span style="text-align: center;"><img src="{$smarty.const.ICON_RELATIVE|cat:'toggle_on.png'}" /></span>
                 {else}
-                    <a href="{link action=activate_address is_what="is_shipping"  id=$address->id enabled=1}"><img src="{$smarty.const.ICON_RELATIVE|cat:'toggle_off.png'}" /></a>
+                    <a href="{link action=activate_address is_what="is_shipping" id=$address->id enabled=1}"><img src="{$smarty.const.ICON_RELATIVE|cat:'toggle_off.png'}" /></a>
                 {/if}   
             </td>
             <td>
@@ -75,15 +75,15 @@
 				{permissions level=$smarty.const.UILEVEL_PERMISSIONS}
 					<div class="item-actions">
 						{if $user->id == $address->user_id}
-							{icon action=edit record=$address title="Edit this Address"}
-							{if $addresses|@count > 1}{icon action=delete record=$address title="Delete this Address" onclick="return confirm('Are you sure you want to delete this address?');"}{/if}
+							{icon action=edit record=$address}
+							{if $addresses|@count > 1}{icon action=delete record=$address}{/if}
 						{/if}
 					</div>
 				{/permissions}
 			</td>
 				</tr>    
 			{foreachelse}
-				<tr><td colspan="4"></tr><p>You don't have any addresses in your address book yet</p></td>
+				<tr><td colspan="4"></tr><p>{'You don\'t have any addresses in your address book yet'|gettext}</p></td>
 			{/foreach}
 		</tbody>
     </table>
