@@ -60,7 +60,7 @@
 			{/permissions}
 		</dt>
 		<dd>
-				<strong>
+            <strong>
 				{if $item->is_allday == 1}
 					{$item->eventstart|format_date:$smarty.const.DISPLAY_DATE_FORMAT}
 				{elseif $item->eventstart != $item->eventend}

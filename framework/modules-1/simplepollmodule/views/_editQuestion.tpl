@@ -28,6 +28,6 @@
  *
  *}
  <div class="form_header">
-     <h1>Simple Poll Question</h1>
+     <h1>{'Simple Poll Question'|gettext}</h1>
      {$form_html} 
 </div>

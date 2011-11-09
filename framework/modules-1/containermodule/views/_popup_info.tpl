@@ -28,19 +28,19 @@
  *
  *}
 <html>
-	<title>Module Information</title>
+	<title>{'Module Information'|gettext}</title>
 	<link rel="stylesheet" href="{$smarty.const.THEME_RELATIVE}style.css" />
 </head>
 <body>
 <br /><br />
-<div align="center" style="font-weight: bold">{if $name == ''}Unknown Module{else}{$name}{/if}</div>
+<div align="center" style="font-weight: bold">{if $name == ''}{'Unknown Module'|gettext}{else}{$name}{/if}</div>
 <br />
 
 <div style="border-top: 3px dashed lightgrey; padding: 3px;">
 <table cellpadding="0" cellspacing="0" border="0">
 {if $is_orphan}
 <tr>
-	<td>Archived Module</td>
+	<td>{'Archived Module'|gettext}</td>
 </tr>
 {else}
 <tr>
@@ -55,6 +55,6 @@
 </table>
 </div>
 
-<div style="border-top: 3px dashed lightgrey; padding: 3px;">{if $name == ''}<i>Module Not Found in the System</i>{elseif $info == ''}<i>No Description Provided</i>{else}{$info|nl2br}{/if}</div>
+<div style="border-top: 3px dashed lightgrey; padding: 3px;">{if $name == ''}<i>{'Module Not Found in the System'|gettext}</i>{elseif $info == ''}<i>{'No Description Provided'|gettext}</i>{else}{$info|nl2br}{/if}</div>
 </body>
 </html>

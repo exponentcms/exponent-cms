@@ -19,12 +19,8 @@
 {link m=$iloc->mod s=$iloc->src i=$iloc->int action=delete_content}
 {/capture}
 
-
-{pop modal="true" onnogo=$onnogo onyesgo=$redirect close="false" id=alert dialog="Send to Recycle Bin:Permanently Delete" width=500px type=alert hide=true fade="0.15" header="Send to Recycle Bin?"}
+{pop modal="true" onnogo=$onnogo onyesgo=$redirect close="false" id=alert dialog="Send to Recycle Bin:Permanently Delete"|gettext width=500px type=alert hide=true fade="0.15" header="Send to Recycle Bin"|gettext|cat:"?"}
 
 {"This module's content is not being used anywhere else.  Would you like to send this module to the Recycle Bin?<br><br>If you do not send it to the Recycle Bin the content will be permanently deleted."|gettext}
 
 {/pop}	
-
-
-

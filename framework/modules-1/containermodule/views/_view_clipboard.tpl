@@ -15,27 +15,27 @@
  *}
 
 <div class="containermodule view-clipboard">
-<h1>Clipboard Contents</h1>
+<h1>{'Clipboard Contents'|gettext}</h1>
 <table cellspacing="0" cellpadding="5" border="0" width="100%">
 	<tr>
-		<td class="header">Module Type</td>
-		<td class="header">Title</td>
-		<td class="header">Copied From Page</td>
-		<td class="header">Cut/Copy?</td>
-		<td class="header">Description</td>
+		<td class="header">{'Module Type'|gettext}</td>
+		<td class="header">{'Title'|gettext}</td>
+		<td class="header">{'Copied From Page'|gettext}</td>
+		<td class="header">{'Cut/Copy'|gettext}?</td>
+		<td class="header">{'Description'|gettext}</td>
 	</tr>
 	{foreach name=a from=$items item=item}
-                <tr class="row {cycle values='odd_row,even_row'}">
-                        <td>{$item->module}</td>
-                        <td><b>{$item->title}</b></td>
-                        <td>{$item->copied_from}</td>
-                        <td>{$item->operation}</td>
-                        <td>{$collection->description}</td>
-                <tr>
-        {foreachelse}
-                <tr>
-                        <td colspan="2" align="center"><i>Your clipboard is currently empty.</i></td>
-                </tr>
-        {/foreach}
+        <tr class="row {cycle values='odd_row,even_row'}">
+            <td>{$item->module}</td>
+            <td><b>{$item->title}</b></td>
+            <td>{$item->copied_from}</td>
+            <td>{$item->operation}</td>
+            <td>{$collection->description}</td>
+        <tr>
+    {foreachelse}
+        <tr>
+            <td colspan="2" align="center"><i>{'Your clipboard is currently empty'|gettext}.</i></td>
+        </tr>
+    {/foreach}
 </table>
 </div>

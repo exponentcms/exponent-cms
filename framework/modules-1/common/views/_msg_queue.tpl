@@ -20,7 +20,7 @@
 {if $queues|@count!=0} 
 {foreach from=$queues item=queue key=qname}
 <div class="msg-queue {$qname}">
-    <a class="close" href="#">Close</a>
+    <a class="close" href="#">{'Close'|gettext}</a>
     {foreach from=$queue item=msg} 
     	<div class="msg">{$msg}</div>
     {/foreach}
