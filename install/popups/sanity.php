@@ -23,7 +23,10 @@
 </div>
 <div id="bd">
 <!--<div id="leftcol">-->
-<p><?php echo gt('The sanity checks are in place to ensure that problems with the server environment (file permissions, PHP extensions, etc) are suitable for installing Exponent.  This page explains each of the sanity checks, why it is performed, and how to reconfigure your web server if the check fails.<br /><br />Note: In all of the solutions, <span class="var">WEBUSER</span> is used for the username of the user running the web server, and <span class="var">EXPONENT</span> is used as the full path to the Exponent directory.'); ?></p>
+<p><?php echo gt('The sanity checks are in place to ensure that problems with the server environment (file permissions, PHP extensions, etc) are suitable for installing Exponent.').
+    gt('This page explains each of the sanity checks, why it is performed, and how to reconfigure your web server if the check fails.').'<br /><br />'.
+    gt('Note: In all of the solutions').', <span class="var">WEBUSER</span> '.gt('is used for the username of the user running the web server, and').
+    ' <span class="var">EXPONENT</span> '.gt('is used as the full path to the Exponent directory.'); ?></p>
 <table cellspacing="0" cellpadding="3" rules="all" border="0" style="border:1px solid grey;" width="100%" class="exp-skin-table">
 <tr><td colspan="2" style="background-color: lightgrey;"><b><?php echo gt('File and Directory Permission Tests'); ?></b></td></tr>
 <tr>

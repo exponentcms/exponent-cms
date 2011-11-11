@@ -24,11 +24,7 @@ expSession::clearAllSessionData();
 
 global $user;
 
-// We have to force the language name into the config.php file
-$lang = str_replace("'", "", trim($_REQUEST['lang']));
-expSettings::change('LANGUAGE',$lang);
-
-if (isset($_REQUEST['upgrade'])) { 
+if (isset($_REQUEST['upgrade'])) {
 // upgrades hit this
 //    if (unlink(BASE.'install/not_configured')) {
     $leaveinstaller = (unlink(BASE.'install/not_configured')||!file_exists(BASE.'install/not_configured'));

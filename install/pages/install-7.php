@@ -22,6 +22,9 @@ global $db;
 
 $error = false;
 $lang = (defined('LANGUAGE')) ? "&lang='".LANGUAGE."'" : '';
+// We have to force the language name into the config.php file
+expSettings::change('LANGUAGE',LANGUAGE);
+
 $user = $db->selectObject('user','is_admin=1');
 
 $user->username = $_POST['username'];
