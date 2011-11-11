@@ -396,6 +396,7 @@ class administrationController extends expController {
         flash($result['type'],$result['message']);
         if ($result['type'] != 'error') {
             expSettings::change('LANGUAGE', $_POST['newlang']);
+            expLang::createNewLangInfoFile($_POST['newlang'],$_POST['newauthor'],$_POST['newcharset'],$_POST['newlocale']);
             flash('message',gt('Display Language changed to').": ".$_POST['newlang']);
         }
         redirect_to(array('controller'=>'administration', 'action'=>'manage_lang'));

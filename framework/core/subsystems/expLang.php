@@ -159,6 +159,26 @@ class expLang {
         return $result;
    	}
 
+    public static function createNewLangInfoFile($newlang,$newauthor,$newcharset,$newlocale) {
+        if (!empty($newlang)) {
+            if (empty($newcharset)) $newcharset = 'UTF-8';
+            $newlanginfofile = BASE."framework/core/lang/".utf8_decode($newlang).".info.php";
+            if (((!file_exists($newlanginfofile)))) {
+                $fp = fopen($newlanginfofile, 'w+') or die("I could not open $newlanginfofile.");
+                fwrite($fp,"<?php\n");
+                fwrite($fp,"return array(\n");
+                fwrite($fp,"\t\"name\"=>\"".$newlang."\",\n");
+                fwrite($fp,"\t\"author\"=>\"".$newauthor."\",\n");
+                fwrite($fp,"\t\"charset\"=>\"".$newcharset."\",\n");
+                fwrite($fp,"\t\"locale\"=>\"".$newlocale."\",\n");
+                fwrite($fp,"\t\"default_view\"=>\"Default\",\n");
+                fwrite($fp,");\n");
+                fwrite($fp,"?>\n");
+                fclose($fp);
+            }
+        }
+   	}
+
     public static function langList() {
    		$dir = BASE.'framework/core/lang';
    		$langs = array();

@@ -49,7 +49,10 @@
     <hr>
     <h2>{"Create a New Translation based on the Current Translation"|gettext} - {$smarty.const.LANG}</h2>
     {form action=save_newlangfile}
-        {control type=text name=newlang label="New Translation Name"|gettext}
+        {control type=text name=newlang label="New Translation Name"|gettext|cat:" Español"}
+        {control type=text name=newauthor label="New Translation Author"|gettext}
+        {control type=text name=newcharset label="New Translation Character Set"|gettext|cat:" (UTF-8)"}
+        {control type=text name=newlocale label="New Translation Locale"|gettext|cat:" (es)"}
         {control type=buttongroup submit="Create and Begin Using a New Translation"|gettext}
     {/form}
 </div>
