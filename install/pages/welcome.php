@@ -22,7 +22,7 @@ if (!defined('EXPONENT')) exit('');
 ?>
 <h1><?php echo gt('Welcome to Exponent CMS'); ?></h1>
 <p>
-    <?php echo gt('The Exponent Development Team would like to thank you for downloading and installing the Exponent Content Management System. ').
+    <?php echo gt('The Exponent Development Team would like to thank you for downloading and installing the Exponent Content Management System.').
 		gt('We fervently hope that you will enjoy the power, flexibility, and ease-of-use that Exponent has to offer.') ?>
 </p>
 

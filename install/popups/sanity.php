@@ -104,13 +104,13 @@
 <tr>
 	<td class="bodytext" style="font-weight: bold;" valign="top"><a name="fdp_modules" />framework/modules/</td>
 	<td class="bodytext" valign="top">
-		<?php echo gt('Exponent runs a few checks against the installed modules to make sure that nothing strange is encountered.  If this test fails, please Create a Ticket on the <a href="http://exponentcms.lighthouseapp.com/projects/61783-exponent-cms/tickets/new" target="_blank">Exponent Lighthouse page</a>.'); ?>
+		<?php echo gt('Exponent runs a few checks against the installed modules to make sure that nothing strange is encountered.  If this test fails, please Create a Ticket on the').' <a href="http://exponentcms.lighthouseapp.com/projects/61783-exponent-cms/tickets/new" target="_blank">'.gt('Exponent Lighthouse page').'</a>.'; ?>
 	</td>
 </tr>
 <tr>
 	<td class="bodytext" style="font-weight: bold;" valign="top"><a name="fdp_modules1" />framework/modules-1/</td>
 	<td class="bodytext" valign="top">
-		<?php echo gt('Exponent runs a few checks against the installed (old-school) modules to make sure that nothing strange is encountered.  If this test fails, please Create a Ticket on the <a href="http://exponentcms.lighthouseapp.com/projects/61783-exponent-cms/tickets/new" target="_blank">Exponent Lighthouse page</a>.'); ?>
+		<?php echo gt('Exponent runs a few checks against the installed (old-school) modules to make sure that nothing strange is encountered.  If this test fails, please Create a Ticket on the').' <a href="http://exponentcms.lighthouseapp.com/projects/61783-exponent-cms/tickets/new" target="_blank">'.gt('Exponent Lighthouse page').'</a>.'; ?>
 	</td>
 </tr>
 

@@ -67,7 +67,7 @@ if (isset($_REQUEST['upgrade'])) {
                 }
             } else {
                 echo '<h2>' . gt('Hmmmm....') ."</h2>";
-	            echo '<p>' . gt('Either we weren\'t able to log in or ') ."</p>";
+	            echo '<p>' . gt('Either we weren\'t able to log in or') ."</p>";
                 echo '<p>' . gt('We weren\'t able to remove /install/not_configured. Remove this file manually to complete your installation.') ."</p>";
             }
         }

@@ -21,7 +21,7 @@
         {/if}
         {if $record->title}<h2>{$record->title}</h2>{/if}
         <span class="label size">{'File Size'|gettext}:</span>
-        <span class="value">{$record->expFile.downloadable[0]->filesize|kilobytes}{'Kb'|gettext}</span>
+        <span class="value">{$record->expFile.downloadable[0]->filesize|kilobytes}{'kb'|gettext}</span>
         &nbsp;&nbsp;
         <span class="label downloads"># {'Downloads'|gettext}:</span>
         <span class="value">{$record->downloads}</span>

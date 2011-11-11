@@ -152,7 +152,7 @@ function _sanity_checkGD() {
 	if ($info['GD Version'] == 'Not Supported') {
 		return array(SANITY_WARNING,gt('No GD Support'));
 	} else if (strpos($info['GD Version'],'2.0') === false) {
-		return array(SANITY_WARNING,sprintf(gt('Older Version Installed (%s)'),$info['GD Version']));
+		return array(SANITY_WARNING,sprintf(gt('Older Version Installed').' (%s)',$info['GD Version']));
 	}
 	return array(SANITY_FINE,$info['GD Version']);
 }

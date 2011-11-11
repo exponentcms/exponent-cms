@@ -15,5 +15,5 @@
  *}
 
 <ul class="error">
-	<li>{gettext str="The view you are trying to use was not found for this module"}</li>
+	<li>{"The view you are trying to use was not found for this module"|gettext}</li>
 </ul>

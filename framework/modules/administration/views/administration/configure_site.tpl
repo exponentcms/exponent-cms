@@ -121,7 +121,7 @@
                     {control type="dropdown" name="sc[DISPLAY_START_OF_WEEK]" label="Start of Week"|gettext items=$start_of_week default=$smarty.const.DISPLAY_START_OF_WEEK}
 	                {control type="dropdown" name="sc[DISPLAY_DEFAULT_TIMEZONE]" label="Default timezone for this site"|gettext|cat:(' <br />'|cat:("CAUTION: This may break calendars and other features that use date functions if you change this after entering data."|gettext)) items=$timezones default=$smarty.const.DISPLAY_DEFAULT_TIMEZONE}
                     {control type="radiogroup" name="sc[SLINGBAR_TOP]" label="Default Admin Slingbar Position" items="Top of Viewport,Bottom of Viewport"|gettext values="1,0" default=$smarty.const.SLINGBAR_TOP}
-					{control type="text" name="sc[THUMB_QUALITY]" label="Thumbnail JPEG Quality (1 - 95)"|gettext value=$smarty.const.THUMB_QUALITY|default:75 size="5"}
+					{control type="text" name="sc[THUMB_QUALITY]" label="Thumbnail JPEG Quality"|gettext|cat:" (0 - 95)" value=$smarty.const.THUMB_QUALITY|default:75 size="5"}
                 </div>
                 {if $user->is_admin==1}
                 <div id="tab6">

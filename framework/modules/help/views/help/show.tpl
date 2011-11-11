@@ -36,7 +36,7 @@
 				<li><a href="#tab4"><em>{'Videos'|gettext}</em></a></li>
 			{/if}
 			{if $doc->additional}
-				<li><a href="#tab5"><em>{'Additional Info'|gettext}</em></a></li>
+				<li><a href="#tab5"><em>{'Additional Information'|gettext}</em></a></li>
 			{/if}
 		</ul>
 		<div class="yui-content bodycopy">

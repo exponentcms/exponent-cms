@@ -24,7 +24,7 @@
                 <li><a href="#tab2"><em>{'Actions and Views'|gettext}</em></a></li>
                 <li><a href="#tab3"><em>{'Configuration'|gettext}</em></a></li>
                 <li><a href="#tab4"><em>{'Videos'|gettext}</em></a></li>
-                <li><a href="#tab5"><em>{'Additional Info'|gettext}</em></a></li>
+                <li><a href="#tab5"><em>{'Additional Information'|gettext}</em></a></li>
                 <li><a href="#tab6"><em>{'SEO'|gettext}</em></a></li>
             </ul>            
             <div class="yui-content">
@@ -51,7 +51,7 @@
             </div>
             <div id="tab5">
                  <h2>{'Additional Information'|gettext}</h2>
-                 {control type=html name=additional label="Additional Info (displays in side column)"|gettext value=$record->additional}
+                 {control type=html name=additional label="Additional Info"|gettext|cat:" ("|cat:("displays in side column"|gettext)|cat:")"|gettext value=$record->additional}
             </div>
             <div id="tab6">
                  <h2>{'SEO Settings'|gettext}</h2>

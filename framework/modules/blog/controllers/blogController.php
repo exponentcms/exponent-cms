@@ -266,7 +266,7 @@ class blogController extends expController {
                     $object = new expTag($_REQUEST['tag']);
                     // set the meta info
                     if (!empty($object)) {
-                        $metainfo['title'] = gt('Showing all Blog Posts with tagged with ') ."\"" . $object->title . "\"";
+                        $metainfo['title'] = gt('Showing all Blog Posts tagged with') ." \"" . $object->title . "\"";
                         $metainfo['keywords'] = empty($object->meta_keywords) ? SITE_KEYWORDS : $object->meta_keywords;
                         $metainfo['description'] = empty($object->meta_description) ? SITE_DESCRIPTION : $object->meta_description;
                     }              

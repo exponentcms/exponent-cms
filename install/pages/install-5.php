@@ -34,6 +34,11 @@ if (is_readable(BASE . 'themes')) {
     while (($file = readdir($dh)) !== false) {
         if (is_readable(BASE . "themes/$file/class.php")) {
             include_once(BASE . "themes/$file/class.php");
+            /**
+             * Stores the theme object
+             * @var \theme $theme
+             * @name $theme
+             */
             $theme          = new $file();
             
             echo '<div class="theme clearfix">

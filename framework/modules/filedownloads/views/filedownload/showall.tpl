@@ -41,7 +41,7 @@
 			{/if}
 			{if $config.show_info}
 				<span class="label size">{'File Size'}:</span>
-				<span class="value">{$file->expFile.downloadable[0]->filesize|kilobytes}{'Kb'|gettext}</span>
+				<span class="value">{$file->expFile.downloadable[0]->filesize|kilobytes}{'kb'|gettext}</span>
 				&nbsp;&nbsp;
 				<span class="label downloads"># {'Downloads'|gettext}:</span>
 				<span class="value">{$file->downloads}</span>
