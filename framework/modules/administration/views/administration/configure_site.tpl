@@ -27,20 +27,20 @@
     {form controller="administration" action=update_siteconfig}
         <div id="{$config}" class="yui-navset yui3-skin-sam hide">
             <ul class="yui-nav">
-	            <li class="selected"><a href="#tab1"><em>{gettext str="General"}</em></a></li>
-	            <li><a href="#tab2"><em>{gettext str="Anti-Spam"}</em></a></li>
-	            <li><a href="#tab3"><em>{gettext str="User Registration"}</em></a></li>
-	            <li><a href="#tab4"><em>{gettext str="Comment Policies"}</em></a></li>
-	            <li><a href="#tab5"><em>{gettext str="Display"}</em></a></li>
+	            <li class="selected"><a href="#tab1"><em>{"General"|gettext}</em></a></li>
+	            <li><a href="#tab2"><em>{"Anti-Spam"|gettext}</em></a></li>
+	            <li><a href="#tab3"><em>{"User Registration"|gettext}</em></a></li>
+	            <li><a href="#tab4"><em>{"Comment Policies"|gettext}</em></a></li>
+	            <li><a href="#tab5"><em>{"Display"|gettext}</em></a></li>
 	            {if $user->is_admin==1}
-					<li><a href="#tab6"><em>{gettext str="Mail Server"}</em></a></li>
-		            <li><a href="#tab7"><em>{gettext str="Maintenance"}</em></a></li>
-		            <li><a href="#tab8"><em>{gettext str="Security"}</em></a></li>
-					<li><a href="#tab9"><em>{gettext str="Help Links"}</em></a></li>
-					<li><a href="#tab10"><em>{gettext str="WYSIWYG Editor"}</em></a></li>
-		            <li><a href="#tab11"><em>{gettext str="Error Messages"}</em></a></li>
-		            <li><a href="#tab12"><em>{gettext str="PDF Generation"}</em></a></li>
-					<li><a href="#tab13"><em>{gettext str="Minify"}</em></a></li>
+					<li><a href="#tab6"><em>{"Mail Server"|gettext}</em></a></li>
+		            <li><a href="#tab7"><em>{"Maintenance"|gettext}</em></a></li>
+		            <li><a href="#tab8"><em>{"Security"|gettext}</em></a></li>
+					<li><a href="#tab9"><em>{"Help Links"|gettext}</em></a></li>
+					<li><a href="#tab10"><em>{"WYSIWYG Editor"|gettext}</em></a></li>
+		            <li><a href="#tab11"><em>{"Error Messages"|gettext}</em></a></li>
+		            <li><a href="#tab12"><em>{"PDF Generation"|gettext}</em></a></li>
+					<li><a href="#tab13"><em>{"Minify"|gettext}</em></a></li>
 	            {/if}
             </ul>            
             <div class="yui-content">
@@ -65,12 +65,12 @@
                         <div class="related-actions">
 	                        {help text="Get Help"|gettext|cat:" "|cat:("with"|gettext)|cat:" "|cat:("anti-spam measure settings"|gettext) module="anti-spam-measures"}
                         </div>
-		                <h2>{gettext str="Anti-Spam Measures"}</h2>
+		                <h2>{"Anti-Spam Measures"|gettext}</h2>
                     </div>
                     {control type="checkbox" postfalse=1 name="sc[SITE_USE_ANTI_SPAM]" label="Use Anti-Spam measures?"|gettext checked=$smarty.const.SITE_USE_ANTI_SPAM value=1}
                     {control type="checkbox" postfalse=1 name="sc[ANTI_SPAM_USERS_SKIP]" label="Skip using Anti-Spam measures for Logged-In Users?"|gettext checked=$smarty.const.ANTI_SPAM_USERS_SKIP value=1}
                     {control type="dropdown" name="sc[ANTI_SPAM_CONTROL]" label="Anti-Spam Method"|gettext items=$as_types default=$smarty.const.ANTI_SPAM_CONTROL}
-	                <p>{gettext str="To obtain the reCAPTCHA 'keys', you'll need to first have a"} <a href="http://www.google.com/" target="_blank">{gettext str="Google account"}</a> {gettext str="to log in, then setup up a reCAPTCHA account for your domain(s)"} <a href="http://www.google.com/recaptcha/whyrecaptcha" target="_blank">here</a></p>
+	                <p>{"To obtain the reCAPTCHA 'keys', you'll need to first have a"|gettext} <a href="http://www.google.com/" target="_blank">{"Google account"|gettext}</a> {"to log in, then setup up a reCAPTCHA account for your domain(s)"|gettext} <a href="http://www.google.com/recaptcha/whyrecaptcha" target="_blank">{"here"|gettext}</a></p>
                     {control type="dropdown" name="sc[RECAPTCHA_THEME]" label="re-Captcha Theme"|gettext items=$as_themes default=$smarty.const.RECAPTCHA_THEME}
                     {control type="text" name="sc[RECAPTCHA_PUB_KEY]" label="reCAPTCHA Public Key"|gettext value=$smarty.const.RECAPTCHA_PUB_KEY}
                     {control type="text" name="sc[RECAPTCHA_PRIVATE_KEY]" label="reCAPTCHA Private Key"|gettext value=$smarty.const.RECAPTCHA_PRIVATE_KEY}
@@ -80,7 +80,7 @@
                         <div class="related-actions">
 	                        {help text="Get Help"|gettext|cat:" "|cat:("with"|gettext)|cat:" "|cat:("user registration settings"|gettext) module="user-registration"}
                         </div>
-		                <h2>{gettext str="User Registration"}</h2>
+		                <h2>{"User Registration"|gettext}</h2>
                     </div>
                     {control type="checkbox" postfalse=1 name="sc[SITE_ALLOW_REGISTRATION]" label="Should users be allowed to create accounts for themselves?"|gettext checked=$smarty.const.SITE_ALLOW_REGISTRATION value=1}
                     {control type="checkbox" postfalse=1 name="sc[USER_REGISTRATION_USE_EMAIL]" label="Use an email address instead of a username?"|gettext checked=$smarty.const.USER_REGISTRATION_USE_EMAIL value=1}
@@ -96,7 +96,7 @@
                         <div class="related-actions">
 	                        {help text="Get Help"|gettext|cat:" "|cat:("with"|gettext)|cat:" "|cat:("user comment policy settings"|gettext) module="user-comment-policies"}
                         </div>
-		                <h2>{gettext str="User Comment Policies"}</h2>
+		                <h2>{"User Comment Policies"|gettext}</h2>
                     </div>
                     {control type="checkbox" postfalse=1 name="sc[COMMENTS_REQUIRE_LOGIN]" label="Require User Login to Post Comments?"|gettext checked=$smarty.const.COMMENTS_REQUIRE_LOGIN value=1}
                     {control type="checkbox" postfalse=1 name="sc[COMMENTS_REQUIRE_APPROVAL]" label="All Comments Must be Approved?"|gettext checked=$smarty.const.COMMENTS_REQUIRE_APPROVAL value=1}
@@ -108,7 +108,7 @@
                         <div class="related-actions">
 	                        {help text="Get Help"|gettext|cat:" "|cat:("with"|gettext)|cat:" "|cat:("display settings"|gettext) module="display-settings"}
                         </div>
-		                <h2>{gettext str="Display Settings"}</h2>
+		                <h2>{"Display Settings"|gettext}</h2>
                     </div>
                     {control type="dropdown" name="sc[LANGUAGE]" label="Display Language"|gettext items=$langs default=$smarty.const.LANGUAGE}
                     {*{control type="dropdown" name="sc[DISPLAY_THEME_REAL]" label="Theme <a href=\"manage_themes\">(More Theme Options)</a>"|gettext items=$themes default=$smarty.const.DISPLAY_THEME_REAL}*}
@@ -129,11 +129,11 @@
                         <div class="related-actions">
 	                        {help text="Get Help"|gettext|cat:" "|cat:("with"|gettext)|cat:" "|cat:("mail server settings"|gettext) module="mail-server-settings"}
                         </div>
-		                <h2>{gettext str="Mail Server Settings"}</h2>
+		                <h2>{"Mail Server Settings"|gettext}</h2>
                     </div>
 	                {control type="text" name="sc[SMTP_FROMADDRESS]" label="From Address"|gettext value=$smarty.const.SMTP_FROMADDRESS}
                     {br}{control type="checkbox" postfalse=1 name="sc[SMTP_USE_PHP_MAIL]" label="Use php's mail() function instead of SMTP?"|gettext checked=$smarty.const.SMTP_USE_PHP_MAIL value=1}
-	                (or)<h3>{gettext str="SMTP Server Settings"}</h3>
+	                (or)<h3>{"SMTP Server Settings"|gettext}</h3>
                     {control type="text" name="sc[SMTP_SERVER]" label="SMTP Server"|gettext value=$smarty.const.SMTP_SERVER}
                     {control type="text" name="sc[SMTP_PORT]" label="SMTP Port"|gettext value=$smarty.const.SMTP_PORT}
                     {control type="dropdown" name="sc[SMTP_PROTOCOL]" label="Type of Encrypted Connection"|gettext items=$protocol default=$smarty.const.SMTP_PROTOCOL includeblank="None"}
@@ -146,7 +146,7 @@
                         <div class="related-actions">
 	                        {help text="Get Help"|gettext|cat:" "|cat:("with"|gettext)|cat:" "|cat:("site maintenance mode settings"|gettext) module="site-maintenance-mode-settings"}
                         </div>
-		                <h2>{gettext str="Site Maintenance Mode Settings"}</h2>
+		                <h2>{"Site Maintenance Mode Settings"|gettext}</h2>
                     </div>
                     {control type="checkbox" postfalse=1 name="sc[MAINTENANCE_MODE]" label="Enter Maintenance Mode?"|gettext checked=$smarty.const.MAINTENANCE_MODE value=1}
                     {control type="html" name="sc[MAINTENANCE_MSG_HTML]" label="Maintenance Mode Message"|gettext value=$smarty.const.MAINTENANCE_MSG_HTML}
@@ -156,7 +156,7 @@
                         <div class="related-actions">
 	                        {help text="Get Help"|gettext|cat:" "|cat:("with"|gettext)|cat:" "|cat:("security settings"|gettext) module="security-settings"}
                         </div>
-		                <h2>{gettext str="Security Settings"}</h2>
+		                <h2>{"Security Settings"|gettext}</h2>
                     </div>
                     {control type="checkbox" postfalse=1 name="sc[SESSION_TIMEOUT_ENABLE]" label="Enable Session Timeout?"|gettext checked=$smarty.const.SESSION_TIMEOUT_ENABLE value=1}
                     {control type="text" name="sc[SESSION_TIMEOUT]" label="Session Timeout in seconds"|gettext value=$smarty.const.SESSION_TIMEOUT}
@@ -171,7 +171,7 @@
                         <div class="related-actions">
 	                        {help text="Get Help"|gettext|cat:" "|cat:("with"|gettext)|cat:" "|cat:("help link settings"|gettext) module="help-link-settings"}
                         </div>
-		                <h2>{gettext str="Help Link Settings"}</h2>
+		                <h2>{"Help Link Settings"|gettext}</h2>
                     </div>
                     {control type="checkbox" postfalse=1 name="sc[HELP_ACTIVE]" label="Enable Help links for documentation?"|gettext checked=$smarty.const.HELP_ACTIVE value=1}
                     {control type="text" name="sc[HELP_URL]" label="URL for Help Documentation"|gettext value=$smarty.const.HELP_URL}
@@ -181,7 +181,7 @@
                         <div class="related-actions">
 	                        {help text="Get Help"|gettext|cat:" "|cat:("with"|gettext)|cat:" "|cat:("WYSIWYG Editor Settings"|gettext) module="wysiwyg-editor-settings"}
                         </div>
-		                <h2>{gettext str="WYSIWYG Editor Settings"}</h2>
+		                <h2>{"WYSIWYG Editor Settings"|gettext}</h2>
                     </div>
                     {control type="dropdown" name="sc[SITE_WYSIWYG_EDITOR]" label="HTML Editor"|gettext items="CKEditor" values="ckeditor" default=$smarty.const.SITE_WYSIWYG_EDITOR}
 	                {if $smarty.const.SITE_WYSIWYG_EDITOR == 'ckeditor'}

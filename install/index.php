@@ -37,7 +37,6 @@ if (!file_exists('not_configured') && file_exists(BASE.'conf/config.php')) {
 }
 
 if (isset($_POST['sc'])) {
-
     if (file_exists("../conf/config.php")) {
         // Update the config
         $config = $_POST['sc'];

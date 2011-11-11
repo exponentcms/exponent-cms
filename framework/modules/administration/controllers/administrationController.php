@@ -378,7 +378,7 @@ class administrationController extends expController {
         if (isset($_POST['lang'])) {
             foreach ($cur_lang as $key => $value) {
                 if ($key == $value) {
-                    $translation = expLang::translate($value,'en',$_POST['lang']);
+                    $translation = expLang::translate(stripslashes($value),'en',$_POST['lang']);
                     if ($translation) {
                         $cur_lang[$key] = addslashes($translation);
                         expLang::saveCurrLangFile();

@@ -24,6 +24,10 @@ expSession::clearAllSessionData();
 
 global $user;
 
+// We have to force the language name into the config.php file
+$lang = str_replace("'", "", trim($_REQUEST['lang']));
+expSettings::change('LANGUAGE',$lang);
+
 if (isset($_REQUEST['upgrade'])) { 
 // upgrades hit this
 //    if (unlink(BASE.'install/not_configured')) {
@@ -86,7 +90,7 @@ if (isset($_REQUEST['upgrade'])) {
 			<label class="label"><?php echo gt("Password").':'; ?></label><input type="password" class="password " size="25" value="" name="password">
 		</div>
         <div class="formcontrol radiogroup">
-            <span class="label">And:</span>
+            <span class="label"><?php echo gt('And'); ?>:</span>
             <div class="formcontrol radiobutton">
                 <input type="radio" id="radiocontrol-1" class="radiobutton" value="migration" name="next">
 				<label for="radiocontrol-1"><?php echo gt("I want to begin transferring an existing Exponent v0.9x site"); ?></label>
