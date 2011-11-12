@@ -11,7 +11,7 @@
         <thead>
             <tr>
                 <th colspan="2">
-                    <h1>{gettext str="Payment Report"}</h1>
+                    <h1>{"Payment Report"|gettext}</h1>
                 </th>
             </tr>
         </thead>

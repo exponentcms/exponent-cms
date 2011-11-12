@@ -67,14 +67,14 @@ YUI(EXPONENT.YUI3_CONFIG).use('node', 'charts', 'yui2-yahoo-dom-event','yui2-ele
 
 	<div id="payments" class="yui-navset">
 		<ul class="yui-nav">
-		<li class="selected"><a href="#tab1"><em>{gettext str="Payment Summary"}</em></a></li>
-        <li><a href="#tab2"><em>{gettext str="Column Chart"}</em></a></li>
-		<!--li><a href="#tab2"><em>{gettext str="Area Chart"}</em></a></li>
-		<li><a href="#tab3"><em>{gettext str="Bar Chart"}</em></a></li>
-		<li><a href="#tab4"><em>{gettext str="Column Chart"}</em></a></li>
-		<li><a href="#tab5"><em>{gettext str="Combo Chart"}</em></a></li>
-		<li><a href="#tab6"><em>{gettext str="Line Chart"}</em></a></li>
-		<li><a href="#tab7"><em>{gettext str="Pie Chart"}</em></a></li-->
+		<li class="selected"><a href="#tab1"><em>{"Payment Summary"|gettext}</em></a></li>
+        <li><a href="#tab2"><em>{"Column Chart"|gettext}</em></a></li>
+		<!--li><a href="#tab2"><em>{"Area Chart"|gettext}</em></a></li>
+		<li><a href="#tab3"><em>{"Bar Chart"|gettext}</em></a></li>
+		<li><a href="#tab4"><em>{"Column Chart"|gettext}</em></a></li>
+		<li><a href="#tab5"><em>{"Combo Chart"|gettext}</em></a></li>
+		<li><a href="#tab6"><em>{"Line Chart"|gettext}</em></a></li>
+		<li><a href="#tab7"><em>{"Pie Chart"|gettext}</em></a></li-->
 		</ul>            
 		<div class="yui-content">
 			<div id="tab1">
@@ -83,7 +83,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('node', 'charts', 'yui2-yahoo-dom-event','yui2-ele
 						<thead>
 							<tr class="{cycle values='odd,even'}">
 								<th colspan="2">
-									<h1>{gettext str="Payment Summary"}</h1>
+									<h1>{"Payment Summary"|gettext}</h1>
 								</th>
 							</tr>
 						</thead>
@@ -129,7 +129,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('node', 'charts', 'yui2-yahoo-dom-event','yui2-ele
             <thead>
                 <tr class="{cycle values='odd,even'}">
                     <th colspan="2">
-                        <h1>{gettext str="Tax Summary"}</h1>
+                        <h1>{"Tax Summary"|gettext}</h1>
                     </th>
                 </tr>
             </thead>

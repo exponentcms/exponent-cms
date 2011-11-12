@@ -77,7 +77,7 @@
         
         {if $product->expFile.images[0]->id}
         <div class="additional thumbnails">
-            <h3>{gettext str="Additional Images"}</h3>
+            <h3>{"Additional Images"|gettext}</h3>
             <ul>
                 <li>
                     {if $config.enable_lightbox}
@@ -253,14 +253,14 @@
     
     {if $product->company->id}
     <p class="manufacturer">
-        {gettext str="Manufactured by"}:
+        {"Manufactured by"|gettext}:
         <a href="{link controller=company action=show id=$product->company->id}">{$product->company->title}</a>
     </p>
     {/if}
     
     {if $product->model}
     <p class="sku">
-        {gettext str="SKU"}:
+        {"SKU"|gettext}:
         <strong>{$product->model}</strong>
     </p>
     {/if}
@@ -276,13 +276,13 @@
     {if $product->minimum_order_quantity > 1}
     {br}
     <p>
-        <span>This item has a minimum order quantity of {$product->minimum_order_quantity}</span>
+        <span>{"This item has a minimum order quantity of"|gettext} {$product->minimum_order_quantity}</span>
     </p>
     {/if}    
 
     {*if $product->expFile.images[0]->id}
     <div class="additional thumbnails">
-        <h3>{gettext str="Additional Images"}</h3>
+        <h3>{"Additional Images"|gettext}</h3>
         <ul>
             {if $product->expFile.mainthumbnail[0]->id}
                 <li>{img file_id=$product->expFile.mainthumbnail[0]->id w=50 h=50 zc=1 class="thumbnail" id="thumb-`$mainimg`"}</li>
@@ -302,7 +302,7 @@
     
     {if $product->main_image_functionality=="iws"}
     <div class="swatches thumbnails">
-        <h3>{gettext str="Available Patterns"}</h3>
+        <h3>{"Available Patterns"|gettext}</h3>
         <ul>
         {foreach from=$product->expFile.swatchimages item=swch key=key}
             <li>
@@ -324,7 +324,7 @@
 
     {if $product->expFile.brochures[0]->id}
     <div class="more-information">
-        <h3>{gettext str="Additional Product Information"}</h3>
+        <h3>{"Additional Product Information"|gettext}</h3>
         <ul>
         {foreach from=$product->expFile.brochures item=doc}
             <li><a href="{link action=downloadfile id=$doc->id}">{if $doc->title}{$doc->title}{else}{$doc->filename}{/if}</a></li>
@@ -399,7 +399,7 @@
     {if $product->childProduct|@count >= 1}
     {permissions}                   
     {if $permissions.delete == 1}   
-        {icon class=delete action=deleteChildren record=$product text="Delete All Child Products" title="Delete `$product->title`'s Children" onclick="return confirm('Are you sure you want to delete ALL child products?  This is permanent.');"}         
+        {icon class=delete action=deleteChildren record=$product text="Delete All Child Products"|gettext title="Delete `$product->title`'s Children" onclick="return confirm('Are you sure you want to delete ALL child products?  This is permanent.');"}
     {/if}
     {/permissions}
     
@@ -409,14 +409,14 @@
             <thead>
                 <tr>
                     <th>&nbsp;</th>
-                    <th><strong>{gettext str="QTY"}</strong></th>
-                    <th><strong>{gettext str="SKU"}</strong></th>
+                    <th><strong>{"QTY"|gettext}</strong></th>
+                    <th><strong>{"SKU"|gettext}</strong></th>
                     {if $product->extra_fields}
                     {foreach from=$product->extra_fields item=chiprodname}                        
                         <th><span>{$chiprodname.name}</span></th>                            
                     {/foreach}
                     {/if}
-                    <th style="text-align: right;"><strong>{gettext str="PRICE"}</strong></th>
+                    <th style="text-align: right;"><strong>{"PRICE"|gettext}</strong></th>
                     <th>&nbsp;</th>
                 </tr>
             </thead>
@@ -497,7 +497,7 @@
         </table>
 
         {if $product->active_type == 0}
-        <a id="submit-chiprods" href="javascript:{ldelim}{rdelim}" class="awesome {$smarty.const.BTN_COLOR} {$smarty.const.BTN_SIZE} exp-ecom-link" rel="nofollow"><strong><em>Add selected items to cart</em></strong></a>
+        <a id="submit-chiprods" href="javascript:{ldelim}{rdelim}" class="awesome {$smarty.const.BTN_COLOR} {$smarty.const.BTN_SIZE} exp-ecom-link" rel="nofollow"><strong><em>{"Add selected items to cart"|gettext}</em></strong></a>
         {/if}
         {/form}
         

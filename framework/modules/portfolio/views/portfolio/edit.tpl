@@ -70,7 +70,7 @@
 		Y.one('.loadingdiv').remove();
 
 		var inputNode = Y.one('#expTag');
-		var tags = [{/literal}{gettext str=$taglist}{literal}];
+		var tags = [{/literal}{$taglist}{literal}];
 
 		inputNode.plug(Y.Plugin.AutoComplete, {
 		  activateFirstItem: true,
