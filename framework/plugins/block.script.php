@@ -17,6 +17,24 @@
 #
 ##################################################
 
+/**
+ * Smarty plugin
+ * @package Smarty-Plugins
+ * @subpackage Block
+ */
+
+/**
+ * Smarty {script} block plugin
+ *
+ * Type:     block<br>
+ * Name:     script<br>
+ * Purpose:  Set up a script block
+ *
+ * @param $params
+ * @param $content
+ * @param \Smarty $smarty
+ * @param $repeat
+ */
 function smarty_block_script($params,$content,&$smarty, &$repeat) {
 	if ($content) {
 		global $userjsfiles;

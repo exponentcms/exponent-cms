@@ -17,6 +17,24 @@
 #
 ##################################################
 
+/**
+ * Smarty plugin
+ * @package Smarty-Plugins
+ * @subpackage Block
+ */
+
+/**
+ * Smarty {toggle} block plugin
+ *
+ * Type:     block<br>
+ * Name:     toggle<br>
+ * Purpose:  Set up a toggle block
+ *
+ * @param $params
+ * @param $content
+ * @param \Smarty $smarty
+ * @param $repeat
+ */
 function smarty_block_toggle($params,$content,&$smarty, &$repeat) {
 	if(empty($content)){
 		if (!empty($params['link'])) echo '<a href="javascript:void(0);" onclick="divtoggle(\''.$params['id'].'\')">'.$params['link'].'</a>';

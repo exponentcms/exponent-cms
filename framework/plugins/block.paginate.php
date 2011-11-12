@@ -18,6 +18,23 @@
 ##################################################
 /** @define "BASE" "../.." */
 
+/**
+ * Smarty plugin
+ * @package Smarty-Plugins
+ * @subpackage Block
+ */
+
+/**
+ * Smarty {paginate} block plugin
+ *
+ * Type:     block<br>
+ * Name:     paginate<br>
+ * Purpose:  Set up a pagination block
+ *
+ * @param         $params
+ * @param         $content
+ * @param \Smarty $smarty
+ */
 function smarty_block_paginate($params,$content,&$smarty) {
 	if ($content) {
 ?>
