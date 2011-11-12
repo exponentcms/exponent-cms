@@ -17,6 +17,25 @@
 #
 ##################################################
 
+/**
+ * Smarty plugin
+ * @package Smarty-Plugins
+ * @subpackage Modifier
+ */
+
+/**
+ * Smarty {summarize} modifier plugin
+ *
+ * Type:     modifier<br>
+ * Name:     summarize<br>
+ * Purpose:  shorten and flatten a string removing some or all markup
+ *
+ * @param $string
+ * @param $strtype
+ * @param $type
+ *
+ * @return array
+ */
 function smarty_modifier_summarize($string, $strtype, $type) {
 	$sep = ($strtype == "html" ? array("</p>","</div>") : array("\r\n","\n","\r"));
 	$origstring = $string;

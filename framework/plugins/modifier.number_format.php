@@ -17,6 +17,24 @@
 #
 ##################################################
 
+/**
+ * Smarty plugin
+ * @package Smarty-Plugins
+ * @subpackage Modifier
+ */
+
+/**
+ * Smarty {number_format} modifier plugin
+ *
+ * Type:     modifier<br>
+ * Name:     number_format<br>
+ * Purpose:  format a number
+ *
+ * @param $number
+ * @param $decimals
+ *
+ * @return array
+ */
 function smarty_modifier_number_format($number,$decimals) {
     $number = ($number=="") ? 0 : $number;
 	return number_format($number,$decimals,".",",");

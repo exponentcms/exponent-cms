@@ -17,6 +17,22 @@
 #
 ##################################################
 
+/**
+ * Smarty plugin
+ * @package Smarty-Plugins
+ * @subpackage Modifier
+ */
+
+/**
+ * Smarty {nobreak} modifier plugin
+ *
+ * Type:     modifier<br>
+ * Name:     nobreak<br>
+ * Purpose:  replace spaces with non-breaking spaces
+ *
+ * @param array
+ * @return array
+ */
 function smarty_modifier_nobreak($string) {
 	return str_replace(' ', '&nbsp;', $string);
 }

@@ -17,6 +17,24 @@
 #
 ##################################################
 
+/**
+ * Smarty plugin
+ * @package Smarty-Plugins
+ * @subpackage Modifier
+ */
+
+/**
+ * Smarty {format_date} modifier plugin
+ *
+ * Type:     modifier<br>
+ * Name:     format_date<br>
+ * Purpose:  format a date
+ *
+ * @param        array
+ * @param string $format
+ *
+ * @return array
+ */
 function smarty_modifier_format_date($timestamp,$format=DISPLAY_DATE_FORMAT) {
 	// Do some sort of mangling of the format for windows.
 	// reference the PHP_OS constant to figure that one out.

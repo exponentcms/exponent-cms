@@ -17,6 +17,24 @@
 #
 ##################################################
 
+/**
+ * Smarty plugin
+ * @package Smarty-Plugins
+ * @subpackage Modifier
+ */
+
+/**
+ * Smarty {expdate} modifier plugin
+ *
+ * Type:     modifier<br>
+ * Name:     expdate<br>
+ * Purpose:  Format a string according to the given format
+ *
+ * @param $timestamp
+ * @param $format
+ *
+ * @return array
+ */
 function smarty_modifier_expdate($timestamp,$format) {
 	return date($format, $timestamp);
 }

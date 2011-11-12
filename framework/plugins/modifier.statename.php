@@ -17,6 +17,24 @@
 #
 ##################################################
 
+/**
+ * Smarty plugin
+ * @package Smarty-Plugins
+ * @subpackage Modifier
+ */
+
+/**
+ * Smarty {statename} modifier plugin
+ *
+ * Type:     modifier<br>
+ * Name:     statename<br>
+ * Purpose:  lookup a state's name based o state id
+ *
+ * @param        array
+ * @param string $col
+ *
+ * @return array
+ */
 function smarty_modifier_statename($state,$col='name') {
 	global $db;
 	if ($col != 'name') $col = 'code';
