@@ -18,6 +18,12 @@
 ##################################################
 
 /**
+ * Smarty plugin
+ * @package Smarty-Plugins
+ * @subpackage Function
+ */
+
+/**
  * Smarty {podcastlink} function plugin
  *
  * Type:     function<br>

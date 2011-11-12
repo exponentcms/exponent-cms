@@ -16,8 +16,24 @@
 # GPL: http://www.gnu.org/licenses/gpl.txt
 #
 ##################################################
-/** @define "BASE" "../.." */
 
+/**
+ * Smarty plugin
+ * @package Smarty-Plugins
+ * @subpackage Function
+ */
+
+/**
+ * Smarty {object_to_js} function plugin
+ *
+ * Type:     function<br>
+ * Name:     object_to_js<br>
+ * Purpose:  convert a php object into javascript
+ *
+ * @param         $params
+ * @param \Smarty $smarty
+ * @return bool
+ */
 function smarty_function_object_to_js($params,&$smarty) {
 	echo "var ".$params['name']." = new Array();\n";
 	if (isset($params['objects']) && count($params['objects']) > 0) {

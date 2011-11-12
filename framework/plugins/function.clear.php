@@ -17,6 +17,22 @@
 #
 ##################################################
 
+/**
+ * Smarty plugin
+ * @package Smarty-Plugins
+ * @subpackage Function
+ */
+
+/**
+ * Smarty {clear} function plugin
+ *
+ * Type:     function<br>
+ * Name:     clear<br>
+ * Purpose:  clear formatting
+ *
+ * @param         $params
+ * @param \Smarty $smarty
+ */
 function smarty_function_clear($params,&$smarty) {
 	echo '<div style="clear:both"></div>';
 }

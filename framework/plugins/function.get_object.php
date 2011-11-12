@@ -18,6 +18,12 @@
 ##################################################
 
 /**
+ * Smarty plugin
+ * @package Smarty-Plugins
+ * @subpackage Function
+ */
+
+/**
  * Smarty {get_object} function plugin
  *
  * Type:     function<br>

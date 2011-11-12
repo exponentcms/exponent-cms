@@ -16,9 +16,24 @@
 # GPL: http://www.gnu.org/licenses/gpl.txt
 #
 ##################################################
-/** @define "BASE" "../.." */
 
-function smarty_function_control($params,&$smarty) { 
+/**
+ * Smarty plugin
+ * @package Smarty-Plugins
+ * @subpackage Function
+ */
+
+/**
+ * Smarty {control} function plugin
+ *
+ * Type:     function<br>
+ * Name:     control<br>
+ * Purpose:  create a form control
+ *
+ * @param         $params
+ * @param \Smarty $smarty
+ */
+function smarty_function_control($params,&$smarty) {
     global $db,$user;
     
     if ( (isset($params['type']) && isset($params['name'])) || $params['type'] == 'buttongroup' 

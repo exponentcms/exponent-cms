@@ -15,8 +15,24 @@
 # GPL: http://www.gnu.org/licenses/gpl.txt
 #
 ##################################################
-/** @define "BASE" "../.." */
 
+/**
+ * Smarty plugin
+ * @package Smarty-Plugins
+ * @subpackage Function
+ */
+
+/**
+ * Smarty {yuilogger} function plugin
+ *
+ * Type:     function<br>
+ * Name:     yuilogger<br>
+ * Purpose:  attempt to start the yui logger
+ *
+ * @param         $params
+ * @param \Smarty $smarty
+ * @return bool
+ */
 function smarty_function_yuilogger($params,&$smarty) {
 	global $userjsfiles;
 		$logger =  "

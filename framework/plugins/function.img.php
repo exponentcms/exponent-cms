@@ -17,6 +17,23 @@
 #
 ##################################################
 
+/**
+ * Smarty plugin
+ * @package Smarty-Plugins
+ * @subpackage Function
+ */
+
+/**
+ * Smarty {img} function plugin
+ *
+ * Type:     function<br>
+ * Name:     img<br>
+ * Purpose:  display an image
+ *
+ * @param         $params
+ * @param \Smarty $smarty
+ * @return bool
+ */
 function smarty_function_img($params,&$smarty) {
 	//$alt = isset($params['alt']) ? $params['alt'] : 'Image';
 	$closing = (XHTML==1) ? ' />' : '>';

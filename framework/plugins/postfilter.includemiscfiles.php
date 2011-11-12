@@ -31,6 +31,12 @@
 ##################################################
 
 /**
+ * Smarty plugin
+ * @package Smarty-Plugins
+ * @subpackage PostFilter
+ */
+
+/**
  * Smarty {includemiscfiles} postfilter plugin
  *
  * Type:     postfilter<br>

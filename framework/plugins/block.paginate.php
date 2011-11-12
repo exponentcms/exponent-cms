@@ -16,7 +16,6 @@
 # GPL: http://www.gnu.org/licenses/gpl.txt
 #
 ##################################################
-/** @define "BASE" "../.." */
 
 /**
  * Smarty plugin

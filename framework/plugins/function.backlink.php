@@ -17,6 +17,22 @@
 #
 ##################################################
 
+/**
+ * Smarty plugin
+ * @package Smarty-Plugins
+ * @subpackage Function
+ */
+
+/**
+ * Smarty {backlink} function plugin
+ *
+ * Type:     function<br>
+ * Name:     backlink<br>
+ * Purpose:  create a back link
+ *
+ * @param         $params
+ * @param \Smarty $smarty
+ */
 function smarty_function_backlink($params,&$smarty) {
 //	global $history;
 //	$d=$params['distance']?$params['distance']+1:2;

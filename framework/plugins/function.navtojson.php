@@ -17,6 +17,23 @@
 #
 ##################################################
 
+/**
+ * Smarty plugin
+ * @package Smarty-Plugins
+ * @subpackage Function
+ */
+
+/**
+ * Smarty {navtojson} function plugin
+ *
+ * Type:     function<br>
+ * Name:     navtojson<br>
+ * Purpose:  caonvert navigation structure to javascript via json
+ *
+ * @param         $params
+ * @param \Smarty $smarty
+ * @return bool
+ */
 function smarty_function_navtojson($params,&$smarty) {
     echo navigationmodule::navtojson();
 }

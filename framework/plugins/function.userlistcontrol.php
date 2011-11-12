@@ -16,8 +16,24 @@
 # GPL: http://www.gnu.org/licenses/gpl.txt
 #
 ##################################################
-/** @define "BASE" "../.." */
 
+/**
+ * Smarty plugin
+ * @package Smarty-Plugins
+ * @subpackage Function
+ */
+
+/**
+ * Smarty {userlistcontrol} function plugin
+ *
+ * Type:     function<br>
+ * Name:     userlistcontrol<br>
+ * Purpose:  display a list control of users
+ *
+ * @param         $params
+ * @param \Smarty $smarty
+ * @return bool
+ */
 function smarty_function_userlistcontrol($params,&$smarty) {
 	echo '<script src="'.PATH_RELATIVE.'framework/core/subsystems/forms/controls/listbuildercontrol.js" language="javascript"></script>';
 

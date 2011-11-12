@@ -17,6 +17,22 @@
 #
 ##################################################
 
+/**
+ * Smarty plugin
+ * @package Smarty-Plugins
+ * @subpackage Function
+ */
+
+/**
+ * Smarty {fileuploadcontrol} function plugin
+ *
+ * Type:     function<br>
+ * Name:     fileuploadcontrol<br>
+ * Purpose:  display a file upload control
+ *
+ * @param         $params
+ * @param \Smarty $smarty
+ */
 function smarty_function_fileuploadcontrol($params,&$smarty) {
 	global $db;
 	$files = $db->selectObjects('file', 'item_id="'.$params['id'].'" AND item_type="'.$params['type'].'"');

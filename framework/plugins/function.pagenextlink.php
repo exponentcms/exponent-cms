@@ -17,6 +17,23 @@
 #
 ##################################################
 
+/**
+ * Smarty plugin
+ * @package Smarty-Plugins
+ * @subpackage Function
+ */
+
+/**
+ * Smarty {pagenextlink} function plugin
+ *
+ * Type:     function<br>
+ * Name:     pagenextlink<br>
+ * Purpose:  display pagination next page link
+ *
+ * @param         $params
+ * @param \Smarty $smarty
+ * @return bool
+ */
 function smarty_function_pagenextlink($params,&$smarty) {
 	if ($params['page']->page < $params['page']->numberOfPages) {
 		// initialize a couple of variables
