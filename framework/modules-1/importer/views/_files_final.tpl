@@ -18,5 +18,5 @@
 	<div class="form_header">
 		<h2>{'Selected Files have been Imported'|gettext}</h2>
 	</div>
-	{'Successfully restored '|gettext}{$file_count}{' uploaded files from backup.'|gettext}
+	{'Successfully restored '|gettext}{$file_count} {'uploaded files from backup.'|gettext}
 </div>

@@ -32,7 +32,7 @@
 
     <p> 
 		{'Note: this only properly copied over the records from the old database into the Exponent v2 database.
-		Make sure you manually copy the "files" directory over to this installation.'|gettext}
+		Make sure you manually copy the \'files\' directory over to this installation.'|gettext}
     </p>
         <ul>
 			<li class=\"mig-msg\">

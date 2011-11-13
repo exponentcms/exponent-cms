@@ -45,7 +45,7 @@
 			
 			<div class="actions">
 				{if $question->open_voting}
-					<input class="awesome button {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" type="submit" value="Vote!"|gettext />
+					<input class="awesome button {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" type="submit" value={"Vote!"|gettext} />
 				{else}
 					{'Voting has closed for this poll'|gettext}.
 				{/if}

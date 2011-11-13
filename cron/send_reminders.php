@@ -28,7 +28,7 @@ global $db;
 // let's select a calendar by its source to make it easier to find and harder to spoof	
 $src = $_GET['src'];
 if (!$src) {
-	print_r("<br><b><i>Exponent - No Calendar Selected!</i></b><br>");	
+	print_r("<br><b><i>Exponent - ".gt('No Calendar Selected!')."</i></b><br>");
 	exit();
 }	
 
@@ -38,7 +38,7 @@ $loc->src = $src;
 $loc->int = '';	
 $config = $db->selectObject("calendarmodule_config","location_data='".serialize($loc)."'");
 if (!$config) {
-	print_r("<br><b><i>Exponent - Calendar Not Found!</i></b><br>");	
+	print_r("<br><b><i>Exponent - ".gt('Calendar Not Found!')."</i></b><br>");
 	exit();
 }
 
@@ -327,7 +327,7 @@ $template->assign("totaldays",$totaldays);
 
 
 if ($count == 0) {
-	print_r("<br><b><i>Exponent - No Events to Send!</i></b><br>");	
+	print_r("<br><b><i>Exponent - ".gt('No Events to Send!')."</i></b><br>");
 	exit();
 }
 
@@ -409,7 +409,7 @@ foreach ($db->selectObjects('calendar_reminder_address',"calendar_id='".$config-
 	}
 }
 if (empty($emails)) {
-	print_r("<br><b><i>Exponent - No One to Send Reminders to!</i></b><br>");	
+	print_r("<br><b><i>Exponent - ".gt('No One to Send Reminders to!')."</i></b><br>");
 	exit();
 }
 
@@ -429,7 +429,7 @@ $mail->quickSend(array(
 		'subject'=>$subject,
 ));
 
-print_r("<p>The following reminder was sent via email:</p><br>");	
+print_r("<p>".gt('The following reminder was sent via email').":</p><br>");
 print_r($htmlmsg);
 
 ?>
