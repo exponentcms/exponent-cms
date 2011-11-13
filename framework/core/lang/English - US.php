@@ -1,16 +1,13 @@
 <?php
 return array(
-	""=>"",
 	"# of Items"=>"# of Items",
 	"# of Orders"=>"# of Orders",
 	"(Not Required)"=>"(Not Required)",
 	"(blank)"=>"(blank)",
 	"(empty)"=>"(empty)",
 	"(not supported)"=>"(not supported)",
-	")"=>")",
 	"-- No Tax Required --"=>"-- No Tax Required --",
 	"--Disregard this column--"=>"--Disregard this column--",
-	"."=>".",
 	"A green button indicates your selection"=>"A green button indicates your selection",
 	"A pre-existing database can be used to store the content of your website, however a few issues must be dealt with."=>"A pre-existing database can be used to store the content of your website, however a few issues must be dealt with.",
 	"A strange internal error has occurred.  Please contact the Exponent Developers."=>"A strange internal error has occurred.  Please contact the Exponent Developers.",

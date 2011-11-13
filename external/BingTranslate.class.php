@@ -275,7 +275,8 @@ class BingTranslateWrapper
             } 
             else 
             {
-                throw new Exception('Error communcating with Bing Translate.');
+                return false;
+                throw new Exception('Error communicating with Bing Translate.');
             }
             
         }

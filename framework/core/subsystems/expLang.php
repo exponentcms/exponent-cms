@@ -39,6 +39,7 @@ class expLang {
 
 	    if (is_readable(BASE . 'framework/core/lang/' . utf8_decode(LANG).'.info.php')) {
 			$info = include(BASE . 'framework/core/lang/' . utf8_decode(LANG).'.info.php');
+            define('LOCALE', $info['locale']);
 			setlocale(LC_ALL, $info['locale']);
 			//DEPRECATED: we no longer use views for i18n
 			define('DEFAULT_VIEW', $info['default_view']);
