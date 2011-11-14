@@ -347,6 +347,8 @@ class administrationController extends expController {
     public function manage_lang() {
         global $default_lang, $cur_lang;
 
+        // Available Languages
+	    $langs = expLang::langList();
         if (empty($default_lang)) $default_lang = include(BASE."framework/core/lang/English - US.php");
         $num_missing = 0;
         foreach ($default_lang as $key => $value) {
@@ -356,7 +358,7 @@ class administrationController extends expController {
         foreach ($cur_lang as $key => $value) {
             if ($key == $value) $num_untrans++;
         }
-        assign_to_template(array('missing'=>$num_missing,"count"=>count($cur_lang),'untrans'=>$num_untrans));
+        assign_to_template(array('langs'=>$langs,'missing'=>$num_missing,"count"=>count($cur_lang),'untrans'=>$num_untrans));
    	}
 
     public function manage_lang_await() {
@@ -388,6 +390,12 @@ class administrationController extends expController {
             }
             flash('message',$num_added." ".gt("New Phases translated to")." ".$_POST['lang']);
         }
+        redirect_to(array('controller'=>'administration', 'action'=>'manage_lang'));
+   	}
+
+    public function update_language() {
+        expSettings::change('LANGUAGE', $_POST['newlang']);
+        flash('message',gt('Display Language changed to').": ".$_POST['newlang']);
         redirect_to(array('controller'=>'administration', 'action'=>'manage_lang'));
    	}
 

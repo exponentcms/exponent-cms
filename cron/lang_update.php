@@ -43,6 +43,7 @@ if (defined('LOCALE')) {
         if ($key == $value) {
             $translation = expLang::translate(stripslashes($value),'en',LOCALE);
             if ($translation) {
+                str_replace('"', "\'", $translation);  // remove the killer double-quotes
                 $cur_lang[$key] = addslashes($translation);
                 expLang::saveCurrLangFile();
                 $num_added++;
