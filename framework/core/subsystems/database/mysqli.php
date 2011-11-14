@@ -995,12 +995,12 @@ class mysqli_database extends database {
             $errno = mysqli_errno($this->connection);
             switch ($errno) {
                 case 1046:
-                    return "1046 : Selected database does not exist";
+                    return "1046 : ".gt("Selected database does not exist");
                 default:
                     return mysqli_errno($this->connection) . " : " . mysqli_error($this->connection);
             }
         } else if ($this->connection == false) {
-            return "Unable to connect to database server";
+            return gt("Unable to connect to database server");
         } else
             return "";
     }

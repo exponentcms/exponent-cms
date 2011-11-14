@@ -27,7 +27,7 @@
 
 <div class="navigationmodule manager-hierarchy">
 	<div class="form_header">
-		<p>{'<strong>Drag and drop</strong> tree items to re-order your site\'s hierarchy (main menu). <strong>Right click on any tree item</strong> for a context menu of options for that item.'|gettext}</p>
+		<p><strong>{'Drag and drop'|gettext}</strong> {'tree items to re-order your site\'s hierarchy (main menu).'|gettext} <strong>{'Right click on any tree item'|gettext}</strong> {'for a context menu of options for that item.'|gettext}</p>
 	</div>
 	{permissions}
 		{if $user->isAdmin()}

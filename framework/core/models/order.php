@@ -270,7 +270,7 @@ class order extends expRecord {
                                             }
                                             else
                                             {
-                                                flash('message','Welcome back ' . $u->firstname . '! We see that you have shopped with us before.<br><br><a id="submit-verify" href="'.makelink(array("controller"=>"order","action"=>"verifyReturnShopper")).'" rel="nofollow">Click Here to Restore Your Previous Shopping Cart</a><br><br><a class="exp-ecom-link" href="'.makelink(array("controller"=>"order","action"=>"clearCart","id"=>$cookie_cart_id)).'">Click Here To Start a New Shopping Cart</a>');                                             
+                                                flash('message',gt('Welcome back').' ' . $u->firstname . '! '.gt('We see that you have shopped with us before.').'<br><br><a id="submit-verify" href="'.makelink(array("controller"=>"order","action"=>"verifyReturnShopper")).'" rel="nofollow">'.gt('Click Here to Restore Your Previous Shopping Cart').'</a><br><br><a class="exp-ecom-link" href="'.makelink(array("controller"=>"order","action"=>"clearCart","id"=>$cookie_cart_id)).'">'.gt('Click Here To Start a New Shopping Cart').'</a>');
                                                 $sessAr['orig_path'] = $router->current_url;
                                                 expSession::set('verify_shopper',$sessAr);
                                             }                                                                                                                                                                                                                                                                                                                           
@@ -282,7 +282,7 @@ class order extends expRecord {
                                             $cart->update(array("sessionticket_ticket"=>$ticket, 'return_count'=>$cart->setReturnCount($orig_referrer)));                                             
                                             expSession::set('verify_shopper',array('au'=>1,'orig_path'=>$router->current_url, 'firstname'=>$u->firstname, 'cid'=>$cookie_cart_id, 'awaiting_choice'=>true));
                                             //order::setCartCookie($cart);                                            
-                                            flash('message','Welcome back ' . $u->firstname . '! We see that you have shopped with us before.<br><br><a id="submit-verify" href="'.makelink(array("controller"=>"order","action"=>"verifyReturnShopper")).'" rel="nofollow">Click Here to Restore Your Previous Shopping Cart</a><br><br><a class="exp-ecom-link" href="'.makelink(array("controller"=>"order","action"=>"clearCart","id"=>$cookie_cart_id)).'">Click Here To Start a New Shopping Cart</a>');                                             
+                                            flash('message','Welcome back ' . $u->firstname . '! '.gt('We see that you have shopped with us before.').'<br><br><a id="submit-verify" href="'.makelink(array("controller"=>"order","action"=>"verifyReturnShopper")).'" rel="nofollow">'.gt('Click Here to Restore Your Previous Shopping Cart').'</a><br><br><a class="exp-ecom-link" href="'.makelink(array("controller"=>"order","action"=>"clearCart","id"=>$cookie_cart_id)).'">'.gt('Click Here To Start a New Shopping Cart').'</a>');
                                           }                                         
                                         }                                        
                                      }
@@ -295,7 +295,7 @@ class order extends expRecord {
                                          $cart = new order();
                                          $cart->update(array("sessionticket_ticket"=>$ticket, 'user_id'=>$user->id, 'orig_referrer'=>$orig_referrer)); 
                                          order::setCartCookie($cart);
-                                         flash('message','Welcome back ' . $u->firstname . '! If you would like to pick up where you left off, click here to login and your previous shopping cart will be restored.');                                             
+                                         flash('message','Welcome back ' . $u->firstname . '! '.gt('If you would like to pick up where you left off, click here to login and your previous shopping cart will be restored.'));
                                      }                           
                                  }
                             }                                       
@@ -501,7 +501,7 @@ class order extends expRecord {
                     $forced_calc = $od->getRequiredShippingCalculatorId();
                     $forced_method = $od->getRequiredShippingMethod();                
                     $this->forced_shipping = true;
-                    $this->forcing_shipping_reason = 'The discount code you are using';
+                    $this->forcing_shipping_reason = gt('The discount code you are using');
                     break;
                 }
             }

@@ -21,7 +21,7 @@
     	<div id="uploaderOverlay" style="position:absolute; z-index:2"></div> 
     	<a class="select awesome small green" style="z-index:1" id="selectLink" href="#"><span>{'Select Files'|gettext}</span></a>
         <a id="uploadLink" class="upload awesome small green" href="#"><span>{"Upload Files"|gettext}</span></a>
-        <a id="backlink" class="back awesome small green" href="{link action=picker update=$smarty.get.update fck=$smarty.get.fck CKEditor=$smarty.get.CKEditor CKEditorFuncNum=$smarty.get.CKEditorFuncNum langCode=$smarty.get.langCode ajax_action=1}"><span>Back to Manager</span></a>
+        <a id="backlink" class="back awesome small green" href="{link action=picker update=$smarty.get.update fck=$smarty.get.fck CKEditor=$smarty.get.CKEditor CKEditorFuncNum=$smarty.get.CKEditorFuncNum langCode=$smarty.get.langCode ajax_action=1}"><span>{'Back to Manager'|gettext}</span></a>
     </div>
 	<div class="info-header clearfix">
 		<div id="noflash"></div>

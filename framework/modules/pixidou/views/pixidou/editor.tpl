@@ -33,7 +33,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr" lang="fr">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" >
-        <title>Pixidou - Open Source AJAX Image Editor</title>
+        <title>Pixidou - {'Open Source AJAX Image Editor'|gettext}</title>
         <!-- Combo-handled YUI CSS files: -->
         {*<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/combo?2.6.0/build/reset-fonts/reset-fonts.css&2.6.0/build/assets/skins/sam/skin.css" >*}
 	    {*<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/combo?2.9.0/build/reset-fonts/reset-fonts.css&2.9.0/build/assets/skins/sam/skin.css">*}

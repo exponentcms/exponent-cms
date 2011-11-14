@@ -41,8 +41,8 @@ class poll_answer {
 			$form->meta('id',$object->id);
 		}
 		
-		$form->register('answer','Answer',new textcontrol($object->answer));
-		$form->register('submit','',new buttongroupcontrol('Save','','Cancel'));
+		$form->register('answer',gt('Answer'),new textcontrol($object->answer));
+		$form->register('submit','',new buttongroupcontrol(gt('Save'),'',gt('Cancel')));
 		
 		return $form;
 	}

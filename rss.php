@@ -81,7 +81,7 @@ if (isset($module)) {
 			echo $rss->createFeed("RSS2.0");
 		}
 	} else {
-		echo "This RSS feed has been disabled.";
+		echo gt("This RSS feed has been disabled.");
 	}
 } 
 

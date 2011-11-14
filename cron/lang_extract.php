@@ -27,6 +27,9 @@
  *
  */
 
+define('DEVELOPMENT','1');
+define('WRITE_LANG_TEMPLATE', DEVELOPMENT);
+
 // Initialize the exponent environment
 include_once('../exponent_bootstrap.php');
 // Initialize the language subsystem

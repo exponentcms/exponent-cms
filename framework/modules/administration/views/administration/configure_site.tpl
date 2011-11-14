@@ -196,10 +196,10 @@
                         </div>
 		                <h2>{"Error Messages"|gettext}</h2>
                     </div>
-                    {control type="text" name="sc[SITE_404_TITLE]" label="Page Title For \'Not Found\' (404) Error"|gettext value=$smarty.const.SITE_404_TITLE}
-                    {control type="html" name="sc[SITE_404_HTML]" label="\'Not Found\' (404) Error Message"|gettext value=$smarty.const.SITE_404_HTML}
-                    {control type="html" name="sc[SITE_403_REAL_HTML]" label="\'Access Denied\' (403) Error Message"|gettext value=$smarty.const.SITE_403_REAL_HTML}
-                    {control type="html" name="sc[SESSION_TIMEOUT_HTML]" label="\'Session Expired\' Error  Message"|gettext value=$smarty.const.SESSION_TIMEOUT_HTML}
+                    {control type="text" name="sc[SITE_404_TITLE]" label='Page Title For \'Not Found\' (404) Error'|gettext value=$smarty.const.SITE_404_TITLE}
+                    {control type="html" name="sc[SITE_404_HTML]" label='\'Not Found\' (404) Error Message'|gettext value=$smarty.const.SITE_404_HTML}
+                    {control type="html" name="sc[SITE_403_REAL_HTML]" label='\'Access Denied\' (403) Error Message'|gettext value=$smarty.const.SITE_403_REAL_HTML}
+                    {control type="html" name="sc[SESSION_TIMEOUT_HTML]" label='\'Session Expired\' Error  Message'|gettext value=$smarty.const.SESSION_TIMEOUT_HTML}
                 </div>
                 <div id="tab12">
 	                <div class="info-header">
@@ -219,7 +219,7 @@
 			            <h2>{"Minify Configuration"|gettext}</h2>
 			        </div>
                     {control type="text" name="sc[MINIFY_MAXAGE]" label="Maximum age of browser cache in seconds"|gettext value=$smarty.const.MINIFY_MAXAGE}
-					{control type="text" name="sc[MINIFY_MAX_FILES]" label="Maximum # of files that can be specified in the \'f\' GET parameter"|gettext value=$smarty.const.MINIFY_MAX_FILES}
+					{control type="text" name="sc[MINIFY_MAX_FILES]" label='Maximum # of files that can be specified in the \'f\' GET parameter'|gettext value=$smarty.const.MINIFY_MAX_FILES}
 					{control type="text" name="sc[MINIFY_URL_LENGTH]" label="The length of minification url"|gettext value=$smarty.const.MINIFY_URL_LENGTH}
 					{control type="checkbox" postfalse=1 name="sc[MINIFY_ERROR_LOGGER]" label="Enable logging of minify error messages to FirePHP?"|gettext checked=$smarty.const.MINIFY_ERROR_LOGGER value=1}
                     

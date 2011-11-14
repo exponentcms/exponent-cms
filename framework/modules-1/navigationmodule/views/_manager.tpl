@@ -25,8 +25,8 @@
 	</div>
 	<div id="navmanager-tabs" class="yui-navset yui3-skin-sam hide">
 	    <ul class="yui-nav">
-        	<li class="selected"><a href="#tab1"><em>Hierarchy</em></a></li>
-	        {if $canManageStandalones}<li><a href="#tab2"><em>Standalone</em></a></li>{/if}
+        	<li class="selected"><a href="#tab1"><em>{'Hierarchy'|gettext}</em></a></li>
+	        {if $canManageStandalones}<li><a href="#tab2"><em>{'Standalone'|gettext}</em></a></li>{/if}
         	{*if $canManagePagesets}<li><a href="#tab3"><em>Page Sets</em></a></li>{/if*}
 	    </ul>            
 	    <div class="yui-content">

@@ -231,7 +231,7 @@
                  {if isset($order->order_discounts[0]) && $order->order_discounts[0]->isCartDiscount()} 
                  <tr class="odd">
                     <td style="border:1px solid #DEDEDE;">
-                    {gettext str="Total Discounts (Code: `$order->order_discounts[0]->coupon_code`)"}
+                    {"Total Discounts (Code"|gettext}: {$order->order_discounts[0]->coupon_code})
                     </td>
                     <td style="border:1px solid #DEDEDE; border-right:0px">
                     {currency_symbol}
@@ -268,7 +268,7 @@
                 <tr class="even">
                     <td style="border:1px solid #DEDEDE;">
                         {if isset($order->order_discounts[0]) && $order->order_discounts[0]->isShippingDiscount()} 
-                            {gettext str="Shipping & Handling (Discount Code: `$order->order_discounts[0]->coupon_code`)"}
+                            {"Shipping & Handling (Discount Code"|gettext}: {$order->order_discounts[0]->coupon_code})
                         {else}
                             {"Shipping & Handling"|gettext}
                         {/if}                    

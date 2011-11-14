@@ -108,7 +108,7 @@ class discounts extends expRecord {
         global $order, $user;
         $retMessage = "";
         if (!$this->isAvailable()) {            
-            return "This discount code you entered is currently unavailable.";            
+            return gt("This discount code you entered is currently unavailable.");
         } 
         
         //check discounts rules
@@ -137,14 +137,14 @@ class discounts extends expRecord {
             }             
             //eDebug($required_groups);
             //eDebug($users_groups);
-            if (!$inARequiredGroup) return "This discount is not available to your user group.";
+            if (!$inARequiredGroup) return gt("This discount is not available to your user group.");
         }
         
         
         //5. check minimum order amount
         if ($order->subtotal < $this->minimum_order_amount) 
         {
-            $retMessage = "You must purchase a minimum of $" . /* number_format() */ $this->minimum_order_amount . " to use this coupon code.";            
+            $retMessage = gt("You must purchase a minimum of")." $" . /* number_format() */ $this->minimum_order_amount . " ".gt("to use this coupon code.");
         }
          
         //check rules of products in cart

@@ -419,7 +419,7 @@
                  <tr class="odd">
                     <td>
                     {if isset($order->order_discounts[0]) && $order->order_discounts[0]->isCartDiscount()}
-                        {gettext str="Total Cart Discounts (Code: `$order->order_discounts[0]->coupon_code`)"}
+                        {"Total Cart Discounts (Code"|gettext}: {$order->order_discounts[0]->coupon_code})
                     {else}
                         {"Total Cart Discounts"|gettext}
                     {/if}
@@ -460,7 +460,7 @@
                 <tr class="even">
                     <td>
                     {if isset($order->order_discounts[0]) && $order->order_discounts[0]->isShippingDiscount()} 
-                        {gettext str="Shipping & Handling (Discount Code: `$order->order_discounts[0]->coupon_code`)"}
+                        {"Shipping & Handling (Discount Code"|gettext}: {$order->order_discounts[0]->coupon_code})
                     {else}
                         {"Shipping & Handling"|gettext}
                     {/if}

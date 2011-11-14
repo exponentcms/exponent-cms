@@ -465,7 +465,7 @@ class expSettings {
 					$t[] = trim($l);
 
 					if ($go) {
-						$array[$t[0]] = $t[1];
+						$array[$t[0]] = gt($t[1]);
 						$t = array();
 					}
 				}

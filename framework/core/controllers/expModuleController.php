@@ -61,7 +61,7 @@ class expModuleController extends expController {
                 $db->insertObject($aMod,'modstate');
             }
         }
-        flash("message", "Active Modules have been updated.");
+        flash("message", gt("Active Modules have been updated."));
         expHistory::returnTo('editable');
     }
 

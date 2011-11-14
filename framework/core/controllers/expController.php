@@ -141,7 +141,7 @@ abstract class expController {
 	 * description of module
 	 * @return string
 	 */
-	function description() { return "This is the base controller that most Exponent modules will inherit from."; }
+	function description() { return gt("This is the base controller that most Exponent modules will inherit from."); }
 
 	/**
 	 * does module have sources available?
@@ -362,7 +362,7 @@ abstract class expController {
 	function delete() {
         $modelname = $this->basemodel_name;
         if (empty($this->params['id'])) {
-	        flash('error', 'Missing id for the '.$modelname.' you would like to delete');
+	        flash('error', gt('Missing id for the').' '.$modelname.' '.gt('you would like to delete'));
 	        expHistory::back();
 	    }
         

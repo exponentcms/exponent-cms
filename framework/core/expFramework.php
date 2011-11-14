@@ -146,7 +146,7 @@ function renderAction(array $parms=array()) {
     } elseif ($controllerClass->hasMethod('showall')) {
         $action = 'showall';
     } else {
-        expQueue::flashAndFlow('error', 'The requested action could not be performed: Action not found');
+        expQueue::flashAndFlow('error', gt('The requested action could not be performed: Action not found'));
     }
 
     // initialize the controller.
@@ -198,7 +198,7 @@ function renderAction(array $parms=array()) {
     if (array_key_exists($permaction, $perms)) {
         if (!expPermissions::check($permaction, $controller->loc)) {
             if (expTheme::inAction()) {
-                flash('error', "You don't have permission to ".$perms[$permaction]);
+                flash('error', gt("You don't have permission to")." ".$perms[$permaction]);
                 expHistory::returnTo('viewable');
             } else {
                 return false;
@@ -207,7 +207,7 @@ function renderAction(array $parms=array()) {
     } elseif (array_key_exists($common_action_name, $perms)) {
         if (!expPermissions::check($common_action_name, $controller->loc)) {
             if (expTheme::inAction()) {
-                flash('error', "You don't have permission to ".$perms[$common_action_name]);
+                flash('error', gt("You don't have permission to")." ".$perms[$common_action_name]);
                 expHistory::returnTo('viewable');
             } else {
                 return false;
@@ -216,14 +216,14 @@ function renderAction(array $parms=array()) {
     } elseif (array_key_exists($permaction, $controller->requires_login)) {
         // check if the action requires the user to be logged in
         if (!$user->isLoggedIn()) {
-            $msg = empty($controller->requires_login[$permaction]) ? "You must be logged in to perform this action" : $controller->requires_login[$permaction];
+            $msg = empty($controller->requires_login[$permaction]) ? gt("You must be logged in to perform this action") : $controller->requires_login[$permaction];
             flash('error', $msg);
             expHistory::redirecto_login();
         }
     } elseif (array_key_exists($common_action_name, $controller->requires_login)) {
         // check if the action requires the user to be logged in
         if (!$user->isLoggedIn()) {
-            $msg = empty($controller->requires_login[$common_action_name]) ? "You must be logged in to perform this action" : $controller->requires_login[$common_action_name];
+            $msg = empty($controller->requires_login[$common_action_name]) ? gt("You must be logged in to perform this action") : $controller->requires_login[$common_action_name];
             flash('error', $msg);
             expHistory::redirecto_login();
         }
@@ -405,7 +405,7 @@ function get_config_templates($controller, $loc) {
         if (file_exists($path.'/'.$viewconfig)) {
             $fileparts = explode('_', $viewname);
             if ($fileparts[0]=='show'||$fileparts[0]=='showall') array_shift($fileparts);
-            $module_views[$viewname]['name'] = ucwords(implode(' ', $fileparts)).' View Configuration';
+            $module_views[$viewname]['name'] = ucwords(implode(' ', $fileparts)).' '.gt('View Configuration');
             $module_views[$viewname]['file'] =$path.'/'.$viewconfig;
         }
     }

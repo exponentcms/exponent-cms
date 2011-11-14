@@ -39,7 +39,7 @@ class order_discounts extends expRecord {
         {
             //somthing is wrong so we need to remove the code, flash an erorr, and redirect to rebuild the cart
             $this->delete();
-            flash('error', $validateDiscountMessage . "This discount code has been removed from your cart.");
+            flash('error', $validateDiscountMessage . gt("This discount code has been removed from your cart."));
             //redirect_to($redirectOnFailureTo);          
             redirect_to($router->current_url);          
         }        
