@@ -22,9 +22,9 @@
 	<h1>{ecomconfig var='cart_title_text' default="Your Secure Shopping Cart"}</h1>
     <div id="cart-message">{ecomconfig var='cart_description_text' default=""}</div>
     <div style="padding:8px; 0">
-        <a class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" href="{backlink}">Continue Shopping</a>
+        <a class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" href="{backlink}">{"Continue Shopping"|gettext}</a>
         {if $items|@count gt 0}
-        <a class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" style="margin-left: 18px;" href="{securelink controller=cart action=checkout}">Checkout Now</a>
+        <a class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" style="margin-left: 18px;" href="{securelink controller=cart action=checkout}">{"Checkout Now"|gettext}</a>
         {/if}
         <a class="awesome small red" style="float:right; margin-left: 18px;" href="{link action=empty_cart}"  onclick="return confirm('Are you sure you want to empty all items from your shopping cart?');">Empty Cart</a>
     </div>
@@ -32,9 +32,9 @@
 		<div id="cart-top" width="100%" cellpadding="0" cellspacing="0">
 			<div class="cart-total-label">
                 {if $order->total_discounts > 0} 
-			        <span class="total-label">Cart Items Total With Discounts:</span>
+			        <span class="total-label">{"Cart Items Total With Discounts:"|gettext}</span>
                 {else}
-                    <span class="total-label">Cart Items Total:</span>
+                    <span class="total-label">{"Cart Items Total:"|gettext}</span>
                 {/if}
 				<span id="cart-total" class="carttotal">{currency_symbol}{$order->total|number_format:2}</span>
 			</div>
@@ -47,14 +47,14 @@
                 <thead>
                     <tr>
                         <th colspan=3 align="left">
-                            {gettext str="Totals"}
+                            {"Totals"|gettext}
                         </th>
                    </tr>
                 </thead>
                 <tbody>
                     <tr class="{cycle values="odd, even"}">
                         <td class="cart-totals-title">
-                        {gettext str="Subtotal"}:
+                        {"Subtotal"|gettext}:
                         </td>
                         <td>
                         {currency_symbol}
@@ -66,7 +66,7 @@
                         {if $discounts[0]->isCartDiscount()} 
                              <tr class="{cycle values="odd, even"}">
                                 <td class="cart-totals-title">
-                                <a style="font-weight: none;" href="{link action=removeDiscountFromCart id=$discounts[0]->id}"  alt="Remove discount from cart.">[remove coupon code]</a>&nbsp;(<span style="background-color:#33CC00;">{$discounts[0]->coupon_code}</span>)&nbsp;{gettext str="Total Discounts"}:
+                                <a style="font-weight: none;" href="{link action=removeDiscountFromCart id=$discounts[0]->id}"  alt="Remove discount from cart.">[remove coupon code]</a>&nbsp;(<span style="background-color:#33CC00;">{$discounts[0]->coupon_code}</span>)&nbsp;{"Total Discounts"|gettext}:
                                 </td>
                                 <td>
                                 {currency_symbol}
@@ -76,7 +76,7 @@
                             </tr>
                             <tr class="{cycle values="odd, even"}">
                                 <td class="cart-totals-title">
-                                {gettext str="Cart Total"}:
+                                {"Cart Total"|gettext}:
                                 </td>
                                 <td>
                                 {currency_symbol}
@@ -88,7 +88,7 @@
                       {/if}     
                       <tr class="{cycle values="odd, even"}">
                         <td width="90%" class="cart-totals-title">
-                        {gettext str="Tax - "}
+                        {"Tax - "|gettext}
                         {foreach from=$order->taxzones item=zone}
                             {$zone->name} ({$zone->rate}%):
                         {foreachelse}
@@ -105,11 +105,11 @@
                         <td class="cart-totals-title">
                         {if isset($discounts[0])}                        
                             {if $discounts[0]->isShippingDiscount()}
-                                <a style="font-weight: none;" href="{link action=removeDiscountFromCart id=$discounts[0]->id}"  alt="Remove discount from cart.">[remove coupon code]</a>&nbsp;(<span style="background-color:#33CC00;">{$discounts[0]->coupon_code}</span>)&nbsp; 
+                                <a style="font-weight: none;" href="{link action=removeDiscountFromCart id=$discounts[0]->id}"  alt="Remove discount from cart.">[remove coupon code]</a>&nbsp;(<span style="background-color:#33CC00;">{$discounts[0]->coupon_code}</span>)&nbsp;
                             {/if}
                         {/if}
                         {* else *}
-                        {gettext str="Estimated Shipping & Handling"}:
+                        {"Estimated Shipping & Handling"|gettext}:
                         {* /if *}
                         </td>
                         <td>
@@ -122,7 +122,7 @@
                     {if $order->surcharge_total != 0}
                         <tr class="{cycle values="odd, even"}">
                             <td class="cart-totals-title">
-                            {gettext str="Freight Surcharge"}
+                            {"Freight Surcharge"|gettext}
                             </td>
                             <td>
                             {currency_symbol}
@@ -133,7 +133,7 @@
                     {/if}
                     <tr class="{cycle values="odd, even"}">
                         <td class="cart-totals-title">
-                        {gettext str="Order Total"}:
+                        {"Order Total"|gettext}:
                         </td>
                         <td>
                         {currency_symbol}
@@ -146,8 +146,8 @@
                             <td colspan="3">
                             <div class="input-code">
                                 {form action="addDiscountToCart"}
-                                    {control type="text" name="coupon_code" label="Enter a Discount Code"}
-                                    {control type="buttongroup" submit="Apply Code"}
+                                    {control type="text" name="coupon_code" label="Enter a Discount Code"|gettext}
+                                    {control type="buttongroup" submit="Apply Code"|gettext}
                                 {/form}
                             </div>                
                             <div style="clear:both"></div>
@@ -159,9 +159,9 @@
         {/if}
 	</div>
     <div style="padding:8px; 0">
-        <a class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" href="{backlink}">Continue Shopping</a>
+        <a class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" href="{backlink}">{"Continue Shopping"|gettext}</a>
         {if $items|@count gt 0}
-        <a class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" style="margin-left: 18px;" href="{securelink controller=cart action=checkout}">Checkout Now</a>
+        <a class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" style="margin-left: 18px;" href="{securelink controller=cart action=checkout}">{"Checkout Now"|gettext}</a>
         {/if}
     </div>
 </div>

@@ -45,7 +45,7 @@
             </div>
         </div>
 	    <div class="loadingdiv">{'Loading'|gettext}</div>
-        {control type="buttongroup" submit="Save Gift Card" cancel="Cancel"}
+        {control type="buttongroup" submit="Save Gift Card"|gettext cancel="Cancel"|gettext}
     {/form}
 </div>
 

@@ -14,9 +14,9 @@
  *
  *}
 
-<h2>Configure this Module</h2>
+<h2>{'Configure this Module'|gettext}</h2>
 <p>
-    If no Message of the Day if found for the current day we can pull up a random previous
-    Message of the Day.  If you would like to use this functionality check the box below.
+    {'If no Message of the Day if found for the current day we can pull up a random previous
+    Message of the Day.  If you would like to use this functionality check the box below.'|gettext}
 </p>
-{control type="checkbox" name="userand" label="Use Random MOTD" value=1 checked=$config.userand}
+{control type="checkbox" name="userand" label="Use Random MOTD"|gettext value=1 checked=$config.userand}

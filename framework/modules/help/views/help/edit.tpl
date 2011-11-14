@@ -15,54 +15,54 @@
  *}
 
 <div id="edithelp" class="module help edit">
-    {if $record->id != ""}<h1>Editing {$record->title}</h1>{else}<h1>New Help Document</h1>{/if}
+    {if $record->id != ""}<h1>{'Editing'|gettext} {$record->title}</h1>{else}<h1>{'New Help Document'|gettext}</h1>{/if}
     {form action=update record=$record}
         {control type=hidden name=id value=$record->id}
         <div id="edithelp-tabs" class="yui-navset yui3-skin-sam hide">
             <ul class="yui-nav">
-                <li class="selected"><a href="#tab1"><em>General</em></a></li>
-                <li><a href="#tab2"><em>Actions and Views</em></a></li>
-                <li><a href="#tab3"><em>Configuration</em></a></li>
-                <li><a href="#tab4"><em>Videos</em></a></li>
-                <li><a href="#tab5"><em>Additional Info</em></a></li>
-                <li><a href="#tab6"><em>SEO</em></a></li>
+                <li class="selected"><a href="#tab1"><em>{'General'|gettext}</em></a></li>
+                <li><a href="#tab2"><em>{'Actions and Views'|gettext}</em></a></li>
+                <li><a href="#tab3"><em>{'Configuration'|gettext}</em></a></li>
+                <li><a href="#tab4"><em>{'Videos'|gettext}</em></a></li>
+                <li><a href="#tab5"><em>{'Additional Information'|gettext}</em></a></li>
+                <li><a href="#tab6"><em>{'SEO'|gettext}</em></a></li>
             </ul>            
             <div class="yui-content">
             <div id="tab1">
-                <h2>General Information</h2>
-                {control type=text name=title label="Title" value=$record->title}
-	            {control type="text" name="sef_url" label="SEF URL" value=$record->sef_url}
-                {control type="dropdown" name="help_version_id" label="Version" frommodel="help_version" key=id display=version order=version dir=DESC value=$record->help_version_id}
-                {control type=textarea name=summary label="Summary" value=$record->summary}
-                {control type=html name=body label="General Information" value=$record->body}
-				{control type="dropdown" name="section" label="Help Section" items=$sections value=$cursec}
+                <h2>{'General Information'|gettext}</h2>
+                {control type=text name=title label="Title"|gettext value=$record->title}
+	            {control type="text" name="sef_url" label="SEF URL"|gettext value=$record->sef_url}
+                {control type="dropdown" name="help_version_id" label="Version"|gettext frommodel="help_version" key=id display=version order=version dir=DESC value=$record->help_version_id}
+                {control type=textarea name=summary label="Summary"|gettext value=$record->summary}
+                {control type=html name=body label="General Information"|gettext value=$record->body}
+				{control type="dropdown" name="section" label="Help Section"|gettext items=$sections value=$cursec}
             </div>
             <div id="tab2">
-                 <h2>Actions and Views</h2>
-                 {control type=html name=actions_views label="Actions and Views" value=$record->actions_views}
+                 <h2>{'Actions and Views'|gettext}</h2>
+                 {control type=html name=actions_views label="Actions and Views"|gettext value=$record->actions_views}
             </div>
             <div id="tab3">
-                 <h2>Configuration</h2>
-                 {control type=html name=configuration label="Configurations" value=$record->configuration}
+                 <h2>{'Configuration'|gettext}</h2>
+                 {control type=html name=configuration label="Configurations"|gettext value=$record->configuration}
             </div>
             <div id="tab4">
-                <h2>YouTube Video Code</h2>
-                {control type=textarea cols=80 rows=20 name=youtube_vid_code label="YouTube Video (Embed) Code" value=$record->youtube_vid_code}
+                <h2>{'YouTube Video Code'|gettext}</h2>
+                {control type=textarea cols=80 rows=20 name=youtube_vid_code label="YouTube Video (Embed) Code"|gettext value=$record->youtube_vid_code}
             </div>
             <div id="tab5">
-                 <h2>Additional Information</h2>
-                 {control type=html name=additional label="Additional Info (displays in side column)" value=$record->additional}
+                 <h2>{'Additional Information'|gettext}</h2>
+                 {control type=html name=additional label="Additional Info"|gettext|cat:" ("|cat:("displays in side column"|gettext)|cat:")"|gettext value=$record->additional}
             </div>
             <div id="tab6">
-                 <h2>SEO Settings</h2>
-                {control type="text" name="meta_title" label="Meta Title" value=$record->meta_title}
-                {control type="textarea" name="meta_keywords" label="Meta Description" rows=5 cols=35 value=$record->meta_description}
-                {control type="textarea" name="meta_description" label="Meta Keywords" rows=5 cols=35 value=$record->meta_keywords}
+                 <h2>{'SEO Settings'|gettext}</h2>
+                {control type="text" name="meta_title" label="Meta Title"|gettext value=$record->meta_title}
+                {control type="textarea" name="meta_keywords" label="Meta Description"|gettext rows=5 cols=35 value=$record->meta_description}
+                {control type="textarea" name="meta_description" label="Meta Keywords"|gettext rows=5 cols=35 value=$record->meta_keywords}
             </div>
             </div>
         </div>
 	    <div class="loadingdiv">{"Loading Help Item"|gettext}</div>
-        {control type=buttongroup submit="Save Help Doc" cancel="Cancel"}
+        {control type=buttongroup submit="Save Help Doc"|gettext cancel="Cancel"|gettext}
     {/form}     
 </div>
 

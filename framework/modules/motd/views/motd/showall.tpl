@@ -19,7 +19,7 @@
 {/css}
 
 <div class="module motd showall">
-    <h1>{$moduletitle|default:"Messages by day"}</h1>
+    <h1>{$moduletitle|default:"Messages by day"|gettext}</h1>
     <div class="bodycopy">
         {$record->body}
     </div>
@@ -28,7 +28,7 @@
     {permissions}
 		<div class="module-actions">
 			{if $permissions.edit == 1}
-				{icon class=add action=create text="Add a New Message"}
+				{icon class=add action=create text="Add a New Message"|gettext}
 			{/if}
 		</div>
     {/permissions}
@@ -48,10 +48,10 @@
 					{permissions}
 						<div class="item-actions">
 							{if $permissions.edit == 1}
-								{icon action=edit record=$listing title="Edit this message"}
+								{icon action=edit record=$listing title="Edit this message"|gettext}
 							{/if}
 							{if $permissions.delete == 1}
-								{icon action=delete record=$listing title="Delete this message" onclick="return confirm('Are you sure you want to delete this message?');"}
+								{icon action=delete record=$listing title="Delete this message"|gettext onclick="return confirm('Are you sure you want to delete this message?');"}
 							{/if}
 						</div>
 					{/permissions}  
@@ -60,7 +60,7 @@
 			{foreachelse}
 				<tr class="{cycle values="odd,even"}">
 				<td colspan="6">
-					There are no products in the this store yet.
+					{'There are no messages yet.'|gettext}
 				</td>                   
 			</tr>
 			{/foreach}

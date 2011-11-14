@@ -17,6 +17,23 @@
 #
 ##################################################
 
+/**
+ * Smarty plugin
+ * @package Smarty-Plugins
+ * @subpackage Function
+ */
+
+/**
+ * Smarty {pagelinks} function plugin
+ *
+ * Type:     function<br>
+ * Name:     pagelinks<br>
+ * Purpose:  display page links
+ *
+ * @param         $params
+ * @param \Smarty $smarty
+ * @return bool
+ */
 function smarty_function_pagelinks($params,&$smarty) {
     $config = $smarty->getTemplateVars('config');
     if (!$config['pagelinks'] || $config['pagelinks']=="Top and Bottom") {

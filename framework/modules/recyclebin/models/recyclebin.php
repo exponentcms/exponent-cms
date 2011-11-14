@@ -31,7 +31,7 @@ class recyclebin extends expRecord {
             } else {
                 $mod = new $module();
                 ob_start();
-	                $mod->show("Default",$loc);
+	                $mod->show("Default",$loc);  //FIXME $loc is not set
 	                $orphans[$i]->html =ob_get_contents();
 	            ob_end_clean();
             }

@@ -17,6 +17,22 @@
 #
 ##################################################
 
+/**
+ * Smarty plugin
+ * @package Smarty-Plugins
+ * @subpackage Modifier
+ */
+
+/**
+ * Smarty {remove_space} modifier plugin
+ *
+ * Type:     modifier<br>
+ * Name:     remove_space<br>
+ * Purpose:  remove spaces, replacing them with underscores
+ *
+ * @param array
+ * @return array
+ */
 function smarty_modifier_remove_space($string) {
 		return str_replace(' ', '_', $string);
 }

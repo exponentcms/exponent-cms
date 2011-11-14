@@ -18,6 +18,7 @@
 ##################################################
 /** @define "BASE" "." */
 
+global $db;
 if (!defined('EXPONENT')) exit('');
 function epb($buffer, $mode) {
     //@ob_gzhandler($buffer, $mode);

@@ -17,6 +17,22 @@
 #
 ##################################################
 
+/**
+ * Smarty plugin
+ * @package Smarty-Plugins
+ * @subpackage Function
+ */
+
+/**
+ * Smarty {br} function plugin
+ *
+ * Type:     function<br>
+ * Name:     br<br>
+ * Purpose:  create an appropriate break depending on xhtml setting
+ *
+ * @param         $params
+ * @param \Smarty $smarty
+ */
 function smarty_function_br($params,&$smarty) {
 	if (XHTML==1){
 		echo "<br />";

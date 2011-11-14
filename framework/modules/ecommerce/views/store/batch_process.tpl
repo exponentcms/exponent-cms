@@ -21,7 +21,7 @@
         {control type="dropdown" name="order_status_success" label="Set Status of Successfully Captured and Non-Authorized Orders (PayPal, Phone, etc) To:" size=4 multiple=false items=$order_status default=-1} 
         {* control type="dropdown" name="order_status_fail" label="Set Status of Orders That Fail Capture To:" size=4 multiple=false items=$order_status default=-1 *}    
         {control type="radiogroup" name="email_customer" label="Email Status to Customer?" flip=true items="No,Yes"}
-        {control type="buttongroup" submit="Process Orders" cancel="Cancel"}
+        {control type="buttongroup" submit="Process Orders"|gettext cancel="Cancel"|gettext}
     {/form}
     {br}
 </div>

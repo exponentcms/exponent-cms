@@ -50,15 +50,15 @@
                 <div id="nav-menu" class="yuimenubar yuimenubarnav">
                     <div class="bd">
                         <ul class="first-of-type">
-                            <li class="yuimenubaritem first-of-type"><a class="yuimenubaritemlabel" href="#file">File</a>
+                            <li class="yuimenubaritem first-of-type"><a class="yuimenubaritemlabel" href="#file">{'File'|gettext}</a>
                                 <div id="file" class="yuimenu">
                                     <div class="bd">
                                         <ul>
                                             {if $saveog==1}
-                                                <li class="yuimenuitem yuimenuitemlabel" id="saveAsIs">Save over existing</li>
+                                                <li class="yuimenuitem yuimenuitemlabel" id="saveAsIs">{'Save over existing'|gettext}</li>
                                             {/if}
-                                            <li class="yuimenuitem yuimenuitemlabel" id="saveAsCopy">Save as a copy</li>
-                                            <li class="yuimenuitem yuimenuitemlabel" id="quit">Quit without saving</li>
+                                            <li class="yuimenuitem yuimenuitemlabel" id="saveAsCopy">{'Save as a copy'|gettext}</li>
+                                            <li class="yuimenuitem yuimenuitemlabel" id="quit">{'Quit without saving'|gettext}</li>
                                             <!--li class="yuimenuitem yuimenuitemlabel" id="openFile">Open <em class="helptext">Shift + O</em></li>
                                             <li class="yuimenuitem yuimenuitemlabel" id="saveJpgTool">Save as JPG <em class="helptext">Shift + J</em></li>
                                             <li class="yuimenuitem yuimenuitemlabel" id="savePngTool">Save as PNG <em class="helptext">Shift + P</em></li>
@@ -67,46 +67,46 @@
                                     </div>
                                 </div>      
                             </li>
-                            <li class="yuimenubaritem first-of-type"><a class="yuimenubaritemlabel" href="#edit">Edit</a>
+                            <li class="yuimenubaritem first-of-type"><a class="yuimenubaritemlabel" href="#edit">{'Edit'|gettext}</a>
                                 <div id="edit" class="yuimenu">
                                     <div class="bd">
                                         <ul>
-                                            <li class="yuimenuitem yuimenuitemlabel" id="undoTool">Undo <em class="helptext">Shift + Z</em></li>
+                                            <li class="yuimenuitem yuimenuitemlabel" id="undoTool">{'Undo'|gettext} <em class="helptext">{'Shift'|gettext} + Z</em></li>
                                         </ul>
                                     </div>
                                 </div>
                             </li>
-                            <li class="yuimenubaritem"><a class="yuimenubaritemlabel" href="#image">Image</a>
+                            <li class="yuimenubaritem"><a class="yuimenubaritemlabel" href="#image">{'Image'|gettext}</a>
                                 <div id="image" class="yuimenu">
                                     <div class="bd">
                                         <ul>
-                                            <li class="yuimenuitem yuimenuitemlabel" id="brightnessTool">Brightness <em class="helptext">Shift + B</em></li>
-                                            <li class="yuimenuitem yuimenuitemlabel" id="contrastTool">Contrast <em class="helptext">Shift + C</em></li>
-                                            <li class="yuimenuitem yuimenuitemlabel" id="cropTool">Crop <em class="helptext">Shift + V</em></li>
+                                            <li class="yuimenuitem yuimenuitemlabel" id="brightnessTool">{'Brightness'|gettext} <em class="helptext">{'Shift'|gettext} + B</em></li>
+                                            <li class="yuimenuitem yuimenuitemlabel" id="contrastTool">{'Contrast'|gettext} <em class="helptext">{'Shift'|gettext} + C</em></li>
+                                            <li class="yuimenuitem yuimenuitemlabel" id="cropTool">{'Crop'|gettext} <em class="helptext">{'Shift'|gettext} + V</em></li>
                                             <li class="yuimenuitem">
-                                                <a class="yuimenuitemlabel" href="#flipTool">Flip</a>
+                                                <a class="yuimenuitemlabel" href="#flipTool">{'Flip'|gettext}</a>
                                                 <div id="flipTool" class="yuimenu">
                                                     <div class="bd">
                                                         <ul class="first-of-type">
-                                                            <li class="yuimenuitem yuimenuitemlabel" id="flipToolH">Horizontal <em class="helptext">Shift + H</em></li>
-                                                            <li class="yuimenuitem yuimenuitemlabel" id="flipToolV">Vertical <em class="helptext">Shift + Y</em></li>
+                                                            <li class="yuimenuitem yuimenuitemlabel" id="flipToolH">{'Horizontal'|gettext} <em class="helptext">{'Shift'|gettext} + H</em></li>
+                                                            <li class="yuimenuitem yuimenuitemlabel" id="flipToolV">{'Vertical'|gettext} <em class="helptext">{'Shift'|gettext} + Y</em></li>
                                                         </ul>
                                                     </div>
                                                 </div>
                                             </li>
-                                            <li class="yuimenuitem yuimenuitemlabel" id="negativeTool">Negative <em class="helptext">Shift + N</em></li>
-                                            <li class="yuimenuitem yuimenuitemlabel" id="resizeTool">Resize <em class="helptext">Shift + X</em></li>
-                                            <li class="yuimenuitem yuimenuitemlabel" id="rotateTool">Rotate <em class="helptext">Shift + R</em></li>
-                                            <li class="yuimenuitem yuimenuitemlabel" id="tintTool">Tint <em class="helptext">Shift + T</em></li>
+                                            <li class="yuimenuitem yuimenuitemlabel" id="negativeTool">{'Negative'|gettext} <em class="helptext">{'Shift'|gettext} + N</em></li>
+                                            <li class="yuimenuitem yuimenuitemlabel" id="resizeTool">{'Resize'|gettext} <em class="helptext">{'Shift'|gettext} + X</em></li>
+                                            <li class="yuimenuitem yuimenuitemlabel" id="rotateTool">{'Rotate'|gettext} <em class="helptext">{'Shift'|gettext} + R</em></li>
+                                            <li class="yuimenuitem yuimenuitemlabel" id="tintTool">{'Tint'|gettext} <em class="helptext">{'Shift'|gettext} + T</em></li>
                                         </ul>
                                     </div>                   
                                 </div>
                             </li>
-                            <li class="yuimenubaritem"><a class="yuimenubaritemlabel" href="#help">Help</a>
+                            <li class="yuimenubaritem"><a class="yuimenubaritemlabel" href="#help">{'Help'|gettext}</a>
                                 <div id="help" class="yuimenu">
                                     <div class="bd">
                                         <ul>
-                                            <li class="yuimenuitem yuimenuitemlabel" id="aboutTool">About <em class="helptext">Shift + A</em></li>
+                                            <li class="yuimenuitem yuimenuitemlabel" id="aboutTool">{'About'|gettext} <em class="helptext">{'Shift'|gettext} + A</em></li>
                                         </ul>
                                     </div>
                                 </div>
@@ -124,7 +124,7 @@
                 
                 <!-- Upload form -->
                 <div id="uploadPanel">
-                    <div class="hd">Choose your file to upload</div>
+                    <div class="hd">{'Choose your file to upload'|gettext}</div>
                     <div class="bd">
                         <form action="upload.php" enctype="multipart/form-data" method="post" name="uploadForm" id="uploadForm">
                             Image : <input type="file" name="uploadImage" id="uploadImage" />
@@ -135,7 +135,7 @@
                 
                 <!-- Tint panel -->
                 <div id="tintPickerPanel" class="yui-picker-panel">
-                    <div class="hd">Please choose a color:</div>
+                    <div class="hd">{'Please choose a color'|gettext}:</div>
                     <div class="bd">
                         <div class="yui-picker" id="tintPicker"></div>
                     </div>
@@ -144,7 +144,7 @@
                 
                 <!-- Contrast panel -->
                 <div id="contrastPanel">
-                    <div class="hd">Adjust contrast</div>
+                    <div class="hd">{'Adjust contrast'|gettext}</div>
                     <div class="bd">
                         <div id="contrastSliderBg" class="yui-h-slider" title="Slider">
                             <div id="contrastSliderThumb" class="yui-slider-thumb"><img src="{$smarty.const.URL_FULL|cat:'framework/modules/pixidou/assets/images/thumb-n.gif'}" alt="" /></div>
@@ -156,7 +156,7 @@
                 
                 <!-- Brightness panel -->
                 <div id="brightnessPanel">
-                    <div class="hd">Adjust brightness</div>
+                    <div class="hd">{'Adjust brightness'|gettext}</div>
                     <div class="bd">
                         <div id="brightnessSliderBg" class="yui-h-slider" title="Slider">
                             <div id="brightnessSliderThumb" class="yui-slider-thumb"><img src="{$smarty.const.URL_FULL|cat:'framework/modules/pixidou/assets/images/thumb-n.gif'}" alt="" /></div>
@@ -168,11 +168,11 @@
                 
                 <!-- Help About panel -->
                 <div id="aboutPanel">
-                    <div class="hd">About Pixidou</div>
+                    <div class="hd">{'About'|gettext} Pixidou</div>
                     <div class="bd">
                         <div id="aboutTab" class="yui-navset">
                             <ul class="yui-nav">
-                                <li class="selected"><a href="#aboutAbout"><em>About</em></a></li>
+                                <li class="selected"><a href="#aboutAbout"><em>{'About'|gettext}</em></a></li>
                                 <li><a href="#aboutJoin"><em>Join Pixidou</em></a></li>
                                 <li><a href="#aboutLicense"><em>License Agreement</em></a></li>
                             </ul>           
@@ -204,8 +204,8 @@
                 <!-- Info panel -->
                 <div id="infoPanel">
                     <div class="infoZoom">
-                        <button type="button" id="zoomInTool" name="zoomInTool" value="Zoom In">Zoom +</button>
-                        <button type="button" id="zoomOutTool" name="zoomOutTool" value="Zoom Out">Zoom -</button>
+                        <button type="button" id="zoomInTool" name="zoomInTool" value="Zoom In">{'Zoom'|gettext} +</button>
+                        <button type="button" id="zoomOutTool" name="zoomOutTool" value="Zoom Out">{'Zoom'|gettext} -</button>
                         <span id="zoomValue">100</span>%
                     </div>
                 </div>
@@ -213,8 +213,8 @@
                 
                 <!-- Actions panel -->
                 <div id="actionsPanel">
-                    <button type="button" id="applyTool" name="applyTool" value="Apply">Apply</button>
-                    <button type="button" id="cancelTool" name="cancelTool" value="Cancel">Cancel</button>
+                    <button type="button" id="applyTool" name="applyTool" value="Apply">{'Apply'|gettext}</button>
+                    <button type="button" id="cancelTool" name="cancelTool" value="Cancel">{'Cancel'|gettext}</button>
                 </div>
                 <!-- /Actions panel -->
             </div>

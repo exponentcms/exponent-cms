@@ -16,20 +16,20 @@
 
 <div class="module help edit yui-skin-sam">
     {if $record->id != ""}
-        <h1>Editing Version {$record->version}</h1>
+        <h1>{'Editing Version'|gettext} {$record->version}</h1>
     {else}
-        <h1>New Help Version</h1>
+        <h1>{'New Help Version'|gettext}</h1>
         <p>
-            Creating a new version will copy all the docs from the current version over to the 
-            new version and make them available for viewing and editing
+            {'Creating a new version will copy all the docs from the current version over to the
+            new version and make them available for viewing and editing'|gettext}
         </p>
     {/if}
 
     {form action=update_version}
         {control type=hidden name=id value=$record->id}
-        {control type="text" name="version" label="Version #" value=$record->version}
-        {control type=text name=title label="Version Name" value=$record->title}
-        {control type="checkbox" name="is_current" label="Make this the current version" value=1 checked=$record->is_current}
-        {control type=buttongroup submit="Save Version" cancel="Cancel"}
+        {control type="text" name="version" label="Version"|gettext|cat:" #" value=$record->version}
+        {control type=text name=title label="Version Name"|gettext value=$record->title}
+        {control type="checkbox" name="is_current" label="Make this the current version"|gettext value=1 checked=$record->is_current}
+        {control type=buttongroup submit="Save Version"|gettext cancel="Cancel"|gettext}
     {/form}   
 </div>

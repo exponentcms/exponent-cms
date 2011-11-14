@@ -17,6 +17,22 @@
 #
 ##################################################
 
+/**
+ * Smarty plugin
+ * @package Smarty-Plugins
+ * @subpackage Modifier
+ */
+
+/**
+ * Smarty {hide_email} modifier plugin
+ *
+ * Type:     modifier<br>
+ * Name:     hide_email<br>
+ * Purpose:  obfuscate an email address
+ *
+ * @param array
+ * @return array
+ */
 function smarty_modifier_hide_email($string) {
 	return str_replace(array('@','.'),array(' at ',' dot '),$string);
 }

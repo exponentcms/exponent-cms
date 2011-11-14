@@ -19,19 +19,19 @@
             <thead>
                 <tr>
                     <th>
-                    <a href="#">{gettext str="Order Type"}</a>
+                    <a href="#">{"Order Type"|gettext}</a>
                     </th>
                     <th>
-                    <a href="#">{gettext str="Order Status"}</a>
+                    <a href="#">{"Order Status"|gettext}</a>
                     </th>
                     <th>
-                    <a href="#">{gettext str="# of Orders"}</a>
+                    <a href="#">{"# of Orders"|gettext}</a>
                     </th>
                     <th>
-                    <a href="#">{gettext str="# of Items"}</a>
+                    <a href="#">{"# of Items"|gettext}</a>
                     </th>
                     <th style="text-align:right;">
-                    <a href="#">{gettext str="Total"}</a>
+                    <a href="#">{"Total"|gettext}</a>
                     </th>
                 </tr>
             </thead>
@@ -62,16 +62,16 @@
         <tr>                            
             <td>
             {form controller="report" action="dashboard" name="filter_dashboard" id="filter_dashboard"}
-                Quick Range Filter:{br}
+                {"Quick Range Filter:"|gettext}{br}
                 {control type="dropdown" name="quickrange" label="" items=$quickrange default=$quickrange_default onchange="this.form.submit();"}      
                 {/form}
                 </td>
                 <td>{form action="dashboard"}   
-                Purchased Between:{br}
+                {"Purchased Between:"|gettext}{br}
                 {control type="calendar" name="starttime" label="" default_date=$prev_month default_hour=$prev_hour default_min=$prev_min default_ampm=$prev_ampm}{br}                
-                And{br}
+                {"And"|gettext}{br}
                 {control type="calendar" name="endtime" label="" default_date=$now_date default_hour=$now_hour default_min=$now_min default_ampm=$now_ampm}    {br}
-                {control type="buttongroup" submit="Apply Filter"}
+                {control type="buttongroup" submit="Apply Filter"|gettext}
             {/form}
             </td>
         </tr>                    

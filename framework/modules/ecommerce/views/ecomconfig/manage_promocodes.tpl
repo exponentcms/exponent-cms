@@ -40,7 +40,7 @@
                 <td>{control type=text name=title label=" "}</td>
                 <td>{control type="text" name="promo_code" label="" label=" "}</td>
                 <td>{control type="dropdown" name="discounts_id" items=$discounts key=id display=title label=" " includeblank="-- Select a Discount --"}</td>
-                <td>{control type=buttongroup submit="Add Discount"}</td>
+                <td>{control type=buttongroup submit="Add Discount"|gettext}</td>
 	        {/form}
 	    </tr>
 	</tbody>
@@ -64,7 +64,7 @@
 	                <td>{control type=text name=title label=" " value=$code->title}</td>
 	                <td>{control type="text" name="promo_code" label="" label=" " value=$code->promo_code}</td>
                     <td>{control type="dropdown" name="discounts_id" items=$discounts key=id display=title label=" " value=$code->discounts_id}</td>
-                    <td>{control type=buttongroup submit="Update"}</td>
+                    <td>{control type=buttongroup submit="Update"|gettext}</td>
 	            {/form}
 			</tr>
 		{/foreach}

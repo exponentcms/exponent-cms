@@ -59,7 +59,7 @@
             {chain controller=cart action=show view=show_quickpay_donation_cart}
         </div>
     </div>
-    {control type="buttongroup" submit="Submit" cancel="Cancel"}
+    {control type="buttongroup" submit="Submit"|gettext cancel="Cancel"|gettext}
     {/form}
     
 </div>

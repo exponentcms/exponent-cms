@@ -68,7 +68,7 @@
 				{/if}
             </div>    
         </div>
-        {control type=buttongroup submit=Save cancel=Cancel}
+        {control type=buttongroup submit="Save"|gettext cancel="Cancel"|gettext}
         {/form}                      
 </div>
 <div class="loadingdiv">{'Loading'|gettext}</div>

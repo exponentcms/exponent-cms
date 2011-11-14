@@ -17,6 +17,23 @@
 #
 ##################################################
 
+/**
+ * Smarty plugin
+ * @package Smarty-Plugins
+ * @subpackage Function
+ */
+
+/**
+ * Smarty {optiondisplayer} function plugin
+ *
+ * Type:     function<br>
+ * Name:     optiondisplayer<br>
+ * Purpose:  display option dropdown list
+ *
+ * @param         $params
+ * @param \Smarty $smarty
+ * @return bool
+ */
 function smarty_function_optiondisplayer($params,&$smarty) {
     global $db;
     

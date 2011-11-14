@@ -17,6 +17,23 @@
 #
 ##################################################
 
+/**
+ * Smarty plugin
+ * @package Smarty-Plugins
+ * @subpackage Modifier
+ */
+
+/**
+ * Smarty {address} modifier plugin
+ *
+ * Type:     modifier<br>
+ * Name:     address<br>
+ * Purpose:  return an address display from an id
+ *
+ * @param        array
+ *
+ * @return array
+ */
 function smarty_modifier_address($address) {
 	$addyid = is_numeric($address) ? $address : $address->id;
 	return renderAction(array('controller'=>'address', 'action'=>'show', 'id'=>$addyid));

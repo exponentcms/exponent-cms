@@ -28,5 +28,5 @@
 	{control type="text" name="vendor[website]" label="Website" value=$vendor->website}
 	{control type="text" name="vendor[email]" label="Email Address" value=$vendor->email}
 	
-    {control type="buttongroup" submit="Submit" cancel="Cancel"}
+    {control type="buttongroup" submit="Submit"|gettext cancel="Cancel"|gettext}
 {/form}

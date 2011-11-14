@@ -17,6 +17,22 @@
 #
 ##################################################
 
+/**
+ * Smarty plugin
+ * @package Smarty-Plugins
+ * @subpackage Function
+ */
+
+/**
+ * Smarty {gettext} function plugin
+ *
+ * Type:     function<br>
+ * Name:     gettext<br>
+ * Purpose:  Replace with the chosen language for this text
+ *
+ * @param $params
+ * @param $smarty
+ */
 function smarty_function_gettext($params,&$smarty) {
     echo expLang::gettext($params['str']);
 }

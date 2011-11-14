@@ -20,7 +20,7 @@
  
 <div class="module news headlines">
     {if $enable_rss == true}
-        <a class="rsslink" href="{rsslink}">Subscribe to {$config.feed_title}</a>
+        <a class="rsslink" href="{rsslink}">{'Subscribe to'|gettext} {$config.feed_title}</a>
     {/if}
     {if $moduletitle != ""}<h2>{$moduletitle}</h2>{/if}
 
@@ -52,10 +52,10 @@
                 {permissions}
                 <div class="item-actions">
                      {if $permissions.edit == true}
-                        {icon action=edit record=$item title="Edit this news post"}
+                        {icon action=edit record=$item}
                     {/if}
                     {if $permissions.delete == true}
-                        {icon action=delete record=$item title="Delete this news post" onclick="return confirm('Are you sure you want to delete `$item->title`?');"}
+                        {icon action=delete record=$item}
                     {/if}
                     {if $permissions.edit == true && $config.order == 'rank ASC'}
                         {if $smarty.foreach.items.first == 0}

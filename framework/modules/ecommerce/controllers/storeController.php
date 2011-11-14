@@ -1224,7 +1224,7 @@ class storeController extends expController {
         }        
         usort($res,'sortSearch');        
         
-        $ar = new expAjaxReply(200, gettext('Here\'s the items you wanted'), $res);
+        $ar = new expAjaxReply(200, gt('Here\'s the items you wanted'), $res);
         $ar->send();
     } 
     

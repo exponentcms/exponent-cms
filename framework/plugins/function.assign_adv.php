@@ -1,6 +1,38 @@
 <?php
 
+##################################################
+#
+# Copyright (c) 2007-2008 OIC Group, Inc.
+# Written and Designed by Adam Kessler, Phillip Ball, Ron Miller
+#
+# This file is part of Exponent
+#
+# Exponent is free software; you can redistribute
+# it and/or modify it under the terms of the GNU
+# General Public License as published by the Free
+# Software Foundation; either version 2 of the
+# License, or (at your option) any later version.
+#
+# GPL: http://www.gnu.org/licenses/gpl.txt
+#
+##################################################
 
+/**
+ * Smarty plugin
+ * @package Smarty-Plugins
+ * @subpackage Function
+ */
+
+/**
+ * Smarty {assign_adv} function plugin
+ *
+ * Type:     function<br>
+ * Name:     assign_adv<br>
+ * Purpose:  Advanced assign variable to template
+ *
+ * @param         $params
+ * @param \Smarty $smarty
+ */
 function smarty_function_assign_adv($params, &$smarty)
 {
     extract($params);
@@ -14,6 +46,7 @@ function smarty_function_assign_adv($params, &$smarty)
         $smarty->trigger_error("assign_adv: missing 'value' parameter");
         return;
     }
+    $value = isset($params['value']) ? $params['value'] : null;
     if (preg_match('/^\s*array\s*\(\s*(.*)\s*\)\s*$/s',$value,$match)){
         eval('$value=array('.str_replace("\n", "", $match[1]).');');
     }

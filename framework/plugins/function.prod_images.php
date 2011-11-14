@@ -17,6 +17,23 @@
 #
 ##################################################
 
+/**
+ * Smarty plugin
+ * @package Smarty-Plugins
+ * @subpackage Function
+ */
+
+/**
+ * Smarty {prod_images} function plugin
+ *
+ * Type:     function<br>
+ * Name:     prod_images<br>
+ * Purpose:  display product images
+ *
+ * @param         $params
+ * @param \Smarty $smarty
+ * @return bool
+ */
 function smarty_function_prod_images($params,&$smarty) {
     //load up the img plugin
     require_once $smarty->_get_plugin_filepath('function', 'img');

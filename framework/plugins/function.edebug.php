@@ -17,8 +17,24 @@
 #
 ##################################################
 
+/**
+ * Smarty plugin
+ * @package Smarty-Plugins
+ * @subpackage Function
+ */
+
+/**
+ * Smarty {edebug} function plugin
+ *
+ * Type:     function<br>
+ * Name:     edebug<br>
+ * Purpose:  dump a variable
+ *
+ * @param         $params
+ * @param \Smarty $smarty
+ */
 function smarty_function_edebug($params,&$smarty) {
-        echo eDebug($params['var']);
+    echo eDebug($params['var']);
 }
 
 ?>

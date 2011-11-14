@@ -24,24 +24,24 @@
 {if $permissions.manage == 1}
     <div class="module ecomconfig manage-discounts">
         <div class="form_header">
-                <h1>Manage Discounts</h1>
-                <p>Here you can configure discounts to be used in your store.</p><p></p>
+                <h1>{"Manage Discounts"|gettext}</h1>
+                <p>{"Here you can configure discounts to be used in your store."|gettext}</p><p></p>
         </div>
         
         {*icon class=edit action=edit_optiongroup_master record=$group}
         {icon class=delete action=delete_optiongroup_master record=$group onclick="return confirm('This option group is being used by `$group->timesImplemented` products. Deleting this option group will also delete all of the options related to it. Are you sure you want to delete this option group?');"*}
        
-        {icon class=add controller="ecomconfig" action="edit_discount" title="Create a New Store Discount" alt="Create a New Store Discount"}
+        {icon class=add controller="ecomconfig" action="edit_discount" title="Create a New Store Discount"|gettext alt="Create a New Store Discount"|gettext}
             
         {if $discounts|@count > 0}
-            <h2>Modify existing group discount</h2>
+            <h2>{"Modify existing group discount"|gettext}</h2>
             <table class="exp-skin-table">
                 <thead>
                 <tr>
-                    <th>Enabled</th>
-                    <th>Name</th>
-                    <th>Coupon Code</th>
-                    <th>Valid Until</th>
+                    <th>{"Enabled"|gettext}</th>
+                    <th>{"Name"|gettext}</th>
+                    <th>{"Coupon Code"|gettext}</th>
+                    <th>{"Valid Until"|gettext}</th>
                     <th>&nbsp;</th>
                 </tr>
                 </thead>
@@ -59,7 +59,7 @@
                             <td>{$discount->title}</td>  
                             <td>{$discount->coupon_code}</td>  
                             {if $discount->never_expires}
-                                <td>{gettext str="Never Expires"}</td>
+                                <td>{"Never Expires"|gettext}</td>
                             {else}
                                 <td>{$discount->enddate|date_format:"%m/%d/%y"} - {$discount->enddate_time|expdate:"g:i a"}</td>  
                             {/if}
@@ -68,7 +68,7 @@
                                 {*icon class=delete action=delete_discount record=$group onclick="return confirm('This option group is being used by `$group->timesImplemented` products. Deleting this option group will also delete all of the options related to it. Are you sure you want to delete this option group?');"*}
                             </td>
                             <!--td>{control type="test" name="title" label=" " value=$discount->title}</td>  
-                            <td>{control type="dropdown" name="discount_type" label=" {gettext str="test"}" items=$discount->discount_types value=$discount->discount_type}</td>
+                            <td>{control type="dropdown" name="discount_type" label=" {"test"|gettext}" items=$discount->discount_types value=$discount->discount_type}</td>
                             <td>{control type=text name=discount_amount label=" " size=2 value=$discount->discount_amount}</td>
                             <td>{control type=dropdown name=apply_when items=$apply_rules label=" " value=$discount->discount->apply}</td>
                             <td>{control type=buttongroup submit='Update Discount'|gettext}</td-->
@@ -78,7 +78,7 @@
             </tbody>
             </table>
         {else}
-            <div>You do not have any discounts currently.</div>
+            <div>{"You do not have any discounts currently."|gettext}</div>
         {/if}
     </div>
 {/if}

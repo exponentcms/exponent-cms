@@ -12,7 +12,7 @@
         <thead>
             <tr>
                 <th>
-                    <h1>{gettext str="Build a Product Report"}</h1>
+                    <h1>{"Build a Product Report"|gettext}</h1>
                 </th>
             </tr>
         </thead>

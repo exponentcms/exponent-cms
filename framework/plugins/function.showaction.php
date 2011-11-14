@@ -17,6 +17,22 @@
 #
 ##################################################
 
+/**
+ * Smarty plugin
+ * @package Smarty-Plugins
+ * @subpackage Function
+ */
+
+/**
+ * Smarty {showaction} function plugin
+ *
+ * Type:     function<br>
+ * Name:     showaction<br>
+ * Purpose:  Display an action.<br>
+ *
+ * @param array $params
+ * @param mixed $smarty
+ */
 function smarty_function_showaction($params,&$smarty) {
 		//echo $params['module']."|".$params['action']."|".$params['source'];
         expTheme::showAction($params['module'], $params['action'], $params['source'], $params['params']);

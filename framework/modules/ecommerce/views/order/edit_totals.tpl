@@ -47,7 +47,7 @@
         <tr><td> 
         {control type=checkbox label='Auto calculate grand total?' flip=true name=autocalc value=1 checked=true}
         </td><td>
-        {control type=buttongroup submit="Save Totals" cancel="Cancel"}            
+        {control type=buttongroup submit="Save Totals"|gettext cancel="Cancel"|gettext}
         </td></tr>
         </table>
     {/form}

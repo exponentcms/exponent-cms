@@ -21,7 +21,7 @@
 if (!defined('EXPONENT')) exit('');
 
 //filter the message thru the form template for formatting
-$msgtemplate = new formtemplate('forms/email', '_'.$_POST['formname']);
+$msgtemplate = new formtemplate('forms/calendar', '_'.$_POST['formname']);
 $msgtemplate->assign('post', $_POST);
 $msg = $msgtemplate->render();
 $ret = false;

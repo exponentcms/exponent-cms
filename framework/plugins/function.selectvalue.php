@@ -17,6 +17,23 @@
 #
 ##################################################
 
+/**
+ * Smarty plugin
+ * @package Smarty-Plugins
+ * @subpackage Function
+ */
+
+/**
+ * Smarty {selectvalue} function plugin
+ *
+ * Type:     function<br>
+ * Name:     selectvalue<br>
+ * Purpose:  select a database table value
+ *
+ * @param         $params
+ * @param \Smarty $smarty
+ * @return bool
+ */
 function smarty_function_selectvalue($params,&$smarty) {
 	global $db;
 	

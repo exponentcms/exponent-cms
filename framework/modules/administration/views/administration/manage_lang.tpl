@@ -19,24 +19,31 @@
         <div class="related-actions">
             {help text="Get Help"|gettext|cat:" "|cat:("Managing Translations"|gettext) module="manage-language"}
         </div>
-        <h1>{"Manage Translations"|gettext}}</h1>
+        <h1>{"Manage Translations"|gettext}</h1>
     </div>
-    {"Current Display Language is"|gettext}}: {$smarty.const.LANG}
-    {if $smarty.const.LANG != 'English - US'}
-        {br}{br}
-        <a class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" href="{link action=update_lang}"><b>{gettext str="Add missing phrases to"|cat:" "|cat:($smarty.const.LANG)}</b></a>
-    {/if}
-    {br}{br}<hr>
-    <h2>{"Add Phrases to the Default Translation File"|gettext}}</h2>
-    <h3 style="color:red">{'WARNING! Turning this on will SLOW down the site and also turn on error reporting'|gettext}}!</h3>
-    {form action=update_langtemplate}
-        {control type="checkbox" postfalse=1 name=writetemplate label="Build Phrase Library?"|gettext checked=$smarty.const.WRITE_LANG_TEMPLATE value=1}
-        {control type=buttongroup submit="Change Setting"|gettext}}
+    {form action=save_newlanguage}
+        {control type="dropdown" name="newlang" label="Select Display Language"|gettext items=$langs default=$smarty.const.LANGUAGE}
+        {control type=buttongroup submit="Switch to this Display Language"|gettext}
     {/form}
     <hr>
-    <h2>{"Create a New Translation based on the Current Translation"|gettext}} - {$smarty.const.LANG}</h2>
+    <h3>{"Current Display Language is"|gettext}: {$smarty.const.LANG}, {'with'|gettext} {$count} {"Phrases"|gettext}</h3>
+    {if $smarty.const.LANG != 'English - US'}
+        {if $missing}
+            <p>{"There are"|gettext} {$missing} {"Missing Phrases in the"|gettext} {$smarty.const.LANG} {"Translation"|gettext}</p>
+        {/if}
+        {if $untrans}
+            <p>{"There are"|gettext} {$untrans} {"Untranslated Phrases in the"|gettext} {$smarty.const.LANG} {"Translation"|gettext}</p>
+            <a class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" href="{link action=manage_lang_await}"><b>{"View Un-Translated Phrases"|gettext}</b></a>{br}{br}
+        {/if}
+        <p>{"You may use the 'lang_update.php' script to help correct this for the "|gettext} {$smarty.const.LANG} {"translation"|gettext}</p>
+    {/if}
+    <hr>
+    <h2>{"Create a New Translation based on the Current Translation"|gettext} - {$smarty.const.LANG}</h2>
     {form action=save_newlangfile}
-        {control type=text name=newlang label="New Translation Name"|gettext}
-        {control type=buttongroup submit="Create and Begin Using a New Translation"|gettext}}
+        {control type=text name=newlang label="New Translation Name"|gettext|cat:" (Español)"}
+        {control type=text name=newauthor label="New Translation Author"|gettext}
+        {control type=text name=newcharset label="New Translation Character Set"|gettext|cat:" (UTF-8)"}
+        {control type=text name=newlocale label="New Translation Locale"|gettext|cat:' (<a href="http://www.loc.gov/standards/iso639-2/php/English_list.php" target="_blank">ISO 639-1</a>)'}
+        {control type=buttongroup submit="Create and Begin Using a New Translation"|gettext}
     {/form}
 </div>

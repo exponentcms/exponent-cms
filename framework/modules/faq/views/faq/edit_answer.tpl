@@ -15,21 +15,21 @@
  *}
 
 <div class="module faq edit-answer">
-    <h1>Format Email Reply</h1>
+    <h1>{'Format Email Reply'|gettext}</h1>
     
     {form action="update_answer"}
         <table>
         <tr>
-            <td>From: {$config.answer_from_name} &lt;{$from}&gt;</td>
+            <td>{'From'|gettext}: {$config.answer_from_name} &lt;{$from}&gt;</td>
         </tr>
         <tr>
-            <td>To: {$faq->submitter_name} &lt;{$faq->submitter_name}&gt;</td>
+            <td>{'To'|gettext}: {$faq->submitter_name} &lt;{$faq->submitter_name}&gt;</td>
         </tr>
         </table>
         {control type="hidden" name="id" value=$faq->id}
-        {control type="text" name="subject" label="Subject" size="50" value=$config.answer_subject}
-        {control type="html" name="body" label="Message" value=$reply}
-        {control type="buttongroup" submit="Send Email" cancel="Cancel"}
+        {control type="text" name="subject" label="Subject"|gettext size="50" value=$config.answer_subject}
+        {control type="html" name="body" label="Message"|gettext value=$reply}
+        {control type="buttongroup" submit="Send Email"|gettext cancel="Cancel"|gettext}
     {/form}
             
 </div>

@@ -44,7 +44,7 @@
                 <td>{control type=dropdown name=group_id items=$groups label=" " key=id display=name includeblank="-- Select a group --"}</td>
                 <td>{control type="dropdown" name="discounts_id" items=$discounts key=id display=title label=" " includeblank="-- Select a Discount --"}</td>
                 <td>{control type="checkbox" name="dont_allow_other_discounts" label=" " value=1}</td>
-                <td>{control type=buttongroup submit="Add"}</td>
+                <td>{control type=buttongroup submit="Add"|gettext}</td>
 	        {/form}
 	    </tr>
 	</tbody>
@@ -79,7 +79,7 @@
                             {/if}
                         {/if}
                     </td>
-                    <td>{control type=buttongroup submit="Update"}</td>
+                    <td>{control type=buttongroup submit="Update"|gettext}</td>
 	            {/form}
 			</tr>
 		{/foreach}

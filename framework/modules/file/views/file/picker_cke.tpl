@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-    <title>File Manager  |  Exponent CMS</title>
+    <title>{'File Manager'|gettext}  |  Exponent CMS</title>
 
     <link rel="stylesheet" type="text/css" href="{$smarty.const.URL_FULL}framework/core/assets/css/msgq.css" />
     <link rel="stylesheet" type="text/css" href="{$smarty.const.URL_FULL}framework/core/assets/css/button.css" />
@@ -11,19 +11,18 @@
 
     <script type="text/javascript" src="{$smarty.const.YUI3_PATH}yui/yui-min.js"></script>
     <script type="text/javascript" src="{$smarty.const.URL_FULL}exponent.js.php"></script>
-
 </head>
 <body class=" exp-skin">
 
 <div id="filemanager">
-	<h1>File Manager</h1>
+	<h1>{'File Manager'|gettext}</h1>
     {messagequeue}
 	<div class="info-header">
 		<div class="related-actions">
 			{help text="Get Help"|gettext|cat:" "|cat:("Managing Files"|gettext) module="file-manager"}
 		</div>
 		<div id="autocomplete">
-			<label for="dt_input">Filter by Filename, title, or alt:</label>
+			<label for="dt_input">{'Filter by Filename, title, or alt'|gettext}:</label>
 			<input id="dt_input" type="text" />
 		</div>	
 		<div id="dt_ac_container"></div>	
@@ -171,7 +170,6 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event','yui2-container','yu
                                 +deletestring;
         };
     
-        
         // request to share
         var editShare = function (callback, newValue) {
             var record = this.getRecord(),

@@ -17,6 +17,23 @@
 #
 ##################################################
 
+/**
+ * Smarty plugin
+ * @package Smarty-Plugins
+ * @subpackage Function
+ */
+
+/**
+ * Smarty {uniqueid} function plugin
+ *
+ * Type:     function<br>
+ * Name:     uniquieid<br>
+ * Purpose:  create a unique id
+ *
+ * @param         $params
+ * @param \Smarty $smarty
+ * @return bool
+ */
 function smarty_function_uniqueid($params,&$smarty) {
     $badvals = array("[", "]", ",", " ", "'", "\"", "&", "#", "%", "@", "!", "$", "(", ")", "{", "}");
     $randstr  = 'exp';

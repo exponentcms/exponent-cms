@@ -1,46 +1,46 @@
 {control type="hidden" name="tab_loaded[images]" value=1} 
 <div id="imagefunctionality">              
-     The image alt tag will be created dynamically by the system, however you may supply a custom one here:
-    {control type="text" name="images[image_alt_tag]" label="Image Alt Tag" value=$record->image_alt_tag}
-    {control type=radiogroup columns=2 name="images[main_image_functionality]" label="Main Image Functionality" items="Single Image,Image with Swatches" values="si,iws"  default=$record->main_image_functionality|default:"si"}
+     {"The image alt tag will be created dynamically by the system, however you may supply a custom one here:"|gettext}
+    {control type="text" name="images[image_alt_tag]" label="Image Alt Tag"|gettext value=$record->image_alt_tag}
+    {control type=radiogroup columns=2 name="images[main_image_functionality]" label="Main Image Functionality"|gettext items="Single Image,Image with Swatches" values="si,iws"  default=$record->main_image_functionality|default:"si"}
     
     <div id="si-div" class="imngfuncbody">
-        <h3>Single Image</h3>
-        <h4>Main Image</h4>
-        {control type=files name=mainimages label="Product Images" subtype="mainimage" value=$record->expFile limit=1}
-        <h4>{gettext str="Thumbnail for Main Image"}</h4>
-        <p>{gettext str="If no image is provided to use as a thumbnail, one will be generated from the main image. This image will only show if additional images are provided"}</p>
-        {control type=files name=mainthumb label="Product Images" subtype="mainthumbnail" value=$record->expFile limit=1}
+        <h3>{"Single Image"|gettext}</h3>
+        <h4>{"Main Image"|gettext}</h4>
+        {control type=files name=mainimages label="Product Images"|gettext subtype="mainimage" value=$record->expFile limit=1}
+        <h4>{"Thumbnail for Main Image"|gettext}</h4>
+        <p>{"If no image is provided to use as a thumbnail, one will be generated from the main image. This image will only show if additional images are provided"|gettext}</p>
+        {control type=files name=mainthumb label="Product Images"|gettext subtype="mainthumbnail" value=$record->expFile limit=1}
     </div>
     <div id="iws-div" class="imngfuncbody" style="display:none;">
         <table border="0" cellspacing="0" cellpadding="1" width="100%">
             <tr>
-                <th width="50%">Image</th>
-                <th width="50%">Color/Pattern Swatch</th>
+                <th width="50%">{"Image"|gettext}</th>
+                <th width="50%">{"Color/Pattern Swatch"|gettext}</th>
             </tr>
             <tr>
                 <td style="vertical-align:top;">
-                    {control type=files name=imagesforswatches label="Images" subtype="imagesforswatches" value=$record->expFile}
+                    {control type=files name=imagesforswatches label="Images"|gettext subtype="imagesforswatches" value=$record->expFile}
                 </td>
                 <td style="vertical-align:top;">
-                    {control type=files name=swatchimages label="Swatches" subtype="swatchimages" value=$record->expFile}
+                    {control type=files name=swatchimages label="Swatches"|gettext subtype="swatchimages" value=$record->expFile}
                 </td>
             </tr>
         </table>
     </div>
     {br}
-    <h4>{gettext str="Additional Images"}</h4>
-    <p>{gettext str="Have additional images to show for your product?"}</p>
+    <h4>{"Additional Images"|gettext}</h4>
+    <p>{"Have additional images to show for your product?"|gettext}</p>
     
     <div class="additional-images">
-        {control type=files name=images label="Additional Images" subtype="images" value=$record->expFile}
+        {control type=files name=images label="Additional Images"|gettext subtype="images" value=$record->expFile}
     </div>
     {br}
-    <h4>{gettext str="Additional File Attachments"}</h4>
-    <p>{gettext str="Attach Product Brochures, Docs, Manuals, etc."}</p>
-    {control type=files name=brochures label="Additional Files" subtype="brochures" value=$record->expFile}
+    <h4>{"Additional File Attachments"|gettext}</h4>
+    <p>{"Attach Product Brochures, Docs, Manuals, etc."|gettext}</p>
+    {control type=files name=brochures label="Additional Files"|gettext subtype="brochures" value=$record->expFile}
 	
-	{control type=files name="featured_image" label="Featured Product Images" subtype="featured_image" value=$record->expFile}
+	{control type=files name="featured_image" label="Featured Product Images"|gettext subtype="featured_image" value=$record->expFile}
 
 </div>
 

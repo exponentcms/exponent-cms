@@ -49,7 +49,9 @@ if (!defined('HOSTNAME')) {
 		define('HOSTNAME',$_SERVER['HTTP_HOST']);
 	} else if (isset($_SERVER['SERVER_NAME'])) {
 		define('HOSTNAME',$_SERVER['SERVER_NAME']);
-	}
+	} else {
+        define('HOSTNAME','');
+    }
 }
 
 if (!defined('URL_BASE')) {
@@ -380,6 +382,7 @@ define('TEMPLATE_FALLBACK_VIEW',BASE.'framework/core/views/viewnotfound.tpl');
 // Determines platform (OS), browser and version of the user
 // Based on a phpBuilder article:
 //   see http://www.phpbuilder.net/columns/tim20000821.php
+if (empty($_SERVER['HTTP_USER_AGENT'])) $_SERVER['HTTP_USER_AGENT'] = '';
 if (!defined('EXPONENT_USER_OS')) {
     // 1. Platform
     if (strstr($_SERVER['HTTP_USER_AGENT'], 'Win')) {
@@ -480,5 +483,7 @@ if (!defined('SWIFT_PATH')) {
 	define('SWIFT_VERSION', '4.1.3');
 	define('SWIFT_PATH', BASE.'external/Swift-'.SWIFT_VERSION.'/lib/');
 }
+
+define('BING_API', '92487BA7619E18106C842DD8463C4EC411F281B1');
 
 ?>

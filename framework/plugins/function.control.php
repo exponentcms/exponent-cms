@@ -16,9 +16,24 @@
 # GPL: http://www.gnu.org/licenses/gpl.txt
 #
 ##################################################
-/** @define "BASE" "../.." */
 
-function smarty_function_control($params,&$smarty) { 
+/**
+ * Smarty plugin
+ * @package Smarty-Plugins
+ * @subpackage Function
+ */
+
+/**
+ * Smarty {control} function plugin
+ *
+ * Type:     function<br>
+ * Name:     control<br>
+ * Purpose:  create a form control
+ *
+ * @param         $params
+ * @param \Smarty $smarty
+ */
+function smarty_function_control($params,&$smarty) {
     global $db,$user;
     
     if ( (isset($params['type']) && isset($params['name'])) || $params['type'] == 'buttongroup' 
@@ -268,6 +283,7 @@ function smarty_function_control($params,&$smarty) {
             $max = isset($params['max']) ? $params['max'] : 99999;
             $control = new quantitycontrol($value, $min, $max);
         } elseif ($params['type'] == 'checkbox') {
+            $value = isset($params['value']) ? $params['value'] : null;
             $control = new checkboxcontrol($value);
             $control->postfalse = isset($params['postfalse']) ? 1 : 0;
             $control->newschool = true;

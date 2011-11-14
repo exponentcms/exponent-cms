@@ -94,7 +94,7 @@ class autocompletecontrol extends formcontrol {
             "unique"=>'ac'.$name,
             "yui3mods"=>1,
             "content"=>$script,
-            "src"=>$params['src']
+            "src"=>""
          ));
        
         //exponent_javascript_toFoot('ac'.$name, "animation,autocomplete,connection,datasource", null, $script);

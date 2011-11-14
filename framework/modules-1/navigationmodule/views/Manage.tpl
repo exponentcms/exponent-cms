@@ -17,7 +17,7 @@
 <div class="navigationmodule manage">
 	{permissions}
 	{if $canManage == 1}
-		<li><a class="navlink" href="{link action=manage}">Manage Navigation</a></li>
+		<li><a class="navlink" href="{link action=manage}">{'Manage Navigation'|gettext}</a></li>
 	{/if}
 	{/permissions}
 </div>

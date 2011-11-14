@@ -17,6 +17,23 @@
 #
 ##################################################
 
+/**
+ * Smarty plugin
+ * @package Smarty-Plugins
+ * @subpackage Function
+ */
+
+/**
+ * Smarty {podcastlink} function plugin
+ *
+ * Type:     function<br>
+ * Name:     podcastlink<br>
+ * Purpose:  make a podcast link
+ *
+ * @param         $params
+ * @param \Smarty $smarty
+ * @return bool
+ */
 function smarty_function_podcastlink($params,&$smarty) {
 	$loc = $smarty->getTemplateVars('__loc');
 	if (!isset($params['module'])) $params['module'] = $loc->mod;

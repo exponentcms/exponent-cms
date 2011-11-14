@@ -17,6 +17,23 @@
 #
 ##################################################
 
+/**
+ * Smarty plugin
+ * @package Smarty-Plugins
+ * @subpackage Function
+ */
+
+/**
+ * Smarty {makecase} function plugin
+ *
+ * Type:     function<br>
+ * Name:     makecase<br>
+ * Purpose:  change case of string
+ *
+ * @param         $params
+ * @param \Smarty $smarty
+ * @return bool
+ */
 function smarty_function_makecase($params,&$smarty) {
   switch ($params['type']){
     case 'toupper':

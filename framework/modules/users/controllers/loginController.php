@@ -90,7 +90,7 @@ class loginController extends expController {
 		expSession::un_set("permissions");
 		expSession::un_set('uilevel');
 		expSession::clearCurrentUserSessionCache();
-		flash('message', 'You have been logged out');
+		flash('message', gt('You have been logged out'));
 		redirect_to(array("section"=>SITE_DEFAULT_SECTION));
 	}
 
@@ -110,7 +110,7 @@ class loginController extends expController {
 			}
 		} else {
 			global $user;
-			flash ('message', 'Welcome back '.$_POST['username']);
+			if (isset($_POST['username'])) flash ('message', gt('Welcome back').' '.$_POST['username']);
 			foreach ($user->groups as $g) {
 				if (!empty($g->redirect)) {
 					$url = URL_FULL.$g->redirect;

@@ -19,13 +19,13 @@
 
     {permissions level=$smarty.const.UILEVEL_NORMAL}
         {if $permissions.create == 1}
-            {icon class=add action=edit title="Add a Help Doc" text="Add Help Doc"}{br}
+            {icon class=add action=edit title="Add a Help Doc"|gettext text="Add Help Doc"|gettext}{br}
         {/if}
         {if $permissions.manage == 1}
-            {icon action=manage version=$current_version->id title="Manage Help Docs" text="Manage Help Docs for version `$current_version->version`"}{br}
-            {icon class=manage action=manage_versions title="Manage Help Versions" text="Manage Help Versions"}{br}
+            {icon action=manage version=$current_version->id title="Manage Help Docs"|gettext text="Manage Help Docs for version"|gettext|cat:" `$current_version->version`"}{br}
+            {icon class=manage action=manage_versions title="Manage Help Versions"|gettext text="Manage Help Versions"|gettext}{br}
 		    {if ($rank == 1)}
-	            {ddrerank items=$page->records only="help_version_id=$current_version->id" model="help" label="Help Docs"}
+	            {ddrerank items=$page->records only="help_version_id=$current_version->id" model="help" label="Help Docs"|gettext}
 		    {/if}
         {/if}
     {/permissions}
@@ -43,10 +43,10 @@
             {permissions}
             <div class="item-actions">
                 {if $permissions.edit == 1}
-                    {icon action=edit record=$doc title="Edit this `$modelname`"}
+                    {icon action=edit record=$doc}
                 {/if}
                 {if $permissions.delete == 1}
-                    {icon action=delete record=$doc title="Delete this `$modelname`" onclick="return confirm('Are you sure you want to delete this `$modelname`?');"}
+                    {icon action=delete record=$doc}
                 {/if}
             </div>
             {/permissions}
@@ -55,7 +55,7 @@
                 {$doc->summary}
             </div>
             
-        </dd>
+        </div>
     {/foreach}
     </dl>
 </div>

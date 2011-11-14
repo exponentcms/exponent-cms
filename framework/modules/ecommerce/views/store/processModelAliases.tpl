@@ -16,7 +16,7 @@
 	{if $autocomplete}
 		{control type="buttongroup" submit="Next"}
 	{else}
-		{control type="buttongroup" submit="Next" cancel="Cancel"}
+		{control type="buttongroup" submit="Next"|gettext cancel="Cancel"|gettext}
 	{/if}
 {/form}
 <h3 style="float: right;">{$count} model aliases left.</h3>

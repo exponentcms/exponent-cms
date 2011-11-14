@@ -18,14 +18,14 @@
     <h1>Import Data</h1>    
     {form action=import}        
         {control type="dropdown" name="import_type" label="Select Data to Import" items=$importDD default="storeController"}
-        {control type="buttongroup" submit="Submit" cancel="Cancel"}
+        {control type="buttongroup" submit="Submit"|gettext cancel="Cancel"|gettext}
     {/form}
     {br}
     {*
     <h1>Export Data</h1>    
     {form action=export}
         {control type="dropdown" name="export_type" label="Select Data to Export" items=$exportDD}
-        {control type="buttongroup" submit="Submit" cancel="Cancel"}
+        {control type="buttongroup" submit="Submit"|gettext cancel="Cancel"|gettext}
     {/form}
     *}
 </div>

@@ -35,7 +35,7 @@ class motdController extends expController {
         $day = date('j', $now);
         $message = $this->motd->find('first', 'month='.$month.' AND day='.$day); 
         
-        if (empty($message->id) && $this->config['userand']==true) {
+        if (empty($message->id) && (!empty($this->config['userand']) && $this->config['userand']==true)) {
             $message = $this->motd->find('first', null, 'RAND()');  
         }
         

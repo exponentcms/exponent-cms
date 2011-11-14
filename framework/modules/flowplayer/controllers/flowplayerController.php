@@ -31,7 +31,7 @@ class flowplayerController extends expController {
     );
 
     function displayname() { return "Flowplayer Media Player"; }
-    function description() { return "Flowplayer is a video player for Web sites. Use it to embed video streams into your HTML pages."; }
+    function description() { return "Flowplayer is a media player for Web sites. Use it to embed video/audio streams into your HTML pages."; }
     function isSearchable() { return true; }
     
     function showall() {

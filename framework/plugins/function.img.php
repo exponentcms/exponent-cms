@@ -17,6 +17,23 @@
 #
 ##################################################
 
+/**
+ * Smarty plugin
+ * @package Smarty-Plugins
+ * @subpackage Function
+ */
+
+/**
+ * Smarty {img} function plugin
+ *
+ * Type:     function<br>
+ * Name:     img<br>
+ * Purpose:  display an image
+ *
+ * @param         $params
+ * @param \Smarty $smarty
+ * @return bool
+ */
 function smarty_function_img($params,&$smarty) {
 	//$alt = isset($params['alt']) ? $params['alt'] : 'Image';
 	$closing = (XHTML==1) ? ' />' : '>';
@@ -403,7 +420,7 @@ function smarty_function_img($params,&$smarty) {
 		$src .= '&amp;err=' . URL_FULL. 'framework/core/assets/images/default_preview_notfound.gif';
 	}
 	
-	$source .= ' src="'.$src.'"';
+	$source = ' src="'.$src.'"';
     
     if (empty($params['return'])) {
     	echo '<img'.$id.$class.$source.$dims.$alt.$style.$title.$closing;

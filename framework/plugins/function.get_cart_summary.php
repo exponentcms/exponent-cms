@@ -17,6 +17,23 @@
 #
 ##################################################
 
+/**
+ * Smarty plugin
+ * @package Smarty-Plugins
+ * @subpackage Function
+ */
+
+/**
+ * Smarty {get_cart_summary} function plugin
+ *
+ * Type:     function<br>
+ * Name:     get_cart_summary<br>
+ * Purpose:  get summary of cart contents
+ *
+ * @param         $params
+ * @param \Smarty $smarty
+ * @return bool
+ */
 function smarty_function_get_cart_summary($params,&$smarty) {
 	$product = new $params['item']->product_type($params['item']->product_id);
 	echo $product->cartSummary($params['item']);

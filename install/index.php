@@ -37,7 +37,6 @@ if (!file_exists('not_configured') && file_exists(BASE.'conf/config.php')) {
 }
 
 if (isset($_POST['sc'])) {
-
     if (file_exists("../conf/config.php")) {
         // Update the config
         $config = $_POST['sc'];
@@ -108,14 +107,14 @@ switch ($page) {
 		break;
 	case 'install-1':
         $masthead = gt("New Installation");
-		$page_text = gt('Exponent requires that several file permissions be set correctly in order to operate. ').
+		$page_text = gt('Exponent requires that several file permissions be set correctly in order to operate.').' '.
             gt('Sanity checks are being run right now to ensure that the web server directory you wish to install Exponent in, is suitable.').'<br><br>'.
-	        gt('If something fails, please ').'<a href="javascript:void(0)" onclick="return pop(\'sanity\');">'.gt('read about each sanity check').'</a>'.
+	        gt('If something fails, please').' <a href="javascript:void(0)" onclick="return pop(\'sanity\');">'.gt('read about each sanity check').'</a> '.
             gt('for an explanation of what exactly the installer is checking for, and how to fix it.');
 		break;
 	case 'install-2':
         $masthead = gt("New Installation");
-		$page_text = gt('Exponent requires a database to store and manage content. ').
+		$page_text = gt('Exponent requires a database to store and manage content.').' '.
 			gt('Simply create a database using your database tool of of choice, and fill in the information on this page.');
 		break;
 	case 'install-3':
@@ -132,12 +131,12 @@ switch ($page) {
 		break;
 	case 'install-6':
         $masthead = gt("New Installation");
-		$page_text = gt('The user you\'re about to create will be the').' <b>'.gt('Super Administrator').'</b> '.gt('for the entire system. ').
+		$page_text = gt('The user you\'re about to create will be the').' <b>'.gt('Super Administrator').'</b> '.gt('for the entire system.').' '.
 			gt('This level of administration has un-restricted access and abilities throughout the entire website.');
 		break;
 	case 'install-7':
         $masthead = gt("New Installation");
-		$page_text = gt('The user you\'re about to create will be the').' <b>'.gt('Super Administrator').'</b> '.gt('for the entire system. ').
+		$page_text = gt('The user you\'re about to create will be the').' <b>'.gt('Super Administrator').'</b> '.gt('for the entire system.').' '.
 			gt('This level of administration has un-restricted access and abilities throughout the entire website.');
 		break;
 	case 'final':
@@ -170,7 +169,7 @@ switch ($page) {
     
 	<script type="text/javascript">	
 	function pop(page) {
-        var url = "popup.php?page="+page;
+        var url = "popup.php?page="+page+"&lang='<?php echo LANGUAGE; ?>'";
         window.open(url,"pop","height=400,width=600,title=no,titlebar=no,scrollbars=yes");
 	}
 	

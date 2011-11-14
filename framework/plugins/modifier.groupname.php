@@ -17,6 +17,22 @@
 #
 ##################################################
 
+/**
+ * Smarty plugin
+ * @package Smarty-Plugins
+ * @subpackage Modifier
+ */
+
+/**
+ * Smarty {groupname} modifier plugin
+ *
+ * Type:     modifier<br>
+ * Name:     groupname<br>
+ * Purpose:  return the group name for a group id
+ *
+ * @param array
+ * @return array
+ */
 function smarty_modifier_groupname($groupid) {
 	global $db;
 	return $db->selectValue('group', 'name', 'id='.intval($groupid));

@@ -17,6 +17,23 @@
 #
 ##################################################
 
+/**
+ * Smarty plugin
+ * @package Smarty-Plugins
+ * @subpackage Function
+ */
+
+/**
+ * Smarty {obj2json} function plugin
+ *
+ * Type:     function<br>
+ * Name:     obj2json<br>
+ * Purpose:  convert a php object to javascript via json
+ *
+ * @param         $params
+ * @param \Smarty $smarty
+ * @return bool
+ */
 function smarty_function_obj2json($params,&$smarty) {
 	echo json_encode($params['obj']);
 }

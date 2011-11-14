@@ -17,6 +17,23 @@
 #
 ##################################################
 
+/**
+ * Smarty plugin
+ * @package Smarty-Plugins
+ * @subpackage Function
+ */
+
+/**
+ * Smarty {printer_friendly_link} function plugin
+ *
+ * Type:     function<br>
+ * Name:     printer_friendly_link<br>
+ * Purpose:  format a link for displaying a printer friendly version of the page
+ *
+ * @param         $params
+ * @param \Smarty $smarty
+ * @return bool
+ */
 function smarty_function_printer_friendly_link($params,&$smarty) {
 	global $router;
 

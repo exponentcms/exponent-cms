@@ -24,7 +24,7 @@ expSession::clearAllSessionData();
 
 global $user;
 
-if (isset($_REQUEST['upgrade'])) { 
+if (isset($_REQUEST['upgrade'])) {
 // upgrades hit this
 //    if (unlink(BASE.'install/not_configured')) {
     $leaveinstaller = (unlink(BASE.'install/not_configured')||!file_exists(BASE.'install/not_configured'));
@@ -67,7 +67,7 @@ if (isset($_REQUEST['upgrade'])) {
                 }
             } else {
                 echo '<h2>' . gt('Hmmmm....') ."</h2>";
-	            echo '<p>' . gt('Either we weren\'t able to log in or ') ."</p>";
+	            echo '<p>' . gt('Either we weren\'t able to log in or') ."</p>";
                 echo '<p>' . gt('We weren\'t able to remove /install/not_configured. Remove this file manually to complete your installation.') ."</p>";
             }
         }
@@ -86,7 +86,7 @@ if (isset($_REQUEST['upgrade'])) {
 			<label class="label"><?php echo gt("Password").':'; ?></label><input type="password" class="password " size="25" value="" name="password">
 		</div>
         <div class="formcontrol radiogroup">
-            <span class="label">And:</span>
+            <span class="label"><?php echo gt('And'); ?>:</span>
             <div class="formcontrol radiobutton">
                 <input type="radio" id="radiocontrol-1" class="radiobutton" value="migration" name="next">
 				<label for="radiocontrol-1"><?php echo gt("I want to begin transferring an existing Exponent v0.9x site"); ?></label>

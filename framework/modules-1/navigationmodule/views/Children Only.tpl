@@ -33,7 +33,6 @@
             {/if}
         {/foreach}
         
-        
         {if $islastdepth=="false"}
         {foreach from=$sections item=section}
             {if $section->parent == $current->parent}

@@ -19,7 +19,7 @@
         {css unique="container-chrome" link="`$smarty.const.PATH_RELATIVE`framework/modules/container/assets/css/admin-container.css"}
 
         {/css}
-    	{script  yui3mods="1" unique="container-chrome" src=$smarty.const.PATH_RELATIVE|cat:'framework/core/assets/js/exp-container.js'}
+    	{script yui3mods="1" unique="container-chrome" src=$smarty.const.PATH_RELATIVE|cat:'framework/core/assets/js/exp-container.js'}
 
     	{/script}
 		<div id="cont{$top->id}" class="exp-container-wrapper">
@@ -32,7 +32,7 @@
     {if $hasParent == 0 && ($user->isAdmin())}
 	{** top level container module **}
 		<div class="container-chrome">
-			<a href="#" class="trigger" title="Container">Container</a>
+			<a href="#" class="trigger" title="Container">{'Container'|gettext}</a>
 			<ul class="container-menu">
 			    {if $user->isAdmin()}
     				<li><a href="{link _common=1 action=userperms}" class="user">{"User Permissions"|gettext}</a></li>
@@ -43,7 +43,7 @@
 		</div>
 	{/if}
 	{if $permissions.add_module == 1 && $hidebox == 0}
-		<a class="addmodule" href="{link action=edit rerank=1 rank=0}"><span class="addtext">{gettext str="Add Module"}</span></a>
+		<a class="addmodule" href="{link action=edit rerank=1 rank=0}"><span class="addtext">{"Add Module"|gettext}</span></a>
 	{/if}
 {/permissions}
 
@@ -90,7 +90,7 @@
 
 		{permissions level=$smarty.const.UILEVEL_STRUCTURE}
 			{if $permissions.add_module == 1 && $hidebox == 0}
-				<a class="addmodule" href="{link action=edit rerank=1 rank=$smarty.foreach.c.iteration}"><span class="addtext">{gettext str="Add Module"}</span></a>
+				<a class="addmodule" href="{link action=edit rerank=1 rank=$smarty.foreach.c.iteration}"><span class="addtext">{"Add Module"|gettext}</span></a>
 			{/if}
 		{/permissions}
 	{/if}

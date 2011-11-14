@@ -16,8 +16,24 @@
 # GPL: http://www.gnu.org/licenses/gpl.txt
 #
 ##################################################
-/** @define "BASE" "../.." */
 
+/**
+ * Smarty plugin
+ * @package Smarty-Plugins
+ * @subpackage Function
+ */
+
+/**
+ * Smarty {scaffold} function plugin
+ *
+ * Type:     function<br>
+ * Name:     scaffold<br>
+ * Purpose:  scaffold
+ *
+ * @param         $params
+ * @param \Smarty $smarty
+ * @return bool
+ */
 function smarty_function_scaffold($params,&$smarty) {
 	if (isset($params['model']) ) {
 		global $db;

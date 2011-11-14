@@ -63,7 +63,7 @@
         </ul>
         <div id="loadcontent" class="exp-ajax-tabs-content"></div>
         
-        {control type="buttongroup" submit="Save Product" cancel="Cancel"}
+        {control type="buttongroup" submit="Save Product"|gettext cancel="Cancel"|gettext}
         {if isset($record->original_id)}
             {control type="hidden" name="original_id" value=$record->original_id}
             {control type="hidden" name="original_model" value=$record->original_model}

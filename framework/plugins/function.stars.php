@@ -17,6 +17,23 @@
 #
 ##################################################
 
+/**
+ * Smarty plugin
+ * @package Smarty-Plugins
+ * @subpackage Function
+ */
+
+/**
+ * Smarty {stars} function plugin
+ *
+ * Type:     function<br>
+ * Name:     stars<br>
+ * Purpose:  display a rating by stars
+ *
+ * @param         $params
+ * @param \Smarty $smarty
+ * @return bool
+ */
 function smarty_function_stars($params,&$smarty) {
 
 $rating = $params['rating'];

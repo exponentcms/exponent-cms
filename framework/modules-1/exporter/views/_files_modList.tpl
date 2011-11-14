@@ -28,7 +28,7 @@
 			<tr>
 				<td>
 					<input type="checkbox" name="save_sample" value="1" class="checkbox">
-					<b><label class="label ">Save as Sample Content for the '{$smarty.const.DISPLAY_THEME}' Theme?</label></b>
+					<b><label class="label ">{'Save as Sample Content for the'|gettext} '{$smarty.const.DISPLAY_THEME}' {'Theme'|gettext}?</label></b>
 				</td>
 			</tr>
 			{/if}

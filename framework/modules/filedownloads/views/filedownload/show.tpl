@@ -15,19 +15,23 @@
 
 <div class="module filedownload show">
 	<div class="item">
+        {$filetype=$record->expFile.downloadable[0]->filename|regex_replace:"/^.*\.([^.]+)$/D":"$1"}
         {if $record->expFile.preview[0] != ""}
             {img class="preview-img" file_id=$record->expFile.preview[0]->id square=150}
         {/if}
         {if $record->title}<h2>{$record->title}</h2>{/if}
-        <span class="label size">File Size:</span>
-        <span class="value">{$record->expFile.downloadable[0]->filesize|kilobytes}Kb</span>
+        <span class="label size">{'File Size'|gettext}:</span>
+        <span class="value">{$record->expFile.downloadable[0]->filesize|kilobytes}{'kb'|gettext}</span>
         &nbsp;&nbsp;
-        <span class="label downloads"># Downloads:</span>
+        <span class="label downloads"># {'Downloads'|gettext}:</span>
         <span class="value">{$record->downloads}</span>
         <div class="bodycopy">
             {$record->body}
         </div>
-        <a class="download" href="{link action=downloadfile fileid=$record->id}">Download</a>
+        <a class="download" href="{link action=downloadfile fileid=$record->id}">{'Download'|gettext}</a>
+        {if $config.show_player && ($filetype == "mp3" || $filetype == "flv" || $filetype == "f4v")}
+            <a href="{$file->expFile.downloadable[0]->url}" style="display:block;width:360px;height:30px;" class="filedownloads-media"></a>
+        {/if}
         {clear}
         {permissions}
 			<div class="item-actions">
@@ -35,13 +39,37 @@
 					{icon action=edit record=$record title="Edit this file"|gettext}
 				{/if}
 				{if $permissions.delete == 1}
-					{icon action=delete record=$record title="Delete this file" onclick="return confirm('Are you sure you want to delete this file?');"}
+					{icon action=delete record=$record title="Delete this file"|gettext onclick="return confirm('Are you sure you want to delete this file?');"}
 				{/if}
 			</div>
         {/permissions}  
         
         {if $config.usescomments == true}
-            {comments content_type="filedownload" content_id=$record->id title="Comments"}
+            {comments content_type="filedownload" content_id=$record->id title="Comments"|gettext}
         {/if}  
 	</div>		
 </div>
+
+{if $config.show_player}
+    {script unique="filedownloads" src="`$smarty.const.PATH_RELATIVE`external/flowplayer3/example/flowplayer-3.2.6.min.js"}
+    {literal}
+    flowplayer("a.filedownloads-media", EXPONENT.PATH_RELATIVE+"external/flowplayer3/flowplayer-3.2.7.swf",
+        {
+    		wmode: 'opaque',
+    		clip: {
+    			autoPlay: false,
+    			},
+            plugins:  {
+                controls: {
+                    play: true,
+                    scrubber: true,
+                    fullscreen: false,
+                    height: 30,
+                    autoHide: false
+                }
+            }
+        }
+    );
+    {/literal}
+    {/script}
+{/if}

@@ -17,6 +17,23 @@
 #
 ##################################################
 
+/**
+ * Smarty plugin
+ * @package Smarty-Plugins
+ * @subpackage Function
+ */
+
+/**
+ * Smarty {pagenumbers} function plugin
+ *
+ * Type:     function<br>
+ * Name:     pagenumbers<br>
+ * Purpose:  display a pagination page numbers
+ *
+ * @param         $params
+ * @param \Smarty $smarty
+ * @return bool
+ */
 function smarty_function_pagenumbers($params,&$smarty) {
 	// initialize a couple of variables
 	$page = $params['page']; //just for neater code :-)

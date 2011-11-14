@@ -20,5 +20,5 @@
     {control type="hidden" name="id" value=$model_alias->id}
     {control type="text" name="model" label="Model Alias:" value=$model_alias->model}
 
-    {control type="buttongroup" submit="Submit" cancel="Cancel"}
+    {control type="buttongroup" submit="Submit"|gettext cancel="Cancel"|gettext}
 {/form}

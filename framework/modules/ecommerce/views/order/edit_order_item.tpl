@@ -84,7 +84,7 @@
             {/foreach}
             </div>
         {/if}
-         {control type=buttongroup submit="Save Order Item Change" cancel="Cancel"}            
+         {control type=buttongroup submit="Save Order Item Change"|gettext cancel="Cancel"|gettext}
         
     {/form}
 </div>

@@ -16,13 +16,13 @@
 
 <div id="rsspullControl" class="control">
     {control type="text" id="feedmaker" name="feedmaker" label="Add RSS Feed"}
-    <a class="addtolist" href="#">Add to list</a>
+    <a class="addtolist" href="#">{'Add to list'|gettext}</a>
     <h2>RSS Feeds</h2> 
     <ul id="rsspull-feeds">
         {foreach from=$config.pull_rss item=feed}
-            {if $feed!=""}<li>{control type="hidden" name="pull_rss[]" value=$feed}{$feed} <a class="removerss" href="#">remove?</a></li>{/if}
+            {if $feed!=""}<li>{control type="hidden" name="pull_rss[]" value=$feed}{$feed} <a class="removerss" href="#">{'remove'|gettext}?</a></li>{/if}
         {foreachelse}
-            <h2 id="norssfeeds">You don't have any RSS feeds configured</h2>
+            <h2 id="norssfeeds">{'You don\'t have any RSS feeds configured'|gettext}</h2>
         {/foreach}
     </ul>
     {script unique="rssfeedpicker"}
@@ -58,7 +58,6 @@
         var list = YAHOO.util.Dom.get('rsspull-feeds');
         list.removeChild(lItem);
     });
-    
     
     {/literal}
     {/script}

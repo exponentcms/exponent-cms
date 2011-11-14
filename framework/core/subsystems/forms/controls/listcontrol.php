@@ -116,7 +116,7 @@ class listcontrol extends formcontrol {
             } else {
                 $filepic = "<img class=\"filepic\" src=".URL_FULL."thumb.php?id=".$val->id."&square=24\">";
             }
-            $html .= "<li class=\"".$cycle."\" id=\"imgdiv".$val->id."\">";
+            $html = "<li class=\"".$cycle."\" id=\"imgdiv".$val->id."\">";
             $html .= "<input type=\"hidden\" name=\"".$subTypeName."\" value=\"".$val->id."\">";
             $html .= "<div class=\"fpdrag\"></div>";
             $html .= $filepic;

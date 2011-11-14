@@ -17,6 +17,25 @@
 #
 ##################################################
 
+/**
+ * Smarty plugin
+ * @package Smarty-Plugins
+ * @subpackage Block
+ */
+
+/**
+ * Smarty {if_elements} block plugin
+ *
+ * Type:     block<br>
+ * Name:     if_elements<br>
+ * Purpose:  Set up a if elements block
+ *
+ * @param $params
+ * @param $content
+ * @param \Smarty $smarty
+ * @param $repeat
+ * @return string
+ */
 function smarty_block_if_elements($params,$content,&$smarty, &$repeat) {
 	if ($content) {
 		return (count($params['array']) ? $content : "");

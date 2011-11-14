@@ -17,6 +17,23 @@
 #
 ##################################################
 
+/**
+ * Smarty plugin
+ * @package Smarty-Plugins
+ * @subpackage Function
+ */
+
+/**
+ * Smarty {icon} function plugin
+ *
+ * Type:     function<br>
+ * Name:     icon<br>
+ * Purpose:  create an icon type link
+ *
+ * @param         $params
+ * @param \Smarty $smarty
+ * @return bool
+ */
 function smarty_function_icon($params,&$smarty) {
 	$loc = $smarty->getTemplateVars('__loc');
 	if (isset($params['record'])) { 

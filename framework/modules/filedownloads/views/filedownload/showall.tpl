@@ -15,7 +15,7 @@
 
 <div class="module filedownload showall">
     {if $config.enable_rss}
-        <a class="rsslink" href="{podcastlink}">Subscribe to {$config.feed_title}</a>
+        <a class="rsslink" href="{podcastlink}">{'Subscribe to'|gettext} {$config.feed_title}</a>
     {/if}
     {if $moduletitle}<h1>{$moduletitle}</h1>{/if} 
     {permissions}
@@ -30,7 +30,7 @@
     {/permissions}    
     {pagelinks paginate=$page top=1}
     {foreach from=$page->records item=file name=files}
-		<div class="item">
+        {$filetype=$file->expFile.downloadable[0]->filename|regex_replace:"/^.*\.([^.]+)$/D":"$1"}
 			{if $file->expFile.preview[0] != "" && $config.show_icon}
 				{img class="preview-img" file_id=$file->expFile.preview[0]->id square=150}
 			{/if}
@@ -40,10 +40,10 @@
 				{if $file->title}<h2><a class="readmore" href="{link action=show title=$file->sef_url}">{$file->title}</a></h2>{/if}
 			{/if}
 			{if $config.show_info}
-				<span class="label size">File Size:</span>
-				<span class="value">{$file->expFile.downloadable[0]->filesize|kilobytes}Kb</span>
+				<span class="label size">{'File Size'}:</span>
+				<span class="value">{$file->expFile.downloadable[0]->filesize|kilobytes}{'kb'|gettext}</span>
 				&nbsp;&nbsp;
-				<span class="label downloads"># Downloads:</span>
+				<span class="label downloads"># {'Downloads'|gettext}:</span>
 				<span class="value">{$file->downloads}</span>
 			{/if}
 			{permissions}
@@ -74,12 +74,15 @@
                 {/if}
 			</div>
 			{if $config.usebody==1 || $config.usebody==2}
-				<a class="readmore" href="{link action=show title=$file->sef_url}">Read more</a>
+				<a class="readmore" href="{link action=show title=$file->sef_url}">{'Read more'|gettext}</a>
 				&nbsp;&nbsp;
 			{/if}
 			{if !$config.quick_download}
-				<a class="download" href="{link action=downloadfile fileid=$file->id}">Download</a>
+				<a class="download" href="{link action=downloadfile fileid=$file->id}">{'Download'|gettext}</a>
 			{/if}
+            {if $config.show_player && ($filetype == "mp3" || $filetype == "flv" || $filetype == "f4v")}
+                <a href="{$file->expFile.downloadable[0]->url}" style="display:block;width:360px;height:30px;" class="filedownloads-media"></a>
+            {/if}
 			{clear}
 			{permissions}
 				<div class="module-actions">
@@ -93,3 +96,27 @@
     {/foreach}
     {pagelinks paginate=$page bottom=1}
 </div>
+
+{if $config.show_player}
+    {script unique="filedownloads" src="`$smarty.const.PATH_RELATIVE`external/flowplayer3/example/flowplayer-3.2.6.min.js"}
+    {literal}
+    flowplayer("a.filedownloads-media", EXPONENT.PATH_RELATIVE+"external/flowplayer3/flowplayer-3.2.7.swf",
+        {
+    		wmode: 'opaque',
+    		clip: {
+    			autoPlay: false,
+    			},
+            plugins:  {
+                controls: {
+                    play: true,
+                    scrubber: true,
+                    fullscreen: false,
+                    height: 30,
+                    autoHide: false
+                }
+            }
+        }
+    );
+    {/literal}
+    {/script}
+{/if}

@@ -17,6 +17,23 @@
 #
 ##################################################
 
+/**
+ * Smarty plugin
+ * @package Smarty-Plugins
+ * @subpackage Function
+ */
+
+/**
+ * Smarty {yuimenubar} function plugin
+ *
+ * Type:     function<br>
+ * Name:     yuimenubar<br>
+ * Purpose:  display a yui menu bar
+ *
+ * @param         $params
+ * @param \Smarty $smarty
+ * @return bool
+ */
 function smarty_function_yuimenubar($params,&$smarty) {
 
 

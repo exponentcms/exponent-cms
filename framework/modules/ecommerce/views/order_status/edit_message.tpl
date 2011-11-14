@@ -22,6 +22,6 @@
     {form action=update_message}
         {control type="hidden" name="id" value=$record->id}
         {control type="html" name="body" label="Message" value=$record->body}
-        {control type="buttongroup" submit="Submit" cancel="Cancel"}
+        {control type="buttongroup" submit="Submit"|gettext cancel="Cancel"|gettext}
     {/form}
 </div>

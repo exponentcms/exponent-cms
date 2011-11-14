@@ -17,6 +17,23 @@
 #
 ##################################################
 
+/**
+ * Smarty plugin
+ * @package Smarty-Plugins
+ * @subpackage Function
+ */
+
+/**
+ * Smarty {help} function plugin
+ *
+ * Type:     function<br>
+ * Name:     help<br>
+ * Purpose:  create a help link
+ *
+ * @param         $params
+ * @param \Smarty $smarty
+ * @return bool
+ */
 function smarty_function_help($params,&$smarty) {
 
     if (HELP_ACTIVE) {

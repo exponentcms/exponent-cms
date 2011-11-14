@@ -20,16 +20,16 @@
 
 <div class="module blog showall">
     {if $config.enable_rss == true}
-        <a class="rsslink" href="{rsslink}">Subscribe to {$config.feed_title}</a>
+        <a class="rsslink" href="{rsslink}">{'Subscribe to'|gettext} {$config.feed_title}</a>
     {/if}
     {if $moduletitle}<h1>{$moduletitle}</h1>{/if}
     {permissions}
 		<div class="module-actions">
 			{if $permissions.edit == 1}
-				{icon class=add action=edit title="Add a new blog article" text="Add a new blog article"}
+				{icon class=add action=edit text="Add a new blog article"|gettext}
 			{/if}
             {if $permissions.manage == 1}
-                {icon class="manage" controller=expTag action=manage title="Manage Tags"|gettext text="Manage Tags"|gettext}
+                {icon class="manage" controller=expTag action=manage text="Manage Tags"|gettext}
             {/if}
 		</div>
     {/permissions}
@@ -44,16 +44,16 @@
             {permissions}
                 <div class="item-actions">
                     {if $permissions.edit == 1}
-                        {icon action=edit record=$item title="Edit this `$modelname`"}
+                        {icon action=edit record=$item}
                     {/if}
                     {if $permissions.delete == 1}
-                        {icon action=delete record=$item title="Delete this `$modelname`" onclick="return confirm('Are you sure you want to delete this `$modelname`?');"}
+                        {icon action=delete record=$item}
                     {/if}
                 </div>
             {/permissions}
             <div class="post-info">
                 <span class="attribution">
-                    Posted by {attribution user_id=$item->poster} on <span class="date">{$item->created_at|format_date:$smarty.const.DISPLAY_DATE_FORMAT}</span>
+                    {'Posted by'|gettext} {attribution user_id=$item->poster} {'on'|gettext} <span class="date">{$item->created_at|format_date:$smarty.const.DISPLAY_DATE_FORMAT}</span>
                 </span>
 
                 | <a class="comments" href="{link action=show title=$item->sef_url}#exp-comments">{$item->expComment|@count} {"Comments"|gettext}</a>

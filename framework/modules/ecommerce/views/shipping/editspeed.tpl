@@ -21,6 +21,6 @@
     {form action=saveEditSpeed}
   		{control type="hidden" name="shippingcalculator_id" value=$calculator->id}
         {include file=$calculator->editspeed()}
-        {control type="buttongroup" submit="Save" cancel="Cancel"}
+        {control type="buttongroup" submit="Save"|gettext cancel="Cancel"|gettext}
     {/form}
 </div>

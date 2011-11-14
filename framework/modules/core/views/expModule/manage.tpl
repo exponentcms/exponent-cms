@@ -66,7 +66,7 @@
     <div id="mod-manager-tabs" class="yui-navset yui3-skin-sam hide">
         <ul class="yui-nav">
             <li class="selected"><a href="#tab1"><em>Exponent 2</em></a></li>
-            <li><a href="#tab2"><em>{gettext str="Old School"}</em></a></li>
+            <li><a href="#tab2"><em>{"Old School"|gettext}</em></a></li>
         </ul>            
         <div class="yui-content">
             <div id="tab1">

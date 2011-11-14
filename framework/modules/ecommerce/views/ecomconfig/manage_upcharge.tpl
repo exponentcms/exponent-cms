@@ -72,6 +72,6 @@
         {/foreach}
         </tbody>
         </table>
-        {control type=buttongroup submit="Save Upcharge Rate" cancel="Cancel"}
+        {control type=buttongroup submit="Save Upcharge Rate"|gettext cancel="Cancel"|gettext}
     {/form}
 </div>
