@@ -56,21 +56,62 @@ class giftcard extends expRecord {
 	function addToCart($params) {
 	
 	    global $order;
+		expSession::set('params', $params);
+		//get the configuration
+		$cfg->mod = "ecomconfig";
+        $cfg->src = "@globalstoresettings";
+        $cfg->int = "";
+        $config = new expConfig($cfg);
+        $this->config = (empty($catConfig->config) || @$catConfig->config['use_global']==1) ? $config->config : $catConfig->config;    
+		$min_amount = $this->config['minimum_gift_card_purchase'];
+		$custom_message_product = $this->config['custom_message_product'];
 	    
-	    if (empty($params['card_amount'])) {
-			
-	        return false;
+		if(empty($params['product_id'])) {
+			flash('error', "Please specify the style of the gift card you want to purchase.");
+			expHistory::back();
+		}
+
+	    if (empty($params['card_amount']) && empty($params['card_amount_txt'])) {
+				flash('error', "You need to specify the card amount for the gift card.");
+				expHistory::back();
 	    } else {
 			// eDebug($params, true);
 	        $item = new orderitem($params);	        
 	        $sm = $order->getCurrentShippingMethod();
 	        
 	        $item->shippingmethods_id = $sm->id;
-	        $item->products_price = preg_replace("/[^0-9.]/","",$params['card_amount']);
+			
+			if(isset($params['card_amount_txt'])) {
+				$params['card_amount_txt'] = preg_replace("/[^0-9.]/","",$params['card_amount_txt']);
+			}
+			
+			if(!empty($params['card_amount_txt']) && $params['card_amount_txt'] > 0) {
+				$item->products_price = preg_replace("/[^0-9.]/","",$params['card_amount_txt']);
+			} else {
+				$item->products_price = preg_replace("/[^0-9.]/","",$params['card_amount']);
+			}
+			
+			if($item->products_price < $min_amount) {
+				flash('error', "The minimum amount of gift card is {$min_amount}.");
+				expHistory::back();
+			}
+			
 	        $item->products_name = expCore::getCurrencySymbol() . $params['card_amount'].' '. $this->title . " Style Gift Card";
-	        $ed['To'] = isset($params['toname']) ? $params['toname'] : '';
-	        $ed['From'] = isset($params['fromname']) ? $params['fromname'] : '';
-	        $ed['Message'] = isset($params['msg']) ? $params['msg'] : '';
+			
+			if(!empty($params['toname'])) {
+				$ed['To'] = isset($params['toname']) ? $params['toname'] : '';
+			}
+			
+			if(!empty($params['fromname'])) {
+				$ed['From'] = isset($params['fromname']) ? $params['fromname'] : '';
+			}
+			
+			if(!empty($params['msg'])) {
+				$ed['Message'] = isset($params['msg']) ? $params['msg'] : '';
+				$item->products_price += $custom_message_product;
+				$item->products_name = $item->products_name . " (with message)";
+			}
+			
 	        $item->extra_data = serialize($ed);
 
 	        // we need to unset the orderitem's ID to force a new entry..other wise we will overwrite any

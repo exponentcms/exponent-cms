@@ -59,8 +59,7 @@ class storeController extends expController {
 	'deleteProcessedModelAliases'=>'Delete processed uploaded model aliases',
 	'delete_model_alias'=>'Process model aliases',
 	'update_model_alias'=>'Save model aliases',
-	'edit_model_alias'=>'Delete model aliases',
-	'showGiftCards' => 'Show Gift Cards UI'
+	'edit_model_alias'=>'Delete model aliases'
     );
      
     function displayname() { return "e-Commerce Store Front"; }
@@ -485,8 +484,9 @@ class storeController extends expController {
 		//Set the needed config for the view
 		$config['custom_message_product'] = $this->config['custom_message_product'];
 		$config['minimum_gift_card_purchase'] = $this->config['minimum_gift_card_purchase'];
-		
-		assign_to_template(array('giftcards' => $giftcards, 'config' => $config));
+		$records =  expSession::get('params');
+		expSession::un_set('params');
+		assign_to_template(array('giftcards' => $giftcards, 'config' => $config, 'records' => $records));
 	}
     
     function show() {

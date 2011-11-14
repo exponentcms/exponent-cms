@@ -26,7 +26,13 @@
         <td>
             <span class="itemname"><strong>{$item->products_name}</strong></span>
 			 <div class="itembody">
-				 To: {$message.To} From: {$message.From} 
+				{if $message.To}
+					To: {$message.To} 
+				{/if}
+				
+				{if $message.From}
+					From: {$message.From} 
+				{/if}
 				{br}{$message.Message|truncate:50:"..."}    
 			</div>
         </td>
