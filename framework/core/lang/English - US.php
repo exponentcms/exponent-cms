@@ -1993,7 +1993,6 @@ return array(
         email will be sent to the email address you provided along with instructions to reset your password."=>"To reset your password, enter your username/email address below. An
         email will be sent to the email address you provided along with instructions to reset your password.",
 	"To restore your uploaded files, simply select and upload the files archive using this form."=>"To restore your uploaded files, simply select and upload the files archive using this form.",
-	"To use the new passoword just return to"=>"To use the new passoword just return to",
 	"To:"=>"To:",
 	"Toolbar Button Configuration"=>"Toolbar Button Configuration",
 	"Toolbar Configuration"=>"Toolbar Configuration",
