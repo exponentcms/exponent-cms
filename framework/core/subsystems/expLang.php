@@ -41,15 +41,15 @@ class expLang {
 			$info = include(BASE . 'framework/core/lang/' . utf8_decode(LANG).'.info.php');
             define('LOCALE', $info['locale']);
 			setlocale(LC_ALL, $info['locale']);
+            // For anything related to character sets:
+            define('LANG_CHARSET', $info['charset']);
 			//DEPRECATED: we no longer use views for i18n
 			define('DEFAULT_VIEW', $info['default_view']);
-			// For anything related to character sets:
-			define('LANG_CHARSET', $info['charset']);
 	    } else {
+            // For anything related to character sets:
+            define('LANG_CHARSET', 'UTF-8');
 		    //DEPRECATED: we no longer use views for i18n
 		    define('DEFAULT_VIEW', 'Default');
-		    // For anything related to character sets:
-		    define('LANG_CHARSET', 'UTF-8');
 	    }
 
         if (DEVELOPMENT) $default_lang = include(BASE."framework/core/lang/English - US.php");
