@@ -91,7 +91,7 @@ if ((isset($_POST['action']) ? $_POST['action'] : (isset($_GET['action']) ? $_GE
             echo '  link to the file just uploaded: <a href="'.$dir_pics.'/' . $handle->file_dst_name . '">' . $handle->file_dst_name . '</a>';
             echo '</fieldset>';
         } else {
-            // one error occured
+            // one error occurred
             echo '<fieldset>';
             echo '  <legend>file not uploaded to the wanted location</legend>';
             echo '  Error: ' . $handle->error . '';
@@ -110,7 +110,7 @@ if ((isset($_POST['action']) ? $_POST['action'] : (isset($_GET['action']) ? $_GE
             echo '  link to the file just uploaded: <a href="'.$dir_pics.'/' . $handle->file_dst_name . '">' . $handle->file_dst_name . '</a>';
             echo '</fieldset>';
         } else {
-            // one error occured
+            // one error occurred
             echo '<fieldset>';
             echo '  <legend>file not uploaded to the wanted location</legend>';
             echo '  Error: ' . $handle->error . '';
@@ -164,7 +164,7 @@ if ((isset($_POST['action']) ? $_POST['action'] : (isset($_GET['action']) ? $_GE
             echo '  link to the file just uploaded: <a href="'.$dir_pics.'/' . $handle->file_dst_name . '">' . $handle->file_dst_name . '</a><br/>';
             echo '</fieldset>';
         } else {
-            // one error occured
+            // one error occurred
             echo '<fieldset>';
             echo '  <legend>file not uploaded to the wanted location</legend>';
             echo '  Error: ' . $handle->error . '';
@@ -191,7 +191,7 @@ if ((isset($_POST['action']) ? $_POST['action'] : (isset($_GET['action']) ? $_GE
             echo '  link to the file just uploaded: <a href="'.$dir_pics.'/' . $handle->file_dst_name . '">' . $handle->file_dst_name . '</a><br/>';
             echo '</fieldset>';
         } else {
-            // one error occured
+            // one error occurred
             echo '<fieldset>';
             echo '  <legend>file not uploaded to the wanted location</legend>';
             echo '  Error: ' . $handle->error . '';
@@ -250,7 +250,7 @@ if ((isset($_POST['action']) ? $_POST['action'] : (isset($_GET['action']) ? $_GE
                 echo '  link to the file just uploaded: <a href="'.$dir_pics.'/' . $handle->file_dst_name . '">' . $handle->file_dst_name . '</a>';
                 echo '</fieldset>';
             } else {
-                // one error occured
+                // one error occurred
                 echo '<fieldset>';
                 echo '  <legend>file not uploaded to the wanted location</legend>';
                 echo '  Error: ' . $handle->error . '';

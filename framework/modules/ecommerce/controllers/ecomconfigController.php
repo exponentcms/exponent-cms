@@ -315,7 +315,7 @@ class ecomconfigController extends expController {
 		$this->config['upcharge'] = $upcharge;
 		
         $config->update(array('config'=>$this->config));
-        flash('message', 'Configuration updated');
+        flash('message', gt('Configuration updated'));
         expHistory::back();
     }
 	

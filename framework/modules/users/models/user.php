@@ -233,7 +233,7 @@ class user extends expRecord {
 	    return false;
     }
     
-    public static function getByUsername($username) {
+    public static function getByUsername($username) {  //FIXME this is a duplicate of getUserByName - deprecate
         global $db;
 
         $user = new user($db->selectValue('user', 'id', 'username="'.$username.'"'));
@@ -280,7 +280,7 @@ class user extends expRecord {
 	 * to the database.
 	 *
 	 * @param string $name The username of the user account to retrieve.
-	 * @return array
+	 * @return \user
 	 * @node Model:User
 	 */
 	public static function getUserByName($name) {
@@ -306,7 +306,7 @@ class user extends expRecord {
 	 * object do not result in another trip to the database engine.
 	 *
 	 * @param integer $uid The id of the user account to retrieve.
-	 * @return array
+	 * @return \user
 	 * @node Model:User
 	 */
 	public static function getUserById($uid) {

@@ -44,7 +44,7 @@ if ($f) {
 		$check = $db->selectObject('formbuilder_control', 'name="'.$ctl->identifier.'" AND form_id='.$f->id);
 		if (!empty($check) && empty($_POST['id'])) {
 			//expValidator::failAndReturnToForm('A field with the same name already exists for this form', $_POST);
-			flash('error', 'A field by the name "'.$ctl->identifier.'" already exists on this form');
+			flash('error', gt('A field by the name")." "'.$ctl->identifier.'" ".gt("already exists on this form'));
 			expHistory::returnTo('editable');
 		}
 

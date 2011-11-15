@@ -75,7 +75,7 @@ class usersController extends expController {
         if ($user->isAdmin() || ($user->id == $id)) {
             $u = new user($id);
         } else {
-            flash('error', 'You do not have the proper permissions to edit this user');
+            flash('error', gt('You do not have the proper permissions to edit this user'));
             expHistory::back();
         }
 //        $active_extensions = $db->selectColumn('profileextension','classname','active=1', 'rank');
@@ -98,10 +98,10 @@ class usersController extends expController {
         
         // make sure this user should be updating user accounts
         if (!$user->isLoggedIn() && SITE_ALLOW_REGISTRATION == 0){
-            flash('error', 'This site does not allow user registrations');
+            flash('error', gt('This site does not allow user registrations'));
             expHistory::back();
         } elseif (!$user->isAdmin() && ($user->isLoggedIn() && $user->id != $id)) {
-            flash('error', 'You do not have permission to edit this user account');            
+            flash('error', gt('You do not have permission to edit this user account'));
             expHistory::back();
         }
         
@@ -112,9 +112,9 @@ class usersController extends expController {
             $u = new user($id);
             $u->update($this->params);  
             if ($user->isAdmin()) {
-                flash('message', 'Account information for '.$u->username.' has been updated.');
+                flash('message', gt('Account information for').' '.$u->username.' '.gt('has been updated.'));
             } else {
-                flash('message', 'Thank you '.$u->firstname.'.  Your account information has been updated.');
+                flash('message', gt('Thank you').' '.$u->firstname.'.  '.gt('Your account information has been updated.'));
             }          
         } else {
             $u = new user($this->params);
@@ -122,10 +122,10 @@ class usersController extends expController {
             if ($ret != true) expValidator::failAndReturnToForm($ret, $this->params);
             $u->save();
             if ($user->isAdmin()) {
-                flash('message', 'Created new user account for '.$u->username);
+                flash('message', gt('Created new user account for').' '.$u->username);
             } else {
                 user::login($u->username, $this->params['pass1']);
-                flash('message', 'Thank you '.$u->firstname.'.  Your new account has been created.');
+                flash('message', gt('Thank you').' '.$u->firstname.'.  '.gt('Your new account has been created.'));
             }
         }     
         
@@ -178,7 +178,7 @@ class usersController extends expController {
 					    'subject'=>USER_REGISTRATION_WELCOME_SUBJECT,
 		        ));
 		        
-		        flash('message', 'A welcome email has been sent to '.$u->email);
+		        flash('message', gt('A welcome email has been sent to').' '.$u->email);
 	        }
 
             // send and email notification to the admin of the site.
@@ -203,12 +203,12 @@ class usersController extends expController {
     public function delete() {
         global $user, $db;
         if (!$user->isAdmin()) {
-            flash('error', 'You do not have permission to delete user accounts');
+            flash('error', gt('You do not have permission to delete user accounts'));
             expHistory::back();
         }
         
         if (empty($this->params['id'])) {
-            flash('error', 'No user selected.');
+            flash('error', gt('No user selected.'));
             expHistory::back();
         }
         
@@ -378,7 +378,8 @@ class usersController extends expController {
         global $db;
         
         // find the user
-        $u = user::getByUsername($this->params['username']);
+//        $u = user::getByUsername($this->params['username']);
+        $u = user::getUserByName($this->params['username']);
 
         if (!expValidator::check_antispam($this->params)) {
             expValidator::failAndReturnToForm('Anti-spam verification failed', $this->params);
@@ -408,9 +409,9 @@ class usersController extends expController {
         
         $db->delete('passreset_token', 'uid='.$u->id);
         $db->insertObject($tok,'passreset_token');
-        flash('message', 'An email has been sent to your email address with instructions on how to 
-        finish resetting your password.<br><br>The new password is good for 2 hours.  If you have not completed
-        the password reset process in 2 hours time, the new password will expire.');
+        flash('message', gt('An email has been sent to your email address with instructions on how to
+        finish resetting your password.').'<br><br>'.gt('The new password is good for 2 hours.  If you have not completed
+        the password reset process in 2 hours time, the new password will expire.'));
         
         expHistory::back();
     }
@@ -421,7 +422,7 @@ class usersController extends expController {
         $db->delete('passreset_token','expires < ' . time());
         $tok = $db->selectObject('passreset_token','uid='.trim($_GET['uid'])." AND token='".preg_replace('/[^A-Za-z0-9]/','',$_GET['token']) ."'");
         if ($tok == null) {
-	        flash('error', 'Your password reset has expired.  Please try again.');
+	        flash('error', gt('Your password reset has expired.  Please try again.'));
 	        expHistory::back();
         } 
 
@@ -480,12 +481,12 @@ class usersController extends expController {
     public function save_change_password() {
         global $user, $db;
         if (!$user->isAdmin() && ($this->params['uid'] != $user->id)) {
-            flash('error', 'You do not have permissions to change this users password.');
+            flash('error', gt('You do not have permissions to change this users password.'));
             expHistory::back();
         }
         
         if (!$user->isAdmin() && (empty($this->params['password']) || $user->password != md5($this->params['password']))) {
-            flash('error', 'The current password you entered is not correct.');
+            flash('error', gt('The current password you entered is not correct.'));
             expHistory::returnTo('editable');
         }
         //eDebug($user);
@@ -502,9 +503,9 @@ class usersController extends expController {
         }
         
         if ($this->params['uid'] != $user->id) {
-            flash('message', 'Your password for '.$u->username.' been changed.');
+            flash('message', gt('Your password for').' '.$u->username.' '.gt('been changed.'));
         } else {
-            flash('message', 'Your password has been changed.');
+            flash('message', gt('Your password has been changed.'));
         }
         expHistory::back();
     }
@@ -546,7 +547,7 @@ class usersController extends expController {
             $u->save(true);
         }
         
-        flash('message', 'Password reset for user '.$u->username);
+        flash('message', gt('Password reset for user').' '.$u->username);
         expHistory::back();
     }
     
@@ -632,12 +633,12 @@ class usersController extends expController {
     public function delete_group() {
         global $user, $db;
         if (!$user->isAdmin()) {
-            flash('error', 'You do not have permission to delete user groups');
+            flash('error', gt('You do not have permission to delete user groups'));
             expHistory::back();
         }
         
         if (empty($this->params['id'])) {
-            flash('error', 'No group selected.');
+            flash('error', gt('No group selected.'));
             expHistory::back();
         }
         

@@ -24,7 +24,7 @@ if (!defined('EXPONENT')) exit('');
 $post = $_POST;
 $post['manual_redirect'] = true;
 if (!expValidator::check_antispam($post)) {
-    flash('error', 'Security Validation Failed');
+    flash('error', gt('Security Validation Failed'));
     expHistory::back();
 }
 

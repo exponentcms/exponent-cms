@@ -241,7 +241,7 @@ class migrationController extends expController {
 
         flash ('message', $successful.' pages were imported from '.$this->config['database'].$del_pages);
         if ($failed > 0) {
-            flash('error', $failed.' pages could not be imported from '.$this->config['database'].' This is usually because a page with the same ID already exists in the database you importing to.');
+            flash('error', $failed.' '.gt('pages could not be imported from').' '.$this->config['database'].' '.gt('This is usually because a page with the same ID already exists in the database you importing to.'));
         }
 
         expSession::clearCurrentUserSessionCache();
@@ -739,7 +739,7 @@ class migrationController extends expController {
 				if ($msg != '') { $msg .= ' and ';}
 				$msg .= $gfailed.' groups ';
 			}
-            flash('error', $msg.' could not be imported from '.$this->config['database'].' This is usually because a user with the username or group with that name already exists in the database you importing to.');
+            flash('error', $msg.' '.gt('could not be imported from').' '.$this->config['database'].' '.gt('This is usually because a user with the username or group with that name already exists in the database you importing to.'));
         }
         expSession::clearCurrentUserSessionCache();
         expHistory::back();

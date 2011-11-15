@@ -500,11 +500,11 @@ class storeController extends expController {
             $product_type->user_message = "This product is temporarily unavailable for purchase.";   
         }elseif ($product->active_type == 2 && !($user->is_admin || $user->is_acting_admin))
         {
-            flash("error", $product->title ." is curently unavailable.");
+            flash("error", $product->title ." ".gt("is currently unavailable."));
             expHistory::back();   
         }elseif ($product->active_type == 2 && ($user->is_admin || $user->is_acting_admin))
         {
-            $product_type->user_message = $product->title ." is curently marked as unavailable for purchase or display.  Normal users will not see this product.";
+            $product_type->user_message = $product->title ." is currently marked as unavailable for purchase or display.  Normal users will not see this product.";
         }
         expHistory::set('viewable', $this->params);    
         
@@ -552,11 +552,11 @@ class storeController extends expController {
             $product_type->user_message = "This product is temporarily unavailable for purchase.";   
         }elseif ($product->active_type == 2 && !($user->is_admin || $user->is_acting_admin))
         {
-            flash("error", $product->title ." is curently unavailable.");
+            flash("error", $product->title ." ".gt("is currently unavailable."));
             expHistory::back();   
         }elseif ($product->active_type == 2 && ($user->is_admin || $user->is_acting_admin))
         {
-            $product_type->user_message = $product->title ." is curently marked as unavailable for purchase or display.  Normal users will not see this product.";
+            $product_type->user_message = $product->title ." is currently marked as unavailable for purchase or display.  Normal users will not see this product.";
         }
         foreach ($product_type->crosssellItem as &$csi) {
             $csi->getAttachableItems();
@@ -978,18 +978,18 @@ class storeController extends expController {
 			//Create a flash message and redirect to the page accordingly
 			if($record->parent_id != 0 ) {
 				$parent = new $product_type($record->parent_id,false,false);
-				flash("message","Child product saved.");                
+				flash("message",gt("Child product saved."));
 				redirect_to(array('controller'=>'store','action'=>'showByTitle','title'=>$parent->sef_url));
 			} elseif(isset($this->params['original_id']) ) {
-				flash("message","Product copied and saved. You are now viewing your new product.");                
+				flash("message",gt("Product copied and saved. You are now viewing your new product."));
 				redirect_to(array('controller'=>'store','action'=>'showByTitle','title'=>$record->sef_url));
 			} else {            
-				flash("message","Product saved.");                
+				flash("message",gt("Product saved."));
 				redirect_to(array('controller'=>'store','action'=>'showByTitle','title'=>$record->sef_url));
 			}
 		} elseif($product_type == "giftcard") {
 		
-			flash("message","Giftcard saved.");                
+			flash("message",gt("Giftcard saved."));
 			redirect_to(array('controller'=>'store','action'=>'manage'));
 		}
     }
@@ -1020,7 +1020,7 @@ class storeController extends expController {
 		
         $product->delete();
         
-        flash('message', 'Product deleted successfully.');
+        flash('message', gt('Product deleted successfully.'));
         expHistory::back();
     }
     
@@ -1100,7 +1100,7 @@ class storeController extends expController {
         //eDebug($product, true);
         if (empty($product->id)) // || empty($product->previous_id)) 
         {
-            flash('error', 'There was an error deleting the child products.');
+            flash('error', gt('There was an error deleting the child products.'));
             expHistory::back(); 
         }
         $childrenToDelete = $product->find('all','parent_id='.$product->id);
@@ -1309,7 +1309,7 @@ class storeController extends expController {
         //$file = new expFile($this->params['expFile']['batch_process_upload'][0]);
         if(!empty($_FILES['batch_upload_file']['error']))
         {
-            flash('error','There was an error uploading your file.  Please try again.');
+            flash('error',gt('There was an error uploading your file.  Please try again.'));
             redirect_to(array('controller'=>'store','action'=>'batch_process'));        
         }
         
@@ -1585,7 +1585,7 @@ class storeController extends expController {
 //        eDebug($_FILES,true);
         if(!empty($_FILES['address_csv']['error']))
         {
-            flash('error','There was an error uploading your file.  Please try again.');
+            flash('error',gt('There was an error uploading your file.  Please try again.'));
             redirect_to(array('controller'=>'store','action'=>'import_external_addresses'));        
         }
         
@@ -1882,7 +1882,7 @@ class storeController extends expController {
 		if(isset($_FILES['modelaliases']['tmp_name'])) {
 			if(!empty($_FILES['modelaliases']['error']))
 			{
-				flash('error','There was an error uploading your file.  Please try again.');
+				flash('error',gt('There was an error uploading your file.  Please try again.'));
 				redirect_to(array('controller'=>'store','action'=>'uploadModelAliases'));        
 			}
 			
@@ -2048,10 +2048,10 @@ class storeController extends expController {
 			//Update the record in the tmp table to mark it as process
 			$res->is_processed = 1;
 			$db->updateObject($res, 'model_aliases_tmp');
-			flash("message", "Product succesfully Saved.");
+			flash("message", gt("Product succesfully Saved."));
 			redirect_to(array('controller'=>'store','action'=>'processModelAliases', 'index' => $index));
 		} else {
-			flash("error", "Product title is invalid.");
+			flash("error", gt("Product title is invalid."));
 			redirect_to(array('controller'=>'store','action'=>'processModelAliases', 'index' => $index - 1, 'error' => 'Product title is invalid.'));
 		}
 	}	

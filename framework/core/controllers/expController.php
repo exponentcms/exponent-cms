@@ -527,7 +527,7 @@ abstract class expController {
         $config = new expConfig($this->loc);
                 
         $config->update(array('config'=>$this->params));        
-        flash('message', 'Configuration updated');
+        flash('message', gt('Configuration updated'));
         expHistory::back();
     }
 
@@ -542,7 +542,7 @@ abstract class expController {
                 expFile::download($this->params['id']);
             //}
         } else {
-            flash('error', 'Downloads have not been enabled for this file'); 
+            flash('error', gt('Downloads have not been enabled for this file'));
             expHistory::back();         
         }
         

@@ -32,7 +32,7 @@ class expCommentController extends expController {
     
 	function edit() {
 	    if (empty($this->params['content_id'])) {
-	        flash('message','An error occured: No content id set.');
+	        flash('message','An error occurred: No content id set.');
             expHistory::back();  
 	    } 
         /* The global constants can be overriden by passing appropriate params */ 

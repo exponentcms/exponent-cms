@@ -42,7 +42,7 @@ class group extends expRecord {
 	 * to the database.
 	 *
 	 * @param integer $gid The id of the group account to retrieve.
-	 * @return object
+	 * @return \group
 	 * @node Model:Group
 	 */
 	public static function getGroupById($gid) {
@@ -100,7 +100,7 @@ class group extends expRecord {
 	 * to the database.
 	 *
 	 * @param integer $name The name of the group account to retrieve.
-	 * @return array
+	 * @return \group
 	 * @node Model:Group
 	 */
 	public static function getGroupByName($name) {

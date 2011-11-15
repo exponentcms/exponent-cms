@@ -208,7 +208,7 @@ class order extends expRecord {
                                 //update the session ticket and return count                                                                
                                 $cart->update(array('sessionticket_ticket'=>$ticket,'return_count'=>$cart->setReturnCount($orig_referrer)));                                                      
                                 order::setCartCookie($cart);
-                                flash('message','Welcome back!');
+                                flash('message',gt('Welcome back!'));
                             }
                             //2) Was logged in 
                             else if(!empty($tmpCart->user_id))
@@ -228,7 +228,7 @@ class order extends expRecord {
                                     $cart = new order();
                                     $cart->update(array("sessionticket_ticket"=>$ticket, 'user_id'=>$user->id, 'orig_referrer'=>$orig_referrer,'return_count'=>$tmpCart->setReturnCount($orig_referrer))); 
                                     order::setCartCookie($cart);
-                                    flash('message','Welcome back!');
+                                    flash('message',gt('Welcome back!'));
                                 }   
                                 //3) Was logged in WITH items in cart                            
                                 else if(!empty($tmpCart->user_id) && count($tmpCart->orderitem) > 0)
@@ -249,7 +249,7 @@ class order extends expRecord {
                                             expSession::login($user);
                                             //Update the last login timestamp for this user.
                                             $user->updateLastLogin();                                        
-                                            flash('message','Welcome back ' . $sessAr['firstname'] . '! Your shopping cart has been restored - you may continue shopping or <a href="'.makelink(array("controller"=>"cart","action"=>"checkout")).'">checkout</a> at your convenience.');                                             
+                                            flash('message',gt('Welcome back').' ' . $sessAr['firstname'] . '! '.gt('Your shopping cart has been restored - you may continue shopping or').' <a href="'.makelink(array("controller"=>"cart","action"=>"checkout")).'">checkout</a> '.gt('at your convenience.'));
                                         }
                                         else
                                         {
@@ -282,7 +282,7 @@ class order extends expRecord {
                                             $cart->update(array("sessionticket_ticket"=>$ticket, 'return_count'=>$cart->setReturnCount($orig_referrer)));                                             
                                             expSession::set('verify_shopper',array('au'=>1,'orig_path'=>$router->current_url, 'firstname'=>$u->firstname, 'cid'=>$cookie_cart_id, 'awaiting_choice'=>true));
                                             //order::setCartCookie($cart);                                            
-                                            flash('message','Welcome back ' . $u->firstname . '! '.gt('We see that you have shopped with us before.').'<br><br><a id="submit-verify" href="'.makelink(array("controller"=>"order","action"=>"verifyReturnShopper")).'" rel="nofollow">'.gt('Click Here to Restore Your Previous Shopping Cart').'</a><br><br><a class="exp-ecom-link" href="'.makelink(array("controller"=>"order","action"=>"clearCart","id"=>$cookie_cart_id)).'">'.gt('Click Here To Start a New Shopping Cart').'</a>');
+                                            flash('message',gt('Welcome back').' ' . $u->firstname . '! '.gt('We see that you have shopped with us before.').'<br><br><a id="submit-verify" href="'.makelink(array("controller"=>"order","action"=>"verifyReturnShopper")).'" rel="nofollow">'.gt('Click Here to Restore Your Previous Shopping Cart').'</a><br><br><a class="exp-ecom-link" href="'.makelink(array("controller"=>"order","action"=>"clearCart","id"=>$cookie_cart_id)).'">'.gt('Click Here To Start a New Shopping Cart').'</a>');
                                           }                                         
                                         }                                        
                                      }
@@ -295,7 +295,7 @@ class order extends expRecord {
                                          $cart = new order();
                                          $cart->update(array("sessionticket_ticket"=>$ticket, 'user_id'=>$user->id, 'orig_referrer'=>$orig_referrer)); 
                                          order::setCartCookie($cart);
-                                         flash('message','Welcome back ' . $u->firstname . '! '.gt('If you would like to pick up where you left off, click here to login and your previous shopping cart will be restored.'));
+                                         flash('message',gt('Welcome back').' ' . $u->firstname . '! '.gt('If you would like to pick up where you left off, click here to login and your previous shopping cart will be restored.'));
                                      }                           
                                  }
                             }                                       

@@ -120,7 +120,7 @@ class helpController extends expController {
 	    $current_version = $hv->find('first', 'is_current=1');
 	    
 	    if (empty($current_version)) {
-	        flash('error', "You don't have any software versions created yet.  Please do so now.");
+	        flash('error', gt("You don't have any software versions created yet.  Please do so now."));
 	        redirect_to(array('controller'=>'help', 'action'=>'edit_version'));
 	    }
 
@@ -175,7 +175,7 @@ class helpController extends expController {
 	    $newvers = $db->selectValue('help_version', 'version', 'id='.$to);
 	    
 	    // send a message saying what we've done
-	    flash('message', 'Copied all docs from version '.$oldvers.' to new version '.$newvers);
+	    flash('message', gt('Copied all docs from version').' '.$oldvers.' '.gt('to new version').' '.$newvers);
 	    return true;
 	}
 	
@@ -210,13 +210,13 @@ class helpController extends expController {
 	
 	public function delete_version() {
 	    if (empty($this->params['id'])) {
-	        flash('error', 'The version you are trying to delete could not be found');
+	        flash('error', gt('The version you are trying to delete could not be found'));
 	    }
 	    
 	    // get the version
 	    $version = new help_version($this->params['id']);
 	    if (empty($version->id)) {
-	        flash('error', 'The version you are trying to delete could not be found');
+	        flash('error', gt('The version you are trying to delete could not be found'));
 	    }
 	    
 	    // if we have errors than lets get outta here!
@@ -234,7 +234,7 @@ class helpController extends expController {
 	    }
 	    expSession::un_set('help-version');
 
-	    flash('message', 'Deleted version '.$version->version.' and '.$num_docs.' documents that were in that version.');
+	    flash('message', gt('Deleted version').' '.$version->version.' '.gt('and').' '.$num_docs.' '.gt('documents that were in that version.'));
 	    expHistory::back();	    
 	}
 	
@@ -264,7 +264,7 @@ class helpController extends expController {
 	        self::copydocs($current_version->id, $version->id);	        
 	    }
 
-	    flash('message', 'Saved help version '.$version->version);
+	    flash('message', gt('Saved help version').' '.$version->version);
 	    expHistory::back();
 	}
 
@@ -280,7 +280,7 @@ class helpController extends expController {
 	    $this->params['is_current'] = 1;
 	    $version->update($this->params);
 
-	    flash('message', 'Changed active help version to '.$version->version);
+	    flash('message', gt('Changed active help version to').' '.$version->version);
 	    expHistory::back();
 	}
 
