@@ -130,7 +130,7 @@ class importexportController extends expController {
         }        
         fclose($checkhandle);
         
-        echo "<br/>CSV File passed validation...<br/>";
+        echo "<br/>".gt("CSV File passed validation")."...<br/>";
         
         if($this->params['import_type'] == 'storeController') $this->importProduct($file);
         //else if($this->params['import_type'] == 'addressController') $this->importAddresses($file);

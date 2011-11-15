@@ -382,13 +382,13 @@ class usersController extends expController {
         $u = user::getUserByName($this->params['username']);
 
         if (!expValidator::check_antispam($this->params)) {
-            expValidator::failAndReturnToForm('Anti-spam verification failed', $this->params);
+            expValidator::failAndReturnToForm(gt('Anti-spam verification failed'), $this->params);
 		} elseif (empty($u)) {
-            expValidator::failAndReturnToForm('We were unable to find an account with that username', $this->params);
+            expValidator::failAndReturnToForm(gt('We were unable to find an account with that username'), $this->params);
         } elseif (empty($u->email)) {
-            expValidator::failAndReturnToForm('Your account does not appear to have an email address.  Please contact the site administrators to reset your password', $this->params);
+            expValidator::failAndReturnToForm(gt('Your account does not appear to have an email address.  Please contact the site administrators to reset your password'), $this->params);
         } elseif ($u->isAdmin()) {
-            expValidator::failAndReturnToForm('You cannot reset passwords for an administrator account.', $this->params);
+            expValidator::failAndReturnToForm(gt('You cannot reset passwords for an administrator account.'), $this->params);
         }
 	
         $tok = null;
@@ -522,17 +522,17 @@ class usersController extends expController {
     
     public function update_userpassword() {
         if (empty($this->params['id'])) {
-            expValidator::failAndReturnToForm('You must specify the user whose password you want to change', $this->params);
+            expValidator::failAndReturnToForm(gt('You must specify the user whose password you want to change'), $this->params);
         }
         
         if (empty($this->params['new_password1'])) {
             expValidator::setErrorField('new_password1');
-            expValidator::failAndReturnToForm('You must specify a new password for this user.', $this->params);
+            expValidator::failAndReturnToForm(gt('You must specify a new password for this user.'), $this->params);
         }
          
         if (empty($this->params['new_password2'])) {
             expValidator::setErrorField('new_password2');
-            expValidator::failAndReturnToForm('You must confirm the password.', $this->params);
+            expValidator::failAndReturnToForm(gt('You must confirm the password.'), $this->params);
             
         }
         

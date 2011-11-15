@@ -54,7 +54,7 @@ class cash extends billingcalculator{
 		global $order; 
 		
 		if ($order->grand_total > $params["cash_amount"]) {
-			expValidator::failAndReturnToForm("The total amount of your order is greater than what the amount you have input. <br /> Please enter exact or greater amount of your total.");
+			expValidator::failAndReturnToForm(gt("The total amount of your order is greater than what the amount you have input.")."<br />".gt("Please enter exact or greater amount of your total."));
 		}
       
 		$this->opts = null;

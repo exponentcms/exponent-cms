@@ -129,7 +129,7 @@ class newsController extends expController {
     public function saveConfig() { 
         if (!empty($this->params['aggregate']) || !empty($this->params['pull_rss'])) {
             if ($this->params['order'] == 'rank ASC') {
-                expValidator::failAndReturnToForm('User defined ranking is not allowed when aggregating or pull RSS data feeds.', $this->params);
+                expValidator::failAndReturnToForm(gt('User defined ranking is not allowed when aggregating or pull RSS data feeds.'), $this->params);
             }
         }
         

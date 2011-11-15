@@ -795,12 +795,12 @@ class cartController extends expController {
         
         // if they didn't fill out anything
         if (empty($this->params['methods'])) {
-            expValidator::failAndReturnToForm("You did not pick  any shipping options", $this->params);
+            expValidator::failAndReturnToForm(gt("You did not pick  any shipping options"), $this->params);
         }
         
         // if they don't check all the radio buttons
         if (count($this->params['methods']) < count($this->params['calcs'])) {
-            expValidator::failAndReturnToForm("You must select a shipping options for all of your packages.", $this->params);
+            expValidator::failAndReturnToForm(gt("You must select a shipping options for all of your packages."), $this->params);
         }
         
         foreach ($this->params['methods'] as $id=>$method) {

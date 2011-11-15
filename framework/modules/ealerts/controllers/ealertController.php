@@ -166,7 +166,7 @@ class ealertController extends expController {
     public function signup() {
         global $db;
         // check the anti-spam control
-        expValidator::check_antispam($this->params, "Anti-spam verification failed.  Please try again.");
+        expValidator::check_antispam($this->params, gt("Anti-spam verification failed.  Please try again."));
         
         // make sure we have what we need.
         if (empty($this->params['email'])) expQueue::flashAndFlow('error', 'You must supply an email address to sign up for email alerts.');
