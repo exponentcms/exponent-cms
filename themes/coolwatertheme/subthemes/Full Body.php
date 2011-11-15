@@ -22,9 +22,9 @@
 				<h1 id="logo-text"><a href="<?php echo URL_FULL; ?>index.php" title="<?php echo SITE_TITLE; ?>"><span class="green"><?php echo ORGANIZATION_NAME; ?></span> <sup></sup></a></h1>
 				<p id="slogan"><?php echo SITE_HEADER; ?></p>
 				<div id="header-links">
-					<a href="<?php echo expCore::makeLink(array('section'=>SITE_DEFAULT_SECTION)); ?>">Home</a> |
-					<a href="<?php echo expCore::makeLink(array('section'=>16)); ?>">Contact Us</a> |
-					<a href="<?php echo expCore::makeLink(array('section'=>10)); ?>">Site-map</a>
+                    <a href="<?php echo expCore::makeLink(array('section'=>SITE_DEFAULT_SECTION)); ?>"><?php echo gt('Home'); ?></a> |
+                    <a href="<?php echo expCore::makeLink(array('section'=>16)); ?>"><?php echo gt('Contact Us'); ?></a> |
+                    <a href="<?php echo expCore::makeLink(array('section'=>10)); ?>"><?php echo gt('Site-map'); ?></a>
 				</div>
 				<div id="header-login">
 					<?php expTheme::showController(array("controller"=>"login","action"=>"showlogin","view"=>"showlogin_expanded")); ?>
