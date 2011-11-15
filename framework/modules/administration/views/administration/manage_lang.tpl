@@ -21,7 +21,7 @@
         </div>
         <h1>{"Manage Translations"|gettext}</h1>
     </div>
-    {form action=save_newlanguage}
+    {form action=update_language}
         {control type="dropdown" name="newlang" label="Select Display Language"|gettext items=$langs default=$smarty.const.LANGUAGE}
         {control type=buttongroup submit="Switch to this Display Language"|gettext}
     {/form}
