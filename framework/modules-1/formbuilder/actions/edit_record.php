@@ -74,8 +74,6 @@ if ($f && $data && $controls) {
 		$form->meta('data_id',$data->id);
 		$form->location($loc);
 		
-//		global $SYS_FLOW_REDIRECTIONPATH;
-//		$SYS_FLOW_REDIRECTIONPATH = "editfallback";
 		$template = new template('formbuilder','_view_form');
 		$template->assign('form_html',$form->toHTML($f->id));
 		$template->assign('form',$f);

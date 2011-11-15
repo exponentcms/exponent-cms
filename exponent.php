@@ -56,7 +56,6 @@ $available_controllers = expModules::initializeControllers();  //original positi
 
 // Initialize the History (Flow) subsystem.
 $history = new expHistory(); //<--This is the new flow subsystem
-//$SYS_FLOW_REDIRECTIONPATH = 'exponent_default';
 
 // Initialize the javascript subsystem
 if (expJavascript::inAjaxAction()) set_error_handler('handleErrors');

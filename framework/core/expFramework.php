@@ -74,7 +74,6 @@ $db = null;
  * @name $history
  */
 $history = null;
-//$SYS_FLOW_REDIRECTIONPATH = '';
 
 // user model
 /**

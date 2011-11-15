@@ -148,10 +148,7 @@ if (!isset($_POST['data_id']) || (isset($_POST['data_id']) && expPermissions::ch
     //If is a new post show response, otherwise redirect to the flow.
     if (!isset($_POST['data_id'])) {
         $template = new template("formbuilder","_view_response");
-//        global $SYS_FLOW_REDIRECTIONPATH;
-//        $SYS_FLOW_REDIRECTIONPATH = "editfallback";
         $template->assign("backlink",expHistory::getLastNotEditable());
-//        $SYS_FLOW_REDIRECTIONPATH = "exponent_default";
         $template->assign("response_html",$f->response);
         $template->output();
     } else {
