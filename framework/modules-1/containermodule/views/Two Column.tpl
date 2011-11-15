@@ -14,7 +14,7 @@
  *
  *}
  
- {css unique="2col-container" link="`$smarty.const.PATH_RELATIVE`framework/modules/container/assets/css/container.css"}
+ {css unique="2col-container" link=$smarty.const.PATH_RELATIVE|cat:'framework/modules/container/assets/css/container.css'}
 
 {/css}
  

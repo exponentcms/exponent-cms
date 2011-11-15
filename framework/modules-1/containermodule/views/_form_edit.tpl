@@ -14,7 +14,7 @@
  *
  *}
 
-{css unique="addmodule1" link="`$smarty.const.PATH_RELATIVE`framework/modules/container/assets/css/add-content.css" corecss="admin-global"}
+{css unique="addmodule1" link=$smarty.const.PATH_RELATIVE|cat:'framework/modules/container/assets/css/add-content.css' corecss="admin-global"}
 
 {/css}
 

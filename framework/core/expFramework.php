@@ -125,6 +125,25 @@ $exponent_permissions_r = array();
  * @name $userjsfiles
  */
 $userjsfiles = array();
+/**
+ * Stores the user's javascript files
+ * @global array $js2foot
+ * @name $js2foot
+ */
+$js2foot = array();
+//$yui2js = array();
+/**
+ * Stores the user's javascript files
+ * @global array $yui3js
+ * @name $yui3js
+ */
+$yui3js = array();
+/**
+ * Stores the user's javascript files
+ * @global array $expJS
+ * @name $expJS
+ */
+$expJS = array();
 
 function renderAction(array $parms=array()) {
     global $user;
