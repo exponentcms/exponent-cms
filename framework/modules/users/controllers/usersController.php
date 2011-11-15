@@ -457,7 +457,7 @@ class usersController extends expController {
         // cleanup the reset token
         $db->delete('passreset_token','uid='.$tok->uid);
 
-        flash ('message', 'Your new password has been emailed to your email account.');
+        flash('message', gt('Your new password has been emailed to your email account.'));
 
         // send the user the login page.
         redirect_to(array('controller'=>'login', 'action'=>'loginredirect'));
@@ -513,7 +513,7 @@ class usersController extends expController {
     public function edit_userpassword() {
         expHistory::set('editable', $this->params);
         if (empty($this->params['id'])) {
-            flash ('error', 'You must specify the user whose password you want to change');
+            flash('error', gt('You must specify the user whose password you want to change'));
         }
         
         $u = new user($this->params['id']);

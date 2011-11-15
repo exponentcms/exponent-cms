@@ -152,7 +152,7 @@ if (!isset($_POST['data_id']) || (isset($_POST['data_id']) && expPermissions::ch
         $template->assign("response_html",$f->response);
         $template->output();
     } else {
-		flash ('message', 'Record was updated!');
+		flash('message', gt('Record was updated!'));
 //        expHistory::back();
         expHistory::returnTo('editable');
     }

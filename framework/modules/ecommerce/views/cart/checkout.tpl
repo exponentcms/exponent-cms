@@ -91,7 +91,7 @@
                 </div>
                 {else}
                     <div class="codes-applied">
-                        {"You've applied the following"|gettext} {if $discounts|@count==1}{"coupon"|gettext}{else}{$discounts|@count} {"coupons"|gettext}{/if}:
+                        {"You\'ve applied the following"|gettext} {if $discounts|@count==1}{"coupon"|gettext}{else}{$discounts|@count} {"coupons"|gettext}{/if}:
                         <ul>
                             {foreach from=$discounts item=discount}
                             <li>

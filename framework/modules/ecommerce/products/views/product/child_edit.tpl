@@ -160,7 +160,7 @@
                     {control type="textarea" name="availability_note" label="* "|cat:("Note to display per above selection"|gettext) rows=5 cols=45 value=$record->availability_note}
                 </div>
                 <div id="shipping">
-                    {control type="checkbox" name="no_shipping" label="This item doesn't require shipping"|gettext value=1 checked=$record->no_shipping}
+                    {control type="checkbox" name="no_shipping" label="This item doesn\'t require shipping"|gettext value=1 checked=$record->no_shipping}
                     {control type="dropdown" name="required_shipping_calculator_id" id="required_shipping_calculator_id" label="Required Shipping Service"|gettext includeblank="--- Select a shipping service ---" items=$shipping_services value=$record->required_shipping_calculator_id onchange="switchMethods();"}
                     {foreach from=$shipping_methods key=calcid item=methods name=sm}
                         <div id="dd-{$calcid}" class="hide methods">
@@ -175,13 +175,13 @@
                 </div>
                 <div id="categories">
                     <a href='{link controller="storeCategory" action="manage"}'>{"Manage Categories"|gettext}</a>{br}{br}
-                    <h2>{"Category is inherited from this product's parent."|gettext}</h2>
+                    <h2>{"Category is inherited from this product\'s parent."|gettext}</h2>
                 </div>
                 <div id="options">
-                      <h2>{"Options are inherited from this product's parent."|gettext}</h2>
+                      <h2>{"Options are inherited from this product\'s parent."|gettext}</h2>
                 </div>
                 <div id="uifld">
-                    <h2>{"User Input Fields are inherited from this items parent."|gettext}</h2>
+                    <h2>{"User Input Fields are inherited from this item\'s parent."|gettext}</h2>
                 </div>
                 <div id="active">
                     <h2>{"Active/Inactive"|gettext}</h2>
@@ -195,7 +195,7 @@
                 </div>
                  <div id="xtrafields">
                     <h2>{"Extra Fields"|gettext}</h2>
-                    {"Extra field names are defined in this product's parent.  You may enter the field values for this product here."|gettext}
+                    {"Extra field names are defined in this product\'s parent.  You may enter the field values for this product here."|gettext}
                     <table> 
                         {if $parent->extra_fields.0.name != '' }
                             <tr>

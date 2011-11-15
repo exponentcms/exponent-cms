@@ -216,6 +216,10 @@ class expLang {
 
     public static function translate($text, $from = 'en', $to = 'fr') {
         include_once(BASE.'external/BingTranslate.class.php');
+        $from1 = explode('_',$from);
+        $from = $from1[0];
+        $to1 = explode('_',$to);
+        $to = $to1[0];
         $gt = new BingTranslateWrapper(BING_API);
         return $gt->translate($text, $from, $to);
 

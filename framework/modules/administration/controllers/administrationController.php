@@ -358,6 +358,7 @@ class administrationController extends expController {
         foreach ($cur_lang as $key => $value) {
             if ($key == $value) $num_untrans++;
         }
+        eDebug(expLang::getLangs());
         assign_to_template(array('langs'=>$langs,'missing'=>$num_missing,"count"=>count($cur_lang),'untrans'=>$num_untrans));
    	}
 

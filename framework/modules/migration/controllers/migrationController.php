@@ -154,7 +154,7 @@ class migrationController extends expController {
 		$del_pages = '';
         if (isset($this->params['wipe_pages'])) {
             $db->delete('section',"id > '1'");
-			$del_pages = ' after clearing database of pages';
+			$del_pages = ' '.gt('after clearing database of pages');
 		}
         $successful = 0;
         $failed     = 0;
@@ -239,7 +239,7 @@ class migrationController extends expController {
 			}		
 		}
 
-        flash ('message', $successful.' pages were imported from '.$this->config['database'].$del_pages);
+        flash('message', $successful.' '.gt('pages were imported from').' '.$this->config['database'].$del_pages);
         if ($failed > 0) {
             flash('error', $failed.' '.gt('pages could not be imported from').' '.$this->config['database'].' '.gt('This is usually because a page with the same ID already exists in the database you importing to.'));
         }
@@ -300,14 +300,14 @@ class migrationController extends expController {
         for($i=0; $i<count($modules); $i++) {
             if (array_key_exists($modules[$i]->module, $this->new_modules)) {
                 $newmod = new $this->new_modules[$modules[$i]->module]();
-                $modules[$i]->action = '<span style="color:green;">Converting content to '.$newmod->displayname()."</span>";
+                $modules[$i]->action = '<span style="color:green;">'.gt('Converting content to').' '.$newmod->displayname()."</span>";
             } elseif (in_array($modules[$i]->module, $this->deprecated_modules)) {
                 // $modules[$i]->action = '<span style="color:red;">This module is deprecated and will not be migrated.</span>';
                 $modules[$i]->notmigrating = 1;
             } elseif (in_array($modules[$i]->module, $this->needs_written)) {
-                $modules[$i]->action = '<span style="color:orange;">Still needs migration script written</span>';
+                $modules[$i]->action = '<span style="color:orange;">'.gt('Still needs migration script written').'</span>';
             } else {
-                $modules[$i]->action = 'Migrating as is.';
+                $modules[$i]->action = gt('Migrating as is.');
             }
         }
         //eDebug($modules);
@@ -729,7 +729,7 @@ class migrationController extends expController {
 			}
 		}
 		
-        flash ('message', $successful.' users and '.$gsuccessful.' groups were imported from '.$this->config['database']);
+        flash('message', $successful.' '.gt('users and').' '.$gsuccessful.' '.gt('groups were imported from').' '.$this->config['database']);
         if ($failed > 0 || $gfailed > 0) {
 			$msg = '';
 			if ($failed > 0) {
@@ -1935,9 +1935,9 @@ class migrationController extends expController {
 //        flash('message', 'Migration Configuration Saved');
 //        expHistory::back();
 		if (isset($this->params['fix_database'])) $this->fix_database();
-		echo '<h2>Migration Configuration Saved</h2><br />';
-		echo '<p>gt(We\'ve successfully connected to the Old database</p><br />';
-		echo "<a class=\"awesome ".BTN_SIZE." ".BTN_COLOR."\" href=\"migration/manage_users\">Next Step -> Migrate Users & Groups</a>";
+		echo '<h2>'.gt('Migration Configuration Saved').'</h2><br />';
+		echo '<p>'.gt('We\'ve successfully connected to the Old database').'</p><br />';
+		echo "<a class=\"awesome ".BTN_SIZE." ".BTN_COLOR."\" href=\"migration/manage_users\">".gt('Next Step -> Migrate Users & Groups')."</a>";
     }
 	
 	/**
@@ -1955,14 +1955,14 @@ class migrationController extends expController {
             empty($this->config['prefix']) ||
             empty($this->config['port'])
         ) {
-            flash ('error', 'You are missing some required database connection information.  Please enter DB information.');
+            flash('error', gt('You are missing some required database connection information.  Please enter DB information.'));
             redirect_to (array('controller'=>'migration', 'action'=>'configure'));
         }
 
        $database = expDatabase::connect($this->config['username'],$this->config['password'],$this->config['server'].':'.$this->config['port'],$this->config['database']);
 
        if (empty($database->havedb)) {
-            flash ('error', 'An error was encountered trying to connect to the database you specified. Please check your DB config.');
+            flash('error', gt('An error was encountered trying to connect to the database you specified. Please check your DB config.'));
             redirect_to (array('controller'=>'migration', 'action'=>'configure'));
        }
 
@@ -1978,11 +1978,11 @@ class migrationController extends expController {
 		// let's test the connection
 		$old_db = $this->connect();
 		
-		print_r("<h2>We're connected to the Old Database!</h2><br><br><h3>Running several checks and fixes on the old database<br>to enhance Migration.</h3><br>");
+		print_r("<h2>".gt('We\'re connected to the Old Database!')."</h2><br><br><h3>".gt('Running several checks and fixes on the old database')."<br>".gt('to enhance Migration.')."</h3><br>");
 
 		print_r("<pre>");
 	// upgrade sectionref's that have lost their originals
-		print_r("<b>Searching for sectionrefs that have lost their originals</b><br><br>");
+		print_r("<b>".gt('Searching for sectionrefs that have lost their originals')."</b><br><br>");
 		$sectionrefs = $old_db->selectObjects('sectionref',"is_original=0");
 		print_r("Found: ".count($sectionrefs)." copies (not originals)<br>");
 		foreach ($sectionrefs as $sectionref) {
@@ -1997,7 +1997,7 @@ class migrationController extends expController {
 	
 		print_r("<pre>");
 	// upgrade sectionref's that point to missing sections (pages)
-		print_r("<b>Searching for sectionrefs pointing to missing sections/pages <br>to fix for the Recycle Bin</b><br><br>");
+		print_r("<b>".gt('Searching for sectionrefs pointing to missing sections/pages')." <br>".gt('to fix for the Recycle Bin')."</b><br><br>");
 		$sectionrefs = $old_db->selectObjects('sectionref',"refcount!=0");
 		foreach ($sectionrefs as $sectionref) {
 			if ($old_db->selectObject('section',"id='".$sectionref->section."'") == null) {
