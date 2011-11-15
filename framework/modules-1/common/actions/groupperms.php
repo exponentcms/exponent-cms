@@ -53,7 +53,7 @@ if (expPermissions::check('administrate',$loc)) {
 	
 	$p[gt("Group")] = 'username';
 	foreach ($mod->permissions() as $key => $value) {
-        $p[$value]=$key;
+        $p[gt($value)]=$key;
 	}
 	
 	if (SEF_URLS == 1) {

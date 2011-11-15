@@ -60,7 +60,7 @@ if ($user->isAdmin()) {
 	$p[gt("First Name")] = 'firstname';
 	$p[gt("Last Name")] = 'lastname';
 	foreach ($mod->permissions() as $key => $value) {
-        $p[$value]=$key;
+        $p[gt($value)]=$key;
 	}
 
 	if (SEF_URLS == 1) {
