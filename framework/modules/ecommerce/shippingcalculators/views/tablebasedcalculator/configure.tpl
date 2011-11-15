@@ -29,11 +29,11 @@
 			<li>
 			{$calc->speed}{br}
 			{* icon controller=shipping action=editspeed id=$calc->id title="Edit `$calc->speed`" *}
-            {icon controller=shipping img='delete.png' text="delete" action=deleteSpeed id=$calc->id title="Delete `$calc->speed`" onclick="return confirm('Are you sure you want to delete this speed?');"}
+            {icon controller=shipping img='delete.png' text="delete" action=deleteSpeed id=$calc->id title="Delete `$calc->speed`" onclick="return confirm('"|cat:("Are you sure you want to delete this speed?"|gettext)|cat:"');"}
 			</li>
 		{/foreach}
     </ul>
-    {icon class="add" action="editspeed/id/`$calculator->id`" text="Create new Shipping Speed"}
+    {icon class="add" action="editspeed/id/`$calculator->id`" text="Create new Shipping Speed"|gettext}
     {br}{br}
 	<div class="{if !$calculator->shippingspeeds}hide{/if}">
     <hr>

@@ -44,7 +44,7 @@
 		{/if}
 	</td><td>
 		{icon class=edit action=edit_contentpage record=$section title='Edit'|gettext}
-        {icon action=delete record=$section title='Delete'|gettext onclick="return confirm('Delete this page?');"}
+        {icon action=delete record=$section title='Delete'|gettext onclick="return confirm('"|cat:("Delete this page?"|gettext)|cat:"');"}
 	</td><td>
 		{icon int=$section->id action=userperms _common=1 img='userperms.png' title='Assign user permissions for this page'|gettext text="User"}
 		{icon int=$section->id action=groupperms _common=1 img='groupperms.png' title='Assign group permissions for this page'|gettext text="Group"}

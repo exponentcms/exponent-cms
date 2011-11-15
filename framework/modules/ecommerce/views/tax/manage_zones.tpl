@@ -20,7 +20,7 @@
 
 <h1>{"Tax Zone Manager"|gettext}</h1>
 
-{icon action=edit_zone class="add" text="Add a Tax Zone"}  
+{icon action=edit_zone class="add" text="Add a Tax Zone"|gettext}
 {br}
 {br}
 <table border="0" cellspacing="0" cellpadding="0" class="exp-skin-table">

@@ -23,7 +23,7 @@
     {permissions}
 		<div class="module-actions">
 			{if $permissions.edit == 1}
-				{icon class=add action=edit title="Create a new product" text="Add a product"}
+				{icon class=add action=edit title="Create a new product"|gettext text="Add a product"|gettext}
 			{/if}
 		</div>
     {/permissions}

@@ -46,7 +46,7 @@
 								{icon action=edit record=$video title="Edit `$video->title` video"}
 							{/if}
 							{if $permissions.delete == 1}
-								{icon action=delete record=$video title="delete `$video->title` video" onclick="return confirm('Are you sure you want to delete this `$modelname`?');"}
+								{icon action=delete record=$video title="delete `$video->title` video"}
 							{/if}
 						</div>
 					{/permissions}

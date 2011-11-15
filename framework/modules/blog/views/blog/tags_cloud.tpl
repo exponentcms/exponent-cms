@@ -23,7 +23,7 @@
 
     {permissions}
     {if $permissions.manage == 1}
-        {icon class="manage" controller=expTag action=manage title="Manage Tags"|gettext text="Manage Tags"|gettext}
+        {icon class="manage" controller=expTag action=manage text="Manage Tags"|gettext}
     {/if}
     {/permissions}
     <ul>

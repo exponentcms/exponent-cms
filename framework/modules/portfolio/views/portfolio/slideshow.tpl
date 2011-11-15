@@ -26,7 +26,7 @@
     {permissions}
 		<div class="module-actions">
 			{if $permissions.create == 1}
-				{icon class=add action=edit rank=1 title="Add a Slide"|gettext text="Add a Slide"|gettext}
+				{icon class=add action=edit rank=1 text="Add a Slide"|gettext}
 			{/if}
 			{if $permissions.manage == 1 && $slides|@count>1}
 				{ddrerank items=$slides model="photo" label="Slides"}
@@ -46,7 +46,7 @@
                                 {icon action=edit record=$slide title="Edit"|gettext|cat:" `$item->title`"}
                             {/if}
                             {if $permissions.delete == 1}
-                                {icon action=delete record=$slide title="Delete"|gettext|cat:" `$item->title`" onclick="return confirm('Are you sure you want to delete this `$modelname`?');"}
+                                {icon action=delete record=$slide title="Delete"|gettext|cat:" `$item->title`"}
                             {/if}
                             {if $permissions.create == 1}
                                 {icon class=add action=edit rank=$slide->rank+1 title="Add another slide here"|gettext  text="Add another slide here"|gettext}

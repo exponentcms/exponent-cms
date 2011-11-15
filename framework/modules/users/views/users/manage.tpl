@@ -69,8 +69,8 @@
 			        {permissions level=$smarty.const.UILEVEL_PERMISSIONS}
 						<div class="item-actions">
 							{icon class=edit action=edituser record=$user}
-							{icon class="password" action=change_password record=$user title="Change this users password" text="Password"}
-							{icon action=delete record=$user title="Delete" onclick="return confirm('Are you sure you want to delete this user?');"}
+							{icon class="password" action=change_password record=$user title="Change this users password"|gettext text="Password"|gettext}
+							{icon action=delete record=$user title="Delete"|gettext onclick="return confirm('"|cat:("Are you sure you want to delete this user?"|gettext)|cat:"');"}
 						</div>
                     {/permissions}
 			    </td>
@@ -120,9 +120,9 @@
            {/literal}{permissions level=$smarty.const.UILEVEL_PERMISSIONS}{literal}
 		   
 				 elCell.innerHTML = '<div class="item-actions">';
-				 editstring       = '{/literal}{icon class="edit" action="edituser" id="editstringid" title="Edit this user"}{literal}';
-				 passwordstring   = '{/literal}{icon class="password" action="change_password" id="passwordstringid" title="Change this users password" text="Password"}{literal}';
-				 deletestring     = '{/literal}{icon action="delete" id="deletestringid" title="Delete this user" onclick="return confirm(\'Are you sure you want to delete this user?\');"}{literal}';
+				 editstring       = '{/literal}{icon class="edit" action="edituser" id="editstringid" title="Edit this user"|gettext}{literal}';
+				 passwordstring   = '{/literal}{icon class="password" action="change_password" id="passwordstringid" title="Change this users password"|gettext text="Password"|gettext}{literal}';
+				 deletestring     = '{/literal}{icon action="delete" id="deletestringid" title="Delete this user"|gettext onclick="return confirm(\'"|cat:("Are you sure you want to delete this user?"|gettext)|cat:"\');"}{literal}';
 				 editstring     = editstring.replace('editstringid',oRecord._oData.id);
 				 passwordstring = passwordstring.replace('passwordstringid',oRecord._oData.id);
 				 deletestring   = deletestring.replace('deletestringid',oRecord._oData.id);

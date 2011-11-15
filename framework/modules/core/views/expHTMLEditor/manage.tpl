@@ -129,7 +129,7 @@
                 <td>
 					<div class="item-actions">
 						{icon module="expHTMLEditor" action=edit record=$cfg title="Edit this Toolbar"|gettext}
-						{icon module="expHTMLEditor" action=delete record=$cfg title="Delete this Toolbar"|gettext onclick="return confirm('Are you sure you want to delete this toolbar?');"}
+						{icon module="expHTMLEditor" action=delete record=$cfg title="Delete this Toolbar"|gettext onclick="return confirm('"|cat:("Are you sure you want to delete this toolbar?"|gettext)|cat:"');"}
 					</div>
                 </td>
             </tr>

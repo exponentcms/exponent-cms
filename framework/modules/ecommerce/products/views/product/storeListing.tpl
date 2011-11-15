@@ -56,7 +56,7 @@
             {icon action=edit record=$listing title="Edit `$listing->title`"}
         {/if}
         {if $permissions.delete == 1}
-            {icon action=delete record=$listing title="Delete `$listing->title`" onclick="return confirm('Are you sure you want to delete this product?');"}
+            {icon action=delete record=$listing title="Delete `$listing->title`" onclick="return confirm('"|cat:("Are you sure you want to delete this product?"|gettext)|cat:"');"}
         {/if}
         {if $permissions.edit == 1}
             {icon action=copyProduct class="copy" record=$listingtitle text="Copy" title="Copy `$listing->title` " record=$listing}

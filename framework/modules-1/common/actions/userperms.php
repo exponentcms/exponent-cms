@@ -56,9 +56,9 @@ if ($user->isAdmin()) {
 		$users[] = $u;
 	}
 	
-	$p["User Name"] = 'username';
-	$p["First Name"] = 'firstname';
-	$p["Last Name"] = 'lastname';
+	$p[gt("User Name")] = 'username';
+	$p[gt("First Name")] = 'firstname';
+	$p[gt("Last Name")] = 'lastname';
 	foreach ($mod->permissions() as $key => $value) {
         $p[$value]=$key;
 	}

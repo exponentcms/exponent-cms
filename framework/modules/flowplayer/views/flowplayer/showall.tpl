@@ -64,10 +64,10 @@ flowplayer("a.flowplayer-video", EXPONENT.PATH_RELATIVE+"external/flowplayer3/fl
 			{permissions}
 				<div class="item-actions">
 					{if $permissions.edit == 1}
-						{icon action=edit record=$video title="Edit `$video->title` video"}
+						{icon action=edit record=$video title="Edit"|gettext|cat:" "|cat:$video->title|cat:" "|cat:("video"|gettext)}
 					{/if}
 					{if $permissions.delete == 1}
-						{icon action=delete record=$video title="Delete `$video->title` video" onclick="return confirm('Are you sure you want to delete this `$modelname`?');"}
+						{icon action=delete record=$video title="Delete"|gettext|cat:" "|cat:$video->title|cat:" "|cat:("video"|gettext)}
 					{/if}
 				</div>			
 			{/permissions} 

@@ -19,11 +19,11 @@
 	{permissions}
 		<div class="module-actions">
 			{if $permissions.create == 1}
-				{icon class=add action=create title="Add a new FAQ"|gettext text="Add a New FAQ"|gettext}
+				{icon class=add action=create text="Add a New FAQ"|gettext}
 			{/if}
 			{br}
 			{if $permissions.manage == 1}
-				{icon action=manage title="Manage FAQs"|gettext text="Manage FAQs"|gettext}
+				{icon action=manage text="Manage FAQs"|gettext}
 			{/if}
 		</div>
 	{/permissions}

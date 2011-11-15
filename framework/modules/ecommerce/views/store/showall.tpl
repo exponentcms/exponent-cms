@@ -38,7 +38,7 @@
         {permissions}
             <div class="module-actions">
                 {if $permissions.edit == 1}
-                    {icon action=edit module=storeCategory record=$current_category title="Edit `$current_category->title`" text="Edit this Store Category"}{br}
+                    {icon action=edit module=storeCategory record=$current_category title="Edit `$current_category->title`" text="Edit this Store Category"|gettext}{br}
                 {/if}
                 {*if $permissions.manage == 1}
                     {icon action=configure module=storeCategory record=$current_category title="Configure `$current_category->title`" text="Configure this Store Category"}{br}
@@ -50,7 +50,7 @@
                     {ddrerank label="Products" sql=$rerankSQL model="product" controller="storeCategory" id=$current_category->id}
                 {/if}
                 {if $permissions.edit == 1}
-                     {icon class=add action=create title="Add a new product" text="Add a New Product"}
+                     {icon class=add action=create text="Add a New Product"|gettext}
                 {/if}
             </div>
         {/permissions}
@@ -86,7 +86,7 @@
                             {icon controller=storeCategory action=edit record=$cat title="Edit `$cat->title`"}
                         {/if}
                         {if $permissions.delete == 1}
-                            {icon controller=storeCategory action=delete record=$cat title="Delete `$cat->title`" onclick="return confirm('Are you sure you want to delete this category?');"}
+                            {icon controller=storeCategory action=delete record=$cat title="Delete `$cat->title`" onclick="return confirm('"|cat:("Are you sure you want to delete this category?"|gettext)|cat:"');"}
                         {/if}
                     </div>
                     {/permissions}

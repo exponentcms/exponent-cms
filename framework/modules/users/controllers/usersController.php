@@ -47,10 +47,10 @@ class usersController extends expController {
                     'controller'=>$this->baseclassname,
                     'action'=>$this->params['action'],
                     'columns'=>array(
-                        'Username'=>'username',
-                        'First Name'=>'firstname',
-                        'Last Name'=>'lastname',
-                        'Is Admin'=>'is_acting_admin',
+                        gt('Username')=>'username',
+                        gt('First Name')=>'firstname',
+                        gt('Last Name')=>'lastname',
+                        gt('Is Admin')=>'is_acting_admin',
                         )
                     ));
                     

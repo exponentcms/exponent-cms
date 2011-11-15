@@ -483,7 +483,7 @@
                             {icon img="edit.png" action=edit id=$chiprod->id title="Edit `$chiprod->title`"}
                         {/if}
                         {if $permissions.delete == 1}
-                            {icon img="delete.png" action=delete record=$chiprod title="Delete `$chiprod->title`" onclick="return confirm('Are you sure you want to delete this child product?');"}
+                            {icon img="delete.png" action=delete record=$chiprod title="Delete `$chiprod->title`" onclick="return confirm('"|cat:("Are you sure you want to delete this child product?"|gettext)|cat:"');"}
                         {/if}
                         {if $permissions.edit == 1}
                             {icon action=copyProduct img="copy.png" title="Copy `$chiprod->title` " record=$chiprod}
