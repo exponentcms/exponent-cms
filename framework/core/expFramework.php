@@ -92,7 +92,6 @@ $user = null;
  */
 $SYS_USERS_CACHE = array();
 
-
 // expRouter
 /**
  * Stores the routing/link/url object
@@ -100,6 +99,12 @@ $SYS_USERS_CACHE = array();
  * @name $router
  */
 $router = null;
+/**
+ * Stores the routing/link/url object
+ * @global section $sectionObj
+ * @name $sectionObj
+ */
+$sectionObj = null;
 
 // expCore
 /**
@@ -108,7 +113,6 @@ $router = null;
  * @name $sections
  */
 $sections = array();
-
 // expPermissions
 /**
  * Stores the permission data for the current user.
@@ -144,6 +148,80 @@ $yui3js = array();
  * @name $expJS
  */
 $expJS = array();
+
+// expCSS
+/**
+ * Stores the user's css files
+ * @global array $css_primer
+ * @name $css_primer
+ */
+$css_primer = array();
+/**
+ * Stores the user's css files
+ * @global array $css_core
+ * @name $css_core
+ */
+$css_core = array();
+/**
+ * Stores the user's css files
+ * @global array $css_links
+ * @name $css_links
+ */
+$css_links = array();
+/**
+ * Stores the user's css files
+ * @global array $css_theme
+ * @name $css_theme
+ */
+$css_theme = array();
+/**
+ * Stores the user's css files
+ * @global array $css_inline
+ * @name $css_inline
+ */
+$css_inline = array();
+/**
+ * Stores the user's css files
+ * @global array $head_config
+ * @name $head_config
+ */
+$head_config = array();
+/**
+ * Stores the user's css files
+ * @global string $jsForHead
+ * @name $jsForHead
+ */
+$jsForHead = "";
+/**
+ * Stores the user's css files
+ * @global string $cssForHead
+ * @name $cssForHead
+ */
+$cssForHead = "";
+
+// expTemplate
+/**
+ * Stores the global template
+ * @global \basetemplate $template
+ * @name $template
+ */
+$template = null;
+
+// expTimer
+/**
+ * Stores the timer
+ * @global expTimer $timer
+ * @name $timer
+ */
+$timer = null;
+
+// e-commerce
+/**
+ * Stores the order
+ * @global \order $order
+ * @name $order
+ */
+$order = null;
 
 function renderAction(array $parms=array()) {
     global $user;

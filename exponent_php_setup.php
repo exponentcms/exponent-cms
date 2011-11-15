@@ -52,7 +52,11 @@ $auto_dirs = array(
 	BASE.'framework/modules/ecommerce/products/controllers',  //FIXME does NOT exist
 	BASE.'framework/modules/ecommerce/products/datatypes',  // models
 );
-
+/**
+ * Stores the search order locations for models & controllers
+ * @global array $auto_dirs2
+ * @name $auto_dirs2
+ */
 $auto_dirs2 = array(
 	BASE.'framework/modules'
 );
