@@ -43,7 +43,7 @@
                     <a href="{link action=edit id=$listing->id}" title="{"Edit this entry"|gettext}">
                         <img src="{$smarty.const.ICON_RELATIVE|cat:'edit.png'}" title="{"Edit this entry"|gettext}" alt="{"Edit this entry"|gettext}" />
                     </a>
-                    {icon action=delete record=$listing title="Delete this product"}
+                    {icon action=delete record=$listing title="Delete this product"|gettext}
                 {/if}
             </div>
             {/permissions}

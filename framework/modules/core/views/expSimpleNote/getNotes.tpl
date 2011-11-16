@@ -49,7 +49,7 @@
                                 {icon action=edit record=$note tab=$tab content_id=$content_id content_type=$content_type title="Edit this note"|gettext}
                             {/if}
                             {if $permissions.delete == 1}
-                                {icon action=delete record=$note tab=$tab content_id=$content_id content_type=$content_type title="Delete this note"|gettext onclick="return confirm('Are you sure you want to delete this note?');"}
+                                {icon action=delete record=$note tab=$tab content_id=$content_id content_type=$content_type title="Delete this note"|gettext onclick="return confirm('"|cat:("Are you sure you want to delete this note?"|gettext)|cat:"');"}
                             {/if}
                         </div>
                     {/permissions}

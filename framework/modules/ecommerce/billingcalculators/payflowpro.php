@@ -74,7 +74,7 @@ class payflowpro extends creditcard {
         if ($config['testmode'] == 1) 
         {
             $submiturl = 'https://pilot-payflowpro.paypal.com';   
-            flash('message','This Transaction is in TEST MODE');   
+            flash('message',gt('This Transaction is in TEST MODE'));
         } 
         else 
         {
@@ -226,7 +226,7 @@ class payflowpro extends creditcard {
         if ($config['testmode'] == 1) 
         {
             $submiturl = 'https://pilot-payflowpro.paypal.com';
-            flash('message','This Transaction is in TEST MODE');   
+            flash('message',gt('This Transaction is in TEST MODE'));
         } 
         else 
         {
@@ -379,7 +379,7 @@ class payflowpro extends creditcard {
         if ($config['testmode'] == 1) 
         {
             $submiturl = 'https://pilot-payflowpro.paypal.com';   
-            flash('message','This Transaction is in TEST MODE');   
+            flash('message',gt('This Transaction is in TEST MODE'));
         } 
         else 
         {
@@ -503,7 +503,7 @@ class payflowpro extends creditcard {
         if ($config['testmode'] == 1) 
         {
             $submiturl = 'https://pilot-payflowpro.paypal.com';   
-            flash('message','This Transaction is in TEST MODE');   
+            flash('message',gt('This Transaction is in TEST MODE'));
         } 
         else 
         {
@@ -629,7 +629,7 @@ class payflowpro extends creditcard {
         if ($config['testmode'] == 1) 
         {
             $submiturl = 'https://pilot-payflowpro.paypal.com';   
-            flash('message','This Transaction is in TEST MODE');   
+            flash('message',gt('This Transaction is in TEST MODE'));
         } 
         else 
         {

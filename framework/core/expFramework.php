@@ -74,7 +74,6 @@ $db = null;
  * @name $history
  */
 $history = null;
-//$SYS_FLOW_REDIRECTIONPATH = '';
 
 // user model
 /**
@@ -92,7 +91,6 @@ $user = null;
  */
 $SYS_USERS_CACHE = array();
 
-
 // expRouter
 /**
  * Stores the routing/link/url object
@@ -100,6 +98,12 @@ $SYS_USERS_CACHE = array();
  * @name $router
  */
 $router = null;
+/**
+ * Stores the routing/link/url object
+ * @global section $sectionObj
+ * @name $sectionObj
+ */
+$sectionObj = null;
 
 // expCore
 /**
@@ -108,7 +112,6 @@ $router = null;
  * @name $sections
  */
 $sections = array();
-
 // expPermissions
 /**
  * Stores the permission data for the current user.
@@ -125,6 +128,99 @@ $exponent_permissions_r = array();
  * @name $userjsfiles
  */
 $userjsfiles = array();
+/**
+ * Stores the user's javascript files
+ * @global array $js2foot
+ * @name $js2foot
+ */
+$js2foot = array();
+//$yui2js = array();
+/**
+ * Stores the user's javascript files
+ * @global array $yui3js
+ * @name $yui3js
+ */
+$yui3js = array();
+/**
+ * Stores the user's javascript files
+ * @global array $expJS
+ * @name $expJS
+ */
+$expJS = array();
+
+// expCSS
+/**
+ * Stores the user's css files
+ * @global array $css_primer
+ * @name $css_primer
+ */
+$css_primer = array();
+/**
+ * Stores the user's css files
+ * @global array $css_core
+ * @name $css_core
+ */
+$css_core = array();
+/**
+ * Stores the user's css files
+ * @global array $css_links
+ * @name $css_links
+ */
+$css_links = array();
+/**
+ * Stores the user's css files
+ * @global array $css_theme
+ * @name $css_theme
+ */
+$css_theme = array();
+/**
+ * Stores the user's css files
+ * @global array $css_inline
+ * @name $css_inline
+ */
+$css_inline = array();
+/**
+ * Stores the user's css files
+ * @global array $head_config
+ * @name $head_config
+ */
+$head_config = array();
+/**
+ * Stores the user's css files
+ * @global string $jsForHead
+ * @name $jsForHead
+ */
+$jsForHead = "";
+/**
+ * Stores the user's css files
+ * @global string $cssForHead
+ * @name $cssForHead
+ */
+$cssForHead = "";
+
+// expTemplate
+/**
+ * Stores the global template
+ * @global \basetemplate $template
+ * @name $template
+ */
+$template = null;
+
+// expTimer
+/**
+ * Stores the timer
+ * @global expTimer $timer
+ * @name $timer
+ */
+$timer = null;
+
+// e-commerce
+/**
+ * Stores the order
+ * @global \order $order
+ * @name $order
+ */
+$order = null;
 
 function renderAction(array $parms=array()) {
     global $user;
@@ -146,7 +242,7 @@ function renderAction(array $parms=array()) {
     } elseif ($controllerClass->hasMethod('showall')) {
         $action = 'showall';
     } else {
-        expQueue::flashAndFlow('error', 'The requested action could not be performed: Action not found');
+        expQueue::flashAndFlow('error', gt('The requested action could not be performed: Action not found'));
     }
 
     // initialize the controller.
@@ -198,7 +294,7 @@ function renderAction(array $parms=array()) {
     if (array_key_exists($permaction, $perms)) {
         if (!expPermissions::check($permaction, $controller->loc)) {
             if (expTheme::inAction()) {
-                flash('error', "You don't have permission to ".$perms[$permaction]);
+                flash('error', gt("You don't have permission to")." ".$perms[$permaction]);
                 expHistory::returnTo('viewable');
             } else {
                 return false;
@@ -207,7 +303,7 @@ function renderAction(array $parms=array()) {
     } elseif (array_key_exists($common_action_name, $perms)) {
         if (!expPermissions::check($common_action_name, $controller->loc)) {
             if (expTheme::inAction()) {
-                flash('error', "You don't have permission to ".$perms[$common_action_name]);
+                flash('error', gt("You don't have permission to")." ".$perms[$common_action_name]);
                 expHistory::returnTo('viewable');
             } else {
                 return false;
@@ -216,14 +312,14 @@ function renderAction(array $parms=array()) {
     } elseif (array_key_exists($permaction, $controller->requires_login)) {
         // check if the action requires the user to be logged in
         if (!$user->isLoggedIn()) {
-            $msg = empty($controller->requires_login[$permaction]) ? "You must be logged in to perform this action" : $controller->requires_login[$permaction];
+            $msg = empty($controller->requires_login[$permaction]) ? gt("You must be logged in to perform this action") : $controller->requires_login[$permaction];
             flash('error', $msg);
             expHistory::redirecto_login();
         }
     } elseif (array_key_exists($common_action_name, $controller->requires_login)) {
         // check if the action requires the user to be logged in
         if (!$user->isLoggedIn()) {
-            $msg = empty($controller->requires_login[$common_action_name]) ? "You must be logged in to perform this action" : $controller->requires_login[$common_action_name];
+            $msg = empty($controller->requires_login[$common_action_name]) ? gt("You must be logged in to perform this action") : $controller->requires_login[$common_action_name];
             flash('error', $msg);
             expHistory::redirecto_login();
         }
@@ -405,7 +501,7 @@ function get_config_templates($controller, $loc) {
         if (file_exists($path.'/'.$viewconfig)) {
             $fileparts = explode('_', $viewname);
             if ($fileparts[0]=='show'||$fileparts[0]=='showall') array_shift($fileparts);
-            $module_views[$viewname]['name'] = ucwords(implode(' ', $fileparts)).' View Configuration';
+            $module_views[$viewname]['name'] = ucwords(implode(' ', $fileparts)).' '.gt('View Configuration');
             $module_views[$viewname]['file'] =$path.'/'.$viewconfig;
         }
     }

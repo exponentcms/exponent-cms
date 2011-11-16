@@ -22,9 +22,9 @@
         <em>{'The current version is'|gettext} {$current_version->version}</em>
     </p>
     
-    {icon class=add action=edit_version title="Add new help version"|gettext text="Add a New Help Version"|gettext}{br}
-    {icon class=add action=edit title="Add a New Help Document"|gettext text="Add a New Help Document"|gettext}{br}
-    {icon class=manage action=manage_versions title="Manage Help Versions"|gettext text="Manage Help Versions"|gettext}{br}
+    {icon class=add action=edit_version text="Add a New Help Version"|gettext}{br}
+    {icon class=add action=edit text="Add a New Help Document"|gettext}{br}
+    {icon class=manage action=manage_versions text="Manage Help Versions"|gettext}{br}
     {$page->links}
     <table class="exp-skin-table">
         <thead>
@@ -46,7 +46,7 @@
                         {icon img='edit.png' action=edit record=$doc title="Edit Help Doc"|gettext}
                     {/if}
                     {if $permissions.delete == 1}
-                        {icon action=delete img='delete.png' record=$doc title="Delete this help doc"|gettext onclick="return confirm('Are you sure you want to delete this help document?');"}
+                        {icon action=delete img='delete.png' record=$doc title="Delete this help doc"|gettext onclick="return confirm('"|cat:("Are you sure you want to delete this help document?"|gettext)|cat:"');"}
                     {/if}
                 {/permissions}
             </td>

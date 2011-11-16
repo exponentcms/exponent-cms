@@ -51,7 +51,7 @@
 								{icon action=edit record=$listing title="Edit this message"|gettext}
 							{/if}
 							{if $permissions.delete == 1}
-								{icon action=delete record=$listing title="Delete this message"|gettext onclick="return confirm('Are you sure you want to delete this message?');"}
+								{icon action=delete record=$listing title="Delete this message"|gettext onclick="return confirm('"|cat:("Are you sure you want to delete this message?"|gettext)|cat:"');"}
 							{/if}
 						</div>
 					{/permissions}  

@@ -56,7 +56,6 @@ $available_controllers = expModules::initializeControllers();  //original positi
 
 // Initialize the History (Flow) subsystem.
 $history = new expHistory(); //<--This is the new flow subsystem
-//$SYS_FLOW_REDIRECTIONPATH = 'exponent_default';
 
 // Initialize the javascript subsystem
 if (expJavascript::inAjaxAction()) set_error_handler('handleErrors');
@@ -118,15 +117,15 @@ function eLog($var, $type='', $path='', $minlevel='0') {
 	if (DEVELOPMENT >= $minlevel) {
 		if (is_writable ($path) || !file_exists($path)) {
 			if (!$log = fopen ($path, "ab")) {
-				eDebug("Error opening log file for writing.");
+				eDebug(gt("Error opening log file for writing."));
 			} else {
 				if (fwrite ($log, $type . ": " . $var . "\r\n") === FALSE) {
-					eDebug("Error writing to log file ($path).");
+					eDebug(gt("Error writing to log file")." (".$path.").");
 				}
 				fclose ($log);
 			}
 		} else {
-			eDebug ("Log file ($path) not writable.");
+			eDebug (gt("Log file"." (".$path)." ".gt("not writable."));
 		}
 	}
 }

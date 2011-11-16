@@ -27,6 +27,9 @@
  *
  */
 
+define('DEVELOPMENT','1');
+define('WRITE_LANG_TEMPLATE', DEVELOPMENT);
+
 // Initialize the exponent environment
 include_once('../exponent_bootstrap.php');
 // Initialize the language subsystem
@@ -87,7 +90,7 @@ function do_file($file, $fileext) {
 	global $regex_gt, $regex_gettext_func, $regex_gettext_mod;
     if ($fileext == 'tpl') {
         do_extract($file,$regex_gettext_mod);
-//        do_extract($file,$regex_gettext_func);  //FIXME these tend to hold computations?
+//        do_extract($file,$regex_gettext_func);  //FIXME these tend to hold computations and likewise break things?
     } elseif ($fileext == 'php') {
         do_extract($file,$regex_gt);
     }

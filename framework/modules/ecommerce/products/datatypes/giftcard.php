@@ -67,12 +67,12 @@ class giftcard extends expRecord {
 		$custom_message_product = $this->config['custom_message_product'];
 	    
 		if(empty($params['product_id'])) {
-			flash('error', "Please specify the style of the gift card you want to purchase.");
+			flash('error', gt("Please specify the style of the gift card you want to purchase."));
 			expHistory::back();
 		}
 
 	    if (empty($params['card_amount']) && empty($params['card_amount_txt'])) {
-				flash('error', "You need to specify the card amount for the gift card.");
+				flash('error', gt("You need to specify the card amount for the gift card."));
 				expHistory::back();
 	    } else {
 			// eDebug($params, true);
@@ -92,7 +92,7 @@ class giftcard extends expRecord {
 			}
 			
 			if($item->products_price < $min_amount) {
-				flash('error', "The minimum amount of gift card is {$min_amount}.");
+				flash('error', gt("The minimum amount of gift card is")." ".$min_amount);
 				expHistory::back();
 			}
 			

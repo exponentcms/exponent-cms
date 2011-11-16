@@ -225,7 +225,7 @@ if ($passed) {
 
 	if ($db->tableIsEmpty('section')) {
 		$section = null;
-		$section->name = 'Home';
+		$section->name = gt('Home');  //FIXME not sure if we should do this?
 		$section->public = 1;
 		$section->active = 1;
 		$section->rank = 0;

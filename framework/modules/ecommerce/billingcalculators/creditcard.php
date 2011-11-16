@@ -112,9 +112,9 @@ class creditcard extends billingcalculator {
 	function userFormUpdate($params) {
         //eDebug($params);        
         if (!$this->validate_card_number($params['cc_number']) || !$this->validate_card_type($params['cc_number'],$params['cc_type'])) 
-            expValidator::failAndReturnToForm("Either the card number you entered is not a " .$this->cards[$params['cc_type']].", or the credit card you entered is not a valid credit card number. Please select the proper credit card type and verify the number entered and try again.<br/>For your security, your previously entered credit card information has been cleared.");
-        if (!$this->validate_card_expire($params['expiration_month'] . substr($params['expiration_year'],2,2))) expValidator::failAndReturnToForm("Please enter a valid expiration data.<br/>For your security, your previously entered credit card information has been cleared.");
-        if (!$this->validate_cvv($params['cvv'])) expValidator::failAndReturnToForm("Please enter a valid CVV number.<br/>For your security, your previously entered credit card information has been cleared.");
+            expValidator::failAndReturnToForm(gt("Either the card number you entered is not a")." " .$this->cards[$params['cc_type']].", ".gt("or the credit card you entered is not a valid credit card number. Please select the proper credit card type and verify the number entered and try again.")."<br/>".gt("For your security, your previously entered credit card information has been cleared."));
+        if (!$this->validate_card_expire($params['expiration_month'] . substr($params['expiration_year'],2,2))) expValidator::failAndReturnToForm(gt("Please enter a valid expiration data.")."<br/>".gt("For your security, your previously entered credit card information has been cleared."));
+        if (!$this->validate_cvv($params['cvv'])) expValidator::failAndReturnToForm(gt("Please enter a valid CVV number.")."<br/>".gt("For your security, your previously entered credit card information has been cleared."));
             
         //eDebug(debug_backtrace(), true);
         //eDebug($params);

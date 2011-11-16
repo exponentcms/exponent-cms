@@ -58,7 +58,7 @@ class filedownloadController extends expController {
     
     public function downloadfile() {
         if (empty($this->params['fileid'])) {
-            flash('error', 'There was an error while trying to download your file.  No File Specified.');
+            flash('error', gt('There was an error while trying to download your file.  No File Specified.'));
             expHistory::back();
         }
         
@@ -66,7 +66,7 @@ class filedownloadController extends expController {
         
                
         if (empty($fd->expFile['downloadable'][0]->id)) {
-            flash('error', 'There was an error while trying to download your file.  The file you were looking for could not be found.');
+            flash('error', gt('There was an error while trying to download your file.  The file you were looking for could not be found.'));
             expHistory::back();
         }        
         

@@ -281,7 +281,7 @@ class expTheme {
 
 	public static function clearSmartyCache() {
 		self::removeSmartyCache();
-		flash('message',"Smarty Cache has been cleared");
+		flash('message',gt("Smarty Cache has been cleared"));
 		expHistory::back();
 	}
 

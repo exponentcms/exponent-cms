@@ -15,7 +15,7 @@
  *}
 
 <h2>{"Aggregate content from similar modules"|gettext}</h2>
-{control type="checkbox" name="add_source" label="Separate this blog's content"|gettext|cat:"?" checked=$config.add_source value=1}
+{control type="checkbox" name="add_source" label="Separate this blog\'s content"|gettext|cat:"?" checked=$config.add_source value=1}
 <hr />
 {control type="checkbox" name="noeditagg" label="Prevent editing aggregate items"|gettext value=1 checked=$config.noeditagg}
 <hr />

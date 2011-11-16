@@ -56,7 +56,7 @@
 							{icon action=edit record=$cmt content_id=$content_id title="Edit this comment"|gettext}
 						{/if}
 						{if $permissions.delete == 1}
-							{icon action=delete record=$cmt title="Delete this comment"|gettext onclick="return confirm('Are you sure you want to delete this comment?');"}
+							{icon action=delete record=$cmt title="Delete this comment"|gettext onclick="return confirm('"|cat:("Are you sure you want to delete this comment?"|gettext)|cat:"');"}
 						{/if}
 					<div>
 					{/permissions}

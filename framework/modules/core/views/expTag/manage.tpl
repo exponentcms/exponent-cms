@@ -66,7 +66,7 @@
     						{icon controller=$controller action=edit record=$listing title="Edit this tag"|gettext}
     					{/if}
     					{if $permissions.delete == 1}
-    						{icon controller=$controller action=delete record=$listing title="Delete this tag"|gettext onclick="return confirm('Are you sure you want to delete this tag?');"}
+    						{icon controller=$controller action=delete record=$listing title="Delete this tag"|gettext onclick="return confirm('"|cat:("Are you sure you want to delete this tag?"|gettext)|cat:"');"}
     					{/if}
     				{/permissions}
                 </td>

@@ -1,9 +1,9 @@
 <?php
 return array(
-	"name"=>"Deutsch",
+	"name"=>"Cestina",
 	"author"=>"OIC Group, Inc.",
 	"charset"=>"UTF-8",
-	"locale"=>"de_DE",
+	"locale"=>"cs_CZ",
 	"default_view"=>"Default",
 );
 ?>

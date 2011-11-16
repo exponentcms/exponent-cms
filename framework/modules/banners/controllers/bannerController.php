@@ -59,7 +59,7 @@ class bannerController extends expController {
         //make sure we have companies.
         $count = $db->countObjects('companies');
         if ($count < 1) {
-            flash('message', 'There are no companies created yet.  You need to create at least one company first.');
+            flash('message', gt('There are no companies created yet.  You need to create at least one company first.'));
             redirect_to(array('controller'=>'company', 'action'=>'edit'));
         } else {
             parent::create();
@@ -136,7 +136,7 @@ class bannerController extends expController {
         $db->sql ('UPDATE '.DB_TABLE_PREFIX.'_banner SET clicks=0 WHERE 1'); 
         
         // let the user know we did stuff.      
-        flash('message', "Banner statistics reset.");
+        flash('message', gt("Banner statistics reset."));
         expHistory::back();
     }
 

@@ -28,7 +28,7 @@
         </td>
         <td class="prodrow price" id="price-{$item->id}">${$item->products_price*$item->quantity|number_format:2}</td>
         <!--<td class="prodrow price" id="price-{$item->id}">${$item->getTotal()|number_format:2}</td>-->
-        <td class="prodrow">{icon img="ecom/delete-from-cart.png" action=removeItem record=$item alt="Remove from cart"}</td>
+        <td class="prodrow">{icon img="ecom/delete-from-cart.png" action=removeItem record=$item alt="Remove from cart"|gettext}</td>
     </tr>
     {/foreach}
 </table>

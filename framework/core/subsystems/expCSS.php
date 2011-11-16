@@ -166,7 +166,7 @@ class expCSS {
             }
         }
         // return the theme files in alphabetical order
-        ksort($css_theme);
+        if (is_array($css_theme)) ksort($css_theme);
     }
 
 }

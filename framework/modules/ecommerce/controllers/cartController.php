@@ -39,7 +39,7 @@ class cartController extends expController {
         if (isset($this->params['product_id']) && empty($this->params['children'])) $c = $product->find('first', 'parent_id=' . $this->params['product_id']);
         if (!empty($c->id)) 
         {
-            flash('message', "Please select a product and quantity from the options listed below to add to your cart.");
+            flash('message', gt("Please select a product and quantity from the options listed below to add to your cart."));
             redirect_to(array('controller'=>'store','action'=>'show','id'=>$this->params['product_id']));      
         }
 		
@@ -76,7 +76,7 @@ class cartController extends expController {
 		{
 			if(((int)$this->params['quantity']) < $product->minimum_order_quantity) 
 			{
-				flash('message', "Please enter a quantity equal or greater than the minimum order quantity.");
+				flash('message', gt("Please enter a quantity equal or greater than the minimum order quantity."));
 				redirect_to(array('controller'=>'store','action'=>'show','id'=>$this->params['product_id']));
 			} else {
 			
@@ -112,7 +112,7 @@ class cartController extends expController {
             
             if (empty($this->params['quick'])) {
                 
-                flash('message', "Added ".$product->title." to your cart. <a href='" . $router->makeLink(array('controller'=>'cart', 'action'=>'checkout'), false, true) ."'>Click here to checkout now.</a>");
+                flash('message', gt("Added")." ".$product->title." ".gt("to your cart.")." <a href='" . $router->makeLink(array('controller'=>'cart', 'action'=>'checkout'), false, true) ."'>".gt("Click here to checkout now.")."</a>");
                 //expHistory::back();
                 //eDebug(show_msg_queue(false),true);
                 redirect_to(array('controller'=>'cart', 'action'=>'show'));
@@ -162,7 +162,7 @@ class cartController extends expController {
 
             if (!is_numeric($this->params['quantity']))
             {
-                flash('error', 'Please enter a valid quantity.');
+                flash('error', gt('Please enter a valid quantity.'));
                 expHistory::back(); 
             }
             
@@ -199,10 +199,10 @@ class cartController extends expController {
                 {
                     if ($item->product->availability_type == 1) {
                         $diff = ($item->product->quantity <=0) ? $newqty : $newqty - $item->product->quantity;
-                        $itemMessage = 'Only '.$item->product->quantity.' '.$item->products_name.' are currently in stock. Shipping may be delayed on the other '.$diff."<br/><br/>";
+                        $itemMessage = gt('Only').' '.$item->product->quantity.' '.$item->products_name.' '.gt('are currently in stock. Shipping may be delayed on the other').' '.$diff."<br/><br/>";
                         //$updates->message = 'Only '.$item->product->quantity.' '.$item->products_name.' are currently in stock. Shipping may be delayed on the other '.$diff;
                     } elseif ($item->product->availability_type == 2) {
-                        flash('error', $item->products_name.' only has '.$item->product->quantity.' on hand. You can not add any more than that to your cart.');
+                        flash('error', $item->products_name.' '.gt('only has').' '.$item->product->quantity.' '.gt('on hand. You can not add any more than that to your cart.'));
                         /*$updates->message = $item->products_name.' only has '.$item->product->quantity.' on hand. You can not add any more to your cart.';                        
                         $updates->cart_total = '$'.number_format($order->getCartTotal(), 2);
                         $updates->item_total = '$'.number_format($item->quantity*$item->products_price, 2);
@@ -215,7 +215,7 @@ class cartController extends expController {
                 else if ($newqty <= 0)
                 {
                     $item->delete();
-                    flash('message', $item->products_name.' has been removed from your cart.');
+                    flash('message', $item->products_name.' '.gt('has been removed from your cart.'));
                     expHistory::back();
                 }
                 $item->quantity = $newqty;
@@ -229,7 +229,7 @@ class cartController extends expController {
                 //echo json_encode($updates);
             }
 			//redirect_to(array('controller'=>'cart','action'=>'show'));
-            flash('message', $qtyMessage . $itemMessage . $item->products_name.' quantity has been updated.');
+            flash('message', $qtyMessage . $itemMessage . $item->products_name.' '.gt('quantity has been updated.'));
             expHistory::back();
 		}
 	}
@@ -321,7 +321,7 @@ class cartController extends expController {
                         
 		if (!expSession::get('customer-signup') && !$user->isLoggedin()) {
 		    expHistory::set('viewable', $this->params);
-			flash('message', "Please select how you would like to continue with the checkout process.");
+			flash('message', gt("Please select how you would like to continue with the checkout process."));
 			expHistory::redirecto_login(makeLink(array('module'=>'cart','action'=>'checkout'), 'secure'));
 		}
 
@@ -378,12 +378,12 @@ class cartController extends expController {
 		$shipAddress = $address->find('first', 'user_id='.$user->id . ' AND is_shipping=1');
 		if (empty($shipAddress) || !$user->isLoggedin()) {
 		    expSession::set('customer-signup',false);
-		    flash('message', 'Step One: enter your primary address info now. 
-            <br><br>You may also optionally provide a password if you would like to return to our store at a later time to view your order history or 
-            make additional purchases.
-		    <br><br>
-		    If you need to add another billing or shipping address you will be able to do so on the following page.
-		    ');
+		    flash('message', gt('Step One: enter your primary address info now.').
+            '<br><br>'.
+            gt('You may also optionally provide a password if you would like to return to our store at a later time to view your order history or
+            make additional purchases.').
+		    '<br><br>'.
+		    gt('If you need to add another billing or shipping address you will be able to do so on the following page.'));
 		    redirect_to(array('controller'=>'address','action'=>'edit'));
 		}
 
@@ -433,30 +433,30 @@ class cartController extends expController {
                             
         if (!$user->isLoggedIn()) 
         {
-            flash('message', "It appears that your session has expired. Please log in to continue the checkout process.");
+            flash('message', gt("It appears that your session has expired. Please log in to continue the checkout process."));
             expHistory::redirecto_login(makeLink(array('module'=>'cart','action'=>'checkout'), 'secure'));
         }
         
         // Make sure all the pertanent data is there...otherwise flash an error and redirect to the checkout form.
         if (empty($order->orderitem)) 
         {
-            flash('error', 'There are no items in your cart.');
+            flash('error', gt('There are no items in your cart.'));
         }
         if (empty($shipping->calculator->id) && !$shipping->splitshipping)
         {
-            flash('error', 'You must pick a shipping method');
+            flash('error', gt('You must pick a shipping method'));
         }
         if (empty($shipping->address->id) && !$shipping->splitshipping)
         {
-            flash('error', 'You must pick a shipping address');
+            flash('error', gt('You must pick a shipping address'));
         }
         if (empty($billing->calculator->id))
         {
-            flash('error', 'You must pick a billing method'); 
+            flash('error', gt('You must pick a billing method'));
         }
         if (empty($billing->address->id)) 
         {
-            flash('error', 'You must select a billing address');
+            flash('error', gt('You must select a billing address'));
         }
         
         // make sure all the methods picked for shipping meet the requirements
@@ -512,7 +512,7 @@ class cartController extends expController {
 		} 
 		else 
 		{
-			flash('error', 'An error was encountered while processing your transaction.<br /><br />'.$result->message);
+			flash('error', gt('An error was encountered while processing your transaction.').'<br /><br />'.$result->message);
 			expHistory::back();
 		}
 		
@@ -549,7 +549,7 @@ class cartController extends expController {
         
         //eDebug($order,true);
 		if (!$user->isLoggedIn() && empty($this->params['nologin'])) {
-            flash('message', "It appears that your session has expired. Please log in to continue the checkout process.");
+            flash('message', gt("It appears that your session has expired. Please log in to continue the checkout process."));
             expHistory::back();
             
             //expHistory::redirecto_login(makeLink(array('module'=>'cart','action'=>'checkout'), 'secure'));
@@ -557,7 +557,7 @@ class cartController extends expController {
 		// if this error hits then something went horribly wrong or the user has tried to hit this 
 		// action themselves before the cart was ready or is refreshing the page after they've confirmed the 
 		// order.
-		if (empty($order->orderitem)) flash('error', 'There are no items in your cart.');
+		if (empty($order->orderitem)) flash('error', gt('There are no items in your cart.'));
 		if (!expQueue::isQueueEmpty('error')) redirect_to(array('controller'=>'store', 'action'=>'showall'));
 		
 		// set the gift comments
@@ -599,7 +599,7 @@ class cartController extends expController {
             $billing->calculator->postProcess($order,$this->params);
             orderController::clearCartCookie();
         } else {
-            flash('error', 'An error was encountered while processing your transaction.<br /><br />'.$result->message);
+            flash('error', gt('An error was encountered while processing your transaction.').'<br /><br />'.$result->message);
             expHistory::back();
             
             //redirect_to(array('controller'=>'cart', 'action'=>'checkout'));
@@ -613,11 +613,11 @@ class cartController extends expController {
             if($order->order_type->emails_customer) $invoice = renderAction(array('controller'=>'order', 'action'=>'email', 'id'=>$order->id));
         }else
         {
-            flash('message','Development on, skipping email sending.');
+            flash('message',gt('Development on, skipping email sending.'));
         }
         
 		//assign_to_template(array('order'=>$order, 'billing'=>$billing, 'shipping'=>$shipping, 'result'=>$result, 'billinginfo'=>$billinginfo));
-		flash('message', 'Your order has been submitted.');
+		flash('message', gt('Your order has been submitted.'));
         redirect_to(array('controller'=>'order', 'action'=>'myOrder', 'id'=>$order->id, 'tc'=>1));
 	}
 	
@@ -692,7 +692,7 @@ class cartController extends expController {
 		
 		if (count($addresses_dd) < 2) {
 		    expHistory::set('viewable', $this->params);        
-		    flash('error', 'You must have more than 1 address to split your shipment.  Please add another now.');
+		    flash('error', gt('You must have more than 1 address to split your shipment.  Please add another now.'));
 		    redirect_to(array('controller'=>'address','action'=>'edit'));
 		}
 		
@@ -795,12 +795,12 @@ class cartController extends expController {
         
         // if they didn't fill out anything
         if (empty($this->params['methods'])) {
-            expValidator::failAndReturnToForm("You did not pick  any shipping options", $this->params);
+            expValidator::failAndReturnToForm(gt("You did not pick  any shipping options"), $this->params);
         }
         
         // if they don't check all the radio buttons
         if (count($this->params['methods']) < count($this->params['calcs'])) {
-            expValidator::failAndReturnToForm("You must select a shipping options for all of your packages.", $this->params);
+            expValidator::failAndReturnToForm(gt("You must select a shipping options for all of your packages."), $this->params);
         }
         
         foreach ($this->params['methods'] as $id=>$method) {
@@ -871,10 +871,10 @@ class cartController extends expController {
 	/*function checkDiscount() {
 	    // handles what to do when a code valid or not
 	    if (isValidDiscountCode($this->params['discountcode'])) {
-    	    flash('message', "Discount Code Applied");
+    	    flash('message', gt("Discount Code Applied"));
             redirect_to(array('controller'=>'cart', 'action'=>'checkout'));
 	    } else {
-    	    flash('error', "Sorry, the discount code provided is not a valid code.");
+    	    flash('error', gt("Sorry, the discount code provided is not a valid code."));
             redirect_to(array('controller'=>'cart', 'action'=>'checkout'));
 	    }
 	}   */
@@ -888,7 +888,7 @@ class cartController extends expController {
         $discount = $discount->getCouponByName($this->params['coupon_code']);
         
         if (empty($discount)) {
-            flash('error', "This discount code you entered does not exist.");
+            flash('error', gt("This discount code you entered does not exist."));
             //redirect_to(array('controller'=>'cart', 'action'=>'checkout'));       
             expHistory::back();  
         } 
@@ -896,7 +896,7 @@ class cartController extends expController {
         //check to see if it's in our cart already
         if ($this->isDiscountInCart($discount->id))
         {
-            flash('error', "This discount code is already in your cart.");
+            flash('error', gt("This discount code is already in your cart."));
             //redirect_to(array('controller'=>'cart', 'action'=>'checkout'));
             expHistory::back();
         }   
@@ -914,7 +914,7 @@ class cartController extends expController {
             $od->body = $discount->body;
             $od->save();
             // set this to just the discount applied via this coupon?? if so, when though? $od->discount_total = ??;
-            flash('message', "The discount code has been applied to your cart.");               
+            flash('message', gt("The discount code has been applied to your cart."));
         }
         else
         {
@@ -929,7 +929,7 @@ class cartController extends expController {
         if ($id == null) $id = $this->params['id'];
         $od = new order_discounts($id);        
         $od->delete();
-        flash('message', "The discount code has been removed from your cart");
+        flash('message', gt("The discount code has been removed from your cart"));
         if ($redirect == true)
         {
             //redirect_to(array('controller'=>'cart', 'action'=>'checkout'));
@@ -1015,7 +1015,7 @@ class cartController extends expController {
         foreach ($this->optiongroup as $og) {
             if ($og->required && empty($params['options'][$og->id][0])) {
                 
-                flash('error', $this->title.' requires some options to be selected before you can add it to your cart.');
+                flash('error', $this->title.' '.gt('requires some options to be selected before you can add it to your cart.'));
                 redirect_to(array('controller'=>store, 'action'=>'show', 'id'=>$this->id));
             }
             if (!empty($params['options'][$og->id])) {
@@ -1051,7 +1051,7 @@ class cartController extends expController {
         {
             $orderItem->delete();
         }
-        flash('message','Your shopping cart is now empty.');
+        flash('message',gt('Your shopping cart is now empty.'));
         expHistory::back();   
     }
     

@@ -72,7 +72,7 @@ class faqController extends expController {
     public function submit_question() {
         $faq = new faq();
         $faq->update($this->params);
-        flash('message', 'Your question has been submitted. Some one should get back to you shortly. Thank you.');
+        flash('message', gt('Your question has been submitted. Some one should get back to you shortly. Thank you.'));
         expHistory::back();
     }
     
@@ -100,7 +100,7 @@ class faqController extends expController {
     
     public function edit_answer() {
         if (empty($this->params['id'])) {
-            flash('error', 'No ID was specified for the question to be answered');
+            flash('error', gt('No ID was specified for the question to be answered'));
             expHistory::back();
         }
         
@@ -118,7 +118,7 @@ class faqController extends expController {
     
     public function update_answer() {
         if (empty($this->params['id'])) {
-            flash('error', 'No ID was specified for the question to be answered');
+            flash('error', gt('No ID was specified for the question to be answered'));
             expHistory::back();
         }
         
@@ -135,7 +135,7 @@ class faqController extends expController {
 			    'subject'=>$this->params['subject'],
         ));
         
-        flash('message', 'Your email was sent to '.$faq->submitter_name.' at '.$faq->submitter_email);
+        flash('message', gt('Your email was sent to').' '.$faq->submitter_name.' '.gt('at').' '.$faq->submitter_email);
         expHistory::back();
     }
 }

@@ -52,7 +52,7 @@
 						{icon action=edit record=$file title="Edit this file"|gettext}
 					{/if}
 					{if $permissions.delete == 1}
-						{icon action=delete record=$file title="Delete this file"|gettext onclick="return confirm('Are you sure you want to delete this file?');"}
+						{icon action=delete record=$file title="Delete this file"|gettext onclick="return confirm('"|cat:("Are you sure you want to delete this file?"|gettext)|cat:"');"}
 					{/if}
 				</div>
 			{/permissions}

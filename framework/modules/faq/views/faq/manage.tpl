@@ -29,7 +29,7 @@
     {permissions}
 		<div class="module-actions">
 			{if $permissions.create == 1}
-				{icon class=add action=create title="Add a new FAQ"|gettext text="Add a New FAQ"|gettext}
+				{icon class=add action=create text="Add a New FAQ"|gettext}
 			{/if}
 			{if $permissions.manage == 1}
 				{ddrerank items=$page->records model="faq" sortfield="question" label="FAQs"|gettext}
@@ -68,7 +68,7 @@
 								{icon action=edit record=$question title="Edit FAQ"|gettext}
 							{/if}
 							{if $permissions.delete == 1}
-								{icon action=delete record=$question title="Delete this FAQ"|gettext|cat:"?" onclick="return confirm('Are you sure you want to delete this FAQ?');"}
+								{icon action=delete record=$question title="Delete this FAQ"|gettext|cat:"?" onclick="return confirm('"|cat:("Are you sure you want to delete this FAQ?"|gettext)||cat:"');"}
 							{/if} 
 						</div>					
 					{/permissions}

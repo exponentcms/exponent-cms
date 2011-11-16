@@ -44,10 +44,10 @@ class poll_question {
 			$form->meta('id',$object->id);
 		}
 		
-		$form->register('question','Question',new textcontrol($object->question));
-		$form->register('open_results','Results are Publically Viewable',new checkboxcontrol($object->open_results,1));
-		$form->register('open_voting','Open Voting?',new checkboxcontrol($object->open_voting,1));
-		$form->register('submit','',new buttongroupcontrol('Save','','Cancel'));
+		$form->register('question',gt('Question'),new textcontrol($object->question));
+		$form->register('open_results',gt('Results are Publically Viewable'),new checkboxcontrol($object->open_results,1));
+		$form->register('open_voting',gt('Open Voting?'),new checkboxcontrol($object->open_voting,1));
+		$form->register('submit','',new buttongroupcontrol(gt('Save'),'',gt('Cancel')));
 		
 		return $form;
 	}

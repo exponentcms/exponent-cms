@@ -21,7 +21,7 @@ return array(
 	'name'=>'English - US',
 	'charset'=>'UTF-8', // Used in the META.  Very important.
 	'author'=>'OIC Group, Inc.',
-	'locale'=>'en-us', // See RFC 1766 and ISO 639-2
+	'locale'=>'en_US', // See RFC 1766 and ISO 639-2
 	'default_view'=>'Default' // For recursion in view resolution
 );
 

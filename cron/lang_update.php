@@ -20,18 +20,31 @@ if (LANGUAGE=="English - US") {
     print "You must first Create and/or Switch to this Translation using Manage Translations!\n";
     exit;
 }
-
 print "Updating ".utf8_decode(LANG)." Translation\n";
-if (empty($default_lang)) $default_lang = include(BASE."framework/core/lang/English - US.php");
+print count($cur_lang)." Phrases in the ".utf8_decode(LANG)." Translation\n";
+
+// Add new/missing phrases in current language
 $num_missing = 0;
 foreach ($default_lang as $key => $value) {
     if (!array_key_exists($key,$cur_lang)) $num_missing++;
 }
-print count($cur_lang)." Phrases in the ".utf8_decode(LANG)." Translation\n";
 $changes = expLang::updateCurrLangFile();
 $changes = $changes?$changes:'No';
 print $changes." New Phases were Added to the ".utf8_decode(LANG)." Translation\n";
 
+// Remove Obsolete phrases from current language
+$num_extra = 0;
+foreach ($cur_lang as $key => $value) {
+    if (!array_key_exists($key,$default_lang)) {
+        unset($cur_lang[$key]);
+        expLang::saveCurrLangFile();
+        $num_extra++;
+    }
+}
+$num_extra = $num_extra?$num_extra:'No';
+print $num_extra." Obsolete Phases were Found and Removed from the ".utf8_decode(LANG)." Translation\n";
+
+// Attempt a machine translation for un-translated phrases in current language
 $num_untrans = 0;
 foreach ($cur_lang as $key => $value) {
     if ($key == $value) $num_untrans++;
@@ -41,10 +54,10 @@ $num_added = 0;
 if (defined('LOCALE')) {
     foreach ($cur_lang as $key => $value) {
         if ($key == $value) {
-            $translation = expLang::translate(stripslashes($value),'en',LOCALE);
+            $translation = expLang::translate($value,'en',LOCALE);
             if ($translation) {
-                str_replace('"', "\'", $translation);  // remove the killer double-quotes
-                $cur_lang[$key] = addslashes($translation);
+                $translation = str_replace('"', "\'", $translation);  // remove the killer double-quotes
+                $cur_lang[$key] = addslashes(stripslashes(strip_tags($translation)));
                 expLang::saveCurrLangFile();
                 $num_added++;
             }
@@ -56,6 +69,7 @@ if (defined('LOCALE')) {
     exit;
 }
 
+print count($cur_lang)." Phrases are now in the ".utf8_decode(LANG)." Translation\n";
 print "\nCompleted Updating the ".utf8_decode(LANG)." Translation!\n";
 
 ?>

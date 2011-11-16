@@ -33,7 +33,7 @@
         {'When a new user account is created, it will be automatically added to all groups with a Type of \'Default\''|gettext}
     </p>
 	<div class="module-actions">
-		{icon class=add controller=users action=edit_group title="Create a New User Group" text="Create a New User Group"|gettext alt="Create a New User Group"|gettext}
+		{icon class=add controller=users action=edit_group text="Create a New User Group"|gettext alt="Create a New User Group"|gettext}
 	</div>
     {pagelinks paginate=$page top=1}
 	<table class="exp-skin-table">
@@ -52,9 +52,9 @@
 			    <td>
 			        {permissions level=$smarty.const.UILEVEL_PERMISSIONS}
 						<div class="item-actions">
-							{icon img="groupperms.png" controller=users action="manage_group_memberships" record=$group title="Add/Remove Members to Group `$group->name`"}
+							{icon img="groupperms.png" controller=users action="manage_group_memberships" record=$group title="Add/Remove Members to Group"|gettext|cat:" "|cat:$group->name}
 							{icon img="edit.png" controller=users action=edit_group record=$group title="Edit this group"|gettext}
-							{icon img="delete.png" controller=users action=delete_group record=$group title="Delete this group" onclick="return confirm('Are you sure you want to delete this group?');"}
+							{icon img="delete.png" controller=users action=delete_group record=$group title="Delete this group"|gettext onclick="return confirm('"|cat:("Are you sure you want to delete this group?"|gettext)|cat:"');"}
 						</div>
                     {/permissions}
 			    </td>

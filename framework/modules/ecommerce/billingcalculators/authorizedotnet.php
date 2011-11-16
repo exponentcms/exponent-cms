@@ -82,7 +82,7 @@ class authorizedotnet extends creditcard {
         if($config['testmode']) {
             $url = "https://test.authorize.net/gateway/transact.dll";
             //$data["x_test_request"] = "TRUE"; 
-            flash('message','Authorize.net is in TEST Mode!');
+            flash('message',gt('Authorize.net is in TEST Mode!'));
             
         } else {
             $url = "https://secure.authorize.net/gateway/transact.dll";
@@ -162,7 +162,7 @@ class authorizedotnet extends creditcard {
         if($config['testmode']) {
             $url = "https://test.authorize.net/gateway/transact.dll";
             //$data["x_test_request"] = "TRUE"; 
-            flash('message','Authorize.net is in TEST Mode!');
+            flash('message',gt('Authorize.net is in TEST Mode!'));
             
         } else {
             $url = "https://secure.authorize.net/gateway/transact.dll";
@@ -192,7 +192,7 @@ class authorizedotnet extends creditcard {
 			$method->update(array('billing_options'=>serialize($billing_options), 'transaction_state'=>'voided'));
 			$this->createBillingTransaction($method, urldecode($response[9]),$billing_options->result,'voided');
 			
-			flash('message', 'Void Completed Successfully.');
+			flash('message', gt('Void Completed Successfully.'));
 			redirect_to(array('controller'=>'order', 'action'=>'show', 'id'=>$method->orders_id));
 		} else { // if it has error which like means it is already settled
 		
@@ -232,7 +232,7 @@ class authorizedotnet extends creditcard {
 			$method->update(array('billing_options'=>serialize($billing_options), 'transaction_state'=>'refunded'));
 			$this->createBillingTransaction($method, number_format($amount, 2, '.', ''),$billing_options->result,'refunded');
 			
-			flash('message', 'Refund Completed Successfully.');
+			flash('message',gt('Refund Completed Successfully.'));
 			redirect_to(array('controller'=>'order', 'action'=>'show', 'id'=>$method->orders_id));
 		}
 	}

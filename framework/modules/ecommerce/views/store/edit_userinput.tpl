@@ -165,5 +165,5 @@
 		<hr>
 	</div>
 {else}
-	<h2>User Input Fields are inherited from this items parent.</h2>
+	<h2>User Input Fields are inherited from this item's parent.</h2>
 {/if}

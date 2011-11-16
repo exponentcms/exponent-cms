@@ -141,7 +141,7 @@ abstract class expController {
 	 * description of module
 	 * @return string
 	 */
-	function description() { return "This is the base controller that most Exponent modules will inherit from."; }
+	function description() { return gt("This is the base controller that most Exponent modules will inherit from."); }
 
 	/**
 	 * does module have sources available?
@@ -362,7 +362,7 @@ abstract class expController {
 	function delete() {
         $modelname = $this->basemodel_name;
         if (empty($this->params['id'])) {
-	        flash('error', 'Missing id for the '.$modelname.' you would like to delete');
+	        flash('error', gt('Missing id for the').' '.$modelname.' '.gt('you would like to delete'));
 	        expHistory::back();
 	    }
         
@@ -527,7 +527,7 @@ abstract class expController {
         $config = new expConfig($this->loc);
                 
         $config->update(array('config'=>$this->params));        
-        flash('message', 'Configuration updated');
+        flash('message', gt('Configuration updated'));
         expHistory::back();
     }
 
@@ -542,7 +542,7 @@ abstract class expController {
                 expFile::download($this->params['id']);
             //}
         } else {
-            flash('error', 'Downloads have not been enabled for this file'); 
+            flash('error', gt('Downloads have not been enabled for this file'));
             expHistory::back();         
         }
         

@@ -77,7 +77,7 @@ if (MAINTENANCE_MODE && !$user->isAdmin() && ( !isset($_REQUEST['controller']) |
 	$template = new standalonetemplate('_maintenance');
 	$template->output();
 } else {
-	if (MAINTENANCE_MODE > 0) flash('error', "Maintenance Mode is Enabled");
+	if (MAINTENANCE_MODE > 0) flash('error', gt("Maintenance Mode is Enabled"));
 	//the default user is anonymous
 	if (!expSession::loggedIn()) {
 		//TODO: Maxims initial anonymous user implementation

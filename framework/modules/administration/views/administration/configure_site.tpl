@@ -85,7 +85,7 @@
                     {control type="checkbox" postfalse=1 name="sc[SITE_ALLOW_REGISTRATION]" label="Should users be allowed to create accounts for themselves?"|gettext checked=$smarty.const.SITE_ALLOW_REGISTRATION value=1}
                     {control type="checkbox" postfalse=1 name="sc[USER_REGISTRATION_USE_EMAIL]" label="Use an email address instead of a username?"|gettext checked=$smarty.const.USER_REGISTRATION_USE_EMAIL value=1}
                     {control type="checkbox" postfalse=1 name="sc[USER_REGISTRATION_SEND_NOTIF]" label="Notify a site administrator by email when a new user registers on your website?"|gettext checked=$smarty.const.USER_REGISTRATION_SEND_NOTIF value=1}
-                    {control type="text" name="sc[USER_REGISTRATION_NOTIF_SUBJECT]" label="Subject of the administrator's new user notification"|gettext value=$smarty.const.USER_REGISTRATION_NOTIF_SUBJECT}
+                    {control type="text" name="sc[USER_REGISTRATION_NOTIF_SUBJECT]" label="Subject of the administrator\'s new user notification"|gettext value=$smarty.const.USER_REGISTRATION_NOTIF_SUBJECT}
                     {control type="text" name="sc[USER_REGISTRATION_ADMIN_EMAIL]" label="Email address of administrator that should be notified when a user signs up"|gettext value=$smarty.const.USER_REGISTRATION_ADMIN_EMAIL}
                     {control type="checkbox" postfalse=1 name="sc[USER_REGISTRATION_SEND_WELCOME]" label="Send a Welcome email to the user after signing up?"|gettext checked=$smarty.const.USER_REGISTRATION_SEND_WELCOME value=1}
                     {control type="text" name="sc[USER_REGISTRATION_WELCOME_SUBJECT]" label="Subject of the Welcome email to the user"|gettext value=$smarty.const.USER_REGISTRATION_WELCOME_SUBJECT}
@@ -132,7 +132,7 @@
 		                <h2>{"Mail Server Settings"|gettext}</h2>
                     </div>
 	                {control type="text" name="sc[SMTP_FROMADDRESS]" label="From Address"|gettext value=$smarty.const.SMTP_FROMADDRESS}
-                    {br}{control type="checkbox" postfalse=1 name="sc[SMTP_USE_PHP_MAIL]" label="Use php's mail() function instead of SMTP?"|gettext checked=$smarty.const.SMTP_USE_PHP_MAIL value=1}
+                    {br}{control type="checkbox" postfalse=1 name="sc[SMTP_USE_PHP_MAIL]" label="Use php\'s mail() function instead of SMTP?"|gettext checked=$smarty.const.SMTP_USE_PHP_MAIL value=1}
 	                (or)<h3>{"SMTP Server Settings"|gettext}</h3>
                     {control type="text" name="sc[SMTP_SERVER]" label="SMTP Server"|gettext value=$smarty.const.SMTP_SERVER}
                     {control type="text" name="sc[SMTP_PORT]" label="SMTP Port"|gettext value=$smarty.const.SMTP_PORT}
@@ -196,10 +196,10 @@
                         </div>
 		                <h2>{"Error Messages"|gettext}</h2>
                     </div>
-                    {control type="text" name="sc[SITE_404_TITLE]" label="Page Title For \'Not Found\' (404) Error"|gettext value=$smarty.const.SITE_404_TITLE}
-                    {control type="html" name="sc[SITE_404_HTML]" label="\'Not Found\' (404) Error Message"|gettext value=$smarty.const.SITE_404_HTML}
-                    {control type="html" name="sc[SITE_403_REAL_HTML]" label="\'Access Denied\' (403) Error Message"|gettext value=$smarty.const.SITE_403_REAL_HTML}
-                    {control type="html" name="sc[SESSION_TIMEOUT_HTML]" label="\'Session Expired\' Error  Message"|gettext value=$smarty.const.SESSION_TIMEOUT_HTML}
+                    {control type="text" name="sc[SITE_404_TITLE]" label='Page Title For \'Not Found\' (404) Error'|gettext value=$smarty.const.SITE_404_TITLE}
+                    {control type="html" name="sc[SITE_404_HTML]" label='\'Not Found\' (404) Error Message'|gettext value=$smarty.const.SITE_404_HTML}
+                    {control type="html" name="sc[SITE_403_REAL_HTML]" label='\'Access Denied\' (403) Error Message'|gettext value=$smarty.const.SITE_403_REAL_HTML}
+                    {control type="html" name="sc[SESSION_TIMEOUT_HTML]" label='\'Session Expired\' Error  Message'|gettext value=$smarty.const.SESSION_TIMEOUT_HTML}
                 </div>
                 <div id="tab12">
 	                <div class="info-header">
@@ -219,7 +219,7 @@
 			            <h2>{"Minify Configuration"|gettext}</h2>
 			        </div>
                     {control type="text" name="sc[MINIFY_MAXAGE]" label="Maximum age of browser cache in seconds"|gettext value=$smarty.const.MINIFY_MAXAGE}
-					{control type="text" name="sc[MINIFY_MAX_FILES]" label="Maximum # of files that can be specified in the \'f\' GET parameter"|gettext value=$smarty.const.MINIFY_MAX_FILES}
+					{control type="text" name="sc[MINIFY_MAX_FILES]" label='Maximum # of files that can be specified in the \'f\' GET parameter'|gettext value=$smarty.const.MINIFY_MAX_FILES}
 					{control type="text" name="sc[MINIFY_URL_LENGTH]" label="The length of minification url"|gettext value=$smarty.const.MINIFY_URL_LENGTH}
 					{control type="checkbox" postfalse=1 name="sc[MINIFY_ERROR_LOGGER]" label="Enable logging of minify error messages to FirePHP?"|gettext checked=$smarty.const.MINIFY_ERROR_LOGGER value=1}
                     

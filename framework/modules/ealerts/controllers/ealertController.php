@@ -72,7 +72,7 @@ class ealertController extends expController {
         ));
         
         $bot->fire();
-        flash('message', "The E-Alerts are being sent to the subscribers.");
+        flash('message', gt("The E-Alerts are being sent to the subscribers."));
         expHistory::back();
     }
     
@@ -155,9 +155,9 @@ class ealertController extends expController {
         $count = count($this->params['ealerts']);
         
         if ($count > 0) {
-            flash('message', "Your subscriptions have been updated.  You are now subscriber to ".$count.' E-Alerts.');
+            flash('message', gt("Your subscriptions have been updated.  You are now subscriber to")." ".$count.' '.gt('E-Alerts.'));
         } else {
-            flash('error', "You have been unsubscribed from all E-Alerts.");
+            flash('error', gt("You have been unsubscribed from all E-Alerts."));
         }
         
         expHistory::back();
@@ -166,7 +166,7 @@ class ealertController extends expController {
     public function signup() {
         global $db;
         // check the anti-spam control
-        expValidator::check_antispam($this->params, "Anti-spam verification failed.  Please try again.");
+        expValidator::check_antispam($this->params, gt("Anti-spam verification failed.  Please try again."));
         
         // make sure we have what we need.
         if (empty($this->params['email'])) expQueue::flashAndFlow('error', 'You must supply an email address to sign up for email alerts.');

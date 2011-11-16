@@ -32,7 +32,7 @@ class expCommentController extends expController {
     
 	function edit() {
 	    if (empty($this->params['content_id'])) {
-	        flash('message','An error occured: No content id set.');
+	        flash('message',gt('An error occurred: No content id set.'));
             expHistory::back();  
 	    } 
         /* The global constants can be overriden by passing appropriate params */ 
@@ -159,7 +159,7 @@ class expCommentController extends expController {
         // check the anti-spam control
         if (!$user->isLoggedIn())
         {
-            expValidator::check_antispam($this->params, "Your comment could not be posted because anti-spam verification failed.  Please try again.");
+            expValidator::check_antispam($this->params, gt("Your comment could not be posted because anti-spam verification failed.  Please try again."));
         }
         
         // figure out the name and email address
@@ -183,8 +183,8 @@ class expCommentController extends expController {
 		
 		$msg = 'Thank you for posting a comment.';
 		if ($require_approval == 1 && !$user->isAdmin()) {
-		    $msg .= ' Your comment is now pending approval. You will receive an email to ';
-		    $msg .= $this->expComment->email.' letting you know when it has been approved.'; 
+		    $msg .= ' '.gt('Your comment is now pending approval. You will receive an email to').' ';
+		    $msg .= $this->expComment->email.' '.gt('letting you know when it has been approved.');
 		}
 		
 		if ($require_notification && !$user->isAdmin()) {
@@ -212,7 +212,7 @@ class expCommentController extends expController {
         $notification_email = empty($this->params['notification_email']) ? COMMENTS_NOTIFICATION_EMAIL : $this->params['notification_email'];
 	    
 	    if (empty($this->params['id'])) {
-	        flash('error', 'No ID supplied for comment to approve');
+	        flash('error', gt('No ID supplied for comment to approve'));
 	        expHistory::back();
 	    }
 	    
@@ -222,7 +222,7 @@ class expCommentController extends expController {
 	
 	public function approve_submit() {
 	    if (empty($this->params['id'])) {
-	        flash('error', 'No ID supplied for comment to approve');
+	        flash('error', gt('No ID supplied for comment to approve'));
 	        expHistory::back();
 	    }
         
@@ -270,7 +270,7 @@ class expCommentController extends expController {
         $notification_email = empty($this->params['notification_email']) ? COMMENTS_NOTIFICATION_EMAIL : $this->params['notification_email'];
 	    
 	    if (empty($this->params['id'])) {
-	        flash('error', 'Missing id for the comment you would like to delete');
+	        flash('error', gt('Missing id for the comment you would like to delete'));
 	        expHistory::back();
 	    }
 	    
@@ -298,7 +298,7 @@ class expCommentController extends expController {
         $notification_email = empty($this->params['notification_email']) ? COMMENTS_NOTIFICATION_EMAIL : $this->params['notification_email'];
 	    
 	    // setup some email variables.
-	    $subject = 'Notification of a New Comment Posted to '.URL_BASE;
+	    $subject = gt('Notification of a New Comment Posted to').' '.URL_BASE;
         $tos = explode(',', str_replace(' ', '', $notification_email));
         $tos = array_filter($tos);
         if (empty($tos)) return false;
@@ -310,17 +310,17 @@ class expCommentController extends expController {
         $editlink = makelink(array('controller'=>'expComment', 'action'=>'edit', 'id'=>$comment->id));
         
         // make the email body
-        $body = '<h1>New Comment Posted</h1>';
-        $body .= '<h2>Posted By</h2>';
+        $body = '<h1>'.gt('New Comment Posted').'</h1>';
+        $body .= '<h2>'.gt('Posted By').'</h2>';
         $body .= '<p>'.$comment->name."</p>";
-        $body .= '<h2>Poster\'s Email</h2>';
+        $body .= '<h2>'.gt('Poster\'s Email').'</h2>';
         $body .= '<p>'.$comment->email."</p>";
-        $body .= "<h2>Comment</h2>";
-        $body .= "<p>".$comment->body."</p>";
-        $body .= '<h3>View posting</h3>';
+        $body .= '<h2>'.gt('Comment').'</h2>';
+        $body .= '<p>'.$comment->body.'</p>';
+        $body .= '<h3>'.gt('View posting').'</h3>';
         $body .= '<a href="'.$posting.'">'.$posting.'</a>';
         //1$body .= "<br><br>";
-        $body .= '<h3>Edit / Approve comment</h3>';
+        $body .= '<h3>'.gt('Edit / Approve comment').'</h3>';
         $body .= '<a href="'.$editlink.'">'.$editlink.'</a>';
         
         // create the mail message
@@ -348,7 +348,7 @@ class expCommentController extends expController {
         $notification_email = empty($this->params['notification_email']) ? COMMENTS_NOTIFICATION_EMAIL : $this->params['notification_email'];
 	    
 	    // setup some email variables.
-	    $subject = 'Notification of Comment Approval on '.URL_BASE;
+	    $subject = gt('Notification of Comment Approval on').' '.URL_BASE;
         $tos = explode(',', str_replace(' ', '', $notification_email));
         $tos[] = $comment->email;
 		$tos = array_filter($tos);
@@ -361,14 +361,14 @@ class expCommentController extends expController {
         $editlink = makelink(array('controller'=>'expComment', 'action'=>'edit', 'id'=>$comment->id));
                 
         // make the email body
-        $body = '<h1>Comment Approved</h1>';
-        $body .= '<h2>Posted By</h2>';
+        $body = '<h1>'.gt('Comment Approved').'</h1>';
+        $body .= '<h2>'.gt('Posted By').'</h2>';
         $body .= '<p>'.$comment->name."</p>";
-        $body .= '<h2>Poster\'s Email</h2>';
-        $body .= '<p>'.$comment->email."</p>";
-        $body .= "<h2>Comment</h2>";
-        $body .= "<p>".$comment->body."</p>";
-        $body .= '<h3>View posting</h3>';
+        $body .= '<h2>'.gt('Poster\'s Email').'</h2>';
+        $body .= '<p>'.$comment->email.'</p>';
+        $body .= '<h2>'.gt('Comment').'</h2>';
+        $body .= '<p>'.$comment->body."</p>";
+        $body .= '<h3>'.gt('View posting').'</h3>';
         $body .= '<a href="'.$posting.'">'.$posting.'</a>';
 
         // create the mail message

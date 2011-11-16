@@ -173,7 +173,7 @@ class product extends expRecord {
             $qty = $params['qty'];
             if (($this->quantity - $qCheck) < $qty) {
                 if ($this->availability_type == 2) {
-                    flash('error', $this->title.' only has '.$this->quantity.' on hand. You can not add more than that to your cart.');
+                    flash('error', $this->title.' '.gt('only has').' '.$this->quantity.' '.gt('on hand. You can not add more than that to your cart.'));
                     //return false;
                     expHistory::back();
                 }
@@ -181,7 +181,7 @@ class product extends expRecord {
             //check minimum quantity
             if (($qty + $qCheck) < $this->minimum_order_quantity)
             {
-                 flash('message', $this->title.' has a minimum order quantity of '.$this->minimum_order_quantity.'. The quantity has been adjusted accordingly.');
+                 flash('message', $this->title.' '.gt('has a minimum order quantity of').' '.$this->minimum_order_quantity.'. '.gt('The quantity has been adjusted accordingly.'));
                  $params['qty'] += $this->minimum_order_quantity - ($qty + $qCheck);
                  $qty = $params['qty'];                             
             }
@@ -206,7 +206,7 @@ class product extends expRecord {
                 eDebug("Qcheck:".$qCheck,true);*/
                 if (($cprod->quantity - $qCheck) < $childQty) {
                     if ($cprod->availability_type == 2) {
-                        flash('error', $this->title. ' - ' .$cprod->model. ' only has '.$cprod->quantity.' on hand. You can not add more than that to your cart.');
+                        flash('error', $this->title. ' - ' .$cprod->model. ' '.gt('only has').' '.$cprod->quantity.' '.gt('on hand. You can not add more than that to your cart.'));
                         //return false;
                         expHistory::back();
                     }
@@ -214,7 +214,7 @@ class product extends expRecord {
                 //check minimum quantity
                 if (($childQty + $qCheck) < $cprod->minimum_order_quantity)
                 {
-                     flash('message', $cprod->title.' has a minimum order quantity of '.$cprod->minimum_order_quantity.'. The quantity has been adjusted accordingly.');
+                     flash('message', $cprod->title.' '.gt('has a minimum order quantity of').' '.$cprod->minimum_order_quantity.'. '.gt('The quantity has been adjusted accordingly.'));
                      $params['children'][$idKey] += $cprod->minimum_order_quantity - ($childQty + $qCheck);
                      //$qty = $params['qty'];                    
                 }

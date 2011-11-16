@@ -21,8 +21,8 @@ require_once('exponent.php');
 require_once(BASE.'external/feedcreator.class.php');
 
 $site_rss = new expRss($_REQUEST);
-$site_rss->feed_title = empty($site_rss->feed_title) ? 'RSS for '.URL_FULL : $site_rss->feed_title;
-$site_rss->feed_desc = empty($site_rss->feed_desc) ? 'This is the site wide RSS syndication for '.HOSTNAME : $site_rss->feed_desc;
+$site_rss->feed_title = empty($site_rss->feed_title) ? gt('RSS for').' '.URL_FULL : $site_rss->feed_title;
+$site_rss->feed_desc = empty($site_rss->feed_desc) ? gt('This is the site wide RSS syndication for').' '.HOSTNAME : $site_rss->feed_desc;
 if (isset($site_rss->rss_cachetime)) { $ttl = $site_rss->rss_cachetime; }
 if ($ttl == 0) { $ttl = 1440; }
 
@@ -78,7 +78,7 @@ if ($site_rss->enable_rss == true) {
 		echo $rss->createFeed("RSS2.0");
 	}
 } else {
-	echo "This RSS feed has been disabled.";
+	echo gt("This RSS feed has been disabled.");
 }
 
 ?>

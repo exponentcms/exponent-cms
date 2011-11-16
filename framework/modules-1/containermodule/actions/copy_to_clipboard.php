@@ -35,7 +35,7 @@ $clipboard_object->description = $db->selectValue('sectionref', 'description', '
 $clipboard_object->refcount = $db->selectValue('sectionref', 'refcount', 'module="'.$clipboard_object->module.'" AND source="'.$clipboard_object->source.'"');
 //eDebug($clipboard_object);
 $db->insertObject($clipboard_object, 'clipboard');
-flash('message', 'Module copied to clipboard');
+flash('message', gt('Module copied to clipboard'));
 expHistory::back();
 
 ?>

@@ -293,7 +293,7 @@ class orderController extends expController {
 	    $order = new order($this->params['id']);
 	    $this->params['shipped'] = datetimecontrol::parseData('shipped',$this->params);
 	    $order->update($this->params);
-	    flash('message', 'Shipping information updated.');
+	    flash('message', gt('Shipping information updated.'));
 	    expHistory::back();
 	}
 	
@@ -583,7 +583,7 @@ exit();
         $order = new order($this->params['id']);
         $order->order_type_id = $this->params['order_type_id'];
         $order->save(); 
-        flash('message', 'Invoice #'.$order->invoice_id.' has been set to '.$order->getOrderType());
+        flash('message', gt('Invoice #').$order->invoice_id.' '.gt('has been set to').' '.$order->getOrderType());
         expHistory::back();
     }      
     
@@ -647,14 +647,14 @@ exit();
                             'subject'=>'The status of your order (#'.$order->invoice_id.') has been updated on '.ecomconfig::getConfig('storename').'.'
                     ));
                 } else {
-                    flash('error', 'The email address was NOT send. An email address count not be found for this customer');
+                    flash('error', gt('The email address was NOT send. An email address count not be found for this customer'));
                 }
             }
         }
 	    
         $order->save();	           
 	    
-	    flash('message', 'Order Type and/or Status Updated.');
+	    flash('message', gt('Order Type and/or Status Updated.'));
 	    expHistory::back();
 	}
 	
@@ -744,11 +744,11 @@ exit();
                                     
             //eDebug($note,true);            
         } else {
-            flash('error', 'The email address was NOT sent. An email address count not be found for this customer');
+            flash('error', gt('The email address was NOT sent. An email address count not be found for this customer'));
             expHistory::back();
         }       
         
-        flash('message', 'Email sent.');
+        flash('message', gt('Email sent.'));
         expHistory::back();
     }
     
@@ -815,18 +815,18 @@ exit();
         //eDebug($calc,true);
         if (!method_exists($calc, 'delayed_capture'))
         {
-            flash('error', 'The Billing Calculator does not support delayed capture');
+            flash('error', gt('The Billing Calculator does not support delayed capture'));
             expHistory::back();
         }
         
         $result = $calc->delayed_capture($order->billingmethod[0], $this->params['capture_amt']);
         
         if (empty($result->errorCode)) {
-            flash('message', 'The authorized payment was successfully captured');
+            flash('message', gt('The authorized payment was successfully captured'));
             expHistory::back();
             
         } else {
-            flash('error', 'An error was encountered while capturing the authorized payment.<br /><br />'.$result->message);
+            flash('error', gt('An error was encountered while capturing the authorized payment.').'<br /><br />'.$result->message);
             expHistory::back();
         }
     }
@@ -841,18 +841,18 @@ exit();
         
         if (!method_exists($calc, 'void_transaction'))
         {
-            flash('error', 'The Billing Calculator does not support void');
+            flash('error', gt('The Billing Calculator does not support void'));
             expHistory::back();
         }
         
         $result = $calc->void_transaction($order->billingmethod[0]);
         
         if (empty($result->errorCode)) {
-            flash('message', 'The transaction has been successfully voided');
+            flash('message', gt('The transaction has been successfully voided'));
             expHistory::back();
             
         } else {
-            flash('error', 'An error was encountered while voiding the authorized payment.<br /><br />'.$result->message);
+            flash('error', gt('An error was encountered while voiding the authorized payment.').'<br /><br />'.$result->message);
             expHistory::back();
         }
     }
@@ -865,11 +865,11 @@ exit();
         $result = $billing->calculator->credit_transaction($billing->billingmethod, $this->params['capture_amt']);
         
         if ($result->errorCode == '0') {
-            flash('message', 'The transaction has been credited');
+            flash('message', gt('The transaction has been credited'));
             expHistory::back();
             
         } else {
-            flash('error', 'An error was encountered while capturing the authorized payment.<br /><br />'.$result->message);
+            flash('error', gt('An error was encountered while capturing the authorized payment.').'<br /><br />'.$result->message);
             expHistory::back();
         }
     }
@@ -991,7 +991,7 @@ exit();
             $newOi->save();
         }
         
-        flash('message','Reference Order #'. $newOrder->invoice_id . " created successfully.");
+        flash('message',gt('Reference Order #'). $newOrder->invoice_id . " ".gt("created successfully."));
         redirect_to(array('controller'=>'order','action'=>'show','id'=>$newOrder->id));        
     }
     
@@ -1144,7 +1144,7 @@ exit();
         $oi->shippingmethods_id = $newShippingMethod->id;
         $oi->save(false);
         
-        flash('message','New Order #'. $newOrder->invoice_id . " created successfully.");
+        flash('message',gt('New Order #'). $newOrder->invoice_id . " ".gt("created successfully."));
         redirect_to(array('controller'=>'order','action'=>'show','id'=>$newOrder->id));  
     }
     
@@ -1292,7 +1292,7 @@ exit();
         $order = new order($this->params['orderid']);
         if(count($order->orderitem) <= 1) 
         {
-            flash('error','You may not delete the only item on an order.  Please edit this item, or add another item before removing this one.');
+            flash('error',gt('You may not delete the only item on an order.  Please edit this item, or add another item before removing this one.'));
             expHistory::back();
         }
         
@@ -1689,13 +1689,13 @@ exit();
                 {
                     //eDebug("Validated NOT",true);
                     //validation failed, so go back
-                    flash('error',"We're sorry, but we could not verify your information.  Please try again, or start a new shopping cart.");
+                    flash('error',gt("We're sorry, but we could not verify your information.  Please try again, or start a new shopping cart."));
                     redirect_to(array('controller'=>'order','action'=>'verifyReturnShopper','id'=>$sessAr['cid']));  
                 }
             }            
             else
             {
-                flash('error','We were unable to restore the previous order, we apologize for the inconvenience.  Please start a new shopping cart.');
+                flash('error',gt('We were unable to restore the previous order, we apologize for the inconvenience.  Please start a new shopping cart.'));
                 $this->clearCart();
             }               
         }        

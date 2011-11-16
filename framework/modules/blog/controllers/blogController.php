@@ -162,8 +162,9 @@ class blogController extends expController {
 	public function showall_by_author() {
 	    expHistory::set('viewable', $this->params);
 	    
-	    $user = user::getByUsername($this->params['author']);
-	    
+//	    $user = user::getByUsername($this->params['author']);
+        $user = user::getUserByName($this->params['author']);
+
 		$where = ($this->aggregateWhereClause()?$this->aggregateWhereClause()." AND ":"")."poster=".$user->id;
 
 		$order = 'created_at';

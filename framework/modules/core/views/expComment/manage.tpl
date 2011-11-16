@@ -48,7 +48,7 @@
             <td>
 				<div class="item-actions">
 					{icon action=edit record=$comment content_id=$content_id title="Edit this comment"|gettext}
-					{icon action=delete record=$comment title="Delete this comment"|gettext onclick="return confirm('Are you sure you want to delete this comment?');"}
+					{icon action=delete record=$comment title="Delete this comment"|gettext onclick="return confirm('"|cat:("Are you sure you want to delete this comment?"|gettext)|cat:"');"}
 				</div>
             </td>
         </tr>

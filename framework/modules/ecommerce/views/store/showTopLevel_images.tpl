@@ -65,7 +65,7 @@
                             {icon controller=storeCategory action=edit record=$cat title="Edit `$cat->title`"}
                         {/if}
                         {if $permissions.delete == 1}
-                            {icon controller=storeCategory action=delete record=$cat title="Delete `$cat->title`" onclick="return confirm('Are you sure you want to delete this category?');"}
+                            {icon controller=storeCategory action=delete record=$cat title="Delete `$cat->title`" onclick="return confirm('"|cat:("Are you sure you want to delete this category?"|gettext)|cat:"');"}
                         {/if}
                     </div>
                     {/permissions}

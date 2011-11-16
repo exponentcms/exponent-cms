@@ -88,9 +88,9 @@
 						{/if}
 						{if ($theme->user_configured)}
 							{if $smarty.const.THEME_STYLE == ""}
-								{br}{icon class=configure action=configure_theme theme=$class title="Configure this Theme"|gettext text="Configure"|gettext}
+								{br}{icon class=configure action=configure_theme theme=$class title="Configure this Theme"|gettext}
 							{else}
-								{br}{icon class=configure action=configure_theme theme=$class sv=$smarty.const.THEME_STYLE title="Configure this Theme"|gettext text="Configure"|gettext}
+								{br}{icon class=configure action=configure_theme theme=$class sv=$smarty.const.THEME_STYLE title="Configure this Theme"|gettext}
 							{/if}
 						{/if}
 					</td>

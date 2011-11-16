@@ -1,9 +1,9 @@
 <?php
 return array(
-	"name"=>"Deutsch",
+	"name"=>"Norsk",
 	"author"=>"OIC Group, Inc.",
 	"charset"=>"UTF-8",
-	"locale"=>"de_DE",
+	"locale"=>"nb_NO",
 	"default_view"=>"Default",
 );
 ?>

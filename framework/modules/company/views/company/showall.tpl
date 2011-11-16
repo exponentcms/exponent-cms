@@ -39,7 +39,7 @@
 							{icon action=edit record=$company title="Edit"|gettext|cat:" `$company->title`"}
 						{/if}
 						{if $permissions.delete == 1}
-							{icon action=delete record=$company title="Delete"|gettext|cat:" `$company->title`" onclick="return confirm('Are you sure you want to delete this `$modelname`?');"}
+							{icon action=delete record=$company title="Delete"|gettext|cat:" `$company->title`"}
 						{/if}
 					</div>
                 {/permissions}
