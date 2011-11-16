@@ -208,7 +208,7 @@ class order extends expRecord {
                                 //update the session ticket and return count                                                                
                                 $cart->update(array('sessionticket_ticket'=>$ticket,'return_count'=>$cart->setReturnCount($orig_referrer)));                                                      
                                 order::setCartCookie($cart);
-                                flash('message',gt('Welcome back!'));
+                                flash('message',gt('Welcome back'));
                             }
                             //2) Was logged in 
                             else if(!empty($tmpCart->user_id))
@@ -228,7 +228,7 @@ class order extends expRecord {
                                     $cart = new order();
                                     $cart->update(array("sessionticket_ticket"=>$ticket, 'user_id'=>$user->id, 'orig_referrer'=>$orig_referrer,'return_count'=>$tmpCart->setReturnCount($orig_referrer))); 
                                     order::setCartCookie($cart);
-                                    flash('message',gt('Welcome back!'));
+                                    flash('message',gt('Welcome back'));
                                 }   
                                 //3) Was logged in WITH items in cart                            
                                 else if(!empty($tmpCart->user_id) && count($tmpCart->orderitem) > 0)

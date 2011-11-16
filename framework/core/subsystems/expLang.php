@@ -221,7 +221,7 @@ class expLang {
         $to1 = explode('_',$to);
         $to = $to1[0];
         $gt = new BingTranslateWrapper(BING_API);
-        return $gt->translate($text, $from, $to);
+        return $gt->translate(stripslashes($text), $from, $to);
 
         //old method
     	$data = self::loadData('http://api.bing.net/json.aspx?AppId=' . BING_API . '&Sources=Translation&Version=2.2&Translation.SourceLanguage=' . $from . '&Translation.TargetLanguage=' . $to . '&Query=' . urlencode($text));

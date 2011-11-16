@@ -54,10 +54,10 @@ $num_added = 0;
 if (defined('LOCALE')) {
     foreach ($cur_lang as $key => $value) {
         if ($key == $value) {
-            $translation = expLang::translate(stripslashes($value),'en',LOCALE);
+            $translation = expLang::translate($value,'en',LOCALE);
             if ($translation) {
-                str_replace('"', "\'", $translation);  // remove the killer double-quotes
-                $cur_lang[$key] = addslashes($translation);
+                $translation = str_replace('"', "\'", $translation);  // remove the killer double-quotes
+                $cur_lang[$key] = addslashes(stripslashes(strip_tags($translation)));
                 expLang::saveCurrLangFile();
                 $num_added++;
             }

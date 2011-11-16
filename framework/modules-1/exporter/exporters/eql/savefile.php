@@ -43,7 +43,7 @@ if (!isset($_POST['tables'])) { // No checkboxes clicked, and got past the JS ch
 				flash('error',gt("Error writing to eql file")." ".$path);
 			}
 			fclose ($eql);
-			flash('message',gt("Sample database (eql file) saved to")." '".DISPLAY_THEME."' ".gt("theme."));
+			flash('message',gt("Sample database (eql file) saved to")." '".DISPLAY_THEME."' ".gt("theme"));
 			expHistory::back();
 		}
 	} else {

@@ -252,7 +252,7 @@
                  {/if}
                   <tr class="odd">
                     <td width="90%" style="border:1px solid #DEDEDE;">
-                    {"Tax - "|gettext}
+                    {"Tax"|gettext|cat:" - "}
                     {foreach from=$order->taxzones item=zone}
                         {$zone->name} ({$zone->rate}%)
                     {foreachelse}

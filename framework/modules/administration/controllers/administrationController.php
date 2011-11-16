@@ -361,6 +361,12 @@ class administrationController extends expController {
         assign_to_template(array('langs'=>$langs,'missing'=>$num_missing,"count"=>count($cur_lang),'untrans'=>$num_untrans));
    	}
 
+    public function update_language() {
+        expSettings::change('LANGUAGE', $_POST['newlang']);
+        flash('message',gt('Display Language changed to').": ".$_POST['newlang']);
+        redirect_to(array('controller'=>'administration', 'action'=>'manage_lang'));
+   	}
+
     public function manage_lang_await() {
         global $cur_lang;
 
@@ -373,32 +379,6 @@ class administrationController extends expController {
         assign_to_template(array('await'=>$awaiting_trans));
    	}
 
-    public function manage_lang_auto() {
-        global $cur_lang;
-
-        $num_added = 0;
-        if (isset($_POST['lang'])) {
-            foreach ($cur_lang as $key => $value) {
-                if ($key == $value) {
-                    $translation = expLang::translate(stripslashes($value),'en',$_POST['lang']);
-                    if ($translation) {
-                        $cur_lang[$key] = addslashes($translation);
-                        expLang::saveCurrLangFile();
-                        $num_added++;
-                    }
-                }
-            }
-            flash('message',$num_added." ".gt("New Phases translated to")." ".$_POST['lang']);
-        }
-        redirect_to(array('controller'=>'administration', 'action'=>'manage_lang'));
-   	}
-
-    public function update_language() {
-        expSettings::change('LANGUAGE', $_POST['newlang']);
-        flash('message',gt('Display Language changed to').": ".$_POST['newlang']);
-        redirect_to(array('controller'=>'administration', 'action'=>'manage_lang'));
-   	}
-
     public function save_newlangfile() {
 		$result = expLang::createNewLangFile($_POST['newlang']);
         flash($result['type'],$result['message']);
@@ -407,22 +387,6 @@ class administrationController extends expController {
             expLang::createNewLangInfoFile($_POST['newlang'],$_POST['newauthor'],$_POST['newcharset'],$_POST['newlocale']);
             flash('message',gt('Display Language changed to').": ".$_POST['newlang']);
         }
-        redirect_to(array('controller'=>'administration', 'action'=>'manage_lang'));
-   	}
-
-    public function update_langtemplate() {
-        expSettings::change('WRITE_LANG_TEMPLATE', $_POST['writetemplate']);
-        if (!empty($_POST['writetemplate'])) {
-            expSettings::change('DEVELOPMENT', $_POST['writetemplate']);
-        }
-        flash('message',gt('Language Phrase Building Feature Turned')." ".($_POST['writetemplate']?gt("On"):gt("Off")));
-        redirect_to(array('controller'=>'administration', 'action'=>'manage_lang'));
-   	}
-
-    public function update_lang() {
-   		$changes = expLang::updateCurrLangFile();
-        $changes = $changes?$changes:'No';
-        flash('message',$changes." ".gt('New Phases were Added to the')." ".LANG.gt('Translation'));
         redirect_to(array('controller'=>'administration', 'action'=>'manage_lang'));
    	}
 
