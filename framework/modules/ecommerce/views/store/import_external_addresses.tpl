@@ -19,7 +19,7 @@
     This will clear any existing external addresses for this source and replace with the addresses you upload.    
     {form action=process_external_addresses}
         <input type="file" name="address_csv" size="50">
-        {control type="dropdown" name="type_of_address" label="Select the source of the CSV file:" size=4 multiple=false items=$sources default=-1} 
+        {control type="dropdown" name="type_of_address" label="Select the source of the CSV file:"|gettext size=4 multiple=false items=$sources default=-1}
         {control type="buttongroup" submit="Import Addresses"|gettext cancel="Cancel"|gettext}
     {/form}
     {br}

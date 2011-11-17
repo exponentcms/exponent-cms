@@ -33,9 +33,9 @@
 	    	<div class="yui-content">
 	        	<div id="tab1">
 				    <h2>General Configuration</h2>
-				    {control type="text" name="storename" label="Store Name" value=$config.storename}
+				    {control type="text" name="storename" label="Store Name"|gettext value=$config.storename}
                     {* control type="checkbox" name="allow_anonymous_checkout" label="Allow Anonymous Checkout" value=1 checked=$config.allow_anonymous_checkout *}
-				    {control type="text" name="starting_invoice_number" label="Starting Invoice Number" size=50 value=$config.starting_invoice_number}				    
+				    {control type="text" name="starting_invoice_number" label="Starting Invoice Number"|gettext size=50 value=$config.starting_invoice_number}
 				    <h2>Header</h2>
 				    <p>This will be displayed on the top of your emails and invoices.</p>
 				    {control type="html" name="header" label=" " rows=6 cols=60 value=$config.header}
@@ -47,14 +47,14 @@
                 <div id="tab2">
                     <h2>Cart Title</h2>
                     <p>The title that appears at the top of your shopping cart.</p>
-                    {control type="text" name="cart_title_text" label="Shopping Cart Title" value=$config.cart_title_text}
+                    {control type="text" name="cart_title_text" label="Shopping Cart Title"|gettext value=$config.cart_title_text}
                     <h2>Cart Message</h2>
                     <p>This will be displayed at the top of your shopping cart.</p>
-                    {control type="html" name="cart_description_text" label="Shopping Cart Description Text" value=$config.cart_description_text}    
+                    {control type="html" name="cart_description_text" label="Shopping Cart Description Text"|gettext value=$config.cart_description_text}
                     <hr>
                     <h2>Checkout Title</h2>
                     <p>The title that appears at the top of your final confirmation checkout page.</p>
-                    {control type="text" name="checkout_title_top" label="Checkout Title" value=$config.checkout_title_top}
+                    {control type="text" name="checkout_title_top" label="Checkout Title"|gettext value=$config.checkout_title_top}
                     <h2>Checkout Message - Top</h2>
                     <p>This will be displayed on the top of your final confirmation checkout page.</p>
                     {control type="html" name="checkout_message_top" label=" " rows=6 cols=60 value=$config.checkout_message_top}
@@ -67,12 +67,12 @@
                 </div>
 				<div id="tab3">
 				    <h2>Product Sorting</h2>
-				    {control type="dropdown" name="orderby" label="Default sort order" items="Name, Price, Rank" values="title,base_price,rank" value=$config.orderby}
-				    {control type="dropdown" name="orderby_dir" label="Sort direction" items="Ascending, Descending" values="ASC, DESC" value=$config.orderby_dir}				    
+				    {control type="dropdown" name="orderby" label="Default sort order"|gettext items="Name, Price, Rank"|gettext values="title,base_price,rank" value=$config.orderby}
+				    {control type="dropdown" name="orderby_dir" label="Sort direction"|gettext items="Ascending, Descending"|gettext values="ASC, DESC" value=$config.orderby_dir}
 
 				    <h2>Pagination and Display</h2>
-				    {control type="text" name="pagination_default" label="Default # of products to show per page" size=3 filter=integer value=$config.pagination_default}
-				    {control type="checkbox" name="show_first_category" label="Show the first category in your store by default?" value=1 checked=$config.show_first_category}
+				    {control type="text" name="pagination_default" label="Default # of products to show per page"|gettext size=3 filter=integer value=$config.pagination_default}
+				    {control type="checkbox" name="show_first_category" label="Show the first category in your store by default?"|gettext value=1 checked=$config.show_first_category}
                     {*
                     <h2>Sub Category Display</h2>
                     drop down coming soon...
@@ -86,47 +86,47 @@
 				</div>
 				<div id="tab4">
 				    <h2>Notifications</h2>
-				    {control type="checkbox" name="email_invoice" label="Send email notification of new orders?" value=1 checked=$config.email_invoice}
-				    {control type="text" name="email_invoice_addresses" label="Send email notifications to (separate email addresses with a comma)" size=60 value=$config.email_invoice_addresses}			    
+				    {control type="checkbox" name="email_invoice" label="Send email notification of new orders?"|gettext value=1 checked=$config.email_invoice}
+				    {control type="text" name="email_invoice_addresses" label="Send email notifications to (separate email addresses with a comma)"|gettext size=60 value=$config.email_invoice_addresses}
 				</div>
 				<div id="tab5">
 				    <h2>Store Email Settings</h2>
-				    {control type="text" name="from_name" label="Email From Name" value=$config.from_name}
-				    {control type="text" name="from_address" label="Email From Address" value=$config.from_address}
-				    {control type="checkbox" name="email_invoice_to_user" label="Email a copy of the invoice to the user after purchase?" value=1 checked=$config.email_invoice_to_user}
-				    {control type="text" name="invoice_subject" label="Subject of invoice email" size="40" value=$config.invoice_subject}
-				    {control type="textarea" name="invoice_msg" label="Message to put in invoice email:" rows=5 cols=45 value=$config.invoice_msg}				    	
+				    {control type="text" name="from_name" label="Email From Name"|gettext value=$config.from_name}
+				    {control type="text" name="from_address" label="Email From Address"|gettext value=$config.from_address}
+				    {control type="checkbox" name="email_invoice_to_user" label="Email a copy of the invoice to the user after purchase?"|gettext value=1 checked=$config.email_invoice_to_user}
+				    {control type="text" name="invoice_subject" label="Subject of invoice email"|gettext size="40" value=$config.invoice_subject}
+				    {control type="textarea" name="invoice_msg" label="Message to put in invoice email:"|gettext rows=5 cols=45 value=$config.invoice_msg}
 				</div>      
                 <div id="tab6">
                     <h2>General Address/Geo Settings</h2>
-                    {control type="checkbox" name="address_allow_admins_all" label="Allow admins access to the full geographical data regardless of other settings?" value=1 checked=$config.address_allow_admins_all}
+                    {control type="checkbox" name="address_allow_admins_all" label="Allow admins access to the full geographical data regardless of other settings?"|gettext value=1 checked=$config.address_allow_admins_all}
                 </div>      
                 <div id="tab7">
                     <h2>Invoice Settings</h2>
-                    {control type="checkbox" name="enable_barcode" label="Enable Barcode?" value=1 checked=$config.enable_barcode}
+                    {control type="checkbox" name="enable_barcode" label="Enable Barcode?"|gettext value=1 checked=$config.enable_barcode}
                 </div>  
                 <div id="tab8">
                     <h2>{"Product Listing Pages"|gettext}</h2>
-				    {control type="text" name="images_per_row" label="Products per row" size="3" value=$config.images_per_row}
+				    {control type="text" name="images_per_row" label="Products per row"|gettext size="3" value=$config.images_per_row}
                     <h2>{"Product Detail Pages"|gettext}</h2>
-                    {control type="checkbox" name="enable_ratings_and_reviews" label="Enable Ratings & Reviews?" value=1 checked=$config.enable_ratings_and_reviews}
-                    {control type="checkbox" name="enable_lightbox" label="Enable Lightbox Image Viewer?" value=1 checked=$config.enable_lightbox}
+                    {control type="checkbox" name="enable_ratings_and_reviews" label="Enable Ratings & Reviews?"|gettext value=1 checked=$config.enable_ratings_and_reviews}
+                    {control type="checkbox" name="enable_lightbox" label="Enable Lightbox Image Viewer?"|gettext value=1 checked=$config.enable_lightbox}
                 </div>  
 				
 				<div id="tab9">
 					<h2>{"Product Type Settings"|gettext}</h2>
-					{control type="checkbox" name="product_types[Google]" label="Google Feed" value="google_product_type" checked=$config.product_types.Google}
-					{control type="checkbox" name="product_types[Bing]" label="Bing Feed" value="bing_product_type" checked=$config.product_types.Bing}
-					{control type="checkbox" name="product_types[NexTag]" label="NexTag Feed" value="nextag_product_type" checked=$config.product_types.NexTag}
-					{control type="checkbox" name="product_types[Shopzilla]" label="Shopzilla Feed" value="shopzilla_product_type" checked=$config.product_types.Shopzilla}
-					{control type="checkbox" name="product_types[Shopping]" label="Shopping Feed" value="shopping_product_type" checked=$config.product_types.Shopping}
-					{control type="checkbox" name="product_types[PriceGrabber]" label="Price Grabber Feed" value="pricegrabber_product_type" checked=$config.product_types.PriceGrabber}
+					{control type="checkbox" name="product_types[Google]" label="Google Feed"|gettext value="google_product_type" checked=$config.product_types.Google}
+					{control type="checkbox" name="product_types[Bing]" label="Bing Feed"|gettext value="bing_product_type" checked=$config.product_types.Bing}
+					{control type="checkbox" name="product_types[NexTag]" label="NexTag Feed"|gettext value="nextag_product_type" checked=$config.product_types.NexTag}
+					{control type="checkbox" name="product_types[Shopzilla]" label="Shopzilla Feed"|gettext value="shopzilla_product_type" checked=$config.product_types.Shopzilla}
+					{control type="checkbox" name="product_types[Shopping]" label="Shopping Feed"|gettext value="shopping_product_type" checked=$config.product_types.Shopping}
+					{control type="checkbox" name="product_types[PriceGrabber]" label="Price Grabber Feed"|gettext value="pricegrabber_product_type" checked=$config.product_types.PriceGrabber}
 				</div>
 				
 				<div id="tab10">
 					<h2>{"Gift Card Settings"|gettext}</h2>
-					{control type="text" name="minimum_gift_card_purchase" label="Minimum Gift Card Puchase" value=$config.minimum_gift_card_purchase filter=money}
-					{control type="text" name="custom_message_product" label="Custom Message Price" value=$config.custom_message_product filter=money}
+					{control type="text" name="minimum_gift_card_purchase" label="Minimum Gift Card Puchase"|gettext value=$config.minimum_gift_card_purchase filter=money}
+					{control type="text" name="custom_message_product" label="Custom Message Price"|gettext value=$config.custom_message_product filter=money}
 				</div>
             </div>
         </div>

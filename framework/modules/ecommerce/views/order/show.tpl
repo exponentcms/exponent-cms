@@ -41,13 +41,13 @@
         <div class="yui-content exp-ecom-table">
             <div id="invoice">
                 <div id="buttons">
-                    {printer_friendly_link class="awesome `$smarty.const.BTN_SIZE` `$smarty.const.BTN_COLOR`" text="Print this invoice" view="show_printable"} 
+                    {printer_friendly_link class="awesome `$smarty.const.BTN_SIZE` `$smarty.const.BTN_COLOR`" text="Print this invoice"|gettext view="show_printable"}
                     {if $smarty.const.HTMLTOPDF_PATH && $smarty.const.HTMLTOPDF_PATH_TMP}                                        
                         <a class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" href="{link controller='order' action='getPDF' id=$order->id inum=$order->invoice_number}">Download PDF</a>
                     {/if}
                     {permissions}
                         {if $permissions.manage == 1}
-                            {printer_friendly_link class="awesome `$smarty.const.BTN_SIZE` `$smarty.const.BTN_COLOR`" text="Print Packing Slip" view="show_packing"}
+                            {printer_friendly_link class="awesome `$smarty.const.BTN_SIZE` `$smarty.const.BTN_COLOR`" text="Print Packing Slip"|gettext view="show_packing"}
                             <a class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" href="{link controller='order' action='createReferenceOrder' id=$order->id}">Spawn Reference Order</a>
                         {/if}
                     {/permissions} 
@@ -69,18 +69,18 @@
                             <tr><td>                                
                                 {form action=setStatus}
                                     {control type="hidden" name="id" value=$order->id}
-                                    {control type="dropdown" name="order_type_id" label="Change order type to:" frommodel=order_type orderby='rank' value=$order->order_type_id orderby=title}
-                                    {control type="dropdown" name="order_status_id" label="Change order status to:" frommodel='order_status' orderby='rank' value=$order->order_status_id}
-                                    {control type="checkbox" name="email_user" label="Send email to user to notify them of status change?" value=1}
-                                    {control type="checkbox" name="include_shipping_info" label="Include Shipping Information in email?" value=1}
+                                    {control type="dropdown" name="order_type_id" label="Change order type to:"|gettext frommodel=order_type orderby='rank' value=$order->order_type_id orderby=title}
+                                    {control type="dropdown" name="order_status_id" label="Change order status to:"|gettext frommodel='order_status' orderby='rank' value=$order->order_status_id}
+                                    {control type="checkbox" name="email_user" label="Send email to user to notify them of status change?"|gettext value=1}
+                                    {control type="checkbox" name="include_shipping_info" label="Include Shipping Information in email?"|gettext value=1}
                                     <select id="order_status_messages" name="order_status_messages" size="1">
                                         <option value="0" selected>-- Select a predefined message --</option>
                                         {foreach from=$messages item=msg}
                                             <option value="{$msg->body}">{$msg->body|truncate:80}</option>
                                         {/foreach}
                                     </select>
-                                    {control id=msgbox type="textarea" name="comment" label="Comment" rows=6 cols=45}
-                                    {control type="checkbox" name="save_message" label="Save this message to use in the future?" value=1}
+                                    {control id=msgbox type="textarea" name="comment" label="Comment"|gettext rows=6 cols=45}
+                                    {control type="checkbox" name="save_message" label="Save this message to use in the future?"|gettext value=1}
                                     {control type=buttongroup submit="Save change"|gettext}
                                 {/form}                 
                             </td></tr>
@@ -129,8 +129,8 @@
                         <tr><td colspan="2">
                         {form action=update_shipping}
                             {control type="hidden" name="id" value=$order->id}
-                            {control type="text" name="shipping_tracking_number" label="Tracking #" value=$order->shipping_tracking_number}
-                            {control type="datetimecontrol" name="shipped" showtime=false label="Date Shipped" value=$order->shipped}
+                            {control type="text" name="shipping_tracking_number" label="Tracking #"|gettext value=$order->shipping_tracking_number}
+                            {control type="datetimecontrol" name="shipped" showtime=false label="Date Shipped"|gettext value=$order->shipped}
                             {control type="buttongroup" submit="Save Shipping Info"|gettext}
                         {/form}
                         </td>
@@ -177,7 +177,7 @@
                                 {if $bt->captureEnabled() == true}
                                     {form action=captureAuthorization}
                                         {control type="hidden" name="id" value=$order->id}
-                                        {control type="text" name="capture_amt" label="Amount to Capture" value=$order->grand_total}
+                                        {control type="text" name="capture_amt" label="Amount to Capture"|gettext value=$order->grand_total}
                                         {control type="buttongroup" submit="Capture Transaction"|gettext}
                                     {/form}
                                 {/if}
@@ -192,7 +192,7 @@
                                 {if $bt->creditEnabled() == true}
                                     {form action=creditTransaction}
                                         {control type="hidden" name="id" value=$order->id}
-                                        {control type="text" name="capture_amt" label="Amount to Refund" value=$order->grand_total}
+                                        {control type="text" name="capture_amt" label="Amount to Refund"|gettext value=$order->grand_total}
                                         {control type="buttongroup" submit="Credit "|gettext}
                                     {/form}
                                 {/if}
@@ -223,9 +223,9 @@
                             <td>
                                 {form action=update_sales_reps}
                                     {control type="hidden" name="id" value=$order->id}
-                                    {control type="dropdown" name="sales_rep_1_id" label="Sales Rep 1 (Initial Order)" includeblank=true items=$sales_reps value=$order->sales_rep_1_id}
-                                    {control type="dropdown" name="sales_rep_2_id" label="Sales Rep 2 (Completed Order)" includeblank=true items=$sales_reps value=$order->sales_rep_2_id}
-                                    {control type="dropdown" name="sales_rep_3_id" label="Sales Rep 3 (Other)" includeblank=true items=$sales_reps value=$order->sales_rep_3_id}
+                                    {control type="dropdown" name="sales_rep_1_id" label="Sales Rep 1 (Initial Order)"|gettext includeblank=true items=$sales_reps value=$order->sales_rep_1_id}
+                                    {control type="dropdown" name="sales_rep_2_id" label="Sales Rep 2 (Completed Order)"|gettext includeblank=true items=$sales_reps value=$order->sales_rep_2_id}
+                                    {control type="dropdown" name="sales_rep_3_id" label="Sales Rep 3 (Other)"|gettext includeblank=true items=$sales_reps value=$order->sales_rep_3_id}
                                     {control type="buttongroup" submit="Update Sales Reps"|gettext}
                                 {/form}
                             </td>
@@ -286,13 +286,13 @@
                                             <option value="{$msg->body|escape:"all"}">{$msg->body|truncate:80}</option>
                                         {/foreach}
                                     </select>
-                                    {control type=text name="to_addresses" size="100" label="To (comma seperate multiple):" value="`$to_addresses`"}                                    
-                                    {control type=text name="email_subject" size="100" label="Email Subject:" value="`$email_subject`"}
+                                    {control type=text name="to_addresses" size="100" label="To (comma seperate multiple):"|gettext value="`$to_addresses`"}
+                                    {control type=text name="email_subject" size="100" label="Email Subject:"|gettext value="`$email_subject`"}
                                     {control id=email_message type="editor" name="email_message" height=250}
-                                    {control type="checkbox" name="save_message" label="Save this message to use in the future?" value=1}
-                                    {control type="checkbox" name="include_invoice" label="Attach invoice to this email?" value=1}
-                                    {control type=radiogroup columns=1 name="from_address" label="Select From Address" items=$from_addresses default=$from_default flip=false}        
-                                    {control type=text name="other_from_address" label="Other From Address" value=''}
+                                    {control type="checkbox" name="save_message" label="Save this message to use in the future?"|gettext value=1}
+                                    {control type="checkbox" name="include_invoice" label="Attach invoice to this email?"|gettext value=1}
+                                    {control type=radiogroup columns=1 name="from_address" label="Select From Address"|gettext items=$from_addresses default=$from_default flip=false}
+                                    {control type=text name="other_from_address" label="Other From Address"|gettext value=''}
                                     {control type=buttongroup submit="Email Customer"|gettext}
                                 {/form}
                             {/if}

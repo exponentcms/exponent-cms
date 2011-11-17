@@ -122,7 +122,8 @@ class expLang {
             fwrite($fp,"<?php\n");
             fwrite($fp,"return array(\n");
             foreach($cur_lang as $key => $value){
-               fwrite($fp,"\t\"".$key."\"=>\"".$value."\",\n");
+                $value = addslashes(stripslashes(strip_tags($value)));
+                fwrite($fp,"\t\"".$key."\"=>\"".$value."\",\n");
             }
             fwrite($fp,");\n");
             fwrite($fp,"?>\n");

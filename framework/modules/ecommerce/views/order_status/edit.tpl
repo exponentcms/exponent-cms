@@ -21,9 +21,9 @@
     
     {form action=update}
         {control type="hidden" name="id" value=$record->id}
-        {control type="text" name="title" label="Status Name" value=$record->title}
-        {control type="checkbox" name="is_default" label="Default?" value=1 checked=$record->is_default}
-        {control type="checkbox" name="treat_as_closed" label="Treat as Closed?" value=1 checked=$record->treat_as_closed}
+        {control type="text" name="title" label="Status Name"|gettext value=$record->title}
+        {control type="checkbox" name="is_default" label="Default?"|gettext value=1 checked=$record->is_default}
+        {control type="checkbox" name="treat_as_closed" label="Treat as Closed?"|gettext value=1 checked=$record->treat_as_closed}
         {control type="buttongroup" submit="Submit"|gettext cancel="Cancel"|gettext}
     {/form}
 </div>

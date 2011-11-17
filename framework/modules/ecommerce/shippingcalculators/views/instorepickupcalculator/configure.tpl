@@ -21,7 +21,7 @@
         </ul>            
         <div class="yui-content">
 	        <div id="tab1">
-	            {control type="text" name="rate" label="In Store Pickup Charge" size=5 filter=money value=$calculator->configdata.rate}
+	            {control type="text" name="rate" label="In Store Pickup Charge"|gettext size=5 filter=money value=$calculator->configdata.rate}
 	        </div>
         </div>
     </div>

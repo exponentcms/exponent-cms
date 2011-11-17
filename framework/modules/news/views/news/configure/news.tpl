@@ -15,7 +15,7 @@
  *}
 
 <h2>{'Configure this Module'|gettext}</h2>
-{*control type=dropdown name=order label="Sort Order" items="$sortopts" value=$config.order*}
+{*control type=dropdown name=order label="Sort Order"|gettext items="$sortopts" value=$config.order*}
 {control type="checkbox" name="only_featured" label="Only show Featured News Items"|gettext value=1 checked=$config.only_featured}
 {control type="radiogroup" name="usebody" label="Body Text"|gettext value=$config.usebody|default:0 items="Full,Summary,None"|gettext values="0,1,2"}
 

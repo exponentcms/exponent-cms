@@ -5,7 +5,7 @@
 {form action=saveModelAliases controller=store}
 	{control type="hidden" name="index" value=$index}
 	{if $autocomplete}
-		{control type="autocomplete" controller="store" action="search" name="product_title" label="Add a new item" value="Search title or SKU to add an item" schema="title,id,sef_url,expFile,model" searchmodel="product" searchoncol="title,model" jsinject=$callbacks}
+		{control type="autocomplete" controller="store" action="search" name="product_title" label="Add a new item"|gettext value="Search title or SKU to add an item" schema="title,id,sef_url,expFile,model" searchmodel="product" searchoncol="title,model" jsinject=$callbacks}
 		{control type="buttongroup" submit="Save" cancel="Cancel"}
 	{/if}
 {/form}

@@ -20,10 +20,10 @@
     {form action="addItem"}
         {control type="hidden" name="product_type" value=$params.product_type}
         {control type="hidden" name="product_id" value=$params.product_id}
-        {control type="text" id="dollar_amount" name="dollar_amount" label="Dollar Amount:" value=$record->dollar_amount size=7 filter=money}
-        {control type="text" name="to" label="To:" value=$record->to}
-        {control type="text" name="from" label="From:" value=$record->from}
-        {control type="textarea" name="msg" label="Message:" rows=3 value=$record->msg}
+        {control type="text" id="dollar_amount" name="dollar_amount" label="Dollar Amount:"|gettext value=$record->dollar_amount size=7 filter=money}
+        {control type="text" name="to" label="To:"|gettext value=$record->to}
+        {control type="text" name="from" label="From:"|gettext value=$record->from}
+        {control type="textarea" name="msg" label="Message:"|gettext rows=3 value=$record->msg}
         {control type="buttongroup" name="add2cart" submit="Add to cart"|gettext}
     {/form}
     

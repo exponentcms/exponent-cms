@@ -38,7 +38,7 @@
     				<li><a href="{link _common=1 action=userperms}" class="user">{"User Permissions"|gettext}</a></li>
     				<li><a href="{link _common=1 action=groupperms}" class="group">{"Group Permissions"|gettext}</a></li>
 			    {/if}
-				<li>{help text="Help with Containers"}</li>
+				<li>{help text="Help with Containers"|gettext}</li>
 			</ul>
 		</div>
 	{/if}

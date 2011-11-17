@@ -23,9 +23,9 @@
         {control type="hidden" name="product_id" value=$product->id}
         
 <div class="module cart eventregistration addToCart registration_div" id="regdiv"> 
-        {control type="text" id="registrations" name="registrants[]" label="Registrant Name:"}
-        {control type="text" id="registrations_emails" name="registrant_emails[]" label="Registrant Email:"}
-        {control type="text" id="registrations_phones" name="registrant_phones[]" label="Registrant Phone:"}
+        {control type="text" id="registrations" name="registrants[]" label="Registrant Name:"|gettext}
+        {control type="text" id="registrations_emails" name="registrant_emails[]" label="Registrant Email:"|gettext}
+        {control type="text" id="registrations_phones" name="registrant_phones[]" label="Registrant Phone:"|gettext}
 <hr>
      </div>
    

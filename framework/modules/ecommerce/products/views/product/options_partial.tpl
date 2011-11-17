@@ -35,10 +35,10 @@
     	            {control type="hidden" name="optiongroups[`$group->title`][id]" value=$group->id}
     	            {control type="hidden" name="optiongroups[`$group->title`][title]" value=$group->title}
     	            {control type="hidden" name="optiongroups[`$group->title`][optiongroup_master_id]" value=$group->optiongroup_master_id}
-                    {control type="text" name="optiongroups[`$group->title`][rank]" label="Rank" size="3" value=$group->rank}
-                    {control type="checkbox" nowrap=true name="optiongroups[`$group->title`][required]" label="Required" value=1 checked=$group->required}
-        	        {control type="radio" nowrap=true name="optiongroups[`$group->title`][allow_multiple]" label="Select Single" value=0 checked=$group->allow_multiple}
-        	        {control type="radio" nowrap=true name="optiongroups[`$group->title`][allow_multiple]" label="Select  Multiple" value=1 checked=$group->allow_multiple}
+                    {control type="text" name="optiongroups[`$group->title`][rank]" label="Rank"|gettext size="3" value=$group->rank}
+                    {control type="checkbox" nowrap=true name="optiongroups[`$group->title`][required]" label="Required"|gettext value=1 checked=$group->required}
+        	        {control type="radio" nowrap=true name="optiongroups[`$group->title`][allow_multiple]" label="Select Single"|gettext value=0 checked=$group->allow_multiple}
+        	        {control type="radio" nowrap=true name="optiongroups[`$group->title`][allow_multiple]" label="Select  Multiple"|gettext value=1 checked=$group->allow_multiple}
         	    </th>
     	    </tr>
             <tr class="column-label">     
@@ -67,7 +67,7 @@
             </tr>
             <tr class="{cycle values='odd,even'}" id="mo-{$key}-{$group->title}" style="display:none">  
                 <td colspan=5>
-                    {control type="text" name="optiongroups[`$group->title`][options][`$option->title`][optionweight]" label="Option Weight" size=6 value=$option->amount}
+                    {control type="text" name="optiongroups[`$group->title`][options][`$option->title`][optionweight]" label="Option Weight"|gettext size=6 value=$option->amount}
                     <hr>
                 </td>
             </tr>

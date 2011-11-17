@@ -279,7 +279,7 @@ var YAHOO = Y.YUI2;
 			this.hide();
 		};
 
-		var message = "Deleting a page moves it to the Standalone Page Manager, removing it from the Site Hierarchy. If there are any sub-pages to this section, those will also be moved";
+		var message = "{/literal}{"Deleting a page moves it to the Standalone Page Manager, removing it from the Site Hierarchy. If there are any sub-pages to this section, those will also be moved"|gettext}{literal}";
 
 		// Instantiate the Dialog
 		var delpage = new YAHOO.widget.SimpleDialog("simpledialog1",
@@ -292,8 +292,8 @@ var YAHOO = Y.YUI2;
 											text: message,
 											icon: YAHOO.widget.SimpleDialog.ICON_HELP,
 											constraintoviewport: true,
-											buttons: [ { text:"Move to Standalone", handler:handleYes, isDefault:true },
-												{ text:"Cancel",  handler:handleNo } ]
+											buttons: [ { text:"{/literal}{"Move to Standalone"|gettext}{literal}", handler:handleYes, isDefault:true },
+												{ text:"{/literal}{"Cancel"|gettext}{literal}",  handler:handleNo } ]
 										} );
 		delpage.setHeader("Remove \""+currentMenuNode.data.name+"\" from hierarchy");
 		
@@ -442,39 +442,39 @@ var YAHOO = Y.YUI2;
 	
 	if (usr.is_acting_admin==1 || usr.is_admin==1) {
 		var navoptions = [
-				{ classname:"addsubpage", text: "Add A Subpage", onclick: { fn: addSubNode },
+				{ classname:"addsubpage", text: "{/literal}{"Add A Subpage"|gettext}{literal}", onclick: { fn: addSubNode },
 					submenu: {
 						id: "submenu1",
 						itemdata: [
-							{ classname:"addsubpage", text: "Add Content Page Here", onclick: { fn: addContentSubNode } },
-							{ classname:"addsubpage", text: "Add External Website Link Page Here", onclick: { fn: addInternalSubNode } },
-							{ classname:"addsubpage", text: "Add Internal Page Alias Page Here", onclick: { fn: addExternalSubNode } },
-							{ classname:"addsubpage", text: "Move Standalone Page to Here", onclick: { fn: addStandaloneSubNode } }
+							{ classname:"addsubpage", text: "{/literal}{"Add Content Page Here"|gettext}{literal}", onclick: { fn: addContentSubNode } },
+							{ classname:"addsubpage", text: "{/literal}{"Add External Website Link Page Here"|gettext}{literal}", onclick: { fn: addInternalSubNode } },
+							{ classname:"addsubpage", text: "{/literal}{"Add Internal Page Alias Page Here"|gettext}{literal}", onclick: { fn: addExternalSubNode } },
+							{ classname:"addsubpage", text: "{/literal}{"Move Standalone Page to Here"|gettext}{literal}", onclick: { fn: addStandaloneSubNode } }
 						]
 					}
 				},
-				{ classname:"viewpage", text: "View This Page", onclick: { fn: viewNode } },
-				{ classname:"editpage", text: "Edit This Page", onclick: { fn: editNode } },
-				{ classname:"deletepage", text: "Delete This Page", onclick: { fn: deleteNode } },
-				{ classname:"userperms", text: "Manage User Permissions", onclick: { fn: editUserPerms } },
-				{ classname:"groupperms", text: "Manage Group Permissions", onclick: { fn: editGroupPerms } }
+				{ classname:"viewpage", text: "{/literal}{"View This Page"|gettext}{literal}", onclick: { fn: viewNode } },
+				{ classname:"editpage", text: "{/literal}{"Edit This Page"|gettext}{literal}", onclick: { fn: editNode } },
+				{ classname:"deletepage", text: "{/literal}{"Delete This Page"|gettext}{literal}", onclick: { fn: deleteNode } },
+				{ classname:"userperms", text: "{/literal}{"Manage User Permissions"|gettext}{literal}", onclick: { fn: editUserPerms } },
+				{ classname:"groupperms", text: "{/literal}{"Manage Group Permissions"|gettext}{literal}", onclick: { fn: editGroupPerms } }
 			];
 	} else {
 		var navoptions = [
-				{ classname:"addsubpage", text: "Add A Subpage", onclick: { fn: addSubNode },
+				{ classname:"addsubpage", text: "{/literal}{"Add A Subpage"|gettext}{literal}", onclick: { fn: addSubNode },
 					submenu: {
 						id: "submenu1",
 						itemdata: [
-							{ classname:"addsubpage", text: "Add Content Page", onclick: { fn: addContentSubNode } },
-							{ classname:"addsubpage", text: "Add External Website Link", onclick: { fn: addInternalSubNode } },
-							{ classname:"addsubpage", text: "Add Internal Page Alias", onclick: { fn: addExternalSubNode } },
-							{ classname:"addsubpage", text: "Move Standalone Page", onclick: { fn: addStandaloneSubNode } }
+							{ classname:"addsubpage", text: "{/literal}{"Add Content Page"|gettext}{literal}", onclick: { fn: addContentSubNode } },
+							{ classname:"addsubpage", text: "{/literal}{"Add External Website Link"|gettext}{literal}", onclick: { fn: addInternalSubNode } },
+							{ classname:"addsubpage", text: "{/literal}{"Add Internal Page Alias"|gettext}{literal}", onclick: { fn: addExternalSubNode } },
+							{ classname:"addsubpage", text: "{/literal}{"Move Standalone Page"|gettext}{literal}", onclick: { fn: addStandaloneSubNode } }
 						]
 					}
 				},
-				{ classname:"viewpage", text: "View This Page", onclick: { fn: viewNode } },
-				{ classname:"editpage", text: "Edit This Page", onclick: { fn: editNode } },
-				{ classname:"deletepage", text: "Delete This Page", onclick: { fn: deleteNode } }
+				{ classname:"viewpage", text: "{/literal}{"View This Page"|gettext}{literal}", onclick: { fn: viewNode } },
+				{ classname:"editpage", text: "{/literal}{"Edit This Page"|gettext}{literal}", onclick: { fn: editNode } },
+				{ classname:"deletepage", text: "{/literal}{"Delete This Page"|gettext}{literal}", onclick: { fn: deleteNode } }
 			];
 	}
 

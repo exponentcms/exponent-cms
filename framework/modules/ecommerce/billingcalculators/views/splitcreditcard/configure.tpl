@@ -22,14 +22,14 @@
         </ul>            
         <div class="yui-content">
 	        <div id="tab1">
-	            {*control type="checkbox" name="email_admin" label="Send a notication that a new order was received?" value=1 checked=$calculator->configdata.email_admin*}
-	            {control type="text" name="notification_addy" label="Email addresses to send notifications to (comma separated list of email addresses)" value=$calculator->configdata.notification_addy}
+	            {*control type="checkbox" name="email_admin" label="Send a notification that a new order was received?"|gettext value=1 checked=$calculator->configdata.email_admin*}
+	            {control type="text" name="notification_addy" label="Email addresses to send notifications to (comma separated list of email addresses)"|gettext value=$calculator->configdata.notification_addy}
 	        </div>
 	        <div id="tab2">
-	            {control type="checkbox" name="accepted_cards[]" label="Master Card" value="MasterCard" checked=$calculator->configdata.accepted_cards}
-	            {control type="checkbox" name="accepted_cards[]" label="Visa" value="VisaCard" checked=$calculator->configdata.accepted_cards}
-	            {control type="checkbox" name="accepted_cards[]" label="American Express" value="AmExCard" checked=$calculator->configdata.accepted_cards}
-	            {control type="checkbox" name="accepted_cards[]" label="Discover Card" value="DiscoverCard" checked=$calculator->configdata.accepted_cards}
+	            {control type="checkbox" name="accepted_cards[]" label="Master Card" value="MasterCard"|gettext checked=$calculator->configdata.accepted_cards}
+	            {control type="checkbox" name="accepted_cards[]" label="Visa" value="VisaCard"|gettext checked=$calculator->configdata.accepted_cards}
+	            {control type="checkbox" name="accepted_cards[]" label="American Express" value="AmExCard"|gettext checked=$calculator->configdata.accepted_cards}
+	            {control type="checkbox" name="accepted_cards[]" label="Discover Card" value="DiscoverCard"|gettext checked=$calculator->configdata.accepted_cards}
 	        </div>
         </div>
     </div>

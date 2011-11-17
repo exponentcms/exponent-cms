@@ -30,26 +30,26 @@
         {else}
             If you update the existing address, it will change this saved address permanently.  If you save this as a new address, it will leave the existing address as-is to be used later by the customer and create a new {$type} address for this order.{br}
         {/if}
-            {control type=radiogroup label='' items='Update existing address, Save as new address' values='0,1' name=save_option default='0'}        
+            {control type=radiogroup label='' items='Update existing address, Save as new address'|gettext values='0,1' name=save_option default='0'}
             
-        {control type=checkbox label='Default address for this customer?' flip=true name=address[is_default] value=1 checked=$record->is_default}
+        {control type=checkbox label='Default address for this customer?'|gettext flip=true name=address[is_default] value=1 checked=$record->is_default}
         {control type=hidden name=address[is_shipping] value=$record->is_shipping}
         {control type=hidden name=address[is_billing] value=$record->is_billing}
-        {control type=text name=address[firstname] label="*First Name" value=$record->firstname}
-        {control type=text name=address[middlename] label="Middle Name" value=$record->middlename}
-        {control type=text name=address[lastname] label="*Last Name" value=$record->lastname}
-        {control type=text name=address[organization] label="Company/Organization" value=$record->organization}
-        {control type=text name=address[address1] label="*Street Address" value=$record->address1}
-        {control type=text name=address[address2] label="Apt/Suite #" value=$record->address2}
-        {control type=text name=address[city] label="*City" value=$record->city}
+        {control type=text name=address[firstname] label="*First Name"|gettext value=$record->firstname}
+        {control type=text name=address[middlename] label="Middle Name"|gettext value=$record->middlename}
+        {control type=text name=address[lastname] label="*Last Name"|gettext value=$record->lastname}
+        {control type=text name=address[organization] label="Company/Organization"|gettext value=$record->organization}
+        {control type=text name=address[address1] label="*Street Address"|gettext value=$record->address1}
+        {control type=text name=address[address2] label="Apt/Suite #"|gettext value=$record->address2}
+        {control type=text name=address[city] label="*City"|gettext value=$record->city}
         
-        {control type=state name=address[state] label="*State" includeblank="-- Choose a State -- " value=$record->state add_other=true all_us_territories=true exclude="6,8,10,17,30,46,50"}
-        {control type=text name=address[non_us_state] label="&nbsp;State/Province if non-US" value=$record->non_us_state}           
-        {control type=country name=address[country] label="&nbsp;Country" value=$record->country|default:223}    
+        {control type=state name=address[state] label="*State" includeblank="-- Choose a State --"|gettext value=$record->state add_other=true all_us_territories=true exclude="6,8,10,17,30,46,50"}
+        {control type=text name=address[non_us_state] label="&nbsp;"|cat:("State/Province if non-US"|gettext) value=$record->non_us_state}
+        {control type=country name=address[country] label="&nbsp;"|cat:("Country"|gettext) value=$record->country|default:223}
         
-        {control type=text name=address[zip] label="*Zip Code" value=$record->zip}
-        {control type="text" name="address[phone]" label="*Phone Number (xxx-xxx-xxxx)" value=$record->phone}
-        {control type="text" name="address[email]" label="*Email Address" value=$record->email}
+        {control type=text name=address[zip] label="*Zip Code"|gettext value=$record->zip}
+        {control type="text" name="address[phone]" label="*Phone Number"|gettext|cat:" (xxx-xxx-xxxx)" value=$record->phone}
+        {control type="text" name="address[email]" label="*Email Address"|gettext value=$record->email}
        
         {control type=buttongroup submit="Save Address Change"|gettext cancel="Cancel"|gettext}
         

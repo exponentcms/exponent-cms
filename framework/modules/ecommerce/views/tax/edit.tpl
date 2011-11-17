@@ -15,11 +15,11 @@
  *}
 {form action=update}
     {control type="hidden" name="id" value=$record->id}
-    {control type="text" name="name" label="Class Name" value=$record->classname}
-    {control type="text" name="rate" label="Rate" value=$record->rate}
-    {control type="dropdown" name="zone" label="Zone" items=$zones value=$record->zone}
-    {control type=state name=state label="State/Province" value=$record->state}
-    {control type=country name=country label="Country" value=$record->country} 
+    {control type="text" name="name" label="Class Name"|gettext value=$record->classname}
+    {control type="text" name="rate" label="Rate"|gettext value=$record->rate}
+    {control type="dropdown" name="zone" label="Zone"|gettext items=$zones value=$record->zone}
+    {control type=state name=state label="State/Province"|gettext value=$record->state}
+    {control type=country name=country label="Country"|gettext value=$record->country}
 
     {control type="buttongroup" submit="Submit"|gettext cancel="Cancel"|gettext}
 {/form}
