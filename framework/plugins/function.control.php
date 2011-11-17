@@ -408,7 +408,11 @@ function smarty_function_control($params,&$smarty) {
             echo '<span class="label'.$labelclass.'">'.$params['label'].'</span>';
         }
         */
-        
+
+        // attempt to translate the label
+        if (!empty($params['label'])) {
+            $params['label'] = gt($params['label']);
+        }
         //write out the control itself...and then we're done. 
         if (isset($params['model'])) {
             echo $control->toHTML($params['label'], $params['model'].'['.$params['name'].']');

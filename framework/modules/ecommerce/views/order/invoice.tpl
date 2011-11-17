@@ -379,7 +379,7 @@
 
                         {/literal}
                         {/capture}
-                        {control type="autocomplete" controller="store" action="search" name="add_new_item" label="Add a new item" value="Search title or SKU to add an item" schema="title,id,sef_url,expFile,model" searchmodel="product" searchoncol="title,model" jsinject=$callbacks}
+                        {control type="autocomplete" controller="store" action="search" name="add_new_item" label="Add a new item"|gettext value="Search title or SKU to add an item" schema="title,id,sef_url,expFile,model" searchmodel="product" searchoncol="title,model" jsinject=$callbacks}
                         <div id="new_items">                        
                         </div>
                         </td>

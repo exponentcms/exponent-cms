@@ -18,7 +18,7 @@
 <div id="edit_shipping_method">
     {form action=save_invoice_id}
         {control type="hidden" name="id" value=$orderid}                     
-        {control type="text" name="invoice_id" label='Invoice #:' value=$invoice_id} 
+        {control type="text" name="invoice_id" label='Invoice #:'|gettext value=$invoice_id}
         {control type="buttongroup" submit="Save Invoice Id"|gettext cancel="Cancel"|gettext}
     {/form}
 </div>

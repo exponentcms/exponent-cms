@@ -27,7 +27,7 @@
 	    {control type="hidden" name=id value=$record->id}
         {control type="hidden" name=rank value=$record->rank}
 	    {control type="hidden" name=optiongroup_master_id value=$record->optiongroup_master_id}
-	    {control type="text" name="title" label="Name" value=$record->title}
+	    {control type="text" name="title" label="Name"|gettext value=$record->title}
 	    {control type="buttongroup" submit="Submit"|gettext cancel="Cancel"|gettext}
 	{/form}
 </div>

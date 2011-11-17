@@ -43,20 +43,20 @@
             </ul>            
             <div class="yui-content">
                 <div id="general">   
-					{control type=text name=title label="Category Name" value=$node->title}
-					{control type="checkbox" name="is_active" label="This category is active" value=1 checked=$node->is_active|default:1}                                                
-					{control type="files" name="image" label="Category Image" value=$node->expFile}
-					{control type=editor name=body label="Category Description" value=$node->body}
+					{control type=text name=title label="Category Name"|gettext value=$node->title}
+					{control type="checkbox" name="is_active" label="This category is active"|gettext value=1 checked=$node->is_active|default:1}
+					{control type="files" name="image" label="Category Image"|gettext value=$node->expFile}
+					{control type=editor name=body label="Category Description"|gettext value=$node->body}
 	            </div>
                 <div id="seo">
-                    {control type=text name=sef_url label="SEF URL" value=$node->sef_url}                                                                                 
-                    {control type=text name=meta_title label="Meta Title" value=$node->meta_title}
-                    {control type=text name=meta_keywords label="Meta Keywords" value=$node->meta_keywords}
-                    {control type=text name=meta_description label="Meta Description" value=$node->meta_description}                        
+                    {control type=text name=sef_url label="SEF URL"|gettext value=$node->sef_url}
+                    {control type=text name=meta_title label="Meta Title"|gettext value=$node->meta_title}
+                    {control type=text name=meta_keywords label="Meta Keywords"|gettext value=$node->meta_keywords}
+                    {control type=text name=meta_description label="Meta Description"|gettext value=$node->meta_description}
                 </div>        
                  <div id="events">   
-                    {control type="checkbox" name="is_events" label="This category is used for events" value=1 checked=$node->is_events}                        
-                    {control type="checkbox" name="hide_closed_events" label="Don't Show Closed Events" value=1 checked=$node->hide_closed_events}
+                    {control type="checkbox" name="is_events" label="This category is used for events"|gettext value=1 checked=$node->is_events}
+                    {control type="checkbox" name="hide_closed_events" label="Don\'t Show Closed Events"|gettext value=1 checked=$node->hide_closed_events}
                 </div>  
 				{if $product_types}
 					{foreach from=$product_types key=key item=item}

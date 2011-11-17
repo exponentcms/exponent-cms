@@ -484,6 +484,4 @@ if (!defined('SWIFT_PATH')) {
 	define('SWIFT_PATH', BASE.'external/Swift-'.SWIFT_VERSION.'/lib/');
 }
 
-define('BING_API', '92487BA7619E18106C842DD8463C4EC411F281B1');
-
 ?>

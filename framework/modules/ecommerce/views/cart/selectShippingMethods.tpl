@@ -46,7 +46,7 @@
                         </li>
                     {/foreach}
                     </ul>
-                    {control type="dropdown" name="calcs[`$shippingitem->method->id`]" class="smc`$shippingitem->method->id`" label="Shipping Service" items=$shipping->selectable_calculators includeblank="-- Select a Shipping Service --"}
+                    {control type="dropdown" name="calcs[`$shippingitem->method->id`]" class="smc`$shippingitem->method->id`" label="Shipping Service"|gettext items=$shipping->selectable_calculators includeblank="-- Select a Shipping Service --"|gettext}
                 </th>
             </tr>
             </thead>

@@ -39,7 +39,7 @@
 	        {form action=update_promocode}
                 <td>{control type=text name=title label=" "}</td>
                 <td>{control type="text" name="promo_code" label="" label=" "}</td>
-                <td>{control type="dropdown" name="discounts_id" items=$discounts key=id display=title label=" " includeblank="-- Select a Discount --"}</td>
+                <td>{control type="dropdown" name="discounts_id" items=$discounts key=id display=title label=" " includeblank="-- Select a Discount --"|gettext}</td>
                 <td>{control type=buttongroup submit="Add Discount"|gettext}</td>
 	        {/form}
 	    </tr>

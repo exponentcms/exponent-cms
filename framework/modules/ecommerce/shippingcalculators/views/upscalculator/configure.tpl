@@ -24,41 +24,41 @@
         </ul>            
         <div class="yui-content">
 	        <div id="tab1">
-	            {control type="text" name="username" label="UPS Username" value=$calculator->configdata.username}
-	            {control type="text" name="accessnumber" label="Access Number" value=$calculator->configdata.accessnumber}
-	            {control type="text" name="password" label="Password" value=$calculator->configdata.password}
-	            {control type="text" name="shipfrom[shipperNumber]" label="Account #" value=$calculator->configdata.shipfrom.shipperNumber}
-	            {control type="checkbox" name="testmode" label="Enable Test Mode" value=1 checked=$calculator->configdata.testmode}
+	            {control type="text" name="username" label="UPS Username"|gettext value=$calculator->configdata.username}
+	            {control type="text" name="accessnumber" label="Access Number"|gettext value=$calculator->configdata.accessnumber}
+	            {control type="text" name="password" label="Password"|gettext value=$calculator->configdata.password}
+	            {control type="text" name="shipfrom[shipperNumber]" label="Account #"|gettext value=$calculator->configdata.shipfrom.shipperNumber}
+	            {control type="checkbox" name="testmode" label="Enable Test Mode"|gettext value=1 checked=$calculator->configdata.testmode}
 	        </div>
 	        <div id="tab2">
-	            {control type="checkbox" name="shipping_methods[]" label="UPS Next Day Air" value="01" checked=$calculator->configdata.shipping_methods}
-	            {control type="checkbox" name="shipping_methods[]" label="UPS Second Day Air" value="02" checked=$calculator->configdata.shipping_methods}
-	            {control type="checkbox" name="shipping_methods[]" label="UPS Ground" value="03" checked=$calculator->configdata.shipping_methods}
-	            {control type="checkbox" name="shipping_methods[]" label="UPS Worldwide Express" value="07" checked=$calculator->configdata.shipping_methods}
-	            {control type="checkbox" name="shipping_methods[]" label="UPS Worldwide Expedited" value="08" checked=$calculator->configdata.shipping_methods}
-	            {control type="checkbox" name="shipping_methods[]" label="UPS Standard" value="11" checked=$calculator->configdata.shipping_methods}
-	            {control type="checkbox" name="shipping_methods[]" label="UPS Three-Day Select" value="12" checked=$calculator->configdata.shipping_methods}
-	            {control type="checkbox" name="shipping_methods[]" label="Next Day Air Saver" value="13" checked=$calculator->configdata.shipping_methods}
-	            {control type="checkbox" name="shipping_methods[]" label="UPS Next Day Air Early AM" value="14" checked=$calculator->configdata.shipping_methods}
-	            {control type="checkbox" name="shipping_methods[]" label="UPS Worldwide Express Plus" value="54" checked=$calculator->configdata.shipping_methods}
-	            {control type="checkbox" name="shipping_methods[]" label="UPS Second Day Air AM" value="59" checked=$calculator->configdata.shipping_methods}
-	            {control type="checkbox" name="shipping_methods[]" label="UPS Saver" value="65" checked=$calculator->configdata.shipping_methods}
+	            {control type="checkbox" name="shipping_methods[]" label="UPS Next Day Air"|gettext value="01" checked=$calculator->configdata.shipping_methods}
+	            {control type="checkbox" name="shipping_methods[]" label="UPS Second Day Air"|gettext value="02" checked=$calculator->configdata.shipping_methods}
+	            {control type="checkbox" name="shipping_methods[]" label="UPS Ground"|gettext value="03" checked=$calculator->configdata.shipping_methods}
+	            {control type="checkbox" name="shipping_methods[]" label="UPS Worldwide Express"|gettext value="07" checked=$calculator->configdata.shipping_methods}
+	            {control type="checkbox" name="shipping_methods[]" label="UPS Worldwide Expedited"|gettext value="08" checked=$calculator->configdata.shipping_methods}
+	            {control type="checkbox" name="shipping_methods[]" label="UPS Standard"|gettext value="11" checked=$calculator->configdata.shipping_methods}
+	            {control type="checkbox" name="shipping_methods[]" label="UPS Three-Day Select"|gettext value="12" checked=$calculator->configdata.shipping_methods}
+	            {control type="checkbox" name="shipping_methods[]" label="Next Day Air Saver"|gettext value="13" checked=$calculator->configdata.shipping_methods}
+	            {control type="checkbox" name="shipping_methods[]" label="UPS Next Day Air Early AM"|gettext value="14" checked=$calculator->configdata.shipping_methods}
+	            {control type="checkbox" name="shipping_methods[]" label="UPS Worldwide Express Plus"|gettext value="54" checked=$calculator->configdata.shipping_methods}
+	            {control type="checkbox" name="shipping_methods[]" label="UPS Second Day Air AM"|gettext value="59" checked=$calculator->configdata.shipping_methods}
+	            {control type="checkbox" name="shipping_methods[]" label="UPS Saver|gettext" value="65" checked=$calculator->configdata.shipping_methods}
 	        </div>
 	        <div id="tab3">
-	            {control type="text" name="shipfrom[name]" label="Company Name" value=$calculator->configdata.shipfrom.name}
-	            {control type="text" name="shipfrom[phone]" label="Phone Number" value=$calculator->configdata.shipfrom.phone}
-	            {control type="text" name="shipfrom[address1]" label="Address" value=$calculator->configdata.shipfrom.address1}
+	            {control type="text" name="shipfrom[name]" label="Company Name"|gettext value=$calculator->configdata.shipfrom.name}
+	            {control type="text" name="shipfrom[phone]" label="Phone Number"|gettext value=$calculator->configdata.shipfrom.phone}
+	            {control type="text" name="shipfrom[address1]" label="Address"|gettext value=$calculator->configdata.shipfrom.address1}
 	            {control type="text" name="shipfrom[address2]" label=" " value=$calculator->configdata.shipfrom.address2}
 	            {control type="text" name="shipfrom[address3]" label=" " value=$calculator->configdata.shipfrom.address3}
-	            {control type="text" name="shipfrom[city]" label="City" value=$calculator->configdata.shipfrom.city}
-	            {control type="state" name="shipfrom[region]" label="State" value=$calculator->configdata.shipfrom.region}
-	            {control type="text" name="shipfrom[postalCode]" label="Zip Code" size=10 value=$calculator->configdata.shipfrom.postalCode}
+	            {control type="text" name="shipfrom[city]" label="City"|gettext value=$calculator->configdata.shipfrom.city}
+	            {control type="state" name="shipfrom[region]" label="State"|gettext value=$calculator->configdata.shipfrom.region}
+	            {control type="text" name="shipfrom[postalCode]" label="Zip Code"|gettext size=10 value=$calculator->configdata.shipfrom.postalCode}
 	        </div>
 	        <div id="tab4">
-	            {control type="text" name="default_width" label="Standard Box Width (inches)" size=5 value=$calculator->configdata.default_width}
-	            {control type="text" name="default_length" label="Standard Box length (inches)" size=5 value=$calculator->configdata.default_length}
-	            {control type="text" name="default_height" label="Standard Box Heigth (inches)" size=5 value=$calculator->configdata.default_height}
-	            {control type="text" name="default_max_weight" label="Default Weight for Box (lbs)" size=5 value=$calculator->configdata.default_max_weight}
+	            {control type="text" name="default_width" label="Standard Box Width (inches)"|gettext size=5 value=$calculator->configdata.default_width}
+	            {control type="text" name="default_length" label="Standard Box length (inches)"|gettext size=5 value=$calculator->configdata.default_length}
+	            {control type="text" name="default_height" label="Standard Box Heigth (inches)"|gettext size=5 value=$calculator->configdata.default_height}
+	            {control type="text" name="default_max_weight" label="Default Weight for Box (lbs)"|gettext size=5 value=$calculator->configdata.default_max_weight}
 	        </div>
         </div>
     </div>

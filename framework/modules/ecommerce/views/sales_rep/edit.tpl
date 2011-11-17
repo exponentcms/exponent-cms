@@ -21,9 +21,9 @@
     
     {form action=update}
         {control type="hidden" name="id" value=$record->id}
-        {control type="text" name="first_name" label="First Name" value=$record->first_name}
-        {control type="text" name="last_name" label="Last Name" value=$record->last_name}
-        {control type="text" name="initials" label="Initials" value=$record->initials}        
+        {control type="text" name="first_name" label="First Name"|gettext value=$record->first_name}
+        {control type="text" name="last_name" label="Last Name"|gettext value=$record->last_name}
+        {control type="text" name="initials" label="Initials"|gettext value=$record->initials}
         {control type="buttongroup" submit="Submit"|gettext cancel="Cancel"|gettext}
     {/form}
 </div>

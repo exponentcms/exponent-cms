@@ -68,6 +68,16 @@ function smarty_function_icon($params,&$smarty) {
 
 	if (!isset($params['int'])) $params['int'] = $loc->int;
 
+    // attempt to translate the alt, text, & title
+    if (!empty($params['alt'])) {
+        $params['alt'] = gt($params['alt']);
+    }
+    if (!empty($params['text'])) {
+        $params['text'] = gt($params['text']);
+    }
+    if (!empty($params['title'])) {
+        $params['title'] = gt($params['title']);
+    }
 
 	// figure out whether to use the edit icon or text, alt tags, etc.	
 	$alt 	= (empty($params['alt'])) ? '' : $params['alt'];

@@ -92,7 +92,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event','yui2-container','yu
 
         // handler for showing file information
         var showFileInfo = function(oRecordData) {
-            var owner = (oRecordData.user.username!="") ? ' owned by '+oRecordData.user.firstname+' '+oRecordData.user.lastname+' ('+oRecordData.user.username+')' : "";
+            var owner = (oRecordData.user.username!="") ? ' '+"{/literal}{"owned by"|gettext}{literal}"+' '+oRecordData.user.firstname+' '+oRecordData.user.lastname+' ('+oRecordData.user.username+')' : "";
 
             infopanel.setHeader(oRecordData.filename+owner);
             if (oRecordData.is_image==1) {
@@ -106,13 +106,13 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event','yui2-container','yu
                         oFile +
                 '</div></td><td class="info">'+
                 '<table border="0" cellspacing="0" cellpadding="2" width=100%>'+
-                        '<tr class="odd"><td><span>Title</span>'+oRecordData.title+
-                        '</td></tr><tr class="even"><td><span>Alt</span>'+oRecordData.alt+
-                        '</td></tr><tr class="odd"><td><span>File Type</span>'+oRecordData.mimetype+
-                        '</td></tr><tr class="even"><td><span>Image Height</span>'+oRecordData.image_height+
-                        '</td></tr><tr class="odd"><td><span>Image Width</span>'+oRecordData.image_width+
-                        '</td></tr><tr class="even"><td><span>File Size</span>'+oRecordData.filesize+
-                        '</td></tr><tr class="odd"><td><span>URL</span>'+oRecordData.url+
+                        '<tr class="odd"><td><span>{/literal}{"Title"|gettext}{literal}</span>'+oRecordData.title+
+                        '</td></tr><tr class="even"><td><span>{/literal}{"Alt"|gettext}{literal}</span>'+oRecordData.alt+
+                        '</td></tr><tr class="odd"><td><span>{/literal}{"File Type"|gettext}{literal}</span>'+oRecordData.mimetype+
+                        '</td></tr><tr class="even"><td><span>{/literal}{"Image Height"|gettext}{literal}</span>'+oRecordData.image_height+
+                        '</td></tr><tr class="odd"><td><span>{/literal}{"Image Width"|gettext}{literal}</span>'+oRecordData.image_width+
+                        '</td></tr><tr class="even"><td><span>{/literal}{"File Size"|gettext}{literal}</span>'+oRecordData.filesize+
+                        '</td></tr><tr class="odd"><td><span>{/literal}{"URL"|gettext}{literal}</span>'+oRecordData.url+
                     '</td></tr>'+
                     '</table>'+
                 '</td></tr></table>'
@@ -140,7 +140,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event','yui2-container','yu
         // alt formatter
         var formatAlt = function(elCell, oRecord, oColumn, sData) {
             if (oRecord.getData().is_image!=1) {
-                elCell.innerHTML = '<em>Not an image</em>';
+                elCell.innerHTML = '<em>{/literal}{"Not an image"|gettext}{literal}</em>';
             } else {
                 elCell.innerHTML = sData;
             };
@@ -149,22 +149,22 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event','yui2-container','yu
         // shared formatter
         var formatShared = function(elCell, oRecord, oColumn, sData) {
             if (oRecord.getData().shared == 0) {
-                elCell.innerHTML = '<img src="'+EXPONENT.URL_FULL+'framework/modules/file/assets/images/unchecked.gif" title="Make this fie available to other users">';
+                elCell.innerHTML = '<img src="'+EXPONENT.URL_FULL+'framework/modules/file/assets/images/unchecked.gif" title="{/literal}{"Make this file available to other users"|gettext}{literal}">';
             } else {
-                elCell.innerHTML = '<img src="'+EXPONENT.URL_FULL+'framework/modules/file/assets/images/checked.gif" title="Make this fie available to other users">';
+                elCell.innerHTML = '<img src="'+EXPONENT.URL_FULL+'framework/modules/file/assets/images/checked.gif" title="{/literal}{"Make this file available to other users"|gettext}{literal}">';
             };
         }
     
         var formatactions = function(elCell, oRecord, oColumn, sData) {
-            var deletestring = '<a href="{/literal}{link action=delete update=$smarty.get.update id="replacewithid" controller=file}{literal}" onclick="return confirm(\'Are you sure you want to delete this file?\');"><img width=16 height=16 style="border:none;" src="{/literal}{$smarty.const.ICON_RELATIVE}{literal}delete.png" /></a>';
+            var deletestring = '<a href="{/literal}{link action=delete update=$smarty.get.update id="replacewithid" controller=file}{literal}" onclick="return confirm(\'{/literal}{"Are you sure you want to delete this file?"|gettext}{literal}\');"><img width=16 height=16 style="border:none;" src="{/literal}{$smarty.const.ICON_RELATIVE}{literal}delete.png" /></a>';
             deletestring = deletestring.replace('replacewithid',oRecord._oData.id);
             if (oRecord._oData.is_image==1){
-                var editorstring = '<a title="Edit Image" href="{/literal}{link controller=pixidou action=editor ajax_action=1 id="replacewithid" update=$update fck=$smarty.get.fck}{literal}"><img width=16 height=16 style="border:none;" src="{/literal}{$smarty.const.ICON_RELATIVE}{literal}edit-image.png" /></a>&nbsp;&nbsp;&nbsp;';
+                var editorstring = '<a title="{/literal}{"Edit Image"|gettext}{literal}" href="{/literal}{link controller=pixidou action=editor ajax_action=1 id="replacewithid" update=$update fck=$smarty.get.fck}{literal}"><img width=16 height=16 style="border:none;" src="{/literal}{$smarty.const.ICON_RELATIVE}{literal}edit-image.png" /></a>&nbsp;&nbsp;&nbsp;';
                 editorstring = editorstring.replace('replacewithid',oRecord._oData.id);
             } else {
                 var editorstring = '<img width=16 height=16 style="border:none;" src="{/literal}{$smarty.const.ICON_RELATIVE}{literal}cant-edit-image.png" />&nbsp;&nbsp;&nbsp;';
             }
-            var pickerstring = {/literal}{if $smarty.get.update != "noupdate"}'<a title="Use This Image" onclick="routBackToSource(\''+EXPONENT.PATH_RELATIVE+oRecord._oData.directory+oRecord._oData.filename+'\','+oRecord._oData.id+'); window.close(); return false;" href="#"><img width=16 height=16 style="border:none;" src="{$smarty.const.ICON_RELATIVE|cat:'use.png'}" /></a>&nbsp;&nbsp;&nbsp;'{else}''{/if}{literal};
+            var pickerstring = {/literal}{if $smarty.get.update != "noupdate"}'<a title="{"Use This Image"|gettext}" onclick="routBackToSource(\''+EXPONENT.PATH_RELATIVE+oRecord._oData.directory+oRecord._oData.filename+'\','+oRecord._oData.id+'); window.close(); return false;" href="#"><img width=16 height=16 style="border:none;" src="{$smarty.const.ICON_RELATIVE|cat:'use.png'}" /></a>&nbsp;&nbsp;&nbsp;'{else}''{/if}{literal};
             elCell.innerHTML =  pickerstring
                                 +editorstring
                                 +deletestring;
@@ -231,11 +231,11 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event','yui2-container','yu
     
         // Column definitions
         var myColumnDefs = [ // sortable:true enables sorting
-            { key:"id",label:"File Name",formatter:formatTitle,sortable:true},
-            { key:"title",label:"Title",sortable:true, editor: new YAHOO.widget.TextboxCellEditor({asyncSubmitter:editTitle})},
-            { key:"alt",label:"alt", sortable:true, formatter:formatAlt, editor: new YAHOO.widget.TextboxCellEditor({asyncSubmitter:editAlt})},
-            { key:"shared",label:'<img src="'+EXPONENT.URL_FULL+'framework/modules/file/assets/images/public.png" title="Make File Public" />',formatter:formatShared,editor: new YAHOO.widget.CheckboxCellEditor({checkboxOptions:[{label:"Make this file public?",value:1}],asyncSubmitter:editShare})},
-            { label:"Actions",sortable:false,formatter: formatactions}
+            { key:"id",label:"{/literal}{"File Name"|gettext}{literal}",formatter:formatTitle,sortable:true},
+            { key:"title",label:"{/literal}{"Title"|gettext}{literal}",sortable:true, editor: new YAHOO.widget.TextboxCellEditor({asyncSubmitter:editTitle})},
+            { key:"alt",label:"{/literal}{"alt"|gettext}{literal}", sortable:true, formatter:formatAlt, editor: new YAHOO.widget.TextboxCellEditor({asyncSubmitter:editAlt})},
+            { key:"shared",label:'<img src="'+EXPONENT.URL_FULL+'framework/modules/file/assets/images/public.png" title="{/literal}{"Make File Public"|gettext}{literal}" />',formatter:formatShared,editor: new YAHOO.widget.CheckboxCellEditor({checkboxOptions:[{label:"{/literal}{"Make this file public?"|gettext}{literal}",value:1}],asyncSubmitter:editShare})},
+            { label:"{/literal}{"Actions"|gettext}{literal}",sortable:false,formatter: formatactions}
             ];
 
         // DataSource instance
@@ -306,7 +306,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event','yui2-container','yu
                 }
 
                 if (currentColumn=='shared' && currentRecord.shared==1){
-                    alert('Only Administrators can make files private again once they\'re are public.');
+                    alert('{/literal}{"Only Administrators can make files private again once they\'re are public."|gettext}{literal}');
                 }
 
                 if ((currentColumn=='title' && currentRecord.shared==0) || (currentColumn=='title' && currentRecord.shared==1 && usr.id==currentRecord.poster)) {
@@ -314,7 +314,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event','yui2-container','yu
                 }
 
                 if ((currentColumn=='title' || (currentColumn=='alt' && currentRecord.is_image==1)) && usr.id!=currentRecord.poster) {
-                    alert("Sorry, you must be the owner of this file in order to edit it.");
+                    alert("{/literal}{"Sorry, you must be the owner of this file in order to edit it."|gettext}{literal}");
                 }
 
             } else {
@@ -349,7 +349,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event','yui2-container','yu
 	            var sUri = EXPONENT.URL_FULL + "index.php?ajax_action=1" + json + "&yaetime=" + dt;
 	            return sUri;
 	        } else if (!obj.action || (!obj.controller && !obj.module)) {
-	            alert("If you don't pass the ID of a form, you need to specify both a module/controller AND and a cresponding action.");
+	            alert("{/literal}{"If you don't pass the ID of a form, you need to specify both a module/controller AND and a corresponding action."|gettext}{literal}");
 	        } else {
 	            //slap a date in there so IE doesn't cache
 	            var dt = new Date().valueOf();
@@ -373,7 +373,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event','yui2-container','yu
 	        },
 	        fetch: function(obj) {
 	            if (typeof obj == "undefined" || !obj){
-	                alert('EXPONENT.ajax requires a single object parameter.');
+	                alert('{/literal}{"EXPONENT.ajax requires a single object parameter."|gettext}{literal}');
 	                return false;
 	            } else {
 	                if (typeof(obj.json)!=="undefined"){

@@ -67,10 +67,10 @@
         {if isset($record->original_id)}
             {control type="hidden" name="original_id" value=$record->original_id}
             {control type="hidden" name="original_model" value=$record->original_model}
-            {control type="checkbox" name="copy_children" label="Copy Child Products?" value="1"}
-            {control type="checkbox" name="copy_related" label="Copy Related Products?" value="1"}
-            {control type="checkbox" name="adjust_child_price" label="Reset Price on Child Products?" value="1"}
-            {control type="text" name="new_child_price" label="New Child Price" value=""}
+            {control type="checkbox" name="copy_children" label="Copy Child Products?"|gettext value="1"}
+            {control type="checkbox" name="copy_related" label="Copy Related Products?"|gettext value="1"}
+            {control type="checkbox" name="adjust_child_price" label="Reset Price on Child Products?"|gettext value="1"}
+            {control type="text" name="new_child_price" label="New Child Price"|gettext value=""}
             {*control type="checkbox" name="copy_related" label="Copy Related Products?" value="1"*}
         {/if}
     {/form}

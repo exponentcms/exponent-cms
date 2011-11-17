@@ -24,7 +24,7 @@
 
     <h1>{if $record->id}{"Editing"|gettext}{else}Creating{/if} {"Purchase Order"|gettext}</h1>
     <form id="create_po">
-        {control type="dropdown" name="vendor" id="vendorSelect" label="Select a Vendor" includeblank="--Select a Vendor--" frommodel=vendor key=id display=title value=$purchase_order->vendor_id}
+        {control type="dropdown" name="vendor" id="vendorSelect" label="Select a Vendor"|gettext includeblank="--Select a Vendor--"|gettext frommodel=vendor key=id display=title value=$purchase_order->vendor_id}
 		
     </form>
     <div id="vendorinfo">

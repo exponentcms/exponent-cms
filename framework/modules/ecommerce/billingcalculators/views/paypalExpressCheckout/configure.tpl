@@ -23,18 +23,18 @@
         </ul>            
         <div class="yui-content">
 	        <div id="tab1">
-	            {control type="text" name="username" label="API Username" value=$calculator->configdata.username}
-	            {control type="text" name="password" label="API Password" value=$calculator->configdata.password}
-	            {control type="text" name="signature" label="API Signature" value=$calculator->configdata.signature}
-	            {control type="radiogroup" name="process_mode" label="Processing Mode" items="Sale, Authorization, Order" values="Sale,Authorization,Order" default=$calculator->configdata.process_mode}
-	            {control type="checkbox" name="testmode" label="Enable Test Mode? You must be logged in to <a href='https://developer.paypal.com/'>Developer Central</a>" value=1 checked=$calculator->configdata.testmode}
+	            {control type="text" name="username" label="API Username"|gettext value=$calculator->configdata.username}
+	            {control type="text" name="password" label="API Password"|gettext value=$calculator->configdata.password}
+	            {control type="text" name="signature" label="API Signature"|gettext value=$calculator->configdata.signature}
+	            {control type="radiogroup" name="process_mode" label="Processing Mode"|gettext items="Sale, Authorization, Order"|gettext values="Sale,Authorization,Order" default=$calculator->configdata.process_mode}
+	            {control type="checkbox" name="testmode" label="Enable Test Mode? You must be logged in to"|gettext|cat:" <a href='https://developer.paypal.com/'>"|cat:("Developer Central"|gettext)|cat:"</a>" value=1 checked=$calculator->configdata.testmode}
 	        </div>
 	        <div id="tab2">
-	            {control type="checkbox" name="email_customer" label="Send customer an email confirmation?" value=1 checked=$calculator->configdata.email_customer}
+	            {control type="checkbox" name="email_customer" label="Send customer an email confirmation?"|gettext value=1 checked=$calculator->configdata.email_customer}
 	        </div>
 	        <div id="tab3">
-	            {control type="checkbox" name="email_admin" label="Send a notication that a new order was received?" value=1 checked=$calculator->configdata.email_admin}
-	            {control type="text" name="notification_addy" label="Email addresses to send notifications to (comma separated list of email addresses)" value=$calculator->configdata.notification_addy}
+	            {control type="checkbox" name="email_admin" label="Send a notication that a new order was received?"|gettext value=1 checked=$calculator->configdata.email_admin}
+	            {control type="text" name="notification_addy" label="Email addresses to send notifications to (comma separated list of email addresses)"|gettext value=$calculator->configdata.notification_addy}
 	        </div>
         </div>
     </div>

@@ -15,10 +15,10 @@
  *}
  
 <div class="module importexport manage">
-    <h1>Upload Your {$type} CSV File to Import</h1>    
+    <h1>{"Upload Your"|gettext} {$type} {"CSV File to Import"|gettext}</h1>
     {form action=validate}
         {control type="hidden" name="import_type" value=$type}
-        {* control type=files name=import_file label="Upload .csv File to Import" limit=1 subtype="import_file" *}
+        {* control type=files name=import_file label="Upload .csv File to Import"|gettext limit=1 subtype="import_file" *}
         <input type="file" name="import_file" size="50">
         {control type="buttongroup" submit="Import"|gettext|cat:"!" cancel="Cancel"|gettext}
     {/form}

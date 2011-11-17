@@ -10,7 +10,7 @@
             </ul>
             <div class="yui-content">
                 <div id="tab1" class="exp-ecom-table">
-                    {control type="dropdown" name="filter" label="Range: " items="Last 24 hours, Last 48 hours, Jurassic Period and prior"}
+                    {control type="dropdown" name="filter" label="Range"|gettext|cat:": " items="Last 24 hours, Last 48 hours, Jurassic Period and prior"|getttext values="Last 24 hours, Last 48 hours, Jurassic Period and prior"}
                     <table border="0" cellspacing="0" cellpadding="0">
                         <tbody>
                             <tr class="even">

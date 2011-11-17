@@ -47,7 +47,7 @@
                     {icon action=configure module=ecomconfig hash="#tab2" title="Configure Categories Globally" text="Configure Categories Globally"}{br}
                 {/if*}
                 {if $permissions.manage == 1 && $config.orderby=="rank"}
-                    {ddrerank label="Products" sql=$rerankSQL model="product" controller="storeCategory" id=$current_category->id}
+                    {ddrerank label="Products"|gettext sql=$rerankSQL model="product" controller="storeCategory" id=$current_category->id}
                 {/if}
                 {if $permissions.edit == 1}
                      {icon class=add action=create text="Add a New Product"|gettext}

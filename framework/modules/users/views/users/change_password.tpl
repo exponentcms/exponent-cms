@@ -26,7 +26,7 @@
     {form action=save_change_password}
         {control type="hidden" name="uid" value=$u->id}
         {if $isuser}
-        {control type="password" name="password" label="Current Password"}
+        {control type="password" name="password" label="Current Password"|gettext}
         {/if}
         {control type="password" name="new_password1" label="Enter your new password"|gettext}
         {control type="password" name="new_password2" label="Confirm your new password"|gettext}

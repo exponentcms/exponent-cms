@@ -21,8 +21,8 @@
         </ul>            
         <div class="yui-content">
             <div id="tab1">
-                {control type="text" name="free_shipping_method_default_name" label="Default Name for this Shipping Method" value=$calculator->configdata.free_shipping_method_default_name}
-                {control type="text" name="free_shipping_option_default_name" label="Default Name for the Selectable Shipping Option" value=$calculator->configdata.free_shipping_option_default_name} 
+                {control type="text" name="free_shipping_method_default_name" label="Default Name for this Shipping Method"|gettext value=$calculator->configdata.free_shipping_method_default_name}
+                {control type="text" name="free_shipping_option_default_name" label="Default Name for the Selectable Shipping Option"|gettext value=$calculator->configdata.free_shipping_option_default_name}
             </div>        
         </div>
     </div>

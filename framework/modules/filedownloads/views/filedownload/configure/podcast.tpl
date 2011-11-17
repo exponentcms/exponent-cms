@@ -18,4 +18,4 @@
 {control type="checkbox" name="enable_rss" label="Enable Podcasting"|gettext value=1 checked=$config.enable_rss}
 {control type="text" name="feed_title" label="Feed Title"|gettext value=$config.feed_title}
 {control type="textarea" name="feed_desc" label="Feed Description"|gettext value=$config.feed_desc}
-{*control type="textarea" name="itunes_cats" label="Itunes Categories" value=$config.itunes_cats*}
+{*control type="textarea" name="itunes_cats" label="Itunes Categories"|gettext value=$config.itunes_cats*}

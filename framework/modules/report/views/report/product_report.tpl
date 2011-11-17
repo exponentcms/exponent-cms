@@ -19,17 +19,17 @@
         <tbody>  
             <tr class="even">
                   <td>
-                    {control type="dropdown" name="product_type" label="A Product Type Of" size=4 multiple=true includeblank="--Any--" items=$product_types}    
+                    {control type="dropdown" name="product_type" label="A Product Type Of"|gettext size=4 multiple=true includeblank="--Any--"|gettext items=$product_types}
                 </td>
             </tr>              
             <tr class="odd">
                   <td>
-                    {control type="dropdown" name="product_status" label="A Product Status Of" includeblank="--Any--" size=4 multiple=true frommodel=product_status}    
+                    {control type="dropdown" name="product_status" label="A Product Status Of"|gettext includeblank="--Any--"|gettext size=4 multiple=true frommodel=product_status}
                 </td>
             </tr>
             <tr class="even">
                 <td>
-                <div>{control type="checkbox" name="uncategorized" flip=true label="Uncategorized Products Only" value=1}  </div>{br}
+                <div>{control type="checkbox" name="uncategorized" flip=true label="Uncategorized Products Only"|gettext value=1}  </div>{br}
                     <div class="control"> 
                         <a href="#showcats" id="showcats"class=" awesome small black">Show Categories</a>
                     </div>
@@ -60,30 +60,30 @@
             </tr>
             <tr class="even">
                 <td>
-                    {control type="dropdown" name="company" label="Product company... " includeblank="--Any--" size=4 multiple=true frommodel=company}    
+                    {control type="dropdown" name="company" label="Product company... "|gettext includeblank="--Any--"|gettext size=4 multiple=true frommodel=company}
                 </td>
             </tr>
             <tr class="odd">
                 <td>
-                    {control type="dropdown" name="product-range-op" label="A Product ID..." items="Equal to,Less than,Greater than" values="e,l,g"}
+                    {control type="dropdown" name="product-range-op" label="A Product ID..."|gettext items="Equal to,Less than,Greater than"|gettext values="e,l,g"}
                     {control type="text" name="product-range-num" label=" " value=$record->prn class="collapse prn"}
                 </td>
             </tr>
             <tr class="even">
                  <td>
-                    {control type="dropdown" name="product-price-op" label="Product Price..." items="Equal to,Less than,Greater than" values="e,l,g"}
+                    {control type="dropdown" name="product-price-op" label="Product Price..."|gettext items="Equal to,Less than,Greater than"|gettext values="e,l,g"}
                     {control type="text" name="product-price-num" label=" " value=$record->ppn class="collapse ppn"}
                 </td> 
             </tr>
             <tr class="odd">
                 <td>
-                    {control type="text" name="pnam" label="Product Name Like" value=$record->product}
+                    {control type="text" name="pnam" label="Product Name Like"|gettext value=$record->product}
                 </td>
                 
             </tr>
             <tr class="even">
                 <td>
-                    {control type="text" name="sku" label="Product SKU Like" value=$record->sku}
+                    {control type="text" name="sku" label="Product SKU Like"|gettext value=$record->sku}
                 </td>
                 
             </tr>

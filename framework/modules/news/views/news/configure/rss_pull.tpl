@@ -16,7 +16,7 @@
 
 <div id="rsspullControl" class="control">
     <h2>{"Add RSS Feeds"|gettext}</h2> 
-    {control type="text" id="feedmaker" name="feedmaker" label="Add RSS Feed"}
+    {control type="text" id="feedmaker" name="feedmaker" label="Add RSS Feed"|gettext}
     <a class="addtolist" href="#">{'Add to list'|gettext}</a>
     <h4>{"Current Feeds"|gettext}</h4>
     <ul id="rsspull-feeds">

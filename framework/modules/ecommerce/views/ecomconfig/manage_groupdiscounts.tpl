@@ -41,8 +41,8 @@
 	<tbody>
 	    <tr>
 	        {form action=update_groupdiscounts}
-                <td>{control type=dropdown name=group_id items=$groups label=" " key=id display=name includeblank="-- Select a group --"}</td>
-                <td>{control type="dropdown" name="discounts_id" items=$discounts key=id display=title label=" " includeblank="-- Select a Discount --"}</td>
+                <td>{control type=dropdown name=group_id items=$groups label=" " key=id display=name includeblank="-- Select a group --"|gettext}</td>
+                <td>{control type="dropdown" name="discounts_id" items=$discounts key=id display=title label=" " includeblank="-- Select a Discount --"|gettext}</td>
                 <td>{control type="checkbox" name="dont_allow_other_discounts" label=" " value=1}</td>
                 <td>{control type=buttongroup submit="Add"|gettext}</td>
 	        {/form}
@@ -66,7 +66,7 @@
 			<tr class="{cycle values='even,odd'}"">
 			    {form action=update_groupdiscounts}
 	                {control type="hidden" name="id" value=$discount->id}
-                    <td>{control type=dropdown name=group_id items=$groups key=id display=name label=" " includeblank="-- Select a group --" value=$discount->group_id}</td>
+                    <td>{control type=dropdown name=group_id items=$groups key=id display=name label=" " includeblank="-- Select a group --"|gettext value=$discount->group_id}</td>
                     <td>{control type="dropdown" name="discounts_id" items=$discounts key=id display=title label=" " value=$discount->discounts_id}</td>
                     <td>{control type="checkbox" name="dont_allow_other_discounts" label=" " value=1 checked=$discount->dont_allow_other_discounts}</td>
                     <td>

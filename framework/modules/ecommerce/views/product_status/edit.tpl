@@ -21,7 +21,7 @@
     
     {form action=update}
         {control type="hidden" name="id" value=$record->id}
-        {control type="text" name="title" label="Status Type" value=$record->title}
+        {control type="text" name="title" label="Status Type"|gettext value=$record->title}
         {control type="buttongroup" submit="Submit"|gettext cancel="Cancel"|gettext}
     {/form}
 </div>

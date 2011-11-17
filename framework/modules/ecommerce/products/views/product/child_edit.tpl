@@ -91,7 +91,7 @@
                     <div id="imagefunctionality">
                         {"The image alt tag will be created dynamically by the system, however you may supply a custom one here:"|gettext}
                         {control type="text" name="image_alt_tag" label="Image Alt Tag"|gettext value=$record->image_alt_tag}
-                        {control type=radiogroup columns=2 name="main_image_functionality" label="Main Image Functionality"|gettext items="Single Image,Image with Swatches" values="si,iws"  default=$record->main_image_functionality|default:"si"}
+                        {control type=radiogroup columns=2 name="main_image_functionality" label="Main Image Functionality"|gettext items="Single Image,Image with Swatches"|gettext values="si,iws"  default=$record->main_image_functionality|default:"si"}
                         <div id="si-div" class="imngfuncbody">
                             <h3>{"Single Image"|gettext}</h3>
                             <h4>{"Main Image"|gettext}</h4>
@@ -161,7 +161,7 @@
                 </div>
                 <div id="shipping">
                     {control type="checkbox" name="no_shipping" label="This item doesn\'t require shipping"|gettext value=1 checked=$record->no_shipping}
-                    {control type="dropdown" name="required_shipping_calculator_id" id="required_shipping_calculator_id" label="Required Shipping Service"|gettext includeblank="--- Select a shipping service ---" items=$shipping_services value=$record->required_shipping_calculator_id onchange="switchMethods();"}
+                    {control type="dropdown" name="required_shipping_calculator_id" id="required_shipping_calculator_id" label="Required Shipping Service"|gettext includeblank="-- Select a shipping service --" items=$shipping_services value=$record->required_shipping_calculator_id onchange="switchMethods();"}
                     {foreach from=$shipping_methods key=calcid item=methods name=sm}
                         <div id="dd-{$calcid}" class="hide methods">
                         {control type="dropdown" name="required_shipping_methods[`$calcid`]" label="Shipping Methods"|gettext items=$methods value=$record->required_shippng_method}

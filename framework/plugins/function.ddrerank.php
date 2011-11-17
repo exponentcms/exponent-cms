@@ -64,7 +64,11 @@ function smarty_function_ddrerank($params,&$smarty) {
         
         $sortfield = empty($params['sortfield']) ? 'title' : $params['sortfield']; //what was this even for?
    
-        echo '<a id="rerank'.$uniqueid.'" class="reranklink" href="#">Order '.$params['label'].'</a>';
+        // attempt to translate the label
+        if (!empty($params['label'])) {
+            $params['label'] = gt($params['label']);
+        }
+        echo '<a id="rerank'.$uniqueid.'" class="reranklink" href="#">'.gt("Order").' '.$params['label'].'</a>';
 
         $html = '
         <div id="panel'.$uniqueid.'" class="exp-panel exp-panel-rerank hide">
