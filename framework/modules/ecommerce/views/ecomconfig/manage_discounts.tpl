@@ -33,50 +33,56 @@
        
         {icon class=add controller="ecomconfig" action="edit_discount" title="Create a New Store Discount"|gettext alt="Create a New Store Discount"|gettext}
             
-        {if $discounts|@count > 0}
+        {if $page|@count > 0}
             <h2>{"Modify existing group discount"|gettext}</h2>
-            <table class="exp-skin-table">
-                <thead>
-                <tr>
-                    <th>{"Enabled"|gettext}</th>
-                    <th>{"Name"|gettext}</th>
-                    <th>{"Coupon Code"|gettext}</th>
-                    <th>{"Valid Until"|gettext}</th>
-                    <th>&nbsp;</th>
-                </tr>
-                </thead>
-                {foreach from=$discounts item=discount}
-                    <tr class="{cycle values='even,odd'}">
-                        {form action=update_discount}
-                            {control type="hidden" name="id" value=$discount->id}
-                            <td style="text-align:center;">
-                            {if $discount->enabled}
-                                <a href="{link action=activate_discount id=$discount->id enabled=0}">{img src=$smarty.const.ICON_RELATIVE|cat:'toggle_on.png'}</a>
-                            {else}
-                                <a href="{link action=activate_discount id=$discount->id enabled=1}">{img src=$smarty.const.ICON_RELATIVE|cat:'toggle_off.png'}</a>
-                            {/if}
-                            </td>
-                            <td>{$discount->title}</td>  
-                            <td>{$discount->coupon_code}</td>  
-                            {if $discount->never_expires}
-                                <td>{"Never Expires"|gettext}</td>
-                            {else}
-                                <td>{$discount->enddate|date_format:"%m/%d/%y"} - {$discount->enddate_time|expdate:"g:i a"}</td>  
-                            {/if}
-                            <td>
-                                {icon class=edit action=edit_discount record=$discount}
-                                {*icon class=delete action=delete_discount record=$group onclick="return confirm('This option group is being used by `$group->timesImplemented` products. Deleting this option group will also delete all of the options related to it. Are you sure you want to delete this option group?');"*}
-                            </td>
-                            <!--td>{control type="test" name="title" label=" " value=$discount->title}</td>  
-                            <td>{control type="dropdown" name="discount_type" label=" {"test"|gettext}" items=$discount->discount_types value=$discount->discount_type}</td>
-                            <td>{control type=text name=discount_amount label=" " size=2 value=$discount->discount_amount}</td>
-                            <td>{control type=dropdown name=apply_when items=$apply_rules label=" " value=$discount->discount->apply}</td>
-                            <td>{control type=buttongroup submit='Update Discount'|gettext}</td-->
-                        {/form} 
-                    </tr>
-                {/foreach}
-            </tbody>
-            </table>
+           {pagelinks paginate=$page top=1}
+			<table id="discounts" class="exp-skin-table">
+				<thead>
+					<tr>
+					{$page->header_columns}
+					<th></th>
+					</tr>
+				</thead>
+				<tbody>
+				{foreach from=$page->records item=listing name=listings}
+				<tr class="{cycle values='odd,even'}">
+					{form action=update_discount}
+					{control type="hidden" name="id" value=$listing->id}
+					<td style="text-align:center;">
+					{if $listing->enabled}
+						<a href="{link action=activate_discount id=$listing->id enabled=0}" title="Disable Discount">{img src=$smarty.const.ICON_RELATIVE|cat:'toggle_on.png'}</a>
+					{else}
+						<a href="{link action=activate_discount id=$listing->id enabled=1}" title="Enable Discount">{img src=$smarty.const.ICON_RELATIVE|cat:'toggle_off.png'}</a>
+					{/if}
+					</td>
+					
+					<td>
+						{$listing->title}
+					</td>
+					
+					<td>
+						{$listing->coupon_code}
+					</td>
+					
+					<td>
+						{if $listing->never_expires}
+							{"Never Expires"|gettext}
+                        {else}
+							{$listing->enddate|date_format:"%m/%d/%y"} - {$listing->enddate_time|expdate:"g:i a"}
+						{/if}
+					</td>
+					
+					<td>
+						{if $permissions.edit == 1}
+							{icon class=edit action=edit_discount record=$listing title="Edit Discount"}
+						{/if}
+					</td>
+					{/form} 
+				</tr>
+				{/foreach}
+				</tbody>
+			</table>
+			{pagelinks paginate=$page bottom=1}
         {else}
             <div>{"You do not have any discounts currently."|gettext}</div>
         {/if}

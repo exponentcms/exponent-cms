@@ -129,9 +129,18 @@ class ecomconfigController extends expController {
     /*****************************************************************/
     public function manage_discounts() {
         expHistory::set('manageable', $this->params);
-        $discountObj = new discounts();
-        $discounts = $discountObj->find('all');
-        assign_to_template(array(/*'apply_rules'=>$discountObj->apply_rules, 'discount_types'=>$discountObj->discount_types,*/'discounts'=>$discounts));
+		
+        $order = isset($this->params['order']) ? $this->params['order'] : null;
+        $page = new expPaginator(array(
+			'sql'=>'SELECT * FROM '.DB_TABLE_PREFIX.'_discounts',
+			'limit'=> 10,
+			'order'=>$order,
+			'model'=>'discounts',
+			'columns'=>array('Enabled'=>'enabled','Name'=>'title', 'Coupon Code'=>'coupon_code', 'Valid Until'=>'enddate'),
+			));
+
+		
+        assign_to_template(array(/*'apply_rules'=>$discountObj->apply_rules, 'discount_types'=>$discountObj->discount_types,*/'page'=>$page));
     }
     
       public function edit_discount() {
