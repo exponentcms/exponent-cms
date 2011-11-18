@@ -72,7 +72,7 @@
         {/form}                      
 </div>
 <div class="loadingdiv">{'Loading'|gettext}</div>
-{script unique="cattabs" src="framework/core/subsystems/forms/controls/listbuildercontrol.js"}
+{script unique="cattabs" src="`$smarty.const.PATH_RELATIVE`framework/core/subsystems/forms/controls/listbuildercontrol.js"}
 {literal}
 YUI(EXPONENT.YUI3_CONFIG).use('node','event','yui2-tabview','yui2-element', function(Y) {
     var YAHOO=Y.YUI2;

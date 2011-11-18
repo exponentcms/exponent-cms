@@ -63,7 +63,7 @@
     {/form}
     
 </div>
-{script unique="shoppingcartcheckout" yuimodules="animation,container,json" src=$smarty.const.JS_FULL|cat:'exp-ecomcheckout.js'}
+{script unique="shoppingcartcheckout" yuimodules="animation,container,json" src="`$smarty.const.JS_FULL`exp-ecomcheckout.js"}
 //
 {/script}
 
