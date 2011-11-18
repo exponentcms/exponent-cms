@@ -347,7 +347,7 @@ class expTheme {
 	//}
 
 	public static function headerInfo($config) {
-		global $sectionObj, $validateTheme, $head_config;
+		global $sectionObj, $validateTheme, $head_config, $cur_lang;
 
 		$validateTheme['headerinfo'] = true;
 		// end checking for headerInfo
@@ -605,7 +605,7 @@ class expTheme {
 	 * @node Subsystems:Theme
 	 */
 	public static function showModule($module,$view="Default",$title="",$source=null,$pickable=false,$section=null,$hide_menu=false,$params=array()) {
-		if (!AUTHORIZED_SECTION && $module != 'navigationmodule' && $module != 'loginmodule') return;
+		if (!AUTHORIZED_SECTION && $module != 'navigationmodule' && $module != 'loginController') return;
 
 		global $db, $sectionObj;
 		// Ensure that we have a section
@@ -618,7 +618,7 @@ class expTheme {
 			$sectionObj = $db->selectObject('section','id='.$section_id);
 			//$section->id = $section_id;
 		}
-		if ($module == "loginmodule" && defined('PREVIEW_READONLY') && PREVIEW_READONLY == 1) return;
+		if ($module == "loginController" && defined('PREVIEW_READONLY') && PREVIEW_READONLY == 1) return;
 
 		if (expSession::is_set("themeopt_override")) {
 			$config = expSession::get("themeopt_override");
