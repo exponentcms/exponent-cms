@@ -31,10 +31,10 @@
     {img file_id=$product->expFile.mainimage.0->id w=150 class="prod-img"}
     {/if}
     <p>
-        <strong>Additional information is required before we can add to your cart</strong>
+        <strong>{'Additional information is required before we can add to your cart'|gettext}</strong>
     {br}{br}
-        If you are ordering multiple quantities of this item, the SAME information you select here will be applied to 
-    all of the items. If you would like different options or personalized fields for each item, please add them one at a time to your cart.
+        {'If you are ordering multiple quantities of this item, the SAME information you select here will be applied to
+    all of the items. If you would like different options or personalized fields for each item, please add them one at a time to your cart.'|gettext}
     </p>
     <div style="clear:both"></div>
     {form controller=cart action=addItem id="options-uifields"}
@@ -49,7 +49,7 @@
         {/if}
         {if $product->hasOptions()}
             <div class="product-options">
-                <h2>{$product->title} Options</h2>
+                <h2>{$product->title} {'Options'|gettext}</h2>
                 {foreach from=$product->optiongroup item=og}
                     {if $og->hasEnabledOptions()} 
                         <div class="option {cycle values="odd,even"}">
@@ -66,14 +66,14 @@
                         </div> 
                     {/if}
                 {/foreach}
-                <span style="font-variant:small-caps;">* Selection required.</span>
+                <span style="font-variant:small-caps;">* {'Selection required.'|gettext}</span>
             </div>
         {/if}
         
         {if !empty($product->user_input_fields) && $product->user_input_fields|@count>0 }
             <div class="user-input-fields">
-            <h2>Additional Information for {$product->title}</h2>
-            <p>This item would like the following additional information. Items marked with an * are required:</p>
+            <h2>{'Additional Information for'|gettext} {$product->title}</h2>
+            <p>{'This item would like the following additional information. Items marked with an * are required:'|gettext}</p>
             {foreach from=$product->user_input_fields key=uifkey item=uif}  
                 <div class="user-input {cycle values="odd,even"}">
                     {if $uif.use}                   

@@ -3,20 +3,20 @@
 	<div class="rightcol">
 	    <div id="dashboard-tabs" class="yui-navset yui3-skin-sam hide">
             <ul class="yui-nav">
-                <li class="selected"><a href="#tab1"><em>New Orders</em></a></li>
+                <li class="selected"><a href="#tab1"><em>{'New Orders'|gettext}</em></a></li>
                 <!--li><a href="#tab2"><em>Top Selling Items</em></a></li>
                 <li><a href="#tab3"><em>Most Viewed</em></a></li>
                 <li><a href="#tab4"><em>Customers</em></a></li-->
             </ul>
             <div class="yui-content">
                 <div id="tab1" class="exp-ecom-table">
-                    {control type="dropdown" name="filter" label="Range"|gettext|cat:": " items="Last 24 hours, Last 48 hours, Jurassic Period and prior"|getttext values="Last 24 hours, Last 48 hours, Jurassic Period and prior"}
+                    {control type="dropdown" name="filter" label="Range"|gettext|cat:": " items="Last 24 hours, Last 48 hours, Jurassic Period and prior" values="Last 24 hours, Last 48 hours, Jurassic Period and prior"}
                     <table border="0" cellspacing="0" cellpadding="0">
                         <tbody>
                             <tr class="even">
-                                <td>Carts Started (visits)
+                                <td>{'Carts Started (visits)'|gettext}
                                 </td>
-                                <td>Sessions Started (visits)
+                                <td>{'Sessions Started (visits)'|gettext}
                                 </td>
                             </tr>
                         </tbody>

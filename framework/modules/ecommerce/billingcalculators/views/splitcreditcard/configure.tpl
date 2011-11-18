@@ -17,8 +17,8 @@
 <div id="authcfg">
     <div id="authcfg-tabs" class="yui-navset yui3-skin-sam hide">
         <ul class="yui-nav">
-	        <li class="selected"><a href="#tab1"><em>Split Credit Card<br>Settings</em></a></li>
-	        <li><a href="#tab2"><em>Accepted<br>Credit Cards</em></a></li>
+	        <li class="selected"><a href="#tab1"><em>{'Split Credit Card'|gettext}<br>{'Settings'|gettext}</em></a></li>
+	        <li><a href="#tab2"><em>{'Accepted'|gettext}<br>{'Credit Cards'|gettext}</em></a></li>
         </ul>            
         <div class="yui-content">
 	        <div id="tab1">

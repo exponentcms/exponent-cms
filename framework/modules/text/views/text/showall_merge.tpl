@@ -20,7 +20,7 @@
         <div class="module-actions">
 			{if $permissions.edit == 1}
 				<div class="msg-queue notice">
-				<h3>This special template allows merging multiple text modules (items) into one module</h3>
+				<h3>{'This special template allows merging multiple text modules (items) into one module'|gettext}</h3>
 				<i>(This may be desired as a post-migration cleanup action)</i>
 				<ul>
 					<li>From the target module, aggregate the source module(s)</li>

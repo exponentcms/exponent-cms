@@ -51,13 +51,13 @@
                     if (bx.get('checked')) {
                         bxchkd++;
                         if (parseInt(txts.item(key).get('value'))<=0) {
-                            msg = " You'll also need a value greater than 0 for a quantity."
+                            msg = "{/literal}{"You\'ll also need a value greater than 0 for a quantity."|gettext}{literal}"
                         }
                     };
                 });
                 
                 if (bxchkd==0 || msg!="") {
-                    alert('You need to check at least 1 product before it can be added to your cart'+msg);
+                    alert('{/literal}{"You need to check at least 1 product before it can be added to your cart"|gettext}{literal}'+msg);
                 } else {
                     frm.submit();
                 };

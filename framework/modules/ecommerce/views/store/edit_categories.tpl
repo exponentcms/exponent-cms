@@ -4,6 +4,6 @@
 	{br}
 	{control type="tagtree" name="managecats" id="managecats" controller="store" model="storeCategory" draggable=false addable=false menu=true checkable=true values=$record->storeCategory expandonstart=true }
 {else}
-	<a href='{link controller="storeCategory" action="manage"}'>Manage Categories</a>{br}{br}
-	<h2>Category is inherited from this product's parent.</h2>
+	<a href='{link controller="storeCategory" action="manage"}'>{'Manage Categories'|gettext}</a>{br}{br}
+	<h2>{'Category is inherited from this product\'s parent.'|gettext}</h2>
 {/if}

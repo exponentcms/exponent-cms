@@ -19,20 +19,20 @@
 {/css}
 
 <div class="modules order_type showall">
-	<h1>{$moduletitle|default:"Manage Order Types"}</h1>
+	<h1>{$moduletitle|default:"Manage Order Types"|gettext}</h1>
 	
-	<a href="{link action=create}">Create a new order type</a>{br}{br}
+	<a href="{link action=create}">{'Create a new order type'|gettext}</a>{br}{br}
 	<div id="orders">
 		{pagelinks paginate=$page top=1}
 		<table id="prods" class="exp-skin-table">
 			<thead>
 				<tr>
-				    <th>Default</th>
-                    <th>Creates New User</th> 
-                    <th>Emails Customer</th> 
-                    <th>Affects Inventory</th> 
-					<th>Name</th>
-					<th>Admin</th>
+				    <th>{'Default'|gettext}</th>
+                    <th>{'Creates New User'|gettext}</th>
+                    <th>{'Emails Customer'|gettext}</th>
+                    <th>{'Affects Inventory'|gettext}</th>
+					<th>{'Name'|gettext}</th>
+					<th>{'Admin'|gettext}</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -52,7 +52,7 @@
 				</tr>
 				{foreachelse}
 				    <tr class="{cycle values="odd,even"}">
-				        <td colspan="4">No order types have been created yet.</td>
+				        <td colspan="4">{'No order types have been created yet.'|gettext}</td>
 				    </tr>
 				{/foreach}
 		</tbody>

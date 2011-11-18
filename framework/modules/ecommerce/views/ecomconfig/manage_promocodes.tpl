@@ -20,17 +20,17 @@
 
 <div class="module ecomconfig promocodes">
 	<div class="form_header">
-        	<h1>Promotional Codes</h1>
-	        <p>Here you can configure promotional codes to give to users.</p>
+        <h1>{'Promotional Codes'|gettext}</h1>
+        <p>{'Here you can configure promotional codes to give to users.'|gettext}</p>
 	</div>
 	
-	<h2>Add a new promo code</h2>
+	<h2>{'Add a new promo code'|gettext}</h2>
 	<table class="exp-skin-table">
 	<thead>
 	    <tr>
-	        <th>Name</th>
-		    <th>Promo Code</th>
-		    <th>Discount</th>
+	        <th>{'Name'|gettext}</th>
+		    <th>{'Promo Code'|gettext}</th>
+		    <th>{'Discount'|gettext}</th>
 		    <th>&nbsp;</th>
 		</tr>
 	</thead>
@@ -47,13 +47,13 @@
 	</table>
 	
 	{if $promo_codes|@count > 0}
-	<h2>Modify existing group discount</h2>
+	<h2>{'Modify existing group discount'|gettext}</h2>
 	<table class="exp-skin-table">
 	    <thead>
 	    <tr>
-	        <th>Name</th>
-		    <th>Promo Code</th>
-		    <th>Discount</th>
+	        <th>{'Name'|gettext}</th>
+		    <th>{'Promo Code'|gettext}</th>
+		    <th>{'Discount'|gettext}</th>
 		    <th>&nbsp;</th>
 	    </tr>
 	    </thead>

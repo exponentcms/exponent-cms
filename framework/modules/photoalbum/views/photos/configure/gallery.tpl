@@ -21,7 +21,7 @@
 {control type=text name="quality" label="Thumbnail JPEG Quality"|gettext|cat:" (0 - 95)" value=$config.quality|default:$smarty.const.THUMB_QUALITY size="5"}
 {control type="checkbox" name="lightbox" label="Use lightbox effect"|gettext value=1 checked=$config.lightbox}
 <hr />
-<h4>Detail Page or Lightbox</h4>
+<h4>{'Detail Page or Lightbox'|gettext}</h4>
 {control type=text name="pa_showall_enlarged" label="Box size for enlarged images"|gettext value=$config.pa_showall_enlarged|default:300 size="5"}
-<h4>Detail Page</h4>
-{control type="dropdown" name="pa_float_enlarged" label="Float enlarged image"|gettext items="No Float,Left,Right"|gettext values="No Float,Left,Right" value=$config.pa_float_enlarged}
+<h4>{'Detail Page'|gettext}</h4>
+{control type="dropdown" name="pa_float_enlarged" label="Float enlarged image"|gettext items="No Float,Left,Right" values="No Float,Left,Right" value=$config.pa_float_enlarged}

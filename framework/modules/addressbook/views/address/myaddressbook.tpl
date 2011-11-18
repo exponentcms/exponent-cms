@@ -23,7 +23,7 @@
 {/css}
 
 <div class="module address myaddressbook">
-    <h1>{$moduletitle|default:"My address book"}</h1>
+    <h1>{$moduletitle|default:"My address book"|gettext}</h1>
     <div>{'Click the'|gettext} <strong>{'Add New Address'|gettext}</strong> {'link below if you\'d like to add a new address to use for either your billing or shipping address'|gettext}.{br}
     {'To change your billing or shipping address for this order, simply select the button next to the address you\'d like to set in either the billing or shipping address column'|gettext}.{br}
     {'A green button indicates your selection'|gettext}.{br}{br}

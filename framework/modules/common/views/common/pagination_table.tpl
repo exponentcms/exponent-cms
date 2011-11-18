@@ -55,7 +55,7 @@
 			    </td-->
 			</tr>
 			{foreachelse}
-			    <td colspan="{$page->columns|count}">No Data.</td>
+			    <td colspan="{$page->columns|count}">{'No Data'|gettext}</td>
 			{/foreach}
 		</tbody>
 	</table>

@@ -13,25 +13,24 @@
 *
 *}
 
-
 <table border="0" cellspacing="0" cellpadding="0" class="cart-item">
     <tr>
         <td class="cart-image">
             {if $item->product->expFile.mainimage[0]->id}
                 {img file_id=$item->product->expFile.mainimage[0]->id  h=50 w=50 zc=1 class="border"}
             {else}
-                No Image Available
+                {'No Image Available'|gettext}
             {/if}
         </td>
         <td>
             <span class="itemname"><strong>{$item->products_name}</strong></span>
 			 <div class="itembody">
 				{if $message.To}
-					To: {$message.To} 
+					{'To:'|gettext} {$message.To}
 				{/if}
 				
 				{if $message.From}
-					From: {$message.From} 
+					{'From:'|gettext} {$message.From}
 				{/if}
 				{br}{$message.Message|truncate:50:"..."}    
 			</div>

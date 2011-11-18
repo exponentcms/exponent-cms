@@ -19,19 +19,19 @@
 {/css}
 
 <div class="modules order_status showall">
-	<h1>{$moduletitle|default:"Manage Status Codes"}</h1>
+	<h1>{$moduletitle|default:"Manage Status Codes"|gettext}</h1>
 	
-	<a href="{link action=create}">Create a new status code</a>{br}{br}
+	<a href="{link action=create}">{'Create a new status code'|gettext}</a>{br}{br}
 	<div id="orders">
 		{pagelinks paginate=$page top=1}
 		<table id="prods" class="exp-skin-table">
 			<thead>
 				<tr>
-				    <th>Default</th>
-				    <th>Treat as Closed</th>
-					<th>Name</th>
-					<th>Admin</th>
-					<th>Order</th>
+				    <th>{'Default'|gettext}</th>
+				    <th>{'Treat as Closed'|gettext}</th>
+					<th>{'Name'|gettext}</th>
+					<th>{'Admin'|gettext}</th>
+					<th>{'Order'|gettext}</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -70,7 +70,7 @@
 				</tr>
 				{foreachelse}
 				    <tr class="{cycle values="odd,even"}">
-				        <td colspan="4">No order status codes have been created yet.</td>
+				        <td colspan="4">{'No order status codes have been created yet.'|gettext}</td>
 				    </tr>
 				{/foreach}
 		</tbody>

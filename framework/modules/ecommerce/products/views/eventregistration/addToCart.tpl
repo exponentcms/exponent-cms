@@ -15,8 +15,8 @@
  *}
 {if $product->isAvailable()}
 <div class="module cart eventregistration addToCart">
-    <h1>Register for {$product->title}</h1>
-    <p>Please enter the name, email, and phone number of the person you would like to register for this event.  If you would like to add more registrants, simply click 'Add another registrant'. </p><br/>
+    <h1>{'Register for'|gettext} {$product->title}</h1>
+    <p>{'Please enter the name, email, and phone number of the person you would like to register for this event.  If you would like to add more registrants, simply click \'Add another registrant\'.'|gettext} </p><br/>
 
     {form name="evregfrm" action=addItem}
         {control type="hidden" name="product_type" value=$product->product_type}
@@ -28,8 +28,7 @@
         {control type="text" id="registrations_phones" name="registrant_phones[]" label="Registrant Phone:"|gettext}
 <hr>
      </div>
-   
-        <a class="exp-ecom-link plus" id="newregistrant" href="#"><em>Add another registrant</em> <span></span></a> &nbsp;&nbsp; OR &nbsp; <a class="exp-ecom-link addtocart" onclick="EXPONENT.validateReg()" href="#"><em>Add Registration to Cart</em><span></span></a>
+        <a class="exp-ecom-link plus" id="newregistrant" href="#"><em>{'Add another registrant'|gettext}</em> <span></span></a> &nbsp;&nbsp; {'OR'|gettext} &nbsp; <a class="exp-ecom-link addtocart" onclick="EXPONENT.validateReg()" href="#"><em>{'Add Registration to Cart'|gettext}</em><span></span></a>
     {/form}
     
 </div>
@@ -41,17 +40,17 @@ EXPONENT.validateReg = function() {
     if (frm.registrations.value==undefined){
 	for(i=0; i<frm.registrations.length; i++){
 	   if (frm.registrations[i].value==""){
-		alert("You must provide a name for each of your registrants.");
+		alert("{/literal}{"You must provide a name for each of your registrants."|gettext}{literal}");
 		frm.registrations[i].focus();
 		return;
 	   } 	
 	   if (frm.registrations_emails[i].value==""){
-                alert("You must provide an email for each of your registrants.");
+                alert("{/literal}{"You must provide an email for each of your registrants."|gettext}{literal}");
                 frm.registrations_emails[i].focus();
                 return;
            }
 	   if (frm.registrations_phones[i].value==""){
-                alert("You must provide a phone for each of your registrants.");
+                alert("{/literal}{"You must provide a phone for each of your registrants."|gettext}{literal}");
                 frm.registrations_phones[i].focus();
                 return;
            }
@@ -60,7 +59,7 @@ EXPONENT.validateReg = function() {
     } else if (frm.registrations.value!="" && frm.registrations_emails.value!="" && frm.registrations_phones.value!=""){
         YAHOO.util.Dom.get('evregfrm').submit();
     } else {
-        alert("You must provide name, email, and phone information for your registrant.");
+        alert("{/literal}{"You must provide name, email, and phone information for your registrant."|gettext}{literal}");
 	frm.registrations.focus();
     }
 }
@@ -100,6 +99,6 @@ YAHOO.util.Event.onDOMReady(function(){
 {/script}
 {else}
 <div class="module cart eventregistration addToCart">
-    <h1>{$product->title} is Closed for Registration</h1>
+    <h1>{$product->title} {'is Closed for Registration'|gettext}</h1>
 </div> 
 {/if}

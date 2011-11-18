@@ -161,7 +161,7 @@ function _sanity_checkPHPVersion() {
 	if (version_compare(phpversion(),'5.2.1','>=')) {
 		return array(SANITY_FINE,phpversion());
 	} else {
-		return array(SANITY_ERROR,gt('This version of ExponentCMS requires PHP 5.2.1 or higher. You are running PHP').' '.phpversion().'<br>'.gt('(not supported)'));
+		return array(SANITY_ERROR,gt('This version of ExponentCMS requires PHP 5.2.1 or higher. You are running PHP').' '.phpversion().'<br>('.gt('not supported'.')'));
 	}
 }
 

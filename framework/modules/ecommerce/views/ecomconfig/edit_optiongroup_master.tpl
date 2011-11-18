@@ -17,10 +17,10 @@
 {permissions}
 {if $permissions.manage == 1}
 <div class="module storeadmin edit_optiongroup_master">
-	<h1>{$moduletitle|default:"Edit Product Option Group"}</h1>
+	<h1>{$moduletitle|default:"Edit Product Option Group"|gettext}</h1>
 	{if $record->timesImplemented > 0}
 	<p>
-	    This option group is being used by {$record->timesImplemented} products on your site.  Changing the name will change it for all the products currently using it.
+	    {'This option group is being used by'|gettext} {$record->timesImplemented} {'products on your site.  Changing the name will change it for all the products currently using it.'|gettext}
 	</p>
 	{/if}
 	

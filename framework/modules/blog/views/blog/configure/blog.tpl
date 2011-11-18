@@ -19,4 +19,4 @@
     {"This is where you can configure the settings to be used by this Blog module. 
     These settings will only apply to this particular module."|gettext}
 </p>
-{control type="radiogroup" name="usebody" label="Body Text"|gettext value=$config.usebody|default:0 items="Full,Summary,None"|gettext values="0,1,2"}
+{control type="radiogroup" name="usebody" label="Body Text"|gettext value=$config.usebody|default:0 items="Full,Summary,None" values="0,1,2"}

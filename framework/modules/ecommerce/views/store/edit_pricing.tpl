@@ -1,6 +1,6 @@
 {control type="hidden" name="tab_loaded[pricing]" value=1} 
 <fieldset>
-<h2>General Pricing</h2>
+<h2>{'General Pricing'|gettext}</h2>
     <table>
     <tr>
         <td>{control type="text" name="pricing[base_price]" label="Base Price"|gettext value=$record->base_price filter=decimal}</td>
@@ -12,18 +12,18 @@
     </table>
 </fieldset>
 <fieldset>
-<h2>Quantity Discounts</h2>
+<h2>{'Quantity Discounts'|gettext}</h2>
     <p>
-        Quantity discounts are discounts that get applied when a customer purchases a certain 
-        amount of this product. You can configure how the discounts work by setting the discount
-        rules below. 
+        {'Quantity discounts are discounts that get applied when a customer purchases a certain'|gettext}{br}
+        {'amount of this product. You can configure how the discounts work by setting the discount'|gettext}{br}
+        {'rules below.'|gettext}
     </p>
     <table class="qty-discount">
     <tr>
-        <td>If a customer purchases more than </td>
+        <td>{'If a customer purchases more than'|gettext} </td>
         <!--td>{control type="dropdown" name="pricing[quantity_discount_num_items_mod]" label=" " items=$record->quantity_discount_items_modifiers value=$record->quantity_discount_num_items}</td-->
         <td>{control type="text" name="pricing[quantity_discount_num_items]" label=" " value=$record->quantity_discount_num_items size=3 filter=integer}</td>
-        <td>items, than discount the price by</td>
+        <td>{'items, than discount the price by'|gettext}</td>
         <td>{control type="text" name="pricing[quantity_discount_amount]" label=" " value=$record->quantity_discount_amount size=3 filter=decimal}
         <td>{control type="dropdown" name="pricing[quantity_discount_amount_mod]" label=" " items=$record->quantity_discount_amount_modifiers value=$record->quantity_discount_amount_mod}</td>
     </tr>
@@ -32,5 +32,5 @@
     </tr>
     </table>
 </fieldset>                 
-<h2>Tax Class</h2>
+<h2>{'Tax Class'|gettext}</h2>
 {control type="dropdown" name="pricing[tax_class_id]" label="" frommodel=taxclass key=id display=name includeblank="-- No Tax Required --"|gettext value=$record->tax_class_id|default:1}

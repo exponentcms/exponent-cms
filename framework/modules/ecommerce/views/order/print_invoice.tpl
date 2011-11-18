@@ -14,21 +14,21 @@
  *
  *}
 <div class="module order print-invoice">
-    {printer_friendly_link text="Print this invoice"}
+    {printer_friendly_link text="Print this invoice"|gettext}
     {br}{br}
 	<table width=100% border="0" cellspacing="5" cellpadding="5">
 		<thead>
 		<tr>
 			<th colspan=2>
-		        <h1>Invoice # {$order->invoice_id}</h1>
-				<span>Order was placed on: {$order->purchased|format_date:$smarty.const.DISPLAY_DATETIME_FORMAT}</span>
+		        <h1>{'Invoice #'|gettext} {$order->invoice_id}</h1>
+				<span>{'Order was placed on:'|gettext} {$order->purchased|format_date:$smarty.const.DISPLAY_DATETIME_FORMAT}</span>
 			</th>
 		</tr>
 		</thead>
 		<tbody>
 		<tr>
 			<td>
-				<h2>Shipping Address</h2>
+				<h2>{'Shipping Address'|gettext}</h2>
 				{if $order->shipping_required == true}
 				    {if $order->shippingmethods|@count <= 1}
 				        <address>
@@ -51,14 +51,14 @@
 				        {if $shipping->shippingmethod->email != ""}{$shipping->shippingmethod->email}<br>{/if}
 				        <br>
 				    {else}
-				        See shipping information below.
+				        {'See shipping information below.'|gettext}
 				    {/if}
 				{else}
-				    No shipping required for this order.
+				    {'No shipping required for this order.'|gettext}
 				{/if}
 			</td>
 			<td>
-				<h2>Billing Address</h2>
+				<h2>{'Billing Address'|gettext}</h2>
 				<address>
 				{$order->billingmethod[0]->firstname} {$order->billingmethod[0]->lastname}<br>
 				{if $order->billingmethod[0]->company != ""}{$order->billingmethod[0]->company}<br>{/if}
@@ -83,30 +83,30 @@
 		</tr>
 		<tr>
 			<td>
-				<h2>Shipping Method</h2>
+				<h2>{'Shipping Method'|gettext}</h2>
 				{if $order->shipping_required == true}
 				    {if $order->shippingmethods|@count <= 1}
     				    {$shipping->calculator->title} ({$shipping->shippingmethod->option_title}) - {currency_symbol}{$shipping->shippingmethod->shipping_cost|number_format:2}
 	    			    <br><br><br><br>
 	    			 {else}
-	    			    See shipping information below.
+	    			    {'See shipping information below.'|gettext}
 	    			 {/if}
 				{else}
-				    No shipping required for this order.
+				    {'No shipping required for this order.'|gettext}
 				{/if}
 			</td>
 			<td>
-				<h2>Payment Method</h2>
+				<h2>{'Payment Method'|gettext}</h2>
 				{$billing->info}
 			</td>
 		</tr>
 		<tr>
-		    <td colspan="2">Order Details</td>
+		    <td colspan="2">{'Order Details'|gettext}</td>
 		</tr>
 		</tbody>
 	</table>
 
-	<h3>Items</h3>
+	<h3>{'Items'|gettext}</h3>
 	<ul>
 	{if $order->shippingmethods|@count > 1}
 	{foreach from=$order->shippingmethods item=method}
@@ -116,7 +116,7 @@
 		    <ul>
 		    {foreach from=$method->orderitem item=oi}
 		        <li>
-    		    <a href="{link action=showByTitle controller="storeController" title=$oi->products_name}">{$oi->products_name}</a> - {$oi->quantity} at ${$oi->products_price|number_format:2} each
+    		    <a href="{link action=showByTitle controller="storeController" title=$oi->products_name}">{$oi->products_name}</a> - {$oi->quantity} {'at'|gettext} ${$oi->products_price|number_format:2} {'each'|gettext}
 	    	    {$oi->getExtraData()}
 	    	    </li>
 	    	{/foreach}
@@ -126,7 +126,7 @@
 	{else}
 	    {foreach from=$order->orderitem item=oi}
 		<li>
-		    <a href="{link action=showByTitle controller="storeController" title=$oi->products_name}">{$oi->products_name}</a> - {$oi->quantity} at ${$oi->products_price|number_format:2} each
+		    <a href="{link action=showByTitle controller="storeController" title=$oi->products_name}">{$oi->products_name}</a> - {$oi->quantity} {'at'|gettext} ${$oi->products_price|number_format:2} {'each'|gettext}
 		    {$oi->getExtraData()}
 		</li>
 	{/foreach}

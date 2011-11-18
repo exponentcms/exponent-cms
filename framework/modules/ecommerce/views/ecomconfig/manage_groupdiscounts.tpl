@@ -20,21 +20,21 @@
 
 <div class="module storeadmin groupdiscounts">
 	<div class="form_header">
-        	<h1>Group Discounts</h1>
-	        <p>You can configure certain user groups to get a discount applied to their carts when they checkout.</p>
+        	<h1>{'Group Discounts'|gettext}</h1>
+	        <p>{'You can configure certain user groups to get a discount applied to their carts when they checkout.'|gettext}</p>
 	</div>
 	
 	{br}
-	<a class="add" href="{link controller=user action=edit_group id=0}">Add a new group</a>
-	<a class="add" href="{link controller=ecomconfig action=manage_discounts}">Manage a Discount Rules</a>
+	<a class="add" href="{link controller=user action=edit_group id=0}">{'Add a new group'|gettext}</a>
+	<a class="add" href="{link controller=ecomconfig action=manage_discounts}">{'Manage a Discount Rules'|gettext}</a>
 	{br}{br}
-	<h2>Add a new group discount</h2>
+	<h2>{'Add a new group discount'|gettext}</h2>
 	<table class="exp-skin-table">
 	<thead>
 	    <tr>
-	        <th>Group</th>
-		    <th>Discount</th>
-		    <th>Don't allow{br}other{br}group discounts</th>
+	        <th>{'Group'|gettext}</th>
+		    <th>{'Discount'|gettext}</th>
+		    <th>{'Don\'t allow'|gettext}{br}{'other'|gettext}{br}{'group discounts'|gettext}</th>
 		    <th>&nbsp;</th>
 		</tr>
 	</thead>
@@ -51,14 +51,14 @@
 	</table>
 	
 	{if $group_discounts|@count > 0}
-	<h2>Modify existing group discount</h2>
+	<h2>{'Modify existing group discount'|gettext}</h2>
 	<table class="exp-skin-table">
 	    <thead>
 	    <tr>
-	        <th>Group</th>
-		    <th>Discount</th>
-		    <th>Don't allow{br}other{br}group discounts</th>
-		    <th>Order</th>
+	        <th>{'Group'|gettext}</th>
+		    <th>{'Discount'|gettext}</th>
+		    <th>{'Don\'t allow{br}other{br}group discounts'|gettext}</th>
+		    <th>{'Order'|gettext}</th>
 		    <th>&nbsp;</th>
 	    </tr>
 	    </thead>

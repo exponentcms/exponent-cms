@@ -21,27 +21,27 @@
 
 
 <div class="module store quick-links">
-    <h2>{$moduletitle|default:"Store Links"}</h2>
+    <h2>{$moduletitle|default:"Store Links"|gettext}</h2>
     {if $user->id != '' && $user->id != 0}
         <strong class="attribution">Welcome {attribution user=$user display=firstlast}</strong>
     {/if}
     
     <ul>
-        <li><a class="viewcart" href="{link controller=cart action=show}" rel="nofollow">View My Cart</a></li>
+        <li><a class="viewcart" href="{link controller=cart action=show}" rel="nofollow">{'View My Cart'|gettext}</a></li>
     
     {if $itemcount > 0}
         <li>
-            <a class="checkoutnow" href="{securelink controller=cart action=checkout}" rel="nofollow">Checkout now</a>
+            <a class="checkoutnow" href="{securelink controller=cart action=checkout}" rel="nofollow">{'Checkout Now'|gettext}</a>
         </li>
     {/if}
 
     {if $user->id != '' && $user->id != 0}
-        <li><a class="addressbook" href="{link module=address action=myaddressbook}">Manage My Addresses</a></li>
-        <li><a class="vieworders" href="{link module=order action=ordersbyuser}">View My Orders</a></li>
-        <li><a class="password" href="{link controller=users action=change_password}">Change My Password</a></li>
-        <li><a class="logout" href="{link controller=login action=logout}">Log Out</a></li>
+        <li><a class="addressbook" href="{link module=address action=myaddressbook}">{'Manage My Addresses'|gettext}</a></li>
+        <li><a class="vieworders" href="{link module=order action=ordersbyuser}">{'View My Orders'|gettext}</a></li>
+        <li><a class="password" href="{link controller=users action=change_password}">{'Change My Password'|gettext}</a></li>
+        <li><a class="logout" href="{link controller=login action=logout}">{'Log Out'|gettext}</a></li>
     {else}
-        <li><a class="login" href="{link controller=login action=loginredirect}" rel="nofollow">Login</a></li>
+        <li><a class="login" href="{link controller=login action=loginredirect}" rel="nofollow">{'Login'|gettext}</a></li>
     {/if}
     </ul>
 </div>

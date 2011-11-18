@@ -34,7 +34,7 @@
                         <a href="#showcats" id="showcats"class=" awesome small black">Show Categories</a>
                     </div>
                     <div id="catpicker" class="hide">
-                        <div class="hd">Select Categories</div>
+                        <div class="hd">{'Select Categories'|gettext}</div>
                         <div class="bd">                            
                             <div style="overflow-y:scroll;height:300px;">                            
                             {control type="tagtree" addable=false id="managecats" name="managecats" controller=storeCategory draggable=false menu=false expandonstart=false checkable=true}
@@ -65,13 +65,13 @@
             </tr>
             <tr class="odd">
                 <td>
-                    {control type="dropdown" name="product-range-op" label="A Product ID..."|gettext items="Equal to,Less than,Greater than"|gettext values="e,l,g"}
+                    {control type="dropdown" name="product-range-op" label="A Product ID..."|gettext items="Equal to,Less than,Greater than" values="e,l,g"}
                     {control type="text" name="product-range-num" label=" " value=$record->prn class="collapse prn"}
                 </td>
             </tr>
             <tr class="even">
                  <td>
-                    {control type="dropdown" name="product-price-op" label="Product Price..."|gettext items="Equal to,Less than,Greater than"|gettext values="e,l,g"}
+                    {control type="dropdown" name="product-price-op" label="Product Price..."|gettext items="Equal to,Less than,Greater than" values="e,l,g"}
                     {control type="text" name="product-price-num" label=" " value=$record->ppn class="collapse ppn"}
                 </td> 
             </tr>
@@ -90,7 +90,7 @@
             
             <tr class="odd">
                 <td>
-                    <a id="submit-report" href="#" onclick="document.reportform.submit(); return false;" class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}"><strong><em>Generate Report</em></strong></a>
+                    <a id="submit-report" href="#" onclick="document.reportform.submit(); return false;" class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}"><strong><em>{'Generate Report'|gettext}</em></strong></a>
                 </td>
             </tr>
         </tbody>

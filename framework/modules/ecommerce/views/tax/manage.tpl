@@ -28,22 +28,22 @@
     <thead>
         <tr>
             <th>
-                Class
+                {'Class'|gettext}
             </th>
             <th>
-                Rate
+                {'Rate'|gettext}
             </th>
             <th>
-                Zone
+                {'Zone'|gettext}
             </th>
             <th>
-                State
+                {'State'|gettext}
             </th>
             <th>
-                Country
+                {'Country'|gettext}
             </th>
 			 <th>
-                Action
+                {'Action'|gettext}
             </th>
         </tr>
     </thead>

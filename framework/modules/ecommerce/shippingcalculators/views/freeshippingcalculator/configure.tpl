@@ -17,7 +17,7 @@
 <div id="freeshippingcfg">
     <div id="freeship-tabs" class="yui-navset yui3-skin-sam hide">
         <ul class="yui-nav">
-	        <li class="selected"><a href="#tab1"><em>Free Shipping Settings</em></a></li>
+	        <li class="selected"><a href="#tab1"><em>{'Free Shipping Settings'|gettext}</em></a></li>
         </ul>            
         <div class="yui-content">
             <div id="tab1">

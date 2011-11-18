@@ -230,7 +230,7 @@
                     </table>
                 </div>
                 <div id="misc">
-                    <h2>Miscellaneous Information</h2>
+                    <h2>{'Miscellaneous Information'|gettext}</h2>
                     {control type="text" name="warehouse_location" label="Warehouse Location"|gettext value=$record->warehouse_location}
                 </div>
             </div>
@@ -259,7 +259,6 @@
                 }
             }
         }
-
 
         YAHOO.util.Dom.removeClass("editproduct", 'hide');
         var loading = YAHOO.util.Dom.getElementsByClassName('loadingdiv', 'div');

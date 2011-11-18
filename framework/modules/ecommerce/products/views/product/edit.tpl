@@ -24,9 +24,9 @@
 
 <div id="editproduct" class="module store edit hide yui-skin-sam yui3-skin-sam exp-skin exp-admin-skin">
     {if $record->id != ""}
-        <h1>Edit Information for {$modelname}</h1>
+        <h1>{'Edit Information for'|gettext} {$modelname}</h1>
     {else}
-        <h1>New {$modelname}</h1>
+        <h1>{'New'|gettext} {$modelname}</h1>
     {/if}
 
     {form action=update}
@@ -38,28 +38,28 @@
 		{control type="hidden" name="id" value=$record->id}
         <ul id="dynamicload" class="exp-ajax-tabs">
 	
-        	<li><a href="{link action="edit" product_type="product" ajax_action=1 id=$record->id parent_id = $record->parent_id view="edit_general"}">General</a></li>
-        	<li><a href="{link action="edit" product_type="product" ajax_action=1 id=$record->id parent_id = $record->parent_id view="edit_pricing"}">Pricing, Tax &amp; Discounts</a></li>
-        	<li><a href="{link action="edit" product_type="product" ajax_action=1 id=$record->id parent_id = $record->parent_id view="edit_images"}">Images &amp; Files</a></li>
-        	<li><a href="{link action="edit" product_type="product" ajax_action=1 id=$record->id parent_id = $record->parent_id view="edit_quantity"}">Quantity</a></li>
-        	<li><a href="{link action="edit" product_type="product" ajax_action=1 id=$record->id parent_id = $record->parent_id view="edit_shipping"}">Shipping</a></li>
-        	<li><a href="{link action="edit" product_type="product" ajax_action=1 id=$record->id parent_id = $record->parent_id view="edit_categories"}">Categories</a></li>
-        	<li><a href="{link action="edit" product_type="product" ajax_action=1 id=$record->id parent_id = $record->parent_id view="edit_options"}">Options</a></li>
+        	<li><a href="{link action="edit" product_type="product" ajax_action=1 id=$record->id parent_id = $record->parent_id view="edit_general"}">{'General'|gettext}</a></li>
+        	<li><a href="{link action="edit" product_type="product" ajax_action=1 id=$record->id parent_id = $record->parent_id view="edit_pricing"}">{'Pricing, Tax'|gettext} &amp; {'Discounts'|gettext}</a></li>
+        	<li><a href="{link action="edit" product_type="product" ajax_action=1 id=$record->id parent_id = $record->parent_id view="edit_images"}">{'Images'|gettext} &amp; {'Files'|gettext}</a></li>
+        	<li><a href="{link action="edit" product_type="product" ajax_action=1 id=$record->id parent_id = $record->parent_id view="edit_quantity"}">{'Quantity'|gettext}</a></li>
+        	<li><a href="{link action="edit" product_type="product" ajax_action=1 id=$record->id parent_id = $record->parent_id view="edit_shipping"}">{'Shipping'|gettext}</a></li>
+        	<li><a href="{link action="edit" product_type="product" ajax_action=1 id=$record->id parent_id = $record->parent_id view="edit_categories"}">{'Categories'|gettext}</a></li>
+        	<li><a href="{link action="edit" product_type="product" ajax_action=1 id=$record->id parent_id = $record->parent_id view="edit_options"}">{'Options'|gettext}</a></li>
 			{if $record->parent_id == 0}
-        	<li><a href="{link action="edit" product_type="product" ajax_action=1 id=$record->id view="edit_featured"}">Featured</a></li>
-        	<li><a href="{link action="edit" product_type="product" ajax_action=1 id=$record->id view="edit_related"}">Related Products</a></li>
+        	<li><a href="{link action="edit" product_type="product" ajax_action=1 id=$record->id view="edit_featured"}">{'Featured'|gettext}</a></li>
+        	<li><a href="{link action="edit" product_type="product" ajax_action=1 id=$record->id view="edit_related"}">{'Related Products'|gettext}</a></li>
 			{/if}
-        	<li><a href="{link action="edit" product_type="product" ajax_action=1 id=$record->id parent_id = $record->parent_id view="edit_userinput"}">User Input Fields</a></li>
-        	<li><a href="{link action="edit" product_type="product" ajax_action=1 id=$record->id parent_id = $record->parent_id view="edit_status"}">Active &amp; Status Settings</a></li>
+        	<li><a href="{link action="edit" product_type="product" ajax_action=1 id=$record->id parent_id = $record->parent_id view="edit_userinput"}">{'User Input Fields'|gettext}</a></li>
+        	<li><a href="{link action="edit" product_type="product" ajax_action=1 id=$record->id parent_id = $record->parent_id view="edit_status"}">{'Active'|gettext} &amp; {'Status Settings'|gettext}</a></li>
 			{if $record->parent_id == 0}
-        	<li><a href="{link action="edit" product_type="product" ajax_action=1 id=$record->id view="edit_meta"}">Meta Info</a></li>
+        	<li><a href="{link action="edit" product_type="product" ajax_action=1 id=$record->id view="edit_meta"}">{'Meta Info'|gettext}</a></li>
 			{/if}
-        	<li><a href="{link action="edit" product_type="product" ajax_action=1 id=$record->id parent_id = $record->parent_id view="edit_notes"}">Notes</a></li>
-        	<li><a href="{link action="edit" product_type="product" ajax_action=1 id=$record->id parent_id = $record->parent_id view="edit_extrafields"}">Extra Fields</a></li>
+        	<li><a href="{link action="edit" product_type="product" ajax_action=1 id=$record->id parent_id = $record->parent_id view="edit_notes"}">{'Notes'|gettext}</a></li>
+        	<li><a href="{link action="edit" product_type="product" ajax_action=1 id=$record->id parent_id = $record->parent_id view="edit_extrafields"}">{'Extra Fields'|gettext}</a></li>
 			{if $record->parent_id == 0}
-        	<li><a href="{link action="edit" product_type="product" ajax_action=1 id=$record->id view="edit_model"}">SKUS/Model</a></li>
+        	<li><a href="{link action="edit" product_type="product" ajax_action=1 id=$record->id view="edit_model"}">{'SKUS/Model'|gettext}</a></li>
 			{/if}
-        	<li><a href="{link action="edit" product_type="product" ajax_action=1 id=$record->id parent_id = $record->parent_id view="edit_misc"}">Misc</a></li>
+        	<li><a href="{link action="edit" product_type="product" ajax_action=1 id=$record->id parent_id = $record->parent_id view="edit_misc"}">{'Misc'|gettext}</a></li>
         </ul>
         <div id="loadcontent" class="exp-ajax-tabs-content"></div>
         

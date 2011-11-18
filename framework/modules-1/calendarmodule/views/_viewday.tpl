@@ -75,7 +75,7 @@
 					<span><b>
 						{if $item->is_allday == 1}{'All Day'|gettext}{else}
 							{if $item->eventstart != $item->eventend}
-								{$item->eventstart|format_date:$smarty.const.DISPLAY_TIME_FORMAT} to {$item->eventend|format_date:$smarty.const.DISPLAY_TIME_FORMAT}
+								{$item->eventstart|format_date:$smarty.const.DISPLAY_TIME_FORMAT} {'to'|gettext} {$item->eventend|format_date:$smarty.const.DISPLAY_TIME_FORMAT}
 							{else}
 								{$item->eventstart|format_date:$smarty.const.DISPLAY_TIME_FORMAT}
 							{/if}

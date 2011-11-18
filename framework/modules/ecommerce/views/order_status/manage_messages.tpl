@@ -19,15 +19,15 @@
 {/css}
 
 <div class="modules order_status manage-messages">
-	<h1>{$moduletitle|default:"Manage Order Status Messages"}</h1>
+	<h1>{$moduletitle|default:"Manage Order Status Messages"|gettext}</h1>
 	
-	<a class="add" href="{link action=edit_message}">Add a new message</a>
+	<a class="add" href="{link action=edit_message}">{'Add a new message'|gettext}</a>
 	<div id="orders">
 		{pagelinks paginate=$page top=1}
 		<table id="prods" class="exp-skin-table">
 			<thead>
 				<tr>
-				    <th>Body</th>
+				    <th>{'Body'|gettext}</th>
 					<th>&nbsp;</th>
 				</tr>
 			</thead>
@@ -44,7 +44,7 @@
 				</tr>
 				{foreachelse}
 				    <tr class="{cycle values="odd,even"}">
-				        <td colspan="4">No status codes have been created yet.</td>
+				        <td colspan="4">{'No status codes have been created yet.'|gettext}</td>
 				    </tr>
 				{/foreach}
 		</tbody>

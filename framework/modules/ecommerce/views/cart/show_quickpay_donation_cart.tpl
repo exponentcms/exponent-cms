@@ -17,8 +17,8 @@
 {if $items|@count > 0}
 <table id="cart" width="100%" cellpadding="0" cellspacing="0">
     <tr>
-        <th>Item</th>
-        <th>Price</th>
+        <th>{'Item'|gettext}</th>
+        <th>{'Price'|gettext}</th>
         <th>&nbsp;</th>
     </tr>
     {foreach from=$items item=item}
@@ -34,6 +34,6 @@
 </table>
 {else}
 <div class="no-items">
-    You don't have any items in your cart.
+    {'You currently have no items in your cart'|gettext}
 </div>
 {/if}

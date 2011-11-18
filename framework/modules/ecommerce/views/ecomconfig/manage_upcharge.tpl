@@ -29,7 +29,7 @@
     <h1>{"Up Charge Rate Settings"|gettext}</h1>
 	
 	{form action=update_upcharge}
-		Select the configuration of the Up charge Rate for the Countries and States/Provinces:
+		{'Select the configuration of the Up charge Rate for the Countries and States/Provinces:'|gettext}
         <table class="exp-skin-table">
             <thead>
                 <tr>

@@ -17,7 +17,7 @@
 <h2>{"Configure File Display Settings"|gettext}</h2>
     {control id="filedisplay" type='filedisplay-types' name=filedisplay label="Display Files as"|gettext value=$config.filedisplay}
 <div id="ff-options" style="display:none">
-    {control type="dropdown" name="ffloat" label="File Display Box Float"|gettext items="No Float,Left,Right"|gettext values="No Float,Left,Right" value=$config.ffloat}
+    {control type="dropdown" name="ffloat" label="File Display Box Float"|gettext items="No Float,Left,Right" values="No Float,Left,Right" value=$config.ffloat}
     {control type="text" label="Width of File Display Box"|gettext name="fwidth" value=$config.fwidth size=5}
     {control type="text" label="Width of Margin"|gettext name="fmargin" value=$config.fmargin size=5}
     <hr />
@@ -74,7 +74,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','io', function(Y) {
     Y.one('#filedisplay').on('change',function(e){
         cfg.data = "view="+e.target.get('value');
         var request = Y.io(sUrl, cfg);
-        Y.one('#fileViewConfig').setContent(Y.Node.create('<div class="loadingdiv" style="width:40%">Loading Form</div>'));
+        Y.one('#fileViewConfig').setContent(Y.Node.create('<div class="loadingdiv" style="width:40%">{/literal}{"Loading Form"|gettext}{literal}</div>'));
         if (e.target.get('value')==""){
             Y.one('#ff-options').setStyle("display","none");
         }

@@ -18,7 +18,7 @@
 	{form name=setaddy action="setAddress" ajax=true}
 	{foreach from=$addresses item=addy name=addresses}
 			<div class="address">
-				<a href="javascript:void(0)" onclick="YAHOO.util.Connect.asyncRequest('GET', 'http://adam/core/cart/setAddress/1');">Make this my shipping address</a>
+				<a href="javascript:void(0)" onclick="YAHOO.util.Connect.asyncRequest('GET', 'http://adam/core/cart/setAddress/1');">{'Make this my shipping address'|gettext}</a>
 				{control type=radio flip=true name=shipping label="Ship to this address"|gettext value=$address->id}
 				<strong>{$addy->firstname} {$addy->middlename} {$addy->lastname}</strong>{br}
 				{$addy->address1}{br}
@@ -28,11 +28,11 @@
 				{control type=radio flip=true name=billing label="This is my billing address"|gettext value=$address->id}
 			</div>
 	{foreachelse}
-		<a href="javascript:void(0);" onclick="divtoggle('saddy')">You don't have any address configured yet.  Click here to setup a new address</a>
+		<a href="javascript:void(0);" onclick="divtoggle('saddy')">{'You don\'t have any address configured yet.  Click here to setup a new address'|gettext}</a>
 	{/foreach}
 	{/form}
 	<div style="clear:both"></div>
-	{br}<a href="javascript:void(0);" onclick="divtoggle('saddy')">Add a new address</a>
+	{br}<a href="javascript:void(0);" onclick="divtoggle('saddy')">{'Add a new address'|gettext}</a>
 	<div id="saddy" style="display:none">
                 {form name="newaddy" action=createaddress ajax=true update=addyblock}
                         {control type=text name=firstname label="First Name"|gettext}

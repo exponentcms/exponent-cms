@@ -24,9 +24,9 @@
 				{clear}
 			</li>
 		{foreachelse}
-            <li>You currently have no items in your cart</li>
+            <li>{'You currently have no items in your cart'|gettext}</li>
         {/foreach}
 	</ul>
 	{br}<em>Cart Total: {currency_symbol}{$total|number_format:2}</em>
-	{br}<a class="checkout" href="{securelink action="checkout"}">Checkout now</a>
+	{br}<a class="checkout" href="{securelink action="checkout"}">{'Checkout Now'|gettext}</a>
 </div>

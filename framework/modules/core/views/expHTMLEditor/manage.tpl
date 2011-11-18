@@ -78,13 +78,13 @@
 					kama
                 </td>
                 <td>
-					On
+					{'On'|gettext}
                 </td>
                 <td>
-					No
+					{'No'|gettext}
                 </td>
 	            <td>
-					No
+					{'No'|gettext}
 	            </td>
                 <td>
 
@@ -94,7 +94,7 @@
             <tr class="{cycle values="odd,even"}{if $module->active == 1} active{/if}">
                 <td>
                     {if $cfg->active}
-                        <span class="active">Active</span>
+                        <span class="active">{'Active'|gettext}</span>
                     {else}
                         <a class="inactive" href="{link module="expHTMLEditor" action=activate id=$cfg->id}" title="Activate this Toolbar"|gettext>Activate</a>
                     {/if}
@@ -107,23 +107,23 @@
                 </td>
                 <td>
 					{if $cfg->scayt_on}
-						On
+						{'On'|gettext}
 					{else}
-						Off
+						{'Off'|gettext}
 					{/if}
                 </td>
                 <td>
 					{if $cfg->paste_word}
-						Yes
+						{'Yes'|gettext}
 					{else}
-						No
+						{'No'|gettext}
 					{/if}
                 </td>
 	            <td>
 					{if $cfg->plugins}
-						Yes
+						{'Yes'|gettext}
 					{else}
-						No
+						{'No'|gettext}
 					{/if}
 	            </td>
                 <td>

@@ -50,7 +50,7 @@ if ($f) {
 		$types[".break"] = gt('Spacer');
 		$types[".line"] = gt('Horizontal Line');
 		uasort($types,"strnatcmp");
-		array_unshift($types,gt('[Please Select]'));
+		array_unshift($types,'['.gt('Please Select'.']'));
 		$template->assign("types",$types);
 		$template->assign("pickerurl",URL_FULL."source_selector.php?showmodules=formmodule&dest='+escape(\"".PATH_RELATIVE."?module=formbuilder&action=picked_source&form_id=".$f->id."&s=".$loc->src."&m=".$loc->mod ."\")+'&vmod=containermodule&vview=_sourcePicker");
 		$template->output();

@@ -1,14 +1,14 @@
 {br}
-<p>There are {$count} products that have non-unicode characters in it.</p>
+<p>{'There are'|gettext} {$count} {'products that have non-unicode characters in it.'|gettext}</p>
 
  <div id="products">
 	<table id="prods" class="exp-skin-table" style="width:95%">
 	<thead>
 		<tr>
-			<th>Model</th>
-			<th>Title</th>
-			<th>Non-Unicode Field(s)</th>
-			<th>Actions</th>
+			<th>{'Model'|gettext}</th>
+			<th>{'Title'|gettext}</th>
+			<th>{'Non-Unicode Field(s)'|gettext}</th>
+			<th>{'Actions'|gettext}"}</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -29,5 +29,5 @@
 	</tbody>
 	</table>
 	{br}
-	<a href={link controller=store action=cleanNonUnicodeProducts} onclick="return confirm('Are you sure you want to clean all of the products shown above?');">Clean Data</a>
+	<a href={link controller=store action=cleanNonUnicodeProducts} onclick="return confirm('{"Are you sure you want to clean all of the products shown above?"|gettext}');">{'Clean Data'|gettext}</a>
 </div>

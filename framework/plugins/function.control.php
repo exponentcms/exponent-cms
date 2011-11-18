@@ -112,7 +112,8 @@ function smarty_function_control($params,&$smarty) {
                 foreach($params['items'] as $item) {
                     $control->items[$item->$key] = $item->$display;
                 }
-                if (count($control->items) < 1) $control->items = array(0=>'-- No items found. --');
+                $noitems = gt("-- No items found --");
+                if (count($control->items) < 1) $control->items = array(0=>$noitems);
             } else {
                 if (is_array($params['items'])) {
                     $control->items = $params['items'];

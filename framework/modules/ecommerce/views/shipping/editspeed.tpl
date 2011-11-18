@@ -15,8 +15,8 @@
  *}
 
 <div class="module shipping configure">
-    <h1>Configure {$calculator->title} Speed</h1>
-    <p>Use this form to configure the {$calculator->title} speed</p>
+    <h1>{'Configure'|gettext} {$calculator->title} {'Speed'|gettext}</h1>
+    <p>{'Use this form to configure the'|gettext} {$calculator->title} {'speed'|gettext}</p>
     
     {form action=saveEditSpeed}
   		{control type="hidden" name="shippingcalculator_id" value=$calculator->id}

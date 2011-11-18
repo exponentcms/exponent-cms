@@ -16,7 +16,7 @@
 
 <div class="module order_type edit">
     <h1>
-        {if $record->id == ""}New Product Status{else}Editing {$record->title}{/if}
+        {if $record->id == ""}{'New Product Status'|gettext}{else}{'Editing'|gettext} {$record->title}{/if}
     </h1>
     
     {form action=update}

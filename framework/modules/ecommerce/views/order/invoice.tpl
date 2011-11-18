@@ -106,7 +106,7 @@
                             <div class="item-permissions">
                                 {if $permissions.edit_address == 1 && !$pf}                                                                                        
                                     {br}    
-                                    <a href="{link action=edit_address id=$order->id type='s'}">[-edit-]</a>
+                                    <a href="{link action=edit_address id=$order->id type='s'}">[-{'edit'|gettext}-]</a>
                                     {br} 
                                 {/if}
                             </div>
@@ -121,7 +121,7 @@
                             <div class="item-permissions">
                                 {if $permissions.edit_shipping_method == 1 && !$pf}                                                                                        
                                     {br}    
-                                    <a href="{link action=edit_shipping_method id=$order->id}">[-edit-]</a>
+                                    <a href="{link action=edit_shipping_method id=$order->id}">[-{'edit'|gettext}-]</a>
                                 {/if} 
                             </div>
                         {/permissions}                            
@@ -195,7 +195,7 @@
                          {permissions}
                                 {if $permissions.edit_shipping_method == 1 && !$pf}{br} 
                             <div class="item-permissions">
-                                <a href="{link action=edit_payment_info id=$order->id}">[-edit-]</a>
+                                <a href="{link action=edit_payment_info id=$order->id}">[-{'edit'|gettext}-]</a>
                                 {br}{br}   
                             </div>
                                 {/if}                            
@@ -218,9 +218,9 @@
             <tbody>
                 <tr>
                     <td>
-                        <strong>To: </strong>{$sm->to}{br}
-                        <strong>From: </strong>{$sm->from}{br}
-                        <strong>Message: </strong>{$sm->message}{br}
+                        <strong>{'To:'|gettext} </strong>{$sm->to}{br}
+                        <strong>{'From:'|gettext} </strong>{$sm->from}{br}
+                        <strong>{'Message:'|gettext} </strong>{$sm->message}{br}
                     </td>
                 </tr>
             </tbody>
@@ -448,7 +448,7 @@
                     {foreach from=$order->taxzones item=zone}
                         {$zone->name} ({$zone->rate}%)
                     {foreachelse}
-                        (Not Required)
+                        ({'Not Required'|gettext})
                     {/foreach}
                     </td>
                     <td style="border-right:0px;">

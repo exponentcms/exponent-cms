@@ -15,8 +15,8 @@
  *}
 
 <div class="module cart module addToCart">
-    <h1>{$moduletitle|default:"Online Donation - Select Amount"}</h1>
-    <p>Minimum donation amount is ${$product->base_price}.00 increments.</p>
+    <h1>{$moduletitle|default:"Online Donation - Select Amount"|gettext}</h1>
+    <p>{'Minimum donation amount is'|gettext} ${$product->base_price}.00 {'increments'|gettext}.</p>
     {form name=donationamt controller=cart action="addItem"}
         {control type="hidden" name="product_type" value=$params.product_type}
         {control type="hidden" name="product_id" value=$params.product_id}
@@ -25,7 +25,7 @@
         {*control type="buttongroup" name="add2cart" submit="Pay now"*}
     {/form}
     <a id="paynow" class="rc-link" href="">Pay now<span></span></a> or
-    <a id="continue" class="rc-link" href="{link controller=cart action=addItem}">Add to cart and continue shopping<span></span></a>
+    <a id="continue" class="rc-link" href="{link controller=cart action=addItem}">{'Add to cart and continue shopping'|gettext}<span></span></a>
 </div>
 
 {script unique="a2cgc" yui3mods=1}

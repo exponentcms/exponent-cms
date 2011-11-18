@@ -43,9 +43,9 @@ YUI(EXPONENT.YUI3_CONFIG).use('node', 'charts', 'yui2-yahoo-dom-event','yui2-ele
             },
             markerLabelFunction: function(categoryItem, valueItem, itemIndex, series, seriesIndex)
             {
-                var msg = "<span style=\"text-decoration:underline\">Total " + 
+                var msg = "<span style=\"text-decoration:underline\">{/literal}{"Total"|gettext}{literal} " +
                 categoryItem.axis.get("labelFunction").apply(this, [categoryItem.value, categoryItem.axis.get("labelFormat")]) + 
-                " Payment</span><br/><div style=\"margin-top:5px;font-weight:bold\">" + valueItem.axis.get("labelFunction").apply(this, [valueItem.value, {prefix:"$", decimalPlaces:2}]) + "</div>";
+                " {/literal}{"Payment"|gettext}{literal}</span><br/><div style=\"margin-top:5px;font-weight:bold\">" + valueItem.axis.get("labelFunction").apply(this, [valueItem.value, {prefix:"$", decimalPlaces:2}]) + "</div>";
                 return msg; 
             }
         };
@@ -63,7 +63,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('node', 'charts', 'yui2-yahoo-dom-event','yui2-ele
 	
 <div id="payment-summary" class="module administration configure-site exp-skin-tabview">
     
-    <h1>Payment Summary</h1>
+    <h1>{'Payment Summary'|gettext}</h1>
 
 	<div id="payments" class="yui-navset">
 		<ul class="yui-nav">
@@ -123,7 +123,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('node', 'charts', 'yui2-yahoo-dom-event','yui2-ele
 </div>
 
 <div id="tax-summary" class="module administration configure-site exp-skin-tabview">    
-    <h1>Tax Summary</h1>  
+    <h1>{'Tax Summary'|gettext}</h1>
     <div class="exp-ecom-table exp-skin-table">
         <table border="0" cellspacing="0" cellpadding="0">
             <thead>

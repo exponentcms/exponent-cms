@@ -256,7 +256,7 @@
                     {foreach from=$order->taxzones item=zone}
                         {$zone->name} ({$zone->rate}%)
                     {foreachelse}
-                        {"(Not Required)"|gettext}
+                        ({"Not Required"|gettext})
                     {/foreach}
                     </td>
                     <td style="border:1px solid #DEDEDE; border-right:0px;">

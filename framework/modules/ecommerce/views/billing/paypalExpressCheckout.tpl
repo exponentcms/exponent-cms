@@ -1,5 +1,5 @@
 <div class="billing-method">
-    <h4>Pay with Paypal</h4>
+    <h4>{'Pay with Paypal'|gettext}</h4>
     
     {form controller=cart action=preprocess}
         {control type="hidden" name="billingcalculator_id" value=$calcid}

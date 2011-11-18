@@ -17,16 +17,16 @@
 <div id="authcfg">
     <div id="authcfg-tabs" class="yui-navset yui3-skin-sam hide">
         <ul class="yui-nav">
-	        <li class="selected"><a href="#tab1"><em>PayPal Express Checkout<br>Settings</em></a></li>
-	        <li><a href="#tab3"><em>Customer<br>Confirmations</em></a></li>
-	        <li><a href="#tab4"><em>Administrator<br>Notifications</em></a></li>
+	        <li class="selected"><a href="#tab1"><em>{'PayPal Express Checkout'|gettext}<br>{'Settings'|gettext}</em></a></li>
+	        <li><a href="#tab3"><em>{'Customer'|gettext}<br>{'Confirmations'|gettext}</em></a></li>
+	        <li><a href="#tab4"><em>{'Administrator'|gettext}<br>{'Notifications'|gettext}</em></a></li>
         </ul>            
         <div class="yui-content">
 	        <div id="tab1">
 	            {control type="text" name="username" label="API Username"|gettext value=$calculator->configdata.username}
 	            {control type="text" name="password" label="API Password"|gettext value=$calculator->configdata.password}
 	            {control type="text" name="signature" label="API Signature"|gettext value=$calculator->configdata.signature}
-	            {control type="radiogroup" name="process_mode" label="Processing Mode"|gettext items="Sale, Authorization, Order"|gettext values="Sale,Authorization,Order" default=$calculator->configdata.process_mode}
+	            {control type="radiogroup" name="process_mode" label="Processing Mode"|gettext items="Sale, Authorization, Order" values="Sale,Authorization,Order" default=$calculator->configdata.process_mode}
 	            {control type="checkbox" name="testmode" label="Enable Test Mode? You must be logged in to"|gettext|cat:" <a href='https://developer.paypal.com/'>"|cat:("Developer Central"|gettext)|cat:"</a>" value=1 checked=$calculator->configdata.testmode}
 	        </div>
 	        <div id="tab2">

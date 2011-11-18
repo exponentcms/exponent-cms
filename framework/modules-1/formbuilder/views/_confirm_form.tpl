@@ -29,11 +29,11 @@
 {/css}
 
 <div class="formbuilder confirm-form">
-	<h1>Please confirm your submission</h1>
+	<h1>{'Please confirm your submission'|gettext}</h1>
 	<table width="100%" border="0" cellpadding="0" cellspacing="0" class="exp-skin-table">
 	    <thead>
-        	<th>Field</th>
-        	<th>Your Response</th>
+        	<th>{'Field'|gettext}</th>
+        	<th>{'Your Response'|gettext}</th>
         </thead>
         <tbody>
     	{foreach from=$responses item=response key=name}

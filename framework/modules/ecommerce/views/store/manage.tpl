@@ -19,7 +19,7 @@
 {/css}
 
 <div class="module store showall-uncategorized">
-    <h1>Manage Products</h1>
+    <h1>{'Manage Products'|gettext}</h1>
     {permissions}
 		<div class="module-actions">
 			{if $permissions.edit == 1}
@@ -34,7 +34,7 @@
             <tr>
             <th></th>
             {$page->header_columns}
-            <th>Actions</th>
+            <th>{'Actions'|gettext}</th>
             </tr>
         </thead>
         <tbody>
@@ -87,11 +87,11 @@
     {permissions level=$smarty.const.UILEVEL_PERMISSIONS}
         {if $permissions.configure == 1 or $permissions.administrate == 1}
         <div id="prod-admin">
-                <a href="{link controller=store action=create}">Add a new Product</a>
-                {br}<a href="{link controller=storeCategory action=manage}">Manage Categories</a>
-                {br}<a href="{link controller=store action=config}">Configure Store</a>
-				{br}<a href="{link controller=store action=nonUnicodeProducts}">Show Non-Unicode Products</a>
-				{br}<a href="{link controller=store action=uploadModelAliases}">Upload Model Aliases</a>
+                <a href="{link controller=store action=create}">{'Add a new Product'|gettext}</a>
+                {br}<a href="{link controller=storeCategory action=manage}">{'Manage Categories'|gettext}</a>
+                {br}<a href="{link controller=store action=config}">{'Configure Store'|gettext}</a>
+				{br}<a href="{link controller=store action=nonUnicodeProducts}">{'Show Non-Unicode Products'|gettext}</a>
+				{br}<a href="{link controller=store action=uploadModelAliases}">{'Upload Model Aliases'|gettext}</a>
         </div>
     {/if}
     {/permissions}

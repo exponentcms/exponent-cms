@@ -33,7 +33,10 @@ if (!defined('EXPONENT')) exit('');
 <?php echo gt('This will set the default Language for the installation process as well as your new Exponent website.'); ?>
 </p>
 
-<?php $lang = (defined('LANGUAGE')) ? "&lang='".LANGUAGE."'" : ''; ?>
+<?php
+$lang = (defined('LANGUAGE')) ? "&lang='".LANGUAGE."'" : '';
+if (empty($_REQUEST['lang'])) $_REQUEST['lang'] = 'English - US';
+?>
 
 <form method="post" action="index.php">
 <!--	 send us to the next page -->
@@ -41,12 +44,7 @@ if (!defined('EXPONENT')) exit('');
 	<div class="control">
 		<select name="lang" onChange="Refresh(this.value)">
 			<?PHP foreach(expLang::langList() as $currid=>$currlang) {?>
-<!--				--><?php //if ($currid == "English - US") { ?>
-				<?php if (isset($_REQUEST['lang']) && $currid == trim($_REQUEST['lang'])) { ?>
-				<option value="<?PHP echo $currid?>" selected><?PHP echo $currlang?></option>
-				<?php } else { ?>
-				<option value="<?PHP echo $currid?>"><?PHP echo $currlang?></option>
-				<?php } ?>
+				<option value="<?PHP echo $currid?>"<?php if (isset($_REQUEST['lang']) && $currid == trim($_REQUEST['lang'])) echo " selected"; ?>><?PHP echo $currlang?></option>
 			<?PHP }?>
 		</select>
 	</div>

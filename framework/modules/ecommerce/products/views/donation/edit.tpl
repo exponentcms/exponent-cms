@@ -17,9 +17,9 @@
 <div id="editproduct" class="module store edit">
 
     {if $record->id != ""}
-        <h1>Edit Information for {$record->product_name}</h1>
+        <h1>{'Edit Information for'|gettext} {$record->product_name}</h1>
     {else}
-        <h1>New {$record->product_name}</h1>
+        <h1>{'New'|gettext} {$record->product_name}</h1>
     {/if}
 
     {form action=update}
@@ -28,12 +28,12 @@
         
         <div id="editproduct-tabs" class="yui-navset yui3-skin-sam hide">
             <ul class="yui-nav">
-	            <li class="selected"><a href="#tab1"><em>General Info</em></a></li>
-	            <li><a href="#tab2"><em>Pricing</em></a></li>
-	            <li><a href="#tab3"><em>Files & Images</em></a></li>
+	            <li class="selected"><a href="#tab1"><em>{'General Info'|gettext}</em></a></li>
+	            <li><a href="#tab2"><em>{'Pricing'|gettext}</em></a></li>
+	            <li><a href="#tab3"><em>{'Files & Images'|gettext}</em></a></li>
 	            <!--li><a href="#tab4"><em>Quantity Info</em></a></li-->
 	            <!--li><a href="#tab5"><em>Shipping Info</em></a></li-->
-	            <li><a href="#tab6"><em>Categories</em></a></li>
+	            <li><a href="#tab6"><em>{'Categories'|gettext}</em></a></li>
             </ul>            
             <div class="yui-content">
 	            <div id="tab1">
@@ -55,7 +55,7 @@
 	                {control type="checkbox" name="is_available" label="Is this product available?"|gettext value=$record->is_available}
 	                {control type="text" name="availability_note" label="Note to display when product is not available"|gettext value=$record->availability_note}
 	                {control type="radiogroup" name="availability_type" label="Quantity Display"|gettext
-	                    items="Unavailable if out of stock.,Available but shown as backordered if out of stock.,Always available even if out of stock.,Show as \'Call for Price\'."|gettext
+	                    items="Unavailable if out of stock.,Available but shown as backordered if out of stock.,Always available even if out of stock.,Show as \'Call for Price\'."
 	                    values="0,1,2,3"
 	                }
 	            </div-->

@@ -15,7 +15,7 @@
  *}
 <div style="float:right; margin-top:15px;"><a href="{link controller=report action=batch_export applytoall=true}">[Export This Data]</a></div>
 <div class="module store showall-uncategorized">
-    <h1>Improperly Categorized Products</h1>    
+    <h1>{'Improperly Categorized Products'|gettext}</h1>
     <div id="products">
         {$page->links}
         <table id="prods" class="exp-skin-table" style="width:95%">
@@ -23,7 +23,7 @@
             <tr>
             <th></th>
             {$page->header_columns}
-            <th>Edit/Delete</th>
+            <th>{'Edit/Delete'|gettext}</th>
             </tr>
         </thead>
         <tbody>

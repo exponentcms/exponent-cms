@@ -90,13 +90,13 @@
          </thead>
          <tbody>
         <tr><td>
-        {control type=text name=subtotal label="Subtotal"|gettext value=$order->subtotal} </td><td>* This is the total of all order items.
+        {control type=text name=subtotal label="Subtotal"|gettext value=$order->subtotal} </td><td>* {'This is the total of all order items.'|gettext}
         </td></tr>
         <tr><td> 
         {control type=text name=total_discounts label="Total Discounts"|gettext value=$order->total_discounts}</td><td> * {"Total discounts you want reflected on this order."|gettext}
         </td></tr>
         <tr><td> 
-        {control type=text name=tax label="Tax"|gettext value=$order->tax}</td><td>* Total of tax for this order
+        {control type=text name=tax label="Tax"|gettext value=$order->tax}</td><td>* {'Total of tax for this order'|gettext}
         </td></tr>
         <tr><td> 
         {control type=text name=shipping_total label="Shipping Total"|gettext value=$order->shipping_total}</td><td> * {"Total of shipping for this order."|gettext}
@@ -138,7 +138,7 @@
                 });
                 
                 if (bxchkd==0) {
-                    alert('You may not create an order with no items selected. Select the checkbox in the "Include Item?" column above to include at least one item on your reference order. You may edit that item anytime, or remove the included item after you add an additional one.')
+                    alert('{/literal}{"You may not create an order with no items selected. Select the checkbox in the \'Include Item?\' column above to include at least one item on your reference order. You may edit that item anytime, or remove the included item after you add an additional one."|gettext}{literal}')
                     //var pRet = confirm('Are you sure you want to continue with no items selected?\nClick Cancel below and select the checkbox in the "Include Item?" column above to include an item on your reference order, or click OK to continue with no items.');
                     //if(pRet==true)
                     //{

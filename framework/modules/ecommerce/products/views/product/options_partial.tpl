@@ -23,11 +23,11 @@
 	{foreach from=$optiongroups item=group}
     <div class="panel"> 
         <div class="hd">
-            <h2>{$group->title}</h2><a href="#" class="expand">Expand</a>
+            <h2>{$group->title}</h2><a href="#" class="expand">{'Expand'|gettext}</a>
         </div>
     
         <div class="bd collapsed">
-    	    <table class="options exp-skin-table" summary="{$group->title} Product Options">
+    	    <table class="options exp-skin-table" summary="{$group->title} {'Product Options'|gettext}">
     	    <thead>
     	    <tr>
     	        <th colspan="5">
@@ -42,11 +42,11 @@
         	    </th>
     	    </tr>
             <tr class="column-label">     
-                <th>Label</th>
-                <th>Adjustment</th>
-                <th>Modifier</th>
-                <th>Amount</th>
-                <th>Default</th>
+                <th>{'Label'|gettext}</th>
+                <th>{'Adjustment'|gettext}</th>
+                <th>{'Modifier'|gettext}</th>
+                <th>{'Amount'|gettext}</th>
+                <th>{'Default'|gettext}</th>
             </tr>
     	    </thead>
     	    <tbody>
@@ -58,7 +58,7 @@
                     {control type="hidden" name="optiongroups[`$group->title`][options][`$option->title`][option_master_id]" value=$option->option_master_id}                  
 
                     {control type="checkbox" name="optiongroups[`$group->title`][options][`$option->title`][enable]" label=$option->title value=1 checked=$option->enable}
-                    <a rel="mo-{$key}-{$group->title}" class="togglelink" href="#">+More...</a>
+                    <a rel="mo-{$key}-{$group->title}" class="togglelink" href="#">+{'More...'|gettext}</a>
                 </td>
                 <td>{control type="dropdown" name="optiongroups[`$group->title`][options][`$option->title`][updown]" items="+,-" values="+,-" label=" " value=$option->updown}</td>
                 <td>{control type="dropdown" name="optiongroups[`$group->title`][options][`$option->title`][modtype]" items="$,%" values="$,%" label=" " value=$option->modtype}</td>
@@ -73,7 +73,7 @@
             </tr>
             {foreachelse}
                 <p>
-                 This option group does not have any options yet.
+                 {'This option group does not have any options yet.'|gettext}
                 </p>
             {/foreach}
             </tbody>
@@ -81,7 +81,7 @@
         </div>
     </div>
     {foreachelse}
-        There are no product options setup yet.
+        {'There are no product options setup yet.'|gettext}
     {/foreach}
 </div>
 

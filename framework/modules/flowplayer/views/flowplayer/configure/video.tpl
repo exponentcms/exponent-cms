@@ -18,7 +18,7 @@
 {control type="checkbox" name="autoplay" label="Automatically Play Videos"|gettext value=1 checked=$config.autoplay}
 {control type="text" name="video_width" label="Video Width"|gettext value=$config.video_width|default:200 size=4}
 {control type="text" name="video_height" label="Video Height"|gettext value=$config.video_height|default:143 size=4}
-{control type=dropdown name="video_style" items="Modern,Air,Tube"|gettext values="1,2,3" label="Player Style"|gettext value=$config.video_style|default:""}
+{control type=dropdown name="video_style" items="Modern,Air,Tube" values="1,2,3" label="Player Style"|gettext value=$config.video_style|default:""}
 <h3>{"Player Controls"|gettext}</h3>
 {control type="checkbox" name="control_stop" label="Stop"|gettext value=1 checked=$config.control_stop}
 {control type="checkbox" name="control_play" label="Play/Pause"|gettext value=1 checked=$config.control_play|default:1}

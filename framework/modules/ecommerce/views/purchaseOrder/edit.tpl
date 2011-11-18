@@ -22,7 +22,7 @@
 
 <div id="editpurchaseorder" class="module purchaseorder edit">
 
-    <h1>{if $record->id}{"Editing"|gettext}{else}Creating{/if} {"Purchase Order"|gettext}</h1>
+    <h1>{if $record->id}{"Editing"|gettext}{else}{'Creating'|gettext}{/if} {"Purchase Order"|gettext}</h1>
     <form id="create_po">
         {control type="dropdown" name="vendor" id="vendorSelect" label="Select a Vendor"|gettext includeblank="--Select a Vendor--"|gettext frommodel=vendor key=id display=title value=$purchase_order->vendor_id}
 		
@@ -121,7 +121,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','event','io', function(Y) {
             },
             on: {
                 start: function(){
-                    vBody.setContent('<div class="loadingdiv">Adding Vendor Information<div>');
+                    vBody.setContent('<div class="loadingdiv">{/literal}{"Adding Vendor Information"|gettext}{literal}<div>');
                 },
                 complete: function(id, o, args){
                     var data = o.responseText; // Response data.
@@ -165,7 +165,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','event','io', function(Y) {
             },
             on: {
                 start: function(){
-                    ctrlRow.get('parentNode').insert('<tr class="load"><td colspan="9"><div class="loadingdiv">Adding Purchase Order Item<div></td></tr>',ctrlRow)
+                    ctrlRow.get('parentNode').insert('<tr class="load"><td colspan="9"><div class="loadingdiv">{/literal}{"Adding Purchase Order Item"|gettext}{literal}<div></td></tr>',ctrlRow)
                 },
                 complete: rowIOComplete
                 //end: Dispatch.end

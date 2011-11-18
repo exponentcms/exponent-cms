@@ -54,7 +54,6 @@
                 {/permissions}
 
                 <div class="bodycopy">
-
                     {if !$config.hidetext}
                         <h2>{$slide->title}</h2>
                         {$slide->body}

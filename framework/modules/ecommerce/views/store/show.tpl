@@ -48,11 +48,11 @@
             {icon action=delete record=$product title="Delete `$product->title`" onclick="return confirm('Are you sure you want to delete this product?');"}
         {/if}
         {if $permissions.edit == 1}
-            {icon action=copyProduct class="copy" text="Copy Product" title="Copy `$product->title` " record=$product}
+            {icon action=copyProduct class="copy" text="Copy Product"|gettext title="Copy `$product->title` " record=$product}
         {/if}
         {if $permissions.edit == 1}   
         
-            <a href="{link controller=store action=edit parent_id=$product->id product_type='childProduct'}" class="add">Add Child Product</a>
+            <a href="{link controller=store action=edit parent_id=$product->id product_type='childProduct'}" class="add">{'Add Child Product'|gettext}</a>
         {/if}
     </div>
     {/permissions}
@@ -240,7 +240,7 @@
             [3] => Show as &quot;Call for Price&quot;.
         *}                                                                                      
         {if $product->availability_type == 3}
-            <strong>{"Call for price"|gettext}</strong>
+            <strong>{"Call for Price"|gettext}</strong>
         {else}
             {if $product->use_special_price}                     
                 <span class="regular-price on-sale">{currency_symbol}{$product->base_price|number_format:2}</span>
@@ -466,7 +466,7 @@
                     {/if}
                     <td style="text-align: right;">
                         {if $chiprod->availability_type == 3 && $chiprod->active_type == 0}
-                            <strong><a href="javascript:void();" rel=nofollow title="{$chiprod->availability_note}">Call for price</a></strong>                
+                            <strong><a href="javascript:void();" rel=nofollow title="{$chiprod->availability_note}">Call for Price</a></strong>
                         {else}
                             {if $chiprod->use_special_price}
                                 <span style="color:red; font-size: 8px; font-weight: bold;">SALE</span>{br}
@@ -517,13 +517,13 @@
                     if (bx.get('checked')) {
                         bxchkd++;
                         if (parseInt(txts.item(key).get('value'))<=0) {
-                            msg = " You'll also need a value greter than 0 for a quantity."
+                            msg = "{/literal}{"You\'ll also need a value greater than 0 for a quantity."|gettext}{literal}"
                         }
                     };
                 });
                 
                 if (bxchkd==0 || msg!="") {
-                    alert('You need to check at least 1 product before it can be added to your cart'+msg);
+                    alert('{/literal}{"You need to check at least 1 product before it can be added to your cart"|gettext}{literal}'+msg);
                 } else {
                     frm.submit();
                 };

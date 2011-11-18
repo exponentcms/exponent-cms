@@ -13,7 +13,7 @@
  * GPL: http://www.gnu.org/licenses/gpl.txt
  *
  *}
-<h1>Vendor Information</h1>
+<h1>{'Vendor Information'|gettext}</h1>
 {form action=update_vendor}
     {control type="hidden" name="vendor[id]" value=$vendor->id}
     {control type="text" name="vendor[title]" label="Vendor Name"|gettext value=$vendor->title}

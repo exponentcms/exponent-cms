@@ -13,8 +13,9 @@
  * GPL: http://www.gnu.org/licenses/gpl.txt
  *
  *}
-MESSAGE:
 
-Email:    {$post.email}
-Subject:  {$post.subject}
-Message:  {$post.message}
+{'MESSAGE:'|gettext}
+
+{'Email:'|gettext}    {$post.email}
+{'Subject:'|gettext}  {$post.subject}
+{'Message:'|gettext}  {$post.message}

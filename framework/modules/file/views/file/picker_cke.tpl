@@ -349,7 +349,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event','yui2-container','yu
 	            var sUri = EXPONENT.URL_FULL + "index.php?ajax_action=1" + json + "&yaetime=" + dt;
 	            return sUri;
 	        } else if (!obj.action || (!obj.controller && !obj.module)) {
-	            alert("{/literal}{"If you don't pass the ID of a form, you need to specify both a module/controller AND and a corresponding action."|gettext}{literal}");
+	            alert("{/literal}{"If you don\'t pass the ID of a form, you need to specify both a module/controller AND and a corresponding action."|gettext}{literal}");
 	        } else {
 	            //slap a date in there so IE doesn't cache
 	            var dt = new Date().valueOf();

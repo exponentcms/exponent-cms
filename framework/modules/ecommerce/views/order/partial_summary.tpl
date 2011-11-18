@@ -18,11 +18,11 @@
     <table>
     <thead>
         <tr>
-            <th>Item</th>
-            <th>Model/SKU</th>
-            <th>Qty</th>
-            <th>Item Price</th>
-            <th>Total Price</th>
+            <th>{'Item'|gettext}</th>
+            <th>{'Model/SKU'|gettext}</th>
+            <th>{'Qty'|gettext}</th>
+            <th>{'Item Price'|gettext}</th>
+            <th>{'Total Price'|gettext}</th>
             
         </tr>
     </thead>
@@ -64,16 +64,16 @@
         {/foreach}
         {if $show_totals == 1}
         <tr>
-            <td colspan="4" class="totals top-brdr">Subtotal</td>
+            <td colspan="4" class="totals top-brdr">{'Subtotal'|gettext}</td>
             <td class="top-brdr">{currency_symbol}{$order->subtotal|number_format:2}</td>
         </tr>
         {if $order->total_discounts > 0}
             <tr>
-                <td colspan="4" class="totals">Discounts</td>
+                <td colspan="4" class="totals">{'Discounts'|gettext}</td>
                 <td align="right">{currency_symbol}-{$order->total_discounts|number_format:2}</td>
             </tr> 
             <tr>
-                <td colspan="4" class="totals">Total</td>
+                <td colspan="4" class="totals">{'Total'|gettext}</td>
                 <td align="right">{currency_symbol}{$order->total|number_format:2}</td>
             </tr>  
         {/if}
@@ -83,17 +83,17 @@
                 {foreach from=$order->taxzones item=zone}
                     {br}{$zone->name} ({$zone->rate}%)
                 {foreachelse}
-                    (Not Required)
+                    ({'Not Required'|gettext})
                 {/foreach}
             </td>
             <td>{currency_symbol}{$order->tax|number_format:2}</td>
         </tr>
         <tr>
-            <td colspan="4" class="totals">Shipping</td>
+            <td colspan="4" class="totals">{'Shipping'|gettext}</td>
             <td>{currency_symbol}{$order->shipping_total|number_format:2}</td>
         </tr>
         <tr>
-            <td colspan="4" class="totals">Order Total</td>
+            <td colspan="4" class="totals">{'Order Total'|gettext}</td>
             <td>{currency_symbol}{$order->grand_total|number_format:2}</td>
         </tr>
         </tr>

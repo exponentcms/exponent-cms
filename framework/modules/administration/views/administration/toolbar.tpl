@@ -105,7 +105,7 @@
              });
              
              var err = function () {
-                 alert("Your popup blocker has prevented the file manager from opening");
+                 alert("{/literal}{"Your popup blocker has prevented the file manager from opening"|gettext}{literal}");
              }
              
              var reportbugwindow = function (){

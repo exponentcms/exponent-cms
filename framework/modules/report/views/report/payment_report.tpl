@@ -18,50 +18,50 @@
         <tbody>
             <tr class="even">   
                   <td>
-                    Visa
+                    {'Visa'|gettext}
                 </td>
                 <td>
-                    val
+                    {'val'|gettext}
                 </td>
             </tr>
             <tr class="odd">   
                   <td>
-                    MasterCard
+                    {'MasterCard'|gettext}
                 </td>
                 <td>
-                    val
+                    {'val'|gettext}
                 </td>
             </tr>
             <tr class="even">   
                   <td>
-                    American Express
+                    {'American Express'|gettext}
                 </td>
                 <td>
-                    val
+                    {'val'|gettext}
                 </td>
             </tr>
             <tr class="odd">   
                   <td>
-                    Discover
+                    {'Discover'|gettext}
                 </td>
                 <td>
-                    val
+                    {'val'|gettext}
                 </td>
             </tr>
              <tr class="even">   
                   <td>
-                    PayPal
+                    {'PayPal'|gettext}
                 </td>
                 <td>
-                    val
+                    {'val'|gettext}
                 </td>
             </tr>
             <tr class="odd">   
                   <td>
-                    Total
+                    {'Total'|gettext}
                 </td>
                 <td>
-                    val
+                    {'val'|gettext}
                 </td>
             </tr>
         </tbody>

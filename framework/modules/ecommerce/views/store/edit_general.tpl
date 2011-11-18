@@ -14,7 +14,7 @@
 	{/foreach}
 	{/if}
 {else}
-	Parent Product: <a href="{link controller='store' action='edit' id=$record->parent_id}">{$parent->title}</a>
+	{'Parent Product:'|gettext} <a href="{link controller='store' action='edit' id=$record->parent_id}">{$parent->title}</a>
 	{control type="text" name="general[child_rank]" label="Rank"|gettext value=$record->child_rank}
 	{control type="hidden" name="general[parent_id]" value=$record->parent_id}  
 	{control type="hidden" name="general[product_type]" value='childProduct'}  

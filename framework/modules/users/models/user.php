@@ -27,7 +27,7 @@ class user extends expRecord {
 			    'email'=>array('message'=>'The email address does not appear to be valid')
 	        ),
 	        'uniqueness_of'=>array(
-			    'username'=>array('message'=>'That username is already take. Please use another username.')
+			    'username'=>array('message'=>'That username is already taken. Please use another username.')
 	        ),
 	        'length_of'=>array(
 			    'username'=>array('length'=>3)

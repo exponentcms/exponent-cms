@@ -66,7 +66,7 @@
     {* current category's sub-categories *}
     {if $categories|@count > 0}
         <div class="cats">
-            <h2>Categories Under {$current_category->title}</h2>
+            <h2>{'Categories Under'|gettext} {$current_category->title}</h2>
             
             {counter assign="ipcr" name="ipcr" start=1}
             {assign var=open_c_row value=1}

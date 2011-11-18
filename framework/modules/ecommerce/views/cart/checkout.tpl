@@ -18,7 +18,7 @@
 {/css}
 
 <div id="expresscheckout" class="cart checkout exp-skin">
-    <h1>{$moduletitle|default:"Express Checkout"}</h1>
+    <h1>{$moduletitle|default:"Express Checkout"|gettext}</h1>
 
     {if $cartConfig.policy!=""}
         <a href="#" id="review-policy">{"Review Store Policies"|gettext}</a>
@@ -103,7 +103,7 @@
                             {if $discount->isShippingDiscount()}{assign var='is_shipping_discount' value=true}{/if}
                             {/foreach}
                         </ul>
-                        {if $discounts|@count==1}This coupon is {else}These coupons are {/if} saving you {currency_symbol}
+                        {if $discounts|@count==1}{'This coupon is'|gettext} {else}{'These coupons are'|gettext} {/if} {'saving you'|gettext} {currency_symbol}
                         {if $discounts[0]->isCartDiscount()}{$order->total_discounts|number_format:2}.
                         {else} {$order->shippingDiscount|number_format:2}. 
                         {/if}
@@ -221,7 +221,7 @@
             
                 {foreach from=$shipping->splitmethods item=method}
                     <div class="splitaddress">
-                        <h4>{$order->countOrderitemsByShippingmethod($method->id)} items will be shipped to:</h4>
+                        <h4>{$order->countOrderitemsByShippingmethod($method->id)} {'items will be shipped to:'|gettext}</h4>
                         <!--a class="ordermessage awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" href="#" rel="{$method->id}"><strong><em>Add a Gift Message to this Order</em></strong></a-->
                         <address>
                             {$method->firstname} {$method->middlename} {$method->lastname}{br}

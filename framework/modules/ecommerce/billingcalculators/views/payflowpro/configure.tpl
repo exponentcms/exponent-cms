@@ -17,10 +17,10 @@
 <div id="authcfg">
     <div id="authcfg-tabs" class="yui-navset yui3-skin-sam hide">
         <ul class="yui-nav">
-	        <li class="selected"><a href="#tab1"><em>Payflow Pro<br>Settings</em></a></li>
-	        <li><a href="#tab2"><em>Accepted<br>Credit Cards</em></a></li>
-	        <li><a href="#tab3"><em>Customer<br>Confirmations</em></a></li>
-	        <li><a href="#tab4"><em>Administrator<br>Notifications</em></a></li>
+	        <li class="selected"><a href="#tab1"><em>{'Payflow Pro'|gettext}<br>{'Settings'|gettext}</em></a></li>
+	        <li><a href="#tab2"><em>{'Accepted'|gettext}<br>{'Credit Cards'|gettext}</em></a></li>
+	        <li><a href="#tab3"><em>{'Customer'|gettext}<br>{'Confirmations'|gettext}</em></a></li>
+	        <li><a href="#tab4"><em>{'Administrator'|gettext}<br>{'Notifications'|gettext}</em></a></li>
         </ul>            
         <div class="yui-content">
 	        <div id="tab1">
@@ -29,7 +29,7 @@
 	            {control type="text" name="partner" label="Partner"|gettext value=$calculator->configdata.partner}
 	            {control type="text" name="password" label="Password"|gettext value=$calculator->configdata.password}
 	            {control type="checkbox" name="testmode" label="Enable Test Mode?"|gettext value=1 checked=$calculator->configdata.testmode}
-	            {control type="radiogroup" name="process_mode" label="Processing Mode" items="Authorize and Capture, Authorize Only"|gettext values="S,A" default=$calculator->configdata.process_mode}
+	            {control type="radiogroup" name="process_mode" label="Processing Mode" items="Authorize and Capture, Authorize Only" values="S,A" default=$calculator->configdata.process_mode}
 	        </div>
 	        <div id="tab2">
 	            {control type="checkbox" name="accepted_cards[]" label="Master Card" value="MasterCard"|gettext checked=$calculator->configdata.accepted_cards}

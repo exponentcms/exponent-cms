@@ -29,7 +29,7 @@
     {/permissions}    
     
     {if $config.allow_user_questions}
-        <a href="{link action="ask_question"}">{'Ask a question'|gettext}</a>
+        <a href="{link action="ask_question"}">{'Ask a Question'|gettext}</a>
     {/if}
     
     {if $config.use_toc}

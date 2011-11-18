@@ -30,7 +30,7 @@
                 &nbsp;
             </th>
             <th>
-                Name
+                {'Name'|gettext}
             </th>
         </tr>
     </thead>

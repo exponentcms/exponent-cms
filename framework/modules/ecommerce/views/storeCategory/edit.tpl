@@ -16,8 +16,8 @@
 
 <div id="editcategory" class="storecategory edit hide exp-skin-tabview">
 	<div class="form_header">
-        	<h1>Edit Store Category</h1>
-        	<p>Complete and save the form below to configure this store category</p>
+        	<h1>{'Edit Store Category'|gettext}</h1>
+        	<p>{'Complete and save the form below to configure this store category'|gettext}</p>
 	</div>
         
 	{if $node->id == ""}
@@ -32,12 +32,12 @@
         {control type=hidden name=lft value=$node->lft}                
         <div id="demo" class="yui-navset">
             <ul class="yui-nav">
-				<li class="selected"><a href="#general"><em>General</em></a></li>
-				<li><a href="#seo"><em>Meta Info</em></a></li>
-				<li><a href="#events"><em>Events</em></a></li>
+				<li class="selected"><a href="#general"><em>{'General'|gettext}</em></a></li>
+				<li><a href="#seo"><em>{'Meta Info'|gettext}</em></a></li>
+				<li><a href="#events"><em>{'Events'|gettext}</em></a></li>
 				{if $product_types}
 					{foreach from=$product_types key=key item=item}
-						<li><a href="#{$item}"><em>{$key} Product Types</em></a></li>
+						<li><a href="#{$item}"><em>{$key} {'Product Types'|gettext}</em></a></li>
 					{/foreach}
 				{/if}
             </ul>            

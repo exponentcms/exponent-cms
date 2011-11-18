@@ -15,35 +15,35 @@
  *}
 
 <div class="module address edit address-form">
-    <h1>Editing order totals</h1>
+    <h1>{'Editing order totals'|gettext}</h1>
     
     {form action=save_order_item}
         {control type=hidden name=id value=$oi->id}
        
-        You may change the item quantity here, price, as well as edit the options and user input fields.{br}
-        If you would like to change the product, please delete it and add the correct item.{br}
+        {'You may change the item quantity here, price, as well as edit the options and user input fields.'|gettext}{br}
+        {'If you would like to change the product, please delete it and add the correct item.'|gettext}{br}
         Note:{br}
-        <strong>* If you edit, add, or remove order items, the order will automatically recalculate the order totals.</strong>{br}
-        <strong>* If this item has product options and those options modify the price, YOU must adjust the price below manually if you change the options. This will NOT recalculate the option price modifiers automatically.</strong>{br}
+        <strong>* {'If you edit, add, or remove order items, the order will automatically recalculate the order totals.'|gettext}</strong>{br}
+        <strong>* {'If this item has product options and those options modify the price, YOU must adjust the price below manually if you change the options. This will NOT recalculate the option price modifiers automatically.'|gettext}</strong>{br}
         {br} 
         <table width='60%'>
         <tr><td>
-        Item name:</td><td>{control type=textarea name=products_name cols=40 rows=3 label="" value=$oi->products_name}
+        {'Item name:'|gettext}</td><td>{control type=textarea name=products_name cols=40 rows=3 label="" value=$oi->products_name}
         </td></tr>
         <tr><td> 
-        Item model:</td><td>{$oi->products_model}              
+        {'Item model:'|gettext}</td><td>{$oi->products_model}
         </td></tr>
         <tr><td> 
-        Item price:</td><td>{control type=text name=products_price label="" value=$oi->products_price}
+        {'Item price:'|gettext}</td><td>{control type=text name=products_price label="" value=$oi->products_price}
         </td></tr>
         <tr><td> 
-        Item quantity:</td><td>{control type=text name=quantity label="" value=$oi->quantity}
+        {'Item quantity:'|gettext}</td><td>{control type=text name=quantity label="" value=$oi->quantity}
         </td></tr>
         
         </table>
       {if $oi->product->hasOptions()}
             <div class="product-options">
-                <h2>{$oi->products_name} Options</h2>
+                <h2>{$oi->products_name} {'Options'|gettext}</h2>
                 {foreach from=$oi->product->optiongroup item=og}
                     {if $og->hasEnabledOptions()} 
                         <div class="option {cycle values="odd,even"}"> 
@@ -63,13 +63,13 @@
                         </div> 
                     {/if}
                 {/foreach}
-                <span style="font-variant:small-caps;">* Selection required.</span>
+                <span style="font-variant:small-caps;">* {'Selection required'|gettext}.</span>
             </div>
         {/if}
         
         {if !empty($oi->product->user_input_fields) && $oi->product->user_input_fields|@count>0 }
             <div class="user-input-fields">
-            <h2>User Input Fields</h2>            
+            <h2>{'User Input Fields'|gettext}</h2>
             {foreach from=$oi->product->user_input_fields key=uifkey item=uif}  
                 <div class="user-input {cycle values="odd,even"}">
                 {if $uif.use}                   

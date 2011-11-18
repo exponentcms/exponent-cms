@@ -39,7 +39,7 @@
                 <div style="clear:both"></div>
             </li>
         {foreachelse}
-            <li>You currently have no items in your cart</li>
+            <li>{'You currently have no items in your cart'|gettext}</li>
         {/foreach}
     </ul>
 </div>

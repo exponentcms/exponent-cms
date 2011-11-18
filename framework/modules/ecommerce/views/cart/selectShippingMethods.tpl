@@ -19,11 +19,11 @@
 {/css}
 
 <div class="module cart select-shipping-methods">
-    <h1>{$moduletitle|default:"Select Shipping Methods"}</h1>    
+    <h1>{$moduletitle|default:"Select Shipping Methods"|gettext}</h1>
     
     {form action=saveShippingMethods}
     {foreach from=$shipping_items item=shippingitem}
-        <h2>Choose shipping</h2>     
+        <h2>{'Choose shipping'|gettext}</h2>
         <table width=100% class="exp-skin-table" border="0" cellspacing="5" cellpadding="5">
             <thead>
             <tr>
@@ -36,7 +36,7 @@
                     {foreach from=$shippingitem->orderitem item=product}
                         <li>{$product->products_name} - {currency_symbol}{$product->products_price}
                             {if $product->opts[0]}
-                		    <h4>Selected Options</h4>
+                		    <h4>{'Selected Options'|gettext}</h4>
                 		    <ul style="padding:0 0 0 15px;margin:0 0 5px 0;">
                 		        {foreach from=$product->opts item=options}
                 		            <li>{$options[1]}</li>

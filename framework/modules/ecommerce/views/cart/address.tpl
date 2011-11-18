@@ -22,10 +22,10 @@
 		{if $defaultaddy->address2 != ""}{$defaultaddy->address2}{br}{/if}
 		{$defaultaddy->city}. {$defaultaddy->state|statename} {$defaultaddy->zip}{br}
 		{if $defaultaddy->address2 == ""}{br}{/if}
-		<a href="javascript:void(0);" onclick="divtoggle('saddy')">You don't have any address configured yet.  Click here to setup a new address</a>
+		<a href="javascript:void(0);" onclick="divtoggle('saddy')">{'You don\'t have any address configured yet.  Click here to setup a new address'|gettext}</a>
 	{/form}
 	<div style="clear:both"></div>
-	{br}<a href="javascript:void(0);" onclick="divtoggle('saddy')">Add a new address</a>
+	{br}<a href="javascript:void(0);" onclick="divtoggle('saddy')">{'Add a new address'|gettext}</a>
 	<div id="saddy" style="display:none">
                 {form name="newaddy" action=createaddress ajax=true update=addyblock}
                         {control type=text name=firstname label="First Name"|gettext}

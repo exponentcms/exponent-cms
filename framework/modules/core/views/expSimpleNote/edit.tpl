@@ -27,12 +27,12 @@
 		{if $user->id == 0}
 		    {control type=text name=name label="Name (required)"|gettext value=$simplenote->id}
 		{else}
-		    <strong>Name: {$user->firstname} {$user->lastname}</strong>{br}
+		    <strong>{'Name:'|gettext} {$user->firstname} {$user->lastname}</strong>{br}
 		{/if}
 		{if $user->id == 0}
 		    {control type=text name=email label="Email (required)"|gettext value=$simplenote->email}
 		{else}
-		    <strong>Email: {$user->email}{br}
+		    <strong>{'Email:'|gettext} {$user->email}{br}
 		{/if}
 		{control type=textarea name=body label="New Note"|gettext|cat:":" rows=6 cols=35 value=$simplenote->body}
 		{control type=buttongroup submit="Add Note"|gettext}

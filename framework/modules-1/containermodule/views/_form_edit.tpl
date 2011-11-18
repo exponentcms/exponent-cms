@@ -106,7 +106,7 @@ YUI(EXPONENT.YUI_CONFIG).use("node","event","yui2-yahoo-dom-event","yui2-connect
                         break;
                 }
             }
-            return "no selected radios found";
+            return "{/literal}{"no selected radios found"|gettext}{literal}";
         },
         setSelectedRadio: function (formId, inputId, rValue){
             var oForm = this.grabForm(formId);
@@ -119,12 +119,12 @@ YUI(EXPONENT.YUI_CONFIG).use("node","event","yui2-yahoo-dom-event","yui2-connect
                     case 'radio':
                         if(oElement.name==inputId && oElement.value==rValue){
                             oElement.checked = true;
-                            return "Radio "+oElement.name+" set to value "+oElement.value;
+                            return "{/literal}{"Radio"|gettext}{literal}"+" "+oElement.name+" "+"{/literal}{"set to value"|gettext}{literal}"+" "+oElement.value;
                         }
                         break;
                 }
             }
-            return "No value matching the one provided was found in this radio group";
+            return "{/literal}{"No value matching the one provided was found in this radio group"|gettext}{literal}";
         },
         getSelectValue: function (selectid) {
             var selectmenu = YAHOO.util.Dom.get(selectid);
@@ -215,7 +215,7 @@ YUI(EXPONENT.YUI_CONFIG).use("node","event","yui2-yahoo-dom-event","yui2-connect
     
     //resets the actionpicker to the default when entering this page
     EXPONENT.resetActions = function() {
-        var actionDefaultOption = Y.Node.create('<option value="0">No Module Selected</option>');
+        var actionDefaultOption = Y.Node.create('<option value="0">{/literal}{"No Module Selected"|gettext}{literal}</option>');
         actionpicker.appendChild(actionDefaultOption);
         actionpicker.set('disabled',1);
         actionpicker.ancestor('div.control').addClass('disabled');
@@ -223,7 +223,7 @@ YUI(EXPONENT.YUI_CONFIG).use("node","event","yui2-yahoo-dom-event","yui2-connect
 
     //resets the viewpicker to the default when entering this page
     EXPONENT.resetViews = function() {
-        var viewDefaultOption = Y.Node.create('<option value="0">No Action Selected</option>');
+        var viewDefaultOption = Y.Node.create('<option value="0">{/literal}{"No Action Selected"|gettext}{literal}</option>');
         viewpicker.appendChild(viewDefaultOption);
         viewpicker.set('disabled',1);
         viewpicker.ancestor('div.control').addClass('disabled');
@@ -303,7 +303,7 @@ YUI(EXPONENT.YUI_CONFIG).use("node","event","yui2-yahoo-dom-event","yui2-connect
                 {success: function(o) {
                     var opts = YAHOO.lang.JSON.parse(o.responseText);
                     actionpicker.set('innerHTML','');
-                    el = Y.Node.create('<option value="0">Select an Action</option>');
+                    el = Y.Node.create('<option value="0">{/literal}{"Select an Action"|gettext}{literal}</option>');
                     actionpicker.appendChild(el);
 
                     for(var action in opts) {
@@ -321,7 +321,7 @@ YUI(EXPONENT.YUI_CONFIG).use("node","event","yui2-yahoo-dom-event","yui2-connect
                 }}, 'module=containermodule&action=getaction&ajax_action=1&mod=' + EXPONENT.curMod
             );
         } else {
-            actionpicker.set('disabled',1).set('innerHTML','<option value="0">No actions for this module...</option>');
+            actionpicker.set('disabled',1).set('innerHTML','<option value="0">{/literal}{"No actions for this module..."|gettext}{literal}</option>');
         };
     }
 
@@ -333,7 +333,7 @@ YUI(EXPONENT.YUI_CONFIG).use("node","event","yui2-yahoo-dom-event","yui2-connect
                 {success: function(o) {
                     var opts = YAHOO.lang.JSON.parse(o.responseText);
                     viewpicker.set('innerHTML','');
-                    el = Y.Node.create('<option value="0">Select a View</option>');
+                    el = Y.Node.create('<option value="0">{/literal}{"Select a View"|gettext}{literal}</option>');
                     viewpicker.appendChild(el);
                     for(var view in opts) {
                             el = document.createElement('option');
@@ -353,14 +353,14 @@ YUI(EXPONENT.YUI_CONFIG).use("node","event","yui2-yahoo-dom-event","yui2-connect
             
         } else {
             //set the actions drop to something a little more informational
-            var nas = Y.Node.create('<option value="0">No actions for this module...</option>');
+            var nas = Y.Node.create('<option value="0">{/literal}{"No actions for this module..."|gettext}{literal}</option>');
             actionpicker.appendChild(nas);
             actionpicker.ancestor('div.control').addClass('disabled');
             actionpicker.set('disabled',1);
             
             //load up the views dropdown with the legacy views for the oldschool mods
             viewpicker.set('innerHTML','');
-            el = Y.Node.create('<option value="0">Select a View</option>');
+            el = Y.Node.create('<option value="0">{/literal}{"Select a View"|gettext}{literal}</option>');
             viewpicker.appendChild(el);
             for(var view in osmv[EXPONENT.curMod].views) {
                 el = document.createElement('option');

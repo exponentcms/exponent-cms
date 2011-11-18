@@ -16,7 +16,7 @@
 		<tbody>
 			<tr>
 				<td>
-					<h2>Select the style of your gift card</h2>
+					<h2>{'Select the style of your gift card'|gettext}</h2>
 				</td>
 			</tr>
 	
@@ -39,7 +39,7 @@
 	
 			<tr>
 				<td>
-					<h2>Select the amount of the gift card</h2>
+					<h2>{'Select the amount of the gift card'|gettext}</h2>
 				</td>
 			</tr>
 			
@@ -53,25 +53,25 @@
 						<div class="radio control" id="100dControl"><table cellspacing="0" cellpadding="0" border="0"><tbody><tr><td class="input"><input type="radio" onclick="clearTxtField()" class="radio amount" value="100" name="card_amount" id="100d" {if $records.card_amount == "100"}checked="checked"{/if}></td><td><label class="label " for="100d">$100</label></td></tr></tbody></table></div>
 						<div class="radio control" id="150dControl"><table cellspacing="0" cellpadding="0" border="0"><tbody><tr><td class="input"><input type="radio" onclick="clearTxtField()" class="radio amount" value="150" name="card_amount" id="150d" {if $records.card_amount == "150"}checked="checked"{/if}></td><td><label class="label " for="150d">$150</label></td></tr></tbody></table></div>
 						<div class="radio control" id="200dControl"><table cellspacing="0" cellpadding="0" border="0"><tbody><tr><td class="input"><input type="radio" onclick="clearTxtField()" class="radio amount" value="200" name="card_amount" id="200d" {if $records.card_amount == "200"}checked="checked"{/if}></td><td><label class="label " for="200d">$200</label></td></tr></tbody></table></div>
-						<div class="text-control control  man_amount " id="card_amount_txtControl"><label class="label" for="card_amount_txt">Other Amount</label><input type="text" onchange="clearRadioButtons();" onpaste="return money_filter.onpaste(this, event);" onfocus="money_filter.onfocus(this);" onblur="money_filter.onblur(this);" onkeypress="return money_filter.on_key_press(this, event);" class="text man_amount" size="6" value="{$records.card_amount_txt}" name="card_amount_txt" id="card_amount_txt"></div>
-						<em>There is a {currency_symbol}{$config.minimum_gift_card_purchase|number_format:2} Minimum on gift card purchases.</em>
+						<div class="text-control control  man_amount " id="card_amount_txtControl"><label class="label" for="card_amount_txt">{'Other Amount'|gettext}</label><input type="text" onchange="clearRadioButtons();" onpaste="return money_filter.onpaste(this, event);" onfocus="money_filter.onfocus(this);" onblur="money_filter.onblur(this);" onkeypress="return money_filter.on_key_press(this, event);" class="text man_amount" size="6" value="{$records.card_amount_txt}" name="card_amount_txt" id="card_amount_txt"></div>
+						<em>There is a {currency_symbol}{$config.minimum_gift_card_purchase|number_format:2} {'Minimum on gift card purchases.'|gettext}</em>
 					</fieldset>
 				</td>
 			</tr>
 			
 			<tr>
 				<td>
-					<h2>Personalize your gift card</h2>
+					<h2>{'Personalize your gift card'|gettext}</h2>
 				</td>
 			</tr>
 			
 			<tr>
 				<td>
 					<fieldset>
-						<em>The "To" and "From" name may be added at no additional charge.</em>
+						<em>{'The \'To\' and \'From\' name may be added at no additional charge.'|gettext}</em>
 						<div class="text-control control  "><label class="label">To:</label><input type="text" class="text " size="20" name="toname" value="{$records.toname}"></div>
 						<div class="text-control control  "><label class="label">From:</label><input type="text" class="text " size="20" value="{$records.fromname}" name="fromname"></div>
-						<br><em>Adding a custom message will add {currency_symbol}{$config.custom_message_product|number_format:2} to the price of your gift card.</em><br><br>
+						<br><em>{'Adding a custom message will add'|gettext} {currency_symbol}{$config.custom_message_product|number_format:2} {'to the price of your gift card.'|gettext}</em><br><br>
 						<div class="text-control control "><label class="label">Custom Message (100 characters max)</label><textarea cols="45" rows="3" name="msg" id="msg" class="textarea">{$records.msg}</textarea></div>
 					</fieldset>
 				</td>
@@ -79,7 +79,7 @@
 		</tbody>
 	</table>
 
-	<a id="submit-giftcard" href="javascript:{ldelim}{rdelim}" class="awesome {$smarty.const.BTN_COLOR} {$smarty.const.BTN_SIZE} exp-ecom-link" rel="nofollow"><strong><em>Add selected items to cart</em></strong></a>
+	<a id="submit-giftcard" href="javascript:{ldelim}{rdelim}" class="awesome {$smarty.const.BTN_COLOR} {$smarty.const.BTN_SIZE} exp-ecom-link" rel="nofollow"><strong><em>{'Add selected items to cart'|gettext}</em></strong></a>
 	{/form}
 	
 </div>		

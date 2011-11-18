@@ -35,7 +35,7 @@
                 {control type="files" name="files" label="Files"|gettext value=$record->expFile limit=1}
             </div>
             <div id="tab4">
-                 <h2>SEO Settings</h2>
+                 <h2>{'SEO Settings'|gettext}</h2>
                 {control type="text" name="sef_url" label="SEF URL"|gettext value=$record->sef_url}
                 {control type="text" name="meta_title" label="Meta Title"|gettext value=$record->meta_title}
                 {control type="textarea" name="meta_description" label="Meta Description"|gettext rows=5 cols=35 value=$record->meta_description}

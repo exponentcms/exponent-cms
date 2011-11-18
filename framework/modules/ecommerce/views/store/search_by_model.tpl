@@ -15,7 +15,7 @@
  *}
 
 <div class="store showall">
-    <h2>Search results for {$terms}</h2>
+    <h2>{'Search results for'|gettext} {$terms}</h2>
     {pagelinks paginate=$page top=1}
     <div class="products">
         {foreach from=$page->records item=listing name=listings}

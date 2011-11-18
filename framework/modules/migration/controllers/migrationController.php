@@ -1032,8 +1032,8 @@ class migrationController extends expController {
                         $loc = expUnserialize($ni['location_data']);
                         $loc->mod = "news";
                         $news->location_data = serialize($loc);
-                        $news->title = (!empty($ni['title'])) ? $ni['title'] : 'Untitled';
-                        $news->body = (!empty($ni['body'])) ? $ni['body'] : '(empty)';
+                        $news->title = (!empty($ni['title'])) ? $ni['title'] : gt('Untitled');
+                        $news->body = (!empty($ni['body'])) ? $ni['body'] : gt('(empty)');
                         $news->save();
 						// default is to create with current time
                         $news->created_at = $ni['posted'];
@@ -1318,8 +1318,8 @@ class migrationController extends expController {
                         $loc = expUnserialize($bi['location_data']);
                         $loc->mod = "blog";
                         $post->location_data = serialize($loc);
-                        $post->title = (!empty($bi['title'])) ? $bi['title'] : 'Untitled';
-                        $post->body = (!empty($bi['body'])) ? $bi['body'] : '(empty)';
+                        $post->title = (!empty($bi['title'])) ? $bi['title'] : gt('Untitled');
+                        $post->body = (!empty($bi['body'])) ? $bi['body'] : gt('(empty)');
                         $post->save();
 						// default is to create with current time						
                         $post->created_at = $bi['posted'];

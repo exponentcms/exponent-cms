@@ -4,14 +4,14 @@
 
 <div class="module order verifyReturnShopper">
     <div class="top">
-        <h1>Welcome back {$firstname}!</h1>
+        <h1>{'Welcome back'|gettext} {$firstname}!</h1>
         <p>
-            We see that you have shopped with us before. You can either restore your shopping cart and pick up where you left off, or start your shopping experience over with a fresh cart.
+            {'We see that you have shopped with us before. You can either restore your shopping cart and pick up where you left off, or start your shopping experience over with a fresh cart.'|gettext}
         </p>
     </div>
 
     <div class="col one">
-        <h3>Verify the following information from your previous session to restore your shopping cart:{br}</h3>
+        <h3>{'Verify the following information from your previous session to restore your shopping cart:'|gettext}{br}</h3>
     
         {form name="verifyAndRestoreCartForm" controller="order" action="verifyAndRestoreCart"}
            {control type="text" name="lastname" id="lastname" label="Last Name:"|gettext}
@@ -22,9 +22,9 @@
     </div>
 
     <div class="col two">
-        <h3>I am not {$firstname}, or I would like to start over with a fresh shopping cart.</h3>
+        <h3>{'I am not'|gettext} {$firstname}, {'or I would like to start over with a fresh shopping cart.'|gettext}</h3>
         <p>
-            <a class="awesome {$smarty.const.BTN_COLOR} {$smarty.const.BTN_SIZE}" href="{link controller='order' action='clearCart' id=$order->id}">Start a New Shopping Cart</a>
+            <a class="awesome {$smarty.const.BTN_COLOR} {$smarty.const.BTN_SIZE}" href="{link controller='order' action='clearCart' id=$order->id}">{'Start a New Shopping Cart'|gettext}</a>
         </p>
     </div>    
         
@@ -44,17 +44,17 @@ YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
         
         if(ln.get('value) == '')
         {
-            alert("Please verify your Last Name to continue.");
+            alert("{/literal}{"Please verify your Last Name to continue."|gettext}{literal}");
             return false;
         }
         if(em.get('value) == '')
         {
-            alert("Please verify your Email to continue.");
+            alert("{/literal}{"Please verify your Email to continue."|gettext}{literal}");
             return false;
         }
         if(zc.get('value) == '')
         {
-            alert("Please verify your Zip Code to continue.");
+            alert("{/literal}{"Please verify your Zip Code to continue."|gettext}{literal}");
             return false;
         }
         frm.submit();                

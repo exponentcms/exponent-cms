@@ -22,7 +22,7 @@
 
 {/css}
 <div class="exporter extension-finalsummary">
-	<h1>New Extension Installation Summary</h1>
+	<h1>{'New Extension Installation Summary'|gettext}</h1>
 	{if $nofiles == 1}
 		<h3>{'No files to copy.  If you hit refresh, this is normal.'|gettext}</h3>
 	{else}

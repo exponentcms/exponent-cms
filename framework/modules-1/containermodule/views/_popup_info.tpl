@@ -44,12 +44,12 @@
 </tr>
 {else}
 <tr>
-	<td>View:&nbsp;</td>
+	<td>{'View:'|gettext}&nbsp;</td>
 	<td>{$container->view}</td>
 </tr>
 <tr>
-	<td>Title:&nbsp;</td>
-	<td>{if $container->title == ""}<i>&lt;none&gt;</i>{else}{$container->title}{/if}</td>
+	<td>{'Title:'|gettext}&nbsp;</td>
+	<td>{if $container->title == ""}<i>&lt;{'none'|gettext}&gt;</i>{else}{$container->title}{/if}</td>
 </tr>
 {/if}
 </table>

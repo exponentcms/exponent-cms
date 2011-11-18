@@ -19,7 +19,7 @@
 {/css}
 
 <div id="myCart" class="module cart show hide">
-	<h1>{ecomconfig var='cart_title_text' default="Your Secure Shopping Cart"}</h1>
+	<h1>{ecomconfig var='cart_title_text' default="Your Secure Shopping Cart"|gettext}</h1>
     <div id="cart-message">{ecomconfig var='cart_description_text' default=""}</div>
     <div style="padding:8px; 0">
         <a class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" href="{backlink}">{"Continue Shopping"|gettext}</a>
@@ -88,11 +88,11 @@
                       {/if}     
                       <tr class="{cycle values="odd, even"}">
                         <td width="90%" class="cart-totals-title">
-                        {"Tax - "|gettext}
+                        {"Tax"|gettext} -
                         {foreach from=$order->taxzones item=zone}
                             {$zone->name} ({$zone->rate}%):
                         {foreachelse}
-                            (N/A):
+                            ({'N/A'|gettext}):
                         {/foreach}
                         </td>
                         <td>
@@ -105,7 +105,7 @@
                         <td class="cart-totals-title">
                         {if isset($discounts[0])}                        
                             {if $discounts[0]->isShippingDiscount()}
-                                <a style="font-weight: none;" href="{link action=removeDiscountFromCart id=$discounts[0]->id}"  alt="Remove discount from cart.">[remove coupon code]</a>&nbsp;(<span style="background-color:#33CC00;">{$discounts[0]->coupon_code}</span>)&nbsp;
+                                <a style="font-weight: none;" href="{link action=removeDiscountFromCart id=$discounts[0]->id}"  alt="Remove discount from cart.">[{'remove coupon code'|gettext}]</a>&nbsp;(<span style="background-color:#33CC00;">{$discounts[0]->coupon_code}</span>)&nbsp;
                             {/if}
                         {/if}
                         {* else *}

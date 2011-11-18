@@ -23,7 +23,7 @@
         <div class="related-actions">
             {help text="Get Help"|gettext|cat:" "|cat:("Managing Users"|gettext) module="manage-users"}
         </div>
-        <h1>{$moduletitle|default:"Manage Users"}</h1>
+        <h1>{$moduletitle|default:"Manage Users"|gettext}</h1>
     </div>
 	<p>
         {'From here, you can create, modify and remove normal user accounts.
@@ -76,7 +76,7 @@
 			    </td>
 			</tr>
 			{foreachelse}
-			    <td colspan="{$page->columns|count}">No Data.</td>
+			    <td colspan="{$page->columns|count}">No Data</td>
 			{/foreach}
 		</tbody>
 	</table>
@@ -135,10 +135,10 @@
 	
 			// Column definitions
 			var myColumnDefs = [ // sortable:true enables sorting
-			{ key:"id",label:"Username",formatter:formatID},
-			{ key:"firstname",label:"First Name"},
-			{ key:"lastname",label:"Last Name"},
-			{ key:"is_acting_admin",label:"Is Admin",formatter:formatActingAdmin},
+			{ key:"id",label:"{/literal}{"Username"|gettext}{literal}",formatter:formatID},
+			{ key:"firstname",label:"{/literal}{"First Name"|gettext}{literal}"},
+			{ key:"lastname",label:"{/literal}{"Last Name"|gettext}{literal}"},
+			{ key:"is_acting_admin",label:"{/literal}{"Is Admin"|gettext}{literal}",formatter:formatActingAdmin},
 			{ label:"Actions",label:"", sortable:false,formatter: formatactions}
 			];
 			// DataSource instance
@@ -206,7 +206,7 @@
 				oPayload.totalRecords = oResponse.meta.totalRecords;
 				
 				var df = YAHOO.util.Dom.get('totalResult');
-				df.innerHTML = "Total Results: " + oResponse.meta.totalRecords;
+				df.innerHTML = "{/literal}{"Total Results:"|gettext}{literal}"+" " + oResponse.meta.totalRecords;
 			
 				return oPayload;
 			}

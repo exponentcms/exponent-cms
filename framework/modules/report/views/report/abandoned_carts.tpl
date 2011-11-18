@@ -9,7 +9,7 @@
 
         <div id="dashboard-tabs" class="yui-navset yui3-skin-sam hide">
                 <ul class="yui-nav">
-                    <li class="selected"><a href="#tab1"><em>New Orders</em></a></li>
+                    <li class="selected"><a href="#tab1"><em>{'New Orders'|gettext}</em></a></li>
                     <!--li><a href="#tab2"><em>Top Selling Items</em></a></li>
                     <li><a href="#tab3"><em>Most Viewed</em></a></li>
                     <li><a href="#tab4"><em>Customers</em></a></li-->

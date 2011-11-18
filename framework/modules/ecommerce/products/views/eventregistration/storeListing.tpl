@@ -22,7 +22,7 @@
             {if $listing->expFile.images[0]->id != ""}
                 {img file_id=$listing->expFile.images[0]->id constraint=1 width=165 alt=$listing->title}
             {else}
-                No Image
+                {'No Image'|gettext}
             {/if}
         </a>
     </div>
@@ -44,6 +44,6 @@
     {$listing->body}
     </div>
     <div class="price">{currency_symbol}{$listing->price|number_format:2}</div>
-    <a href="{link controller=cart action=addItem product_id=$listing->id product_type=$listing->product_type}" class="exp-ecom-link addtocart">Register Today <span></span></a>
+    <a href="{link controller=cart action=addItem product_id=$listing->id product_type=$listing->product_type}" class="exp-ecom-link addtocart">{'Register Today'|gettext} <span></span></a>
     <div style="clear:both"></div>
 </div>

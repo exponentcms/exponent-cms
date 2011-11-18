@@ -64,13 +64,13 @@
 		{if !($smarty.section.i.last)}
         <tr class="row row-{math equation='x + y' x=$smarty.section.i.index y=1} {cycle values='odd,even'}">
         	<td class="from">
-        		<a href="#" class="delete">remove</a>
+        		<a href="#" class="delete">)'remove'|gettext}</a>
         	</td>
         	<td class="from">
         		<label for="from-{$smarty.section.i.index}">$</label><input type="text" size="10" id="from-{$smarty.section.i.index}" value="{$calculator->configdata.from[i]}" name="from[]}">
         	</td>
         	<td>
-        		to
+        		{'to'|gettext}
         	</td>
         	<td class="to">
         		<label for="to-{$smarty.section.i.index}">$</label><input type="text" size="10" id="to-{$smarty.section.i.index}" value="{$calculator->configdata.to[i]}" name="to[]">
@@ -95,7 +95,7 @@
                 <label for="from-1">$</label><input type="text" name="from[]" value="{$calculator->configdata.from[$lastcharge]}" id="from-1" size="10">
             </td>
             <td>
-                and up
+                {'and up'|gettext}
             </td>
             <td class="to">
 
