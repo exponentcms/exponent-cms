@@ -2113,8 +2113,8 @@ if (false) {
 		$this->is_alpha = true;
 		if ($this->thumbnail_image_width >= $this->thumbnail_width) {
 
+            $aspectratio = $this->thumbnail_image_height / $this->thumbnail_image_width;
 			if ($this->w) {
-				$aspectratio = $this->thumbnail_image_height / $this->thumbnail_image_width;
 				$this->thumbnail_image_height = round($this->thumbnail_image_width * $aspectratio);
 				$this->thumbnail_height = ($this->h ? $this->h : $this->thumbnail_image_height);
 			} elseif ($this->thumbnail_image_height < $this->thumbnail_height) {
@@ -2123,8 +2123,8 @@ if (false) {
 			}
 
 		} else {
+            $aspectratio = $this->thumbnail_image_width / $this->thumbnail_image_height;
 			if ($this->h) {
-				$aspectratio = $this->thumbnail_image_width / $this->thumbnail_image_height;
 				$this->thumbnail_image_width = round($this->thumbnail_image_height * $aspectratio);
 			} elseif ($this->thumbnail_image_width < $this->thumbnail_width) {
 				$this->thumbnail_image_width = $this->thumbnail_width;
@@ -3403,7 +3403,7 @@ exit;
 			if (empty($this->sourceFilename) && !empty($this->rawImageData)) {
 				$this->DebugMessage('Copying raw image data to temp file and trying again with ImageMagick', __FILE__, __LINE__);
 				if ($tempnam = $this->phpThumb_tempnam()) {
-					if (file_put_contents($tempname, $this->rawImageData)) {
+					if (file_put_contents($tempnam, $this->rawImageData)) {
 						$this->sourceFilename = $tempnam;
 						if ($this->ImageMagickThumbnailToGD()) {
 							// excellent, we have a thumbnailed source image
@@ -3999,7 +3999,7 @@ exit;
 							$this->DebugMessage('deleting "'.$tempfilename.'"', __FILE__, __LINE__);
 							unlink($tempfilename);
 							return $gdimg_source;
-							break;
+//							break;
 						} else {
 							$ErrorMessage = 'Failed to open tempfile in '.__FILE__.' on line '.__LINE__;
 							$this->DebugMessage($ErrorMessage, __FILE__, __LINE__);
