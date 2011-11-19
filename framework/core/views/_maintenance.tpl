@@ -16,11 +16,9 @@
 	
 	<div style="border: 1px solid black; margin: 15%; padding: 3em;">
 		{$smarty.const.MAINTENANCE_MSG_HTML}
-		<p>
-			<!--a href="login.php">{'Administrator Login'|gettext}</a-->
-		</p>
+        <!--a href="login.php">{'Administrator Login'|gettext}</a-->
 		<h3>{'Administrator Login'|gettext}</h3>
-		{chain controller=login view=Default title="Administrators Login"|gettext}
+		{chain controller=login view=showlogin_stacked title="Administrators Login"|gettext}
 	</div>
 	</body>
 </html>
