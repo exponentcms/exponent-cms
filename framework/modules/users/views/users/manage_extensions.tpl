@@ -26,9 +26,9 @@
         <h1>{"Manage User Profile Extensions"|gettext}</h1>
     </div>
 	<p>
-        {"From here activate or deactivate user profile extensions.  User profile extensions are used to 
-        give users the ability to put in more information about themselves.  The active extensions will 
-        add fields to the form a user has to fill out to create an account."|gettext}
+        {"From here activate or deactivate user profile extensions."|gettext}&nbsp;&nbsp;
+        {"User profile extensions are used to give users the ability to put in more information about themselves."|gettext}&nbsp;&nbsp;
+        {"The active extensions will add fields to the form a user has to fill out to create an account."|gettext}
     </p>
     {pagelinks paginate=$page top=1}
 	<table class="exp-skin-table">

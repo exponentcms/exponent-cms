@@ -23,9 +23,9 @@
     </div>
 
     <p> 
-		{'This copies the list of files found in the database'|gettext} ({$config.database}).
-		{'Note: this will only properly copy over the records from the old database into the Exponent v2 database.
-		Make sure you manually copy the \'files\' directory over to this installation.'|gettext}
+		{'This copies the list of files found in the database'|gettext} ({$config.database}).&nbsp;&nbsp;
+        {'Note: this only properly copied over the records from the old database into the Exponent v2 database.'|gettext}&nbsp;&nbsp;
+        {'Make sure you manually copy the \'files\' directory over to this installation.'|gettext}
         <span class="warning">
             {br}{'WARNING: This process will wipe out all current file records in the database'|gettext}.
         </span>

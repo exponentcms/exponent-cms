@@ -23,8 +23,7 @@
     </div>
 
 	<p>
-		{'This is where you enter the database connection information for your
-		old Exponent v1 site you want to migrate data from.'|gettext}
+		{'This is where you enter the database connection information for your old Exponent v1 site you want to migrate data from.'|gettext}
 	</p>
     {form action=saveconfig}
 		{control type=text name=server label="Server Name"|gettext value=$config.server|default:'localhost'}

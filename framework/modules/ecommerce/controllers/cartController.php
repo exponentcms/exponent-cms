@@ -380,8 +380,7 @@ class cartController extends expController {
 		    expSession::set('customer-signup',false);
 		    flash('message', gt('Step One: enter your primary address info now.').
             '<br><br>'.
-            gt('You may also optionally provide a password if you would like to return to our store at a later time to view your order history or
-            make additional purchases.').
+            gt('You may also optionally provide a password if you would like to return to our store at a later time to view your order history or make additional purchases.').
 		    '<br><br>'.
 		    gt('If you need to add another billing or shipping address you will be able to do so on the following page.'));
 		    redirect_to(array('controller'=>'address','action'=>'edit'));

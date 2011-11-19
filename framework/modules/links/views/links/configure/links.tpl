@@ -16,8 +16,8 @@
 
 <h2>{'Configure this Module'|gettext}</h2>
 <p>
-    {'This is where you can configure the settings to be used by this Link Manager module.
-    These settings will only apply to this particular module.'|gettext}
+    {'This is where you can configure the settings to be used by this Link Manager module.'|gettext}&nbsp;&nbsp;
+    {'These settings will only apply to this particular module.'|gettext}
 </p>
 {control type=dropdown name=order label="Sort By"|gettext items="Alphabetical, Reverse Alphabetical, Order Manually" values="title,title DESC,rank" value=$config.order|default:rank}
 

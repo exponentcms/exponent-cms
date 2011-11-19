@@ -21,8 +21,8 @@
 <div class="module banner manage">
 	<h1>{$moduletitle|default:"Manage Banners"|gettext}</h1>
 	<p>
-        {'You can manage the banners for your site\'s banner modules here.  The banners you create and configure
-        here will be available to all the banner modules you have on your site.'|gettext}
+        {'You can manage the banners for your site\'s banner modules here.'|gettext}&nbsp;&nbsp;
+        {'The banners you create and configure here will be available to all the banner modules you have on your site.'|gettext}
     </p>
 	{icon class=add action=create text="Create a new banner"|gettext}{br}
 	{icon action=export text="Export banner data"|gettext}{br}

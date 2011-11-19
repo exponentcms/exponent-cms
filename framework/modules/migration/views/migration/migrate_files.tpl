@@ -31,8 +31,8 @@
     </div>
 
     <p> 
-		{'Note: this only properly copied over the records from the old database into the Exponent v2 database.
-		Make sure you manually copy the \'files\' directory over to this installation.'|gettext}
+		{'Note: this only properly copied over the records from the old database into the Exponent v2 database.'|gettext}&nbsp;&nbsp;
+		{'Make sure you manually copy the \'files\' directory over to this installation.'|gettext}
     </p>
         <ul>
 			<li class=\"mig-msg\">
@@ -49,8 +49,8 @@
 			</li>
         </ul>
     <p> 
-		{'The following is a list of all file records migrated into the database.
-		A checkmark indicates the file already resides in the destination \'files\' folder.'|gettext}
+		{'The following is a list of all file records migrated into the database.'|gettext}&nbsp;&nbsp;
+		{'A checkmark indicates the file already resides in the destination \'files\' folder.'|gettext}
     </p>		
 	<table class="exp-skin-table">
 		<thead>

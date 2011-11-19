@@ -25,12 +25,14 @@
         {control type=hidden name=type value=$type}
         {control type=hidden name=same value=$same}
         {if $same==true}
-            {'This address is the same for both shipping and billing on this order. If you update the existing address, it will update both the
-            shipping and billing address for this order.  If you save this as a new address, it will leave the existing address as is and only update the'|gettext} {$type} {'address'|gettext}.{br}
+            {'This address is the same for both shipping and billing on this order.'|gettext}&nbsp;&nbsp;
+            {'If you update the existing address, it will update both the shipping and billing address for this order.'|gettext}&nbsp;&nbsp;
+            {'If you save this as a new address, it will leave the existing address as is and only update the'|gettext} {$type} {'address'|gettext}.{br}
         {else}
-            {'If you update the existing address, it will change this saved address permanently.  If you save this as a new address, it will leave the existing address as-is to be used later by the customer and create a new'|gettext} {$type} {'address for this order.'|gettext}{br}
+            {'If you update the existing address, it will change this saved address permanently.'|gettext}
+            {'If you save this as a new address, it will leave the existing address as-is to be used later by the customer and create a new'|gettext} {$type} {'address for this order.'|gettext}{br}
         {/if}
-            {control type=radiogroup label='' items='Update existing address, Save as new address' values='0,1' name=save_option default='0'}
+        {control type=radiogroup label='' items='Update existing address, Save as new address' values='0,1' name=save_option default='0'}
             
         {control type=checkbox label='Default address for this customer?'|gettext flip=true name=address[is_default] value=1 checked=$record->is_default}
         {control type=hidden name=address[is_shipping] value=$record->is_shipping}

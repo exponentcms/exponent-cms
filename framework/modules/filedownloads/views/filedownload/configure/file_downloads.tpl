@@ -16,8 +16,8 @@
 
 <h2>{'Configure this Module'|gettext}</h2>
 <p>
-    {'This is where you can configure the settings to be used by this File Download module.
-    These settings will only apply to this particular module.'|gettext}
+    {'This is where you can configure the settings to be used by this File Download module.'|gettext}&nbsp;&nbsp;
+    {'These settings will only apply to this particular module.'|gettext}
 </p>
 {control type=dropdown name=order label="Sort By"|gettext items="Date Added, Order Manually" values="created_at,rank" value=$config.order|default:rank}
 {control type=dropdown name=dir label="Sort Order"|gettext items="Newest First, Oldest First" values="DESC, ASC" value=$config.dir}

@@ -20,8 +20,7 @@
     {else}
         <h1>{'New Help Version'|gettext}</h1>
         <p>
-            {'Creating a new version will copy all the docs from the current version over to the
-            new version and make them available for viewing and editing'|gettext}
+            {'Creating a new version will copy all the docs from the current version over to the new version and make them available for viewing and editing'|gettext}
         </p>
     {/if}
 

@@ -130,7 +130,7 @@ class fix_database extends upgradescript {
 						$db->insertObject($newSecRef,"sectionref");
 						print_r(gt("Missing sectionref for container replaced").": ".$iloc->mod." - ".$iloc->src." - PageID #".$section->id."<br>");
 					} else {
-						print_r(gt("Can\'t find the container page for container").": ".$iloc->mod." - ".$iloc->src."<br>");
+						print_r(gt("Can't find the container page for container").": ".$iloc->mod." - ".$iloc->src."<br>");
 					}
 				}
 			}

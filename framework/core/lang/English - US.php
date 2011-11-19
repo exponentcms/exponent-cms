@@ -28,6 +28,8 @@ return array(
 	"A Product ID..."=>"A Product ID...",
 	"A Product Status Of"=>"A Product Status Of",
 	"A Product Type Of"=>"A Product Type Of",
+	"A checkmark indicates the file already resides in the destination \'files\' folder."=>"A checkmark indicates the file already resides in the destination \'files\' folder.",
+	"A confirmation email has been sent to"=>"A confirmation email has been sent to",
 	"A field by the name"=>"A field by the name",
 	"A field with the same name already exists for this form"=>"A field with the same name already exists for this form",
 	"A green button indicates your selection"=>"A green button indicates your selection",
@@ -197,6 +199,7 @@ return array(
 	"Affects Inventory?"=>"Affects Inventory?",
 	"After"=>"After",
 	"After clearing the database of content"=>"After clearing the database of content",
+	"After you log in you can use the \'Change Password\' feature to set the password to one of your choosing."=>"After you log in you can use the \'Change Password\' feature to set the password to one of your choosing.",
 	"Aggregate content from similar modules"=>"Aggregate content from similar modules",
 	"Alias"=>"Alias",
 	"All Caches were cleared."=>"All Caches were cleared.",
@@ -230,9 +233,8 @@ return array(
 	"An Order ID..."=>"An Order ID...",
 	"An Order Type Of..."=>"An Order Type Of...",
 	"An Order Value..."=>"An Order Value...",
-	"An email has been sent to your email address with instructions on how to
-        finish resetting your password."=>"An email has been sent to your email address with instructions on how to
-        finish resetting your password.",
+	"An email has been sent to your email address with instructions on how to finish resetting your password."=>"An email has been sent to your email address with instructions on how to finish resetting your password.",
+	"An email will be sent to the email address you provided along with instructions to reset your password."=>"An email will be sent to the email address you provided along with instructions to reset your password.",
 	"An error occurred: No content id set."=>"An error occurred: No content id set.",
 	"An error was encountered trying to connect to the database you specified. Please check your DB config."=>"An error was encountered trying to connect to the database you specified. Please check your DB config.",
 	"An error was encountered while capturing the authorized payment."=>"An error was encountered while capturing the authorized payment.",
@@ -578,9 +580,7 @@ return array(
 	"Creates New User?"=>"Creates New User?",
 	"Creating"=>"Creating",
 	"Creating a New Database"=>"Creating a New Database",
-	"Creating a new version will copy all the docs from the current version over to the
-            new version and make them available for viewing and editing"=>"Creating a new version will copy all the docs from the current version over to the
-            new version and make them available for viewing and editing",
+	"Creating a new version will copy all the docs from the current version over to the new version and make them available for viewing and editing"=>"Creating a new version will copy all the docs from the current version over to the new version and make them available for viewing and editing",
 	"Credit "=>"Credit ",
 	"Credit Card"=>"Credit Card",
 	"Credit Card Information"=>"Credit Card Information",
@@ -729,9 +729,7 @@ return array(
 	"E-Alerts Description"=>"E-Alerts Description",
 	"E-Alerts Settings"=>"E-Alerts Settings",
 	"E-Alerts Title"=>"E-Alerts Title",
-	"E-Alerts allow your users to sign up to receive email versions of new content you create.  If you
-        want users to be able to sign up to  E-Alerts."=>"E-Alerts allow your users to sign up to receive email versions of new content you create.  If you
-        want users to be able to sign up to  E-Alerts.",
+	"E-Alerts allow your users to sign up to receive email versions of new content you create."=>"E-Alerts allow your users to sign up to receive email versions of new content you create.",
 	"E-Alerts."=>"E-Alerts.",
 	"E-Mail"=>"E-Mail",
 	"EQL Database Exporter"=>"EQL Database Exporter",
@@ -862,6 +860,7 @@ return array(
 	"End Time:"=>"End Time:",
 	"End all sessions for this user"=>"End all sessions for this user",
 	"End this session"=>"End this session",
+	"Ending a session will cause that user to be logged out of the site, and any content they were editing will be lost."=>"Ending a session will cause that user to be logged out of the site, and any content they were editing will be lost.",
 	"Enter Maintenance Mode?"=>"Enter Maintenance Mode?",
 	"Enter a Discount Code"=>"Enter a Discount Code",
 	"Enter multiple addresses by using a comma to separate them"=>"Enter multiple addresses by using a comma to separate them",
@@ -1042,14 +1041,8 @@ return array(
 	"From (Display)"=>"From (Display)",
 	"From (Email)"=>"From (Email)",
 	"From Address"=>"From Address",
-	"From here activate or deactivate user profile extensions.  User profile extensions are used to 
-        give users the ability to put in more information about themselves.  The active extensions will 
-        add fields to the form a user has to fill out to create an account."=>"From here activate or deactivate user profile extensions.  User profile extensions are used to 
-        give users the ability to put in more information about themselves.  The active extensions will 
-        add fields to the form a user has to fill out to create an account.",
-	"From here, you can create, modify and remove normal user accounts.
-        You will not be able to create, modify or remove administrator accounts (these options will be disabled)."=>"From here, you can create, modify and remove normal user accounts.
-        You will not be able to create, modify or remove administrator accounts (these options will be disabled).",
+	"From here activate or deactivate user profile extensions."=>"From here activate or deactivate user profile extensions.",
+	"From here, you can create, modify and remove normal user accounts."=>"From here, you can create, modify and remove normal user accounts.",
 	"From:"=>"From:",
 	"Full Path to the WKHTMLtoPDF Binary Utility"=>"Full Path to the WKHTMLtoPDF Binary Utility",
 	"Full Path to the WKHTMLtoPDF Temp Directory"=>"Full Path to the WKHTMLtoPDF Temp Directory",
@@ -1097,11 +1090,7 @@ return array(
 	"Group Permissions"=>"Group Permissions",
 	"Group name is required."=>"Group name is required.",
 	"Groups"=>"Groups",
-	"Groups are used to treat a set of users as a single entity, mostly for permission management.
-        This form allows you to determine which users belong to which groups, create new groups, modify 
-        existing groups, and remove groups."=>"Groups are used to treat a set of users as a single entity, mostly for permission management.
-        This form allows you to determine which users belong to which groups, create new groups, modify 
-        existing groups, and remove groups.",
+	"Groups are used to treat a set of users as a single entity, mostly for permission management."=>"Groups are used to treat a set of users as a single entity, mostly for permission management.",
 	"HOWEVER, you must manually copy the \'files\' directory over to this installation"=>"HOWEVER, you must manually copy the \'files\' directory over to this installation",
 	"HTML Editor"=>"HTML Editor",
 	"Has Items With User Input Data"=>"Has Items With User Input Data",
@@ -1140,9 +1129,7 @@ return array(
 	"Identifier must be unique."=>"Identifier must be unique.",
 	"If a customer purchases more than"=>"If a customer purchases more than",
 	"If in doubt, contact your system administrator or hosting provider."=>"If in doubt, contact your system administrator or hosting provider.",
-	"If no Message of the Day if found for the current day we can pull up a random previous
-    Message of the Day.  If you would like to use this functionality check the box below."=>"If no Message of the Day if found for the current day we can pull up a random previous
-    Message of the Day.  If you would like to use this functionality check the box below.",
+	"If no Message of the Day if found for the current day we can pull up a random previous Message of the Day."=>"If no Message of the Day if found for the current day we can pull up a random previous Message of the Day.",
 	"If no image is provided to use as a thumbnail, one will be generated from the main image."=>"If no image is provided to use as a thumbnail, one will be generated from the main image.",
 	"If no image is provided to use as a thumbnail, one will be generated from the main image. This image will only show if additional images are provided"=>"If no image is provided to use as a thumbnail, one will be generated from the main image. This image will only show if additional images are provided",
 	"If quality is set to 100, the raw image will be used instead of thumbnailing"=>"If quality is set to 100, the raw image will be used instead of thumbnailing",
@@ -1153,13 +1140,9 @@ return array(
 	"If you are a new customer, select this option  to continue with the checkout process."=>"If you are a new customer, select this option  to continue with the checkout process.",
 	"If you are a new customer, select this option to continue with the checkout process."=>"If you are a new customer, select this option to continue with the checkout process.",
 	"If you are a new customer,add an item to your cart  to continue with the checkout process."=>"If you are a new customer,add an item to your cart  to continue with the checkout process.",
-	"If you are ordering multiple quantities of this item, the SAME information you select here will be applied to
-    all of the items. If you would like different options or personalized fields for each item, please add them one at a time to your cart."=>"If you are ordering multiple quantities of this item, the SAME information you select here will be applied to
-    all of the items. If you would like different options or personalized fields for each item, please add them one at a time to your cart.",
+	"If you are ordering multiple quantities of this item, the SAME information you select here will be applied to all of the items."=>"If you are ordering multiple quantities of this item, the SAME information you select here will be applied to all of the items.",
 	"If you are using a database server that supports TCP or other network connection protocols, and that database software runs on a different physical machine than the web server,"=>"If you are using a database server that supports TCP or other network connection protocols, and that database software runs on a different physical machine than the web server,",
-	"If you check the \'Default?\' checkbox, user accounts created after this group is saved
-        will be added to it. This will not retro-actively add existing users to this group."=>"If you check the \'Default?\' checkbox, user accounts created after this group is saved
-        will be added to it. This will not retro-actively add existing users to this group.",
+	"If you check the \'Default?\' checkbox, user accounts created after this group is saved will be added to it."=>"If you check the \'Default?\' checkbox, user accounts created after this group is saved will be added to it.",
 	"If you did not request this email, you can safely ignore it"=>"If you did not request this email, you can safely ignore it",
 	"If you do not send it to the Recycle Bin the content will be permanently deleted."=>"If you do not send it to the Recycle Bin the content will be permanently deleted.",
 	"If you don\'t pass the ID of a form, you need to specify both a module/controller AND and a corresponding action."=>"If you don\'t pass the ID of a form, you need to specify both a module/controller AND and a corresponding action.",
@@ -1170,19 +1153,24 @@ return array(
 	"If you need or want a link in your site hiearchy to link to some off-site webpage, create an External Link."=>"If you need or want a link in your site hiearchy to link to some off-site webpage, create an External Link.",
 	"If you need or want a link to another page in your site hierarchy, use an internal page alias."=>"If you need or want a link to another page in your site hierarchy, use an internal page alias.",
 	"If you need to add another billing or shipping address you will be able to do so on the following page."=>"If you need to add another billing or shipping address you will be able to do so on the following page.",
+	"If you need to edit the comment before you approve it and let it go live, you can do that here as well."=>"If you need to edit the comment before you approve it and let it go live, you can do that here as well.",
+	"If you need to edit the note before you approve it and let it go live, you can do that here as well."=>"If you need to edit the note before you approve it and let it go live, you can do that here as well.",
+	"If you save this as a new address, it will leave the existing address as is and only update the"=>"If you save this as a new address, it will leave the existing address as is and only update the",
+	"If you save this as a new address, it will leave the existing address as-is to be used later by the customer and create a new"=>"If you save this as a new address, it will leave the existing address as-is to be used later by the customer and create a new",
 	"If you selected \'Fixed amount off entire cart\', enter dollar amount discount you would like applied with this coupon code here."=>"If you selected \'Fixed amount off entire cart\', enter dollar amount discount you would like applied with this coupon code here.",
 	"If you selected \'Fixed amount off shipping\', enter dollar amount you would like discounted off the shipping."=>"If you selected \'Fixed amount off shipping\', enter dollar amount you would like discounted off the shipping.",
 	"If you selected \'Precentage off entire cart\', enter the precentage discount you would like applied with this coupon code here."=>"If you selected \'Precentage off entire cart\', enter the precentage discount you would like applied with this coupon code here.",
+	"If you update the existing address, it will change this saved address permanently."=>"If you update the existing address, it will change this saved address permanently.",
 	"If you update the existing address, it will change this saved address permanently.  If you save this as a new address, it will leave the existing address as-is to be used later by the customer and create a new"=>"If you update the existing address, it will change this saved address permanently.  If you save this as a new address, it will leave the existing address as-is to be used later by the customer and create a new",
+	"If you update the existing address, it will update both the shipping and billing address for this order."=>"If you update the existing address, it will update both the shipping and billing address for this order.",
 	"If you upgrade any module in Exponent, these queries will be run to change table structures in the database."=>"If you upgrade any module in Exponent, these queries will be run to change table structures in the database.",
+	"If you want users to be able to sign up to  E-Alerts."=>"If you want users to be able to sign up to  E-Alerts.",
+	"If you would like different options or personalized fields for each item, please add them one at a time to your cart."=>"If you would like different options or personalized fields for each item, please add them one at a time to your cart.",
 	"If you would like to change the product, please delete it and add the correct item."=>"If you would like to change the product, please delete it and add the correct item.",
 	"If you would like to pick up where you left off, click here to login and your previous shopping cart will be restored."=>"If you would like to pick up where you left off, click here to login and your previous shopping cart will be restored.",
-	"If you would like to stay up to date with email alerts, simply give us your email address
-        and pick what you would like to be alerted about."=>"If you would like to stay up to date with email alerts, simply give us your email address
-        and pick what you would like to be alerted about.",
-	"If you would like us to remember you, simply supply a password here and you may login to this site anytime to track your orders and view your order history.
-    Otherwise uncheck \'Remember Me?\' and continue anonymously."=>"If you would like us to remember you, simply supply a password here and you may login to this site anytime to track your orders and view your order history.
-    Otherwise uncheck \'Remember Me?\' and continue anonymously.",
+	"If you would like to stay up to date with email alerts, simply give us your email address and pick what you would like to be alerted about."=>"If you would like to stay up to date with email alerts, simply give us your email address and pick what you would like to be alerted about.",
+	"If you would like to use this functionality check the box below."=>"If you would like to use this functionality check the box below.",
+	"If you would like us to remember you, simply supply a password here and you may login to this site anytime to track your orders and view your order history."=>"If you would like us to remember you, simply supply a password here and you may login to this site anytime to track your orders and view your order history.",
 	"If your database server software runs on a different physical machine than the web server, enter the address of the database server machine."=>"If your database server software runs on a different physical machine than the web server, enter the address of the database server machine.",
 	"If your database server software runs on the same machine as the web server, use the default setting, \'localhost\'."=>"If your database server software runs on the same machine as the web server, use the default setting, \'localhost\'.",
 	"If your email client does not allow you to click on the link above, simply copy and paste the link into your web browsers address bar."=>"If your email client does not allow you to click on the link above, simply copy and paste the link into your web browsers address bar.",
@@ -1322,6 +1310,7 @@ return array(
 	"Maintenance Mode is Enabled"=>"Maintenance Mode is Enabled",
 	"Make File Public"=>"Make File Public",
 	"Make sure that this user has the proper database user privileges."=>"Make sure that this user has the proper database user privileges.",
+	"Make sure you manually copy the \'files\' directory over to this installation."=>"Make sure you manually copy the \'files\' directory over to this installation.",
 	"Make this Configuration Active?"=>"Make this Configuration Active?",
 	"Make this a required field."=>"Make this a required field.",
 	"Make this file available to other users"=>"Make this file available to other users",
@@ -1633,12 +1622,7 @@ return array(
 	"Note: Continuing with the installation will overwrite existing files.  It is highly recommended that you ensure that you want to do this."=>"Note: Continuing with the installation will overwrite existing files.  It is highly recommended that you ensure that you want to do this.",
 	"Note: In all of the solutions"=>"Note: In all of the solutions",
 	"Note: once you save, you will not be able to edit this information.  Using pagesets is a shortcut for creating a number of sections and giving them default content."=>"Note: once you save, you will not be able to edit this information.  Using pagesets is a shortcut for creating a number of sections and giving them default content.",
-	"Note: this only properly copied over the records from the old database into the Exponent v2 database.
-		Make sure you manually copy the \'files\' directory over to this installation."=>"Note: this only properly copied over the records from the old database into the Exponent v2 database.
-		Make sure you manually copy the \'files\' directory over to this installation.",
-	"Note: this will only properly copy over the records from the old database into the Exponent v2 database.
-		Make sure you manually copy the \'files\' directory over to this installation."=>"Note: this will only properly copy over the records from the old database into the Exponent v2 database.
-		Make sure you manually copy the \'files\' directory over to this installation.",
+	"Note: this only properly copied over the records from the old database into the Exponent v2 database."=>"Note: this only properly copied over the records from the old database into the Exponent v2 database.",
 	"Note: you will only be able to re-use content from modules of the same type"=>"Note: you will only be able to re-use content from modules of the same type",
 	"Notes"=>"Notes",
 	"Notes & Communications"=>"Notes & Communications",
@@ -1663,9 +1647,7 @@ return array(
 	"Old School"=>"Old School",
 	"Older Version Installed"=>"Older Version Installed",
 	"On"=>"On",
-	"Once you have followed the instructions
-        listed in the email you will start receiving email alerts for the following topics:"=>"Once you have followed the instructions
-        listed in the email you will start receiving email alerts for the following topics:",
+	"Once you have followed the instructions listed in the email you will start receiving email alerts for the following topics:"=>"Once you have followed the instructions listed in the email you will start receiving email alerts for the following topics:",
 	"Online Donation - Select Amount"=>"Online Donation - Select Amount",
 	"Only"=>"Only",
 	"Only Administrators can make files private again once they\'re are public."=>"Only Administrators can make files private again once they\'re are public.",
@@ -1710,6 +1692,7 @@ return array(
 	"Other From Address"=>"Other From Address",
 	"Other Phone"=>"Other Phone",
 	"Other Tests"=>"Other Tests",
+	"Otherwise uncheck \'Remember Me?\' and continue anonymously."=>"Otherwise uncheck \'Remember Me?\' and continue anonymously.",
 	"Out Of Stock"=>"Out Of Stock",
 	"PDF Generation"=>"PDF Generation",
 	"PHP Version"=>"PHP Version",
@@ -1902,12 +1885,7 @@ return array(
 	"Quantity"=>"Quantity",
 	"Quantity Discounts"=>"Quantity Discounts",
 	"Quantity Display"=>"Quantity Display",
-	"Quantity discounts are discounts that get applied when a customer purchases a certain"=>"Quantity discounts are discounts that get applied when a customer purchases a certain",
-	"Quantity discounts are discounts that get applied when a customer purchases a certain
-                            amount of this product. You can configure how the discounts work by setting the discount
-                            rules below."=>"Quantity discounts are discounts that get applied when a customer purchases a certain
-                            amount of this product. You can configure how the discounts work by setting the discount
-                            rules below.",
+	"Quantity discounts are discounts that get applied when a customer purchases a certain amount of this product."=>"Quantity discounts are discounts that get applied when a customer purchases a certain amount of this product.",
 	"Queries of this type are very important to the basic operation of Exponent.  All data stored in the database is read back through the use of SELECT queries."=>"Queries of this type are very important to the basic operation of Exponent.  All data stored in the database is read back through the use of SELECT queries.",
 	"Question"=>"Question",
 	"Quick Download"=>"Quick Download",
@@ -2381,9 +2359,7 @@ return array(
 	"Test SMTP Mail Server Settings"=>"Test SMTP Mail Server Settings",
 	"Text Items"=>"Text Items",
 	"Thank you"=>"Thank you",
-	"Thank you for confirming your subscriptions.  You are now subscribed to receive email
-        alerts for the following topics."=>"Thank you for confirming your subscriptions.  You are now subscribed to receive email
-        alerts for the following topics.",
+	"Thank you for confirming your subscriptions.  You are now subscribed to receive email alerts for the following topics."=>"Thank you for confirming your subscriptions.  You are now subscribed to receive email alerts for the following topics.",
 	"Thank you for voting."=>"Thank you for voting.",
 	"Thank you for your rating"=>"Thank you for your rating",
 	"The Billing Calculator does not support delayed capture"=>"The Billing Calculator does not support delayed capture",
@@ -2394,7 +2370,9 @@ return array(
 	"The Exponent Install Wizard found some major problems with the server environment, which you must fix before you can continue."=>"The Exponent Install Wizard found some major problems with the server environment, which you must fix before you can continue.",
 	"The Exponent Install Wizard found some minor problems with the server environment, but you should be able to continue."=>"The Exponent Install Wizard found some minor problems with the server environment, but you should be able to continue.",
 	"The \'To\' and \'From\' name may be added at no additional charge."=>"The \'To\' and \'From\' name may be added at no additional charge.",
+	"The active extensions will add fields to the form a user has to fill out to create an account."=>"The active extensions will add fields to the form a user has to fill out to create an account.",
 	"The authorized payment was successfully captured"=>"The authorized payment was successfully captured",
+	"The banners you create and configure here will be available to all the banner modules you have on your site."=>"The banners you create and configure here will be available to all the banner modules you have on your site.",
 	"The conf/config.php file stores the active configuration for the site, including database connection settings and choice of theme."=>"The conf/config.php file stores the active configuration for the site, including database connection settings and choice of theme.",
 	"The conf/profiles directory stores the saved configurations for the site.  Even if you do not use more than one profile, the web server must be able to create files in this directory."=>"The conf/profiles directory stores the saved configurations for the site.  Even if you do not use more than one profile, the web server must be able to create files in this directory.",
 	"The current password you entered is not correct."=>"The current password you entered is not correct.",
@@ -2412,9 +2390,7 @@ return array(
 	"The file you attempted to upload is too large.  Contact your system administrator if this is a problem."=>"The file you attempted to upload is too large.  Contact your system administrator if this is a problem.",
 	"The file you uploaded exceeded the size limits for the server."=>"The file you uploaded exceeded the size limits for the server.",
 	"The file you uploaded was only partially uploaded."=>"The file you uploaded was only partially uploaded.",
-	"The following is a list of all file records migrated into the database.
-		A checkmark indicates the file already resides in the destination \'files\' folder."=>"The following is a list of all file records migrated into the database.
-		A checkmark indicates the file already resides in the destination \'files\' folder.",
+	"The following is a list of all file records migrated into the database."=>"The following is a list of all file records migrated into the database.",
 	"The following is a list of modules we found in the database"=>"The following is a list of modules we found in the database",
 	"The following is a list of pages we found in the database"=>"The following is a list of pages we found in the database",
 	"The following is a list of users and groups we found in the database"=>"The following is a list of users and groups we found in the database",
@@ -2430,9 +2406,7 @@ return array(
 	"The module you are trying to edit is inactive. Please contact your administrator to activate this module."=>"The module you are trying to edit is inactive. Please contact your administrator to activate this module.",
 	"The name specified in the SEF Name field is a duplicate of an existing page."=>"The name specified in the SEF Name field is a duplicate of an existing page.",
 	"The name you specify for this Pageset will be used for reference only.  It will be replaced by whatever is entered into the name field of the \'Add Section\' form."=>"The name you specify for this Pageset will be used for reference only.  It will be replaced by whatever is entered into the name field of the \'Add Section\' form.",
-	"The new password is good for 2 hours.  If you have not completed
-        the password reset process in 2 hours time, the new password will expire."=>"The new password is good for 2 hours.  If you have not completed
-        the password reset process in 2 hours time, the new password will expire.",
+	"The new password is good for 2 hours.  If you have not completed the password reset process in 2 hours time, the new password will expire."=>"The new password is good for 2 hours.  If you have not completed the password reset process in 2 hours time, the new password will expire.",
 	"The open_basedir restriction is a security measure present in some Shared Hosting Environments.  It limits PHP scripts from dealing with files outside of a given directory.  This may cause some problems with some of Exponent\'s file operations, including the Multi-Site manager.  Ignore this error at your own risk."=>"The open_basedir restriction is a security measure present in some Shared Hosting Environments.  It limits PHP scripts from dealing with files outside of a given directory.  This may cause some problems with some of Exponent\'s file operations, including the Multi-Site manager.  Ignore this error at your own risk.",
 	"The overrides.php file is used to override constants that are automagically detected by Exponent.  If the installer finds a problem with some auto-detected values, it will write the correct values out to this file before completing the installation.  After you have installed Exponent, this file only needs to be readable by the web server."=>"The overrides.php file is used to override constants that are automagically detected by Exponent.  If the installer finds a problem with some auto-detected values, it will write the correct values out to this file before completing the installation.  After you have installed Exponent, this file only needs to be readable by the web server.",
 	"The password of your administrator account."=>"The password of your administrator account.",
@@ -2443,9 +2417,7 @@ return array(
 	"The system keeps track of its version for upgrades"=>"The system keeps track of its version for upgrades",
 	"The table below shows notes have not yet been approved"=>"The table below shows notes have not yet been approved",
 	"The theme shell"=>"The theme shell",
-	"The title and description you supply below is what will be displayed to your users on the E-Alerts
-        sign-up form."=>"The title and description you supply below is what will be displayed to your users on the E-Alerts
-        sign-up form.",
+	"The title and description you supply below is what will be displayed to your users on the E-Alerts sign-up form."=>"The title and description you supply below is what will be displayed to your users on the E-Alerts sign-up form.",
 	"The title that appears at the top of your final confirmation checkout page."=>"The title that appears at the top of your final confirmation checkout page.",
 	"The title that appears at the top of your shopping cart."=>"The title that appears at the top of your shopping cart.",
 	"The tmp directory is used by various parts of Exponent for temporary files."=>"The tmp directory is used by various parts of Exponent for temporary files.",
@@ -2491,17 +2463,15 @@ return array(
 	"These queries are executed on the database whenever an administrator trims it to remove tables that are no longer used."=>"These queries are executed on the database whenever an administrator trims it to remove tables that are no longer used.",
 	"These queries create new table structures inside the database.  Exponent needs this when you install it for the first time.  CREATE TABLE queries are also run after new modules are uploaded to the site."=>"These queries create new table structures inside the database.  Exponent needs this when you install it for the first time.  CREATE TABLE queries are also run after new modules are uploaded to the site.",
 	"These queries remove content and configuration from the tables in the site database.  They are also executed whenever users and groups are removed, and permissions are revoked."=>"These queries remove content and configuration from the tables in the site database.  They are also executed whenever users and groups are removed, and permissions are revoked.",
-	"These setting allow you make syndicate your content via RSS.  To start syndicating all
-    you have to do is enable RSS and give this module\'s content a title and description!"=>"These setting allow you make syndicate your content via RSS.  To start syndicating all
-    you have to do is enable RSS and give this module\'s content a title and description!",
+	"These setting allow you make syndicate your content via RSS."=>"These setting allow you make syndicate your content via RSS.",
 	"These settings are used when email answers to users who have submitted a question"=>"These settings are used when email answers to users who have submitted a question",
+	"These settings will only apply to this particular banner module."=>"These settings will only apply to this particular banner module.",
+	"These settings will only apply to this particular module."=>"These settings will only apply to this particular module.",
 	"This Exponent Site has already been configured."=>"This Exponent Site has already been configured.",
 	"This RSS feed has been disabled."=>"This RSS feed has been disabled.",
 	"This Script attempts to"=>"This Script attempts to",
 	"This Transaction is in TEST MODE"=>"This Transaction is in TEST MODE",
-	"This address is the same for both shipping and billing on this order. If you update the existing address, it will update both the
-            shipping and billing address for this order.  If you save this as a new address, it will leave the existing address as is and only update the"=>"This address is the same for both shipping and billing on this order. If you update the existing address, it will update both the
-            shipping and billing address for this order.  If you save this as a new address, it will leave the existing address as is and only update the",
+	"This address is the same for both shipping and billing on this order."=>"This address is the same for both shipping and billing on this order.",
 	"This category is active"=>"This category is active",
 	"This category is used for events"=>"This category is used for events",
 	"This content is being sent to the Recycle Bin to be recovered later if you wish."=>"This content is being sent to the Recycle Bin to be recovered later if you wish.",
@@ -2516,6 +2486,7 @@ return array(
 	"This file is now shared."=>"This file is now shared.",
 	"This form allows you to assign permissions on this module to a specific user."=>"This form allows you to assign permissions on this module to a specific user.",
 	"This form allows you to assign permissions to an entire group of users."=>"This form allows you to assign permissions to an entire group of users.",
+	"This form allows you to determine which users belong to which groups, create new groups, modify existing groups, and remove groups."=>"This form allows you to determine which users belong to which groups, create new groups, modify existing groups, and remove groups.",
 	"This form allows you to upload modules, themes, plugins, and views to the website.  After you upload an archive containing an extension (or more) you will be shown a pre-installation summary page, outlining exactly what files will be installed where, and what each file contains (for security reasons)"=>"This form allows you to upload modules, themes, plugins, and views to the website.  After you upload an archive containing an extension (or more) you will be shown a pre-installation summary page, outlining exactly what files will be installed where, and what each file contains (for security reasons)",
 	"This form lets you upload a database backup (in EQL format) to the server.  Doing so will restore the database table to the state stored in that backup file."=>"This form lets you upload a database backup (in EQL format) to the server.  Doing so will restore the database table to the state stored in that backup file.",
 	"This installation wizard will guide you step by step through the configuration and setup of your new Exponent-powered website."=>"This installation wizard will guide you step by step through the configuration and setup of your new Exponent-powered website.",
@@ -2530,21 +2501,11 @@ return array(
 	"This is usually because a page with the same ID already exists in the database you importing to."=>"This is usually because a page with the same ID already exists in the database you importing to.",
 	"This is usually because a user with the username or group with that name already exists in the database you importing to."=>"This is usually because a user with the username or group with that name already exists in the database you importing to.",
 	"This is where you can add, edit and rearrange categories."=>"This is where you can add, edit and rearrange categories.",
-	"This is where you can configure the settings to be used by this Blog module. 
-    These settings will only apply to this particular module."=>"This is where you can configure the settings to be used by this Blog module. 
-    These settings will only apply to this particular module.",
-	"This is where you can configure the settings to be used by this File Download module.
-    These settings will only apply to this particular module."=>"This is where you can configure the settings to be used by this File Download module.
-    These settings will only apply to this particular module.",
-	"This is where you can configure the settings to be used by this Link Manager module.
-    These settings will only apply to this particular module."=>"This is where you can configure the settings to be used by this Link Manager module.
-    These settings will only apply to this particular module.",
-	"This is where you can configure the settings to be used by this banner module.
-    These settings will only apply to this particular banner module."=>"This is where you can configure the settings to be used by this banner module.
-    These settings will only apply to this particular banner module.",
-	"This is where you enter the database connection information for your
-		old Exponent v1 site you want to migrate data from."=>"This is where you enter the database connection information for your
-		old Exponent v1 site you want to migrate data from.",
+	"This is where you can configure the settings to be used by this Blog module."=>"This is where you can configure the settings to be used by this Blog module.",
+	"This is where you can configure the settings to be used by this File Download module."=>"This is where you can configure the settings to be used by this File Download module.",
+	"This is where you can configure the settings to be used by this Link Manager module."=>"This is where you can configure the settings to be used by this Link Manager module.",
+	"This is where you can configure the settings to be used by this banner module."=>"This is where you can configure the settings to be used by this banner module.",
+	"This is where you enter the database connection information for your old Exponent v1 site you want to migrate data from."=>"This is where you enter the database connection information for your old Exponent v1 site you want to migrate data from.",
 	"This item doesn\'t require shipping"=>"This item doesn\'t require shipping",
 	"This item has a minimum order quantity of"=>"This item has a minimum order quantity of",
 	"This item has an extra freight surcharge of"=>"This item has an extra freight surcharge of",
@@ -2563,13 +2524,7 @@ return array(
 	"This page explains each of the sanity checks, why it is performed, and how to reconfigure your web server if the check fails."=>"This page explains each of the sanity checks, why it is performed, and how to reconfigure your web server if the check fails.",
 	"This page lists all installed exporters that Exponent recognizes and gives some information about each."=>"This page lists all installed exporters that Exponent recognizes and gives some information about each.",
 	"This page lists all installed importers that Exponent recognizes and gives some information about each"=>"This page lists all installed importers that Exponent recognizes and gives some information about each",
-	"This page shows all of the active sessions, along with session information like login time,
-        browser signature, etc. You can forcibly end either a specific session or all sessions for 
-        a user account. Ending a session will cause that user to be logged out of the site, and any 
-        content they were editing will be lost."=>"This page shows all of the active sessions, along with session information like login time,
-        browser signature, etc. You can forcibly end either a specific session or all sessions for 
-        a user account. Ending a session will cause that user to be logged out of the site, and any 
-        content they were editing will be lost.",
+	"This page shows all of the active sessions, along with session information like login time, browser signature, etc."=>"This page shows all of the active sessions, along with session information like login time, browser signature, etc.",
 	"This site does not allow user registrations"=>"This site does not allow user registrations",
 	"This special template allows merging multiple text modules (items) into one module"=>"This special template allows merging multiple text modules (items) into one module",
 	"This version of ExponentCMS requires PHP 5.2.1 or higher. You are running PHP"=>"This version of ExponentCMS requires PHP 5.2.1 or higher. You are running PHP",
@@ -2580,6 +2535,7 @@ return array(
 	"This will be displayed on the top of your emails and invoices."=>"This will be displayed on the top of your emails and invoices.",
 	"This will be displayed on the top of your final confirmation checkout page."=>"This will be displayed on the top of your final confirmation checkout page.",
 	"This will clear any existing external addresses for this source and replace with the addresses you upload."=>"This will clear any existing external addresses for this source and replace with the addresses you upload.",
+	"This will not retro-actively add existing users to this group."=>"This will not retro-actively add existing users to this group.",
 	"This will set the default Language for the installation process as well as your new Exponent website."=>"This will set the default Language for the installation process as well as your new Exponent website.",
 	"Thumbnail Box Size"=>"Thumbnail Box Size",
 	"Thumbnail JPEG Quality"=>"Thumbnail JPEG Quality",
@@ -2601,19 +2557,14 @@ return array(
 	"Title:"=>"Title:",
 	"To"=>"To",
 	"To (comma seperate multiple):"=>"To (comma seperate multiple):",
-	"To approve a comment just check the \'Approve Comment\' checkbox and click the approve button below.&nbsp;&nbsp;
-        If you need to edit the comment before you approve it and let it go live, you can do that here as well."=>"To approve a comment just check the \'Approve Comment\' checkbox and click the approve button below.&nbsp;&nbsp;
-        If you need to edit the comment before you approve it and let it go live, you can do that here as well.",
-	"To approve a note just check the \'Approve Note\' checkbox and click the approve button below.&nbsp;&nbsp;
-        If you need to edit the note before you approve it and let it go live, you can do that here as well."=>"To approve a note just check the \'Approve Note\' checkbox and click the approve button below.&nbsp;&nbsp;
-        If you need to edit the note before you approve it and let it go live, you can do that here as well.",
+	"To approve a comment just check the \'Approve Comment\' checkbox and click the approve button below."=>"To approve a comment just check the \'Approve Comment\' checkbox and click the approve button below.",
+	"To approve a note just check the \'Approve Note\' checkbox and click the approve button below."=>"To approve a note just check the \'Approve Note\' checkbox and click the approve button below.",
 	"To change your billing or shipping address for this order, simply select the button next to the address you\'d like to set in either the billing or shipping address column"=>"To change your billing or shipping address for this order, simply select the button next to the address you\'d like to set in either the billing or shipping address column",
 	"To change your password enter your current password and then enter what you would like your new password to be"=>"To change your password enter your current password and then enter what you would like your new password to be",
 	"To help prevent data loss, you cannot remove a form\'s database table once it has been added."=>"To help prevent data loss, you cannot remove a form\'s database table once it has been added.",
-	"To reset your password, enter your username/email address below. An
-        email will be sent to the email address you provided along with instructions to reset your password."=>"To reset your password, enter your username/email address below. An
-        email will be sent to the email address you provided along with instructions to reset your password.",
+	"To reset your password, enter your username/email address below."=>"To reset your password, enter your username/email address below.",
 	"To restore your uploaded files, simply select and upload the files archive using this form."=>"To restore your uploaded files, simply select and upload the files archive using this form.",
+	"To start syndicating all you have to do is enable RSS and give this module\'s content a title and description!"=>"To start syndicating all you have to do is enable RSS and give this module\'s content a title and description!",
 	"To use the new password just return to"=>"To use the new password just return to",
 	"To:"=>"To:",
 	"Toolbar Button Configuration"=>"Toolbar Button Configuration",
@@ -2780,6 +2731,7 @@ return array(
 	"User Sessions"=>"User Sessions",
 	"User and group permissions will NOT be migrated."=>"User and group permissions will NOT be migrated.",
 	"User defined ranking is not allowed when aggregating or pull RSS data feeds."=>"User defined ranking is not allowed when aggregating or pull RSS data feeds.",
+	"User profile extensions are used to give users the ability to put in more information about themselves."=>"User profile extensions are used to give users the ability to put in more information about themselves.",
 	"Username"=>"Username",
 	"Username Specified in CSV File"=>"Username Specified in CSV File",
 	"Username/Email"=>"Username/Email",
@@ -2903,9 +2855,9 @@ return array(
 	"You are missing some required database connection information.  Please enter DB information."=>"You are missing some required database connection information.  Please enter DB information.",
 	"You are previewing the"=>"You are previewing the",
 	"You can configure certain user groups to get a discount applied to their carts when they checkout."=>"You can configure certain user groups to get a discount applied to their carts when they checkout.",
-	"You can manage the banners for your site\'s banner modules here.  The banners you create and configure
-        here will be available to all the banner modules you have on your site."=>"You can manage the banners for your site\'s banner modules here.  The banners you create and configure
-        here will be available to all the banner modules you have on your site.",
+	"You can configure how the discounts work by setting the discount rules below."=>"You can configure how the discounts work by setting the discount rules below.",
+	"You can forcibly end either a specific session or all sessions for a user account."=>"You can forcibly end either a specific session or all sessions for a user account.",
+	"You can manage the banners for your site\'s banner modules here."=>"You can manage the banners for your site\'s banner modules here.",
 	"You can view, edit and optionally approved this comment by going to"=>"You can view, edit and optionally approved this comment by going to",
 	"You cannot reset passwords for an administrator account."=>"You cannot reset passwords for an administrator account.",
 	"You currently have no items in your cart"=>"You currently have no items in your cart",
@@ -2928,9 +2880,7 @@ return array(
 	"You have not selected an address yet."=>"You have not selected an address yet.",
 	"You have selected the"=>"You have selected the",
 	"You may add up to four extra fields to your product here.  These field names are also picked up by your child products where you can assign values to them."=>"You may add up to four extra fields to your product here.  These field names are also picked up by your child products where you can assign values to them.",
-	"You may also optionally provide a password if you would like to return to our store at a later time to view your order history or
-            make additional purchases."=>"You may also optionally provide a password if you would like to return to our store at a later time to view your order history or
-            make additional purchases.",
+	"You may also optionally provide a password if you would like to return to our store at a later time to view your order history or make additional purchases."=>"You may also optionally provide a password if you would like to return to our store at a later time to view your order history or make additional purchases.",
 	"You may change the item quantity here, price, as well as edit the options and user input fields."=>"You may change the item quantity here, price, as well as edit the options and user input fields.",
 	"You may define fields here that the user is required to fill out when purchasing this product.  For instance, to supply a value to be imprinted on an item."=>"You may define fields here that the user is required to fill out when purchasing this product.  For instance, to supply a value to be imprinted on an item.",
 	"You may enter the grand total manually, or select the checkbox below to auto calculate the grand total based on the other fields."=>"You may enter the grand total manually, or select the checkbox below to auto calculate the grand total based on the other fields.",
@@ -2969,6 +2919,7 @@ return array(
 	"You requested to subscribe to the following E-Alert topics"=>"You requested to subscribe to the following E-Alert topics",
 	"You should now see all files from your previous system listed in your file manager"=>"You should now see all files from your previous system listed in your file manager",
 	"You will be paying by "=>"You will be paying by ",
+	"You will not be able to create, modify or remove administrator accounts (these options will be disabled)."=>"You will not be able to create, modify or remove administrator accounts (these options will be disabled).",
 	"YouTube Video (Embed) Code"=>"YouTube Video (Embed) Code",
 	"YouTube Video Code"=>"YouTube Video Code",
 	"YouTube Videos"=>"YouTube Videos",
@@ -3020,9 +2971,7 @@ return array(
 	"Your passwords do not match. Please check your entries."=>"Your passwords do not match. Please check your entries.",
 	"Your popup blocker has prevented the file manager from opening"=>"Your popup blocker has prevented the file manager from opening",
 	"Your question has been submitted. Some one should get back to you shortly. Thank you."=>"Your question has been submitted. Some one should get back to you shortly. Thank you.",
-	"Your request to modify your e-Alert settings has been received. A confirmation
-        email has been sent to"=>"Your request to modify your e-Alert settings has been received. A confirmation
-        email has been sent to",
+	"Your request to modify your e-Alert settings has been received."=>"Your request to modify your e-Alert settings has been received.",
 	"Your search for"=>"Your search for",
 	"Your shopping cart has been restored - you may continue shopping or"=>"Your shopping cart has been restored - you may continue shopping or",
 	"Your shopping cart is now empty."=>"Your shopping cart is now empty.",
@@ -3059,9 +3008,7 @@ return array(
 	"alt"=>"alt",
 	"amount of this product. You can configure how the discounts work by setting the discount"=>"amount of this product. You can configure how the discounts work by setting the discount",
 	"and"=>"and",
-	"and log in using your username and this password.  After you log in you can use the \'Change Password\'
-feature to set the password to one of your choosing."=>"and log in using your username and this password.  After you log in you can use the \'Change Password\'
-feature to set the password to one of your choosing.",
+	"and log in using your username and this password."=>"and log in using your username and this password.",
 	"and then run through any upgrade scripts needed to bring your code and database up to date."=>"and then run through any upgrade scripts needed to bring your code and database up to date.",
 	"and up"=>"and up",
 	"anti-spam measure settings"=>"anti-spam measure settings",

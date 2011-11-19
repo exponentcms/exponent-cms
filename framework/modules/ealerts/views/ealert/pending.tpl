@@ -17,9 +17,9 @@
 <div class="module ealerts pending">
     <h1>{'Account Settings Pending'|gettext}</h1>
     <p>
-        {'Your request to modify your e-Alert settings has been received. A confirmation
-        email has been sent to'|gettext} {$subscriber->email}. {'Once you have followed the instructions
-        listed in the email you will start receiving email alerts for the following topics:'|gettext}
+        {'Your request to modify your e-Alert settings has been received.'|gettext}&nbsp;&nbsp;
+        {'A confirmation email has been sent to'|gettext} {$subscriber->email}.&nbsp;&nbsp;
+        {'Once you have followed the instructions listed in the email you will start receiving email alerts for the following topics:'|gettext}
     </p>
     
     <ul>

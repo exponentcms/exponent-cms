@@ -74,8 +74,8 @@ YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
             <div id="passwordDiv">
                 {control type="checkbox" flip=1 id="remember_me" name="remember_me" label="Remember Me"|gettext|cat:"?" value=1 checked=true}
                 <p>
-                    {"If you would like us to remember you, simply supply a password here and you may login to this site anytime to track your orders and view your order history.
-    Otherwise uncheck \'Remember Me?\' and continue anonymously."|gettext}
+                    {"If you would like us to remember you, simply supply a password here and you may login to this site anytime to track your orders and view your order history."|gettext}&nbsp;&nbsp;
+                    {'Otherwise uncheck \'Remember Me?\' and continue anonymously.'|gettext}
                 </p>
                 <div class="passwords">
                     {control type="password" name="password" label="<span class=\"required\">*</span>"|cat:"Password"|gettext}

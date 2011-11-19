@@ -66,9 +66,8 @@
                     <fieldset>
                     <h2>{"Quantity Discounts"|gettext}</h2>
                         <p>
-                            {"Quantity discounts are discounts that get applied when a customer purchases a certain
-                            amount of this product. You can configure how the discounts work by setting the discount
-                            rules below."|gettext}
+                            {"Quantity discounts are discounts that get applied when a customer purchases a certain amount of this product."|gettext}&nbsp;&nbsp;
+                            {"You can configure how the discounts work by setting the discount rules below."|gettext}
                         </p>
                         <table class="qty-discount">
                         <tr>

@@ -409,9 +409,8 @@ class usersController extends expController {
         
         $db->delete('passreset_token', 'uid='.$u->id);
         $db->insertObject($tok,'passreset_token');
-        flash('message', gt('An email has been sent to your email address with instructions on how to
-        finish resetting your password.').'<br><br>'.gt('The new password is good for 2 hours.  If you have not completed
-        the password reset process in 2 hours time, the new password will expire.'));
+        flash('message', gt('An email has been sent to your email address with instructions on how to finish resetting your password.').'<br><br>'.
+            gt('The new password is good for 2 hours.  If you have not completed the password reset process in 2 hours time, the new password will expire.'));
         
         expHistory::back();
     }

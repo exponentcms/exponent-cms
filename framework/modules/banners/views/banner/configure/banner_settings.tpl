@@ -16,8 +16,8 @@
 
 <h2>{'Configure this Banner Module'|gettext}</h2>
 <p>
-    {'This is where you can configure the settings to be used by this banner module.
-    These settings will only apply to this particular banner module.'|gettext}
+    {'This is where you can configure the settings to be used by this banner module.'|gettext}&nbsp;&nbsp;
+    {'These settings will only apply to this particular banner module.'|gettext}
 </p>
 <h2>{'Number of Banners to Display'|gettext}</h2>
 {control type="text" name="limit" label="Number of banners"|gettext size=3 filter=integer value=$config.limit}

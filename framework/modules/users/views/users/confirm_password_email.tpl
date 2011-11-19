@@ -15,9 +15,8 @@
  *}
 <p>{'Your password has been reset.  Your new password is'|gettext} {$newpass}.</p>
 <p>
-{'To use the new password just return to'|gettext} <a href="http://{$smarty.const.HOSTNAME}">{$smarty.const.HOSTNAME}</a>
-{'and log in using your username and this password.  After you log in you can use the \'Change Password\'
-feature to set the password to one of your choosing.'|gettext}
+{'To use the new password just return to'|gettext} <a href="http://{$smarty.const.HOSTNAME}">{$smarty.const.HOSTNAME}</a> {'and log in using your username and this password.'|gettext}&nbsp;&nbsp;
+{'After you log in you can use the \'Change Password\' feature to set the password to one of your choosing.'|gettext}
 </p>
 
 Thanks!

@@ -21,8 +21,7 @@
 <div class="module ealerts showall">
     <h1>{$moduletitle|default:"Sign Up for E-Alerts"|gettext}</h1>
     <p>
-        {'If you would like to stay up to date with email alerts, simply give us your email address
-        and pick what you would like to be alerted about.'|gettext}
+        {'If you would like to stay up to date with email alerts, simply give us your email address and pick what you would like to be alerted about.'|gettext}
     </p>
     {form action=signup}
     <strong>{'Step 1: Let us know your email address'|gettext}</strong>
