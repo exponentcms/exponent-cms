@@ -126,7 +126,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','uploader', function(Y) {
     }
 
     function uploadComplete (event) {
-		var progbar = "<div style='width:90%;background-color:#CCC;'><div style='height:12px;padding:3px;font-size:10px;color:#fff;background-color:#2f840a;width:100%;'><img src=\"/_trunk/github/framework/core/assets/images/accepted.png\" style=\"float:right; margin:-3px -24px 0 0\">100%</div></div>";
+		var progbar = "<div style='width:90%;background-color:#CCC;'><div style='height:12px;padding:3px;font-size:10px;color:#fff;background-color:#2f840a;width:100%;'><img src='"+EXPONENT.URL_FULL+"framework/core/assets/images/accepted.png' style=\"float:right; margin:-3px -24px 0 0\">100%</div></div>";
             Y.one("#div_" + event.id).setContent(progbar);
     }
 
@@ -136,7 +136,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','uploader', function(Y) {
     		//uploader.setSimUploadLimit(parseInt(3));
 //    		console.debug(EXPONENT.URL_FULL+"index.php?controller=file&action=upload&ajax_action=1");
 //            uploader.uploadAll(EXPONENT.URL_FULL+"index.php?controller=file&action=upload&ajax_action=1");
-            console.debug(EXPONENT.URL_FULL+"index.php?controller=file&action=upload&ajax_action=1&usrid=" + usr['id']);
+//            console.debug(EXPONENT.URL_FULL+"index.php?controller=file&action=upload&ajax_action=1&usrid=" + usr['id']);
             uploader.uploadAll(EXPONENT.URL_FULL+"index.php?controller=file&action=upload&ajax_action=1&usrid=" + usr['id']);    	//}
         //uploader.uploadAll("http://www.yswfblog.com/upload/upload_simple.php");
     }
