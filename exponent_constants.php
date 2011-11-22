@@ -470,7 +470,7 @@ if (!defined('SMARTY_PATH')) {
 	 *
 	 * Changing the version here lets Exponent adjust where to look
 	 */
-	define('SMARTY_VERSION', '3.1.4');
+	define('SMARTY_VERSION', '3.1.5');
 	define('SMARTY_PATH', BASE.'external/Smarty-'.SMARTY_VERSION.'/libs/');
 }
 
