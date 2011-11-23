@@ -33,7 +33,7 @@
     
     </div>
     <div id="actionbar">
-        <a class="upload awesome green small" href="{link action=uploader update=$smarty.get.update fck=$smarty.get.fck CKEditor=$smarty.get.CKEditor CKEditorFuncNum=$smarty.get.CKEditorFuncNum langCode=$smarty.get.langCode ajax_action=1 }"><span>{"Upload Files"|gettext}</span></a>
+        <a class="upload awesome green small" href="{link action=uploader ajax_action=1 ck=$smarty.get.ck update=$smarty.get.update fck=$smarty.get.fck}{if $smarty.const.SEF_URLS}?{else}&{/if}CKEditor={$smarty.get.CKEditor}&CKEditorFuncNum={$smarty.get.CKEditorFuncNum}&langCode={$smarty.get.langCode}"><span>{"Upload Files"|gettext}</span></a>
     </div>
 
     <div id="infopanel">

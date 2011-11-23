@@ -8,7 +8,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 
 	<head>
-		<title>Insert/Modify Link</title>
+		<title><?PHP echo gt('Insert/Modify Link'); ?></title>
 
 		<script type="text/javascript" src="<?PHP echo PATH_RELATIVE ?>exponent.js.php"></script>
 		<script type="text/javascript" src="popup.js"></script>
@@ -127,25 +127,25 @@
 	</head>
 
 	<body onload="__dlg_translate(eXp._TR);">
-		<div class="title">Insert/Modify Link</div>
+		<div class="title"><?PHP echo gt('Insert/Modify Link'); ?></div>
 
 		<table border="0" style="width: 100%;">
 			<tbody>
 				<tr>
 					<td colspan="2"><hr size="1" />
-						<a class="header">Select a Page, or Content</a>
+						<a class="header"><?PHP echo gt('Select a Page, or Content'); ?></a>
 					</td>
 				</tr>
 				<tr>
-					<td class="label"><br />Select a Page below</td>
+					<td class="label"><br /><?PHP echo gt('Select a Page below'); ?></td>
 					<td align="right">
-						<a href="#" onclick="openContentLinker(); return false;">Link to Content</a>
+						<a href="#" onclick="openContentLinker(); return false;"><?PHP echo gt('Link to Content'); ?></a>
 						<input id="f_href" type="hidden"/>
 						<input id="f_extern" checked="checked" type="hidden"/>
 						<input id="f_title" type="hidden"/>
 						<div id="buttons">
-							<button type="button" name="ok" onclick="return onOK();">OK</button>
-							<button type="button" name="cancel" onclick="return onCancel();">Cancel</button>
+							<button type="button" name="ok" onclick="return onOK();"><?PHP echo gt('OK'); ?></button>
+							<button type="button" name="cancel" onclick="return onCancel();"><?PHP echo gt('Cancel'); ?></button>
 						</div>
 					</td>
 				</tr>
