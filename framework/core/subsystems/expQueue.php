@@ -43,7 +43,7 @@ class expQueue {
 	static function flash($name, $msg) {
         	$flash = expSession::get('flash');
 	        if(empty($flash[$name])) $flash[$name]  = $msg;           
-	        else $flash[$name] .= "<br/><br/>" . $msg;
+	        elseif ($flash[$name] != $msg) $flash[$name] .= "<br/><br/>" . $msg;
 	        expSession::set('flash', $flash);
     	}
 
