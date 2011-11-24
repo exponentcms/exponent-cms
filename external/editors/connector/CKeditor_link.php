@@ -61,8 +61,6 @@
 			}
 
 			function openContentLinker() {
-//				window.open("../../../content_selector.php?dest="+escape("external/editors/connector/content_linked.php?dummy")+"&vview=_sourcePicker&vmod=containermodule&showmodules=all","contentlinker","toolbar=no,title=no,width=800,height=600,scrollbars=yes");
-//				window.open("../../../content_selector.php?dest="+escape("external/editors/connector/content_linked.php?dummy")+"&vview=_linkPicker&vmod=containermodule&showmodules=all","contentlinker","toolbar=no,title=no,width=800,height=600,scrollbars=yes");
 				window.open("../../../source_selector.php?dest="+escape("external/editors/connector/content_linked.php?dummy")+"&vview=_linkPicker&vmod=containermodule&showmodules=all","contentlinker","toolbar=no,title=no,width=800,height=600,scrollbars=yes");
 			}
 		/* ]]> */

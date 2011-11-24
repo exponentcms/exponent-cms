@@ -135,7 +135,7 @@ class expRouter {
                 }
                 //trim last / off                 
                 return self::cleanLink($linkbase.$link);
-                }
+            }
         } else {
             // if the users don't have SEF URL's turned on then we make the link the old school way.
             if (!empty($params['sef_name'])) unset($params['sef_name']);

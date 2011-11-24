@@ -61,13 +61,12 @@ function fs($str) {
 
 // rips gettext strings from $file and prints them in C format
 function do_extract($file, $regex) {
-    global $default_lang, $total_new;
+    global $total_new;
 
     $content = @file_get_contents($file);
    	if (empty($content)) {
    		return;
    	}
-
     preg_match_all(
            $regex,
            $content,
