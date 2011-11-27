@@ -51,13 +51,13 @@ class filemanagercontrol extends formcontrol {
             $html .= ' | <small>Limit: <em class="limit">'.$this->limit.'</em></small>';
         }
         if ($this->count < $this->limit){
-            $html .= ' | <a class="add" href="#" id="addfiles-'.$name.'">Add Files</a>';
+            $html .= ' | <a class="add" href="#" id="addfiles-'.$name.'">'.gt('Add Files').'</a>';
         }
         $html .= '</label></div>';
 
         if (empty($files)) {
             $this->count = 0;
-            $files = '<li class="blank">You need to add some files</li>';
+            $files = '<li class="blank">'.gt('You need to add some files').'</li>';
         }
         $html .= '<ul id="filelist'.$name.'" class="filelist">';
         $html .= $files;
@@ -76,7 +76,7 @@ class filemanagercontrol extends formcontrol {
                     win = window.open('".makeLink($params=array('controller'=>'file','action'=>'picker','ajax_action'=>"1",'update'=>$name))."', 'IMAGE_BROWSER','left=20,top=20,scrollbars=yes,width=800,height=600,toolbar=no,resizable=yes,status=0');
                     if (!win) {
                         //Catch the popup blocker
-                        alert('Please disable your popup blocker!!');
+                        alert('".gt('Please disable your popup blocker')."!!');
                     }
                 };
                 
@@ -86,7 +86,7 @@ class filemanagercontrol extends formcontrol {
                 };
                 
                 var showEmptyLI = function(){
-                    var blank = Y.Node.create('<li class=\"blank\">You need to add some files</li>');
+                    var blank = Y.Node.create('<li class=\"blank\">".gt('You need to add some files')."</li>');
                     fl.appendChild(blank);
                 };
                 
@@ -104,7 +104,7 @@ class filemanagercontrol extends formcontrol {
                 var showFileAdder = function() {
                     var sf = Y.one('#addfiles-".$name."');
                     if (Y.Lang.isNull(sf)) {
-                        var afl = Y.Node.create('<a class=\"add\" href=\"#\" id=\"addfiles-".$name."\">Add Files</a>');
+                        var afl = Y.Node.create('<a class=\"add\" href=\"#\" id=\"addfiles-".$name."\">".gt('Add Files')."</a>');
                         Y.one('#filemanager".$name." .hd').append(afl);
                         listenForAdder();
                     }
@@ -112,10 +112,6 @@ class filemanagercontrol extends formcontrol {
                     if (filesAdded == 0) showEmptyLI();
                 }
 
-                
-                
-                
-                
                 //Drag Drop stuff
                 
                 //Listen for all drop:over events

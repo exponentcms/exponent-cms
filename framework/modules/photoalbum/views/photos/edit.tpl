@@ -25,22 +25,22 @@
                 <li><a href="#tab4"><em>{"SEO"|gettext}</em></a></li>
             </ul>            
             <div class="yui-content">
-            <div id="tab1">
-                {control type=text name=title label="Title"|gettext value=$record->title}
-                {control type=html name=body label="Description"|gettext value=$record->body}
-                {control type="text" name="link" label="Link a Slideshow Slide"|gettext value=$record->link}
-                {control type="text" name="alt" label="Alt Tag (overwrites alt supplied in file manager)"|gettext value=$record->alt}
-            </div>
-            <div id="tab3">
-                {control type="files" name="files" label="Files"|gettext value=$record->expFile limit=1}
-            </div>
-            <div id="tab4">
-                 <h2>{'SEO Settings'|gettext}</h2>
-                {control type="text" name="sef_url" label="SEF URL"|gettext value=$record->sef_url}
-                {control type="text" name="meta_title" label="Meta Title"|gettext value=$record->meta_title}
-                {control type="textarea" name="meta_description" label="Meta Description"|gettext rows=5 cols=35 value=$record->meta_description}
-                {control type="textarea" name="meta_keywords" label="Meta Keywords"|gettext rows=5 cols=35 value=$record->meta_keywords}
-            </div>
+                <div id="tab1">
+                    {control type=text name=title label="Title"|gettext value=$record->title}
+                    {control type=html name=body label="Description"|gettext value=$record->body}
+                    {control type="text" name="link" label="Link a Slideshow Slide"|gettext value=$record->link}
+                    {control type="text" name="alt" label="Alt Tag (overwrites alt supplied in file manager)"|gettext value=$record->alt}
+                </div>
+                <div id="tab3">
+                    {control type="files" name="files" label="Files"|gettext value=$record->expFile limit=1}
+                </div>
+                <div id="tab4">
+                     <h2>{'SEO Settings'|gettext}</h2>
+                    {control type="text" name="sef_url" label="SEF URL"|gettext value=$record->sef_url}
+                    {control type="text" name="meta_title" label="Meta Title"|gettext value=$record->meta_title}
+                    {control type="textarea" name="meta_description" label="Meta Description"|gettext rows=5 cols=35 value=$record->meta_description}
+                    {control type="textarea" name="meta_keywords" label="Meta Keywords"|gettext rows=5 cols=35 value=$record->meta_keywords}
+                </div>
             </div>
         </div>
 	    <div class="loadingdiv">{"Loading Photo Item"|gettext}</div>
