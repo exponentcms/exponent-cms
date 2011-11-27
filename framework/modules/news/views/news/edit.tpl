@@ -33,15 +33,15 @@
                 <div id="tab1">
                     {control type=text name=title label="Title"|gettext value=$record->title}
                 	{control type="editor" name="body" label="Body"|gettext value=$record->body}
-                	{control type="checkbox" name="is_featured" label="Feature this news post"|gettext|cat:"?" value=1 checked=$record->is_featured}
+                	{control type="checkbox" name="is_featured" label="Feature this news post?"|gettext value=1 checked=$record->is_featured}
                 	{if $config.enable_ealerts}
-                	    {control type="checkbox" name="send_ealerts" label="Send E-Alerts"|gettext|cat:"?" value=1}
+                	    {control type="checkbox" name="send_ealerts" label="Send E-Alerts?"|gettext value=1}
                 	{/if}
                 </div>
                 <div id="tab2">
                     {control type="yuidatetimecontrol" name="publish" label="Publish Date"|gettext edit_text="Publish Immediately" value=$record->publish}
                     {control type="yuidatetimecontrol" name="unpublish" label="Un-publish Date"|gettext edit_text="Do Not Un-Publish" value=$record->unpublish}
-                </div>          
+                </div>
                 <div id="tab3">
                     {control type=files name=images label="Attachable Files"|gettext value=$record->expFile}
                 </div>
@@ -59,7 +59,7 @@
      {/form}
 </div>
 
-{script unique="newed" yui3mods=1}
+{script unique="editform" yui3mods=1}
 {literal}
 	YUI(EXPONENT.YUI3_CONFIG).use('tabview', function(Y) {
        var tabview = new Y.TabView({srcNode:'#newsedit-tabs'});
@@ -69,4 +69,3 @@
     });
 {/literal}
 {/script}
-
