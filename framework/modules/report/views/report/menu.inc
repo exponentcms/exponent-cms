@@ -35,6 +35,10 @@
                         <strong><a href="{link action=abandoned_carts}">{'View Abandoned Carts'|gettext}</a></strong>
                         {'View and manage abandoned carts.'|gettext}
                     </li>
+                    <li>
+                        <strong><a href="{link action=current_carts}">{'View Current Carts'|gettext}</a></strong>
+                        {'View and manage current carts.'|gettext}
+                    </li>
                 </ul>
             </div>
         </div>
