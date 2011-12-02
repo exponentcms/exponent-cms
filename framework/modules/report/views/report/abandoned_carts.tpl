@@ -1,110 +1,199 @@
 {include file='menu.inc'}
-{css unique="general-ecom" link="`$smarty.const.PATH_RELATIVE`framework/modules/ecommerce/assets/css/ecom.css"}
 
-{/css}
-{css unique="report-builder" link="`$smarty.const.PATH_RELATIVE`framework/modules/ecommerce/assets/css/report-builder.css"}
+{css unique="current_carts" corecss="tables"}
 
 {/css}
 	<div class="rightcol">
+		<div class="module report abandoned_carts">
+			{form action="abandoned_carts"}
+			{"Abandoned Carts From:"|gettext}{br}
+			{control type="dropdown" name="quickrange" label="" items=$quickrange default=$quickrange_default onchange="this.form.submit();"}      
+			{/form}
+			
+			{br}
+			<div class="exp-skin-table">
+				<table border="0" cellspacing="0" cellpadding="0" width="50%">
+					<thead>
+						<th colspan="2">
+							<h1 style="text-align: center;">{"Abandoned Cart Summary"|gettext}</h1>
+						</th>
+						</tr>
+					</thead>
+					<tbody>
 
-        <div id="dashboard-tabs" class="yui-navset yui3-skin-sam hide">
-                <ul class="yui-nav">
-                    <li class="selected"><a href="#tab1"><em>{'New Orders'|gettext}</em></a></li>
-                    <!--li><a href="#tab2"><em>Top Selling Items</em></a></li>
-                    <li><a href="#tab3"><em>Most Viewed</em></a></li>
-                    <li><a href="#tab4"><em>Customers</em></a></li-->
-                </ul>            
-                <div class="yui-content">      
-                    <div id="tab1" class="exp-ecom-table">                                      
-                    <table border="0" cellspacing="0" cellpadding="0">
-                            <thead>
-                                <tr>
-                                    <th>
-                                    <a href="#">{"Order Type"|gettext}</a>
-                                    </th>
-                                    <th>
-                                    <a href="#">{"Order Status"|gettext}</a>
-                                    </th>
-                                    <th>
-                                    <a href="#">{"# of Orders"|gettext}</a>
-                                    </th>
-                                    <th>
-                                    <a href="#">{"# of Items"|gettext}</a>
-                                    </th>
-                                    <th style="text-align:right;">
-                                    <a href="#">{"Total"|gettext}</a>
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {foreach from=$orders item=order key=tkey name=typeloop}
-                                <tr class="{cycle values="even,odd"}" style="font-weight:bold; font-size:120%">
-                                    <td>{$tkey}</td>
-                                    <td>&nbsp;</td>
-                                    <td>{$order.num_orders}</td>
-                                    <td>{$order.num_items}</td>
-                                    <td style="text-align:right;">${$order.grand_total|number_format:2}</td>
-                                </tr>
-                                    {foreach from=$order item=stat key=skey name=typeloop}
-                                    {if $skey != 'num_orders' && $skey!= 'num_items' && $skey != 'grand_total'}
-                                        <tr class="{cycle values="even,odd"}" style="color:grey;">
-                                            <td>&nbsp;</td>
-                                            <td>{$skey}</td>
-                                            <td>{$stat.num_orders}</td>
-                                            <td>{$stat.num_items}</td>
-                                            <td style="text-align:right;">${$stat.grand_total|number_format:2}</td>    
-                                        </tr>
-                                    {/if}
-                                    {/foreach}
-                                {/foreach}
-                            <tbody>
-                        </table>
-                        <table>
-                        <tr>                            
-                            <td>
-                            {form action="abandoned_carts"}
-                            {"Quick Range Filter:"|gettext}{br}
-                            {control type="dropdown" name="quickrange" label="" items=$quickrange default=$quickrange_default onchange="this.form.submit();"}      
-                            {/form}
-                            </td>
-                            <td>{form action="abandoned_carts"}   
-                            {"Purchased Between:"|gettext}{br}
-                            {control type="calendar" name="starttime" label="" default_date=$prev_month default_hour=$prev_hour default_min=$prev_min default_ampm=$prev_ampm}{br}                
-                            {"And"|gettext}{br}
-                            {control type="calendar" name="endtime" label="" default_date=$now_date default_hour=$now_hour default_min=$now_min default_ampm=$now_ampm}    {br}
-                            {control type="submit" name="submit" value="Apply Filter"}
-                            {/form} 
-                            </td>
-                        </tr>                    
-                    </table>
-                    </div>
-                    <!--div id="tab2">
-                    </div>          
-                    <div id="tab3">
-                    </div>
-                    <div id="tab4">
-                    </div>
-                    <div id="tab5">
-                    </div-->
-                </div>
-            <div class="loadingdiv">{"Loading Dashboard"|gettext}</div>
-        </div>
+						<tr class="odd">
+							<td>{"Total No. of Carts"|gettext}</td>
+							<td>{$summary.totalcarts}</td>
+						</tr>
+						<tr class="even">
+							<td>{"Value of Products in the Carts"|gettext}</td>
+							<td>{$summary.valueproducts}</td>
+						</tr>
+						<tr class="odd">
+							<td>{"Active Carts w/out Products"|gettext}</td>
+							<td>{$summary.cartsWithoutItems}</td>
+						</tr>
+						<tr class="even">
+							<td>{"Active Carts w/ Products"|gettext}</td>
+							<td>{$summary.cartsWithItems}</td>
+						</tr>
+						<tr class="odd">
+							<td>{"Active Carts w/ Products and User Info"|gettext}</td>
+							<td>{$summary.cartsWithItemsAndInfo}</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			
+			{if $cartsWithoutItems|@count gt 1}
+				{br}
+				{br}
+				<h2 style="text-align: center;">{"Abandoned Carts w/out Products and User Information"|gettext}</h2>
+				<div class="exp-skin-table">
+					<table border="0" cellspacing="0" cellpadding="0" width="50%">
+						<thead>
+							<tr>
+								<th>Last Visit</th>
+								<th>Referring URL</th>
+							</tr>
+						</thead>
+						<tbody>
+						{foreach from=$cartsWithoutItems item=item} 
+						
+							{if is_object($item)}
+							<tr>
+								<td>{$item->last_visit}</td>
+							
+								<td>
+									{if $item->referrer}
+										{$item->referrer}
+									{else}
+										Direct
+									{/if}
+								</td>
+							</tr>
+						
+							{/if}
+						{/foreach}
+						</tbody>
+					</table>
+				</div>
+			{/if}
+			
+			{if $cartsWithItems|@count gt 1}
+				{br}
+				{br}
+				<h2 style="text-align: center;">{"Abandoned Carts w/ Products"|gettext}</h2>
+				<div class="exp-skin-table">
+					<table border="0" cellspacing="0" cellpadding="0" width="50%">
+						<thead>
+							<tr>
+								<th>Last Visit</th>
+								<th>Referring URL</th>
+							</tr>
+						</thead>
+						<tbody>
+						{foreach from=$cartsWithItems item=item} 
+							{if is_array($item)}
+							<tr>
+								<td>{$item.last_visit}</td>
+								
+								<td>
+									{if $item->referrer}
+										{$item->referrer}
+									{else}
+										Direct
+									{/if}
+								</td>
+							</tr>
+							<tr>
+								<table>
+									<thead>
+										<tr>
+											<td colspan="3"><h3 style="margin:0; padding: 0;">Products</h3></td>
+										</tr>
+										<tr>
+											<td><strong>Product Title</strong></td>
+											<td><strong>Quantity</strong></td>
+											<td><strong>Price</strong></td>
+										</tr>
+									</thead>
+									<tbody>
+									{foreach from=$item item=item2}  
+										{if isset($item2->products_name)}
+											<tr>
+												<td>{$item2->products_name}</td>
+												<td>{$item2->quantity}</td>
+												<td>{$item2->products_price_adjusted}</td>
+											</tr>
+										{/if}
+									{/foreach}
+									</tbody>
+								</table>
+							</tr>
+							{/if}
+						{/foreach}
+						</tbody>
+					</table>
+				</div>
+			{/if}
+			
+					{if $cartsWithItemsAndInfo|@count gt 1}
+			{br}
+			{br}
+			<h2 style="text-align: center;">{"Abandoned Carts w/ Products and User Information"|gettext}</h2>
+			<div class="exp-skin-table">
+				<table border="0" cellspacing="0" cellpadding="0" width="50%">
+					<thead>
+						<tr>
+							<th>Name</th>
+							<th>Email</th>
+							<th>Last Visit</th>
+							<th>Referring URL</th>
+						</tr>
+					</thead>
+					<tbody>
+					{foreach from=$cartsWithItemsAndInfo item=item} 
+						{if is_array($item)}
+						<tr>
+							<td>{$item.name}</td>
+							<td>{$item.email}</td>
+							<td>{$item.last_visit}</td>
+							<td>{$item.referrer}</td>
+						</tr>
+						<tr>
+							<table>
+								<thead>
+									<tr>
+										<td colspan="3"><h3 style="margin:0; padding: 0;">Products</h3></td>
+									</tr>
+									<tr>
+										<td><strong>Product Title</strong></td>
+										<td><strong>Quantity</strong></td>
+										<td><strong>Price</strong></td>
+									</tr>
+								</thead>
+								<tbody>
+								{foreach from=$item item=item2}  
+									{if isset($item2->products_name)}
+										<tr>
+											<td>{$item2->products_name}</td>
+											<td>{$item2->quantity}</td>
+											<td>{$item2->products_price_adjusted}</td>
+										</tr>
+									{/if}
+								{/foreach}
+								</tbody>
+							</table>
+						</tr>
+						{/if}
+					{/foreach}
+					</tbody>
+				</table>
+			</div>
+		{/if}
+
+		</div>
     </div>
     <div style="clear:both"></div>
 </div>
-
-{script unique="editform" yui3mods=1}
-{literal}
-//    YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-tabview','yui2-element', function(Y) {
-//        var YAHOO=Y.YUI2;
-//        var tabView = new YAHOO.widget.TabView('dashboard-tabview');
-//        Y.one('#dashboard-tabs').removeClass('hide').next().remove();
-	YUI(EXPONENT.YUI3_CONFIG).use('tabview', function(Y) {
-		var tabview = new Y.TabView({srcNode:'#dashboard-tabs'});
-		tabview.render();
-		Y.one('#dashboard-tabs').removeClass('hide');
-		Y.one('.loadingdiv').remove();
-    });
-{/literal}
-{/script}
-

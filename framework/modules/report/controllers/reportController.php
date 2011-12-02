@@ -1517,7 +1517,75 @@ class reportController extends expController {
     }
 	
 	function abandoned_carts() {
+		global $db;
+		
+		$allCarts = array();
+		$carts = array();
+		$cartsWithoutItems = array();
+		$cartsWithItems = array();
+		$cartsWithItemsAndInfo = array();
+		$summary = array();
+		$valueproducts = '';
+		
+		$this->setDateParams($this->params);
+			
+		$sql  = "SELECT * FROM " . DB_TABLE_PREFIX . "_orders WHERE purchased = 0 AND edited_at >= " . $this->tstart . " AND edited_at <= " . $this->tend . " AND sessionticket_ticket NOT IN ";
+		$sql .= "(SELECT ticket FROM " . DB_TABLE_PREFIX . "_sessionticket) ORDER BY edited_at DESC";
+		// echo $sql;
+		$allCarts = $db->selectObjectsBySql($sql);
+		foreach($allCarts as $item) {
+			
+			$sql = "SELECT * FROM " . DB_TABLE_PREFIX . "_orderitems WHERE orders_id =" .  $item->id;
 	
+			$carts = $db->selectObjectsBySql($sql);
+			foreach($carts as $item2) {
+				$valueproducts += $item2->products_price_adjusted  * $item2->quantity;
+			}
+			
+			$carts['last_visit']  = date('Y-m-d, g:i:s A', $item->edited_at);
+			$carts['referrer']    = $item->orig_referrer;
+	
+			if(count($carts) > 2) {	
+				if(!empty($item->user_id)) {
+					$u = $db->selectObject('user', 'id='.$item->user_id);
+					$carts['name']        = $u->firstname . ' ' . $u->lastname;
+					$carts['email']       = $u->email;
+					$cartsWithItemsAndInfo[] =  $carts;
+					// $cartsWithItemsAndInfo['length_of_time']  = round(abs($item->last_active - $item->start_time) / 60,2)." minutes";
+					// $cartsWithItemsAndInfo['ip_address']  = $item->ip_address;
+					// $cartsWithItemsAndInfo['referrer']    = $item->referrer;
+				} else {
+					$cartsWithItems[]        =  $carts;
+					// $cartsWithItems['length_of_time']  = round(abs($item->last_active - $item->start_time) / 60,2)." minutes";
+					// $cartsWithItems['ip_address']  = $item->ip_address;
+					// $cartsWithItems['referrer']    = $item->referrer;
+				}	
+				
+			} else {
+				$item->last_visit = date('Y-m-d, g:i:s A', $item->edited_at);
+				$cartsWithoutItems[] = $item;
+			}
+		}
+		//Added the count
+		$allCarts['count'] = count($allCarts);
+		$cartsWithoutItems['count'] = count($cartsWithoutItems);
+		$cartsWithItems['count'] = count($cartsWithItems); //for the added values at the top
+		$cartsWithItemsAndInfo['count'] = count($cartsWithItemsAndInfo); //for the added values at the top
+		
+		// eDebug($allCarts);
+		// eDebug($cartsWithoutItems);
+		// eDebug($cartsWithItems);
+		// eDebug($cartsWithItemsAndInfo);
+		// exit();
+		$summary['totalcarts']    = $allCarts['count'];
+		$summary['valueproducts'] = $valueproducts;
+		$summary['cartsWithoutItems']       = round(($cartsWithoutItems['count']     / $allCarts['count']) * 100, 2) . '%';
+		$summary['cartsWithItems']          = round(($cartsWithItems['count']        / $allCarts['count']) * 100, 2) . '%';
+		$summary['cartsWithItemsAndInfo']   = round(($cartsWithItemsAndInfo['count'] / $allCarts['count']) * 100, 2) . '%';
+		
+		$quickrange = array(0=>'Last 24 Hours',1=>'Last 7 Days',2=>'Last 30 Days');
+        $quickrange_default = isset($this->params['quickrange']) ? $this->params['quickrange'] : 0;
+        assign_to_template(array('quickrange'=>$quickrange,'quickrange_default'=>$quickrange_default, 'summary'=>$summary, 'cartsWithoutItems'=>$cartsWithoutItems, 'cartsWithItems' => $cartsWithItems, 'cartsWithItemsAndInfo' => $cartsWithItemsAndInfo));
 	}
      
     function current_carts() {
@@ -1551,7 +1619,7 @@ class reportController extends expController {
 			$carts['ip_address']  = $item->ip_address;
 			$carts['referrer']    = $item->referrer;
 	
-			if(!empty($carts)) {	
+			if(count($carts) > 3) {	
 				if(!empty($item->user_id)) {
 					$u = $db->selectObject('user', 'id='.$item->user_id);
 					$carts['name']        = $u->firstname . ' ' . $u->lastname;
@@ -1568,6 +1636,7 @@ class reportController extends expController {
 				}	
 				
 			} else {
+				$item->length_of_time = round(abs($item->last_active - $item->start_time) / 60,2)." minutes";
 				$cartsWithoutItems[] = $item;
 			}
 		}
@@ -1584,9 +1653,9 @@ class reportController extends expController {
 		
 		$summary['totalcarts']    = $allCarts['count'];
 		$summary['valueproducts'] = $valueproducts;
-		$summary['cartsWithoutItems']       = ($cartsWithoutItems['count']     / $allCarts['count']) * 100 . '%';
-		$summary['cartsWithItems']          = ($cartsWithItems['count']        / $allCarts['count']) * 100 . '%';
-		$summary['cartsWithItemsAndInfo']   = ($cartsWithItemsAndInfo['count'] / $allCarts['count']) * 100 . '%';
+		$summary['cartsWithoutItems']       = round(($cartsWithoutItems['count']     / $allCarts['count']) * 100, 2) . '%';
+		$summary['cartsWithItems']          = round(($cartsWithItems['count']        / $allCarts['count']) * 100, 2) . '%';
+		$summary['cartsWithItemsAndInfo']   = round(($cartsWithItemsAndInfo['count'] / $allCarts['count']) * 100, 2) . '%';
 		
 		// eDebug($summary, true);
 		assign_to_template(array('summary'=>$summary, 'cartsWithoutItems'=>$cartsWithoutItems, 'cartsWithItems' => $cartsWithItems, 'cartsWithItemsAndInfo' => $cartsWithItemsAndInfo));
