@@ -56,7 +56,7 @@ class hiddenfieldcontrol extends formcontrol {
 	}
 	
 	function templateFormat($db_data, $ctl) {
-		return ($db_data==1)?"Yes":"No";
+		return ($db_data==1)?gt("Yes"):gt("No");
 	}
 	
 	function form($object) {

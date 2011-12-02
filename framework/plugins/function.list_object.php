@@ -25,7 +25,7 @@ function smarty_function_list_object($params,&$smarty) {
 		}
 		echo "</ul>";
 	} else {
-		echo '<span class="error">No Object Found</span><br />';
+		echo '<span class="error">'.gt('No Object Found').'</span><br />';
 	}
 }
 

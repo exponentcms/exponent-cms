@@ -26,7 +26,7 @@ if (!defined('EXPONENT')) exit('');
  * @package Subsystems-Forms
  * @subpackage Control
  */
-class antispamcontrol extends formcontrol {
+class antispamcontrol extends formcontrol {  //FIXME this is old tech and not-language-ized
 
 	function name() { return "Anti-Spam Control"; }
 	function isSimpleControl() { return false; }

@@ -68,7 +68,7 @@ function smarty_function_getchromemenu($params,&$smarty) {
 
 	if (!empty($module->id) && expPermissions::check('edit_module', $cloc) && $module->permissions['administrate'] == 1) {
 		$editlink = $router->makeLink(array('module'=>'containermodule', 'id'=>$module->id, 'action'=>'edit', 'src'=>$module->info['source']));
-		$list .= '<li><a href="'.$editlink.'" class="config-view">'.gt("Configure Action &amp; View").'</a></li>';
+		$list .= '<li><a href="'.$editlink.'" class="config-view">'.gt("Configure Action")." &amp; ".gt("View").'</a></li>';
 	}
 
 	if ($module->permissions['configure'] == 1) {

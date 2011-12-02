@@ -74,14 +74,14 @@ class datetimecontrol extends formcontrol {
 		if ($minute < 10) $minute = "0".$minute;
 		$html = "<input type='hidden' id='__".$name."' name='__".$name."' value='".($this->showdate?"1":"0").($this->showtime?"1":"0")."' />";
 		if ($this->showdate) {
-			$html .= '<div class="datetime date"><label>Date: </label>';
+			$html .= '<div class="datetime date"><label>'.gt('Date').': </label>';
 			$html .= expDateTime::monthsDropdown($name . "_month",$default_date['mon']);
 			$html .= '<input class="text" type="text" id="' . $name . '_day" name="' . $name . '_day" size="3" maxlength="2" value="' . $default_date['mday'] . '" />';
 			$html .= '<input class="text" id="' . $name . '_year" name="' . $name . '_year" size="5" maxlength="4" value="' . $default_date['year'] . '" />';
 			$html .= '</div>';
 		}
 		if ($this->showtime) {
-		    $html .= '<div class="datetime time"><label>Time: </label>';
+		    $html .= '<div class="datetime time"><label>'.gt('Time').': </label>';
 			$html .= '<input class="text" type="text" id="' . $name . '_hour" name="' . $name . '_hour" size="3" maxlength="2" value="' . $hour . '" />';
 			$html .= '<input class="text" type="text" id="' . $name . '_minute" name="' . $name . '_minute" size="3" maxlength="2" value="' . $minute . '" />';
 			$html .= '<select class="select" id="' . $name . '_ampm" name="' . $name . '_ampm" size="1">';

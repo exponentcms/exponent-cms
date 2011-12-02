@@ -143,7 +143,7 @@ class expPermissions {
 
 		$has_perm = false;
 
-		if (is_callable(array($location->mod,"getLocationHierarchy"))) {
+		if (is_callable(array($location->mod,"getLocationHierarchy"))) {  //FIXME this is only available in calendarmodule
 			foreach (call_user_func(array($location->mod,"getLocationHierarchy"),$location) as $loc) {
 				foreach ($permission as $perm) {
 					if (isset($exponent_permissions_r[$loc->mod][$loc->src][$loc->int][$perm])) {
@@ -197,7 +197,7 @@ class expPermissions {
 	 * @param User $user The user to check permission on
 	 * @param string $permission The name of the permission to check
 	 * @param Object $location The location to check on.
-	 * @param boolean $explicitOnly Whether to check for explit assignment or implicit.
+	 * @param boolean $explicitOnly Whether to check for explicit assignment or implicit.
 	 *
 	 * @return bool
 	 * @node Subsystems:expPermissions

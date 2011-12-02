@@ -57,7 +57,7 @@ function smarty_function_max_filesize($params,&$smarty) {
 			} else if ($size >= 1024) { // Kilo
 				$size_msg = round(($size / 1024),2) . " kB";
 			} else {
-				$size_msg = $size . " bytes";
+				$size_msg = $size . " ".gt("bytes");
 			}
 	}
 

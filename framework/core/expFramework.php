@@ -266,7 +266,7 @@ function renderAction(array $parms=array()) {
         $controller->$model = new $model(null,false,false);   //added null,false,false to reduce unnecessary queries. FJD
     }
     
-    // add the $_REQUEST values to the controller <- pb: took this out and passed in the params to the controller consttuctor above
+    // add the $_REQUEST values to the controller <- pb: took this out and passed in the params to the controller constructor above
     //$controller->params = $parms;
     //check the perms for this action
     $perms = $controller->permissions();
@@ -275,7 +275,7 @@ function renderAction(array $parms=array()) {
     //permissions.  Really the only way this will fail will be if someone bypasses the perm check
     //on the edit form somehow..like a hacker trying to bypass the form and just submit straight to 
     //the action. To safeguard, we'll catch if the action is update and change it either to create or
-    //edit depending on whether an id param is passed to. that should be suffecient.
+    //edit depending on whether an id param is passed to. that should be sufficient.
     $common_action_name = null;
     if ($parms['action'] == 'update') {
         $permaction = (!isset($parms['id']) || $parms['id'] == 0) ? 'create' : 'edit';

@@ -185,7 +185,7 @@ function smarty_function_control($params,&$smarty) {
 			if (SITE_USE_ANTI_SPAM && ANTI_SPAM_CONTROL == 'recaptcha') {                
                 // make sure we have the proper config.
                 if (!defined('RECAPTCHA_PUB_KEY')) {
-                    echo '<h2 style="color:red">reCaptcha configuration is missing the public key.</h2>';
+                    echo '<h2 style="color:red">'.gt('reCaptcha configuration is missing the public key.').'</h2>';
                     return;
                 }
 				if ($user->isLoggedIn() && ANTI_SPAM_USERS_SKIP == 1) {
@@ -194,7 +194,7 @@ function smarty_function_control($params,&$smarty) {
 					// include the library and show the form control
 					require_once(BASE.'external/recaptchalib.php');
 					echo recaptcha_get_html(RECAPTCHA_PUB_KEY, $error);
-					echo '<p>Fill out the above security question to submit your form.</p>';
+					echo '<p>'.gt('Fill out the above security question to submit your form.').'</p>';
 				}
                 return;
             } elseif (ANTI_SPAM_CONTROL == 0) {
@@ -430,7 +430,7 @@ function smarty_function_control($params,&$smarty) {
         if($params['type']!='hidden'){ echo '</label>'; }
         */
     } else {
-        echo "Both the \"type\" and \"name\" parameters are required for the control plugin to function";
+        echo "Both the 'type' and 'name' parameters are required for the control plugin to function";
     }
 }
 

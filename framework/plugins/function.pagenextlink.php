@@ -38,7 +38,7 @@ function smarty_function_pagenextlink($params,&$smarty) {
 	if ($params['page']->page < $params['page']->numberOfPages) {
 		// initialize a couple of variables
 		$class = isset($params['class']) ? $params['class'] : 'page-next';
-		$text = isset($params['text']) ? $params['text'] : 'Next >';
+		$text = isset($params['text']) ? $params['text'] : gt('Next').' >';
 
 		// if the designer specified an image then show it here
 		if (isset($params['image'])) {

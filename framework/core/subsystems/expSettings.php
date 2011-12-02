@@ -59,7 +59,7 @@ class expSettings {
 
 	/** exdoc
 	 * Uses magical regular expressions voodoo to pull the
-	 * actuall define() calls out of a configuration PHP file,
+	 * actual define() calls out of a configuration PHP file,
 	 * and return them in an associative array, for use in
 	 * viewing and analyzing configs.  Returns an associative
 	 * array of constant names => values
@@ -140,7 +140,7 @@ class expSettings {
 	 * This function looks through all of the available configuration
 	 * extensions, and generates a form object consisting of each
 	 * extension's form part.  This can then be used to edit the full
-	 * site configuration.  Returns a form object intended for editting the profile.
+	 * site configuration.  Returns a form object intended for editing the profile.
 	 *
 	 * @param string $configname The name of the configuration profile,
 	 *    for filling in default values.

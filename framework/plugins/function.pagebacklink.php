@@ -38,7 +38,7 @@ function smarty_function_pagebacklink($params,&$smarty) {
 	if ($params['page']->page > 1) {
 		// initialize a couple of variables
 		$class = isset($params['class']) ? $params['class'] : 'page-back';
-		$text = isset($params['text']) ? $params['text'] : '< Back';
+		$text = isset($params['text']) ? $params['text'] : '< '.gt('Back');
 
 		// if the designer specified an image then show it here
 		if (isset($params['image'])) {

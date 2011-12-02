@@ -53,11 +53,11 @@ class dropdowncontrol extends formcontrol {
     
     function controlToHTML($name) {          
         $inputID  = (!empty($this->id)) ? ' id="'.$this->id.'"' : "";
-        $dissabled = $this->disabled != false ? "disabled" : ""; 
+        $disabled = $this->disabled != false ? "disabled" : "";
         $html = '<select'.$inputID.' name="' . $name;
         if ($this->multiple) $html.= '[]';
         $html .= '" size="' . $this->size . '"';
-        $html .= ' class="'.$this->class.' select '.$dissabled.'"';
+        $html .= ' class="'.$this->class.' select '.$disabled.'"';
         if ($this->disabled) $html .= ' disabled';
         if ($this->tabindex >= 0) $html .= ' tabindex="' . $this->tabindex . '"';
         foreach ($this->jsHooks as $hook=>$action) {

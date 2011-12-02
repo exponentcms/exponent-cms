@@ -38,12 +38,12 @@ function smarty_function_assign_adv($params, &$smarty)
     extract($params);
 
     if (empty($var)) {
-        $smarty->trigger_error("assign_adv: missing 'var' parameter");
+        $smarty->trigger_error(gt("assign_adv: missing 'var' parameter"));
         return;
     }
 
     if (!in_array('value', array_keys($params))) {
-        $smarty->trigger_error("assign_adv: missing 'value' parameter");
+        $smarty->trigger_error(gt("assign_adv: missing 'value' parameter"));
         return;
     }
     $value = isset($params['value']) ? $params['value'] : null;

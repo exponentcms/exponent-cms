@@ -60,7 +60,7 @@ function smarty_function_attribution($params,&$smarty) {
 		}
 		echo $str;
 	} else {
-		echo 'Anonymous User';
+		echo gt('Anonymous User');
 	}
 }
 

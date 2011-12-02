@@ -74,7 +74,7 @@ function smarty_function_scaffold($params,&$smarty) {
 		}
     }
 
-	$submit = new buttongroupcontrol('Submit', 'Reset', 'Cancel'); 
+	$submit = new buttongroupcontrol(gt('Submit'), gt('Reset'), gt('Cancel'));
 	echo $submit->controlToHTML('submit');
 }
 

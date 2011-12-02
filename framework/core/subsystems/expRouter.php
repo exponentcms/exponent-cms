@@ -166,7 +166,7 @@ class expRouter {
 
         if ($this->url_style == 'sef') {
             if ($this->url_type == 'page' || $this->url_type == 'base') {
-                $ret = $this->routePageRequest();               // if we hit this the formating of the URL looks like the user is trying to go to a page.
+                $ret = $this->routePageRequest();               // if we hit this the formatting of the URL looks like the user is trying to go to a page.
                 if (!$ret) $this->url_type = 'malformed';
             } elseif ($this->url_type == 'action') {
                 $this->isMappedURL();                       //check for a router map
@@ -179,7 +179,7 @@ class expRouter {
                 if (!$ret) $this->url_type = 'malformed';  
             } elseif ($this->url_type == 'post') {
                 // some forms aren't getting the controller field set right when the form is created
-                // we are putting this check here to safe gaurd against a controller being referred to as 
+                // we are putting this check here to safe guard against a controller being referred to as
                 // a module in the form.
                 if (!empty($_POST['controller']) || !empty($_POST['module'])) {
                     $module = !empty($_POST['controller']) ? $_POST['controller'] : $_POST['module'];
@@ -201,7 +201,7 @@ class expRouter {
         if ($this->url_type != 'malformed') {               
             $this->current_url = $this->buildCurrentUrl();
         } else {
-            // check if the URL is looking for a non-existant page or controller (we will check for bad action in renderAction())
+            // check if the URL is looking for a non-existent page or controller (we will check for bad action in renderAction())
             // if page or controller is not found we will route to the not found controller.            
             $_REQUEST['controller'] = 'notfound';
             $_REQUEST['action'] = 'handle';   
@@ -290,7 +290,7 @@ class expRouter {
         } else {
             // Try to look up the page by sef_name first.  If that doesn't exist, strip out the dashes and 
             // check the regular page names.  If that still doesn't work then we'll redirect them to the 
-            // search module using the page name as the seach string.
+            // search module using the page name as the search string.
             $section = $this->getPageByName($this->url_parts[0]);
             ########################################################
             #FJD TODO:  this needs further refinement

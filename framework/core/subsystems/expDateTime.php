@@ -347,7 +347,7 @@ class expDateTime {
 			// For by day recurrence, we need to know what week it is, and what weekday.
 			// (i.e. the 3rd Thursday of the month)
 
-			// Calculate the Week Offset, as the ceilling value of date / DAYS_PER_WEEK
+			// Calculate the Week Offset, as the ceiling value of date / DAYS_PER_WEEK
 			$week = ceil($mdate / 7);
 			// Store the weekday
 			$wday = $dateinfo['wday'];

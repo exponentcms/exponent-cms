@@ -104,14 +104,13 @@ function smarty_function_ddrerank($params,&$smarty) {
                 </div>
                 ';
             } else {
-                $html .='<strong>Nothing to re-rank</strong>
+                $html .='<strong>'.gt('Nothing to re-rank').'</strong>
             
                     </div>
                 </div>
                 ';
             }
             
-    
         echo $html;
     
         $script = "
@@ -128,8 +127,7 @@ function smarty_function_ddrerank($params,&$smarty) {
                     e.halt();
                     ropanel".$uniqueid.".show();
                 });
-            
-            
+
                 ropanel".$uniqueid.". showEvent.subscribe(
                 function() {
                     //Listen for all drop:over events
@@ -248,4 +246,3 @@ function smarty_function_ddrerank($params,&$smarty) {
 }
 
 ?>
-

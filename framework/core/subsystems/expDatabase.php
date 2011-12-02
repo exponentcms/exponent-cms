@@ -49,9 +49,9 @@ class expDatabase {
 				define('DB_ENGINE','NOTSUPPORTED');
 			}
 		}
-		(include_once(BASE.'framework/core/subsystems/database/'.DB_ENGINE.'.php')) or exit('None of the installed Exponent Database Backends will work with this server\'s version of PHP.');
+		(include_once(BASE.'framework/core/subsystems/database/'.DB_ENGINE.'.php')) or exit(gt('None of the installed Exponent Database Backends will work with this server\'s version of PHP.'));
 		if ($dbclass == '' || $dbclass == null) $dbclass = DB_ENGINE;
-		(include_once(BASE.'framework/core/subsystems/database/'.$dbclass.'.php')) or exit('The specified database backend  ('.$dbclass.') is not supported by Exponent');
+		(include_once(BASE.'framework/core/subsystems/database/'.$dbclass.'.php')) or exit(gt('The specified database backend').'  ('.$dbclass.') '.gt('is not supported by Exponent'));
 		$dbclass .= '_database';
 		$newdb = new $dbclass($username,$password,$hostname,$database,$new);
 		return $newdb;
