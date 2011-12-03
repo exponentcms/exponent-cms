@@ -42,7 +42,7 @@
     {form action=save_newlangfile}
         {control type=text name=newlang label="New Translation Name"|gettext|cat:" (Español)"}
         {control type=text name=newauthor label="New Translation Author"|gettext}
-        {control type=text name=newcharset label="New Translation Character Set"|gettext|cat:" (UTF-8)"}
+        {control type=text name=newcharset label="New Translation Character Set"|gettext value="UTF-8"}
         {control type=text name=newlocale label="New Translation Locale"|gettext|cat:' (<a href="http://www.loc.gov/standards/iso639-2/php/English_list.php" target="_blank">ISO 639-1</a>)'}
         {control type=buttongroup submit="Create and Begin Using a New Translation"|gettext}
     {/form}
