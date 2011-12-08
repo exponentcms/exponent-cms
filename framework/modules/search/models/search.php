@@ -29,7 +29,7 @@ class search extends expRecord {
 	}
 	
 	public function getSearchResults($terms) {
-	    global $db;
+	    global $db, $user;
 	    
 	    // get the search terms
         //$terms = $this->params['search_string'];
@@ -37,8 +37,9 @@ class search extends expRecord {
         if (SAVE_SEARCH_QUERIES)
         {
             $queryObj = new stdClass();
-            $queryObj->query = $terms;
-            $queryObj->timestamp = time();
+			$queryObj->user_id    = $user->id;
+            $queryObj->query      = $terms;
+            $queryObj->timestamp  = time();
             
             $db->insertObject($queryObj, 'search_queries');
         } 
