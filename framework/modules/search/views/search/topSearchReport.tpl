@@ -27,9 +27,9 @@
 	<table class="exp-skin-table">
 	    <thead>
 			<tr>
-				<th>Rank</th>
-				<th>Term</th>
-				<th>% of All Searches</th>
+				<th>{"Rank"|gettext}</th>
+				<th>{"Term"|gettext}</th>
+				<th>{"% of All Searches"|gettext}</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -40,7 +40,7 @@
 				<td>{(($query->cnt / $total)*100)|number_format:2} %</td>
 			</tr>
 			{foreachelse}
-			    <td colspan="3">No Search Query Data</td>
+			    <td colspan="3">{"No Search Query Data"|gettext}</td>
 			{/foreach}
 		</tbody>
 	</table>

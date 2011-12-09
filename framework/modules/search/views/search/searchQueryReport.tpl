@@ -44,12 +44,12 @@
 					{if !empty($query->user)}
 						{$query->user}
 					{else}
-						Anonymous
+						{"Anonymous"|gettext}
 					{/if}
 				</td>
 			</tr>
 			{foreachelse}
-			    <td colspan="{$page->columns|count}">No Search Query Data</td>
+			    <td colspan="{$page->columns|count}">{"No Search Query Data"|gettext}</td>
 			{/foreach}
 		</tbody>
 	</table>
