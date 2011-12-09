@@ -19,7 +19,7 @@
 
 <div class="module formbuilder edit-report">
 	<div class="form_title">
-		<h1>{'Edit Report Settings'|gettext}</h1>
+		<h1>{'Report Editor'|gettext}</h1>
 	</div>
 	{$form_html}
 </div>
