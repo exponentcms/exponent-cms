@@ -48,7 +48,7 @@ class filemanagercontrol extends formcontrol {
         //$html .= '<div id="displayfiles" class="displayfiles" style="padding:5px; border:1px solid #444"> </div>';
         $html .= '<div class="hd"><label class="label">'.$label.'';
         if ($this->limit!=null){
-            $html .= ' | <small>Limit: <em class="limit">'.$this->limit.'</em></small>';
+            $html .= ' | <small>'.gt('Limit').': <em class="limit">'.$this->limit.'</em></small>';
         }
         if ($this->count < $this->limit){
             $html .= ' | <a class="add" href="#" id="addfiles-'.$name.'">'.gt('Add Files').'</a>';
@@ -230,7 +230,7 @@ class filemanagercontrol extends formcontrol {
                     
                         var html = '<li>';
                         html += '<input type=\"hidden\" name=\"".$subTypeName."\" value=\"'+obj.id+'\">';
-                        html += '<a class=\"delete\" rel=\"imgdiv'+obj.id+'\" href=\"javascript:{}\">delete<\/a>';
+                        html += '<a class=\"delete\" rel=\"imgdiv'+obj.id+'\" href=\"javascript:{}\">".gt('delete')."<\/a>';
                         html += filepic;
                         html += '<span class=\"filename\">'+obj.filename+'<\/span>';
                         html += '<\/li>';
