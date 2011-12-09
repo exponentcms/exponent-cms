@@ -68,7 +68,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
 			{if $is_group_admin}
 				<a class="groups" href="{link controller=users action=manage_group_memberships}">{'My Groups'|gettext}</a>{br}
 			{/if}
-			<a class="password" href="{link controller=users action=change_password}">{'Change Password'|gettext}</a>{br}
+			<a class="password" href="{link controller=users action=change_password ud=$user->id}">{'Change Password'|gettext}</a>{br}
 			<a class="logout" href="{link action=logout}">{'Logout'|gettext}</a>{br}
 			<a class="{$previewclass}" href="{link controller=administration action=toggle_preview}">{$previewtext}</a>{br}
 		</div>
