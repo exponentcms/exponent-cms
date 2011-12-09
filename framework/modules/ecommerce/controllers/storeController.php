@@ -1158,10 +1158,12 @@ class storeController extends expController {
     public function search() {
         global $db, $user;
 		
-		$qry = trim($this->params['query']);
-		if(!empty($qry)) {
-			$search = new search();
-			$r = $search->getSearchResults($this->params['query']);
+		if(INCLUDE_AJAX_SEARCH == 1) {
+			$qry = trim($this->params['query']);
+			if(!empty($qry)) {
+				$search = new search();
+				$r = $search->getSearchResults($this->params['query']);
+			}
 		}
         //$this->params['query'] = str_ireplace('-','\-',$this->params['query']);
         $terms = explode(" ",$this->params['query']);

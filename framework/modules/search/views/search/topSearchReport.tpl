@@ -21,7 +21,7 @@
 <div class="module topsearchquery report">
     <div class="info-header">
    
-        <h1>{$moduletitle|default:"Top 10 Search Queries Report"|gettext}</h1>
+        <h1>{$moduletitle|default:"Top `$limit` Search Queries Report"|gettext}</h1>
     </div>
 
 	<table class="exp-skin-table">
@@ -37,7 +37,7 @@
 			<tr class="{cycle values='odd,even'}">
 				<td>{counter}</td>
 				<td>{$query->query}</td>
-				<td>{(($query->cnt / $total)*100)|number_format:2}</td>
+				<td>{(($query->cnt / $total)*100)|number_format:2} %</td>
 			</tr>
 			{foreachelse}
 			    <td colspan="3">No Search Query Data</td>

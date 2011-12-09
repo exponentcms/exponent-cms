@@ -41,6 +41,7 @@
 		            <li><a href="#tab11"><em>{"Error Messages"|gettext}</em></a></li>
 		            <li><a href="#tab12"><em>{"PDF Generation"|gettext}</em></a></li>
 					<li><a href="#tab13"><em>{"Minify"|gettext}</em></a></li>
+					<li><a href="#tab14"><em>{"Search Report"|gettext}</em></a></li>
 	            {/if}
             </ul>            
             <div class="yui-content">
@@ -222,8 +223,15 @@
 					{control type="text" name="sc[MINIFY_MAX_FILES]" label='Maximum # of files that can be specified in the \'f\' GET parameter'|gettext value=$smarty.const.MINIFY_MAX_FILES}
 					{control type="text" name="sc[MINIFY_URL_LENGTH]" label="The length of minification url"|gettext value=$smarty.const.MINIFY_URL_LENGTH}
 					{control type="checkbox" postfalse=1 name="sc[MINIFY_ERROR_LOGGER]" label="Enable logging of minify error messages to FirePHP?"|gettext checked=$smarty.const.MINIFY_ERROR_LOGGER value=1}
-                    
                 </div>
+				
+				<div id="tab14">
+					 <h2>{"Search Report Configuration"|gettext}</h2>
+					 
+					{control type="text" name="sc[TOP_SEARCH]" label="Number of Top Search Queries"|gettext value=$smarty.const.TOP_SEARCH}
+					{control type="checkbox" postfalse=1 name="sc[INCLUDE_AJAX_SEARCH]" label="Include ajax search in reports?"|gettext checked=$smarty.const.INCLUDE_AJAX_SEARCH value=1}
+					{control type="checkbox" postfalse=1 name="sc[INCLUDE_ANONYMOUS_SEARCH]" label="Include unregistered users search?"|gettext checked=$smarty.const.INCLUDE_ANONYMOUS_SEARCH value=1}
+				</div>
                 {/if}
             </div>
         </div>

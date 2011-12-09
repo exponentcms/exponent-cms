@@ -36,12 +36,15 @@ class search extends expRecord {
         
         if (SAVE_SEARCH_QUERIES)
         {
-            $queryObj = new stdClass();
-			$queryObj->user_id    = $user->id;
-            $queryObj->query      = $terms;
-            $queryObj->timestamp  = time();
-            
-            $db->insertObject($queryObj, 'search_queries');
+		
+			if(INCLUDE_ANONYMOUS_SEARCH == 1 || $user->id <> 0) {
+				$queryObj = new stdClass();
+				$queryObj->user_id    = $user->id;
+				$queryObj->query      = $terms;
+				$queryObj->timestamp  = time();
+				
+				$db->insertObject($queryObj, 'search_queries');
+			}
         } 
         
         //setup the sql query

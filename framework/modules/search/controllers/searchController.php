@@ -200,11 +200,17 @@ class searchController extends expController {
 	
 	public function topSearchReport() {
 		global $db;
+		$limit = TOP_SEARCH;
+		
+		if(empty($limit)) {
+			$limit = 10;
+		}
+
 		$count   = $db->countObjects('search_queries');
 	
-		$records = $db->selectObjectsBySql("SELECT COUNT(query) cnt, query FROM " .DB_TABLE_PREFIX . "_search_queries GROUP BY query ORDER BY cnt DESC LIMIT 0, 10");
+		$records = $db->selectObjectsBySql("SELECT COUNT(query) cnt, query FROM " .DB_TABLE_PREFIX . "_search_queries GROUP BY query ORDER BY cnt DESC LIMIT 0, {$limit}");
 		
-		assign_to_template(array('records'=>$records, 'total'=>$count)); 
+		assign_to_template(array('records'=>$records, 'total'=>$count, 'limit' => $limit)); 
 	}
 	
     
