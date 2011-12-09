@@ -89,12 +89,12 @@ if ($user->isAdmin()) {
 		));
 	}
         
-	
 	$template->assign('have_users',$have_users);
 	$template->assign('users',$users);
 	$template->assign('page',$page);
 	$template->assign('perms',$perms);
-	
+    $template->assign('title',$modulename != 'navigationmodule'?$mod->name().' '.($modulename != 'containermodule'?gt('module'):'').' ':'page');
+
 	$template->output();
 } else {
 	echo SITE_403_HTML;

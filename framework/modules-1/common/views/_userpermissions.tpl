@@ -20,9 +20,9 @@
 			<div class="related-actions">
 				{help text="Get Help"|gettext|cat:" "|cat:("Managing User Permissions"|gettext) module="manage-user-permissions"}
 			</div>
-        	<h1>{'Assign User Permissions'|gettext}</h1>
+        	<h1>{'Assign User Permissions for this'|gettext} {$title}</h1>
 		</div>
-		<p>{'This form allows you to assign permissions on this module to a specific user.'|gettext}</p>
+		<p>{'This form allows you to assign permissions to a specific user.'|gettext}</p>
 	</div>
 	{capture assign="file"}{$smarty.const.BASE}framework/modules-1/common/views/_permissions.tpl{/capture}
 	{include file=$file}

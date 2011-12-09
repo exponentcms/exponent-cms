@@ -19,7 +19,7 @@
 /** @define "BASE" "../../.." */
 
 class containermodule {
-	function name() { return 'Container Module'; }
+	function name() { return 'Container'; }
 	function author() { return 'James Hunt'; }
 	function description() { return 'Contains other modules'; }
 	
