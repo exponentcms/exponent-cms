@@ -284,7 +284,7 @@ function renderAction(array $parms=array()) {
     } else {
         // action convention for controllers that manage more than one model (datatype). 
         // if you preface the name action name with a common crud action name we can check perms on 
-        // it with the developer needing to  specify any...better safe than sorry.
+        // it with the developer needing to specify any...better safe than sorry.
         // i.e if the action is edit_mymodel it will be checked against the edit permission
         if (stristr($parms['action'], '_')) $parts = explode("_", $parms['action']);
         $common_action_name = isset($parts[0]) ? $parts[0] : null;

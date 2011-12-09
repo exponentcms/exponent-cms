@@ -25,7 +25,7 @@
 
 class migrationController extends expController {
     //public $basemodel_name = '';
-    protected $permissions = array('manage'=>'Manage', 'analyze'=>'Analyze Data', 'migrate'=>'Migrate Data','configure'=>'Configure');
+    protected $add_permissions = array('analyze'=>'Analyze Data', 'migrate'=>'Migrate Data');
     //public $useractions = array('showall'=>'Show all');
 	public $useractions = array();
 	public $codequality = 'beta';
