@@ -27,11 +27,11 @@ abstract class expController {
     protected $classname = '';
     protected $permissions = array(
         'manage'=>'Manage',
-        'create'=>'Create', 
+        'configure'=>'Configure',
+        'create'=>'Create',
         'edit'=>'Edit', 
         'delete'=>'Delete', 
-        'configure'=>'Configure', 
-        //'perms'=>'Manage Permissions', 
+        //'perms'=>'Manage Permissions',
         );
     protected $remove_permissions = array();    
     protected $add_permissions = array();

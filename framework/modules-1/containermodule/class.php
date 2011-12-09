@@ -32,10 +32,10 @@ class containermodule {
 	function permissions($internal = '') {
 		return array(
 			'administrate'=>gt('Manage'),
-			'add_module'=>gt('Add'),
+            'order_modules'=>gt('Configure'),
+			'add_module'=>gt('Create'),
 			'edit_module'=>gt('Edit'),
 			'delete_module'=>gt('Delete'),
-			'order_modules'=>gt('Reorder'),
 		);
 	}
 	

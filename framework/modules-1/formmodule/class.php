@@ -33,20 +33,20 @@ class formmodule {
 	function permissions($internal = "") {
 		if ($internal == "") {
 			return array(
-				"administrate"=>gt('Administrate'),
-				"editform"=>gt('Edit Form'),
-				"editformsettings"=>gt('Edit Form Settings'),
-				"editreport"=>gt('Edit Form Report'),
+				"administrate"=>gt('Manage'),
+				"editformsettings"=>gt('Configure'),
+                "editform"=>gt('Edit Form'),
+				"editreport"=>gt('Edit Report'),
 				"viewdata"=>gt('View Posts'),
 				"editdata"=>gt('Edit Posts'),
 				"deletedata"=>gt('Delete Posts')
 			);
 		} else {
 			return array(
-				"administrate"=>gt('Administrate'),
+				"administrate"=>gt('Manage'),
+                "editformsettings"=>gt('Configure'),
 				"editform"=>gt('Edit Form'),
-				"editformsettings"=>gt('Edit Form Settings'),
-				"editreport"=>gt('Edit Form Report'),
+				"editreport"=>gt('Edit Report'),
 				"viewdata"=>gt('View Posts'),
 				"editdata"=>gt('Edit Posts'),
 				"deletedata"=>gt('Delete Posts')

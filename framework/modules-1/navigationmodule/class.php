@@ -31,7 +31,7 @@ class navigationmodule {
 	
 	function permissions($internal = '') {
 		return array(
-			'manage'=>gt('Administrate'),
+			'manage'=>gt('Manage'),
 			'view'=>gt('View Page'),
 		);
 	}

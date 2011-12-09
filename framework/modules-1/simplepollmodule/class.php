@@ -45,7 +45,7 @@ class simplepollmodule {
 	
 	function permissions($internal = '') {
 		return array(
-			'administrate'=>'Administrate',
+			'administrate'=>'Manage',
 			'configure'=>'Configure',
 			'manage_question'=>'Manage Questions',
 			'manage_answer'=>'Manage Answers'
