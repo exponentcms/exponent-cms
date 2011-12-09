@@ -76,6 +76,10 @@
 YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
     var manage = Y.all('input.manage');
     var admin = Y.all('input.administrate');
+    var create = Y.all('input.create');
+    var post = Y.all('input.post');
+    var add_module = Y.all('input.add_module');
+
     var checkSubs = function(row) {
         row.each(function(n,k){
             if (!n.hasClass('manage') && !n.hasClass('administrate')) {
@@ -108,14 +112,101 @@ YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
     manage.on('click',function(e){
         toggleChecks(e.target);
     });
-    admin.on('click',function(e){
-        toggleChecks(e.target);
-    });
     manage.each(function(n){
         toggleChecks(n,1);
     });
+    admin.on('click',function(e){
+        toggleChecks(e.target);
+    });
     admin.each(function(n){
         toggleChecks(n,1);
+    });
+    create.on('click',function(e){
+        var row = e.target.ancestor('tr').all('input[type=checkbox]');
+        if(e.target.get('checked')&&!e.target.get('disabled')){
+            row.each(function(n,k){
+                if (n.hasClass('edit')) {
+                    n.insertBefore('<input type="hidden" name="'+n.get("name")+'" value="1">',n);
+                    n.setAttrs({'checked':1,'disabled':1});
+                };
+            });
+        } else {
+            row.each(function(n,k){
+                if (n.hasClass('edit')) {
+                    n.get('previousSibling').remove();
+                    n.setAttrs({'checked':0,'disabled':0});
+                };
+            });
+        }
+    });
+    create.each(function(n){
+        var row = e.target.ancestor('tr').all('input[type=checkbox]');
+        if(e.target.get('checked')&&!e.target.get('disabled')){
+            row.each(function(n,k){
+                if (n.hasClass('edit')) {
+                    n.insertBefore('<input type="hidden" name="'+n.get("name")+'" value="1">',n);
+                    n.setAttrs({'checked':1,'disabled':1});
+                };
+            });
+        }
+    });
+    post.on('click',function(e){
+        var row = e.target.ancestor('tr').all('input[type=checkbox]');
+        if(e.target.get('checked')&&!e.target.get('disabled')){
+            row.each(function(n,k){
+                if (n.hasClass('edit')) {
+                    n.insertBefore('<input type="hidden" name="'+n.get("name")+'" value="1">',n);
+                    n.setAttrs({'checked':1,'disabled':1});
+                };
+            });
+        } else {
+            row.each(function(n,k){
+                if (n.hasClass('edit')) {
+                    n.get('previousSibling').remove();
+                    n.setAttrs({'checked':0,'disabled':0});
+                };
+            });
+        }
+    });
+    post.each(function(n){
+        var row = e.target.ancestor('tr').all('input[type=checkbox]');
+        if(e.target.get('checked')&&!e.target.get('disabled')){
+            row.each(function(n,k){
+                if (n.hasClass('edit')) {
+                    n.insertBefore('<input type="hidden" name="'+n.get("name")+'" value="1">',n);
+                    n.setAttrs({'checked':1,'disabled':1});
+                };
+            });
+        }
+    });
+    add_module.on('click',function(e){
+        var row = e.target.ancestor('tr').all('input[type=checkbox]');
+        if(e.target.get('checked')&&!e.target.get('disabled')){
+            row.each(function(n,k){
+                if (n.hasClass('edit_module')) {
+                    n.insertBefore('<input type="hidden" name="'+n.get("name")+'" value="1">',n);
+                    n.setAttrs({'checked':1,'disabled':1});
+                };
+            });
+        } else {
+            row.each(function(n,k){
+                if (n.hasClass('edit_module')) {
+                    n.get('previousSibling').remove();
+                    n.setAttrs({'checked':0,'disabled':0});
+                };
+            });
+        }
+    });
+    add_module.each(function(n){
+        var row = e.target.ancestor('tr').all('input[type=checkbox]');
+        if(e.target.get('checked')&&!e.target.get('disabled')){
+            row.each(function(n,k){
+                if (n.hasClass('edit_module')) {
+                    n.insertBefore('<input type="hidden" name="'+n.get("name")+'" value="1">',n);
+                    n.setAttrs({'checked':1,'disabled':1});
+                };
+            });
+        }
     });
 });
 {/literal}
