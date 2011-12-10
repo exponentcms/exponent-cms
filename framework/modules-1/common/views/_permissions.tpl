@@ -139,9 +139,9 @@ YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
             });
         }
     });
-    create.each(function(n){
-        var row = e.target.ancestor('tr').all('input[type=checkbox]');
-        if(e.target.get('checked')&&!e.target.get('disabled')){
+    create.each(function(target){
+        var row = target.ancestor('tr').all('input[type=checkbox]');
+        if(target.get('checked')&&!target.get('disabled')){
             row.each(function(n,k){
                 if (n.hasClass('edit')) {
                     n.insertBefore('<input type="hidden" name="'+n.get("name")+'" value="1">',n);
@@ -168,9 +168,9 @@ YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
             });
         }
     });
-    post.each(function(n){
-        var row = e.target.ancestor('tr').all('input[type=checkbox]');
-        if(e.target.get('checked')&&!e.target.get('disabled')){
+    post.each(function(target){
+        var row = target.ancestor('tr').all('input[type=checkbox]');
+        if(target.get('checked')&&!target.get('disabled')){
             row.each(function(n,k){
                 if (n.hasClass('edit')) {
                     n.insertBefore('<input type="hidden" name="'+n.get("name")+'" value="1">',n);
@@ -197,9 +197,9 @@ YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
             });
         }
     });
-    add_module.each(function(n){
-        var row = e.target.ancestor('tr').all('input[type=checkbox]');
-        if(e.target.get('checked')&&!e.target.get('disabled')){
+    add_module.each(function(target){
+        var row = target.ancestor('tr').all('input[type=checkbox]');
+        if(target.get('checked')&&!target.get('disabled')){
             row.each(function(n,k){
                 if (n.hasClass('edit_module')) {
                     n.insertBefore('<input type="hidden" name="'+n.get("name")+'" value="1">',n);
