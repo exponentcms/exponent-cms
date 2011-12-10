@@ -2021,7 +2021,7 @@ class migrationController extends expController {
 		if ($item == null) return null;
 		switch ($item->permission) {
 		    case 'administrate':
-			    $item->permission = 'perms';
+			    $item->permission = 'manage';
 				break;
 			case 'post':
 			case 'create_slide':
@@ -2040,17 +2040,19 @@ class migrationController extends expController {
 				break;
 			case 'order':
 			case 'import':
-				$item->permission = 'manage';
+				$item->permission = 'configure';
 				break;
 			case 'view_unpublished':
 				$item->permission = 'show_unpublished';
 				break;
+            case 'approve_comments':
+                $item->permission = 'approve';
+                break;
 			case 'manage_categories':
 			case 'manage_approval':
 			case 'approve':
 			case 'can_download':
 			case 'comment':
-			case 'approve_comments':
 			case 'edit_comments':
 			case 'delete_comments':
 			case 'view_private':
