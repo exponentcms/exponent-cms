@@ -171,8 +171,8 @@ class user extends expRecord {
 	private function checkAdminFlags() {
 		global $user;
 
-		if (!empty($this->is_admin) && $user->is_admin == 0) $this->is_admin = 0;
-        if (!empty($this->is_acting_admin) && $user->is_admin == 0) $this->is_acting_admin = 0;
+		if (!empty($this->is_admin) && $user->isAdmin) $this->is_admin = 0;
+        if (!empty($this->is_acting_admin) && $user->isAdmin) $this->is_acting_admin = 0;
 	}
 
     public function setPassword($pass1, $pass2) {
