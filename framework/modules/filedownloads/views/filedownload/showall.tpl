@@ -30,6 +30,7 @@
     {/permissions}    
     {pagelinks paginate=$page top=1}
     {foreach from=$page->records item=file name=files}
+        <div class="item">
         {$filetype=$file->expFile.downloadable[0]->filename|regex_replace:"/^.*\.([^.]+)$/D":"$1"}
 			{if $file->expFile.preview[0] != "" && $config.show_icon}
 				{img class="preview-img" file_id=$file->expFile.preview[0]->id square=150}
