@@ -23,7 +23,7 @@ if (!defined('EXPONENT')) exit('');
 if (expPermissions::check('administrate',$loc)) {
 
 	$locarray = array();
-	if ($loc->mod == 'navigationmodule' && !empty($perms[1]) && $perms[1] == 'manage') {
+    if ($loc->mod == 'navigationmodule' && (isset($_POST['permdata'][1]['manage']) && $_POST['permdata'][1]['manage'] || isset($_POST['permdata'][1]['administrate']) && $_POST['permdata'][1]['administrate'])) {
 		$sections = navigationmodule::levelTemplate($loc->int);
 		$locarray[] = $loc;
 		foreach ($sections as $section) {
