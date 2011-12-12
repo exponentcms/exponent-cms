@@ -26,7 +26,7 @@
 
 	
     {pagelinks paginate=$page top=1}
-	{control type="dropdown" name="user_id" label="Filter by User"|gettext items="{$user_name}" values="{$user_id}" value=$user_default class="userdropdown"}
+	{control type="dropdown" name="user_id" label="Filter by User"|gettext items="{$users.name}" values="{$users.id}" value=$user_default class="userdropdown"}
 	<table class="exp-skin-table">
 	    <thead>
 			<tr>

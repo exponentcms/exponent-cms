@@ -20,7 +20,6 @@
 
 <div class="module topsearchquery report">
     <div class="info-header">
-   
         <h1>{$moduletitle|default:"Top `$limit` Search Queries Report"|gettext}</h1>
     </div>
 
@@ -44,5 +43,4 @@
 			{/foreach}
 		</tbody>
 	</table>
-
 </div>

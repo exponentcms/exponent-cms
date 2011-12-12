@@ -123,8 +123,12 @@ class searchController extends expController {
 	
 	public function searchQueryReport() {
 		global $db;
+		
+		//User Records Initialization
 		$all_user  = -1;
 		$anonymous = -2;
+		$uname = array('id'=>array($all_user, $anonymous), 'name'=>array('All Users', 'Anonymous'));
+
 		$user_default = '';
 		$where = '';
 		
@@ -134,29 +138,25 @@ class searchController extends expController {
 		
 		expHistory::set('manageable', $this->params);
 
-		$uname = '';
-		$uname->name[0] = 'All Users';
-		$uname->id[0] = $all_user;
-		$uname->name[1] = 'Anonymous';
-		$uname->id[1] = $anonymous;
 		$ctr = 2;
 		
+		//Getting the search users
 		$records = $db->selectObjects('search_queries');
 		foreach($records as $item) {
 			$u = user::getUserById($item->user_id);
 
-			
 			if($item->user_id == 0) {
 				$item->user_id = $anonymous;
 			}
 			
-			if(!in_array($item->user_id, $uname->id)) {
-				$uname->name[$ctr] = $u->firstname . ' ' . $u->lastname;
-				$uname->id[$ctr] = $item->user_id;
+			if(!in_array($item->user_id, $uname['id'])) {
+				$uname['name'][$ctr] = $u->firstname . ' ' . $u->lastname;
+				$uname['id'][$ctr] = $item->user_id;
 				$ctr++;
 			}
 		}
 		
+		//Check if the user choose from the dropdown
 		if(!empty($user_default)) {
 			if($user_default == $anonymous) {
 				$u_id = 0;
@@ -166,8 +166,8 @@ class searchController extends expController {
 			$where .= "user_id = {$u_id}";
 		}
 	
+		//Get all the search query records
 		$records = $db->selectObjects('search_queries', $where);
-		
 		for($i = 0 ; $i < count($records); $i++) {
 			if(!empty($records[$i]->user_id)) {
 				$u = user::getUserById($records[$i]->user_id);
@@ -177,7 +177,7 @@ class searchController extends expController {
 		
 		$limit = empty($this->config['limit']) ? 10 : $this->config['limit'];
         $order = empty($this->config['order']) ? 'timestamp' : $this->config['order'];
-		
+
         $page = new expPaginator(array(
 					'records' => $records,
                     'where'=>1, 
@@ -193,8 +193,8 @@ class searchController extends expController {
                         gt('User')=>'user_id',
                         )
                     ));
-
-        assign_to_template(array('page'=>$page, 'user_name'=>$uname->name, 'user_id'=>$uname->id, 'user_default' => $user_default)); 
+	
+        assign_to_template(array('page'=>$page, 'users'=>$uname, 'user_default' => $user_default)); 
 		
 	}
 	
