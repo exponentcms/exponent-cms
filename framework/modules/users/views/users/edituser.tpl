@@ -52,11 +52,18 @@
 	                {control type=text name=lastname label="Last Name"|gettext value=$edit_user->lastname}
 	                {*control type=checkbox name="recv_html" label="I prefer HTML Email" value=1 checked=$edit_user->recv_html*}
 	                {if $user->isAdmin() == 1}
-	                    {if $edit_user->id==$user->id || $user->isActingAdmin()}
+	                    {if $edit_user->id==$user->id || $user->isActingAdmin() || $edit_user->id == 1}
                             {control type=checkbox readonly="readonly" name=is_acting_admin value=1 label="Make this user an Administrator?"|gettext checked=$edit_user->is_acting_admin}
 	                    {else}
 	                        {control type=checkbox name=is_acting_admin value=1 label="Make this user an Administrator?"|gettext checked=$edit_user->is_acting_admin}
 	                    {/if}
+	                {/if}
+                    {if $user->isSuperAdmin() == 1}
+	                    {if $edit_user->id==$user->id || $edit_user->id == 1}
+                            {control type=checkbox readonly="readonly" name=is_admin value=1 label="Make this user a Super Administrator?"|gettext checked=$edit_user->is_admin}
+	                    {else}
+                            {control type=checkbox name=is_admin value=1 label="Make this user a Super Administrator?"|gettext checked=$edit_user->is_admin}
+                        {/if}
 	                {/if}
 	            </div>
 	            {foreach from=$extensions item=extension}
