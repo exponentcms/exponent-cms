@@ -53,7 +53,7 @@
     {control type=dropdown id="modcntrol" name=modcntrol items=$modules includeblank="Select a Module"|gettext label="Type of Content"|gettext disabled=1 value=$container->internal->mod}
     {if $is_edit}{control type=hidden id="modcntrol" name=modcntrol value=$container->internal->mod}{/if}
 
-    {if $is_edit == 0}
+    {if $is_edit == 0 && $user->is_acting_admin==1}
     <div id="recyclebin" class="control disabled">
         <label>{'Recycle Bin'|gettext}</label>
         <a id="browse-bin" href="#" >{'Browse Recycled Content'|gettext}</a>
