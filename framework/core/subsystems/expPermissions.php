@@ -138,16 +138,30 @@ class expPermissions {
 		}
 
 		if (!is_array($permission)) $permission = array($permission);
-        // always add 'manage' and 'administrate' to $permission array
+        // always add 'manage' and 'administrate' to permissions to check for
         $permission[] = 'manage';
         $permission[] = 'administrate';
-        // add parent implied 'create' || 'post' || 'add_module' to $permission array if looking for 'edit' & 'edit_module' perms
+        // add variations to permission names for 1.0 modules like containers
+        if (array_intersect(array('configure','order_modules'),$permission)) {
+            $permission[] = 'configure';
+            $permission[] = 'order_modules';
+        }
         if (array_intersect(array('edit','edit_module'),$permission)) {
+            $permission[] = 'edit';
+            $permission[] = 'edit_module';
+        }
+        if (array_intersect(array('create','post','add_module'),$permission)) {  // also implied from edit perm
             $permission[] = 'create';
             $permission[] = 'post';
             $permission[] = 'add_module';
+            $permission[] = 'edit';
+            $permission[] = 'edit_module';
         }
-        $permission = array_unique($permission);
+        if (array_intersect(array('delete','delete_module'),$permission)) {
+            $permission[] = 'delete';
+            $permission[] = 'delete_module';
+        }
+        $permission = array_unique($permission);  // strip out duplicates
 
 		if (is_callable(array($location->mod,"getLocationHierarchy"))) {  //FIXME this is only available in calendarmodule
 			foreach (call_user_func(array($location->mod,"getLocationHierarchy"),$location) as $loc) {  //FIXME this is only available in calendarmodule
@@ -195,17 +209,17 @@ class expPermissions {
 			if (self::check('manage',expCore::makeLocation('navigationmodule','',$sectionObj->id))) {
 				return true;
 			}
-            $sections = navigationmodule::levelTemplate($sectionObj->id);
-            foreach ($sections as $section) {
-                if (self::check('manage',expCore::makeLocation('navigationmodule','',$section->id))) {
-                    return true;
-                }
-            }
+//            $sections = navigationmodule::levelTemplate($sectionObj->id);
+//            foreach ($sections as $section) {
+//                if (self::check('manage',expCore::makeLocation('navigationmodule','',$section->id))) {
+//                    return true;
+//                }
+//            }
 		} else {
             // check for recursive inherited page permission
             $page = $db->selectObject("section","id=".$location->int);
             if ($page->parent) {
-                // first check for specific permission
+                // first check for specific 'view' permission
                 if (self::check($permission,expCore::makeLocation('navigationmodule','',$page->parent))) {
                     return true;
                 }
@@ -258,10 +272,10 @@ class expPermissions {
         $perms = array();
         $perms[] = $permission;
         // account for old-style container perms
-        if ($permission == 'administrate') {
-            $perms[] = 'manage';
-        } elseif ($permission == 'post' || $permission == 'create') {
+        $perms[] = 'administrate';
+        if ($permission == 'post' || $permission == 'create') {
             $perms[] = 'add_module';
+            $perms[] = 'edit_module';
         } elseif ($permission == 'edit')  {
             $perms[] = 'edit_module';
         } elseif ($permission == 'delete')  {
@@ -295,7 +309,7 @@ class expPermissions {
         if (substr($location->src,0,8)!='@section' && substr($location->src,0,8)!='@random') {
             return false;
         }
-        // check for inherited 'manage' permission from its page and parents
+        // check for inherited 'manage' permission from its page
         if ($location->mod != 'navigationmodule') {
             $tmpLoc->mod = $location->mod;
             $tmpLoc->src = $location->src;
@@ -305,18 +319,18 @@ class expPermissions {
                 if (self::checkUser($user,'manage',expCore::makeLocation('navigationmodule','',$secref->section))) {
                     return true;
                 }
-                $sections = navigationmodule::levelTemplate($secref->section);
-                foreach ($sections as $section) {
-                    if (self::checkUser($user,'manage',expCore::makeLocation('navigationmodule','',$section->id))) {
-                        return true;
-                    }
-                }
+//                $sections = navigationmodule::levelTemplate($secref->section);
+//                foreach ($sections as $section) {
+//                    if (self::checkUser($user,'manage',expCore::makeLocation('navigationmodule','',$section->id))) {
+//                        return true;
+//                    }
+//                }
             }
         } else {
             // check for recursive inherited page permission
             $page = $db->selectObject("section","id=".$location->int);
             if ($page->parent) {
-                // first check for specific permission
+                // first check for specific 'view' permission
                 if (self::checkUser($user,$permission,expCore::makeLocation('navigationmodule','',$page->parent))) {
                     return true;
                 }
@@ -378,14 +392,13 @@ class expPermissions {
 		if ($explicitOnly || $explicit) return $explicit;
 
         // check for inherited container permission
-        // check for inherited container permission
         $perms = array();
         $perms[] = $permission;
         // account for old-style container perms
-        if ($permission == 'administrate') {
-            $perms[] = 'manage';
-        } elseif ($permission == 'post' || $permission == 'create') {
+        $perms[] = 'administrate';
+        if ($permission == 'post' || $permission == 'create') {
             $perms[] = 'add_module';
+            $perms[] = 'edit_module';
         } elseif ($permission == 'edit')  {
             $perms[] = 'edit_module';
         } elseif ($permission == 'delete')  {
@@ -413,7 +426,7 @@ class expPermissions {
         if (substr($location->src,0,8)!='@section' && substr($location->src,0,8)!='@random') {
             return false;
         }
-        // check for inherited 'manage' permission from its page and parents
+        // check for inherited 'manage' permission from its page
         if ($location->mod != 'navigationmodule') {
             $tmpLoc->mod = $location->mod;
             $tmpLoc->src = $location->src;
@@ -423,18 +436,18 @@ class expPermissions {
                 if (self::checkGroup($group,'manage',expCore::makeLocation('navigationmodule','',$secref->section))) {
                     return true;
                 }
-                $sections = navigationmodule::levelTemplate($secref->section);
-                foreach ($sections as $section) {
-                    if (self::checkGroup($group,'manage',expCore::makeLocation('navigationmodule','',$section->id))) {
-                        return true;
-                    }
-                }
+//                $sections = navigationmodule::levelTemplate($secref->section);
+//                foreach ($sections as $section) {
+//                    if (self::checkGroup($group,'manage',expCore::makeLocation('navigationmodule','',$section->id))) {
+//                        return true;
+//                    }
+//                }
             }
         } else {
             // check for recursive inherited page permission
             $page = $db->selectObject("section","id=".$location->int);
             if ($page->parent) {
-                // first check for specific permission
+                // first check for specific 'view' permission
                 if (self::checkGroup($group,$permission,expCore::makeLocation('navigationmodule','',$page->parent))) {
                     return true;
                 }
