@@ -45,7 +45,12 @@ class help extends expRecord {
 			$this->location_data = serialize($loc);
 		}
 
+        // circumvent the re-ranking problem
+        $oldrank = $this->rank;
+        unset($this->rank);
         parent::save(true);
+        $this->rank = $oldrank;
+        parent::save();
    }
 
 	/**
