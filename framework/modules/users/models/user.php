@@ -44,7 +44,9 @@ class user extends expRecord {
 
 	 public function save($overrideUsername = false) {
         global $db;
-        
+
+         if (empty($_POST['is_admin'])) $this->is_admin = 0;
+         if (empty($_POST['is_acting_admin'])) $this->is_acting_admin = 0;
         // if someone is trying to make this user an admin, lets make sure they have permission to do so.
         $this->checkAdminFlags();
         
@@ -171,8 +173,8 @@ class user extends expRecord {
 	private function checkAdminFlags() {
 		global $user;
 
-		if (!empty($this->is_admin) && $user->isAdmin) $this->is_admin = 0;
-        if (!empty($this->is_acting_admin) && $user->isAdmin) $this->is_acting_admin = 0;
+		if (!empty($this->is_admin) && !$user->isAdmin()) $this->is_admin = 0;
+        if (!empty($this->is_acting_admin) && !$user->isAdmin()) $this->is_acting_admin = 0;
 	}
 
     public function setPassword($pass1, $pass2) {
