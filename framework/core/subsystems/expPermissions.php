@@ -147,6 +147,7 @@ class expPermissions {
             $permission[] = 'post';
             $permission[] = 'add_module';
         }
+        $permission = array_unique($permission);
 
 		if (is_callable(array($location->mod,"getLocationHierarchy"))) {  //FIXME this is only available in calendarmodule
 			foreach (call_user_func(array($location->mod,"getLocationHierarchy"),$location) as $loc) {  //FIXME this is only available in calendarmodule
@@ -164,19 +165,22 @@ class expPermissions {
             }
         }
 
-        // check for permission inherited from container(s)  //FIXME still needs work
-        foreach ($permission as $perm) {
-            if (array_key_exists('containermodule',$exponent_permissions_r)) {
+        // check for permission inherited from container(s)
+        if (array_key_exists('containermodule',$exponent_permissions_r)) {
+            foreach ($permission as $perm) {
                 // inclusive container perms
                 $tmpLoc->mod = $location->mod;
                 $tmpLoc->src = $location->src;
                 $tmpLoc->int = $location->int;
                 $tmpLoc->mod = (!strpos($tmpLoc->mod,"Controller") && !strpos($tmpLoc->mod,"module")) ? $tmpLoc->mod."Controller" : $tmpLoc->mod;
                 $cLoc = expUnserialize($db->selectValue('container','external','internal=\''.serialize($tmpLoc).'\''));
-                if (@isset($exponent_permissions_r[$cLoc->mod][$cLoc->src][$cLoc->int])) {
-                    //FIXME sets $has_perm if container has ANY perm
-                    //FIXME only looks at immediate parent container, not nested containers
+                if (@isset($exponent_permissions_r[$cLoc->mod][$cLoc->src][$cLoc->int][$perm])) {
                    return true;
+                }
+                if (!empty($cLoc)) {
+                    if (self::check($perm,$cLoc)) {
+                        return true;
+                    }
                 }
              }
         }
@@ -251,9 +255,37 @@ class expPermissions {
         }
 
         // check for inherited container permission
-            //FIXME need to write recursive container permission check
+        $perms = array();
+        $perms[] = $permission;
+        // account for old-style container perms
+        if ($permission == 'administrate') {
+            $perms[] = 'manage';
+        } elseif ($permission == 'post' || $permission == 'create') {
+            $perms[] = 'add_module';
+        } elseif ($permission == 'edit')  {
+            $perms[] = 'edit_module';
+        } elseif ($permission == 'delete')  {
+            $perms[] = 'delete_module';
+        } elseif ($permission == 'configure')  {
+            $perms[] = 'order_modules';
+        }
+        foreach ($perms as $perm) {
+            $tmpLoc->mod = $location->mod;
+            $tmpLoc->src = $location->src;
+            $tmpLoc->int = $location->int;
+            $tmpLoc->mod = (!strpos($tmpLoc->mod,"Controller") && !strpos($tmpLoc->mod,"module")) ? $tmpLoc->mod."Controller" : $tmpLoc->mod;
+            $cLoc = expUnserialize($db->selectValue('container','external','internal=\''.serialize($tmpLoc).'\''));
+            if (!empty($cLoc) && $db->selectObject("userpermission","uid=" . $user->id . " AND module='" . $cLoc->mod . "' AND source='" . $cLoc->src . "' AND internal='" . $cLoc->int . "' AND permission='$perm'")) {
+               return true;
+            }
+            if (!empty($cLoc)) {
+                if (self::checkUser($user,$perm,$cLoc)) {
+                    return true;
+                }
+            }
+        }
 
-        // check for implicit group permission
+    // check for implicit group permission
         $memberships = $db->selectObjects("groupmembership","member_id=".$user->id);
         foreach ($memberships as $memb) {
             if (self::checkGroup($memb,$permission,$location))
@@ -346,7 +378,36 @@ class expPermissions {
 		if ($explicitOnly || $explicit) return $explicit;
 
         // check for inherited container permission
-            //FIXME need to write recursive container permission check
+        // check for inherited container permission
+        $perms = array();
+        $perms[] = $permission;
+        // account for old-style container perms
+        if ($permission == 'administrate') {
+            $perms[] = 'manage';
+        } elseif ($permission == 'post' || $permission == 'create') {
+            $perms[] = 'add_module';
+        } elseif ($permission == 'edit')  {
+            $perms[] = 'edit_module';
+        } elseif ($permission == 'delete')  {
+            $perms[] = 'delete_module';
+        } elseif ($permission == 'configure')  {
+            $perms[] = 'order_modules';
+        }
+        foreach ($perms as $perm) {
+            $tmpLoc->mod = $location->mod;
+            $tmpLoc->src = $location->src;
+            $tmpLoc->int = $location->int;
+            $tmpLoc->mod = (!strpos($tmpLoc->mod,"Controller") && !strpos($tmpLoc->mod,"module")) ? $tmpLoc->mod."Controller" : $tmpLoc->mod;
+            $cLoc = expUnserialize($db->selectValue('container','external','internal=\''.serialize($tmpLoc).'\''));
+            if (!empty($cLoc) && $db->selectObject("grouppermission","gid=" . $group->id . " AND module='" . $cLoc->mod . "' AND source='" . $cLoc->src . "' AND internal='" . $cLoc->int . "' AND permission='$perm'")) {
+               return true;
+            }
+            if (!empty($cLoc)) {
+                if (self::checkGroup($group,$perm,$cLoc)) {
+                    return true;
+                }
+            }
+        }
 
         // if this is the global sidebar, then exit since we don't care about page permissions
         if (substr($location->src,0,8)!='@section' && substr($location->src,0,8)!='@random') {
