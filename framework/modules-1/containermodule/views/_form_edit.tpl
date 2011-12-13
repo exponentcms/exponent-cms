@@ -53,7 +53,7 @@
     {control type=dropdown id="modcntrol" name=modcntrol items=$modules includeblank="Select a Module"|gettext label="Type of Content"|gettext disabled=1 value=$container->internal->mod}
     {if $is_edit}{control type=hidden id="modcntrol" name=modcntrol value=$container->internal->mod}{/if}
 
-    {if $is_edit == 0 && $user->is_acting_admin==1}
+    {if $is_edit == 0}
     <div id="recyclebin" class="control disabled">
         <label>{'Recycle Bin'|gettext}</label>
         <a id="browse-bin" href="#" >{'Browse Recycled Content'|gettext}</a>
@@ -176,7 +176,7 @@ YUI(EXPONENT.YUI_CONFIG).use("node","event","yui2-yahoo-dom-event","yui2-connect
             }
         }else{
             //else, they clicked back on "select a module", so we reset everything
-            EXPONENT.diableRecycleBin();
+            EXPONENT.disableRecycleBin();
 			EXPONENT.resetActionsViews();
         };
     });
@@ -262,11 +262,15 @@ YUI(EXPONENT.YUI_CONFIG).use("node","event","yui2-yahoo-dom-event","yui2-connect
     //makes the recycle bin link clickable
     EXPONENT.enableRecycleBin = function() {
         recyclebin.on('click',EXPONENT.recyclebin);
-        recyclebinwrap.removeClass('disabled');
+        if ({/literal}{$user->is_acting_admin}{literal}) {
+            recyclebinwrap.removeClass('disabled');
+        } else {
+            recyclebin.detach('click');
+        }
     }
     
     //makes the recycle bin link clickable
-    EXPONENT.diableRecycleBin = function() {
+    EXPONENT.disableRecycleBin = function() {
         recyclebin.detach('click');
         recyclebinwrap.addClass('disabled');
     }
