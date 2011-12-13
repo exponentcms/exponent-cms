@@ -163,6 +163,7 @@ class expPermissions {
                 return true;
             }
         }
+
         // check for permission inherited from container(s)  //FIXME still needs work
         foreach ($permission as $perm) {
             if (array_key_exists('containermodule',$exponent_permissions_r)) {
@@ -179,6 +180,7 @@ class expPermissions {
                 }
              }
         }
+
         // if this is the global sidebar, then exit since we don't care about page permissions
         if (substr($location->src,0,8)!='@section' && substr($location->src,0,8)!='@random') {
             return false;
@@ -247,8 +249,16 @@ class expPermissions {
                 }
             }
         }
+
         // check for inherited container permission
-            //FIXME need to write container permission check
+            //FIXME need to write recursive container permission check
+
+        // check for implicit group permission
+        $memberships = $db->selectObjects("groupmembership","member_id=".$user->id);
+        foreach ($memberships as $memb) {
+            if (self::checkGroup($memb,$permission,$location))
+                return true;
+        }
         // if this is the global sidebar, then exit since we don't care about page permissions
         if (substr($location->src,0,8)!='@section' && substr($location->src,0,8)!='@random') {
             return false;
@@ -283,12 +293,6 @@ class expPermissions {
                     return true;
                 }
             }
-        }
-        // check for implicit group permission
-        $memberships = $db->selectObjects("groupmembership","member_id=".$user->id);
-        foreach ($memberships as $memb) {
-            if (self::checkGroup($memb,$permission,$location))
-                return true;
         }
 
 		return false;
@@ -341,22 +345,9 @@ class expPermissions {
 		$explicit = $db->selectObject("grouppermission","gid=" . $group->id . " AND module='" . $location->mod . "' AND source='" . $location->src . "' AND internal='" . $location->int . "' AND permission='$permission'");
 		if ($explicitOnly || $explicit) return $explicit;
 
-//		if ($location->mod != 'navigationmodule') {
-//			// Calculate inherited permissions
-//            $tmpLoc->mod = $location->mod;
-//            $tmpLoc->src = $location->src;
-//            $tmpLoc->int = $location->int;
-//            $tmpLoc->mod = (!strpos($tmpLoc->mod,"Controller") && !strpos($tmpLoc->mod,"module")) ? $tmpLoc->mod."Controller" : $tmpLoc->mod;
-//            //FIXME seems like we do this backwards, but also only look at manage permissions for the page
-//			foreach ($db->selectObjects('grouppermission','gid='.$group->id." AND module='navigationmodule' AND permission='manage'") as $perm) {
-//				if ($db->countObjects('sectionref','is_original=1 AND section='.$perm->internal." AND module='".$tmpLoc->mod."' AND source='".$tmpLoc->src."'")) {
-//					return true;
-//				}
-//			}
-//		}
-
         // check for inherited container permission
-            //FIXME need to write container permission check
+            //FIXME need to write recursive container permission check
+
         // if this is the global sidebar, then exit since we don't care about page permissions
         if (substr($location->src,0,8)!='@section' && substr($location->src,0,8)!='@random') {
             return false;
