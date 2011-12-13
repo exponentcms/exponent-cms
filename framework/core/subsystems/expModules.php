@@ -94,6 +94,7 @@ class expModules {
     			$moduleInfo[$module]->active = ($modstate != null ? $modstate->active : 0);
     		}
     	}
+        $moduleInfo = expSorter::sort(array('array'=>$moduleInfo,'sortby'=>'name', 'order'=>'ASC', 'ignore_case'=>true));
     	return $moduleInfo;
     }
 
