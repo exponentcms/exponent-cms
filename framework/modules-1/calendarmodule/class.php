@@ -112,7 +112,7 @@ class calendarmodule {
 
 	function getLocationHierarchy($loc) {
 		if ($loc->int == '') return array($loc);
-		else return array($loc,expCore::makeLocation($loc->mod,$loc->src));
+		else return array($loc,expCore::makeLocation($loc->mod,$loc->src));  // array of
 	}
 
 	static function show($view,$loc = null, $title = '') {

@@ -48,7 +48,7 @@ if(DEVELOPMENT) $timer = new expTimer();
 // skip it and default back to the old way of doing things.
 $router->routeRequest();
 
-// initialize this users cart if they have ecomm installed.
+// initialize this users cart if they have ecom installed.
 // define whether or not ecom is enabled
 if ($db->selectValue('modstate', 'active', 'module="storeController"')) {
     define('ECOM',1);

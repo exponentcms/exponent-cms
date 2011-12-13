@@ -276,50 +276,50 @@ function renderAction(array $parms=array()) {
     //on the edit form somehow..like a hacker trying to bypass the form and just submit straight to 
     //the action. To safeguard, we'll catch if the action is update and change it either to create or
     //edit depending on whether an id param is passed to. that should be sufficient.
-    $common_action_name = null;
+    $common_action = null;
     if ($parms['action'] == 'update') {
-        $permaction = (!isset($parms['id']) || $parms['id'] == 0) ? 'create' : 'edit';
+        $perm_action = (!isset($parms['id']) || $parms['id'] == 0) ? 'create' : 'edit';
     } elseif ($parms['action'] == 'saveconfig') {
-        $permaction = 'configure';
+        $perm_action = 'configure';
     } else {
         // action convention for controllers that manage more than one model (datatype). 
         // if you preface the name action name with a common crud action name we can check perms on 
         // it with the developer needing to specify any...better safe than sorry.
         // i.e if the action is edit_mymodel it will be checked against the edit permission
         if (stristr($parms['action'], '_')) $parts = explode("_", $parms['action']);
-        $common_action_name = isset($parts[0]) ? $parts[0] : null;
-        $permaction = $parms['action'];
+        $common_action = isset($parts[0]) ? $parts[0] : null;
+        $perm_action = $parms['action'];
     }
 
-    if (array_key_exists($permaction, $perms)) {
-        if (!expPermissions::check($permaction, $controller->loc)) {
+    if (array_key_exists($perm_action, $perms)) {
+        if (!expPermissions::check($perm_action, $controller->loc)) {
             if (expTheme::inAction()) {
-                flash('error', gt("You don't have permission to")." ".$perms[$permaction]);
+                flash('error', gt("You don't have permission to")." ".$perms[$perm_action]);
                 expHistory::returnTo('viewable');
             } else {
                 return false;
             }
         }
-    } elseif (array_key_exists($common_action_name, $perms)) {
-        if (!expPermissions::check($common_action_name, $controller->loc)) {
+    } elseif (array_key_exists($common_action, $perms)) {
+        if (!expPermissions::check($common_action, $controller->loc)) {
             if (expTheme::inAction()) {
-                flash('error', gt("You don't have permission to")." ".$perms[$common_action_name]);
+                flash('error', gt("You don't have permission to")." ".$perms[$common_action]);
                 expHistory::returnTo('viewable');
             } else {
                 return false;
             }
         }
-    } elseif (array_key_exists($permaction, $controller->requires_login)) {
+    } elseif (array_key_exists($perm_action, $controller->requires_login)) {
         // check if the action requires the user to be logged in
         if (!$user->isLoggedIn()) {
-            $msg = empty($controller->requires_login[$permaction]) ? gt("You must be logged in to perform this action") : $controller->requires_login[$permaction];
+            $msg = empty($controller->requires_login[$perm_action]) ? gt("You must be logged in to perform this action") : $controller->requires_login[$perm_action];
             flash('error', $msg);
             expHistory::redirecto_login();
         }
-    } elseif (array_key_exists($common_action_name, $controller->requires_login)) {
+    } elseif (array_key_exists($common_action, $controller->requires_login)) {
         // check if the action requires the user to be logged in
         if (!$user->isLoggedIn()) {
-            $msg = empty($controller->requires_login[$common_action_name]) ? gt("You must be logged in to perform this action") : $controller->requires_login[$common_action_name];
+            $msg = empty($controller->requires_login[$common_action]) ? gt("You must be logged in to perform this action") : $controller->requires_login[$common_action];
             flash('error', $msg);
             expHistory::redirecto_login();
         }

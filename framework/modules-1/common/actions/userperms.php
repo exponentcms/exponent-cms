@@ -41,7 +41,7 @@ if ($user->isAdmin()) {
 	$mod = new $modclass();
 	$perms = $mod->permissions($loc->int);
 	$have_users = 0;
-	foreach (user::getAllUsers(0) as $u) {
+	foreach (user::getAllUsers(false) as $u) {
 		$have_users = 1;
 		foreach ($perms as $perm=>$name) {
 			$var = 'perms_'.$perm;
