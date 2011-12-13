@@ -46,7 +46,7 @@ class helpController extends expController {
 
         // pagination parameter..hard coded for now.	    
 		$where = $this->aggregateWhereClause();
-	    $where .= 'AND help_version_id='.$ref_version->id;
+	    $where .= 'AND help_version_id='.(empty($ref_version->id)?'0':$ref_version->id);
 	    $limit = 500;
 //	    $order = 'rank';
 	    $order = isset($this->config['order']) ? $this->config['order'] : 'rank';
