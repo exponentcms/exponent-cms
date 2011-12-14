@@ -18,9 +18,9 @@
 ##################################################
 
 if (!defined('EXPONENT')) exit('');
-global $router;
+global $router, $section;
 
-if (expPermissions::check('manage',expCore::makeLocation('navigationmodule','',''))) {
+if (expPermissions::check('manage',expCore::makeLocation('navigationmodule','',$section))) {
     global $user;
 //	expHistory::flowSet(SYS_FLOW_PROTECTED, SYS_FLOW_ACTION);
 	expHistory::set('manageable', $router->params);
