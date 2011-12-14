@@ -210,7 +210,17 @@ class searchController extends expController {
 	
 		$records = $db->selectObjectsBySql("SELECT COUNT(query) cnt, query FROM " .DB_TABLE_PREFIX . "_search_queries GROUP BY query ORDER BY cnt DESC LIMIT 0, {$limit}");
 		
-		assign_to_template(array('records'=>$records, 'total'=>$count, 'limit' => $limit)); 
+	
+		foreach($records as $item) {
+			$records_key_arr[] = '"' . $item->query . '"';
+			$records_values_arr[] = number_format((($item->cnt / $count)*100), 2);
+		}
+		$records_key   = implode(",", $records_key_arr);
+		$records_values = implode(",", $records_values_arr);
+		
+	
+		
+		assign_to_template(array('records'=>$records, 'total'=>$count, 'limit' => $limit, 'records_key' => $records_key, 'records_values' => $records_values)); 
 	}
 	
     

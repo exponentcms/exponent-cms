@@ -18,49 +18,69 @@
 
 {/css}
 
-<div class="module searchquery report">
-    <div class="info-header">
-   
-        <h1>{$moduletitle|default:"Search Queries Report"|gettext}</h1>
-    </div>
+<div class="module searchquery report exp-skin-tabview">
 
-	
-    {pagelinks paginate=$page top=1}
-	{control type="dropdown" name="user_id" label="Filter by User"|gettext items="{$users.name}" values="{$users.id}" value=$user_default class="userdropdown"}
-	<table class="exp-skin-table">
-	    <thead>
-			<tr>
-				{$page->header_columns}
+	<div id="searchqueryreport" class="yui-navset">
+		
+
+		<ul class="yui-nav">
+			<li class="selected"><a href="#tab1"><em>{"All Search Queries"|gettext}</em></a></li>
+			<li><a href="#tab2"><em>{"Bad Search Queries"|gettext}</em></a></li>
+		</ul>
+
+		<div class="yui-content">
+			<div id="tab1">
+
+				<div class="info-header">
+					<h1>{$moduletitle|default:"Search Queries Report"|gettext}</h1>
+				</div>
+				
+				{pagelinks paginate=$page top=1}
+				{control type="dropdown" name="user_id" label="Filter by User"|gettext items="{$users.name}" values="{$users.id}" value=$user_default class="userdropdown"}
+				<table class="exp-skin-table">
+					<thead>
+						<tr>
+							{$page->header_columns}
+						
+						</tr>
+					</thead>
+					<tbody>
+						{foreach from=$page->records item=query name=listings}
+						<tr class="{cycle values='odd,even'}">
+							<td>{$query->id}</td>
+							<td>{$query->query}</td>
+							<td>{$query->timestamp|format_date:$smarty.const.DISPLAY_DATE_FORMAT}</td>
+							<td>
+								{if !empty($query->user)}
+									{$query->user}
+								{else}
+									{"Anonymous"|gettext}
+								{/if}
+							</td>
+						</tr>
+						{foreachelse}
+							<td colspan="{$page->columns|count}">{"No Search Query Data"|gettext}</td>
+						{/foreach}
+					</tbody>
+				</table>
+				{pagelinks paginate=$page bottom=1}
+			</div>
 			
-			</tr>
-		</thead>
-		<tbody>
-			{foreach from=$page->records item=query name=listings}
-			<tr class="{cycle values='odd,even'}">
-				<td>{$query->id}</td>
-				<td>{$query->query}</td>
-				<td>{$query->timestamp|format_date:$smarty.const.DISPLAY_DATE_FORMAT}</td>
-				<td>
-					{if !empty($query->user)}
-						{$query->user}
-					{else}
-						{"Anonymous"|gettext}
-					{/if}
-				</td>
-			</tr>
-			{foreachelse}
-			    <td colspan="{$page->columns|count}">{"No Search Query Data"|gettext}</td>
-			{/foreach}
-		</tbody>
-	</table>
-    {pagelinks paginate=$page bottom=1}
-
+			<div id="tab2">
+                <div class="info-header">
+					<h1>{$moduletitle|default:"Bad Queries Report"|gettext}</h1>
+				</div>
+            </div>
+		</div>
+	</div>
 </div>
 
 {script unique="searchQueryReport"}
 {literal}
-YUI(EXPONENT.YUI3_CONFIG).use('node',function(Y) {
+YUI(EXPONENT.YUI3_CONFIG).use('node', 'charts', 'yui2-yahoo-dom-event','yui2-element','yui2-tabview', function(Y) {
     
+		var YAHOO=Y.YUI2;
+		var tabView = new YAHOO.widget.TabView('searchqueryreport');
   
         var userdropdown = Y.one('.userdropdown');
     
