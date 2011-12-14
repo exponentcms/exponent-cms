@@ -138,10 +138,10 @@ class expPermissions {
 		}
 
 		if (!is_array($permission)) $permission = array($permission);
-        // always add 'manage' and 'administrate' to permissions to check for
+        // always check for 'manage' and 'administrate' permissions
         $permission[] = 'manage';
         $permission[] = 'administrate';
-        // add variations to permission names for 1.0 modules like containers
+        // add variations to permission names for 1.0 modules such as containers
         if (array_intersect(array('configure','order_modules'),$permission)) {
             $permission[] = 'configure';
             $permission[] = 'order_modules';
@@ -200,7 +200,7 @@ class expPermissions {
         }
 
         // if this is the global sidebar, then exit since we don't care about page permissions
-        if (substr($location->src,0,8)!='@section' && substr($location->src,0,8)!='@random') {
+        if (!empty($location->src) && substr($location->src,0,8)!='@section' && substr($location->src,0,8)!='@random') {
             return false;
         }
         // check for inherited 'manage' permission from current page and its parents
@@ -218,7 +218,7 @@ class expPermissions {
 		} else {
             // check for recursive inherited page permission
             $page = $db->selectObject("section","id=".$location->int);
-            if ($page->parent) {
+            if (!empty($page->parent)) {
                 // first check for specific 'view' permission
                 if (self::check($permission,expCore::makeLocation('navigationmodule','',$page->parent))) {
                     return true;
@@ -306,7 +306,7 @@ class expPermissions {
                 return true;
         }
         // if this is the global sidebar, then exit since we don't care about page permissions
-        if (substr($location->src,0,8)!='@section' && substr($location->src,0,8)!='@random') {
+        if (!empty($location->src) && substr($location->src,0,8)!='@section' && substr($location->src,0,8)!='@random') {
             return false;
         }
         // check for inherited 'manage' permission from its page
@@ -329,7 +329,7 @@ class expPermissions {
         } else {
             // check for recursive inherited page permission
             $page = $db->selectObject("section","id=".$location->int);
-            if ($page->parent) {
+            if (!empty($page->parent)) {
                 // first check for specific 'view' permission
                 if (self::checkUser($user,$permission,expCore::makeLocation('navigationmodule','',$page->parent))) {
                     return true;
@@ -423,7 +423,7 @@ class expPermissions {
         }
 
         // if this is the global sidebar, then exit since we don't care about page permissions
-        if (substr($location->src,0,8)!='@section' && substr($location->src,0,8)!='@random') {
+        if (!empty($location->src) && substr($location->src,0,8)!='@section' && substr($location->src,0,8)!='@random') {
             return false;
         }
         // check for inherited 'manage' permission from its page
@@ -446,7 +446,7 @@ class expPermissions {
         } else {
             // check for recursive inherited page permission
             $page = $db->selectObject("section","id=".$location->int);
-            if ($page->parent) {
+            if (!empty($page->parent)) {
                 // first check for specific 'view' permission
                 if (self::checkGroup($group,$permission,expCore::makeLocation('navigationmodule','',$page->parent))) {
                     return true;
