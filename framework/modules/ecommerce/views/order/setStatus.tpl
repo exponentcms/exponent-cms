@@ -1,20 +1,20 @@
 {'An order you placed on the'|gettext} {$storename} {'website has been updated.  The status of your order has been changed to'|gettext} {$to_status}.{br}
 <hr>
-{'Invoice:'|gettext} {$order->invoice_id}{br}
-{'Update Date/Time:'|gettext} {$date} {br}
+{'Invoice'|gettext}: {$order->invoice_id}{br}
+{'Update Date/Time'|gettext}: {$date} {br}
 {if $comment != ''}
 <hr>  
-{'Notes:'|gettext} {br}
+{'Notes'|gettext}: {br}
 {$comment}
 {/if}
 {br}
 {if $include_shipping == true}
 <hr>
 {'Your order was shipped on'|gettext} {$order->shipped|format_date:$smarty.const.DISPLAY_DATE_FORMAT}.{br}
-{'Carrier:'|gettext} {$carrier}{br}
-{'Tracking Number:'|gettext} {$order->shipping_tracking_number}{br}{br}
+{'Carrier'|gettext}: {$carrier}{br}
+{'Tracking Number'|gettext}: {$order->shipping_tracking_number}{br}{br}
 {if $tracking_link != ''}
-{'You may visit the shipping providers website to track your order by following this link:'|gettext}{br}
+{'You may visit the shipping providers website to track your order by following this link'|gettext}:{br}
 {$tracking_link}
 {br}{br}
 {'If your email client does not allow you to click on the link above, simply copy and paste the link into your web browsers address bar.'|gettext} {br}{br}

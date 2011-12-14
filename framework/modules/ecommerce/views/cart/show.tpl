@@ -32,9 +32,9 @@
 		<div id="cart-top" width="100%" cellpadding="0" cellspacing="0">
 			<div class="cart-total-label">
                 {if $order->total_discounts > 0} 
-			        <span class="total-label">{"Cart Items Total With Discounts:"|gettext}</span>
+			        <span class="total-label">{"Cart Items Total With Discounts"|gettext}:</span>
                 {else}
-                    <span class="total-label">{"Cart Items Total:"|gettext}</span>
+                    <span class="total-label">{"Cart Items Total"|gettext}:</span>
                 {/if}
 				<span id="cart-total" class="carttotal">{currency_symbol}{$order->total|number_format:2}</span>
 			</div>

@@ -19,7 +19,7 @@
 		{control type="buttongroup" submit="Next"|gettext cancel="Cancel"|gettext}
 	{/if}
 {/form}
-<h3 style="float: right;">{$count} {'model aliases left.'|gettext}</h3>
+<h3 style="float: right;">{$count} {'model aliases left'|gettext}.</h3>
 {clear}
 <style type="text/css">
 {literal}

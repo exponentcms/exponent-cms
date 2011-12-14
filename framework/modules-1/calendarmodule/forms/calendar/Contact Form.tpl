@@ -26,7 +26,7 @@
             <td width="10" style="width: 10px" valign="top" colspan="2"><b>{'Submit Feedback'|gettext}</b></td>
         </tr>
         <tr>
-            <td valign="top">{'Your E-mail Address:'|gettext}</td>
+            <td valign="top">{'Your Email Address'|gettext}:</td>
             <td>
                 <input type="text" name="email" />
             </td>
@@ -38,7 +38,7 @@
             </td>
         </tr>
         <tr>
-            <td valign="top">{'Message:'|gettext}</td>
+            <td valign="top">{'Message'|gettext}:</td>
             <td>
                 <textarea name="message"></textarea>
             </td>

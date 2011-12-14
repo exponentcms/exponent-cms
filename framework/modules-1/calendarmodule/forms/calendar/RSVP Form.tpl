@@ -30,32 +30,32 @@
             <td width="10" style="width: 10px" valign="top" colspan="2"><b>{'RSVP to This Event'|gettext}</b></td>
         </tr>
         <tr>
-            <td valign="top">{'Your Name:'|gettext}</td>
+            <td valign="top">{'Your Name'|gettext}:</td>
             <td>
                 <input type="text" name="name" />
             </td>
         </tr>
         <tr>
-            <td valign="top">{'Your Email Address:'|gettext}</td>
+            <td valign="top">{'Your Email Address'|gettext}:</td>
             <td>
                 <input type="text" name="email" />
             </td>
         </tr>
         <tr>
-            <td valign="top">{'Your Phone:'|gettext}</td>
+            <td valign="top">{'Your Phone'|gettext}:</td>
             <td>
                 <input type="text" name="phone" />
             </td>
         </tr>
         <tr>
-            <td valign="top">{'Number of Attendees:'|gettext}</td>
+            <td valign="top">{'Number of Attendees'|gettext}:</td>
             <td>
                 <input type="text" name="attendees" />
             </td>
         </tr>
 
         <tr>
-            <td valign="top">{'Comments:'|gettext}</td>
+            <td valign="top">{'Comments'|gettext}:</td>
             <td>
                 <textarea name="Comments"></textarea>
             </td>

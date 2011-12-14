@@ -47,7 +47,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
 					{if $smarty.const.ECOM}
 						{if $oicount>0}
 							{"If you are a new customer, select this option  <br />to continue with the checkout process."|gettext}{br}{br}
-							{"We will gather billing and shipping information,  <br />and you will have the option to create an account  <br />so can track your order status."|gettext}{br}{br}
+							{"We will gather billing and shipping information, <br />and you will have the option to create an account  <br />so can track your order status."|gettext}{br}{br}
 							<a class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" href="{link module=cart action=customerSignup}">{"Continue Checking Out"|gettext}</a>
 						{else}
 							{"If you are a new customer,add an item to your cart  <br />to continue with the checkout process."|gettext}

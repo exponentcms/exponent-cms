@@ -206,7 +206,7 @@
 				oPayload.totalRecords = oResponse.meta.totalRecords;
 				
 				var df = YAHOO.util.Dom.get('totalResult');
-				df.innerHTML = "{/literal}{"Total Results:"|gettext}{literal}"+" " + oResponse.meta.totalRecords;
+				df.innerHTML = "{/literal}{"Total Results"|gettext}:{literal}"+" " + oResponse.meta.totalRecords;
 			
 				return oPayload;
 			}

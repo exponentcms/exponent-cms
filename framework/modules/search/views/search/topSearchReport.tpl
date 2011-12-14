@@ -20,7 +20,7 @@
 
 <div class="module topsearchquery report">
     <div class="info-header">
-        <h1>{$moduletitle|default:"Top `$limit` Search Queries Report"|gettext}</h1>
+        <h1>{$moduletitle|default:"Top"|gettext|cat:" `$limit` "|cat:("Search Queries Report"|gettext)}</h1>
     </div>
 
 	<table class="exp-skin-table">

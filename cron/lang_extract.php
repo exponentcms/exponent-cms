@@ -49,6 +49,8 @@ $regex_gt='/(?<=gt\([\'"])((\\\\.|[^\'"])*)(?=[\'"]\))/';
 // extensions of files, used when going through a directory
 $extensions = array('tpl','php');
 
+$recur = true;
+
 $total_new = 0;
 
 // "fix" string - strip slashes, escape and convert new lines to \n
@@ -97,7 +99,7 @@ function do_file($file, $fileext) {
 
 // go through a directory
 function do_dir($dir) {
-    global $extensions;
+    global $extensions, $recur;
 
 	$d = dir($dir);
 
@@ -109,7 +111,7 @@ function do_dir($dir) {
 		$entry = $dir.'/'.$entry;
 
 		if (is_dir($entry)) { // if a directory, go through it
-			do_dir($entry);
+			if ($recur) do_dir($entry);
 		} else { // if file, parse only if extension is matched
 			$pi = pathinfo($entry);
 			
@@ -124,7 +126,9 @@ function do_dir($dir) {
 
 for ($ac=1; $ac < $_SERVER['argc']; $ac++) {
     print "Extracting Language Phrases\n";
-	if (is_dir($_SERVER['argv'][$ac])) { // go through directory
+	if ($_SERVER['argv'][$ac] == '-r'){
+        $recur = false;
+    } elseif (is_dir($_SERVER['argv'][$ac])) { // go through directory
 		do_dir($_SERVER['argv'][$ac]);
 	} else { // do file
         $pi = pathinfo($_SERVER['argv'][$ac]);

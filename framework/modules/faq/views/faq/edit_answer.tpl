@@ -20,10 +20,10 @@
     {form action="update_answer"}
         <table>
         <tr>
-            <td>{'From'|gettext}: {$config.answer_from_name} &lt;{$from}&gt;</td>
+            <td>{'From:'|gettext} {$config.answer_from_name} &lt;{$from}&gt;</td>
         </tr>
         <tr>
-            <td>{'To'|gettext}: {$faq->submitter_name} &lt;{$faq->submitter_name}&gt;</td>
+            <td>{'To:'|gettext} {$faq->submitter_name} &lt;{$faq->submitter_name}&gt;</td>
         </tr>
         </table>
         {control type="hidden" name="id" value=$faq->id}

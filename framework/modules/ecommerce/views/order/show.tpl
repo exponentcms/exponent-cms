@@ -137,7 +137,7 @@
                         </tr>
                     {else}
                         <tr><td> 
-                            {'Tracking #:'|gettext}</td><td>{$order->shipping_tracking_number}{br}
+                            {'Tracking #'|gettext}:</td><td>{$order->shipping_tracking_number}{br}
                         </td></tr> 
                         <tr><td> 
                             {'Date Shipped:'|gettext}</td><td>{if $order->shipped != 0}{$order->shipped|format_date:$smarty.const.DISPLAY_DATE_FORMAT}{else}{'This order has not been shipped yet'|gettext}{/if}

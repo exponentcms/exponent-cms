@@ -21,7 +21,7 @@
 <div class="module cart show-inline">
     {if $moduletitle}<h2>{$moduletitle}</h2>{/if}
     <div class="total">
-        Total: <span class="carttotal">{currency_symbol}{$order->total|number_format:2}</span>
+        {"Total"|gettext}: <span class="carttotal">{currency_symbol}{$order->total|number_format:2}</span>
     </div>
     <ul>
         {foreach from=$items item=item}

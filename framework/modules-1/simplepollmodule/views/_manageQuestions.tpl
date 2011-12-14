@@ -2,8 +2,8 @@
 	<table cellpadding="0" cellspacing="0" style="border:none;" width="100%">
 		<tr><th class="header">{'Question'|gettext}</th>
 			<th class="header">{'Active'|gettext}?</th>
-			<th class="header">{'Open Results'|gettext}?</th>
-			<th class="header">{'Open Voting'|gettext}?</th>
+			<th class="header">{'Open Results?'|gettext}</th>
+			<th class="header">{'Open Voting?'|gettext}</th>
 			<th class="header"></th>
 		</tr>
 		{foreach from=$questions item=question}

@@ -20,10 +20,10 @@
     {form action="send_process"}
         <table>
         <tr>
-            <td>{'From'|gettext}: {$smarty.const.SMTP_FROMADDRESS}</td>
+            <td>{'From:'|gettext} {$smarty.const.SMTP_FROMADDRESS}</td>
         </tr>
         <tr>
-            <td>{'To'|gettext}: {$number_of_subscribers} Subscribers</td>
+            <td>{'To:'|gettext} {$number_of_subscribers} Subscribers</td>
         </tr>
         </table>
         {control type="hidden" name="id" value=$ealert->id}

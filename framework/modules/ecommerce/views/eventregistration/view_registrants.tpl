@@ -32,7 +32,7 @@
     <div class="events">
 	<table class="exp-skin-table">
             <thead>
-        	<tr><th>{'Registrant Name'|gettext}</th><th>{'Registrant Email'|gettext}</th><th>{'Registrant Phone'|gettext}</th></tr>
+        	<tr><th>{'Registrant Name:'|gettext}</th><th>{'Registrant Email:'|gettext}</th><th>{'Registrant Phone:'|gettext}</th></tr>
             </thead>
 	    <tbody>
 		{if $registrants|count > 0}

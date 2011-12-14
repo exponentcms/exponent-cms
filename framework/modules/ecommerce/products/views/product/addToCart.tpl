@@ -66,7 +66,7 @@
                         </div> 
                     {/if}
                 {/foreach}
-                <span style="font-variant:small-caps;">* {'Selection required.'|gettext}</span>
+                <span style="font-variant:small-caps;">* {'Selection required'|gettext}.</span>
             </div>
         {/if}
         
