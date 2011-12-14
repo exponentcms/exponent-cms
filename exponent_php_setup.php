@@ -50,7 +50,7 @@ $auto_dirs = array(
 	BASE.'framework/modules/ecommerce/billingcalculators',
 	BASE.'framework/modules/ecommerce/shippingcalculators',
 	BASE.'framework/modules/ecommerce/products/controllers',  //FIXME does NOT exist
-	BASE.'framework/modules/ecommerce/products/datatypes',  // models
+	BASE.'framework/modules/ecommerce/products/model',  // models
 );
 /**
  * Stores the search order locations for models & controllers

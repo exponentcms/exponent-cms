@@ -124,6 +124,13 @@ class searchController extends expController {
 	public function searchQueryReport() {
 		global $db;
 		
+		//Instantiate the search model
+		$search = new search();
+		
+		//Store the keywords that returns nothing
+        $badSearch = array();
+		$badSearchArr =  array();
+		
 		//User Records Initialization
 		$all_user  = -1;
 		$anonymous = -2;
@@ -138,10 +145,13 @@ class searchController extends expController {
 		
 		expHistory::set('manageable', $this->params);
 
-		$ctr = 2;
+		$ctr  = 2;
+		$ctr2 = 0;
 		
 		//Getting the search users
 		$records = $db->selectObjects('search_queries');
+		
+		
 		foreach($records as $item) {
 			$u = user::getUserById($item->user_id);
 
@@ -154,8 +164,17 @@ class searchController extends expController {
 				$uname['id'][$ctr] = $item->user_id;
 				$ctr++;
 			}
+			
+			$result  = $search->getSearchResults($item->query, true);
+			if(empty($result) && !in_array($item->query, $badSearchArr)) {
+				$badSearchArr[] = $item->query;
+				$badSearch[$ctr2]['query'] = $item->query;
+				$badSearch[$ctr2]['count'] = $db->countObjects("search_queries", "query='{$item->query}'");
+				$ctr2++;
+			}
+			
 		}
-		
+	
 		//Check if the user choose from the dropdown
 		if(!empty($user_default)) {
 			if($user_default == $anonymous) {
@@ -177,7 +196,7 @@ class searchController extends expController {
 		
 		$limit = empty($this->config['limit']) ? 10 : $this->config['limit'];
         $order = empty($this->config['order']) ? 'timestamp' : $this->config['order'];
-
+		
         $page = new expPaginator(array(
 					'records' => $records,
                     'where'=>1, 
@@ -194,7 +213,7 @@ class searchController extends expController {
                         )
                     ));
 	
-        assign_to_template(array('page'=>$page, 'users'=>$uname, 'user_default' => $user_default)); 
+        assign_to_template(array('page'=>$page, 'users'=>$uname, 'user_default' => $user_default, 'badSearch' => $badSearch)); 
 		
 	}
 	
@@ -210,7 +229,16 @@ class searchController extends expController {
 	
 		$records = $db->selectObjectsBySql("SELECT COUNT(query) cnt, query FROM " .DB_TABLE_PREFIX . "_search_queries GROUP BY query ORDER BY cnt DESC LIMIT 0, {$limit}");
 		
-		assign_to_template(array('records'=>$records, 'total'=>$count, 'limit' => $limit)); 
+		foreach($records as $item) {
+			$records_key_arr[] = '"' . $item->query . '"';
+			$records_values_arr[] = number_format((($item->cnt / $count)*100), 2);
+		}
+		$records_key   = implode(",", $records_key_arr);
+		$records_values = implode(",", $records_values_arr);
+		
+	
+		
+		assign_to_template(array('records'=>$records, 'total'=>$count, 'limit' => $limit, 'records_key' => $records_key, 'records_values' => $records_values)); 
 	}
 	
     
