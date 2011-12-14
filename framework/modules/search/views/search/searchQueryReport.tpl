@@ -69,6 +69,25 @@
 			<div id="tab2">
                 <div class="info-header">
 					<h1>{$moduletitle|default:"Bad Queries Report"|gettext}</h1>
+					
+					<table class="exp-skin-table">
+						<thead>
+							<tr>
+								<th>Term</th>
+								<th>Count</th>
+							</tr>
+						</thead>
+						<tbody>
+							{foreach from=$badSearch item=item name=listings}
+							<tr class="{cycle values='odd,even'}">
+								<td>{$item.query}</td>
+								<td>{$item.count}</td>
+							</tr>
+							{foreachelse}
+								<td colspan="2">{"No Bad Search Query Data"|gettext}</td>
+							{/foreach}
+						</tbody>
+					</table>
 				</div>
             </div>
 		</div>

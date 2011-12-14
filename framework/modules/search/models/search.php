@@ -28,13 +28,13 @@ class search extends expRecord {
     	return strip_tags(str_replace(array("<br/>","<br>","<br />","</div>"),"\n",$str));
 	}
 	
-	public function getSearchResults($terms) {
+	public function getSearchResults($terms, $readonly = 0) {
 	    global $db, $user;
 	    
 	    // get the search terms
         //$terms = $this->params['search_string'];
         
-        if (SAVE_SEARCH_QUERIES)
+        if (SAVE_SEARCH_QUERIES && $readonly == 0)
         {
 		
 			if(INCLUDE_ANONYMOUS_SEARCH == 1 || $user->id <> 0) {
