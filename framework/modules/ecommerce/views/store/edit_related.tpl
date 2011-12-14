@@ -64,7 +64,7 @@ oAC.itemSelectEvent.subscribe(appendToList);
 {/capture}
 
 {control type="autocomplete" controller="store" action="search" name="related_items" label="Related Products"|gettext value="Search Title or SKU"|gettext schema="title,id,sef_url,expFile,model" searchmodel="product" searchoncol="title,model" jsinject=$callbacks}
-
+{br}
 <ul id="relatedItemsList">
     {foreach from=$record->crosssellItem item=prod name=prods}
         <li>
