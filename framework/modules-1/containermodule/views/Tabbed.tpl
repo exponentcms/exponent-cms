@@ -43,14 +43,14 @@
 				<li><a href="#tab{$smarty.section.contain.index+1}"><em>{$tabtitle}</em></a></li>
 			{else}
 				{permissions level=$smarty.const.UILEVEL_STRUCTURE}
-					{if ($permissions.administrate == 1 || $permissions.edit_module == 1 || $permissions.delete_module == 1 || $permissions.add_module == 1)}
+					{if ($permissions.administrate == 1 || $permissions.edit_module == 1 || $permissions.delete_module == 1 || $permissions.add_module == 1 || $permissions.order_modules == 1)}
 						<li><a href="#tab{$smarty.section.contain.index+1}"><em>{$tabtitle}</em></a></li>
 					{/if}
 				{/permissions}
 			{/if}
 		{/section}	
 		{permissions level=$smarty.const.UILEVEL_STRUCTURE}
-			{if ($permissions.administrate == 1 || $permissions.edit_module == 1 || $permissions.delete_module == 1 || $permissions.add_module == 1)}
+			{if ($permissions.administrate == 1 || $permissions.edit_module == 1 || $permissions.delete_module == 1 || $permissions.add_module == 1 || $permissions.order_modules == 1)}
 				{if $smarty.section.contain.total != 0}
 					<li>
 				{else}

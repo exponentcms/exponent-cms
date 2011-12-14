@@ -23,7 +23,7 @@
 	</head>
 	
 	<body style="margin: 0px; padding: 0px;"> 
-		<br />
+		{br}
 		<div style="font-size: 2em">{'No Content Selected'|gettext}</div>
 		<hr size="1"/>{'To use the content from an existing module, click the "Use Existing Content" link to the left to enter the Site Content Selector.  Then, find your module and click "Use This Module\'s Content."'|gettext}<br />
 		<i>{'<b>Note:</b> you will only be able to re-use content from modules of the same type'|gettext}</i>

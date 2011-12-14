@@ -25,14 +25,14 @@
     	{assign var=i value=0}
 		{assign var=rerank value=0}
     	{include file=$viewfile}
-		<div style="clear:both"></div>
+		{clear}
     </div>
     <div class="twocolcontainerright">
     	{assign var=container value=$containers.1}
     	{assign var=i value=1}
 		{assign var=rerank value=0}
     	{include file=$viewfile}
-		<div style="clear:both"></div>
+		{clear}
     </div>
-    <div style="clear:both"></div>
+    {clear}
 </div>

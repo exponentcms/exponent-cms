@@ -105,7 +105,6 @@ function smarty_function_getchromemenu($params,&$smarty) {
         "src"=>PATH_RELATIVE."framework/core/assets/js/exp-container.js"
      ));
 	
-
 	echo $list;
 }
 

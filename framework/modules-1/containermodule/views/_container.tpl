@@ -15,7 +15,7 @@
  *}
 
 {if $container != null}
-<a name="mod_{$container->id}"></a> 
+    <a name="mod_{$container->id}"></a>
 	{permissions level=$smarty.const.UILEVEL_STRUCTURE}
 		{if ($permissions.administrate == 1 || $permissions.edit_module == 1 || $permissions.delete_module == 1 || $permissions.add_module == 1 || $container->permissions.administrate == 1)}
 			<div id="module{$container->id}" class="exp-container-module-wrapper">

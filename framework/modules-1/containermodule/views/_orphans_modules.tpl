@@ -13,6 +13,7 @@
  * GPL: http://www.gnu.org/licenses/gpl.txt
  *
  *}
+
 {foreach from=$orphan_mods item=modname key=mod}
     <a class="navlink" href="{link module=$mod}">{$modname}</a><br />
 {foreachelse}

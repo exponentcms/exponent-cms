@@ -106,17 +106,17 @@ class containermodule {
 		
 		$containers = array();
        
-        	if(!isset($cache[$container_key])) {
-		    	foreach ($db->selectObjects('container',"external='" . $container_key . "'") as $c) {
-				if ($c->is_private == 0 || expPermissions::check('view',expCore::makeLocation($loc->mod,$loc->src,$c->id))) {
-				    $containers[$c->rank] = $c;
-			    	}
-		    	}
-        		$cache[$container_key] = $containers;
-        		expSession::setCacheValue('containermodule', $cache);
-        	} else {
-            		$containers = $cache[$container_key];            
-        	}
+        if(!isset($cache[$container_key])) {
+            foreach ($db->selectObjects('container',"external='" . $container_key . "'") as $c) {
+            if ($c->is_private == 0 || expPermissions::check('view',expCore::makeLocation($loc->mod,$loc->src,$c->id))) {
+                $containers[$c->rank] = $c;
+                }
+            }
+            $cache[$container_key] = $containers;
+            expSession::setCacheValue('containermodule', $cache);
+        } else {
+                $containers = $cache[$container_key];
+        }
  
 		ksort($containers);
 		foreach (array_keys($containers) as $i) {
@@ -130,12 +130,12 @@ class containermodule {
 				$mod = new $modclass();
 				
 				ob_start();
-					$mod->_hasParent = 1;
-					if ($iscontroller) {
-						renderAction(array('controller'=>$location->mod, 'action'=>$containers[$i]->action, 'src'=>$location->src, 'view'=>$containers[$i]->view, 'moduletitle'=>$containers[$i]->title));
-					} else {
-						$mod->show($containers[$i]->view,$location,$containers[$i]->title);
-					}
+                $mod->_hasParent = 1;
+                if ($iscontroller) {
+                    renderAction(array('controller'=>$location->mod, 'action'=>$containers[$i]->action, 'src'=>$location->src, 'view'=>$containers[$i]->view, 'moduletitle'=>$containers[$i]->title));
+                } else {
+                    $mod->show($containers[$i]->view,$location,$containers[$i]->title);
+                }
 
 				$containers[$i]->output = trim(ob_get_contents());
 				ob_end_clean();

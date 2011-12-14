@@ -15,19 +15,19 @@
  *}
  
 {permissions}
-	{if ($permissions.administrate == 1 || $permissions.edit_module == 1 || $permissions.delete_module == 1 || $permissions.add_module == 1 || $container->permissions.administrate == 1 || $container->permissions.edit_module == 1 || $container->permissions.delete_module == 1)} 
+	{if ($permissions.administrate == 1 || $permissions.edit_module == 1 || $permissions.delete_module == 1 || $permissions.add_module == 1 || $permissions.order_modules == 1
+      || $container->permissions.administrate == 1 || $container->permissions.edit_module == 1 || $container->permissions.delete_module == 1 || $container->permissions.order_modules == 1)}
         {css unique="container-chrome" link=$smarty.const.PATH_RELATIVE|cat:'framework/modules/container/assets/css/admin-container.css'}
 
         {/css}
     	{script yui3mods="1" unique="container-chrome" src="`$smarty.const.PATH_RELATIVE`framework/core/assets/js/exp-container.js"}
 
     	{/script}
-		<div id="cont{$top->id}" class="exp-container-wrapper">
+		<div id="cont{$top->id}" class="exp-container-module-wrapper">
 	{/if}
 {/permissions}
 
 {permissions}
-
     {*if $hasParent == 0 && ($permissions.edit_module || $permissions.add_module || $permissions.delete_module || $permissions.order_module || $permissions.administrate)*}
     {if $hasParent == 0 && ($user->isAdmin())}
 	{** top level container module **}
@@ -56,7 +56,8 @@
 	{else}
 		<a name="mod_{$container->id}"></a> 
 		{permissions}
-			{if ($permissions.administrate == 1 || $permissions.edit_module == 1 || $permissions.delete_module == 1 || $permissions.add_module == 1 || $container->permissions.administrate == 1 || $container->permissions.configure == 1 || $container->permissions.manage == 1)}
+            {if ($permissions.administrate == 1 || $permissions.edit_module == 1 || $permissions.delete_module == 1 || $permissions.add_module == 1 || $permissions.order_modules == 1
+                 || $container->permissions.administrate == 1 || $container->permissions.edit_module == 1 || $container->permissions.delete_module == 1 || $container->permissions.order_modules == 1)}
                 
                 {* repeating css and JS calls in case they only have module management, and aren not admins *}
                 {css unique="container-chrome" link=$smarty.const.PATH_RELATIVE|cat:'framework/modules/container/assets/css/admin-container.css'}
@@ -65,7 +66,6 @@
             	{script yui3mods="1" unique="container-chrome" src="`$smarty.const.PATH_RELATIVE`framework/core/assets/js/exp-container.js"}
 
             	{/script}
-
 
 				<div id="module{$container->id}" class="exp-container-module-wrapper">
 				{if $i == $containers|@count}
@@ -83,7 +83,8 @@
 		{$container->output}
 
 		{permissions level=$smarty.const.UILEVEL_STRUCTURE}
-			{if ($permissions.administrate == 1 || $permissions.edit_module == 1 || $permissions.delete_module == 1 || $permissions.add_module == 1 || $container->permissions.administrate == 1 || $container->permissions.edit_module == 1 || $container->permissions.delete_module == 1 || $container->permissions.configure || $container->permissions.configure == 1)} 
+            {if ($permissions.administrate == 1 || $permissions.edit_module == 1 || $permissions.delete_module == 1 || $permissions.add_module == 1 || $permissions.order_modules == 1
+                 || $container->permissions.administrate == 1 || $container->permissions.edit_module == 1 || $container->permissions.delete_module == 1 || $container->permissions.order_modules == 1)}
 				</div>
 			{/if}
 		{/permissions}
@@ -97,8 +98,9 @@
 {/foreach}
 
 {permissions}
-	{if ($permissions.administrate == 1 || $permissions.edit_module == 1 || $permissions.delete_module == 1 || $permissions.add_module == 1 || $container->permissions.administrate == 1 || $container->permissions.edit_module == 1 || $container->permissions.delete_module == 1 || $container->permissions.configure || $container->permissions.configure == 1)} 
-		<div style="clear:both"></div>
+    {if ($permissions.administrate == 1 || $permissions.edit_module == 1 || $permissions.delete_module == 1 || $permissions.add_module == 1 || $permissions.order_modules == 1
+         || $container->permissions.administrate == 1 || $container->permissions.edit_module == 1 || $container->permissions.delete_module == 1 || $container->permissions.order_modules == 1)}
+		{clear}
 		</div>
 	{/if}
 {/permissions}
