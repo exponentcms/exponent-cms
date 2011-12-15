@@ -40,35 +40,35 @@ class expQueue {
 		self::isQueueEmpty();
 	}
 
-	static function flash($name, $msg) {
+	public static function flash($name, $msg) {
         	$flash = expSession::get('flash');
 	        if(empty($flash[$name])) $flash[$name]  = $msg;           
 	        elseif ($flash[$name] != $msg) $flash[$name] .= "<br/><br/>" . $msg;
 	        expSession::set('flash', $flash);
     	}
 
-	static function flashAndFlow($name, $msg) {
+	public static function flashAndFlow($name, $msg) {
     		flash($name, $msg);
 	    	expHistory::back();
 	}
 
-	static function flashIfNotLoggedIn($name, $msg) {
+	public static function flashIfNotLoggedIn($name, $msg) {
 		global $user;
 		if (!$user->isLoggedIn()) self::flashAndFlow($name, $msg);
 	}
 	
-	static function isQueueEmpty($name) {
+	public static function isQueueEmpty($name) {
 		$flash = expSession::get('flash');
 		return empty($flash[$name]);	
 	}
 
-	static function flushQueue($name) {
+	public static function flushQueue($name) {
 		$flash = expSession::get('flash');
 		$flash[$name] = array();
 		expSession::set('flash', $flash);
 	}
 
-	static function flushAllQueues() {
+	public static function flushAllQueues() {
 		expSession::set('flash', array());
 	}
 }

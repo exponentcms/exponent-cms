@@ -132,7 +132,7 @@ class expCSS {
     }
     
     
-    public function themeCSS() {
+    public static function themeCSS() {
         global $css_theme, $head_config;
 
         $cssdirs[] = BASE.'themes/'.DISPLAY_THEME.'/css/';

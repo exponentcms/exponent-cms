@@ -133,14 +133,14 @@
 		                <h2>{"Mail Server Settings"|gettext}</h2>
                     </div>
 	                {control type="text" name="sc[SMTP_FROMADDRESS]" label="From Address"|gettext value=$smarty.const.SMTP_FROMADDRESS}
-                    {br}{control type="checkbox" postfalse=1 name="sc[SMTP_USE_PHP_MAIL]" label='Use php\'s mail() function instead of SMTP?'|gettext checked=$smarty.const.SMTP_USE_PHP_MAIL value=1}
+                    {br}{control type="checkbox" postfalse=1 name="sc[SMTP_USE_PHP_MAIL]" label='Use simplified php mail() function instead of SMTP?'|gettext checked=$smarty.const.SMTP_USE_PHP_MAIL value=1}
 	                (or)<h3>{"SMTP Server Settings"|gettext}</h3>
                     {control type="text" name="sc[SMTP_SERVER]" label="SMTP Server"|gettext value=$smarty.const.SMTP_SERVER}
                     {control type="text" name="sc[SMTP_PORT]" label="SMTP Port"|gettext value=$smarty.const.SMTP_PORT}
                     {control type="dropdown" name="sc[SMTP_PROTOCOL]" label="Type of Encrypted Connection"|gettext items=$protocol default=$smarty.const.SMTP_PROTOCOL includeblank="None"}
                     {control type="text" name="sc[SMTP_USERNAME]" label="SMTP Username"|gettext value=$smarty.const.SMTP_USERNAME}
                     {control type="text" name="sc[SMTP_PASSWORD]" label="SMTP Password"|gettext value=$smarty.const.SMTP_PASSWORD}
-	                {control type="checkbox" postfalse=1 name="sc[SMTP_DEBUGGING]" label="Turn SMTP Debugging On?"|gettext checked=$smarty.const.SMTP_DEBUGGING value=1}
+	                {control type="checkbox" postfalse=1 name="sc[SMTP_DEBUGGING]" label="Turn On SMTP Debugging?"|gettext checked=$smarty.const.SMTP_DEBUGGING value=1}
                 </div>
                 <div id="tab7">
 	                <div class="info-header">
@@ -149,7 +149,7 @@
                         </div>
 		                <h2>{"Site Maintenance Mode Settings"|gettext}</h2>
                     </div>
-                    {control type="checkbox" postfalse=1 name="sc[MAINTENANCE_MODE]" label="Enter Maintenance Mode?"|gettext checked=$smarty.const.MAINTENANCE_MODE value=1}
+                    {control type="checkbox" postfalse=1 name="sc[MAINTENANCE_MODE]" label="Place Site in Maintenance Mode?"|gettext checked=$smarty.const.MAINTENANCE_MODE value=1}
                     {control type="html" name="sc[MAINTENANCE_MSG_HTML]" label="Maintenance Mode Message"|gettext value=$smarty.const.MAINTENANCE_MSG_HTML}
                 </div>
                 <div id="tab8">
@@ -174,7 +174,7 @@
                         </div>
 		                <h2>{"Help Link Settings"|gettext}</h2>
                     </div>
-                    {control type="checkbox" postfalse=1 name="sc[HELP_ACTIVE]" label="Enable Help links for documentation?"|gettext checked=$smarty.const.HELP_ACTIVE value=1}
+                    {control type="checkbox" postfalse=1 name="sc[HELP_ACTIVE]" label="Enable Help links to online documentation?"|gettext checked=$smarty.const.HELP_ACTIVE value=1}
                     {control type="text" name="sc[HELP_URL]" label="URL for Help Documentation"|gettext value=$smarty.const.HELP_URL}
                 </div>
                 <div id="tab10">
@@ -226,8 +226,12 @@
                 </div>
 				
 				<div id="tab14">
-					 <h2>{"Search Report Configuration"|gettext}</h2>
-					 
+                    <div class="info-header">
+                        <div class="related-actions">
+                            {help text="Get Help"|gettext|cat:" "|cat:("with"|gettext)|cat:" "|cat:("search report settings"|gettext) module="search-report-settings"}
+                        </div>
+                        <h2>{"Search Report Configuration"|gettext}</h2>
+                    </div>
 					{control type="text" name="sc[TOP_SEARCH]" label="Number of Top Search Queries"|gettext value=$smarty.const.TOP_SEARCH}
 					{control type="checkbox" postfalse=1 name="sc[INCLUDE_AJAX_SEARCH]" label="Include ajax search in reports?"|gettext checked=$smarty.const.INCLUDE_AJAX_SEARCH value=1}
 					{control type="checkbox" postfalse=1 name="sc[INCLUDE_ANONYMOUS_SEARCH]" label="Include unregistered users search?"|gettext checked=$smarty.const.INCLUDE_ANONYMOUS_SEARCH value=1}
