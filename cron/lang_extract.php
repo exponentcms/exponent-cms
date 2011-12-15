@@ -134,7 +134,7 @@ for ($ac=1; $ac < $_SERVER['argc']; $ac++) {
         $pi = pathinfo($_SERVER['argv'][$ac]);
 		do_file($_SERVER['argv'][$ac],$pi['extension']);
 	}
-    print "\nCompleted Extracting from ".$total_new." Phrases!\n";
+    print "\nCompleted Extracting from ".$total_new." Phrases!\n\n";
 }
 
 ?>
