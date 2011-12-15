@@ -1,4 +1,5 @@
 <?php
+header("Content-type: text/javascript");
 
 ##################################################
 #
@@ -26,9 +27,6 @@ require_once('exponent.php');
 // exponent Javascript Support Systems
 
 EXPONENT = {};
-
-// for back-compat
-eXp = EXPONENT;
 
 // map certian php CONSTANTS to JS vars
 
@@ -81,4 +79,16 @@ EXPONENT.YUI3_CONFIG = {
         }
     }
 };
+
+gt = function(str) {
+    var langStr = <?php echo json_encode($cur_lang); ?>;
+    return langStr[str];
+};
+
+// if you feel like short-handing
+eXp = EXPONENT;
+
+
+console.log(gt('Add Configuration Settings'));
+
 //console.debug(EXPONENT.YUI3_CONFIG);
