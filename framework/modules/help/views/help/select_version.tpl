@@ -16,7 +16,7 @@
 
 {literal}
 <style type="text/css">
-    .control .label {
+    .select-version .control .label {
         display: inline;
         font-size: 100%;
         font-weight: bold;
