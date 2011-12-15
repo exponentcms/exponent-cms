@@ -18,7 +18,7 @@
 ##################################################
 
 class helpController extends expController {
-	public $useractions = array('showall'=>'Show all');
+	public $useractions = array('showall'=>'Show all','select_version'=>'Select Help Version');
 	public $codequality = 'beta';
 
 	function displayname() { return "Help"; }
@@ -37,7 +37,10 @@ class helpController extends expController {
         
         $this->help_version = expSession::get('help-version');
 	}
-	
+
+    /**
+     * Display list of help documents
+     */
 	public function showall() {
 	    expHistory::set('viewable', $this->params);
 	    $hv = new help_version();
@@ -66,7 +69,10 @@ class helpController extends expController {
 	    
 	    assign_to_template(array('current_version'=>$ref_version, 'page'=>$page, 'rank'=>($order==='rank')?1:0));
 	}
-	
+
+    /**
+     * Create or Edit a help document
+     */
 	public function edit() {
 	    global $db, $sectionObj;
 	    expHistory::set('editable', $this->params);
@@ -95,7 +101,10 @@ class helpController extends expController {
 //	    assign_to_template(array('record'=>$help,"cursec"=>$sectionObj->id,"sections"=>$sectionlist));
 	    assign_to_template(array('record'=>$help,"cursec"=>$this->loc->src,"sections"=>$sectionlist));
 	}
-	
+
+    /**
+     * Display a help document
+     */
 	public function show() {
 	    global $db;
 	
@@ -111,7 +120,10 @@ class helpController extends expController {
 	    $doc = $help->find('first', 'help_version_id='.$version_id.' AND sef_url="'.$this->params['title'].'"');
 	    assign_to_template(array('doc'=>$doc,"hv"=>$this->help_version));
 	}
-	
+
+    /**
+     * Manage help documents
+     */
 	public function manage() {
 	    expHistory::set('manageable', $this->params);
 	    global $db;
@@ -142,7 +154,14 @@ class helpController extends expController {
 	    
 	    assign_to_template(array('current_version'=>$current_version, 'page'=>$page, 'sections'=>$sections));
 	}
-	
+
+    /**
+     * Routine to copy all existing help docs from a version to the new version
+     * @static
+     * @param $from
+     * @param $to
+     * @return bool
+     */
 	private static function copydocs($from, $to) {
 	    global $db;
 	    	    
@@ -178,7 +197,10 @@ class helpController extends expController {
 	    flash('message', gt('Copied all docs from version').' '.$oldvers.' '.gt('to new version').' '.$newvers);
 	    return true;
 	}
-	
+
+    /**
+     * Manage help versions
+     */
 	public function manage_versions() {
 	    expHistory::set('manageable', $this->params);
 	    
@@ -200,14 +222,20 @@ class helpController extends expController {
 	    
 	    assign_to_template(array('current_version'=>$current_version, 'page'=>$page));
 	}
-	
+
+    /**
+     * Create or Edit details about a help version
+     */
 	public function edit_version() {
 	    expHistory::set('editable', $this->params);
 	    $id = empty($this->params['id']) ? null : $this->params['id'];
 	    $version = new help_version($id);
 	    assign_to_template(array('record'=>$version));
 	}
-	
+
+    /**
+     * Delete a help version and all assoc docs
+     */
 	public function delete_version() {
 	    if (empty($this->params['id'])) {
 	        flash('error', gt('The version you are trying to delete could not be found'));
@@ -237,7 +265,10 @@ class helpController extends expController {
 	    flash('message', gt('Deleted version').' '.$version->version.' '.gt('and').' '.$num_docs.' '.gt('documents that were in that version.'));
 	    expHistory::back();	    
 	}
-	
+
+    /**
+     * Creates a new help version, possibly based on existing help version
+     */
 	public function update_version() {
 	    global $db;
 	    
@@ -268,6 +299,9 @@ class helpController extends expController {
 	    expHistory::back();
 	}
 
+    /**
+     * Switches current help version globally
+     */
 	public function activate_version() {
 	    global $db;
 
@@ -284,6 +318,39 @@ class helpController extends expController {
 	    expHistory::back();
 	}
 
+    /**
+     * Displays available help versions
+     */
+	public function select_version() {
+        global $db;
+
+  	    $hv = expSession::get('help-version');
+        $selected = $db->selectValue('help_version', 'id', 'version="'.$hv.'"');
+   	    $versions = $db->selectDropdown('help_version','version',1,'version');
+   	    assign_to_template(array('current_version'=>$hv, 'selected'=>$selected, 'versions'=>$versions));
+	}
+
+    /**
+     * Switches current help version temporarily
+     */
+	public function switch_version() {
+        global $db;
+
+	    // unset the current version.
+	    expSession::un_set('help-version');
+        // set the requested version.
+        $version = $db->selectValue('help_version','version','id="'.$this->params['version'].'"');
+        expSession::set('help-version',$version);
+	    flash('message', gt('Now displaying Help version').' '.$version);
+        expHistory::back();
+	}
+
+    /**
+     * Hack to try and determine page which help doc is assoc with
+     * @static
+     * @param $params
+     * @return null|void
+     */
 	public static function getSection($params) {
 	    global $db;
 	    $h = new help();
