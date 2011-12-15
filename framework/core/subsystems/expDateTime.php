@@ -573,4 +573,31 @@ class expDateTime {
 		}
 	}
 
+    /**
+     * Return a date in the site preferred format
+     *
+     * @param        array
+     * @param string $format
+     *
+     * @return array
+     */
+    public static function format_date($timestamp,$format=DISPLAY_DATE_FORMAT) {
+    	// Do some sort of mangling of the format for windows.
+    	// reference the PHP_OS constant to figure that one out.
+    	if (strtolower(substr(PHP_OS,0,3)) == 'win') {
+    		// We are running on a windows platform.  Run the replacements
+
+    		// Preserve the '%%'
+    		$toks = explode('%%',$format);
+    		for ($i = 0; $i < count($toks); $i++) {
+    			$toks[$i] = str_replace(
+    				array('%D','%e','%g','%G','%h','%r','%R','%T','%l'),
+    				array('%m/%d/%y','%#d','%y','%Y','%b','%I:%M:%S %p','%H:%M','%H:%M:%S','%#I'),
+    				$toks[$i]);
+    		}
+    		$format = implode('%%',$toks);
+    	}
+    	return strftime($format,$timestamp);
+    }
+
 }

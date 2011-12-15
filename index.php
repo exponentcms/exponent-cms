@@ -65,7 +65,7 @@ if ($db->selectValue('modstate', 'active', 'module="storeController"')) {
 
 if (isset($_GET['id']) && !is_numeric($_GET['id'])) $_GET['id'] = intval($_GET['id']);
 $section = $router->getSection();
-$sectionObj = $router->getSectionObj($section);
+if ($db->havedb) $sectionObj = $router->getSectionObj($section);
 if (ENABLE_TRACKING) $router->updateHistory($section);
 
 // set the output header

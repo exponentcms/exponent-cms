@@ -16,6 +16,9 @@
 	
 	<div style="border: 1px solid black; margin: 15%; padding: 3em;">
 		{$smarty.const.MAINTENANCE_MSG_HTML}
+        {if $db_down}
+        <h3 style="color:red">{'Database is currently Off-line!'|gettext}</h3>
+        {/if}
         <!--a href="login.php">{'Administrator Login'|gettext}</a-->
 		<h3>{'Administrator Login'|gettext}</h3>
 		{chain controller=login view=showlogin_stacked title="Administrators Login"|gettext}
