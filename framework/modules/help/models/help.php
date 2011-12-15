@@ -46,11 +46,11 @@ class help extends expRecord {
 		}
 
         // circumvent the re-ranking problem
-        $oldrank = $this->rank;
-        unset($this->rank);
+//        $oldrank = $this->rank;
+//        if (empty($this->rank)) unset($this->rank);
         parent::save(true);
-        $this->rank = $oldrank;
-        parent::save();
+//        if (!empty($oldrank)) $this->rank = $oldrank;
+//        parent::save();
    }
 
 	/**
@@ -64,7 +64,7 @@ class help extends expRecord {
 		} else {
 			$this->sef_url = $router->encode('Untitled');
 		}
-        $dupe = $db->selectValue($this->tablename, 'sef_url', 'sef_url="'.$this->sef_url.' AND help_version_id = '.$this->help_version_id.'"');
+        $dupe = $db->selectValue($this->tablename, 'sef_url', 'sef_url="'.$this->sef_url." AND help_version_id='".$this->help_version_id."'");
 		if (!empty($dupe)) {
 			list($u, $s) = explode(' ',microtime());
 			$this->sef_url .= '-'.$s.'-'.$u;
@@ -101,7 +101,7 @@ class help extends expRecord {
             foreach($field as $key=>$value) {
                 $fieldname = is_numeric($key) ? $value : $key;
                 $opts = is_numeric($key) ? array() : $value;
-                $sql = "`".$fieldname."`='".$this->$fieldname.' AND help_version_id = '.$this->help_version_id.'"';
+                $sql = "`".$fieldname."`='".$this->$fieldname." AND help_version_id='".$this->help_version_id."'";
                 if (!empty($this->id)) $sql .= ' AND id != '.$this->id;
                 $ret = $db->countObjects($this->tablename, $sql);
                 if ($ret > 0) {
@@ -118,6 +118,94 @@ class help extends expRecord {
         }
 
         if (count($messages) >= 1) expValidator::failAndReturnToForm($messages, $post);
+    }
+
+    /**
+   	 * rerank items
+   	 * @param $direction
+   	 * @param string $where
+   	 */
+   	public function rerank($direction, $where='') {
+       global $db;
+       if (!empty($this->rank)) {
+           $next_prev = $direction == 'up' ? $this->rank - 1 : $this->rank +1;
+           $where.= empty($this->location_data) ? null : "location_data='".$this->location_data."' AND help_version_id='".$this->help_version_id."'";
+           $db->switchValues($this->tablename, 'rank', $this->rank, $next_prev, $where);
+       }
+    }
+
+    /**
+   	 * before saving item
+   	 */
+   	public function beforeSave() {
+       global $user, $db;
+       // populate the magic fields
+       if (empty($this->id)) {
+           // timestamp the record
+           if (property_exists($this, 'created_at')) $this->created_at = time();
+           if (property_exists($this, 'edited_at')) $this->edited_at = time();
+           // record the user saving the record.
+           if (property_exists($this, 'poster')) $this->poster = empty($this->poster) ? $user->id : $this->poster;
+           // fill in the rank field if it exist
+           if (property_exists($this, 'rank')) {
+               if (empty($this->rank)) {
+//                   $where = "1 ";
+                   $where .= empty($this->location_data) ? "1 " : "location_data='".$this->location_data."' ";
+                   $where .= " AND help_version_id='".$this->help_version_id."'";
+                   //FIXME: $where .= empty($this->rank_by_field) ? null : "AND " . $this->rank_by_field . "='" . $this->$this->rank_by_field . "'";
+                   $groupby = empty($this->location_data) ? null : 'location_data';
+//                   $groupby .= empty($this->rank_by_field) ? null : empty($groupby) ? null : ',' . $this->rank_by_field;
+                   $this->rank = $db->max($this->tablename, 'rank', $groupby, $where) +1;
+               } else {
+                   // check if this rank is already there..if so increment everything below it.
+                   $obj = $db->selectObject($this->tablename, 'rank='.$this->rank." AND help_version_id='".$this->help_version_id."'");
+                   if (!empty($obj)) {
+                       $db->increment($this->tablename,'rank',1,'rank>='.$this->rank." AND help_version_id='".$this->help_version_id."'");
+                   }
+               }
+           }
+
+           $this->beforeCreate();
+       } else {
+           // put the created_at time back the way it was so we don't set it 0
+           if (property_exists($this, 'created_at') && $this->created_at == 0) {
+               $this->created_at = $db->selectValue($this->tablename, 'created_at', 'id='.$this->id);
+           }
+
+           // put the original posters id back the way it was so we don't set it 0
+           if (property_exists($this, 'poster') && $this->poster == 0) {
+               $this->poster = $db->selectValue($this->tablename, 'poster', 'id='.$this->id);
+           }
+
+           //put the rank back to what it was so we don't set it 0
+           if (property_exists($this, 'rank') && $this->rank == 0) {
+               $this->rank = $db->selectValue($this->tablename, 'rank', 'id='.$this->id);
+           }
+
+           if (property_exists($this, 'edited_at')) $this->edited_at = time();
+           if (property_exists($this, 'editor')) $this->editor = $user->id;
+           $this->beforeUpdate();
+       }
+    }
+
+    /**
+   	 * delete item
+   	 * @param string $where
+   	 * @return bool
+   	 */
+   	public function delete($where = '') {
+       global $db;
+       if (empty($this->id)) return false;
+       $this->beforeDelete();
+       $db->delete($this->tablename,'id='.$this->id);
+       if (!empty($where)) $where .= ' AND ';
+       if (property_exists($this, 'rank')) $db->decrement($this->tablename,'rank',1, $where . 'rank>='.$this->rank." AND help_version_id='".$this->help_version_id."'");
+
+       // delete attached items
+       foreach($this->attachable_item_types as $content_table=>$type) {
+           $db->delete($content_table, 'content_type="'.$this->classname.'" AND content_id='.$this->id);
+       }
+       $this->afterDelete();
     }
 
     public static function makeHelpLink($module) {
