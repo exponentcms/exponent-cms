@@ -13,13 +13,13 @@
  * GPL: http://www.gnu.org/licenses/gpl.txt
  *{math equation="x*20" x=$section->depth}
  *}
- {css unique="yui-top-nav" link="`$smarty.const.YUI3_PATH`node-menunav/assets/skins/sam/node-menunav-skin.css"}
+ {css unique="yui-top-nav" link="`$smarty.const.YUI3_PATH`assets/skins/sam/node-menunav.css"}
 
  {/css}
  {uniqueid assign=id prepend="sub`$parent`"}
 <div class="module navigationmodule flydown yui3-skin-sam">
-    <div id="{$id}" class="yui3-menu yui3-menu-horizontal">
-        <div class="yui3-menu-content">
+    <div id="{$id}" class="yui3-menu yui3-menu-horizontal yui3-menubuttonnav">
+        <div class="yui3-menu-content" style="visibility:hidden;">
     		<ul>
     		{assign var=startdepth value=$startdepth|default:0}
     		{foreach name="children" key=key from=$sections item=section}
@@ -43,7 +43,13 @@
 
             {if $type=="label"}
                 <li class="{if $section->id==$current->id}current{/if}">
-                    <a class="yui3-menu-label" href="#{$id}-{$section->id}">{$section->name}</a>
+                    <a class="yui3-menu-label" href="#{$id}-{$section->id}">
+                    {if $section->depth==0}
+                        <em>{$section->name}</em>
+                    {else}
+                        {$section->name}
+                    {/if}
+                    </a>
             {elseif $type=="content"}
                 <li class="yui3-menuitem{if $section->id==$current->id} current{/if}">
                     <a class="yui3-menuitem-content" href="{$section->link}">{$section->name}</a>
@@ -78,7 +84,7 @@
 {script yui3mods=1 unique=$id}
 {literal}
 YUI(EXPONENT.YUI3_CONFIG).use("node-menunav", function(Y) {
-	Y.one("#{/literal}{$id}{literal}").plug(Y.Plugin.NodeMenuNav);
+    var menu = Y.one("#{/literal}{$id}{literal}").plug(Y.Plugin.NodeMenuNav).one('.yui3-menu-content').setStyle("visibility","visible");
 });
 
 
