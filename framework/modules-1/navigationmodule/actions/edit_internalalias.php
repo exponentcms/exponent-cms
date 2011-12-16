@@ -39,12 +39,8 @@ if (isset($_GET['id'])) {
     $check_id = $section->parent;
 }
 
-// FIXME: Allow non-administrative users to manage certain
-// FIXME: parts of the section hierarchy.
-	
-if ($check_id != -1 && $user && 
-	($user->is_acting_admin == 1 ||
-    expPermissions::check('manage',expCore::makeLocation('navigationmodule','',$check_id)))) {
+// FIXME: Allow non-administrative users to manage certain parts of the section hierarchy.
+if ($check_id != -1 && $user && expPermissions::check('manage',expCore::makeLocation('navigationmodule','',$check_id))) {
 	$form = section::internalAliasForm($section);
 	$form->meta('module','navigationmodule');
 	$form->meta('action','save_internalalias');

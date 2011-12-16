@@ -52,6 +52,7 @@ class expVersion {
 	public static function checkVersion() {
 		global $db, $user;
 
+        //FIXME delete/change these next few lines in 2.0.4 so we don't auto-launch installer but go to maintenance mode
 		// we're not up and running yet, so fix that first
 		if (@file_exists(BASE.'install/not_configured') || !(@file_exists(BASE.'conf/config.php'))) {
 			self::launchInstaller();
@@ -86,15 +87,17 @@ class expVersion {
             exit();
         }
 
-        // check if online version is newer than installed software version only once per session
+        // check if online version is newer than installed software version, but only once per session
         if ($user->isAdmin()) {
             if (!expSession::is_set('update-check')) {
                 $onlineVer = self::getOnlineVersion();
-                if (self::compareVersion($swversion,$onlineVer)) {
-                    $newvers = $onlineVer->major.'.'.$onlineVer->minor.'.'.$onlineVer->revision.$onlineVer->type.$onlineVer->iteration;
-                    flash('message',gt('There is a new Version available').' v'.$newvers.' '.gt('released').' '.expDateTime::format_date($onlineVer->builddate));
+                if (!empty($onlineVer)) {
+                    expSession::set('update-check','1');
+                    if (self::compareVersion($swversion,$onlineVer)) {
+                        $newvers = $onlineVer->major.'.'.$onlineVer->minor.'.'.$onlineVer->revision.$onlineVer->type.$onlineVer->iteration;
+                        flash('message',gt('There is a new Version available').' v'.$newvers.' '.gt('released').' '.expDateTime::format_date($onlineVer->builddate));
+                    }
                 }
-                expSession::set('update-check','1');
             }
         }
 	}

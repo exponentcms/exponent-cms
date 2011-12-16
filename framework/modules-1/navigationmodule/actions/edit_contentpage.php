@@ -22,9 +22,7 @@
 if (!defined('EXPONENT')) exit('');
 
 $check_id = -1;
-// FIXME: Allow non-administrative users to manage certain
-// FIXME: parts of the section hierarchy.
-
+// FIXME: Allow non-administrative users to manage certain parts of the section hierarchy.
 //if ($user->is_acting_admin == 1 /*TODO: section admin*/) {
 	$section = null;
 	if (isset($_GET['id'])) {
