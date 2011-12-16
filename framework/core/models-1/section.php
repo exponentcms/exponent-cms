@@ -62,7 +62,7 @@ class section {
 		}
 		
 		// The name of the section, as it will be linked in the section hierarchy.
-		$form->register('name',gt('name'),new textcontrol($object->name));
+		$form->register('name',gt('Name'),new textcontrol($object->name));
 		$form->register('sef_name',gt('SEF Name').'<p class="sefinfo">'.gt('If you don\'t put in an SEF Name one will be generated based on the title provided. SEF names can only contain alpha-numeric characters, hyphens and underscores.').'</p>',new textcontrol($object->sef_name));
 		
 		if (!isset($object->id)) {
