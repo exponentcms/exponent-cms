@@ -27,8 +27,14 @@ div.msg-queue.error {
 
 div.msg-queue.notice {
     background: #f1e778;
-    border: 2px solid #c59207;
-    color: #c59207;
+    border: 2px solid #c27b12;
+    color: #c27b12;
+}
+
+div.msg-queue.info {
+    background: #c2f0f0;
+    border: 2px solid #1a18c4;
+    color: #1a18c4;
 }
 
 .msg-queue {

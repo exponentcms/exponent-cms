@@ -19,7 +19,7 @@
 {/css}
 
 <div class="formmodule default"> 
-    {messagequeue}
+    {messagequeue name='notice'}
 	{permissions}
 		<div class="module-actions">
 			{if $permissions.viewdata == 1 && $form->is_saved == 1}<a class="addnew mngmntlink" href="{link action=view_data module=formbuilder id=$form->id}">{'View Data'|gettext} ({$count})</a>&nbsp;&nbsp;{/if}

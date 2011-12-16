@@ -35,7 +35,8 @@
  * @return bool
  */
 function smarty_function_messagequeue($params,&$smarty) {
-    echo show_msg_queue();
+    $name = empty($params['name']) ? null : $params['name'];
+    echo show_msg_queue($name);
 }
 
 ?>

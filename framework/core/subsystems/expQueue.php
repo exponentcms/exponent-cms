@@ -36,35 +36,51 @@ class expQueue {
 		self::flushQueue($this->name);
 	}
 
-	public function isEmpty() {
-		self::isQueueEmpty();
-	}
-
 	public static function flash($name, $msg) {
-        	$flash = expSession::get('flash');
-	        if(empty($flash[$name])) $flash[$name]  = $msg;           
-	        elseif ($flash[$name] != $msg) $flash[$name] .= "<br/><br/>" . $msg;
-	        expSession::set('flash', $flash);
-    	}
+        $flash = expSession::get('flash');
+        if(empty($flash[$name])) $flash[$name]  = $msg;
+        elseif ($flash[$name] != $msg) $flash[$name] .= "<br/><br/>" . $msg;
+        expSession::set('flash', $flash);
+    }
 
 	public static function flashAndFlow($name, $msg) {
-    		flash($name, $msg);
-	    	expHistory::back();
+        flash($name, $msg);
+        expHistory::back();
 	}
 
 	public static function flashIfNotLoggedIn($name, $msg) {
 		global $user;
 		if (!$user->isLoggedIn()) self::flashAndFlow($name, $msg);
 	}
-	
-	public static function isQueueEmpty($name) {
+
+    public static function show($name=null) {
+        $queues = expSession::get('flash');
+        if (empty($name)) {
+            $template = new template('common','_msg_queue');
+            $template->assign('queues', $queues);
+            $html = $template->render();
+            self::flushAllQueues();
+        } elseif (!empty($queues[$name])) {
+            $template = new template('common','_msg_queue');
+            $template->assign('queues', array($name=>$queues[$name]));
+            $html = $template->render();
+            self::flushQueue($name);
+        }
+        return $html;
+    }
+
+	public static function isQueueEmpty($name=null) {
 		$flash = expSession::get('flash');
 		return empty($flash[$name]);	
 	}
 
+    public function isEmpty() {
+   		self::isQueueEmpty();
+   	}
+
 	public static function flushQueue($name) {
 		$flash = expSession::get('flash');
-		$flash[$name] = array();
+        unset($flash[$name]);
 		expSession::set('flash', $flash);
 	}
 

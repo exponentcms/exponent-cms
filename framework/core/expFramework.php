@@ -354,9 +354,9 @@ function renderAction(array $parms=array()) {
 function hotspot($source = null) {
     if (!empty($source)) {
         global $sectionObj;
-	    //FIXME there is NO 'page' object
+	    //FIXME there is NO 'page' object and section has not _construct method
         $page = new section($sectionObj->id);
-        $modules = $page->getModulesBySource($source);
+        $modules = $page->getModulesBySource($source);  //FIXME there is no getModulesBySource method anywhere
         //eDebug($modules);exit();
 
         foreach ($modules as $module) {
@@ -389,45 +389,8 @@ function flashAndFlow($name, $msg) {
     expQueue::flashAndFlow($name, $msg);
 }
 
-function flushFlash() {
-    expQueue::flushAllQueues();
-}
-
-function handleErrors($errno, $errstr, $errfile, $errline) {
-    if (DEVELOPMENT > 0) {
-        $msg = "";
-        switch ($errno) {
-                case E_USER_ERROR:
-                    $msg = 'PHP Error('.$errno.'): ';
-                break;
-                case E_USER_WARNING:
-                    $msg = 'PHP Warning('.$errno.'): ';
-                break;
-                case E_USER_NOTICE:
-                case E_NOTICE:
-                    $msg = 'PHP Notice('.$errno.'): ';
-                default:
-                $msg = 'PHP Issue('.$errno.'): ';
-                break;  
-            }
-        $msg .= $errstr;
-        $msg .= !empty($errfile) ? ' in file '.$errfile : "";
-        $msg .= !empty($errline) ? ' on line '.$errline : "";
-        // currently we are doing nothing with these error messages..we could in the future however.
-    }
-}
-
-function show_msg_queue() {
-    $queues = expSession::get('flash');
-#    if (!empty($queues)) {
-        $template = new template('common','_msg_queue');
-        $template->assign('queues', expSession::get('flash'));
-        $html = $template->render();
-#    } else {
-#        $html = '';
-#    }
-    flushFlash();
-    return $html;
+function show_msg_queue($name=null) {
+    return expQueue::show($name);
 }
 
 function assign_to_template(array $vars=array()) {
@@ -682,6 +645,30 @@ function curPageURL() {
         $pageURL .= $_SERVER["SERVER_NAME"].$_SERVER["REQUEST_URI"];
     }
     return $pageURL;
+}
+
+function handleErrors($errno, $errstr, $errfile, $errline) {
+    if (DEVELOPMENT > 0) {
+        $msg = "";
+        switch ($errno) {
+                case E_USER_ERROR:
+                    $msg = 'PHP Error('.$errno.'): ';
+                break;
+                case E_USER_WARNING:
+                    $msg = 'PHP Warning('.$errno.'): ';
+                break;
+                case E_USER_NOTICE:
+                case E_NOTICE:
+                    $msg = 'PHP Notice('.$errno.'): ';
+                default:
+                $msg = 'PHP Issue('.$errno.'): ';
+                break;
+            }
+        $msg .= $errstr;
+        $msg .= !empty($errfile) ? ' in file '.$errfile : "";
+        $msg .= !empty($errline) ? ' on line '.$errline : "";
+        // currently we are doing nothing with these error messages..we could in the future however.
+    }
 }
 
 function gt($s){
