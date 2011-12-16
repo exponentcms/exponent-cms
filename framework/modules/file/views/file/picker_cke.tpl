@@ -11,9 +11,9 @@
 
     <script type="text/javascript" src="{$smarty.const.YUI3_PATH}yui/yui-min.js"></script>
     <script type="text/javascript" src="{$smarty.const.URL_FULL}exponent.js.php"></script>
+	<script type="text/javascript" src="{$smarty.const.PATH_RELATIVE}external/flowplayer3/example/flowplayer-3.2.6.min.js"></script>
 </head>
 <body class=" exp-skin">
-
 <div id="filemanager">
 	<h1>{'File Manager'|gettext}</h1>
     {messagequeue}
@@ -95,8 +95,12 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event','yui2-container','yu
             var owner = (oRecordData.user.username!="") ? ' '+"{/literal}{"owned by"|gettext}{literal}"+' '+oRecordData.user.firstname+' '+oRecordData.user.lastname+' ('+oRecordData.user.username+')' : "";
 
             infopanel.setHeader(oRecordData.filename+owner);
+            filetype = oRecordData.filename.replace(/^\s|\s$/g, "");
+            ismedia = filetype.match(/([^\/\\]+)\.(mp3|flv|f4v)$/i)
             if (oRecordData.is_image==1) {
     	        var oFile = '<img src="'+oRecordData.url+'" onError="this.src=\''+EXPONENT.URL_FULL+'/framework/core/assets/images/default_preview_notfound.gif\'">';
+            }else if (ismedia){
+                var oFile = '<a href="'+oRecordData.url+'" style="display:block;width:450px;height:360px;" class="player"></a>';
             }else{
                 var oFile = '<img src="'+EXPONENT.URL_FULL+'framework/modules/file/assets/images/general.png">' ;
             };
@@ -118,6 +122,22 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event','yui2-container','yu
                 '</td></tr></table>'
             );
             infopanel.show();
+			flowplayer("a.player", EXPONENT.URL_FULL+"external/flowplayer3/flowplayer-3.2.7.swf",
+				{
+					wmode: 'opaque',
+					clip: {
+						autoPlay: false,
+						},
+					plugins:  {
+						controls: {
+							play: true,
+							scrubber: true,
+							fullscreen: false,
+							autoHide: false
+						}
+					}
+				}
+			);
         }
         
         //set up autocomplete
@@ -411,6 +431,5 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event','yui2-container','yu
 });
 {/literal}
 </script>
-
 </body>
 </html>
