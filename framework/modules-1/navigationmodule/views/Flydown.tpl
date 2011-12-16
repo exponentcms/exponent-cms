@@ -43,7 +43,7 @@
 
             {if $type=="label"}
                 <li class="{if $section->id==$current->id}current{/if}">
-                    <a class="yui3-menu-label" href="#{$id}-{$section->id}">
+                    <a class="yui3-menu-label" href="{$section->link}">
                     {if $section->depth==0}
                         <em>{$section->name}</em>
                     {else}
