@@ -54,7 +54,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event','yui2-container','yu
         var usr = {/literal}{obj2json obj=$user}{literal}; //user
         var myDataSource = null;
         var myDataTable = null;
-    
+
         function getUrlParam(paramName) {
             var reParam = new RegExp('(?:[\?&]|&amp;)' + paramName + '=([^&]+)', 'i') ;
             var match = window.location.search.match(reParam) ;
@@ -89,7 +89,12 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event','yui2-container','yu
             } 
         );
         infopanel.render();
-
+        infopanel.subscribe('hide',function(event){
+            //FIXME need some code to actually stop/unload the player
+//            document.getElementByClassName("a.player").flowplayer(0).stop();
+//            this.getOverlay().find("a.player").flowplayer(0).pause();
+//            this.getOverlay().find("a.player").flowplayer(0).unload();
+        });
         // handler for showing file information
         var showFileInfo = function(oRecordData) {
             var owner = (oRecordData.user.username!="") ? ' '+"{/literal}{"owned by"|gettext}{literal}"+' '+oRecordData.user.firstname+' '+oRecordData.user.lastname+' ('+oRecordData.user.username+')' : "";
@@ -126,8 +131,8 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event','yui2-container','yu
 				{
 					wmode: 'opaque',
 					clip: {
-						autoPlay: false,
-						},
+						autoPlay: false
+                    },
 					plugins:  {
 						controls: {
 							play: true,

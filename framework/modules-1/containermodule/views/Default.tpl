@@ -82,14 +82,14 @@
 		
 		{$container->output}
 
-		{permissions level=$smarty.const.UILEVEL_STRUCTURE}
+		{permissions}
             {if ($permissions.administrate == 1 || $permissions.edit_module == 1 || $permissions.delete_module == 1 || $permissions.add_module == 1 || $permissions.order_modules == 1
                  || $container->permissions.administrate == 1 || $container->permissions.edit_module == 1 || $container->permissions.delete_module == 1 || $container->permissions.order_modules == 1)}
 				</div>
 			{/if}
 		{/permissions}
 
-		{permissions level=$smarty.const.UILEVEL_STRUCTURE}
+		{permissions}
 			{if $permissions.add_module == 1 && $hidebox == 0}
 				<a class="addmodule" href="{link action=edit rerank=1 rank=$smarty.foreach.c.iteration}"><span class="addtext">{"Add Module"|gettext}</span></a>
 			{/if}

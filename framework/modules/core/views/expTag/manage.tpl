@@ -16,7 +16,7 @@
 
 <div class="module expTags manage">
 	<h1>{"Manage Tags"|gettext}</h1>
-	{permissions level=$smarty.const.UILEVEL_NORMAL}
+	{permissions}
     	{if $permissions.create == 1}
     		<a class="add" href="{link controller=$model_name action=create}">{"Create a new Tag"|gettext}</a>
     	{/if}

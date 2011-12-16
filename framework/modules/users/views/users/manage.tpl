@@ -66,7 +66,7 @@
 				{/if}
 				</td>
 			    <td>
-			        {permissions level=$smarty.const.UILEVEL_PERMISSIONS}
+			        {permissions}
 						<div class="item-actions">
 							{icon class=edit action=edituser record=$user}
 							{icon class="password" action=change_password record=$user title="Change this users password"|gettext text="Password"|gettext}
@@ -117,7 +117,7 @@
 		
 		
         var formatactions = function(elCell, oRecord, oColumn, sData) {
-           {/literal}{permissions level=$smarty.const.UILEVEL_PERMISSIONS}{literal}
+           {/literal}{permissions}{literal}
 		   
 				 elCell.innerHTML = '<div class="item-actions">';
 				 editstring       = '{/literal}{icon class="edit" action="edituser" id="editstringid" title="Edit this user"|gettext}{literal}';

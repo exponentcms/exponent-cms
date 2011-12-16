@@ -57,7 +57,7 @@
 		</form>
 	{/if}
 	
-	{permissions level=$smarty.const.UILEVEL_NORMAL}
+	{permissions}
 		{if $permissions.manage_question == 1 || $permissions.manage_answer == 1}
 			<div class="module-actions">
 				{icon class=manage action=manage_questions text="Manage Questions"|gettext}

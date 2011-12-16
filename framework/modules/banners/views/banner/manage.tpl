@@ -47,7 +47,7 @@
 				<td>{$listing->impressions}</td>
 				<td>{$listing->clicks}</td>
 			    <td>
-			        {permissions level=$smarty.const.UILEVEL_PERMISSIONS}
+			        {permissions}
 						<div class="item-actions">
 							{if $permissions.edit == true}
 								{icon action=edit record=$listing}

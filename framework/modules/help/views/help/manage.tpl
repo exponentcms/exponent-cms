@@ -41,7 +41,7 @@
             <td><a href="{link action=manage version=$doc->help_version->id}">{$doc->help_version->version}</a></td>
 	        <td>{$sections[$sec]->name}</td>
             <td>
-                {permissions level=$smarty.const.UILEVEL_NORMAL}
+                {permissions}
                     {if $permissions.edit == 1}
                         {icon img='edit.png' action=edit record=$doc title="Edit Help Doc"|gettext}
                     {/if}

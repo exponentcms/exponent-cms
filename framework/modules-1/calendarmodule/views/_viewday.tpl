@@ -51,7 +51,7 @@
 			{assign var=count value=1}
 			<dt>
 				<span class="eventtitle"><a class="itemtitle calendar_mngmntlink" href="{link action=view id=$item->id date_id=$item->eventdate->id}"><b>{$item->title}</b></a></span>
-				{permissions level=$smarty.const.UILEVEL_PERMISSIONS}
+				{permissions}
 					<div class="item-actions">
 						{if $permissions.edit == 1}
 							{icon action=edit record=$item date_id=$item->eventdate->id title="Edit this Event"|gettext}

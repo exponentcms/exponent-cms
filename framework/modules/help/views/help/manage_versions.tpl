@@ -46,7 +46,7 @@
             </td>
             <td>{$version->num_docs}</td>
             <td>
-                {permissions level=$smarty.const.UILEVEL_NORMAL}
+                {permissions}
                     {if $permissions.edit == 1}
                         {icon img='edit.png' action=edit_version record=$version title="Edit Help Version"|gettext}
                     {/if}

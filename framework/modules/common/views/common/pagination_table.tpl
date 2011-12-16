@@ -42,7 +42,7 @@
 				    </td>
 				{/foreach}
 			    <!--td>
-			        {permissions level=$smarty.const.UILEVEL_PERMISSIONS}
+			        {permissions}
                     <div class="item-actions">
                     {if $permissions.edit == true}
                         {icon controller=$page->controller action=edit record=$item}

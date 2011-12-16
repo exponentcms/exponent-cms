@@ -30,7 +30,7 @@
 		{/if}
 		{$item->title}
 	</h2>
-	{permissions level=$smarty.const.UILEVEL_PERMISSIONS}
+	{permissions}
 		<div class="item-actions">
 			{br}
 			{if $permissions.edit == 1}

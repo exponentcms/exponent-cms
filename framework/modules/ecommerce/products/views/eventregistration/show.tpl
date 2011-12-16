@@ -25,7 +25,7 @@
      </div>
 
      <div class="bd">
-         {permissions level=$smarty.const.UILEVEL_PERMISSIONS}
+         {permissions}
          <div class="item-actions">
              {if $permissions.configure == 1 or $permissions.administrate == 1}
                  <a href="{link action=edit id=$product->id}" title="{"Edit this entry"|gettext}">

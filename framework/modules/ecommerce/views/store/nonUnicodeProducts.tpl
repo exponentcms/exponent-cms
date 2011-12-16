@@ -18,7 +18,7 @@
 			<td><a href={link controller=store action=showByTitle title=$listing.sef_url}>{$listing.title}</a></td>
 			<td>{$listing.nonunicode}</td> 
 			<td>
-				{permissions level=$smarty.const.UILEVEL_NORMAL}
+				{permissions}
 					{if $permissions.edit == 1}
 						{icon img='edit.png' action=edit id=$listing.id title="Edit `$listing.title`"}
 					{/if}

@@ -17,7 +17,7 @@
 <div class="module help showall">
     {if $moduletitle}<h1>{$moduletitle}</h1>{/if}
 
-    {permissions level=$smarty.const.UILEVEL_NORMAL}
+    {permissions}
         {if $permissions.create == 1}
             {icon class=add action=edit text="Add a Help Doc"|gettext}{br}
         {/if}

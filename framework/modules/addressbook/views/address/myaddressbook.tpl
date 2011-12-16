@@ -72,7 +72,7 @@
 				</address>
 			</td>
 			<td>
-				{permissions level=$smarty.const.UILEVEL_PERMISSIONS}
+				{permissions}
 					<div class="item-actions">
 						{if $user->id == $address->user_id}
 							{icon action=edit record=$address}

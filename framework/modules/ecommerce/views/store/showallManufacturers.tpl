@@ -22,7 +22,7 @@
 		{/foreach}
 	</ul>	
 	
-	{permissions level=$smarty.const.UILEVEL_PERMISSIONS}
+	{permissions}
         {if $permissions.create == 1 or $permissions.edit == 1}
         <div id="prod-admin">
             <a href="{link controller=company action=create}">{'Add a new company'|gettext}</a>

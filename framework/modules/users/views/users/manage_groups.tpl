@@ -48,7 +48,7 @@
 				<td>{$group->description}</td>
 				<td>{if $group->inclusive}<b>{'Default'|gettext}</b>{else}{'Normal'|gettext}{/if}</td>
 			    <td>
-			        {permissions level=$smarty.const.UILEVEL_PERMISSIONS}
+			        {permissions}
 						<div class="item-actions">
 							{icon img="groupperms.png" controller=users action="manage_group_memberships" record=$group title="Add/Remove Members to Group"|gettext|cat:" "|cat:$group->name}
 							{icon img="edit.png" controller=users action=edit_group record=$group title="Edit this group"|gettext}

@@ -42,14 +42,14 @@
 			{elseif $container != null}
 				<li><a href="#tab{$smarty.section.contain.index+1}"><em>{$tabtitle}</em></a></li>
 			{else}
-				{permissions level=$smarty.const.UILEVEL_STRUCTURE}
+				{permissions}
 					{if ($permissions.administrate == 1 || $permissions.edit_module == 1 || $permissions.delete_module == 1 || $permissions.add_module == 1 || $permissions.order_modules == 1)}
 						<li><a href="#tab{$smarty.section.contain.index+1}"><em>{$tabtitle}</em></a></li>
 					{/if}
 				{/permissions}
 			{/if}
 		{/section}	
-		{permissions level=$smarty.const.UILEVEL_STRUCTURE}
+		{permissions}
 			{if ($permissions.administrate == 1 || $permissions.edit_module == 1 || $permissions.delete_module == 1 || $permissions.add_module == 1 || $permissions.order_modules == 1)}
 				{if $smarty.section.contain.total != 0}
 					<li>
@@ -74,7 +74,7 @@
 					{include file=$viewfile}
 				</div>
 			{else}
-				{permissions level=$smarty.const.UILEVEL_STRUCTURE}
+				{permissions}
 					{if $permissions.add_module == 1 && $hidebox == 0}
 						<div id="tab{$smarty.section.contain.index+1}"{if !$smarty.section.contain.first}{/if}>
 							<a class="addmodule" href="{link action=edit rerank=0 rank=$rank}"><span class="addtext">{'Add Module'|gettext}</span></a>

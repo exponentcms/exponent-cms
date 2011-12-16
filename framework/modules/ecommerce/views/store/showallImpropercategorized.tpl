@@ -34,7 +34,7 @@
                 <td>{$listing->title}</td>
                 <td>${$listing->base_price|number_format:2}</td>
                 <td>
-                    {permissions level=$smarty.const.UILEVEL_NORMAL}
+                    {permissions}
                         {if $permissions.edit == 1}
                             {icon img='edit.png' action=edit id=$listing->id title="Edit `$listing->title`"}
                         {/if}

@@ -84,7 +84,7 @@
         </table>
 		{pagelinks paginate=$page bottom=1}
     </div>
-    {permissions level=$smarty.const.UILEVEL_PERMISSIONS}
+    {permissions}
         {if $permissions.configure == 1 or $permissions.administrate == 1}
         <div id="prod-admin">
                 <a href="{link controller=store action=create}">{'Add a new Product'|gettext}</a>
