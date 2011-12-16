@@ -27,10 +27,10 @@
 
 <div class="navigationmodule manager-hierarchy">
 	<div class="form_header">
-		<p><strong>{'Drag and drop'|gettext}</strong> {'tree items to re-order your site\'s hierarchy (main menu).'|gettext} <strong>{'Right click on any tree item'|gettext}</strong> {'for a context menu of options for that item.'|gettext}</p>
+		<p><strong>{'Drag and drop'|gettext}</strong> {'tree items with the 4-way arrows icon to re-order the site hierarchy (main menu).'|gettext} <strong>{'Right click on a tree item'|gettext}</strong> {'for a context menu of item options.'|gettext}</p>
 	</div>
 	{permissions}
-		{if $user->isAdmin()}
+		{if $user->is_admin || $user->is_acting_admin}
 			<a class="add" href="{link action=add_section parent=0}">{'Create a New Top Level Page'|gettext}</a>
 		{/if}
 	{/permissions}
@@ -447,8 +447,8 @@ var YAHOO = Y.YUI2;
 						id: "submenu1",
 						itemdata: [
 							{ classname:"addsubpage", text: "{/literal}{"Add Content Page Here"|gettext}{literal}", onclick: { fn: addContentSubNode } },
-							{ classname:"addsubpage", text: "{/literal}{"Add External Website Link Page Here"|gettext}{literal}", onclick: { fn: addInternalSubNode } },
-							{ classname:"addsubpage", text: "{/literal}{"Add Internal Page Alias Page Here"|gettext}{literal}", onclick: { fn: addExternalSubNode } },
+							{ classname:"addsubpage", text: "{/literal}{"Add External Website Link Page Here"|gettext}{literal}", onclick: { fn: addExternalSubNode } },
+							{ classname:"addsubpage", text: "{/literal}{"Add Internal Page Alias Page Here"|gettext}{literal}", onclick: { fn: addInternalSubNode } },
 							{ classname:"addsubpage", text: "{/literal}{"Move Standalone Page to Here"|gettext}{literal}", onclick: { fn: addStandaloneSubNode } }
 						]
 					}
@@ -466,9 +466,8 @@ var YAHOO = Y.YUI2;
 						id: "submenu1",
 						itemdata: [
 							{ classname:"addsubpage", text: "{/literal}{"Add Content Page"|gettext}{literal}", onclick: { fn: addContentSubNode } },
-							{ classname:"addsubpage", text: "{/literal}{"Add External Website Link"|gettext}{literal}", onclick: { fn: addInternalSubNode } },
-							{ classname:"addsubpage", text: "{/literal}{"Add Internal Page Alias"|gettext}{literal}", onclick: { fn: addExternalSubNode } },
-							{ classname:"addsubpage", text: "{/literal}{"Move Standalone Page"|gettext}{literal}", onclick: { fn: addStandaloneSubNode } }
+							{ classname:"addsubpage", text: "{/literal}{"Add External Website Link"|gettext}{literal}", onclick: { fn: addExternalSubNode } },
+							{ classname:"addsubpage", text: "{/literal}{"Add Internal Page Alias"|gettext}{literal}", onclick: { fn: addInternalSubNode } }
 						]
 					}
 				},

@@ -257,11 +257,18 @@ class navigationmodule {
 		}
 		return $html;
 	}
-	
-	/*
-	 * Returns a flat representation of the full site hierarchy.
-	 */
-	static function levelDropDownControlArray($parent,$depth = 0,$ignore_ids = array(),$full=false) {
+
+    /**
+     * Returns a flat representation of the full site hierarchy.
+     *
+     * @param       $parent top level parent id
+     * @param int   $depth variable to hold level of recursion
+     * @param array $ignore_ids array of pages to ignore
+     * @param bool  $full include a 'top' level entry
+     *
+     * @return array
+     */
+	static function levelDropDownControlArray($parent,$depth=0,$ignore_ids = array(),$full=false, $perm='view') {
 		$ar = array();
 		if ($parent == 0 && $full) {
 			$ar[0] = '&lt;'.gt('Top of Hierarchy').'&gt;';
@@ -270,14 +277,14 @@ class navigationmodule {
 		$nodes = $db->selectObjects('section','parent='.$parent);
 		$nodes = expSorter::sort(array('array'=>$nodes,'sortby'=>'rank', 'order'=>'ASC'));
 		foreach ($nodes as $node) {
-			if (($node->public == 1 || expPermissions::check('view',expCore::makeLocation('navigationmodule','',$node->id))) && !in_array($node->id,$ignore_ids)) {
+			if ((($perm=='view' && $node->public == 1) || expPermissions::check($perm,expCore::makeLocation('navigationmodule','',$node->id))) && !in_array($node->id,$ignore_ids)) {
 				if ($node->active == 1) {
 					$text = str_pad('',($depth+($full?1:0))*3,'.',STR_PAD_LEFT) . $node->name;
 				} else {
 					$text = str_pad('',($depth+($full?1:0))*3,'.',STR_PAD_LEFT) . '('.$node->name.')';
 				}
 				$ar[$node->id] = $text;
-				foreach (navigationmodule::levelDropdownControlArray($node->id,$depth+1,$ignore_ids,$full) as $id=>$text) {
+				foreach (navigationmodule::levelDropdownControlArray($node->id,$depth+1,$ignore_ids,$full,$perm) as $id=>$text) {
 					$ar[$id] = $text;
 				}
 			}
@@ -285,7 +292,17 @@ class navigationmodule {
 		
 		return $ar;
 	}
-	
+
+    /**
+     * returns all the sections children
+     *
+     * @static
+     * @param $parent top level parent id
+     * @param int $depth variable to hold level of recursion
+     * @param array $parents
+     *
+     * @return array
+     */
 	static function levelTemplate($parent, $depth = 0, $parents = array()) {
 		if ($parent != 0) $parents[] = $parent;
 		global $db, $user;
@@ -352,7 +369,15 @@ class navigationmodule {
 		return $nodes;
 	}
 
-	
+    /**
+     * recursively lists the template hierarchy
+     *
+     * @static
+     * @param $parent top level parent id
+     * @param int $depth variable to hold level of recursion
+     *
+     * @return array
+     */
 	static function getTemplateHierarchyFlat($parent,$depth = 1) {
 		global $db;
 		

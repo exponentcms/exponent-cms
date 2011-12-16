@@ -15,8 +15,8 @@
  *}
 <div class="navigationmodule add-whichtype">
 <div class="form_header">
-        <h1>{'Add New Page to Site Navigation'|gettext}</h1>
-        <p>
+    <h1>{'Add New Page to Site Navigation'|gettext}</h1>
+    <p>
 		{if $parent->id == 0}{'You are adding a new top-level page.'|gettext}{else}{'You are adding a new sub page to "%s".'|gettext|sprintf:$parent->name}{/if}
 		{'Please select the type of page you would like to add.'|gettext}
 	</p>
@@ -44,7 +44,7 @@
 <div style="padding: .5em; padding-bottom: 1.5em;">{'Pagesets are powerful tools that allow you to create sections with default content and subsections by adding a single pageset.'|gettext}</div>
 {/if}
 
-{if $haveStandalone != 0}
+{if $haveStandalone != 0 && $isAdministrator}
 <div style="background-color: #CCC; padding: 5px;">
 <a class="mngmntlink navigation_mngmntlink" href="{link action=move_standalone parent=$parent->id}">{'Move Standalone Page'|gettext}</a>
 </div>

@@ -19,7 +19,7 @@
 
 if (!defined('EXPONENT')) exit('');
 
-if ($user->is_acting_admin == 1) {
+if ($user->is_admin == 1 || $user->is_acting_admin == 1) {
 	$section = $db->selectObject('section','id='.intval($_GET['id']));
 	if ($section) {
 		navigationmodule::deleteLevel($section->id);

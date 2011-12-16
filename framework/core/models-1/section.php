@@ -93,8 +93,8 @@ class section {
 			// when the form is submitted.
 			$form->meta('parent',$object->parent);
 		} else if ($object->parent >= 0) {
-			// Allow them to change parents, but not if the section is outside of the hiearchy (parent > 0)
-			$form->register('parent',gt('Parent Page'),new dropdowncontrol($object->parent,navigationmodule::levelDropdownControlArray(0,0,array($object->id),1)));
+			// Allow them to change parents, but not if the section is outside of the hierarchy (parent > 0)
+			$form->register('parent',gt('Parent Page'),new dropdowncontrol($object->parent,navigationmodule::levelDropdownControlArray(0,0,array($object->id),true,'manage')));
 		}
 		$form->register('new_window',gt('Open in New Window'),new checkboxcontrol($object->new_window,false));
 		
@@ -230,7 +230,7 @@ class section {
 		$form->unregister('sef_name');
 		
 		// Add a dropdown to allow the user to choose an internal page.
-		$form->register('internal_id',gt('Page'),new dropdowncontrol($object->internal_id,navigationmodule::levelDropDownControlArray(0,0)));
+		$form->register('internal_id',gt('Page'),new dropdowncontrol($object->internal_id,navigationmodule::levelDropDownControlArray(0,0,array(),false,'manage')));
 		
 		// Add the'Public?' checkbox.  The 'Active?' checkbox is omitted, because it makes no sense.
 		$form->register('public',gt('Public'),new checkboxcontrol($object->public));

@@ -19,7 +19,7 @@
 
 if (!defined('EXPONENT')) exit('');
 
-if ($user && $user->is_acting_admin == 1) {
+if ($user && ($user->is_admin == 1 || $user->is_acting_admin == 1)) {
 	$standalone = $db->selectObject('section','parent=-1 AND id='.intval($_POST['page']));
 	if ($standalone) {
 		$standalone->parent = intval($_POST['parent']);
