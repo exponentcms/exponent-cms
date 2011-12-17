@@ -28,7 +28,8 @@ class helpController extends expController {
     function __construct($src=null, $params=array()) {
         global $db;
         parent::__construct($src,$params);
-        if (!expSession::get('help-version')) {
+        // only set the system help version if it's not already set as a session variable
+        if (!expSession::is_set('help-version')) {
             $version = $db->selectValue('help_version', 'version','is_current=1');
             if(!empty($params['version'])) {
                 $version = isset($params['version']) ? (($params['version'] == 'current') ? $version : $params['version']) : $version;
@@ -80,7 +81,11 @@ class helpController extends expController {
 	    $help = new help($id);
 	    
 	    // get the id of the current version and use it if we need to.
-	    $version = $db->selectValue('help_version', 'id', 'is_current=1');
+        if (!expSession::is_set('help-version')) {
+            $version = expSession::get('help-version');  // version the site is currently using
+        } else {
+            $version = $db->selectValue('help_version', 'id', 'is_current=1');
+        }
 	    if (empty($help->help_version_id)) $help->help_version_id = $version;
 
 		$sectionlist = array();
