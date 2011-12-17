@@ -351,6 +351,41 @@ class helpController extends expController {
 	}
 
     /**
+   	 * add only current version of docs to search index
+   	 * @return int
+   	 */
+   	function addContentToSearch() {
+       global $db, $router;
+
+       $count = 0;
+       $model = new $this->basemodel_name(null, false, false);
+       $content = $db->selectArrays($model->tablename,'help_version_id="'.$db->selectValue('help_version', 'version','is_current=1')."'");
+       foreach ($content as $cnt) {
+           $origid = $cnt['id'];
+           unset($cnt['id']);
+
+           // get the location data for this content
+           if (isset($cnt['location_data'])) $loc = expUnserialize($cnt['location_data']);
+           $src = isset($loc->src) ? $loc->src : null;
+
+           //build the search record and save it.
+           $search_record = new search($cnt, false, false);
+           $search_record->original_id = $origid;
+           $search_record->posted = empty($cnt['created_at']) ? null : $cnt['created_at'];
+           $link = str_replace(URL_FULL,'', makeLink(array('controller'=>$this->baseclassname, 'action'=>'show', 'id'=>$origid, 'src'=>$src)));
+//	        if (empty($search_record->title)) $search_record->title = 'Untitled';
+           $search_record->view_link = $link;
+           $search_record->ref_module = $this->classname;
+           $search_record->category = $this->searchName();
+           $search_record->ref_type = $this->searchCategory();
+           $search_record->save();
+           $count += 1;
+        }
+
+        return $count;
+   }
+
+    /**
      * Hack to try and determine page which help doc is assoc with
      * @static
      * @param $params
