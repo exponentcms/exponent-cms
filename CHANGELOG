@@ -16,6 +16,7 @@ Added / Fixed / changed for 2.0.3
 # Flowplayer module now offers style selection
 # Filedownloads optionally shows media player for audio(mp3)/video(flv/f4v) downloads
 # If database is down, the system is put in a temp maintenance mode instead of running installation
+# Adds search result highlighting
 # Plus many other bug fixes and updates
 
 Added / Fixed / changed for 2.0.2

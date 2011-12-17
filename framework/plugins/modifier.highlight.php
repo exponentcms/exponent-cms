@@ -28,18 +28,22 @@
  *
  * Type:     modifier<br>
  * Name:     highlight<br>
- * Purpose:  highlight selected segments of text
+ * Purpose:  highlight selected phrases in text
  *
  * @param string $text
- * @param string $word
+ * @param string $word phrase(s) to highlight
+ * @param string $highlight type of highlight (style/class) to place inside <span> tag
  *
  * @return array
  */
-function smarty_modifier_highlight($text='', $word='') {
-   if(strlen($text) > 0 && strlen($word) > 0)
-   {
-//      return preg_replace('/\b('.preg_quote($word).')\b/', '<span class="highlight">${1}</span>', $text);
-       return preg_replace('/('.preg_quote($word).')/i', '<span style="background-color:#ffff55;" class="highlight">${1}</span>', $text);
+function smarty_modifier_highlight($text='', $word='', $highlight='') {
+   if(strlen($text) > 0 && strlen($word) > 0) {
+       $highlight = empty($highlight) ? 'style="background-color:#ffff55;"' : $highlight;
+       $words = explode(' ',$word);
+       foreach ($words as $phrase) {
+    //      return preg_replace('/\b('.preg_quote($word).')\b/', '<span class="highlight">${1}</span>', $text);
+           $text = preg_replace('/('.preg_quote($phrase).')/i', '<span '.$highlight.'>${1}</span>', $text);
+       }
    }
    return($text);
 }
