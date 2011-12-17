@@ -18,62 +18,60 @@
 <div class="module navigation side-nav yui-skin-sam">
 	<div id="sidenav" class="yuimenu">
 		<div class="bd">
-				<ul class="first-of-type">
+            <ul class="first-of-type">
 				{assign var=startdepth value=0}
 				{foreach name="children" key=key from=$sections item=section}
-				{assign var=nextkey value=$key+1}
-				{assign var=previouskey value=$key-1}
-	
-				{if $sections[$previouskey]->depth < $section->depth && $smarty.foreach.children.first!=true}
+                    {assign var=nextkey value=$key+1}
+                    {assign var=previouskey value=$key-1}
 
-				<div id="flyout{$section->id}" class="yuimenu">
-					<div class="bd">
-						<ul class="first-of-type">
-				{/if}
-                            {if $section->active == 1}	
-                                <li class="yuimenuitem{if $section->id == $current->id} current{/if}">
-                                    <a class="yuimenuitemlabel{if $section->id == $current->id} current{/if}" href="{$section->link}" {if $section->new_window} target="_blank"{/if}>{$section->name}</a>
-                                {if $sections[$nextkey]->depth == $section->depth}</li>{/if}
-                            {else}
-                                <li class="yuimenuitem{if $section->id == $current->id} current{/if}">
-                                    <a class="yuimenuitemlabel" href="#" {if $section->new_window} target="_blank"{/if}>{$section->name}</a>
-                                {if $sections[$nextkey]->depth == $section->depth}</li>{/if}
-                            {/if}		
+                    {if $sections[$previouskey]->depth < $section->depth && $smarty.foreach.children.first!=true}
 
-                            {if $sections[$nextkey]->depth < $section->depth}
+                        <div id="flyout{$section->id}" class="yuimenu">
+                            <div class="bd">
+                                <ul class="first-of-type">
+                    {/if}
+                    {if $section->active == 1}
+                                    <li class="yuimenuitem{if $section->id == $current->id} current{/if}">
+                                        <a class="yuimenuitemlabel{if $section->id == $current->id} current{/if}" href="{$section->link}" {if $section->new_window} target="_blank"{/if}>{$section->name}</a>
+                                    {if $sections[$nextkey]->depth == $section->depth}</li>{/if}
+                    {else}
+                                    <li class="yuimenuitem{if $section->id == $current->id} current{/if}">
+                                        <a class="yuimenuitemlabel" href="#" {if $section->new_window} target="_blank"{/if}>{$section->name}</a>
+                                    {if $sections[$nextkey]->depth == $section->depth}</li>{/if}
+                    {/if}
+
+                    {if $sections[$nextkey]->depth < $section->depth}
                             {if $smarty.foreach.children.last==true}
-                                {assign var=nextdepth value=$startdepth}
+                                    {assign var=nextdepth value=$startdepth}
                             {else}
-                                {assign var=nextdepth value=$sections[$nextkey]->depth}
+                                    {assign var=nextdepth value=$sections[$nextkey]->depth}
                             {/if}
-                            {math equation="x-y" x=$section->depth y=$nextdepth assign=looper}
-                            {section name="close" loop=$looper}
-							</li>      
-						</ul>
-					</div>	
-				</div>	
+                                {math equation="x-y" x=$section->depth y=$nextdepth assign=looper}
+                                {section name="close" loop=$looper}
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
 
-				{/section}
-					</li>
-			{/if}
+                                {/section}
+                        </li>
+                    {/if}
+                {/foreach}
+            </ul>
+        </div>
+    </div>
 
-			{/foreach}
-		</ul>
-	</div>
-</div>
+    {script unique="sidemenu" yuimodules="menu"}
+    {literal}
+    YAHOO.util.Event.onDOMReady(function(){
+        var sidemenu = new YAHOO.widget.Menu("sidenav", {
+                                                position: "static",
+                                                hidedelay:	100,
+                                                lazyload: true });
 
-
-{script unique="sidemenu" yuimodules="menu"}
-{literal}
-YAHOO.util.Event.onDOMReady(function(){
-	var sidemenu = new YAHOO.widget.Menu("sidenav", { 
-											position: "static", 
-											hidedelay:	100, 
-											lazyload: true });
-
-	sidemenu.render();			  
-});
-{/literal}
-{/script}
+        sidemenu.render();
+    });
+    {/literal}
+    {/script}
 </div>
 

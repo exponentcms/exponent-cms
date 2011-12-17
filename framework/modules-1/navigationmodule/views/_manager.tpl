@@ -35,7 +35,7 @@
         	{*if $canManagePagesets}<div id="tab3">{chain module=navigationmodule action=manage_pagesets}</div>{/if*}
 	    </div>
 	</div>
-	<div class="loadingdiv">{'Loading'|gettext}</div>
+	<div class="loadingdiv">{'Loading Pages'|gettext}</div>
 </div>
 
 {script unique="editform" yui3mods=1}

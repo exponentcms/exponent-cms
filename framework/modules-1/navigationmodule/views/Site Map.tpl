@@ -14,6 +14,7 @@
  * GPL: http://www.gnu.org/licenses/gpl.txt
  *
  *}
+
 <div class="navigationmodule site-map">
     {assign var=in_action value=0}
     {if $smarty.request.module == 'navigationmodule' && $smarty.request.action == 'manage'}
@@ -22,7 +23,7 @@
     {assign var=titlepresent value=0}
     {if $moduletitle != ""}
         <h1>{$moduletitle}</h1>
-    {assign var=titlepresent value=1}
+        {assign var=titlepresent value=1}
     {/if}
     {assign var=sectiondepth value=-1}
     {foreach from=$sections item=section}

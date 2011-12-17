@@ -27,7 +27,12 @@
 
 <div class="navigationmodule manager-hierarchy">
 	<div class="form_header">
-		<p><strong>{'Drag and drop'|gettext}</strong> {'tree items with the 4-way arrows icon to re-order the site hierarchy (main menu).'|gettext} <strong>{'Right click on a tree item'|gettext}</strong> {'for a context menu of item options.'|gettext}</p>
+		<p>
+            <strong>{'Drag and drop'|gettext}</strong> {'tree items with the 4-way arrows icon to re-order the site hierarchy (main menu).'|gettext}
+            {'Drop an item on item on a name to place it within that menu.'|gettext}
+            {'Drop an item between item namess to place it next to that menu.'|gettext}
+            <strong>{'Right click on a tree item'|gettext}</strong> {'for a context menu of item options.'|gettext}
+        </p>
 	</div>
 	{permissions}
 		{if $user->is_admin || $user->is_acting_admin}

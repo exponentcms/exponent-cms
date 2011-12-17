@@ -38,7 +38,7 @@
 	<tr class="{cycle values='odd,even'}">
 	<td>
 		{if $section->active}
-			<a href="{link section=$section->id}" class="navlink">{$section->name}</a>&nbsp;
+			<a href="{link section=$section->id}" class="navlink" title="{'View/Edit this Page'|gettext}">{$section->name}</a>&nbsp;
 		{else}
 			{$section->name}&nbsp;
 		{/if}
