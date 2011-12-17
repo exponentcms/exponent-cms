@@ -647,6 +647,7 @@ function curPageURL() {
     return $pageURL;
 }
 
+// this function is called from exponent.php as the ajax error handler
 function handleErrors($errno, $errstr, $errfile, $errline) {
     if (DEVELOPMENT > 0) {
         $msg = "";
