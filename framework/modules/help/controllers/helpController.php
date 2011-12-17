@@ -359,7 +359,7 @@ class helpController extends expController {
 
        $count = 0;
        $model = new $this->basemodel_name(null, false, false);
-       $content = $db->selectArrays($model->tablename,'help_version_id="'.$db->selectValue('help_version','version','is_current=1').'"');
+       $content = $db->selectArrays($model->tablename,'help_version_id="'.$db->selectValue('help_version','id','is_current=1').'"');
        foreach ($content as $cnt) {
            $origid = $cnt['id'];
            unset($cnt['id']);
@@ -372,7 +372,7 @@ class helpController extends expController {
            $search_record = new search($cnt, false, false);
            $search_record->original_id = $origid;
            $search_record->posted = empty($cnt['created_at']) ? null : $cnt['created_at'];
-           $link = str_replace(URL_FULL,'', makeLink(array('controller'=>$this->baseclassname, 'action'=>'show', 'id'=>$origid, 'src'=>$src)));
+           $link = str_replace(URL_FULL,'', makeLink(array('controller'=>$this->baseclassname, 'action'=>'show', 'title'=>$cnt['sef_url'])));
 //	        if (empty($search_record->title)) $search_record->title = 'Untitled';
            $search_record->view_link = $link;
            $search_record->ref_module = $this->classname;
