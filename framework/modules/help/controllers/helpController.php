@@ -28,13 +28,13 @@ class helpController extends expController {
     function __construct($src=null, $params=array()) {
         global $db;
         parent::__construct($src,$params);
-        if(!empty($params['version']) && !expSession::get('help-version')) {
-            expSession::set('help-version',isset($params['version']));
-        } elseif (empty($params['version']) && !expSession::get('help-version')) {
-    	    $version = $db->selectValue('help_version', 'version','is_current=1');
-            expSession::set('help-version',$version);            
+        if (!expSession::get('help-version')) {
+            $version = $db->selectValue('help_version', 'version','is_current=1');
+            if(!empty($params['version'])) {
+                $version = isset($params['version']) ? (($params['version'] == 'current') ? $version : $params['version']) : $version;
+            }
+            expSession::set('help-version',$version);
         }
-        
         $this->help_version = expSession::get('help-version');
 	}
 
