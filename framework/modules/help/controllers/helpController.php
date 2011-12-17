@@ -81,7 +81,7 @@ class helpController extends expController {
 	    $help = new help($id);
 	    
 	    // get the id of the current version and use it if we need to.
-        if (!expSession::is_set('help-version')) {
+        if (expSession::is_set('help-version')) {
             $version = expSession::get('help-version');  // version the site is currently using
         } else {
             $version = $db->selectValue('help_version', 'id', 'is_current=1');
