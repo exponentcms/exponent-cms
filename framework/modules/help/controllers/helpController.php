@@ -359,7 +359,7 @@ class helpController extends expController {
 
        $count = 0;
        $model = new $this->basemodel_name(null, false, false);
-       $content = $db->selectArrays($model->tablename,'help_version_id="'.$db->selectValue('help_version', 'version','is_current=1')."'");
+       $content = $db->selectArrays($model->tablename,'help_version_id="'.$db->selectValue('help_version','version','is_current=1').'"');
        foreach ($content as $cnt) {
            $origid = $cnt['id'];
            unset($cnt['id']);
