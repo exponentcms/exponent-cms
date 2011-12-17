@@ -39,7 +39,7 @@ function smarty_modifier_highlight($text='', $word='') {
    if(strlen($text) > 0 && strlen($word) > 0)
    {
 //      return preg_replace('/\b('.preg_quote($word).')\b/', '<span class="highlight">${1}</span>', $text);
-       return preg_replace('/\b('.preg_quote($word).')\b/', '<span style="background-color: #ffff55;" class="highlight">${1}</span>', $text);
+       return preg_replace('/('.preg_quote($word).')/', '<span style="background-color:#ffff55;" class="highlight">${1}</span>', $text);
    }
    return($text);
 }
