@@ -116,7 +116,7 @@ if (expPermissions::check('edit_module',$loc) || expPermissions::check('add_modu
 	}
 	//$js_init .= "\r\n</script>";
 	
-	asort($mods);
+    array_multisort(array_map('strtolower', $mods), $mods);
 	if (!key_exists($container->internal->mod, $mods) && !empty($container->id)) {
         $template->assign('error',gt('The module you are trying to edit is inactive. Please contact your administrator to activate this module.'));
 	}
