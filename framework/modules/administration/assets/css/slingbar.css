@@ -109,6 +109,12 @@
 #admintoolbar li.config a.yuimenuitemlabel {
     background:url(../images/admintoolbar/config.png) no-repeat 5px 50%;
 }
+#admintoolbar .info li.docs a.yuimenuitemlabel {
+    background:url(../../../../core/assets/images/document_info.png) no-repeat 5px 50%;
+}
+#admintoolbar .info li.forums a.yuimenuitemlabel {
+    background:url(../../../../core/assets/images/user_comment.png) no-repeat 5px 50%;
+}
 #admintoolbar .info li.reportbug a.yuimenuitemlabel {
     background:url(../../../../core/assets/images/bug.png) no-repeat 5px 50%;
 }

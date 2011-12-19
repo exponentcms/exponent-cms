@@ -26,7 +26,7 @@
 			{*if $result->canview == 1*}
 				<div class="item {cycle values="odd,even"}">
 					<a href="{$smarty.const.URL_FULL}{$result->view_link}">{$result->title|highlight:$terms}</a>
-					{if $result->body != ""}<br /><span class="summary">{$result->body|strip_tags|truncate:240|highlight:$terms}</span>{/if}
+					{if $result->body != ""}{br}<span class="summary">{$result->body|strip_tags|truncate:240|highlight:$terms}</span>{/if}
 					{clear}
 				</div>
 			{*/if*}

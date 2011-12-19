@@ -28,10 +28,10 @@
 <div class="navigationmodule manager-hierarchy">
 	<div class="form_header">
 		<p>
-            <strong>{'Drag and drop'|gettext}</strong> {'tree items with the 4-way arrows icon to re-order the site hierarchy (main menu).'|gettext}
-            {'Drop an item on item on a name to place it within that menu.'|gettext}
-            {'Drop an item between item namess to place it next to that menu.'|gettext}
-            <strong>{'Right click on a tree item'|gettext}</strong> {'for a context menu of item options.'|gettext}
+            <strong>{'Drag and drop'|gettext}</strong> {'tree items using the 4-way arrows icon to re-order the site hierarchy (main menu).'|gettext}
+            {'Dropping an item on a name (name grays out) places it within that menu.'|gettext}
+            {'Dropping an item between names (shows a line) places it next to that menu.'|gettext}
+            <strong>{'Right click on a tree item'|gettext}</strong> {'for a context menu of options.'|gettext}
         </p>
 	</div>
 	{permissions}

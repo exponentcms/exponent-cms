@@ -57,6 +57,18 @@ if ($user->isAdmin()) {
 								'classname' => 'moreinfo',
 								'text'=>gt("Exponent Version")." : ".$my_version."<br />".$my_type.gt("Release date")." : ".date("F-d-Y",EXPONENT_VERSION_BUILDDATE)."<br />".gt("PHP Version")." : ".phpversion(),"disabled"=>true
 							),
+                            array(
+                                'text' => gt("Exponent Documentation"),
+                                'url'=>'#',
+                                'id'=>'docs-toolbar',
+                                'classname' => 'docs',
+                            ),
+                            array(
+                                'text' => gt("Discuss Exponent"),
+                                'url'=>'#',
+                                'id'=>'forums-toolbar',
+                                'classname' => 'forums',
+                            ),
 							array(
 								'text' => gt("Report a bug"),
 								'url'=>'#',
@@ -85,7 +97,19 @@ if ($user->isAdmin()) {
 							array(
 								'classname' => 'moreinfo',
 								'text'=>gt("Exponent Version")." : ".$my_version."<br />".gt("Release level")." : ".$my_type."<br />".gt("Release date")." : ".date("F-d-Y",EXPONENT_VERSION_BUILDDATE),"disabled"=>true
-							)
+							),
+                            array(
+                                'text' => gt("Exponent Documentation"),
+                                'url'=>'#',
+                                'id'=>'docs-toolbar',
+                                'classname' => 'docs',
+                            ),
+                            array(
+                                'text' => gt("Discuss Exponent"),
+                                'url'=>'#',
+                                'id'=>'forums-toolbar',
+                                'classname' => 'forums',
+                            )
 						)
 					)
 				),
