@@ -2,7 +2,6 @@
     
 {/css}
 
-
 <div id="admintoolbar">
 
 </div>
@@ -124,7 +123,7 @@
              }
 
              Y.on('toolbar:loaded',function(){
-                 if (document.getElementById("#reportabug-toolbar")) Y.one('#reportabug-toolbar').on('click', reportbugwindow);
+                 if (document.getElementById("reportabug-toolbar")) Y.one('#reportabug-toolbar').on('click', reportbugwindow);
                  Y.one('#filemanager-toolbar').on('click',filepickerwindow);
                  Y.one('#fileuploader-toolbar').on('click',fileuploaderwindow);
                  // Y.later(900,this,function(){
