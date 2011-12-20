@@ -89,6 +89,6 @@ gt = function(str) {
 eXp = EXPONENT;
 
 
-console.log(gt('Add Configuration Settings'));
+//console.log(gt('Add Configuration Settings'));
 
 //console.debug(EXPONENT.YUI3_CONFIG);
