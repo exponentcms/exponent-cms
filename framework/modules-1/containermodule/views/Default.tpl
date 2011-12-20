@@ -17,6 +17,8 @@
 {permissions}
 	{if ($permissions.administrate == 1 || $permissions.edit_module == 1 || $permissions.delete_module == 1 || $permissions.add_module == 1 || $permissions.order_modules == 1
       || $container->permissions.administrate == 1 || $container->permissions.edit_module == 1 || $container->permissions.delete_module == 1 || $container->permissions.order_modules == 1)}
+        {$mainNeedsClosing=1}
+      
         {css unique="container-chrome" link=$smarty.const.PATH_RELATIVE|cat:'framework/modules/container/assets/css/admin-container.css'}
 
         {/css}
@@ -98,9 +100,7 @@
 {/foreach}
 
 {permissions}
-    {if ($permissions.administrate == 1 || $permissions.edit_module == 1 || $permissions.delete_module == 1 || $permissions.add_module == 1 || $permissions.order_modules == 1
-         || $container->permissions.administrate == 1 || $container->permissions.edit_module == 1 || $container->permissions.delete_module == 1 || $container->permissions.order_modules == 1)}
-		{clear}
+    {if $mainNeedsClosing==1}
 		</div>
 	{/if}
 {/permissions}
