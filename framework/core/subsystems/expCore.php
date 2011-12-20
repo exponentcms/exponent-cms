@@ -33,7 +33,7 @@ class expCore {
 	 * @node Subsystems:expCore
 	 */
 	public static function initializeNavigation () {
-		$sections = array();
+//		$sections = array();
 		$sections = navigationmodule::levelTemplate(0,0);
 		return $sections;
 	}

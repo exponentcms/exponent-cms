@@ -50,9 +50,9 @@ class navigationmodule {
 				global $sections;
 				$current = $db->selectObject('section',' id= '.$id);
 			
-				if( $current->parent == -1 )
+				if( $current->parent == -1 )  // standalone page
 				{
-					$sections = navigationmodule::levelTemplate(-1,0);
+					$sections = navigationmodule::levelTemplate(-1,0);  //FIXME why are we changing the global $sessions?
 					foreach ($sections as $section) {
 						if ($section->id == $id) {
 							$current = $section;
@@ -60,7 +60,7 @@ class navigationmodule {
 						}
 					}
 				} else {
-					$sections = navigationmodule::levelTemplate(0,0);
+					$sections = navigationmodule::levelTemplate(0,0);  //FIXME global $sections is initialized this way
 					foreach ($sections as $section) {
 						if ($section->id == $id) {
 							$current = $section;
@@ -294,7 +294,7 @@ class navigationmodule {
 	}
 
     /**
-     * returns all the sections children
+     * returns all the section's children
      *
      * @static
      * @param $parent top level parent id

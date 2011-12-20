@@ -32,6 +32,12 @@ $available_controllers = array();
  * @name $validateTheme
  */
 $validateTheme = array("headerinfo"=>false,"footerinfo"=>false);
+/**
+ * Stores the list of module scopes
+ * @global array $module_scope
+ * @name $module_scope
+ */
+$module_scope = array();
 
 // expLang
 /**

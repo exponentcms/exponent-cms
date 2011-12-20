@@ -129,7 +129,7 @@ class expPermissions {
 	 * @node Subsystems:expPermissions
 	 */
 	public static function check($permission,$location) {
-		global $exponent_permissions_r, $user, $db;
+		global $exponent_permissions_r, $user, $db, $module_scope;
 
 		if (!empty($user->id)) {
 			if ($user->isAdmin()) return true;  // admin users always have permissions
@@ -147,6 +147,9 @@ class expPermissions {
             $permission[] = 'order_modules';
         }
         if (array_intersect(array('edit','edit_module'),$permission)) {
+            $permission[] = 'create';
+            $permission[] = 'post';
+            $permission[] = 'add_module';
             $permission[] = 'edit';
             $permission[] = 'edit_module';
         }
@@ -154,8 +157,6 @@ class expPermissions {
             $permission[] = 'create';
             $permission[] = 'post';
             $permission[] = 'add_module';
-            $permission[] = 'edit';
-            $permission[] = 'edit_module';
         }
         if (array_intersect(array('delete','delete_module'),$permission)) {
             $permission[] = 'delete';
@@ -179,6 +180,15 @@ class expPermissions {
             }
         }
 
+        // exit recursive calls for globally scoped modules
+        if (!empty($module_scope[$location->src][$location->mod]->scope)) {  // is this the main container?
+            $rLoc = $db->selectObject("sectionref","source='" . $location->src . "' AND module='" . $location->mod . "'");
+            if (!empty($rLoc) && $rLoc->refcount == 1000 && $module_scope[$location->src][$location->mod]->scope == 'global') {
+                $module_scope['error'] = true;
+                return false;
+            }
+        }
+
         // check for permission inherited from container(s)
         if (array_key_exists('containermodule',$exponent_permissions_r)) {
             foreach ($permission as $perm) {
@@ -198,11 +208,21 @@ class expPermissions {
                 }
              }
         }
-
-        // if this is the global sidebar, then exit since we don't care about page permissions
-        if (!empty($location->src) && substr($location->src,0,8)!='@section' && substr($location->src,0,8)!='@random') {
+        if (@$module_scope['error'] == true) {
+            $module_scope['error'] = false;
             return false;
         }
+
+        // if this is the global sidebar, then exit since we don't care about page permissions
+//        if (!empty($location->src) && substr($location->src,0,8)!='@section' && substr($location->src,0,8)!='@random') {
+        if (!empty($module_scope[$location->src][$location->mod]->scope)) {  // is this the main container?
+            $rLoc = $db->selectObject("sectionref","source='" . $location->src . "' AND module='" . $location->mod . "'");
+            if (!empty($rLoc) && $rLoc->refcount == 1000 && @$module_scope[$location->src][$location->mod]->scope == 'global') {
+                $module_scope['error'] = true;
+                return false;
+            }
+        }
+
         // check for inherited 'manage' permission from current page and its parents
 		if ($location->mod != 'navigationmodule') {
 			global $sectionObj;
@@ -248,7 +268,7 @@ class expPermissions {
 	 * @node Subsystems:expPermissions
 	 */
 	public static function checkUser($user,$permission,$location,$explicitOnly = false) {
-		global $db;
+		global $db, $module_scope;
 
 		if ($user == null) {
             return false;
@@ -257,7 +277,7 @@ class expPermissions {
         }
         // check for explicit user permission
 		$explicit = $db->selectObject("userpermission","uid=" . $user->id . " AND module='" . $location->mod . "' AND source='" . $location->src . "' AND internal='" . $location->int . "' AND permission='$permission'");
-		if ($explicitOnly || $explicit) return $explicit;
+		if ($explicitOnly || $explicit) return !empty($explicit);
 
         // Calculate inherited permissions if we don't already have explicit/implicit perms
         if (is_callable(array($location->mod,"getLocationHierarchy"))) {  //FIXME this is only available in calendarmodule
@@ -268,6 +288,23 @@ class expPermissions {
             }
         }
 
+        // check for implicit group permission
+        $memberships = $db->selectObjects("groupmembership","member_id=".$user->id);
+        foreach ($memberships as $memb) {
+            $group = $db->selectObject("group","id=".$memb->group_id);
+            if (self::checkGroup($group,$permission,$location))
+                return true;
+        }
+
+        // exit recursive calls for globally scoped modules
+        if (!empty($module_scope[$location->src][$location->mod]->scope)) {  // is this the main container?
+            $rLoc = $db->selectObject("sectionref","source='" . $location->src . "' AND module='" . $location->mod . "'");
+            if (!empty($rLoc) && $rLoc->refcount == 1000 && $module_scope[$location->src][$location->mod]->scope == 'global') {
+                $module_scope['error'] = true;
+                return false;
+            }
+        }
+
         // check for inherited container permission
         $perms = array();
         $perms[] = $permission;
@@ -275,8 +312,8 @@ class expPermissions {
         $perms[] = 'administrate';
         if ($permission == 'post' || $permission == 'create') {
             $perms[] = 'add_module';
-            $perms[] = 'edit_module';
         } elseif ($permission == 'edit')  {
+            $perms[] = 'add_module';
             $perms[] = 'edit_module';
         } elseif ($permission == 'delete')  {
             $perms[] = 'delete_module';
@@ -298,17 +335,24 @@ class expPermissions {
                 }
             }
         }
-
-    // check for implicit group permission
-        $memberships = $db->selectObjects("groupmembership","member_id=".$user->id);
-        foreach ($memberships as $memb) {
-            if (self::checkGroup($memb,$permission,$location))
-                return true;
-        }
-        // if this is the global sidebar, then exit since we don't care about page permissions
-        if (!empty($location->src) && substr($location->src,0,8)!='@section' && substr($location->src,0,8)!='@random') {
+        if (@$module_scope['error'] == true) {
+            $module_scope['error'] = false;
             return false;
         }
+
+        // if this is the global sidebar, then exit since we don't care about page permissions
+//        if (!empty($location->src) && substr($location->src,0,8)!='@section' && substr($location->src,0,8)!='@random') {
+//        if (!empty($location->src) && @$module_scope[$location->src][$location->mod]->scope=='global') {
+//            return false;
+//        }
+        if (!empty($module_scope[$location->src][$location->mod]->scope)) {  // is this the main container?
+            $rLoc = $db->selectObject("sectionref","source='" . $location->src . "' AND module='" . $location->mod . "'");
+            if (!empty($rLoc) && $rLoc->refcount == 1000 && @$module_scope[$location->src][$location->mod]->scope == 'global') {
+                $module_scope['error'] = true;
+                return false;
+            }
+        }
+
         // check for inherited 'manage' permission from its page
         if ($location->mod != 'navigationmodule') {
             $tmpLoc->mod = $location->mod;
@@ -384,12 +428,21 @@ class expPermissions {
 	 * @node Subsystems:expPermissions
 	 */
 	public static function checkGroup($group,$permission,$location,$explicitOnly = false) {
-		global $db;
+		global $db, $module_scope;
 
 		if ($group == null) return false;
         // check for explicit group permission
 		$explicit = $db->selectObject("grouppermission","gid=" . $group->id . " AND module='" . $location->mod . "' AND source='" . $location->src . "' AND internal='" . $location->int . "' AND permission='$permission'");
-		if ($explicitOnly || $explicit) return $explicit;
+		if ($explicitOnly || $explicit) return !empty($explicit);
+
+        // exit recursive calls for globally scoped modules
+        if (!empty($module_scope[$location->src][$location->mod]->scope)) {  // is this the main container?
+            $rLoc = $db->selectObject("sectionref","source='" . $location->src . "' AND module='" . $location->mod . "'");
+            if (!empty($rLoc) && $rLoc->refcount == 1000 && $module_scope[$location->src][$location->mod]->scope == 'global') {
+                $module_scope['error'] = true;
+                return false;
+            }
+        }
 
         // check for inherited container permission
         $perms = array();
@@ -398,8 +451,8 @@ class expPermissions {
         $perms[] = 'administrate';
         if ($permission == 'post' || $permission == 'create') {
             $perms[] = 'add_module';
-            $perms[] = 'edit_module';
         } elseif ($permission == 'edit')  {
+            $perms[] = 'add_module';
             $perms[] = 'edit_module';
         } elseif ($permission == 'delete')  {
             $perms[] = 'delete_module';
@@ -416,16 +469,31 @@ class expPermissions {
                return true;
             }
             if (!empty($cLoc)) {
+//                if (self::checkGroup($group,$perm,$cLoc)) {
+//                    return true;
+//                }
                 if (self::checkGroup($group,$perm,$cLoc)) {
                     return true;
                 }
             }
         }
-
-        // if this is the global sidebar, then exit since we don't care about page permissions
-        if (!empty($location->src) && substr($location->src,0,8)!='@section' && substr($location->src,0,8)!='@random') {
+        if (@$module_scope['error'] == true) {
+            $module_scope['error'] = false;
             return false;
         }
+
+        // if this is the global sidebar, then exit since we don't care about page permissions
+//        if (!empty($location->src) && substr($location->src,0,8)!='@section' && substr($location->src,0,8)!='@random') {
+//            return false;
+//        }
+        if (!empty($module_scope[$location->src][$location->mod]->scope)) {  // is this the main container?
+            $rLoc = $db->selectObject("sectionref","source='" . $location->src . "' AND module='" . $location->mod . "'");
+            if (!empty($rLoc) && $rLoc->refcount == 1000 && @$module_scope[$location->src][$location->mod]->scope == 'global') {
+                $module_scope['error'] = true;
+                return false;
+            }
+        }
+
         // check for inherited 'manage' permission from its page
         if ($location->mod != 'navigationmodule') {
             $tmpLoc->mod = $location->mod;
@@ -451,10 +519,22 @@ class expPermissions {
                 if (self::checkGroup($group,$permission,expCore::makeLocation('navigationmodule','',$page->parent))) {
                     return true;
                 }
+//                $res = self::checkGroup($group,$permission,expCore::makeLocation('navigationmodule','',$page->parent));
+//                if ($res === 2) {
+//                    return false;
+//                } elseif ($res) {
+//                    return $res;
+//                }
                 // otherwise check for 'super' permission
                 if (self::checkGroup($group,'manage',expCore::makeLocation('navigationmodule','',$page->parent))) {
                     return true;
                 }
+//                $res = self::checkGroup($group,'manage',expCore::makeLocation('navigationmodule','',$page->parent));
+//                if ($res === 2) {
+//                    return false;
+//                } elseif ($res) {
+//                    return $res;
+//                }
             }
         }
 
