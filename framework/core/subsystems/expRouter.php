@@ -286,7 +286,8 @@ class expRouter {
 
         if ($this->url_type == 'base') {
             // if we made it in here this is a request for http://www.baseurl.com
-            $_REQUEST['section'] = SITE_DEFAULT_SECTION;  
+            //$_REQUEST['section'] = SITE_DEFAULT_SECTION;  
+            $_REQUEST['section'] = (expSession::is_set('last_section') ? expSession::get('last_section') : SITE_DEFAULT_SECTION);
         } else {
             // Try to look up the page by sef_name first.  If that doesn't exist, strip out the dashes and 
             // check the regular page names.  If that still doesn't work then we'll redirect them to the 
