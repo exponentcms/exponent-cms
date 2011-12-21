@@ -21,12 +21,13 @@ if (!defined('EXPONENT'))
     exit('');
 global $user, $db;
 
-$my_version = EXPONENT_VERSION_MAJOR.".".EXPONENT_VERSION_MINOR.".".EXPONENT_VERSION_REVISION;
+$my_version = gt("Exponent Version")." : ".EXPONENT_VERSION_MAJOR.".".EXPONENT_VERSION_MINOR.".".EXPONENT_VERSION_REVISION."<br />";
 if (EXPONENT_VERSION_TYPE != '') {
 	$my_type = gt("Release level")." : ".EXPONENT_VERSION_TYPE.EXPONENT_VERSION_ITERATION."<br />";
 } else {
 	$my_type = '';
 }
+$my_releasedate = gt("Release date")." : ".date("F-d-Y",EXPONENT_VERSION_BUILDDATE);
 
 $script = "
 // YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
@@ -55,7 +56,7 @@ if ($user->isAdmin()) {
 						'itemdata'=>array(
 							array(
 								'classname' => 'moreinfo',
-								'text'=>gt("Exponent Version")." : ".$my_version."<br />".$my_type.gt("Release date")." : ".date("F-d-Y",EXPONENT_VERSION_BUILDDATE)."<br />".gt("PHP Version")." : ".phpversion(),"disabled"=>true
+								'text'=>$my_version.$my_type.$my_releasedate."<br />".gt("PHP Version")." : ".phpversion(),"disabled"=>true
 							),
                             array(
                                 'text' => gt("Exponent Documentation"),
@@ -96,7 +97,7 @@ if ($user->isAdmin()) {
 						'itemdata'=>array(
 							array(
 								'classname' => 'moreinfo',
-								'text'=>gt("Exponent Version")." : ".$my_version."<br />".gt("Release level")." : ".$my_type."<br />".gt("Release date")." : ".date("F-d-Y",EXPONENT_VERSION_BUILDDATE),"disabled"=>true
+								'text'=>$my_version.$my_type.$my_releasedate,"disabled"=>true
 							),
                             array(
                                 'text' => gt("Exponent Documentation"),
