@@ -181,6 +181,7 @@ class expPermissions {
         }
 
         // exit recursive calls for globally scoped modules
+        $module_scope['error'] = false;
         if (!empty($module_scope[$location->src][$location->mod]->scope)) {  // is this the main container?
             $rLoc = $db->selectObject("sectionref","source='" . $location->src . "' AND module='" . $location->mod . "'");
             if (!empty($rLoc) && $rLoc->refcount == 1000 && $module_scope[$location->src][$location->mod]->scope == 'global') {
@@ -190,7 +191,7 @@ class expPermissions {
         }
 
         // check for permission inherited from container(s)
-        if (array_key_exists('containermodule',$exponent_permissions_r)) {
+//        if (array_key_exists('containermodule',$exponent_permissions_r)) {
             foreach ($permission as $perm) {
                 // inclusive container perms
                 $tmpLoc->mod = $location->mod;
@@ -207,7 +208,7 @@ class expPermissions {
                     }
                 }
              }
-        }
+//        }
         if (@$module_scope['error'] == true) {
             $module_scope['error'] = false;
             return false;
@@ -215,6 +216,7 @@ class expPermissions {
 
         // if this is the global sidebar, then exit since we don't care about page permissions
 //        if (!empty($location->src) && substr($location->src,0,8)!='@section' && substr($location->src,0,8)!='@random') {
+        $module_scope['error'] = false;
         if (!empty($module_scope[$location->src][$location->mod]->scope)) {  // is this the main container?
             $rLoc = $db->selectObject("sectionref","source='" . $location->src . "' AND module='" . $location->mod . "'");
             if (!empty($rLoc) && $rLoc->refcount == 1000 && @$module_scope[$location->src][$location->mod]->scope == 'global') {
@@ -297,6 +299,7 @@ class expPermissions {
         }
 
         // exit recursive calls for globally scoped modules
+        $module_scope['error'] = false;
         if (!empty($module_scope[$location->src][$location->mod]->scope)) {  // is this the main container?
             $rLoc = $db->selectObject("sectionref","source='" . $location->src . "' AND module='" . $location->mod . "'");
             if (!empty($rLoc) && $rLoc->refcount == 1000 && $module_scope[$location->src][$location->mod]->scope == 'global') {
@@ -345,6 +348,7 @@ class expPermissions {
 //        if (!empty($location->src) && @$module_scope[$location->src][$location->mod]->scope=='global') {
 //            return false;
 //        }
+        $module_scope['error'] = false;
         if (!empty($module_scope[$location->src][$location->mod]->scope)) {  // is this the main container?
             $rLoc = $db->selectObject("sectionref","source='" . $location->src . "' AND module='" . $location->mod . "'");
             if (!empty($rLoc) && $rLoc->refcount == 1000 && @$module_scope[$location->src][$location->mod]->scope == 'global') {
@@ -436,6 +440,7 @@ class expPermissions {
 		if ($explicitOnly || $explicit) return !empty($explicit);
 
         // exit recursive calls for globally scoped modules
+        $module_scope['error'] = false;
         if (!empty($module_scope[$location->src][$location->mod]->scope)) {  // is this the main container?
             $rLoc = $db->selectObject("sectionref","source='" . $location->src . "' AND module='" . $location->mod . "'");
             if (!empty($rLoc) && $rLoc->refcount == 1000 && $module_scope[$location->src][$location->mod]->scope == 'global') {
@@ -486,6 +491,7 @@ class expPermissions {
 //        if (!empty($location->src) && substr($location->src,0,8)!='@section' && substr($location->src,0,8)!='@random') {
 //            return false;
 //        }
+        $module_scope['error'] = false;
         if (!empty($module_scope[$location->src][$location->mod]->scope)) {  // is this the main container?
             $rLoc = $db->selectObject("sectionref","source='" . $location->src . "' AND module='" . $location->mod . "'");
             if (!empty($rLoc) && $rLoc->refcount == 1000 && @$module_scope[$location->src][$location->mod]->scope == 'global') {
