@@ -444,8 +444,7 @@ if (!defined('MIMEICON_RELATIVE')) {
 
 if (!defined('YUI3_PATH')) {
     /*
-	 *  YUI 3 Version Constant
-	 *
+	 * YUI 3 Version Constant
 	 * Changing the version here lets Exponent adjust where to look
 	 */
 	define('YUI3_VERSION', '3.4.0');
@@ -455,8 +454,7 @@ if (!defined('YUI3_PATH')) {
 
 if (!defined('YUI2_PATH')) {
     /*
-	 *  YUI 2 Version Constant
-	 *
+	 * YUI 2 Version Constant
 	 * Changing the version here lets Exponent adjust where to look
 	 */
 	define('YUI2_VERSION', '2.9.0');
@@ -466,21 +464,19 @@ if (!defined('YUI2_PATH')) {
 
 if (!defined('SMARTY_PATH')) {
     /*
-	 *  Smarty Version Constant
-	 *
+	 * Smarty Version Constant
 	 * Changing the version here lets Exponent adjust where to look
 	 */
-	define('SMARTY_VERSION', '3.1.6');
+	define('SMARTY_VERSION', '3.1.7');
 	define('SMARTY_PATH', BASE.'external/Smarty-'.SMARTY_VERSION.'/libs/');
 }
 
 if (!defined('SWIFT_PATH')) {
     /*
-	 *  Swift Version Constant
-	 *
+	 * Swift Version Constant
 	 * Changing the version here lets Exponent adjust where to look
 	 */
-	define('SWIFT_VERSION', '4.1.3');
+	define('SWIFT_VERSION', '4.1.4');
 	define('SWIFT_PATH', BASE.'external/Swift-'.SWIFT_VERSION.'/lib/');
 }
 
