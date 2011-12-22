@@ -55,7 +55,7 @@ class search extends expRecord {
         LEFT OUTER JOIN exponent_product p ON s.original_id = p.id WHERE MATCH(s.title,s.body) against ('army combat uniform' IN BOOLEAN MODE)*/
         
         $sql  = "SELECT *, MATCH (s.title,s.body) AGAINST ('".$terms."*') as score from ".DB_TABLE_PREFIX."_search as s ";
-        $sql .= "WHERE MATCH(title,body) against ('".$terms."*' IN BOOLEAN MODE) GROUP BY original_id";
+        $sql .= "WHERE MATCH(title,body) against ('".$terms."*' IN BOOLEAN MODE) ";
 		
         // look up the records.
         //eDebug($sql);
