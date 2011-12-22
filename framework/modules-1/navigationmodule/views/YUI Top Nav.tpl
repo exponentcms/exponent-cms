@@ -19,7 +19,7 @@
 {/css}
 {uniqueid assign=id prepend="sub`$parent`"}
 
-<div class="module navigation yui-top-nav top-nav yui-skin-sam">
+<div class="module navigation yui-top-nav yui-skin-sam">
     <div id="{$id}" class="yuimenubar yuimenubarnav">
     	<div class="bd">
     		<ul class="first-of-type">
