@@ -27,7 +27,7 @@
                     <a href="<?php echo expCore::makeLink(array('section'=>10)); ?>"><?php echo gt('Site-map'); ?></a>
 				</div>
 				<div id="header-login">
-					<?php expTheme::showController(array("controller"=>"login","action"=>"showlogin","view"=>"showlogin_expanded")); ?>
+					<?php expTheme::module(array("controller"=>"login","action"=>"showlogin","view"=>"showlogin_expanded")); ?>
 				</div>
 			</div>
 			<!-- navigation -->
@@ -43,7 +43,7 @@
 			</div>
 			<!--footer starts here-->
 			<div id="footer">
-				<?php expTheme::showController(array("controller"=>"text","action"=>"showall","view"=>"showall","source"=>"@footer")) ?>
+				<?php expTheme::module(array("controller"=>"text","action"=>"showall","view"=>"showall","source"=>"@footer")) ?>
 			</div>
 
 		</div>
