@@ -36,9 +36,9 @@
 function smarty_function_control($params,&$smarty) {
     global $db,$user;
     
-    if ( (isset($params['type']) && isset($params['name'])) || $params['type'] == 'buttongroup' 
+    if ( (isset($params['type']) && isset($params['name'])) || $params['type'] == 'buttongroup' || $params['type'] == 'antispam') {
 //    || $params['type'] == 'captcha' || $params['type'] == 'recaptcha' || $params['type'] == 'antispam') {
-	  || $params['type'] == 'recaptcha' || $params['type'] == 'antispam') {
+//	  || $params['type'] == 'recaptcha' || $params['type'] == 'antispam') {
 
         // if a label wasn't passed in then we need to set one.
         //if (empty($params['label'])) $params['label'] = $params['name'];

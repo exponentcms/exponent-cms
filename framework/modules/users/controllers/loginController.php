@@ -110,7 +110,7 @@ class loginController extends expController {
 			}
 		} else {
 			global $user;
-			if (isset($_POST['username'])) flash('message', gt('Welcome back').' '.$_POST['username']);
+			if (!empty($_POST['username'])) flash('message', gt('Welcome back').' '.$_POST['username']);
 			foreach ($user->groups as $g) {
 				if (!empty($g->redirect)) {
 					$url = URL_FULL.$g->redirect;

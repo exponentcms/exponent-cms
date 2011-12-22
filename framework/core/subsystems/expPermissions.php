@@ -43,74 +43,24 @@ class expPermissions {
 		if ($user->is_acting_admin == 0) {
 			// Retrieve all of the explicit user permissions, by user id
 			foreach ($db->selectObjects('userpermission','uid=' . $user->id) as $obj) {
-//				if ($obj->permission == 'administrate') $has_admin = 1;
 				$exponent_permissions_r[$obj->module][$obj->source][$obj->internal][$obj->permission] = 1;
 			}
 			// Retrieve all of the implicit user permissions (by virtue of group membership).
 			foreach ($db->selectObjects('groupmembership','member_id='.$user->id) as $memb) {
 				foreach ($db->selectObjects('grouppermission','gid=' . $memb->group_id) as $obj) {
-//					if ($obj->permission == 'administrate') $has_admin = 1;
 					$exponent_permissions_r[$obj->module][$obj->source][$obj->internal][$obj->permission] = 1;
 				}
 			}
 			// Retrieve all of the implicit user permissions (by virtue of subscriptions).
 			foreach ($db->selectObjects('subscriptions_users','user_id='.$user->id) as $memb) {
 				foreach ($db->selectObjects('subscriptionpermission','subscription_id=' . $memb->subscription_id) as $obj) {
-//					if ($obj->permission == 'administrate') $has_admin = 1;
 					$exponent_permissions_r[$obj->module][$obj->source][$obj->internal][$obj->permission] = 1;
 				}
 			}
-			// Retrieve sectional admin status.
-			// First, figure out what sections the user has permission to manage, through the navigationmodule permissions
-			/*if (isset($exponent_permissions_r['navigationmodule']['']) && is_array($exponent_permissions_r['navigationmodule'][''])) {
-				foreach ($exponent_permissions_r['navigationmodule'][''] as $id=>$perm_data) {
-					if ($perm_data['manage'] == 1) {
-						// The user is allowed to manage sections.
-						// Pull in all stuff for the section, using section ref.
-						//$sectionrefs = $db->selectObjects('sectionref','is_original=1 AND section='.$id);
-						$sectionrefs = $db->selectObjects('sectionref','section='.$id);
-						foreach ($sectionrefs as $sref) {
-							$sloc = expCore::makeLocation($sref->module,$sref->source);
-							if (class_exists($sref->module)) { // In business, the module exists
-								$perms = call_user_func(array($sref->module,'permissions'));
-								if ($perms == null) $perms = array(); // For good measure, since some mods return no perms.
-								foreach ($perms as $perm=>$name) {
-									$exponent_permissions_r[$sloc->mod][$sloc->src][''][$perm] = 1;
-								}
-							}
-						}
-					}
-				}
-			}*/
 		}
 
 		expSession::set('permissions',$exponent_permissions_r);
 
-		// Check perm stats for UI levels
-//		$ui_levels = array();
-//
-//		if ($user->is_acting_admin == 1) {
-//			$ui_levels = array(
-//				gt('Preview'),
-//				gt('Normal'),
-//				gt('Permission Management'),
-//				gt('Structure Management')
-//			);
-//		} else {
-//			if (count($exponent_permissions_r)) {
-//				$ui_levels = array(
-//					gt('Preview'),
-//					gt('Normal')
-//				);
-//			}
-//			if ($has_admin) {
-//				$ui_levels[] = gt('Permission Management');
-//			}
-//			if (isset($exponent_permissions_r['containermodule']) && count($exponent_permissions_r['containermodule'])) {
-//				$ui_levels[] = gt('Structure Management');
-//			}
-//		}
-//		expSession::set('uilevels',$ui_levels);
 	}
 
 	/** exdoc
@@ -191,31 +141,28 @@ class expPermissions {
         }
 
         // check for permission inherited from container(s)
-//        if (array_key_exists('containermodule',$exponent_permissions_r)) {
-            foreach ($permission as $perm) {
-                // inclusive container perms
-                $tmpLoc->mod = $location->mod;
-                $tmpLoc->src = $location->src;
-                $tmpLoc->int = $location->int;
-                $tmpLoc->mod = (!strpos($tmpLoc->mod,"Controller") && !strpos($tmpLoc->mod,"module")) ? $tmpLoc->mod."Controller" : $tmpLoc->mod;
-                $cLoc = expUnserialize($db->selectValue('container','external','internal=\''.serialize($tmpLoc).'\''));
-                if (@isset($exponent_permissions_r[$cLoc->mod][$cLoc->src][$cLoc->int][$perm])) {
-                   return true;
+        foreach ($permission as $perm) {
+            // inclusive container perms
+            $tmpLoc->mod = $location->mod;
+            $tmpLoc->src = $location->src;
+            $tmpLoc->int = $location->int;
+            $tmpLoc->mod = (!strpos($tmpLoc->mod,"Controller") && !strpos($tmpLoc->mod,"module")) ? $tmpLoc->mod."Controller" : $tmpLoc->mod;
+            $cLoc = expUnserialize($db->selectValue('container','external','internal=\''.serialize($tmpLoc).'\''));
+            if (@isset($exponent_permissions_r[$cLoc->mod][$cLoc->src][$cLoc->int][$perm])) {
+               return true;
+            }
+            if (!empty($cLoc)) {
+                if (self::check($perm,$cLoc)) {
+                    return true;
                 }
-                if (!empty($cLoc)) {
-                    if (self::check($perm,$cLoc)) {
-                        return true;
-                    }
-                }
-             }
-//        }
+            }
+         }
         if (@$module_scope['error'] == true) {
             $module_scope['error'] = false;
             return false;
         }
 
         // if this is the global sidebar, then exit since we don't care about page permissions
-//        if (!empty($location->src) && substr($location->src,0,8)!='@section' && substr($location->src,0,8)!='@random') {
         $module_scope['error'] = false;
         if (!empty($module_scope[$location->src][$location->mod]->scope)) {  // is this the main container?
             $rLoc = $db->selectObject("sectionref","source='" . $location->src . "' AND module='" . $location->mod . "'");
@@ -227,16 +174,10 @@ class expPermissions {
 
         // check for inherited 'manage' permission from current page and its parents
 		if ($location->mod != 'navigationmodule') {
-			global $sectionObj;
-			if (self::check('manage',expCore::makeLocation('navigationmodule','',$sectionObj->id))) {
+            global $sectionObj;
+            if (self::check('manage',expCore::makeLocation('navigationmodule','',$sectionObj->id))) {
 				return true;
 			}
-//            $sections = navigationmodule::levelTemplate($sectionObj->id);
-//            foreach ($sections as $section) {
-//                if (self::check('manage',expCore::makeLocation('navigationmodule','',$section->id))) {
-//                    return true;
-//                }
-//            }
 		} else {
             // check for recursive inherited page permission
             $page = $db->selectObject("section","id=".$location->int);
@@ -344,10 +285,6 @@ class expPermissions {
         }
 
         // if this is the global sidebar, then exit since we don't care about page permissions
-//        if (!empty($location->src) && substr($location->src,0,8)!='@section' && substr($location->src,0,8)!='@random') {
-//        if (!empty($location->src) && @$module_scope[$location->src][$location->mod]->scope=='global') {
-//            return false;
-//        }
         $module_scope['error'] = false;
         if (!empty($module_scope[$location->src][$location->mod]->scope)) {  // is this the main container?
             $rLoc = $db->selectObject("sectionref","source='" . $location->src . "' AND module='" . $location->mod . "'");
@@ -367,12 +304,6 @@ class expPermissions {
                 if (self::checkUser($user,'manage',expCore::makeLocation('navigationmodule','',$secref->section))) {
                     return true;
                 }
-//                $sections = navigationmodule::levelTemplate($secref->section);
-//                foreach ($sections as $section) {
-//                    if (self::checkUser($user,'manage',expCore::makeLocation('navigationmodule','',$section->id))) {
-//                        return true;
-//                    }
-//                }
             }
         } else {
             // check for recursive inherited page permission
@@ -474,9 +405,6 @@ class expPermissions {
                return true;
             }
             if (!empty($cLoc)) {
-//                if (self::checkGroup($group,$perm,$cLoc)) {
-//                    return true;
-//                }
                 if (self::checkGroup($group,$perm,$cLoc)) {
                     return true;
                 }
@@ -488,9 +416,6 @@ class expPermissions {
         }
 
         // if this is the global sidebar, then exit since we don't care about page permissions
-//        if (!empty($location->src) && substr($location->src,0,8)!='@section' && substr($location->src,0,8)!='@random') {
-//            return false;
-//        }
         $module_scope['error'] = false;
         if (!empty($module_scope[$location->src][$location->mod]->scope)) {  // is this the main container?
             $rLoc = $db->selectObject("sectionref","source='" . $location->src . "' AND module='" . $location->mod . "'");
@@ -510,12 +435,6 @@ class expPermissions {
                 if (self::checkGroup($group,'manage',expCore::makeLocation('navigationmodule','',$secref->section))) {
                     return true;
                 }
-//                $sections = navigationmodule::levelTemplate($secref->section);
-//                foreach ($sections as $section) {
-//                    if (self::checkGroup($group,'manage',expCore::makeLocation('navigationmodule','',$section->id))) {
-//                        return true;
-//                    }
-//                }
             }
         } else {
             // check for recursive inherited page permission
@@ -525,22 +444,10 @@ class expPermissions {
                 if (self::checkGroup($group,$permission,expCore::makeLocation('navigationmodule','',$page->parent))) {
                     return true;
                 }
-//                $res = self::checkGroup($group,$permission,expCore::makeLocation('navigationmodule','',$page->parent));
-//                if ($res === 2) {
-//                    return false;
-//                } elseif ($res) {
-//                    return $res;
-//                }
                 // otherwise check for 'super' permission
                 if (self::checkGroup($group,'manage',expCore::makeLocation('navigationmodule','',$page->parent))) {
                     return true;
                 }
-//                $res = self::checkGroup($group,'manage',expCore::makeLocation('navigationmodule','',$page->parent));
-//                if ($res === 2) {
-//                    return false;
-//                } elseif ($res) {
-//                    return $res;
-//                }
             }
         }
 
