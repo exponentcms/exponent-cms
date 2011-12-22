@@ -17,7 +17,7 @@
 <div id="authcfg">
     {form action=save_payment_info}
         {control type="hidden" name="id" value=$orderid}    
-        <div id="authcfg-tabs" class="yui-navset yui3-skin-sam hide">
+        <div id="authcfg-tabs" class="yui-navset exp-skin-tabview hide">
             <ul class="yui-nav">
             <li class="selected"><a href="#tab1"><em>{'Edit Payment Info'|gettext}</em></a></li>
             </ul>            

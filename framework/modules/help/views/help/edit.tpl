@@ -18,7 +18,7 @@
     {if $record->id != ""}<h1>{'Editing'|gettext} {$record->title}</h1>{else}<h1>{'New Help Document'|gettext}</h1>{/if}
     {form action=update record=$record}
         {control type=hidden name=id value=$record->id}
-        <div id="edithelp-tabs" class="yui-navset yui3-skin-sam hide">
+        <div id="edithelp-tabs" class="yui-navset exp-skin-tabview hide">
             <ul class="yui-nav">
                 <li class="selected"><a href="#tab1"><em>{'General'|gettext}</em></a></li>
                 <li><a href="#tab2"><em>{'Actions and Views'|gettext}</em></a></li>

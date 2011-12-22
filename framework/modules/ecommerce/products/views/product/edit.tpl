@@ -22,7 +22,7 @@
 
 {/script}
 
-<div id="editproduct" class="module store edit hide yui-skin-sam yui3-skin-sam exp-skin exp-admin-skin">
+<div id="editproduct" class="module store edit hide yui-skin-sam exp-skin-tabview exp-skin exp-admin-skin">
     {if $record->id != ""}
         <h1>{'Edit Information for'|gettext} {$modelname}</h1>
     {else}

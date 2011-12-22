@@ -27,7 +27,7 @@
         {control type="hidden" name="product_type" value=$record->product_type}
         {control type="hidden" name="product_type_id" value=$record->product_type_id}
         
-        <div id="editproduct-tabs" class="yui-navset yui3-skin-sam hide">
+        <div id="editproduct-tabs" class="yui-navset exp-skin-tabview hide">
             <ul class="yui-nav">
 	            <li class="selected"><a href="#tab1"><em>{'General Info'|gettext}</em></a></li>
 	            <li><a href="#tab2"><em>{'Event Info'|gettext}</em></a></li>

@@ -25,7 +25,7 @@
 		</div>
 	</div>
     {form controller="administration" action=update_siteconfig}
-        <div id="{$config}" class="yui-navset yui3-skin-sam hide">
+        <div id="{$config}" class="yui-navset exp-skin-tabview hide">
             <ul class="yui-nav">
 	            <li class="selected"><a href="#tab1"><em>{"General"|gettext}</em></a></li>
 	            <li><a href="#tab2"><em>{"Anti-Spam"|gettext}</em></a></li>

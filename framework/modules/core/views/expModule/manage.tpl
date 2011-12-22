@@ -63,7 +63,7 @@
         <h1>{"Module Manager"|gettext}</h1>
     </div>
     {form action="update"}
-    <div id="mod-manager-tabs" class="yui-navset yui3-skin-sam hide">
+    <div id="mod-manager-tabs" class="yui-navset exp-skin-tabview hide">
         <ul class="yui-nav">
             <li class="selected"><a href="#tab1"><em>Exponent 2</em></a></li>
             <li><a href="#tab2"><em>{"Old School"|gettext}</em></a></li>

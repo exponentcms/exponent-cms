@@ -23,7 +23,7 @@
 			<h1>{'Manage Pages'|gettext}</h1>
 		</div>
 	</div>
-	<div id="navmanager-tabs" class="yui-navset yui3-skin-sam hide">
+	<div id="navmanager-tabs" class="yui-navset exp-skin-tabview hide">
 	    <ul class="yui-nav">
         	<li class="selected"><a href="#tab1"><em>{'Hierarchy'|gettext}</em></a></li>
 	        {if $canManageStandalones}<li><a href="#tab2"><em>{'Standalone'|gettext}</em></a></li>{/if}

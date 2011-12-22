@@ -26,7 +26,7 @@
 				<h1>{'Edit User'|gettext} - '{$edit_user->username}'</h1> ( {'Date of last login'|gettext} {$edit_user->last_login|format_date})
 			{/if}
 	    </div>
-	    <div id="edituser-tabs" class="yui-navset yui3-skin-sam hide">
+	    <div id="edituser-tabs" class="yui-navset exp-skin-tabview hide">
 		    <ul class="yui-nav">
 		        <li class="selected"><a href="#tab1"><em>{"General"|gettext}</em></a></li>
 		            {foreach from=$extensions item=extension}

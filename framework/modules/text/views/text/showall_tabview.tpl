@@ -28,7 +28,7 @@
             {/if}
         </div>
     {/permissions}
-    <div id="{$id}" class="yui-navset yui3-skin-sam hide">
+    <div id="{$id}" class="yui-navset exp-skin-tabview hide">
         <ul>
             {foreach from=$items item=tab name=tabs}
                 <li><a href="#tab{$smarty.foreach.items.iteration}">{$tab->title}</a></li>
