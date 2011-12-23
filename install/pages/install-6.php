@@ -54,7 +54,6 @@ function validateForm(f){
 </script>
 <form method="post" onsubmit="return validateForm(this);">
     <input type="hidden" name="page" value="install-7" />
-    <input type="hidden" name="lang" value="<?php echo LANGUAGE; ?>" />
     <div class="form_section">
         <div class="control">
             <span class="label"><?php echo gt('Username'); ?>: </span>

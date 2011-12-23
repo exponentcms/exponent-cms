@@ -18,9 +18,6 @@
 ##################################################
 
 // Jumpstart to Initialize the installer language before it's set to default
-if (isset($_REQUEST['lang'])) {
-	if (!defined('LANGUAGE')) define('LANGUAGE', trim($_REQUEST['lang'],"'"));
-}
 
 include_once('../exponent.php');
 
