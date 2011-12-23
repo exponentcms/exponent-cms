@@ -162,8 +162,9 @@ class blogController extends expController {
 	public function showall_by_author() {
 	    expHistory::set('viewable', $this->params);
 	    
-	    $user = user::getByUsername($this->params['author']);
-	    
+//	    $user = user::getByUsername($this->params['author']);
+        $user = user::getUserByName($this->params['author']);
+
 		$where = ($this->aggregateWhereClause()?$this->aggregateWhereClause()." AND ":"")."poster=".$user->id;
 
 		$order = 'created_at';
@@ -266,7 +267,7 @@ class blogController extends expController {
                     $object = new expTag($_REQUEST['tag']);
                     // set the meta info
                     if (!empty($object)) {
-                        $metainfo['title'] = gt('Showing all Blog Posts with tagged with ') ."\"" . $object->title . "\"";
+                        $metainfo['title'] = gt('Showing all Blog Posts tagged with') ." \"" . $object->title . "\"";
                         $metainfo['keywords'] = empty($object->meta_keywords) ? SITE_KEYWORDS : $object->meta_keywords;
                         $metainfo['description'] = empty($object->meta_description) ? SITE_DESCRIPTION : $object->meta_description;
                     }              

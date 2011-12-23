@@ -18,7 +18,7 @@
     {permissions}
         <div class="module-actions">
             {if $permissions.manage == 1}
-				{icon action=manage record=$item title="manage `$modelname`" text="Manage Banners"}
+				{icon action=manage record=$item text="Manage Banners"|gettext}
             {/if}
         </div>
     {/permissions}

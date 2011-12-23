@@ -17,7 +17,7 @@
 <div class="navigationmodule form-editInternalAliasPage">
     <div class="info-header">
         <div class="related-actions">
-			{help text="Get Help Editing Internal Alias Pages" module="edit-internal-page"}
+			{help text="Get Help"|gettext|cat:" "|cat:("Editing Internal Alias Pages"|gettext) module="edit-internal-page"}
         </div>
 	    <h1>{if $is_edit == 1}{'Edit Existing Internal Alias'|gettext}{else}{'New Internal Alias'|gettext}{/if}</h1>
 	</div>

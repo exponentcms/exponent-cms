@@ -17,6 +17,23 @@
 #
 ##################################################
 
+/**
+ * Smarty plugin
+ * @package Smarty-Plugins
+ * @subpackage Function
+ */
+
+/**
+ * Smarty {plural} function plugin
+ *
+ * Type:     function<br>
+ * Name:     plural<br>
+ * Purpose:  test and return a singular or plural form of phrase
+ *
+ * @param         $params
+ * @param \Smarty $smarty
+ * @return bool
+ */
 function smarty_function_plural($params,&$smarty) {
 	if ($params['count'] == 1) return $params['singular'];
 	else return $params['plural'];

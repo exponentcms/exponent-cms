@@ -21,7 +21,7 @@
 	</div>
 	{if $is_top == 1}
 		{br}{br}
-		{'The name you specify for this Pageset will be used for reference only.  It will be replaced by whatever is entered into the name field of the "Add Section" form.'|gettext}
+		{'The name you specify for this Pageset will be used for reference only.  It will be replaced by whatever is entered into the name field of the \'Add Section\' form.'|gettext}
 	{/if}
 	{$form_html}
 </div>

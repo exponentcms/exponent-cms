@@ -14,17 +14,16 @@
  *
  *}
 
-<h2>E-Alerts Settings</h2>
+<h2>{'E-Alerts Settings'|gettext}</h2>
 <blockquote>
     <p>
-        E-Alerts allow your users to sign up to receive email versions of new content you create.  If you 
-        want users to be able to sign up to  E-Alerts.
+        {'E-Alerts allow your users to sign up to receive email versions of new content you create.'|gettext}&nbsp;&nbsp;
+        {'If you want users to be able to sign up to  E-Alerts.'|gettext}
     </p>
     <p>
-        The title and description you supply below is what will be displayed to your users on the E-Alerts
-        sign-up form.
+        {'The title and description you supply below is what will be displayed to your users on the E-Alerts sign-up form.'|gettext}
     </p>
 </blockquote>
-{control type="checkbox" name="enable_ealerts" label="Enable E-Alerts" value=1 checked=$config.enable_ealerts}
-{control type="text" name="ealert_title" label="E-Alerts Title" value=$config.ealert_title}
-{control type="textarea" name="ealert_desc" label="E-Alerts Description" value=$config.ealert_desc}
+{control type="checkbox" name="enable_ealerts" label="Enable E-Alerts"|gettext value=1 checked=$config.enable_ealerts}
+{control type="text" name="ealert_title" label="E-Alerts Title"|gettext value=$config.ealert_title}
+{control type="textarea" name="ealert_desc" label="E-Alerts Description"|gettext value=$config.ealert_desc}

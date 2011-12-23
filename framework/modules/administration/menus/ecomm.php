@@ -225,6 +225,14 @@ $ecom = array(
                             'text'=>gt("Import External Addresses"),
                             'url'=>makeLink(array('controller'=>'store','action'=>'import_external_addresses')),
                         ),
+						 array(
+                            'text'=>gt("View All Search Queries"),
+                            'url'=>makeLink(array('controller'=>'search','action'=>'searchQueryreport')),
+                        ),
+						 array(
+                            'text'=>gt("Top Search Queries Report"),
+                            'url'=>makeLink(array('controller'=>'search','action'=>'topSearchReport')),
+                        ),
                     ),                        
                 ),
             ),

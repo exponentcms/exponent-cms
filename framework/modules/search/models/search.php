@@ -28,19 +28,23 @@ class search extends expRecord {
     	return strip_tags(str_replace(array("<br/>","<br>","<br />","</div>"),"\n",$str));
 	}
 	
-	public function getSearchResults($terms) {
-	    global $db;
+	public function getSearchResults($terms, $readonly = 0) {
+	    global $db, $user;
 	    
 	    // get the search terms
         //$terms = $this->params['search_string'];
         
-        if (SAVE_SEARCH_QUERIES)
+        if (SAVE_SEARCH_QUERIES && $readonly == 0)
         {
-            $queryObj = new stdClass();
-            $queryObj->query = $terms;
-            $queryObj->timestamp = time();
-            
-            $db->insertObject($queryObj, 'search_queries');
+		
+			if(INCLUDE_ANONYMOUS_SEARCH == 1 || $user->id <> 0) {
+				$queryObj = new stdClass();
+				$queryObj->user_id    = $user->id;
+				$queryObj->query      = $terms;
+				$queryObj->timestamp  = time();
+				
+				$db->insertObject($queryObj, 'search_queries');
+			}
         } 
         
         //setup the sql query
@@ -51,7 +55,7 @@ class search extends expRecord {
         LEFT OUTER JOIN exponent_product p ON s.original_id = p.id WHERE MATCH(s.title,s.body) against ('army combat uniform' IN BOOLEAN MODE)*/
         
         $sql  = "SELECT *, MATCH (s.title,s.body) AGAINST ('".$terms."*') as score from ".DB_TABLE_PREFIX."_search as s ";
-        $sql .= "WHERE MATCH(title,body) against ('".$terms."*' IN BOOLEAN MODE)";
+        $sql .= "WHERE MATCH(title,body) against ('".$terms."*' IN BOOLEAN MODE) ";
 		
         // look up the records.
         //eDebug($sql);

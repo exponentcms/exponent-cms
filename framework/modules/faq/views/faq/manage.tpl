@@ -23,16 +23,16 @@
 {/css}
 
 <div class="module faq manage">
-    <h1>Manage Questions</h1>
-    <p>Here you can view questions on your site and edit, delete, and answer unanswered questions</p>
+    <h1>{'Manage Questions'|gettext}</h1>
+    <p>{'Here you can view questions on your site and edit, delete, and answer unanswered questions'|gettext}</p>
     
     {permissions}
 		<div class="module-actions">
 			{if $permissions.create == 1}
-				{icon class=add action=create title="Add a new FAQ" text="Add a New FAQ"}
+				{icon class=add action=create text="Add a New FAQ"|gettext}
 			{/if}
 			{if $permissions.manage == 1}
-				{ddrerank items=$page->records model="faq" sortfield="question" label="FAQs"}
+				{ddrerank items=$page->records model="faq" sortfield="question" label="FAQs"|gettext}
 			{/if}
 		</div>
     {/permissions}
@@ -48,11 +48,11 @@
 			<tr class="{cycle values="even, odd"}">
 				<td>                
 					{if $question->include_in_faq == 1}
-						<a href="{link action=edit_toggle id=$question->id}" title="Remove this question from the FAQs">
+						<a href="{link action=edit_toggle id=$question->id}" title="Remove this question from the FAQs"|gettext>
 							{img src=$smarty.const.ICON_RELATIVE|cat:'toggle_on.png'}
 						</a>
 					{else}
-						<a href="{link action=edit_toggle id=$question->id}" title="Add this question to the FAQs">
+						<a href="{link action=edit_toggle id=$question->id}" title="Add this question to the FAQs"|gettext>
 							{img src=$smarty.const.ICON_RELATIVE|cat:'toggle_off.png'}
 						</a>   
 					{/if}                
@@ -65,17 +65,17 @@
 					{permissions}
 						<div class="item-actions">
 							{if $permissions.edit == 1}
-								{icon action=edit record=$question title="Edit FAQ"}
+								{icon action=edit record=$question title="Edit FAQ"|gettext}
 							{/if}
 							{if $permissions.delete == 1}
-								{icon action=delete record=$question title="Delete this FAQ?" onclick="return confirm('Are you sure you want to delete this FAQ?');"}
+								{icon action=delete record=$question title="Delete this FAQ"|gettext|cat:"?" onclick="return confirm('"|cat:("Are you sure you want to delete this FAQ?"|gettext)||cat:"');"}
 							{/if} 
 						</div>					
 					{/permissions}
 				</td>
 			</tr>
 			{foreachelse}
-			<tr><td>No questions found</td></tr>
+			<tr><td>{'No questions found'|gettext}</td></tr>
 			{/foreach}
 		</tbody>
     </table>    

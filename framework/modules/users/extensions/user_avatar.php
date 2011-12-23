@@ -42,8 +42,6 @@ class user_avatar extends expRecord {
 	 * @return bool
 	 */
 	public function update($params=array()) {
-        global $db;
-        global $user;
 
         // if not user id then we should not be doing anything here
         if (empty($params['user_id'])) return false;

@@ -17,6 +17,22 @@
 #
 ##################################################
 
+/**
+ * Smarty plugin
+ * @package Smarty-Plugins
+ * @subpackage Modifier
+ */
+
+/**
+ * Smarty {kilobytes} modifier plugin
+ *
+ * Type:     modifier<br>
+ * Name:     kilobytes<br>
+ * Purpose:  convert to kilobytes
+ *
+ * @param array
+ * @return array
+ */
 function smarty_modifier_kilobytes($bytes) {
 	return round($bytes/1024, 2);
 }

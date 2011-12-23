@@ -25,7 +25,7 @@
             {elseif $listing->expFile.images[0]->id != ""}
                 {img file_id=$listing->expFile.images[0]->id constraint=1 width=165 alt=$listing->title}
             {else}
-                No Image
+                {'No Image'|gettext}
             {/if}
         <div class="bodycopy">
             <a href="{link controller=store action=showByTitle title=$listing->title}">

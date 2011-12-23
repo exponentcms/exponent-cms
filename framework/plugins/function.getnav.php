@@ -17,6 +17,23 @@
 #
 ##################################################
 
+/**
+ * Smarty plugin
+ * @package Smarty-Plugins
+ * @subpackage Function
+ */
+
+/**
+ * Smarty {getnav} function plugin
+ *
+ * Type:     function<br>
+ * Name:     getnav<br>
+ * Purpose:  get and assign navigation structure
+ *
+ * @param         $params
+ * @param \Smarty $smarty
+ * @return bool
+ */
 function smarty_function_getnav($params,&$smarty) {
 	global $sections;
 
@@ -29,8 +46,7 @@ function smarty_function_getnav($params,&$smarty) {
 		$linkInQuestion = $rekeyed[$params['of']];
 		
 		$nav = $rekeyed[$linkInQuestion->parent];
-		
-		
+
 	}
 
 	if($params['type']=="siblingsandchildren"){
@@ -65,7 +81,6 @@ function smarty_function_getnav($params,&$smarty) {
 			$rekeyed[$value->id] = $value;
 		}
 		
-		
 		$linkInQuestion = $rekeyed[$params['of']];
 		
 		foreach ($sections as $key=>$value) {
@@ -85,7 +100,6 @@ function smarty_function_getnav($params,&$smarty) {
 		foreach($sections as $key=>$value){
 			$rekeyed[$value->id] = $value;
 		}
-		
 		
 		$linkInQuestion = $rekeyed[$params['of']];
 	//	echo $linkInQuestion->depth;
@@ -120,14 +134,12 @@ function smarty_function_getnav($params,&$smarty) {
 			}			
 		}
 		
-		
 	}
 	if($params['type']=="children"){
 		
 		foreach($sections as $key=>$value){
 			$rekeyed[$value->id] = $value;
 		}
-		
 		
 		$linkInQuestion = $rekeyed[$params['of']];
 		foreach ($sections as $key=>$value) {
@@ -136,14 +148,12 @@ function smarty_function_getnav($params,&$smarty) {
 			}			
 		}
 		
-		
 	}
 	if($params['type']=="haschildren"){
 		
 		foreach($sections as $key=>$value){
 			$rekeyed[$value->id] = $value;
 		}
-		
 		
 		$linkInQuestion = $rekeyed[$params['of']];
 		foreach ($sections as $key=>$value) {
@@ -164,4 +174,3 @@ function smarty_function_getnav($params,&$smarty) {
 }
 
 ?>
-

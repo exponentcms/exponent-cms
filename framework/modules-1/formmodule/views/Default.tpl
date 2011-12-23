@@ -19,7 +19,7 @@
 {/css}
 
 <div class="formmodule default"> 
-    {messagequeue}
+    {messagequeue name='notice'}
 	{permissions}
 		<div class="module-actions">
 			{if $permissions.viewdata == 1 && $form->is_saved == 1}<a class="addnew mngmntlink" href="{link action=view_data module=formbuilder id=$form->id}">{'View Data'|gettext} ({$count})</a>&nbsp;&nbsp;{/if}
@@ -29,7 +29,7 @@
 			{/if}
 			{if $permissions.editformsettings == 1}<a class="addnew mngmntlink" href="{link action=edit_form module=formbuilder id=$form->id}">{'Form Settings'|gettext}</a>&nbsp;&nbsp;{/if}
 			{if $permissions.editform == 1}|&nbsp;&nbsp;<a class="addnew mngmntlink" href="{link action=view_form module=formbuilder id=$form->id}">{'Edit Form'|gettext}</a>&nbsp;&nbsp;{/if}
-			{if $permissions.editreport == 1}|&nbsp;&nbsp;<a class="addnew mngmntlink" href="{link action=edit_report module=formbuilder id=$form->id}">{'Report Settings'|gettext}</a>&nbsp;&nbsp;{/if}
+			{if $permissions.editreport == 1}|&nbsp;&nbsp;<a class="addnew mngmntlink" href="{link action=edit_report module=formbuilder id=$form->id}">{'Edit Report'|gettext}</a>&nbsp;&nbsp;{/if}
 		</div>
 	{/permissions}
 	{if $moduletitle != ""}<h2>{$moduletitle}</h2>{/if}

@@ -17,6 +17,23 @@
 #
 ##################################################
 
+/**
+ * Smarty plugin
+ * @package Smarty-Plugins
+ * @subpackage Function
+ */
+
+/**
+ * Smarty {selectobjects} function plugin
+ *
+ * Type:     function<br>
+ * Name:     selectobjects<br>
+ * Purpose:  select and assign objects
+ *
+ * @param         $params
+ * @param \Smarty $smarty
+ * @return bool
+ */
 function smarty_function_selectobjects($params,&$smarty) {
 	global $db;
 	$where = isset($params['where']) ? $params['where'] : null;

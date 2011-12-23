@@ -1,7 +1,7 @@
 {if $record->id != ""}
-	<h1>Edit Information for {$modelname}</h1>
+	<h1>{'Edit Information for'|gettext} {$modelname}</h1>
 {else}
-	<h1>New {$modelname}</h1>
+	<h1>{'New'|gettext} {$modelname}</h1>
 {/if}
 
 {form action=update}

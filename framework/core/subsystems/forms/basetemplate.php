@@ -46,6 +46,7 @@ class basetemplate {
 		// Set up the Smarty template variable we wrap around.
 		$this->tpl = new Smarty();
 		$this->tpl->error_reporting = error_reporting() & ~E_NOTICE & ~E_WARNING;  //FIXME this disables bad template code reporting 3.x
+        $this->tpl->error_unassigned = true;  // display notice when accessing unassigned variable, if warnings turned on
 //		$this->tpl->debugging = DEVELOPMENT;  // Opens up the debug console
 
 		//Some (crappy) wysiwyg editors use php as their default initializer

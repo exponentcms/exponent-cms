@@ -17,6 +17,23 @@
 #
 ##################################################
 
+/**
+ * Smarty plugin
+ * @package Smarty-Plugins
+ * @subpackage Function
+ */
+
+/**
+ * Smarty {chain} function plugin
+ *
+ * Type:     function<br>
+ * Name:     chain<br>
+ * Purpose:  chain/append templates
+ *
+ * @param         $params
+ * @param \Smarty $smarty
+ * @return bool
+ */
 function smarty_function_chain($params,&$smarty) {
     if (empty($params['module']) && empty($params['controller']))  return false;
     

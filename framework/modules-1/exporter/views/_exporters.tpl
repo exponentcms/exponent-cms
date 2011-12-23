@@ -26,7 +26,7 @@
 	<table cellpadding="4" cellspacing="0" border="0" width="100%">
 		{foreach from=$exporters item=exporter key=impname}
 			<tr>
-				<td class="administration_modmgrheader"><b>{$exporter.name}</b> {'by %s'|gettext|sprintf:$exporter.author}</td>
+				<td class="administration_modmgrheader"><b>{$exporter.name}</b> {'by'|gettext|cat:' %s'|sprintf:$exporter.author}</td>
 			</tr>
 			<tr>
 				<td class="administration_modmgrbody">

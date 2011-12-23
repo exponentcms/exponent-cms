@@ -16,8 +16,23 @@
 # GPL: http://www.gnu.org/licenses/gpl.txt
 #
 ##################################################
-/** @define "BASE" "../.." */
 
+/**
+ * Smarty plugin
+ * @package Smarty-Plugins
+ * @subpackage Function
+ */
+
+/**
+ * Smarty {attribution} function plugin
+ *
+ * Type:     function<br>
+ * Name:     attribution<br>
+ * Purpose:  create an attribution phrase
+ *
+ * @param         $params
+ * @param \Smarty $smarty
+ */
 function smarty_function_attribution($params,&$smarty) {
 	if (isset($params['user_id'])) {
 		$u = user::getUserById($params['user_id']);
@@ -45,7 +60,7 @@ function smarty_function_attribution($params,&$smarty) {
 		}
 		echo $str;
 	} else {
-		echo 'Anonymous User';
+		echo gt('Anonymous User');
 	}
 }
 

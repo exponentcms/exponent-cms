@@ -15,14 +15,14 @@
  *}
 
 <div id="authcfg">
-    <div id="authcfg-tabs" class="yui-navset yui3-skin-sam hide">
+    <div id="authcfg-tabs" class="yui-navset exp-skin-tabview hide">
         <ul class="yui-nav">
-	        <li class="selected"><a href="#tab1"><em>General</em></a></li>
+	        <li class="selected"><a href="#tab1"><em>{'General'|gettext}</em></a></li>
         </ul>            
         <div class="yui-content">
 	        <div id="tab1">
-	            {control type="text" name="rate" label="Flat Rate Shipping & Handling Charge" size=5 filter=money value=$calculator->configdata.rate}
-	            {control type="textarea" name="out_of_zone_message" label="Message to Out-of-Zone Buyers" size=15 value=$calculator->configdata.out_of_zone_message}
+	            {control type="text" name="rate" label="Flat Rate Shipping & Handling Charge"|gettext size=5 filter=money value=$calculator->configdata.rate}
+	            {control type="textarea" name="out_of_zone_message" label="Message to Out-of-Zone Buyers"|gettext size=15 value=$calculator->configdata.out_of_zone_message}
 	        </div>
         </div>
     </div>

@@ -17,26 +17,26 @@
     {form action=processQuickPay}
     {if $order->billing_required == true}
         <div class="billingdetails ">            
-            <h1>Credit Card Information</h1>
+            <h1>{'Credit Card Information'|gettext}</h1>
             <div class="info">
-                <h2>Name as it appears on card</h2>
-                {control id=fname type=text name="billing[firstname]" label="First Name"}
-                {control id=midname type=text name="billing[middlename]" label="Middle" size=5}
-                {control id=lname type=text name="billing[lastname]" label="Last Name"}
+                <h2>{'Name as it appears on card'|gettext}</h2>
+                {control id=fname type=text name="billing[firstname]" label="First Name"|gettext}
+                {control id=midname type=text name="billing[middlename]" label="Middle"|gettext size=5}
+                {control id=lname type=text name="billing[lastname]" label="Last Name"|gettext}
                 {clear}
             </div>
             <div class="info">
-                <h2>Billing address of the card you are using</h2>
-                {control id=addy1 type=text name="billing[address1]" label="Street Address"}
-                {control id=addy2 type=text name="billing[address2]" label="Apt/Suite #" size=10}
-                {control id=city type=text name="billing[city]" label="City" size=15}
-                {control id=state type=state name="billing[state]" label="State"}
-                {control id=zip type=text name="billing[zip]" label="Zip Code" size=6}
+                <h2>{'Billing address of the card you are using'|gettext}</h2>
+                {control id=addy1 type=text name="billing[address1]" label="Street Address"|gettext}
+                {control id=addy2 type=text name="billing[address2]" label="Apt/Suite #"|gettext size=10}
+                {control id=city type=text name="billing[city]" label="City"|gettext size=15}
+                {control id=state type=state name="billing[state]" label="State"|gettext}
+                {control id=zip type=text name="billing[zip]" label="Zip Code"|gettext size=6}
                 {clear}
             </div>
             
             <div class="info" id="ccfs">
-                <h2>Credit Card</h2>
+                <h2>{'Credit Card'|gettext}</h2>
                 {if $billing->form != ""}
 					{assign var='calcid' value=$billing->calculator->id}
                     {$billing->form.$calcid}
@@ -52,18 +52,18 @@
     
     
     <div class="cartitems info">
-        <h2>Your cart contents</h2>
-        <p>You’ve got <strong>{$order->orderitem|@count}</strong> item{if $order->orderitem|@count > 1}s{/if} in your cart. {br}
-        <a id="expandcart" href="#" class="fox-link hide">Show them?<span></span></a></p>
+        <h2>{'Your cart contents'|gettext}</h2>
+        <p>{'You’ve got'|gettext} <strong>{$order->orderitem|@count}</strong> item{if $order->orderitem|@count > 1}s{/if} {'in your cart.'|gettext} {br}
+        <a id="expandcart" href="#" class="fox-link hide">{'Show them?'|gettext}<span></span></a></p>
         <div id="shoppingcartwrapper">
             {chain controller=cart action=show view=show_quickpay_donation_cart}
         </div>
     </div>
-    {control type="buttongroup" submit="Submit" cancel="Cancel"}
+    {control type="buttongroup" submit="Submit"|gettext cancel="Cancel"|gettext}
     {/form}
     
 </div>
-{script unique="shoppingcartcheckout" yuimodules="animation,container,json" src=$smarty.const.JS_FULL|cat:'exp-ecomcheckout.js'}
+{script unique="shoppingcartcheckout" yuimodules="animation,container,json" src="`$smarty.const.JS_FULL`exp-ecomcheckout.js"}
 //
 {/script}
 

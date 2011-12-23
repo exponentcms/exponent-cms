@@ -59,7 +59,7 @@ class genericcontrol extends formcontrol {
             $divID  = '';
             $for = '';
         }
-        if ($required) $label = "*" . $label;
+        if ($this->required) $label = "*" . $label;
         $dissabled = $this->disabled == true ? "disabled" : ""; 
         if ($this->type != 'hidden') {
             $class = empty($this->class) ? '' : ' '.$this->class;
@@ -74,7 +74,7 @@ class genericcontrol extends formcontrol {
             }
             $html .= "</div>";
         } else {
-            $html .= $this->controlToHTML($name, $label);
+            $html = $this->controlToHTML($name, $label);
         }
         return $html;
     }
@@ -117,7 +117,7 @@ class genericcontrol extends formcontrol {
     }
     
     function templateFormat($db_data, $ctl) {
-        return ($db_data==1)?"Yes":"No";
+        return ($db_data==1)?gt("Yes"):gt("No");
     }
     
     function form($object) {

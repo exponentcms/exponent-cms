@@ -30,8 +30,6 @@ if ($container != null) {
 	$cloc->int = $container->id;
 }
 
-
-
 if (expPermissions::check("add_module",$loc) ||
 	($iloc != null && expPermissions::check("administrate",$iloc)) ||
 	($cloc != null && expPermissions::check("edit_module",$cloc))

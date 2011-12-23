@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-    <title>File Uploader  |  Exponent CMS</title>
+    <title>{'File Uploader'|gettext}  |  Exponent CMS</title>
     <link rel="stylesheet" type="text/css" href="{$smarty.const.URL_FULL}framework/core/assets/css/msgq.css" />
     <link rel="stylesheet" type="text/css" href="{$smarty.const.URL_FULL}framework/core/assets/css/button.css" />
     <link rel="stylesheet" type="text/css" href="{$smarty.const.URL_FULL}framework/core/assets/css/tables.css" />
@@ -13,33 +13,30 @@
     <script type="text/javascript" src="{$smarty.const.URL_FULL}exponent.js.php"></script>
     <script type="text/javascript" src="{$smarty.const.YUI3_PATH}yui/yui-min.js"></script>
 	<script type="text/javascript" src="{$smarty.const.URL_FULL}framework/core/assets/js/exp-flashdetector.js"></script>
-    
-    
 </head>
 <body class="exp-skin">
 <div id="exp-uploader">
     <h1>{"Upload Files"|gettext}</h1>
     <div id="actionbar">
     	<div id="uploaderOverlay" style="position:absolute; z-index:2"></div> 
-    	<a class="select awesome small green" style="z-index:1" id="selectLink" href="#"><span>Select Files</span></a>
+    	<a class="select awesome small green" style="z-index:1" id="selectLink" href="#"><span>{'Select Files'|gettext}</span></a>
         <a id="uploadLink" class="upload awesome small green" href="#"><span>{"Upload Files"|gettext}</span></a>
-        <a id="backlink" class="back awesome small green" href="{link action=picker update=$smarty.get.update fck=$smarty.get.fck CKEditor=$smarty.get.CKEditor CKEditorFuncNum=$smarty.get.CKEditorFuncNum langCode=$smarty.get.langCode ajax_action=1}"><span>Back to Manager</span></a>
+        <a id="backlink" class="back awesome small green" href="{link action=picker ajax_action=1 ck=$smarty.get.ck update=$smarty.get.update fck=$smarty.get.fck}{if $smarty.const.SEF_URLS}?{else}&{/if}CKEditor={$smarty.get.CKEditor}&CKEditorFuncNum={$smarty.get.CKEditorFuncNum}&langCode={$smarty.get.langCode}"><span>{'Back to Manager'|gettext}</span></a>
     </div>
 	<div class="info-header clearfix">
 		<div id="noflash"></div>
 		
 		<div class="related-actions">
-			{help text="Get Help with Uploading Files" module="upload-files"}
+			{help text="Get Help"|gettext|cat:" "|cat:("Uploading Files"|gettext) module="upload-files"}
 		</div>
 
 	</div>    
     {messagequeue}
 
-
     <div id="dataTableContainer">
       <table id="filenames" class="exp-skin-table">
         <thead>
-    	   <tr><th>Filename</th><th>File size</th><th>Percent uploaded</th></tr>
+    	   <tr><th>{'Filename'|gettext}</th><th>{'File size'|gettext}</th><th>{'Percent uploaded'|gettext}</th></tr>
     	</thead>
     	<tbody>
     	</tbody>
@@ -78,7 +75,6 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','uploader', function(Y) {
     }
 
     Y.on("domready", init);
-
 
     function setupUploader (event) {
     	uploader.set("multiFiles", true);
@@ -130,7 +126,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','uploader', function(Y) {
     }
 
     function uploadComplete (event) {
-		var progbar = "<div style='width:90%;background-color:#CCC;'><div style='height:12px;padding:3px;font-size:10px;color:#fff;background-color:#2f840a;width:100%;'><img src=\"/_trunk/github/framework/core/assets/images/accepted.png\" style=\"float:right; margin:-3px -24px 0 0\">100%</div></div>";
+		var progbar = "<div style='width:90%;background-color:#CCC;'><div style='height:12px;padding:3px;font-size:10px;color:#fff;background-color:#2f840a;width:100%;'><img src='"+EXPONENT.URL_FULL+"framework/core/assets/images/accepted.png' style=\"float:right; margin:-3px -24px 0 0\">100%</div></div>";
             Y.one("#div_" + event.id).setContent(progbar);
     }
 
@@ -138,9 +134,10 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','uploader', function(Y) {
 
     	//if (selectedFiles != null) {
     		//uploader.setSimUploadLimit(parseInt(3));
-    		console.debug(EXPONENT.URL_FULL+"index.php?controller=file&action=upload&ajax_action=1");
-            uploader.uploadAll(EXPONENT.URL_FULL+"index.php?controller=file&action=upload&ajax_action=1");
-    	//}	
+//    		console.debug(EXPONENT.URL_FULL+"index.php?controller=file&action=upload&ajax_action=1");
+//            uploader.uploadAll(EXPONENT.URL_FULL+"index.php?controller=file&action=upload&ajax_action=1");
+//            console.debug(EXPONENT.URL_FULL+"index.php?controller=file&action=upload&ajax_action=1&usrid=" + usr['id']);
+            uploader.uploadAll(EXPONENT.URL_FULL+"index.php?controller=file&action=upload&ajax_action=1&usrid=" + usr['id']);    	//}
         //uploader.uploadAll("http://www.yswfblog.com/upload/upload_simple.php");
     }
 

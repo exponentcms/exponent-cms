@@ -125,7 +125,7 @@ class storeCategoryController extends expNestedNodeController {
         $this->loc->src = "@store-".$this->params['cat-id'];
         $config = new expConfig($this->loc);
         $config->update(array('config'=>$this->params));
-        flash('message', 'Configuration updated');
+        flash('message', gt('Configuration updated'));
         expHistory::back();
     }
 

@@ -92,18 +92,18 @@ class calendarmodule {
 	function permissions($internal = '') {
 		if ($internal == '') {
 			return array(
-				'administrate'=>gt('Administrate'),
+				'administrate'=>gt('Manage'),
 				'configure'=>gt('Configure'),
 				'post'=>gt('Create'),
 				'edit'=>gt('Edit'),
 				'delete'=>gt('Delete'),
-				'approve'=>gt('Approve'),
-				'manage_approval'=>gt('Manage Approval'),
-				'manage_categories'=>gt('Manage Categories')
+//				'approve'=>gt('Approve'),
+//				'manage_approval'=>gt('Manage Approval'),
+//				'manage_categories'=>gt('Manage Categories')
 			);
 		} else {
 			return array(
-				'administrate'=>gt('Administrate'),
+				'administrate'=>gt('Manage'),
 				'edit'=>gt('Edit'),
 				'delete'=>gt('Delete')
 			);
@@ -112,7 +112,7 @@ class calendarmodule {
 
 	function getLocationHierarchy($loc) {
 		if ($loc->int == '') return array($loc);
-		else return array($loc,expCore::makeLocation($loc->mod,$loc->src));
+		else return array($loc,expCore::makeLocation($loc->mod,$loc->src));  // array of
 	}
 
 	static function show($view,$loc = null, $title = '') {

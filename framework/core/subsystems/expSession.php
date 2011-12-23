@@ -63,7 +63,7 @@ class expSession {
         self::un_set($var);
     }
     
-    public function setCache($params=array()) {
+    public static function setCache($params=array()) {
         $_SESSION[SYS_SESSION_KEY]['cache'][$params['module']] = $params['val'];
     }
     

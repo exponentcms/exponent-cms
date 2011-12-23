@@ -19,7 +19,7 @@
 {/css}
 
 <div class="module store showall-uncategorized">
-    <h1>Uncategorized Products</h1>
+    <h1>{'Uncategorized Products'|gettext}</h1>
     <div id="products">
 		{pagelinks paginate=$page top=1}
         <table id="prods" class="exp-skin-table" style="width:95%">
@@ -27,7 +27,7 @@
             <tr>
             <th></th>
             {$page->header_columns}
-            <th>Edit/Delete</th>
+            <th>{'Edit/Delete'|gettext}</th>
             </tr>
         </thead>
         <tbody>

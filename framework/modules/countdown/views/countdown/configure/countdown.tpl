@@ -14,10 +14,10 @@
  *
  *}
 
-<h2>Configure this Module</h2>
+<h2>{'Configure this Module'|gettext}</h2>
 
-{control type="text" name="title" label="Title" value=$config.title}
-{control type="text" name="count" label="Countdown Date" value=$config.count}
-<em>NOTE: date must follow this format: 12/31/2020 5:00 AM</em>
-{control type="text" name="message" label="Countdown Finish Message" value=$config.message}
-{control type="editor" name="body" label="Message on clock" value=$config.body}
+{control type="text" name="title" label="Title"|gettext value=$config.title}
+{control type="text" name="count" label="Countdown Date"|gettext value=$config.count}
+<em>{'NOTE: date must follow this format'|gettext}: 12/31/2020 5:00 AM</em>
+{control type="text" name="message" label="Countdown Finish Message"|gettext value=$config.message}
+{control type="editor" name="body" label="Message on clock"|gettext value=$config.body}

@@ -15,7 +15,7 @@
  *}
 
 {permissions}
-	<div class="exp-container-wrapper">
+	<div class="exp-container-module-wrapper">
 		<div class="container-chrome module-chrome hardcoded-chrome">
 			<a href="#" class="trigger" title="{$container->info.module}">{$container->info.module}</a>
 			{getchromemenu module=$container rank=$i rerank=$rerank last=$last}

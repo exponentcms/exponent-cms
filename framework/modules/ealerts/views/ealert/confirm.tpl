@@ -15,10 +15,9 @@
  *}
 
 <div class="module ealerts pending">
-    <h1>Subscriptions Activated</h1>
+    <h1>{'Subscriptions Activated'|gettext}</h1>
     <p>
-        Thank you for confirming your subscriptions.  You are now subscribed to receive email
-        alerts for the following topics.
+        {'Thank you for confirming your subscriptions.  You are now subscribed to receive email alerts for the following topics.'|gettext}
     </p>
     
     <ul>

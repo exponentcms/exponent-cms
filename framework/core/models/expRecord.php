@@ -502,7 +502,6 @@ class expRecord {
                     $obj = $db->selectObject($this->tablename, 'rank='.$this->rank);
                     if (!empty($obj)) {
                         $db->increment($this->tablename,'rank',1,'rank>='.$this->rank);
-                        
                     }
                 }
             }

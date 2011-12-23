@@ -2,6 +2,23 @@ Exponent Content Management System
 Copyright (c) 2004-2011 OIC Group, Inc.
 ===============================================
 
+Added / Fixed / changed for 2.0.3
+-----------------------
+# This release focuses on refining the language system
+  - for general use, installation, and to simplify translation creation
+  - Spanish, German, Danish, Norwegian, Czech, and Finnish translations added
+# Tweaked permission system to more accurately reflect designed purpose
+  - Permissions now cascade down thru pages and containers
+  - Management screens accurately reflect inherited and implied permissions
+  - The super-admin may now create other super-admin users
+  - Global sidebar modules don't inherit current page permissions & now require permission for non-admin users
+# File Manager, Uploader, & Pixidou editor - tweaked and fixed
+# Flowplayer module now offers style selection
+# Filedownloads optionally shows media player for audio(mp3)/video(flv/f4v) downloads
+# If database is down, the system is put in a temp maintenance mode instead of running installation
+# Adds search result highlighting
+# Plus many other bug fixes and updates
+
 Added / Fixed / changed for 2.0.2
 -----------------------
 # This release focuses on integrating Smarty v3

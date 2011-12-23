@@ -13,6 +13,7 @@
  * GPL: http://www.gnu.org/licenses/gpl.txt
  *
  *}
+
 <div class="options dropdown"> 
     {assign var=gid value=$group->id} 
     {if isset($selected.$gid)}
@@ -21,7 +22,6 @@
         {control id="options`$group->id`" type=dropdown name="options[`$group->id`][]" label=$group->title items=$options includeblank=$includeblank value=$default required=$required}
     {/if}
 </div>
-
 
 {*script unique="optionselector"}
 {literal}
@@ -70,4 +70,3 @@ for (var i=0; i< options.length; i++) {
 
 {/literal}
 {/script*}
-

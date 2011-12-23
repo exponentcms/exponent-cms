@@ -28,7 +28,6 @@ class loginController extends expController {
 //    );
 //    public $remove_permissions = array('create', 'edituser');
 	public $codequality = 'beta';
-
 	public $remove_configs = array(
         'aggregation',
         'comments',
@@ -75,7 +74,7 @@ class loginController extends expController {
 			} else {
 				$is_group_admin = 0;
 			}
-			assign_to_template(array('oicount'=>$oicount,'previewtext'=>$previewtext,'previewclass'=>$previewclass,'loggedin'=>$loggedin,'user'=>$user,'displayname'=>$display_name,'is_grou_admin'=>$is_group_admin));
+			assign_to_template(array('oicount'=>$oicount,'previewtext'=>$previewtext,'previewclass'=>$previewclass,'loggedin'=>$loggedin,'user'=>$user,'displayname'=>$display_name,'is_group_admin'=>$is_group_admin));
 		} else {
 			//$template->assign('isecom',in_array('storeController',listActiveControllers()));
 			$loggedin = 0;
@@ -91,7 +90,7 @@ class loginController extends expController {
 		expSession::un_set("permissions");
 		expSession::un_set('uilevel');
 		expSession::clearCurrentUserSessionCache();
-		flash('message', 'You have been logged out');
+		flash('message', gt('You have been logged out'));
 		redirect_to(array("section"=>SITE_DEFAULT_SECTION));
 	}
 
@@ -99,9 +98,7 @@ class loginController extends expController {
 	 * main login method
 	 */
 	public static function login() {
-		global $user;
-
-		$user = user::login($_POST['username'],$_POST['password']);
+		user::login($_POST['username'],$_POST['password']);
 		if (!isset($_SESSION[SYS_SESSION_KEY]['user'])) {
 			flash('error', gt('Invalid Username / Password'));
 			if (expSession::is_set('redirecturl_error')) {
@@ -113,7 +110,7 @@ class loginController extends expController {
 			}
 		} else {
 			global $user;
-			flash ('message', 'Welcome back '.$_POST['username']);
+			if (!empty($_POST['username'])) flash('message', gt('Welcome back').' '.$_POST['username']);
 			foreach ($user->groups as $g) {
 				if (!empty($g->redirect)) {
 					$url = URL_FULL.$g->redirect;

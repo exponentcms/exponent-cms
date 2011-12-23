@@ -18,9 +18,9 @@
 {if $permissions.manage == 1}
 
 <div class="module storeadmin options">
-	<h1>{$moduletitle|default:"Manage Product Options"}</h1>
+	<h1>{$moduletitle|default:"Manage Product Options"|gettext}</h1>
 	
-	<a href="{link action=edit_optiongroup_master}">Create new option group</a>
+	<a href="{link action=edit_optiongroup_master}">{'Create new option group'|gettext}</a>
 	{foreach from=$optiongroups item=group}
     <table class="" style="border:1px solid red;">
     <thead><th>
@@ -32,7 +32,7 @@
 	</th></thead>  
     <tbody>
     <tr><td>
-	    <a href="{link action=edit_option_master optiongroup_master_id=$group->id}">Add an option to {$group->title}</a>
+	    <a href="{link action=edit_option_master optiongroup_master_id=$group->id}">{'Add an option to'|gettext} {$group->title}</a>
 	    <ul>
 	        {foreach name=options from=$group->option_master item=optname}
 	            <li>
@@ -51,14 +51,14 @@
                     {/if}
 	            </li>
 	        {foreachelse}
-	            This option group doesn't have any options yet.
+	            {'This option group doesn\'t have any options yet.'|gettext}
 	        {/foreach}
 	    </ul>
     </td></tr>
     </tbody>  
     </table>
 	{foreachelse}
-	    <h2>There are no product options setup yet.</h2>
+	    <h2>{'There are no product options setup yet.'|gettext}</h2>
 	{/foreach}
 </div>
 {/if}

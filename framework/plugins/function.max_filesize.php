@@ -17,6 +17,23 @@
 #
 ##################################################
 
+/**
+ * Smarty plugin
+ * @package Smarty-Plugins
+ * @subpackage Function
+ */
+
+/**
+ * Smarty {max_filesize} function plugin
+ *
+ * Type:     function<br>
+ * Name:     max_filesize<br>
+ * Purpose:  display php max filesize
+ *
+ * @param         $params
+ * @param \Smarty $smarty
+ * @return bool
+ */
 function smarty_function_max_filesize($params,&$smarty) {
     $size = ini_get("upload_max_filesize");
 	$size_msg = "";
@@ -40,7 +57,7 @@ function smarty_function_max_filesize($params,&$smarty) {
 			} else if ($size >= 1024) { // Kilo
 				$size_msg = round(($size / 1024),2) . " kB";
 			} else {
-				$size_msg = $size . " bytes";
+				$size_msg = $size . " ".gt("bytes");
 			}
 	}
 

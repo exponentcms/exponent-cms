@@ -132,7 +132,7 @@ class expCSS {
     }
     
     
-    public function themeCSS() {
+    public static function themeCSS() {
         global $css_theme, $head_config;
 
         $cssdirs[] = BASE.'themes/'.DISPLAY_THEME.'/css/';
@@ -166,7 +166,7 @@ class expCSS {
             }
         }
         // return the theme files in alphabetical order
-        ksort($css_theme);
+        if (is_array($css_theme)) ksort($css_theme);
     }
 
 }

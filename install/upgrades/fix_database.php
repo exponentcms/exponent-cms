@@ -33,13 +33,13 @@ class fix_database extends upgradescript {
 	 * name/title of upgrade script
 	 * @return string
 	 */
-	function name() { return gt("Replace Missing Database Table Entries"); }
+	function name() { return gt("Repair/Replace Missing Database Table Entries"); }
 
 	/**
 	 * generic description of upgrade script
 	 * @return string
 	 */
-	function description() { return "Update cross-referenced entries in the containers and sectionref tables."; }
+	function description() { return gt("Update cross-referenced entries in the containers and sectionref tables"); }
 
 	/**
 	 * additional test(s) to see if upgrade script should be run
@@ -57,29 +57,29 @@ class fix_database extends upgradescript {
 	    global $db;
 
 		print_r("<pre>");
-	    print_r("<h4>(Some Conditions can NOT be repaired by this Procedure!)</h4><br>");
+	    print_r("<h4>(".gt("Some Conditions can NOT be repaired by this Procedure")."!)</h4><br>");
 		print_r("<pre>");
 	// upgrade sectionref's that have lost their originals
-		print_r("<b>Searching for sectionrefs that have lost their originals</b><br><br>");
+		print_r("<b>".gt("Searching for sectionrefs that have lost their originals")."</b><br><br>");
 		$sectionrefs = $db->selectObjects('sectionref',"is_original=0");
 		if (count($sectionrefs)) {
-			print_r("Found: ".count($sectionrefs)." copies (not originals)<br>");
+			print_r(gt("Found").": ".count($sectionrefs)." ".gt("copies (not originals)")."<br>");
 		} else {
-			print_r(" - None Found: Good!<br>");
+			print_r(" - ".gt("None Found: Good")."!<br>");
 		}
 		foreach ($sectionrefs as $sectionref) {
 			if ($db->selectObject('sectionref',"module='".$sectionref->module."' AND source='".$sectionref->source."' AND is_original='1'") == null) {
 			// There is no original for this sectionref so change it to the original
 				$sectionref->is_original = 1;
 				$db->updateObject($sectionref,"sectionref");
-				print_r("Fixed: ".$sectionref->module." - ".$sectionref->source."<br>");
+				print_r(gt("Fixed").": ".$sectionref->module." - ".$sectionref->source."<br>");
 			}
 		}
 		print_r("</pre>");
 
 		print_r("<pre>");
 	// upgrade sectionref's that point to missing sections (pages)
-		print_r("<b>Searching for sectionrefs pointing to missing sections/pages <br>to fix for the Recycle Bin</b><br><br>");
+		print_r("<b>".gt("Searching for sectionrefs pointing to missing sections/pages")." <br>".gt("to fix for the Recycle Bin")."</b><br><br>");
 		$sectionrefs = $db->selectObjects('sectionref',"refcount!=0");
 		$found = 0;
 		foreach ($sectionrefs as $sectionref) {
@@ -87,30 +87,30 @@ class fix_database extends upgradescript {
 			// There is no section/page for sectionref so change the refcount
 				$sectionref->refcount = 0;
 				$db->updateObject($sectionref,"sectionref");
-				print_r("Fixed: ".$sectionref->module." - ".$sectionref->source."<br>");
+				print_r(gt("Fixed").": ".$sectionref->module." - ".$sectionref->source."<br>");
 				$found += 1;
 			}
 		}
 		if (!$found) {
-			print_r(" - None Found: Good!<br>");
+			print_r(" - ".gt("None Found: Good")."!<br>");
 		}
 		print_r("</pre>");
 
 		 print_r("<pre>");
 	 // delete sectionref's that have empty sources since they are dead
-		 print_r("<b>Searching for unassigned modules (no source)</b><br><br>");
+		 print_r("<b>".gt("Searching for unassigned modules (no source)")."</b><br><br>");
 		 $sectionrefs = $db->selectObjects('sectionref','source=""');
 		 if ($sectionrefs != null) {
-			 print_r("Removing: ".count($sectionrefs)." empty sectionref's (no source)<br>");
+			 print_r(gt("Removing").": ".count($sectionrefs)." ".gt("empty sectionrefs (no source)")."<br>");
 			 $db->delete('sectionref','source=""');
 		 } else {
-			 print_r(" - No Empties Found: Good!<br>");
+			 print_r(" - ".gt("No Empties Found: Good")."!<br>");
 		 }
 		 print_r("</pre>");
 
 		print_r("<pre>");
 	// add missing sectionrefs based on existing containers (fixes aggregation problem)
-		print_r("<b>Searching for missing sectionref's based on existing container's</b><br><br>");
+		print_r("<b>".gt("Searching for missing sectionrefs based on existing containers")."</b><br><br>");
 		$containers = $db->selectObjects('container',1);
 		foreach ($containers as $container) {
 			$iloc = expUnserialize($container->internal);
@@ -128,9 +128,9 @@ class fix_database extends upgradescript {
 					if (!empty($section)) {
 						$newSecRef->section = $section->id;
 						$db->insertObject($newSecRef,"sectionref");
-						print_r("Missing sectionref for container replaced: ".$iloc->mod." - ".$iloc->src." - PageID #".$section->id."<br>");
+						print_r(gt("Missing sectionref for container replaced").": ".$iloc->mod." - ".$iloc->src." - PageID #".$section->id."<br>");
 					} else {
-						print_r("Cant' find the container page for container: ".$iloc->mod." - ".$iloc->src."<br>");
+						print_r(gt("Can't find the container page for container").": ".$iloc->mod." - ".$iloc->src."<br>");
 					}
 				}
 			}

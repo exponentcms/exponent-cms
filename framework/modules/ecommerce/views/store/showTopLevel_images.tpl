@@ -37,7 +37,7 @@
             {icon class="configure" action=configure module=ecomconfig hash="#tab2" title="Configure Categories Globally" text="Configure Categories Globally"}{br}
         {/if*}
         {if $permissions.edit == 1 && $config.orderby=="rank"}
-            {ddrerank label="Products" sql=$rerankSQL model="product" controller="storeCategory" id=$current_category->id}
+            {ddrerank label="Products"|gettext sql=$rerankSQL model="product" controller="storeCategory" id=$current_category->id}
         {/if}
     {/permissions}
     {/if}
@@ -65,7 +65,7 @@
                             {icon controller=storeCategory action=edit record=$cat title="Edit `$cat->title`"}
                         {/if}
                         {if $permissions.delete == 1}
-                            {icon controller=storeCategory action=delete record=$cat title="Delete `$cat->title`" onclick="return confirm('Are you sure you want to delete this category?');"}
+                            {icon controller=storeCategory action=delete record=$cat title="Delete `$cat->title`" onclick="return confirm('"|cat:("Are you sure you want to delete this category?"|gettext)|cat:"');"}
                         {/if}
                     </div>
                     {/permissions}
@@ -137,7 +137,7 @@
 
     {$page->links}
     
-    {permissions level=$smarty.const.UILEVEL_NORMAL}
+    {permissions}
         {if $permissions.edit == 1}
             {icon class="add" action=create title="Add a new product" text="Add a New Product"}
       {/if}

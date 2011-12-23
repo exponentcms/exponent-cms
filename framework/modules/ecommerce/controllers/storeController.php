@@ -29,11 +29,12 @@ class storeController extends expController {
         'showFullTree'=>'Categories - Show Full Tree',
         'showallSubcategories'=>'Categories - Subcategories of current category',
         'upcoming_events'=>'Event Registration - Upcomming Events',
-		  'events_calendar'=>'Event Registration - Calendar View',
+		 'events_calendar'=>'Event Registration - Calendar View',
         'ecom_search'=>'Search - Autocomplete',
         'search_by_model_form'=>'Search - By Model',
         'quicklinks'=>'Links - Users Links',
-		  'showall_category_featured_products' => 'Show Featured Products under the current category'
+		'showall_category_featured_products' => 'Show Featured Products under the current category',
+		'showGiftCards'=>'Gift Cards UI',
     );
     
     // hide the configs we don't need
@@ -469,6 +470,24 @@ class storeController extends expController {
         $manufacturers = $db->selectObjectsBySql($sql);
         assign_to_template(array('manufacturers'=>$manufacturers));
     }
+	
+	function showGiftCards() {
+		
+		//Get all giftcards
+		$product_type = 'giftcard';
+		$giftcard  = new $product_type();
+		$giftcards = $giftcard->find("all", "product_type = 'giftcard'");
+		
+		//Grab the config
+		$this->grabConfig();
+		
+		//Set the needed config for the view
+		$config['custom_message_product'] = $this->config['custom_message_product'];
+		$config['minimum_gift_card_purchase'] = $this->config['minimum_gift_card_purchase'];
+		$records =  expSession::get('params');
+		expSession::un_set('params');
+		assign_to_template(array('giftcards' => $giftcards, 'config' => $config, 'records' => $records));
+	}
     
     function show() {
         global $db, $order, $template, $user;
@@ -481,11 +500,11 @@ class storeController extends expController {
             $product_type->user_message = "This product is temporarily unavailable for purchase.";   
         }elseif ($product->active_type == 2 && !($user->is_admin || $user->is_acting_admin))
         {
-            flash("error", $product->title ." is curently unavailable.");
+            flash("error", $product->title ." ".gt("is currently unavailable."));
             expHistory::back();   
         }elseif ($product->active_type == 2 && ($user->is_admin || $user->is_acting_admin))
         {
-            $product_type->user_message = $product->title ." is curently marked as unavailable for purchase or display.  Normal users will not see this product.";
+            $product_type->user_message = $product->title ." is currently marked as unavailable for purchase or display.  Normal users will not see this product.";
         }
         expHistory::set('viewable', $this->params);    
         
@@ -533,11 +552,11 @@ class storeController extends expController {
             $product_type->user_message = "This product is temporarily unavailable for purchase.";   
         }elseif ($product->active_type == 2 && !($user->is_admin || $user->is_acting_admin))
         {
-            flash("error", $product->title ." is curently unavailable.");
+            flash("error", $product->title ." ".gt("is currently unavailable."));
             expHistory::back();   
         }elseif ($product->active_type == 2 && ($user->is_admin || $user->is_acting_admin))
         {
-            $product_type->user_message = $product->title ." is curently marked as unavailable for purchase or display.  Normal users will not see this product.";
+            $product_type->user_message = $product->title ." is currently marked as unavailable for purchase or display.  Normal users will not see this product.";
         }
         foreach ($product_type->crosssellItem as &$csi) {
             $csi->getAttachableItems();
@@ -811,14 +830,14 @@ class storeController extends expController {
 #        eDebug($shipping_services);
 #        eDebug($shipping_methods);
 
-//eDebug($record);
-        //if new record and it's a child, then well set the child rank to be at the end
-        if (empty($record->id) && $record->isChild()) 
-        {               
-            $record->child_rank = $db->max('product','child_rank',null,'parent_id=' . $record->parent_id) + 1;
+		if($this->params['product_type'] == "product" || $this->params['product_type'] == "childProduct") {
+			//if new record and it's a child, then well set the child rank to be at the end
+			if (empty($record->id) && $record->isChild()) 
+			{               
+				$record->child_rank = $db->max('product','child_rank',null,'parent_id=' . $record->parent_id) + 1;
+			}
+			//eDebug($record,true);
         }
-        //eDebug($record,true);
-        
         $view='';
         $parent = null;
         if ((isset($this->params['parent_id']) && empty($record->id)))
@@ -949,24 +968,30 @@ class storeController extends expController {
 		
 		//Get the product type
         $product_type = isset($this->params['product_type']) ? $this->params['product_type'] : 'product';
-        
+      
 		$record = new $product_type();
+		
 		$record->update($this->params);
 		
-        $record->addContentToSearch();
+		if($product_type == "childProduct" || $product_type =="product") {
+			$record->addContentToSearch();
+			//Create a flash message and redirect to the page accordingly
+			if($record->parent_id != 0 ) {
+				$parent = new $product_type($record->parent_id,false,false);
+				flash("message",gt("Child product saved."));
+				redirect_to(array('controller'=>'store','action'=>'showByTitle','title'=>$parent->sef_url));
+			} elseif(isset($this->params['original_id']) ) {
+				flash("message",gt("Product copied and saved. You are now viewing your new product."));
+				redirect_to(array('controller'=>'store','action'=>'showByTitle','title'=>$record->sef_url));
+			} else {            
+				flash("message",gt("Product saved."));
+				redirect_to(array('controller'=>'store','action'=>'showByTitle','title'=>$record->sef_url));
+			}
+		} elseif($product_type == "giftcard") {
 		
-        //Create a flash message and redirect to the page accordingly
-        if($record->parent_id != 0 ) {
-            $parent = new $product_type($record->parent_id,false,false);
-            flash("message","Child product saved.");                
-            redirect_to(array('controller'=>'store','action'=>'showByTitle','title'=>$parent->sef_url));
-        } elseif(isset($this->params['original_id']) ) {
-            flash("message","Product copied and saved. You are now viewing your new product.");                
-            redirect_to(array('controller'=>'store','action'=>'showByTitle','title'=>$record->sef_url));
-        } else {            
-            flash("message","Product saved.");                
-            redirect_to(array('controller'=>'store','action'=>'showByTitle','title'=>$record->sef_url));
-        }        
+			flash("message",gt("Giftcard saved."));
+			redirect_to(array('controller'=>'store','action'=>'manage'));
+		}
     }
     
     function delete() {
@@ -985,14 +1010,17 @@ class storeController extends expController {
         $db->delete('optiongroup', 'product_id='.$product->id);
         //die();
         $db->delete('product_storeCategories', 'product_id='.$product->id.' AND product_type="'.$product_type.'"');
-        if ($product->hasChildren())
-        {
-            $this->deleteChildren();    
-        }    
-        
+		
+		if($product->product_type == "product") {
+			if ($product->hasChildren())
+			{
+				$this->deleteChildren();    
+			}    
+        }
+		
         $product->delete();
         
-        flash('message', 'Product deleted successfully.');
+        flash('message', gt('Product deleted successfully.'));
         expHistory::back();
     }
     
@@ -1006,7 +1034,7 @@ class storeController extends expController {
     
     static public function getProductTypes() {        
         $paths = array(
-            BASE.'framework/modules/ecommerce/products/datatypes',
+            BASE.'framework/modules/ecommerce/products/model',
         );
     
         $products = array();
@@ -1072,7 +1100,7 @@ class storeController extends expController {
         //eDebug($product, true);
         if (empty($product->id)) // || empty($product->previous_id)) 
         {
-            flash('error', 'There was an error deleting the child products.');
+            flash('error', gt('There was an error deleting the child products.'));
             expHistory::back(); 
         }
         $childrenToDelete = $product->find('all','parent_id='.$product->id);
@@ -1129,6 +1157,14 @@ class storeController extends expController {
     
     public function search() {
         global $db, $user;
+		
+		if(INCLUDE_AJAX_SEARCH == 1) {
+			$qry = trim($this->params['query']);
+			if(!empty($qry)) {
+				$search = new search();
+				$r = $search->getSearchResults($this->params['query']);
+			}
+		}
         //$this->params['query'] = str_ireplace('-','\-',$this->params['query']);
         $terms = explode(" ",$this->params['query']);
         $sql = "select DISTINCT(p.id) as id, p.title, model, sef_url, f.id as fileid, match (p.title,p.body) against ('" . $this->params['query'] .  "*' IN BOOLEAN MODE) as score ";
@@ -1190,13 +1226,13 @@ class storeController extends expController {
             {        
                 foreach($terms as $term)
                 {        
-                    if(stristr($r->title,$term)) $res[$r->model]->weight = $res[$r->model]->weight + 1;    
+                    if(stristr($r->title,$term)) $res[$r->model]->weight = $res[$r->model]->weight + 1;   			
                 }  
             }
         }        
         usort($res,'sortSearch');        
         
-        $ar = new expAjaxReply(200, gettext('Here\'s the items you wanted'), $res);
+        $ar = new expAjaxReply(200, gt('Here\'s the items you wanted'), $res);
         $ar->send();
     } 
     
@@ -1281,7 +1317,7 @@ class storeController extends expController {
         //$file = new expFile($this->params['expFile']['batch_process_upload'][0]);
         if(!empty($_FILES['batch_upload_file']['error']))
         {
-            flash('error','There was an error uploading your file.  Please try again.');
+            flash('error',gt('There was an error uploading your file.  Please try again.'));
             redirect_to(array('controller'=>'store','action'=>'batch_process'));        
         }
         
@@ -1557,7 +1593,7 @@ class storeController extends expController {
 //        eDebug($_FILES,true);
         if(!empty($_FILES['address_csv']['error']))
         {
-            flash('error','There was an error uploading your file.  Please try again.');
+            flash('error',gt('There was an error uploading your file.  Please try again.'));
             redirect_to(array('controller'=>'store','action'=>'import_external_addresses'));        
         }
         
@@ -1854,7 +1890,7 @@ class storeController extends expController {
 		if(isset($_FILES['modelaliases']['tmp_name'])) {
 			if(!empty($_FILES['modelaliases']['error']))
 			{
-				flash('error','There was an error uploading your file.  Please try again.');
+				flash('error',gt('There was an error uploading your file.  Please try again.'));
 				redirect_to(array('controller'=>'store','action'=>'uploadModelAliases'));        
 			}
 			
@@ -2020,10 +2056,10 @@ class storeController extends expController {
 			//Update the record in the tmp table to mark it as process
 			$res->is_processed = 1;
 			$db->updateObject($res, 'model_aliases_tmp');
-			flash("message", "Product succesfully Saved.");
+			flash("message", gt("Product succesfully Saved."));
 			redirect_to(array('controller'=>'store','action'=>'processModelAliases', 'index' => $index));
 		} else {
-			flash("error", "Product title is invalid.");
+			flash("error", gt("Product title is invalid."));
 			redirect_to(array('controller'=>'store','action'=>'processModelAliases', 'index' => $index - 1, 'error' => 'Product title is invalid.'));
 		}
 	}	

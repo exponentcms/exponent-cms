@@ -19,11 +19,11 @@
 {/css}
 
 <div class="module cart split-shipping">
-    <h1>{$moduletitle|default:"Choose which addresses to ship your items."}</h1>    
+    <h1>{$moduletitle|default:"Choose which addresses to ship your items."|gettext}</h1>
     
     {if $addresses_dd|@count < 1}
         <a href="{link controller=address action=create}">
-            It doesn't appear you have any addresses setup yet.  Click here to add an address.
+            {'It doesn\'t appear you have any addresses setup yet.  Click here to add an address.'|gettext}
         </a>    
     {else}
         {form action="saveSplitShipping"}
@@ -48,7 +48,7 @@
                 </table>
             {/if}
             {/foreach}
-            {control type="buttongroup" submit="Submit" cancel="Cancel"}
+            {control type="buttongroup" submit="Submit"|gettext cancel="Cancel"|gettext}
         {/form}
     {/if}
 </div>

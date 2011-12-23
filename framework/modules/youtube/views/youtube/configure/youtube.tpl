@@ -14,7 +14,7 @@
  *
  *}
 
-<h2>{"Configure"|gettext} YouTube {"Module"|gettext}</h2>
-{control type="text" name="width" label="Width of Video" size=4 filter=integer value=$config.width}
-{control type="text" name="height" label="Height of Video" size=4 filter=integer value=$config.height}
+<h2>{"Configure this Module"|gettext}</h2>
+{control type="text" name="width" label="Width of Video"|gettext size=4 filter=integer value=$config.width}
+{control type="text" name="height" label="Height of Video"|gettext size=4 filter=integer value=$config.height}
 

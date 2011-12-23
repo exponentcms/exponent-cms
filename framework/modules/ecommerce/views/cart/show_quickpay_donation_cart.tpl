@@ -17,8 +17,8 @@
 {if $items|@count > 0}
 <table id="cart" width="100%" cellpadding="0" cellspacing="0">
     <tr>
-        <th>Item</th>
-        <th>Price</th>
+        <th>{'Item'|gettext}</th>
+        <th>{'Price'|gettext}</th>
         <th>&nbsp;</th>
     </tr>
     {foreach from=$items item=item}
@@ -28,12 +28,12 @@
         </td>
         <td class="prodrow price" id="price-{$item->id}">${$item->products_price*$item->quantity|number_format:2}</td>
         <!--<td class="prodrow price" id="price-{$item->id}">${$item->getTotal()|number_format:2}</td>-->
-        <td class="prodrow">{icon img="ecom/delete-from-cart.png" action=removeItem record=$item alt="Remove from cart"}</td>
+        <td class="prodrow">{icon img="ecom/delete-from-cart.png" action=removeItem record=$item alt="Remove from cart"|gettext}</td>
     </tr>
     {/foreach}
 </table>
 {else}
 <div class="no-items">
-    You don't have any items in your cart.
+    {'You currently have no items in your cart'|gettext}
 </div>
 {/if}

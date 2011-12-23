@@ -18,15 +18,15 @@
 	<div class="form_header">
 		<div class="info-header">
 			<div class="related-actions">
-				{help text="Get Help Managing Pages" module="manage-all-pages"}
+				{help text="Get Help"|gettext|cat:" "|cat:("Managing Pages"|gettext) module="manage-all-pages"}
 			</div>
 			<h1>{'Manage Pages'|gettext}</h1>
 		</div>
 	</div>
-	<div id="navmanager-tabs" class="yui-navset yui3-skin-sam hide">
+	<div id="navmanager-tabs" class="yui-navset exp-skin-tabview hide">
 	    <ul class="yui-nav">
-        	<li class="selected"><a href="#tab1"><em>Hierarchy</em></a></li>
-	        {if $canManageStandalones}<li><a href="#tab2"><em>Standalone</em></a></li>{/if}
+        	<li class="selected"><a href="#tab1"><em>{'Hierarchy'|gettext}</em></a></li>
+	        {if $canManageStandalones}<li><a href="#tab2"><em>{'Standalone'|gettext}</em></a></li>{/if}
         	{*if $canManagePagesets}<li><a href="#tab3"><em>Page Sets</em></a></li>{/if*}
 	    </ul>            
 	    <div class="yui-content">
@@ -35,7 +35,7 @@
         	{*if $canManagePagesets}<div id="tab3">{chain module=navigationmodule action=manage_pagesets}</div>{/if*}
 	    </div>
 	</div>
-	<div class="loadingdiv">{'Loading'|gettext}</div>
+	<div class="loadingdiv">{'Loading Pages'|gettext}</div>
 </div>
 
 {script unique="editform" yui3mods=1}

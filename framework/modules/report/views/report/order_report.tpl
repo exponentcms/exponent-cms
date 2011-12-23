@@ -12,109 +12,109 @@
         <thead>
             <tr>
                 <th>
-                    <h1>{gettext str="Build a Report"}</h1>
+                    <h1>{"Build a Report"|gettext}</h1>
                 </th>
             </tr>
         </thead>
         <tbody>
             <tr class="even">   
                   <td>
-                    {control type="dropdown" name="order_type" label="An Order Type Of..." size=4 multiple=true items=$order_type default=-1}    
+                    {control type="dropdown" name="order_type" label="An Order Type Of..."|gettext size=4 multiple=true items=$order_type default=-1}
                 </td>
             </tr>
             <tr class="odd">                
                 <td>
-                    {control type="checkbox" name="include_purchased_date" label="Include Purchase Date" flip=true}
+                    {control type="checkbox" name="include_purchased_date" label="Include Purchase Date"|gettext flip=true}
                 </td>
             </tr>
             <tr class="odd">                
                 <td>
-                    {control type="calendar" name="pstartdate" label="Purchased Between" default_date=$prev_month default_hour='12' default_min='00' default_ampm='AM'}
+                    {control type="calendar" name="pstartdate" label="Purchased Between"|gettext default_date=$prev_month default_hour='12' default_min='00' default_ampm='AM'}
                 </td>
             </tr>
             <tr class="odd">
                  <td>
-                    {control type="calendar" name="penddate" label="And" default_date=$now_date default_hour=$now_hour default_min=$now_min default_ampm=$now_ampm}
+                    {control type="calendar" name="penddate" label="And"|gettext default_date=$now_date default_hour=$now_hour default_min=$now_min default_ampm=$now_ampm}
                 </td>
             </tr>
              <tr class="even">
                   <td>
-                    {control type="dropdown" name="order_status" label="A CURRENT Order Status Of..." size=4 multiple=true items=$order_status default=-1}    
+                    {control type="dropdown" name="order_status" label="A CURRENT Order Status Of..."|gettext size=4 multiple=true items=$order_status default=-1}
                 </td>
             </tr>
             <tr class="odd">                
                 <td>
-                    {control type="checkbox" name="include_status_date" label="Include Status Changed Date" flip=true}
+                    {control type="checkbox" name="include_status_date" label="Include Status Changed Date"|gettext flip=true}
                 </td>
             </tr>
             <tr class="odd">                
                 <td>
-                    {control type="calendar" name="sstartdate" label="Status Changed Between" default_date=$prev_month default_hour='12' default_min='00' default_ampm='AM'}
+                    {control type="calendar" name="sstartdate" label="Status Changed Between"|gettext default_date=$prev_month default_hour='12' default_min='00' default_ampm='AM'}
                 </td>
             </tr>
             <tr class="odd">
                  <td>
-                    {control type="calendar" name="senddate" label="And" default_date=$now_date default_hour=$now_hour default_min=$now_min default_ampm=$now_ampm}
+                    {control type="calendar" name="senddate" label="And"|gettext default_date=$now_date default_hour=$now_hour default_min=$now_min default_ampm=$now_ampm}
                 </td>
             </tr>
             <tr class="even">
                   <td>
-                    {control type="dropdown" name="order_status_changed" label="Status Was Changed To..." size=4 multiple=true items=$order_status default=-1}    
+                    {control type="dropdown" name="order_status_changed" label="Status Was Changed To..."|gettext size=4 multiple=true items=$order_status default=-1}
                 </td>
             </tr>
             <!--tr class="even">
                   <td>
-                    {* control type="dropdown" name="order_type" label="An Order Type Of" size=4 multiple=true items=$order_type default=-1 *}    
+                    {* control type="dropdown" name="order_type" label="An Order Type Of..."|gettext size=4 multiple=true items=$order_type default=-1 *}
                 </td>
             </tr-->
             <tr class="odd">
                 <td>
-                    {control type="dropdown" name="order-range-op" label="An Order ID..." items="Equal to,Less than,Greater than" values="e,l,g"}
+                    {control type="dropdown" name="order-range-op" label="An Order ID..."|gettext items="Equal to,Less than,Greater than" values="e,l,g"}
                     {control type="text" name="order-range-num" value=$record->orn class="collapse orn"}
                 </td>
             </tr>
              <tr class="even">
                  <td>
-                    {control type="dropdown" name="order-price-op" label="An Order Value..." items="Equal to,Less than,Greater than" values="e,l,g"}
+                    {control type="dropdown" name="order-price-op" label="An Order Value..."|gettext items="Equal to,Less than,Greater than" values="e,l,g"}
                     {control type="text" name="order-price-num" value=$record->opn class="collapse orn"}
                 </td> 
             </tr>
             <tr class="odd">
                 <td>
-                    {control type="text" name="pnam" label="Containg A Product Name Like" value=$record->product}
+                    {control type="text" name="pnam" label="Containg A Product Name Like"|gettext value=$record->product}
                 </td>
                 
             </tr>
             <tr class="even">
                 <td>
-                    {control type="text" name="sku" label="Containg A SKU Like" value=$record->sku}
+                    {control type="text" name="sku" label="Containg A SKU Like"|gettext value=$record->sku}
                 </td>
                 
             </tr>
             <tr class="odd">
                 <td>
-                    {control type="checkbox" name="uidata" label="Has Items With User Input Data" value=$record->uidata flip=true}
+                    {control type="checkbox" name="uidata" label="Has Items With User Input Data"|gettext value=$record->uidata flip=true}
                 </td>
                 
             </tr>
             <tr class="even">
                 <td>
-                    {control type="dropdown" name="product_status" label="Contains A Product with a Status Of" includeblank="--Any--" size=4 multiple=true frommodel=product_status}    
+                    {control type="dropdown" name="product_status" label="Contains A Product with a Status Of"|gettext includeblank="--Any--"|gettext size=4 multiple=true frommodel=product_status}
                 </td>                
             </tr>
             <tr class="odd">
                  <td>
-                    {control type="dropdown" name="discounts" label="Using Discount Code(s)" size=4 multiple=true items=$discounts default="-1" include_blank="true"}    
+                    {control type="dropdown" name="discounts" label="Using Discount Code(s)"|gettext size=4 multiple=true items=$discounts default="-1" include_blank="true"}
                 </td> 
             </tr>
             <tr class="even">
                   <td>
-                    {control type="text" name="blshpname" label="A Billing or Shipping Name Containing" value=$record->blshpname}
+                    {control type="text" name="blshpname" label="A Billing or Shipping Name Containing"|gettext value=$record->blshpname}
                 </td>
             </tr>
             <tr class="odd">
                 <td>
-                    {control type="text" name="email" label="An Email Address Containing" value=$record->email}
+                    {control type="text" name="email" label="An Email Address Containing"|gettext value=$record->email}
                 </td>
             </tr>
             <tr class="even">
@@ -133,12 +133,12 @@
            
             <tr class="even">
                 <td>
-                    {control type="dropdown" name="payment_method" label="A Payment Method of" multiple=true size=4 items=$payment_methods}
+                    {control type="dropdown" name="payment_method" label="A Payment Method of"|gettext multiple=true size=4 items=$payment_methods}
                 </td>
             </tr>
              <tr class="odd">
                 <td>
-                    {control type="text" name="referrer" label="Referrer Like" value=$record->referrer}
+                    {control type="text" name="referrer" label="Referrer Like"|gettext value=$record->referrer}
                 </td>
             </tr>
             <tr class="even">

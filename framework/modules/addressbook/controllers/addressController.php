@@ -115,7 +115,7 @@ class addressController extends expController {
         }
         else
         {
-            flash("error","You must have at least one address.");
+            flash("error",gt("You must have at least one address."));
         }
 	    expHistory::back();
 	}
@@ -125,7 +125,7 @@ class addressController extends expController {
         global $db, $user;
         $object->id = $this->params['id'];
         $db->setUniqueFlag($object, 'addresses', $this->params['is_what'], "user_id=" . $user->id);
-        flash("message", "Successfully updated address.");
+        flash("message", gt("Successfully updated address."));
         expHistory::back(); 
     }
     
@@ -169,7 +169,7 @@ class addressController extends expController {
             if(isset($this->params['region_rank'][$region_id])) $gr->rank = $this->params['region_rank'][$region_id];
             $gr->save();            
         }
-        flash('message','Address configurations successfully updated.');
+        flash('message',gt('Address configurations successfully updated.'));
         redirect_to(array('controller'=>'address','action'=>'manage'));        
     }
 }

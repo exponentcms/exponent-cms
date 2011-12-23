@@ -42,20 +42,20 @@
 				    </td>
 				{/foreach}
 			    <!--td>
-			        {permissions level=$smarty.const.UILEVEL_PERMISSIONS}
+			        {permissions}
                     <div class="item-actions">
                     {if $permissions.edit == true}
-                        {icon controller=$page->controller action=edit record=$item title="Edit"}
+                        {icon controller=$page->controller action=edit record=$item}
                     {/if}
                     {if $permissions.delete == true}
-                        {icon controller=$page->controller action=delete record=$item title="Delete" onclick="return confirm('Are you sure you want to delete this?');"}
+                        {icon controller=$page->controller action=delete record=$item}
                     {/if}
                     </div>
                     {/permissions}
 			    </td-->
 			</tr>
 			{foreachelse}
-			    <td colspan="{$page->columns|count}">No Data.</td>
+			    <td colspan="{$page->columns|count}">{'No Data'|gettext}</td>
 			{/foreach}
 		</tbody>
 	</table>

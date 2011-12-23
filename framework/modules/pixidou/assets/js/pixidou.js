@@ -14,7 +14,7 @@ pixidou = {
 	imageHistoryIndex: 0, // index to know where we are in our image history
 	savedState: true, // whether the image must be saved or not in order to continue (useful for resize/crop)
 	currentTool: null, // current tool, currently resize/crop
-	
+
 	/**
 	*	Initializes the whole thing to get going
 	*	@params image String
@@ -26,6 +26,7 @@ pixidou = {
 		pixidou.image = image;
 		pixidou.imageWidth = width;
 		pixidou.imageHeight = height;
+
 	},
 	
 	/**
@@ -66,8 +67,12 @@ pixidou = {
 	*	Disables our crop tool
 	*/
 	disableCropTool: function(){
+//        pixidou.crop.reset();
 		pixidou.crop.destroy();
-		// set current tool to null
+
+        // hide apply/cancel buttons
+        ui.disableApplyButton();
+        pixidou.savedState = true;
 		pixidou.currentTool = null;
 	},
 	
@@ -169,7 +174,7 @@ pixidou = {
 			
 			// init our control
 			pixidou.resize = new YAHOO.util.Resize('yuiImg', {
-	        	handles: 'all',
+//	        	handles: 'all',
 	            knobHandles: true,
 	            height: pixidou.imageHeight + 'px',
 	            width: pixidou.imageWidth + 'px',
@@ -178,7 +183,11 @@ pixidou = {
 	            status: true,
 	            draggable: false
 	        });
-			
+            pixidou.resize.on('startResize', function() {
+                this.getProxyEl().innerHTML = '<img src="' + this.get('element').src + '" style="height: 100%; width: 100%;">';
+                Dom.setStyle(this.getProxyEl().firstChild, 'opacity', '.25');
+            }, pixidou.resize, true);
+
 			// remove any listeners for the apply/cancel button
 			YAHOO.util.Event.removeListener('applyTool', 'click');
 			YAHOO.util.Event.removeListener('cancelTool', 'click');
@@ -186,7 +195,7 @@ pixidou = {
 			// set new listeners
 			YAHOO.util.Event.addListener('applyTool', 'click', pixidou.applyResizeTool);
 			YAHOO.util.Event.addListener('cancelTool', 'click', pixidou.disableResizeTool);
-			
+
 			// show the buttons in the footer
 			ui.enableApplyButton();
 			
@@ -205,9 +214,11 @@ pixidou = {
 		pixidou.resize.reset();
 		pixidou.resize.destroy();
 	
+        // hide apply/cancel buttons
+        ui.disableApplyButton();
 		pixidou.savedState = true;
+        pixidou.zoomTo(100);
 		pixidou.currentTool = null;
-		
 	},
 	
 	/**
@@ -442,9 +453,6 @@ pixidou = {
 			// update our image container
 			pixidou.updateImage(imageObject.image, imageObject.width, imageObject.height);
 
-			//FIXME we must update the image on disk to be able to continue working since most operations do a file check first
-			// this method completely reverts image to original rather than one step though
-			pixidou.saveImage(/[^.]+$/.exec(pixidou.image));
 		}
 	},
 	

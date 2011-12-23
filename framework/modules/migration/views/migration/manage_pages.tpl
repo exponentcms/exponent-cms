@@ -21,22 +21,22 @@
 <div class="module migration manage-pages">
     <div class="info-header">
         <div class="related-actions">
-			{help text="Get Help with Migrating Pages" module="migrate-pages"}
+			{help text="Get Help"|gettext|cat:" "|cat:("Migrating Pages"|gettext) module="migrate-pages"}
         </div>
 		<h1>{"Migrate Pages"|gettext}</h1>	    
     </div>
 
     <p> 
-        The following is a list of pages we found in the database {$config.database}.
-        Select the pages you would like to pull over from {$config.database}.
+        {'The following is a list of pages we found in the database'|gettext} {$config.database}.
+        {'Select the pages you would like to pull over from'|gettext} {$config.database}.
     </p>
     {form action="migrate_pages"}
         <table class="exp-skin-table">
         <thead>
             <tr>
-                <th>Migrate</th>
-                <th>Replace</th>
-                <th>Name</th>
+                <th>{'Migrate'|gettext}</th>
+                <th>{'Replace'|gettext}</th>
+                <th>{'Name'|gettext}</th>
             </tr>
         </thead>
         <tbody>
@@ -44,7 +44,7 @@
         <tr class="{cycle values="even,odd"}">            
             <td>
 				{if ($page->exists == true)}
-					<em>(exists)</em>
+					<em>({'exists'|gettext})</em>
 				{else}
 					{control type="checkbox" name="pages[]" label=" " value=$page->id checked=true}
 				{/if}
@@ -53,22 +53,22 @@
 				{if ($page->exists == true)}
 					{control type="checkbox" name="rep_pages[]" label=" " value=$page->id checked=false}
 				{else}
-					<em>(new)</em>
+					<em>({'new'|gettext})</em>
 				{/if}
             </td>
             <td>
-                {$page->name} {if ($page->parent == -1)}(<b><em>Standalone</em></b>){/if}
+                {$page->name} {if ($page->parent == -1)}(<b><em>{'Standalone'|gettext}</em></b>){/if}
             </td>
         </tr>
         {foreachelse}
-			<tr><td colspan=>No new pages found in the database {$config.database}</td></tr>
+			<tr><td colspan=>{'No new pages found in the database'|gettext} {$config.database}</td></tr>
         {/foreach}
         </tbody>
         </table>
-		{control type="checkbox" name="copy_permissions" label="Migrate page permissions? (erases current page permissions!)" value=1 checked=false}
-        {control type="checkbox" name="wipe_pages" label="Erase all current pages and then try again?" value=1 checked=false}
-        {control type="buttongroup" submit="Migrate Pages" cancel="Cancel"}
+		{control type="checkbox" name="copy_permissions" label="Migrate page permissions"|gettext|cat:"? ("|cat:("erases current page permissions"|gettext)|cat:"!)" value=1 checked=false}
+        {control type="checkbox" name="wipe_pages" label="Erase all current pages and then try again"|gettext|cat:"?" value=1 checked=false}
+        {control type="buttongroup" submit="Migrate Pages"|gettext cancel="Cancel"|gettext}
     {/form}
 	{br}<hr>{br}
-	<a class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" href="{link module=migration action=manage_files}"><b>Next Step -> Migrate Files</b></a>
+	<a class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" href="{link module=migration action=manage_files}"><b>{'Next Step -> Migrate Files'|gettext}</b></a>
 </div>

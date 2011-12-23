@@ -16,19 +16,19 @@
 
 <div class="module text edit">
     {if $record->id != ""}
-        <h1>Editing: {$record->title}</h1>
+        <h1>{'Editing'|gettext}: {$record->title}</h1>
     {else}
-        <h1>New {$modelname}</h1>
+        <h1>{'New Text Item'|gettext}</h1>
     {/if}
 
     {form action=update}
         {control type=hidden name=id value=$record->id}
         {control type=hidden name=rank value=$record->rank}
-        {control type=text name=title label="Title" value=$record->title|escape:"html"}
-        {control type=html name=body label="Body Content" value=$record->body}
+        {control type=text name=title label="Title"|gettext value=$record->title|escape:"html"}
+        {control type=html name=body label="Body Content"|gettext value=$record->body}
         {if $config.filedisplay}
-            {control type="files" name="files" label="Files" value=$record->expFile}
+            {control type="files" name="files" label="Files"|gettext value=$record->expFile}
         {/if}
-        {control type=buttongroup submit="Save Text" cancel="Cancel"}
+        {control type=buttongroup submit="Save Text"|gettext cancel="Cancel"|gettext}
     {/form}   
 </div>

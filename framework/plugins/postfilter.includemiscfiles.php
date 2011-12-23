@@ -29,10 +29,25 @@
 #
 # 
 ##################################################
-/* exdoc
- * 
- * This function creates html loaders for - currently - JS and CSS Files
- * Please note it will only work for newtype __names (SomeModule, SomeForm, SomeTheme, SomeControl...)
+
+/**
+ * Smarty plugin
+ * @package Smarty-Plugins
+ * @subpackage PostFilter
+ */
+
+/**
+ * Smarty {includemiscfiles} postfilter plugin
+ *
+ * Type:     postfilter<br>
+ * Name:     includemiscfiles<br>
+ * Purpose:   This function creates html loaders for - currently - JS and CSS Files
+ *            Please note it will only work for newtype __names (SomeModule, SomeForm, SomeTheme, SomeControl...)
+ *
+ * @param         $compiledsource
+ * @param \Smarty $smarty
+ *
+ * @return bool
  */
 function smarty_postfilter_includemiscfiles($compiledsource, &$smarty) {
 	ob_start();

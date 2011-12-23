@@ -15,8 +15,8 @@
  *}
 
 {if $container != null}
-<a name="mod_{$container->id}"></a> 
-	{permissions level=$smarty.const.UILEVEL_STRUCTURE}
+    <a name="mod_{$container->id}"></a>
+	{permissions}
 		{if ($permissions.administrate == 1 || $permissions.edit_module == 1 || $permissions.delete_module == 1 || $permissions.add_module == 1 || $container->permissions.administrate == 1)}
 			<div id="module{$container->id}" class="exp-container-module-wrapper">
 				<div class="container-chrome module-chrome">
@@ -26,13 +26,13 @@
 		{/if}
 	{/permissions}
 	{$container->output}
-	{permissions level=$smarty.const.UILEVEL_STRUCTURE}
+	{permissions}
 		{if ($permissions.administrate == 1 || $permissions.edit_module == 1 || $permissions.delete_module == 1 || $permissions.add_module == 1 || $container->permissions.administrate == 1)}
 			</div>
 		{/if}
 	{/permissions}
 {else}
-	{permissions level=$smarty.const.UILEVEL_STRUCTURE}
+	{permissions}
 		{if $permissions.add_module == 1 && $hidebox == 0}
 			<a class="addmodule" href="{link action=edit rank=$i}"><span class="addtext">{'Add New Module'|gettext}</span></a>
 		{/if}

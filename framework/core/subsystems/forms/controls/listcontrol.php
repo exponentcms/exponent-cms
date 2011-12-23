@@ -39,9 +39,9 @@ class listcontrol extends formcontrol {
 
     function toHTML($label,$name) {
         $html  = '<div id="list'.$name.'" class="list control">';
-        $html .= '<label>Add '.$label.'</label>';
+        $html .= '<label>'.gt('Add').' '.$label.'</label>';
         $html .= '<input id="list-input-'.$name.'" name="list-input-'.$name.'">';
-        $html .= '<a class="addtolist" href="#">Add to list</a>';
+        $html .= '<a class="addtolist" href="#">'.gt('Add to list').'</a>';
         $html .= '<h2>'.$label.'</h2>';
         $html .= '<ul id="list-values-'.$name.'">';
         
@@ -51,7 +51,7 @@ class listcontrol extends formcontrol {
                 $html .= $value.'<a class="remove-from-list" href="#">remove?</a></li>';
             }
         } else {
-            '<h2 id="empty-list-'.$name.'">There are no items yet.</h2>';        
+            '<h2 id="empty-list-'.$name.'">'.gt('There are no items yet.').'</h2>';
         }
         
         $html .= '</ul>';
@@ -68,7 +68,7 @@ class listcontrol extends formcontrol {
             newLabel.innerHTML = listitem.value + '<input type=\"hidden\" name=\"".$name."[]\" value=\"'+listitem.value+'\" />';
             var newRemove = document.createElement('a');
             newRemove.setAttribute('href','#');
-            newRemove.innerHTML = ' Remove?';
+            newRemove.innerHTML = ' ".gt('Remove')."?';
             newli.appendChild(newLabel);
             newli.appendChild(newRemove);
             var list = YAHOO.util.Dom.get('list-values-".$name."');
@@ -116,7 +116,7 @@ class listcontrol extends formcontrol {
             } else {
                 $filepic = "<img class=\"filepic\" src=".URL_FULL."thumb.php?id=".$val->id."&square=24\">";
             }
-            $html .= "<li class=\"".$cycle."\" id=\"imgdiv".$val->id."\">";
+            $html = "<li class=\"".$cycle."\" id=\"imgdiv".$val->id."\">";
             $html .= "<input type=\"hidden\" name=\"".$subTypeName."\" value=\"".$val->id."\">";
             $html .= "<div class=\"fpdrag\"></div>";
             $html .= $filepic;

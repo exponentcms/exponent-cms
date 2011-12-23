@@ -20,30 +20,30 @@
 
 <h1>{"Tax Class Manager"|gettext}</h1>
 
-{icon action=edit class="add" text="Add a Tax Class"}  
-{icon action=manage_zones class="manage" text="Manage Zones"}
+{icon action=edit class="add" text="Add a Tax Class"|gettext}
+{icon action=manage_zones class="manage" text="Manage Zones"|gettext}
 {br}
 {br}
 <table border="0" cellspacing="0" cellpadding="0" class="exp-skin-table">
     <thead>
         <tr>
             <th>
-                Class
+                {'Class'|gettext}
             </th>
             <th>
-                Rate
+                {'Rate'|gettext}
             </th>
             <th>
-                Zone
+                {'Zone'|gettext}
             </th>
             <th>
-                State
+                {'State'|gettext}
             </th>
             <th>
-                Country
+                {'Country'|gettext}
             </th>
 			 <th>
-                Action
+                {'Action'|gettext}
             </th>
         </tr>
     </thead>

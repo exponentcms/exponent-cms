@@ -16,7 +16,7 @@
 
 <div class="store showall showall-by-manufacturer">
     
-    <h1>All Products for {$company->title}</h1>
+    <h1>{'All Products for'|gettext} {$company->title}</h1>
     {pagelinks paginate=$page top=1}
     <div class="products">
         {foreach from=$page->records item=listing name=listings}
@@ -27,7 +27,7 @@
     {permissions}
 		<div class="module-actions">
 			{if $permissions.edit == 1}
-				{icon class=add action=create title="Add a new product" text="Add a New Product"}
+				{icon class=add action=create text="Add a New Product"|gettext}
 			{/if}
 		</div>
     {/permissions}

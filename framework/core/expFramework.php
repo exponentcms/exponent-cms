@@ -32,6 +32,12 @@ $available_controllers = array();
  * @name $validateTheme
  */
 $validateTheme = array("headerinfo"=>false,"footerinfo"=>false);
+/**
+ * Stores the list of module scopes
+ * @global array $module_scope
+ * @name $module_scope
+ */
+$module_scope = array();
 
 // expLang
 /**
@@ -46,6 +52,12 @@ $cur_lang = array();
  * @name $default_lang
  */
 $default_lang = array();
+/**
+ * Stores the name of the default language file
+ * @global array $default_lang_file
+ * @name $default_lang_file
+ */
+$default_lang_file = '';
 /**
  * Stores the name of the language file to be created
  * @global array $target_lang_file
@@ -68,7 +80,6 @@ $db = null;
  * @name $history
  */
 $history = null;
-//$SYS_FLOW_REDIRECTIONPATH = '';
 
 // user model
 /**
@@ -86,7 +97,6 @@ $user = null;
  */
 $SYS_USERS_CACHE = array();
 
-
 // expRouter
 /**
  * Stores the routing/link/url object
@@ -94,6 +104,12 @@ $SYS_USERS_CACHE = array();
  * @name $router
  */
 $router = null;
+/**
+ * Stores the routing/link/url object
+ * @global section $sectionObj
+ * @name $sectionObj
+ */
+$sectionObj = null;
 
 // expCore
 /**
@@ -102,7 +118,6 @@ $router = null;
  * @name $sections
  */
 $sections = array();
-
 // expPermissions
 /**
  * Stores the permission data for the current user.
@@ -119,6 +134,99 @@ $exponent_permissions_r = array();
  * @name $userjsfiles
  */
 $userjsfiles = array();
+/**
+ * Stores the user's javascript files
+ * @global array $js2foot
+ * @name $js2foot
+ */
+$js2foot = array();
+//$yui2js = array();
+/**
+ * Stores the user's javascript files
+ * @global array $yui3js
+ * @name $yui3js
+ */
+$yui3js = array();
+/**
+ * Stores the user's javascript files
+ * @global array $expJS
+ * @name $expJS
+ */
+$expJS = array();
+
+// expCSS
+/**
+ * Stores the user's css files
+ * @global array $css_primer
+ * @name $css_primer
+ */
+$css_primer = array();
+/**
+ * Stores the user's css files
+ * @global array $css_core
+ * @name $css_core
+ */
+$css_core = array();
+/**
+ * Stores the user's css files
+ * @global array $css_links
+ * @name $css_links
+ */
+$css_links = array();
+/**
+ * Stores the user's css files
+ * @global array $css_theme
+ * @name $css_theme
+ */
+$css_theme = array();
+/**
+ * Stores the user's css files
+ * @global array $css_inline
+ * @name $css_inline
+ */
+$css_inline = array();
+/**
+ * Stores the user's css files
+ * @global array $head_config
+ * @name $head_config
+ */
+$head_config = array();
+/**
+ * Stores the user's css files
+ * @global string $jsForHead
+ * @name $jsForHead
+ */
+$jsForHead = "";
+/**
+ * Stores the user's css files
+ * @global string $cssForHead
+ * @name $cssForHead
+ */
+$cssForHead = "";
+
+// expTemplate
+/**
+ * Stores the global template
+ * @global \basetemplate $template
+ * @name $template
+ */
+$template = null;
+
+// expTimer
+/**
+ * Stores the timer
+ * @global expTimer $timer
+ * @name $timer
+ */
+$timer = null;
+
+// e-commerce
+/**
+ * Stores the order
+ * @global \order $order
+ * @name $order
+ */
+$order = null;
 
 function renderAction(array $parms=array()) {
     global $user;
@@ -140,7 +248,7 @@ function renderAction(array $parms=array()) {
     } elseif ($controllerClass->hasMethod('showall')) {
         $action = 'showall';
     } else {
-        expQueue::flashAndFlow('error', 'The requested action could not be performed: Action not found');
+        expQueue::flashAndFlow('error', gt('The requested action could not be performed: Action not found'));
     }
 
     // initialize the controller.
@@ -164,7 +272,7 @@ function renderAction(array $parms=array()) {
         $controller->$model = new $model(null,false,false);   //added null,false,false to reduce unnecessary queries. FJD
     }
     
-    // add the $_REQUEST values to the controller <- pb: took this out and passed in the params to the controller consttuctor above
+    // add the $_REQUEST values to the controller <- pb: took this out and passed in the params to the controller constructor above
     //$controller->params = $parms;
     //check the perms for this action
     $perms = $controller->permissions();
@@ -173,51 +281,51 @@ function renderAction(array $parms=array()) {
     //permissions.  Really the only way this will fail will be if someone bypasses the perm check
     //on the edit form somehow..like a hacker trying to bypass the form and just submit straight to 
     //the action. To safeguard, we'll catch if the action is update and change it either to create or
-    //edit depending on whether an id param is passed to. that should be suffecient.
-    $common_action_name = null;
+    //edit depending on whether an id param is passed to. that should be sufficient.
+    $common_action = null;
     if ($parms['action'] == 'update') {
-        $permaction = (!isset($parms['id']) || $parms['id'] == 0) ? 'create' : 'edit';
+        $perm_action = (!isset($parms['id']) || $parms['id'] == 0) ? 'create' : 'edit';
     } elseif ($parms['action'] == 'saveconfig') {
-        $permaction = 'configure';
+        $perm_action = 'configure';
     } else {
         // action convention for controllers that manage more than one model (datatype). 
         // if you preface the name action name with a common crud action name we can check perms on 
-        // it with the developer needing to  specify any...better safe than sorry.
+        // it with the developer needing to specify any...better safe than sorry.
         // i.e if the action is edit_mymodel it will be checked against the edit permission
         if (stristr($parms['action'], '_')) $parts = explode("_", $parms['action']);
-        $common_action_name = isset($parts[0]) ? $parts[0] : null;
-        $permaction = $parms['action'];
+        $common_action = isset($parts[0]) ? $parts[0] : null;
+        $perm_action = $parms['action'];
     }
 
-    if (array_key_exists($permaction, $perms)) {
-        if (!expPermissions::check($permaction, $controller->loc)) {
+    if (array_key_exists($perm_action, $perms)) {
+        if (!expPermissions::check($perm_action, $controller->loc)) {
             if (expTheme::inAction()) {
-                flash('error', "You don't have permission to ".$perms[$permaction]);
+                flash('error', gt("You don't have permission to")." ".$perms[$perm_action]);
                 expHistory::returnTo('viewable');
             } else {
                 return false;
             }
         }
-    } elseif (array_key_exists($common_action_name, $perms)) {
-        if (!expPermissions::check($common_action_name, $controller->loc)) {
+    } elseif (array_key_exists($common_action, $perms)) {
+        if (!expPermissions::check($common_action, $controller->loc)) {
             if (expTheme::inAction()) {
-                flash('error', "You don't have permission to ".$perms[$common_action_name]);
+                flash('error', gt("You don't have permission to")." ".$perms[$common_action]);
                 expHistory::returnTo('viewable');
             } else {
                 return false;
             }
         }
-    } elseif (array_key_exists($permaction, $controller->requires_login)) {
+    } elseif (array_key_exists($perm_action, $controller->requires_login)) {
         // check if the action requires the user to be logged in
         if (!$user->isLoggedIn()) {
-            $msg = empty($controller->requires_login[$permaction]) ? "You must be logged in to perform this action" : $controller->requires_login[$permaction];
+            $msg = empty($controller->requires_login[$perm_action]) ? gt("You must be logged in to perform this action") : $controller->requires_login[$perm_action];
             flash('error', $msg);
             expHistory::redirecto_login();
         }
-    } elseif (array_key_exists($common_action_name, $controller->requires_login)) {
+    } elseif (array_key_exists($common_action, $controller->requires_login)) {
         // check if the action requires the user to be logged in
         if (!$user->isLoggedIn()) {
-            $msg = empty($controller->requires_login[$common_action_name]) ? "You must be logged in to perform this action" : $controller->requires_login[$common_action_name];
+            $msg = empty($controller->requires_login[$common_action]) ? gt("You must be logged in to perform this action") : $controller->requires_login[$common_action];
             flash('error', $msg);
             expHistory::redirecto_login();
         }
@@ -252,9 +360,9 @@ function renderAction(array $parms=array()) {
 function hotspot($source = null) {
     if (!empty($source)) {
         global $sectionObj;
-	    //FIXME there is NO 'page' object
-        $page = new page($sectionObj->id);
-        $modules = $page->getModulesBySource($source);
+	    //FIXME there is NO 'page' object and section has not _construct method
+        $page = new section($sectionObj->id);
+        $modules = $page->getModulesBySource($source);  //FIXME there is no getModulesBySource method anywhere
         //eDebug($modules);exit();
 
         foreach ($modules as $module) {
@@ -287,45 +395,8 @@ function flashAndFlow($name, $msg) {
     expQueue::flashAndFlow($name, $msg);
 }
 
-function flushFlash() {
-    expQueue::flushAllQueues();
-}
-
-function handleErrors($errno, $errstr, $errfile, $errline) {
-    if (DEVELOPMENT > 0) {
-        $msg = "";
-        switch ($errno) {
-                case E_USER_ERROR:
-                    $msg = 'PHP Error('.$errno.'): ';
-                break;
-                case E_USER_WARNING:
-                    $msg = 'PHP Warning('.$errno.'): ';
-                break;
-                case E_USER_NOTICE:
-                case E_NOTICE:
-                    $msg = 'PHP Notice('.$errno.'): ';
-                default:
-                $msg = 'PHP Issue('.$errno.'): ';
-                break;  
-            }
-        $msg .= $errstr;
-        $msg .= !empty($errfile) ? ' in file '.$errfile : "";
-        $msg .= !empty($errline) ? ' on line '.$errline : "";
-        // currently we are doing nothing with these error messages..we could in the future however.
-    }
-}
-
-function show_msg_queue() {
-    $queues = expSession::get('flash');
-#    if (!empty($queues)) {
-        $template = new template('common','_msg_queue');
-        $template->assign('queues', expSession::get('flash'));
-        $html = $template->render();
-#    } else {
-#        $html = '';
-#    }
-    flushFlash();
-    return $html;
+function show_msg_queue($name=null) {
+    return expQueue::show($name);
 }
 
 function assign_to_template(array $vars=array()) {
@@ -399,7 +470,7 @@ function get_config_templates($controller, $loc) {
         if (file_exists($path.'/'.$viewconfig)) {
             $fileparts = explode('_', $viewname);
             if ($fileparts[0]=='show'||$fileparts[0]=='showall') array_shift($fileparts);
-            $module_views[$viewname]['name'] = ucwords(implode(' ', $fileparts)).' View Configuration';
+            $module_views[$viewname]['name'] = ucwords(implode(' ', $fileparts)).' '.gt('View Configuration');
             $module_views[$viewname]['file'] =$path.'/'.$viewconfig;
         }
     }
@@ -580,6 +651,31 @@ function curPageURL() {
         $pageURL .= $_SERVER["SERVER_NAME"].$_SERVER["REQUEST_URI"];
     }
     return $pageURL;
+}
+
+// this function is called from exponent.php as the ajax error handler
+function handleErrors($errno, $errstr, $errfile, $errline) {
+    if (DEVELOPMENT > 0) {
+        $msg = "";
+        switch ($errno) {
+                case E_USER_ERROR:
+                    $msg = 'PHP Error('.$errno.'): ';
+                break;
+                case E_USER_WARNING:
+                    $msg = 'PHP Warning('.$errno.'): ';
+                break;
+                case E_USER_NOTICE:
+                case E_NOTICE:
+                    $msg = 'PHP Notice('.$errno.'): ';
+                default:
+                $msg = 'PHP Issue('.$errno.'): ';
+                break;
+            }
+        $msg .= $errstr;
+        $msg .= !empty($errfile) ? ' in file '.$errfile : "";
+        $msg .= !empty($errline) ? ' on line '.$errline : "";
+        // currently we are doing nothing with these error messages..we could in the future however.
+    }
 }
 
 function gt($s){

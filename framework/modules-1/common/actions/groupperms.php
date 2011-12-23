@@ -51,9 +51,9 @@ if (expPermissions::check('administrate',$loc)) {
 		$users[] = $g;
 	}
 	
-	$p["Group"] = 'username';
+	$p[gt("Group")] = 'username';
 	foreach ($mod->permissions() as $key => $value) {
-        $p[$value]=$key;
+        $p[gt($value)]=$key;
 	}
 	
 	if (SEF_URLS == 1) {
@@ -87,6 +87,7 @@ if (expPermissions::check('administrate',$loc)) {
 	$template->assign('users',$users);
 	$template->assign('page',$page);
 	$template->assign('perms',$perms);
+    $template->assign('title',$modulename != 'navigationmodule'?$mod->name().' '.($modulename != 'containermodule'?gt('module'):'').' ':'Page');
 
 	$template->output();
 } else {

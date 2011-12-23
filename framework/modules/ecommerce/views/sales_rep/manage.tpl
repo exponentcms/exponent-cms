@@ -15,18 +15,18 @@
  *}
 
 <div class="modules order_type showall">
-	<h1>{$moduletitle|default:"Sales Rep Administration"}</h1>
+	<h1>{$moduletitle|default:"Sales Rep Administration"|gettext}</h1>
 	
-	<a href="{link action=create}">Create a new Sales Rep</a>{br}{br}
+	<a href="{link action=create}">{'Create a new Sales Rep'|gettext}</a>{br}{br}
 	<div id="orders">
 		{$page->links}
 		<table id="prods" class="exp-skin-table">
 			<thead>
 				<tr>
-				    <th>First Name</th>
-					<th>Last Name</th>
-					<th>Initials</th>
-                    <th>Admin</th>
+				    <th>{'First Name'|gettext}</th>
+					<th>{'Last Name'|gettext}</th>
+					<th>{'Initials'|gettext}</th>
+                    <th>{'Admin'|gettext}</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -44,7 +44,7 @@
 				</tr>
 				{foreachelse}
 				    <tr class="{cycle values="odd,even"}">
-				        <td colspan="4">No sales reps have been created yet.</td>
+				        <td colspan="4">{'No sales reps have been created yet.'|gettext}</td>
 				    </tr>
 				{/foreach}
 		</tbody>

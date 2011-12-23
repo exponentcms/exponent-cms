@@ -18,7 +18,7 @@
     {permissions}
 		<div class="module-actions">
 			{if $permissions.create == 1 || $permissions.edit == 1}
-				{icon class=add action=create text="Add a new link" title="Add a new link"|gettext}
+				{icon class=add action=create text="Add a new link"|gettext}
 			{/if}
 			{if $permissions.manage == 1 && $rank == 1}
 				{ddrerank items=$items model="links" label="Links"|gettext}
@@ -32,10 +32,10 @@
 			{permissions}
 				<div class="item-actions">
 					{if $permissions.edit == 1}
-						{icon action=edit record=$item title="Edit this `$modelname`"}
+						{icon action=edit record=$item}
 					{/if}
 					{if $permissions.delete == 1}
-						{icon action=delete record=$item title="Delete this `$modelname`" onclick="return confirm('Are you sure you want to delete this `$modelname`?');"}
+						{icon action=delete record=$item}
 					{/if}
 				</div> 
 			{/permissions}

@@ -46,7 +46,7 @@
 								{icon action=edit record=$video title="Edit `$video->title` video"}
 							{/if}
 							{if $permissions.delete == 1}
-								{icon action=delete record=$video title="delete `$video->title` video" onclick="return confirm('Are you sure you want to delete this `$modelname`?');"}
+								{icon action=delete record=$video title="delete `$video->title` video"}
 							{/if}
 						</div>
 					{/permissions}
@@ -75,8 +75,14 @@
                 }, 
                 plugins: {
                     controls: { 
-                        play: true,  
-                        scrubber: true 
+                        url: '{/literal}{if $config.video_style == 1}flowplayer.controls-air-3.2.5.swf{elseif $config.video_style == 2}flowplayer.controls-tube-3.2.5.swf{else}flowplayer.controls-3.2.5.swf{/if}{literal}',
+                        play: {/literal}{if !$config.control_play}false{else}true{/if}{literal},
+                        stop: {/literal}{if $config.control_stop}true{else}false{/if}{literal},
+                        scrubber: {/literal}{if $config.control_scrubber}true{else}false{/if}{literal},
+                        time: {/literal}{if $config.control_time}true{else}false{/if}{literal},
+                        mute: {/literal}{if $config.control_mute}true{else}false{/if}{literal},
+                        volume: {/literal}{if $config.control_volume}true{else}false{/if}{literal},
+                        fullscreen: {/literal}{if $config.control_fullscreen}true{else}false{/if}{literal}
                     }         
                 } 
             }

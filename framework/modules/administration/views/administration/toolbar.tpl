@@ -2,7 +2,6 @@
     
 {/css}
 
-
 <div id="admintoolbar">
 
 </div>
@@ -35,7 +34,6 @@
              // }
              //oMenuBar.subscribe("show", onSubmenuShow);
              
-         
              var tb = Y.one('#admintoolbar');
              
              //Selector of the node to make draggable
@@ -101,33 +99,43 @@
                      anim.run();
                  }
                  
-                 
                  anim.on("end",recordPosition);
                  
              });
              
              var err = function () {
-                 alert("Your popup blocker has prevented the file manager from opening");
+                 alert("{/literal}{"Your popup blocker has prevented the file manager from opening"|gettext}{literal}");
              }
-             
-             
+
+             var docswindow = function (){
+                 var win = window.open('http://docs.exponentcms.org');
+                 if (!win) { err(); }
+             }
+
+             var forumswindow = function (){
+                 var win = window.open('http://forums.exponentcms.org');
+                 if (!win) { err(); }
+             }
+
              var reportbugwindow = function (){
                  var win = window.open('http://exponentcms.lighthouseapp.com/projects/61783-exponent-cms/tickets/new');
                  if (!win) { err(); }
              }
 
              var filepickerwindow = function (){
-                 var win = window.open('{/literal}{link controller=file action=picker ajax_action=1 update=noupdate}{literal}', 'IMAGE_BROWSER','left=0,top=0,scrollbars=yes,width=1024,height=600,toolbar=no,resizable=yes,status=0');
+                 var win = window.open('{/literal}{link controller=file action=picker ajax_action=1 update=noupdate}{literal}', 'IMAGE_BROWSER','left=0,top=0,scrollbars=yes,width={/literal}{$smarty.const.FM_WIDTH}{literal},height={/literal}{$smarty.const.FM_HEIGHT}{literal},toolbar=no,resizable=yes,status=0');
                  if (!win) { err(); }
              }
 
              var fileuploaderwindow = function (){
-                 var win = window.open('{/literal}{link controller=file action=uploader ajax_action=1 update=noupdate}{literal}', 'IMAGE_BROWSER','left=0,top=0,scrollbars=yes,width=1024,height=600,toolbar=no,resizable=yes,status=0');
+                 var win = window.open('{/literal}{link controller=file action=uploader ajax_action=1 update=noupdate}{literal}', 'IMAGE_BROWSER','left=0,top=0,scrollbars=yes,width={/literal}{$smarty.const.FM_WIDTH}{literal},height={/literal}{$smarty.const.FM_HEIGHT}{literal},toolbar=no,resizable=yes,status=0');
                  if (!win) { err(); }
              }
 
              Y.on('toolbar:loaded',function(){
-                 Y.one('#reportabug-toolbar').on('click', reportbugwindow);
+                 if (document.getElementById("reportabug-toolbar")) Y.one('#reportabug-toolbar').on('click', reportbugwindow);
+                 Y.one('#docs-toolbar').on('click',docswindow);
+                 Y.one('#forums-toolbar').on('click',forumswindow);
                  Y.one('#filemanager-toolbar').on('click',filepickerwindow);
                  Y.one('#fileuploader-toolbar').on('click',fileuploaderwindow);
                  // Y.later(900,this,function(){
@@ -135,13 +143,9 @@
                  // });
              });
 
-
              Y.fire('toolbar:loaded');
-             
-             
              
          });
          
-
 {/literal}
 {/script}

@@ -20,17 +20,17 @@
 
 <div class="module ecomconfig promocodes">
 	<div class="form_header">
-        	<h1>Promotional Codes</h1>
-	        <p>Here you can configure promotional codes to give to users.</p>
+        <h1>{'Promotional Codes'|gettext}</h1>
+        <p>{'Here you can configure promotional codes to give to users.'|gettext}</p>
 	</div>
 	
-	<h2>Add a new promo code</h2>
+	<h2>{'Add a new promo code'|gettext}</h2>
 	<table class="exp-skin-table">
 	<thead>
 	    <tr>
-	        <th>Name</th>
-		    <th>Promo Code</th>
-		    <th>Discount</th>
+	        <th>{'Name'|gettext}</th>
+		    <th>{'Promo Code'|gettext}</th>
+		    <th>{'Discount'|gettext}</th>
 		    <th>&nbsp;</th>
 		</tr>
 	</thead>
@@ -39,21 +39,21 @@
 	        {form action=update_promocode}
                 <td>{control type=text name=title label=" "}</td>
                 <td>{control type="text" name="promo_code" label="" label=" "}</td>
-                <td>{control type="dropdown" name="discounts_id" items=$discounts key=id display=title label=" " includeblank="-- Select a Discount --"}</td>
-                <td>{control type=buttongroup submit="Add Discount"}</td>
+                <td>{control type="dropdown" name="discounts_id" items=$discounts key=id display=title label=" " includeblank="-- Select a Discount --"|gettext}</td>
+                <td>{control type=buttongroup submit="Add Discount"|gettext}</td>
 	        {/form}
 	    </tr>
 	</tbody>
 	</table>
 	
 	{if $promo_codes|@count > 0}
-	<h2>Modify existing group discount</h2>
+	<h2>{'Modify existing group discount'|gettext}</h2>
 	<table class="exp-skin-table">
 	    <thead>
 	    <tr>
-	        <th>Name</th>
-		    <th>Promo Code</th>
-		    <th>Discount</th>
+	        <th>{'Name'|gettext}</th>
+		    <th>{'Promo Code'|gettext}</th>
+		    <th>{'Discount'|gettext}</th>
 		    <th>&nbsp;</th>
 	    </tr>
 	    </thead>
@@ -64,7 +64,7 @@
 	                <td>{control type=text name=title label=" " value=$code->title}</td>
 	                <td>{control type="text" name="promo_code" label="" label=" " value=$code->promo_code}</td>
                     <td>{control type="dropdown" name="discounts_id" items=$discounts key=id display=title label=" " value=$code->discounts_id}</td>
-                    <td>{control type=buttongroup submit="Update"}</td>
+                    <td>{control type=buttongroup submit="Update"|gettext}</td>
 	            {/form}
 			</tr>
 		{/foreach}

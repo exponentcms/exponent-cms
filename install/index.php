@@ -20,12 +20,10 @@
 
 ob_start();
 
-//define('DEVELOPMENT',1);
-
 define('SCRIPT_EXP_RELATIVE','install/');
 define('SCRIPT_FILENAME','index.php');
 
-// Jumpstart to Initialize the installer language
+// Jumpstart to Initialize the installer language before it's set to default
 if (isset($_REQUEST['lang'])) {
 	if (!defined('LANGUAGE')) define('LANGUAGE', trim($_REQUEST['lang'],"'"));
 }
@@ -39,7 +37,6 @@ if (!file_exists('not_configured') && file_exists(BASE.'conf/config.php')) {
 }
 
 if (isset($_POST['sc'])) {
-
     if (file_exists("../conf/config.php")) {
         // Update the config
         $config = $_POST['sc'];
@@ -108,71 +105,42 @@ switch ($page) {
 	    $masthead = gt("Upgrade");
 		$page_text = gt("We'll now run any upgrade scripts needed for this version of Exponent.");
 		break;
-	case 'setlang':
-		$page_image = 'setlang';
-		$page_text = gt('Please choose which language you would like to use for this install.');
-		break;
 	case 'install-1':
         $masthead = gt("New Installation");
-		$page_text = gt('
-        Exponent requires that several file permissions be set correctly in order to operate.
-        Sanity checks are being run right now to ensure that the web server directory you wish to install Exponent in, is suitable.
-        <br><br>
-        If something fails, please 
-        <a href="javascript:void(0)" onclick="return pop(\'sanity\');">read about each sanity check</a>
-        for an explanation of what exactly the installer is checking for, and how to fix it.        		
-		');
+		$page_text = gt('Exponent requires that several file permissions be set correctly in order to operate.').' '.
+            gt('Sanity checks are being run right now to ensure that the web server directory you wish to install Exponent in, is suitable.').'<br><br>'.
+	        gt('If something fails, please').' <a href="javascript:void(0)" onclick="return pop(\'sanity\');">'.gt('read about each sanity check').'</a> '.
+            gt('for an explanation of what exactly the installer is checking for, and how to fix it.');
 		break;
 	case 'install-2':
         $masthead = gt("New Installation");
-		$page_text = gt('
-        Exponent requires a database to store and manage content. Simply create a database using your database tool of of choice, and fill in the information on this page.
-		');
+		$page_text = gt('Exponent requires a database to store and manage content.').' '.
+			gt('Simply create a database using your database tool of of choice, and fill in the information on this page.');
 		break;
 	case 'install-3':
         $masthead = gt("New Installation");
-		$page_text = gt('
-            Exponent is now checking to make sure that the database configuration information you provided is valid.
- 		');
+		$page_text = gt('Exponent is now checking to make sure that the database configuration information you provided is valid.');
 		break;
 	case 'install-4':
         $masthead = gt("New Installation");
-		$page_text = gt('
-            Please enter some basic information for your site.
- 		');
+		$page_text = gt('Please enter some basic information for your site.');
 		break;
 	case 'install-5':
         $masthead = gt("New Installation");
-		$page_text = gt('
-            Your theme is your site\'s look and feel. Select what you\'d like you site to look like from the list of themes.
- 		');
+		$page_text = gt('Your theme is your site\'s look and feel. Select what you\'d like you site to look like from the list of themes.');
 		break;
 	case 'install-6':
         $masthead = gt("New Installation");
-		$page_text = gt('
-            The user you\'re about to create will be the <b>Super Administrator</b> for the entire system. This level of administration has un-restricted access and abilities throughout the entire website.
- 		');
+		$page_text = gt('The user you\'re about to create will be the').' <b>'.gt('Super Administrator').'</b> '.gt('for the entire system.').' '.
+			gt('This level of administration has un-restricted access and abilities throughout the entire website.');
 		break;
 	case 'install-7':
         $masthead = gt("New Installation");
-		$page_text = gt('
-            The user you\'re about to create will be the <b>Super Administrator</b> for the entire system. This level of administration has un-restricted access and abilities throughout the entire website.
- 		');
-		break;
-	case 'admin_user':
-		$page_image = 'account';
-		$page_text = gt('The Exponent Administrator account is the most important account in the whole installation.  The Administrator has access to every feature of the software, and controls all content and configuration.');
-		break;
-	case 'upgrade_version':
-		$page_image = 'system';
-		$page_text = gt('Choose which version you want to upgrade.');
-		break;
-	case 'upgrade':
-		$page_image = 'system';
-		$page_text = gt('Exponent is now upgrading the database definitions.');
+		$page_text = gt('The user you\'re about to create will be the').' <b>'.gt('Super Administrator').'</b> '.gt('for the entire system.').' '.
+			gt('This level of administration has un-restricted access and abilities throughout the entire website.');
 		break;
 	case 'final':
-        $masthead = (isset($_REQUEST['upgrade']))?"Upgrade":"New Installation";
+        $masthead = (isset($_REQUEST['upgrade']))?gt("Upgrade"):gt("New Installation");
         $page_text = (isset($_REQUEST['upgrade']))?gt("Your upgrade is complete!"):gt("Your installation is complete!");
 		break;
 	default:
@@ -201,8 +169,8 @@ switch ($page) {
     
 	<script type="text/javascript">	
 	function pop(page) {
-    		var url = "popup.php?page="+page;
-    		window.open(url,"pop","height=400,width=600,title=no,titlebar=no,scrollbars=yes");
+        var url = "popup.php?page="+page+"&lang='<?php echo LANGUAGE; ?>'";
+        window.open(url,"pop","height=400,width=600,title=no,titlebar=no,scrollbars=yes");
 	}
 	
 	</script>

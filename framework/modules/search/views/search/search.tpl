@@ -16,24 +16,24 @@
 
 <div class="module search search-results">
 	
-	<h1>Search Results</h1>
+	<h1>{'Search Results'|gettext}</h1>
     {pagelinks paginate=$page top=1}
 	<span class="searched_for">
-	Your search for <span class="terms">"{$terms}"</span> returned <span class="result-count">{$page->total_records}</span> results<br />
+	{'Your search for'|gettext} <span class="terms">"{$terms}"</span> {'returned'|gettext} <span class="result-count">{$page->total_records}</span> {'results'|gettext}<br />
 	</span>
 	{if $config->is_categorized == 0}
 		{foreach from=$page->records item=result}
 			{*if $result->canview == 1*}
 				<div class="item {cycle values="odd,even"}">
-					<a href="{$smarty.const.URL_FULL}{$result->view_link}">{$result->title}</a>
-					{if $result->body != ""}<br /><span class="summary">{$result->body|strip_tags|truncate:240}</span>{/if}
+					<a href="{$smarty.const.URL_FULL}{$result->view_link}">{$result->title|highlight:$terms}</a>
+					{if $result->body != ""}{br}<span class="summary">{$result->body|strip_tags|truncate:240|highlight:$terms}</span>{/if}
 					{clear}
 				</div>
 			{*/if*}
 		{/foreach}
 	{else}{* categorized, list of crap is two levels deep *}
 		{foreach from=$results key=category item=subresults}
-			<h2><a name="#{$category}">{$category} matching "{$query}":</a></h2>
+			<h2><a name="#{$category}">{$category} {'matching'|gettext} "{$query}":</a></h2>
 			{foreach from=$subresults item=result}
 				<div class="item {cycle values="odd,even"}">
 					<a href="{$smarty.const.URL_FULL}{$result->view_link}">{$result->title}</a>

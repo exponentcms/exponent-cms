@@ -38,16 +38,16 @@
 	<tr class="{cycle values='odd,even'}">
 	<td>
 		{if $section->active}
-			<a href="{link section=$section->id}" class="navlink">{$section->name}</a>&nbsp;
+			<a href="{link section=$section->id}" class="navlink" title="{'View/Edit this Page'|gettext}">{$section->name}</a>&nbsp;
 		{else}
 			{$section->name}&nbsp;
 		{/if}
 	</td><td>
 		{icon class=edit action=edit_contentpage record=$section title='Edit'|gettext}
-        {icon action=delete record=$section title='Delete'|gettext onclick="return confirm('Delete this page?');"}
+        {icon action=delete record=$section title='Delete'|gettext onclick="return confirm('"|cat:("Delete this page?"|gettext)|cat:"');"}
 	</td><td>
-		{icon int=$section->id action=userperms _common=1 img='userperms.png' title='Assign user permissions for this page'|gettext text="User"}
-		{icon int=$section->id action=groupperms _common=1 img='groupperms.png' title='Assign group permissions for this page'|gettext text="Group"}
+		{icon int=$section->id action=userperms _common=1 img='userperms.png' title='Assign user permissions for this Page'|gettext text="User"}
+		{icon int=$section->id action=groupperms _common=1 img='groupperms.png' title='Assign group permissions for this Page'|gettext text="Group"}
 	</td></tr>
 	{foreachelse}
 		<tr><td colspan=3><i>{'No standalone pages found'|gettext}</i></td></tr>

@@ -414,6 +414,7 @@ class expPaginator {
                      ));
 
                 } else {
+					unset($params['page']);
                     $this->header_columns .= '<a href="'.$router->makeLink($params, null, null, true).'" alt="sort by '.$colname.'" rel="nofollow">'.$colname.'</a>';
                 }
                 

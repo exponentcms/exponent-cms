@@ -15,23 +15,23 @@
  *}
 
 <div class="module faq ask-question">
-    <h1>{$moduletitle|default:"Ask a Question"}</h1>
+    <h1>{$moduletitle|default:"Ask a Question"|gettext}</h1>
 	{permissions}
 		<div class="module-actions">
 			{if $permissions.create == 1}
-				{icon class=add action=create title="Add a new FAQ" text="Add a New FAQ"}
+				{icon class=add action=create text="Add a New FAQ"|gettext}
 			{/if}
 			{br}
 			{if $permissions.manage == 1}
-				{icon action=manage title="Manage FAQs" text="Manage FAQs"}
+				{icon action=manage text="Manage FAQs"|gettext}
 			{/if}
 		</div>
 	{/permissions}
 
     {form action=submit_question}
-        {control type="text" name="submitter_name" label="Your Name" value=$record->submitter_name}
-        {control type="text" name="submitter_email" label="Your Email Address" value=$record->submitter_email}      
-        {control type="textarea" name="question" label="Question" value=$record->question}
-        {control type="buttongroup" submit="Submit Question" cancel="Cancel"}
+        {control type="text" name="submitter_name" label="Your Name"|gettext value=$record->submitter_name}
+        {control type="text" name="submitter_email" label="Your Email Address"|gettext value=$record->submitter_email}
+        {control type="textarea" name="question" label="Question"|gettext value=$record->question}
+        {control type="buttongroup" submit="Submit Question"|gettext cancel="Cancel"|gettext}
     {/form}
 </div>

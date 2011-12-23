@@ -514,7 +514,7 @@ class expFile extends expRecord {
 		if (!is_object($file)) $file = new expFile($file); 
 		//if (empty($file->id) || !file_exists($file->path)) return false;
         if (!file_exists($file->path)) {
-	        flash('error', 'The file is unavailable for Download');
+	        flash('error', gt('The file is unavailable for Download'));
 	        expHistory::back();
 	        return false;
         }
@@ -1421,7 +1421,7 @@ class expFile extends expRecord {
 			}
 
 			// make sure the database tables are up to date
-		    administrationController::installTables();
+		    administrationController::install_dbtables();
 
 			$table = '';
 			$table_function = '';

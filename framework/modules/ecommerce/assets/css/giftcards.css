@@ -1,0 +1,19 @@
+.giftcards fieldset {
+  
+    border: 0 none;
+    margin-bottom: 10px;
+    padding: 5px;
+    position: relative;
+}
+
+.giftcards .picwrapper {
+    float: left;
+    margin: 13px 25px 3px;
+    padding: 0 5px;
+}
+
+.giftcards .gc-preview {
+    height: 90px;
+    width: 90px;
+	cursor: pointer;
+}

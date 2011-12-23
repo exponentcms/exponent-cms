@@ -16,8 +16,24 @@
 # GPL: http://www.gnu.org/licenses/gpl.txt
 #
 ##################################################
-/** @define "BASE" "../.." */
 
+/**
+ * Smarty plugin
+ * @package Smarty-Plugins
+ * @subpackage Block
+ */
+
+/**
+ * Smarty {paginate} block plugin
+ *
+ * Type:     block<br>
+ * Name:     paginate<br>
+ * Purpose:  Set up a pagination block
+ *
+ * @param         $params
+ * @param         $content
+ * @param \Smarty $smarty
+ */
 function smarty_block_paginate($params,$content,&$smarty) {
 	if ($content) {
 ?>
@@ -102,8 +118,8 @@ function smarty_block_paginate($params,$content,&$smarty) {
 		this.modulePrefix = <?php echo ((isset($params['modulePrefix'])) ?'"'.$params['modulePrefix'].'"': '"default"'); ?>;
 		this.name = <?php echo ("'".$params['paginateName'] . "';\n"); ?>
 
-		this.noRecords = '<?php echo ((isset($params['noRecordsText']))?$params['noRecordsText']:"No records found"); ?>';
-		this.noMatches = '<?php echo ((isset($params['noMatchesText']))?$params['noMatchesText']:"Nothing matched your criteria."); ?>';
+		this.noRecords = '<?php echo ((isset($params['noRecordsText']))?$params['noRecordsText']:gt("No records found")); ?>';
+		this.noMatches = '<?php echo ((isset($params['noMatchesText']))?$params['noMatchesText']:gt("Nothing matched your criteria.")); ?>';
 
 		this.filteredData = new Array();
 		this.allData = new Array();
@@ -460,7 +476,7 @@ function smarty_block_paginate($params,$content,&$smarty) {
 			//  %sr - starting record
 			//  %er - ending record
 			//  %tr - total records
-			if (sText == "") sText = "On page %cp of %tp viewing records %sr to %er of %tr.";
+			if (sText == "") sText = "<?php echo gt("On page")." %cp ".gt("of")." %tp ".gt("viewing records")." %sr ".gt("to")." %er ".gt("of"); ?> %tr.";
 			var sID = "ps_" + (Math.floor(Math.random() * 10000));
 			this.controls[sID] = sText;
 			return "<span id='" + sID + "'></span>";
@@ -516,16 +532,16 @@ function smarty_block_paginate($params,$content,&$smarty) {
 				radio_all.setAttribute("name", sID + "_match");
 
 				cell.appendChild(radio_any);
-				cell.appendChild(document.createTextNode("Match Any Criteria"));
+				cell.appendChild(document.createTextNode(<?php echo gt("Match Any Criteria"); ?>));
 				cell.appendChild(document.createElement("br"));
 
 				cell.appendChild(radio_all);
-				cell.appendChild(document.createTextNode("Match All Criteria"));
+				cell.appendChild(document.createTextNode(<?php echo gt("Match All Criteria"); ?>));
 				cell.appendChild(document.createElement("br"));
 
 				var btn = document.createElement("input");
 				btn.setAttribute("type","button");
-				btn.setAttribute("value","Filter");
+				btn.setAttribute("value",<?php echo gt("Filter"); ?>);
 				btn.setAttribute("onclick","paginate.applyFilter('" + sID + "'); return false;");
 				cell.appendChild(btn);
 				return cell.innerHTML;

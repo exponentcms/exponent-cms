@@ -17,6 +17,23 @@
 #
 ##################################################
 
+/**
+ * Smarty plugin
+ * @package Smarty-Plugins
+ * @subpackage Function
+ */
+
+/**
+ * Smarty {rating} function plugin
+ *
+ * Type:     function<br>
+ * Name:     rating<br>
+ * Purpose:  display a rating
+ *
+ * @param         $params
+ * @param \Smarty $smarty
+ * @return bool
+ */
 function smarty_function_rating($params,&$smarty) {
     global $user,$db;
     
@@ -44,7 +61,7 @@ function smarty_function_rating($params,&$smarty) {
         $total_average = 0;
     }
     $avg_percent = round($total_average*100/5)+1;
-    $html .= '
+    $html = '
     <div class="star-rating">
         <div id="rating-total-'.$params['subtype'].'" class="star-stats">
             <strong>'.$params['label'].'</strong>
@@ -65,8 +82,8 @@ function smarty_function_rating($params,&$smarty) {
                 </div>';
                 
             }
-        if ($rating_count) $html.='</div><em><span class="avg">'.$total_average.'</span> avg. by <span class="raters">'.$rating_count.'</span> people</em></div>';
-        else $html .= '</div><em><span class="raters">Be the first to rate this item.</em></div>';
+        if ($rating_count) $html.='</div><em><span class="avg">'.$total_average.'</span> '.gt('avg. by').' <span class="raters">'.$rating_count.'</span> '.gt('people').'</em></div>';
+        else $html .= '</div><em><span class="raters">'.gt('Be the first to rate this item.').'</em></div>';
         
         $rated = $db->selectValue('content_expRatings','expratings_id',"content_type='".$params['content_type']."' AND subtype='".$params['subtype']."' AND poster='".$user->id."'");
     $rated_val = $db->selectValue('expRatings','rating',"id='".$rated."' AND poster='".$user->id."'");
@@ -170,7 +187,6 @@ function smarty_function_rating($params,&$smarty) {
     });
     ";
 
-    
     if ($user->isLoggedIn()) {
         expJavascript::pushToFoot(array(
             "unique"=>'ratings'.$params['subtype'],
@@ -179,9 +195,7 @@ function smarty_function_rating($params,&$smarty) {
          ));
     }    
 
-        
     echo $html;
 }
 
 ?>
-

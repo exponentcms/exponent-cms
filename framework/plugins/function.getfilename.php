@@ -17,6 +17,23 @@
 #
 ##################################################
 
+/**
+ * Smarty plugin
+ * @package Smarty-Plugins
+ * @subpackage Function
+ */
+
+/**
+ * Smarty {getfilename} function plugin
+ *
+ * Type:     function<br>
+ * Name:     getfilename<br>
+ * Purpose:  get and assign relative path filename for a file
+ *
+ * @param         $params
+ * @param \Smarty $smarty
+ * @return bool
+ */
 function smarty_function_getfilename($params,&$smarty) {
 	global $db;
 	$file = $db->selectObject("file","id=".$params['id']);

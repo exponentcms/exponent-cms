@@ -19,21 +19,21 @@
 {/css}
 
 <div class="module administration manage-unused-tables">
-    <h1>Deprecated/Unused Tables</h1>
-    <h2>{$unused_tables|@count} unused tables found</h2>
+    <h1>{'Deprecated/Unused Tables'|gettext}</h1>
+    <h2>{$unused_tables|@count} {'unused tables found'|gettext}</h2>
     <p>
-        The list of tables below are ones that are no longer used by Exponent. However, these tables probably
-        aren't hurting anything.  If you do not have a good idea of what a table does or why it is there
-        it is probably best to just leave it.
+        {'The list of tables below are ones that are no longer used by Exponent. However, these tables probably'|gettext}
+        {'aren\'t hurting anything.  If you do not have a good idea of what a table does or why it is there'|gettext}
+        {'it is probably best to just leave it.'|gettext}
     </p>
     
     {form action=delete_unused_tables}
         <table class="exp-skin-table">
         <thead>
             <tr>
-                <th>Delete?</th>
-                <th>Table Name</th>
-                <th># Rows</th>
+                <th>{'Delete'|gettext}?</th>
+                <th>{'Table Name'|gettext}</th>
+                <th># {'Rows'|gettext}</th>
             </tr>
         </thead>
         <tbody>
@@ -44,10 +44,10 @@
                 <td>{$table->rows}</td>
             </tr>
             {foreachelse}
-            <tr><td>No unused tables were found.</td></tr>
+            <tr><td>{'No unused tables were found'|gettext}.</td></tr>
             {/foreach}
         </tbody>
         </table>
-        {control type="buttongroup" submit="Delete Tables" cancel="Cancel"}
+        {control type="buttongroup" submit="Delete Tables"|gettext} cancel="Cancel"|gettext}
     {/form}
 </div>

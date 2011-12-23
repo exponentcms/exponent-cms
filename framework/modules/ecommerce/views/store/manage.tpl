@@ -19,11 +19,11 @@
 {/css}
 
 <div class="module store showall-uncategorized">
-    <h1>Manage Products</h1>
+    <h1>{'Manage Products'|gettext}</h1>
     {permissions}
 		<div class="module-actions">
 			{if $permissions.edit == 1}
-				{icon class=add action=edit title="Create a new product" text="Add a product"}
+				{icon class=add action=edit title="Create a new product"|gettext text="Add a product"|gettext}
 			{/if}
 		</div>
     {/permissions}
@@ -34,18 +34,35 @@
             <tr>
             <th></th>
             {$page->header_columns}
-            <th>Actions</th>
+            <th>{'Actions'|gettext}</th>
             </tr>
         </thead>
         <tbody>
             {foreach from=$page->records item=listing name=listings}
+			
             <tr class="{cycle values="odd,even"}">
                 <!--td>{img file_id=$listing->expFile.images[0]->id square=60}</td-->
-                <td><a href={link controller=store action=showByTitle title=$listing->sef_url}>{img file_id=$listing->expFile.mainimage[0]->id square=true h=50}</a></td>
+                <td>
+					{if $listing->product_type == "product"}
+						<a href={link controller=store action=showByTitle title=$listing->sef_url}>{img file_id=$listing->expFile.mainimage[0]->id square=true h=50}</a>
+					{else}
+						{img file_id=$listing->expFile.mainimage[0]->id square=true h=50}
+					{/if}
+				</td>
                 <td>{$listing->product_type}</td> 
                 <td>{$listing->model|default:"N/A"}</td>                
-                <td><a href={link controller=store action=showByTitle title=$listing->sef_url}>{$listing->title}</a></td>
-                <td>${$listing->base_price|number_format:2}</td>
+                <td>
+					{if $listing->product_type == "product"}
+						<a href={link controller=store action=showByTitle title=$listing->sef_url}>{$listing->title}</a>
+					{else}
+						{$listing->title}
+					{/if}
+				</td>
+                <td>
+					{if $listing->product_type == "product"}
+						${$listing->base_price|number_format:2}
+					{/if}
+				</td>
                 <td>
                     {permissions}
 						<div class="item-actions">
@@ -55,7 +72,7 @@
 							{if $permissions.delete == 1}
 								{icon action=delete record=$listing title="Delete `$listing->title`"}
 							{/if}
-							{if $permissions.edit == 1}
+							{if $permissions.edit == 1 && $listing->product_type == "product"}
 								{icon action=copyProduct img="copy.png" title="Copy `$listing->title` " record=$listing}
 							{/if}
 						</div>
@@ -67,14 +84,14 @@
         </table>
 		{pagelinks paginate=$page bottom=1}
     </div>
-    {permissions level=$smarty.const.UILEVEL_PERMISSIONS}
+    {permissions}
         {if $permissions.configure == 1 or $permissions.administrate == 1}
         <div id="prod-admin">
-                <a href="{link controller=store action=create}">Add a new Product</a>
-                {br}<a href="{link controller=storeCategory action=manage}">Manage Categories</a>
-                {br}<a href="{link controller=store action=config}">Configure Store</a>
-				{br}<a href="{link controller=store action=nonUnicodeProducts}">Show Non-Unicode Products</a>
-				{br}<a href="{link controller=store action=uploadModelAliases}">Upload Model Aliases</a>
+                <a href="{link controller=store action=create}">{'Add a new Product'|gettext}</a>
+                {br}<a href="{link controller=storeCategory action=manage}">{'Manage Categories'|gettext}</a>
+                {br}<a href="{link controller=store action=config}">{'Configure Store'|gettext}</a>
+				{br}<a href="{link controller=store action=nonUnicodeProducts}">{'Show Non-Unicode Products'|gettext}</a>
+				{br}<a href="{link controller=store action=uploadModelAliases}">{'Upload Model Aliases'|gettext}</a>
         </div>
     {/if}
     {/permissions}

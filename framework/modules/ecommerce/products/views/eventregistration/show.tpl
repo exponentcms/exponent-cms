@@ -25,25 +25,25 @@
      </div>
 
      <div class="bd">
-         {permissions level=$smarty.const.UILEVEL_PERMISSIONS}
+         {permissions}
          <div class="item-actions">
              {if $permissions.configure == 1 or $permissions.administrate == 1}
                  <a href="{link action=edit id=$product->id}" title="{"Edit this entry"|gettext}">
                      <img src="{$smarty.const.ICON_RELATIVE|cat:'edit.png'}" title="{"Edit this entry"|gettext}" alt="{"Edit this entry"|gettext}" />
                  </a>
-                 {icon action=delete record=$product title="Delete this product"}
+                 {icon action=delete record=$product title="Delete this product"|gettext}
              {/if}
          </div>
          {/permissions}
 
          <div class="bodycopy">{$product->body}</div>
          <span class="date">
-             <span class="label">Event Date: </span><span class="value">{$product->eventdate|date_format:"%A, %B %e, %Y"}</span>{br}
-             <span class="label">Start Time: </span><span class="value">{$product->event_starttime|expdate:"g:i a"}</span>{br}
-             <span class="label">End Time: </span><span class="value">{$product->event_endtime|expdate:"g:i a"}</span>{br}
+             <span class="label">{'Event Date:'|gettext} </span><span class="value">{$product->eventdate|date_format:"%A, %B %e, %Y"}</span>{br}
+             <span class="label">{'Start Time:'|gettext} </span><span class="value">{$product->event_starttime|expdate:"g:i a"}</span>{br}
+             <span class="label">{'End Time:'|gettext} </span><span class="value">{$product->event_endtime|expdate:"g:i a"}</span>{br}
              {br}
-             <span class="label">Seats Available: </span><span class="value">{$product->spacesLeft()} of {$product->quantity}</span>{br}
-             <span class="label">Registration Closes: </span><span class="value">{$product->signup_cutoff|expdate:"l, F j, Y, g:i a"}</span>{br}
+             <span class="label">{'Seats Available:'|gettext} </span><span class="value">{$product->spacesLeft()} {'of'|gettext} {$product->quantity}</span>{br}
+             <span class="label">{'Registration Closes:'|gettext} </span><span class="value">{$product->signup_cutoff|expdate:"l, F j, Y, g:i a"}</span>{br}
          </span>
          <div class="price">{currency_symbol}{$product->price|number_format:2}</div>
         
@@ -53,7 +53,7 @@
             </a>
          {else}
             <a href="#" class="addtocart exp-ecom-link">
-                Registration is closed.<span></span>
+                {'Registration is closed.'|gettext}<span></span>
             </a>
          {/if}
      </div>

@@ -10,106 +10,110 @@
     <div class="leftcol">
         
         <div id="quickstats" class="panel">
-            <div class="hd"><h2>Quick Stats</h2><a href="#" class="collapse">Collapse</a></div>
+            <div class="hd"><h2>{'Quick Stats'|gettext}</h2><a href="#" class="collapse">{'Collapse'|gettext}</a></div>
             <div class="bd {if $smarty.cookies.quickstats=='collapsed'}collapsed{/if}">
                 <ul>
                     <li>
-                        <strong><a href="#">View recent orders</a></strong>
-                        View and manage all new and existing orders.
+                        <strong><a href="#">{'View recent orders'|gettext}</a></strong>
+                        {'View and manage all new and existing orders.'|gettext}
                     </li>
                 </ul>
             </div>
         </div>
         
         <div id="cartstats" class="panel">
-            <div class="hd"><h2>Cart Stats</h2><a href="#" class="collapse">Collapse</a></div>
+            <div class="hd"><h2>{'Cart Stats'|gettext}</h2><a href="#" class="collapse">Collapse</a></div>
             <div class="bd {if $smarty.cookies.cartstats=='collapsed'}collapsed{/if}">
                 <ul>
                     <li>
-                        <strong><a href="{link action=cart_summary}">Summary Stats</a></strong>
-                        Quick statistics on carts vr. orders.
+                        <strong><a href="{link action=cart_summary}">{'Summary Stats'|gettext}</a></strong>
+                        {'Quick statistics on carts vr. orders.'|gettext}
                     </li>
                 </ul>
                 <ul>
                     <li>
-                        <strong><a href="{link action=abandoned_carts}">View Abandoned Carts</a></strong>
-                        View and manage abandoned carts.
+                        <strong><a href="{link action=abandoned_carts}">{'View Abandoned Carts'|gettext}</a></strong>
+                        {'View and manage abandoned carts.'|gettext}
+                    </li>
+                    <li>
+                        <strong><a href="{link action=current_carts}">{'View Current Carts'|gettext}</a></strong>
+                        {'View and manage current carts.'|gettext}
                     </li>
                 </ul>
             </div>
         </div>
         
         <div id="orders" class="panel">
-            <div class="hd"><h2>Orders</h2><a href="#" class="collapse">Collapse</a></div>
+            <div class="hd"><h2>{'Orders'|gettext}</h2><a href="#" class="collapse">{'Collapse'|gettext}</a></div>
             <div class="bd {if $smarty.cookies.orders=='collapsed'}collapsed{/if}">
                 <ul>
                     <li>
-                        <strong><a href="#">View recent orders</a></strong>
-                        View and manage all new and existing orders.
+                        <strong><a href="#">{'View recent orders'|gettext}</a></strong>
+                        {'View and manage all new and existing orders.'|gettext}
                     </li>
                     <li>
-                        <strong><a href="#">Create a Report</a></strong>
-                        Create reports based on orders, products, and other information user information on your site.
+                        <strong><a href="#">{'Create a Report'|gettext}</a></strong>
+                        {'Create reports based on orders, products, and other information user information on your site.'|gettext}
                     </li>
                 </ul>
             </div>
         </div>
         
         <div id="configuration" class="panel">
-            <div class="hd"><h2>Store Settings</h2><a href="#" class="collapse">Collapse</a></div>
+            <div class="hd"><h2>{'Store Settings'|gettext}</h2><a href="#" class="collapse">{'Collapse'|gettext}</a></div>
             <div class="bd {if $smarty.cookies.configuration=='collapsed'}collapsed{/if}">
                 <ul>
                     <li>
-                        <strong><a href="#">Configure General Store Settings</a></strong>
-                        Set up how your site will look and act, and notify you.
+                        <strong><a href="#">{'Configure General Store Settings'|gettext}</a></strong>
+                        {'Set up how your site will look and act, and notify you.'|gettext}
                     </li>
                     <li>
-                        <strong><a href="#">Manage Status Codes</a></strong>
-                        Manage the labeling of each phase a completed order goes through.
+                        <strong><a href="#">{'Manage Status Codes'|gettext}</a></strong>
+                        {'Manage the labeling of each phase a completed order goes through.'|gettext}
                     </li>
                     <li>
-                        <strong><a href="#">Manage Status Messages</a></strong>
-                        Create, edit, and delete Status Messages.
+                        <strong><a href="#">{'Manage Status Messages'|gettext}</a></strong>
+                        {'Create, edit, and delete Status Messages.'|gettext}
                     </li>
                 </ul>
             </div>
         </div>
         
         <div id="products" class="panel">
-            <div class="hd"><h2>Products and Categories</h2><a href="#" class="collapse">Collapse</a></div>
+            <div class="hd"><h2>{'Products and Categories'|gettext}</h2><a href="#" class="collapse">{'Collapse'|gettext}</a></div>
             <div class="bd {if $smarty.cookies.products=='collapsed'}collapsed{/if}">
                 <ul>
                     <li>
-                        <strong><a href="#">Add a Product</a></strong>
-                        Add a <a href="#">Product</a>, <a href="#">Donation</a>, <a href="#">Gift Card</a>, or <a href="#">Event Registration</a> to your store.
+                        <strong><a href="#">{'Add a Product'|gettext}</a></strong>
+                        Add a <a href="#">{'Product'|gettext}</a>, <a href="#">{'Donation'|gettext}</a>, <a href="#">{'Gift Card'|gettext}</a>, {'or'|gettext} <a href="#">{'Event Registration'|gettext}</a> {'to your store.'|gettext}
                     </li>
                     <li>
-                        <strong><a href="#">Manage Products</a></strong>
-                        List all products in your store and make it easy to manage them.
+                        <strong><a href="#">{'Manage Products'|gettext}</a></strong>
+                        {'List all products in your store and make it easy to manage them.'|gettext}
                     </li>
                     <li>
-                        <strong><a href="#">Manage Product Options</a></strong>
-                        Create options for your products, like 'large', 'small', 'red', 'greed', 'blue', etc.
+                        <strong><a href="#">{'Manage Product Options'|gettext}</a></strong>
+                        {'Create options for your products, like \'large\', \'small\', \'red\', \'green\', \'blue\', etc.'|gettext}
                     </li>
                     <li>
-                        <strong><a href="#">Manage Store Categories</a></strong>
-                        Create and manage Categories in a hierarchical fashion.
+                        <strong><a href="#">{'Manage Store Categories'|gettext}</a></strong>
+                        {'Create and manage Categories in a hierarchical fashion.'|gettext}
                     </li>
                 </ul>
             </div>
         </div>
         
         <div id="shipping" class="panel">
-            <div class="hd"><h2>Billing and Shipping</h2><a href="#" class="collapse">Collapse</a></div>
+            <div class="hd"><h2>{'Billing and Shipping'|gettext}</h2><a href="#" class="collapse">{'Collapse'|gettext}</a></div>
             <div class="bd {if $smarty.cookies.shipping=='collapsed'}collapsed{/if}">
                 <ul>
                     <li>
-                        <strong><a href="#">Configure Billing Settings</a></strong>
-                        Set up your store to use PayPal, Authorize.net, and other billing methods.
+                        <strong><a href="#">{'Configure Billing Settings'|gettext}</a></strong>
+                        {'Set up your store to use PayPal, Authorize.net, and other billing methods.'|gettext}
                     </li>
                     <li>
-                        <strong><a href="#">Configure Shipping Information</a></strong>
-                        Set up your site to use UPS, FedEx, in-store pickup and other shipping methods..
+                        <strong><a href="#">{'Configure Shipping Information'|gettext}</a></strong>
+                        {'Set up your site to use UPS, FedEx, in-store pickup and other shipping methods.'|gettext}
                     </li>
                 </ul>
             </div>

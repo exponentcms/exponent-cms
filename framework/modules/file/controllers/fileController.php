@@ -21,9 +21,9 @@ class fileController extends expController {
     public $basemodel_name = "expFile";
     //public $useractions = array('showall'=>'Show all');
     //public $add_permissions = array('picker'=>'Manage Files');
-    //public $remove_permissions = array('edit');
+    public $remove_permissions = array('delete');
     public $requires_login = array('picker'=>'must be logged in','edit_alt'=>'must be logged in');
-	public $codequality = 'beta';
+	public $codequality = 'stable';
 
     function displayname() { return "File Manager"; }
     function description() { return "Add and manage Exponent Files"; }
@@ -55,9 +55,9 @@ class fileController extends expController {
     public function uploader() {
         global $user;
         //expHistory::set('manageable', $this->params);
-        flash('message','Upload size limit: '.ini_get('upload_max_filesize'));
+        flash('message',gt('Upload size limit').': '.ini_get('upload_max_filesize'));
         if(intval(ini_get('upload_max_filesize'))!=intval(ini_get('post_max_size')) && $user->is_admin){
-            flash('error','In order for the uploader to work correctly, "post_max_size" and "upload_max_filesize" within your php.ini file must match one another');
+            flash('error',gt('In order for the uploader to work correctly, \'"post_max_size\' and \'upload_max_filesize\' within your php.ini file must match one another'));
         }
 
         assign_to_template(
@@ -194,13 +194,17 @@ class fileController extends expController {
     } 
     
     public function delete() {
-        global $db;
+        global $db,$user;
         $file = new expFile($this->params['id']);
-        $file->delete();
-        if (unlink($file->directory.$file->filename)) {
-            flash('message',$file->filename.' was successfully deleted');
+        if ($user->id==$file->poster || $user->isAdmin()) {
+            $file->delete();
+            if (unlink($file->directory.$file->filename)) {
+                flash('message',$file->filename.' '.gt('was successfully deleted'));
+            } else {
+                flash('error',$file->filename.' '.gt('was deleted from the database, but could not be removed from the file system.'));
+            }
         } else {
-            flash('error',$file->filename.' was deleted from the database, but could not be removed from the file system.');
+            flash('error',$file->filename.' '.gt('wasn\'t deleted because you don\'t own the file.'));
         }
         redirect_to(array("controller"=>'file',"action"=>'picker',"ajax_action"=>1,"update"=>$this->params['update'],"fck"=>$this->params['fck']));
     } 
@@ -229,9 +233,9 @@ class fileController extends expController {
         if ($user->id==$file->poster || $user->is_acting_admin==1) {
             $file->title = $this->params['newValue'];
             $file->save();
-            $ar = new expAjaxReply(200, 'Your title was updated successfully', $file);
+            $ar = new expAjaxReply(200, gt('Your title was updated successfully'), $file);
         } else {
-            $ar = new expAjaxReply(300, "You didn't create this file, so you can't edit it.");
+            $ar = new expAjaxReply(300, gt("You didn't create this file, so you can't edit it."));
         }
         $ar->send();
     } 
@@ -242,9 +246,9 @@ class fileController extends expController {
         if ($user->id==$file->poster || $user->is_acting_admin==1) {
             $file->alt = $this->params['newValue'];
             $file->save();
-            $ar = new expAjaxReply(200, 'Your alt was updated successfully', $file);
+            $ar = new expAjaxReply(200, gt('Your alt was updated successfully'), $file);
         } else {
-            $ar = new expAjaxReply(300, "You didn't create this file, so you can't edit it.");
+            $ar = new expAjaxReply(300, gt("You didn't create this file, so you can't edit it."));
         }
         $ar->send();
         echo json_encode($file);
@@ -259,9 +263,9 @@ class fileController extends expController {
         if ($user->id==$file->poster || $user->is_acting_admin==1) {
             $file->shared = $this->params['newValue'];
             $file->save();
-            $ar = new expAjaxReply(200, 'This file is now shared.', $file);
+            $ar = new expAjaxReply(200, gt('This file is now shared.'), $file);
         } else {
-            $ar = new expAjaxReply(300, "You didn't create this file, so it's not yours to share.");
+            $ar = new expAjaxReply(300, gt("You didn't create this file, so it's not yours to share."));
         }
         $ar->send();
         echo json_encode($file);

@@ -23,7 +23,10 @@
 </div>
 <div id="bd">
 <!--<div id="leftcol">-->
-<p><?php echo gt('The sanity checks are in place to ensure that problems with the server environment (file permissions, PHP extensions, etc) are suitable for installing Exponent.  This page explains each of the sanity checks, why it is performed, and how to reconfigure your web server if the check fails.<br /><br />Note: In all of the solutions, <span class="var">WEBUSER</span> is used for the username of the user running the web server, and <span class="var">EXPONENT</span> is used as the full path to the Exponent directory.'); ?></p>
+<p><?php echo gt('The sanity checks are in place to ensure that problems with the server environment (file permissions, PHP extensions, etc) are suitable for installing Exponent.').
+    gt('This page explains each of the sanity checks, why it is performed, and how to reconfigure your web server if the check fails.').'<br /><br />'.
+    gt('Note: In all of the solutions').', <span class="var">WEBUSER</span> '.gt('is used for the username of the user running the web server, and').
+    ' <span class="var">EXPONENT</span> '.gt('is used as the full path to the Exponent directory.'); ?></p>
 <table cellspacing="0" cellpadding="3" rules="all" border="0" style="border:1px solid grey;" width="100%" class="exp-skin-table">
 <tr><td colspan="2" style="background-color: lightgrey;"><b><?php echo gt('File and Directory Permission Tests'); ?></b></td></tr>
 <tr>
@@ -104,13 +107,13 @@
 <tr>
 	<td class="bodytext" style="font-weight: bold;" valign="top"><a name="fdp_modules" />framework/modules/</td>
 	<td class="bodytext" valign="top">
-		<?php echo gt('Exponent runs a few checks against the installed modules to make sure that nothing strange is encountered.  If this test fails, please Create a Ticket on the <a href="http://exponentcms.lighthouseapp.com/projects/61783-exponent-cms/tickets/new" target="_blank">Exponent Lighthouse page</a>.'); ?>
+		<?php echo gt('Exponent runs a few checks against the installed modules to make sure that nothing strange is encountered.  If this test fails, please Create a Ticket on the').' <a href="http://exponentcms.lighthouseapp.com/projects/61783-exponent-cms/tickets/new" target="_blank">'.gt('Exponent Lighthouse page').'</a>.'; ?>
 	</td>
 </tr>
 <tr>
 	<td class="bodytext" style="font-weight: bold;" valign="top"><a name="fdp_modules1" />framework/modules-1/</td>
 	<td class="bodytext" valign="top">
-		<?php echo gt('Exponent runs a few checks against the installed (old-school) modules to make sure that nothing strange is encountered.  If this test fails, please Create a Ticket on the <a href="http://exponentcms.lighthouseapp.com/projects/61783-exponent-cms/tickets/new" target="_blank">Exponent Lighthouse page</a>.'); ?>
+		<?php echo gt('Exponent runs a few checks against the installed (old-school) modules to make sure that nothing strange is encountered.  If this test fails, please Create a Ticket on the').' <a href="http://exponentcms.lighthouseapp.com/projects/61783-exponent-cms/tickets/new" target="_blank">'.gt('Exponent Lighthouse page').'</a>.'; ?>
 	</td>
 </tr>
 
@@ -176,7 +179,7 @@
 	<td class="bodytext" valign="top">
 		<div class="sanity_req"><?php echo gt('Must be readable and writable by web server'); ?></div>
 		<br />
-		<?php echo gt('Exponent can use "Minification" for speed by compressing and compiling stylesheets in the tmp/minfy directory, which must be writable by the web server.'); ?>
+		<?php echo gt('Exponent can use \'Minification\' for speed by compressing and compiling stylesheets in the tmp/minfy directory, which must be writable by the web server.'); ?>
 		<br />
 		<br />
 		<b><?php echo gt('UNIX Solution'); ?>:</b>
@@ -205,7 +208,7 @@
 	<td class="bodytext" valign="top">
 		<div class="sanity_req"><?php echo gt('Must be readable and writable by web server'); ?></div>
 		<br />
-		<?php echo gt('Exponent creates image thumbnails "on the fly".  These thumbnails are cached in the tmp/image_cache directory, which must be writable by the web server.'); ?>
+		<?php echo gt('Exponent creates image thumbnails \'on the fly\'.  These thumbnails are cached in the tmp/image_cache directory, which must be writable by the web server.'); ?>
 		<br />
 		<br />
 		<b><?php echo gt('UNIX Solution'); ?>:</b>
@@ -259,7 +262,7 @@
 	</td>
 </tr>
 <tr>
-	<td class="bodytext" style="font-weight: bold;" valign="top"><a name="o_xml" /><?php echo gt('XML (Expat) Library Support)'); ?></td>
+	<td class="bodytext" style="font-weight: bold;" valign="top"><a name="o_xml" /><?php echo gt('XML (Expat) Library Support'); ?>)</td>
 	<td class="bodytext" valign="top">
 		<?php echo gt('The web services extensions for Exponent require the Expat Library.  If you are not using web services or module that are dependent on web services, this is a safe warning to ignore.'); ?>
 	</td>
@@ -289,7 +292,7 @@
 <tr>
 	<td class="bodytext" style="font-weight: bold;" valign="top"><a name="o_tmpfile" /><?php echo gt('Temporary File Creation'); ?></td>
 	<td class="bodytext" valign="top">
-		<?php echo gt('Various parts of Exponent have to create temporary files to accomplish a given task.  Usually, this error is related to the "tmp/" file and directory permission test, above.'); ?>
+		<?php echo gt('Various parts of Exponent have to create temporary files to accomplish a given task.  Usually, this error is related to the \'tmp/\' file and directory permission test, above.'); ?>
 	</td>
 </tr>
 </table>

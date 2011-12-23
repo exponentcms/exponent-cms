@@ -25,32 +25,32 @@
 <div class="module migration migrate-files">
     <div class="info-header">
         <div class="related-actions">
-			{help text="Tips to Follow after Migrating Files" module="post-file-migration"}
+			{help text="Tips to Follow after Migrating Files"|gettext module="post-file-migration"}
         </div>
 		<h1>{"File Migration Report"|gettext}</h1>	    
     </div>
 
     <p> 
-		Note: this only properly copied over the records from the old database into the Exponent v2 database. 
-		Make sure you manually copy the "files" directory over to this installation.
+		{'Note: this only properly copied over the records from the old database into the Exponent v2 database.'|gettext}&nbsp;&nbsp;
+		{'Make sure you manually copy the \'files\' directory over to this installation.'|gettext}
     </p>
         <ul>
 			<li class=\"mig-msg\">
-				Emptied the expFiles table before the file import
+				{'Emptied the expFiles table before the file import'|gettext}
 			</li>
 			<li class=\"mig-msg\">
-				{$count} file records were imported
+				{$count} {'file records were imported'|gettext}
 			</li>
 			<li class=\"mig-msg\">
-				You should now see all files from your previous system listed in your file manager
+				{'You should now see all files from your previous system listed in your file manager'|gettext}
 			</li>
 			<li class=\"mig-msg\">
-				HOWEVER, you must manually copy the 'files' directory over to this installation
+				{'HOWEVER, you must manually copy the \'files\' directory over to this installation'|gettext}
 			</li>
         </ul>
     <p> 
-		The following is a list of all file records migrated into the database.  
-		A checkmark indicates the file already resides in the destination 'files' folder.
+		{'The following is a list of all file records migrated into the database.'|gettext}&nbsp;&nbsp;
+		{'A checkmark indicates the file already resides in the destination \'files\' folder.'|gettext}
     </p>		
 	<table class="exp-skin-table">
 		<thead>
@@ -68,9 +68,9 @@
 					<td width=65%>{$file->directory}</td>
 				</tr>
 			{foreachelse}
-				<tr><td colspan=3>No files found in the database {$config.database}</td></tr>
+				<tr><td colspan=3>{'No files found in the database'|gettext} {$config.database}</td></tr>
 			{/foreach}
 		</tbody>
 	</table>
-	<a class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" href="{link module=migration action=manage_content}"><b>Next Step -> Migrate Content</b></a>
+	<a class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" href="{link module=migration action=manage_content}"><b>{'Next Step -> Migrate Content'|gettext}</b></a>
 </div>

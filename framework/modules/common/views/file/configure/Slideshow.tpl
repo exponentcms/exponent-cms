@@ -14,10 +14,10 @@
  *
  *}
  
-<h2>Slideshow Configuration</h2>
-{control type=text name="width" label="Slideshow Width" value=$config.width|default:350 size="5"}
-{control type=text name="height" label="Slideshow Height" value=$config.height|default:200 size="5"}
-{control type=text name="speed" label="Seconds per slide" value=$config.speed|default:5 size="5"}
-{control type=text name="quality" label="Slide Thumbnail JPEG Quality (0 - 95, 100)<br><small>If quality is set to 100, the raw image will be used instead of thumbnailing</small>" value=$config.quality|default:$smarty.const.THUMB_QUALITY size="5"}
+<h2>{'Slideshow Configuration'}</h2>
+{control type=text name="width" label="Slideshow Width"|gettext value=$config.width|default:350 size="5"}
+{control type=text name="height" label="Slideshow Height"|gettext value=$config.height|default:200 size="5"}
+{control type=text name="speed" label="Seconds per slide"|gettext value=$config.speed|default:5 size="5"}
+{control type=text name="quality" label="Slide Thumbnail JPEG Quality"|gettext|cat:" (0 - 95, 100)<br><small>"|cat:("If quality is set to 100, the raw image will be used instead of thumbnailing"|gettext|cat:"</small>") value=$config.quality|default:$smarty.const.THUMB_QUALITY size="5"}
 
 

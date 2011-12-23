@@ -41,16 +41,13 @@ if ($check_id == -1) {
 	$check_id = $section->parent;
 }
 
-if (($check_id != -1 && 
-	expPermissions::check('manage',expCore::makeLocation('navigationmodule','',$check_id)) ||
-	$user->is_acting_admin == 1
-	)) {
+if ($check_id != -1 && expPermissions::check('manage',expCore::makeLocation('navigationmodule','',$check_id))) {
 
 	// make sure the SEF name is valid
         global $router;
         if (empty($section->sef_name)) $section->sef_name = $router->encode($section->name);
-        if (!section::isValidName($section->sef_name)) expValidator::failAndReturnToForm('You have invalid characters in the SEF Name field.');
-        if (section::isDuplicateName($section)) expValidator::failAndReturnToForm('The name specified in the SEF Name field is a duplicate of an existing page.');
+        if (!section::isValidName($section->sef_name)) expValidator::failAndReturnToForm(('You have invalid characters in the SEF Name field.'));
+        if (section::isDuplicateName($section)) expValidator::failAndReturnToForm(gt('The name specified in the SEF Name field is a duplicate of an existing page.'));
 
 	if (isset($section->id)) {
 		if ($section->parent != $old_parent) {

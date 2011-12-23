@@ -12,29 +12,29 @@
         <thead>
             <tr>
                 <th>
-                    <h1>{gettext str="Build a Product Report"}</h1>
+                    <h1>{"Build a Product Report"|gettext}</h1>
                 </th>
             </tr>
         </thead>
         <tbody>  
             <tr class="even">
                   <td>
-                    {control type="dropdown" name="product_type" label="A Product Type Of" size=4 multiple=true includeblank="--Any--" items=$product_types}    
+                    {control type="dropdown" name="product_type" label="A Product Type Of"|gettext size=4 multiple=true includeblank="--Any--"|gettext items=$product_types}
                 </td>
             </tr>              
             <tr class="odd">
                   <td>
-                    {control type="dropdown" name="product_status" label="A Product Status Of" includeblank="--Any--" size=4 multiple=true frommodel=product_status}    
+                    {control type="dropdown" name="product_status" label="A Product Status Of"|gettext includeblank="--Any--"|gettext size=4 multiple=true frommodel=product_status}
                 </td>
             </tr>
             <tr class="even">
                 <td>
-                <div>{control type="checkbox" name="uncategorized" flip=true label="Uncategorized Products Only" value=1}  </div>{br}
+                <div>{control type="checkbox" name="uncategorized" flip=true label="Uncategorized Products Only"|gettext value=1}  </div>{br}
                     <div class="control"> 
                         <a href="#showcats" id="showcats"class=" awesome small black">Show Categories</a>
                     </div>
                     <div id="catpicker" class="hide">
-                        <div class="hd">Select Categories</div>
+                        <div class="hd">{'Select Categories'|gettext}</div>
                         <div class="bd">                            
                             <div style="overflow-y:scroll;height:300px;">                            
                             {control type="tagtree" addable=false id="managecats" name="managecats" controller=storeCategory draggable=false menu=false expandonstart=false checkable=true}
@@ -60,37 +60,37 @@
             </tr>
             <tr class="even">
                 <td>
-                    {control type="dropdown" name="company" label="Product company... " includeblank="--Any--" size=4 multiple=true frommodel=company}    
+                    {control type="dropdown" name="company" label="Product company... "|gettext includeblank="--Any--"|gettext size=4 multiple=true frommodel=company}
                 </td>
             </tr>
             <tr class="odd">
                 <td>
-                    {control type="dropdown" name="product-range-op" label="A Product ID..." items="Equal to,Less than,Greater than" values="e,l,g"}
+                    {control type="dropdown" name="product-range-op" label="A Product ID..."|gettext items="Equal to,Less than,Greater than" values="e,l,g"}
                     {control type="text" name="product-range-num" label=" " value=$record->prn class="collapse prn"}
                 </td>
             </tr>
             <tr class="even">
                  <td>
-                    {control type="dropdown" name="product-price-op" label="Product Price..." items="Equal to,Less than,Greater than" values="e,l,g"}
+                    {control type="dropdown" name="product-price-op" label="Product Price..."|gettext items="Equal to,Less than,Greater than" values="e,l,g"}
                     {control type="text" name="product-price-num" label=" " value=$record->ppn class="collapse ppn"}
                 </td> 
             </tr>
             <tr class="odd">
                 <td>
-                    {control type="text" name="pnam" label="Product Name Like" value=$record->product}
+                    {control type="text" name="pnam" label="Product Name Like"|gettext value=$record->product}
                 </td>
                 
             </tr>
             <tr class="even">
                 <td>
-                    {control type="text" name="sku" label="Product SKU Like" value=$record->sku}
+                    {control type="text" name="sku" label="Product SKU Like"|gettext value=$record->sku}
                 </td>
                 
             </tr>
             
             <tr class="odd">
                 <td>
-                    <a id="submit-report" href="#" onclick="document.reportform.submit(); return false;" class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}"><strong><em>Generate Report</em></strong></a>
+                    <a id="submit-report" href="#" onclick="document.reportform.submit(); return false;" class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}"><strong><em>{'Generate Report'|gettext}</em></strong></a>
                 </td>
             </tr>
         </tbody>

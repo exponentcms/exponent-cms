@@ -19,18 +19,18 @@
 {/css}
 
 <div class="module billing manage">
-    <h1>Manage Payment Options</h1>
+    <h1>{'Manage Payment Options'|gettext}</h1>
     <p>
-        This page allows you to turn different payment options (known as billing calculators) on and off for customers on your webstore.
+        {'This page allows you to turn different payment options (known as billing calculators) on and off for customers on your webstore.'|gettext}
     </p>
     
     <table class="exp-skin-table">
         <thead>
         <tr>
-            <th>Name</th>
-            <th>Description</th>
-            <th>Enabled</th>
-            <th>Configure</th>
+            <th>{'Name'|gettext}</th>
+            <th>{'Description'|gettext}</th>
+            <th>{'Enabled'|gettext}</th>
+            <th>{'Configure'|gettext}</th>
         </tr>
         </thead>
         <tbody>
@@ -53,7 +53,7 @@
             </td>
             <td>
                 {if $calc->calculator->hasConfig() == 1}
-                    {icon action=configure record=$calc title="Configure `$calc->title`"}
+                    {icon action=configure record=$calc title="Configure"|gettext|cat:" `$calc->title`"}
                 {/if}
             </td>
         </tr>

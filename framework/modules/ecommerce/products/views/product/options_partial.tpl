@@ -23,11 +23,11 @@
 	{foreach from=$optiongroups item=group}
     <div class="panel"> 
         <div class="hd">
-            <h2>{$group->title}</h2><a href="#" class="expand">Expand</a>
+            <h2>{$group->title}</h2><a href="#" class="expand">{'Expand'|gettext}</a>
         </div>
     
         <div class="bd collapsed">
-    	    <table class="options exp-skin-table" summary="{$group->title} Product Options">
+    	    <table class="options exp-skin-table" summary="{$group->title} {'Product Options'|gettext}">
     	    <thead>
     	    <tr>
     	        <th colspan="5">
@@ -35,18 +35,18 @@
     	            {control type="hidden" name="optiongroups[`$group->title`][id]" value=$group->id}
     	            {control type="hidden" name="optiongroups[`$group->title`][title]" value=$group->title}
     	            {control type="hidden" name="optiongroups[`$group->title`][optiongroup_master_id]" value=$group->optiongroup_master_id}
-                    {control type="text" name="optiongroups[`$group->title`][rank]" label="Rank" size="3" value=$group->rank}
-                    {control type="checkbox" nowrap=true name="optiongroups[`$group->title`][required]" label="Required" value=1 checked=$group->required}
-        	        {control type="radio" nowrap=true name="optiongroups[`$group->title`][allow_multiple]" label="Select Single" value=0 checked=$group->allow_multiple}
-        	        {control type="radio" nowrap=true name="optiongroups[`$group->title`][allow_multiple]" label="Select  Multiple" value=1 checked=$group->allow_multiple}
+                    {control type="text" name="optiongroups[`$group->title`][rank]" label="Rank"|gettext size="3" value=$group->rank}
+                    {control type="checkbox" nowrap=true name="optiongroups[`$group->title`][required]" label="Required"|gettext value=1 checked=$group->required}
+        	        {control type="radio" nowrap=true name="optiongroups[`$group->title`][allow_multiple]" label="Select Single"|gettext value=0 checked=$group->allow_multiple}
+        	        {control type="radio" nowrap=true name="optiongroups[`$group->title`][allow_multiple]" label="Select  Multiple"|gettext value=1 checked=$group->allow_multiple}
         	    </th>
     	    </tr>
             <tr class="column-label">     
-                <th>Label</th>
-                <th>Adjustment</th>
-                <th>Modifier</th>
-                <th>Amount</th>
-                <th>Default</th>
+                <th>{'Label'|gettext}</th>
+                <th>{'Adjustment'|gettext}</th>
+                <th>{'Modifier'|gettext}</th>
+                <th>{'Amount'|gettext}</th>
+                <th>{'Default'|gettext}</th>
             </tr>
     	    </thead>
     	    <tbody>
@@ -58,7 +58,7 @@
                     {control type="hidden" name="optiongroups[`$group->title`][options][`$option->title`][option_master_id]" value=$option->option_master_id}                  
 
                     {control type="checkbox" name="optiongroups[`$group->title`][options][`$option->title`][enable]" label=$option->title value=1 checked=$option->enable}
-                    <a rel="mo-{$key}-{$group->title}" class="togglelink" href="#">+More...</a>
+                    <a rel="mo-{$key}-{$group->title}" class="togglelink" href="#">+{'More...'|gettext}</a>
                 </td>
                 <td>{control type="dropdown" name="optiongroups[`$group->title`][options][`$option->title`][updown]" items="+,-" values="+,-" label=" " value=$option->updown}</td>
                 <td>{control type="dropdown" name="optiongroups[`$group->title`][options][`$option->title`][modtype]" items="$,%" values="$,%" label=" " value=$option->modtype}</td>
@@ -67,13 +67,13 @@
             </tr>
             <tr class="{cycle values='odd,even'}" id="mo-{$key}-{$group->title}" style="display:none">  
                 <td colspan=5>
-                    {control type="text" name="optiongroups[`$group->title`][options][`$option->title`][optionweight]" label="Option Weight" size=6 value=$option->amount}
+                    {control type="text" name="optiongroups[`$group->title`][options][`$option->title`][optionweight]" label="Option Weight"|gettext size=6 value=$option->amount}
                     <hr>
                 </td>
             </tr>
             {foreachelse}
                 <p>
-                 This option group does not have any options yet.
+                 {'This option group does not have any options yet.'|gettext}
                 </p>
             {/foreach}
             </tbody>
@@ -81,7 +81,7 @@
         </div>
     </div>
     {foreachelse}
-        There are no product options setup yet.
+        {'There are no product options setup yet.'|gettext}
     {/foreach}
 </div>
 

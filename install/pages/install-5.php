@@ -34,6 +34,11 @@ if (is_readable(BASE . 'themes')) {
     while (($file = readdir($dh)) !== false) {
         if (is_readable(BASE . "themes/$file/class.php")) {
             include_once(BASE . "themes/$file/class.php");
+            /**
+             * Stores the theme object
+             * @var \theme $theme
+             * @name $theme
+             */
             $theme          = new $file();
             
             echo '<div class="theme clearfix">
@@ -44,8 +49,9 @@ if (is_readable(BASE . 'themes')) {
             echo "<em>".$theme->author()."</em>";
             echo "<p>".$theme->description().'<br /><br />
                 <input type="hidden" name="page" value="install-6">
+			  	<input type="hidden" name="lang" value="'.LANGUAGE.'" />
                 <input type="hidden" name="sc[DISPLAY_THEME_REAL]" value="'.$file.'" id="sc[DISPLAY_THEME_REAL]">';
-			echo file_exists(BASE . "themes/$file/sample.eql") ? '<input type="checkbox" name="install_sample" value="1" class="checkbox"><label class="label ">Install Sample Content</label><br /><br />' : '';
+			echo file_exists(BASE . "themes/$file/sample.eql") ? '<input type="checkbox" name="install_sample" value="1" class="checkbox"><label class="label ">'.gt('Install Sample Content').';</label><br /><br />' : '';
             echo '<button class="awesome green small">'. gt('Use') .' '.$theme->name().'</button>'.
 	            '</p>';
             echo "</form></div>";

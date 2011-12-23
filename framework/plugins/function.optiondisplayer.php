@@ -17,6 +17,23 @@
 #
 ##################################################
 
+/**
+ * Smarty plugin
+ * @package Smarty-Plugins
+ * @subpackage Function
+ */
+
+/**
+ * Smarty {optiondisplayer} function plugin
+ *
+ * Type:     function<br>
+ * Name:     optiondisplayer<br>
+ * Purpose:  display option dropdown list
+ *
+ * @param         $params
+ * @param \Smarty $smarty
+ * @return bool
+ */
 function smarty_function_optiondisplayer($params,&$smarty) {
     global $db;
     
@@ -43,7 +60,7 @@ function smarty_function_optiondisplayer($params,&$smarty) {
     //if((isset() || $og->required == false) $includeblank = $params['includeblank'] ; 
     //elseif((isset($params['includeblank']) && $params['includeblank'] == false) || $og->required == true) $includeblank = false;
     
-    $includeblank = $og->required == false && !isset($params['includeblank']) ? '-- Please Select an Option --' : $params['includeblank'];
+    $includeblank = $og->required == false && !isset($params['includeblank']) ? gt('-- Please Select an Option --') : $params['includeblank'];
     
     $template = get_common_template($view, $smarty->getTemplateVars('__loc'), 'options');
     $template->assign('product', $product);

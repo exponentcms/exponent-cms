@@ -90,8 +90,8 @@ class htmleditorcontrol extends formcontrol {
 			
 			//spares us to send the js editor init code more than once
 			//TODO: Convert to OO API and use eXp->EditorControl->doneInit instead
-			if(!defined("SITE_WYSIWYG_INIT")) {
-				define("SITE_WYSIWYG_INIT", 1);
+			if(!defined('SITE_WYSIWYG_INIT')) {
+				define('SITE_WYSIWYG_INIT', 1);
 			}
 			
 //			return $html;

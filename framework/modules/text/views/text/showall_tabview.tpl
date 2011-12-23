@@ -21,14 +21,14 @@
     {permissions}
         <div class="module-actions">
             {if $permissions.create == 1}
-                {icon class=add action=edit rank=1 title="Add Tab" text="Add Tab"}
+                {icon class=add action=edit rank=1 text="Add Tab"|gettext}
             {/if}
             {if $permissions.manage == 1}
                 {ddrerank items=$items model="text" label="Text Items"|gettext}
             {/if}
         </div>
     {/permissions}
-    <div id="{$id}" class="yui-navset yui3-skin-sam hide">
+    <div id="{$id}" class="yui-navset exp-skin-tabview hide">
         <ul>
             {foreach from=$items item=tab name=tabs}
                 <li><a href="#tab{$smarty.foreach.items.iteration}">{$tab->title}</a></li>
@@ -40,10 +40,10 @@
                     {permissions}
 						<div class="item-actions">
 						   {if $permissions.edit == 1}
-								{icon action=edit class="edit" record=$text title="Edit this `$modelname`"}
+								{icon action=edit record=$text}
 							{/if}
 							{if $permissions.delete == 1}
-								{icon action=delete record=$text title="Delete this Text Item" onclick="return confirm('Are you sure you want to delete this `$modelname`?');"}
+								{icon action=delete record=$text}
 							{/if}
 						</div>
                     {/permissions}
@@ -54,7 +54,7 @@
 					{permissions}
 						<div class="module-actions">
 							{if $permissions.create == 1}
-								{icon class=add action=edit rank=$text->rank+1 title="Add tab" text="Add another tab after this one"}
+								{icon class=add action=edit rank=$text->rank+1 text="Add another tab after this one"|gettext}
 							{/if}
 						</div>
 					{/permissions}

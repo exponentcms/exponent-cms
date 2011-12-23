@@ -21,15 +21,15 @@
 <div class="module migration manage-users">
     <div class="info-header">
         <div class="related-actions">
-			{help text="Get Help with Migrating Users and Groups" module="migrate-users"}
+			{help text="Get Help"|gettext|cat:" "|cat:("Migrating Users and Groups"|gettext) module="migrate-users"}
         </div>
 		<h1>{"Migrate Users and Groups"|gettext}</h1>	    
     </div>
 
     <p> 
-        The following is a list of users and groups we found in the database {$config.database}.
-        Select the users and groups you would like to pull over from {$config.database}.
-		User and group permissions will NOT be migrated.
+        {'The following is a list of users and groups we found in the database'|gettext} {$config.database}.
+        {'Select the users and groups you would like to pull over from'|gettext} {$config.database}.
+		{'User and group permissions will NOT be migrated.'|gettext}
     </p>
     {form action="migrate_users"}
         <table class="exp-skin-table">
@@ -74,11 +74,11 @@
 						</td>            
 					</tr>
 				{foreachelse}
-					<tr><td colspan=5>No users found to migrate from the database {$config.database}</td></tr>
+					<tr><td colspan=5>{'No users found to migrate from the database'|gettext} {$config.database}</td></tr>
 				{/foreach}
 			</tbody>
 			<tbody>
-				<tr><td colspan=5>{control type="checkbox" name="wipe_users" label="Erase all current users?" value=1 checked=false}</td></tr>
+				<tr><td colspan=5>{control type="checkbox" name="wipe_users" label="Erase all current users"|gettext|cat:"?" value=1 checked=false}</td></tr>
 				<tr><td>&nbsp;</td></tr>
 			</tbody>
 			<thead>
@@ -118,13 +118,13 @@
 						</td>            
 					</tr>
 				{foreachelse}
-					<tr><td colspan=5>No groups found to migrate from the database {$config.database}</td></tr>
+					<tr><td colspan=5>{'No groups found to migrate from the database'|gettext} {$config.database}</td></tr>
 				{/foreach}
 			</tbody>
-			<tr><td colspan=5>{control type="checkbox" name="wipe_groups" label="Erase all current groups?" value=1 checked=false}</td></tr>
+			<tr><td colspan=5>{control type="checkbox" name="wipe_groups" label="Erase all current groups"|gettext|cat:"?" value=1 checked=false}</td></tr>
         </table>
-        {control type="buttongroup" submit="Migrate Users/Groups" cancel="Cancel"}
+        {control type="buttongroup" submit="Migrate Users/Groups"|gettext cancel="Cancel"|gettext}
     {/form}
 	{br}<hr>{br}
-	<a class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" href="{link module=migration action=manage_pages}"><b>Next Step -> Migrate Pages</b></a>
+	<a class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" href="{link module=migration action=manage_pages}"><b>{'Next Step -> Migrate Pages'|gettext}</b></a>
 </div>

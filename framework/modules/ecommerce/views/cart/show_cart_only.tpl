@@ -22,10 +22,10 @@
 <table id="cart" width="100%" cellpadding="0" cellspacing="0" class="exp-skin-table">
     <thead>
     <tr>
-        <th>Item</th>
-        <th>Price</th>
-        <th>Amount</th>  
-        <th>Quantity</th>
+        <th>{'Item'|gettext}</th>
+        <th>{'Price'|gettext}</th>
+        <th>{'Amount'|gettext}</th>
+        <th>{'Quantity'|gettext}</th>
         <th>&nbsp;</th>
     </tr>
     </thead>
@@ -65,6 +65,6 @@
 </table>
 {else}
 <div class="no-items">
-    You don't have any items in your cart.
+    {'You currently have no items in your cart'|gettext}
 </div>
 {/if}

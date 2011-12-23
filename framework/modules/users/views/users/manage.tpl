@@ -21,20 +21,20 @@
 <div class="module users manage">
     <div class="info-header">
         <div class="related-actions">
-            {help text="Get Help Managing Users" module="manage-users"}
+            {help text="Get Help"|gettext|cat:" "|cat:("Managing Users"|gettext) module="manage-users"}
         </div>
-        <h1>{$moduletitle|default:"Manage Users"}</h1>
+        <h1>{$moduletitle|default:"Manage Users"|gettext}</h1>
     </div>
 	<p>
-        From here, you can create, modify and remove normal user accounts. 
-        You will not be able to create, modify or remove administrator accounts (these options will be disabled).
+        {'From here, you can create, modify and remove normal user accounts.'|gettext}&nbsp;&nbsp;
+        {'You will not be able to create, modify or remove administrator accounts (these options will be disabled).'|gettext}
     </p>
 	<div class="module-actions">
-		{icon class=add module=users action=create text="Create a New User"|gettext title="Create a New User"|gettext alt="Create a New User"|gettext}
+		{icon class=add module=users action=create text="Create a New User"|gettext}
 	</div>
 	
 	<div id="user_autocomplete">
-		<label for="user_dt_input">Filter by First Name, Last Name, or Email Address:</label>
+		<label for="user_dt_input">{'Filter by First Name, Last Name, or Email Address:'|gettext}</label>
 		<input id="user_dt_input" type="text" />
 	</div>	
 	<div id="dt_ac_container"></div>
@@ -66,17 +66,17 @@
 				{/if}
 				</td>
 			    <td>
-			        {permissions level=$smarty.const.UILEVEL_PERMISSIONS}
+			        {permissions}
 						<div class="item-actions">
 							{icon class=edit action=edituser record=$user}
-							{icon class="password" action=change_password record=$user title="Change this users password" text="Password"}
-							{icon action=delete record=$user title="Delete" onclick="return confirm('Are you sure you want to delete this user?');"}
+							{icon class="password" action=change_password record=$user title="Change this users password"|gettext text="Password"|gettext}
+							{icon action=delete record=$user title="Delete"|gettext onclick="return confirm('"|cat:("Are you sure you want to delete this user?"|gettext)|cat:"');"}
 						</div>
                     {/permissions}
 			    </td>
 			</tr>
 			{foreachelse}
-			    <td colspan="{$page->columns|count}">No Data.</td>
+			    <td colspan="{$page->columns|count}">No Data</td>
 			{/foreach}
 		</tbody>
 	</table>
@@ -89,10 +89,12 @@
 			var YAHOO=Y.YUI2;
 			var myDataSource = null;
 			var myDataTable = null;
+			var at = YAHOO.util.Dom.get('user_dt_input');
 			
 			 //set up autocomplete
 			var getTerms = function(query) {
 				myDataSource.sendRequest('sort=id&dir=asc&startIndex=0&results=10&query=' + query,myDataTable.onDataReturnInitializeTable, myDataTable);
+		
 			};
 			
 			var oACDS = new YAHOO.util.FunctionDataSource(getTerms);
@@ -115,12 +117,12 @@
 		
 		
         var formatactions = function(elCell, oRecord, oColumn, sData) {
-           {/literal}{permissions level=$smarty.const.UILEVEL_PERMISSIONS}{literal}
+           {/literal}{permissions}{literal}
 		   
 				 elCell.innerHTML = '<div class="item-actions">';
-				 editstring       = '{/literal}{icon class="edit" action="edituser" id="editstringid"}{literal}';
-				 passwordstring   = '{/literal}{icon class="password" action=change_password id="passwordstringid" title="Change this users password" text="Password"}{literal}';
-				 deletestring     = '<a href="{/literal}{link action=delete id="deletestringid"}{literal}" onclick="return confirm(\'Are you sure you want to delete this user?\');"><img width=16 height=16 style="border:none;" src="{/literal}{$smarty.const.ICON_RELATIVE}{literal}delete.png" /> Delete</a>';
+				 editstring       = '{/literal}{icon class="edit" action="edituser" id="editstringid" title="Edit this user"|gettext}{literal}';
+				 passwordstring   = '{/literal}{icon class="password" action="change_password" id="passwordstringid" title="Change this users password"|gettext text="Password"|gettext}{literal}';
+				 deletestring     = '{/literal}{icon action="delete" id="deletestringid" title="Delete this user"|gettext onclick="return confirm(\'"|cat:("Are you sure you want to delete this user?"|gettext)|cat:"\');"}{literal}';
 				 editstring     = editstring.replace('editstringid',oRecord._oData.id);
 				 passwordstring = passwordstring.replace('passwordstringid',oRecord._oData.id);
 				 deletestring   = deletestring.replace('deletestringid',oRecord._oData.id);
@@ -133,10 +135,10 @@
 	
 			// Column definitions
 			var myColumnDefs = [ // sortable:true enables sorting
-			{ key:"id",label:"Username",formatter:formatID},
-			{ key:"firstname",label:"First Name"},
-			{ key:"lastname",label:"Last Name"},
-			{ key:"is_acting_admin",label:"Is Admin",formatter:formatActingAdmin},
+			{ key:"id",label:"{/literal}{"Username"|gettext}{literal}",formatter:formatID},
+			{ key:"firstname",label:"{/literal}{"First Name"|gettext}{literal}"},
+			{ key:"lastname",label:"{/literal}{"Last Name"|gettext}{literal}"},
+			{ key:"is_acting_admin",label:"{/literal}{"Is Admin"|gettext}{literal}",formatter:formatActingAdmin},
 			{ label:"Actions",label:"", sortable:false,formatter: formatactions}
 			];
 			// DataSource instance
@@ -158,8 +160,34 @@
 				}
 			};
 			
+			var requestBuilder = function (oState, oSelf) {
+				/* We aren't initializing sort and dir variables. If you are
+				using column sorting built into the DataTable, use this
+				set of variable initializers.
+				var sort, dir, startIndex, results; */
+				
+				var startIndex, results;
+				
+				oState = oState || {pagination: null, sortedBy: null};
+				
+				/* If using column sorting built into DataTable, these next two lines
+				will properly set the current _sortedBy_ column and the _sortDirection_
+				sort = (oState.sortedBy) ? oState.sortedBy.key : oSelf.getColumnSet().keys[0].getKey();
+				dir = (oState.sortedBy && oState.sortedBy.dir === DataTable.CLASS_DESC) ? "desc" : "asc"; */
+				
+				startIndex = (oState.pagination) ? oState.pagination.recordOffset : 0;
+				results = (oState.pagination) ? oState.pagination.rowsPerPage : null;
+				
+				
+				return  "results=" 	+ results +
+						"&startIndex=" 	+ startIndex +
+						"&sort=id&dir=asc" +
+						"&query=" + at.value;
+			}
+			
 			 // DataTable configuration
 			var myConfigs = {
+				generateRequest: requestBuilder,
 				initialRequest: "sort=id&dir=asc&startIndex=0&results=10", // Initial request for first page of data
 				dynamicData: true, // Enables dynamic server-driven data
 				sortedBy : {key:"id", dir:YAHOO.widget.DataTable.CLASS_DESC}, // Sets UI initial sort arrow
@@ -178,7 +206,7 @@
 				oPayload.totalRecords = oResponse.meta.totalRecords;
 				
 				var df = YAHOO.util.Dom.get('totalResult');
-				df.innerHTML = "Total Results: " + oResponse.meta.totalRecords;
+				df.innerHTML = "{/literal}{"Total Results"|gettext}:{literal}"+" " + oResponse.meta.totalRecords;
 			
 				return oPayload;
 			}

@@ -19,29 +19,30 @@
 
 if (!defined('EXPONENT')) exit('');
 
-expSession::un_set('installer_config');
+//expSession::un_set('installer_config');
 expSession::clearAllSessionData();
 
 global $user;
 
-if (isset($_REQUEST['upgrade'])) { 
+if (isset($_REQUEST['upgrade'])) {
 // upgrades hit this
-    if (unlink(BASE.'install/not_configured')) { 
-    
-            echo '<h2>' . gt('You\'re all set!') ."</h2>";
-            echo '<p>' . gt('Take me to your leader') ."</p>";
-
-        } else {
-
-            echo '<h2>' . gt('Hmmmm....') ."</h2>";
-            echo '<p>' . gt('We weren\'t able to remove /install/not_configured. Remove this file manually to complete your installation.') ."</p>";
-
-    } 
+//    if (unlink(BASE.'install/not_configured')) {
+    $leaveinstaller = (unlink(BASE.'install/not_configured')||!file_exists(BASE.'install/not_configured'));
+    if ($leaveinstaller) {
+        echo '<h2>' . gt('You\'re all set!') ."</h2>";
+        echo '<p>' . gt('Take me to your leader') ."</p>";
+    } else {
+        echo '<h2>' . gt('Hmmmm....') ."</h2>";
+        echo '<p>' . gt('We weren\'t able to remove /install/not_configured. Remove this file manually to complete your upgrade.') ."</p>";
+    }
+?>
+    <p><?php echo gt('Log back in to start using all your fancy new enhancements!') ?></p>
+    <a class="awesome large green" href="<?php echo URL_FULL; ?>login.php"><?php echo gt("Log In Screen"); ?></a>
+<?php
 
 } else {
-    
     if (isset($_POST['username'])) {
-        $user = user::login($_POST['username'],$_POST['password']);
+        user::login($_POST['username'],$_POST['password']);
         $leaveinstaller = (unlink(BASE.'install/not_configured')||!file_exists(BASE.'install/not_configured'));
         if ($leaveinstaller) { 
             if ($user->id!=0) {
@@ -50,14 +51,14 @@ if (isset($_REQUEST['upgrade'])) {
                         if (SEF_URLS) {
                     	    header('Location: '.URL_FULL."migration/configure/");
                         } else {
-                    	    header('Location: '.URL_FULL."index.php?module=migration&action=configure");
+                    	    header('Location: '.URL_FULL."index.php?controller=migration&action=configure");
                         }
                         break;
                     case 'configsite':
                         if (SEF_URLS) {
                     	    header('Location: '.URL_FULL."administration/configure_site/");
                         } else {
-                    	    header('Location: '.URL_FULL."index.php?module=administration&action=configure_site");
+                    	    header('Location: '.URL_FULL."index.php?controller=administration&action=configure_site");
                         }
                         break;
                     default:
@@ -65,11 +66,10 @@ if (isset($_REQUEST['upgrade'])) {
                         break;
                 }
             } else {
-                    
                 echo '<h2>' . gt('Hmmmm....') ."</h2>";
+	            echo '<p>' . gt('Either we weren\'t able to log in or') ."</p>";
                 echo '<p>' . gt('We weren\'t able to remove /install/not_configured. Remove this file manually to complete your installation.') ."</p>";
-            
-            } 
+            }
         }
     }
 
@@ -78,14 +78,15 @@ if (isset($_REQUEST['upgrade'])) {
 
 ?>
 	<form action="index.php?page=final" method="POST">
+		<input type="hidden" name="lang" value="<?php echo LANGUAGE; ?>" />
 		<div class="text-control control ">
-			<label class="label"><?php echo gt("Username:"); ?></label><input type="text" class="text " size="25" value="" name="username">
+			<label class="label"><?php echo gt("Username").':'; ?></label><input type="text" class="text " size="25" value="" name="username">
 		</div>
 		<div class="password-control control ">
-			<label class="label"><?php echo gt("Password:"); ?></label><input type="password" class="password " size="25" value="" name="password">
+			<label class="label"><?php echo gt("Password").':'; ?></label><input type="password" class="password " size="25" value="" name="password">
 		</div>
         <div class="formcontrol radiogroup">
-            <span class="label">And:</span>
+            <span class="label"><?php echo gt('And'); ?>:</span>
             <div class="formcontrol radiobutton">
                 <input type="radio" id="radiocontrol-1" class="radiobutton" value="migration" name="next">
 				<label for="radiocontrol-1"><?php echo gt("I want to begin transferring an existing Exponent v0.9x site"); ?></label>
@@ -105,11 +106,5 @@ if (isset($_REQUEST['upgrade'])) {
 	</form>
     
 <?php
-
 }
 ?>
-
-<?php if (isset($_REQUEST['upgrade'])) { ?>
-<p><?php echo gt('Log back in to start using all your fancy new enhancements!') ?></p>
-<a class="awesome large green" href="<?php echo URL_FULL; ?>login.php"><?php echo gt("Log In Screen"); ?></a>
-<?php } ?>

@@ -15,7 +15,7 @@
  *}
 
 <div class="module blog showall-authors">
-    <h2>{$moduletitle|default:"Authors"}</h2>
+    <h2>{$moduletitle|default:"Authors"|gettext}</h2>
 
     <ul>
         {foreach from=$authors item=author}

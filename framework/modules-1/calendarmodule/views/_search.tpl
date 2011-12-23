@@ -62,17 +62,17 @@
 					{/if*}
 					<div style="padding-left: 10px">
 						<b>
-						{if $event->is_allday == 1}All Day{else}
+						{if $event->is_allday == 1}{'All Day'|gettext}{else}
 							{$dates->eventstart|format_date:"%l:%M %P"} - {$dates->eventend|format_date:"%l:%M %P"}
 						{/if}</b><br/>
 						{$event->body|summarize:"html":"paralinks"}</br>
-						&nbsp;&nbsp;<a class="mngmntlink calendar_mngmntlink" href="{link action=view id=$event->id date_id=$dates->id}">Click here for more information or to register.</a>
+						&nbsp;&nbsp;<a class="mngmntlink calendar_mngmntlink" href="{link action=view id=$event->id date_id=$dates->id}">{'Click here for more information or to register.'|gettext}</a>
 					</div><br/>
 				</td></tr>
 			{/foreach}
 		{/foreach}
 		{if $count == 0}
-			<tr><td><i>No Events</i></td></tr>
+			<tr><td><i>{'No Events'|gettext}</i></td></tr>
 		{/if}
 	</table>
 </div>

@@ -15,7 +15,7 @@
  *}
 
 
-You requested that your password be reset at {$smarty.const.URL_FULL}.
+{'You requested that your password be reset at'|gettext} {$smarty.const.URL_FULL}.
 \r\n\r\n
-Please follow this link to confirm that you do want it reset:
+{'Please follow this link to confirm that you do want it reset'|gettext}:
 {link controller=users action=confirm_password_reset token=$token->token uid=$token->uid}

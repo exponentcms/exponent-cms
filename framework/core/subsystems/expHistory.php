@@ -181,31 +181,6 @@ class expHistory {
         expSession::set('history', $this->history);
     }
 
-	/** exdoc
-	 * Old flow subsystem code
-	 * Saves the current URL in a persistent session, to be used later.
-	 *
-	 * @param integer $access_level The access level of the current page.
-	 *  Either SYS_FLOW_PUBLIC or SYS_FLOW_PROTECTED
-	 * @param integer $url_type The type of URL being set.  Either
-	 *  SYS_FLOW_SECTIONAL or SYS_FLOW_ACTION
-	 * @node Subsystems:Flow
-	 */
-	public static function flowSet($access_level,$url_type) {  //FIXME - Needs to be deprecated now as it's not used!
-//		global $SYS_FLOW_REDIRECTIONPATH;
-		global $router;
-		//echo '<h1>setting flow</h1>'.$router->current_url;
-//		if ($access_level == SYS_FLOW_PUBLIC) {
-//			expSession::set($SYS_FLOW_REDIRECTIONPATH.'_flow_' . SYS_FLOW_PROTECTED . '_' . $url_type, $router->current_url);
-//			expSession::set($SYS_FLOW_REDIRECTIONPATH.'_flow_last_' . SYS_FLOW_PROTECTED, $router->current_url);
-//		}
-//		expSession::set($SYS_FLOW_REDIRECTIONPATH.'_flow_' . $access_level . '_' . $url_type, $router->current_url);
-//		expSession::set($SYS_FLOW_REDIRECTIONPATH.'_flow_last_' . $access_level, $router->current_url);
-
-		//FIXME:  Glue code to try to get new history and old flow to play nicely together.
-		expHistory::set('viewable', $router->params);
-	}
-
     public static function flush() {
         $history = array('viewable'=>array(), 'editable'=>array(), 'manageable'=>array(), 'lasts'=>array());
         expSession::set('history', $history);

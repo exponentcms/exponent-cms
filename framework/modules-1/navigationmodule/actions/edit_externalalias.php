@@ -23,9 +23,8 @@ if (!defined('EXPONENT')) exit('');
 
 $check_id = 0;
 
-// FIXME: Allow non-administrative users to manage certain
-// FIXME: parts of the section hierarchy.
-if ($user && $user->is_acting_admin == 1) {
+// FIXME: Allow non-administrative users to manage certain parts of the section hierarchy.
+if ($user && ($user->is_admin == 1 || $user->is_acting_admin == 1)) {
 	$section = null;
 	if (isset($_GET['id'])) {
 		// Check to see if an id was passed in get.  If so, retrieve that section from

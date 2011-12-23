@@ -32,8 +32,6 @@ $loc = expCore::makeLocation(
 	(isset($_GET['int'])?$_GET['int']:'')
 );
 
-//$SYS_FLOW_REDIRECTIONPATH='popup';
-
 if (expTheme::inAction()) {
 	expTheme::runAction();
 } else if (isset($_GET['module']) && isset($_GET['view'])) {

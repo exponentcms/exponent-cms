@@ -17,8 +17,26 @@
 #
 ##################################################
 
+/**
+ * Smarty plugin
+ * @package Smarty-Plugins
+ * @subpackage Function
+ */
+
+/**
+ * Smarty {messagequeue} function plugin
+ *
+ * Type:     function<br>
+ * Name:     messagequeue<br>
+ * Purpose:  display 'flash' message queue
+ *
+ * @param         $params
+ * @param \Smarty $smarty
+ * @return bool
+ */
 function smarty_function_messagequeue($params,&$smarty) {
-    echo show_msg_queue();
+    $name = empty($params['name']) ? null : $params['name'];
+    echo show_msg_queue($name);
 }
 
 ?>

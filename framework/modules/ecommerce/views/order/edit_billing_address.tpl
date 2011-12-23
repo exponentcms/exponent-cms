@@ -17,16 +17,16 @@
 <div id="authcfg">
     {form action=save_payment_info}
         {control type="hidden" name="id" value=$orderid}    
-        <div id="authcfg-tabs" class="yui-navset yui3-skin-sam hide">
+        <div id="authcfg-tabs" class="yui-navset exp-skin-tabview hide">
             <ul class="yui-nav">
-            <li class="selected"><a href="#tab1"><em>Edit Payment Info</em></a></li>
+            <li class="selected"><a href="#tab1"><em>{'Edit Payment Info'|gettext}</em></a></li>
             </ul>            
             <div class="yui-content">
                 <div id="tab1">
                     {foreach from=$opts item=field key=key}
                         {control type="text" name="result[`$key`]" label=$key value=$field}
                     {/foreach}
-                    {control type="buttongroup" submit="Save Payment Info" cancel="Cancel"}
+                    {control type="buttongroup" submit="Save Payment Info"|gettext cancel="Cancel"|gettext}
                 
                 </div>
             </div>

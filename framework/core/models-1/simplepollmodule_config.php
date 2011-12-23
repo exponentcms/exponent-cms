@@ -36,20 +36,20 @@ class simplepollmodule_config {
 	function form($object) {
 		$form = new form();
 		if (!isset($object->id)) {
-			$object->thank_you_message = 'Thank you for voting.';
-			$object->already_voted_message = 'You have already voted in this poll.';
-			$object->voting_closed_message = 'Voting has been closed for this poll.';
+			$object->thank_you_message = gt('Thank you for voting.');
+			$object->already_voted_message = gt('You have already voted in this poll.');
+			$object->voting_closed_message = gt('Voting has been closed for this poll.');
 			$object->anonymous_timeout = 5;
 		} else {
 			$object->anonymous_timeout /= 3600;
 			$form->meta('id',$object->id);
 		}
 		
-		$form->register('thank_you_message','"Thank You" Message',new texteditorcontrol($object->thank_you_message,7,40));
-		$form->register('already_voted_message','"Already Voted" Message',new texteditorcontrol($object->already_voted_message,7,40));
-		$form->register('voting_closed_message','"Voting Closed" Message',new texteditorcontrol($object->voting_closed_message,7,40));
-		$form->register('anonymous_timeout','Anonymous Block Timeout (hours)',new textcontrol($object->anonymous_timeout));
-		$form->register('submit','',new buttongroupcontrol('Save','','Cancel'));
+		$form->register('thank_you_message',gt('\'Thank You\' Message'),new texteditorcontrol($object->thank_you_message,7,40));
+		$form->register('already_voted_message',gt('\'Already Voted\' Message'),new texteditorcontrol($object->already_voted_message,7,40));
+		$form->register('voting_closed_message',gt('\'Voting Closed\' Message'),new texteditorcontrol($object->voting_closed_message,7,40));
+		$form->register('anonymous_timeout',gt('Anonymous Block Timeout (hours)'),new textcontrol($object->anonymous_timeout));
+		$form->register('submit','',new buttongroupcontrol(gt('Save'),'',gt('Cancel')));
 		
 		return $form;
 	}

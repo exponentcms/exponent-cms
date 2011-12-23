@@ -16,8 +16,8 @@
 
 <div id="editcategory" class="storecategory edit hide exp-skin-tabview">
 	<div class="form_header">
-        	<h1>Edit Store Category</h1>
-        	<p>Complete and save the form below to configure this store category</p>
+        	<h1>{'Edit Store Category'|gettext}</h1>
+        	<p>{'Complete and save the form below to configure this store category'|gettext}</p>
 	</div>
         
 	{if $node->id == ""}
@@ -32,31 +32,31 @@
         {control type=hidden name=lft value=$node->lft}                
         <div id="demo" class="yui-navset">
             <ul class="yui-nav">
-				<li class="selected"><a href="#general"><em>General</em></a></li>
-				<li><a href="#seo"><em>Meta Info</em></a></li>
-				<li><a href="#events"><em>Events</em></a></li>
+				<li class="selected"><a href="#general"><em>{'General'|gettext}</em></a></li>
+				<li><a href="#seo"><em>{'Meta Info'|gettext}</em></a></li>
+				<li><a href="#events"><em>{'Events'|gettext}</em></a></li>
 				{if $product_types}
 					{foreach from=$product_types key=key item=item}
-						<li><a href="#{$item}"><em>{$key} Product Types</em></a></li>
+						<li><a href="#{$item}"><em>{$key} {'Product Types'|gettext}</em></a></li>
 					{/foreach}
 				{/if}
             </ul>            
             <div class="yui-content">
                 <div id="general">   
-					{control type=text name=title label="Category Name" value=$node->title}
-					{control type="checkbox" name="is_active" label="This category is active" value=1 checked=$node->is_active|default:1}                                                
-					{control type="files" name="image" label="Category Image" value=$node->expFile}
-					{control type=editor name=body label="Category Description" value=$node->body}
+					{control type=text name=title label="Category Name"|gettext value=$node->title}
+					{control type="checkbox" name="is_active" label="This category is active"|gettext value=1 checked=$node->is_active|default:1}
+					{control type="files" name="image" label="Category Image"|gettext value=$node->expFile}
+					{control type=editor name=body label="Category Description"|gettext value=$node->body}
 	            </div>
                 <div id="seo">
-                    {control type=text name=sef_url label="SEF URL" value=$node->sef_url}                                                                                 
-                    {control type=text name=meta_title label="Meta Title" value=$node->meta_title}
-                    {control type=text name=meta_keywords label="Meta Keywords" value=$node->meta_keywords}
-                    {control type=text name=meta_description label="Meta Description" value=$node->meta_description}                        
+                    {control type=text name=sef_url label="SEF URL"|gettext value=$node->sef_url}
+                    {control type=text name=meta_title label="Meta Title"|gettext value=$node->meta_title}
+                    {control type=text name=meta_keywords label="Meta Keywords"|gettext value=$node->meta_keywords}
+                    {control type=text name=meta_description label="Meta Description"|gettext value=$node->meta_description}
                 </div>        
                  <div id="events">   
-                    {control type="checkbox" name="is_events" label="This category is used for events" value=1 checked=$node->is_events}                        
-                    {control type="checkbox" name="hide_closed_events" label="Don't Show Closed Events" value=1 checked=$node->hide_closed_events}
+                    {control type="checkbox" name="is_events" label="This category is used for events"|gettext value=1 checked=$node->is_events}
+                    {control type="checkbox" name="hide_closed_events" label="Don\'t Show Closed Events"|gettext value=1 checked=$node->hide_closed_events}
                 </div>  
 				{if $product_types}
 					{foreach from=$product_types key=key item=item}
@@ -68,11 +68,11 @@
 				{/if}
             </div>    
         </div>
-        {control type=buttongroup submit=Save cancel=Cancel}
+        {control type=buttongroup submit="Save"|gettext cancel="Cancel"|gettext}
         {/form}                      
 </div>
 <div class="loadingdiv">{'Loading'|gettext}</div>
-{script unique="cattabs" src="framework/core/subsystems/forms/controls/listbuildercontrol.js"}
+{script unique="cattabs" src="`$smarty.const.PATH_RELATIVE`framework/core/subsystems/forms/controls/listbuildercontrol.js"}
 {literal}
 YUI(EXPONENT.YUI3_CONFIG).use('node','event','yui2-tabview','yui2-element', function(Y) {
     var YAHOO=Y.YUI2;

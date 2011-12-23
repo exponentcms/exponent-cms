@@ -45,8 +45,10 @@ class mysqli_database extends database {
 
 //	function connect ($username, $password, $hostname, $database, $new=false) {
 	function __construct($username, $password, $hostname, $database, $new=false) {
-		list ( $host, $port ) = @explode (":", $hostname);
-		if ($this->connection = mysqli_connect($host, $username, $password, $database, $port)) {
+		if (strstr($hostname,':')) {
+			list ( $host, $port ) = @explode (":", $hostname);
+		}
+		if ($this->connection = @mysqli_connect($host, $username, $password, $database, $port)) {
 			$this->havedb = true;
 		}
 		//fix to support utf8, warning it only works from a certain mySQL version on
@@ -57,8 +59,8 @@ class mysqli_database extends database {
 		//anything else would result in an inconsistent user experience
 		//TODO: determine how to handle encoding on postgres
 
-		list($major, $minor, $micro) = sscanf(mysqli_get_server_info($this->connection), "%d.%d.%d-%s");
-		if(defined("DB_ENCODING")) {
+		list($major, $minor, $micro) = sscanf(@mysqli_get_server_info($this->connection), "%d.%d.%d-%s");
+		if(defined('DB_ENCODING')) {
 			//SET NAMES is possible since version 4.1
 			if(($major > 4) OR (($major == 4) AND ($minor >= 1))) {
 				@mysqli_query($this->connection, "SET NAMES " . DB_ENCODING);
@@ -993,12 +995,12 @@ class mysqli_database extends database {
             $errno = mysqli_errno($this->connection);
             switch ($errno) {
                 case 1046:
-                    return "1046 : Selected database does not exist";
+                    return "1046 : ".gt("Selected database does not exist");
                 default:
                     return mysqli_errno($this->connection) . " : " . mysqli_error($this->connection);
             }
         } else if ($this->connection == false) {
-            return "Unable to connect to database server";
+            return gt("Unable to connect to database server");
         } else
             return "";
     }

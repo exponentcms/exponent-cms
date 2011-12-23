@@ -17,6 +17,23 @@
 #
 ##################################################
 
+/**
+ * Smarty plugin
+ * @package Smarty-Plugins
+ * @subpackage Function
+ */
+
+/**
+ * Smarty {help} function plugin
+ *
+ * Type:     function<br>
+ * Name:     help<br>
+ * Purpose:  create a help link
+ *
+ * @param         $params
+ * @param \Smarty $smarty
+ * @return bool
+ */
 function smarty_function_help($params,&$smarty) {
 
     if (HELP_ACTIVE) {
@@ -29,7 +46,7 @@ function smarty_function_help($params,&$smarty) {
         // figure out the params
         $text = empty($params['text']) ? '&nbsp' : $params['text'];
 
-        $title = empty($params['title']) ? 'Get help for '.$params['module'] : $params['title'];
+        $title = empty($params['title']) ? gt('Get Help').' for '.$params['module'] : $params['title'];
 
         $class  = 'helplink';
         $class .= empty($params['class']) ? '' : $params['class'];

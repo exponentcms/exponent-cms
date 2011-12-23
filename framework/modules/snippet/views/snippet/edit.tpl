@@ -16,15 +16,15 @@
 
 <div class="module text edit yui-skin-sam">
     {if $record->id != ""}
-        <h1>Editing {$record->title}</h1>
+        <h1>{'Editing'|gettext}: {$record->title}</h1>
     {else}
-        <h1>New Code Snippet</h1>
+        <h1>{'New Code Snippet'|gettext}</h1>
     {/if}
 
     {form action=update}
         {control type=hidden name=id value=$record->id}
-        {control type=text name=title label="Title" value=$record->title}
-        {control type=textarea cols="80" rows=20 name=body label="Code Snippet" value=$record->body}
-        {control type=buttongroup submit="Save Text" cancel="Cancel"}
+        {control type=text name=title label="Title"|gettext value=$record->title}
+        {control type=textarea cols="80" rows=20 name=body label="Code Snippet"|gettext value=$record->body}
+        {control type=buttongroup submit="Save Text"|gettext cancel="Cancel"|gettext}
     {/form}   
 </div>

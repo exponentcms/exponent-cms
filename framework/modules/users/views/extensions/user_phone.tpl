@@ -15,11 +15,11 @@
  *}
 
 <div class="module users extension phone">
-    {control type="text" name="home_phone" label="Home Phone" value=$edit_user->home_phone}
-    {control type="text" name="bus_phone" label="Work Phone" value=$edit_user->bus_phone}
-    {control type="text" name="other_phone" label="Other Phone" value=$edit_user->other_phone}
-    {control type="text" name="pref_contact" label="Preferred Contact Method" value=$edit_user->pref_contact}
-    {control type="text" name="contact_time" label="Preferred Contact Time" value=$edit_user->contact_time}
+    {control type="text" name="home_phone" label="Home Phone"|gettext value=$edit_user->home_phone}
+    {control type="text" name="bus_phone" label="Work Phone"|gettext value=$edit_user->bus_phone}
+    {control type="text" name="other_phone" label="Other Phone"|gettext value=$edit_user->other_phone}
+    {control type="text" name="pref_contact" label="Preferred Contact Method"|gettext value=$edit_user->pref_contact}
+    {control type="text" name="contact_time" label="Preferred Contact Time"|gettext value=$edit_user->contact_time}
 </div>
 
 

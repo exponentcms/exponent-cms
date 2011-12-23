@@ -23,30 +23,12 @@ class administrationController extends expController {
     public $useractions = array();
     public $add_permissions = array(
 	    'administrate'=>'Manage Administration',
-	    'clear_all_caches'=>'Clear All Caches',
-	    'clear_css_cache'=>'Clear CSS Cache',
-	    'clear_image_cache'=>'Clear Image Cache',
-	    'clear_rss_cache'=>'Clear RSS Cache',
-	    'clear_smarty_cache'=>'Clear Smarty Cache',
-	    'configure_site'=>'Configure Site',
-	    'configure_theme'=>'Configure Theme',
-	    'delete_unused_tables'=>'Delete Unused Tables',
-	    "fix_database"=>"Fix Database",
-	    "fix_sessions"=>"Fix Sessions",
-	    "install_extension"=>"Install Extension",
-	    "install_tables"=>"Install Tables",
-	    "installTables"=>"Install Tables",
-	    'manage_themes'=>'Manage Themes',
-	    'manage_unused_tables'=>'Manage Unused Tables',
-	    'optimize_database'=>'Optimize Database',
-	    'preview_theme'=>'Preview Theme',
-	    "switch_themes"=>"Change Themes",
+	    'clear'=>'Clear Caches',
+	    "fix"=>"Fix Database",
+	    "install"=>"Installation",
+	    "theme"=>"Manage Themes",
 	    'test_smtp'=>'Test SMTP Server Settings',
-	    'toggle_dev'=>'Toggle Development Mode',
-	    'toggle_maintenance'=>'Toggle Maintenance Mode',
-	    'toggle_minify'=>'Toggle Minify Mode',
-	    'toggle_preview'=>'Toggle Preview Mode',
-	    "upload_extension"=>"Upload Extension",
+	    'toggle'=>'Toggle Settings',
         );
 	public $codequality = 'beta';
     
@@ -54,13 +36,13 @@ class administrationController extends expController {
     function description() { return "This is the beginnings of the new Administration Module"; }
     function author() { return "OIC Group, Inc"; }
 
-	public static function installTables() {
+	public static function install_dbtables() {
 	    global $db;
 
-		define("TMP_TABLE_EXISTED",		1);
-		define("TMP_TABLE_INSTALLED",	2);
-		define("TMP_TABLE_FAILED",		3);
-		define("TMP_TABLE_ALTERED",		4);
+		define('TMP_TABLE_EXISTED',		1);
+		define('TMP_TABLE_INSTALLED',	2);
+		define('TMP_TABLE_FAILED',		3);
+		define('TMP_TABLE_ALTERED',		4);
 
 		expSession::clearCurrentUserSessionCache();
 		$tables = array();
@@ -140,7 +122,7 @@ class administrationController extends expController {
 	}
 
 	public function install_tables() {
-		$tables = self::installTables();
+		$tables = self::install_dbtables();
 		ksort($tables);
         assign_to_template(array('status'=>$tables));
 	}
@@ -211,11 +193,11 @@ class administrationController extends expController {
             $count += $db->dropTable($basename);
         }
         
-        flash('message', 'Deleted '.$count.' unused tables.');
+        flash('message', gt('Deleted').' '.$count.' '.gt('unused tables').'.');
         expHistory::back();
     }
 
-	public function optimize_database() {
+	public function fix_optimize_database() {
 	    global $db;
 
 		$before = $db->databaseInfo();
@@ -231,7 +213,7 @@ class administrationController extends expController {
 
 //		$test = $db->sql('CHECK TABLE '.DB_TABLE_PREFIX.'sessionticket');
 		$fix = $db->sql('REPAIR TABLE '.DB_TABLE_PREFIX.'sessionticket');
-		flash('message', 'Sessions Table was Repaired');
+		flash('message', gt('Sessions Table was Repaired'));
 		expHistory::back();
 	}
 
@@ -239,30 +221,30 @@ class administrationController extends expController {
 	public function fix_database() {
 	    global $db;
 
-	    print_r("<h1>Attempting to Fix the Exponent Database</h1>");
-	    print_r("<h3>Some Error Conditions can NOT be repaired by this Procedure!</h3><br>");
+	    print_r("<h1>".gt("Attempting to Fix the Exponent Database")."</h1>");
+	    print_r("<h3>".gt("Some Error Conditions can NOT be repaired by this Procedure")."!</h3><br>");
 		print_r("<pre>");
 	// upgrade sectionref's that have lost their originals
-		print_r("<b>Searching for sectionrefs that have lost their originals</b><br><br>");
+		print_r("<b>".gt("Searching for sectionrefs that have lost their originals")."</b><br><br>");
 		$sectionrefs = $db->selectObjects('sectionref',"is_original=0");
 		if (count($sectionrefs)) {
-			print_r("Found: ".count($sectionrefs)." copies (not originals)<br>");
+			print_r(gt("Found").": ".count($sectionrefs)." ".gt("copies (not originals)")."<br>");
 		} else {
-			print_r("None Found: Good!<br>");
+			print_r(gt("None Found: Good")."!<br>");
 		}
 		foreach ($sectionrefs as $sectionref) {
 			if ($db->selectObject('sectionref',"module='".$sectionref->module."' AND source='".$sectionref->source."' AND is_original='1'") == null) {
 			// There is no original for this sectionref so change it to the original
 				$sectionref->is_original = 1;
 				$db->updateObject($sectionref,"sectionref");
-				print_r("Fixed: ".$sectionref->module." - ".$sectionref->source."<br>");
+				print_r(gt("Fixed").": ".$sectionref->module." - ".$sectionref->source."<br>");
 			}
 		}
 		print_r("</pre>");
 
 		print_r("<pre>");
 	// upgrade sectionref's that point to missing sections (pages)
-		print_r("<b>Searching for sectionrefs pointing to missing sections/pages <br>to fix for the Recycle Bin</b><br><br>");
+		print_r("<b>".gt("Searching for sectionrefs pointing to missing sections/pages")." <br>".gt("to fix for the Recycle Bin")."</b><br><br>");
 		$sectionrefs = $db->selectObjects('sectionref',"refcount!=0");
 		$found = 0;
 		foreach ($sectionrefs as $sectionref) {
@@ -270,29 +252,29 @@ class administrationController extends expController {
 			// There is no section/page for sectionref so change the refcount
 				$sectionref->refcount = 0;
 				$db->updateObject($sectionref,"sectionref");
-				print_r("Fixed: ".$sectionref->module." - ".$sectionref->source."<br>");
+				print_r(gt("Fixed").": ".$sectionref->module." - ".$sectionref->source."<br>");
 				$found += 1;
 			}
 		}
 		if (!$found) {
-			print_r("None Found: Good!<br>");
+			print_r(gt("None Found: Good")."!<br>");
 		}
 		print_r("</pre>");
 
 		 print_r("<pre>");
 	 // delete sectionref's that have empty sources since they are dead
-		 print_r("<b>Searching for unassigned modules (no source)</b><br><br>");
+		 print_r("<b>".gt("Searching for unassigned modules (no source)")."</b><br><br>");
 		 $sectionrefs = $db->selectObjects('sectionref','source=""');
 		 if ($sectionrefs != null) {
-			 print_r("Removing: ".count($sectionrefs)." empty sectionref's (no source)<br>");
+			 print_r(gt("Removing").": ".count($sectionrefs)." ".gt("empty sectionrefs (no source)")."<br>");
 			 $db->delete('sectionref','source=""');
 		 } else {
-			 print_r("No Empties Found: Good!<br>");
+			 print_r(gt("No Empties Found: Good")."!<br>");
 		 }
 
 		print_r("<pre>");
 	// add missing sectionrefs based on existing containers (fixes aggregation problem)
-		print_r("<b>Searching for missing sectionref's based on existing container's</b><br><br>");
+		print_r("<b>".gt("Searching for missing sectionrefs based on existing containers")."</b><br><br>");
 		$containers = $db->selectObjects('container',1);
 		foreach ($containers as $container) {
 			$iloc = expUnserialize($container->internal);
@@ -310,9 +292,9 @@ class administrationController extends expController {
 					if (!empty($section)) {
 						$newSecRef->section = $section->id;
 						$db->insertObject($newSecRef,"sectionref");
-						print_r("Missing sectionref for container replaced: ".$iloc->mod." - ".$iloc->src." - PageID #".$section->id."<br>");
+						print_r(gt("Missing sectionref for container replaced").": ".$iloc->mod." - ".$iloc->src." - PageID #".$section->id."<br>");
 					} else {
-						print_r("Cant' find the container page for container: ".$iloc->mod." - ".$iloc->src."<br>");
+						print_r(gt("Cant' find the container page for container").": ".$iloc->mod." - ".$iloc->src."<br>");
 					}
 				}
 			}
@@ -358,8 +340,55 @@ class administrationController extends expController {
     }
     
     public function update_SetSlingbarPosition() {
-       expSession::set("slingbar_top",$this->params['top']);
+        expSession::set("slingbar_top",$this->params['top']);
+        expHistory::back();
     }
+
+    public function manage_lang() {
+        global $default_lang, $cur_lang;
+
+        // Available Languages
+	    $langs = expLang::langList();
+        if (empty($default_lang)) $default_lang = include(BASE."framework/core/lang/English - US.php");
+        $num_missing = 0;
+        foreach ($default_lang as $key => $value) {
+            if (!array_key_exists($key,$cur_lang)) $num_missing++;
+        }
+        $num_untrans = 0;
+        foreach ($cur_lang as $key => $value) {
+            if ($key == $value) $num_untrans++;
+        }
+        assign_to_template(array('langs'=>$langs,'missing'=>$num_missing,"count"=>count($cur_lang),'untrans'=>$num_untrans));
+   	}
+
+    public function update_language() {
+        expSettings::change('LANGUAGE', $_POST['newlang']);
+        flash('message',gt('Display Language changed to').": ".$_POST['newlang']);
+        redirect_to(array('controller'=>'administration', 'action'=>'manage_lang'));
+   	}
+
+    public function manage_lang_await() {
+        global $cur_lang;
+
+        $awaiting_trans = array();
+        foreach ($cur_lang as $key => $value) {
+            if ($key == $value) {
+                $awaiting_trans[$key] = stripslashes($value);
+            }
+        }
+        assign_to_template(array('await'=>$awaiting_trans));
+   	}
+
+    public function save_newlangfile() {
+		$result = expLang::createNewLangFile($_POST['newlang']);
+        flash($result['type'],$result['message']);
+        if ($result['type'] != 'error') {
+            expSettings::change('LANGUAGE', $_POST['newlang']);
+            expLang::createNewLangInfoFile($_POST['newlang'],$_POST['newauthor'],$_POST['newcharset'],$_POST['newlocale']);
+            flash('message',gt('Display Language changed to').": ".$_POST['newlang']);
+        }
+        redirect_to(array('controller'=>'administration', 'action'=>'manage_lang'));
+   	}
 
 	public function test_smtp() {
 		$smtp = new expMail();
@@ -369,7 +398,7 @@ class administrationController extends expController {
     public function toggle_minify() {
     	$value = (MINIFY == 1) ? 0 : 1;
     	expSettings::change('MINIFY', $value);
-    	$message = (MINIFY != 1) ? "Exponent is now minifying Javascript and CSS" : "Exponent is no longer minifying Javascript and CSS" ;
+    	$message = (MINIFY != 1) ? gt("Exponent is now minifying Javascript and CSS") : gt("Exponent is no longer minifying Javascript and CSS") ;
     	flash('message',$message);
     	expHistory::back();
     }
@@ -378,7 +407,7 @@ class administrationController extends expController {
 	    $value = (DEVELOPMENT == 1) ? 0 : 1;
 	    expSettings::change('DEVELOPMENT', $value);
 	    expTheme::removeCss();
-		$message = (DEVELOPMENT != 1) ? "Exponent is now in 'Development' mode" : "Exponent is no longer in 'Development' mode" ;
+		$message = (DEVELOPMENT != 1) ? gt("Exponent is now in 'Development' mode") : gt("Exponent is no longer in 'Development' mode") ;
 		flash('message',$message);
 		expHistory::back();
 	}
@@ -386,7 +415,7 @@ class administrationController extends expController {
 	public function toggle_maintenance() {
 		$value = (MAINTENANCE_MODE == 1) ? 0 : 1;
 		expSettings::change('MAINTENANCE_MODE', $value);
-		MAINTENANCE_MODE == 1 ? flash('message',"Exponent is no longer in 'Maintenance' mode") : "" ;
+		MAINTENANCE_MODE == 1 ? flash('message',gt("Exponent is no longer in 'Maintenance' mode")) : "" ;
 		expHistory::back();
 	}
 
@@ -400,7 +429,7 @@ class administrationController extends expController {
 		} else { //edit mode
 			expSession::set("uilevel",0);
 		}
-		$message = ($level == UILEVEL_PREVIEW) ? "Exponent is no longer in 'Preview' mode" : "Exponent is now in 'Preview' mode" ;
+		$message = ($level == UILEVEL_PREVIEW) ? gt("Exponent is no longer in 'Preview' mode") : gt("Exponent is now in 'Preview' mode") ;
 		flash('message',$message);
 		expHistory::back();
 	}
@@ -411,20 +440,20 @@ class administrationController extends expController {
 
 	public function clear_css_cache() {
 		expTheme::removeCss();
-		flash('message',"CSS/Minfy Cache has been cleared");
+		flash('message',gt("CSS/Minfy Cache has been cleared"));
 		expHistory::back();
 	}
 
 	public function clear_image_cache() {
 		expFile::removeFilesInDirectory(BASE.'tmp/pixidou');
 		if (file_exists(BASE.'tmp/img_cache')) expFile::removeFilesInDirectory(BASE.'tmp/img_cache');
-		flash('message',"Image/Pixidou Cache has been cleared");
+		flash('message',gt("Image/Pixidou Cache has been cleared"));
 		expHistory::back();
 	}
 
 	public function clear_rss_cache() {
 		expFile::removeFilesInDirectory(BASE.'tmp/rsscache');
-		flash('message',"RSS/Podcast Cache has been cleared");
+		flash('message',gt("RSS/Podcast Cache has been cleared"));
 		expHistory::back();
 	}
 
@@ -435,23 +464,22 @@ class administrationController extends expController {
 		if (file_exists(BASE.'tmp/img_cache')) expFile::removeFilesInDirectory(BASE.'tmp/img_cache');
 		if (file_exists(BASE.'tmp/extensionuploads')) expFile::removeFilesInDirectory(BASE.'tmp/extensionuploads');
 		expFile::removeFilesInDirectory(BASE.'tmp/rsscache');
-		$message = "All the System Caches have been cleared" ;
-		flash('message',$message);
+		flash('message',gt("All the System Caches have been cleared"));
 		expHistory::back();
 	}
 
-	public function upload_extension() {
+	public function install_extension() {
 		$form = new form();
 		$form->register(null,'',new htmlcontrol(expCore::maxUploadSizeMessage()));
 		$form->register('mod_archive','Extension Archive',new uploadcontrol());
 		$form->register('submit','',new buttongroupcontrol(gt('Upload Extension')));
 		$form->meta('module','administration');
-		$form->meta('action','install_extension');
+		$form->meta('action','install_extension_confirm');
 
 		assign_to_template(array('form_html'=>$form->toHTML()));
 	}
 
-	public function install_extension() {
+	public function install_extension_confirm() {
 		if ($_FILES['mod_archive']['error'] != UPLOAD_ERR_OK) {
 			switch($_FILES['mod_archive']['error']) {
 				case UPLOAD_ERR_INI_SIZE:
@@ -567,7 +595,7 @@ class administrationController extends expController {
 		}
 	}
 
-	public function finish_install_extension() {
+	public function install_extension_finish() {
 		$sessid = session_id();
 		if (!file_exists(BASE."tmp/extensionuploads/$sessid") || !is_dir(BASE."tmp/extensionuploads/$sessid")) {
 //				$template = new template('administrationmodule','_upload_finalSummary',$loc);
@@ -589,7 +617,7 @@ class administrationController extends expController {
 //			ob_start();
 //			include(BASE . 'framework/modules-1/administrationmodule/actions/installtables.php');
 //			ob_end_clean();
-			self::installTables();
+			self::install_dbtables();
 
 //				$template = new template('administrationmodule','_upload_finalSummary',$loc);
 //				$template->assign('nofiles',0);
@@ -638,7 +666,7 @@ class administrationController extends expController {
         assign_to_template(array('themes'=>$themes));
     }
     
-    public function switch_themes() {
+    public function theme_switch() {
     	expSettings::change('DISPLAY_THEME_REAL', $this->params['theme']);
 	    expSession::set('display_theme',$this->params['theme']);
 	    $sv = isset($this->params['sv'])?$this->params['sv']:'';
@@ -647,26 +675,26 @@ class administrationController extends expController {
 	    }
 	    expSettings::change('THEME_STYLE_REAL',$sv);
 	    expSession::set('theme_style',$sv);
-	    self::installTables();  // update tables to include any custom definitions in the new theme
+	    self::install_dbtables();  // update tables to include any custom definitions in the new theme
 
         // $message = (MINIFY != 1) ? "Exponent is now minifying Javascript and CSS" : "Exponent is no longer minifying Javascript and CSS" ;
         // flash('message',$message);
-	    $message = "You have selected the '".$this->params['theme']."' theme";
+	    $message = gt("You have selected the")." '".$this->params['theme']."' ".gt("theme");
 	    if ($sv != '') {
-		    $message .= ' with '.$this->params['sv'].' style variation';
+		    $message .= ' '.gt('with').' '.$this->params['sv'].' '.gt('style variation');
 	    }
 	    flash('message',$message);
     	expHistory::returnTo('manageable');
     }	
     
-	public function preview_theme() {
+	public function theme_preview() {
 		expSession::set('display_theme',$this->params['theme']);
 		$sv = isset($this->params['sv'])?$this->params['sv']:'';
 		if (strtolower($sv)=='default') {
 		   $sv = '';
 		}
 		expSession::set('theme_style',$sv);
-		$message = "You are previewing the '".$this->params['theme']."' theme";
+		$message = gt("You are previewing the")." '".$this->params['theme']."' ".gt("theme");
 		if ($sv) {
 			$message .= ' with '.$sv.' style variation';
 		}
@@ -707,16 +735,16 @@ class administrationController extends expController {
 
         // TYPES OF ANTISPAM CONTROLS... CURRENTLY ONLY ReCAPTCHA
         $as_types = array(
-            '0'=>'-- Please Select an Anti-Spam Control --',
+            '0'=>'-- '.gt('Please Select an Anti-Spam Control').' --',
             "recaptcha"=>'reCAPTCHA'
         );
         
         //THEMES FOR RECAPTCHA
         $as_themes = array(
-            "red"=>'DEFAULT RED',
-        	"white"=>'White',
-        	"blackglass"=>'Black Glass',
-        	"clean"=>'Clean (very generic)',
+            "red"=>gt('DEFAULT RED'),
+        	"white"=>gt('White'),
+        	"blackglass"=>gt('Black Glass'),
+        	"clean"=>gt('Clean (very generic)'),
         	//"custom"=>'Custom' --> THIS MAY BE COOL TO ADD LATER...
         );
         
@@ -840,7 +868,7 @@ class administrationController extends expController {
             expSettings::change($key, addslashes($value));
         }
         
-        flash('message', "Your Website Configuration has been updated");
+        flash('message', gt("Your Website Configuration has been updated"));
 //        expHistory::back();
 	    expHistory::returnTo('viewable');
     }
@@ -857,7 +885,7 @@ class theme {
 
 	function name() { return "theme"; }
 	function author() { return ""; }
-	function description() { return "The theme shell"; }
+	function description() { return gt("The theme shell"); }
 
 	/**
 	 * Method to Configure theme settings

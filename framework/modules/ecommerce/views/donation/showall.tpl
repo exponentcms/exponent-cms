@@ -26,29 +26,29 @@
                 {$cause->body}
             </td>
             <td>
-                <a href="{link controller=cart action=addItem quick=1 product_type=$cause->product_type product_id=$cause->id}">Donate Now</a>                
+                <a href="{link controller=cart action=addItem quick=1 product_type=$cause->product_type product_id=$cause->id}">{'Donate Now'|gettext}</a>
             </td>
             <td>
                 {permissions}
 					<div class="item-actions">
 						{if $permissions.edit == 1}
-							{icon controller=store action=edit record=$cause title="Edit Donation"}
+							{icon controller=store action=edit record=$cause title="Edit Donation"|gettext}
 						{/if}
 						{if $permissions.delete == 1}
-							{icon controller=store action=delete record=$cause title="Remove Donation"}
+							{icon controller=store action=delete record=$cause title="Remove Donation"|gettext}
 						{/if}
 					</div>
                 {/permissions}
             </td>
          </tr>
     {foreachelse}
-        <h2>No causes have been setup to donate to.</h2>
+        <h2>{"No causes have been setup to donate to."|gettext}</h2>
     {/foreach}
     </table>
-    {permissions level=$smarty.const.UILEVEL_PERMISSIONS}
+    {permissions}
         {if $permissions.edit == 1 or $permissions.administrate == 1}
         <div id="prod-admin">
-            <a href="{link controller=store action=edit id=0 product_type=donation}">Add a new donation cause</a>
+            <a href="{link controller=store action=edit id=0 product_type=donation}">{"Add a new donation cause"|gettext}</a>
         </div>
     {/if}
     {/permissions}

@@ -14,7 +14,7 @@
  *}
 
  <div id="discountconfig" class="module discountconfig configure hide exp-skin-tabview">
-    <h1>Ecommerce Store Configuration</h1>
+    <h1>{'Ecommerce Store Configuration'|gettext}</h1>
 
     {form action=update_discount}
         {control type="hidden" name="id" value=$discount->id}       
@@ -44,8 +44,8 @@
                     {control type="datetimecontrol" name="enddate_time" label=" " value=$discount->enddate_time showdate=false}     
                     {* control type="checkbox" name="allow_other_coupons" label="All Use of Other Coupons"|gettext value=$discount->allow_other_coupons *}  
                     {* control type="radiogroup?" name="apply_before_after_tax" label="All Use of Other Coupons"|gettext value=$discount->allow_other_coupons *}  
-                    If the discount is related to free or discounted shipping, or you simply want to force the shipping method used when this discount is applied, you may force the shipping method used here:
-                    {control type="dropdown" name="required_shipping_calculator_id" id="required_shipping_calculator_id" label="Required Shipping Service" includeblank="--- Select a shipping service ---" items=$shipping_services value=$discount->required_shipping_calculator_id onchange="switchMethods();"}
+                    {'If the discount is related to free or discounted shipping, or you simply want to force the shipping method used when this discount is applied, you may force the shipping method used here:'|gettext}
+                    {control type="dropdown" name="required_shipping_calculator_id" id="required_shipping_calculator_id" label="Required Shipping Service" includeblank="-- Select a shipping service --"|gettext items=$shipping_services value=$discount->required_shipping_calculator_id onchange="switchMethods();"}
                     {foreach from=$shipping_methods key=calcid item=methods name=sm}
                         <div id="dd-{$calcid}" class="hide methods">
                         {control type="dropdown" name="required_shipping_methods[`$calcid`]" label="Required Shipping Method" items=$methods value=$discount->required_shippng_method}
@@ -60,11 +60,11 @@
                 <div id="tab4">
                     <h2>{"Actions and Amounts"|gettext}</h2>                    
                     {control type="dropdown" name="action_type" label="Discount Action"|gettext items=$discount->actions default=$discount->action_type}
-                    If you selected 'Precentage off entire cart', enter the precentage discount you would like applied with this coupon code here.                                                                                                                             
+                    {'If you selected \'Precentage off entire cart\', enter the precentage discount you would like applied with this coupon code here.'|gettext}
                     {control type="text" name="discount_percent" label="Discount Percent"|gettext filter=percent value=$discount->discount_percent}
-                    If you selected 'Fixed amount off entire cart', enter dollar amount discount you would like applied with this coupon code here.
+                    {'If you selected \'Fixed amount off entire cart\', enter dollar amount discount you would like applied with this coupon code here.'|gettext}
                     {control type="text" name="discount_amount" label="Discount Amount"|gettext filter=money value=$discount->discount_amount}
-                    If you selected 'Fixed amount off shipping', enter dollar amount you would like discounted off the shipping.
+                    {'If you selected \'Fixed amount off shipping\', enter dollar amount you would like discounted off the shipping.'|gettext}
                     {control type="text" name="shipping_discount_amount" label="Shipping Discount Amount"|gettext filter=money value=$discount->shipping_discount_amount}
                 </div>                
             </div>

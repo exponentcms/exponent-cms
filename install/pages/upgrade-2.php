@@ -20,18 +20,13 @@
 
 if (!defined('EXPONENT')) exit('');
 
-
 ?>
 <h2><?php echo gt('Installing and Upgrading tables'); ?></h2>
 
 <?php
+global $db;
 
-//define("TMP_TABLE_EXISTED",		1);
-//define("TMP_TABLE_INSTALLED",	2);
-//define("TMP_TABLE_FAILED",		3);
-//define("TMP_TABLE_ALTERED",		4);
-
-$tables = administrationController::installTables();
+$tables = administrationController::install_dbtables();
 ksort($tables);
 
 ?>
@@ -105,7 +100,7 @@ if ($db->tableIsEmpty('user') || $db->tableIsEmpty('modstate') || $db->tableIsEm
 	echo '<div style="color: red; font-weight: bold">';
 	echo 'No Database Entries Were Found!';
 	echo '</div>';
-	$emptydb = 'install-3';
+	$emptydb = 'install-2';
 	$emptydbstr = gt('Switching to Installer');
 }
 ?>

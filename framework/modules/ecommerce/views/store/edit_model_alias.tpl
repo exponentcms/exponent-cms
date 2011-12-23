@@ -18,7 +18,7 @@
 	{control type="hidden" name="tab_loaded[model_alias]" value=1} 
 	{control type="hidden" name="product_id" value=$product_id}
     {control type="hidden" name="id" value=$model_alias->id}
-    {control type="text" name="model" label="Model Alias:" value=$model_alias->model}
+    {control type="text" name="model" label="Model Alias:"|gettext value=$model_alias->model}
 
-    {control type="buttongroup" submit="Submit" cancel="Cancel"}
+    {control type="buttongroup" submit="Submit"|gettext cancel="Cancel"|gettext}
 {/form}

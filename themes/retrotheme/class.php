@@ -22,7 +22,7 @@ if (class_exists('retrotheme')) return;
 class retrotheme extends theme {
 	function name() { return "Retro Theme"; }
 	function author() { return "Phillip Ball"; }
-	function description() { return "A <a href=\"http://developer.yahoo.com/yui/grids/\" target=\"_blank\">YUI 2 Gids</a> based theme styled with a '70s color pallet"; }
+	function description() { return "A <a href=\"http://developer.yahoo.com/yui/grids/\" target=\"_blank\">YUI 2 Gids</a> based theme styled with a '70s color palette"; }
 }
 
 ?>

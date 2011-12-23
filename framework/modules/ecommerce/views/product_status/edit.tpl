@@ -16,12 +16,12 @@
 
 <div class="module order_type edit">
     <h1>
-        {if $record->id == ""}New Product Status{else}Editing {$record->title}{/if}
+        {if $record->id == ""}{'New Product Status'|gettext}{else}{'Editing'|gettext} {$record->title}{/if}
     </h1>
     
     {form action=update}
         {control type="hidden" name="id" value=$record->id}
-        {control type="text" name="title" label="Status Type" value=$record->title}
-        {control type="buttongroup" submit="Submit" cancel="Cancel"}
+        {control type="text" name="title" label="Status Type"|gettext value=$record->title}
+        {control type="buttongroup" submit="Submit"|gettext cancel="Cancel"|gettext}
     {/form}
 </div>

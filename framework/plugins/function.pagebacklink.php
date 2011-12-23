@@ -17,11 +17,28 @@
 #
 ##################################################
 
+/**
+ * Smarty plugin
+ * @package Smarty-Plugins
+ * @subpackage Function
+ */
+
+/**
+ * Smarty {pagebacklink} function plugin
+ *
+ * Type:     function<br>
+ * Name:     pagebacklink<br>
+ * Purpose:  display pagination back page link
+ *
+ * @param         $params
+ * @param \Smarty $smarty
+ * @return bool
+ */
 function smarty_function_pagebacklink($params,&$smarty) {
 	if ($params['page']->page > 1) {
 		// initialize a couple of variables
 		$class = isset($params['class']) ? $params['class'] : 'page-back';
-		$text = isset($params['text']) ? $params['text'] : '< Back';
+		$text = isset($params['text']) ? $params['text'] : '< '.gt('Back');
 
 		// if the designer specified an image then show it here
 		if (isset($params['image'])) {

@@ -17,9 +17,9 @@
 <div id="editproduct" class="module store edit">
 
     {if $record->id != ""}
-        <h1>Edit Information for {$record->product_name}</h1>
+        <h1>{'Edit Information for'|gettext {$record->product_name}</h1>
     {else}
-        <h1>New {$record->product_name}</h1>
+        <h1>{'New'|gettext} {$record->product_name}</h1>
     {/if}
 
     {form action=update}
@@ -27,33 +27,33 @@
         {control type="hidden" name="product_type" value=$record->product_type}
         {control type="hidden" name="product_type_id" value=$record->product_type_id}
         
-        <div id="editproduct-tabs" class="yui-navset yui3-skin-sam hide">
+        <div id="editproduct-tabs" class="yui-navset exp-skin-tabview hide">
             <ul class="yui-nav">
-	            <li class="selected"><a href="#tab1"><em>General Info</em></a></li>
-	            <li><a href="#tab2"><em>Event Info</em></a></li>
-	            <li><a href="#tab3"><em>Pricing</em></a></li>
-	            <li><a href="#tab4"><em>Files & Images</em></a></li>
-	            <li><a href="#tab5"><em>Categories</em></a></li>
-	            <li><a href="#tab6"><em>SEO</em></a></li>
+	            <li class="selected"><a href="#tab1"><em>{'General Info'|gettext}</em></a></li>
+	            <li><a href="#tab2"><em>{'Event Info'|gettext}</em></a></li>
+	            <li><a href="#tab3"><em>{'Pricing'|gettext}</em></a></li>
+	            <li><a href="#tab4"><em>{'Files & Images'|gettext}</em></a></li>
+	            <li><a href="#tab5"><em>{'Categories'|gettext}</em></a></li>
+	            <li><a href="#tab6"><em>{'SEO'|gettext}</em></a></li>
             </ul>            
             <div class="yui-content">
                 <div id="tab1">
-                    {control type="text" name="title" label="Title" value=$record->title}
-                    {control type="textarea" name="summary" label="Product Summary" rows=3 cols=45 value=$record->summary}
-                    {control type="editor" name="body" label="Product Description" height=250 value=$record->body}          
+                    {control type="text" name="title" label="Title"|gettext value=$record->title}
+                    {control type="textarea" name="summary" label="Product Summary"|gettext rows=3 cols=45 value=$record->summary}
+                    {control type="editor" name="body" label="Product Description"|gettext height=250 value=$record->body}
                 </div>
                 <div id="tab2">
-                    <h2>Number of Seats available</h2>
-                    {control type="text" name="quantity" label="Number of seats" filter=integer size=4 value=$record->quantity}
-                    <h2>Event Date/Time</h2>                
-                    {control type="datetimecontrol" name="eventdate" label="Date of Event" value=$record->eventdate showtime=false}
-                    {control type="datetimecontrol" name="event_starttime" label="Start Time" value=$record->event_starttime showdate=false}
-                    {control type="datetimecontrol" name="event_endtime" label="End Time" value=$record->event_endtime showdate=false}
-                    <h2>Signup Cutoff</h2> 
-                    {control type="datetimecontrol" name="signup_cutoff" label="No registrations after" value=$record->signup_cutoff showtime=true}
+                    <h2>{'Number of Seats available'|gettext}</h2>
+                    {control type="text" name="quantity" label="Number of seats"|gettext filter=integer size=4 value=$record->quantity}
+                    <h2>{'Event Date/Time'|gettext}</h2>
+                    {control type="datetimecontrol" name="eventdate" label="Date of Event"|gettext value=$record->eventdate showtime=false}
+                    {control type="datetimecontrol" name="event_starttime" label="Start Time"|gettext value=$record->event_starttime showdate=false}
+                    {control type="datetimecontrol" name="event_endtime" label="End Time"|gettext value=$record->event_endtime showdate=false}
+                    <h2>{'Signup Cutoff'|gettext}</h2>
+                    {control type="datetimecontrol" name="signup_cutoff" label="No registrations after"|gettext value=$record->signup_cutoff showtime=true}
                 </div>
                 <div id="tab3">
-                    {control type="text" name="base_price" label="Event Price" value=$record->base_price filter=money}
+                    {control type="text" name="base_price" label="Event Price"|gettext value=$record->base_price filter=money}
                 </div>
                 <div id="tab4">
                     {control type=files name=files subtype="images" value=$record->expFile}
@@ -62,16 +62,16 @@
                     {control type="tagtree" id="managecats" name="managecats" model="storeCategory" draggable=false checkable=true values=$record->storeCategory}
                 </div>
                 <div id="tab6">
-                    <h2>SEO Settings</h2>
-                    {control type="text" name="sef_url" label="SEF URL" value=$record->sef_url}
-                    {control type="text" name="meta_title" label="Meta Title" value=$record->meta_title}
-                    {control type="textarea" name="meta_keywords" label="Meta Description" value=$record->meta_description}
-                    {control type="textarea" name="meta_description" label="Meta Keywords" value=$record->meta_keywords}
+                    <h2>{'SEO Settings'|gettext}</h2>
+                    {control type="text" name="sef_url" label="SEF URL"|gettext value=$record->sef_url}
+                    {control type="text" name="meta_title" label="Meta Title"|gettext value=$record->meta_title}
+                    {control type="textarea" name="meta_keywords" label="Meta Description"|gettext value=$record->meta_description}
+                    {control type="textarea" name="meta_description" label="Meta Keywords"|gettext value=$record->meta_keywords}
                 </div>
             </div>
         </div>
 	    <div class="loadingdiv">{'Loading'|gettext}</div>
-        {control type="buttongroup" submit="Save Product" cancel="Cancel"}
+        {control type="buttongroup" submit="Save Product"|gettext cancel="Cancel"|gettext}
     {/form}
 </div>
 

@@ -83,7 +83,7 @@ class billingController extends expController {
 	        $calc = new billingcalculator($this->params['id']);
 	        $calc->update($this->params);
 	        if ($calc->calculator->hasConfig() && empty($calc->config)) {
-	            flash('message', $calc->calculator->name().' requires configuration. Please do so now.');
+	            flash('message', $calc->calculator->name().' '.gt('requires configuration. Please do so now.'));
 	            redirect_to(array('controller'=>'billing', 'action'=>'configure', 'id'=>$calc->id));
 	        }
 	    }

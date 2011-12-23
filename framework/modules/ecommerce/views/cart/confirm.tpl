@@ -22,7 +22,7 @@
  {/css}                                                
 
 <div class="module cart confirm exp-ecom-table">
-    <h1>{ecomconfig var='checkout_title_top' default="Confirm Your Secure Order"}</h1> 
+    <h1>{ecomconfig var='checkout_title_top' default="Confirm Your Secure Order"|gettext}</h1>
     <div id="cart-message">{ecomconfig var='checkout_message_top' default=""}</div>
     {br}
     <div class="confirmationlinks">
@@ -35,7 +35,7 @@
     </div>
     {br}
     <div class="billinginfo">
-        <h2>Billing Information</h2>
+        <h2>{'Billing Information'|gettext}</h2>
         <div class="payment-info">
             {$billinginfo}
         </div>
@@ -111,10 +111,10 @@
                             {$shipping->shippingmethod->addresses_id|address}
                             {if $shipping->shippingmethod->to != "" || $shipping->shippingmethod->from != "" || $shipping->shippingmethod->message != ""}
                                 {br}
-                                <h4>Gift Message</h4>
-                                <strong>To: </strong>{$shipping->shippingmethod->to}{br}
-                                <strong>From: </strong>{$shipping->shippingmethod->from}{br}
-                                <strong>Message: </strong>{$shipping->shippingmethod->message}{br}
+                                <h4>{'Gift Message'|gettext}</h4>
+                                <strong>{'To:'|gettext} </strong>{$shipping->shippingmethod->to}{br}
+                                <strong>{'From:'|gettext} </strong>{$shipping->shippingmethod->from}{br}
+                                <strong>{'Message:'|gettext} </strong>{$shipping->shippingmethod->message}{br}
                             {/if}
                         </td>
                     </tr>
@@ -150,47 +150,47 @@
             {include file="../order/partial_summary.tpl" items=$method->orderitem}
         {/foreach}
     {else}
-        <h2>{"You're purchasing"|gettext}</h2>
+        <h2>{"You\'re purchasing"|gettext}</h2>
             {include file="../order/partial_summary.tpl" items=$order->orderitem}
              <div class=" order-total"> 
                 <table class="nowrap">
                     <thead>
                         <tr>
                             <th colspan="2">
-                                Totals
+                                {'Totals'|gettext}
                             </th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr class="even"><td class="right">Subtotal:</td><td class="totals subtotal">{currency_symbol}{$order->subtotal|number_format:2}</td></tr>
+                        <tr class="even"><td class="right">{'Subtotal'|gettext}:</td><td class="totals subtotal">{currency_symbol}{$order->subtotal|number_format:2}</td></tr>
                         {if $order->total_discounts > 0}
-                            <tr class="odd"><td class="right">Discounts:</td><td class="totals discounts">-{currency_symbol}{$order->total_discounts|number_format:2}</td></tr>
-                            <tr class="even"><td class="right">Total:</td><td class="totals subtotal">{currency_symbol}{$order->total|number_format:2}</td></tr>
+                            <tr class="odd"><td class="right">{'Discounts'|gettext}:</td><td class="totals discounts">-{currency_symbol}{$order->total_discounts|number_format:2}</td></tr>
+                            <tr class="even"><td class="right">{'Total'|gettext}:</td><td class="totals subtotal">{currency_symbol}{$order->total|number_format:2}</td></tr>
                         {/if}
-                        <tr class="odd"><td class="right">Tax:</td><td class="totals tax">{currency_symbol}{$order->tax|number_format:2}</td></tr>
+                        <tr class="odd"><td class="right">{'Tax'|gettext}:</td><td class="totals tax">{currency_symbol}{$order->tax|number_format:2}</td></tr>
                         {if $order->shipping_required == true} 
                             <tr class="even">
-                                <td class="right">Shipping:</td>
+                                <td class="right">{'Shipping'|gettext}:</td>
                                 <td class="totals shipping">{currency_symbol}{$order->shipping_total_before_discounts|number_format:2}</td>                   
                             </tr>                    
                             {if $order->shippingDiscount > 0}
                                 <tr class="odd">
-                                    <td class="right">Shipping<br/>Discount:</td>
+                                    <td class="right">{'Shipping'|gettext}<br/>{'Discount'|gettext}:</td>
                                     <td class="totals shipping">{currency_symbol}-{$order->shippingDiscount|number_format:2}</td>
                                 </tr>
                                 <tr class="even">
-                                    <td class="right">Total Shipping:</td>
+                                    <td class="right">{'Total Shipping'|gettext}:</td>
                                     <td class="totals shipping">{currency_symbol}{$order->shipping_total|number_format:2}</td>
                                 </tr>
                             {/if}
                         {/if}
                         {if $order->surcharge_total != 0} 
                         <tr class="even">
-                            <td class="right">Freight Surcharge:</td>
+                            <td class="right">{'Freight Surcharge'|gettext}:</td>
                             <td class="totals shipping">{currency_symbol}{$order->surcharge_total|number_format:2}</td>
                         </tr>
                         {/if}
-                        <tr class="odd"><td class="right">Final Total:</td><td class="totals total">{currency_symbol}{$order->grand_total|number_format:2}</td></tr>
+                        <tr class="odd"><td class="right">{'Final Total'|gettext}:</td><td class="totals total">{currency_symbol}{$order->grand_total|number_format:2}</td></tr>
                         </tr>
                     </tbody>
                 </table>

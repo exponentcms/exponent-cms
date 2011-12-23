@@ -16,12 +16,12 @@
 
 <div class="module order_status edit-message">
     <h1>
-        {if $record->id == ""}New Status{else}Editing {$record->title}{/if}
+        {if $record->id == ""}{'New Status'|gettext}{else}{'Editing'|gettext} {$record->title}{/if}
     </h1>
     
     {form action=update_message}
         {control type="hidden" name="id" value=$record->id}
-        {control type="html" name="body" label="Message" value=$record->body}
-        {control type="buttongroup" submit="Submit" cancel="Cancel"}
+        {control type="html" name="body" label="Message"|gettext value=$record->body}
+        {control type="buttongroup" submit="Submit"|gettext cancel="Cancel"|gettext}
     {/form}
 </div>

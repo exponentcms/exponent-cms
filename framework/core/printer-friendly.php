@@ -31,7 +31,7 @@
 </head>
 <body style="background:none;text-align: left;">
 	<div class="printer-button-bar">
-	    <a href="#" onclick="window.print();return false;" class="awesome small blue" title="Print this page"><?php echo gt("Print This Page"); ?></a>
+	    <a href="#" onclick="window.print();return false;" class="awesome small blue" title=<?php echo gt("Print this page"); ?>><?php echo gt("Print This Page"); ?></a>
 	</div>
 	<?php expTheme::main(); ?>
 </body>

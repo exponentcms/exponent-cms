@@ -14,6 +14,8 @@
  *
  *}
 
-<h2>Default Banner</h2>
-<p>This is the banner that will be used if there are no banners available for this banner module.</p>
-{control type="files" name="default" label="Default Banner Image" value=$config.defaultbanner}
+<h2>{'Default Banner'|gettext}</h2>
+<p>
+    {'This is the banner that will be used if there are no banners available for this banner module.'|gettext}
+</p>
+{control type="files" name="default" label="Default Banner Image"|gettext value=$config.defaultbanner}

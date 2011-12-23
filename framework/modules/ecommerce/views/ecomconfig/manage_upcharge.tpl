@@ -29,7 +29,7 @@
     <h1>{"Up Charge Rate Settings"|gettext}</h1>
 	
 	{form action=update_upcharge}
-		Select the configuration of the Up charge Rate for the Countries and States/Provinces:
+		{'Select the configuration of the Up charge Rate for the Countries and States/Provinces:'|gettext}
         <table class="exp-skin-table">
             <thead>
                 <tr>
@@ -54,7 +54,7 @@
 				
 				<td>
 					{assign var="key" value="country_`$country->id`"}
-					{control type="text" name="upcharge[country_`$country->id`]" label="Rate:" size="5" value="`$upcharge.$key`"}
+					{control type="text" name="upcharge[country_`$country->id`]" label="Rate:"|gettext size="5" value="`$upcharge.$key`"}
                 </td>
             </tr>                        
             {foreach from=$regions item=region}
@@ -64,7 +64,7 @@
 						<td><strong>{$region->name}</strong></td>
 						<td>
 							{assign var="key" value="region_`$region->id`"}
-							{control type="text" name="upcharge[region_`$region->id`]" label="Rate:" size="5" value="`$upcharge.$key`"}
+							{control type="text" name="upcharge[region_`$region->id`]" label="Rate:"|gettext size="5" value="`$upcharge.$key`"}
 						</td>  
 					</tr>                                
                 {/if}
@@ -72,6 +72,6 @@
         {/foreach}
         </tbody>
         </table>
-        {control type=buttongroup submit="Save Upcharge Rate" cancel="Cancel"}
+        {control type=buttongroup submit="Save Upcharge Rate"|gettext cancel="Cancel"|gettext}
     {/form}
 </div>

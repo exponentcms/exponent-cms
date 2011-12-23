@@ -1515,15 +1515,158 @@ class reportController extends expController {
          $prods = $p->find('all','parent_id=0 AND ');
          //$prods =  $db->selectObjects('product','parent_id=0 AND');
     }
+	
+	function abandoned_carts() {
+		global $db;
+		
+		$allCarts = array();
+		$carts = array();
+		$cartsWithoutItems = array();
+		$cartsWithItems = array();
+		$cartsWithItemsAndInfo = array();
+		$summary = array();
+		$valueproducts = '';
+		
+		$this->setDateParams($this->params);
+			
+		$sql  = "SELECT * FROM " . DB_TABLE_PREFIX . "_orders WHERE purchased = 0 AND edited_at >= " . $this->tstart . " AND edited_at <= " . $this->tend . " AND sessionticket_ticket NOT IN ";
+		$sql .= "(SELECT ticket FROM " . DB_TABLE_PREFIX . "_sessionticket) ORDER BY edited_at DESC";
+		// echo $sql;
+		$allCarts = $db->selectObjectsBySql($sql);
+		foreach($allCarts as $item) {
+			
+			$sql = "SELECT * FROM " . DB_TABLE_PREFIX . "_orderitems WHERE orders_id =" .  $item->id;
+	
+			$carts = $db->selectObjectsBySql($sql);
+			foreach($carts as $item2) {
+				$valueproducts += $item2->products_price_adjusted  * $item2->quantity;
+			}
+			
+			$carts['last_visit']  = date('Y-m-d, g:i:s A', $item->edited_at);
+			$carts['referrer']    = $item->orig_referrer;
+	
+			if(count($carts) > 2) {	
+				if(!empty($item->user_id)) {
+					$u = $db->selectObject('user', 'id='.$item->user_id);
+					$carts['name']        = $u->firstname . ' ' . $u->lastname;
+					$carts['email']       = $u->email;
+					$cartsWithItemsAndInfo[] =  $carts;
+					// $cartsWithItemsAndInfo['length_of_time']  = round(abs($item->last_active - $item->start_time) / 60,2)." minutes";
+					// $cartsWithItemsAndInfo['ip_address']  = $item->ip_address;
+					// $cartsWithItemsAndInfo['referrer']    = $item->referrer;
+				} else {
+					$cartsWithItems[]        =  $carts;
+					// $cartsWithItems['length_of_time']  = round(abs($item->last_active - $item->start_time) / 60,2)." minutes";
+					// $cartsWithItems['ip_address']  = $item->ip_address;
+					// $cartsWithItems['referrer']    = $item->referrer;
+				}	
+				
+			} else {
+				$item->last_visit = date('Y-m-d, g:i:s A', $item->edited_at);
+				$cartsWithoutItems[] = $item;
+			}
+		}
+		//Added the count
+		$allCarts['count'] = count($allCarts);
+		$cartsWithoutItems['count'] = count($cartsWithoutItems);
+		$cartsWithItems['count'] = count($cartsWithItems); //for the added values at the top
+		$cartsWithItemsAndInfo['count'] = count($cartsWithItemsAndInfo); //for the added values at the top
+		
+		// eDebug($allCarts);
+		// eDebug($cartsWithoutItems);
+		// eDebug($cartsWithItems);
+		// eDebug($cartsWithItemsAndInfo);
+		// exit();
+		$summary['totalcarts']    = $allCarts['count'];
+		$summary['valueproducts'] = $valueproducts;
+		$summary['cartsWithoutItems']       = round(($cartsWithoutItems['count']     / $allCarts['count']) * 100, 2) . '%';
+		$summary['cartsWithItems']          = round(($cartsWithItems['count']        / $allCarts['count']) * 100, 2) . '%';
+		$summary['cartsWithItemsAndInfo']   = round(($cartsWithItemsAndInfo['count'] / $allCarts['count']) * 100, 2) . '%';
+		
+		$quickrange = array(0=>'Last 24 Hours',1=>'Last 7 Days',2=>'Last 30 Days');
+        $quickrange_default = isset($this->params['quickrange']) ? $this->params['quickrange'] : 0;
+        assign_to_template(array('quickrange'=>$quickrange,'quickrange_default'=>$quickrange_default, 'summary'=>$summary, 'cartsWithoutItems'=>$cartsWithoutItems, 'cartsWithItems' => $cartsWithItems, 'cartsWithItemsAndInfo' => $cartsWithItemsAndInfo));
+	}
      
-    function abandoned_carts()
-    {
+    function current_carts() {
         global $db;
+		
+		$allCarts = array();
+		$carts = array();
+		$cartsWithoutItems = array();
+		$cartsWithItems = array();
+		$cartsWithItemsAndInfo = array();
+		$summary = array();
+		$valueproducts = '';
+		// $sql = "SELECT * FROM " . DB_TABLE_PREFIX . "_orders WHERE DATEDIFF(FROM_UNIXTIME(edited_at, '%Y-%m-%d'), '" . date('Y-m-d') . "') = 0";
+		
+		$sql = "SELECT * FROM " . DB_TABLE_PREFIX . "_orders, " . DB_TABLE_PREFIX . "_sessionticket WHERE ticket = sessionticket_ticket";
+
+		$allCarts = $db->selectObjectsBySql($sql);
+		
+		// eDebug($allCarts, true);
+		foreach($allCarts as $item) {
+			
+			$sql = "SELECT * FROM " . DB_TABLE_PREFIX . "_orderitems WHERE orders_id =" .  $item->id;
+	
+			$carts = $db->selectObjectsBySql($sql);
+			
+			foreach($carts as $item2) {
+				$valueproducts += $item2->products_price_adjusted  * $item2->quantity;
+			}
+			
+			$carts['length_of_time']  = round(abs($item->last_active - $item->start_time) / 60,2)." minutes";
+			$carts['ip_address']  = $item->ip_address;
+			$carts['referrer']    = $item->referrer;
+	
+			if(count($carts) > 3) {	
+				if(!empty($item->user_id)) {
+					$u = $db->selectObject('user', 'id='.$item->user_id);
+					$carts['name']        = $u->firstname . ' ' . $u->lastname;
+					$carts['email']       = $u->email;
+					$cartsWithItemsAndInfo[] =  $carts;
+					// $cartsWithItemsAndInfo['length_of_time']  = round(abs($item->last_active - $item->start_time) / 60,2)." minutes";
+					// $cartsWithItemsAndInfo['ip_address']  = $item->ip_address;
+					// $cartsWithItemsAndInfo['referrer']    = $item->referrer;
+				} else {
+					$cartsWithItems[]        =  $carts;
+					// $cartsWithItems['length_of_time']  = round(abs($item->last_active - $item->start_time) / 60,2)." minutes";
+					// $cartsWithItems['ip_address']  = $item->ip_address;
+					// $cartsWithItems['referrer']    = $item->referrer;
+				}	
+				
+			} else {
+				$item->length_of_time = round(abs($item->last_active - $item->start_time) / 60,2)." minutes";
+				$cartsWithoutItems[] = $item;
+			}
+		}
+		//Added the count
+		$allCarts['count'] = count($allCarts);
+		$cartsWithoutItems['count'] = count($cartsWithoutItems);
+		$cartsWithItems['count'] = count($cartsWithItems); //for the added values at the top
+		$cartsWithItemsAndInfo['count'] = count($cartsWithItemsAndInfo); //for the added values at the top
+		
+		// eDebug($allCarts);
+		// eDebug($cartsWithoutItems);
+		// eDebug($cartsWithItems);
+		// eDebug($cartsWithItemsAndInfo);
+		
+		$summary['totalcarts']    = $allCarts['count'];
+		$summary['valueproducts'] = $valueproducts;
+		$summary['cartsWithoutItems']       = round(($cartsWithoutItems['count']     / $allCarts['count']) * 100, 2) . '%';
+		$summary['cartsWithItems']          = round(($cartsWithItems['count']        / $allCarts['count']) * 100, 2) . '%';
+		$summary['cartsWithItemsAndInfo']   = round(($cartsWithItemsAndInfo['count'] / $allCarts['count']) * 100, 2) . '%';
+		
+		// eDebug($summary, true);
+		assign_to_template(array('summary'=>$summary, 'cartsWithoutItems'=>$cartsWithoutItems, 'cartsWithItems' => $cartsWithItems, 'cartsWithItemsAndInfo' => $cartsWithItemsAndInfo));
+		/*
         $this->setDateParams($this->params);
         $except = array('order_discounts', 'billingmethod', 'order_status_changes', 'billingmethod','order_discounts');
-        //$orders = $this->o->find('all','purchased >= ' . $this->tstart . ' AND purchased <= ' . $this->tend,null,null,null,true,false,$except,true);                
-        eDebug($this->tstart);
-        eDebug($this->tend);
+        //$orders = $this->o->find('all','purchased >= ' . $this->tstart . ' AND purchased <= ' . $this->tend,null,null,null,true,false,$except,true);
+		// $sql = "SELECT DATE_FORMAT(created_at, '%Y-%m-%d') as formattedDate FROM orders WHERE created_at
+        eDebug(date('Y-m-d'), true);
+        // eDebug($this->tend);
+		eDebug(date('Y-m-d, g:i:s A', $this->tend));
         $allOrderCount = $this->o->find('count','created_at >= ' . $this->tstart . ' AND created_at <= ' . $this->tend,null,null,null,true,false,$except,true);            
         $sql = "SELECT COUNT(DISTINCT(`orders_id`)) as c FROM " . DB_TABLE_PREFIX . "_orderitems oi ";
         $sql .= "JOIN " . DB_TABLE_PREFIX . "_orders o ON  oi.orders_id = o.id ";
@@ -1536,7 +1679,7 @@ class reportController extends expController {
         $sql = "SELECT COUNT(DISTINCT(`orders_id`)) as c FROM " . DB_TABLE_PREFIX . "_orderitems oi ";
         $sql .= "JOIN " . DB_TABLE_PREFIX . "_orders o ON  oi.orders_id = o.id ";
         $sql .= "WHERE o.created_at >= " . $this->tstart . " AND o.created_at <= " . $this->tend;
-        
+        eDebug($sql);
         $realUserCartsWithItems = $db->countObjectsBySql($sql);
                 
         $ordersInCheckout = $this->o->find('count','created_at >= ' . $this->tstart . ' AND created_at <= ' . $this->tend . " AND user_id != 0",null,null,null,true,false,$except,true);            
@@ -1557,31 +1700,13 @@ class reportController extends expController {
         eDebug("Checkout Abandoned: " . $checkoutAbandoned);
         
         
-                $oar = array();         
-        foreach ($orders as $order)
-        {                         
-            //eDebug($order,true);
-            //eDebug($)
-            $u = new user($order->user_id);
-            eDebug("Order Type: " . $order->order_type->title . ", User: " . $order->user_id . " : " . $u->firstname . " " . $u->lastname );
-            /*
-            
-            $oar[$order->order_type->title]['grand_total']+= $order->grand_total;
-            $oar[$order->order_type->title]['num_orders']+= 1;
-            $oar[$order->order_type->title]['num_items']+= count($order->orderitem);
-            
-            $oar[$order->order_type->title][$order->order_status->title]['grand_total'] += $order->grand_total;
-            $oar[$order->order_type->title][$order->order_status->title]['num_orders'] += 1;
-            $oar[$order->order_type->title][$order->order_status->title]['num_items'] += count($order->orderitem);
-            
-            */
-        }
+  
         
         $quickrange = array(0=>'Last 24 Hours',1=>'Last 7 Days',2=>'Last 30 Days');
         $quickrange_default = isset($this->params['quickrange']) ? $this->params['quickrange'] : 0;
         assign_to_template(array('orders'=>$oar,'quickrange'=>$quickrange,'quickrange_default'=>$quickrange_default));
         assign_to_template(array('prev_month'=>$this->prev_month, 'now_date'=>$this->now_date, 'now_hour'=>$this->now_hour, 'now_min'=>$this->now_min, 'now_ampm'=>$this->now_ampm, 'prev_hour'=>$this->prev_hour, 'prev_min'=>$this->prev_min, 'prev_ampm'=>$this->prev_ampm)); 
-        
+        */
     }   
     
     function batch_export()

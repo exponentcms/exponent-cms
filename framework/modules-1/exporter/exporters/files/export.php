@@ -48,7 +48,7 @@ $filename = preg_replace('/[^A-Za-z0-9_.-]/','-',strftime($filename,time()).'.ta
 if (isset($_POST['save_sample'])) { // Save as a theme sample is checked off
 	copy($fname,BASE . "themes/".DISPLAY_THEME_REAL."/sample.tar.gz");
 	unlink($fname);
-	flash('message',"Sample uploaded files archive saved to '".DISPLAY_THEME_REAL."' theme.");
+	flash('message',gt("Sample uploaded files archive saved to")." '".DISPLAY_THEME_REAL."' ".gt("theme"));
 	expHistory::back();
 } else {
 	ob_end_clean();

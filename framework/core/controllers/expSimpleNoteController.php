@@ -46,11 +46,11 @@ class expSimpleNoteController extends expController {
         {
             if (empty($this->params['id']))
             {
-                $formtitle = "Add New Note";
+                $formtitle = gt("Add New Note");
             }
             else
             {
-                $formtitle = "Edit Note";
+                $formtitle = gt("Edit Note");
             }
         }
         else
@@ -197,10 +197,10 @@ class expSimpleNoteController extends expController {
         if(isset($this->params['subtype'])) $obj->subtype = $this->params['subtype'];
         $db->insertObject($obj, $this->expSimpleNote->attachable_table);
         
-        $msg = 'Your note has been added.';
+        $msg = gt('Your note has been added.');
         if ($require_approval == 1 && !$user->isAdmin()) {
-            $msg .= ' Your note is now pending approval. You will receive an email to ';
-            $msg .= $this->expSimpleNote->email.' letting you know when it has been approved.'; 
+            $msg .= ' '.gt('Your note is now pending approval. You will receive an email to').' ';
+            $msg .= $this->expSimpleNote->email.' '.gt('letting you know when it has been approved.');
         }
         
         if ($require_notification && !$user->isAdmin()) {
@@ -229,7 +229,7 @@ class expSimpleNoteController extends expController {
         $notification_email = empty($this->params['notification_email']) ? SIMPLENOTE_NOTIFICATION_EMAIL : $this->params['notification_email'];
         
         if (empty($this->params['id'])) {
-            flash('error', 'No ID supplied for note to approve');
+            flash('error', gt('No ID supplied for note to approve'));
             $lastUrl = expHistory::getLast('editable');
         }
         
@@ -248,7 +248,7 @@ class expSimpleNoteController extends expController {
         global $history;
         
         if (empty($this->params['id'])) {
-            flash('error', 'No ID supplied for comment to approve');
+            flash('error', gt('No ID supplied for comment to approve'));
             $lastUrl = expHistory::getLast('editable');
         }
         
@@ -308,7 +308,7 @@ class expSimpleNoteController extends expController {
         $notification_email = empty($this->params['notification_email']) ? SIMPLENOTE_NOTIFICATION_EMAIL : $this->params['notification_email'];
         
         if (empty($this->params['id'])) {
-            flash('error', 'Missing id for the comment you would like to delete');
+            flash('error', gt('Missing id for the comment you would like to delete'));
             $lastUrl = expHistory::getLast('editable');
         }
         
@@ -344,10 +344,10 @@ class expSimpleNoteController extends expController {
         $editlink = makelink(array('controller'=>'expSimpleNote', 'action'=>'edit', 'id'=>$simplenote->id));
         
         // make the email body
-        $body  = 'Posted By:&nbsp;'.$simplenote->name."<br>";
-        $body .= 'Posters Email:&nbsp;'.$simplenote->email."<br><br>";
+        $body  = gt('Posted By').':&nbsp;'.$simplenote->name."<br>";
+        $body .= gt('Posters Email').':&nbsp;'.$simplenote->email."<br><br>";
         $body .= $simplenote->body."<br><br>";
-        $body .= 'You can view, edit and optionally approved this comment by going to ';
+        $body .= gt('You can view, edit and optionally approved this comment by going to').' ';
         $body .= '<a href="'.$editlink.'">'.$editlink.'</a>';
         
         // create the mail message

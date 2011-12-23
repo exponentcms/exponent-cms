@@ -33,7 +33,7 @@ class expCore {
 	 * @node Subsystems:expCore
 	 */
 	public static function initializeNavigation () {
-		$sections = array();
+//		$sections = array();
 		$sections = navigationmodule::levelTemplate(0,0);
 		return $sections;
 	}
@@ -366,9 +366,9 @@ class expCore {
 			} elseif($type == "controllers") {
 				$relpath .= "framework/views/";
 			} elseif($type == "forms") {
-				if ($name != "forms/email") {
+				if ($name != "forms/calendar") {
 					$relpath .= "framework/core/subsystems/forms/";
-				} else {  //TODO  forms/email only used by calendarmodule
+				} else {  //TODO  forms/calendar only used by calendarmodule
 					$relpath .= "framework/modules-1/calendarmodule/";
 				}
 			} elseif($type == "themes") {
@@ -392,7 +392,7 @@ class expCore {
 
 		// for later use for searching in lib/common
 		$typepath = $relpath;
-		if ($name != "" && $name != "forms/email") {  //TODO  forms/email only used by calendarmodule
+		if ($name != "" && $name != "forms/calendar") {  //TODO  forms/calendar only used by calendarmodule
 			$relpath .= $name . "/";
 		}
 
@@ -405,9 +405,9 @@ class expCore {
 			} elseif($subtype == "tpl") {
 				if ($type == 'controllers' || $type == 'Controller') {
 					//do nothing
-				} elseif ($name == "forms/email") {  //TODO  forms/email only used by calendarmodule
+				} elseif ($name == "forms/calendar") {  //TODO  forms/calendar only used by calendarmodule
 	//				$relpath2 .= "/";
-					$relpath2 .= "forms/email/";
+					$relpath2 .= "forms/calendar/";
 				} elseif ($type == 'controls' || $type == 'Control') {
 					$relpath2 .= 'editors/';
 				} elseif ($type == 'profileextension') {
@@ -530,5 +530,23 @@ class expCore {
 				return "$";
 	    }
 	}
+
+    public static function loadData($url, $ref = false, $post = false) {
+    	$chImg = curl_init($url);
+    	curl_setopt($chImg, CURLOPT_RETURNTRANSFER, true);
+    	curl_setopt($chImg, CURLOPT_USERAGENT, "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.6; rv:2.0) Gecko/20100101 Firefox/4.0");
+        if ($post) {
+            curl_setopt($chImg, CURLOPT_POST, true);
+        }
+    	if ($ref) {
+    		curl_setopt($chImg, CURLOPT_REFERER, $ref);
+    	}
+    	$curl_scraped_data = curl_exec($chImg);
+        if ($post) {
+            curl_setopt($chImg, CURLOPT_POST, false);
+        }
+    	curl_close($chImg);
+    	return $curl_scraped_data;
+    }
 
 }

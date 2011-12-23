@@ -16,14 +16,29 @@
 # GPL: http://www.gnu.org/licenses/gpl.txt
 #
 ##################################################
-/** @define "BASE" "../.." */
 
-function smarty_function_control($params,&$smarty) { 
+/**
+ * Smarty plugin
+ * @package Smarty-Plugins
+ * @subpackage Function
+ */
+
+/**
+ * Smarty {control} function plugin
+ *
+ * Type:     function<br>
+ * Name:     control<br>
+ * Purpose:  create a form control
+ *
+ * @param         $params
+ * @param \Smarty $smarty
+ */
+function smarty_function_control($params,&$smarty) {
     global $db,$user;
     
-    if ( (isset($params['type']) && isset($params['name'])) || $params['type'] == 'buttongroup' 
+    if ( (isset($params['type']) && isset($params['name'])) || $params['type'] == 'buttongroup' || $params['type'] == 'antispam') {
 //    || $params['type'] == 'captcha' || $params['type'] == 'recaptcha' || $params['type'] == 'antispam') {
-	  || $params['type'] == 'recaptcha' || $params['type'] == 'antispam') {
+//	  || $params['type'] == 'recaptcha' || $params['type'] == 'antispam') {
 
         // if a label wasn't passed in then we need to set one.
         //if (empty($params['label'])) $params['label'] = $params['name'];
@@ -97,7 +112,8 @@ function smarty_function_control($params,&$smarty) {
                 foreach($params['items'] as $item) {
                     $control->items[$item->$key] = $item->$display;
                 }
-                if (count($control->items) < 1) $control->items = array(0=>'-- No items found. --');
+                $noitems = gt("-- No items found --");
+                if (count($control->items) < 1) $control->items = array(0=>$noitems);
             } else {
                 if (is_array($params['items'])) {
                     $control->items = $params['items'];
@@ -169,7 +185,7 @@ function smarty_function_control($params,&$smarty) {
 			if (SITE_USE_ANTI_SPAM && ANTI_SPAM_CONTROL == 'recaptcha') {                
                 // make sure we have the proper config.
                 if (!defined('RECAPTCHA_PUB_KEY')) {
-                    echo '<h2 style="color:red">reCaptcha configuration is missing the public key.</h2>';
+                    echo '<h2 style="color:red">'.gt('reCaptcha configuration is missing the public key.').'</h2>';
                     return;
                 }
 				if ($user->isLoggedIn() && ANTI_SPAM_USERS_SKIP == 1) {
@@ -178,7 +194,7 @@ function smarty_function_control($params,&$smarty) {
 					// include the library and show the form control
 					require_once(BASE.'external/recaptchalib.php');
 					echo recaptcha_get_html(RECAPTCHA_PUB_KEY, $error);
-					echo '<p>Fill out the above security question to submit your form.</p>';
+					echo '<p>'.gt('Fill out the above security question to submit your form.').'</p>';
 				}
                 return;
             } elseif (ANTI_SPAM_CONTROL == 0) {
@@ -268,6 +284,7 @@ function smarty_function_control($params,&$smarty) {
             $max = isset($params['max']) ? $params['max'] : 99999;
             $control = new quantitycontrol($value, $min, $max);
         } elseif ($params['type'] == 'checkbox') {
+            $value = isset($params['value']) ? $params['value'] : null;
             $control = new checkboxcontrol($value);
             $control->postfalse = isset($params['postfalse']) ? 1 : 0;
             $control->newschool = true;
@@ -392,7 +409,11 @@ function smarty_function_control($params,&$smarty) {
             echo '<span class="label'.$labelclass.'">'.$params['label'].'</span>';
         }
         */
-        
+
+        // attempt to translate the label
+        if (!empty($params['label'])) {
+            $params['label'] = gt($params['label']);
+        }
         //write out the control itself...and then we're done. 
         if (isset($params['model'])) {
             echo $control->toHTML($params['label'], $params['model'].'['.$params['name'].']');
@@ -409,7 +430,7 @@ function smarty_function_control($params,&$smarty) {
         if($params['type']!='hidden'){ echo '</label>'; }
         */
     } else {
-        echo "Both the \"type\" and \"name\" parameters are required for the control plugin to function";
+        echo "Both the 'type' and 'name' parameters are required for the control plugin to function";
     }
 }
 

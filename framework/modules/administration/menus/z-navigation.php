@@ -42,7 +42,7 @@ $info = array(
     )
 );
 
-if ($db->selectValue('userpermission','uid','uid=\''.$user->id.'\' AND permission!=\'view\' AND internal='.$section.'') || $user->isAdmin()) {
+if (expPermissions::check('manage',expCore::makeLocation('navigationmodule','',$section))) {
     $info['itemdata'][] = array('text'=>gt('Edit this page'),'classname'=>'edit', 'url'=>makeLink(array('module'=>'navigationmodule', 'action'=>'edit_contentpage', 'id'=>$page->id)));
 }
 
@@ -50,7 +50,9 @@ if ($user->isAdmin()) {
     $info['itemdata'][] = array('text'=>gt('Manage User Permissions'),'classname'=>'user', 'url'=>makeLink(array('module'=>'navigationmodule','action'=>'userperms',"_common"=>"1","int"=>$page->id)));
     $info['itemdata'][] = array('text'=>gt('Manage Group Permissions'),'classname'=>'group', 'url'=>makeLink(array('module'=>'navigationmodule','action'=>'groupperms',"_common"=>"1","int"=>$page->id)));
 }
-$info['itemdata'][] = array('text'=>gt('Manage all pages'),'classname'=>'sitetree', 'url'=>makeLink(array('module'=>'navigationmodule','action'=>'manage')));
+if (expPermissions::check('manage',expCore::makeLocation('navigationmodule','',$section))) {
+    $info['itemdata'][] = array('text'=>gt('Manage all pages'),'classname'=>'sitetree', 'url'=>makeLink(array('module'=>'navigationmodule','action'=>'manage')));
+}
 
 return array(
     'text'=>gt('Pages'),

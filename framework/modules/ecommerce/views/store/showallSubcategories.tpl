@@ -19,7 +19,7 @@
     <h1>{$moduletitle|default:""}</h1>
     <div id="catnav">
         <ul>
-            <li><a href="{link controller=store action=showall}">Browse all Products</a></li>
+            <li><a href="{link controller=store action=showall}">{'Browse all Products'|gettext}</a></li>
             {foreach from=$ancestors item=ancestor name=path}
                 {math equation="x*10" x=$smarty.foreach.path.iteration assign=depth} 
                 <li style="margin-left: {$depth}px">
@@ -38,7 +38,7 @@
             {/foreach}          
             {br}
             {if $user->is_admin == 1 || $user->is_acting_admin}
-                <li><a href="{link controller=store action=showallUncategorized}">Show uncategoried products</a></li>
+                <li><a href="{link controller=store action=showallUncategorized}">{'Show uncategoried products'|gettext}</a></li>
             {/if}
         </ul>
     </div>

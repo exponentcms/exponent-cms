@@ -34,7 +34,7 @@ class expModules {
 	}
 
 	// recursive function used for (auto?)loading 2.0 modules controllers & models
-	function loadModulesDir($dir, &$controllers) {
+	public static function loadModulesDir($dir, &$controllers) {
 		global $db;
 	    if (is_readable($dir)) {
 	        $dh = opendir($dir);
@@ -94,6 +94,7 @@ class expModules {
     			$moduleInfo[$module]->active = ($modstate != null ? $modstate->active : 0);
     		}
     	}
+        $moduleInfo = expSorter::sort(array('array'=>$moduleInfo,'sortby'=>'name', 'order'=>'ASC', 'ignore_case'=>true));
     	return $moduleInfo;
     }
 

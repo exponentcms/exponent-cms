@@ -26,7 +26,7 @@
 	    {if $unapproved > 0}
 			<div class="unapproved msg-queue notice">
 			    <div class="msg">
-    				<a class="manage" href="{link action=manage content_id=$content_id content_type=$content_type}">Manage Comments</a> | There are {$unapproved} comments awaiting approval
+    				<a class="manage" href="{link action=manage content_id=$content_id content_type=$content_type}">{'Manage Comments'|gettext}</a> | {'There are'|gettext} {$unapproved} {'comments awaiting approval'|gettext}
 			    </div>
 			</div>
 	    {/if}
@@ -53,10 +53,10 @@
 					{permissions}
 					<div class="item-actions">
 						{if $permissions.manage == 1}
-							{icon action=edit record=$cmt content_id=$content_id title="Edit Comment"}
+							{icon action=edit record=$cmt content_id=$content_id title="Edit this comment"|gettext}
 						{/if}
 						{if $permissions.delete == 1}
-							{icon action=delete record=$cmt title="Delete Comment" onclick="return confirm('Are you sure you want to delete this comment?');"}
+							{icon action=delete record=$cmt title="Delete this comment"|gettext onclick="return confirm('"|cat:("Are you sure you want to delete this comment?"|gettext)|cat:"');"}
 						{/if}
 					<div>
 					{/permissions}

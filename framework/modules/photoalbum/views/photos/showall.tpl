@@ -32,10 +32,10 @@
     {permissions}
 		<div class="module-actions">
 			{if $permissions.create == 1}
-				{icon class=add action=edit rank=1 title="Add to the top" text="Add Image"}
+				{icon class=add action=edit rank=1 title="Add to the top"|gettext text="Add Image"|gettext}
 			{/if}
 			{if $permissions.manage == 1}
-				{ddrerank items=$page->records model="photo" label="Images"}
+				{ddrerank items=$page->records model="photo" label="Images"|gettext}
 			{/if}
 		</div>
     {/permissions}
@@ -57,13 +57,13 @@
             {permissions}
                 <div class="item-actions">
                     {if $permissions.edit == 1}
-                        {icon action=edit record=$record title="Edit `$modelname`"}
+                        {icon action=edit record=$record title="Edit"|gettext|cat:" `$modelname`"}
                     {/if}
                     {if $permissions.delete == 1}
-                        {icon action=delete record=$record title="Delete `$modelname`"}
+                        {icon action=delete record=$record title="Delete"|gettext|cat:" `$modelname`"}
                     {/if}
                     {if $permissions.create == 1}
-						{icon class=add action=edit rank=$text->rank+1 title="Add another `$modelname` after this one" text="Add After"}
+                        {icon class=add action=edit rank=$slide->rank+1 title="Add another slide here"|gettext  text="Add After"|gettext}
                     {/if}
                 </div>
             {/permissions}

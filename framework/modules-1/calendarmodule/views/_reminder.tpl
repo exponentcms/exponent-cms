@@ -36,7 +36,7 @@
 	{if $totaldays == 1}
 		<a href="{link module=calendarmodule action=viewmonth time=$start}">{'Events for'|gettext} {$start|format_date:"%B %e, %Y"}</a>
 	{else}
-		<a href="{link module=calendarmodule action=viewmonth time=$start}">{'Events for'|gettext}{' the next '|gettest}{$totaldays}{' days from'|gettext} {$start|format_date:"%B %e, %Y"}</a>
+		<a href="{link module=calendarmodule action=viewmonth time=$start}">{'Events for'|gettext}{' the next '|gettest}{$totaldays} {'days from'|gettext} {$start|format_date:"%B %e, %Y"}</a>
 	{/if}
 	</h4>
 	<dl class="viewweek">
@@ -56,10 +56,10 @@
 						<div>
 							&nbsp-&nbsp 
 							{if $event->is_allday == 1}
-								All Day
+								{'All Day'|gettext}
 							{else}
 								{if $event->eventstart != $event->eventend}
-									{$event->eventstart|format_date:$smarty.const.DISPLAY_TIME_FORMAT} to {$event->eventend|format_date:$smarty.const.DISPLAY_TIME_FORMAT}
+									{$event->eventstart|format_date:$smarty.const.DISPLAY_TIME_FORMAT} {'to'|gettext} {$event->eventend|format_date:$smarty.const.DISPLAY_TIME_FORMAT}
 								{else}
 									{$event->eventstart|format_date:$smarty.const.DISPLAY_TIME_FORMAT}
 								{/if}

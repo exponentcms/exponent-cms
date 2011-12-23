@@ -16,8 +16,24 @@
 # GPL: http://www.gnu.org/licenses/gpl.txt
 #
 ##################################################
-/** @define "BASE" "../.." */
 
+/**
+ * Smarty plugin
+ * @package Smarty-Plugins
+ * @subpackage Function
+ */
+
+/**
+ * Smarty {sessions_get} function plugin
+ *
+ * Type:     function<br>
+ * Name:     chain<br>
+ * Purpose:  get and assign sessions variables
+ *
+ * @param         $params
+ * @param \Smarty $smarty
+ * @return bool
+ */
 function smarty_function_sessions_get($params,&$smarty) {
 	$smarty->assign($params['var'], expSession::get($params['var']));
 }

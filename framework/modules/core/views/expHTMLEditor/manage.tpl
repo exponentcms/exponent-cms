@@ -26,7 +26,7 @@
     <div class="info-header">
         <div class="related-actions">
 			<a class="add" href="{link module="expHTMLEditor" action="edit"}">{"Create New Configuration"|gettext}</a>
-            {help text="Get Help Managing CKEditor Toolbars"|gettext module="ckeditor-toolbar-configuration"}
+            {help text="Get Help"|gettext|cat:" "|cat:("Managing CKEditor Toolbars"|gettext) module="ckeditor-toolbar-configuration"}
         </div>
         <h1>{"CKEditor Toolbar Manager"|gettext}</h1>
     </div>
@@ -66,7 +66,7 @@
 						{/if}
 					{/foreach}
                     {if !$active}
-                        <span class="active">Active</span>
+                        <span class="active">{'Active'|gettext}</span>
                     {else}
 						<a class="inactive" href="{link module="expHTMLEditor" action=activate id="default"}" title="Activate this Toolbar"|gettext>Activate</a>
                     {/if}
@@ -78,13 +78,13 @@
 					kama
                 </td>
                 <td>
-					On
+					{'On'|gettext}
                 </td>
                 <td>
-					No
+					{'No'|gettext}
                 </td>
 	            <td>
-					No
+					{'No'|gettext}
 	            </td>
                 <td>
 
@@ -94,7 +94,7 @@
             <tr class="{cycle values="odd,even"}{if $module->active == 1} active{/if}">
                 <td>
                     {if $cfg->active}
-                        <span class="active">Active</span>
+                        <span class="active">{'Active'|gettext}</span>
                     {else}
                         <a class="inactive" href="{link module="expHTMLEditor" action=activate id=$cfg->id}" title="Activate this Toolbar"|gettext>Activate</a>
                     {/if}
@@ -107,29 +107,29 @@
                 </td>
                 <td>
 					{if $cfg->scayt_on}
-						On
+						{'On'|gettext}
 					{else}
-						Off
+						{'Off'|gettext}
 					{/if}
                 </td>
                 <td>
 					{if $cfg->paste_word}
-						Yes
+						{'Yes'|gettext}
 					{else}
-						No
+						{'No'|gettext}
 					{/if}
                 </td>
 	            <td>
 					{if $cfg->plugins}
-						Yes
+						{'Yes'|gettext}
 					{else}
-						No
+						{'No'|gettext}
 					{/if}
 	            </td>
                 <td>
 					<div class="item-actions">
-						{icon module="expHTMLEditor" action=edit title="Edit this Toolbar"|gettext record=$cfg}
-						{icon module="expHTMLEditor" action=delete title="Delete this Toolbar"|gettext record=$cfg}
+						{icon module="expHTMLEditor" action=edit record=$cfg title="Edit this Toolbar"|gettext}
+						{icon module="expHTMLEditor" action=delete record=$cfg title="Delete this Toolbar"|gettext onclick="return confirm('"|cat:("Are you sure you want to delete this toolbar?"|gettext)|cat:"');"}
 					</div>
                 </td>
             </tr>

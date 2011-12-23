@@ -18,7 +18,7 @@
 	{permissions}
 	    <div class="module-actions">
 	        {if $permissions.create == 1}
-	            {icon class=add action=edit title="Add a Tweet" text="Add a Tweet"|gettext}
+	            {icon class=add action=edit text="Add a Tweet"|gettext}
 	        {/if}
 	    </div>
 	{/permissions}
@@ -39,10 +39,10 @@
 						{$tweet.text}
 						{permissions}
 							{if $permissions.create == 1 && !$tweet.ours && !$tweet.retweetedbyme}
-								&nbsp;{icon img='retweet.png' id=$tweet.id action=create_retweet title="Retweet" onclick="return confirm('Are you sure you want to retweet this item?');"}
+								&nbsp;{icon img='retweet.png' id=$tweet.id action=create_retweet title="Retweet"|gettext onclick="return confirm('"|cat:("Are you sure you want to retweet this item?"|gettext)|cat:"');"}
 							{/if}
 							{if $permissions.delete == 1 && $tweet.ours && !$tweet.retweeted_status}
-								&nbsp;{icon class=delete id=$tweet.id action=delete_retweet title="Delete Tweet" onclick="return confirm('Are you sure you want to delete this item?');"}
+								&nbsp;{icon class=delete id=$tweet.id action=delete_retweet}
 							{/if}
 						{/permissions}
 					</dd>

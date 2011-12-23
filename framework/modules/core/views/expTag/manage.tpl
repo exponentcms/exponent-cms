@@ -16,7 +16,7 @@
 
 <div class="module expTags manage">
 	<h1>{"Manage Tags"|gettext}</h1>
-	{permissions level=$smarty.const.UILEVEL_NORMAL}
+	{permissions}
     	{if $permissions.create == 1}
     		<a class="add" href="{link controller=$model_name action=create}">{"Create a new Tag"|gettext}</a>
     	{/if}
@@ -63,10 +63,10 @@
                 <td>
     				{permissions}
     					{if $permissions.edit == 1}
-    						{icon controller=$controller action=edit record=$listing title="Edit this `$modelname`"}
+    						{icon controller=$controller action=edit record=$listing title="Edit this tag"|gettext}
     					{/if}
     					{if $permissions.delete == 1}
-    						{icon controller=$controller action=delete record=$listing title="Delete this `$modelname`" onclick="return confirm('Are you sure you want to delete this `$modelname`?');"}
+    						{icon controller=$controller action=delete record=$listing title="Delete this tag"|gettext onclick="return confirm('"|cat:("Are you sure you want to delete this tag?"|gettext)|cat:"');"}
     					{/if}
     				{/permissions}
                 </td>

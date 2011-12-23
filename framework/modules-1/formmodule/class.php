@@ -33,20 +33,20 @@ class formmodule {
 	function permissions($internal = "") {
 		if ($internal == "") {
 			return array(
-				"administrate"=>gt('Administrate'),
-				"editform"=>gt('Edit Form'),
-				"editformsettings"=>gt('Edit Form Settings'),
-				"editreport"=>gt('Edit Form Report'),
+				"administrate"=>gt('Manage'),
+				"editformsettings"=>gt('Configure'),
+                "editform"=>gt('Edit Form'),
+				"editreport"=>gt('Edit Report'),
 				"viewdata"=>gt('View Posts'),
 				"editdata"=>gt('Edit Posts'),
 				"deletedata"=>gt('Delete Posts')
 			);
 		} else {
 			return array(
-				"administrate"=>gt('Administrate'),
+				"administrate"=>gt('Manage'),
+                "editformsettings"=>gt('Configure'),
 				"editform"=>gt('Edit Form'),
-				"editformsettings"=>gt('Edit Form Settings'),
-				"editreport"=>gt('Edit Form Report'),
+				"editreport"=>gt('Edit Report'),
 				"viewdata"=>gt('View Posts'),
 				"editdata"=>gt('Edit Posts'),
 				"deletedata"=>gt('Delete Posts')
@@ -59,7 +59,7 @@ class formmodule {
         // require_once(BASE."framework/core/subsystems/forms/baseform.php");
         // require_once(BASE."framework/core/subsystems/forms/form.php");
 
-		if (defined("PREVIEW_READONLY") && !defined("SELECTOR")) {
+		if (defined('PREVIEW_READONLY') && !defined('SELECTOR')) {
 			// Pass
 		}  else {
 			$f = null;
@@ -87,12 +87,7 @@ class formmodule {
 				$db->insertObject($rpt,"formbuilder_report");
 				$f->id = $frmid;
 			}
-//			global $SYS_FLOW_REDIRECTIONPATH;
-//			expHistory::flowSet(SYS_FLOW_PUBLIC,SYS_FLOW_ACTION);
-//			$SYS_FLOW_REDIRECTIONPATH = "editfallback";
-//			expHistory::flowSet(SYS_FLOW_PUBLIC,SYS_FLOW_ACTION);
-//			$SYS_FLOW_REDIRECTIONPATH = "exponent_default";
-			
+
 			$floc = unserialize($f->location_data);
 			$controls = $db->selectObjects("formbuilder_control","form_id=".$f->id);
 			$controls = expSorter::sort(array('array'=>$controls,'sortby'=>'rank', 'order'=>'ASC'));

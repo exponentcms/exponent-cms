@@ -13,5 +13,6 @@
  * GPL: http://www.gnu.org/licenses/gpl.txt
  *
  *}
+
 <h1>{'Edit Page Properties'|gettext}</h1>
 {$form_html}

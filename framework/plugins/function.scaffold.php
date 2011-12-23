@@ -16,8 +16,24 @@
 # GPL: http://www.gnu.org/licenses/gpl.txt
 #
 ##################################################
-/** @define "BASE" "../.." */
 
+/**
+ * Smarty plugin
+ * @package Smarty-Plugins
+ * @subpackage Function
+ */
+
+/**
+ * Smarty {scaffold} function plugin
+ *
+ * Type:     function<br>
+ * Name:     scaffold<br>
+ * Purpose:  scaffold
+ *
+ * @param         $params
+ * @param \Smarty $smarty
+ * @return bool
+ */
 function smarty_function_scaffold($params,&$smarty) {
 	if (isset($params['model']) ) {
 		global $db;
@@ -58,7 +74,7 @@ function smarty_function_scaffold($params,&$smarty) {
 		}
     }
 
-	$submit = new buttongroupcontrol('Submit', 'Reset', 'Cancel'); 
+	$submit = new buttongroupcontrol(gt('Submit'), gt('Reset'), gt('Cancel'));
 	echo $submit->controlToHTML('submit');
 }
 

@@ -48,10 +48,10 @@ if(DEVELOPMENT) $timer = new expTimer();
 // skip it and default back to the old way of doing things.
 $router->routeRequest();
 
-// initialize this users cart if they have ecomm installed.
+// initialize this users cart if they have ecom installed.
 // define whether or not ecom is enabled
 if ($db->selectValue('modstate', 'active', 'module="storeController"')) {
-    define("ECOM",1);
+    define('ECOM',1);
     $order = order::getUserCart();      
     // Create a globle store config
     // We're forcing the location. Global store setting will always have this loc
@@ -60,25 +60,24 @@ if ($db->selectValue('modstate', 'active', 'module="storeController"')) {
     $cfg->int = "";
     $storeConfig = new expConfig($cfg);
 } else {
-    define("ECOM",0);
+    define('ECOM',0);
 }
 
 if (isset($_GET['id']) && !is_numeric($_GET['id'])) $_GET['id'] = intval($_GET['id']);
 $section = $router->getSection();
-$sectionObj = $router->getSectionObj($section);
+if ($db->havedb) $sectionObj = $router->getSectionObj($section);
 if (ENABLE_TRACKING) $router->updateHistory($section);
 
 // set the output header
 header("Content-Type: text/html; charset=".LANG_CHARSET);
 
 // Check to see if we are in maintenance mode.
-//if (MAINTENANCE_MODE && !$user->isAdmin() && ( !isset($_REQUEST['module']) || $_REQUEST['module'] != 'loginmodule')) {
 if (MAINTENANCE_MODE && !$user->isAdmin() && ( !isset($_REQUEST['controller']) || $_REQUEST['controller'] != 'login')) {
 	//only admins/acting_admins are allowed to get to the site, all others get the maintenance view
 	$template = new standalonetemplate('_maintenance');
 	$template->output();
 } else {
-	if (MAINTENANCE_MODE > 0) flash('error', "Maintenance Mode is Enabled");
+	if (MAINTENANCE_MODE > 0) flash('error', gt('Maintenance Mode is Enabled'));
 	//the default user is anonymous
 	if (!expSession::loggedIn()) {
 		//TODO: Maxims initial anonymous user implementation

@@ -14,8 +14,8 @@
  *
  *}
 
-<h2>Podcast/RSS Feed Settings</h2>
-{control type="checkbox" name="enable_rss" label="Enable Podcasting" value=1 checked=$config.enable_rss}
-{control type="text" name="feed_title" label="Feed Title" value=$config.feed_title}
-{control type="textarea" name="feed_desc" label="Feed Description" value=$config.feed_desc}
-{*control type="textarea" name="itunes_cats" label="Itunes Categories" value=$config.itunes_cats*}
+<h2>{'Podcast/RSS Feed Settings'|gettext}</h2>
+{control type="checkbox" name="enable_rss" label="Enable Podcasting"|gettext value=1 checked=$config.enable_rss}
+{control type="text" name="feed_title" label="Feed Title"|gettext value=$config.feed_title}
+{control type="textarea" name="feed_desc" label="Feed Description"|gettext value=$config.feed_desc}
+{*control type="textarea" name="itunes_cats" label="Itunes Categories"|gettext value=$config.itunes_cats*}

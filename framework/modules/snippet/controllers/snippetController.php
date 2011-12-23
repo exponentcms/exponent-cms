@@ -25,6 +25,13 @@ class snippetController extends expController {
 		'showall'=>'Copy and Display Snippet',
 		'showall_highlight'=>'Highlight and Display Snippet'
 	);
+    public $remove_configs = array(
+   		'comments',
+        'files',
+   		'rss',
+   		'ealerts',
+   		'tags'
+   	); // all options: ('aggregation','files','comments','rss','ealerts','tags')
 	public $codequality = 'stable';
 
 	function displayname() { return "Code Snippets"; }

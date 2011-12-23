@@ -35,7 +35,7 @@
         <tr>
             {$page->header_columns}
 			<th>
-				Links
+				{'Links'|gettext}
 			</th>
         </tr>
     </thead>

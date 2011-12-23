@@ -20,25 +20,23 @@
 
 <div class="navigationmodule top-nav">
 	<ul>
-	{assign var=isparent value=0}	
-	{foreach from=$sections item=section}
-	{if $section->parent == 0}
-		
-		{if $current->parents[0]!=""}
-			{foreach from=$current->parents item=parent}
-				{if $parent==$section->id}
-					{assign var=isparent value=1}				
-				{/if}
-			{/foreach}
-		{/if}
-		
-		{if $section->active == 1}
-			<li class="{if $section->id==$current->id || $isparent==1}current{/if}{if $section->last==1} last{/if}{if $section->first==1} first{/if}"><a class="navlink" href="{$section->link}"{if $section->new_window} target="_blank"{/if}>{$section->name}</a></li>
-		{else}
-			<li><span class="navlink">{$section->name}</span></li>
-		{/if}
-		{/if}
-		{assign var=isparent value=0}
-	{/foreach}
+        {assign var=isparent value=0}
+        {foreach from=$sections item=section}
+            {if $section->parent == 0}
+                {if $current->parents[0]!=""}
+                    {foreach from=$current->parents item=parent}
+                        {if $parent==$section->id}
+                            {assign var=isparent value=1}
+                        {/if}
+                    {/foreach}
+                {/if}
+                {if $section->active == 1}
+                    <li class="{if $section->id==$current->id || $isparent==1}current{/if}{if $section->last==1} last{/if}{if $section->first==1} first{/if}"><a class="navlink" href="{$section->link}"{if $section->new_window} target="_blank"{/if}>{$section->name}</a></li>
+                {else}
+                    <li><span class="navlink">{$section->name}</span></li>
+                {/if}
+            {/if}
+            {assign var=isparent value=0}
+        {/foreach}
 	</ul>
 </div>

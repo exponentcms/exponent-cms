@@ -14,7 +14,7 @@
  *
  *}
  
-{css unique="3col-container" link="`$smarty.const.PATH_RELATIVE`framework/modules/container/assets/css/container.css"}
+{css unique="3col-container" link=$smarty.const.PATH_RELATIVE|cat:'framework/modules/container/assets/css/container.css'}
 
 {/css}
  
@@ -25,20 +25,20 @@
     	{assign var=i value=0}
 		{assign var=rerank value=0}
     	{include file=$viewfile}
-        <div style="clear:both"></div>
+        {clear}
     </div>
     <div class="col2">
     	{assign var=container value=$containers.1}
     	{assign var=i value=1}
 		{assign var=rerank value=0}
     	{include file=$viewfile}
-        <div style="clear:both"></div>
+        {clear}
     </div>
     <div class="col3">
     	{assign var=container value=$containers.2}
     	{assign var=i value=2}
     	{include file=$viewfile}
-        <div style="clear:both"></div>
+        {clear}
     </div>
-    <div style="clear:both"></div>
+    {clear}
 </div>

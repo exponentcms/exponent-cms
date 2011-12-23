@@ -15,15 +15,15 @@
  *}
 
 <div class="module users reset-password">
-    <h1>Reset Your Password</h1>
+    <h1>{'Reset Your Password'|gettext}</h1>
     <p>
-        To reset your password, enter your username/email address below. An 
-        email will be sent to the email address you provided along with instructions to reset your password.
+        {'To reset your password, enter your username/email address below.'|gettext}&nbsp;&nbsp;
+        {'An email will be sent to the email address you provided along with instructions to reset your password.'|gettext}
     </p>
     
     {form action=send_new_password}
-        {control type="text" name="username" label="Username/Email"}
+        {control type="text" name="username" label="Username/Email"|gettext}
 		{control type=antispam}
-        {control type="buttongroup" submit="Submit"}
+        {control type="buttongroup" submit="Submit"|gettext}
     {/form}
 </div>

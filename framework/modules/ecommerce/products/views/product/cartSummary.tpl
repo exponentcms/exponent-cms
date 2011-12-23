@@ -30,11 +30,11 @@
             </div>
             {if $options|@count > 0 || $item->getUserInputFields()!= ''}
                 <div class="options">
-                    <a href="#" class="infoicon">{gettext str="Additional Information"}</a>
+                    <a href="#" class="infoicon">{"Additional Information"|gettext}</a>
                     <div class="exp-dropmenu">
                         {if $options|@count > 0}
                             <div class="hd" style="padding:0 5px">
-                                <span class="type-icon"></span><h6>{gettext str="Selected Product Options"}</h6>
+                                <span class="type-icon"></span><h6>{"Selected Product Options"|gettext}</h6>
                             </div>
                             <div class="bd">
                                 <ul>
@@ -47,7 +47,7 @@
                         
                         {if $item->getUserInputFields() != ''}
                             <div class="hd" style="padding:0 5px">
-                                {if $options|@count <= 0}<span class="type-icon"></span>{/if}<h6>{gettext str="Additional Information"}</h6>
+                                {if $options|@count <= 0}<span class="type-icon"></span>{/if}<h6>{"Additional Information"|gettext}</h6>
                             </div>
                             <div class="bd">
                                 {$item->getUserInputFields()}

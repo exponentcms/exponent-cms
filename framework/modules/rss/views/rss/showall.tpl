@@ -15,10 +15,10 @@
  *}
 
 <div class="module rss showall">
-    <h1>{$moduletitle|default:"RSS Feeds"}</h1>
+    <h1>{$moduletitle|default:"RSS Feeds"|gettext}</h1>
     {foreach from=$feeds item=feed}
 		<div class="item">
-			<a class="rsslink" href="{rsslink}" title="{$feed->feed_desc}">Subscribe to {$feed->feed_title}</a>
+			<a class="rsslink" href="{rsslink}" title="{$feed->feed_desc}">{'Subscribe to'|gettext} {$feed->feed_title}</a>
 		</div>
     {/foreach}    
 </div>

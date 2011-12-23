@@ -31,16 +31,16 @@
     </div>
 	<!--
     <div class="filters">
-        {control type="text" name="dynamicfilter" id="dynamicfilter" label="Filter By Order ID"}
-        {control type="text" name="perpage" label="Items per-page" size=5 value=$perpage|default:50}
-        {control type="dropdown" name="status" label="Show" items="All Orders,Only Open Orders, Only Closed Orders"}
-        {control type="dropdown" name="daterange" label="Within" items="The last Month,The Last 6 months,The Last Year,All Time"}
+        {control type="text" name="dynamicfilter" id="dynamicfilter" label="Filter By Order ID"|gettext}
+        {control type="text" name="perpage" label="Items per-page"|gettext size=5 value=$perpage|default:50}
+        {control type="dropdown" name="status" label="Show"|gettext items="All Orders,Only Open Orders, Only Closed Orders" values="All Orders,Only Open Orders, Only Closed Orders"}
+        {control type="dropdown" name="daterange" label="Within"|gettext items="The last Month,The Last 6 months,The Last Year,All Time" values="The last Month,The Last 6 months,The Last Year,All Time"}
     </div>
 	-->
 	<div class="leftcol">
-		<h2>Select a Vendor</h2>
+		<h2>{'Select a Vendor'|gettext}</h2>
 		<ul>
-		<li {if !$vendor_id}class="current"{/if}><a href="{link action='getPurchaseOrderByJSON' ajax_action=1}">All Vendors</a></li>
+		<li {if !$vendor_id}class="current"{/if}><a href="{link action='getPurchaseOrderByJSON' ajax_action=1}">{'All Vendors'|gettext}</a></li>
 		{foreach from=$vendors item=vendor}
 			<li {if $vendor_id == $vendor->id}class="current"{/if}>
 				<a href="{link action='getPurchaseOrderByJSON' vendor=$vendor->id ajax_action=1}">{$vendor->title}</a>

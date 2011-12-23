@@ -32,7 +32,7 @@
  * 
  * @param $params
  * @param $content
- * @param mixed $smarty
+ * @param \Smarty $smarty
  * @param $repeat
  */
 function smarty_block_form($params,$content,&$smarty, &$repeat) {

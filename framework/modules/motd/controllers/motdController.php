@@ -35,7 +35,7 @@ class motdController extends expController {
         $day = date('j', $now);
         $message = $this->motd->find('first', 'month='.$month.' AND day='.$day); 
         
-        if (empty($message->id) && $this->config['userand']==true) {
+        if (empty($message->id) && (!empty($this->config['userand']) && $this->config['userand']==true)) {
             $message = $this->motd->find('first', null, 'RAND()');  
         }
         
@@ -61,7 +61,7 @@ class motdController extends expController {
         $timestamp = mktime(0, 0, 0, $this->params['month'], 1);
         $endday = expDateTime::endOfMonthDay($timestamp);
         if ($this->params['day'] > $endday) {
-            expValidator::failAndReturnToForm('There are only '.$endday.' days in '.$this->motd->months[$this->params['month']], $this->params);
+            expValidator::failAndReturnToForm(gt('There are only').' '.$endday.' '.gt('days in').' '.$this->motd->months[$this->params['month']], $this->params);
         }
         parent::update();
     }

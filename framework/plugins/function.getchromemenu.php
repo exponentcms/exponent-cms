@@ -17,6 +17,23 @@
 #
 ##################################################
 
+/**
+ * Smarty plugin
+ * @package Smarty-Plugins
+ * @subpackage Function
+ */
+
+/**
+ * Smarty {getchromemenu} function plugin
+ *
+ * Type:     function<br>
+ * Name:     getchromemenu<br>
+ * Purpose:  display the chrome menu
+ *
+ * @param         $params
+ * @param \Smarty $smarty
+ * @return bool
+ */
 function smarty_function_getchromemenu($params,&$smarty) {
 	global $router, $user;
 	$cloc = $smarty->getTemplateVars('__loc');
@@ -51,7 +68,7 @@ function smarty_function_getchromemenu($params,&$smarty) {
 
 	if (!empty($module->id) && expPermissions::check('edit_module', $cloc) && $module->permissions['administrate'] == 1) {
 		$editlink = $router->makeLink(array('module'=>'containermodule', 'id'=>$module->id, 'action'=>'edit', 'src'=>$module->info['source']));
-		$list .= '<li><a href="'.$editlink.'" class="config-view">'.gt("Configure Action &amp; View").'</a></li>';
+		$list .= '<li><a href="'.$editlink.'" class="config-view">'.gt("Configure Action")." &amp; ".gt("View").'</a></li>';
 	}
 
 	if ($module->permissions['configure'] == 1) {
@@ -88,7 +105,6 @@ function smarty_function_getchromemenu($params,&$smarty) {
         "src"=>PATH_RELATIVE."framework/core/assets/js/exp-container.js"
      ));
 	
-
 	echo $list;
 }
 

@@ -24,6 +24,7 @@ if (!defined('EXPONENT')) exit('');
 
 <form method="post" action="index.php">
 <input type="hidden" name="page" value="install-5" />
+<input type="hidden" name="lang" value="<?php echo LANGUAGE; ?>" />
 
 <div id="tab1" class="">
   <h2><?php echo gt('Site Configuration'); ?></h2>
@@ -42,11 +43,11 @@ if (!defined('EXPONENT')) exit('');
   </div>
   
   <div class="text-control control ">
-    <label class="label"><?php echo gt('(Meta) Keywords'); ?></label>
+    <label class="label"><?php echo '('.gt('Meta').') '.gt('Keywords'); ?></label>
     <textarea class="textarea" id="sc[SITE_KEYWORDS]" name="sc[SITE_KEYWORDS]" rows="5" cols="38">exponent cms</textarea>
   </div>
   <div class="text-control control ">
-    <label class="label"><?php echo gt('(Meta) Description'); ?></label>
+    <label class="label"><?php echo '('.gt('Meta').') '.gt('Description'); ?></label>
     <textarea class="textarea" id="sc[SITE_DESCRIPTION]" name="sc[SITE_DESCRIPTION]" rows="5" cols="38">exponent</textarea>
   </div>
   <div class="control checkbox">

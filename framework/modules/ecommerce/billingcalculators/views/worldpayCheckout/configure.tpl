@@ -15,26 +15,26 @@
  *}
 
 <div id="authcfg">
-    <div id="authcfg-tabs" class="yui-navset yui3-skin-sam hide">
+    <div id="authcfg-tabs" class="yui-navset exp-skin-tabview hide">
         <ul class="yui-nav">
-	        <li class="selected"><a href="#tab1"><em>Wordpay Checkout<br>Settings</em></a></li>
-	        <li><a href="#tab3"><em>Customer<br>Confirmations</em></a></li>
-	        <li><a href="#tab4"><em>Administrator<br>Notifications</em></a></li>
+	        <li class="selected"><a href="#tab1"><em>{'Wordpay Checkout'|gettext}<br>{'Settings'|gettext}</em></a></li>
+	        <li><a href="#tab3"><em>{'Customer'|gettext}<br>{'Confirmations'|gettext}</em></a></li>
+	        <li><a href="#tab4"><em>{'Administrator'|gettext}<br>{'Notifications'|gettext}}</em></a></li>
         </ul>            
         <div class="yui-content">
 	        <div id="tab1">
-	            {control type="text" name="username" label="API Username" value=$calculator->configdata.username}
-	            {control type="text" name="password" label="API Password" value=$calculator->configdata.password}
-	            {control type="text" name="installationid" label="Installation ID" value=$calculator->configdata.installationid}
-				{control type="dropdown" name="authCurrency" label="Choose currency" includeblank="-- Select currency" default=$calculator->configdata.authCurrency items="GBP (Pounds Sterling),USD (US Dollar)" values="GBP, USD"}
-	            {control type="checkbox" name="testmode" label="Enable Test Mode?" value=1 checked=$calculator->configdata.testmode}
+	            {control type="text" name="username" label="API Username"|gettext value=$calculator->configdata.username}
+	            {control type="text" name="password" label="API Password"|gettext value=$calculator->configdata.password}
+	            {control type="text" name="installationid" label="Installation ID"|gettext value=$calculator->configdata.installationid}
+				{control type="dropdown" name="authCurrency" label="Choose currency"|gettext includeblank="-- Select currency --"|gettext default=$calculator->configdata.authCurrency items="GBP (Pounds Sterling),USD (US Dollar)" values="GBP, USD"}
+	            {control type="checkbox" name="testmode" label="Enable Test Mode?"|gettext value=1 checked=$calculator->configdata.testmode}
 	        </div>
 	        <div id="tab2">
-	            {control type="checkbox" name="email_customer" label="Send customer an email confirmation?" value=1 checked=$calculator->configdata.email_customer}
+	            {control type="checkbox" name="email_customer" label="Send customer an email confirmation?"|gettext value=1 checked=$calculator->configdata.email_customer}
 	        </div>
 	        <div id="tab3">
-	            {control type="checkbox" name="email_admin" label="Send a notication that a new order was received?" value=1 checked=$calculator->configdata.email_admin}
-	            {control type="text" name="notification_addy" label="Email addresses to send notifications to (comma separated list of email addresses)" value=$calculator->configdata.notification_addy}
+	            {control type="checkbox" name="email_admin" label="Send a notication that a new order was received?"|gettext value=1 checked=$calculator->configdata.email_admin}
+	            {control type="text" name="notification_addy" label="Email addresses to send notifications to (comma separated list of email addresses)"|gettext value=$calculator->configdata.notification_addy}
 	        </div>
         </div>
     </div>

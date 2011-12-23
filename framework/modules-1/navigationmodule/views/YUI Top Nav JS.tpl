@@ -13,19 +13,20 @@
  * GPL: http://www.gnu.org/licenses/gpl.txt
  *{math equation="x*20" x=$section->depth}
  *}
+
 <div class="navigationmodule yui-top-nav exp-yui-nav">
 	<div id="yuimenubar" class="yuimenubar yuimenubarnav">
 		<div class="bd">
 			<ul class="first-of-type">
-			{foreach name="children" key=key from=$sections item=section}
-			    {if $section->depth==0}
-				<li class="yuimenubaritem">
-					<a class="yuimenubaritemlabel" href="{link section=$section->id}">{$section->name|replace:"&":"&amp;"}</a>
-				</li>
-				{/if}
-			{/foreach}
+                {foreach name="children" key=key from=$sections item=section}
+                    {if $section->depth==0}
+                        <li class="yuimenubaritem">
+                            <a class="yuimenubaritemlabel" href="{link section=$section->id}">{$section->name|replace:"&":"&amp;"}</a>
+                        </li>
+                    {/if}
+                {/foreach}
 			</ul>
 		</div>
 	</div>
-{yuimenubar buildon="yuimenubar"}
+    {yuimenubar buildon="yuimenubar"}
 </div>

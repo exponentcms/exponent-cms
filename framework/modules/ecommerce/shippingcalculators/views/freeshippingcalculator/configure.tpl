@@ -15,14 +15,14 @@
  *}
 
 <div id="freeshippingcfg">
-    <div id="freeship-tabs" class="yui-navset yui3-skin-sam hide">
+    <div id="freeship-tabs" class="yui-navset exp-skin-tabview hide">
         <ul class="yui-nav">
-	        <li class="selected"><a href="#tab1"><em>Free Shipping Settings</em></a></li>
+	        <li class="selected"><a href="#tab1"><em>{'Free Shipping Settings'|gettext}</em></a></li>
         </ul>            
         <div class="yui-content">
             <div id="tab1">
-                {control type="text" name="free_shipping_method_default_name" label="Default Name for this Shipping Method" value=$calculator->configdata.free_shipping_method_default_name}
-                {control type="text" name="free_shipping_option_default_name" label="Default Name for the Selectable Shipping Option" value=$calculator->configdata.free_shipping_option_default_name} 
+                {control type="text" name="free_shipping_method_default_name" label="Default Name for this Shipping Method"|gettext value=$calculator->configdata.free_shipping_method_default_name}
+                {control type="text" name="free_shipping_option_default_name" label="Default Name for the Selectable Shipping Option"|gettext value=$calculator->configdata.free_shipping_option_default_name}
             </div>        
         </div>
     </div>

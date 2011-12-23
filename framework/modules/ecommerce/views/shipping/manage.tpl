@@ -19,17 +19,17 @@
 {/css}
 
 <div class="module shipping manage">
-    <h1>Manage Shipping Options</h1>
+    <h1>{'Manage Shipping Options'|gettext}</h1>
     <p>
-        This page allows you to turn different shipping options (known as shipping calculators) on and off for customers on your webstore.
+        {'This page allows you to turn different shipping options (known as shipping calculators) on and off for customers on your webstore.'|gettext}
     </p>
     
     <table class="exp-skin-table">
     <thead>
         <tr>
-            <th>Name</th>
-            <th>Description</th>
-            <th>on/off</th>
+            <th>{'Name'|gettext}</th>
+            <th>{'Description'|gettext}</th>
+            <th>{'on/off'|gettext}</th>
         </tr>
     </thead>
     <tbody>

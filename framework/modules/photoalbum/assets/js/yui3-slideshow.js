@@ -283,7 +283,7 @@ YUI.add('gallery-yui-slideshow', function(Y) {
 				}
 			}
 			
-			if (this.pagination!=false) {
+			if (this.pagination!=false && linkParent) {
 			    linkParent.get('children').removeClass('current');
 			    linkParent.one('[rel="'+this.currentSlide+'"]').addClass('current');
 			};
@@ -385,9 +385,11 @@ YUI.add('gallery-yui-slideshow', function(Y) {
 			}, this.pauseButton, this);
 		}
 		if(this.pagination !== false){
-		    var linkParent = Y.one(this.pagination).get('parentNode');
-            linkParent.one('[rel="0"]').addClass('current');
-            
+            var linkParent;
+            if (Y.one(this.pagination)) {
+                linkParent = Y.one(this.pagination).get('parentNode');
+                linkParent.one('[rel="0"]').addClass('current');
+            }
 			Y.on('click', function(e){
 			    e.halt();
         		if (!Y.Lang.isNull(Y.one(this.pauseButton))) Y.one(this.pauseButton).addClass('hide');

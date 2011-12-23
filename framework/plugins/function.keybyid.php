@@ -17,6 +17,23 @@
 #
 ##################################################
 
+/**
+ * Smarty plugin
+ * @package Smarty-Plugins
+ * @subpackage Function
+ */
+
+/**
+ * Smarty {keybyid} function plugin
+ *
+ * Type:     function<br>
+ * Name:     keybyid<br>
+ * Purpose:  get and assign key by its id
+ *
+ * @param         $params
+ * @param \Smarty $smarty
+ * @return bool
+ */
 function smarty_function_keybyid($params,&$smarty) {
 
 	$obj = $params['obj'];

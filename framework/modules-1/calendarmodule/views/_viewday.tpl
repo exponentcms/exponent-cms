@@ -51,7 +51,7 @@
 			{assign var=count value=1}
 			<dt>
 				<span class="eventtitle"><a class="itemtitle calendar_mngmntlink" href="{link action=view id=$item->id date_id=$item->eventdate->id}"><b>{$item->title}</b></a></span>
-				{permissions level=$smarty.const.UILEVEL_PERMISSIONS}
+				{permissions}
 					<div class="item-actions">
 						{if $permissions.edit == 1}
 							{icon action=edit record=$item date_id=$item->eventdate->id title="Edit this Event"|gettext}
@@ -75,7 +75,7 @@
 					<span><b>
 						{if $item->is_allday == 1}{'All Day'|gettext}{else}
 							{if $item->eventstart != $item->eventend}
-								{$item->eventstart|format_date:$smarty.const.DISPLAY_TIME_FORMAT} to {$item->eventend|format_date:$smarty.const.DISPLAY_TIME_FORMAT}
+								{$item->eventstart|format_date:$smarty.const.DISPLAY_TIME_FORMAT} {'to'|gettext} {$item->eventend|format_date:$smarty.const.DISPLAY_TIME_FORMAT}
 							{else}
 								{$item->eventstart|format_date:$smarty.const.DISPLAY_TIME_FORMAT}
 							{/if}

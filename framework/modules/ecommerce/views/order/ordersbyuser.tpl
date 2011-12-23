@@ -19,14 +19,14 @@
 {/css}
 
 <div class="module order ordersbyuser">
-    <h1>{$moduletitle|default:"My Orders"}</h1>
+    <h1>{$moduletitle|default:"My Orders"|gettext}</h1>
     <div id="orders">
 		{pagelinks paginate=$page top=1}
         <table id="prods" class="exp-skin-table">
             <thead>
                 <tr>
                     {$page->header_columns}
-                    <th><span>Total</span></th>
+                    <th><span>{'Total'|gettext}</span></th>
                 </tr>
             </thead>
             <tbody>

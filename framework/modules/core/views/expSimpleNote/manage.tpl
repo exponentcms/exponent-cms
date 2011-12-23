@@ -19,8 +19,8 @@
 {/css}
 
 <div class="module simplenote manage">
-    <h1>Manage Notes</h1>
-    <p>The table below shows notes have not yet been approved.</p>
+    <h1>{'Manage Notes'|gettext}</h1>
+    <p>{'The table below shows notes have not yet been approved'|gettext}.</p>
     
     <table class="exp-skin-table">
     <thead>
@@ -34,11 +34,11 @@
         <tr class="{cycle values="even, odd"}">
             <td>
                 {if $simplenote->approved == 1}
-                    <a href="{link action=approve_toggle id=$simplenote->id tab=$tab}" title="Disable this note">
+                    <a href="{link action=approve_toggle id=$simplenote->id tab=$tab}" title="Disable this note"|gettext>
                         {img src=$smarty.const.ICON_RELATIVE|cat:'toggle_on.png'}
                     </a>
                 {else}
-                    <a href="{link action=approve_toggle id=$simplenote->id tab=$tab}" title="Approve this note">
+                    <a href="{link action=approve_toggle id=$simplenote->id tab=$tab}" title="Approve this note"|gettext>
                         {img src=$smarty.const.ICON_RELATIVE|cat:'toggle_off.png'}
                     </a>   
                 {/if}  
@@ -47,13 +47,13 @@
             <td>{$simplenote->body}</td>
             <td>
 				<div class="item-actions">
-					{icon class=edit action=approve record=$simplenote tab=$tab title="Edit Note"}
-					{icon action=delete record=$simplenote tab=$tab title="Delete note" onclick="return confirm('Are you sure you want to delete this note?');"}
+					{icon class=edit action=approve record=$simplenote tab=$tab title="Edit this note"|gettext}
+					{icon action=delete record=$simplenote tab=$tab title="Delete this note"|gettext onclick="return confirm('"|cat:("Are you sure you want to delete this note?"|gettext)|cat:"');"}
 				</div>
             </td>
         </tr>
         {foreachelse}
-        <tr><td>There are no notes awaiting approval</td></tr>
+        <tr><td>{'There are no notes awaiting approval'|gettext}</td></tr>
         {/foreach}
     </tbody>
     </table>        

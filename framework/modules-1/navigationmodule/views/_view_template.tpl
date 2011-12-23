@@ -51,4 +51,4 @@
 </table>
 <br />
 <br />
-<a class="mngmntlink navigation_mngmntlink" href="{link action=manage}">{'Back To Manager'|gettext}</a>
+<a class="mngmntlink navigation_mngmntlink" href="{link action=manage}">{'Back to Manager'|gettext}</a>

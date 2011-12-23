@@ -20,12 +20,12 @@
             {if $item->product->expFile.images[0]->id}
                 {img file_id=$item->product->expFile.images[0]->id square=35}
             {else}
-                No Image Available
+                {'No Image Available'|gettext}
             {/if}
         </td>
         <td>
             <span class="itemname">{$item->products_name}</span>{br}
-            Registering {$number} people:{br}
+            {'Registering'|gettext} {$number} {'people'|gettext}:{br}
             {$people|truncate:50:"..."}        
         </td>
     </tr>

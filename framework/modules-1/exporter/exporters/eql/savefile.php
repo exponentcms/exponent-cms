@@ -36,14 +36,14 @@ if (!isset($_POST['tables'])) { // No checkboxes clicked, and got past the JS ch
 //		$path = BASE . "themes/".DISPLAY_THEME_REAL."/sample.eql";
 		$path = BASE . "themes/".DISPLAY_THEME."/sample.eql";
 		if (!$eql = fopen ($path, "w")) {
-			flash('error',"Error opening eql file for writing ($path).");
+			flash('error',gt("Error opening eql file for writing")." ".$path);
 		} else {
 			$eqlfile = expFile::dumpDatabase($db,array_keys($_POST['tables']));
 			if (fwrite ($eql, $eqlfile)  === FALSE) {
-				flash('error',"Error writing to eql file ($path).");
+				flash('error',gt("Error writing to eql file")." ".$path);
 			}
 			fclose ($eql);
-			flash('message',"Sample database (eql file) saved to '".DISPLAY_THEME."' theme.");
+			flash('message',gt("Sample database (eql file) saved to")." '".DISPLAY_THEME."' ".gt("theme"));
 			expHistory::back();
 		}
 	} else {

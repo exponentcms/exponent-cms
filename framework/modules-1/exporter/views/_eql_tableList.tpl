@@ -17,7 +17,7 @@
 <div class="exporter eql-tablelist">
 	<div class="form_header">
 		<h2>{'Backup Current Database'|gettext}</h2>
-		<p>{'Listed below are all of the tables in your site\'s database.  Select which tables you wish to backup, and then click the "Export Data" button.  Doing so will generate an EQL file (which you must save) that contains the data in the selected tables.  This file can be used later to restore the database to the current state.'|gettext}</p>
+		<p>{'Listed below are all of the tables in your site\'s database.  Select which tables you wish to backup, and then click the \'Export Data\' button.  Doing so will generate an EQL file (which you must save) that contains the data in the selected tables.  This file can be used later to restore the database to the current state.'|gettext}</p>
 	</div>
 	<script type="text/javascript">
 	{literal}
@@ -86,12 +86,12 @@
 					<input type="checkbox" name="save_sample" value="1" class="checkbox">
 				</td>
 				<td colspan="4" valign="top">
-					<b><label class="label ">Save as Sample Content for the '{$smarty.const.DISPLAY_THEME}' Theme?</label></b>
+					<b><label class="label ">{'Save as Sample Content for the'|gettext} '{$smarty.const.DISPLAY_THEME}' {'Theme'|gettext}?</label></b>
 				</td>
 			</tr>
 			{/if}
 			<tr>
-				<td colspan="3" valign="top"><b>{'File Name Template:'|gettext}</b></td>
+				<td colspan="3" valign="top"><b>{'File Name Template'|gettext}:</b></td>
 				<td colspan="2">
 					<input type="text" name="filename" size="20" value="database" />
 				</td>

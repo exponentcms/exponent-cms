@@ -13,7 +13,7 @@
  * GPL: http://www.gnu.org/licenses/gpl.txt
  *
  *}
-<h1>Manage Bots</h1>
+<h1>{'Manage Bots'|gettext}</h1>
 <div class="form_header">{'Mange Bots'|gettext}</div><br /><br />
 <hr size="1" />
 <ul>
@@ -23,9 +23,9 @@
 			<span class="state">{$bot->state}</span>
 			<span class="toggle">
 				{if $bot->state > 0}
-					<a href="{link id=$bot->id action="deactivate_bot"}">Turn off bot</a>
+					<a href="{link id=$bot->id action="deactivate_bot"}">{'Turn off bot'|gettext}</a>
 				{else}
-					<a href="{link id=$bot->id action="activate_bot"}">Turn on bot</a>
+					<a href="{link id=$bot->id action="activate_bot"}">{'Turn on bot'|gettext}</a>
 				{/if}
 			</span>
 		</li>

@@ -20,7 +20,7 @@
 
     {if $moduletitle}<h1>{$moduletitle}</h1>{/if}
     {if !$config}
-        <strong style="color:red">{"To Display the 'Countdown' Module, you MUST First 'Configure Settings'!"|gettext}</strong>
+        <strong style="color:red">{"To Display the 'Countdown' Module, you MUST First 'Configure Settings'"|gettext|cat:"!"}</strong>
     {else}    
     {if $config.title}<h3>{$config.title}</h3>{/if}
 
@@ -42,7 +42,6 @@
     {/if}
 
 </div>
-
 
 {*
     see http://www.hashemian.com/tools/javascript-countdown.htm

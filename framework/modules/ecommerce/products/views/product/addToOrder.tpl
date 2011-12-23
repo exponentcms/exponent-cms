@@ -29,10 +29,10 @@
     <h1>{$product->title}</h1>
     {img file_id=$product->expFile.mainimage.0->id w=150 class="prod-img"}
     <p>
-        <strong>Additional information is required before we can add to your cart</strong>
+        <strong>{"Additional information is required before we can add to your cart"|gettext}</strong>
     {br}{br}
-        If you are ordering multiple quantities of this item, the SAME information you select here will be applied to 
-    all of the items. If you would like different options or personalized fields for each item, please add them one at a time to your cart.
+        {"If you are ordering multiple quantities of this item, the SAME information you select here will be applied to all of the items."|gettext}&nbsp;&nbsp;
+        {"If you would like different options or personalized fields for each item, please add them one at a time to your cart."|gettext}
     </p>
     <div style="clear:both"></div>
     {script unique="children-submit"}
@@ -51,13 +51,13 @@
                     if (bx.get('checked')) {
                         bxchkd++;
                         if (parseInt(txts.item(key).get('value'))<=0) {
-                            msg = " You'll also need a value greater than 0 for a quantity."
+                            msg = "{/literal}{"You\'ll also need a value greater than 0 for a quantity."|gettext}{literal}"
                         }
                     };
                 });
                 
                 if (bxchkd==0 || msg!="") {
-                    alert('You need to check at least 1 product before it can be added to your cart'+msg);
+                    alert('{/literal}{"You need to check at least 1 product before it can be added to your cart"|gettext}{literal}'+msg);
                 } else {
                     frm.submit();
                 };
@@ -80,12 +80,12 @@
             <thead>
                 <tr>
                     <th>&nbsp;</th>
-                    <th><strong>{gettext str="QTY"}</strong></th>
-                    <th><strong>{gettext str="SKU"}</strong></th>
+                    <th><strong>{"QTY"|gettext}</strong></th>
+                    <th><strong>{"SKU"|gettext}</strong></th>
                     {foreach from=$product->extra_fields item=chiprodname}                        
                         <th><span>{$chiprodname.name}</span></th>                            
                     {/foreach}
-                    <th style="text-align: right;"><strong>{gettext str="PRICE"}</strong></th>
+                    <th style="text-align: right;"><strong>{"PRICE"|gettext}</strong></th>
                     <th>&nbsp;</th>
                 </tr>
             </thead>
@@ -155,7 +155,7 @@
                         </div> 
                     {/if}
                 {/foreach}
-                <span style="font-variant:small-caps;">* Selection required.</span>
+                <span style="font-variant:small-caps;">* {"Selection required"|gettext}.</span>
             </div>
         {/if}
         
@@ -177,6 +177,6 @@
             {/foreach}
             </div>
         {/if}
-        {control type="buttongroup" submit="Add Item(s) to Order"}        
+        {control type="buttongroup" submit="Add Item(s) to Order"|gettext}
     {/form}
 </div>

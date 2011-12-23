@@ -15,20 +15,20 @@
  *}
 
 <div class="module simplenote approve">
-	<h1>Edit & Approve a Note</h1>
+	<h1>{'Edit & Approve a Note'|gettext}</h1>
     <p>
-        To approve a note just check the "Approve Note" checkbox and click the approve button below.&nbsp;&nbsp;
-        If you need to edit the note before you approve it and let it go live, you can do that here as well.
+        {'To approve a note just check the \'Approve Note\' checkbox and click the approve button below.'|gettext}&nbsp;&nbsp;
+        {'If you need to edit the note before you approve it and let it go live, you can do that here as well.'|gettext}
     </p>
 	{form action=approve_submit}
 		{control type=hidden name=id value=$simplenote->id}
         {control type=hidden name=tab value=$tab}
 		
-	    <strong>Poster's Name: {$user->firstname} {$user->lastname}</strong>{br}
-	    <strong>Poster's Email: {$user->email}{br}
-		{control type=textarea name=body label="Note Body" rows=6 cols=35 value=$simplenote->body}
-		{control type="checkbox" name="approved" label="Approve Note" value=1 checked=$simplenote->approved}
-		{control type=buttongroup submit="Approve"}
+	    <strong>{'Poster\'s Name:'|gettext} {$user->firstname} {$user->lastname}</strong>{br}
+	    <strong>{'Poster\'s Email:'|gettext} {$user->email}{br}
+		{control type=textarea name=body label="Note Body"|gettext rows=6 cols=35 value=$simplenote->body}
+		{control type="checkbox" name="approved" label="Approve Note"|gettext value=1 checked=$simplenote->approved}
+		{control type=buttongroup submit="Approve"|gettext}
 	{/form}
 </div>
 

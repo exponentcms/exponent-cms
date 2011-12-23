@@ -20,7 +20,7 @@
 <div class="module users manage-group-memberships">
     <div class="info-header">
         <div class="related-actions">
-			{help text="Get Help with Managing Group Memberships" module="manage-group-members"}
+			{help text="Get Help"|gettext|cat:" "|cat:("Managing Group Memberships"|gettext) module="manage-group-members"}
         </div>
 		<h1>{"Manage Group Memberships"|gettext}</h1>	    
     </div>
@@ -48,12 +48,12 @@
 					</td>
 				</tr>
 			{foreachelse}
-				<td colspan="{$page->columns|count}">No Data.</td>
+				<td colspan="{$page->columns|count}">{'No Data'|gettext}.</td>
 			{/foreach}
 		</tbody>
 	</table>
     {pagelinks paginate=$page bottom=1}
-    {control type="buttongroup" submit="Save Memberships" cancel="Cancel"}
+    {control type="buttongroup" submit="Save Memberships"|gettext cancel="Cancel"|gettext}
     {/form}
 </div>
 

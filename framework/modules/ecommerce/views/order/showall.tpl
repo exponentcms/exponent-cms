@@ -19,11 +19,11 @@
 {/css}
 
 <div class="modules order showall">
-	<h1>{$moduletitle|default:"Store Order Administration"}</h1>
+	<h1>{$moduletitle|default:"Store Order Administration"|gettext}</h1>
 	{if $closed_count > -1}
-    	{br}{$closed_count} orders have been closed. <a href="{link action=showall showclosed=1}">View Now</a>{br}
+    	{br}{$closed_count} {'orders have been closed.'|gettext} <a href="{link action=showall showclosed=1}">{'View Now'|gettext}</a>{br}
     {else}
-        {br}<a href="{link action=showall showclosed=0}">Hide closed orders</a>{br}
+        {br}<a href="{link action=showall showclosed=0}">{'Hide closed orders'|gettext}</a>{br}
     {/if}
     {*edebug var=$page->records[0]*}
 	<div id="orders">
@@ -52,7 +52,7 @@
 				</tr>
 				{foreachelse}
 				    <tr class="{cycle values="odd,even"}">
-				        <td colspan="4">No orders have been placed yet</td>
+				        <td colspan="4">{'No orders have been placed yet'|gettext}</td>
 				    </tr>
 				{/foreach}
 		</tbody>

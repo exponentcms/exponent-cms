@@ -56,7 +56,9 @@ class calendar {
 		$form->register('eventend',gt('End Time'),new datetimecontrol($object->eventend,false));
 
 		if (!isset($object->id)) {
-			$customctl = file_get_contents(BASE.'framework/modules-1/calendarmodule/form.part');
+//			$customctl = file_get_contents(BASE.'framework/modules-1/calendarmodule/form.part');
+            $custom =  new formtemplate('forms/calendar', '_recurring');
+            $customctl = $custom->render();
 			//$datectl = new popupdatetimecontrol($object->eventstart+365*86400,'',false);
 			$datectl = new yuicalendarcontrol($object->eventdate->date+365*86400,'',false);
 			$customctl = str_replace('%%UNTILDATEPICKER%%',$datectl->controlToHTML('untildate'),$customctl);

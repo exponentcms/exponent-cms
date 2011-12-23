@@ -52,8 +52,8 @@ if ($parent) {
 		// We also need to know if there are any standalone pages.
 		$template->assign('haveStandalone',($db->countObjects('section','parent=-1') && $parent->id >= 0));
 		// Assign the parent we were passed, so that it can propagated along to the actual form action.
-		$template->assign('parent',$parent);
-		$template->assign('isAdministrator',($user && $user->is_acting_admin ? 1 : 0));
+        $template->assign('parent',$parent);
+		$template->assign('isAdministrator',($user && ($user->is_admin || $user->is_acting_admin) ? 1 : 0));
 		$template->output();
 	} else {
 		// Current user is not allowed to manage sections.  Throw a 403.

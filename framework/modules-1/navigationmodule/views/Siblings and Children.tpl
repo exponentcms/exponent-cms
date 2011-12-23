@@ -36,6 +36,7 @@
                                         {else}
                                             <span class="navlink">{$section->name}</span>&nbsp;
                                         {/if}
+                                    </li>
                                 {/foreach}
                             </ul>
                         {/if}

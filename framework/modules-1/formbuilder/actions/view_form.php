@@ -44,16 +44,13 @@ if ($f) {
 		$template = new template("formbuilder","_view_form");
 		$template->assign("form_html",$form->toHTML($f->id));
 		$template->assign("form",$f);
-//		global $SYS_FLOW_REDIRECTIONPATH;
-//		$SYS_FLOW_REDIRECTIONPATH = "editfallback";
 		$template->assign("backlink",expHistory::getLastNotEditable());
-//		$SYS_FLOW_REDIRECTIONPATH = "exponent_default";
-		
+
 		$types = expTemplate::listControlTypes();
 		$types[".break"] = gt('Spacer');
 		$types[".line"] = gt('Horizontal Line');
 		uasort($types,"strnatcmp");
-		array_unshift($types,gt('[Please Select]'));
+		array_unshift($types,'['.gt('Please Select'.']'));
 		$template->assign("types",$types);
 		$template->assign("pickerurl",URL_FULL."source_selector.php?showmodules=formmodule&dest='+escape(\"".PATH_RELATIVE."?module=formbuilder&action=picked_source&form_id=".$f->id."&s=".$loc->src."&m=".$loc->mod ."\")+'&vmod=containermodule&vview=_sourcePicker");
 		$template->output();

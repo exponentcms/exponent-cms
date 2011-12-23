@@ -19,17 +19,17 @@
  {/css}
     
 <div>
-    <h1>Create A New Order</h1>
+    <h1>{'Create A New Ordercount'|gettext}</h1>
     <div id="create_new_order">
     {form id=order_item_form name=order_item_form action=save_new_order}              
-        Select the order type, order status, and customer.{br}{br}            
-        {control type="dropdown" name="order_type_id" label="Order Type:" frommodel='order_type'}
-        {control type="dropdown" name="order_status_id" label="Order Status:" frommodel='order_status' orderby='rank'}
+        {'Select the order type, order status, and customer.'|gettext}{br}{br}
+        {control type="dropdown" name="order_type_id" label="Order Type:"|gettext frommodel='order_type'}
+        {control type="dropdown" name="order_status_id" label="Order Status:"|gettext frommodel='order_status' orderby='rank'}
         {control type="hidden" id="addresses_id" name="addresses_id"}
         {br}        
         <input type="radio" id="customer_type1" name="customer_type" value="1" checked=""> New Customer{br}
-        <input type="radio" id="customer_type2" name="customer_type"  value="2"> Existing Customer - Internal{br}
-        <input type="radio" id="customer_type3" name="customer_type"  value="3"> Existing Customer - External{br}
+        <input type="radio" id="customer_type2" name="customer_type"  value="2"> {'Existing Customer - Internal'|gettext}{br}
+        <input type="radio" id="customer_type3" name="customer_type"  value="3"> {'Existing Customer - External'|gettext}{br}
         {capture assign="callbacks"}
                         {literal}
                         

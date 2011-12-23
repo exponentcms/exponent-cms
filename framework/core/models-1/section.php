@@ -18,15 +18,18 @@
 /** @define "BASE" "../../.." */
 
 class section {
-	/*
-	 * Common Form helper method
-	 *
-	 * This method, intended to be used solely by other methods of the
-	 * section class, creates a base form that all other page types can
-	 * build off of.  This form includes a name textbox, and either a rank
-	 * meta field (hidden input) or a rank dropdown.
-	 */
-	function _commonForm(&$object) {
+    /**
+     * Common Form helper method
+     *
+     * This method, intended to be used solely by other methods of the
+     * section class, creates a base form that all other page types can
+     * build off of.  This form includes a name textbox, and either a rank
+     * meta field (hidden input) or a rank dropdown.
+     *
+     * @param $object
+     *
+     * @return \form
+     */function _commonForm(&$object) {
 		// Create a new blank form.
 		$form = new form();
 		
@@ -59,8 +62,8 @@ class section {
 		}
 		
 		// The name of the section, as it will be linked in the section hierarchy.
-		$form->register('name',gt('name'),new textcontrol($object->name));
-		$form->register('sef_name',gt('SEF Name').'<p class="sefinfo">If you don\'t put in an SEF Name one will be generated based on the title provided. SEF names can only contain alpha-numeric characters, hyphens and underscores.</p>',new textcontrol($object->sef_name));
+		$form->register('name',gt('Name'),new textcontrol($object->name));
+		$form->register('sef_name',gt('SEF Name').'<p class="sefinfo">'.gt('If you don\'t put in an SEF Name one will be generated based on the title provided. SEF names can only contain alpha-numeric characters, hyphens and underscores.').'</p>',new textcontrol($object->sef_name));
 		
 		if (!isset($object->id)) {
 			// This is a new section, so we can add the positional dropdown
@@ -77,7 +80,7 @@ class section {
 				// Generate the Position dropdown array.
 				$positions = array(gt('At the Top'));
 				foreach ($sections as $section) {
-					$positions[] = sprintf(gt('After "%s"'),$section->name);
+					$positions[] = sprintf(gt('After')." %s",$section->name);
 				}
     			$form->meta('rank',count($positions)-1);
 				//$form->register('rank',gt('Rank'),new dropdowncontrol(count($positions)-1,$positions));
@@ -90,8 +93,8 @@ class section {
 			// when the form is submitted.
 			$form->meta('parent',$object->parent);
 		} else if ($object->parent >= 0) {
-			// Allow them to change parents, but not if the section is outside of the hiearchy (parent > 0)
-			$form->register('parent',gt('Parent Page'),new dropdowncontrol($object->parent,navigationmodule::levelDropdownControlArray(0,0,array($object->id),1)));
+			// Allow them to change parents, but not if the section is outside of the hierarchy (parent > 0)
+			$form->register('parent',gt('Parent Page'),new dropdowncontrol($object->parent,navigationmodule::levelDropdownControlArray(0,0,array($object->id),true,'manage')));
 		}
 		$form->register('new_window',gt('Open in New Window'),new checkboxcontrol($object->new_window,false));
 		
@@ -118,7 +121,7 @@ class section {
 		return $form;
 	}
 
-	/*
+	/**
 	 * Content Page Form method
 	 *
 	 * This method returns a Form object to be used when allowing the user
@@ -163,7 +166,7 @@ class section {
 		return $form;
 	}
 	
-	/*
+	/**
 	 * External Alias Form method
 	 *
 	 * This method returns a form object to be used when allowing the user
@@ -199,7 +202,7 @@ class section {
 		return $form;
 	}
 	
-	/*
+	/**
 	 * Internal Alias Form method
 	 *
 	 * This method returns a form object to be used when allowing the user
@@ -227,7 +230,7 @@ class section {
 		$form->unregister('sef_name');
 		
 		// Add a dropdown to allow the user to choose an internal page.
-		$form->register('internal_id',gt('Page'),new dropdowncontrol($object->internal_id,navigationmodule::levelDropDownControlArray(0,0)));
+		$form->register('internal_id',gt('Page'),new dropdowncontrol($object->internal_id,navigationmodule::levelDropDownControlArray(0,0,array(),false,'manage')));
 		
 		// Add the'Public?' checkbox.  The 'Active?' checkbox is omitted, because it makes no sense.
 		$form->register('public',gt('Public'),new checkboxcontrol($object->public));
@@ -239,7 +242,7 @@ class section {
 		return $form;
 	}
 	
-	/*
+	/**
 	 * Pageset Form method
 	 *
 	 * This method returns a form object to be used when allowing the user
@@ -281,7 +284,7 @@ class section {
 	
 	// Update methods
 	
-	/*
+	/**
 	 * Update Object helper method
 	 *
 	 * This method is a complement to _commonForm, and updates the name
@@ -301,7 +304,7 @@ class section {
 		return $object;
 	}
 	
-	/*
+	/**
 	 * Content Page Update method
 	 *
 	 * This method updates the passed section object's attributes using
@@ -324,7 +327,7 @@ class section {
 		return $object;
 	}
 	
-	/*
+	/**
 	 * External Alias Update method
 	 *
 	 * This method updates the passed section object's attributes using
@@ -349,7 +352,7 @@ class section {
 		return $object;
 	}
 	
-	/*
+	/**
 	 * Internal Alias Update method
 	 *
 	 * This method updates the passed section object's attributes using
@@ -388,7 +391,7 @@ class section {
 		return $object;
 	}
 	
-	/*
+	/**
 	 * Pageset Update method
 	 *
 	 * This method updates the passed section object's attributes using
@@ -413,7 +416,7 @@ class section {
 	
 	// The following are helper functions for dealing with the Section datatype.
 	
-	/*
+	/**
 	 * Determine Section Depth
 	 *
 	 * This method looks at a section ID, and figures out how deep in the

@@ -17,11 +17,29 @@
 #
 ##################################################
 
+/**
+ * Smarty plugin
+ * @package Smarty-Plugins
+ * @subpackage Block
+ */
+
+/**
+ * Smarty {script} block plugin
+ *
+ * Type:     block<br>
+ * Name:     script<br>
+ * Purpose:  Set up a script block
+ *
+ * @param $params
+ * @param $content
+ * @param \Smarty $smarty
+ * @param $repeat
+ */
 function smarty_block_script($params,$content,&$smarty, &$repeat) {
 	if ($content) {
 		global $userjsfiles;
 		
-		if (empty($params['unique'])) die("<strong style='color:red'>The 'unique' parameter is required for the {script} pluggin.</strong>"); 
+		if (empty($params['unique'])) die("<strong style='color:red'>".gt("The 'unique' parameter is required for the {script} plugin.")."</strong>");
 		
         if ((isset($params['yui2mods']) || isset($params['yuimodules'])) && !strstr($content,"YUI(")) {
             $params['yui3mods'] = 1;

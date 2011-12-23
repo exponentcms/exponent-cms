@@ -14,9 +14,9 @@
  *
  *}
 
-<div id="config" class="module scaffold configure">
+<div id="config" class="module scaffold configure exp-skin-tabview">
 	{form action=saveconfig}
-		<div id="config-tabs" class="yui-navset yui3-skin-sam hide">
+		<div id="config-tabs" class="yui-navset hide">
 			<ul class="yui-nav">
 			    {foreach from=$views item=tab name=tabs}
 			        <li{if $smarty.foreach.tabs.first} class="selected"{/if}>
@@ -24,16 +24,16 @@
 			        </li>
 			    {/foreach}
 			</ul>            
-		    	<div class="yui-content">
-		    	    {foreach from=$views item=body name=body}
-		    	        <div id="tab{$smarty.foreach.body.iteration}">
-		    	            {include file=$body.file}
-		    	        </div>
-		    	    {/foreach}
+            <div class="yui-content">
+                {foreach from=$views item=body name=body}
+                    <div id="tab{$smarty.foreach.body.iteration}">
+                        {include file=$body.file}
+                    </div>
+                {/foreach}
 			</div>
 		</div>
 		<div class="loadingdiv">{"Loading Settings"|gettext}</div>
-		{control type=buttongroup submit="Save Config" cancel="Cancel"}
+		{control type=buttongroup submit="Save Config"|gettext cancel="Cancel"|gettext}
 	{/form}
 </div>
 

@@ -17,6 +17,23 @@
 #
 ##################################################
 
+/**
+ * Smarty plugin
+ * @package Smarty-Plugins
+ * @subpackage Function
+ */
+
+/**
+ * Smarty {viewfile} function plugin
+ *
+ * Type:     function<br>
+ * Name:     viewfile<br>
+ * Purpose:  get and assign a view file
+ *
+ * @param         $params
+ * @param \Smarty $smarty
+ * @return bool
+ */
 function smarty_function_viewfile($params,&$smarty) {
 	$view = expTemplate::getModuleViewFile($params['module'],$params['view']);
 	$smarty->assign($params['var'],$view);

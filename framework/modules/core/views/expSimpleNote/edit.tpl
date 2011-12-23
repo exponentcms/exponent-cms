@@ -25,23 +25,23 @@
 		{control type=hidden name=content_type value=$content_type}
         {control type=hidden name=tab value=$tab}
 		{if $user->id == 0}
-		    {control type=text name=name label="Name (required)" value=$simplenote->id}
+		    {control type=text name=name label="Name (required)"|gettext value=$simplenote->id}
 		{else}
-		    <strong>Name: {$user->firstname} {$user->lastname}</strong>{br}
+		    <strong>{'Name:'|gettext} {$user->firstname} {$user->lastname}</strong>{br}
 		{/if}
 		{if $user->id == 0}
-		    {control type=text name=email label="Email (required)" value=$simplenote->email}
+		    {control type=text name=email label="Email (required)"|gettext value=$simplenote->email}
 		{else}
-		    <strong>Email: {$user->email}{br}
+		    <strong>{'Email:'|gettext} {$user->email}{br}
 		{/if}
-		{control type=textarea name=body label="New Note:" rows=6 cols=35 value=$simplenote->body}
-		{control type=buttongroup submit="Add Note"}
+		{control type=textarea name=body label="New Note"|gettext|cat:":" rows=6 cols=35 value=$simplenote->body}
+		{control type=buttongroup submit="Add Note"|gettext}
 	{/form}
 	{else}
 	    <div class="form_header">
     	<h1>{$formtitle}</h1>
 		<p>
-			<a href="{link controller=login action=loginredirect}">You need to be logged in to add notes.</a>
+			<a href="{link controller=login action=loginredirect}">{'You need to be logged in to add notes'|gettext}.</a>
 		</p> 
 	</div>
 	{/if}

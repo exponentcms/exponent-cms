@@ -232,7 +232,7 @@ fltr = filter system. Call as an array as follows:
          (range -255 to 255)
          Availble in PHP5 with bundled GD only.
        - "gam" (Gamma Correction) [ex: &fltr[]=gam|<value>]
-         where <value> can be a number >0 to 10+ (default 1.0)
+         where <value> can be a number 0.01 to 10 (default 1.0)
          Must be >0 (zero gives no effect). There is no max,
          although beyond 10 is pretty useless. Negative
          numbers actually do something, maybe not quite the
@@ -268,9 +268,9 @@ fltr = filter system. Call as an array as follows:
          values give brighter/yellower images and higher
          values give darker/bluer images
        - "usm" (UnSharpMask) [ex: &fltr[]=usm|<a>|<r>|<t>]
-         where <a> is the amount (default = 80), <r> is the
-         radius (default = 0.5), <t> is the threshold
-         (default = 3).
+         where <a> is the amount (default = 80, range 0-255),
+         <r> is the radius (default = 0.5, range 0.0-10.0),
+         <t> is the threshold (default = 3, range 0-50).
        - "blur" (Blur) [ex: &fltr[]=blur|<radius>]
          where (0 < <radius> < 25) (default = 1)
        - "gblr" (Gaussian Blur) [ex: &fltr[]=gblr]
@@ -431,11 +431,12 @@ fltr = filter system. Call as an array as follows:
          hex color of the main border, <c2> is the highlight
          bevel color, <c3> is the shadow bevel color
        - "drop" (DROP shadow)
-         [ex: &fltr[]=drop|<d>|<w>|<clr>|<a>]
+         [ex: &fltr[]=drop|<d>|<w>|<clr>|<a>|<o>]
          where <d> is distance from image to shadow, <w> is
          width of shadow fade (not yet implemented), <clr> is
-         the hex color of the shadow, and <a> is the angle of
-         the shadow (default=225)
+         the hex color of the shadow, <a> is the angle of the
+         shadow (default=225), <o> is opacity (0=transparent,
+         100=opaque, default=100) (not yet implemented)
        - "crop" (CROP image)
          [ex: &fltr[]=crop|<l>|<r>|<t>|<b>]
          where <l> is the number of pixels to crop from the left
@@ -580,7 +581,7 @@ General Notes:
   apache_lookup_uri(), which is missing or broken in
   Apache2, or if PHP is not installed as an Apache module.
   phpThumb() does try and work around this if it is
-  unavailble, but you may have to specify a full filename
+  unavailable, but you may have to specify a full filename
   for "src" if you encounter problems.
 
 * phpThumb() should work with PHP v4.0.6+, but seems to
@@ -651,8 +652,16 @@ See /docs/phpthumb.license.commercial.txt
 for details on the terms of the license.
 
 Current list of pTCL licensees:
+(updated list at http://www.phpthumb.com/)
 
 1) Accomplish Hosting, LLC
    http://www.accomplishhosting.com
    effective 2007-Apr-28 (lifetime license)
 
+2) Eric Pujol
+   http://www.kaprikorn.fr/
+   effective 2007-Sep-29 (lifetime license)
+
+3) CalemEAM Inc.
+   http://www.calemeam.com/
+   effective 2010-Jun-14 (lifetime license)

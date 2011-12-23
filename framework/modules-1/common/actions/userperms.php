@@ -41,7 +41,7 @@ if ($user->isAdmin()) {
 	$mod = new $modclass();
 	$perms = $mod->permissions($loc->int);
 	$have_users = 0;
-	foreach (user::getAllUsers(0) as $u) {
+	foreach (user::getAllUsers(false) as $u) {
 		$have_users = 1;
 		foreach ($perms as $perm=>$name) {
 			$var = 'perms_'.$perm;
@@ -56,11 +56,11 @@ if ($user->isAdmin()) {
 		$users[] = $u;
 	}
 	
-	$p["User Name"] = 'username';
-	$p["First Name"] = 'firstname';
-	$p["Last Name"] = 'lastname';
+	$p[gt("User Name")] = 'username';
+	$p[gt("First Name")] = 'firstname';
+	$p[gt("Last Name")] = 'lastname';
 	foreach ($mod->permissions() as $key => $value) {
-        $p[$value]=$key;
+        $p[gt($value)]=$key;
 	}
 
 	if (SEF_URLS == 1) {
@@ -89,12 +89,12 @@ if ($user->isAdmin()) {
 		));
 	}
         
-	
 	$template->assign('have_users',$have_users);
 	$template->assign('users',$users);
 	$template->assign('page',$page);
 	$template->assign('perms',$perms);
-	
+    $template->assign('title',$modulename != 'navigationmodule'?$mod->name().' '.($modulename != 'containermodule'?gt('module'):'').' ':'page');
+
 	$template->output();
 } else {
 	echo SITE_403_HTML;

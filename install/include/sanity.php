@@ -136,7 +136,7 @@ function sanity_checkServer() {
 	$status = array(
 		gt('Database Backend')=>_sanity_checkDB(),
 		gt('GD Graphics Library 2.0+')=>_sanity_checkGD(),
-		gt('PHP 5.2.1+')=>_sanity_checkPHPVersion(),
+		'PHP 5.2.1+'=>_sanity_checkPHPVersion(),
 		gt('ZLib Support')=>_sanity_checkZlib(),
 		gt('XML (Expat) Library Support')=>_sanity_checkXML(),
 		gt('Safe Mode Not Enabled')=>_sanity_CheckSafeMode(),
@@ -152,7 +152,7 @@ function _sanity_checkGD() {
 	if ($info['GD Version'] == 'Not Supported') {
 		return array(SANITY_WARNING,gt('No GD Support'));
 	} else if (strpos($info['GD Version'],'2.0') === false) {
-		return array(SANITY_WARNING,sprintf(gt('Older Version Installed (%s)'),$info['GD Version']));
+		return array(SANITY_WARNING,sprintf(gt('Older Version Installed').' (%s)',$info['GD Version']));
 	}
 	return array(SANITY_FINE,$info['GD Version']);
 }
@@ -161,7 +161,7 @@ function _sanity_checkPHPVersion() {
 	if (version_compare(phpversion(),'5.2.1','>=')) {
 		return array(SANITY_FINE,phpversion());
 	} else {
-		return array(SANITY_ERROR,'This version of ExponentCMS requires PHP 5.2.1 or higher. You are running PHP '.phpversion().'<br>'.gt('(not supported)'));
+		return array(SANITY_ERROR,gt('This version of ExponentCMS requires PHP 5.2.1 or higher. You are running PHP').' '.phpversion().'<br>('.gt('not supported'.')'));
 	}
 }
 

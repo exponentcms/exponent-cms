@@ -43,7 +43,7 @@
 
 		<table cellspacing="0" cellpadding="0" border="0" width="100%" class="exp-skin-table">
 			<thead>
-				<th colspan="2">Files found in this Archive</th>
+				<th colspan="2">{'Files found in this Archive'|gettext}</th>
 			</thead>
 			<tbody>
 				{foreach from=$file_data item=mod_data}

@@ -27,9 +27,7 @@ $num_version = expVersion::getVersion();
 <h2><?php echo gt('Upgrade Scripts'); ?></h2>
 <p>
 <?php 
-echo gt("
-Exponent will perform the following upgrades:
-"); 
+echo gt("Exponent will perform the following upgrades").':';
 
 //display the upgrade scripts
 $upgrade_dir = 'upgrades';
@@ -42,6 +40,11 @@ if (is_readable($upgrade_dir)) {
         if (is_readable($upgrade_dir . '/' . $file) && is_file($upgrade_dir . '/' . $file) && ($file != '.' && $file != '..' && $file != '.svn' && substr($file, -4, 4) != '.swp')) {
             include_once($upgrade_dir . '/' . $file);
             $classname     = substr($file, 0, -4);
+            /**
+             * Stores the upgradescript object
+             * @var \upgradescript $upgradescript
+             * @name $upgradescript
+             */
             $upgradescript = new $classname;
             if ($upgradescript->checkVersion($num_version) && $upgradescript->needed($num_version)) {
                 echo '<li><h3>' . $upgradescript->name() . '</h3>';

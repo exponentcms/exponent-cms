@@ -17,6 +17,23 @@
 #
 ##################################################
 
+/**
+ * Smarty plugin
+ * @package Smarty-Plugins
+ * @subpackage Function
+ */
+
+/**
+ * Smarty {ddrerank} function plugin
+ *
+ * Type:     function<br>
+ * Name:     ddrerank<br>
+ * Purpose:  display item re-ranking popup
+ *
+ * @param         $params
+ * @param \Smarty $smarty
+ * @return bool
+ */
 function smarty_function_ddrerank($params,&$smarty) {
     global $db;
 	$loc = $smarty->getTemplateVars('__loc');
@@ -47,7 +64,11 @@ function smarty_function_ddrerank($params,&$smarty) {
         
         $sortfield = empty($params['sortfield']) ? 'title' : $params['sortfield']; //what was this even for?
    
-        echo '<a id="rerank'.$uniqueid.'" class="reranklink" href="#">Order '.$params['label'].'</a>';
+        // attempt to translate the label
+        if (!empty($params['label'])) {
+            $params['label'] = gt($params['label']);
+        }
+        echo '<a id="rerank'.$uniqueid.'" class="reranklink" href="#">'.gt("Order").' '.$params['label'].'</a>';
 
         $html = '
         <div id="panel'.$uniqueid.'" class="exp-panel exp-panel-rerank hide">
@@ -71,7 +92,7 @@ function smarty_function_ddrerank($params,&$smarty) {
                     <input type="hidden" name="rerank[]" value="'.$item->id.'" />
                     <div class="fpdrag"></div>';
         			//Do we include the picture? It depends on if there is one set.
-                    $html .= ($item->expFile[0]->id) ? '<img class="filepic" src="'.URL_FULL.'thumb.php?id='.$item->expFile[0]->id.'&w=24&h=24&zc=1">' : '';
+                    $html .= ($item->expFile[0]->id && $item->expFile[0]->is_image) ? '<img class="filepic" src="'.URL_FULL.'thumb.php?id='.$item->expFile[0]->id.'&w=24&h=24&zc=1">' : '';
                     $html .= '<div class="filename">'.substr($item->$sortfield, 0, 40).'</div>
                     </li>';
                     $odd = $odd == "even" ? "odd" : "even";
@@ -83,14 +104,13 @@ function smarty_function_ddrerank($params,&$smarty) {
                 </div>
                 ';
             } else {
-                $html .='<strong>Nothing to re-rank</strong>
+                $html .='<strong>'.gt('Nothing to re-rank').'</strong>
             
                     </div>
                 </div>
                 ';
             }
             
-    
         echo $html;
     
         $script = "
@@ -107,8 +127,7 @@ function smarty_function_ddrerank($params,&$smarty) {
                     e.halt();
                     ropanel".$uniqueid.".show();
                 });
-            
-            
+
                 ropanel".$uniqueid.". showEvent.subscribe(
                 function() {
                     //Listen for all drop:over events
@@ -227,4 +246,3 @@ function smarty_function_ddrerank($params,&$smarty) {
 }
 
 ?>
-

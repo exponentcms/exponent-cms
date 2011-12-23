@@ -6,22 +6,22 @@
 {if $loggedin == false || $smarty.const.PREVIEW_READONLY == 1}
 	<div class="box login-form one">
 	    {if $smarty.const.USER_REGISTRATION_USE_EMAIL || $smarty.const.ECOM}
-            {assign var=usertype value="Customers"}
-            {assign var=label value="Email Address:"}
+            {assign var=usertype value="Customers"|gettext}
+            {assign var=label value="Email Address"|gettext|cat:":"}
 	    {else}
-            {assign var=usertype value="Users"}
-            {assign var=label value="Username:"}
+            {assign var=usertype value="Users"|gettext}
+            {assign var=label value="Username"|gettext|cat:":"}
 	    {/if}
 	    
 		<h2>{"Existing"|gettext} {$usertype}</h2>
 		<!--p>If you are an existing customer please log-in below to continue in the checkout process.</p-->
 		{form action=login}
 			{control type="text" name="username" label=$label size=25}
-			{control type="password" name="password" label="Password:" size=25}
-			{control type="buttongroup" submit="Log In"}
+			{control type="password" name="password" label="Password"|gettext|cat:":" size=25}
+			{control type="buttongroup" submit="Log In"|gettext}
 		{/form}
             {if $smarty.const.SITE_ALLOW_REGISTRATION == 1}
-                {br}<a href="{link controller=users action=reset_password}">Forgot Your Password?</a><br />
+                {br}<a href="{link controller=users action=reset_password}">{'Forgot Your Password'|gettext}?</a><br />
             {/if}
 	</div>
 

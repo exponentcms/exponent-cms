@@ -94,7 +94,7 @@ class paypalExpressCheckout extends billingcalculator {
                 * @var string
                 */
                 $paypal_url = 'https://www.sandbox.paypal.com/webscr&cmd=_express-checkout&token=';
-                //flash('message','This Transaction is in TEST MODE');   
+                //flash('message',gt('This Transaction is in TEST MODE'));
             }
             else
             {
@@ -168,7 +168,7 @@ class paypalExpressCheckout extends billingcalculator {
             { 
                 // paypal error
                 $object->errorCode = "";
-                $object->message = "The following errors occured: ";
+                $object->message = "The following errors occurred: ";
                 
                 // its possible there are more than one error. 
                 foreach ($nvpResArray as $k=>$v) {
@@ -405,7 +405,7 @@ class paypalExpressCheckout extends billingcalculator {
             * @var string
             */
             $api_endpoint = 'https://api-3t.sandbox.paypal.com/nvp';
-            flash('message','This Transaction is in TEST MODE');   
+            flash('message',gt('This Transaction is in TEST MODE'));
         }
         else
         {
@@ -615,7 +615,7 @@ class paypalExpressCheckout extends billingcalculator {
 			
 			$billing_options->result->correlationID = urldecode($httpParsedResponseAr['CORRELATIONID']);
 			$this->createBillingTransaction($method,urldecode($httpParsedResponseAr['NETREFUNDAMT']),$billing_options->result,'refunded');
-			flash('message', 'Refund Completed Successfully.');
+			flash('message', gt('Refund Completed Successfully.'));
 			redirect_to(array('controller'=>'order', 'action'=>'show', 'id'=>$method->orders_id));
 		} else  {
 			exit('RefundTransaction failed: ' . $httpParsedResponseAr["L_LONGMESSAGE0"]);

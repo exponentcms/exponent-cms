@@ -16,14 +16,14 @@
 
 <div class="module order_status edit">
     <h1>
-        {if $record->id == ""}New Order Status{else}Editing {$record->title}{/if}
+        {if $record->id == ""}{'New Order Status'|gettext}{else}{'Editing'|gettext} {$record->title}{/if}
     </h1>
     
     {form action=update}
         {control type="hidden" name="id" value=$record->id}
-        {control type="text" name="title" label="Status Name" value=$record->title}
-        {control type="checkbox" name="is_default" label="Default?" value=1 checked=$record->is_default}
-        {control type="checkbox" name="treat_as_closed" label="Treat as Closed?" value=1 checked=$record->treat_as_closed}
-        {control type="buttongroup" submit="Submit" cancel="Cancel"}
+        {control type="text" name="title" label="Status Name"|gettext value=$record->title}
+        {control type="checkbox" name="is_default" label="Default?"|gettext value=1 checked=$record->is_default}
+        {control type="checkbox" name="treat_as_closed" label="Treat as Closed?"|gettext value=1 checked=$record->treat_as_closed}
+        {control type="buttongroup" submit="Submit"|gettext cancel="Cancel"|gettext}
     {/form}
 </div>

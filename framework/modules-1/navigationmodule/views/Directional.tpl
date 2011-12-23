@@ -13,15 +13,16 @@
  * GPL: http://www.gnu.org/licenses/gpl.txt
  *
  *}
+
  <div class="navigationmodule directional">
     {math equation="x-1" x=$current->rank assign="prevrank"}
     {if $prevrank < 0}
-    	{'&lt; Prev Page'|gettext}
+    	&lt; {'Prev Page'|gettext}
     {else}
     	{foreach from=$sections item=section}
-    	{if $section->parent ==$current->parent && $section->rank==$prevrank}
-    	<a href="{$section->link}"{if $section->new_window} target="_blank"{/if}>{'&lt; Prev Page'|gettext}</a>
-    	{/if}
+            {if $section->parent ==$current->parent && $section->rank==$prevrank}
+                <a href="{$section->link}"{if $section->new_window} target="_blank"{/if}>&lt; {'Prev Page'|gettext}</a>
+            {/if}
     	{/foreach}
     {/if}
 
@@ -40,12 +41,12 @@
     {math equation="x+1" x=$current->rank assign="nextrank"}
     {assign var=gotlink value=0}
     {foreach from=$sections item=section }
-    {if $section->parent == $current->parent && $section->rank == $nextrank}
-    <a href="{$section->link}"{if $section->new_window} target="_blank"{/if}>{'Next Page &gt;'|gettext}</a>
-    {assign var=gotlink value=1}
-    {/if}
+        {if $section->parent == $current->parent && $section->rank == $nextrank}
+            <a href="{$section->link}"{if $section->new_window} target="_blank"{/if}>{'Next Page'|gettext} &gt;</a>
+            {assign var=gotlink value=1}
+        {/if}
     {/foreach}
     {if $gotlink == 0}
-    {'Next Page &gt;'|gettext}
+        {'Next Page'|gettext} &gt;
     {/if}
 </div>

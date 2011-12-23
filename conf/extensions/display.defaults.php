@@ -17,9 +17,8 @@
 #
 ##################################################
 
-if (!defined('LANGUAGE')) define("LANGUAGE",'English - US');
+if (!defined('LANGUAGE')) define('LANGUAGE','English - US');
 if (!defined('SLINGBAR_TOP')) define('SLINGBAR_TOP','1');
-if (!defined('WRITE_LANG_TEMPLATE')) define('WRITE_LANG_TEMPLATE','0');
 if (!defined('DISPLAY_THEME_REAL')) define('DISPLAY_THEME_REAL','retrotheme');
 if (!defined('FORCE_MOBILE')) define('FORCE_MOBILE','0');
 if (!defined('THEME_STYLE_REAL')) define('THEME_STYLE_REAL','');
@@ -30,6 +29,6 @@ if (!defined('DISPLAY_TIME_FORMAT')) define('DISPLAY_TIME_FORMAT','%l:%M%p');
 if (!defined('DISPLAY_START_OF_WEEK')) define('DISPLAY_START_OF_WEEK','0');
 if (!defined('DISPLAY_DEFAULT_TIMEZONE')) define ('DISPLAY_DEFAULT_TIMEZONE', function_exists('date_default_timezone_get') ? @date_default_timezone_get() : null);
 if (!defined('THUMB_QUALITY')) define('THUMB_QUALITY','75');
-//if (!defined('BTN_SIZE')) define('BTN_SIZE','medium');
-//if (!defined('BTN_COLOR')) define('BTN_COLOR','black');
+if (!defined('FM_WIDTH')) define('FM_WIDTH','1024');
+if (!defined('FM_HEIGHT')) define('FM_HEIGHT','600');
 ?>

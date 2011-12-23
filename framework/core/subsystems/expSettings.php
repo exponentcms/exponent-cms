@@ -59,7 +59,7 @@ class expSettings {
 
 	/** exdoc
 	 * Uses magical regular expressions voodoo to pull the
-	 * actuall define() calls out of a configuration PHP file,
+	 * actual define() calls out of a configuration PHP file,
 	 * and return them in an associative array, for use in
 	 * viewing and analyzing configs.  Returns an associative
 	 * array of constant names => values
@@ -70,33 +70,31 @@ class expSettings {
 	 * @node Subsystems:Config
 	 */
 	public static function parse($configname,$site_root = null) {
-	// Last argument added in 0.96, for shared core.  Default it to the old hard-coded value
 		if ($site_root == null) $site_root = BASE;
-
-		// We don't actually use the forms subsystem, but the .structure.php files do.
 
 		if ($configname == '') $file = $site_root.'conf/config.php';
 		else $file = $site_root."conf/profiles/$configname.php";
 		$options = array();
-		$valid = array();
+//		$valid = array();
 		if (is_readable($file)) $options = self::parseFile($file);
 		if (is_readable($site_root.'conf/extensions')) {
 			$dh = opendir($site_root.'conf/extensions');
 			while (($file = readdir($dh)) !== false) {
 				if (substr($file,-13,13) == '.defaults.php') {
 					$options = array_merge(self::parseFile($site_root.'conf/extensions/'.$file),$options);
-				} else if (substr($file,-14,14) == '.structure.php') {
-					$tmp = include($site_root.'conf/extensions/'.$file);
-					$valid = array_merge($valid,array_keys($tmp[1]));
 				}
+//				else if (substr($file,-14,14) == '.structure.php') {
+//					$tmp = include($site_root.'conf/extensions/'.$file);
+//					$valid = array_merge($valid,array_keys($tmp[1]));
+//				}
 			}
 		}
 
-		$valid = array_flip($valid);
+//		$valid = array_flip($valid);
 
-		foreach ($options as $key=>$value) {
-			if (!isset($valid[$key])) unset($options[$key]);
-		}
+//		foreach ($options as $key=>$value) {
+//			if (!isset($valid[$key])) unset($options[$key]);
+//		}
 
 		return $options;
 	}
@@ -142,7 +140,7 @@ class expSettings {
 	 * This function looks through all of the available configuration
 	 * extensions, and generates a form object consisting of each
 	 * extension's form part.  This can then be used to edit the full
-	 * site configuration.  Returns a form object intended for editting the profile.
+	 * site configuration.  Returns a form object intended for editing the profile.
 	 *
 	 * @param string $configname The name of the configuration profile,
 	 *    for filling in default values.
@@ -467,7 +465,7 @@ class expSettings {
 					$t[] = trim($l);
 
 					if ($go) {
-						$array[$t[0]] = $t[1];
+						$array[$t[0]] = gt($t[1]);
 						$t = array();
 					}
 				}

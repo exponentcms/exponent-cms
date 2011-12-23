@@ -31,6 +31,22 @@
 # $Id: function.currency_symbol.php,v 1.1 2005/07/15 00:59:27 cvs Exp $
 ##################################################
 
+/**
+ * Smarty plugin
+ * @package Smarty-Plugins
+ * @subpackage Function
+ */
+
+/**
+ * Smarty {currencty_symbol} function plugin
+ *
+ * Type:     function<br>
+ * Name:     currency_symbol<br>
+ * Purpose:  create appropriate currency symbol
+ *
+ * @param         $params
+ * @param \Smarty $smarty
+ */
 function smarty_function_currency_symbol($params,&$smarty) {
 	global $db;
 	switch (ECOM_CURRENCY) {

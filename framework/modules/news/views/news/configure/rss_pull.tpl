@@ -16,16 +16,17 @@
 
 <div id="rsspullControl" class="control">
     <h2>{"Add RSS Feeds"|gettext}</h2> 
-    {control type="text" id="feedmaker" name="feedmaker" label="Add RSS Feed"}
-    <a class="addtolist" href="#">Add to list</a>
+    {control type="text" id="feedmaker" name="feedmaker" label="Add RSS Feed"|gettext}
+    <a class="addtolist" href="#">{'Add to list'|gettext}</a>
     <h4>{"Current Feeds"|gettext}</h4>
     <ul id="rsspull-feeds">
         {foreach from=$config.pull_rss item=feed}
             {if $feed!=""}<li>{control type="hidden" name="pull_rss[]" value=$feed}{$feed} - <a class="delete removerss" href="#">{"Remove"|gettext}</a></li>{/if}
         {foreachelse}
-            <li id="norssfeeds">You don't have any RSS feeds configured</li>
+            <li id="norssfeeds">{'You don\'t have any RSS feeds configured'|gettext}</li>
         {/foreach}
     </ul>
+
     {script unique="rssfeedpicker" yui3mods=1}
     {literal}
     YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event', function(Y) {
@@ -62,8 +63,6 @@
             list.removeChild(lItem);
         });
     });
-    
-    
     {/literal}
     {/script}
 </div>

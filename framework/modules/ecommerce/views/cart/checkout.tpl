@@ -18,13 +18,13 @@
 {/css}
 
 <div id="expresscheckout" class="cart checkout exp-skin">
-    <h1>{$moduletitle|default:"Express Checkout"}</h1>
+    <h1>{$moduletitle|default:"Express Checkout"|gettext}</h1>
 
     {if $cartConfig.policy!=""}
-        <a href="#" id="review-policy">{gettext str="Review Store Policies"}</a>
+        <a href="#" id="review-policy">{"Review Store Policies"|gettext}</a>
         <div id="storepolicies" class="exp-form">
             <div class="hd">
-                {gettext str="Store Policies"}
+                {"Store Policies"|gettext}
             </div>
             <div class="bd" style="overflow-y:scroll">
                 {$cartConfig.policy}
@@ -66,7 +66,7 @@
 
     <div class="totals">
         <div class="details">
-            Subtotal{if $discounts} with discounts{/if}: <span class="carttotal">{currency_symbol}{$order->total|number_format:2}</span>
+            {"Subtotal"|gettext}{if $discounts} {"with discounts"|gettext}{/if}: <span class="carttotal">{currency_symbol}{$order->total|number_format:2}</span>
         </div>
     </div>
 
@@ -80,30 +80,30 @@
     <div style="clear:both"></div>
     {if !$noactivediscounts}
         <div class="separate">
-            <h2>{gettext str="Optional Promotional Code"}</h2>
+            <h2>{"Optional Promotional Code"|gettext}</h2>
             <div class="apply-codes">
                 {if !$discounts}      
                 <div class="input-code">
                     {form action="addDiscountToCart"}
                         {control type="text" name="coupon_code" label=" "}
-                        {control type="buttongroup" submit="Apply Code"}
+                        {control type="buttongroup" submit="Apply Code"|gettext}
                     {/form}
                 </div>
                 {else}
                     <div class="codes-applied">
-                        You've applied the following {if $discounts|@count==1}coupon{else}{$discounts|@count} coupons{/if}:
+                        {"You\'ve applied the following"|gettext} {if $discounts|@count==1}{"coupon"|gettext}{else}{$discounts|@count} {"coupons"|gettext}{/if}:
                         <ul>
                             {foreach from=$discounts item=discount}
                             <li>
                                 <strong>{$discount->coupon_code}</strong>
-                                &nbsp;&nbsp;{icon class=delete action=removeDiscountFromCart record=$discount alt="Remove discount from cart."}
+                                &nbsp;&nbsp;{icon class=delete action=removeDiscountFromCart record=$discount alt="Remove discount from cart."|gettext}
                                 {br}
                                 <em>{$discount->title}</em>
                             </li>
                             {if $discount->isShippingDiscount()}{assign var='is_shipping_discount' value=true}{/if}
                             {/foreach}
                         </ul>
-                        {if $discounts|@count==1}This coupon is {else}These coupons are {/if} saving you {currency_symbol}
+                        {if $discounts|@count==1}{'This coupon is'|gettext} {else}{'These coupons are'|gettext} {/if} {'saving you'|gettext} {currency_symbol}
                         {if $discounts[0]->isCartDiscount()}{$order->total_discounts|number_format:2}.
                         {else} {$order->shippingDiscount|number_format:2}. 
                         {/if}
@@ -130,14 +130,14 @@
                 {/foreach}
             {/if}
             <div class="shipping-info">
-                <h2>Your Shipping Information</h2>  
+                <h2>{"Your Shipping Information"|gettext}</h2>
                 {if $order->forced_shipping == true || $is_shipping_discount == true}
                     <ul id="forcedshipping" class="queue message">
                         {if $order->forced_shipping == true}
-                            <li>{$order->forcing_shipping_reason} requires you to ship this order via {$shipping->shippingmethod->option_title}</li>
+                            <li>{$order->forcing_shipping_reason} {"requires you to ship this order via"|gettext} {$shipping->shippingmethod->option_title}</li>
                         {/if}
                         {if $is_shipping_discount}                
-                            <li>Your full shipping discount will be reflected on the following order confirmation page, prior to submitting your order.</li>                
+                            <li>{"Your full shipping discount will be reflected on the following order confirmation page, prior to submitting your order."|gettext}</li>
                         {/if}
                     </ul>
                  {/if}              
@@ -165,7 +165,7 @@
                 
                 
                     {if $order->forced_shipping == true}
-                        <p>Your order requires <strong>{$shipping->shippingmethod->option_title}</strong></p>
+                        <p>{"Your order requires"|gettext} <strong>{$shipping->shippingmethod->option_title}</strong></p>
                     {else}
                     {*
                         <p{if $noShippingPrices} class="hide"{/if}><strong id="cur-calc">{if $shipping->calculator->id}{$shipping->calculator->title}{else}No service selected{/if}</strong>  -  <a href="#" id="servicepicker">Select a Service</a></p>
@@ -196,13 +196,13 @@
                     {include file="`$smarty.const.BASE`framework/modules/ecommerce/views/shipping/renderOptions.tpl"}
                 </div>
 
-                <h3>Shipping Address</h3>
+                <h3>{"Shipping Address"|gettext}</h3>
                 <!--p>Would you like to <a class="ordermessage" href="#" rel="{$shipping->shippingmethod->id}">add a gift message</a> to this Order?</p-->
                 
                 <div class="shipping-address">
                     <div id="shpAddSwp">
                         {if $shipping->address->id == ''}
-                            No address yet
+                            {"No address yet"|gettext}
                         {else}
                             {$shipping->address|address}
                         {/if}
@@ -217,11 +217,11 @@
                 {else}
 
                 {* else, we have split shipping *}
-                <a id="miltiaddresslink" class="ecomlink-link" href="{link action=splitShipping}">Edit Shipping Information</a>
+                <a id="miltiaddresslink" class="ecomlink-link" href="{link action=splitShipping}">{"Edit Shipping Information"|gettext}</a>
             
                 {foreach from=$shipping->splitmethods item=method}
                     <div class="splitaddress">
-                        <h4>{$order->countOrderitemsByShippingmethod($method->id)} items will be shipped to:</h4>
+                        <h4>{$order->countOrderitemsByShippingmethod($method->id)} {'items will be shipped to:'|gettext}</h4>
                         <!--a class="ordermessage awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" href="#" rel="{$method->id}"><strong><em>Add a Gift Message to this Order</em></strong></a-->
                         <address>
                             {$method->firstname} {$method->middlename} {$method->lastname}{br}
@@ -247,25 +247,25 @@
             {/if} {* end shipping required check *}
         </div>
         <div class="billingdetails separate">
-            <h2>Your Billing Information</h2>
-            <h3>Your billing address</h3>
+            <h2>{"Your Billing Information"|gettext}</h2>
+            <h3>{"Your billing address"|gettext}</h3>
             
             <div class="billing-address">
                 <div id="bllAddSwp">
                     {if $billing->address->id == ''}
-                        You have not selected an address yet.
+                        {"You have not selected an address yet."|gettext}
                     {else}
                         {$billing->address|address}
                     {/if}
                 </div>
                 <div class="bracket">
-                    <a class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" href="{link controller=address action=myaddressbook}"><strong><em>Change or Add Address</em></strong></a>
+                    <a class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" href="{link controller=address action=myaddressbook}"><strong><em>{"Change or Add Address"|gettext}</em></strong></a>
                 </div>                
             </div>
             <div style="clear: both;"></div>
         </div>
         <div class="separate">
-            <h2>Payment Information</h2>
+            <h2>{"Payment Information"|gettext}</h2>
             <div>
                 {foreach from=$billing->calculator_views item=cviews name=calcs}
                     {include file=$cviews.view calcid=$cviews.id}

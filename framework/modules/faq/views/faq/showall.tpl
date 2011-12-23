@@ -15,21 +15,21 @@
  *}
 
 <div class="module faq showall">
-    <h1>{$moduletitle|default:"Frequently Asked Questions"}</h1>
+    <h1>{$moduletitle|default:"Frequently Asked Questions"|gettext}</h1>
     {permissions}
 		<div class="module-actions">
 			{if $permissions.create == 1}
-				{icon class=add action=create title="Add a new FAQ" text="Add a New FAQ"}
+				{icon class=add action=create text="Add a New FAQ"|gettext}
 			{/if}
 			{br}
 			{if $permissions.manage == 1}
-				{icon action=manage title="Manage FAQs" text="Manage FAQs"}
+				{icon action=manage text="Manage FAQs"|gettext}
 			{/if}
 		</div>
     {/permissions}    
     
     {if $config.allow_user_questions}
-        <a href="{link action="ask_question"}">Ask a question</a>    
+        <a href="{link action="ask_question"}">{'Ask a Question'|gettext}</a>
     {/if}
     
     {if $config.use_toc}
@@ -51,16 +51,16 @@
                 {permissions}
 					<div class="item-actions">
 						{if $permissions.edit == 1}
-							{icon action=edit record=$question title="Edit FAQ"}
+							{icon action=edit record=$question title="Edit FAQ"|gettext}
 						{/if}
 						{if $permissions.delete == 1}
-							{icon action=delete record=$question title="Delete this FAQ?" onclick="return confirm('Are you sure you want to delete this FAQ?');"}
+							{icon action=delete record=$question title="Delete this FAQ"|gettext|cat:"?" onclick="return confirm('"|cat:("Are you sure you want to delete this FAQ?"|gettext)|cat:"');"}
 						{/if}                  
 					</div>
                 {/permissions}
             </span>
         </div>
     {foreachelse}
-        <em>There are currently no FAQ's</em>
+        <em>{'There are currently no FAQ\'s'|gettext}</em>
     {/foreach}
 </div>

@@ -15,12 +15,12 @@
  *}
 
 <div class="module billing configure">
-    <h1>Configure {$calculator->title}</h1>
-    <p>Use this form to configure the {$calculator->title}</p>
+    <h1>{'Configure'|gettext} {$calculator->title}</h1>
+    <p>{'Use this form to configure the'|gettext} {$calculator->title}</p>
     
     {form action=saveconfig}
         {control type="hidden" name="id" value=$calculator->id}
         {include file=$calculator->calculator->configForm()}
-        {control type="buttongroup" submit="Save Config" cancel="Cancel"}
+        {control type="buttongroup" submit="Save Config"|gettext cancel="Cancel"|gettext}
     {/form}
 </div>

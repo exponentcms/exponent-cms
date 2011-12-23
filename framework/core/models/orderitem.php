@@ -167,6 +167,18 @@ class orderitem extends expRecord {
 	    //$product = new $this->product_type($this->product_id);
 	    //return $product->formatExtraData($this);
 	}
+	
+	public function getFormattedExtraData($style='list') {
+		$ret = '';
+		if ($style == 'list') {
+			$ret ='<ul>';
+			foreach(expUnserialize($this->extra_data) as $key => $item) {
+				$ret .= "<li>{$key} : {$item}</li>";
+			}
+			$ret .='<ul>';
+		}
+		return $ret;
+	}
     
     public function getProductsName()
     {
@@ -186,7 +198,7 @@ class orderitem extends expRecord {
     public function getShippingSurchargeMessage()
     {
         $sc = $this->product->getSurcharge();
-        if ($sc > 0) return "<span class='surcharge'>* This item has an extra freight surcharge of $" . number_format($sc,2) .' each.</span>';
+        if ($sc > 0) return "<span class='surcharge'>* ".gt('This item has an extra freight surcharge of')." $" . number_format($sc,2) .' '.gt('each').'.</span>';
         else return '';
     }
     

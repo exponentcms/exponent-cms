@@ -23,7 +23,7 @@
                     {img class=listingimage file_id=$listing->expFile.images[0]->id square=149 alt=$listing->title}
                     {br}
                 {else}
-                    No Image
+                    {'No Image'|gettext}
                 {/if}
             </a>                    
         </div>
@@ -37,13 +37,13 @@
             <span class="price">${$listing->base_price|number_format:2}</span>
 			<a href="{link controller=cart action=addItem product_id=$listing->id product_type=$listing->product_type}" class="fox-link addtocart" rel="nofollow"><em>Add to cart</em><span></span></a>
             
-            {permissions level=$smarty.const.UILEVEL_PERMISSIONS}
+            {permissions}
             <div class="item-actions">
                 {if $permissions.configure == 1 or $permissions.administrate == 1}
                     <a href="{link action=edit id=$listing->id}" title="{"Edit this entry"|gettext}">
                         <img src="{$smarty.const.ICON_RELATIVE|cat:'edit.png'}" title="{"Edit this entry"|gettext}" alt="{"Edit this entry"|gettext}" />
                     </a>
-                    {icon action=delete record=$listing title="Delete this product"}
+                    {icon action=delete record=$listing title="Delete this product"|gettext}
                 {/if}
             </div>
             {/permissions}

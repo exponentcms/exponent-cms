@@ -76,7 +76,7 @@ if ($item) {
 	$template = new template("calendarmodule","_view",$loc);
 
 	if ($item->feedback_form != "") {
-		$formtemplate = new formtemplate('forms/email', $item->feedback_form);
+		$formtemplate = new formtemplate('forms/calendar', $item->feedback_form);
 		$formtemplate->assign('formname', $item->feedback_form);
 		$formtemplate->assign('module','calendarmodule');
 		$formtemplate->assign('loc', $loc);

@@ -24,19 +24,19 @@
             <thead>
                 <tr>
                     <th>
-                    {gettext str="Source Site"}
+                    {"Source Site"|gettext}
                     </th>
                     <th>
-                    {gettext str="Order #"}
+                    {"Order #"|gettext}
                     </th>
                     <th>
-                    {gettext str="Order Date"}
+                    {"Order Date"|gettext}
                     </th>
                     <th>
-                    {gettext str="Order Type"}
+                    {"Order Type"|gettext}
                     </th>
                     <th>
-                    {gettext str="Date Shipped"}
+                    {"Date Shipped"|gettext}
                     </th>
                 </tr>
             </thead>
@@ -66,7 +66,7 @@
                     {if $order->shipped}
                         {$order->shipped|date_format:"%A, %B %e, %Y":"Not Shipped Yet"}
                     {else}
-                        Not Shipped Yet
+                        {"Not Shipped Yet"|gettext}
                     {/if}
                     </td>
                 </tr>
@@ -77,13 +77,13 @@
             <thead>
                 <tr>
                     <th class="billing-header" style="width:27%;">
-                    {gettext str="Billing Address"}
+                    {"Billing Address"|gettext}
                     </th>
                     <th class="shipping-header" style="width:27%;">
-                    {gettext str="Shipping Address"}
+                    {"Shipping Address"|gettext}
                     </th>
                     <th class="payment-info-header" style="width:46%;">
-                    {gettext str="Payment Info"}
+                    {"Payment Info"|gettext}
                     </th>
                 </tr>
             </thead>
@@ -106,7 +106,7 @@
                             <div class="item-permissions">
                                 {if $permissions.edit_address == 1 && !$pf}                                                                                        
                                     {br}    
-                                    <a href="{link action=edit_address id=$order->id type='s'}">[-edit-]</a>
+                                    <a href="{link action=edit_address id=$order->id type='s'}">[-{'edit'|gettext}-]</a>
                                     {br} 
                                 {/if}
                             </div>
@@ -115,20 +115,20 @@
                         <table style="width: 100%; border: 0px; text-align: left; padding: 0px; margin:0px;">
                         <tr style="border: 0px; padding: 0px; margin:0px;">
                         <td style="border: 0px; text-align: left; padding: 0px; margin:0px;">
-                            <strong>{gettext str="Shipping Method"}:</strong>{br}
+                            <strong>{"Shipping Method"|gettext}:</strong>{br}
                         {$shipping->shippingmethod->option_title}
                         {permissions}
                             <div class="item-permissions">
                                 {if $permissions.edit_shipping_method == 1 && !$pf}                                                                                        
                                     {br}    
-                                    <a href="{link action=edit_shipping_method id=$order->id}">[-edit-]</a>
+                                    <a href="{link action=edit_shipping_method id=$order->id}">[-{'edit'|gettext}-]</a>
                                 {/if} 
                             </div>
                         {/permissions}                            
                         </td>                        
                         <td style="border: 0px; text-align: left; padding: 0px; padding-right: 5px; margin:0px;">
                             {if $shipping->shippingmethod->carrier != ''}           
-                            <strong>{gettext str="Carrier"}:</strong>{br}
+                            <strong>{"Carrier"|gettext}:</strong>{br}
                             {$shipping->shippingmethod->carrier}         
                             {/if}               
                         </td>
@@ -138,7 +138,7 @@
                     <td class="div-rows" style="width:46%;">
                         <div class="odd">
                             <span class="pmt-label">
-                            {gettext str="Payment Method"}
+                            {"Payment Method"|gettext}
                             </span>
                             <span class="pmt-value">
                             {$billing->calculator->getPaymentMethod($billing->billingmethod)}
@@ -146,7 +146,7 @@
                         </div>
                         <div class="even">
                             <span class="pmt-label">
-                            {gettext str="Payment Status"}
+                            {"Payment Status"|gettext}
                             </span>
                             <span class="pmt-value">
                             {$billing->calculator->getPaymentStatus($billing->billingmethod)}
@@ -154,7 +154,7 @@
                         </div>
                         <div class="odd">
                             <span class="pmt-label">
-                            {gettext str="Payment Authorization #"}
+                            {"Payment Authorization #"|gettext}
                             </span>
                             <span class="pmt-value">
                             {$billing->calculator->getPaymentAuthorizationNumber($billing->billingmethod)}
@@ -162,7 +162,7 @@
                         </div>
                         <div class="even">
                             <span class="pmt-label">
-                            {gettext str="Payment Reference #"}
+                            {"Payment Reference #"|gettext}
                             </span>
                             <span class="pmt-value">
                             {$billing->calculator->getPaymentReferenceNumber($billing->billingmethod->billing_options)}
@@ -170,7 +170,7 @@
                         </div>
                         <div class="odd">
                             <span class="pmt-label">
-                            {gettext str="AVS Address Verified"}
+                            {"AVS Address Verified"|gettext}
                             </span>
                             <span class="pmt-value">
                             {$billing->calculator->getAVSAddressVerified($billing->billingmethod)}
@@ -178,7 +178,7 @@
                         </div>
                         <div class="even">
                             <span class="pmt-label">
-                            {gettext str="AVS ZIP Verified"}
+                            {"AVS ZIP Verified"|gettext}
                             </span>
                             <span class="pmt-value">
                             {$billing->calculator->getAVSZipVerified($billing->billingmethod)}
@@ -186,7 +186,7 @@
                         </div>
                         <div class="odd">
                             <span class="pmt-label">
-                            {gettext str="CVV # Matched"}
+                            {"CVV # Matched"|gettext}
                             </span>
                             <span class="pmt-value">
                             {$billing->calculator->getCVVMatched($billing->billingmethod)}
@@ -195,7 +195,7 @@
                          {permissions}
                                 {if $permissions.edit_shipping_method == 1 && !$pf}{br} 
                             <div class="item-permissions">
-                                <a href="{link action=edit_payment_info id=$order->id}">[-edit-]</a>
+                                <a href="{link action=edit_payment_info id=$order->id}">[-{'edit'|gettext}-]</a>
                                 {br}{br}   
                             </div>
                                 {/if}                            
@@ -211,16 +211,16 @@
             <thead>
                 <tr>
                     <th>
-                    {gettext str="Gift Message"}
+                    {"Gift Message"|gettext}
                     </th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
                     <td>
-                        <strong>To: </strong>{$sm->to}{br}
-                        <strong>From: </strong>{$sm->from}{br}
-                        <strong>Message: </strong>{$sm->message}{br}
+                        <strong>{'To:'|gettext} </strong>{$sm->to}{br}
+                        <strong>{'From:'|gettext} </strong>{$sm->from}{br}
+                        <strong>{'Message:'|gettext} </strong>{$sm->message}{br}
                     </td>
                 </tr>
             </tbody>
@@ -231,25 +231,25 @@
             <thead>
                 <tr>
                     <th>
-                        {gettext str="QTY"}
+                        {"QTY"|gettext}
                     </th>
                     <th>
-                        {gettext str="SKU"}
+                        {"SKU"|gettext}
                     </th>
                     <th>
-                        {gettext str="Description"}
+                        {"Description"|gettext}
                     </th>
                     <th>
-                        {gettext str="Location"}
+                        {"Location"|gettext}
                     </th>
                     <th>
-                        {gettext str="Status"}
+                        {"Status"|gettext}
                     </th>
                     <th style="text-align:right;">
-                        {gettext str="Price"}
+                        {"Price"|gettext}
                     </th>
                     <th style="text-align:right;">
-                        {gettext str="Amount"}
+                        {"Amount"|gettext}
                     </th>
                     {permissions}
                         <div class="item-permissions">
@@ -267,7 +267,7 @@
                         {$oi->quantity}
                     </td>
                     <td>
-                        {$oi->products_model}
+						{if $oi->products_model != ""}{$oi->products_model}{else}N/A{/if}
                     </td>
                     <td>
                         {$oi->getProductsName()}
@@ -278,7 +278,11 @@
                             {/foreach}                            
                         {/if}
                         {$oi->getUserInputFields('br')} 
-                        {$oi->getExtraData()}
+						{if $oi->product_type == "product" || $oi->product_type == "childProduct"}
+							{$oi->getExtraData()}
+						{else}
+							{$oi->getFormattedExtraData('list')}
+						{/if}
                     </td>
                     <td>
                         {$oi->products_warehouse_location}
@@ -375,7 +379,7 @@
 
                         {/literal}
                         {/capture}
-                        {control type="autocomplete" controller="store" action="search" name="add_new_item" label="Add a new item" value="Search title or SKU to add an item" schema="title,id,sef_url,expFile,model" searchmodel="product" searchoncol="title,model" jsinject=$callbacks}
+                        {control type="autocomplete" controller="store" action="search" name="add_new_item" label="Add a new item"|gettext value="Search title or SKU to add an item" schema="title,id,sef_url,expFile,model" searchmodel="product" searchoncol="title,model" jsinject=$callbacks}
                         <div id="new_items">                        
                         </div>
                         </td>
@@ -394,7 +398,7 @@
                     {else}
                     <th  colspan=3>
                     {/if} 
-                    {gettext str="Totals"}
+                    {"Totals"|gettext}
                     </th>
                     {if !$pf}<th colspan="2"></th>{/if}                              
                </tr>
@@ -402,7 +406,7 @@
             <tbody>
                 <tr class="even">
                     <td>
-                    {gettext str="Subtotal"}
+                    {"Subtotal"|gettext}
                     </td>
                     <td style="border-right:0px">
                     {currency_symbol}
@@ -415,9 +419,9 @@
                  <tr class="odd">
                     <td>
                     {if isset($order->order_discounts[0]) && $order->order_discounts[0]->isCartDiscount()}
-                        {gettext str="Total Cart Discounts (Code: `$order->order_discounts[0]->coupon_code`)"}
+                        {"Total Cart Discounts (Code"|gettext}: {$order->order_discounts[0]->coupon_code})
                     {else}
-                        {gettext str="Total Cart Discounts"}
+                        {"Total Cart Discounts"|gettext}
                     {/if}
                     
                     </td>
@@ -429,7 +433,7 @@
                 </tr>
                 <tr class="even">
                     <td>
-                    {gettext str="Total"}
+                    {"Total"|gettext}
                     </td>
                     <td style="border-right:0px">
                     {currency_symbol}
@@ -440,11 +444,11 @@
                  {/if}
                   <tr class="odd">
                     <td width="90%">
-                    {gettext str="Tax - "}
+                    {"Tax"|gettext|cat:" - "}
                     {foreach from=$order->taxzones item=zone}
                         {$zone->name} ({$zone->rate}%)
                     {foreachelse}
-                        (Not Required)
+                        ({'Not Required'|gettext})
                     {/foreach}
                     </td>
                     <td style="border-right:0px;">
@@ -456,9 +460,9 @@
                 <tr class="even">
                     <td>
                     {if isset($order->order_discounts[0]) && $order->order_discounts[0]->isShippingDiscount()} 
-                        {gettext str="Shipping & Handling (Discount Code: `$order->order_discounts[0]->coupon_code`)"}
+                        {"Shipping & Handling (Discount Code"|gettext}: {$order->order_discounts[0]->coupon_code})
                     {else}
-                        {gettext str="Shipping & Handling"}
+                        {"Shipping & Handling"|gettext}
                     {/if}
                     
                     </td>
@@ -471,7 +475,7 @@
                 {if $order->surcharge_total != 0}
                     <tr class="even">
                         <td>
-                        {gettext str="Freight Surcharge"}
+                        {"Freight Surcharge"|gettext}
                         </td>
                         <td style="border-right:0px;">
                         {currency_symbol}
@@ -482,7 +486,7 @@
                 {/if}
                 <tr class="odd">
                     <td>
-                    {gettext str="Order Total"}
+                    {"Order Total"|gettext}
                     </td>
                     <td style="border-right:0px;">
                     {currency_symbol}

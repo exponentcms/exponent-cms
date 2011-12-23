@@ -61,7 +61,7 @@ class yuieditorcontrol extends formcontrol {
 		$html .= ">";
 		$html .= $this->default;
 		$html .= "</textarea></div>";
-		$script .= "
+		$script = "
 		(function() {
     			var Dom = YAHOO.util.Dom,
         		Event = YAHOO.util.Event;

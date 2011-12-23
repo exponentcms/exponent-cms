@@ -16,8 +16,8 @@
 
 <div class="exptag edit">
 	<div class="form_header">
-        	<h1>Edit Tags</h1>
-        	<p>Add new tags to this tag collection</p>
+        <h1>{'Edit Tags'|gettext}</h1>
+        <p>{'Add new tags to this tag collection'|gettext}</p>
 	</div>
 	{if $record->id == ""}
 		{assign var=action value=create}
@@ -31,8 +31,8 @@
 		{control type=hidden name=parent_id value=$record->parent_id}
 		{control type=hidden name=rgt value=$record->rgt}
 		{control type=hidden name=lft value=$record->lft}
-		{control type=text name=title label="Tag" value=$record->title}
-		{control type=buttongroup submit=Save cancel=Cancel}
+		{control type=text name=title label="Tag"|gettext value=$record->title}
+		{control type=buttongroup submit="Save"|gettext cancel="Cancel"|gettext}
 	{/form}
 </div>
 

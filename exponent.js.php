@@ -1,4 +1,5 @@
 <?php
+header("Content-type: text/javascript");
 
 ##################################################
 #
@@ -27,9 +28,6 @@ require_once('exponent.php');
 
 EXPONENT = {};
 
-// for back-compat
-eXp = EXPONENT;
-
 // map certian php CONSTANTS to JS vars
 
 EXPONENT.LANG = "<?php echo LANG; ?>";
@@ -45,9 +43,6 @@ EXPONENT.YUI3_URL = '<?php echo YUI3_URL; ?>';
 EXPONENT.YUI2_VERSION = '<?php echo YUI2_VERSION; ?>';
 EXPONENT.YUI2_PATH = '<?php echo YUI2_PATH; ?>';
 EXPONENT.YUI2_URL = '<?php echo YUI2_URL; ?>';
-
-
-
 
 EXPONENT.YUI3_CONFIG = {
     combine:<?php echo (MINIFY==1)?1:0; ?>,
@@ -84,5 +79,16 @@ EXPONENT.YUI3_CONFIG = {
         }
     }
 };
-//console.debug(EXPONENT.YUI3_CONFIG);
 
+gt = function(str) {
+    var langStr = <?php echo json_encode($cur_lang); ?>;
+    return langStr[str];
+};
+
+// if you feel like short-handing
+eXp = EXPONENT;
+
+
+//console.log(gt('Add Configuration Settings'));
+
+//console.debug(EXPONENT.YUI3_CONFIG);

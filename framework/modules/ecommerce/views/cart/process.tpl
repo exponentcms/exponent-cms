@@ -15,22 +15,22 @@
  *} 
 
 <div class="module order show">
-    <h2 class="message">Your order was was successful. Thank you for your business.</h2>
+    <h2 class="message">{'Your order was was successful. Thank you for your business.'|gettext}</h2>
 	<table width=100% border="0" cellspacing="5" cellpadding="5">
 		<thead>
 		<tr>
 			<th colspan=2>
-		        <h1>Invoice # {$order->invoice_id}</h1>
+		        <h1>{'Invoice #'|gettext} {$order->invoice_id}</h1>
 			</th>
 		</tr>
 		</thead>
 		<tbody>
 		<tr>
 			<td>
-				<h2>Shipping Address</h2>
+				<h2>{'Shipping Address'|gettext}</h2>
 				{if $order->shipping_required == true}
 				    {if $shipping->splitshipping == true}
-				        Shipping split between {$shipping->splitmethods|@count} addresses.
+				        {'Shipping split between'|gettext} {$shipping->splitmethods|@count} {'addresses'|gettext}.
 				    {else}
 				        <address>
 				        {$shipping->shippingmethod->firstname} {$shipping->shippingmethod->lastname}<br>
@@ -46,11 +46,11 @@
 				        <br>
 				    {/if}
 				{else}
-				    No shipping required for this order.
+				    {'No shipping required for this order.'|gettext}
 				{/if}
 			</td>
 			<td>
-				<h2>Billing Address</h2>
+				<h2>{'Billing Address'|gettext}</h2>
 				<address>
 				{$order->billingmethod[0]->firstname} {$order->billingmethod[0]->lastname}<br>
 				{if $order->billingmethod[0]->company != ""}{$order->billingmethod[0]->company}<br>{/if}
@@ -67,10 +67,10 @@
 		</tr>
 		<tr>
 			<td>
-				<h2>Shipping Method</h2>
+				<h2>{'Shipping Method'|gettext}</h2>
 				{if $order->shipping_required == true}
 				    {if $shipping->splitshipping == true}
-				        Shipped via:
+				        {'Shipped via:'|gettext}
 				        <ul>
 				        {foreach from=$shipping->splitmethods item=method}
 				           <li>{$method->option_title}</li>
@@ -80,19 +80,19 @@
     				    {$shipping->calculator->title} ({$shipping->shippingmethod->option_title}) - {currency_symbol}{$shipping->shippingmethod->shipping_cost|number_format:2}
     				{/if}
 				{else}
-				    No shipping required for this order.
+				    {'No shipping required for this order.'|gettext}
 				{/if}				
 				<br><br><br><br>
 			</td>
 			<td>
-				<h2>Payment Method</h2>
+				<h2>{'Payment Method'|gettext}</h2>
 				{$billinginfo}
 			</td>
 		</tr>
 		</tbody>
 	</table>
 
-	<h3>Items</h3>
+	<h3>{'Items'|gettext}</h3>
 	<ul>
 	{foreach from=$order->orderitem item=oi}
 		<li>

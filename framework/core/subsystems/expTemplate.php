@@ -154,11 +154,10 @@ class expTemplate {
 	 * This array is unsorted.
 	 *
 	 * @param string $module The classname of the module to get views for.
-	 * @param string $lang deprecated, was used to list language specific templates
 	 * @return array
 	 * @node Subsystems:Template
 	 */
-	public static function listModuleViews($module, $lang = LANG) {  //FIXME only used by containermodule edit action and administrationmodule examplecontent action
+	public static function listModuleViews($module) {  //FIXME only used by containermodule edit action and administrationmodule examplecontent action
 		return expCore::buildNameList("modules", $module, "tpl", "[!_]*");
 	}
 

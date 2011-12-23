@@ -46,7 +46,7 @@ class remove_headlinecontroller extends upgradescript {
 	 * @return bool
 	 */
 	function needed() {
-		return false;  // TODO this line is set to false to disable this sample script
+		return false;  // FIXME this line is set to false to disable this sample script
 	}
 
 	/**

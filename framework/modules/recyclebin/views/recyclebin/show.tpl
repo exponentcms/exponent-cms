@@ -16,18 +16,18 @@
 
 <html>
 <head>
-    <title>Restore from Recycle Bin</title>
+    <title>{'Restore from Recycle Bin'|gettext}</title>
     <link rel="stylesheet" type="text/css" href="{$smarty.const.URL_FULL}tmp/css/exp-styles-min.css" >
     <link rel="stylesheet" type="text/css" href="{$smarty.const.URL_FULL}framework/modules/recyclebin/assets/css/recyclebin.css" >
     
 </head>
 <body>
     <div class="recyclebin orphan-content">
-        <h1 class="main">Recycle Bin - {$module|getControllerName|capitalize} items</h1>
+        <h1 class="main">{'Recycle Bin'|gettext} - {$module|getcontrollername|capitalize} {'items'|gettext}</h1>
         {foreach from=$items item=item}
             <div class="rb-item">
                 <a class="usecontent" href="#" onclick="window.opener.EXPONENT.useRecycled('{$item->source}');window.close();">
-                    Restore this content
+                    {'Restore this content'|gettext}
                 </a>
                 <div class="recycledcontent">
                     {$item->html}
@@ -35,7 +35,7 @@
             </div>
         {foreachelse}
             <div class="rb-item">
-                There's nothing for this module that's been sent the the Recycle Bin.
+                {'There\'s nothing for this module that\'s been sent the the Recycle Bin'|gettext}.
             </div>
         {/foreach}
     </div>

@@ -18,6 +18,7 @@
 ##################################################
 /** @define "BASE" "." */
 
+global $db;
 if (!defined('EXPONENT')) exit('');
 function epb($buffer, $mode) {
     //@ob_gzhandler($buffer, $mode);
@@ -41,7 +42,6 @@ $page = ($section && $section->subtheme != '' && is_readable('themes/'.DISPLAY_T
 if (is_readable(BASE.$page)) {
 	define('PREVIEW_READONLY',1); // for mods
 	define('SELECTOR',1);
-//	$SYS_FLOW_REDIRECTIONPATH='source_selector';
 
 	$source_select = array();
 	if (expSession::is_set('source_select')) $source_select = expSession::get('source_select');

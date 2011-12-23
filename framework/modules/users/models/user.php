@@ -27,7 +27,7 @@ class user extends expRecord {
 			    'email'=>array('message'=>'The email address does not appear to be valid')
 	        ),
 	        'uniqueness_of'=>array(
-			    'username'=>array('message'=>'That username is already take. Please use another username.')
+			    'username'=>array('message'=>'That username is already taken. Please use another username.')
 	        ),
 	        'length_of'=>array(
 			    'username'=>array('length'=>3)
@@ -44,7 +44,9 @@ class user extends expRecord {
 
 	 public function save($overrideUsername = false) {
         global $db;
-        
+
+         if (empty($_POST['is_admin'])) $this->is_admin = 0;
+         if (empty($_POST['is_acting_admin'])) $this->is_acting_admin = 0;
         // if someone is trying to make this user an admin, lets make sure they have permission to do so.
         $this->checkAdminFlags();
         
@@ -55,7 +57,7 @@ class user extends expRecord {
     }
 	
 	public static function login($username, $password) {
-        global $db;
+        global $db, $user;
 
 	    // Retrieve the user object from the database.  This may be null, if the username is non-existent.
 	    $user = new user($db->selectValue('user', 'id', "username='" . $username . "'"));
@@ -101,6 +103,7 @@ class user extends expRecord {
     
 	public function updateLastLogin() {
 		global $db, $user;
+
 		$obj = null;
 		$obj->id = $this->id;
 		$obj->last_login = time();
@@ -146,6 +149,7 @@ class user extends expRecord {
 
 	private function getUserProfile() {
         global $db;
+
         if (!empty($this->id)) {
             $active_extensions = $db->selectObjects('profileextension', 'active=1');
             foreach ($active_extensions as $ext) {
@@ -168,8 +172,9 @@ class user extends expRecord {
 	 */
 	private function checkAdminFlags() {
 		global $user;
-		if (!empty($this->is_admin) && $user->is_admin == 0) $this->is_admin = 0;
-        if (!empty($this->is_acting_admin) && $user->is_admin == 0) $this->is_acting_admin = 0;
+
+		if (!empty($this->is_admin) && !$user->isAdmin()) $this->is_admin = 0;
+        if (!empty($this->is_acting_admin) && !$user->isAdmin()) $this->is_acting_admin = 0;
 	}
 
     public function setPassword($pass1, $pass2) {
@@ -230,8 +235,9 @@ class user extends expRecord {
 	    return false;
     }
     
-    public static function getByUsername($username) {
+    public static function getByUsername($username) {  //FIXME this is a duplicate of getUserByName - deprecate
         global $db;
+
         $user = new user($db->selectValue('user', 'id', 'username="'.$username.'"'));
         return empty($user->id) ? false : $user;
     }
@@ -243,6 +249,7 @@ class user extends expRecord {
 
 	public static function getEmailById($id) {
 		global $db;
+
 		return $db->selectValue('user','email','id='.$id);
 	}
 
@@ -257,6 +264,7 @@ class user extends expRecord {
 	 */
 	public static function getAllUsers($allow_admin=1,$allow_normal=1) {
 		global $db;
+
 		if ($allow_admin && $allow_normal) return $db->selectObjects('user');
 		else if ($allow_admin) return $db->selectObjects('user','is_admin=1 OR is_acting_admin = 1');
 		else if ($allow_normal) return $db->selectObjects('user','is_admin=0 AND is_acting_admin = 0');
@@ -274,11 +282,12 @@ class user extends expRecord {
 	 * to the database.
 	 *
 	 * @param string $name The username of the user account to retrieve.
-	 * @return array
+	 * @return \user
 	 * @node Model:User
 	 */
 	public static function getUserByName($name) {
 		global $db;
+
 		$tmpu = $db->selectObject('user',"username='$name'");
 		if ($tmpu && $tmpu->is_admin == 1) {
 			// User is an admin.  Update is_acting_admin, just in case.
@@ -299,12 +308,13 @@ class user extends expRecord {
 	 * object do not result in another trip to the database engine.
 	 *
 	 * @param integer $uid The id of the user account to retrieve.
-	 * @return array
+	 * @return \user
 	 * @node Model:User
 	 */
 	public static function getUserById($uid) {
 		// Pull in the exclusive global variable $SYS_USERS_CACHE
 		global $SYS_USERS_CACHE;
+
 		if (!isset($SYS_USERS_CACHE[$uid])) {
 			// If we haven't previously retrieved an object for this ID, pull it out from
 			// the database and stick it in the cache array, for future calls.

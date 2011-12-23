@@ -17,6 +17,24 @@
 #
 ##################################################
 
+/**
+ * Smarty plugin
+ * @package Smarty-Plugins
+ * @subpackage Modifier
+ */
+
+/**
+ * Smarty {countryname} modifier plugin
+ *
+ * Type:     modifier<br>
+ * Name:     countryname<br>
+ * Purpose:  lookup a country's name based a country id
+ *
+ * @param        array
+ * @param string $col
+ *
+ * @return array
+ */
 function smarty_modifier_countryname($country,$col='name') {
 	global $db;
 	if ($col != 'name') $col = 'code';

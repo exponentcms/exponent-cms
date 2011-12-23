@@ -66,9 +66,9 @@ if (preg_match('/[^A-Za-z0-9]/',$config['db_table_prefix'])) {
 if ($passed) {
 	//set connection encoding, works only on mySQL > 4.1
 	if($config["db_engine"] == "mysqli") {
-		if (!defined("DB_ENCODING")) define("DB_ENCODING", $config["DB_ENCODING"]);
+		if (!defined('DB_ENCODING')) define('DB_ENCODING', $config["DB_ENCODING"]);
 	}
-	$db = expDatabase::connect($config['db_user'],$config['db_pass'],$config['db_host'],$config['db_name'],$config['db_engine'],1);
+	$db = expDatabase::connect($config['db_user'],$config['db_pass'],$config['db_host'].':'.$config['db_port'],$config['db_name'],$config['db_engine'],1);
 
 	$db->prefix = $config['db_table_prefix'] . '_';
 
@@ -203,7 +203,7 @@ if ($passed) {
 if ($passed) {
 	echoStart(gt('Installing Tables').':');
 
-	$tables = administrationController::installTables();
+	$tables = administrationController::install_dbtables();
 
 	if ($db->tableIsEmpty('user')) {
 		$user = null;
@@ -225,7 +225,7 @@ if ($passed) {
 
 	if ($db->tableIsEmpty('section')) {
 		$section = null;
-		$section->name = 'Home';
+		$section->name = gt('Home');  //FIXME not sure if we should do this?
 		$section->public = 1;
 		$section->active = 1;
 		$section->rank = 0;
@@ -272,6 +272,7 @@ if (!@file_exists(BASE.'install/not_configured')) {
 </tbody>
 </table>
 <?php
+$lang = (defined('LANGUAGE')) ? "&lang='".LANGUAGE."'" : '';
 
 if ($passed) {
 	// Do some final cleanup
@@ -286,11 +287,11 @@ if ($passed) {
 	echo '</p>';
 
 	?>
-	<a class="awesome green large" href='?page=install-4'><?php echo gt('Continue Installation'); ?></a>
+	<a class="awesome green large" href="?page=install-4<?php echo $lang; ?>"><?php echo gt('Continue Installation'); ?></a>
 	<?php
 } else {
 	?>
-	<a class="awesome red large" href="?page=install-2" onclick="history.go(-1); return false;"><?php echo gt('Edit Your Database Settings'); ?></a>
+	<a class="awesome red large" href="?page=install-2<?php echo $lang; ?>" onclick="history.go(-1); return false;"><?php echo gt('Edit Your Database Settings'); ?></a>
 	<?php
 }
 ?>

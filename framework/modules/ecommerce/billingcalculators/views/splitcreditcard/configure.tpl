@@ -15,21 +15,21 @@
  *}
 
 <div id="authcfg">
-    <div id="authcfg-tabs" class="yui-navset yui3-skin-sam hide">
+    <div id="authcfg-tabs" class="yui-navset exp-skin-tabview hide">
         <ul class="yui-nav">
-	        <li class="selected"><a href="#tab1"><em>Split Credit Card<br>Settings</em></a></li>
-	        <li><a href="#tab2"><em>Accepted<br>Credit Cards</em></a></li>
+	        <li class="selected"><a href="#tab1"><em>{'Split Credit Card'|gettext}<br>{'Settings'|gettext}</em></a></li>
+	        <li><a href="#tab2"><em>{'Accepted'|gettext}<br>{'Credit Cards'|gettext}</em></a></li>
         </ul>            
         <div class="yui-content">
 	        <div id="tab1">
-	            {*control type="checkbox" name="email_admin" label="Send a notication that a new order was received?" value=1 checked=$calculator->configdata.email_admin*}
-	            {control type="text" name="notification_addy" label="Email addresses to send notifications to (comma separated list of email addresses)" value=$calculator->configdata.notification_addy}
+	            {*control type="checkbox" name="email_admin" label="Send a notification that a new order was received?"|gettext value=1 checked=$calculator->configdata.email_admin*}
+	            {control type="text" name="notification_addy" label="Email addresses to send notifications to (comma separated list of email addresses)"|gettext value=$calculator->configdata.notification_addy}
 	        </div>
 	        <div id="tab2">
-	            {control type="checkbox" name="accepted_cards[]" label="Master Card" value="MasterCard" checked=$calculator->configdata.accepted_cards}
-	            {control type="checkbox" name="accepted_cards[]" label="Visa" value="VisaCard" checked=$calculator->configdata.accepted_cards}
-	            {control type="checkbox" name="accepted_cards[]" label="American Express" value="AmExCard" checked=$calculator->configdata.accepted_cards}
-	            {control type="checkbox" name="accepted_cards[]" label="Discover Card" value="DiscoverCard" checked=$calculator->configdata.accepted_cards}
+	            {control type="checkbox" name="accepted_cards[]" label="Master Card" value="MasterCard"|gettext checked=$calculator->configdata.accepted_cards}
+	            {control type="checkbox" name="accepted_cards[]" label="Visa" value="VisaCard"|gettext checked=$calculator->configdata.accepted_cards}
+	            {control type="checkbox" name="accepted_cards[]" label="American Express" value="AmExCard"|gettext checked=$calculator->configdata.accepted_cards}
+	            {control type="checkbox" name="accepted_cards[]" label="Discover Card" value="DiscoverCard"|gettext checked=$calculator->configdata.accepted_cards}
 	        </div>
         </div>
     </div>

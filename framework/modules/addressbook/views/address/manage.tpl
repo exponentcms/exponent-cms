@@ -30,7 +30,7 @@
     <h1>{"Geography Settings"|gettext}</h1>
 	
 	{form action=manage_update}
-        Select the Countries and States/Provinces below that you would like to show for users creating billing and shipping addresses:
+        {'Select the Countries and States/Provinces below that you would like to show for users creating billing and shipping addresses'|gettext}:
         <table class="exp-skin-table">
             <thead>
                 <tr>
@@ -50,7 +50,7 @@
             <tr class="{cycle values="odd,even"}">
                 <td colspan="2">{control type="checkbox" name="country[`$country->id`]" label=$country->name value=1 checked=$country->active}
                 </td>
-                <td>{control type="radio" name="country_default" label="Default Country?" value=$country->id checked=$country->is_default}</td>
+                <td>{control type="radio" name="country_default" label="Default Country"|gettext|cat:"?" value=$country->id checked=$country->is_default}</td>
             </tr>                        
             {foreach from=$regions item=region}
                 {if $region->country_id == $country->id}
@@ -58,7 +58,7 @@
                         <tr class="{cycle values="odd,even"}">
                             <td>&nbsp;</td>
                             <td>{control type="checkbox" name="region[`$region->id`]" label=$region->name value=1 checked=$region->active}</td>
-                            <td>{control type="text" name="region_rank[`$region->id`]" label="Rank:" size="5" value=$region->rank}</td>                                        
+                            <td>{control type="text" name="region_rank[`$region->id`]" label="Rank"|gettext|cat:":" size="5" value=$region->rank}</td>
                         </tr>                                
                     <!-- div>
                         <div style="margin-left: 25px; width:49%;">{control type="checkbox" name="address_state[`$region->id`]" label=$region->name value=1 checked=$config.address_allow_admins_all}</div>
@@ -67,11 +67,11 @@
                     </div -->
                 {/if}
             {foreachelse}
-                No defined regions in this country.
+                {'No defined regions in this country'|gettext}.
             {/foreach}
         {/foreach}
         </tbody>
         </table>
-        {control type=buttongroup submit="Save Address Configuration" cancel="Cancel"}
+        {control type=buttongroup submit="Save Address Configuration"|gettext cancel="Cancel"|gettext}
     {/form}
 </div>

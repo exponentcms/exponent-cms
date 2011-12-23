@@ -1,28 +1,28 @@
 {if $record->parent_id == 0}
 	{control type="hidden" name="tab_loaded[extrafields]" value=1} 
-	<h2>Extra Fields</h2> 
-	You may add up to four extra fields to your product here.  These field names are also picked up by your child products where you can assign values to them.
+	<h2>{'Extra Fields'|gettext}</h2>
+	{'You may add up to four extra fields to your product here.  These field names are also picked up by your child products where you can assign values to them.'|gettext}
 	<table> 
 		<tr>
 			<td>{control type="text" name="extra_fields_name[0]" label="Extra Field Name #1:" value=$record->extra_fields.0.name}</td>
-			{if $record->childProduct|@count == 0}<td>{control type="text" name="extra_fields_value[0]" label="Extra Field Value #1:" value=$record->extra_fields.0.value}</td>{/if}
+			{if $record->childProduct|@count == 0}<td>{control type="text" name="extra_fields_value[0]" label="Extra Field Value #1:"|gettext value=$record->extra_fields.0.value}</td>{/if}
 		</tr>
 		<tr>
 			<td>{control type="text" name="extra_fields_name[1]" label="Extra Field Name #2:" value=$record->extra_fields.1.name}</td>
-			{if $record->childProduct|@count == 0}<td>{control type="text" name="extra_fields_value[1]" label="Extra Field Value #2:" value=$record->extra_fields.1.value}</td>{/if}
+			{if $record->childProduct|@count == 0}<td>{control type="text" name="extra_fields_value[1]" label="Extra Field Value #2:"|gettext value=$record->extra_fields.1.value}</td>{/if}
 		</tr>
 		<tr>
 			<td>{control type="text" name="extra_fields_name[2]" label="Extra Field Name #3:" value=$record->extra_fields.2.name}</td>
-			{if $record->childProduct|@count == 0}<td>{control type="text" name="extra_fields_value[2]" label="Extra Field Value #3:" value=$record->extra_fields.2.value}</td>{/if}
+			{if $record->childProduct|@count == 0}<td>{control type="text" name="extra_fields_value[2]" label="Extra Field Value #3:"|gettext value=$record->extra_fields.2.value}</td>{/if}
 		</tr>
 		<tr>
 			<td>{control type="text" name="extra_fields_name[3]" label="Extra Field Name #4:" value=$record->extra_fields.3.name}</td>
-			{if $record->childProduct|@count == 0}<td>{control type="text" name="extra_fields_value[3]" label="Extra Field Value #4:" value=$record->extra_fields.3.value}</td>{/if}
+			{if $record->childProduct|@count == 0}<td>{control type="text" name="extra_fields_value[3]" label="Extra Field Value #4:"|gettext value=$record->extra_fields.3.value}</td>{/if}
 		</tr>
 	</table>
 {else}
-	<h2>Extra Fields</h2>                     
-	Extra field names are defined in this product's parent.  You may enter the field values for this product here. 
+	<h2>{'Extra Fields'|gettext}</h2>
+	{'Extra field names are defined in this product\'s parent.  You may enter the field values for this product here.'|gettext}
 	<table> 
 		{if $parent->extra_fields.0.name != '' }
 			<tr>
@@ -52,7 +52,7 @@
 				</tr>
 			{/if}
 		{else}
-			{br}{br}<i>There are no extra fields defined for this item.</i>
+			{br}{br}<i>{'There are no extra fields defined for this item.'|gettext}</i>
 		{/if} 
 	</table>
 {/if}

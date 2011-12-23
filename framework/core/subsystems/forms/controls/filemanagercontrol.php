@@ -48,16 +48,16 @@ class filemanagercontrol extends formcontrol {
         //$html .= '<div id="displayfiles" class="displayfiles" style="padding:5px; border:1px solid #444"> </div>';
         $html .= '<div class="hd"><label class="label">'.$label.'';
         if ($this->limit!=null){
-            $html .= ' | <small>Limit: <em class="limit">'.$this->limit.'</em></small>';
+            $html .= ' | <small>'.gt('Limit').': <em class="limit">'.$this->limit.'</em></small>';
         }
         if ($this->count < $this->limit){
-            $html .= ' | <a class="add" href="#" id="addfiles-'.$name.'">Add Files</a>';
+            $html .= ' | <a class="add" href="#" id="addfiles-'.$name.'">'.gt('Add Files').'</a>';
         }
         $html .= '</label></div>';
 
         if (empty($files)) {
             $this->count = 0;
-            $files = '<li class="blank">You need to add some files</li>';
+            $files = '<li class="blank">'.gt('You need to add some files').'</li>';
         }
         $html .= '<ul id="filelist'.$name.'" class="filelist">';
         $html .= $files;
@@ -76,7 +76,7 @@ class filemanagercontrol extends formcontrol {
                     win = window.open('".makeLink($params=array('controller'=>'file','action'=>'picker','ajax_action'=>"1",'update'=>$name))."', 'IMAGE_BROWSER','left=20,top=20,scrollbars=yes,width=800,height=600,toolbar=no,resizable=yes,status=0');
                     if (!win) {
                         //Catch the popup blocker
-                        alert('Please disable your popup blocker!!');
+                        alert('".gt('Please disable your popup blocker')."!!');
                     }
                 };
                 
@@ -86,7 +86,7 @@ class filemanagercontrol extends formcontrol {
                 };
                 
                 var showEmptyLI = function(){
-                    var blank = Y.Node.create('<li class=\"blank\">You need to add some files</li>');
+                    var blank = Y.Node.create('<li class=\"blank\">".gt('You need to add some files')."</li>');
                     fl.appendChild(blank);
                 };
                 
@@ -104,7 +104,7 @@ class filemanagercontrol extends formcontrol {
                 var showFileAdder = function() {
                     var sf = Y.one('#addfiles-".$name."');
                     if (Y.Lang.isNull(sf)) {
-                        var afl = Y.Node.create('<a class=\"add\" href=\"#\" id=\"addfiles-".$name."\">Add Files</a>');
+                        var afl = Y.Node.create('<a class=\"add\" href=\"#\" id=\"addfiles-".$name."\">".gt('Add Files')."</a>');
                         Y.one('#filemanager".$name." .hd').append(afl);
                         listenForAdder();
                     }
@@ -112,10 +112,6 @@ class filemanagercontrol extends formcontrol {
                     if (filesAdded == 0) showEmptyLI();
                 }
 
-                
-                
-                
-                
                 //Drag Drop stuff
                 
                 //Listen for all drop:over events
@@ -234,7 +230,7 @@ class filemanagercontrol extends formcontrol {
                     
                         var html = '<li>';
                         html += '<input type=\"hidden\" name=\"".$subTypeName."\" value=\"'+obj.id+'\">';
-                        html += '<a class=\"delete\" rel=\"imgdiv'+obj.id+'\" href=\"javascript:{}\">delete<\/a>';
+                        html += '<a class=\"delete\" rel=\"imgdiv'+obj.id+'\" href=\"javascript:{}\">".gt('delete')."<\/a>';
                         html += filepic;
                         html += '<span class=\"filename\">'+obj.filename+'<\/span>';
                         html += '<\/li>';
@@ -330,7 +326,7 @@ class filemanagercontrol extends formcontrol {
             } else {
                 $filepic = "<img class=\"filepic\" src=\"".URL_FULL."thumb.php?id=".$val->id."&amp;w=24&amp;h=24&amp;zc=1\">";
             }
-            $html .= "<li>";
+            $html = "<li>";
             $html .= "<input type=\"hidden\" name=\"".$subTypeName."\" value=\"".$val->id."\">";
             //$html .= "<div class=\"fpdrag\"></div>";
             $html .= "<a class=\"delete\" rel=\"imgdiv".$val->id."\" href='javascript:{}'>Delete</a>";

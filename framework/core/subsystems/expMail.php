@@ -261,7 +261,7 @@ class expMail {
 		try {
 			$numsent = $this->mailer->send($this->message);
 		} catch (Swift_TransportException $e) {
-			flash('error','Sending Mail Failed! - '.$e->getMessage());
+			flash('error',gt('Sending Mail Failed!').' - '.$e->getMessage());
 		}
 		return $numsent;
 	}
@@ -380,7 +380,7 @@ class expMail {
 				$this->message->setTo(array($address=>$name));
 				$numsent += $this->send();
 			} catch (Swift_TransportException $e) {
-				flash('error','Batch Send Mail Failed! - '.$address.' - '.$e->getMessage());
+				flash('error',gt('Batch Send Mail Failed!').' - '.$address.' - '.$e->getMessage());
 			}
 		}
 		return $numsent;

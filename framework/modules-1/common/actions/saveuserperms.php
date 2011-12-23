@@ -23,15 +23,15 @@ if (!defined('EXPONENT')) exit('');
 if (expPermissions::check('administrate',$loc)) {
 
 	$locarray = array();
-	if ($loc->mod == 'navigationmodule' && !empty($perms[1]) && $perms[1] == 'manage') {
-		$sections = navigationmodule::levelTemplate($loc->int);
+//    if ($loc->mod == 'navigationmodule' && (isset($_POST['permdata'][2]['manage']) && $_POST['permdata'][2]['manage'] || isset($_POST['permdata'][2]['administrate']) && $_POST['permdata'][2]['administrate'])) {
+//		$sections = navigationmodule::levelTemplate($loc->int);
+//		$locarray[] = $loc;
+//		foreach ($sections as $section) {
+//			$locarray[] = expCore::makeLocation('navigationmodule', null, $section->id);
+//		}
+//	} else {
 		$locarray[] = $loc;
-		foreach ($sections as $section) {
-			$locarray[] = expCore::makeLocation('navigationmodule', null, $section->id);
-		}
-	} else {
-		$locarray[] = $loc;
-	}
+//	}
 	$users = user::getAllUsers();
 	foreach ($locarray as $location) {
 		foreach ($users as $u) {

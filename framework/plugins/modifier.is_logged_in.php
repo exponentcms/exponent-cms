@@ -16,8 +16,23 @@
 # GPL: http://www.gnu.org/licenses/gpl.txt
 #
 ##################################################
-/** @define "BASE" "../.." */
 
+/**
+ * Smarty plugin
+ * @package Smarty-Plugins
+ * @subpackage Modifier
+ */
+
+/**
+ * Smarty {is_logged_in} modifier plugin
+ *
+ * Type:     modifier<br>
+ * Name:     is_logged_in<br>
+ * Purpose:  determine if user is logged in
+ *
+ * @param array
+ * @return array
+ */
 function smarty_modifier_is_logged_in($string) {
 	if(expSession::loggedIn()) {
 		return true; 

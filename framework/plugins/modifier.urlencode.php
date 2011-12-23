@@ -17,6 +17,24 @@
 #
 ##################################################
 
+/**
+ * Smarty plugin
+ * @package Smarty-Plugins
+ * @subpackage Modifier
+ */
+
+/**
+ * Smarty {urlencode} modifier plugin
+ *
+ * Type:     modifier<br>
+ * Name:     urlencode<br>
+ * Purpose:  urlencode a string
+ *
+ * @param $string
+ * @param $ignore_whitespace
+ *
+ * @return array
+ */
 function smarty_modifier_urlencode($string,$ignore_whitespace) {
 	if ($ignore_whitespace) $string = trim($string);
 	return urlencode($string);
