@@ -22,7 +22,7 @@ class administrationController extends expController {
     public $basemodel_name = 'expRecord';
     public $useractions = array();
     public $add_permissions = array(
-	    'administrate'=>'Manage Administration',
+	    'administrate'=>'Manage Administration', //FIXME is this used? old 1.0 permission
 	    'clear'=>'Clear Caches',
 	    "fix"=>"Fix Database",
 	    "install"=>"Installation",
@@ -33,7 +33,7 @@ class administrationController extends expController {
 	public $codequality = 'beta';
     
     function displayname() { return "Administration Controls"; }
-    function description() { return "This is the beginnings of the new Administration Module"; }
+    function description() { return "This is the Administration Module"; }
     function author() { return "OIC Group, Inc"; }
 
 	public static function install_dbtables() {
@@ -349,7 +349,6 @@ class administrationController extends expController {
 
         // Available Languages
 	    $langs = expLang::langList();
-        if (empty($default_lang)) $default_lang = include(BASE."framework/core/lang/English - US.php");
         $num_missing = 0;
         foreach ($default_lang as $key => $value) {
             if (!array_key_exists($key,$cur_lang)) $num_missing++;
@@ -469,6 +468,43 @@ class administrationController extends expController {
 	}
 
 	public function install_extension() {
+
+		$modsurl =array(
+			'themes'=>'http://www.exponentcms.org/site_podcast.php?module=filedownload&src=%40random4e6a70cebdc96',
+			'fixes'=>'http://www.exponentcms.org/site_podcast.php?module=filedownload&src=%40random4e6a710126abf',
+			'mods'=>'http://www.exponentcms.org/site_podcast.php?module=filedownload&src=%40random4e6a7148c84a9'
+		);
+
+		$RSS = new SimplePie();
+		$RSS->set_cache_location(BASE.'tmp/rsscache');  // default is ./cache
+//	        $RSS->set_cache_duration(3600);  // default if 3600
+		$RSS->set_timeout(20);  // default is 10
+//	        $RSS->set_output_encoding('UTF-8');  // which is the default
+		$items['themes'] = array();
+		$items['fixes'] = array();
+		$items['mods'] = array();
+		foreach($modsurl as $type=>$url) {
+		    $RSS->set_feed_url($url);
+		    $feed = $RSS->init();
+		    if (!$feed) {
+		        // an error occurred in the rss.
+		        continue;
+		    }
+			$RSS->handle_content_type();
+		    foreach ($RSS->get_items() as $rssItem) {
+		        $rssObject = new stdClass();
+		        $rssObject->title = $rssItem->get_title();
+		        $rssObject->body = $rssItem->get_description();
+		        $rssObject->rss_link = $rssItem->get_permalink();
+		        $rssObject->publish = $rssItem->get_date('U');
+		        $rssObject->publish_date = $rssItem->get_date('U');
+				foreach ($rssItem->get_enclosures() as $enclosure) {
+					$rssObject->enclosure = $enclosure->get_link();
+				}
+		        $items[$type][] = $rssObject;
+		    }
+		}
+
 		$form = new form();
 		$form->register(null,'',new htmlcontrol(expCore::maxUploadSizeMessage()));
 		$form->register('mod_archive','Extension Archive',new uploadcontrol());
@@ -476,7 +512,7 @@ class administrationController extends expController {
 		$form->meta('module','administration');
 		$form->meta('action','install_extension_confirm');
 
-		assign_to_template(array('form_html'=>$form->toHTML()));
+		assign_to_template(array('themes'=>$items['themes'],'fixes'=>$items['fixes'],'mods'=>$items['mods'],'form_html'=>$form->toHTML()));
 	}
 
 	public function install_extension_confirm() {
@@ -872,6 +908,7 @@ class administrationController extends expController {
 //        expHistory::back();
 	    expHistory::returnTo('viewable');
     }
+
 }
 
 /**
@@ -944,6 +981,7 @@ class theme {
 		}
 		expHistory::back();
 	}
+
 }
 
 ?>

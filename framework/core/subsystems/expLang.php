@@ -183,7 +183,10 @@ class expLang {
    	}
 
     public static function langList() {
+        global $default_lang;
+
    		$dir = BASE.'framework/core/lang';
+        if (empty($default_lang)) $default_lang = include(BASE."framework/core/lang/English - US.php");
    		$langs = array();
    		if (is_readable($dir)) {
    			$dh = opendir($dir);
