@@ -54,7 +54,6 @@ $config = array(
 <h1><?php echo gt('Configure Database'); ?></h1>
 <form method="post" action="index.php">
     <input type="hidden" name="page" value="install-3" />
-	<input type="hidden" name="lang" value="<?php echo LANGUAGE; ?>" />
 	<div class="control">
         <span class="label"><?php echo gt('Backend'); ?>: </span>
         <select name="sc[db_engine]" onchange="showOptions(this.value);">

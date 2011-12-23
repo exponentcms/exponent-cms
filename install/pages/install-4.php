@@ -24,7 +24,6 @@ if (!defined('EXPONENT')) exit('');
 
 <form method="post" action="index.php">
 <input type="hidden" name="page" value="install-5" />
-<input type="hidden" name="lang" value="<?php echo LANGUAGE; ?>" />
 
 <div id="tab1" class="">
   <h2><?php echo gt('Site Configuration'); ?></h2>

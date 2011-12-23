@@ -157,8 +157,11 @@ class expVersion {
 			$nc_file = fopen(BASE.'install/not_configured', "w");
 			fclose($nc_file);
 		}
-
-		header('Location: '.URL_FULL.'install/index.php');
+        $page = "";
+        if (@file_exists(BASE.'conf/config.php')) {
+            $page = "?page=upgrade-1";
+        }
+		header('Location: '.URL_FULL.'install/index.php'.$page);
 		exit('Redirecting to the Exponent Install Wizard');
 	}
 

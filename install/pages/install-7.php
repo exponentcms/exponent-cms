@@ -21,7 +21,6 @@ if (!defined('EXPONENT')) exit('');
 global $db;
 
 $error = false;
-$lang = (defined('LANGUAGE')) ? "&lang='".LANGUAGE."'" : '';
 // We have to force the language name into the config.php file
 expSettings::change('LANGUAGE',LANGUAGE);
 
@@ -47,7 +46,7 @@ if ($user->username == '') {
 
 if ($error) {  //FIXME Shouldn't get this because of check in install-6.php unless browser jscript disabled
     flash('error',$errorstr);
-    header('Location: index.php?page=install-6'.$errorflag.$lang);
+    header('Location: index.php?page=install-6'.$errorflag);
     exit();
 } else {
 	$user->password = md5($_POST['password']);
@@ -62,7 +61,7 @@ if ($error) {  //FIXME Shouldn't get this because of check in install-6.php unle
 	}else{
 		$db->insertObject($user,'user');
 	}
-	header('Location: '.'index.php?page=final'.$lang);
+	header('Location: '.'index.php?page=final');
 }
 
 ?>

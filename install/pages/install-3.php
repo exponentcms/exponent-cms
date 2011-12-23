@@ -272,7 +272,6 @@ if (!@file_exists(BASE.'install/not_configured')) {
 </tbody>
 </table>
 <?php
-$lang = (defined('LANGUAGE')) ? "&lang='".LANGUAGE."'" : '';
 
 if ($passed) {
 	// Do some final cleanup
@@ -287,11 +286,11 @@ if ($passed) {
 	echo '</p>';
 
 	?>
-	<a class="awesome green large" href="?page=install-4<?php echo $lang; ?>"><?php echo gt('Continue Installation'); ?></a>
+	<a class="awesome green large" href="?page=install-4"><?php echo gt('Continue Installation'); ?></a>
 	<?php
 } else {
 	?>
-	<a class="awesome red large" href="?page=install-2<?php echo $lang; ?>" onclick="history.go(-1); return false;"><?php echo gt('Edit Your Database Settings'); ?></a>
+	<a class="awesome red large" href="?page=install-2" onclick="history.go(-1); return false;"><?php echo gt('Edit Your Database Settings'); ?></a>
 	<?php
 }
 ?>

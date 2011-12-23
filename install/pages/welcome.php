@@ -34,8 +34,10 @@ if (!defined('EXPONENT')) exit('');
 </p>
 
 <?php
-$lang = (defined('LANGUAGE')) ? "&lang='".LANGUAGE."'" : '';
-if (empty($_REQUEST['lang'])) $_REQUEST['lang'] = 'English - US';
+if (!defined('LANGUAGE')) {
+    if (empty($_POST['sc']['LANGUAGE'])) $_POST['sc']['LANGUAGE'] = 'English - US';
+    define('LANGUAGE', $_POST['sc']['LANGUAGE']);
+}
 ?>
 
 <form method="post" action="index.php">
@@ -44,7 +46,7 @@ if (empty($_REQUEST['lang'])) $_REQUEST['lang'] = 'English - US';
 	<div class="control">
 		<select name="lang" onChange="Refresh(this.value)">
 			<?PHP foreach(expLang::langList() as $currid=>$currlang) {?>
-				<option value="<?PHP echo $currid?>"<?php if (isset($_REQUEST['lang']) && $currid == trim($_REQUEST['lang'])) echo " selected"; ?>><?PHP echo $currlang?></option>
+				<option value="<?PHP echo $currid?>"<?php if ($currid == LANGUAGE) echo " selected"; ?>><?PHP echo $currlang?></option>
 			<?PHP }?>
 		</select>
 	</div>

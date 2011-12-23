@@ -44,7 +44,7 @@ function smarty_function_control($params,&$smarty) {
         //if (empty($params['label'])) $params['label'] = $params['name'];
 
         //Figure out which type of control to use. Also, some controls need some special setup.  We handle that here.
-        if ($params['type'] == 'popupdatetimecontrol') {
+        if ($params['type'] == 'popupdatetimecontrol') {  //FIXME this control does not exist due ot missing library files
             $control = new popupdatetimecontrol(null, "",false);
         } elseif ($params['type'] == 'yuidatetimecontrol') {
             $edittext = isset($params['edit_text']) ? $params['edit_text'] : 'Change Date/Time';
