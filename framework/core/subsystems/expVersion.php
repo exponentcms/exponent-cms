@@ -52,12 +52,6 @@ class expVersion {
 	public static function checkVersion() {
 		global $db, $user;
 
-        //FIXME delete/change these next few lines in 2.0.4 so we don't auto-launch installer but go to maintenance mode
-		// we're not up and running yet, so fix that first
-		if (@file_exists(BASE.'install/not_configured') || !(@file_exists(BASE.'conf/config.php'))) {
-			self::launchInstaller();
-		}
-
         $swversion->major = EXPONENT_VERSION_MAJOR;
         $swversion->minor = EXPONENT_VERSION_MINOR;
         $swversion->revision = EXPONENT_VERSION_REVISION;
@@ -67,17 +61,22 @@ class expVersion {
 
 		// check database version against installed software version
         if ($db->havedb) {
-            $dbversion = $db->selectObject('version',1);
-            if (empty($dbversion)) {
-                $dbversion->major = 0;
-                $dbversion->minor = 0;
-                $dbversion->revision = 0;
-                $dbversion->type = '';
-                $dbversion->iteration = '';
-            }
-            // check if software version is newer than database version
-            if (self::compareVersion($dbversion,$swversion)) {
-                self::launchInstaller();
+            if ($user->isAdmin()) {
+                $dbversion = $db->selectObject('version',1);
+                if (empty($dbversion)) {
+                    $dbversion->major = 0;
+                    $dbversion->minor = 0;
+                    $dbversion->revision = 0;
+                    $dbversion->type = '';
+                    $dbversion->iteration = '';
+                }
+                // check if software version is newer than database version
+                if (self::compareVersion($dbversion,$swversion)) {
+                    $oldvers = $dbversion->major.'.'.$dbversion->minor.'.'.$dbversion->revision.($dbversion->type?$dbversion->type:'').($dbversion->iteration?$dbversion->iteration:'');
+                    $newvers = $swversion->major.'.'.$swversion->minor.'.'.$swversion->revision.($swversion->type?$swversion->type:'').($swversion->iteration?$swversion->iteration:'');
+                    flash('message',gt('The database requires upgrading from').' v'.$oldvers.' '.gt('to').' v'.$newvers.
+                        '<br><a href="'.makelink(array("controller"=>"administration","action"=>"install_exponent")).'">'.gt('Click here to Upgrade your website').'</a>');
+                }
             }
         } else {
             // database is unavailable, so show us as being offline
@@ -89,14 +88,13 @@ class expVersion {
 
         // check if online version is newer than installed software version, but only once per session
         if ($user->isAdmin()) {
-            if (!expSession::is_set('update-check')) {
+            if (expSession::is_set('update-check')) {
                 $onlineVer = self::getOnlineVersion();
-                if (!empty($onlineVer)) {
-                    expSession::set('update-check','1');
-                    if (self::compareVersion($swversion,$onlineVer)) {
-                        $newvers = $onlineVer->major.'.'.$onlineVer->minor.'.'.$onlineVer->revision.$onlineVer->type.$onlineVer->iteration;
-                        flash('message',gt('There is a new Version available').' v'.$newvers.' '.gt('released').' '.expDateTime::format_date($onlineVer->builddate));
-                    }
+                expSession::set('update-check','1');
+                if (self::compareVersion($swversion,$onlineVer)) {
+                    $newvers = $onlineVer->major.'.'.$onlineVer->minor.'.'.$onlineVer->revision.($onlineVer->type?$onlineVer->type:'').($onlineVer->iteration?$onlineVer->iteration:'');
+                    flash('message',gt('A newer version of Exponent is available').', v'.$newvers.' '.gt('was released').' '.expDateTime::format_date($onlineVer->builddate).
+                        '<br><a href="https://github.com/exponentcms/exponent-cms/downloads" target="_blank">'.gt('Click here to see Downloads').'</a>');
                 }
             }
         }
@@ -135,7 +133,9 @@ class expVersion {
      * @return object
      */
     private static function getOnlineVersion() {
-        $onlineversion = json_decode(expCore::loadData('http://www.exponentcms.org/getswversion.php'));
+        //FIXME we need a good installation to place this in
+        $over=expCore::loadData('http://localhost/exp2/getswversion.php');
+        $onlineversion = json_decode($over)->data;
         if (empty($onlineversion)) {
             $onlineversion->major = 0;
             $onlineversion->minor = 0;
@@ -146,24 +146,6 @@ class expVersion {
         }
         return $onlineversion;
     }
-
-	/**
-	 * Routine to force launching exponent installer
-	 */
-	public static function launchInstaller() {
-        //FIXME in 2.0.4 we'll add a routine to simply display a flash message with a link to this method
-		// we'll need the not_configured file to exist for install routine to work
-		if (!@file_exists(BASE.'install/not_configured')) {
-			$nc_file = fopen(BASE.'install/not_configured', "w");
-			fclose($nc_file);
-		}
-        $page = "";
-        if (@file_exists(BASE.'conf/config.php')) {
-            $page = "?page=upgrade-1";
-        }
-		header('Location: '.URL_FULL.'install/index.php'.$page);
-		exit('Redirecting to the Exponent Install Wizard');
-	}
 
 	/**
 	 * Routine to convert version iteration type to a rank
