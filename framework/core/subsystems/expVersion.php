@@ -88,7 +88,7 @@ class expVersion {
 
         // check if online version is newer than installed software version, but only once per session
         if ($user->isAdmin()) {
-            if (!expSession::is_set('update-check')) {
+            if (expSession::is_set('update-check')) {
                 $onlineVer = self::getOnlineVersion();
                 expSession::set('update-check','1');
                 if (self::compareVersion($swversion,$onlineVer)) {
@@ -134,7 +134,8 @@ class expVersion {
      */
     private static function getOnlineVersion() {
         //FIXME we need a good installation to place this in
-        $onlineversion = json_decode(expCore::loadData('http://localhost/exp2/getswversion.php'))->data;
+        $over=expCore::loadData('http://localhost/exp2/getswversion.php');
+        $onlineversion = json_decode($over)->data;
         if (empty($onlineversion)) {
             $onlineversion->major = 0;
             $onlineversion->minor = 0;
