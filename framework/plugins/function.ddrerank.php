@@ -58,7 +58,8 @@ function smarty_function_ddrerank($params,&$smarty) {
     
     if (count($params['items'])>=2) {
         expCSS::pushToHead(array(
-		    "corecss"=>"rerankpanel,panels",
+		    //"corecss"=>"rerankpanel,panels",
+		    "corecss"=>"rerank,panel",
 		    )
 		);
         
@@ -71,9 +72,9 @@ function smarty_function_ddrerank($params,&$smarty) {
         echo '<a id="rerank'.$uniqueid.'" class="reranklink" href="#">'.gt("Order").' '.$params['label'].'</a>';
 
         $html = '
-        <div id="panel'.$uniqueid.'" class="exp-panel exp-panel-rerank hide">
-            <div class="hd">Order '.$params['label'].'</div>
-            <div class="bd">
+        <div id="panel'.$uniqueid.'" class="exp-skin-panel exp-skin-rerank hide">
+            <div class="yui3-widget-hd">Order '.$params['label'].'</div>
+            <div class="yui3-widget-bd">
             <form method="post" action="'.URL_FULL.'">
             <input type="hidden" name="model" value="'.$model.'" />
             <input type="hidden" name="controller" value="'.$controller.'" />
@@ -83,7 +84,7 @@ function smarty_function_ddrerank($params,&$smarty) {
                 // we may need to pass through an ID for some reason, like a category ID for products
                 $html .= ($params['id']) ? '<input type="hidden" name="id" value="'.$params['id'].'" />' : '';
                 $html .= '<input type="hidden" name="action" value="manage_ranks" />
-                <ul id="listToOrder'.$uniqueid.'" style="height:350px;overflow-y:auto;">
+                <ul id="listToOrder'.$uniqueid.'" style="'.((count($params['items']<12))?"":"height:350px").';overflow-y:auto;">
                 ';
                 $odd = "even";
                 foreach ($params['items'] as $item) {
@@ -92,13 +93,15 @@ function smarty_function_ddrerank($params,&$smarty) {
                     <input type="hidden" name="rerank[]" value="'.$item->id.'" />
                     <div class="fpdrag"></div>';
         			//Do we include the picture? It depends on if there is one set.
-                    $html .= ($item->expFile[0]->id && $item->expFile[0]->is_image) ? '<img class="filepic" src="'.URL_FULL.'thumb.php?id='.$item->expFile[0]->id.'&w=24&h=24&zc=1">' : '';
-                    $html .= '<div class="filename">'.substr($item->$sortfield, 0, 40).'</div>
+                    $html .= ($item->expFile[0]->id && $item->expFile[0]->is_image) ? '<img class="filepic" src="'.URL_FULL.'thumb.php?id='.$item->expFile[0]->id.'&w=16&h=16&zc=1">' : '';
+                    $html .= '<span class="label">'.(!empty($item->$sortfield) ? substr($item->$sortfield, 0, 40) : gt('Untitled')).'</span>
                     </li>';
                     $odd = $odd == "even" ? "odd" : "even";
                 }
                 $html .='</ul>
-                    <input type="submit" value="Submit">
+                    <div class="yui3-widget-ft">
+                    <button type="submit" class="awesome small '.BTN_COLOR.'">'.gt('Save').'</button>
+                    </div>
                     </form>
                     </div>
                 </div>
@@ -114,124 +117,145 @@ function smarty_function_ddrerank($params,&$smarty) {
         echo $html;
     
         $script = "
-        YUI(EXPONENT.YUI3_CONFIG).use('node','dd','yui2-container', function(Y) {
-        var YAHOO=Y.YUI2;
-        
-        var ropanel".$uniqueid." = new YAHOO.widget.Panel('panel".$uniqueid."', { width:'400px',y:100,zindex:50,visible:false, constraintoviewport:true, fixedcenter:1 } );
-    	ropanel".$uniqueid.".render(document.body);
-    	YAHOO.util.Dom.removeClass('panel".$uniqueid."', 'hide');
-    
-            var rrlink = Y.one('#rerank".$uniqueid."');
-            if (!Y.Lang.isNull(rrlink)) {
-                rrlink.on('click',function(e){
-                    e.halt();
-                    ropanel".$uniqueid.".show();
-                });
-
-                ropanel".$uniqueid.". showEvent.subscribe(
-                function() {
-                    //Listen for all drop:over events
-                    //Y.DD.DDM._debugShim = true;
-
-                    Y.DD.DDM.on('drop:over', function(e) {
-                        //Get a reference to out drag and drop nodes
-                        var drag = e.drag.get('node'),
-                            drop = e.drop.get('node');
-
-                        //Are we dropping on a li node?
-                        if (drop.get('tagName').toLowerCase() === 'li') {
-                            //Are we not going up?
-                            if (!goingUp) {
-                                drop = drop.get('nextSibling');
-                            }
-                            //Add the node to this list
-                            e.drop.get('node').get('parentNode').insertBefore(drag, drop);
-                            //Resize this nodes shim, so we can drop on it later.
-                            e.drop.sizeShim();
-                        }
-                    });
-                    //Listen for all drag:drag events
-                    Y.DD.DDM.on('drag:drag', function(e) {
-                        //Get the last y point
-                        var y = e.target.lastXY[1];
-                        //is it greater than the lastY var?
-                        if (y < lastY) {
-                            //We are going up
-                            goingUp = true;
-                        } else {
-                            //We are going down..
-                            goingUp = false;
-                        }
-                        //Cache for next check
-                        lastY = y;
-                        Y.DD.DDM.syncActiveShims(true);
-                    });
-                    //Listen for all drag:start events
-                    Y.DD.DDM.on('drag:start', function(e) {
-                        //Get our drag object
-                        var drag = e.target;
-                        //Set some styles here
-                        drag.get('node').setStyle('opacity', '.25');
-                        drag.get('dragNode').set('innerHTML', drag.get('node').get('innerHTML'));
-                        drag.get('dragNode').setStyles({
-                            opacity: '.5',
-                            borderColor: drag.get('node').getStyle('borderColor'),
-                            backgroundColor: drag.get('node').getStyle('backgroundColor')
-                        });
-                    });
-                    //Listen for a drag:end events
-                    Y.DD.DDM.on('drag:end', function(e) {
-                        var drag = e.target;
-                        //Put out styles back
-                        drag.get('node').setStyles({
-                            visibility: '',
-                            opacity: '1'
-                        });
-                    });
-                    //Listen for all drag:drophit events
-                    Y.DD.DDM.on('drag:drophit', function(e) {
-                        var drop = e.drop.get('node'),
-                            drag = e.drag.get('node');
-
-                        //if we are not on an li, we must have been dropped on a ul
-                        if (drop.get('tagName').toLowerCase() !== 'li') {
-                            if (!drop.contains(drag)) {
-                                drop.appendChild(drag);
-                            }
-                        }
-                    });
-
-                    //Static Vars
-                    var goingUp = false, lastY = 0;
-                    // the list
-                    var ul = '#listToOrder".$uniqueid."';
-
-                    //Get the list of li's in the lists and make them draggable
-                    var lis = Y.Node.all('#listToOrder".$uniqueid." li');
-                    lis.each(function(v, k) {
-                        var dd = new Y.DD.Drag({
-                            node: v,
-                            target: {
-                                padding: '0 0 0 20'
-                            }
-                        }).plug(Y.Plugin.DDProxy, {
-                            moveOnEnd: false
-                        }).plug(Y.Plugin.DDConstrained, {
-                            constrain2node: ul,
-                            stickY:true
-                        }).plug(Y.Plugin.DDNodeScroll, {
-                            node: ul
-                        }).addHandle('.fpdrag');
-                    });
-
-                    //Create simple targets for the 2 lists..
-                    var tar = new Y.DD.Drop({
-                        node: ul
-                    });        
-                
-                });
+        YUI(EXPONENT.YUI3_CONFIG).use('node','dd','dd-plugin','panel', function(Y) {
+            var panel = new Y.Panel({
+                srcNode:'#panel".$uniqueid."',
+                width        : 500,
+                visible      : false,
+                zIndex       : 50,
+                centered     : false,
+                render       : 'body',
+                // plugins      : [Y.Plugin.Drag]
+            }).plug(Y.Plugin.Drag);
             
-            }
+            panel.dd.addHandle('.yui3-widget-hd');
+            
+            var panelContainer = Y.one('#panel".$uniqueid."').get('parentNode');
+            panelContainer.addClass('exp-panel-container');
+            Y.one('#panel".$uniqueid."').removeClass('hide');
+                        
+            Y.one('#rerank".$uniqueid."').on('click',function(e){
+                e.halt();
+                panel.show();
+                panel.set('centered',true);
+            });
+
+            //Static Vars
+            var goingUp = false, lastY = 0;
+
+            // the list
+            var ul = '#listToOrder".$uniqueid."';
+
+            //Get the list of li's in the lists and make them draggable
+            var lis = Y.Node.all('#listToOrder".$uniqueid." li');
+//            lis.each(function(v, k) {
+                // var dragItem = new Y.DD.Drag({
+                //     node: v,
+                //     target: {
+                //         padding: '0 0 0 0'
+                //     }
+                // }).plug(Y.Plugin.DDProxy, {
+                //     moveOnEnd: false
+                // }).plug(Y.Plugin.DDConstrained, {
+                //     constrain2node: ul,
+                //     stickY:true
+                // }).plug(Y.Plugin.DDNodeScroll, {
+                //     node: ul
+                // }).addHandle('.fpdrag');
+
+                var dragItems = new Y.DD.Delegate({
+                    container: ul,
+                    nodes: 'li',
+                    target: {
+                        padding: '0 0 0 0'
+                    }
+                })
+                
+                dragItems.dd.plug(Y.Plugin.DDConstrained, {
+                    constrain2node: ul,
+                    stickY:true
+                }).plug(Y.Plugin.DDProxy, {
+                    moveOnEnd: false
+                }).plug(Y.Plugin.DDConstrained, {
+                    constrain2node: ul,
+                    stickY:true
+                }).plug(Y.Plugin.DDNodeScroll, {
+                    node: ul
+                }).addHandle('.fpdrag');
+
+                dragItems.on('drop:over', function(e) {
+                    //Get a reference to out drag and drop nodes
+                    var drag = e.drag.get('node'),
+                        drop = e.drop.get('node');
+
+                    //Are we dropping on a li node?
+                    if (drop.get('tagName').toLowerCase() === 'li') {
+                        //Are we not going up?
+                        if (!goingUp) {
+                            drop = drop.get('nextSibling');
+                        }
+                        //Add the node to this list
+                        e.drop.get('node').get('parentNode').insertBefore(drag, drop);
+                        //Resize this nodes shim, so we can drop on it later.
+                        e.drop.sizeShim();
+                    }
+                });
+                //Listen for all drag:drag events
+                dragItems.on('drag:drag', function(e) {
+                    //Get the last y point
+                    var y = e.target.lastXY[1];
+                    //is it greater than the lastY var?
+                    if (y < lastY) {
+                        //We are going up
+                        goingUp = true;
+                    } else {
+                        //We are going down..
+                        goingUp = false;
+                    }
+                    //Cache for next check
+                    lastY = y;
+                    Y.DD.DDM.syncActiveShims(true);
+                });
+                //Listen for all drag:start events
+                dragItems.on('drag:start', function(e) {
+                    //Get our drag object
+                    var drag = e.target;
+                    //Set some styles here
+                    drag.get('node').setStyle('opacity', '.25');
+                    drag.get('dragNode').addClass('rerank-proxy').set('innerHTML', drag.get('node').get('innerHTML'));
+                    drag.get('dragNode').setStyles({
+                        opacity: '.5'
+                        // borderColor: drag.get('node').getStyle('borderColor'),
+                        // backgroundColor: drag.get('node').getStyle('backgroundColor')
+                    });
+                });
+                //Listen for a drag:end events
+                dragItems.on('drag:end', function(e) {
+                    var drag = e.target;
+                    //Put out styles back
+                    drag.get('node').setStyles({
+                        visibility: '',
+                        opacity: '1'
+                    });
+                });
+                //Listen for all drag:drophit events
+                dragItems.on('drag:drophit', function(e) {
+                    var drop = e.drop.get('node'),
+                        drag = e.drag.get('node');
+
+                    //if we are not on an li, we must have been dropped on a ul
+                    if (drop.get('tagName').toLowerCase() !== 'li') {
+                        if (!drop.contains(drag)) {
+                            drop.appendChild(drag);
+                        }
+                    }
+                });
+//            });
+
+            //Create simple targets for the 2 lists..
+            var tar = new Y.DD.Drop({
+                node: ul
+            });        
         });
         
         ";
