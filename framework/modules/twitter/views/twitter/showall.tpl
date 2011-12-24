@@ -51,5 +51,4 @@
 			{clear}
 		{/foreach}
 	</dl>
-	{br}
 </div>

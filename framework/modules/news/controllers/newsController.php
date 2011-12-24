@@ -193,7 +193,11 @@ class newsController extends expController {
                     $rssObject->rss_link = $rssItem->get_permalink();
                     $rssObject->publish = $rssItem->get_date('U');
                     $rssObject->publish_date = $rssItem->get_date('U');
+                    $rssObject->poster = $rssItem->get_author()->name;
                     $rssObject->isRss = true;
+					$t = explode(' • ',$rssObject->title);
+					$rssObject->forum = $t[0];
+					$rssObject->topic = $t[1];
                     $news[] = $rssObject;
                 }
             }
