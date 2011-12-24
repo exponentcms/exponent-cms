@@ -17,16 +17,16 @@
 #
 ##################################################
 
-// Initialize the Exponent Framework
-require_once('exponent.php');
+$swversion->major = 2;
+$swversion->minor = 0;
+$swversion->revision = 4;
+$swversion->type = '';
+$swversion->iteration = '';
+$swversion->builddate = '1324662757';
 
-$swversion->major = EXPONENT_VERSION_MAJOR;
-$swversion->minor = EXPONENT_VERSION_MINOR;
-$swversion->revision = EXPONENT_VERSION_REVISION+1;
-$swversion->type = EXPONENT_VERSION_TYPE;
-$swversion->iteration = EXPONENT_VERSION_ITERATION;
-$swversion->builddate = EXPONENT_VERSION_BUILDDATE;
-
-echo expJavascript::ajaxReply(201, '', $swversion);
+$ajaxObj['data'] = $swversion;
+$ajaxObj['replyCode'] = 201;
+$ajaxObj['replyText'] = 'Ok';
+echo json_encode($ajaxObj);
 
 ?>
