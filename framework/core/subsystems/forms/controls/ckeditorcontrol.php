@@ -104,7 +104,8 @@ class ckeditorcontrol extends formcontrol {
     					extraPlugins : '".$plugins."',
     					entities_additional : '',
     					contentsCSS : '".THEME_RELATIVE."css/base-styles.css',
-    					uiColor : '#dedede'
+    					uiColor : '#dedede',
+    					baseHref : '".URL_FULL."'
                     });
 
     				CKEDITOR.on( 'instanceReady', function( ev ) {
