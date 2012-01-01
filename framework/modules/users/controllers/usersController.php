@@ -82,7 +82,8 @@ class usersController extends expController {
         $active_extensions = $db->selectObjects('profileextension','active=1','rank');
 
 		//If there is no image uploaded and the system is not in the development mode, use the default avatar
-		if(empty($u->image) && !DEVELOPMENT) {
+//		if(empty($u->image) && !DEVELOPMENT) {
+        if(empty($u->image)) {
 			$u->image = DEFAULT_AVATAR;
 		}
 		
