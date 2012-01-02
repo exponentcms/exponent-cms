@@ -120,8 +120,10 @@ class helpController extends expController {
 	        $version_id = $db->selectValue('help_version', 'id', 'is_current=1');
 	    } else {
 	        $version_id = $db->selectValue('help_version', 'id', 'version=\''.$this->params['version'].'\'');
-	    }	    
-
+            if (empty($version_id)) {
+                $version_id = $db->selectValue('help_version', 'id', 'is_current=1');
+            }
+	    }
 	    $doc = $help->find('first', 'help_version_id='.$version_id.' AND sef_url="'.$this->params['title'].'"');
 	    assign_to_template(array('doc'=>$doc,"hv"=>$this->help_version));
 	}
