@@ -136,10 +136,12 @@ class usersController extends expController {
             // get the active profile extensions and save them out
             $active_extensions = $db->selectObjects('profileextension','active=1');
             foreach ($active_extensions as $pe) {
-                include_once(BASE.$pe->classfile);
-                $ext = new $pe->classname();
-                $db->delete($ext->tablename, 'user_id='.$u->id);
-                $ext->update($this->params);
+                if (is_file(BASE.$pe->classfile)) {
+                   include_once(BASE.$pe->classfile);
+                   $ext = new $pe->classname();
+                   $db->delete($ext->tablename, 'user_id='.$u->id);
+                   $ext->update($this->params);
+                }
             }
         }
         
