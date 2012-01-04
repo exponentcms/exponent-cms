@@ -416,6 +416,10 @@ class expFile extends expRecord {
             $__oldumask = umask(0);
             chmod($_destFullPath,FILE_DEFAULT_MODE);
             umask($__oldumask);
+            // Checking
+            if ($__oldumask != umask()) {
+                flash('error',gt('An error occurred while setting file permissions').': '.$_destFullPath);
+            }
         } else {
 			return 'could not move';
 		}

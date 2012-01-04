@@ -222,9 +222,11 @@ class usersController extends expController {
         //remove user profiles
         $active_extensions = $db->selectObjects('profileextension','active=1');
         foreach ($active_extensions as $pe) {
-            include_once(BASE.$pe->classfile);
-            $ext = new $pe->classname();
-            $db->delete($ext->table, 'user_id='.$this->params['id']);
+            if (is_file(BASE.$pe->classfile)) {
+                include_once(BASE.$pe->classfile);
+                $ext = new $pe->classname();
+                $db->delete($ext->table, 'user_id='.$this->params['id']);
+            }
         }
         
         // remove user address
