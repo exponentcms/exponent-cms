@@ -202,7 +202,7 @@ class expTheme {
      * @return void
      * @node Subsystems:Theme
      */
-    public static function showSectionalController($params=array()) {
+    public static function showSectionalController($params=array()) {  //FIXME not used in base system (custom themes?)
         global $sectionObj, $module_scope;
         $src = "@section" . $sectionObj->id;
         $params['source'] = $src;
@@ -264,9 +264,9 @@ class expTheme {
 
     public static function grabViews($path,$filter='') {  //FIXME Not used
         $dirs = array(
+            BASE.'framework/'.$path,
 //            BASE.'themes/'.DISPLAY_THEME_REAL.'/'.$path,
             BASE.'themes/'.DISPLAY_THEME.'/'.$path,
-            BASE.'framework/'.$path,
         );
 
         foreach ($dirs as $dir) {
@@ -274,7 +274,7 @@ class expTheme {
                 $dh = opendir($dir);
                 while (($filename = readdir($dh)) !== false) {
                     $file = $dir.$filename;
-                    if (is_file($filename)) {
+                    if (is_file($file)) {  //FIXME this should be $file instead of $filename?
                         $files[$filename] = $file;
                     }
                 }
@@ -907,7 +907,7 @@ class expTheme {
 		if (expSession::is_set("themeopt_override")) {
 			$config = expSession::get("themeopt_override");
 			if (in_array($module,$config['ignore_mods'])) return;
-			$src = $config['src_prefix'].$prefix;
+			$src = $config['src_prefix'].$prefix;  //FIXME there is no such config index
 			$section = null;
 		} else {
 			global $sectionObj;

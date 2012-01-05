@@ -93,8 +93,8 @@ class expVersion {
                 expSession::set('update-check','1');
                 if (self::compareVersion($swversion,$onlineVer)) {
                     $newvers = $onlineVer->major.'.'.$onlineVer->minor.'.'.$onlineVer->revision.($onlineVer->type?$onlineVer->type:'').($onlineVer->iteration?$onlineVer->iteration:'');
-                    flash('message',gt('A newer version of Exponent is available').', v'.$newvers.' '.gt('was released').' '.expDateTime::format_date($onlineVer->builddate).
-                        '<br><a href="https://github.com/exponentcms/exponent-cms/downloads" target="_blank">'.gt('Click here to see Downloads').'</a>');
+                    flash('message',gt('A newer version of Exponent is available').': v'.$newvers.' '.gt('was released').' '.expDateTime::format_date($onlineVer->builddate).
+                        '<br><a href="https://github.com/exponentcms/exponent-cms/downloads" target="_blank">'.gt('Click here to see available Downloads').'</a>');
                 }
             }
         }
