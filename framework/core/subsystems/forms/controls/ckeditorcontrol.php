@@ -45,67 +45,89 @@ class ckeditorcontrol extends formcontrol {
 
 	function controlToHTML($name) {
 	    global $db;
-		$toolbar = 'def';
-		if (empty($this->toolbar)) $toolbar = $db->selectObject('htmleditor_ckeditor','active=1');
-		if (empty($toolbar) || $this->toolbar=="default" || (isset($this->toolbar->data) && $this->toolbar->data=="default")) {
-			$tb = "
-	           ['Source','-','Preview','-','Templates'],
-               ['Cut','Copy','Paste','PasteText','PasteFromWord','-','Print','SpellChecker','Scayt'],
-               ['Undo','Redo','-','Find','Replace','-','SelectAll','RemoveFormat'],
-               '/',
-               ['Bold','Italic','Underline','Strike','-','Subscript','Superscript'],
-               ['NumberedList','BulletedList','-','Outdent','Indent','Blockquote','CreateDiv'],
-               ['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock'],
-               ['Link','Unlink','Anchor'],
-               ['Image','Flash','Table','HorizontalRule','Smiley','SpecialChar','PageBreak','Iframe'],
-               '/',
-               ['Styles','Format','Font','FontSize'],
-               ['TextColor','BGColor'],
-               ['Maximize', 'ShowBlocks','-','About']
-			";
-			$skin = 'kama';
-			$scayt_on = 'true';
-			$paste_word = 'forcePasteAsPlainText : true,';
-			$plugins = '';
-	    } else {
-//			$tb = !empty($this->toolbar) ? $this->toolbar->data : $toolbar->data;
-//			$skin = !empty($toolbar->skin) ? $toolbar->skin : 'kama';
-			if (!empty($this->toolbar)) {
-				$tb = $this->toolbar->data;
-				$skin = $this->toolbar->skin;
-				$scayt_on = $this->toolbar->scayt_on ? 'true' : 'false';
-				$paste_word = $this->toolbar->paste_word ? 'pasteFromWordPromptCleanup : true,' : 'forcePasteAsPlainText : true,';
-				$plugins = $this->toolbar->plugins;
-			} else {
-				$tb = $toolbar->data;
-				$skin = $toolbar->skin;
-				$scayt_on = $toolbar->scayt_on ? 'true' : 'false';
-				$paste_word = $toolbar->paste_word ? 'pasteFromWordPromptCleanup : true,' : 'forcePasteAsPlainText : true,';
-				$plugins = $toolbar->plugins;
+
+        $contentCSS = '';
+        $cssabs = BASE.'themes/'.DISPLAY_THEME.'/editors/ckeditor/ckeditor.css';
+        $css = PATH_RELATIVE.'themes/'.DISPLAY_THEME.'/editors/ckeditor/ckeditor.css';
+        if (THEME_STYLE!="") {
+            $cssabs = BASE.'themes/'.DISPLAY_THEME.'/editors/ckeditor/ckeditor_'.THEME_STYLE.'.css';
+            $css = PATH_RELATIVE.'themes/'.DISPLAY_THEME.'/editors/ckeditor/ckeditor_'.THEME_STYLE.'.css';
+        }
+        if (is_file($cssabs)) {
+            $contentCSS = "contentsCss : '".$css."',";
+        }
+		if (empty($this->toolbar)) {
+            $settings = $db->selectObject('htmleditor_ckeditor','active=1');
+        } elseif ($this->toolbar!=0) {
+            $settings = $db->selectObject('htmleditor_ckeditor','id='.$this->toolbar);
+			if (!empty($settings)) {
+				$tb = stripSlashes($settings->data);
+				$skin = $settings->skin;
+				$scayt_on = $settings->scayt_on ? 'true' : 'false';
+				$paste_word = $settings->paste_word ? 'pasteFromWordPromptCleanup : true,' : 'forcePasteAsPlainText : true,';
+				$plugins = stripSlashes($settings->plugins);
+                $stylesset = stripSlashes($settings->stylesset);
+                $formattags = stripSlashes($settings->formattags);
+                $fontnames = stripSlashes($settings->fontnames);
 			}
 	    }
-	    
+
+        // set defaults
+        if (empty($tb)) $tb = "
+     	            ['Source','-','Preview','-','Templates'],
+                    ['Cut','Copy','Paste','PasteText','PasteFromWord','-','Print','SpellChecker','Scayt'],
+                    ['Undo','Redo','-','Find','Replace','-','SelectAll','RemoveFormat'],
+                    '/',
+                    ['Bold','Italic','Underline','Strike','-','Subscript','Superscript'],
+                    ['NumberedList','BulletedList','-','Outdent','Indent','Blockquote','CreateDiv'],
+                    ['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock'],
+                    ['Link','Unlink','Anchor'],
+                    ['Image','Flash','Table','HorizontalRule','Smiley','SpecialChar','PageBreak','Iframe'],
+                    '/',
+                    ['Styles','Format','Font','FontSize'],
+                    ['TextColor','BGColor'],
+                    ['Maximize', 'ShowBlocks','-','About']";
+     	if (empty($skin)) $skin = 'kama';
+     	if (empty($scayt_on)) $scayt_on = 'true';
+     	if (empty($paste_word)) $paste_word = 'forcePasteAsPlainText : true,';
+     	if (empty($plugins)) $plugins = '';
+        if (empty($stylesset)) $stylesset = "'default'";
+        if (empty($formattags)) $formattags = "'p;h1;h2;h3;h4;h5;h6;pre;address;div'";
+        if (empty($fontnames)) $fontnames = "'Arial/Arial, Helvetica, sans-serif;' +
+                                    'Comic Sans MS/Comic Sans MS, cursive;' +
+                                    'Courier New/Courier New, Courier, monospace;' +
+                                    'Georgia/Georgia, serif;' +
+                                    'Lucida Sans Unicode/Lucida Sans Unicode, Lucida Grande, sans-serif;' +
+                                    'Tahoma/Tahoma, Geneva, sans-serif;' +
+                                    'Times New Roman/Times New Roman, Times, serif;' +
+                                    'Trebuchet MS/Trebuchet MS, Helvetica, sans-serif;' +
+                                    'Verdana/Verdana, Geneva, sans-serif'";
 	    $content = "
 	    YUI(EXPONENT.YUI3_CONFIG).use('yui', function(Y) {
 	       // Y.on('readyforcke', function () {
     	    	EXPONENT.editor".createValidId($name)." = CKEDITOR.replace('".createValidId($name)."',
     				{
     					skin : '".$skin."',
-    					toolbar : [".stripSlashes($tb)."],
+    					toolbar : [".$tb."],
     					".$paste_word."
                         scayt_autoStartup : ".$scayt_on.",
                         filebrowserBrowseUrl : '".makelink(array("controller"=>"file", "action"=>"picker", "ajax_action"=>1, "ck"=>1, "update"=>"fck"))."',
-                        filebrowserWindowWidth : '640',
-                        filebrowserWindowHeight : '480',
+                        filebrowserWindowWidth : '800',
+                        filebrowserWindowHeight : '600',
     					filebrowserLinkBrowseUrl : '".PATH_RELATIVE."external/editors/connector/CKeditor_link.php',
                         filebrowserLinkWindowWidth : '320',
                         filebrowserLinkWindowHeight : '600',
     					filebrowserImageBrowseLinkUrl : '".PATH_RELATIVE."external/editors/connector/CKeditor_link.php',
-    					extraPlugins : '".$plugins."',
+    					extraPlugins : 'stylesheetparser,autogrow,tableresize,".$plugins."',
+    					autoGrow_maxHeight : 400,
     					entities_additional : '',
-    					contentsCSS : '".THEME_RELATIVE."css/base-styles.css',
-    					uiColor : '#dedede',
-    					baseHref : '".URL_FULL."'
+    					".$contentCSS."
+                        stylesSet : ".$stylesset.",
+    					format_tags : ".$formattags.",
+                        font_names :
+                            ".$fontnames.",
+    					uiColor : '#aaaaaa',
+     					baseHref : '".URL_FULL."'
                     });
 
     				CKEDITOR.on( 'instanceReady', function( ev ) {

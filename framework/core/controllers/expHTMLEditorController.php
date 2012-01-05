@@ -30,11 +30,14 @@ class expHTMLEditorController extends expController {
     function author() { return "Phillip Ball"; }
     function hasSources() { return false; }
 	function hasContent() { return false; }
-	protected $add_permissions = array('activate'=>"activate",'preview'=>"preview CKEditor toolbars");
+	protected $add_permissions = array(
+        'activate'=>"activate",
+        'preview'=>"preview CKEditor toolbars"
+    );
     
     function manage () {
         global $db;
-        // yet more gluecode
+
         if (SITE_WYSIWYG_EDITOR=="FCKeditor") {
 	        flash('error',gt('FCKeditor is deprecated!'));
 	        redirect_to(array("module"=>"administration","action"=>"configure_site"));
@@ -48,6 +51,7 @@ class expHTMLEditorController extends expController {
 
     function update () {
         global $db;
+
         $obj = $db->selectObject('htmleditor_ckeditor',"id=".$this->params['id']);
         $obj->name = $this->params['name'];
         $obj->data = stripSlashes($this->params['data']);
@@ -55,8 +59,11 @@ class expHTMLEditorController extends expController {
         $obj->scayt_on = $this->params['scayt_on'];
         $obj->paste_word = $this->params['paste_word'];
         $obj->plugins = stripSlashes($this->params['plugins']);
+        $obj->stylesset = stripSlashes($this->params['stylesset']);
+        $obj->formattags = stripSlashes($this->params['formattags']);
+        $obj->fontnames = stripSlashes($this->params['fontnames']);
         if (empty($this->params['id'])) {
-            $db->insertObject($obj,'htmleditor_ckeditor');
+            $this->params['id'] = $db->insertObject($obj,'htmleditor_ckeditor');
         } else {
             $db->updateObject($obj,'htmleditor_ckeditor',null,'id');
         }
@@ -68,17 +75,22 @@ class expHTMLEditorController extends expController {
 
     function edit() {
         global $db;
+
         expHistory::set('editable', $this->params);
         $tool = @$db->selectObject('htmleditor_ckeditor',"id=".$this->params['id']);
         $tool->data = @stripSlashes($tool->data);
+        $tool->plugins = @stripSlashes($tool->plugins);
+        $tool->stylesset = @stripSlashes($tool->stylesset);
+        $tool->formattags = @stripSlashes($tool->formattags);
+        $tool->fontnames = @stripSlashes($tool->fontnames);
         assign_to_template(array('record'=>$tool));
     }
     
 	function delete() {
 	    global $db;
+
 	    expHistory::set('editable', $this->params);
 	    @$db->delete('htmleditor_ckeditor',"id=".$this->params['id']);
-
 		expHistory::returnTo('manageable');
 	}
 
@@ -89,19 +101,18 @@ class expHTMLEditorController extends expController {
         if ($this->params['id']!="default") {
             $active = $db->selectObject('htmleditor_ckeditor',"id=".$this->params['id']);
             $active->active = 1;
-        
             $db->updateObject($active,'htmleditor_ckeditor',null,'id');
         }
-
 	    expHistory::returnTo('manageable');
     }
 
     function preview () {
         global $db;
-        if ($this->params['id']=="default") {
+
+        if ($this->params['id']==0) {  // we want the default editor
+            $demo->id=0;
             $demo->name="Default";
-            $demo->data="default";
-			$demo->skin = 'kama';
+			$demo->skin='kama';
         } else {
             $demo = $db->selectObject('htmleditor_ckeditor',"id=".$this->params['id']);
         }

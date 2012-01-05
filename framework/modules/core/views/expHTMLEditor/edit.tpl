@@ -30,11 +30,16 @@
         {control type=hidden name=id value=$record->id}
         {control type=text name=name label="Configuration Name"|gettext value=$record->name}
 	    {control type="checkbox" postfalse=1 name=active label="Make this Configuration Active?"|gettext checked=$record->active value=1}
-		{control type=dropdown name=skin label="Toolbar Skin"|gettext items="Kama, Office 2003, Version 2" values="kama,office2003,v2" value=$record->skin}
-		{control type="checkbox" postfalse=1 name=scayt_on label="Autostart SpellCheck"|gettext checked=$record->scayt_on value=1}
+		{control type=dropdown name=skin label="Toolbar Skin"|gettext items="Kama, Office 2003, Version 2" values="kama,office2003,v2" value=$record->skin default='kama'}
+		{control type="checkbox" postfalse=1 name=scayt_on label="Autostart SpellCheck"|gettext checked=$record->scayt_on value=1 checked=1}
 		{control type="checkbox" postfalse=1 name=paste_word label="Allow Formatted Pasting from MS Word"|gettext checked=$record->paste_word value=1}
+        <h3><em>({'Blank or empty entries in the following text boxes result in using the default setting'|gettext})</em></h3>
+        <p><em>({'Please visit the help page for entry format requirements!'|gettext})</em></p>
 		{control type=textarea cols=80 rows=20 name=data label="Toolbar Button Configuration"|gettext value=$record->data}
-	    {control type=textarea cols=80 rows=2 name=plugins label="Load Custom Plugins (comma separated) MUST be installed first!"|gettext value=$record->plugins}
+        {control type=textarea cols=80 rows=2 name=stylesset label="Styles List (plus style sheet styles)"|gettext value=$record->stylesset}
+        {control type=textarea cols=80 rows=2 name=formattags label="Formats List"|gettext value=$record->formattags}
+	    {control type=textarea cols=80 rows=2 name=fontnames label="Fonts List"|gettext value=$record->fontnames}
+        {control type=textarea cols=80 rows=2 name=plugins label="Load Custom Plugins (comma separated) MUST be installed first!"|gettext value=$record->plugins}
         {control type=buttongroup submit="Save Toolbar"|gettext cancel="Cancel"|gettext returntype="manageable"}
     {/form}   
 </div>
