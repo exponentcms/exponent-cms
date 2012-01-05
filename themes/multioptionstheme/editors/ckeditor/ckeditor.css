@@ -1,0 +1,22 @@
+.cke_panel_frame {background:white;}
+
+html {
+    font:92% Tahoma,sans-serif;
+    background:#fefefe;
+    color:#555;
+    line-height:1.6em;
+}
+h1 {margin:0 auto; padding:0; font-size:2.4em; font-weight:700; letter-spacing:-1px; line-height:2.2em; text-shadow:#ccc 2px 2px 8px;}
+h1 a {font-weight:700; text-decoration:none;}
+h1 a:hover {color:#222; text-decoration:none;}
+.slogan {color:#555; font-size:1.4em; margin:0 0 15px 0; padding:0; text-shadow:#ccc 2px 2px 8px;}
+
+/* HTML Tags */
+a {font-weight:400;}
+a:hover {color:#333 !important;}
+a img {border:0;}
+h2 {clear:left; margin:0 0 12px 0; padding:0 0 8px; font-size:1.8em; font-weight:700; border-bottom:1px solid #ddd; text-shadow:#ccc 2px 2px 8px;}
+h3 {clear:left; font-size:1.4em; font-weight:700; margin:0 0 10px 0; padding:2px 0; border-bottom:1px solid #ddd; text-shadow:#ccc 2px 2px 6px;}
+p {margin:0 0 15px 0;}
+ul {margin:0 0 15px 20px; padding:0;}
+li {margin:0 0 5px 0; padding:0 0 0 5px;}

@@ -1,0 +1,51 @@
+.cke_panel_frame {background:white;}
+
+html {
+   	font: 70%/1.5em Verdana, Tahoma, arial, sans-serif;
+   	color: #777;
+}
+a:link,
+a, a:visited {
+	text-decoration: none;
+	background-color: transparent;
+	color: #FB9233;
+}
+a:hover {
+	text-decoration: underline;
+	background-color: transparent;
+	color: #93C600;
+}
+
+h1,h2,h3,h4,h5,h6,strong {
+	/*bringing boldness back to headers and the strong element*/
+	font-weight:bold;
+}
+
+em {
+	/*bringing italics back to the em element*/
+	font-style:italic;
+}
+
+/* headers */
+h1, h2, h3 { font-family: 'Trebuchet MS', Tahoma, Sans-serif;  }
+
+h1 {
+	font-size: 180%;
+	font-weight: normal;
+	color: #555;
+}
+
+h2 {
+	font-size: 160%;
+	color: #88ac0b;
+	font-weight: normal;
+}
+
+h3 {
+	font-size: 135%;
+	color: #666666;
+}
+
+h1, h2, h3, h4, h5, h6{
+	margin:15px 0 10px 0;
+}
