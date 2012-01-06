@@ -60,17 +60,17 @@ class ckeditorcontrol extends formcontrol {
             $settings = $db->selectObject('htmleditor_ckeditor','active=1');
         } elseif ($this->toolbar!=0) {
             $settings = $db->selectObject('htmleditor_ckeditor','id='.$this->toolbar);
-			if (!empty($settings)) {
-				$tb = stripSlashes($settings->data);
-				$skin = $settings->skin;
-				$scayt_on = $settings->scayt_on ? 'true' : 'false';
-				$paste_word = $settings->paste_word ? 'pasteFromWordPromptCleanup : true,' : 'forcePasteAsPlainText : true,';
-				$plugins = stripSlashes($settings->plugins);
-                $stylesset = stripSlashes($settings->stylesset);
-                $formattags = stripSlashes($settings->formattags);
-                $fontnames = stripSlashes($settings->fontnames);
-			}
 	    }
+        if (!empty($settings)) {
+            $tb = stripSlashes($settings->data);
+            $skin = $settings->skin;
+            $scayt_on = $settings->scayt_on ? 'true' : 'false';
+            $paste_word = $settings->paste_word ? 'pasteFromWordPromptCleanup : true,' : 'forcePasteAsPlainText : true,';
+            $plugins = stripSlashes($settings->plugins);
+            $stylesset = stripSlashes($settings->stylesset);
+            $formattags = stripSlashes($settings->formattags);
+            $fontnames = stripSlashes($settings->fontnames);
+        }
 
         // set defaults
         if (empty($tb)) $tb = "
