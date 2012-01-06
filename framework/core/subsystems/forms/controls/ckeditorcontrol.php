@@ -49,7 +49,7 @@ class ckeditorcontrol extends formcontrol {
         $contentCSS = '';
         $cssabs = BASE.'themes/'.DISPLAY_THEME.'/editors/ckeditor/ckeditor.css';
         $css = PATH_RELATIVE.'themes/'.DISPLAY_THEME.'/editors/ckeditor/ckeditor.css';
-        if (THEME_STYLE!="") {
+        if (THEME_STYLE!="" && is_file(BASE.'themes/'.DISPLAY_THEME.'/editors/ckeditor/ckeditor_'.THEME_STYLE.'.css')) {
             $cssabs = BASE.'themes/'.DISPLAY_THEME.'/editors/ckeditor/ckeditor_'.THEME_STYLE.'.css';
             $css = PATH_RELATIVE.'themes/'.DISPLAY_THEME.'/editors/ckeditor/ckeditor_'.THEME_STYLE.'.css';
         }
