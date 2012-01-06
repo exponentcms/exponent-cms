@@ -23,16 +23,16 @@
 
 		<tr class="daysoftheweek">
 			{if $smarty.const.DISPLAY_START_OF_WEEK == 0}
-			<th scope="col" abbr="{'Sunday'|gettext}" title="{'Sunday'|gettext}">{'Sunday'|gettext}</th>
+			<th scope="col" abbr="{'Sunday'|gettext}" title="{'Sunday'|gettext}">{'S'|gettext}</th>
 			{/if}
-			<th scope="col" abbr="{'Monday'|gettext}" title="{'Monday'|gettext}">{'Monday'|gettext}</th>
-			<th scope="col" abbr="{'Tuesday'|gettext}" title="{'Tuesday'|gettext}">{'Tuesday'|gettext}</th>
-			<th scope="col" abbr="{'Wednesday'|gettext}" title="'Wednesday'|gettext}">{'Wednesday'|gettext}</th>
-			<th scope="col" abbr="{'Thursday'|gettext}" title="{'Thursday'|gettext}">{'Thursday'|gettext}</th>
-			<th scope="col" abbr="{'Friday'|gettext}" title="{'Friday'|gettext}">{'Friday'|gettext}</th>
-			<th scope="col" abbr="{'Saturday'|gettext}" title="{'Saturday'|gettext}">{'Saturday'|gettext}</th>
+			<th scope="col" abbr="{'Monday'|gettext}" title="{'Monday'|gettext}">{'M'|gettext}</th>
+			<th scope="col" abbr="{'Tuesday'|gettext}" title="{'Tuesday'|gettext}">{'T'|gettext}</th>
+			<th scope="col" abbr="{'Wednesday'|gettext}" title="'Wednesday'|gettext}">{'W'|gettext}</th>
+			<th scope="col" abbr="{'Thursday'|gettext}" title="{'Thursday'|gettext}">{'T'|gettext}</th>
+			<th scope="col" abbr="{'Friday'|gettext}" title="{'Friday'|gettext}">{'F'|gettext}</th>
+			<th scope="col" abbr="{'Saturday'|gettext}" title="{'Saturday'|gettext}">{'S'|gettext}</th>
 			{if $smarty.const.DISPLAY_START_OF_WEEK != 0}
-			<th scope="col" abbr="{'Sunday'|gettext}" title="{'Sunday'|gettext}">{'Sunday'|gettext}</th>
+			<th scope="col" abbr="{'Sunday'|gettext}" title="{'Sunday'|gettext}">{'S'|gettext}</th>
 			{/if}
 		</tr>
 		{foreach from=$monthly item=week key=weekid}
