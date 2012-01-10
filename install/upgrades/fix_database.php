@@ -27,7 +27,7 @@
  */
 class fix_database extends upgradescript {
 	protected $from_version = '0.96.3';
-//	protected $to_version = '2.0.1';
+	protected $to_version = '2.0.1';  // we no longer need to do this for every upgrade, only from OLD ones
 
 	/**
 	 * name/title of upgrade script
