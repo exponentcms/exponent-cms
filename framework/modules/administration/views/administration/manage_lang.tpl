@@ -33,7 +33,6 @@
         {/if}
         {if $untrans}
             <p>{"There are"|gettext} {$untrans} {"Untranslated Phrases in the"|gettext} {$smarty.const.LANG} {"Translation"|gettext}</p>
-            <a class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" href="{link action=manage_lang_await}"><b>{"View Un-Translated Phrases"|gettext}</b></a>{br}{br}
         {/if}
         <p>{'You may use the \'lang_update.php\' script to help correct this for the'|gettext} {$smarty.const.LANG} {"translation"|gettext}</p>
     {/if}
