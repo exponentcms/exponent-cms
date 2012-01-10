@@ -56,7 +56,16 @@ class snippetController extends expController {
 			$item->body = highlight_string($item->body, true); 
 		}
 		assign_to_template(array('items'=>$items));
-	}	
+	}
+
+    public function update() {
+        // update the record.
+        $record = $this->snippet->update($this->params);
+
+        // go back to where we came from.
+        expHistory::back();
+    }
+
 }
 
 ?>

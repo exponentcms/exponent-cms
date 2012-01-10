@@ -23,6 +23,7 @@
 
     {form action=update}
         {control type=hidden name=id value=$record->id}
+        {control type=hidden name=rank value=$record->rank}
         {control type=text name=title label="Title"|gettext value=$record->title}
         {control type=textarea cols="80" rows=20 name=body label="Code Snippet"|gettext value=$record->body}
         {control type=buttongroup submit="Save Text"|gettext cancel="Cancel"|gettext}
