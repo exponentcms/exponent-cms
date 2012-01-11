@@ -27,7 +27,6 @@ if ($user && $user->is_acting_admin == 1) {
 	}
 	
 	if ($page) {
-//		expHistory::flowSet(SYS_FLOW_PROTECTED,SYS_FLOW_ACTION);
 		expHistory::set('manageable', $router->params);
 
 		$template = new template('navigationmodule','_view_template',$loc);
