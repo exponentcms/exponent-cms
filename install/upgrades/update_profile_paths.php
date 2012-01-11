@@ -57,11 +57,13 @@ class update_profile_paths extends upgradescript {
 	function upgrade() {
 	    global $db;
 
+        $fixed = 0;
 		// update each bad default avatar reference to default
 	    $badavatarurls = $db->selectObjects('user_avatar',"image = ''URL_FULL .'");
 	    foreach ($badavatarurls as $badavatarurl) {
             $badavatarurl->image = URL_FULL.'framework/modules/users/assets/images/avatar_not_found.jpg';
 		    $db->updateObject($badavatarurl,'user_avatar');
+            $fixed =+1 ;
 	    }
 
 		// convert each active user profile extension path from a full to relative path
@@ -79,13 +81,14 @@ class update_profile_paths extends upgradescript {
                         if (!empty($extension->id)) {
                             $extension->classfile = "$dir/$file";
                             $db->updateObject($extension,'profileextension');
+                            $fixed =+1 ;
                         }
                     }
                 }
             }
         }
 
-        return gt('User Profile Extension Paths Corrected');
+        return ($fixed)?$fixed:gt('No').' '.gt('User Profile Extension Paths Corrected');
 	}
 }
 

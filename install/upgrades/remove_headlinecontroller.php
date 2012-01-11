@@ -42,14 +42,6 @@ class remove_headlinecontroller extends upgradescript {
 	function description() { return "Beginning with Exponent 2.0.0 Beta4, the Headline Controller is replaced by the Text Controller.  This Script converts headline modules to text modules and then deletes the headlines"; }
 
 	/**
-	 * additional test(s) to see if upgrade script should be run
-	 * @return bool
-	 */
-	function needed() {
-		return false;  // FIXME this line is set to false to disable this sample script
-	}
-
-	/**
 	 * coverts all headline modules/items into text modules/items and deletes headline controller files
 	 * @return bool
 	 */
