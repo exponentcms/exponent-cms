@@ -83,7 +83,12 @@ class expHTMLEditorController extends expController {
         $tool->stylesset = @stripSlashes($tool->stylesset);
         $tool->formattags = @stripSlashes($tool->formattags);
         $tool->fontnames = @stripSlashes($tool->fontnames);
-        assign_to_template(array('record'=>$tool));
+        $skins_dir = opendir(BASE.'external/editors/ckeditor/skins');
+        while (($skin = readdir($skins_dir)) !== false) {
+            if ($skin != '.' && $skin != '..')
+                $skins[] = $skin;
+        }
+        assign_to_template(array('record'=>$tool, 'skins'=>$skins));
     }
     
 	function delete() {

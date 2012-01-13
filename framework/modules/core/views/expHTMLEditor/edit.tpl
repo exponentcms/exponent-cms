@@ -30,7 +30,7 @@
         {control type=hidden name=id value=$record->id}
         {control type=text name=name label="Configuration Name"|gettext value=$record->name}
 	    {control type="checkbox" postfalse=1 name=active label="Make this Configuration Active?"|gettext checked=$record->active value=1}
-		{control type=dropdown name=skin label="Toolbar Skin"|gettext items="Kama, Office 2003, Version 2" values="kama,office2003,v2" value=$record->skin default='kama'}
+		{control type=dropdown name=skin label="Toolbar Skin"|gettext items=$skins values=$skins value=$record->skin default='kama'}
 		{control type="checkbox" postfalse=1 name=scayt_on label="Autostart SpellCheck"|gettext checked=$record->scayt_on value=1 checked=1}
 		{control type="checkbox" postfalse=1 name=paste_word label="Allow Formatted Pasting from MS Word"|gettext checked=$record->paste_word value=1}
         <h3><em>({'Blank or empty entries in the following text boxes result in using the default setting'|gettext})</em></h3>

@@ -79,136 +79,111 @@ class expTheme {
 		echo self::advertiseRSS();
     }
 
+	///** exdoc
+	// * @state <b>UNDOCUMENTED</b>
+	// * @node Undocumented
+	// */
+	//function self::headerInfo($config) {
+	//    echo headerInfo($config);
+	//	echo self::advertiseRSS();
+	//}
+	public static function headerInfo($config) {
+		global $sectionObj, $validateTheme, $head_config, $cur_lang;
+
+		$validateTheme['headerinfo'] = true;
+		// end checking for headerInfo
+
+		// globalize header configuration
+		$head_config = $config;
+
+		// check to see if we're in XHTML or HTML mode
+		if(isset($config['xhtml']) && $config['xhtml']==true){
+			define('XHTML',1);define('XHTML_CLOSING',"/"); //default
+		} else {
+			define('XHTML',0); define('XHTML_CLOSING',"");
+		}
+
+
+		// Load primer CSS files, or default to false if not set.
+		if(!empty($config['css_primer'])){
+			expCSS::pushToHead($config);
+		} else {
+			$config['css_primer'] = false;
+		};
+
+		if(isset($config['css_core'])) {
+			if (is_array($config['css_core'])) {
+				$corecss = implode(",",$config['css_core']);
+				expCSS::pushToHead(array(
+					"corecss"=>$corecss
+				));
+			}
+		} else {
+			$config['css_core'] = false;
+		};
+
+		// Default the running of view based CSS inclusion to true
+		if(empty($config['css_links'])){
+			$config['css_links'] = true;
+		}
+
+		// default theme css collecting to true if not set
+		if(empty($config['css_theme'])){
+			$config['css_theme'] = true;
+		}
+
+		//eDebug($config);
+
+		if (empty($sectionObj)) return false;
+
+		$metainfo = self::pageMetaInfo();
+
+		$str = '';
+		$str = '<title>'.$metainfo['title']."</title>\r\n";
+		$str .= "\t".'<meta http-equiv="Content-Type" content="text/html; charset='.LANG_CHARSET.'" '.XHTML_CLOSING.'>'."\n";
+		$str .= "\t".'<meta name="Generator" content="Exponent Content Management System - '.expVersion::getVersion(true).'" '.XHTML_CLOSING.'>' . "\n";
+		$str .= "\t".'<meta name="Keywords" content="'.$metainfo['keywords'] . '" '.XHTML_CLOSING.'>'."\n";
+		$str .= "\t".'<meta name="Description" content="'.$metainfo['description']. '" '.XHTML_CLOSING.'>'."\n";
+
+		//the last little bit of IE 6 support
+		$str .= "\t".'<!--[if IE 6]><style type="text/css">  body { behavior: url('.PATH_RELATIVE.'external/csshover.htc); }</style><![endif]-->'."\n";
+
+		// when minification is used, the comment below gets replaced when the buffer is dumped
+		$str .= '<!-- MINIFY REPLACE -->';
+
+//		if(file_exists(BASE.'themes/'.DISPLAY_THEME_REAL.'/favicon.ico')) {
+//			$str .= "\t".'<link rel="shortcut icon" href="'.URL_FULL.'themes/'.DISPLAY_THEME_REAL.'/favicon.ico" type="image/x-icon" />'."\r\n";
+		if(file_exists(BASE.'themes/'.DISPLAY_THEME.'/favicon.ico')) {
+			$str .= "\t".'<link rel="shortcut icon" href="'.URL_FULL.'themes/'.DISPLAY_THEME.'/favicon.ico" type="image/x-icon" '.XHTML_CLOSING.'>'."\r\n";
+		}
+
+		return $str;
+	}
+
 	public static function foot($params = array()) {
 		echo self::footerInfo($params);
 	}
 
-	/** exdoc
-	* Takes care of all the specifics of either showing a sectional container or running an action.
-	* @node Subsystems:Theme
-	*/
-    public static function main() {
-		global $db, $user;
+    public static function footerInfo($params = array()) {
+   		// checks to see if the theme is calling footerInfo.
+   		global $validateTheme, $user;
 
-		echo show_msg_queue();
-		if ((!defined('SOURCE_SELECTOR') || SOURCE_SELECTOR == 1)) {
-			$last_section = expSession::get("last_section");
-			$section = $db->selectObject("section","id=".$last_section);
-			// View authorization will be taken care of by the runAction and mainContainer functions
-			if (self::inAction()) {
-				self::runAction();
-			} else if ($section == null) {
-				self::goDefaultSection();
-			} else {
-				self::mainContainer();
-			}
-		} else {
-			if (isset($_REQUEST['module'])) {
-				include_once(BASE."framework/modules-1/containermodule/actions/orphans_content.php");
-			} else {
-				echo gt('Select a module');
-			}
-		}
-    }
-    
-    public static function module($params) {
-	    if (empty($params)) {
-		    return false;
-	    } elseif (isset($params['controller'])) {
-            self::showController($params);
-        } elseif (isset($params['module'])) {
-            $moduletitle = (isset($params['moduletitle'])) ? $params['moduletitle'] : "";
-            $source = (isset($params['source'])) ? $params['source'] : "";
-            $chrome = (isset($params['chrome'])) ? $params['chrome'] : false;
-            $scope = (isset($params['scope'])) ? $params['scope'] : "global";
+   		$validateTheme['footerinfo'] = true;
 
-            if ($scope=="global") {
-                self::showModule($params['module']."module",$params['view'],$moduletitle,$source,false,null,$chrome);
-            }
-            if ($scope=="top-sectional") {
-                self::showTopSectionalModule($params['module']."module", //module
-                                            $params['view'], //view
-                                            $moduletitle, // Title
-                                            $source, // source
-                                            false, // prefix??  no idea...
-                                            null, // used to apply to source picker. does nothing now.
-                                            $chrome // Show chrome
-                                            );
-            }
-            if ($scope=="sectional") {
-                self::showSectionalModule($params['module']."module", //module
-                                        $params['view'], //view
-                                        $moduletitle, // title
-                                        $source, // source
-                                        false, // prefix??  no idea...
-                                        null, // used to apply to source picker. does nothing now.
-                                        $chrome // Show chrome
-                                        );
-            }
-        } else {
-		    return false;
-	    }
-    }
+   		if (!empty($user->getsToolbar) && PRINTER_FRIENDLY != 1 && !defined('SOURCE_SELECTOR') && empty($params['hide-slingbar'])) {
+   			self::module(array("controller"=>"administration","action"=>"toolbar","source"=>"admin"));
+   		}
 
-    public static function showController($params=array()) {
-        global $sectionObj, $db, $module_scope;
-        if (empty($params)) {
-	        return false;
-        } elseif (isset($params['module'])) {
-            self::module($params);
-        } else if (isset($params['controller'])) {
-			$params['view'] = isset($params['view']) ? $params['view'] : $params['action'];
-			$params['title'] = isset($params['moduletitle']) ? $params['moduletitle'] : '';
-			$params['chrome'] = (!isset($params['chrome']) || (isset($params['chrome'])&&empty($params['chrome']))) ? true : false;
-			$params['scope'] = isset($params['scope']) ? $params['scope'] : 'global';
+   		if ((self::is_mobile() || FORCE_MOBILE) && is_readable(BASE.'themes/'.DISPLAY_THEME.'/mobile/index.php')) {
+   			echo ('<div style="text-align:center"><a href="'.makeLink(array('module' => 'administration','action' => 'toggle_mobile')).'">View site in '.(MOBILE ? "Classic":"Mobile").' mode</a></div>');
+   		}
+   		//echo expJavascript::parseJSFiles();
+   		echo self::processCSSandJS();
+   		echo expJavascript::footJavascriptOutput();
 
-			// set the controller and action to the one called via the function params
-			$requestvars = isset($params['params']) ? $params['params'] : array();
-			$requestvars['controller'] = $params['controller'];
-			$requestvars['action'] = isset($params['action']) ? $params['action'] : null;
-			$requestvars['view'] = isset($params['view']) ? $params['view'] : null;
-
-			// figure out the scope of the module and set the source accordingly
-			if ($params['scope'] == 'global') {
-				$params['source'] = isset($params['source']) ? $params['source'] : null;
-			} elseif ($params['scope'] == 'sectional') {
-				$params['source']  = isset($params['source']) ? $params['source'] : '@section';
-				$params['source'] .= $sectionObj->id;
-			} elseif ($params['scope'] == 'top-sectional') {
-				$params['source']  = isset($params['source']) ? $params['source'] : '@section';
-				$section = $sectionObj;
-				while ($section->parent > 0) $section = $db->selectObject("section","id=".$section->parent);
-				$params['source'] .= $section->id;
-			}
-            $module_scope[$params['source']][(isset($params['module'])?$params['module']:$params['controller'])]->scope = $params['scope'];
-			self::showModule(expModules::getControllerClassName($params['controller']),$params['view'],$params['title'],$params['source'],false,null,$params['chrome'],$requestvars);
-        } else {
-	        return false;
-        }
-    }
-
-    /** exdoc
-     * Calls the necessary methods to show a specific controller, in a section-sensitive way.
-     *
-     * @param array $params
-     *
-     * @internal param string $module The classname of the module to display
-     * @internal param string $view The name of the view to display the module with
-     * @internal param string $title The title of the module (support is view-dependent)
-     * @internal param string $prefix The prefix of the module's source.  The current section id will be appended to this
-     * @internal param bool $pickable Whether or not the module is pickable in the Source Picker.
-     * @internal param bool $hide_menu
-     *
-     * @return void
-     * @node Subsystems:Theme
-     */
-    public static function showSectionalController($params=array()) {  //FIXME not used in base system (custom themes?)
-        global $sectionObj, $module_scope;
-        $src = "@section" . $sectionObj->id;
-        $params['source'] = $src;
-        $module_scope[$params['source']][(isset($params['module'])?$params['module']:$params['controller'])]->scope = 'sectional';
-        self::showController($params);
-    }
+   		expSession::deleteVar("last_POST");  //ADK - putting this here so one form doesn't unset it before another form needs it.
+   		expSession::deleteVar('last_post_errors');
+   	}
 
     public static function pageMetaInfo() {
         global $sectionObj, $db, $router;
@@ -225,27 +200,6 @@ class expTheme {
         }
 
         return $metainfo;
-    }
-
-	/** exdoc
-	 * Checks to see if the page is currently in an action.  Useful only if the theme does not use the self::main() function
-	 * Returns whether or not an action should be run.
-	 * @node Subsystems:Theme
-	 * @return bool
-	 */
-    public static function inAction() {
-        return (isset($_REQUEST['action']) && (isset($_REQUEST['module']) || isset($_REQUEST['controller'])));
-    }
-
-    public static function reRoutActionTo($theme = "") {
-        if (empty($theme)) {
-            return false;
-        }
-        if (self::inAction()) {
-//            include_once(BASE."themes/".DISPLAY_THEME_REAL."/".$theme);
-            include_once(BASE."themes/".DISPLAY_THEME."/".$theme);
-            exit;
-        }
     }
 
     public static function grabView($path,$filename) {  //FIXME Not used
@@ -354,108 +308,13 @@ class expTheme {
 		}
 	}
 
-	///** exdoc
-	// * @state <b>UNDOCUMENTED</b>
-	// * @node Undocumented
-	// */
-	//function self::headerInfo($config) {
-	//    echo headerInfo($config);
-	//	echo self::advertiseRSS();
-	//}
-
-	public static function headerInfo($config) {
-		global $sectionObj, $validateTheme, $head_config, $cur_lang;
-
-		$validateTheme['headerinfo'] = true;
-		// end checking for headerInfo
-
-		// globalize header configuration
-		$head_config = $config;
-
-		// check to see if we're in XHTML or HTML mode
-		if(isset($config['xhtml']) && $config['xhtml']==true){
-			define('XHTML',1);define('XHTML_CLOSING',"/"); //default
-		} else {
-			define('XHTML',0); define('XHTML_CLOSING',"");
-		}
-
-
-		// Load primer CSS files, or default to false if not set.
-		if(!empty($config['css_primer'])){
-			expCSS::pushToHead($config);
-		} else {
-			$config['css_primer'] = false;
-		};
-
-		if(isset($config['css_core'])) {
-			if (is_array($config['css_core'])) {
-				$corecss = implode(",",$config['css_core']);
-				expCSS::pushToHead(array(
-					"corecss"=>$corecss
-				));
-			}
-		} else {
-			$config['css_core'] = false;
-		};
-
-		// Default the running of view based CSS inclusion to true
-		if(empty($config['css_links'])){
-			$config['css_links'] = true;
-		}
-
-		// default theme css collecting to true if not set
-		if(empty($config['css_theme'])){
-			$config['css_theme'] = true;
-		}
-
-		//eDebug($config);
-
-		if (empty($sectionObj)) return false;
-
-		$metainfo = self::pageMetaInfo();
-
-		$str = '';
-		$str = '<title>'.$metainfo['title']."</title>\r\n";
-		$str .= "\t".'<meta http-equiv="Content-Type" content="text/html; charset='.LANG_CHARSET.'" '.XHTML_CLOSING.'>'."\n";
-		$str .= "\t".'<meta name="Generator" content="Exponent Content Management System - '.expVersion::getVersion(true).'" '.XHTML_CLOSING.'>' . "\n";
-		$str .= "\t".'<meta name="Keywords" content="'.$metainfo['keywords'] . '" '.XHTML_CLOSING.'>'."\n";
-		$str .= "\t".'<meta name="Description" content="'.$metainfo['description']. '" '.XHTML_CLOSING.'>'."\n";
-
-		//the last little bit of IE 6 support
-		$str .= "\t".'<!--[if IE 6]><style type="text/css">  body { behavior: url('.PATH_RELATIVE.'external/csshover.htc); }</style><![endif]-->'."\n";
-
-		// when minification is used, the comment below gets replaced when the buffer is dumped
-		$str .= '<!-- MINIFY REPLACE -->';
-
-//		if(file_exists(BASE.'themes/'.DISPLAY_THEME_REAL.'/favicon.ico')) {
-//			$str .= "\t".'<link rel="shortcut icon" href="'.URL_FULL.'themes/'.DISPLAY_THEME_REAL.'/favicon.ico" type="image/x-icon" />'."\r\n";
-		if(file_exists(BASE.'themes/'.DISPLAY_THEME.'/favicon.ico')) {
-			$str .= "\t".'<link rel="shortcut icon" href="'.URL_FULL.'themes/'.DISPLAY_THEME.'/favicon.ico" type="image/x-icon" '.XHTML_CLOSING.'>'."\r\n";
-		}
-
-		return $str;
-	}
-
-	public static function footerInfo($params = array()) {
-		// checks to see if the theme is calling footerInfo.
-		global $validateTheme, $user;
-
-		$validateTheme['footerinfo'] = true;
-
-		if (!empty($user->getsToolbar) && PRINTER_FRIENDLY != 1 && !defined('SOURCE_SELECTOR') && empty($params['hide-slingbar'])) {
-			self::showController(array("controller"=>"administration","action"=>"toolbar","source"=>"admin"));
-		}
-
-		if ((self::is_mobile() || FORCE_MOBILE) && is_readable(BASE.'themes/'.DISPLAY_THEME.'/mobile/index.php')) {
-			echo ('<div style="text-align:center"><a href="'.makeLink(array('module' => 'administration','action' => 'toggle_mobile')).'">View site in '.(MOBILE ? "Classic":"Mobile").' mode</a></div>');
-		}
-		//echo expJavascript::parseJSFiles();
-		echo self::processCSSandJS();
-		echo expJavascript::footJavascriptOutput();
-
-		expSession::deleteVar("last_POST");  //ADK - putting this here so one form doesn't unset it before another form needs it.
-		expSession::deleteVar('last_post_errors');
-	}
+    public static function loadActionMaps() {
+   		if (is_readable(BASE.'themes/'.DISPLAY_THEME.'/action_maps.php')) {
+   			return include(BASE.'themes/'.DISPLAY_THEME.'/action_maps.php');
+   		} else {
+   			return array();
+   		}
+   	}
 
 	public static function satisfyThemeRequirements() {
 		global $validateTheme;
@@ -526,6 +385,44 @@ class expTheme {
 		return $theme;
 	}
 
+    /** exdoc
+     *
+     * @state <b>UNDOCUMENTED</b>
+     * @node  Undocumented
+     *
+     * @param bool   $include_default
+     * @param string $theme
+     *
+     * @return array
+     */
+	public static function getSubthemes($include_default = true,$theme = DISPLAY_THEME) {
+		$base = BASE."themes/$theme/subthemes";
+		// The array of subthemes.  If the theme has no subthemes directory,
+		// or the directory is not readable by the web server, this empty array
+		// will be returned (Unless the caller wanted us to include the default layout)
+		$subs = array();
+		if ($include_default == true) {
+			// Caller wants us to include the default layout.
+			$subs[''] = DEFAULT_VIEW; // Not really its intended use, but it works.
+		}
+
+		if (is_readable($base)) {
+			// subthemes directory exists and is readable by the web server.  Continue on.
+			$dh = opendir($base);
+			// Read out all entries in the THEMEDIR/subthemes directory
+			while (($s = readdir($dh)) !== false) {
+				if (substr($s,-4,4) == '.php' && substr($s,0,1) != '_' && is_file($base."/$s") && is_readable($base."/$s")) {
+					// Only readable .php files are allowed to be subtheme files.
+					$subs[substr($s,0,-4)] = substr($s,0,-4);
+				}
+			}
+			// Sort the subthemes by their keys (which are the same as the values)
+			// using a natural string comparison function (PHP built-in)
+			uksort($subs,'strnatcmp');
+		}
+		return $subs;
+	}
+
 	public static function getPrinterFriendlyTheme() {
 		$common = 'framework/core/printer-friendly.php';
 		$theme = 'themes/'.DISPLAY_THEME.'/printer-friendly.php';
@@ -537,9 +434,28 @@ class expTheme {
 		} else {
 			return null;
 		}
-
 	}
 
+    /** exdoc
+   	 * Checks to see if the page is currently in an action.  Useful only if the theme does not use the self::main() function
+   	 * Returns whether or not an action should be run.
+   	 * @node Subsystems:Theme
+   	 * @return bool
+   	 */
+    public static function inAction() {
+        return (isset($_REQUEST['action']) && (isset($_REQUEST['module']) || isset($_REQUEST['controller'])));
+    }
+
+    public static function reRoutActionTo($theme = "") {
+        if (empty($theme)) {
+            return false;
+        }
+        if (self::inAction()) {
+//            include_once(BASE."themes/".DISPLAY_THEME_REAL."/".$theme);
+            include_once(BASE."themes/".DISPLAY_THEME."/".$theme);
+            exit;
+        }
+    }
 
 	/** exdoc
 	 * Runs the appropriate action, by looking at the $_REQUEST variable.
@@ -551,10 +467,10 @@ class expTheme {
 			if (!AUTHORIZED_SECTION) {
 				echo SITE_403_HTML;
 			}
-			if (expSession::is_set("themeopt_override")) {
-				$config = expSession::get("themeopt_override");
-				echo "<a class='mngmntlink sitetemplate_mngmntlink' href='".$config['mainpage']."'>".$config['backlinktext']."</a><br /><br />";
-			}
+//			if (expSession::is_set("themeopt_override")) {
+//				$config = expSession::get("themeopt_override");
+//				echo "<a class='mngmntlink sitetemplate_mngmntlink' href='".$config['mainpage']."'>".$config['backlinktext']."</a><br /><br />";
+//			}
 
 			//FIXME: module/controller glue code..remove ASAP
 			$module = empty($_REQUEST['controller']) ? $_REQUEST['module'] : $_REQUEST['controller'];
@@ -607,6 +523,330 @@ class expTheme {
 		}
 	}
 
+    public static function showAction($module, $action, $src="", $params="") {
+   		global $db, $user;
+
+   		$loc = null;
+   		$loc->mod = $module;
+   		$loc->src = (isset($src) ? $src : "");
+   		$loc->int = (isset($int) ? $int : "");
+
+   		$actfile = "/" . $module . "/actions/" . $action . ".php";
+   		if (isset($params)) {
+   			foreach ($params as $key => $value) {
+   				$_GET[$key] = $value;
+   			}
+   		}
+   		//if (isset($['_common'])) $actfile = "/common/actions/" . $_REQUEST['action'] . ".php";
+
+   //		if (is_readable(BASE."themes/".DISPLAY_THEME_REAL."/modules".$actfile)) {
+   //			include(BASE."themes/".DISPLAY_THEME_REAL."/modules".$actfile);
+   		if (is_readable(BASE."themes/".DISPLAY_THEME."/modules".$actfile)) {
+   				include(BASE."themes/".DISPLAY_THEME."/modules".$actfile);
+   		} elseif (is_readable(BASE.'framework/modules-1/'.$actfile)) {
+   			include(BASE.'framework/modules-1/'.$actfile);
+   		} else {
+   			echo SITE_404_HTML . '<br /><br /><hr size="1" />';
+   			echo sprintf(gt('No such module action').' : %1 : %2',strip_tags($_REQUEST['module']),strip_tags($_REQUEST['action']));
+   			echo '<br />';
+   		}
+   	}
+
+
+    /** exdoc
+   	 * Redirect User to Default Section
+   	 * @node Subsystems:Theme
+   	 */
+   	public static function goDefaultSection() {
+   		$last_section = expSession::get("last_section");
+   		if (defined('SITE_DEFAULT_SECTION') && SITE_DEFAULT_SECTION != $last_section) {
+   			header("Location: ".URL_FULL."index.php?section=".SITE_DEFAULT_SECTION);
+   			exit();
+   		} else {
+   			global $db;
+   			$section = $db->selectObject("section","public = 1 AND active = 1"); // grab first section, go there
+   			if ($section) {
+   				header("Location: ".URL_FULL."index.php?section=".$section->id);
+   				exit();
+   			} else {
+   				echo SITE_404_HTML;
+   			}
+   		}
+   	}
+
+    /** exdoc
+    * Takes care of all the specifics of either showing a sectional container or running an action.
+    * @node Subsystems:Theme
+    */
+    public static function main() {
+        global $db, $user;
+
+        echo show_msg_queue();
+        if ((!defined('SOURCE_SELECTOR') || SOURCE_SELECTOR == 1)) {
+            $last_section = expSession::get("last_section");
+            $section = $db->selectObject("section","id=".$last_section);
+            // View authorization will be taken care of by the runAction and mainContainer functions
+            if (self::inAction()) {
+                self::runAction();
+            } else if ($section == null) {
+                self::goDefaultSection();
+            } else {
+                self::mainContainer();
+            }
+        } else {
+            if (isset($_REQUEST['module'])) {
+                include_once(BASE."framework/modules-1/containermodule/actions/orphans_content.php");
+            } else {
+                echo gt('Select a module');
+            }
+        }
+    }
+
+   /** exdoc
+    * Useful only if theme does not use self::main
+    *
+    * @return
+    * @internal param bool $public Whether or not the page is public.
+    * @node     Subsystems:Theme
+    */
+   	public static function mainContainer() {
+   		global $router;
+
+   		if (!AUTHORIZED_SECTION) {
+   			// Set this so that a login on an Auth Denied page takes them back to the previously Auth-Denied page
+   //			expHistory::flowSet(SYS_FLOW_PROTECTED,SYS_FLOW_SECTIONAL);
+   			expHistory::set('manageable', $router->params);
+   			echo SITE_403_HTML;
+   			return;
+   		}
+
+   		if (PUBLIC_SECTION) {
+   //			expHistory::flowSet(SYS_FLOW_PUBLIC,SYS_FLOW_SECTIONAL);
+   			expHistory::set('viewable', $router->params);
+   		} else {
+   //			expHistory::flowSet(SYS_FLOW_PROTECTED,SYS_FLOW_SECTIONAL);
+   			expHistory::set('manageable', $router->params);
+   		}
+
+   	#   if (expSession::is_set("themeopt_override")) {
+   	#       $config = expSession::get("themeopt_override");
+   			self::showSectionalModule("containermodule","Default","","@section",false,true);  //FIXME change to showModule call
+   	#   } else {
+   	#       self::showSectionalModule("containermodule","Default","","@section");
+   	#   }
+   	}
+
+    /** exdoc
+     * Calls the necessary methods to show a specific module, in a section-sensitive way.
+     *
+     * @param string $module   The classname of the module to display
+     * @param string $view     The name of the view to display the module with
+     * @param string $title    The title of the module (support is view-dependent)
+     * @param string $prefix   The prefix of the module's source.  The current section id will be appended to this
+     * @param bool   $pickable Whether or not the module is pickable in the Source Picker.
+     * @param bool   $hide_menu
+     *
+     * @return
+     * @node Subsystems:Theme
+     */
+	public static function showSectionalModule($module,$view,$title,$prefix = null, $pickable = false, $hide_menu=false) {
+		global $db, $module_scope;
+
+		if ($prefix == null) $prefix = "@section";
+
+		$src = $prefix;
+
+//		if (expSession::is_set("themeopt_override")) {
+//			$config = expSession::get("themeopt_override");
+//			if (in_array($module,$config['ignore_mods'])) return;
+//			$src = $config['src_prefix'].$prefix;  //FIXME there is no such config index
+//			$section = null;
+//		} else {
+			global $sectionObj;
+			//$last_section = expSession::get("last_section");
+			//$section = $db->selectObject("section","id=".$last_section);
+			$src .= $sectionObj->id;
+//		}
+        $module_scope[$src][$module]->scope = 'sectional';
+
+		self::showModule($module,$view,$title,$src,$pickable,$sectionObj->id,$hide_menu);
+	}
+
+    /** exdoc
+     * Calls the necessary methods to show a specific module in such a way that the current
+     * section displays the same content as its top-level parent and all of the top-level parent's
+     * children, grand-children, grand-grand-children, etc.
+     *
+     * @param string $module   The classname of the module to display
+     * @param string $view     The name of the view to display the module with
+     * @param string $title    The title of the module (support is view-dependent)
+     * @param string $prefix   The prefix of the module's source.  The current section id will be appended to this
+     * @param bool   $pickable Whether or not the module is pickable in the Source Picker.
+     * @param bool   $hide_menu
+     *
+     * @node Subsystems:Theme
+     */
+	public static function showTopSectionalModule($module,$view,$title,$prefix = null, $pickable = false, $hide_menu=false) {
+		global $db, $module_scope;
+
+		if ($prefix == null) $prefix = "@section";
+		$last_section = expSession::get("last_section");
+
+		$section = $db->selectObject("section","id=".$last_section);
+        $module_scope[$prefix.$section->id][$module]->scope = 'top-sectional';
+		// Loop until we find the top level parent.
+		while ($section->parent != 0) $section = $db->selectObject("section","id=".$section->parent);
+
+		self::showModule($module,$view,$title,$prefix.$section->id,$pickable,$section,$hide_menu);
+	}
+
+    /** exdoc
+     * Calls the necessary methods to show a specific controller, in a section-sensitive way.
+     *
+     * @param array $params
+     *
+     * @internal param string $module The classname of the module to display
+     * @internal param string $view The name of the view to display the module with
+     * @internal param string $title The title of the module (support is view-dependent)
+     * @internal param string $prefix The prefix of the module's source.  The current section id will be appended to this
+     * @internal param bool $pickable Whether or not the module is pickable in the Source Picker.
+     * @internal param bool $hide_menu
+     *
+     * @return void
+     * @node Subsystems:Theme
+     */
+    public static function showSectionalController($params=array()) {  //FIXME not used in base system (custom themes?)
+        global $sectionObj, $module_scope;
+        $src = "@section" . $sectionObj->id;
+        $params['source'] = $src;
+        $module_scope[$params['source']][(isset($params['module'])?$params['module']:$params['controller'])]->scope = 'sectional';
+        self::module($params);
+    }
+
+    public static function showController($params=array()) {
+        global $sectionObj, $db, $module_scope;
+        if (empty($params)) {
+	        return false;
+        } elseif (isset($params['module'])) {
+            self::module($params);
+        } else if (isset($params['controller'])) {
+			$params['view'] = isset($params['view']) ? $params['view'] : $params['action'];
+			$params['title'] = isset($params['moduletitle']) ? $params['moduletitle'] : '';
+			$params['chrome'] = (!isset($params['chrome']) || (isset($params['chrome'])&&empty($params['chrome']))) ? true : false;
+			$params['scope'] = isset($params['scope']) ? $params['scope'] : 'global';
+
+			// set the controller and action to the one called via the function params
+			$requestvars = isset($params['params']) ? $params['params'] : array();
+			$requestvars['controller'] = $params['controller'];
+			$requestvars['action'] = isset($params['action']) ? $params['action'] : null;
+			$requestvars['view'] = isset($params['view']) ? $params['view'] : null;
+
+			// figure out the scope of the module and set the source accordingly
+			if ($params['scope'] == 'global') {
+				$params['source'] = isset($params['source']) ? $params['source'] : null;
+			} elseif ($params['scope'] == 'sectional') {
+				$params['source']  = isset($params['source']) ? $params['source'] : '@section';
+				$params['source'] .= $sectionObj->id;
+			} elseif ($params['scope'] == 'top-sectional') {
+				$params['source']  = isset($params['source']) ? $params['source'] : '@section';
+				$section = $sectionObj;
+				while ($section->parent > 0) $section = $db->selectObject("section","id=".$section->parent);
+				$params['source'] .= $section->id;
+			}
+            $module_scope[$params['source']][(isset($params['module'])?$params['module']:$params['controller'])]->scope = $params['scope'];
+			self::showModule(expModules::getControllerClassName($params['controller']),$params['view'],$params['title'],$params['source'],false,null,$params['chrome'],$requestvars);
+        } else {
+	        return false;
+        }
+    }
+
+    /**
+     * Entry point for displaying modules
+     * Packages $params for calling showModule method
+     *
+     * @param array $params list of module parameters
+     *
+     * @return bool
+     */
+    public static function module($params) {
+        global $db, $module_scope, $sectionObj;
+
+	    if (empty($params)) {
+		    return false;
+	    } elseif (isset($params['controller'])) {
+//            self::showController($params);
+            //FIXME change to showModule call?
+            $params['view'] = isset($params['view']) ? $params['view'] : $params['action'];
+            $params['title'] = isset($params['moduletitle']) ? $params['moduletitle'] : '';
+            $params['chrome'] = (!isset($params['chrome']) || (isset($params['chrome'])&&empty($params['chrome']))) ? true : false;
+            $params['scope'] = isset($params['scope']) ? $params['scope'] : 'global';
+
+            // set the controller and action to the one called via the function params
+            $requestvars = isset($params['params']) ? $params['params'] : array();
+            $requestvars['controller'] = $params['controller'];
+            $requestvars['action'] = isset($params['action']) ? $params['action'] : null;
+            $requestvars['view'] = isset($params['view']) ? $params['view'] : null;
+
+            // figure out the scope of the module and set the source accordingly
+            if ($params['scope'] == 'global') {
+                $params['source'] = isset($params['source']) ? $params['source'] : null;
+            } elseif ($params['scope'] == 'sectional') {
+                $params['source']  = isset($params['source']) ? $params['source'] : '@section';
+                $params['source'] .= $sectionObj->id;
+            } elseif ($params['scope'] == 'top-sectional') {
+                $params['source']  = isset($params['source']) ? $params['source'] : '@section';
+                $section = $sectionObj;
+                while ($section->parent > 0) $section = $db->selectObject("section","id=".$section->parent);
+                $params['source'] .= $section->id;
+            }
+            $module_scope[$params['source']][(isset($params['module'])?$params['module']:$params['controller'])]->scope = $params['scope'];
+            self::showModule(expModules::getControllerClassName($params['controller']),$params['view'],$params['title'],$params['source'],false,null,$params['chrome'],$requestvars);
+        } elseif (isset($params['module'])) {
+            $moduletitle = (isset($params['moduletitle'])) ? $params['moduletitle'] : "";
+            $source = (isset($params['source'])) ? $params['source'] : "";
+            $chrome = (isset($params['chrome'])) ? $params['chrome'] : false;
+            $scope = (isset($params['scope'])) ? $params['scope'] : "global";
+
+            if ($scope=="global") {
+                self::showModule($params['module']."module",$params['view'],$moduletitle,$source,false,null,$chrome);
+            }
+            if ($scope=="top-sectional") {
+//                self::showTopSectionalModule($params['module']."module", //module
+//                                             $params['view'], //view
+//                                             $moduletitle, // Title
+//                                             $source, // source
+//                                             false, // used to apply to source picker. does nothing now.
+//                                             $chrome // Show chrome
+//                                            );
+                //FIXME change to showModule call
+                if ($source == null) $source = "@section";
+                $last_section = expSession::get("last_section");
+                $section = $db->selectObject("section","id=".$last_section);
+                // Loop until we find the top level parent.
+                while ($section->parent != 0) $section = $db->selectObject("section","id=".$section->parent);
+                $module_scope[$source.$section->id][$params['module']."module"]->scope = 'top-sectional';
+                self::showModule($params['module']."module",$params['view'],$moduletitle,$source.$section->id,false,$section,$chrome);
+            }
+            if ($scope=="sectional") {
+//                self::showSectionalModule($params['module']."module", //module
+//                                          $params['view'], //view
+//                                          $moduletitle, // title
+//                                          $source, // source/prefix
+//                                          false, // used to apply to source picker. does nothing now.
+//                                          $chrome // Show chrome
+//                                        );
+                //FIXME change to showModule call
+                if ($source == null) $source = "@section";
+                $src = $source;
+                $src .= $sectionObj->id;
+                $module_scope[$src][$params['module']."module"]->scope = 'sectional';
+                self::showModule($params['module']."module",$params['view'],$moduletitle,$src,false,$sectionObj->id,$chrome);
+            }
+        } else {
+		    return false;
+	    }
+    }
+
 	/** exdoc
 	 * Calls the necessary methods to show a specific module
 	 *
@@ -637,10 +877,10 @@ class expTheme {
 		}
 		if ($module == "loginController" && defined('PREVIEW_READONLY') && PREVIEW_READONLY == 1) return;
 
-		if (expSession::is_set("themeopt_override")) {
-			$config = expSession::get("themeopt_override");
-			if (in_array($module,$config['ignore_mods'])) return;
-		}
+//		if (expSession::is_set("themeopt_override")) {
+//			$config = expSession::get("themeopt_override");
+//			if (in_array($module,$config['ignore_mods'])) return;
+//		}
 		$loc = expCore::makeLocation($module,$source."");
 
         if (empty($module_scope[$source][$module]->scope))
@@ -723,263 +963,6 @@ class expTheme {
 			} else {
 				echo sprintf(gt('The module "%s" was not found in the system.'),$module);
 			}
-		}
-	}
-
-	/* exdoc
-	 * Runs the appropriate action, by looking at the $_REQUEST variable.
-	 * @node Subsystems:Theme
-	 */
-	//function self::runAction() {
-	//    if (self::inAction()) {
-	//        if (!AUTHORIZED_SECTION) {
-	//            echo SITE_403_HTML;
-	//        }
-	//        if (expSession::is_set("themeopt_override")) {
-	//            $config = expSession::get("themeopt_override");
-	//            echo "<a class='mngmntlink sitetemplate_mngmntlink' href='".$config['mainpage']."'>".$config['backlinktext']."</a><br /><br />";
-	//        }
-	//
-	//        //FIXME: module/controller glue code..remove ASAP
-	//        $module = empty($_REQUEST['controller']) ? $_REQUEST['module'] : $_REQUEST['controller'];
-	//        $isController = controllerExists($module);
-	//
-	//        if ($isController && !isset($_REQUEST['_common'])) {
-	//            // this is being set just incase the url said module=modname instead of controller=modname
-	//            // with SEF URls turned on its not really an issue, but with them off some of the links
-	//            // aren't being made correctly...depending on how the {link} plugin was used in the view.
-	//            $_REQUEST['controller'] = $module;
-	//
-	//            echo renderAction($_REQUEST);
-	//        } else {
-	//            if ($_REQUEST['action'] == 'index') {
-	//                $view = empty($_REQUEST['view']) ? 'Default' : $_REQUEST['view'];
-	//                $title = empty($_REQUEST['title']) ? '' : $_REQUEST['title'];
-	//                $src = empty($_REQUEST['src']) ? null : $_REQUEST['src'];
-	//                self::showModule($module, $view, $title, $src);
-	//                return true;
-	//            }
-	//
-	//            global $db, $user;
-	//
-	//            // the only reason we should have a controller down in this section is if we are hitting a common action like
-	//            // userperms or groupperms...deal wit it.
-	//            $loc = null;
-	//            $loc->mod = $module;
-	//            $loc->src = (isset($_REQUEST['src']) ? $_REQUEST['src'] : "");
-	//            $loc->int = (isset($_REQUEST['int']) ? $_REQUEST['int'] : "");
-	//            //if (isset($_REQUEST['act'])) $loc->act = $_REQUEST['act'];
-	//
-	//            if (isset($_REQUEST['_common'])) {
-	//                $actfile = "/common/actions/" . $_REQUEST['action'] . ".php";
-	//            } else {
-	//                $actfile = "/" . $module . "/actions/" . $_REQUEST['action'] . ".php";
-	//            }
-	//
-	//            if (is_readable(BASE."themes/".DISPLAY_THEME_REAL."/modules".$actfile)) {
-	//                include_once(BASE."themes/".DISPLAY_THEME_REAL."/modules".$actfile);
-	//            } elseif (is_readable(BASE.'framework/modules-1/'.$actfile)) {
-	//                include_once(BASE.'framework/modules-1/'.$actfile);
-	//            } else {
-	//                echo SITE_404_HTML . '<br /><br /><hr size="1" />';
-	//                echo sprintf(gt('No such module action').' : %1 : %2',strip_tags($module),strip_tags($_REQUEST['action']));
-	//                echo '<br />';
-	//            }
-	//        }
-	//    }
-	//}
-
-	public static function showAction($module, $action, $src="", $params="") {
-		global $db, $user;
-
-		$loc = null;
-		$loc->mod = $module;
-		$loc->src = (isset($src) ? $src : "");
-		$loc->int = (isset($int) ? $int : "");
-
-		$actfile = "/" . $module . "/actions/" . $action . ".php";
-		if (isset($params)) {
-			foreach ($params as $key => $value) {
-				$_GET[$key] = $value;
-			}
-		}
-		//if (isset($['_common'])) $actfile = "/common/actions/" . $_REQUEST['action'] . ".php";
-
-//		if (is_readable(BASE."themes/".DISPLAY_THEME_REAL."/modules".$actfile)) {
-//			include(BASE."themes/".DISPLAY_THEME_REAL."/modules".$actfile);
-		if (is_readable(BASE."themes/".DISPLAY_THEME."/modules".$actfile)) {
-				include(BASE."themes/".DISPLAY_THEME."/modules".$actfile);
-		} elseif (is_readable(BASE.'framework/modules-1/'.$actfile)) {
-			include(BASE.'framework/modules-1/'.$actfile);
-		} else {
-			echo SITE_404_HTML . '<br /><br /><hr size="1" />';
-			echo sprintf(gt('No such module action').' : %1 : %2',strip_tags($_REQUEST['module']),strip_tags($_REQUEST['action']));
-			echo '<br />';
-		}
-	}
-
-    /** exdoc
-     *
-     * @state <b>UNDOCUMENTED</b>
-     * @node  Undocumented
-     *
-     * @param bool   $include_default
-     * @param string $theme
-     *
-     * @return array
-     */
-	public static function getSubthemes($include_default = true,$theme = DISPLAY_THEME) {
-		$base = BASE."themes/$theme/subthemes";
-		// The array of subthemes.  If the theme has no subthemes directory,
-		// or the directory is not readable by the web server, this empty array
-		// will be returned (Unless the caller wanted us to include the default layout)
-		$subs = array();
-		if ($include_default == true) {
-			// Caller wants us to include the default layout.
-			$subs[''] = DEFAULT_VIEW; // Not really its intended use, but it works.
-		}
-
-		if (is_readable($base)) {
-			// subthemes directory exists and is readable by the web server.  Continue on.
-			$dh = opendir($base);
-			// Read out all entries in the THEMEDIR/subthemes directory
-			while (($s = readdir($dh)) !== false) {
-				if (substr($s,-4,4) == '.php' && substr($s,0,1) != '_' && is_file($base."/$s") && is_readable($base."/$s")) {
-					// Only readable .php files are allowed to be subtheme files.
-					$subs[substr($s,0,-4)] = substr($s,0,-4);
-				}
-			}
-			// Sort the subthemes by their keys (which are the same as the values)
-			// using a natural string comparison function (PHP built-in)
-			uksort($subs,'strnatcmp');
-		}
-		return $subs;
-	}
-
-    /** exdoc
-     * Calls the necessary methods to show a specific module in such a way that the current
-     * section displays the same content as its top-level parent and all of the top-level parent's
-     * children, grand-children, grand-grand-children, etc.
-     *
-     * @param string $module   The classname of the module to display
-     * @param string $view     The name of the view to display the module with
-     * @param string $title    The title of the module (support is view-dependent)
-     * @param string $prefix   The prefix of the module's source.  The current section id will be appended to this
-     * @param bool   $pickable Whether or not the module is pickable in the Source Picker.
-     * @param bool   $hide_menu
-     *
-     * @node Subsystems:Theme
-     */
-	public static function showTopSectionalModule($module,$view,$title,$prefix = null, $pickable = false, $hide_menu=false) {
-		global $db, $module_scope;
-
-		if ($prefix == null) $prefix = "@section";
-		$last_section = expSession::get("last_section");
-
-		$section = $db->selectObject("section","id=".$last_section);
-        $module_scope[$prefix.$section->id][$module]->scope = 'top-sectional';
-		// Loop until we find the top level parent.
-		while ($section->parent != 0) $section = $db->selectObject("section","id=".$section->parent);
-
-		self::showModule($module,$view,$title,$prefix.$section->id,$pickable,$section, $hide_menu);
-	}
-
-    /** exdoc
-     * Calls the necessary methods to show a specific module, in a section-sensitive way.
-     *
-     * @param string $module   The classname of the module to display
-     * @param string $view     The name of the view to display the module with
-     * @param string $title    The title of the module (support is view-dependent)
-     * @param string $prefix   The prefix of the module's source.  The current section id will be appended to this
-     * @param bool   $pickable Whether or not the module is pickable in the Source Picker.
-     * @param bool   $hide_menu
-     *
-     * @return
-     * @node Subsystems:Theme
-     */
-	public static function showSectionalModule($module,$view,$title,$prefix = null, $pickable = false, $hide_menu=false) {
-		global $db, $module_scope;
-
-		if ($prefix == null) $prefix = "@section";
-
-		$src = $prefix;
-
-		if (expSession::is_set("themeopt_override")) {
-			$config = expSession::get("themeopt_override");
-			if (in_array($module,$config['ignore_mods'])) return;
-			$src = $config['src_prefix'].$prefix;  //FIXME there is no such config index
-			$section = null;
-		} else {
-			global $sectionObj;
-			//$last_section = expSession::get("last_section");
-			//$section = $db->selectObject("section","id=".$last_section);
-			$src .= $sectionObj->id;
-		}
-        $module_scope[$src][$module]->scope = 'sectional';
-
-		self::showModule($module,$view,$title,$src,$pickable,$sectionObj->id, $hide_menu);
-	}
-
-	/** exdoc
-	 * Redirect User to Default Section
-	 * @node Subsystems:Theme
-	 */
-	public static function goDefaultSection() {
-		$last_section = expSession::get("last_section");
-		if (defined('SITE_DEFAULT_SECTION') && SITE_DEFAULT_SECTION != $last_section) {
-			header("Location: ".URL_FULL."index.php?section=".SITE_DEFAULT_SECTION);
-			exit();
-		} else {
-			global $db;
-			$section = $db->selectObject("section","public = 1 AND active = 1"); // grab first section, go there
-			if ($section) {
-				header("Location: ".URL_FULL."index.php?section=".$section->id);
-				exit();
-			} else {
-				echo SITE_404_HTML;
-			}
-		}
-	}
-
-    /** exdoc
-     * Useful only if theme does not use self::main
-     *
-     * @return
-     * @internal param bool $public Whether or not the page is public.
-     * @node     Subsystems:Theme
-     */
-	public static function mainContainer() {
-		global $router;
-
-		if (!AUTHORIZED_SECTION) {
-			// Set this so that a login on an Auth Denied page takes them back to the previously Auth-Denied page
-//			expHistory::flowSet(SYS_FLOW_PROTECTED,SYS_FLOW_SECTIONAL);
-			expHistory::set('manageable', $router->params);
-			echo SITE_403_HTML;
-			return;
-		}
-
-		if (PUBLIC_SECTION) {
-//			expHistory::flowSet(SYS_FLOW_PUBLIC,SYS_FLOW_SECTIONAL);
-			expHistory::set('viewable', $router->params);
-		} else {
-//			expHistory::flowSet(SYS_FLOW_PROTECTED,SYS_FLOW_SECTIONAL);
-			expHistory::set('manageable', $router->params);
-		}
-
-	#   if (expSession::is_set("themeopt_override")) {
-	#       $config = expSession::get("themeopt_override");
-			self::showSectionalModule("containermodule","Default","","@section",false,true);
-	#   } else {
-	#       self::showSectionalModule("containermodule","Default","","@section");
-	#   }
-	}
-
-	public static function loadActionMaps() {
-		if (is_readable(BASE.'themes/'.DISPLAY_THEME.'/action_maps.php')) {
-			return include(BASE.'themes/'.DISPLAY_THEME.'/action_maps.php');
-		} else {
-			return array();
 		}
 	}
 
