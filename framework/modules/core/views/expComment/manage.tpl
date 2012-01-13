@@ -21,7 +21,7 @@
 <div class="module expcomment manage">
     <h1>{"Manage Comments"|gettext}</h1>
     
-    {pagelinks}
+    {$page->links}
     <table class="exp-skin-table">
         <thead>
             <tr>
@@ -57,5 +57,5 @@
             {/foreach}
         </tbody>
     </table>        
-    {pagelinks}
+    {$page->links}
 </div>
