@@ -25,7 +25,6 @@
 	<dl>
 		{foreach from=$items item=tweet}
 			<div class="item">
-				<p>
 					{if $config.showimage}
 						<div style="float:left;">
 							{img src="`$tweet.image`" style="margin:2px 5px 100% 0px;"}
@@ -46,7 +45,6 @@
 							{/if}
 						{/permissions}
 					</dd>
-				</p>
 			</div>
 			{clear}
 		{/foreach}

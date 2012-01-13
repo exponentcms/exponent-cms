@@ -21,41 +21,41 @@
 <div class="module expcomment manage">
     <h1>{"Manage Comments"|gettext}</h1>
     
-    {pagelinks paginate=$page top=1}
+    {pagelinks}
     <table class="exp-skin-table">
-    <thead>
-        <tr>
-            {$page->header_columns}
-            <th>&nbsp</th>
-        </tr>
-    </thead>
-    <tbody>
-        {foreach from=$page->records item=comment}
-        <tr class="{cycle values="even, odd"}">
-            <td>
-                {if $comment->approved == 1}
-                    <a href="{link action=approve_toggle id=$comment->id content_type=$content_type content_id=$content_id}" title="Disable this comment"|gettext>
-                        <img src="{$smarty.const.ICON_RELATIVE|cat:'toggle_on.png'}">
-                    </a>
-                {else}
-                    <a href="{link action=approve_toggle id=$comment->id content_type=$content_type content_id=$content_id}" title="Approve this comment"|gettext>
-                        <img src="{$smarty.const.ICON_RELATIVE|cat:'toggle_off.png'}">
-                    </a>   
-                {/if}  
-            </td>
-            <td>{$comment->name}</td>
-            <td>{$comment->body}</td>
-            <td>
-				<div class="item-actions">
-					{icon action=edit record=$comment content_id=$content_id title="Edit this comment"|gettext}
-					{icon action=delete record=$comment title="Delete this comment"|gettext onclick="return confirm('"|cat:("Are you sure you want to delete this comment?"|gettext)|cat:"');"}
-				</div>
-            </td>
-        </tr>
-        {foreachelse}
-        <tr><td>{'There are no comments awaiting approval'|gettext}</td></tr>
-        {/foreach}
-    </tbody>
+        <thead>
+            <tr>
+                {$page->header_columns}
+                <th>&nbsp</th>
+            </tr>
+        </thead>
+        <tbody>
+            {foreach from=$page->records item=comment}
+                <tr class="{cycle values="even, odd"}">
+                    <td>
+                        {if $comment->approved == 1}
+                            <a href="{link action=approve_toggle id=$comment->id content_type=$content_type content_id=$content_id}" title="Disable this comment"|gettext>
+                                <img src="{$smarty.const.ICON_RELATIVE|cat:'toggle_on.png'}">
+                            </a>
+                        {else}
+                            <a href="{link action=approve_toggle id=$comment->id content_type=$content_type content_id=$content_id}" title="Approve this comment"|gettext>
+                                <img src="{$smarty.const.ICON_RELATIVE|cat:'toggle_off.png'}">
+                            </a>
+                        {/if}
+                    </td>
+                    <td>{$comment->name}</td>
+                    <td>{$comment->body}</td>
+                    <td>
+                        <div class="item-actions">
+                            {icon action=edit record=$comment content_id=$content_id title="Edit this comment"|gettext}
+                            {icon action=delete record=$comment title="Delete this comment"|gettext onclick="return confirm('"|cat:("Are you sure you want to delete this comment?"|gettext)|cat:"');"}
+                        </div>
+                    </td>
+                </tr>
+            {foreachelse}
+                <tr><td>{'There are no comments awaiting approval'|gettext}</td></tr>
+            {/foreach}
+        </tbody>
     </table>        
-    {pagelinks paginate=$page bottom=1}
+    {pagelinks}
 </div>
