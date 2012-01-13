@@ -26,7 +26,7 @@
  * This is the class update_profile_paths
  */
 class update_profile_paths extends upgradescript {
-	protected $from_version = '1.99.0';
+	protected $from_version = '1.99.0';  // version number lower than first released version, 2.0.0
 	protected $to_version = '2.0.3';  // code was corrected in 2.0.4
 
 	/**
@@ -39,8 +39,8 @@ class update_profile_paths extends upgradescript {
 	 * generic description of upgrade script
 	 * @return string
 	 */
-	function description() { return "Prior to Exponent 2.0.4, the User profile extension table contained full paths which prevented moving Exponent to a new folder after a test install.
-	   There was also an issue with the default user avatar path entry.  This Script deletes the bad entry placing the correct ones"; }
+	function description() { return "Prior to v2.0.4, the User profile extension table contained full paths which prevented moving Exponent to a new folder after a test install.
+	   There was also an issue with the default user avatar path entry.  This Script replaces bad entries with correct ones"; }
 
 	/**
 	 * additional test(s) to see if upgrade script should be run

@@ -108,8 +108,8 @@ class expVersion {
      *
      * @return bool set to true if $version1 is less than $version2
      */
-    private static function compareVersion($version1, $version2) {
-        if ($version1->major < EXPONENT_VERSION_MAJOR) {
+    public static function compareVersion($version1, $version2) {
+        if ($version1->major < $version2->major) {
             return true;
         } elseif ($version1->major == $version2->major && $version1->minor < $version2->minor) {
             return true;

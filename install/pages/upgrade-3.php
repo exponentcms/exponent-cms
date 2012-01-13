@@ -19,9 +19,10 @@
 ##################################################
 
 if (!defined('EXPONENT')) exit('');
-//$db_version = $db->selectObject('version','created_at=(select max(created_at) from '.DB_TABLE_PREFIX.'_version)');
 //$num_version = EXPONENT_VERSION_MAJOR.'.'.EXPONENT_VERSION_MINOR.'.'.EXPONENT_VERSION_REVISION;
 $num_version = expVersion::getVersion();
+global $db;
+$db_version = $db->selectObject('version','1');
 
 ?>
 <h2><?php echo gt('Upgrade Scripts'); ?></h2>
@@ -46,7 +47,8 @@ if (is_readable($upgrade_dir)) {
              * @name $upgradescript
              */
             $upgradescript = new $classname;
-            if ($upgradescript->checkVersion($num_version) && $upgradescript->needed($num_version)) {
+//            if ($upgradescript->checkVersion($num_version) && $upgradescript->needed($num_version)) {
+            if ($upgradescript->checkVersion($db_version) && $upgradescript->needed()) {
                 echo '<li><h3>' . $upgradescript->name() . '</h3>';
                 if (isset($_REQUEST['run'])) {
                     echo '<p class="success">' . $upgradescript->upgrade() . '</p></li>';

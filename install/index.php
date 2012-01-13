@@ -85,7 +85,7 @@ if (isset($_POST['install_sample'])) {
 //		}
 }
 
-if (file_exists("../conf/config.php") && !file_exists('not_configured') && !isset($_REQUEST['page'])) {
+if (file_exists("../conf/config.php") && !isset($_REQUEST['page'])) {
 	$_REQUEST['page'] = 'upgrade-1';
 }
 		
