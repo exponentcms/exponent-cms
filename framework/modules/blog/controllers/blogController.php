@@ -39,22 +39,29 @@ class blogController extends expController {
 	/**
 	 * edit item in module
 	 */
-	function edit() {
-		$blogs = $this->blog->find('all');
-		$used_tags = array();
-		$taglist = '';
-		foreach ($blogs as $blog) {
-			foreach($blog->expTag as $tag) {
-				$exptag = new expTag($tag->id);
-				if (!in_array($exptag->title,$used_tags)) {
-					$taglist .= "'".$exptag->title."',";
-					$used_tags[] = $exptag->title;
-				}
-			}
-		}
-		assign_to_template(array('taglist'=>$taglist));
-		parent::edit();
-    }
+//	function edit() {
+//        global $db;
+//
+////		$blogs = $this->blog->find('all');
+////		$used_tags = array();
+////		$taglist = '';
+////		foreach ($blogs as $blog) {
+////			foreach($blog->expTag as $tag) {
+////				$exptag = new expTag($tag->id);
+////				if (!in_array($exptag->title,$used_tags)) {
+////					$taglist .= "'".$exptag->title."',";
+////					$used_tags[] = $exptag->title;
+////				}
+////			}
+////		}
+//        $tags = $db->selectObjects('expTags','1');
+//		$taglist = '';
+//        foreach ($tags as $tag) {
+//            $taglist .= "'".$tag->title."',";
+//        }
+//		assign_to_template(array('taglist'=>$taglist));
+//		parent::edit();
+//    }
 
     public function showall() {
 	    expHistory::set('viewable', $this->params);

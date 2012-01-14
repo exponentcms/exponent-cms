@@ -23,6 +23,9 @@
 			{if $permissions.create == 1}
 				{icon class=add action=edit rank=1 title="Add a File at the Top"|gettext text="Add a File"|gettext}
 			{/if}
+            {if $permissions.manage == 1}
+                {icon class="manage" controller=expTag action=manage text="Manage Tags"|gettext}
+            {/if}
 			{if ($permissions.manage == 1 && $rank == 1)}
 				{ddrerank items=$page->records model="filedownload" label="Downloadable Items"|gettext}
 			{/if}

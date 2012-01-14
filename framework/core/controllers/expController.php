@@ -314,7 +314,15 @@ abstract class expController {
 	 * edit item in module
 	 */
 	function edit() {
+        global $db;
+
         expHistory::set('editable', $this->params);
+        $tags = $db->selectObjects('expTags','1','title ASC');
+   		$taglist = '';
+        foreach ($tags as $tag) {
+            $taglist .= "'".$tag->title."',";
+        }
+		assign_to_template(array('taglist'=>$taglist));
         $modelname = $this->basemodel_name;
         assign_to_template(array('controller'=>$this->params['controller']));
         assign_to_template(array('modelname'=>$modelname));

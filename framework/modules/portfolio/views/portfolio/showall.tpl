@@ -24,6 +24,9 @@
 			{if $permissions.create == 1}
 				{icon class=add action=edit title="Add to the top"|gettext text="Add a Portfolio Piece"|gettext}
 			{/if}
+            {if $permissions.manage == 1}
+                {icon class="manage" controller=expTag action=manage text="Manage Tags"|gettext}
+            {/if}
 			{if $permissions.manage == 1}
 				{ddrerank items=$page->records model="portfolio" label="Portfolio Pieces"|gettext}
 			{/if}

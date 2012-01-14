@@ -13,6 +13,7 @@
  * GPL: http://www.gnu.org/licenses/gpl.txt
  *
  *}
+
 <div id="editblog" class="module blog edit">
     {if $record->id != ""}<h1>{'Editing'|gettext} {$record->title}</h1>{else}<h1>{'New'|gettext} {$modelname}</h1>{/if}
     {form action=update}

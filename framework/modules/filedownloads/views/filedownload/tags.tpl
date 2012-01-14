@@ -16,6 +16,16 @@
 
 <div class="module filedownloads showall-by-tag">
     {if $moduletitle}<h2>{$moduletitle}</h2>{/if}
+    {permissions}
+        <div class="module-actions">
+			{if $permissions.create == 1}
+				{icon class=add action=edit title="Add a File at the Top"|gettext text="Add a File"|gettext}
+			{/if}
+            {if $permissions.manage == 1}
+                {icon class="manage" controller=expTag action=manage text="Manage Tags"|gettext}
+            {/if}
+        </div>
+    {/permissions}
     <div class="bodycopy">
     <ul>
         {foreach from=$tags item=tag}
