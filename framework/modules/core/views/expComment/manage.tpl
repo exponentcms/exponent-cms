@@ -20,7 +20,6 @@
 
 <div class="module expcomment manage">
     <h1>{"Manage Comments"|gettext}</h1>
-    
     {$page->links}
     <table class="exp-skin-table">
         <thead>

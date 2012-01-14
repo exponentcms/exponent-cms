@@ -74,7 +74,3 @@
     </table>
     {$page->links}
 </div>
-
-
-	
-

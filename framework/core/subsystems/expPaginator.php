@@ -122,7 +122,6 @@ class expPaginator {
 		    )
 		);
 		
-	
 		$this->start = (($this->page * $this->limit) - $this->limit);
 		
 		//setup the columns and default ordering of records
@@ -307,12 +306,10 @@ class expPaginator {
 
 		$this->makeSortDropdown($sortparams);
        
-        
         $table_template = get_common_template('pagination_table', null, 'common');
         $table_template->assign('page', $this);
         $this->table = $table_template->render();
         
-                                                           
 	}
 	
 	//From Merge

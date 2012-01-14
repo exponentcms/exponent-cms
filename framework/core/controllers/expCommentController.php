@@ -67,7 +67,7 @@ class expCommentController extends expController {
         //$sql .= 'AND c.approved=0';
 
         $page = new expPaginator(array(
-            //'model'=>'expComment',
+            'model'=>'expComment',
             'sql'=>$sql, 
             'limit'=>10,
             'order'=>'created_at',
