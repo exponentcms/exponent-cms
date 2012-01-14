@@ -26,7 +26,7 @@
                 <li><a href="#tab3"><em>{'Files'|gettext}</em></a></li>
                 <li><a href="#tab4"><em>{'SEO'|gettext}</em></a></li>
             </ul>            
-            <div class="yui-content">
+            <div class="yui-content yui3-skin-sam">
                 <div id="tab1">
                     {control type=text name=title label="Title"|gettext value=$record->title}
                     {control type="checkbox" name="featured" label="Feature this Portfolio Piece"|gettext|cat:"?" checked=$record->featured value=1}
@@ -35,14 +35,14 @@
                 <div id="tab2">
                     <h2>{'Tags'|gettext}</h2>
                     {foreach from=$record->expTag item=tag name=tags}
-                    {if $smarty.foreach.tags.first == false}
+                        {if $smarty.foreach.tags.first == false}
                             {assign var=tags value="`$tags`,`$tag->title`"}
                         {else}
                             {assign var=tags value=$tag->title}
                         {/if}
                     {/foreach}
                     {if $tags != ""}{$tags=$tags|cat:','}{/if}
-                    {control type="textarea" name="expTag" label="Tags (comma separated)"|gettext value=$tags}
+                    {control type="text" id="expTag" name="expTag" label="Tags (comma separated)"|gettext value=$tags size=45}
                 </div>
                 <div id="tab3">
                     {control type="files" name="files" label="Files"|gettext value=$record->expFile}
@@ -79,11 +79,12 @@
 		  queryDelay: 0,
 		  queryDelimiter: ',',
 		  source: tags,
-		  resultHighlighter: 'startsWith',
+          resultFilters    : 'phraseMatch',
+          resultHighlighter: 'phraseMatch',
 
-		  // Chain together a startsWith filter followed by a custom result filter
+		  // Chain together a phraseMatch filter followed by a custom result filter
 		  // that only displays tags that haven't already been selected.
-		  resultFilters: ['startsWith', function (query, results) {
+		  resultFilters: ['phraseMatch', function (query, results) {
 		    // Split the current input value into an array based on comma delimiters.
 		    var selected = inputNode.ac.get('value').split(/\s*,\s*/);
 

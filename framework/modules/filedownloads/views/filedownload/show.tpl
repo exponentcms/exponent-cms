@@ -22,9 +22,18 @@
         {if $record->title}<h2>{$record->title}</h2>{/if}
         <span class="label size">{'File Size'|gettext}:</span>
         <span class="value">{$record->expFile.downloadable[0]->filesize|kilobytes}{'kb'|gettext}</span>
-        &nbsp;&nbsp;
+        &nbsp;|&nbsp;
         <span class="label downloads"># {'Downloads'|gettext}:</span>
         <span class="value">{$record->downloads}</span>
+        {if $record->expTag}
+            &nbsp;|&nbsp;
+       		<span class="tag">
+       			{'Tags'|gettext}:
+       			{foreach from=$record->expTag item=tag name=tags}
+       				<a href="{link action=showall_by_tags tag=$tag->sef_url}">{$tag->title}</a>{if $smarty.foreach.tags.last != 1},{/if}
+       			{/foreach}
+       		</span>
+       	{/if}
         <div class="bodycopy">
             {$record->body}
         </div>

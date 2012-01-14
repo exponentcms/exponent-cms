@@ -31,7 +31,7 @@
     {pagelinks paginate=$page top=1}
     {foreach from=$page->records item=file name=files}
         <div class="item">
-        {$filetype=$file->expFile.downloadable[0]->filename|regex_replace:"/^.*\.([^.]+)$/D":"$1"}
+            {$filetype=$file->expFile.downloadable[0]->filename|regex_replace:"/^.*\.([^.]+)$/D":"$1"}
 			{if $file->expFile.preview[0] != "" && $config.show_icon}
 				{img class="preview-img" file_id=$file->expFile.preview[0]->id square=150}
 			{/if}
@@ -43,9 +43,18 @@
 			{if $config.show_info}
 				<span class="label size">{'File Size'}:</span>
 				<span class="value">{$file->expFile.downloadable[0]->filesize|kilobytes}{'kb'|gettext}</span>
-				&nbsp;&nbsp;
+				&nbsp;|&nbsp;
 				<span class="label downloads"># {'Downloads'|gettext}:</span>
 				<span class="value">{$file->downloads}</span>
+                {if $file->expTag|@count>0}
+                    &nbsp;|&nbsp;
+                    <span class="tag">
+                        {'Tags'|gettext}:
+                        {foreach from=$file->expTag item=tag name=tags}
+                            <a href="{link action=showall_by_tags tag=$tag->sef_url}">{$tag->title}</a>{if $smarty.foreach.tags.last != 1},{/if}
+                        {/foreach}
+                    </span>
+                {/if}
 			{/if}
 			{permissions}
 				<div class="item-actions">
@@ -58,15 +67,6 @@
 				</div>
 			{/permissions}
 			<div class="bodycopy">
-				{if $config.usestags}
-					<div class="tags">
-						Tags: 
-						{foreach from=$file->expTag item=tag name=tags}
-							<a href="{link action=showall_by_tags tag=$tag->sef_url}">{$tag->title}</a>
-							{if $smarty.foreach.tags.last != 1},{/if}
-						{/foreach} 
-					</div>
-				{/if}
 				{if $config.usebody==1}
                     <p>{$file->body|summarize:"html":"paralinks"}</p>
                 {elseif $config.usebody==2}

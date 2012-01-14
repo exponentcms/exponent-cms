@@ -34,6 +34,25 @@ class filedownloadController extends expController {
 	function description() { return " This module lets you put files on your website for users to download."; }
 	function isSearchable() { return true; }
 	
+    /**
+   	 * edit item in module
+   	 */
+   	function edit() {
+   		$files = $this->filedownload->find('all');
+   		$used_tags = array();
+   		$taglist = '';
+   		foreach ($files as $file) {
+   			foreach($file->expTag as $tag) {
+   				$exptag = new expTag($tag->id);
+   				if (!in_array($exptag->title,$used_tags)) {
+   					$taglist .= "'".$exptag->title."',";
+   					$used_tags[] = $exptag->title;
+   				}
+   			}
+   		}
+   		assign_to_template(array('taglist'=>$taglist));
+   		parent::edit();
+    }
 
     function showall() {
         $modelname = $this->basemodel_name;
