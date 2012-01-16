@@ -16,15 +16,16 @@
 
 <div class="exptag edit">
 	<div class="form_header">
-        <h1>{'Edit Tags'|gettext}</h1>
-        <p>{'Add new tags to this tag collection'|gettext}</p>
-	</div>
-	{if $record->id == ""}
-		{assign var=action value=create}
-	{else}
-		{assign var=action value=update}
-	{/if}
-	
+        {if $record->id == ""}
+            <h1>{'Create Tag'|gettext}</h1>
+            <p>{'Create a new tag to add to the list of available tags'|gettext}</p>
+            {assign var=action value=create}
+        {else}
+            <h1>{'Edit Tag'|gettext}</h1>
+            <p>{'Edit this tag to update all associated tagged items'|gettext}</p>
+            {assign var=action value=update}
+        {/if}
+    </div>
 	{form controller=expTag action=$action}
 		{control type=hidden name=id value=$record->id}
 		{control type=hidden name=tag_collections_id value=$record->tag_collections_id}

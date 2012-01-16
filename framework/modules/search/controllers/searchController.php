@@ -236,13 +236,9 @@ class searchController extends expController {
 		$records_key   = implode(",", $records_key_arr);
 		$records_values = implode(",", $records_values_arr);
 		
-	
-		
-		assign_to_template(array('records'=>$records, 'total'=>$count, 'limit' => $limit, 'records_key' => $records_key, 'records_values' => $records_values)); 
+		assign_to_template(array('records'=>$records, 'total'=>$count, 'limit' => $limit, 'records_key' => $records_key, 'records_values' => $records_values));
 	}
-	
-    
-    
+
 }
 
 ?>
