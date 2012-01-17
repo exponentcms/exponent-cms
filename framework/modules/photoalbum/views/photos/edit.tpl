@@ -27,6 +27,7 @@
             </ul>            
             <div class="yui-content">
                 <div id="tab1">
+                    <h2>{'Image Entry'|gettext}</h2>
                     {control type=text name=title label="Title"|gettext value=$record->title}
                     {control type=html name=body label="Description"|gettext value=$record->body}
                     {control type="text" name="link" label="Link a Slideshow Slide"|gettext value=$record->link}

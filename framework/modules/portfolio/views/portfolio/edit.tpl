@@ -23,18 +23,15 @@
         <div id="editportfolio-tabs" class="yui-navset exp-skin-tabview hide">
             <ul class="yui-nav">
                 <li class="selected"><a href="#tab1"><em>{'General'|gettext}</em></a></li>
-                <li><a href="#tab2"><em>{'Tags'|gettext}</em></a></li>
                 <li><a href="#tab3"><em>{'Files'|gettext}</em></a></li>
                 <li><a href="#tab4"><em>{'SEO'|gettext}</em></a></li>
             </ul>            
             <div class="yui-content yui3-skin-sam">
                 <div id="tab1">
+                    <h2>{'Portfolio Piece'|gettext}</h2>
                     {control type=text name=title label="Title"|gettext value=$record->title}
                     {control type="checkbox" name="featured" label="Feature this Portfolio Piece"|gettext|cat:"?" checked=$record->featured value=1}
                     {control type=html name=body label="Description"|gettext value=$record->body}
-                </div>
-                <div id="tab2">
-                    <h2>{'Tags'|gettext}</h2>
                     {foreach from=$record->expTag item=tag name=tags}
                         {if $smarty.foreach.tags.first == false}
                             {assign var=tags value="`$tags`,`$tag->title`"}

@@ -22,37 +22,35 @@
         <div id="editfile-tabs" class="yui-navset exp-skin-tabview hide">
             <ul class="yui-nav">
                 <li class="selected"><a href="#tab1"><em>{'General'|gettext}</em></a></li>
-				<li><a href="#tab2"><em>{'Tags'|gettext}</em></a></li>
                 <li><a href="#tab3"><em>{'Files'|gettext}</em></a></li>
                 <li><a href="#tab4"><em>{'SEO'|gettext}</em></a></li>
             </ul>            
             <div class="yui-content yui3-skin-sam">
-            <div id="tab1">
-                {control type=text name=title label="Title"|gettext value=$record->title}
-                {control type=html name=body label="Body Content"|gettext value=$record->body}
-            </div>
-            <div id="tab2">
-                {foreach from=$record->expTag item=tag name=tags}
-                    {if $smarty.foreach.tags.first == false}
-                        {assign var=tags value="`$tags`,`$tag->title`"}
-                    {else}
-                        {assign var=tags value=$tag->title}
-                    {/if}                    
-                {/foreach}
-                {if $tags != ""}{$tags=$tags|cat:','}{/if}
-                {control type="text" id="expTag" name="expTag" label="Tags (comma separated)"|gettext size=45 value=$tags}
-            </div>
-            <div id="tab3">
-                {control id="downloadable" type="files" name="downloadable" label="File for Download"|gettext subtype=downloadable value=$record->expFile}
-                {control id="preview" type="files" name="preview" label="Preview Image to display with above 'File for Download'"|gettext subtype=preview value=$record->expFile}
-            </div>
-            <div id="tab4">
-                 <h2>{'SEO Settings'|gettext}</h2>
-                {control type="text" name="sef_url" label="SEF URL"|gettext value=$record->sef_url}
-                {control type="text" name="meta_title" label="Meta Title"|gettext value=$record->meta_title}
-                {control type="textarea" name="meta_description" label="Meta Description"|gettext rows=5 cols=35 value=$record->meta_description}
-                {control type="textarea" name="meta_keywords" label="Meta Keywords"|gettext rows=5 cols=35 value=$record->meta_keywords}
-            </div>
+                <div id="tab1">
+                    <h2>{'File Download'|gettext}</h2>
+                    {control type=text name=title label="Title"|gettext value=$record->title}
+                    {control type=html name=body label="Body Content"|gettext value=$record->body}
+                    {foreach from=$record->expTag item=tag name=tags}
+                        {if $smarty.foreach.tags.first == false}
+                            {assign var=tags value="`$tags`,`$tag->title`"}
+                        {else}
+                            {assign var=tags value=$tag->title}
+                        {/if}
+                    {/foreach}
+                    {if $tags != ""}{$tags=$tags|cat:','}{/if}
+                    {control type="text" id="expTag" name="expTag" label="Tags (comma separated)"|gettext size=45 value=$tags}
+                </div>
+                <div id="tab3">
+                    {control id="downloadable" type="files" name="downloadable" label="File for Download"|gettext subtype=downloadable value=$record->expFile}
+                    {control id="preview" type="files" name="preview" label="Preview Image to display with above 'File for Download'"|gettext subtype=preview value=$record->expFile}
+                </div>
+                <div id="tab4">
+                     <h2>{'SEO Settings'|gettext}</h2>
+                    {control type="text" name="sef_url" label="SEF URL"|gettext value=$record->sef_url}
+                    {control type="text" name="meta_title" label="Meta Title"|gettext value=$record->meta_title}
+                    {control type="textarea" name="meta_description" label="Meta Description"|gettext rows=5 cols=35 value=$record->meta_description}
+                    {control type="textarea" name="meta_keywords" label="Meta Keywords"|gettext rows=5 cols=35 value=$record->meta_keywords}
+                </div>
             </div>
         </div>
 	    <div class="loadingdiv">{"Loading File Download Item"|gettext}</div>
