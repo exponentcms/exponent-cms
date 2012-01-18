@@ -72,17 +72,17 @@ if (ENABLE_TRACKING) $router->updateHistory($section);
 header("Content-Type: text/html; charset=".LANG_CHARSET);
 
 // Check to see if we are in maintenance mode.
-if (MAINTENANCE_MODE && !$user->isAdmin() && ( !isset($_REQUEST['controller']) || $_REQUEST['controller'] != 'login')) {
+if (MAINTENANCE_MODE && !$user->isAdmin() && (!isset($_REQUEST['controller']) || $_REQUEST['controller'] != 'login') && !expJavascript::inAjaxAction()) {
 	//only admins/acting_admins are allowed to get to the site, all others get the maintenance view
 	$template = new standalonetemplate('_maintenance');
 	$template->output();
 } else {
 	if (MAINTENANCE_MODE > 0) flash('error', gt('Maintenance Mode is Enabled'));
 	//the default user is anonymous
-	if (!expSession::loggedIn()) {
+//	if (!expSession::loggedIn()) {
 		//TODO: Maxims initial anonymous user implementation
 		//user::login("anonymous", "anonymous");
-	}
+//	}
 
 	// check to see if we need to install or upgrade the system
 	expVersion::checkVersion();
