@@ -29,39 +29,11 @@ class blogController extends expController {
     public $add_permissions = array('approve'=>"Approve Comments");
     public $codequality = 'stable';
     
-
     function displayname() { return "Blog"; }
     function description() { return "This module allows you to run a blog on your site."; }
     function author() { return "Phillip Ball - OIC Group, Inc"; }
     function hasSources() { return false; }  // must be explicitly added by config['add_source'] or config['aggregate']
     function isSearchable() { return true; }
-
-	/**
-	 * edit item in module
-	 */
-//	function edit() {
-//        global $db;
-//
-////		$blogs = $this->blog->find('all');
-////		$used_tags = array();
-////		$taglist = '';
-////		foreach ($blogs as $blog) {
-////			foreach($blog->expTag as $tag) {
-////				$exptag = new expTag($tag->id);
-////				if (!in_array($exptag->title,$used_tags)) {
-////					$taglist .= "'".$exptag->title."',";
-////					$used_tags[] = $exptag->title;
-////				}
-////			}
-////		}
-//        $tags = $db->selectObjects('expTags','1');
-//		$taglist = '';
-//        foreach ($tags as $tag) {
-//            $taglist .= "'".$tag->title."',";
-//        }
-//		assign_to_template(array('taglist'=>$taglist));
-//		parent::edit();
-//    }
 
     public function showall() {
 	    expHistory::set('viewable', $this->params);
@@ -163,7 +135,7 @@ class blogController extends expController {
 		            'columns'=>array('Title'=>'title'),
 		            ));
 		            
-		assign_to_template(array('page'=>$page));
+		assign_to_template(array('page'=>$page,'moduletitle'=>'Blogs by date "'.expDateTime::format_date($start_date).'"'));
 	}
 	
 	public function showall_by_author() {
@@ -187,7 +159,7 @@ class blogController extends expController {
 		            'columns'=>array('Title'=>'title'),
 		            ));
             	    
-		assign_to_template(array('page'=>$page));
+		assign_to_template(array('page'=>$page,'moduletitle'=>'Blogs by author "'.$this->params['author'].'"'));
 	}
 	
 	public function showall_by_tags() {
@@ -224,7 +196,7 @@ class blogController extends expController {
 		            'columns'=>array('Title'=>'title'),
 		            ));
 		
-		assign_to_template(array('page'=>$page));
+		assign_to_template(array('page'=>$page,'moduletitle'=>'Blogs by tag "'.$this->params['tag'].'"'));
 	}
 	
 	public function show() {

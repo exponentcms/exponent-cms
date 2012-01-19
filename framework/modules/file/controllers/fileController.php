@@ -215,16 +215,20 @@ class fileController extends expController {
         $file = expFile::fileUpload('Filedata',false,false);
         
         // since most likely this function will only get hit via flash in YUI Uploader
-        // and since Flash can't pass cookies, we lose the knowlege of our $user
+        // and since Flash can't pass cookies, we lose the knowledge of our $user
         // so we're passing the user's ID in as $_POST data. We then instantiate a new $user,
         // and then assign $user->id to $file->poster so we have an audit trail for the upload
 
-        $user = new user($_REQUEST['usrid']);
-        $file->poster = $user->id;
-        $file->save();
-     
-        // a blank echo so YUI Uploader is notified of the function's completion
-        echo ' ';
+        if (is_object($file)) {
+            $user = new user($_REQUEST['usrid']);
+            $file->poster = $user->id;
+            $file->save();
+
+            // a blank echo so YUI Uploader is notified of the function's completion
+            echo ' ';
+        } else {
+            flash('error',gt('File was not uploaded!'));
+        }
     } 
 
     public function editTitle() {
