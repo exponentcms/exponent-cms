@@ -511,7 +511,7 @@ class expTheme {
 //				if (is_readable(BASE."themes/".DISPLAY_THEME_REAL."/modules".$actfile)) {
 //					include_once(BASE."themes/".DISPLAY_THEME_REAL."/modules".$actfile);
 				if (is_readable(BASE."themes/".DISPLAY_THEME."/modules".$actfile)) {
-						include_once(BASE."themes/".DISPLAY_THEME."/modules".$actfile);
+                    include_once(BASE."themes/".DISPLAY_THEME."/modules".$actfile);
 				} elseif (is_readable(BASE.'framework/modules-1/'.$actfile)) {
 					include_once(BASE.'framework/modules-1/'.$actfile);
 				} else {

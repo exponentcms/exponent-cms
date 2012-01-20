@@ -29,9 +29,8 @@ class administrationController extends expController {
 	    "theme"=>"Manage Themes",
 	    'test_smtp'=>'Test SMTP Server Settings',
 	    'toggle'=>'Toggle Settings',
-        );
-	public $codequality = 'beta';
-    
+    );
+
     function displayname() { return "Administration Controls"; }
     function description() { return "This is the Administration Module"; }
     function author() { return "OIC Group, Inc"; }

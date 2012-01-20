@@ -19,14 +19,11 @@
 
 class addressController extends expController {
 	public $useractions = array('myaddressbook'=>'Show my addressbook');
-
-    function displayname() { return "Addresses"; }
-    function description() { return "Use this module to display and manage addresses of users on your site."; }
-    function canImportData() { return true;}
-    function isSearchable() { return true; }
-    
-    public $codequality = 'beta';
-    public $remove_permissions = array('create', 'edit', 'delete');
+    public $remove_permissions = array(
+        'create',
+        'edit',
+        'delete'
+    );
 	public $remove_configs = array(
         'aggregation',
         'comments',
@@ -35,8 +32,13 @@ class addressController extends expController {
         'pagination',
         'rss',
         'tags'
-    );    
-	
+    );
+
+    function displayname() { return "Addresses"; }
+    function description() { return "Use this module to display and manage addresses of users on your site."; }
+    function canImportData() { return true;}
+    function isSearchable() { return true; }
+
     function showall() {
         redirect_to(array("controller"=>'address',"action"=>'myaddressbook'));
 	}
@@ -96,7 +98,7 @@ class addressController extends expController {
         $count = $this->address->find('count', 'user_id='.$user->id);
         if($count > 1)
         {    
-	        if ($user->isAdmin() || ($user->id == $address->user_id)) {
+	        if ($user->isAdmin() || ($user->id == $address->user_id)) {  //FIXME $address not set
                 $address = new address($this->params['id']);
                 if ($address->is_billing) 
                 {
@@ -123,7 +125,7 @@ class addressController extends expController {
     public function activate_address()
     {
         global $db, $user;
-        $object->id = $this->params['id'];
+        $object->id = $this->params['id'];  //FIXME $object not set
         $db->setUniqueFlag($object, 'addresses', $this->params['is_what'], "user_id=" . $user->id);
         flash("message", gt("Successfully updated address."));
         expHistory::back(); 

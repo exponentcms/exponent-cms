@@ -20,8 +20,10 @@
 class pixidouController extends expController {
 //    public $cacheDir = "framework/modules/pixidou/images/";
 	public $cacheDir = "tmp/pixidou/";
-    public $requires_login = array('editor','exitEditor');
-	public $codequality = 'stable';
+    public $requires_login = array(
+        'editor',
+        'exitEditor'
+    );
 
     function displayname() { return "Pixidou Image Editor"; }
     function description() { return "Add and manage Exponent Files"; }

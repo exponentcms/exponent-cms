@@ -19,21 +19,20 @@
 
 class linksController extends expController {
     //public $basemodel_name = '';
-    public $useractions = array('showall'=>'Show all');
+    public $useractions = array(
+        'showall'=>'Show all'
+    );
     //public $add_permissions = array('show'=>'View Links');
     //public $remove_permissions = array('edit');
+    public $remove_configs = array(
+           'comments',
+           'files',
+           'pagination',
+           'rss',
+           'tags'
+       );
 
     function requiresConfiguration() { return true; }
-
-	public $remove_configs = array(
-        'comments',
-        'files',
-        'pagination',
-        'rss',
-        'tags'
-    );
-    public $codequality = 'beta';
-
     function displayname() { return "Link Manager"; }
     function description() { return "Add and manage a list of URLs"; }
     function author() { return "Phillip Ball - OIC Group, Inc"; }
@@ -46,7 +45,7 @@ class linksController extends expController {
         $limit = isset($this->config['limit']) ? $this->config['limit'] : null;
         $order = isset($this->config['order']) ? $this->config['order'] : "rank";
         $links = $this->$modelname->find('all', $where, $order, $limit);
-        assign_to_template(array('items'=>$links, 'modelname'=>$modelname, 'rank'=>($order==='rank')?1:0));
+        assign_to_template(array('items'=>$links, 'rank'=>($order==='rank')?1:0));
     }
     
     public function show() {

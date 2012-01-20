@@ -18,8 +18,10 @@
 ##################################################
 
 class helpController extends expController {
-	public $useractions = array('showall'=>'Show all','select_version'=>'Select Help Version');
-	public $codequality = 'beta';
+	public $useractions = array(
+        'showall'=>'Show all',
+        'select_version'=>'Select Help Version'
+    );
 
 	function displayname() { return "Help"; }
 	function description() { return "Module for managing Exponent CMS help files."; }

@@ -18,11 +18,21 @@
 ##################################################
 
 class searchController extends expController {
-    public $useractions = array('show'=>'Show Search Form');
-    public $add_permissions = array('spider'=>'Spider Site');
+    public $useractions = array(
+        'show'=>'Show Search Form'
+    );
+    public $add_permissions = array(
+        'spider'=>'Spider Site'
+    );
 
-    public $remove_configs = array('ealerts','tags','files','aggregation','comments','rss');
-	public $codequality = 'beta';
+    public $remove_configs = array(
+        'ealerts',
+        'tags',
+        'files',
+        'aggregation',
+        'comments',
+        'rss'
+    );
 
     function displayname() { return "Search Form"; }
     function description() { return "Add a form to allow users to search for content on your website."; }

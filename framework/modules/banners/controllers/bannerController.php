@@ -19,9 +19,16 @@
 
 class bannerController extends expController {
     //public $basemodel_name = '';
-    public $remove_configs = array('aggregation', 'comments', 'files','rss','tags');
-    public $useractions = array('showall'=>'Display Banner(s)');
-	public $codequality = 'beta';
+    public $remove_configs = array(
+        'aggregation',
+        'comments',
+        'files',
+        'rss',
+        'tags'
+    );
+    public $useractions = array(
+        'showall'=>'Display Banner(s)'
+    );
 
     function displayname() { return "Banners"; }
     function description() { return "Use this to display banners on your website."; }

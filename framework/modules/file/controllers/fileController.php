@@ -21,9 +21,13 @@ class fileController extends expController {
     public $basemodel_name = "expFile";
     //public $useractions = array('showall'=>'Show all');
     //public $add_permissions = array('picker'=>'Manage Files');
-    public $remove_permissions = array('delete');
-    public $requires_login = array('picker'=>'must be logged in','edit_alt'=>'must be logged in');
-	public $codequality = 'stable';
+    public $remove_permissions = array(
+        'delete'
+    );
+    public $requires_login = array(
+        'picker'=>'must be logged in',
+        'edit_alt'=>'must be logged in'
+    );
 
     function displayname() { return "File Manager"; }
     function description() { return "Add and manage Exponent Files"; }

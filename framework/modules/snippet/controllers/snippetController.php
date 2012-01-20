@@ -32,7 +32,6 @@ class snippetController extends expController {
    		'ealerts',
    		'tags'
    	); // all options: ('aggregation','files','comments','rss','ealerts','tags')
-	public $codequality = 'stable';
 
 	function displayname() { return "Code Snippets"; }
 	function description() { return "Use this to put snippets of code, i.e. Javascript, embedded video, etc, on your site."; }

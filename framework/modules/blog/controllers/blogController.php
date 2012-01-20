@@ -24,11 +24,13 @@ class blogController extends expController {
         'authors'=>"Authors",
         'dates'=>"Dates",
     );
-    
-    public $remove_configs = array('ealerts');
-    public $add_permissions = array('approve'=>"Approve Comments");
-    public $codequality = 'stable';
-    
+    public $remove_configs = array(
+        'ealerts'
+    );
+    public $add_permissions = array(
+        'approve'=>"Approve Comments"
+    );
+
     function displayname() { return "Blog"; }
     function description() { return "This module allows you to run a blog on your site."; }
     function author() { return "Phillip Ball - OIC Group, Inc"; }
@@ -276,7 +278,7 @@ class blogController extends expController {
                     
                     if (!empty($str)) {
                         $metainfo['title'] = gt('Showing all Blog Posts written by ') ."\"" . $str . "\"";
-                        $metainfo['keywords'] = empty($object->meta_keywords) ? SITE_KEYWORDS : $object->meta_keywords;
+                        $metainfo['keywords'] = empty($object->meta_keywords) ? SITE_KEYWORDS : $object->meta_keywords;  //FIXME $object not set
                         $metainfo['description'] = empty($object->meta_description) ? SITE_DESCRIPTION : $object->meta_description;
                     }              
                 }
@@ -287,7 +289,7 @@ class blogController extends expController {
             			$ts = strftime('%B, %Y',$mk);
                         // set the meta info
                         $metainfo['title'] = gt('Showing all Blog Posts written in ') . $ts ;
-                        $metainfo['keywords'] = empty($object->meta_keywords) ? SITE_KEYWORDS : $object->meta_keywords;
+                        $metainfo['keywords'] = empty($object->meta_keywords) ? SITE_KEYWORDS : $object->meta_keywords;  //FIXME $object not set
                         $metainfo['description'] = empty($object->meta_description) ? SITE_DESCRIPTION : $object->meta_description;
                     }
             break;

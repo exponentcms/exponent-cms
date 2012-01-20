@@ -19,9 +19,9 @@
 
 class flowplayerController extends expController {
     //public $basemodel_name = '';
-    public $useractions = array('showall'=>'Show all');
-	public $codequality = 'beta';
-
+    public $useractions = array(
+        'showall'=>'Show all'
+    );
 	public $remove_configs = array(
         'aggregation',
         'comments',
@@ -50,10 +50,9 @@ class flowplayerController extends expController {
                     'columns'=>array('ID#'=>'id','Title'=>'title', 'Body'=>'body'),
                     ));
         
-        assign_to_template(array('page'=>$page, 'items'=>$page->records, 'modelname'=>$modelname));
+        assign_to_template(array('page'=>$page, 'items'=>$page->records));
     }
 
-    
 }
 
 ?>

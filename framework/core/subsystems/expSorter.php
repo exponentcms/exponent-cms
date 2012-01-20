@@ -40,7 +40,7 @@ class expSorter {
         if ($this->sort_order == 'ASC') {
             $dir = 'sortASC';
         } else {
-            $dir ='sortDESC';
+            $dir = 'sortDESC';
         }
         if ($this->sort_type == 'a') {
             uasort($this->sort_array, array($this,$dir));

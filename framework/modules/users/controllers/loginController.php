@@ -27,7 +27,6 @@ class loginController extends expController {
 //        'boot_user'=>'Boot Users',
 //    );
 //    public $remove_permissions = array('create', 'edituser');
-	public $codequality = 'beta';
 	public $remove_configs = array(
         'aggregation',
         'comments',
@@ -37,7 +36,6 @@ class loginController extends expController {
         'rss',
         'tags'
     );
-
     public $useractions = array(
 	    'showlogin'=>'Login',
     );

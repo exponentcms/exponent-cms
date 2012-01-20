@@ -18,9 +18,10 @@
 ##################################################
 
 class faqController extends expController {
-    public $useractions = array('showall'=>'Show FAQs', 'ask_question'=>'Show Question Form');
-	public $codequality = 'beta';
-
+    public $useractions = array(
+        'showall'=>'Show FAQs',
+        'ask_question'=>'Show Question Form'
+    );
 	public $remove_configs = array(
         'aggregation',
         'comments',
@@ -38,10 +39,8 @@ class faqController extends expController {
         $questions = $faqs->find('all', $this->aggregateWhereClause().' AND include_in_faq=1', 'rank');
         assign_to_template(array('questions'=>$questions));
     }
-    
-	
-	
-	/*
+
+	/**
 	 *    This manage function will show the FAQs that appear for a particular module, so if you have multiple FAQs around the site, this 
 	 *    will let you edit each individual module's FAQs and the ranks associated with them.
 	 */
