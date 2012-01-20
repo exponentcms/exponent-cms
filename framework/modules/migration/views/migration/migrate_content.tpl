@@ -40,7 +40,7 @@
 						{if $key == $val.name}
 							<strong>{$val.count}</strong> {'record'|gettext}{if $val.count!=1}s{/if} {'from'|gettext} <strong>{$key}</strong> {if $val.count!=1}{'have'|gettext}{else}{'has'|gettext}{/if} {'been migrated as is'|gettext}</strong>
 						{else}
-							<strong>{$val.count}</strong> {'record'|gettext}{if $val.count!=1}s{/if} {{'from'|gettext} <strong>{$key}</strong> {if $val.count!=1}{'have'|gettext}{else}{'has'|gettext}{/if} {'been migrated to'|gettext} <strong>{$val.name}</strong>
+							<strong>{$val.count}</strong> {'record'|gettext}{if $val.count!=1}s{/if} {'from'|gettext} <strong>{$key}</strong> {if $val.count!=1}{'have'|gettext}{else}{'has'|gettext}{/if} {'been migrated to'|gettext} <strong>{$val.name}</strong>
 						{/if}
 					</td>
 				</tr>
