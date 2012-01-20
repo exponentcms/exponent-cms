@@ -39,7 +39,7 @@ class notfoundController extends expController {
         $params = $router->params;
         unset($params['controller']);
         unset($params['action']);
-
+        $terms = empty($params[0]) ? '' : $params[0];
         expCSS::pushToHead(array(
 	        "unique"=>"search-results",
 	        "link"=>$this->asset_path."css/results.css",
@@ -57,7 +57,7 @@ class notfoundController extends expController {
 			'dir'=>'DESC',
 			));
 
-        assign_to_template(array('page'=>$page, 'terms'=>$params[0]));
+        assign_to_template(array('page'=>$page, 'terms'=>$terms));
     }
 
 }
