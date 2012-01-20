@@ -17,7 +17,7 @@
 <div id="rsspullControl" class="control">
     <h2>{"Add RSS Feeds"|gettext}</h2> 
     {control type="text" id="feedmaker" name="feedmaker" label="Add RSS Feed"|gettext}
-    <a class="addtolist" href="#">{'Add to list'|gettext}</a>
+    <a class="addtolist add" href="#">{'Add to list'|gettext}</a>{br}
     <h4>{"Current Feeds"|gettext}</h4>
     <ul id="rsspull-feeds">
         {foreach from=$config.pull_rss item=feed}
@@ -38,9 +38,10 @@
             var feedtoadd = YAHOO.util.Dom.get("feedmaker");
             var newli = document.createElement('li');
             var newLabel = document.createElement('span');
-            newLabel.innerHTML = feedtoadd.value + '<input type="hidden" name="pull_rss[]" value="'+feedtoadd.value+'" />';
+            newLabel.innerHTML = feedtoadd.value + '    <input type="hidden" name="pull_rss[]" value="'+feedtoadd.value+'" />';
             var newRemove = document.createElement('a');
             newRemove.setAttribute('href','#');
+            newRemove.className = "delete removerss";
             newRemove.innerHTML = " Remove?";
             newli.appendChild(newLabel);
             newli.appendChild(newRemove);
