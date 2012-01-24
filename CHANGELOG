@@ -5,6 +5,14 @@ Copyright (c) 2004-2011 OIC Group, Inc.
 Added / Fixed / changed for 2.0.4
 -----------------------
 # This release focuses on revising the install/update/upgrade process
+  - installation and upgrade must now be specifically invoked by url
+  - notice given to admin uses or upgrade need or new version availability
+# WYSIWYG editor (CKEditor) now more faithfully displays content styles
+  - editor can now also have customized format, font, & styles drop-downs
+# Many fixes and updates
+  - corrects path problem w/ user extensions, esp the avatar extension
+  - improved tag viewing, usage and management
+  - plus many other bug fixes and updates
 
 Added / Fixed / changed for 2.0.3
 -----------------------

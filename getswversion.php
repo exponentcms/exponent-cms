@@ -20,7 +20,7 @@
 ini_set('error_reporting', E_ALL);
 $swversion->major = 2;
 $swversion->minor = 0;
-$swversion->revision = 5;
+$swversion->revision = 4;
 $swversion->type = '';
 $swversion->iteration = '';
 $swversion->builddate = '1324662757';

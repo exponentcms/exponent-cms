@@ -812,6 +812,8 @@ abstract class database {
 	       return DB_DEF_BOOLEAN;
 	   elseif ($type == "int(14)")
 	       return DB_DEF_TIMESTAMP;
+       elseif ($type == "datetime")
+  	       return DB_DEF_TIMESTAMP;
 	   //else if (substr($type,5) == "double") return DB_DEF_DECIMAL;
 	   elseif ($type == "double")
 	       return DB_DEF_DECIMAL;
