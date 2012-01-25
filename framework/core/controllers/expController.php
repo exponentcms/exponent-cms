@@ -450,7 +450,6 @@ abstract class expController {
                     'order'=>'section',
                     'columns'=>array('Title'=>'title', 'Page'=>'section'),
                     ));
-
         assign_to_template(array('config'=>$this->config, 'pullable_modules'=>$pullable_modules, 'page'=>$page, 'views'=>$views));
     }
 

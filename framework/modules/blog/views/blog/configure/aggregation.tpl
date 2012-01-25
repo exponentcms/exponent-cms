@@ -22,8 +22,10 @@
 <table class="exp-skin-table">
     <thead>
         <tr>
-            <th>{"Select"|gettext}</th>
-            {$page->header_columns}
+            <th>{""|gettext}</th>
+            {*{$page->header_columns}*}
+            <th>{"Title"|gettext}</th>
+            <th>{"Page"|gettext}</th>
         </tr>
     </thead>
     <tbody>

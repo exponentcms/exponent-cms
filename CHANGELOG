@@ -10,8 +10,10 @@ Added / Fixed / changed for 2.0.4
 # WYSIWYG editor (CKEditor) now more faithfully displays content styles
   - editor can now also have customized format, font, & styles drop-downs
 # Many fixes and updates
-  - corrects path problem w/ user extensions, esp the avatar extension
+  - corrects path problem w/ user extensions, esp. the avatar extension
   - improved tag viewing, usage and management
+  - improved aggregation selection list
+  - can now remove missing files or add files found on server to File Manager
   - plus many other bug fixes and updates
 
 Added / Fixed / changed for 2.0.3

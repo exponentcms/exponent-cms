@@ -221,7 +221,7 @@ class fileController extends expController {
                 $notafile[$file->id] = $file;
             }
         }
-        assign_to_template(array('files'=>$notafile,));
+        assign_to_template(array('files'=>$notafile));
     }
 
     public function deleteit() {
@@ -253,7 +253,7 @@ class fileController extends expController {
                 }
             }
         }
-        assign_to_template(array('files'=>$notindb,));
+        assign_to_template(array('files'=>$notindb));
     }
 
     public function addit() {
