@@ -40,6 +40,7 @@
         <div class="hd"></div>
         <div class="bd"></div>
     </div>
+    {br}<a id="deletelink" class="delete awesome medium red" href="{link action=deleter ajax_action=1 ck=$smarty.get.ck update=$smarty.get.update}"><span>{'Delete Missing Files'|gettext}</span></a>
 </div>
 <script type="text/javascript">
 {literal}

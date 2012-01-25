@@ -213,6 +213,29 @@ class fileController extends expController {
         redirect_to(array("controller"=>'file',"action"=>'picker',"ajax_action"=>1,"update"=>$this->params['update'],"fck"=>$this->params['fck']));
     } 
     
+    public function deleter() {
+        global $db,$user;
+        $files = $db->selectObjects('expFiles',1);
+        foreach ($files as $file) {
+            if (!is_file($file->directory.$file->filename)) {
+                $notafile[$file->id] = $file;
+            }
+        }
+        assign_to_template(array('files'=>$notafile,));
+    }
+
+    public function deleteit() {
+        global $user;
+        if (!empty($this->params['deleteit'])) {
+            $file = new expFile($this->params['deleteit'][0]);
+            if ($user->id==$file->poster || $user->isAdmin()) {
+                $file->delete();
+                flash('error',$file->filename.' '.gt('was deleted from the database.'));
+            }
+        }
+        redirect_to(array("controller"=>'file',"action"=>'picker',"ajax_action"=>1,"update"=>$this->params['update'],"fck"=>$this->params['fck']));
+    }
+
     public function upload() {
         
         // upload the file, but don't save the record yet...
