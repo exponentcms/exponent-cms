@@ -444,7 +444,14 @@ abstract class expController {
         expHistory::set('editable', $this->params);
         $pullable_modules = expModules::listInstalledControllers($this->classname, $this->loc);
         $views = get_config_templates($this, $this->loc);
-        assign_to_template(array('config'=>$this->config, 'pullable_modules'=>$pullable_modules, 'views'=>$views));
+        $page = new expPaginator(array(
+                    'records'=>$pullable_modules,
+                    'limit'=>count($pullable_modules),
+                    'order'=>'section',
+                    'columns'=>array('Title'=>'title', 'Page'=>'section'),
+                    ));
+
+        assign_to_template(array('config'=>$this->config, 'pullable_modules'=>$pullable_modules, 'page'=>$page, 'views'=>$views));
     }
 
 
