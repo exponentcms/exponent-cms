@@ -476,7 +476,7 @@ if (!defined('SWIFT_PATH')) {
 	 * Swift Version Constant
 	 * Changing the version here lets Exponent adjust where to look
 	 */
-	define('SWIFT_VERSION', '4.1.4');
+	define('SWIFT_VERSION', '4.1.5');
 	define('SWIFT_PATH', BASE.'external/Swift-'.SWIFT_VERSION.'/lib/');
 }
 
