@@ -23,7 +23,7 @@
 {/css}
 
 <div class="exporter extension-filelist">
-	<h1>Uploading new Extension</h1>
+	<h1>{"Uploading New Extension"|gettext}</h1>
 	{assign var=haveFiles value=1}
 	{assign var=failed value=0}
 	{assign var=warn value=0}

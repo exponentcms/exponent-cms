@@ -323,6 +323,16 @@ define('DB_DEF_TIMESTAMP',	105);
 define('DB_DEF_DECIMAL',	106);
 
 /**
+ * Field Type specifier: Datetime
+ *
+ * A value for the Exponent Data Definition Language.
+ * This value, specified for the DB_FIELD_TYPE index,
+ * denotes that the field should store a MySQL datetime,
+ * in order to portably manage dates and/or times.
+ */
+define('DB_DEF_DATETIME',	107);
+
+/**
  * Table Alteration Error Message - 200 : Alter Not Needed
  *
  * A message constant returned by parts of the Database Subsystem

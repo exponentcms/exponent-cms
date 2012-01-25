@@ -214,7 +214,7 @@ class fileController extends expController {
     } 
     
     public function deleter() {
-        global $db,$user;
+        global $db;
         $files = $db->selectObjects('expFiles',1);
         foreach ($files as $file) {
             if (!is_file($file->directory.$file->filename)) {
@@ -239,7 +239,7 @@ class fileController extends expController {
     }
 
     public function adder() {
-        global $db,$user;
+        global $db;
         $allfiles = expFile::listFlat(BASE.'files',true,null,null,BASE);
         foreach ($allfiles as $path=>$file) {
             if ($file[0] != '.') {
@@ -257,7 +257,6 @@ class fileController extends expController {
     }
 
     public function addit() {
-        global $user;
         foreach ($this->params['addit'] as $file) {
             $newfile = new expFile(array('directory'=>dirname($file).'/','filename'=>basename($file)));
             $newfile->posted = $newfile->las_accessed = time();
