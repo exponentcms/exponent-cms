@@ -227,11 +227,42 @@ class fileController extends expController {
     public function deleteit() {
         global $user;
         if (!empty($this->params['deleteit'])) {
-            $file = new expFile($this->params['deleteit'][0]);
-            if ($user->id==$file->poster || $user->isAdmin()) {
-                $file->delete();
-                flash('error',$file->filename.' '.gt('was deleted from the database.'));
+            foreach ($this->params['deleteit'] as $file) {
+                $delfile = new expFile($file);
+                if ($user->id==$delfile->poster || $user->isAdmin()) {
+                    $delfile->delete();
+                    flash('error',$delfile->filename.' '.gt('was deleted from the database.'));
+                }
             }
+        }
+        redirect_to(array("controller"=>'file',"action"=>'picker',"ajax_action"=>1,"update"=>$this->params['update'],"fck"=>$this->params['fck']));
+    }
+
+    public function adder() {
+        global $db,$user;
+        $allfiles = expFile::listFlat(BASE.'files',true,null,null,BASE);
+        foreach ($allfiles as $path=>$file) {
+            if ($file[0] != '.') {
+                $found = false;
+                $dbfiles = $db->selectObjects('expFiles',"filename='".$file."'");
+                foreach ($dbfiles as $dbfile) {
+                    $found = ($dbfile->directory == str_replace($file,'',$path));
+                }
+                if (!$found) {
+                    $notindb[$path] = $file;
+                }
+            }
+        }
+        assign_to_template(array('files'=>$notindb,));
+    }
+
+    public function addit() {
+        global $user;
+        foreach ($this->params['addit'] as $file) {
+            $newfile = new expFile(array('directory'=>dirname($file).'/','filename'=>basename($file)));
+            $newfile->posted = $newfile->las_accessed = time();
+            $newfile->save();
+            flash('message',$newfile->filename.' '.gt('was added to the File Manager.'));
         }
         redirect_to(array("controller"=>'file',"action"=>'picker',"ajax_action"=>1,"update"=>$this->params['update'],"fck"=>$this->params['fck']));
     }

@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-    <title>{'Delete Missing Files'|gettext}  |  Exponent CMS</title>
+    <title>{'Add Existing Files'|gettext}  |  Exponent CMS</title>
     <link rel="stylesheet" type="text/css" href="{$smarty.const.URL_FULL}framework/core/assets/css/msgq.css" />
     <link rel="stylesheet" type="text/css" href="{$smarty.const.URL_FULL}framework/core/assets/css/button.css" />
     <link rel="stylesheet" type="text/css" href="{$smarty.const.URL_FULL}framework/core/assets/css/tables.css" />
@@ -14,21 +14,21 @@
     <script type="text/javascript" src="{$smarty.const.YUI3_PATH}yui/yui-min.js"></script>
 </head>
 <body class="exp-skin">
-<div id="exp-deleter">
-    <h1>{"Delete Missing Files"|gettext}</h1>
+<div id="exp-adder">
+    <h1>{"Add Existing Files"|gettext}</h1>
     <div id="actionbar">
         <a id="backlink" class="back awesome small green" href="{link action=picker ajax_action=1 ck=$smarty.get.ck update=$smarty.get.update fck=$smarty.get.fck}{if $smarty.const.SEF_URLS}?{else}&{/if}CKEditor={$smarty.get.CKEditor}&CKEditorFuncNum={$smarty.get.CKEditorFuncNum}&langCode={$smarty.get.langCode}"><span>{'Back to Manager'|gettext}</span></a>
     </div>
 	<div class="info-header clearfix">
 		<div class="related-actions">
-			{help text="Get Help"|gettext|cat:" "|cat:("Deleting Files"|gettext) module="delete-files"}
+			{help text="Get Help"|gettext|cat:" "|cat:("Deleting Files"|gettext) module="add-files"}
 		</div>
-        <p>{"Select the following non-existent files to remove them from the File Manager."|gettext}</p>
+        <p>{"Select the following files found on the server to add them to the File Manager."|gettext}</p>
 	</div>
     {messagequeue}
 
     <div id="filelist">
-    {form action=deleteit}
+    {form action=addit}
       <table id="filenames" class="exp-skin-table">
         <thead>
     	   <tr>
@@ -41,21 +41,21 @@
 {foreach from=$files item=file key=src}
         <tr class="{cycle values="even,odd"}">
             <td width="20">
-                {control type="checkbox" name="deleteit[]" value=$src}
+                {control type="checkbox" name="addit[]" value=$src}
             </td>
             <td>
-                {$file->filename}
+                {$file}
             </td>
             <td>
-                {$file->directory}
+                {$src}
             </td>
         </tr>
 {foreachelse}
-        <tr><td colspan=3>{'There don\'t appear to be any missing files'|gettext}</td></tr>
+        <tr><td colspan=3>{'There don\'t appear to be any files on the server which aren\'t already in the File Manager'|gettext}</td></tr>
 {/foreach}
         </tbody>
      </table>
-    {control type=buttongroup submit="Delete Selected Files"|gettext}
+    {control type=buttongroup submit="Add Selected Files"|gettext}
     {/form}
     </div>
 </div>

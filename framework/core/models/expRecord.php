@@ -76,7 +76,7 @@ class expRecord {
 	function __construct($params=null, $get_assoc=true, $get_attached=true) {
         global $db;
         
-        // @TODO Change this conditional check as the default value in arguement list 
+        // @TODO Change this conditional check as the default value in argument list
         // if the params come thru as a null value we need to convert to an empty array
         if (empty($params)) {
             $params = array();
