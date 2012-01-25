@@ -374,6 +374,7 @@ function smarty_function_control($params,&$smarty) {
         }
         
         //if (isset($params['value'])) $control->default = $params['value'];
+        if (isset($params['caption'])) $control->caption = $params['caption'];
         if (isset($params['size'])) $control->size = $params['size'];
         if (isset($params['nowrap'])) $control->nowrap = "nowrap";
         if (isset($params['flip'])) $control->flip = $params['flip'];
