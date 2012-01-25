@@ -32,9 +32,9 @@
       <table id="filenames" class="exp-skin-table">
         <thead>
     	   <tr>
-               <th>{'Select'|gettext}</th>
-               <th>{'Filename'|gettext}</th>
-               <th>{'Folder'|gettext}</th>
+                <th><a href="#" onclick="files_selectUnselectAll(true); return false;">{'All'|gettext}</a>&nbsp;|&nbsp;<a href="#" onclick="files_selectUnselectAll(false); return false;">{'None'|gettext}</a></th>
+                <th>{'Filename'|gettext}</th>
+                <th>{'Folder'|gettext}</th>
            </tr>
     	</thead>
     	<tbody>
@@ -59,5 +59,15 @@
     {/form}
     </div>
 </div>
+<script type="text/javascript">
+function files_selectUnselectAll(setChecked) {
+	var elems = document.getElementsByTagName("input");
+	for (var key = 0; key < elems.length; key++) {
+		if (elems[key].type == "checkbox" && elems[key].name.substr(0,9) == "deleteit[") {
+			elems[key].checked = setChecked;
+		}
+	}
+}
+</script>
 </body>
 </html>
