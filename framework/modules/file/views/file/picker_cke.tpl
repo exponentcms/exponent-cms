@@ -90,10 +90,14 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event','yui2-container','yu
         );
         infopanel.render();
         infopanel.subscribe('hide',function(event){
-            //FIXME need some code to actually stop/unload the player
-//            document.getElementByClassName("a.player").flowplayer(0).stop();
-//            this.getOverlay().find("a.player").flowplayer(0).pause();
-//            this.getOverlay().find("a.player").flowplayer(0).unload();
+            flowplayer("a.player", EXPONENT.URL_FULL+"external/flowplayer3/flowplayer-3.2.7.swf",
+         				{
+         					wmode: 'opaque',
+         					clip: {
+         						autoPlay: false
+                             },
+         				}
+         			);
         });
         // handler for showing file information
         var showFileInfo = function(oRecordData) {
