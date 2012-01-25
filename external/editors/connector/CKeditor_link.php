@@ -56,6 +56,14 @@
 				return false;
 			};
 
+            EXPONENT.passBackFile = function(fi) {
+                window.opener.EXPONENT.passBackFile(fi);
+            }
+
+            function openFileManager() {
+                window.location.href=EXPONENT.PATH_RELATIVE+'file/picker?ajax_action=1&ck=1&update=fck&CKEditor=body&CKEditorFuncNum=2&langCode=en';
+            }
+
 			function openSectionLinker() {
 				window.open("../../../modules/navigationmodule/nav.php?linkbase="+escape("../../external/editors/connector/section_linked.php?dummy"),"sectionlinker","toolbar=no,title=no,width=250,height=480,scrollbars=yes");
 			}
@@ -126,7 +134,7 @@
 
 	<body onload="__dlg_translate(eXp._TR);">
 		<div class="title"><?PHP echo gt('Insert/Modify Link'); ?></div>
-
+        <a href="#" onclick="openFileManager(); return false;"><?PHP echo gt('Switch to File Manager'); ?></a>
 		<table border="0" style="width: 100%;">
 			<tbody>
 				<tr>
@@ -149,7 +157,6 @@
 				</tr>
 			</tbody>
 		</table>
-		
 <?PHP
 include(BASE.'framework/modules-1/navigationmodule/nav.php');
 ?>		
