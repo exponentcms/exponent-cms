@@ -25,6 +25,13 @@ $status = sanity_checkFiles();
 // Run sanity checks
 $errcount = count($status);
 $warncount = 0; // No warnings with permissions
+
+// create the not_configured file since we're in the installer
+if (!@file_exists(BASE.'install/not_configured')) {
+	$nc_file = fopen(BASE.'install/not_configured', "w");
+	fclose($nc_file);
+}
+
 ?>
 <h1><?php echo gt('System Requirements Check'); ?></h1>
 <table cellspacing="0" cellpadding="0" rules="all" border="0" width="100%" class="exp-skin-table">

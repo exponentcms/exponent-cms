@@ -102,6 +102,12 @@ if ($db->tableIsEmpty('user') || $db->tableIsEmpty('modstate') || $db->tableIsEm
 	echo '</div>';
 	$emptydb = 'install-2';
 	$emptydbstr = gt('Switching to Installer');
+
+    // create the not_configured file since we're in the installer
+    if (!@file_exists(BASE.'install/not_configured')) {
+        $nc_file = fopen(BASE.'install/not_configured', "w");
+        fclose($nc_file);
+    }
 }
 ?>
 
