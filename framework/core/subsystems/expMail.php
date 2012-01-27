@@ -913,7 +913,7 @@ class expMail {
 		if ($this->errStack != null) {
 //			eDebug($error);
 //			eDebug($this->errStack);
-			eDebug($this->log->dump());
+//			eDebug($this->log->dump());
 		}
 	}
 }

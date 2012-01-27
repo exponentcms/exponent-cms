@@ -48,7 +48,12 @@ EXPONENT.YUI3_CONFIG.modules = {
 
 YUI(EXPONENT.YUI3_CONFIG).use('gallery-yui-slideshow', function(Y) {
     var oSlideshow = new Y.Slideshow('#ss-{/literal}{$name}{literal}',
-    {interval:{/literal}{$config.speed|default:5}000{literal}}
+        {interval:{/literal}{$config.speed|default:5}000{literal}}
+//        nextButton:"#ss-{/literal}{$name}{literal} .next_slide",
+//        previousButton:"#ss-{/literal}{$name}{literal} .prev_slide",
+//        playButton:"#ss-{/literal}{$name}{literal} .play_slide",
+//        pauseButton:"#ss-{/literal}{$name}{literal} .pause_slide",
+//        pagination:"#ss-{/literal}{$name}{literal} .slideshow-pagination a"
     );
 });
 

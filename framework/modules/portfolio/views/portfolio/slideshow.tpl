@@ -16,12 +16,11 @@
 
 {uniqueid prepend="slideshow" assign="name"}
 
-{css unique="photoalbum`$name`" corecss="common,pagination" link="`$smarty.const.PATH_RELATIVE`framework/modules/photoalbum/assets/css/yui3-slideshow.css"}
+{css unique="portfolio`$name`" corecss="common,pagination" link="`$smarty.const.PATH_RELATIVE`framework/modules/photoalbum/assets/css/yui3-slideshow.css"}
 
 {/css}
 
 <div class="module photoalbum portfolio slideshow">
-
     {if $moduletitle != ""}<h1>{$moduletitle}</h1>{/if}
     {permissions}
 		<div class="module-actions">
@@ -33,13 +32,11 @@
 			{/if}
 		</div>
     {/permissions}
-
-    <div id="ss-{$name}" class="slideshow-container" style="width:{$config.width|default:350}px;">    
+    <div id="ss-{$name}" class="slideshow-container" style="width:{$config.width|default:350}px;">
         <ul class="slideshow-frame"{if $config.width} style="width:{$config.width}px;height:{$config.height}px;"{/if}>
             {foreach key=key from=$slides item=slide name=slides}
             <li class="slide" style="position:absolute;{if $smarty.foreach.slides.first}z-index:4;{else}z-index:1;{/if}">
                 <div class="bodycopy">
-
                     {permissions}
                         <div class="item-actions">
                             {if $permissions.edit == 1}
@@ -53,7 +50,6 @@
                             {/if}
                         </div>
                     {/permissions}
-
                     {if !$config.hidetext}
                         <h2>
                             <a href="{link action="show" title=$slide->sef_url}">
@@ -73,7 +69,7 @@
                 <li>{"No slides yet"|gettext}</li>
             {/foreach}
         </ul>
-
+        {if !$config.hidecontrols}
         <div class="slideshow-buttons">
             <a id="prev{$name}" href="javascript:void(0);" class="prev_slide" title="Prevous Slide"|gettext>
                 &lt;&lt; {'Previous'|gettext}
@@ -95,7 +91,7 @@
                 {'Next'|gettext} &gt;&gt;
             </a>
         </div>
-    
+        {/if}
     </div>
 </div>
 
@@ -105,8 +101,8 @@
 
 EXPONENT.YUI3_CONFIG.modules = {
 	'gallery-yui-slideshow': {
-		fullpath: '{/literal}{$asset_path}js/yui3-slideshow.js{literal}',
-		requires: ['anim']
+        fullpath: EXPONENT.PATH_RELATIVE+'framework/modules/photoalbum/assets/js/yui3-slideshow.js',
+        requires: ['anim','node'],
 	}
 }
 

@@ -20,7 +20,6 @@
 
 if (!defined('EXPONENT')) exit('');
 
-//expHistory::flowSet(SYS_FLOW_PUBLIC,SYS_FLOW_ACTION);  //FIXME we don't need to return here, do we?
 // id & date_id set if single event, else
 //   src & time (opt?) set for longer list/month, etc...
 if (isset($_GET['date_id']) || isset($_GET['src'])) {
@@ -69,7 +68,7 @@ if (isset($_GET['date_id']) || isset($_GET['src'])) {
 			$Filename = preg_replace('/\s+/','',$title);  // without whitespace
 		}	
 
-		if (!function_exists("quoted_printable_encode")) {
+		if (!function_exists("quoted_printable_encode")) {  // function added in php v5.3.0
 			function quoted_printable_encode($input, $line_max = 75) { 
 			   $hex = array('0','1','2','3','4','5','6','7', 
 									  '8','9','A','B','C','D','E','F'); 
@@ -157,7 +156,6 @@ if (isset($_GET['date_id']) || isset($_GET['src'])) {
 			} // end quoted_printable_encode 
 		}
 		
-	//	$tz = "America/New_York";
 		$tz = DISPLAY_DEFAULT_TIMEZONE;
 		$msg = "BEGIN:VCALENDAR\n";
 		$msg .= "VERSION:2.0\n";  // version for iCalendar files vs vCalendar files

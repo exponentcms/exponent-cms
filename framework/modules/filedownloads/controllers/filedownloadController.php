@@ -19,8 +19,10 @@
 
 class filedownloadController extends expController {
 	//protected $basemodel_name = '';
-	public $useractions = array('showall'=>'Show all');
-
+	public $useractions = array(
+        'showall'=>'Show all',
+        'tags'=>"Tags",
+    );
 	public $remove_configs = array(
         'comments',
         'ealerts',
@@ -28,13 +30,11 @@ class filedownloadController extends expController {
         'rss',
 		'tags'
     );
-    public $codequality = 'beta';
 
 	function displayname() { return "File Downloads"; }
 	function description() { return " This module lets you put files on your website for users to download."; }
 	function isSearchable() { return true; }
 	
-
     function showall() {
         $modelname = $this->basemodel_name;
         $where = $this->aggregateWhereClause();
@@ -53,7 +53,7 @@ class filedownloadController extends expController {
                     'columns'=>array('ID#'=>'id','Title'=>'title', 'Body'=>'body'),
                     ));
                     
-		assign_to_template(array('page'=>$page, 'items'=>$page->records, 'modelname'=>$modelname, 'rank'=>($order==='rank')?1:0));
+		assign_to_template(array('page'=>$page, 'items'=>$page->records, 'rank'=>($order==='rank')?1:0));
     }
     
     public function downloadfile() {
@@ -78,27 +78,6 @@ class filedownloadController extends expController {
         parent::downloadfile();        
     }
     
-    public function update() {
-	    //FIXME:  Remove this code once we have the new tag implementation	    
-	    if (!empty($this->params['tags'])) {
-	        global $db;
-	        if (isset($this->params['id'])) {
-    	        $db->delete('content_expTags', 'content_type="filedownload" AND content_id='.$this->params['id']);
-    	    }
-    	    
-	        $tags = explode(",", $this->params['tags']);
-	        
-	        foreach($tags as $tag) {
-	            $tag = trim($tag);
-	            $expTag = new expTag($tag);
-	            if (empty($expTag->id)) $expTag->update(array('title'=>$tag));
-	            $this->params['expTag'][] = $expTag->id;
-	        }
-	    }
-	    // call expController update to save the file
-	    parent::update();
-	}
-	
 	public function showall_by_tags() {
 	    global $db;	    
 
@@ -130,7 +109,7 @@ class filedownloadController extends expController {
 		            'columns'=>array('Title'=>'title'),
 		            ));
 		
-		assign_to_template(array('page'=>$page));
+		assign_to_template(array('page'=>$page,'moduletitle'=>'File Downloads by tag "'.$this->params['tag'].'"'));
 	}
 
 	public function tags() {

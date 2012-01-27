@@ -20,7 +20,7 @@
 class headlineController extends expController {
     //protected $basemodel_name = '';
     public $useractions = array(
-            'show'=>'Show Headline',
+        'show'=>'Show Headline',
     );
 	public $codequality = 'beta';
  

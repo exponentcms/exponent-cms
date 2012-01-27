@@ -54,7 +54,7 @@ class expCommentController extends expController {
 	function manage() {
 	    expHistory::set('manageable', $this->params);
         
-        /* The global constants can be overriden by passing appropriate params */ 
+        /* The global constants can be overridden by passing appropriate params */
         //sure wish I could do this once in the constructor. sadly $this->params[] isn't set yet
         $require_login = empty($this->params['require_login']) ? COMMENTS_REQUIRE_LOGIN : $this->params['require_login'];
         $require_approval = empty($this->params['require_approval']) ? COMMENTS_REQUIRE_APPROVAL : $this->params['require_approval'];
@@ -67,7 +67,7 @@ class expCommentController extends expController {
         //$sql .= 'AND c.approved=0';
 
         $page = new expPaginator(array(
-            //'model'=>'expComment',
+            'model'=>'expComment',
             'sql'=>$sql, 
             'limit'=>10,
             'order'=>'created_at',
@@ -87,7 +87,7 @@ class expCommentController extends expController {
 	function getComments() {
 		global $user, $db;
 
-        /* The global constants can be overriden by passing appropriate params */ 
+        /* The global constants can be overridden by passing appropriate params */
         //sure wish I could do this once in the constructor. sadly $this->params[] isn't set yet
         $require_login = empty($this->params['require_login']) ? COMMENTS_REQUIRE_LOGIN : $this->params['require_login'];
         $require_approval = empty($this->params['require_approval']) ? COMMENTS_REQUIRE_APPROVAL : $this->params['require_approval'];
@@ -95,18 +95,18 @@ class expCommentController extends expController {
         $notification_email = empty($this->params['notification_email']) ? COMMENTS_NOTIFICATION_EMAIL : $this->params['notification_email'];
         
         
-        // $sql  = 'SELECT c.*, ua.image, u.username FROM '.DB_TABLE_PREFIX.'_expComments c ';
-        // $sql .= 'JOIN '.DB_TABLE_PREFIX.'_content_expComments cnt ON c.id=cnt.expcomments_id ';
-        // $sql .= 'JOIN '.DB_TABLE_PREFIX.'_user_avatar ua ON c.poster=ua.user_id ';
-        // $sql .= 'JOIN '.DB_TABLE_PREFIX.'_user u ON c.poster=u.id ';
-        // $sql .= 'WHERE cnt.content_id='.$this->params['content_id']." AND cnt.content_type='".$this->params['content_type']."' ";
-        // $sql .= 'AND c.approved=1';
-        
+//        $sql  = 'SELECT c.*, ua.image, u.username FROM '.DB_TABLE_PREFIX.'_expComments c ';
+//        $sql .= 'JOIN '.DB_TABLE_PREFIX.'_content_expComments cnt ON c.id=cnt.expcomments_id ';
+//        $sql .= 'JOIN '.DB_TABLE_PREFIX.'_user_avatar ua ON c.poster=ua.user_id ';
+//        $sql .= 'JOIN '.DB_TABLE_PREFIX.'_user u ON c.poster=u.id ';
+//        $sql .= 'WHERE cnt.content_id='.$this->params['content_id']." AND cnt.content_type='".$this->params['content_type']."' ";
+
         $sql  = 'SELECT c.* FROM '.DB_TABLE_PREFIX.'_expComments c ';
         $sql .= 'JOIN '.DB_TABLE_PREFIX.'_content_expComments cnt ON c.id=cnt.expcomments_id ';
         $sql .= 'WHERE cnt.content_id='.$this->params['content_id']." AND cnt.content_type='".$this->params['content_type']."' ";
-        $sql .= 'AND c.approved=1';
-        
+        if (!($user->is_admin || $user->is_acting_admin)) {
+            $sql .= 'AND c.approved=1';
+        }
 
         $comments = new expPaginator(array(
             //'model'=>'expComment',
@@ -117,7 +117,13 @@ class expCommentController extends expController {
             'action'=>$this->params['action'],
             'columns'=>array('Readable Column Name'=>'Column Name'),
         ));
-        
+
+        // add username and avatar
+        foreach ($comments->records as $key=>$record) {
+            $commentor = new user($record->poster);
+            $comments->records[$key]->username = $commentor->username;
+            $comments->records[$key]->avatar = $db->selectObject('user_avatar',"user_id='".$record->poster."'");
+        }
         // eDebug($sql, true);
         
         // count the unapproved comments

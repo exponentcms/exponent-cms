@@ -25,7 +25,7 @@ $orphans = array();
 foreach ($db->selectObjects("sectionref","refcount=0", "module") as $orphan) {
 	$obj = null;
 	$loc = expCore::makeLocation($orphan->module,$orphan->source,$orphan->internal);
-	eDebug($orphan);	
+//	eDebug($orphan);
 }
 
 //$template = new template("containermodule","");

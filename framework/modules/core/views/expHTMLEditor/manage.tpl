@@ -43,13 +43,10 @@
                     {"Skin"|gettext}
                 </th>
                 <th>
-					{"SpellCheck"|gettext}
+					{"Custom Toolbar"|gettext}
                 </th>
                 <th>
-					{"Word Pasting"|gettext}
-                </th>
-                <th>
-					{"Custom Plugins"|gettext}
+					{"Other Customizations"|gettext}
                 </th>
 	            <th width="20%">
                     {"Action"|gettext}
@@ -72,13 +69,10 @@
                     {/if}
                 </td>
                 <td>
-                    <a href="{link module="expHTMLEditor" action=preview id="default"}" title="Preview this Toolbar"|gettext>{"Default"|gettext}</a>
+                    <a href="{link module="expHTMLEditor" action=preview id=0}" title="Preview this Toolbar"|gettext>{"Default"|gettext}</a>
                 </td>
                 <td>
 					kama
-                </td>
-                <td>
-					{'On'|gettext}
                 </td>
                 <td>
 					{'No'|gettext}
@@ -106,21 +100,14 @@
                     {$cfg->skin}
                 </td>
                 <td>
-					{if $cfg->scayt_on}
-						{'On'|gettext}
-					{else}
-						{'Off'|gettext}
-					{/if}
-                </td>
-                <td>
-					{if $cfg->paste_word}
+					{if $cfg->data}
 						{'Yes'|gettext}
 					{else}
 						{'No'|gettext}
 					{/if}
                 </td>
 	            <td>
-					{if $cfg->plugins}
+					{if !$cfg->scayt_on || $cfg->plugins || $cfg->paste_word || $cfg->stylesset || $cfg->formattags || $cfg->fontnames}
 						{'Yes'|gettext}
 					{else}
 						{'No'|gettext}

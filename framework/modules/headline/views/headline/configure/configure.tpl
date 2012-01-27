@@ -14,5 +14,5 @@
  *
  *}
 
-<h3>{'Configure Headline Module'|gettext}</h3>
+<h3>{'Configure this Module'|gettext}</h3>
 {control type=checkbox name="action_titles" label="Let Exponent create my action titles"|gettext checked=$config.action_titles value=1}

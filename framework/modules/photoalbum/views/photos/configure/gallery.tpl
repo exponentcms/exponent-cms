@@ -14,7 +14,7 @@
  *
  *}
 
-<h3>{"Gallery Settings"|gettext}</h3>
+<h3>{"Configure this Module"|gettext}</h3>
 <hr />
 <h4>{'Gallery Page'|gettext}</h4>
 {control type=text name="pa_showall_thumbbox" label="Box size for image thumbnails"|gettext value=$config.pa_showall_thumbbox|default:100 size="5"}

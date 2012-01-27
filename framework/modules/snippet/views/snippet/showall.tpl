@@ -22,7 +22,7 @@
 				{icon class=add action=edit rank=1 text="Add a snippet at the top"|gettext}
             {/if}
             {if $permissions.manage == 1}
-                {ddrerank items=$items model="text" label="Code Snippets"|gettext}
+                {ddrerank items=$items model="snippet" label="Code Snippets"|gettext}
             {/if}
         </div>
     {/permissions}

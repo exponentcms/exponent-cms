@@ -205,7 +205,7 @@ abstract class expController {
                     'columns'=>array('ID#'=>'id','Title'=>'title', 'Body'=>'body'),
                     ));
         
-        assign_to_template(array('page'=>$page, 'items'=>$page->records, 'modelname'=>$modelname));
+        assign_to_template(array('page'=>$page, 'items'=>$page->records));
     }
 
 	/**
@@ -297,7 +297,7 @@ abstract class expController {
             $records[] = new $modelname($assoc->id);
         }
 
-        assign_to_template(array('items'=>$records, 'modelname'=>$modelname));
+        assign_to_template(array('items'=>$records));
     }
 
 	/**
@@ -314,10 +314,17 @@ abstract class expController {
 	 * edit item in module
 	 */
 	function edit() {
+        global $db;
+
         expHistory::set('editable', $this->params);
+        $tags = $db->selectObjects('expTags','1','title ASC');
+   		$taglist = '';
+        foreach ($tags as $tag) {
+            $taglist .= "'".$tag->title."',";
+        }
+		assign_to_template(array('taglist'=>$taglist));
         $modelname = $this->basemodel_name;
         assign_to_template(array('controller'=>$this->params['controller']));
-        assign_to_template(array('modelname'=>$modelname));
         $record = isset($this->params['id']) ? $this->$modelname->find($this->params['id']) : new $modelname($this->params);
         assign_to_template(array('record'=>$record, 'table'=>$this->$modelname->tablename));
     }
@@ -333,17 +340,18 @@ abstract class expController {
 	        if (isset($this->params['id'])) {
     	        $db->delete('content_expTags', 'content_type="'.(!empty($this->params['content_type'])?$this->params['content_type']:$this->basemodel_name).'" AND content_id='.$this->params['id']);
     	    }
-	        $tags = explode(",", $this->params['expTag']);
+	        $tags = explode(",", trim($this->params['expTag']));
 	        unset($this->params['expTag']);
 	        
 	        foreach($tags as $tag) {
-	            $tag = strtolower(trim($tag));
-	            $expTag = new expTag($tag);
-	            if (empty($expTag->id)) $expTag->update(array('title'=>$tag));
-	            $this->params['expTag'][] = $expTag->id;
+                if (!empty($tag)) {
+                    $tag = strtolower(trim($tag));
+                    $expTag = new expTag($tag);
+                    if (empty($expTag->id)) $expTag->update(array('title'=>$tag));
+                    $this->params['expTag'][] = $expTag->id;
+                }
 	        }
-	    }
-	    
+        }
         $modelname = $this->basemodel_name;
         $this->$modelname->update($this->params);
         $this->addContentToSearch($this->params);
@@ -409,7 +417,7 @@ abstract class expController {
                     'columns'=>array('ID#'=>'id','Title'=>'title', 'Body'=>'body'),
                     ));
         
-        assign_to_template(array('page'=>$page, 'items'=>$page->records, 'modelname'=>$modelname));
+        assign_to_template(array('page'=>$page, 'items'=>$page->records));
     }
 
 	/**
@@ -436,7 +444,13 @@ abstract class expController {
         expHistory::set('editable', $this->params);
         $pullable_modules = expModules::listInstalledControllers($this->classname, $this->loc);
         $views = get_config_templates($this, $this->loc);
-        assign_to_template(array('config'=>$this->config, 'pullable_modules'=>$pullable_modules, 'views'=>$views));
+        $page = new expPaginator(array(
+                    'records'=>$pullable_modules,
+                    'limit'=>count($pullable_modules),
+                    'order'=>'section',
+                    'columns'=>array('Title'=>'title', 'Page'=>'section'),
+                    ));
+        assign_to_template(array('config'=>$this->config, 'pullable_modules'=>$pullable_modules, 'page'=>$page, 'views'=>$views));
     }
 
 

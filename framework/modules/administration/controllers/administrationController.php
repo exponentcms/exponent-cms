@@ -29,9 +29,8 @@ class administrationController extends expController {
 	    "theme"=>"Manage Themes",
 	    'test_smtp'=>'Test SMTP Server Settings',
 	    'toggle'=>'Toggle Settings',
-        );
-	public $codequality = 'beta';
-    
+    );
+
     function displayname() { return "Administration Controls"; }
     function description() { return "This is the Administration Module"; }
     function author() { return "OIC Group, Inc"; }
@@ -908,6 +907,24 @@ class administrationController extends expController {
 //        expHistory::back();
 	    expHistory::returnTo('viewable');
     }
+
+    /**
+   	 * Routine to force launching exponent installer
+   	 */
+   	public static function install_exponent() {
+           //FIXME in 2.0.4 we'll add a routine to simply display a flash message with a link to this method
+   		// we'll need the not_configured file to exist for install routine to work
+   		if (!@file_exists(BASE.'install/not_configured')) {
+   			$nc_file = fopen(BASE.'install/not_configured', "w");
+   			fclose($nc_file);
+   		}
+           $page = "";
+           if (@file_exists(BASE.'conf/config.php')) {
+               $page = "?page=upgrade-1";
+           }
+   		header('Location: '.URL_FULL.'install/index.php'.$page);
+   		exit('Redirecting to the Exponent Install Wizard');
+   	}
 
 }
 

@@ -55,4 +55,3 @@ function smarty_function_pagelinks($params,&$smarty) {
 }
 
 ?>
-

@@ -518,13 +518,14 @@ class expDateTime {
 
 			By Garrett Murray, http://graveyard.maniacalrage.net/etc/relative/
 		**/
+        $diff = time()-$posted_date;
 		$posted_date = date('YmdGis',$posted_date);  // convert to expected format
 
-		$in_seconds = strtotime(substr($posted_date,0,8).' '.
-					  substr($posted_date,8,2).':'.
-					  substr($posted_date,10,2).':'.
-					  substr($posted_date,12,2));
-		$diff = time()-$in_seconds;
+//		$in_seconds = strtotime(substr($posted_date,0,8).' '.
+//					  substr($posted_date,8,2).':'.
+//					  substr($posted_date,10,2).':'.
+//					  substr($posted_date,12,2));
+//		$diff = time()-$in_seconds;
 		$future = $diff < 0 ? true : false;
 		$diff = abs($diff);
 		$months = floor($diff/2592000);

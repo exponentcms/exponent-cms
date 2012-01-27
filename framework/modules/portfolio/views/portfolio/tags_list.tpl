@@ -16,6 +16,16 @@
 
 <div class="module portfolio tags-list">
     {if $moduletitle}<h2>{$moduletitle}</h2>{/if}
+    {permissions}
+		<div class="module-actions">
+			{if $permissions.create == 1}
+				{icon class=add action=edit text="Add a Slide"|gettext}
+			{/if}
+			{if $permissions.manage == 1 && $slides|@count>1}
+				{ddrerank items=$slides model="photo" label="Slides"|gettext}
+			{/if}
+		</div>
+    {/permissions}
     <ul>
         {foreach from=$tags item=tag}
             <li>

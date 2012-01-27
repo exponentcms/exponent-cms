@@ -19,8 +19,7 @@ class flickrfeedController extends expController {
     public $useractions = array(
         'showall'=>'Display Public Photostream',
     );
-	public $codequality = 'beta';
-    
+
     function displayname() { return "Flickr Feed"; }
     function description() { return "Display your Flickr Photostream"; }
     function author() { return "Jonathan Worent - OIC Group, Inc"; }

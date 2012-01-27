@@ -36,22 +36,29 @@ class portfolioController extends expController {
 	/**
 	 * edit item in module
 	 */
-	function edit() {
-		$ports = $this->portfolio->find('all');
-		$used_tags = array();
-		$taglist = '';
-		foreach ($ports as $port) {
-			foreach($port->expTag as $tag) {
-				$exptag = new expTag($tag->id);
-				if (!in_array($exptag->title,$used_tags)) {
-					$taglist .= "'".$exptag->title."',";
-					$used_tags[] = $exptag->title;
-				}
-			}
-		}
-		assign_to_template(array('taglist'=>$taglist));
-		parent::edit();
-    }
+//	function edit() {
+//        global $db;
+//
+////		$ports = $this->portfolio->find('all');
+////		$used_tags = array();
+////		$taglist = '';
+////		foreach ($ports as $port) {
+////			foreach($port->expTag as $tag) {
+////				$exptag = new expTag($tag->id);
+////				if (!in_array($exptag->title,$used_tags)) {
+////					$taglist .= "'".$exptag->title."',";
+////					$used_tags[] = $exptag->title;
+////				}
+////			}
+////		}
+//        $tags = $db->selectObjects('expTags','1');
+//   		$taglist = '';
+//        foreach ($tags as $tag) {
+//            $taglist .= "'".$tag->title."',";
+//        }
+//		assign_to_template(array('taglist'=>$taglist));
+//		parent::edit();
+//    }
 
     public function showall() {
         $where = $this->aggregateWhereClause();

@@ -29,7 +29,7 @@
             </ul>            
             <div class="yui-content">
             <div id="tab1">
-                <h2>{'General Information'|gettext}</h2>
+                <h2>{'Help Document'|gettext}</h2>
                 {control type=text name=title label="Title"|gettext value=$record->title}
 	            {control type="text" name="sef_url" label="SEF URL"|gettext value=$record->sef_url}
                 {control type="dropdown" name="help_version_id" label="Version"|gettext frommodel="help_version" key=id display=version order=version dir=DESC value=$record->help_version_id}

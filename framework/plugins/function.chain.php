@@ -80,7 +80,7 @@ function smarty_function_chain($params,&$smarty) {
 	        $cfg['chrome'] = false;
         }
         //eDebug($cfg);
-        expTheme::showController($cfg);
+        expTheme::module($cfg);
     }
 }
 

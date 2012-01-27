@@ -416,6 +416,10 @@ class expFile extends expRecord {
             $__oldumask = umask(0);
             chmod($_destFullPath,FILE_DEFAULT_MODE);
             umask($__oldumask);
+            // Checking
+            if ($__oldumask != umask()) {
+                flash('error',gt('An error occurred while setting file permissions').': '.$_destFullPath);
+            }
         } else {
 			return 'could not move';
 		}
@@ -625,7 +629,7 @@ class expFile extends expRecord {
 		return $_sizeinfo;
 	}
 
-	/* exdoc
+	/** exdoc
 	 * Create an image resource handle (from GD) for a given filename.
 	 * This is a wrapper around various GD functions, to provide Exponent
 	 * programmers a single point of entry.  It also handles situations where
@@ -662,7 +666,7 @@ class expFile extends expRecord {
 		return $img;
 	}
 
-	/* exdoc
+	/** exdoc
 	 * Create a new blank image resource, with the specified width and height.
 	 * This is a wrapper around various GD functions, to provide Exponent
 	 * programmers a single point of entry.  It also handles situations where
@@ -691,16 +695,6 @@ class expFile extends expRecord {
 		}
 	}
 
-	/* exdoc
-	 * Create a new blank image resource, with the specified width and height.
-	 * This is a wrapper around various GD functions, to provide Exponent
-	 * programmers a single point of entry.  It also handles situations where
-	 * there is no GD support compiled into the server.  (In this case, null is returned).
-	 *
-	 * @param integer $w Width of the image resource to create (in pixels)
-	 * @param integer $h Height of the image resource to create (in pixels)
-	 * @node Model:expFile
-	 */
 	function copyToDirectory($destination) {
 	    //eDebug($this,true);
         copy($this->path,$destination.$this->filename);
@@ -718,7 +712,7 @@ class expFile extends expRecord {
 		}
 	}
 
-	/* exdoc
+	/** exdoc
 	 * Proportionally scale an image by a specific percentage
 	 * This is a wrapper around various GD functions, to provide Exponent
 	 * programmers a single point of entry.  It also handles situations where
@@ -753,7 +747,7 @@ class expFile extends expRecord {
 		return $thumb;
 	}
 
-	/* exdoc
+	/** exdoc
 	 * Proportionally scale an image to a given width. Height adjusts accordingly.
 	 * This is a wrapper around various GD functions, to provide Exponent
 	 * programmers a single point of entry.  It also handles situations where
@@ -787,7 +781,7 @@ class expFile extends expRecord {
 		return $thumb;
 	}
 
-	/* exdoc
+	/** exdoc
 	 * Proportionally scale an image to a given height.  Width adjusts accordingly.
 	 * This is a wrapper around various GD functions, to provide Exponent
 	 * programmers a single point of entry.  It also handles situations where
@@ -822,7 +816,7 @@ class expFile extends expRecord {
 		return $thumb;
 	}
 
-	/* exdoc
+	/** exdoc
 	 * Proportionally scale an image to fit within the given width / height.
 	 * This is a wrapper around various GD functions, to provide Exponent
 	 * programmers a single point of entry.  It also handles situations where
@@ -863,7 +857,7 @@ class expFile extends expRecord {
 		return $thumb;
 	}
 
-	/* exdoc
+	/** exdoc
 	 * Scale an image to a square keeping the image aspect ratio.
 	 * If the image is smaller in either dimension than request square side original is returned.
 	 * Image is first cropped to a square of length smaller of width or height and then resized.
@@ -920,7 +914,7 @@ class expFile extends expRecord {
 		return $thumb;
 	}
 
-	/* exdoc
+	/** exdoc
 	 * Scale an image to a given width and height, without regard to aspect ratio.
 	 * This is a wrapper around various GD functions, to provide Exponent
 	 * programmers a single point of entry.  It also handles situations where
@@ -1010,10 +1004,16 @@ class expFile extends expRecord {
 		return $new;
 	}
 
-	/* exdoc
-	 * @state <b>UNDOCUMENTED</b>
-	 * @node Undocumented
-	 */
+    /** exdoc
+     *
+     * @state <b>UNDOCUMENTED</b>
+     * @node  Undocumented
+     *
+     * @param      $img
+     * @param      $sizeinfo
+     * @param null $filename
+     * @param int  $quality
+     */
 	public static function imageOutput($img, $sizeinfo, $filename=null,  $quality=75) {
 		header('Content-type: ' . $sizeinfo['mime']);
 		if ($sizeinfo['mime'] == 'image/jpeg') {
@@ -1025,7 +1025,7 @@ class expFile extends expRecord {
 		}
 	}
 
-	/* exdoc
+	/** exdoc
 	 * @state <b>UNDOCUMENTED</b>
 	 * @node Undocumented
 	 */
@@ -1129,7 +1129,7 @@ class expFile extends expRecord {
 		return $results;
 	}
 
-	/* exdoc
+	/** exdoc
 	 * This method creates a directory and all of its parent directories, if they do not exist,
 	 * emulating the behavior of the -p option to mkdir on UNIX systems.  Returns
 	 * a SYS_FILES_* constant, indicating its status.
@@ -1196,9 +1196,9 @@ class expFile extends expRecord {
 		return preg_replace('/[^A-Za-z0-9\.]/','_',$name);
 	}
 
-	/* exdoc
-	* Move an uploaded temporary file to a more permanent home inside of the Exponent files/ directory.
-	* This function takes into account the default file modes specified in the site configuration.
+	/** exdoc
+	 * Move an uploaded temporary file to a more permanent home inside of the Exponent files/ directory.
+	 * This function takes into account the default file modes specified in the site configuration.
 	 * @param string $tmp_name The temporary path of the uploaded file.
 	 * @param string $dest The full path to the destination file (including the destination filename).
 	 * @node Model:expFile
@@ -1212,7 +1212,7 @@ class expFile extends expRecord {
 		}
 	}
 
-	/* exdoc
+	/** exdoc
 	 * Checks to see if the upload destination file exists.  This is to prevent
 	 * accidentally uploading over the top of another file.
 	 * Returns true if the file already exists, and false if it does not.
@@ -1221,27 +1221,31 @@ class expFile extends expRecord {
 	 * @param string $name The name of the file control used to upload the
 	 *  file.  The files subsystem will look to the $_FILES array
 	 *  to get the filename of the uploaded file.
-	 * @node Model:expFile
+     * @return bool
+     * @node Model:expFile
 	 */
 	public static function uploadDestinationFileExists($dir,$name) {
 		return (file_exists(BASE.$dir."/".self::fixName($_FILES[$name]['name'])));
 	}
 
-	/* exdoc
-	 * Lists files and directories under a given parent directory. Returns an
-	 * associative, flat array of files and directories.  The key is the full file
-	 * or directory name, and the value is the file or directory name.
-	 *
-	 * @param string $dir The path of the directory to look at.
-	 * @param boolean $recurse A boolean dictating whether to descend into subdirectories
-	 * 	recursively, and list files and subdirectories.
-	 * @param string $ext An optional file extension.  If specified, only files ending with
-	 * 	that file extension will show up in the list.  Directories are not affected.
-	 * @param array $exclude_dirs An array of directory names to exclude.  These names are
-	 * 	path-independent.  Specifying "dir" will ignore all directories and
-	 * 	sub-directories named "dir", regardless of their parent.
-	 * @node Model:expFile
-	 */
+    /** exdoc
+     * Lists files and directories under a given parent directory. Returns an
+     * associative, flat array of files and directories.  The key is the full file
+     * or directory name, and the value is the file or directory name.
+     *
+     * @param string  $dir          The path of the directory to look at.
+     * @param boolean $recurse      A boolean dictating whether to descend into subdirectories
+     *                              recursively, and list files and subdirectories.
+     * @param string  $ext          An optional file extension.  If specified, only files ending with
+     *                              that file extension will show up in the list.  Directories are not affected.
+     * @param array   $exclude_dirs An array of directory names to exclude.  These names are
+     *                              path-independent.  Specifying "dir" will ignore all directories and
+     *                              sub-directories named "dir", regardless of their parent.
+     * @param string  $relative
+     *
+     * @return array
+     * @node Model:expFile
+     */
 	public static function listFlat($dir, $recurse = false, $ext=null, $exclude_dirs = array(), $relative = "") {
 		$files = array();
 		if (is_readable($dir)) {
@@ -1259,7 +1263,7 @@ class expFile extends expRecord {
 		return $files;
 	}
 
-	/* exdoc
+	/** exdoc
 	 * Looks at the filesystem structure surrounding the destination
 	 * and determines if the web server can create a new file there.
 	 * Returns one of the following:
@@ -1298,7 +1302,7 @@ class expFile extends expRecord {
 		}
 	}
 
-	/* exdoc
+	/** exdoc
 	 * Copies just the directory structure (including subdirectories) of a given directory.
 	 * Any files in the source directory are ignore, and duplicate copies are made (no symlinks).
 	 *

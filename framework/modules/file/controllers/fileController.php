@@ -21,9 +21,13 @@ class fileController extends expController {
     public $basemodel_name = "expFile";
     //public $useractions = array('showall'=>'Show all');
     //public $add_permissions = array('picker'=>'Manage Files');
-    public $remove_permissions = array('delete');
-    public $requires_login = array('picker'=>'must be logged in','edit_alt'=>'must be logged in');
-	public $codequality = 'stable';
+    public $remove_permissions = array(
+        'delete'
+    );
+    public $requires_login = array(
+        'picker'=>'must be logged in',
+        'edit_alt'=>'must be logged in'
+    );
 
     function displayname() { return "File Manager"; }
     function description() { return "Add and manage Exponent Files"; }
@@ -44,7 +48,7 @@ class fileController extends expController {
             $files[$key]->save();
         }
     
-        eDebug($files,true);
+//        eDebug($files,true);
     }
     
     public function picker() {
@@ -138,7 +142,6 @@ class fileController extends expController {
             }
 
             $totalrecords = $this->$modelname->find('count',"filename LIKE '%".$_GET['query']."%' OR title LIKE '%".$_GET['query']."%' OR alt LIKE '%".$_GET['query']."%'");
-            
             $files = $this->$modelname->find('all',$filter."filename LIKE '%".$_GET['query']."%' OR title LIKE '%".$_GET['query']."%' OR alt LIKE '%".$_GET['query']."%'".$imagesOnly,$sort.' '.$dir, $results, $startIndex);
 
             foreach ($files as $key=>$file) {
@@ -166,9 +169,7 @@ class fileController extends expController {
                 $filter .= "is_image=1";
             }
             
-            
             $totalrecords = $this->$modelname->find('count',$filter);
-
             $files = $this->$modelname->find('all',$filter,$sort.' '.$dir, $results, $startIndex);
             
             foreach ($files as $key=>$file) {
@@ -209,22 +210,79 @@ class fileController extends expController {
         redirect_to(array("controller"=>'file',"action"=>'picker',"ajax_action"=>1,"update"=>$this->params['update'],"fck"=>$this->params['fck']));
     } 
     
+    public function deleter() {
+        global $db;
+        $files = $db->selectObjects('expFiles',1);
+        foreach ($files as $file) {
+            if (!is_file($file->directory.$file->filename)) {
+                $notafile[$file->id] = $file;
+            }
+        }
+        assign_to_template(array('files'=>$notafile));
+    }
+
+    public function deleteit() {
+        global $user;
+        if (!empty($this->params['deleteit'])) {
+            foreach ($this->params['deleteit'] as $file) {
+                $delfile = new expFile($file);
+                if ($user->id==$delfile->poster || $user->isAdmin()) {
+                    $delfile->delete();
+                    flash('error',$delfile->filename.' '.gt('was deleted from the database.'));
+                }
+            }
+        }
+        redirect_to(array("controller"=>'file',"action"=>'picker',"ajax_action"=>1,"update"=>$this->params['update'],"fck"=>$this->params['fck']));
+    }
+
+    public function adder() {
+        global $db;
+        $allfiles = expFile::listFlat(BASE.'files',true,null,null,BASE);
+        foreach ($allfiles as $path=>$file) {
+            if ($file[0] != '.') {
+                $found = false;
+                $dbfiles = $db->selectObjects('expFiles',"filename='".$file."'");
+                foreach ($dbfiles as $dbfile) {
+                    $found = ($dbfile->directory == str_replace($file,'',$path));
+                }
+                if (!$found) {
+                    $notindb[$path] = $file;
+                }
+            }
+        }
+        assign_to_template(array('files'=>$notindb));
+    }
+
+    public function addit() {
+        foreach ($this->params['addit'] as $file) {
+            $newfile = new expFile(array('directory'=>dirname($file).'/','filename'=>basename($file)));
+            $newfile->posted = $newfile->las_accessed = time();
+            $newfile->save();
+            flash('message',$newfile->filename.' '.gt('was added to the File Manager.'));
+        }
+        redirect_to(array("controller"=>'file',"action"=>'picker',"ajax_action"=>1,"update"=>$this->params['update'],"fck"=>$this->params['fck']));
+    }
+
     public function upload() {
         
         // upload the file, but don't save the record yet...
         $file = expFile::fileUpload('Filedata',false,false);
         
         // since most likely this function will only get hit via flash in YUI Uploader
-        // and since Flash can't pass cookies, we lose the knowlege of our $user
+        // and since Flash can't pass cookies, we lose the knowledge of our $user
         // so we're passing the user's ID in as $_POST data. We then instantiate a new $user,
         // and then assign $user->id to $file->poster so we have an audit trail for the upload
 
-        $user = new user($_REQUEST['usrid']);
-        $file->poster = $user->id;
-        $file->save();
-     
-        // a blank echo so YUI Uploader is notified of the function's completion
-        echo ' ';
+        if (is_object($file)) {
+            $user = new user($_REQUEST['usrid']);
+            $file->poster = $user->id;
+            $file->save();
+
+            // a blank echo so YUI Uploader is notified of the function's completion
+            echo ' ';
+        } else {
+            flash('error',gt('File was not uploaded!'));
+        }
     } 
 
     public function editTitle() {

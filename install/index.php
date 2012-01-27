@@ -49,7 +49,7 @@ if (isset($_POST['sc'])) {
             expSettings::change($key, addslashes($value));
         }
     } else {
-        // Update init the config
+        // Initialize /conf/config
         $config = $_POST['sc'];
     	$values = array(
     		'c'=>$config,
@@ -62,11 +62,11 @@ if (isset($_POST['sc'])) {
 }
 
 if (isset($_POST['install_sample'])) {
-	$eql = BASE . "themes/".DISPLAY_THEME_REAL."/sample.eql";
+	$eql = BASE . $_POST['install_sample'] . ".eql";
 	if (file_exists($eql)) {
 		$errors = array();
 		expFile::restoreDatabase($db,$eql,$errors,0);
-		$files = BASE . "themes/".DISPLAY_THEME_REAL."/sample.tar.gz";  // only install if there was an eql file
+		$files = BASE . $_POST['install_sample'] . ".tar.gz";  // only install if there was an eql file
 		if (file_exists($files)) {
 			include_once(BASE.'external/Tar.php');
 			$tar = new Archive_Tar($files);
@@ -85,7 +85,7 @@ if (isset($_POST['install_sample'])) {
 //		}
 }
 
-if (file_exists("../conf/config.php") && !file_exists('not_configured') && !isset($_REQUEST['page'])) {
+if (file_exists("../conf/config.php") && !isset($_REQUEST['page'])) {
 	$_REQUEST['page'] = 'upgrade-1';
 }
 		

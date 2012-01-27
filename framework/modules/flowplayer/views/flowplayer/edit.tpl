@@ -31,6 +31,7 @@
 	{/if}
     {form action=update}
         {control type="hidden" name="id" value=$record->id}
+        {control type="hidden" name=rank value=$record->rank}
         {control type="text" name="title" label="Video Title"|gettext value=$record->title}
         {control type="html" name="body" label="Video Description"|gettext value=$record->body}
         {control type="text" name="width" label="Width"|gettext filter=integer value=$record->width|default:$width}

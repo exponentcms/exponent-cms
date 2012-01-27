@@ -25,9 +25,11 @@ class usersController extends expController {
         'kill_session'=>'End Sessions',
         'boot_user'=>'Boot Users',
     );
-    public $remove_permissions = array('create', 'edit');
-	public $codequality = 'beta';
-    
+    public $remove_permissions = array(
+        'create',
+        'edit'
+    );
+
     //public $useractions = array('showall'=>'Show all');
 
     function displayname() { return "User Manager"; }
@@ -82,7 +84,8 @@ class usersController extends expController {
         $active_extensions = $db->selectObjects('profileextension','active=1','rank');
 
 		//If there is no image uploaded and the system is not in the development mode, use the default avatar
-		if(empty($u->image) && !DEVELOPMENT) {
+//		if(empty($u->image) && !DEVELOPMENT) {
+        if(empty($u->image)) {
 			$u->image = DEFAULT_AVATAR;
 		}
 		
@@ -135,10 +138,12 @@ class usersController extends expController {
             // get the active profile extensions and save them out
             $active_extensions = $db->selectObjects('profileextension','active=1');
             foreach ($active_extensions as $pe) {
-                include_once($pe->classfile);
-                $ext = new $pe->classname();
-                $db->delete($ext->tablename, 'user_id='.$u->id);
-                $ext->update($this->params);
+                if (is_file(BASE.$pe->classfile)) {
+                   include_once(BASE.$pe->classfile);
+                   $ext = new $pe->classname();
+                   $db->delete($ext->tablename, 'user_id='.$u->id);
+                   $ext->update($this->params);
+                }
             }
         }
         
@@ -221,9 +226,11 @@ class usersController extends expController {
         //remove user profiles
         $active_extensions = $db->selectObjects('profileextension','active=1');
         foreach ($active_extensions as $pe) {
-            include_once($pe->classfile);
-            $ext = new $pe->classname();
-            $db->delete($ext->table, 'user_id='.$this->params['id']);
+            if (is_file(BASE.$pe->classfile)) {
+                include_once(BASE.$pe->classfile);
+                $ext = new $pe->classname();
+                $db->delete($ext->table, 'user_id='.$this->params['id']);
+            }
         }
         
         // remove user address
@@ -307,15 +314,15 @@ class usersController extends expController {
         // Lets find all the user profiles availabe and then see if they are
         // in the database yet.  If not we will add them.
 		$extdirs = array(
-			BASE.'framework/modules/users/extensions',
-			BASE.'themes/'.DISPLAY_THEME.'framework/modules/users/extensions'
+			'framework/modules/users/extensions',
+			'themes/'.DISPLAY_THEME.'framework/modules/users/extensions'
 		);
 		foreach ($extdirs as $dir) {
-			if (is_readable($dir)) {
-	        	$dh = opendir($dir);
+			if (is_readable(BASE.$dir)) {
+	        	$dh = opendir(BASE.$dir);
 	        	while (($file = readdir($dh)) !== false) {
-                	if (is_file("$dir/$file") && is_readable("$dir/$file") && substr($file, 0, 1) != '_' && substr($file, 0, 1) != '.') {
-                    	include_once("$dir/$file");
+                	if (is_file(BASE."$dir/$file") && is_readable(BASE."$dir/$file") && substr($file, 0, 1) != '_' && substr($file, 0, 1) != '.') {
+                    	include_once(BASE."$dir/$file");
                     	$classname = substr($file,0,-4);                  	
                     	$class = new $classname();
                     	$extension = $db->selectObject('profileextension', "title='".$class->name()."'");

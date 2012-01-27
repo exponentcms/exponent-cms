@@ -22,8 +22,11 @@
     {permissions}
         <div class="module-actions">
 			{if $permissions.create == 1}
-				{icon class=add action=edit title="Add to the top"|gettext text="Add a Portfolio Piece"|gettext}
+				{icon class=add action=edit rank=1 title="Add to the top"|gettext text="Add a Portfolio Piece"|gettext}
 			{/if}
+            {if $permissions.manage == 1}
+                {icon class="manage" controller=expTag action=manage text="Manage Tags"|gettext}
+            {/if}
 			{if $permissions.manage == 1}
 				{ddrerank items=$page->records model="portfolio" label="Portfolio Pieces"|gettext}
 			{/if}
@@ -33,7 +36,6 @@
     {foreach from=$page->records item=record}
 		<div class="item">
 			<h2><a href="{link action=show title=$record->sef_url}" title="{$record->title|escape:"htmlall"}">{$record->title}</a></h2>
-
 			{permissions}
 				<div class="item-actions">
 					{if $permissions.edit == 1}
@@ -44,7 +46,6 @@
 					{/if}                
 				</div>
 			{/permissions}
-			
 			{if $record->expTag|@count>0}
 				<div class="tag">
 					{'Tags'|gettext}:
@@ -53,7 +54,6 @@
 					{/foreach}
 				</div>
 			{/if}
-			
             <div class="bodycopy">
                 {filedisplayer view="`$config.filedisplay`" files=$record->expFile record=$record is_listing=1}
 

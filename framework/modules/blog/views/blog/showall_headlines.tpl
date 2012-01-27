@@ -19,12 +19,14 @@
         <a class="rsslink" href="{rsslink}">{'Subscribe to'|gettext} {$config.feed_title}</a>
     {/if}
     {if $moduletitle}<h2>{$moduletitle}</h2>{/if}
-    
     {permissions}
 		<div clas="module-actions">
 			{if $permissions.edit == 1}
 				{icon class=add action=edit text="Add a new blog article"|gettext}
 			{/if}
+            {if $permissions.manage == 1}
+                {icon class="manage" controller=expTag action=manage text="Manage Tags"|gettext}
+            {/if}
 		</div>
     {/permissions}
     <ul>

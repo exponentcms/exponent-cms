@@ -80,14 +80,13 @@ EXPONENT.YUI3_CONFIG = {
     }
 };
 
-gt = function(str) {
-    var langStr = <?php echo json_encode($cur_lang); ?>;
-    return langStr[str];
-};
+//gt = function(str) {
+//    var langStr = <?php echo json_encode($cur_lang); ?>;
+//    return langStr[str];
+//};
 
 // if you feel like short-handing
 eXp = EXPONENT;
-
 
 //console.log(gt('Add Configuration Settings'));
 

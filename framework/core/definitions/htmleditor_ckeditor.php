@@ -41,7 +41,16 @@ return array(
 	'paste_word'=>array(
 		DB_FIELD_TYPE=>DB_DEF_BOOLEAN),
 	'active'=>array(
-		DB_FIELD_TYPE=>DB_DEF_BOOLEAN)
+		DB_FIELD_TYPE=>DB_DEF_BOOLEAN),
+    'stylesset'=>array(
+   		DB_FIELD_TYPE=>DB_DEF_STRING,
+   		DB_FIELD_LEN=>255),
+    'formattags'=>array(
+   		DB_FIELD_TYPE=>DB_DEF_STRING,
+   		DB_FIELD_LEN=>255),
+    'fontnames'=>array(
+   		DB_FIELD_TYPE=>DB_DEF_STRING,
+   		DB_FIELD_LEN=>255),
 );
 
 ?>

@@ -35,27 +35,22 @@
     {/permissions}
     <div class="post-info">
         <span class="attribution">
-            {'Posted by'|gettext} {attribution user_id=$record->poster} {'on'|gettext} <span class="date">{$record->created_at|format_date:$smarty.const.DISPLAY_DATE_FORMAT}</span>
+            {'Posted by'|gettext} <a href="{link action=showall_by_author author=$record->poster|username}">{attribution user_id=$record->poster}</a> {'on'|gettext} <span class="date">{$record->created_at|format_date:$smarty.const.DISPLAY_DATE_FORMAT}</span>
         </span>
-
         | <a class="comments" href="{link action=show title=$record->sef_url}#exp-comments">{$record->expComment|@count} {"Comments"|gettext}</a>
-        
 		{if $record->expTag[0]->id}
 		| <span class="tags">
 			{"Tags"|gettext}: 
 			{foreach from=$record->expTag item=tag name=tags}
-			<a href="{link action=showall_by_tags tag=$tag->sef_url}">{$tag->title}</a>
-			{if $smarty.foreach.tags.last != 1},{/if}
+                <a href="{link action=showall_by_tags tag=$tag->sef_url}">{$tag->title}</a>
+                {if $smarty.foreach.tags.last != 1},{/if}
 			{/foreach} 
 		</span>
 		{/if}
     </div>
-    
     <div class="bodycopy">
         {filedisplayer view="`$config.filedisplay`" files=$record->expFile id=$record->id}
         {$record->body}
     </div>
-
-    
     {comments content_type="blog" content_id=$record->id title="Comments"|gettext}
 </div>

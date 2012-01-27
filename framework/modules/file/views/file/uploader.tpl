@@ -115,7 +115,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','uploader', function(Y) {
     }
 
     function updateProgress (event) {
-        console.debug(event);
+//        console.debug(event);
 		//var rowNum = fileIdHash[event["id"]];
 		var prog = Math.round(100 * (event.bytesLoaded / event.bytesTotal));
 		var progbar = "<div style='width:90%;background-color:#CCC;'><div style='height:12px;padding:3px;font-size:10px;color:#fff;background-color:"+((prog>90)?'#fad00e':'#b30c0c')+";width:" + prog + "%;'>" + prog + "%</div></div>";

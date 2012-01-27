@@ -70,7 +70,7 @@
 						<div class="item-actions">
 							{icon class=edit action=edituser record=$user}
 							{icon class="password" action=change_password record=$user title="Change this users password"|gettext text="Password"|gettext}
-							{icon action=delete record=$user title="Delete"|gettext onclick="return confirm('"|cat:("Are you sure you want to delete this user?"|gettext)|cat:"');"}
+							{icon action=delete record=$user title="Delete"|gettext}
 						</div>
                     {/permissions}
 			    </td>
@@ -83,6 +83,7 @@
     {* pagelinks paginate=$page bottom=1 *}
 	-->
 </div>
+
 <script type="text/javascript">
 	{literal}
 		YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event','yui2-container','yui2-json','yui2-datasource','yui2-connection','yui2-autocomplete','yui2-element','yui2-paginator','yui2-datatable', function(Y) {
@@ -115,7 +116,6 @@
 			}
         };
 		
-		
         var formatactions = function(elCell, oRecord, oColumn, sData) {
            {/literal}{permissions}{literal}
 		   
@@ -132,7 +132,6 @@
 			{/literal}{/permissions}{literal}
         };
     
-	
 			// Column definitions
 			var myColumnDefs = [ // sortable:true enables sorting
 			{ key:"id",label:"{/literal}{"Username"|gettext}{literal}",formatter:formatID},
@@ -211,7 +210,6 @@
 				return oPayload;
 			}
 				
-			
 		});
 	{/literal}
 </script>

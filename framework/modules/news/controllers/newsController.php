@@ -21,17 +21,19 @@ class newsController extends expController {
     public $useractions = array(
         'showall'=>'Show all News',
     );
-
-    public $remove_configs = array('ealerts','tags','comments');
-	public $codequality = 'beta';
-
-    public $add_permissions = array('showUnpublished'=>'View Unpublished News');
-    private $sortopts = array(
-                        'DESC'=>'Newest Posts First', 
-                        'ASC'=>'Oldest First', 
-                        'rank'=>'I will sort them manually'
+    public $remove_configs = array(
+        'ealerts',
+        'tags',
+        'comments'
     );
-    
+    public $add_permissions = array(
+        'showUnpublished'=>'View Unpublished News'
+    );
+    private $sortopts = array(
+        'DESC'=>'Newest Posts First',
+        'ASC'=>'Oldest First',
+        'rank'=>'I will sort them manually'
+    );
 
     function displayname() { return "News"; }
     function description() { return "Use this to display & manage news type content on your site."; }
@@ -90,7 +92,6 @@ class newsController extends expController {
             'morenews'=>$morenews,
             'page'=>$page,
             'items'=>$items,
-            'modelname'=>$modelname,
             'enable_rss'=>empty($this->config['enable_rss']) ? false : true,
         ));
     }
@@ -193,7 +194,11 @@ class newsController extends expController {
                     $rssObject->rss_link = $rssItem->get_permalink();
                     $rssObject->publish = $rssItem->get_date('U');
                     $rssObject->publish_date = $rssItem->get_date('U');
+                    $rssObject->poster = $rssItem->get_author()->name;
                     $rssObject->isRss = true;
+					$t = explode(' • ',$rssObject->title);
+					$rssObject->forum = $t[0];
+					$rssObject->topic = $t[1];
                     $news[] = $rssObject;
                 }
             }

@@ -20,9 +20,14 @@
 			{if $permissions.edit == 1}
 				{icon action=edit record=$record title="edit `$record->title`"}
 			{/if}
+            {if $permissions.delete == 1}
+                {icon action=delete record=$record title="Delete `$record->title`"}
+            {/if}
+            {if $permissions.manage == 1}
+                {icon class="manage" controller=expTag action=manage text="Manage Tags"|gettext}
+            {/if}
 		</div>
 	{/permissions}
-	
 	{if $record->expTag}
 		<div class="tag">
 			{'Tags'|gettext}:
@@ -31,7 +36,6 @@
 			{/foreach}
 		</div>
 	{/if}
-
 	<div class="bodycopy">
         {filedisplayer view="`$config.filedisplay`" files=$record->expFile record=$record}
 		{$record->body}

@@ -20,8 +20,9 @@
 
 class motdController extends expController {
     //public $basemodel_name = '';
-    public $useractions = array('show'=>'Show Todays Message');
-	public $codequality = 'beta';
+    public $useractions = array(
+        'show'=>'Show Todays Message'
+    );
 
     function displayname() { return "Message of the Day"; }
     function description() { return "Display a message for a given day of the year."; }

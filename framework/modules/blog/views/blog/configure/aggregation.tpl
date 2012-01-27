@@ -15,12 +15,35 @@
  *}
 
 <h2>{"Aggregate content from similar modules"|gettext}</h2>
-{control type="checkbox" name="add_source" label="Separate this blog\'s content"|gettext|cat:"?" checked=$config.add_source value=1}
+{control type="checkbox" name="add_source" label="Separate this blog's content"|gettext|cat:"?" checked=$config.add_source value=1}
 <hr />
 {control type="checkbox" name="noeditagg" label="Prevent editing aggregate items"|gettext value=1 checked=$config.noeditagg}
 <hr />
-{foreach from=$pullable_modules item=mod key=src}
-    {control type="checkbox" name="aggregate[]" label="`$mod->title` on page `$mod->section`" value=$src checked=$config.aggregate}
+<table class="exp-skin-table">
+    <thead>
+        <tr>
+            <th>{""|gettext}</th>
+            {*{$page->header_columns}*}
+            <th>{"Title"|gettext}</th>
+            <th>{"Page"|gettext}</th>
+        </tr>
+    </thead>
+    <tbody>
+{*{foreach from=$pullable_modules item=mod key=src}*}
+{foreach from=$page->records item=mod key=src name=mod}
+        <tr class="{cycle values="even,odd"}">
+            <td width="20">
+                {control type="checkbox" name="aggregate[]" value=$src checked=$config.aggregate}
+            </td>
+            <td>
+                {$mod->title}
+            </td>
+            <td>
+                {$mod->section}
+            </td>
+        </tr>
 {foreachelse}
-    {'There doesn\'t appear to be any other modules installed that you can aggregate data from'|gettext}
+        <tr><td colspan=3>{'There doesn\'t appear to be any other modules installed that you can aggregate data from'|gettext}</td></tr>
 {/foreach}
+    </tbody>
+</table>

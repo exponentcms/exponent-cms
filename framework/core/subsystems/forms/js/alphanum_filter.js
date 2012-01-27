@@ -23,7 +23,7 @@ function alphanum_filter_class() {
 		for (var n =0; n < g_aIgnore.length; n++) {
 			if (sChar == g_aIgnore[n]) return true;
 		}
-				console.debug(sChar);
+		//	console.debug(sChar);
 		var strNewVal = GetResultingValue(ptObject, String.fromCharCode(sChar));
 		
 		return !this.isValueIllegal(strNewVal);

@@ -25,10 +25,12 @@
 
 class migrationController extends expController {
     //public $basemodel_name = '';
-    protected $add_permissions = array('analyze'=>'Analyze Data', 'migrate'=>'Migrate Data');
+    protected $add_permissions = array(
+        'analyze'=>'Analyze Data',
+        'migrate'=>'Migrate Data'
+    );
     //public $useractions = array('showall'=>'Show all');
 	public $useractions = array();
-	public $codequality = 'beta';
 
     // this is a list of modules that we can convert to exp2 type modules.
     public $new_modules = array(
@@ -1937,7 +1939,7 @@ class migrationController extends expController {
 		if (isset($this->params['fix_database'])) $this->fix_database();
 		echo '<h2>'.gt('Migration Configuration Saved').'</h2><br />';
 		echo '<p>'.gt('We\'ve successfully connected to the Old database').'</p><br />';
-		echo "<a class=\"awesome ".BTN_SIZE." ".BTN_COLOR."\" href=\"migration/manage_users\">".gt('Next Step -> Migrate Users & Groups')."</a>";
+		echo "<a class=\"awesome ".BTN_SIZE." ".BTN_COLOR."\" href=\"".expCore::makeLink(array('controller'=>'migration','action'=>'manage_users'))."\">".gt('Next Step -> Migrate Users & Groups')."</a>";
     }
 	
 	/**

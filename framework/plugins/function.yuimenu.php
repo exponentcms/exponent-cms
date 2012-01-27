@@ -49,7 +49,7 @@ function smarty_function_yuimenu($params,&$smarty) {
                 if (this.getRoot() == this) {
 					for (i=0; i<=this.getItems().length; i++){
 						var j=i;
-						////console.debug(aSubmenuData[j].itemdata.length);
+						//  console.debug(aSubmenuData[j].itemdata.length);
 						if (aSubmenuData[j].itemdata.length>0){
 		                    this.getItem(i).cfg.setProperty("submenu", aSubmenuData[j]);
 						}

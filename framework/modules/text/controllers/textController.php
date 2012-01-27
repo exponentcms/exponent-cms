@@ -29,7 +29,6 @@ class textController extends expController {
 		'ealerts',
 		'tags'
 	); // all options: ('aggregation','files','comments','rss','ealerts','tags')
-    public $codequality = 'stable';
 
 	function displayname() { return "Text"; }
 	function description() { return "Puts text on your webpages"; }

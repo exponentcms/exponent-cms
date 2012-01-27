@@ -40,6 +40,8 @@
         <div class="hd"></div>
         <div class="bd"></div>
     </div>
+    {br}<a id="deletelink" class="delete awesome medium red" href="{link action=deleter ajax_action=1 ck=$smarty.get.ck update=$smarty.get.update}"><span>{'Delete Missing Files'|gettext}</span></a>
+    <a id="addlink" class="add awesome medium green" href="{link action=adder ajax_action=1 ck=$smarty.get.ck update=$smarty.get.update}"><span>{'Add Existing Files'|gettext}</span></a>
 </div>
 <script type="text/javascript">
 {literal}
@@ -90,10 +92,14 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event','yui2-container','yu
         );
         infopanel.render();
         infopanel.subscribe('hide',function(event){
-            //FIXME need some code to actually stop/unload the player
-//            document.getElementByClassName("a.player").flowplayer(0).stop();
-//            this.getOverlay().find("a.player").flowplayer(0).pause();
-//            this.getOverlay().find("a.player").flowplayer(0).unload();
+            flowplayer("a.player", EXPONENT.URL_FULL+"external/flowplayer3/flowplayer-3.2.7.swf",
+         				{
+         					wmode: 'opaque',
+         					clip: {
+         						autoPlay: false
+                             }
+         				}
+         			).close();
         });
         // handler for showing file information
         var showFileInfo = function(oRecordData) {

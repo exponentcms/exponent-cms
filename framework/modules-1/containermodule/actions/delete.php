@@ -48,7 +48,7 @@ if ($container != null) {
 			}
 
 			expHistory::back();
-            eDebug(expHistory::getLastNotEditable());
+//            eDebug(expHistory::getLastNotEditable());
             // $template = new template('containermodule','_lastreferencedelete',$loc);
             // $template->assign('iloc',$iloc);
             // $template->assign('redirect',expHistory::getLastNotEditable());

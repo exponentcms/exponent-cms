@@ -125,7 +125,7 @@ function eLog($var, $type='', $path='', $minlevel='0') {
 				fclose ($log);
 			}
 		} else {
-			eDebug (gt("Log file"." (".$path)." ".gt("not writable."));
+			eDebug(gt("Log file"." (".$path)." ".gt("not writable."));
 		}
 	}
 }

@@ -19,10 +19,16 @@
 
 class youtubeController extends expController {
 	//protected $basemodel_name = '';
-	public $useractions = array('showall'=>'Display a YouTube Video');
-
-    public $remove_configs = array('ealerts','tags','files','rss','comments');
-	public $codequality = 'beta';
+	public $useractions = array(
+        'showall'=>'Display a YouTube Video'
+    );
+    public $remove_configs = array(
+        'ealerts',
+        'tags',
+        'files',
+        'rss',
+        'comments'
+    );
 
 	function displayname() { return "YouTube"; }
 	function description() { return "Display youtube videos on your page."; }

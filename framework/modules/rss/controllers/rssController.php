@@ -19,7 +19,9 @@
 
 class rssController extends expController {
     public  $basemodel_name = 'expRss';
-    public $useractions = array('showall'=>'Show all RSS Feeds');
+    public $useractions = array(
+        'showall'=>'Show all RSS Feeds'
+    );
 
 	public $remove_configs = array(
         'aggregation',
@@ -28,7 +30,6 @@ class rssController extends expController {
         //'rss',
         'tags'
     );
-	public $codequality = 'beta';
 
     function displayname() { return "RSS Syndication"; }
     function description() { return "This module will allow you to display a list of your syndicated RSS feeds on a web page"; }

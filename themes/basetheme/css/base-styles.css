@@ -11,8 +11,6 @@
     z-index:5;
 }
 
-
-
 #bd {
     z-index:2;
 }
@@ -20,9 +18,6 @@
 #ft {
     z-index:1;
 }
-
-
-
 
 /*
 Copyright (c) 2009, Yahoo! Inc. All rights reserved.
@@ -101,4 +96,3 @@ p,fieldset,table,pre {
 	/*so things don't run into each other*/
 	margin-bottom:1em;
 }
-

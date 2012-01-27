@@ -25,14 +25,13 @@
 	<dl>
 		{foreach from=$items item=tweet}
 			<div class="item">
-				<p>
 					{if $config.showimage}
 						<div style="float:left;">
-							{img src="`$tweet.image`" style="margin:2px 5px 2px 0px;"}
+							{img src="`$tweet.image`" style="margin:2px 5px 100% 0px;"}
 							{if $tweet.retweetedbyme}{img src="$smarty.const.URL_FULL|cat:'framework/modules/twitter/assets/images/tweeted.png'" style="position:relative;top:-37px;left:-60px;margin-right:-18px"}{/if}
 						</div>
 					{elseif $tweet.retweetedbyme}
-						{img src="$smarty.const.URL_FULL|cat:'framework/modules/twitter/assets/images/tweeted.png'" style="float:left;margin:2px 5px 2px 0px;"}
+						{img src="$smarty.const.URL_FULL|cat:'framework/modules/twitter/assets/images/tweeted.png'" style="float:left; margin:2px 5px 100% 0px;"}
 					{/if}
 					<dt><em class="date">{$tweet.created_at}{if $config.showattrib} via {$tweet.via}, {$tweet.screen_name} wrote:{/if}</em></dt>
 					<dd>
@@ -46,10 +45,8 @@
 							{/if}
 						{/permissions}
 					</dd>
-				</p>
 			</div>
 			{clear}
 		{/foreach}
 	</dl>
-	{br}
 </div>

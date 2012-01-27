@@ -19,26 +19,26 @@
 {/css}
 
 {if $page->total_records > 0}
-<div class="pagination-links">	
-	<span class="pagination">
-	{if $page->previous_page != ''}<a href="{$page->previous_page}"><< {'Previous'|gettext}</a> {/if}
-	{if $page->firstpage != ''}<a href="{$page->firstpage}">1</a> {/if}
-	{if $page->previous_shift != ''}<a href="{$page->previous_shift}">...</a> {/if}
-	{if $page->total_pages > 1}
-	{foreach from=$page->pages item=link key=curpage}
-		<span class="pagelink">
-			{if $curpage == $page->page}
-				<span class="currentpage">{$curpage}</span>
-			{else}
-				<a href="{$link}">{$curpage}</a>
-			{/if}
-		</span>
-	{/foreach}
-	{/if}
-	{if $page->next_shift != ''}<a href="{$page->next_shift}">...</a> {/if}
-	{if $page->lastpage != ''}<a href="{$page->lastpage}">{$page->total_pages}</a> {/if}
-	{if $page->next_page != ''} <a href="{$page->next_page}">{'Next'|gettext} >></a>{/if}
-	</span>
-	<span class="pagetotals">{'Showing'|gettext} <span class="frecord">{$page->firstrecord}</span>-<span class="lrecord">{$page->lastrecord}</span> {'of'|gettext} <span class="total">{$page->total_records}</span></span>
-</div>
+    <div class="pagination-links">
+        <span class="pagination">
+            {if $page->previous_page != ''}<a href="{$page->previous_page}"><< {'Previous'|gettext}</a> {/if}
+            {if $page->firstpage != ''}<a href="{$page->firstpage}">1</a> {/if}
+            {if $page->previous_shift != ''}<a href="{$page->previous_shift}">...</a> {/if}
+            {if $page->total_pages > 1}
+                {foreach from=$page->pages item=link key=curpage}
+                    <span class="pagelink">
+                        {if $curpage == $page->page}
+                            <span class="currentpage">{$curpage}</span>
+                        {else}
+                            <a href="{$link}">{$curpage}</a>
+                        {/if}
+                    </span>
+                {/foreach}
+            {/if}
+            {if $page->next_shift != ''}<a href="{$page->next_shift}">...</a> {/if}
+            {if $page->lastpage != ''}<a href="{$page->lastpage}">{$page->total_pages}</a> {/if}
+            {if $page->next_page != ''} <a href="{$page->next_page}">{'Next'|gettext} >></a>{/if}
+        </span>
+        <span class="pagetotals">{'Showing'|gettext} <span class="frecord">{$page->firstrecord}</span>-<span class="lrecord">{$page->lastrecord}</span> {'of'|gettext} <span class="total">{$page->total_records}</span></span>
+    </div>
 {/if}

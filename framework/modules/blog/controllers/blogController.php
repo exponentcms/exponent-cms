@@ -24,37 +24,18 @@ class blogController extends expController {
         'authors'=>"Authors",
         'dates'=>"Dates",
     );
-    
-    public $remove_configs = array('ealerts');
-    public $add_permissions = array('approve'=>"Approve Comments");
-    public $codequality = 'stable';
-    
+    public $remove_configs = array(
+        'ealerts'
+    );
+    public $add_permissions = array(
+        'approve'=>"Approve Comments"
+    );
 
     function displayname() { return "Blog"; }
     function description() { return "This module allows you to run a blog on your site."; }
     function author() { return "Phillip Ball - OIC Group, Inc"; }
     function hasSources() { return false; }  // must be explicitly added by config['add_source'] or config['aggregate']
     function isSearchable() { return true; }
-
-	/**
-	 * edit item in module
-	 */
-	function edit() {
-		$blogs = $this->blog->find('all');
-		$used_tags = array();
-		$taglist = '';
-		foreach ($blogs as $blog) {
-			foreach($blog->expTag as $tag) {
-				$exptag = new expTag($tag->id);
-				if (!in_array($exptag->title,$used_tags)) {
-					$taglist .= "'".$exptag->title."',";
-					$used_tags[] = $exptag->title;
-				}
-			}
-		}
-		assign_to_template(array('taglist'=>$taglist));
-		parent::edit();
-    }
 
     public function showall() {
 	    expHistory::set('viewable', $this->params);
@@ -156,7 +137,7 @@ class blogController extends expController {
 		            'columns'=>array('Title'=>'title'),
 		            ));
 		            
-		assign_to_template(array('page'=>$page));
+		assign_to_template(array('page'=>$page,'moduletitle'=>'Blogs by date "'.expDateTime::format_date($start_date).'"'));
 	}
 	
 	public function showall_by_author() {
@@ -180,7 +161,7 @@ class blogController extends expController {
 		            'columns'=>array('Title'=>'title'),
 		            ));
             	    
-		assign_to_template(array('page'=>$page));
+		assign_to_template(array('page'=>$page,'moduletitle'=>'Blogs by author "'.$this->params['author'].'"'));
 	}
 	
 	public function showall_by_tags() {
@@ -217,7 +198,7 @@ class blogController extends expController {
 		            'columns'=>array('Title'=>'title'),
 		            ));
 		
-		assign_to_template(array('page'=>$page));
+		assign_to_template(array('page'=>$page,'moduletitle'=>'Blogs by tag "'.$this->params['tag'].'"'));
 	}
 	
 	public function show() {
@@ -297,7 +278,7 @@ class blogController extends expController {
                     
                     if (!empty($str)) {
                         $metainfo['title'] = gt('Showing all Blog Posts written by ') ."\"" . $str . "\"";
-                        $metainfo['keywords'] = empty($object->meta_keywords) ? SITE_KEYWORDS : $object->meta_keywords;
+                        $metainfo['keywords'] = empty($object->meta_keywords) ? SITE_KEYWORDS : $object->meta_keywords;  //FIXME $object not set
                         $metainfo['description'] = empty($object->meta_description) ? SITE_DESCRIPTION : $object->meta_description;
                     }              
                 }
@@ -308,7 +289,7 @@ class blogController extends expController {
             			$ts = strftime('%B, %Y',$mk);
                         // set the meta info
                         $metainfo['title'] = gt('Showing all Blog Posts written in ') . $ts ;
-                        $metainfo['keywords'] = empty($object->meta_keywords) ? SITE_KEYWORDS : $object->meta_keywords;
+                        $metainfo['keywords'] = empty($object->meta_keywords) ? SITE_KEYWORDS : $object->meta_keywords;  //FIXME $object not set
                         $metainfo['description'] = empty($object->meta_description) ? SITE_DESCRIPTION : $object->meta_description;
                     }
             break;

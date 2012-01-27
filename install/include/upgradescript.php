@@ -42,15 +42,30 @@ class upgradescript {
 	function description() { return gt("This Script attempts to")." ".$this->name(); }
 
 	/**
-	 * test version number (code vs database) to see if upgrade script should be run
-	 * @param $version
+	 * test version number (upgrade script requirements vs database version) to see if upgrade script should be run
+	 * @param object $version
 	 * @return bool
 	 */
 	function checkVersion($version) {
-		// if this upgrade applies to only one version then check to see if we have a match
-		if ($this->from_version == $this->to_version && $version == $this->from_version) {
+        $db_version = $version->major.'.'.$version->minor.'.'.$version->revision;
+        $to_version = explode('.',$this->to_version);
+        $to_ver->major = $to_version[0];
+        $to_ver->minor = $to_version[1];
+        $to_ver->revision = $to_version[2];
+        $to_ver->type = '';
+        $to_ver->iteration = '';
+        $from_version = explode('.',$this->from_version);
+        $from_ver->major = $from_version[0];
+        $from_ver->minor = $from_version[1];
+        $from_ver->revision = $from_version[2];
+        $from_ver->type = '';
+        $from_ver->iteration = '';
+
+		// check if db version is equal to or inside the versions
+		if ($db_version == $this->from_version || $db_version == $this->to_version) {
 			return true;
-		} elseif ($version >= $this->from_version && $version <= $this->to_version) {
+//		} elseif ($version >= $this->from_version && $version <= $this->to_version) {
+        } elseif (expVersion::compareVersion($from_ver, $version) && expVersion::compareVersion($version, $to_ver)) {
 			return true;
 		} else {
 			return false;

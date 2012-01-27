@@ -104,13 +104,16 @@ function smarty_function_icon($params,&$smarty) {
 	unset($params['img']);
 	unset($params['class']);
 	unset($params['record']);
+    unset($params['record']);
+    $onclick = $params['onclick'];
+    unset($params['onclick']);
 	//eDebug($params);
 	if (!empty($params['action'])) {
 		echo '<a href="'.expCore::makeLink($params).'" title="'.$title.'" class="'.$class.'"';
-		if ($params['action']=="delete"&&!isset($params['onclick']))
+		if ($params['action']=="delete" && empty($onclick))
             echo ' onclick="return confirm(\''.gt('Are you sure you want to delete this').' '.$smarty->getTemplateVars('modelname').' '.gt('item').'?\');"';
-		if (isset($params['onclick']))
-            echo ' onclick="'.$params['onclick'].'"';
+		if (!empty($onclick))
+            echo ' onclick="'.$onclick.'"';
 		echo '>'.$linktext.'</a>';
 	} else {
 		echo $linktext;

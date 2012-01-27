@@ -25,7 +25,7 @@ var buildmenu = function (elem,cfg) {
             }
         }
     });
-    ////console.debug(oMenuBar.getItems());
+    //  console.debug(oMenuBar.getItems());
     
     oMenuBar.render();         
 

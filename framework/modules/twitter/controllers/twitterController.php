@@ -17,11 +17,9 @@
 
 class twitterController extends expController {
     public $basemodel_name = 'expRecord';
-
     public $useractions = array(
         'showall'=>'Show all'
     );
-    
     public $remove_configs = array(
         'aggregation',
         'comments',
@@ -30,8 +28,7 @@ class twitterController extends expController {
         'rss',
         'tags'
     );
-	public $codequality = 'beta';
-    
+
     function displayname() { return "Twitter"; }
     function description() { return "Display your tweets just like on Twitter"; }
     function author() { return "Jonathan Worent - OIC Group, Inc"; }

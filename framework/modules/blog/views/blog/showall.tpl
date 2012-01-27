@@ -53,7 +53,7 @@
             {/permissions}
             <div class="post-info">
                 <span class="attribution">
-                    {'Posted by'|gettext} {attribution user_id=$item->poster} {'on'|gettext} <span class="date">{$item->created_at|format_date:$smarty.const.DISPLAY_DATE_FORMAT}</span>
+                    {'Posted by'|gettext} <a href="{link action=showall_by_author author=$item->poster|username}">{attribution user_id=$item->poster}</a> {'on'|gettext} <span class="date">{$item->created_at|format_date:$smarty.const.DISPLAY_DATE_FORMAT}</span>
                 </span>
 
                 | <a class="comments" href="{link action=show title=$item->sef_url}#exp-comments">{$item->expComment|@count} {"Comments"|gettext}</a>

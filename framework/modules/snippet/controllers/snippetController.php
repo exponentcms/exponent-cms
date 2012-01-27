@@ -32,7 +32,6 @@ class snippetController extends expController {
    		'ealerts',
    		'tags'
    	); // all options: ('aggregation','files','comments','rss','ealerts','tags')
-	public $codequality = 'stable';
 
 	function displayname() { return "Code Snippets"; }
 	function description() { return "Use this to put snippets of code, i.e. Javascript, embedded video, etc, on your site."; }
@@ -56,7 +55,16 @@ class snippetController extends expController {
 			$item->body = highlight_string($item->body, true); 
 		}
 		assign_to_template(array('items'=>$items));
-	}	
+	}
+
+    public function update() {
+        // update the record.
+        $record = $this->snippet->update($this->params);
+
+        // go back to where we came from.
+        expHistory::back();
+    }
+
 }
 
 ?>
