@@ -442,6 +442,14 @@ class expTheme {
    	 * @node Subsystems:Theme
    	 * @return bool
    	 */
+    public static function inPreview() {
+    	$level = 99;
+    	if (expSession::is_set('uilevel')) {
+    		$level = expSession::get('uilevel');
+    	}
+    	return ($level == UILEVEL_PREVIEW);
+    }
+
     public static function inAction() {
         return (isset($_REQUEST['action']) && (isset($_REQUEST['module']) || isset($_REQUEST['controller'])));
     }

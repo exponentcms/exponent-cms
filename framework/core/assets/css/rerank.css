@@ -7,9 +7,7 @@
 .exp-skin-rerank ul li,
 .rerank-proxy {
     padding:0;
-    background:#dedede;
-    border:1px solid #999;
-    background: #eae6df url(../images/button/gradient.png) repeat-x; 
+    background: #efecce url(../images/button/gradient.png) repeat-x; 
 }
 
 .exp-skin-rerank ul li *,

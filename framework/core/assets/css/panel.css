@@ -11,13 +11,13 @@
 }
 
 .exp-skin-panel {
-    border:1px solid #777;
+    border:1px solid #002f2e;
     background:#fff;
 }
 
 .exp-skin-panel .yui3-widget-hd {
     padding:5px;
-    background:#0072B6;
+    background:#002f2e;
     color:#fff;
     font-size:13px;
     font-weight:bold;
@@ -26,7 +26,7 @@
 
 .exp-skin-panel .yui3-widget-ft {
     padding:5px;
-    background:#dedede;
+    background:#fff;
     text-align:right;
     border-top:#999;
 }

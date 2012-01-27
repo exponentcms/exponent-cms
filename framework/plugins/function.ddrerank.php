@@ -260,11 +260,13 @@ function smarty_function_ddrerank($params,&$smarty) {
         
         ";
         
-        expJavascript::pushToFoot(array(
-            "unique"=>$uniqueid,
-            "yui3mods"=>1,
-            "content"=>$script,
-         ));
+        if (!expTheme::inPreview()) {
+            expJavascript::pushToFoot(array(
+                "unique"=>$uniqueid,
+                "yui3mods"=>1,
+                "content"=>$script,
+             ));
+        }
         
     }
 }
