@@ -16,15 +16,14 @@
 
 <div id="editportfolio" class="module blog edit">
     {if $record->id != ""}<h1>{'Editing'|gettext} {$record->title}</h1>{else}<h1>{'New'|gettext} {$modelname}</h1>{/if}
-    
     {form action=update}
         {control type=hidden name=id value=$record->id}
         {control type=hidden name=rank value=$record->rank}
         <div id="editportfolio-tabs" class="yui-navset exp-skin-tabview hide">
             <ul class="yui-nav">
                 <li class="selected"><a href="#tab1"><em>{'General'|gettext}</em></a></li>
-                <li><a href="#tab3"><em>{'Files'|gettext}</em></a></li>
-                <li><a href="#tab4"><em>{'SEO'|gettext}</em></a></li>
+                <li><a href="#tab2"><em>{'Files'|gettext}</em></a></li>
+                <li><a href="#tab3"><em>{'SEO'|gettext}</em></a></li>
             </ul>            
             <div class="yui-content yui3-skin-sam">
                 <div id="tab1">
@@ -42,10 +41,10 @@
                     {if $tags != ""}{$tags=$tags|cat:','}{/if}
                     {control type="text" id="expTag" name="expTag" label="Tags (comma separated)"|gettext value=$tags size=45}
                 </div>
-                <div id="tab3">
+                <div id="tab2">
                     {control type="files" name="files" label="Files"|gettext value=$record->expFile}
                 </div>
-                <div id="tab4">
+                <div id="tab3">
                      <h2>{'SEO Settings'|gettext}</h2>
                     {control type="text" name="sef_url" label="SEF URL"|gettext value=$record->sef_url}
                     {control type="text" name="meta_title" label="Meta Title"|gettext value=$record->meta_title}

@@ -14,13 +14,12 @@
  *
  *}
  
- {css unique="photo-album" link="`$asset_path`css/photoalbum.css"}
+{css unique="photo-album" link="`$asset_path`css/photoalbum.css"}
 
- {/css}
+{/css}
 
 <div class="module photoalbum show">
     <h1>{$record->title}</h1>
-
     {permissions}
     <div class="item-actions">
         {if $permissions.edit == 1}
@@ -28,14 +27,11 @@
         {/if}
     </div>
     {/permissions}
-
     <div class="next-prev">
         <a href="{link action=show id=$previous}">{"Previous Image"|gettext}</a>
          | {$imgnum} {"of"|gettext} {$imgtot}| 
         <a href="{link action=show id=$next}">{"Next Image"|gettext}</a>
     </div>
-
-
     <div class="bodycopy">
         {capture assign="float"}{$config.pa_float_enlarged|lower|replace:" ":""}{/capture}
         {img alt=$record->alt file_id=$record->expFile[0]->id w=$config.pa_showall_enlarged class="img-large float-`$float`" title=$record->alt|default:$record->expFile[0]->title style="float:`$float`;"}    

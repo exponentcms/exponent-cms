@@ -36,7 +36,6 @@
     {foreach from=$page->records item=record}
 		<div class="item">
 			<h2><a href="{link action=show title=$record->sef_url}" title="{$record->title|escape:"htmlall"}">{$record->title}</a></h2>
-
 			{permissions}
 				<div class="item-actions">
 					{if $permissions.edit == 1}
@@ -47,7 +46,6 @@
 					{/if}                
 				</div>
 			{/permissions}
-			
 			{if $record->expTag|@count>0}
 				<div class="tag">
 					{'Tags'|gettext}:
@@ -56,7 +54,6 @@
 					{/foreach}
 				</div>
 			{/if}
-			
             <div class="bodycopy">
                 {filedisplayer view="`$config.filedisplay`" files=$record->expFile record=$record is_listing=1}
 

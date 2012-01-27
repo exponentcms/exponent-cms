@@ -116,11 +116,11 @@ class expVersion {
         } elseif ($version1->major == $version2->major && $version1->minor == $version2->minor && $version1->revision < $version2->revision) {
             return true;
         } elseif ($version1->major == $version2->major && $version1->minor == $version2->minor && $version1->revision == $version2->revision) {
-            $vertype = self::iterateType($version1->type);
-            $swtype = self::iterateType($version2->type);
-            if ($vertype < $swtype) {
+            $ver1type = self::iterateType($version1->type);
+            $ver2type = self::iterateType($version2->type);
+            if ($ver1type < $ver2type) {
                 return true;
-            } elseif ($vertype == $swtype && $version1->iteration < $version2->iteration) {
+            } elseif ($ver1type == $ver2type && $version1->iteration < $version2->iteration) {
                 return true;
             }
         }
@@ -134,7 +134,7 @@ class expVersion {
      */
     private static function getOnlineVersion() {
         //FIXME we need a good installation to place this in
-        $over=expCore::loadData(URL_FULL.'getswversion.php');
+        $over=expCore::loadData('http://www.exponentcms.org/'.'getswversion.php');
         $onlineversion = json_decode($over)->data;
         if (empty($onlineversion)) {
             $onlineversion->major = 0;

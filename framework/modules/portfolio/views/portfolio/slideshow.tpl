@@ -16,7 +16,7 @@
 
 {uniqueid prepend="slideshow" assign="name"}
 
-{css unique="photoalbum`$name`" corecss="common,pagination" link="`$smarty.const.PATH_RELATIVE`framework/modules/photoalbum/assets/css/yui3-slideshow.css"}
+{css unique="portfolio`$name`" corecss="common,pagination" link="`$smarty.const.PATH_RELATIVE`framework/modules/photoalbum/assets/css/yui3-slideshow.css"}
 
 {/css}
 
@@ -30,9 +30,6 @@
 			{if $permissions.manage == 1 && $slides|@count>1}
 				{ddrerank items=$slides model="photo" label="Slides"|gettext}
 			{/if}
-			{if $permissions.manage == 1}
-				{ddrerank items=$page->records model="portfolio" label="Portfolio Pieces"|gettext}
-			{/if}
 		</div>
     {/permissions}
     <div id="ss-{$name}" class="slideshow-container" style="width:{$config.width|default:350}px;">
@@ -40,7 +37,6 @@
             {foreach key=key from=$slides item=slide name=slides}
             <li class="slide" style="position:absolute;{if $smarty.foreach.slides.first}z-index:4;{else}z-index:1;{/if}">
                 <div class="bodycopy">
-
                     {permissions}
                         <div class="item-actions">
                             {if $permissions.edit == 1}
@@ -73,6 +69,7 @@
                 <li>{"No slides yet"|gettext}</li>
             {/foreach}
         </ul>
+        {if !$config.hidecontrols}
         <div class="slideshow-buttons">
             <a id="prev{$name}" href="javascript:void(0);" class="prev_slide" title="Prevous Slide"|gettext>
                 &lt;&lt; {'Previous'|gettext}
@@ -94,6 +91,7 @@
                 {'Next'|gettext} &gt;&gt;
             </a>
         </div>
+        {/if}
     </div>
 </div>
 
@@ -103,8 +101,8 @@
 
 EXPONENT.YUI3_CONFIG.modules = {
 	'gallery-yui-slideshow': {
-		fullpath: '{/literal}{$asset_path}js/yui3-slideshow.js{literal}',
-		requires: ['anim']
+        fullpath: EXPONENT.PATH_RELATIVE+'framework/modules/photoalbum/assets/js/yui3-slideshow.js',
+        requires: ['anim','node'],
 	}
 }
 

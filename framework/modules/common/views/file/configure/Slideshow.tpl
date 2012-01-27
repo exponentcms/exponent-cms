@@ -14,10 +14,25 @@
  *
  *}
  
-<h2>{'Slideshow Configuration'}</h2>
+<h2>{'Slideshow View Settings'|gettext}</h2>
 {control type=text name="width" label="Slideshow Width"|gettext value=$config.width|default:350 size="5"}
 {control type=text name="height" label="Slideshow Height"|gettext value=$config.height|default:200 size="5"}
 {control type=text name="speed" label="Seconds per slide"|gettext value=$config.speed|default:5 size="5"}
 {control type=text name="quality" label="Slide Thumbnail JPEG Quality"|gettext|cat:" (0 - 95, 100)<br><small>"|cat:("If quality is set to 100, the raw image will be used instead of thumbnailing"|gettext|cat:"</small>") value=$config.quality|default:$smarty.const.THUMB_QUALITY size="5"}
+{*{control type=checkbox name="hidetext" label="Hide Title and Body text in slides"|gettext checked=$config.hidetext value=1}*}
+{*{control type="checkbox" name="hidecontrols" label="Hide controls"|gettext checked=$config.hidecontrols|default:0 value=1}*}
 
+{*control type=dropdown name="pa_slideshow_anim"
+items="Fade,Slide Right,Slide Left,Slide Up,Reveal Left,Reveal Right,Reveal up,Reveal Down"
+values="fadeOut,slideRight,slideLeft,slideUp,squeezeLeft,squeezeRight,squeezeUp,squeezeDown" label="Animation Type" value=$config.pa_slideshow_anim}
 
+<h4>{'Configure the box size of the Slideshow frame'|gettext}</h4>
+{control type=text name="pa_slideshow_width" label="Slideshow Width"|gettext value=$config.pa_slideshow_width|default:100 size="5"}
+{control type=text name="pa_slideshow_height" label="Slideshow Height"|gettext value=$config.pa_slideshow_height|default:100 size="5"}
+
+<h4>{'Configure the box size the Slideshow images'|gettext}</h4>
+{control type=text name="pa_image_width" label="Image Width"|gettext value=$config.pa_image_width|default:100 size="5"}
+{control type=text name="pa_image_height" label="Image Height"|gettext value=$config.pa_image_height|default:100 size="5"}
+
+<h4>{'Show or hide Slideshow Controls'|gettext}</h4>
+{control type=checkbox name="pa_show_controls" label="Show Slideshow Controls"|gettext checked=$config.pa_show_controls value=1*}

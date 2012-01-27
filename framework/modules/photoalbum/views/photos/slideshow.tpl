@@ -21,7 +21,6 @@
 {/css}
 
 <div class="module photoalbum slideshow">
-
     {if $moduletitle != ""}<h1>{$moduletitle}</h1>{/if}
     {permissions}
     <div class="module-actions">
@@ -33,8 +32,7 @@
         {/if}
     </div>
     {/permissions}
-
-    <div id="ss-{$name}" class="slideshow-container" style="width:{$config.width|default:350}px;">    
+    <div id="ss-{$name}" class="slideshow-container" style="width:{$config.width|default:350}px;">
         <ul class="slideshow-frame" style="width:{$config.width|default:350}px;height:{$config.height|default:300}px;">
 			{assign var=quality value=$config.quality|default:$smarty.const.THUMB_QUALITY}
             {foreach key=key from=$slides item=slide name=slides}
@@ -52,7 +50,6 @@
                         {/if}
                     </div>
                 {/permissions}
-
                 <div class="bodycopy">
                     {if !$config.hidetext}
                         <h2>{$slide->title}</h2>
@@ -75,31 +72,27 @@
                 <li>{"No slides yet"|gettext}</li>
             {/foreach}
         </ul>
-        
         {if !$config.hidecontrols}
-        <div class="slideshow-buttons">
-            <a id="prev{$name}" href="javascript:void(0);" class="prev_slide" title="Prevous Slide">
-                &lt;&lt; {'Previous'|gettext}
-            </a>
-            <span class="slideshow-pagination">
-                {foreach key=key from=$slides item=slide name=slides}
-                <a class="slide-page-link" href="#" rel="{$key}">
-                    {$smarty.foreach.slides.iteration}
+            <div class="slideshow-buttons">
+                <a id="prev{$name}" href="javascript:void(0);" class="prev_slide" title="Prevous Slide">
+                    &lt;&lt; {'Previous'|gettext}
                 </a>
-                {/foreach}
-            </span>
-            <a id="plps{$name}" href="javascript:void(0);" class="pause_slide" title="Pause Slideshow"|gettext>
-                {'Pause'|gettext}
-            </a>
-            <a id="plps{$name}" href="javascript:void(0);" class="play_slide hide" title="Play Slideshow"|gettext>
-                {'Play'|gettext}
-            </a>
-            <a id="next{$name}" href="javascript:void(0);" class="next_slide" title="Next Slide"|gettext>
-                {'Next'|gettext} &gt;&gt;
-            </a>
-        </div>
+                <span class="slideshow-pagination">
+                    {foreach key=key from=$slides item=slide name=slides}
+                        <a class="slide-page-link" href="#" rel="{$key}">{$smarty.foreach.slides.iteration}</a>
+                    {/foreach}
+                </span>
+                <a id="plps{$name}" href="javascript:void(0);" class="pause_slide" title="Pause Slideshow"|gettext>
+                    {'Pause'|gettext}
+                </a>
+                <a id="plps{$name}" href="javascript:void(0);" class="play_slide hide" title="Play Slideshow"|gettext>
+                    {'Play'|gettext}
+                </a>
+                <a id="next{$name}" href="javascript:void(0);" class="next_slide" title="Next Slide"|gettext>
+                    {'Next'|gettext} &gt;&gt;
+                </a>
+            </div>
         {/if}
-    
     </div>
 </div>
 
@@ -110,7 +103,7 @@
 EXPONENT.YUI3_CONFIG.modules = {
 	'gallery-yui-slideshow': {
 		fullpath: '{/literal}{$asset_path}js/yui3-slideshow.js{literal}',
-		requires: ['anim']
+		requires: ['anim','node']
 	}
 }
 
@@ -125,7 +118,6 @@ YUI(EXPONENT.YUI3_CONFIG).use('gallery-yui-slideshow', function(Y) {
         pagination:"#ss-{/literal}{$name}{literal} .slideshow-pagination a"
     });
 });
-
 
 {/literal}
 {/script}
