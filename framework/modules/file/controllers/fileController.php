@@ -48,7 +48,7 @@ class fileController extends expController {
             $files[$key]->save();
         }
     
-        eDebug($files,true);
+//        eDebug($files,true);
     }
     
     public function picker() {
@@ -142,7 +142,6 @@ class fileController extends expController {
             }
 
             $totalrecords = $this->$modelname->find('count',"filename LIKE '%".$_GET['query']."%' OR title LIKE '%".$_GET['query']."%' OR alt LIKE '%".$_GET['query']."%'");
-            
             $files = $this->$modelname->find('all',$filter."filename LIKE '%".$_GET['query']."%' OR title LIKE '%".$_GET['query']."%' OR alt LIKE '%".$_GET['query']."%'".$imagesOnly,$sort.' '.$dir, $results, $startIndex);
 
             foreach ($files as $key=>$file) {
@@ -170,9 +169,7 @@ class fileController extends expController {
                 $filter .= "is_image=1";
             }
             
-            
             $totalrecords = $this->$modelname->find('count',$filter);
-
             $files = $this->$modelname->find('all',$filter,$sort.' '.$dir, $results, $startIndex);
             
             foreach ($files as $key=>$file) {

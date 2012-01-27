@@ -6,9 +6,10 @@ Added / Fixed / changed for 2.0.4
 -----------------------
 # This release focuses on revising the install/update/upgrade process
   - installation and upgrade must now be specifically invoked by url
-  - notice given to admin uses or upgrade need or new version availability
+  - notice given to admin users on upgrade need or new version availability
 # WYSIWYG editor (CKEditor) now more faithfully displays content styles
-  - editor can now also have customized format, font, & styles drop-downs
+  - can now also have customized format, font, & styles drop-downs
+  - can now access File Manager to link to files in addition to pages/modules
 # Many fixes and updates
   - corrects path problem w/ user extensions, esp. the avatar extension
   - improved tag viewing, usage and management
