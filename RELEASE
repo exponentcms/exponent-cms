@@ -6,6 +6,6 @@ Release Notes for Exponent Content Management System
 
 For a complete list of the changes made from release to release, see the CHANGELOG
 
-2.0.3 - Dec 2011
+2.0.5 - Feb 2012
 ========================
-# This release focuses on refining the language system for general use, installation, and especially to simplify translation creation
+# This release focuses on implementing categories & a new calendar
