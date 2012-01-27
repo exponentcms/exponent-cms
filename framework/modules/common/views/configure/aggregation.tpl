@@ -32,10 +32,10 @@
     </thead>
     <tbody>
 {*{foreach from=$pullable_modules item=mod key=src}*}
-{foreach from=$page->records item=mod key=src name=mod}
+{foreach from=$page->records item=mod}
         <tr class="{cycle values="even,odd"}">
             <td width="20">
-                {control type="checkbox" name="aggregate[]" value=$src checked=$config.aggregate}
+                {control type="checkbox" name="aggregate[]" value=$mod->src checked=$config.aggregate}
             </td>
             <td>
                 {$mod->title}

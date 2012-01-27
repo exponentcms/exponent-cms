@@ -126,6 +126,7 @@ class expModules {
 	                $mod = null;
 	                $mod->title = !empty($instance->title) ? $instance->title : "Untitled";
 	                $mod->section = $db->selectvalue('section', 'name', 'id='.$ref->section);
+                    $mod->src = $ref->source;
 	                $modules[$ref->source] = $mod;
 	            }
 	        }
