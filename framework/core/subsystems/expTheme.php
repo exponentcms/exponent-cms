@@ -440,7 +440,7 @@ class expTheme {
    	 * Checks to see if the page is currently in an action.  Useful only if the theme does not use the self::main() function
    	 * Returns whether or not an action should be run.
    	 * @node Subsystems:Theme
-   	 * @return bool
+   	 * @return boolean
    	 */
     public static function inPreview() {
     	$level = 99;
