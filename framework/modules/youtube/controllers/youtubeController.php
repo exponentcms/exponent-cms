@@ -28,7 +28,7 @@ class youtubeController extends expController {
         'files',
         'rss',
         'comments'
-    );
+    ); // all options: ('aggregation', 'cats','comments','ealerts','files','pagination', 'rss','tags')
 
 	function displayname() { return "YouTube"; }
 	function description() { return "Display youtube videos on your page."; }

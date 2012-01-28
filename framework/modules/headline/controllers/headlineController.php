@@ -30,7 +30,7 @@ class headlineController extends expController {
         'files',
         'rss',
         'tags'
-    );
+    ); // all options: ('aggregation', 'cats','comments','ealerts','files','pagination', 'rss','tags')
 	   
     function displayname() { return "Headline"; }
     function description() { return "Allows Admin's to create headlines for sections, and pulls the Title in for modules actions."; }

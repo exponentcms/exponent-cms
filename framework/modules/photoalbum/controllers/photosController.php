@@ -30,7 +30,7 @@ class photosController extends expController {
         'comments',
         'rss',
         'tags'
-    );
+    ); // all options: ('aggregation', 'cats','comments','ealerts','files','pagination', 'rss','tags')
 
     function displayname() { return "Photo Album"; }
     function description() { return "This module allows you to display and manage images."; }

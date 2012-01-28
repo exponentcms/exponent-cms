@@ -25,7 +25,7 @@ class bannerController extends expController {
         'files',
         'rss',
         'tags'
-    );
+    ); // all options: ('aggregation', 'cats','comments','ealerts','files','pagination', 'rss','tags')
     public $useractions = array(
         'showall'=>'Display Banner(s)'
     );

@@ -32,7 +32,7 @@ class addressController extends expController {
         'pagination',
         'rss',
         'tags'
-    );
+    ); // all options: ('aggregation', 'cats','comments','ealerts','files','pagination', 'rss','tags')
 
     function displayname() { return "Addresses"; }
     function description() { return "Use this module to display and manage addresses of users on your site."; }

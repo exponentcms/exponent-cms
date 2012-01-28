@@ -22,7 +22,8 @@ class portfolio extends expRecord {
     protected $attachable_item_types = array(
         'content_expFiles'=>'expFile',
         'content_expTags'=>'expTag',
-        'content_expComments'=>'expComment'
+        'content_expComments'=>'expComment',
+        'content_expCats'=>'expCat'
     );
 
     public $validates = array(

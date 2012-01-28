@@ -33,9 +33,16 @@
         </div>
     {/permissions}    
     {pagelinks paginate=$page top=1}
+    {assign var="cat" value="bad"}
+    {assign var="oldcat" value="bad"}
     {foreach from=$page->records item=record}
+        {if $cat != $record->expCat[0]->id}
+            {if $oldcat != "bad"}</div>{/if}
+            <h2>{if $record->expCat[0]->title!= ""}{$record->expCat[0]->title}{else}{'Uncategorized'|gettext}{/if}</h2>
+            <div style="margin-left:10px; padding-left:10px;">
+        {/if}
 		<div class="item">
-			<h2><a href="{link action=show title=$record->sef_url}" title="{$record->title|escape:"htmlall"}">{$record->title}</a></h2>
+			<h3><a href="{link action=show title=$record->sef_url}" title="{$record->title|escape:"htmlall"}">{$record->title}</a></h3>
 			{permissions}
 				<div class="item-actions">
 					{if $permissions.edit == 1}
@@ -64,13 +71,15 @@
                     {$record->body}
                 {/if}
             </div>
-            <div style="clear:both"></div>
+            {*<div style="clear:both"></div>*}
 		</div>
         {permissions}
 			{if $permissions.create == 1}
 				{icon class="add addhere" action=edit rank=$record->rank+1 title="Add another here"|gettext  text="Add a portfolio piece here"|gettext}
 			{/if}
         {/permissions}
-    {/foreach}   
+        {assign var="oldcat" value=$cat}
+        {assign var="cat" value=$record->expCat[0]->id}
+    {/foreach}
     {pagelinks paginate=$page bottom=1}
 </div>

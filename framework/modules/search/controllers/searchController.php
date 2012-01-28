@@ -32,7 +32,7 @@ class searchController extends expController {
         'aggregation',
         'comments',
         'rss'
-    );
+    ); // all options: ('aggregation', 'cats','comments','ealerts','files','pagination', 'rss','tags')
 
     function displayname() { return "Search Form"; }
     function description() { return "Add a form to allow users to search for content on your website."; }

@@ -55,7 +55,7 @@ abstract class expController {
 	function requiresConfiguration() { return false; }
     
     public $requires_login = array();
-    public $remove_configs = array();
+    public $remove_configs = array(); // all options: ('aggregation', 'cats','comments','ealerts','files','pagination', 'rss','tags')
     public $config = array();
     public $basemodel_name = '';
     public $model_table = '';
@@ -351,6 +351,12 @@ abstract class expController {
                     $this->params['expTag'][] = $expTag->id;
                 }
 	        }
+        }
+        //check for and handle cats
+        if (array_key_exists('expCat',$this->params)&&!empty($this->params['expCat'])) {
+            $catid = $this->params['expCat'];
+            unset($this->params['expCat']);
+            $this->params['expCat'][] = $catid;
         }
         $modelname = $this->basemodel_name;
         $this->$modelname->update($this->params);

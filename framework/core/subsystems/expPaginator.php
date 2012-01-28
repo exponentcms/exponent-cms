@@ -76,6 +76,7 @@ class expPaginator {
 	public $total_records = 0;
 	public $total_pages = 0;
 	public $page_offset = 0;
+    public $categorize = false;
 	/**#@+
      * @access public
      * @var array
@@ -105,7 +106,8 @@ class expPaginator {
 		$this->order = empty($params['order']) ? 'id' : $params['order'];
 		$this->dir = empty($params['dir']) ? 'ASC' : $params['dir'];
 		$this->src = empty($params['src']) ? null : $params['src'];
-		
+        $this->categorize = empty($params['categorize']) ? false : $params['categorize'];
+
 		// if a view was passed we'll use it.
 		if (isset($params['view'])) $this->view = $params['view'];
 
@@ -200,9 +202,29 @@ class expPaginator {
 			    $this->records = $db->selectObjectsBySql($this->sql);
 			}
 		}	
-		
-      if (!isset($params['records'])) $this->runCallback(); // isset($params['records']) added to correct search for products.
-      //$this->runCallback();
+
+        if ($this->categorize) {
+            foreach ($this->records as $key=>$record) {
+                foreach ($record->expCat as $cat) {
+                    $this->records[$key]->catid = $cat->id;
+                    $this->records[$key]->catrank = $cat->rank;
+                    $this->records[$key]->cat = $cat->title;
+                    break;
+                }
+                if (empty($this->records[$key]->catid)) {
+                    $this->records[$key]->catid = null;
+                    $this->records[$key]->catrank = 999999;
+                    $this->records[$key]->cat = 'Not Categorized';
+                }
+            }
+            function rankSort(&$a, &$b) {
+                return $a->catrank == $b->catrank ? 0 : ( $a->catrank > $b->catrank ) ? 1 : -1;
+            }
+            usort($this->records,'rankSort');
+        }
+
+        if (!isset($params['records'])) $this->runCallback(); // isset($params['records']) added to correct search for products.
+        //$this->runCallback();
       
         //eDebug($this->records);
 		// get the number of the last record we are showing...this is used in the page links.

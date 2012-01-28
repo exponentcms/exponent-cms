@@ -29,7 +29,7 @@ class filedownloadController extends expController {
         'files',
         'rss',
 		'tags'
-    );
+    ); // all options: ('aggregation', 'cats','comments','ealerts','files','pagination', 'rss','tags')
 
 	function displayname() { return "File Downloads"; }
 	function description() { return " This module lets you put files on your website for users to download."; }

@@ -28,7 +28,7 @@ class textController extends expController {
 		'rss',
 		'ealerts',
 		'tags'
-	); // all options: ('aggregation','files','comments','rss','ealerts','tags')
+	); // all options: ('aggregation', 'cats','comments','ealerts','files','pagination', 'rss','tags')
 
 	function displayname() { return "Text"; }
 	function description() { return "Puts text on your webpages"; }

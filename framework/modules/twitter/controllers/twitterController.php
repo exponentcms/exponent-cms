@@ -27,7 +27,7 @@ class twitterController extends expController {
         'files',
         'rss',
         'tags'
-    );
+    ); // all options: ('aggregation', 'cats','comments','ealerts','files','pagination', 'rss','tags')
 
     function displayname() { return "Twitter"; }
     function description() { return "Display your tweets just like on Twitter"; }
