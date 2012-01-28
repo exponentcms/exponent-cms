@@ -20,7 +20,7 @@
 
 if (!defined('EXPONENT')) exit('');
 
-//if (expPermissions::check('administrate',$loc)) {
+//if (expPermissions::check('manage',$loc)) {
 if ($user->isAdmin()) {
 	global $router;
 	if (expTemplate::getModuleViewFile($loc->mod,'_userpermissions',false) == TEMPLATE_FALLBACK_VIEW) {

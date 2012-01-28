@@ -45,7 +45,7 @@ class simplepollmodule {
 	
 	function permissions($internal = '') {
 		return array(
-			'administrate'=>'Manage',
+			'manage'=>'Manage',
 			'configure'=>'Configure',
 			'manage_question'=>'Manage Questions',
 			'manage_answer'=>'Manage Answers'
@@ -68,7 +68,7 @@ class simplepollmodule {
 		$template->assign('have_answers',count($answers));
 		
 		$template->register_permissions(
-			array('administrate','configure','manage_question','manage_answer'),
+			array('manage','configure','manage_question','manage_answer'),
 			$loc);
 		
 		$template->output();

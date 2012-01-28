@@ -101,7 +101,7 @@ if (isset($_GET['id'])) {
 //		$template->assign("items",$items);
 		$template->assign("f",$f);
 		$template->assign("backlink",expHistory::getLastNotEditable());
-		$template->register_permissions(array("administrate","editform","editformsettings","editreport","viewdata","editdata","deletedata"),unserialize($f->location_data));
+		$template->register_permissions(array("manage","editform","editformsettings","editreport","viewdata","editdata","deletedata"),unserialize($f->location_data));
 		$columndef .= 'new cColumn("Links","",links,null)';
 		$columndef .= ');';
 		

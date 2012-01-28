@@ -77,7 +77,7 @@
 		{/foreach}
 	</table>
 	{permissions}
-		{if $permissions.post == 1}
+		{if $permissions.create == 1}
 			<div class="module-actions">
 				{icon class=add action=edit title="Add a New Event"|gettext text="Add an Event"|gettext}
 			</div>

@@ -20,7 +20,7 @@
 
 if (!defined('EXPONENT')) exit('');
 
-if (expPermissions::check('administrate',$loc)) {
+if (expPermissions::check('manage',$loc)) {
 	global $router;
 	if (expTemplate::getModuleViewFile($loc->mod,'_grouppermissions',false) == TEMPLATE_FALLBACK_VIEW) {
 		$template = new template('common','_grouppermissions',$loc);

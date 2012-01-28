@@ -17,7 +17,7 @@
 {if $container != null}
     <a name="mod_{$container->id}"></a>
 	{permissions}
-		{if ($permissions.administrate == 1 || $permissions.edit_module == 1 || $permissions.delete_module == 1 || $permissions.add_module == 1 || $container->permissions.administrate == 1)}
+		{if ($permissions.manage == 1 || $permissions.edit == 1 || $permissions.delete == 1 || $permissions.create == 1 || $container->permissions.manage == 1)}
 			<div id="module{$container->id}" class="exp-container-module-wrapper">
 				<div class="container-chrome module-chrome">
 					<a href="#" class="trigger" title="{$container->info.module}">{$container->info.module}</a>
@@ -27,13 +27,13 @@
 	{/permissions}
 	{$container->output}
 	{permissions}
-		{if ($permissions.administrate == 1 || $permissions.edit_module == 1 || $permissions.delete_module == 1 || $permissions.add_module == 1 || $container->permissions.administrate == 1)}
+		{if ($permissions.manage == 1 || $permissions.edit == 1 || $permissions.delete == 1 || $permissions.create == 1 || $container->permissions.manage == 1)}
 			</div>
 		{/if}
 	{/permissions}
 {else}
 	{permissions}
-		{if $permissions.add_module == 1 && $hidebox == 0}
+		{if $permissions.create == 1 && $hidebox == 0}
 			<a class="addmodule" href="{link action=edit rank=$i}"><span class="addtext">{'Add New Module'|gettext}</span></a>
 		{/if}
 	{/permissions}

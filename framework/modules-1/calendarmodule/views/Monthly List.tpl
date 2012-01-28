@@ -21,7 +21,7 @@
 	<div class="module-actions">
 		<a class="monthviewlink" href="{link action=viewmonth time=$time}">{'Calendar View'|gettext}</a>&nbsp;&nbsp;|&nbsp;&nbsp;<span class="listviewlink"></span>{'List View'|gettext}
 		{permissions}
-			{if $permissions.administrate == 1}
+			{if $permissions.manage == 1}
 				&nbsp;&nbsp;|&nbsp;&nbsp;<a class="adminviewlink mngmntlink" href="{link _common=1 view='Administration' action='show_view' time=$time}">{'Administration View'|gettext}</a>
 			{/if}
 			&nbsp;&nbsp;|&nbsp;&nbsp;
@@ -37,7 +37,7 @@
 	</h2>
 	{permissions}
 		<div class="module-actions">
-			{if $permissions.post == 1}
+			{if $permissions.create == 1}
 				{icon class=add action=edit title="Add a New Event"|gettext text="Add an Event"|gettext}
 			{/if}
 		</div>

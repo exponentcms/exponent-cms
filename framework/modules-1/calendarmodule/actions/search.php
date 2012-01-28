@@ -55,9 +55,6 @@ for ($j = 0; $j < count($o); $j++) {
 //echo "<xmp>";
 //print_r($o);//
 //echo "</xmp>";
-$template->register_permissions(
-	array("manage_approval"),
-	$loc);
 $template->assign("days",$o);
 $template->assign("count",sizeof($o));
 $template->assign("title",trim($_GET['title']));

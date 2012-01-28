@@ -29,7 +29,7 @@ if (isset($_POST['id']) && !isset($_POST['submitNew'])) {
 	$iloc = expCore::makeLocation($loc->mod,$loc->src,$item->id);
 }
 
-if (($item == null && expPermissions::check("post",$loc)) ||
+if (($item == null && expPermissions::check("create",$loc)) ||
 	($item != null && expPermissions::check("edit",$loc)) ||
 	($iloc != null && expPermissions::check("edit",$iloc))
 ) {

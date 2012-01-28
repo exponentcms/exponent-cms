@@ -918,11 +918,11 @@ class expTheme {
 				if (!$iscontroller) {
 					if ((!$hide_menu && $loc->mod != "containermodule" && (call_user_func(array($module,"hasSources")) || $db->tableExists($loc->mod."_config")))) {
 						$container->permissions = array(
-							'administrate'=>(expPermissions::check('administrate',$loc) ? 1 : 0),
+							'manage'=>(expPermissions::check('manage',$loc) ? 1 : 0),
 							'configure'=>(expPermissions::check('configure',$loc) ? 1 : 0)
 						);
 
-						if ($container->permissions['administrate'] || $container->permissions['configure']) {
+						if ($container->permissions['manage'] || $container->permissions['configure']) {
 							$container->randomizer = mt_rand(1,ceil(microtime(1)));
 							$container->view = $view;
 							$container->info['class'] = $loc->mod;
@@ -939,11 +939,11 @@ class expTheme {
 					if (!$hide_menu ) {
 						$controller = expModules::getController($module);
 						$container->permissions = array(
-							'administrate'=>(expPermissions::check('administrate',$loc) ? 1 : 0),
+							'manage'=>(expPermissions::check('manage',$loc) ? 1 : 0),
 							'configure'=>(expPermissions::check('configure',$loc) ? 1 : 0)
 						);
 
-						if ($container->permissions['administrate'] || $container->permissions['configure']) {
+						if ($container->permissions['manage'] || $container->permissions['configure']) {
 							$container->randomizer = mt_rand(1,ceil(microtime(1)));
 							$container->view = $view;
 							$container->action = $params['action'];

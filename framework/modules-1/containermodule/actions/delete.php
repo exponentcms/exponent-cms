@@ -29,7 +29,7 @@ if ($container != null) {
 	$cloc = unserialize($container->external);
 	$cloc->int = $container->id;
 
-	if (expPermissions::check('delete_module',$loc) || expPermissions::check('delete_module',$cloc) || expPermissions::check('administrate',$iloc)) {
+	if (expPermissions::check('delete',$loc) || expPermissions::check('delete',$cloc) || expPermissions::check('manage',$iloc)) {
 		
 //		container::delete($container,(isset($_GET['rerank']) ? 1 : 0));
 		container::delete($container,(isset($_GET['rerank']) ? $_GET['rerank'] : 0));
@@ -39,7 +39,7 @@ if ($container != null) {
 
 		// Check to see if its the last reference
 		$secref = $db->selectObject('sectionref',"module='".$iloc->mod."' AND source='".$iloc->src."' AND internal='".$iloc->int."'");
-		if ($secref->refcount == 0 && expPermissions::check('administrate',$iloc) && call_user_func(array($iloc->mod,'hasContent')) == 1) {
+		if ($secref->refcount == 0 && expPermissions::check('manage',$iloc) && call_user_func(array($iloc->mod,'hasContent')) == 1) {
 			//FIXME: module/controller glue code
 			// remove this controllers data from the search table.			
 			if (expModules::controllerExists($iloc->mod)) {

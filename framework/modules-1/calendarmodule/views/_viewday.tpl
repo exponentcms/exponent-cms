@@ -31,7 +31,7 @@
 	</h2>
 	{permissions}
 		<div class="module-actions">
-			{if $permissions.post == 1}
+			{if $permissions.create == 1}
 				{icon class=add action=edit title="Add a New Event"|gettext text="Add an Event"|gettext}
 			{/if}
 		</div>
@@ -63,8 +63,7 @@
 								{icon action=delete_form class=delete record=$item date_id=$item->eventdate->id title="Delete this Event"|gettext}
 							{/if}
 						{/if}
-						{if $permissions.administrate == 1 || $permissions.edit == 1 ||
-							$permissions.delete == 1 || $permissions.manage_approval == 1}
+						{if $permissions.manage == 1 || $permissions.edit == 1 || $permissions.delete == 1}
 							{br}
 						{/if}
 					</div>

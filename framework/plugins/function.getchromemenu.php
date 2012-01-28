@@ -41,7 +41,7 @@ function smarty_function_getchromemenu($params,&$smarty) {
 
 	$list = '<ul class="container-menu">';
 	$list .= '<li class="container-info">'.$module->action.' / '.str_replace($module->action.'_','',$module->view).'</li>';
-	if (!empty($params['rank']) && expPermissions::check('order_modules', $cloc)) {
+	if (!empty($params['rank']) && expPermissions::check('configure', $cloc)) {
 		$uplink = $router->makeLink(array('module'=>'containermodule','src'=>$cloc->src,'action'=>'order','a'=>$params['rank'] - 2,'b'=>$params['rank'] - 1));
 		$downlink = $router->makeLink(array('module'=>'containermodule','src'=>$cloc->src,'action'=>'order', 'a'=>$params['rank'] - 1,'b'=>$params['rank']));
 		if ($params['rank'] != 1) {	//dont show this up arrow if it's the first module in a container
@@ -66,7 +66,7 @@ function smarty_function_getchromemenu($params,&$smarty) {
 		$list .= '<li><a href="'.$grouplink.'" class="group">'.gt("Group Permissions").'</a></li>';
 	}
 
-	if (!empty($module->id) && expPermissions::check('edit_module', $cloc) && $module->permissions['administrate'] == 1) {
+	if (!empty($module->id) && expPermissions::check('edit', $cloc) && $module->permissions['manage'] == 1) {
 		$editlink = $router->makeLink(array('module'=>'containermodule', 'id'=>$module->id, 'action'=>'edit', 'src'=>$module->info['source']));
 		$list .= '<li><a href="'.$editlink.'" class="config-view">'.gt("Configure Action")." &amp; ".gt("View").'</a></li>';
 	}
@@ -81,7 +81,7 @@ function smarty_function_getchromemenu($params,&$smarty) {
 		}
 	}
 
-	if (!empty($module->id) && expPermissions::check('delete_module', $cloc)) {
+	if (!empty($module->id) && expPermissions::check('delete', $cloc)) {
 		$deletelink = $router->makeLink(array('module'=>'containermodule', 'id'=>$module->id, 'action'=>'delete', 'rerank'=>$rerank));
 		$list .= '<li><a href="'.$deletelink.'" class="delete" onclick="alert(\''.gt("This content is being sent to the Recycle Bin to be recovered later if you wish.").'\')">'.gt("Remove Module").'</a></li>';
 	}

@@ -31,11 +31,11 @@ class containermodule {
 	
 	function permissions($internal = '') {
 		return array(
-			'administrate'=>gt('Manage'),
-            'order_modules'=>gt('Configure'),
-			'add_module'=>gt('Create'),
-			'edit_module'=>gt('Edit'),
-			'delete_module'=>gt('Delete'),
+			'manage'=>gt('Manage'),
+            'configure'=>gt('Configure'),
+			'create'=>gt('Create'),
+			'edit'=>gt('Edit'),
+			'delete'=>gt('Delete'),
 		);
 	}
 	
@@ -177,7 +177,7 @@ class containermodule {
 			$cloc->int = $containers[$i]->id;
             $location->mod = str_replace('Controller','',$location->mod);
 			$containers[$i]->permissions = array(
-				'administrate'=>(expPermissions::check('administrate',$location) ? 1 : 0),
+				'manage'=>(expPermissions::check('manage',$location) ? 1 : 0),
 				'configure'=>(expPermissions::check('configure',$location) ? 1 : 0)
 			);
 		}
@@ -186,7 +186,7 @@ class containermodule {
 		$template->assign('containers',$containers);
 		$template->assign('hasParent',(isset($this) && isset($this->_hasParent) ? 1 : 0));
 		$template->register_permissions(
-			array('administrate','add_module','edit_module','delete_module','order_modules'),
+			array('manage','create','edit','delete','configure'),
 			$loc
 		);
 		

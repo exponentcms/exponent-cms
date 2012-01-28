@@ -561,11 +561,11 @@ class migrationController extends expController {
 					$loc->mod = $item->module;
 					$loc->src = $item->source;
 					$loc->int = '';
-					if (array_key_exists($item->module, $this->new_modules)) {
+//					if (array_key_exists($item->module, $this->new_modules)) {
 						$loc->mod = $this->new_modules[$item->module];
 						$item->module = $this->new_modules[$item->module];
 						$item = $this->convert_permission($item);
-					}
+//					}
 					if ($item && $db->selectObject('container',"internal = '".serialize($loc)."'")) {
 						$db->insertObject($item,'userpermission');
 						if ($item->permission == 'edit') {  // if they had edit permission, we'll also give them create permission
@@ -583,11 +583,11 @@ class migrationController extends expController {
 					$loc->mod = $item->module;
 					$loc->src = $item->source;
 					$loc->int = '';
-					if (array_key_exists($item->module, $this->new_modules)) {
+//					if (array_key_exists($item->module, $this->new_modules)) {
 						$loc->mod = $this->new_modules[$item->module];
 						$item->module = $this->new_modules[$item->module];
 						$item = $this->convert_permission($item);
-					}
+//					}
 					if ($item && $db->selectObject('container',"internal = '".serialize($loc)."'")) {
 						$db->insertObject($item,'grouppermission');
 						if ($item->permission == 'edit') {  // if they had edit permission, we'll also give them create permission
@@ -2027,21 +2027,24 @@ class migrationController extends expController {
 				break;
 			case 'post':
 			case 'create_slide':
-			case 'create':
 			case 'add':
 			case 'add_item':
+            case 'add_module':
 				$item->permission = 'create';
 				break;
 			case 'edit_item':
 			case 'edit_slide':
+            case 'edit_module':
 				$item->permission = 'edit';
 				break;
 			case 'delete_item':
 			case 'delete_slide':
+            case 'delete_module':
 				$item->permission = 'delete';
 				break;
 			case 'order':
 			case 'import':
+            case 'orders_modules':
 				$item->permission = 'configure';
 				break;
 			case 'view_unpublished':

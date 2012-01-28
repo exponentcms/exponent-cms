@@ -23,7 +23,7 @@ $iloc = expCore::makeLocation($_GET['m'],@$_GET['s'],@$_GET['i']);
 
 // Make sure that secref refcount is indeed 0.
 $secref = $db->selectObject("sectionref","module='".$iloc->mod."' AND source='".$iloc->src."' AND internal='".$iloc->int."'");
-if ($secref && $secref->refcount == 0 && expPermissions::check("administrate",$iloc)) {
+if ($secref && $secref->refcount == 0 && expPermissions::check("manage",$iloc)) {
 	// delete in location.
 	$modclass = $iloc->mod;
     expSession::clearAllUsersSessionCache('containermodule');

@@ -21,7 +21,7 @@
 	</div>
 	<div class="bd">		
 	    {permissions}
-		    {if $permissions.administrate == 1}
+		    {if $permissions.manage == 1}
 		    <a class="admin" href="{link controller=administration action=install_tables}">Install Tables</a>{br}
 		    <a class="admin" href="{link controller=administration action=toggle_dev}">Toggle Dev</a>{br}
 		    <a class="admin" href="{link controller=administration action=clear_smarty_cache}">Clear Smarty Cache Files</a>{br}

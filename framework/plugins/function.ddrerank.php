@@ -50,7 +50,13 @@ function smarty_function_ddrerank($params,&$smarty) {
             $model = empty($params['model']) ? $params['items'][0]->classname : $params['model'] ;
 	        $only = !empty($params['only']) ? ' AND '.$params['only'] : '';
             $obj = new $model();
-            $params['items'] = $obj->find('all',"location_data='".serialize($loc)."'".$only,"rank");
+            if ($params['model'] == 'expCat') {
+                $loc = '1';
+            } else {
+                $loc = "location_data='".serialize($loc)."'";
+            }
+//            $params['items'] = $obj->find('all',"location_data='".serialize($loc)."'".$only,"rank");
+            $params['items'] = $obj->find('all',$loc.$only,"rank");
         } else {
             $params['items'] = array();
         }

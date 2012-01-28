@@ -22,7 +22,7 @@ class administrationController extends expController {
     public $basemodel_name = 'expRecord';
     public $useractions = array();
     public $add_permissions = array(
-	    'administrate'=>'Manage Administration', //FIXME is this used? old 1.0 permission
+//	    'administrate'=>'Manage Administration', //FIXME is this used? old 1.0 permission
 	    'clear'=>'Clear Caches',
 	    "fix"=>"Fix Database",
 	    "install"=>"Installation",

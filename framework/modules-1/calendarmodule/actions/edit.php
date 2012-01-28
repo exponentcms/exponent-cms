@@ -37,7 +37,7 @@ if (isset($_GET['id'])) {
 	}
 }
 
-if (($item == null && expPermissions::check('post',$loc)) ||
+if (($item == null && expPermissions::check('create',$loc)) ||
 	($item != null && expPermissions::check('edit',$loc)) ||
 	($iloc != null && expPermissions::check('edit',$iloc))
 ) {

@@ -30,9 +30,9 @@ if ($container != null) {
 	$cloc->int = $container->id;
 }
 
-if (expPermissions::check("add_module",$loc) ||
-	($iloc != null && expPermissions::check("administrate",$iloc)) ||
-	($cloc != null && expPermissions::check("edit_module",$cloc))
+if (expPermissions::check("create",$loc) ||
+	($iloc != null && expPermissions::check("manage",$iloc)) ||
+	($cloc != null && expPermissions::check("edit",$cloc))
 	) {
 	
 	//eDebug($_POST,true);

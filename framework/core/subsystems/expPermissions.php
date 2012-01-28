@@ -90,28 +90,29 @@ class expPermissions {
 		if (!is_array($permission)) $permission = array($permission);
         // always check for 'manage' and 'administrate' permissions
         $permission[] = 'manage';
-        $permission[] = 'administrate';
+//        $permission[] = 'administrate';
         // add variations to permission names for 1.0 modules such as containers
-        if (array_intersect(array('configure','order_modules'),$permission)) {
-            $permission[] = 'configure';
-            $permission[] = 'order_modules';
-        }
-        if (array_intersect(array('edit','edit_module'),$permission)) {
+//        if (array_intersect(array('configure','order_modules'),$permission)) {
+//            $permission[] = 'configure';
+//            $permission[] = 'order_modules';
+//        }
+//        if (array_intersect(array('edit','edit_module'),$permission)) {
+        if (array_intersect(array('edit'),$permission)) {
             $permission[] = 'create';
-            $permission[] = 'post';
-            $permission[] = 'add_module';
-            $permission[] = 'edit';
-            $permission[] = 'edit_module';
+//            $permission[] = 'post';
+//            $permission[] = 'add_module';
+//            $permission[] = 'edit';
+//            $permission[] = 'edit_module';
         }
-        if (array_intersect(array('create','post','add_module'),$permission)) {  // also implied from edit perm
-            $permission[] = 'create';
-            $permission[] = 'post';
-            $permission[] = 'add_module';
-        }
-        if (array_intersect(array('delete','delete_module'),$permission)) {
-            $permission[] = 'delete';
-            $permission[] = 'delete_module';
-        }
+//        if (array_intersect(array('create','post','add_module'),$permission)) {  // also implied from edit perm
+//            $permission[] = 'create';
+//            $permission[] = 'post';
+//            $permission[] = 'add_module';
+//        }
+//        if (array_intersect(array('delete','delete_module'),$permission)) {
+//            $permission[] = 'delete';
+//            $permission[] = 'delete_module';
+//        }
         $permission = array_unique($permission);  // strip out duplicates
 
 		if (is_callable(array($location->mod,"getLocationHierarchy"))) {  //FIXME this is only available in calendarmodule
@@ -253,17 +254,17 @@ class expPermissions {
         $perms = array();
         $perms[] = $permission;
         // account for old-style container perms
-        $perms[] = 'administrate';
-        if ($permission == 'post' || $permission == 'create') {
-            $perms[] = 'add_module';
-        } elseif ($permission == 'edit')  {
-            $perms[] = 'add_module';
-            $perms[] = 'edit_module';
-        } elseif ($permission == 'delete')  {
-            $perms[] = 'delete_module';
-        } elseif ($permission == 'configure')  {
-            $perms[] = 'order_modules';
-        }
+//        $perms[] = 'administrate';
+//        if ($permission == 'post' || $permission == 'create') {
+//            $perms[] = 'add_module';
+//        } elseif ($permission == 'edit')  {
+//            $perms[] = 'add_module';
+//            $perms[] = 'edit_module';
+//        } elseif ($permission == 'delete')  {
+//            $perms[] = 'delete_module';
+//        } elseif ($permission == 'configure')  {
+//            $perms[] = 'order_modules';
+//        }
         foreach ($perms as $perm) {
             $tmpLoc->mod = $location->mod;
             $tmpLoc->src = $location->src;
@@ -384,17 +385,17 @@ class expPermissions {
         $perms = array();
         $perms[] = $permission;
         // account for old-style container perms
-        $perms[] = 'administrate';
-        if ($permission == 'post' || $permission == 'create') {
-            $perms[] = 'add_module';
-        } elseif ($permission == 'edit')  {
-            $perms[] = 'add_module';
-            $perms[] = 'edit_module';
-        } elseif ($permission == 'delete')  {
-            $perms[] = 'delete_module';
-        } elseif ($permission == 'configure')  {
-            $perms[] = 'order_modules';
-        }
+//        $perms[] = 'administrate';
+//        if ($permission == 'post' || $permission == 'create') {
+//            $perms[] = 'add_module';
+//        } elseif ($permission == 'edit')  {
+//            $perms[] = 'add_module';
+//            $perms[] = 'edit_module';
+//        } elseif ($permission == 'delete')  {
+//            $perms[] = 'delete_module';
+//        } elseif ($permission == 'configure')  {
+//            $perms[] = 'order_modules';
+//        }
         foreach ($perms as $perm) {
             $tmpLoc->mod = $location->mod;
             $tmpLoc->src = $location->src;

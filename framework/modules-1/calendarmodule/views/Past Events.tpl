@@ -25,14 +25,14 @@
 	<div class="module-actions">
 		<a class="monthviewlink" href="{link action=viewmonth time=$time}">{'Calendar View'|gettext}</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a class="listviewlink" href="{link _common=1 view='Monthly List' action='show_view' time=$time}">{'List View'|gettext}</a>
 		{permissions}
-			{if $permissions.administrate == 1}
+			{if $permissions.manage == 1}
 				&nbsp;&nbsp;|&nbsp;&nbsp;<a class="adminviewlink mngmntlink" href="{link _common=1 view='Administration' action='show_view' time=$time}">{'Administration View'|gettext}</a>
 			{/if}
 			&nbsp;&nbsp;|&nbsp;&nbsp;
 			{printer_friendly_link class="printer-friendly-link" text='Printer-friendly'|gettext}
 			{br}
 			<span class="listviewlink">{'Past Events View'|gettext}{$config->colorize}</span>
-			{if $permissions.administrate == 1}
+			{if $permissions.manage == 1}
 				&nbsp;&nbsp;|&nbsp;&nbsp;
 				<img class="mngmnt_icon" style="border:none;" src="{$smarty.const.ICON_RELATIVE|cat:'delete.png'}" title="{'Delete All Past Events'|gettext}" alt="{'Delete All Past Events'|gettext}" />
 				<a class="mngmntlink" href="{link action=delete_all_past}" onclick="return confirm('{'Delete All Past Events?'|gettext}');" title="{'Delete All Past Events'|gettext}">{'Purge All Past Events'|gettext}</a>
@@ -48,7 +48,7 @@
 	</h2>
 	{permissions}
 		<div class="module-actions">
-			{if $permissions.post == 1}
+			{if $permissions.create == 1}
 				{icon class=add action=edit title="Add a New Event"|gettext text="Add an Event"|gettext}
 			{/if}
 		</div>

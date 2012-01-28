@@ -92,18 +92,15 @@ class calendarmodule {
 	function permissions($internal = '') {
 		if ($internal == '') {
 			return array(
-				'administrate'=>gt('Manage'),
+				'manage'=>gt('Manage'),
 				'configure'=>gt('Configure'),
-				'post'=>gt('Create'),
+				'create'=>gt('Create'),
 				'edit'=>gt('Edit'),
 				'delete'=>gt('Delete'),
-//				'approve'=>gt('Approve'),
-//				'manage_approval'=>gt('Manage Approval'),
-//				'manage_categories'=>gt('Manage Categories')
 			);
 		} else {
 			return array(
-				'administrate'=>gt('Manage'),
+				'manage'=>gt('Manage'),
 				'edit'=>gt('Edit'),
 				'delete'=>gt('Delete')
 			);
@@ -143,7 +140,7 @@ class calendarmodule {
 		$inapproval = false;
 
 		global $user;
-		if ($user) $canviewapproval = (expPermissions::check("approve",$loc) || expPermissions::check("manage_approval",$loc));
+		if ($user) $canviewapproval = (expPermissions::check("approve",$loc));
 		if ($db->countObjects("calendar","location_data='".serialize($loc)."' AND approved!=1")) {
 			foreach ($db->selectObjects("calendar","location_data='".serialize($loc)."' AND approved!=1") as $c) {
 				if ($c->poster == $user->id) $canviewapproval = true;
@@ -240,7 +237,7 @@ class calendarmodule {
 				for ($j = 0; $j < count($days[$start]); $j++) {
 					$thisloc = expCore::makeLocation($loc->mod,$loc->src,$days[$start][$j]->id);
 					$days[$start][$j]->permissions = array(
-						"administrate"=>(expPermissions::check("administrate",$thisloc) || expPermissions::check("administrate",$loc)),
+						"manage"=>(expPermissions::check("manage",$thisloc) || expPermissions::check("manage",$loc)),
 						"edit"=>(expPermissions::check("edit",$thisloc) || expPermissions::check("edit",$loc)),
 						"delete"=>(expPermissions::check("delete",$thisloc) || expPermissions::check("delete",$loc))
 					);
@@ -312,12 +309,10 @@ class calendarmodule {
 		} else if ($viewparams['type'] == "administration") {
 			// Check perms and return if cant view
 			if ($viewparams['type'] == "administration" && !$user) return;
-			$continue = (expPermissions::check("administrate",$loc) ||
-						expPermissions::check("post",$loc) ||
+			$continue = (expPermissions::check("manage",$loc) ||
+						expPermissions::check("create",$loc) ||
 						expPermissions::check("edit",$loc) ||
-						expPermissions::check("delete",$loc) ||
-						expPermissions::check("approve",$loc) ||
-						expPermissions::check("manage_approval",$loc)
+						expPermissions::check("delete",$loc)
 				) ? 1 : 0;
 			$dates = $db->selectObjects("eventdate",$locsql." AND date >= '".expDateTime::startOfDayTimestamp(time())."'");
 			$items = calendarmodule::_getEventsForDates($dates);
@@ -326,7 +321,7 @@ class calendarmodule {
 					$iloc = expCore::makeLocation($loc->mod,$loc->src,$i->id);
 					if (expPermissions::check("edit",$iloc) ||
 						expPermissions::check("delete",$iloc) ||
-						expPermissions::check("administrate",$iloc)
+						expPermissions::check("manage",$iloc)
 					) {
 						$continue = true;
 					}
@@ -337,7 +332,7 @@ class calendarmodule {
 				$thisloc = expCore::makeLocation($loc->mod,$loc->src,$items[$i]->id);
 				if ($user && $items[$i]->poster == $user->id) $canviewapproval = 1;
 				$items[$i]->permissions = array(
-					"administrate"=>(expPermissions::check("administrate",$thisloc) || expPermissions::check("administrate",$loc)),
+					"manage"=>(expPermissions::check("manage",$thisloc) || expPermissions::check("manage",$loc)),
 					"edit"=>(expPermissions::check("edit",$thisloc) || expPermissions::check("edit",$loc)),
 					"delete"=>(expPermissions::check("delete",$thisloc) || expPermissions::check("delete",$loc))
 				);
@@ -397,7 +392,7 @@ class calendarmodule {
 				$thisloc = expCore::makeLocation($loc->mod,$loc->src,$items[$i]->id);
 				if ($user && $items[$i]->poster == $user->id) $canviewapproval = 1;
 				$items[$i]->permissions = array(
-					'administrate'=>(expPermissions::check('administrate',$thisloc) || expPermissions::check('administrate',$loc)),
+					'manage'=>(expPermissions::check('manage',$thisloc) || expPermissions::check('manage',$loc)),
 					'edit'=>(expPermissions::check('edit',$thisloc) || expPermissions::check('edit',$loc)),
 					'delete'=>(expPermissions::check('delete',$thisloc) || expPermissions::check('delete',$loc))
 				);
@@ -416,7 +411,7 @@ class calendarmodule {
 		$template->assign('in_approval',$inapproval);
 		$template->assign('canview_approval_link',$canviewapproval);
 		$template->register_permissions(
-			array('administrate','configure','post','edit','delete','manage_approval','manage_categories'),
+			array('manage','configure','create','edit','delete'),
 			$loc
 		);
 

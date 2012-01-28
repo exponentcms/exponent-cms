@@ -35,9 +35,9 @@ if (isset($_GET['id'])) {
 }
 $loc->src = urldecode($loc->src);
 
-if (expPermissions::check('edit_module',$loc) || expPermissions::check('add_module',$loc) ||
-	($iloc != null && expPermissions::check('administrate',$iloc)) ||
-	($cloc != null && expPermissions::check('delete_module',$cloc))
+if (expPermissions::check('edit',$loc) || expPermissions::check('create',$loc) ||
+	($iloc != null && expPermissions::check('manage',$iloc)) ||
+	($cloc != null && expPermissions::check('delete',$cloc))
 ) {
 	#
 	# Initialize Container, in case its null

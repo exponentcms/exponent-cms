@@ -15,8 +15,8 @@
  *}
  
 {permissions}
-	{if ($permissions.administrate == 1 || $permissions.edit_module == 1 || $permissions.delete_module == 1 || $permissions.add_module == 1 || $permissions.order_modules == 1
-      || $container->permissions.administrate == 1 || $container->permissions.edit_module == 1 || $container->permissions.delete_module == 1 || $container->permissions.order_modules == 1)}
+	{if ($permissions.manage == 1 || $permissions.edit == 1 || $permissions.delete == 1 || $permissions.create == 1 || $permissions.configure == 1
+      || $container->permissions.manage == 1 || $container->permissions.edit == 1 || $container->permissions.delete == 1 || $container->permissions.configure == 1)}
         {$mainNeedsClosing=1}
       
         {css unique="container-chrome" link=$smarty.const.PATH_RELATIVE|cat:'framework/modules/container/assets/css/admin-container.css'}
@@ -30,7 +30,7 @@
 {/permissions}
 
 {permissions}
-    {*if $hasParent == 0 && ($permissions.edit_module || $permissions.add_module || $permissions.delete_module || $permissions.order_module || $permissions.administrate)*}
+    {*if $hasParent == 0 && ($permissions.edit || $permissions.create || $permissions.delete || $permissions.order_module || $permissions.manage)*}
     {if $hasParent == 0 && ($user->isAdmin())}
 	{** top level container module **}
 		<div class="container-chrome">
@@ -44,7 +44,7 @@
 			</ul>
 		</div>
 	{/if}
-	{if $permissions.add_module == 1 && $hidebox == 0}
+	{if $permissions.create == 1 && $hidebox == 0}
 		<a class="addmodule" href="{link action=edit rerank=1 rank=0}"><span class="addtext">{"Add Module"|gettext}</span></a>
 	{/if}
 {/permissions}
@@ -58,8 +58,8 @@
 	{else}
 		<a name="mod_{$container->id}"></a> 
 		{permissions}
-            {if ($permissions.administrate == 1 || $permissions.edit_module == 1 || $permissions.delete_module == 1 || $permissions.add_module == 1 || $permissions.order_modules == 1
-                 || $container->permissions.administrate == 1 || $container->permissions.edit_module == 1 || $container->permissions.delete_module == 1 || $container->permissions.order_modules == 1)}
+            {if ($permissions.manage == 1 || $permissions.edit == 1 || $permissions.delete == 1 || $permissions.create == 1 || $permissions.configure == 1
+                 || $container->permissions.manage == 1 || $container->permissions.edit == 1 || $container->permissions.delete == 1 || $container->permissions.configure == 1)}
                 
                 {* repeating css and JS calls in case they only have module management, and aren not admins *}
                 {css unique="container-chrome" link=$smarty.const.PATH_RELATIVE|cat:'framework/modules/container/assets/css/admin-container.css'}
@@ -85,14 +85,14 @@
 		{$container->output}
 
 		{permissions}
-            {if ($permissions.administrate == 1 || $permissions.edit_module == 1 || $permissions.delete_module == 1 || $permissions.add_module == 1 || $permissions.order_modules == 1
-                 || $container->permissions.administrate == 1 || $container->permissions.edit_module == 1 || $container->permissions.delete_module == 1 || $container->permissions.order_modules == 1)}
+            {if ($permissions.manage == 1 || $permissions.edit == 1 || $permissions.delete == 1 || $permissions.create == 1 || $permissions.configure == 1
+                 || $container->permissions.manage == 1 || $container->permissions.edit == 1 || $container->permissions.delete == 1 || $container->permissions.configure == 1)}
 				</div>
 			{/if}
 		{/permissions}
 
 		{permissions}
-			{if $permissions.add_module == 1 && $hidebox == 0}
+			{if $permissions.create == 1 && $hidebox == 0}
 				<a class="addmodule" href="{link action=edit rerank=1 rank=$smarty.foreach.c.iteration}"><span class="addtext">{"Add Module"|gettext}</span></a>
 			{/if}
 		{/permissions}
