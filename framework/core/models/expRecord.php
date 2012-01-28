@@ -495,7 +495,7 @@ class expRecord {
                     $where .= empty($this->location_data) ? null : "AND location_data='".$this->location_data."' ";
                     //FIXME: $where .= empty($this->rank_by_field) ? null : "AND " . $this->rank_by_field . "='" . $this->$this->rank_by_field . "'";
                     $groupby = empty($this->location_data) ? null : 'location_data';
-                    $groupby .= empty($this->rank_by_field) ? null : empty($groupby) ? null : ',' . $this->rank_by_field;
+                    $groupby .= empty($this->rank_by_field) ? null : (empty($groupby) ? null : ',' . $this->rank_by_field);
                     $this->rank = $db->max($this->tablename, 'rank', $groupby, $where) +1;
                 } else {
                     // check if this rank is already there..if so increment everything below it.

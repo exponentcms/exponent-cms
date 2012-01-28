@@ -17,6 +17,12 @@
 
 {/css}
 
+{if $config.usecategories}
+{css unique="categories" corecss="categories"}
+
+{/css}
+{/if}
+
 <div class="module portfolio showall">
     {if $moduletitle != ""}<h1>{$moduletitle}</h1>{/if}
     {permissions}
@@ -34,12 +40,12 @@
     {/permissions}    
     {pagelinks paginate=$page top=1}
     {assign var="cat" value="bad"}
-    {assign var="oldcat" value="bad"}
+    {*{assign var="oldcat" value="bad"}*}
     {foreach from=$page->records item=record}
-        {if $cat != $record->expCat[0]->id}
-            {if $oldcat != "bad"}</div>{/if}
+        {if $cat != $record->expCat[0]->id && $config.usecategories}
+            {*{if $oldcat != "bad"}</div>{/if}*}
             <h2>{if $record->expCat[0]->title!= ""}{$record->expCat[0]->title}{else}{'Uncategorized'|gettext}{/if}</h2>
-            <div style="margin-left:10px; padding-left:10px;">
+            {*<div style="margin-left:10px; padding-left:10px;">*}
         {/if}
 		<div class="item">
 			<h3><a href="{link action=show title=$record->sef_url}" title="{$record->title|escape:"htmlall"}">{$record->title}</a></h3>
@@ -71,15 +77,16 @@
                     {$record->body}
                 {/if}
             </div>
+            {permissions}
+    			{if $permissions.create == 1}
+    				{icon class="add addhere" action=edit rank=$record->rank+1 title="Add another here"|gettext  text="Add a portfolio piece here"|gettext}
+    			{/if}
+            {/permissions}
             {*<div style="clear:both"></div>*}
 		</div>
-        {permissions}
-			{if $permissions.create == 1}
-				{icon class="add addhere" action=edit rank=$record->rank+1 title="Add another here"|gettext  text="Add a portfolio piece here"|gettext}
-			{/if}
-        {/permissions}
-        {assign var="oldcat" value=$cat}
+        {*{assign var="oldcat" value=$cat}*}
         {assign var="cat" value=$record->expCat[0]->id}
     {/foreach}
+</div><div style="clear:both"></div>
     {pagelinks paginate=$page bottom=1}
 </div>
