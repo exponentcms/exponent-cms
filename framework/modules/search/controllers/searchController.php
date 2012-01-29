@@ -19,7 +19,8 @@
 
 class searchController extends expController {
     public $useractions = array(
-        'show'=>'Show Search Form'
+        'show'=>'Show Search Form',
+        'cloud'=>'Show Tag Cloud'
     );
     public $add_permissions = array(
         'spider'=>'Spider Site'
@@ -108,7 +109,41 @@ class searchController extends expController {
     public function showall() {
         redirect_to(array("controller"=>'search',"action"=>'show'));
     }
-    
+
+    /**
+     * tag cloud
+     */
+    function cloud() {
+        global $db;
+        expHistory::set('manageable', $this->params);
+        $where = $this->hasSources() ? $this->aggregateWhereClause() : null;
+        $order = "title";
+        $page = new expPaginator(array(
+                    'model'=>'expTag',
+                    'where'=>$where,
+                    'limit'=>50,
+                    'order'=>$order,
+                    'controller'=>$this->baseclassname,
+                    'action'=>$this->params['action'],
+                    'src'=>$this->hasSources() == true ? $this->loc->src : null,
+                    'columns'=>array('ID#'=>'id','Title'=>'title','Body'=>'body'),
+                    ));
+
+        foreach ($db->selectColumn('content_expTags','content_type',null,null,true) as $contenttype) {
+            foreach ($page->records as $key => $value) {
+                $attatchedat = $page->records[$key]->findWhereAttachedTo($contenttype);
+                if (!empty($attatchedat)) {
+                    $page->records[$key]->attachedcount = @$page->records[$key]->attachedcount + count($attatchedat);
+                    $page->records[$key]->attached[$contenttype] = $attatchedat;
+                }
+            }
+        }
+
+        assign_to_template(array(
+            'page'=>$page
+        ));
+    }
+
     // some general search stuff
     public function autocomplete() {
         return;

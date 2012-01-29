@@ -45,6 +45,34 @@ class expTagController extends expController {
 	 */
 	function hasSources() { return false; }
 
+    /**
+   	 * default view for individual item
+   	 */
+   	function show() {
+       global $db;
+       expHistory::set('viewable', $this->params);
+       $modelname = $this->basemodel_name;
+
+       // figure out if we're looking this up by id or title
+       $id = null;
+       if (isset($this->params['id'])) {
+           $id = $this->params['id'];
+       } elseif (isset($this->params['title'])) {
+           $id = $this->params['title'];
+       }
+
+       $record = new $modelname($id);
+       foreach ($db->selectColumn('content_expTags','content_type',null,null,true) as $contenttype) {
+              $attatchedat = $record->findWhereAttachedTo($contenttype);
+              if (!empty($attatchedat)) {
+                  $record->attachedcount = @$record->attachedcount + count($attatchedat);
+                  $record->attached[$contenttype] = $attatchedat;
+              }
+       }
+
+       assign_to_template(array('record'=>$record));
+    }
+
 	/**
 	 * manage tags
 	 */
