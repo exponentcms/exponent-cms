@@ -244,6 +244,16 @@ class expPaginator {
              * @param $array
              * @param $properties
              */
+            function collapse($node, $props) {
+                if (is_array($props)) {
+                    foreach ($props as $prop) {
+                        $node = (!isset($node->$prop)) ? null : $node->$prop;
+                    }
+                    return $node;
+                } else {
+                    return (!isset($node->$props)) ? null : $node->$props;
+                }
+            };
             function oasort($a, $b) {
                 global $properties;
                 foreach($properties as $k => $v) {
@@ -251,18 +261,8 @@ class expPaginator {
                         $k = $v;
                         $v = SORT_ASC;
                     }
-                    $collapse = function($node, $props) {
-                        if (is_array($props)) {
-                            foreach ($props as $prop) {
-                                $node = (!isset($node->$prop)) ? null : $node->$prop;
-                            }
-                            return $node;
-                        } else {
-                            return (!isset($node->$props)) ? null : $node->$props;
-                        }
-                    };
-                    $aProp = $collapse($a, $k);
-                    $bProp = $collapse($b, $k);
+                    $aProp = collapse($a, $k);
+                    $bProp = collapse($b, $k);
                     if ($aProp != $bProp) {
                         return ($v == SORT_ASC) ? strnatcasecmp($aProp, $bProp) : strnatcasecmp($bProp, $aProp);
                     }
