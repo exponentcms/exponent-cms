@@ -39,7 +39,10 @@
  * 
  * @subpackage Core-Subsystems
  * @package Framework
- */ 
+ */
+
+$properties = null;
+
 class expPaginator {
     /**#@+
      * @access public
@@ -93,8 +96,8 @@ class expPaginator {
 	 * @return \expPaginator
 	 */
 	public function __construct($params=array()) {
-		global $router,$db;		
-		                                     
+		global $router,$db;
+
 		$this->where = empty($params['where']) ? null : $params['where'];
 		$this->records = empty($params['records']) ? array() : $params['records'];
 		$this->limit = empty($params['limit']) ? 10 : $params['limit'];
@@ -241,36 +244,40 @@ class expPaginator {
              * @param $array
              * @param $properties
              */
-            function osort(&$array, $properties) {
-                if (is_string($properties)) {
-                    $col = $properties;
-                    unset($properties);
-                    $properties = array($col => SORT_ASC);
-                }
-                uasort($array, function($a, $b) use ($properties) {
-                    foreach($properties as $k => $v) {
-                        if (is_int($k)) {
-                            $k = $v;
-                            $v = SORT_ASC;
-                        }
-                        $collapse = function($node, $props) {
-                            if (is_array($props)) {
-                                foreach ($props as $prop) {
-                                    $node = (!isset($node->$prop)) ? null : $node->$prop;
-                                }
-                                return $node;
-                            } else {
-                                return (!isset($node->$props)) ? null : $node->$props;
-                            }
-                        };
-                        $aProp = $collapse($a, $k);
-                        $bProp = $collapse($b, $k);
-                        if ($aProp != $bProp) {
-                            return ($v == SORT_ASC) ? strnatcasecmp($aProp, $bProp) : strnatcasecmp($bProp, $aProp);
-                        }
+            function oasort($a, $b) {
+                global $properties;
+                foreach($properties as $k => $v) {
+                    if (is_int($k)) {
+                        $k = $v;
+                        $v = SORT_ASC;
                     }
-                    return 0;
-                });
+                    $collapse = function($node, $props) {
+                        if (is_array($props)) {
+                            foreach ($props as $prop) {
+                                $node = (!isset($node->$prop)) ? null : $node->$prop;
+                            }
+                            return $node;
+                        } else {
+                            return (!isset($node->$props)) ? null : $node->$props;
+                        }
+                    };
+                    $aProp = $collapse($a, $k);
+                    $bProp = $collapse($b, $k);
+                    if ($aProp != $bProp) {
+                        return ($v == SORT_ASC) ? strnatcasecmp($aProp, $bProp) : strnatcasecmp($bProp, $aProp);
+                    }
+                }
+                return 0;
+            }
+            function osort(&$array, $props) {
+                global $properties;
+                if (is_string($props)) {
+                    unset($properties);
+                    $properties = array($props => SORT_ASC);
+                } else {
+                    $properties = $props;
+                }
+                uasort($array,'oasort');
             }
             osort($this->records, array(array('catrank'),array($this->order)));
         }
