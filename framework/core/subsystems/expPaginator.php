@@ -203,12 +203,14 @@ class expPaginator {
 			}
 		}	
 
-        if ($this->categorize) {
+        if (!empty($this->categorize) && $this->categorize) {
             foreach ($this->records as $key=>$record) {
                 foreach ($record->expCat as $cat) {
                     $this->records[$key]->catid = $cat->id;
                     $this->records[$key]->catrank = $cat->rank;
                     $this->records[$key]->cat = $cat->title;
+                    $this->records[$key]->color = empty($cat->color) ? null : $cat->color;
+                    $this->records[$key]->module = empty($cat->module) ? null : $cat->module;
                     break;
                 }
                 if (empty($this->records[$key]->catid)) {
@@ -241,7 +243,9 @@ class expPaginator {
              */
             function osort(&$array, $properties) {
                 if (is_string($properties)) {
-                    $properties = array($properties => SORT_ASC);
+                    $col = $properties;
+                    unset($properties);
+                    $properties = array($col => SORT_ASC);
                 }
                 uasort($array, function($a, $b) use ($properties) {
                     foreach($properties as $k => $v) {
