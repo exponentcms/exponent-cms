@@ -24,6 +24,9 @@ expSession::clearAllSessionData();
 
 global $user;
 
+// let's update the search index
+searchController::spider();
+
 if (isset($_REQUEST['upgrade'])) {
 // upgrades hit this
 //    if (unlink(BASE.'install/not_configured')) {
