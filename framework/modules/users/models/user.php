@@ -147,7 +147,7 @@ class user extends expRecord {
 		return (empty($this->id)) ? false : true;
 	}
 
-	private function getUserProfile() {
+	public function getUserProfile() {
         global $db;
 
         if (!empty($this->id)) {
