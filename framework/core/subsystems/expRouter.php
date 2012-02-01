@@ -644,6 +644,7 @@ class expRouter {
     }
 
     public function getSection() {
+        global $db;
         if (expTheme::inAction()) {
             if (isset($_REQUEST['section'])) {
                 $section = $this->url_type=="sef" ? $this->getPageByName($_REQUEST['section']) : $_REQUEST['section'] ;
@@ -652,6 +653,10 @@ class expRouter {
             }
         } else {
             $section = (isset($_REQUEST['section']) ? $_REQUEST['section'] : SITE_DEFAULT_SECTION);
+        }
+        $testsection = $db->selectObject('section','id='.$section);
+        if (empty($testsection)) {
+            $section = SITE_DEFAULT_SECTION;
         }
         return $section;
     }
