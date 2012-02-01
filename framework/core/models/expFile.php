@@ -414,7 +414,7 @@ class expFile extends expRecord {
 
         if (file_exists($_destFullPath)) {
             $__oldumask = umask(0);
-            chmod($_destFullPath,FILE_DEFAULT_MODE);
+            chmod($_destFullPath,octdec(FILE_DEFAULT_MODE_STR+0));
             umask($__oldumask);
             // Checking
             if ($__oldumask != umask()) {
@@ -1145,7 +1145,7 @@ class expFile extends expRecord {
 				// No parent directory.  Create it.
 				if (is_file($parentdir.$part)) return SYS_FILES_FOUNDFILE;
 				if (expUtil::isReallyWritable($parentdir)) {
-					if ($mode == null) $mode = DIR_DEFAULT_MODE+0;
+					if ($mode == null) $mode = octdec(DIR_DEFAULT_MODE_STR+0);
 					mkdir($parentdir.$part,$mode);
 					chmod($parentdir.$part,$mode);
 				} else return SYS_FILES_NOTWRITABLE;
@@ -1207,7 +1207,7 @@ class expFile extends expRecord {
 		move_uploaded_file($tmp_name,$dest);
 		if (file_exists($dest)) {
 			$__oldumask = umask(0);
-			chmod($dest,FILE_DEFAULT_MODE);
+			chmod($dest,octdec(FILE_DEFAULT_MODE_STR+0));
 			umask($__oldumask);
 		}
 	}

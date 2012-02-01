@@ -43,9 +43,7 @@ if (!defined('SSL_URL')) define('SSL_URL','https://my.domain/');
 if (!defined('NONSSL_URL')) define('NONSSL_URL','http://my.domain/');
 
 if (!defined('FILE_DEFAULT_MODE_STR')) define('FILE_DEFAULT_MODE_STR','0666');
-if (!defined('FILE_DEFAULT_MODE')) define('FILE_DEFAULT_MODE',octdec(FILE_DEFAULT_MODE_STR+0));
 if (!defined('DIR_DEFAULT_MODE_STR')) define('DIR_DEFAULT_MODE_STR','0770');
-if (!defined('DIR_DEFAULT_MODE')) define('DIR_DEFAULT_MODE',octdec(DIR_DEFAULT_MODE_STR+0));
 
 if (!defined('ORGANIZATION_NAME')) define('ORGANIZATION_NAME',URL_BASE);
 if (!defined('HELP_ACTIVE')) define('HELP_ACTIVE',1);
