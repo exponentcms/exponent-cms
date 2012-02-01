@@ -41,8 +41,10 @@ if ($check_id == -1) {
 	$check_id = $section->parent;
 }
 
-if ($check_id != -1 && expPermissions::check('manage',expCore::makeLocation('navigationmodule','',$check_id))) {
-
+if (($check_id != -1 &&
+	expPermissions::check('manage',expCore::makeLocation('navigationmodule','',$check_id)) ||
+	$user->is_acting_admin == 1
+	)) {
 	// make sure the SEF name is valid
         global $router;
         if (empty($section->sef_name)) $section->sef_name = $router->encode($section->name);
