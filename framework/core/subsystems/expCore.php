@@ -310,7 +310,7 @@ class expCore {
 	}
 
 	/**
-	 *helper function
+	 * helper function
 	 *
 	 * @param $workArray
 	 * @return array
@@ -362,33 +362,33 @@ class expCore {
 		// convert types into paths
 		$relpath = '';
 		if ($type == "modules" || $type == 'profileextension') {
-				$relpath .= "framework/modules-1/";
-			} elseif($type == "controllers") {
-				$relpath .= "framework/views/";
-			} elseif($type == "forms") {
-				if ($name != "forms/calendar") {
-					$relpath .= "framework/core/subsystems/forms/";
-				} else {  //TODO  forms/calendar only used by calendarmodule
-					$relpath .= "framework/modules-1/calendarmodule/";
-				}
-			} elseif($type == "themes") {
-				$relpath .= "themes/";
-			} elseif($type == "models") {
-				$relpath .= "models/";
-			} elseif($type == "controls") {
-	//			$relpath .= "themes/";
-				$relpath .= "external/";
-			} elseif($type == "Control") {
-				$relpath .= "themes/";
-			} elseif($type == "Form") {
-				$relpath .= "framework/core/subsystems/forms/";
-			} elseif($type == "Module") {
-				$relpath .= "modules/";
-			} elseif($type == "Controller" || $type=='controllers') {
-				$relpath .= "framework/views/";
-			} elseif($type == "Theme") {
-				$relpath .= "themes/";
-			}
+            $relpath .= "framework/modules-1/";
+        } elseif($type == "controllers") {
+            $relpath .= "framework/views/";
+        } elseif($type == "forms") {
+            if ($name != "forms/calendar") {
+                $relpath .= "framework/core/subsystems/forms/";
+            } else {  //TODO  forms/calendar only used by calendarmodule
+                $relpath .= "framework/modules-1/calendarmodule/";
+            }
+        } elseif($type == "themes") {
+            $relpath .= "themes/";
+        } elseif($type == "models") {
+            $relpath .= "models/";
+        } elseif($type == "controls") {
+//			$relpath .= "themes/";
+            $relpath .= "external/";
+        } elseif($type == "Control") {
+            $relpath .= "themes/";
+        } elseif($type == "Form") {
+            $relpath .= "framework/core/subsystems/forms/";
+        } elseif($type == "Module") {
+            $relpath .= "modules/";
+        } elseif($type == "Controller" || $type=='controllers') {
+            $relpath .= "framework/views/";
+        } elseif($type == "Theme") {
+            $relpath .= "themes/";
+        }
 
 		// for later use for searching in lib/common
 		$typepath = $relpath;
@@ -399,31 +399,31 @@ class expCore {
 		// for later use for searching in lib/common
 		$relpath2 = '';
 		if ($subtype == "css") {
-				$relpath2 .= "css/";
-			} elseif($subtype == "js") {
-				$relpath2 .= "js/";
-			} elseif($subtype == "tpl") {
-				if ($type == 'controllers' || $type == 'Controller') {
-					//do nothing
-				} elseif ($name == "forms/calendar") {  //TODO  forms/calendar only used by calendarmodule
-	//				$relpath2 .= "/";
-					$relpath2 .= "forms/calendar/";
-				} elseif ($type == 'controls' || $type == 'Control') {
-					$relpath2 .= 'editors/';
-				} elseif ($type == 'profileextension') {
-					$relpath2 .= "extensions/";
-				} elseif ($type == 'globalviews') {
-					$relpath2 .= "framework/core/views/";
-				} else {
-					$relpath2 .= "views/";
-				}
-			} elseif($subtype == "form") {
-				$relpath2 .= "views/";
-			} elseif($subtype == "action") {
-				$relpath2 .= "actions/";
-				//HACK: workaround for now
-				$subtype = "php";
-			}
+            $relpath2 .= "css/";
+        } elseif($subtype == "js") {
+            $relpath2 .= "js/";
+        } elseif($subtype == "tpl") {
+            if ($type == 'controllers' || $type == 'Controller') {
+                //do nothing
+            } elseif ($name == "forms/calendar") {  //TODO  forms/calendar only used by calendarmodule
+//				$relpath2 .= "/";
+                $relpath2 .= "forms/calendar/";
+            } elseif ($type == 'controls' || $type == 'Control') {
+                $relpath2 .= 'editors/';
+            } elseif ($type == 'profileextension') {
+                $relpath2 .= "extensions/";
+            } elseif ($type == 'globalviews') {
+                $relpath2 .= "framework/core/views/";
+            } else {
+                $relpath2 .= "views/";
+            }
+        } elseif($subtype == "form") {
+            $relpath2 .= "views/";
+        } elseif($subtype == "action") {
+            $relpath2 .= "actions/";
+            //HACK: workaround for now
+            $subtype = "php";
+        }
 
 		$relpath2 .= $subname;
 		if($subtype != "") {
@@ -440,25 +440,25 @@ class expCore {
 		foreach($locations as $location) {
 			$checkpaths[] = $location . $typepath . $relpath2;
 	//		if (strstr($location,DISPLAY_THEME_REAL) && strstr($relpath,"framework/modules-1")) {
-			if (strstr($location,DISPLAY_THEME) && strstr($relpath,"framework/modules-1")) {
+			if (strstr($location,THEME_ABSOLUTE) && strstr($relpath,"framework/modules-1")) {
 				$checkpaths[] = $location . str_replace("framework/modules-1", "modules", $relpath);
 			} else {
 				$checkpaths[] = $location . $relpath;
 			}
 			//eDebug($relpath);
 		}
-		//eDebug($checkpaths);
+//		eDebug($checkpaths);
 
-		//TODO: handle the - currently unused - case where there is
-		//the same file in different $type categories
+		//TODO: handle the - currently unused - case where there is the same file in different $type categories
 		$myFiles = array();
 		foreach($checkpaths as $checkpath) {
-		//eDebug($checkpath);
+//		eDebug($checkpath);
 			$tempFiles = self::glob2keyedArray(glob($checkpath));
 			if ($tempFiles != false) {
 				$myFiles = array_merge($myFiles, $tempFiles);
 			}
 		}
+//        eDebug($myFiles);
 		if(count($myFiles) != 0) {
 			return array_values($myFiles);
 		} else {
@@ -481,7 +481,7 @@ class expCore {
 	 * @return array
 	 * @node Subsystems:expCore
 	 */
-	public static function buildNameList($type, $name, $subtype, $subname) {  //FIXME only used by calendarmodule edit action & expTemplate::listModuleViews (total of 2 calls)
+	public static function buildNameList($type, $name, $subtype, $subname) {  //FIXME only used by 1) calendarmodule edit action (email forms) & 2) expTemplate::listModuleViews
 		$nameList = array();
 		$fileList = self::resolveFilePaths($type, $name, $subtype, $subname);
 		if ($fileList != false) {
@@ -547,6 +547,28 @@ class expCore {
         }
     	curl_close($chImg);
     	return $curl_scraped_data;
+    }
+
+    public static function saveData($url, $filename, $ref = false, $post = false) {
+    	$chImg = curl_init($url);
+        $fp = fopen($filename, 'w');
+        curl_setopt($chImg, CURLOPT_FILE, $fp);
+//    	curl_setopt($chImg, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($chImg, CURLOPT_BINARYTRANSFER, 1);
+//    	curl_setopt($chImg, CURLOPT_USERAGENT, "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.6; rv:2.0) Gecko/20100101 Firefox/4.0");
+        if ($post) {
+            curl_setopt($chImg, CURLOPT_POST, true);
+        }
+    	if ($ref) {
+    		curl_setopt($chImg, CURLOPT_REFERER, $ref);
+    	}
+        $curl_scraped_data = curl_exec($chImg);
+        if ($post) {
+            curl_setopt($chImg, CURLOPT_POST, false);
+        }
+        curl_close($chImg);
+        fclose($fp);
+//    	return $curl_scraped_data;
     }
 
 }
