@@ -124,7 +124,7 @@ function smarty_function_ddrerank($params,&$smarty) {
                 visible      : false,
                 zIndex       : 50,
                 centered     : false,
-                render       : 'body',
+                render       : 'body'
                 // plugins      : [Y.Plugin.Drag]
             }).plug(Y.Plugin.Drag);
             
