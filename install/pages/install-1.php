@@ -47,7 +47,7 @@ if (!@file_exists(BASE.'install/not_configured')) {
 $row = "even";
 foreach ($status as $file=>$stat) {
 	echo '<tr class="'.$row.'"><td>'.$file.'</td><td';
-	if ($stat != SANITY_FINE) echo ' class="bodytext error">';
+	if ($stat != SANITY_FINE) echo ' class="bodytext failed">';
 	else echo ' class="bodytext success">';
 	switch ($stat) {
 		case SANITY_NOT_E:
@@ -96,7 +96,7 @@ foreach ($status as $test=>$stat) {
 		echo 'class="bodytext success">';
 	} else if ($stat[0] == SANITY_ERROR) {
 		$warncount--;
-		echo 'class="bodytext error">';
+		echo 'class="bodytext failed">';
 	} else {
 		$errcount--;
 		echo 'class="bodytext warning">';

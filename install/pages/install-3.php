@@ -43,7 +43,7 @@ function echoSuccess($msg = "") {
 }
 
 function echoFailure($msg = "") {
-	echo '<span class="failed">'.gt('Failed').'</span>';
+	echo '<span class="error">'.gt('Failed').'</span>';
 	if ($msg != "") echo ' : ' . $msg;
 	echo '</td></tr>';
 }

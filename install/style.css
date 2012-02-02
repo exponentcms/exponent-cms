@@ -189,19 +189,15 @@ p {
     font-size:120%;
 
 }
-p.success {
+.success {
     color:green;
     font-style:italic;
 }
-td.success {
-    color:green;
-    font-style:italic;
-}
-td.warning {
+.warning {
     color:orange;
     font-style:italic;
 }
-td.error {
+.failed {
     color:red;
     font-style:italic;
 }
