@@ -193,6 +193,18 @@ p.success {
     color:green;
     font-style:italic;
 }
+td.success {
+    color:green;
+    font-style:italic;
+}
+td.warning {
+    color:orange;
+    font-style:italic;
+}
+td.error {
+    color:red;
+    font-style:italic;
+}
 #rightcol p {
     font-size:110%;
     font-style:italic;

@@ -122,17 +122,7 @@ if ($errcount > 0) {
 	}
 	?>
 	<br /><br />
-<?php
-	if (isset($_REQUEST['type']) && $_REQUEST['type'] == 'new'){
-		?>
-		<a href="index.php?page=sanity&type=new"><?php echo gt('Re-run Environment Checks'); ?></a>
-		<?php
-	} else {
-		?>
-		<a href="index.php?page=sanity"><?php echo gt('Re-run Environment Checks'); ?></a>
-		<?php
-	} ?>
-
+    <a class="awesome large red" href="index.php?page=install-1"><?php echo gt('Re-run Environment Checks'); ?></a>
 	<?php
 } else if ($warncount > 0) {
 //} else if (true) {
