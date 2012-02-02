@@ -55,17 +55,17 @@
 	<table class="exp-skin-table">
 		<thead>
 			<tr>
-				<th width=5%>&nbsp;</th>
-				<th width=30%>{"File Name"|gettext}</th>
-				<th width=65%>{"Directory"|gettext}</th>
+				<th width="5%">&nbsp;</th>
+				<th width="30%">{"File Name"|gettext}</th>
+				<th width="65%">{"Directory"|gettext}</th>
 			</tr>
 		</thead>
 		<tbody>
 			{foreach from=$files item=file name=files}
 				<tr class="{cycle values="even,odd"}">            
-					<td width=5%>{if $file->exists}{img src=$smarty.const.ICON_RELATIVE|cat:'clean.png'}{else}<span style="color:red"><b>??</b></span>{/if}</td>
-					<td width=30%>{$file->filename}</td>
-					<td width=65%>{$file->directory}</td>
+					<td width="5%">{if $file->exists}{img src=$smarty.const.ICON_RELATIVE|cat:'clean.png'}{else}<span style="color:red"><b>??</b></span>{/if}</td>
+					<td width="30%">{$file->filename}</td>
+					<td width="65%">{$file->directory}</td>
 				</tr>
 			{foreachelse}
 				<tr><td colspan=3>{'No files found in the database'|gettext} {$config.database}</td></tr>
