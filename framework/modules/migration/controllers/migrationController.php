@@ -534,7 +534,6 @@ class migrationController extends expController {
 					$newmodule['views'] = $module->view;
 					$newmodule['title'] = $module->title;
 					$newmodule['actions'] = '';
-//                    $_POST['current_section'] = 1;  //FIXME we need to find the real page instead of just assigning Home
                     $section = $old_db->selectObject('sectionref',"module='".$iloc->mod."' AND source='".$iloc->src."' AND is_original='0'");
                     $_POST['current_section'] = empty($section->section) ? 1 : $section->section;
 					$module = container::update($newmodule,$module,expUnserialize($module->external));
@@ -1228,8 +1227,9 @@ class migrationController extends expController {
                 $gis = $old_db->selectArrays('slideshow_slide', "location_data='".serialize($iloc)."'");
                 foreach ($gis as $gi) {
                     $photo = new photo();
-                    $loc = $iloc;
                     $loc->mod = "photos";
+                    $loc->src = $iloc->src;
+                    $loc->int = $iloc->int;
                     $photo->title = (!empty($gi['name'])) ? $gi['name'] : 'Untitled';
                     $photo->body = $gi['description'];
                     $photo->alt = $gi['alt'];
@@ -1242,6 +1242,7 @@ class migrationController extends expController {
                             @$this->msg['migrated'][$iloc->mod]['name'] = $this->new_modules[$iloc->mod];
                             $file = new expFile($gi['file_id']);
                             $photo->attachitem($file,'');
+                            $photo->update(array("validate"=>false));
                         }
                     }
                 }
