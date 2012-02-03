@@ -68,7 +68,7 @@
 								{icon action=edit record=$question title="Edit FAQ"|gettext}
 							{/if}
 							{if $permissions.delete == 1}
-								{icon action=delete record=$question title="Delete this FAQ"|gettext|cat:"?" onclick="return confirm('"|cat:("Are you sure you want to delete this FAQ?"|gettext)||cat:"');"}
+								{icon action=delete record=$question title="Delete this FAQ?"|gettext onclick="return confirm('"|cat:("Are you sure you want to delete this FAQ?"|gettext)|cat:"');"}
 							{/if} 
 						</div>					
 					{/permissions}
