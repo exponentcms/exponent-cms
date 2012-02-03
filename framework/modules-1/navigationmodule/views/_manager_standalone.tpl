@@ -24,34 +24,50 @@
 		<a class="add" href="{link action=edit_contentpage parent=-1}">{'Create a New Standalone Page'|gettext}</a>
 	</div>
 
-	<table cellpadding="2" cellspacing="0" border="0" width="100%" class="exp-skin-table">
-    <thead>
-        <tr>
-    		<th><strong>{'Page Title'|gettext}</strong></th>
-    		<th><strong>{'Actions'|gettext}</strong></th>
-    		<th><strong>{'Permissions'|gettext}</strong></th>
-    	</tr>
-	</thead>
-	<tbody>
-	{foreach from=$sections item=section}
+    {form action=delete_standalones}
+        <table cellpadding="2" cellspacing="0" border="0" width="100%" class="exp-skin-table">
+        <thead>
+            <tr>
+                <th><input type='checkbox' name='checkall' title="{'Select All/None'|gettext}" style="margin-left: 1px;" onChange="selectAll(this.checked)"></th>
+                <th><strong>{'Page Title'|gettext}</strong></th>
+                <th><strong>{'Actions'|gettext}</strong></th>
+                <th><strong>{'Permissions'|gettext}</strong></th>
+            </tr>
+        </thead>
+        <tbody>
+        {foreach from=$sections item=section}
 
-	<tr class="{cycle values='odd,even'}">
-	<td>
-		{if $section->active}
-			<a href="{link section=$section->id}" class="navlink" title="{'View/Edit this Page'|gettext}">{$section->name}</a>&nbsp;
-		{else}
-			{$section->name}&nbsp;
-		{/if}
-	</td><td>
-		{icon class=edit action=edit_contentpage record=$section title='Edit'|gettext}
-        {icon action=delete record=$section title='Delete'|gettext onclick="return confirm('"|cat:("Delete this page?"|gettext)|cat:"');"}
-	</td><td>
-		{icon int=$section->id action=userperms _common=1 img='userperms.png' title='Assign user permissions for this Page'|gettext text="User"}
-		{icon int=$section->id action=groupperms _common=1 img='groupperms.png' title='Assign group permissions for this Page'|gettext text="Group"}
-	</td></tr>
-	{foreachelse}
-		<tr><td colspan=3><i>{'No standalone pages found'|gettext}</i></td></tr>
-	{/foreach}
-	</tbody>
-	</table>
+        <tr class="{cycle values='odd,even'}">
+            <td width="20">
+                {control type="checkbox" name="deleteit[]" value=$section->id}
+            </td>
+        <td>
+            {if $section->active}
+                <a href="{link section=$section->id}" class="navlink" title="{'View/Edit this Page'|gettext}">{$section->name}</a>&nbsp;
+            {else}
+                {$section->name}&nbsp;
+            {/if}
+        </td><td>
+            {icon class=edit action=edit_contentpage record=$section title='Edit'|gettext}
+            {icon action=delete record=$section title='Delete'|gettext onclick="return confirm('"|cat:("Delete this page?"|gettext)|cat:"');"}
+        </td><td>
+            {icon int=$section->id action=userperms _common=1 img='userperms.png' title='Assign user permissions for this Page'|gettext text="User"}
+            {icon int=$section->id action=groupperms _common=1 img='groupperms.png' title='Assign group permissions for this Page'|gettext text="Group"}
+        </td></tr>
+        {foreachelse}
+            <tr><td colspan=4><i>{'No standalone pages found'|gettext}</i></td></tr>
+        {/foreach}
+        </tbody>
+        </table>
+        {control class=delete type=buttongroup submit="Delete Selected Pages"|gettext onclick="&& confirm('"|cat:("Are you sure you want to delete these pages?"|gettext)|cat:"')"}
+    {/form}
 </div>
+
+<script type="text/javascript">
+    function selectAll(val) {
+        var checks = document.getElementsByName("deleteit[]");
+        for (var i = 0; i < checks.length; i++) {
+          checks[i].checked = val;
+        }
+    }
+</script>
