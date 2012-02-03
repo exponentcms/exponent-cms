@@ -24,7 +24,8 @@
 <table class="exp-skin-table">
     <thead>
         <tr>
-            <th>{""|gettext}</th>
+            {*<th>{""|gettext}</th>*}
+            <th><input type='checkbox' name='checkall' title="{'Select All/None'|gettext}" style="margin-left: 1px;" onChange="selectAll(this.checked)"></th>
             {*{$page->header_columns}*}
             <th>{"Title"|gettext}</th>
             <th>{"Page"|gettext}</th>
@@ -49,3 +50,12 @@
 {/foreach}
     </tbody>
 </table>
+
+<script type="text/javascript">
+    function selectAll(val) {
+        var checks = document.getElementsByName("aggregate[]");
+        for (var i = 0; i < checks.length; i++) {
+          checks[i].checked = val;
+        }
+    }
+</script>
