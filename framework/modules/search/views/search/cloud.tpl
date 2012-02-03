@@ -14,10 +14,6 @@
  *
  *}
 
-{css unique="blog" link="`$asset_path`css/blog.css"}
-
-{/css}
-
 <div class="module search cloud">
     {if $moduletitle}<h2>{$moduletitle}</h2>{/if}
     {permissions}
