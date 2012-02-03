@@ -54,6 +54,7 @@
 	                {if $user->isAdmin() == 1}
 	                    {if $edit_user->id==$user->id || $user->isActingAdmin() || $edit_user->id == 1}
                             {control type=checkbox readonly="readonly" name=is_acting_admin value=1 label="Make this user an Administrator?"|gettext checked=$edit_user->is_acting_admin}
+                            {control type=hidden name=is_acting_admin value=1}
 	                    {else}
 	                        {control type=checkbox name=is_acting_admin value=1 label="Make this user an Administrator?"|gettext checked=$edit_user->is_acting_admin}
 	                    {/if}
@@ -61,6 +62,7 @@
                     {if $user->isSuperAdmin() == 1}
 	                    {if $edit_user->id==$user->id || $edit_user->id == 1}
                             {control type=checkbox readonly="readonly" name=is_admin value=1 label="Make this user a Super Administrator?"|gettext checked=$edit_user->is_admin}
+                            {control type=hidden name=is_admin value=1}
 	                    {else}
                             {control type=checkbox name=is_admin value=1 label="Make this user a Super Administrator?"|gettext checked=$edit_user->is_admin}
                         {/if}
