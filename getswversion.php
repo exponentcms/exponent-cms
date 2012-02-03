@@ -18,12 +18,19 @@
 ##################################################
 
 ini_set('error_reporting', E_ALL);
-$swversion->major = 2;
-$swversion->minor = 0;
-$swversion->revision = 4;
-$swversion->type = '';
-$swversion->iteration = '';
-$swversion->builddate = '1324662757';
+include('./exponent_version.php');
+//$swversion->major = 2;
+//$swversion->minor = 0;
+//$swversion->revision = 4;
+//$swversion->type = '';
+//$swversion->iteration = '';
+//$swversion->builddate = '1324662757';
+$swversion->major = EXPONENT_VERSION_MAJOR;
+$swversion->minor = EXPONENT_VERSION_MINOR;
+$swversion->revision = EXPONENT_VERSION_REVISION;
+$swversion->type = EXPONENT_VERSION_TYPE;
+$swversion->iteration = EXPONENT_VERSION_ITERATION;
+$swversion->builddate = EXPONENT_VERSION_BUILDDATE;
 
 $ajaxObj['data'] = $swversion;
 $ajaxObj['replyCode'] = 201;
