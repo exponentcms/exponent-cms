@@ -28,7 +28,7 @@
 	{foreach from=$days item=items key=ts}
 		{if_elements array=$items}
 			<div class="sectiontitle">
-			{$ts|format_date:$smarty.const.DISPLAY_DATE_FORMAT}
+			{$ts|format_date}
 			</div>
 			{assign var=none value=1}
 			{foreach from=$items item=item}

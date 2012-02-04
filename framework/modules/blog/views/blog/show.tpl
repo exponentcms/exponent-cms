@@ -29,13 +29,13 @@
                 {icon action=delete record=$record}
             {/if}
             {if $permissions.manage == 1}
-                {icon class="manage" controller=expTag action=manage text="Manage Tags"|gettext}
+                {icon controller=expTag action=manage text="Manage Tags"|gettext}
             {/if}
         </div>
     {/permissions}
     <div class="post-info">
         <span class="attribution">
-            {'Posted by'|gettext} <a href="{link action=showall_by_author author=$record->poster|username}">{attribution user_id=$record->poster}</a> {'on'|gettext} <span class="date">{$record->created_at|format_date:$smarty.const.DISPLAY_DATE_FORMAT}</span>
+            {'Posted by'|gettext} <a href="{link action=showall_by_author author=$record->poster|username}">{attribution user_id=$record->poster}</a> {'on'|gettext} <span class="date">{$record->created_at|format_date}</span>
         </span>
         | <a class="comments" href="{link action=show title=$record->sef_url}#exp-comments">{$record->expComment|@count} {"Comments"|gettext}</a>
 		{if $record->expTag[0]->id}

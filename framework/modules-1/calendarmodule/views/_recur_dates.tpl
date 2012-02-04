@@ -21,7 +21,7 @@
 				<input type="checkbox" name="dates[{$d->id}]" {if $d->id == $checked_date->id}checked="checked" {/if}/>
 			</td>
 			<td style="border:none;">
-				{$d->date|format_date:$smarty.const.DISPLAY_DATE_FORMAT}
+				{$d->date|format_date}
 			</td>
 		</tr>
 	{/foreach}

@@ -25,7 +25,7 @@
 				&nbsp;&nbsp;|&nbsp;&nbsp;<a class="adminviewlink mngmntlink" href="{link _common=1 view='Administration' action='show_view' time=$time}">{'Administration View'|gettext}</a>
 			{/if}
 		{/permissions}
-		&nbsp;&nbsp;|&nbsp;&nbsp;{printer_friendly_link class="printer-friendly-link" text='Printer-friendly'|gettext}
+		&nbsp;&nbsp;|&nbsp;&nbsp;{printer_friendly_link text='Printer-friendly'|gettext}
 	</div>
 	<h2>
 		{if $enable_ical == true}
@@ -62,11 +62,11 @@
 		<dd>
 			<strong>
 			{if $item->is_allday == 1}
-				{$item->eventstart|format_date:$smarty.const.DISPLAY_DATE_FORMAT}
+				{$item->eventstart|format_date}
 			{elseif $item->eventstart != $item->eventend}
-				{$item->eventstart|format_date:$smarty.const.DISPLAY_DATE_FORMAT} @ {$item->eventstart|format_date:$smarty.const.DISPLAY_TIME_FORMAT} {'to'|gettext} {$item->eventend|format_date:$smarty.const.DISPLAY_TIME_FORMAT}
+				{$item->eventstart|format_date} @ {$item->eventstart|format_date:$smarty.const.DISPLAY_TIME_FORMAT} {'to'|gettext} {$item->eventend|format_date:$smarty.const.DISPLAY_TIME_FORMAT}
 			{else}
-				{$item->eventstart|format_date:$smarty.const.DISPLAY_DATE_FORMAT} @ {$item->eventstart|format_date:$smarty.const.DISPLAY_TIME_FORMAT}
+				{$item->eventstart|format_date} @ {$item->eventstart|format_date:$smarty.const.DISPLAY_TIME_FORMAT}
 			{/if}
 			</strong>
 		</dd>

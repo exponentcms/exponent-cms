@@ -18,7 +18,7 @@
     {if $moduletitle}<h2>{$moduletitle}</h2>{/if}
     {permissions}
         {if $permissions.manage == 1}
-            {icon class="manage" controller=expTag action=manage text="Manage Tags"|gettext}
+            {icon controller=expTag action=manage text="Manage Tags"|gettext}
         {/if}
         {br}
     {/permissions}

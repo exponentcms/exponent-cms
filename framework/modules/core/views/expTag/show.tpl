@@ -21,7 +21,7 @@
     		<a class="add" href="{link controller=$model_name action=create}">{"Create a new Tag"|gettext}</a>
     	{/if}
         {if $permissions.manage == 1}
-            {icon class="manage" controller=expTag action=manage text="Manage Tags"|gettext}
+            {icon controller=expTag action=manage text="Manage Tags"|gettext}
         {/if}
     {/permissions}
     {br}

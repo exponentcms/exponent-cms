@@ -26,7 +26,7 @@
 		<a class="monthviewlink" href="{link action=viewmonth time=$time}">{'Calendar View'|gettext}</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a class="listviewlink" href="{link _common=1 view='Monthly List' action='show_view' time=$time}">{'List View'|gettext}</a>
 		&nbsp;&nbsp;|&nbsp;&nbsp;<span class="adminviewlink">{'Administration View'|gettext}</span>
 		&nbsp;&nbsp;|&nbsp;&nbsp;
-		{printer_friendly_link class="printer-friendly-link" text='Printer-friendly'|gettext}
+		{printer_friendly_link text='Printer-friendly'|gettext}
 		{br}
 		<a class="listviewlink" href="{link _common=1 view='Past Events' action='show_view' time=$time}">{'Past Events View'|gettext}</a>{br}
 	</div>
@@ -59,7 +59,7 @@
 				<td><a class="itemtitle calendar_mngmntlink" href="{link action=view id=$item->id date_id=$item->eventdate->id}" title="{$item->body|summarize:"html":"para"}">{$item->title}</a></td>
 				<td>
 				{if $item->is_allday == 1}
-					{$item->eventstart|format_date:$smarty.const.DISPLAY_DATE_FORMAT}
+					{$item->eventstart|format_date}
 				{else}
 					{if $event->eventstart != $event->eventend}
 						{$item->eventstart|format_date:"%b %e %Y"} @ {$item->eventstart|format_date:"%l:%M %p"} - {$event->eventend|format_date:"%l:%M %p"}

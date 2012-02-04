@@ -77,7 +77,7 @@
 				   {$purchase_order->vendor->title}
 					</td>
 					<td>
-					{$purchase_order->created_at|format_date:$smarty.const.DISPLAY_DATE_FORMAT}
+					{$purchase_order->created_at|format_date}
 					</td>
 					<td>
 					ordered

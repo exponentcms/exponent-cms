@@ -59,7 +59,7 @@
 				</td>
 				<td>{if $question->answer != ""}{img src=$smarty.const.ICON_RELATIVE|cat:'clean.png'}{/if}</td>
 				<td>{$question->question}</td>
-				<td>{$question->created_at|format_date:$smarty.const.DISPLAY_DATE_FORMAT}</td>
+				<td>{$question->created_at|format_date}</td>
 				<td>{$question->submitter_name}</td>
 				<td>
 					{permissions}

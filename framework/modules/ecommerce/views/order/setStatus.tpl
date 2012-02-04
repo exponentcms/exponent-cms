@@ -10,7 +10,7 @@
 {br}
 {if $include_shipping == true}
 <hr>
-{'Your order was shipped on'|gettext} {$order->shipped|format_date:$smarty.const.DISPLAY_DATE_FORMAT}.{br}
+{'Your order was shipped on'|gettext} {$order->shipped|format_date}.{br}
 {'Carrier'|gettext}: {$carrier}{br}
 {'Tracking Number'|gettext}: {$order->shipping_tracking_number}{br}{br}
 {if $tracking_link != ''}

@@ -20,7 +20,7 @@
 <div class="module calendar viewweek"> 
 	<div class="module-actions">
 		<a class="monthviewlink" href="{link action=viewmonth time=$startweek}" title="{'View Entire Month'|gettext}">{'View Month'|gettext}</a>
-		&nbsp;&nbsp;|&nbsp;&nbsp;{printer_friendly_link class="printer-friendly-link" text='Printer-friendly'|gettext}
+		&nbsp;&nbsp;|&nbsp;&nbsp;{printer_friendly_link text='Printer-friendly'|gettext}
 	</div>
 	<h2>
 		{if $enable_ical == true}

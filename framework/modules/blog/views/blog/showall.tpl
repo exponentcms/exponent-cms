@@ -29,7 +29,7 @@
 				{icon class=add action=edit text="Add a new blog article"|gettext}
 			{/if}
             {if $permissions.manage == 1}
-                {icon class="manage" controller=expTag action=manage text="Manage Tags"|gettext}
+                {icon controller=expTag action=manage text="Manage Tags"|gettext}
             {/if}
 		</div>
     {/permissions}
@@ -53,7 +53,7 @@
             {/permissions}
             <div class="post-info">
                 <span class="attribution">
-                    {'Posted by'|gettext} <a href="{link action=showall_by_author author=$item->poster|username}">{attribution user_id=$item->poster}</a> {'on'|gettext} <span class="date">{$item->created_at|format_date:$smarty.const.DISPLAY_DATE_FORMAT}</span>
+                    {'Posted by'|gettext} <a href="{link action=showall_by_author author=$item->poster|username}">{attribution user_id=$item->poster}</a> {'on'|gettext} <span class="date">{$item->created_at|format_date}</span>
                 </span>
 
                 | <a class="comments" href="{link action=show title=$item->sef_url}#exp-comments">{$item->expComment|@count} {"Comments"|gettext}</a>

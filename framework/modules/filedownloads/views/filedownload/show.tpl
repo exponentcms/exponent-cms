@@ -29,7 +29,7 @@
 					{icon action=delete record=$record title="Delete this file"|gettext onclick="return confirm('"|cat:("Are you sure you want to delete this file?"|gettext)|cat:"');"}
 				{/if}
                 {if $permissions.manage == 1}
-                    {icon class="manage" controller=expTag action=manage text="Manage Tags"|gettext}
+                    {icon controller=expTag action=manage text="Manage Tags"|gettext}
                 {/if}
 			</div>
         {/permissions}

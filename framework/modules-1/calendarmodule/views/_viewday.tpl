@@ -21,7 +21,7 @@
 	<div class="module-actions">
 		<a class="weekviewlink" href="{link action=viewweek time=$now view=_viewweek}" title="{'View Entire Week'|gettext}">{'View Week'|gettext}</a>&nbsp;&nbsp;|&nbsp;&nbsp;
 		<a class="monthviewlink" href="{link action=viewmonth time=$item->eventstart}" title="{'View Entire Month'|gettext}" alt="{'View Entire Month'|gettext}">{'View Month'|gettext}</a>&nbsp;&nbsp;|&nbsp;&nbsp;
-		{printer_friendly_link class="printer-friendly-link" text='Printer-friendly'|gettext}
+		{printer_friendly_link text='Printer-friendly'|gettext}
 	</div>
 	<h2>
 		{if $enable_ical == true}

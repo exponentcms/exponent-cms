@@ -43,9 +43,9 @@
 					<a class="link" href="{link action=view id=$item->id date_id=$item->eventdate->id}" title="{$item->body|summarize:"html":"para"}">{$item->title}</a>
 					<em class="date">
 						{if $item->is_allday == 1}
-							{$item->eventstart|format_date:$smarty.const.DISPLAY_DATE_FORMAT}
+							{$item->eventstart|format_date}
 						{else}
-							{$item->eventstart|format_date:$smarty.const.DISPLAY_DATE_FORMAT} @ {$item->eventstart|format_date:"%l:%M %p"}
+							{$item->eventstart|format_date} @ {$item->eventstart|format_date:"%l:%M %p"}
 						{/if}
 					</em>
 					{permissions}

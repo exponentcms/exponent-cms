@@ -25,7 +25,7 @@
 				&nbsp;&nbsp;|&nbsp;&nbsp;<a class="adminviewlink mngmntlink" href="{link _common=1 view='Administration' action='show_view' time=$time}">{'Administration View'|gettext}</a>
 			{/if}
 			&nbsp;&nbsp;|&nbsp;&nbsp;
-			{printer_friendly_link class="printer-friendly-link" text='Printer-friendly'|gettext}
+			{printer_friendly_link text='Printer-friendly'|gettext}
 			{br}
 		{/permissions}
 	</div>

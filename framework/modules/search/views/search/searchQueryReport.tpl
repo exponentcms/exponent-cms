@@ -49,7 +49,7 @@
 						<tr class="{cycle values='odd,even'}">
 							<td>{$query->id}</td>
 							<td>{$query->query}</td>
-							<td>{$query->timestamp|format_date:$smarty.const.DISPLAY_DATE_FORMAT}</td>
+							<td>{$query->timestamp|format_date}</td>
 							<td>
 								{if !empty($query->user)}
 									{$query->user}

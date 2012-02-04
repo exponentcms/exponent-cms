@@ -46,7 +46,7 @@
 						
 						{*$cmt->name *} says
 					</span>
-					<span class="comment-date">{$cmt->created_at|format_date:$smarty.const.DISPLAY_DATE_FORMAT}</span>
+					<span class="comment-date">{$cmt->created_at|format_date}</span>
 				</cite>
 				<div class="comment-text bodycopy">	
 					{img src=$cmt->image h=80}   
