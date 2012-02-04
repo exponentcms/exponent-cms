@@ -71,7 +71,7 @@ class containermodule {
 			$dest = $source_select['dest'];
 		}
 		
-		global $db, $user;
+		global $db, $user, $module_scope;
 		
 		$container = null;
 		$container_key = serialize( $loc );
@@ -96,6 +96,7 @@ class containermodule {
 			if (!defined('PREVIEW_READONLY') || defined('SELECTOR')) $view = empty($container->view) ? $view : $container->view;
 			$title = $container->title;
 		}
+        $container->scope = empty($module_scope[$loc->src]["containermodule"]->scope) ? '' : $module_scope[$loc->src]["containermodule"]->scope;
 
 		$template = new template('containermodule',$view,$loc,$cache);
 		if ($dest) $template->assign('dest',$dest);
@@ -143,6 +144,7 @@ class containermodule {
 				$containers[$i]->info = array(
 					'module'=>$mod->name(),
 					'source'=>$location->src,
+//                    'scope'=>$module_scope[$loc->src]["containermodule"]->scope,
 					'hasContent'=>$mod->hasContent(),
 					'hasSources'=>$mod->hasSources(),
 					'hasViews'=>$mod->hasViews(),
@@ -158,6 +160,7 @@ class containermodule {
 				$containers[$i]->info = array(
 					'module'=>sprintf(gt('Unknown: %s'),$location->mod),
 					'source'=>$location->src,
+//                    'scope'=>$module_scope[$loc->src]["containermodule"]->scope,
 					'hasContent'=>0,
 					'hasSources'=>0,
 					'hasViews'=>0,

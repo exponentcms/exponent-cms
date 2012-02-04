@@ -34,7 +34,7 @@
     {if $hasParent == 0 && ($user->isAdmin())}
 	{** top level container module **}
 		<div class="container-chrome">
-			<a href="#" class="trigger" title="Container">{'Container'|gettext}</a>
+			<a href="#" class="trigger" title="Container">{'Container'|gettext} ({$top->scope})</a>
 			<ul class="container-menu">
 			    {if $user->isAdmin()}
     				<li><a href="{link _common=1 action=userperms}" class="user">{"User Permissions"|gettext}</a></li>

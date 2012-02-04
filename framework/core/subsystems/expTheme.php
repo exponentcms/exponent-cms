@@ -928,6 +928,7 @@ class expTheme {
 							$container->info['class'] = $loc->mod;
 							$container->info['module'] = call_user_func(array($module,"name"));
 							$container->info['source'] = $loc->src;
+                            $container->info['scope'] = $module_scope[$source][$module]->scope;
 							$container->info['hasConfig'] = $db->tableExists($loc->mod."_config");
 							$template = new template('containermodule','_hardcoded_module_menu',$loc);
 							$template->assign('container', $container);
@@ -950,6 +951,7 @@ class expTheme {
 							$container->info['class'] = $loc->mod;
 							$container->info['module'] = $controller->displayname();
 							$container->info['source'] = $loc->src;
+                            $container->info['scope'] = $module_scope[$source][$module]->scope;
 							$container->info['hasConfig'] = true;
 							$template = new template('containermodule','_hardcoded_module_menu',$loc);
 							$template->assign('container', $container);
