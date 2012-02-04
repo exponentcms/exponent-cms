@@ -30,12 +30,12 @@
 		{br}
 		<a class="listviewlink" href="{link _common=1 view='Past Events' action='show_view' time=$time}">{'Past Events View'|gettext}</a>{br}
 	</div>
-	<h2>
+	<h1>
 		{if $enable_ical == true}
 			<a class="icallink module-actions" href="{link action=ical}" title="{'iCalendar Feed'|gettext}" alt="{'iCalendar Feed'|gettext}"> </a>
 		{/if}
-		{if $moduletitle != ""}{$moduletitle} - {'Administration View'}{/if}
-	</h2>
+		{if $moduletitle}{$moduletitle} - {'Administration View'}{/if}
+	</h1>
 	{permissions}
 		<div class="module-actions">
 			{if $permissions.create == 1}

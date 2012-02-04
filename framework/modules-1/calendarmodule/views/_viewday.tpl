@@ -23,12 +23,12 @@
 		<a class="monthviewlink" href="{link action=viewmonth time=$item->eventstart}" title="{'View Entire Month'|gettext}" alt="{'View Entire Month'|gettext}">{'View Month'|gettext}</a>&nbsp;&nbsp;|&nbsp;&nbsp;
 		{printer_friendly_link text='Printer-friendly'|gettext}
 	</div>
-	<h2>
+	<h1>
 		{if $enable_ical == true}
 			<a class="icallink module-actions" href="{link action=ical}" title="{'iCalendar Feed'|gettext}" alt="{'iCalendar Feed'|gettext}"> </a>
 		{/if}
-		{if $moduletitle != ""}{$moduletitle}{/if}
-	</h2>
+		{if $moduletitle}{$moduletitle}{/if}
+	</h1>
 	{permissions}
 		<div class="module-actions">
 			{if $permissions.create == 1}

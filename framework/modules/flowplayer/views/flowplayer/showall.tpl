@@ -39,7 +39,7 @@ flowplayer("a.flowplayer-video", EXPONENT.PATH_RELATIVE+"external/flowplayer3/fl
 {/script}
 
 <div class="module flowplayer showall">
-    {if $moduletitle}<h1>{$moduletitle}</h1>{/if}
+    {if $moduletitle && !$config.hidemoduletitle}<h1>{$moduletitle}</h1>{/if}
 	{permissions}
 		<div class="module-actions">
 			{if $permissions.edit == 1}

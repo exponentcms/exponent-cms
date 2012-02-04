@@ -15,7 +15,7 @@
  *}
 
 <div class="module help showall">
-    {if $moduletitle}<h1>{$moduletitle}</h1>{/if}
+    {if $moduletitle && !$config.hidemoduletitle}<h1>{$moduletitle}</h1>{/if}
 
     {permissions}
         {if $permissions.create == 1}

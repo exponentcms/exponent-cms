@@ -44,7 +44,8 @@ class storeController extends expController {
         'files',
         'rss',
         'aggregation',
-        'tags'
+        'tags',
+        'module_title'
     ); // all options: ('aggregation', 'cats','comments','ealerts','files','pagination', 'rss','tags')
     
     //protected $permissions = array_merge(array("test"=>'Test'), array('copyProduct'=>"Copy Product"));

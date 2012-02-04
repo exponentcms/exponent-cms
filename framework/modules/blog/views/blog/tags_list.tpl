@@ -15,7 +15,7 @@
  *}
 
 <div class="module blog tags_list">
-    {if $moduletitle}<h2>{$moduletitle}</h2>{/if}
+    {if $moduletitle && !$config.hidemoduletitle}<h2>{$moduletitle}</h2>{/if}
     {permissions}
         {if $permissions.edit == 1}
             {icon class=add action=edit text="Add a new blog article"|gettext}

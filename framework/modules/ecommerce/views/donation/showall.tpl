@@ -15,7 +15,7 @@
  *}
 
 <div class="module donation showall">
-    {if $moduletitle != ''}<h1>{$moduletitle}</h1>{/if}
+    {if $moduletitle && !$config.hidemoduletitle}<h1>{$moduletitle}</h1>{/if}
     
     <table>
     {foreach from=$causes item=cause}

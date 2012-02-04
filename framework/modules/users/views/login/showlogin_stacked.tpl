@@ -16,9 +16,7 @@
 
 <div class="module login stacked">
     {if $loggedin == false}
-		{if $moduletitle}
-			<h2>{$moduletitle}</h2>
-		{/if}
+		{if $moduletitle && !$config.hidemoduletitle}<h2>{$moduletitle}</h2>{/if}
 		<div>
 			{form action=login}
 				{control type="text" name="username" label="Username"|gettext|cat:":" size=25}

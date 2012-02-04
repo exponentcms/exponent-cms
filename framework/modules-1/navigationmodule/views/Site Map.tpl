@@ -21,7 +21,7 @@
         {assign var=in_action value=1}
     {/if}
     {assign var=titlepresent value=0}
-    {if $moduletitle != ""}
+    {if $moduletitle && !$config.hidemoduletitle}
         <h1>{$moduletitle}</h1>
         {assign var=titlepresent value=1}
     {/if}

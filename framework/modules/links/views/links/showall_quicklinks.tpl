@@ -14,7 +14,7 @@
  *}
  
 <div class="module links showall-quicklinks">
-    {if $moduletitle}<h2>{$moduletitle}</h2>{/if}
+    {if $moduletitle && !$config.hidemoduletitle}<h2>{$moduletitle}</h2>{/if}
     {permissions}
         <div class="module-actions">
 			{if $permissions.create == 1 || $permissions.edit == 1}

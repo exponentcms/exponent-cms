@@ -47,8 +47,8 @@
             {control type=hidden name=rerank value=$rerank}
             {control type=hidden name=current_section value=$current_section}
 
-            {control type=text size=31 label="Module Title"|gettext name="title" value=$container->title}
-            {*{control type=text size=31 label="Module Title"|gettext name="title" value=$container->title caption="Module Title"|gettext required=true}*}
+            {*{control type=text size=31 label="Module Title"|gettext name="title" value=$container->title}*}
+            {control type=text size=31 label="Module Title"|gettext name="title" value=$container->title caption="Module Title"|gettext required=true}
 
             {control type=dropdown id="modcntrol" name=modcntrol items=$modules includeblank="Select a Module"|gettext label="Type of Content"|gettext disabled=1 value=$container->internal->mod}
             {if $is_edit}{control type=hidden id="modcntrol" name=modcntrol value=$container->internal->mod}{/if}

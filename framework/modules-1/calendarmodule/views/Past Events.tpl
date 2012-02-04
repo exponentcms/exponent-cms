@@ -40,12 +40,12 @@
 			{/if}
 		{/permissions}
 	</div>
-	<h2>
+	<h1>
 		{if $enable_ical == true}
 			<a class="icallink module-actions" href="{link action=ical}" title="{'iCalendar Feed'|gettext}" alt="{'iCalendar Feed'|gettext}"> </a>
 		{/if}
-		{if $moduletitle != ""}{$moduletitle} - {'Past Events View'|gettext}{/if}
-	</h2>
+		{if $moduletitle}{$moduletitle} - {'Past Events View'|gettext}{/if}
+	</h1>
 	{permissions}
 		<div class="module-actions">
 			{if $permissions.create == 1}

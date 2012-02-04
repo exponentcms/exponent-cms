@@ -29,9 +29,9 @@
 {/literal}
  
 <div class="calendarmodule cal-default"> 
-	<h2>
-	{if $moduletitle != ""}{$moduletitle}{/if}
-	</h2>
+	<h1>
+	{if $moduletitle}{/if}
+	</h1>
 	<h4 align="center">
 	{if $totaldays == 1}
 		<a href="{link module=calendarmodule action=viewmonth time=$start}">{'Events for'|gettext} {$start|format_date:"%B %e, %Y"}</a>

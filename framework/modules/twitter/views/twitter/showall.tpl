@@ -14,7 +14,7 @@
  *}
 
 <div class="module twitter showall">
-	{if $moduletitle}<h2>{$moduletitle}</h2>{/if}
+	{if $moduletitle && !$config.hidemoduletitle}<h1>{$moduletitle}</h1>{/if}
 	{permissions}
 	    <div class="module-actions">
 	        {if $permissions.create == 1}

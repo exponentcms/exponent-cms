@@ -29,7 +29,7 @@
  *}
 
 <div class="module simplepoll default">
-    {if $moduletitle}<h1>{$moduletitle}</h1>{/if}
+    {if $moduletitle && !$config.hidemoduletitle}<h1>{$moduletitle}</h1>{/if}
 	
 	{if $have_answers != 0}
 		<form method="post" action="{$smarty.const.URL_FULL}index.php">

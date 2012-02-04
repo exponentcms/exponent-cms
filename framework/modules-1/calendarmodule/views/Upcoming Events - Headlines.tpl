@@ -22,7 +22,7 @@
         {if $enable_ical == true}
             <a class="icallink module-actions" href="{link action=ical}" title="{'iCalendar Feed'|gettext}" alt="{'iCalendar Feed'|gettext}"> </a>
         {/if}
-        {if $moduletitle != ""}{$moduletitle}{/if}
+        {if $moduletitle}{$moduletitle}{/if}
     </h2>
 	{permissions}
 		<div class="module-actions">

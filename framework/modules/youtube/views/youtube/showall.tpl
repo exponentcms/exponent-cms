@@ -14,7 +14,7 @@
  *}
 
 <div class="module youtube showall">
-    {if $moduletitle}<h1>{$moduletitle}</h1>{/if}
+    {if $moduletitle && !$config.hidemoduletitle}<h1>{$moduletitle}</h1>{/if}
     {permissions}
         <div class="module-actions">
 			{if $permissions.create == 1}

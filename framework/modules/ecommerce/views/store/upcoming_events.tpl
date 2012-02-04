@@ -15,7 +15,7 @@
  *}
 
 <div class="module store upcoming-events">
-    {if $moduletitle != ""}<h1>{$moduletitle}</h1>{/if}
+    {if $moduletitle && !$config.hidemoduletitle}<h1>{$moduletitle}</h1>{/if}
     
     <ul>
     {foreach name=uce from=$page->records item=item}

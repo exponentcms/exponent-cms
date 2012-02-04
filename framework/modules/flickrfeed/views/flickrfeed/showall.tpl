@@ -15,7 +15,7 @@
  *}
 
 <div class="module flickr showall">
-    {if $moduletitle != ""}<h1>{$moduletitle}</h1>{/if}
+    {if $moduletitle && !$config.hidemoduletitle}<h1>{$moduletitle}</h1>{/if}
     {foreach from=$items item=item}
         <div class="item">
             {if $item->title != ""}<p>{$item->title}</p>{/if}

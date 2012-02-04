@@ -16,7 +16,7 @@
 
 <div class="module store showall-featured-products">
     
-    {if $moduletitle}<h1>{$moduletitle}</h1>{/if}
+    {if $moduletitle && !$config.hidemoduletitle}<h1>{$moduletitle}</h1>{/if}
         
     {foreach from=$page->records item=listing name=listings}
     <div class="featured-product">

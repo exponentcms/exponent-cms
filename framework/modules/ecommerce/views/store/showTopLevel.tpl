@@ -16,7 +16,7 @@
 
 <div class="module store show-top-level">
 	{assign var=depth value=0}
-	{if $moduletitle}<h2>{$moduletitle}</h2>{/if}
+	{if $moduletitle && !$config.hidemoduletitle}<h2>{$moduletitle}</h2>{/if}
 	<div id="catnav">
 		<ul>	
 			{foreach from=$categories item=category}

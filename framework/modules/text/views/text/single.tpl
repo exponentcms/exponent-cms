@@ -15,7 +15,7 @@
  *}
 
 <div class="module text single">
-    {if $moduletitle != ""}<h1>{$moduletitle}</h1>{/if}
+    {if $moduletitle && !$config.hidemoduletitle}<h1>{$moduletitle}</h1>{/if}
     {if $items[0]->title}<h2>{$items[0]->title}</h2>{/if}
     {permissions}
         {if $permissions.edit == 1}

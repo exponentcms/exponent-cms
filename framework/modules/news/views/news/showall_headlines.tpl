@@ -22,7 +22,7 @@
     {if $enable_rss == true}
         <a class="rsslink" href="{rsslink}">{'Subscribe to'|gettext} {$config.feed_title}</a>
     {/if}
-    {if $moduletitle != ""}<h2>{$moduletitle}</h2>{/if}
+    {if $moduletitle && !$config.hidemoduletitle}<h2>{$moduletitle}</h2>{/if}
 
     {permissions}
         <div class="module-actions">

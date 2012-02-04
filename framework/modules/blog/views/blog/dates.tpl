@@ -15,7 +15,7 @@
  *}
 
 <div class="module blog showall-dates">
-    {if $moduletitle}<h2>{$moduletitle}</h2>{/if}
+    {if $moduletitle && !$config.hidemoduletitle}<h2>{$moduletitle}</h2>{/if}
     {foreach from=$dates item=ydate key=year}
         <h3>{$year}</h3>
         <ul>

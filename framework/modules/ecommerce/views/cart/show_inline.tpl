@@ -19,7 +19,7 @@
 {/css}
 
 <div class="module cart show-inline">
-    {if $moduletitle}<h2>{$moduletitle}</h2>{/if}
+    {if $moduletitle && !$config.hidemoduletitle}<h2>{$moduletitle}</h2>{/if}
     <div class="total">
         {"Total"|gettext}: <span class="carttotal">{currency_symbol}{$order->total|number_format:2}</span>
     </div>

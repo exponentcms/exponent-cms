@@ -22,7 +22,7 @@
 
 {/css}
 <div class="module store showall">
-    {if $moduletitle}<h1>{$moduletitle}</h1>{/if}
+    {if $moduletitle && !$config.hidemoduletitle}<h1>{$moduletitle}</h1>{/if}
     <h1>{$current_category->title}</h1>
 
     {if $current_category->id}

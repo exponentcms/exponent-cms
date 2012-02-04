@@ -32,7 +32,7 @@
 			{if $permissions.editreport == 1}|&nbsp;&nbsp;<a class="addnew mngmntlink" href="{link action=edit_report module=formbuilder id=$form->id}">{'Edit Report'|gettext}</a>&nbsp;&nbsp;{/if}
 		</div>
 	{/permissions}
-	{if $moduletitle != ""}<h2>{$moduletitle}</h2>{/if}
+	{if $moduletitle && !$config.hidemoduletitle}<h1>{$moduletitle}</h1>{/if}
 	 <div class="bodycopy">
     	{if $description != ""}
     		{$description}
