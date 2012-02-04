@@ -154,7 +154,7 @@ class expString {
      * @param string $str
      * @return string
      */
-    function convertSmartQuotes($str) {
+    public static function convertSmartQuotes($str) {
     	$find[] = '�';  // left side double smart quote
     	$find[] = '�';  // right side double smart quote
     	$find[] = '�';  // left side single smart quote
