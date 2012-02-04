@@ -18,10 +18,12 @@
 {/css}
 
 <div class="module calendar upcoming-events-headlines">
-	{if $enable_ical == true}
-		<a class="icallink module-actions" href="{link action=ical}" title="{'iCalendar Feed'|gettext}" alt="{'iCalendar Feed'|gettext}"></a>
-	{/if}
-    {if $moduletitle != ""}<h2>{$moduletitle}</h2>{/if}
+    <h2>
+        {if $enable_ical == true}
+            <a class="icallink module-actions" href="{link action=ical}" title="{'iCalendar Feed'|gettext}" alt="{'iCalendar Feed'|gettext}"> </a>
+        {/if}
+        {if $moduletitle != ""}{$moduletitle}{/if}
+    </h2>
 	{permissions}
 		<div class="module-actions">
 			<p>
