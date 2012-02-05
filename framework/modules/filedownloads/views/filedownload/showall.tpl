@@ -13,6 +13,12 @@
  *
  *}
 
+{if $config.usecategories}
+{css unique="categories" corecss="categories"}
+
+{/css}
+{/if}
+
 <div class="module filedownload showall">
     {if $config.enable_rss}
         <a class="rsslink" href="{podcastlink}">{'Subscribe to'|gettext} {$config.feed_title}</a>
@@ -32,16 +38,20 @@
         </div>
     {/permissions}    
     {pagelinks paginate=$page top=1}
+    {assign var="cat" value="bad"}
     {foreach from=$page->records item=file name=files}
+        {if $cat != $file->expCat[0]->id && $config.usecategories}
+            <h2>{if $file->expCat[0]->title!= ""}{$file->expCat[0]->title}{else}{'Uncategorized'|gettext}{/if}</h2>
+        {/if}
         <div class="item">
             {$filetype=$file->expFile.downloadable[0]->filename|regex_replace:"/^.*\.([^.]+)$/D":"$1"}
 			{if $file->expFile.preview[0] != "" && $config.show_icon}
 				{img class="preview-img" file_id=$file->expFile.preview[0]->id square=150}
 			{/if}
 			{if $config.quick_download}
-				<h2><a class="download" href="{link action=downloadfile fileid=$file->id}">{$file->title}</a></h2>
+				<h3><a class="download" href="{link action=downloadfile fileid=$file->id}">{$file->title}</a></h3>
 			{else}
-				{if $file->title}<h2><a class="readmore" href="{link action=show title=$file->sef_url}">{$file->title}</a></h2>{/if}
+				{if $file->title}<h3><a class="readmore" href="{link action=show title=$file->sef_url}">{$file->title}</a></h3>{/if}
 			{/if}
 			{if $config.show_info}
 				<span class="label size">{'File Size'}:</span>
@@ -97,6 +107,7 @@
 			{/permissions}
 			{clear}  
 		</div>		
+        {assign var="cat" value=$file->expCat[0]->id}
     {/foreach}
     {pagelinks paginate=$page bottom=1}
 </div>

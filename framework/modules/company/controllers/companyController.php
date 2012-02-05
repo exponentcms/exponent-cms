@@ -27,7 +27,7 @@ class companyController extends expController {
         //'files',
         'rss',
         'tags'
-    ); // all options: ('aggregation', 'cats','comments','ealerts','files','pagination', 'rss','tags')
+    ); // all options: ('aggregation', 'categories','comments','ealerts','files','module_title','pagination', 'rss','tags')
 
 	function displayname() { return "Company Listings"; }
 	function description() { return "This module shows company listings"; }

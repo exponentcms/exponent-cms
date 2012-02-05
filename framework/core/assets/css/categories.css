@@ -1,9 +1,9 @@
-.portfolio.showall .item {
+.showall .item {
     margin-left: 10px;
     padding-left: 10px;
 }
 
-.portfolio.showall h2 {
+.showall h2 {
     border: 1px;
     border-color: black;
     border-style: solid none;

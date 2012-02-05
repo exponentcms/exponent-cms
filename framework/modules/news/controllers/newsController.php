@@ -22,10 +22,10 @@ class newsController extends expController {
         'showall'=>'Show all News',
     );
     public $remove_configs = array(
+        'comments',
         'ealerts',
-        'tags',
-        'comments'
-    ); // all options: ('aggregation', 'cats','comments','ealerts','files','pagination', 'rss','tags')
+        'tags'
+    ); // all options: ('aggregation', 'categories','comments','ealerts','files','module_title','pagination', 'rss','tags')
     public $add_permissions = array(
         'showUnpublished'=>'View Unpublished News'
     );

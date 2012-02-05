@@ -22,12 +22,13 @@ class twitterController extends expController {
     );
     public $remove_configs = array(
         'aggregation',
+        'categories',
         'comments',
         'ealerts',
         'files',
         'rss',
         'tags'
-    ); // all options: ('aggregation', 'cats','comments','ealerts','files','pagination', 'rss','tags')
+    ); // all options: ('aggregation', 'categories','comments','ealerts','files','module_title','pagination', 'rss','tags')
 
     function displayname() { return "Twitter"; }
     function description() { return "Display your tweets just like on Twitter"; }

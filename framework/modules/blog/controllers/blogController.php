@@ -26,7 +26,7 @@ class blogController extends expController {
     );
     public $remove_configs = array(
         'ealerts'
-    ); // all options: ('aggregation', 'cats','comments','ealerts','files','pagination', 'rss','tags')
+    ); // all options: ('aggregation', 'categories','comments','ealerts','files','module_title','pagination', 'rss','tags')
     public $add_permissions = array(
         'approve'=>"Approve Comments"
     );

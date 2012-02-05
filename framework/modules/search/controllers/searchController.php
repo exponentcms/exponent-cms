@@ -27,13 +27,14 @@ class searchController extends expController {
     );
 
     public $remove_configs = array(
-        'ealerts',
-        'tags',
-        'files',
         'aggregation',
+        'categories',
         'comments',
-        'rss'
-    ); // all options: ('aggregation', 'cats','comments','ealerts','files','pagination', 'rss','tags')
+        'ealerts',
+        'files',
+        'rss',
+        'tags'
+    ); // all options: ('aggregation', 'categories','comments','ealerts','files','module_title','pagination', 'rss','tags')
 
     function displayname() { return "Search Form"; }
     function description() { return "Add a form to allow users to search for content on your website."; }

@@ -26,11 +26,12 @@ class headlineController extends expController {
  
 	public $remove_configs = array(
         'aggregation',
+        'categories',
         'comments',
         'files',
         'rss',
         'tags'
-    ); // all options: ('aggregation', 'cats','comments','ealerts','files','pagination', 'rss','tags')
+    ); // all options: ('aggregation', 'categories','comments','ealerts','files','module_title','pagination', 'rss','tags')
 	   
     function displayname() { return "Headline"; }
     function description() { return "Allows Admin's to create headlines for sections, and pulls the Title in for modules actions."; }

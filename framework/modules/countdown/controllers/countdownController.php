@@ -23,13 +23,14 @@ class countdownController extends expController {
         'show'=>'Show Clock'
     );
     public $remove_configs = array(
+        'aggregation',
+        'categories',
+        'comments',
         'ealerts',
-        'tags',
         'files',
         'rss',
-        'comments',
-        'aggregation'
-    ); // all options: ('aggregation', 'cats','comments','ealerts','files','pagination', 'rss','tags')
+        'tags'
+    ); // all options: ('aggregation', 'categories','comments','ealerts','files','module_title','pagination', 'rss','tags')
 
 	function displayname() { return "Countdown"; }
 	function description() { return "This module allows you to display a timer counting down to a specified date/time."; }

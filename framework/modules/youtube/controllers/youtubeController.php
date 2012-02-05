@@ -23,12 +23,13 @@ class youtubeController extends expController {
         'showall'=>'Display a YouTube Video'
     );
     public $remove_configs = array(
+        'categories',
+        'comments',
         'ealerts',
-        'tags',
         'files',
         'rss',
-        'comments'
-    ); // all options: ('aggregation', 'cats','comments','ealerts','files','pagination', 'rss','tags')
+        'tags'
+    ); // all options: ('aggregation', 'categories','comments','ealerts','files','module_title','pagination', 'rss','tags')
 
 	function displayname() { return "YouTube"; }
 	function description() { return "Display youtube videos on your page."; }

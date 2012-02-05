@@ -24,11 +24,12 @@ class flowplayerController extends expController {
     );
 	public $remove_configs = array(
         'aggregation',
+        'categories',
         'comments',
         'files',
         'rss',
         'tags'
-    ); // all options: ('aggregation', 'cats','comments','ealerts','files','pagination', 'rss','tags')
+    ); // all options: ('aggregation', 'categories','comments','ealerts','files','module_title','pagination', 'rss','tags')
 
     function displayname() { return "Flowplayer Media Player"; }
     function description() { return "Flowplayer is a media player for Web sites. Use it to embed video/audio streams into your HTML pages."; }

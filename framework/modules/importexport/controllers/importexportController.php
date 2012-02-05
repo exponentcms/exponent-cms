@@ -33,13 +33,14 @@ class importexportController extends expController {
     
     // hide the configs we don't need
     public $remove_configs = array(
+        'aggregation',
+        'categories',
         'comments',
         'ealerts',
         'files',
         'rss',
-        'aggregation',
         'tags'
-    ); // all options: ('aggregation', 'cats','comments','ealerts','files','pagination', 'rss','tags')
+    ); // all options: ('aggregation', 'categories','comments','ealerts','files','module_title','pagination', 'rss','tags')
     
     //protected $permissions = array_merge(array("test"=>'Test'), array('copyProduct'=>"Copy Product"));
     protected $add_permissions = array('import'=>'Import Data', 'export'=>'Export Data');

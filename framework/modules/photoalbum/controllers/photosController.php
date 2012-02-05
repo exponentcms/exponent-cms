@@ -25,12 +25,12 @@ class photosController extends expController {
         //'showall_tags'=>"Tag Categories"
     );
     public $remove_configs = array(
-        'files',
-        'ealerts',
         'comments',
+        'ealerts',
+        'files',
         'rss',
         'tags'
-    ); // all options: ('aggregation', 'cats','comments','ealerts','files','pagination', 'rss','tags')
+    ); // all options: ('aggregation', 'categories','comments','ealerts','files','module_title','pagination', 'rss','tags')
 
     function displayname() { return "Photo Album"; }
     function description() { return "This module allows you to display and manage images."; }

@@ -29,7 +29,7 @@ class filedownloadController extends expController {
         'files',
         'rss',
 		'tags'
-    ); // all options: ('aggregation', 'cats','comments','ealerts','files','pagination', 'rss','tags')
+    ); // all options: ('aggregation', 'categories','comments','ealerts','files','module_title','pagination', 'rss','tags')
 
 	function displayname() { return "File Downloads"; }
 	function description() { return " This module lets you put files on your website for users to download."; }
@@ -41,12 +41,14 @@ class filedownloadController extends expController {
         $limit = isset($this->config['limit']) ? $this->config['limit'] : null;
         $order = isset($this->config['order']) ? $this->config['order'] : 'rank';
         $dir   = isset($this->config['dir']) ? $this->config['dir'] : 'ASC';
+        $usecategories = empty($this->config['usecategories']) ? false : $this->config['usecategories'];
         $page = new expPaginator(array(
                     'model'=>$modelname,
                     'where'=>$where, 
                     'limit'=>$limit,
                     'order'=>$order,
                     'dir'=>$dir,
+                    'categorize'=>$usecategories,
                     'controller'=>$this->baseclassname,
                     'action'=>$this->params['action'],
                     'src'=>$this->loc->src,
