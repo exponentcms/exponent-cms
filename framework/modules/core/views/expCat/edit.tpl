@@ -32,7 +32,7 @@
 		{*{control type=hidden name=rgt value=$record->rgt}*}
 		{*{control type=hidden name=lft value=$record->lft}*}
 		{control type=text name=title label="Category Name"|gettext value=$record->title}
-        {control type=text name=color label="Color"|gettext value=$record->color}
+        {*{control type=text name=color label="Color"|gettext value=$record->color}*}
         {control type=text name=module label="Module Specific?"|gettext value=$record->module}
 		{control type=buttongroup submit="Save"|gettext cancel="Cancel"|gettext}
 	{/form}
