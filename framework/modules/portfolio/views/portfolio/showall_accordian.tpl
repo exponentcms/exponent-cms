@@ -13,28 +13,10 @@
  * GPL: http://www.gnu.org/licenses/gpl.txt
  *
  *}
- 
- <style type="text/css">
-    {* Some CSS for the initial setup *}
-    {literal}
-        .portfolio.showall-accordian .piece {
-            overflow:hidden;
-            height: 0px;
-        }
-        .portfolio.showall-accordian .down {
-            margin: 5px;
-            padding-left: 20px;
-            background-image: url('{/literal}{$smarty.const.PATH_RELATIVE}{literal}framework/core/assets/images/down.png');
-            background-repeat: no-repeat;
-        }
-        .portfolio.showall-accordian .up {
-            margin: 5px;
-            padding-left: 20px;
-            background-image: url('{/literal}{$smarty.const.PATH_RELATIVE}{literal}framework/core/assets/images/up.png');
-            background-repeat: no-repeat;
-        }
-    {/literal}
- </style>
+
+{css unique="portfolio" link="`$asset_path`css/portfolio.css"}
+
+{/css}
 
 <div class="module portfolio showall-accordian">
 
