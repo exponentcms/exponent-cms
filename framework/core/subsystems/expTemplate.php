@@ -56,7 +56,6 @@ class expTemplate {
 		return self::getViewFile("modules", $name, $view);
 	}
 
-	// I think these still need to be i18n-ized
 	public static function getViewConfigForm($module,$view,$form,$values) {
 		$form_file = "";
 		$resolved_path = null;
@@ -74,7 +73,7 @@ class expTemplate {
 		if ($form == null) $form = new form();
 		if ($form_file == "") return $form;
 
-		$form->register(null,"",new htmlcontrol("<hr size='1' /><b>Layout Configuration</b>"));
+		$form->register(null,"",new htmlcontrol("<hr size='1' /><b>".gt('Layout Configuration')."</b>"));
 
 		$fh = fopen($form_file,"r");
 		while (($control_data = fgetcsv($fh,65536,"\t")) !== false) {
@@ -157,7 +156,7 @@ class expTemplate {
 	 * @return array
 	 * @node Subsystems:Template
 	 */
-	public static function listModuleViews($module) {  //FIXME only used by containermodule edit action and administrationmodule examplecontent action
+	public static function listModuleViews($module) {  //FIXME only used by 1) containermodule edit action
 		return expCore::buildNameList("modules", $module, "tpl", "[!_]*");
 	}
 

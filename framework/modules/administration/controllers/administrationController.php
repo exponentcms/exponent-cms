@@ -469,9 +469,9 @@ class administrationController extends expController {
 	public function install_extension() {
 
 		$modsurl =array(
-			'themes'=>'http://www.exponentcms.org/site_podcast.php?module=filedownload&src=%40random4e6a70cebdc96',
-			'fixes'=>'http://www.exponentcms.org/site_podcast.php?module=filedownload&src=%40random4e6a710126abf',
-			'mods'=>'http://www.exponentcms.org/site_podcast.php?module=filedownload&src=%40random4e6a7148c84a9'
+			'themes'=>'http://www.exponentcms.org/site_rss.php?module=filedownload&src=%40random4e6a70cebdc96',
+			'fixes'=>'http://www.exponentcms.org/site_rss.php?module=filedownload&src=%40random4e6a710126abf',
+			'mods'=>'http://www.exponentcms.org/site_rss.php?module=filedownload&src=%40random4e6a7148c84a9'
 		);
 
 		$RSS = new SimplePie();
@@ -507,7 +507,8 @@ class administrationController extends expController {
 		$form = new form();
 		$form->register(null,'',new htmlcontrol(expCore::maxUploadSizeMessage()));
 		$form->register('mod_archive','Extension Archive',new uploadcontrol());
-		$form->register('submit','',new buttongroupcontrol(gt('Upload Extension')));
+        $form->register('patch',gt('Patch Exponent CMS?'),new checkboxcontrol(null,false));
+        $form->register('submit','',new buttongroupcontrol(gt('Upload Extension')));
 		$form->meta('module','administration');
 		$form->meta('action','install_extension_confirm');
 
@@ -515,26 +516,36 @@ class administrationController extends expController {
 	}
 
 	public function install_extension_confirm() {
-		if ($_FILES['mod_archive']['error'] != UPLOAD_ERR_OK) {
+        if (!empty($_POST['files'])) {
+            foreach ($_POST['files'] as $title=>$url) {
+                $filename = tempnam("tmp/extensionuploads/",'tmp');
+                expCore::saveData($url,$filename);
+                $_FILES['mod_archive']['name'] = end(explode("/", $url));
+//                $finfo = finfo_open(FILEINFO_MIME);
+//                $mimetype = finfo_file($finfo, $filename);
+//                finfo_close($finfo);
+//                $_FILES['mod_archive']['type'] = $mimetype;
+                $_FILES['mod_archive']['tmp_name'] = $filename;
+                $_FILES['mod_archive']['error'] = 0;
+                $_FILES['mod_archive']['size'] = filesize($filename);
+            }
+        }
+        if ($_FILES['mod_archive']['error'] != UPLOAD_ERR_OK) {
 			switch($_FILES['mod_archive']['error']) {
 				case UPLOAD_ERR_INI_SIZE:
 				case UPLOAD_ERR_FORM_SIZE:
-//					echo gt('The file you uploaded exceeded the size limits for the server.').'<br />';
 					flash('error', gt('The file you uploaded exceeded the size limits for the server.'));
 					break;
 				case UPLOAD_ERR_PARTIAL:
-//					echo gt('The file you uploaded was only partially uploaded.').'<br />';
 					flash('error', gt('The file you uploaded was only partially uploaded.'));
 					break;
 				case UPLOAD_ERR_NO_FILE:
-//					echo gt('No file was uploaded.').'<br />';
 					flash('error', gt('No file was uploaded.'));
 					break;
 			}
 		} else {
 			$basename = basename($_FILES['mod_archive']['name']);
-			// Check future radio buttons
-			// for now, try auto-detect
+			// Check future radio buttons; for now, try auto-detect
 			$compression = null;
 			$ext = '';
 			if (substr($basename,-4,4) == '.tar') {
@@ -555,7 +566,6 @@ class administrationController extends expController {
 			}
 
 			if ($ext == '') {
-//				echo gt('Unknown archive format. Archives must either be regular ZIP files, TAR files, Gzipped Tarballs, or Bzipped Tarballs.').'<br />';
 				flash('error', gt('Unknown archive format. Archives must either be regular ZIP files, TAR files, Gzipped Tarballs, or Bzipped Tarballs.'));
 			} else {
 
@@ -567,22 +577,23 @@ class administrationController extends expController {
 					switch ($return) {
 						case SYS_FILES_FOUNDFILE:
 						case SYS_FILES_FOUNDDIR:
-//							echo gt('Found a file in the directory path when creating the directory to store the files in.').'<br />';
 							flash('error', gt('Found a file in the directory path when creating the directory to store the files in.'));
 							break;
 						case SYS_FILES_NOTWRITABLE:
-//							echo gt('Destination parent is not writable.').'<br />';
 							flash('error', gt('Destination parent is not writable.'));
 							break;
 						case SYS_FILES_NOTREADABLE:
-//							echo gt('Destination parent is not readable.').'<br />';
 							flash('error', gt('Destination parent is not readable.'));
 							break;
 					}
 				}
 
 				$dest = BASE."tmp/extensionuploads/$sessid/archive$ext";
-				move_uploaded_file($_FILES['mod_archive']['tmp_name'],$dest);
+                if (is_uploaded_file($_FILES['mod_archive']['tmp_name'])) {
+				    move_uploaded_file($_FILES['mod_archive']['tmp_name'],$dest);
+                } else {
+                    rename($_FILES['mod_archive']['tmp_name'],$dest);
+                }
 
 				if ($compression != 'zip') {// If not zip, must be tar
 					include_once(BASE.'external/Tar.php');
@@ -592,7 +603,6 @@ class administrationController extends expController {
 					PEAR::setErrorHandling(PEAR_ERROR_PRINT);
 					$return = $tar->extract(dirname($dest));
 					if (!$return) {
-//						echo '<br />'.gt('Error extracting TAR archive').'<br />';
 						flash('error',gt('Error extracting TAR archive'));
 					} else {
 //						header('Location: ' . URL_FULL . 'index.php?module=administrationmodule&action=verify_extension&type=tar');
@@ -605,8 +615,6 @@ class administrationController extends expController {
 
 					PEAR::setErrorHandling(PEAR_ERROR_PRINT);
 					if ($zip->extract(array('add_path'=>dirname($dest))) == 0) {
-//						echo '<br />'.gt('Error extracting ZIP archive').':<br />';
-//						echo $zip->_error_code . ' : ' . $zip->_error_string . '<br />';
 						flash('error',gt('Error extracting ZIP archive: ').$zip->_error_code . ' : ' . $zip->_error_string . '<br />');
 					} else {
 //						header('Location: ' . URL_FULL . 'index.php?module=administrationmodule&action=verify_extension&type=zip');
@@ -617,51 +625,70 @@ class administrationController extends expController {
 				$files = array();
 				foreach (expFile::listFlat(BASE.'tmp/extensionuploads/'.$sessid,true,null,array(),BASE.'tmp/extensionuploads/'.$sessid) as $key=>$f) {
 					if ($key != '/archive.tar' && $key != '/archive.tar.gz' && $key != '/archive.tar.bz2' && $key != '/archive.zip') {
+                        if (empty($_POST['patch']) || !$_POST['patch']) {
+                            $key = substr($key,1);
+                            if (substr($key,0,7)=='themes/') {
+                                $parts = explode('/',$key);
+                                $parts[1] = DISPLAY_THEME_REAL;
+                                $file = implode('/',$parts);
+                                $file = $file;
+                            } else {
+                                $file = 'themes/'.DISPLAY_THEME_REAL.'/'.str_replace("framework/", "", $key);
+                            }
+                            $file = str_replace("modules-1", "modules", $file);
+                        } else {
+                            $file = substr($key,1);
+                        }
 						$files[] = array(
-							'absolute'=>$key,
+							'absolute'=>$file,
 							'relative'=>$f,
-							'canCreate'=>expFile::canCreate(BASE.substr($key,1)),
+							'canCreate'=>expFile::canCreate(BASE.$file,1),
 							'ext'=>substr($f,-3,3)
 						);
 					}
 				}
-				assign_to_template(array('relative'=>'tmp/extensionuploads/'.$sessid,'files'=>$files));
+				assign_to_template(array('relative'=>'tmp/extensionuploads/'.$sessid,'files'=>$files,'patch'=>empty($_POST['patch'])?0:$_POST['patch']));
 			}
 		}
 	}
 
 	public function install_extension_finish() {
+        $patch =$_GET['patch']==1;
 		$sessid = session_id();
 		if (!file_exists(BASE."tmp/extensionuploads/$sessid") || !is_dir(BASE."tmp/extensionuploads/$sessid")) {
-//				$template = new template('administrationmodule','_upload_finalSummary',$loc);
-//				$template->assign('nofiles',1);
 			$nofiles = 1;
 		} else {
 			$success = array();
 			foreach (array_keys(expFile::listFlat(BASE."tmp/extensionuploads/$sessid",true,null,array(),BASE."tmp/extensionuploads/$sessid")) as $file) {
 				if ($file != '/archive.tar' && $file != '/archive.tar.gz' && $file != 'archive.tar.bz2' && $file != '/archive.zip') {
-					expFile::makeDirectory(dirname($file));
-					$success[$file] = copy(BASE."tmp/extensionuploads/$sessid".$file,BASE.substr($file,1));
-					if (basename($file) == 'views_c') chmod(BASE.substr($file,1),0777);
+                    if ($patch) {  // this is a patch/fix extension
+                        expFile::makeDirectory(dirname($file));
+                        $success[$file] = copy(BASE."tmp/extensionuploads/$sessid".$file,BASE.substr($file,1));
+                        if (basename($file) == 'views_c') chmod(BASE.substr($file,1),0777);
+                    } else {
+                        $newfile = substr($file,1);
+                        if (substr($newfile,0,7)=='themes/') {  // this is a theme extension
+                            $parts = explode('/',$newfile);
+                            $parts[1] = DISPLAY_THEME_REAL;
+                            $newfile = implode('/',$parts);
+                        } else {  // this is a mod extension
+                            $newfile = str_replace("framework/", "", $newfile);
+                            $newfile = 'themes/'.DISPLAY_THEME_REAL.'/'.str_replace("modules-1", "modules", $newfile);
+                        }
+                        expFile::makeDirectory(dirname($newfile));
+                        $success[$newfile] = copy(BASE."tmp/extensionuploads/$sessid".$file,BASE.$newfile);
+                    }
 				}
 			}
 
 			$del_return = expFile::removeDirectory(BASE."tmp/extensionuploads/$sessid");  //FIXME shouldn't use echo
-			echo $del_return;
-
-//			ob_start();
-//			include(BASE . 'framework/modules-1/administrationmodule/actions/installtables.php');
-//			ob_end_clean();
-			self::install_dbtables();
-
-//				$template = new template('administrationmodule','_upload_finalSummary',$loc);
-//				$template->assign('nofiles',0);
+//			echo $del_return;
+            $tables = self::install_dbtables();
+            ksort($tables);
+            assign_to_template(array('tables'=>$tables));
 			$nofiles = 0;
-//				$template->assign('success',$success);
-//				$template->assign('redirect',expHistory::getLastNotEditable());
 		}
 
-//			$template->output();
 		assign_to_template(array('nofiles'=>$nofiles,'success'=>$success,'redirect'=>expHistory::getLastNotEditable()));
 	}
 
