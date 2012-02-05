@@ -19,12 +19,6 @@
 
 {/css}
 
-{if $config.usecategories}
-{css unique="categories" corecss="categories"}
-
-{/css}
-{/if}
-
 <div class="module portfolio showall-tabbed">
     {if $moduletitle && !$config.hidemoduletitle}<h1>{$moduletitle}</h1>{/if}
     {permissions}

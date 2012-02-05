@@ -211,5 +211,5 @@
 		{/if}
 	</div>
 </div>
-<div style="clear:both"></div>
+{clear}
 </div>

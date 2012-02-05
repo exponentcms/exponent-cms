@@ -36,7 +36,7 @@
                     {$item->quantity} @ <span class="price">{currency_symbol}{$item->products_price|number_format:2}</span>
                 </div>
                 <a href="{link action=removeItem id=$item->id}" class="delete">Remove from cart</a>
-                <div style="clear:both"></div>
+                {clear}
             </li>
         {foreachelse}
             <li>{'You currently have no items in your cart'|gettext}</li>

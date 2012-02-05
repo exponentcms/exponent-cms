@@ -36,7 +36,7 @@
         {'If you are ordering multiple quantities of this item, the SAME information you select here will be applied to all of the items.'|gettext}&nbsp;&nbsp;
         {'If you would like different options or personalized fields for each item, please add them one at a time to your cart.'|gettext}
     </p>
-    <div style="clear:both"></div>
+    {clear}
     {form controller=cart action=addItem id="options-uifields"}
         {control type=hidden name=product_id value=$product->id}
         {control type=hidden name=product_type value=$product->classname}			        

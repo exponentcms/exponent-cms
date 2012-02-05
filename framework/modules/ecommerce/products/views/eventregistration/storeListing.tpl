@@ -45,5 +45,5 @@
     </div>
     <div class="price">{currency_symbol}{$listing->price|number_format:2}</div>
     <a href="{link controller=cart action=addItem product_id=$listing->id product_type=$listing->product_type}" class="exp-ecom-link addtocart">{'Register Today'|gettext} <span></span></a>
-    <div style="clear:both"></div>
+    {clear}
 </div>

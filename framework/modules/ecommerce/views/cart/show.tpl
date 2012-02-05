@@ -150,7 +150,7 @@
                                     {control type="buttongroup" submit="Apply Code"|gettext}
                                 {/form}
                             </div>                
-                            <div style="clear:both"></div>
+                            {clear}
                             </td>
                         </tr>
                    {/if}

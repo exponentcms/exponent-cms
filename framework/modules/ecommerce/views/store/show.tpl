@@ -395,7 +395,7 @@
      </div> 
      {/if}   
 
-    <div style="clear:both"></div>
+    {clear}
     {if $product->childProduct|@count >= 1}
     {permissions}                   
     {if $permissions.delete == 1}   

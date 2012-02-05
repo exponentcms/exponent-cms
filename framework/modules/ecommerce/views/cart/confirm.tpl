@@ -199,7 +199,7 @@
     {/if}
     </div>
     
-    <div style="clear:both"></div>
+    {clear}
     
     <div class="confirmationlinks">
         <a href="{if $nologin}{link controller=cart action=process nologin=1}{else}{link controller=cart action=process}{/if}" class="awesome {$smarty.const.BTN_SIZE} green next" />

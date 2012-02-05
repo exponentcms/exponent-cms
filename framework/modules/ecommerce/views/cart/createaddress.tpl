@@ -31,7 +31,7 @@
 		<a href="javascript:void(0);" onclick="divtoggle('saddy')">{'You don\'t have any address configured yet.  Click here to setup a new address'|gettext}</a>
 	{/foreach}
 	{/form}
-	<div style="clear:both"></div>
+    {clear}
 	{br}<a href="javascript:void(0);" onclick="divtoggle('saddy')">{'Add a new address'|gettext}</a>
 	<div id="saddy" style="display:none">
                 {form name="newaddy" action=createaddress ajax=true update=addyblock}

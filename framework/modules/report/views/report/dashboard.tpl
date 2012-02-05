@@ -77,5 +77,5 @@
         </tr>                    
     </table>
     </div>
-    <div style="clear:both"></div>
+    {clear}
 </div>

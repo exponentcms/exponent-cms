@@ -65,7 +65,7 @@
 
                 <a class="readmore" href="{if $item->isRss}{$item->rss_link}{else}{link action=showByTitle title=$item->sef_url}{/if}">{"Read More"|gettext}</a>
             </div>
-            <div style="clear:both"></div>
+            {clear}
         </div>
     {/foreach}
     {pagelinks paginate=$page bottom=1}

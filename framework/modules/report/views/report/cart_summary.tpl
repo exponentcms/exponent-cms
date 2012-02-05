@@ -38,7 +38,7 @@
 	    </div>
 	    <div class="loadingdiv">{'Loading Dashboard'|gettext}</div>
     </div>
-    <div style="clear:both"></div>
+    {clear}
 </div>
 
 {script unique="editform" yui3mods=1}
