@@ -27,13 +27,9 @@
 	{form controller=expCat action=update}
 		{control type=hidden name=id value=$record->id}
         {control type=hidden name=rank value=$record->rank}
-		{*{control type=hidden name=cat_collections_id value=$record->cat_collections_id}*}
-		{*{control type=hidden name=parent_id value=$record->parent_id}*}
-		{*{control type=hidden name=rgt value=$record->rgt}*}
-		{*{control type=hidden name=lft value=$record->lft}*}
 		{control type=text name=title label="Category Name"|gettext value=$record->title}
         {*{control type=text name=color label="Color"|gettext value=$record->color}*}
-        {control type=text name=module label="Module Specific?"|gettext value=$record->module}
+        {control type="dropdown" name=module label="Module Specific?"|gettext items=$mods includeblank="All Modules"|gettext value=$record->module}
 		{control type=buttongroup submit="Save"|gettext cancel="Cancel"|gettext}
 	{/form}
 </div>

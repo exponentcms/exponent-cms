@@ -75,10 +75,23 @@ class expCatController extends expController {
                 }
             }
         }
-        
         assign_to_template(array(
             'page'=>$page
         ));
+    }
+    function edit() {
+        $modules = expModules::listControllers();
+        $mod = array();
+        foreach ($modules as $modname=>$mods) {
+            if (!strstr($mods,'Controller')) {
+                $mod[$modname] = ucfirst($modname);
+            }
+        }
+        ksort($mod);
+        assign_to_template(array(
+            'mods'=>$mod
+        ));
+        parent::edit();
     }
 }
 ?>
