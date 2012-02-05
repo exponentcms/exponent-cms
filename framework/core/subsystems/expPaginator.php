@@ -299,7 +299,7 @@ class expPaginator {
                     $title = ucfirst($record->$order);
                     $title = $title[0];
                 } else {
-                    $title = gt('Uncategorized');
+                    $title = '';
                 }
                 if (empty($this->cats[$title])) {
                     $this->cats[$title]->count = 1;
