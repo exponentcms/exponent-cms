@@ -48,7 +48,7 @@
                                 {assign var=catid value=$cat->id}
                             {/if}
                         {/foreach}
-                        {control type="dropdown" name=expCat label="Category"|gettext frommodel="expCat" orderby="rank" display=title key=id includeblank="Not Categorized"|gettext value=$catid}
+                        {control type="dropdown" name=expCat label="Category"|gettext frommodel="expCat" where="module='' OR module='`$modelname`'" orderby="rank" display=title key=id includeblank="Not Categorized"|gettext value=$catid}
                     {/if}
                 </div>
                 {if $config.filedisplay}

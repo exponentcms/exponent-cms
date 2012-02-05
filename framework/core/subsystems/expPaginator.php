@@ -86,6 +86,7 @@ class expPaginator {
      */	
 	public $pages = array();
 	public $records = array();
+    public $cats = array();
 
 	/**
 	 * expPaginator Constructor
@@ -222,6 +223,7 @@ class expPaginator {
                     $this->records[$key]->cat = 'Not Categorized';
                 }
             }
+            // now sort by category
             /**
              * Sort an array of objects.
              *
@@ -280,6 +282,16 @@ class expPaginator {
                 uasort($array,'oasort');
             }
             osort($this->records, array(array('catrank'),array($this->order)));
+            // create an array of the categories
+            foreach ($this->records as $key=>$record) {
+                if (empty($this->cats[$record->catid])) {
+                    $this->cats[$record->catid]->count = 1;
+                    $this->cats[$record->catid]->name = $record->cat;
+                } else {
+                    $this->cats[$record->catid]->count += 1;
+                }
+                $this->cats[$record->catid]->records[] = $record;
+            }
         }
 
         if (!isset($params['records'])) $this->runCallback(); // isset($params['records']) added to correct search for products.

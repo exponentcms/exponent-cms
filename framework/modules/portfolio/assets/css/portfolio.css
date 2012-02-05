@@ -1,4 +1,4 @@
-.portfolio.showall .thumbnail {
+.portfolio.showall .thumb-imgs {
     float:left;
     display:block;
     border:1px solid #333;
@@ -6,6 +6,10 @@
     padding:3px;
     background:#dedede;
 }
-.portfolio.showall .thumbnail img {
+.portfolio.showall .thumb-imgs img {
+    display:block;
+}
+
+.portfolio.showall img {
     display:block;
 }
