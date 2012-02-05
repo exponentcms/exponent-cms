@@ -5,6 +5,19 @@ Copyright (c) 2004-2011 OIC Group, Inc.
 Added / Fixed / changed for 2.0.5
 -----------------------
 # This release focuses on implementing categories & a new calendar
+  - categories are only (fully) implemented within the portfolio module
+    -- adds tabbed view either by category or alphabetized like rolodex
+    -- adds an accordian like view w/ collapse and expand by category/alphabetized
+  - calendar2 should be considered alpha quality
+# Many fixes and updates
+  - adds deletion of multiple standalone pages at once
+  - adds tag cloud view to search module
+  - adds notification of version patch releases
+  - fixes migration of slideshowmodule's
+    -- better migration of 0.9x-type 'reused' modules
+  - adds module scope type indicator to top-level/hard-coded chrome menus
+  - implemented extension (theme, patch, & mods) repository access
+    -- extensions loaded into current theme unless told to patch system
 
 Added / Fixed / changed for 2.0.4
 -----------------------
