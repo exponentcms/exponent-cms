@@ -1,0 +1,23 @@
+.filedownload.showall-accordian .piece {
+    overflow:hidden;
+    height: 0px;
+}
+
+.filedownload.showall-accordian .down {
+    margin: 5px;
+    padding-left: 20px;
+    background-image: url('../../../../../framework/core/assets/images/down.png');
+    background-repeat: no-repeat;
+}
+
+.filedownload.showall-accordian .up {
+    margin: 5px;
+    padding-left: 20px;
+    background-image: url('../../../../../framework/core/assets/images/up.png');
+    background-repeat: no-repeat;
+}
+
+.filedownload.showall-accordian .piece {
+    margin-left: 20px;
+    padding-left: 20px;
+}

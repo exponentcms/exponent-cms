@@ -15,28 +15,27 @@
 
 {uniqueid assign="id"}
 
-{css unique="portfolio" link="`$asset_path`css/portfolio.css"}
-
-{/css}
-
 {if $config.usecategories}
 {css unique="categories" corecss="categories"}
 
 {/css}
 {/if}
 
-<div class="module portfolio showall-tabbed">
+<div class="module filedownload showall-tabbed">
+    {if $config.enable_rss}
+        <a class="rsslink" href="{podcastlink}">{'Subscribe to'|gettext} {$config.feed_title}</a>
+    {/if}
     {if $moduletitle && !$config.hidemoduletitle}<h1>{$moduletitle}</h1>{/if}
     {permissions}
         <div class="module-actions">
 			{if $permissions.create == 1}
-				{icon class=add action=edit rank=1 title="Add to the top"|gettext text="Add a Portfolio Piece"|gettext}
+				{icon class=add action=edit rank=1 title="Add a File at the Top"|gettext text="Add a File"|gettext}
 			{/if}
             {if $permissions.manage == 1}
                 {icon class="manage" controller=expTag action=manage text="Manage Tags"|gettext}
             {/if}
 			{if $permissions.manage == 1 && $rank == 1}
-				{ddrerank items=$page->records model="portfolio" label="Portfolio Pieces"|gettext}
+				{ddrerank items=$page->records model="filedownload" label="Downloadable Items"|gettext}
 			{/if}
         </div>
     {/permissions}
@@ -49,8 +48,8 @@
         <div>
             {foreach name=items from=$page->cats key=catid item=cat}
                 <div id="tab{$smarty.foreach.items.iteration}">
-                     {foreach from=$cat->records item=record}
-                        {include 'portfolioitem.tpl'}
+                    {foreach from=$cat->records item=file}
+                        {include 'filedownloaditem.tpl'}
                     {/foreach}
                 </div>
             {/foreach}
