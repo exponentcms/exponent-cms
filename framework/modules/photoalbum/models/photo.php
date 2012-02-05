@@ -25,8 +25,9 @@ class photo extends expRecord {
             //'body'=>array('message'=>'Body is a required field.'),
         ));
     protected $attachable_item_types = array(
-        'content_expFiles'=>'expFile'
-    );    
+        'content_expFiles'=>'expFile',
+	    'content_expCats'=>'expCat'
+    );
 }
 
 ?>

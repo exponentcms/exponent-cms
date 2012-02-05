@@ -32,6 +32,14 @@
                     {control type=html name=body label="Description"|gettext value=$record->body}
                     {control type="text" name="link" label="Link this Slideshow Slide to a URL"|gettext value=$record->link}
                     {control type="text" name="alt" label="Alt Tag (overwrites alt supplied in file manager)"|gettext value=$record->alt}
+                    {if $config.usecategories}
+                        {foreach from=$record->expCat item=cat name=cats}
+                            {if $smarty.foreach.cats.first != false}
+                                {assign var=catid value=$cat->id}
+                            {/if}
+                        {/foreach}
+                        {control type="dropdown" name=expCat label="Category"|gettext frommodel="expCat" where="module='' OR module='`$modelname`'" orderby="rank" display=title key=id includeblank="Not Categorized"|gettext value=$catid}
+                    {/if}
                 </div>
                 <div id="tab2">
                      <h2>{'SEO Settings'|gettext}</h2>

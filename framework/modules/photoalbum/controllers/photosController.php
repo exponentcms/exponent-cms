@@ -41,12 +41,17 @@ class photosController extends expController {
         $where = $this->aggregateWhereClause();
         $order = 'rank';
         $limit = empty($this->config['limit']) ? 10 : $this->config['limit'];
-        
+        if ($this->params['view'] != 'showall') {
+            $limit = 999;
+        }
+        $usecategories = empty($this->config['usecategories']) ? false : $this->config['usecategories'];
+
         $page = new expPaginator(array(
                     'model'=>'photo',
                     'where'=>$where, 
                     'limit'=>$limit,
                     'order'=>$order,
+                    'categorize'=>$usecategories,
                     'src'=>$this->loc->src,
                     'controller'=>$this->baseclassname,
                     'action'=>$this->params['action'],

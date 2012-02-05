@@ -38,10 +38,14 @@
 			{/if}
 		</div>
     {/permissions}
+    {assign var="cat" value="bad"}
     {pagelinks paginate=$page top=1}
     <ul class="image-list">
     {assign var=quality value=$config.quality|default:$smarty.const.THUMB_QUALITY}	
     {foreach from=$page->records item=record name=items}
+        {if $cat != $record->expCat[0]->id && $config.usecategories}
+            <h2 class="category">{if $record->expCat[0]->title!= ""}{$record->expCat[0]->title}{else}{'Uncategorized'|gettext}{/if}</h2>
+        {/if}
         <li style="width:{$config.pa_showall_thumbbox|default:"150"}px;height:{$config.pa_showall_thumbbox|default:"150"}px;">
             {if $config.lightbox}
             {if $record->expFile[0]->width >= $record->expFile[0]->height}{assign var=x value="w"}{else}{assign var=x value="w"}{/if}
@@ -65,6 +69,7 @@
                 </div>
             {/permissions}
         </li>
+        {assign var="cat" value=$record->expCat[0]->id}
     {/foreach}
     </ul>
     {pagelinks paginate=$page bottom=1}
