@@ -20,9 +20,10 @@
         {if $permissions.manage == 1}
             {icon controller=expTag action=manage text="Manage Tags"|gettext}
         {/if}
-        {br}
     {/permissions}
-    {foreach from=$page->records item=listing}
-        <a href="{link controller=expTag action=show title=$listing->sef_url}" style="font-size:1.{if $listing->attachedcount<10}0{$listing->attachedcount}{else}{$listing->attachedcount}{/if}em;">{$listing->title}</a>
-    {/foreach}
+    <div class="item">
+        {foreach from=$page->records item=listing}
+            <a href="{link controller=expTag action=show title=$listing->sef_url}" style="font-size:1.{if $listing->attachedcount<10}0{$listing->attachedcount}{else}{$listing->attachedcount}{/if}em;">{$listing->title}</a>
+        {/foreach}
+    </div>
 </div>
