@@ -283,7 +283,7 @@ class expPaginator {
             }
             osort($this->records, array(array('catrank'),array($this->order)));
             // create an array of the categories
-            foreach ($this->records as $key=>$record) {
+            foreach ($this->records as $record) {
                 if (empty($this->cats[$record->catid])) {
                     $this->cats[$record->catid]->count = 1;
                     $this->cats[$record->catid]->name = $record->cat;
@@ -291,6 +291,23 @@ class expPaginator {
                     $this->cats[$record->catid]->count += 1;
                 }
                 $this->cats[$record->catid]->records[] = $record;
+            }
+        } else {  // categorized is off, so let's categorize by alpha, etc...
+            $order = $this->order;
+            foreach ($this->records as $record) {
+                if (is_string($record->$order) && !is_numeric($record->$order)) {
+                    $title = ucfirst($record->$order);
+                    $title = $title[0];
+                } else {
+                    $title = gt('Uncategorized');
+                }
+                if (empty($this->cats[$title])) {
+                    $this->cats[$title]->count = 1;
+                    $this->cats[$title]->name = $title;
+                } else {
+                    $this->cats[$title]->count += 1;
+                }
+                $this->cats[$title]->records[] = $record;
             }
         }
 
