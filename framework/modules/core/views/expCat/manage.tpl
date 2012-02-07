@@ -53,16 +53,17 @@
                     </td>
                     <td>
                         {foreach from=$listing->attached item="type" key=key name=types}
-                            <strong>{$key}</strong><br />
-                            {foreach from=$type item=ai name=ai}
-                                {if $ai->sef_url != ""}
-                                    <a href="{link controller=$key action="show" title=$ai->sef_url}">{$ai->title|truncate:50:"..."}</a>
-                                {else}
-                                    {$ai->title|truncate:50:"..."}
-                                {/if}
-                                <br />
-                                <br />
-                            {/foreach}
+                            {*<strong>{$key}</strong><br />*}
+                            {$key}
+                            {*{foreach from=$type item=ai name=ai}*}
+                                {*{if $ai->sef_url != ""}*}
+                                    {*<a href="{link controller=$key action="show" title=$ai->sef_url}">{$ai->title|truncate:50:"..."}</a>*}
+                                {*{else}*}
+                                    {*{$ai->title|truncate:50:"..."}*}
+                                {*{/if}*}
+                                {*<br />*}
+                                {*<br />*}
+                            {*{/foreach}*}
                         {/foreach}
                     </td>
                     <td>

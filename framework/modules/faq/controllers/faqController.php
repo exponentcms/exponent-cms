@@ -56,7 +56,9 @@ class faqController extends expController {
                 }
             }
             expSorter::osort($questions, array(array('catrank'),array('rank')));
+            $cats[0]->name = '';
             foreach ($questions as $record) {
+                if (empty($record->catid)) $record->catid = 0;
                 if (empty($cats[$record->catid])) {
                     $cats[$record->catid]->count = 1;
                     $cats[$record->catid]->name = $record->cat;
