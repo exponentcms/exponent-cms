@@ -45,6 +45,39 @@ class linksController extends expController {
         $limit = isset($this->config['limit']) ? $this->config['limit'] : null;
         $order = isset($this->config['order']) ? $this->config['order'] : "rank";
         $links = $this->$modelname->find('all', $where, $order, $limit);
+
+        if (empty($this->config['usecategories']) ? false : $this->config['usecategories']) {
+            $cats = array();
+            foreach ($links as $key=>$record) {
+                foreach ($record->expCat as $cat) {
+                    $links[$key]->catid = $cat->id;
+                    $links[$key]->catrank = $cat->rank;
+                    $links[$key]->cat = $cat->title;
+                    $links[$key]->color = empty($cat->color) ? null : $cat->color;
+                    $links[$key]->module = empty($cat->module) ? null : $cat->module;
+                    break;
+                }
+                if (empty($links[$key]->catid)) {
+                    $links[$key]->catid = null;
+                    $links[$key]->catrank = 999999;
+                    $links[$key]->cat = 'Not Categorized';
+                }
+            }
+            expSorter::osort($links, array(array('catrank'),array($order)));
+            $cats[0]->name = '';
+            foreach ($links as $record) {
+                if (empty($record->catid)) $record->catid = 0;
+                if (empty($cats[$record->catid])) {
+                    $cats[$record->catid]->count = 1;
+                    $cats[$record->catid]->name = $record->cat;
+                } else {
+                    $cats[$record->catid]->count += 1;
+                }
+                $cats[$record->catid]->records[] = $record;
+            }
+            assign_to_template(array('cats'=>$cats));
+        }
+
         assign_to_template(array('items'=>$links, 'rank'=>($order==='rank')?1:0));
     }
     

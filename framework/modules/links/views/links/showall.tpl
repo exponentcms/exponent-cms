@@ -12,7 +12,13 @@
  * GPL: http://www.gnu.org/licenses/gpl.txt
  *
  *}
- 
+
+{if $config.usecategories}
+{css unique="categories" corecss="categories"}
+
+{/css}
+{/if}
+
 <div class="module links showall">
     {if $moduletitle && !$config.hidemoduletitle}<h1>{$moduletitle}</h1>{/if}
     {permissions}
@@ -25,30 +31,61 @@
 			{/if}
 		</div>
     {/permissions}
-    
-	{foreach name=items from=$items item=item}
-		<div class="item">     
-			<h2><a class="li-link" {if $item->new_window}target="_blank"{/if} href="{$item->url}">{$item->title}</a></h2>
-			{permissions}
-				<div class="item-actions">
-					{if $permissions.edit == 1}
-						{icon action=edit record=$item}
-					{/if}
-					{if $permissions.delete == 1}
-						{icon action=delete record=$item}
-					{/if}
-				</div> 
-			{/permissions}
 
-			{if $item->expFile[0]->id}
-				<a class="li-link" {if $item->new_window}target="_blank"{/if} href="{$item->url}">{img file_id=$item->expFile[0]->id width=200 height=150 constrain=1 style="float:left; margin-right:10px"}</a>
-			{/if}
-			{if $item->body}
-				<div class="bodycopy">
-					{$item->body}
-				</div>
-			{/if}
-			{clear}
-		</div>
-	{/foreach}
+    {if $config.usecategories}
+        {foreach from=$cats key=catid item=cat}
+            {if $catid != 0}
+                <h2 class="category">{$cat->name}</h2>
+            {/if}
+            {foreach name=items from=$cat->records item=item}
+                <div class="item">
+                    <h3 class="link-title"><a {if $item->new_window}target="_blank"{/if} href="{$item->url}">{$item->title}</a></h3>
+                    {permissions}
+                        <div class="item-actions">
+                            {if $permissions.edit == 1}
+                                {icon action=edit record=$item}
+                            {/if}
+                            {if $permissions.delete == 1}
+                                {icon action=delete record=$item}
+                            {/if}
+                        </div>
+                    {/permissions}
+                    {if $item->expFile[0]->id}
+                        <a class="li-link" {if $item->new_window}target="_blank"{/if} href="{$item->url}">{img file_id=$item->expFile[0]->id width=200 height=150 constrain=1 style="float:left; margin-right:10px"}</a>
+                    {/if}
+                    {if $item->body}
+                        <div class="bodycopy">
+                            {$item->body}
+                        </div>
+                    {/if}
+                    {clear}
+                </div>
+            {/foreach}
+        {/foreach}
+    {else}
+        {foreach name=items from=$items item=item}
+            <div class="item">
+                <h2><a class="li-link" {if $item->new_window}target="_blank"{/if} href="{$item->url}">{$item->title}</a></h2>
+                {permissions}
+                    <div class="item-actions">
+                        {if $permissions.edit == 1}
+                            {icon action=edit record=$item}
+                        {/if}
+                        {if $permissions.delete == 1}
+                            {icon action=delete record=$item}
+                        {/if}
+                    </div>
+                {/permissions}
+                {if $item->expFile[0]->id}
+                    <a class="li-link" {if $item->new_window}target="_blank"{/if} href="{$item->url}">{img file_id=$item->expFile[0]->id width=200 height=150 constrain=1 style="float:left; margin-right:10px"}</a>
+                {/if}
+                {if $item->body}
+                    <div class="bodycopy">
+                        {$item->body}
+                    </div>
+                {/if}
+                {clear}
+            </div>
+        {/foreach}
+    {/if}
 </div>

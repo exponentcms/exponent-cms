@@ -25,21 +25,53 @@
 			{/if}
         </div>
     {/permissions}
-    <ul>
-        {foreach name=items from=$items item=item name=links}
-		<li{if $smarty.foreach.links.last} class="item last"{/if}>
-			<a class="link" {if $item->new_window}target="_blank"{/if} href="{$item->url}">{$item->title}</a>
-			{permissions}
-				<div class="item-actions">
-					{if $permissions.edit == 1}
-						{icon action=edit record=$item}
-					{/if}
-					{if $permissions.delete == 1}
-						{icon action=delete record=$item}
-					{/if}
-				</div>
-			{/permissions}
-		</li>
+
+    {if $config.usecategories}
+        {foreach from=$cats key=catid item=cat}
+           {if $catid != 0}
+              <div class="itemtitle"><h3>{$cat->name}</h3></div>
+           {/if}
+            <ul>
+           {foreach name=links from=$cat->records item=item}
+                <li{if $smarty.foreach.links.last} class="item last"{/if}>
+                    <div class="link">
+                        <a href="{$item->url}" {if $item->new_window == 1} target="_blank"{/if} title="{$item->body}">{$item->title}</a>
+                    </div>
+                    {permissions}
+                        <div class="item-actions">
+                            {if $permissions.edit == 1}
+                                {icon action=edit record=$item}
+                            {/if}
+                            {if $permissions.delete == 1}
+                                {icon action=delete record=$item}
+                            {/if}
+                        </div>
+                    {/permissions}
+                 </li>
+           {foreachelse}
+              {if ($catid != 0) }
+                  <div ><i>{'No Links'|gettext}</i></div>
+              {/if}
+           {/foreach}
+            </ul>
         {/foreach}
-    </ul>
+    {else}
+        <ul>
+            {foreach name=items from=$items item=item name=links}
+                <li{if $smarty.foreach.links.last} class="item last"{/if}>
+                    <a class="link" {if $item->new_window}target="_blank"{/if} href="{$item->url}">{$item->title}</a>
+                    {permissions}
+                        <div class="item-actions">
+                            {if $permissions.edit == 1}
+                                {icon action=edit record=$item}
+                            {/if}
+                            {if $permissions.delete == 1}
+                                {icon action=delete record=$item}
+                            {/if}
+                        </div>
+                    {/permissions}
+                </li>
+            {/foreach}
+        </ul>
+    {/if}
 </div>
