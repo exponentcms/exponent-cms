@@ -237,7 +237,7 @@ class fileController extends expController {
 
     public function adder() {
         global $db;
-        $allfiles = expFile::listFlat(BASE.'files',true,null,null,BASE);
+        $allfiles = expFile::listFlat(BASE.'files',true,null,array(),BASE);
         foreach ($allfiles as $path=>$file) {
             if ($file[0] != '.') {
                 $found = false;
