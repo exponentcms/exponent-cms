@@ -39,5 +39,5 @@
         {control type="buttongroup" submit="Migrate Files"|gettext cancel="Cancel"|gettext}
     {/form}
 	{br}<hr>{br}
-	<a class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" href="{link module=migration action=manage_content}"><b>{'Next Step -> Migrate Content'|gettext}</b></a>
+	<a class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" href="{link module=migration action=manage_content}"><b>{'Skip to Next Step -> Migrate Content'|gettext}</b></a>
 </div>

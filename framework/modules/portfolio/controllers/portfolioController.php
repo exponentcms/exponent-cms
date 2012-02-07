@@ -25,11 +25,11 @@ class portfolioController extends expController {
         'slideshow'=>"Slideshow"
     );
     public $remove_configs = array(
+        'comments',
         'ealerts',
-        'tags',
         'rss',
-        'comments'
-    ); // all options: ('aggregation', 'cats','comments','ealerts','files','pagination', 'rss','tags')
+        'tags'
+    ); // all options: ('aggregation', 'categories','comments','ealerts','files','module_title','pagination', 'rss','tags')
 
     function displayname() { return "Portfolio"; }
     function description() { return "This module allows you to show off your work portfolio style."; }
@@ -38,23 +38,25 @@ class portfolioController extends expController {
     public function showall() {
         $where = $this->aggregateWhereClause();
         $where .= (!empty($this->config['only_featured']))?"AND featured=1":"";
-        $order = 'rank';
+//        $order = 'rank';
+        $order = isset($this->config['order']) ? $this->config['order'] : 'rank';
         $limit = empty($this->config['limit']) ? 10 : $this->config['limit'];
-        $usecategories = empty($this->config['usecategories']) ? false : $this->config['usecategories'];
+        if (!empty($this->params['view']) && $this->params['view'] != 'showall') {
+            $limit = 999;
+        }
 
         $page = new expPaginator(array(
                     'model'=>'portfolio',
                     'where'=>$where, 
                     'limit'=>$limit,
                     'order'=>$order,
-                    'categorize'=>$usecategories,
+                    'categorize'=>empty($this->config['usecategories']) ? false : $this->config['usecategories'],
                     'controller'=>$this->baseclassname,
                     'src'=>$this->loc->src,
                     'action'=>$this->params['action'],
                     'columns'=>array('Title'=>'title'),
                     ));
-        
-        assign_to_template(array('page'=>$page));
+        assign_to_template(array('page'=>$page, 'rank'=>($order==='rank')?1:0));
     }
     
 	public function tags() {
@@ -72,7 +74,8 @@ class portfolioController extends expController {
             }
         }
         
-        $used_tags = expSorter::sort(array('array'=>$used_tags,'sortby'=>'title', 'order'=>'ASC', 'ignore_case'=>true));
+        $used_tags = expSorter::sort(array('array'=>$used_tags,'sortby'=>'title', 'order'=>'ASC', 'ignore_case'=>true, 'rank'=>($order==='rank')?1:0));
+        $order = isset($this->config['order']) ? $this->config['order'] : 'rank';
 	    assign_to_template(array('tags'=>$used_tags));
 	}
 
@@ -80,11 +83,12 @@ class portfolioController extends expController {
         expHistory::set('viewable', $this->params);
         $where = $this->aggregateWhereClause();
         $where .= (!empty($this->config['only_featured']))?"AND featured=1":"";
-        $order = 'rank';
+//        $order = 'rank';
+        $order = isset($this->config['order']) ? $this->config['order'] : 'rank';
         $s = new portfolio();
         $slides = $s->find('all',$where,$order);
                     
-        assign_to_template(array('slides'=>$slides));
+        assign_to_template(array('slides'=>$slides, 'rank'=>($order==='rank')?1:0));
     }
 
 	public function showall_by_tags() {
@@ -122,7 +126,7 @@ class portfolioController extends expController {
 		            ));
         $page->records = expSorter::sort(array('array'=>$page->records,'sortby'=>'rank', 'order'=>'ASC', 'ignore_case'=>true));
 
-		assign_to_template(array('page'=>$page,'moduletitle'=>'Portfolio Pieces by tag "'.$this->params['tag'].'"'));
+		assign_to_template(array('page'=>$page,'moduletitle'=>'Portfolio Pieces by tag "'.$this->params['tag'].'"', 'rank'=>($order==='rank')?1:0));
 	}
 
     public function showall_by_cats() {
@@ -160,7 +164,7 @@ class portfolioController extends expController {
                     ));
         $page->records = expSorter::sort(array('array'=>$page->records,'sortby'=>'rank', 'order'=>'ASC', 'ignore_case'=>true));
 
-        assign_to_template(array('page'=>$page,'moduletitle'=>'Portfolio Pieces by category "'.$this->params['cat'].'"'));
+        assign_to_template(array('page'=>$page,'moduletitle'=>'Portfolio Pieces by category "'.$this->params['cat'].'"', 'rank'=>($order==='rank')?1:0));
     }
 
 }

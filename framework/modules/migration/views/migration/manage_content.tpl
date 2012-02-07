@@ -33,8 +33,8 @@
         <table class="exp-skin-table">
 			<thead>
 				<tr>
-					<th>{'Migrate'|gettext}</th>
-					<th>{'Replace'|gettext}</th>
+					<th><input type='checkbox' name='checkallm' title="{'Select All/None'|gettext}" onChange="selectAllm(this.checked)" checked=1> {'Migrate'|gettext}</th>
+					<th><input type='checkbox' name='checkallr' title="{'Select All/None'|gettext}" onChange="selectAllr(this.checked)"> {'Replace'|gettext}</th>
 					<th>{'Module'|gettext}</th>
 					<th>{'Count'|gettext}</th>
 					<th>{'Action'|gettext}</th>
@@ -44,8 +44,8 @@
 				{foreach from=$modules item=module name=modules}
 					{if !$module->notmigrating}
 						<tr class="{cycle values="even,odd"}">            
-							<td><input type=checkbox name="migrate[{$module->module}]" label=" " value=1 checked=1></td>
-							<td><input type=checkbox name="replace[{$module->module}]" label=" " value=1></td>
+							<td><input type=checkbox name="migrate[]" label=" " value='{$module->module}' checked=1></td>
+							<td><input type=checkbox name="replace[]" label=" " value='{$module->module}'></td>
 							<td>{$module->module}</td>
 							<td>{$module->count}</td>
 							<td>{$module->action}</td>
@@ -63,3 +63,19 @@
 	{br}<hr>{br}
 	<div class="admin"><b>{'This is the Final Migration Step'|gettext}</b></div>
 </div>
+
+<script type="text/javascript">
+    function selectAllm(val) {
+        var checks = document.getElementsByName("migrate[]");
+        for (var i = 0; i < checks.length; i++) {
+          checks[i].checked = val;
+        }
+    }
+
+    function selectAllr(val) {
+        var checks = document.getElementsByName("replace[]");
+        for (var i = 0; i < checks.length; i++) {
+          checks[i].checked = val;
+        }
+    }
+</script>

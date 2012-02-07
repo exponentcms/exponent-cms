@@ -28,6 +28,14 @@
         {control type="checkbox" name="new_window" label="Open in New Window"|gettext checked=$record->new_window value="1"}
         {control type="files" name="image" label="Image"|gettext value=$record->expFile limit=2}
         {control type="editor" name="body" label="URL Description"|gettext value=$record->body}
+        {if $config.usecategories}
+            {foreach from=$record->expCat item=cat name=cats}
+                {if $smarty.foreach.cats.first != false}
+                    {assign var=catid value=$cat->id}
+                {/if}
+            {/foreach}
+            {control type="dropdown" name=expCat label="Category"|gettext frommodel="expCat" where="module='' OR module='`$modelname`'" orderby="rank" display=title key=id includeblank="Not Categorized"|gettext value=$catid}
+        {/if}
         {control type="buttongroup" submit="Save"|gettext cancel="Cancel"|gettext}
     {/form}
 </div>

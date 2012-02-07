@@ -35,8 +35,8 @@
         <table class="exp-skin-table">
 			<thead>
 				<tr>
-					<th>{"Migrate"|gettext}</th>
-					<th>{"Replace"|gettext}</th>
+					<th><input type='checkbox' name='checkallmu' title="{'Select All/None'|gettext}" onChange="selectAllmu(this.checked)" checked=1> {"Migrate"|gettext}</th>
+					<th><input type='checkbox' name='checkallru' title="{'Select All/None'|gettext}" onChange="selectAllru(this.checked)"> {"Replace"|gettext}</th>
 					<th>{"Username"|gettext}</th>
 					<th>{"Name"|gettext}</th>
 					<th>{"E-Mail"|gettext}</th>
@@ -83,8 +83,8 @@
 			</tbody>
 			<thead>
 				<tr>
-					<th>{"Migrate"|gettext}</th>
-					<th>{"Replace"|gettext}</th>
+					<th><input type='checkbox' name='checkallmg' title="{'Select All/None'|gettext}" onChange="selectAllmg(this.checked)" checked=1> {"Migrate"|gettext}</th>
+					<th><input type='checkbox' name='checkallrg' title="{'Select All/None'|gettext}" onChange="selectAllrg(this.checked)"> {"Replace"|gettext}</th>
 					<th>{"Group Name"|gettext}</th>
 					<th>{"Description"|gettext}</th>
 					<th>{"Type"|gettext}</th>
@@ -128,3 +128,32 @@
 	{br}<hr>{br}
 	<a class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" href="{link module=migration action=manage_pages}"><b>{'Next Step -> Migrate Pages'|gettext}</b></a>
 </div>
+
+<script type="text/javascript">
+    function selectAllmu(val) {
+        var checks = document.getElementsByName("users[]");
+        for (var i = 0; i < checks.length; i++) {
+          checks[i].checked = val;
+        }
+    }
+
+    function selectAllru(val) {
+        var checks = document.getElementsByName("rep_users[]");
+        for (var i = 0; i < checks.length; i++) {
+          checks[i].checked = val;
+        }
+    }
+    function selectAllmg(val) {
+        var checks = document.getElementsByName("groups[]");
+        for (var i = 0; i < checks.length; i++) {
+          checks[i].checked = val;
+        }
+    }
+
+    function selectAllrg(val) {
+        var checks = document.getElementsByName("rep_groups[]");
+        for (var i = 0; i < checks.length; i++) {
+          checks[i].checked = val;
+        }
+    }
+</script>

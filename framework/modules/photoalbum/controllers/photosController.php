@@ -19,11 +19,11 @@
 
 class photosController extends expController {
     public $basemodel_name = 'photo';
-    public $useractions = array(
-        'showall'=>'Gallery', 
-        'slideshow'=>'Slideshow', 
-        //'showall_tags'=>"Tag Categories"
-    );
+//    public $useractions = array(
+//        'showall'=>'Gallery',
+//        'slideshow'=>'Slideshow',
+//        //'showall_tags'=>"Tag Categories"
+//    );
     public $remove_configs = array(
         'comments',
         'ealerts',
@@ -41,17 +41,16 @@ class photosController extends expController {
         $where = $this->aggregateWhereClause();
         $order = 'rank';
         $limit = empty($this->config['limit']) ? 10 : $this->config['limit'];
-        if ($this->params['view'] != 'showall') {
+        if (!empty($this->params['view']) && $this->params['view'] != 'showall') {
             $limit = 999;
         }
-        $usecategories = empty($this->config['usecategories']) ? false : $this->config['usecategories'];
 
         $page = new expPaginator(array(
                     'model'=>'photo',
                     'where'=>$where, 
                     'limit'=>$limit,
                     'order'=>$order,
-                    'categorize'=>$usecategories,
+                    'categorize'=>empty($this->config['usecategories']) ? false : $this->config['usecategories'],
                     'src'=>$this->loc->src,
                     'controller'=>$this->baseclassname,
                     'action'=>$this->params['action'],

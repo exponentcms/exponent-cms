@@ -34,8 +34,8 @@
         <table class="exp-skin-table">
         <thead>
             <tr>
-                <th>{'Migrate'|gettext}</th>
-                <th>{'Replace'|gettext}</th>
+                <th><input type='checkbox' name='checkallp' title="{'Select All/None'|gettext}" onChange="selectAllp(this.checked)" checked=1> {'Migrate'|gettext}</th>
+                <th><input type='checkbox' name='checkallr' title="{'Select All/None'|gettext}" onChange="selectAllr(this.checked)"> {'Replace'|gettext}</th>
                 <th>{'Name'|gettext}</th>
             </tr>
         </thead>
@@ -72,3 +72,19 @@
 	{br}<hr>{br}
 	<a class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" href="{link module=migration action=manage_files}"><b>{'Next Step -> Migrate Files'|gettext}</b></a>
 </div>
+
+<script type="text/javascript">
+    function selectAllp(val) {
+        var checks = document.getElementsByName("page[]");
+        for (var i = 0; i < checks.length; i++) {
+          checks[i].checked = val;
+        }
+    }
+
+    function selectAllr(val) {
+        var checks = document.getElementsByName("rep_pages[]");
+        for (var i = 0; i < checks.length; i++) {
+          checks[i].checked = val;
+        }
+    }
+</script>

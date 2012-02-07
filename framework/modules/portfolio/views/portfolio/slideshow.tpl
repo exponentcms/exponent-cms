@@ -21,13 +21,13 @@
 {/css}
 
 <div class="module photoalbum portfolio slideshow">
-    {if $moduletitle != ""}<h1>{$moduletitle}</h1>{/if}
+    {if $moduletitle && !$config.hidemoduletitle}<h1>{$moduletitle}</h1>{/if}
     {permissions}
 		<div class="module-actions">
 			{if $permissions.create == 1}
 				{icon class=add action=edit rank=1 text="Add a Slide"|gettext}
 			{/if}
-			{if $permissions.manage == 1 && $slides|@count>1}
+			{if $permissions.manage == 1 && $slides|@count>1 && $rank == 1}
 				{ddrerank items=$slides model="photo" label="Slides"|gettext}
 			{/if}
 		</div>

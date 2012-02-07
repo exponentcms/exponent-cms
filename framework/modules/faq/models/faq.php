@@ -19,6 +19,11 @@
 
 class faq extends expRecord {
     public $table = 'faqs';
+
+    protected $attachable_item_types = array(
+        'content_expCats'=>'expCat'
+    );
+
     public $validates = array(
         'presence_of'=>array(
             'question'=>array('message'=>'Question is a required field.'),

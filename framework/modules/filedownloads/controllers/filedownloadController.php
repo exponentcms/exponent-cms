@@ -39,19 +39,18 @@ class filedownloadController extends expController {
         $modelname = $this->basemodel_name;
         $where = $this->aggregateWhereClause();
         $limit = isset($this->config['limit']) ? $this->config['limit'] : null;
-        if ($this->params['view'] != 'showall') {
+        if (!empty($this->params['view']) && $this->params['view'] != 'showall') {
             $limit = 999;
         }
         $order = isset($this->config['order']) ? $this->config['order'] : 'rank';
-        $dir   = isset($this->config['dir']) ? $this->config['dir'] : 'ASC';
-        $usecategories = empty($this->config['usecategories']) ? false : $this->config['usecategories'];
+//        $dir   = isset($this->config['dir']) ? $this->config['dir'] : 'ASC';
         $page = new expPaginator(array(
                     'model'=>$modelname,
                     'where'=>$where, 
                     'limit'=>$limit,
                     'order'=>$order,
-                    'dir'=>$dir,
-                    'categorize'=>$usecategories,
+//                    'dir'=>$dir,
+                    'categorize'=>empty($this->config['usecategories']) ? false : $this->config['usecategories'],
                     'controller'=>$this->baseclassname,
                     'action'=>$this->params['action'],
                     'src'=>$this->loc->src,

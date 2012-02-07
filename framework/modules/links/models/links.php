@@ -20,7 +20,8 @@
 class links extends expRecord {
 
     protected $attachable_item_types = array(
-        'content_expFiles'=>'expFile'
+        'content_expFiles'=>'expFile',
+        'content_expCats'=>'expCat'
     );
 
     public $validates = array(

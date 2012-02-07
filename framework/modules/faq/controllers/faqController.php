@@ -23,7 +23,7 @@ class faqController extends expController {
         'ask_question'=>'Show Question Form'
     );
 	public $remove_configs = array(
-        'aggregation',
+//        'aggregation',
         'comments',
         'files',
         'rss',
@@ -37,6 +37,37 @@ class faqController extends expController {
         expHistory::set('viewable', $this->params);
         $faqs = new faq();
         $questions = $faqs->find('all', $this->aggregateWhereClause().' AND include_in_faq=1', 'rank');
+
+        if (empty($this->config['usecategories']) ? false : $this->config['usecategories']) {
+            $cats = array();
+            foreach ($questions as $key=>$record) {
+                foreach ($record->expCat as $cat) {
+                    $questions[$key]->catid = $cat->id;
+                    $questions[$key]->catrank = $cat->rank;
+                    $questions[$key]->cat = $cat->title;
+                    $questions[$key]->color = empty($cat->color) ? null : $cat->color;
+                    $questions[$key]->module = empty($cat->module) ? null : $cat->module;
+                    break;
+                }
+                if (empty($questions[$key]->catid)) {
+                    $questions[$key]->catid = null;
+                    $questions[$key]->catrank = 999999;
+                    $questions[$key]->cat = 'Not Categorized';
+                }
+            }
+            expSorter::osort($questions, array(array('catrank'),array('rank')));
+            foreach ($questions as $record) {
+                if (empty($cats[$record->catid])) {
+                    $cats[$record->catid]->count = 1;
+                    $cats[$record->catid]->name = $record->cat;
+                } else {
+                    $cats[$record->catid]->count += 1;
+                }
+                $cats[$record->catid]->records[] = $record;
+            }
+            assign_to_template(array('cats'=>$cats));
+        }
+
         assign_to_template(array('questions'=>$questions));
     }
 
@@ -76,9 +107,36 @@ class faqController extends expController {
     }
     
     public function update() {
+        global $db;
+
+        //check for and handle tags
+        if (array_key_exists('expTag',$this->params)&&!empty($this->params['expTag'])) {
+	        if (isset($this->params['id'])) {
+    	        $db->delete('content_expTags', 'content_type="'.(!empty($this->params['content_type'])?$this->params['content_type']:$this->basemodel_name).'" AND content_id='.$this->params['id']);
+    	    }
+	        $tags = explode(",", trim($this->params['expTag']));
+	        unset($this->params['expTag']);
+
+	        foreach($tags as $tag) {
+                if (!empty($tag)) {
+                    $tag = strtolower(trim($tag));
+                    $expTag = new expTag($tag);
+                    if (empty($expTag->id)) $expTag->update(array('title'=>$tag));
+                    $this->params['expTag'][] = $expTag->id;
+                }
+	        }
+        }
+        //check for and handle cats
+        if (array_key_exists('expCat',$this->params)&&!empty($this->params['expCat'])) {
+            $catid = $this->params['expCat'];
+            unset($this->params['expCat']);
+            $this->params['expCat'][] = $catid;
+        }
+
         $faq = new faq();
         $faq->update($this->params);
-        
+        $this->addContentToSearch($this->params);
+
         if (!empty($this->params['send_email'])) {
             redirect_to(array('controller'=>'faq', 'action'=>'edit_answer', 'id'=>$faq->id, 'src'=>$this->loc->src));
         } else {

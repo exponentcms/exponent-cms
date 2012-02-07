@@ -36,5 +36,5 @@
         {control type=buttongroup submit="Save Config"|gettext cancel="Cancel"|gettext}
     {/form}
 	{br}<hr>{br}
-	<a class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" href="{link module=migration action=manage_users}"><b>{'Next Step -> Migrate Users & Groups'|gettext}</b></a>
+	<a class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" href="{link module=migration action=manage_users}"><b>{'Skip to Next Step -> Migrate Users & Groups'|gettext}</b></a>
 </div>

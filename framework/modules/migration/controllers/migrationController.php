@@ -348,6 +348,7 @@ class migrationController extends expController {
             $db->delete('content_expFiles');
             $db->delete('content_expSimpleNote');
             $db->delete('content_expTags');
+            $db->delete('content_expCats');
             $db->delete('expComments');
             $db->delete('expConfigs', 'id>1');  // don't delete migration config
 //            $db->delete('expFiles');			// deleted and rebuilt during (previous) file migration
@@ -356,7 +357,7 @@ class migrationController extends expController {
             $db->delete('expeAlerts_temp');
             $db->delete('expSimpleNote');
             $db->delete('expRss');
-            $db->delete('expTags');
+            $db->delete('expCats');
             $db->delete('calendar');
             $db->delete('eventdate');
             $db->delete('calendarmodule_config');
@@ -372,7 +373,7 @@ class migrationController extends expController {
         }
 		
 		if (!empty($this->params['replace'])) {
-			foreach($this->params['replace'] as $replace => $value) {
+			foreach($this->params['replace'] as $replace) {
 				switch ($replace) {
 				    case 'containermodule':
 					    $db->delete('container');
@@ -455,7 +456,7 @@ class migrationController extends expController {
 			$where = '1';
 		} else {
 			$where = '';
-			foreach ($this->params['migrate'] as $key=>$var) {
+			foreach ($this->params['migrate'] as $key) {
 				if (!empty($where)) {$where .= " or";}
 				$where .= " module='".$key."'";
 			}
@@ -506,7 +507,7 @@ class migrationController extends expController {
         // // we will convert it to the new type of module before pulling.
         $cwhere = ' and (';
         $i=0;
-        foreach ($this->params['migrate'] as $key=>$var) {
+        foreach ($this->params['migrate'] as $key) {
             $cwhere .= ($i==0) ? "" : " or ";
             $cwhere .= "internal like '%".$key."%'";
             $i=1;
@@ -759,21 +760,21 @@ class migrationController extends expController {
 	 * @return
 	 */
     private function convert($iloc, $module, $hc=0) {
-        if (!array_key_exists($iloc->mod, $this->params['migrate'])) return $module;
+        if (!in_array($iloc->mod, $this->params['migrate'])) return $module;
         global $db;
         $old_db = $this->connect();
 		$linked = false;
 	    $loc = null;
+        $newconfig = new expConfig();
 
         switch ($iloc->mod) {
             case 'textmodule':
-
 				@$module->view = 'showall';
 
 				//check to see if it's already pulled in (circumvent !is_original)
 				$ploc = $iloc;
 				$ploc->mod = "text";
-				if ($db->countObjects($ploc->mod, "location_data='".serialize($ploc)."'") || $module->is_existing) {
+				if ($db->countObjects($ploc->mod, "location_data='".serialize($ploc)."'") || (!empty($module->is_existing) && $module->is_existing)) {
 					$iloc->mod = 'textmodule';
 					$linked = true;
 					break;
@@ -795,7 +796,6 @@ class migrationController extends expController {
                 }
 				break;
             case 'rotatormodule':
-
                 $module->action = 'showRandom';
                 $module->view = 'showRandom';
 
@@ -824,7 +824,6 @@ class migrationController extends expController {
                 }
 				break;
             case 'snippetmodule':
-
 				$module->view = 'showall';
 
 				//check to see if it's already pulled in (circumvent !is_original)
@@ -856,7 +855,6 @@ class migrationController extends expController {
                 }
 				break;
             case 'linklistmodule':
-
 				switch ($module->view) {
 					case 'Quick Links':
 						@$module->view = "showall_quicklinks";
@@ -897,7 +895,6 @@ class migrationController extends expController {
 				}
 				break;
             case 'linkmodule':  // user mod, not widely distributed
-
 				switch ($module->view) {
 					case 'Summary':
 						@$module->view = "showall_quicklinks";
@@ -906,6 +903,38 @@ class migrationController extends expController {
 						@$module->view = 'showall';
 						break;
 				}
+
+                $oldconfig = $old_db->selectObject('linkmodule_config', "location_data='".serialize($iloc)."'");
+                if ($oldconfig->enable_rss == 1) {
+                    $newconfig->config['enable_rss'] = true;
+                    $newconfig->config['feed_title'] = $oldconfig->feed_title;
+                    $newconfig->config['feed_desc'] = $oldconfig->feed_desc;
+                    $newconfig->config['rss_limit'] = isset($oldconfig->rss_limit) ? $oldconfig->rss_limit : 24;
+                    $newconfig->config['rss_cachetime'] = isset($oldconfig->rss_cachetime) ? $oldconfig->rss_cachetime : 1440;
+                    $newrss = new expRss();
+                    $newrss->module = $loc->mod;
+                    $newrss->src = $loc->src;
+                    $newrss->enable_rss = $oldconfig->enable_rss;
+                    $newrss->feed_title = $oldconfig->feed_title;
+                    $newrss->feed_desc = $oldconfig->feed_desc;
+                    $newrss->rss_limit = isset($oldconfig->rss_limit) ? $oldconfig->rss_limit : 24;
+                    $newrss->rss_cachetime = isset($oldconfig->rss_cachetime) ? $oldconfig->rss_cachetime : 1440;
+                    $newrss->save();
+                }
+                if (!empty($oldconfig->orderhow)) {
+                    if ($oldconfig->orderby == 'name') $newconfig->config['order'] = 'title';
+                    switch ($oldconfig->orderhow) {
+                        case '1':
+                            $newconfig->config['order'] .= ' DESC';
+                            break;
+                        case '2':
+                            $newconfig->config['order'] = 'rank';
+                            break;
+                    }
+                }
+                if ($oldconfig->enable_categories == 1) {
+                    $newconfig->config['usecategories'] = true;
+                }
 
 				//check to see if it's already pulled in (circumvent !is_original)
 				$ploc = $iloc;
@@ -918,7 +947,6 @@ class migrationController extends expController {
 
                 $iloc->mod = 'linkmodule';
                 $links = $old_db->selectArrays('link', "location_data='".serialize($iloc)."'");
-				$oldconfig = $old_db->selectObject('linkmodule_config', "location_data='".serialize($iloc)."'");
 				if ($links) {
 					foreach ($links as $link) {
 						$lnk = new links();
@@ -935,31 +963,28 @@ class migrationController extends expController {
 						$lnk->save();
 						@$this->msg['migrated'][$iloc->mod]['count']++;
 						@$this->msg['migrated'][$iloc->mod]['name'] = $this->new_modules[$iloc->mod];
-					}
-					if ($oldconfig->enable_rss == 1) {
-						$config['enable_rss'] = true;
-						$config['feed_title'] = $oldconfig->feed_title;
-						$config['feed_desc'] = $oldconfig->feed_desc;
-						$config['rss_limit'] = isset($oldconfig->rss_limit) ? $oldconfig->rss_limit : 24;
-						$config['rss_cachetime'] = isset($oldconfig->rss_cachetime) ? $oldconfig->rss_cachetime : 1440;
-						$newconfig = new expConfig();
-						$newconfig->config = $config;
-						$newconfig->location_data = $loc;
-						$newconfig->save();
-						$newrss = new expRss();
-						$newrss->module = $loc->mod;
-						$newrss->src = $loc->src;
-						$newrss->enable_rss = $oldconfig->enable_rss;
-						$newrss->feed_title = $oldconfig->feed_title;
-						$newrss->feed_desc = $oldconfig->feed_desc;
-						$newrss->rss_limit = isset($oldconfig->rss_limit) ? $oldconfig->rss_limit : 24;
-						$newrss->rss_cachetime = isset($oldconfig->rss_cachetime) ? $oldconfig->rss_cachetime : 1440;
-						$newrss->save();
+                        if ($oldconfig->enable_categories == 1 && $link['category_id']) {
+                            $params = null;
+                            $oldcat = $old_db->selectObject('category','id = '.$link['category_id']);
+                            $cat = new expCat($oldcat->name);
+                            if (empty($cat->id)) {
+                                $cat->title = $oldcat->name;
+                                $cat->rank = $oldcat->rank;
+                                $cat->color = $oldcat->color;
+                                $catloc = expUnserialize($oldcat->location_data);
+                                if (array_key_exists($catloc->mod, $this->new_modules)) {
+                                    $mod = explode("Controller",$this->new_modules[$catloc->mod]);
+                                    $cat->module = $mod[0];
+                                }
+                                $cat->update();
+                            }
+                            $params['expCat'][] = $cat->id;
+                            $lnk->update($params);
+                        }
 					}
 				}
 				break;
             case 'swfmodule':
-
 				$module->view = 'showall';
 
 				//check to see if it's already pulled in (circumvent !is_original)
@@ -1001,25 +1026,81 @@ class migrationController extends expController {
 				}
 				break;
             case 'newsmodule':
-
-	            if ($module->view == 'Featured News') {
-		            $only_featured = true;
-	            }
+                $only_featured = false;
+                $usebody = 0;
 				switch ($module->view) {
+                    case 'Featured News':
+                        $only_featured = true;
+                        $module->view = 'showall';
+                        break;
 					case 'Headlines':
+                        $usebody = 2;
 						$module->view = 'showall_headlines';
 						break;
 					case 'Summary':
-						$module->view = 'showall_summary';
-						break;
+                    case 'Default':
+                        $usebody = 1;
 					default:
 						$module->view = 'showall';
 						break;
 				}
 
+                $oldconfig = $old_db->selectObject('newsmodule_config', "location_data='".serialize($iloc)."'");
+                $oldviewconfig = expUnserialize($old_db->selectValue('container','view_data', "internal='".serialize($iloc)."'"));
+                $ploc = $iloc;
+                $ploc->mod = "news";
+                // fudge a config to get attached files to appear
+                $newconfig->config = expUnserialize('a:14:{s:9:"feedmaker";s:0:"";s:11:"filedisplay";s:7:"Gallery";s:6:"ffloat";s:4:"Left";s:6:"fwidth";s:3:"120";s:7:"fmargin";s:1:"5";s:7:"piwidth";s:3:"100";s:5:"thumb";s:3:"100";s:7:"spacing";s:2:"10";s:10:"floatthumb";s:8:"No Float";s:6:"tclass";s:0:"";s:5:"limit";s:0:"";s:9:"pagelinks";s:14:"Top and Bottom";s:10:"feed_title";s:0:"";s:9:"feed_desc";s:0:"";}');
+                if ($oldconfig->enable_rss == 1) {
+                    $newconfig->config['enable_rss'] = true;
+                    $newconfig->config['feed_title'] = $oldconfig->feed_title;
+                    $newconfig->config['feed_desc'] = $oldconfig->feed_desc;
+                    $newconfig->config['rss_limit'] = isset($oldconfig->rss_limit) ? $oldconfig->rss_limit : 24;
+                    $newconfig->config['rss_cachetime'] = isset($oldconfig->rss_cachetime) ? $oldconfig->rss_cachetime : 1440;
+                    $newrss = new expRss();
+                    $newrss->module = $ploc->mod;
+                    $newrss->src = $ploc->src;
+                    $newrss->enable_rss = $oldconfig->enable_rss;
+                    $newrss->feed_title = $oldconfig->feed_title;
+                    $newrss->feed_desc = $oldconfig->feed_desc;
+                    $newrss->rss_limit = isset($oldconfig->rss_limit) ? $oldconfig->rss_limit : 24;
+                    $newrss->rss_cachetime = isset($oldconfig->rss_cachetime) ? $oldconfig->rss_cachetime : 1440;
+                    $newrss->save();
+                }
+                if (!empty($oldconfig->item_limit)) {
+                    $newconfig->config['limit'] = $oldconfig->item_limit;
+                    $newconfig->config['multipageonly'] = true;
+                }
+                if (!empty($oldconfig->sortfield)) {
+                    switch ($oldconfig->sortfield) {
+                        case 'publish':
+                            $newconfig->config['order'] = 'publish';
+                            break;
+                        case 'edited':
+                            $newconfig->config['order'] = 'edited_at';
+                            break;
+                        case 'posted':
+                        default:
+                            $newconfig->config['order'] = 'created_at';
+                            break;
+                    }
+                    if ($oldconfig->sortorder == 'DESC') {
+                        $newconfig->config['order'] .= ' DESC';
+                    }
+                }
+                if ($usebody) {
+                    $newconfig->config['usebody'] = $usebody;
+                }
+                if (!empty($oldviewconfig['num_items'])) {
+                    $newconfig->config['limit'] = $oldviewconfig['num_items'];
+                    $newconfig->config['pagelinks'] = "Don't show page links";
+                }
+                $only_featured = empty($oldviewconfig['featured_only']) ? 0 : 1;
+                if ($only_featured) {
+                    $newconfig->config['only_featured'] = true;
+                }
+
 				//check to see if it's already pulled in (circumvent !is_original)
-				$ploc = $iloc;
-				$ploc->mod = "news";
 				if ($db->countObjects($ploc->mod, "location_data='".serialize($ploc)."'") || $module->is_existing) {
 					$iloc->mod = 'newsmodule';
 					$linked = true;
@@ -1028,9 +1109,7 @@ class migrationController extends expController {
 
                 $iloc->mod = 'newsmodule';
                 $newsitems = $old_db->selectArrays('newsitem', "location_data='".serialize($iloc)."'");
-				$oldconfig = $old_db->selectObject('newsmodule_config', "location_data='".serialize($iloc)."'");
                 if ($newsitems) {
-					$files_attached = false;
                     foreach ($newsitems as $ni) {
                         unset($ni['id']);
                         $news = new news($ni);
@@ -1049,57 +1128,102 @@ class migrationController extends expController {
                         if (!empty($ni['file_id'])) {
                             $file = new expFile($ni['file_id']);
                             $news->attachitem($file,'');
-							$files_attached = true;
+                        }
+                        if (isset($oldconfig->enable_tags) && $oldconfig->enable_tags = true) {
+	                        $params = null;;
+							$oldtags = expUnserialize($ni['tags']);
+                            if (!empty($oldtags)) {
+                                foreach ($oldtags as $oldtag){
+                                    $tagtitle = strtolower(trim($old_db->selectValue('tags','name','id = '.$oldtag)));
+                                    $tag = new expTag($tagtitle);
+    //								$tag->title = $old_db->selectValue('tags','name','id = '.$oldtag);
+                                    if (empty($tag->id)) $tag->update(array('title'=>$tagtitle));
+                                    $params['expTag'][] = $tag->id;
+                                }
+                            }
+                            $news->update($params);
                         }
                     }
-					$newconfig = new expConfig();
-					if ($files_attached) {
-						// fudge a config to get attached files to appear
-						$newconfig->config = 'a:14:{s:9:"feedmaker";s:0:"";s:11:"filedisplay";s:7:"Gallery";s:6:"ffloat";s:4:"Left";s:6:"fwidth";s:3:"120";s:7:"fmargin";s:1:"5";s:7:"piwidth";s:3:"100";s:5:"thumb";s:3:"100";s:7:"spacing";s:2:"10";s:10:"floatthumb";s:8:"No Float";s:6:"tclass";s:0:"";s:5:"limit";s:0:"";s:9:"pagelinks";s:14:"Top and Bottom";s:10:"feed_title";s:0:"";s:9:"feed_desc";s:0:"";}';
-					}
-					if ($oldconfig->enable_rss == 1) {
-						if ($newconfig->config != null) {
-							$config = expUnserialize($newconfig->config);
-						}
-						$config['enable_rss'] = true;
-						$config['feed_title'] = $oldconfig->feed_title;
-						$config['feed_desc'] = $oldconfig->feed_desc;
-						$config['rss_limit'] = isset($oldconfig->rss_limit) ? $oldconfig->rss_limit : 24;
-						$config['rss_cachetime'] = isset($oldconfig->rss_cachetime) ? $oldconfig->rss_cachetime : 1440;
-						$newconfig->config = $config;
-						$newrss = new expRss();
-						$newrss->module = $loc->mod;
-						$newrss->src = $loc->src;
-						$newrss->enable_rss = $oldconfig->enable_rss;
-						$newrss->feed_title = $oldconfig->feed_title;
-						$newrss->feed_desc = $oldconfig->feed_desc;
-						$newrss->rss_limit = isset($oldconfig->rss_limit) ? $oldconfig->rss_limit : 24;
-						$newrss->rss_cachetime = isset($oldconfig->rss_cachetime) ? $oldconfig->rss_cachetime : 1440;
-						$newrss->save();
-					}
-					if ($only_featured) {
-						$newconfig->config['only_featured'] = true;
-					}
-					if ($newconfig != null) {
-						$newconfig->location_data = $loc;
-						$newconfig->save();
-					}
                 }
 				break;
             case 'resourcesmodule':
-
 				switch ($module->view) {
 					case 'One Click Download - Descriptive':
 						$module->view = 'showall_quick_download_with_description';
 						break;
+                    case 'Recent':
+                        $newconfig->config['usebody'] = 2;
 					default:
 						$module->view = 'showall';
 						break;
 				}
 
+                $oldconfig = $old_db->selectObject('resourcesmodule_config', "location_data='".serialize($iloc)."'");
+                $oldviewconfig = expUnserialize($old_db->selectValue('container','view_data', "internal='".serialize($iloc)."'"));
+                $ploc = $iloc;
+                $ploc->mod = "filedownload";
+                if ($oldconfig->enable_categories == 1) {
+                    $newconfig->config['usecategories'] = true;
+                }
+                if (isset($oldconfig->enable_rss)) {
+                    $dorss = $oldconfig->enable_rss;
+                } elseif (isset($oldconfig->enable_podcasting)) {
+                    $dorss = $oldconfig->enable_podcasting;
+                } else {
+                    $dorss = false;
+                }
+                if ($dorss) {
+                    $newconfig->config['enable_rss'] = true;
+                    $newconfig->config['feed_title'] = $oldconfig->feed_title;
+                    $newconfig->config['feed_desc'] = $oldconfig->feed_desc;
+                    $newconfig->config['rss_limit'] = isset($oldconfig->rss_limit) ? $oldconfig->rss_limit : 24;
+                    $newconfig->config['rss_cachetime'] = isset($oldconfig->rss_cachetime) ? $oldconfig->rss_cachetime : 1440;
+                    $newrss = new expRss();
+                    $newrss->module = $ploc->mod;
+                    $newrss->src = $ploc->src;
+//						$newrss->enable_rss = $oldconfig->enable_rss;
+                    $newrss->enable_rss = true;
+                    $newrss->feed_title = $oldconfig->feed_title;
+                    $newrss->feed_desc = $oldconfig->feed_desc;
+                    $newrss->rss_limit = isset($oldconfig->rss_limit) ? $oldconfig->rss_limit : 24;
+                    $newrss->rss_cachetime = isset($oldconfig->rss_cachetime) ? $oldconfig->rss_cachetime : 1440;
+                    $newrss->save();
+                }
+                if (!empty($oldconfig->orderhow)) {
+                    switch ($oldconfig->orderby) {
+                        case 'edited':
+                            $newconfig->config['order'] = 'edited_at';
+                            break;
+                        case 'downloads':
+                            $newconfig->config['order'] = 'downloads';
+                            break;
+                        case 'name':
+                            $newconfig->config['order'] = 'title';
+                            break;
+                        case 'posted':
+                        default:
+                            $newconfig->config['order'] = 'created_at';
+                            break;
+                    }
+                    switch ($oldconfig->orderhow) {
+                        case '2':
+                            $newconfig->config['order'] = 'rank';
+                        break;
+                        case '1':
+                            $newconfig->config['order'] .= ' DESC';
+                        break;
+                    }
+                }
+                if (!empty($oldviewconfig['num_posts'])) {
+                    $newconfig->config['limit'] = $oldviewconfig['num_posts'];
+                    $newconfig->config['pagelinks'] = "Don't show page links";
+                }
+                $newconfig->config['quick_download'] = $oldviewconfig['direct_download'] ? 1 : 0;
+                $newconfig->config['show_info'] = $oldviewconfig['show_descriptions'] ? 1 : 0;
+                $newconfig->config['show_icon'] = $oldviewconfig['show_icons'] ? 1 : 0;
+                $newconfig->config['show_player'] = $oldviewconfig['show_player'] ? 1 : 0;
+
 				//check to see if it's already pulled in (circumvent !is_original)
-				$ploc = $iloc;
-				$ploc->mod = "filedownload";
 				if ($db->countObjects('filedownloads', "location_data='".serialize($ploc)."'") || $module->is_existing) {
 					$iloc->mod = 'resourcesmodule';
 					$linked = true;
@@ -1108,7 +1232,6 @@ class migrationController extends expController {
 
                 $iloc->mod = 'resourcesmodule';
                 $resourceitems = $old_db->selectArrays('resourceitem', "location_data='".serialize($iloc)."'");
-				$oldconfig = $old_db->selectObject('resourcesmodule_config', "location_data='".serialize($iloc)."'");
 				if ($resourceitems) {
 					foreach ($resourceitems as $ri) {
 						unset($ri['id']);
@@ -1129,40 +1252,29 @@ class migrationController extends expController {
 							$filedownload->created_at = $ri['posted'];
 							$filedownload->edited_at = $ri['edited'];
 							$filedownload->update();
+                            if ($oldconfig->enable_categories == 1 && $ri['category_id']) {
+                                $params = null;
+                                $oldcat = $old_db->selectObject('category','id = '.$ri['category_id']);
+                                $cat = new expCat($oldcat->name);
+                                if (empty($cat->id)) {
+                                    $cat->title = $oldcat->name;
+                                    $cat->rank = $oldcat->rank;
+                                    $cat->color = $oldcat->color;
+                                    $catloc = expUnserialize($oldcat->location_data);
+                                    if (array_key_exists($catloc->mod, $this->new_modules)) {
+                                        $mod = explode("Controller",$this->new_modules[$catloc->mod]);
+                                        $cat->module = $mod[0];
+                                    }
+                                    $cat->update();
+                                }
+                                $params['expCat'][] = $cat->id;
+                                $filedownload->update($params);
+                            }
 						}
 					}
-					if (isset($oldconfig->enable_rss)) {
-						$dorss = $oldconfig->enable_rss;
-					} elseif (isset($oldconfig->enable_podcasting)) {
-						$dorss = $oldconfig->enable_podcasting;
-					} else {
-						$dorss = false;
-					}
-					if ($dorss) {
-						$config['enable_rss'] = true;
-						$config['feed_title'] = $oldconfig->feed_title;
-						$config['feed_desc'] = $oldconfig->feed_desc;
-						$config['rss_limit'] = isset($oldconfig->rss_limit) ? $oldconfig->rss_limit : 24;
-						$config['rss_cachetime'] = isset($oldconfig->rss_cachetime) ? $oldconfig->rss_cachetime : 1440;
-						$newconfig = new expConfig();
-						$newconfig->config = $config;
-						$newconfig->location_data = $loc;
-						$newconfig->save();
-						$newrss = new expRss();
-						$newrss->module = $loc->mod;
-						$newrss->src = $loc->src;
-//						$newrss->enable_rss = $oldconfig->enable_rss;
-						$newrss->enable_rss = true;
-						$newrss->feed_title = $oldconfig->feed_title;
-						$newrss->feed_desc = $oldconfig->feed_desc;
-						$newrss->rss_limit = isset($oldconfig->rss_limit) ? $oldconfig->rss_limit : 24;
-						$newrss->rss_cachetime = isset($oldconfig->rss_cachetime) ? $oldconfig->rss_cachetime : 1440;
-						$newrss->save();
-					}					
 				}
 				break;
             case 'imagegallerymodule':
-
 				switch ($module->view) {
 					case 'Slideshow':
 						$module->action = 'slideshow';
@@ -1172,6 +1284,12 @@ class migrationController extends expController {
 						$module->view = 'showall';
 						break;
 				}
+
+                $oldviewconfig = expUnserialize($old_db->selectValue('container','view_data', "internal='".serialize($iloc)."'"));
+                $newconfig->config['usecategories'] = true;
+                $newconfig->config['multipageonly'] = true;
+                $newconfig->config['speed'] = empty($oldviewconfig['delay']) ? 0: $oldviewconfig['delay']/1000;
+                $newconfig->config['pa_show_controls'] = empty($oldviewconfig['controller']) ? 0 : 1;
 
 				//check to see if it's already pulled in (circumvent !is_original)
 				$ploc = $iloc;
@@ -1186,6 +1304,15 @@ class migrationController extends expController {
                 $galleries = $old_db->selectArrays('imagegallery_gallery', "location_data='".serialize($iloc)."'");
 				if ($galleries) {
 					foreach ($galleries as $gallery) {
+                        $params = null;;
+                        $cat = new expCat($gallery['name']);
+                        if (empty($cat->id)) {
+                            $cat->title = $gallery['name'];
+                            $cat->rank = $gallery['galleryorder'];
+                            $cat->module = 'photo';
+                            $cat->update();
+                        }
+                        $params['expCat'][] = $cat->id;
 						$gis = $old_db->selectArrays('imagegallery_image', "gallery_id='".$gallery['id']."'");
 						foreach ($gis as $gi) {
 							$photo = new photo();
@@ -1204,13 +1331,17 @@ class migrationController extends expController {
 								$photo->created_at = $gi['posted'];
 								$photo->edited_at = $gi['posted'];
 								$photo->update(array("validate"=>false));								
+                                $photo->update($params);  // save gallery name as category
 							}
 						}
 					}
+                    // pick up some module config settings based on last gallery
+                    $newconfig->config['pa_showall_thumbbox'] = $gallery['box_size'];
+                    $newconfig->config['pa_showall_enlarged'] = $gallery['pop_size'];
+                    $newconfig->config['limit'] = $gallery['perpage'];
 				}
 				break;
             case 'slideshowmodule':
-
                 $module->action = 'slideshow';
                 $module->view = 'showall';
 
@@ -1225,30 +1356,31 @@ class migrationController extends expController {
 
                 $iloc->mod = 'slideshowmodule';
                 $gis = $old_db->selectArrays('slideshow_slide', "location_data='".serialize($iloc)."'");
-                foreach ($gis as $gi) {
-                    $photo = new photo();
-                    $loc->mod = "photos";
-                    $loc->src = $iloc->src;
-                    $loc->int = $iloc->int;
-                    $photo->title = (!empty($gi['name'])) ? $gi['name'] : 'Untitled';
-                    $photo->body = $gi['description'];
-                    $photo->alt = $gi['alt'];
-                    $photo->location_data = serialize($loc);
-                    $te = $photo->find('first',"location_data='".$photo->location_data."'");
-                    if (empty($te)) {
-                        if (!empty($gi['file_id'])) {
-                            $photo->save();
-                            @$this->msg['migrated'][$iloc->mod]['count']++;
-                            @$this->msg['migrated'][$iloc->mod]['name'] = $this->new_modules[$iloc->mod];
-                            $file = new expFile($gi['file_id']);
-                            $photo->attachitem($file,'');
-                            $photo->update(array("validate"=>false));
+                if ($gis) {
+                    foreach ($gis as $gi) {
+                        $photo = new photo();
+                        $loc->mod = "photos";
+                        $loc->src = $iloc->src;
+                        $loc->int = $iloc->int;
+                        $photo->title = (!empty($gi['name'])) ? $gi['name'] : 'Untitled';
+                        $photo->body = $gi['description'];
+                        $photo->alt = empty($gi['alt']) ? '' : $gi['alt'];
+                        $photo->location_data = serialize($loc);
+                        $te = $photo->find('first',"location_data='".$photo->location_data."'");
+                        if (empty($te)) {
+                            if (!empty($gi['file_id'])) {
+                                $photo->save();
+                                @$this->msg['migrated'][$iloc->mod]['count']++;
+                                @$this->msg['migrated'][$iloc->mod]['name'] = $this->new_modules[$iloc->mod];
+                                $file = new expFile($gi['file_id']);
+                                $photo->attachitem($file,'');
+                                $photo->update(array("validate"=>false));
+                            }
                         }
                     }
                 }
 				break;
             case 'headlinemodule':
-
                 $module->view = 'showall';
 
 				//check to see if it's already pulled in (circumvent !is_original)
@@ -1279,7 +1411,7 @@ class migrationController extends expController {
                 }
 				break;
             case 'weblogmodule':
-
+                $usebody = 0;
 				switch ($module->view) {
 					case 'By Author':
 						$module->action = 'authors';
@@ -1293,14 +1425,54 @@ class migrationController extends expController {
 						$module->action = 'dates';
 						$module->view = 'dates';
 						break;
+                    case 'Summary':
+                        $usebody = 2;
+						$module->view = 'showall';
+						break;
+                    case 'Default':
+                        $usebody = 1;
 					default:
 						$module->view = 'showall';
 						break;
 				}
 
-				//check to see if it's already pulled in (circumvent !is_original)
-				$ploc = $iloc;
-				$ploc->mod = "blog";
+                $oldconfig = $old_db->selectObject('weblogmodule_config', "location_data='".serialize($iloc)."'");
+                $oldviewconfig = expUnserialize($old_db->selectValue('container','view_data', "internal='".serialize($iloc)."'"));
+                $ploc = $iloc;
+                $ploc->mod = "blog";
+                $newconfig->config['add_source'] = '1';
+                if ($oldconfig->enable_rss == 1) {
+                    $newconfig->config['enable_rss'] = true;
+                    $newconfig->config['feed_title'] = $oldconfig->feed_title;
+                    $newconfig->config['feed_desc'] = $oldconfig->feed_desc;
+                    $newconfig->config['rss_limit'] = isset($oldconfig->rss_limit) ? $oldconfig->rss_limit : 24;
+                    $newconfig->config['rss_cachetime'] = isset($oldconfig->rss_cachetime) ? $oldconfig->rss_cachetime : 1440;
+                    $newrss = new expRss();
+                    $newrss->module = $ploc->mod;
+                    $newrss->src = $ploc->src;
+                    $newrss->enable_rss = $oldconfig->enable_rss;
+                    $newrss->feed_title = $oldconfig->feed_title;
+                    $newrss->feed_desc = $oldconfig->feed_desc;
+                    $newrss->rss_limit = isset($oldconfig->rss_limit) ? $oldconfig->rss_limit : 24;
+                    $newrss->rss_cachetime = isset($oldconfig->rss_cachetime) ? $oldconfig->rss_cachetime : 1440;
+                    $newrss->save();
+                }
+                if (!empty($oldconfig->items_per_page)) {
+                    $newconfig->config['limit'] = $oldconfig->items_per_page;
+                    $newconfig->config['multipageonly'] = true;
+                }
+                if (!empty($oldviewconfig['num_posts'])) {
+                    $newconfig->config['limit'] = $oldviewconfig['num_posts'];
+                    $newconfig->config['pagelinks'] = "Don't show page links";
+                }
+                if (!empty($oldconfig->allow_comments)) {
+                    $newconfig->config['usescomments'] = !$oldconfig->allow_comments;
+                }
+                if ($usebody) {
+                    $newconfig->config['usebody'] = $usebody;
+                }
+
+                //check to see if it's already pulled in (circumvent !is_original)
 				if ($db->countObjects($ploc->mod, "location_data='".serialize($ploc)."'") || $module->is_existing) {
 					$iloc->mod = 'weblogmodule';
 					$linked = true;
@@ -1309,7 +1481,6 @@ class migrationController extends expController {
 
                 $iloc->mod = 'weblogmodule';
                 $blogitems = $old_db->selectArrays('weblog_post', "location_data='".serialize($iloc)."'");
-				$oldconfig = $old_db->selectObject('weblogmodule_config', "location_data='".serialize($iloc)."'");
                 if ($blogitems) {
                     foreach ($blogitems as $bi) {
                         unset($bi['id']);
@@ -1360,32 +1531,16 @@ class migrationController extends expController {
 							$db->insertObject($obj, $newcomment->attachable_table);
 						}
                     }
-                    $newconfig = new expConfig();
-                    $config['add_source'] = '1';
-					if ($oldconfig->enable_rss == 1) {
-						$config['enable_rss'] = true;
-						$config['feed_title'] = $oldconfig->feed_title;
-						$config['feed_desc'] = $oldconfig->feed_desc;
-						$config['rss_limit'] = isset($oldconfig->rss_limit) ? $oldconfig->rss_limit : 24;
-						$config['rss_cachetime'] = isset($oldconfig->rss_cachetime) ? $oldconfig->rss_cachetime : 1440;
-						$newrss = new expRss();
-						$newrss->module = $loc->mod;
-						$newrss->src = $loc->src;
-						$newrss->enable_rss = $oldconfig->enable_rss;
-						$newrss->feed_title = $oldconfig->feed_title;
-						$newrss->feed_desc = $oldconfig->feed_desc;
-						$newrss->rss_limit = isset($oldconfig->rss_limit) ? $oldconfig->rss_limit : 24;
-						$newrss->rss_cachetime = isset($oldconfig->rss_cachetime) ? $oldconfig->rss_cachetime : 1440;
-						$newrss->save();
-					}
-					$newconfig->config = $config;
-					$newconfig->location_data = $loc;
-					$newconfig->save();
                 }
 				break;
             case 'faqmodule':
-
 				$module->view = 'showall';
+
+                $oldconfig = $old_db->selectObject('faqmodule_config', "location_data='".serialize($iloc)."'");
+                if ($oldconfig->enable_categories == 1) {
+                    $newconfig->config['usecategories'] = true;
+                }
+                $newconfig->config['use_toc'] = true;
 
 				//check to see if it's already pulled in (circumvent !is_original)
 				$ploc = $iloc;
@@ -1414,12 +1569,66 @@ class migrationController extends expController {
                         $faq->save();
                         @$this->msg['migrated'][$iloc->mod]['count']++;
                         @$this->msg['migrated'][$iloc->mod]['name'] = $this->new_modules[$iloc->mod];
+                        if ($oldconfig->enable_categories == 1 && $fqi['category_id']) {
+                            $params = null;
+                            $oldcat = $old_db->selectObject('category','id = '.$fqi['category_id']);
+                            $cat = new expCat($oldcat->name);
+                            if (empty($cat->id)) {
+                                $cat->title = $oldcat->name;
+                                $cat->rank = $oldcat->rank;
+                                $cat->color = $oldcat->color;
+                                $catloc = expUnserialize($oldcat->location_data);
+                                if (array_key_exists($catloc->mod, $this->new_modules)) {
+                                    $mod = explode("Controller",$this->new_modules[$catloc->mod]);
+                                    $cat->module = $mod[0];
+                                }
+                                $cat->update();
+                            }
+                            $params['expCat'][] = $cat->id;
+                            $faq->update($params);
+                        }
                     }
                 }
 				break;
             case 'listingmodule':
+                $usebody = 0;
+                $module->view = 'showall';
+				switch ($module->view) {
+					case 'Full':
+						break;
+					case 'Simple':
+                        $usebody = 2;
+						break;
+                    case 'Default':
+                        $usebody = 1;
+					default:
+						break;
+				}
 
-				$module->view = 'showall';
+                $oldconfig = $old_db->selectObject('listingmodule_config', "location_data='".serialize($iloc)."'");
+                // fudge a config to get attached files to appear
+                $newconfig->config = expUnserialize('a:11:{s:11:"filedisplay";s:7:"Gallery";s:6:"ffloat";s:4:"Left";s:6:"fwidth";s:3:"120";s:7:"fmargin";s:1:"5";s:7:"piwidth";s:3:"100";s:5:"thumb";s:3:"100";s:7:"spacing";s:2:"10";s:10:"floatthumb";s:8:"No Float";s:6:"tclass";s:0:"";s:5:"limit";s:0:"";s:9:"pagelinks";s:14:"Top and Bottom";}');
+                if ($oldconfig->enable_categories == 1) {
+                    $newconfig->config['usecategories'] = true;
+                }
+                if (!empty($oldconfig->items_perpage)) {
+                    $newconfig->config['limit'] = $oldconfig->items_perpage;
+                    $newconfig->config['multipageonly'] = true;
+                }
+                if (!empty($oldconfig->orderhow)) {
+                    if ($oldconfig->orderby == 'name') $newconfig->config['order'] = 'title';
+                    switch ($oldconfig->orderhow) {
+                        case '1':
+                            $newconfig->config['order'] .= ' DESC';
+                            break;
+                        case '2':
+                            $newconfig->config['order'] = 'rank';
+                            break;
+                    }
+                }
+                if ($usebody) {
+                    $newconfig->config['usebody'] = $usebody;
+                }
 
 				//check to see if it's already pulled in (circumvent !is_original)
 				$ploc = $iloc;
@@ -1433,7 +1642,6 @@ class migrationController extends expController {
                 $iloc->mod = 'listingmodule';
                 $listingitems = $old_db->selectArrays('listing', "location_data='".serialize($iloc)."'");
                 if ($listingitems) {
-					$files_attached = false;
                     foreach ($listingitems as $li) {
                         unset($li['id']);
                         $listing = new portfolio($li);
@@ -1454,20 +1662,29 @@ class migrationController extends expController {
                         if (!empty($li['file_id'])) {
 							$file = new expFile($li['file_id']);
 							$listing->attachitem($file,'');
-							$files_attached = true;
 						}
+                        if ($oldconfig->enable_categories == 1 && $li['category_id']) {
+                            $params = null;
+                            $oldcat = $old_db->selectObject('category','id = '.$li['category_id']);
+                            $cat = new expCat($oldcat->name);
+                            if (empty($cat->id)) {
+                                $cat->title = $oldcat->name;
+                                $cat->rank = $oldcat->rank;
+                                $cat->color = $oldcat->color;
+                                $catloc = expUnserialize($oldcat->location_data);
+                                if (array_key_exists($catloc->mod, $this->new_modules)) {
+                                    $mod = explode("Controller",$this->new_modules[$catloc->mod]);
+                                    $cat->module = $mod[0];
+                                }
+                                $cat->update();
+                            }
+                            $params['expCat'][] = $cat->id;
+                            $listing->update($params);
+                        }
                     }
-					if ($files_attached) {
-						// fudge a config to get attached files to appear
-						$config = new expConfig();
-						$config->location_data = $loc;
-						$config->config = 'a:11:{s:11:"filedisplay";s:7:"Gallery";s:6:"ffloat";s:4:"Left";s:6:"fwidth";s:3:"120";s:7:"fmargin";s:1:"5";s:7:"piwidth";s:3:"100";s:5:"thumb";s:3:"100";s:7:"spacing";s:2:"10";s:10:"floatthumb";s:8:"No Float";s:6:"tclass";s:0:"";s:5:"limit";s:0:"";s:9:"pagelinks";s:14:"Top and Bottom";}';
-						$config->save();
-					}
                 }
 				break;
             case 'contactmodule':  // convert to an old school form
-
 				$module->view == "Default";
 
 				//check to see if it's already pulled in (circumvent !is_original)
@@ -1549,7 +1766,6 @@ class migrationController extends expController {
 				}
 				break;
             case 'youtubemodule':
-
 				//check to see if it's already pulled in (circumvent !is_original)
 				$ploc = $iloc;
 				$ploc->mod = "youtube";
@@ -1585,7 +1801,6 @@ class migrationController extends expController {
 				}
 				break;
             case 'mediaplayermodule':
-
 				//check to see if it's already pulled in (circumvent !is_original)
 				$ploc = $iloc;
 				$ploc->mod = "flowplayer";
@@ -1629,7 +1844,6 @@ class migrationController extends expController {
 				}
 				break;
             case 'bannermodule':
-
 				//check to see if it's already pulled in (circumvent !is_original)
 				$ploc = $iloc;
 				$ploc->mod = "banner";
@@ -1719,7 +1933,6 @@ class migrationController extends expController {
 				}
 				break;
             case 'feedlistmodule':
-
 				@$module->view = 'showall';
 
                 $iloc->mod = 'feedlistmodule';
@@ -1727,13 +1940,11 @@ class migrationController extends expController {
                 if ($feedlist->enable_rss == 1) {
 					$loc = expUnserialize($feedlist->location_data);
 					$loc->mod = "rssController";
-					$config['enable_rss'] = true;
-					$config['feed_title'] = $feedlist->feed_title;
-					$config['feed_desc'] = $feedlist->feed_desc;
-					$config['rss_limit'] = isset($feedlist->rss_limit) ? $feedlist->rss_limit : 24;
-					$config['rss_cachetime'] = isset($feedlist->rss_cachetime) ? $feedlist->rss_cachetime : 1440;
-					$newconfig = new expConfig();
-					$newconfig->config = $config;
+					$newconfig->config['enable_rss'] = true;
+					$newconfig->config['feed_title'] = $feedlist->feed_title;
+					$newconfig->config['feed_desc'] = $feedlist->feed_desc;
+					$newconfig->config['rss_limit'] = isset($feedlist->rss_limit) ? $feedlist->rss_limit : 24;
+					$newconfig->config['rss_cachetime'] = isset($feedlist->rss_cachetime) ? $feedlist->rss_cachetime : 1440;
 					$newconfig->location_data = $loc;
 					$newconfig->save();
 					$newrss = new expRss();
@@ -1755,7 +1966,7 @@ class migrationController extends expController {
 		}
         // quick check for non hard coded modules
         // We add a container if they're not hard coded.
-        (!$hc) ? $this->add_container($iloc,$module,$linked) : "";
+        (!$hc) ? $this->add_container($iloc,$module,$linked,$newconfig) : "";
 
         return $module;
     }
@@ -1876,7 +2087,7 @@ class migrationController extends expController {
 	 * @param bool $linked
 	 * @return void
 	 */
-	private function add_container($iloc,$m,$linked=false) {
+	private function add_container($iloc,$m,$linked=false,$newconfig) {
         global $db;
 
         $old_db = $this->connect();
@@ -1894,9 +2105,6 @@ class migrationController extends expController {
 			$m->internal = serialize($iloc);
 		}
 		if ($linked) {
-			$newconfig = new expConfig();
-			$config['aggregate'] = Array($iloc->src);
-			$newconfig->config = $config;
 			$newmodule['i_mod'] = $iloc->mod;
 			$newmodule['modcntrol'] = $iloc->mod;
 			$newmodule['rank'] = $m->rank;
@@ -1905,13 +2113,19 @@ class migrationController extends expController {
 			$newmodule['actions'] = $m->action;
 			$_POST['current_section'] = empty($section->section) ? 1 : $section->section;
 			$m = container::update($newmodule,$m,expUnserialize($m->external));
-			$newmodinternal = expUnserialize($m->internal);
-			$newmod = explode("Controller",$newmodinternal->mod);
-			$newmodinternal->mod = $newmod[0];
-			$newconfig->location_data = $newmodinternal;
-			$newconfig->save();
-		} 
+            $newconfig->config['aggregate'] = Array($iloc->src);
+            if ($iloc->mod == 'blogController') {
+                $newconfig->config['add_source'] = 1;  //  we need to make our blog agregation discrete
+            }
+		}
 		$db->insertObject($m, 'container');
+        if ($newconfig->config != null) {
+            $newmodinternal = expUnserialize($m->internal);
+            $newmod = explode("Controller",$newmodinternal->mod);
+            $newmodinternal->mod = $newmod[0];
+            $newconfig->location_data = $newmodinternal;
+            $newconfig->save();
+        }
     }
 
 	/**
