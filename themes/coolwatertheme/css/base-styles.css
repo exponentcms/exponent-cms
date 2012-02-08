@@ -267,7 +267,15 @@ div.bodycopy ul, ol {
     font-weight:normal;
 }
 
-/* Footer */	
+#sidebar .container-chrome ul li a {
+    font-weight:normal;
+}
+
+#sidebar .container-chrome.module-chrome ul li.container-info {
+    padding: 2px 6px 6px 26px;
+}
+
+/* Footer */
 #footer {
 	color: #C6DDEE;
 	background: #caced1 url(../images/footer.jpg) no-repeat center top;
