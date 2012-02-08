@@ -221,13 +221,13 @@ abstract class expController {
         // get the tag being passed
         $tag = new expTag($this->params['tag']);
 
-        // find all the id's of the portfolios for this portfolio module
+        // find all the id's of the portfolios for this module
         $item_ids = $db->selectColumn($modelname, 'id', $this->aggregateWhereClause());
 
-        // find all the portfolios that this tag is attached to
+        // find all the items that this tag is attached to
         $items = $tag->findWhereAttachedTo($modelname);
 
-        // loop the portfolios for this tag and find out which ones belong to this module
+        // loop the items for this tag and find out which ones belong to this module
         $items_by_tags = array();
         foreach($items as $item) {
             if (in_array($item->id, $item_ids)) $items_by_tags[] = $item;
@@ -245,7 +245,8 @@ abstract class expController {
                     'action'=>$this->params['action'],
                     'columns'=>array('Title'=>'title'),
                     ));
-        $page->records = expSorter::sort(array('array'=>$page->records, 'sortby'=>'rank', 'order'=>'ASC', 'ignore_case'=>true));
+//        $page->records = expSorter::sort(array('array'=>$page->records, 'sortby'=>'rank', 'order'=>'ASC', 'ignore_case'=>true));
+        $page->records = expSorter::sort(array('array'=>$page->records, 'sortby'=>'created_at', 'order'=>'DESC', 'ignore_case'=>true));
 
         assign_to_template(array('page'=>$page,'moduletitle'=>ucfirst($modelname).' items by tag "'.$this->params['tag'].'"', 'rank'=>($order==='rank')?1:0));
     }
@@ -254,7 +255,7 @@ abstract class expController {
 
         $modelname = $this->basemodel_name;
 
-        $items = $this->$modelname->find('all');
+        $items = $this->$modelname->find('all', $this->aggregateWhereClause());
         $used_tags = array();
         foreach ($items as $item) {
             foreach($item->expTag as $tag) {

@@ -74,7 +74,7 @@ class blogController extends expController {
 //            }
 //        }
 //
-////        $used_tags = expSorter::sort(array('array'=>$used_tags,'sortby'=>'title', 'order'=>'ASC', 'ignore_case'=>true));
+//        $used_tags = expSorter::sort(array('array'=>$used_tags,'sortby'=>'title', 'order'=>'ASC', 'ignore_case'=>true));
 //        $order = isset($this->config['order']) ? $this->config['order'] : 'title ASC';
 //        $used_tags = expSorter::sort(array('array'=>$used_tags, 'order'=>$order, 'ignore_case'=>true));
 //	    assign_to_template(array('tags'=>$used_tags));
@@ -97,8 +97,9 @@ class blogController extends expController {
 	
 	public function dates() {
 	    global $db;
-	    $dates = $db->selectColumn('blog', 'created_at', $this->aggregateWhereClause());
+	    $dates = $db->selectColumn('blog', 'created_at', $this->aggregateWhereClause(), 'created_at DESC');
 	    $blog_dates = array();
+        $i = 0;
 	    foreach ($dates as $date) {
 	        $year = date('Y',$date);
 	        $month = date('n',$date);
@@ -107,7 +108,8 @@ class blogController extends expController {
 	        } else {
 	            $blog_date[$year][$month]->name = date('F',$date);
 	            $blog_date[$year][$month]->count = 1;    
-	        }   
+	        }
+            if ($i++ >= $this->config['limit']) break;
 	    }
 	    ksort($blog_date);
 	    $blog_date = array_reverse($blog_date,1);
