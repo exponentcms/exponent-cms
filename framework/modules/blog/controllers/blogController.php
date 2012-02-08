@@ -59,24 +59,26 @@ class blogController extends expController {
 		assign_to_template(array('page'=>$page));
 	}
 	
-	public function tags() {
-        $blogs = $this->blog->find('all');
-        $used_tags = array();
-        foreach ($blogs as $blog) {
-            foreach($blog->expTag as $tag) {
-                if (isset($used_tags[$tag->id])) {
-                    $used_tags[$tag->id]->count += 1;
-                } else {
-                    $exptag = new expTag($tag->id);
-                    $used_tags[$tag->id] = $exptag;
-                    $used_tags[$tag->id]->count = 1;
-                }
-            }
-        }
-        
-        $used_tags = expSorter::sort(array('array'=>$used_tags,'sortby'=>'title', 'order'=>'ASC', 'ignore_case'=>true));
-	    assign_to_template(array('tags'=>$used_tags));
-	}
+//	public function tags() {
+//        $blogs = $this->blog->find('all');
+//        $used_tags = array();
+//        foreach ($blogs as $blog) {
+//            foreach($blog->expTag as $tag) {
+//                if (isset($used_tags[$tag->id])) {
+//                    $used_tags[$tag->id]->count += 1;
+//                } else {
+//                    $exptag = new expTag($tag->id);
+//                    $used_tags[$tag->id] = $exptag;
+//                    $used_tags[$tag->id]->count = 1;
+//                }
+//            }
+//        }
+//
+////        $used_tags = expSorter::sort(array('array'=>$used_tags,'sortby'=>'title', 'order'=>'ASC', 'ignore_case'=>true));
+//        $order = isset($this->config['order']) ? $this->config['order'] : 'title ASC';
+//        $used_tags = expSorter::sort(array('array'=>$used_tags, 'order'=>$order, 'ignore_case'=>true));
+//	    assign_to_template(array('tags'=>$used_tags));
+//	}
 	
 	public function authors() {
         $blogs = $this->blog->find('all');
@@ -162,43 +164,6 @@ class blogController extends expController {
 		            ));
             	    
 		assign_to_template(array('page'=>$page,'moduletitle'=>'Blogs by author "'.$this->params['author'].'"'));
-	}
-	
-	public function showall_by_tags() {
-	    global $db;	    
-
-	    // set history
-	    expHistory::set('viewable', $this->params);
-	    
-	    // get the tag being passed
-        $tag = new expTag($this->params['tag']);
-
-        // find all the id's of the blog posts for this blog module
-        $blog_ids = $db->selectColumn('blog', 'id', $this->aggregateWhereClause());
-        
-        // find all the blogs that this tag is attached to
-        $blogs = $tag->findWhereAttachedTo('blog');
-        
-        // loop the blogs for this tag and find out which ones belong to this module
-        $blogs_by_tags = array();
-        foreach($blogs as $blog) {
-            if (in_array($blog->id, $blog_ids)) $blogs_by_tags[] = $blog;
-        }
-
-        // create a pagination object for the blog posts and render the action
-		$order = 'created_at';
-		$limit = empty($this->config['limit']) ? 10 : $this->config['limit'];
-		
-		$page = new expPaginator(array(
-		            'records'=>$blogs_by_tags,
-		            'limit'=>$limit,
-		            'order'=>$order,
-		            'controller'=>$this->baseclassname,
-		            'action'=>$this->params['action'],
-		            'columns'=>array('Title'=>'title'),
-		            ));
-		
-		assign_to_template(array('page'=>$page,'moduletitle'=>'Blogs by tag "'.$this->params['tag'].'"'));
 	}
 	
 	public function show() {

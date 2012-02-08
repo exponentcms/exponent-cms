@@ -208,6 +208,73 @@ abstract class expController {
         assign_to_template(array('page'=>$page, 'items'=>$page->records));
     }
 
+    /**
+   	 * default module view method for all items with a specific tag
+   	 */
+    public function showall_by_tags() {
+        global $db;
+
+        $modelname = $this->basemodel_name;
+        // set history
+        expHistory::set('viewable', $this->params);
+
+        // get the tag being passed
+        $tag = new expTag($this->params['tag']);
+
+        // find all the id's of the portfolios for this portfolio module
+        $item_ids = $db->selectColumn($modelname, 'id', $this->aggregateWhereClause());
+
+        // find all the portfolios that this tag is attached to
+        $items = $tag->findWhereAttachedTo($modelname);
+
+        // loop the portfolios for this tag and find out which ones belong to this module
+        $items_by_tags = array();
+        foreach($items as $item) {
+            if (in_array($item->id, $item_ids)) $items_by_tags[] = $item;
+        }
+
+        // create a pagination object for the model and render the action
+        $order = 'created_at DESC';
+        $limit = empty($this->config['limit']) ? 10 : $this->config['limit'];
+
+        $page = new expPaginator(array(
+                    'records'=>$items_by_tags,
+                    'limit'=>$limit,
+                    'order'=>$order,
+                    'controller'=>$this->baseclassname,
+                    'action'=>$this->params['action'],
+                    'columns'=>array('Title'=>'title'),
+                    ));
+        $page->records = expSorter::sort(array('array'=>$page->records, 'sortby'=>'rank', 'order'=>'ASC', 'ignore_case'=>true));
+
+        assign_to_template(array('page'=>$page,'moduletitle'=>ucfirst($modelname).' items by tag "'.$this->params['tag'].'"', 'rank'=>($order==='rank')?1:0));
+    }
+
+    public function tags() {
+
+        $modelname = $this->basemodel_name;
+
+        $items = $this->$modelname->find('all');
+        $used_tags = array();
+        foreach ($items as $item) {
+            foreach($item->expTag as $tag) {
+                if (isset($used_tags[$tag->id])) {
+                    $used_tags[$tag->id]->count += 1;
+                } else {
+                    $exptag = new expTag($tag->id);
+                    $used_tags[$tag->id] = $exptag;
+                    $used_tags[$tag->id]->count = 1;
+                }
+            }
+        }
+
+//        $order = isset($this->config['order']) ? $this->config['order'] : 'rank';
+//        $used_tags = expSorter::sort(array('array'=>$used_tags,'sortby'=>'title', 'order'=>'ASC', 'ignore_case'=>true, 'rank'=>($order==='rank')?1:0));
+        $order = isset($this->config['order']) ? $this->config['order'] : 'title ASC';
+        $used_tags = expSorter::sort(array('array'=>$used_tags, 'order'=>$order, 'ignore_case'=>true, 'rank'=>($order==='rank')?1:0));
+        assign_to_template(array('tags'=>$used_tags));
+    }
+
 	/**
 	 * default view for individual item
 	 */

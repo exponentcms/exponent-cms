@@ -59,26 +59,28 @@ class portfolioController extends expController {
         assign_to_template(array('page'=>$page, 'rank'=>($order==='rank')?1:0));
     }
     
-	public function tags() {
-        $ports = $this->portfolio->find('all');
-        $used_tags = array();
-        foreach ($ports as $port) {
-            foreach($port->expTag as $tag) {
-                if (isset($used_tags[$tag->id])) {
-                    $used_tags[$tag->id]->count += 1;
-                } else {
-                    $exptag = new expTag($tag->id);
-                    $used_tags[$tag->id] = $exptag;
-                    $used_tags[$tag->id]->count = 1;
-                }
-            }
-        }
-        
-        $used_tags = expSorter::sort(array('array'=>$used_tags,'sortby'=>'title', 'order'=>'ASC', 'ignore_case'=>true, 'rank'=>($order==='rank')?1:0));
-        $order = isset($this->config['order']) ? $this->config['order'] : 'rank';
-	    assign_to_template(array('tags'=>$used_tags));
-	}
-
+//	public function tags() {
+//        $ports = $this->portfolio->find('all');
+//        $used_tags = array();
+//        foreach ($ports as $port) {
+//            foreach($port->expTag as $tag) {
+//                if (isset($used_tags[$tag->id])) {
+//                    $used_tags[$tag->id]->count += 1;
+//                } else {
+//                    $exptag = new expTag($tag->id);
+//                    $used_tags[$tag->id] = $exptag;
+//                    $used_tags[$tag->id]->count = 1;
+//                }
+//            }
+//        }
+//
+////        $order = isset($this->config['order']) ? $this->config['order'] : 'rank';
+////        $used_tags = expSorter::sort(array('array'=>$used_tags,'sortby'=>'title', 'order'=>'ASC', 'ignore_case'=>true, 'rank'=>($order==='rank')?1:0));
+//        $order = isset($this->config['order']) ? $this->config['order'] : 'title ASC';
+//        $used_tags = expSorter::sort(array('array'=>$used_tags, 'order'=>$order, 'ignore_case'=>true, 'rank'=>($order==='rank')?1:0));
+//	    assign_to_template(array('tags'=>$used_tags));
+//	}
+//
     public function slideshow() {
         expHistory::set('viewable', $this->params);
         $where = $this->aggregateWhereClause();
@@ -89,82 +91,6 @@ class portfolioController extends expController {
         $slides = $s->find('all',$where,$order);
                     
         assign_to_template(array('slides'=>$slides, 'rank'=>($order==='rank')?1:0));
-    }
-
-	public function showall_by_tags() {
-	    global $db;	    
-
-	    // set history
-	    expHistory::set('viewable', $this->params);
-	    
-	    // get the tag being passed
-        $tag = new expTag($this->params['tag']);
-
-        // find all the id's of the portfolios for this portfolio module
-        $port_ids = $db->selectColumn('portfolio', 'id', $this->aggregateWhereClause());
-        
-        // find all the portfolios that this tag is attached to
-        $ports = $tag->findWhereAttachedTo('portfolio');
-        
-        // loop the portfolios for this tag and find out which ones belong to this module
-        $ports_by_tags = array();
-        foreach($ports as $port) {
-            if (in_array($port->id, $port_ids)) $ports_by_tags[] = $port;
-        }
-
-        // create a pagination object for the portfolios and render the action
-		$order = 'created_at';
-		$limit = empty($this->config['limit']) ? 10 : $this->config['limit'];
-		
-		$page = new expPaginator(array(
-		            'records'=>$ports_by_tags,
-		            'limit'=>$limit,
-		            'order'=>$order,
-		            'controller'=>$this->baseclassname,
-		            'action'=>$this->params['action'],
-		            'columns'=>array('Title'=>'title'),
-		            ));
-        $page->records = expSorter::sort(array('array'=>$page->records,'sortby'=>'rank', 'order'=>'ASC', 'ignore_case'=>true));
-
-		assign_to_template(array('page'=>$page,'moduletitle'=>'Portfolio Pieces by tag "'.$this->params['tag'].'"', 'rank'=>($order==='rank')?1:0));
-	}
-
-    public function showall_by_cats() {
-        global $db;
-
-        // set history
-        expHistory::set('viewable', $this->params);
-
-        // get the tag being passed
-        $cat = new expCat($this->params['cat']);
-
-        // find all the id's of the portfolios for this portfolio module
-        $port_ids = $db->selectColumn('portfolio', 'id', $this->aggregateWhereClause());
-
-        // find all the portfolios that this cat is attached to
-        $ports = $cat->findWhereAttachedTo('portfolio');
-
-        // loop the portfolios for this cat and find out which ones belong to this module
-        $ports_by_cats = array();
-        foreach($ports as $port) {
-            if (in_array($port->id, $port_ids)) $ports_by_cats[] = $port;
-        }
-
-        // create a pagination object for the portfolios and render the action
-        $order = 'created_at';
-        $limit = empty($this->config['limit']) ? 10 : $this->config['limit'];
-
-        $page = new expPaginator(array(
-                    'records'=>$ports_by_cats,
-                    'limit'=>$limit,
-                    'order'=>$order,
-                    'controller'=>$this->baseclassname,
-                    'action'=>$this->params['action'],
-                    'columns'=>array('Title'=>'title'),
-                    ));
-        $page->records = expSorter::sort(array('array'=>$page->records,'sortby'=>'rank', 'order'=>'ASC', 'ignore_case'=>true));
-
-        assign_to_template(array('page'=>$page,'moduletitle'=>'Portfolio Pieces by category "'.$this->params['cat'].'"', 'rank'=>($order==='rank')?1:0));
     }
 
 }
