@@ -96,6 +96,11 @@ class expSorter {
         if (empty($params['array'])) return array();
         $sortby = empty($params['sortby']) ? NULL : $params['sortby']; 
         $order = empty($params['order']) ? NULL : $params['order'];
+        if (strstr(" ",$order)) {
+            $orderby = explode(" ",$order);
+            $sortby = $orderby[0];
+            $order = $orderby[1];
+        }
         $ic = empty($params['ignore_case']) ? NULL : $params['ignore_case'];
         $type = empty($params['type']) ? NULL : $params['type'];
         $sorter = new expSorter(array('array'=>$params['array'],'sortby'=>$sortby,'order'=>$order, 'ignore_case'=>$ic,'type'=>$type));
