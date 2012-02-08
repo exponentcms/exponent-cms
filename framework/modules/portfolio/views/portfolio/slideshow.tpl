@@ -36,29 +36,29 @@
         <ul class="slideshow-frame"{if $config.width} style="width:{$config.width}px;height:{$config.height}px;"{/if}>
             {foreach key=key from=$slides item=slide name=slides}
             <li class="slide" style="position:absolute;{if $smarty.foreach.slides.first}z-index:4;{else}z-index:1;{/if}">
-                <div class="bodycopy">
-                    {permissions}
-                        <div class="item-actions">
-                            {if $permissions.edit == 1}
-                                {icon action=edit record=$slide title="Edit"|gettext|cat:" `$item->title`"}
-                            {/if}
-                            {if $permissions.delete == 1}
-                                {icon action=delete record=$slide title="Delete"|gettext|cat:" `$item->title`"}
-                            {/if}
-                            {if $permissions.create == 1}
-                                {icon class=add action=edit rank=$slide->rank+1 title="Add another slide here"|gettext  text="Add another slide here"|gettext}
-                            {/if}
-                        </div>
-                    {/permissions}
-                    {if !$config.hidetext}
+                {permissions}
+                    <div class="item-actions">
+                        {if $permissions.edit == 1}
+                            {icon action=edit record=$slide title="Edit"|gettext|cat:" `$item->title`"}
+                        {/if}
+                        {if $permissions.delete == 1}
+                            {icon action=delete record=$slide title="Delete"|gettext|cat:" `$item->title`"}
+                        {/if}
+                        {if $permissions.create == 1}
+                            {icon class=add action=edit rank=$slide->rank+1 title="Add another slide here"|gettext  text="Add another slide here"|gettext}
+                        {/if}
+                    </div>
+                {/permissions}
+                {if !$config.hidetext}
+                    <div class="bodycopy">
                         <h2>
                             <a href="{link action="show" title=$slide->sef_url}">
                                 {$slide->title}
                             </a>
                         </h2>
                         {$slide->body}
-                    {/if}
-                </div>
+                    </div>
+                {/if}
                 {if $config.quality==100}
                     <img src="{$slide->expFile[0]->url}" class="slide-image" />
                 {else}

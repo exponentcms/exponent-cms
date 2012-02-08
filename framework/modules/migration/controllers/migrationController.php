@@ -1343,7 +1343,7 @@ class migrationController extends expController {
 				break;
             case 'slideshowmodule':
                 $module->action = 'slideshow';
-                $module->view = 'showall';
+                $module->view = 'slideshow';
 
 				//check to see if it's already pulled in (circumvent !is_original)
 				$ploc = $iloc;

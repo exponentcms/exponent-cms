@@ -50,12 +50,12 @@
                         {/if}
                     </div>
                 {/permissions}
-                <div class="bodycopy">
-                    {if !$config.hidetext}
+                {if !$config.hidetext}
+                    <div class="bodycopy">
                         <h2>{$slide->title}</h2>
                         {$slide->body}
-                    {/if}
-                </div>
+                    </div>
+                {/if}
                 {if $slide->link}
                     <a href="{$slide->link}">
                 {/if}
