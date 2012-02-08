@@ -20,11 +20,12 @@
 class newsController extends expController {
     public $useractions = array(
         'showall'=>'Show all News',
+        'tags'=>"Tags",
     );
     public $remove_configs = array(
         'comments',
         'ealerts',
-        'tags'
+//        'tags'
     ); // all options: ('aggregation', 'categories','comments','ealerts','files','module_title','pagination', 'rss','tags')
     public $add_permissions = array(
         'showUnpublished'=>'View Unpublished News'

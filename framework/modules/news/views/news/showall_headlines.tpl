@@ -27,10 +27,10 @@
     {permissions}
         <div class="module-actions">
 			{if $permissions.create == true || $permissions.edit}
-				<a class="add" href="{link action=create}">{"Add a news post"|gettext}</a>
+				{icon class="add" action=create title="Add a news post"|gettext}</a>
 			{/if}
 			{if $permissions.showUnpublished == 1 }
-				<a class="view" href="{link action=showUnpublished}">{"View Unpublished"|gettext}</a>
+				{icon class="view" action=showUnpublished title="View Unpublished"|gettext}</a>
 			{/if}
         </div>
     {/permissions}

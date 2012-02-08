@@ -21,7 +21,8 @@ class news extends expRecord {
 	//public $table = 'news';
 
     protected $attachable_item_types = array(
-        'content_expFiles'=>'expFile'
+        'content_expFiles'=>'expFile',
+        'content_expTags'=>'expTag'
     );
 
 	public $validates = array(
