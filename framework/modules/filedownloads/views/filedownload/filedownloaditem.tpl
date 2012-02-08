@@ -6,7 +6,7 @@
     {if $config.quick_download}
         <h3><a class="download" href="{link action=downloadfile fileid=$file->id}">{$file->title}</a></h3>
     {else}
-        {if $file->title}<h3><a class="readmore" href="{link action=show title=$file->sef_url}">{$file->title}</a></h3>{/if}
+        {if $file->title}<h3><a {if !$config.usebody}class="readmore"{/if} href="{link action=show title=$file->sef_url}">{$file->title}</a></h3>{/if}
     {/if}
     {if $config.show_info}
         <span class="label size">{'File Size'}:</span>
@@ -34,14 +34,15 @@
             {/if}
         </div>
     {/permissions}
-    <div class="bodycopy">
-        {if $config.usebody==1}
-            <p>{$file->body|summarize:"html":"paralinks"}</p>
-        {elseif $config.usebody==2}
-        {else}
-            {$file->body}
-        {/if}
-    </div>
+    {if $config.usebody!=2}
+        <div class="bodycopy">
+            {if $config.usebody==1}
+                <p>{$file->body|summarize:"html":"paralinks"}</p>
+            {else}
+                {$file->body}
+            {/if}
+        </div>
+    {/if}
     {if $config.usebody==1 || $config.usebody==2}
         <a class="readmore" href="{link action=show title=$file->sef_url}">{'Read more'|gettext}</a>
         &nbsp;&nbsp;
@@ -49,9 +50,9 @@
     {if !$config.quick_download}
         <a class="download" href="{link action=downloadfile fileid=$file->id}">{'Download'|gettext}</a>
     {/if}
-        {if $config.show_player && ($filetype == "mp3" || $filetype == "flv" || $filetype == "f4v")}
-            <a href="{$file->expFile.downloadable[0]->url}" style="display:block;width:360px;height:30px;" class="filedownloads-media"></a>
-        {/if}
+    {if $config.show_player && ($filetype == "mp3" || $filetype == "flv" || $filetype == "f4v")}
+        <a href="{$file->expFile.downloadable[0]->url}" style="display:block;width:360px;height:30px;" class="filedownloads-media"></a>
+    {/if}
     {clear}
     {permissions}
         <div class="module-actions">

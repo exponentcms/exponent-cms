@@ -35,7 +35,7 @@
            {foreach name=links from=$cat->records item=item}
                 <li{if $smarty.foreach.links.last} class="item last"{/if}>
                     <div class="link">
-                        <a href="{$item->url}" {if $item->new_window == 1} target="_blank"{/if} title="{$item->body}">{$item->title}</a>
+                        <a href="{$item->url}" {if $item->new_window == 1} target="_blank"{/if} title="{$item->body|summarize:"html":"para"}">{$item->title}</a>
                     </div>
                     {permissions}
                         <div class="item-actions">
@@ -47,7 +47,7 @@
                             {/if}
                         </div>
                     {/permissions}
-                 </li>
+                    {edebug var=$item}                </li>
            {foreachelse}
               {if ($catid != 0) }
                   <div ><i>{'No Links'|gettext}</i></div>
@@ -59,7 +59,7 @@
         <ul>
             {foreach name=items from=$items item=item name=links}
                 <li{if $smarty.foreach.links.last} class="item last"{/if}>
-                    <a class="link" {if $item->new_window}target="_blank"{/if} href="{$item->url}">{$item->title}</a>
+                    <a class="link" {if $item->new_window}target="_blank"{/if} href="{$item->url}" title="{$item->body|summarize:"html":"para"}">{$item->title}</a>
                     {permissions}
                         <div class="item-actions">
                             {if $permissions.edit == 1}

@@ -18,7 +18,7 @@
     {if $enable_rss == true}
         <a class="rsslink" href="{rsslink}">{'Subscribe to'|gettext} {$config.feed_title}</a>
     {/if}
-    {if $moduletitle && !$config.hidemoduletitle}<h1>{'Recent News from'|gettext} {$moduletitle}</h1>{/if}
+    {if $moduletitle && !$config.hidemoduletitle}<h1>{'Recent'|gettext} {$moduletitle}</h1>{/if}
 
     {permissions}
     <div class="module-actions">

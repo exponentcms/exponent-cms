@@ -19,10 +19,11 @@
 {/css}
  
 <div class="module news headlines">
+    {if $moduletitle && !$config.hidemoduletitle}<h2>{/if}
     {if $enable_rss == true}
-        <a class="rsslink" href="{rsslink}">{'Subscribe to'|gettext} {$config.feed_title}</a>
+        <a class="rsslink" href="{rsslink}" title="{'Subscribe to'|gettext} {$config.feed_title}"></a>
     {/if}
-    {if $moduletitle && !$config.hidemoduletitle}<h2>{$moduletitle}</h2>{/if}
+    {if $moduletitle && !$config.hidemoduletitle}{$moduletitle}</h2>{/if}
 
     {permissions}
         <div class="module-actions">
@@ -40,7 +41,7 @@
         {if $smarty.foreach.items.iteration<=$config.headcount || !$config.headcount}
 
         <li>
-            <a class="link" href="{if $item->isRss}{$item->rss_link}{else}{link action=showByTitle title=$item->sef_url}{/if}">                 
+            <a class="link" href="{if $item->isRss}{$item->rss_link}{else}{link action=showByTitle title=$item->sef_url}{/if}" title="{$item->body|summarize:"html":"para"}">
                 {$item->title}
             </a>
             
