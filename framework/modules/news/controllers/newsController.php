@@ -89,10 +89,7 @@ class newsController extends expController {
             'view'=>empty($this->params['view']) ? null : $this->params['view']
             ));
             
-        $morenews = (count($items) > $limit) ? 1 : 0;
-
         assign_to_template(array(
-            'morenews'=>$morenews,
             'page'=>$page,
             'items'=>$items,
             'enable_rss'=>empty($this->config['enable_rss']) ? false : true,

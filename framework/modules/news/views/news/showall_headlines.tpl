@@ -38,7 +38,7 @@
     <ul>
     {foreach name=items from=$page->records item=item}
         {if $smarty.foreach.items.iteration<=$config.headcount || !$config.headcount}
-            
+
         <li>
             <a class="link" href="{if $item->isRss}{$item->rss_link}{else}{link action=showByTitle title=$item->sef_url}{/if}">                 
                 {$item->title}
@@ -72,5 +72,8 @@
 
         {/if}
     {/foreach}
-    </ul>    
+    </ul>
+    {if $page->total_records > $config.headcount}
+        {icon action="showall" text="More News..."|gettext}
+    {/if}
 </div>

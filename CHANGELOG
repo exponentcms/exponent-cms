@@ -5,20 +5,22 @@ Copyright (c) 2004-2011 OIC Group, Inc.
 Added / Fixed / changed for 2.0.5
 -----------------------
 # This release focuses on implementing categories & a new calendar
-  - categories are only (fully) implemented within the portfolio & filedownloads modules
+  - categories are (fully) implemented within the faq, filedownloads, links, photoalbum & portfolio modules
     -- adds tabbed view either by category or alphabetized like rolodex
     -- adds an accordian like view w/ collapse/expand by category/alphabetized
     -- categories now migrated; imagegallerymodule galleries converted to categories
   - calendar2 should be considered alpha quality
 # Many fixes and updates
-  - adds deletion of multiple standalone pages at once
   - adds tag cloud view to search module
+  - adds tags to news module
+  - adds deletion of multiple standalone pages at once
   - adds notification of version patch releases
   - adds additional sorting options to news, filedownloads, & portfolio modules
+  - adds 'Recent' views to blog, filedownloads, & news modules...good teaser view
   - many migration updates and fixes
     -- fixes slideshowmodule migration
     -- better migration of 0.9x-type 'reused' modules
-    -- now migrates newsmodule tags (why weren't we already doing this)
+    -- newsmodule tags now migrated (why weren't we already doing this)
     -- now migrates many more module and view configuration settings
   - adds module scope type indicator to top-level/hard-coded chrome menus
   - implemented extension (theme, patch, & mods) repository access
