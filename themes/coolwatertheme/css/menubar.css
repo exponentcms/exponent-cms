@@ -5,7 +5,8 @@
 	border:solid 0px #808080;
 	font-family:"Trebuchet MS",Verdana;
 	font-size:93%;
-	font-size:11px;
+    font-weight:bold;
+   	font-size:12px;
 	height:40px;
 	line-height:2;
 	*line-height:1.9;  /* for ie 6 and 7 */
@@ -13,7 +14,6 @@
 	padding-left:5px;
 	z-index:20;
 }
-
 
 /* the menubar's <li> tag */
 .navigationmodule #yuimenubar.yuimenubar .yuimenubaritem{
@@ -70,7 +70,6 @@
 	cursor:pointer;
 	text-decoration:none!important;
 }
-
 
 .navigationmodule .yuimenu .yuimenu,
 .navigationmodule #yuimenubar.yuimenubar .yuimenu{
@@ -170,7 +169,6 @@
 	overflow:auto;
 }
 
-
 .navigationmodule #yuimenubar.yuimenubarnav .yuimenubaritem{
 
 }
@@ -183,7 +181,6 @@
 .navigationmodule #yuimenubar.yuimenubarnav .yuimenubaritemlabel-hassubmenu{
 	background:url(../skins/coolwater/menubaritem_submenuindicator.png) right center no-repeat;
 }
-
 
 .navigationmodule .yuimenubaritemlabel-disabled{
 	cursor:default;
@@ -204,7 +201,6 @@
 .navigationmodule .yuimenu .yuimenu{
 	font-size:100%;
 }
-
 
 .navigationmodule .yuimenu ul{
 	padding:3px 0;
@@ -294,5 +290,3 @@
 .navigationmodule .yuimenuitem-checked-disabled{
 	background-image:url(../skins/coolwater/menuitem_checkbox_disabled.png);
 }
-
-

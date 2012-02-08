@@ -207,7 +207,6 @@ div.bodycopy ul, ol {
 	color: #D4FF55;	
 }
 
-
 /* Main Column */
 #main {
 	float: left;
@@ -217,19 +216,13 @@ div.bodycopy ul, ol {
 	background: url(../images/box.jpg) no-repeat; 	
 }
 #main h2 {
-	font: normal 180% 'Trebuchet MS', Tahoma, Arial, Sans-serif;
+	font: normal 160% 'Trebuchet MS', Tahoma, Arial, Sans-serif;
 	padding: 0; 	
 	margin-bottom: 0;		
 	color: #2666c3;
 }
-#main h2 a {
-	color: #2666c3;
-	text-decoration: none;	
-}
 
-
-
-/* Sidebar */	
+/* Sidebar */
 #sidebar {
 	float: right;
 	width: 195px;
@@ -243,6 +236,35 @@ div.bodycopy ul, ol {
 }
 #sidebar p {
 	margin-left: 5px;
+}
+
+#sidebar ul {
+	list-style: none;
+	text-align: left;
+	margin: 7px 10px 8px 0; padding: 0;
+	text-decoration: none;
+	border-top: 1px solid #A9D4EF;
+}
+
+#sidebar ul li {
+	list-style: none;
+	padding: 4px 0 4px 5px;
+	margin: 0 2px;
+	color: #777;
+	border-bottom: 1px solid #D2E8F7;
+}
+
+
+#sidebar ul li a {
+	text-decoration: none;
+	color: #1773BC;
+    font-weight:bold;
+}
+
+#sidebar .item-actions a {
+	text-decoration: none;
+	color: #1773BC;
+    font-weight:normal;
 }
 
 /* Footer */	

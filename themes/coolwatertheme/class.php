@@ -22,7 +22,7 @@ if (class_exists('coolwatertheme')) return;
 class coolwatertheme extends theme {
 	function name() { return "Coolwater Theme"; }
 	function author() { return "Erwin Aligam - ealigam@gmail.com"; }
-	function description() { return "A simple, clean design from the kids at <a href=\"http://developer.yahoo.com/yui/grids/\" target=\"_blank\">Style Shout</a>"; }
+	function description() { return "A simple, clean design from the kids at <a href=\"http://styleshout.com/\" target=\"_blank\">Style Shout</a>"; }
 }
 
 ?>
