@@ -41,8 +41,9 @@
  * @package Framework
  */
 
-$properties = null;
-
+/**
+ *
+ */
 class expPaginator {
     /**#@+
      * @access public
@@ -147,7 +148,7 @@ class expPaginator {
 		    }
 		}
 		
-		// if we are in an action, see if the action if for this controller/action..if so pull the order
+		// if we are in an action, see if the action is for this controller/action..if so pull the order
 		// and order direction from the request params...this is how the params are passed via the column
 		// headers.
 		$this->order_direction = $this->dir;	
