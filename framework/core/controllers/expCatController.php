@@ -124,7 +124,7 @@ class expCatController extends expController {
         }
         $orderby = explode(" ",$order);
         $order = $orderby[0];
-        $order_direction = $orderby[1] == 'DESC' ? SORT_DESC : SORT_ASC;
+        $order_direction = !empty($orderby[1]) && $orderby[1] == 'DESC' ? SORT_DESC : SORT_ASC;
         expSorter::osort($records, array('catrank',$order => $order_direction));
     }
 
