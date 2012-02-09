@@ -16,3 +16,4 @@
 
 <h2>{"Module Title"|gettext}</h2>
 {control type="checkbox" name="hidemoduletitle" label="Hide Module Title?"|gettext value=1 checked=$config.hidemoduletitle}
+{control type="html" name="moduledescription" label="Module Description"|gettext value=$config.moduledescription}

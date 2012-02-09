@@ -32,6 +32,9 @@
         {/if}
     </div>
     {/permissions}
+    {if $config.moduledescription != ""}
+   		{$config.moduledescription}
+   	{/if}
     <div id="ss-{$name}" class="slideshow-container" style="width:{$config.width|default:350}px;">
         <ul class="slideshow-frame" style="width:{$config.width|default:350}px;height:{$config.height|default:300}px;">
 			{assign var=quality value=$config.quality|default:$smarty.const.THUMB_QUALITY}

@@ -38,6 +38,9 @@
 			{/if}
 		</div>
     {/permissions}
+    {if $config.moduledescription != ""}
+   		{$config.moduledescription}
+   	{/if}
     {assign var="cat" value="bad"}
     {pagelinks paginate=$page top=1}
     <ul class="image-list">

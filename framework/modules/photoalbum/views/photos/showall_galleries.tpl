@@ -38,6 +38,9 @@
 			{/if}
 		</div>
     {/permissions}
+    {if $config.moduledescription != ""}
+   		{$config.moduledescription}
+   	{/if}
     {foreach name=items from=$page->cats key=catid item=cat}
         <h2 class="category">{$cat->name}</h2>
         <ul class="image-list">

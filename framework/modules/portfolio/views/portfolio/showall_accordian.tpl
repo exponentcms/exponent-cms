@@ -33,6 +33,9 @@
 			{/if}
         </div>
     {/permissions}
+    {if $config.moduledescription != ""}
+   		{$config.moduledescription}
+   	{/if}
 
 	{* Assign the expanding div an ID based again of the $textitem ID so we know what to look for *}
     <div>

@@ -38,6 +38,9 @@
 			{/if}
         </div>
     {/permissions}    
+    {if $config.moduledescription != ""}
+   		{$config.moduledescription}
+   	{/if}
     {pagelinks paginate=$page top=1}
     {assign var="cat" value="bad"}
     {foreach from=$page->records item=file name=files}
