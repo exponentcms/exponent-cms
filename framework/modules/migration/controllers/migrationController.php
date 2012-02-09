@@ -766,6 +766,9 @@ class migrationController extends expController {
 		$linked = false;
 	    $loc = null;
         $newconfig = new expConfig();
+        if ((!empty($module->is_existing) && $module->is_existing)) {
+            $linked = true;
+        }
 
         switch ($iloc->mod) {
             case 'textmodule':
@@ -774,7 +777,7 @@ class migrationController extends expController {
 				//check to see if it's already pulled in (circumvent !is_original)
 				$ploc = $iloc;
 				$ploc->mod = "text";
-				if ($db->countObjects($ploc->mod, "location_data='".serialize($ploc)."'") || (!empty($module->is_existing) && $module->is_existing)) {
+				if ($db->countObjects($ploc->mod, "location_data='".serialize($ploc)."'")) {
 					$iloc->mod = 'textmodule';
 					$linked = true;
 					break;
@@ -802,7 +805,7 @@ class migrationController extends expController {
 				//check to see if it's already pulled in (circumvent !is_original)
 				$ploc = $iloc;
 				$ploc->mod = "text";
-				if ($db->countObjects($ploc->mod, "location_data='".serialize($ploc)."'") || $module->is_existing) {
+				if ($db->countObjects($ploc->mod, "location_data='".serialize($ploc)."'")) {
 					$iloc->mod = 'rotatormodule';
 					$linked = true;
 					break;
@@ -829,7 +832,7 @@ class migrationController extends expController {
 				//check to see if it's already pulled in (circumvent !is_original)
 				$ploc = $iloc;
 				$ploc->mod = "snippet";
-				if ($db->countObjects($ploc->mod, "location_data='".serialize($ploc)."'") || $module->is_existing) {
+				if ($db->countObjects($ploc->mod, "location_data='".serialize($ploc)."'")) {
 					$iloc->mod = 'snippetmodule';
 					$linked = true;
 					break;
@@ -867,7 +870,7 @@ class migrationController extends expController {
 				//check to see if it's already pulled in (circumvent !is_original)
 				$ploc = $iloc;
 				$ploc->mod = "links";
-				if ($db->countObjects($ploc->mod, "location_data='".serialize($ploc)."'") || $module->is_existing) {
+				if ($db->countObjects($ploc->mod, "location_data='".serialize($ploc)."'")) {
 					$iloc->mod = 'linklistmodule';
 					$linked = true;
 					break;
@@ -939,7 +942,7 @@ class migrationController extends expController {
 				//check to see if it's already pulled in (circumvent !is_original)
 				$ploc = $iloc;
 				$ploc->mod = "links";
-				if ($db->countObjects($ploc->mod, "location_data='".serialize($ploc)."'") || $module->is_existing) {
+				if ($db->countObjects($ploc->mod, "location_data='".serialize($ploc)."'")) {
 					$iloc->mod = 'linkmodule';
 					$linked = true;
 					break;
@@ -990,7 +993,7 @@ class migrationController extends expController {
 				//check to see if it's already pulled in (circumvent !is_original)
 				$ploc = $iloc;
 				$ploc->mod = "text";
-				if ($db->countObjects($ploc->mod, "location_data='".serialize($ploc)."'") || $module->is_existing) {
+				if ($db->countObjects($ploc->mod, "location_data='".serialize($ploc)."'")) {
 					$iloc->mod = 'swfmodule';
 					$linked = true;
 					break;
@@ -1101,7 +1104,7 @@ class migrationController extends expController {
                 }
 
 				//check to see if it's already pulled in (circumvent !is_original)
-				if ($db->countObjects($ploc->mod, "location_data='".serialize($ploc)."'") || $module->is_existing) {
+				if ($db->countObjects($ploc->mod, "location_data='".serialize($ploc)."'")) {
 					$iloc->mod = 'newsmodule';
 					$linked = true;
 					break;
@@ -1224,7 +1227,7 @@ class migrationController extends expController {
                 $newconfig->config['show_player'] = $oldviewconfig['show_player'] ? 1 : 0;
 
 				//check to see if it's already pulled in (circumvent !is_original)
-				if ($db->countObjects('filedownloads', "location_data='".serialize($ploc)."'") || $module->is_existing) {
+				if ($db->countObjects('filedownloads', "location_data='".serialize($ploc)."'")) {
 					$iloc->mod = 'resourcesmodule';
 					$linked = true;
 					break;
@@ -1294,7 +1297,7 @@ class migrationController extends expController {
 				//check to see if it's already pulled in (circumvent !is_original)
 				$ploc = $iloc;
 				$ploc->mod = "photos";
-				if ($db->countObjects('photo', "location_data='".serialize($ploc)."'") || $module->is_existing) {
+				if ($db->countObjects('photo', "location_data='".serialize($ploc)."'")) {
 					$iloc->mod = 'imagegallerymodule';
 					$linked = true;
 					break;
@@ -1348,7 +1351,7 @@ class migrationController extends expController {
 				//check to see if it's already pulled in (circumvent !is_original)
 				$ploc = $iloc;
 				$ploc->mod = "photos";
-				if ($db->countObjects('photo', "location_data='".serialize($ploc)."'") || $module->is_existing) {
+				if ($db->countObjects('photo', "location_data='".serialize($ploc)."'")) {
 					$iloc->mod = 'slideshowmodule';
 					$linked = true;
 					break;
@@ -1386,7 +1389,7 @@ class migrationController extends expController {
 				//check to see if it's already pulled in (circumvent !is_original)
 				$ploc = $iloc;
 				$ploc->mod = "text";
-				if ($db->countObjects($ploc->mod, "location_data='".serialize($ploc)."'") || $module->is_existing) {
+				if ($db->countObjects($ploc->mod, "location_data='".serialize($ploc)."'")) {
 					$iloc->mod = 'headlinemodule';
 					$linked = true;
 					break;
@@ -1473,7 +1476,7 @@ class migrationController extends expController {
                 }
 
                 //check to see if it's already pulled in (circumvent !is_original)
-				if ($db->countObjects($ploc->mod, "location_data='".serialize($ploc)."'") || $module->is_existing) {
+				if ($db->countObjects($ploc->mod, "location_data='".serialize($ploc)."'")) {
 					$iloc->mod = 'weblogmodule';
 					$linked = true;
 					break;
@@ -1545,7 +1548,7 @@ class migrationController extends expController {
 				//check to see if it's already pulled in (circumvent !is_original)
 				$ploc = $iloc;
 				$ploc->mod = "faq";
-				if ($db->countObjects('faqs', "location_data='".serialize($ploc)."'") || $module->is_existing) {
+				if ($db->countObjects('faqs', "location_data='".serialize($ploc)."'")) {
 					$iloc->mod = 'faqmodule';
 					$linked = true;
 					break;
@@ -1633,7 +1636,7 @@ class migrationController extends expController {
 				//check to see if it's already pulled in (circumvent !is_original)
 				$ploc = $iloc;
 				$ploc->mod = "portfolio";
-				if ($db->countObjects($ploc->mod, "location_data='".serialize($ploc)."'") || $module->is_existing) {
+				if ($db->countObjects($ploc->mod, "location_data='".serialize($ploc)."'")) {
 					$iloc->mod = 'listingmodule';
 					$linked = true;
 					break;
@@ -1690,7 +1693,7 @@ class migrationController extends expController {
 				//check to see if it's already pulled in (circumvent !is_original)
 				$ploc = $iloc;
 				$ploc->mod = "formmodule";
-				if ($db->countObjects('formbuilder_form', "location_data='".serialize($ploc)."'") || $module->is_existing) {
+				if ($db->countObjects('formbuilder_form', "location_data='".serialize($ploc)."'")) {
 					$iloc->mod = 'contactmodule';
 					$linked = true;
 					break;
@@ -1769,7 +1772,7 @@ class migrationController extends expController {
 				//check to see if it's already pulled in (circumvent !is_original)
 				$ploc = $iloc;
 				$ploc->mod = "youtube";
-				if ($db->countObjects('youtube', "location_data='".serialize($ploc)."'") || $module->is_existing) {
+				if ($db->countObjects('youtube', "location_data='".serialize($ploc)."'")) {
 					$iloc->mod = 'youtubemodule';
 					$linked = true;
 					break;
@@ -1804,7 +1807,7 @@ class migrationController extends expController {
 				//check to see if it's already pulled in (circumvent !is_original)
 				$ploc = $iloc;
 				$ploc->mod = "flowplayer";
-				if ($db->countObjects('flowplayer', "location_data='".serialize($ploc)."'") || $module->is_existing) {
+				if ($db->countObjects('flowplayer', "location_data='".serialize($ploc)."'")) {
 					$iloc->mod = 'mediaplayermodule';
 					$linked = true;
 					break;
@@ -1847,7 +1850,7 @@ class migrationController extends expController {
 				//check to see if it's already pulled in (circumvent !is_original)
 				$ploc = $iloc;
 				$ploc->mod = "banner";
-				if ($db->countObjects('banner', "location_data='".serialize($ploc)."'") || $module->is_existing) {
+				if ($db->countObjects('banner', "location_data='".serialize($ploc)."'")) {
 					$iloc->mod = 'bannermodule';
 					$linked = true;
 					break;
@@ -1898,7 +1901,7 @@ class migrationController extends expController {
 				//check to see if it's already pulled in (circumvent !is_original)
 				// $ploc = $iloc;
 				// $ploc->mod = "addresses";
-				// if ($db->countObjects($ploc->mod, "location_data='".serialize($ploc)."'") || $module->is_existing) {
+				// if ($db->countObjects($ploc->mod, "location_data='".serialize($ploc)."'")) {
 					// $iloc->mod = 'addressbookmodule';
 					// $linked = true;
 					// break;
@@ -1982,10 +1985,13 @@ class migrationController extends expController {
         global $db;
         $old_db = $this->connect();
 		$linked = false;
-		
+        if ((!empty($module->is_existing) && $module->is_existing)) {
+            $linked = true;
+        }
+
         switch ($iloc->mod) {
             case 'calendarmodule':
-				if ($db->countObjects('calendar', "location_data='".serialize($iloc)."'") || $module->is_existing) {
+				if ($db->countObjects('calendar', "location_data='".serialize($iloc)."'")) {
 					$linked = true;
 					break;
 				}
@@ -2014,7 +2020,7 @@ class migrationController extends expController {
 				@$this->msg['migrated'][$iloc->mod]['name'] = $iloc->mod;
 				break;
             case 'simplepollmodule':
-				if ($db->countObjects('poll_question', "location_data='".serialize($iloc)."'") || $module->is_existing) {
+				if ($db->countObjects('poll_question', "location_data='".serialize($iloc)."'")) {
 					break;
 				}
                 $questions = $old_db->selectObjects('poll_question', "location_data='".serialize($iloc)."'");
@@ -2037,7 +2043,7 @@ class migrationController extends expController {
 				@$this->msg['migrated'][$iloc->mod]['name'] = $iloc->mod;
 				break;
             case 'formmodule':
-				if ($db->countObjects('formbuilder_form', "location_data='".serialize($iloc)."'") || $module->is_existing) {
+				if ($db->countObjects('formbuilder_form', "location_data='".serialize($iloc)."'")) {
 					break;
 				}
                 $form = $old_db->selectObject('formbuilder_form', "location_data='".serialize($iloc)."'");
@@ -2151,6 +2157,7 @@ class migrationController extends expController {
 //        flash('message', 'Migration Configuration Saved');
 //        expHistory::back();
 		if (isset($this->params['fix_database'])) $this->fix_database();
+        //FIXME we need to push the button.css file to head for coolwater theme?
 		echo '<h2>'.gt('Migration Configuration Saved').'</h2><br />';
 		echo '<p>'.gt('We\'ve successfully connected to the Old database').'</p><br />';
 		echo "<a class=\"awesome ".BTN_SIZE." ".BTN_COLOR."\" href=\"".expCore::makeLink(array('controller'=>'migration','action'=>'manage_users'))."\">".gt('Next Step -> Migrate Users & Groups')."</a>";

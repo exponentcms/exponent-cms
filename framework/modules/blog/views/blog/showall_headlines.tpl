@@ -15,10 +15,11 @@
  *}
 
 <div class="module blog showall-headlines">
+    {if $moduletitle && !$config.hidemoduletitle}<h2>{/if}
     {if $config.enable_rss == true}
-        <a class="rsslink" href="{rsslink}">{'Subscribe to'|gettext} {$config.feed_title}</a>
+        <a class="rsslink" href="{rsslink}" title="{'Subscribe to'|gettext} {$config.feed_title}"></a>
     {/if}
-    {if $moduletitle && !$config.hidemoduletitle}<h2>{$moduletitle}</h2>{/if}
+    {if $moduletitle && !$config.hidemoduletitle}{$moduletitle}</h2>{/if}
     {permissions}
 		<div clas="module-actions">
 			{if $permissions.edit == 1}

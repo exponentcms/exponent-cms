@@ -14,10 +14,11 @@
  *}
 
 <div class="module filedownload showall">
-    {if $config.enable_rss}
-        <a class="rsslink" href="{podcastlink}">{'Subscribe to'|gettext} {$config.feed_title}</a>
+    {if $moduletitle && !$config.hidemoduletitle}<h1>{/if}
+    {if $config.enable_rss == true}
+        <a class="rsslink" href="{rsslink}" title="{'Subscribe to'|gettext} {$config.feed_title}"></a>
     {/if}
-    {if $moduletitle && !$config.hidemoduletitle}<h1>{'Recent'|gettext} {$moduletitle}</h1>{/if}
+    {if $moduletitle && !$config.hidemoduletitle}{'Recent'|gettext} {$moduletitle}</h1>{/if}
     {permissions}
         <div class="module-actions">
 			{if $permissions.create == 1}

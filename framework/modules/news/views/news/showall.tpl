@@ -15,10 +15,11 @@
  *}
 
 <div class="module news showall">
-    {if $enable_rss == true}
-        <a class="rsslink" href="{rsslink}">{'Subscribe to'|gettext} {$config.feed_title}</a>
+    {if $moduletitle && !$config.hidemoduletitle}<h1>{/if}
+    {if $config.enable_rss == true}
+        <a class="rsslink" href="{rsslink}" title="{'Subscribe to'|gettext} {$config.feed_title}"></a>
     {/if}
-    {if $moduletitle && !$config.hidemoduletitle}<h1>{$moduletitle}</h1>{/if}
+    {if $moduletitle && !$config.hidemoduletitle}{$moduletitle}</h1>{/if}
 
     {permissions}
     <div class="module-actions">

@@ -20,7 +20,7 @@
  
 <div class="module news headlines">
     {if $moduletitle && !$config.hidemoduletitle}<h2>{/if}
-    {if $enable_rss == true}
+    {if $config.enable_rss == true}
         <a class="rsslink" href="{rsslink}" title="{'Subscribe to'|gettext} {$config.feed_title}"></a>
     {/if}
     {if $moduletitle && !$config.hidemoduletitle}{$moduletitle}</h2>{/if}

@@ -18,7 +18,7 @@
 
 {/css}
 
-{css unique="migratefiles" corecss="tables"}
+{css unique="migratefiles" corecss="tables"}  {* FIXME why isn't this working in coolwater *}
 
 {/css}
 
