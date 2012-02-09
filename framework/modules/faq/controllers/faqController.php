@@ -39,34 +39,37 @@ class faqController extends expController {
         $questions = $faqs->find('all', $this->aggregateWhereClause().' AND include_in_faq=1', 'rank');
 
         if (empty($this->config['usecategories']) ? false : $this->config['usecategories']) {
+//            foreach ($questions as $key=>$record) {
+//                foreach ($record->expCat as $cat) {
+//                    $questions[$key]->catid = $cat->id;
+//                    $questions[$key]->catrank = $cat->rank;
+//                    $questions[$key]->cat = $cat->title;
+//                    $questions[$key]->color = empty($cat->color) ? null : $cat->color;
+//                    $questions[$key]->module = empty($cat->module) ? null : $cat->module;
+//                    break;
+//                }
+//                if (empty($questions[$key]->catid)) {
+//                    $questions[$key]->catid = null;
+//                    $questions[$key]->catrank = 999999;
+//                    $questions[$key]->cat = 'Not Categorized';
+//                }
+//            }
+//            expSorter::osort($questions, array(array('catrank'),array('rank')));
+            expCatController::addCats($questions,'rank');
+
             $cats = array();
-            foreach ($questions as $key=>$record) {
-                foreach ($record->expCat as $cat) {
-                    $questions[$key]->catid = $cat->id;
-                    $questions[$key]->catrank = $cat->rank;
-                    $questions[$key]->cat = $cat->title;
-                    $questions[$key]->color = empty($cat->color) ? null : $cat->color;
-                    $questions[$key]->module = empty($cat->module) ? null : $cat->module;
-                    break;
-                }
-                if (empty($questions[$key]->catid)) {
-                    $questions[$key]->catid = null;
-                    $questions[$key]->catrank = 999999;
-                    $questions[$key]->cat = 'Not Categorized';
-                }
-            }
-            expSorter::osort($questions, array(array('catrank'),array('rank')));
             $cats[0]->name = '';
-            foreach ($questions as $record) {
-                if (empty($record->catid)) $record->catid = 0;
-                if (empty($cats[$record->catid])) {
-                    $cats[$record->catid]->count = 1;
-                    $cats[$record->catid]->name = $record->cat;
-                } else {
-                    $cats[$record->catid]->count += 1;
-                }
-                $cats[$record->catid]->records[] = $record;
-            }
+//            foreach ($questions as $record) {
+//                if (empty($record->catid)) $record->catid = 0;
+//                if (empty($cats[$record->catid])) {
+//                    $cats[$record->catid]->count = 1;
+//                    $cats[$record->catid]->name = $record->cat;
+//                } else {
+//                    $cats[$record->catid]->count += 1;
+//                }
+//                $cats[$record->catid]->records[] = $record;
+//            }
+            expCatController::createCats($questions,$cats);
             assign_to_template(array('cats'=>$cats));
         }
 

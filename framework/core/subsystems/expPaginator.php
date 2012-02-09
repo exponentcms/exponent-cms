@@ -160,43 +160,41 @@ class expPaginator {
 			    $this->order_direction = isset($_REQUEST['dir']) ? $_REQUEST['dir'] : $this->dir;
 //			}
 		}
+        // allow passing of a single order/dir as stored
         if (strstr($this->order," ")) {
             $orderby = explode(" ",$this->order);
             $this->order = $orderby[0];
             $this->order_direction = $orderby[1];
         }
-		
+
+        //FIXME we'll need to:
+        // 1. pull all the records
+        // 2. categorize the entire record set (if needed?)
+        // 3. then reduce it's size
+
 		// figure out how many records we're dealing with & grab the records
 		//if (!empty($this->records)) { //from Merge <~~ this doesn't work. Could be empty, but still need to hit.
 		if (isset($params['records'])) { // if we pass $params['records'], we WANT to hit this
 		    // sort, count and slice the records that were passed in to us
 		    usort($this->records,array('expPaginator', strtolower($this->order_direction)));
 		    $this->total_records = count($this->records);
-			if ($this->start > $this->total_records) {
-				$this->start = $this->total_records - $this->limit;
-			}
-		    $this->records = array_slice($this->records, $this->start, $this->limit);
+//		    $this->records = array_slice($this->records, $this->start, $this->limit);  //FIXME save for later
 		} elseif (!empty($class)) { //where clause     //FJD: was $this->class, but wasn't working...
 			$this->total_records = $class->find('count', $this->where);
-			$this->records = $class->find('all', $this->where, $this->order.' '.$this->order_direction, $this->limit, $this->start);
+//			$this->records = $class->find('all', $this->where, $this->order.' '.$this->order_direction, $this->limit, $this->start);  //FIXME save for later
+            $this->records = $class->find('all', $this->where, $this->order.' '.$this->order_direction);
 		} elseif (!empty($this->where)) { //from Merge....where clause
 			$this->total_records = $class->find('count', $this->where);
-			if ($this->start > $this->total_records) {
-				$this->start = $this->total_records - $this->limit;
-			}
-			$this->records = $class->find('all', $this->where, $this->order.' '.$this->order_direction, $this->limit, $this->start);
-		} else { //sql clause
+//			$this->records = $class->find('all', $this->where, $this->order.' '.$this->order_direction, $this->limit, $this->start);  //FIXME save for later
+            $this->records = $class->find('all', $this->where, $this->order.' '.$this->order_direction);
+		} else { //sql clause  //FIXME we don't get attachments in this approach
 			//$records = $db->selectObjectsBySql($this->sql);
 			//$this->total_records = count($records);
             //this is MUCH faster if you supply a proper count_sql param using a COUNT() function; if not,
             //we'll run the standard sql and do a queryRows with it
-            
 			//$this->total_records = $this->count_sql == '' ? $db->queryRows($this->sql) : $db->selectValueBySql($this->count_sql); //From Merge
                         
 			$this->total_records =  $db->countObjectsBySql($this->count_sql); //$db->queryRows($this->sql); //From most current Trunk            
-			if ($this->start > $this->total_records) {
-				$this->start = $this->total_records - $this->limit;
-			}
 
             if (!empty($this->order)) $this->sql .= ' ORDER BY '.$this->order.' '.$this->order_direction;
 			if (!empty($this->limit)) $this->sql .= ' LIMIT '.$this->start.','.$this->limit;
@@ -212,36 +210,47 @@ class expPaginator {
 			    $this->records = $db->selectObjectsBySql($this->sql);
 			}
 		}	
+        if ($this->start > $this->total_records) {
+            $this->start = $this->total_records - $this->limit;
+        }
 
+        // next we'll sort them based on categories if needed
         if (!empty($this->categorize) && $this->categorize) {
-            foreach ($this->records as $key=>$record) {
-                foreach ($record->expCat as $cat) {
-                    $this->records[$key]->catid = $cat->id;
-                    $this->records[$key]->catrank = $cat->rank;
-                    $this->records[$key]->cat = $cat->title;
-                    $this->records[$key]->color = empty($cat->color) ? null : $cat->color;
-                    $this->records[$key]->module = empty($cat->module) ? null : $cat->module;
-                    break;
-                }
-                if (empty($this->records[$key]->catid)) {
-                    $this->records[$key]->catid = null;
-                    $this->records[$key]->catrank = 9999;
-                    $this->records[$key]->cat = 'Not Categorized';
-                }
-            }
-            expSorter::osort($this->records, array(array('catrank'),array($this->order)));
+//            foreach ($this->records as $key=>$record) {
+//                foreach ($record->expCat as $cat) {
+//                    $this->records[$key]->catid = $cat->id;
+//                    $this->records[$key]->catrank = $cat->rank;
+//                    $this->records[$key]->cat = $cat->title;
+//                    $this->records[$key]->color = empty($cat->color) ? null : $cat->color;
+//                    $this->records[$key]->module = empty($cat->module) ? null : $cat->module;
+//                    break;
+//                }
+//                if (empty($this->records[$key]->catid)) {
+//                    $this->records[$key]->catid = null;
+//                    $this->records[$key]->catrank = 9999;
+//                    $this->records[$key]->cat = 'Not Categorized';
+//                }
+//            }
+//            expSorter::osort($this->records, array(array('catrank'),array($this->order)));
+            expCatController::addCats($this->records,$this->order);
+        }
 
-            // create another array of the categories
-            foreach ($this->records as $record) {
-                if (empty($this->cats[$record->catid])) {
-                    $this->cats[$record->catid]->count = 1;
-                    $this->cats[$record->catid]->name = $record->cat;
-                } else {
-                    $this->cats[$record->catid]->count += 1;
-                }
-                $this->cats[$record->catid]->records[] = $record;
-            }
-        } else {  // categorized is off, so let's categorize by alpha, etc...
+        // now we'll trim the records to the number requested
+        $this->records = array_slice($this->records, $this->start, $this->limit);
+
+        // finally, we'll create another multi-dimensional array of the categories
+        if (!empty($this->categorize) && $this->categorize) {
+//            foreach ($this->records as $record) {
+//                if (empty($this->cats[$record->catid])) {
+//                    $this->cats[$record->catid]->count = 1;
+//                    $this->cats[$record->catid]->name = $record->cat;
+//                } else {
+//                    $this->cats[$record->catid]->count += 1;
+//                }
+//                $this->cats[$record->catid]->records[] = $record;
+//            }
+            expCatController::createCats($this->records,$this->cats);
+        } else {  // categorized is off, so let's categorize by alpha instead
             $order = $this->order;
             foreach ($this->records as $record) {
                 if (is_string($record->$order) && !is_numeric($record->$order)) {

@@ -19,6 +19,10 @@
 {/css}
 {/if}
 
+{css unique="links" link="`$asset_path`css/links.css"}
+
+{/css}
+
 <div class="module links showall">
     {if $moduletitle && !$config.hidemoduletitle}<h1>{$moduletitle}</h1>{/if}
     {permissions}

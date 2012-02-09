@@ -97,5 +97,54 @@ class expCatController extends expController {
         ));
         parent::edit();
     }
+
+    /**
+     * this method adds cats properties to object and then sorts by category
+     *  it is assumed the records have expCats attachments, even if they are empty
+     *
+     * @static
+     * @param $records
+     * @param $order
+     */
+    public static function addCats(&$records,$order) {
+        foreach ($records as $key=>$record) {
+            foreach ($record->expCat as $cat) {
+                $records[$key]->catid = $cat->id;
+                $records[$key]->catrank = $cat->rank;
+                $records[$key]->cat = $cat->title;
+                $records[$key]->color = empty($cat->color) ? null : $cat->color;
+                $records[$key]->module = empty($cat->module) ? null : $cat->module;
+                break;
+            }
+            if (empty($records[$key]->catid)) {
+                $records[$key]->catid = null;
+                $records[$key]->catrank = 9999;
+                $records[$key]->cat = 'Not Categorized';
+            }
+        }
+        expSorter::osort($records, array(array('catrank'),array($order)));
+    }
+
+    /**
+     * this method fills an multidimensional array from a sorted records object
+     *  it is assumed the records object came from expCatController::addCats
+     *
+     * @static
+     * @param $records
+     * @param $cats
+     */
+    public static function createCats($records,&$cats) {
+        foreach ($records as $record) {
+            if (empty($record->catid)) $record->catid = 0;
+            if (empty($cats[$record->catid])) {
+                $cats[$record->catid]->count = 1;
+                $cats[$record->catid]->name = $record->cat;
+            } else {
+                $cats[$record->catid]->count += 1;
+            }
+            $cats[$record->catid]->records[] = $record;
+        }
+    }
+
 }
 ?>
