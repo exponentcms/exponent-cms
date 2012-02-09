@@ -49,6 +49,7 @@ li {margin:0 0 5px 0; padding:0 0 0 5px;}
 #sidebar ul.sidemenu li a.active {color:#333;}
 #sidebar ul.sidemenu ul {width:240px; padding:0; margin:0 0 0 20px;}
 #sidebar ul.sidemenu ul li a {padding:2px 0 2px 15px; margin:0; font-size:0.9em; font-weight:400;}
+#sidebar .container-chrome ul li.container-info {padding: 2px 6px 6px 26px;}
 
 /* Content area */
 #content {margin:0 0 15px 0; width:680px; float:left;}

@@ -12,7 +12,11 @@
  * GPL: http://www.gnu.org/licenses/gpl.txt
  *
  *}
- 
+
+{css unique="links" link="`$asset_path`css/links.css"}
+
+{/css}
+
 <div class="module links showall-quicklinks">
     {if $moduletitle && !$config.hidemoduletitle}<h2>{$moduletitle}</h2>{/if}
     {permissions}
