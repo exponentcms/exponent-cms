@@ -1096,7 +1096,7 @@ class migrationController extends expController {
                 }
                 if (!empty($oldviewconfig['num_items'])) {
                     $newconfig->config['limit'] = $oldviewconfig['num_items'];
-                    $newconfig->config['pagelinks'] = "Don't show page links";
+//                    $newconfig->config['pagelinks'] = "Don't show page links";
                 }
                 $only_featured = empty($oldviewconfig['featured_only']) ? 0 : 1;
                 if ($only_featured) {
@@ -1168,6 +1168,9 @@ class migrationController extends expController {
                 if ($oldconfig->enable_categories == 1) {
                     $newconfig->config['usecategories'] = true;
                 }
+                if (!empty($oldconfig->description)) {
+                    $newconfig->config['moduledescription'] = $oldconfig->description;
+                }
                 if (isset($oldconfig->enable_rss)) {
                     $dorss = $oldconfig->enable_rss;
                 } elseif (isset($oldconfig->enable_podcasting)) {
@@ -1219,7 +1222,7 @@ class migrationController extends expController {
                 }
                 if (!empty($oldviewconfig['num_posts'])) {
                     $newconfig->config['limit'] = $oldviewconfig['num_posts'];
-                    $newconfig->config['pagelinks'] = "Don't show page links";
+//                    $newconfig->config['pagelinks'] = "Don't show page links";
                 }
                 $newconfig->config['quick_download'] = $oldviewconfig['direct_download'] ? 1 : 0;
                 $newconfig->config['show_info'] = $oldviewconfig['show_descriptions'] ? 1 : 0;
@@ -1466,7 +1469,7 @@ class migrationController extends expController {
                 }
                 if (!empty($oldviewconfig['num_posts'])) {
                     $newconfig->config['limit'] = $oldviewconfig['num_posts'];
-                    $newconfig->config['pagelinks'] = "Don't show page links";
+//                    $newconfig->config['pagelinks'] = "Don't show page links";
                 }
                 if (!empty($oldconfig->allow_comments)) {
                     $newconfig->config['usescomments'] = !$oldconfig->allow_comments;
@@ -1628,6 +1631,9 @@ class migrationController extends expController {
                             $newconfig->config['order'] = 'rank';
                             break;
                     }
+                }
+                if (!empty($oldconfig->description)) {
+                    $newconfig->config['moduledescription'] = $oldconfig->description;
                 }
                 if ($usebody) {
                     $newconfig->config['usebody'] = $usebody;

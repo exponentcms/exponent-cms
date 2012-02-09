@@ -25,6 +25,8 @@ Added / Fixed / changed for 2.0.5
   - adds module scope type indicator to top-level/hard-coded chrome menus
   - implemented extension (theme, patch, & mods) repository access
     -- extensions loaded into current theme unless told to patch system
+  - adds a module description feature and making the display of the module title optional
+    -- module titles are now mandatory; to better differentiate on aggregation selection, etc...
 
 Added / Fixed / changed for 2.0.4
 -----------------------
