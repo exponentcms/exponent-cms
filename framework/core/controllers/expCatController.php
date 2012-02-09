@@ -122,7 +122,10 @@ class expCatController extends expController {
                 $records[$key]->cat = 'Not Categorized';
             }
         }
-        expSorter::osort($records, array(array('catrank'),array($order)));
+        $orderby = explode(" ",$order);
+        $order = $orderby[0];
+        $order_direction = $orderby[1] == 'DESC' ? SORT_DESC : SORT_ASC;
+        expSorter::osort($records, array('catrank',$order => $order_direction));
     }
 
     /**
@@ -133,7 +136,7 @@ class expCatController extends expController {
      * @param $records
      * @param $cats
      */
-    public static function createCats($records,&$cats) {
+    public static function sortedByCats($records,&$cats) {
         foreach ($records as $record) {
             if (empty($record->catid)) $record->catid = 0;
             if (empty($cats[$record->catid])) {

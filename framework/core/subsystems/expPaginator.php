@@ -216,23 +216,7 @@ class expPaginator {
 
         // next we'll sort them based on categories if needed
         if (!empty($this->categorize) && $this->categorize) {
-//            foreach ($this->records as $key=>$record) {
-//                foreach ($record->expCat as $cat) {
-//                    $this->records[$key]->catid = $cat->id;
-//                    $this->records[$key]->catrank = $cat->rank;
-//                    $this->records[$key]->cat = $cat->title;
-//                    $this->records[$key]->color = empty($cat->color) ? null : $cat->color;
-//                    $this->records[$key]->module = empty($cat->module) ? null : $cat->module;
-//                    break;
-//                }
-//                if (empty($this->records[$key]->catid)) {
-//                    $this->records[$key]->catid = null;
-//                    $this->records[$key]->catrank = 9999;
-//                    $this->records[$key]->cat = 'Not Categorized';
-//                }
-//            }
-//            expSorter::osort($this->records, array(array('catrank'),array($this->order)));
-            expCatController::addCats($this->records,$this->order);
+            expCatController::addCats($this->records,$this->order.' '.$this->order_direction);
         }
 
         // now we'll trim the records to the number requested
@@ -240,16 +224,7 @@ class expPaginator {
 
         // finally, we'll create another multi-dimensional array of the categories
         if (!empty($this->categorize) && $this->categorize) {
-//            foreach ($this->records as $record) {
-//                if (empty($this->cats[$record->catid])) {
-//                    $this->cats[$record->catid]->count = 1;
-//                    $this->cats[$record->catid]->name = $record->cat;
-//                } else {
-//                    $this->cats[$record->catid]->count += 1;
-//                }
-//                $this->cats[$record->catid]->records[] = $record;
-//            }
-            expCatController::createCats($this->records,$this->cats);
+            expCatController::sortedByCats($this->records,$this->cats);
         } else {  // categorized is off, so let's categorize by alpha instead
             $order = $this->order;
             foreach ($this->records as $record) {

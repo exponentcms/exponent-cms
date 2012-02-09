@@ -41,9 +41,6 @@ class portfolioController extends expController {
 //        $order = 'rank';
         $order = isset($this->config['order']) ? $this->config['order'] : 'rank';
         $limit = empty($this->config['limit']) ? 10 : $this->config['limit'];
-        if (!empty($this->params['view']) && $this->params['view'] != 'showall') {
-            $limit = 999;
-        }
 
         $page = new expPaginator(array(
                     'model'=>'portfolio',
