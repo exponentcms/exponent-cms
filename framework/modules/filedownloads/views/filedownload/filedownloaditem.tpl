@@ -10,10 +10,23 @@
     {/if}
     {if $config.show_info}
         <span class="label size">{'File Size'}:</span>
-        <span class="value">{$file->expFile.downloadable[0]->filesize|kilobytes}{'kb'|gettext}</span>
+        {if $file->expFile.downloadable[0]->filesize >= 1048576}
+            <span class="value">{$file->expFile.downloadable[0]->filesize|megabytes} {'mb'|gettext}</span>
+        {elseif $file->expFile.downloadable[0]->filesize >= 1024}
+            <span class="value">{$file->expFile.downloadable[0]->filesize|kilobytes} {'kb'|gettext}</span>
+        {else}
+            <span class="value">{$file->expFile.downloadable[0]->filesize} {'bytes'|gettext}</span>
+        {/if}
         &nbsp;|&nbsp;
         <span class="label downloads"># {'Downloads'|gettext}:</span>
         <span class="value">{$file->downloads}</span>
+        &nbsp;|&nbsp;
+        <span class="label dated">{'dated'|gettext}:</span>
+        {if strstr($config.order,'edited_at')}
+            <span class="value">{$file->edited_at|format_date}</span>
+        {else}
+            <span class="value">{$file->created_at|format_date}</span>
+        {/if}
         {if $file->expTag|@count>0}
             &nbsp;|&nbsp;
             <span class="tag">

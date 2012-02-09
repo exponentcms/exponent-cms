@@ -1155,7 +1155,9 @@ class migrationController extends expController {
 						$module->view = 'showall_quick_download_with_description';
 						break;
                     case 'Recent':
+                        $module->view = 'showall_recent';
                         $newconfig->config['usebody'] = 2;
+                        break;
 					default:
 						$module->view = 'showall';
 						break;
@@ -1165,7 +1167,7 @@ class migrationController extends expController {
                 $oldviewconfig = expUnserialize($old_db->selectValue('container','view_data', "internal='".serialize($iloc)."'"));
                 $ploc = $iloc;
                 $ploc->mod = "filedownload";
-                if ($oldconfig->enable_categories == 1) {
+                if ($oldconfig->enable_categories == 1 && $module->view != 'showall_recent') {
                     $newconfig->config['usecategories'] = true;
                 }
                 if (!empty($oldconfig->description)) {
