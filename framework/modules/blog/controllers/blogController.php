@@ -99,17 +99,19 @@ class blogController extends expController {
 	    global $db;
 	    $dates = $db->selectColumn('blog', 'created_at', $this->aggregateWhereClause(), 'created_at DESC');
 	    $blog_dates = array();
-        $i = 0;
+        $count = 0;
+        $limit = empty($this->config['limit']) ? count($dates) : $this->config['limit'];
 	    foreach ($dates as $date) {
 	        $year = date('Y',$date);
 	        $month = date('n',$date);
 	        if (isset($blog_date[$year][$month])) {
 	            $blog_date[$year][$month]->count += 1;
 	        } else {
+                $count++;
+                if ($count > $limit) break;
 	            $blog_date[$year][$month]->name = date('F',$date);
 	            $blog_date[$year][$month]->count = 1;    
 	        }
-            if ($i++ >= $this->config['limit']) break;
 	    }
 	    ksort($blog_date);
 	    $blog_date = array_reverse($blog_date,1);
