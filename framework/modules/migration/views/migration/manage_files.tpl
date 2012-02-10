@@ -14,6 +14,10 @@
  *
  *}
 
+{css unique="manage-files" corecss="button"}
+
+{/css}
+
 <div class="module migration manage-files">
     <div class="info-header">
         <div class="related-actions">
@@ -30,14 +34,8 @@
             {br}{'WARNING: This process will wipe out all current file records in the database'|gettext}.
         </span>
     </p>
-    {form action="migrate_files"}
-        <table>
-			<tbody>
-				<tr><td>{if $count > 0}{$count}{else}No{/if} {'files found in the database'|gettext} '{$config.database}'</td>
-			</tbody>
-        </table>
-        {control type="buttongroup" submit="Migrate Files"|gettext cancel="Cancel"|gettext}
-    {/form}
+    <h3>{if $count > 0}{$count}{else}{'No'|gettext}{/if} {'files found in the database'|gettext} '{$config.database}'</h3>
+    {br}<a class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" href="{link module=migration action=migrate_files}"><b>{'Migrate Files'|gettext}</b></a>{br}
 	{br}<hr>{br}
 	<a class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" href="{link module=migration action=manage_content}"><b>{'Skip to Next Step -> Migrate Content'|gettext}</b></a>
 </div>

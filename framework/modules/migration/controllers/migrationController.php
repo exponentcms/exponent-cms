@@ -2151,6 +2151,10 @@ class migrationController extends expController {
 //        expHistory::back();
 		if (isset($this->params['fix_database'])) $this->fix_database();
         //FIXME we need to push the button.css file to head for coolwater theme?
+        expCSS::pushToHead(array(
+      		    "unique"=>"button",
+      		    "corecss"=>"button",
+      		    ));
 		echo '<h2>'.gt('Migration Configuration Saved').'</h2><br />';
 		echo '<p>'.gt('We\'ve successfully connected to the Old database').'</p><br />';
 		echo "<a class=\"awesome ".BTN_SIZE." ".BTN_COLOR."\" href=\"".expCore::makeLink(array('controller'=>'migration','action'=>'manage_users'))."\">".gt('Next Step -> Migrate Users & Groups')."</a>";
