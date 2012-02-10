@@ -1079,6 +1079,12 @@ class migrationController extends expController {
                         $newconfig->config['aggregate'][] = $merge;
                     }
                 }
+                if (!empty($oldconfig->pull_rss) && $oldconfig->pull_rss) {
+                    $pulled = expUnserialize($oldconfig->rss_feed);
+                    foreach ($pulled as $pull) {
+                        $newconfig->config['pull_rss'][] = $pull;
+                    }
+                }
                 if ($usebody) {
                     $newconfig->config['usebody'] = $usebody;
                 }
