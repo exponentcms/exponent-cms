@@ -43,12 +43,7 @@
                     {if $tags != ""}{$tags=$tags|cat:','}{/if}
                     {control type="text" id="expTag" name="expTag" label="Tags (comma separated)"|gettext value=$tags size=45}
                     {if $config.usecategories}
-                        {foreach from=$record->expCat item=cat name=cats}
-                            {if $smarty.foreach.cats.first != false}
-                                {assign var=catid value=$cat->id}
-                            {/if}
-                        {/foreach}
-                        {control type="dropdown" name=expCat label="Category"|gettext frommodel="expCat" where="module='' OR module='`$modelname`'" orderby="rank" display=title key=id includeblank="Not Categorized"|gettext value=$catid}
+                        {control type="dropdown" name=expCat label="Category"|gettext frommodel="expCat" where="module='' OR module='`$modelname`'" orderby="rank" display=title key=id includeblank="Not Categorized"|gettext value=$record->expCat[0]->id}
                     {/if}
                 </div>
                 {if $config.filedisplay}

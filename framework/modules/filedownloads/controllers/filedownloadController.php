@@ -150,8 +150,8 @@ class filedownloadController extends expController {
         $rssitems = array();
         foreach ($items as $key => $item) { 
             $rss_item = new FeedItem();
-            $rss_item->title = $item->title;
-            $rss_item->description = $item->body;
+            $rss_item->title = expString::convertSmartQuotes($item->title);
+            $rss_item->description = expString::convertSmartQuotes($item->body);
             $rss_item->date = isset($item->publish_date) ? date('r',$item->publish_date) : date('r', $item->created_at);
             $rss_item->link = makeLink(array('controller'=>$this->classname, 'action'=>'show', 'title'=>$item->sef_url));
             if (!empty($item->expCat[0]->title)) $rss_item->category = array($item->expCat[0]->title);

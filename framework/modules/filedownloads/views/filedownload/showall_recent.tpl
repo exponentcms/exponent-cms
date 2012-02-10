@@ -38,11 +38,11 @@
     {assign var="cat" value="bad"}
     {foreach from=$page->records item=file name=files}
         {if $smarty.foreach.files.iteration<=$config.headcount || !$config.headcount}
-        {if $cat != $file->expCat[0]->id && $config.usecategories}
-            {if $file->expCat[0]->title!= ""}from "{$file->expCat[0]->title}" dated {$file->created_at|format_date}{/if}
-        {/if}
-        {include 'filedownloaditem.tpl'}
-        {assign var="cat" value=$file->expCat[0]->id}
+            {include 'filedownloaditem.tpl'}
+            {if $file->expCat[0]->title != ""}
+                {'from'|gettext} "{$file->expCat[0]->title}" {'dated'|gettext} {$file->created_at|format_date}
+            {/if}
+            {assign var="cat" value=$file->expCat[0]->id}
         {/if}
     {/foreach}
     {if $page->total_records > $config.headcount}

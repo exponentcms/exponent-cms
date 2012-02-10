@@ -571,14 +571,14 @@ abstract class expController {
 		
 //        $items = $db->selectObjects($this->basemodel_name, $where.' ORDER BY created_at');
         $class = new $this->basemodel_name;
-        $this->records = $class->find('all', $where, 'created_at');
+        $items = $class->find('all', $where, 'created_at');
 
         //Convert the items to rss items
         $rssitems = array();
         foreach ($items as $key => $item) { 
             $rss_item = new FeedItem();
-            $rss_item->title = $item->title;
-            $rss_item->description = $item->body;
+            $rss_item->title = expString::convertSmartQuotes($item->title);
+            $rss_item->description = expString::convertSmartQuotes($item->body);
             $rss_item->date = isset($item->publish_date) ? date('r',$item->publish_date) : date('r', $item->created_at);
             $rss_item->link = makeLink(array('controller'=>$this->classname, 'action'=>'show', 'title'=>$item->sef_url));
             if (!empty($item->expCat[0]->title)) $rss_item->category = array($item->expCat[0]->title);

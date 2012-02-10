@@ -179,6 +179,7 @@ class expString {
         $find[] = chr(151);
         $find[] = chr(133);
         $find[] = chr(149);
+        $find[] = chr(11);
 
     	$replace[] = '"';
     	$replace[] = '"';
@@ -204,6 +205,7 @@ class expString {
         $replace[] = "-";
         $replace[] = "...";
         $replace[] = "&bull;";
+        $replace[] = "\n";
 
     	return str_replace($find, $replace, $str);
     }
