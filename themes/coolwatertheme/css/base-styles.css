@@ -270,10 +270,6 @@ div.bodycopy ul, ol {
     font-weight:normal;
 }
 
-#sidebar .container-chrome ul li.container-info {
-    padding: 2px 6px 6px 26px;
-}
-
 #sidebar .container-chrome ul li {
     border: none;
     color: #777777;
