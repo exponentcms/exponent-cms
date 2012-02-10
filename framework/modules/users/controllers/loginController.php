@@ -48,7 +48,7 @@ class loginController extends expController {
 	 * Display a login view
 	 */
 	function showlogin() {
-		global $db, $user, $order;
+		global $db, $user, $order, $router;
 
 		$oicount = $order?$order->item_count:0;
 		// FIGURE OUT IF WE"RE IN PREVIEW MODE OR NOT
@@ -58,6 +58,12 @@ class loginController extends expController {
 		}
 		$previewtext = $level == UILEVEL_PREVIEW ? gt('Turn Preview Mode off') : gt('Turn Preview Mode on');
 		$previewclass = $level == UILEVEL_PREVIEW ? 'preview_on' : 'preview_off';
+
+        if (!expSession::is_set('redirecturl')) expSession::set('redirecturl', expHistory::getLast());
+        if (!expSession::is_set('redirecturl_error')) {
+            expSession::set('redirecturl_error', makeLink(array('controller'=>'login', 'action'=>'showlogin')));
+            expHistory::set('viewable', $router->params);
+        }
 
 		//eDebug($order);
 		if (expSession::loggedIn() && $user->username != "anonymous") {

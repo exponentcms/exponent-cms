@@ -2,6 +2,7 @@
 
 {/css}
 
+{messagequeue}
 <div class="login default">
 {if $loggedin == false || $smarty.const.PREVIEW_READONLY == 1}
 	<div class="box login-form one">
