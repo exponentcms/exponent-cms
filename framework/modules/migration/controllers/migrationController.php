@@ -914,15 +914,6 @@ class migrationController extends expController {
                     $newconfig->config['feed_desc'] = $oldconfig->feed_desc;
                     $newconfig->config['rss_limit'] = isset($oldconfig->rss_limit) ? $oldconfig->rss_limit : 24;
                     $newconfig->config['rss_cachetime'] = isset($oldconfig->rss_cachetime) ? $oldconfig->rss_cachetime : 1440;
-                    $newrss = new expRss();
-                    $newrss->module = $loc->mod;
-                    $newrss->src = $loc->src;
-                    $newrss->enable_rss = $oldconfig->enable_rss;
-                    $newrss->feed_title = $oldconfig->feed_title;
-                    $newrss->feed_desc = $oldconfig->feed_desc;
-                    $newrss->rss_limit = isset($oldconfig->rss_limit) ? $oldconfig->rss_limit : 24;
-                    $newrss->rss_cachetime = isset($oldconfig->rss_cachetime) ? $oldconfig->rss_cachetime : 1440;
-                    $newrss->save();
                 }
                 if (!empty($oldconfig->orderhow)) {
                     if ($oldconfig->orderby == 'name') $newconfig->config['order'] = 'title';
@@ -1060,15 +1051,6 @@ class migrationController extends expController {
                     $newconfig->config['feed_desc'] = $oldconfig->feed_desc;
                     $newconfig->config['rss_limit'] = isset($oldconfig->rss_limit) ? $oldconfig->rss_limit : 24;
                     $newconfig->config['rss_cachetime'] = isset($oldconfig->rss_cachetime) ? $oldconfig->rss_cachetime : 1440;
-                    $newrss = new expRss();
-                    $newrss->module = $ploc->mod;
-                    $newrss->src = $ploc->src;
-                    $newrss->enable_rss = $oldconfig->enable_rss;
-                    $newrss->feed_title = $oldconfig->feed_title;
-                    $newrss->feed_desc = $oldconfig->feed_desc;
-                    $newrss->rss_limit = isset($oldconfig->rss_limit) ? $oldconfig->rss_limit : 24;
-                    $newrss->rss_cachetime = isset($oldconfig->rss_cachetime) ? $oldconfig->rss_cachetime : 1440;
-                    $newrss->save();
                 }
                 if (!empty($oldconfig->item_limit)) {
                     $newconfig->config['limit'] = $oldconfig->item_limit;
@@ -1089,6 +1071,12 @@ class migrationController extends expController {
                     }
                     if ($oldconfig->sortorder == 'DESC') {
                         $newconfig->config['order'] .= ' DESC';
+                    }
+                }
+                if (!empty($oldconfig->aggregate) && $oldconfig->aggregate != 'a:0:{}') {
+                    $merged = expUnserialize($oldconfig->aggregate);
+                    foreach ($merged as $merge) {
+                        $newconfig->config['aggregate'][] = $merge;
                     }
                 }
                 if ($usebody) {
@@ -1186,16 +1174,6 @@ class migrationController extends expController {
                     $newconfig->config['feed_desc'] = $oldconfig->feed_desc;
                     $newconfig->config['rss_limit'] = isset($oldconfig->rss_limit) ? $oldconfig->rss_limit : 24;
                     $newconfig->config['rss_cachetime'] = isset($oldconfig->rss_cachetime) ? $oldconfig->rss_cachetime : 1440;
-                    $newrss = new expRss();
-                    $newrss->module = $ploc->mod;
-                    $newrss->src = $ploc->src;
-//						$newrss->enable_rss = $oldconfig->enable_rss;
-                    $newrss->enable_rss = true;
-                    $newrss->feed_title = $oldconfig->feed_title;
-                    $newrss->feed_desc = $oldconfig->feed_desc;
-                    $newrss->rss_limit = isset($oldconfig->rss_limit) ? $oldconfig->rss_limit : 24;
-                    $newrss->rss_cachetime = isset($oldconfig->rss_cachetime) ? $oldconfig->rss_cachetime : 1440;
-                    $newrss->save();
                 }
                 if (!empty($oldconfig->orderhow)) {
                     switch ($oldconfig->orderby) {
@@ -1455,15 +1433,6 @@ class migrationController extends expController {
                     $newconfig->config['feed_desc'] = $oldconfig->feed_desc;
                     $newconfig->config['rss_limit'] = isset($oldconfig->rss_limit) ? $oldconfig->rss_limit : 24;
                     $newconfig->config['rss_cachetime'] = isset($oldconfig->rss_cachetime) ? $oldconfig->rss_cachetime : 1440;
-                    $newrss = new expRss();
-                    $newrss->module = $ploc->mod;
-                    $newrss->src = $ploc->src;
-                    $newrss->enable_rss = $oldconfig->enable_rss;
-                    $newrss->feed_title = $oldconfig->feed_title;
-                    $newrss->feed_desc = $oldconfig->feed_desc;
-                    $newrss->rss_limit = isset($oldconfig->rss_limit) ? $oldconfig->rss_limit : 24;
-                    $newrss->rss_cachetime = isset($oldconfig->rss_cachetime) ? $oldconfig->rss_cachetime : 1440;
-                    $newrss->save();
                 }
                 if (!empty($oldconfig->items_per_page)) {
                     $newconfig->config['limit'] = $oldconfig->items_per_page;
@@ -1475,6 +1444,12 @@ class migrationController extends expController {
                 }
                 if (!empty($oldconfig->allow_comments)) {
                     $newconfig->config['usescomments'] = !$oldconfig->allow_comments;
+                }
+                if (!empty($oldconfig->aggregate) && $oldconfig->aggregate != 'a:0:{}') {
+                    $merged = expUnserialize($oldconfig->aggregate);
+                    foreach ($merged as $merge) {
+                        $newconfig->config['aggregate'][] = $merge;
+                    }
                 }
                 if ($usebody) {
                     $newconfig->config['usebody'] = $usebody;
@@ -1958,15 +1933,6 @@ class migrationController extends expController {
 					$newconfig->config['rss_cachetime'] = isset($feedlist->rss_cachetime) ? $feedlist->rss_cachetime : 1440;
 					$newconfig->location_data = $loc;
 					$newconfig->save();
-					$newrss = new expRss();
-					$newrss->module = $loc->mod;
-					$newrss->src = $loc->src;
-					$newrss->enable_rss = $feedlist->enable_rss;
-					$newrss->feed_title = $feedlist->feed_title;
-					$newrss->feed_desc = $feedlist->feed_desc;
-					$newrss->rss_limit = isset($feedlist->rss_limit) ? $feedlist->rss_limit : 24;
-					$newrss->rss_cachetime = isset($feedlist->rss_cachetime) ? $feedlist->rss_cachetime : 1440;
-					$newrss->save();
 					@$this->msg['migrated'][$iloc->mod]['count']++;
 					@$this->msg['migrated'][$iloc->mod]['name'] = $this->new_modules[$iloc->mod];
                 }
@@ -2127,18 +2093,31 @@ class migrationController extends expController {
 			$newmodule['actions'] = $m->action;
 			$_POST['current_section'] = empty($section->section) ? 1 : $section->section;
 			$m = container::update($newmodule,$m,expUnserialize($m->external));
-            $newconfig->config['aggregate'] = Array($iloc->src);
+            $newconfig->config['aggregate'][] = $iloc->src;
             if ($iloc->mod == 'blogController') {
                 $newconfig->config['add_source'] = 1;  //  we need to make our blog agregation discrete
             }
 		}
 		$db->insertObject($m, 'container');
+        if (!empty($newconfig->config['enable_rss']) && $newconfig->config['enable_rss'] == true) {
+            $newrss = new expRss();
+            $newrss->enable_rss = $newconfig->config['enable_rss'];
+            $newrss->feed_title = $newconfig->config['feed_title'];
+            $newrss->feed_desc = $newconfig->config['feed_desc'];
+            $newrss->rss_limit = $newconfig->config['rss_limit'];
+            $newrss->rss_cachetime = $newconfig->config['rss_cachetime'];
+        }
         if ($newconfig->config != null) {
             $newmodinternal = expUnserialize($m->internal);
             $newmod = explode("Controller",$newmodinternal->mod);
             $newmodinternal->mod = $newmod[0];
             $newconfig->location_data = $newmodinternal;
             $newconfig->save();
+        }
+        if (!empty($newrss->enable_rss) && $newconfig->config['enable_rss'] == true) {
+            $newrss->module = $newmodinternal->mod;
+            $newrss->src = $newmodinternal->src;
+            $newrss->save();
         }
     }
 
