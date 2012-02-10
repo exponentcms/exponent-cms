@@ -103,7 +103,6 @@ class expTheme {
 			define('XHTML',0); define('XHTML_CLOSING',"");
 		}
 
-
 		// Load primer CSS files, or default to false if not set.
 		if(!empty($config['css_primer'])){
 			expCSS::pushToHead($config);
@@ -138,24 +137,21 @@ class expTheme {
 
 		$metainfo = self::pageMetaInfo();
 
-		$str = '';
-		$str = '<title>'.$metainfo['title']."</title>\r\n";
+		$str = '<title>'.$metainfo['title']."</title>\n";
 		$str .= "\t".'<meta http-equiv="Content-Type" content="text/html; charset='.LANG_CHARSET.'" '.XHTML_CLOSING.'>'."\n";
 		$str .= "\t".'<meta name="Generator" content="Exponent Content Management System - '.expVersion::getVersion(true).'" '.XHTML_CLOSING.'>' . "\n";
 		$str .= "\t".'<meta name="Keywords" content="'.$metainfo['keywords'] . '" '.XHTML_CLOSING.'>'."\n";
 		$str .= "\t".'<meta name="Description" content="'.$metainfo['description']. '" '.XHTML_CLOSING.'>'."\n";
+        // favicon
+        if(file_exists(BASE.'themes/'.DISPLAY_THEME.'/favicon.ico')) {
+            $str .= "\t".'<link rel="shortcut icon" href="'.URL_FULL.'themes/'.DISPLAY_THEME.'/favicon.ico" type="image/x-icon" '.XHTML_CLOSING.'>'."\n";
+        }
 
 		//the last little bit of IE 6 support
 		$str .= "\t".'<!--[if IE 6]><style type="text/css">  body { behavior: url('.PATH_RELATIVE.'external/csshover.htc); }</style><![endif]-->'."\n";
 
 		// when minification is used, the comment below gets replaced when the buffer is dumped
 		$str .= '<!-- MINIFY REPLACE -->';
-
-//		if(file_exists(BASE.'themes/'.DISPLAY_THEME_REAL.'/favicon.ico')) {
-//			$str .= "\t".'<link rel="shortcut icon" href="'.URL_FULL.'themes/'.DISPLAY_THEME_REAL.'/favicon.ico" type="image/x-icon" />'."\r\n";
-		if(file_exists(BASE.'themes/'.DISPLAY_THEME.'/favicon.ico')) {
-			$str .= "\t".'<link rel="shortcut icon" href="'.URL_FULL.'themes/'.DISPLAY_THEME.'/favicon.ico" type="image/x-icon" '.XHTML_CLOSING.'>'."\r\n";
-		}
 
 		return $str;
 	}

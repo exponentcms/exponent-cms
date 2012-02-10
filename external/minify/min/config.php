@@ -5,7 +5,7 @@
  */
 
 //Initialize exponent Framework
-include_once(dirname(__FILE__) .'../../../exponent_bootstrap.php');
+include_once(dirname(__FILE__) .'/../../../exponent_bootstrap.php');
 include_once(BASE.'conf/config.php');
 
 /**

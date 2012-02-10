@@ -42,7 +42,7 @@ class expJavascript {
         $scripts .= "\t"."<!-- EXPONENT namespace setup -->"."\r\n";
         $scripts .= "\t".'<script type="text/javascript" src="'.PATH_RELATIVE.'exponent.js.php"></script>'."\r\n";
 
-        $scripts .= (!empty($yui3js)) ? "\r\n\t"."<!-- YUI3 Scripts -->"."\r\n\t".'<script type="text/javascript" src="'.YUI3_PATH.'yui/yui-min.js"></script>'."\r\n" : "";
+        $scripts .= (!empty($yui3js)) ? "\t"."<!-- YUI3 Scripts -->"."\r\n\t".'<script type="text/javascript" src="'.YUI3_PATH.'yui/yui-min.js"></script>'."\r\n" : "";
         //$scripts .= "\r\n\t"."<meta id=\"yui3marker\" />"."\r\n";
         if (!empty($expJS)) {
             foreach ($expJS as $key=>$mod) {

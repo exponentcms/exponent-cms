@@ -16,6 +16,6 @@
 #
 ##################################################
 
-if (!defined('SAVE_SEARCH_QUERIES')) define ('SAVE_SEARCH_QUERIES',0);
+if (!defined('SAVE_SEARCH_QUERIES')) define ('SAVE_SEARCH_QUERIES','0');
 
 ?>
