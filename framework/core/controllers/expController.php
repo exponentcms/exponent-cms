@@ -567,9 +567,11 @@ abstract class expController {
     
         // setup the where clause for looking up records.
         $where = $this->aggregateWhereClause();
-        $where = empty($where) ? '1' : $where;
+//        $where = empty($where) ? '1' : $where;
 		
-        $items = $db->selectObjects($this->basemodel_name, $where.' ORDER BY created_at');
+//        $items = $db->selectObjects($this->basemodel_name, $where.' ORDER BY created_at');
+        $class = new $this->basemodel_name;
+        $this->records = $class->find('all', $where, 'created_at');
 
         //Convert the items to rss items
         $rssitems = array();
@@ -579,6 +581,7 @@ abstract class expController {
             $rss_item->description = $item->body;
             $rss_item->date = isset($item->publish_date) ? date('r',$item->publish_date) : date('r', $item->created_at);
             $rss_item->link = makeLink(array('controller'=>$this->classname, 'action'=>'show', 'title'=>$item->sef_url));
+            if (!empty($item->expCat[0]->title)) $rss_item->category = array($item->expCat[0]->title);
             $rssitems[$key] = $rss_item;
         }
         return $rssitems;

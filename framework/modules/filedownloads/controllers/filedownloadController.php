@@ -154,6 +154,7 @@ class filedownloadController extends expController {
             $rss_item->description = $item->body;
             $rss_item->date = isset($item->publish_date) ? date('r',$item->publish_date) : date('r', $item->created_at);
             $rss_item->link = makeLink(array('controller'=>$this->classname, 'action'=>'show', 'title'=>$item->sef_url));
+            if (!empty($item->expCat[0]->title)) $rss_item->category = array($item->expCat[0]->title);
 
             $rss_item->enclosure = new Enclosure();
             //$rss_item->enclosure->url = URL_FULL.'index.php?module=resourcesmodule&action=download_resource&id='.$item->id;
