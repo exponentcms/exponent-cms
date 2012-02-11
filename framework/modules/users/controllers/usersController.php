@@ -118,7 +118,9 @@ class usersController extends expController {
                 flash('message', gt('Account information for').' '.$u->username.' '.gt('has been updated.'));
             } else {
                 flash('message', gt('Thank you').' '.$u->firstname.'.  '.gt('Your account information has been updated.'));
-            }          
+                $_SESSION[SYS_SESSION_KEY]['user'] = $u;
+                $user = $u;
+            }
         } else {
             $u = new user($this->params);
             $ret = $u->setPassword($this->params['pass1'], $this->params['pass2']);
