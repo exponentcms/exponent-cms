@@ -53,7 +53,7 @@
 			{section name=tid loop=$tables step=2}
 				<tr class="row {cycle values='even_row,odd_row'}">
 					<td>
-						<input type="checkbox" name="tables[{$tables[tid]}]" {if $tables[tid] != 'sessionticket'}checked {/if}/>
+						<input type="checkbox" name="tables[{$tables[tid]}]" {if $tables[tid] != 'sessionticket' && $tables[tid] != 'search'}checked {/if}/>
 					</td>
 
 					<td>{$tables[tid]}</td>
@@ -62,7 +62,7 @@
 
 					{math equation="x+1" x=$smarty.section.tid.index assign=nextid}
 					<td>
-						{if $tables[$nextid] != ""}<input type="checkbox" name="tables[{$tables[$nextid]}]" {if $tables[$nextid] != 'sessionticket' || $tables[$nextid] != 'search'}checked {/if}/>{/if}
+						{if $tables[$nextid] != ""}<input type="checkbox" name="tables[{$tables[$nextid]}]" {if $tables[$nextid] != 'sessionticket' && $tables[$nextid] != 'search'}checked {/if}/>{/if}
 					</td>
 
 					<td>{$tables[$nextid]}</td>
