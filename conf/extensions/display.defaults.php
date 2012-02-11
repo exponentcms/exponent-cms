@@ -27,7 +27,7 @@ if (!defined('DISPLAY_DATETIME_FORMAT')) define('DISPLAY_DATETIME_FORMAT','%D --
 if (!defined('DISPLAY_DATE_FORMAT')) define('DISPLAY_DATE_FORMAT','%D');
 if (!defined('DISPLAY_TIME_FORMAT')) define('DISPLAY_TIME_FORMAT','%l:%M%p');
 if (!defined('DISPLAY_START_OF_WEEK')) define('DISPLAY_START_OF_WEEK','0');
-if (!defined('DISPLAY_DEFAULT_TIMEZONE')) define ('DISPLAY_DEFAULT_TIMEZONE',function_exists('date_default_timezone_get')?@date_default_timezone_get():null);
+if (!defined('DISPLAY_DEFAULT_TIMEZONE')) define('DISPLAY_DEFAULT_TIMEZONE',function_exists('date_default_timezone_get')?@date_default_timezone_get():null);
 if (!defined('THUMB_QUALITY')) define('THUMB_QUALITY','75');
 if (!defined('FM_WIDTH')) define('FM_WIDTH','1024');
 if (!defined('FM_HEIGHT')) define('FM_HEIGHT','600');

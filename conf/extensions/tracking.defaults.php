@@ -16,7 +16,7 @@
 #
 ##################################################
 
-if (!defined('ENABLE_TRACKING')) define ('ENABLE_TRACKING','0');
+if (!defined('ENABLE_TRACKING')) define('ENABLE_TRACKING','0');
 if (!defined('TRACKING_COOKIE_EXPIRES')) define('TRACKING_COOKIE_EXPIRES','30');
 if (!defined('TRACKING_ARCHIVE_DELAY')) define('TRACKING_ARCHIVE_DELAY','24');
 if (!defined('TRACKING_ARCHIVE_TIME')) define('TRACKING_ARCHIVE_TIME','180');
