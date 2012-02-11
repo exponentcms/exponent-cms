@@ -22,7 +22,7 @@
 
 <div class="containermodule tabbed">
 {viewfile module=$singlemodule view=$singleview var=viewfile} 
-<div id="{$tabs}" class="yui-navset yui3-skin-sam hide">
+<div id="{$tabs}" class="yui-navset exp-skin-tabview hide">
 	<ul class="yui-nav">
 		{foreach from=$containers item=container key=tabnum name=contain}
 			{assign var=numcontainers value=$tabnum+1}

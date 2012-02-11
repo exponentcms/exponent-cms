@@ -48,10 +48,10 @@ EXPONENT.YUI3_CONFIG = {
     combine:<?php echo (MINIFY==1)?1:0; ?>,
     // root:         EXPONENT.YUI3_PATH.substr(1),
     // base:         EXPONENT.YUI3_PATH,
-    comboBase:    EXPONENT.PATH_RELATIVE+'external/minify/min/?b='+EXPONENT.PATH_RELATIVE.substr(1)+'external/yui&f=',
+    comboBase:    EXPONENT.PATH_RELATIVE+'external/minify/min/index.php?b='+EXPONENT.PATH_RELATIVE.substr(1)+'external/yui&f=',
     filter: {
-        'searchExp': ".js&", 
-        'replaceStr': ".js,"
+        'searchExp': "&3",
+        'replaceStr': ",3"
     },
     //combine: false,
     //filter:   "debug",
@@ -63,7 +63,7 @@ EXPONENT.YUI3_CONFIG = {
             combine:false,
             base: EXPONENT.YUI2_PATH,
             root: EXPONENT.YUI2_VERSION+'/',
-            comboBase:EXPONENT.PATH_RELATIVE+'external/minify/min/?b='+EXPONENT.PATH_RELATIVE.substr(1)+'external/yui/2in3/dist&f=',
+            comboBase:EXPONENT.PATH_RELATIVE+'external/minify/min/index.php?b='+EXPONENT.PATH_RELATIVE.substr(1)+'external/yui/2in3/dist&f=',
             patterns:  {
                 "yui2-": {
                     configFn: function (me) {
