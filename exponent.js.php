@@ -50,7 +50,7 @@ EXPONENT.YUI3_CONFIG = {
     // root:         EXPONENT.YUI3_PATH.substr(1),
     comboBase:    EXPONENT.PATH_RELATIVE+'external/minify/min/index.php?b='+EXPONENT.PATH_RELATIVE.substr(1)+'external/yui&f=',
     filter: {
-        'searchExp': "&([0-9])",
+        'searchExp': "&([2-3])",
         'replaceStr': ",$1"
     },
     //combine: false,

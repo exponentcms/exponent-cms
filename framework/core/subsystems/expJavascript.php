@@ -68,9 +68,11 @@ class expJavascript {
                 $html.= $file."\r\n";
             }            
         } 
-        
-        return '<script type="text/javascript" charset="utf-8">//<![CDATA['."\r\n".$html.'//]]></script>';
-        
+        if (MINIFY) {
+            include_once(BASE.'external/minify/min/lib/JSMin.php');
+            $html = JSMin::minify($html);
+        }
+        return '<script type="text/javascript" charset="utf-8">//<![CDATA['."\r\n".$html."\r\n".'//]]></script>';
 	}
 	
     public static function pushToFoot($params) {
@@ -91,7 +93,6 @@ class expJavascript {
 		    ";
 		    return true;
     	}
-
 
     	if (!empty($params['src'])) {
     	    //$src = str_replace(URL_FULL,PATH_RELATIVE,$params['src']);

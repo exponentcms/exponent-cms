@@ -117,21 +117,26 @@ class expCSS {
         
         if (!empty($css_inline)) {
             $styles = "";
+            $htmlcss = "";
             foreach ($css_inline as $key=>$val) {
                 $styles .= $val;
             }
             trim($styles);
             if (!empty($styles)) {
-                $html .= "\t".'<style type="text/css" media="screen">'."\n";
-                $html .= "\t".$styles."\n";
-                $html .= "\t".'</style>'."\n";
+                $htmlcss .= "\t".'<style type="text/css" media="screen">'."\n";
+                $htmlcss .= "\t".$styles."\n";
+                $htmlcss .= "\t".'</style>'."\n";
             }
+            if (MINIFY) {
+                include_once(BASE.'external/minify/min/lib/JSMin.php');
+                $htmlcss = JSMin::minify($html);
+            }
+            $html .= $htmlcss;
         }
-        
+
         return $html;
     }
-    
-    
+
     public static function themeCSS() {
         global $css_theme, $head_config;
 
