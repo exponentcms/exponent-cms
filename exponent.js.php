@@ -46,12 +46,12 @@ EXPONENT.YUI2_URL = '<?php echo YUI2_URL; ?>';
 
 EXPONENT.YUI3_CONFIG = {
     combine:<?php echo (MINIFY==1)?1:0; ?>,
-    // root:         EXPONENT.YUI3_PATH.substr(1),
     // base:         EXPONENT.YUI3_PATH,
+    // root:         EXPONENT.YUI3_PATH.substr(1),
     comboBase:    EXPONENT.PATH_RELATIVE+'external/minify/min/index.php?b='+EXPONENT.PATH_RELATIVE.substr(1)+'external/yui&f=',
     filter: {
-        'searchExp': "&3",
-        'replaceStr': ",3"
+        'searchExp': "&([0-9])",
+        'replaceStr': ",$1"
     },
     //combine: false,
     //filter:   "debug",
@@ -60,9 +60,9 @@ EXPONENT.YUI3_CONFIG = {
     // },
     groups: {
         yui2: {
-            combine:false,
+            combine:<?php echo (MINIFY==1)?1:0; ?>,
             base: EXPONENT.YUI2_PATH,
-            root: EXPONENT.YUI2_VERSION+'/',
+            root: EXPONENT.YUI2_VERSION+'/build/',
             comboBase:EXPONENT.PATH_RELATIVE+'external/minify/min/index.php?b='+EXPONENT.PATH_RELATIVE.substr(1)+'external/yui/2in3/dist&f=',
             patterns:  {
                 "yui2-": {
