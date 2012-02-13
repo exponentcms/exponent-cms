@@ -51,7 +51,7 @@
 YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event','yui2-container','yui2-json','yui2-datasource','yui2-connection','yui2-autocomplete','yui2-element','yui2-paginator','yui2-datatable', function(Y) {
     var YAHOO=Y.YUI2;
     EXPONENT.fileManager = function() {
-        var queryString = '&results=50&output=json'; //autocomplete query
+//        var queryString = '&results=50&output=json'; //autocomplete query
         var fck = {/literal}{if $smarty.get.fck}{$smarty.get.fck}{else}0{/if}{literal}; //are we coming from FCK as the window launcher?
         var usr = {/literal}{obj2json obj=$user}{literal}; //user
         var thumbnails = {/literal}{$smarty.const.FM_THUMBNAILS}{literal};
@@ -154,7 +154,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event','yui2-container','yu
         
         //set up autocomplete
         var getTerms = function(query) {
-            myDataSource.sendRequest('sort=id&dir=desc&startIndex=0&fck='+fck+'&results=25&query=' + query,myDataTable.onDataReturnInitializeTable, myDataTable);
+            myDataSource.sendRequest('sort=id&dir=desc&startIndex=0&fck='+fck+'&results={/literal}{$smarty.const.FM_LIMIT}{literal}&query=' + query,myDataTable.onDataReturnInitializeTable, myDataTable);
         };
     
         var oACDS = new YAHOO.util.FunctionDataSource(getTerms);
@@ -167,7 +167,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event','yui2-container','yu
         // filename formatter
         var formatTitle = function(elCell, oRecord, oColumn, sData) {
             if (oRecord.getData().is_image==1 && thumbnails) {
-                elCell.innerHTML = '<a href="#" class="fileinfo"><img src="'+EXPONENT.URL_FULL+'thumb.php?&id='+oRecord.getData().id+'&w=48&h=48"> '+oRecord.getData().filename+'</a>';
+                elCell.innerHTML = '<a href="#" class="fileinfo"><img src="'+EXPONENT.URL_FULL+'thumb.php?&id='+oRecord.getData().id+'&w={/literal}{$smarty.const.FM_THUMB_SIZE}{literal}&h={/literal}{$smarty.const.FM_THUMB_SIZE}{literal}"> '+oRecord.getData().filename+'</a>';
             } else {
                 elCell.innerHTML = '<a href="#" class="fileinfo">'+oRecord.getData().filename+'</a>';
             }
@@ -303,10 +303,10 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event','yui2-container','yu
     
         // DataTable configuration
         var myConfigs = {
-            initialRequest: "sort=id&dir=desc&startIndex=0&results=25", // Initial request for first page of data
+            initialRequest: "sort=id&dir=desc&startIndex=0&results={/literal}{$smarty.const.FM_LIMIT}{literal}", // Initial request for first page of data
             dynamicData: true, // Enables dynamic server-driven data
             sortedBy : {key:"id", dir:YAHOO.widget.DataTable.CLASS_DESC}, // Sets UI initial sort arrow
-            paginator: new YAHOO.widget.Paginator({rowsPerPage:25,containers:"pagelinks"}) // Enables pagination 
+            paginator: new YAHOO.widget.Paginator({rowsPerPage:{/literal}{$smarty.const.FM_LIMIT}{literal},containers:"pagelinks"}) // Enables pagination
         };
     
         // DataTable instance
