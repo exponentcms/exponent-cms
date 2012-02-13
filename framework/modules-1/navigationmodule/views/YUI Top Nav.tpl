@@ -81,7 +81,6 @@ YUI(EXPONENT.YUI3_CONFIG).use('yui2-container','yui2-menu', function(Y) {
 	menubar.render(); 
 });
 
-
 {/literal}
 {/script}
 
