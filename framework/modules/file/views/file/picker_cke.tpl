@@ -54,6 +54,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event','yui2-container','yu
         var queryString = '&results=50&output=json'; //autocomplete query
         var fck = {/literal}{if $smarty.get.fck}{$smarty.get.fck}{else}0{/if}{literal}; //are we coming from FCK as the window launcher?
         var usr = {/literal}{obj2json obj=$user}{literal}; //user
+        var thumbnails = {/literal}{$smarty.const.FM_THUMBNAILS}{literal};
         var myDataSource = null;
         var myDataTable = null;
 
@@ -165,7 +166,11 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event','yui2-container','yu
 
         // filename formatter
         var formatTitle = function(elCell, oRecord, oColumn, sData) {
-            elCell.innerHTML = '<a href="#" class="fileinfo">'+oRecord.getData().filename+'</a>';
+            if (oRecord.getData().is_image==1 && thumbnails) {
+                elCell.innerHTML = '<a href="#" class="fileinfo"><img src="'+EXPONENT.URL_FULL+'thumb.php?&id='+oRecord.getData().id+'&w=48&h=48"> '+oRecord.getData().filename+'</a>';
+            } else {
+                elCell.innerHTML = '<a href="#" class="fileinfo">'+oRecord.getData().filename+'</a>';
+            }
         };
 
         // alt formatter

@@ -11,6 +11,8 @@ Added / Fixed / changed for 2.0.5
     -- categories now migrated; imagegallerymodule galleries converted to categories
   - calendar2 should be considered alpha quality
 # Many fixes and updates
+  - Minification has been fixed (possibly broken since 2.0.1?)
+  - adds optional thumbnail view to file manager
   - adds tag cloud view to search module
   - adds tags to news module
   - adds deletion of multiple standalone pages at once

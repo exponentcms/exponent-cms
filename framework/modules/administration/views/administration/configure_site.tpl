@@ -123,9 +123,11 @@
 	                {control type="dropdown" name="sc[DISPLAY_DEFAULT_TIMEZONE]" label="Default timezone for this site"|gettext|cat:(' <br />'|cat:("CAUTION: This may break calendars and other features that use date functions if you change this after entering data."|gettext)) items=$timezones default=$smarty.const.DISPLAY_DEFAULT_TIMEZONE}
                     {control type="radiogroup" name="sc[SLINGBAR_TOP]" label="Default Admin Slingbar Position" items="Top of Viewport,Bottom of Viewport" values="1,0" default=$smarty.const.SLINGBAR_TOP}
 					{control type="text" name="sc[THUMB_QUALITY]" label="Thumbnail JPEG Quality"|gettext|cat:" (0 - 95)" value=$smarty.const.THUMB_QUALITY|default:75 size="2"}
-                    <h3>{"File Manager/Uploader Popup Window Size"|gettext}</h3>
+                    <h3>{"File Manager/Uploader Popup Window"|gettext}</h3>
+                    {control type="checkbox" postfalse=1 name="sc[FM_THUMBNAILS]" label="Show Image Thumbnails?"|gettext checked=$smarty.const.FM_THUMBNAILS value=1}
                     {control type="text" name="sc[FM_WIDTH]" label="Width"|gettext value=$smarty.const.FM_WIDTH|default:1024 size="4"}
                     {control type="text" name="sc[FM_HEIGHT]" label="Height" value=$smarty.const.FM_HEIGHT|default:600 size="4"}
+
                 </div>
                 {if $user->is_admin==1}
                 <div id="tab6">

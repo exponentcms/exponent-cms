@@ -31,4 +31,5 @@ if (!defined('DISPLAY_DEFAULT_TIMEZONE')) define('DISPLAY_DEFAULT_TIMEZONE',func
 if (!defined('THUMB_QUALITY')) define('THUMB_QUALITY','75');
 if (!defined('FM_WIDTH')) define('FM_WIDTH','1024');
 if (!defined('FM_HEIGHT')) define('FM_HEIGHT','600');
+if (!defined('FM_THUMBNAILS')) define('FM_THUMBNAILS','0');
 ?>
