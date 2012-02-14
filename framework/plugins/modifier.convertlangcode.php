@@ -2,8 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2011 OIC Group, Inc.
-# Written and Designed by James Hunt
+# Copyright (c) 2004-2012 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -17,6 +16,23 @@
 #
 ##################################################
 
+/**
+ * Smarty plugin
+ * @package Smarty-Plugins
+ * @subpackage Modifier
+ */
+
+/**
+ * Smarty {convertlangcode} modifier plugin
+ *
+ * Type:     modifier<br>
+ * Name:     convertlangcode<br>
+ * Purpose:  attempt to convert language codes between different formats
+ *
+ * @param $lang_code
+ * @param string $target
+ * @return array
+ */
 function smarty_modifier_convertlangcode($lang_code, $target = "iso639-1") {
 	return $lang_code; //FIXME this plugin isn't used, but this will at least return something
 //	return exponent_lang_convertLangCode($lang_code, $target);

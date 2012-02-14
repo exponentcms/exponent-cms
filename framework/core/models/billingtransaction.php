@@ -2,8 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2011 OIC Group, Inc.
-# Written and Designed by Adam Kessler
+# Copyright (c) 2004-2012 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -17,7 +16,11 @@
 #
 ##################################################
 
-class billingtransaction extends expRecord {  
+/**
+ * @subpackage Core-Models
+ * @package Framework
+ */
+class billingtransaction extends expRecord {
     public $has_one = array('billingcalculator'); 
 	public $table = 'billingtransactions';
     

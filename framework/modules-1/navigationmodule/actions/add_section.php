@@ -2,8 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2011 OIC Group, Inc.
-# Written and Designed by James Hunt
+# Copyright (c) 2004-2012 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -17,8 +16,6 @@
 #
 ##################################################
 
-// Bail in case someone has visited us directly, or the Exponent framework is
-// otherwise not initialized.
 if (!defined('EXPONENT')) exit('');
 
 // First, retrieve the parent section from the database.

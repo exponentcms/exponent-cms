@@ -2,8 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2011 OIC Group, Inc.
-# Written and Designed by James Hunt
+# Copyright (c) 2004-2012 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -16,8 +15,6 @@
 # GPL: http://www.gnu.org/licenses/gpl.txt
 #
 ##################################################
-
-if (!defined('EXPONENT')) exit('');
 
 if (!defined('SMTP_FROMADDRESS')) define('SMTP_FROMADDRESS','website@localhost');
 if (!defined('SMTP_USE_PHP_MAIL')) define('SMTP_USE_PHP_MAIL','0');

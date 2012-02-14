@@ -1,8 +1,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2011 OIC Group, Inc.
-# Created by Adam Kessler @ 05/28/2008
+# Copyright (c) 2004-2012 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -15,6 +14,11 @@
 # GPL: http://www.gnu.org/licenses/gpl.txt
 #
 ##################################################
+
+/**
+ * @subpackage Calculators
+ * @package Framework
+ */
 
 class splitcreditcard extends creditcard {
 	function name() { return 'Split Credit Card'; }

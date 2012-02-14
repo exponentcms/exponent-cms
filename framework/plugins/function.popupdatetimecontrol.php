@@ -2,8 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2007-2008 OIC Group, Inc.
-# Written and Designed by Adam Kessler
+# Copyright (c) 2004-2012 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -32,7 +31,6 @@
  *
  * @param         $params
  * @param \Smarty $smarty
- * @return bool
  */
 function smarty_function_popupdatetimecontrol($params,&$smarty) {  //FIXME this seems like a empty copy of something else
 	if (isset($params['name']) ) {

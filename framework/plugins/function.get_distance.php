@@ -2,8 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2007-2008 OIC Group, Inc.
-# Written and Designed by Adam Kessler
+# Copyright (c) 2004-2012 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -17,6 +16,22 @@
 #
 ##################################################
 
+/**
+ * Smarty plugin
+ * @package Smarty-Plugins
+ * @subpackage Function
+ */
+
+/**
+ * Smarty {get_distance} function plugin
+ *
+ * Type:     function<br>
+ * Name:     get_distance<br>
+ * Purpose:  determine distance
+ *
+ * @param         $params
+ * @param \Smarty $smarty
+ */
 function smarty_function_get_distance($params,&$smarty) {
 	echo zipcode::distanceBetween($params['zip1'], $params['zip2']); 
 }

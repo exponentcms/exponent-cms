@@ -2,9 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2011 OIC Group, Inc.
-# Copyright (c) 2006-2007 Maxim Mueller
-# Written and Designed by James Hunt
+# Copyright (c) 2004-2012 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -24,7 +22,7 @@
  *
  * This class is used for site wide forms.  
  *
- * @package Subsystems
+ * @package Subsystems-Forms
  * @subpackage Template
  */
 class formtemplate extends basetemplate {  //FIXME only used by calendarmodule for feedback forms

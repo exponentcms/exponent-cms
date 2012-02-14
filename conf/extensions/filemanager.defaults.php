@@ -2,8 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2011 OIC Group, Inc.
-# Written and Designed by James Hunt
+# Copyright (c) 2004-2012 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -22,4 +21,5 @@ if (!defined('FM_THUMB_SIZE')) define('FM_THUMB_SIZE','48');
 if (!defined('FM_WIDTH')) define('FM_WIDTH','1024');
 if (!defined('FM_HEIGHT')) define('FM_HEIGHT','600');
 if (!defined('FM_LIMIT')) define('FM_LIMIT','25');
+
 ?>

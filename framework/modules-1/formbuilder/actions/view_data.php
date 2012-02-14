@@ -2,8 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2011 OIC Group, Inc.
-# Written and Designed by James Hunt
+# Copyright (c) 2004-2012 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -17,6 +16,7 @@
 #
 ##################################################
 /** @define "BASE" "../../../.." */
+
 if (!defined('EXPONENT')) exit('');
 
 $template = new template('formbuilder','_data_view');

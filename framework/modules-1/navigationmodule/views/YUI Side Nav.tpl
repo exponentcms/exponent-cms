@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2011 OIC Group, Inc.
+ * Copyright (c) 2004-2012 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -10,7 +10,9 @@
  * License, or (at your option) any later version.
  *
  * GPL: http://www.gnu.org/licenses/gpl.txt
-*}
+ *
+ *}
+
 {css unique="yui-side-nav" link="`$smarty.const.YUI2_PATH`assets/skins/sam/menu.css"}
 
 {/css}
