@@ -90,27 +90,16 @@ class helpController extends expController {
         }
 	    if (empty($help->help_version_id)) $help->help_version_id = $version;
 
-//		$sectionlist = array();
-//		$sections = $db->selectObjectsIndexedArray('section',1);
-//		$helpsections = $db->selectObjects('help',1);
-//		foreach ($helpsections as $helpsection) {
-//			if ($helpsection->location_data != null) {
-//				$helpsrc = expUnserialize($helpsection->location_data);
-//				if (!array_key_exists($helpsrc->src, $sectionlist) && $helpsection->section != 0) {
-//					$sectionlist[$helpsrc->src] = $sections[$helpsection->section]->name;
-//					if ($helpsection->section == $sectionObj->id) {
-//						$sectionlist[$helpsrc->src] .= " (current section)";
-//					}
-//				}
-//			}
-//		}
-
-        $sectionlist = array();
-        foreach ($db->selectObjects('sectionref','module="helpController"') as $sectionref) {
-            if (!empty($sectionref->source) && empty($sectionlist[$sectionref->source])) {
-                $sectionlist[$sectionref->source] = $db->selectValue('section', 'name', 'id="' . $sectionref->section .'"');
-            }
-        }
+		$sectionlist = array();
+		$helpsections = $db->selectObjects('help',1);
+		foreach ($helpsections as $helpsection) {
+			if (!empty($helpsection->location_data)) {
+				$helpsrc = expUnserialize($helpsection->location_data);
+				if (!array_key_exists($helpsrc->src, $sectionlist)) {
+                    $sectionlist[$helpsrc->src] = $db->selectValue('section', 'name', 'id="' . $db->selectValue('sectionref', 'section', 'module = "helpController" AND source="' . $helpsrc->src .'"').'"');
+				}
+			}
+		}
         $sectionlist[$this->loc->src] .= gt(" (current section)");
 
 	    assign_to_template(array('record'=>$help,"current_section"=>$this->loc->src,"sections"=>$sectionlist));
@@ -133,6 +122,7 @@ class helpController extends expController {
             }
 	    }
 	    $doc = $help->find('first', 'help_version_id='.$version_id.' AND sef_url="'.$this->params['title'].'"');
+
 	    assign_to_template(array('doc'=>$doc,"hv"=>$this->help_version));
 	}
 
@@ -151,9 +141,6 @@ class helpController extends expController {
 	        redirect_to(array('controller'=>'help', 'action'=>'edit_version'));
 	    }
 
-		// for now we'll display help by section, though location_data would be more accurate
-		//  this helps find problems in older help docs
-//	    $sections = $db->selectObjectsIndexedArray('section',1);
         $sections = array();
         foreach ($db->selectObjects('sectionref','module="helpController"') as $sectionref) {
             if (!empty($sectionref->source) && empty($sections[$sectionref->source])) {
@@ -172,7 +159,7 @@ class helpController extends expController {
 	                'action'=>$this->params['action'],
 	                'columns'=>array('Title'=>'title', 'Version'=>'help_version_id', 'Section'=>'section'),
 	                ));
-	    
+
 	    assign_to_template(array('current_version'=>$current_version, 'page'=>$page, 'sections'=>$sections));
 	}
 
@@ -417,8 +404,6 @@ class helpController extends expController {
         }
 	    $help = $h->find('first','help_version_id='.$hv.' and sef_url=\''.$params['title'].'\'');
 	    $session_section = expSession::get('last_section') ? expSession::get('last_section') : 1 ;
-//	    $sid = ($help->section!=0)?$help->section:$session_section;
-        // default to finding help section by location_data & sectionref, else use help section field and then session section
         $help_sectionref = $db->selectObject('sectionref','module="helpController" AND source="'. expUnserialize($help->location_data)->src.'"');
         $sid = !empty($help_sectionref) ? $help_sectionref->section : (($help->section!=0) ? $help->section : $session_section);
         if (!expSession::get('last_section')) {
