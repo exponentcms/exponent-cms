@@ -1,5 +1,7 @@
 {*
- * This file is part of Exponent Content Management System
+ * Copyright (c) 2004-2012 OIC Group, Inc.
+ *
+ * This file is part of Exponent
  *
  * Exponent is free software; you can redistribute
  * it and/or modify it under the terms of the GNU
@@ -7,10 +9,8 @@
  * Software Foundation; either version 2 of the
  * License, or (at your option) any later version.
  *
- * @category   Exponent CMS
- * @copyright  2004-2011 OIC Group, Inc.
- * @license    GPL: http://www.gnu.org/licenses/gpl.txt
- * @link       http://www.exponent-docs.org/
+ * GPL: http://www.gnu.org/licenses/gpl.txt
+ *
  *}
 
 <div class="module twitter showall">

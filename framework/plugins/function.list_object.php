@@ -2,8 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2007-2008 OIC Group, Inc.
-# Written and Designed by Adam Kessler
+# Copyright (c) 2004-2012 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -17,6 +16,22 @@
 #
 ##################################################
 
+/**
+ * Smarty plugin
+ * @package Smarty-Plugins
+ * @subpackage Function
+ */
+
+/**
+ * Smarty {list_object} function plugin
+ *
+ * Type:     function<br>
+ * Name:     list_object<br>
+ * Purpose:  place an object in a unordered list
+ *
+ * @param         $params
+ * @param \Smarty $smarty
+ */
 function smarty_function_list_object($params,&$smarty) {
 	if (isset($params['object'])) {
 		echo "<ul>";

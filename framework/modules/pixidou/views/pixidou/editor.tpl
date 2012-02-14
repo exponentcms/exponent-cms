@@ -1,4 +1,18 @@
 {*
+ * Copyright (c) 2004-2012 OIC Group, Inc.
+ *
+ * This file is part of Exponent
+ *
+ * Exponent is free software; you can redistribute
+ * it and/or modify it under the terms of the GNU
+ * General Public License as published by the Free
+ * Software Foundation; either version 2 of the
+ * License, or (at your option) any later version.
+ *
+ * GPL: http://www.gnu.org/licenses/gpl.txt
+ *
+ *}
+{*
     /**
      +------------------------------------------------------------------------+
      | Pixidou - an Open Source AJAX Image Editor                             |
@@ -181,7 +195,7 @@
                                     <h1>Pixidou 0.1-exp - an open source AJAX image editor</h1>
                                     <br/>
                                     <p>(c) 2008 - Asvin Balloo</p>
-                                    <p>(c) 2011 - Extensively modified to work within Exponent CMS</p>
+                                    <p>(c) 2012 - Extensively modified to work within Exponent CMS</p>
                                 </div>
                                 <div id="aboutJoin">
                                     <p>I'm currently looking for some collaborators to take Pixidou a level higher. </p>

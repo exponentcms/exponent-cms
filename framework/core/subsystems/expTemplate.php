@@ -1,10 +1,7 @@
 <?php
-
 ##################################################
 #
-# Copyright (c) 2004-2011 OIC Group, Inc.
-# Copyright (c) 2006-2007 Maxim Mueller
-# Written and Designed by James Hunt
+# Copyright (c) 2004-2012 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -17,14 +14,14 @@
 # GPL: http://www.gnu.org/licenses/gpl.txt
 #
 ##################################################
-/** @define "BASE" "../../.." */
 
 /**
- * This is the class expTheme
- *
- * @subpackage Core-Subsystems
- * @package Framework
+* This is the class expTemplate
+*
+ * @package    Framework
+ * @subpackage Subsystems
  */
+/** @define "BASE" "../../.." */
 
 class expTemplate {
 

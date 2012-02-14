@@ -2,9 +2,8 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2011 OIC Group, Inc.
-# Written and Designed by Phillip Ball
-
+# Copyright (c) 2004-2012 OIC Group, Inc.
+#
 # This file is part of Exponent
 #
 # Exponent is free software; you can redistribute
@@ -16,6 +15,11 @@
 # GPL: http://www.gnu.org/licenses/gpl.txt
 #
 ##################################################
+
+/**
+ * @subpackage Controllers
+ * @package Framework
+ */
 
 class fileController extends expController {
     public $basemodel_name = "expFile";

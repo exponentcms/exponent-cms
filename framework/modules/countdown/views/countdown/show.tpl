@@ -1,6 +1,5 @@
 {*
- * Copyright (c) 2007-2008 OIC Group, Inc.
- * Written and Designed by Adam Kessler
+ * Copyright (c) 2004-2012 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -13,8 +12,6 @@
  * GPL: http://www.gnu.org/licenses/gpl.txt
  *
  *}
- 
-
 
 <div class="module countdown show">
 
@@ -22,23 +19,23 @@
     {if !$config}
         <strong style="color:red">{"To Display the 'Countdown' Module, you MUST First 'Configure Settings'"|gettext|cat:"!"}</strong>
     {else}    
-    {if $config.title}<h3>{$config.title}</h3>{/if}
+        {if $config.title}<h3>{$config.title}</h3>{/if}
 
-    <script language="JavaScript">
-    TargetDate = "{$config.count}";
-    BackColor = "";
-    ForeColor = "";
-    CountActive = true;
-    CountStepper = -1;
-    LeadingZero = true;
-    DisplayFormat = "D:%%D%% H:%%H%% M:%%M%% S:%%S%%";
-    FinishMessage = "{$config.message}";
-    </script>
-    <script language="JavaScript" src="{$asset_path}/js/countdown.js"></script>
-    
-    <div class="bodycopy">
-        {$config.body}
-    </div>
+        <script language="JavaScript">
+        TargetDate = "{$config.count}";
+        BackColor = "";
+        ForeColor = "";
+        CountActive = true;
+        CountStepper = -1;
+        LeadingZero = true;
+        DisplayFormat = "D:%%D%% H:%%H%% M:%%M%% S:%%S%%";
+        FinishMessage = "{$config.message}";
+        </script>
+        <script language="JavaScript" src="{$asset_path}/js/countdown.js"></script>
+
+        <div class="bodycopy">
+            {$config.body}
+        </div>
     {/if}
 
 </div>

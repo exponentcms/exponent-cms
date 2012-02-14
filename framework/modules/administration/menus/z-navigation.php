@@ -2,8 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2011 OIC Group, Inc.
-# Written and Designed by Adam Kessler
+# Copyright (c) 2004-2012 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -18,6 +17,7 @@
 ##################################################
 
 if (!defined('EXPONENT')) exit('');
+
 global $user, $router, $db, $section;
 
 if (!$db->selectValue('userpermission','uid','uid=\''.$user->id.'\' AND permission!=\'view\' AND internal!=\'\'') && !$user->isAdmin()) return false;

@@ -1,7 +1,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2005-2006 Maxim Mueller
+# Copyright (c) 2004-2012 OIC Group, Inc.
 #
 # This file is part of Exponent
 #

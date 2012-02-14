@@ -2,9 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2011 OIC Group, Inc.
-# Copyright (c) 2006-2007 Maxim Mueller
-# Written and Designed by James Hunt
+# Copyright (c) 2004-2012 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -25,7 +23,10 @@
  * A standalone template is a template (tpl) file found in either
  * THEME_ABSOLUTE/views or BASE/views, which uses
  * the corresponding views_c directory for compilation.
- * 
+ *
+ * @package Subsystems-Forms
+ * @subpackage Template
+ *
  * @param string $view The name of the standalone view.
  */
 class standalonetemplate extends basetemplate {

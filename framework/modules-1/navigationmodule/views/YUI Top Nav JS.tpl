@@ -1,6 +1,5 @@
 {*
- * Copyright (c) 2004-2011 OIC Group, Inc.
- * Written and Designed by Phillip Ball and	 Adam Kessler
+ * Copyright (c) 2004-2012 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -11,7 +10,7 @@
  * License, or (at your option) any later version.
  *
  * GPL: http://www.gnu.org/licenses/gpl.txt
- *{math equation="x*20" x=$section->depth}
+ *
  *}
 
 <div class="navigationmodule yui-top-nav exp-yui-nav">

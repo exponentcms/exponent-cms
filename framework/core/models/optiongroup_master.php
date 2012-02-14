@@ -2,8 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2011 OIC Group, Inc.
-# Written and Designed by Adam Kessler
+# Copyright (c) 2004-2012 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -17,6 +16,10 @@
 #
 ##################################################
 
+/**
+ * @subpackage Core-Models
+ * @package Framework
+ */
 class optiongroup_master extends expRecord {
 	public $has_many = array('option_master');
     //public $has_many_options = array('option_master'=>array('sort'=>'rank', 'sortdir'=>'ASC'));

@@ -2,8 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2006 OIC Group, Inc.
-# Written and Designed by James Hunt
+# Copyright (c) 2004-2012 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -17,7 +16,24 @@
 #
 ##################################################
 
-function smarty_function_ecomconfig($params,&$smarty) {        
+/**
+ * Smarty plugin
+ * @package Smarty-Plugins
+ * @subpackage Function
+ */
+
+/**
+ * Smarty {ecomconfig} function plugin
+ *
+ * Type:     function<br>
+ * Name:     ecomconfig<br>
+ * Purpose:  return the ecom configuration
+ *
+ * @param         $params
+ * @param \Smarty $smarty
+ * @return null|string
+ */
+function smarty_function_ecomconfig($params,&$smarty) {
         $ecc = new ecomconfig();
         $retval = $ecc->getConfig($params['var']);
         if (empty($retval)) return $params['default'];

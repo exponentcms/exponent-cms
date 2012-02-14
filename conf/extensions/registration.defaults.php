@@ -2,9 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2011 OIC Group, Inc.
-# Copyright (c) 2006 Maxim Mueller
-# Written and Designed by James Hunt
+# Copyright (c) 2004-2012 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -20,11 +18,9 @@
 
 if (!defined('SITE_ALLOW_REGISTRATION')) define('SITE_ALLOW_REGISTRATION','0');
 if (!defined('USER_REGISTRATION_USE_EMAIL')) define('USER_REGISTRATION_USE_EMAIL','0');
-
 if (!defined('USER_REGISTRATION_SEND_NOTIF')) define('USER_REGISTRATION_SEND_NOTIF','0');
 if (!defined('USER_REGISTRATION_NOTIF_SUBJECT')) define('USER_REGISTRATION_NOTIF_SUBJECT','New User Registration From Website');
 if (!defined('USER_REGISTRATION_ADMIN_EMAIL')) define('USER_REGISTRATION_ADMIN_EMAIL','');
-
 if (!defined('USER_REGISTRATION_SEND_WELCOME')) define('USER_REGISTRATION_SEND_WELCOME','0');
 if (!defined('USER_REGISTRATION_WELCOME_SUBJECT')) define('USER_REGISTRATION_WELCOME_SUBJECT','Welcome to our website!');
 if (!defined('USER_REGISTRATION_WELCOME_MSG')) define('USER_REGISTRATION_WELCOME_MSG','');

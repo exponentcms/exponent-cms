@@ -2,8 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2011 OIC Group, Inc.
-# Written and Designed by Adam Kessler
+# Copyright (c) 2004-2012 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -17,6 +16,22 @@
 #
 ##################################################
 
+/**
+ * Smarty plugin
+ * @package Smarty-Plugins
+ * @subpackage Function
+ */
+
+/**
+ * Smarty {chainbytags} function plugin
+ *
+ * Type:     function<br>
+ * Name:     chainbytags<br>
+ * Purpose:  chain template using the 'tags' view
+ *
+ * @param         $params
+ * @param \Smarty $smarty
+ */
 function smarty_function_chainbytags($params,&$smarty) {
 	if (empty($params['controller'])) return false;
 

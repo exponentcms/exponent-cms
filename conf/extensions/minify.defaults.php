@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2011 OIC Group, Inc. and Contributors
+# Copyright (c) 2004-2012 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -21,4 +21,5 @@ if (!defined('MINIFY_MAXAGE')) define('MINIFY_MAXAGE',180000);
 if (!defined('MINIFY_URL_LENGTH')) define('MINIFY_URL_LENGTH',1500);
 if (!defined('MINIFY_ERROR_LOGGER')) define('MINIFY_ERROR_LOGGER',0);
 if (!defined('MINIFY_MAX_FILES')) define('MINIFY_MAX_FILES',30);
+
 ?>

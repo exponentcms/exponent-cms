@@ -1,6 +1,5 @@
 {*
- * Copyright (c) 2004-2008 OIC Group, Inc.
- * Written and Designed by Adam Kessler
+ * Copyright (c) 2004-2012 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -13,7 +12,6 @@
  * GPL: http://www.gnu.org/licenses/gpl.txt
  *
  *}
- 
  
 {css unique="add-to-cart" link="`$smarty.const.PATH_RELATIVE`framework/modules/ecommerce/assets/css/addToCart.css"}
 
