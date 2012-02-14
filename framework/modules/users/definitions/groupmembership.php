@@ -18,7 +18,7 @@
 
 /**
  * @subpackage Definitions
- * @package Framework
+ * @package Modules
  */
 return array(
 	'member_id'=>array(

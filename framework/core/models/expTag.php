@@ -18,8 +18,8 @@
 /**
  * This is the class expTag
  *
- * @subpackage Core-Models
- * @package Framework
+ * @subpackage Models
+ * @package Core
  */
 class expTag extends expRecord {
 	public $table = 'expTags';

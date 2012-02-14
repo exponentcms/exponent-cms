@@ -18,7 +18,7 @@
 /**
  * This is the class expCSS
  *
- * @package Framework
+ * @package Subsystems
  * @subpackage Subsystems
  */
 

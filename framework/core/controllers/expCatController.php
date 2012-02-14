@@ -18,8 +18,8 @@
 /**
  * This is the class expCatController
  *
- * @subpackage Core-Controllers
- * @package Framework
+ * @package Core
+ * @subpackage Controllers
  */
 
 class expCatController extends expController {

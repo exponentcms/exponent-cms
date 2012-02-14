@@ -18,7 +18,7 @@
 /**
  * This is the class expLDAP
  *
- * @package Framework
+ * @package Subsystems
  * @subpackage Subsystems
  */
 

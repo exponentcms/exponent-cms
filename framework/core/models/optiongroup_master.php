@@ -17,8 +17,8 @@
 ##################################################
 
 /**
- * @subpackage Core-Models
- * @package Framework
+ * @subpackage Models
+ * @package Core
  */
 class optiongroup_master extends expRecord {
 	public $has_many = array('option_master');

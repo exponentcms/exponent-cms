@@ -18,7 +18,7 @@
 /**
  * This is the class expPermissions
  *
- * @package Framework
+ * @package Subsystems
  * @subpackage Subsystems
  */
 /** @define "BASE" "../../.." */

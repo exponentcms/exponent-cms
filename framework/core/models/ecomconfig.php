@@ -17,8 +17,8 @@
 ##################################################
 
 /**
- * @subpackage Core-Models
- * @package Framework
+ * @subpackage Models
+ * @package Core
  */
 class ecomconfig extends expConfig {
     public static function getConfig($configname) {

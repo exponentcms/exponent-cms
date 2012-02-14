@@ -17,8 +17,8 @@
 ##################################################
 
 /**
- * @subpackage Core-Models
- * @package Framework
+ * @subpackage Models
+ * @package Core
  */
 class pricegrabber_product_types extends product_type {
 	public $table = 'pricegrabber_product_types';

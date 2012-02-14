@@ -18,7 +18,7 @@
 
 /**
  * @subpackage Controllers
- * @package Framework
+ * @package Modules
  */
 
 class order_typeController extends expController {

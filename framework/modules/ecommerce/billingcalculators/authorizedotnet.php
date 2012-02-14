@@ -17,7 +17,7 @@
 
 /**
  * @subpackage Calculators
- * @package Framework
+ * @package Modules
  */
 
 define('ECOM_AUTHORIZENET_AUTH_CAPTURE',0);

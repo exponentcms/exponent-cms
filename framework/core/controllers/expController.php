@@ -18,8 +18,8 @@
 /**
  * This is the class expController
  *
- * @subpackage Core-Controllers
- * @package Framework
+ * @package Core
+ * @subpackage Controllers
  */
 
 abstract class expController {

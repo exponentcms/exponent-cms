@@ -18,7 +18,7 @@
 
 /**
  * @subpackage Profile-Extensions
- * @package Framework
+ * @package Modules
  */
 
 class user_address extends expRecord {

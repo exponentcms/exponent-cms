@@ -18,8 +18,8 @@
 /**
  * This is the class expModuleController
  *
- * @subpackage Core-Controllers
- * @package Framework
+ * @package Core
+ * @subpackage Controllers
  */
 
 class expModuleController extends expController {

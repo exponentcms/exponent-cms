@@ -17,7 +17,7 @@
 
 /**
  * @subpackage Controllers
- * @package Framework
+ * @package Modules
  */
 
 class blogController extends expController {

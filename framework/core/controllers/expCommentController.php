@@ -18,8 +18,8 @@
 /**
  * This is the class expCommentController
  *
- * @subpackage Core-Controllers
- * @package Framework
+ * @package Core
+ * @subpackage Controllers
  */
 
 class expCommentController extends expController {

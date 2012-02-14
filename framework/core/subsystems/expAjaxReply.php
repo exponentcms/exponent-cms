@@ -18,7 +18,7 @@
 /**
  * This is the class expAjaxReply
  *
- * @package Framework
+ * @package Subsystems
  * @subpackage Subsystems
  */
 

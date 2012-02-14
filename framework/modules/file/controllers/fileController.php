@@ -18,7 +18,7 @@
 
 /**
  * @subpackage Controllers
- * @package Framework
+ * @package Modules
  */
 
 class fileController extends expController {

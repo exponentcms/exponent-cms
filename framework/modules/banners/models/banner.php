@@ -18,7 +18,7 @@
 
 /**
  * @subpackage Models
- * @package Framework
+ * @package Modules
  */
 
 class banner extends expRecord {

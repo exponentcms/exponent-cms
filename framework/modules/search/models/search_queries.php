@@ -18,7 +18,7 @@
 
 /**
  * @subpackage Models
- * @package Framework
+ * @package Modules
  */
 
 class search_queries extends expRecord {

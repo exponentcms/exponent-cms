@@ -20,7 +20,7 @@
  * expMail is an integrator class, bringing the flexibility of SwiftMail into Exponent gracefully.
  * More docs to follow as I become more familiar with SwiftMail.
  *
- * @package Framework
+ * @package Subsystems
  * @subpackage Subsystems
  */
 /** @define "BASE" "../../.." */

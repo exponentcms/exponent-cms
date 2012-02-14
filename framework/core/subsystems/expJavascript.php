@@ -18,7 +18,7 @@
 /**
  * This is the class expJavascript
  *
- * @package Framework
+ * @package Subsystems
  * @subpackage Subsystems
  */
 /** @define "BASE" "../../.." */

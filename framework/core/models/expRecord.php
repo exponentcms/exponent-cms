@@ -18,8 +18,8 @@
 /**
  * This is the class expRecord
  *
- * @subpackage Core-Models
- * @package Framework
+ * @subpackage Models
+ * @package Core
  */
 class expRecord {
     protected $classinfo = null;

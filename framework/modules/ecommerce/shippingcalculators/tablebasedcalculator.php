@@ -18,7 +18,7 @@
 
 /**
  * @subpackage Calculators
- * @package Framework
+ * @package Modules
  */
 
 class tablebasedcalculator extends shippingcalculator {

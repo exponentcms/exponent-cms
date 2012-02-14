@@ -17,7 +17,7 @@
 
 /**
  * @subpackage Calculators
- * @package Framework
+ * @package Modules
  */
 
 //TODO: make into php5 class with access modifiers proprities and all that jazz.

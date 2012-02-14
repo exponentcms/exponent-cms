@@ -18,8 +18,8 @@
 /**
  * This is the class expSession
  *
- * @package Framework
- * @subpackage Subssytems
+ * @package Subsystems
+ * @subpackage Subsystems
  */
 
 class expSession {

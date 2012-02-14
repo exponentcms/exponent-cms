@@ -17,7 +17,7 @@
 
 /**
  * @subpackage Calculators
- * @package Framework
+ * @package Modules
  */
 /** @define "BASE" "../../../.." */
 

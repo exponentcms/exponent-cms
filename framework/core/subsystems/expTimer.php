@@ -25,7 +25,7 @@
  * @copyright Copyright (c) 2007, John Ciacia
  * @license [url=http://opensource.org/licenses/gpl-license.php]Open Source Initiative OSI - The GPL:Licensing | Open Source Initiative[/url] GNU Public License
  *
- * @package    Framework
+ * @package    Subsystems
  * @subpackage Subsystems
  */
 /** @define "BASE" "../../.." */

@@ -18,7 +18,7 @@
 /**
 * This is the class expTemplate
 *
- * @package    Framework
+ * @package    Subsystems
  * @subpackage Subsystems
  */
 /** @define "BASE" "../../.." */

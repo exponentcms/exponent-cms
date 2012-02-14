@@ -18,8 +18,8 @@
 /**
  * This is the class expTagController
  *
- * @subpackage Core-Controllers
- * @package Framework
+ * @package Core
+ * @subpackage Controllers
  */
 
 class expRatingController extends expController {

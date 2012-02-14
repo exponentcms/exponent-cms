@@ -18,8 +18,8 @@
 /**
  * This is the class expCat
  *
- * @subpackage Core-Models
- * @package Framework
+ * @subpackage Models
+ * @package Core
  */
 
 class expCat extends expRecord {

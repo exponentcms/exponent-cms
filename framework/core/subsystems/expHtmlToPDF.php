@@ -18,7 +18,7 @@
 /**
  * This is the class expHtmlToPDF
  *
- * @package Framework
+ * @package Subsystems
  * @subpackage Subsystems
  */
 

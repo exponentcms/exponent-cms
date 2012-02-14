@@ -18,7 +18,7 @@
 /**
  * This is the class expUtil
  *
- * @package    Framework
+ * @package    Subsystems
  * @subpackage Subsystems
  */
 /** @define "BASE" "../../.." */

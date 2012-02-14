@@ -17,7 +17,7 @@
 
 /**
  * @subpackage Controllers
- * @package Framework
+ * @package Modules
  */
 
 class migrationController extends expController {

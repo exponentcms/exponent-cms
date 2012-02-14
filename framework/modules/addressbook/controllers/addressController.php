@@ -17,8 +17,8 @@
 ##################################################
 
 /**
+ * @package Modules
  * @subpackage Controllers
- * @package Framework
  */
 
 class addressController extends expController {

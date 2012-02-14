@@ -17,8 +17,8 @@
 ##################################################
 
 /**
- * @subpackage Core-Models
- * @package Framework
+ * @subpackage Models
+ * @package Core
  */
 class shopzilla_product_types extends product_type {
 	public $table = 'shopzilla_product_types';

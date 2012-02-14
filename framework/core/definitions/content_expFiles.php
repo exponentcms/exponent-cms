@@ -17,8 +17,8 @@
 ##################################################
 
 /**
- * @subpackage Core-Definitions
- * @package Framework
+ * @subpackage Definitions
+ * @package Core
  */
 return array(
 	'expfiles_id'=>array(

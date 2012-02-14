@@ -18,7 +18,7 @@
 
 /**
  * @subpackage Definitions
- * @package Framework
+ * @package Modules
  */
 return array(
     'user_id'=>array(

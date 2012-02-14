@@ -18,7 +18,7 @@
 /**
  * This is the class expBot
  *
- * @package Framework
+ * @package Subsystems
  * @subpackage Subsystems
  */
 

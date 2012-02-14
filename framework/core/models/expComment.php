@@ -18,8 +18,8 @@
 /**
  * This is the class expComment
  *
- * @subpackage Core-Models
- * @package Framework
+ * @subpackage Models
+ * @package Core
  */
 
 class expComment extends expRecord {

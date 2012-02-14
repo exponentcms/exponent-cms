@@ -18,7 +18,7 @@
 
 /**
  * @subpackage Profile-Extensions
- * @package Framework
+ * @package Modules
  */
 class user_avatar extends expRecord {
 #    public $validates = array(

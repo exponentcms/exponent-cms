@@ -17,7 +17,7 @@
 
 /**
  * @subpackage Calculators
- * @package Framework
+ * @package Modules
  */
 class payflowpro extends creditcard {
 	function name() { return "Payflow Pro Payment Gateway"; }

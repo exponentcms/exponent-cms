@@ -18,7 +18,7 @@
 /**
  * This is the class expLang
  *
- * @package Framework
+ * @package Subsystems
  * @subpackage Subsystems
  */
 /** @define "BASE" "../../.." */

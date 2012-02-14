@@ -19,7 +19,7 @@
  * This is the expDatabase subsystem
  * Handles all database abstraction in Exponent.
  *
- * @package Framework
+ * @package Subsystems
  * @subpackage Subsystems
  */
 class expDatabase {

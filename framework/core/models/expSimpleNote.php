@@ -18,8 +18,8 @@
 /**
  * This is the class expSimpleNote
  *
- * @subpackage Core-Models
- * @package Framework
+ * @subpackage Models
+ * @package Core
  */
 class expSimpleNote extends expRecord {
     public $table = 'expSimpleNote';

@@ -16,8 +16,8 @@
 ##################################################
 
 /**
- * @subpackage Core-Models
- * @package Framework
+ * @subpackage Models
+ * @package Core
  */
 /** @define "BASE" "../../.." */
 
@@ -31,8 +31,8 @@
   * and importing of data in preparation of data importation. Upload and
   * import via child classes.
   *
- * @subpackage Core-Models
- * @package Framework
+ * @subpackage Models
+ * @package Core
   *
   */
 class expFile extends expRecord {

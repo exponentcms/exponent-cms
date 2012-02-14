@@ -18,7 +18,7 @@
 /**
  * This is the class expModules
  *
- * @package Framework
+ * @package Subsystems
  * @subpackage Subsystems
  */
 

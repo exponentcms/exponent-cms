@@ -18,7 +18,7 @@
 
 /**
  * @subpackage Controllers
- * @package Framework
+ * @package Modules
  */
 /** @define "BASE" "../../../.." */
 
@@ -963,7 +963,7 @@ class administrationController extends expController {
  * This is the base theme class
  *
  * @subpackage Core-Controllers
- * @package Framework
+ * @package Modules
  */
 class theme {
 	public $user_configured = false;

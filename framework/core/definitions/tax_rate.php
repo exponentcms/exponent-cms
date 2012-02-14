@@ -16,8 +16,8 @@
 ##################################################
 
 /**
- * @subpackage Core-Definitions
- * @package Framework
+ * @subpackage Definitions
+ * @package Core
  */
 return array(
 	"id"=>array(

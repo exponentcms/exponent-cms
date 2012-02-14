@@ -18,8 +18,8 @@
 /**
  * This is the class expRss
  *
- * @subpackage Core-Models
- * @package Framework
+ * @subpackage Models
+ * @package Core
  */
 /** @define "BASE" "../../../" */
 

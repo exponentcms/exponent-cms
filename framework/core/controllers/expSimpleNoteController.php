@@ -18,8 +18,8 @@
 /**
  * This is the class expSimpleNoteController
  *
- * @subpackage Core-Controllers
- * @package Framework
+ * @package Core
+ * @subpackage Controllers
  */
 
 class expSimpleNoteController extends expController {

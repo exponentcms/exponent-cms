@@ -18,7 +18,7 @@
 /**
  * This is the class expQueue
  *
- * @package Framework
+ * @package Subsystems
  * @subpackage Subsystems
  */
 

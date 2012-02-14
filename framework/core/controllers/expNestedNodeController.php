@@ -18,8 +18,8 @@
 /**
  * This is the class expNestedNodeController
  *
- * @subpackage Core-Controllers
- * @package Framework
+ * @package Core
+ * @subpackage Controllers
  */
 
 class expNestedNodeController extends expController {

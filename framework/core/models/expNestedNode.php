@@ -18,8 +18,8 @@
 /**
  * This is the class expNestedNode
  *
- * @subpackage Core-Models
- * @package Framework
+ * @subpackage Models
+ * @package Core
  */
 abstract class expNestedNode extends expRecord {
 

@@ -18,7 +18,7 @@
 /**
  * This is the class expCore
  *
- * @package Framework
+ * @package Subsystems
  * @subpackage Subsystems
  */
 /** @define "BASE" "../../.." */

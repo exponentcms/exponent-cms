@@ -18,8 +18,8 @@
 /**
  * This is the class expHTMLEditorController
  *
- * @subpackage Core-Controllers
- * @package Framework
+ * @package Core
+ * @subpackage Controllers
  */
 
 class expHTMLEditorController extends expController {

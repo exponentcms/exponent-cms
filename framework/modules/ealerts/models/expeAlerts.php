@@ -17,7 +17,7 @@
 
 /**
  * @subpackage Models
- * @package Framework
+ * @package Modules
  */
  
 class expeAlerts extends expRecord {
