@@ -34,13 +34,14 @@ class help extends expRecord {
 	public function save() {
         global $db;
 
-		if (isset($_POST['section'])) {
+		if (isset($_POST['help_section'])) {
 			// manipulate section & location_data to correct values
-			$hlpsection = $db->selectObject('sectionref','module = "helpController" AND source = "'.$_POST['section'].'"');
-			$this->section = $hlpsection->section;
+//			$hlpsection = $db->selectObject('sectionref','module = "helpController" AND source = "'.$_POST['section'].'"');
+//            $hlpsection = $db->selectValue('sectionref', 'section', 'module = "helpController" AND source="' . $_POST['section'] .'"');
+			$this->section = $db->selectValue('sectionref', 'section', 'module = "helpController" AND source="' . $_POST['help_section'] .'"');
 			$loc = null;
 			$loc->mod = 'help';
-			$loc->src = $_POST['section'];
+			$loc->src = $_POST['help_section'];
 			$loc->int = '';
 			$this->location_data = serialize($loc);
 		}
