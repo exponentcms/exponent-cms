@@ -118,6 +118,10 @@ class helpController extends expController {
 	    expHistory::set('viewable', $this->params);
 
 	    $help = new help();
+//        if (empty($this->params['title']) && !empty($this->params['version'])) {
+//            $this->params['title'] = $this->params['version'];
+//            $this->params['version'] = 'current';
+//        }
         if (empty($this->params['version']) || $this->params['version'] == 'current') {
 	        $version_id = $db->selectValue('help_version', 'id', 'is_current=1');
 	    } else {
@@ -398,7 +402,11 @@ class helpController extends expController {
 	public static function getSection($params) {
 	    global $db;
 	    $h = new help();
-	    $hv = $db->selectValue('help_version', 'id', 'version='.$params['version']);
+        if (empty($params['version']) || $params['version']=='current') {
+            $hv = $db->selectValue('help_version', 'id', 'is_current=1');
+        } else {
+            $hv = $db->selectValue('help_version', 'id', 'version='.$params['version']);
+        }
 	    $help = $h->find('first','help_version_id='.$hv.' and sef_url=\''.$params['title'].'\'');
 	    $sessec = expSession::get('last_section') ? expSession::get('last_section') : 1 ;
 	    $sid = ($help->section!=0)?$help->section:$sessec;

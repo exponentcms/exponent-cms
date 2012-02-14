@@ -52,7 +52,8 @@
             {/permissions}
             
             <div class="bodycopy">
-                {$doc->summary}
+                {*{$doc->summary}*}
+                {$doc->body|summarize:"html":"paralinks"}
             </div>
             
         </div>
