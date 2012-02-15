@@ -1,6 +1,3 @@
-/*!
- * Minify URI Builder
- */
 var MUB = {
     _uid : 0
     ,_minRoot : '/min/?'
@@ -200,12 +197,11 @@ var MUB = {
      * Runs on DOMready
      */
     ,init : function () {
-        $('#jsDidntLoad').hide();
         $('#app').show();
         $('#sources').html('');
         $('#add button').click(MUB.addButtonClick);
         // make easier to copy text out of
-        $('#uriHtml, #groupConfig, #symlinkOpt').click(function () {
+        $('#uriHtml, #groupConfig').click(function () {
             this.select();
         }).focus(function () {
             this.select();
@@ -226,9 +222,10 @@ var MUB = {
                 return false;
             }).attr({title:'Add file +'});
         } else {
-            // setup bookmarklet 1
+            // copy bookmarklet code into href
+            var bmUri = location.pathname.replace(/\/[^\/]*$/, '/bm.js').substr(1);
             $.ajax({
-                url : '../?f=' + location.pathname.replace(/\/[^\/]*$/, '/bm.js').substr(1)
+                url : '../?f=' + bmUri
                 ,success : function (code) {
                     $('#bm')[0].href = code
                         .replace('%BUILDER_URL%', location.href)
@@ -239,15 +236,7 @@ var MUB = {
             $.browser.msie && $('#getBm p:last').append(' Sorry, not supported in MSIE!');
             MUB.addButtonClick();
         }
-        // setup bookmarklet 2
-        $.ajax({
-            url : '../?f=' + location.pathname.replace(/\/[^\/]*$/, '/bm2.js').substr(1)
-            ,success : function (code) {
-                $('#bm2')[0].href = code.replace(/\n/g, ' ');
-            }
-            ,dataType : 'text'
-        });
         MUB.checkRewrite();
     }
 };
-$(MUB.init);
+window.onload = MUB.init;

@@ -52,10 +52,9 @@ abstract class Minify_Controller_Base {
             ,'quiet' => false // serve() will send headers and output
             ,'debug' => false
             
-            // if you override these, the response codes MUST be directly after
+            // if you override this, the response code MUST be directly after 
             // the first space.
             ,'badRequestHeader' => 'HTTP/1.0 400 Bad Request'
-            ,'errorHeader'      => 'HTTP/1.0 500 Internal Server Error'
             
             // callback function to see/modify content of all sources
             ,'postprocessor' => null
@@ -118,8 +117,6 @@ abstract class Minify_Controller_Base {
      * be in subdirectories of these directories.
      * 
      * @return bool file is safe
-     *
-     * @deprecated use checkAllowDirs, checkNotHidden instead
      */
     public static function _fileIsSafe($file, $safeDirs)
     {
@@ -137,28 +134,7 @@ abstract class Minify_Controller_Base {
         list($revExt) = explode('.', strrev($base));
         return in_array(strrev($revExt), array('js', 'css', 'html', 'txt'));
     }
-
     
-    public static function checkAllowDirs($file, $allowDirs, $uri)
-    {
-        foreach ((array)$allowDirs as $allowDir) {
-            if (strpos($file, $allowDir) === 0) {
-                return true;
-            }
-        }
-        throw new Exception("File '$file' is outside \$allowDirs. If the path is"
-            . " resolved via an alias/symlink, look into the \$min_symlinks option."
-            . " E.g. \$min_symlinks['/" . dirname($uri) . "'] = '" . dirname($file) . "';");
-    }
-
-    public static function checkNotHidden($file)
-    {
-        $b = basename($file);
-        if (0 === strpos($b, '.')) {
-            throw new Exception("Filename '$b' starts with period (may be hidden)");
-        }
-    }
-
     /**
      * @var array instances of Minify_Source, which provide content and
      * any individual minification needs.
@@ -167,15 +143,6 @@ abstract class Minify_Controller_Base {
      */
     public $sources = array();
     
-    /**
-     * The setupSources() method may choose to set this, making it easier to 
-     * recognize a particular set of sources/settings in the cache folder. It
-     * will be filtered and truncated to make the final cache id <= 250 bytes.
-     * 
-     * @var string short name to place inside cache id
-     */
-    public $selectionId = '';
-
     /**
      * Mix in default controller options with user-given options
      * 
@@ -228,7 +195,7 @@ abstract class Minify_Controller_Base {
      * @param string $msg
      * @return null
      */
-    public function log($msg) {
+    protected function log($msg) {
         require_once 'Minify/Logger.php';
         Minify_Logger::log($msg);
     }

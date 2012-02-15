@@ -54,12 +54,9 @@ class Minify_Cache_APC {
      */
     public function getSize($id)
     {
-        if (! $this->_fetch($id)) {
-            return false;
-        }
-        return (function_exists('mb_strlen') && ((int)ini_get('mbstring.func_overload') & 2))
-            ? mb_strlen($this->_data, '8bit')
-            : strlen($this->_data);
+        return $this->_fetch($id)
+            ? strlen($this->_data)
+            : false;
     }
 
     /**
