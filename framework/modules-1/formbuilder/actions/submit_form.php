@@ -121,17 +121,17 @@ if (!isset($_POST['data_id']) || (isset($_POST['data_id']) && expPermissions::ch
 		if (empty($from_name)) {
 			$from_name = trim(ORGANIZATION_NAME);
 		}
-		$headers = array(
-			"MIME-Version"=>"1.0",
-			"Content-type"=>"text/html; charset=".LANG_CHARSET
-		);
+//		$headers = array(
+//			"MIME-Version"=>"1.0",
+//			"Content-type"=>"text/html; charset=".LANG_CHARSET
+//		);
         if (count($emaillist)) {
             //This is an easy way to remove duplicates
             $emaillist = array_flip(array_flip($emaillist));
             $emaillist = array_map('trim', $emaillist);
 			$mail = new expMail();
 			$mail->quickSend(array(
-					'headers'=>$headers,
+//					'headers'=>$headers,
 					'html_message'=>$emailHtml,
 					"text_message"=>$emailText,
 					'to'=>$emaillist,
