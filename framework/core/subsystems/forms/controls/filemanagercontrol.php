@@ -221,7 +221,7 @@ class filemanagercontrol extends formcontrol {
                         var df = Y.one('#filelist".$name."');
                         var objson = Y.JSON.parse(o.responseText);
                         var obj = objson.data;
-                        if (obj.mimetype!='image/png' && obj.mimetype!='image/gif' && obj.mimetype!='image/jpeg'){
+                        if (obj.mimetype!='image/png' && obj.mimetype!='image/gif' && obj.mimetype!='image/jpeg' && obj.mimetype!='image/pjpeg' && obj.mimetype!='image/x-png') {
                             var filepic = '<img class=\"filepic\" src=\"'+EXPONENT.ICON_RELATIVE+'\"attachableitems/generic_22x22.png\">';
                         } else {
                             var filepic = '<img class=\"filepic\" src=\"'+EXPONENT.URL_FULL+'thumb.php?id='+obj.id+'&amp;w=24&amp;h=24&amp;zc=1\">';
@@ -321,7 +321,7 @@ class filemanagercontrol extends formcontrol {
         //$cycle = "odd";
         $html='';
         foreach($filearray as $val) {
-            if ($val->mimetype!="image/png" && $val->mimetype!="image/gif" && $val->mimetype!="image/jpeg"){
+            if ($val->mimetype!="image/png" && $val->mimetype!="image/gif" && $val->mimetype!="image/jpeg" && $val->mimetype!="image/pjpeg" && $val->mimetype!="image/x-png") {
                 $filepic = "<img class=\"filepic\" src='".ICON_RELATIVE."attachableitems/generic_22x22.png'>";
             } else {
                 $filepic = "<img class=\"filepic\" src=\"".URL_FULL."thumb.php?id=".$val->id."&amp;w=24&amp;h=24&amp;zc=1\">";
