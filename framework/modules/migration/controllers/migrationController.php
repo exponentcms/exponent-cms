@@ -1267,7 +1267,7 @@ class migrationController extends expController {
 				switch ($module->view) {
 					case 'Slideshow':
 						$module->action = 'slideshow';
-						$module->view = 'showall';
+						$module->view = 'slideshow';
 						break;
 					default:
 						$module->view = 'showall';

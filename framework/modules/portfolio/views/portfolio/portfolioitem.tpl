@@ -42,10 +42,12 @@
             {$record->body}
         {/if}
     </div>
+    {clear}
     {permissions}
         {if $permissions.create == 1}
-            {icon class="add addhere" action=edit rank=$record->rank+1 title="Add another here"|gettext  text="Add a portfolio piece here"|gettext}
+            <div class="module-actions">
+                {icon class="add addhere" action=edit rank=$record->rank+1 title="Add another here"|gettext  text="Add a portfolio piece here"|gettext}
+            </div>
         {/if}
     {/permissions}
-    {clear}
 </div>
