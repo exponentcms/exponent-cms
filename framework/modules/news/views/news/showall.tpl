@@ -65,15 +65,18 @@
             {/if}
 
             <div class="bodycopy">
-                {filedisplayer view="`$config.filedisplay`" files=$item->expFile record=$item is_listing=1}
-
+                {if $config.filedisplay != "Downloadable Files"}
+                    {filedisplayer view="`$config.filedisplay`" files=$item->expFile record=$item is_listing=1}
+                {/if}
                 {if $config.usebody==1}
                     <p>{$item->body|summarize:"html":"paralinks"}</p>
                 {elseif $config.usebody==2}
 				{else}
                     {$item->body}
                 {/if}
-
+                {if $config.filedisplay == "Downloadable Files"}
+                    {filedisplayer view="`$config.filedisplay`" files=$item->expFile record=$item is_listing=1}
+                {/if}
                 <a class="readmore" href="{if $item->isRss}{$item->rss_link}{else}{link action=showByTitle title=$item->sef_url}{/if}">{"Read More"|gettext}</a>
             </div>
             {clear}

@@ -37,7 +37,12 @@
 		</div>
 	{/if}
 	<div class="bodycopy">
-        {filedisplayer view="`$config.filedisplay`" files=$record->expFile record=$record}
+        {if $config.filedisplay != "Downloadable Files"}
+            {filedisplayer view="`$config.filedisplay`" files=$record->expFile record=$record}
+        {/if}
 		{$record->body}
+        {if $config.filedisplay == "Downloadable Files"}
+            {filedisplayer view="`$config.filedisplay`" files=$record->expFile record=$record}
+        {/if}
 	</div>
 </div>

@@ -48,8 +48,13 @@
 		{/if}
     </div>
     <div class="bodycopy">
-        {filedisplayer view="`$config.filedisplay`" files=$record->expFile id=$record->id}
+        {if $config.filedisplay != "Downloadable Files"}
+            {filedisplayer view="`$config.filedisplay`" files=$record->expFile record=$record}
+        {/if}
         {$record->body}
+        {if $config.filedisplay == "Downloadable Files"}
+            {filedisplayer view="`$config.filedisplay`" files=$record->expFile record=$record}
+        {/if}
     </div>
     {comments content_type="blog" content_id=$record->id title="Comments"|gettext}
 </div>

@@ -47,8 +47,13 @@
 						</div>
                     {/permissions}
                     <div class="bodycopy">
-                        {filedisplayer view="`$config.filedisplay`" files=$text->expFile id=$text->id}
+                        {if $config.filedisplay != "Downloadable Files"}
+                            {filedisplayer view="`$config.filedisplay`" files=$text->expFile record=$text}
+                        {/if}
                         {$text->body}
+                        {if $config.filedisplay == "Downloadable Files"}
+                            {filedisplayer view="`$config.filedisplay`" files=$text->expFile record=$text}
+                        {/if}
                     </div>
 					{permissions}
 						<div class="module-actions">
