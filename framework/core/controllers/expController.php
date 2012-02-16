@@ -558,20 +558,22 @@ abstract class expController {
 
 	/**
 	 * get the items in an rss feed format
+     *
+     * this function is very general and will most of the time need to be overwritten and customized
+     *
 	 * @return array
 	 */
 	function getRSSContent() {
-        // this function is very general and will most of the time need to be overwritten and customized
-        
-        global $db;     
+        global $db;
     
         // setup the where clause for looking up records.
         $where = $this->aggregateWhereClause();
 //        $where = empty($where) ? '1' : $where;
 		
-//        $items = $db->selectObjects($this->basemodel_name, $where.' ORDER BY created_at');
+        $order = isset($this->config['order']) ? $this->config['order'] : 'created_at';
+
         $class = new $this->basemodel_name;
-        $items = $class->find('all', $where, 'created_at');
+        $items = $class->find('all', $where, $order);
 
         //Convert the items to rss items
         $rssitems = array();

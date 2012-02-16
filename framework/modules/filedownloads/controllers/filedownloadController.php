@@ -150,9 +150,10 @@ class filedownloadController extends expController {
         // setup the where clause for looking up records.
         $where = $this->aggregateWhereClause();
 
-        //$items = $db->selectObjects($this->model_table, $where.' ORDER BY created_at');
+        $order = isset($this->config['order']) ? $this->config['order'] : 'created_at DESC';
+
         $fd = new filedownload();
-        $items = $fd->find('all',$where);
+        $items = $fd->find('all',$where, $order);
         
         //Convert the items to rss items
         $rssitems = array();
