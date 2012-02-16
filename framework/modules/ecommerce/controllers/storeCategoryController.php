@@ -31,13 +31,15 @@ class storeCategoryController extends expNestedNodeController {
 
     // hide the configs we don't need
     public $remove_configs = array(
+        'aggregation',
+        'categories',
         'comments',
         'ealerts',
         'files',
+        'module_title',
         'rss',
-        'aggregation',
         'tags'
-    ); // all options: ('aggregation', 'cats','comments','ealerts','files','module_title','pagination', 'rss','tags')
+    ); // all options: ('aggregation','categories','comments','ealerts','files','module_title','pagination','rss','tags')
 
     public function edit() {
 		global $db;

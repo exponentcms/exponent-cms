@@ -1309,7 +1309,7 @@ class migrationController extends expController {
 							$loc->mod = "photos";
 							$photo->title = (!empty($gi['name'])) ? $gi['name'] : 'Untitled';
 							$photo->body = $gi['description'];
-							$photo->alt = $gi['alt'];
+							$photo->alt = !empty($gi['alt']) ? $gi['alt'] : $photo->title;
 							$photo->location_data = serialize($loc);
 							if (!empty($gi['file_id'])) {
 								$photo->save();
@@ -1353,7 +1353,7 @@ class migrationController extends expController {
                         $loc->int = $iloc->int;
                         $photo->title = (!empty($gi['name'])) ? $gi['name'] : 'Untitled';
                         $photo->body = $gi['description'];
-                        $photo->alt = empty($gi['alt']) ? '' : $gi['alt'];
+                        $photo->alt = !empty($gi['alt']) ? $gi['alt'] : $photo->title;
                         $photo->location_data = serialize($loc);
                         $te = $photo->find('first',"location_data='".$photo->location_data."'");
                         if (empty($te)) {

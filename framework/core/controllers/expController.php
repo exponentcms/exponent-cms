@@ -55,7 +55,7 @@ abstract class expController {
 	function requiresConfiguration() { return false; }
     
     public $requires_login = array();
-    public $remove_configs = array(); // all options: ('aggregation', 'cats','comments','ealerts','files','module_title','pagination', 'rss','tags')
+    public $remove_configs = array(); // all options: ('aggregation','categories','comments','ealerts','files','module_title','pagination','rss','tags')
     public $config = array();
     public $basemodel_name = '';
     public $model_table = '';
@@ -420,6 +420,7 @@ abstract class expController {
                 }
 	        }
         }
+
         //check for and handle cats
         if (array_key_exists('expCat',$this->params)&&!empty($this->params['expCat'])) {
             $catid = $this->params['expCat'];

@@ -33,10 +33,10 @@ class snippetController extends expController {
         'categories',
    		'comments',
         'files',
+        'ealerts',
    		'rss',
-   		'ealerts',
    		'tags'
-   	); // all options: ('aggregation', 'categories','comments','ealerts','files','module_title','pagination', 'rss','tags')
+   	); // all options: ('aggregation','categories','comments','ealerts','files','module_title','pagination','rss','tags')
 
 	function displayname() { return "Code Snippets"; }
 	function description() { return "Use this to put snippets of code, i.e. Javascript, embedded video, etc, on your site."; }

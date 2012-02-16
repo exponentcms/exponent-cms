@@ -34,7 +34,7 @@ class countdownController extends expController {
         'files',
         'rss',
         'tags'
-    ); // all options: ('aggregation', 'categories','comments','ealerts','files','module_title','pagination', 'rss','tags')
+    ); // all options: ('aggregation','categories','comments','ealerts','files','module_title','pagination','rss','tags')
 
 	function displayname() { return "Countdown"; }
 	function description() { return "This module allows you to display a timer counting down to a specified date/time."; }

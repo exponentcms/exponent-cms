@@ -44,7 +44,7 @@ class importexportController extends expController {
         'files',
         'rss',
         'tags'
-    ); // all options: ('aggregation', 'categories','comments','ealerts','files','module_title','pagination', 'rss','tags')
+    ); // all options: ('aggregation','categories','comments','ealerts','files','module_title','pagination','rss','tags')
     
     //protected $permissions = array_merge(array("test"=>'Test'), array('copyProduct'=>"Copy Product"));
     protected $add_permissions = array('import'=>'Import Data', 'export'=>'Export Data');

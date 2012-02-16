@@ -31,10 +31,10 @@ class rssController extends expController {
         'aggregation',
         'categories',
         'comments',
+        'ealerts',
         'files',
-        //'rss',
         'tags'
-    ); // all options: ('aggregation', 'categories','comments','ealerts','files','module_title','pagination', 'rss','tags')
+    ); // all options: ('aggregation','categories','comments','ealerts','files','module_title','pagination','rss','tags')
 
     function displayname() { return "RSS Syndication"; }
     function description() { return "This module will allow you to display a list of your syndicated RSS feeds on a web page"; }

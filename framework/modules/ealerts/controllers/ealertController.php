@@ -32,7 +32,7 @@ class ealertController extends expController {
         'files',
         'rss',
         'tags'
-    ); // all options: ('aggregation', 'categories','comments','ealerts','files','module_title','pagination', 'rss','tags')
+    ); // all options: ('aggregation','categories','comments','ealerts','files','module_title','pagination','rss','tags')
 	
     function displayname() { return "E-Alerts"; }
     function description() { return "This module will allow your users to signup for email alerts on a module by module basis."; }

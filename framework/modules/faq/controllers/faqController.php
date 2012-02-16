@@ -27,12 +27,11 @@ class faqController extends expController {
         'ask_question'=>'Show Question Form'
     );
 	public $remove_configs = array(
-//        'aggregation',
         'comments',
+        'ealerts',
         'files',
-        'rss',
-        'tags'
-    ); // all options: ('aggregation', 'categories','comments','ealerts','files','module_title','pagination', 'rss','tags')
+        'rss'
+    ); // all options: ('aggregation','categories','comments','ealerts','files','module_title','pagination','rss','tags')
 
     function displayname() { return "Frequently Asked Questions"; }
     function description() { return "This module allows you show frequently asked questions.  Users can post questions to you to answer too."; }
@@ -108,6 +107,7 @@ class faqController extends expController {
                 }
 	        }
         }
+
         //check for and handle cats
         if (array_key_exists('expCat',$this->params)&&!empty($this->params['expCat'])) {
             $catid = $this->params['expCat'];

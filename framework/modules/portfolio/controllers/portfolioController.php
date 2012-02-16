@@ -31,9 +31,8 @@ class portfolioController extends expController {
     public $remove_configs = array(
         'comments',
         'ealerts',
-        'rss',
-        'tags'
-    ); // all options: ('aggregation', 'categories','comments','ealerts','files','module_title','pagination', 'rss','tags')
+        'rss'
+    ); // all options: ('aggregation','categories','comments','ealerts','files','module_title','pagination','rss','tags')
 
     function displayname() { return "Portfolio"; }
     function description() { return "This module allows you to show off your work portfolio style."; }

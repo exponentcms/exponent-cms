@@ -30,11 +30,12 @@ class linksController extends expController {
     //public $remove_permissions = array('edit');
     public $remove_configs = array(
            'comments',
+           'ealerts',
            'files',
            'pagination',
            'rss',
            'tags'
-       ); // all options: ('aggregation', 'categories','comments','ealerts','files','module_title','pagination', 'rss','tags')
+       ); // all options: ('aggregation','categories','comments','ealerts','files','module_title','pagination','rss','tags')
 
     function requiresConfiguration() { return true; }
     function displayname() { return "Link Manager"; }

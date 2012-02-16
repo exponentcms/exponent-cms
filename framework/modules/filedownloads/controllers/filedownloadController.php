@@ -31,9 +31,8 @@ class filedownloadController extends expController {
         'comments',
         'ealerts',
         'files',
-        'rss',
-		'tags'
-    ); // all options: ('aggregation', 'categories','comments','ealerts','files','module_title','pagination', 'rss','tags')
+        'rss'
+    ); // all options: ('aggregation','categories','comments','ealerts','files','module_title','pagination','rss','tags')
 
 	function displayname() { return "File Downloads"; }
 	function description() { return " This module lets you put files on your website for users to download."; }

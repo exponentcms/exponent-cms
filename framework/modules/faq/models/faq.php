@@ -25,7 +25,8 @@ class faq extends expRecord {
     public $table = 'faqs';
 
     protected $attachable_item_types = array(
-        'content_expCats'=>'expCat'
+        'content_expCats'=>'expCat',
+        'content_expTags'=>'expTag'
     );
 
     public $validates = array(

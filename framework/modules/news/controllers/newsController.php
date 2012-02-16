@@ -29,8 +29,7 @@ class newsController extends expController {
     public $remove_configs = array(
         'comments',
         'ealerts',
-//        'tags'
-    ); // all options: ('aggregation', 'categories','comments','ealerts','files','module_title','pagination', 'rss','tags')
+    ); // all options: ('aggregation','categories','comments','ealerts','files','module_title','pagination','rss','tags')
     public $add_permissions = array(
         'showUnpublished'=>'View Unpublished News'
     );

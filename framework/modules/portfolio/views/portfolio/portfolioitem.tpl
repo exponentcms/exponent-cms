@@ -26,7 +26,7 @@
 		</div>
 	{/permissions}
 	{if $record->expTag|@count>0}
-		<div class="tag">
+		<div class="tags">
 			{'Tags'|gettext}:
 			{foreach from=$record->expTag item=tag name=tags}
 				<a href="{link action=showall_by_tags tag=$tag->sef_url}">{$tag->title}</a>{if $smarty.foreach.tags.last != 1},{/if}

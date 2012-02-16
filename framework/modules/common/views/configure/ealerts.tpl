@@ -13,7 +13,7 @@
  *
  *}
 
-<h2>{'E-Alerts Settings'|gettext}</h2>
+<h2>{'E-Alerts Subscription Settings'|gettext}</h2>
 <blockquote>
     <p>
         {'E-Alerts allow your users to sign up to receive email versions of new content you create.'|gettext}&nbsp;&nbsp;

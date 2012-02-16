@@ -36,15 +36,17 @@
                     {control type=text name=title label="Title"|gettext value=$record->title}
                 	{control type="editor" name="body" label="Body"|gettext value=$record->body}
                 	{control type="checkbox" name="is_featured" label="Feature this News Post?"|gettext value=1 checked=$record->is_featured}
-                    {foreach from=$record->expTag item=tag name=tags}
-                        {if $smarty.foreach.tags.first == false}
-                            {assign var=tags value="`$tags`,`$tag->title`"}
-                        {else}
-                            {assign var=tags value=$tag->title}
-                        {/if}
-                    {/foreach}
-                    {if $tags != ""}{$tags=$tags|cat:','}{/if}
-                    {control type="text" id="expTag" name="expTag" label="Tags (comma separated)"|gettext value=$tags size=45}
+                    {if !$config.disabletags}
+                        {foreach from=$record->expTag item=tag name=tags}
+                            {if $smarty.foreach.tags.first == false}
+                                {assign var=tags value="`$tags`,`$tag->title`"}
+                            {else}
+                                {assign var=tags value=$tag->title}
+                            {/if}
+                        {/foreach}
+                        {if $tags != ""}{$tags=$tags|cat:','}{/if}
+                        {control type="text" id="expTag" name="expTag" label="Tags (comma separated)"|gettext value=$tags size=45}
+                    {/if}
                 	{if $config.enable_ealerts}
                 	    {control type="checkbox" name="send_ealerts" label="Send E-Alerts?"|gettext value=1}
                 	{/if}

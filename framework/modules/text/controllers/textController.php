@@ -30,10 +30,10 @@ class textController extends expController {
 	public $remove_configs = array(
         'categories',
 		'comments',
+        'ealerts',
 		'rss',
-		'ealerts',
 		'tags'
-	); // all options: ('aggregation', 'categories','comments','ealerts','files','module_title','pagination', 'rss','tags')
+	); // all options: ('aggregation','categories','comments','ealerts','files','module_title','pagination','rss','tags')
 
 	function displayname() { return "Text"; }
 	function description() { return "Puts text on your webpages"; }

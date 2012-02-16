@@ -27,11 +27,12 @@ class companyController extends expController {
     );
 	public $remove_configs = array(
         'aggregation',
+        'categories',
         'comments',
         //'files',
         'rss',
         'tags'
-    ); // all options: ('aggregation', 'categories','comments','ealerts','files','module_title','pagination', 'rss','tags')
+    ); // all options: ('aggregation','categories','comments','ealerts','files','module_title','pagination','rss','tags')
 
 	function displayname() { return "Company Listings"; }
 	function description() { return "This module shows company listings"; }

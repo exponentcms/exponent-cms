@@ -32,15 +32,17 @@
                     {control type=text name=title label="Title"|gettext value=$record->title}
                     {control type=html name=body label="Description"|gettext value=$record->body}
                     {control type="checkbox" name="featured" label="Feature this Portfolio Piece"|gettext|cat:"?" checked=$record->featured value=1}
-                    {foreach from=$record->expTag item=tag name=tags}
-                        {if $smarty.foreach.tags.first == false}
-                            {assign var=tags value="`$tags`,`$tag->title`"}
-                        {else}
-                            {assign var=tags value=$tag->title}
-                        {/if}
-                    {/foreach}
-                    {if $tags != ""}{$tags=$tags|cat:','}{/if}
-                    {control type="text" id="expTag" name="expTag" label="Tags (comma separated)"|gettext value=$tags size=45}
+                    {if !$config.disabletags}
+                        {foreach from=$record->expTag item=tag name=tags}
+                            {if $smarty.foreach.tags.first == false}
+                                {assign var=tags value="`$tags`,`$tag->title`"}
+                            {else}
+                                {assign var=tags value=$tag->title}
+                            {/if}
+                        {/foreach}
+                        {if $tags != ""}{$tags=$tags|cat:','}{/if}
+                        {control type="text" id="expTag" name="expTag" label="Tags (comma separated)"|gettext value=$tags size=45}
+                    {/if}
                     {if $config.usecategories}
                         {control type="dropdown" name=expCat label="Category"|gettext frommodel="expCat" where="module='' OR module='`$modelname`'" orderby="rank" display=title key=id includeblank="Not Categorized"|gettext value=$record->expCat[0]->id}
                     {/if}

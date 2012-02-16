@@ -13,6 +13,6 @@
  *
  *}
 
-<h2>{"Categories"|gettext}</h2>
-{control type="checkbox" name="usecategories" label="Use Categories?"|gettext value=1 checked=$config.usecategories}
+<h2>{"Allow item grouping by category"|gettext}</h2>
+{control type="checkbox" name="usecategories" label="Use Categories for this module?"|gettext value=1 checked=$config.usecategories}
 {*{chain module=expCat view=manage}*}

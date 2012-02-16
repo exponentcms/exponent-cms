@@ -37,7 +37,7 @@ class addressController extends expController {
         'pagination',
         'rss',
         'tags'
-    ); // all options: ('aggregation', 'categories','comments','ealerts','files','module_title','pagination', 'rss','tags')
+    ); // all options: ('aggregation','categories','comments','ealerts','files','module_title','pagination','rss','tags')
 
     function displayname() { return "Addresses"; }
     function description() { return "Use this module to display and manage addresses of users on your site."; }
