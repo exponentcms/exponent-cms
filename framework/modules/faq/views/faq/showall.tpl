@@ -95,7 +95,7 @@
                     </div>
                 {/if}
             {/foreach}
-            <div class="back-to-top itemactions"><a href="#top" title="{'Follow this link to go back to the top'|gettext}">{'Back to the top'|gettext}</a></div>
+            <div class="back-to-top"><a href="#top" title="{'Follow this link to go back to the top'|gettext}">{'Back to the top'|gettext}</a></div>
         {foreachelse}
             BLAH
         {/foreach}
