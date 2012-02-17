@@ -5,7 +5,6 @@
     padding:8px;
 }
 
-
 .info-header h1 {
     margin:0;
 }
@@ -94,48 +93,52 @@ a.view {
     display:inline-block;
     *display:inline;
     zoom:1;
+    text-transform:capitalize;
     background: url(../images/add.png) no-repeat 0 50%;
 }
 
 a.add {
-    text-transform:capitalize;
     background: url(../images/add.png) no-repeat 0 50%;
 }
 
 a.edit {
-    text-transform:capitalize;
     background: url(../images/edit.png) no-repeat 0 50%;
 }
 
 a.configure {
-    text-transform:capitalize;
     background: url(../images/configure.png) no-repeat 0 50%;
 }
 
 a.delete {
-    text-transform:capitalize;
     background: url(../images/delete.png) no-repeat 0 50%;
 }
 
 a.manage {
-    text-transform:capitalize;
     background: url(../images/manage.png) no-repeat 0 50%;
 }
 
 a.reranklink {
-	text-transform:capitalize;
     background: url(../images/rerank.png) no-repeat 0 50%;
 }
 
 a.revisions {
-	text-transform:capitalize;
     background: url(../images/revisions.png) no-repeat 0 50%;
 }
 
 a.view {
-	text-transform:capitalize;
     background: url(../images/view.png) no-repeat 0 50%;
 }
+
+/****************  tags style  ***********************/
+
+.tag-list li {
+    list-style: disc outside none;
+}
+
+.tag-list ol, ul, dl {
+    margin-left: 1em;
+}
+
 
 /****************  loading div style  ***********************/
 

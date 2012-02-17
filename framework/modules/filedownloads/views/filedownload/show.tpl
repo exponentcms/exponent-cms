@@ -50,7 +50,7 @@
         <div class="bodycopy">
             {$record->body}
         </div>
-        <a class="download" href="{link action=downloadfile fileid=$record->id}">{'Download'|gettext}</a>
+        <a class="downloadfile" href="{link action=downloadfile fileid=$record->id}">{'Download'|gettext}</a>
         {if $config.show_player && ($filetype == "mp3" || $filetype == "flv" || $filetype == "f4v")}
             <a href="{$file->expFile.downloadable[0]->url}" style="display:block;width:360px;height:30px;" class="filedownloads-media"></a>
         {/if}

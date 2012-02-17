@@ -1,5 +1,6 @@
 {*
- * Copyright (c) 2004-2012 OIC Group, Inc.
+ * Copyright (c) 2004-2008 OIC Group, Inc.
+ * Written and Designed by Adam Kessler
  *
  * This file is part of Exponent
  *
@@ -13,11 +14,5 @@
  *
  *}
 
-{if $config.title}<h3>{$config.title}</h3>{/if}
-<ul class="filelist">
-{foreach from=$files item=file}
-	<li>
-		<a class="downloadfile" href="{link action="downloadfile" id=$file->id}" title="{$file->title}">{if $file->title!=""}{$file->title}{else}{$file->filename}{/if}</a>
-	</li>
-{/foreach}
-</ul>
+<h2>{'Select whether or not this module can use tags'|gettext}</h2>
+{control type=checkbox name=disabletags label="Disable Tags for this module" value=1 checked=$config.disabletags}

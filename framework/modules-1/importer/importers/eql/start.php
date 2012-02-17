@@ -26,7 +26,7 @@ $form->meta('importer','eql');
 $form->meta('page','process');
 
 $form->register('file',gt('EQL File'),new uploadcontrol());
-$form->register('submit','',new buttongroupcontrol(gt('Restore'),'',''));
+$form->register('submit','',new buttongroupcontrol(gt('Restore'),'','','uploadfile'));
 
 $template = new template('importer','_eql_restoreForm',$loc);
 $template->assign('form_html',$form->toHTML());

@@ -50,9 +50,36 @@ a.readmore {
     background: url(../images/readmore.gif) no-repeat 0 50%;
 }
 
+a.downloadfile {
+    padding:3px 3px 3px 20px;
+    display:inline-block;
+    zoom:1;
+    background: url(../images/download.png) no-repeat 0 50%;
+}
 
-.date {
+input.downloadfile {
+    padding-left:15px;
+    display:inline-block;
+    zoom:1;
+    background: url(../images/download.png) no-repeat 0 50%;
+}
+
+.button.uploadfile {
+    padding-left:20px;
+    display:inline-block;
+    zoom:1;
+    background: url(../images/upload.png) no-repeat 0 50%;
+}
+
+.date, .attribution, .tags {
     color:#777;
+    font-size:90%;
+    font-style:italic;
+}
+
+a.comments {
+    font-size:90%;
+    font-style:italic;
 }
 
 img.border {

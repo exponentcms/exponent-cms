@@ -326,7 +326,7 @@
         <h3>{"Additional Product Information"|gettext}</h3>
         <ul>
         {foreach from=$product->expFile.brochures item=doc}
-            <li><a href="{link action=downloadfile id=$doc->id}">{if $doc->title}{$doc->title}{else}{$doc->filename}{/if}</a></li>
+            <li><a class="downloadfile" href="{link action=downloadfile id=$doc->id}">{if $doc->title}{$doc->title}{else}{$doc->filename}{/if}</a></li>
         {/foreach}
         </ul>
     </div>

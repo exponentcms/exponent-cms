@@ -60,7 +60,7 @@ class buttongroupcontrol extends formcontrol {
 		if (empty($this->id)) $this->id = $name;
 		$html = "";
 		if ($this->submit != "") {
-			$html .= '<button type="submit" id="'.$this->id.'Submit" class="submit button awesome '.BTN_SIZE.' '.BTN_COLOR;
+			$html .= '<button type="submit" id="'.$this->id.'Submit" class="submit button awesome '.BTN_SIZE.' '.BTN_COLOR.' '.$this->class;
 			if ($this->disabled) $html .= " disabled";
 			$html .='" type="submit" value="' . $this->submit . '"';
 			if ($this->disabled) $html .= " disabled";

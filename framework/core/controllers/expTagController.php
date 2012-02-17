@@ -98,13 +98,15 @@ class expTagController extends expController {
                 if (!empty($attatchedat)) {
                     $page->records[$key]->attachedcount = @$page->records[$key]->attachedcount + count($attatchedat);
                     $page->records[$key]->attached[$contenttype] = $attatchedat;
+                    //FIXME here is a hack to get the faq to be listed
+                    if ($contenttype == 'faq' && !empty($page->records[$key]->attached[$contenttype][0]->question)) {
+                        $page->records[$key]->attached[$contenttype][0]->title = $page->records[$key]->attached[$contenttype][0]->question;
+                    }
                 }
             }
         }
         
-        assign_to_template(array(
-            'page'=>$page
-        ));
+        assign_to_template(array('page'=>$page));
     }
 }
 ?>

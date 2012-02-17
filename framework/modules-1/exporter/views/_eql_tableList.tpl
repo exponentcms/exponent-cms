@@ -103,7 +103,7 @@
 			<tr>
 				<td colspan="2">&nbsp;</td>
 				<td colspan="3">
-					<input class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" type="submit" value="{'Export Data'|gettext}" onclick="return isOneSelected();" />
+					<input class="downloadfile awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" type="submit" value="{'Export Data'|gettext}" onclick="return isOneSelected();" />
 				</td>
 			</tr>
 		</table>
