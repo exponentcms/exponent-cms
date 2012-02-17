@@ -19,7 +19,7 @@
         {img class="preview-img" file_id=$file->expFile.preview[0]->id square=150}
     {/if}
     {if $config.quick_download}
-        <h3>{icon action=downloadfile fileid=$record->id text='Download'|gettext}</h3>
+        <h3>{icon action=downloadfile fileid=$record->id title='Download'|gettext text=$file->title}</h3>
     {else}
         {if $file->title}<h3><a {if !$config.usebody}class="readmore"{/if} href="{link action=show title=$file->sef_url}">{$file->title}</a></h3>{/if}
     {/if}
