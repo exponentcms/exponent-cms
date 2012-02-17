@@ -37,7 +37,7 @@
             {'Posted by'|gettext} <a href="{link action=showall_by_author author=$record->poster|username}">{attribution user_id=$record->poster}</a> {'on'|gettext} <span class="date">{$record->created_at|format_date}</span>
         </span>
         | <a class="comments" href="{link action=show title=$record->sef_url}#exp-comments">{$record->expComment|@count} {"Comments"|gettext}</a>
-		{if $record->expTag[0]->id}
+		{if $record->expTag|@count>0 && !$config.disabletags}
 		| <span class="tags">
 			{"Tags"|gettext}: 
 			{foreach from=$record->expTag item=tag name=tags}

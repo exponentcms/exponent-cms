@@ -45,22 +45,19 @@
                 <ol>
                     {foreach name=a from=$cat->records item=qna}
                         <li><a href="#cat{$catid}q{$qna->rank}" title="{$qna->answer|summarize:"html":"para"}">{$qna->question}</a></li>
-                    {foreachelse}
-                        <i>{'No Questions'|gettext}</i>
                     {/foreach}
                 </ol>
             {/foreach}
         {else}
             <ol>
-                {foreach from=$questions item=question}
+                {foreach from=$items item=question}
                     <li><em><a href="#faq_{$question->id}">{$question->question}</a></em></li>
                 {/foreach}
             </ol>
         {/if}
         <hr/>
     {/if}
-
-    {if $config.usecategories}
+    {if $config.usecategories && $cats|@count>0}
         {foreach name=c from=$cats key=catid item=cat}
             <a name="cat{$catid}"></a>
             <h3>{$cat->name}</h3>
@@ -71,18 +68,24 @@
                 <div class="item">
                     <a name="cat{$catid}q{$qna->rank}"></a>
                     <h4>Q{$smarty.foreach.a.iteration}. {$qna->question}</h4>
-                    <span class="editicons">
                         {permissions}
                             <div class="item-actions">
                                 {if $permissions.edit == 1}
-                                    {icon action=edit record=$question title="Edit FAQ"|gettext}
+                                    {icon action=edit record=$qna title="Edit FAQ"|gettext}
                                 {/if}
                                 {if $permissions.delete == 1}
-                                    {icon action=delete record=$question title="Delete this FAQ"|gettext|cat:"?" onclick="return confirm('"|cat:("Are you sure you want to delete this FAQ?"|gettext)|cat:"');"}
+                                    {icon action=delete record=$qna title="Delete this FAQ"|gettext|cat:"?" onclick="return confirm('"|cat:("Are you sure you want to delete this FAQ?"|gettext)|cat:"');"}
                                 {/if}
                             </div>
                         {/permissions}
-                    </span>
+                    {if $qna->expTag|@count>0 && !$config.disabletags}
+                        <span class="tags">
+                            {'Tags'|gettext}:
+                            {foreach from=$qna->expTag item=tag name=tags}
+                                <a href="{link action=showall_by_tags tag=$tag->sef_url}">{$tag->title}</a>{if $smarty.foreach.tags.last != 1},{/if}
+                            {/foreach}
+                        </span>
+                    {/if}
                     <div class="bodycopy">
                         {$qna->answer}
                     </div>
@@ -96,29 +99,33 @@
                 {/if}
             {/foreach}
             <div class="back-to-top"><a href="#top" title="{'Follow this link to go back to the top'|gettext}">{'Back to the top'|gettext}</a></div>
-        {foreachelse}
-            BLAH
         {/foreach}
     {else}
-        {foreach from=$questions item=question}
+        {foreach from=$items item=question}
             <div>
                 <a name="faq_{$question->id}"></a>
                 <h3>{$question->question}</h3>
+                {if $question->expTag|@count>0 && !$config.disabletags}
+                    <span class="tags">
+                        {'Tags'|gettext}:
+                        {foreach from=$question->expTag item=tag name=tags}
+                            <a href="{link action=showall_by_tags tag=$tag->sef_url}">{$tag->title}</a>{if $smarty.foreach.tags.last != 1},{/if}
+                        {/foreach}
+                    </span>
+                {/if}
                 <div class="bodycopy">
                     <p>{$question->answer}</p>
                 </div>
-                <span class="editicons">
                     {permissions}
-                        <div class="item-actions">
-                            {if $permissions.edit == 1}
-                                {icon action=edit record=$question title="Edit FAQ"|gettext}
-                            {/if}
-                            {if $permissions.delete == 1}
-                                {icon action=delete record=$question title="Delete this FAQ"|gettext|cat:"?" onclick="return confirm('"|cat:("Are you sure you want to delete this FAQ?"|gettext)|cat:"');"}
-                            {/if}
-                        </div>
-                    {/permissions}
-                </span>
+                    <div class="item-actions">
+                        {if $permissions.edit == 1}
+                            {icon action=edit record=$question title="Edit FAQ"|gettext}
+                        {/if}
+                        {if $permissions.delete == 1}
+                            {icon action=delete record=$question title="Delete this FAQ"|gettext|cat:"?" onclick="return confirm('"|cat:("Are you sure you want to delete this FAQ?"|gettext)|cat:"');"}
+                        {/if}
+                    </div>
+                {/permissions}
             </div>
         {foreachelse}
             <em>{'There are currently no FAQ\'s'|gettext}</em>

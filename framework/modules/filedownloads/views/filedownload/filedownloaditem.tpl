@@ -42,7 +42,7 @@
         {else}
             <span class="value">{$file->created_at|format_date}</span>
         {/if}
-        {if $file->expTag|@count>0}
+        {if $file->expTag|@count>0 && !$config.disabletags}
             &nbsp;|&nbsp;
             <span class="tags">
                 {'Tags'|gettext}:

@@ -55,7 +55,7 @@
                 {/permissions}
             {/if}
             <span class="date">{$item->publish_date|date_format}</span>
-            {if $item->expTag[0]->id}
+            {if $item->expTag|@count>0 && !$config.disabletags}
                 | <span class="tags">
                     {"Tags"|gettext}:
                     {foreach from=$item->expTag item=tag name=tags}

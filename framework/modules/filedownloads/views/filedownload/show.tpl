@@ -38,7 +38,7 @@
         &nbsp;|&nbsp;
         <span class="label downloads"># {'Downloads'|gettext}:</span>
         <span class="value">{$record->downloads}</span>
-        {if $record->expTag}
+        {if $record->expTag|@count>0 && !$config.disabletags}
             &nbsp;|&nbsp;
        		<span class="tags">
        			{'Tags'|gettext}:

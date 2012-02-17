@@ -29,7 +29,7 @@
             {/if}
         </div>
     {/permissions}
-    {if $record->expTag[0]->id}
+    {if $record->expTag|@count>0 && !$config.disabletags}
         <div class="tags">
             {"Tags"|gettext}:
             {foreach from=$record->expTag item=tag name=tags}

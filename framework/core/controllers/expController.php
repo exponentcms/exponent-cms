@@ -248,7 +248,7 @@ abstract class expController {
 //        $page->records = expSorter::sort(array('array'=>$page->records, 'sortby'=>'rank', 'order'=>'ASC', 'ignore_case'=>true));
         $page->records = expSorter::sort(array('array'=>$page->records, 'sortby'=>'created_at', 'order'=>'DESC', 'ignore_case'=>true));
 
-        assign_to_template(array('page'=>$page,'moduletitle'=>ucfirst($modelname).' items by tag "'.$this->params['tag'].'"', 'rank'=>($order==='rank')?1:0));
+        assign_to_template(array('page'=>$page, 'items'=>$page->records, 'moduletitle'=>ucfirst($modelname).' items by tag "'.$this->params['tag'].'"', 'rank'=>($order==='rank')?1:0));
     }
 
     public function tags() {

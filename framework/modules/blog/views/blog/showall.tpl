@@ -61,7 +61,7 @@
 
                 | <a class="comments" href="{link action=show title=$item->sef_url}#exp-comments">{$item->expComment|@count} {"Comments"|gettext}</a>
                 
-				{if $item->expTag[0]->id}
+				{if $item->expTag|@count>0 && !$config.disabletags}
 				| <span class="tags">
 					{"Tags"|gettext}: 
 					{foreach from=$item->expTag item=tag name=tags}
