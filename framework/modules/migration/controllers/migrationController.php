@@ -1587,16 +1587,15 @@ class migrationController extends expController {
 				break;
             case 'listingmodule':
                 $usebody = 0;
-                $module->view = 'showall';
 				switch ($module->view) {
-					case 'Full':
-						break;
 					case 'Simple':
                         $module->view = 'showall_simple_list';
                         $usebody = 2;
 						break;
                     case 'Default':
                         $usebody = 1;
+                    case 'Full':
+                        $module->view = 'showall';
 					default:
 						break;
 				}
