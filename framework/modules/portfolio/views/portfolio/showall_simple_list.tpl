@@ -49,16 +49,16 @@
         {/if}
         <div class="item">
         	<h3><a href="{link action=show title=$record->sef_url}" title="{$record->body|summarize:"html":"para"}">{$record->title}</a></h3>
-                {permissions}
-                    <div class="item-actions">
-                        {if $permissions.edit == 1}
-                            {icon action=edit record=$record title="Edit `$record->title`"}
-                        {/if}
-                        {if $permissions.delete == 1}
-                            {icon action=delete record=$record title="Delete `$record->title`"}
-                        {/if}
-                    </div>
-                {/permissions}
+            {permissions}
+                <div class="item-actions">
+                    {if $permissions.edit == 1}
+                        {icon action=edit record=$record title="Edit `$record->title`"}
+                    {/if}
+                    {if $permissions.delete == 1}
+                        {icon action=delete record=$record title="Delete `$record->title`"}
+                    {/if}
+                </div>
+            {/permissions}
             {permissions}
                 {if $permissions.create == 1}
                     {icon class="add addhere" action=edit rank=$record->rank+1 title="Add another here"|gettext  text="Add a portfolio piece here"|gettext}

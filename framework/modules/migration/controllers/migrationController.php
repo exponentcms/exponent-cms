@@ -960,13 +960,14 @@ class migrationController extends expController {
                             $cat = new expCat($oldcat->name);
                             if (empty($cat->id)) {
                                 $cat->title = $oldcat->name;
-                                $cat->rank = $oldcat->rank;
                                 $cat->color = $oldcat->color;
                                 $catloc = expUnserialize($oldcat->location_data);
                                 if (array_key_exists($catloc->mod, $this->new_modules)) {
                                     $mod = explode("Controller",$this->new_modules[$catloc->mod]);
                                     $cat->module = $mod[0];
                                 }
+                                $cat->save();
+                                $cat->rank = $oldcat->rank + 1;
                                 $cat->update();
                             }
                             $params['expCat'][] = $cat->id;
@@ -1115,7 +1116,7 @@ class migrationController extends expController {
                         $news->save();
 						// default is to create with current time
                         $news->created_at = $ni['posted'];
-                        $news->edited_at = $ni['edited'];
+                        $news->migrated_at = $ni['edited'];
                         $news->update();
                         @$this->msg['migrated'][$iloc->mod]['count']++;
                         @$this->msg['migrated'][$iloc->mod]['name'] = $this->new_modules[$iloc->mod];
@@ -1239,7 +1240,7 @@ class migrationController extends expController {
 							$filedownload->attachitem($file,'downloadable');
 							// default is to create with current time						
 							$filedownload->created_at = $ri['posted'];
-							$filedownload->edited_at = $ri['edited'];
+							$filedownload->migrated_at = $ri['edited'];
 							$filedownload->update();
                             if ($oldconfig->enable_categories == 1 && $ri['category_id']) {
                                 $params = null;
@@ -1247,13 +1248,14 @@ class migrationController extends expController {
                                 $cat = new expCat($oldcat->name);
                                 if (empty($cat->id)) {
                                     $cat->title = $oldcat->name;
-                                    $cat->rank = $oldcat->rank;
                                     $cat->color = $oldcat->color;
                                     $catloc = expUnserialize($oldcat->location_data);
                                     if (array_key_exists($catloc->mod, $this->new_modules)) {
                                         $mod = explode("Controller",$this->new_modules[$catloc->mod]);
                                         $cat->module = $mod[0];
                                     }
+                                    $cat->save();
+                                    $cat->rank = $oldcat->rank +1;
                                     $cat->update();
                                 }
                                 $params['expCat'][] = $cat->id;
@@ -1318,7 +1320,7 @@ class migrationController extends expController {
 								$file = new expFile($gi['file_id']);
 								$photo->attachitem($file,'');
 								$photo->created_at = $gi['posted'];
-								$photo->edited_at = $gi['posted'];
+								$photo->migrated_at = $gi['posted'];
 								$photo->update(array("validate"=>false));								
                                 $photo->update($params);  // save gallery name as category
 							}
@@ -1479,7 +1481,7 @@ class migrationController extends expController {
                         $post->save();
 						// default is to create with current time						
                         $post->created_at = $bi['posted'];
-                        $post->edited_at = $bi['edited'];
+                        $post->migrated_at = $bi['edited'];
                         $post->update();
                         @$this->msg['migrated'][$iloc->mod]['count']++;
                         @$this->msg['migrated'][$iloc->mod]['name'] = $this->new_modules[$iloc->mod];
@@ -1561,13 +1563,14 @@ class migrationController extends expController {
                             $cat = new expCat($oldcat->name);
                             if (empty($cat->id)) {
                                 $cat->title = $oldcat->name;
-                                $cat->rank = $oldcat->rank;
                                 $cat->color = $oldcat->color;
                                 $catloc = expUnserialize($oldcat->location_data);
                                 if (array_key_exists($catloc->mod, $this->new_modules)) {
                                     $mod = explode("Controller",$this->new_modules[$catloc->mod]);
                                     $cat->module = $mod[0];
                                 }
+                                $cat->save();
+                                $cat->rank = $oldcat->rank + 1;
                                 $cat->update();
                             }
                             $params['expCat'][] = $cat->id;
@@ -1583,6 +1586,7 @@ class migrationController extends expController {
 					case 'Full':
 						break;
 					case 'Simple':
+                        $module->view = 'showall_simple_list';
                         $usebody = 2;
 						break;
                     case 'Default':
@@ -1643,9 +1647,9 @@ class migrationController extends expController {
                         $listing->body = "<p>".$li['summary']."</p>".$li['body'];
                         $listing->save();
 						// default is to create with current time						
-                        $listing->created_at = time();
-                        $listing->edited_at = time();
-                        $listing->update();
+//                        $listing->created_at = time();
+//                        $listing->edited_at = time();
+//                        $listing->update();
                         @$this->msg['migrated'][$iloc->mod]['count']++;
                         @$this->msg['migrated'][$iloc->mod]['name'] = $this->new_modules[$iloc->mod];
                         if (!empty($li['file_id'])) {
@@ -1658,13 +1662,14 @@ class migrationController extends expController {
                             $cat = new expCat($oldcat->name);
                             if (empty($cat->id)) {
                                 $cat->title = $oldcat->name;
-                                $cat->rank = $oldcat->rank;
                                 $cat->color = $oldcat->color;
                                 $catloc = expUnserialize($oldcat->location_data);
                                 if (array_key_exists($catloc->mod, $this->new_modules)) {
                                     $mod = explode("Controller",$this->new_modules[$catloc->mod]);
                                     $cat->module = $mod[0];
                                 }
+                                $cat->save();
+                                $cat->rank = $oldcat->rank + 1;
                                 $cat->update();
                             }
                             $params['expCat'][] = $cat->id;

@@ -18,6 +18,8 @@
 {/css}
 
 <div class="module migration manage-files">
+ 	<a class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" href="{link module=migration action=manage_content}"><b>{'Skip to Next Step -> Migrate Content'|gettext}</b></a>
+    {br}{br}<hr />
     <div class="info-header">
         <div class="related-actions">
 			{help text="Get Help"|gettext|cat:" "|cat:("Migrating Files"|gettext) module="migrate-files"}
@@ -35,6 +37,4 @@
     </p>
     <h3>{if $count > 0}{$count}{else}{'No'|gettext}{/if} {'files found in the database'|gettext} '{$config.database}'</h3>
     {br}<a class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" href="{link module=migration action=migrate_files}"><b>{'Migrate Files'|gettext}</b></a>{br}
-	{br}<hr>{br}
-	<a class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" href="{link module=migration action=manage_content}"><b>{'Skip to Next Step -> Migrate Content'|gettext}</b></a>
 </div>

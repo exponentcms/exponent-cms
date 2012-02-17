@@ -18,14 +18,15 @@
 {/css}
 
 <div class="module migration manage_content">
+ 	<div class="admin"><b>{'This is the Final Migration Step'|gettext}</b></div>
+    {br}<hr />
     <div class="info-header">
         <div class="related-actions">
 			{help text="Get Help"|gettext|cat:" "|cat:("Migrating Content"|gettext) module="migrate-content"}
         </div>
 		<h1>{"Migrate Content"|gettext}</h1>	    
     </div>
-
-    <p> 
+    <p>
         {'The following is a list of modules we found in the database'|gettext} {$config.database}.
     </p>
     {form action="migrate_content"}
@@ -59,8 +60,6 @@
         {control type="checkbox" name="wipe_content" label="Erase all current content before import"|gettext|cat:"?" value=1 checked=false}
         {control type="buttongroup" submit="Migrate Content"|gettext cancel="Cancel"|gettext}
     {/form}
-	{br}<hr>{br}
-	<div class="admin"><b>{'This is the Final Migration Step'|gettext}</b></div>
 </div>
 
 <script type="text/javascript">

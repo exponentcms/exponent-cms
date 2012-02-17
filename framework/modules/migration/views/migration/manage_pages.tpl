@@ -18,6 +18,8 @@
 {/css}
 
 <div class="module migration manage-pages">
+ 	<a class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" href="{link module=migration action=manage_files}"><b>{'Next Step -> Migrate Files'|gettext}</b></a>
+    {br}{br}<hr />
     <div class="info-header">
         <div class="related-actions">
 			{help text="Get Help"|gettext|cat:" "|cat:("Migrating Pages"|gettext) module="migrate-pages"}
@@ -68,8 +70,6 @@
         {control type="checkbox" name="wipe_pages" label="Erase all current pages and then try again"|gettext|cat:"?" value=1 checked=false}
         {control type="buttongroup" submit="Migrate Pages"|gettext cancel="Cancel"|gettext}
     {/form}
-	{br}<hr>{br}
-	<a class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" href="{link module=migration action=manage_files}"><b>{'Next Step -> Migrate Files'|gettext}</b></a>
 </div>
 
 <script type="text/javascript">

@@ -6,6 +6,7 @@
 
 .exp-skin-rerank ul li,
 .rerank-proxy {
+    text-align: left;
     padding:0;
     background: #efecce url(../images/button/gradient.png) repeat-x; 
 }

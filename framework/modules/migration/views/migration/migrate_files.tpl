@@ -22,6 +22,8 @@
 {/css}
 
 <div class="module migration migrate-files">
+    <a class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" href="{link module=migration action=manage_content}"><b>{'Next Step -> Migrate Content'|gettext}</b></a>
+    {br}{br}<hr />
     <div class="info-header">
         <div class="related-actions">
 			{help text="Tips to Follow after Migrating Files"|gettext module="post-file-migration"}
@@ -71,5 +73,4 @@
 			{/foreach}
 		</tbody>
 	</table>
-	<a class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" href="{link module=migration action=manage_content}"><b>{'Next Step -> Migrate Content'|gettext}</b></a>
 </div>

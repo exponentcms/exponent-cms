@@ -539,6 +539,11 @@ class expRecord {
 	 * before updating item
 	 */
 	public function beforeUpdate() {
+        // we need some help migrating edited dates
+        if (!empty($this->migrated_at)) {
+            $this->edited_at = $this->migrated_at;
+            unset($this->migrated_at);
+        }
         $this->runCallback('beforeUpdate');
     }
 

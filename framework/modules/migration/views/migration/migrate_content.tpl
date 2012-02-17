@@ -18,6 +18,8 @@
 {/css}
 
 <div class="module migration migrate_content">
+    <div class="admin"><b>{'This is the Final Migration Step'|gettext}</b></div>
+    {br}{br}<hr />
     <div class="info-header">
         <div class="related-actions">
 			{help text="Tips to Follow after Migrating Content"|gettext module="post-content-migration"}
@@ -46,5 +48,4 @@
 			{/foreach}
 		</tbody>
 	</table>
-	<div class="admin"><b>{'This is the Final Migration Step'|gettext}</b></div>
 </div>

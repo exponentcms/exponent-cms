@@ -18,6 +18,8 @@
 {/css}
 
 <div class="module migration manage-users">
+	<a class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" href="{link module=migration action=manage_pages}"><b>{'Next Step -> Migrate Pages'|gettext}</b></a>
+    {br}{br}<hr />
     <div class="info-header">
         <div class="related-actions">
 			{help text="Get Help"|gettext|cat:" "|cat:("Migrating Users and Groups"|gettext) module="migrate-users"}
@@ -124,8 +126,6 @@
         </table>
         {control type="buttongroup" submit="Migrate Users/Groups"|gettext cancel="Cancel"|gettext}
     {/form}
-	{br}<hr>{br}
-	<a class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" href="{link module=migration action=manage_pages}"><b>{'Next Step -> Migrate Pages'|gettext}</b></a>
 </div>
 
 <script type="text/javascript">
