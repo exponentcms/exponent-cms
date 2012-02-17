@@ -480,4 +480,5 @@ class expSettings {
 	}
 
 }
+
 ?>

@@ -217,4 +217,5 @@ class newsController extends expController {
         return ($a->publish_date < $b->publish_date ? -1 : 1);
     }
 }
+
 ?>

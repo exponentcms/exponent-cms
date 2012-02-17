@@ -46,4 +46,5 @@ class billingtransaction extends expRecord {
         return $this->billingcalculator->calculator->getPaymentReferenceNumber($this->billing_options);
     }
 }
+
 ?>

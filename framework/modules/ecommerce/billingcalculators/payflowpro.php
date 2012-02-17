@@ -907,4 +907,3 @@ class payflowpro extends creditcard {
 }
 
 ?>
-

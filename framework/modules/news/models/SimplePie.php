@@ -14047,3 +14047,5 @@ class SimplePie_XML_Declaration_Parser
 		}
 	}
 }
+
+?>

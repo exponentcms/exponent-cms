@@ -359,5 +359,3 @@ class authorizedotnet extends creditcard {
 }
 
 ?>
-
-

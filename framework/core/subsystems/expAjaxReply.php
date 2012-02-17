@@ -66,7 +66,5 @@ class expAjaxReply {
     	return $ajaxObj;
 	}
 }
+
 ?>
-
-
-

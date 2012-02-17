@@ -82,5 +82,6 @@ class keywords {
 		$id = is_object($section) ? $section->id : $section;
 		return self::getAndWeightKeywords(self::getTextBySection($section));
 	}
-}																																
+}
+
 ?>

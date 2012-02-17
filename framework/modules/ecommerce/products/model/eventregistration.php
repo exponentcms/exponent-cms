@@ -147,4 +147,5 @@ class eventregistration extends product {
     }
 	
 }
+
 ?>

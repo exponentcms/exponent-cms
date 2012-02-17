@@ -58,4 +58,5 @@ class expConfig extends expRecord {
 		$this->config = (is_array($this->config)) ? serialize($this->config) : $this->config;
 	}
 }
+
 ?>

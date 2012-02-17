@@ -281,4 +281,3 @@ class creditcard extends billingcalculator {
 }
 
 ?>
-

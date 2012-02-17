@@ -77,4 +77,5 @@ class formbuilder_report {
 		return $object;
 	}
 }
+
 ?>

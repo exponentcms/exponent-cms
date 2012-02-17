@@ -107,4 +107,5 @@ class flickrfeedController extends expController {
         assign_to_template(array('items'=>$photos));
     }
 }
+
 ?>
