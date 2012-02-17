@@ -20,7 +20,7 @@
 }
 /* the menubar's <li> tag */
 .navigationmodule .yuimenubaritem-selected{
-	background:url(../skins/coolwater/sprite.png) repeat-x 0 -1701px;
+	background:url(../images/skins/sprite.png) repeat-x 0 -1701px;
 }
 
 /* the menubar's <a> tag when not hovered */
@@ -179,7 +179,7 @@
 }
 
 .navigationmodule #yuimenubar.yuimenubarnav .yuimenubaritemlabel-hassubmenu{
-	background:url(../skins/coolwater/menubaritem_submenuindicator.png) right center no-repeat;
+	background:url(../images/skins/menubaritem_submenuindicator.png) right center no-repeat;
 }
 
 .navigationmodule .yuimenubaritemlabel-disabled{
@@ -188,7 +188,7 @@
 }
 
 .navigationmodule #yuimenubar.yuimenubarnav .yuimenubaritemlabel-hassubmenu-disabled{
-	background-image:url(../skins/coolwater/menubaritem_submenuindicator_disabled.png);
+	background-image:url(../images/skins/menubaritem_submenuindicator_disabled.png);
 }
 
 .navigationmodule .yuimenu{
@@ -234,7 +234,7 @@
 .navigationmodule .yuimenu .bottomscrollbar{
 	height:16px;
 	border:solid 1px #808080;
-	background:#fff url(../skins/coolwater/sprite.png) no-repeat 0 0;
+	background:#fff url(../images/skins/sprite.png) no-repeat 0 0;
 }
 
 .navigationmodule .yuimenu .topscrollbar{
@@ -261,13 +261,13 @@
 }
 
 .navigationmodule .yuimenuitem-hassubmenu{
-	background-image:url(../skins/coolwater/menuitem_submenuindicator.png);
+	background-image:url(../images/skins/menuitem_submenuindicator.png);
 	background-position:right center;
 	background-repeat:no-repeat;
 }
 
 .navigationmodule .yuimenuitem-checked{
-	background-image:url(../skins/coolwater/menuitem_checkbox.png);
+	background-image:url(../images/skins/menuitem_checkbox.png);
 	background-position:left center;
 	background-repeat:no-repeat;
 }
@@ -284,9 +284,9 @@
 }
 
 .navigationmodule .yuimenuitem-hassubmenu-disabled{
-	background-image:url(../skins/coolwater/menuitem_submenuindicator_disabled.png);
+	background-image:url(../images/skins/menuitem_submenuindicator_disabled.png);
 }
 
 .navigationmodule .yuimenuitem-checked-disabled{
-	background-image:url(../skins/coolwater/menuitem_checkbox_disabled.png);
+	background-image:url(../images/skins/menuitem_checkbox_disabled.png);
 }

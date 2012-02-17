@@ -78,7 +78,7 @@ div.bodycopy ul li {
 
 div.bodycopy ul, ol {
 	margin: 5px 15px;
-	padding: 0 25px;
+	padding: 0 15px;
 }
 
 .green {
@@ -91,12 +91,20 @@ div.bodycopy ul, ol {
 	font-style:italic;
 }
 
+ol li {
+    list-style: decimal;
+}
+
+ul li {
+    list-style: disc;
+}
+
 #main div.bodycopy{
 	font-size:110%;
 	line-height:20px;
 	margin-left: 0px;
 	margin-right: 25px;
-	margin-bottom: 25px;
+	margin-bottom: 15px;
 }
 
 .fullbody #main {

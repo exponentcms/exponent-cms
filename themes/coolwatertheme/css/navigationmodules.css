@@ -33,3 +33,7 @@
 }
 #sidebar .navigationmodule.children-only ul ul { margin: 0 0 0 5px; padding: 0; }
 #sidebar .navigationmodule.children-only ul ul li { border: none; }
+
+.navigationmodule.site-map ul {
+    margin-left: 25px;
+}
