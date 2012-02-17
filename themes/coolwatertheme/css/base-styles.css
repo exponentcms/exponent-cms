@@ -193,18 +193,25 @@ div.bodycopy ul, ol {
 	text-align:right;
 	padding:0px;
 }
+#header #header-links a {
+	color: #fff;
+	text-decoration: none;
+}
+#header #header-links a:hover {
+	color: #D4FF55;
+}
 #header #header-login {
 	position: absolute;
 	font: bold 14px"Trebuchet MS", Arial, Tahoma, Sans-serif;
 	top: 60px; right: 20px;	
 	text-align:right;
 }
-#header #header-links a {	
+#header #header-login a {
 	color: #fff;
-	text-decoration: none;	
+	text-decoration: none;
 }
-#header #header-links a:hover {
-	color: #D4FF55;	
+#header #header-login a:hover {
+	color: #D4FF55;
 }
 
 /* Main Column */

@@ -26,9 +26,9 @@
 					<a href="<?php echo expCore::makeLink(array('section'=>16)); ?>"><?php echo gt('Contact Us'); ?></a> |
 					<a href="<?php echo expCore::makeLink(array('section'=>10)); ?>"><?php echo gt('Site-map'); ?></a>
 				</div>
-				<div id="header-login">
-					<?php expTheme::module(array("controller"=>"login","action"=>"showlogin","view"=>"showlogin_expanded")); ?>
-				</div>
+                <div id="header-login">
+                    <?php expTheme::module(array("controller"=>"login","action"=>"showlogin","view"=>"showlogin_expanded")); ?>
+                </div>
 			</div>
 			<!-- navigation -->
 			<div  id="menu">

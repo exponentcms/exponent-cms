@@ -1,0 +1,4 @@
+/* the menubar <div> */
+.navigationmodule #yuimenubar.yuimenubar {
+	background:url(../images/menu-wide.jpg) repeat-x 0 0;
+}
