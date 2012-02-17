@@ -264,10 +264,12 @@ class navigationmodule {
      * @param int   $depth variable to hold level of recursion
      * @param array $ignore_ids array of pages to ignore
      * @param bool  $full include a 'top' level entry
+     * @param string $perm permission level to build list
+     * @param bool  $addstandalones should we add the stand-alone pages also
      *
      * @return array
      */
-	static function levelDropDownControlArray($parent,$depth=0,$ignore_ids = array(),$full=false, $perm='view') {
+	static function levelDropDownControlArray($parent,$depth=0,$ignore_ids = array(),$full=false,$perm='view',$addstandalones=false) {
 		$ar = array();
 		if ($parent == 0 && $full) {
 			$ar[0] = '&lt;'.gt('Top of Hierarchy').'&gt;';
@@ -288,6 +290,20 @@ class navigationmodule {
 				}
 			}
 		}
+        if ($addstandalones && $parent == 0) {
+            $sections = $db->selectObjects('section','parent=-1');
+            foreach ($sections as $node) {
+                if ((($perm=='view' && $node->public == 1) || expPermissions::check($perm,expCore::makeLocation('navigationmodule','',$node->id))) && !in_array($node->id,$ignore_ids)) {
+                    if ($node->active == 1) {
+                        $text = str_pad('',($depth+($full?1:0))*3,'.',STR_PAD_LEFT) . $node->name;
+                    } else {
+                        $text = str_pad('',($depth+($full?1:0))*3,'.',STR_PAD_LEFT) . '('.$node->name.')';
+                    }
+                    $ar[$node->id] = '(' . gt('Standalone').') ' . $text;
+                }
+            }
+//            $ar = array_merge($ar,$sections);
+        }
 		
 		return $ar;
 	}
