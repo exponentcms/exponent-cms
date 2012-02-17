@@ -11,17 +11,17 @@ Added / Fixed / changed for 2.0.5
     -- categories now migrated; imagegallerymodule galleries converted to categories
   - calendar2 should be considered alpha quality
 # Many fixes and updates
-  - Minification has been fixed (possibly broken since 2.0.1?)
+  - Minification has been fixed for many server scenarios
   - adds optional thumbnail view and list size setting to file manager
   - adds tag cloud view to search module
-  - adds tags to news module
+  - adds tags to faq, news, & photoalubm modules
   - adds deletion of multiple standalone pages at once
   - adds notification of version patch releases
   - adds additional sorting options to news, filedownloads, & portfolio modules
   - adds 'Recent' views to blog, filedownloads, & news modules...good teaser view
   - many migration updates and fixes
     -- fixes slideshowmodule migration (which wasn't occuring)
-    -- better migration of 0.9x-type 'reused' modules
+    -- better migration of 0.9x-type 'reused' type modules
     -- newsmodule tags now migrated (why weren't we already doing this)
     -- now migrates many more module and view configuration settings
   - adds module scope type indicator to top-level/hard-coded chrome menus
