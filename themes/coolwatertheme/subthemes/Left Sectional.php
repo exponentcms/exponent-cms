@@ -19,12 +19,12 @@
 		<div id="wrap">
 			<!--header -->
 			<div id="header">			
-				<h1 id="logo-text"><a href="<?php echo URL_FULL; ?>index.php" title="<?php echo SITE_TITLE; ?>"><span class="green"><?php echo ORGANIZATION_NAME; ?></span> <sup></sup></a></h1>
+                <h1 id="logo-text"><a href="<?php echo URL_FULL; ?>index.php" title="<?php echo SITE_TITLE; ?>"><span class="green"><?php if(LOGO_TEXT_MAIN=='') echo ORGANIZATION_NAME; else echo LOGO_TEXT_MAIN; ?></span> <sup><?php echo LOGO_TEXT_SUPERSCRIPT; ?></sup></a></h1>
 				<p id="slogan"><?php echo SITE_HEADER; ?></p>
 				<div id="header-links">
-					<a href="<?php echo expCore::makeLink(array('section'=>SITE_DEFAULT_SECTION)); ?>"><?php echo gt('Home'); ?></a> |
-					<a href="<?php echo expCore::makeLink(array('section'=>16)); ?>"><?php echo gt('Contact Us'); ?></a> |
-					<a href="<?php echo expCore::makeLink(array('section'=>10)); ?>"><?php echo gt('Site-map'); ?></a>
+                    <a href="<?php echo expCore::makeLink(array('section'=>(LINK1_SECTION!=''?LINK1_SECTION:SITE_DEFAULT_SECTION))); ?>"><?php if(LINK1_TEXT!='') echo LINK1_TEXT; else echo gt('Home'); ?></a> |
+                    <a href="<?php echo expCore::makeLink(array('section'=>(LINK2_SECTION!=''?LINK2_SECTION:16))); ?>"><?php if(LINK2_TEXT!='') echo LINK2_TEXT; else echo gt('Contact Us'); ?></a> |
+                    <a href="<?php echo expCore::makeLink(array('section'=>(LINK3_SECTION!=''?LINK3_SECTION:10))); ?>"><?php if(LINK3_TEXT!='') echo LINK3_TEXT; else echo gt('Site-map'); ?></a>
 				</div>
 				<div id="header-login">
 					<?php expTheme::module(array("controller"=>"login","action"=>"showlogin","view"=>"showlogin_expanded")); ?>
