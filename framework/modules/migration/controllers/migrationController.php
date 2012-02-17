@@ -776,7 +776,7 @@ class migrationController extends expController {
 				$ploc->mod = "text";
 				if ($db->countObjects($ploc->mod, "location_data='".serialize($ploc)."'")) {
 					$iloc->mod = 'textmodule';
-					$linked = true;
+//					$linked = true;
 					break;
 				}
 
@@ -804,7 +804,7 @@ class migrationController extends expController {
 				$ploc->mod = "text";
 				if ($db->countObjects($ploc->mod, "location_data='".serialize($ploc)."'")) {
 					$iloc->mod = 'rotatormodule';
-					$linked = true;
+//					$linked = true;
 					break;
 				}
 
@@ -831,7 +831,7 @@ class migrationController extends expController {
 				$ploc->mod = "snippet";
 				if ($db->countObjects($ploc->mod, "location_data='".serialize($ploc)."'")) {
 					$iloc->mod = 'snippetmodule';
-					$linked = true;
+//					$linked = true;
 					break;
 				}
 
@@ -869,7 +869,7 @@ class migrationController extends expController {
 				$ploc->mod = "links";
 				if ($db->countObjects($ploc->mod, "location_data='".serialize($ploc)."'")) {
 					$iloc->mod = 'linklistmodule';
-					$linked = true;
+//					$linked = true;
 					break;
 				}
 
@@ -932,7 +932,7 @@ class migrationController extends expController {
 				$ploc->mod = "links";
 				if ($db->countObjects($ploc->mod, "location_data='".serialize($ploc)."'")) {
 					$iloc->mod = 'linkmodule';
-					$linked = true;
+//					$linked = true;
 					break;
 				}
 
@@ -983,7 +983,7 @@ class migrationController extends expController {
 				$ploc->mod = "text";
 				if ($db->countObjects($ploc->mod, "location_data='".serialize($ploc)."'")) {
 					$iloc->mod = 'swfmodule';
-					$linked = true;
+//					$linked = true;
 					break;
 				}
 
@@ -1097,7 +1097,7 @@ class migrationController extends expController {
 				//check to see if it's already pulled in (circumvent !is_original)
 				if ($db->countObjects($ploc->mod, "location_data='".serialize($ploc)."'")) {
 					$iloc->mod = 'newsmodule';
-					$linked = true;
+//					$linked = true;
 					break;
 				}
 
@@ -1215,7 +1215,7 @@ class migrationController extends expController {
 				//check to see if it's already pulled in (circumvent !is_original)
 				if ($db->countObjects('filedownloads', "location_data='".serialize($ploc)."'")) {
 					$iloc->mod = 'resourcesmodule';
-					$linked = true;
+//					$linked = true;
 					break;
 				}
 
@@ -1285,7 +1285,7 @@ class migrationController extends expController {
 				$ploc->mod = "photos";
 				if ($db->countObjects('photo', "location_data='".serialize($ploc)."'")) {
 					$iloc->mod = 'imagegallerymodule';
-					$linked = true;
+//					$linked = true;
 					break;
 				}
 
@@ -1339,7 +1339,7 @@ class migrationController extends expController {
 				$ploc->mod = "photos";
 				if ($db->countObjects('photo', "location_data='".serialize($ploc)."'")) {
 					$iloc->mod = 'slideshowmodule';
-					$linked = true;
+//					$linked = true;
 					break;
 				}
 
@@ -1377,7 +1377,7 @@ class migrationController extends expController {
 				$ploc->mod = "text";
 				if ($db->countObjects($ploc->mod, "location_data='".serialize($ploc)."'")) {
 					$iloc->mod = 'headlinemodule';
-					$linked = true;
+//					$linked = true;
 					break;
 				}
 
@@ -1461,7 +1461,7 @@ class migrationController extends expController {
                 //check to see if it's already pulled in (circumvent !is_original)
 				if ($db->countObjects($ploc->mod, "location_data='".serialize($ploc)."'")) {
 					$iloc->mod = 'weblogmodule';
-					$linked = true;
+//					$linked = true;
 					break;
 				}
 
@@ -1533,7 +1533,7 @@ class migrationController extends expController {
 				$ploc->mod = "faq";
 				if ($db->countObjects('faqs', "location_data='".serialize($ploc)."'")) {
 					$iloc->mod = 'faqmodule';
-					$linked = true;
+//					$linked = true;
 					break;
 				}
 
@@ -1624,7 +1624,7 @@ class migrationController extends expController {
 				$ploc->mod = "portfolio";
 				if ($db->countObjects($ploc->mod, "location_data='".serialize($ploc)."'")) {
 					$iloc->mod = 'listingmodule';
-					$linked = true;
+//					$linked = true;
 					break;
 				}
 
@@ -1681,7 +1681,7 @@ class migrationController extends expController {
 				$ploc->mod = "formmodule";
 				if ($db->countObjects('formbuilder_form', "location_data='".serialize($ploc)."'")) {
 					$iloc->mod = 'contactmodule';
-					$linked = true;
+//					$linked = true;
 					break;
 				}
 
@@ -1760,7 +1760,7 @@ class migrationController extends expController {
 				$ploc->mod = "youtube";
 				if ($db->countObjects('youtube', "location_data='".serialize($ploc)."'")) {
 					$iloc->mod = 'youtubemodule';
-					$linked = true;
+//					$linked = true;
 					break;
 				}
 
@@ -1795,7 +1795,7 @@ class migrationController extends expController {
 				$ploc->mod = "flowplayer";
 				if ($db->countObjects('flowplayer', "location_data='".serialize($ploc)."'")) {
 					$iloc->mod = 'mediaplayermodule';
-					$linked = true;
+//					$linked = true;
 					break;
 				}
 
@@ -1838,7 +1838,7 @@ class migrationController extends expController {
 				$ploc->mod = "banner";
 				if ($db->countObjects('banner', "location_data='".serialize($ploc)."'")) {
 					$iloc->mod = 'bannermodule';
-					$linked = true;
+//					$linked = true;
 					break;
 				}
 
