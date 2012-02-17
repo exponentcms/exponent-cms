@@ -2,8 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2011 OIC Group, Inc.
-# Written and Designed by Adam Kessler
+# Copyright (c) 2004-2012 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -17,20 +16,24 @@
 #
 ##################################################
 
+/**
+ * @subpackage Controllers
+ * @package Modules
+ */
+
 class photosController extends expController {
     public $basemodel_name = 'photo';
-//    public $useractions = array(
-//        'showall'=>'Gallery',
-//        'slideshow'=>'Slideshow',
-//        //'showall_tags'=>"Tag Categories"
-//    );
+    public $useractions = array(
+        'showall'=>'Gallery',
+        'slideshow'=>'Slideshow',
+        //'showall_tags'=>"Tag Categories"
+    );
     public $remove_configs = array(
         'comments',
         'ealerts',
         'files',
-        'rss',
-        'tags'
-    ); // all options: ('aggregation', 'categories','comments','ealerts','files','module_title','pagination', 'rss','tags')
+        'rss'
+    ); // all options: ('aggregation','categories','comments','ealerts','files','module_title','pagination','rss','tags')
 
     function displayname() { return "Photo Album"; }
     function description() { return "This module allows you to display and manage images."; }
@@ -41,9 +44,6 @@ class photosController extends expController {
         $where = $this->aggregateWhereClause();
         $order = 'rank';
         $limit = empty($this->config['limit']) ? 10 : $this->config['limit'];
-        if (!empty($this->params['view']) && $this->params['view'] != 'showall') {
-            $limit = 999;
-        }
 
         $page = new expPaginator(array(
                     'model'=>'photo',
@@ -121,23 +121,7 @@ class photosController extends expController {
     }           
     
     public function update() {
-        //FIXME:  Remove this code once we have the new tag implementation
-        if (!empty($this->params['tags'])) {
-            global $db;
-            if (isset($this->params['id'])) {
-                $db->delete('content_expTags', 'content_type="image" AND content_id='.$this->params['id']);
-            }
-            
-            $tags = explode(",", $this->params['tags']);
-            
-            foreach($tags as $tag) {
-                $tag = strtolower(trim($tag));
-                $expTag = new expTag($tag);
-                if (empty($expTag->id)) $expTag->update(array('title'=>$tag));
-                $this->params['expTag'][] = $expTag->id;
-            }
-        }
-        
+
         //populate the alt tag field if the user didn't
         if (empty($this->params['alt'])) $this->params['alt'] = $this->params['title'];
         

@@ -1208,8 +1208,14 @@ class migrationController extends expController {
                     $newconfig->config['limit'] = $oldviewconfig['num_posts'];
 //                    $newconfig->config['pagelinks'] = "Don't show page links";
                 }
+                $newconfig->config['usebody'] = 2;
+                if (!empty($oldviewconfig['show_descriptions'])) {
+                    $newconfig->config['show_info'] = $oldviewconfig['show_descriptions'] ? 1 : 0;
+                    if ($oldviewconfig['show_descriptions']) {
+                        $newconfig->config['usebody'] = 0;
+                    }
+                }
                 $newconfig->config['quick_download'] = $oldviewconfig['direct_download'] ? 1 : 0;
-                $newconfig->config['show_info'] = $oldviewconfig['show_descriptions'] ? 1 : 0;
                 $newconfig->config['show_icon'] = $oldviewconfig['show_icons'] ? 1 : 0;
                 $newconfig->config['show_player'] = $oldviewconfig['show_player'] ? 1 : 0;
 
