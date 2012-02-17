@@ -1017,12 +1017,16 @@ class theme {
 		unset ($params['sv']);
 		unset ($params['controller']);
 		unset ($params['action']);
+        unset ($params['cid']);
+        unset ($params['scayt_verLang']);
+        unset ($params['slingbar-top']);
+        unset ($params['XDEBUG_SESSION']);
 		foreach ($params as $key=>$value) {
-			if (strpos($key,'_' == 1)) {
+			if ($key[0] == '_') {
 				unset ($params[$key]);
 			}
 		}
-		if ($params['sv'] != '') {
+		if ($sv != '') {
 			expSettings::saveValues($params, BASE."themes/".$theme."/config_".$sv.".php");
 		} else {
 			expSettings::saveValues($params, BASE."themes/".$theme."/config.php");
