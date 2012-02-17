@@ -37,3 +37,7 @@
 .navigationmodule.site-map ul {
     margin-left: 25px;
 }
+
+.navigationmodule ul li {
+    list-style: disc;
+}

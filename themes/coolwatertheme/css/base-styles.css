@@ -91,14 +91,6 @@ div.bodycopy ul, ol {
 	font-style:italic;
 }
 
-ol li {
-    list-style: decimal;
-}
-
-ul li {
-    list-style: disc;
-}
-
 #main div.bodycopy{
 	font-size:110%;
 	line-height:20px;
