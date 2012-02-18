@@ -8,7 +8,7 @@
 
 //Initialize exponent Framework
 include_once(dirname(__FILE__) .'/../../../exponent_bootstrap.php');
-include_once(BASE.'conf/config.php');
+//include_once(BASE.'conf/config.php');
 
 /**
  * Set to true to log messages to FirePHP (Firefox Firebug addon).
@@ -41,7 +41,7 @@ $min_allowDebugFlag = false;
  * Allow use of the Minify URI Builder app. If you no longer need 
  * this, set to false.
  **/
-$min_enableBuilder = false;
+$min_enableBuilder = true;
 
 /**
  * For best performance, specify your temp directory here. Otherwise Minify
