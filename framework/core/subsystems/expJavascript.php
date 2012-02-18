@@ -47,7 +47,7 @@ class expJavascript {
             $scripts .= "\t".'<script type="text/javascript" src="'.PATH_RELATIVE.'exponent.js.php"></script>'."\r\n";
             $srt[$i] = YUI3_PATH.'yui/yui-min.js,';
             foreach ($expJS as $file) {
-                if (strlen($srt[$i])+strlen($file)<= $strlen) {
+                if (strlen($srt[$i])+strlen($file['fullpath'])<= $strlen) {
                     $srt[$i] .= $file['fullpath'].",";
                 } else {
                     $i++;
