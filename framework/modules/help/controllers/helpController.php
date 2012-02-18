@@ -225,7 +225,7 @@ class helpController extends expController {
 	    $page = new expPaginator(array(
 	                'sql'=>$sql, 
 	                'limit'=>30,
-	                'order'=>'help_version_id',
+	                'order'=>'version',
 	                'dir'=>'DESC',
 	                'controller'=>$this->baseclassname,
 	                'action'=>$this->params['action'],
