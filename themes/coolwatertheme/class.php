@@ -26,10 +26,8 @@ class coolwatertheme extends theme {
 	function description() { return "A simple, clean design from the kids at <a href=\"http://styleshout.com/\" target=\"_blank\">Style Shout</a>"; }
 
     function configureTheme() {
-        if (isset($_GET['sv']) && $_GET['sv'] != '') {
-            if (strtolower($_GET['sv'])=='default') {
-               $_GET['sv']='';
-            }
+        if (!empty($_GET['sv'])) {
+            if (strtolower($_GET['sv'])=='default') $_GET['sv']='';
             $settings = expSettings::parseFile(BASE."themes/".$_GET['theme']."/config_".$_GET['sv'].".php");
         } else {
             $settings = expSettings::parseFile(BASE."themes/".$_GET['theme']."/config.php");
@@ -38,7 +36,7 @@ class coolwatertheme extends theme {
    		$form->meta('controller','administration');
    		$form->meta('action','update_theme');
    		$form->meta('theme',$_GET['theme']);
-        $form->meta('sv',$_GET['sv']);
+        if (!empty($_GET['sv'])) $form->meta('sv',$_GET['sv']);
         $form->register('logo_text_main','Main Site Title'.': ',new textcontrol($settings['LOGO_TEXT_MAIN'],20));
         $form->register('logo_text_superscript','Site Sub Title'.': ',new textcontrol($settings['LOGO_TEXT_SUPERSCRIPT'],20));
         $form->register('link1_text','Link #1 Text (blank to disable) '.': ',new textcontrol($settings['LINK1_TEXT'],20));
