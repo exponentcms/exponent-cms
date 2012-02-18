@@ -39,9 +39,6 @@
     {foreach from=$page->records item=file name=files}
         {if $smarty.foreach.files.iteration<=$config.headcount || !$config.headcount}
             {include 'filedownloaditem.tpl'}
-            {if $file->expCat[0]->title != ""}
-                {'from'|gettext} "{$file->expCat[0]->title}" {'dated'|gettext} {$file->created_at|format_date}
-            {/if}
             {assign var="cat" value=$file->expCat[0]->id}
         {/if}
     {/foreach}
