@@ -36,20 +36,42 @@ class expJavascript {
         global $userjsfiles,$expJS,$yui2js,$yui3js;
         
     	$scripts = "";
-        
-        $scripts .= "\t"."<!-- EXPONENT namespace setup -->"."\r\n";
-        $scripts .= "\t".'<script type="text/javascript" src="'.PATH_RELATIVE.'exponent.js.php"></script>'."\r\n";
 
-        $scripts .= (!empty($yui3js)) ? "\t"."<!-- YUI3 Scripts -->"."\r\n\t".'<script type="text/javascript" src="'.YUI3_PATH.'yui/yui-min.js"></script>'."\r\n" : "";
-        //$scripts .= "\r\n\t"."<meta id=\"yui3marker\" />"."\r\n";
-        if (!empty($expJS)) {
-            foreach ($expJS as $key=>$mod) {
-                //eDebug($mod['name']);
-                $scripts .= "\t".'<script type="text/javascript" src="'.$mod['fullpath'].'"></script>'."\r\n";
+        if (MINIFY==1&&MINIFY_LINKED_JS==1) {
+            // if we're minifying, we'll break our URLs apart at MINIFY_URL_LENGTH characters to allow it through
+            // browser string limits
+            $strlen = (ini_get("suhosin.get.max_value_length")==0) ? MINIFY_URL_LENGTH : ini_get("suhosin.get.max_value_length");
+            $i = 0;
+            $srt = array();
+//            $srt[$i] = PATH_RELATIVE.'exponent.js.php,'.YUI3_PATH.'yui/yui-min.js,';
+            $scripts .= "\t".'<script type="text/javascript" src="'.PATH_RELATIVE.'exponent.js.php"></script>'."\r\n";
+            $srt[$i] = YUI3_PATH.'yui/yui-min.js,';
+            foreach ($expJS as $file) {
+                if (strlen($srt[$i])+strlen($file)<= $strlen) {
+                    $srt[$i] .= $file['fullpath'].",";
+                } else {
+                    $i++;
+                    $srt[$i] = "";
+                    $srt[$i] .= $file['fullpath'].",";
+                }
+            }
+            foreach ($srt as $link) {
+                $link = rtrim($link,",");
+                $scripts .= "\t".'<script type="text/javascript" src="'.PATH_RELATIVE.'external/minify/min/index.php?f='.$link.'"></script>'."\r\n";
+            }
+        } else {
+            $scripts .= "\t"."<!-- EXPONENT namespace setup -->"."\r\n";
+            $scripts .= "\t".'<script type="text/javascript" src="'.PATH_RELATIVE.'exponent.js.php"></script>'."\r\n";
+
+            $scripts .= (!empty($yui3js)) ? "\t"."<!-- YUI3 Scripts -->"."\r\n\t".'<script type="text/javascript" src="'.YUI3_PATH.'yui/yui-min.js"></script>'."\r\n" : "";
+            //$scripts .= "\r\n\t"."<meta id=\"yui3marker\" />"."\r\n";
+            if (!empty($expJS)) {
+                foreach ($expJS as $key=>$mod) {
+                    //eDebug($mod['name']);
+                    $scripts .= "\t".'<script type="text/javascript" src="'.$mod['fullpath'].'"></script>'."\r\n";
+                }
             }
         }
-
-
 
         //$html .= "\t".$expYUIJSLoader->js()."\r\n";
         return $scripts;
@@ -66,7 +88,7 @@ class expJavascript {
                 $html.= $file."\r\n";
             }            
         } 
-        if (MINIFY) {
+        if (MINIFY==1&&MINIFY_INLINE_JS==1) {
             include_once(BASE.'external/minify/min/lib/JSMin.php');
             $html = JSMin::minify($html);
         }

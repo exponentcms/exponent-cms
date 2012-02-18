@@ -86,13 +86,8 @@ class expCSS {
             };
         };
 
-        if (MINIFY!=1) {
-            //eDebug($css_files);
-            foreach ($css_files as $file) {
-                $html .= "\t".'<link rel="stylesheet" type="text/css" href="'.$file.'" '.XHTML_CLOSING.'>'."\r\n";
-            }
-        } else {
-            // if we're minifying, we'll break our URLs apart at MINIFY_URL_LENGTH characters to allow it through 
+        if (MINIFY==1&&MINIFY_LINKED_CSS==1) {
+            // if we're minifying, we'll break our URLs apart at MINIFY_URL_LENGTH characters to allow it through
             // browser string limits
             $strlen = (ini_get("suhosin.get.max_value_length")==0) ? MINIFY_URL_LENGTH : ini_get("suhosin.get.max_value_length");
             $i = 0;
@@ -107,13 +102,16 @@ class expCSS {
                     $srt[$i] .= $file.",";
                 }
             }
-
             foreach ($srt as $link) {
                 $link = rtrim($link,",");
                 $html .= "\t".'<link rel="stylesheet" type="text/css" href="'.PATH_RELATIVE.'external/minify/min/index.php?f=' . $link . '"' . XHTML_CLOSING.'>'."\r\n";
             }
+        } else {
+            //eDebug($css_files);
+            foreach ($css_files as $file) {
+                $html .= "\t".'<link rel="stylesheet" type="text/css" href="'.$file.'" '.XHTML_CLOSING.'>'."\r\n";
+            }
         }
-        
         
         if (!empty($css_inline)) {
             $styles = "";
@@ -127,9 +125,9 @@ class expCSS {
                 $htmlcss .= "\t".$styles."\n";
                 $htmlcss .= "\t".'</style>'."\n";
             }
-            if (MINIFY) {
+            if (MINIFY==1&&MINIFY_INLINE_CSS==1) {
                 include_once(BASE.'external/minify/min/lib/JSMin.php');
-                $htmlcss = JSMin::minify($html);
+                $htmlcss = JSMin::minify($htmlcss);
             }
             $html .= $htmlcss;
         }
