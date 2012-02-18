@@ -239,11 +239,11 @@
                     <h3>{"Minify Debugging Settings"|gettext}</h3>
 					{control type="checkbox" postfalse=1 name="sc[MINIFY_ERROR_LOGGER]" label="Enable logging of minify error messages to FirePHP?"|gettext checked=$smarty.const.MINIFY_ERROR_LOGGER value=1}
                     {control type="checkbox" postfalse=1 name="sc[MINIFY_INLINE_CSS]" label="Minify inline css styles?"|gettext checked=$smarty.const.MINIFY_INLINE_CSS value=1}
-                    {control type="checkbox" postfalse=1 name="sc[MINIFY_INLINE_JS]" label="Minify inline javascript?"|gettext checked=$smarty.const.MINIFY_INLINE_JS value=1}
                     {control type="checkbox" postfalse=1 name="sc[MINIFY_LINKED_CSS]" label="Minify linked css style-sheets?"|gettext checked=$smarty.const.MINIFY_LINKED_CSS value=1}
+                    {control type="checkbox" postfalse=1 name="sc[MINIFY_INLINE_JS]" label="Minify inline javascript?"|gettext checked=$smarty.const.MINIFY_INLINE_JS value=1}
                     {control type="checkbox" postfalse=1 name="sc[MINIFY_LINKED_JS]" label="Minify linked js scripts?"|gettext checked=$smarty.const.MINIFY_LINKED_JS value=1}
-                    {control type="checkbox" postfalse=1 name="sc[MINIFY_YUI2]" label="Minify YUI2 items?"|gettext checked=$smarty.const.MINIFY_YUI2 value=1}
                     {control type="checkbox" postfalse=1 name="sc[MINIFY_YUI3]" label="Minify YUI3 items?"|gettext checked=$smarty.const.MINIFY_YUI3 value=1}
+                    {control type="checkbox" postfalse=1 name="sc[MINIFY_YUI2]" label="Minify YUI2 items?"|gettext checked=$smarty.const.MINIFY_YUI2 value=1}
                 </div>
 				<div id="tab15">
                     <div class="info-header">

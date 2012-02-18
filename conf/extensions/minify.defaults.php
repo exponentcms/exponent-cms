@@ -23,10 +23,10 @@ if (!defined('MINIFY_MAX_FILES')) define('MINIFY_MAX_FILES','30');
 
 if (!defined('MINIFY_ERROR_LOGGER')) define('MINIFY_ERROR_LOGGER','0');
 if (!defined('MINIFY_INLINE_CSS')) define('MINIFY_INLINE_CSS','1');
-if (!defined('MINIFY_INLINE_JS')) define('MINIFY_INLINE_JS','1');
 if (!defined('MINIFY_LINKED_CSS')) define('MINIFY_LINKED_CSS','1');
+if (!defined('MINIFY_INLINE_JS')) define('MINIFY_INLINE_JS','1');
 if (!defined('MINIFY_LINKED_JS')) define('MINIFY_LINKED_JS','1');
-if (!defined('MINIFY_YUI2')) define('MINIFY_YUI2','1');
-if (!defined('MINIFY_YUI3')) define('MINIFY_YUI3','1');
+if (!defined('MINIFY_YUI3')) define('MINIFY_YUI3','0');
+if (!defined('MINIFY_YUI2')) define('MINIFY_YUI2','0');
 
 ?>
