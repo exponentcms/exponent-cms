@@ -13,7 +13,7 @@
  *
  *}
 
-{css unique="view-form-buttons" link="`$smarty.const.PATH_RELATIVE`framework/core/assets/css/button.css"}
+{css unique="view-form-buttons" corecss="button"}
 
 {/css}
 

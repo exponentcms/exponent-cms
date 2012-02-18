@@ -13,7 +13,7 @@
  *
  *}
  
-{css unique="theme-edit" link="`$smarty.const.PATH_RELATIVE`framework/core/assets/css/button.css"}
+{css unique="theme-edit" corecss="button"}
 
 {/css}
 

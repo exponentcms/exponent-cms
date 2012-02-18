@@ -14,18 +14,14 @@
  *}
  
 {css unique="cal" link="`$smarty.const.PATH_RELATIVE`framework/modules-1/calendarmodule/assets/css/calendar.css"}
-
-{/css}
-
 {literal}
-<style type="text/css">
 	.caption {text-align: center;font-weight: bold;border-top: 1px solid;border-bottom: 1px solid;}
 	.viewweek caption {line-height: 2.5em;text-align: center;font-weight: bold;border-top: 1px solid;}
 	.viewweek td {padding: .1em .1em .1em 0;}
 	.viewweek {border: none;width:100%;list-style: none;margin: 0;padding: 0;}
 	.viewweek dt {line-height: 2em; border-top: 1px solid;}
-</style>
 {/literal}
+{/css}
  
 <div class="calendarmodule cal-default"> 
 	<h1>

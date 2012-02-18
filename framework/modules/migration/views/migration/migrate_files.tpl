@@ -13,11 +13,7 @@
  *
  *}
 
-{css unique="migratefiles-buttons" link="`$smarty.const.PATH_RELATIVE`framework/core/assets/css/button.css"}
-
-{/css}
-
-{css unique="migratefiles" corecss="tables"}  {* FIXME why isn't this working in coolwater *}
+{css unique="migratefiles" corecss="button,tables"}
 
 {/css}
 

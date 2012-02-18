@@ -113,7 +113,7 @@ if (!isset($_POST['data_id']) || (isset($_POST['data_id']) && expPermissions::ch
         $template->assign("is_email",1);
         $emailText = $template->render();
 		$emailText = chop(strip_tags(str_replace(array("<br />","<br>","br/>"),"\n",$emailText)));
-		$template->assign("css",file_get_contents(BASE."framework/core/assets/css/tables.css"));
+//		$template->assign("css",file_get_contents(BASE."framework/core/assets/css/tables.css"));
 		$emailHtml = $template->render();
 		if (empty($from)) {
 			$from = trim(SMTP_FROMADDRESS);

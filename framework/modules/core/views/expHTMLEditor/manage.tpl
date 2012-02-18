@@ -13,11 +13,7 @@
  *
  *}
 
-{css unique="managehtml1" link="`$smarty.const.PATH_RELATIVE`framework/core/assets/css/admin-global.css"}
-
-{/css}
-
-{css unique="managehtml2" corecss="tables"}
+{css unique="managehtml1" corecss="admin-global,tables"}
 
 {/css}
 

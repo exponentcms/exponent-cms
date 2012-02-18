@@ -13,7 +13,7 @@
  *
  *}
 
-{css unique="custom-report-buttons" link="`$smarty.const.PATH_RELATIVE`framework/core/assets/css/button.css"}
+{css unique="custom-report-buttons" corecss="button"}
 
 {/css}
 

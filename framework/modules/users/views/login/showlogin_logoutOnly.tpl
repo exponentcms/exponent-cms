@@ -13,7 +13,7 @@
  *
  *}
 
-{css unique="showlogin-logoutonly" link="`$smarty.const.PATH_RELATIVE`framework/core/assets/css/button.css"}
+{css unique="showlogin-logoutonly" corecss="button"}
 
 {/css}
 

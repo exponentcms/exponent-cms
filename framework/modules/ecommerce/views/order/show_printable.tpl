@@ -14,8 +14,8 @@
  *}
 
 {if $include_css == true}
-    <style type="text/css" media="screen">
+    {css unique="show-printable"}
         {$css}
-    </style>
+    {/css}
 {/if}
 {include file="invoice.tpl"}

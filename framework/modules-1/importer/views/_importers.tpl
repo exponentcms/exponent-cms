@@ -13,7 +13,7 @@
  *
  *}
 
-{css unique="importers-buttons" link="`$smarty.const.PATH_RELATIVE`framework/core/assets/css/button.css"}
+{css unique="importers-buttons" corecss="button"}
 
 {/css}
 

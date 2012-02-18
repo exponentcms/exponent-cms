@@ -13,11 +13,7 @@
  *
  *}
 
-{css unique="mangefaq-buttons" link="`$smarty.const.PATH_RELATIVE`framework/core/assets/css/button.css"}
-
-{/css}
-
-{css unique="managefaq" corecss="tables"}
+{css unique="managefaq" corecss="button,tables"}
 
 {/css}
 

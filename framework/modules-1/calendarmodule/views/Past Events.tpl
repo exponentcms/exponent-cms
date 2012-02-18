@@ -13,15 +13,11 @@
  *
  *}
  
-{css unique="cal" link="`$smarty.const.PATH_RELATIVE`framework/modules-1/calendarmodule/assets/css/calendar.css"}
+{css unique="cal" link="`$smarty.const.PATH_RELATIVE`framework/modules-1/calendarmodule/assets/css/calendar.css" corecss="tables"}
 
 {/css}
 
-{css unique="cal1" corecss="tables"}
-
-{/css}
-
-<div class="module calendar cal-admin"> 
+<div class="module calendar cal-admin">
 	<div class="module-actions">
 		<a class="monthviewlink" href="{link action=viewmonth time=$time}">{'Calendar View'|gettext}</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a class="listviewlink" href="{link _common=1 view='Monthly List' action='show_view' time=$time}">{'List View'|gettext}</a>
 		{permissions}

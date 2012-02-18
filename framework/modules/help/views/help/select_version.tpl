@@ -13,15 +13,15 @@
  *
  *}
 
+{css unique="select-version"}
 {literal}
-<style type="text/css">
     .select-version .control .label {
         display: inline;
         font-size: 100%;
         font-weight: bold;
     }
-</style>
 {/literal}
+{/css}
 
 <div class="module help select-version">
     <form>
@@ -29,10 +29,10 @@
     </form>
 </div>
 
-{literal}
 <script type="text/javascript">
+{literal}
 	function switch_ver(id){
 		location.href="index.php?module=help&action=switch_version&version=" + id
 	}
-</script>
 {/literal}
+</script>

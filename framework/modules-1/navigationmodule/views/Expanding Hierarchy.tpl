@@ -13,26 +13,9 @@
  *
  *}
 
-<style type="text/css" media="screen">
-    {*should go in stylesheet*}
-    {literal}
-    .navigationmodule.expanding .depth1 {
-        margin-left:10px;
-    }
-    .navigationmodule.expanding .depth2 {
-        margin-left:20px;
-    }
-    .navigationmodule.expanding .depth3 {
-        margin-left:30px;
-    }
-    .navigationmodule.expanding .depth4 {
-        margin-left:40px;
-    }
-    .navigationmodule.expanding .depth5 {
-        margin-left:50px;
-    }
-    {/literal}
-</style>
+{css unique="expanding-hierarchy" link="`$smarty.const.PATH_RELATIVE`framework/modules-1/navigationmodule/assets/css/depth.css"}
+
+{/css}
 
 <div class="navigationmodule expanding">
     <ul>

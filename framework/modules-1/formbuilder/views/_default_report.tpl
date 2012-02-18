@@ -13,20 +13,16 @@
  *
  *}
 
-{css unique="default-report-buttons" link="`$smarty.const.PATH_RELATIVE`framework/core/assets/css/button.css"}
+{css unique="default-report-buttons" corecss="tables"}
 
 {/css}
 
-{if $is_email == 1}
-<style type="text/css" media="screen">
-    {$css}
-</style> 
-{else}
-	{css unique="default-report" corecss="tables"}
+{if $is_email == 0}
+    {css unique="default-report-buttons" corecss="button"}
 
-	{/css}
+    {/css}
 {/if}
- 
+
  <table border="0" cellspacing="0" cellpadding="0" class="exp-skin-table">
     <thead>
         <tr>

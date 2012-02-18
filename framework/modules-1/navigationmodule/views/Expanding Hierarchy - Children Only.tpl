@@ -13,28 +13,11 @@
  *
  *}
 
- <style type="text/css" media="screen">
-     {*should go in stylesheet*}
-     {literal}
-     .navigationmodule.expanding-children-only .depth1 {
-         margin-left:10px;
-     }
-     .navigationmodule.expanding-children-only .depth2 {
-         margin-left:20px;
-     }
-     .navigationmodule.expanding-children-only .depth3 {
-         margin-left:30px;
-     }
-     .navigationmodule.expanding-children-only .depth4 {
-         margin-left:40px;
-     }
-     .navigationmodule.expanding-children-only .depth5 {
-         margin-left:50px;
-     }
-     {/literal}
- </style>
+{css unique="expanding-hierarchy-children" link="`$smarty.const.PATH_RELATIVE`framework/modules-1/navigationmodule/assets/css/depth.css"}
 
-<div class="navigationmodule expanding-children-only">
+{/css}
+
+<div class="navigationmodule expanding">
     <ul>
         {foreach from=$sections item=section}
             {if $section->numParents != 0}

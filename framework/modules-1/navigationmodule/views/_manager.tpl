@@ -82,4 +82,3 @@
 	});
 {/literal}
 {/script}
-

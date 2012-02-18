@@ -261,15 +261,11 @@
 }
 
 .navigationmodule .yuimenuitem-hassubmenu{
-	background-image:url(../images/skins/menuitem_submenuindicator.png);
-	background-position:right center;
-	background-repeat:no-repeat;
+    background : url(../images/skins/menuitem_submenuindicator.png) no-repeat right center;
 }
 
 .navigationmodule .yuimenuitem-checked{
-	background-image:url(../images/skins/menuitem_checkbox.png);
-	background-position:left center;
-	background-repeat:no-repeat;
+    background : url(../images/skins/menuitem_checkbox.png) no-repeat left center;
 }
 
 .navigationmodule .yui-menu-shadow-visible{

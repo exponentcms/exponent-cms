@@ -13,13 +13,13 @@
  *
  *}
 
-<style type="text/css" media="screen">
+{css unique="email-invoice"}
 {literal}
-.address span {
-    display:block;
-}
+    .address span {
+        display:block;
+    }
 {/literal}
-</style>
+{/css}
 
 <div id="invoice" style="color:#000000; font-size:100%; position:relative; text-align: left; margin: 0px; padding: 0px;">   
     <div id="invoice-data">

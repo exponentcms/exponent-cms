@@ -13,10 +13,6 @@
  *
  *}
 
-{css unique="myaddressbook-buttons" link="`$smarty.const.PATH_RELATIVE`framework/core/assets/css/button.css"}
-
-{/css}
-
 {css unique="myaddressbook" corecss="tables,button"}
 
 {/css}

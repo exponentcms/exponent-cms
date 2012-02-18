@@ -18,17 +18,18 @@
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset={$smarty.const.LANG_CHARSET}" />
 		<title>{$smarty.const.SITE_TITLE} :: {'Down for Maintenance.'|gettext}</title>
-		<style type="text/css">{literal}
+		{css unique="maintenance"}
+        {literal}
 			div {
 				font-size: 10pt;
 				font-family: Arial, sans-serif;
 				font-weight: normal;
 				color: #333;
 			}
-		{/literal}</style>
+		{/literal}
+        {/css}
 	</head>
 	<body>
-	
 	<div style="border: 1px solid black; margin: 15%; padding: 3em;">
 		{$smarty.const.MAINTENANCE_MSG_HTML}
         {if $db_down}

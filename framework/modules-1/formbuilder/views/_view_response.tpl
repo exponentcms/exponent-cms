@@ -13,7 +13,7 @@
  *
  *}
 
-{css unique="submit-form-buttons" link="`$smarty.const.PATH_RELATIVE`framework/core/assets/css/button.css"}
+{css unique="submit-form-buttons" corecss="button"}
 
 {/css}
 

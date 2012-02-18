@@ -17,13 +17,13 @@
 	<head>
 		<meta type="Generator" value="Exponent Content Management System" />
 		<link rel="stylesheet" href="{$smarty.const.THEME_RELATIVE}style.css" /> 
-		<style type="text/css">
+		{css unique="linker"}
 		{literal}
 			body {
 				padding: 5px;
 			}
 		{/literal}
-		</style>
+		{/css}
 	</head>
 	<body> *}
 	<b>{'Site Hierarchy'|gettext}</b><hr size="1" />

@@ -36,12 +36,11 @@
 {/form}
 <h3 style="float: right;">{$count} {'model aliases left'|gettext}.</h3>
 {clear}
-<style type="text/css">
-{literal}
 
+{css unique="processModelAliases"}
+{literal}
 	#product_title, #resultsproduct_title {
 		width: 450px;
 	}
-	
 {/literal}
-</style>
+{/css}

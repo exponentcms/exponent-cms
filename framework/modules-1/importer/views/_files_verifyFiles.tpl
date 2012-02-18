@@ -13,11 +13,7 @@
  *
  *}
 
-{css unique="verifyfiles-buttons" link="`$smarty.const.PATH_RELATIVE`framework/core/assets/css/button.css"}
-
-{/css}
-
-{css unique="verifyfiles" corecss="tables"}
+{css unique="verifyfiles" corecss="button,tables"}
 
 {/css}
 

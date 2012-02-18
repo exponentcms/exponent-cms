@@ -15,9 +15,9 @@
 
 {css unique="gallery-config"}
 {literal}
-small {
-    display:block;
-}
+    small {
+        display:block;
+    }
 {/literal}
 {/css}
 

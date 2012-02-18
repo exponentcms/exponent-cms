@@ -15,9 +15,9 @@
 
 {css unique="twitter-config"}
 {literal}
-.control.key input.text {
-    width:100%;
-}
+    .control.key input.text {
+        width:100%;
+    }
 {/literal}
 {/css}
 
