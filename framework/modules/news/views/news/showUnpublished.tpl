@@ -30,7 +30,7 @@
 		<tbody>
 			{foreach from=$page->records item=listing name=listings}
 			<tr class="{cycle values="odd,even"}">
-				<td><a href="{link controller=news action=show id=$listing->id}">{$listing->title}</a></td>
+				<td><a href="{link controller=news action=show id=$listing->id}" title="{$listing->body|summarize:"html":"para"}">{$listing->title}</a></td>
 				<td>{$listing->publish|format_date:"%B %e, %Y"}</td>
 				<td>
 				    {if $listing->unpublish == 0}

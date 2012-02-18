@@ -40,7 +40,7 @@
         {if $smarty.foreach.items.iteration<=$config.headcount || !$config.headcount}
         <div class="item">
             <h2>
-            <a href="{link action=show title=$item->sef_url}">
+            <a href="{link action=show title=$item->sef_url}" title="{$item->body|summarize:"html":"para"}">
             {$item->title}
             </a>
             </h2>

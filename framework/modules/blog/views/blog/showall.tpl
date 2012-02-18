@@ -40,7 +40,7 @@
     {foreach from=$page->records item=item}
         <div class="item">
             <h2>
-            <a href="{link action=show title=$item->sef_url}">
+            <a href="{link action=show title=$item->sef_url}" title="{$item->body|summarize:"html":"para"}">
             {$item->title}
             </a>
             </h2>

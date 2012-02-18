@@ -34,7 +34,7 @@
         <div class="item">
             <dt>
                 <h2>
-                    <a href={link controller=help action=show version=$doc->help_version->version title=$doc->sef_url}>{$doc->title}</a>
+                    <a href={link controller=help action=show version=$doc->help_version->version title=$doc->sef_url} title="{$doc->body|summarize:"html":"para"}">{$doc->title}</a>
                 </h2>
             </dt>
             

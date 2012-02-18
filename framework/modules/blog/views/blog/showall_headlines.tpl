@@ -33,7 +33,7 @@
     {foreach from=$page->records item=record name="blogs"}
         {if $smarty.foreach.blogs.iteration <= $config.headcount}
         <li class="item">
-            <a href="{link action=show title=$record->sef_url}">{$record->title}</a>
+            <a href="{link action=show title=$record->sef_url}" title="{$record->body|summarize:"html":"para"}">{$record->title}</a>
             {permissions}
                 <div class="item-actions">
                     {if $permissions.edit == 1}

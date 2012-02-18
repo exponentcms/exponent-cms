@@ -54,7 +54,7 @@
                 {if !$config.hidetext}
                     <div class="bodycopy">
                         <h2>
-                            <a href="{link action="show" title=$slide->sef_url}">
+                            <a href="{link action="show" title=$slide->sef_url}" title="{$slide->body|summarize:"html":"para"}">
                                 {$slide->title}
                             </a>
                         </h2>
