@@ -178,7 +178,7 @@ class helpController extends expController {
 	    global $db;
 	    	    
 	    $help = new help();
-	    $current_docs = $help->find('all', 'help_version_id='.$from);
+	    $current_docs = $help->find('all', 'help_version_id='.$from,'rank');
 	    foreach ($current_docs as $key=>$doc) {
 	        unset($doc->id);
 	        $doc->help_version_id = $to;
