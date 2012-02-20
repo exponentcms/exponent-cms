@@ -235,13 +235,13 @@ class calendarcontrol extends formcontrol {
         // css
         expCSS::pushToHead(array(
 		    "unique"=>"cal0",
-		    "link"=>YUI2_PATH."button/assets/skins/sam/button.css"
+		    "link"=>YUI2_PATH."assets/skins/sam/button.css"
 		    )
 		);
 		
         expCSS::pushToHead(array(
 		    "unique"=>"cal1",
-		    "link"=>YUI2_PATH."calendar/assets/skins/sam/calendar.css"
+		    "link"=>YUI2_PATH."assets/skins/sam/calendar.css"
 		    )
 		);
 		
