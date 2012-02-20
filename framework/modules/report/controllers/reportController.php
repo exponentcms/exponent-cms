@@ -1583,9 +1583,9 @@ class reportController extends expController {
 		// exit();
 		$summary['totalcarts']    = $allCarts['count'];
 		$summary['valueproducts'] = $valueproducts;
-		$summary['cartsWithoutItems']       = round(($cartsWithoutItems['count']     / $allCarts['count']) * 100, 2) . '%';
-		$summary['cartsWithItems']          = round(($cartsWithItems['count']        / $allCarts['count']) * 100, 2) . '%';
-		$summary['cartsWithItemsAndInfo']   = round(($cartsWithItemsAndInfo['count'] / $allCarts['count']) * 100, 2) . '%';
+		$summary['cartsWithoutItems']       = $allCarts['count'] ? round(($cartsWithoutItems['count']     / $allCarts['count']) * 100, 2) . '%' : 0;
+		$summary['cartsWithItems']          = $allCarts['count'] ? round(($cartsWithItems['count']        / $allCarts['count']) * 100, 2) . '%' : 0;
+		$summary['cartsWithItemsAndInfo']   = $allCarts['count'] ? round(($cartsWithItemsAndInfo['count'] / $allCarts['count']) * 100, 2) . '%' : 0;
 		
 		$quickrange = array(0=>'Last 24 Hours',1=>'Last 7 Days',2=>'Last 30 Days');
         $quickrange_default = isset($this->params['quickrange']) ? $this->params['quickrange'] : 0;
