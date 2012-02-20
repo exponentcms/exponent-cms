@@ -44,7 +44,7 @@ class portfolioController extends expController {
 //        $order = 'rank';
         $order = isset($this->config['order']) ? $this->config['order'] : 'rank';
         $limit = empty($this->config['limit']) ? 10 : $this->config['limit'];
-        if (!empty($this->params['view']) && ($this->params['view'] == 'showall_accordian' || $this->params['view'] == 'showall_tabbed')) {
+        if (!empty($this->params['view']) && ($this->params['view'] == 'showall_accordion' || $this->params['view'] == 'showall_tabbed')) {
             $limit = 999;
         }
 

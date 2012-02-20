@@ -13,11 +13,11 @@
  *
  *}
 
-{css unique="filedownload" link="`$asset_path`css/accordian.css"}
+{css unique="filedownload" link="`$asset_path`css/accordion.css"}
 
 {/css}
 
-<div class="module filedownload showall-accordian">
+<div class="module filedownload showall-accordion">
     {if $moduletitle && !$config.hidemoduletitle}<h1>{/if}
     {if $config.enable_rss == true}
         <a class="rsslink" href="{rsslink}" title="{'Subscribe to'|gettext} {$config.feed_title}"></a>
@@ -55,7 +55,7 @@
     </div>
 </div>
 
-{* all we need is Annimation for the yuimods *}
+{* all we need is Animation for the yuimods *}
 {script unique="expanding-content" yuimodules="animation" yui3mods="1"}
 {literal}
 //wait for the DOM to load

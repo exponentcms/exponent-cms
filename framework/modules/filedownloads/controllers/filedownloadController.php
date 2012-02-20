@@ -44,7 +44,7 @@ class filedownloadController extends expController {
         $order = isset($this->config['order']) ? $this->config['order'] : 'rank';
 //        $dir   = isset($this->config['dir']) ? $this->config['dir'] : 'ASC';
         $limit = isset($this->config['limit']) ? $this->config['limit'] : null;
-        if (!empty($this->params['view']) && ($this->params['view'] == 'showall_accordian' || $this->params['view'] == 'showall_tabbed')) {
+        if (!empty($this->params['view']) && ($this->params['view'] == 'showall_accordion' || $this->params['view'] == 'showall_tabbed')) {
             $limit = 999;
         }
 

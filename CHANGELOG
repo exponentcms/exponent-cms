@@ -7,7 +7,7 @@ Added / Fixed / changed for 2.0.5
 # This release focuses on implementing categories & a new calendar
   - categories are (fully) implemented within the faq, filedownloads, links, photoalbum & portfolio modules
     -- adds tabbed view either by category or alphabetized like rolodex
-    -- adds an accordian like view w/ collapse/expand by category/alphabetized
+    -- adds an accordion like view w/ collapse/expand by category/alphabetized
     -- categories now migrated; imagegallerymodule galleries converted to categories
   - calendar2 should be considered alpha quality
 # Many fixes and updates

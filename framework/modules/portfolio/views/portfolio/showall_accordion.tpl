@@ -17,7 +17,7 @@
 
 {/css}
 
-<div class="module portfolio showall-accordian">
+<div class="module portfolio showall-accordion">
     {if $moduletitle && !$config.hidemoduletitle}<h1>{$moduletitle}</h1>{/if}
     {permissions}
         <div class="module-actions">
