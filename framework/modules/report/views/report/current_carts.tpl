@@ -15,11 +15,8 @@
 
 {include file='menu.inc'}
 
-{css unique="current_carts" corecss="tables"}
+{css unique="current_carts" link="`$asset_path`/css/accordion.css" corecss="tables"}
 
-{/css}
-
-{css unique="ecom-report2" link="`$asset_path`/css/accordion.css"}
 {/css}
 
 <script type="text/javascript" src="http://yui.yahooapis.com/2.7.0/build/utilities/utilities.js"></script>
