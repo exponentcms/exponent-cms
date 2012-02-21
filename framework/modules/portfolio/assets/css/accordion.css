@@ -15,15 +15,16 @@
 
 .showall-accordion .dashboard .hd h2 {
     margin:0;
-    padding:8px 0 8px 33px;
-    font-size:14px;
+    padding:5px 0 5px 33px;
+    font-size:18px;
+    font-weight:bold;
     background-image:url(../../../../../framework/modules/ecommerce/assets/images/ecom-sprite.png);
     background-repeat:no-repeat;
 }
 
 .showall-accordion .dashboard .hd a.expand {
     /*background:url(../../../../../framework/modules/ecommerce/assets/images/ecom-sprite.png) no-repeat -4px -413px;*/
-    background-image: url('../../../../../framework/core/assets/images/down.png');
+    background-image: url('../../../../../framework/core/assets/images/section_collapsed.png');
     background-repeat:no-repeat;
     background-position: right;
     display:block;
@@ -31,7 +32,7 @@
 
 .showall-accordion .dashboard .hd a.collapse {
     /*background:url(../../../../../framework/modules/ecommerce/assets/images/ecom-sprite.png) no-repeat -4px -386px;*/
-    background-image: url('../../../../../framework/core/assets/images/up.png');
+    background-image: url('../../../../../framework/core/assets/images/section_expanded.png');
     background-repeat:no-repeat;
     background-position: right;
     display:block;
