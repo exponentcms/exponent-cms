@@ -13,7 +13,7 @@
  *
  *}
 
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<!DOCTYPE HTML>
 <html>
 <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
@@ -43,46 +43,47 @@
     {messagequeue}
 
     <div id="filelist">
-    {form action=addit}
-      <table id="filenames" class="exp-skin-table">
-        <thead>
-    	   <tr>
-               <th><a href="#" onclick="files_selectUnselectAll(true); return false;">{'All'|gettext}</a>&nbsp;|&nbsp;<a href="#" onclick="files_selectUnselectAll(false); return false;">{'None'|gettext}</a></th>
-               <th>{'Filename'|gettext}</th>
-               <th>{'Folder'|gettext}</th>
-           </tr>
-    	</thead>
-    	<tbody>
-{foreach from=$files item=file key=src}
-        <tr class="{cycle values="even,odd"}">
-            <td width="20">
-                {control type="checkbox" name="addit[]" value=$src}
-            </td>
-            <td>
-                {$file}
-            </td>
-            <td>
-                {$src}
-            </td>
-        </tr>
-{foreachelse}
-        <tr><td colspan=3>{'There don\'t appear to be any files on the server which aren\'t already in the File Manager'|gettext}</td></tr>
-{/foreach}
-        </tbody>
-     </table>
-    {control type=buttongroup submit="Add Selected Files"|gettext}
-    {/form}
+        {form action=addit}
+            <table id="filenames" class="exp-skin-table">
+                <thead>
+                   <tr>
+                       <th><input type='checkbox' name='checkall' title="{'Select All/None'|gettext}" onChange="selectAll(this.checked)"></th>
+                       <th>{'Filename'|gettext}</th>
+                       <th>{'Folder'|gettext}</th>
+                   </tr>
+                </thead>
+                <tbody>
+                    {foreach from=$files item=file key=src}
+                        <tr class="{cycle values="even,odd"}">
+                            <td width="20">
+                                {control type="checkbox" name="addit[]" value=$src}
+                            </td>
+                            <td>
+                                {$file}
+                            </td>
+                            <td>
+                                {$src}
+                            </td>
+                        </tr>
+                    {foreachelse}
+                        <tr><td colspan=3>{'There don\'t appear to be any files on the server which aren\'t already in the File Manager'|gettext}</td></tr>
+                    {/foreach}
+                </tbody>
+            </table>
+            {control type=buttongroup submit="Add Selected Files"|gettext}
+        {/form}
     </div>
 </div>
+
 <script type="text/javascript">
-function files_selectUnselectAll(setChecked) {
-	var elems = document.getElementsByTagName("input");
-	for (var key = 0; key < elems.length; key++) {
-		if (elems[key].type == "checkbox" && elems[key].name.substr(0,6) == "addit[") {
-			elems[key].checked = setChecked;
-		}
-	}
-}
+{literal}
+    function selectAll(val) {
+        var checks = document.getElementsByName("addit[]");
+        for (var i = 0; i < checks.length; i++) {
+          checks[i].checked = val;
+        }
+    }
+{/literal}
 </script>
 </body>
 </html>
