@@ -16,6 +16,9 @@
 {css unique="portfolio" link="`$asset_path`css/portfolio.css"}
 
 {/css}
+{css unique="accordion" link="`$asset_path`css/accordion.css"}
+
+{/css}
 
 <div class="module portfolio showall-accordion">
     {if $moduletitle && !$config.hidemoduletitle}<h1>{$moduletitle}</h1>{/if}
@@ -36,56 +39,78 @@
    		{$config.moduledescription}
    	{/if}
 
-	{* Assign the expanding div an ID based again of the $textitem ID so we know what to look for *}
-    <div>
+    <div class="dashboard">
         {foreach name=items from=$page->cats key=catid item=cat}
-            {* here, we're setting an ID based on the id of the $textitem *}
-            {* We're also giving it a classname, which is what YUI will pick up and listen for *}
-            <h2 id="expand{$catid}" class="expandable down" style="cursor:pointer" title="{"Expand this item"|gettext}">{if $cat->name ==""}{'The List'|gettext}{else}{$cat->name}{/if}</h2>
-            <div id="expandcont{$catid}" class="piece">
-                 {foreach from=$cat->records item=record}
-                    {include 'portfolioitem.tpl'}
-                {/foreach}
+            <div id="item{$catid}" class="panel">
+                <div class="hd"><a href="#" class="{if $config.initial_view==2||($config.initial_view==3&&$smarty.foreach.items.iteration==1)}collapse{else}expand{/if}"><h2>{if $cat->name ==""}{'The List'|gettext}{else}{$cat->name}{/if}</h2></a></div>
+                <div class="piece bd {if $config.initial_view==2||($config.initial_view==3&&$smarty.foreach.items.iteration==1)}expanded{else}collapsed{/if}">
+                    <ul>
+                        {foreach from=$cat->records item=record}
+                            <li>
+                                {include 'portfolioitem.tpl'}
+                            </li>
+                        {/foreach}
+                    </ul>
+                </div>
             </div>
         {/foreach}
     </div>
 </div>
 
-{* all we need is Annimation for the yuimods *}
-{script unique="expanding-content" yuimodules="animation" yui3mods="1"}
+{script unique="expand-panels" yui3mods="1"}
 {literal}
-//wait for the DOM to load
-YAHOO.util.Event.onDOMReady(function(){
-    // gather all elements with a class name of expandable 
-    var triggers =  YAHOO.util.Dom.getElementsByClassName('expandable');
-    
-    // listen for any triggers to be clicked, and execute the anonymous function when they do
-    YAHOO.util.Event.on(triggers, 'click', function(e){
-        
-        //grab the HTML element from the click event
-        var target = YAHOO.util.Event.getTarget(e);
-        
-        // get and parse out the numeric ID from the html node
-        var eid = target.id.replace("expand","");
-        
-        // grab the element to expand based on our new ID
-        var dvToExpand = YAHOO.util.Dom.get('expandcont'+eid);
+YUI(EXPONENT.YUI3_CONFIG).use('node','anim', function(Y) {
+    var panels = Y.all(".dashboard .panel");
+    var expandHeight = [];
+    var exclusiveExp = {/literal}{if $config.initial_view==1||$config.initial_view==3}true{else}false{/if}{literal};
+    var action = function(e){
+        e.halt();
 
-        //the rest is your code :)
-        var to_height = (dvToExpand.offsetHeight == 0) ? dvToExpand.scrollHeight : 0;
-        var from_height = (dvToExpand.offsetHeight == 0) ? 0 : dvToExpand.scrollHeight;
-        var ease_type = (from_height == 0) ? YAHOO.util.Easing.easeOut : YAHOO.util.Easing.easeIn;
-        var new_status = (from_height == 0) ? "Collapse" : "expand";
-        var h2ToExpand = YAHOO.util.Dom.get('expand'+eid);
-        if (from_height == 0) {
-            h2ToExpand.title="{/literal}{'Collapse this item'|gettext}{literal}";
-            h2ToExpand.className='expandable up';
-        } else {
-            h2ToExpand.title="{/literal}{'Expand this item'|gettext}{literal}";
-            h2ToExpand.className='expandable down';
+        var pBody = e.target.ancestor('.panel').one('.bd');
+        var pID = e.target.ancestor('.panel').getAttribute('id');
+        var savedState = e.target.ancestor('.panel').one('.hd a').getAttribute("class");
+        var cfg = {
+            node: pBody,
+            duration: 0.5,
+            easing: Y.Easing.easeOut
         }
-        var anim = new YAHOO.util.Anim(dvToExpand, { height: {to: to_height, from: from_height} }, 0.5, ease_type);
-        anim.animate();
+
+        if (exclusiveExp) {
+            panels.each(function(n,k){
+                var cfg = {
+                    node: n.one('.bd'),
+                    duration: 0.5,
+                    easing: Y.Easing.easeOut
+                }
+                n.one('.hd a').replaceClass('collapse','expand');
+                n.one('.bd').replaceClass('expanded','collapsed');
+                cfg.to = { height: 0 };
+                var anim = new Y.Anim(cfg);
+                anim.run();
+            });
+        }
+
+        if (savedState=="collapse") {
+            cfg.to = { height: 0 };
+            cfg.from = { height: expandHeight[pID] };
+            pBody.setStyle('height',expandHeight[pID]+"px");
+            pBody.replaceClass('expanded','collapsed');
+            e.target.ancestor('.panel').one('.hd a').replaceClass('collapse','expand');
+        } else {
+            pBody.setStyle('height',0);
+            cfg.from = { height: 0 };
+            cfg.to = { height: expandHeight[pID] };
+            pBody.replaceClass('collapsed','expanded');
+            e.target.ancestor('.panel').one('.hd a').replaceClass('expand','collapse');
+        }
+        var anim = new Y.Anim(cfg);
+        anim.run();
+    }
+    panels.each(function(n,k){
+        n.delegate('click',action,'.hd a');
+//            n.one('.hd a').replaceClass('collapse','expand');
+//            n.one('.bd').addClass('collapsed');
+        expandHeight[n.get('id')] = n.one('.bd ul').get('offsetHeight');
     });
 });
 {/literal}

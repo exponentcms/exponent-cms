@@ -14,27 +14,6 @@
     display:block;
 }
 
-.portfolio.showall-accordion .down {
-    margin: 5px;
-    padding-left: 20px !important;
-    background-image: url('../../../../../framework/core/assets/images/down.png');
-    background-repeat: no-repeat;
-}
-
-.portfolio.showall-accordion .up {
-    margin: 5px;
-    padding-left: 20px !important;
-    background-image: url('../../../../../framework/core/assets/images/up.png');
-    background-repeat: no-repeat;
-}
-
-.portfolio.showall-accordion .piece {
-    overflow:hidden;
-    height: 0px;
-    margin-left: 20px;
-    padding-left: 20px;
-}
-
 .portfolio.showall-simple-list .item {
     margin-left: 10px;
     padding-left: 10px;
