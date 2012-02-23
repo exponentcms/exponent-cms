@@ -905,26 +905,28 @@ class migrationController extends expController {
 				}
 
                 $oldconfig = $old_db->selectObject('linkmodule_config', "location_data='".serialize($iloc)."'");
-                if ($oldconfig->enable_rss == 1) {
-                    $newconfig->config['enable_rss'] = true;
-                    $newconfig->config['feed_title'] = $oldconfig->feed_title;
-                    $newconfig->config['feed_desc'] = $oldconfig->feed_desc;
-                    $newconfig->config['rss_limit'] = isset($oldconfig->rss_limit) ? $oldconfig->rss_limit : 24;
-                    $newconfig->config['rss_cachetime'] = isset($oldconfig->rss_cachetime) ? $oldconfig->rss_cachetime : 1440;
-                }
-                if (!empty($oldconfig->orderhow)) {
-                    if ($oldconfig->orderby == 'name') $newconfig->config['order'] = 'title';
-                    switch ($oldconfig->orderhow) {
-                        case '1':
-                            $newconfig->config['order'] .= ' DESC';
-                            break;
-                        case '2':
-                            $newconfig->config['order'] = 'rank';
-                            break;
+                if (!empty($oldconfig)) {
+                    if ($oldconfig->enable_rss == 1) {
+                        $newconfig->config['enable_rss'] = true;
+                        $newconfig->config['feed_title'] = $oldconfig->feed_title;
+                        $newconfig->config['feed_desc'] = $oldconfig->feed_desc;
+                        $newconfig->config['rss_limit'] = isset($oldconfig->rss_limit) ? $oldconfig->rss_limit : 24;
+                        $newconfig->config['rss_cachetime'] = isset($oldconfig->rss_cachetime) ? $oldconfig->rss_cachetime : 1440;
                     }
-                }
-                if ($oldconfig->enable_categories == 1) {
-                    $newconfig->config['usecategories'] = true;
+                    if (!empty($oldconfig->orderhow)) {
+                        if ($oldconfig->orderby == 'name') $newconfig->config['order'] = 'title';
+                        switch ($oldconfig->orderhow) {
+                            case '1':
+                                $newconfig->config['order'] .= ' DESC';
+                                break;
+                            case '2':
+                                $newconfig->config['order'] = 'rank';
+                                break;
+                        }
+                    }
+                    if ($oldconfig->enable_categories == 1) {
+                        $newconfig->config['usecategories'] = true;
+                    }
                 }
 
 				//check to see if it's already pulled in (circumvent !is_original)
@@ -954,7 +956,7 @@ class migrationController extends expController {
 						$lnk->save();
 						@$this->msg['migrated'][$iloc->mod]['count']++;
 						@$this->msg['migrated'][$iloc->mod]['name'] = $this->new_modules[$iloc->mod];
-                        if ($oldconfig->enable_categories == 1 && $link['category_id']) {
+                        if (!empty($oldconfig) && $oldconfig->enable_categories == 1 && $link['category_id']) {
                             $params = null;
                             $oldcat = $old_db->selectObject('category','id = '.$link['category_id']);
                             $cat = new expCat($oldcat->name);
@@ -1043,44 +1045,46 @@ class migrationController extends expController {
                 $ploc->mod = "news";
                 // fudge a config to get attached files to appear
                 $newconfig->config = expUnserialize('a:14:{s:9:"feedmaker";s:0:"";s:11:"filedisplay";s:7:"Gallery";s:6:"ffloat";s:4:"Left";s:6:"fwidth";s:3:"120";s:7:"fmargin";s:1:"5";s:7:"piwidth";s:3:"100";s:5:"thumb";s:3:"100";s:7:"spacing";s:2:"10";s:10:"floatthumb";s:8:"No Float";s:6:"tclass";s:0:"";s:5:"limit";s:0:"";s:9:"pagelinks";s:14:"Top and Bottom";s:10:"feed_title";s:0:"";s:9:"feed_desc";s:0:"";}');
-                if ($oldconfig->enable_rss == 1) {
-                    $newconfig->config['enable_rss'] = true;
-                    $newconfig->config['feed_title'] = $oldconfig->feed_title;
-                    $newconfig->config['feed_desc'] = $oldconfig->feed_desc;
-                    $newconfig->config['rss_limit'] = isset($oldconfig->rss_limit) ? $oldconfig->rss_limit : 24;
-                    $newconfig->config['rss_cachetime'] = isset($oldconfig->rss_cachetime) ? $oldconfig->rss_cachetime : 1440;
-                }
-                if (!empty($oldconfig->item_limit)) {
-                    $newconfig->config['limit'] = $oldconfig->item_limit;
-                    $newconfig->config['multipageonly'] = true;
-                }
-                if (!empty($oldconfig->sortfield)) {
-                    switch ($oldconfig->sortfield) {
-                        case 'publish':
-                            $newconfig->config['order'] = 'publish';
-                            break;
-                        case 'edited':
-                            $newconfig->config['order'] = 'edited_at';
-                            break;
-                        case 'posted':
-                        default:
-                            $newconfig->config['order'] = 'created_at';
-                            break;
+                if (!empty($oldconfig)) {
+                    if ($oldconfig->enable_rss == 1) {
+                        $newconfig->config['enable_rss'] = true;
+                        $newconfig->config['feed_title'] = $oldconfig->feed_title;
+                        $newconfig->config['feed_desc'] = $oldconfig->feed_desc;
+                        $newconfig->config['rss_limit'] = isset($oldconfig->rss_limit) ? $oldconfig->rss_limit : 24;
+                        $newconfig->config['rss_cachetime'] = isset($oldconfig->rss_cachetime) ? $oldconfig->rss_cachetime : 1440;
                     }
-                    if ($oldconfig->sortorder == 'DESC') {
-                        $newconfig->config['order'] .= ' DESC';
+                    if (!empty($oldconfig->item_limit)) {
+                        $newconfig->config['limit'] = $oldconfig->item_limit;
+                        $newconfig->config['multipageonly'] = true;
                     }
-                }
-                if (!empty($oldconfig->aggregate) && $oldconfig->aggregate != 'a:0:{}') {
-                    $merged = expUnserialize($oldconfig->aggregate);
-                    foreach ($merged as $merge) {
-                        $newconfig->config['aggregate'][] = $merge;
+                    if (!empty($oldconfig->sortfield)) {
+                        switch ($oldconfig->sortfield) {
+                            case 'publish':
+                                $newconfig->config['order'] = 'publish';
+                                break;
+                            case 'edited':
+                                $newconfig->config['order'] = 'edited_at';
+                                break;
+                            case 'posted':
+                            default:
+                                $newconfig->config['order'] = 'created_at';
+                                break;
+                        }
+                        if ($oldconfig->sortorder == 'DESC') {
+                            $newconfig->config['order'] .= ' DESC';
+                        }
                     }
-                }
-                if (!empty($oldconfig->pull_rss) && $oldconfig->pull_rss) {
-                    $pulled = expUnserialize($oldconfig->rss_feed);
-                    foreach ($pulled as $pull) {
-                        $newconfig->config['pull_rss'][] = $pull;
+                    if (!empty($oldconfig->aggregate) && $oldconfig->aggregate != 'a:0:{}') {
+                        $merged = expUnserialize($oldconfig->aggregate);
+                        foreach ($merged as $merge) {
+                            $newconfig->config['aggregate'][] = $merge;
+                        }
+                    }
+                    if (!empty($oldconfig->pull_rss) && $oldconfig->pull_rss) {
+                        $pulled = expUnserialize($oldconfig->rss_feed);
+                        foreach ($pulled as $pull) {
+                            $newconfig->config['pull_rss'][] = $pull;
+                        }
                     }
                 }
                 if ($usebody) {
@@ -1159,49 +1163,51 @@ class migrationController extends expController {
                 $oldviewconfig = expUnserialize($old_db->selectValue('container','view_data', "internal='".serialize($iloc)."'"));
                 $ploc = $iloc;
                 $ploc->mod = "filedownload";
-                if ($oldconfig->enable_categories == 1 && $module->view != 'showall_recent') {
-                    $newconfig->config['usecategories'] = true;
-                }
-                if (!empty($oldconfig->description)) {
-                    $newconfig->config['moduledescription'] = $oldconfig->description;
-                }
-                if (isset($oldconfig->enable_rss)) {
-                    $dorss = $oldconfig->enable_rss;
-                } elseif (isset($oldconfig->enable_podcasting)) {
-                    $dorss = $oldconfig->enable_podcasting;
-                } else {
-                    $dorss = false;
-                }
-                if ($dorss) {
-                    $newconfig->config['enable_rss'] = true;
-                    $newconfig->config['feed_title'] = $oldconfig->feed_title;
-                    $newconfig->config['feed_desc'] = $oldconfig->feed_desc;
-                    $newconfig->config['rss_limit'] = isset($oldconfig->rss_limit) ? $oldconfig->rss_limit : 24;
-                    $newconfig->config['rss_cachetime'] = isset($oldconfig->rss_cachetime) ? $oldconfig->rss_cachetime : 1440;
-                }
-                if (!empty($oldconfig->orderhow)) {
-                    switch ($oldconfig->orderby) {
-                        case 'edited':
-                            $newconfig->config['order'] = 'edited_at';
-                            break;
-                        case 'downloads':
-                            $newconfig->config['order'] = 'downloads';
-                            break;
-                        case 'name':
-                            $newconfig->config['order'] = 'title';
-                            break;
-                        case 'posted':
-                        default:
-                            $newconfig->config['order'] = 'created_at';
-                            break;
+                if (!empty($oldconfig)) {
+                    if ($oldconfig->enable_categories == 1 && $module->view != 'showall_recent') {
+                        $newconfig->config['usecategories'] = true;
                     }
-                    switch ($oldconfig->orderhow) {
-                        case '2':
-                            $newconfig->config['order'] = 'rank';
-                        break;
-                        case '1':
-                            $newconfig->config['order'] .= ' DESC';
-                        break;
+                    if (!empty($oldconfig->description)) {
+                        $newconfig->config['moduledescription'] = $oldconfig->description;
+                    }
+                    if (isset($oldconfig->enable_rss)) {
+                        $dorss = $oldconfig->enable_rss;
+                    } elseif (isset($oldconfig->enable_podcasting)) {
+                        $dorss = $oldconfig->enable_podcasting;
+                    } else {
+                        $dorss = false;
+                    }
+                    if ($dorss) {
+                        $newconfig->config['enable_rss'] = true;
+                        $newconfig->config['feed_title'] = $oldconfig->feed_title;
+                        $newconfig->config['feed_desc'] = $oldconfig->feed_desc;
+                        $newconfig->config['rss_limit'] = isset($oldconfig->rss_limit) ? $oldconfig->rss_limit : 24;
+                        $newconfig->config['rss_cachetime'] = isset($oldconfig->rss_cachetime) ? $oldconfig->rss_cachetime : 1440;
+                    }
+                    if (!empty($oldconfig->orderhow)) {
+                        switch ($oldconfig->orderby) {
+                            case 'edited':
+                                $newconfig->config['order'] = 'edited_at';
+                                break;
+                            case 'downloads':
+                                $newconfig->config['order'] = 'downloads';
+                                break;
+                            case 'name':
+                                $newconfig->config['order'] = 'title';
+                                break;
+                            case 'posted':
+                            default:
+                                $newconfig->config['order'] = 'created_at';
+                                break;
+                        }
+                        switch ($oldconfig->orderhow) {
+                            case '2':
+                                $newconfig->config['order'] = 'rank';
+                            break;
+                            case '1':
+                                $newconfig->config['order'] .= ' DESC';
+                            break;
+                        }
                     }
                 }
                 if (!empty($oldviewconfig['num_posts'])) {
@@ -1215,9 +1221,9 @@ class migrationController extends expController {
                         $newconfig->config['usebody'] = 0;
                     }
                 }
-                $newconfig->config['quick_download'] = $oldviewconfig['direct_download'] ? 1 : 0;
-                $newconfig->config['show_icon'] = $oldviewconfig['show_icons'] ? 1 : 0;
-                $newconfig->config['show_player'] = $oldviewconfig['show_player'] ? 1 : 0;
+                $newconfig->config['quick_download'] = !empty($oldviewconfig['direct_download']) ? $oldviewconfig['direct_download'] : 0;
+                $newconfig->config['show_icon'] = !empty($oldviewconfig['show_icons']) ? $oldviewconfig['show_icons'] : 0;
+                $newconfig->config['show_player'] = !empty($oldviewconfig['show_player']) ? $oldviewconfig['show_player'] : 0;
 
 				//check to see if it's already pulled in (circumvent !is_original)
 				if ($db->countObjects('filedownloads', "location_data='".serialize($ploc)."'")) {
@@ -1248,7 +1254,7 @@ class migrationController extends expController {
 							$filedownload->created_at = $ri['posted'];
 							$filedownload->migrated_at = $ri['edited'];
 							$filedownload->update();
-                            if ($oldconfig->enable_categories == 1 && $ri['category_id']) {
+                            if (!empty($oldconfig) && $oldconfig->enable_categories == 1 && $ri['category_id']) {
                                 $params = null;
                                 $oldcat = $old_db->selectObject('category','id = '.$ri['category_id']);
                                 $cat = new expCat($oldcat->name);
@@ -1438,28 +1444,30 @@ class migrationController extends expController {
                 $ploc = $iloc;
                 $ploc->mod = "blog";
                 $newconfig->config['add_source'] = '1';
-                if ($oldconfig->enable_rss == 1) {
-                    $newconfig->config['enable_rss'] = true;
-                    $newconfig->config['feed_title'] = $oldconfig->feed_title;
-                    $newconfig->config['feed_desc'] = $oldconfig->feed_desc;
-                    $newconfig->config['rss_limit'] = isset($oldconfig->rss_limit) ? $oldconfig->rss_limit : 24;
-                    $newconfig->config['rss_cachetime'] = isset($oldconfig->rss_cachetime) ? $oldconfig->rss_cachetime : 1440;
-                }
-                if (!empty($oldconfig->items_per_page)) {
-                    $newconfig->config['limit'] = $oldconfig->items_per_page;
-                    $newconfig->config['multipageonly'] = true;
-                }
-                if (!empty($oldviewconfig['num_posts'])) {
-                    $newconfig->config['limit'] = $oldviewconfig['num_posts'];
-//                    $newconfig->config['pagelinks'] = "Don't show page links";
-                }
-                if (!empty($oldconfig->allow_comments)) {
-                    $newconfig->config['usescomments'] = !$oldconfig->allow_comments;
-                }
-                if (!empty($oldconfig->aggregate) && $oldconfig->aggregate != 'a:0:{}') {
-                    $merged = expUnserialize($oldconfig->aggregate);
-                    foreach ($merged as $merge) {
-                        $newconfig->config['aggregate'][] = $merge;
+                if (!empty($oldconfig)) {
+                    if ($oldconfig->enable_rss == 1) {
+                        $newconfig->config['enable_rss'] = true;
+                        $newconfig->config['feed_title'] = $oldconfig->feed_title;
+                        $newconfig->config['feed_desc'] = $oldconfig->feed_desc;
+                        $newconfig->config['rss_limit'] = isset($oldconfig->rss_limit) ? $oldconfig->rss_limit : 24;
+                        $newconfig->config['rss_cachetime'] = isset($oldconfig->rss_cachetime) ? $oldconfig->rss_cachetime : 1440;
+                    }
+                    if (!empty($oldconfig->items_per_page)) {
+                        $newconfig->config['limit'] = $oldconfig->items_per_page;
+                        $newconfig->config['multipageonly'] = true;
+                    }
+                    if (!empty($oldviewconfig['num_posts'])) {
+                        $newconfig->config['limit'] = $oldviewconfig['num_posts'];
+    //                    $newconfig->config['pagelinks'] = "Don't show page links";
+                    }
+                    if (!empty($oldconfig->allow_comments)) {
+                        $newconfig->config['usescomments'] = !$oldconfig->allow_comments;
+                    }
+                    if (!empty($oldconfig->aggregate) && $oldconfig->aggregate != 'a:0:{}') {
+                        $merged = expUnserialize($oldconfig->aggregate);
+                        foreach ($merged as $merge) {
+                            $newconfig->config['aggregate'][] = $merge;
+                        }
                     }
                 }
                 if ($usebody) {
@@ -1531,7 +1539,7 @@ class migrationController extends expController {
 				$module->view = 'showall';
 
                 $oldconfig = $old_db->selectObject('faqmodule_config', "location_data='".serialize($iloc)."'");
-                if ($oldconfig->enable_categories == 1) {
+                if (!empty($oldconfig) && $oldconfig->enable_categories == 1) {
                     $newconfig->config['usecategories'] = true;
                 }
                 $newconfig->config['use_toc'] = true;
@@ -1563,7 +1571,7 @@ class migrationController extends expController {
                         $faq->save();
                         @$this->msg['migrated'][$iloc->mod]['count']++;
                         @$this->msg['migrated'][$iloc->mod]['name'] = $this->new_modules[$iloc->mod];
-                        if ($oldconfig->enable_categories == 1 && $fqi['category_id']) {
+                        if (!empty($oldconfig) && $oldconfig->enable_categories == 1 && $fqi['category_id']) {
                             $params = null;
                             $oldcat = $old_db->selectObject('category','id = '.$fqi['category_id']);
                             $cat = new expCat($oldcat->name);
@@ -1603,26 +1611,28 @@ class migrationController extends expController {
                 $oldconfig = $old_db->selectObject('listingmodule_config', "location_data='".serialize($iloc)."'");
                 // fudge a config to get attached files to appear
                 $newconfig->config = expUnserialize('a:11:{s:11:"filedisplay";s:7:"Gallery";s:6:"ffloat";s:4:"Left";s:6:"fwidth";s:3:"120";s:7:"fmargin";s:1:"5";s:7:"piwidth";s:3:"100";s:5:"thumb";s:3:"100";s:7:"spacing";s:2:"10";s:10:"floatthumb";s:8:"No Float";s:6:"tclass";s:0:"";s:5:"limit";s:0:"";s:9:"pagelinks";s:14:"Top and Bottom";}');
-                if ($oldconfig->enable_categories == 1) {
-                    $newconfig->config['usecategories'] = true;
-                }
-                if (!empty($oldconfig->items_perpage)) {
-                    $newconfig->config['limit'] = $oldconfig->items_perpage;
-                    $newconfig->config['multipageonly'] = true;
-                }
-                if (!empty($oldconfig->orderhow)) {
-                    if ($oldconfig->orderby == 'name') $newconfig->config['order'] = 'title';
-                    switch ($oldconfig->orderhow) {
-                        case '1':
-                            $newconfig->config['order'] .= ' DESC';
-                            break;
-                        case '2':
-                            $newconfig->config['order'] = 'rank';
-                            break;
+                if (!empty($oldconfig)) {
+                    if ($oldconfig->enable_categories == 1) {
+                        $newconfig->config['usecategories'] = true;
                     }
-                }
-                if (!empty($oldconfig->description)) {
-                    $newconfig->config['moduledescription'] = $oldconfig->description;
+                    if (!empty($oldconfig->items_perpage)) {
+                        $newconfig->config['limit'] = $oldconfig->items_perpage;
+                        $newconfig->config['multipageonly'] = true;
+                    }
+                    if (!empty($oldconfig->orderhow)) {
+                        if ($oldconfig->orderby == 'name') $newconfig->config['order'] = 'title';
+                        switch ($oldconfig->orderhow) {
+                            case '1':
+                                $newconfig->config['order'] .= ' DESC';
+                                break;
+                            case '2':
+                                $newconfig->config['order'] = 'rank';
+                                break;
+                        }
+                    }
+                    if (!empty($oldconfig->description)) {
+                        $newconfig->config['moduledescription'] = $oldconfig->description;
+                    }
                 }
                 if ($usebody) {
                     $newconfig->config['usebody'] = $usebody;
@@ -1661,7 +1671,7 @@ class migrationController extends expController {
 							$file = new expFile($li['file_id']);
 							$listing->attachitem($file,'');
 						}
-                        if ($oldconfig->enable_categories == 1 && $li['category_id']) {
+                        if (!empty($oldconfig) && $oldconfig->enable_categories == 1 && $li['category_id']) {
                             $params = null;
                             $oldcat = $old_db->selectObject('category','id = '.$li['category_id']);
                             $cat = new expCat($oldcat->name);
