@@ -21,7 +21,7 @@
 
 <div class="module faq showall">
     <a name="top"></a>
-    <h1>{$moduletitle|default:"Frequently Asked Questions"|gettext}</h1>
+    {if !$config.hidemoduletitle}<h1>{$moduletitle|default:"Frequently Asked Questions"|gettext}</h1>{/if}
     {permissions}
 		<div class="module-actions">
 			{if $permissions.create == 1}
@@ -33,11 +33,15 @@
 			{/if}
 		</div>
     {/permissions}    
-    
+    {if $config.moduledescription != ""}
+        {$config.moduledescription}
+    {/if}
     {if $config.allow_user_questions}
         <a href="{link action="ask_question"}">{'Ask a Question'|gettext}</a>
     {/if}
-    
+    {if $config.moduledescription != ""}
+        {$config.moduledescription}
+    {/if}
     {if $config.use_toc}
         {if $config.usecategories}
             {foreach name=c from=$cats key=catid item=cat}

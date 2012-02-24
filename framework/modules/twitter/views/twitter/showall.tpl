@@ -22,6 +22,9 @@
 	        {/if}
 	    </div>
 	{/permissions}
+    {if $config.moduledescription != ""}
+        {$config.moduledescription}
+    {/if}
 	<dl>
 		{foreach from=$items item=tweet}
 			<div class="item">

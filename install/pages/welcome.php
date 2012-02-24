@@ -55,6 +55,6 @@ if (!defined('LANGUAGE')) {
 
 <script type="text/javascript">
 	function Refresh(id){
-		location.href="index.php?lang=" + id
+		location.href="index.php?lang=" + id + "&page='welcome'"
 	}
 </script>

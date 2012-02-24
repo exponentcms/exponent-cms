@@ -29,6 +29,7 @@ Added / Fixed / changed for 2.0.5
   - adds a module description feature and making the display of the module title optional
     -- module titles are now mandatory; to better differentiate on aggregation selection, etc...
   - coolwater theme enhanced with header configuration, new 'wide' style variation, etc...
+  - changes calling parameters for send_reminders.php
 
 Added / Fixed / changed for 2.0.4
 -----------------------

@@ -15,7 +15,6 @@
 
 <div class="module help showall">
     {if $moduletitle && !$config.hidemoduletitle}<h1>{$moduletitle}</h1>{/if}
-
     {permissions}
         {if $permissions.create == 1}
             {icon class=add action=edit text="Add a Help Doc"|gettext}{br}
@@ -28,7 +27,9 @@
 		    {/if}
         {/if}
     {/permissions}
-    
+    {if $config.moduledescription != ""}
+   		{$config.moduledescription}
+   	{/if}
     <dl>
     {foreach from=$page->records item=doc name=docs}
         <div class="item">

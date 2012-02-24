@@ -102,7 +102,10 @@ class calendarmodule_config {
 		$form->register('enable_feedback',gt('Enable Feedback'),new checkboxcontrol($object->enable_feedback,true));
 
 		$form->register(null,'',new htmlcontrol('<h3>'.gt('Events Reminder Email').'</h3><hr size="1" />'));
-		
+        if ($object->id) {
+            $form->register(null,'',new htmlcontrol('<h4>'.gt('sendreminders.php Calendar ID:').' '.$object->id.'</h4>'));
+        }
+
 		// Get original style user lists
 		// $selected_users = array();
 		// foreach(unserialize($object->reminder_notify) as $i) {

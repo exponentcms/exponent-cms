@@ -23,18 +23,26 @@ require_once('../exponent.php');
 global $user;
 global $db;
 
-// let's select a calendar by its source to make it easier to find and harder to spoof	
-$src = $_GET['src'];
-if (!$src) {
-	print_r("<br><b><i>Exponent - ".gt('No Calendar Selected!')."</i></b><br>");
-	exit();
-}	
+// first, find the calendar/event data
+$id = intval($_GET['id']);
+if (!$id) {
+    print_r("<br><b><i>Exponent - No Calendar Selected!</i></b><br>");
+    exit();
+}
+$config = $db->selectObject("calendarmodule_config","id='".$id."'");
 
-$loc = null;
-$loc->mod = 'calendarmodule';
-$loc->src = $src;
-$loc->int = '';	
-$config = $db->selectObject("calendarmodule_config","location_data='".serialize($loc)."'");
+// let's select a calendar by its source to make it easier to find and harder to spoof
+//$src = $_GET['src'];
+//if (!$src) {
+//	print_r("<br><b><i>Exponent - ".gt('No Calendar Selected!')."</i></b><br>");
+//	exit();
+//}
+//
+//$loc = null;
+//$loc->mod = 'calendarmodule';
+//$loc->src = $src;
+//$loc->int = '';
+//$config = $db->selectObject("calendarmodule_config","location_data='".serialize($loc)."'");
 if (!$config) {
 	print_r("<br><b><i>Exponent - ".gt('Calendar Not Found!')."</i></b><br>");
 	exit();

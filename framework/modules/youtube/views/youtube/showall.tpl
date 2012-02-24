@@ -25,6 +25,9 @@
 			{/if}
         </div>
     {/permissions}    
+    {if $config.moduledescription != ""}
+        {$config.moduledescription}
+    {/if}
     {pagelinks paginate=$page top=1}
     {foreach from=$items item=ytv name=items}
 		<div class="item">

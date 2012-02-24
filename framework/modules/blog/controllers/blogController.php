@@ -117,12 +117,16 @@ class blogController extends expController {
 	            $blog_date[$year][$month]->count = 1;    
 	        }
 	    }
-	    ksort($blog_date);
-	    $blog_date = array_reverse($blog_date,1);
-	    foreach ($blog_date as $key=>$val) {
-    	    ksort($blog_date[$key]);
-    	    $blog_date[$key] = array_reverse($blog_date[$key],1);
-	    }
+        if (!empty($blog_date)) {
+            ksort($blog_date);
+            $blog_date = array_reverse($blog_date,1);
+            foreach ($blog_date as $key=>$val) {
+                ksort($blog_date[$key]);
+                $blog_date[$key] = array_reverse($blog_date[$key],1);
+            }
+        } else {
+            $blog_date = array();
+        }
 	    //eDebug($blog_date);
 	    assign_to_template(array('dates'=>$blog_date));
 	}
@@ -130,9 +134,9 @@ class blogController extends expController {
 	public function showall_by_date() {
 	    expHistory::set('viewable', $this->params);
 	    
-	    $start_date = mktime(0, 0, 0, $this->params['month'], 1, $this->params['year']);
-	    $end_date = mktime(0, 0, 0, $this->params['month']+1, 0, $this->params['year']);
-		$where = ($this->aggregateWhereClause()?$this->aggregateWhereClause()." AND ":"").'created_at > '.$start_date.' AND created_at < '.$end_date;
+	    $start_date = expDateTime::startOfMonthTimestamp(mktime(0, 0, 0, $this->params['month'], 1, $this->params['year']));
+	    $end_date = expDateTime::endOfMonthTimestamp(mktime(0, 0, 0, $this->params['month'], 1, $this->params['year']));
+		$where = ($this->aggregateWhereClause()?$this->aggregateWhereClause()." AND ":"")."created_at >= '".$start_date."' AND created_at <= '".$end_date."'";
 		$order = 'created_at';
 		$limit = empty($this->config['limit']) ? 10 : $this->config['limit'];
 		

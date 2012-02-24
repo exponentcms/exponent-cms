@@ -14,7 +14,10 @@
  *}
 
 <div class="module blog showall-authors">
-    <h2>{$moduletitle|default:"Authors"|gettext}</h2>
+    {if !$config.hidemoduletitle}<h2>{$moduletitle|default:"Authors"|gettext}</h2>{/if}
+    {if $config.moduledescription != ""}
+        {$config.moduledescription}
+    {/if}
     <ul>
         {foreach from=$authors item=author}
             <li>

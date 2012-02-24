@@ -15,7 +15,7 @@
 
 {clear}
 <div class="module motd show">
-    <h1>{$moduletitle|default:"Message of the Day"|gettext}</h1>
+    {if !$config.hidemoduletitle}<h1>{$moduletitle|default:"Message of the Day"|gettext}</h1>{/if}
     <div class="motd-message">
         <div class="motd-date">
             <span class="date-header">{$smarty.now|expdate:"D, M j, Y"}</span>

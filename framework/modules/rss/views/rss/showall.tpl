@@ -14,7 +14,10 @@
  *}
 
 <div class="module rss showall">
-    <h1>{$moduletitle|default:"RSS Feeds"|gettext}</h1>
+    {if !$config.hidemoduletitle}<h1>{$moduletitle|default:"RSS Feeds"|gettext}</h1>{/if}
+    {if $config.moduledescription != ""}
+        {$config.moduledescription}
+    {/if}
     {foreach from=$feeds item=feed}
 		<div class="item">
 			<a class="rsslink" href="{rsslink}" title="{$feed->feed_desc}">{'Subscribe to'|gettext} {$feed->feed_title}</a>
