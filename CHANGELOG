@@ -4,15 +4,14 @@ Copyright (c) 2004-2012 OIC Group, Inc.
 
 Added / Fixed / changed for 2.0.5
 -----------------------
-# This release focuses on implementing categories & a new calendar
+# This release focuses on implementing categories
   - categories are (fully) implemented within the faq, filedownloads, links, photoalbum & portfolio modules
     -- adds tabbed view either by category or alphabetized like rolodex
     -- adds an accordion like view w/ collapse/expand by category/alphabetized
     -- categories now migrated; imagegallerymodule galleries converted to categories
-  - calendar2 should be considered alpha quality
 # Many fixes and updates
   - Minification has been fixed for many server scenarios
-  - adds optional thumbnail view and list size setting to file manager
+  - adds optional thumbnail display and list size setting to file manager
   - adds tag cloud view to search module
   - adds tags to faq, news, & photoalubm modules
   - adds deletion of multiple standalone pages at once
@@ -23,12 +22,13 @@ Added / Fixed / changed for 2.0.5
     -- fixes slideshowmodule migration (which wasn't occuring)
     -- better migration of 0.9x-type 'reused' type modules
     -- newsmodule tags now migrated (why weren't we already doing this)
-    -- now migrates many more module and view configuration settings
+    -- now migrates many additional module and view configuration settings
   - adds module scope type indicator to top-level/hard-coded chrome menus
   - implemented extension (theme, patch, & mods) repository access
     -- extensions loaded into current theme unless told to patch system
   - adds a module description feature and making the display of the module title optional
     -- module titles are now mandatory; to better differentiate on aggregation selection, etc...
+  - coolwater theme enhanced with header configuration, new 'wide' style variation, etc...
 
 Added / Fixed / changed for 2.0.4
 -----------------------
