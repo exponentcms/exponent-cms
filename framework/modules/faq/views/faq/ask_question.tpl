@@ -14,7 +14,7 @@
  *}
 
 <div class="module faq ask-question">
-    <h1>{$moduletitle|default:"Ask a Question"|gettext}</h1>
+    {if !$config.hidemoduletitle}<h1>{$moduletitle|default:"Ask a Question"|gettext}</h1>{/if}
 	{permissions}
 		<div class="module-actions">
 			{if $permissions.create == 1}
@@ -26,7 +26,6 @@
 			{/if}
 		</div>
 	{/permissions}
-
     {form action=submit_question}
         {control type="text" name="submitter_name" label="Your Name"|gettext value=$record->submitter_name}
         {control type="text" name="submitter_email" label="Your Email Address"|gettext value=$record->submitter_email}

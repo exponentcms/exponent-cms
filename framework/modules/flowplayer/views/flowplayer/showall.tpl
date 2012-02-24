@@ -50,6 +50,9 @@ flowplayer("a.flowplayer-video", EXPONENT.PATH_RELATIVE+"external/flowplayer3/fl
 			{/if}
 		</div>	
 	{/permissions}   
+    {if $config.moduledescription != ""}
+   		{$config.moduledescription}
+   	{/if}
     {pagelinks paginate=$page top=1}
     {foreach from=$page->records item=video key=key}
         <div class="item">

@@ -29,7 +29,9 @@
 			{/if}
         </div>
     {/permissions}
-
+    {if $config.moduledescription != ""}
+        {$config.moduledescription}
+    {/if}
     {if $config.usecategories}
         {foreach from=$cats key=catid item=cat}
            {if $catid != 0}

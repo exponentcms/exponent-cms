@@ -33,7 +33,6 @@
     {if $config.moduledescription != ""}
    		{$config.moduledescription}
    	{/if}
-
     {pagelinks paginate=$page top=1}
     {foreach from=$page->records item=item}
         <div class="item">

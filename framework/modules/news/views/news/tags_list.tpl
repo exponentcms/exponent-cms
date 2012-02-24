@@ -25,6 +25,9 @@
             {/if}
         </div>
     {/permissions}
+    {if $config.moduledescription != ""}
+        {$config.moduledescription}
+    {/if}
     <div class="bodycopy">
     <ul>
         {foreach from=$tags item=tag}

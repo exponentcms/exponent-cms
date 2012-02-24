@@ -25,6 +25,9 @@
             {/if}
         </div>
     {/permissions}
+    {if $config.moduledescription != ""}
+        {$config.moduledescription}
+    {/if}
     {foreach from=$items item=text name=items}
         {if $text->title}<h2>{$text->title}</h2>{/if}
         {permissions}

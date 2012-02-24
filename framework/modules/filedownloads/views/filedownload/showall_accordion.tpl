@@ -39,7 +39,6 @@
     {if $config.moduledescription != ""}
    		{$config.moduledescription}
    	{/if}
-
     <div class="dashboard">
         {foreach name=items from=$page->cats key=catid item=cat}
             <div id="item{$catid}" class="panel">

@@ -33,7 +33,6 @@
     {if $config.moduledescription != ""}
    		{$config.moduledescription}
    	{/if}
-
     {foreach name=items from=$page->records item=item}
         {if $smarty.foreach.items.iteration<=$config.headcount || !$config.headcount}
         <div class="item">

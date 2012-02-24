@@ -23,7 +23,6 @@
         <a class="rsslink" href="{rsslink}" title="{'Subscribe to'|gettext} {$config.feed_title}"></a>
     {/if}
     {if $moduletitle && !$config.hidemoduletitle}{$moduletitle}</h2>{/if}
-
     {permissions}
         <div class="module-actions">
 			{if $permissions.create == true || $permissions.edit}
@@ -34,7 +33,9 @@
 			{/if}
         </div>
     {/permissions}
-
+    {if $config.moduledescription != ""}
+   		{$config.moduledescription}
+   	{/if}
     <ul>
     {foreach name=items from=$page->records item=item}
         {if $smarty.foreach.items.iteration<=$config.headcount || !$config.headcount}

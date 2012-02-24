@@ -19,6 +19,9 @@
  
 <div class="module search show-form">
     {if $moduletitle && !$config.hidemoduletitle}<h1>{$moduletitle}</h1>{/if}
+    {if $config.moduledescription != ""}
+        {$config.moduledescription}
+    {/if}
     <form id="form" name="form" class="" method="POST" action="{$smarty.const.URL_FULL}index.php">
         <input type="hidden" name="action" id="action" value="search">
         <input type="hidden" name="module" id="module" value="search">

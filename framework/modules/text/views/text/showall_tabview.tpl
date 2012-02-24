@@ -27,6 +27,9 @@
             {/if}
         </div>
     {/permissions}
+    {if $config.moduledescription != ""}
+        {$config.moduledescription}
+    {/if}
     <div id="{$id}" class="yui-navset exp-skin-tabview hide">
         <ul>
             {foreach from=$items item=tab name=tabs}

@@ -25,6 +25,9 @@
 			{/if}
 		</div>
     {/permissions}
+    {if $config.moduledescription != ""}
+        {$config.moduledescription}
+    {/if}
     <ul>
         {foreach from=$tags item=tag}
             <li>
