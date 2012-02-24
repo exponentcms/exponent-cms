@@ -130,7 +130,7 @@ class expDateTime {
 		// Calculate the timestamp at 8am, and then subtract 8 hours, for Daylight Savings
 		// Time.  If we are in those strange edge cases of DST, 12:00am can turn out to be
 		// of the previous day.
-		return mktime(0,0,0,$info['mon'],$info['mday'],$info['year']);
+		return mktime(23,59,59,$info['mon'],$info['mday'],$info['year']);
 	}
 
 	/** exdoc
