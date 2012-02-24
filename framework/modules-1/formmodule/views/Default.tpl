@@ -1,6 +1,5 @@
 {*
- * Copyright (c) 2004-2011 OIC Group, Inc.
- * Written and Designed by James Hunt
+ * Copyright (c) 2004-2012 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -23,7 +22,7 @@
 	{permissions}
 		<div class="module-actions">
 			{if $permissions.viewdata == 1 && $form->is_saved == 1}<a class="addnew mngmntlink" href="{link action=view_data module=formbuilder id=$form->id}">{'View Data'|gettext} ({$count})</a>&nbsp;&nbsp;{/if}
-			{if $permissions.viewdata == 1 && $form->is_saved == 1}|&nbsp;&nbsp;<a class="addnew mngmntlink" href="{link action=export_csv module=formbuilder id=$form->id}">{"Export CSV"|gettext}</a>&nbsp;&nbsp;
+			{if $permissions.viewdata == 1 && $form->is_saved == 1}|&nbsp;&nbsp;<a class="downloadfile addnew mngmntlink" href="{link action=export_csv module=formbuilder id=$form->id}">{"Export CSV"|gettext}</a>&nbsp;&nbsp;
 				{if $permissions.editformsettings == 1}|&nbsp;&nbsp;
 				{/if}
 			{/if}
@@ -32,7 +31,7 @@
 			{if $permissions.editreport == 1}|&nbsp;&nbsp;<a class="addnew mngmntlink" href="{link action=edit_report module=formbuilder id=$form->id}">{'Edit Report'|gettext}</a>&nbsp;&nbsp;{/if}
 		</div>
 	{/permissions}
-	{if $moduletitle != ""}<h2>{$moduletitle}</h2>{/if}
+	{if $moduletitle && !$config.hidemoduletitle}<h1>{$moduletitle}</h1>{/if}
 	 <div class="bodycopy">
     	{if $description != ""}
     		{$description}

@@ -2,8 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2011 OIC Group, Inc.
-# Written and Designed by James Hunt
+# Copyright (c) 2004-2012 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -33,7 +32,7 @@ class formmodule {
 	function permissions($internal = "") {
 		if ($internal == "") {
 			return array(
-				"administrate"=>gt('Manage'),
+				"manage"=>gt('Manage'),
 				"editformsettings"=>gt('Configure'),
                 "editform"=>gt('Edit Form'),
 				"editreport"=>gt('Edit Report'),
@@ -43,7 +42,7 @@ class formmodule {
 			);
 		} else {
 			return array(
-				"administrate"=>gt('Manage'),
+				"manage"=>gt('Manage'),
                 "editformsettings"=>gt('Configure'),
 				"editform"=>gt('Edit Form'),
 				"editreport"=>gt('Edit Report'),
@@ -129,7 +128,7 @@ class formmodule {
 			$template->assign("form_html",$form->toHTML($f->id));
 			$template->assign("form",$f);
 			$template->assign("count",$count);
-			$template->register_permissions(array("administrate","editform","editformsettings","editreport","viewdata","editdata","deletedata"),$loc);
+			$template->register_permissions(array("manage","editform","editformsettings","editreport","viewdata","editdata","deletedata"),$loc);
 			$template->output();
 		}
 	}

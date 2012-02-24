@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2011 OIC Group, Inc.
+# Copyright (c) 2004-2012 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -31,7 +31,6 @@
  *
  * @param         $params
  * @param \Smarty $smarty
- * @return bool
  */
 function smarty_function_yuilogger($params,&$smarty) {
 	global $userjsfiles;

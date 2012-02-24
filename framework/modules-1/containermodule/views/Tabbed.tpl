@@ -1,6 +1,5 @@
 {*
- * Copyright (c) 2004-2011 OIC Group, Inc.
- * Written and Designed by James Hunt
+ * Copyright (c) 2004-2012 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -22,7 +21,7 @@
 
 <div class="containermodule tabbed">
 {viewfile module=$singlemodule view=$singleview var=viewfile} 
-<div id="{$tabs}" class="yui-navset yui3-skin-sam hide">
+<div id="{$tabs}" class="yui-navset exp-skin-tabview hide">
 	<ul class="yui-nav">
 		{foreach from=$containers item=container key=tabnum name=contain}
 			{assign var=numcontainers value=$tabnum+1}
@@ -43,14 +42,14 @@
 				<li><a href="#tab{$smarty.section.contain.index+1}"><em>{$tabtitle}</em></a></li>
 			{else}
 				{permissions}
-					{if ($permissions.administrate == 1 || $permissions.edit_module == 1 || $permissions.delete_module == 1 || $permissions.add_module == 1 || $permissions.order_modules == 1)}
+					{if ($permissions.manage == 1 || $permissions.edit == 1 || $permissions.delete == 1 || $permissions.create == 1 || $permissions.configure == 1)}
 						<li><a href="#tab{$smarty.section.contain.index+1}"><em>{$tabtitle}</em></a></li>
 					{/if}
 				{/permissions}
 			{/if}
 		{/section}	
 		{permissions}
-			{if ($permissions.administrate == 1 || $permissions.edit_module == 1 || $permissions.delete_module == 1 || $permissions.add_module == 1 || $permissions.order_modules == 1)}
+			{if ($permissions.manage == 1 || $permissions.edit == 1 || $permissions.delet == 1 || $permissions.create == 1 || $permissions.configure == 1)}
 				{if $smarty.section.contain.total != 0}
 					<li>
 				{else}
@@ -75,7 +74,7 @@
 				</div>
 			{else}
 				{permissions}
-					{if $permissions.add_module == 1 && $hidebox == 0}
+					{if $permissions.create == 1 && $hidebox == 0}
 						<div id="tab{$smarty.section.contain.index+1}"{if !$smarty.section.contain.first}{/if}>
 							<a class="addmodule" href="{link action=edit rerank=0 rank=$rank}"><span class="addtext">{'Add Module'|gettext}</span></a>
 						</div>

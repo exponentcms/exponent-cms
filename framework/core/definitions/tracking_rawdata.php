@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2011 OIC Group, Inc. and Contributors
+# Copyright (c) 2004-2012 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -16,6 +16,10 @@
 #
 ##################################################
 
+/**
+ * @subpackage Definitions
+ * @package Core
+ */
 return array(
 	'id'=>array(
 		DB_FIELD_TYPE=>DB_DEF_ID,

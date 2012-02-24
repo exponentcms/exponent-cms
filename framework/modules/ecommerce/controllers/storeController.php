@@ -2,8 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2011 OIC Group, Inc.
-# Created by Adam Kessler @ 05/28/2008
+# Copyright (c) 2004-2012 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -16,6 +15,11 @@
 # GPL: http://www.gnu.org/licenses/gpl.txt
 #
 ##################################################
+
+/**
+ * @subpackage Controllers
+ * @package Modules
+ */
 /** @define "BASE" "../../../.." */
 
 class storeController extends expController {
@@ -39,13 +43,15 @@ class storeController extends expController {
     
     // hide the configs we don't need
     public $remove_configs = array(
+        'aggregation',
+        'categories',
         'comments',
         'ealerts',
         'files',
+        'module_title',
         'rss',
-        'aggregation',
         'tags'
-    );
+    ); // all options: ('aggregation','categories','comments','ealerts','files','module_title','pagination','rss','tags')
     
     //protected $permissions = array_merge(array("test"=>'Test'), array('copyProduct'=>"Copy Product"));
     protected $add_permissions = array('copyProduct'=>"Copy Product",'delete_children'=>"Delete Children", 'import'=>'Import Products', 'reimport'=>'ReImport Products', 'export'=>'Export Products','findDupes'=>'Fix Duplicate SEF Names','manage_sales_reps'=>'Manage Sales Reps', 'batch_process'=>'Batch capture order transactions','process_orders'=>'Batch capture order transactions','import_external_addresses'=>'Import addressess from other sources',

@@ -1,20 +1,24 @@
 <?php
 
+##################################################
+#
+# Copyright (c) 2004-2012 OIC Group, Inc.
+#
+# This file is part of Exponent
+#
+# Exponent is free software; you can redistribute
+# it and/or modify it under the terms of the GNU
+# General Public License as published by the Free
+# Software Foundation; either version 2 of the
+# License, or (at your option) any later version.
+#
+# GPL: http://www.gnu.org/licenses/gpl.txt
+#
+##################################################
+
 /**
- *  This file is part of Exponent
- *  Exponent is free software; you can redistribute
- *  it and/or modify it under the terms of the GNU
- *  General Public License as published by the Free
- *  Software Foundation; either version 2 of the
- *  License, or (at your option) any later version.
- *
- * The file that holds the user class
- *
- * @link http://www.gnu.org/licenses/gpl.txt GPL http://www.gnu.org/licenses/gpl.txt
- * @package Exponent-CMS
- * @copyright 2004-2011 OIC Group, Inc.
- * @author Adam Kessler <adam@oicgroup.net>
- * @version 2.0.0
+ * @subpackage Models
+ * @package Modules
  */
 
 class user extends expRecord {
@@ -147,7 +151,7 @@ class user extends expRecord {
 		return (empty($this->id)) ? false : true;
 	}
 
-	private function getUserProfile() {
+	public function getUserProfile() {
         global $db;
 
         if (!empty($this->id)) {

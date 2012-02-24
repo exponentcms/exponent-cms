@@ -2,8 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2011 OIC Group, Inc.
-# Written and Designed by James Hunt
+# Copyright (c) 2004-2012 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -17,7 +16,6 @@
 #
 ##################################################
 
-if (!defined('DEFAULT_AVATAR')) define('DEFAULT_AVATAR', URL_FULL."framework/modules/users/assets/images/avatar_not_found.jpg");
-
+if (!defined('DEFAULT_AVATAR')) define('DEFAULT_AVATAR',URL_FULL."framework/modules/users/assets/images/avatar_not_found.jpg");
 
 ?>

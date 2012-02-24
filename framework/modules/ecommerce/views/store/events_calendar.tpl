@@ -1,6 +1,5 @@
 {*
- * Copyright (c) 2007-2008 OIC Group, Inc.
- * Written and Designed by Adam Kessler
+ * Copyright (c) 2004-2012 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -14,10 +13,9 @@
  *
  *}
 
-
 <div class="store showallCalendar">
 	
-<h1>{if $moduletitle}{$moduletitle}{/if}</h1>
+<h1>{if $moduletitle && !$config.hidemoduletitle}{$moduletitle}{/if}</h1>
 
 <table id="calendar" cellspacing="0" cellpadding="0" summary="{$moduletitle|default:'Subscribe to this Event RSS Feed'|gettext}">
 <caption><a href="{link action=events_calendar time=$prevmonth}" title="{'Previous Month'|gettext}" class="nav">&laquo;</a> {$now|format_date:"%B %Y"} <a href="{link action=events_calendar time=$nextmonth}" title="{'Next Month'|gettext}" class="nav">&raquo;</a></caption>

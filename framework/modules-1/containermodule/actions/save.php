@@ -2,8 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2011 OIC Group, Inc.
-# Written and Designed by James Hunt
+# Copyright (c) 2004-2012 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -30,9 +29,9 @@ if ($container != null) {
 	$cloc->int = $container->id;
 }
 
-if (expPermissions::check("add_module",$loc) ||
-	($iloc != null && expPermissions::check("administrate",$iloc)) ||
-	($cloc != null && expPermissions::check("edit_module",$cloc))
+if (expPermissions::check("create",$loc) ||
+	($iloc != null && expPermissions::check("manage",$iloc)) ||
+	($cloc != null && expPermissions::check("edit",$cloc))
 	) {
 	
 	//eDebug($_POST,true);

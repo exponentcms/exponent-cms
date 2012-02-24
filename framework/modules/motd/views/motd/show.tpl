@@ -1,6 +1,5 @@
 {*
- * Copyright (c) 2004-2011 OIC Group, Inc.
- * Written and Designed by Adam Kessler
+ * Copyright (c) 2004-2012 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -16,7 +15,7 @@
 
 {clear}
 <div class="module motd show">
-    <h1>{$moduletitle|default:"Message of the Day"|gettext}</h1>
+    {if !$config.hidemoduletitle}<h1>{$moduletitle|default:"Message of the Day"|gettext}</h1>{/if}
     <div class="motd-message">
         <div class="motd-date">
             <span class="date-header">{$smarty.now|expdate:"D, M j, Y"}</span>

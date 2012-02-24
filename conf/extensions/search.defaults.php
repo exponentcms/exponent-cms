@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2008 OIC Group, Inc. and Contributors
+# Copyright (c) 2004-2012 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -16,6 +16,6 @@
 #
 ##################################################
 
-if (!defined('SAVE_SEARCH_QUERIES')) define ('SAVE_SEARCH_QUERIES',0);
+if (!defined('SAVE_SEARCH_QUERIES')) define('SAVE_SEARCH_QUERIES','0');
 
 ?>

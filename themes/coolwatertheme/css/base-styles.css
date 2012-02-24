@@ -78,7 +78,7 @@ div.bodycopy ul li {
 
 div.bodycopy ul, ol {
 	margin: 5px 15px;
-	padding: 0 25px;
+	padding: 0 15px;
 }
 
 .green {
@@ -96,7 +96,7 @@ div.bodycopy ul, ol {
 	line-height:20px;
 	margin-left: 0px;
 	margin-right: 25px;
-	margin-bottom: 25px;
+	margin-bottom: 15px;
 }
 
 .fullbody #main {
@@ -172,6 +172,7 @@ div.bodycopy ul, ol {
 #header h1#logo-text a sup {
 	font-family:verdana;
 	font-size:18px;
+    vertical-align: top;
 }
 
 #header p#slogan {
@@ -193,20 +194,26 @@ div.bodycopy ul, ol {
 	text-align:right;
 	padding:0px;
 }
+#header #header-links a {
+	color: #fff;
+	text-decoration: none;
+}
+#header #header-links a:hover {
+	color: #D4FF55;
+}
 #header #header-login {
 	position: absolute;
 	font: bold 14px"Trebuchet MS", Arial, Tahoma, Sans-serif;
 	top: 60px; right: 20px;	
 	text-align:right;
 }
-#header #header-links a {	
+#header #header-login a {
 	color: #fff;
-	text-decoration: none;	
+	text-decoration: none;
 }
-#header #header-links a:hover {
-	color: #D4FF55;	
+#header #header-login a:hover {
+	color: #D4FF55;
 }
-
 
 /* Main Column */
 #main {
@@ -217,19 +224,22 @@ div.bodycopy ul, ol {
 	background: url(../images/box.jpg) no-repeat; 	
 }
 #main h2 {
-	font: normal 180% 'Trebuchet MS', Tahoma, Arial, Sans-serif;
+	font: normal 160% 'Trebuchet MS', Tahoma, Arial, Sans-serif;
 	padding: 0; 	
 	margin-bottom: 0;		
 	color: #2666c3;
 }
-#main h2 a {
-	color: #2666c3;
-	text-decoration: none;	
+
+#main .showall-accordion .dashboard .hd h2 {
+    margin:0;
+    padding:5px 0 5px 33px;
+    font-size:18px;
+    font-weight:bold;
+    background-image:url(../../../framework/modules/ecommerce/assets/images/ecom-sprite.png);
+    background-repeat:no-repeat;
 }
 
-
-
-/* Sidebar */	
+/* Sidebar */
 #sidebar {
 	float: right;
 	width: 195px;
@@ -245,7 +255,47 @@ div.bodycopy ul, ol {
 	margin-left: 5px;
 }
 
-/* Footer */	
+#sidebar ul {
+	list-style: none;
+	text-align: left;
+	margin: 7px 10px 8px 0; padding: 0;
+	text-decoration: none;
+	border-top: 1px solid #A9D4EF;
+}
+
+#sidebar ul li {
+	list-style: none;
+	padding: 4px 0 4px 5px;
+	margin: 0 2px;
+	color: #777;
+	border-bottom: 1px solid #D2E8F7;
+}
+
+#sidebar ul li a {
+	text-decoration: none;
+	color: #1773BC;
+    font-weight:bold;
+}
+
+#sidebar .item-actions a {
+	text-decoration: none;
+	color: #1773BC;
+    font-weight:normal;
+}
+
+#sidebar .container-chrome ul li a {
+    font-weight:normal;
+}
+
+#sidebar .container-chrome ul li {
+    border: none;
+    color: #777777;
+    list-style: none none;
+    margin: 0px;
+    padding: 0px;
+}
+
+/* Footer */
 #footer {
 	color: #C6DDEE;
 	background: #caced1 url(../images/footer.jpg) no-repeat center top;

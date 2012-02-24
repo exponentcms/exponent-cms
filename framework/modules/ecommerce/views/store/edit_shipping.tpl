@@ -1,4 +1,19 @@
-{control type="hidden" name="tab_loaded[shipping]" value=1} 
+{*
+ * Copyright (c) 2004-2012 OIC Group, Inc.
+ *
+ * This file is part of Exponent
+ *
+ * Exponent is free software; you can redistribute
+ * it and/or modify it under the terms of the GNU
+ * General Public License as published by the Free
+ * Software Foundation; either version 2 of the
+ * License, or (at your option) any later version.
+ *
+ * GPL: http://www.gnu.org/licenses/gpl.txt
+ *
+ *}
+
+{control type="hidden" name="tab_loaded[shipping]" value=1}
 {control type="checkbox" name="shipping[no_shipping]" label="This item doesn\'t require shipping"|gettext value=1 checked=$record->no_shipping postfalse=1}
 {control type="dropdown" name="shipping[required_shipping_calculator_id]" id="required_shipping_calculator_id" label="Required Shipping Service"|gettext includeblank="-- Select a shipping service --" items=$shipping_services value=$record->required_shipping_calculator_id onchange="switchMethods();"}
 {foreach from=$shipping_methods key=calcid item=methods name=sm}

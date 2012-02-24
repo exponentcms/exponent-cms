@@ -2,8 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2011 OIC Group, Inc.
-# Written and Designed by James Hunt
+# Copyright (c) 2004-2012 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -17,6 +16,22 @@
 #
 ##################################################
 
+/**
+ * Smarty plugin
+ * @package Smarty-Plugins
+ * @subpackage Function
+ */
+
+/**
+ * Smarty {editorinclude} function plugin
+ *
+ * Type:     function<br>
+ * Name:     editorinclude<br>
+ * Purpose:  include an external editor
+ *
+ * @param         $params
+ * @param \Smarty $smarty
+ */
 function smarty_function_editorinclude($params,&$smarty) {
 	if (file_exists(BASE.'themes/'.DISPLAY_THEME.'/editors/'.$params['filename'])) {
         echo ( URL_FULL.'themes/'.DISPLAY_THEME.'/editors/'.$params['filename'] );

@@ -2,8 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2011 OIC Group, Inc.
-# Written and Designed by James Hunt
+# Copyright (c) 2004-2012 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -19,6 +18,7 @@
 /** @define "BASE" "../../../.." */
 
 if (!defined('EXPONENT')) exit('');
+
 expHistory::set('editable',array("module"=>"containermodule","action"=>"edit"));;
 $container = null;
 $iloc = null;
@@ -35,9 +35,9 @@ if (isset($_GET['id'])) {
 }
 $loc->src = urldecode($loc->src);
 
-if (expPermissions::check('edit_module',$loc) || expPermissions::check('add_module',$loc) ||
-	($iloc != null && expPermissions::check('administrate',$iloc)) ||
-	($cloc != null && expPermissions::check('delete_module',$cloc))
+if (expPermissions::check('edit',$loc) || expPermissions::check('create',$loc) ||
+	($iloc != null && expPermissions::check('manage',$iloc)) ||
+	($cloc != null && expPermissions::check('delete',$cloc))
 ) {
 	#
 	# Initialize Container, in case its null

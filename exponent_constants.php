@@ -2,8 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2011 OIC Group, Inc.
-# Written and Designed by James Hunt
+# Copyright (c) 2004-2012 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -477,7 +476,7 @@ if (!defined('SMARTY_PATH')) {
 	 * Smarty Version Constant
 	 * Changing the version here lets Exponent adjust where to look
 	 */
-	define('SMARTY_VERSION', '3.1.7');
+	define('SMARTY_VERSION', '3.1.8');
 	define('SMARTY_PATH', BASE.'external/Smarty-'.SMARTY_VERSION.'/libs/');
 }
 

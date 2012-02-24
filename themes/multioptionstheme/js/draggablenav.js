@@ -1,3 +1,17 @@
+/*
+ * Copyright (c) 2004-2012 OIC Group, Inc.
+ *
+ * This file is part of Exponent
+ *
+ * Exponent is free software; you can redistribute
+ * it and/or modify it under the terms of the GNU
+ * General Public License as published by the Free
+ * Software Foundation; either version 2 of the
+ * License, or (at your option) any later version.
+ *
+ * GPL: http://www.gnu.org/licenses/gpl.txt
+ *
+ */
 
 (function() {
 YAHOO.namespace('container');
@@ -12,12 +26,10 @@ var DDM = YAHOO.util.DragDropMgr;
 YAHOO.example.DDApp = {
 
     init: function() {
-	
-		
+
 		//find all contaners with a dragablecontainer class
         var ddc = Dom.getElementsByClassName('draggablenav') ;
-		
-		
+
 		// loop through DragDrop Containers, assign them to DDTarget based on their ID attribute
 		var moduleCounter = 0;
 		YAHOO.container.conModule = new Array();
@@ -47,11 +59,9 @@ YAHOO.example.DDApp = {
 			
 			//
           // dd3 = new YAHOO.util.DDTarget("dragDiv3");
-			
-			
+
        }
-	
-		
+
         Event.on("showButton", "click", this.showOrder);
         Event.on("switchButton", "click", this.switchStyles);
 		
@@ -64,7 +74,6 @@ YAHOO.example.DDApp = {
 		}
 		return false;
 	},
-
 
     showOrder: function() {
         var parseList = function(ul, title) {
@@ -215,7 +224,6 @@ YAHOO.extend(YAHOO.example.DDList, YAHOO.util.DDProxy, {
     }
 });
 
-
 YAHOO.example.DDOnTop = function(id, sGroup, config) {
     if (id) {
         this.init(id, sGroup, config);
@@ -251,12 +259,6 @@ YAHOO.example.DDOnTop.prototype.endDrag = function(e) {
     // restore the original z-index
     this.getEl().style.zIndex = this.origZ;
 };
-
-
-
-
-
-
 
 Event.onDOMReady(YAHOO.example.DDApp.init, YAHOO.example.DDApp, true);
 

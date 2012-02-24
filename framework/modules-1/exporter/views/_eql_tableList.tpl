@@ -1,6 +1,5 @@
 {*
- * Copyright (c) 2004-2011 OIC Group, Inc.
- * Written and Designed by James Hunt
+ * Copyright (c) 2004-2012 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -53,7 +52,7 @@
 			{section name=tid loop=$tables step=2}
 				<tr class="row {cycle values='even_row,odd_row'}">
 					<td>
-						<input type="checkbox" name="tables[{$tables[tid]}]" {if $tables[tid] != 'sessionticket'}checked {/if}/>
+						<input type="checkbox" name="tables[{$tables[tid]}]" {if $tables[tid] != 'sessionticket' && $tables[tid] != 'search'}checked {/if}/>
 					</td>
 
 					<td>{$tables[tid]}</td>
@@ -62,7 +61,7 @@
 
 					{math equation="x+1" x=$smarty.section.tid.index assign=nextid}
 					<td>
-						{if $tables[$nextid] != ""}<input type="checkbox" name="tables[{$tables[$nextid]}]" {if $tables[$nextid] != 'sessionticket' || $tables[$nextid] != 'search'}checked {/if}/>{/if}
+						{if $tables[$nextid] != ""}<input type="checkbox" name="tables[{$tables[$nextid]}]" {if $tables[$nextid] != 'sessionticket' && $tables[$nextid] != 'search'}checked {/if}/>{/if}
 					</td>
 
 					<td>{$tables[$nextid]}</td>
@@ -104,7 +103,7 @@
 			<tr>
 				<td colspan="2">&nbsp;</td>
 				<td colspan="3">
-					<input class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" type="submit" value="{'Export Data'|gettext}" onclick="return isOneSelected();" />
+					<input class="downloadfile awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" type="submit" value="{'Export Data'|gettext}" onclick="return isOneSelected();" />
 				</td>
 			</tr>
 		</table>

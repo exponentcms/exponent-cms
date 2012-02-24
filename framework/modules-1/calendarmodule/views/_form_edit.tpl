@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2011 OIC Group, Inc.
+ * Copyright (c) 2004-2012 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -17,15 +17,7 @@
 
 {/css}
 
-{css unique="calendar-edit2" link="`$smarty.const.PATH_RELATIVE`framework/modules-1/calendarmodule/assets/css/cal-edit.css"}
-
-{/css}
-
-{css unique="calendar-edit3" link="`$smarty.const.PATH_RELATIVE`framework/core/assets/css/button.css"}
-
-{/css}
-
-{css unique="calendar-edit4" corecss="tables"}
+{css unique="calendar-edit2" link="`$asset_path`css/cal-edit.css" corecss="button,tables"}
 
 {/css}
 

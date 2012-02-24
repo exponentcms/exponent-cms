@@ -1,27 +1,26 @@
 <?php
-/**
- *  This file is part of Exponent
- *  Exponent is free software; you can redistribute
- *  it and/or modify it under the terms of the GNU
- *  General Public License as published by the Free
- *  Software Foundation; either version 2 of the
- *  License, or (at your option) any later version.
- *
- * The file that holds the expRecord class
- *
- * @link http://www.gnu.org/licenses/gpl.txt GPL http://www.gnu.org/licenses/gpl.txt
- * @package Exponent-CMS
- * @copyright 2004-2011 OIC Group, Inc.
- * @author Adam Kessler <adam@oicgroup.net>
- * @version 2.0.0
- */
+##################################################
+#
+# Copyright (c) 2004-2012 OIC Group, Inc.
+#
+# This file is part of Exponent
+#
+# Exponent is free software; you can redistribute
+# it and/or modify it under the terms of the GNU
+# General Public License as published by the Free
+# Software Foundation; either version 2 of the
+# License, or (at your option) any later version.
+#
+# GPL: http://www.gnu.org/licenses/gpl.txt
+#
+##################################################
+
 /**
  * This is the class expRecord
  *
- * @subpackage Core-Datatypes
- * @package Framework
+ * @subpackage Models
+ * @package Core
  */
- 
 class expRecord {
     protected $classinfo = null;
     public $tablename = '';
@@ -495,7 +494,7 @@ class expRecord {
                     $where .= empty($this->location_data) ? null : "AND location_data='".$this->location_data."' ";
                     //FIXME: $where .= empty($this->rank_by_field) ? null : "AND " . $this->rank_by_field . "='" . $this->$this->rank_by_field . "'";
                     $groupby = empty($this->location_data) ? null : 'location_data';
-                    $groupby .= empty($this->rank_by_field) ? null : empty($groupby) ? null : ',' . $this->rank_by_field;
+                    $groupby .= empty($this->rank_by_field) ? null : (empty($groupby) ? null : ',' . $this->rank_by_field);
                     $this->rank = $db->max($this->tablename, 'rank', $groupby, $where) +1;
                 } else {
                     // check if this rank is already there..if so increment everything below it.
@@ -540,6 +539,11 @@ class expRecord {
 	 * before updating item
 	 */
 	public function beforeUpdate() {
+        // we need some help migrating edited dates
+        if (!empty($this->migrated_at)) {
+            $this->edited_at = $this->migrated_at;
+            unset($this->migrated_at);
+        }
         $this->runCallback('beforeUpdate');
     }
 

@@ -2,8 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2011 OIC Group, Inc.
-# Written and Designed by James Hunt
+# Copyright (c) 2004-2012 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -17,6 +16,22 @@
 #
 ##################################################
 
+/**
+ * Smarty plugin
+ * @package Smarty-Plugins
+ * @subpackage Function
+ */
+
+/**
+ * Smarty {google_maps_link} function plugin
+ *
+ * Type:     function<br>
+ * Name:     google_maps_link<br>
+ * Purpose:  create a google maps link
+ *
+ * @param         $params
+ * @param \Smarty $smarty
+ */
 function smarty_function_google_maps_link($params,&$smarty) {
 	$link = '';
 

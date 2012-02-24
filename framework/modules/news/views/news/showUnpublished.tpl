@@ -1,6 +1,5 @@
 {*
- * Copyright (c) 2007-2011 OIC Group, Inc.
- * Written and Designed by Adam Kessler
+ * Copyright (c) 2004-2012 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -19,7 +18,7 @@
 {/css}
 
 <div class="module news show-expired">
-	<h1>{$moduletitle|default:"Expired News"|gettext}</h1>
+    {if !$config.hidemoduletitle}<h1>{$moduletitle|default:"Expired News"|gettext}</h1>{/if}
     {pagelinks paginate=$page top=1}
 	<table id="prods" class="exp-skin-table" width="95%">
 	    <thead>
@@ -31,7 +30,7 @@
 		<tbody>
 			{foreach from=$page->records item=listing name=listings}
 			<tr class="{cycle values="odd,even"}">
-				<td><a href="{link controller=news action=show id=$listing->id}">{$listing->title}</a></td>
+				<td><a href="{link controller=news action=show id=$listing->id}" title="{$listing->body|summarize:"html":"para"}">{$listing->title}</a></td>
 				<td>{$listing->publish|format_date:"%B %e, %Y"}</td>
 				<td>
 				    {if $listing->unpublish == 0}

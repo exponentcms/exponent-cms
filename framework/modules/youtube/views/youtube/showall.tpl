@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2007-2011 OIC Group, Inc.
+ * Copyright (c) 2004-2012 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -14,7 +14,7 @@
  *}
 
 <div class="module youtube showall">
-    {if $moduletitle}<h1>{$moduletitle}</h1>{/if}
+    {if $moduletitle && !$config.hidemoduletitle}<h1>{$moduletitle}</h1>{/if}
     {permissions}
         <div class="module-actions">
 			{if $permissions.create == 1}
@@ -25,6 +25,9 @@
 			{/if}
         </div>
     {/permissions}    
+    {if $config.moduledescription != ""}
+        {$config.moduledescription}
+    {/if}
     {pagelinks paginate=$page top=1}
     {foreach from=$items item=ytv name=items}
 		<div class="item">

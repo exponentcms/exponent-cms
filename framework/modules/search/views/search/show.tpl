@@ -1,6 +1,5 @@
 {*
- * Copyright (c) 2007-2008 OIC Group, Inc.
- * Written and Designed by Adam Kessler
+ * Copyright (c) 2004-2012 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -19,7 +18,10 @@
 {/css}
  
 <div class="module search show-form">
-    {if $moduletitle != ""}<h1>{$moduletitle}</h1>{/if}
+    {if $moduletitle && !$config.hidemoduletitle}<h1>{$moduletitle}</h1>{/if}
+    {if $config.moduledescription != ""}
+        {$config.moduledescription}
+    {/if}
     <form id="form" name="form" class="" method="POST" action="{$smarty.const.URL_FULL}index.php">
         <input type="hidden" name="action" id="action" value="search">
         <input type="hidden" name="module" id="module" value="search">

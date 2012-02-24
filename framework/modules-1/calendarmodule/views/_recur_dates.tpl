@@ -1,6 +1,5 @@
 {*
- * Copyright (c) 2004-2011 OIC Group, Inc.
- * Written and Designed by James Hunt
+ * Copyright (c) 2004-2012 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -21,7 +20,7 @@
 				<input type="checkbox" name="dates[{$d->id}]" {if $d->id == $checked_date->id}checked="checked" {/if}/>
 			</td>
 			<td style="border:none;">
-				{$d->date|format_date:$smarty.const.DISPLAY_DATE_FORMAT}
+				{$d->date|format_date}
 			</td>
 		</tr>
 	{/foreach}

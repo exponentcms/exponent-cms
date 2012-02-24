@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2011 OIC Group, Inc.
+# Copyright (c) 2004-2012 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -20,7 +20,8 @@ if (!defined('EXPONENT')) exit('');
 
 return array(
 	'cart'=>array(
-                'checkout'=>'Full Body'),
+        'checkout'=>'Full Body'
+    ),
 );
 
 ?>

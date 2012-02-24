@@ -1,6 +1,5 @@
 {*
- * Copyright (c) 2007-2008 OIC Group, Inc.
- * Written and Designed by Adam Kessler
+ * Copyright (c) 2004-2012 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -13,6 +12,7 @@
  * GPL: http://www.gnu.org/licenses/gpl.txt
  *
  *}
+
  {css unique="confirmation1" link="`$asset_path`css/ecom.css"}
 
  {/css}
@@ -199,7 +199,7 @@
     {/if}
     </div>
     
-    <div style="clear:both"></div>
+    {clear}
     
     <div class="confirmationlinks">
         <a href="{if $nologin}{link controller=cart action=process nologin=1}{else}{link controller=cart action=process}{/if}" class="awesome {$smarty.const.BTN_SIZE} green next" />

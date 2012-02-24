@@ -1,6 +1,5 @@
 {*
- * Copyright (c) 2004-2011 OIC Group, Inc.
- * Written and Designed by James Hunt
+ * Copyright (c) 2004-2012 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -13,6 +12,7 @@
  * GPL: http://www.gnu.org/licenses/gpl.txt
  *
  *}
+
 {get_user assign=user}
 {if $user->id != '' && $user->id != 0} 
 <div class="module administration quicklinks">
@@ -21,7 +21,7 @@
 	</div>
 	<div class="bd">		
 	    {permissions}
-		    {if $permissions.administrate == 1}
+		    {if $permissions.manage == 1}
 		    <a class="admin" href="{link controller=administration action=install_tables}">Install Tables</a>{br}
 		    <a class="admin" href="{link controller=administration action=toggle_dev}">Toggle Dev</a>{br}
 		    <a class="admin" href="{link controller=administration action=clear_smarty_cache}">Clear Smarty Cache Files</a>{br}

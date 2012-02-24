@@ -2,8 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2011 OIC Group, Inc.
-# Written and Designed by Adam Kessler
+# Copyright (c) 2004-2012 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -17,6 +16,11 @@
 #
 ##################################################
 
+/**
+ * @subpackage Controllers
+ * @package Modules
+ */
+
 class filedownloadController extends expController {
 	//protected $basemodel_name = '';
 	public $useractions = array(
@@ -27,9 +31,8 @@ class filedownloadController extends expController {
         'comments',
         'ealerts',
         'files',
-        'rss',
-		'tags'
-    );
+        'rss'
+    ); // all options: ('aggregation','categories','comments','ealerts','files','module_title','pagination','rss','tags')
 
 	function displayname() { return "File Downloads"; }
 	function description() { return " This module lets you put files on your website for users to download."; }
@@ -38,15 +41,20 @@ class filedownloadController extends expController {
     function showall() {
         $modelname = $this->basemodel_name;
         $where = $this->aggregateWhereClause();
-        $limit = isset($this->config['limit']) ? $this->config['limit'] : null;
         $order = isset($this->config['order']) ? $this->config['order'] : 'rank';
-        $dir   = isset($this->config['dir']) ? $this->config['dir'] : 'ASC';
+//        $dir   = isset($this->config['dir']) ? $this->config['dir'] : 'ASC';
+        $limit = isset($this->config['limit']) ? $this->config['limit'] : null;
+        if (!empty($this->params['view']) && ($this->params['view'] == 'showall_accordion' || $this->params['view'] == 'showall_tabbed')) {
+            $limit = 999;
+        }
+
         $page = new expPaginator(array(
                     'model'=>$modelname,
                     'where'=>$where, 
                     'limit'=>$limit,
                     'order'=>$order,
-                    'dir'=>$dir,
+//                    'dir'=>$dir,
+                    'categorize'=>empty($this->config['usecategories']) ? false : $this->config['usecategories'],
                     'controller'=>$this->baseclassname,
                     'action'=>$this->params['action'],
                     'src'=>$this->loc->src,
@@ -79,27 +87,27 @@ class filedownloadController extends expController {
     }
     
 	public function showall_by_tags() {
-	    global $db;	    
+	    global $db;
 
 	    // get the tag being passed
         $tag = new expTag($this->params['tag']);
 
-        // find all the id's of the blog posts for this blog module
+        // find all the id's of the filedownload for this filedownload module
         $item_ids = $db->selectColumn('filedownloads', 'id', $this->aggregateWhereClause());
-                
+
         // find all the blogs that this tag is attached to
         $items = $tag->findWhereAttachedTo('filedownload');
 
-        // loop the blogs for this tag and find out which ones belong to this module
+        // loop the filedownload for this tag and find out which ones belong to this module
         $items_by_tags = array();
         foreach($items as $item) {
             if (in_array($item->id, $item_ids)) $items_by_tags[] = $item;
         }
 
-        // create a pagination object for the blog posts and render the action
+        // create a pagination object for the filedownload and render the action
 		$order = 'created_at';
 		$limit = empty($this->config['limit']) ? 10 : $this->config['limit'];
-		
+
 		$page = new expPaginator(array(
 		            'records'=>$items_by_tags,
 		            'limit'=>$limit,
@@ -108,28 +116,31 @@ class filedownloadController extends expController {
 		            'action'=>$this->params['action'],
 		            'columns'=>array('Title'=>'title'),
 		            ));
-		
+
 		assign_to_template(array('page'=>$page,'moduletitle'=>'File Downloads by tag "'.$this->params['tag'].'"'));
 	}
 
-	public function tags() {
-        $blogs = $this->filedownload->find('all');
-        $used_tags = array();
-        foreach ($blogs as $blog) {
-            foreach($blog->expTag as $tag) {
-                if (isset($used_tags[$tag->id])) {
-                    $used_tags[$tag->id]->count += 1;
-                } else {
-                    $exptag = new expTag($tag->id);
-                    $used_tags[$tag->id] = $exptag;
-                    $used_tags[$tag->id]->count = 1;
-                }
-                
-            }
-        }
-        $used_tags = expSorter::sort(array('array'=>$used_tags,'sortby'=>'title', 'order'=>'ASC', 'ignore_case'=>true));
-	    assign_to_template(array('tags'=>$used_tags));
-	}    
+//	public function tags() {
+//        $blogs = $this->filedownload->find('all');
+//        $used_tags = array();
+//        foreach ($blogs as $blog) {
+//            foreach($blog->expTag as $tag) {
+//                if (isset($used_tags[$tag->id])) {
+//                    $used_tags[$tag->id]->count += 1;
+//                } else {
+//                    $exptag = new expTag($tag->id);
+//                    $used_tags[$tag->id] = $exptag;
+//                    $used_tags[$tag->id]->count = 1;
+//                }
+//
+//            }
+//        }
+////        $used_tags = expSorter::sort(array('array'=>$used_tags,'sortby'=>'title', 'order'=>'ASC', 'ignore_case'=>true));
+//        $order = isset($this->config['order']) ? $this->config['order'] : 'title ASC';
+//        $used_tags = expSorter::sort(array('array'=>$used_tags, 'order'=>$order, 'ignore_case'=>true));
+//	    assign_to_template(array('tags'=>$used_tags));
+//	}
+
     function getRSSContent() {
         // this function is very general and will most of the time need to be overwritten and customized
         
@@ -138,18 +149,20 @@ class filedownloadController extends expController {
         // setup the where clause for looking up records.
         $where = $this->aggregateWhereClause();
 
-        //$items = $db->selectObjects($this->model_table, $where.' ORDER BY created_at');
+        $order = isset($this->config['order']) ? $this->config['order'] : 'created_at DESC';
+
         $fd = new filedownload();
-        $items = $fd->find('all',$where);
+        $items = $fd->find('all',$where, $order);
         
         //Convert the items to rss items
         $rssitems = array();
         foreach ($items as $key => $item) { 
             $rss_item = new FeedItem();
-            $rss_item->title = $item->title;
-            $rss_item->description = $item->body;
+            $rss_item->title = expString::convertSmartQuotes($item->title);
+            $rss_item->description = expString::convertSmartQuotes($item->body);
             $rss_item->date = isset($item->publish_date) ? date('r',$item->publish_date) : date('r', $item->created_at);
             $rss_item->link = makeLink(array('controller'=>$this->classname, 'action'=>'show', 'title'=>$item->sef_url));
+            if (!empty($item->expCat[0]->title)) $rss_item->category = array($item->expCat[0]->title);
 
             $rss_item->enclosure = new Enclosure();
             //$rss_item->enclosure->url = URL_FULL.'index.php?module=resourcesmodule&action=download_resource&id='.$item->id;

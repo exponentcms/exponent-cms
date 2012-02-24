@@ -1,6 +1,5 @@
 {*
- * Copyright (c) 2004-2011 OIC Group, Inc.
- * Written and Designed by Adam Kessler
+ * Copyright (c) 2004-2012 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -30,15 +29,20 @@
                     <h2>{'File Download'|gettext}</h2>
                     {control type=text name=title label="Title"|gettext value=$record->title}
                     {control type=html name=body label="Body Content"|gettext value=$record->body}
-                    {foreach from=$record->expTag item=tag name=tags}
-                        {if $smarty.foreach.tags.first == false}
-                            {assign var=tags value="`$tags`,`$tag->title`"}
-                        {else}
-                            {assign var=tags value=$tag->title}
-                        {/if}
-                    {/foreach}
-                    {if $tags != ""}{$tags=$tags|cat:','}{/if}
-                    {control type="text" id="expTag" name="expTag" label="Tags (comma separated)"|gettext size=45 value=$tags}
+                    {if !$config.disabletags}
+                        {foreach from=$record->expTag item=tag name=tags}
+                            {if $smarty.foreach.tags.first == false}
+                                {assign var=tags value="`$tags`,`$tag->title`"}
+                            {else}
+                                {assign var=tags value=$tag->title}
+                            {/if}
+                        {/foreach}
+                        {if $tags != ""}{$tags=$tags|cat:','}{/if}
+                        {control type="text" id="expTag" name="expTag" label="Tags (comma separated)"|gettext size=45 value=$tags}
+                    {/if}
+                    {if $config.usecategories}
+                        {control type="dropdown" name=expCat label="Category"|gettext frommodel="expCat" where="module='' OR module='`$modelname`'" orderby="rank" display=title key=id includeblank="Not Categorized"|gettext value=$record->expCat[0]->id}
+                    {/if}
                 </div>
                 <div id="tab3">
                     {control id="downloadable" type="files" name="downloadable" label="File for Download"|gettext subtype=downloadable value=$record->expFile}

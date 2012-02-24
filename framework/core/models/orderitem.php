@@ -2,10 +2,9 @@
 
 ##################################################
 #
-# Copyright (c) 2007-2008 OIC Group, Inc.
-# Created by Adam Kessler @ 09/06/2007
+# Copyright (c) 2004-2012 OIC Group, Inc.
 #
-# This file is part of Acorn Web API
+# This file is part of Exponent
 #
 # Exponent is free software; you can redistribute
 # it and/or modify it under the terms of the GNU
@@ -17,6 +16,10 @@
 #
 ##################################################
 
+/**
+ * @subpackage Models
+ * @package Core
+ */
 class orderitem extends expRecord {
 	public $table = 'orderitems';
 	public $has_one = array('shippingmethod');

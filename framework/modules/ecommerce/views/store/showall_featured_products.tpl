@@ -1,6 +1,5 @@
 {*
- * Copyright (c) 2007-2008 OIC Group, Inc.
- * Written and Designed by Adam Kessler
+ * Copyright (c) 2004-2012 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -16,7 +15,7 @@
 
 <div class="module store showall-featured-products">
     
-    {if $moduletitle}<h1>{$moduletitle}</h1>{/if}
+    {if $moduletitle && !$config.hidemoduletitle}<h1>{$moduletitle}</h1>{/if}
         
     {foreach from=$page->records item=listing name=listings}
     <div class="featured-product">

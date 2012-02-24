@@ -1,6 +1,5 @@
 {*
- * Copyright (c) 2007-2011 OIC Group, Inc.
- * Written and Designed by Adam Kessler
+ * Copyright (c) 2004-2012 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -140,7 +139,7 @@
                             {'Tracking #'|gettext}:</td><td>{$order->shipping_tracking_number}{br}
                         </td></tr> 
                         <tr><td> 
-                            {'Date Shipped:'|gettext}</td><td>{if $order->shipped != 0}{$order->shipped|format_date:$smarty.const.DISPLAY_DATE_FORMAT}{else}{'This order has not been shipped yet'|gettext}{/if}
+                            {'Date Shipped:'|gettext}</td><td>{if $order->shipped != 0}{$order->shipped|format_date}{else}{'This order has not been shipped yet'|gettext}{/if}
                         </td></tr>
                     {/if}
                  </table>

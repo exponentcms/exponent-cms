@@ -1,6 +1,5 @@
 {*
- * Copyright (c) 2007-2008 OIC Group, Inc.
- * Written and Designed by Adam Kessler
+ * Copyright (c) 2004-2012 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -13,6 +12,7 @@
  * GPL: http://www.gnu.org/licenses/gpl.txt
  *
  *}
+
 {css unique="cart" link="`$asset_path`css/cart.css" corecss="panels,button"}
 
 {/css}
@@ -77,7 +77,7 @@
             {chain controller=cart action=show view=show_cart_only}
         </div>
     </div>
-    <div style="clear:both"></div>
+    {clear}
     {if !$noactivediscounts}
         <div class="separate">
             <h2>{"Optional Promotional Code"|gettext}</h2>
@@ -109,7 +109,7 @@
                         {/if}
                     </div>
                 {/if}
-                <div style="clear:both"></div>
+                {clear}
             </div>
         </div>
     {/if}
@@ -189,7 +189,7 @@
                 {/if}
                 {if $shipping->splitshipping == false}
 
-                <div style="clear:both"></div>
+                {clear}
                 
                 <div id="shipping-services">
                     <h3>{"Selected Shipping Method"|gettext}</h3>
@@ -213,7 +213,7 @@
                     </div>
                     
                 </div>
-                <div style="clear:both"></div>
+                {clear}
                 {else}
 
                 {* else, we have split shipping *}

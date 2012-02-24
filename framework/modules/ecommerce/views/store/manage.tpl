@@ -1,6 +1,5 @@
 {*
- * Copyright (c) 2007-2011 OIC Group, Inc.
- * Written and Designed by Adam Kessler
+ * Copyright (c) 2004-2012 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -85,7 +84,7 @@
 		{pagelinks paginate=$page bottom=1}
     </div>
     {permissions}
-        {if $permissions.configure == 1 or $permissions.administrate == 1}
+        {if $permissions.configure == 1 or $permissions.manage == 1}
         <div id="prod-admin">
                 <a href="{link controller=store action=create}">{'Add a new Product'|gettext}</a>
                 {br}<a href="{link controller=storeCategory action=manage}">{'Manage Categories'|gettext}</a>

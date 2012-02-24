@@ -2,8 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2011 OIC Group, Inc.
-# Written and Designed by James Hunt
+# Copyright (c) 2004-2012 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -17,6 +16,22 @@
 #
 ##################################################
 
+/**
+ * Smarty plugin
+ * @package Smarty-Plugins
+ * @subpackage Function
+ */
+
+/**
+ * Smarty {getfilicon} function plugin
+ *
+ * Type:     function<br>
+ * Name:     getfilicon<br>
+ * Purpose:  displays on icon for a file
+ *
+ * @param         $params
+ * @param \Smarty $smarty
+ */
 function smarty_function_getfileicon($params,&$smarty) {
 	global $db;
 	

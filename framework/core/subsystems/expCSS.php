@@ -1,25 +1,25 @@
 <?php
-/**
- *  This file is part of Exponent
- *  Exponent is free software; you can redistribute
- *  it and/or modify it under the terms of the GNU
- *  General Public License as published by the Free
- *  Software Foundation; either version 2 of the
- *  License, or (at your option) any later version.
- *
- * The file that holds the expCSS class
- *
- * @link http://www.gnu.org/licenses/gpl.txt GPL http://www.gnu.org/licenses/gpl.txt
- * @package Exponent-CMS
- * @copyright 2004-2011 OIC Group, Inc.
- * @author Phillip Ball <phillip@oicgroup.net>
- * @version 2.0.0
- */
+##################################################
+#
+# Copyright (c) 2004-2012 OIC Group, Inc.
+#
+# This file is part of Exponent
+#
+# Exponent is free software; you can redistribute
+# it and/or modify it under the terms of the GNU
+# General Public License as published by the Free
+# Software Foundation; either version 2 of the
+# License, or (at your option) any later version.
+#
+# GPL: http://www.gnu.org/licenses/gpl.txt
+#
+##################################################
+
 /**
  * This is the class expCSS
  *
- * @subpackage Core-Subsystems
- * @package Framework
+ * @package Subsystems
+ * @subpackage Subsystems
  */
 
 class expCSS {
@@ -86,13 +86,8 @@ class expCSS {
             };
         };
 
-        if (MINIFY!=1) {
-            //eDebug($css_files);
-            foreach ($css_files as $file) {
-                $html .= "\t".'<link rel="stylesheet" type="text/css" href="'.$file.'" '.XHTML_CLOSING.'>'."\r\n";
-            }
-        } else {
-            // if we're minifying, we'll break our URLs apart at MINIFY_URL_LENGTH characters to allow it through 
+        if (MINIFY==1&&MINIFY_LINKED_CSS==1) {
+            // if we're minifying, we'll break our URLs apart at MINIFY_URL_LENGTH characters to allow it through
             // browser string limits
             $strlen = (ini_get("suhosin.get.max_value_length")==0) ? MINIFY_URL_LENGTH : ini_get("suhosin.get.max_value_length");
             $i = 0;
@@ -107,31 +102,39 @@ class expCSS {
                     $srt[$i] .= $file.",";
                 }
             }
-
             foreach ($srt as $link) {
                 $link = rtrim($link,",");
                 $html .= "\t".'<link rel="stylesheet" type="text/css" href="'.PATH_RELATIVE.'external/minify/min/index.php?f=' . $link . '"' . XHTML_CLOSING.'>'."\r\n";
             }
+        } else {
+            //eDebug($css_files);
+            foreach ($css_files as $file) {
+                $html .= "\t".'<link rel="stylesheet" type="text/css" href="'.$file.'" '.XHTML_CLOSING.'>'."\r\n";
+            }
         }
-        
         
         if (!empty($css_inline)) {
             $styles = "";
+            $htmlcss = "";
             foreach ($css_inline as $key=>$val) {
                 $styles .= $val;
             }
             trim($styles);
             if (!empty($styles)) {
-                $html .= "\t".'<style type="text/css" media="screen">'."\n";
-                $html .= "\t".$styles."\n";
-                $html .= "\t".'</style>'."\n";
+                $htmlcss .= "\t".'<style type="text/css" media="screen">'."\n";
+                $htmlcss .= "\t".$styles."\n";
+                $htmlcss .= "\t".'</style>'."\n";
             }
+            if (MINIFY==1&&MINIFY_INLINE_CSS==1) {
+                include_once(BASE.'external/minify/min/lib/JSMin.php');
+                $htmlcss = JSMin::minify($htmlcss);
+            }
+            $html .= $htmlcss;
         }
-        
+
         return $html;
     }
-    
-    
+
     public static function themeCSS() {
         global $css_theme, $head_config;
 
@@ -170,4 +173,5 @@ class expCSS {
     }
 
 }
+
 ?>

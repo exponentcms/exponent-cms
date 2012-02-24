@@ -2,8 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2011 OIC Group, Inc.
-# Written and Designed by James Hunt
+# Copyright (c) 2004-2012 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -28,7 +27,7 @@ $form->meta('action','page');
 $form->meta('importer','files');
 $form->meta('page','process');
 $form->register('file',gt('Files Archive'),new uploadcontrol());
-$form->register('submit','',new buttongroupcontrol(gt('Restore')));
+$form->register('submit','',new buttongroupcontrol(gt('Restore'),'','','uploadfile'));
 
 $template->assign('form_html',$form->toHTML());
 $template->output();

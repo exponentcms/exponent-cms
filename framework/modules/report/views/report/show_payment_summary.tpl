@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2007-2008 OIC Group, Inc.
+ * Copyright (c) 2004-2012 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -12,12 +12,14 @@
  * GPL: http://www.gnu.org/licenses/gpl.txt
  *
  *}
+
 {css unique="general-ecom" link="`$smarty.const.PATH_RELATIVE`framework/modules/ecommerce/assets/css/ecom.css"}
 
 {/css}
 {css unique="report-builder" link="`$smarty.const.PATH_RELATIVE`framework/modules/ecommerce/assets/css/report-builder.css"}
 
 {/css}
+
 {script unique="payment-summary" yui3mods=1}
 {literal}
 YUI(EXPONENT.YUI3_CONFIG).use('node', 'charts', 'yui2-yahoo-dom-event','yui2-element','yui2-tabview', function(Y) {
@@ -144,28 +146,26 @@ YUI(EXPONENT.YUI3_CONFIG).use('node', 'charts', 'yui2-yahoo-dom-event','yui2-ele
     </div>
 </div>
 
-
-<style type="text/css">
+{css unique="show-payment"}
 {literal}
-.fullbody #centercol {
-    width: 422px;     
-}
+    .fullbody #centercol {
+        width: 422px;
+    }
 
-.exp-skin-table {
-    width:400px;
-}
-.exp-skin-table tbody tr.odd th,
-.exp-skin-table tbody tr.odd td {
-    border-color:#EBE5D9;
-    background:#F7F4EE;
-}
+    .exp-skin-table {
+        width:400px;
+    }
+    .exp-skin-table tbody tr.odd th,
+    .exp-skin-table tbody tr.odd td {
+        border-color:#EBE5D9;
+        background:#F7F4EE;
+    }
 
-#areachart, #barchart, #columnchart, #combochart, #linechart, #piechart {
-    margin:10px 10px 10px 10px;
-    width:90%;
-    max-width: 400px;
-    height:400px;
-}
-
+    #areachart, #barchart, #columnchart, #combochart, #linechart, #piechart {
+        margin:10px 10px 10px 10px;
+        width:90%;
+        max-width: 400px;
+        height:400px;
+    }
 {/literal}
-</style>
+{/css}

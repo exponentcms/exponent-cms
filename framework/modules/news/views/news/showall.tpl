@@ -1,6 +1,5 @@
 {*
- * Copyright (c) 2004-2011 OIC Group, Inc.
- * Written and Designed by James Hunt
+ * Copyright (c) 2004-2012 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -15,27 +14,30 @@
  *}
 
 <div class="module news showall">
-    {if $enable_rss == true}
-        <a class="rsslink" href="{rsslink}">{'Subscribe to'|gettext} {$config.feed_title}</a>
+    {if $moduletitle && !$config.hidemoduletitle}<h1>{/if}
+    {if $config.enable_rss == true}
+        <a class="rsslink" href="{rsslink}" title="{'Subscribe to'|gettext} {$config.feed_title}"></a>
     {/if}
-    {if $moduletitle}<h1>{$moduletitle}</h1>{/if}
+    {if $moduletitle && !$config.hidemoduletitle}{$moduletitle}</h1>{/if}
 
     {permissions}
     <div class="module-actions">
         {if $permissions.create == true || $permissions.edit == true}
-            <a class="add" href="{link action=create}">{"Add a news post"|gettext}</a>
+            {icon class="add" action=create text="Add a news post"|gettext}</a>
         {/if}
         {if $permissions.showUnpublished == 1 }
-             |  <a class="view" href="{link action=showUnpublished}">{"View Expired/Unpublished News"|gettext}</a>
+             |  {icon class="view" action=showUnpublished text="View Expired/Unpublished News"|gettext}</a>
         {/if}
     </div>
     {/permissions}
-
+    {if $config.moduledescription != ""}
+   		{$config.moduledescription}
+   	{/if}
     {pagelinks paginate=$page top=1}
     {foreach from=$page->records item=item}
         <div class="item">
             <h2>
-                <a href="{if $item->isRss}{$item->rss_link}{else}{link action=showByTitle title=$item->sef_url}{/if}">
+                <a href="{if $item->isRss}{$item->rss_link}{else}{link action=showByTitle title=$item->sef_url}{/if}" title="{$item->body|summarize:"html":"para"}">
                 {$item->title}
                 </a>
             </h2>
@@ -52,20 +54,31 @@
                 {/permissions}
             {/if}
             <span class="date">{$item->publish_date|date_format}</span>
+            {if $item->expTag|@count>0 && !$config.disabletags}
+                | <span class="tags">
+                    {"Tags"|gettext}:
+                    {foreach from=$item->expTag item=tag name=tags}
+                        <a href="{link action=showall_by_tags tag=$tag->sef_url}">{$tag->title}</a>{if $smarty.foreach.tags.last != 1},{/if}
+                    {/foreach}
+                </span>
+            {/if}
 
             <div class="bodycopy">
-                {filedisplayer view="`$config.filedisplay`" files=$item->expFile record=$item is_listing=1}
-
+                {if $config.filedisplay != "Downloadable Files"}
+                    {filedisplayer view="`$config.filedisplay`" files=$item->expFile record=$item is_listing=1}
+                {/if}
                 {if $config.usebody==1}
                     <p>{$item->body|summarize:"html":"paralinks"}</p>
                 {elseif $config.usebody==2}
 				{else}
                     {$item->body}
                 {/if}
-
+                {if $config.filedisplay == "Downloadable Files"}
+                    {filedisplayer view="`$config.filedisplay`" files=$item->expFile record=$item is_listing=1}
+                {/if}
                 <a class="readmore" href="{if $item->isRss}{$item->rss_link}{else}{link action=showByTitle title=$item->sef_url}{/if}">{"Read More"|gettext}</a>
             </div>
-            <div style="clear:both"></div>
+            {clear}
         </div>
     {/foreach}
     {pagelinks paginate=$page bottom=1}

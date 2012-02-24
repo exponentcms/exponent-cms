@@ -1,6 +1,5 @@
 {*
- * Copyright (c) 2007-2011 OIC Group, Inc.
- * Written and Designed by Adam Kessler
+ * Copyright (c) 2004-2012 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -25,7 +24,7 @@
         {'The banners you create and configure here will be available to all the banner modules you have on your site.'|gettext}
     </p>
 	{icon class=add action=create text="Create a new banner"|gettext}{br}
-	{icon action=export text="Export banner data"|gettext}{br}
+	{icon class="downloadfile" action=export text="Export banner data"|gettext}{br}
     {icon action=reset_stats text="Reset banner stats"|gettext onclick="return confirm('Are you sure you want to reset the Impression and Click statistics of your banners?');"}{br}
 	{*{icon class=add module=company action=create text="Create a new company"|gettext}{br}*}
 	{icon class=manage module=company action=showall text="Manage companies"|gettext}{br}

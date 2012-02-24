@@ -2,8 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2011 OIC Group, Inc.
-# Written and Designed by James Hunt
+# Copyright (c) 2004-2012 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -14,7 +13,7 @@
 # License, or (at your option) any later version.
 #
 # GPL: http://www.gnu.org/licenses/gpl.txt
-# 
+#
 ##################################################
 /** @define "BASE" "../../.." */
 
@@ -265,10 +264,12 @@ class navigationmodule {
      * @param int   $depth variable to hold level of recursion
      * @param array $ignore_ids array of pages to ignore
      * @param bool  $full include a 'top' level entry
+     * @param string $perm permission level to build list
+     * @param bool  $addstandalones should we add the stand-alone pages also
      *
      * @return array
      */
-	static function levelDropDownControlArray($parent,$depth=0,$ignore_ids = array(),$full=false, $perm='view') {
+	static function levelDropDownControlArray($parent,$depth=0,$ignore_ids = array(),$full=false,$perm='view',$addstandalones=false) {
 		$ar = array();
 		if ($parent == 0 && $full) {
 			$ar[0] = '&lt;'.gt('Top of Hierarchy').'&gt;';
@@ -289,6 +290,20 @@ class navigationmodule {
 				}
 			}
 		}
+        if ($addstandalones && $parent == 0) {
+            $sections = $db->selectObjects('section','parent=-1');
+            foreach ($sections as $node) {
+                if ((($perm=='view' && $node->public == 1) || expPermissions::check($perm,expCore::makeLocation('navigationmodule','',$node->id))) && !in_array($node->id,$ignore_ids)) {
+                    if ($node->active == 1) {
+                        $text = str_pad('',($depth+($full?1:0))*3,'.',STR_PAD_LEFT) . $node->name;
+                    } else {
+                        $text = str_pad('',($depth+($full?1:0))*3,'.',STR_PAD_LEFT) . '('.$node->name.')';
+                    }
+                    $ar[$node->id] = '(' . gt('Standalone').') ' . $text;
+                }
+            }
+//            $ar = array_merge($ar,$sections);
+        }
 		
 		return $ar;
 	}
@@ -341,7 +356,7 @@ class navigationmodule {
 					
 					// Need to check and see if the internal_id is pointing at an external link.
 					$dest = $db->selectObject('section','id='.$child->internal_id);
-					if ($dest->alias_type == 1) {
+					if (!empty($dest->alias_type) && $dest->alias_type == 1) {
 						// This internal alias is pointing at an external alias.
 						// Use the external_link of the destination section for the link
 						$child->link = $dest->external_link;
@@ -353,7 +368,7 @@ class navigationmodule {
 						// (see datatypes/section.php)
 						
 						//added by Tyler to pull the descriptions through for the children view
-						$child->description = $dest->description;
+						$child->description = !empty($dest->description) ? $dest->description : '';
 						
 						$child->link = expCore::makeLink(array('section'=>$child->internal_id));
 					}

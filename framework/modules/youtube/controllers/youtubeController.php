@@ -2,8 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2011 OIC Group, Inc.
-# Written and Designed by Adam Kessler
+# Copyright (c) 2004-2012 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -17,18 +16,24 @@
 #
 ##################################################
 
+/**
+ * @subpackage Controllers
+ * @package Modules
+ */
+
 class youtubeController extends expController {
 	//protected $basemodel_name = '';
 	public $useractions = array(
         'showall'=>'Display a YouTube Video'
     );
     public $remove_configs = array(
+        'categories',
+        'comments',
         'ealerts',
-        'tags',
         'files',
         'rss',
-        'comments'
-    );
+        'tags'
+    ); // all options: ('aggregation','categories','comments','ealerts','files','module_title','pagination','rss','tags')
 
 	function displayname() { return "YouTube"; }
 	function description() { return "Display youtube videos on your page."; }

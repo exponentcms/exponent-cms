@@ -1,6 +1,5 @@
 {*
- * Copyright (c) 2004-2011 OIC Group, Inc.
- * Written and Designed by Adam Kessler
+ * Copyright (c) 2004-2012 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -19,15 +18,16 @@
 {/css}
 
 <div class="module blog tags_cloud">
-    {if $moduletitle}<h2>{$moduletitle}</h2>{/if}
+    {if $moduletitle && !$config.hidemoduletitle}<h2>{$moduletitle}</h2>{/if}
     {permissions}
-        {if $permissions.edit == 1}
-            {icon class=add action=edit text="Add a new blog article"|gettext}
-        {/if}
         {if $permissions.manage == 1}
-            {icon class="manage" controller=expTag action=manage text="Manage Tags"|gettext}
+            {icon controller=expTag action=manage text="Manage Tags"|gettext}
         {/if}
+        {br}
     {/permissions}
+    {if $config.moduledescription != ""}
+   		{$config.moduledescription}
+   	{/if}
     <ul>
         {foreach from=$tags item=tag}
             <li>

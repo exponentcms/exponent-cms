@@ -2,8 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2011 OIC Group, Inc.
-# Written and Designed by James Hunt
+# Copyright (c) 2004-2012 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -236,13 +235,13 @@ class calendarcontrol extends formcontrol {
         // css
         expCSS::pushToHead(array(
 		    "unique"=>"cal0",
-		    "link"=>YUI2_PATH."button/assets/skins/sam/button.css"
+		    "link"=>YUI2_PATH."assets/skins/sam/button.css"
 		    )
 		);
 		
         expCSS::pushToHead(array(
 		    "unique"=>"cal1",
-		    "link"=>YUI2_PATH."calendar/assets/skins/sam/calendar.css"
+		    "link"=>YUI2_PATH."assets/skins/sam/calendar.css"
 		    )
 		);
 		

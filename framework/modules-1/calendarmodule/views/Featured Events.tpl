@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2011 OIC Group, Inc.
+ * Copyright (c) 2004-2012 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -19,12 +19,12 @@
 
 <div class="module calendar cal-admin">  
 	<a href="{link _common=1 view=Default action=show_view}">Month View</a>{br}
-	<h2>
+	<h1>
 		{if $enable_rss == true}
 			<a href="{rsslink}"><img src="{$smarty.const.ICON_RELATIVE|cat:'rss-feed.gif'}" title="{'RSS Feed'|gettext}" alt="{'Link to RSS Feed'|gettext}" /></a>
 		{/if}
-		{if $moduletitle != ""}{$moduletitle}{/if}
-	</h2>
+		{if $moduletitle}{$moduletitle}{/if}
+	</h1>
 	<table cellspacing="0" cellpadding="0" border="0" width="100%">
 		{foreach from=$items item=item}
 			{if $item->is_featured == 1}
@@ -77,7 +77,7 @@
 		{/foreach}
 	</table>
 	{permissions}
-		{if $permissions.post == 1}
+		{if $permissions.create == 1}
 			<div class="module-actions">
 				{icon class=add action=edit title="Add a New Event"|gettext text="Add an Event"|gettext}
 			</div>

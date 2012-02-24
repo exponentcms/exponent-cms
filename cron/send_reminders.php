@@ -1,9 +1,7 @@
 <?php 
 ##################################################
 #
-# Copyright (c) 2004-2011 OIC Group, Inc.
-# Copyright (c) 2006 Maxim Mueller
-# Written and Designed by James Hunt
+# Copyright (c) 2004-2012 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -25,18 +23,26 @@ require_once('../exponent.php');
 global $user;
 global $db;
 
-// let's select a calendar by its source to make it easier to find and harder to spoof	
-$src = $_GET['src'];
-if (!$src) {
-	print_r("<br><b><i>Exponent - ".gt('No Calendar Selected!')."</i></b><br>");
-	exit();
-}	
+// first, find the calendar/event data
+$id = intval($_GET['id']);
+if (!$id) {
+    print_r("<br><b><i>Exponent - No Calendar Selected!</i></b><br>");
+    exit();
+}
+$config = $db->selectObject("calendarmodule_config","id='".$id."'");
 
-$loc = null;
-$loc->mod = 'calendarmodule';
-$loc->src = $src;
-$loc->int = '';	
-$config = $db->selectObject("calendarmodule_config","location_data='".serialize($loc)."'");
+// let's select a calendar by its source to make it easier to find and harder to spoof
+//$src = $_GET['src'];
+//if (!$src) {
+//	print_r("<br><b><i>Exponent - ".gt('No Calendar Selected!')."</i></b><br>");
+//	exit();
+//}
+//
+//$loc = null;
+//$loc->mod = 'calendarmodule';
+//$loc->src = $src;
+//$loc->int = '';
+//$config = $db->selectObject("calendarmodule_config","location_data='".serialize($loc)."'");
 if (!$config) {
 	print_r("<br><b><i>Exponent - ".gt('Calendar Not Found!')."</i></b><br>");
 	exit();
@@ -151,7 +157,7 @@ for ($i = 0; $i < $totaldays; $i++) {
 	for ($j = 0; $j < count($days[$start]); $j++) {
 		$thisloc = expCore::makeLocation($loc->mod,$loc->src,$days[$start][$j]->id);
 		$days[$start][$j]->permissions = array(
-			"administrate"=>(expPermissions::check("administrate",$thisloc) || expPermissions::check("administrate",$loc)),
+			"manage"=>(expPermissions::check("manage",$thisloc) || expPermissions::check("manage",$loc)),
 			"edit"=>(expPermissions::check("edit",$thisloc) || expPermissions::check("edit",$loc)),
 			"delete"=>(expPermissions::check("delete",$thisloc) || expPermissions::check("delete",$loc))
 		);
@@ -228,12 +234,10 @@ $template->assign("totaldays",$totaldays);
 	// // Check perms and return if cant view
 	// if ($viewparams['type'] == "administration" && !$user) return;
 	// $continue = (
-		// expPermissions::check("administrate",$loc) ||
-		// expPermissions::check("post",$loc) ||
+		// expPermissions::check("manage",$loc) ||
+		// expPermissions::check("create",$loc) ||
 		// expPermissions::check("edit",$loc) ||
-		// expPermissions::check("delete",$loc) ||
-		// expPermissions::check("approve",$loc) ||
-		// expPermissions::check("manage_approval",$loc)
+		// expPermissions::check("delete",$loc)
 		// ) ? 1 : 0;
 	// $dates = $db->selectObjects("eventdate",$locsql);
 	// $items = calendarmodule::_getEventsForDates($dates);
@@ -242,7 +246,7 @@ $template->assign("totaldays",$totaldays);
 			// $iloc = expCore::makeLocation($loc->mod,$loc->src,$i->id);
 			// if (expPermissions::check("edit",$iloc) ||
 				// expPermissions::check("delete",$iloc) ||
-				// expPermissions::check("administrate",$iloc)
+				// expPermissions::check("manage",$iloc)
 			// ) {
 				// $continue = true;
 			// }
@@ -253,7 +257,7 @@ $template->assign("totaldays",$totaldays);
 		// $thisloc = expCore::makeLocation($loc->mod,$loc->src,$items[$i]->id);
 		// if ($user && $items[$i]->poster == $user->id) $canviewapproval = 1;
 		// $items[$i]->permissions = array(
-			// "administrate"=>(expPermissions::check("administrate",$thisloc) || expPermissions::check("administrate",$loc)),
+			// "manage"=>(expPermissions::check("manage",$thisloc) || expPermissions::check("manage",$loc)),
 			// "edit"=>(expPermissions::check("edit",$thisloc) || expPermissions::check("edit",$loc)),
 			// "delete"=>(expPermissions::check("delete",$thisloc) || expPermissions::check("delete",$loc))
 		// );
@@ -308,7 +312,7 @@ $template->assign("totaldays",$totaldays);
 		// $thisloc = expCore::makeLocation($loc->mod,$loc->src,$items[$i]->id);
 		// if ($user && $items[$i]->poster == $user->id) $canviewapproval = 1;
 		// $items[$i]->permissions = array(
-			// 'administrate'=>(expPermissions::check('administrate',$thisloc) || expPermissions::check('administrate',$loc)),
+			// 'manage'=>(expPermissions::check('manage',$thisloc) || expPermissions::check('manage',$loc)),
 			// 'edit'=>(expPermissions::check('edit',$thisloc) || expPermissions::check('edit',$loc)),
 			// 'delete'=>(expPermissions::check('delete',$thisloc) || expPermissions::check('delete',$loc))
 		// );
@@ -334,7 +338,7 @@ if ($count == 0) {
 // $template->assign('in_approval',$inapproval);
 // $template->assign('canview_approval_link',$canviewapproval);
 // $template->register_permissions(
-	// array('administrate','configure','post','edit','delete','manage_approval','manage_categories'),
+	// array('manage','configure','create','edit','delete'),
 	// $loc
 // );
 

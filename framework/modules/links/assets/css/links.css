@@ -1,0 +1,24 @@
+div.module.links.showall h2 {
+    margin-top: 5px;
+    margin-bottom: 0px;
+    padding-bottom: 0px;
+}
+
+div.module.links.showall h3 {
+    margin-top: 5px;
+    margin-bottom: 0px;
+    padding-bottom: 0px;
+}
+
+div.module.links.showall .item .bodycopy {
+    margin-bottom: 10px;
+}
+
+div.module.links.showall-quicklinks li {
+    list-style: none outside none;
+    margin-bottom: 10px;
+}
+
+div.module.links.showall-quicklinks ul {
+    margin-left: 0px;
+}

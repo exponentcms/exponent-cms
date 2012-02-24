@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2008 OIC Group, Inc. and Contributors
+# Copyright (c) 2004-2012 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -15,7 +15,6 @@
 # GPL: http://www.gnu.org/licenses/gpl.txt
 #
 ##################################################
-
 
 if (!defined('HTMLTOPDF_PATH')) define('HTMLTOPDF_PATH','');
 if (!defined('HTMLTOPDF_PATH_TMP')) define('HTMLTOPDF_PATH_TMP','');

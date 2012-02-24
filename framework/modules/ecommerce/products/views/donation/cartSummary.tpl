@@ -1,6 +1,5 @@
 {*
- * Copyright (c) 2007-2008 OIC Group, Inc.
- * Written and Designed by Adam Kessler
+ * Copyright (c) 2004-2012 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -13,6 +12,7 @@
  * GPL: http://www.gnu.org/licenses/gpl.txt
  *
  *}
+
 <table border="0" cellspacing="0" cellpadding="0" class="cart-item">
     <tr>
         <td class="cart-image">

@@ -2,8 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2011 OIC Group, Inc.
-# Written and Designed by James Hunt
+# Copyright (c) 2004-2012 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -114,7 +113,7 @@ if (!isset($_POST['data_id']) || (isset($_POST['data_id']) && expPermissions::ch
         $template->assign("is_email",1);
         $emailText = $template->render();
 		$emailText = chop(strip_tags(str_replace(array("<br />","<br>","br/>"),"\n",$emailText)));
-		$template->assign("css",file_get_contents(BASE."framework/core/assets/css/tables.css"));
+//		$template->assign("css",file_get_contents(BASE."framework/core/assets/css/tables.css"));
 		$emailHtml = $template->render();
 		if (empty($from)) {
 			$from = trim(SMTP_FROMADDRESS);
@@ -122,17 +121,17 @@ if (!isset($_POST['data_id']) || (isset($_POST['data_id']) && expPermissions::ch
 		if (empty($from_name)) {
 			$from_name = trim(ORGANIZATION_NAME);
 		}
-		$headers = array(
-			"MIME-Version"=>"1.0",
-			"Content-type"=>"text/html; charset=".LANG_CHARSET
-		);
+//		$headers = array(
+//			"MIME-Version"=>"1.0",
+//			"Content-type"=>"text/html; charset=".LANG_CHARSET
+//		);
         if (count($emaillist)) {
             //This is an easy way to remove duplicates
             $emaillist = array_flip(array_flip($emaillist));
             $emaillist = array_map('trim', $emaillist);
 			$mail = new expMail();
 			$mail->quickSend(array(
-					'headers'=>$headers,
+//					'headers'=>$headers,
 					'html_message'=>$emailHtml,
 					"text_message"=>$emailText,
 					'to'=>$emaillist,

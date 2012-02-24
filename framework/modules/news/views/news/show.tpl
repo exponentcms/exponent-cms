@@ -1,6 +1,5 @@
 {*
- * Copyright (c) 2004-2011 OIC Group, Inc.
- * Written and Designed by Adam Kessler
+ * Copyright (c) 2004-2012 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -30,8 +29,21 @@
             {/if}
         </div>
     {/permissions}
+    {if $record->expTag|@count>0 && !$config.disabletags}
+        <div class="tags">
+            {"Tags"|gettext}:
+            {foreach from=$record->expTag item=tag name=tags}
+                <a href="{link action=showall_by_tags tag=$tag->sef_url}">{$tag->title}</a>{if $smarty.foreach.tags.last != 1},{/if}
+            {/foreach}
+        </div>
+    {/if}
     <div class="bodycopy">
-        {filedisplayer view="`$config.filedisplay`" files=$record->expFile record=$record}
+        {if $config.filedisplay != "Downloadable Files"}
+            {filedisplayer view="`$config.filedisplay`" files=$record->expFile record=$record}
+        {/if}
         {$record->body}
+        {if $config.filedisplay == "Downloadable Files"}
+            {filedisplayer view="`$config.filedisplay`" files=$record->expFile record=$record}
+        {/if}
     </div>
 </div>

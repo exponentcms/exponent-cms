@@ -3,9 +3,7 @@ header("Content-type: text/javascript");
 
 ##################################################
 #
-# Copyright (c) 2004-2011 OIC Group, Inc.
-# Copyright 2006 Maxim Mueller
-# Written and Designed by James Hunt
+# Copyright (c) 2004-2012 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -45,13 +43,13 @@ EXPONENT.YUI2_PATH = '<?php echo YUI2_PATH; ?>';
 EXPONENT.YUI2_URL = '<?php echo YUI2_URL; ?>';
 
 EXPONENT.YUI3_CONFIG = {
-    combine:<?php echo (MINIFY==1)?1:0; ?>,
-    // root:         EXPONENT.YUI3_PATH.substr(1),
+    combine:<?php echo (MINIFY==1&&MINIFY_YUI3==1)?1:0; ?>,
     // base:         EXPONENT.YUI3_PATH,
-    comboBase:    EXPONENT.PATH_RELATIVE+'external/minify/min/?b='+EXPONENT.PATH_RELATIVE.substr(1)+'external/yui&f=',
+    // root:         EXPONENT.YUI3_PATH.substr(1),
+    comboBase:    EXPONENT.PATH_RELATIVE+'external/minify/min/index.php?b='+EXPONENT.PATH_RELATIVE.substr(1)+'external/yui&f=',
     filter: {
-        'searchExp': ".js&", 
-        'replaceStr': ".js,"
+        'searchExp': "&([2-3])",
+        'replaceStr': ",$1"
     },
     //combine: false,
     //filter:   "debug",
@@ -60,10 +58,10 @@ EXPONENT.YUI3_CONFIG = {
     // },
     groups: {
         yui2: {
-            combine:false,
+            combine:<?php echo (MINIFY==1&&MINIFY_YUI2==1)?1:0; ?>,
             base: EXPONENT.YUI2_PATH,
-            root: EXPONENT.YUI2_VERSION+'/',
-            comboBase:EXPONENT.PATH_RELATIVE+'external/minify/min/?b='+EXPONENT.PATH_RELATIVE.substr(1)+'external/yui/2in3/dist&f=',
+            root: EXPONENT.YUI2_VERSION+'/build/',
+            comboBase:EXPONENT.PATH_RELATIVE+'external/minify/min/index.php?b='+EXPONENT.PATH_RELATIVE.substr(1)+'external/yui/2in3/dist&f=',
             patterns:  {
                 "yui2-": {
                     configFn: function (me) {

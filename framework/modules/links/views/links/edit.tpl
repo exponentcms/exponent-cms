@@ -1,6 +1,5 @@
 {*
- * Copyright (c) 2007-2008 OIC Group, Inc.
- * Written and Designed by Adam Kessler
+ * Copyright (c) 2004-2012 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -28,6 +27,9 @@
         {control type="checkbox" name="new_window" label="Open in New Window"|gettext checked=$record->new_window value="1"}
         {control type="files" name="image" label="Image"|gettext value=$record->expFile limit=2}
         {control type="editor" name="body" label="URL Description"|gettext value=$record->body}
+        {if $config.usecategories}
+            {control type="dropdown" name=expCat label="Category"|gettext frommodel="expCat" where="module='' OR module='`$modelname`'" orderby="rank" display=title key=id includeblank="Not Categorized"|gettext value=$record->expCat[0]->id}
+        {/if}
         {control type="buttongroup" submit="Save"|gettext cancel="Cancel"|gettext}
     {/form}
 </div>

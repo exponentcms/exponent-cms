@@ -1,6 +1,5 @@
 {*
- * Copyright (c) 2004-2011 OIC Group, Inc.
- * Written and Designed by Adam Kessler
+ * Copyright (c) 2004-2012 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -18,7 +17,7 @@
 <ul class="filelist">
 {foreach from=$files item=file}
 	<li>
-		<a href="{link action="downloadfile" id=$file->id}" title="{$file->title}">{if $file->title!=""}{$file->title}{else}{$file->filename}{/if}</a>
+		<a class="downloadfile" href="{link action="downloadfile" id=$file->id}" title="{$file->title}">{if $file->title!=""}{$file->title}{else}{$file->filename}{/if}</a>
 	</li>
 {/foreach}
 </ul>

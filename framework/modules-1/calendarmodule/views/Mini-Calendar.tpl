@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2011 OIC Group, Inc.
+ * Copyright (c) 2004-2012 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -56,7 +56,7 @@
 	<a class="mngmntlink calendar_mngmntlink" href="{link action=viewmonth}">{'View Month'|gettext}</a>
 	{br}
 	{permissions}
-		{if $permissions.post == 1}
+		{if $permissions.create == 1}
 			<div class="module-actions">
 				{icon class=add action=edit title="Add a New Event"|gettext text="Add an Event"|gettext}
 			</div>

@@ -2,8 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2011 OIC Group, Inc.
-# Written and Designed by James Hunt
+# Copyright (c) 2004-2012 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -17,6 +16,22 @@
 #
 ##################################################
 
+/**
+ * Smarty plugin
+ * @package Smarty-Plugins
+ * @subpackage Function
+ */
+
+/**
+ * Smarty {last_url_of} function plugin
+ *
+ * Type:     function<br>
+ * Name:     last_url_of<br>
+ * Purpose:  return the last url of type passed
+ *
+ * @param         $params
+ * @param \Smarty $smarty
+ */
 function smarty_function_last_url_of($params,&$smarty) {
 	global $history;
 	echo $history->lastUrl($params['type']);

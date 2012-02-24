@@ -1,6 +1,5 @@
 {*
- * Copyright (c) 2004-2011 OIC Group, Inc.
- * Written and Designed by James Hunt
+ * Copyright (c) 2004-2012 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -13,6 +12,7 @@
  * GPL: http://www.gnu.org/licenses/gpl.txt
  *
  *}
+
 {get_user assign=user}
 {if $user->id != '' && $user->id != 0} 
 <div class="administrationmodule quicklinks yui-panel">
@@ -22,7 +22,7 @@
 	<div class="bd">		
 	{permissions}
 	{if $can_manage_nav == 1}<a class="sitetree" href="{link module=navigationmodule action=manage}">{'Manage Site Navigation'|gettext}</a>{/if}
-		{if $permissions.administrate == 1}
+		{if $permissions.manage == 1}
 		<a class="files" href="{$smarty.const.URL_FULL}framework/modules-1/filemanagermodule/actions/picker.php">{'Manage Files'|gettext}</a>
 		<a class="admin" href="{link module=administrationmodule action=index}">{'Site Administration'|gettext}</a>
 		{*<a id="addmodulelink" class="clicktoaddmodule" href="#">{'Add Module'|gettext}</a>*}

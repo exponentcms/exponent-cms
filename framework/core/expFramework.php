@@ -1,7 +1,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2011 OIC Group, Inc. and Contributors
+# Copyright (c) 2004-2012 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -229,7 +229,7 @@ $timer = null;
 $order = null;
 
 function renderAction(array $parms=array()) {
-    global $user;
+    global $user, $db;
     
     //Get some info about the controller
     $baseControllerName = expModules::getControllerName($parms['controller']);
@@ -265,7 +265,14 @@ function renderAction(array $parms=array()) {
     $controller->moduleSelfAwareness();
 
     //if this controller is being called by a container then we should have a module title.
-    if (isset($parms['moduletitle'])) $template->assign('moduletitle', $parms['moduletitle']);
+    if (isset($parms['moduletitle'])) {
+        $template->assign('moduletitle', $parms['moduletitle']);
+    } else {
+        $title->mod = $controller->loc->mod.'Controller';  //FIXME do we process modules also needing this?
+        $title->src = $controller->loc->src;
+        $title->int = '';
+        $template->assign('moduletitle', $db->selectValue('container', 'title', "internal='".serialize($title)."'"));
+    }
 
     //setup some default models for this controller's actions to use
     foreach ($controller->getModels() as $model) {

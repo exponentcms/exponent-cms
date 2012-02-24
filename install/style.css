@@ -189,8 +189,16 @@ p {
     font-size:120%;
 
 }
-p.success {
+.success {
     color:green;
+    font-style:italic;
+}
+.warning {
+    color:orange;
+    font-style:italic;
+}
+.failed {
+    color:red;
     font-style:italic;
 }
 #rightcol p {

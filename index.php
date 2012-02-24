@@ -2,9 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2011 OIC Group, Inc.
-# Copyright (c) 2006 Maxim Mueller
-# Written and Designed by James Hunt
+# Copyright (c) 2004-2012 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -28,7 +26,7 @@ define('SCRIPT_FILENAME','index.php');
  * @return string
  */
 function epb($buffer, $mode) {
-    //@ob_gzhandler($buffer, $mode);
+//    @ob_gzhandler($buffer, $mode);
     @ob_gzhandler($buffer);
     //return $buffer; // uncomment if you're messing with output buffering so errors show. ~pb
     return expProcessBuffer($buffer);

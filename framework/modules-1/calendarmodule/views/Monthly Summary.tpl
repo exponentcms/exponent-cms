@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2011 OIC Group, Inc.
+ * Copyright (c) 2004-2012 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -24,7 +24,7 @@
 				<td>
 					<a class="mngmntlink calendar_mngmntlink" href="{link action=viewmonth time=$prevmonth}"><img class="mngmnt_icon" style="border:none;" src="{$smarty.const.ICON_RELATIVE|cat:'left.png'}" title="{'Previous Month'|gettext}" alt="{'Previous Month'|gettext}" /></a>
 				</td>
-				<td colspan="5">{if $moduletitle != ""}{$moduletitle} {/if}{$now|format_date:"%B %Y"}</td>
+				<td colspan="5">{if $moduletitle}{$moduletitle} {/if}{$now|format_date:"%B %Y"}</td>
 				<td>
 					<a class="mngmntlink calendar_mngmntlink" href="{link action=viewmonth time=$nextmonth}"><img class="mngmnt_icon" style="border:none;" src="{$smarty.const.ICON_RELATIVE|cat:'right.png'}" title="{'Next Month'|gettext}" alt="{'Next Month'|gettext}" /></a>
 				</td>
@@ -60,7 +60,7 @@
 		</tbody>
 	</table>
 	{permissions}
-		{if $permissions.post == 1}
+		{if $permissions.create == 1}
 			<div class="module-actions">
 				{icon class=add action=edit title="Add a New Event"|gettext text="Add an Event"|gettext}
 			</div>

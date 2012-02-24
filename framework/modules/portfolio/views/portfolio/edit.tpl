@@ -1,6 +1,5 @@
 {*
- * Copyright (c) 2004-2011 OIC Group, Inc.
- * Written and Designed by Adam Kessler
+ * Copyright (c) 2004-2012 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -22,28 +21,37 @@
         <div id="editportfolio-tabs" class="yui-navset exp-skin-tabview hide">
             <ul class="yui-nav">
                 <li class="selected"><a href="#tab1"><em>{'General'|gettext}</em></a></li>
-                <li><a href="#tab2"><em>{'Files'|gettext}</em></a></li>
+                {if $config.filedisplay}
+                    <li><a href="#tab2"><em>{'Files'|gettext}</em></a></li>
+                {/if}
                 <li><a href="#tab3"><em>{'SEO'|gettext}</em></a></li>
             </ul>            
             <div class="yui-content yui3-skin-sam">
                 <div id="tab1">
                     <h2>{'Portfolio Piece'|gettext}</h2>
                     {control type=text name=title label="Title"|gettext value=$record->title}
-                    {control type="checkbox" name="featured" label="Feature this Portfolio Piece"|gettext|cat:"?" checked=$record->featured value=1}
                     {control type=html name=body label="Description"|gettext value=$record->body}
-                    {foreach from=$record->expTag item=tag name=tags}
-                        {if $smarty.foreach.tags.first == false}
-                            {assign var=tags value="`$tags`,`$tag->title`"}
-                        {else}
-                            {assign var=tags value=$tag->title}
-                        {/if}
-                    {/foreach}
-                    {if $tags != ""}{$tags=$tags|cat:','}{/if}
-                    {control type="text" id="expTag" name="expTag" label="Tags (comma separated)"|gettext value=$tags size=45}
+                    {control type="checkbox" name="featured" label="Feature this Portfolio Piece"|gettext|cat:"?" checked=$record->featured value=1}
+                    {if !$config.disabletags}
+                        {foreach from=$record->expTag item=tag name=tags}
+                            {if $smarty.foreach.tags.first == false}
+                                {assign var=tags value="`$tags`,`$tag->title`"}
+                            {else}
+                                {assign var=tags value=$tag->title}
+                            {/if}
+                        {/foreach}
+                        {if $tags != ""}{$tags=$tags|cat:','}{/if}
+                        {control type="text" id="expTag" name="expTag" label="Tags (comma separated)"|gettext value=$tags size=45}
+                    {/if}
+                    {if $config.usecategories}
+                        {control type="dropdown" name=expCat label="Category"|gettext frommodel="expCat" where="module='' OR module='`$modelname`'" orderby="rank" display=title key=id includeblank="Not Categorized"|gettext value=$record->expCat[0]->id}
+                    {/if}
                 </div>
-                <div id="tab2">
-                    {control type="files" name="files" label="Files"|gettext value=$record->expFile}
-                </div>
+                {if $config.filedisplay}
+                    <div id="tab2">
+                        {control type="files" name="files" label="Files"|gettext value=$record->expFile}
+                    </div>
+                {/if}
                 <div id="tab3">
                      <h2>{'SEO Settings'|gettext}</h2>
                     {control type="text" name="sef_url" label="SEF URL"|gettext value=$record->sef_url}

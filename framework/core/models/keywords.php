@@ -2,8 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2011 OIC Group, Inc.
-# Written and Designed by Adam Kessler
+# Copyright (c) 2004-2012 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -18,6 +17,10 @@
 ##################################################
 /** @define "BASE" "../../.." */
 
+/**
+ * @subpackage Models
+ * @package Core
+ */
 class keywords {
 
 	public function getAndWeightKeywords($text) {
@@ -79,5 +82,6 @@ class keywords {
 		$id = is_object($section) ? $section->id : $section;
 		return self::getAndWeightKeywords(self::getTextBySection($section));
 	}
-}																																
+}
+
 ?>

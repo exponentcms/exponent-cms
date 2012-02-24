@@ -1,6 +1,5 @@
 {*
- * Copyright (c) 2004-2011 OIC Group, Inc.
- * Written and Designed by Adam Kessler
+ * Copyright (c) 2004-2012 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -17,7 +16,7 @@
 {permissions}
 	<div class="exp-container-module-wrapper">
 		<div class="container-chrome module-chrome hardcoded-chrome">
-			<a href="#" class="trigger" title="{$container->info.module}">{$container->info.module}</a>
+			<a href="#" class="trigger" title="{$container->info.module}">{$container->info.module} ({if $container->info.scope == 'top-sectional'}Top{else}{$container->info.scope}{/if})</a>
 			{getchromemenu module=$container rank=$i rerank=$rerank last=$last}
 		</div>
 	</div>

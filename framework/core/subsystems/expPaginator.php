@@ -1,21 +1,22 @@
 <?php
+##################################################
+#
+# Copyright (c) 2004-2012 OIC Group, Inc.
+#
+# This file is part of Exponent
+#
+# Exponent is free software; you can redistribute
+# it and/or modify it under the terms of the GNU
+# General Public License as published by the Free
+# Software Foundation; either version 2 of the
+# License, or (at your option) any later version.
+#
+# GPL: http://www.gnu.org/licenses/gpl.txt
+#
+##################################################
+
 /**
- *  This file is part of Exponent
- *  Exponent is free software; you can redistribute
- *  it and/or modify it under the terms of the GNU
- *  General Public License as published by the Free
- *  Software Foundation; either version 2 of the
- *  License, or (at your option) any later version.
- *
- * The file that holds the expPaginator class
- *
- * @link http://www.gnu.org/licenses/gpl.txt GPL http://www.gnu.org/licenses/gpl.txt
- * @package Exponent-CMS
- * @copyright 2004-2011 OIC Group, Inc.
- * @author Phillip Ball <phillip@oicgroup.net>
- * @version 2.0.0
- */
-/**
+ * This is the class expPaginator
  * Exponent Pagination Subsystem
  *
  * The expPaginator class is used to retrieve objects from the database
@@ -37,9 +38,10 @@
  *  ));
  * </code>
  * 
- * @subpackage Core-Subsystems
- * @package Framework
- */ 
+ * @package Subsystems
+ * @subpackage Subsystems
+ */
+
 class expPaginator {
     /**#@+
      * @access public
@@ -76,12 +78,14 @@ class expPaginator {
 	public $total_records = 0;
 	public $total_pages = 0;
 	public $page_offset = 0;
+    public $categorize = false;
 	/**#@+
      * @access public
      * @var array
      */	
 	public $pages = array();
 	public $records = array();
+    public $cats = array();
 
 	/**
 	 * expPaginator Constructor
@@ -92,8 +96,8 @@ class expPaginator {
 	 * @return \expPaginator
 	 */
 	public function __construct($params=array()) {
-		global $router,$db;		
-		                                     
+		global $router,$db;
+
 		$this->where = empty($params['where']) ? null : $params['where'];
 		$this->records = empty($params['records']) ? array() : $params['records'];
 		$this->limit = empty($params['limit']) ? 10 : $params['limit'];
@@ -105,7 +109,8 @@ class expPaginator {
 		$this->order = empty($params['order']) ? 'id' : $params['order'];
 		$this->dir = empty($params['dir']) ? 'ASC' : $params['dir'];
 		$this->src = empty($params['src']) ? null : $params['src'];
-		
+        $this->categorize = empty($params['categorize']) ? false : $params['categorize'];
+
 		// if a view was passed we'll use it.
 		if (isset($params['view'])) $this->view = $params['view'];
 
@@ -141,7 +146,7 @@ class expPaginator {
 		    }
 		}
 		
-		// if we are in an action, see if the action if for this controller/action..if so pull the order
+		// if we are in an action, see if the action is for this controller/action..if so pull the order
 		// and order direction from the request params...this is how the params are passed via the column
 		// headers.
 		$this->order_direction = $this->dir;	
@@ -152,39 +157,42 @@ class expPaginator {
 			    $this->order = isset($_REQUEST['order']) ? $_REQUEST['order'] : $this->order;
 			    $this->order_direction = isset($_REQUEST['dir']) ? $_REQUEST['dir'] : $this->dir;
 //			}
-		} 		
-		
+		}
+        // allow passing of a single order/dir as stored
+        if (strstr($this->order," ")) {
+            $orderby = explode(" ",$this->order);
+            $this->order = $orderby[0];
+            $this->order_direction = $orderby[1];
+        }
+
+        //FIXME we'll need to:
+        // 1. pull all the records
+        // 2. categorize the entire record set (if needed?)
+        // 3. then reduce it's size
+
 		// figure out how many records we're dealing with & grab the records
 		//if (!empty($this->records)) { //from Merge <~~ this doesn't work. Could be empty, but still need to hit.
 		if (isset($params['records'])) { // if we pass $params['records'], we WANT to hit this
 		    // sort, count and slice the records that were passed in to us
 		    usort($this->records,array('expPaginator', strtolower($this->order_direction)));
 		    $this->total_records = count($this->records);
-			if ($this->start > $this->total_records) {
-				$this->start = $this->total_records - $this->limit;
-			}
-		    $this->records = array_slice($this->records, $this->start, $this->limit);
+//		    $this->records = array_slice($this->records, $this->start, $this->limit);  //FIXME save for later
 		} elseif (!empty($class)) { //where clause     //FJD: was $this->class, but wasn't working...
 			$this->total_records = $class->find('count', $this->where);
-			$this->records = $class->find('all', $this->where, $this->order.' '.$this->order_direction, $this->limit, $this->start);
+//			$this->records = $class->find('all', $this->where, $this->order.' '.$this->order_direction, $this->limit, $this->start);  //FIXME save for later
+            $this->records = $class->find('all', $this->where, $this->order.' '.$this->order_direction);
 		} elseif (!empty($this->where)) { //from Merge....where clause
 			$this->total_records = $class->find('count', $this->where);
-			if ($this->start > $this->total_records) {
-				$this->start = $this->total_records - $this->limit;
-			}
-			$this->records = $class->find('all', $this->where, $this->order.' '.$this->order_direction, $this->limit, $this->start);
-		} else { //sql clause
+//			$this->records = $class->find('all', $this->where, $this->order.' '.$this->order_direction, $this->limit, $this->start);  //FIXME save for later
+            $this->records = $class->find('all', $this->where, $this->order.' '.$this->order_direction);
+		} else { //sql clause  //FIXME we don't get attachments in this approach
 			//$records = $db->selectObjectsBySql($this->sql);
 			//$this->total_records = count($records);
             //this is MUCH faster if you supply a proper count_sql param using a COUNT() function; if not,
             //we'll run the standard sql and do a queryRows with it
-            
 			//$this->total_records = $this->count_sql == '' ? $db->queryRows($this->sql) : $db->selectValueBySql($this->count_sql); //From Merge
                         
 			$this->total_records =  $db->countObjectsBySql($this->count_sql); //$db->queryRows($this->sql); //From most current Trunk            
-			if ($this->start > $this->total_records) {
-				$this->start = $this->total_records - $this->limit;
-			}
 
             if (!empty($this->order)) $this->sql .= ' ORDER BY '.$this->order.' '.$this->order_direction;
 			if (!empty($this->limit)) $this->sql .= ' LIMIT '.$this->start.','.$this->limit;
@@ -200,9 +208,42 @@ class expPaginator {
 			    $this->records = $db->selectObjectsBySql($this->sql);
 			}
 		}	
-		
-      if (!isset($params['records'])) $this->runCallback(); // isset($params['records']) added to correct search for products.
-      //$this->runCallback();
+        if ($this->start > $this->total_records) {
+            $this->start = $this->total_records - $this->limit;
+        }
+
+        // next we'll sort them based on categories if needed
+        if (!empty($this->categorize) && $this->categorize) {
+            expCatController::addCats($this->records,$this->order.' '.$this->order_direction);
+        }
+
+        // now we'll trim the records to the number requested
+        $this->records = array_slice($this->records, $this->start, $this->limit);
+
+        // finally, we'll create another multi-dimensional array of the categories
+        if (!empty($this->categorize) && $this->categorize) {
+            expCatController::sortedByCats($this->records,$this->cats);
+        } else {  // categorized is off, so let's categorize by alpha instead
+            $order = $this->order;
+            foreach ($this->records as $record) {
+                if (is_string($record->$order) && !is_numeric($record->$order)) {
+                    $title = ucfirst($record->$order);
+                    $title = $title[0];
+                } else {
+                    $title = '';
+                }
+                if (empty($this->cats[$title])) {
+                    $this->cats[$title]->count = 1;
+                    $this->cats[$title]->name = $title;
+                } else {
+                    $this->cats[$title]->count += 1;
+                }
+                $this->cats[$title]->records[] = $record;
+            }
+        }
+
+        if (!isset($params['records'])) $this->runCallback(); // isset($params['records']) added to correct search for products.
+        //$this->runCallback();
       
         //eDebug($this->records);
 		// get the number of the last record we are showing...this is used in the page links.

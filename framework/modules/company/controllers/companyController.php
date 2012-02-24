@@ -2,8 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2011 OIC Group, Inc.
-# Written and Designed by Adam Kessler
+# Copyright (c) 2004-2012 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -17,17 +16,23 @@
 #
 ##################################################
 
+/**
+ * @subpackage Controllers
+ * @package Modules
+ */
+
 class companyController extends expController {
 	public $useractions = array(
         'showall'=>'Show all'
     );
 	public $remove_configs = array(
         'aggregation',
+        'categories',
         'comments',
         //'files',
         'rss',
         'tags'
-    );
+    ); // all options: ('aggregation','categories','comments','ealerts','files','module_title','pagination','rss','tags')
 
 	function displayname() { return "Company Listings"; }
 	function description() { return "This module shows company listings"; }

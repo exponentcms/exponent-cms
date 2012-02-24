@@ -2,8 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2011 OIC Group, Inc.
-# Written and Designed by James Hunt
+# Copyright (c) 2004-2012 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -47,7 +46,7 @@ if (!@file_exists(BASE.'install/not_configured')) {
 $row = "even";
 foreach ($status as $file=>$stat) {
 	echo '<tr class="'.$row.'"><td>'.$file.'</td><td';
-	if ($stat != SANITY_FINE) echo ' class="bodytext error">';
+	if ($stat != SANITY_FINE) echo ' class="bodytext failed">';
 	else echo ' class="bodytext success">';
 	switch ($stat) {
 		case SANITY_NOT_E:
@@ -96,7 +95,7 @@ foreach ($status as $test=>$stat) {
 		echo 'class="bodytext success">';
 	} else if ($stat[0] == SANITY_ERROR) {
 		$warncount--;
-		echo 'class="bodytext error">';
+		echo 'class="bodytext failed">';
 	} else {
 		$errcount--;
 		echo 'class="bodytext warning">';
@@ -122,17 +121,7 @@ if ($errcount > 0) {
 	}
 	?>
 	<br /><br />
-<?php
-	if (isset($_REQUEST['type']) && $_REQUEST['type'] == 'new'){
-		?>
-		<a href="index.php?page=sanity&type=new"><?php echo gt('Re-run Environment Checks'); ?></a>
-		<?php
-	} else {
-		?>
-		<a href="index.php?page=sanity"><?php echo gt('Re-run Environment Checks'); ?></a>
-		<?php
-	} ?>
-
+    <a class="awesome large red" href="index.php?page=install-1"><?php echo gt('Re-run Environment Checks'); ?></a>
 	<?php
 } else if ($warncount > 0) {
 //} else if (true) {

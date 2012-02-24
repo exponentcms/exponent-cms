@@ -1,6 +1,5 @@
 {*
- * Copyright (c) 2004-2011 OIC Group, Inc.
- * Written and Designed by Adam Kessler
+ * Copyright (c) 2004-2012 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -19,6 +18,8 @@
 {/css}
 
 <div class="module migration migrate_content">
+    <div class="admin"><h3>{'This is the Final Migration Step'|gettext}</h3></div>
+    {br}<hr />
     <div class="info-header">
         <div class="related-actions">
 			{help text="Tips to Follow after Migrating Content"|gettext module="post-content-migration"}
@@ -47,5 +48,4 @@
 			{/foreach}
 		</tbody>
 	</table>
-	<div class="admin"><b>{'This is the Final Migration Step'|gettext}</b></div>
 </div>

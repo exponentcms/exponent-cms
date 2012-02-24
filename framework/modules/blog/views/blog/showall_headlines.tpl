@@ -1,6 +1,5 @@
 {*
- * Copyright (c) 2004-2011 OIC Group, Inc.
- * Written and Designed by Adam Kessler
+ * Copyright (c) 2004-2012 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -15,25 +14,29 @@
  *}
 
 <div class="module blog showall-headlines">
+    {if $moduletitle && !$config.hidemoduletitle}<h2>{/if}
     {if $config.enable_rss == true}
-        <a class="rsslink" href="{rsslink}">{'Subscribe to'|gettext} {$config.feed_title}</a>
+        <a class="rsslink" href="{rsslink}" title="{'Subscribe to'|gettext} {$config.feed_title}"></a>
     {/if}
-    {if $moduletitle}<h2>{$moduletitle}</h2>{/if}
+    {if $moduletitle && !$config.hidemoduletitle}{$moduletitle}</h2>{/if}
     {permissions}
 		<div clas="module-actions">
 			{if $permissions.edit == 1}
 				{icon class=add action=edit text="Add a new blog article"|gettext}
 			{/if}
             {if $permissions.manage == 1}
-                {icon class="manage" controller=expTag action=manage text="Manage Tags"|gettext}
+                {icon controller=expTag action=manage text="Manage Tags"|gettext}
             {/if}
 		</div>
     {/permissions}
+    {if $config.moduledescription != ""}
+   		{$config.moduledescription}
+   	{/if}
     <ul>
     {foreach from=$page->records item=record name="blogs"}
         {if $smarty.foreach.blogs.iteration <= $config.headcount}
         <li class="item">
-            <a href="{link action=show title=$record->sef_url}">{$record->title}</a>
+            <a href="{link action=show title=$record->sef_url}" title="{$record->body|summarize:"html":"para"}">{$record->title}</a>
             {permissions}
                 <div class="item-actions">
                     {if $permissions.edit == 1}

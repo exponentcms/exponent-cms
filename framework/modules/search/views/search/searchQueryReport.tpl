@@ -1,6 +1,5 @@
 {*
- * Copyright (c) 2007-2011 OIC Group, Inc.
- * Written and Designed by OIC Group
+ * Copyright (c) 2004-2012 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -49,7 +48,7 @@
 						<tr class="{cycle values='odd,even'}">
 							<td>{$query->id}</td>
 							<td>{$query->query}</td>
-							<td>{$query->timestamp|format_date:$smarty.const.DISPLAY_DATE_FORMAT}</td>
+							<td>{$query->timestamp|format_date}</td>
 							<td>
 								{if !empty($query->user)}
 									{$query->user}

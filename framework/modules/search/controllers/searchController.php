@@ -2,8 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2011 OIC Group, Inc.
-# Written and Designed by Adam Kessler
+# Copyright (c) 2004-2012 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -17,22 +16,29 @@
 #
 ##################################################
 
+/**
+ * @subpackage Controllers
+ * @package Modules
+ */
+
 class searchController extends expController {
     public $useractions = array(
-        'show'=>'Show Search Form'
+        'show'=>'Show Search Form',
+        'cloud'=>'Show Tag Cloud'
     );
     public $add_permissions = array(
         'spider'=>'Spider Site'
     );
 
     public $remove_configs = array(
-        'ealerts',
-        'tags',
-        'files',
         'aggregation',
+        'categories',
         'comments',
-        'rss'
-    );
+        'ealerts',
+        'files',
+        'rss',
+        'tags'
+    ); // all options: ('aggregation','categories','comments','ealerts','files','module_title','pagination','rss','tags')
 
     function displayname() { return "Search Form"; }
     function description() { return "Add a form to allow users to search for content on your website."; }
@@ -108,7 +114,41 @@ class searchController extends expController {
     public function showall() {
         redirect_to(array("controller"=>'search',"action"=>'show'));
     }
-    
+
+    /**
+     * tag cloud
+     */
+    function cloud() {
+        global $db;
+        expHistory::set('manageable', $this->params);
+        $where = $this->hasSources() ? $this->aggregateWhereClause() : null;
+        $order = "title";
+        $page = new expPaginator(array(
+                    'model'=>'expTag',
+                    'where'=>$where,
+                    'limit'=>50,
+                    'order'=>$order,
+                    'controller'=>$this->baseclassname,
+                    'action'=>$this->params['action'],
+                    'src'=>$this->hasSources() == true ? $this->loc->src : null,
+                    'columns'=>array('ID#'=>'id','Title'=>'title','Body'=>'body'),
+                    ));
+
+        foreach ($db->selectColumn('content_expTags','content_type',null,null,true) as $contenttype) {
+            foreach ($page->records as $key => $value) {
+                $attatchedat = $page->records[$key]->findWhereAttachedTo($contenttype);
+                if (!empty($attatchedat)) {
+                    $page->records[$key]->attachedcount = @$page->records[$key]->attachedcount + count($attatchedat);
+                    $page->records[$key]->attached[$contenttype] = $attatchedat;
+                }
+            }
+        }
+
+        assign_to_template(array(
+            'page'=>$page
+        ));
+    }
+
     // some general search stuff
     public function autocomplete() {
         return;

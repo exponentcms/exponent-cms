@@ -1,6 +1,5 @@
 {*
- * Copyright (c) 2007-2011 OIC Group, Inc.
- * Written and Designed by Adam Kessler
+ * Copyright (c) 2004-2012 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -33,9 +32,9 @@
                 {control type=text name=title label="Title"|gettext value=$record->title}
 	            {control type="text" name="sef_url" label="SEF URL"|gettext value=$record->sef_url}
                 {control type="dropdown" name="help_version_id" label="Version"|gettext frommodel="help_version" key=id display=version order=version dir=DESC value=$record->help_version_id}
-                {control type=textarea name=summary label="Summary"|gettext value=$record->summary}
+                {*{control type=textarea name=summary label="Summary"|gettext value=$record->summary}*}
                 {control type=html name=body label="General Information"|gettext value=$record->body}
-				{control type="dropdown" name="section" label="Help Section"|gettext items=$sections value=$cursec}
+				{control type="dropdown" name="help_section" label="Help Section"|gettext items=$sections value=$record->loc->src default=$current_section}
             </div>
             <div id="tab2">
                  <h2>{'Actions and Views'|gettext}</h2>

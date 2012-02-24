@@ -1,6 +1,5 @@
 {*
- * Copyright (c) 2007-2011 OIC Group, Inc.
- * Written and Designed by Adam Kessler
+ * Copyright (c) 2004-2012 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -15,7 +14,7 @@
  *}
 
 <div class="module text showall">
-    {if $moduletitle}<h1>{$moduletitle}</h1>{/if}
+    {if $moduletitle && !$config.hidemoduletitle}<h1>{$moduletitle}</h1>{/if}
     {permissions}
         <div class="module-actions">
             {if $permissions.create == 1}
@@ -26,6 +25,9 @@
             {/if}
         </div>
     {/permissions}
+    {if $config.moduledescription != ""}
+        {$config.moduledescription}
+    {/if}
     {foreach from=$items item=text name=items}
         {if $text->title}<h2>{$text->title}</h2>{/if}
         {permissions}
@@ -39,8 +41,13 @@
 			</div>
         {/permissions}
         <div class="bodycopy">
-            {filedisplayer view="`$config.filedisplay`" files=$text->expFile id=$text->id}
+            {if $config.filedisplay != "Downloadable Files"}
+                {filedisplayer view="`$config.filedisplay`" files=$text->expFile record=$text}
+            {/if}
             {$text->body}
+            {if $config.filedisplay == "Downloadable Files"}
+                {filedisplayer view="`$config.filedisplay`" files=$text->expFile record=$text}
+            {/if}
         </div>
         {permissions}
 			<div class="module-actions">

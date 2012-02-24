@@ -1,26 +1,25 @@
 <?php
-/**
- *  This file is part of Exponent
- * 
- *  Exponent is free software; you can redistribute
- *  it and/or modify it under the terms of the GNU
- *  General Public License as published by the Free
- *  Software Foundation; either version 2 of the
- *  License, or (at your option) any later version.
- *
- * The file that holds the expTagController class.
- *
- * @link http://www.gnu.org/licenses/gpl.txt GPL http://www.gnu.org/licenses/gpl.txt
- * @package Exponent-CMS
- * @copyright 2004-2011 OIC Group, Inc.
- * @author Adam Kessler <adam@oicgroup.net>
- * @version 2.0.0
- */
+##################################################
+#
+# Copyright (c) 2004-2012 OIC Group, Inc.
+#
+# This file is part of Exponent
+#
+# Exponent is free software; you can redistribute
+# it and/or modify it under the terms of the GNU
+# General Public License as published by the Free
+# Software Foundation; either version 2 of the
+# License, or (at your option) any later version.
+#
+# GPL: http://www.gnu.org/licenses/gpl.txt
+#
+##################################################
+
 /**
  * This is the class expTagController
  *
- * @subpackage Core-Controllers
- * @package Framework
+ * @package Core
+ * @subpackage Controllers
  */
 
 class expTagController extends expController {
@@ -44,6 +43,34 @@ class expTagController extends expController {
 	 * @return bool
 	 */
 	function hasSources() { return false; }
+
+    /**
+   	 * default view for individual item
+   	 */
+   	function show() {
+       global $db;
+       expHistory::set('viewable', $this->params);
+       $modelname = $this->basemodel_name;
+
+       // figure out if we're looking this up by id or title
+       $id = null;
+       if (isset($this->params['id'])) {
+           $id = $this->params['id'];
+       } elseif (isset($this->params['title'])) {
+           $id = $this->params['title'];
+       }
+
+       $record = new $modelname($id);
+       foreach ($db->selectColumn('content_expTags','content_type',null,null,true) as $contenttype) {
+              $attatchedat = $record->findWhereAttachedTo($contenttype);
+              if (!empty($attatchedat)) {
+                  $record->attachedcount = @$record->attachedcount + count($attatchedat);
+                  $record->attached[$contenttype] = $attatchedat;
+              }
+       }
+
+       assign_to_template(array('record'=>$record));
+    }
 
 	/**
 	 * manage tags
@@ -71,13 +98,16 @@ class expTagController extends expController {
                 if (!empty($attatchedat)) {
                     $page->records[$key]->attachedcount = @$page->records[$key]->attachedcount + count($attatchedat);
                     $page->records[$key]->attached[$contenttype] = $attatchedat;
+                    //FIXME here is a hack to get the faq to be listed
+                    if ($contenttype == 'faq' && !empty($page->records[$key]->attached[$contenttype][0]->question)) {
+                        $page->records[$key]->attached[$contenttype][0]->title = $page->records[$key]->attached[$contenttype][0]->question;
+                    }
                 }
             }
         }
         
-        assign_to_template(array(
-            'page'=>$page
-        ));
+        assign_to_template(array('page'=>$page));
     }
 }
+
 ?>

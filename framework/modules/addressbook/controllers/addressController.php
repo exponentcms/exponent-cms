@@ -2,8 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2011 OIC Group, Inc.
-# Created by Adam Kessler @ 05/28/2008
+# Copyright (c) 2004-2012 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -17,6 +16,11 @@
 #
 ##################################################
 
+/**
+ * @package Modules
+ * @subpackage Controllers
+ */
+
 class addressController extends expController {
 	public $useractions = array('myaddressbook'=>'Show my addressbook');
     public $remove_permissions = array(
@@ -26,13 +30,14 @@ class addressController extends expController {
     );
 	public $remove_configs = array(
         'aggregation',
+        'categories',
         'comments',
         'ealerts',
         'files',
         'pagination',
         'rss',
         'tags'
-    );
+    ); // all options: ('aggregation','categories','comments','ealerts','files','module_title','pagination','rss','tags')
 
     function displayname() { return "Addresses"; }
     function description() { return "Use this module to display and manage addresses of users on your site."; }

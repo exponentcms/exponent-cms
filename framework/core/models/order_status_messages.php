@@ -2,8 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2011 OIC Group, Inc.
-# Written and Designed by Adam Kessler
+# Copyright (c) 2004-2012 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -17,6 +16,10 @@
 #
 ##################################################
 
+/**
+ * @subpackage Models
+ * @package Core
+ */
 class order_status_messages extends expRecord {
     public $table = 'order_status_messages';
     public $validates = array(

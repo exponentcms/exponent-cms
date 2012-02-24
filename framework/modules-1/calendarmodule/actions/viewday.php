@@ -2,8 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2011 OIC Group, Inc.
-# Written and Designed by James Hunt
+# Copyright (c) 2004-2012 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -18,6 +17,7 @@
 ##################################################
  
 if (!defined('EXPONENT')) exit('');
+
 global $router;
 
 //expHistory::flowSet(SYS_FLOW_PUBLIC,SYS_FLOW_ACTION);
@@ -55,7 +55,7 @@ foreach ($dates as $d) {
 		$o->eventend += $d->date;
 		$thisloc = expCore::makeLocation($loc->mod,$loc->src,$o->id);
 		$o->permissions = array(
-			"administrate"=>(expPermissions::check("administrate",$thisloc) || expPermissions::check("administrate",$loc)),
+			"manage"=>(expPermissions::check("manage",$thisloc) || expPermissions::check("manage",$loc)),
 			"edit"=>(expPermissions::check("edit",$thisloc) || expPermissions::check("edit",$loc)),
 			"delete"=>(expPermissions::check("delete",$thisloc) || expPermissions::check("delete",$loc))
 		);
@@ -70,7 +70,7 @@ foreach ($dates as $d) {
 }
 
 $template->register_permissions(
-	array("post","edit","delete","administrate","manage_approval"),
+	array("create","edit","delete","manage"),
 	$loc
 );
 

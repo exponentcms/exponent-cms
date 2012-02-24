@@ -1,29 +1,27 @@
 <?php
-/**
- *  This file is part of Exponent
- *  Exponent is free software; you can redistribute
- *  it and/or modify it under the terms of the GNU
- *  General Public License as published by the Free
- *  Software Foundation; either version 2 of the
- *  License, or (at your option) any later version.
- *
- * The file that holds the expJavascript class
- *
- * @link http://www.gnu.org/licenses/gpl.txt GPL http://www.gnu.org/licenses/gpl.txt
- * @package Exponent-CMS
- * @copyright 2004-2011 OIC Group, Inc.
- * @author Adam Kessler <adam@oicgroup.net>
- * @version 2.0.0
- */
-/** @define "BASE" "../../.." */
-
+##################################################
+#
+# Copyright (c) 2004-2012 OIC Group, Inc.
+#
+# This file is part of Exponent
+#
+# Exponent is free software; you can redistribute
+# it and/or modify it under the terms of the GNU
+# General Public License as published by the Free
+# Software Foundation; either version 2 of the
+# License, or (at your option) any later version.
+#
+# GPL: http://www.gnu.org/licenses/gpl.txt
+#
+##################################################
 
 /**
  * This is the class expJavascript
  *
- * @subpackage Core-Subsystems
- * @package Framework
+ * @package Subsystems
+ * @subpackage Subsystems
  */
+/** @define "BASE" "../../.." */
 
 class expJavascript {
 	public static function inAjaxAction() {
@@ -38,20 +36,42 @@ class expJavascript {
         global $userjsfiles,$expJS,$yui2js,$yui3js;
         
     	$scripts = "";
-        
-        $scripts .= "\t"."<!-- EXPONENT namespace setup -->"."\r\n";
-        $scripts .= "\t".'<script type="text/javascript" src="'.PATH_RELATIVE.'exponent.js.php"></script>'."\r\n";
 
-        $scripts .= (!empty($yui3js)) ? "\r\n\t"."<!-- YUI3 Scripts -->"."\r\n\t".'<script type="text/javascript" src="'.YUI3_PATH.'yui/yui-min.js"></script>'."\r\n" : "";
-        //$scripts .= "\r\n\t"."<meta id=\"yui3marker\" />"."\r\n";
-        if (!empty($expJS)) {
-            foreach ($expJS as $key=>$mod) {
-                //eDebug($mod['name']);
-                $scripts .= "\t".'<script type="text/javascript" src="'.$mod['fullpath'].'"></script>'."\r\n";
+        if (MINIFY==1&&MINIFY_LINKED_JS==1) {
+            // if we're minifying, we'll break our URLs apart at MINIFY_URL_LENGTH characters to allow it through
+            // browser string limits
+            $strlen = (ini_get("suhosin.get.max_value_length")==0) ? MINIFY_URL_LENGTH : ini_get("suhosin.get.max_value_length");
+            $i = 0;
+            $srt = array();
+//            $srt[$i] = PATH_RELATIVE.'exponent.js.php,'.YUI3_PATH.'yui/yui-min.js,';
+            $scripts .= "\t".'<script type="text/javascript" src="'.PATH_RELATIVE.'exponent.js.php"></script>'."\r\n";
+            $srt[$i] = YUI3_PATH.'yui/yui-min.js,';
+            foreach ($expJS as $file) {
+                if (strlen($srt[$i])+strlen($file['fullpath'])<= $strlen) {
+                    $srt[$i] .= $file['fullpath'].",";
+                } else {
+                    $i++;
+                    $srt[$i] = "";
+                    $srt[$i] .= $file['fullpath'].",";
+                }
+            }
+            foreach ($srt as $link) {
+                $link = rtrim($link,",");
+                $scripts .= "\t".'<script type="text/javascript" src="'.PATH_RELATIVE.'external/minify/min/index.php?f='.$link.'"></script>'."\r\n";
+            }
+        } else {
+            $scripts .= "\t"."<!-- EXPONENT namespace setup -->"."\r\n";
+            $scripts .= "\t".'<script type="text/javascript" src="'.PATH_RELATIVE.'exponent.js.php"></script>'."\r\n";
+
+            $scripts .= (!empty($yui3js)) ? "\t"."<!-- YUI3 Scripts -->"."\r\n\t".'<script type="text/javascript" src="'.YUI3_PATH.'yui/yui-min.js"></script>'."\r\n" : "";
+            //$scripts .= "\r\n\t"."<meta id=\"yui3marker\" />"."\r\n";
+            if (!empty($expJS)) {
+                foreach ($expJS as $key=>$mod) {
+                    //eDebug($mod['name']);
+                    $scripts .= "\t".'<script type="text/javascript" src="'.$mod['fullpath'].'"></script>'."\r\n";
+                }
             }
         }
-
-
 
         //$html .= "\t".$expYUIJSLoader->js()."\r\n";
         return $scripts;
@@ -68,9 +88,11 @@ class expJavascript {
                 $html.= $file."\r\n";
             }            
         } 
-        
-        return '<script type="text/javascript" charset="utf-8">//<![CDATA['."\r\n".$html.'//]]></script>';
-        
+        if (MINIFY==1&&MINIFY_INLINE_JS==1) {
+            include_once(BASE.'external/minify/min/lib/JSMin.php');
+            $html = JSMin::minify($html);
+        }
+        return '<script type="text/javascript" charset="utf-8">//<![CDATA['."\r\n".$html."\r\n".'//]]></script>';
 	}
 	
     public static function pushToFoot($params) {
@@ -91,7 +113,6 @@ class expJavascript {
 		    ";
 		    return true;
     	}
-
 
     	if (!empty($params['src'])) {
     	    //$src = str_replace(URL_FULL,PATH_RELATIVE,$params['src']);
@@ -328,4 +349,5 @@ class expJavascript {
     }
 
 }
+
 ?>

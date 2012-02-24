@@ -2,8 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2011 OIC Group, Inc.
-# Written and Designed by Adam Kessler
+# Copyright (c) 2004-2012 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -16,6 +15,11 @@
 # GPL: http://www.gnu.org/licenses/gpl.txt
 #
 ##################################################
+
+/**
+ * @subpackage Models
+ * @package Modules
+ */
 
 class help extends expRecord {
 	public $table = 'help';
@@ -34,13 +38,12 @@ class help extends expRecord {
 	public function save() {
         global $db;
 
-		if (isset($_POST['section'])) {
+		if (isset($_POST['help_section'])) {
 			// manipulate section & location_data to correct values
-			$hlpsection = $db->selectObject('sectionref','module = "helpController" AND source = "'.$_POST['section'].'"');
-			$this->section = $hlpsection->section;
+			$this->section = $db->selectValue('sectionref', 'section', 'module = "helpController" AND source="' . $_POST['help_section'] .'"');
 			$loc = null;
 			$loc->mod = 'help';
-			$loc->src = $_POST['section'];
+			$loc->src = $_POST['help_section'];
 			$loc->int = '';
 			$this->location_data = serialize($loc);
 		}

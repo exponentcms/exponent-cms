@@ -2,8 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2011 OIC Group, Inc.
-# Written and Designed by Adam Kessler
+# Copyright (c) 2004-2012 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -17,15 +16,20 @@
 #
 ##################################################
 
+/**
+ * @subpackage Controllers
+ * @package Modules
+ */
+
 class newsController extends expController {
     public $useractions = array(
         'showall'=>'Show all News',
+        'tags'=>"Tags",
     );
     public $remove_configs = array(
+        'comments',
         'ealerts',
-        'tags',
-        'comments'
-    );
+    ); // all options: ('aggregation','categories','comments','ealerts','files','module_title','pagination','rss','tags')
     public $add_permissions = array(
         'showUnpublished'=>'View Unpublished News'
     );
@@ -57,19 +61,21 @@ class newsController extends expController {
         }       
         
         // set the sort order of the records.
-        $order = 'publish';
-        if (empty($this->config['order'])) {            
-            $order_dir = 'DESC';
-        } elseif ($this->config['order'] == 'rank') {
-             $order = 'rank';
-             $order_dir = 'ASC';
-        } else {
-            $order_dir = $this->config['order'];
-        }
-        
+//        $order = 'publish';
+//        if (empty($this->config['order'])) {
+//            $order_dir = 'DESC';
+//        } elseif ($this->config['order'] == 'rank') {
+//             $order = 'rank';
+//             $order_dir = 'ASC';
+//        } else {
+//            $order_dir = $this->config['order'];
+//        }
+        $order = isset($this->config['order']) ? $this->config['order'] : 'publish DESC';
+
         // pull the news posts from the database 
-        $items = $this->$modelname->find('all', $where, $order.' '.$order_dir);  
-        
+//        $items = $this->$modelname->find('all', $where, $order.' '.$order_dir);
+        $items = $this->$modelname->find('all', $where, $order);
+
         // merge in any RSS news and perform the sort and limit the number of posts we return to the configured amount.
         if (!empty($this->config['pull_rss'])) $items = $this->mergeRssData($items);
         
@@ -79,21 +85,14 @@ class newsController extends expController {
             'records'=>$items,
             'limit'=>$limit,
             'order'=>$order,
-            'dir'=>$order_dir,
+//            'dir'=>$order_dir,
             'controller'=>$this->baseclassname,
             'action'=>$this->params['action'],
             'src'=>$this->loc->src,
             'view'=>empty($this->params['view']) ? null : $this->params['view']
             ));
             
-        $morenews = (count($items) > $limit) ? 1 : 0;
-
-        assign_to_template(array(
-            'morenews'=>$morenews,
-            'page'=>$page,
-            'items'=>$items,
-            'enable_rss'=>empty($this->config['enable_rss']) ? false : true,
-        ));
+        assign_to_template(array('page'=>$page, 'items'=>$page->records, 'enable_rss'=>empty($this->config['enable_rss']) ? false : true));
     }
     
     public function showUnpublished() {
@@ -145,19 +144,22 @@ class newsController extends expController {
         if (isset($this->config['only_featured'])) $where .= ' AND is_featured=1';
 
         // set the sort order of the records.
-        $order = 'publish';
-        $order_dir = '';
-        if (empty($this->config['order'])) {            
-            $order_dir = 'DESC';
-        } elseif ($this->config['order'] == 'rank') {
-             $order = 'rank';
-             $order_dir = 'ASC';
-        } else {
-            $order_dir = $this->config['order'];
-        }
-        // pull the news posts from the database 
-        $items = $this->news->find('all', $where, $order.' '.$order_dir);  
-        
+//        $order = 'publish';
+//        $order_dir = '';
+//        if (empty($this->config['order'])) {
+//            $order_dir = 'DESC';
+//        } elseif ($this->config['order'] == 'rank') {
+//             $order = 'rank';
+//             $order_dir = 'ASC';
+//        } else {
+//            $order_dir = $this->config['order'];
+//        }
+        $order = isset($this->config['order']) ? $this->config['order'] : 'publish';
+
+        // pull the news posts from the database
+//        $items = $this->news->find('all', $where, $order.' '.$order_dir);
+        $items = $this->news->find('all', $where, $order);
+
         //Convert the newsitems to rss items
         $rssitems = array();
         foreach ($items as $key => $item) { 
@@ -215,4 +217,5 @@ class newsController extends expController {
         return ($a->publish_date < $b->publish_date ? -1 : 1);
     }
 }
+
 ?>

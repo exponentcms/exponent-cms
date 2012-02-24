@@ -2,8 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2011 OIC Group, Inc.
-# Written and Designed by James Hunt
+# Copyright (c) 2004-2012 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -19,6 +18,7 @@
 /** @define "BASE" "../../../.." */
 
 if (!defined('EXPONENT')) exit('');
+
 global $router;
 
 //expHistory::flowSet(SYS_FLOW_PUBLIC,SYS_FLOW_ACTION);
@@ -66,7 +66,7 @@ for ($i = 0; $i < count($all_events); $i++) {
 		$event = $all_events[$i];
 		$event->selected_tags = $selected_tags;
 		$event->permissions = array(
-			"administrate"=>(expPermissions::check("administrate",$ploc) || expPermissions::check("administrate",$loc)),
+			"manage"=>(expPermissions::check("manage",$ploc) || expPermissions::check("manage",$loc)),
 			"edit"=>(expPermissions::check("edit",$ploc) || expPermissions::check("edit",$loc)),
 			"delete"=>(expPermissions::check("delete",$ploc) || expPermissions::check("delete",$loc))
 		);
@@ -76,7 +76,7 @@ for ($i = 0; $i < count($all_events); $i++) {
 
 $template = new template("calendarmodule","_viewtag",$loc,false);
 $template->register_permissions(
-	array('administrate','configure','post','edit','delete','manage_approval','manage_categories'),
+	array('manage','configure','create','edit','delete'),
 	$loc
 );
 $template->assign("config",$config);

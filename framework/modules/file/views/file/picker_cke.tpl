@@ -1,3 +1,18 @@
+{*
+ * Copyright (c) 2004-2012 OIC Group, Inc.
+ *
+ * This file is part of Exponent
+ *
+ * Exponent is free software; you can redistribute
+ * it and/or modify it under the terms of the GNU
+ * General Public License as published by the Free
+ * Software Foundation; either version 2 of the
+ * License, or (at your option) any later version.
+ *
+ * GPL: http://www.gnu.org/licenses/gpl.txt
+ *
+ *}
+
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html>
 <head>
@@ -40,8 +55,10 @@
         <div class="hd"></div>
         <div class="bd"></div>
     </div>
-    {br}<a id="deletelink" class="delete awesome medium red" href="{link action=deleter ajax_action=1 ck=$smarty.get.ck update=$smarty.get.update}"><span>{'Delete Missing Files'|gettext}</span></a>
-    <a id="addlink" class="add awesome medium green" href="{link action=adder ajax_action=1 ck=$smarty.get.ck update=$smarty.get.update}"><span>{'Add Existing Files'|gettext}</span></a>
+    {if $permissions.manage == 1}
+        {br}<a id="addlink" class="add awesome medium green" href="{link action=adder ajax_action=1 ck=$smarty.get.ck update=$smarty.get.update}"><span>{'Add Existing Files'|gettext}</span></a>&nbsp;&nbsp;
+        <a id="deletelink" class="delete awesome medium red" href="{link action=deleter ajax_action=1 ck=$smarty.get.ck update=$smarty.get.update}"><span>{'Delete Missing Files'|gettext}</span></a>
+    {/if}
 </div>
 <script type="text/javascript">
 {literal}
@@ -51,9 +68,10 @@
 YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event','yui2-container','yui2-json','yui2-datasource','yui2-connection','yui2-autocomplete','yui2-element','yui2-paginator','yui2-datatable', function(Y) {
     var YAHOO=Y.YUI2;
     EXPONENT.fileManager = function() {
-        var queryString = '&results=50&output=json'; //autocomplete query
+//        var queryString = '&results=50&output=json'; //autocomplete query
         var fck = {/literal}{if $smarty.get.fck}{$smarty.get.fck}{else}0{/if}{literal}; //are we coming from FCK as the window launcher?
         var usr = {/literal}{obj2json obj=$user}{literal}; //user
+        var thumbnails = {/literal}{$smarty.const.FM_THUMBNAILS}{literal};
         var myDataSource = null;
         var myDataTable = null;
 
@@ -153,7 +171,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event','yui2-container','yu
         
         //set up autocomplete
         var getTerms = function(query) {
-            myDataSource.sendRequest('sort=id&dir=desc&startIndex=0&fck='+fck+'&results=25&query=' + query,myDataTable.onDataReturnInitializeTable, myDataTable);
+            myDataSource.sendRequest('sort=id&dir=desc&startIndex=0&fck='+fck+'&results={/literal}{$smarty.const.FM_LIMIT}{literal}&query=' + query,myDataTable.onDataReturnInitializeTable, myDataTable);
         };
     
         var oACDS = new YAHOO.util.FunctionDataSource(getTerms);
@@ -165,7 +183,11 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event','yui2-container','yu
 
         // filename formatter
         var formatTitle = function(elCell, oRecord, oColumn, sData) {
-            elCell.innerHTML = '<a href="#" class="fileinfo">'+oRecord.getData().filename+'</a>';
+            if (oRecord.getData().is_image==1 && thumbnails) {
+                elCell.innerHTML = '<a href="#" class="fileinfo"><img src="'+EXPONENT.URL_FULL+'thumb.php?&id='+oRecord.getData().id+'&w={/literal}{$smarty.const.FM_THUMB_SIZE}{literal}&h={/literal}{$smarty.const.FM_THUMB_SIZE}{literal}"> '+oRecord.getData().filename+'</a>';
+            } else {
+                elCell.innerHTML = '<a href="#" class="fileinfo">'+oRecord.getData().filename+'</a>';
+            }
         };
 
         // alt formatter
@@ -298,10 +320,10 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event','yui2-container','yu
     
         // DataTable configuration
         var myConfigs = {
-            initialRequest: "sort=id&dir=desc&startIndex=0&results=25", // Initial request for first page of data
+            initialRequest: "sort=id&dir=desc&startIndex=0&results={/literal}{$smarty.const.FM_LIMIT}{literal}", // Initial request for first page of data
             dynamicData: true, // Enables dynamic server-driven data
             sortedBy : {key:"id", dir:YAHOO.widget.DataTable.CLASS_DESC}, // Sets UI initial sort arrow
-            paginator: new YAHOO.widget.Paginator({rowsPerPage:25,containers:"pagelinks"}) // Enables pagination 
+            paginator: new YAHOO.widget.Paginator({rowsPerPage:{/literal}{$smarty.const.FM_LIMIT}{literal},containers:"pagelinks"}) // Enables pagination
         };
     
         // DataTable instance

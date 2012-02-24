@@ -1,10 +1,25 @@
+{*
+ * Copyright (c) 2004-2012 OIC Group, Inc.
+ *
+ * This file is part of Exponent
+ *
+ * Exponent is free software; you can redistribute
+ * it and/or modify it under the terms of the GNU
+ * General Public License as published by the Free
+ * Software Foundation; either version 2 of the
+ * License, or (at your option) any later version.
+ *
+ * GPL: http://www.gnu.org/licenses/gpl.txt
+ *
+ *}
+
 {css unique="autocomplete-extras" link="`$asset_path`css/ecom_search.css"}
 
 {/css}
 
 <div class="module ecommerce ecom-search yui3-skin-sam  yui-skin-sam">
     <div id="search-autocomplete" class="control">
-      {if $moduletitle}<label class="label" for="ac-input">{$moduletitle}</label>{/if}
+      {if $moduletitle && !$config.hidemoduletitle}<label class="label" for="ac-input">{$moduletitle}</label>{/if}
       <input id="ac-input" type="text" class="text">
     </div>
 </div>

@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2007-2011 OIC Group, Inc.
+ * Copyright (c) 2004-2012 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -39,7 +39,7 @@ flowplayer("a.flowplayer-video", EXPONENT.PATH_RELATIVE+"external/flowplayer3/fl
 {/script}
 
 <div class="module flowplayer showall">
-    {if $moduletitle}<h1>{$moduletitle}</h1>{/if}
+    {if $moduletitle && !$config.hidemoduletitle}<h1>{$moduletitle}</h1>{/if}
 	{permissions}
 		<div class="module-actions">
 			{if $permissions.edit == 1}
@@ -50,6 +50,9 @@ flowplayer("a.flowplayer-video", EXPONENT.PATH_RELATIVE+"external/flowplayer3/fl
 			{/if}
 		</div>	
 	{/permissions}   
+    {if $config.moduledescription != ""}
+   		{$config.moduledescription}
+   	{/if}
     {pagelinks paginate=$page top=1}
     {foreach from=$page->records item=video key=key}
         <div class="item">

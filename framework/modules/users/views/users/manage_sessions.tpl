@@ -1,6 +1,5 @@
 {*
- * Copyright (c) 2004-2011 OIC Group, Inc.
- * Written and Designed by Adam Kessler
+ * Copyright (c) 2004-2012 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -54,7 +53,7 @@
 				    </tr>
 				    <tr>
 					    <td width="100">{'Last Active'|gettext}: </td>
-					    <td>{$session->last_active|format_date:$smarty.const.DISPLAY_DATE_FORMAT}</td>
+					    <td>{$session->last_active|format_date}</td>
 				    <tr>
 					    <td>{'Browser'|gettext}: </td>
 					    <td>{$session->browser}</td>

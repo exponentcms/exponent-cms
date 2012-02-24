@@ -1,6 +1,5 @@
 {*
- * Copyright (c) 2004-2011 OIC Group, Inc.
- * Written and Designed by James Hunt
+ * Copyright (c) 2004-2012 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -75,14 +74,11 @@
 {literal}
 YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
     var manage = Y.all('input.manage');
-    var admin = Y.all('input.administrate');
     var create = Y.all('input.create');
-    var post = Y.all('input.post');
-    var add_module = Y.all('input.add_module');
 
     var checkSubs = function(row) {
         row.each(function(n,k){
-            if (!n.hasClass('manage') && !n.hasClass('administrate')) {
+            if (!n.hasClass('manage')) {
                 n.insertBefore('<input type="hidden" name="'+n.get("name")+'" value="1">',n);
                 n.setAttrs({'checked':1,'disabled':1});
             };
@@ -91,7 +87,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
 
     var unCheckSubs = function(row) {
         row.each(function(n,k){
-            if (!n.hasClass('manage') && !n.hasClass('administrate')) {
+            if (!n.hasClass('manage')) {
                 n.get('previousSibling').remove();
                 n.setAttrs({'checked':0,'disabled':0});
             };
@@ -113,12 +109,6 @@ YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
         toggleChecks(e.target);
     });
     manage.each(function(n){
-        toggleChecks(n,1);
-    });
-    admin.on('click',function(e){
-        toggleChecks(e.target);
-    });
-    admin.each(function(n){
         toggleChecks(n,1);
     });
     create.on('click',function(e){
@@ -150,64 +140,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
             });
         }
     });
-    post.on('click',function(e){
-        var row = e.target.ancestor('tr').all('input[type=checkbox]');
-        if(e.target.get('checked')&&!e.target.get('disabled')){
-            row.each(function(n,k){
-                if (n.hasClass('edit')) {
-                    n.insertBefore('<input type="hidden" name="'+n.get("name")+'" value="1">',n);
-                    n.setAttrs({'checked':1,'disabled':1});
-                };
-            });
-        } else {
-            row.each(function(n,k){
-                if (n.hasClass('edit')) {
-                    n.get('previousSibling').remove();
-                    n.setAttrs({'checked':0,'disabled':0});
-                };
-            });
-        }
-    });
-    post.each(function(target){
-        var row = target.ancestor('tr').all('input[type=checkbox]');
-        if(target.get('checked')&&!target.get('disabled')){
-            row.each(function(n,k){
-                if (n.hasClass('edit')) {
-                    n.insertBefore('<input type="hidden" name="'+n.get("name")+'" value="1">',n);
-                    n.setAttrs({'checked':1,'disabled':1});
-                };
-            });
-        }
-    });
-    add_module.on('click',function(e){
-        var row = e.target.ancestor('tr').all('input[type=checkbox]');
-        if(e.target.get('checked')&&!e.target.get('disabled')){
-            row.each(function(n,k){
-                if (n.hasClass('edit_module')) {
-                    n.insertBefore('<input type="hidden" name="'+n.get("name")+'" value="1">',n);
-                    n.setAttrs({'checked':1,'disabled':1});
-                };
-            });
-        } else {
-            row.each(function(n,k){
-                if (n.hasClass('edit_module')) {
-                    n.get('previousSibling').remove();
-                    n.setAttrs({'checked':0,'disabled':0});
-                };
-            });
-        }
-    });
-    add_module.each(function(target){
-        var row = target.ancestor('tr').all('input[type=checkbox]');
-        if(target.get('checked')&&!target.get('disabled')){
-            row.each(function(n,k){
-                if (n.hasClass('edit_module')) {
-                    n.insertBefore('<input type="hidden" name="'+n.get("name")+'" value="1">',n);
-                    n.setAttrs({'checked':1,'disabled':1});
-                };
-            });
-        }
-    });
+
 });
 {/literal}
 {/script}

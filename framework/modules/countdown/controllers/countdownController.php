@@ -2,8 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2011 OIC Group, Inc.
-# Written and Designed by Adam Kessler
+# Copyright (c) 2004-2012 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -17,19 +16,25 @@
 #
 ##################################################
 
+/**
+ * @subpackage Controllers
+ * @package Modules
+ */
+
 class countdownController extends expController {
 	//protected $basemodel_name = '';
 	public $useractions = array(
         'show'=>'Show Clock'
     );
     public $remove_configs = array(
+        'aggregation',
+        'categories',
+        'comments',
         'ealerts',
-        'tags',
         'files',
         'rss',
-        'comments',
-        'aggregation'
-    );
+        'tags'
+    ); // all options: ('aggregation','categories','comments','ealerts','files','module_title','pagination','rss','tags')
 
 	function displayname() { return "Countdown"; }
 	function description() { return "This module allows you to display a timer counting down to a specified date/time."; }

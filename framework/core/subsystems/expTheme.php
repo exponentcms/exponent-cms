@@ -1,28 +1,27 @@
 <?php
-/**
- *  This file is part of Exponent
- *  Exponent is free software; you can redistribute
- *  it and/or modify it under the terms of the GNU
- *  General Public License as published by the Free
- *  Software Foundation; either version 2 of the
- *  License, or (at your option) any later version.
- *
- * The file that holds the expTheme class
- *
- * @link http://www.gnu.org/licenses/gpl.txt GPL http://www.gnu.org/licenses/gpl.txt
- * @package Exponent-CMS
- * @copyright 2004-2011 OIC Group, Inc.
- * @author Adam Kessler <adam@oicgroup.net>
- * @version 2.0.0
- */
-/** @define "BASE" "../../.." */
+##################################################
+#
+# Copyright (c) 2004-2012 OIC Group, Inc.
+#
+# This file is part of Exponent
+#
+# Exponent is free software; you can redistribute
+# it and/or modify it under the terms of the GNU
+# General Public License as published by the Free
+# Software Foundation; either version 2 of the
+# License, or (at your option) any later version.
+#
+# GPL: http://www.gnu.org/licenses/gpl.txt
+#
+##################################################
 
 /**
  * This is the class expTheme
  *
- * @subpackage Core-Subsystems
- * @package Framework
+ * @package    Subsystems
+ * @subpackage Subsystems
  */
+/** @define "BASE" "../../.." */
 
 class expTheme {
 
@@ -103,7 +102,6 @@ class expTheme {
 			define('XHTML',0); define('XHTML_CLOSING',"");
 		}
 
-
 		// Load primer CSS files, or default to false if not set.
 		if(!empty($config['css_primer'])){
 			expCSS::pushToHead($config);
@@ -138,24 +136,21 @@ class expTheme {
 
 		$metainfo = self::pageMetaInfo();
 
-		$str = '';
-		$str = '<title>'.$metainfo['title']."</title>\r\n";
+		$str = '<title>'.$metainfo['title']."</title>\n";
 		$str .= "\t".'<meta http-equiv="Content-Type" content="text/html; charset='.LANG_CHARSET.'" '.XHTML_CLOSING.'>'."\n";
 		$str .= "\t".'<meta name="Generator" content="Exponent Content Management System - '.expVersion::getVersion(true).'" '.XHTML_CLOSING.'>' . "\n";
 		$str .= "\t".'<meta name="Keywords" content="'.$metainfo['keywords'] . '" '.XHTML_CLOSING.'>'."\n";
 		$str .= "\t".'<meta name="Description" content="'.$metainfo['description']. '" '.XHTML_CLOSING.'>'."\n";
+        // favicon
+        if(file_exists(BASE.'themes/'.DISPLAY_THEME.'/favicon.ico')) {
+            $str .= "\t".'<link rel="shortcut icon" href="'.URL_FULL.'themes/'.DISPLAY_THEME.'/favicon.ico" type="image/x-icon" '.XHTML_CLOSING.'>'."\n";
+        }
 
 		//the last little bit of IE 6 support
 		$str .= "\t".'<!--[if IE 6]><style type="text/css">  body { behavior: url('.PATH_RELATIVE.'external/csshover.htc); }</style><![endif]-->'."\n";
 
 		// when minification is used, the comment below gets replaced when the buffer is dumped
 		$str .= '<!-- MINIFY REPLACE -->';
-
-//		if(file_exists(BASE.'themes/'.DISPLAY_THEME_REAL.'/favicon.ico')) {
-//			$str .= "\t".'<link rel="shortcut icon" href="'.URL_FULL.'themes/'.DISPLAY_THEME_REAL.'/favicon.ico" type="image/x-icon" />'."\r\n";
-		if(file_exists(BASE.'themes/'.DISPLAY_THEME.'/favicon.ico')) {
-			$str .= "\t".'<link rel="shortcut icon" href="'.URL_FULL.'themes/'.DISPLAY_THEME.'/favicon.ico" type="image/x-icon" '.XHTML_CLOSING.'>'."\r\n";
-		}
 
 		return $str;
 	}
@@ -440,7 +435,7 @@ class expTheme {
    	 * Checks to see if the page is currently in an action.  Useful only if the theme does not use the self::main() function
    	 * Returns whether or not an action should be run.
    	 * @node Subsystems:Theme
-   	 * @return bool
+   	 * @return boolean
    	 */
     public static function inPreview() {
     	$level = 99;
@@ -918,16 +913,17 @@ class expTheme {
 				if (!$iscontroller) {
 					if ((!$hide_menu && $loc->mod != "containermodule" && (call_user_func(array($module,"hasSources")) || $db->tableExists($loc->mod."_config")))) {
 						$container->permissions = array(
-							'administrate'=>(expPermissions::check('administrate',$loc) ? 1 : 0),
+							'manage'=>(expPermissions::check('manage',$loc) ? 1 : 0),
 							'configure'=>(expPermissions::check('configure',$loc) ? 1 : 0)
 						);
 
-						if ($container->permissions['administrate'] || $container->permissions['configure']) {
+						if ($container->permissions['manage'] || $container->permissions['configure']) {
 							$container->randomizer = mt_rand(1,ceil(microtime(1)));
 							$container->view = $view;
 							$container->info['class'] = $loc->mod;
 							$container->info['module'] = call_user_func(array($module,"name"));
 							$container->info['source'] = $loc->src;
+                            $container->info['scope'] = $module_scope[$source][$module]->scope;
 							$container->info['hasConfig'] = $db->tableExists($loc->mod."_config");
 							$template = new template('containermodule','_hardcoded_module_menu',$loc);
 							$template->assign('container', $container);
@@ -939,17 +935,18 @@ class expTheme {
 					if (!$hide_menu ) {
 						$controller = expModules::getController($module);
 						$container->permissions = array(
-							'administrate'=>(expPermissions::check('administrate',$loc) ? 1 : 0),
+							'manage'=>(expPermissions::check('manage',$loc) ? 1 : 0),
 							'configure'=>(expPermissions::check('configure',$loc) ? 1 : 0)
 						);
 
-						if ($container->permissions['administrate'] || $container->permissions['configure']) {
+						if ($container->permissions['manage'] || $container->permissions['configure']) {
 							$container->randomizer = mt_rand(1,ceil(microtime(1)));
 							$container->view = $view;
 							$container->action = $params['action'];
 							$container->info['class'] = $loc->mod;
 							$container->info['module'] = $controller->displayname();
 							$container->info['source'] = $loc->src;
+                            $container->info['scope'] = $module_scope[$source][$module]->scope;
 							$container->info['hasConfig'] = true;
 							$template = new template('containermodule','_hardcoded_module_menu',$loc);
 							$template->assign('container', $container);

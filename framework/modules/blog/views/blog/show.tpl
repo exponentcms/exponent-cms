@@ -1,6 +1,5 @@
 {*
- * Copyright (c) 2004-2011 OIC Group, Inc.
- * Written and Designed by Adam Kessler
+ * Copyright (c) 2004-2012 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -29,16 +28,16 @@
                 {icon action=delete record=$record}
             {/if}
             {if $permissions.manage == 1}
-                {icon class="manage" controller=expTag action=manage text="Manage Tags"|gettext}
+                {icon controller=expTag action=manage text="Manage Tags"|gettext}
             {/if}
         </div>
     {/permissions}
     <div class="post-info">
         <span class="attribution">
-            {'Posted by'|gettext} <a href="{link action=showall_by_author author=$record->poster|username}">{attribution user_id=$record->poster}</a> {'on'|gettext} <span class="date">{$record->created_at|format_date:$smarty.const.DISPLAY_DATE_FORMAT}</span>
+            {'Posted by'|gettext} <a href="{link action=showall_by_author author=$record->poster|username}">{attribution user_id=$record->poster}</a> {'on'|gettext} <span class="date">{$record->created_at|format_date}</span>
         </span>
         | <a class="comments" href="{link action=show title=$record->sef_url}#exp-comments">{$record->expComment|@count} {"Comments"|gettext}</a>
-		{if $record->expTag[0]->id}
+		{if $record->expTag|@count>0 && !$config.disabletags}
 		| <span class="tags">
 			{"Tags"|gettext}: 
 			{foreach from=$record->expTag item=tag name=tags}
@@ -49,8 +48,13 @@
 		{/if}
     </div>
     <div class="bodycopy">
-        {filedisplayer view="`$config.filedisplay`" files=$record->expFile id=$record->id}
+        {if $config.filedisplay != "Downloadable Files"}
+            {filedisplayer view="`$config.filedisplay`" files=$record->expFile record=$record}
+        {/if}
         {$record->body}
+        {if $config.filedisplay == "Downloadable Files"}
+            {filedisplayer view="`$config.filedisplay`" files=$record->expFile record=$record}
+        {/if}
     </div>
     {comments content_type="blog" content_id=$record->id title="Comments"|gettext}
 </div>

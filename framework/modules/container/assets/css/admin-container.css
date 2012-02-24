@@ -71,7 +71,7 @@
 .container-chrome.module-chrome ul li.container-info {
     border-bottom:1px dotted #007800;
     margin-top:-3px;
-    padding:2px 6px 6px 26px;  
+    padding:2px 6px 6px 26px !important;
     background:url(../../../../core/assets/images/exp-admin-sprite.png) no-repeat 0 -116px;
     color:#004277;
     font-weight:bold;

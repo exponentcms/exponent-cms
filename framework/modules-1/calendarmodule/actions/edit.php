@@ -2,8 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2011 OIC Group, Inc.
-# Written and Designed by James Hunt
+# Copyright (c) 2004-2012 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -37,7 +36,7 @@ if (isset($_GET['id'])) {
 	}
 }
 
-if (($item == null && expPermissions::check('post',$loc)) ||
+if (($item == null && expPermissions::check('create',$loc)) ||
 	($item != null && expPermissions::check('edit',$loc)) ||
 	($iloc != null && expPermissions::check('edit',$iloc))
 ) {

@@ -2,8 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2011 OIC Group, Inc.
-# Written and Designed by James Hunt
+# Copyright (c) 2004-2012 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -32,7 +31,7 @@
  *
  * @param         $params
  * @param \Smarty $smarty
- * @return bool
+ * @return string
  */
 function smarty_function_object_to_js($params,&$smarty) {
 	echo "var ".$params['name']." = new Array();\n";

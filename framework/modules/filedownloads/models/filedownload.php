@@ -2,8 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2011 OIC Group, Inc.
-# Written and Designed by Adam Kessler
+# Copyright (c) 2004-2012 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -17,20 +16,26 @@
 #
 ##################################################
 
+/**
+ * @subpackage Models
+ * @package Modules
+ */
+
 class filedownload extends expRecord {
 	public $table = 'filedownloads';
 
     protected $attachable_item_types = array(
         'content_expFiles'=>'expFile',
         'content_expTags'=>'expTag',
-        'content_expComments'=>'expComment'
+        'content_expComments'=>'expComment',
+        'content_expCats'=>'expCat'
     );
 
 	public $validates = array(
 		'presence_of'=>array(
 			'title'=>array('message'=>'Title is a required field.'),
 		));
-		
+
 }
 
 ?>

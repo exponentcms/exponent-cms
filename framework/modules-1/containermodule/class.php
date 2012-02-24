@@ -2,8 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2011 OIC Group, Inc.
-# Written and Designed by James Hunt
+# Copyright (c) 2004-2012 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -31,11 +30,11 @@ class containermodule {
 	
 	function permissions($internal = '') {
 		return array(
-			'administrate'=>gt('Manage'),
-            'order_modules'=>gt('Configure'),
-			'add_module'=>gt('Create'),
-			'edit_module'=>gt('Edit'),
-			'delete_module'=>gt('Delete'),
+			'manage'=>gt('Manage'),
+            'configure'=>gt('Configure'),
+			'create'=>gt('Create'),
+			'edit'=>gt('Edit'),
+			'delete'=>gt('Delete'),
 		);
 	}
 	
@@ -71,7 +70,7 @@ class containermodule {
 			$dest = $source_select['dest'];
 		}
 		
-		global $db, $user;
+		global $db, $user, $module_scope;
 		
 		$container = null;
 		$container_key = serialize( $loc );
@@ -96,6 +95,7 @@ class containermodule {
 			if (!defined('PREVIEW_READONLY') || defined('SELECTOR')) $view = empty($container->view) ? $view : $container->view;
 			$title = $container->title;
 		}
+        $container->scope = empty($module_scope[$loc->src]["containermodule"]->scope) ? '' : $module_scope[$loc->src]["containermodule"]->scope;
 
 		$template = new template('containermodule',$view,$loc,$cache);
 		if ($dest) $template->assign('dest',$dest);
@@ -143,6 +143,7 @@ class containermodule {
 				$containers[$i]->info = array(
 					'module'=>$mod->name(),
 					'source'=>$location->src,
+//                    'scope'=>$module_scope[$loc->src]["containermodule"]->scope,
 					'hasContent'=>$mod->hasContent(),
 					'hasSources'=>$mod->hasSources(),
 					'hasViews'=>$mod->hasViews(),
@@ -158,6 +159,7 @@ class containermodule {
 				$containers[$i]->info = array(
 					'module'=>sprintf(gt('Unknown: %s'),$location->mod),
 					'source'=>$location->src,
+//                    'scope'=>$module_scope[$loc->src]["containermodule"]->scope,
 					'hasContent'=>0,
 					'hasSources'=>0,
 					'hasViews'=>0,
@@ -177,7 +179,7 @@ class containermodule {
 			$cloc->int = $containers[$i]->id;
             $location->mod = str_replace('Controller','',$location->mod);
 			$containers[$i]->permissions = array(
-				'administrate'=>(expPermissions::check('administrate',$location) ? 1 : 0),
+				'manage'=>(expPermissions::check('manage',$location) ? 1 : 0),
 				'configure'=>(expPermissions::check('configure',$location) ? 1 : 0)
 			);
 		}
@@ -186,7 +188,7 @@ class containermodule {
 		$template->assign('containers',$containers);
 		$template->assign('hasParent',(isset($this) && isset($this->_hasParent) ? 1 : 0));
 		$template->register_permissions(
-			array('administrate','add_module','edit_module','delete_module','order_modules'),
+			array('manage','create','edit','delete','configure'),
 			$loc
 		);
 		

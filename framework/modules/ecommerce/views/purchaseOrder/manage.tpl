@@ -1,6 +1,5 @@
 {*
- * Copyright (c) 2004-2011 OIC Group, Inc.
- * Written and Designed by Adam Kessler
+ * Copyright (c) 2004-2012 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -17,8 +16,6 @@
 {css unique="purchase-orders" corecss="tables" link="`$asset_path`css/purchaseorder.css"}
 
 {/css}
-
-
 
 <div id="managepurchaseorders" class="module purchaseorder manage">
 
@@ -77,7 +74,7 @@
 				   {$purchase_order->vendor->title}
 					</td>
 					<td>
-					{$purchase_order->created_at|format_date:$smarty.const.DISPLAY_DATE_FORMAT}
+					{$purchase_order->created_at|format_date}
 					</td>
 					<td>
 					ordered

@@ -1,6 +1,5 @@
 {*
- * Copyright (c) 2004-2011 OIC Group, Inc.
- * Written and Designed by James Hunt
+ * Copyright (c) 2004-2012 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -15,7 +14,10 @@
  *}
 
 <div class="module flickr showall">
-    {if $moduletitle != ""}<h1>{$moduletitle}</h1>{/if}
+    {if $moduletitle && !$config.hidemoduletitle}<h1>{$moduletitle}</h1>{/if}
+    {if $config.moduledescription != ""}
+   		{$config.moduledescription}
+   	{/if}
     {foreach from=$items item=item}
         <div class="item">
             {if $item->title != ""}<p>{$item->title}</p>{/if}

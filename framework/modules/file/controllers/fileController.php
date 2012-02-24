@@ -2,9 +2,8 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2011 OIC Group, Inc.
-# Written and Designed by Phillip Ball
-
+# Copyright (c) 2004-2012 OIC Group, Inc.
+#
 # This file is part of Exponent
 #
 # Exponent is free software; you can redistribute
@@ -16,6 +15,11 @@
 # GPL: http://www.gnu.org/licenses/gpl.txt
 #
 ##################################################
+
+/**
+ * @subpackage Controllers
+ * @package Modules
+ */
 
 class fileController extends expController {
     public $basemodel_name = "expFile";
@@ -237,7 +241,7 @@ class fileController extends expController {
 
     public function adder() {
         global $db;
-        $allfiles = expFile::listFlat(BASE.'files',true,null,null,BASE);
+        $allfiles = expFile::listFlat(BASE.'files',true,null,array(),BASE);
         foreach ($allfiles as $path=>$file) {
             if ($file[0] != '.') {
                 $found = false;

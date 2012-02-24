@@ -2,8 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2011 OIC Group, Inc.
-# Written and Designed by Adam Kessler
+# Copyright (c) 2004-2012 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -16,6 +15,11 @@
 # GPL: http://www.gnu.org/licenses/gpl.txt
 #
 ##################################################
+
+/**
+ * @subpackage Controllers
+ * @package Modules
+ */
 /** @define "BASE" "../../../.." */
 
 class loginController extends expController {
@@ -29,13 +33,14 @@ class loginController extends expController {
 //    public $remove_permissions = array('create', 'edituser');
 	public $remove_configs = array(
         'aggregation',
+        'categories',
         'comments',
 		'ealerts',
         'files',
         'pagination',
         'rss',
         'tags'
-    );
+    ); // all options: ('aggregation','categories','comments','ealerts','files','module_title','pagination','rss','tags')
     public $useractions = array(
 	    'showlogin'=>'Login',
     );
@@ -47,7 +52,7 @@ class loginController extends expController {
 	 * Display a login view
 	 */
 	function showlogin() {
-		global $db, $user, $order;
+		global $db, $user, $order, $router;
 
 		$oicount = $order?$order->item_count:0;
 		// FIGURE OUT IF WE"RE IN PREVIEW MODE OR NOT
@@ -57,6 +62,12 @@ class loginController extends expController {
 		}
 		$previewtext = $level == UILEVEL_PREVIEW ? gt('Turn Preview Mode off') : gt('Turn Preview Mode on');
 		$previewclass = $level == UILEVEL_PREVIEW ? 'preview_on' : 'preview_off';
+
+        if (!expSession::is_set('redirecturl')) expSession::set('redirecturl', expHistory::getLast());
+        if (!expSession::is_set('redirecturl_error')) {
+            expSession::set('redirecturl_error', makeLink(array('controller'=>'login', 'action'=>'showlogin')));
+            expHistory::set('viewable', $router->params);
+        }
 
 		//eDebug($order);
 		if (expSession::loggedIn() && $user->username != "anonymous") {

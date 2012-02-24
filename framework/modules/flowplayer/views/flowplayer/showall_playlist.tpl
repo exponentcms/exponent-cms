@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2007-2011 OIC Group, Inc.
+ * Copyright (c) 2004-2012 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -15,7 +15,7 @@
 
 <script src="{$smarty.const.URL_FULL}external/flowplayer3/example/flowplayer-3.2.6.min.js"></script>
 <div class="module flowplayer showall-playlist">
-    {if $moduletitle}<h1>{$moduletitle}</h1>{/if}
+    {if $moduletitle && !$config.hidemoduletitle}<h1>{$moduletitle}</h1>{/if}
     <a id="playlist-player" href="{$page->records[0]->expFile.video[0]->url}" style="display:block;width:{$config.video_width}px;height:{$config.video_height}px;">
     </a>
     {permissions}
@@ -25,6 +25,9 @@
 			{/if}
 		</div>	
     {/permissions}  
+    {if $config.moduledescription != ""}
+   		{$config.moduledescription}
+   	{/if}
     <ul>
 		{permissions}
 			<div class="item">

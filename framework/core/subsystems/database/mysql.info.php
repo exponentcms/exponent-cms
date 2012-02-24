@@ -2,8 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2011 OIC Group, Inc.
-# Written and Designed by James Hunt
+# Copyright (c) 2004-2012 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -23,10 +22,6 @@ if (!defined('EXPONENT')) exit('');
  * MySQL Database Engine Info File
  *
  * Contains information about the MySQL Database Engine implementation
- *
- * @author James Hunt
- * @copyright 2004-2011 OIC Group, Inc.
- * @version 0.95
  *
  * @package Subsystems
  * @subpackage Database

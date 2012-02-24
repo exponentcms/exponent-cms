@@ -1,6 +1,5 @@
 {*
- * Copyright (c) 2004-2011 OIC Group, Inc.
- * Written and Designed by Adam Kessler
+ * Copyright (c) 2004-2012 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -14,7 +13,7 @@
  *
  *}
 
-<h2>{'E-Alerts Settings'|gettext}</h2>
+<h2>{'E-Alerts Subscription Settings'|gettext}</h2>
 <blockquote>
     <p>
         {'E-Alerts allow your users to sign up to receive email versions of new content you create.'|gettext}&nbsp;&nbsp;

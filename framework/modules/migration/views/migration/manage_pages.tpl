@@ -1,6 +1,5 @@
 {*
- * Copyright (c) 2004-2011 OIC Group, Inc.
- * Written and Designed by Adam Kessler
+ * Copyright (c) 2004-2012 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -19,6 +18,8 @@
 {/css}
 
 <div class="module migration manage-pages">
+ 	<a class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" href="{link module=migration action=manage_files}"><b>{'Next Step -> Migrate Files'|gettext}</b></a>
+    {br}{br}<hr />
     <div class="info-header">
         <div class="related-actions">
 			{help text="Get Help"|gettext|cat:" "|cat:("Migrating Pages"|gettext) module="migrate-pages"}
@@ -34,8 +35,8 @@
         <table class="exp-skin-table">
         <thead>
             <tr>
-                <th>{'Migrate'|gettext}</th>
-                <th>{'Replace'|gettext}</th>
+                <th><input type='checkbox' name='checkallp' title="{'Select All/None'|gettext}" onChange="selectAllp(this.checked)" checked=1> {'Migrate'|gettext}</th>
+                <th><input type='checkbox' name='checkallr' title="{'Select All/None'|gettext}" onChange="selectAllr(this.checked)"> {'Replace'|gettext}</th>
                 <th>{'Name'|gettext}</th>
             </tr>
         </thead>
@@ -69,6 +70,20 @@
         {control type="checkbox" name="wipe_pages" label="Erase all current pages and then try again"|gettext|cat:"?" value=1 checked=false}
         {control type="buttongroup" submit="Migrate Pages"|gettext cancel="Cancel"|gettext}
     {/form}
-	{br}<hr>{br}
-	<a class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" href="{link module=migration action=manage_files}"><b>{'Next Step -> Migrate Files'|gettext}</b></a>
 </div>
+
+<script type="text/javascript">
+    function selectAllp(val) {
+        var checks = document.getElementsByName("page[]");
+        for (var i = 0; i < checks.length; i++) {
+          checks[i].checked = val;
+        }
+    }
+
+    function selectAllr(val) {
+        var checks = document.getElementsByName("rep_pages[]");
+        for (var i = 0; i < checks.length; i++) {
+          checks[i].checked = val;
+        }
+    }
+</script>

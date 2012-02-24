@@ -1,6 +1,5 @@
 {*
- * Copyright (c) 2004-2011 OIC Group, Inc.
- * Written and Designed by Adam Kessler
+ * Copyright (c) 2004-2012 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -13,6 +12,7 @@
  * GPL: http://www.gnu.org/licenses/gpl.txt
  *
  *}
+
 <p>{'Your password has been reset.  Your new password is'|gettext} {$newpass}.</p>
 <p>
 {'To use the new password just return to'|gettext} <a href="http://{$smarty.const.HOSTNAME}">{$smarty.const.HOSTNAME}</a> {'and log in using your username and this password.'|gettext}&nbsp;&nbsp;

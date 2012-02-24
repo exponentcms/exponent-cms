@@ -2,8 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2011 OIC Group, Inc.
-# Written and Designed by James Hunt
+# Copyright (c) 2004-2012 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -17,7 +16,7 @@
 #
 ##################################################
 
-if (!defined('USE_LDAP')) define('USE_LDAP',0);
+if (!defined('USE_LDAP')) define('USE_LDAP','0');
 if (!defined('LDAP_SERVER')) define('LDAP_SERVER','not_configured');
 if (!defined('LDAP_BASE_DN')) define('LDAP_BASE_DN','not_configured');
 if (!defined('LDAP_BIND_USER')) define('LDAP_BIND_USER','not_configured');

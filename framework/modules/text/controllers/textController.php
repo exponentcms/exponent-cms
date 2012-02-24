@@ -2,8 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2011 OIC Group, Inc.
-# Written and Designed by Adam Kessler
+# Copyright (c) 2004-2012 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -17,6 +16,11 @@
 #
 ##################################################
 
+/**
+ * @subpackage Controllers
+ * @package Modules
+ */
+
 class textController extends expController {
 	//protected $basemodel_name = '';
 	public $useractions = array(
@@ -24,11 +28,12 @@ class textController extends expController {
         'showRandom'=>'Show Random Text',
 	);
 	public $remove_configs = array(
+        'categories',
 		'comments',
+        'ealerts',
 		'rss',
-		'ealerts',
 		'tags'
-	); // all options: ('aggregation','files','comments','rss','ealerts','tags')
+	); // all options: ('aggregation','categories','comments','ealerts','files','module_title','pagination','rss','tags')
 
 	function displayname() { return "Text"; }
 	function description() { return "Puts text on your webpages"; }

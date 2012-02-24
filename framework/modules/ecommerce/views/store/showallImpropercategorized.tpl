@@ -1,6 +1,5 @@
 {*
- * Copyright (c) 2007-2008 OIC Group, Inc.
- * Written and Designed by Adam Kessler
+ * Copyright (c) 2004-2012 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -13,6 +12,7 @@
  * GPL: http://www.gnu.org/licenses/gpl.txt
  *
  *}
+
 <div style="float:right; margin-top:15px;"><a href="{link controller=report action=batch_export applytoall=true}">[Export This Data]</a></div>
 <div class="module store showall-uncategorized">
     <h1>{'Improperly Categorized Products'|gettext}</h1>

@@ -2,8 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2011 OIC Group, Inc.
-# Written and Designed by James Hunt
+# Copyright (c) 2004-2012 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -23,6 +22,9 @@ if (!defined('EXPONENT')) exit('');
 expSession::clearAllSessionData();
 
 global $user;
+
+// let's update the search index
+searchController::spider();
 
 if (isset($_REQUEST['upgrade'])) {
 // upgrades hit this

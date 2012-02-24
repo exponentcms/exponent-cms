@@ -2,8 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2011 OIC Group, Inc.
-# Written and Designed by James Hunt
+# Copyright (c) 2004-2012 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -27,7 +26,7 @@ $form->meta('importer','eql');
 $form->meta('page','process');
 
 $form->register('file',gt('EQL File'),new uploadcontrol());
-$form->register('submit','',new buttongroupcontrol(gt('Restore'),'',''));
+$form->register('submit','',new buttongroupcontrol(gt('Restore'),'','','uploadfile'));
 
 $template = new template('importer','_eql_restoreForm',$loc);
 $template->assign('form_html',$form->toHTML());

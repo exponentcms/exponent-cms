@@ -2,9 +2,9 @@
 
 ##################################################
 #
-# Copyright (c) 2007-2008 OIC Group, Inc.
-# Created by Adam Kessler @ 09/06/2007
+# Copyright (c) 2004-2012 OIC Group, Inc.
 #
+# This file is part of Exponent
 #
 # Exponent is free software; you can redistribute
 # it and/or modify it under the terms of the GNU
@@ -15,6 +15,11 @@
 # GPL: http://www.gnu.org/licenses/gpl.txt
 #
 ##################################################
+
+/**
+ * @subpackage Models
+ * @package Modules
+ */
 
 class eventregistration extends product {
 	public $table = 'product';
@@ -142,4 +147,5 @@ class eventregistration extends product {
     }
 	
 }
+
 ?>

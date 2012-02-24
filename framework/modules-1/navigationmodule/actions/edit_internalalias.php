@@ -2,8 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2011 OIC Group, Inc.
-# Written and Designed by James Hunt
+# Copyright (c) 2004-2012 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -17,14 +16,12 @@
 #
 ##################################################
 
+if (!defined('EXPONENT')) exit('');
+
 // if unchanged, $check_id will return the SITE_403_HTML message.
 // Prevents internal alias to standalone page [do we really need to do this?]
 // and provides failsafe if args for 'id' or 'parent' are missing -tz
 $check_id = -1;
-
-// Bail in case someone has visited us directly, or the Exponent framework is
-// otherwise not initialized.
-if (!defined('EXPONENT')) exit('');
 
 $section = null;
 if (isset($_GET['id'])) {

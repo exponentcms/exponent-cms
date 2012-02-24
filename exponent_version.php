@@ -2,8 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2011 OIC Group, Inc.
-# Written and Designed by James Hunt
+# Copyright (c) 2004-2012 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -33,7 +32,7 @@ if (!defined('EXPONENT_VERSION_MAJOR')) {
 		/* exdoc
 		 * This is the revision version number of Exponent; the 2 in 1.96.2-beta3
 		 */
-		define('EXPONENT_VERSION_REVISION','4');
+		define('EXPONENT_VERSION_REVISION','5');
 		/* exdoc
 		 * This specifies the type of release, either 'alpha','beta','release-candidate' or '' (for stable).
 		 */
@@ -46,12 +45,12 @@ if (!defined('EXPONENT_VERSION_MAJOR')) {
 		/* exdoc
 		 * This is the date that this version of Exponent was released.
 		 */
-		define('EXPONENT_VERSION_BUILDDATE','1327690743');
+		define('EXPONENT_VERSION_BUILDDATE','1330127330');
 	} else {
 		// the info for the "next" version if we are a pre-release from the repository
 		define('EXPONENT_VERSION_MAJOR','2');
 		define('EXPONENT_VERSION_MINOR','0');
-		define('EXPONENT_VERSION_REVISION','3');
+		define('EXPONENT_VERSION_REVISION','5');
 		define('EXPONENT_VERSION_TYPE','develop');
 		define('EXPONENT_VERSION_ITERATION','');
 		define('EXPONENT_VERSION_BUILDDATE',time());

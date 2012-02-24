@@ -1,6 +1,5 @@
 {*
- * Copyright (c) 2004-2011 OIC Group, Inc.
- * Written and Designed by Adam Kessler
+ * Copyright (c) 2004-2012 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -15,7 +14,10 @@
  *}
 
 <div class="module rss showall">
-    <h1>{$moduletitle|default:"RSS Feeds"|gettext}</h1>
+    {if !$config.hidemoduletitle}<h1>{$moduletitle|default:"RSS Feeds"|gettext}</h1>{/if}
+    {if $config.moduledescription != ""}
+        {$config.moduledescription}
+    {/if}
     {foreach from=$feeds item=feed}
 		<div class="item">
 			<a class="rsslink" href="{rsslink}" title="{$feed->feed_desc}">{'Subscribe to'|gettext} {$feed->feed_title}</a>

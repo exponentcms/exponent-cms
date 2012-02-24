@@ -2,9 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2011 OIC Group, Inc.
-# Copyright (c) 2006-2007 Maxim Mueller
-# Written and Designed by James Hunt
+# Copyright (c) 2004-2012 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -22,6 +20,9 @@
 /**
  * Wraps the template system in use, to provide a uniform and consistent
  * interface to templates.
+ *
+ * @package Subsystems-Forms
+ * @subpackage Template
  */
 //TODO: prepare this class for multiple template systems
 class template extends basetemplate {

@@ -1,6 +1,5 @@
 {*
- * Copyright (c) 2007-2008 OIC Group, Inc.
- * Written and Designed by Adam Kessler
+ * Copyright (c) 2004-2012 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -16,7 +15,7 @@
 
 <div class="module store show-top-level">
 	{assign var=depth value=0}
-	{if $moduletitle}<h2>{$moduletitle}</h2>{/if}
+	{if $moduletitle && !$config.hidemoduletitle}<h2>{$moduletitle}</h2>{/if}
 	<div id="catnav">
 		<ul>	
 			{foreach from=$categories item=category}

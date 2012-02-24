@@ -1,10 +1,7 @@
 <?php
-
 ##################################################
 #
-# Copyright (c) 2004-2011 OIC Group, Inc.
-# Copyright (c) 2006-2007 Maxim Mueller
-# Written and Designed by James Hunt
+# Copyright (c) 2004-2012 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -17,14 +14,14 @@
 # GPL: http://www.gnu.org/licenses/gpl.txt
 #
 ##################################################
-/** @define "BASE" "../../.." */
 
 /**
- * This is the class expTheme
- *
- * @subpackage Core-Subsystems
- * @package Framework
+* This is the class expTemplate
+*
+ * @package    Subsystems
+ * @subpackage Subsystems
  */
+/** @define "BASE" "../../.." */
 
 class expTemplate {
 
@@ -56,7 +53,6 @@ class expTemplate {
 		return self::getViewFile("modules", $name, $view);
 	}
 
-	// I think these still need to be i18n-ized
 	public static function getViewConfigForm($module,$view,$form,$values) {
 		$form_file = "";
 		$resolved_path = null;
@@ -74,7 +70,7 @@ class expTemplate {
 		if ($form == null) $form = new form();
 		if ($form_file == "") return $form;
 
-		$form->register(null,"",new htmlcontrol("<hr size='1' /><b>Layout Configuration</b>"));
+		$form->register(null,"",new htmlcontrol("<hr size='1' /><b>".gt('Layout Configuration')."</b>"));
 
 		$fh = fopen($form_file,"r");
 		while (($control_data = fgetcsv($fh,65536,"\t")) !== false) {
@@ -157,7 +153,7 @@ class expTemplate {
 	 * @return array
 	 * @node Subsystems:Template
 	 */
-	public static function listModuleViews($module) {  //FIXME only used by containermodule edit action and administrationmodule examplecontent action
+	public static function listModuleViews($module) {  //FIXME only used by 1) containermodule edit action
 		return expCore::buildNameList("modules", $module, "tpl", "[!_]*");
 	}
 

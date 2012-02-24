@@ -1,6 +1,5 @@
 {*
- * Copyright (c) 2004-2011 OIC Group, Inc.
- * Written and Designed by Adam Kessler
+ * Copyright (c) 2004-2012 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -17,8 +16,6 @@
 {css unique="purchase-orders" corecss="tables" link="`$asset_path`css/purchaseorder.css"}
 
 {/css}
-
-
 
 <div id="editpurchaseorder" class="module purchaseorder edit">
 

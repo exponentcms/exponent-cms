@@ -1,6 +1,5 @@
 {*
- * Copyright (c) 2004-2011 OIC Group, Inc.
- * Written and Designed by Adam Kessler
+ * Copyright (c) 2004-2012 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -15,6 +14,8 @@
  *}
 
 <div id="migrationconfig" class="module migration configure">
+ 	<a class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" href="{link module=migration action=manage_users}"><b>{'Skip to Next Step -> Migrate Users & Groups'|gettext}</b></a>
+    {br}{br}<hr />
     <div class="info-header">
         <div class="related-actions">
 			{help text="Get Help"|gettext|cat:" "|cat:("Migration Database Settings"|gettext) module="configure-migration-settings"}
@@ -35,6 +36,4 @@
 	    {control type="checkbox" name="fix_database" label="Attempt to fix tables in old database? (may cause a timeout on slow connection)"|gettext value=1 checked=false}
         {control type=buttongroup submit="Save Config"|gettext cancel="Cancel"|gettext}
     {/form}
-	{br}<hr>{br}
-	<a class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" href="{link module=migration action=manage_users}"><b>{'Next Step -> Migrate Users & Groups'|gettext}</b></a>
 </div>

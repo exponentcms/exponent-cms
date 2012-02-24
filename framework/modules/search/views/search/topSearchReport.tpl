@@ -1,6 +1,5 @@
 {*
- * Copyright (c) 2007-2011 OIC Group, Inc.
- * Written and Designed by OIC Group
+ * Copyright (c) 2004-2012 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -15,20 +14,37 @@
  *}
 
 {css unique="topsearchreport" corecss="tables"}
+{literal}
+    .fullbody #centercol {
+        width: 422px;
+    }
 
+    .exp-skin-table {
+        width:400px;
+    }
+    .exp-skin-table tbody tr.odd th,
+    .exp-skin-table tbody tr.odd td {
+        border-color:#EBE5D9;
+        background:#F7F4EE;
+    }
+
+    #columnchart {
+        margin:10px 10px 10px 10px;
+
+        height:400px;
+    }
+{/literal}
 {/css}
 
 <div class="module topsearchquery report exp-skin-tabview">
     <div class="info-header">
         <h1>{$moduletitle|default:"Top"|gettext|cat:" `$limit` "|cat:("Search Queries Report"|gettext)}</h1>
     </div>
-
 	<div id="topsearch" class="yui-navset">
 		<ul class="yui-nav">
 			<li class="selected"><a href="#tab1"><em>{"Top Search"|gettext}</em></a></li>
 			<li><a href="#tab2"><em>{"Chart View"|gettext}</em></a></li>
 		</ul>    
-        
 		<div class="yui-content">
 			<div id="tab1">
 				<table class="exp-skin-table">
@@ -58,7 +74,6 @@
 		</div>
 	</div>
 </div>
-
 
 {script unique="topsearch" yui3mods=1}
 {literal}
@@ -100,28 +115,3 @@ YUI(EXPONENT.YUI3_CONFIG).use('node', 'charts', 'yui2-yahoo-dom-event','yui2-ele
 
 {/literal}
 {/script}
-
-
-<style type="text/css">
-{literal}
-.fullbody #centercol {
-    width: 422px;     
-}
-
-.exp-skin-table {
-    width:400px;
-}
-.exp-skin-table tbody tr.odd th,
-.exp-skin-table tbody tr.odd td {
-    border-color:#EBE5D9;
-    background:#F7F4EE;
-}
-
-#columnchart {
-    margin:10px 10px 10px 10px;
-
-    height:400px;
-}
-
-{/literal}
-</style>

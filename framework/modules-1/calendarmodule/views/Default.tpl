@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2011 OIC Group, Inc.
+ * Copyright (c) 2004-2012 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -12,7 +12,7 @@
  * GPL: http://www.gnu.org/licenses/gpl.txt
  *
  *}
- 
+
 {css unique="cal" link="`$smarty.const.PATH_RELATIVE`framework/modules-1/calendarmodule/assets/css/calendar.css"}
 
 {/css}
@@ -21,23 +21,23 @@
 	<div class="module-actions">
 		<span class="monthviewlink">{'Calendar View'|gettext}</span>&nbsp;&nbsp;|&nbsp;&nbsp;<a class="listviewlink" href="{link _common=1 view='Monthly List' action='show_view' time=$time}">{'List View'|gettext}</a>
 		{permissions}
-			{if $permissions.administrate == 1}
+			{if $permissions.manage == 1}
 				&nbsp;&nbsp;|&nbsp;&nbsp;<a class="adminviewlink mngmntlink" href="{link _common=1 view='Administration' action='show_view' time=$time}">{'Administration View'|gettext}</a>
 			{/if}
 			&nbsp;&nbsp;|&nbsp;&nbsp;
-			{printer_friendly_link class="printer-friendly-link" text='Printer-friendly'|gettext}
+			{printer_friendly_link text='Printer-friendly'|gettext}
 			{br}
 		{/permissions}
 	</div>
-	<h2>
+	<h1>
 		{if $enable_ical == true}
-			<a class="icallink module-actions" href="{link action=ical}" title="{'iCalendar Feed'|gettext}" alt="{'iCalendar Feed'|gettext}"></a>
+			<a class="icallink module-actions" href="{link action=ical}" title="{'iCalendar Feed'|gettext}" alt="{'iCalendar Feed'|gettext}"> </a>
 		{/if}
-		{if $moduletitle != ""}{$moduletitle}{/if}
-	</h2>
+		{if $moduletitle}{$moduletitle}{/if}
+	</h1>
 	{permissions}
 		<div class="module-actions">
-			{if $permissions.post == 1}
+			{if $permissions.create == 1}
 				{icon class=add action=edit title="Add a New Event"|gettext text="Add an Event"|gettext}
 			{/if}
 		</div>

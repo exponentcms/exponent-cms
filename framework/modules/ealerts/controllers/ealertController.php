@@ -2,8 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2011 OIC Group, Inc.
-# Written and Designed by Adam Kessler
+# Copyright (c) 2004-2012 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -17,17 +16,23 @@
 #
 ##################################################
 
+/**
+ * @subpackage Controllers
+ * @package Modules
+ */
+
 class ealertController extends expController {
     public $basemodel_name = 'expeAlerts';
     public $useractions = array('showall'=>'Show all modules available for signup');
 	
 	public $remove_configs = array(
         'aggregation',
+        'categories',
         'comments',
         'files',
         'rss',
         'tags'
-    );
+    ); // all options: ('aggregation','categories','comments','ealerts','files','module_title','pagination','rss','tags')
 	
     function displayname() { return "E-Alerts"; }
     function description() { return "This module will allow your users to signup for email alerts on a module by module basis."; }

@@ -2,9 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2011 OIC Group, Inc.
-# Copyright (c) 2006 Maxim Mueller
-# Written and Designed by James Hunt
+# Copyright (c) 2004-2012 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -43,7 +41,7 @@ function echoSuccess($msg = "") {
 }
 
 function echoFailure($msg = "") {
-	echo '<span class="failed">'.gt('Failed').'</span>';
+	echo '<span class="error">'.gt('Failed').'</span>';
 	if ($msg != "") echo ' : ' . $msg;
 	echo '</td></tr>';
 }

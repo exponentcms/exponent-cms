@@ -2,8 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2011 OIC Group, Inc.
-# Written and Designed by Adam Kessler
+# Copyright (c) 2004-2012 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -32,7 +31,6 @@
  *
  * @param         $params
  * @param \Smarty $smarty
- * @return bool
  */
 function smarty_function_pagenumbers($params,&$smarty) {
 	// initialize a couple of variables

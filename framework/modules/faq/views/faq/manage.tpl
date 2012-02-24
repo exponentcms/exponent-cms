@@ -1,6 +1,5 @@
 {*
- * Copyright (c) 2004-2011 OIC Group, Inc.
- * Written and Designed by Adam Kessler
+ * Copyright (c) 2004-2012 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -14,11 +13,7 @@
  *
  *}
 
-{css unique="mangefaq-buttons" link="`$smarty.const.PATH_RELATIVE`framework/core/assets/css/button.css"}
-
-{/css}
-
-{css unique="managefaq" corecss="tables"}
+{css unique="managefaq" corecss="button,tables"}
 
 {/css}
 
@@ -59,7 +54,7 @@
 				</td>
 				<td>{if $question->answer != ""}{img src=$smarty.const.ICON_RELATIVE|cat:'clean.png'}{/if}</td>
 				<td>{$question->question}</td>
-				<td>{$question->created_at|format_date:$smarty.const.DISPLAY_DATE_FORMAT}</td>
+				<td>{$question->created_at|format_date}</td>
 				<td>{$question->submitter_name}</td>
 				<td>
 					{permissions}

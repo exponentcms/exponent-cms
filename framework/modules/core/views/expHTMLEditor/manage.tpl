@@ -1,6 +1,5 @@
 {*
- * Copyright (c) 2004-2011 OIC Group, Inc.
- * Written and Designed by James Hunt
+ * Copyright (c) 2004-2012 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -14,11 +13,7 @@
  *
  *}
 
-{css unique="managehtml1" link="`$smarty.const.PATH_RELATIVE`framework/core/assets/css/admin-global.css"}
-
-{/css}
-
-{css unique="managehtml2" corecss="tables"}
+{css unique="managehtml1" corecss="admin-global,tables"}
 
 {/css}
 

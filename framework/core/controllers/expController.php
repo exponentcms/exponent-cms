@@ -1,25 +1,25 @@
 <?php
-/**
- *  This file is part of Exponent
- *  Exponent is free software; you can redistribute
- *  it and/or modify it under the terms of the GNU
- *  General Public License as published by the Free
- *  Software Foundation; either version 2 of the
- *  License, or (at your option) any later version.
- *
- * The file that holds the expController class.
- *
- * @link http://www.gnu.org/licenses/gpl.txt GPL http://www.gnu.org/licenses/gpl.txt
- * @package Exponent-CMS
- * @copyright 2004-2011 OIC Group, Inc.
- * @author Adam Kessler <adam@oicgroup.net>
- * @version 2.0.0
- */
+##################################################
+#
+# Copyright (c) 2004-2012 OIC Group, Inc.
+#
+# This file is part of Exponent
+#
+# Exponent is free software; you can redistribute
+# it and/or modify it under the terms of the GNU
+# General Public License as published by the Free
+# Software Foundation; either version 2 of the
+# License, or (at your option) any later version.
+#
+# GPL: http://www.gnu.org/licenses/gpl.txt
+#
+##################################################
+
 /**
  * This is the class expController
  *
- * @subpackage Core-Controllers
- * @package Framework
+ * @package Core
+ * @subpackage Controllers
  */
 
 abstract class expController {
@@ -55,7 +55,7 @@ abstract class expController {
 	function requiresConfiguration() { return false; }
     
     public $requires_login = array();
-    public $remove_configs = array();
+    public $remove_configs = array(); // all options: ('aggregation','categories','comments','ealerts','files','module_title','pagination','rss','tags')
     public $config = array();
     public $basemodel_name = '';
     public $model_table = '';
@@ -208,6 +208,74 @@ abstract class expController {
         assign_to_template(array('page'=>$page, 'items'=>$page->records));
     }
 
+    /**
+   	 * default module view method for all items with a specific tag
+   	 */
+    public function showall_by_tags() {
+        global $db;
+
+        $modelname = $this->basemodel_name;
+        // set history
+        expHistory::set('viewable', $this->params);
+
+        // get the tag being passed
+        $tag = new expTag($this->params['tag']);
+
+        // find all the id's of the portfolios for this module
+        $item_ids = $db->selectColumn($modelname, 'id', $this->aggregateWhereClause());
+
+        // find all the items that this tag is attached to
+        $items = $tag->findWhereAttachedTo($modelname);
+
+        // loop the items for this tag and find out which ones belong to this module
+        $items_by_tags = array();
+        foreach($items as $item) {
+            if (in_array($item->id, $item_ids)) $items_by_tags[] = $item;
+        }
+
+        // create a pagination object for the model and render the action
+        $order = 'created_at DESC';
+        $limit = empty($this->config['limit']) ? 10 : $this->config['limit'];
+
+        $page = new expPaginator(array(
+                    'records'=>$items_by_tags,
+                    'limit'=>$limit,
+                    'order'=>$order,
+                    'controller'=>$this->baseclassname,
+                    'action'=>$this->params['action'],
+                    'columns'=>array('Title'=>'title'),
+                    ));
+//        $page->records = expSorter::sort(array('array'=>$page->records, 'sortby'=>'rank', 'order'=>'ASC', 'ignore_case'=>true));
+        $page->records = expSorter::sort(array('array'=>$page->records, 'sortby'=>'created_at', 'order'=>'DESC', 'ignore_case'=>true));
+
+        assign_to_template(array('page'=>$page, 'items'=>$page->records, 'moduletitle'=>ucfirst($modelname).' items by tag "'.$this->params['tag'].'"', 'rank'=>($order==='rank')?1:0));
+    }
+
+    public function tags() {
+
+        $modelname = $this->basemodel_name;
+
+        $items = $this->$modelname->find('all', $this->aggregateWhereClause());
+        $used_tags = array();
+        foreach ($items as $item) {
+            foreach($item->expTag as $tag) {
+                if (isset($used_tags[$tag->id])) {
+                    $used_tags[$tag->id]->count += 1;
+                } else {
+                    $exptag = new expTag($tag->id);
+                    $used_tags[$tag->id] = $exptag;
+                    $used_tags[$tag->id]->count = 1;
+                }
+            }
+        }
+
+//        $order = isset($this->config['order']) ? $this->config['order'] : 'rank';
+//        $used_tags = expSorter::sort(array('array'=>$used_tags,'sortby'=>'title', 'order'=>'ASC', 'ignore_case'=>true, 'rank'=>($order==='rank')?1:0));
+        $order = isset($this->config['order']) ? $this->config['order'] : 'title ASC';
+        $used_tags = expSorter::sort(array('array'=>$used_tags, 'order'=>$order, 'ignore_case'=>true, 'rank'=>($order==='rank')?1:0));
+        assign_to_template(array('tags'=>$used_tags));
+    }
+
 	/**
 	 * default view for individual item
 	 */
@@ -352,6 +420,13 @@ abstract class expController {
                 }
 	        }
         }
+
+        //check for and handle cats
+        if (array_key_exists('expCat',$this->params)&&!empty($this->params['expCat'])) {
+            $catid = $this->params['expCat'];
+            unset($this->params['expCat']);
+            $this->params['expCat'][] = $catid;
+        }
         $modelname = $this->basemodel_name;
         $this->$modelname->update($this->params);
         $this->addContentToSearch($this->params);
@@ -484,27 +559,32 @@ abstract class expController {
 
 	/**
 	 * get the items in an rss feed format
+     *
+     * this function is very general and will most of the time need to be overwritten and customized
+     *
 	 * @return array
 	 */
 	function getRSSContent() {
-        // this function is very general and will most of the time need to be overwritten and customized
-        
-        global $db;     
+        global $db;
     
         // setup the where clause for looking up records.
         $where = $this->aggregateWhereClause();
-        $where = empty($where) ? '1' : $where;
+//        $where = empty($where) ? '1' : $where;
 		
-        $items = $db->selectObjects($this->basemodel_name, $where.' ORDER BY created_at');
+        $order = isset($this->config['order']) ? $this->config['order'] : 'created_at';
+
+        $class = new $this->basemodel_name;
+        $items = $class->find('all', $where, $order);
 
         //Convert the items to rss items
         $rssitems = array();
         foreach ($items as $key => $item) { 
             $rss_item = new FeedItem();
-            $rss_item->title = $item->title;
-            $rss_item->description = $item->body;
+            $rss_item->title = expString::convertSmartQuotes($item->title);
+            $rss_item->description = expString::convertSmartQuotes($item->body);
             $rss_item->date = isset($item->publish_date) ? date('r',$item->publish_date) : date('r', $item->created_at);
             $rss_item->link = makeLink(array('controller'=>$this->classname, 'action'=>'show', 'title'=>$item->sef_url));
+            if (!empty($item->expCat[0]->title)) $rss_item->category = array($item->expCat[0]->title);
             $rssitems[$key] = $rss_item;
         }
         return $rssitems;
@@ -739,4 +819,5 @@ abstract class expController {
         return $sql;
     }
 }
+
 ?>

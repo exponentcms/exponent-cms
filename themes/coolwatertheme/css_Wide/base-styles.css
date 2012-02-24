@@ -1,0 +1,64 @@
+/********************************************
+   AUTHOR:  			Erwin Aligam 
+   WEBSITE:   			http://www.styleshout.com/
+	TEMPLATE NAME:		CoolWater
+   TEMPLATE CODE: 	S-0019
+   VERSION:          1.0     
+	DATE:					November-07-2007     	
+ *******************************************/
+ 
+/*#main div.bodycopy{*/
+	/*margin-right: 15px;*/
+	/*margin-bottom: 15px;*/
+/*}*/
+
+/*#main div.bodycopyfull{*/
+	/*margin-left: 0px;*/
+	/*margin-right: 15px;*/
+	/*margin-bottom: 15px;*/
+/*}*/
+
+.fullbody #main {
+	width: 900px;
+	background: url(../images/box-wide-full.jpg) no-repeat;
+}
+
+#wrap {
+	width: 970px;
+	background: #fff url(../images/content-wide.jpg) repeat-y center top ;
+}
+
+#wrap.fullbody {
+	width: 970px;
+	background: #fff url(../images/content-wide-full.jpg) repeat-y center top;
+}
+
+#content-wrap {
+	width: 940px;
+	margin: auto;
+}
+
+#header {
+	background: #caced1 url(../images/header-wide.jpg) no-repeat center top;
+}
+
+/* Main Column */
+#main {
+	width: 650px;
+	margin: 5px 0;
+    padding: 15px;
+	background: url(../images/box-full.jpg) no-repeat;
+}
+
+/* Sidebar */	
+#sidebar {
+	width: 220px;
+	padding: 0px 10px 0px 10px;
+    margin: 0px 5px 0px 5px;
+}
+
+/* Footer */	
+#footer {
+	background: #caced1 url(../images/footer-wide.jpg) no-repeat center top;
+	width: 970px;
+}

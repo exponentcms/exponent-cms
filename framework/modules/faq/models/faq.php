@@ -2,8 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2011 OIC Group, Inc.
-# Written and Designed by Adam Kessler
+# Copyright (c) 2004-2012 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -17,8 +16,19 @@
 #
 ##################################################
 
+/**
+ * @subpackage Models
+ * @package Modules
+ */
+
 class faq extends expRecord {
     public $table = 'faqs';
+
+    protected $attachable_item_types = array(
+        'content_expCats'=>'expCat',
+        'content_expTags'=>'expTag'
+    );
+
     public $validates = array(
         'presence_of'=>array(
             'question'=>array('message'=>'Question is a required field.'),

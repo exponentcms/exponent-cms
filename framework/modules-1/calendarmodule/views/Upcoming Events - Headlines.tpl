@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2011 OIC Group, Inc.
+ * Copyright (c) 2004-2012 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -18,17 +18,19 @@
 {/css}
 
 <div class="module calendar upcoming-events-headlines">
-	{if $enable_ical == true}
-		<a class="icallink module-actions" href="{link action=ical}" title="{'iCalendar Feed'|gettext}" alt="{'iCalendar Feed'|gettext}"></a>
-	{/if}
-    {if $moduletitle != ""}<h2>{$moduletitle}</h2>{/if}
+    <h2>
+        {if $enable_ical == true}
+            <a class="icallink module-actions" href="{link action=ical}" title="{'iCalendar Feed'|gettext}" alt="{'iCalendar Feed'|gettext}"> </a>
+        {/if}
+        {if $moduletitle}{$moduletitle}{/if}
+    </h2>
 	{permissions}
 		<div class="module-actions">
 			<p>
-			{if $permissions.administrate == 1}
+			{if $permissions.manage == 1}
 				<a class="adminviewlink mngmntlink" href="{link _common=1 view='Administration' action='show_view' time=$time}">{'Administration View'|gettext}</a>{br}
 			{/if}
-			{if $permissions.post == 1}
+			{if $permissions.create == 1}
 				{icon class=add action=edit title="Add a New Event"|gettext text="Add an Event"|gettext}
 			{/if}
 			</p>
@@ -43,9 +45,9 @@
 					<a class="link" href="{link action=view id=$item->id date_id=$item->eventdate->id}" title="{$item->body|summarize:"html":"para"}">{$item->title}</a>
 					<em class="date">
 						{if $item->is_allday == 1}
-							{$item->eventstart|format_date:$smarty.const.DISPLAY_DATE_FORMAT}
+							{$item->eventstart|format_date}
 						{else}
-							{$item->eventstart|format_date:$smarty.const.DISPLAY_DATE_FORMAT} @ {$item->eventstart|format_date:"%l:%M %p"}
+							{$item->eventstart|format_date} @ {$item->eventstart|format_date:"%l:%M %p"}
 						{/if}
 					</em>
 					{permissions}

@@ -1,6 +1,5 @@
 {*
- * Copyright (c) 2007-2011 OIC Group, Inc.
- * Written and Designed by Adam Kessler
+ * Copyright (c) 2004-2012 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -17,7 +16,7 @@
 {uniqueid assign="id"}
 
 <div class="module text showall-tabview">
-    {if $moduletitle}<h1>{$moduletitle}</h1>{/if}
+    {if $moduletitle && !$config.hidemoduletitle}<h1>{$moduletitle}</h1>{/if}
     {permissions}
         <div class="module-actions">
             {if $permissions.create == 1}
@@ -28,6 +27,9 @@
             {/if}
         </div>
     {/permissions}
+    {if $config.moduledescription != ""}
+        {$config.moduledescription}
+    {/if}
     <div id="{$id}" class="yui-navset exp-skin-tabview hide">
         <ul>
             {foreach from=$items item=tab name=tabs}
@@ -48,8 +50,13 @@
 						</div>
                     {/permissions}
                     <div class="bodycopy">
-                        {filedisplayer view="`$config.filedisplay`" files=$text->expFile id=$text->id}
+                        {if $config.filedisplay != "Downloadable Files"}
+                            {filedisplayer view="`$config.filedisplay`" files=$text->expFile record=$text}
+                        {/if}
                         {$text->body}
+                        {if $config.filedisplay == "Downloadable Files"}
+                            {filedisplayer view="`$config.filedisplay`" files=$text->expFile record=$text}
+                        {/if}
                     </div>
 					{permissions}
 						<div class="module-actions">

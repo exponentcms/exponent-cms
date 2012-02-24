@@ -1,6 +1,5 @@
 {*
- * Copyright (c) 2004-2011 OIC Group, Inc.
- * Written and Designed by Adam Kessler
+ * Copyright (c) 2004-2012 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -15,7 +14,10 @@
  *}
 
 <div class="module blog showall-dates">
-    {if $moduletitle}<h2>{$moduletitle}</h2>{/if}
+    {if $moduletitle && !$config.hidemoduletitle}<h2>{$moduletitle}</h2>{/if}
+    {if $config.moduledescription != ""}
+   		{$config.moduledescription}
+   	{/if}
     {foreach from=$dates item=ydate key=year}
         <h3>{$year}</h3>
         <ul>

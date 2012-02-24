@@ -2,8 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2011 OIC Group, Inc.
-# Created by Adam Kessler @ 05/28/2008
+# Copyright (c) 2004-2012 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -17,6 +16,11 @@
 #
 ##################################################
 
+/**
+ * @subpackage Controllers
+ * @package Modules
+ */
+
 class storeCategoryController extends expNestedNodeController {
 	
 	function displayname() { return "Store Category Manager"; }
@@ -27,13 +31,15 @@ class storeCategoryController extends expNestedNodeController {
 
     // hide the configs we don't need
     public $remove_configs = array(
+        'aggregation',
+        'categories',
         'comments',
         'ealerts',
         'files',
+        'module_title',
         'rss',
-        'aggregation',
         'tags'
-    );
+    ); // all options: ('aggregation','categories','comments','ealerts','files','module_title','pagination','rss','tags')
 
     public function edit() {
 		global $db;

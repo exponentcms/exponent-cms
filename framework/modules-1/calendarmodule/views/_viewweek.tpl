@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2011 OIC Group, Inc.
+ * Copyright (c) 2004-2012 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -20,17 +20,17 @@
 <div class="module calendar viewweek"> 
 	<div class="module-actions">
 		<a class="monthviewlink" href="{link action=viewmonth time=$startweek}" title="{'View Entire Month'|gettext}">{'View Month'|gettext}</a>
-		&nbsp;&nbsp;|&nbsp;&nbsp;{printer_friendly_link class="printer-friendly-link" text='Printer-friendly'|gettext}
+		&nbsp;&nbsp;|&nbsp;&nbsp;{printer_friendly_link text='Printer-friendly'|gettext}
 	</div>
-	<h2>
+	<h1>
 		{if $enable_ical == true}
-			<a class="icallink module-actions" href="{link action=ical}" title="{'iCalendar Feed'|gettext}" alt="{'iCalendar Feed'|gettext}"></a>
+			<a class="icallink module-actions" href="{link action=ical}" title="{'iCalendar Feed'|gettext}" alt="{'iCalendar Feed'|gettext}"> </a>
 		{/if}
-		{if $moduletitle != ""}{$moduletitle}{/if}
-	</h2>
+		{if $moduletitle}{$moduletitle}{/if}
+	</h1>
 	{permissions}
 		<div class="module-actions">
-			{if $permissions.post == 1}
+			{if $permissions.create == 1}
 				{icon class=add action=edit title="Add a New Event"|gettext text="Add an Event"|gettext}
 			{/if}
 		</div>

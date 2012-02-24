@@ -2,8 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2011 OIC Group, Inc.
-# Written and Designed by Adam Kessler
+# Copyright (c) 2004-2012 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -17,8 +16,8 @@
 #
 ##################################################
 
-if (!defined('EXPONENT'))
-    exit('');
+if (!defined('EXPONENT')) exit('');
+
 global $user, $db;
 
 $my_version = gt("Exponent Version")." : ".EXPONENT_VERSION_MAJOR.".".EXPONENT_VERSION_MINOR.".".EXPONENT_VERSION_REVISION."<br />";
@@ -135,6 +134,22 @@ if ($user->isAdmin()) {
 							'action' => 'configure_site'
 						))
 					),
+                    array(
+                        'text' => gt('Manage Tags'),
+                        'classname' => 'manage',
+                        'url' => makeLink(array(
+                            'controller' => 'expTag',
+                            'action' => 'manage'
+                        ))
+                    ),
+                    array(
+                        'text' => gt('Manage Categories'),
+                        'classname' => 'manage',
+                        'url' => makeLink(array(
+                            'controller' => 'expCat',
+                            'action' => 'manage'
+                        ))
+                    ),
 					array(
 						'text' => gt('Regenerate Search Index'),
 						'classname' => 'search',
@@ -167,6 +182,22 @@ if ($user->isAdmin()) {
 							'action' => 'test_smtp'
 						))
 					),
+                    array(
+                        'text' => gt('Manage Tags'),
+                        'classname' => 'manage',
+                        'url' => makeLink(array(
+                            'controller' => 'expTag',
+                            'action' => 'manage'
+                        ))
+                    ),
+                    array(
+                        'text' => gt('Manage Categories'),
+                        'classname' => 'manage',
+                        'url' => makeLink(array(
+                            'controller' => 'expCat',
+                            'action' => 'manage'
+                        ))
+                    ),
 					array(
 						'text' => gt('Regenerate Search Index'),
 						'classname' => 'search',
@@ -299,47 +330,11 @@ if ($user->isSuperAdmin()) {
                 ),
                 
                 array(
-                    'text' => gt('Migration'),
-                    'submenu' => array(
-                        'id' => 'migration',
-                        'itemdata' => array(
-                            array(
-                                'text' => '1 - '.gt('Configure Migration Settings'),
-                                'url' => makeLink(array(
-                                    'module' => 'migration',
-                                    'action' => 'configure'
-                                ))
-                            ),
-                            array(
-                                'text' => '2 - '.gt('Migrate Users/Groups'),
-                                'url' => makeLink(array(
-                                    'module' => 'migration',
-                                    'action' => 'manage_users'
-                                ))
-                            ),
-                            array(
-                                'text' => '3 - '.gt('Migrate Pages'),
-                                'url' => makeLink(array(
-                                    'module' => 'migration',
-                                    'action' => 'manage_pages'
-                                ))
-                            ),
-                            array(
-                                'text' => '4 - '.gt('Migrate Files'),
-                                'url' => makeLink(array(
-                                    'module' => 'migration',
-                                    'action' => 'manage_files'
-                                ))
-                            ),
-                            array(
-                                'text' => '5 - '.gt('Migrate Content'),
-                                'url' => makeLink(array(
-                                    'module' => 'migration',
-                                    'action' => 'manage_content'
-                                ))
-                            )
-                        )
-                    )
+                    'text' => gt('Migrate 0.9x Site'),
+                    'url' => makeLink(array(
+                        'module' => 'migration',
+                        'action' => 'configure'
+                    ))
                 ),
                 array(
                     'text' => gt('Extensions'),

@@ -2,8 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2011 OIC Group, Inc.
-# Written and Designed by James Hunt
+# Copyright (c) 2004-2012 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -18,6 +17,7 @@
 ##################################################
 
 if (!defined('EXPONENT')) exit('');
+
 global $router;
 
 //expHistory::flowSet(SYS_FLOW_PUBLIC,SYS_FLOW_ACTION);
@@ -30,13 +30,13 @@ if ($item) {
 	$item->permissions = array(
 		"edit"=>(expPermissions::check("edit",$iloc) || expPermissions::check("edit",$loc)),
 		"delete"=>(expPermissions::check("delete",$iloc) || expPermissions::check("delete",$loc)),
-		"administrate"=>(expPermissions::check("administrate",$iloc) || expPermissions::check("administrate",$loc)),
+		"manage"=>(expPermissions::check("manage",$iloc) || expPermissions::check("manage",$loc)),
 	);
 	// Debugger test
 	$item->permissions = array(
 		"edit"=>expPermissions::check("edit",$iloc),
 		"delete"=>expPermissions::check("delete",$iloc),
-		"administrate"=>expPermissions::check("administrate",$iloc)
+		"manage"=>expPermissions::check("manage",$iloc)
 	);
 
 	if (!isset($_GET['date_id'])) {
@@ -105,7 +105,7 @@ if ($item) {
 	$template->assign("item",$item);
 	$template->assign("directory","files/calendarmodule/".$loc->src);
 	$template->register_permissions(
-		array("post","edit","delete","administrate","manage_approval"),
+		array("create","edit","delete","manage"),
 		$loc
 	);
 	$template->assign('moduletitle',$title);

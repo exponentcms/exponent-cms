@@ -2,8 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2011 OIC Group, Inc.
-# Written and Designed by James Hunt
+# Copyright (c) 2004-2012 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -49,7 +48,7 @@ class yuieditorcontrol extends formcontrol {
 
 	function controlToHTML($name) {
 //		$html  = '<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.5.2/build/editor/assets/skins/sam/simpleeditor.css" />';
-		$html  = '<link rel="stylesheet" type="text/css" href="'.YUI2_PATH.'editor/assets/skins/sam/simpleeditor.css" />';
+		$html  = '<link rel="stylesheet" type="text/css" href="'.YUI2_PATH.'assets/skins/sam/simpleeditor.css" />';
 		$html .= '<div class="yui-skin-sam"><textarea name="'.$name.'" id="'.$name.'"';
 		$html .= " rows=\"" . $this->rows . "\" cols=\"" . $this->cols . "\"";
 		if ($this->accesskey != "") $html .= " accesskey=\"" . $this->accesskey . "\"";

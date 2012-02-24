@@ -1,6 +1,5 @@
 {*
- * Copyright (c) 2004-2011 OIC Group, Inc.
- * Written and Designed by Adam Kessler
+ * Copyright (c) 2004-2012 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -37,9 +36,9 @@
         {foreach from=$page->records item=doc}
         {assign var=sec value=$doc->section}
         <tr class="{cycle values="odd,even"}">
-            <td><a href={link action=show version=$doc->help_version->version title=$doc->sef_url}>{$doc->title}</a></td>
+            <td><a href={link action=show version=$doc->help_version->version title=$doc->sef_url} title="{$doc->body|summarize:"html":"para"}">{$doc->title}</a></td>
             <td><a href="{link action=manage version=$doc->help_version->id}">{$doc->help_version->version}</a></td>
-	        <td>{$sections[$sec]->name}</td>
+	        <td>{$sections[$doc->loc->src]}</td>
             <td>
                 {permissions}
                     {if $permissions.edit == 1}

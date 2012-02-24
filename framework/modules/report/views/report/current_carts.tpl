@@ -1,10 +1,22 @@
+{*
+ * Copyright (c) 2004-2012 OIC Group, Inc.
+ *
+ * This file is part of Exponent
+ *
+ * Exponent is free software; you can redistribute
+ * it and/or modify it under the terms of the GNU
+ * General Public License as published by the Free
+ * Software Foundation; either version 2 of the
+ * License, or (at your option) any later version.
+ *
+ * GPL: http://www.gnu.org/licenses/gpl.txt
+ *
+ *}
+
 {include file='menu.inc'}
 
-{css unique="current_carts" corecss="tables"}
+{css unique="current_carts" link="`$asset_path`/css/accordion.css" corecss="tables"}
 
-{/css}
-
-{css unique="ecom-report2" link="`$asset_path`/css/accordion.css"}
 {/css}
 
 <script type="text/javascript" src="http://yui.yahooapis.com/2.7.0/build/utilities/utilities.js"></script>
@@ -211,5 +223,5 @@
 		{/if}
 	</div>
 </div>
-<div style="clear:both"></div>
+{clear}
 </div>

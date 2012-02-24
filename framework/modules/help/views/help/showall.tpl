@@ -1,6 +1,5 @@
 {*
- * Copyright (c) 2007-2011 OIC Group, Inc.
- * Written and Designed by Adam Kessler
+ * Copyright (c) 2004-2012 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -15,8 +14,7 @@
  *}
 
 <div class="module help showall">
-    {if $moduletitle}<h1>{$moduletitle}</h1>{/if}
-
+    {if $moduletitle && !$config.hidemoduletitle}<h1>{$moduletitle}</h1>{/if}
     {permissions}
         {if $permissions.create == 1}
             {icon class=add action=edit text="Add a Help Doc"|gettext}{br}
@@ -29,13 +27,15 @@
 		    {/if}
         {/if}
     {/permissions}
-    
+    {if $config.moduledescription != ""}
+   		{$config.moduledescription}
+   	{/if}
     <dl>
     {foreach from=$page->records item=doc name=docs}
         <div class="item">
             <dt>
                 <h2>
-                    <a href={link controller=help action=show version=$doc->help_version->version title=$doc->sef_url}>{$doc->title}</a>
+                    <a href={link controller=help action=show version=$doc->help_version->version title=$doc->sef_url} title="{$doc->body|summarize:"html":"para"}">{$doc->title}</a>
                 </h2>
             </dt>
             
@@ -52,7 +52,8 @@
             {/permissions}
             
             <div class="bodycopy">
-                {$doc->summary}
+                {*{$doc->summary}*}
+                {$doc->body|summarize:"html":"paralinks"}
             </div>
             
         </div>

@@ -1,3 +1,18 @@
-{control type="hidden" name="tab_loaded[featured]" value=1} 
+{*
+ * Copyright (c) 2004-2012 OIC Group, Inc.
+ *
+ * This file is part of Exponent
+ *
+ * Exponent is free software; you can redistribute
+ * it and/or modify it under the terms of the GNU
+ * General Public License as published by the Free
+ * Software Foundation; either version 2 of the
+ * License, or (at your option) any later version.
+ *
+ * GPL: http://www.gnu.org/licenses/gpl.txt
+ *
+ *}
+
+{control type="hidden" name="tab_loaded[featured]" value=1}
 {control type="checkbox" name="featured[is_featured]" label="Feature this product?"|gettext value=1 checked=$record->is_featured postfalse=1}
 {control type="textarea" name="featured[featured_body]" label="Featured Description"|gettext height=450 value=$record->featured_body}

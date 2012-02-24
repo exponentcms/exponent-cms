@@ -2,8 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2011 OIC Group, Inc.
-# Written and Designed by Adam Kessler
+# Copyright (c) 2004-2012 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -16,6 +15,11 @@
 # GPL: http://www.gnu.org/licenses/gpl.txt
 #
 ##################################################
+
+/**
+ * @subpackage Controllers
+ * @package Modules
+ */
 /** @define "BASE" "../../../.." */
 
 class usersController extends expController {
@@ -114,11 +118,15 @@ class usersController extends expController {
         if (!empty($id)) {
             $u = new user($id);
             $u->update($this->params);  
-            if ($user->isAdmin()) {
+            if ($user->isAdmin() && $user->id != $id) {
                 flash('message', gt('Account information for').' '.$u->username.' '.gt('has been updated.'));
             } else {
                 flash('message', gt('Thank you').' '.$u->firstname.'.  '.gt('Your account information has been updated.'));
-            }          
+            }
+            if ($user->id == $id) {
+                $_SESSION[SYS_SESSION_KEY]['user'] = $u;
+                $user = $u;
+            }
         } else {
             $u = new user($this->params);
             $ret = $u->setPassword($this->params['pass1'], $this->params['pass2']);
@@ -150,7 +158,7 @@ class usersController extends expController {
         // if this is a new account then we will check to see if we need to send 
         // a welcome message or admin notification of new accounts.
         if (empty($id)) {
-            // Calculate Group Memeberships for newly created users.  Any groups that
+            // Calculate Group Memberships for newly created users.  Any groups that
 	        // are marked as 'inclusive' automatically pick up new users.  This is the part
 	        // of the code that goes out, finds those groups, and makes the new user a member
 	        // of them.
@@ -161,13 +169,14 @@ class usersController extends expController {
 	        if (isset($this->params['groupcode']) && $this->params['groupcode'] != '') {
 		        $code_where = " OR code='".$this->params['groupcode']."'";
 	        }
+            // Add to default plus any groupcode groups
 	        foreach($db->selectObjects('group','inclusive=1'.$code_where) as $g) {
 		        $memb->group_id = $g->id;
 		        $db->insertObject($memb,'groupmembership');
 	        }
 
             // if we added the user to any group than we need to reload their permissions
-            expPermissions::load($u);
+//            expPermissions::load($u);  //FIXME why are we doing this? this loads the edited user perms over the current user???
             
 	        //signup email stuff
           	if (USER_REGISTRATION_SEND_WELCOME){
@@ -200,8 +209,14 @@ class usersController extends expController {
 					    'subject'=>USER_REGISTRATION_NOTIF_SUBJECT,
 		        ));
           	}
-        }        
-        
+        }
+
+        // we need to reload our updated profile if we just edited our own account
+        if ($id == $user->id) {
+            $user->getUserProfile();
+//            expPermissions::load($user);  // not sure this is necessary since we can't add groups here
+        }
+
         expHistory::back();
     }
     

@@ -1,6 +1,5 @@
 {*
- * Copyright (c) 2007-2008 OIC Group, Inc.
- * Written and Designed by Adam Kessler
+ * Copyright (c) 2004-2012 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -50,12 +49,18 @@
                     </td>
                     <td>
                         {foreach from=$listing->attached item="type" key=key name=types}
-                            <strong>{$key}</strong><br />
+                            <strong>{$key}</strong>{br}
+                            <ul class="tag-list">
                             {foreach from=$type item=ai name=ai}
-                                <a href="{link controller=$key action="show" title=$ai->sef_url}">{$ai->title|truncate:50:"..."}</a>
-                                <br />
-                                <br />
+                                <li>
+                                {if $key!='faq'}
+                                    <a href="{link controller=$key action="show" title=$ai->sef_url}">{$ai->title|truncate:50:"..."}</a>
+                                {else}
+                                    {$ai->title|truncate:50:"..."}
+                                {/if}
+                                </li>
                             {/foreach}
+                            </ul>
                         {/foreach}
                     </td>
                     <td>

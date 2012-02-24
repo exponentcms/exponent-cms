@@ -1,6 +1,5 @@
 {*
- * Copyright (c) 2004-2011 OIC Group, Inc.
- * Written and Designed by Adam Kessler
+ * Copyright (c) 2004-2012 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -19,28 +18,30 @@
 {/css}
  
 <div class="module news headlines">
-    {if $enable_rss == true}
-        <a class="rsslink" href="{rsslink}">{'Subscribe to'|gettext} {$config.feed_title}</a>
+    {if $moduletitle && !$config.hidemoduletitle}<h2>{/if}
+    {if $config.enable_rss == true}
+        <a class="rsslink" href="{rsslink}" title="{'Subscribe to'|gettext} {$config.feed_title}"></a>
     {/if}
-    {if $moduletitle != ""}<h2>{$moduletitle}</h2>{/if}
-
+    {if $moduletitle && !$config.hidemoduletitle}{$moduletitle}</h2>{/if}
     {permissions}
         <div class="module-actions">
 			{if $permissions.create == true || $permissions.edit}
-				<a class="add" href="{link action=create}">{"Add a news post"|gettext}</a>
+				{icon class="add" action=create title="Add a news post"|gettext}</a>
 			{/if}
 			{if $permissions.showUnpublished == 1 }
-				<a class="view" href="{link action=showUnpublished}">{"View Unpublished"|gettext}</a>
+				{icon class="view" action=showUnpublished title="View Unpublished"|gettext}</a>
 			{/if}
         </div>
     {/permissions}
-
+    {if $config.moduledescription != ""}
+   		{$config.moduledescription}
+   	{/if}
     <ul>
     {foreach name=items from=$page->records item=item}
         {if $smarty.foreach.items.iteration<=$config.headcount || !$config.headcount}
-            
+
         <li>
-            <a class="link" href="{if $item->isRss}{$item->rss_link}{else}{link action=showByTitle title=$item->sef_url}{/if}">                 
+            <a class="link" href="{if $item->isRss}{$item->rss_link}{else}{link action=showByTitle title=$item->sef_url}{/if}" title="{$item->body|summarize:"html":"para"}">
                 {$item->title}
             </a>
             
@@ -72,5 +73,8 @@
 
         {/if}
     {/foreach}
-    </ul>    
+    </ul>
+    {if $page->total_records > $config.headcount}
+        {icon action="showall" text="More News..."|gettext}
+    {/if}
 </div>

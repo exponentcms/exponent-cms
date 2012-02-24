@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2011 OIC Group, Inc.
+ * Copyright (c) 2004-2012 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -28,7 +28,7 @@
 	{foreach from=$days item=items key=ts}
 		{if_elements array=$items}
 			<div class="sectiontitle">
-			{$ts|format_date:$smarty.const.DISPLAY_DATE_FORMAT}
+			{$ts|format_date}
 			</div>
 			{assign var=none value=1}
 			{foreach from=$items item=item}
@@ -36,7 +36,7 @@
 				<div class="paragraph">
 					<a class="mngmntlink calendar_mngmntlink" href="{link action=view id=$item->id date_id=$item->eventdate->id}" title="{$item->body|summarize:"html":"para"}">{$item->title}</a>
 					{if $item->is_allday == 0}&nbsp;{$item->eventstart|format_date:$smarty.const.DISPLAY_TIME_FORMAT} - {$item->eventend|format_date:$smarty.const.DISPLAY_TIME_FORMAT}{/if}
-					{if $permissions.edit == 1 || $item->permissions.edit == 1 || $permissions.delete == 1 || $item->permissions.delete == 1 || $permissions.administrate == 1 || $item->permissions.administrate == 1}
+					{if $permissions.edit == 1 || $item->permissions.edit == 1 || $permissions.delete == 1 || $item->permissions.delete == 1 || $permissions.manage == 1 || $item->permissions.manage == 1}
 						<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 					{/if}
 					{permissions}
@@ -63,7 +63,7 @@
 		{/if_elements}
 	{/foreach}
 	{permissions}
-		{if $permissions.post == 1}
+		{if $permissions.create == 1}
 			<div class="module-actions">
 				{icon class="add" action=edit title="Add a New Event"|gettext text="Add an Event"|gettext}
 			</div>

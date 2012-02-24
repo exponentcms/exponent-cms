@@ -1,26 +1,27 @@
 <?php
+##################################################
+#
+# Copyright (c) 2004-2012 OIC Group, Inc.
+#
+# This file is part of Exponent
+#
+# Exponent is free software; you can redistribute
+# it and/or modify it under the terms of the GNU
+# General Public License as published by the Free
+# Software Foundation; either version 2 of the
+# License, or (at your option) any later version.
+#
+# GPL: http://www.gnu.org/licenses/gpl.txt
+#
+##################################################
+
 /**
- *  This file is part of Exponent
- *  Exponent is free software; you can redistribute
- *  it and/or modify it under the terms of the GNU
- *  General Public License as published by the Free
- *  Software Foundation; either version 2 of the
- *  License, or (at your option) any later version.
- *
- * The file that holds the expMail class
- *
- * @link http://www.gnu.org/licenses/gpl.txt GPL http://www.gnu.org/licenses/gpl.txt
- * @package Exponent-CMS
- * @copyright 2004-2006 OIC Group, Inc.
- * @author Online Innovative Creations
- * @version 2.0.0
- */
-/**
- * exponentMail is an integrator class, bringing the flexibility of SwiftMail into Exponent gracefully.
+ * This is the class expMail
+ * expMail is an integrator class, bringing the flexibility of SwiftMail into Exponent gracefully.
  * More docs to follow as I become more familiar with SwiftMail.
  *
- * @subpackage Core-Subsystems
- * @package Framework
+ * @package Subsystems
+ * @subpackage Subsystems
  */
 /** @define "BASE" "../../.." */
 

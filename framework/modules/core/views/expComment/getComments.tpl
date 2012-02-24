@@ -1,6 +1,5 @@
 {*
- * Copyright (c) 2007-2011 OIC Group, Inc.
- * Written and Designed by Adam Kessler
+ * Copyright (c) 2004-2012 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -22,7 +21,6 @@
 	{if !$hidecomments && $comments|@count > 0}
 	    <a id="exp-comments"></a>
 	    {if $title}<h3>{$title}</h3>{/if}
-	    
 	    {if $unapproved > 0}
 			<div class="unapproved msg-queue notice">
 			    <div class="msg">
@@ -30,23 +28,20 @@
 			    </div>
 			</div>
 	    {/if}
-        
         {if $comments->records|@count!=0}
 	    <ol class="commentlist">		
         {foreach from=$comments->records item=cmt name=comments}
 			<li class="comment">
 				<cite>
 					<span class="attribution">
-						
 						{if $cmt->name != ''}
 							{$cmt->name}
 						{else}
 							{$cmt->username}
 						{/if}
-						
 						{*$cmt->name *} says
 					</span>
-					<span class="comment-date">{$cmt->created_at|format_date:$smarty.const.DISPLAY_DATE_FORMAT}</span>
+					<span class="comment-date">{$cmt->created_at|format_date}</span>
 				</cite>
 				<div class="comment-text bodycopy">	
 					{img src=$cmt->image h=80}   
@@ -60,7 +55,6 @@
 						{/if}
 					<div>
 					{/permissions}
-
 					{$cmt->body}
 				</div>
 			</li>

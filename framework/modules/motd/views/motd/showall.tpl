@@ -1,6 +1,5 @@
 {*
- * Copyright (c) 2004-2011 OIC Group, Inc.
- * Written and Designed by Adam Kessler
+ * Copyright (c) 2004-2012 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -19,11 +18,10 @@
 {/css}
 
 <div class="module motd showall">
-    <h1>{$moduletitle|default:"Messages by day"|gettext}</h1>
+    {if !$config.hidemoduletitle}<h1>{$moduletitle|default:"Messages by day"|gettext}</h1>{/if}
     <div class="bodycopy">
         {$record->body}
     </div>
-    
     {pagelinks paginate=$page top=1}
     {permissions}
 		<div class="module-actions">
@@ -32,6 +30,9 @@
 			{/if}
 		</div>
     {/permissions}
+    {if $config.moduledescription != ""}
+        {$config.moduledescription}
+    {/if}
     <table id="prods" class="exp-skin-table">
 		<thead>
 			<tr>

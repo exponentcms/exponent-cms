@@ -1,3 +1,18 @@
+{*
+ * Copyright (c) 2004-2012 OIC Group, Inc.
+ *
+ * This file is part of Exponent
+ *
+ * Exponent is free software; you can redistribute
+ * it and/or modify it under the terms of the GNU
+ * General Public License as published by the Free
+ * Software Foundation; either version 2 of the
+ * License, or (at your option) any later version.
+ *
+ * GPL: http://www.gnu.org/licenses/gpl.txt
+ *
+ *}
+
 {if $error}
 <span style="color: red">{$error}</span>
 {/if}
@@ -21,12 +36,11 @@
 {/form}
 <h3 style="float: right;">{$count} {'model aliases left'|gettext}.</h3>
 {clear}
-<style type="text/css">
-{literal}
 
+{css unique="processModelAliases"}
+{literal}
 	#product_title, #resultsproduct_title {
 		width: 450px;
 	}
-	
 {/literal}
-</style>
+{/css}

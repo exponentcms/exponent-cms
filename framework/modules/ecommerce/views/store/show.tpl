@@ -1,6 +1,5 @@
 {*
- * Copyright (c) 2007-2008 OIC Group, Inc.
- * Written and Designed by Adam Kessler
+ * Copyright (c) 2004-2012 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -327,7 +326,7 @@
         <h3>{"Additional Product Information"|gettext}</h3>
         <ul>
         {foreach from=$product->expFile.brochures item=doc}
-            <li><a href="{link action=downloadfile id=$doc->id}">{if $doc->title}{$doc->title}{else}{$doc->filename}{/if}</a></li>
+            <li><a class="downloadfile" href="{link action=downloadfile id=$doc->id}">{if $doc->title}{$doc->title}{else}{$doc->filename}{/if}</a></li>
         {/foreach}
         </ul>
     </div>
@@ -395,7 +394,7 @@
      </div> 
      {/if}   
 
-    <div style="clear:both"></div>
+    {clear}
     {if $product->childProduct|@count >= 1}
     {permissions}                   
     {if $permissions.delete == 1}   

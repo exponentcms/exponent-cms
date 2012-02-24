@@ -2,8 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2011 OIC Group, Inc.
-# Written and Designed by James Hunt
+# Copyright (c) 2004-2012 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -17,8 +16,10 @@
 #
 ##################################################
 
-if (!defined('EXPONENT')) exit('');
-
+/**
+ * @subpackage Definitions
+ * @package Modules
+ */
 return array(
 	'member_id'=>array(
 		DB_FIELD_TYPE=>DB_DEF_ID),

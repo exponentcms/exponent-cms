@@ -2,8 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2011 OIC Group, Inc.
-# Written and Designed by Adam Kessler
+# Copyright (c) 2004-2012 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -16,6 +15,11 @@
 # GPL: http://www.gnu.org/licenses/gpl.txt
 #
 ##################################################
+
+/**
+ * @subpackage Controllers
+ * @package Modules
+ */
 
 class helpController extends expController {
 	public $useractions = array(
@@ -91,22 +95,18 @@ class helpController extends expController {
 	    if (empty($help->help_version_id)) $help->help_version_id = $version;
 
 		$sectionlist = array();
-		$sections = $db->selectObjectsIndexedArray('section',1);
 		$helpsections = $db->selectObjects('help',1);
 		foreach ($helpsections as $helpsection) {
-			if ($helpsection->location_data != null) {
+			if (!empty($helpsection->location_data)) {
 				$helpsrc = expUnserialize($helpsection->location_data);
-				if (!array_key_exists($helpsrc->src, $sectionlist) && $helpsection->section != 0) {
-					$sectionlist[$helpsrc->src] = $sections[$helpsection->section]->name;
-					if ($helpsection->section == $sectionObj->id) {
-						$sectionlist[$helpsrc->src] .= " (current section)";
-					}
+				if (!array_key_exists($helpsrc->src, $sectionlist)) {
+                    $sectionlist[$helpsrc->src] = $db->selectValue('section', 'name', 'id="' . $db->selectValue('sectionref', 'section', 'module = "helpController" AND source="' . $helpsrc->src .'"').'"');
 				}
 			}
 		}
-		$sectionlist[$this->loc->src] = $sectionObj->name." (current section)";
-//	    assign_to_template(array('record'=>$help,"cursec"=>$sectionObj->id,"sections"=>$sectionlist));
-	    assign_to_template(array('record'=>$help,"cursec"=>$this->loc->src,"sections"=>$sectionlist));
+        $sectionlist[$this->loc->src] .= gt(" (current section)");
+
+	    assign_to_template(array('record'=>$help,"current_section"=>$this->loc->src,"sections"=>$sectionlist));
 	}
 
     /**
@@ -116,7 +116,6 @@ class helpController extends expController {
 	    global $db;
 	
 	    expHistory::set('viewable', $this->params);
-
 	    $help = new help();
         if (empty($this->params['version']) || $this->params['version'] == 'current') {
 	        $version_id = $db->selectValue('help_version', 'id', 'is_current=1');
@@ -127,6 +126,7 @@ class helpController extends expController {
             }
 	    }
 	    $doc = $help->find('first', 'help_version_id='.$version_id.' AND sef_url="'.$this->params['title'].'"');
+
 	    assign_to_template(array('doc'=>$doc,"hv"=>$this->help_version));
 	}
 
@@ -145,9 +145,12 @@ class helpController extends expController {
 	        redirect_to(array('controller'=>'help', 'action'=>'edit_version'));
 	    }
 
-		// for now we'll display help by section, though location_data would be more accurate
-		//  this helps find problems in older help docs
-	    $sections = $db->selectObjectsIndexedArray('section',1);
+        $sections = array();
+        foreach ($db->selectObjects('sectionref','module="helpController"') as $sectionref) {
+            if (!empty($sectionref->source) && empty($sections[$sectionref->source])) {
+                $sections[$sectionref->source] = $db->selectValue('section', 'name', 'id="' . $sectionref->section .'"');
+            }
+        }
 
 	    $where = empty($this->params['version']) ? 1 : 'help_version_id='.$this->params['version'];
 	    $page = new expPaginator(array(
@@ -160,7 +163,7 @@ class helpController extends expController {
 	                'action'=>$this->params['action'],
 	                'columns'=>array('Title'=>'title', 'Version'=>'help_version_id', 'Section'=>'section'),
 	                ));
-	    
+
 	    assign_to_template(array('current_version'=>$current_version, 'page'=>$page, 'sections'=>$sections));
 	}
 
@@ -175,7 +178,8 @@ class helpController extends expController {
 	    global $db;
 	    	    
 	    $help = new help();
-	    $current_docs = $help->find('all', 'help_version_id='.$from);
+        $order = 'rank DESC';
+	    $current_docs = $help->find('all', 'help_version_id='.$from,$order);
 	    foreach ($current_docs as $key=>$doc) {
 	        unset($doc->id);
 	        $doc->help_version_id = $to;
@@ -222,7 +226,7 @@ class helpController extends expController {
 	    $page = new expPaginator(array(
 	                'sql'=>$sql, 
 	                'limit'=>30,
-	                'order'=>'help_version_id',
+	                'order'=>'version',
 	                'dir'=>'DESC',
 	                'controller'=>$this->baseclassname,
 	                'action'=>$this->params['action'],
@@ -398,10 +402,15 @@ class helpController extends expController {
 	public static function getSection($params) {
 	    global $db;
 	    $h = new help();
-	    $hv = $db->selectValue('help_version', 'id', 'version='.$params['version']);
+        if (empty($params['version']) || $params['version']=='current') {
+            $hv = $db->selectValue('help_version', 'id', 'is_current=1');
+        } else {
+            $hv = $db->selectValue('help_version', 'id', 'version='.$params['version']);
+        }
 	    $help = $h->find('first','help_version_id='.$hv.' and sef_url=\''.$params['title'].'\'');
-	    $sessec = expSession::get('last_section') ? expSession::get('last_section') : 1 ;
-	    $sid = ($help->section!=0)?$help->section:$sessec;
+	    $session_section = expSession::get('last_section') ? expSession::get('last_section') : 1 ;
+        $help_sectionref = $db->selectObject('sectionref','module="helpController" AND source="'. expUnserialize($help->location_data)->src.'"');
+        $sid = !empty($help_sectionref) ? $help_sectionref->section : (($help->section!=0) ? $help->section : $session_section);
         if (!expSession::get('last_section')) {
             expSession::set('last_section',$sid);
         }

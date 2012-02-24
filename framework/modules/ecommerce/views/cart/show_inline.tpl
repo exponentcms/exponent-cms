@@ -1,6 +1,5 @@
 {*
- * Copyright (c) 2007-2008 OIC Group, Inc.
- * Written and Designed by Adam Kessler
+ * Copyright (c) 2004-2012 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -19,7 +18,7 @@
 {/css}
 
 <div class="module cart show-inline">
-    {if $moduletitle}<h2>{$moduletitle}</h2>{/if}
+    {if $moduletitle && !$config.hidemoduletitle}<h2>{$moduletitle}</h2>{/if}
     <div class="total">
         {"Total"|gettext}: <span class="carttotal">{currency_symbol}{$order->total|number_format:2}</span>
     </div>
@@ -36,7 +35,7 @@
                     {$item->quantity} @ <span class="price">{currency_symbol}{$item->products_price|number_format:2}</span>
                 </div>
                 <a href="{link action=removeItem id=$item->id}" class="delete">Remove from cart</a>
-                <div style="clear:both"></div>
+                {clear}
             </li>
         {foreachelse}
             <li>{'You currently have no items in your cart'|gettext}</li>

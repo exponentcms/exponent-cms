@@ -1,6 +1,5 @@
 {*
- * Copyright (c) 2004-2008 OIC Group, Inc.
- * Written and Designed by Adam Kessler
+ * Copyright (c) 2004-2012 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -13,7 +12,6 @@
  * GPL: http://www.gnu.org/licenses/gpl.txt
  *
  *}
- 
  
 {css unique="add-to-cart" link="`$smarty.const.PATH_RELATIVE`framework/modules/ecommerce/assets/css/addToCart.css"}
 
@@ -34,7 +32,7 @@
         {"If you are ordering multiple quantities of this item, the SAME information you select here will be applied to all of the items."|gettext}&nbsp;&nbsp;
         {"If you would like different options or personalized fields for each item, please add them one at a time to your cart."|gettext}
     </p>
-    <div style="clear:both"></div>
+    {clear}
     {script unique="children-submit"}
         {literal}
         YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {

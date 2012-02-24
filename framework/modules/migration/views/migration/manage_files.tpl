@@ -1,6 +1,5 @@
 {*
- * Copyright (c) 2004-2011 OIC Group, Inc.
- * Written and Designed by Adam Kessler
+ * Copyright (c) 2004-2012 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -14,7 +13,13 @@
  *
  *}
 
+{css unique="manage-files" corecss="button"}
+
+{/css}
+
 <div class="module migration manage-files">
+ 	<a class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" href="{link module=migration action=manage_content}"><b>{'Skip to Next Step -> Migrate Content'|gettext}</b></a>
+    {br}{br}<hr />
     <div class="info-header">
         <div class="related-actions">
 			{help text="Get Help"|gettext|cat:" "|cat:("Migrating Files"|gettext) module="migrate-files"}
@@ -30,14 +35,6 @@
             {br}{'WARNING: This process will wipe out all current file records in the database'|gettext}.
         </span>
     </p>
-    {form action="migrate_files"}
-        <table>
-			<tbody>
-				<tr><td>{if $count > 0}{$count}{else}No{/if} {'files found in the database'|gettext} '{$config.database}'</td>
-			</tbody>
-        </table>
-        {control type="buttongroup" submit="Migrate Files"|gettext cancel="Cancel"|gettext}
-    {/form}
-	{br}<hr>{br}
-	<a class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" href="{link module=migration action=manage_content}"><b>{'Next Step -> Migrate Content'|gettext}</b></a>
+    <h3>{if $count > 0}{$count}{else}{'No'|gettext}{/if} {'files found in the database'|gettext} '{$config.database}'</h3>
+    {br}<a class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" href="{link module=migration action=migrate_files}"><b>{'Migrate Files'|gettext}</b></a>{br}
 </div>

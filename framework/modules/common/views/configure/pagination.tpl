@@ -1,6 +1,5 @@
 {*
- * Copyright (c) 2004-2011 OIC Group, Inc.
- * Written and Designed by Adam Kessler
+ * Copyright (c) 2004-2012 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -14,7 +13,7 @@
  *
  *}
 
-<h2>{"Pagination"|gettext}</h2>
+<h2>{"Pagination Settings"|gettext}</h2>
 {control type=text name=limit label="Items per page"|gettext value=$config.limit}
 {control type=dropdown name=pagelinks label="Show page links"|gettext items="Top and Bottom,Top Only,Bottom Only,Don't show page links" values="Top and Bottom,Top Only,Bottom Only,Don't show page links" value=$config.pagelinks}
 {control type="checkbox" name="multipageonly" label="Disable page links until page limit is reached"|gettext value=1 checked=$config.multipageonly}

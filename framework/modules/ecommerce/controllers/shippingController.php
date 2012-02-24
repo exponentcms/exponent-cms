@@ -2,8 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2011 OIC Group, Inc.
-# Written and Designed by Adam Kessler
+# Copyright (c) 2004-2012 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -13,9 +12,14 @@
 # Software Foundation; either version 2 of the
 # License, or (at your option) any later version.
 #
-# GPL: http://www.gnu.org/licenses/gpl.txts
+# GPL: http://www.gnu.org/licenses/gpl.txt
 #
 ##################################################
+
+/**
+ * @subpackage Controllers
+ * @package Modules
+ */
 
 class shippingController extends expController {
 	public $useractions = array();

@@ -1,6 +1,5 @@
 {*
- * Copyright (c) 2004-2011 OIC Group, Inc.
- * Written and Designed by Adam Kessler
+ * Copyright (c) 2004-2012 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -21,7 +20,7 @@
 {/css}
 
 <div class="module photoalbum slideshow">
-    {if $moduletitle != ""}<h1>{$moduletitle}</h1>{/if}
+    {if $moduletitle && !$config.hidemoduletitle}<h1>{$moduletitle}</h1>{/if}
     {permissions}
     <div class="module-actions">
         {if $permissions.create == 1}
@@ -32,6 +31,9 @@
         {/if}
     </div>
     {/permissions}
+    {if $config.moduledescription != ""}
+   		{$config.moduledescription}
+   	{/if}
     <div id="ss-{$name}" class="slideshow-container" style="width:{$config.width|default:350}px;">
         <ul class="slideshow-frame" style="width:{$config.width|default:350}px;height:{$config.height|default:300}px;">
 			{assign var=quality value=$config.quality|default:$smarty.const.THUMB_QUALITY}
@@ -50,12 +52,12 @@
                         {/if}
                     </div>
                 {/permissions}
-                <div class="bodycopy">
-                    {if !$config.hidetext}
+                {if !$config.hidetext}
+                    <div class="bodycopy">
                         <h2>{$slide->title}</h2>
                         {$slide->body}
-                    {/if}
-                </div>
+                    </div>
+                {/if}
                 {if $slide->link}
                     <a href="{$slide->link}">
                 {/if}

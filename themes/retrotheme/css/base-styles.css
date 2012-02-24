@@ -17,7 +17,7 @@ body {
     background:url(../images/head.jpg) no-repeat right 55px;
 }
 
-#hd .top-nav {
+#hd .yui-top-nav {
     position:absolute;
     z-index:5;
     bottom:0;

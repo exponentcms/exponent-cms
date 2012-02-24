@@ -35,8 +35,51 @@ a.printer-friendly-link {
 	background:url(../images/print.png) no-repeat 0 50%;
 }
 
-.date {
+a.showall {
+    padding:3px 3px 3px 22px;
+    display:inline-block;
+    zoom:1;
+    text-transform:capitalize;
+    background: url(../images/view_latest_post.gif) no-repeat 0 50%;
+}
+
+a.readmore {
+    padding:3px 3px 3px 15px;
+    display:inline-block;
+    zoom:1;
+    background: url(../images/readmore.gif) no-repeat 0 50%;
+}
+
+a.downloadfile {
+    padding:3px 3px 3px 20px;
+    display:inline-block;
+    zoom:1;
+    background: url(../images/download.png) no-repeat 0 50%;
+}
+
+input.downloadfile {
+    padding-left:15px;
+    display:inline-block;
+    zoom:1;
+    background: url(../images/download.png) no-repeat 0 50%;
+}
+
+.button.uploadfile {
+    padding-left:20px;
+    display:inline-block;
+    zoom:1;
+    background: url(../images/upload.png) no-repeat 0 50%;
+}
+
+.date, .attribution, .tags {
     color:#777;
+    font-size:90%;
+    font-style:italic;
+}
+
+a.comments {
+    font-size:90%;
+    font-style:italic;
 }
 
 img.border {

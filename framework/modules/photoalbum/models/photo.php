@@ -2,8 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2011 OIC Group, Inc.
-# Written and Designed by Adam Kessler
+# Copyright (c) 2004-2012 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -17,6 +16,11 @@
 #
 ##################################################
 
+/**
+ * @subpackage Models
+ * @package Modules
+ */
+
 class photo extends expRecord {
     //public $table = 'portfolio';
     public $validates = array(
@@ -25,8 +29,10 @@ class photo extends expRecord {
             //'body'=>array('message'=>'Body is a required field.'),
         ));
     protected $attachable_item_types = array(
-        'content_expFiles'=>'expFile'
-    );    
+        'content_expFiles'=>'expFile',
+	    'content_expCats'=>'expCat',
+    	'content_expTags'=>'expTag'
+    );
 }
 
 ?>

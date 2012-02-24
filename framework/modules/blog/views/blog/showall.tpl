@@ -1,6 +1,5 @@
 {*
- * Copyright (c) 2004-2011 OIC Group, Inc.
- * Written and Designed by Adam Kessler
+ * Copyright (c) 2004-2012 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -19,25 +18,29 @@
 {/css}
 
 <div class="module blog showall">
+    {if $moduletitle && !$config.hidemoduletitle}<h1>{/if}
     {if $config.enable_rss == true}
-        <a class="rsslink" href="{rsslink}">{'Subscribe to'|gettext} {$config.feed_title}</a>
+        <a class="rsslink" href="{rsslink}" title="{'Subscribe to'|gettext} {$config.feed_title}"></a>
     {/if}
-    {if $moduletitle}<h1>{$moduletitle}</h1>{/if}
+    {if $moduletitle && !$config.hidemoduletitle}{$moduletitle}</h1>{/if}
     {permissions}
 		<div class="module-actions">
 			{if $permissions.edit == 1}
 				{icon class=add action=edit text="Add a new blog article"|gettext}
 			{/if}
             {if $permissions.manage == 1}
-                {icon class="manage" controller=expTag action=manage text="Manage Tags"|gettext}
+                {icon controller=expTag action=manage text="Manage Tags"|gettext}
             {/if}
 		</div>
     {/permissions}
+    {if $config.moduledescription != ""}
+   		{$config.moduledescription}
+   	{/if}
     {pagelinks paginate=$page top=1}
     {foreach from=$page->records item=item}
         <div class="item">
             <h2>
-            <a href="{link action=show title=$item->sef_url}">
+            <a href="{link action=show title=$item->sef_url}" title="{$item->body|summarize:"html":"para"}">
             {$item->title}
             </a>
             </h2>
@@ -53,12 +56,12 @@
             {/permissions}
             <div class="post-info">
                 <span class="attribution">
-                    {'Posted by'|gettext} <a href="{link action=showall_by_author author=$item->poster|username}">{attribution user_id=$item->poster}</a> {'on'|gettext} <span class="date">{$item->created_at|format_date:$smarty.const.DISPLAY_DATE_FORMAT}</span>
+                    {'Posted by'|gettext} <a href="{link action=showall_by_author author=$item->poster|username}">{attribution user_id=$item->poster}</a> {'on'|gettext} <span class="date">{$item->created_at|format_date}</span>
                 </span>
 
                 | <a class="comments" href="{link action=show title=$item->sef_url}#exp-comments">{$item->expComment|@count} {"Comments"|gettext}</a>
                 
-				{if $item->expTag[0]->id}
+				{if $item->expTag|@count>0 && !$config.disabletags}
 				| <span class="tags">
 					{"Tags"|gettext}: 
 					{foreach from=$item->expTag item=tag name=tags}
@@ -68,14 +71,18 @@
 				{/if}
             </div>
             <div class="bodycopy">
-                {filedisplayer view="`$config.filedisplay`" files=$item->expFile item=$item is_listing=1}
+                {if $config.filedisplay != "Downloadable Files"}
+                    {filedisplayer view="`$config.filedisplay`" files=$item->expFile record=$item is_listing=1}
+                {/if}
     			{if $config.usebody==1}
     				<p>{$item->body|summarize:"html":"paralinks"}</p>
     			{elseif $config.usebody==2}
     			{else}
     				{$item->body}
     			{/if}			
-                
+                {if $config.filedisplay == "Downloadable Files"}
+                    {filedisplayer view="`$config.filedisplay`" files=$item->expFile record=$item is_listing=1}
+                {/if}
             </div>
         </div>
     {/foreach}    

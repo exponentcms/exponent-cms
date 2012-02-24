@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2011 OIC Group, Inc.
+ * Copyright (c) 2004-2012 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -21,17 +21,17 @@
 	<div class="module-actions">
 		<a class="weekviewlink" href="{link action=viewweek time=$now view=_viewweek}" title="{'View Entire Week'|gettext}">{'View Week'|gettext}</a>&nbsp;&nbsp;|&nbsp;&nbsp;
 		<a class="monthviewlink" href="{link action=viewmonth time=$item->eventstart}" title="{'View Entire Month'|gettext}" alt="{'View Entire Month'|gettext}">{'View Month'|gettext}</a>&nbsp;&nbsp;|&nbsp;&nbsp;
-		{printer_friendly_link class="printer-friendly-link" text='Printer-friendly'|gettext}
+		{printer_friendly_link text='Printer-friendly'|gettext}
 	</div>
-	<h2>
+	<h1>
 		{if $enable_ical == true}
-			<a class="icallink module-actions" href="{link action=ical}" title="{'iCalendar Feed'|gettext}" alt="{'iCalendar Feed'|gettext}"></a>
+			<a class="icallink module-actions" href="{link action=ical}" title="{'iCalendar Feed'|gettext}" alt="{'iCalendar Feed'|gettext}"> </a>
 		{/if}
-		{if $moduletitle != ""}{$moduletitle}{/if}
-	</h2>
+		{if $moduletitle}{$moduletitle}{/if}
+	</h1>
 	{permissions}
 		<div class="module-actions">
-			{if $permissions.post == 1}
+			{if $permissions.create == 1}
 				{icon class=add action=edit title="Add a New Event"|gettext text="Add an Event"|gettext}
 			{/if}
 		</div>
@@ -63,8 +63,7 @@
 								{icon action=delete_form class=delete record=$item date_id=$item->eventdate->id title="Delete this Event"|gettext}
 							{/if}
 						{/if}
-						{if $permissions.administrate == 1 || $permissions.edit == 1 ||
-							$permissions.delete == 1 || $permissions.manage_approval == 1}
+						{if $permissions.manage == 1 || $permissions.edit == 1 || $permissions.delete == 1}
 							{br}
 						{/if}
 					</div>

@@ -2,8 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2011 OIC Group, Inc.
-# Written and Designed by James Hunt
+# Copyright (c) 2004-2012 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -56,6 +55,6 @@ if (!defined('LANGUAGE')) {
 
 <script type="text/javascript">
 	function Refresh(id){
-		location.href="index.php?lang=" + id
+		location.href="index.php?lang=" + id + "&page='welcome'"
 	}
 </script>

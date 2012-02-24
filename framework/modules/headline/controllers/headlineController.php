@@ -2,8 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2011 OIC Group, Inc.
-# Written and Designed by Adam Kessler
+# Copyright (c) 2004-2012 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -17,6 +16,11 @@
 #
 ##################################################
 
+/**
+ * @subpackage Controllers
+ * @package Modules
+ */
+
 class headlineController extends expController {
     //protected $basemodel_name = '';
     public $useractions = array(
@@ -26,11 +30,14 @@ class headlineController extends expController {
  
 	public $remove_configs = array(
         'aggregation',
+        'categories',
         'comments',
+        'ealerts',
+        'pagination',
         'files',
         'rss',
         'tags'
-    );
+    ); // all options: ('aggregation','categories','comments','ealerts','files','module_title','pagination','rss','tags')
 	   
     function displayname() { return "Headline"; }
     function description() { return "Allows Admin's to create headlines for sections, and pulls the Title in for modules actions."; }

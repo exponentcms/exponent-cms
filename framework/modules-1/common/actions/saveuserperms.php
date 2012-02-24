@@ -2,8 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2011 OIC Group, Inc.
-# Written and Designed by James Hunt
+# Copyright (c) 2004-2012 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -20,10 +19,10 @@
 
 if (!defined('EXPONENT')) exit('');
 
-if (expPermissions::check('administrate',$loc)) {
+if (expPermissions::check('manage',$loc)) {
 
 	$locarray = array();
-//    if ($loc->mod == 'navigationmodule' && (isset($_POST['permdata'][2]['manage']) && $_POST['permdata'][2]['manage'] || isset($_POST['permdata'][2]['administrate']) && $_POST['permdata'][2]['administrate'])) {
+//    if ($loc->mod == 'navigationmodule' && (isset($_POST['permdata'][2]['manage']) && $_POST['permdata'][2]['manage'] || isset($_POST['permdata'][2]['manage']) && $_POST['permdata'][2]['manage'])) {
 //		$sections = navigationmodule::levelTemplate($loc->int);
 //		$locarray[] = $loc;
 //		foreach ($sections as $section) {

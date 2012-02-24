@@ -1,7 +1,5 @@
 {*
- * Copyright (c) 2004-2011 OIC Group, Inc.
- * Written and Designed by James Hunt
- * Modified by Maia Good
+ * Copyright (c) 2004-2012 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -21,7 +19,7 @@
         {assign var=in_action value=1}
     {/if}
     {assign var=titlepresent value=0}
-    {if $moduletitle != ""}
+    {if $moduletitle && !$config.hidemoduletitle}
         <h1>{$moduletitle}</h1>
         {assign var=titlepresent value=1}
     {/if}

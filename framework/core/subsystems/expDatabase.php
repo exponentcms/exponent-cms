@@ -1,9 +1,7 @@
 <?php
-
 ##################################################
 #
-# Copyright (c) 2004-2011 OIC Group, Inc.
-# Written and Designed by James Hunt
+# Copyright (c) 2004-2012 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -21,8 +19,8 @@
  * This is the expDatabase subsystem
  * Handles all database abstraction in Exponent.
  *
- * @subpackage Core-Subsystems
- * @package Framework
+ * @package Subsystems
+ * @subpackage Subsystems
  */
 class expDatabase {
 
@@ -88,9 +86,6 @@ class expDatabase {
 * This is the class database
 *
 * This is the generic implementation of the database class.
-* @copyright 2004-2011 OIC Group, Inc.
-* @author Written and Designed by James Hunt
-* @version 2.0.0
 * @subpackage Database = database
 * @package Subsystems
 */

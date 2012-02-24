@@ -1,6 +1,5 @@
 {*
- * Copyright (c) 2004-2011 OIC Group, Inc.
- * Written and Designed by Adam Kessler
+ * Copyright (c) 2004-2012 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -14,15 +13,13 @@
  *
  *}
 
-{css unique="migratefiles-buttons" link="`$smarty.const.PATH_RELATIVE`framework/core/assets/css/button.css"}
-
-{/css}
-
-{css unique="migratefiles" corecss="tables"}
+{css unique="migratefiles" corecss="button,tables"}
 
 {/css}
 
 <div class="module migration migrate-files">
+    <a class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" href="{link module=migration action=manage_content}"><b>{'Next Step -> Migrate Content'|gettext}</b></a>
+    {br}{br}<hr />
     <div class="info-header">
         <div class="related-actions">
 			{help text="Tips to Follow after Migrating Files"|gettext module="post-file-migration"}
@@ -55,22 +52,21 @@
 	<table class="exp-skin-table">
 		<thead>
 			<tr>
-				<th width=5%>&nbsp;</th>
-				<th width=30%>{"File Name"|gettext}</th>
-				<th width=65%>{"Directory"|gettext}</th>
+				<th width="5%">&nbsp;</th>
+				<th width="30%">{"File Name"|gettext}</th>
+				<th width="65%">{"Directory"|gettext}</th>
 			</tr>
 		</thead>
 		<tbody>
 			{foreach from=$files item=file name=files}
 				<tr class="{cycle values="even,odd"}">            
-					<td width=5%>{if $file->exists}{img src=$smarty.const.ICON_RELATIVE|cat:'clean.png'}{else}<span style="color:red"><b>??</b></span>{/if}</td>
-					<td width=30%>{$file->filename}</td>
-					<td width=65%>{$file->directory}</td>
+					<td width="5%">{if $file->exists}{img src=$smarty.const.ICON_RELATIVE|cat:'clean.png'}{else}<span style="color:red"><b>??</b></span>{/if}</td>
+					<td width="30%">{$file->filename}</td>
+					<td width="65%">{$file->directory}</td>
 				</tr>
 			{foreachelse}
 				<tr><td colspan=3>{'No files found in the database'|gettext} {$config.database}</td></tr>
 			{/foreach}
 		</tbody>
 	</table>
-	<a class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" href="{link module=migration action=manage_content}"><b>{'Next Step -> Migrate Content'|gettext}</b></a>
 </div>

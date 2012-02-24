@@ -1,6 +1,5 @@
 {*
- * Copyright (c) 2004-2011 OIC Group, Inc.
- * Written and Designed by James Hunt
+ * Copyright (c) 2004-2012 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -16,9 +15,10 @@
 
 <div class="module login stacked">
     {if $loggedin == false}
-		{if $moduletitle}
-			<h2>{$moduletitle}</h2>
-		{/if}
+		{if $moduletitle && !$config.hidemoduletitle}<h2>{$moduletitle}</h2>{/if}
+        {if $config.moduledescription != ""}
+           {$config.moduledescription}
+        {/if}
 		<div>
 			{form action=login}
 				{control type="text" name="username" label="Username"|gettext|cat:":" size=25}

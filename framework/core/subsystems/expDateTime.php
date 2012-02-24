@@ -1,21 +1,25 @@
 <?php
+##################################################
+#
+# Copyright (c) 2004-2012 OIC Group, Inc.
+#
+# This file is part of Exponent
+#
+# Exponent is free software; you can redistribute
+# it and/or modify it under the terms of the GNU
+# General Public License as published by the Free
+# Software Foundation; either version 2 of the
+# License, or (at your option) any later version.
+#
+# GPL: http://www.gnu.org/licenses/gpl.txt
+#
+##################################################
+
 /**
- * This file is part of Exponent Content Management System
+ * This is the class expDateTime
  *
- * Exponent is free software; you can redistribute
- * it and/or modify it under the terms of the GNU
- * General Public License as published by the Free
- * Software Foundation; either version 2 of the
- * License, or (at your option) any later version.
- *
- * @category   Exponent CMS
- * @package    Framework
+ * @package Subsystems
  * @subpackage Subsystems
- * @author     Adam Kessler <adam@oicgroup.net>
- * @copyright  2004-2009 OIC Group, Inc.
- * @license    GPL: http://www.gnu.org/licenses/gpl.txt
- * @version    Release: @package_version@
- * @link       http://www.exponent-docs.org/api/package/PackageName
  */
 /** @define "BASE" "../../.." */
 
@@ -126,7 +130,7 @@ class expDateTime {
 		// Calculate the timestamp at 8am, and then subtract 8 hours, for Daylight Savings
 		// Time.  If we are in those strange edge cases of DST, 12:00am can turn out to be
 		// of the previous day.
-		return mktime(0,0,0,$info['mon'],$info['mday'],$info['year']);
+		return mktime(23,59,59,$info['mon'],$info['mday'],$info['year']);
 	}
 
 	/** exdoc
@@ -602,3 +606,5 @@ class expDateTime {
     }
 
 }
+
+?>

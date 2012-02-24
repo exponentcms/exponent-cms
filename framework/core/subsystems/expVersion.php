@@ -1,20 +1,25 @@
 <?php
+##################################################
+#
+# Copyright (c) 2004-2012 OIC Group, Inc.
+#
+# This file is part of Exponent
+#
+# Exponent is free software; you can redistribute
+# it and/or modify it under the terms of the GNU
+# General Public License as published by the Free
+# Software Foundation; either version 2 of the
+# License, or (at your option) any later version.
+#
+# GPL: http://www.gnu.org/licenses/gpl.txt
+#
+##################################################
+
 /**
- * This file is part of Exponent Content Management System
+ * This is the class expVersion
  *
- * Exponent is free software; you can redistribute
- * it and/or modify it under the terms of the GNU
- * General Public License as published by the Free
- * Software Foundation; either version 2 of the
- * License, or (at your option) any later version.
- *
- * @category   Exponent CMS
- * @package    Framework
+ * @package    Subsystems
  * @subpackage Subsystems
- * @copyright  2004-2009 OIC Group, Inc.
- * @license    GPL: http://www.gnu.org/licenses/gpl.txt
- * @version    Release: @package_version@
- * @link       http://www.exponent-docs.org/api/package/PackageName
  */
 /** @define "BASE" "../../.." */
 
@@ -93,7 +98,8 @@ class expVersion {
                 expSession::set('update-check','1');
                 if (self::compareVersion($swversion,$onlineVer)) {
                     $newvers = $onlineVer->major.'.'.$onlineVer->minor.'.'.$onlineVer->revision.($onlineVer->type?$onlineVer->type:'').($onlineVer->iteration?$onlineVer->iteration:'');
-                    flash('message',gt('A newer version of Exponent is available').': v'.$newvers.' '.gt('was released').' '.expDateTime::format_date($onlineVer->builddate).
+                    $note = $onlineVer->type == 'patch' ? gt('A patch for the latest') : gt('A newer version of Exponent is available').':';
+                    flash('message',$note.' v'.$newvers.' '.gt('was released').' '.expDateTime::format_date($onlineVer->builddate).
                         '<br><a href="https://github.com/exponentcms/exponent-cms/downloads" target="_blank">'.gt('Click here to see available Downloads').'</a>');
                 }
             }
@@ -171,6 +177,9 @@ class expVersion {
 			case '': // stable
 				$typenum = 10;
 				break;
+            case 'patch':  // a patch trumps the stable version of the same version number
+                $typenum = 20;
+                break;
 			default:
 				$typenum = 0;
 				break;
@@ -179,3 +188,5 @@ class expVersion {
 	}
 
 }
+
+?>

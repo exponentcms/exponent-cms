@@ -1,6 +1,5 @@
 {*
- * Copyright (c) 2004-2011 OIC Group, Inc.
- * Written and Designed by James Hunt
+ * Copyright (c) 2004-2012 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -13,17 +12,18 @@
  * GPL: http://www.gnu.org/licenses/gpl.txt
  *
  *}
+
 {* <html>
 	<head>
 		<meta type="Generator" value="Exponent Content Management System" />
 		<link rel="stylesheet" href="{$smarty.const.THEME_RELATIVE}style.css" /> 
-		<style type="text/css">
+		{css unique="linker"}
 		{literal}
 			body {
 				padding: 5px;
 			}
 		{/literal}
-		</style>
+		{/css}
 	</head>
 	<body> *}
 	<b>{'Site Hierarchy'|gettext}</b><hr size="1" />

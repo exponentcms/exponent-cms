@@ -2,8 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2006 OIC Group, Inc.
-# Created by Adam Kessler @ 05/28/2008
+# Copyright (c) 2004-2012 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -16,6 +15,11 @@
 # GPL: http://www.gnu.org/licenses/gpl.txt
 #
 ##################################################
+
+/**
+ * @subpackage Controllers
+ * @package Modules
+ */
 
 class importexportController extends expController {
     
@@ -33,13 +37,14 @@ class importexportController extends expController {
     
     // hide the configs we don't need
     public $remove_configs = array(
+        'aggregation',
+        'categories',
         'comments',
         'ealerts',
         'files',
         'rss',
-        'aggregation',
         'tags'
-    );
+    ); // all options: ('aggregation','categories','comments','ealerts','files','module_title','pagination','rss','tags')
     
     //protected $permissions = array_merge(array("test"=>'Test'), array('copyProduct'=>"Copy Product"));
     protected $add_permissions = array('import'=>'Import Data', 'export'=>'Export Data');
@@ -474,4 +479,5 @@ class importexportController extends expController {
         
     }
 }
+
 ?>

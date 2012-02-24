@@ -1,6 +1,5 @@
 {*
- * Copyright (c) 2004-2011 OIC Group, Inc.
- * Written and Designed by Adam Kessler
+ * Copyright (c) 2004-2012 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -27,11 +26,21 @@
         {/if}
     </div>
     {/permissions}
-    <div class="next-prev">
-        <a href="{link action=show id=$previous}">{"Previous Image"|gettext}</a>
-         | {$imgnum} {"of"|gettext} {$imgtot}| 
-        <a href="{link action=show id=$next}">{"Next Image"|gettext}</a>
-    </div>
+    {if $imgtot}
+        <div class="next-prev">
+            <a href="{link action=show id=$previous}">{"Previous Image"|gettext}</a>
+             | {$imgnum} {"of"|gettext} {$imgtot}|
+            <a href="{link action=show id=$next}">{"Next Image"|gettext}</a>
+        </div>
+    {/if}
+    {if $record->expTag|@count>0 && !$config.disabletags}
+        <div class="tags">
+            {"Tags"|gettext}:
+            {foreach from=$record->expTag item=tag name=tags}
+                <a href="{link action=showall_by_tags tag=$tag->sef_url}">{$tag->title}</a>{if $smarty.foreach.tags.last != 1},{/if}
+            {/foreach}
+        </div>
+    {/if}
     <div class="bodycopy">
         {capture assign="float"}{$config.pa_float_enlarged|lower|replace:" ":""}{/capture}
         {img alt=$record->alt file_id=$record->expFile[0]->id w=$config.pa_showall_enlarged class="img-large float-`$float`" title=$record->alt|default:$record->expFile[0]->title style="float:`$float`;"}    
@@ -39,6 +48,6 @@
     </div>
     
     {*if $config.usescomments}
-        {comments content_type="blog" content_id=$record->id title="Comments"}
+        {comments content_type="photos" content_id=$record->id title="Comments"}
     {/if*}
 </div>

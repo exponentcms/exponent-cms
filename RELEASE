@@ -1,11 +1,11 @@
 Exponent Content Management System
-Copyright (c) 2004-2011 OIC Group, Inc.
+Copyright (c) 2004-2012 OIC Group, Inc.
 ===============================================
 
 Release Notes for Exponent Content Management System
 
 For a complete list of the changes made from release to release, see the CHANGELOG
 
-2.0.4 - Jan 2012
+2.0.5 - Feb 2012
 ========================
-# This release focuses on revising the install/update/upgrade process
+# This release focuses on implementing categories

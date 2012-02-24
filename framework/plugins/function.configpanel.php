@@ -2,8 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2011 OIC Group, Inc.
-# Written and Designed by James Hunt
+# Copyright (c) 2004-2012 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -17,6 +16,22 @@
 #
 ##################################################
 
+/**
+ * Smarty plugin
+ * @package Smarty-Plugins
+ * @subpackage Function
+ */
+
+/**
+ * Smarty {configpanel} function plugin
+ *
+ * Type:     function<br>
+ * Name:     configpanel<br>
+ * Purpose:  display a config panel
+ *
+ * @param         $params
+ * @param \Smarty $smarty
+ */
 function smarty_function_configpanel($params,&$smarty) {
 	$cp = new configcontrol($params['title'], $params['welcome'], $params['opts']);
 	echo $cp->controlToHTML('test', 'test');

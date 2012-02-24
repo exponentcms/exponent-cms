@@ -2,8 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2011 OIC Group, Inc.
-# Written and Designed by Adam Kessler
+# Copyright (c) 2004-2012 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -17,18 +16,22 @@
 #
 ##################################################
 
+/**
+ * @subpackage Controllers
+ * @package Modules
+ */
+
 class faqController extends expController {
     public $useractions = array(
         'showall'=>'Show FAQs',
         'ask_question'=>'Show Question Form'
     );
 	public $remove_configs = array(
-        'aggregation',
         'comments',
+        'ealerts',
         'files',
-        'rss',
-        'tags'
-    );
+        'rss'
+    ); // all options: ('aggregation','categories','comments','ealerts','files','module_title','pagination','rss','tags')
 
     function displayname() { return "Frequently Asked Questions"; }
     function description() { return "This module allows you show frequently asked questions.  Users can post questions to you to answer too."; }
@@ -37,8 +40,51 @@ class faqController extends expController {
         expHistory::set('viewable', $this->params);
         $faqs = new faq();
         $questions = $faqs->find('all', $this->aggregateWhereClause().' AND include_in_faq=1', 'rank');
-        assign_to_template(array('questions'=>$questions));
+
+        if (empty($this->config['usecategories']) ? false : $this->config['usecategories']) {
+            expCatController::addCats($questions,'rank');
+            $cats = array();
+            $cats[0]->name = '';
+            expCatController::sortedByCats($questions,$cats);
+            assign_to_template(array('cats'=>$cats));
+        }
+
+        assign_to_template(array('items'=>$questions));
     }
+
+    public function showall_by_tags() {
+    	    global $db;
+
+    	    // get the tag being passed
+            $tag = new expTag($this->params['tag']);
+
+            // find all the id's of the filedownload for this filedownload module
+            $item_ids = $db->selectColumn('faqs', 'id', $this->aggregateWhereClause());
+
+            // find all the blogs that this tag is attached to
+            $items = $tag->findWhereAttachedTo('faq');
+
+            // loop the filedownload for this tag and find out which ones belong to this module
+            $items_by_tags = array();
+            foreach($items as $item) {
+                if (in_array($item->id, $item_ids)) $items_by_tags[] = $item;
+            }
+
+            // create a pagination object for the filedownload and render the action
+    		$order = 'created_at';
+    		$limit = empty($this->config['limit']) ? 10 : $this->config['limit'];
+
+    		$page = new expPaginator(array(
+    		            'records'=>$items_by_tags,
+    		            'limit'=>$limit,
+    		            'order'=>$order,
+    		            'controller'=>$this->baseclassname,
+    		            'action'=>$this->params['action'],
+    		            'columns'=>array('Title'=>'title'),
+    		            ));
+
+    		assign_to_template(array('page'=>$page, 'items'=>$page->records,'moduletitle'=>'FAQ\'s by tag "'.$this->params['tag'].'"'));
+    	}
 
 	/**
 	 *    This manage function will show the FAQs that appear for a particular module, so if you have multiple FAQs around the site, this 
@@ -76,9 +122,37 @@ class faqController extends expController {
     }
     
     public function update() {
+        global $db;
+
+        //check for and handle tags
+        if (array_key_exists('expTag',$this->params)&&!empty($this->params['expTag'])) {
+	        if (isset($this->params['id'])) {
+    	        $db->delete('content_expTags', 'content_type="'.(!empty($this->params['content_type'])?$this->params['content_type']:$this->basemodel_name).'" AND content_id='.$this->params['id']);
+    	    }
+	        $tags = explode(",", trim($this->params['expTag']));
+	        unset($this->params['expTag']);
+
+	        foreach($tags as $tag) {
+                if (!empty($tag)) {
+                    $tag = strtolower(trim($tag));
+                    $expTag = new expTag($tag);
+                    if (empty($expTag->id)) $expTag->update(array('title'=>$tag));
+                    $this->params['expTag'][] = $expTag->id;
+                }
+	        }
+        }
+
+        //check for and handle cats
+        if (array_key_exists('expCat',$this->params)&&!empty($this->params['expCat'])) {
+            $catid = $this->params['expCat'];
+            unset($this->params['expCat']);
+            $this->params['expCat'][] = $catid;
+        }
+
         $faq = new faq();
         $faq->update($this->params);
-        
+        $this->addContentToSearch($this->params);
+
         if (!empty($this->params['send_email'])) {
             redirect_to(array('controller'=>'faq', 'action'=>'edit_answer', 'id'=>$faq->id, 'src'=>$this->loc->src));
         } else {

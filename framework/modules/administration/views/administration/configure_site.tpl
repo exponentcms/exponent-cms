@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2007-2008 OIC Group, Inc.
+ * Copyright (c) 2004-2012 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -32,16 +32,17 @@
 	            <li><a href="#tab3"><em>{"User Registration"|gettext}</em></a></li>
 	            <li><a href="#tab4"><em>{"Comment Policies"|gettext}</em></a></li>
 	            <li><a href="#tab5"><em>{"Display"|gettext}</em></a></li>
+                <li><a href="#tab6"><em>{"File Manager"|gettext}</em></a></li>
 	            {if $user->is_admin==1}
-					<li><a href="#tab6"><em>{"Mail Server"|gettext}</em></a></li>
-		            <li><a href="#tab7"><em>{"Maintenance"|gettext}</em></a></li>
-		            <li><a href="#tab8"><em>{"Security"|gettext}</em></a></li>
-					<li><a href="#tab9"><em>{"Help Links"|gettext}</em></a></li>
-					<li><a href="#tab10"><em>{"WYSIWYG Editor"|gettext}</em></a></li>
-		            <li><a href="#tab11"><em>{"Error Messages"|gettext}</em></a></li>
-		            <li><a href="#tab12"><em>{"PDF Generation"|gettext}</em></a></li>
-					<li><a href="#tab13"><em>{"Minify"|gettext}</em></a></li>
-					<li><a href="#tab14"><em>{"Search Report"|gettext}</em></a></li>
+					<li><a href="#tab7"><em>{"Mail Server"|gettext}</em></a></li>
+		            <li><a href="#tab8"><em>{"Maintenance"|gettext}</em></a></li>
+		            <li><a href="#tab9"><em>{"Security"|gettext}</em></a></li>
+					<li><a href="#tab10"><em>{"Help Links"|gettext}</em></a></li>
+					<li><a href="#tab11"><em>{"WYSIWYG Editor"|gettext}</em></a></li>
+		            <li><a href="#tab12"><em>{"Error Messages"|gettext}</em></a></li>
+		            <li><a href="#tab13"><em>{"PDF Generation"|gettext}</em></a></li>
+					<li><a href="#tab14"><em>{"Minify"|gettext}</em></a></li>
+					<li><a href="#tab15"><em>{"Search Report"|gettext}</em></a></li>
 	            {/if}
             </ul>            
             <div class="yui-content">
@@ -113,7 +114,7 @@
                     </div>
                     {control type="dropdown" name="sc[LANGUAGE]" label="Display Language"|gettext items=$langs default=$smarty.const.LANGUAGE}
                     {*{control type="dropdown" name="sc[DISPLAY_THEME_REAL]" label="Theme <a href=\"manage_themes\">(More Theme Options)</a>"|gettext items=$themes default=$smarty.const.DISPLAY_THEME_REAL}*}
-	                <h3><a href=manage_themes>Display Theme Options</a></h3>
+	                <h3><a href="manage_themes">Display Theme Options</a></h3>
 	                {control type="checkbox" postfalse=1 name="sc[FORCE_MOBILE]" label="Force Display of the Mobile Theme Variation (if available)?"|gettext checked=$smarty.const.FORCE_MOBILE value=1}
                     {control type="dropdown" name="sc[DISPLAY_ATTRIBUTION]" label="Attribution Display"|gettext items=$attribution default=$smarty.const.DISPLAY_ATTRIBUTION}
 	                {control type="dropdown" name="sc[DISPLAY_DATETIME_FORMAT]" label="Date/Time Format"|gettext items=$datetime_format default=$smarty.const.DISPLAY_DATETIME_FORMAT}
@@ -123,12 +124,22 @@
 	                {control type="dropdown" name="sc[DISPLAY_DEFAULT_TIMEZONE]" label="Default timezone for this site"|gettext|cat:(' <br />'|cat:("CAUTION: This may break calendars and other features that use date functions if you change this after entering data."|gettext)) items=$timezones default=$smarty.const.DISPLAY_DEFAULT_TIMEZONE}
                     {control type="radiogroup" name="sc[SLINGBAR_TOP]" label="Default Admin Slingbar Position" items="Top of Viewport,Bottom of Viewport" values="1,0" default=$smarty.const.SLINGBAR_TOP}
 					{control type="text" name="sc[THUMB_QUALITY]" label="Thumbnail JPEG Quality"|gettext|cat:" (0 - 95)" value=$smarty.const.THUMB_QUALITY|default:75 size="2"}
-                    <h3>{"File Manager/Uploader Popup Window Size"|gettext}</h3>
-                    {control type="text" name="sc[FM_WIDTH]" label="Width"|gettext value=$smarty.const.FM_WIDTH|default:1024 size="4"}
-                    {control type="text" name="sc[FM_HEIGHT]" label="Height" value=$smarty.const.FM_HEIGHT|default:600 size="4"}
+                </div>
+                <div id="tab6">
+	                <div class="info-header">
+                        <div class="related-actions">
+	                        {help text="Get Help"|gettext|cat:" "|cat:("with"|gettext)|cat:" "|cat:("file manager settings"|gettext) module="filemanager-settings"}
+                        </div>
+		                <h2>{"File Manager/Uploader Settings"|gettext}</h2>
+                    </div>
+                    {control type="text" name="sc[FM_WIDTH]" label="Popup Window Width"|gettext value=$smarty.const.FM_WIDTH|default:1024 size="4"}
+                    {control type="text" name="sc[FM_HEIGHT]" label="Popup Window Height" value=$smarty.const.FM_HEIGHT|default:600 size="4"}
+                    {control type="text" name="sc[FM_LIMIT]" label="Number of Files per page" value=$smarty.const.FM_LIMIT|default:25 size="4"}
+                    {control type="checkbox" postfalse=1 name="sc[FM_THUMBNAILS]" label="Show Image Thumbnails?"|gettext checked=$smarty.const.FM_THUMBNAILS value=1}
+                    {control type="text" name="sc[FM_THUMB_SIZE]" label="Thumbnail Size"|gettext value=$smarty.const.FM_THUMB_SIZE|default:48 size="4"}
                 </div>
                 {if $user->is_admin==1}
-                <div id="tab6">
+                <div id="tab7">
 	                <div class="info-header">
                         <div class="related-actions">
 	                        {help text="Get Help"|gettext|cat:" "|cat:("with"|gettext)|cat:" "|cat:("mail server settings"|gettext) module="mail-server-settings"}
@@ -145,7 +156,7 @@
                     {control type="text" name="sc[SMTP_PASSWORD]" label="SMTP Password"|gettext value=$smarty.const.SMTP_PASSWORD}
 	                {control type="checkbox" postfalse=1 name="sc[SMTP_DEBUGGING]" label="Turn On SMTP Debugging?"|gettext checked=$smarty.const.SMTP_DEBUGGING value=1}
                 </div>
-                <div id="tab7">
+                <div id="tab8">
 	                <div class="info-header">
                         <div class="related-actions">
 	                        {help text="Get Help"|gettext|cat:" "|cat:("with"|gettext)|cat:" "|cat:("site maintenance mode settings"|gettext) module="site-maintenance-mode-settings"}
@@ -155,7 +166,7 @@
                     {control type="checkbox" postfalse=1 name="sc[MAINTENANCE_MODE]" label="Place Site in Maintenance Mode?"|gettext checked=$smarty.const.MAINTENANCE_MODE value=1}
                     {control type="html" name="sc[MAINTENANCE_MSG_HTML]" label="Maintenance Mode Message"|gettext value=$smarty.const.MAINTENANCE_MSG_HTML}
                 </div>
-                <div id="tab8">
+                <div id="tab9">
 	                <div class="info-header">
                         <div class="related-actions">
 	                        {help text="Get Help"|gettext|cat:" "|cat:("with"|gettext)|cat:" "|cat:("security settings"|gettext) module="security-settings"}
@@ -170,7 +181,7 @@
                     {control type="text" name="sc[NONSSL_URL]" label="Non-SSL URL Base"|gettext value=$smarty.const.NONSSL_URL}
                     {control type="text" name="sc[SSL_URL]" label="SSL URL Base"|gettext value=$smarty.const.SSL_URL}
                 </div>
-                <div id="tab9">
+                <div id="tab10">
 	                <div class="info-header">
                         <div class="related-actions">
 	                        {help text="Get Help"|gettext|cat:" "|cat:("with"|gettext)|cat:" "|cat:("help link settings"|gettext) module="help-link-settings"}
@@ -180,7 +191,7 @@
                     {control type="checkbox" postfalse=1 name="sc[HELP_ACTIVE]" label="Enable Help links to online documentation?"|gettext checked=$smarty.const.HELP_ACTIVE value=1}
                     {control type="text" name="sc[HELP_URL]" label="URL for Help Documentation"|gettext value=$smarty.const.HELP_URL}
                 </div>
-                <div id="tab10">
+                <div id="tab11">
 	                <div class="info-header">
                         <div class="related-actions">
 	                        {help text="Get Help"|gettext|cat:" "|cat:("with"|gettext)|cat:" "|cat:("WYSIWYG Editor Settings"|gettext) module="wysiwyg-editor-settings"}
@@ -193,7 +204,7 @@
 		                {chain module=expHTMLEditor view=manage}
 	                {/if}
                 </div>
-                <div id="tab11">
+                <div id="tab12">
 	                <div class="info-header">
                         <div class="related-actions">
 	                        {help text="Get Help"|gettext|cat:" "|cat:("with"|gettext)|cat:" "|cat:("error message settings"|gettext) module="error-messages"}
@@ -205,7 +216,7 @@
                     {control type="html" name="sc[SITE_403_REAL_HTML]" label='\'Access Denied\' (403) Error Message'|gettext value=$smarty.const.SITE_403_REAL_HTML}
                     {control type="html" name="sc[SESSION_TIMEOUT_HTML]" label='\'Session Expired\' Error  Message'|gettext value=$smarty.const.SESSION_TIMEOUT_HTML}
                 </div>
-                <div id="tab12">
+                <div id="tab13">
 	                <div class="info-header">
                         <div class="related-actions">
 	                        {help text="Get Help"|gettext|cat:" "|cat:("with"|gettext)|cat:" "|cat:("generating PDF settings"|gettext) module="pdf-generation"}
@@ -215,7 +226,7 @@
                     {control type="text" name="sc[HTMLTOPDF_PATH]" label="Full Path to the WKHTMLtoPDF Binary Utility"|gettext value=$smarty.const.HTMLTOPDF_PATH}
                     {control type="text" name="sc[HTMLTOPDF_PATH_TMP]" label="Full Path to the WKHTMLtoPDF Temp Directory"|gettext value=$smarty.const.HTMLTOPDF_PATH_TMP}
                 </div>
-				<div id="tab13">
+				<div id="tab14">
 					<div class="info-header">
 			            <div class="related-actions">
 				            {help text="Get Help"|gettext|cat:" "|cat:("with"|gettext)|cat:" "|cat:("minification settings"|gettext) module="minify-configuration"}
@@ -225,10 +236,16 @@
                     {control type="text" name="sc[MINIFY_MAXAGE]" label="Maximum age of browser cache in seconds"|gettext value=$smarty.const.MINIFY_MAXAGE}
 					{control type="text" name="sc[MINIFY_MAX_FILES]" label='Maximum # of files that can be specified in the \'f\' GET parameter'|gettext value=$smarty.const.MINIFY_MAX_FILES}
 					{control type="text" name="sc[MINIFY_URL_LENGTH]" label="The length of minification url"|gettext value=$smarty.const.MINIFY_URL_LENGTH}
+                    <h3>{"Minify Debugging Settings"|gettext}</h3>
 					{control type="checkbox" postfalse=1 name="sc[MINIFY_ERROR_LOGGER]" label="Enable logging of minify error messages to FirePHP?"|gettext checked=$smarty.const.MINIFY_ERROR_LOGGER value=1}
+                    {control type="checkbox" postfalse=1 name="sc[MINIFY_INLINE_CSS]" label="Minify inline css styles?"|gettext checked=$smarty.const.MINIFY_INLINE_CSS value=1}
+                    {control type="checkbox" postfalse=1 name="sc[MINIFY_LINKED_CSS]" label="Minify linked css style-sheets?"|gettext checked=$smarty.const.MINIFY_LINKED_CSS value=1}
+                    {control type="checkbox" postfalse=1 name="sc[MINIFY_INLINE_JS]" label="Minify inline javascript?"|gettext checked=$smarty.const.MINIFY_INLINE_JS value=1}
+                    {control type="checkbox" postfalse=1 name="sc[MINIFY_LINKED_JS]" label="Minify linked js scripts?"|gettext checked=$smarty.const.MINIFY_LINKED_JS value=1}
+                    {control type="checkbox" postfalse=1 name="sc[MINIFY_YUI3]" label="Minify YUI3 items?"|gettext checked=$smarty.const.MINIFY_YUI3 value=1}
+                    {control type="checkbox" postfalse=1 name="sc[MINIFY_YUI2]" label="Minify YUI2 items?"|gettext checked=$smarty.const.MINIFY_YUI2 value=1}
                 </div>
-				
-				<div id="tab14">
+				<div id="tab15">
                     <div class="info-header">
                         <div class="related-actions">
                             {help text="Get Help"|gettext|cat:" "|cat:("with"|gettext)|cat:" "|cat:("search report settings"|gettext) module="search-report-settings"}

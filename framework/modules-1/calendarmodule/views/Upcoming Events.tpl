@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2011 OIC Group, Inc.
+ * Copyright (c) 2004-2012 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -21,21 +21,21 @@
 	<div class="module-actions">
 		<a class="monthviewlink" href="{link action=viewmonth time=$time}">{'Calendar View'|gettext}</a>
 		{permissions}
-			{if $permissions.administrate == 1}
+			{if $permissions.manage == 1}
 				&nbsp;&nbsp;|&nbsp;&nbsp;<a class="adminviewlink mngmntlink" href="{link _common=1 view='Administration' action='show_view' time=$time}">{'Administration View'|gettext}</a>
 			{/if}
 		{/permissions}
-		&nbsp;&nbsp;|&nbsp;&nbsp;{printer_friendly_link class="printer-friendly-link" text='Printer-friendly'|gettext}
+		&nbsp;&nbsp;|&nbsp;&nbsp;{printer_friendly_link text='Printer-friendly'|gettext}
 	</div>
-	<h2>
+	<h1>
 		{if $enable_ical == true}
-			<a class="icallink module-actions" href="{link action=ical}" title="{'iCalendar Feed'|gettext}" alt="{'iCalendar Feed'|gettext}"></a>
+			<a class="icallink module-actions" href="{link action=ical}" title="{'iCalendar Feed'|gettext}" alt="{'iCalendar Feed'|gettext}"> </a>
 		{/if}
-		{if $moduletitle != ""}{$moduletitle}{/if}
-	</h2>
+		{if $moduletitle}{$moduletitle}{/if}
+	</h1>
 	{permissions}
 		<div class="module-actions">
-			{if $permissions.post == 1}
+			{if $permissions.create == 1}
 				{icon class=add action=edit title="Add a New Event"|gettext text="Add an Event"|gettext}
 			{/if}
 		</div>
@@ -62,11 +62,11 @@
 		<dd>
             <strong>
 				{if $item->is_allday == 1}
-					{$item->eventstart|format_date:$smarty.const.DISPLAY_DATE_FORMAT}
+					{$item->eventstart|format_date}
 				{elseif $item->eventstart != $item->eventend}
-					{$item->eventstart|format_date:$smarty.const.DISPLAY_DATE_FORMAT} @ {$item->eventstart|format_date:$smarty.const.DISPLAY_TIME_FORMAT} {'to'|gettext} {$item->eventend|format_date:$smarty.const.DISPLAY_TIME_FORMAT}
+					{$item->eventstart|format_date} @ {$item->eventstart|format_date:$smarty.const.DISPLAY_TIME_FORMAT} {'to'|gettext} {$item->eventend|format_date:$smarty.const.DISPLAY_TIME_FORMAT}
 				{else}
-					{$item->eventstart|format_date:$smarty.const.DISPLAY_DATE_FORMAT} @ {$item->eventstart|format_date:$smarty.const.DISPLAY_TIME_FORMAT}
+					{$item->eventstart|format_date} @ {$item->eventstart|format_date:$smarty.const.DISPLAY_TIME_FORMAT}
 				{/if}
 			</strong>
 		</dd>

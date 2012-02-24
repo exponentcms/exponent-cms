@@ -2,8 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2011 OIC Group, Inc.
-# Written and Designed by James Hunt
+# Copyright (c) 2004-2012 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -17,6 +16,7 @@
 #
 ##################################################
 /** @define "BASE" "../../../.." */
+
 if (!defined('EXPONENT')) exit('');
 
 $template = new template('formbuilder','_data_view');
@@ -101,7 +101,7 @@ if (isset($_GET['id'])) {
 //		$template->assign("items",$items);
 		$template->assign("f",$f);
 		$template->assign("backlink",expHistory::getLastNotEditable());
-		$template->register_permissions(array("administrate","editform","editformsettings","editreport","viewdata","editdata","deletedata"),unserialize($f->location_data));
+		$template->register_permissions(array("manage","editform","editformsettings","editreport","viewdata","editdata","deletedata"),unserialize($f->location_data));
 		$columndef .= 'new cColumn("Links","",links,null)';
 		$columndef .= ');';
 		

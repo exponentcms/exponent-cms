@@ -1,6 +1,5 @@
 {*
- * Copyright (c) 2007-2011 OIC Group, Inc.
- * Written and Designed by Adam Kessler
+ * Copyright (c) 2004-2012 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -17,6 +16,10 @@
 {uniqueid prepend="slideshow`$params.record->id`" assign="name"}
 
 {css unique="files-gallery" link="`$smarty.const.PATH_RELATIVE`framework/modules/common/assets/css/filedisplayer.css"}
+
+{/css}
+
+{css unique="photoalbum`$name`" corecss="common,pagination" link="`$asset_path`css/yui3-slideshow.css"}
 
 {/css}
 
@@ -37,7 +40,7 @@
 </ul>
 
 {if $files|@count > 1}
-{script unique="slideshow`$name`" yui3mods="1"}
+{script unique="slideshow`$name`" yui3mods="anim"}
 {literal}
 EXPONENT.YUI3_CONFIG.modules = {
     	'gallery-yui-slideshow': {
