@@ -134,7 +134,7 @@ class expSettings {
 						$opts[1] = eval("return ".$opts[1].";");
 	/*					$opts[1] = preg_replace('/<[bB][rR]\s?\/?>/',"\r\n",$opts[1]); */
 					}
-					$options[$opts[0]] = str_replace("\\'","'",$opts[1]);
+					$options[$opts[0]] = str_replace("\'","'",$opts[1]);
 				}
 			}
 		}
