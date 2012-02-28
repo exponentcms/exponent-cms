@@ -27,7 +27,7 @@
             </div>
         {/permissions}
         {foreach from=$items item=listing}
-			{if $listing->title}<h2><a href="{link controller=$controller action=show id=$listing->id}">{$listing->title}</a></h2>{/if}
+			{if $listing->title}<h2>{$listing->title}</h2>{/if}
 			{permissions}
 				<div class="item-actions">
                     {if $myloc != $listing->location_data}{icon class=merge img='arrow_merge.png' title="Aggregated Content"|gettext}{/if}
