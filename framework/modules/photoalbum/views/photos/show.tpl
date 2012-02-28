@@ -19,8 +19,10 @@
 
 <div class="module photoalbum show">
     <h1>{$record->title}</h1>
+    {assign var=myloc value=serialize($__loc)}
     {permissions}
     <div class="item-actions">
+        {if $myloc != $record->location_data}{icon img='arrow_merge.png' title="Aggregated Content"|gettext}{/if}
         {if $permissions.edit == 1}
             {icon action=edit record=$record title="Edit"|gettext|cat:" `$record->title`"}
         {/if}

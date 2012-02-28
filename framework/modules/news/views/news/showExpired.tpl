@@ -15,6 +15,7 @@
 
 <div class="module news show-expired">
     {if !$config.hidemoduletitle}<h1>{$moduletitle|default:"Expired News"|gettext}</h1>{/if}
+    {assign var=myloc value=serialize($__loc)}
     {pagelinks paginate=$page top=1}
 	<table id="prods">
 	    <thead>
@@ -32,6 +33,7 @@
 				<td>
 				    {permissions}
 						<div class="item-actions">
+                            {if $myloc != $listing->location_data}{icon img='arrow_merge.png' title="Aggregated Content"|gettext}{/if}
 							{if $permissions.edit == true}
 								{icon action=edit record=$listing}
 							{/if}

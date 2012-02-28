@@ -30,6 +30,7 @@
     {if $config.moduledescription != ""}
         {$config.moduledescription}
     {/if}
+    {assign var=myloc value=serialize($__loc)}
     <div id="{$id}" class="yui-navset exp-skin-tabview hide">
         <ul>
             {foreach from=$items item=tab name=tabs}
@@ -41,6 +42,7 @@
                 <div id="tab{$smarty.foreach.items.iteration}">
                     {permissions}
 						<div class="item-actions">
+                            {if $myloc != $text->location_data}{icon img='arrow_merge.png' title="Aggregated Content"|gettext}{/if}
 						   {if $permissions.edit == 1}
 								{icon action=edit record=$text}
 							{/if}

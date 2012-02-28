@@ -41,6 +41,7 @@
     {if $config.moduledescription != ""}
    		{$config.moduledescription}
    	{/if}
+    {assign var=myloc value=serialize($__loc)}
     {pagelinks paginate=$page top=1}
     {assign var="cat" value="bad"}
     {foreach from=$page->records item=file name=files}

@@ -33,6 +33,7 @@
     {if $config.moduledescription != ""}
         {$config.moduledescription}
     {/if}
+    {assign var=myloc value=serialize($__loc)}
     <table id="prods" class="exp-skin-table">
 		<thead>
 			<tr>
@@ -48,6 +49,7 @@
 				<td>
 					{permissions}
 						<div class="item-actions">
+                            {if $myloc != $listing->location_data}{icon img='arrow_merge.png' title="Aggregated Content"|gettext}{/if}
 							{if $permissions.edit == 1}
 								{icon action=edit record=$listing title="Edit this message"|gettext}
 							{/if}

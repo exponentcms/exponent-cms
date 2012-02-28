@@ -33,6 +33,7 @@
     {if $config.moduledescription != ""}
    		{$config.moduledescription}
    	{/if}
+    {assign var=myloc value=serialize($__loc)}
     {pagelinks paginate=$page top=1}
     {foreach from=$page->records item=item}
         <div class="item">
@@ -44,6 +45,7 @@
             {if $item->isRss != true}
                 {permissions}
                 <div class="item-actions">
+                    {if $myloc != $item->location_data}{icon img='arrow_merge.png' title="Aggregated Content"|gettext}{/if}
                     {if $permissions.edit == true}
                         {icon action=edit record=$item}
                     {/if}

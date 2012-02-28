@@ -36,6 +36,7 @@
     {if $config.moduledescription != ""}
    		{$config.moduledescription}
    	{/if}
+    {assign var=myloc value=serialize($__loc)}
     <ul>
     {foreach name=items from=$page->records item=item}
         {if $smarty.foreach.items.iteration<=$config.headcount || !$config.headcount}
@@ -52,7 +53,8 @@
             {if $item->isRss != true}
                 {permissions}
                 <div class="item-actions">
-                     {if $permissions.edit == true}
+                    {if $myloc != $item->location_data}{icon img='arrow_merge.png' title="Aggregated Content"|gettext}{/if}
+                    {if $permissions.edit == true}
                         {icon action=edit record=$item}
                     {/if}
                     {if $permissions.delete == true}

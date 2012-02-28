@@ -18,9 +18,11 @@
     {printer_friendly_link}
     {/if}
     <h1>{$record->title}</h1>
+    {assign var=myloc value=serialize($__loc)}
     <span class="date">{$record->publish|format_date:"%A, %B %e, %Y"}</span>
     {permissions}
         <div class="item-actions">   
+            {if $myloc != $record->location_data}{icon img='arrow_merge.png' title="Aggregated Content"|gettext}{/if}
             {if $permissions.edit == true}
                 {icon action=edit record=$record}
             {/if}

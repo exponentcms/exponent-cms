@@ -15,6 +15,7 @@
 
 <div class="module text show-random">
 	    {if $moduletitle && !$config.hidemoduletitle}<h1>{$moduletitle}</h1>{/if}
+        {assign var=myloc value=serialize($__loc)}
 	    {permissions}
     	    <div class="module-actions">
 				{if $permissions.create == 1}
@@ -29,6 +30,7 @@
 			{if $listing->title}<h2><a href="{link controller=$controller action=show id=$listing->id}">{$listing->title}</a></h2>{/if}
 			{permissions}
 				<div class="item-actions">
+                    {if $myloc != $listing->location_data}{icon img='arrow_merge.png' title="Aggregated Content"|gettext}{/if}
 					{if $permissions.edit == 1}
 						{icon action=edit record=$listing}
 					{/if}

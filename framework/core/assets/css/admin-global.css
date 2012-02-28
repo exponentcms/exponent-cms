@@ -86,6 +86,7 @@ a.edit,
 a.configure,
 a.delete,
 a.manage,
+a.merge,
 a.revisions,
 a.reranklink,
 a.view {
@@ -115,6 +116,10 @@ a.delete {
 
 a.manage {
     background: url(../images/manage.png) no-repeat 0 50%;
+}
+
+a.merge {
+    background: url(../images/arrow_merge.png) no-repeat 0 50%;
 }
 
 a.reranklink {

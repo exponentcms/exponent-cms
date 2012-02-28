@@ -36,11 +36,9 @@
     {if $config.moduledescription != ""}
         {$config.moduledescription}
     {/if}
+    {assign var=myloc value=serialize($__loc)}
     {if $config.allow_user_questions}
         <a href="{link action="ask_question"}">{'Ask a Question'|gettext}</a>
-    {/if}
-    {if $config.moduledescription != ""}
-        {$config.moduledescription}
     {/if}
     {if $config.use_toc}
         {if $config.usecategories}
@@ -74,6 +72,7 @@
                     <h4>Q{$smarty.foreach.a.iteration}. {$qna->question}</h4>
                         {permissions}
                             <div class="item-actions">
+                                {if $myloc != $qna->location_data}{icon img='arrow_merge.png' title="Aggregated Content"|gettext}{/if}
                                 {if $permissions.edit == 1}
                                     {icon action=edit record=$qna title="Edit FAQ"|gettext}
                                 {/if}
@@ -122,6 +121,7 @@
                 </div>
                     {permissions}
                     <div class="item-actions">
+                        {if $myloc != $question->location_data}{icon img='arrow_merge.png' title="Aggregated Content"|gettext}{/if}
                         {if $permissions.edit == 1}
                             {icon action=edit record=$question title="Edit FAQ"|gettext}
                         {/if}

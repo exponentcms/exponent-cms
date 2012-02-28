@@ -35,6 +35,7 @@
     {if $config.moduledescription != ""}
    		{$config.moduledescription}
    	{/if}
+    {assign var=myloc value=serialize($__loc)}
     {assign var="cat" value="bad"}
     {foreach from=$page->records item=file name=files}
         {if $smarty.foreach.files.iteration<=$config.headcount || !$config.headcount}

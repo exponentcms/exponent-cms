@@ -15,8 +15,10 @@
 
 <div id="showhelp" class="module help show">
     <h1>{$doc->title}</h1>
+    {assign var=myloc value=serialize($__loc)}
     {permissions}
     <div class="item-actions">
+        {if $myloc != $doc->location_data}{icon img='arrow_merge.png' title="Aggregated Content"|gettext}{/if}
         {if $permissions.edit == 1}
             {icon action=edit record=$doc}
         {/if}

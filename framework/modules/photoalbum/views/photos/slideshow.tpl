@@ -34,6 +34,7 @@
     {if $config.moduledescription != ""}
    		{$config.moduledescription}
    	{/if}
+    {assign var=myloc value=serialize($__loc)}
     <div id="ss-{$name}" class="slideshow-container" style="width:{$config.width|default:350}px;">
         <ul class="slideshow-frame" style="width:{$config.width|default:350}px;height:{$config.height|default:300}px;">
 			{assign var=quality value=$config.quality|default:$smarty.const.THUMB_QUALITY}
@@ -41,6 +42,7 @@
             <li class="slide" style="position:absolute;{if $smarty.foreach.slides.first}z-index:4;{else}z-index:1;{/if}">
                 {permissions}
                     <div class="item-actions">
+                        {if $myloc != $slide->location_data}{icon img='arrow_merge.png' title="Aggregated Content"|gettext}{/if}
                         {if $permissions.edit == 1}
                             {icon action=edit record=$slide title="Edit"|gettext|cat:" `$item->title`"}
                         {/if}

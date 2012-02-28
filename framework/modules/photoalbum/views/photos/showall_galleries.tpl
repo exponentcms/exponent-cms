@@ -40,6 +40,7 @@
     {if $config.moduledescription != ""}
    		{$config.moduledescription}
    	{/if}
+    {assign var=myloc value=serialize($__loc)}
     {foreach name=items from=$page->cats key=catid item=cat}
         <h2 class="category">{$cat->name}</h2>
         <ul class="image-list">
@@ -56,6 +57,7 @@
                 </a>
                 {permissions}
                     <div class="item-actions">
+                        {if $myloc != $record->location_data}{icon img='arrow_merge.png' title="Aggregated Content"|gettext}{/if}
                         {if $permissions.edit == 1}
                             {icon action=edit record=$record title="Edit"|gettext|cat:" `$modelname`"}
                         {/if}
