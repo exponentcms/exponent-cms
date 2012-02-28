@@ -72,7 +72,7 @@
                     <h4>Q{$smarty.foreach.a.iteration}. {$qna->question}</h4>
                         {permissions}
                             <div class="item-actions">
-                                {if $myloc != $qna->location_data}{icon img='arrow_merge.png' title="Aggregated Content"|gettext}{/if}
+                                {if $myloc != $qna->location_data}{icon class=merge img='arrow_merge.png' title="Aggregated Content"|gettext}{/if}
                                 {if $permissions.edit == 1}
                                     {icon action=edit record=$qna title="Edit FAQ"|gettext}
                                 {/if}
@@ -121,7 +121,7 @@
                 </div>
                     {permissions}
                     <div class="item-actions">
-                        {if $myloc != $question->location_data}{icon img='arrow_merge.png' title="Aggregated Content"|gettext}{/if}
+                        {if $myloc != $question->location_data}{icon class=merge img='arrow_merge.png' title="Aggregated Content"|gettext}{/if}
                         {if $permissions.edit == 1}
                             {icon action=edit record=$question title="Edit FAQ"|gettext}
                         {/if}

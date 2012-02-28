@@ -43,7 +43,7 @@
 				<td>
 				    {permissions}
 						<div class="item-actions">
-                            {if $myloc != $listing->location_data}{icon img='arrow_merge.png' title="Aggregated Content"|gettext}{/if}
+                            {if $myloc != $listing->location_data}{icon class=merge img='arrow_merge.png' title="Aggregated Content"|gettext}{/if}
 							{if $permissions.edit == true}
 								{icon action=edit record=$listing}
 							{/if}

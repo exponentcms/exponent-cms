@@ -49,7 +49,7 @@
         {if $text->title}<h2>{$text->title}</h2>{/if}
         {permissions}
 			<div class="item-actions">
-                {if $myloc != $text->location_data}{icon img='arrow_merge.png' title="Aggregated Content"|gettext}{/if}
+                {if $myloc != $text->location_data}{icon class=merge img='arrow_merge.png' title="Aggregated Content"|gettext}{/if}
 				{if $permissions.edit == 1}
 					{icon action=edit id=$text->id}
 				{/if}

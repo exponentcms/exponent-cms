@@ -96,7 +96,7 @@ function smarty_function_icon($params,&$smarty) {
 	if (empty($params['img'])&&empty($params['text'])) {
     	$img 	= gt(ucfirst($class));
 	} else if (!empty($params['img'])) {
-	    $img 	= '<img src="'.ICON_RELATIVE.$params['img'].'" title="'.$title.'" alt="'.$alt.'"'.XHTML_CLOSING.'>';
+	    $img 	= '<img class="'.$class.'" src="'.ICON_RELATIVE.$params['img'].'" title="'.$title.'" alt="'.$alt.'"'.XHTML_CLOSING.'>';
 	}
 
 	$linktext = $img.$text;

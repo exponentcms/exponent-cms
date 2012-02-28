@@ -25,7 +25,7 @@
 		{foreach from=$page->records item=result}
 			<div class="item {cycle values="odd,even"}">
 				<a href="{$smarty.const.URL_FULL}{$result->view_link}">{$result->title}</a>
-				{if $result->body != ""}<br /><span class="summary">{$result->body|strip_tags|truncate:240}</span>{/if}
+				{if $result->body != ""}{br}<span class="summary">{$result->body|strip_tags|truncate:240|highlight:$terms}</span>{/if}
 				{clear}
 			</div>
 		{/foreach}

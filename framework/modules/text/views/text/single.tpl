@@ -18,7 +18,7 @@
     {assign var=myloc value=serialize($__loc)}
     {if $items[0]->title}<h2>{$items[0]->title}</h2>{/if}
     {permissions}
-        {if $myloc != $items[0]->location_data}{icon img='arrow_merge.png' title="Aggregated Content"|gettext}{/if}
+        {if $myloc != $items[0]->location_data}{icon class=merge img='arrow_merge.png' title="Aggregated Content"|gettext}{/if}
         {if $permissions.edit == 1}
         <div class="item-actions">
             {icon action=edit record=$items[0]}

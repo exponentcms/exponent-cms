@@ -45,7 +45,7 @@
             {if $item->isRss != true}
                 {permissions}
                 <div class="item-actions">
-                    {if $myloc != $item->location_data}{icon img='arrow_merge.png' title="Aggregated Content"|gettext}{/if}
+                    {if $myloc != $item->location_data}{icon class=merge img='arrow_merge.png' title="Aggregated Content"|gettext}{/if}
                     {if $permissions.edit == true}
                         {icon action=edit record=$item}
                     {/if}

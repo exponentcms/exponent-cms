@@ -35,7 +35,7 @@
 			{if $ytv->title}<h2>{$ytv->title}</h2>{/if}
 			{permissions}
 				<div class="item-actions">
-                    {if $myloc != $ytv->location_data}{icon img='arrow_merge.png' title="Aggregated Content"|gettext}{/if}
+                    {if $myloc != $ytv->location_data}{icon class=merge img='arrow_merge.png' title="Aggregated Content"|gettext}{/if}
 					{if $permissions.edit == 1}
 						{icon action=edit record=$ytv}
 					{/if}

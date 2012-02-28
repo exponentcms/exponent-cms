@@ -42,7 +42,7 @@
             <li class="slide" style="position:absolute;{if $smarty.foreach.slides.first}z-index:4;{else}z-index:1;{/if}">
                 {permissions}
                     <div class="item-actions">
-                        {if $myloc != $slide->location_data}{icon img='arrow_merge.png' title="Aggregated Content"|gettext}{/if}
+                        {if $myloc != $slide->location_data}{icon class=merge img='arrow_merge.png' title="Aggregated Content"|gettext}{/if}
                         {if $permissions.edit == 1}
                             {icon action=edit record=$slide title="Edit"|gettext|cat:" `$item->title`"}
                         {/if}
