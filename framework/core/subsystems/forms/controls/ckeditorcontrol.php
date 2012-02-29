@@ -57,7 +57,7 @@ class ckeditorcontrol extends formcontrol {
         }
 		if (empty($this->toolbar)) {
             $settings = $db->selectObject('htmleditor_ckeditor','active=1');
-        } elseif ($this->toolbar!=0) {
+        } elseif (intval($this->toolbar)!=0) {
             $settings = $db->selectObject('htmleditor_ckeditor','id='.$this->toolbar);
 	    }
         if (!empty($settings)) {
@@ -72,7 +72,12 @@ class ckeditorcontrol extends formcontrol {
         }
 
         // set defaults
-        if (empty($tb)) $tb = "
+        if (empty($tb)) {
+            if ($this->toolbar == 'basic') {
+                $tb = "
+                    ['Bold', 'Italic', '-', 'NumberedList', 'BulletedList', '-', 'Link', 'Unlink','-','About']";
+            } else {
+                $tb = "
      	            ['Source','-','Preview','-','Templates'],
                     ['Cut','Copy','Paste','PasteText','PasteFromWord','-','Print','SpellChecker','Scayt'],
                     ['Undo','Redo','-','Find','Replace','-','SelectAll','RemoveFormat'],
@@ -86,6 +91,8 @@ class ckeditorcontrol extends formcontrol {
                     ['Styles','Format','Font','FontSize'],
                     ['TextColor','BGColor'],
                     ['Maximize', 'ShowBlocks','-','About']";
+            }
+        }
      	if (empty($skin)) $skin = 'kama';
      	if (empty($scayt_on)) $scayt_on = 'true';
      	if (empty($paste_word)) $paste_word = 'forcePasteAsPlainText : true,';

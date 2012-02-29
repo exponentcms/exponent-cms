@@ -34,7 +34,8 @@
             {permissions}
             {/permissions}
     		{*control type=text name=website label="Website" value=$comment->website*}
-    		{control type=textarea name=body label="Your Comment"|gettext rows=6 cols=35 value=$comment->body}
+    		{*{control type=textarea name=body label="Your Comment"|gettext rows=6 cols=35 value=$comment->body}*}
+            {control type="editor" name=body label="Your Comment"|gettext value=$comment->body toolbar='basic'}
     		{control type="antispam"}
             {if $permissions.approve}
     		    {control type="checkbox" name="approved" label="Approve Comment"|gettext value=1 checked=$comment->approved}
