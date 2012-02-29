@@ -44,7 +44,10 @@ class blogController extends expController {
     public function showall() {
 	    expHistory::set('viewable', $this->params);
 		$where = $this->aggregateWhereClause();
-		$order = 'created_at';
+        if (!expPermissions::check('edit',$this->loc)) {
+            $where = "(publish = 0 or publish <= " . time() . ") AND (unpublish = 0 OR unpublish > ".time().") AND ".$where;
+        }
+		$order = 'publish';
 		$limit = empty($this->config['limit']) ? 10 : $this->config['limit'];
 		$dir = empty($this->config['sort_dir']) ? 'DESC' : $this->config['sort_dir'];
 		
@@ -101,8 +104,13 @@ class blogController extends expController {
 	
 	public function dates() {
 	    global $db;
-	    $dates = $db->selectColumn('blog', 'created_at', $this->aggregateWhereClause(), 'created_at DESC');
-	    $blog_dates = array();
+
+        $where = $this->aggregateWhereClause();
+        if (!expPermissions::check('edit',$this->loc)) {
+            $where = "(publish = 0 or publish <= " . time() . ") AND (unpublish = 0 OR unpublish > ".time().") AND ".$where;
+        }
+	    $dates = $db->selectColumn('blog', 'publish', $where, 'publish DESC');
+	    $blog_date = array();
         $count = 0;
         $limit = empty($this->config['limit']) ? count($dates) : $this->config['limit'];
 	    foreach ($dates as $date) {
@@ -136,8 +144,11 @@ class blogController extends expController {
 	    
 	    $start_date = expDateTime::startOfMonthTimestamp(mktime(0, 0, 0, $this->params['month'], 1, $this->params['year']));
 	    $end_date = expDateTime::endOfMonthTimestamp(mktime(0, 0, 0, $this->params['month'], 1, $this->params['year']));
-		$where = ($this->aggregateWhereClause()?$this->aggregateWhereClause()." AND ":"")."created_at >= '".$start_date."' AND created_at <= '".$end_date."'";
-		$order = 'created_at';
+		$where = ($this->aggregateWhereClause()?$this->aggregateWhereClause()." AND ":"")."publish >= '".$start_date."' AND publish <= '".$end_date."'";
+        if (!expPermissions::check('edit',$this->loc)) {
+            $where = "(publish = 0 or publish <= " . time() . ") AND (unpublish = 0 OR unpublish > ".time().") AND ".$where;
+        }
+		$order = 'publish';
 		$limit = empty($this->config['limit']) ? 10 : $this->config['limit'];
 		
 		$page = new expPaginator(array(
@@ -159,12 +170,13 @@ class blogController extends expController {
 	    
 //	    $user = user::getByUsername($this->params['author']);
         $user = user::getUserByName($this->params['author']);
-
 		$where = ($this->aggregateWhereClause()?$this->aggregateWhereClause()." AND ":"")."poster=".$user->id;
-
-		$order = 'created_at';
+        if (!expPermissions::check('edit',$this->loc)) {
+            $where = "(publish = 0 or publish <= " . time() . ") AND (unpublish = 0 OR unpublish > ".time().") AND ".$where;
+        }
+		$order = 'publish';
 		$limit = empty($this->config['limit']) ? 10 : $this->config['limit'];
-		
+
 		$page = new expPaginator(array(
 		            'model'=>'blog',
 		            'where'=>$where, 
@@ -191,6 +203,84 @@ class blogController extends expController {
 	    
 	    assign_to_template(array('__loc'=>$loc,'record'=>$blog));
 	}
+
+    /**
+     * view items referenced by tags
+     */
+    function showByTags() {
+        global $db;
+
+        // set the history point for this action
+        expHistory::set('viewable', $this->params);
+
+        // setup some objects
+        $tagobj = new expTag();
+        $modelname = empty($this->params['model']) ? $this->basemodel_name : $this->params['model'];
+        $model = new $modelname();
+
+        // start building the sql query
+        $sql  = 'SELECT DISTINCT m.id FROM '.DB_TABLE_PREFIX.'_'.$model->table.' m ';
+        $sql .= 'JOIN '.DB_TABLE_PREFIX.'_'.$tagobj->attachable_table.' ct ';
+        $sql .= 'ON m.id = ct.content_id WHERE (';
+        $first = true;
+
+        if (isset($this->params['tags'])) {
+            $tags = is_array($this->params['tags']) ? $this->params['tags'] : array($this->params['tags']);
+        } elseif (isset($this->config['expTags'])) {
+            $tags = $this->config['expTags'];
+        } else {
+            $tags = array();
+        }
+
+        foreach ($tags as $tagid) {
+            $sql .= ($first) ? 'exptag_id='.intval($tagid) : ' OR exptag_id='.intval($tagid);
+            $first = false;
+        }
+        $sql .= ") AND content_type='".$model->classname."'";
+        if (!expPermissions::check('edit',$this->loc)) {
+            $sql = "(publish =0 or publish <= " . time() . ") AND (unpublish = 0 OR unpublish > ".time().") AND ". $sql . ' AND private=0';
+        }
+        if (!expPermissions::check('edit',$this->loc)) {
+        }
+
+        // get the objects and render the template
+        $tag_assocs = $db->selectObjectsBySql($sql);
+        $records = array();
+        foreach ($tag_assocs as $assoc) {
+            $records[] = new $modelname($assoc->id);
+        }
+
+        assign_to_template(array('items'=>$records));
+    }
+
+    /**
+   	 * The aggregateWhereClause function creates a sql where clause which also includes aggregated module content
+   	 *
+   	 * @return string
+   	 */
+   	function aggregateWhereClause() {
+        $sql = '';
+
+        if (!$this->hasSources() && empty($this->config['add_source'])) { return $sql; }
+
+        if (!empty($this->config['aggregate'])) $sql .= '(';
+
+        $sql .= "location_data ='".serialize($this->loc)."'";
+
+        if (!empty($this->config['aggregate'])) {
+            foreach ($this->config['aggregate'] as $src) {
+                $loc = makeLocation($this->baseclassname, $src);
+                $sql .= " OR location_data ='".serialize($loc)."'";
+            }
+
+            $sql .= ')';
+        }
+        if (!expPermissions::check('edit',$this->loc)) {
+            $sql .= ' AND private = 0';
+        }
+
+        return $sql;
+    }
 
 	function metainfo() {
         global $router;

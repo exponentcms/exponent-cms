@@ -20,17 +20,18 @@
         <div id="editblog-tabs" class="yui-navset exp-skin-tabview hide">
             <ul class="yui-nav">
                 <li class="selected"><a href="#tab1"><em>{'General'|gettext}</em></a></li>
+                <li><a href="#tab2"><em>{'Publish'|gettext}</em></a></li>
                 {if $config.filedisplay}
-                    <li><a href="#tab2"><em>{'Files'|gettext}</em></a></li>
+                    <li><a href="#tab3"><em>{'Files'|gettext}</em></a></li>
                 {/if}
-                <li><a href="#tab3"><em>{'SEO'|gettext}</em></a></li>
+                <li><a href="#tab4"><em>{'SEO'|gettext}</em></a></li>
             </ul>
             <div class="yui-content yui3-skin-sam">
                 <div id="tab1">
                     <h2>{'Blog Entry'|gettext}</h2>
                     {control type=text name=title label="Title"|gettext value=$record->title}
                     {control type=html name=body label="Body Content"|gettext value=$record->body}
-                    {*{control type="checkbox" name="private" label="Save as draft"|gettext value=1 checked=$record->private}*}
+                    {control type="checkbox" name="private" label="Save as draft/private"|gettext value=1 checked=$record->private}
                     {if !$config.disabletags}
                         {foreach from=$record->expTag item=tag name=tags}
                             {if $smarty.foreach.tags.first == false}
@@ -43,12 +44,16 @@
                         {control type="text" id="expTag" name="expTag" label="Tags (comma separated)"|gettext value=$tags size=45}
                     {/if}
                 </div>
+                <div id="tab2">
+                    {control type="yuidatetimecontrol" name="publish" label="Publish Date"|gettext edit_text="Publish Immediately" value=$record->publish}
+                    {control type="yuidatetimecontrol" name="unpublish" label="Un-publish Date"|gettext edit_text="Do Not Un-Publish" value=$record->unpublish}
+                </div>
                 {if $config.filedisplay}
-                    <div id="tab2">
+                    <div id="tab3">
                         {control type="files" name="files" label="Files"|gettext value=$record->expFile}
                     </div>
                 {/if}
-                <div id="tab3">
+                <div id="tab4">
                     <h2>{'SEO Settings'|gettext}</h2>
                     {control type="text" name="sef_url" label="SEF URL"|gettext value=$record->sef_url}
                     {control type="text" name="meta_title" label="Meta Title"|gettext value=$record->meta_title}

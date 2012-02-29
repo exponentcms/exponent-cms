@@ -32,6 +32,7 @@
     {if $config.moduledescription != ""}
    		{$config.moduledescription}
    	{/if}
+    {assign var=myloc value=serialize($__loc)}
     <ul>
     {foreach from=$page->records item=record name="blogs"}
         {if $smarty.foreach.blogs.iteration <= $config.headcount}
@@ -39,6 +40,7 @@
             <a href="{link action=show title=$record->sef_url}" title="{$record->body|summarize:"html":"para"}">{$record->title}</a>
             {permissions}
                 <div class="item-actions">
+                    {if $myloc != $qna->location_data}{icon class=merge img='arrow_merge.png' title="Aggregated Content"|gettext}{/if}
                     {if $permissions.edit == 1}
                         {icon action=edit record=$record}
                     {/if}

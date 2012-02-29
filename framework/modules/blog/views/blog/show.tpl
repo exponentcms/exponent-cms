@@ -19,8 +19,10 @@
 
 <div class="module blog show">
     <h1>{$record->title}</h1>
+    {assign var=myloc value=serialize($__loc)}
     {permissions}
         <div class="item-actions">
+            {if $myloc != $record->location_data}{icon class=merge img='arrow_merge.png' title="Aggregated Content"|gettext}{/if}
             {if $permissions.edit == 1}
                 {icon action=edit record=$record}
             {/if}
@@ -34,7 +36,7 @@
     {/permissions}
     <div class="post-info">
         <span class="attribution">
-            {'Posted by'|gettext} <a href="{link action=showall_by_author author=$record->poster|username}">{attribution user_id=$record->poster}</a> {'on'|gettext} <span class="date">{$record->created_at|format_date}</span>
+            {'Posted by'|gettext} <a href="{link action=showall_by_author author=$record->poster|username}">{attribution user_id=$record->poster}</a> {'on'|gettext} <span class="date">{$record->publish|format_date}</span>
         </span>
         | <a class="comments" href="{link action=show title=$record->sef_url}#exp-comments">{$record->expComment|@count} {"Comments"|gettext}</a>
 		{if $record->expTag|@count>0 && !$config.disabletags}
