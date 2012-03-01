@@ -17,7 +17,7 @@
 
 {/css}
 
-{css unique="calendar-edit2" link="`$asset_path`css/cal-edit.css" corecss="button,tables"}
+{css unique="calendar-edit2" link="`$smarty.const.PATH_RELATIVE`framework/modules-1/calendarmodule/assets/css/cal-edit.css" corecss="button,tables"}
 
 {/css}
 
