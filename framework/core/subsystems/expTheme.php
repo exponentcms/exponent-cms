@@ -690,12 +690,12 @@ class expTheme {
      * @node Subsystems:Theme
      */
 	public static function showTopSectionalModule($module,$view,$title,$prefix = null, $pickable = false, $hide_menu=false) {
-		global $db, $module_scope;
+		global $db, $module_scope, $sectionObj;
 
 		if ($prefix == null) $prefix = "@section";
-		$last_section = expSession::get("last_section");
-
-		$section = $db->selectObject("section","id=".$last_section);
+//		$last_section = expSession::get("last_section");
+//		$section = $db->selectObject("section","id=".$last_section);
+        $section = $sectionObj;  //FIXME let's try $sectionObj instead of last_section
         $module_scope[$prefix.$section->id][$module]->scope = 'top-sectional';
 		// Loop until we find the top level parent.
 		while ($section->parent != 0) $section = $db->selectObject("section","id=".$section->parent);
@@ -777,8 +777,6 @@ class expTheme {
 	    if (empty($params)) {
 		    return false;
 	    } elseif (isset($params['controller'])) {
-//            self::showController($params);
-            //FIXME change to showModule call?
             $params['view'] = isset($params['view']) ? $params['view'] : $params['action'];
             $params['title'] = isset($params['moduletitle']) ? $params['moduletitle'] : '';
             $params['chrome'] = (!isset($params['chrome']) || (isset($params['chrome'])&&empty($params['chrome']))) ? true : false;
@@ -821,10 +819,11 @@ class expTheme {
 //                                             false, // used to apply to source picker. does nothing now.
 //                                             $chrome // Show chrome
 //                                            );
-                //FIXME change to showModule call
                 if ($source == null) $source = "@section";
-                $last_section = expSession::get("last_section");
-                $section = $db->selectObject("section","id=".$last_section);
+                //FIXME - $section might be empty!  We're getting it from last_section instead of sectionObj??
+//                $last_section = expSession::get("last_section");
+//                $section = $db->selectObject("section","id=".$last_section);
+                $section = $sectionObj;  //FIXME let's try $sectionObj instead of last_section
                 // Loop until we find the top level parent.
                 while ($section->parent != 0) $section = $db->selectObject("section","id=".$section->parent);
                 $module_scope[$source.$section->id][$params['module']."module"]->scope = 'top-sectional';
@@ -838,7 +837,6 @@ class expTheme {
 //                                          false, // used to apply to source picker. does nothing now.
 //                                          $chrome // Show chrome
 //                                        );
-                //FIXME change to showModule call
                 if ($source == null) $source = "@section";
                 $src = $source;
                 $src .= $sectionObj->id;
