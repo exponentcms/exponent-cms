@@ -330,11 +330,13 @@ class migrationController extends expController {
             $db->delete('snippet');
             $db->delete('links');
             $db->delete('news');
-            $db->delete('filedownloads');
+//            $db->delete('filedownloads');
+            $db->delete('filedownload');
             $db->delete('photo');
             $db->delete('headline');
             $db->delete('blog');
-            $db->delete('faqs');
+//            $db->delete('faqs');
+            $db->delete('faq');
             $db->delete('portfolio');
             $db->delete('youtube');
             $db->delete('flowplayer');
@@ -394,7 +396,8 @@ class migrationController extends expController {
 						$db->delete('news');
 						break;
 					case 'resourcesmodule':
-						$db->delete('filedownloads');
+//						$db->delete('filedownloads');
+                        $db->delete('filedownload');
 						break;
 					case 'imagegallerymodule':
 					case 'slideshowmodule':
@@ -1226,7 +1229,8 @@ class migrationController extends expController {
                 $newconfig->config['show_player'] = !empty($oldviewconfig['show_player']) ? $oldviewconfig['show_player'] : 0;
 
 				//check to see if it's already pulled in (circumvent !is_original)
-				if ($db->countObjects('filedownloads', "location_data='".serialize($ploc)."'")) {
+//				if ($db->countObjects('filedownloads', "location_data='".serialize($ploc)."'")) {
+                if ($db->countObjects('filedownload', "location_data='".serialize($ploc)."'")) {
 					$iloc->mod = 'resourcesmodule';
 //					$linked = true;
 					break;
@@ -1547,7 +1551,8 @@ class migrationController extends expController {
 				//check to see if it's already pulled in (circumvent !is_original)
 				$ploc = $iloc;
 				$ploc->mod = "faq";
-				if ($db->countObjects('faqs', "location_data='".serialize($ploc)."'")) {
+//				if ($db->countObjects('faqs', "location_data='".serialize($ploc)."'")) {
+                if ($db->countObjects('faq', "location_data='".serialize($ploc)."'")) {
 					$iloc->mod = 'faqmodule';
 //					$linked = true;
 					break;

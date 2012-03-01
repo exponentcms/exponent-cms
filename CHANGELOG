@@ -5,6 +5,10 @@ Copyright (c) 2004-2012 OIC Group, Inc.
 Added / Fixed / changed for 2.0.6
 -----------------------
 # This release focuses on ???
+  - adds publish/unpublish dates and 'draft' feature to blogs
+  - adds WYSIWYG comments
+  - adds aggregated content indicator
+  - fixes a plural/singular MVC naming issue to provide more fluid integration (developer feature)
 
 Added / Fixed / changed for 2.0.5
 -----------------------

@@ -22,7 +22,7 @@
  */
 
 class filedownload extends expRecord {
-	public $table = 'filedownloads';
+//	public $table = 'filedownloads';
 
     protected $attachable_item_types = array(
         'content_expFiles'=>'expFile',

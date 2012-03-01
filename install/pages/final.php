@@ -29,7 +29,7 @@ searchController::spider();
 if (isset($_REQUEST['upgrade'])) {
 // upgrades hit this
 //    if (unlink(BASE.'install/not_configured')) {
-    $leaveinstaller = (unlink(BASE.'install/not_configured')||!file_exists(BASE.'install/not_configured'));
+    $leaveinstaller = (@unlink(BASE.'install/not_configured')||!file_exists(BASE.'install/not_configured'));
     if ($leaveinstaller) {
         echo '<h2>' . gt('You\'re all set!') ."</h2>";
         echo '<p>' . gt('Take me to your leader') ."</p>";

@@ -26,7 +26,7 @@
  */
 class fix_photo_module extends upgradescript {
 	protected $from_version = '1.99.0';  // version number lower than first released version, 2.0.0
-	protected $to_version = '2.0.5';  // permissions names were changed in 2.0.5
+	protected $to_version = '2.0.6';  // photoController name was changed in 2.0.5
 
 	/**
 	 * name/title of upgrade script
@@ -98,7 +98,7 @@ class fix_photo_module extends upgradescript {
             $db->updateObject($ms,'modstate',"module='photosController'",'module');
             $count++;
         }
-        return $count.' '.gt('old photoalbum references now have the correct spelling.');
+        return $count.' '.gt('old photoalbum references had the spelling corrected.');
 	}
 }
 

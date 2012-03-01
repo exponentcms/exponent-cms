@@ -26,7 +26,7 @@
  */
 class convert_permissions extends upgradescript {
 	protected $from_version = '1.99.0';  // version number lower than first released version, 2.0.0
-	protected $to_version = '2.0.4';  // permissions names were changed in 2.0.5
+	protected $to_version = '2.0.5';  // permissions names were changed in 2.0.5
 
 	/**
 	 * name/title of upgrade script

@@ -26,7 +26,7 @@
  */
 class remove_headlinecontroller extends upgradescript {
 	protected $from_version = '1.99.0';
-	protected $to_version = '2.0.1';
+//	protected $to_version = '2.0.1';
 
 	/**
 	 * name/title of upgrade script

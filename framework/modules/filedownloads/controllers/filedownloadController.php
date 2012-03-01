@@ -93,7 +93,8 @@ class filedownloadController extends expController {
         $tag = new expTag($this->params['tag']);
 
         // find all the id's of the filedownload for this filedownload module
-        $item_ids = $db->selectColumn('filedownloads', 'id', $this->aggregateWhereClause());
+//        $item_ids = $db->selectColumn('filedownloads', 'id', $this->aggregateWhereClause());
+        $item_ids = $db->selectColumn('filedownload', 'id', $this->aggregateWhereClause());
 
         // find all the blogs that this tag is attached to
         $items = $tag->findWhereAttachedTo('filedownload');

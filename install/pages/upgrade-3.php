@@ -17,9 +17,10 @@
 ##################################################
 
 if (!defined('EXPONENT')) exit('');
-//$num_version = EXPONENT_VERSION_MAJOR.'.'.EXPONENT_VERSION_MINOR.'.'.EXPONENT_VERSION_REVISION;
-$num_version = expVersion::getVersion();
+
 global $db;
+
+$num_version = expVersion::getVersion();
 $db_version = $db->selectObject('version','1');
 
 ?>
@@ -30,9 +31,9 @@ echo gt("Exponent will perform the following upgrades").':';
 
 //display the upgrade scripts
 $upgrade_dir = 'upgrades';
-$i = 0;
-if (is_readable('include/upgradescript.php')) include_once('include/upgradescript.php');
 if (is_readable($upgrade_dir)) {
+    $i = 0;
+    if (is_readable('include/upgradescript.php')) include_once('include/upgradescript.php');
     $dh = opendir($upgrade_dir);
     echo '<ol>';
     while (($file = readdir($dh)) !== false) {
@@ -59,7 +60,7 @@ if (is_readable($upgrade_dir)) {
     }
     if ($i==0) {
         echo '<li>
-        <h3>None</h3>
+        <h3>'.gt('None Required').'</h3>
         <p>'.gt('You\'re good to go. Click next to finish up.').'</p>
         </li>';
     }

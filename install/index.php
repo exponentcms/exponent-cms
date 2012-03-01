@@ -33,11 +33,11 @@ if (isset($_POST['sc']['LANGUAGE'])) {
 
 include_once('../exponent.php');
 
-if (!file_exists('not_configured') && file_exists(BASE.'conf/config.php')) {
-	flash('notice',gt('This Exponent Site has already been configured.'));
-	header('Location: ../index.php');
-	exit(gt('This Exponent Site has already been configured.'));
-}
+//if (!file_exists('not_configured') && file_exists(BASE.'conf/config.php')) {
+//	flash('notice',gt('This Exponent Site has already been configured.'));
+//	header('Location: ../index.php');
+//	exit(gt('This Exponent Site has already been configured.'));
+//}
 
 if (isset($_POST['sc'])) {
     if (file_exists("../conf/config.php")) {

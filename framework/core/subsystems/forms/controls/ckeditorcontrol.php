@@ -75,7 +75,7 @@ class ckeditorcontrol extends formcontrol {
         if (empty($tb)) {
             if ($this->toolbar == 'basic') {
                 $tb = "
-                    ['Bold', 'Italic', '-', 'NumberedList', 'BulletedList', '-', 'Link', 'Unlink','-','About']";
+                    ['Bold','Italic','Underline','-','NumberedList','BulletedList','-','Link','Unlink','-','About']";
             } else {
                 $tb = "
      	            ['Source','-','Preview','-','Templates'],

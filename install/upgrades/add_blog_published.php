@@ -26,7 +26,7 @@
  */
 class add_blog_published extends upgradescript {
 	protected $from_version = '1.99.0';  // version number lower than first released version, 2.0.0
-	protected $to_version = '2.0.5';  // permissions names were changed in 2.0.5
+	protected $to_version = '2.0.6';  // publish/unpublish dates were added in 2.0.6
 
 	/**
 	 * name/title of upgrade script
@@ -57,12 +57,14 @@ class add_blog_published extends upgradescript {
 
         $count = 0;
         foreach ($db->selectObjects('blog') as $post) {
-            $post->publish = $post->created_at;
-            $db->updateObject($post,'blog');
-            $count++;
+            if (empty($post->publish)) {
+                $post->publish = $post->created_at;
+                $db->updateObject($post,'blog');
+                $count++;
+            }
 	    }
 
-        return $count.' '.gt('old blog posts now have their publish date set to their created date.');
+        return $count.' '.gt('old blog posts had their publish date set to their created date.');
 	}
 }
 
