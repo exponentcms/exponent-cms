@@ -27,7 +27,11 @@ $db_version = $db->selectObject('version','1');
 <h2><?php echo gt('Upgrade Scripts'); ?></h2>
 <p>
 <?php 
-echo gt("Exponent will perform the following upgrades").':';
+if (isset($_REQUEST['run'])) {
+    echo gt("Exponent has performed the following upgrades").':';
+} else {
+    echo gt("Exponent will perform the following upgrades").':';
+}
 
 //display the upgrade scripts
 $upgrade_dir = 'upgrades';
