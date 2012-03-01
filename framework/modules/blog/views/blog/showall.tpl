@@ -59,7 +59,17 @@
             <div class="post-info">
                 <span class="attribution">
                     {if $item->private}<strong>({'Draft'|gettext})</strong>{/if}
+                    {if $item->publish > $smarty.now}
+                        <strong>{'Will be'|gettext}&nbsp;
+                    {elseif ($item->unpublish != 0) && $item->unpublish <= $smarty.now}
+                        <strong>{'Was'|gettext}&nbsp;
+                    {/if}
                     {'Posted by'|gettext} <a href="{link action=showall_by_author author=$item->poster|username}">{attribution user_id=$item->poster}</a> {'on'|gettext} <span class="date">{$item->publish|format_date}</span>
+                    {if $item->publish > $smarty.now}
+                        </strong>&nbsp;
+                    {elseif ($item->unpublish != 0) && $item->unpublish <= $smarty.now}
+                        {'now unpublished'|gettext}</strong>&nbsp;
+                    {/if}
                 </span>
 
                 | <a class="comments" href="{link action=show title=$item->sef_url}#exp-comments">{$item->expComment|@count} {"Comments"|gettext}</a>
