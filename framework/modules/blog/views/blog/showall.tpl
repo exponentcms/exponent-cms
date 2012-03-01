@@ -47,7 +47,7 @@
             </h2>
             {permissions}
                 <div class="item-actions">
-                    {if $myloc != $item->location_data}{icon class=merge img='arrow_merge.png' title="Aggregated Content"|gettext}{/if}
+                    {if $myloc != $record->location_data}{icon class=merge img='arrow_merge.png' title="Aggregated Content"|gettext}{/if}
                     {if $permissions.edit == 1}
                         {icon action=edit record=$item}
                     {/if}
@@ -58,7 +58,7 @@
             {/permissions}
             <div class="post-info">
                 <span class="attribution">
-                    {if $record->private}<strong>({'Draft'|gettext})</strong>{/if}
+                    {if $item->private}<strong>({'Draft'|gettext})</strong>{/if}
                     {'Posted by'|gettext} <a href="{link action=showall_by_author author=$item->poster|username}">{attribution user_id=$item->poster}</a> {'on'|gettext} <span class="date">{$item->publish|format_date}</span>
                 </span>
 

@@ -36,6 +36,7 @@
     {/permissions}
     <div class="post-info">
         <span class="attribution">
+            {if $record->private}<strong>({'Draft'|gettext})</strong>{/if}
             {'Posted by'|gettext} <a href="{link action=showall_by_author author=$record->poster|username}">{attribution user_id=$record->poster}</a> {'on'|gettext} <span class="date">{$record->publish|format_date}</span>
         </span>
         | <a class="comments" href="{link action=show title=$record->sef_url}#exp-comments">{$record->expComment|@count} {"Comments"|gettext}</a>
