@@ -36,16 +36,16 @@ if (!defined('EXPONENT_VERSION_MAJOR')) {
 		/* exdoc
 		 * This specifies the type of release, either 'alpha','beta','release-candidate' or '' (for stable).
 		 */
-		define('EXPONENT_VERSION_TYPE','');
+		define('EXPONENT_VERSION_TYPE','patch');
 		/* exdoc
 		 * This number is bumped each time a distribution of a single version is
 		 * released.  For instance, the 3rd beta has an version type iteration of 3.
 		 */
-		define('EXPONENT_VERSION_ITERATION',''); // only applies to betas, alphas, or release candidates
+		define('EXPONENT_VERSION_ITERATION','1'); // only applies to betas, alphas, or release candidates
 		/* exdoc
 		 * This is the date that this version of Exponent was released.
 		 */
-		define('EXPONENT_VERSION_BUILDDATE','1330127760');
+		define('EXPONENT_VERSION_BUILDDATE','1330724239');
 	} else {
 		// the info for the "next" version if we are a pre-release from the repository
 		define('EXPONENT_VERSION_MAJOR','2');
