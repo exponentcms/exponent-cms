@@ -44,13 +44,6 @@ class expSettings {
 		// include global constants
 		@include_once(BASE."conf/config.php");
 
-		// include constants defined in the current theme (if theme is defined)  //FIXME, we don't have theme info yet
-//		if (defined('DISPLAY_THEME_REAL')) {
-//			if (file_exists(BASE.'themes/'.DISPLAY_THEME_REAL.'/config.php')) @include_once(BASE.'themes/'.DISPLAY_THEME_REAL.'/config.php');
-//		if (defined('DISPLAY_THEME')) {
-//			if (file_exists(BASE.'themes/'.DISPLAY_THEME.'/config.php')) @include_once(BASE.'themes/'.DISPLAY_THEME.'/config.php');
-//		}
-
 		// include default constants, fill in missing pieces
 		if (is_readable(BASE."conf/extensions")) {
 			$dh = opendir(BASE."conf/extensions");
@@ -141,70 +134,10 @@ class expSettings {
 		return $options;
 	}
 
-	/** exdoc
-	 * This function looks through all of the available configuration
-	 * extensions, and generates a form object consisting of each
-	 * extension's form part.  This can then be used to edit the full
-	 * site configuration.  Returns a form object intended for editing the profile.
-	 *
-	 * @param string $configname The name of the configuration profile,
-	 *    for filling in default values.
-	 * @param bool $database
-	 * @return \form
-	 * @node Subsystems:Config
-	 */
-	public static function configurationForm($configname,$database=false) {  //FIXME this method is never used
-		// $configname = "" for active config
-		if (is_readable(BASE."conf/extensions")) {
-			global $user;
-			$options = self::parse($configname);
-
-			$form = new form();
-
-			$form->register(null,'',new htmlcontrol('<a name="config_top"></a><h3>'.gt('Configuration Options').'</h3>'));
-			$form->register('configname',gt('Profile Name'),new textcontrol($configname));
-			$form->register('activate',gt('Activate'),new checkboxcontrol((!defined('CURRENTCONFIGNAME') || CURRENTCONFIGNAME==$configname)));
-
-			$sections = array();
-
-			$dh = opendir(BASE.'conf/extensions');
-			while (($file = readdir($dh)) !== false) {
-				if (is_readable(BASE.'conf/extensions/'.$file) && substr($file,-14,14) == '.structure.php') {
-					$arr = include(BASE.'conf/extensions/'.$file);
-					// Check to see if the current user is a super admin, and only include database if so
-					if (substr($file,0,-14) != 'database' || $user->is_admin == 1) {
-						$form->register(null,'',new htmlcontrol('<a name="config_'.count($sections).'"></a><div style="font-weight: bold; margin-top: 1.5em; border-top: 1px solid black; border-bottom: 1px solid black; background-color: #ccc; font-size: 12pt;">' . $arr[0] . '</div><a href="#config_top">Top</a>'));
-						$sections[] = '<a href="#config_'.count($sections).'">'.$arr[0].'</a>';
-						foreach ($arr[1] as $directive=>$info) {
-
-							if ($info['description'] != '') {
-								$form->register(null,'',new htmlcontrol('<br /><br />'.$info['description'],false));
-							}
-							if (is_a($info['control'],"checkboxcontrol")) {
-								$form->meta("opts[$directive]",1);
-								$info['control']->default = $options[$directive];
-								$info['control']->flip = true;
-								$form->register("o[$directive]",'<b>'.$info['title'].'</b>',$info['control']);
-							} else {
-								if (isset($options[$directive])) $info["control"]->default = $options[$directive];
-								$form->register("c[$directive]",'<b>'.$info['title'].'</b>',$info['control'],$info['description']);
-							}
-						}
-						//$form->register(null,'',new buttongroupcontrol(gt('Save'),'',gt('Cancel')));
-					}
-				}
-			}
-			$form->registerAfter('activate',null,'',new htmlcontrol('<hr size="1" />'.implode('&nbsp;&nbsp;|&nbsp;&nbsp;',$sections)));
-			$form->register('submit','',new buttongroupcontrol(gt('Save'),'',gt('Cancel')));
-
-			return $form;
-		}
-	}
-
 	public static function saveValues($values, $configname='') {
 		$str = "<?php\n";
-			foreach ($values as $directive=>$value) {
-			$directive = strtoupper($directive);
+        foreach ($values as $directive=>$value) {
+			$directive = trim(strtoupper($directive));
 			$str .= "define(\"$directive\",";
 			if (substr($directive,-5,5) == "_HTML") {
 				$value = htmlentities(stripslashes($value),ENT_QUOTES,LANG_CHARSET); // slashes added by POST
@@ -212,12 +145,13 @@ class expSettings {
 				$value = str_replace(array("\r\n","\r","\n"),"",$value);
 				$str .= "exponent_unhtmlentities('$value')";
 			} elseif (is_int($value)) {
-				$str .= $value;
+				$str .= "'".$value."'";
 			} else {
 				if ($directive != 'SESSION_TIMEOUT')
 					$str .= "'".str_replace("'","\'",$value)."'";
+//                    $str .= "'".$value."'";
 				else
-					$str .= str_replace("'",'', $value);
+					$str .= "'".str_replace("'",'', $value)."'";
 			}
 			$str .= ");\n";
 		}
@@ -359,6 +293,66 @@ class expSettings {
 			}
 		}
 	}
+
+    /** exdoc
+     * This function looks through all of the available configuration
+     * extensions, and generates a form object consisting of each
+     * extension's form part.  This can then be used to edit the full
+     * site configuration.  Returns a form object intended for editing the profile.
+     *
+     * @param string $configname The name of the configuration profile,
+     *    for filling in default values.
+     * @param bool $database
+     * @return \form
+     * @node Subsystems:Config
+     */
+    public static function configurationForm($configname,$database=false) {  //FIXME this method is never used
+        // $configname = "" for active config
+        if (is_readable(BASE."conf/extensions")) {
+            global $user;
+            $options = self::parse($configname);
+
+            $form = new form();
+
+            $form->register(null,'',new htmlcontrol('<a name="config_top"></a><h3>'.gt('Configuration Options').'</h3>'));
+            $form->register('configname',gt('Profile Name'),new textcontrol($configname));
+            $form->register('activate',gt('Activate'),new checkboxcontrol((!defined('CURRENTCONFIGNAME') || CURRENTCONFIGNAME==$configname)));
+
+            $sections = array();
+
+            $dh = opendir(BASE.'conf/extensions');
+            while (($file = readdir($dh)) !== false) {
+                if (is_readable(BASE.'conf/extensions/'.$file) && substr($file,-14,14) == '.structure.php') {
+                    $arr = include(BASE.'conf/extensions/'.$file);
+                    // Check to see if the current user is a super admin, and only include database if so
+                    if (substr($file,0,-14) != 'database' || $user->is_admin == 1) {
+                        $form->register(null,'',new htmlcontrol('<a name="config_'.count($sections).'"></a><div style="font-weight: bold; margin-top: 1.5em; border-top: 1px solid black; border-bottom: 1px solid black; background-color: #ccc; font-size: 12pt;">' . $arr[0] . '</div><a href="#config_top">Top</a>'));
+                        $sections[] = '<a href="#config_'.count($sections).'">'.$arr[0].'</a>';
+                        foreach ($arr[1] as $directive=>$info) {
+
+                            if ($info['description'] != '') {
+                                $form->register(null,'',new htmlcontrol('<br /><br />'.$info['description'],false));
+                            }
+                            if (is_a($info['control'],"checkboxcontrol")) {
+                                $form->meta("opts[$directive]",1);
+                                $info['control']->default = $options[$directive];
+                                $info['control']->flip = true;
+                                $form->register("o[$directive]",'<b>'.$info['title'].'</b>',$info['control']);
+                            } else {
+                                if (isset($options[$directive])) $info["control"]->default = $options[$directive];
+                                $form->register("c[$directive]",'<b>'.$info['title'].'</b>',$info['control'],$info['description']);
+                            }
+                        }
+                        //$form->register(null,'',new buttongroupcontrol(gt('Save'),'',gt('Cancel')));
+                    }
+                }
+            }
+            $form->registerAfter('activate',null,'',new htmlcontrol('<hr size="1" />'.implode('&nbsp;&nbsp;|&nbsp;&nbsp;',$sections)));
+            $form->register('submit','',new buttongroupcontrol(gt('Save'),'',gt('Cancel')));
+
+            return $form;
+        }
+    }
 
 	/** exdoc
 	 * Takes care of setting the appropriate template variables
