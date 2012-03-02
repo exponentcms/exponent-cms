@@ -43,35 +43,39 @@
     {messagequeue}
 
     <div id="filelist">
-        {form action=addit}
-            <table id="filenames" class="exp-skin-table">
-                <thead>
-                   <tr>
-                       <th><input type='checkbox' name='checkall' title="{'Select All/None'|gettext}" onChange="selectAll(this.checked)"></th>
-                       <th>{'Filename'|gettext}</th>
-                       <th>{'Folder'|gettext}</th>
-                   </tr>
-                </thead>
-                <tbody>
-                    {foreach from=$files item=file key=src}
-                        <tr class="{cycle values="even,odd"}">
-                            <td width="20">
-                                {control type="checkbox" name="addit[]" value=$src}
-                            </td>
-                            <td>
-                                {$file}
-                            </td>
-                            <td>
-                                {$src}
-                            </td>
-                        </tr>
-                    {foreachelse}
-                        <tr><td colspan=3>{'There don\'t appear to be any files on the server which aren\'t already in the File Manager'|gettext}</td></tr>
-                    {/foreach}
-                </tbody>
-            </table>
-            {control type=buttongroup submit="Add Selected Files"|gettext}
-        {/form}
+        {if $files|@count!=0}
+            {form action=addit}
+                {control type=hidden name=update value=$smarty.get.update}
+                {control type=hidden name=fck value=$smarty.get.fck}
+                <table id="filenames" class="exp-skin-table">
+                    <thead>
+                       <tr>
+                           <th><input type='checkbox' name='checkall' title="{'Select All/None'|gettext}" onChange="selectAll(this.checked)"></th>
+                           <th>{'Filename'|gettext}</th>
+                           <th>{'Folder'|gettext}</th>
+                       </tr>
+                    </thead>
+                    <tbody>
+                        {foreach from=$files item=file key=src}
+                            <tr class="{cycle values="even,odd"}">
+                                <td width="20">
+                                    {control type="checkbox" name="addit[]" value=$src}
+                                </td>
+                                <td>
+                                    {$file}
+                                </td>
+                                <td>
+                                    {$src}
+                                </td>
+                            </tr>
+                        {/foreach}
+                    </tbody>
+                </table>
+                {control type=buttongroup submit="Add Selected Files"|gettext}
+            {/form}
+        {else}
+            {'There don\'t appear to be any files on the server which aren\'t already in the File Manager'|gettext}
+        {/if}
     </div>
 </div>
 

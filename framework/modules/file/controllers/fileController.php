@@ -216,6 +216,8 @@ class fileController extends expController {
     
     public function deleter() {
         global $db;
+
+        $notafile = array();
         $files = $db->selectObjects('expFiles',1);
         foreach ($files as $file) {
             if (!is_file($file->directory.$file->filename)) {
@@ -241,6 +243,8 @@ class fileController extends expController {
 
     public function adder() {
         global $db;
+
+        $notindb = array();
         $allfiles = expFile::listFlat(BASE.'files',true,null,array(),BASE);
         foreach ($allfiles as $path=>$file) {
             if ($file[0] != '.') {

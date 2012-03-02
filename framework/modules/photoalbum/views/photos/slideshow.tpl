@@ -99,7 +99,7 @@
 </div>
 
 {if $slides|@count > 1}
-{script unique="slideshow" yui3mods="anim"}
+{script unique="ss-`$name`" yui3mods="anim"}
 {literal}
 
 EXPONENT.YUI3_CONFIG.modules = {

@@ -61,8 +61,14 @@ function smarty_function_icon($params,&$smarty) {
 			$params['src'] = $loc->src;
 		}
 	}
-	
-    if(!is_object($smarty->getTemplateVars('config')) && !empty($smarty->getTemplateVars('config')->noeditagg) && ($smarty->getTemplateVars('__loc')->src != $params['src'])) return ;
+    $config = $smarty->getTemplateVars('config');
+    $noeditagg = 0;
+    if (is_object($config)) {
+        $noeditagg = !empty($config->noeditagg) ? $config->noeditagg : 0;
+    } elseif (is_array($config)) {
+        $noeditagg = !empty($config['noeditagg']) ? $config['noeditagg'] : 0;
+    }
+    if($noeditagg && ($smarty->getTemplateVars('__loc')->src != $params['src'])) return ;
 
 	if (!isset($params['int'])) $params['int'] = $loc->int;
 

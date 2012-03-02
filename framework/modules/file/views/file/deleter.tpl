@@ -43,35 +43,39 @@
     {messagequeue}
 
     <div id="filelist">
-        {form action=deleteit}
-            <table id="filenames" class="exp-skin-table">
-                <thead>
-                   <tr>
-                       <th><input type='checkbox' name='checkall' title="{'Select All/None'|gettext}" onChange="selectAll(this.checked)"></th>
-                       <th>{'Filename'|gettext}</th>
-                       <th>{'Folder'|gettext}</th>
-                   </tr>
-                </thead>
-                <tbody>
-                    {foreach from=$files item=file key=src}
-                        <tr class="{cycle values="even,odd"}">
-                            <td width="20">
-                                {control type="checkbox" name="deleteit[]" value=$src}
-                            </td>
-                            <td>
-                                {$file->filename}
-                            </td>
-                            <td>
-                                {$file->directory}
-                            </td>
-                        </tr>
-                    {foreachelse}
-                        <tr><td colspan=3>{'There don\'t appear to be any missing files'|gettext}</td></tr>
-                    {/foreach}
-                </tbody>
-            </table>
-            {control type=buttongroup submit="Delete Selected Files"|gettext}
-        {/form}
+        {if $files|@count!=0}
+            {form action=deleteit}
+                {control type=hidden name=update value=$smarty.get.update}
+                {control type=hidden name=fck value=$smarty.get.fck}
+                <table id="filenames" class="exp-skin-table">
+                    <thead>
+                       <tr>
+                           <th><input type='checkbox' name='checkall' title="{'Select All/None'|gettext}" onChange="selectAll(this.checked)"></th>
+                           <th>{'Filename'|gettext}</th>
+                           <th>{'Folder'|gettext}</th>
+                       </tr>
+                    </thead>
+                    <tbody>
+                        {foreach from=$files item=file key=src}
+                            <tr class="{cycle values="even,odd"}">
+                                <td width="20">
+                                    {control type="checkbox" name="deleteit[]" value=$src}
+                                </td>
+                                <td>
+                                    {$file->filename}
+                                </td>
+                                <td>
+                                    {$file->directory}
+                                </td>
+                            </tr>
+                        {/foreach}
+                    </tbody>
+                </table>
+                {control type=buttongroup submit="Delete Selected Files"|gettext}
+            {/form}
+        {else}
+            {'There don\'t appear to be any missing files'|gettext}
+        {/if}
     </div>
 </div>
 

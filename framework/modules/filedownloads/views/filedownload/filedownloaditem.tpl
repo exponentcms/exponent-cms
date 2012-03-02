@@ -19,7 +19,7 @@
         {img class="preview-img" file_id=$file->expFile.preview[0]->id square=150}
     {/if}
     {if $config.quick_download}
-        <h3>{icon action=downloadfile fileid=$record->id title='Download'|gettext text=$file->title}</h3>
+        <h3>{icon action=downloadfile fileid=$file->id title='Download'|gettext text=$file->title}</h3>
     {else}
         {if $file->title}<h3><a {if !$config.usebody}class="readmore"{/if} href="{link action=show title=$file->sef_url}" title="{$file->body|summarize:"html":"para"}">{$file->title}</a></h3>{/if}
     {/if}
@@ -84,7 +84,7 @@
         &nbsp;&nbsp;
     {/if}
     {if !$config.quick_download}
-        {icon action=downloadfile fileid=$record->id text='Download'|gettext}
+        {icon action=downloadfile fileid=$file->id text='Download'|gettext}
     {/if}
     {if $config.show_player && ($filetype == "mp3" || $filetype == "flv" || $filetype == "f4v")}
         <a href="{$file->expFile.downloadable[0]->url}" style="display:block;width:360px;height:30px;" class="filedownloads-media"></a>

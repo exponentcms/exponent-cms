@@ -931,7 +931,8 @@ class administrationController extends expController {
 
     public function update_siteconfig () {
         foreach ($this->params['sc'] as $key => $value) {
-            expSettings::change($key, addslashes($value));
+//            expSettings::change($key, addslashes($value));
+            expSettings::change($key, $value);
         }
         
         flash('message', gt("Your Website Configuration has been updated"));
@@ -1024,7 +1025,9 @@ class theme {
 		foreach ($params as $key=>$value) {
 			if ($key[0] == '_') {
 				unset ($params[$key]);
-			}
+			} else {
+                $params[$key] = $params[$key];
+            }
 		}
 		if ($sv != '') {
 			expSettings::saveValues($params, BASE."themes/".$theme."/config_".$sv.".php");
