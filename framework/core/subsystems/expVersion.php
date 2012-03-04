@@ -66,7 +66,7 @@ class expVersion {
 
 		// check database version against installed software version
         if ($db->havedb) {
-            if ($user->isAdmin()) {
+            if ($user->isSuperAdmin()) {
                 $dbversion = $db->selectObject('version',1);
                 if (empty($dbversion)) {
                     $dbversion->major = 0;
@@ -92,7 +92,7 @@ class expVersion {
         }
 
         // check if online version is newer than installed software version, but only once per session
-        if ($user->isAdmin()) {
+        if ($user->isSuperAdmin()) {
             if (!expSession::is_set('update-check')) {
                 $onlineVer = self::getOnlineVersion();
                 expSession::set('update-check','1');
