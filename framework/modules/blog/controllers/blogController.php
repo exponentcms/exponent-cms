@@ -45,7 +45,8 @@ class blogController extends expController {
 	    expHistory::set('viewable', $this->params);
 		$where = $this->aggregateWhereClause();
         if (!expPermissions::check('edit',$this->loc)) {
-            $where = "(publish = 0 or publish <= " . time() . ") AND (unpublish = 0 OR unpublish > ".time().") AND ".$where;
+            $where .= !empty($where) ? " AND " : "";
+            $where .= "(publish = 0 or publish <= " . time() . ") AND (unpublish = 0 OR unpublish > ".time().")";
         }
 		$order = 'publish';
 		$limit = empty($this->config['limit']) ? 10 : $this->config['limit'];
@@ -107,21 +108,14 @@ class blogController extends expController {
 
         $where = $this->aggregateWhereClause();
         if (!expPermissions::check('edit',$this->loc)) {
-            $where = "(publish = 0 or publish <= " . time() . ") AND (unpublish = 0 OR unpublish > ".time().") AND ".$where;
+            $where .= !empty($where) ? " AND " : "";
+            $where .= "(publish = 0 or publish <= " . time() . ") AND (unpublish = 0 OR unpublish > ".time().")";
         }
-//	    $dates = $db->selectColumn('blog', 'publish', $where, 'publish DESC');
-        $dates = $db->selectObjects('blog', $where, 'publish DESC');
+	    $dates = $db->selectColumn('blog', 'publish', $where, 'publish DESC');
 	    $blog_date = array();
         $count = 0;
         $limit = empty($this->config['limit']) ? count($dates) : $this->config['limit'];
-	    foreach ($dates as $blog) {
-            if (!empty($blog->publish)) {
-                $date = $blog->publish;
-            } elseif (!empty($blog->edited_at)) {
-                $date = $blog->edited_at;
-            } elseif (!empty($blog->created_at)) {
-                $date = $blog->created_at;
-            }
+	    foreach ($dates as $date) {
 	        $year = date('Y',$date);
 	        $month = date('n',$date);
 	        if (isset($blog_date[$year][$month])) {
@@ -154,7 +148,8 @@ class blogController extends expController {
 	    $end_date = expDateTime::endOfMonthTimestamp(mktime(0, 0, 0, $this->params['month'], 1, $this->params['year']));
 		$where = ($this->aggregateWhereClause()?$this->aggregateWhereClause()." AND ":"")."publish >= '".$start_date."' AND publish <= '".$end_date."'";
         if (!expPermissions::check('edit',$this->loc)) {
-            $where = "(publish = 0 or publish <= " . time() . ") AND (unpublish = 0 OR unpublish > ".time().") AND ".$where;
+            $where .= !empty($where) ? " AND " : "";
+            $where .= "(publish = 0 or publish <= " . time() . ") AND (unpublish = 0 OR unpublish > ".time().")";
         }
 		$order = 'publish';
 		$limit = empty($this->config['limit']) ? 10 : $this->config['limit'];
@@ -180,7 +175,8 @@ class blogController extends expController {
         $user = user::getUserByName($this->params['author']);
 		$where = ($this->aggregateWhereClause()?$this->aggregateWhereClause()." AND ":"")."poster=".$user->id;
         if (!expPermissions::check('edit',$this->loc)) {
-            $where = "(publish = 0 or publish <= " . time() . ") AND (unpublish = 0 OR unpublish > ".time().") AND ".$where;
+            $where .= !empty($where) ? " AND " : "";
+            $where .= "(publish = 0 or publish <= " . time() . ") AND (unpublish = 0 OR unpublish > ".time().")";
         }
 		$order = 'publish';
 		$limit = empty($this->config['limit']) ? 10 : $this->config['limit'];
@@ -247,8 +243,6 @@ class blogController extends expController {
         $sql .= ") AND content_type='".$model->classname."'";
         if (!expPermissions::check('edit',$this->loc)) {
             $sql = "(publish =0 or publish <= " . time() . ") AND (unpublish = 0 OR unpublish > ".time().") AND ". $sql . ' AND private=0';
-        }
-        if (!expPermissions::check('edit',$this->loc)) {
         }
 
         // get the objects and render the template
