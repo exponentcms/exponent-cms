@@ -37,13 +37,13 @@
     <div class="post-info">
         <span class="attribution">
             {if $record->private}<strong>({'Draft'|gettext})</strong>{/if}
-            {if $record->publish > $smarty.now}
+            {if $record->publish_date > $smarty.now}
                 <strong>{'Will be'|gettext}&nbsp;
             {elseif ($record->unpublish != 0) && $record->unpublish <= $smarty.now}
                 <strong>{'Was'|gettext}&nbsp;
             {/if}
-            {'Posted by'|gettext} <a href="{link action=showall_by_author author=$record->poster|username}">{attribution user_id=$record->poster}</a> {'on'|gettext} <span class="date">{$record->publish|format_date}</span>
-            {if $record->publish > $smarty.now}
+            {'Posted by'|gettext} <a href="{link action=showall_by_author author=$record->poster|username}">{attribution user_id=$record->poster}</a> {'on'|gettext} <span class="date">{$record->publish_date|format_date}</span>
+            {if $record->publish_date > $smarty.now}
                 </strong>&nbsp;
             {elseif ($record->unpublish != 0) && $record->unpublish <= $smarty.now}
                 {'now unpublished'|gettext}</strong>&nbsp;

@@ -59,13 +59,13 @@
             <div class="post-info">
                 <span class="attribution">
                     {if $item->private}<strong>({'Draft'|gettext})</strong>{/if}
-                    {if $item->publish > $smarty.now}
+                    {if $item->publish_date > $smarty.now}
                         <strong>{'Will be'|gettext}&nbsp;
                     {elseif ($item->unpublish != 0) && $item->unpublish <= $smarty.now}
                         <strong>{'Was'|gettext}&nbsp;
                     {/if}
-                    {'Posted by'|gettext} <a href="{link action=showall_by_author author=$item->poster|username}">{attribution user_id=$item->poster}</a> {'on'|gettext} <span class="date">{$item->publish|format_date}</span>
-                    {if $item->publish > $smarty.now}
+                    {'Posted by'|gettext} <a href="{link action=showall_by_author author=$item->poster|username}">{attribution user_id=$item->poster}</a> {'on'|gettext} <span class="date">{$item->publish_date|format_date}</span>
+                    {if $item->publish_Date > $smarty.now}
                         </strong>&nbsp;
                     {elseif ($item->unpublish != 0) && $item->unpublish <= $smarty.now}
                         {'now unpublished'|gettext}</strong>&nbsp;

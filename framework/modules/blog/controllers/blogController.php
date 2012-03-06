@@ -109,11 +109,19 @@ class blogController extends expController {
         if (!expPermissions::check('edit',$this->loc)) {
             $where = "(publish = 0 or publish <= " . time() . ") AND (unpublish = 0 OR unpublish > ".time().") AND ".$where;
         }
-	    $dates = $db->selectColumn('blog', 'publish', $where, 'publish DESC');
+//	    $dates = $db->selectColumn('blog', 'publish', $where, 'publish DESC');
+        $dates = $db->selectObjects('blog', $where, 'publish DESC');
 	    $blog_date = array();
         $count = 0;
         $limit = empty($this->config['limit']) ? count($dates) : $this->config['limit'];
-	    foreach ($dates as $date) {
+	    foreach ($dates as $blog) {
+            if (!empty($blog->publish)) {
+                $date = $blog->publish;
+            } elseif (!empty($blog->edited_at)) {
+                $date = $blog->edited_at;
+            } elseif (!empty($blog->created_at)) {
+                $date = $blog->created_at;
+            }
 	        $year = date('Y',$date);
 	        $month = date('n',$date);
 	        if (isset($blog_date[$year][$month])) {
