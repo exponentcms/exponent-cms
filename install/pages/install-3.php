@@ -41,7 +41,7 @@ function echoSuccess($msg = "") {
 }
 
 function echoFailure($msg = "") {
-	echo '<span class="error">'.gt('Failed').'</span>';
+	echo '<span class="failed">'.gt('Failed').'</span>';
 	if ($msg != "") echo ' : ' . $msg;
 	echo '</td></tr>';
 }
@@ -89,6 +89,16 @@ if ($passed) {
 	} else {
 		echoSuccess();
 	}
+}
+
+if ($passed) {
+   	echoStart(gt('Not a 0.9x database').':');
+   	if (!$db->tableExists('textitem')) {
+   		echoSuccess();
+   	} else {
+   		echoFailure(gt("This is a 0.9x database.").' '.gt("Create a new database, then MIGRATE from the 0.9x database after installation."));
+   		$passed = false;
+   	}
 }
 
 $tablename = "installer_test".time(); // Used for other things
