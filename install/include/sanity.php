@@ -137,6 +137,7 @@ function sanity_checkServer() {
 		gt('GD Graphics Library 2.0+')=>_sanity_checkGD(),
 		'PHP 5.2.1+'=>_sanity_checkPHPVersion(),
 		gt('ZLib Support')=>_sanity_checkZlib(),
+        gt('cURL Library Support')=>_sanity_checkcURL(),
 		gt('XML (Expat) Library Support')=>_sanity_checkXML(),
 		gt('Safe Mode Not Enabled')=>_sanity_CheckSafeMode(),
 		gt('Open BaseDir Not Enabled')=>_sanity_checkOpenBaseDir(),
@@ -166,6 +167,14 @@ function _sanity_checkPHPVersion() {
 
 function _sanity_checkZlib() {
 	if (function_exists('gzdeflate')) {
+		return array(SANITY_FINE,gt('Passed'));
+	} else {
+		return array(SANITY_ERROR,gt('Failed'));
+	}
+}
+
+function _sanity_checkcURL() {
+	if (function_exists('curl_init')) {
 		return array(SANITY_FINE,gt('Passed'));
 	} else {
 		return array(SANITY_ERROR,gt('Failed'));
