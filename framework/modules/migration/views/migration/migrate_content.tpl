@@ -18,7 +18,7 @@
 {/css}
 
 <div class="module migration migrate_content">
-    <div class="admin"><h3>{'This is the Final Migration Step'|gettext}</h3></div>
+    <div class="admin"><h3>{'This was the Final Migration Step'|gettext}</h3></div>
     {br}<hr />
     <div class="info-header">
         <div class="related-actions">

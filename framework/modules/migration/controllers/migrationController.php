@@ -32,10 +32,10 @@ class migrationController extends expController {
     // this is a list of modules that we can convert to exp2 type modules.
     public $new_modules = array(
         'addressbookmodule'=>'addressController', 
-        'imagegallerymodule'=>'photosController',
+        'imagegallerymodule'=>'photoController',
         'linklistmodule'=>'linksController',
         'newsmodule'=>'newsController',
-        'slideshowmodule'=>'photosController',
+        'slideshowmodule'=>'photoController',
         'snippetmodule'=>'snippetController',
         'swfmodule'=>'textController',
         'textmodule'=>'textController',
@@ -1300,7 +1300,7 @@ class migrationController extends expController {
 
 				//check to see if it's already pulled in (circumvent !is_original)
 				$ploc = $iloc;
-				$ploc->mod = "photos";
+				$ploc->mod = "photo";
 				if ($db->countObjects('photo', "location_data='".serialize($ploc)."'")) {
 					$iloc->mod = 'imagegallerymodule';
 //					$linked = true;
@@ -1324,7 +1324,7 @@ class migrationController extends expController {
 						foreach ($gis as $gi) {
 							$photo = new photo();
 							$loc = expUnserialize($gallery['location_data']);
-							$loc->mod = "photos";
+							$loc->mod = "photo";
 							$photo->title = (!empty($gi['name'])) ? $gi['name'] : 'Untitled';
 							$photo->body = $gi['description'];
 							$photo->alt = !empty($gi['alt']) ? $gi['alt'] : $photo->title;
@@ -1354,7 +1354,7 @@ class migrationController extends expController {
 
 				//check to see if it's already pulled in (circumvent !is_original)
 				$ploc = $iloc;
-				$ploc->mod = "photos";
+				$ploc->mod = "photo";
 				if ($db->countObjects('photo', "location_data='".serialize($ploc)."'")) {
 					$iloc->mod = 'slideshowmodule';
 //					$linked = true;
@@ -1366,7 +1366,7 @@ class migrationController extends expController {
                 if ($gis) {
                     foreach ($gis as $gi) {
                         $photo = new photo();
-                        $loc->mod = "photos";
+                        $loc->mod = "photo";
                         $loc->src = $iloc->src;
                         $loc->int = $iloc->int;
                         $photo->title = (!empty($gi['name'])) ? $gi['name'] : 'Untitled';
