@@ -69,7 +69,7 @@ class expRouter {
         $linkbase .= SCRIPT_RELATIVE;
                 
         if (isset($params['section']) && $params['section'] == SITE_DEFAULT_SECTION) {            
-                return self::cleanLink($linkbase);
+            return self::cleanLink($linkbase);
         }
 
         // Check to see if SEF_URLS have been turned on in the site config
@@ -358,7 +358,7 @@ class expRouter {
             $_REQUEST['section'] = $section->id;
         }
         
-        expHistory::set('viewable', array('section'=>$_REQUEST['section']));
+        expHistory::set('viewable', array('section'=>intval($_REQUEST['section'])));
         return true;
     }
 
@@ -647,12 +647,12 @@ class expRouter {
         global $db;
         if (expTheme::inAction()) {
             if (isset($_REQUEST['section'])) {
-                $section = $this->url_type=="sef" ? $this->getPageByName($_REQUEST['section']) : $_REQUEST['section'] ;
+                $section = $this->url_type=="sef" ? $this->getPageByName($_REQUEST['section']) : intval($_REQUEST['section']) ;
             } else {
                 $section = (expSession::is_set('last_section') ? expSession::get('last_section') : SITE_DEFAULT_SECTION);
             }
         } else {
-            $section = (isset($_REQUEST['section']) ? $_REQUEST['section'] : SITE_DEFAULT_SECTION);
+            $section = (isset($_REQUEST['section']) ? intval($_REQUEST['section']) : SITE_DEFAULT_SECTION);
         }
         $testsection = $db->selectObject('section','id='.$section);
         if (empty($testsection)) {
