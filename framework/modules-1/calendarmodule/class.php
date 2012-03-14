@@ -279,7 +279,7 @@ class calendarmodule {
 				#$monthly[$week][$i] = $db->selectObjects("calendar","location_data='".serialize($loc)."' AND (eventstart >= $start AND eventend <= " . ($start+86399) . ") AND approved!=0");
 				//$dates = $db->selectObjects("eventdate",$locsql." AND date = $start");
 				$dates = $db->selectObjects("eventdate",$locsql." AND date = '".$start."'");
-				$monthly[$week][$i] = calendarmodule::_getEventsForDates($dates);
+				$monthly[$week][$i] = calendarmodule::_getEventsForDates($dates,true,isset($template->viewconfig['featured_only']) ? true : false);
 				$counts[$week][$i] = count($monthly[$week][$i]);
 				if ($weekday >= (6+DISPLAY_START_OF_WEEK)) {
 					$week++;
