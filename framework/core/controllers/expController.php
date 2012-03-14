@@ -585,6 +585,16 @@ abstract class expController {
             $rss_item->date = isset($item->publish_date) ? date('r',$item->publish_date) : date('r', $item->created_at);
             $rss_item->link = makeLink(array('controller'=>$this->classname, 'action'=>'show', 'title'=>$item->sef_url));
             if (!empty($item->expCat[0]->title)) $rss_item->category = array($item->expCat[0]->title);
+            $params = array(
+                'content_id'=>$item->id,
+                'content_type'=>$this->basemodel_name,
+            );
+            $comment_count = expCommentController::findComments($params);
+            if ($comment_count) {
+                $rss_item->comments = makeLink(array('controller'=>$this->classname, 'action'=>'show', 'title'=>$item->sef_url)).'#exp-comments';
+//                $rss_item->commentsRSS = makeLink(array('controller'=>$this->classname, 'action'=>'show', 'title'=>$item->sef_url)).'#exp-comments';
+                $rss_item->commentsCount = $comment_count;
+            }
             $rssitems[$key] = $rss_item;
         }
         return $rssitems;
@@ -766,7 +776,7 @@ abstract class expController {
             case 'showByTitle':
                 // look up the record.
                 if (isset($_REQUEST['id']) || isset($_REQUEST['title'])) {
-                    $lookup = isset($_REQUEST['id']) ? $_REQUEST['id'] :$_REQUEST['title']; 
+                    $lookup = isset($_REQUEST['id']) ? intval($_REQUEST['id']) : $_REQUEST['title'];
                     $object = new $modelname($lookup);
                     // set the meta info
                     if (!empty($object)) {
