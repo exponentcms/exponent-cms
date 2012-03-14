@@ -39,39 +39,39 @@
         <ul class="slideshow-frame" style="width:{$config.width|default:350}px;height:{$config.height|default:300}px;">
 			{assign var=quality value=$config.quality|default:$smarty.const.THUMB_QUALITY}
             {foreach key=key from=$slides item=slide name=slides}
-            <li class="slide" style="position:absolute;{if $smarty.foreach.slides.first}z-index:4;{else}z-index:1;{/if}">
-                {permissions}
-                    <div class="item-actions">
-                        {if $myloc != $slide->location_data}{icon class=merge img='arrow_merge.png' title="Aggregated Content"|gettext}{/if}
-                        {if $permissions.edit == 1}
-                            {icon action=edit record=$slide title="Edit"|gettext|cat:" `$item->title`"}
-                        {/if}
-                        {if $permissions.delete == 1}
-                            {icon action=delete record=$slide title="Delete"|gettext|cat:" `$item->title`"}
-                        {/if}
-                        {if $permissions.create == 1}
-                            {icon class=add action=edit rank=$slide->rank+1 title="Add another slide here"|gettext  text="Add After"|gettext}
-                        {/if}
-                    </div>
-                {/permissions}
-                {if !$config.hidetext}
-                    <div class="bodycopy">
-                        <h2>{$slide->title}</h2>
-                        {$slide->body}
-                    </div>
-                {/if}
-                {if $slide->link}
-                    <a href="{$slide->link}">
-                {/if}
-                {if $config.quality==100}
-                    <img src="{$slide->expFile[0]->url}" class="slide-image" />
-                {else}
-                    {img file_id=$slide->expFile[0]->id w=$config.width|default:350 h=$config.height|default:300 class="slide-image" zc=1 q=$quality|default:75}
-                {/if}
-                {if $slide->link}
-                    </a>
-                {/if}
-            </li>
+                <li class="slide" style="position:absolute;{if $smarty.foreach.slides.first}z-index:4;{else}z-index:1;{/if}">
+                    {permissions}
+                        <div class="item-actions">
+                            {if $myloc != $slide->location_data}{icon class=merge img='arrow_merge.png' title="Aggregated Content"|gettext}{/if}
+                            {if $permissions.edit == 1}
+                                {icon action=edit record=$slide title="Edit"|gettext|cat:" `$item->title`"}
+                            {/if}
+                            {if $permissions.delete == 1}
+                                {icon action=delete record=$slide title="Delete"|gettext|cat:" `$item->title`"}
+                            {/if}
+                            {if $permissions.create == 1}
+                                {icon class=add action=edit rank=$slide->rank+1 title="Add another slide here"|gettext  text="Add After"|gettext}
+                            {/if}
+                        </div>
+                    {/permissions}
+                    {if !$config.hidetext}
+                        <div class="bodycopy">
+                            <h2>{$slide->title}</h2>
+                            {$slide->body}
+                        </div>
+                    {/if}
+                    {if $slide->link}
+                        <a href="{$slide->link}">
+                    {/if}
+                    {if $config.quality==100}
+                        <img src="{$slide->expFile[0]->url}" class="slide-image" />
+                    {else}
+                        {img file_id=$slide->expFile[0]->id w=$config.width|default:350 h=$config.height|default:300 class="slide-image" zc=1 q=$quality|default:75}
+                    {/if}
+                    {if $slide->link}
+                        </a>
+                    {/if}
+                </li>
             {foreachelse}
                 <li>{"No slides yet"|gettext}</li>
             {/foreach}

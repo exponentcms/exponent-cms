@@ -92,21 +92,21 @@ class expSession {
 	 */
 	public static function initialize() {
 
-	// session key may be overridden
-	if (!defined('SYS_SESSION_KEY')) {
-		/** exdoc
-		 * @state <b>UNDOCUMENTED</b>
-		 * @node Undocumented
-		 */
-		define('SYS_SESSION_KEY',PATH_RELATIVE);
-	}
+        // session key may be overridden
+        if (!defined('SYS_SESSION_KEY')) {
+            /** exdoc
+             * @state <b>UNDOCUMENTED</b>
+             * @node Undocumented
+             */
+            define('SYS_SESSION_KEY',PATH_RELATIVE);
+        }
 
-	// Name of session cookie may also be overridden
-	if (!defined('SYS_SESSION_COOKIE')) {
-		define('SYS_SESSION_COOKIE','PHPSESSID');
-	}
+        // Name of session cookie may also be overridden
+        if (!defined('SYS_SESSION_COOKIE')) {
+            define('SYS_SESSION_COOKIE','PHPSESSID');
+        }
 
-//	$sessid  = '';
+    //	$sessid  = '';
 		if (isset($_GET['expid']))
 		{
 			$sessid = $_GET['expid'];

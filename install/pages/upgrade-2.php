@@ -97,7 +97,7 @@ $emptydbstr = gt('Continue Upgrade');
 if ($db->tableIsEmpty('user') || $db->tableIsEmpty('modstate') || $db->tableIsEmpty('section')) {
 	echo '<div style="color: red; font-weight: bold">';
 	echo 'No Database Entries Were Found!';
-	echo '</div>';
+	echo '<br /></div>';
 	$emptydb = 'install-2';
 	$emptydbstr = gt('Switching to Installer');
 

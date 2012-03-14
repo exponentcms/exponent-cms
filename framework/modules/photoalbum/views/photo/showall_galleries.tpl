@@ -48,10 +48,10 @@
         {foreach from=$cat->records item=record name=items}
             <li style="width:{$config.pa_showall_thumbbox|default:"150"}px;height:{$config.pa_showall_thumbbox|default:"150"}px;">
                 {if $config.lightbox}
-                {if $record->expFile[0]->width >= $record->expFile[0]->height}{assign var=x value="w"}{else}{assign var=x value="w"}{/if}
-                <a rel="lightbox[{$name}]" href="{$smarty.const.URL_FULL}thumb.php?id={$record->expFile[0]->id}&{$x}={$config.pa_showall_enlarged}" title="{$record->title|default:$record->expFile[0]->title}">
+                    {if $record->expFile[0]->width >= $record->expFile[0]->height}{assign var=x value="w"}{else}{assign var=x value="w"}{/if}
+                    <a rel="lightbox[{$name}]" href="{$smarty.const.URL_FULL}thumb.php?id={$record->expFile[0]->id}&{$x}={$config.pa_showall_enlarged}" title="{$record->title|default:$record->expFile[0]->title}">
                 {else}
-                <a href="{link action=show title=$record->sef_url}" title="{$record->title|default:$record->expFile[0]->title}">
+                    <a href="{link action=show title=$record->sef_url}" title="{$record->title|default:$record->expFile[0]->title}">
                 {/if}
                     {img class="img-small" alt=$record->alt|default:$record->expFile[0]->alt file_id=$record->expFile[0]->id w=$config.pa_showall_thumbbox|default:"150" h=$config.pa_showall_thumbbox|default:"150" zc=1 q=$quality|default:75}
                 </a>

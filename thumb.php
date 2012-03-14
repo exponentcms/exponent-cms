@@ -23,17 +23,17 @@ include_once('exponent_bootstrap.php');
 // Since bootstrap doesn't setup the session we need to define this
 // otherwise the expFile can't find it's table desc from cache.
 if (!defined('SYS_SESSION_KEY')) define('SYS_SESSION_KEY',PATH_RELATIVE);                                                                       
-    if (isset($_GET['id'])) {        
-    	// Initialize the Database Subsystem
-    	$db = expDatabase::connect(DB_USER,DB_PASS,DB_HOST.':'.DB_PORT,DB_NAME);
+if (isset($_GET['id'])) {
+    // Initialize the Database Subsystem
+    $db = expDatabase::connect(DB_USER,DB_PASS,DB_HOST.':'.DB_PORT,DB_NAME);
 
-    	$file_obj = new expFile($_GET['id']);         
-        //$_GET['src'] = "/" . $file_obj->directory.$file_obj->filename;
-        $_GET['src'] = $file_obj->path;
-        
-        unset($_GET['id']);
-        unset($_GET['square']);
-    }                                                                                              
-    require_once(BASE."external/phpThumb/phpThumb.php");
+    $file_obj = new expFile(intval($_GET['id']));
+    //$_GET['src'] = "/" . $file_obj->directory.$file_obj->filename;
+    $_GET['src'] = $file_obj->path;
+
+    unset($_GET['id']);
+    unset($_GET['square']);
+}
+require_once(BASE."external/phpThumb/phpThumb.php");
 
 ?>

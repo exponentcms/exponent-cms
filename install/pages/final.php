@@ -91,11 +91,11 @@ if (isset($_REQUEST['upgrade'])) {
             <span class="label"><?php echo gt('And'); ?>:</span>
             <div class="formcontrol radiobutton">
                 <input type="radio" id="radiocontrol-1" class="radiobutton" value="migration" name="next">
-				<label for="radiocontrol-1"><?php echo gt("I want to begin transferring an existing Exponent v0.9x site"); ?></label>
+				<label for="radiocontrol-1"><?php echo gt("I want to transfer an existing Exponent v0.9x site"); ?></label>
             </div>
             <div class="formcontrol radiobutton">
                 <input type="radio" id="radiocontrol-2" class="radiobutton" value="configsite" name="next">
-				<label for="radiocontrol-2"><?php echo gt("I want to start configuring my new site"); ?></label>
+				<label for="radiocontrol-2"><?php echo gt("I want to configure my new site"); ?></label>
             </div>
             <div class="formcontrol radiobutton">
                 <input type="radio" id="radiocontrol-3" class="radiobutton" value="homepage" name="next">
