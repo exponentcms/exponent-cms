@@ -144,7 +144,8 @@ class filedownloadController extends expController {
 
     function getRSSContent() {
         // this function is very general and will most of the time need to be overwritten and customized
-        
+        include_once(BASE.'external/mp3file.php');
+
         global $db;     
     
         // setup the where clause for looking up records.
@@ -159,18 +160,42 @@ class filedownloadController extends expController {
         $rssitems = array();
         foreach ($items as $key => $item) { 
             $rss_item = new FeedItem();
+
+            // Add the basic data
             $rss_item->title = expString::convertSmartQuotes($item->title);
             $rss_item->description = expString::convertSmartQuotes($item->body);
             $rss_item->date = isset($item->publish_date) ? date('r',$item->publish_date) : date('r', $item->created_at);
             $rss_item->link = makeLink(array('controller'=>$this->classname, 'action'=>'show', 'title'=>$item->sef_url));
             if (!empty($item->expCat[0]->title)) $rss_item->category = array($item->expCat[0]->title);
 
+            // Add the attachment/enclosure info
             $rss_item->enclosure = new Enclosure();
-            //$rss_item->enclosure->url = URL_FULL.'index.php?module=resourcesmodule&action=download_resource&id='.$item->id;
             $rss_item->enclosure->url = $item->expFile['downloadable'][0]->url;
             $rss_item->enclosure->length = $item->expFile['downloadable'][0]->filesize;
             $rss_item->enclosure->type = $item->expFile['downloadable'][0]->mimetype;
             if ($rss_item->enclosure->type == 'audio/mpeg') $rss_item->enclosure->type = 'audio/mpg';
+
+            // Add iTunes info
+            $rss_item->itunes->subtitle = expString::convertSmartQuotes($item->title);
+            $rss_item->itunes->summary = expString::convertSmartQuotes($item->body);
+            $rss_item->itunes->author = user::getUserById($item->poster)->firstname.' '.user::getUserById($item->poster)->lastname;
+            $tags = '';
+            foreach ($item->expTag as $tag) {
+                $tags .= $tag->title.", ";
+            }
+            if (!empty($tags)) {
+                $rss_item->itunes->keywords = $tags;
+            }
+            if (($rss_item->enclosure->type == "audio/mpg") && (file_exists(BASE.$item->expFile['downloadable'][0]->directory.'/'.$item->expFile['downloadable'][0]->filename))) {
+                $mp3 = new mp3file(BASE.$item->expFile['downloadable'][0]->directory.'/'.$item->expFile['downloadable'][0]->filename);
+                $id3 = $mp3->get_metadata();
+                if (($id3['Encoding']=='VBR') || ($id3['Encoding']=='CBR')) {
+                    $rss_item->itunes->duration = $id3['Length mm:ss'];
+                }
+            } else {
+                $rss_item->itunes->duration = 'Unknown';
+            }
+
             // Add the item to the array.
             $rssitems[$key] = $rss_item;
 

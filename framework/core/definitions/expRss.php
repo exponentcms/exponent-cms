@@ -45,6 +45,9 @@ return array(
 	    DB_FIELD_TYPE=>DB_DEF_INTEGER),
 	'rss_cachetime'=>array(
 	    DB_FIELD_TYPE=>DB_DEF_INTEGER),
+    'itunes_cats'=>array(
+		DB_FIELD_TYPE=>DB_DEF_STRING,
+		DB_FIELD_LEN=>200),
 );
 
 ?>

@@ -13,10 +13,12 @@
  *
  *}
 
-<h2>{'Podcast/RSS Feed Settings'|gettext}</h2>
+<h2>{'Podcast (RSS Feed) Settings'|gettext}</h2>
 {control type="checkbox" name="enable_rss" label="Enable Podcasting"|gettext value=1 checked=$config.enable_rss}
-{control type="text" name="feed_title" label="Feed Title"|gettext value=$config.feed_title}
-{control type="textarea" name="feed_desc" label="Feed Description"|gettext value=$config.feed_desc}
-{*control type="textarea" name="itunes_cats" label="Itunes Categories"|gettext value=$config.itunes_cats*}
+{control type="text" name="feed_title" label="Podcast Title"|gettext value=$config.feed_title}
+{control type="textarea" name="feed_desc" label="Podcast Summary"|gettext value=$config.feed_desc}
+<p><strong>{'iTunes categories are semi-colon separated, with sub-categories colon separated.'|gettext}</strong>
+{br}{'Only the first category and first subcategory are used.'|gettext} e.g., Category1:sub1Cat1:sub2Cat1;Category2:sub1Cat2
+{control type="textarea" name="itunes_cats" label="iTunes Category"|gettext value=$config.itunes_cats}</p>
 {control type="text" name="rss_limit" label="Maximum number of items to publish (0 = all)"|gettext value=$config.rss_limit|default:24 size=5}
 {control type="text" name="rss_cachetime" label="Recommended feed update interval in minutes (1440 = 1 day)"|gettext value=$config.rss_cachetime|default:1440 size=5}

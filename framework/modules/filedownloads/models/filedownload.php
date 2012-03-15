@@ -34,7 +34,8 @@ class filedownload extends expRecord {
 	public $validates = array(
 		'presence_of'=>array(
 			'title'=>array('message'=>'Title is a required field.'),
-		));
+		)
+    );
 
 }
 

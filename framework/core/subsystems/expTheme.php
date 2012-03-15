@@ -29,6 +29,7 @@ class expTheme {
 		global $auto_dirs2, $user;
 		// Initialize the theme subsystem 1.0 compatibility layer
 		require_once(BASE.'framework/core/compat/theme.php');
+
 		if (!defined('DISPLAY_THEME')) {
 			/* exdoc
 			 * The directory and class name of the current active theme.  This may be different

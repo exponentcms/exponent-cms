@@ -27,62 +27,62 @@ class calendarmodule {
 
 	function supportsWorkflow() { return false; }
 
-	function getRSSContent($loc) {
-		global $db;
-
-		//Get this modules configuration data
-		$config = $db->selectObject('calendarmodule_config',"location_data='".serialize($loc)."'");
-	
-		//If this module was configured as an aggregator, then turn off check for the location_data
-		$locsql = "(location_data='".serialize($loc)."'";
-		if (!empty($config->aggregate)) {
-			$locations = unserialize($config->aggregate);
-			foreach ($locations as $source) {
-				$tmploc = null;
-				$tmploc->mod = 'calendarmodule';
-				$tmploc->src = $source;
-				$tmploc->int = '';
-				$locsql .= " OR location_data='".serialize($tmploc)."'";
-			}
-		}
-		$locsql .= ')';
-							
-		$day = expDateTime::startOfDayTimestamp(time());
-		
-		if ($config->rss_limit > 0) {
-			$rsslimit = " AND date <= " . ($day + ($config->rss_limit * 86400));
-		} else {
-			$rsslimit = "";
-		}
-		
-		$cats = $db->selectObjectsIndexedArray("category");
-		$cats[0] = null;
-		$cats[0]->name = 'None';
-		
-		//Get this modules items
-		$items = array();
-		$dates = null;
-		$sort_asc = true; // For the getEventsForDates call 
-		$dates = $db->selectObjects("eventdate", $locsql." AND date >= ".$day.$rsslimit." ORDER BY date ASC ");                   
-		$items = calendarmodule::_getEventsForDates($dates, $sort_asc);           
-
-		//Convert the events to rss items
-		$rssitems = array();
-		foreach ($items as $key => $item) {
-			$rss_item = new FeedItem();
-			$rss_item->title = $item->title;
-			$rss_item->description = $item->body;
-			$rss_item->date = date('r', $item->eventstart);
-//          $rss_item->date = date('r', $item->posted);
-//			$rss_item->link = "http://".HOSTNAME.PATH_RELATIVE."index.php?module=calendarmodule&action=view&id=".$item->id."&src=".$loc->src;
-			$rss_item->link = expCore::makeLink(array('module'=>'calendarmodule', 'action'=>'view', 'id'=>$item->id, 'date_id'=>$item->eventdate->id));
-			if ($config->enable_categories == 1) {
-				$rss_item->category = array($cats[$item->category_id]->name);
-			}
-			$rssitems[$key] = $rss_item;
-		}
-		return $rssitems;
-	}
+//	function getRSSContent($loc) {
+//		global $db;
+//
+//		//Get this modules configuration data
+//		$config = $db->selectObject('calendarmodule_config',"location_data='".serialize($loc)."'");
+//
+//		//If this module was configured as an aggregator, then turn off check for the location_data
+//		$locsql = "(location_data='".serialize($loc)."'";
+//		if (!empty($config->aggregate)) {
+//			$locations = unserialize($config->aggregate);
+//			foreach ($locations as $source) {
+//				$tmploc = null;
+//				$tmploc->mod = 'calendarmodule';
+//				$tmploc->src = $source;
+//				$tmploc->int = '';
+//				$locsql .= " OR location_data='".serialize($tmploc)."'";
+//			}
+//		}
+//		$locsql .= ')';
+//
+//		$day = expDateTime::startOfDayTimestamp(time());
+//
+//		if ($config->rss_limit > 0) {
+//			$rsslimit = " AND date <= " . ($day + ($config->rss_limit * 86400));
+//		} else {
+//			$rsslimit = "";
+//		}
+//
+//		$cats = $db->selectObjectsIndexedArray("category");
+//		$cats[0] = null;
+//		$cats[0]->name = 'None';
+//
+//		//Get this modules items
+//		$items = array();
+//		$dates = null;
+//		$sort_asc = true; // For the getEventsForDates call
+//		$dates = $db->selectObjects("eventdate", $locsql." AND date >= ".$day.$rsslimit." ORDER BY date ASC ");
+//		$items = calendarmodule::_getEventsForDates($dates, $sort_asc);
+//
+//		//Convert the events to rss items
+//		$rssitems = array();
+//		foreach ($items as $key => $item) {
+//			$rss_item = new FeedItem();
+//			$rss_item->title = $item->title;
+//			$rss_item->description = $item->body;
+//			$rss_item->date = date('r', $item->eventstart);
+////          $rss_item->date = date('r', $item->posted);
+////			$rss_item->link = "http://".HOSTNAME.PATH_RELATIVE."index.php?module=calendarmodule&action=view&id=".$item->id."&src=".$loc->src;
+//			$rss_item->link = expCore::makeLink(array('module'=>'calendarmodule', 'action'=>'view', 'id'=>$item->id, 'date_id'=>$item->eventdate->id));
+//			if ($config->enable_categories == 1) {
+//				$rss_item->category = array($cats[$item->category_id]->name);
+//			}
+//			$rssitems[$key] = $rss_item;
+//		}
+//		return $rssitems;
+//	}
 
 	function copyContent($oloc,$nloc) {
 

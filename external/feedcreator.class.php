@@ -35,7 +35,7 @@ define("TIME_ZONE",date('O',time()));
  * Version string.
  **/
 // define("FEEDCREATOR_VERSION", "FeedCreator 1.7.2-iTunes");
-define("FEEDCREATOR_VERSION", SITE_TITLE);
+define("FEEDCREATOR_VERSION", 'Exponent Content Management System - '.expVersion::getVersion(true));
 
 /**
  * An Enclosure is a part of an Item
@@ -893,20 +893,16 @@ class RSSCreator091 extends FeedCreator {
 		$feed.= $this->_createStylesheetReferences();
 		$feed.= "<rss version=\"".$this->RSSVersion."\"\n";
         if (!empty($this->XMLNS)) {
-            if (is_array($this->XMLNS)) {
-                foreach ($this->XMLNS as $xmlns) {
-                    $feed.= "xmlns:".$xmlns."\n";
-                }
-            } else {
-                $feed.= "xmlns:".$this->XMLNS."\n";
+            foreach ($this->XMLNS as $xmlns) {
+                $feed.= "    xmlns:".$xmlns."\n";
             }
 		}
-        $feed.= 'xmlns:content="http://purl.org/rss/1.0/modules/content/"'."\n";
-        $feed.= 'xmlns:wfw="http://wellformedweb.org/CommentAPI/"'."\n";
-        $feed.= 'xmlns:dc="http://purl.org/dc/elements/1.1/"'."\n";
-        $feed.= 'xmlns:atom="http://www.w3.org/2005/Atom"'."\n";
-        $feed.= 'xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"'."\n";
-        $feed.= 'xmlns:slash="http://purl.org/rss/1.0/modules/slash/"'."\n";
+        $feed.= '    xmlns:content="http://purl.org/rss/1.0/modules/content/"'."\n";
+        $feed.= '    xmlns:wfw="http://wellformedweb.org/CommentAPI/"'."\n";
+        $feed.= '    xmlns:dc="http://purl.org/dc/elements/1.1/"'."\n";
+        $feed.= '    xmlns:atom="http://www.w3.org/2005/Atom"'."\n";
+        $feed.= '    xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"'."\n";
+        $feed.= '    xmlns:slash="http://purl.org/rss/1.0/modules/slash/"'."\n";
 		$feed.= ">\n";
 		$feed.= "    <channel>\n";
 		$feed.= "        <title>".FeedCreator::iTrunc(htmlspecialchars($this->title),100)."</title>\n";
@@ -922,13 +918,13 @@ class RSSCreator091 extends FeedCreator {
 			$feed.= "            <url>".$this->image->url."</url>\n"; 
 			$feed.= "            <title>".FeedCreator::iTrunc(htmlspecialchars($this->image->title),100)."</title>\n"; 
 			$feed.= "            <link>".$this->image->link."</link>\n";
-			if ($this->image->width!="") {
+			if (!empty($this->image->width)) {
 				$feed.= "            <width>".$this->image->width."</width>\n";
 			}
-			if ($this->image->height!="") {
+			if (!empty($this->image->height)) {
 				$feed.= "            <height>".$this->image->height."</height>\n";
 			}
-			if ($this->image->description!="") {
+			if (!empty($this->image->description)) {
 				$feed.= "            <description>".$this->image->getDescription()."</description>\n";
 			}
 			$feed.= "        </image>\n";
@@ -973,10 +969,10 @@ class RSSCreator091 extends FeedCreator {
         if ($this->itunes!="") {
 			if ($this->itunes->category!="") {
 				$feed.= "        <itunes:category text=\"".htmlspecialchars($this->itunes->category)."\">\n";
-			   if ($this->itunes->subcategory!="") {
-			   	$feed.= "            <itunes:category text=\"".htmlspecialchars($this->itunes->subcategory)."\"/>\n";
-			   }
-			   $feed.= "        </itunes:category>\n";
+			    if ($this->itunes->subcategory!="") {
+			        $feed.= "            <itunes:category text=\"".htmlspecialchars($this->itunes->subcategory)."\"/>\n";
+			    }
+			    $feed.= "        </itunes:category>\n";
 			}
 			if ($this->itunes->explicit!="") {
 				$feed.= "        <itunes:explicit>".$this->itunes->explicit."</itunes:explicit>\n";
@@ -995,11 +991,11 @@ class RSSCreator091 extends FeedCreator {
 			}
 			if ($this->itunes->owner_email!="") {
 				$feed.= "        <itunes:owner>\n";
-                                $feed.= "            <itunes:email>".$this->itunes->owner_email."</itunes:email>\n";
-			   if ($this->itunes->owner_name!="") {
-				$feed.= "            <itunes:name>".$this->itunes->owner_name."</itunes:name>\n";
-			   }
-                                $feed.= "        </itunes:owner>\n";
+                $feed.= "            <itunes:email>".$this->itunes->owner_email."</itunes:email>\n";
+			    if ($this->itunes->owner_name!="") {
+			        $feed.= "            <itunes:name>".$this->itunes->owner_name."</itunes:name>\n";
+			    }
+                $feed.= "        </itunes:owner>\n";
 			}
 			if ($this->itunes->image!="") {
 				$feed.= "        <itunes:image href=\"".$this->itunes->image."\" />\n";
@@ -1030,38 +1026,38 @@ class RSSCreator091 extends FeedCreator {
 			}
             /* iTunes add iTunes specific tags */
             if ($this->items[$i]->itunes!="") {
-				if ($this->items[$i]->itunes->category!="") {
+				if (!empty($this->items[$i]->itunes->category)) {
 					$feed.= "            <itunes:category text=\"".htmlspecialchars($this->items[$i]->itunes->category)."\">\n";
-				   if ($this->items[$i]->itunes->subcategory!="") {
-				   	$feed.= "                <itunes:category text=\"".htmlspecialchars($this->items[$i]->itunes->subcategory)."\"/>\n";
-				   }
+				    if (!empty($this->items[$i]->itunes->subcategory)) {
+				   	    $feed.= "                <itunes:category text=\"".htmlspecialchars($this->items[$i]->itunes->subcategory)."\"/>\n";
+				    }
 				   $feed.= "            </itunes:category>\n";
 				}
-				if ($this->items[$i]->itunes->explicit!="") {
+				if (!empty($this->items[$i]->itunes->explicit)) {
 					$feed.= "            <itunes:explicit>".$this->items[$i]->itunes->explicit."</itunes:explicit>\n";
 				}
-				if ($this->items[$i]->itunes->subtitle!="") {
+				if (!empty($this->items[$i]->itunes->subtitle)) {
 					$feed.= "            <itunes:subtitle>".htmlspecialchars($this->items[$i]->itunes->subtitle)."</itunes:subtitle>\n";
 				}
-				if ($this->items[$i]->itunes->summary!="") {
+				if (!empty($this->items[$i]->itunes->summary)) {
 					$feed.= "            <itunes:summary>".htmlspecialchars($this->items[$i]->itunes->summary)."</itunes:summary>\n";
 				}
-				if ($this->items[$i]->itunes->author!="") {
+				if (!empty($this->items[$i]->itunes->author)) {
 					$feed.= "            <itunes:author>".htmlspecialchars($this->items[$i]->itunes->author)."</itunes:author>\n";
 				}
-				if ($this->items[$i]->itunes->keywords!="") {
+				if (!empty($this->items[$i]->itunes->keywords)) {
 					$feed.= "            <itunes:keywords>".htmlspecialchars($this->items[$i]->itunes->keywords)."</itunes:keywords>\n";
 				}
-				if ($this->items[$i]->itunes->duration!="") {
+				if (!empty($this->items[$i]->itunes->duration)) {
 					$feed.= "            <itunes:duration>".$this->items[$i]->itunes->duration."</itunes:duration>\n";
 				}
-				if ($this->items[$i]->itunes->image!="") {
+				if (!empty($this->items[$i]->itunes->image)) {
 					$feed.= "            <itunes:link rel=\"image\" type=\"image/jpeg\" href=\"".$this->items[$i]->itunes->image."\">[image]</itunes:link>\n";
 				}
             }
 			for ($c=0;$c<count($this->items[$i]->category);$c++) {
-	                  if ($this->items[$i]->category[$c]!="") {
-					$feed.= "            <category>".htmlspecialchars($this->items[$i]->category[$c])."</category>\n";
+	            if ($this->items[$i]->category[$c]!="") {
+				    $feed.= "            <category>".htmlspecialchars($this->items[$i]->category[$c])."</category>\n";
 				}
 			}
 			if ($this->items[$i]->comments!="") {

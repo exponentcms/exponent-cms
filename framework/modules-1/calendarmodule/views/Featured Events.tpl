@@ -20,9 +20,9 @@
 <div class="module calendar cal-admin">  
 	<a href="{link _common=1 view=Default action=show_view}">Month View</a>{br}
 	<h1>
-		{if $enable_rss == true}
-			<a href="{rsslink}"><img src="{$smarty.const.ICON_RELATIVE|cat:'rss-feed.gif'}" title="{'RSS Feed'|gettext}" alt="{'Link to RSS Feed'|gettext}" /></a>
-		{/if}
+        {if $enable_ical == true}
+            <a class="icallink module-actions" href="{link action=ical}" title="{'iCalendar Feed'|gettext}" alt="{'iCalendar Feed'|gettext}">&nbsp;</a>
+        {/if}
 		{if $moduletitle}{$moduletitle}{/if}
 	</h1>
 	<table cellspacing="0" cellpadding="0" border="0" width="100%">

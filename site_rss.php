@@ -23,18 +23,19 @@ $site_rss = new expRss($_REQUEST);
 $site_rss->feed_title = empty($site_rss->feed_title) ? gt('RSS for').' '.URL_FULL : $site_rss->feed_title;
 $site_rss->feed_desc = empty($site_rss->feed_desc) ? gt('This is the site wide RSS syndication for').' '.HOSTNAME : $site_rss->feed_desc;
 if (isset($site_rss->rss_cachetime)) { $ttl = $site_rss->rss_cachetime; }
-if ($ttl == 0) { $ttl = 1440; }
+if ($site_rss->rss_cachetime == 0) { $site_rss->rss_cachetime = 1440; }
 
-// $ic = explode(";", $config->config['itunes_cats']);
-// $x = 0;
-// foreach($ic as $cat){
-	// $cat_sub = explode(":", $cat);
-	// $itunes_cats[$x]->category = $cat_sub[0];
-	// if(isset($cat_sub[1])) {
-		// $itunes_cats[$x]->subcategory = $cat_sub[1];	    
-	// }
-	// $x++;
-// }
+$ic = explode(";", $site_rss->itunes_cats);
+$x = 0;
+$itunes_cats = array();
+foreach($ic as $cat){
+    $cat_sub = explode(":", $cat);
+    $itunes_cats[$x]->category = $cat_sub[0];
+    if(isset($cat_sub[1])) {
+        $itunes_cats[$x]->subcategory = $cat_sub[1];
+    }
+    $x++;
+}
 
 if ($site_rss->enable_rss == true) {
 	$rss = new UniversalFeedCreator();
@@ -43,21 +44,27 @@ if ($site_rss->enable_rss == true) {
 	$rss->useCached();
 	$rss->title = $site_rss->feed_title;
 	$rss->description = $site_rss->feed_desc;
-	$rss->ttl = $ttl;
+    $rss->image->url = URL_FULL.'themes/'.DISPLAY_THEME.'/images/logo.png';
+    $rss->image->title = ORGANIZATION_NAME;
+    $rss->image->link = URL_FULL;
+//    $rss->image->width = 64;
+//    $rss->image->height = 64;
+	$rss->ttl = $site_rss->rss_cachetime;
 	$rss->link = "http://".HOSTNAME.PATH_RELATIVE;
 	$rss->syndicationURL = "http://".HOSTNAME.PATH_RELATIVE.$_SERVER['PHP_SELF'];
 	if ($_REQUEST['module'] == "filedownload") {
-		$rss->itunes->summary = $site_rss->feed_desc;
+//		$rss->itunes->summary = $site_rss->feed_desc;
 		$rss->itunes->author = ORGANIZATION_NAME;
-//		$rss->itunes->category = @$itunes_cats[0]->category;
-//		$rss->itunes->subcategory = @$itunes_cats[0]->subcategory;
-		$rss->itunes->category = '';
-		$rss->itunes->subcategory = '';
-		$rss->itunes->image = URL_FULL."framework/modules/filedownloads/assets/images/logo.png";
+        if (!empty($itunes_cats)) {
+            $rss->itunes->category = $itunes_cats[0]->category;
+            $rss->itunes->subcategory = $itunes_cats[0]->subcategory;
+        }
+		$rss->itunes->image = URL_FULL.'themes/'.DISPLAY_THEME.'/images/logo.png';
 		$rss->itunes->explicit = 0;
-		$rss->itunes->subtitle = 0;
+		$rss->itunes->subtitle = $site_rss->feed_title;
 		$rss->itunes->keywords = 0;
-		$rss->itunes->owner_email = 0;
+		$rss->itunes->owner_email = SMTP_FROMADDRESS;
+        $rss->itunes->owner_name = ORGANIZATION_NAME;
 	}
 
 	$pubDate = '';
