@@ -913,7 +913,7 @@ class RSSCreator091 extends FeedCreator {
 		$feed.= "        <lastBuildDate>".htmlspecialchars($now->rfc822())."</lastBuildDate>\n";
 		$feed.= "        <generator>".FEEDCREATOR_VERSION."</generator>\n";
 
-		if ($this->image!=null) {
+		if (!empty($this->image)) {
 			$feed.= "        <image>\n";
 			$feed.= "            <url>".$this->image->url."</url>\n"; 
 			$feed.= "            <title>".FeedCreator::iTrunc(htmlspecialchars($this->image->title),100)."</title>\n"; 
@@ -929,75 +929,75 @@ class RSSCreator091 extends FeedCreator {
 			}
 			$feed.= "        </image>\n";
 		}
-		if ($this->language!="") {
+		if (!empty($this->language)) {
 			$feed.= "        <language>".$this->language."</language>\n";
 		}
-		if ($this->copyright!="") {
+		if (!empty($this->copyright)) {
 			$feed.= "        <copyright>".FeedCreator::iTrunc(htmlspecialchars($this->copyright),100)."</copyright>\n";
 		}
-		if ($this->editor!="") {
+		if (!empty($this->editor)) {
 			$feed.= "        <managingEditor>".FeedCreator::iTrunc(htmlspecialchars($this->editor),100)."</managingEditor>\n";
 		}
-		if ($this->webmaster!="") {
+		if (!empty($this->webmaster)) {
 			$feed.= "        <webMaster>".FeedCreator::iTrunc(htmlspecialchars($this->webmaster),100)."</webMaster>\n";
 		}
-		if ($this->pubDate!="") {
+		if (!empty($this->pubDate)) {
 			$pubDate = new FeedDate($this->pubDate);
 			$feed.= "        <pubDate>".htmlspecialchars($pubDate->rfc822())."</pubDate>\n";
 		}
-		if ($this->category!="") {
+		if (!empty($this->category)) {
 			$feed.= "        <category>".htmlspecialchars($this->category)."</category>\n";
 		}
-		if ($this->docs!="") {
+		if (!empty($this->docs)) {
 			$feed.= "        <docs>".FeedCreator::iTrunc(htmlspecialchars($this->docs),500)."</docs>\n";
 		}
-		if ($this->ttl!="") {
+		if (!empty($this->ttl)) {
 			$feed.= "        <ttl>".htmlspecialchars($this->ttl)."</ttl>\n";
 		}
-		if ($this->rating!="") {
+		if (!empty($this->rating)) {
 			$feed.= "        <rating>".FeedCreator::iTrunc(htmlspecialchars($this->rating),500)."</rating>\n";
 		}
-		if ($this->skipHours!="") {
+		if (!empty($this->skipHours)) {
 			$feed.= "        <skipHours>".htmlspecialchars($this->skipHours)."</skipHours>\n";
 		}
-		if ($this->skipDays!="") {
+		if (!empty($this->skipDays)) {
 			$feed.= "        <skipDays>".htmlspecialchars($this->skipDays)."</skipDays>\n";
 		}
 		$feed.= $this->_createAdditionalElements($this->additionalElements, "    ");
 
                 /* iTunes add iTunes specific tags */
-        if ($this->itunes!="") {
+        if (!empty($this->itunes)) {
 			if ($this->itunes->category!="") {
 				$feed.= "        <itunes:category text=\"".htmlspecialchars($this->itunes->category)."\">\n";
-			    if ($this->itunes->subcategory!="") {
+			    if (!empty($this->itunes->subcategory)) {
 			        $feed.= "            <itunes:category text=\"".htmlspecialchars($this->itunes->subcategory)."\"/>\n";
 			    }
 			    $feed.= "        </itunes:category>\n";
 			}
-			if ($this->itunes->explicit!="") {
+			if (!empty($this->itunes->explicit)) {
 				$feed.= "        <itunes:explicit>".$this->itunes->explicit."</itunes:explicit>\n";
 			}
-			if ($this->itunes->subtitle!="") {
+			if (!empty($this->itunes->subtitle)) {
 				$feed.= "        <itunes:subtitle>".htmlspecialchars($this->itunes->subtitle)."</itunes:subtitle>\n";
 			}
-			if ($this->itunes->summary!="") {
+			if (!empty($this->itunes->summary)) {
 				$feed.= "        <itunes:summary>".htmlspecialchars($this->itunes->summary)."</itunes:summary>\n";
 			}
-			if ($this->itunes->author!="") {
+			if (!empty($this->itunes->author)) {
 				$feed.= "        <itunes:author>".htmlspecialchars($this->itunes->author)."</itunes:author>\n";
 			}
-			if ($this->itunes->keywords!="") {
+			if (!empty($this->itunes->keywords)) {
 				$feed.= "        <itunes:keywords>".htmlspecialchars($this->itunes->keywords)."</itunes:keywords>\n";
 			}
-			if ($this->itunes->owner_email!="") {
+			if (!empty($this->itunes->owner_email)) {
 				$feed.= "        <itunes:owner>\n";
                 $feed.= "            <itunes:email>".$this->itunes->owner_email."</itunes:email>\n";
-			    if ($this->itunes->owner_name!="") {
+			    if (!empty($this->itunes->owner_name)) {
 			        $feed.= "            <itunes:name>".$this->itunes->owner_name."</itunes:name>\n";
 			    }
                 $feed.= "        </itunes:owner>\n";
 			}
-			if ($this->itunes->image!="") {
+			if (!empty($this->itunes->image)) {
 				$feed.= "        <itunes:image href=\"".$this->itunes->image."\" />\n";
 			}
         }
@@ -1008,7 +1008,7 @@ class RSSCreator091 extends FeedCreator {
 			$feed.= "            <link>".str_replace(" ", "%20", htmlspecialchars($this->items[$i]->link))."</link>\n";
 			$feed.= "            <description>".$this->items[$i]->getDescription()."</description>\n";
 			
-			if ($this->items[$i]->author!="") {
+			if (!empty($this->items[$i]->author)) {
 				$feed.= "            <author>".htmlspecialchars($this->items[$i]->author)."</author>\n";
 			}
 			/*
@@ -1018,14 +1018,14 @@ class RSSCreator091 extends FeedCreator {
 			}
 			*/
                   /* podcasts add the enclosure element */
-			if ($this->items[$i]->enclosure!="") {
+			if (!empty($this->items[$i]->enclosure)) {
 				$feed.= "            <enclosure url=\"".str_replace(" ", "%20", htmlspecialchars($this->items[$i]->enclosure->url)).
 								"\" length=\"".htmlspecialchars($this->items[$i]->enclosure->length).
 								"\" type=\"".htmlspecialchars($this->items[$i]->enclosure->type).
 								"\"/>\n";
 			}
             /* iTunes add iTunes specific tags */
-            if ($this->items[$i]->itunes!="") {
+            if (!empty($this->items[$i]->itunes)) {
 				if (!empty($this->items[$i]->itunes->category)) {
 					$feed.= "            <itunes:category text=\"".htmlspecialchars($this->items[$i]->itunes->category)."\">\n";
 				    if (!empty($this->items[$i]->itunes->subcategory)) {
@@ -1056,24 +1056,24 @@ class RSSCreator091 extends FeedCreator {
 				}
             }
 			for ($c=0;$c<count($this->items[$i]->category);$c++) {
-	            if ($this->items[$i]->category[$c]!="") {
+	            if (!empty($this->items[$i]->category[$c])) {
 				    $feed.= "            <category>".htmlspecialchars($this->items[$i]->category[$c])."</category>\n";
 				}
 			}
-			if ($this->items[$i]->comments!="") {
+			if (!empty($this->items[$i]->comments)) {
 				$feed.= "            <comments>".htmlspecialchars($this->items[$i]->comments)."</comments>\n";
 			}
-            if ($this->items[$i]->commentsRSS!="") {
+            if (!empty($this->items[$i]->commentsRSS)) {
                 $feed.= "            <wfw:commentRss>".htmlspecialchars($this->items[$i]->commentsRSS)."</wfw:commentRss>\n";
             }
-            if ($this->items[$i]->commentsCount!="") {
+            if (!empty($this->items[$i]->commentsCount)) {
                 $feed.= "            <slash:comments>".$this->items[$i]->commentsCount."</slash:comments>\n";
             }
-			if ($this->items[$i]->date!="") {
+			if (!empty($this->items[$i]->date)) {
 			$itemDate = new FeedDate($this->items[$i]->date);
 				$feed.= "            <pubDate>".htmlspecialchars($itemDate->rfc822())."</pubDate>\n";
 			}
-			if ($this->items[$i]->guid!="") {
+			if (!empty($this->items[$i]->guid)) {
 				$feed.= "            <guid>".htmlspecialchars($this->items[$i]->guid)."</guid>\n";
 			}
 			$feed.= $this->_createAdditionalElements($this->items[$i]->additionalElements, "        ");

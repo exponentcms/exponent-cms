@@ -49,7 +49,7 @@
                 {'now unpublished'|gettext}</strong>&nbsp;
             {/if}
         </span>
-        | <a class="comments" href="{link action=show title=$record->sef_url}#exp-comments">{$record->expComment|@count} {"Comments"|gettext}</a>
+        | <a class="comments" href="#exp-comments">{$record->expComment|@count} {"Comments"|gettext}</a>
 		{if $record->expTag|@count>0 && !$config.disabletags}
 		| <span class="tags">
 			{"Tags"|gettext}: 

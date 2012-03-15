@@ -60,9 +60,9 @@ if ($site_rss->enable_rss == true) {
             $rss->itunes->subcategory = $itunes_cats[0]->subcategory;
         }
 		$rss->itunes->image = URL_FULL.'themes/'.DISPLAY_THEME.'/images/logo.png';
-		$rss->itunes->explicit = 0;
+//		$rss->itunes->explicit = 0;
 		$rss->itunes->subtitle = $site_rss->feed_title;
-		$rss->itunes->keywords = 0;
+//		$rss->itunes->keywords = 0;
 		$rss->itunes->owner_email = SMTP_FROMADDRESS;
         $rss->itunes->owner_name = ORGANIZATION_NAME;
 	}

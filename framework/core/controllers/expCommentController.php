@@ -152,21 +152,15 @@ class expCommentController extends expController {
 		));
 	}
 
+    /**
+     * Returns count of comments attached to specified item
+     *
+     * @static
+     * @param $params
+     * @return int
+     */
     public static function findComments($params) {
         global $user, $db;
-
-        /* The global constants can be overridden by passing appropriate params */
-        //sure wish I could do this once in the constructor. sadly $this->params[] isn't set yet
-//        $require_login = empty($this->params['require_login']) ? COMMENTS_REQUIRE_LOGIN : $this->params['require_login'];
-//        $require_approval = empty($this->params['require_approval']) ? COMMENTS_REQUIRE_APPROVAL : $this->params['require_approval'];
-//        $require_notification = empty($this->params['require_notification']) ? COMMENTS_REQUIRE_NOTIFICATION : $this->params['require_notification'];
-//        $notification_email = empty($this->params['notification_email']) ? COMMENTS_NOTIFICATION_EMAIL : $this->params['notification_email'];
-
-//        $sql  = 'SELECT c.*, ua.image, u.username FROM '.DB_TABLE_PREFIX.'_expComments c ';
-//        $sql .= 'JOIN '.DB_TABLE_PREFIX.'_content_expComments cnt ON c.id=cnt.expcomments_id ';
-//        $sql .= 'JOIN '.DB_TABLE_PREFIX.'_user_avatar ua ON c.poster=ua.user_id ';
-//        $sql .= 'JOIN '.DB_TABLE_PREFIX.'_user u ON c.poster=u.id ';
-//        $sql .= 'WHERE cnt.content_id='.$this->params['content_id']." AND cnt.content_type='".$this->params['content_type']."' ";
 
         $sql  = 'SELECT c.* FROM '.DB_TABLE_PREFIX.'_expComments c ';
         $sql .= 'JOIN '.DB_TABLE_PREFIX.'_content_expComments cnt ON c.id=cnt.expcomments_id ';
@@ -179,41 +173,8 @@ class expCommentController extends expController {
             'sql'=>$sql,
         ));
         return count($comments->records);
-
 //        return $count = $db->countObjectsBySql($sql);
 
-        // add username and avatar
-//        foreach ($comments->records as $key=>$record) {
-//            $commentor = new user($record->poster);
-//            $comments->records[$key]->username = $commentor->username;
-//            $comments->records[$key]->avatar = $db->selectObject('user_avatar',"user_id='".$record->poster."'");
-//        }
-        // eDebug($sql, true);
-
-        // count the unapproved comments
-//        if ($require_approval == 1 && $user->isAdmin()) {
-//            $sql  = 'SELECT count(com.id) as c FROM '.DB_TABLE_PREFIX.'_expComments com ';
-//            $sql .= 'JOIN '.DB_TABLE_PREFIX.'_content_expComments cnt ON com.id=cnt.expcomments_id ';
-//            $sql .= 'WHERE cnt.content_id='.$this->params['content_id']." AND cnt.content_type='".$this->params['content_type']."' ";
-//            $sql .= 'AND com.approved=0';
-//            $unapproved = $db->countObjectsBySql($sql);
-//        } else {
-//            $unapproved = 0;
-//        }
-//
-//        $this->config = $this->params['config'];
-
-//        assign_to_template(array(
-//            'comments'=>$comments,
-//            'unapproved'=>$unapproved,
-//            'content_id'=>$this->params['content_id'],
-//            'content_type'=>$this->params['content_type'],
-//            'user'=>$user,
-//            'hideform'=>$this->params['hideform'],
-//            'hidecomments'=>$this->params['hidecomments'],
-//            'title'=>$this->params['title'],
-//            'formtitle'=>$this->params['formtitle'],
-//        ));
     }
 
     function update() {

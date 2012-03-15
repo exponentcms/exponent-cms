@@ -256,6 +256,42 @@ class blogController extends expController {
     }
 
     /**
+     * get the blog items in an rss feed format
+     *
+     * @return array
+     */
+    function getRSSContent() {
+        global $db;
+
+        // setup the where clause for looking up records.
+        $where = "(publish = 0 or publish <= " . time() . ") AND (unpublish=0 OR unpublish > ".time().") AND ".$this->aggregateWhereClause();
+
+        $order = isset($this->config['order']) ? $this->config['order'] : 'publish';
+
+        $class = new blog();
+        $items = $class->find('all', $where, $order);
+
+        //Convert the items to rss items
+        $rssitems = array();
+        foreach ($items as $key => $item) {
+            $rss_item = new FeedItem();
+            $rss_item->title = expString::convertSmartQuotes($item->title);
+            $rss_item->description = expString::convertSmartQuotes($item->body);
+            $rss_item->date = isset($item->publish_date) ? date('r',$item->publish_date) : date('r', $item->created_at);
+            $rss_item->link = makeLink(array('controller'=>$this->classname, 'action'=>'show', 'title'=>$item->sef_url));
+            if (!empty($item->expCat[0]->title)) $rss_item->category = array($item->expCat[0]->title);
+            $comment_count = expCommentController::findComments(array('content_id'=>$item->id,'content_type'=>$this->basemodel_name));
+            if ($comment_count) {
+                $rss_item->comments = makeLink(array('controller'=>$this->classname, 'action'=>'show', 'title'=>$item->sef_url)).'#exp-comments';
+//                $rss_item->commentsRSS = makeLink(array('controller'=>$this->classname, 'action'=>'show', 'title'=>$item->sef_url)).'#exp-comments';
+                $rss_item->commentsCount = $comment_count;
+            }
+            $rssitems[$key] = $rss_item;
+        }
+        return $rssitems;
+    }
+
+    /**
    	 * The aggregateWhereClause function creates a sql where clause which also includes aggregated module content
    	 *
    	 * @return string

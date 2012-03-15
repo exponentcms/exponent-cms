@@ -585,11 +585,7 @@ abstract class expController {
             $rss_item->date = isset($item->publish_date) ? date('r',$item->publish_date) : date('r', $item->created_at);
             $rss_item->link = makeLink(array('controller'=>$this->classname, 'action'=>'show', 'title'=>$item->sef_url));
             if (!empty($item->expCat[0]->title)) $rss_item->category = array($item->expCat[0]->title);
-            $params = array(
-                'content_id'=>$item->id,
-                'content_type'=>$this->basemodel_name,
-            );
-            $comment_count = expCommentController::findComments($params);
+            $comment_count = expCommentController::findComments(array('content_id'=>$item->id,'content_type'=>$this->basemodel_name));
             if ($comment_count) {
                 $rss_item->comments = makeLink(array('controller'=>$this->classname, 'action'=>'show', 'title'=>$item->sef_url)).'#exp-comments';
 //                $rss_item->commentsRSS = makeLink(array('controller'=>$this->classname, 'action'=>'show', 'title'=>$item->sef_url)).'#exp-comments';
