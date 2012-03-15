@@ -41,13 +41,14 @@ if (!empty($site_rss->itunes_cats)) {
 
 if ($site_rss->enable_rss == true) {
 	$rss = new UniversalFeedCreator();
+    $rss->encoding = LANG_CHARSET;
 	$rss->cssStyleSheet = "";
 //	$rss->useCached("PODCAST");
 	$rss->useCached();
 	$rss->title = $site_rss->feed_title;
 	$rss->description = $site_rss->feed_desc;
     $rss->image->url = URL_FULL.'themes/'.DISPLAY_THEME.'/images/logo.png';
-    $rss->image->title = ORGANIZATION_NAME;
+    $rss->image->title = $site_rss->feed_title;
     $rss->image->link = URL_FULL;
 //    $rss->image->width = 64;
 //    $rss->image->height = 64;
