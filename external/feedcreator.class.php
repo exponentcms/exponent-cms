@@ -821,10 +821,10 @@ class RSSCreator10 extends FeedCreator {
 				$itemDate = new FeedDate($this->items[$i]->date);
 				$feed.= "        <dc:date>".htmlspecialchars($itemDate->iso8601())."</dc:date>\n";
 			}
-			if ($this->items[$i]->source!="") {
+			if (!empty($this->items[$i]->source)) {
 				$feed.= "        <dc:source>".htmlspecialchars($this->items[$i]->source)."</dc:source>\n";
 			}
-			if ($this->items[$i]->author!="") {
+			if (!empty($this->items[$i]->author)) {
 				$feed.= "        <dc:creator>".htmlspecialchars($this->items[$i]->author)."</dc:creator>\n";
 			}
 			$feed.= "        <title>".htmlspecialchars(strip_tags(strtr($this->items[$i]->title,"\n\r","  ")))."</title>\n";
@@ -967,7 +967,7 @@ class RSSCreator091 extends FeedCreator {
 
                 /* iTunes add iTunes specific tags */
         if (!empty($this->itunes)) {
-			if ($this->itunes->category!="") {
+			if (!empty($this->itunes->category)) {
 				$feed.= "        <itunes:category text=\"".htmlspecialchars($this->itunes->category)."\">\n";
 			    if (!empty($this->itunes->subcategory)) {
 			        $feed.= "            <itunes:category text=\"".htmlspecialchars($this->itunes->subcategory)."\"/>\n";
@@ -1013,7 +1013,7 @@ class RSSCreator091 extends FeedCreator {
 			}
 			/*
 			// on hold
-			if ($this->items[$i]->source!="") {
+			if (!empty($this->items[$i]->source)) {
 					$feed.= "            <source>".htmlspecialchars($this->items[$i]->source)."</source>\n";
 			}
 			*/
@@ -1145,10 +1145,10 @@ class PIECreator01 extends FeedCreator {
 			$feed.= "        <issued>".htmlspecialchars($itemDate->iso8601())."</issued>\n";
 			$feed.= "        <modified>".htmlspecialchars($itemDate->iso8601())."</modified>\n";
 			$feed.= "        <id>".htmlspecialchars($this->items[$i]->guid)."</id>\n";
-			if ($this->items[$i]->author!="") {
+			if (!empty($this->items[$i]->author)) {
 				$feed.= "        <author>\n";
 				$feed.= "            <name>".htmlspecialchars($this->items[$i]->author)."</name>\n";
-				if ($this->items[$i]->authorEmail!="") {
+				if (!empty($this->items[$i]->authorEmail)) {
 					$feed.= "            <email>".$this->items[$i]->authorEmail."</email>\n";
 				}
 				$feed.="        </author>\n";
@@ -1191,7 +1191,7 @@ class AtomCreator03 extends FeedCreator {
 		$feed.= $this->_createGeneratorComment();
 		$feed.= $this->_createStylesheetReferences();
 		$feed.= "<feed version=\"0.3\" xmlns:atom=\"http://purl.org/atom/ns#\"";
-		if ($this->language!="") {
+		if (!empty($this->language)) {
 			$feed.= " xml:lang=\"".$this->language."\"";
 		}
 		$feed.= ">\n"; 
@@ -1201,10 +1201,10 @@ class AtomCreator03 extends FeedCreator {
 		$feed.= "    <id>".htmlspecialchars($this->link)."</id>\n";
 		$now = new FeedDate();
 		$feed.= "    <modified>".htmlspecialchars($now->iso8601())."</modified>\n";
-		if ($this->editor!="") {
+		if (!empty($this->editor)) {
 			$feed.= "    <author>\n";
 			$feed.= "        <name>".$this->editor."</name>\n";
-			if ($this->editorEmail!="") {
+			if (!empty($this->editorEmail)) {
 				$feed.= "        <email>".$this->editorEmail."</email>\n";
 			}
 			$feed.= "    </author>\n";
@@ -1224,12 +1224,12 @@ class AtomCreator03 extends FeedCreator {
 			$feed.= "        <modified>".htmlspecialchars($itemDate->iso8601())."</modified>\n";
 			$feed.= "        <id>".htmlspecialchars($this->items[$i]->link)."</id>\n";
 			$feed.= $this->_createAdditionalElements($this->items[$i]->additionalElements, "        ");
-			if ($this->items[$i]->author!="") {
+			if (!empty($this->items[$i]->author)) {
 				$feed.= "        <author>\n";
 				$feed.= "            <name>".htmlspecialchars($this->items[$i]->author)."</name>\n";
 				$feed.= "        </author>\n";
 			}
-			if ($this->items[$i]->description!="") {
+			if (!empty($this->items[$i]->description)) {
 				$feed.= "        <summary>".htmlspecialchars($this->items[$i]->description)."</summary>\n";
 			}
 			$feed.= "    </entry>\n";
@@ -1289,7 +1289,7 @@ class MBOXCreator extends FeedCreator {
 	 */
 	function createFeed() {
 		for ($i=0;$i<count($this->items);$i++) {
-			if ($this->items[$i]->author!="") {
+			if (!empty($this->items[$i]->author)) {
 				$from = $this->items[$i]->author;
 			} else {
 				$from = $this->title;
@@ -1344,18 +1344,18 @@ class OPMLCreator extends FeedCreator {
 		$feed.= "<opml xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">\n";
 		$feed.= "    <head>\n";
 		$feed.= "        <title>".htmlspecialchars($this->title)."</title>\n";
-		if ($this->pubDate!="") {
+		if (!empty($this->pubDate)) {
 			$date = new FeedDate($this->pubDate);
 			$feed.= "         <dateCreated>".$date->rfc822()."</dateCreated>\n";
 		}
-		if ($this->lastBuildDate!="") {
+		if (!empty($this->lastBuildDate)) {
 			$date = new FeedDate($this->lastBuildDate);
 			$feed.= "         <dateModified>".$date->rfc822()."</dateModified>\n";
 		}
-		if ($this->editor!="") {
+		if (!empty($this->editor)) {
 			$feed.= "         <ownerName>".$this->editor."</ownerName>\n";
 		}
-		if ($this->editorEmail!="") {
+		if (!empty($this->editorEmail)) {
 			$feed.= "         <ownerEmail>".$this->editorEmail."</ownerEmail>\n";
 		}
 		$feed.= "    </head>\n";
@@ -1434,7 +1434,7 @@ class HTMLCreator extends FeedCreator {
 	 */
 	function createFeed() {
 		// if there is styleless output, use the content of this variable and ignore the rest
-		if ($this->stylelessOutput!="") {
+		if (!empty($this->stylelessOutput)) {
 			return $this->stylelessOutput;
 		}
 		
