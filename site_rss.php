@@ -25,16 +25,18 @@ $site_rss->feed_desc = empty($site_rss->feed_desc) ? gt('This is the site wide R
 if (isset($site_rss->rss_cachetime)) { $ttl = $site_rss->rss_cachetime; }
 if ($site_rss->rss_cachetime == 0) { $site_rss->rss_cachetime = 1440; }
 
-$ic = explode(";", $site_rss->itunes_cats);
-$x = 0;
-$itunes_cats = array();
-foreach($ic as $cat){
-    $cat_sub = explode(":", $cat);
-    $itunes_cats[$x]->category = $cat_sub[0];
-    if(isset($cat_sub[1])) {
-        $itunes_cats[$x]->subcategory = $cat_sub[1];
+if (!empty($site_rss->itunes_cats)) {
+    $ic = explode(";", $site_rss->itunes_cats);
+    $x = 0;
+    $itunes_cats = array();
+    foreach($ic as $cat){
+        $cat_sub = explode(":", $cat);
+        $itunes_cats[$x]->category = $cat_sub[0];
+        if(isset($cat_sub[1])) {
+            $itunes_cats[$x]->subcategory = $cat_sub[1];
+        }
+        $x++;
     }
-    $x++;
 }
 
 if ($site_rss->enable_rss == true) {
