@@ -41,7 +41,6 @@ if (!empty($site_rss->itunes_cats)) {
 
 if ($site_rss->enable_rss == true) {
 	$rss = new UniversalFeedCreator();
-    $rss->encoding = LANG_CHARSET;
 	$rss->cssStyleSheet = "";
 //	$rss->useCached("PODCAST");
 	$rss->useCached();

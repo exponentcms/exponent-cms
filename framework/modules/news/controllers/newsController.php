@@ -168,7 +168,6 @@ class newsController extends expController {
             $rss_item->description = $item->body;
             $rss_item->date = date('r',$item->publish_date);
             $rss_item->link = makeLink(array('controller'=>'news', 'action'=>'showByTitle', 'title'=>$item->sef_url));
-            $rss_item->guid = expUnserialize($item->location_data)->src.'-id#'.$item->id;
             $rssitems[$key] = $rss_item;
         }
         return $rssitems;

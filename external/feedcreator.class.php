@@ -891,18 +891,18 @@ class RSSCreator091 extends FeedCreator {
 		$feed = "<?xml version=\"1.0\" encoding=\"".$this->encoding."\"?>\n";
 		/** $feed.= $this->_createGeneratorComment(); */
 		$feed.= $this->_createStylesheetReferences();
-		$feed.= "<rss version=\"".$this->RSSVersion."\"\n";
+		$feed.= "<rss version=\"".$this->RSSVersion."\" ";
         if (!empty($this->XMLNS)) {
             foreach ($this->XMLNS as $xmlns) {
                 $feed.= "    xmlns:".$xmlns."\n";
             }
 		}
-        $feed.= '    xmlns:content="http://purl.org/rss/1.0/modules/content/"'."\n";
-        $feed.= '    xmlns:wfw="http://wellformedweb.org/CommentAPI/"'."\n";
-        $feed.= '    xmlns:dc="http://purl.org/dc/elements/1.1/"'."\n";
-        $feed.= '    xmlns:atom="http://www.w3.org/2005/Atom"'."\n";
-        $feed.= '    xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"'."\n";
-        $feed.= '    xmlns:slash="http://purl.org/rss/1.0/modules/slash/"'."\n";
+        $feed.= 'xmlns:content="http://purl.org/rss/1.0/modules/content/" ' ;
+        $feed.= 'xmlns:wfw="http://wellformedweb.org/CommentAPI/" ' ;
+        $feed.= 'xmlns:dc="http://purl.org/dc/elements/1.1/" ' ;
+        $feed.= 'xmlns:atom="http://www.w3.org/2005/Atom" ' ;
+        $feed.= 'xmlns:sy="http://purl.org/rss/1.0/modules/syndication/" ' ;
+        $feed.= 'xmlns:slash="http://purl.org/rss/1.0/modules/slash/" ' ;
 		$feed.= ">\n";
 		$feed.= "    <channel>\n";
 		$feed.= "        <title>".FeedCreator::iTrunc(htmlspecialchars($this->title),100)."</title>\n";
@@ -1081,7 +1081,7 @@ class RSSCreator091 extends FeedCreator {
 			$feed.= "        </item>\n";
 		}
 		$feed.= "    </channel>\n";
-		$feed.= "</rss>\n";
+		$feed.= "</rss>";
 		return $feed;
 	}
 }
@@ -1097,6 +1097,7 @@ class RSSCreator20 extends RSSCreator091 {
 
     function RSSCreator20() {
         parent::_setRSSVersion("2.0");
+        $this->encoding = "utf-8";
     }
     
 }
@@ -1110,8 +1111,9 @@ class RSSCreator20 extends RSSCreator091 {
  */
 class PodcastCreator extends RSSCreator20 {  
 	function PodcastCreator() {
-	   parent::_setRSSVersion("2.0");
-	   parent::_setXMLNS("itunes=\"http://www.itunes.com/dtds/podcast-1.0.dtd\"");
+	    parent::_setRSSVersion("2.0");
+        $this->encoding = "utf-8";
+	    parent::_setXMLNS("itunes=\"http://www.itunes.com/dtds/podcast-1.0.dtd\"");
 	}
 }
 
