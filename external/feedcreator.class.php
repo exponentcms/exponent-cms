@@ -904,9 +904,9 @@ class RSSCreator091 extends FeedCreator {
         $feed.= '    xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"'."\n";
         $feed.= '    xmlns:slash="http://purl.org/rss/1.0/modules/slash/"'."\n";
 		$feed.= ">\n";
-        $feed.= '    <atom:link href="'.$this->syndicationURL.'" rel="self" type="application/rss+xml" />'."\n";
 		$feed.= "    <channel>\n";
 		$feed.= "        <title>".FeedCreator::iTrunc(htmlspecialchars($this->title),100)."</title>\n";
+//        $feed.= '        <atom:link href="'.$this->syndicationURL.'" rel="self" type="application/rss+xml" />'."\n";
 		$this->descriptionTruncSize = 500;
 		$feed.= "        <description>".$this->getDescription()."</description>\n";
 		$feed.= "        <link>".$this->link."</link>\n";

@@ -54,7 +54,7 @@ if ($site_rss->enable_rss == true) {
 //    $rss->image->height = 64;
 	$rss->ttl = $site_rss->rss_cachetime;
 	$rss->link = "http://".HOSTNAME.PATH_RELATIVE;
-	$rss->syndicationURL = "http://".HOSTNAME.PATH_RELATIVE.$_SERVER['PHP_SELF'];
+	$rss->syndicationURL = "http://".HOSTNAME.$_SERVER['PHP_SELF'].'?module='.$site_rss->module.'&src='.$site_rss->src;
 	if ($_REQUEST['module'] == "filedownload") {
 //		$rss->itunes->summary = $site_rss->feed_desc;
 		$rss->itunes->author = ORGANIZATION_NAME;
