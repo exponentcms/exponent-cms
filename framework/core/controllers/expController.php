@@ -772,7 +772,7 @@ abstract class expController {
             case 'showByTitle':
                 // look up the record.
                 if (isset($_REQUEST['id']) || isset($_REQUEST['title'])) {
-                    $lookup = isset($_REQUEST['id']) ? intval($_REQUEST['id']) : $_REQUEST['title'];
+                    $lookup = isset($_REQUEST['id']) ? intval($_REQUEST['id']) : expString::sanitize($_REQUEST['title']);
                     $object = new $modelname($lookup);
                     // set the meta info
                     if (!empty($object)) {

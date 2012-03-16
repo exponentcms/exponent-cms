@@ -463,12 +463,12 @@ class calendarmodule {
 	function deleteIn($loc) {
 		global $db;
 		$refcount = $db->selectValue('sectionref', 'refcount', "source='".$loc->src."'");
-                if ($refcount <= 0) {
+        if ($refcount <= 0) {
 			$items = $db->selectObjects("calendar","location_data='".serialize($loc)."'");
-			foreach ($items as $i) {
-				$db->delete("calendar_wf_revision","wf_original=".$i->id);
-				$db->delete("calendar_wf_info","real_id=".$i->id);
-			}
+//			foreach ($items as $i) {
+////				$db->delete("calendar_wf_revision","wf_original=".$i->id);
+////				$db->delete("calendar_wf_info","real_id=".$i->id);
+//			}
 			$db->delete("calendar","location_data='".serialize($loc)."'");
 		}
 	}

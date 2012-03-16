@@ -145,6 +145,7 @@ class fileController extends expController {
                 $filter .= "is_image=1 AND ";
             }
 
+            $_GET['query'] = expString::sanitize($_GET['query']);
             $totalrecords = $this->$modelname->find('count',"filename LIKE '%".$_GET['query']."%' OR title LIKE '%".$_GET['query']."%' OR alt LIKE '%".$_GET['query']."%'");
             $files = $this->$modelname->find('all',$filter."filename LIKE '%".$_GET['query']."%' OR title LIKE '%".$_GET['query']."%' OR alt LIKE '%".$_GET['query']."%'".$imagesOnly,$sort.' '.$dir, $results, $startIndex);
 
@@ -282,7 +283,7 @@ class fileController extends expController {
         // and then assign $user->id to $file->poster so we have an audit trail for the upload
 
         if (is_object($file)) {
-            $user = new user($_REQUEST['usrid']);
+            $user = new user(intval($_REQUEST['usrid']));
             $file->poster = $user->id;
             $file->save();
 

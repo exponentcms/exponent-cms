@@ -55,7 +55,7 @@ class expCore {
 		$loc = null;
 		$loc->mod = ($mod ? $mod : "");
 		$loc->src = ($src ? $src : "");
-		$loc->int = ($int ? $int : "");
+		$loc->int = ($int ? intval($int) : "");
 		return $loc;
 	}
 

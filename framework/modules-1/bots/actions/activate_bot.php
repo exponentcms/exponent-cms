@@ -22,12 +22,12 @@ if (!defined('EXPONENT')) exit('');
 
 if (expPermissions::check('extensions',expCore::makeLocation('administrationmodule'))) {
 	// turn on the bot
-	$bot = $db->selectObject('bots', 'id='.$_REQUEST['id']);
+	$bot = $db->selectObject('bots', 'id='.intval($_REQUEST['id']));
 	$bot->state = 1;
 	$db->updateObject($bot, 'bots');
 
 	// start the bot
-	$convo  = "GET ".PATH_RELATIVE."index.php?module=bots&action=run_bot&id=".$_REQUEST['id']."&ajax_action=1 HTTP/1.1\r\n";
+	$convo  = "GET ".PATH_RELATIVE."index.php?module=bots&action=run_bot&id=".intval($_REQUEST['id'])."&ajax_action=1 HTTP/1.1\r\n";
     $convo .= "Host: " . HOSTNAME . "\r\n";
     $convo .= "User-Agent:  ExponentCMS/".EXPONENT_VERSION_MAJOR.".".EXPONENT_VERSION_MINOR.".".EXPONENT_VERSION_REVISION."  Build/".EXPONENT_VERSION_ITERATION." PHP/".phpversion()."\r\n";
     $convo .= "Connection: Close\r\n\r\n";

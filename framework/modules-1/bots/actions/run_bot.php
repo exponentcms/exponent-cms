@@ -21,7 +21,7 @@
 if (!defined('EXPONENT')) exit('');
 
 if (isset($_REQUEST['id'])) {
-    $bot = $db->selectObject('bots', 'id='.$_REQUEST['id']);
+    $bot = $db->selectObject('bots', 'id='.intval($_REQUEST['id']));
     $name = $bot->name;
 } else {
     $name = $_REQUEST['name'];

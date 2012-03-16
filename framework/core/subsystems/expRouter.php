@@ -182,7 +182,7 @@ class expRouter {
                 // we are putting this check here to safe guard against a controller being referred to as
                 // a module in the form.
                 if (!empty($_POST['controller']) || !empty($_POST['module'])) {
-                    $module = !empty($_POST['controller']) ? $_POST['controller'] : $_POST['module'];
+                    $module = !empty($_POST['controller']) ? expString::sanitize($_POST['controller']) : expString::sanitize($_POST['module']);
                     // Figure out if this is module or controller request - WE ONLY NEED THIS CODE UNTIL WE PULL OUT THE OLD MODULES
                     if (expModules::controllerExists($module)) {
                         $_POST['controller'] = $module;
@@ -226,7 +226,7 @@ class expRouter {
         if ($this->url_type == 'page' || $this->url_type == 'base') {
             $trackingObject->section = $section;
         } else {
-            $trackingObject->module = ($_SERVER['REQUEST_METHOD'] == 'POST') ? (empty($_POST['controller']) ? $_POST['module'] : $_POST['controller']) : $this->url_parts[0];
+            $trackingObject->module = ($_SERVER['REQUEST_METHOD'] == 'POST') ? (empty($_POST['controller']) ? expString::sanitize($_POST['module']) : expString::sanitize($_POST['controller'])) : $this->url_parts[0];
             $trackingObject->action = ($_SERVER['REQUEST_METHOD'] == 'POST') ? $_POST['action'] : $this->url_parts[1];
         }
         $trackingObject->referer = empty($_SERVER['HTTP_REFERER']) ? null : $_SERVER['HTTP_REFERER'];

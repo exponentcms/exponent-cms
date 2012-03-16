@@ -209,6 +209,22 @@ class expString {
     	return str_replace($find, $replace, $str);
     }
 
+    public static function sanitize($data) {
+        global $db;
+
+        // remove whitespaces (not a must though)
+        $data = trim($data);
+
+        // apply stripslashes if magic_quotes_gpc is enabled
+        if(get_magic_quotes_gpc()) {
+            $data = stripslashes($data);
+        }
+
+        // a mySQL connection is required before using this function
+        $data = $db->escapeString($data);
+
+        return $data;
+    }
 }
 
 ?>

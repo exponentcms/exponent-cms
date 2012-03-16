@@ -21,7 +21,7 @@
 if (!defined('EXPONENT')) exit('');
 
 if (expPermissions::check('extensions',expCore::makeLocation('administrationmodule'))) {
-	$bot = $db->selectObject('bots', 'id='.$_REQUEST['id']);
+	$bot = $db->selectObject('bots', 'id='.intval($_REQUEST['id']));
 	$bot->state = 0;
 	$db->updateObject($bot, 'bots');
 	expHistory::back();

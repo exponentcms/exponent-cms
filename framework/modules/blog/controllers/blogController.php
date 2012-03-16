@@ -338,7 +338,7 @@ class blogController extends expController {
             case 'showByTitle':
                 // look up the record.
                 if (isset($_REQUEST['id']) || isset($_REQUEST['title'])) {
-                    $lookup = isset($_REQUEST['id']) ? $_REQUEST['id'] :$_REQUEST['title']; 
+                    $lookup = isset($_REQUEST['id']) ? intval($_REQUEST['id']) :expString::sanitize($_REQUEST['title']);
                     $object = new $modelname($lookup);
                     // set the meta info
                     if (!empty($object)) {
@@ -351,7 +351,7 @@ class blogController extends expController {
             case 'showall_by_tags':
                 // look up the record.
                 if (isset($_REQUEST['tag'])) {
-                    $object = new expTag($_REQUEST['tag']);
+                    $object = new expTag(expString::sanitize($_REQUEST['tag']));
                     // set the meta info
                     if (!empty($object)) {
                         $metainfo['title'] = gt('Showing all Blog Posts tagged with') ." \"" . $object->title . "\"";
@@ -364,7 +364,7 @@ class blogController extends expController {
                 // look up the record.
                 if (isset($_REQUEST['author'])) {
                     // set the meta info
-                    $u = user::getUserByName($_REQUEST['author']);
+                    $u = user::getUserByName(expString::sanitize($_REQUEST['author']));
                     
             		switch (DISPLAY_ATTRIBUTION) {
             			case "firstlast":

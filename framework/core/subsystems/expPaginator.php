@@ -152,7 +152,7 @@ class expPaginator {
 		$this->order_direction = $this->dir;	
 		if (expTheme::inAction()) {
 		    //FIXME: module/controller glue code
-		    $mod = !empty($_REQUEST['controller']) ? $_REQUEST['controller'] : $_REQUEST['module'];
+		    $mod = !empty($_REQUEST['controller']) ? expString::sanitize($_REQUEST['controller']) : expString::sanitize($_REQUEST['module']);
 //		    if ($this->controller == $mod && $this->action == $_REQUEST['action']) {
 			    $this->order = isset($_REQUEST['order']) ? $_REQUEST['order'] : $this->order;
 			    $this->order_direction = isset($_REQUEST['dir']) ? $_REQUEST['dir'] : $this->dir;

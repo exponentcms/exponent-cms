@@ -21,12 +21,12 @@ if (!defined('EXPONENT')) exit('');
 $question = null;
 $answer = null;
 if (isset($_GET['id'])) {
-	$answer = $db->selectObject('poll_answer','id='.$_GET['id']);
+	$answer = $db->selectObject('poll_answer','id='.intval($_GET['id']));
 	if ($answer) {
 		$question = $db->selectObject('poll_question','id='.$answer->question_id);
 	}
 } else if (isset($_GET['question_id'])) {
-	$question = $db->selectObject('poll_question','id='.$_GET['question_id']);
+	$question = $db->selectObject('poll_question','id='.intval($_GET['question_id']));
 }
 
 if ($question) {

@@ -1078,7 +1078,7 @@ class storeController extends expController {
                 }              
             break;
             case 'showByTitle':                
-                $prod = new product(isset($_REQUEST['title']) ? $_REQUEST['title']: $_REQUEST['id']);
+                $prod = new product(isset($_REQUEST['title']) ? expString::sanitize($_REQUEST['title']): intval($_REQUEST['id']));
                 if (!empty($prod)) {
                     $metainfo['title'] = empty($prod->meta_title) ? $prod->title : $prod->meta_title;
                     $metainfo['keywords'] = empty($prod->meta_keywords) ? $prod->title : strip_tags($prod->meta_keywords);
