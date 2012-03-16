@@ -51,7 +51,7 @@ foreach ($controls as $c) {
 //        $emailFields[$c->name] = call_user_func(array($control_type,'templateFormat'),$emailValue,$ctl);
         $emailFields[$c->name] = call_user_func(array($control_type,'templateFormat'),$value,$ctl);
         $captions[$c->name] = $c->caption;
-		if ($c->name == "email" && expValidator::is_valid_email(array("email" => $value), "email", array()) === true) {
+		if ($c->name == "email" && expValidator::isValidEmail($value)) {
 			$from = $value;
 		}
 		if ($c->name == "name") {
