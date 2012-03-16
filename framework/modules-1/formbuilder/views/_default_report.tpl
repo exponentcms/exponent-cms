@@ -19,7 +19,7 @@
 
 {if $is_email == 0}
     {css unique="default-report-buttons" corecss="button"}
-
+        {$css}
     {/css}
 {/if}
 
