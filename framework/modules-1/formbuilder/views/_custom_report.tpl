@@ -14,7 +14,7 @@
  *}
 
 {css unique="custom-report-buttons" corecss="button"}
-    {$css}
+
 {/css}
 
 {eval var=$template}
