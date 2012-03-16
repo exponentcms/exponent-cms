@@ -2014,10 +2014,15 @@ class migrationController extends expController {
                 }
                 $configs = $old_db->selectObjects('calendarmodule_config', "location_data='".serialize($iloc)."'");
                 foreach ($configs as $config) {
+                    $reminders = $old_db->selectObjects('calendar_reminder_address', "calendar_id='".$config->id."'");
 					$config->id = '';
 					$config->enable_categories = 0;
 					$config->enable_tags = 0;
                     $db->insertObject($config, 'calendarmodule_config');
+                    foreach($reminders as $reminder) {
+                        $reminder->calendar_id = $config->id;
+                        $db->insertObject($reminder, 'calendar_reminder_address');
+                    }
                 }
 				@$this->msg['migrated'][$iloc->mod]['name'] = $iloc->mod;
 				break;
