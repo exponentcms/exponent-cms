@@ -86,7 +86,7 @@ a.edit,
 a.configure,
 a.delete,
 a.manage,
-img.merge,
+a.merge,
 a.revisions,
 a.reranklink,
 a.view {
@@ -118,11 +118,11 @@ a.manage {
     background: url(../images/manage.png) no-repeat 0 50%;
 }
 
-img.merge {
-    padding : 0 0 4px;
-    margin: 0;
-    vertical-align: middle;
-    background: none;
+a.merge {
+    /*padding : 0 0 4px;*/
+    /*margin: 0;*/
+    /*vertical-align: middle;*/
+    background: url(../images/arrow_merge.png) no-repeat 0 50%;
 }
 
 a.reranklink {

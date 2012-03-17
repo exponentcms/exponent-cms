@@ -23,8 +23,10 @@
         {assign var=myloc value=serialize($__loc)}
         {permissions}
 			<div class="item-actions">
-                {if $myloc != $doc->location_data}{icon class=merge img='arrow_merge.png' title="Aggregated Content"|gettext}{/if}
 				{if $permissions.edit == 1}
+                    {if $myloc != $record->location_data}
+                        {icon action=merge id=$record->id title="Merge Aggregated Content"|gettext}
+                    {/if}
 					{icon action=edit record=$record title="Edit this file"|gettext}
 				{/if}
 				{if $permissions.delete == 1}

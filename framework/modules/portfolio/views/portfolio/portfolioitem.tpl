@@ -17,8 +17,10 @@
 	<h3><a href="{link action=show title=$record->sef_url}" title="{$record->body|summarize:"html":"para"}">{$record->title}</a></h3>
 	{permissions}
 		<div class="item-actions">
-            {if $myloc != $record->location_data}{icon class=merge img='arrow_merge.png' title="Aggregated Content"|gettext}{/if}
 			{if $permissions.edit == 1}
+                {if $myloc != $record->location_data}
+                    {icon action=merge id=$record->id title="Merge Aggregated Content"|gettext}
+                {/if}
 				{icon action=edit record=$record title="Edit `$record->title`"}
 			{/if}
 			{if $permissions.delete == 1}

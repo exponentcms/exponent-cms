@@ -210,7 +210,7 @@ class expString {
     }
 
     /**
-     * Scrub input string for possible security issues
+     * Scrub input string for possible security issues.
      *
      * @static
      * @param $data string
@@ -219,10 +219,8 @@ class expString {
     public static function sanitize($data) {
         global $db;
 
-        // remove whitespaces (not a must though)
-        $data = trim($data);
-
-        $data = strip_tags($data);
+        // remove whitespaces and tags
+        $data = strip_tags(trim($data));
 
         // apply stripslashes if magic_quotes_gpc is enabled
         if(get_magic_quotes_gpc()) {
@@ -234,6 +232,7 @@ class expString {
 
         return $data;
     }
+
 }
 
 ?>

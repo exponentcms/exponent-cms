@@ -397,6 +397,24 @@ abstract class expController {
         assign_to_template(array('record'=>$record, 'table'=>$this->$modelname->tablename));
     }
 
+    /**
+     * merge/move aggregated item into this module
+     */
+    function merge() {
+        global $db;
+
+        expHistory::set('editable', $this->params);
+        $modelname = $this->basemodel_name;
+        $record = $this->$modelname->find($this->params['id']);
+
+        $loc = expUnserialize($record->location_data);
+        $loc->src = $this->loc->src;
+        $record->location_data = serialize($loc);
+        $this->$modelname->update($record);
+
+        expHistory::back();
+    }
+
 	/**
 	 * update item in module
 	 */

@@ -46,8 +46,10 @@
                     </div>
                     {permissions}
                         <div class="item-actions">
-                            {if $myloc != $item->location_data}{icon class=merge img='arrow_merge.png' title="Aggregated Content"|gettext}{/if}
                             {if $permissions.edit == 1}
+                                {if $myloc != $item->location_data}
+                                    {icon action=merge id=$item->id title="Merge Aggregated Content"|gettext}
+                                {/if}
                                 {icon action=edit record=$item}
                             {/if}
                             {if $permissions.delete == 1}
@@ -70,8 +72,10 @@
                     <a class="link" {if $item->new_window}target="_blank"{/if} href="{$item->url}" title="{$item->body|summarize:"html":"para"}">{$item->title}</a>
                     {permissions}
                         <div class="item-actions">
-                            {if $myloc != $item->location_data}{icon class=merge img='arrow_merge.png' title="Aggregated Content"|gettext}{/if}
                             {if $permissions.edit == 1}
+                                {if $myloc != $item->location_data}
+                                    {icon action=merge id=$item->id title="merge Aggregated Content"|gettext}
+                                {/if}
                                 {icon action=edit record=$item}
                             {/if}
                             {if $permissions.delete == 1}

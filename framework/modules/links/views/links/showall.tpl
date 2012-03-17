@@ -49,8 +49,10 @@
                     <h3 class="link-title"><a {if $item->new_window}target="_blank"{/if} href="{$item->url}" title="{$item->body|summarize:"html":"para"}">{$item->title}</a></h3>
                     {permissions}
                         <div class="item-actions">
-                            {if $myloc != $item->location_data}{icon class=merge img='arrow_merge.png' title="Aggregated Content"|gettext}{/if}
                             {if $permissions.edit == 1}
+                                {if $myloc != $item->location_data}
+                                    {icon action=merge id=$item->id title="Merge Aggregated Content"|gettext}
+                                {/if}
                                 {icon action=edit record=$item}
                             {/if}
                             {if $permissions.delete == 1}
@@ -76,8 +78,10 @@
                 <h2><a class="li-link" {if $item->new_window}target="_blank"{/if} href="{$item->url}">{$item->title}</a></h2>
                 {permissions}
                     <div class="item-actions">
-                        {if $myloc != $item->location_data}{icon class=merge img='arrow_merge.png' title="Aggregated Content"|gettext}{/if}
                         {if $permissions.edit == 1}
+                            {if $myloc != $item->location_data}
+                                {icon action=merge id=$item->id title="Merge Aggregated Content"|gettext}
+                            {/if}
                             {icon action=edit record=$item}
                         {/if}
                         {if $permissions.delete == 1}

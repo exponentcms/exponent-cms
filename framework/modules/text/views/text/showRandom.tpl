@@ -30,8 +30,10 @@
 			{if $listing->title}<h2>{$listing->title}</h2>{/if}
 			{permissions}
 				<div class="item-actions">
-                    {if $myloc != $listing->location_data}{icon class=merge img='arrow_merge.png' title="Aggregated Content"|gettext}{/if}
 					{if $permissions.edit == 1}
+                        {if $myloc != $listing->location_data}
+                            {icon action=merge id=$listing->id title="Merge Aggregated Content"|gettext}
+                        {/if}
 						{icon action=edit record=$listing}
 					{/if}
 					{if $permissions.delete == 1}

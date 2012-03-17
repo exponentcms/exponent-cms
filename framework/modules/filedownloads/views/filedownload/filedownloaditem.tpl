@@ -62,8 +62,10 @@
     </div>
     {permissions}
         <div class="item-actions">
-            {if $myloc != $file->location_data}{icon class=merge img='arrow_merge.png' title="Aggregated Content"|gettext}{/if}
             {if $permissions.edit == 1}
+                {if $myloc != $file->location_data}
+                    {icon action=merge id=$file->id title="Merge Aggregated Content"|gettext}
+                {/if}
                 {icon action=edit record=$file title="Edit this file"|gettext}
             {/if}
             {if $permissions.delete == 1}
