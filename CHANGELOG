@@ -7,12 +7,14 @@ Added / Fixed / changed for 2.0.6
 # This release focuses on ???
   - adds publish/unpublish dates and 'draft' feature to blog
   - adds WYSIWYG comments
-  - adds aggregated content indicator
+  - adds aggregated content indicator with command to move into current module
   - incorporates all fixes from 2.0.5 patches
   - fixes a plural/singular MVC naming issue to provide more fluid integration (developer feature)
   - upgrade scripts now run when versions are equal to allow better upgrading from develop code
   - prevent installation/upgrade over 0.9x database (must be clean install then migrate old db)
   - adds cURL library support requirement to installation
+  - adds additional security checking
+  - enhances podcast/rss feeds
 
 Added / Fixed / changed for 2.0.5
 -----------------------
