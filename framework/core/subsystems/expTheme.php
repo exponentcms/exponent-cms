@@ -503,7 +503,7 @@ class expTheme {
 				$loc = null;
 				$loc->mod = $module;
 				$loc->src = (isset($_REQUEST['src']) ? expString::sanitize($_REQUEST['src']) : "");
-				$loc->int = (isset($_REQUEST['int']) ? intval($_REQUEST['int']) : "");
+				$loc->int = (!empty($_REQUEST['int']) ? strval(intval($_REQUEST['int'])) : "");
 				//if (isset($_REQUEST['act'])) $loc->act = $_REQUEST['act'];
 
 				if (isset($_REQUEST['_common'])) {

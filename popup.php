@@ -28,7 +28,7 @@ require_once('exponent.php');
 $loc = expCore::makeLocation(
 	(isset($_GET['module'])?expString::sanitize($_GET['module']):''),
 	(isset($_GET['src'])?expString::sanitize($_GET['src']):''),
-	(isset($_GET['int'])?intval($_GET['int']):'')
+	(isset($_GET['int'])?$_GET['int']:'')
 );
 
 if (expTheme::inAction()) {
