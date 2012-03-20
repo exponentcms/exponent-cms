@@ -37,31 +37,42 @@
                 {/if}
 			</div>
         {/permissions}
-        <span class="label size">{'File Size'}:</span>
-        {if $record->expFile.downloadable[0]->filesize >= 1048576}
-            <span class="value">{$record->expFile.downloadable[0]->filesize|megabytes} {'mb'|gettext}</span>
-        {elseif $record->expFile.downloadable[0]->filesize >= 1024}
-            <span class="value">{$record->expFile.downloadable[0]->filesize|kilobytes} {'kb'|gettext}</span>
-        {else}
-            <span class="value">{$record->expFile.downloadable[0]->filesize} {'bytes'|gettext}</span>
-        {/if}
-        &nbsp;|&nbsp;
-        {if $record->expFile.downloadable[0]->duration}
-            <span class="label size">{'Duration'}:</span>
-            <span class="value">{$record->expFile.downloadable[0]->duration}</span>
+        <div class="attribution">
+            <p>
+            <span class="label dated">{'Dated'|gettext}:</span>
+            {if strstr($config.order,'edited_at')}
+                <span class="value">{$file->edited_at|format_date}</span>
+            {else}
+                <span class="value">{$file->created_at|format_date}</span>
+            {/if}
             &nbsp;|&nbsp;
-        {/if}
-        <span class="label downloads"># {'Downloads'|gettext}:</span>
-        <span class="value">{$record->downloads}</span>
-        {if $record->expTag|@count>0 && !$config.disabletags}
+            <span class="label size">{'File Size'}:</span>
+            {if $record->expFile.downloadable[0]->filesize >= 1048576}
+                <span class="value">{$record->expFile.downloadable[0]->filesize|megabytes} {'mb'|gettext}</span>
+            {elseif $record->expFile.downloadable[0]->filesize >= 1024}
+                <span class="value">{$record->expFile.downloadable[0]->filesize|kilobytes} {'kb'|gettext}</span>
+            {else}
+                <span class="value">{$record->expFile.downloadable[0]->filesize} {'bytes'|gettext}</span>
+            {/if}
             &nbsp;|&nbsp;
-       		<span class="tags">
-       			{'Tags'|gettext}:
-       			{foreach from=$record->expTag item=tag name=tags}
-       				<a href="{link action=showall_by_tags tag=$tag->sef_url}">{$tag->title}</a>{if $smarty.foreach.tags.last != 1},{/if}
-       			{/foreach}
-       		</span>
-       	{/if}
+            {if $record->expFile.downloadable[0]->duration}
+                <span class="label size">{'Duration'}:</span>
+                <span class="value">{$record->expFile.downloadable[0]->duration}</span>
+                &nbsp;|&nbsp;
+            {/if}
+            <span class="label downloads"># {'Downloads'|gettext}:</span>
+            <span class="value">{$record->downloads}</span>
+            {if $record->expTag|@count>0 && !$config.disabletags}
+                &nbsp;|&nbsp;
+                <span class="tags">
+                    {'Tags'|gettext}:
+                    {foreach from=$record->expTag item=tag name=tags}
+                        <a href="{link action=showall_by_tags tag=$tag->sef_url}">{$tag->title}</a>{if $smarty.foreach.tags.last != 1},{/if}
+                    {/foreach}
+                </span>
+            {/if}
+            </p>
+        </div>
         <div class="bodycopy">
             {$record->body}
         </div>
