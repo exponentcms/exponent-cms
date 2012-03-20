@@ -38,20 +38,20 @@
                 <span class="value">{$file->created_at|format_date}</span>
             {/if}
             &nbsp;|&nbsp;
-            <span class="label size">{'File Size'}:</span>
-            {if $file->expFile.downloadable[0]->filesize >= 1048576}
-                <span class="value">{$file->expFile.downloadable[0]->filesize|megabytes} {'mb'|gettext}</span>
-            {elseif $file->expFile.downloadable[0]->filesize >= 1024}
-                <span class="value">{$file->expFile.downloadable[0]->filesize|kilobytes} {'kb'|gettext}</span>
-            {else}
-                <span class="value">{$file->expFile.downloadable[0]->filesize} {'bytes'|gettext}</span>
-            {/if}
-            &nbsp;|&nbsp;
             {if $file->expFile.downloadable[0]->duration}
                 <span class="label size">{'Duration'}:</span>
                 <span class="value">{$file->expFile.downloadable[0]->duration}</span>
-                &nbsp;|&nbsp;
+            {else}
+                <span class="label size">{'File Size'}:</span>
+                {if $file->expFile.downloadable[0]->filesize >= 1048576}
+                    <span class="value">{$file->expFile.downloadable[0]->filesize|megabytes} {'mb'|gettext}</span>
+                {elseif $file->expFile.downloadable[0]->filesize >= 1024}
+                    <span class="value">{$file->expFile.downloadable[0]->filesize|kilobytes} {'kb'|gettext}</span>
+                {else}
+                    <span class="value">{$file->expFile.downloadable[0]->filesize} {'bytes'|gettext}</span>
+                {/if}
             {/if}
+            &nbsp;|&nbsp;
             <span class="label downloads"># {'Downloads'|gettext}:</span>
             <span class="value">{$file->downloads}</span>
             {if $file->expTag|@count>0 && !$config.disabletags}
