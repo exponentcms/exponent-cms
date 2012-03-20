@@ -27,6 +27,7 @@
 class remove_headlinecontroller extends upgradescript {
 	protected $from_version = '1.99.0';
 //	protected $to_version = '2.0.1';
+    public $optional = true;
 
 	/**
 	 * name/title of upgrade script
@@ -38,7 +39,15 @@ class remove_headlinecontroller extends upgradescript {
 	 * generic description of upgrade script
 	 * @return string
 	 */
-	function description() { return "Beginning with Exponent 2.0.0 Beta4, the Headline Controller is replaced by the Text Controller.  This Script converts headline modules to text modules and then deletes the headlines"; }
+	function description() { return "The Headline Controller was replaced by the Text Controller.  This Script converts Headline modules to Text modules and then deletes the Headline module files"; }
+
+    /**
+   	 * This routine should perform additional test(s) to see if upgrade script should be run (files/tables exist, etc...)
+   	 * @return bool
+   	 */
+   	function needed() {
+   		return true;  // subclasses MUST return true to be run
+   	}
 
 	/**
 	 * coverts all headline modules/items into text modules/items and deletes headline controller files
@@ -52,11 +61,6 @@ class remove_headlinecontroller extends upgradescript {
 	    foreach ($srs as $sr) {
 		    $sr->module = 'textController';
 		    $db->updateObject($sr,'sectionref');
-	    }
-		$lrs = $db->selectObjects('locationref',"module = 'headlineController'");
-	    foreach ($lrs as $lr) {
-		    $lr->module = 'textController';
-		    $db->updateObject($lr,'locationref');
 	    }
 	    $gps = $db->selectObjects('grouppermission',"module = 'headlineController'");
         foreach ($gps as $gp) {
@@ -103,25 +107,11 @@ class remove_headlinecontroller extends upgradescript {
 		$db->dropTable('headline');
 
 		// check if the headline controller files are there and remove them
-		$files = array(
-		    BASE."framework/modules/definitions/headline.php",
-		    BASE."framework/modules/models/headline.php",
-		    BASE."framework/modules/headline/"
-		);
+        if (expUtil::isReallyWritable(BASE."framework/modules/headline/")) {
+            expFile::removeFilesInDirectory(BASE."framework/modules/headline/");
+        }
 
-        // delete the files.
-        $removed = 0;
-        $errors = 0;
-		foreach ($files as $file) {
-		    if (expUtil::isReallyWritable($file)) {
-		        unlink ($file);
-		        $removed += 1;
-		    } else {
-		        $errors += 1;
-		    }
-		} 
-		
-		return $modules_converted." Headline modules were converted.<br>".$headlines_converted." Headlines were converted.<br>".$removed." files were deleted.<br>".$errors." files could not be removed.";
+		return $modules_converted." Headline modules were converted.<br>".$headlines_converted." total Headlines were converted.<br>"."and Headline module files were then deleted.";
 		
 	}
 }

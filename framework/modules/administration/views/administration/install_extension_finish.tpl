@@ -53,21 +53,21 @@
          </thead>
          <tbody>
               {foreach from=$tables key=table item=statusnum}
-                  {if $statusnum != $smarty.const.TMP_TABLE_EXISTED}
+                  {if $statusnum != $smarty.const.DATABASE_TABLE_EXISTED}
                      <tr class="{cycle values='odd,even'}">
                         <td>
                              {$table}
                         </td>
                         <td>
-                             {if $statusnum == $smarty.const.TMP_TABLE_INSTALLED}
+                             {if $statusnum == $smarty.const.DATABASE_TABLE_INSTALLED}
                             <div style="color: green; font-weight: bold">
                                 {'Succeeded'|gettext}
                             </div>
-                             {elseif $statusnum == $smarty.const.TMP_TABLE_FAILED}
+                             {elseif $statusnum == $smarty.const.DATABASE_TABLE_FAILED}
                             <div style="color: red; font-weight: bold">
                                 {'Failed'|gettext}
                             </div>
-                             {elseif $statusnum == $smarty.const.TMP_TABLE_ALTERED}
+                             {elseif $statusnum == $smarty.const.DATABASE_TABLE_ALTERED}
                             <div style="color: green; font-weight: bold">
                                 {'Altered Existing'|gettext}
                             </div>

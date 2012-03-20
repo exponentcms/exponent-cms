@@ -26,13 +26,14 @@
  */
 abstract class upgradescript {
 	protected $from_version = '9999.99.99'; //set this default ridiculously high so that it NEVER runs
-	protected $to_version = '9999.99.99'; //set this default to something ridiculously high so it always runs
+	protected $to_version = '9999.99.99';   //set this default to something ridiculously high so it always runs
+    public $optional = false;            //set this default to not make this script optional
 
 	/**
 	 * The name/title of upgrade script
 	 * @return string
 	 */
-	function name() { return "Base Model for the Upgrade Scripts"; }
+	function name() { }
 
 	/**
 	 * The generic description of upgrade script
@@ -83,9 +84,7 @@ abstract class upgradescript {
 	 * The main routine of upgrade script which is run to upgrade Exponent
 	 * @return bool
 	 */
-	function upgrade() {
-		return false;
-	}
+	function upgrade() { }
 }
 
 ?>
