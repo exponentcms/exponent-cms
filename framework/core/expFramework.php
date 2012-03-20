@@ -634,7 +634,7 @@ function object2Array($object=null) {
 function expUnserialize($serial_str) {
     $out = preg_replace('!s:(\d+):"(.*?)";!se', "'s:'.strlen('$2').':\"$2\";'", $serial_str );
     $out2 = unserialize($out);
-    if (!empty($out2['moduledescription'])) {
+    if (is_array($out2) && !empty($out2['moduledescription'])) {
         $out2['moduledescription'] = stripslashes($out2['moduledescription']);
     }
     return $out2;
