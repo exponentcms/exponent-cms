@@ -633,7 +633,11 @@ function object2Array($object=null) {
 
 function expUnserialize($serial_str) {
     $out = preg_replace('!s:(\d+):"(.*?)";!se', "'s:'.strlen('$2').':\"$2\";'", $serial_str );
-    return unserialize($out); 
+    $out2 = unserialize($out);
+    if (!empty($out2['moduledescription'])) {
+        $out2['moduledescription'] = stripslashes($out2['moduledescription']);
+    }
+    return $out2;
 }
 
 // callback when the buffer gets flushed. Any processing on the page output
