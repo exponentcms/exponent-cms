@@ -47,6 +47,11 @@
                 <span class="value">{$file->expFile.downloadable[0]->filesize} {'bytes'|gettext}</span>
             {/if}
             &nbsp;|&nbsp;
+            {if $file->expFile.downloadable[0]->duration}
+                <span class="label size">{'Duration'}:</span>
+                <span class="value">{$file->expFile.downloadable[0]->duration}</span>
+                &nbsp;|&nbsp;
+            {/if}
             <span class="label downloads"># {'Downloads'|gettext}:</span>
             <span class="value">{$file->downloads}</span>
             {if $file->expTag|@count>0 && !$config.disabletags}

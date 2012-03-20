@@ -37,9 +37,20 @@
                 {/if}
 			</div>
         {/permissions}
-        <span class="label size">{'File Size'|gettext}:</span>
-        <span class="value">{$record->expFile.downloadable[0]->filesize|kilobytes}{'kb'|gettext}</span>
+        <span class="label size">{'File Size'}:</span>
+        {if $record->expFile.downloadable[0]->filesize >= 1048576}
+            <span class="value">{$record->expFile.downloadable[0]->filesize|megabytes} {'mb'|gettext}</span>
+        {elseif $record->expFile.downloadable[0]->filesize >= 1024}
+            <span class="value">{$record->expFile.downloadable[0]->filesize|kilobytes} {'kb'|gettext}</span>
+        {else}
+            <span class="value">{$record->expFile.downloadable[0]->filesize} {'bytes'|gettext}</span>
+        {/if}
         &nbsp;|&nbsp;
+        {if $record->expFile.downloadable[0]->duration}
+            <span class="label size">{'Duration'}:</span>
+            <span class="value">{$record->expFile.downloadable[0]->duration}</span>
+            &nbsp;|&nbsp;
+        {/if}
         <span class="label downloads"># {'Downloads'|gettext}:</span>
         <span class="value">{$record->downloads}</span>
         {if $record->expTag|@count>0 && !$config.disabletags}
@@ -56,7 +67,7 @@
         </div>
         {icon action=downloadfile fileid=$record->id text='Download'|gettext}
         {if $config.show_player && ($filetype == "mp3" || $filetype == "flv" || $filetype == "f4v")}
-            <a href="{$file->expFile.downloadable[0]->url}" style="display:block;width:360px;height:30px;" class="filedownload-media"></a>
+            <a href="{$record->expFile.downloadable[0]->url}" style="display:block;width:360px;height:30px;" class="filedownload-media"></a>
         {/if}
         {clear}
         {if $config.usescomments == true}

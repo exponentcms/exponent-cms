@@ -60,10 +60,23 @@ class filedownloadController extends expController {
                     'src'=>$this->loc->src,
                     'columns'=>array('ID#'=>'id','Title'=>'title', 'Body'=>'body'),
                     ));
-                    
+
+        include_once(BASE.'external/mp3file.php');
+        foreach ($page->records as $file) {
+            if (($file->expFile['downloadable'][0]->mimetype == "audio/mpeg") && (file_exists(BASE.$file->expFile['downloadable'][0]->directory.'/'.$file->expFile['downloadable'][0]->filename))) {
+                $mp3 = new mp3file(BASE.$file->expFile['downloadable'][0]->directory.'/'.$file->expFile['downloadable'][0]->filename);
+                $id3 = $mp3->get_metadata();
+                if (($id3['Encoding']=='VBR') || ($id3['Encoding']=='CBR')) {
+                    $file->expFile['downloadable'][0]->duration = $id3['Length mm:ss'];
+                }
+            } else {
+                $file->expFile['downloadable'][0]->duration = '';
+            }
+        }
+
 		assign_to_template(array('page'=>$page, 'items'=>$page->records, 'rank'=>($order==='rank')?1:0));
     }
-    
+
     public function downloadfile() {
         if (empty($this->params['fileid'])) {
             flash('error', gt('There was an error while trying to download your file.  No File Specified.'));
@@ -86,64 +99,7 @@ class filedownloadController extends expController {
         parent::downloadfile();        
     }
     
-//	public function showall_by_tags() {
-//	    global $db;
-//
-//	    // get the tag being passed
-//        $tag = new expTag($this->params['tag']);
-//
-//        // find all the id's of the filedownload for this filedownload module
-////        $item_ids = $db->selectColumn('filedownloads', 'id', $this->aggregateWhereClause());
-//        $item_ids = $db->selectColumn('filedownload', 'id', $this->aggregateWhereClause());
-//
-//        // find all the blogs that this tag is attached to
-//        $items = $tag->findWhereAttachedTo('filedownload');
-//
-//        // loop the filedownload for this tag and find out which ones belong to this module
-//        $items_by_tags = array();
-//        foreach($items as $item) {
-//            if (in_array($item->id, $item_ids)) $items_by_tags[] = $item;
-//        }
-//
-//        // create a pagination object for the filedownload and render the action
-//		$order = 'created_at';
-//		$limit = empty($this->config['limit']) ? 10 : $this->config['limit'];
-//
-//		$page = new expPaginator(array(
-//		            'records'=>$items_by_tags,
-//		            'limit'=>$limit,
-//		            'order'=>$order,
-//		            'controller'=>$this->baseclassname,
-//		            'action'=>$this->params['action'],
-//		            'columns'=>array('Title'=>'title'),
-//		            ));
-//
-//		assign_to_template(array('page'=>$page,'moduletitle'=>'File Downloads by tag "'.$this->params['tag'].'"'));
-//	}
-
-//	public function tags() {
-//        $blogs = $this->filedownload->find('all');
-//        $used_tags = array();
-//        foreach ($blogs as $blog) {
-//            foreach($blog->expTag as $tag) {
-//                if (isset($used_tags[$tag->id])) {
-//                    $used_tags[$tag->id]->count += 1;
-//                } else {
-//                    $exptag = new expTag($tag->id);
-//                    $used_tags[$tag->id] = $exptag;
-//                    $used_tags[$tag->id]->count = 1;
-//                }
-//
-//            }
-//        }
-////        $used_tags = expSorter::sort(array('array'=>$used_tags,'sortby'=>'title', 'order'=>'ASC', 'ignore_case'=>true));
-//        $order = isset($this->config['order']) ? $this->config['order'] : 'title ASC';
-//        $used_tags = expSorter::sort(array('array'=>$used_tags, 'order'=>$order, 'ignore_case'=>true));
-//	    assign_to_template(array('tags'=>$used_tags));
-//	}
-
     function getRSSContent() {
-        // this function is very general and will most of the time need to be overwritten and customized
         include_once(BASE.'external/mp3file.php');
 
         global $db;     
