@@ -301,8 +301,8 @@ class expFile extends expRecord {
             // Assign info back to class
             $this->is_image      = $_fileInfo['is_image'];
             $this->filesize      = $_fileInfo['fileSize'];
+            $this->mimetype      = $_fileInfo['mime'];
             if ( $_fileInfo['is_image'] ) {
-                $this->mimetype      = $_fileInfo['mime'];
                 $this->image_width   = $_fileInfo[0];
                 $this->image_height  = $_fileInfo[1];
             }
@@ -615,18 +615,28 @@ class expFile extends expRecord {
     			// In case this implementation of getimagesize doesn't discover
                 // the mime type
     			$_types = array(
-				'jpg'=>'image/jpeg',
-				'jpeg'=>'image/jpeg',
-				'gif'=>'image/gif',
-				'png'=>'image/png'
-			);
+                    'jpg'=>'image/jpeg',
+                    'jpeg'=>'image/jpeg',
+                    'gif'=>'image/gif',
+                    'png'=>'image/png'
+                );
 
                 $_fileData = pathinfo($_path);
                 $_sizeinfo['mime'] = $_types[$_fileData['extension']];
 			}
         } else {
             $_sizeinfo['is_image'] = false;
-		}
+            if (!isset($_sizeinfo['mime'])) {
+                // In case this implementation of getimagesize doesn't discover
+                  // the mime type
+                $_types = array(
+                    'mp3'=>'image/mpeg'
+                );
+
+                $_fileData = pathinfo($_path);
+                $_sizeinfo['mime'] = $_types[$_fileData['extension']];
+            }
+        }
 
         $_sizeinfo['fileSize'] = self::fileSize($_path);
 
