@@ -56,6 +56,10 @@
 	background-color:#2c553d;
 }
 
+.navigationmodule .yuimenuitemlabel-hassubmenu-selected{
+	background-color:#2c553d;
+}
+
 /* The <a> tag of a menu (not menubar) */
 .navigationmodule .yuimenuitemlabel{
 	padding:2px 20px;
