@@ -287,6 +287,10 @@ div.bodycopy ul, ol {
     font-weight:normal;
 }
 
+#sidebar .container-chrome ul li a:hover {
+    color: #FFFFFF;
+}
+
 #sidebar .container-chrome ul li {
     border: none;
     color: #777777;
