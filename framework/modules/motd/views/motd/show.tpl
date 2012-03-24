@@ -32,7 +32,11 @@
 			<div class="module-actions">
 				{if $permissions.edit == 1}
                     {if $myloc != $message->location_data}
-                        {icon action=merge id=$message->id title="Merge Aggregated Content"|gettext}
+                        {if $permissions.manage == 1}
+                            {icon action=merge id=$message->id title="Merge Aggregated Content"|gettext}
+                        {else}
+                            {icon img='arrow_merge.png' title="Merged Content"|gettext}
+                        {/if}
                     {/if}
 					{icon class=add action=create text="Add a tip"|gettext}
 			    {/if}

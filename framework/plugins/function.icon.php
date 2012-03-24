@@ -116,6 +116,8 @@ function smarty_function_icon($params,&$smarty) {
 		echo '<a href="'.expCore::makeLink($params).'" title="'.$title.'" class="'.$class.'"';
 		if ($params['action']=="delete" && empty($onclick))
             echo ' onclick="return confirm(\''.gt('Are you sure you want to delete this').' '.$smarty->getTemplateVars('modelname').' '.gt('item').'?\');"';
+        if ($params['action']=="merge" && empty($onclick))
+            echo ' onclick="return confirm(\''.gt('Are you sure you want to merge this').' '.$smarty->getTemplateVars('modelname').' '.gt('item').'?\');"';
 		if (!empty($onclick))
             echo ' onclick="'.$onclick.'"';
 		echo '>'.$linktext.'</a>';

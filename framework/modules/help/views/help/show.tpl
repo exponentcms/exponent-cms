@@ -20,7 +20,11 @@
     <div class="item-actions">
         {if $permissions.edit == 1}
             {if $myloc != $doc->location_data}
-                {icon action=merge id=$doc->id title="Merge Aggregated Content"|gettext}
+                {if $permissions.manage == 1}
+                    {icon action=merge id=$doc->id title="Merge Aggregated Content"|gettext}
+                {else}
+                    {icon img='arrow_merge.png' title="Merged Content"|gettext}
+                {/if}
             {/if}
             {icon action=edit record=$doc}
         {/if}

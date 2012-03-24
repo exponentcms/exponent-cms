@@ -32,7 +32,11 @@
 				<div class="item-actions">
 					{if $permissions.edit == 1}
                         {if $myloc != $listing->location_data}
-                            {icon action=merge id=$listing->id title="Merge Aggregated Content"|gettext}
+                            {if $permissions.manage == 1}
+                                {icon action=merge id=$listing->id title="Merge Aggregated Content"|gettext}
+                            {else}
+                                {icon img='arrow_merge.png' title="Merged Content"|gettext}
+                            {/if}
                         {/if}
 						{icon action=edit record=$listing}
 					{/if}
