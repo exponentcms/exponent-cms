@@ -16,7 +16,7 @@
 <html>
 <head>
     <title>{'Restore from Recycle Bin'|gettext}</title>
-    <link rel="stylesheet" type="text/css" href="{$smarty.const.URL_FULL}tmp/css/exp-styles-min.css" >
+    <link rel="stylesheet" type="text/css" href="{$smarty.const.URL_FULL}framework/core/assets/css/admin-global.css" >
     <link rel="stylesheet" type="text/css" href="{$smarty.const.URL_FULL}framework/modules/recyclebin/assets/css/recyclebin.css" >
     
 </head>
@@ -28,6 +28,7 @@
                 <a class="usecontent" href="#" onclick="window.opener.EXPONENT.useRecycled('{$item->source}');window.close();">
                     {'Restore this content'|gettext}
                 </a>
+                {*{icon action=delete id=$item->id mod=$module src=$item->source onclick="return confirm('Are you sure you want to delete this recyclebin item?');window.close();"}*}
                 <div class="recycledcontent">
                     {$item->html}
                 </div>     
