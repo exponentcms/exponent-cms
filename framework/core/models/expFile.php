@@ -630,7 +630,7 @@ class expFile extends expRecord {
                 // In case this implementation of getimagesize doesn't discover
                   // the mime type
                 $_types = array(
-                    'mp3'=>'image/mpeg'
+                    'mp3'=>'audio/mpeg'
                 );
 
                 $_fileData = pathinfo($_path);
