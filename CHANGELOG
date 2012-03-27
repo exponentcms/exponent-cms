@@ -8,16 +8,16 @@ Added / Fixed / changed for 2.0.6
   - incorporates all fixes from v2.0.5 patches
   - adds publish/unpublish dates and 'draft' feature to blog
   - adds WYSIWYG comments
-  - adds aggregated content indicator with command to move into current module
+  - adds aggregated content indicator with command to move item into current module
   - fixes a plural/singular MVC naming issue to provide more fluid integration (developer feature)
-    -- photoAlbum, faq, & filedownloads; fixed during upgrade
+    -- photoalbum, faq, & filedownloads; fixed during the upgrade
   - upgrade scripts now run when versions are equal to allow better upgrading from develop code
-    -- also adds 'optional' upgrade scripts including deprecated headline controller removal
+    -- also adds 'optional' upgrade scripts; includes optional deprecated headline controller removal
   - prevent installation/upgrade over 0.9x database (must be a clean install then migrate old db)
   - adds cURL library support requirement to installation
-  - adds additional security checking
-  - enhanced podcast/rss feeds, deprecates calendar rss in favor of ical feed
+  - enhanced podcast/rss feeds, deprecates 1.0 (calendar) rss in favor of ical feed
   - adds true Finnish (machine) translation
+  - adds additional security checking
   - plus other tweaks, fixes, and features
 
 Added / Fixed / changed for 2.0.5
