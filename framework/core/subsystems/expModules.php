@@ -173,7 +173,7 @@ class expModules {
 
 	public static function getControllerName($controllername) {
 	    if (empty($controllername)) return null;
-	        return (substr($controllername, -10) == 'Controller') ? substr($controllername, 0, -10) : $controllername;
+        return (substr($controllername, -10) == 'Controller') ? substr($controllername, 0, -10) : $controllername;
 	}
 
 	/** exdoc
