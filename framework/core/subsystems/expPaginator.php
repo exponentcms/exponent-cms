@@ -66,6 +66,7 @@ class expPaginator {
 	public $header_columns = '';
 	public $default = '';
 	public $view = null;
+    public $content_type = '';
 	/**#@+
      * @access public
      * @var integer
@@ -79,6 +80,8 @@ class expPaginator {
 	public $total_pages = 0;
 	public $page_offset = 0;
     public $categorize = false;
+    public $version = 0;
+    public $content_id = 0;
 	/**#@+
      * @access public
      * @var array

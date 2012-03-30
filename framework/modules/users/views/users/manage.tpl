@@ -140,7 +140,7 @@
 			{ label:"Actions",label:"", sortable:false,formatter: formatactions}
 			];
 			// DataSource instance
-			var myDataSource = new YAHOO.util.DataSource(EXPONENT.URL_FULL+"index.php?controller=users&action=getFilesByJSON&json=1&ajax_action=1&");
+			var myDataSource = new YAHOO.util.DataSource(EXPONENT.URL_FULL+"index.php?controller=users&action=getUsersByJSON&json=1&ajax_action=1&");
 			myDataSource.responseType = YAHOO.util.DataSource.TYPE_JSON;
 			myDataSource.responseSchema = {
 				resultsList: "records",
