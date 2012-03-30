@@ -91,6 +91,6 @@
         {/if}
     {/foreach}
     {if $page->total_records > $config.headcount}
-        {br}{icon action="showall" text="More News in '`$moduletitle`' ..."|gettext}
+        {br}{icon action="showall" text="More Items in"|gettext|cat:' '|cat:$moduletitle|cat:' ...'}
     {/if}
 </div>
