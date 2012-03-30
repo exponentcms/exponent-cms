@@ -171,13 +171,13 @@ class expVersion {
 			case 'release-candidate':
 				$typenum = 3;
 				break;
-			case 'develop':
+			case 'develop': // code from the github develop branch
 				$typenum = 5;
 				break;
-			case '': // stable
+			case '':        // stable release
 				$typenum = 10;
 				break;
-            case 'patch':  // a patch trumps the stable version of the same version number
+            case 'patch':   // a patch trumps the stable version of the same version number
                 $typenum = 20;
                 break;
 			default:

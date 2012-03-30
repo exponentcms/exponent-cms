@@ -701,7 +701,7 @@ class usersController extends expController {
         
     }
 	
-	public function getFilesByJSON() {
+	public function getUsersByJSON() {
 		global $db,$user;
         $modelname = $this->basemodel_name;
         $results = 25; // default get all
