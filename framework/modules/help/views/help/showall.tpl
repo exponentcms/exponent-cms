@@ -31,6 +31,7 @@
    		{$config.moduledescription}
    	{/if}
     <dl>
+    {assign var=myloc value=serialize($__loc)}
     {foreach from=$page->records item=doc name=docs}
         <div class="item">
             <dt>
@@ -43,6 +44,13 @@
             {permissions}
             <div class="item-actions">
                 {if $permissions.edit == 1}
+                    {if $myloc != $doc->location_data}
+                        {if $permissions.manage == 1}
+                            {icon action=merge id=$doc->id title="Merge Aggregated Content"|gettext}
+                        {else}
+                            {icon img='arrow_merge.png' title="Merged Content"|gettext}
+                        {/if}
+                    {/if}
                     {icon action=edit record=$doc}
                 {/if}
                 {if $permissions.delete == 1}

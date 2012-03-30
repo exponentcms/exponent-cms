@@ -52,39 +52,40 @@ class faqController extends expController {
         assign_to_template(array('items'=>$questions));
     }
 
-    public function showall_by_tags() {
-    	    global $db;
-
-    	    // get the tag being passed
-            $tag = new expTag($this->params['tag']);
-
-            // find all the id's of the filedownload for this filedownload module
-            $item_ids = $db->selectColumn('faqs', 'id', $this->aggregateWhereClause());
-
-            // find all the blogs that this tag is attached to
-            $items = $tag->findWhereAttachedTo('faq');
-
-            // loop the filedownload for this tag and find out which ones belong to this module
-            $items_by_tags = array();
-            foreach($items as $item) {
-                if (in_array($item->id, $item_ids)) $items_by_tags[] = $item;
-            }
-
-            // create a pagination object for the filedownload and render the action
-    		$order = 'created_at';
-    		$limit = empty($this->config['limit']) ? 10 : $this->config['limit'];
-
-    		$page = new expPaginator(array(
-    		            'records'=>$items_by_tags,
-    		            'limit'=>$limit,
-    		            'order'=>$order,
-    		            'controller'=>$this->baseclassname,
-    		            'action'=>$this->params['action'],
-    		            'columns'=>array('Title'=>'title'),
-    		            ));
-
-    		assign_to_template(array('page'=>$page, 'items'=>$page->records,'moduletitle'=>'FAQ\'s by tag "'.$this->params['tag'].'"'));
-    	}
+//    public function showall_by_tags() {
+//        global $db;
+//
+//        // get the tag being passed
+//        $tag = new expTag($this->params['tag']);
+//
+//        // find all the id's of the filedownload for this filedownload module
+////            $item_ids = $db->selectColumn('faqs', 'id', $this->aggregateWhereClause());
+//        $item_ids = $db->selectColumn('faq', 'id', $this->aggregateWhereClause());
+//
+//        // find all the blogs that this tag is attached to
+//        $items = $tag->findWhereAttachedTo('faq');
+//
+//        // loop the filedownload for this tag and find out which ones belong to this module
+//        $items_by_tags = array();
+//        foreach($items as $item) {
+//            if (in_array($item->id, $item_ids)) $items_by_tags[] = $item;
+//        }
+//
+//        // create a pagination object for the filedownload and render the action
+//        $order = 'created_at';
+//        $limit = empty($this->config['limit']) ? 10 : $this->config['limit'];
+//
+//        $page = new expPaginator(array(
+//                    'records'=>$items_by_tags,
+//                    'limit'=>$limit,
+//                    'order'=>$order,
+//                    'controller'=>$this->baseclassname,
+//                    'action'=>$this->params['action'],
+//                    'columns'=>array('Title'=>'title'),
+//                    ));
+//
+//        assign_to_template(array('page'=>$page, 'items'=>$page->records,'moduletitle'=>'FAQ\'s by tag "'.$this->params['tag'].'"'));
+//    }
 
 	/**
 	 *    This manage function will show the FAQs that appear for a particular module, so if you have multiple FAQs around the site, this 

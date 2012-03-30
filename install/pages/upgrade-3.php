@@ -17,9 +17,10 @@
 ##################################################
 
 if (!defined('EXPONENT')) exit('');
-//$num_version = EXPONENT_VERSION_MAJOR.'.'.EXPONENT_VERSION_MINOR.'.'.EXPONENT_VERSION_REVISION;
-$num_version = expVersion::getVersion();
+
 global $db;
+
+$num_version = expVersion::getVersion();
 $db_version = $db->selectObject('version','1');
 
 ?>
@@ -34,10 +35,18 @@ if (isset($_REQUEST['run'])) {
 
 //display the upgrade scripts
 $upgrade_dir = 'upgrades';
-$i = 0;
-if (is_readable('include/upgradescript.php')) include_once('include/upgradescript.php');
 if (is_readable($upgrade_dir)) {
+    $i = 0;
+    if (is_readable('include/upgradescript.php')) include_once('include/upgradescript.php');
     $dh = opendir($upgrade_dir);
+    echo '<form method="post" action="index.php">';
+    if (isset($_REQUEST['run'])) {
+        echo '<input type="hidden" name="page" value="final" />';
+        echo '<input type="hidden" name="upgrade" value="1" />';
+    } else {
+        echo '<input type="hidden" name="page" value="upgrade-3" />';
+        echo '<input type="hidden" name="run" value="1" />';
+    }
     echo '<ol>';
     while (($file = readdir($dh)) !== false) {
         if (is_readable($upgrade_dir . '/' . $file) && is_file($upgrade_dir . '/' . $file) && ($file != '.' && $file != '..' && $file != '.svn' && substr($file, -4, 4) != '.swp')) {
@@ -51,30 +60,41 @@ if (is_readable($upgrade_dir)) {
             $upgradescript = new $classname;
 //            if ($upgradescript->checkVersion($num_version) && $upgradescript->needed($num_version)) {
             if ($upgradescript->checkVersion($db_version) && $upgradescript->needed()) {
-                echo '<li><h3>' . $upgradescript->name() . '</h3>';
+                echo '<li>';
                 if (isset($_REQUEST['run'])) {
-                    echo '<p class="success">' . $upgradescript->upgrade() . '</p></li>';
+                    echo '<h3>' . $upgradescript->name() . '</h3>';
+                    if (!$upgradescript->optional || ($upgradescript->optional && !empty($_POST[$classname]))) {
+                        echo '<p class="success">' . $upgradescript->upgrade();
+                    } else {
+                        echo '<p class="failed"> '.gt('Not Selected to Run');
+                    }
                 } else {
-                    echo '<p>' . $upgradescript->description() . '</p></li>';
+                    if ($upgradescript->optional) {
+                        echo '<input type="checkbox" name="'.$classname.'" value="1" class="checkbox" style="margin-top: 7px;"><label class="label "><h3>'. $upgradescript->name().'</h3></label></b>';
+                    } else {
+                        echo '<input type="checkbox" name="'.$classname.'" value="1" checked="1" disabled="1" class="checkbox" style="margin-top: 7px;"><label class="label "><h3>'. $upgradescript->name().'</h3></label></b>';
+                    }
+                    echo '<p>' . $upgradescript->description();
                 }
+                echo '</p></li>';
                 $i++;
             }
         }
     }
     if ($i==0) {
         echo '<li>
-        <h3>None</h3>
+        <h3>'.gt('None Required').'</h3>
         <p>'.gt('You\'re good to go. Click next to finish up.').'</p>
         </li>';
     }
     echo '</ol>';
+    if (isset($_REQUEST['run']) || $i==0) {
+        echo '<button class="awesome large green" />'; echo gt('Finish Upgrade'); echo '</button>';
+    } else {
+        echo '<button class="awesome large green" />'; echo gt('Run Upgrades'); echo '</button>';
+    }
+    echo '</form>';
 }
 
 ?>
 </p>
-
-<?php if (isset($_REQUEST['run']) || $i==0) { ?>
-    <a class="awesome large green" href="?page=final&amp;upgrade=1"><?php echo gt("Finish Upgrade"); ?></a>
-<?php } else { ?>
-    <a class="awesome large green" href="?page=upgrade-3&amp;run=1"><?php echo gt("Run Upgrades"); ?></a>
-<?php } ?>

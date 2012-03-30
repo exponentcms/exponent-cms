@@ -207,6 +207,8 @@ abstract class database {
 	   if ($additional_where == null) {
 	       $additional_where = '1';
 	   }
+        $a = intval($a);
+        $b = intval($b);
 	   $object_a = $this->selectObject($table, "$field='$a' AND $additional_where");
 	   $object_b = $this->selectObject($table, "$field='$b' AND $additional_where");
 

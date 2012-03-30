@@ -26,8 +26,8 @@ ob_start();
 require_once('exponent.php');
 
 $loc = expCore::makeLocation(
-	(isset($_GET['module'])?$_GET['module']:''),
-	(isset($_GET['src'])?$_GET['src']:''),
+	(isset($_GET['module'])?expString::sanitize($_GET['module']):''),
+	(isset($_GET['src'])?expString::sanitize($_GET['src']):''),
 	(isset($_GET['int'])?$_GET['int']:'')
 );
 
@@ -38,7 +38,7 @@ if (expTheme::inAction()) {
 	expHistory::set('viewable', $router->params);
 
 	$mod = new $_GET['module']();
-	$mod->show($_GET['view'],$loc,(isset($_GET['title'])?$_GET['title']:''));
+	$mod->show($_GET['view'],$loc,(isset($_GET['title'])?expString::sanitize($_GET['title']):''));
 }
 
 $str = ob_get_contents();

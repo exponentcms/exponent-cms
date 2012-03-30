@@ -441,7 +441,7 @@ class usersController extends expController {
         global $db;
 
         $db->delete('passreset_token','expires < ' . time());
-        $tok = $db->selectObject('passreset_token','uid='.trim($_GET['uid'])." AND token='".preg_replace('/[^A-Za-z0-9]/','',$_GET['token']) ."'");
+        $tok = $db->selectObject('passreset_token','uid='.intval($_GET['uid'])." AND token='".preg_replace('/[^A-Za-z0-9]/','',$_GET['token']) ."'");
         if ($tok == null) {
 	        flash('error', gt('Your password reset has expired.  Please try again.'));
 	        expHistory::back();
@@ -701,7 +701,7 @@ class usersController extends expController {
         
     }
 	
-	public function getFilesByJSON() {
+	public function getUsersByJSON() {
 		global $db,$user;
         $modelname = $this->basemodel_name;
         $results = 25; // default get all
@@ -737,6 +737,7 @@ class usersController extends expController {
         
         if (isset($_GET['query'])) {
 
+            $_GET['query'] = expString::sanitize($_GET['query']);
             $totalrecords = $this->$modelname->find('count',"username LIKE '%".$_GET['query']."%' OR firstname LIKE '%".$_GET['query']."%' OR lastname LIKE '%".$_GET['query']."%' OR email LIKE '%".$_GET['query']."%'");
             
             $users = $this->$modelname->find('all',$filter."username LIKE '%".$_GET['query']."%' OR firstname LIKE '%".$_GET['query']."%' OR lastname LIKE '%".$_GET['query']."%' OR email LIKE '%".$_GET['query']."%'" ,$sort.' '.$dir, $results, $startIndex);

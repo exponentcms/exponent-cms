@@ -38,7 +38,7 @@ class calendarmodule_config {
 			$object->email_showdetail = 0;
 			$object->email_signature = "--\nThanks, Webmaster";			
 			$object->aggregate = array();
-			$object->enable_rss = false;
+//			$object->enable_rss = false;
 			$object->enable_ical = true;
 			$object->feed_title = "";
 			$object->feed_desc = "";
@@ -169,13 +169,13 @@ class calendarmodule_config {
 		$form->register(null,'',new htmlcontrol('<h3>'.gt('Merge Calendars').'</h3><hr size="1" />'));
 		$form->register('aggregate',gt('Pull Events from These Other Calendars'),new listbuildercontrol($selected_calendars,$all_calendars));
 
-		$form->register(null,'',new htmlcontrol('<h3>'.gt('RSS/iCalendar Configuration').'</h3><hr size="1" />'));
-		$form->register('enable_rss',gt('Enable RSS'), new checkboxcontrol($object->enable_rss));
+		$form->register(null,'',new htmlcontrol('<h3>'.gt('iCalendar Configuration').'</h3><hr size="1" />'));
+//		$form->register('enable_rss',gt('Enable RSS'), new checkboxcontrol($object->enable_rss));
 		$form->register('enable_ical',gt('Enable iCalendar'), new checkboxcontrol($object->enable_ical));
-   		$form->register('feed_title',gt('Title for this RSS feed'),new textcontrol($object->feed_title,35,false,75));
-   		$form->register('feed_desc',gt('Description for this RSS feed'),new texteditorcontrol($object->feed_desc));
-		$form->register('rss_cachetime', gt('Recommended RSS/iCal feed update interval in minutes (1440 = 1 day)'), new textcontrol($object->rss_cachetime));
-		$form->register('rss_limit', gt('Maximum days of RSS/iCal items to publish (0 = all)'), new textcontrol($object->rss_limit));
+//   		$form->register('feed_title',gt('Title for this iCal feed'),new textcontrol($object->feed_title,35,false,75));
+//   		$form->register('feed_desc',gt('Description for this iCal feed'),new texteditorcontrol($object->feed_desc));
+		$form->register('rss_cachetime', gt('Recommended iCal feed update interval in minutes (1440 = 1 day)'), new textcontrol($object->rss_cachetime));
+		$form->register('rss_limit', gt('Maximum days of iCal items to publish (0 = all)'), new textcontrol($object->rss_limit));
 
 		// $form->register(null,'',new htmlcontrol('<h3>'.gt('Tagging').'</h3><hr size="1" />'));
 		// $form->register('enable_tags',gt('Enable Tags'), new checkboxcontrol($object->enable_tags));
@@ -203,10 +203,10 @@ class calendarmodule_config {
 		
 		$object->aggregate = serialize(listbuildercontrol::parseData($values,'aggregate'));
 
-		$object->enable_rss = (isset($values['enable_rss']) ? 1 : 0);
+//		$object->enable_rss = (isset($values['enable_rss']) ? 1 : 0);
 		$object->enable_ical = (isset($values['enable_ical']) ? 1 : 0);
-		$object->feed_title = $values['feed_title'];
-		$object->feed_desc = $values['feed_desc'];
+//		$object->feed_title = $values['feed_title'];
+//		$object->feed_desc = $values['feed_desc'];
 		$object->rss_cachetime = $values['rss_cachetime'];
 		$object->rss_limit = $values['rss_limit'];
 		

@@ -26,7 +26,7 @@
  */
 class update_profile_paths extends upgradescript {
 	protected $from_version = '1.99.0';  // version number lower than first released version, 2.0.0
-	protected $to_version = '2.0.3';  // code was corrected in 2.0.4
+	protected $to_version = '2.0.4';  // code was corrected in 2.0.4
 
 	/**
 	 * name/title of upgrade script

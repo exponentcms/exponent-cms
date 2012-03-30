@@ -20,7 +20,7 @@ return array(
 	"name"=>"Suomi",
 	"author"=>"OIC Group, Inc.",
 	"charset"=>"UTF-8",
-	"locale"=>"fo",
+	"locale"=>"fi",
 	"default_view"=>"Default",
 );
 ?>

@@ -20,7 +20,7 @@ if (!defined('EXPONENT')) exit('');
 
 $question = null;
 if (isset($_GET['qid'])) {
-	$question = $db->selectObject('poll_question','id='.$_GET['qid']);
+	$question = $db->selectObject('poll_question','id='.intval($_GET['qid']));
 	if ($question) {
 		$loc = unserialize($question->location_data);
 	}

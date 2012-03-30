@@ -22,7 +22,7 @@
  */
 
 class faq extends expRecord {
-    public $table = 'faqs';
+//    public $table = 'faqs';
 
     protected $attachable_item_types = array(
         'content_expCats'=>'expCat',

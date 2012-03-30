@@ -66,6 +66,7 @@ class expPaginator {
 	public $header_columns = '';
 	public $default = '';
 	public $view = null;
+    public $content_type = '';
 	/**#@+
      * @access public
      * @var integer
@@ -79,6 +80,8 @@ class expPaginator {
 	public $total_pages = 0;
 	public $page_offset = 0;
     public $categorize = false;
+    public $version = 0;
+    public $content_id = 0;
 	/**#@+
      * @access public
      * @var array
@@ -152,7 +155,7 @@ class expPaginator {
 		$this->order_direction = $this->dir;	
 		if (expTheme::inAction()) {
 		    //FIXME: module/controller glue code
-		    $mod = !empty($_REQUEST['controller']) ? $_REQUEST['controller'] : $_REQUEST['module'];
+		    $mod = !empty($_REQUEST['controller']) ? expString::sanitize($_REQUEST['controller']) : expString::sanitize($_REQUEST['module']);
 //		    if ($this->controller == $mod && $this->action == $_REQUEST['action']) {
 			    $this->order = isset($_REQUEST['order']) ? $_REQUEST['order'] : $this->order;
 			    $this->order_direction = isset($_REQUEST['dir']) ? $_REQUEST['dir'] : $this->dir;

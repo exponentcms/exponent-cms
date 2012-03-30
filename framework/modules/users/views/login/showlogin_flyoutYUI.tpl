@@ -13,7 +13,7 @@
  *
  *}
 
-{css unique="login" link="`$asset_path`css/flyout.css"}
+{css unique="showlogin-flyout" link="`$asset_path`css/flyout.css"}
 
 {/css}
 

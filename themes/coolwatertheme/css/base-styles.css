@@ -161,7 +161,7 @@ div.bodycopy ul, ol {
 	text-decoration: none;
 	padding:0 0 0 40px;
 	_padding:0 0 0 20px;
-	background-image: url(../images/exp.png);
+	background-image: url(../images/logo.png);
 	_background-image:none;
 	background-repeat: no-repeat ;
 
@@ -285,6 +285,10 @@ div.bodycopy ul, ol {
 
 #sidebar .container-chrome ul li a {
     font-weight:normal;
+}
+
+#sidebar .container-chrome ul li a:hover {
+    color: #FFFFFF;
 }
 
 #sidebar .container-chrome ul li {

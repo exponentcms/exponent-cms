@@ -248,7 +248,7 @@ class expValidator {
 	 * @param $email
 	 * @return bool
 	 */
-    private static function isValidEmail($email)
+    public static function isValidEmail($email)
     {
        $isValid = true;
        $atIndex = strrpos($email, "@");

@@ -2,6 +2,24 @@ Exponent Content Management System
 Copyright (c) 2004-2012 OIC Group, Inc.
 ===============================================
 
+Added / Fixed / changed for 2.0.6
+-----------------------
+# This release focuses on usability features and security
+  - incorporates all fixes from v2.0.5 patches
+  - adds publish/unpublish dates and 'draft' feature to blog
+  - implements WYSIWYG comments
+  - adds aggregated content indicator with command to move item into current module
+  - fixes a plural/singular MVC naming issue to provide more fluid integration (developer feature)
+    -- photoalbum, faq, & filedownloads; all fixed during the upgrade
+  - upgrade scripts now run when versions are equal to allow better upgrading from develop code
+    -- also adds 'optional' upgrade scripts; includes optional deprecated headline controller removal
+  - prevent installation/upgrade over 0.9x database (must be a clean install then migrate old db)
+    -- adds cURL library support requirement to installation
+  - enhanced podcast/rss feeds; deprecates 1.0/calendar rss, in favor of ical feed
+  - adds true Finnish (machine) translation
+  - adds additional url security checking
+  - plus other tweaks, fixes, and features
+
 Added / Fixed / changed for 2.0.5
 -----------------------
 # This release focuses on implementing categories

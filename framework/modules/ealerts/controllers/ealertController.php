@@ -29,7 +29,9 @@ class ealertController extends expController {
         'aggregation',
         'categories',
         'comments',
+        'ealerts',
         'files',
+        'pagination',
         'rss',
         'tags'
     ); // all options: ('aggregation','categories','comments','ealerts','files','module_title','pagination','rss','tags')

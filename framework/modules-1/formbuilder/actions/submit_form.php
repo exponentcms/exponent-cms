@@ -51,7 +51,7 @@ foreach ($controls as $c) {
 //        $emailFields[$c->name] = call_user_func(array($control_type,'templateFormat'),$emailValue,$ctl);
         $emailFields[$c->name] = call_user_func(array($control_type,'templateFormat'),$value,$ctl);
         $captions[$c->name] = $c->caption;
-		if ($c->name == "email" && expValidator::is_valid_email(array("email" => $value), "email", array()) === true) {
+		if ($c->name == "email" && expValidator::isValidEmail($value)) {
 			$from = $value;
 		}
 		if ($c->name == "name") {
@@ -113,7 +113,7 @@ if (!isset($_POST['data_id']) || (isset($_POST['data_id']) && expPermissions::ch
         $template->assign("is_email",1);
         $emailText = $template->render();
 		$emailText = chop(strip_tags(str_replace(array("<br />","<br>","br/>"),"\n",$emailText)));
-//		$template->assign("css",file_get_contents(BASE."framework/core/assets/css/tables.css"));
+		$template->assign("css",file_get_contents(BASE."framework/core/assets/css/tables.css"));
 		$emailHtml = $template->render();
 		if (empty($from)) {
 			$from = trim(SMTP_FROMADDRESS);

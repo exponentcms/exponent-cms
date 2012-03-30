@@ -261,7 +261,13 @@
 	</td>
 </tr>
 <tr>
-	<td class="bodytext" style="font-weight: bold;" valign="top"><a name="o_xml" /><?php echo gt('XML (Expat) Library Support'); ?>)</td>
+    <td class="bodytext" style="font-weight: bold;" valign="top"><a name="o_curl" /><?php echo gt('cURL Library Support'); ?></td>
+    <td class="bodytext" valign="top">
+        <?php echo gt('The cURL Library is required for several features which pull data from external sources.'); ?>
+    </td>
+</tr>
+<tr>
+	<td class="bodytext" style="font-weight: bold;" valign="top"><a name="o_xml" /><?php echo gt('XML (Expat) Library Support'); ?></td>
 	<td class="bodytext" valign="top">
 		<?php echo gt('The web services extensions for Exponent require the Expat Library.  If you are not using web services or module that are dependent on web services, this is a safe warning to ignore.'); ?>
 	</td>
@@ -269,9 +275,11 @@
 <tr>
 	<td class="bodytext" style="font-weight: bold;" valign="top"><a name="o_safemode" /><?php echo gt('Safe Mode Not Enabled'); ?></td>
 	<td class="bodytext" valign="top">
-		<div class="sanity_req"><?php echo gt('Safe Mode is a security measure present in some Shared Hosting Environments.  It limits a PHP scripts from including or modifying files that are not owned by that script\'s owner.  This can cause serious and subtle problems that look like bugs if Exponent\'s files are not properly set up.<br /><br />If you decide to ignore this warning, make sure that ALL files included in the Exponent package are owned by the same system user.'); ?></div>
-		<br />
-		<?php echo gt('Exponent works best when Safe Mode is disabled'); ?>
+        <div class="sanity_req"><?php echo gt('Exponent works best when Safe Mode is disabled'); ?></div>
+        <br />
+		<?php echo gt('Safe Mode is a security measure present in some Shared Hosting Environments.  It limits a PHP scripts from including or modifying files that are not owned by that script\'s owner.  This can cause serious and subtle problems that look like bugs if Exponent\'s files are not properly set up.'); ?>
+        <br /><br />
+        <?php echo gt('If you decide to ignore this warning, make sure that ALL files included in the Exponent package are owned by the same system user.'); ?></div>
 	</td>
 </tr>
 <tr>

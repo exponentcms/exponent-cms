@@ -882,7 +882,7 @@ class storeController extends expController {
             // if we have an id lets pull the product type from the products table.
             $product_type = $db->selectValue('product', 'product_type', 'id='.$this->params['id']);
         } else {
-            if (empty($this->params['product_type'])) redirect_to(array('controller'=>'store', 'action'=>picktype));
+            if (empty($this->params['product_type'])) redirect_to(array('controller'=>'store', 'action'=>'picktype'));
             $product_type = $this->params['product_type'];
         }
         
@@ -1078,7 +1078,7 @@ class storeController extends expController {
                 }              
             break;
             case 'showByTitle':                
-                $prod = new product(isset($_REQUEST['title']) ? $_REQUEST['title']: $_REQUEST['id']);
+                $prod = new product(isset($_REQUEST['title']) ? expString::sanitize($_REQUEST['title']): intval($_REQUEST['id']));
                 if (!empty($prod)) {
                     $metainfo['title'] = empty($prod->meta_title) ? $prod->title : $prod->meta_title;
                     $metainfo['keywords'] = empty($prod->meta_keywords) ? $prod->title : strip_tags($prod->meta_keywords);

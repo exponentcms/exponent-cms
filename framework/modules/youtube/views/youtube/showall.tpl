@@ -28,6 +28,7 @@
     {if $config.moduledescription != ""}
         {$config.moduledescription}
     {/if}
+    {assign var=myloc value=serialize($__loc)}
     {pagelinks paginate=$page top=1}
     {foreach from=$items item=ytv name=items}
 		<div class="item">
@@ -35,6 +36,13 @@
 			{permissions}
 				<div class="item-actions">
 					{if $permissions.edit == 1}
+                        {if $myloc != $ytv->location_data}
+                            {if $permissions.manage == 1}
+                                {icon action=merge id=$ytv->id title="Merge Aggregated Content"|gettext}
+                            {else}
+                                {icon img='arrow_merge.png' title="Merged Content"|gettext}
+                            {/if}
+                        {/if}
 						{icon action=edit record=$ytv}
 					{/if}
 					{if $permissions.delete == 1}

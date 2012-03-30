@@ -15,10 +15,18 @@
 
 <div class="module text single">
     {if $moduletitle && !$config.hidemoduletitle}<h1>{$moduletitle}</h1>{/if}
+    {assign var=myloc value=serialize($__loc)}
     {if $items[0]->title}<h2>{$items[0]->title}</h2>{/if}
     {permissions}
         {if $permissions.edit == 1}
         <div class="item-actions">
+            {if $myloc != $items[0]->location_data}
+                {if $permissions.manage == 1}
+                    {icon action=merge id=$items[0]->id title="Merge Aggregated Content"|gettext}
+                {else}
+                    {icon img='arrow_merge.png' title="Merged Content"|gettext}
+                {/if}
+            {/if}
             {icon action=edit record=$items[0]}
         </div>
         {/if}

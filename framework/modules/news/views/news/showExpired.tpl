@@ -15,6 +15,7 @@
 
 <div class="module news show-expired">
     {if !$config.hidemoduletitle}<h1>{$moduletitle|default:"Expired News"|gettext}</h1>{/if}
+    {assign var=myloc value=serialize($__loc)}
     {pagelinks paginate=$page top=1}
 	<table id="prods">
 	    <thead>
@@ -33,6 +34,13 @@
 				    {permissions}
 						<div class="item-actions">
 							{if $permissions.edit == true}
+                                {if $myloc != $listing->location_data}
+                                    {if $permissions.manage == 1}
+                                        {icon action=merge id=$listing->id title="Merge Aggregated Content"|gettext}
+                                    {else}
+                                        {icon img='arrow_merge.png' title="Merged Content"|gettext}
+                                    {/if}
+                                {/if}
 								{icon action=edit record=$listing}
 							{/if}
 							{if $permissions.delete == true}

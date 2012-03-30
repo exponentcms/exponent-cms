@@ -28,11 +28,19 @@
     {if $config.moduledescription != ""}
         {$config.moduledescription}
     {/if}
+    {assign var=myloc value=serialize($__loc)}
     {foreach from=$items item=text name=items}
         {if $text->title}<h2>{$text->title}</h2>{/if}
         {permissions}
 			<div class="item-actions">
 				{if $permissions.edit == 1}
+                    {if $myloc != $text->location_data}
+                        {if $permissions.manage == 1}
+                            {icon action=merge id=$text->id title="Merge Aggregated Content"|gettext}
+                        {else}
+                            {icon img='arrow_merge.png' title="Merged Content"|gettext}
+                        {/if}
+                    {/if}
 					{icon action=edit record=$text}
 				{/if}
 				{if $permissions.delete == 1}

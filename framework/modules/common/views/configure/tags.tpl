@@ -14,5 +14,5 @@
  *
  *}
 
-<h2>{'Select whether or not this module can use tags'|gettext}</h2>
+<h2>{'Dis-Allow tags'|gettext}</h2>
 {control type=checkbox name=disabletags label="Disable Tags for this module" value=1 checked=$config.disabletags}

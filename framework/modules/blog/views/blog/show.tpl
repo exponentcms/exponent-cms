@@ -19,9 +19,17 @@
 
 <div class="module blog show">
     <h1>{$record->title}</h1>
+    {assign var=myloc value=serialize($__loc)}
     {permissions}
         <div class="item-actions">
             {if $permissions.edit == 1}
+                {if $myloc != $record->location_data}
+                    {if $permissions.manage == 1}
+                        {icon action=merge id=$record->id title="Merge Aggregated Content"|gettext}
+                    {else}
+                        {icon img='arrow_merge.png' title="Merged Content"|gettext}
+                    {/if}
+                {/if}
                 {icon action=edit record=$record}
             {/if}
             {if $permissions.delete == 1}
@@ -34,9 +42,20 @@
     {/permissions}
     <div class="post-info">
         <span class="attribution">
-            {'Posted by'|gettext} <a href="{link action=showall_by_author author=$record->poster|username}">{attribution user_id=$record->poster}</a> {'on'|gettext} <span class="date">{$record->created_at|format_date}</span>
+            {if $record->private}<strong>({'Draft'|gettext})</strong>{/if}
+            {if $record->publish_date > $smarty.now}
+                <strong>{'Will be'|gettext}&nbsp;
+            {elseif ($record->unpublish != 0) && $record->unpublish <= $smarty.now}
+                <strong>{'Was'|gettext}&nbsp;
+            {/if}
+            {'Posted by'|gettext} <a href="{link action=showall_by_author author=$record->poster|username}">{attribution user_id=$record->poster}</a> {'on'|gettext} <span class="date">{$record->publish_date|format_date}</span>
+            {if $record->publish_date > $smarty.now}
+                </strong>&nbsp;
+            {elseif ($record->unpublish != 0) && $record->unpublish <= $smarty.now}
+                {'now unpublished'|gettext}</strong>&nbsp;
+            {/if}
         </span>
-        | <a class="comments" href="{link action=show title=$record->sef_url}#exp-comments">{$record->expComment|@count} {"Comments"|gettext}</a>
+        | <a class="comments" href="#exp-comments">{$record->expComment|@count} {"Comments"|gettext}</a>
 		{if $record->expTag|@count>0 && !$config.disabletags}
 		| <span class="tags">
 			{"Tags"|gettext}: 

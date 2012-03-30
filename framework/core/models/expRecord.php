@@ -100,9 +100,9 @@ class expRecord {
                 $params = array($identifier=>$params); // Convert $params (given number value) into an key/value pair        
             } else {
                 // try to look up by sef_url
-                $values = $db->selectArray($this->tablename, "sef_url='".$params."'", $this->supports_revisions);
+                $values = $db->selectArray($this->tablename, "sef_url='".expString::sanitize($params)."'", $this->supports_revisions);
                 // if we didn't find it via sef_url then we should check by title
-                if (empty($values)) $values = $db->selectArray($this->tablename, "title='".$params."'", $this->supports_revisions);
+                if (empty($values)) $values = $db->selectArray($this->tablename, "title='".expString::sanitize($params)."'", $this->supports_revisions);
                 $this->build($values);
                 $params = array('title'=>$params);
             }

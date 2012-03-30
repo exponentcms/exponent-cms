@@ -25,7 +25,7 @@ $template = new template("containermodule","_popup_info");
 $secref = null;
 
 if (isset($_GET['id'])) {
-	$container = $db->selectObject("container","id=".$_GET['id']);
+	$container = $db->selectObject("container","id=".intval($_GET['id']));
 	if ($container) {
 		$iloc = unserialize($container->internal);
 		$secref = $db->selectObject("sectionref","module='".$iloc->mod."' AND source='".$iloc->src."'");
@@ -37,7 +37,7 @@ if (isset($_GET['id'])) {
 		exit();
 	}
 } else {
-	$secref = $db->selectObject("sectionref","module='".$_GET['mod']."' AND source='".$_GET['src']."'");
+	$secref = $db->selectObject("sectionref","module='".expString::sanitize($_GET['mod'])."' AND source='".expString::sanitize($_GET['src'])."'");
 	$template->assign("is_orphan",1);
 }
 

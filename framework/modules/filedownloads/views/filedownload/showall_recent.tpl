@@ -35,6 +35,7 @@
     {if $config.moduledescription != ""}
    		{$config.moduledescription}
    	{/if}
+    {assign var=myloc value=serialize($__loc)}
     {assign var="cat" value="bad"}
     {foreach from=$page->records item=file name=files}
         {if $smarty.foreach.files.iteration<=$config.headcount || !$config.headcount}
@@ -48,9 +49,9 @@
 </div>
 
 {if $config.show_player}
-    {script unique="filedownloads" src="`$smarty.const.PATH_RELATIVE`external/flowplayer3/example/flowplayer-3.2.6.min.js"}
+    {script unique="filedownload" src="`$smarty.const.PATH_RELATIVE`external/flowplayer3/example/flowplayer-3.2.6.min.js"}
     {literal}
-    flowplayer("a.filedownloads-media", EXPONENT.PATH_RELATIVE+"external/flowplayer3/flowplayer-3.2.7.swf",
+    flowplayer("a.filedownload-media", EXPONENT.PATH_RELATIVE+"external/flowplayer3/flowplayer-3.2.7.swf",
         {
     		wmode: 'opaque',
     		clip: {

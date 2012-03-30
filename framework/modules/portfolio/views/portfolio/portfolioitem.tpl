@@ -18,6 +18,13 @@
 	{permissions}
 		<div class="item-actions">
 			{if $permissions.edit == 1}
+                {if $myloc != $record->location_data}
+                    {if $permissions.manage == 1}
+                        {icon action=merge id=$record->id title="Merge Aggregated Content"|gettext}
+                    {else}
+                        {icon img='arrow_merge.png' title="Merged Content"|gettext}
+                    {/if}
+                {/if}
 				{icon action=edit record=$record title="Edit `$record->title`"}
 			{/if}
 			{if $permissions.delete == 1}

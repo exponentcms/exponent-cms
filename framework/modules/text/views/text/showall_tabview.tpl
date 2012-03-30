@@ -30,6 +30,7 @@
     {if $config.moduledescription != ""}
         {$config.moduledescription}
     {/if}
+    {assign var=myloc value=serialize($__loc)}
     <div id="{$id}" class="yui-navset exp-skin-tabview hide">
         <ul>
             {foreach from=$items item=tab name=tabs}
@@ -42,6 +43,13 @@
                     {permissions}
 						<div class="item-actions">
 						   {if $permissions.edit == 1}
+                                {if $myloc != $text->location_data}
+                                    {if $permissions.manage == 1}
+                                        {icon action=merge id=$text->id title="Merge Aggregated Content"|gettext}
+                                    {else}
+                                        {icon img='arrow_merge.png' title="Merged Content"|gettext}
+                                    {/if}
+                                {/if}
 								{icon action=edit record=$text}
 							{/if}
 							{if $permissions.delete == 1}

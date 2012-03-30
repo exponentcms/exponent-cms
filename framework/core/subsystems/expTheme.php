@@ -29,6 +29,7 @@ class expTheme {
 		global $auto_dirs2, $user;
 		// Initialize the theme subsystem 1.0 compatibility layer
 		require_once(BASE.'framework/core/compat/theme.php');
+
 		if (!defined('DISPLAY_THEME')) {
 			/* exdoc
 			 * The directory and class name of the current active theme.  This may be different
@@ -336,7 +337,7 @@ class expTheme {
 //		$mobile = self::is_mobile();
 
 		// if we are in an action, get the particulars for the module
-		if (self::inAction()) $module = isset($_REQUEST['module']) ? $_REQUEST['module'] : $_REQUEST['controller'];
+		if (self::inAction()) $module = isset($_REQUEST['module']) ? expString::sanitize($_REQUEST['module']) : expString::sanitize($_REQUEST['controller']);
 
 		// if we are in an action and have action maps to work with...
 		if (self::inAction() && (!empty($action_maps[$module]) && (array_key_exists($_REQUEST['action'], $action_maps[$module]) || array_key_exists('*', $action_maps[$module])))) {
@@ -476,7 +477,7 @@ class expTheme {
 //			}
 
 			//FIXME: module/controller glue code..remove ASAP
-			$module = empty($_REQUEST['controller']) ? $_REQUEST['module'] : $_REQUEST['controller'];
+			$module = empty($_REQUEST['controller']) ? expString::sanitize($_REQUEST['module']) : expString::sanitize($_REQUEST['controller']);
 			$isController = expModules::controllerExists($module);
 
 			if ($isController && !isset($_REQUEST['_common'])) {
@@ -489,8 +490,8 @@ class expTheme {
 			} else {
 				if ($_REQUEST['action'] == 'index') {
 					$view = empty($_REQUEST['view']) ? 'Default' : $_REQUEST['view'];
-					$title = empty($_REQUEST['title']) ? '' : $_REQUEST['title'];
-					$src = empty($_REQUEST['src']) ? null : $_REQUEST['src'];
+					$title = empty($_REQUEST['title']) ? '' : expString::sanitize($_REQUEST['title']);
+					$src = empty($_REQUEST['src']) ? null : expString::sanitize($_REQUEST['src']);
 					self::showModule($module, $view, $title, $src);
 					return true;
 				}
@@ -501,8 +502,8 @@ class expTheme {
 				// userperms or groupperms...deal wit it.
 				$loc = null;
 				$loc->mod = $module;
-				$loc->src = (isset($_REQUEST['src']) ? $_REQUEST['src'] : "");
-				$loc->int = (isset($_REQUEST['int']) ? $_REQUEST['int'] : "");
+				$loc->src = (isset($_REQUEST['src']) ? expString::sanitize($_REQUEST['src']) : "");
+				$loc->int = (!empty($_REQUEST['int']) ? strval(intval($_REQUEST['int'])) : "");
 				//if (isset($_REQUEST['act'])) $loc->act = $_REQUEST['act'];
 
 				if (isset($_REQUEST['_common'])) {

@@ -152,6 +152,31 @@ class expCommentController extends expController {
 		));
 	}
 
+    /**
+     * Returns count of comments attached to specified item
+     *
+     * @static
+     * @param $params
+     * @return int
+     */
+    public static function findComments($params) {
+        global $user, $db;
+
+        $sql  = 'SELECT c.* FROM '.DB_TABLE_PREFIX.'_expComments c ';
+        $sql .= 'JOIN '.DB_TABLE_PREFIX.'_content_expComments cnt ON c.id=cnt.expcomments_id ';
+        $sql .= 'WHERE cnt.content_id='.$params['content_id']." AND cnt.content_type='".$params['content_type']."' ";
+        if (!($user->is_admin || $user->is_acting_admin)) {
+            $sql .= 'AND c.approved=1';
+        }
+
+        $comments = new expPaginator(array(
+            'sql'=>$sql,
+        ));
+        return count($comments->records);
+//        return $count = $db->countObjectsBySql($sql);
+
+    }
+
     function update() {
         global $db, $user;
         

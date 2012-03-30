@@ -21,7 +21,7 @@ if (!defined('EXPONENT')) exit('');
 $question = null;
 $answer = null;
 if (isset($_POST['id'])) {
-	$answer = $db->selectObject('poll_answer','id='.$_POST['id']);
+	$answer = $db->selectObject('poll_answer','id='.intval($_POST['id']));
 	if ($answer) {
 		$question = $db->selectObject('poll_question','id='.$answer->question_id);
 		if ($question) {
@@ -29,7 +29,7 @@ if (isset($_POST['id'])) {
 		}
 	}
 } else if (isset($_POST['question_id'])) {
-	$question = $db->selectObject('poll_question','id='.$_POST['question_id']);
+	$question = $db->selectObject('poll_question','id='.intval($_POST['question_id']));
 	if ($question) {
 		$loc = unserialize($answer->location_data);
 	}

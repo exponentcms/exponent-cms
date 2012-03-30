@@ -248,7 +248,7 @@ abstract class expController {
 //        $page->records = expSorter::sort(array('array'=>$page->records, 'sortby'=>'rank', 'order'=>'ASC', 'ignore_case'=>true));
         $page->records = expSorter::sort(array('array'=>$page->records, 'sortby'=>'created_at', 'order'=>'DESC', 'ignore_case'=>true));
 
-        assign_to_template(array('page'=>$page, 'items'=>$page->records, 'moduletitle'=>ucfirst($modelname).' items by tag "'.$this->params['tag'].'"', 'rank'=>($order==='rank')?1:0));
+        assign_to_template(array('page'=>$page, 'items'=>$page->records, 'moduletitle'=>ucfirst($modelname).' items by tag "'.expString::sanitize($this->params['tag']).'"', 'rank'=>($order==='rank')?1:0));
     }
 
     public function tags() {
@@ -271,8 +271,13 @@ abstract class expController {
 
 //        $order = isset($this->config['order']) ? $this->config['order'] : 'rank';
 //        $used_tags = expSorter::sort(array('array'=>$used_tags,'sortby'=>'title', 'order'=>'ASC', 'ignore_case'=>true, 'rank'=>($order==='rank')?1:0));
+//        $order = isset($this->config['order']) ? $this->config['order'] : 'title ASC';
+//        $used_tags = expSorter::sort(array('array'=>$used_tags, 'order'=>$order, 'ignore_case'=>true, 'rank'=>($order==='rank')?1:0));
+        $used_tags = expSorter::sort(array('array'=>$used_tags, 'order'=>'count DESC', 'type'=>'a'));
+        if (!empty($this->config['limit'])) $used_tags = array_slice($used_tags,0,$this->config['limit']);
         $order = isset($this->config['order']) ? $this->config['order'] : 'title ASC';
         $used_tags = expSorter::sort(array('array'=>$used_tags, 'order'=>$order, 'ignore_case'=>true, 'rank'=>($order==='rank')?1:0));
+
         assign_to_template(array('tags'=>$used_tags));
     }
 
@@ -395,6 +400,24 @@ abstract class expController {
         assign_to_template(array('controller'=>$this->params['controller']));
         $record = isset($this->params['id']) ? $this->$modelname->find($this->params['id']) : new $modelname($this->params);
         assign_to_template(array('record'=>$record, 'table'=>$this->$modelname->tablename));
+    }
+
+    /**
+     * merge/move aggregated item into this module
+     */
+    function merge() {
+        global $db;
+
+        expHistory::set('editable', $this->params);
+        $modelname = $this->basemodel_name;
+        $record = $this->$modelname->find($this->params['id']);
+
+        $loc = expUnserialize($record->location_data);
+        $loc->src = $this->loc->src;
+        $record->location_data = serialize($loc);
+        $this->$modelname->update($record);
+
+        expHistory::back();
     }
 
 	/**
@@ -581,10 +604,17 @@ abstract class expController {
         foreach ($items as $key => $item) { 
             $rss_item = new FeedItem();
             $rss_item->title = expString::convertSmartQuotes($item->title);
-            $rss_item->description = expString::convertSmartQuotes($item->body);
-            $rss_item->date = isset($item->publish_date) ? date('r',$item->publish_date) : date('r', $item->created_at);
             $rss_item->link = makeLink(array('controller'=>$this->classname, 'action'=>'show', 'title'=>$item->sef_url));
+            $rss_item->description = expString::convertSmartQuotes($item->body);
+            $rss_item->author = user::getUserById($item->poster)->firstname.' '.user::getUserById($item->poster)->lastname;
+            $rss_item->date = isset($item->publish_date) ? date('r',$item->publish_date) : date('r', $item->created_at);
             if (!empty($item->expCat[0]->title)) $rss_item->category = array($item->expCat[0]->title);
+            $comment_count = expCommentController::findComments(array('content_id'=>$item->id,'content_type'=>$this->basemodel_name));
+            if ($comment_count) {
+                $rss_item->comments = makeLink(array('controller'=>$this->classname, 'action'=>'show', 'title'=>$item->sef_url)).'#exp-comments';
+//                $rss_item->commentsRSS = makeLink(array('controller'=>$this->classname, 'action'=>'show', 'title'=>$item->sef_url)).'#exp-comments';
+                $rss_item->commentsCount = $comment_count;
+            }
             $rssitems[$key] = $rss_item;
         }
         return $rssitems;
@@ -766,7 +796,7 @@ abstract class expController {
             case 'showByTitle':
                 // look up the record.
                 if (isset($_REQUEST['id']) || isset($_REQUEST['title'])) {
-                    $lookup = isset($_REQUEST['id']) ? $_REQUEST['id'] :$_REQUEST['title']; 
+                    $lookup = isset($_REQUEST['id']) ? intval($_REQUEST['id']) : expString::sanitize($_REQUEST['title']);
                     $object = new $modelname($lookup);
                     // set the meta info
                     if (!empty($object)) {

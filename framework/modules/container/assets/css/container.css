@@ -1,5 +1,5 @@
 /**
-* Cintainer Module
+* Container Module
 */
 
 
@@ -17,14 +17,10 @@
     width:49%;
     float:right;
 }
-
 div.containermodule.main-wrapper {
     border-width:0 1px 1px 1px;
     padding:0 0 5px 0;
 }
-
-
-
 
 /**
 * Three Column View
@@ -35,11 +31,9 @@ div.containermodule.main-wrapper {
     width:31%;
     float:left;
 }
-
 .containermodule.three-column .col2 {
     margin-left:1.5em;
 }
-
 .containermodule.three-column .col3 {
     width:32%;
     float:right;

@@ -21,8 +21,8 @@ define('SCRIPT_FILENAME','picked_source.php');
 
 include_once('../../../exponent.php');
 
-$src = $_GET['ss'];
-$mod = $_GET['sm'];
+$src = expString::sanitize($_GET['ss']);
+$mod = expString::sanitize($_GET['sm']);
 
 $secref = $db->selectObject("sectionref","module='".$mod."' AND source='".$src."'");
 if (!isset($secref->description)) $secref->description = '';

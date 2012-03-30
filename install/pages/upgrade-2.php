@@ -45,7 +45,7 @@ ksort($tables);
 $row = "even";
 $line = 0;
 foreach ($tables as $table => $statusnum) {
-	if ($statusnum != TMP_TABLE_EXISTED) {
+	if ($statusnum != DATABASE_TABLE_EXISTED) {
 ?>
 
 <tr class="<?php echo $row ?>">
@@ -53,19 +53,19 @@ foreach ($tables as $table => $statusnum) {
 		 <?php echo gt($table) ?>
 	</td>
 	<td>
-		 <?php  if ($statusnum == TMP_TABLE_EXISTED) { ?>
+		 <?php  if ($statusnum == DATABASE_TABLE_EXISTED) { ?>
 		<div style="color: blue; font-weight: bold">
 			<?php echo gt('Table Exists') ?>
 		</div>
-		 <?php } elseif ($statusnum == TMP_TABLE_INSTALLED) {  ?>
+		 <?php } elseif ($statusnum == DATABASE_TABLE_INSTALLED) {  ?>
 		<div style="color: green; font-weight: bold">
 			<?php echo gt('Added') ?>
 		</div>
-        <?php } elseif ($statusnum == TMP_TABLE_FAILED) {  ?>
+        <?php } elseif ($statusnum == DATABASE_TABLE_FAILED) {  ?>
 		<div style="color: red; font-weight: bold">
 			<?php echo gt('Failed') ?>
 		</div>
-        <?php } elseif ($statusnum == TMP_TABLE_ALTERED) {  ?>
+        <?php } elseif ($statusnum == DATABASE_TABLE_ALTERED) {  ?>
 		<div style="color: green; font-weight: bold">
 			<?php echo gt('Altered Existing') ?>
 		</div>
@@ -97,7 +97,7 @@ $emptydbstr = gt('Continue Upgrade');
 if ($db->tableIsEmpty('user') || $db->tableIsEmpty('modstate') || $db->tableIsEmpty('section')) {
 	echo '<div style="color: red; font-weight: bold">';
 	echo 'No Database Entries Were Found!';
-	echo '</div>';
+	echo '<br /></div>';
 	$emptydb = 'install-2';
 	$emptydbstr = gt('Switching to Installer');
 

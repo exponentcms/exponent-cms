@@ -30,14 +30,14 @@ class expConfig extends expRecord {
         $this->location_data = serialize($params);
 		parent::__construct($db->selectValue($this->table, 'id', "location_data='".$this->location_data."'"));		
 				
-		// treat the loc data like an id - if the location data come thru as an objec we need to look up the record
+		// treat the loc data like an id - if the location data come thru as an object we need to look up the record
             //         if (!empty($params->src)) {
             //             echo "1";
             //             // if we hav a src, ie this controller has sources
             // parent::__construct($db->selectValue($this->table, 'id', "location_data='".$this->location_data."'"));
             //         } else {
             //             echo "2";
-            //             // if we don't have a sourced controller, migh still have a config for it.
+            //             // if we don't have a sourced controller, might still have a config for it.
             // parent::__construct($db->selectValue($this->table, 'id'));
             //}
 		$this->config = expUnserialize($this->config);

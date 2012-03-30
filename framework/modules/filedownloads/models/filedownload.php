@@ -22,7 +22,7 @@
  */
 
 class filedownload extends expRecord {
-	public $table = 'filedownloads';
+//	public $table = 'filedownloads';
 
     protected $attachable_item_types = array(
         'content_expFiles'=>'expFile',
@@ -34,7 +34,24 @@ class filedownload extends expRecord {
 	public $validates = array(
 		'presence_of'=>array(
 			'title'=>array('message'=>'Title is a required field.'),
-		));
+		)
+    );
+
+    public function __construct($params=null, $get_assoc=true, $get_attached=true) {
+        parent::__construct($params, $get_assoc, $get_attached);
+
+        include_once(BASE.'external/mp3file.php');
+        if ($this->id && ($this->expFile['downloadable'][0]->mimetype == "audio/mpeg") && (file_exists(BASE.$this->expFile['downloadable'][0]->directory.'/'.$this->expFile['downloadable'][0]->filename))) {
+            $mp3 = new mp3file(BASE.$this->expFile['downloadable'][0]->directory.'/'.$this->expFile['downloadable'][0]->filename);
+            $id3 = $mp3->get_metadata();
+            if (($id3['Encoding']=='VBR') || ($id3['Encoding']=='CBR')) {
+                $this->expFile['downloadable'][0]->duration = $id3['Length mm:ss'];
+            }
+        } else {
+            $this->expFile['downloadable'][0]->duration = '';
+        }
+
+    }
 
 }
 

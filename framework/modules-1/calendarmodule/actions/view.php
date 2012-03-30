@@ -86,14 +86,14 @@ if ($item) {
 		$template->assign('form', $form);
 	}
 
-	$tags = unserialize($item->tags);
-	if (!empty($tags)) {
-		$selected_tags = $db->selectObjectsInArray('tags', $tags);
-	} else {
-		$selected_tags = array();
-	}
-	$template->assign('tags',$selected_tags);
-	$template->assign('tagcnt',count($selected_tags));
+//	$tags = unserialize($item->tags);
+//	if (!empty($tags)) {
+//		$selected_tags = $db->selectObjectsInArray('tags', $tags);
+//	} else {
+//		$selected_tags = array();
+//	}
+//	$template->assign('tags',$selected_tags);
+//	$template->assign('tagcnt',count($selected_tags));
 
 	$config = $db->selectObject("calendarmodule_config","location_data='".serialize($loc)."'");
 	if (!$config) {

@@ -65,7 +65,7 @@ if ($user->isAdmin()) {
 	if (SEF_URLS == 1) {
 		$page = new expPaginator(array(
 		//'model'=>'user',
-		'limit'=>(isset($_REQUEST['limit'])?$_REQUEST['limit']:20),
+		'limit'=>(isset($_REQUEST['limit'])?intval($_REQUEST['limit']):20),
 		'controller'=>$router->params['controller'],
 		'action'=>$router->params['action'],
 		'records'=>$users,
@@ -77,8 +77,8 @@ if ($user->isAdmin()) {
 	} else {
 		$page = new expPaginator(array(
 		//'model'=>'user',
-		'limit'=>(isset($_REQUEST['limit'])?$_REQUEST['limit']:20),
-		'controller'=>$_GET['module'],
+		'limit'=>(isset($_REQUEST['limit'])?intval($_REQUEST['limit']):20),
+		'controller'=>expString::sanitize($_GET['module']),
 		'action'=>$_GET['action'],
 		'records'=>$users,
 		//'sql'=>$sql,

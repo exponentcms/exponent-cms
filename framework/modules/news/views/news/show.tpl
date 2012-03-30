@@ -18,10 +18,18 @@
     {printer_friendly_link}
     {/if}
     <h1>{$record->title}</h1>
-    <span class="date">{$record->publish|format_date:"%A, %B %e, %Y"}</span>
+    {assign var=myloc value=serialize($__loc)}
+    <span class="date">{$record->publish_date|format_date:"%A, %B %e, %Y"}</span>
     {permissions}
         <div class="item-actions">   
             {if $permissions.edit == true}
+                {if $myloc != $record->location_data}
+                    {if $permissions.manage == 1}
+                        {icon action=merge id=$record->id title="Merge Aggregated Content"|gettext}
+                    {else}
+                        {icon img='arrow_merge.png' title="Merged Content"|gettext}
+                    {/if}
+                {/if}
                 {icon action=edit record=$record}
             {/if}
             {if $permissions.delete == true}

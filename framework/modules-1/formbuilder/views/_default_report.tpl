@@ -13,14 +13,14 @@
  *
  *}
 
-{css unique="default-report-buttons" corecss="tables"}
+{if $is_email == 1}
+<style type="text/css" media="screen">
+    {$css}
+</style>
+{else}
+	{css unique="default-report" corecss="tables,button"}
 
-{/css}
-
-{if $is_email == 0}
-    {css unique="default-report-buttons" corecss="button"}
-
-    {/css}
+	{/css}
 {/if}
 
  <table border="0" cellspacing="0" cellpadding="0" class="exp-skin-table">

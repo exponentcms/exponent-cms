@@ -36,6 +36,7 @@
     {if $config.moduledescription != ""}
    		{$config.moduledescription}
    	{/if}
+    {assign var=myloc value=serialize($__loc)}
     {foreach name=items from=$page->records item=item}
         {if $smarty.foreach.items.iteration<=$config.headcount || !$config.headcount}
         <div class="item">
@@ -47,6 +48,13 @@
             {permissions}
                 <div class="item-actions">
                     {if $permissions.edit == 1}
+                        {if $myloc != $item->location_data}
+                            {if $permissions.manage == 1}
+                                {icon action=merge id=$item->id title="Merge Aggregated Content"|gettext}
+                            {else}
+                                {icon img='arrow_merge.png' title="Merged Content"|gettext}
+                            {/if}
+                        {/if}
                         {icon action=edit record=$item}
                     {/if}
                     {if $permissions.delete == 1}
@@ -56,7 +64,18 @@
             {/permissions}
             <div class="post-info">
                 <span class="attribution">
-                    {'Posted by'|gettext} <a href="{link action=showall_by_author author=$item->poster|username}">{attribution user_id=$item->poster}</a> {'on'|gettext} <span class="date">{$item->created_at|format_date}</span>
+                    {if $item->private}<strong>({'Draft'|gettext})</strong>{/if}
+                    {if $item->publish_date > $smarty.now}
+                        <strong>{'Will be'|gettext}&nbsp;
+                    {elseif ($item->unpublish != 0) && $item->unpublish <= $smarty.now}
+                        <strong>{'Was'|gettext}&nbsp;
+                    {/if}
+                    {'Posted by'|gettext} <a href="{link action=showall_by_author author=$item->poster|username}">{attribution user_id=$item->poster}</a> {'on'|gettext} <span class="date">{$item->publish_date|format_date}</span>
+                    {if $item->publish_date > $smarty.now}
+                        </strong>&nbsp;
+                    {elseif ($item->unpublish != 0) && $item->unpublish <= $smarty.now}
+                        {'now unpublished'|gettext}</strong>&nbsp;
+                    {/if}
                 </span>
 
                 | <a class="comments" href="{link action=show title=$item->sef_url}#exp-comments">{$item->expComment|@count} {"Comments"|gettext}</a>

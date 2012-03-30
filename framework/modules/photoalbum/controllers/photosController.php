@@ -23,11 +23,11 @@
 
 class photosController extends expController {
     public $basemodel_name = 'photo';
-    public $useractions = array(
-        'showall'=>'Gallery',
-        'slideshow'=>'Slideshow',
-        //'showall_tags'=>"Tag Categories"
-    );
+//    public $useractions = array(
+//        'showall'=>'Gallery',
+//        'slideshow'=>'Slideshow',
+//        //'showall_tags'=>"Tag Categories"
+//    );
     public $remove_configs = array(
         'comments',
         'ealerts',

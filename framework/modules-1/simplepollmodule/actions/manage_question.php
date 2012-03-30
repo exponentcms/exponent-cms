@@ -23,7 +23,7 @@ global $router;
 
 $question = null;
 if (isset($_GET['id'])) {
-	$question = $db->selectObject('poll_question','id='.$_GET['id']);
+	$question = $db->selectObject('poll_question','id='.intval($_GET['id']));
 	if ($question) {
 		$loc = unserialize($question->location_data);
 	}

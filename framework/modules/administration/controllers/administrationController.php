@@ -42,11 +42,6 @@ class administrationController extends expController {
 	public static function install_dbtables() {
 	    global $db;
 
-		define('TMP_TABLE_EXISTED',		1);
-		define('TMP_TABLE_INSTALLED',	2);
-		define('TMP_TABLE_FAILED',		3);
-		define('TMP_TABLE_ALTERED',		4);
-
 		expSession::clearCurrentUserSessionCache();
 		$tables = array();
 
@@ -66,7 +61,7 @@ class administrationController extends expController {
 						}
 					} else {
 						foreach ($db->alterTable($tablename,$dd,$info) as $key=>$status) {
-							if (isset($tables[$key])) echo "$tablename, $key<br>";
+//							if (isset($tables[$key])) echo "$tablename, $key<br>";  //FIXME we shouldn't echo this, already installed?
 							if ($status == TABLE_ALTER_FAILED){
 								$tables[$key] = $status;
 							}else{
@@ -105,7 +100,7 @@ class administrationController extends expController {
 										}
 									} else {
 										foreach ($db->alterTable($tablename,$dd,$info) as $key=>$status) {
-											if (isset($tables[$key])) echo "$tablename, $key<br>";
+//											if (isset($tables[$key])) echo "$tablename, $key<br>";  //FIXME we shouldn't echo this, already installed?
 											if ($status == TABLE_ALTER_FAILED){
 												$tables[$key] = $status;
 											}else{

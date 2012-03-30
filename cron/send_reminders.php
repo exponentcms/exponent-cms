@@ -62,15 +62,15 @@ if (!empty($config->aggregate)) {
 }
 $locsql .= ')';
 
-$view = $_GET['view'];
+$view = (isset($_GET['view']) ? $_GET['view'] : '');
 if ($view == "") {
 	$view = "_reminder";	// default reminder view
 }
 
 $template = new template('calendarmodule',$view,$loc);
-if ($title == '') {
-	$title = $db->selectValue('container', 'title', "internal='".serialize($loc)."'");
-}
+//if ($title == '') {
+$title = $db->selectValue('container', 'title', "internal='".serialize($loc)."'");
+//}
 $template->assign('moduletitle',$title);
 
 $time = (isset($_GET['time']) ? $_GET['time'] : time());
@@ -428,7 +428,7 @@ $mail->quickSend(array(
 		'headers'=>$headers,
 		'html_message'=>$htmlmsg,
 		"text_message"=>$msg,
-		'to'=>trim($emails),
+		'to'=>$emails,
 		'from'=>array(trim($config->email_address_reminder)=>$config->email_from_reminder),
 		'subject'=>$subject,
 ));

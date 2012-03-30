@@ -74,7 +74,7 @@
      {/form}
 </div>
 
-{script unique="blogtabs" yui3mods=1}
+{script unique="newstabs" yui3mods=1}
 {literal}
 	YUI(EXPONENT.YUI3_CONFIG).use('autocomplete','autocomplete-filters','autocomplete-highlighters','tabview', function(Y) {
 	    var tabview = new Y.TabView({srcNode:'#newsedit-tabs'});

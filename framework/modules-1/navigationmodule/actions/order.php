@@ -18,8 +18,8 @@
 
 if (!defined('EXPONENT')) exit('');
 
-if (expPermissions::check('manage',expCore::makeLocation('navigationmodule','',intval($_GET['parent'])))) {
-	$db->switchValues('section','rank',intval($_GET['a']),intval($_GET['b']),'parent=' . intval($_GET['parent']));
+if (expPermissions::check('manage',expCore::makeLocation('navigationmodule','',$_GET['parent']))) {
+	$db->switchValues('section','rank',$_GET['a'],$_GET['b'],'parent=' . intval($_GET['parent']));
 	expSession::clearAllUsersSessionCache('navigationmodule');
 	expHistory::back();
 } else {

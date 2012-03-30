@@ -38,13 +38,18 @@
                 <span class="value">{$file->created_at|format_date}</span>
             {/if}
             &nbsp;|&nbsp;
-            <span class="label size">{'File Size'}:</span>
-            {if $file->expFile.downloadable[0]->filesize >= 1048576}
-                <span class="value">{$file->expFile.downloadable[0]->filesize|megabytes} {'mb'|gettext}</span>
-            {elseif $file->expFile.downloadable[0]->filesize >= 1024}
-                <span class="value">{$file->expFile.downloadable[0]->filesize|kilobytes} {'kb'|gettext}</span>
+            {if $file->expFile.downloadable[0]->duration}
+                <span class="label size">{'Duration'}:</span>
+                <span class="value">{$file->expFile.downloadable[0]->duration}</span>
             {else}
-                <span class="value">{$file->expFile.downloadable[0]->filesize} {'bytes'|gettext}</span>
+                <span class="label size">{'File Size'}:</span>
+                {if $file->expFile.downloadable[0]->filesize >= 1048576}
+                    <span class="value">{$file->expFile.downloadable[0]->filesize|megabytes} {'mb'|gettext}</span>
+                {elseif $file->expFile.downloadable[0]->filesize >= 1024}
+                    <span class="value">{$file->expFile.downloadable[0]->filesize|kilobytes} {'kb'|gettext}</span>
+                {else}
+                    <span class="value">{$file->expFile.downloadable[0]->filesize} {'bytes'|gettext}</span>
+                {/if}
             {/if}
             &nbsp;|&nbsp;
             <span class="label downloads"># {'Downloads'|gettext}:</span>
@@ -63,6 +68,13 @@
     {permissions}
         <div class="item-actions">
             {if $permissions.edit == 1}
+                {if $myloc != $file->location_data}
+                    {if $permissions.manage == 1}
+                        {icon action=merge id=$file->id title="Merge Aggregated Content"|gettext}
+                    {else}
+                        {icon img='arrow_merge.png' title="Merged Content"|gettext}
+                    {/if}
+                {/if}
                 {icon action=edit record=$file title="Edit this file"|gettext}
             {/if}
             {if $permissions.delete == 1}
@@ -87,7 +99,7 @@
         {icon action=downloadfile fileid=$file->id text='Download'|gettext}
     {/if}
     {if $config.show_player && ($filetype == "mp3" || $filetype == "flv" || $filetype == "f4v")}
-        <a href="{$file->expFile.downloadable[0]->url}" style="display:block;width:360px;height:30px;" class="filedownloads-media"></a>
+        <a href="{$file->expFile.downloadable[0]->url}" style="display:block;width:360px;height:30px;" class="filedownload-media"></a>
     {/if}
     {clear}
     {permissions}

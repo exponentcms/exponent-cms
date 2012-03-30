@@ -29,7 +29,7 @@ $time = (isset($_GET['time']) ? $_GET['time'] : time());
 if (isset($_GET['categoryid'])) $xsearch = " AND category_id='" . $_GET['categoryid'] ."'";
 //$o = $db->selectObjects("calendar","title='".mysql_escape_string(trim($_GET['title']))."'" . $xsearch);
 //$o = $db->selectObjects("calendar","title='".mysqli_real_escape_string(trim($_GET['title']))."'" . $xsearch);
-$o = $db->selectObjects("calendar","title='".$db->escapeString(trim($_GET['title']))."'" . $xsearch);
+$o = $db->selectObjects("calendar","title='".expString::sanitize($_GET['title'])."'" . $xsearch);
 for ($j = 0; $j < count($o); $j++) {
 	$o[$j]->dates = $db->selectObjects("eventdate","event_id=".$o[$j]->id);
 	foreach ($o[$j]->dates as $key=>$date){

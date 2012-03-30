@@ -19,6 +19,7 @@
 
 <div class="module news show-expired">
     {if !$config.hidemoduletitle}<h1>{$moduletitle|default:"Expired News"|gettext}</h1>{/if}
+    {assign var=myloc value=serialize($__loc)}
     {pagelinks paginate=$page top=1}
 	<table id="prods" class="exp-skin-table" width="95%">
 	    <thead>
@@ -31,7 +32,7 @@
 			{foreach from=$page->records item=listing name=listings}
 			<tr class="{cycle values="odd,even"}">
 				<td><a href="{link controller=news action=show id=$listing->id}" title="{$listing->body|summarize:"html":"para"}">{$listing->title}</a></td>
-				<td>{$listing->publish|format_date:"%B %e, %Y"}</td>
+				<td>{$listing->publish_date|format_date:"%B %e, %Y"}</td>
 				<td>
 				    {if $listing->unpublish == 0}
 				        {'Unpublished'|gettext}
@@ -43,6 +44,13 @@
 				    {permissions}
 						<div class="item-actions">
 							{if $permissions.edit == true}
+                                {if $myloc != $listing->location_data}
+                                    {if $permissions.manage == 1}
+                                        {icon action=merge id=$listing->id title="Merge Aggregated Content"|gettext}
+                                    {else}
+                                        {icon img='arrow_merge.png' title="Merged Content"|gettext}
+                                    {/if}
+                                {/if}
 								{icon action=edit record=$listing}
 							{/if}
 							{if $permissions.delete == true}

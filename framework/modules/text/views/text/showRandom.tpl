@@ -15,6 +15,7 @@
 
 <div class="module text show-random">
 	    {if $moduletitle && !$config.hidemoduletitle}<h1>{$moduletitle}</h1>{/if}
+        {assign var=myloc value=serialize($__loc)}
 	    {permissions}
     	    <div class="module-actions">
 				{if $permissions.create == 1}
@@ -30,6 +31,13 @@
 			{permissions}
 				<div class="item-actions">
 					{if $permissions.edit == 1}
+                        {if $myloc != $listing->location_data}
+                            {if $permissions.manage == 1}
+                                {icon action=merge id=$listing->id title="Merge Aggregated Content"|gettext}
+                            {else}
+                                {icon img='arrow_merge.png' title="Merged Content"|gettext}
+                            {/if}
+                        {/if}
 						{icon action=edit record=$listing}
 					{/if}
 					{if $permissions.delete == 1}

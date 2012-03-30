@@ -20,9 +20,17 @@
             {img class="preview-img" file_id=$record->expFile.preview[0]->id square=150}
         {/if}
         {if $record->title}<h2>{$record->title}</h2>{/if}
+        {assign var=myloc value=serialize($__loc)}
         {permissions}
 			<div class="item-actions">
 				{if $permissions.edit == 1}
+                    {if $myloc != $record->location_data}
+                        {if $permissions.manage == 1}
+                            {icon action=merge id=$record->id title="Merge Aggregated Content"|gettext}
+                        {else}
+                            {icon img='arrow_merge.png' title="Merged Content"|gettext}
+                        {/if}
+                    {/if}
 					{icon action=edit record=$record title="Edit this file"|gettext}
 				{/if}
 				{if $permissions.delete == 1}
@@ -33,26 +41,48 @@
                 {/if}
 			</div>
         {/permissions}
-        <span class="label size">{'File Size'|gettext}:</span>
-        <span class="value">{$record->expFile.downloadable[0]->filesize|kilobytes}{'kb'|gettext}</span>
-        &nbsp;|&nbsp;
-        <span class="label downloads"># {'Downloads'|gettext}:</span>
-        <span class="value">{$record->downloads}</span>
-        {if $record->expTag|@count>0 && !$config.disabletags}
+        <div class="attribution">
+            <p>
+            <span class="label dated">{'Dated'|gettext}:</span>
+            {if strstr($config.order,'edited_at')}
+                <span class="value">{$file->edited_at|format_date}</span>
+            {else}
+                <span class="value">{$file->created_at|format_date}</span>
+            {/if}
             &nbsp;|&nbsp;
-       		<span class="tags">
-       			{'Tags'|gettext}:
-       			{foreach from=$record->expTag item=tag name=tags}
-       				<a href="{link action=showall_by_tags tag=$tag->sef_url}">{$tag->title}</a>{if $smarty.foreach.tags.last != 1},{/if}
-       			{/foreach}
-       		</span>
-       	{/if}
+            {if $record->expFile.downloadable[0]->duration}
+                <span class="label size">{'Duration'}:</span>
+                <span class="value">{$record->expFile.downloadable[0]->duration}</span>
+            {else}
+                <span class="label size">{'File Size'}:</span>
+                {if $record->expFile.downloadable[0]->filesize >= 1048576}
+                    <span class="value">{$record->expFile.downloadable[0]->filesize|megabytes} {'mb'|gettext}</span>
+                {elseif $record->expFile.downloadable[0]->filesize >= 1024}
+                    <span class="value">{$record->expFile.downloadable[0]->filesize|kilobytes} {'kb'|gettext}</span>
+                {else}
+                    <span class="value">{$record->expFile.downloadable[0]->filesize} {'bytes'|gettext}</span>
+                {/if}
+            {/if}
+            &nbsp;|&nbsp;
+            <span class="label downloads"># {'Downloads'|gettext}:</span>
+            <span class="value">{$record->downloads}</span>
+            {if $record->expTag|@count>0 && !$config.disabletags}
+                &nbsp;|&nbsp;
+                <span class="tags">
+                    {'Tags'|gettext}:
+                    {foreach from=$record->expTag item=tag name=tags}
+                        <a href="{link action=showall_by_tags tag=$tag->sef_url}">{$tag->title}</a>{if $smarty.foreach.tags.last != 1},{/if}
+                    {/foreach}
+                </span>
+            {/if}
+            </p>
+        </div>
         <div class="bodycopy">
             {$record->body}
         </div>
         {icon action=downloadfile fileid=$record->id text='Download'|gettext}
         {if $config.show_player && ($filetype == "mp3" || $filetype == "flv" || $filetype == "f4v")}
-            <a href="{$file->expFile.downloadable[0]->url}" style="display:block;width:360px;height:30px;" class="filedownloads-media"></a>
+            <a href="{$record->expFile.downloadable[0]->url}" style="display:block;width:360px;height:30px;" class="filedownload-media"></a>
         {/if}
         {clear}
         {if $config.usescomments == true}
@@ -62,9 +92,9 @@
 </div>
 
 {if $config.show_player}
-    {script unique="filedownloads" src="`$smarty.const.PATH_RELATIVE`external/flowplayer3/example/flowplayer-3.2.6.min.js"}
+    {script unique="filedownload" src="`$smarty.const.PATH_RELATIVE`external/flowplayer3/example/flowplayer-3.2.6.min.js"}
     {literal}
-    flowplayer("a.filedownloads-media", EXPONENT.PATH_RELATIVE+"external/flowplayer3/flowplayer-3.2.7.swf",
+    flowplayer("a.filedownload-media", EXPONENT.PATH_RELATIVE+"external/flowplayer3/flowplayer-3.2.7.swf",
         {
     		wmode: 'opaque',
     		clip: {

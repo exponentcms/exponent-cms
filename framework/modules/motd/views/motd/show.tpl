@@ -16,6 +16,7 @@
 {clear}
 <div class="module motd show">
     {if !$config.hidemoduletitle}<h1>{$moduletitle|default:"Message of the Day"|gettext}</h1>{/if}
+    {assign var=myloc value=serialize($__loc)}
     <div class="motd-message">
         <div class="motd-date">
             <span class="date-header">{$smarty.now|expdate:"D, M j, Y"}</span>
@@ -30,8 +31,15 @@
         {permissions}
 			<div class="module-actions">
 				{if $permissions.edit == 1}
+                    {if $myloc != $message->location_data}
+                        {if $permissions.manage == 1}
+                            {icon action=merge id=$message->id title="Merge Aggregated Content"|gettext}
+                        {else}
+                            {icon img='arrow_merge.png' title="Merged Content"|gettext}
+                        {/if}
+                    {/if}
 					{icon class=add action=create text="Add a tip"|gettext}
-			  {/if}
+			    {/if}
 			 </div>
         {/permissions}    
     </div>

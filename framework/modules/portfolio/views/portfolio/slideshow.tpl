@@ -34,6 +34,7 @@
     {if $config.moduledescription != ""}
    		{$config.moduledescription}
    	{/if}
+    {assign var=myloc value=serialize($__loc)}
     <div id="ss-{$name}" class="slideshow-container" style="width:{$config.width|default:350}px;">
         <ul class="slideshow-frame"{if $config.width} style="width:{$config.width}px;height:{$config.height}px;"{/if}>
             {foreach key=key from=$slides item=slide name=slides}
@@ -41,6 +42,13 @@
                 {permissions}
                     <div class="item-actions">
                         {if $permissions.edit == 1}
+                            {if $myloc != $slide->location_data}
+                                {if $permissions.manage == 1}
+                                    {icon action=merge id=$slide->id title="Merge Aggregated Content"|gettext}
+                                {else}
+                                    {icon img='arrow_merge.png' title="Merged Content"|gettext}
+                                {/if}
+                            {/if}
                             {icon action=edit record=$slide title="Edit"|gettext|cat:" `$item->title`"}
                         {/if}
                         {if $permissions.delete == 1}

@@ -69,7 +69,7 @@ class expRouter {
         $linkbase .= SCRIPT_RELATIVE;
                 
         if (isset($params['section']) && $params['section'] == SITE_DEFAULT_SECTION) {            
-                return self::cleanLink($linkbase);
+            return self::cleanLink($linkbase);
         }
 
         // Check to see if SEF_URLS have been turned on in the site config
@@ -182,7 +182,7 @@ class expRouter {
                 // we are putting this check here to safe guard against a controller being referred to as
                 // a module in the form.
                 if (!empty($_POST['controller']) || !empty($_POST['module'])) {
-                    $module = !empty($_POST['controller']) ? $_POST['controller'] : $_POST['module'];
+                    $module = !empty($_POST['controller']) ? expString::sanitize($_POST['controller']) : expString::sanitize($_POST['module']);
                     // Figure out if this is module or controller request - WE ONLY NEED THIS CODE UNTIL WE PULL OUT THE OLD MODULES
                     if (expModules::controllerExists($module)) {
                         $_POST['controller'] = $module;
@@ -226,7 +226,7 @@ class expRouter {
         if ($this->url_type == 'page' || $this->url_type == 'base') {
             $trackingObject->section = $section;
         } else {
-            $trackingObject->module = ($_SERVER['REQUEST_METHOD'] == 'POST') ? (empty($_POST['controller']) ? $_POST['module'] : $_POST['controller']) : $this->url_parts[0];
+            $trackingObject->module = ($_SERVER['REQUEST_METHOD'] == 'POST') ? (empty($_POST['controller']) ? expString::sanitize($_POST['module']) : expString::sanitize($_POST['controller'])) : $this->url_parts[0];
             $trackingObject->action = ($_SERVER['REQUEST_METHOD'] == 'POST') ? $_POST['action'] : $this->url_parts[1];
         }
         $trackingObject->referer = empty($_SERVER['HTTP_REFERER']) ? null : $_SERVER['HTTP_REFERER'];
@@ -358,7 +358,7 @@ class expRouter {
             $_REQUEST['section'] = $section->id;
         }
         
-        expHistory::set('viewable', array('section'=>$_REQUEST['section']));
+        expHistory::set('viewable', array('section'=>intval($_REQUEST['section'])));
         return true;
     }
 
@@ -647,12 +647,12 @@ class expRouter {
         global $db;
         if (expTheme::inAction()) {
             if (isset($_REQUEST['section'])) {
-                $section = $this->url_type=="sef" ? $this->getPageByName($_REQUEST['section']) : $_REQUEST['section'] ;
+                $section = $this->url_type=="sef" ? $this->getPageByName($_REQUEST['section']) : intval($_REQUEST['section']) ;
             } else {
                 $section = (expSession::is_set('last_section') ? expSession::get('last_section') : SITE_DEFAULT_SECTION);
             }
         } else {
-            $section = (isset($_REQUEST['section']) ? $_REQUEST['section'] : SITE_DEFAULT_SECTION);
+            $section = (isset($_REQUEST['section']) ? intval($_REQUEST['section']) : SITE_DEFAULT_SECTION);
         }
         $testsection = $db->selectObject('section','id='.$section);
         if (empty($testsection)) {
