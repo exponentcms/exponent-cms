@@ -47,8 +47,8 @@ class filedownload extends expRecord {
             if (($id3['Encoding']=='VBR') || ($id3['Encoding']=='CBR')) {
                 $this->expFile['downloadable'][0]->duration = $id3['Length mm:ss'];
             }
-        } else {
-            $this->expFile['downloadable'][0]->duration = '';
+//        } else {
+//            $this->expFile['downloadable'][0]->duration = '';
         }
 
     }

@@ -69,8 +69,8 @@ class filedownloadController extends expController {
                 if (($id3['Encoding']=='VBR') || ($id3['Encoding']=='CBR')) {
                     $file->expFile['downloadable'][0]->duration = $id3['Length mm:ss'];
                 }
-            } else {
-                $file->expFile['downloadable'][0]->duration = '';
+//            } else {
+//                $file->expFile['downloadable'][0]->duration = '';
             }
         }
 
