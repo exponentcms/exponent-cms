@@ -21,7 +21,7 @@ ini_set('session.use_cookies',1);
 // Set the save_handler to files
 ini_set('session.save_handler','files');
 // Set the content compression to zlib
-ini_set("zlib.output_compression", "On");
+//ini_set("zlib.output_compression", "On");
 
 if (DEVELOPMENT) {
 	// In development mode, we need to turn on full throttle error reporting.
