@@ -20,6 +20,8 @@
 ini_set('session.use_cookies',1);
 // Set the save_handler to files
 ini_set('session.save_handler','files');
+// Set the content compression to zlib
+ini_set("zlib.output_compression", "On");
 
 if (DEVELOPMENT) {
 	// In development mode, we need to turn on full throttle error reporting.
@@ -40,12 +42,12 @@ if (DEVELOPMENT) {
 
 // Initialize the AutoLoader subsystem - for objects we want loaded on the fly
 $auto_dirs = array(
-	BASE.'framework/core/models-1',  // old 1.0 /datatypes
+    BASE.'framework/core/subsystems',
+    BASE.'framework/core/controllers',
+   	BASE.'framework/core/models',  // used to be framework/core/datatypes & framework/datatypes
 	BASE.'framework/core/subsystems/forms',
 	BASE.'framework/core/subsystems/forms/controls',
-	BASE.'framework/core/controllers',
-	BASE.'framework/core/models',  // used to be framework/core/datatypes & framework/datatypes
-	BASE.'framework/core/subsystems',
+    BASE.'framework/core/models-1',  // old 1.0 /datatypes
 	BASE.'framework/modules/ecommerce/billingcalculators',
 	BASE.'framework/modules/ecommerce/shippingcalculators',
 	BASE.'framework/modules/ecommerce/products/controllers',  //FIXME does NOT exist
@@ -78,7 +80,7 @@ function expLoadClasses($class) {
 		}
 	}
 
-	// recursive function used for (auto?)loading 2.0 modules controllers & models instead of using initializeControllers()
+	// recursive function used for (auto?)loading 2.0 modules controllers & models
 	foreach ($auto_dirs2 as $dir) {
 		if (is_readable($dir)) {
 			$dh = opendir($dir);

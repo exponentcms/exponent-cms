@@ -26,10 +26,8 @@ define('SCRIPT_FILENAME','index.php');
  * @return string
  */
 function epb($buffer, $mode) {
-//    @ob_gzhandler($buffer, $mode);
-    @ob_gzhandler($buffer);
-    //return $buffer; // uncomment if you're messing with output buffering so errors show. ~pb
-    return expProcessBuffer($buffer);
+//    @ob_gzhandler($buffer);
+    return expProcessBuffer($buffer);  // add/process css & jscript for page
 }
 
 ob_start('epb');
@@ -107,8 +105,6 @@ if (MAINTENANCE_MODE && !$user->isAdmin() && (!isset($_REQUEST['controller']) ||
 	}
 
 	if (PRINTER_FRIENDLY == 1) {
-		//$levels = expSession::get('uilevels');
-		//if (!empty($levels)) expSession::set('uilevel',max(array_keys($levels)));
 		expSession::un_set('uilevel');
 	}
 }
