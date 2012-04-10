@@ -21,7 +21,7 @@ ini_set('session.use_cookies',1);
 // Set the save_handler to files
 ini_set('session.save_handler','files');
 // Set the content compression to zlib
-//ini_set("zlib.output_compression", "On");
+//ini_set("zlib.output_compression", "4096");
 
 if (DEVELOPMENT) {
 	// In development mode, we need to turn on full throttle error reporting.
@@ -44,7 +44,7 @@ if (DEVELOPMENT) {
 $auto_dirs = array(
     BASE.'framework/core/subsystems',
     BASE.'framework/core/controllers',
-   	BASE.'framework/core/models',  // used to be framework/core/datatypes & framework/datatypes
+   	BASE.'framework/core/models',
 	BASE.'framework/core/subsystems/forms',
 	BASE.'framework/core/subsystems/forms/controls',
     BASE.'framework/core/models-1',  // old 1.0 /datatypes

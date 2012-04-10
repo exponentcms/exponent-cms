@@ -174,7 +174,7 @@ class expTheme {
    			echo ('<div style="text-align:center"><a href="'.makeLink(array('module' => 'administration','action' => 'togglemobile')).'">View site in '.(MOBILE ? "Classic":"Mobile").' mode</a></div>');
    		}
    		//echo expJavascript::parseJSFiles();
-   		echo self::processCSSandJS();
+   		self::processCSSandJS();
    		echo expJavascript::footJavascriptOutput();
 
    		expSession::deleteVar("last_POST");  //ADK - putting this here so one form doesn't unset it before another form needs it.

@@ -25,7 +25,7 @@
     <link rel="stylesheet" type="text/css" href="{$smarty.const.URL_FULL}framework/modules/file/assets/css/filemanager.css" />
 
     <script type="text/javascript" src="{$smarty.const.YUI3_PATH}yui/yui-min.js"></script>
-    <script type="text/javascript" src="{$smarty.const.URL_FULL}exponent.js.php"></script>
+    <script type="text/javascript" src="{$smarty.const.PATH_RELATIVE}exponent.js2.php"></script>
 	<script type="text/javascript" src="{$smarty.const.PATH_RELATIVE}external/flowplayer3/example/flowplayer-3.2.6.min.js"></script>
 </head>
 <body class=" exp-skin">

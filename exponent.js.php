@@ -1,6 +1,4 @@
 <?php
-header("Content-type: text/javascript");
-
 ##################################################
 #
 # Copyright (c) 2004-2012 OIC Group, Inc.
@@ -16,10 +14,6 @@ header("Content-type: text/javascript");
 # GPL: http://www.gnu.org/licenses/gpl.txt
 #
 ##################################################
-
-//Initialize exponent Framework
-require_once('exponent.php');
-
 ?>
 
 // exponent Javascript Support Systems
@@ -78,14 +72,5 @@ EXPONENT.YUI3_CONFIG = {
     }
 };
 
-//gt = function(str) {
-//    var langStr = <?php echo json_encode($cur_lang); ?>;
-//    return langStr[str];
-//};
-
 // if you feel like short-handing
 eXp = EXPONENT;
-
-//console.log(gt('Add Configuration Settings'));
-
-//console.debug(EXPONENT.YUI3_CONFIG);

@@ -251,7 +251,7 @@
         <script type="text/javascript" src="{$smarty.const.YUI2_URL}yui2-layout/yui2-layout-min.js"></script>
         <script type="text/javascript" src="{$smarty.const.YUI2_URL}yui2-tabview/yui2-tabview-min.js"></script> *}
 
-        <script type="text/javascript" src="{$smarty.const.URL_FULL}exponent.js.php"></script>
+        <script type="text/javascript" src="{$smarty.const.URL_FULL}exponent.js2.php"></script>
        
         <script type="text/javascript" src="{$smarty.const.URL_FULL}framework/modules/pixidou/assets/js/ui.js"></script>
         <script type="text/javascript" src="{$smarty.const.URL_FULL}framework/modules/pixidou/assets/js/layout.js"></script>
