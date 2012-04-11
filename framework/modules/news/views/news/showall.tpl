@@ -42,25 +42,6 @@
                 {$item->title}
                 </a>
             </h2>
-            {if $item->isRss != true}
-                {permissions}
-                <div class="item-actions">
-                    {if $permissions.edit == true}
-                        {if $myloc != $item->location_data}
-                            {if $permissions.manage == 1}
-                                {icon action=merge id=$item->id title="Merge Aggregated Content"|gettext}
-                            {else}
-                                {icon img='arrow_merge.png' title="Merged Content"|gettext}
-                            {/if}
-                        {/if}
-                        {icon action=edit record=$item}
-                    {/if}
-                    {if $permissions.delete == true}
-                        {icon action=delete record=$item}
-                    {/if}
-                </div>
-                {/permissions}
-            {/if}
             <span class="date">{$item->publish_date|date_format}</span>
             {if $item->expTag|@count>0 && !$config.disabletags}
                 | <span class="tags">
@@ -70,7 +51,25 @@
                     {/foreach}
                 </span>
             {/if}
-
+            {if $item->isRss != true}
+                {permissions}
+                    <div class="item-actions">
+                        {if $permissions.edit == true}
+                            {if $myloc != $item->location_data}
+                                {if $permissions.manage == 1}
+                                    {icon action=merge id=$item->id title="Merge Aggregated Content"|gettext}
+                                {else}
+                                    {icon img='arrow_merge.png' title="Merged Content"|gettext}
+                                {/if}
+                            {/if}
+                            {icon action=edit record=$item}
+                        {/if}
+                        {if $permissions.delete == true}
+                            {icon action=delete record=$item}
+                        {/if}
+                    </div>
+                {/permissions}
+            {/if}
             <div class="bodycopy">
                 {if $config.filedisplay != "Downloadable Files"}
                     {filedisplayer view="`$config.filedisplay`" files=$item->expFile record=$item is_listing=1}

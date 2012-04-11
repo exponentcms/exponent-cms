@@ -20,6 +20,14 @@
     <h1>{$record->title}</h1>
     {assign var=myloc value=serialize($__loc)}
     <span class="date">{$record->publish_date|format_date:"%A, %B %e, %Y"}</span>
+    {if $record->expTag|@count>0 && !$config.disabletags}
+        <div class="tags">
+            {"Tags"|gettext}:
+            {foreach from=$record->expTag item=tag name=tags}
+                <a href="{link action=showall_by_tags tag=$tag->sef_url}">{$tag->title}</a>{if $smarty.foreach.tags.last != 1},{/if}
+            {/foreach}
+        </div>
+    {/if}
     {permissions}
         <div class="item-actions">   
             {if $permissions.edit == true}
@@ -37,14 +45,6 @@
             {/if}
         </div>
     {/permissions}
-    {if $record->expTag|@count>0 && !$config.disabletags}
-        <div class="tags">
-            {"Tags"|gettext}:
-            {foreach from=$record->expTag item=tag name=tags}
-                <a href="{link action=showall_by_tags tag=$tag->sef_url}">{$tag->title}</a>{if $smarty.foreach.tags.last != 1},{/if}
-            {/foreach}
-        </div>
-    {/if}
     <div class="bodycopy">
         {if $config.filedisplay != "Downloadable Files"}
             {filedisplayer view="`$config.filedisplay`" files=$record->expFile record=$record}

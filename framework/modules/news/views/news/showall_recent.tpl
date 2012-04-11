@@ -42,6 +42,15 @@
                 {$item->title}
                 </a>
             </h2>
+            <span class="date">{$item->publish_date|date_format}</span>
+            {if $item->expTag|@count>0 && !$config.disabletags}
+                | <span class="tags">
+                    {"Tags"|gettext}:
+                    {foreach from=$item->expTag item=tag name=tags}
+                        <a href="{link action=showall_by_tags tag=$tag->sef_url}">{$tag->title}</a>{if $smarty.foreach.tags.last != 1},{/if}
+                    {/foreach}
+                </span>
+            {/if}
             {if $item->isRss != true}
                 {permissions}
                 <div class="item-actions">
@@ -61,16 +70,6 @@
                 </div>
                 {/permissions}
             {/if}
-            <span class="date">{$item->publish_date|date_format}</span>
-            {if $item->expTag|@count>0 && !$config.disabletags}
-                | <span class="tags">
-                    {"Tags"|gettext}:
-                    {foreach from=$item->expTag item=tag name=tags}
-                        <a href="{link action=showall_by_tags tag=$tag->sef_url}">{$tag->title}</a>{if $smarty.foreach.tags.last != 1},{/if}
-                    {/foreach}
-                </span>
-            {/if}
-
             <div class="bodycopy">
                 {if $config.filedisplay != "Downloadable Files"}
                     {filedisplayer view="`$config.filedisplay`" files=$item->expFile record=$item is_listing=1}
