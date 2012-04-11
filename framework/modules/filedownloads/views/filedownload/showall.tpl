@@ -68,7 +68,6 @@
                     play: true,
                     scrubber: true,
                     fullscreen: false,
-                    height: 30,
                     autoHide: false
                 }
             }

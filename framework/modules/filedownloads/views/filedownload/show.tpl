@@ -78,7 +78,7 @@
         </div>
         {icon action=downloadfile fileid=$record->id text='Download'|gettext}
         {if $config.show_player && ($filetype == "mp3" || $filetype == "flv" || $filetype == "f4v")}
-            <a href="{$record->expFile.downloadable[0]->url}" style="display:block;width:360px;height:30px;" class="filedownload-media"></a>
+            <a href="{$record->expFile.downloadable[0]->url}" style="display:block;width:360px;height:{if $filetype == "mp3"}26{else}240{/if}px;" class="filedownload-media"></a>
         {/if}
         {clear}
         {if $config.usescomments == true}
@@ -101,7 +101,6 @@
                     play: true,
                     scrubber: true,
                     fullscreen: false,
-                    height: 30,
                     autoHide: false
                 }
             }
