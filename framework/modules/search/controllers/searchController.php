@@ -146,7 +146,9 @@ class searchController extends expController {
         // trim the tag cloud to our limit.
         $page->records = expSorter::sort(array('array'=>$page->records, 'order'=>'attachedcount DESC', 'type'=>'a'));
         if (!empty($this->config['limit'])) $page->records = array_slice($page->records,0,$this->config['limit']);
-        $page->records = expSorter::sort(array('array'=>$page->records, 'order'=>'title ASC', 'ignore_case'=>true, 'sort_type'=>'a'));
+        if (!empty($this->config['order']) && $this->config['order'] != 'hits') {
+            $page->records = expSorter::sort(array('array'=>$page->records, 'order'=>'title ASC', 'ignore_case'=>true, 'sort_type'=>'a'));
+        }
         assign_to_template(array(
             'page'=>$page
         ));
