@@ -43,20 +43,24 @@ return array(
 	'body'=>array(
 		DB_FIELD_TYPE=>DB_DEF_STRING,
 		DB_FIELD_LEN=>100000),
-	'poster'=>array(
-		DB_FIELD_TYPE=>DB_DEF_INTEGER),
+    'poster'=>array(
+   		DB_FIELD_TYPE=>DB_DEF_INTEGER),
+   	'created_at'=>array(
+   		DB_FIELD_TYPE=>DB_DEF_TIMESTAMP),
+   	'editor'=>array(
+   		DB_FIELD_TYPE=>DB_DEF_INTEGER),
+   	'edited_at'=>array(
+   		DB_FIELD_TYPE=>DB_DEF_TIMESTAMP),
+    'publish'=>array(
+   		DB_FIELD_TYPE=>DB_DEF_TIMESTAMP),
+    'location_data'=>array(
+   		DB_FIELD_TYPE=>DB_DEF_STRING,
+   		DB_FIELD_LEN=>250,
+   		DB_INDEX=>10),
 	'downloads'=>array(
 		DB_FIELD_TYPE=>DB_DEF_INTEGER),
 	'rank'=>array(
 		DB_FIELD_TYPE=>DB_DEF_INTEGER),
-	'created_at'=>array(
-		DB_FIELD_TYPE=>DB_DEF_TIMESTAMP),
-	'edited_at'=>array(
-		DB_FIELD_TYPE=>DB_DEF_TIMESTAMP),
-	'location_data'=>array(
-		DB_FIELD_TYPE=>DB_DEF_STRING,
-		DB_FIELD_LEN=>250,
-		DB_INDEX=>10)
 );
 
 ?>

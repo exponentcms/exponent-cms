@@ -112,8 +112,17 @@ class expRecord {
             $this->build($params);
         }
 
+        // establish a pseudo publish date
+        if (!empty($this->publish)) {
+            $this->publish_date = $this->publish;
+        } elseif (!empty($this->edited_at)) {
+            $this->publish_date = $this->edited_at;
+        } elseif (!empty($this->created_at)) {
+            $this->publish_date = $this->created_at;
+        }
+
         // setup the exception array if it's not there.  This array tells the getAssociatedObjectsForThisModel() function which 
-        // modules NOT to setup.  This stops us from getting infinant loops with many to many relationships.
+        // modules NOT to setup.  This stops us from getting infinite loops with many to many relationships.
         $params['except'] = isset($params['except']) ? $params['except'] : array();
         $params['cascade_except'] = isset($params['cascade_except']) ? $params['cascade_except'] : false;        
         

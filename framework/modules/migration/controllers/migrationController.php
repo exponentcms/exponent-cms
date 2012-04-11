@@ -1278,6 +1278,7 @@ class migrationController extends expController {
 							// default is to create with current time						
 							$filedownload->created_at = $ri['posted'];
 							$filedownload->migrated_at = $ri['edited'];
+                            $filedownload->publish = $ri['posted'];
 							$filedownload->update();
                             if (!empty($oldconfig) && $oldconfig->enable_categories == 1 && $ri['category_id']) {
                                 $params = null;
@@ -1431,7 +1432,7 @@ class migrationController extends expController {
                         $headline->title = $hl->headline;
                         $headline->poster = 1;
 //                        $headline->created_at = time();
-//                        $headline->edited_at = time();
+//                        $headline->migrated_at = time();
                         $headline->save();
                         @$this->msg['migrated'][$iloc->mod]['count']++;
                         @$this->msg['migrated'][$iloc->mod]['name'] = $this->new_modules[$iloc->mod];
@@ -1548,7 +1549,8 @@ class migrationController extends expController {
 							unset($comment['id']);
 							$newcomment = new expComment($comment);
 							$newcomment->created_at = $comment['posted'];
-							$newcomment->edited_at = $comment['edited'];
+							$newcomment->migrated_at = $comment['edited'];
+                            $newcomment->publish = $comment['posted'];
 							$newcomment->update();
 							// attach the comment to the blog post it belongs to
 							$obj->content_type = 'blog';
@@ -1689,7 +1691,7 @@ class migrationController extends expController {
                         $listing->save();
 						// default is to create with current time						
 //                        $listing->created_at = time();
-//                        $listing->edited_at = time();
+//                        $listing->migrated_at = time();
 //                        $listing->update();
                         @$this->msg['migrated'][$iloc->mod]['count']++;
                         @$this->msg['migrated'][$iloc->mod]['name'] = $this->new_modules[$iloc->mod];

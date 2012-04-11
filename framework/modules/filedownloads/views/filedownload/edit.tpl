@@ -21,6 +21,7 @@
         <div id="editfile-tabs" class="yui-navset exp-skin-tabview hide">
             <ul class="yui-nav">
                 <li class="selected"><a href="#tab1"><em>{'General'|gettext}</em></a></li>
+                <li><a href="#tab2"><em>{'Publish'|gettext}</em></a></li>
                 <li><a href="#tab3"><em>{'Files'|gettext}</em></a></li>
                 <li><a href="#tab4"><em>{'SEO'|gettext}</em></a></li>
             </ul>            
@@ -43,6 +44,9 @@
                     {if $config.usecategories}
                         {control type="dropdown" name=expCat label="Category"|gettext frommodel="expCat" where="module='' OR module='`$modelname`'" orderby="rank" display=title key=id includeblank="Not Categorized"|gettext value=$record->expCat[0]->id}
                     {/if}
+                </div>
+                <div id="tab2">
+                    {control type="yuidatetimecontrol" name="publish" label="Publish Date"|gettext edit_text="Publish Immediately" value=$record->publish}
                 </div>
                 <div id="tab3">
                     {control id="downloadable" type="files" name="downloadable" label="File for Download"|gettext subtype=downloadable value=$record->expFile}

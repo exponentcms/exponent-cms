@@ -22,23 +22,23 @@
  */
 
 /**
- * This is the class add_blog_published
+ * This is the class add_filedownload_published
  */
-class add_blog_published extends upgradescript {
+class add_filedownload_published extends upgradescript {
 	protected $from_version = '1.99.0';  // version number lower than first released version, 2.0.0
-	protected $to_version = '2.0.6';  // publish dates were added in 2.0.6
+	protected $to_version = '2.0.7';  // publish dates were added in 2.0.6
 
 	/**
 	 * name/title of upgrade script
 	 * @return string
 	 */
-	function name() { return "Update blog posts with valid publish date"; }
+	function name() { return "Update filedownloads with valid publish date"; }
 
 	/**
 	 * generic description of upgrade script
 	 * @return string
 	 */
-	function description() { return "Prior to v2.0.6, blog post date stamps were the created date, but now have a publish date like news.  This script updates existing blog posts."; }
+	function description() { return "Prior to v2.0.7, filedownload date stamps were the created date, but now have a publish date like news.  This script updates existing filedownloads."; }
 
 	/**
 	 * additional test(s) to see if upgrade script should be run
@@ -49,22 +49,22 @@ class add_blog_published extends upgradescript {
 	}
 
 	/**
-	 * coverts all blog items to populate 'publish' field
+	 * coverts all filedownloads to populate 'publish' field
 	 * @return bool
 	 */
 	function upgrade() {
 	    global $db;
 
         $count = 0;
-        foreach ($db->selectObjects('blog') as $post) {
+        foreach ($db->selectObjects('filedownload') as $post) {
             if (empty($post->publish)) {
                 $post->publish = $post->created_at;
-                $db->updateObject($post,'blog');
+                $db->updateObject($post,'filedownload');
                 $count++;
             }
 	    }
 
-        return $count.' '.gt('old blog posts had their publish date set to their created date.');
+        return $count.' '.gt('old filedownloads had their publish date set to their created date.');
 	}
 }
 

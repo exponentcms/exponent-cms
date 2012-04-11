@@ -44,11 +44,7 @@
         <div class="attribution">
             <p>
             <span class="label dated">{'Dated'|gettext}:</span>
-            {if strstr($config.order,'edited_at')}
-                <span class="value">{$file->edited_at|format_date}</span>
-            {else}
-                <span class="value">{$file->created_at|format_date}</span>
-            {/if}
+            <span class="value">{$file->publish_date|format_date}</span>
             &nbsp;|&nbsp;
             {if $record->expFile.downloadable[0]->duration}
                 <span class="label size">{'Duration'}:</span>

@@ -46,7 +46,6 @@
                 </div>
                 <div id="tab2">
                     {control type="yuidatetimecontrol" name="publish" label="Publish Date"|gettext edit_text="Publish Immediately" value=$record->publish}
-                    {control type="yuidatetimecontrol" name="unpublish" label="Un-publish Date"|gettext edit_text="Do Not Un-Publish" value=$record->unpublish}
                 </div>
                 {if $config.filedisplay}
                     <div id="tab3">

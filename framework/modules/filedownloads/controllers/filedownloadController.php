@@ -39,22 +39,17 @@ class filedownloadController extends expController {
 	function isSearchable() { return true; }
 	
     function showall() {
-        $modelname = $this->basemodel_name;
-        $where = $this->aggregateWhereClause();
         $order = isset($this->config['order']) ? $this->config['order'] : 'rank';
-//        $dir   = isset($this->config['dir']) ? $this->config['dir'] : 'ASC';
         $limit = isset($this->config['limit']) ? $this->config['limit'] : null;
         if (!empty($this->params['view']) && ($this->params['view'] == 'showall_accordion' || $this->params['view'] == 'showall_tabbed')) {
             $limit = 999;
         }
 
         $page = new expPaginator(array(
-                    'model'=>$modelname,
-                    'where'=>$where, 
+                    'model'=>$this->basemodel_name,
+                    'where'=>$this->aggregateWhereClause(),
                     'limit'=>$limit,
                     'order'=>$order,
-//                    'dir'=>$dir,
-                    'categorize'=>empty($this->config['usecategories']) ? false : $this->config['usecategories'],
                     'controller'=>$this->baseclassname,
                     'action'=>$this->params['action'],
                     'src'=>$this->loc->src,
@@ -69,8 +64,6 @@ class filedownloadController extends expController {
                 if (($id3['Encoding']=='VBR') || ($id3['Encoding']=='CBR')) {
                     $file->expFile['downloadable'][0]->duration = $id3['Length mm:ss'];
                 }
-//            } else {
-//                $file->expFile['downloadable'][0]->duration = '';
             }
         }
 
@@ -85,7 +78,6 @@ class filedownloadController extends expController {
         
         $fd = new filedownload($this->params['fileid']); 
         
-               
         if (empty($fd->expFile['downloadable'][0]->id)) {
             flash('error', gt('There was an error while trying to download your file.  The file you were looking for could not be found.'));
             expHistory::back();
