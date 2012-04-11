@@ -22,14 +22,15 @@
             <ul class="yui-nav">
                 <li class="selected"><a href="#tab1"><em>{'General'|gettext}</em></a></li>
                 <li><a href="#tab2"><em>{'Publish'|gettext}</em></a></li>
-                <li><a href="#tab3"><em>{'Files'|gettext}</em></a></li>
-                <li><a href="#tab4"><em>{'SEO'|gettext}</em></a></li>
+                <li><a href="#tab3"><em>{'SEO'|gettext}</em></a></li>
             </ul>            
             <div class="yui-content yui3-skin-sam">
                 <div id="tab1">
                     <h2>{'File Download'|gettext}</h2>
                     {control type=text name=title label="Title"|gettext value=$record->title}
                     {control type=html name=body label="Body Content"|gettext value=$record->body}
+                    {control id="downloadable" type="files" name="downloadable" label="File for Download"|gettext subtype=downloadable value=$record->expFile limit=1}
+                    {control id="preview" type="files" name="preview" label="Preview Image to display with above 'File'"|gettext subtype=preview value=$record->expFile limit=1}
                     {if !$config.disabletags}
                         {foreach from=$record->expTag item=tag name=tags}
                             {if $smarty.foreach.tags.first == false}
@@ -49,10 +50,6 @@
                     {control type="yuidatetimecontrol" name="publish" label="Publish Date"|gettext edit_text="Publish Immediately" value=$record->publish}
                 </div>
                 <div id="tab3">
-                    {control id="downloadable" type="files" name="downloadable" label="File for Download"|gettext subtype=downloadable value=$record->expFile}
-                    {control id="preview" type="files" name="preview" label="Preview Image to display with above 'File for Download'"|gettext subtype=preview value=$record->expFile}
-                </div>
-                <div id="tab4">
                      <h2>{'SEO Settings'|gettext}</h2>
                     {control type="text" name="sef_url" label="SEF URL"|gettext value=$record->sef_url}
                     {control type="text" name="meta_title" label="Meta Title"|gettext value=$record->meta_title}
