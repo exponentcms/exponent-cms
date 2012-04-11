@@ -239,13 +239,6 @@ class user extends expRecord {
 	    return false;
     }
     
-    public static function getByUsername($username) {  //FIXME this is a duplicate of getUserByName - deprecate
-        global $db;
-
-        $user = new user($db->selectValue('user', 'id', 'username="'.$username.'"'));
-        return empty($user->id) ? false : $user;
-    }
-    
     public function isTempUser()
     {
         return is_numeric(expUtil::right($this->username,10)) ? true : false;

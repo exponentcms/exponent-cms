@@ -400,7 +400,6 @@ class usersController extends expController {
         global $db;
         
         // find the user
-//        $u = user::getByUsername($this->params['username']);
         $u = user::getUserByName($this->params['username']);
 
         if (!expValidator::check_antispam($this->params)) {
