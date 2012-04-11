@@ -84,6 +84,7 @@ class migrationController extends expController {
         'keywordmodule',
         'sharedcoremodule',
         'svgallerymodule',
+        'uiswitchermodule',
     );
 
     public $needs_written = array(
@@ -464,6 +465,7 @@ class migrationController extends expController {
 
         // pull the sectionref data for selected modules
         $secref = $old_db->selectObjects('sectionref',$where);
+        if (empty($this->params['migrate'])) $this->params['migrate'] = array();
         foreach ($secref as $sr) {
             // hard coded modules
             if (array_key_exists($sr->module, $this->new_modules) && ($sr->refcount==1000)) {
@@ -602,7 +604,26 @@ class migrationController extends expController {
 				}
 			}
 		}
-		
+
+        // migrate the active controller list (modstate)
+        $activemods = $old_db->selectObjects('modstate',1);
+        foreach($activemods as $mod) {
+            if (array_key_exists($mod->module, $this->new_modules)) {
+                $mod->module = $this->new_modules[$mod->module];
+            }
+            if (array_key_exists($mod->module, $this->new_modules) || !in_array($mod->module, $this->deprecated_modules)) {
+//                $mod->path = '';
+//                $mod->user_runnable = 1;
+//                $mod->controller = 1;
+//                $mod->os_module = 1;
+//                $mod->name = '';
+//                $mod->author = '';
+//                $mod->description = '';
+//                $mod->codequality = '';
+                if (!$db->insertObject($mod,'modstate')) @$db->updateObject($mod,'modstate');
+            }
+        }
+
 		searchController::spider();
         expSession::clearCurrentUserSessionCache();
         assign_to_template(array('msg'=>@$this->msg));
