@@ -66,10 +66,10 @@ class expPaginator {
 	public $header_columns = '';
 	public $default = '';
 	public $view = null;
-    public $content_type = '';
-    public $author = '';
-    public $tag = '';
-    public $tags = '';
+//    public $content_type = '';
+//    public $author = '';
+//    public $tag = '';
+//    public $tags = '';
 	/**#@+
      * @access public
      * @var integer
@@ -83,8 +83,8 @@ class expPaginator {
 	public $total_pages = 0;
 	public $page_offset = 0;
     public $categorize = false;
-    public $version = 0;
-    public $content_id = 0;
+//    public $version = 0;
+//    public $content_id = 0;
 	/**#@+
      * @access public
      * @var array
@@ -257,7 +257,8 @@ class expPaginator {
 			
 		// get the page parameters from the router to build the links
 		//$page_params = $router->params; //from Current Trunk
-		$page_params = $this->cleanParams($router->params); //From Merge
+//		$page_params = $this->cleanParams($router->params); //From Merge
+        $page_params = $router->params; //From Merge
 
 		//if (empty($page_params['module'])) $page_params['module'] = $this->controller;
 		//if (empty($page_params['action'])) $page_params['action'] = $this->action;
