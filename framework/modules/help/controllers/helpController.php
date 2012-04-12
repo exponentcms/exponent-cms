@@ -37,6 +37,14 @@ class helpController extends expController {
         // only set the system help version if it's not already set as a session variable
         if (!expSession::is_set('help-version')) {
             $version = $db->selectValue('help_version','version','is_current=1');
+            if (empty($version)) {
+                // there is no help version set to 'is_current'
+                $hv = new help_version();
+           	    $newversion = $hv->find('first','1');
+                $this->params['is_current'] = 1;
+           	    $newversion->update($this->params);
+                $version = $newversion->version;
+            }
             if(!empty($params['version'])) {
                 $version = isset($params['version']) ? (($params['version'] == 'current') ? $version : $params['version']) : $version;
             }
@@ -299,7 +307,7 @@ class helpController extends expController {
 	    // save the version
 	    $id = empty($this->params['id']) ? null : $this->params['id'];
 	    $version = new help_version();
-	    // if we dont have a current version yet we will force this one to be it
+	    // if we don't have a current version yet so we will force this one to be it
 	    if (empty($current_version->id)) $this->params['is_current'] = 1;
 	    $version->update($this->params);
 	    
@@ -307,6 +315,8 @@ class helpController extends expController {
 	    if (empty($id)) {
 	        self::copydocs($current_version->id, $version->id);	        
 	    }
+        // let's update the search index to reflect the current help version
+        searchController::spider();
 
 	    flash('message', gt('Saved help version').' '.$version->version);
 	    expHistory::back();
@@ -326,6 +336,8 @@ class helpController extends expController {
 	    $version = new help_version($id);
 	    $this->params['is_current'] = 1;
 	    $version->update($this->params);
+        // let's update the search index to reflect the current help version
+        searchController::spider();
 
 	    flash('message', gt('Changed active help version to').' '.$version->version);
 	    expHistory::back();
