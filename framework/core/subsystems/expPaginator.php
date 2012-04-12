@@ -226,7 +226,7 @@ class expPaginator {
             foreach ($this->records as $record) {
                 if (is_string($record->$order) && !is_numeric($record->$order)) {
                     $title = ucfirst($record->$order);
-                    $title = $title[0];
+                    $title = empty($title[0])?'':$title[0];
                 } else {
                     $title = '';
                 }
