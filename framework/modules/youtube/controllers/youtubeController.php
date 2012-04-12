@@ -40,21 +40,30 @@ class youtubeController extends expController {
 	function author() { return "Phillip Ball - OIC Group, Inc"; }
 	
 	function showall() {
-        $yt = new $this->basemodel_name();
-        $vids = $yt->find('all',$this->aggregateWhereClause());
+        $limit = isset($this->config['limit']) ? $this->config['limit'] : null;
+        $page = new expPaginator(array(
+                    'model'=>$this->basemodel_name,
+                    'where'=>$this->aggregateWhereClause(),
+                    'limit'=>$limit,
+                    'order'=>'rank',
+                    'controller'=>$this->baseclassname,
+                    'action'=>$this->params['action'],
+                    'src'=>$this->loc->src,
+                    ));
 
         if (!empty($this->config['width'])&&!empty($this->config['height'])) {
-            foreach ($vids as $key=>$val) {
+            // adjust the height/width to our settings
+            foreach ($page->records as $key=>$val) {
                 $val->embed_code = preg_replace("/height=\"\d+\"/", 'height='.$this->config['height'], $val->embed_code);
                 $val->embed_code = preg_replace("/width=\"\d+\"/", 'width='.$this->config['width'], $val->embed_code);
             }
         }
 		// force fix for menus appearing BEHIND the video in IE
-        foreach ($vids as $key=>$val) {
+        foreach ($page->records as $key=>$val) {
             $val->embed_code = preg_replace("/\" frameborder=\"/", '?wmode=opaque" frameborder="', $val->embed_code);
         }
 
-        assign_to_template(array('items'=>$vids));
+        assign_to_template(array('page'=>$page));
     }
 	
 }

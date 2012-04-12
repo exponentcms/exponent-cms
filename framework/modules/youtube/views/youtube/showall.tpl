@@ -21,7 +21,7 @@
 				{icon class=add action=edit rank=1 text="Add a YouTube Video at the Top"|gettext}
 			{/if}
 			{if $permissions.manage == 1}
-				{ddrerank items=$page->records model="portfolio" label="YouTube Videos"|gettext}
+				{ddrerank items=$page->records model="youtube" label="YouTube Videos"|gettext}
 			{/if}
         </div>
     {/permissions}    
@@ -30,7 +30,7 @@
     {/if}
     {assign var=myloc value=serialize($__loc)}
     {pagelinks paginate=$page top=1}
-    {foreach from=$items item=ytv name=items}
+    {foreach from=$page->records item=ytv name=items}
 		<div class="item">
 			{if $ytv->title}<h2>{$ytv->title}</h2>{/if}
 			{permissions}
