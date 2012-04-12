@@ -6,7 +6,9 @@ Added / Fixed / changed for 2.0.7
 -----------------------
 # This release focuses on fixing bugs and possibly enhanced (speed/size) initial module loading
   - incorporates all fixes from v2.0.6 patches
-  - removes unnecessary unpublish feature from blog
+  - removes unnecessary (new) unpublish feature from blog
+  - fixes youtube module to finally handle multiple items (paging, reordering, etc...)
+  - plus other tweaks, fixes, and features
 
 Added / Fixed / changed for 2.0.6
 -----------------------
