@@ -38,49 +38,12 @@
 	</div>	
 	<div id="dt_ac_container"></div>
 	
-    {* pagelinks paginate=$page top=1 *}
 	<div id="pagelinks">&nbsp;</div>
 	<div id="totalResult">&nbsp;</div>
 	<div id="manage_user_dynamicdata">
     
     </div>
 	
-	<!--
-	<table class="exp-skin-table">
-	    <thead>
-			<tr>
-				{$page->header_columns}
-				<th>&nbsp;</th>
-			</tr>
-		</thead>
-		<tbody>
-			{foreach from=$page->records item=user name=listings}
-			<tr class="{cycle values="odd,even"}">
-				<td>{$user->username}</td>
-				<td>{$user->firstname}</td>
-				<td>{$user->lastname}</td>
-				<td>
-				{if $user->is_acting_admin == 1}
-				    <img src="{$smarty.const.ICON_RELATIVE|cat:'toggle_on.png'}">
-				{/if}
-				</td>
-			    <td>
-			        {permissions}
-						<div class="item-actions">
-							{icon class=edit action=edituser record=$user}
-							{icon class="password" action=change_password record=$user title="Change this users password"|gettext text="Password"|gettext}
-							{icon action=delete record=$user title="Delete"|gettext}
-						</div>
-                    {/permissions}
-			    </td>
-			</tr>
-			{foreachelse}
-			    <td colspan="{$page->columns|count}">No Data</td>
-			{/foreach}
-		</tbody>
-	</table>
-    {* pagelinks paginate=$page bottom=1 *}
-	-->
 </div>
 
 <script type="text/javascript">
@@ -103,33 +66,33 @@
 			oAutoComp.minQueryLength = 0;
 			// Formatters for datatable columns
 
-        // filename formatter
-		
-		var formatID = function(elCell, oRecord, oColumn, sData) {
-			elCell.innerHTML = oRecord.getData().usernamelabel;
-        };
-		
-		var formatActingAdmin = function(elCell, oRecord, oColumn, sData) {
-			if(oRecord.getData().is_acting_admin == "1") {
-				 elCell.innerHTML ='<img src="{/literal}{$smarty.const.ICON_RELATIVE|cat:'toggle_on.png'}{literal}">'
-			}
-        };
-		
-        var formatactions = function(elCell, oRecord, oColumn, sData) {
-           {/literal}{permissions}{literal}
-		   
-				 elCell.innerHTML = '<div class="item-actions">';
-				 editstring       = '{/literal}{icon class="edit" action="edituser" id="editstringid" title="Edit this user"|gettext}{literal}';
-				 passwordstring   = '{/literal}{icon class="password" action="change_password" id="passwordstringid" title="Change this users password"|gettext text="Password"|gettext}{literal}';
-				 deletestring     = '{/literal}{icon action="delete" id="deletestringid" title="Delete this user"|gettext onclick="return confirm(\'"|cat:("Are you sure you want to delete this user?"|gettext)|cat:"\');"}{literal}';
-				 editstring     = editstring.replace('editstringid',oRecord._oData.id);
-				 passwordstring = passwordstring.replace('passwordstringid',oRecord._oData.id);
-				 deletestring   = deletestring.replace('deletestringid',oRecord._oData.id);
-				 
-				elCell.innerHTML += editstring + passwordstring + deletestring +'</div>';
-				
-			{/literal}{/permissions}{literal}
-        };
+            // filename formatter
+
+            var formatID = function(elCell, oRecord, oColumn, sData) {
+                elCell.innerHTML = oRecord.getData().usernamelabel;
+            };
+
+            var formatActingAdmin = function(elCell, oRecord, oColumn, sData) {
+                if(oRecord.getData().is_acting_admin == "1") {
+                     elCell.innerHTML ='<img src="{/literal}{$smarty.const.ICON_RELATIVE|cat:'toggle_on.png'}{literal}">'
+                }
+            };
+
+            var formatactions = function(elCell, oRecord, oColumn, sData) {
+               {/literal}{permissions}{literal}
+
+                     elCell.innerHTML = '<div class="item-actions">';
+                     editstring       = '{/literal}{icon class="edit" action="edituser" id="editstringid" title="Edit this user"|gettext}{literal}';
+                     passwordstring   = '{/literal}{icon class="password" action="change_password" id="passwordstringid" title="Change this users password"|gettext text="Password"|gettext}{literal}';
+                     deletestring     = '{/literal}{icon action="delete" id="deletestringid" title="Delete this user"|gettext onclick="return confirm(\'"|cat:("Are you sure you want to delete this user?"|gettext)|cat:"\');"}{literal}';
+                     editstring     = editstring.replace('editstringid',oRecord._oData.id);
+                     passwordstring = passwordstring.replace('passwordstringid',oRecord._oData.id);
+                     deletestring   = deletestring.replace('deletestringid',oRecord._oData.id);
+
+                    elCell.innerHTML += editstring + passwordstring + deletestring +'</div>';
+
+                {/literal}{/permissions}{literal}
+            };
     
 			// Column definitions
 			var myColumnDefs = [ // sortable:true enables sorting
@@ -140,7 +103,7 @@
 			{ label:"Actions",label:"", sortable:false,formatter: formatactions}
 			];
 			// DataSource instance
-			var myDataSource = new YAHOO.util.DataSource(EXPONENT.URL_FULL+"index.php?controller=users&action=getUsersByJSON&json=1&ajax_action=1&");
+			var myDataSource = new YAHOO.util.DataSource(EXPONENT.URL_FULL+"index.php?controller=users&action=getUsersByJSON&json=1&ajax_action=1&filter={/literal}{$filter}{literal}&");
 			myDataSource.responseType = YAHOO.util.DataSource.TYPE_JSON;
 			myDataSource.responseSchema = {
 				resultsList: "records",
