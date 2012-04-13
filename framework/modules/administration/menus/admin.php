@@ -378,7 +378,7 @@ if ($user->isSuperAdmin()) {
 								'classname' => (MOBILE)?'develop_on_green':'develop_off',
 								'url' => makeLink(array(
 									'module' => 'administration',
-									'action' => 'toggle_mobile'
+									'action' => 'togglemobile'
 								)),
                             ),
                         )

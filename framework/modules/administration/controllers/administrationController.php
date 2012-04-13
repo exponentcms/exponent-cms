@@ -782,7 +782,7 @@ class administrationController extends expController {
 		}
 	}
 
-	public function toggle_mobile() {
+	public function togglemobile() {
 		if (!expSession::is_set('mobile')) {  // account for FORCE_MOBILE initial state
 			expSession::set('mobile',MOBILE);
 		}
