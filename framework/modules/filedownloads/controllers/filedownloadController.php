@@ -63,7 +63,7 @@ class filedownloadController extends expController {
 
         include_once(BASE.'external/mp3file.php');
         foreach ($page->records as $file) {
-            if (($file->expFile['downloadable'][0]->mimetype == "audio/mpeg") && (file_exists(BASE.$file->expFile['downloadable'][0]->directory.'/'.$file->expFile['downloadable'][0]->filename))) {
+            if (!empty($file->expFile['downloadable'][0]) && ($file->expFile['downloadable'][0]->mimetype == "audio/mpeg") && (file_exists(BASE.$file->expFile['downloadable'][0]->directory.'/'.$file->expFile['downloadable'][0]->filename))) {
                 $mp3 = new mp3file(BASE.$file->expFile['downloadable'][0]->directory.'/'.$file->expFile['downloadable'][0]->filename);
                 $id3 = $mp3->get_metadata();
                 if (($id3['Encoding']=='VBR') || ($id3['Encoding']=='CBR')) {

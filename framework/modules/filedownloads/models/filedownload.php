@@ -40,17 +40,18 @@ class filedownload extends expRecord {
     public function __construct($params=null, $get_assoc=true, $get_attached=true) {
         parent::__construct($params, $get_assoc, $get_attached);
 
-        include_once(BASE.'external/mp3file.php');
-        if ($this->id && ($this->expFile['downloadable'][0]->mimetype == "audio/mpeg") && (file_exists(BASE.$this->expFile['downloadable'][0]->directory.'/'.$this->expFile['downloadable'][0]->filename))) {
-            $mp3 = new mp3file(BASE.$this->expFile['downloadable'][0]->directory.'/'.$this->expFile['downloadable'][0]->filename);
-            $id3 = $mp3->get_metadata();
-            if (($id3['Encoding']=='VBR') || ($id3['Encoding']=='CBR')) {
-                $this->expFile['downloadable'][0]->duration = $id3['Length mm:ss'];
+        if ($this->id) {
+            include_once(BASE.'external/mp3file.php');
+            if (!empty($this->expFile['downloadable'][0]) && ($this->expFile['downloadable'][0]->mimetype == "audio/mpeg") && (file_exists(BASE.$this->expFile['downloadable'][0]->directory.'/'.$this->expFile['downloadable'][0]->filename))) {
+                $mp3 = new mp3file(BASE.$this->expFile['downloadable'][0]->directory.'/'.$this->expFile['downloadable'][0]->filename);
+                $id3 = $mp3->get_metadata();
+                if (($id3['Encoding']=='VBR') || ($id3['Encoding']=='CBR')) {
+                    $this->expFile['downloadable'][0]->duration = $id3['Length mm:ss'];
+                }
             }
 //        } else {
 //            $this->expFile['downloadable'][0]->duration = '';
         }
-
     }
 
 }
