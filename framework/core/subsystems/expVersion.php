@@ -94,13 +94,16 @@ class expVersion {
         // check if online version is newer than installed software version, but only once per session
         if ($user->isSuperAdmin()) {
             if (!expSession::is_set('update-check')) {
-                $onlineVer = self::getOnlineVersion();
-                expSession::set('update-check','1');
-                if (self::compareVersion($swversion,$onlineVer)) {
-                    $newvers = $onlineVer->major.'.'.$onlineVer->minor.'.'.$onlineVer->revision.($onlineVer->type?$onlineVer->type:'').($onlineVer->iteration?$onlineVer->iteration:'');
-                    $note = $onlineVer->type == 'patch' ? gt('A patch for the latest') : gt('A newer version of Exponent is available').':';
-                    flash('message',$note.' v'.$newvers.' '.gt('was released').' '.expDateTime::format_date($onlineVer->builddate).
-                        '<br><a href="https://github.com/exponentcms/exponent-cms/downloads" target="_blank">'.gt('Click here to see available Downloads').'</a>');
+                //FIXME we need a good installation/server to place this on
+                $onlineVer = json_decode(expCore::loadData('http://www.exponentcms.org/'.'getswversion.php'))->data;
+                if (!empty($onlineVer)) {
+                    expSession::set('update-check','1');
+                    if (self::compareVersion($swversion,$onlineVer)) {
+                        $newvers = $onlineVer->major.'.'.$onlineVer->minor.'.'.$onlineVer->revision.($onlineVer->type?$onlineVer->type:'').($onlineVer->iteration?$onlineVer->iteration:'');
+                        $note = $onlineVer->type == 'patch' ? gt('A patch for the latest') : gt('A newer version of Exponent is available').':';
+                        flash('message',$note.' v'.$newvers.' '.gt('was released').' '.expDateTime::format_date($onlineVer->builddate).
+                            '<br><a href="https://github.com/exponentcms/exponent-cms/downloads" target="_blank">'.gt('Click here to see available Downloads').'</a>');
+                    }
                 }
             }
         }
@@ -131,27 +134,6 @@ class expVersion {
             }
         }
         return false;
-    }
-
-    /**
-     * Routine to obtain online version information
-     *
-     * @return object
-     */
-    private static function getOnlineVersion() {
-        //FIXME we need a good installation to place this in
-        $remote = json_decode(expCore::loadData('http://www.exponentcms.org/'.'getswversion.php'));
-        if (empty($remote->data)) {
-            $onlineversion->major = 2;
-            $onlineversion->minor = 0;
-            $onlineversion->revision = 0;
-            $onlineversion->type = '';
-            $onlineversion->iteration = '';
-            $onlineversion->builddate = '';
-        } else {
-            $onlineversion = $remote->data;
-        }
-        return $onlineversion;
     }
 
 	/**
