@@ -140,15 +140,16 @@ class expVersion {
      */
     private static function getOnlineVersion() {
         //FIXME we need a good installation to place this in
-        $over=expCore::loadData('http://www.exponentcms.org/'.'getswversion.php');
-        $onlineversion = json_decode($over)->data;
-        if (empty($onlineversion)) {
-            $onlineversion->major = 0;
+        $remote = json_decode(expCore::loadData('http://www.exponentcms.org/'.'getswversion.php'));
+        if (empty($remote->data)) {
+            $onlineversion->major = 2;
             $onlineversion->minor = 0;
             $onlineversion->revision = 0;
             $onlineversion->type = '';
             $onlineversion->iteration = '';
             $onlineversion->builddate = '';
+        } else {
+            $onlineversion = $remote->data;
         }
         return $onlineversion;
     }
