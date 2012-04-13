@@ -37,7 +37,7 @@ class helpController extends expController {
         // only set the system help version if it's not already set as a session variable
         if (!expSession::is_set('help-version')) {
             $version = $db->selectValue('help_version','version','is_current=1');
-            if (!empty($version)) {
+            if (empty($version)) {
                 // there is no help version set to 'is_current'
                 $hv = new help_version();
            	    $newversion = $hv->find('first','1');
