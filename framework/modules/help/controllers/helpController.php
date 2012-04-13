@@ -41,9 +41,11 @@ class helpController extends expController {
                 // there is no help version set to 'is_current'
                 $hv = new help_version();
            	    $newversion = $hv->find('first','1');
-                $this->params['is_current'] = 1;
-           	    $newversion->update($this->params);
-                $version = $newversion->version;
+                if (!empty($newversion)) {
+                    $this->params['is_current'] = 1;
+             	    $newversion->update($this->params);
+                    $version = $newversion->version;
+                }
             }
             if(!empty($params['version'])) {
                 $version = isset($params['version']) ? (($params['version'] == 'current') ? $version : $params['version']) : $version;
