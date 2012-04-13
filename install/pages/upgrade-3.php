@@ -22,6 +22,14 @@ global $db;
 
 $num_version = expVersion::getVersion();
 $db_version = $db->selectObject('version','1');
+if (empty($db_version)) {
+    $db_version->major = 0;
+    $db_version->minor = 0;
+    $db_version->revision = 0;
+    $db_version->type = '';
+    $db_version->iteration = '';
+    $db_version->builddate = '';
+}
 
 ?>
 <h2><?php echo gt('Upgrade Scripts'); ?></h2>
