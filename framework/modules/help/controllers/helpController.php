@@ -36,7 +36,15 @@ class helpController extends expController {
         parent::__construct($src,$params);
         // only set the system help version if it's not already set as a session variable
         if (!expSession::is_set('help-version')) {
-            $version = $db->selectValue('help_version', 'version','is_current=1');
+            $version = $db->selectValue('help_version','version','is_current=1');
+            if (empty($version)) {
+                // there is no help version set to 'is_current'
+                $hv = new help_version();
+           	    $newversion = $hv->find('first','1');
+                $this->params['is_current'] = 1;
+           	    $newversion->update($this->params);
+                $version = $newversion->version;
+            }
             if(!empty($params['version'])) {
                 $version = isset($params['version']) ? (($params['version'] == 'current') ? $version : $params['version']) : $version;
             }
@@ -104,7 +112,7 @@ class helpController extends expController {
 				}
 			}
 		}
-        $sectionlist[$this->loc->src] .= gt(" (current section)");
+        $sectionlist[$this->loc->src] .= ' '.gt("(current section)");
 
 	    assign_to_template(array('record'=>$help,"current_section"=>$this->loc->src,"sections"=>$sectionlist));
 	}
