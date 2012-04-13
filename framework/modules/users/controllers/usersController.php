@@ -42,25 +42,35 @@ class usersController extends expController {
     function hasContent() { return false; }
     
     public function manage() {
+        global $user;
+
         expHistory::set('manageable', $this->params);
-        $limit = empty($this->config['limit']) ? 10 : $this->config['limit'];
-        $order = empty($this->config['order']) ? 'username' : $this->config['order'];
-        $page = new expPaginator(array(
-                    'model'=>'user',
-                    'where'=>1, 
-                    'limit'=>$limit,
-                    'order'=>$order,
-                    'controller'=>$this->baseclassname,
-                    'action'=>$this->params['action'],
-                    'columns'=>array(
-                        gt('Username')=>'username',
-                        gt('First Name')=>'firstname',
-                        gt('Last Name')=>'lastname',
-                        gt('Is Admin')=>'is_acting_admin',
-                        )
-                    ));
-                    
-        assign_to_template(array('page'=>$page)); 
+//        $limit = empty($this->config['limit']) ? 10 : $this->config['limit'];
+//        $order = empty($this->config['order']) ? 'username' : $this->config['order'];
+        if ($user->id == 1) {
+            $filter = 1; //'1';
+        } elseif($user->isSuperAdmin()) {
+            $filter = 2; //"id != 1";
+        } else {
+            $filter = 3; //"is_admin != 1";
+        }
+//        $page = new expPaginator(array(
+//                    'model'=>'user',
+//                    'where'=>$where,
+//                    'limit'=>$limit,
+//                    'order'=>$order,
+//                    'controller'=>$this->baseclassname,
+//                    'action'=>$this->params['action'],
+//                    'columns'=>array(
+//                        gt('Username')=>'username',
+//                        gt('First Name')=>'firstname',
+//                        gt('Last Name')=>'lastname',
+//                        gt('Is Admin')=>'is_acting_admin',
+//                        )
+//                    ));
+//
+//        assign_to_template(array('page'=>$page));
+        assign_to_template(array('filter'=>$filter));
     }
     
     public function create() {
@@ -725,6 +735,19 @@ class usersController extends expController {
             $sort = $_GET['sort'];
         }
 
+        if(!empty($_GET['filter'])) {
+            switch ($_GET['filter']) {
+                case '1' :
+                    $filter = '';
+                    break;
+                case '2' :
+                    $filter = "id != 1";
+                    break;
+                case '3' :
+                    $filter = "is_admin != 1";
+            }
+        }
+
         // Sort dir?
         if((strlen($_GET['dir']) > 0) && ($_GET['dir'] == 'desc')) {
             $dir = 'desc';
@@ -735,12 +758,12 @@ class usersController extends expController {
             $sort_dir = SORT_ASC;
         }
         
-        if (isset($_GET['query'])) {
+        if (!empty($_GET['query'])) {
 
             $_GET['query'] = expString::sanitize($_GET['query']);
-            $totalrecords = $this->$modelname->find('count',"username LIKE '%".$_GET['query']."%' OR firstname LIKE '%".$_GET['query']."%' OR lastname LIKE '%".$_GET['query']."%' OR email LIKE '%".$_GET['query']."%'");
+            $totalrecords = $this->$modelname->find('count',(empty($filter)?'':$filter." AND ")."(username LIKE '%".$_GET['query']."%' OR firstname LIKE '%".$_GET['query']."%' OR lastname LIKE '%".$_GET['query']."%' OR email LIKE '%".$_GET['query']."%')");
             
-            $users = $this->$modelname->find('all',$filter."username LIKE '%".$_GET['query']."%' OR firstname LIKE '%".$_GET['query']."%' OR lastname LIKE '%".$_GET['query']."%' OR email LIKE '%".$_GET['query']."%'" ,$sort.' '.$dir, $results, $startIndex);
+            $users = $this->$modelname->find('all',(empty($filter)?'':$filter." AND ")."(username LIKE '%".$_GET['query']."%' OR firstname LIKE '%".$_GET['query']."%' OR lastname LIKE '%".$_GET['query']."%' OR email LIKE '%".$_GET['query']."%')" ,$sort.' '.$dir, $results, $startIndex);
 			
 			for($i = 0; $i < count($users); $i++) {
 				if(ECOM == 1) {
