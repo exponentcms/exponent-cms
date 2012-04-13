@@ -67,6 +67,9 @@ class expPaginator {
 	public $default = '';
 	public $view = null;
     public $content_type = '';
+    public $author = '';
+    public $tag = '';
+    public $tags = '';
 	/**#@+
      * @access public
      * @var integer
