@@ -85,6 +85,7 @@ class migrationController extends expController {
         'sharedcoremodule',
         'svgallerymodule',
         'uiswitchermodule',
+        'filemanagermodule',
     );
 
     public $needs_written = array(
@@ -482,7 +483,7 @@ class migrationController extends expController {
             }
 
             if (!in_array($sr->module, $this->deprecated_modules)) {
-                // if the module is not in the depecation list, we're hitting here
+                // if the module is not in the deprecation list, we're hitting here
                 if (!$db->selectObject('sectionref',"source='".$sr->source."'")) {
 					if (array_key_exists($sr->module, $this->new_modules)) {
 						// convert the source to new exp controller
@@ -620,7 +621,11 @@ class migrationController extends expController {
 //                $mod->author = '';
 //                $mod->description = '';
 //                $mod->codequality = '';
-                if (!$db->insertObject($mod,'modstate')) @$db->updateObject($mod,'modstate');
+                if ($db->selectObject('modstate',"module='".$mod->module."'")) {
+                    $db->updateObject($mod,'modstate');
+                } else {
+                    $db->insertObject($mod,'modstate');
+                }
             }
         }
 
