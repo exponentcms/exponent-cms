@@ -319,12 +319,10 @@ class expCore {
 	 * @param $workArray
 	 * @return array
 	 */
-	public static function glob2keyedArray($workArray){
+	public static function glob2keyedArray($workArray = array()){
 		$temp = array();
-        if (is_array($workArray)) {
-            foreach($workArray as $myWorkFile){
-      			$temp[basename($myWorkFile)] = $myWorkFile;
-      		}
+        foreach($workArray as $myWorkFile){
+            $temp[basename($myWorkFile)] = $myWorkFile;
         }
 		return $temp;
 	}
