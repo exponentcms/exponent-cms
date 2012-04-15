@@ -25,7 +25,7 @@
 class usersController extends expController {
     public $basemodel_name = 'user';
     public $add_permissions = array(
-        'toggle_extension'=>'Activate Extensions', 
+        'toggle_extension'=>'Activate Extensions',
         'kill_session'=>'End Sessions',
         'boot_user'=>'Boot Users',
     );
@@ -207,8 +207,8 @@ class usersController extends expController {
 
             // send and email notification to the admin of the site.
 	        if (USER_REGISTRATION_SEND_NOTIF && !$user->isAdmin()){
-		        $msg = "When: " . date("F j, Y, g:i a") ."\n\n";
-		        $msg .= "Their name is: " . $u->firstname . " " . $u->lastname . "\n\n";
+		        $msg = gt("When").": " . date("F j, Y, g:i a") ."\n\n";
+		        $msg .= gt("Their name is").": " . $u->firstname . " " . $u->lastname . "\n\n";
 
 		        $mail = new expMail();
 		        $mail->quickSend(array(
@@ -372,9 +372,9 @@ class usersController extends expController {
 		            'controller'=>$this->baseclassname,
 		            'action'=>$this->params['action'],
 		            'columns'=>array(
-		                'Name'=>'title',
-		                'Description'=>'body',
-		                'Active'=>'active'
+                        gt('Name')=>'title',
+                        gt('Description')=>'body',
+                        gt('Active')=>'active'
 		                ),
 		            ));
 		
@@ -393,9 +393,9 @@ class usersController extends expController {
                     'controller'=>$this->baseclassname,
                     'action'=>$this->params['action'],
                     'columns'=>array(
-                        'Name'=>'name',
-                        'Description'=>'description',
-                        'Type'=>'inclusive',
+                        gt('Name')=>'name',
+                        gt('Description')=>'description',
+                        gt('Type')=>'inclusive',
                         )
                     ));
                     
@@ -435,7 +435,7 @@ class usersController extends expController {
                 'html_message'=>$msg,
 			    'to'=>trim($u->email),
 			    'from'=>SMTP_FROMADDRESS,
-			    'subject'=>'Your password has',
+			    'subject'=>gt('Your password has been reset'),
         ));
         
         $db->delete('passreset_token', 'uid='.$u->id);
@@ -478,7 +478,7 @@ class usersController extends expController {
                 'html_message'=>$msg,
 		        'to'=>trim($u->email),
 		        'from'=>SMTP_FROMADDRESS,
-		        'subject'=>'Your new password for '.HOSTNAME,
+		        'subject'=>gt('Your new password for').' '.HOSTNAME,
         ));        
         
         // Save new password
@@ -636,11 +636,11 @@ class usersController extends expController {
                     'controller'=>$this->baseclassname,
                     'action'=>$this->params['action'],
                     'columns'=>array(
-                        'Username'=>'username',
-                        'First Name'=>'firstname',
-                        'Last Name'=>'lastname',
-                        'Is Member'=>'is_member',
-                        'Is Admin'=>'is_admin',
+                        gt('Username')=>'username',
+                        gt('First Name')=>'firstname',
+                        gt('Last Name')=>'lastname',
+                        gt('Is Member')=>'is_member',
+                        gt('Is Admin')=>'is_admin',
                         )
                     ));
                     
@@ -837,12 +837,12 @@ class usersController extends expController {
 			'dir'=>'DESC',
 			'limit'=>$limit,
 			'columns'=>array(
-				'Order #'=>'invoice_id', 
-				'Total'=>'total',
-				'Date Purchased'=>'purchased',
-				'Type'=>'order_type_id',
-				'Status'=>'order_status_id',
-				'Ref'=>'orig_referrer',   
+                gt('Order #')=>'invoice_id',
+                gt('Total')=>'total',
+                gt('Date Purchased')=>'purchased',
+                gt('Type')=>'order_type_id',
+                gt('Status')=>'order_status_id',
+                gt('Ref')=>'orig_referrer',
 				)
 			));
 		

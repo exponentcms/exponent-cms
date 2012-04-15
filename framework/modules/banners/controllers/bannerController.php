@@ -94,10 +94,10 @@ class bannerController extends expController {
 			'sql'=>$sql,
 			'order'=>'title',
 			'columns'=>array(
-				'Title'=>'title',
-				'Company'=>'companyname', 
-				'Impressions'=>'impressions',
-				'Clicks'=>'clicks'
+                gt('Title')=>'title',
+                gt('Company')=>'companyname',
+                gt('Impressions')=>'impressions',
+                gt('Clicks')=>'clicks'
 				)
 			));
 

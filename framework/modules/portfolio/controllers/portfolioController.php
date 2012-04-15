@@ -54,7 +54,7 @@ class portfolioController extends expController {
                     'controller'=>$this->baseclassname,
                     'src'=>$this->loc->src,
                     'action'=>$this->params['action'],
-                    'columns'=>array('Title'=>'title'),
+                    'columns'=>array(gt('Title')=>'title'),
                     ));
 
         assign_to_template(array('page'=>$page, 'rank'=>($order==='rank')?1:0));

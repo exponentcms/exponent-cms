@@ -97,7 +97,7 @@ class expSimpleNoteController extends expController {
             'dir'=>'DESC',
             'controller'=>$this->baseclassname,
             'action'=>$this->params['action'],
-            'columns'=>array('Approved'=>'approved', 'Poster'=>'name', 'Comment'=>'body'),
+            'columns'=>array(gt('Approved')=>'approved',gt('Poster')=>'name',gt('Comment')=>'body'),
         ));
         
         assign_to_template(array(
@@ -134,7 +134,7 @@ class expSimpleNoteController extends expController {
             'dir'=>'DESC',
             'controller'=>$this->baseclassname,
             'action'=>$this->params['action'],
-            'columns'=>array('Readable Column Name'=>'Column Name'),
+            'columns'=>array(gt('Readable Column Name')=>'Column Name'),
         ));
         
         // count the unapproved comments

@@ -53,7 +53,7 @@ class flowplayerController extends expController {
                     'order'=>$order,
                     'controller'=>$this->baseclassname,
                     'action'=>$this->params['action'],
-                    'columns'=>array('ID#'=>'id','Title'=>'title', 'Body'=>'body'),
+                    'columns'=>array(gt('ID#')=>'id',gt('Title')=>'title',gt('Body')=>'body'),
                     ));
         
         assign_to_template(array('page'=>$page, 'items'=>$page->records));

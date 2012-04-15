@@ -140,7 +140,7 @@ class ecomconfigController extends expController {
 			'limit'=> 10,
 			'order'=>$order,
 			'model'=>'discounts',
-			'columns'=>array('Enabled'=>'enabled','Name'=>'title', 'Coupon Code'=>'coupon_code', 'Valid Until'=>'enddate'),
+			'columns'=>array(gt('Enabled')=>'enabled',gt('Name')=>'title',gt('Coupon Code')=>'coupon_code',gt('Valid Until')=>'enddate'),
 			));
 
 		

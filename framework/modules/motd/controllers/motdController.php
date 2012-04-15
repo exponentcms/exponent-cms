@@ -56,7 +56,7 @@ class motdController extends expController {
                     'order'=>'month,day',
                     'controller'=>$this->baseclassname,
                     'action'=>$this->params['action'],
-                    'columns'=>array('Date'=>'month', 'Message'=>'body'),
+                    'columns'=>array(gt('Date')=>'month',gt('Message')=>'body'),
                     ));
         
         assign_to_template(array('page'=>$page));

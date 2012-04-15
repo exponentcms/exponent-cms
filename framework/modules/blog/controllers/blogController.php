@@ -53,7 +53,7 @@ class blogController extends expController {
 		            'dir'=>empty($this->config['sort_dir']) ? 'DESC' : $this->config['sort_dir'],
 		            'controller'=>$this->baseclassname,
 		            'action'=>$this->params['action'],
-		            'columns'=>array('Title'=>'title'),
+		            'columns'=>array(gt('Title')=>'title'),
 		            ));
 		            
 		assign_to_template(array('page'=>$page));
@@ -122,7 +122,7 @@ class blogController extends expController {
 		            'dir'=>'desc',
 		            'controller'=>$this->baseclassname,
 		            'action'=>$this->params['action'],
-		            'columns'=>array('Title'=>'title'),
+		            'columns'=>array(gt('Title')=>'title'),
 		            ));
 		            
 		assign_to_template(array('page'=>$page,'moduletitle'=>gt('Blogs by date').' "'.expDateTime::format_date($start_date).'"'));
@@ -139,7 +139,7 @@ class blogController extends expController {
 		            'order'=>'publish',
 		            'controller'=>$this->baseclassname,
 		            'action'=>$this->params['action'],
-		            'columns'=>array('Title'=>'title'),
+		            'columns'=>array(gt('Title')=>'title'),
 		            ));
             	    
 		assign_to_template(array('page'=>$page,'moduletitle'=>gt('Blogs by author').' "'.$this->params['author'].'"'));

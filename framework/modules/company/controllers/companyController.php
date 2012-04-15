@@ -49,7 +49,7 @@ class companyController extends expController {
                     'order'=>$order,
                     'controller'=>$this->baseclassname,
                     'action'=>$this->params['action'],
-                    'columns'=>array('Title'=>'title', 'Link'=>'website'),
+                    'columns'=>array(gt('Title')=>'title',gt('Link')=>'website'),
                     ));
         
         assign_to_template(array('page'=>$page, 'items'=>$page->records));
@@ -90,7 +90,7 @@ class companyController extends expController {
                 'dir'=>$dir,
                 'controller'=>$this->params['controller'],
                 'action'=>$this->params['action'],
-                'columns'=>array('Model #'=>'model','Product Name'=>'title','Price'=>'base_price'),
+                'columns'=>array(gt('Model #')=>'model',gt('Product Name')=>'title',gt('Price')=>'base_price'),
                 )); 
 
         //$ancestors = $this->category->pathToNode();   
@@ -136,7 +136,7 @@ class companyController extends expController {
                 'dir'=>$dir,
                 'controller'=>$this->params['controller'],
                 'action'=>$this->params['action'],
-                'columns'=>array('Model #'=>'model','Product Name'=>'title','Price'=>'base_price'),
+                'columns'=>array(gt('Model #')=>'model',gt('Product Name')=>'title',gt('Price')=>'base_price'),
                 )); 
 
         //$ancestors = $this->category->pathToNode();   

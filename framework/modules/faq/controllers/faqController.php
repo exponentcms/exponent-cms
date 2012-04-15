@@ -100,7 +100,7 @@ class faqController extends expController {
             'order'=>'rank',
             'controller'=>$this->baseclassname,
             'action'=>$this->params['action'],
-            'columns'=>array('In FAQ'=>'include_in_faq', 'Answered'=>'answer', 'Question'=>'question', 'Submitted'=>'created_at', 'Submitted By'=>'submitter_name'),
+            'columns'=>array(gt('In FAQ')=>'include_in_faq',gt('Answered')=>'answer',gt('Question')=>'question',gt('Submitted')=>'created_at',gt('Submitted By')=>'submitter_name'),
         ));
         
         assign_to_template(array('page'=>$page));

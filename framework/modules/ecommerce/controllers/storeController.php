@@ -178,7 +178,7 @@ class storeController extends expController {
                 'dir'=>$dir,
                 'controller'=>$this->params['controller'],
                 'action'=>$this->params['action'],
-                'columns'=>array('Model #'=>'model','Product Name'=>'title','Price'=>'price'),
+                'columns'=>array(gt('Model #')=>'model',gt('Product Name')=>'title',gt('Price')=>'price'),
                 ));
         } else {
             $page = new expPaginator(array(
@@ -189,7 +189,7 @@ class storeController extends expController {
                 'dir'=>$dir,
                 'controller'=>$this->params['controller'],
                 'action'=>$this->params['action'],
-                'columns'=>array('Model #'=>'model','Product Name'=>'title','Price'=>'price'),
+                'columns'=>array(gt('Model #')=>'model',gt('Product Name')=>'title',gt('Price')=>'price'),
                 ));
         }
 
@@ -246,7 +246,7 @@ class storeController extends expController {
             'dir'=>$dir,
             'controller'=>$this->params['controller'],
             'action'=>$this->params['action'],
-            'columns'=>array('Model #'=>'model','Product Name'=>'title','Price'=>'base_price'),
+            'columns'=>array(gt('Model #')=>'model',gt('Product Name')=>'title',gt('Price')=>'base_price'),
             ));
         
         assign_to_template(array('page'=>$page));
@@ -409,7 +409,7 @@ class storeController extends expController {
             'sql'=>$sql,
             'controller'=>$this->params['controller'],
             'action'=>$this->params['action'],
-            'columns'=>array('Model #'=>'model','Product Name'=>'title','Price'=>'base_price'),
+            'columns'=>array(gt('Model #')=>'model',gt('Product Name')=>'title',gt('Price')=>'base_price'),
             ));
             
         assign_to_template(array('page'=>$page, 'moduletitle'=>'Uncategorized Products'));
@@ -421,7 +421,7 @@ class storeController extends expController {
             'model'=>'product',
             'where'=>'parent_id=0',
             'order'=>'title',
-            'columns'=>array('Type'=>'product_type', 'Model #'=>'model', 'Product Name'=>'title','Price'=>'base_price')
+            'columns'=>array(gt('Type')=>'product_type',gt('Model #')=>'model',gt('Product Name')=>'title',gt('Price')=>'base_price')
             ));
         assign_to_template(array('page'=>$page));
     }
@@ -440,7 +440,7 @@ class storeController extends expController {
             'sql'=>$sql,
             'controller'=>$this->params['controller'],
             'action'=>$this->params['action'],
-            'columns'=>array('Model #'=>'model','Product Name'=>'title','Price'=>'base_price'),
+            'columns'=>array(gt('Model #')=>'model',gt('Product Name')=>'title',gt('Price')=>'base_price'),
             ));
             
         assign_to_template(array('page'=>$page, 'moduletitle'=>'Improperly Categorized Products'));
@@ -461,7 +461,7 @@ class storeController extends expController {
             'model'=>'product',
             'where'=>'companies_id='.$this->params['id'] . ' AND parent_id=0',
             'default'=>'Product Name',
-            'columns'=>array('Model #'=>'model','Product Name'=>'title','Price'=>'base_price')
+            'columns'=>array(gt('Model #')=>'model',gt('Product Name')=>'title',gt('Price')=>'base_price')
             ));
         
         $company = new company($this->params['id']);
@@ -617,7 +617,7 @@ class storeController extends expController {
                 'dir'=>$dir,
                 'controller'=>$this->params['controller'],
                 'action'=>$this->params['action'],
-                'columns'=>array('Model #'=>'model','Product Name'=>'title','Price'=>'base_price'),
+                'columns'=>array(gt('Model #')=>'model',gt('Product Name')=>'title',gt('Price')=>'base_price'),
                 ));
                 
         assign_to_template(array('page'=>$page));   
@@ -638,7 +638,7 @@ class storeController extends expController {
                 'dir'=>$dir,
                 'controller'=>$this->params['controller'],
                 'action'=>$this->params['action'],
-                'columns'=>array('Model #'=>'model','Product Name'=>'title','Price'=>'base_price'),
+                'columns'=>array(gt('Model #')=>'model',gt('Product Name')=>'title',gt('Price')=>'base_price'),
                 ));
                 
         assign_to_template(array('page'=>$page));   
@@ -679,7 +679,7 @@ class storeController extends expController {
                 'dir'=>$dir,
                 'controller'=>$this->params['controller'],
                 'action'=>$this->params['action'],
-                'columns'=>array('Model #'=>'model','Product Name'=>'title','Price'=>'base_price'),
+                'columns'=>array(gt('Model #')=>'model',gt('Product Name')=>'title',gt('Price')=>'base_price'),
                 ));
        
         $category = new storeCategory(null,false,false);
@@ -1130,7 +1130,7 @@ class storeController extends expController {
             'where'=>$sql,
             'order'=>'title',
             'dir'=>'DESC',
-            'columns'=>array('Model #'=>'model','Product Name'=>'title','Price'=>'base_price'),
+            'columns'=>array(gt('Model #')=>'model',gt('Product Name')=>'title',gt('Price')=>'base_price'),
             ));
         
         assign_to_template(array('page'=>$page, 'terms'=>$terms));

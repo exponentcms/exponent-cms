@@ -81,7 +81,7 @@ class newsController extends expController {
             'order'=>'unpublish',
             'controller'=>$this->baseclassname,
             'action'=>$this->params['action'],
-            'columns'=>array('Title'=>'title','Published On'=>'publish', 'Status'=>'unpublish'),
+            'columns'=>array(gt('Title')=>'title',gt('Published On')=>'publish',gt('Status')=>'unpublish'),
             ));
             
         assign_to_template(array('page'=>$page));

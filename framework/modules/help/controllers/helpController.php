@@ -81,7 +81,7 @@ class helpController extends expController {
 	                'dir'=>$dir,
 	                'controller'=>$this->baseclassname,
 	                'action'=>$this->params['action'],
-	                'columns'=>array('Title'=>'title', 'Body'=>'body', 'Version'=>'help_version_id'),
+	                'columns'=>array(gt('Title')=>'title',gt('Body')=>'body',gt('Version')=>'help_version_id'),
 	                ));
 	    
 	    assign_to_template(array('current_version'=>$ref_version, 'page'=>$page, 'rank'=>($order==='rank')?1:0));
@@ -171,7 +171,7 @@ class helpController extends expController {
 	                'dir'=>'DESC',
 	                'controller'=>$this->baseclassname,
 	                'action'=>$this->params['action'],
-	                'columns'=>array('Title'=>'title', 'Version'=>'help_version_id', 'Section'=>'section'),
+	                'columns'=>array(gt('Title')=>'title',gt('Version')=>'help_version_id',gt('Section')=>'section'),
 	                ));
 
 	    assign_to_template(array('current_version'=>$current_version, 'page'=>$page, 'sections'=>$sections));
@@ -240,7 +240,7 @@ class helpController extends expController {
 	                'dir'=>'DESC',
 	                'controller'=>$this->baseclassname,
 	                'action'=>$this->params['action'],
-	                'columns'=>array('Version'=>'version', 'Title'=>'title', 'Current'=>'is_current', '# of Docs'=>'num_docs'),
+	                'columns'=>array(gt('Version')=>'version',gt('Title')=>'title',gt('Current')=>'is_current',gt('# of Docs')=>'num_docs'),
 	                ));
 	    
 	    assign_to_template(array('current_version'=>$current_version, 'page'=>$page));

@@ -54,7 +54,7 @@ class photosController extends expController {
                     'src'=>$this->loc->src,
                     'controller'=>$this->baseclassname,
                     'action'=>$this->params['action'],
-                    'columns'=>array('Title'=>'title'),
+                    'columns'=>array(gt('Title')=>'title'),
                     ));
                     
         assign_to_template(array('page'=>$page));

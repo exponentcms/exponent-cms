@@ -53,7 +53,7 @@ class filedownloadController extends expController {
                     'controller'=>$this->baseclassname,
                     'action'=>$this->params['action'],
                     'src'=>$this->loc->src,
-                    'columns'=>array('ID#'=>'id','Title'=>'title', 'Body'=>'body'),
+                    'columns'=>array(gt('ID#')=>'id',gt('Title')=>'title',gt('Body')=>'body'),
                     ));
 
         include_once(BASE.'external/mp3file.php');

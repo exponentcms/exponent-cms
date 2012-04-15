@@ -131,7 +131,7 @@ class searchController extends expController {
                     'controller'=>$this->baseclassname,
                     'action'=>$this->params['action'],
                     'src'=>$this->hasSources() == true ? $this->loc->src : null,
-                    'columns'=>array('ID#'=>'id','Title'=>'title','Body'=>'body'),
+                    'columns'=>array(gt('ID#')=>'id',gt('Title')=>'title',gt('Body')=>'body'),
                     ));
 
         foreach ($db->selectColumn('content_expTags','content_type',null,null,true) as $contenttype) {

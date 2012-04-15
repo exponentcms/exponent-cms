@@ -109,13 +109,13 @@ class orderController extends expController {
 			'dir'=>'DESC',
             'limit'=>$limit,
 			'columns'=>array(
-				'Customer'=>'lastname',
-				'Order #'=>'invoice_id', 
-				'Total'=>'total',
-				'Date Purchased'=>'purchased',
-                'Type'=>'order_type_id',
-				'Status'=>'order_status_id',
-                'Ref'=>'orig_referrer',   
+                gt('Customer')=>'lastname',
+                gt('Order #')=>'invoice_id',
+                gt('Total')=>'total',
+                gt('Date Purchased')=>'purchased',
+                gt('Type')=>'order_type_id',
+                gt('Status')=>'order_status_id',
+                gt('Ref')=>'orig_referrer',
 				)
 			));
         //eDebug($page,true);
@@ -768,8 +768,8 @@ exit();
 			'order'=>'purchased',
 			'dir'=>'DESC',
 			'columns'=>array(
-				'Date Purchased'=>'purchased',
-				'Invoice #'=>'invoice_id', 
+                gt('Date Purchased')=>'purchased',
+                gt('Invoice #')=>'invoice_id',
 				)
 			));
 		assign_to_template(array('page'=>$page));
@@ -1604,7 +1604,7 @@ exit();
             'dir'=>'DESC',            
             'controller'=>$this->baseclassname,
             'action'=>$this->params['action'],
-            'columns'=>array('actupon'=>true,'Order #'=>'invoice_id|controller=order,action=show,showby=id','Purchased Date'=>'purchased_date','First'=>'bfirst','Last'=>'blast','Total'=>'grand_total','Order Type'=>'order_type','Status'=>'status_title'),
+            'columns'=>array('actupon'=>true,gt('Order #')=>'invoice_id|controller=order,action=show,showby=id',gt('Purchased Date')=>'purchased_date',gt('First')=>'bfirst',gt('Last')=>'blast',gt('Total')=>'grand_total',gt('Order Type')=>'order_type',gt('Status')=>'status_title'),
         ));
         assign_to_template(array('page'=>$page));   
         

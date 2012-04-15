@@ -199,7 +199,7 @@ abstract class expController {
                     'controller'=>$this->baseclassname,
                     'action'=>$this->params['action'],
                     'src'=>$this->hasSources() == true ? $this->loc->src : null,
-                    'columns'=>array('ID#'=>'id','Title'=>'title', 'Body'=>'body'),
+                    'columns'=>array(gt('ID#')=>'id',gt('Title')=>'title',gt('Body')=>'body'),
                     ));
         
         assign_to_template(array('page'=>$page, 'items'=>$page->records));
@@ -239,7 +239,7 @@ abstract class expController {
                     'order'=>$order,
                     'controller'=>$this->baseclassname,
                     'action'=>$this->params['action'],
-                    'columns'=>array('Title'=>'title'),
+                    'columns'=>array(gt('Title')=>'title'),
                     ));
 //        $page->records = expSorter::sort(array('array'=>$page->records, 'sortby'=>'rank', 'order'=>'ASC', 'ignore_case'=>true));
         $page->records = expSorter::sort(array('array'=>$page->records, 'sortby'=>'created_at', 'order'=>'DESC', 'ignore_case'=>true));
@@ -505,7 +505,7 @@ abstract class expController {
                     'controller'=>$this->baseclassname,
                     'action'=>$this->params['action'],
                     'src'=>$this->hasSources() == true ? $this->loc->src : null,
-                    'columns'=>array('ID#'=>'id','Title'=>'title', 'Body'=>'body'),
+                    'columns'=>array(gt('ID#')=>'id',gt('Title')=>'title',gt('Body')=>'body'),
                     ));
         
         assign_to_template(array('page'=>$page, 'items'=>$page->records));
@@ -539,7 +539,7 @@ abstract class expController {
                     'records'=>$pullable_modules,
                     'limit'=>count($pullable_modules),
                     'order'=>'section',
-                    'columns'=>array('Title'=>'title', 'Page'=>'section'),
+                    'columns'=>array(gt('Title')=>'title',gt('Page')=>'section'),
                     ));
         assign_to_template(array('config'=>$this->config, 'pullable_modules'=>$pullable_modules, 'page'=>$page, 'views'=>$views));
     }

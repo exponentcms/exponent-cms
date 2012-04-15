@@ -40,7 +40,7 @@ class eventregistrationController extends expController {
             'model'=>'eventregistration',
             'where'=>'product_type="eventregistration"',
             'default'=>'Event Title',
-            'columns'=>array('Event Title'=>'title','Event Date'=>'eventdate', 'Registrants'=>'quantity')
+            'columns'=>array(gt('Event Title')=>'title',gt('Event Date')=>'eventdate',gt('Registrants')=>'quantity')
             ));
         assign_to_template(array('page'=>$page));
     }
