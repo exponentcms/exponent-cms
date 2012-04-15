@@ -62,6 +62,7 @@ if ($f && $controls && $data && $rpt) {
 //		$template->assign('backlink',expHistory::getLastNotEditable());
 		$template->assign('backlink',expHistory::getLast('editable'));
 		$template->assign('is_email',0);
+        $template->assign("css",file_get_contents(BASE."framework/core/assets/css/tables.css"));
 		$template->output();
 	} else {
 		echo SITE_403_HTML;

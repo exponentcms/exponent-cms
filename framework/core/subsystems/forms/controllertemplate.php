@@ -44,7 +44,7 @@ class controllertemplate extends basetemplate {
 		$this->tpl->setPluginsDir(array(SMARTY_PATH.'plugins',BASE.'framework/plugins'));
 
 		//autoload filters
-		$this->tpl->autoload_filters = array('post' => array('includemiscfiles'));
+//		$this->tpl->autoload_filters = array('post' => array('includemiscfiles'));
 		
 		$this->viewfile = $viewfile;
 		$this->viewdir = realpath(dirname($this->viewfile));

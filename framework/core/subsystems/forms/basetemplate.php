@@ -18,12 +18,12 @@
 /** @define "BASE" "../../../.." */
 
 /**
- * Base Template
+ * Base Template class
  *
  * @package Subsystems-Forms
  * @subpackage Template
  */
-class basetemplate {
+abstract class basetemplate {
 	// Smarty template object.
 	var $tpl;
 	
@@ -63,7 +63,7 @@ class basetemplate {
 		$this->tpl->setPluginsDir(array(SMARTY_PATH.'plugins',BASE.'framework/plugins'));
 
 		//autoload filters
-		$this->tpl->autoload_filters = array('post' => array('includemiscfiles'));
+//		$this->tpl->autoload_filters = array('post' => array('includemiscfiles'));
 		
 		$this->viewfile = expTemplate::getViewFile($item_type, $item_dir, $view);
 		$this->viewdir = realpath(dirname($this->viewfile));

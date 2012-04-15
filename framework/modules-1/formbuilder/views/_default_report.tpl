@@ -20,7 +20,7 @@
 {else}
 	{css unique="default-report" corecss="tables,button"}
 
-	{/css}
+    {/css}
 {/if}
 
  <table border="0" cellspacing="0" cellpadding="0" class="exp-skin-table">
