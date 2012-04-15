@@ -33,7 +33,6 @@ class purchaseOrderController extends expController {
     'edit_vendor'=>'Edit Vendor',
     'update_vendor'=>'Update Vendor',
     'delete_vendor'=>'Delete vendors',
- 
     );
 	
 	function displayname() { return "Ecommerce Purchase Order Manager"; }

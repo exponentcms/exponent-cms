@@ -30,8 +30,8 @@ class expHTMLEditorController extends expController {
     function hasSources() { return false; }
 	function hasContent() { return false; }
 	protected $add_permissions = array(
-        'activate'=>"activate",
-        'preview'=>"preview CKEditor toolbars"
+        'activate'=>"Activate",
+        'preview'=>"Preview CKEditor Toolbars"
     );
     
     function manage () {

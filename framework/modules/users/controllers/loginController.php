@@ -23,14 +23,6 @@
 /** @define "BASE" "../../../.." */
 
 class loginController extends expController {
-//    public $basemodel_name = 'user';
-//    public $add_permissions = array(
-//        'toggle_extension'=>'Activate Extensions',
-//        'edituser'=>'Edit Users',
-//        'kill_session'=>'End Sessions',
-//        'boot_user'=>'Boot Users',
-//    );
-//    public $remove_permissions = array('create', 'edituser');
 	public $remove_configs = array(
         'aggregation',
         'categories',
