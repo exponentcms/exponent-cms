@@ -24,7 +24,7 @@
     <table class="exp-skin-table">
     <thead>
         {$page->header_columns}
-        <th>&nbsp;</th>
+        <th>{'Actions'|gettext}</th>
     </thead>
     <tbody>
         {foreach from=$page->records item=company name=companies}

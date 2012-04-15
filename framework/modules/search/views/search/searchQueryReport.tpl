@@ -40,7 +40,6 @@
 					<thead>
 						<tr>
 							{$page->header_columns}
-						
 						</tr>
 					</thead>
 					<tbody>

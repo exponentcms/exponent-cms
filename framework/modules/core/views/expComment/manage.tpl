@@ -24,7 +24,7 @@
         <thead>
             <tr>
                 {$page->header_columns}
-                <th>&nbsp</th>
+                <th>{'Actions'|gettext}</th>
             </tr>
         </thead>
         <tbody>

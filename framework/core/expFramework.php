@@ -228,6 +228,12 @@ $timer = null;
  */
 $order = null;
 
+/**
+ * Main module display logic/routine
+ *
+ * @param array $parms
+ * @return bool|mixed|string
+ */
 function renderAction(array $parms=array()) {
     global $user, $db;
     
@@ -402,10 +408,22 @@ function flashAndFlow($name, $msg) {
     expQueue::flashAndFlow($name, $msg);
 }
 
+/**
+ * Display the message queue
+ *
+ * @param null $name
+ * @return bool|mixed|string
+ */
 function show_msg_queue($name=null) {
     return expQueue::show($name);
 }
 
+/**
+ * Assign a variable to the current template
+ *
+ * @param array $vars
+ * @return bool
+ */
 function assign_to_template(array $vars=array()) {
     global $template;
     
@@ -442,6 +460,12 @@ function get_common_template($view, $loc, $controllername='') {
     }
 }
 
+/**
+ * Return entire list of all controller configuration views available
+ * @param $controller
+ * @param $loc
+ * @return array
+ */
 function get_config_templates($controller, $loc) {
     global $db;
     
@@ -495,6 +519,12 @@ function get_config_templates($controller, $loc) {
     return $views;
 }
 
+/**
+ * Return list of controller configuration views
+ * @param array $paths
+ * @param array $excludes
+ * @return array
+ */
 function find_config_views($paths=array(), $excludes=array()) {
     $views = array();
     foreach ($paths as $path) {
@@ -551,6 +581,13 @@ function get_template_for_action($controller, $action, $loc) {
     }
 }
 
+/**
+ * Return list of controller display views available
+ * @param $ctl
+ * @param $action
+ * @param $human_readable
+ * @return array
+ */
 function get_action_views($ctl, $action, $human_readable) {
     // setup the controller
     $controllerName = expModules::getControllerClassName($ctl);
@@ -589,6 +626,10 @@ function get_action_views($ctl, $action, $human_readable) {
     return $views;
 }
 
+/**
+ * Return list of attached file display views available
+ * @return array
+ */
 function get_filedisplay_views() {
     $paths = array(
         BASE.'framework/modules/common/views/file/',
@@ -640,8 +681,13 @@ function expUnserialize($serial_str) {
     return $out2;
 }
 
-// callback when the buffer gets flushed. Any processing on the page output
-// just before it gets rendered to the screen should happen here.
+/**
+ *  callback when the buffer gets flushed. Any processing on the page output
+ * just before it gets rendered to the screen should happen here.
+ * @param $buffer
+ * @param null $mode
+ * @return mixed
+ */
 function expProcessBuffer($buffer, $mode=null) {
      global $jsForHead, $cssForHead;
      return (str_replace("<!-- MINIFY REPLACE -->", $cssForHead.$jsForHead, $buffer));
@@ -667,7 +713,6 @@ function curPageURL() {
 // this function is called from exponent.php as the ajax error handler
 function handleErrors($errno, $errstr, $errfile, $errline) {
     if (DEVELOPMENT > 0) {
-        $msg = "";
         switch ($errno) {
                 case E_USER_ERROR:
                     $msg = 'PHP Error('.$errno.'): ';
@@ -678,8 +723,9 @@ function handleErrors($errno, $errstr, $errfile, $errline) {
                 case E_USER_NOTICE:
                 case E_NOTICE:
                     $msg = 'PHP Notice('.$errno.'): ';
+                    break;
                 default:
-                $msg = 'PHP Issue('.$errno.'): ';
+                    $msg = 'PHP Issue('.$errno.'): ';
                 break;
             }
         $msg .= $errstr;

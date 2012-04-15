@@ -135,9 +135,9 @@ class expPaginator {
 		
 		$this->start = (($this->page * $this->limit) - $this->limit);
 		
-		//setup the columns and default ordering of records
+		//setup the columns
+        $this->columns = array();
 		if (isset($params['columns'])) {
-		    $this->columns = array();
 		    foreach($params['columns'] as $key=>$col){
 		        $colparse[$key] = explode('|',$col);
 		        $column = array($key=>$colparse[$key][0]);
@@ -152,6 +152,7 @@ class expPaginator {
 		    }
 		}
 		
+		//setup the default ordering of records
 		// if we are in an action, see if the action is for this controller/action..if so pull the order
 		// and order direction from the request params...this is how the params are passed via the column
 		// headers.
@@ -159,10 +160,10 @@ class expPaginator {
 		if (expTheme::inAction()) {
 		    //FIXME: module/controller glue code
 		    $mod = !empty($_REQUEST['controller']) ? expString::sanitize($_REQUEST['controller']) : expString::sanitize($_REQUEST['module']);
-//		    if ($this->controller == $mod && $this->action == $_REQUEST['action']) {
+		    if ($this->controller == $mod && $this->action == $_REQUEST['action']) {
 			    $this->order = isset($_REQUEST['order']) ? $_REQUEST['order'] : $this->order;
 			    $this->order_direction = isset($_REQUEST['dir']) ? $_REQUEST['dir'] : $this->dir;
-//			}
+			}
 		}
         // allow passing of a single order/dir as stored
         if (strstr($this->order," ")) {
@@ -451,8 +452,12 @@ class expPaginator {
                      ));
 
                 } else {
-					unset($params['page']);
-                    $this->header_columns .= '<a href="'.$router->makeLink($params, null, null, true).'" alt="sort by '.$colname.'" rel="nofollow">'.$colname.'</a>';
+					unset($params['page']);  // we want to go back to the first page on a re-sort
+                    if ($col == 'no-sort') {
+                        $this->header_columns .= $colname;
+                    } else {
+                        $this->header_columns .= '<a href="'.$router->makeLink($params, null, null, true).'" alt="sort by '.$colname.'" rel="nofollow">'.$colname.'</a>';
+                    }
                 }
                 
                 $this->header_columns .= '</th>';

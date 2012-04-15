@@ -59,7 +59,8 @@ if ($user->isAdmin()) {
 	$p[gt("First Name")] = 'firstname';
 	$p[gt("Last Name")] = 'lastname';
 	foreach ($mod->permissions() as $key => $value) {
-        $p[gt($value)]=$key;
+//        $p[gt($value)]=$key;
+        $p[gt($value)]='no-sort';
 	}
 
 	if (SEF_URLS == 1) {

@@ -29,9 +29,7 @@
     <thead>
         <tr>
             {$page->header_columns}
-			<th>
-				{'Links'|gettext}
-			</th>
+			<th>{'Actions'|gettext}</th>
         </tr>
     </thead>
     <tbody>
