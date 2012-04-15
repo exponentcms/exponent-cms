@@ -102,7 +102,7 @@
                     </strong>
                     {if $change->comment != ''}                        
                         <div style="border: 1px solid gray; margin-left: 10px; margin-top: 5px;">
-                        <h4>{'Comment:'|gettext}</h4>{$change->comment}
+                        <h4>{'Comment'|gettext}:</h4>{$change->comment}
                         </div>
                     {/if}
                     </td></tr>
@@ -139,7 +139,7 @@
                             {'Tracking #'|gettext}:</td><td>{$order->shipping_tracking_number}{br}
                         </td></tr> 
                         <tr><td> 
-                            {'Date Shipped:'|gettext}</td><td>{if $order->shipped != 0}{$order->shipped|format_date}{else}{'This order has not been shipped yet'|gettext}{/if}
+                            {'Date Shipped'|gettext}:</td><td>{if $order->shipped != 0}{$order->shipped|format_date}{else}{'This order has not been shipped yet'|gettext}{/if}
                         </td></tr>
                     {/if}
                  </table>

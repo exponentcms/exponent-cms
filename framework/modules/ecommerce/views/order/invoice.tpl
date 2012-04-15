@@ -234,8 +234,8 @@
                 <tr>
                     <td>
                         <strong>{'To:'|gettext} </strong>{$sm->to}{br}
-                        <strong>{'From:'|gettext} </strong>{$sm->from}{br}
-                        <strong>{'Message:'|gettext} </strong>{$sm->message}{br}
+                        <strong>{'From'|gettext}: </strong>{$sm->from}{br}
+                        <strong>{'Message'|gettext}: </strong>{$sm->message}{br}
                     </td>
                 </tr>
             </tbody>

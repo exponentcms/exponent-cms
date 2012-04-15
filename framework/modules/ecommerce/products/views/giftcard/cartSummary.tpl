@@ -30,7 +30,7 @@
 				{/if}
 				
 				{if $message.From}
-					{'From:'|gettext} {$message.From}
+					{'From'|gettext}: {$message.From}
 				{/if}
 				{br}{$message.Message|truncate:50:"..."}    
 			</div>

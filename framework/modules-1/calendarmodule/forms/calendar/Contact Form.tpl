@@ -31,7 +31,7 @@
             </td>
         </tr>
         <tr>
-            <td valign="top">{'Subject:'|gettext}</td>
+            <td valign="top">{'Subject'|gettext}:</td>
             <td>
                 <input type="text" name="subject" />
             </td>

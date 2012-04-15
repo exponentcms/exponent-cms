@@ -82,7 +82,7 @@
                 {/form}
                 </td>
                 <td>{form action="dashboard"}   
-                {"Purchased Between:"|gettext}{br}
+                {"Purchased Between"|gettext}:{br}
                 {control type="calendar" name="starttime" label="" default_date=$prev_month default_hour=$prev_hour default_min=$prev_min default_ampm=$prev_ampm}{br}                
                 {"And"|gettext}{br}
                 {control type="calendar" name="endtime" label="" default_date=$now_date default_hour=$now_hour default_min=$now_min default_ampm=$now_ampm}    {br}

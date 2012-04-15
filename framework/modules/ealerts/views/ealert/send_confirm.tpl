@@ -19,7 +19,7 @@
     {form action="send_process"}
         <table>
         <tr>
-            <td>{'From:'|gettext} {$smarty.const.SMTP_FROMADDRESS}</td>
+            <td>{'From'|gettext}: {$smarty.const.SMTP_FROMADDRESS}</td>
         </tr>
         <tr>
             <td>{'To:'|gettext} {$number_of_subscribers} Subscribers</td>

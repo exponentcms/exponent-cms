@@ -20,9 +20,9 @@
 <div class="store showall">
             <div class="form_header">
 		<h1>{'Event Info'|gettext}</h1>
-                <p><span class="label">{'Event Date:'|gettext} </span><span class="value">{$event->eventdate|date_format:"%A, %B %e, %Y"}</span>{br}
-                <span class="label">{'Start Time:'|gettext} </span><span class="value">{$event->event_starttime|date_format:"%I:%M %p"}</span>{br}
-                <span class="label">{'End Time:'|gettext} </span><span class="value">{$event->event_endtime|date_format:"%I:%M %p"}</span>{br}
+                <p><span class="label">{'Event Date'|gettext}: </span><span class="value">{$event->eventdate|date_format:"%A, %B %e, %Y"}</span>{br}
+                <span class="label">{'Start Time'|gettext}: </span><span class="value">{$event->event_starttime|date_format:"%I:%M %p"}</span>{br}
+                <span class="label">{'End Time'|gettext}: </span><span class="value">{$event->event_endtime|date_format:"%I:%M %p"}</span>{br}
                 <span class="label">{'Price per person:'|gettext} </span><span class="value">{currency_symbol}{$event->base_price|number_format:2}</span>{br}
                 <span class="label">{'Seats Registered:'|gettext} </span><span class="value">{$event->number_of_registrants} of {$event->quantity}</span>{br}
                 <span class="label">{'Registration Closes:'|gettext} </span><span class="value">{$event->signup_cutoff|date_format:"%A, %B %e, %Y"}</span></p>{br}

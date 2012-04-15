@@ -23,8 +23,8 @@
 		{control type=hidden name=id value=$simplenote->id}
         {control type=hidden name=tab value=$tab}
 		
-	    <strong>{'Poster\'s Name:'|gettext} {$user->firstname} {$user->lastname}</strong>{br}
-	    <strong>{'Poster\'s Email:'|gettext} {$user->email}{br}
+	    <strong>{'Poster\'s Name'|gettext}: {$user->firstname} {$user->lastname}</strong>{br}
+	    <strong>{'Poster\'s Email'|gettext}: {$user->email}{br}
 		{control type=textarea name=body label="Note Body"|gettext rows=6 cols=35 value=$simplenote->body}
 		{control type="checkbox" name="approved" label="Approve Note"|gettext value=1 checked=$simplenote->approved}
 		{control type=buttongroup submit="Approve"|gettext}

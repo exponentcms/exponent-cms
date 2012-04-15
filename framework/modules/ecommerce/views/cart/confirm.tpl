@@ -113,8 +113,8 @@
                                 {br}
                                 <h4>{'Gift Message'|gettext}</h4>
                                 <strong>{'To:'|gettext} </strong>{$shipping->shippingmethod->to}{br}
-                                <strong>{'From:'|gettext} </strong>{$shipping->shippingmethod->from}{br}
-                                <strong>{'Message:'|gettext} </strong>{$shipping->shippingmethod->message}{br}
+                                <strong>{'From'|gettext}: </strong>{$shipping->shippingmethod->from}{br}
+                                <strong>{'Message'|gettext}: </strong>{$shipping->shippingmethod->message}{br}
                             {/if}
                         </td>
                     </tr>
