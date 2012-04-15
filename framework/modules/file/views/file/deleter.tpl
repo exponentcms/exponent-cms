@@ -24,6 +24,9 @@
     <link rel="stylesheet" type="text/css" href="{$smarty.const.URL_FULL}framework/core/assets/css/common.css" />
     <link rel="stylesheet" type="text/css" href="{$smarty.const.URL_FULL}framework/core/assets/css/admin-global.css" />
     <link rel="stylesheet" type="text/css" href="{$smarty.const.URL_FULL}framework/modules/file/assets/css/filemanager.css" />
+
+    <script type="text/javascript" src="{$smarty.const.YUI3_PATH}yui/yui-min.js"></script>
+    <script type="text/javascript" src="{$smarty.const.PATH_RELATIVE}exponent.js2.php"></script>
 </head>
 <body class="exp-skin">
 <div id="exp-deleter">
