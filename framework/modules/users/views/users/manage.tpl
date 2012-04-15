@@ -81,13 +81,13 @@
             var formatactions = function(elCell, oRecord, oColumn, sData) {
                {/literal}{permissions}{literal}
 
-                     elCell.innerHTML = '<div class="item-actions">';
-                     editstring       = '{/literal}{icon class="edit" action="edituser" id="editstringid" title="Edit this user"|gettext}{literal}';
-                     passwordstring   = '{/literal}{icon class="password" action="change_password" id="passwordstringid" title="Change this users password"|gettext text="Password"|gettext}{literal}';
-                     deletestring     = '{/literal}{icon action="delete" id="deletestringid" title="Delete this user"|gettext onclick="return confirm(\'"|cat:("Are you sure you want to delete this user?"|gettext)|cat:"\');"}{literal}';
-                     editstring     = editstring.replace('editstringid',oRecord._oData.id);
-                     passwordstring = passwordstring.replace('passwordstringid',oRecord._oData.id);
-                     deletestring   = deletestring.replace('deletestringid',oRecord._oData.id);
+                    elCell.innerHTML = '<div class="item-actions">';
+                    editstring       = '{/literal}{icon class="edit" action="edituser" id="editstringid" title="Edit this user"|gettext}{literal}';
+                    passwordstring   = '{/literal}{icon class="password" action="change_password" id="passwordstringid" title="Change this users password"|gettext text="Password"|gettext}{literal}';
+                    deletestring     = '{/literal}{icon action="delete" id="deletestringid" title="Delete this user"|gettext onclick="return confirm(\'"|cat:("Are you sure you want to delete this user?"|gettext)|cat:"\');"}{literal}';
+                    editstring     = editstring.replace('editstringid',oRecord._oData.id);
+                    passwordstring = passwordstring.replace('passwordstringid',oRecord._oData.id);
+                    deletestring   = deletestring.replace('deletestringid',oRecord._oData.id);
 
                     elCell.innerHTML += editstring + passwordstring + deletestring +'</div>';
 
@@ -96,11 +96,11 @@
     
 			// Column definitions
 			var myColumnDefs = [ // sortable:true enables sorting
-			{ key:"id",label:"{/literal}{"Username"|gettext}{literal}",formatter:formatID},
-			{ key:"firstname",label:"{/literal}{"First Name"|gettext}{literal}"},
-			{ key:"lastname",label:"{/literal}{"Last Name"|gettext}{literal}"},
-			{ key:"is_acting_admin",label:"{/literal}{"Is Admin"|gettext}{literal}",formatter:formatActingAdmin},
-			{ label:"Actions",label:"", sortable:false,formatter: formatactions}
+                { key:"id",label:"{/literal}{"Username"|gettext}{literal}",sortable:true,formatter:formatID},
+                { key:"firstname",label:"{/literal}{"First Name"|gettext}{literal}",sortable:true},
+                { key:"lastname",label:"{/literal}{"Last Name"|gettext}{literal}",sortable:true},
+                { key:"is_acting_admin",label:"{/literal}{"Is Admin"|gettext}{literal}",sortable:true,formatter:formatActingAdmin},
+                { key:"Actions",label:"Actions",sortable:false,formatter: formatactions}
 			];
 			// DataSource instance
 			var myDataSource = new YAHOO.util.DataSource(EXPONENT.URL_FULL+"index.php?controller=users&action=getUsersByJSON&json=1&ajax_action=1&filter={/literal}{$filter}{literal}&");
@@ -127,7 +127,7 @@
 				set of variable initializers.
 				var sort, dir, startIndex, results; */
 				
-				var startIndex, results;
+				var sort, dir, startIndex, results;
 				
 				oState = oState || {pagination: null, sortedBy: null};
 				
@@ -135,14 +135,14 @@
 				will properly set the current _sortedBy_ column and the _sortDirection_
 				sort = (oState.sortedBy) ? oState.sortedBy.key : oSelf.getColumnSet().keys[0].getKey();
 				dir = (oState.sortedBy && oState.sortedBy.dir === DataTable.CLASS_DESC) ? "desc" : "asc"; */
-				
+                sort = (oState.sortedBy) ? oState.sortedBy.key : "id";
+                dir = (oState.sortedBy && oState.sortedBy.dir === YAHOO.widget.DataTable.CLASS_DESC) ? "desc" : "asc";
 				startIndex = (oState.pagination) ? oState.pagination.recordOffset : 0;
 				results = (oState.pagination) ? oState.pagination.rowsPerPage : null;
 				
-				
-				return  "results=" 	+ results +
-						"&startIndex=" 	+ startIndex +
-						"&sort=id&dir=asc" +
+				return  "results=" + results +
+						"&startIndex=" + startIndex +
+						"&sort=" + sort + "&dir=" + dir +
 						"&query=" + at.value;
 			}
 			
