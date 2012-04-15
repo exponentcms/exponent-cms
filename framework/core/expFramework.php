@@ -622,7 +622,12 @@ function get_action_views($ctl, $action, $human_readable) {
             }
         }
     }
-    
+
+    // Language-ize the views names
+    foreach ($views as $key=>$value) {
+        $views[$key] = gt($value);
+    }
+
     return $views;
 }
 

@@ -19,5 +19,10 @@
 if (!defined('EXPONENT')) exit('');
 	$classname = $_POST['mod'];
 	$controller = new $classname();
-	echo json_encode($controller->useractions);
+    $actions = $controller->useractions;
+    // Language-ize the action names
+    foreach ($actions as $key=>$value) {
+        $actions[$key] = gt($value);
+    }
+	echo json_encode($actions);
 ?>
