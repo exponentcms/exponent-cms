@@ -158,3 +158,18 @@ table.exp-skin-table {
 	margin:0;
 	padding:0.5em 0.25em;
 }
+
+.yui-skin-sam .yui-dt th a {
+    font-weight: bold !important;
+    color: red !important;
+}
+
+.yui-skin-sam div.yui-dt-liner {
+    *display: inline !important;
+}
+
+.yui-skin-sam .yui-dt-liner {
+    padding: 0.25em 0.5em !important;
+    text-align: left;
+    vertical-align: top;
+}

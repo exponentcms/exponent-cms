@@ -17,7 +17,7 @@
 
 {/css}
 
-<div class="module users manage">
+<div class="module users manage yui-skin-sam">
     <div class="info-header">
         <div class="related-actions">
             {help text="Get Help"|gettext|cat:" "|cat:("Managing Users"|gettext) module="manage-users"}
@@ -82,9 +82,9 @@
                {/literal}{permissions}{literal}
 
                     elCell.innerHTML = '<div class="item-actions">';
-                    editstring       = '{/literal}{icon class="edit" action="edituser" id="editstringid" title="Edit this user"|gettext}{literal}';
-                    passwordstring   = '{/literal}{icon class="password" action="change_password" id="passwordstringid" title="Change this users password"|gettext text="Password"|gettext}{literal}';
-                    deletestring     = '{/literal}{icon action="delete" id="deletestringid" title="Delete this user"|gettext onclick="return confirm(\'"|cat:("Are you sure you want to delete this user?"|gettext)|cat:"\');"}{literal}';
+                    editstring       = '{/literal}{icon img="edit.png" action="edituser" id="editstringid" title="Edit this user"|gettext}{literal}';
+                    passwordstring   = '{/literal}{icon img="password.png" action="change_password" id="passwordstringid" title="Change this users password"|gettext}{literal}';
+                    deletestring     = '{/literal}{icon img="delete.png" action="delete" id="deletestringid" title="Delete this user"|gettext onclick="return confirm(\'"|cat:("Are you sure you want to delete this user?"|gettext)|cat:"\');"}{literal}';
                     editstring     = editstring.replace('editstringid',oRecord._oData.id);
                     passwordstring = passwordstring.replace('passwordstringid',oRecord._oData.id);
                     deletestring   = deletestring.replace('deletestringid',oRecord._oData.id);
@@ -100,7 +100,9 @@
                 { key:"firstname",label:"{/literal}{"First Name"|gettext}{literal}",sortable:true},
                 { key:"lastname",label:"{/literal}{"Last Name"|gettext}{literal}",sortable:true},
                 { key:"is_acting_admin",label:"{/literal}{"Is Admin"|gettext}{literal}",sortable:true,formatter:formatActingAdmin},
+                {/literal}{permissions}{literal}
                 { key:"Actions",label:"Actions",sortable:false,formatter: formatactions}
+                {/literal}{/permissions}{literal}
 			];
 			// DataSource instance
 			var myDataSource = new YAHOO.util.DataSource(EXPONENT.URL_FULL+"index.php?controller=users&action=getUsersByJSON&json=1&ajax_action=1&filter={/literal}{$filter}{literal}&");
