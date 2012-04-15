@@ -87,7 +87,7 @@ function smarty_function_icon($params,&$smarty) {
 	$alt 	= (empty($params['alt'])) ? '' : $params['alt'];
 	$class 	= (empty($params['class'])&&empty($params['img'])) ? $params['action'] : $params['class'];
 	$text 	= (empty($params['text'])) ? '' : $params['text'];
-	$title 	= (empty($params['title'])) ? (empty($text) ? ucfirst($class).' '.gt('this').' '.$smarty->getTemplateVars('modelname').' '.gt('item') : $text) : $params['title'];
+	$title 	= (empty($params['title'])) ? (empty($text) ? gt(ucfirst($class)).' '.gt('this').' '.$smarty->getTemplateVars('modelname').' '.gt('item') : $text) : $params['title'];
 	if (!empty($params['hash'])){
 	    $hash = $params['hash'];
 	    unset($params['hash']);

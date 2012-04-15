@@ -272,7 +272,9 @@ abstract class expController {
         $used_tags = expSorter::sort(array('array'=>$used_tags, 'order'=>'count DESC', 'type'=>'a'));
         if (!empty($this->config['limit'])) $used_tags = array_slice($used_tags,0,$this->config['limit']);
         $order = isset($this->config['order']) ? $this->config['order'] : 'title ASC';
-        $used_tags = expSorter::sort(array('array'=>$used_tags, 'order'=>$order, 'ignore_case'=>true, 'rank'=>($order==='rank')?1:0));
+        if ($order != 'hits') {
+            $used_tags = expSorter::sort(array('array'=>$used_tags, 'order'=>$order, 'ignore_case'=>true, 'rank'=>($order==='rank')?1:0));
+        }
 
         assign_to_template(array('tags'=>$used_tags));
     }

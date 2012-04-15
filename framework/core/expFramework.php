@@ -750,4 +750,14 @@ function gt($s){
     return expLang::gettext($s);
 }
 
+function gtlist($s){
+    $list = '';
+    $phrases = explode(",",$s);
+    foreach ($phrases as $key=>$phrase) {
+        if ($key) $list .= ',';
+        $list .= expLang::gettext(trim($phrase));
+    }
+    return $list;
+}
+
 ?>

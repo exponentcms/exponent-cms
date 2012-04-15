@@ -165,5 +165,11 @@
     gt('Sectional');
     gt('Global');
     gt('Merge');
+    gt('Accessible only to Web Server');
+    gt('World Readable and Writable');
+    gt('Group Readable and Writable');
+    gt('World Read-only');
+    gt('Group Read-only');
+
 
 ?>

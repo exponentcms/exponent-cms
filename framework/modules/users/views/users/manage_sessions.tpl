@@ -62,6 +62,10 @@
 		    </td>
 	    </tr>
 	    <tr></tr>
+        {foreachelse}
+            <tr>
+       		    <td><h3>{br}{'Enable Session Timeout is turned off.  You are not tracking sessions!'|gettext}</h3></td>
+       	    </tr>
 	    {/foreach}
     </table>
 </div>

@@ -4,10 +4,17 @@ Copyright (c) 2004-2012 OIC Group, Inc.
 
 Added / Fixed / changed for 2.0.7
 -----------------------
-# This release focuses on fixing bugs and possibly enhanced (speed/size) initial module loading
+# This release focuses on fixing bugs and enhanced (speed/size) initial module loading
   - incorporates all fixes from v2.0.6 patches
+  - Exponent CMS should work on servers running php v5.4 (v5.2.1 or later required)
   - removes unnecessary (new) unpublish feature from blog
+  - adds publish date feature to filedownloads
+  - better handling of video (and audio) uploads and previews
+  - adds tag list/cloud sorting by # hits and setting limits
   - fixes youtube module to finally handle multiple items (paging, reordering, etc...)
+  - fixes some pagination anomalies associated with multiple pages and sorting
+  - manage users now is sortable with more accurate filters
+  - translation more widely implemented; machine translations updated
   - plus other tweaks, fixes, and features
 
 Added / Fixed / changed for 2.0.6

@@ -192,7 +192,7 @@
                                     {form action=creditTransaction}
                                         {control type="hidden" name="id" value=$order->id}
                                         {control type="text" name="capture_amt" label="Amount to Refund"|gettext value=$order->grand_total}
-                                        {control type="buttongroup" submit="Credit "|gettext}
+                                        {control type="buttongroup" submit="Credit"|gettext}
                                     {/form}
                                 {/if}
                             {/if}

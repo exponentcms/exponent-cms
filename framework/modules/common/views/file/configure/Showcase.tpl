@@ -28,11 +28,11 @@
 {control type="text" label="Listing page image width"|gettext name="listingwidth" value=$config.listingwidth|default:100 size=5}
 
 <h4>{"Portolio landing page"|gettext}</h4>
-{control type="dropdown" name="lpfloat" label="File Display Box Float"|gettext items="No Float,Left,Right" values="No Float,Left,Right" value=$config.lpfloat}
+{control type="dropdown" name="lpfloat" label="File Display Box Float"|gettext items="No Float,Left,Right"|gettextlist values="No Float,Left,Right" value=$config.lpfloat}
 {control type="text" label="Width of Landing Page File Display Box"|gettext name="lpfwidth" value=$config.lpfwidth size=5}
 {control type="text" label="Width of main image"|gettext name="piwidth" value=$config.piwidth|default:100 size=5}
 {control type="text" name="thumb" label="Thumbnail Box Size"|gettext value=$config.thumb|default:100 size=5}
-{control type="radiogroup" columns=2 name="hoverorclick" label="Replace main image on click or hover?"|gettext items="Click,Hover" values="1,2"  default=$config.hoverorclick|default:"1"}
+{control type="radiogroup" columns=2 name="hoverorclick" label="Replace main image on click or hover?"|gettext items="Click,Hover"|gettextlist values="1,2"  default=$config.hoverorclick|default:"1"}
 {control type="text" name="spacing" label="Thumbnail Spacing"|gettext value=$config.spacing|default:10 size=5}
 {control type=text name="quality" label="Thumbnail JPEG Quality"|gettext|cat:" <small>0 - 99. 100 "|cat:("will use actual image without thumbnailing"|gettext|cat:"</small>") value=$config.quality|default:$smarty.const.THUMB_QUALITY size="5"}
 {control type="text" name="tclass" label="Stylesheet class to apply to images"|gettext value=$config.tclass}

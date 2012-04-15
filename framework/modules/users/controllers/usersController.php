@@ -273,7 +273,9 @@ class usersController extends expController {
         //cleans up any old sessions
 		if(SESSION_TIMEOUT_ENABLE == true){	
 			$db->delete('sessionticket','last_active < ' . (time() - SESSION_TIMEOUT));
-		}
+		} else {
+            $db->delete('sessionticket','1');
+        }
 		
 		if (isset($_GET['id']) && $_GET['id'] == 0) {
 			$sessions = $db->selectObjects('sessionticket', "uid<>0");
