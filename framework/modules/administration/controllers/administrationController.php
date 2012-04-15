@@ -35,8 +35,8 @@ class administrationController extends expController {
 	    'toggle'=>'Toggle Settings',
     );
 
-    function displayname() { return "Administration Controls"; }
-    function description() { return "This is the Administration Module"; }
+    function displayname() { return gt("Administration Controls"); }
+    function description() { return gt("This is the Administration Module"); }
     function author() { return "OIC Group, Inc"; }
 
 	public static function install_dbtables() {
@@ -134,6 +134,7 @@ class administrationController extends expController {
         $tables = $db->getTables();
         //eDebug($tables);
 
+		// first the core and 1.0 definitions
 		$coredefs = BASE.'framework/core/definitions';
 		if (is_readable($coredefs)) {
 			$dh = opendir($coredefs);
@@ -146,8 +147,7 @@ class administrationController extends expController {
 
 	    // then search for module definitions
         $moddefs = array(
-            BASE.'themes/'.DISPLAY_THEME_REAL.'/modules',
-//  			BASE.'themes/'.DISPLAY_THEME.'/modules',
+            BASE.'themes/'.DISPLAY_THEME_REAL.'/modules',  // we only want to do this for the set theme, NOT the preview theme
             BASE."framework/modules",
             );
         foreach ($moddefs as $moddef) {

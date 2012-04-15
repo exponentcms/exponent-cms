@@ -34,8 +34,8 @@ class newsController extends expController {
         'showUnpublished'=>'View Unpublished News'
     );
 
-    function displayname() { return "News"; }
-    function description() { return "Use this to display & manage news type content on your site."; }
+    function displayname() { return gt("News"); }
+    function description() { return gt("Use this to display & manage news type content on your site."); }
     function author() { return "OIC Group, Inc"; }
     function isSearchable() { return true; }
     
@@ -91,10 +91,10 @@ class newsController extends expController {
         redirect_to(array('controller'=>'news', 'action'=>'showUnpublished','src'=>$this->params['src']));
     }
     
-    public function configure() {
-        parent::configure();
-        assign_to_template(array('sortopts'=>$this->sortopts));
-    }
+//    public function configure() {
+//        parent::configure();
+//        assign_to_template(array('sortopts'=>$this->sortopts));
+//    }
     
     public function saveConfig() { 
         if (!empty($this->params['aggregate']) || !empty($this->params['pull_rss'])) {

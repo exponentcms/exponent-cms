@@ -27,8 +27,8 @@ class expCommentController extends expController {
     protected $add_permissions = array('approve'=>"Approve Comments");
    	protected $remove_permissions = array('create');
 
-    function displayname() { return "Comments"; }
-    function description() { return "Use this module to add comments to a page."; }
+    function displayname() { return gt("Comments"); }
+    function description() { return gt("Use this module to add comments to a page."); }
     
 	function edit() {
 	    if (empty($this->params['content_id'])) {

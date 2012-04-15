@@ -50,8 +50,8 @@ class importexportController extends expController {
     protected $add_permissions = array('import'=>'Import Data', 'export'=>'Export Data');
      
     function name() { return $this->displayname(); } //for backwards compat with old modules
-    function displayname() { return "Data Import / Export Module"; }
-    function description() { return "Use this module to import and export data from your Exponent website."; }
+    function displayname() { return gt("Data Import / Export Module"); }
+    function description() { return gt("Use this module to import and export data from your Exponent website."); }
     function author() { return "OIC Group, Inc"; }
     function hasSources() { return false; }
     function hasViews() { return true; }

@@ -35,8 +35,8 @@ class photosController extends expController {
         'rss'
     ); // all options: ('aggregation','categories','comments','ealerts','files','module_title','pagination','rss','tags')
 
-    function displayname() { return "Photo Album"; }
-    function description() { return "This module allows you to display and manage images."; }
+    function displayname() { return gt("Photo Album"); }
+    function description() { return gt("This module allows you to display and manage images."); }
     function isSearchable() { return true; }
     
     public function showall() {

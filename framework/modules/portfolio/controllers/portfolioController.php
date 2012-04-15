@@ -34,8 +34,8 @@ class portfolioController extends expController {
         'rss'
     ); // all options: ('aggregation','categories','comments','ealerts','files','module_title','pagination','rss','tags')
 
-    function displayname() { return "Portfolio"; }
-    function description() { return "This module allows you to show off your work portfolio style."; }
+    function displayname() { return gt("Portfolio"); }
+    function description() { return gt("This module allows you to show off your work portfolio style."); }
     function isSearchable() { return true; }
 
     public function showall() {

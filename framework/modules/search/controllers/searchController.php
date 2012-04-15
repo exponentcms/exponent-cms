@@ -40,8 +40,8 @@ class searchController extends expController {
         'tags'
     ); // all options: ('aggregation','categories','comments','ealerts','files','module_title','pagination','rss','tags')
 
-    function displayname() { return "Search Form"; }
-    function description() { return "Add a form to allow users to search for content on your website."; }
+    function displayname() { return gt("Search Form"); }
+    function description() { return gt("Add a form to allow users to search for content on your website."); }
     function hasSources() { return false; }
     function hasContent() { return false; }
 

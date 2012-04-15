@@ -34,8 +34,8 @@ class filedownloadController extends expController {
         'rss'
     ); // all options: ('aggregation','categories','comments','ealerts','files','module_title','pagination','rss','tags')
 
-	function displayname() { return "File Downloads"; }
-	function description() { return " This module lets you put files on your website for users to download."; }
+	function displayname() { return gt("File Downloads"); }
+	function description() { return gt("This module lets you put files on your website for users to download."); }
 	function isSearchable() { return true; }
 	
     function showall() {

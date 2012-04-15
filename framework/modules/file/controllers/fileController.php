@@ -33,8 +33,8 @@ class fileController extends expController {
         'edit_alt'=>'must be logged in'
     );
 
-    function displayname() { return "File Manager"; }
-    function description() { return "Add and manage Exponent Files"; }
+    function displayname() { return gt("File Manager"); }
+    function description() { return gt("Add and manage Exponent Files"); }
     function author() { return "Phillip Ball - OIC Group, Inc"; }
 
     public function manage_fixPaths() {

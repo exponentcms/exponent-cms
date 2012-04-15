@@ -35,8 +35,8 @@ class textController extends expController {
 		'tags'
 	); // all options: ('aggregation','categories','comments','ealerts','files','module_title','pagination','rss','tags')
 
-	function displayname() { return "Text"; }
-	function description() { return "Puts text on your webpages"; }
+	function displayname() { return gt("Text"); }
+	function description() { return gt("Puts text on your webpages"); }
 //	function isSearchable() { return true; }  // this content is pulled by the navigation module since we don't display individual text items
 	
 	public function showall() {

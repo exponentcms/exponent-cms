@@ -38,7 +38,7 @@ function smarty_function_getchromemenu($params,&$smarty) {
 	$module = $params['module'];
 
 	$list = '<ul class="container-menu">';
-	$list .= '<li class="container-info">'.$module->action.' / '.str_replace($module->action.'_','',$module->view).'</li>';
+	$list .= '<li class="container-info">'.gt($module->action).' / '.gt(str_replace($module->action.'_','',$module->view)).'</li>';
 	if (!empty($params['rank']) && expPermissions::check('configure', $cloc)) {
 		$uplink = $router->makeLink(array('module'=>'containermodule','src'=>$cloc->src,'action'=>'order','a'=>$params['rank'] - 2,'b'=>$params['rank'] - 1));
 		$downlink = $router->makeLink(array('module'=>'containermodule','src'=>$cloc->src,'action'=>'order', 'a'=>$params['rank'] - 1,'b'=>$params['rank']));

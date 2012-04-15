@@ -38,8 +38,8 @@ class linksController extends expController {
        ); // all options: ('aggregation','categories','comments','ealerts','files','module_title','pagination','rss','tags')
 
     function requiresConfiguration() { return true; }
-    function displayname() { return "Link Manager"; }
-    function description() { return "Add and manage a list of URLs"; }
+    function displayname() { return gt("Link Manager"); }
+    function description() { return gt("Add and manage a list of URLs"); }
     function author() { return "Phillip Ball - OIC Group, Inc"; }
     function isSearchable() { return true; }
 

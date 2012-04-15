@@ -28,8 +28,8 @@ class motdController extends expController {
         'show'=>'Show Todays Message'
     );
 
-    function displayname() { return "Message of the Day"; }
-    function description() { return "Display a message for a given day of the year."; }
+    function displayname() { return gt("Message of the Day"); }
+    function description() { return gt("Display a message for a given day of the year."); }
     function isSearchable() { return true; }
     
     function show() {

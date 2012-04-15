@@ -38,8 +38,8 @@ class orderController extends expController {
     'createReferenceOrder'=>'Create Reference Order', 'save_reference_order'=>'Save Reference Order'      
     );
 	
-	function displayname() { return "Ecommerce Order Manager"; }
-	function description() { return "Use this module to manage the orders from your ecommerce store."; }
+	function displayname() { return gt("Ecommerce Order Manager"); }
+	function description() { return gt("Use this module to manage the orders from your ecommerce store."); }
 	
 	function showall() {
 	    global $db;

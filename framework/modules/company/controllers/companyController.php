@@ -34,8 +34,8 @@ class companyController extends expController {
         'tags'
     ); // all options: ('aggregation','categories','comments','ealerts','files','module_title','pagination','rss','tags')
 
-	function displayname() { return "Company Listings"; }
-	function description() { return "This module shows company listings"; }
+	function displayname() { return gt("Company Listings"); }
+	function description() { return gt("This module shows company listings"); }
 	function hasSources() { return false; }
 	
 	function showall() {

@@ -26,8 +26,8 @@ class notfoundController extends expController {
     //public $useractions = array('showall'=>'Show all');
     public $add_permissions = array('showall'=>'Showall', 'show'=>'Show');
 
-    function displayname() { return "Not Found Controller"; }
-    function description() { return "This controller handles routing not found pages to the appropriate place."; }
+    function displayname() { return gt("Not Found Controller"); }
+    function description() { return gt("This controller handles routing not found pages to the appropriate place."); }
     function hasSources() { return false; }
     function hasViews() { return false; }
     function hasContent() { return false; }

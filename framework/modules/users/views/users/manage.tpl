@@ -101,7 +101,7 @@
                 { key:"lastname",label:"{/literal}{"Last Name"|gettext}{literal}",sortable:true},
                 { key:"is_acting_admin",label:"{/literal}{"Is Admin"|gettext}{literal}",sortable:true,formatter:formatActingAdmin},
                 {/literal}{permissions}{literal}
-                { key:"Actions",label:"Actions",sortable:false,formatter: formatactions}
+                { key:"Actions",label:"{/literal}{"Actions"|gettext}{literal}",sortable:false,formatter: formatactions}
                 {/literal}{/permissions}{literal}
 			];
 			// DataSource instance

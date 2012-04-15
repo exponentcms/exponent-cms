@@ -24,8 +24,8 @@
 
 class expHTMLEditorController extends expController {
 
-    function displayname() { return "Editors"; }
-    function description() { return "Mostly for CKEditor"; }
+    function displayname() { return gt("Editors"); }
+    function description() { return gt("Mostly for CKEditor"); }
     function author() { return "Phillip Ball"; }
     function hasSources() { return false; }
 	function hasContent() { return false; }

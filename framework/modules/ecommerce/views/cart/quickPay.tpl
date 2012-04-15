@@ -53,7 +53,7 @@
     
     <div class="cartitems info">
         <h2>{'Your cart contents'|gettext}</h2>
-        <p>{'You’ve got'|gettext} <strong>{$order->orderitem|@count}</strong> item{if $order->orderitem|@count > 1}s{/if} {'in your cart.'|gettext} {br}
+        <p>{'You\'ve got'|gettext} <strong>{$order->orderitem|@count}</strong> item{if $order->orderitem|@count > 1}s{/if} {'in your cart.'|gettext} {br}
         <a id="expandcart" href="#" class="fox-link hide">{'Show them?'|gettext}<span></span></a></p>
         <div id="shoppingcartwrapper">
             {chain controller=cart action=show view=show_quickpay_donation_cart}

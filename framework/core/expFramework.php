@@ -484,10 +484,16 @@ function get_config_templates($controller, $loc) {
     
     // get the common configuration files    
     $common_views = find_config_views($commonpaths, $controller->remove_configs);
-    
+    foreach ($common_views as $key=>$value) {
+        $common_views[$key]['name'] = gt($value['name']);
+    }
+
     // get the config views for the module
     $module_views = find_config_views($modpaths);
-    
+    foreach ($module_views as $key=>$value) {
+        $module_views[$key]['name'] = gt($value['name']);
+    }
+
     // look for a config form for this module's current view    
     $controller->loc->mod = expModules::getControllerClassName($controller->loc->mod);
     //check to see if hcview was passed along, indicating a hard-coded module

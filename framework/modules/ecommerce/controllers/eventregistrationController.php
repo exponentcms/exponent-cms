@@ -30,8 +30,8 @@ class eventregistrationController extends expController {
     
     public $add_permissions = array('showall'=>'View Event Registrations','view_registrants'=>'View Event Registrations','export'=>'Export Event Registrations');
 
-    function displayname() { return "Online Event Registration"; }
-    function description() { return "Use this module to manage event registrations on your website"; }
+    function displayname() { return gt("Online Event Registration"); }
+    function description() { return gt("Use this module to manage event registrations on your website"); }
 
     function showall() {
         expHistory::set('viewable', $this->params);

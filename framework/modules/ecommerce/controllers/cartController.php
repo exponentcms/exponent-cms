@@ -27,8 +27,8 @@ class cartController extends expController {
 	//public $useractions = array('show'=>'Display Cart');
 	public $useractions = array();
 
-	function displayname() { return "Ecommerce Shopping Cart"; }
-	function description() { return "This is the cart users will add products from your store to."; }
+	function displayname() { return gt("Ecommerce Shopping Cart"); }
+	function description() { return gt("This is the cart users will add products from your store to."); }
 
 	function addItem() {
         global $router;

@@ -38,8 +38,8 @@ class snippetController extends expController {
    		'tags'
    	); // all options: ('aggregation','categories','comments','ealerts','files','module_title','pagination','rss','tags')
 
-	function displayname() { return "Code Snippets"; }
-	function description() { return "Use this to put snippets of code, i.e. Javascript, embedded video, etc, on your site."; }
+	function displayname() { return gt("Code Snippets"); }
+	function description() { return gt("Use this to put snippets of code, i.e. Javascript, embedded video, etc, on your site."); }
 	
 	public function showall() {
 	    expHistory::set('viewable', $this->params);

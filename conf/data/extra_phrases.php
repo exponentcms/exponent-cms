@@ -161,4 +161,9 @@
     gt('Gift Cards UI');
     gt('Show all Donation Causes');
 
+// other phrases
+    gt('Sectional');
+    gt('Global');
+    gt('Merge');
+
 ?>

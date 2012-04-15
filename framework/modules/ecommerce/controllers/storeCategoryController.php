@@ -23,8 +23,8 @@
 
 class storeCategoryController extends expNestedNodeController {
 	
-	function displayname() { return "Store Category Manager"; }
-	function description() { return "This module is for manageing categories in your store."; }
+	function displayname() { return gt("Store Category Manager"); }
+	function description() { return gt("This module is for manageing categories in your store."); }
 	function author() { return "OIC Group, Inc"; }
 
 	protected $add_permissions = array('fix_categories'=>'to run this action.');

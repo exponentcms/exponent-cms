@@ -36,8 +36,8 @@ class twitterController extends expController {
         'tags'
     ); // all options: ('aggregation','categories','comments','ealerts','files','module_title','pagination','rss','tags')
 
-    function displayname() { return "Twitter"; }
-    function description() { return "Display your tweets just like on Twitter"; }
+    function displayname() { return gt("Twitter"); }
+    function description() { return gt("Display your tweets just like on Twitter"); }
     function author() { return "Jonathan Worent - OIC Group, Inc"; }
     
     public function showall() {

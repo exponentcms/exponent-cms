@@ -25,7 +25,7 @@ class billingController extends expController {
 	public $useractions = array();
     public $add_permissions = array('activate'=>'Activate Payment Options');
     
-	function displayname() { return "Ecommerce Billing Controller"; }
+	function displayname() { return gt("Ecommerce Billing Controller"); }
 	function description() { return ""; }
 	function hasSources() { return false; }
 	

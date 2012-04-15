@@ -35,8 +35,8 @@ class purchaseOrderController extends expController {
     'delete_vendor'=>'Delete vendors',
     );
 	
-	function displayname() { return "Ecommerce Purchase Order Manager"; }
-	function description() { return "Use this module to create and manage purchase orders for your ecommerce store."; }
+	function displayname() { return gt("Ecommerce Purchase Order Manager"); }
+	function description() { return gt("Use this module to create and manage purchase orders for your ecommerce store."); }
 	
 	function manage () {
 	    expHistory::set('viewable', $this->params);

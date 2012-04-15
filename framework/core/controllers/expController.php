@@ -129,19 +129,19 @@ abstract class expController {
 	 * name of module
 	 * @return string
 	 */
-	function displayname() { return "Exponent Base Controller"; }
+	function displayname() { return gt("Exponent Base Controller"); }
+
+    /**
+   	 * description of module
+   	 * @return string
+   	 */
+   	function description() { return gt("This is the base controller that most Exponent modules will inherit from."); }
 
 	/**
 	 * author of module
 	 * @return string
 	 */
 	function author() { return "Adam Kessler @ OIC Group, Inc"; }
-
-	/**
-	 * description of module
-	 * @return string
-	 */
-	function description() { return gt("This is the base controller that most Exponent modules will inherit from."); }
 
 	/**
 	 * does module have sources available?

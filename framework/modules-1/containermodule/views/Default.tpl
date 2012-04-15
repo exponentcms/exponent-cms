@@ -33,7 +33,7 @@
     {if $hasParent == 0 && ($user->isAdmin())}
 	{** top level container module **}
 		<div class="container-chrome">
-			<a href="#" class="trigger" title="Container">{'Container'|gettext} ({if $top->scope == 'top-sectional'}Top{else}{$top->scope}{/if})</a>
+			<a href="#" class="trigger" title="Container">{'Container'|gettext} ({if $top->scope == 'top-sectional'}{'Top'|gettext}{else}{$top->scope|gettext}{/if})</a>
 			<ul class="container-menu">
 			    {if $user->isAdmin()}
     				<li><a href="{link _common=1 action=userperms}" class="user">{"User Permissions"|gettext}</a></li>
@@ -75,7 +75,7 @@
 					{assign var=last value=false}
 				{/if}
 				<div class="container-chrome module-chrome">
-					<a href="#" class="trigger" title="{$container->info.module}">{$container->info.module}</a>
+					<a href="#" class="trigger" title="{$container->info.module|gettext}">{$container->info.module|gettext}</a>
 					{getchromemenu module=$container rank=$i rerank=$rerank last=$last}
 				</div>
 			{/if}

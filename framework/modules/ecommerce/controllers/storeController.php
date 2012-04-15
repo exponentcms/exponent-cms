@@ -68,8 +68,8 @@ class storeController extends expController {
 	'edit_model_alias'=>'Delete model aliases'
     );
      
-    function displayname() { return "e-Commerce Store Front"; }
-    function description() { return "Use this module to display products and categories of you Ecommerce store"; }
+    function displayname() { return gt("e-Commerce Store Front"); }
+    function description() { return gt("Use this module to display products and categories of you Ecommerce store"); }
     function author() { return "OIC Group, Inc"; }
     function isSearchable() { return true; }
     function canImportData() { return true; }

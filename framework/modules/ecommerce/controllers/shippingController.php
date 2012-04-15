@@ -25,7 +25,7 @@ class shippingController extends expController {
 	public $useractions = array();
 	public $add_permissions = array('toggle'=>'Enable/Disable Options');
 
-	function displayname() { return "Ecommerce Shipping Controller"; }
+	function displayname() { return gt("Ecommerce Shipping Controller"); }
 	function description() { return ""; }
 	function hasSources() { return false; }
 	function hasContent() { return false; }

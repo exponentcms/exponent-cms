@@ -19,7 +19,7 @@
 		{if ($permissions.manage == 1 || $permissions.edit == 1 || $permissions.delete == 1 || $permissions.create == 1 || $container->permissions.manage == 1)}
 			<div id="module{$container->id}" class="exp-container-module-wrapper">
 				<div class="container-chrome module-chrome">
-					<a href="#" class="trigger" title="{$container->info.module}">{$container->info.module}</a>
+					<a href="#" class="trigger" title="{$container->info.module|gettext}">{$container->info.module|gettext}</a>
 					{getchromemenu module=$container rank=$i rerank=$rerank last=$last}
 				</div>
 		{/if}

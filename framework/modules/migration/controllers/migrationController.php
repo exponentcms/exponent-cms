@@ -103,13 +103,13 @@ class migrationController extends expController {
 	 * name of module
 	 * @return string
 	 */
-    function displayname() { return "Content Migration Controller"; }
+    function displayname() { return gt("Content Migration Controller"); }
 
 	/**
 	 * description of module
 	 * @return string
 	 */
-    function description() { return "Use this module to pull Exponent 1 style content from your old site."; }
+    function description() { return gt("Use this module to pull Exponent 1 style content from your old site."); }
 
 	/**
 	 * if module has associated sources

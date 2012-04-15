@@ -31,7 +31,7 @@
 	{if $totaldays == 1}
 		<a href="{link module=calendarmodule action=viewmonth time=$start}">{'Events for'|gettext} {$start|format_date:"%B %e, %Y"}</a>
 	{else}
-		<a href="{link module=calendarmodule action=viewmonth time=$start}">{'Events for'|gettext}{' the next '|gettext}{$totaldays} {'days from'|gettext} {$start|format_date:"%B %e, %Y"}</a>
+		<a href="{link module=calendarmodule action=viewmonth time=$start}">{'Events for the next'|gettext} {$totaldays} {'days from'|gettext} {$start|format_date:"%B %e, %Y"}</a>
 	{/if}
 	</h4>
 	<dl class="viewweek">

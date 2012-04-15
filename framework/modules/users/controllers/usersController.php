@@ -36,8 +36,8 @@ class usersController extends expController {
 
     //public $useractions = array('showall'=>'Show all');
 
-    function displayname() { return "User Manager"; }
-    function description() { return "This is the user management module. It allows for creating user, editing user, etc."; }
+    function displayname() { return gt("User Manager"); }
+    function description() { return gt("This is the user management module. It allows for creating user, editing user, etc."); }
     function hasSources() { return false; }
     function hasContent() { return false; }
     
