@@ -20,10 +20,10 @@ if (defined('EXPONENT')) return;
 // bootstrap some exponenty goodness
 include_once('exponent_bootstrap.php');
 
+if (!defined('SYS_SESSION_KEY')) define('SYS_SESSION_KEY',PATH_RELATIVE);
 if (isset($_GET['id'])) {
     // Since bootstrap doesn't setup the session we need to define this
     // otherwise the expFile can't find it's table desc from cache.
-    if (!defined('SYS_SESSION_KEY')) define('SYS_SESSION_KEY',PATH_RELATIVE);
     // Initialize the Database Subsystem
     $db = expDatabase::connect(DB_USER,DB_PASS,DB_HOST.':'.DB_PORT,DB_NAME);
 
