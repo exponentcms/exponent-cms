@@ -31,6 +31,6 @@
 {control type="text" name="oauth_token" label="Access token"|gettext value=$config.oauth_token class=title}
 {control type="text" name="oauth_token_secret" label="Access token secret"|gettext value=$config.oauth_token_secret class=title}
 {control type="text" name="twlimit" label="Number of tweets to show"|gettext size=3 filter=integer value=$config.twlimit|default:20}
-{control type="radiogroup" name="typestatus" label="Pull Tweets from:"|gettext value=$config.typestatus|default:0 items="Home,User,Friends,Mentions,Public"|gettextlist values="0,1,2,3,4"}
+{control type="radiogroup" name="typestatus" label="Pull Tweets from:"|gettext value=$config.typestatus|default:0 items="Home,User,Friends,Mentions,Public"|gettxtlist values="0,1,2,3,4"}
 {control type=checkbox name="showattrib" value=1 label="Show attribution"|gettext|cat:"?" checked=$config.showattrib|default:0}
 {control type=checkbox name="showimage" value=1 label="Show user image"|gettext|cat:"?" checked=$config.showimage|default:0}

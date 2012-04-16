@@ -655,7 +655,7 @@ function get_filedisplay_views() {
             while (($file = readdir($dh)) !== false) {
                 if (is_readable($path.'/'.$file) && substr($file, -4) == '.tpl') {
                     $filename = substr($file, 0, -4);
-                    $views[$filename] = $filename;
+                    $views[$filename] = gt($filename);
                 }
             }
         }
@@ -750,12 +750,19 @@ function gt($s){
     return expLang::gettext($s);
 }
 
-function gtlist($s){
-    $list = '';
-    $phrases = explode(",",$s);
-    foreach ($phrases as $key=>$phrase) {
-        if ($key) $list .= ',';
-        $list .= expLang::gettext(trim($phrase));
+function glist($s){
+    if (is_array($s)) {
+        $list = array();
+        foreach ($s as $key=>$phrase) {
+            $list[$key] = expLang::gettext(trim($phrase));
+        }
+    } else {
+        $list = '';
+        $phrases = explode(",",$s);
+        foreach ($phrases as $key=>$phrase) {
+            if ($key) $list .= ',';
+            $list .= expLang::gettext(trim($phrase));
+        }
     }
     return $list;
 }

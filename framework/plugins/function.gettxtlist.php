@@ -19,25 +19,22 @@
 /**
  * Smarty plugin
  * @package Smarty-Plugins
- * @subpackage Modifier
+ * @subpackage Function
  */
 
 /**
- * Smarty {gettextlist} modifier plugin
+ * Smarty {gettxtlist} function plugin
  *
- * Type:     modifier<br>
- * Name:     gettext<br>
+ * Type:     function<br>
+ * Name:     gettxtlist<br>
  * Purpose:  Replace comma separated list with the chosen language for the text
- * 
- * @param string $str
- * @return string
+ *
+ * @param $params
+ * @param $smarty
  */
-function smarty_modifier_gettextlist($str) {
-    $list = '';
-    $phrases = explode(",",$str);
-    foreach ($phrases as $key=>$phrase) {
-        if ($key) $list .= ',';
-        $list .= expLang::gettext(trim($phrase));
-    }
-    return $list;
+function smarty_function_gettxtlist($params,&$smarty) {
+    echo glist($params['str']);
 }
+
+?>
+

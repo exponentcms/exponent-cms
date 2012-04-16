@@ -28,7 +28,7 @@
 	            {control type="text" name="partner" label="Partner"|gettext value=$calculator->configdata.partner}
 	            {control type="text" name="password" label="Password"|gettext value=$calculator->configdata.password}
 	            {control type="checkbox" name="testmode" label="Enable Test Mode?"|gettext value=1 checked=$calculator->configdata.testmode}
-	            {control type="radiogroup" name="process_mode" label="Processing Mode" items="Authorize and Capture, Authorize Only"|gettextlist values="S,A" default=$calculator->configdata.process_mode}
+	            {control type="radiogroup" name="process_mode" label="Processing Mode" items="Authorize and Capture, Authorize Only"|gettxtlist values="S,A" default=$calculator->configdata.process_mode}
 	        </div>
 	        <div id="tab2">
 	            {control type="checkbox" name="accepted_cards[]" label="Master Card" value="MasterCard"|gettext checked=$calculator->configdata.accepted_cards}

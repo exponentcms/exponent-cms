@@ -359,7 +359,7 @@ class blogController extends expController {
 //            		}
 //
 //                    if (!empty($str)) {
-//                        $metainfo['title'] = gt('Showing all Blog Posts written by ') ."\"" . $str . "\"";
+//                        $metainfo['title'] = gt('Showing all Blog Posts written by') ."\"" . $str . "\"";
 //                        $metainfo['keywords'] = empty($object->meta_keywords) ? SITE_KEYWORDS : $object->meta_keywords;  //FIXME $object not set
 //                        $metainfo['description'] = empty($object->meta_description) ? SITE_DESCRIPTION : $object->meta_description;
 //                    }
@@ -371,7 +371,7 @@ class blogController extends expController {
 //                    $mk = mktime(0, 0, 0, $_REQUEST['month'], 01, $_REQUEST['year']);
 //                    $ts = strftime('%B, %Y',$mk);
 //                    // set the meta info
-//                    $metainfo['title'] = gt('Showing all Blog Posts written in ') . $ts ;
+//                    $metainfo['title'] = gt('Showing all Blog Posts written in') . $ts ;
 //                    $metainfo['keywords'] = empty($object->meta_keywords) ? SITE_KEYWORDS : $object->meta_keywords;  //FIXME $object not set
 //                    $metainfo['description'] = empty($object->meta_description) ? SITE_DESCRIPTION : $object->meta_description;
 //                }

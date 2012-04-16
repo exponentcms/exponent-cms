@@ -56,8 +56,8 @@ if (empty($default_lang)) $default_lang = include(BASE."framework/core/lang/Engl
 // regex for the gettext smarty modifier
 $regex_gettext_mod='/(?<=["\'])((\\\\.|[^\'"])*)(?=["\']\|gettext)/';
 
-// regex for the gettextlist smarty modifier
-$regex_gettextlist_mod='/(?<=["\'])((\\\\.|[^\'"])*)(?=["\']\|gettextlist)/';
+// regex for the gettxtlist smarty modifier
+$regex_gettxtlist_mod='/(?<=["\'])((\\\\.|[^\'"])*)(?=["\']\|gettxtlist)/';
 
 // regex for the gettext smarty function
 $regex_gettext_func='/(?<=gettext str=[\'"])((\\\\.|[^\'"])*)([^}]*)(?=[\'"]\})/';
@@ -65,8 +65,8 @@ $regex_gettext_func='/(?<=gettext str=[\'"])((\\\\.|[^\'"])*)([^}]*)(?=[\'"]\})/
 // regex for the gettext gt shortcut function
 $regex_gt='/(?<=gt\([\'"])((\\\\.|[^\'"])*)(?=[\'"]\))/';
 
-// regex for the gettext gtlist shortcut function
-$regex_gtlist='/(?<=gtlist\([\'"])((\\\\.|[^\'"])*)(?=[\'"]\))/';
+// regex for the gettext glist shortcut function
+$regex_glist='/(?<=glist\([\'"])((\\\\.|[^\'"])*)(?=[\'"]\))/';
 
 // extensions of files, used when going through a directory
 $extensions = array('tpl','php');
@@ -118,14 +118,14 @@ function do_extract($file, $regex, $isalist=false) {
 
 // processes file for assoc strings
 function do_file($file, $fileext) {
-	global $regex_gt, $regex_gettext_mod, $regex_gettextlist_mod, $regex_gettext_func, $regex_gtlist;
+	global $regex_gt, $regex_gettext_mod, $regex_gettxtlist_mod, $regex_gettext_func, $regex_glist;
     if ($fileext == 'tpl') {
         do_extract($file,$regex_gettext_mod);
-        do_extract($file,$regex_gettextlist_mod,true);
+        do_extract($file,$regex_gettxtlist_mod,true);
 //        do_extract($file,$regex_gettext_func);  //FIXME these tend to hold computations and likewise break things?
     } elseif ($fileext == 'php') {
         do_extract($file,$regex_gt);
-        do_extract($file,$regex_gtlist,true);
+        do_extract($file,$regex_glist,true);
     }
 }
 
@@ -166,7 +166,7 @@ for ($ac=1; $ac < $_SERVER['argc']; $ac++) {
         $pi = pathinfo($_SERVER['argv'][$ac]);
 		do_file($_SERVER['argv'][$ac],$pi['extension']);
 	}
-    print "\nCompleted Extracting from ".$total_new." Total Phrases!\n\n";
+    print "\nCompleted Extracting ".$total_new." Total Phrases!\n\n";
 }
 
 ?>

@@ -292,7 +292,7 @@ function smarty_function_control($params,&$smarty) {
             $control = new tagtreecontrol($params);
         } elseif ($params['type'] == 'filedisplay-types') {
             $control = new dropdowncontrol();
-            $control->include_blank = '-- This modules does not use files --';
+            $control->include_blank = gt('-- This modules does not use files --');
             $control->items = get_filedisplay_views();
         } elseif ($params['type'] == 'calendar') {
             $control = new calendarcontrol();

@@ -54,7 +54,7 @@
 	                {control type="checkbox" name="is_available" label="Is this product available?"|gettext value=$record->is_available}
 	                {control type="text" name="availability_note" label="Note to display when product is not available"|gettext value=$record->availability_note}
 	                {control type="radiogroup" name="availability_type" label="Quantity Display"|gettext
-	                    items="Unavailable if out of stock.,Available but shown as backordered if out of stock.,Always available even if out of stock.,Show as \'Call for Price\'."|gettextlist
+	                    items="Unavailable if out of stock.,Available but shown as backordered if out of stock.,Always available even if out of stock.,Show as \'Call for Price\'."|gettxtlist
 	                    values="0,1,2,3"
 	                }
 	            </div-->

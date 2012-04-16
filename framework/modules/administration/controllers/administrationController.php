@@ -852,13 +852,13 @@ class administrationController extends expController {
         $time_format = expSettings::dropdownData('time_format');
         
         // Start of Week
-        $start_of_week = gtlist(expSettings::dropdownData('start_of_week'));
+        $start_of_week = glist(expSettings::dropdownData('start_of_week'));
 
         // File Permissions
-        $file_permisions = gtlist(expSettings::dropdownData('file_permissions'));
+        $file_permisions = glist(expSettings::dropdownData('file_permissions'));
         
         // File Permissions
-        $dir_permissions = gtlist(expSettings::dropdownData('dir_permissions'));
+        $dir_permissions = glist(expSettings::dropdownData('dir_permissions'));
 
         // Homepage Dropdown
         $section_dropdown = navigationmodule::levelDropDownControlArray(0);

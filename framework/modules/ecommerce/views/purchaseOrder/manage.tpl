@@ -30,8 +30,8 @@
     <div class="filters">
         {control type="text" name="dynamicfilter" id="dynamicfilter" label="Filter By Order ID"|gettext}
         {control type="text" name="perpage" label="Items per-page"|gettext size=5 value=$perpage|default:50}
-        {control type="dropdown" name="status" label="Show"|gettext items="All Orders,Only Open Orders, Only Closed Orders"|gettextlist values="All Orders,Only Open Orders, Only Closed Orders"}
-        {control type="dropdown" name="daterange" label="Within"|gettext items="The last Month,The Last 6 months,The Last Year,All Time"|gettextlist values="The last Month,The Last 6 months,The Last Year,All Time"}
+        {control type="dropdown" name="status" label="Show"|gettext items="All Orders,Only Open Orders, Only Closed Orders"|gettxtlist values="All Orders,Only Open Orders, Only Closed Orders"}
+        {control type="dropdown" name="daterange" label="Within"|gettext items="The last Month,The Last 6 months,The Last Year,All Time"|gettxtlist values="The last Month,The Last 6 months,The Last Year,All Time"}
     </div>
 	-->
 	<div class="leftcol">

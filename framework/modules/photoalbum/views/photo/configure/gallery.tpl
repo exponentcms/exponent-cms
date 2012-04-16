@@ -23,4 +23,4 @@
 <h4>{'Detail Page or Lightbox'|gettext}</h4>
 {control type=text name="pa_showall_enlarged" label="Box size for enlarged images"|gettext value=$config.pa_showall_enlarged|default:300 size="5"}
 <h4>{'Detail Page'|gettext}</h4>
-{control type="dropdown" name="pa_float_enlarged" label="Float enlarged image"|gettext items="No Float,Left,Right"|gettextlist values="No Float,Left,Right" value=$config.pa_float_enlarged}
+{control type="dropdown" name="pa_float_enlarged" label="Float enlarged image"|gettext items="No Float,Left,Right"|gettxtlist values="No Float,Left,Right" value=$config.pa_float_enlarged}

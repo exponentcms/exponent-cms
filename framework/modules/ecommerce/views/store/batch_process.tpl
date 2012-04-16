@@ -19,7 +19,7 @@
         <input type="file" name="batch_upload_file" size="50">
         {control type="dropdown" name="order_status_success" label="Set Status of Successfully Captured and Non-Authorized Orders (PayPal, Phone, etc) To:"|gettext size=4 multiple=false items=$order_status default=-1}
         {* control type="dropdown" name="order_status_fail" label="Set Status of Orders That Fail Capture To:"|gettext size=4 multiple=false items=$order_status default=-1 *}
-        {control type="radiogroup" name="email_customer" label="Email Status to Customer?"|gettext flip=true items="No,Yes"|gettextlist}
+        {control type="radiogroup" name="email_customer" label="Email Status to Customer?"|gettext flip=true items="No,Yes"|gettxtlist}
         {control type="buttongroup" submit="Process Orders"|gettext cancel="Cancel"|gettext}
     {/form}
     {br}

@@ -42,6 +42,9 @@ if (empty($default_lang)) $default_lang = include(BASE."framework/core/lang/Engl
 $orig_lang = LANG;
 $lang_list = expLang::langList();
 output("Now Translating ".count($default_lang)." Unique Phrases!\n");
+
+//exit();
+
 foreach ($lang_list as $key=>$value) {
     if ($key!="English - US") {
         output("Now attempting to translate new ".$key." phrases\n");
