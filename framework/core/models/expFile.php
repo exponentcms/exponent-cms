@@ -656,7 +656,8 @@ class expFile extends expRecord {
 	 * is in place, however.
 	 *
 	 * @param string $filename The path/filename of the image.
-	 * @node Model:expFile
+     * @return null|resource|string
+     * @node Model:expFile
 	 */
 	public static function openImageFile($filename) {
 		if (!EXPONENT_HAS_GD) return null;
@@ -690,7 +691,8 @@ class expFile extends expRecord {
 	 *
 	 * @param integer $w Width of the image resource to create (in pixels)
 	 * @param integer $h Height of the image resource to create (in pixels)
-	 * @node Model:expFile
+     * @return null|resource
+     * @node Model:expFile
 	 */
 	public static function imageCreate($w,$h) {
 		if (!EXPONENT_HAS_GD) {
@@ -735,8 +737,9 @@ class expFile extends expRecord {
 	 * there is no GD support compiled into the server.  (In this case, null is returned).
 	 *
 	 * @param string $filename The path/filename of the image to scale.
-	 * @param decimal $scale The scaling factor, as a decimal (i.e. 0.5 for 50%)
-	 * @node Model:expFile
+	 * @param float $scale The scaling factor, as a decimal (i.e. 0.5 for 50%)
+     * @return array|null|resource|string
+     * @node Model:expFile
 	 */
 	public static function imageScaleByPercent($filename,$scale) {
 		$sizeinfo = self::getImageInfo($filename);
@@ -771,7 +774,8 @@ class expFile extends expRecord {
 	 *
 	 * @param string $filename The path/filename of the image to scale.
 	 * @param integer $width The desired width of the scaled image, in pixels.
-	 * @node Model:expFile
+     * @return array|null|resource|string
+     * @node Model:expFile
 	 */
 	public static function imageScaleToWidth($filename,$width) {
 		$sizeinfo = self::getImageInfo($filename);
@@ -805,7 +809,8 @@ class expFile extends expRecord {
 	 *
 	 * @param string $filename The path/filename of the image to scale.
 	 * @param integer $height The desired height of the scaled image, in pixels.
-	 * @node Model:expFile
+     * @return array|null|resource|string
+     * @node Model:expFile
 	 */
 	public static function imageScaleToHeight($filename,$height) {
 		$sizeinfo = self::getImageInfo($filename);
@@ -841,7 +846,8 @@ class expFile extends expRecord {
 	 * @param string $filename The path/filename of the image to scale.
 	 * @param integer $width The maximum width of the scaled image, in pixels.
 	 * @param integer $height The maximum height of the scaled image, in pixels.
-	 * @node Model:expFile
+     * @return array|null|resource|string
+     * @node Model:expFile
 	 */
 	public static function imageScaleToConstraint($filename,$width,$height) {
 		$sizeinfo = self::getImageInfo($filename);
@@ -873,18 +879,20 @@ class expFile extends expRecord {
 		return $thumb;
 	}
 
-	/** exdoc
-	 * Scale an image to a square keeping the image aspect ratio.
-	 * If the image is smaller in either dimension than request square side original is returned.
-	 * Image is first cropped to a square of length smaller of width or height and then resized.
-	 * This is a wrapper around various GD functions, to provide Exponent
-	 * programmers a single point of entry.  It also handles situations where
-	 * there is no GD support compiled into the server.  (In this case, null is returned).
-	 *
-	 * @param string $filename The path/filename of the image to scale.
-	 * @param integer $size The desired side length of the scaled image, in pixels.
-	 * @node Model:expFile
-	 */
+    /** exdoc
+     * Scale an image to a square keeping the image aspect ratio.
+     * If the image is smaller in either dimension than request square side original is returned.
+     * Image is first cropped to a square of length smaller of width or height and then resized.
+     * This is a wrapper around various GD functions, to provide Exponent
+     * programmers a single point of entry.  It also handles situations where
+     * there is no GD support compiled into the server.  (In this case, null is returned).
+     *
+     * @param string $filename The path/filename of the image to scale.
+     * @param $side
+     * @return array|null|resource|string
+     * @internal param int $size The desired side length of the scaled image, in pixels.
+     * @node Model:expFile
+     */
 	public static function imageScaleToSquare($filename,$side) {
 		$sizeinfo = self::getImageInfo($filename);
 		if (!is_array($sizeinfo)) {
@@ -939,7 +947,8 @@ class expFile extends expRecord {
 	 * @param string $filename The path/filename of the image to scale.
 	 * @param integer $width The desired width of the scaled image, in pixels.
 	 * @param integer $height The desired height of the scaled image, in pixels.
-	 * @node Model:expFile
+     * @return array|null|resource|string
+     * @node Model:expFile
 	 */
 	public static function imageScaleManually($filename,$width,$height) {
 		$sizeinfo = self::getImageInfo($filename);
@@ -1041,10 +1050,14 @@ class expFile extends expRecord {
 		}
 	}
 
-	/** exdoc
-	 * @state <b>UNDOCUMENTED</b>
-	 * @node Undocumented
-	 */
+    /** exdoc
+     * @state <b>UNDOCUMENTED</b>
+     * @node Undocumented
+     * @param $w
+     * @param $h
+     * @param $string
+     * @return null|resource
+     */
 	public static function imageCaptcha($w,$h,$string) {
 		$img = self::imageCreate($w,$h);
 		if ($img) {
@@ -1145,14 +1158,17 @@ class expFile extends expRecord {
 		return $results;
 	}
 
-	/** exdoc
-	 * This method creates a directory and all of its parent directories, if they do not exist,
-	 * emulating the behavior of the -p option to mkdir on UNIX systems.  Returns
-	 * a SYS_FILES_* constant, indicating its status.
-	 *
-	 * @param string $dir The directory to create.  This path must be relative to BASE
-	 * @node Model:expFile
-	 */
+    /** exdoc
+     * This method creates a directory and all of its parent directories, if they do not exist,
+     * emulating the behavior of the -p option to mkdir on UNIX systems.  Returns
+     * a SYS_FILES_* constant, indicating its status.
+     *
+     * @param string $dir The directory to create.  This path must be relative to BASE
+     * @param null $mode
+     * @param bool $is_full
+     * @return int
+     * @node Model:expFile
+     */
 	public static function makeDirectory($dir,$mode=null,$is_full=false) {
 		$__oldumask = umask(0);
 		$parentdir = ($is_full ? "/" : BASE); // we will add to parentdir with each directory
@@ -1288,7 +1304,8 @@ class expFile extends expRecord {
 	 *	<br>SYS_FILES_FOUNDFILE - Found destination to be a file, not a directory
 	 *
 	 * @param string $dest Path to the directory to check
-	 * @node Model:expFile
+     * @return int
+     * @node Model:expFile
 	 */
 	public static function canCreate($dest) {
 		if (substr($dest,0,1) == '/') $dest = str_replace(BASE,'',$dest);
@@ -1318,18 +1335,18 @@ class expFile extends expRecord {
 		}
 	}
 
-	/** exdoc
-	 * Copies just the directory structure (including subdirectories) of a given directory.
-	 * Any files in the source directory are ignore, and duplicate copies are made (no symlinks).
-	 *
-	 * @param string $src The directory to copy structure from.  This must be a full path.
-	 * @param string $dest The directory to create duplicate structure in.  If this directory is not empty,
-	 * 	you may run into some problems, because of file/directory conflicts.
-	 * @param $exclude_dirs An array of directory names to exclude.  These names are
-	 * 	path-independent.  Specifying "dir" will ignore all directories and
-	 * 	sub-directories named "dir", regardless of their parent.
-	 * @node Model:expFile
-	 */
+    /** exdoc
+     * Copies just the directory structure (including subdirectories) of a given directory.
+     * Any files in the source directory are ignore, and duplicate copies are made (no symlinks).
+     *
+     * @param string $src The directory to copy structure from.  This must be a full path.
+     * @param string $dest The directory to create duplicate structure in.  If this directory is not empty,
+     *     you may run into some problems, because of file/directory conflicts.
+     * @param array $exclude_dirs An array of directory names to exclude.  These names are
+     *     path-independent.  Specifying "dir" will ignore all directories and
+     *     sub-directories named "dir", regardless of their parent.
+     * @node Model:expFile
+     */
 	public static function copyDirectoryStructure($src,$dest,$exclude_dirs = array()) {
 		$__oldumask = umask(0);
 		if (!file_exists($dest)) mkdir($dest,fileperms($src));

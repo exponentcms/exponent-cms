@@ -314,7 +314,7 @@ class expSession {
 	/** exdoc
 	 * Clears global users session cache
 	 *
-	 * @param Modules $modules If not set, applies to all modules.  If set, will only clear cache for that module
+	 * @param mixed $modules If not set, applies to all modules.  If set, will only clear cache for that module
 	 * @param User $user if not set,applies to all users. If set, will only clear for that user
 	 * @node Subsystems:Sessions
 	 */
@@ -355,7 +355,7 @@ class expSession {
 	/** exdoc
 	 * Clears current users session cache
 	 *
-	 * @param Modules $modules Array or string. If not set, applies to all modules.  If set, will only clear cache for that module
+	 * @param mixed $modules Array or string. If not set, applies to all modules.  If set, will only clear cache for that module
 	 *
 	 * @internal param \User $user if not set,applies to all users. If set, will only clear for that user
 	 * @node Subsystems:Sessions

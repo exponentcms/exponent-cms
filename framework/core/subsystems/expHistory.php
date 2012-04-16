@@ -216,7 +216,6 @@ class expHistory {
 	}
 	
 	/**
-	 * @returns This returns nothing..it forces a header redirect.
 	 *
      * This function will redirect the user to the last page or action not marked
      * as editable.

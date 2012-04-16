@@ -22,7 +22,7 @@
 	<a href="#" onclick="window.open('popup.php?module=calendarmodule&src={$__loc->src}&view=Monthly List&template=printerfriendly&time={$time}','printer','title=no,scrollbars=no,width=800,height=600'); return false">{'Printer-friendly'|gettext}</a>
 	{br}{br}
 	<a class="mngmntlink calendar_mngmntlink" href="{link action=show_view _common=1 view='Monthly List' time=$prev_timestamp}"><img class="mngmnt_icon" style="border:none;" src="{$smarty.const.ICON_RELATIVE|cat:'left.png'}" title="{'Prev'|gettext}" alt="{'Prev'|gettext}" /></a>
-	<b>{$time|format_date:"%B %Y"}</b>
+	<strong>{$time|format_date:"%B %Y"}</strong>
 	<a class="mngmntlink calendar_mngmntlink" href="{link action=show_view _common=1 view='Monthly List' time=$next_timestamp}"><img class="mngmnt_icon" style="border:none;" src="{$smarty.const.ICON_RELATIVE|cat:'right.png'}" title="{'Next'|gettext}" alt="{'next'|gettext}" /></a>
 	{br}{br}
 	{foreach from=$days item=items key=ts}

@@ -64,7 +64,7 @@
                     {edebug var=$item}                </li>
            {foreachelse}
               {if ($catid != 0) }
-                  <div ><i>{'No Links'|gettext}</i></div>
+                  <div ><em>{'No Links'|gettext}</em></div>
               {/if}
            {/foreach}
             </ul>

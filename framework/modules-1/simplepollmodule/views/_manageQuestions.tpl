@@ -41,7 +41,7 @@
 				<a href="{link action=delete_question id=$question->id}" onclick="return confirm('Are you sure you want to delete this question and all associated answers / responses?');"><img class="mngmnt_icon" style="border:none;" src="{$smarty.const.ICON_RELATIVE|cat:'delete.png'}" title="{'Delete'|gettext}" alt="'Delete'|gettext}" /></a>
 			</td></tr>
 		{foreachelse}
-			<tr><td colspan="2" align="center"><i>{'No questions found'|gettext}</i></td></tr>
+			<tr><td colspan="2" align="center"><em>{'No questions found'|gettext}</em></td></tr>
 		{/foreach}
 	</table>
 	<br />

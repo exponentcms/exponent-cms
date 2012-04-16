@@ -20,7 +20,7 @@ class calendarmodule_config {
 	function form($object) {
 		global $db;
 		$tag_collections = $db->selectObjects("tag_collections");
-		foreach ($tag_collections as $tag_collections => $collection) {
+		foreach ($tag_collections as $key => $collection) {
 			$tc_list[$collection->id] = $collection->name;
 		}
 

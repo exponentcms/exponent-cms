@@ -50,6 +50,6 @@
 			</div>
 
 		</div>
-		<?php echo expTheme::foot(); ?>
+		<?php expTheme::foot(); ?>
 	</body>
 </html>

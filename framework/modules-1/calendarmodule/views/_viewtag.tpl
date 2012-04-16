@@ -43,7 +43,7 @@
 	<dl class="viewweek">
 	{foreach from=$items item=item}
 		<dt>
-			<b><a class="itemtitle" href="{link action=view id=$item->id date_id=$item->eventdate->id}">{$item->title}</a></b>
+			<strong><a class="itemtitle" href="{link action=view id=$item->id date_id=$item->eventdate->id}">{$item->title}</a></strong>
 			{permissions}
 				<div class="item-actions">
 					{if $permissions.edit == 1}

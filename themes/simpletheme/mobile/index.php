@@ -36,6 +36,6 @@
 	<div align="center">
 		<b><?php expTheme::module(array("module"=>"navigation","view"=>"Top Nav","source"=>"@top")); ?></b>
 	</div>
-	<?php echo expTheme::foot(); ?>
+	<?php expTheme::foot(); ?>
 </body>
 </html>

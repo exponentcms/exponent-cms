@@ -26,7 +26,7 @@ global $db;
 // first, find the calendar/event data
 $id = intval($_GET['id']);
 if (!$id) {
-    print_r("<br><b><i>Exponent - No Calendar Selected!</i></b><br>");
+    print_r("<br><strong><em>Exponent - No Calendar Selected!</em></strong><br>");
     exit();
 }
 $config = $db->selectObject("calendarmodule_config","id='".$id."'");

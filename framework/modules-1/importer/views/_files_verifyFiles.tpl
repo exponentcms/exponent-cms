@@ -46,7 +46,7 @@
 						{/if}
 					</td>
 				</tr>
-			{foreachelse}<tr><td colspan="2"><i>{'No Files Selected'|gettext}</i></td></tr>
+			{foreachelse}<tr><td colspan="2"><em>{'No Files Selected'|gettext}</em></td></tr>
 			{/foreach}
 		</tbody>
 	</table>

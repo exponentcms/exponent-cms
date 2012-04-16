@@ -19,7 +19,7 @@
 
 <div class="login expanded">
 	{if $smarty.const.PREVIEW_READONLY == 1}
-		<i>{$logged_in_users}:</i><br />
+		<em>{$logged_in_users}:</em><br />
 	{/if}
 	{if $loggedin == true || $smarty.const.PREVIEW_READONLY == 1}
 		{'Welcome'|gettext|cat:', %s'|sprintf:$displayname}<br />
@@ -32,7 +32,7 @@
 	{/if}
 	{if $smarty.const.PREVIEW_READONLY == 1}
 		<hr size="1" />
-		<i>{'Anonymous visitors see this'|gettext}:</i><br />
+		<em>{'Anonymous visitors see this'|gettext}:</em><br />
 	{/if}
 	{if $loggedin == false || $smarty.const.PREVIEW_READONLY == 1}
 		<form method="post" action="{$smarty.const.URL_FULL}index.php">

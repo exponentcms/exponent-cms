@@ -50,7 +50,7 @@
 		{foreach from=$events item=item}
 			{assign var=count value=1}
 			<dt>
-				<span class="eventtitle"><a class="itemtitle calendar_mngmntlink" href="{link action=view id=$item->id date_id=$item->eventdate->id}"><b>{$item->title}</b></a></span>
+				<span class="eventtitle"><a class="itemtitle calendar_mngmntlink" href="{link action=view id=$item->id date_id=$item->eventdate->id}"><strong>{$item->title}</strong></a></span>
 				{permissions}
 					<div class="item-actions">
 						{if $permissions.edit == 1}
@@ -71,7 +71,7 @@
 			</dt>
 			<dd>
 				<p>
-					<span><b>
+					<span><strong>
 						{if $item->is_allday == 1}{'All Day'|gettext}{else}
 							{if $item->eventstart != $item->eventend}
 								{$item->eventstart|format_date:$smarty.const.DISPLAY_TIME_FORMAT} {'to'|gettext} {$item->eventend|format_date:$smarty.const.DISPLAY_TIME_FORMAT}
@@ -79,7 +79,7 @@
 								{$item->eventstart|format_date:$smarty.const.DISPLAY_TIME_FORMAT}
 							{/if}
 						{/if}
-					</b></span>
+					</strong></span>
 					{br}
 					{$item->body|summarize:"html":"paralinks"}
 				</p>

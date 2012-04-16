@@ -818,9 +818,9 @@ class mysql_database extends database {
 	 *
 	 * @param string $table The name of the table to select from.
 	 * @param string $attribute The attribute name to find a maximum value for.
-	 * @param A comma-separated list of fields (or a single field) name, used
+	 * @param string $groupfields A comma-separated list of fields (or a single field) name, used
 	 *    for a GROUP BY clause.  This can also be passed as an array of fields.
-	 * @param $where Optional criteria for narrowing the result set.
+	 * @param string $where Optional criteria for narrowing the result set.
 	 * @return null
 	 */
 	function max($table,$attribute,$groupfields = null,$where = null) {
@@ -842,9 +842,9 @@ class mysql_database extends database {
 	 *
 	 * @param string $table The name of the table to select from.
 	 * @param string $attribute The attribute name to find a minimum value for.
-	 * @param A comma-separated list of fields (or a single field) name, used
+	 * @param string $groupfields A comma-separated list of fields (or a single field) name, used
 	 *    for a GROUP BY clause.  This can also be passed as an array of fields.
-	 * @param $where Optional criteria for narrowing the result set.
+	 * @param string $where Optional criteria for narrowing the result set.
 	 * @return null
 	 */
 	function min($table,$attribute,$groupfields = null,$where = null) {

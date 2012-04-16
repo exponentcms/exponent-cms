@@ -40,7 +40,7 @@
 				{/if}
 			</td></tr>
 		{foreachelse}
-			<tr><td colspan="2" align="center"><i>{'No answers found'|gettext}</i></td></tr>
+			<tr><td colspan="2" align="center"><em>{'No answers found'|gettext}</em></td></tr>
 		{/foreach}
 	</table>
 	<br />

@@ -50,7 +50,7 @@ if (!defined('LANGUAGE')) {
 		</select>
 	</div>
 	<br />
-	<button class="awesome large green" /><?php echo gt('Begin Installation in Selected Language'); ?></button>
+	<button class="awesome large green"><?php echo gt('Begin Installation in Selected Language'); ?></button>
 </form>
 
 <script type="text/javascript">

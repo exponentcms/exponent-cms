@@ -806,7 +806,7 @@ class mysqli_database extends database {
 	 * @param string $attribute The attribute name to find a minimum value for.
 	 * @param string $groupfields A comma-separated list of fields (or a single field) name, used
 	 *    for a GROUP BY clause.  This can also be passed as an array of fields.
-	 * @param $where Optional criteria for narrowing the result set.
+	 * @param string $where Optional criteria for narrowing the result set.
 	 * @return null
 	 */
     function min($table, $attribute, $groupfields = null, $where = null) {

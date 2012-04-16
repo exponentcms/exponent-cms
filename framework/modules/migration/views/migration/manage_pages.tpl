@@ -18,7 +18,7 @@
 {/css}
 
 <div class="module migration manage-pages">
- 	<a class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" href="{link module=migration action=manage_files}"><b>{'Next Step -> Migrate Files'|gettext}</b></a>
+ 	<a class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" href="{link module=migration action=manage_files}"><strong>{'Next Step -> Migrate Files'|gettext}</strong></a>
     {br}{br}<hr />
     <div class="info-header">
         <div class="related-actions">
@@ -58,7 +58,7 @@
 				{/if}
             </td>
             <td>
-                {$page->name} {if ($page->parent == -1)}(<b><em>{'Standalone'|gettext}</em></b>){/if}
+                {$page->name} {if ($page->parent == -1)}(<strong><em>{'Standalone'|gettext}</em></strong>){/if}
             </td>
         </tr>
         {foreachelse}

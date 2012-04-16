@@ -43,7 +43,7 @@ function buildHelp(dbname,username,password,target) {
 
 //-->
 </script>
-<b><?php echo gt('Creating a New Database'); ?></b>
+<strong><?php echo gt('Creating a New Database'); ?></strong>
 
 <div class="bodytext">
 <?php echo gt('Exponent supports both the MySQL database server and the PostGreSQL database server as backends.'); ?>
@@ -81,13 +81,13 @@ function buildHelp(dbname,username,password,target) {
 <a name="mysql"></a>
 <hr size="1" />
 <img src="images/mysql.png" /><br />
-<b><?php echo gt('MySQL Database Creation'); ?></b>
+<strong><?php echo gt('MySQL Database Creation'); ?></strong>
 <br /><br />
 <?php echo gt('If you have access to the database server, and have sufficient privileges to create databases, you can use the following SQL statements to setup the database for Exponent.  Note that you will have to fill in the form above before using these.'); ?>
 <br /><br />
-<b><?php echo gt('Create the Database'); ?></b><br />
+<strong><?php echo gt('Create the Database'); ?></strong><br />
 <textarea id="mysql_create" rows="1" style="width: 100%">(<?php echo gt('fill in the above form and click "Go" to generate SQL'); ?>)</textarea>
-<b><?php echo gt('Grant Database Rights'); ?></b><br />
+<strong><?php echo gt('Grant Database Rights'); ?></strong><br />
 <textarea id="mysql_perms" rows="3" style="width: 100%">(<?php echo gt('fill in the above form and click "Go" to generate SQL'); ?>)</textarea>
 <script type="text/javascript">
 ids.push("mysql_create");
@@ -101,7 +101,7 @@ tpls.push("GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, ALTER, INDEX, DROP to _
 <a name="pgsql"></a>
 <hr size="1" />
 <img src="images/pgsql.gif" /><br />
-<b><?php echo gt('PostGreSQL Database Creation'); ?></b>
+<strong><?php echo gt('PostGreSQL Database Creation'); ?></strong>
 <br /><br />
 <?php echo gt('Because PostGreSQL does not maintain its own set of users like MySQL (and instead relies on system users) you will have to refer to the <a href="http://www.postgresql.org/">online documentation</a> for information on creating new databases and assigning user permissions.'); ?>
 </div>

@@ -70,7 +70,7 @@
 				{assign var=more_events value=1}	
 			{/if}
 		{foreachelse}
-			<li align="center"><i>{'No upcoming events.'|gettext}</i></li>
+			<li align="center"><em>{'No upcoming events.'|gettext}</em></li>
 		{/foreach}
     </ul>
 	<p>

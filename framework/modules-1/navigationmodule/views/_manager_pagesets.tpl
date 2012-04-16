@@ -27,7 +27,7 @@
 		{foreach from=$templates item=t}
 			<tr class="row {cycle values='odd,even'}_row">
 				<td style="padding-left: 10px">
-					<b>{$t->name}</b>
+					<strong>{$t->name}</strong>
 				</td>
 				<td>
 					[ <a href="{link action=view_template id=$t->id}">{'View'|gettext}</a> ]
@@ -36,7 +36,7 @@
 				</td>
 			</tr>
 		{foreachelse}
-			<tr><td><i>{'No pagesets found'|gettext}</i></td></tr>
+			<tr><td><em>{'No pagesets found'|gettext}</em></td></tr>
 		{/foreach}
 	</table>
 </div>

@@ -53,7 +53,7 @@
                         {icon int=$section->id action=groupperms _common=1 img='groupperms.png' title='Assign group permissions for this Page'|gettext text="Group"}
                     </td></tr>
                 {foreachelse}
-                    <tr><td colspan=4><i>{'No standalone pages found'|gettext}</i></td></tr>
+                    <tr><td colspan=4><em>{'No standalone pages found'|gettext}</em></td></tr>
                 {/foreach}
             </tbody>
         </table>

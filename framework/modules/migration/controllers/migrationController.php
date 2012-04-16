@@ -125,7 +125,7 @@ class migrationController extends expController {
 
 	/**
 	 * gather info about all pages in old site for user selection
-	 * @global mysqli_database the exponent database object
+	 * @global \mysqli_database $db the exponent database object
 	 * @return void
 	 */
     public function manage_pages() {
@@ -146,7 +146,7 @@ class migrationController extends expController {
 
 	/**
 	 * copy selected pages over from old site
-	 * @global db the exponent database object
+	 * @global \mysqli_database $db the exponent database object
 	 * @return void
 	 */
     public function migrate_pages() {
@@ -262,7 +262,7 @@ class migrationController extends expController {
 
 	/**
 	 * copy selected file information (not the files themselves) over from old site
-	 * @global db the exponent database object
+	 * @global \mysqli_database $db the exponent database object
 	 * @return void
 	 */
     public function migrate_files() {
@@ -287,7 +287,7 @@ class migrationController extends expController {
 
 	/**
 	 * gather info about all modules in old site for user selection
-	 * @global db the exponent database object
+	 * @global \mysqli_database $db the exponent database object
 	 * @return void
 	 */
     public function manage_content() {
@@ -318,7 +318,7 @@ class migrationController extends expController {
 
 	/**
 	 * copy selected modules and their contents over from old site
-	 * @global db the exponent database object
+	 * @global \mysqli_database $db the exponent database object
 	 * @return void
 	 */
     public function migrate_content() {
@@ -636,7 +636,7 @@ class migrationController extends expController {
 
 	/**
 	 * gather info about all users/groups in old site for user selection
-	 * @global db the exponent database object
+	 * @global \mysqli_database $db the exponent database object
 	 * @return void
 	 */
 	public function manage_users() {
@@ -666,7 +666,7 @@ class migrationController extends expController {
 
 	/**
 	 * copy selected users/groups over from old site
-	 * @global db the exponent database object
+	 * @global \mysqli_database $db the exponent database object
 	 * @return void
 	 */
     public function migrate_users() {
@@ -779,7 +779,7 @@ class migrationController extends expController {
 
 	/**
 	 * main routine to convert old school module data into new controller format
-	 * @global db the exponent database object
+	 * @global \mysqli_database $db the exponent database object
 	 * @param  $iloc
 	 * @param  $module
 	 * @param int $hc
@@ -2006,7 +2006,7 @@ class migrationController extends expController {
 
 	/**
 	 * pull over extra/related data required for old school modules
-	 * @global db the exponent database object
+	 * @global \mysqli_database $db the exponent database object
 	 * @param  $iloc
 	 * @param  $module
 	 * @return bool
@@ -2120,14 +2120,15 @@ class migrationController extends expController {
         return $linked;
     }
 
-	/**
-	 * used to create containers for new modules
-	 * @global db the exponent database object
-	 * @param  $iloc
-	 * @param  $m
-	 * @param bool $linked
-	 * @return void
-	 */
+    /**
+     * used to create containers for new modules
+     * @param $iloc
+     * @param $m
+     * @param bool $linked
+     * @param $newconfig
+     * @global \mysqli_database $db the exponent database object
+     * @return void
+     */
 	private function add_container($iloc,$m,$linked=false,$newconfig) {
         global $db;
 

@@ -81,7 +81,7 @@ if ($db->havedb)
 
 /**
  * dumps the passed variable to screen, but only if in development mode
- * @param  $var the variable to dump
+ * @param mixed $var the variable to dump
  * @param bool $halt if set to true will halt execution
  * @return void
  */
@@ -97,7 +97,7 @@ function eDebug($var, $halt=false){
 
 /**
  * dumps the passed variable to a log, but only if in development mode
- * @param  $var the variable to log
+ * @param mixed $var the variable to log
  * @param string $type the type of entry to record
  * @param string $path the pathname for the log file
  * @param string $minlevel

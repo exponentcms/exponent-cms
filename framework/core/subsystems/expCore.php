@@ -174,7 +174,7 @@ class expCore {
 	 * Decrement the reference counts for a given location.  This is used by the Container Module,
 	 * and probably won't be needed by 95% of the code in Exponent.
 	 *
-	 * @param Location $loc The location object to decrement references for.
+	 * @param object $loc The location object to decrement references for.
 	 * @param integer $section The id of the section that the location exists in.
 	 * @node Subsystems:expCore
 	 */
@@ -189,7 +189,7 @@ class expCore {
 	 * Increment the reference counts for a given location.  This is used by the Container Module,
 	 * and probably won't be needed by 95% of the code in Exponent.
 	 *
-	 * @param Location $loc The location object to increment references for.
+	 * @param object $loc The location object to increment references for.
 	 * @param integer $section The id of the section that the location exists in.
 	 * @node Subsystems:expCore
 	 */

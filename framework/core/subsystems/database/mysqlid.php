@@ -31,29 +31,29 @@ class mysqlid_database extends mysqli_database {
     var $totalQueries = 0;
     var $totalDuration = 0;
 
-	/**
-	 * Make a connection to the Database Server
-	 *
-	 * Takes the supplied credentials (username / password) and tries to
-	 * connect to the server and select the given database.  All the rules
-	 * governing mysqli_connect also govern this method.
-	 *
-	 * @param null $log_file
-	 * @return \mysqlid_database
-	 *
-	 * @internal param string $username The username to connect to the server as.
-	 *
-	 * @internal param string $password The password for $username
-	 *
-	 * @internal param string $hostname The hostname of the database server.  If
-	 *   localhost is specified, a local socket connection will be attempted.
-	 *
-	 * @internal param string $database The name of the database to use.  Multi-database
-	 *   sites are still not yet supported.
-	 *
-	 * @internal param bool $new Whether or not to force the PHP connection function to establish
-	 *   a distinctly new connection handle to the server.
-	 */
+    /**
+     * Make a connection to the Database Server
+     *
+     * Takes the supplied credentials (username / password) and tries to
+     * connect to the server and select the given database.  All the rules
+     * governing mysqli_connect also govern this method.
+     *
+     * @internal param null $log_file
+     * @return \mysqlid_database
+     *
+     * @internal param string $username The username to connect to the server as.
+     *
+     * @internal param string $password The password for $username
+     *
+     * @internal param string $hostname The hostname of the database server.  If
+     *   localhost is specified, a local socket connection will be attempted.
+     *
+     * @internal param string $database The name of the database to use.  Multi-database
+     *   sites are still not yet supported.
+     *
+     * @internal param bool $new Whether or not to force the PHP connection function to establish
+     *   a distinctly new connection handle to the server.
+     */
    
 //   function __construct($log_file = null){
 //        //$log_file==null ? $this->$logFile = BASE . '/tmp/sql.log' : $log_file;
@@ -901,7 +901,7 @@ class mysqlid_database extends mysqli_database {
 	 * @param string $table The name of the table to select from.
 	 * @param string $attribute The attribute name to find a maximum value for.
 	 * @param null $groupfields
-	 * @param $where Optional criteria for narrowing the result set.
+	 * @param string $where Optional criteria for narrowing the result set.
 	 * @return mixed
 	 *
 	 * @internal param \comma $A -separated list of fields (or a single field) name, used
@@ -929,7 +929,7 @@ class mysqlid_database extends mysqli_database {
 	 * @param string $table The name of the table to select from.
 	 * @param string $attribute The attribute name to find a minimum value for.
 	 * @param null $groupfields
-	 * @param $where Optional criteria for narrowing the result set.
+	 * @param string $where Optional criteria for narrowing the result set.
 	 * @return mixed
 	 *
 	 * @internal param \comma $A -separated list of fields (or a single field) name, used

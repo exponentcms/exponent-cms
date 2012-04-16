@@ -72,7 +72,7 @@
 			{/if}
 		{foreachelse}
 			<table cellspacing="0" cellpadding="4" border="1" width="100%">
-				<tr><td align="center"><i>{'No Events'|gettext}</i></td></tr>
+				<tr><td align="center"><em>{'No Events'|gettext}</em></td></tr>
 			</table>
 		{/foreach}
 	</table>

@@ -39,7 +39,7 @@
     </div>
     {if ($config.pio && !$params.is_listing) || !$config.pio}
     <div class="thumb-imgs">
-        {foreach from=$files item=img key=key}<a href="{$img->url}" rel="showcase-{$img->id}" title="{$img->title}" class="image-link" style="margin:{$config.spacing}px;" />{img file_id=$img->id w=$config.thumb h=$config.thumb zc=1 q=$quality|default:75 style="`$imgflot``$spacing`" alt="`$img->alt`" class="`$config.tclass`"}</a>{/foreach}
+        {foreach from=$files item=img key=key}<a href="{$img->url}" rel="showcase-{$img->id}" title="{$img->title}" class="image-link" style="margin:{$config.spacing}px;">{img file_id=$img->id w=$config.thumb h=$config.thumb zc=1 q=$quality|default:75 style="`$imgflot``$spacing`" alt="`$img->alt`" class="`$config.tclass`"}</a>{/foreach}
     </div>
     {/if}
 </div>

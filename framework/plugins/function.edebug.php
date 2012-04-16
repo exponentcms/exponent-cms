@@ -33,7 +33,7 @@
  * @param \Smarty $smarty
  */
 function smarty_function_edebug($params,&$smarty) {
-    echo eDebug($params['var']);
+    eDebug($params['var']);
 }
 
 ?>

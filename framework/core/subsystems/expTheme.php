@@ -76,7 +76,7 @@ class expTheme {
 
     public static function head($config = array()){
     	echo self::headerInfo($config);
-		echo self::advertiseRSS();
+		self::advertiseRSS();
     }
 
 	///** exdoc
@@ -157,7 +157,7 @@ class expTheme {
 	}
 
 	public static function foot($params = array()) {
-		echo self::footerInfo($params);
+		self::footerInfo($params);
 	}
 
     public static function footerInfo($params = array()) {
@@ -527,7 +527,7 @@ class expTheme {
 		}
 	}
 
-    public static function showAction($module, $action, $src="", $params="") {
+    public static function showAction($module, $action, $src="", $params=array()) {
    		global $db, $user;
 
    		$loc = null;
@@ -650,7 +650,7 @@ class expTheme {
      * @param bool   $pickable Whether or not the module is pickable in the Source Picker.
      * @param bool   $hide_menu
      *
-     * @return
+     * @return void
      * @node Subsystems:Theme
      */
 	public static function showSectionalModule($module,$view,$title,$prefix = null, $pickable = false, $hide_menu=false) {

@@ -97,9 +97,9 @@ if (is_readable($upgrade_dir)) {
     }
     echo '</ol>';
     if (isset($_REQUEST['run']) || $i==0) {
-        echo '<button class="awesome large green" />'; echo gt('Finish Upgrade'); echo '</button>';
+        echo '<button class="awesome large green">'; echo gt('Finish Upgrade'); echo '</button>';
     } else {
-        echo '<button class="awesome large green" />'; echo gt('Run Upgrades'); echo '</button>';
+        echo '<button class="awesome large green">'; echo gt('Run Upgrades'); echo '</button>';
     }
     echo '</form>';
 }

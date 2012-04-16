@@ -260,7 +260,7 @@ class navigationmodule {
     /**
      * Returns a flat representation of the full site hierarchy.
      *
-     * @param       $parent top level parent id
+     * @param int   $parent top level parent id
      * @param int   $depth variable to hold level of recursion
      * @param array $ignore_ids array of pages to ignore
      * @param bool  $full include a 'top' level entry
@@ -312,7 +312,7 @@ class navigationmodule {
      * returns all the section's children
      *
      * @static
-     * @param $parent top level parent id
+     * @param int $parent top level parent id
      * @param int $depth variable to hold level of recursion
      * @param array $parents
      *
@@ -388,7 +388,7 @@ class navigationmodule {
      * recursively lists the template hierarchy
      *
      * @static
-     * @param $parent top level parent id
+     * @param int $parent top level parent id
      * @param int $depth variable to hold level of recursion
      *
      * @return array

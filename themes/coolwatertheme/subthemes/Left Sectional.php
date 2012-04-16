@@ -52,6 +52,6 @@
 			    <?php expTheme::module(array("controller"=>"text","action"=>"showall","view"=>"showall","source"=>"@footer")) ?>
 			</div>
 		</div>
-		<?php echo expTheme::foot(); ?>
+		<?php expTheme::foot(); ?>
 	</body>
 </html>

@@ -47,7 +47,7 @@
 		<a class="module-actions calendar_mngmntlink" href="{link action=viewmonth view='Monthly List' time=$prev_timestamp3}" title="{$prev_timestamp3|format_date:"%B %Y"}">{$prev_timestamp3|format_date:"%b"}</a>&nbsp;&nbsp;&laquo;&nbsp;
 		<a class="module-actions calendar_mngmntlink" href="{link action=viewmonth view='Monthly List' time=$prev_timestamp2}" title="{$prev_timestamp2|format_date:"%B %Y"}">{$prev_timestamp2|format_date:"%b"}</a>&nbsp;&nbsp;&laquo;&nbsp;
 		<a class="module-actions calendar_mngmntlink" href="{link action=viewmonth view='Monthly List' time=$prev_timestamp}" title="{$prev_timestamp|format_date:"%B %Y"}">{$prev_timestamp|format_date:"%b"}</a>&nbsp;&nbsp;&laquo;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-		<b>{$time|format_date:"%B %Y"}</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&raquo;&nbsp;&nbsp;
+		<strong>{$time|format_date:"%B %Y"}</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&raquo;&nbsp;&nbsp;
 		<a class="module-actions calendar_mngmntlink" href="{link action=viewmonth view='Monthly List' time=$next_timestamp}" title="{$next_timestamp|format_date:"%B %Y"}">{$next_timestamp|format_date:"%b"}</a>&nbsp;&nbsp;&raquo;&nbsp;
 		<a class="module-actions calendar_mngmntlink" href="{link action=viewmonth view='Monthly List' time=$next_timestamp2}" title="{$next_timestamp2|format_date:"%B %Y"}">{$next_timestamp2|format_date:"%b"}</a>&nbsp;&nbsp;&raquo;&nbsp;
 		<a class="module-actions calendar_mngmntlink" href="{link action=viewmonth view='Monthly List' time=$next_timestamp3}" title="{$next_timestamp3|format_date:"%B %Y"}">{$next_timestamp3|format_date:"%b"}</a>&nbsp;&nbsp;&raquo;

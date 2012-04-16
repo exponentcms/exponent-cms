@@ -85,12 +85,12 @@
 					<input type="checkbox" name="save_sample" value="1" class="checkbox">
 				</td>
 				<td colspan="4" valign="top">
-					<b><label class="label ">{'Save as Sample Content for the'|gettext} '{$smarty.const.DISPLAY_THEME}' {'Theme'|gettext}?</label></b>
+					<strong><label class="label ">{'Save as Sample Content for the'|gettext} '{$smarty.const.DISPLAY_THEME}' {'Theme'|gettext}?</label></strong>
 				</td>
 			</tr>
 			{/if}
 			<tr>
-				<td colspan="3" valign="top"><b>{'File Name Template'|gettext}:</b></td>
+				<td colspan="3" valign="top"><strong>{'File Name Template'|gettext}:</strong></td>
 				<td colspan="2">
 					<input type="text" name="filename" size="20" value="database" />
 				</td>

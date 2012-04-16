@@ -250,10 +250,6 @@ class expRecord {
     *
     * @global object $db
     * @param mixed $params array or Object for table selection
-    *
-    * @return none
-    * @throws none
-    *
     */
     public function build($params=array()) {
         global $db;

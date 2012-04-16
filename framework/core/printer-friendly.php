@@ -35,5 +35,5 @@
 	</div>
 	<?php expTheme::main(); ?>
 </body>
-<?php echo expTheme::foot(); ?>
+<?php expTheme::foot(); ?>
 </html>

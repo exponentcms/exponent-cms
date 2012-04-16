@@ -67,7 +67,7 @@
 				</tr>
 			{/if}
 		{else}
-			{br}{br}<i>{'There are no extra fields defined for this item.'|gettext}</i>
+			{br}{br}<em>{'There are no extra fields defined for this item.'|gettext}</em>
 		{/if} 
 	</table>
 {/if}

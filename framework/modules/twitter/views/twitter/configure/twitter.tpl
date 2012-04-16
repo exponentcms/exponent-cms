@@ -25,7 +25,7 @@
 <p>{'Log in to the Twitter Developer\'s'|gettext} <a href="https://dev.twitter.com/apps" target="_blank">{'website'|gettext}</a> {'with your twitter account.'|gettext}{br}
 {'First create an application which will provide you the Consumer key and secret.'|gettext}{br}
 {'Then you must create an Access token which will give you the Access token settings.'|gettext}{br}
-<b>{'Give your application \'read\' & \'write\' access before requesting a token to also create tweets'|gettext}</b></p>
+<strong>{'Give your application \'read\' & \'write\' access before requesting a token to also create tweets'|gettext}</strong></p>
 {control type="text" name="consumer_key" label="Consumer key"|gettext value=$config.consumer_key class=title}
 {control type="text" name="consumer_secret" label="Consumer secret"|gettext value=$config.consumer_secret class=title}
 {control type="text" name="oauth_token" label="Access token"|gettext value=$config.oauth_token class=title}

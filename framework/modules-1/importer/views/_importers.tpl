@@ -25,7 +25,7 @@
 	<table cellpadding="4" cellspacing="0" border="0" width="100%">
 		{foreach from=$importers item=importer key=impname}
 			<tr>
-				<td class="administration_modmgrheader"><b>{$importer.name}</b> {'by'|gettext|cat:' %s'|sprintf:$importer.author}</td>
+				<td class="administration_modmgrheader"><strong>{$importer.name}</strong> {'by'|gettext|cat:' %s'|sprintf:$importer.author}</td>
 			</tr>
 			<tr>
 				<td class="administration_modmgrbody">
@@ -36,7 +36,7 @@
 			</tr>
 			<tr><td></td></tr>
 		{foreachelse}
-			<tr><td align="center"><i>{'No importers are installed.'|gettext}</i></td></tr>
+			<tr><td align="center"><em>{'No importers are installed.'|gettext}</em></td></tr>
 		{/foreach}
 	</table>
 </div>

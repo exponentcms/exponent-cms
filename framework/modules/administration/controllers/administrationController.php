@@ -630,7 +630,6 @@ class administrationController extends expController {
                                 $parts = explode('/',$key);
                                 $parts[1] = DISPLAY_THEME_REAL;
                                 $file = implode('/',$parts);
-                                $file = $file;
                             } else {
                                 $file = 'themes/'.DISPLAY_THEME_REAL.'/'.str_replace("framework/", "", $key);
                             }
@@ -1020,9 +1019,7 @@ class theme {
 		foreach ($params as $key=>$value) {
 			if ($key[0] == '_') {
 				unset ($params[$key]);
-			} else {
-                $params[$key] = $params[$key];
-            }
+			}
 		}
 		if ($sv != '') {
 			expSettings::saveValues($params, BASE."themes/".$theme."/config_".$sv.".php");

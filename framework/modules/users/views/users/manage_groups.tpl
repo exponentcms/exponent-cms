@@ -45,7 +45,7 @@
 			<tr class="{cycle values="odd,even"}">
 				<td>{$group->name}</td>
 				<td>{$group->description}</td>
-				<td>{if $group->inclusive}<b>{'Default'|gettext}</b>{else}{'Normal'|gettext}{/if}</td>
+				<td>{if $group->inclusive}<strong>{'Default'|gettext}</strong>{else}{'Normal'|gettext}{/if}</td>
 			    <td>
 			        {permissions}
 						<div class="item-actions">

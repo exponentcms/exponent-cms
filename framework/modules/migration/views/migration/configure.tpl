@@ -14,7 +14,7 @@
  *}
 
 <div id="migrationconfig" class="module migration configure">
- 	<a class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" href="{link module=migration action=manage_users}"><b>{'Skip to Next Step -> Migrate Users & Groups'|gettext}</b></a>
+ 	<a class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" href="{link module=migration action=manage_users}"><strong>{'Skip to Next Step -> Migrate Users & Groups'|gettext}</strong></a>
     {br}{br}<hr />
     <div class="info-header">
         <div class="related-actions">

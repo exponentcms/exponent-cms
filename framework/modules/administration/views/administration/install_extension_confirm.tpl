@@ -57,7 +57,7 @@
 			{foreachelse}
 				{assign var=haveFiles value=0}
 				<tr><td colspan="3">
-					<i>{'No files were found in the archive'|gettext}</i>
+					<em>{'No files were found in the archive'|gettext}</em>
 				</td></tr>
 			{/foreach}
 		</tbody>

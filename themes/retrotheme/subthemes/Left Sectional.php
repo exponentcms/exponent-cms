@@ -37,6 +37,6 @@
             <div id="oicinfo"><a href="http://www.oicgroup.net" target="_blank">Website Design</a> and <a href="http://www.oicgroup.net" target="_blank">Website Development</a> by <a href="http://www.oicgroup.net" target="_blank"><strong>Online Innovative Creations</strong></a></div>
 		</div>
 	</div>
-<?php echo expTheme::foot(); ?>
+<?php expTheme::foot(); ?>
 </body>
 </html>

@@ -299,15 +299,15 @@ class Twitter extends expRecord
 		return $return;
 	}
 
-
-	/**
-	 * Make an call to the oAuth
-	 * @todo	refactor me
-	 *
-	 * @return	array
-	 * @param	string $method					The method.
-	 * @param	array[optional] $parameters		The parameters.
-	 */
+    /**
+     * Make an call to the oAuth
+     * @todo    refactor me
+     *
+     * @return    array
+     * @param    string $method                    The method.
+     * @param array|null $parameters [optional] $parameters        The parameters.
+     * @throws TwitterException
+     */
 	private function doOAuthCall($method, array $parameters = null)
 	{
 		try {
@@ -373,25 +373,24 @@ class Twitter extends expRecord
 		}
 	}
 
-
-	/**
-	 * Make the call
-	 *
-	 * @return	string
-	 * @param	string $url						The url to call.
-	 * @param array|null $parameters
-	 * @param bool $authenticate
-	 * @param string $method
-	 * @param null $filePath
-	 * @param bool $expectJSON
-	 * @param bool $returnHeaders
-	 * @internal param $array [optional] $parameters		Optional parameters.
-	 * @internal param $bool [optional] $authenticate	Should we authenticate.
-	 * @internal param $bool [optional] $method			The method to use. Possible values are GET, POST.
-	 * @internal param $string [optional] $filePath		The path to the file to upload.
-	 * @internal param $bool [optional] $expectJSON		Do we expect JSON.
-	 * @internal param $bool [optional] $returnHeaders	Should the headers be returned?
-	 */
+    /**
+     * Make the call
+     *
+     * @return    string
+     * @param    string $url                        The url to call.
+     * @param array|null $parameters
+     * @param bool $authenticate
+     * @param string $method
+     * @param null $filePath
+     * @param bool $expectJSON
+     * @param bool $returnHeaders
+     * @throws TwitterException* @internal param $array [optional] $parameters        Optional parameters.
+     * @internal param $bool [optional] $authenticate    Should we authenticate.
+     * @internal param $bool [optional] $method            The method to use. Possible values are GET, POST.
+     * @internal param $string [optional] $filePath        The path to the file to upload.
+     * @internal param $bool [optional] $expectJSON        Do we expect JSON.
+     * @internal param $bool [optional] $returnHeaders    Should the headers be returned?
+     */
 	private function doCall($url, array $parameters = null, $authenticate = false, $method = 'GET', $filePath = null, $expectJSON = true, $returnHeaders = false)
 	{
 		try {
@@ -605,14 +604,14 @@ class Twitter extends expRecord
 		}
 	}
 
-
-	/**
-	 * Make the call
-	 *
-	 * @return	string
-	 * @param	string $url						The url to call.
-	 * @param	array[optional] $parameters		Optional parameters.
-	 */
+    /**
+     * Make the call
+     *
+     * @return    string
+     * @param    string $url                        The url to call.
+     * @param array|null $parameters [optional] $parameters        Optional parameters.
+     * @throws TwitterException
+     */
 	private function doSearchCall($url, array $parameters = null)
 	{
 		try {
@@ -1028,20 +1027,27 @@ class Twitter extends expRecord
 		return (array) $this->doCall('statuses/user_timeline.json', $parameters);
 	}
 
-
-	/**
-	 * Returns the 20 most recent mentions (status containing @username) for the authenticating user.
-	 * The timeline returned is the equivalent of the one seen when you view your mentions on twitter.com.
-	 *
-	 * @return	array
-	 * @param	string[optional] $sinceId			Returns results with an ID greater than (that is, more recent than) the specified ID.
-	 * @param	string[optional] $maxId				Returns results with an ID less than (that is, older than) or equal to the specified ID.
-	 * @param	int[optional] $count				Specifies the number of records to retrieve. May not be greater than 200.
-	 * @param	int[optional] $page					Specifies the page of results to retrieve.
-	 * @param	bool[optional] $trimUser			When set to either true, each tweet returned in a timeline will include a user object including only the status authors numerical ID. Omit this parameter to receive the complete user object.
-	 * @param	bool[optional] $includeRts			When set to either true, the timeline will contain native retweets (if they exist) in addition to the standard stream of tweets. The output format of retweeted tweets is identical to the representation you see in home_timeline. Note: If you're using the trim_user parameter in conjunction with include_rts, the retweets will still contain a full user object.
-	 * @param	bool[optional] $includeEntities		When set to either true, each tweet will include a node called "entities,". This node offers a variety of metadata about the tweet in a discreet structure, including: user_mentions, urls, and hashtags. While entities are opt-in on timelines at present, they will be made a default component of output in the future.
-	 */
+    /**
+     * Returns the 20 most recent mentions (status containing @username) for the authenticating user.
+     * The timeline returned is the equivalent of the one seen when you view your mentions on twitter.com.
+     *
+     * @return    array
+     * @param null $sinceId
+     * @param null $maxId
+     * @param null $count
+     * @param null $page
+     * @param bool $trimUser
+     * @param bool $includeRts
+     * @param bool $includeEntities
+     * @throws TwitterException
+     * @internal param $string [optional] $sinceId            Returns results with an ID greater than (that is, more recent than) the specified ID.
+     * @internal param $string [optional] $maxId                Returns results with an ID less than (that is, older than) or equal to the specified ID.
+     * @internal param $int [optional] $count                Specifies the number of records to retrieve. May not be greater than 200.
+     * @internal param $int [optional] $page                    Specifies the page of results to retrieve.
+     * @internal param $bool [optional] $trimUser            When set to either true, each tweet returned in a timeline will include a user object including only the status authors numerical ID. Omit this parameter to receive the complete user object.
+     * @internal param $bool [optional] $includeRts            When set to either true, the timeline will contain native retweets (if they exist) in addition to the standard stream of tweets. The output format of retweeted tweets is identical to the representation you see in home_timeline. Note: If you're using the trim_user parameter in conjunction with include_rts, the retweets will still contain a full user object.
+     * @internal param $bool [optional] $includeEntities        When set to either true, each tweet will include a node called "entities,". This node offers a variety of metadata about the tweet in a discreet structure, including: user_mentions, urls, and hashtags. While entities are opt-in on timelines at present, they will be made a default component of output in the future.
+     */
 	public function statusesMentions($sinceId = null, $maxId = null, $count = null, $page = null, $trimUser = false, $includeRts = false, $includeEntities = false)
 	{
 		try {
@@ -1065,18 +1071,24 @@ class Twitter extends expRecord
 		}
 	}
 
-
-	/**
-	 * Returns the 20 most recent retweets posted by the authenticating user.
-	 *
-	 * @return	array
-	 * @param	string[optional] $sinceId			Returns results with an ID greater than (that is, more recent than) the specified ID.
-	 * @param	string[optional] $maxId				Returns results with an ID less than (that is, older than) or equal to the specified ID.
-	 * @param	int[optional] $count				Specifies the number of records to retrieve. May not be greater than 200.
-	 * @param	int[optional] $page					Specifies the page of results to retrieve.
-	 * @param	bool[optional] $trimUser			When set to true each tweet returned in a timeline will include a user object including only the status authors numerical ID. Omit this parameter to receive the complete user object.
-	 * @param	bool[optional] $includeEntities		When set to true each tweet will include a node called "entities,". This node offers a variety of metadata about the tweet in a discreet structure, including: user_mentions, urls, and hashtags.
-	 */
+    /**
+     * Returns the 20 most recent retweets posted by the authenticating user.
+     *
+     * @return    array
+     * @param null $sinceId
+     * @param null $maxId
+     * @param null $count
+     * @param null $page
+     * @param bool $trimUser
+     * @param bool $includeEntities
+     * @throws TwitterException
+     * @internal param $string [optional] $sinceId            Returns results with an ID greater than (that is, more recent than) the specified ID.
+     * @internal param $string [optional] $maxId                Returns results with an ID less than (that is, older than) or equal to the specified ID.
+     * @internal param $int [optional] $count                Specifies the number of records to retrieve. May not be greater than 200.
+     * @internal param $int [optional] $page                    Specifies the page of results to retrieve.
+     * @internal param $bool [optional] $trimUser            When set to true each tweet returned in a timeline will include a user object including only the status authors numerical ID. Omit this parameter to receive the complete user object.
+     * @internal param $bool [optional] $includeEntities        When set to true each tweet will include a node called "entities,". This node offers a variety of metadata about the tweet in a discreet structure, including: user_mentions, urls, and hashtags.
+     */
 	public function statusesRetweetedByMe($sinceId = null, $maxId = null, $count = null, $page = null, $trimUser = false, $includeEntities = false)
 	{
 		try{
@@ -1099,18 +1111,24 @@ class Twitter extends expRecord
 		}
 	}
 
-
-	/**
-	 * Returns the 20 most recent retweets posted by users the authenticating user follow.
-	 *
-	 * @return	array
-	 * @param	string[optional] $sinceId			Returns results with an ID greater than (that is, more recent than) the specified ID.
-	 * @param	string[optional] $maxId				Returns results with an ID less than (that is, older than) or equal to the specified ID.
-	 * @param	int[optional] $count				Specifies the number of records to retrieve. May not be greater than 200.
-	 * @param	int[optional] $page					Specifies the page of results to retrieve.
-	 * @param	bool[optional] $trimUser			When set to true each tweet returned in a timeline will include a user object including only the status authors numerical ID. Omit this parameter to receive the complete user object.
-	 * @param	bool[optional] $includeEntities		When set to true each tweet will include a node called "entities,". This node offers a variety of metadata about the tweet in a discreet structure, including: user_mentions, urls, and hashtags.
-	 */
+    /**
+     * Returns the 20 most recent retweets posted by users the authenticating user follow.
+     *
+     * @return    array
+     * @param null $sinceId
+     * @param null $maxId
+     * @param null $count
+     * @param null $page
+     * @param bool $trimUser
+     * @param bool $includeEntities
+     * @throws TwitterException
+     * @internal param $string [optional] $sinceId            Returns results with an ID greater than (that is, more recent than) the specified ID.
+     * @internal param $string [optional] $maxId                Returns results with an ID less than (that is, older than) or equal to the specified ID.
+     * @internal param $int [optional] $count                Specifies the number of records to retrieve. May not be greater than 200.
+     * @internal param $int [optional] $page                    Specifies the page of results to retrieve.
+     * @internal param $bool [optional] $trimUser            When set to true each tweet returned in a timeline will include a user object including only the status authors numerical ID. Omit this parameter to receive the complete user object.
+     * @internal param $bool [optional] $includeEntities        When set to true each tweet will include a node called "entities,". This node offers a variety of metadata about the tweet in a discreet structure, including: user_mentions, urls, and hashtags.
+     */
 	public function statusesRetweetedToMe($sinceId = null, $maxId = null, $count = null, $page = null, $trimUser = false, $includeEntities = false)
 	{
 		try{
@@ -1133,18 +1151,24 @@ class Twitter extends expRecord
 		}
 	}
 
-
-	/**
-	 * Returns the 20 most recent tweets of the authenticated user that have been retweeted by others.
-	 *
-	 * @return	array
-	 * @param	string[optional] $sinceId			Returns results with an ID greater than (that is, more recent than) the specified ID.
-	 * @param	string[optional] $maxId				Returns results with an ID less than (that is, older than) or equal to the specified ID.
-	 * @param	int[optional] $count				Specifies the number of records to retrieve. May not be greater than 200.
-	 * @param	int[optional] $page					Specifies the page of results to retrieve.
-	 * @param	bool[optional] $trimUser			When set to true each tweet returned in a timeline will include a user object including only the status authors numerical ID. Omit this parameter to receive the complete user object.
-	 * @param	bool[optional] $includeEntities		When set to true each tweet will include a node called "entities,". This node offers a variety of metadata about the tweet in a discreet structure, including: user_mentions, urls, and hashtags.
-	 */
+    /**
+     * Returns the 20 most recent tweets of the authenticated user that have been retweeted by others.
+     *
+     * @return    array
+     * @param null $sinceId
+     * @param null $maxId
+     * @param null $count
+     * @param null $page
+     * @param bool $trimUser
+     * @param bool $includeEntities
+     * @throws TwitterException
+     * @internal param $string [optional] $sinceId            Returns results with an ID greater than (that is, more recent than) the specified ID.
+     * @internal param $string [optional] $maxId                Returns results with an ID less than (that is, older than) or equal to the specified ID.
+     * @internal param $int [optional] $count                Specifies the number of records to retrieve. May not be greater than 200.
+     * @internal param $int [optional] $page                    Specifies the page of results to retrieve.
+     * @internal param $bool [optional] $trimUser            When set to true each tweet returned in a timeline will include a user object including only the status authors numerical ID. Omit this parameter to receive the complete user object.
+     * @internal param $bool [optional] $includeEntities        When set to true each tweet will include a node called "entities,". This node offers a variety of metadata about the tweet in a discreet structure, including: user_mentions, urls, and hashtags.
+     */
 	public function statusesReweetsOfMe($sinceId = null, $maxId = null, $count = null, $page = null, $trimUser = false, $includeEntities = false)
 	{
 		try {
@@ -1258,16 +1282,18 @@ class Twitter extends expRecord
 		return (array) $this->doCall('statuses/retweet/' . $id . '.json', $parameters, true, 'POST');
 	}
 
-
-	/**
-	 * Returns up to 100 of the first retweets of a given tweet.
-	 *
-	 * @return	array
-	 * @param	string $id							The numerical ID of the desired status.
-	 * @param	int[optional] $count				Specifies the number of records to retrieve. May not be greater than 100.
-	 * @param	bool[optional] $trimUser			When set to true each tweet returned in a timeline will include a user object including only the status authors numerical ID. Omit this parameter to receive the complete user object.
-	 * @param	bool[optional] $includeEntities		When set to true each tweet will include a node called "entities,". This node offers a variety of metadata about the tweet in a discreet structure, including: user_mentions, urls, and hashtags.
-	 */
+    /**
+     * Returns up to 100 of the first retweets of a given tweet.
+     *
+     * @return    array
+     * @param    string $id                            The numerical ID of the desired status.
+     * @param    int[optional] $count                Specifies the number of records to retrieve. May not be greater than 100.
+     * @param bool $trimUser
+     * @param bool $includeEntities
+     * @throws TwitterException
+     * @internal param $bool [optional] $trimUser            When set to true each tweet returned in a timeline will include a user object including only the status authors numerical ID. Omit this parameter to receive the complete user object.
+     * @internal param $bool [optional] $includeEntities        When set to true each tweet will include a node called "entities,". This node offers a variety of metadata about the tweet in a discreet structure, including: user_mentions, urls, and hashtags.
+     */
 	public function statusesRetweets($id, $count = null, $trimUser = false, $includeEntities = false)
 	{
 		try {
@@ -1287,17 +1313,21 @@ class Twitter extends expRecord
 		}
 	}
 
-
-	/**
-	 * Show user objects of up to 100 members who retweeted the status.
-	 *
-	 * @return	array
-	 * @param	string $id							The numerical ID of the desired status.
-	 * @param	int[optional] $count				Specifies the number of records to retrieve. May not be greater than 200.
-	 * @param	int[optional] $page					Specifies the page of results to retrieve.
-	 * @param	bool[optional] $trimUser			When set to true each tweet returned in a timeline will include a user object including only the status authors numerical ID. Omit this parameter to receive the complete user object.
-	 * @param	bool[optional] $includeEntities		When set to true each tweet will include a node called "entities,". This node offers a variety of metadata about the tweet in a discreet structure, including: user_mentions, urls, and hashtags.
-	 */
+    /**
+     * Show user objects of up to 100 members who retweeted the status.
+     *
+     * @return    array
+     * @param    string $id                            The numerical ID of the desired status.
+     * @param null $count
+     * @param null $page
+     * @param bool $trimUser
+     * @param bool $includeEntities
+     * @throws TwitterException
+     * @internal param $int [optional] $count                Specifies the number of records to retrieve. May not be greater than 200.
+     * @internal param $int [optional] $page                    Specifies the page of results to retrieve.
+     * @internal param $bool [optional] $trimUser            When set to true each tweet returned in a timeline will include a user object including only the status authors numerical ID. Omit this parameter to receive the complete user object.
+     * @internal param $bool [optional] $includeEntities        When set to true each tweet will include a node called "entities,". This node offers a variety of metadata about the tweet in a discreet structure, including: user_mentions, urls, and hashtags.
+     */
 	public function statusesIdRetweetedBy($id, $count = null, $page = null, $trimUser = false, $includeEntities = false)
 	{
 		try {
@@ -1318,17 +1348,21 @@ class Twitter extends expRecord
 		}
 	}
 
-
-	/**
-	 * Show user ids of up to 100 users who retweeted the status.
-	 *
-	 * @return	array
-	 * @param	string $id							The numerical ID of the desired status.
-	 * @param	int[optional] $count				Specifies the number of records to retrieve. May not be greater than 200.
-	 * @param	int[optional] $page					Specifies the page of results to retrieve.
-	 * @param	bool[optional] $trimUser			When set to true each tweet returned in a timeline will include a user object including only the status authors numerical ID. Omit this parameter to receive the complete user object.
-	 * @param	bool[optional] $includeEntities		When set to true each tweet will include a node called "entities,". This node offers a variety of metadata about the tweet in a discreet structure, including: user_mentions, urls, and hashtags.
-	 */
+    /**
+     * Show user ids of up to 100 users who retweeted the status.
+     *
+     * @return    array
+     * @param    string $id                            The numerical ID of the desired status.
+     * @param null $count
+     * @param null $page
+     * @param bool $trimUser
+     * @param bool $includeEntities
+     * @throws TwitterException
+     * @internal param $int [optional] $count                Specifies the number of records to retrieve. May not be greater than 200.
+     * @internal param $int [optional] $page                    Specifies the page of results to retrieve.
+     * @internal param $bool [optional] $trimUser            When set to true each tweet returned in a timeline will include a user object including only the status authors numerical ID. Omit this parameter to receive the complete user object.
+     * @internal param $bool [optional] $includeEntities        When set to true each tweet will include a node called "entities,". This node offers a variety of metadata about the tweet in a discreet structure, including: user_mentions, urls, and hashtags.
+     */
 	public function statusesIdRetweetedByIds($id, $count = null, $page = null, $trimUser = false, $includeEntities = false)
 	{
 		try {
@@ -1351,15 +1385,19 @@ class Twitter extends expRecord
 
 
 // User resources
-	/**
-	 * Returns extended information of a given user, specified by ID or screen name as per the required id parameter.
-	 * The author's most recent status will be returned inline.
-	 *
-	 * @return	array
-	 * @param	string[optional] $userId			Specfies the ID of the user for whom to return results for. Helpful for disambiguating when a valid user ID is also a valid screen name.
-	 * @param	string[optional] $screenName		Specfies the screen name of the user for whom to return results for. Helpful for disambiguating when a valid screen name is also a user ID.
-	 * @param	bool[optional] $includeEntities		When set to true each tweet will include a node called "entities,". This node offers a variety of metadata about the tweet in a discreet structure, including: user_mentions, urls, and hashtags.
-	 */
+    /**
+     * Returns extended information of a given user, specified by ID or screen name as per the required id parameter.
+     * The author's most recent status will be returned inline.
+     *
+     * @return    array
+     * @param null $userId
+     * @param null $screenName
+     * @param bool $includeEntities
+     * @throws TwitterException
+     * @internal param $string [optional] $userId            Specfies the ID of the user for whom to return results for. Helpful for disambiguating when a valid user ID is also a valid screen name.
+     * @internal param $string [optional] $screenName        Specfies the screen name of the user for whom to return results for. Helpful for disambiguating when a valid screen name is also a user ID.
+     * @internal param $bool [optional] $includeEntities        When set to true each tweet will include a node called "entities,". This node offers a variety of metadata about the tweet in a discreet structure, including: user_mentions, urls, and hashtags.
+     */
 	public function usersShow($userId = null, $screenName = null, $includeEntities = false)
 	{
 		try {
@@ -1379,16 +1417,19 @@ class Twitter extends expRecord
 		}
 	}
 
-
-	/**
-	 * Return up to 100 users worth of extended information, specified by either ID, screen name, or combination of the two.
-	 * The author's most recent status (if the authenticating user has permission) will be returned inline.
-	 *
-	 * @return	array
-	 * @param	mixed[optional] $userIds			An array of user IDs, up to 100 in total.
-	 * @param	mixed[optional] $screenNames		An array of screen names, up to 100 in total.
-	 * @param	bool[optional] $includeEntities		When set to true each tweet will include a node called "entities,". This node offers a variety of metadata about the tweet in a discreet structure, including: user_mentions, urls, and hashtags.
-	 */
+    /**
+     * Return up to 100 users worth of extended information, specified by either ID, screen name, or combination of the two.
+     * The author's most recent status (if the authenticating user has permission) will be returned inline.
+     *
+     * @return    array
+     * @param null $userIds
+     * @param null $screenNames
+     * @param bool $includeEntities
+     * @throws TwitterException
+     * @internal param $mixed [optional] $userIds            An array of user IDs, up to 100 in total.
+     * @internal param $mixed [optional] $screenNames        An array of screen names, up to 100 in total.
+     * @internal param $bool [optional] $includeEntities        When set to true each tweet will include a node called "entities,". This node offers a variety of metadata about the tweet in a discreet structure, including: user_mentions, urls, and hashtags.
+     */
 	public function usersLookup($userIds = null, $screenNames = null, $includeEntities = false)
 	{
 		try {
@@ -1459,17 +1500,18 @@ class Twitter extends expRecord
 		return (array) $this->doCall('users/suggestions/' . (string) $slug . '.json');
 	}
 
-
-	/**
-	 * Access the profile image in various sizes for the user with the indicated screen_name. If no size is provided the normal image is returned.
-	 * This method return an URL to the actual image resource.
-	 * This method should only be used by application developers to lookup or check the profile image URL for a user.
-	 * This method must not be used as the image source URL presented to users of your application.
-	 *
-	 * @return	string
-	 * @param	string $screenName			The screen name of the user for whom to return results for. Helpful for disambiguating when a valid screen name is also a user ID.
-	 * @param	string[optional] $size		Specifies the size of image to fetch. Not specifying a size will give the default, normal size of 48px by 48px. Valid options include: bigger (73x73px), normal (48x48px), mini (24x24px).
-	 */
+    /**
+     * Access the profile image in various sizes for the user with the indicated screen_name. If no size is provided the normal image is returned.
+     * This method return an URL to the actual image resource.
+     * This method should only be used by application developers to lookup or check the profile image URL for a user.
+     * This method must not be used as the image source URL presented to users of your application.
+     *
+     * @return    string
+     * @param    string $screenName            The screen name of the user for whom to return results for. Helpful for disambiguating when a valid screen name is also a user ID.
+     * @param string $size
+     * @throws TwitterException
+     * @internal param $string [optional] $size        Specifies the size of image to fetch. Not specifying a size will give the default, normal size of 48px by 48px. Valid options include: bigger (73x73px), normal (48x48px), mini (24x24px).
+     */
 	public function usersProfileImage($screenName, $size = 'normal')
 	{
 		try {
@@ -1616,15 +1658,18 @@ class Twitter extends expRecord
 
 
 // List resources
-	/**
-	 * Creates a new list for the authenticated user. Accounts are limited to 20 lists.
-	 *
-	 * @return	array
-	 * @param	string $user					The user.
-	 * @param	string $name					The name of the list you are creating.
-	 * @param	string[optional] $mode			Whether your list is public or private. Values can be public or private. Lists are public by default if no mode is specified.
-	 * @param	string[optional] $description	The description of the list you are creating.
-	 */
+    /**
+     * Creates a new list for the authenticated user. Accounts are limited to 20 lists.
+     *
+     * @return    array
+     * @param    string $user                    The user.
+     * @param    string $name                    The name of the list you are creating.
+     * @param null $mode
+     * @param null $description
+     * @throws TwitterException
+     * @internal param $string [optional] $mode            Whether your list is public or private. Values can be public or private. Lists are public by default if no mode is specified.
+     * @internal param $string [optional] $description    The description of the list you are creating.
+     */
 	public function userListsCreate($user, $name, $mode = null, $description = null)
 	{
 		try {
@@ -1677,17 +1722,20 @@ class Twitter extends expRecord
 		return (array) $this->doCall((string) $user . '/lists/' . (string) $id . '.json', null, true);
 	}
 
-
-	/**
-	 * Updates the specified list.
-	 *
-	 * @return	array
-	 * @param	string $user					The user.
-	 * @param	string $id						The id of the list.
-	 * @param	string[optional] $name			The name of the list you are creating.
-	 * @param	string[optional] $mode			Whether your list is public or private. Values can be public or private. Lists are public by default if no mode is specified.
-	 * @param	string[optional] $description	The description of the list you are creating.
-	 */
+    /**
+     * Updates the specified list.
+     *
+     * @return    array
+     * @param    string $user                    The user.
+     * @param    string $id                        The id of the list.
+     * @param null $name
+     * @param null $mode
+     * @param null $description
+     * @throws TwitterException
+     * @internal param $string [optional] $name            The name of the list you are creating.
+     * @internal param $string [optional] $mode            Whether your list is public or private. Values can be public or private. Lists are public by default if no mode is specified.
+     * @internal param $string [optional] $description    The description of the list you are creating.
+     */
 	public function userListsIdUpdate($user, $id, $name = null, $mode = null, $description = null)
 	{
 		try {
@@ -1709,19 +1757,24 @@ class Twitter extends expRecord
 		}
 	}
 
-
-	/**
-	 * Show tweet timeline for members of the specified list.
-	 *
-	 * @return	array
-	 * @param	string $user						The user.
-	 * @param	string $id							The id of the list.
-	 * @param	string[optional] $sinceId			Returns results with an ID greater than (that is, more recent than) the specified ID.
-	 * @param	string[optional] $maxId				Returns results with an ID less than (that is, older than) or equal to the specified ID.
-	 * @param	int[optional] $count				Specifies the number of records to retrieve. May not be greater than 200.
-	 * @param	int[optional] $page					Specifies the page of results to retrieve.
-	 * @param	bool[optional] $includeEntities		When set to true each tweet will include a node called "entities,". This node offers a variety of metadata about the tweet in a discreet structure, including: user_mentions, urls, and hashtags.
-	 */
+    /**
+     * Show tweet timeline for members of the specified list.
+     *
+     * @return    array
+     * @param    string $user                        The user.
+     * @param    string $id                            The id of the list.
+     * @param null $sinceId
+     * @param null $maxId
+     * @param null $count
+     * @param null $page
+     * @param bool $includeEntities
+     * @throws TwitterException
+     * @internal param $string [optional] $sinceId            Returns results with an ID greater than (that is, more recent than) the specified ID.
+     * @internal param $string [optional] $maxId                Returns results with an ID less than (that is, older than) or equal to the specified ID.
+     * @internal param $int [optional] $count                Specifies the number of records to retrieve. May not be greater than 200.
+     * @internal param $int [optional] $page                    Specifies the page of results to retrieve.
+     * @internal param $bool [optional] $includeEntities        When set to true each tweet will include a node called "entities,". This node offers a variety of metadata about the tweet in a discreet structure, including: user_mentions, urls, and hashtags.
+     */
 	public function userListsIdStatuses($user, $id, $sinceId = null, $maxId = null, $count = null, $page = null, $includeEntities = false)
 	{
 		try {
@@ -1819,16 +1872,18 @@ class Twitter extends expRecord
 		return (array) $this->doCall((string) $user . '/' . (string) $id . '/members.json', $parameters, true, 'POST');
 	}
 
-
-	/**
-	 * Adds multiple members to a list, by specifying a comma-separated list of member ids or screen names. The authenticated user must own the list to be able to add members to it. Lists are limited to having 500 members, and you are limited to adding up to 100 members to a list at a time with this method.
-	 *
-	 * @return	array
-	 * @param	string $user					The user.
-	 * @param	string $id						The id of the list.
-	 * @param	mixed[optional] $userIds		An array of user IDs, up to 100 in total.
-	 * @param	mixed[optional] $screenNames	An array of screen names, up to 100 in total.
-	 */
+    /**
+     * Adds multiple members to a list, by specifying a comma-separated list of member ids or screen names. The authenticated user must own the list to be able to add members to it. Lists are limited to having 500 members, and you are limited to adding up to 100 members to a list at a time with this method.
+     *
+     * @return    array
+     * @param    string $user                    The user.
+     * @param    string $id                        The id of the list.
+     * @param null $userIds
+     * @param null $screenNames
+     * @throws TwitterException
+     * @internal param $mixed [optional] $userIds        An array of user IDs, up to 100 in total.
+     * @internal param $mixed [optional] $screenNames    An array of screen names, up to 100 in total.
+     */
 	public function userListMembersCreateAll($user, $id, $userIds = null, $screenNames = null)
 	{
 		try {
@@ -1870,16 +1925,16 @@ class Twitter extends expRecord
 		return (array) $this->doCall((string) $user . '/' . (string) $id . '/members.json', $parameters, true, 'POST');
 	}
 
-
-	/**
-	 * Check if a user is a member of the specified list.
-	 *
-	 * @return	mixed
-	 * @param	string $user						The user.
-	 * @param	string $id							The id of the list.
-	 * @param	string $userId						Specfies the ID of the user for whom to return results for.
-	 * @param	bool[optional] $includeEntities		When set to true each tweet will include a node called "entities,". This node offers a variety of metadata about the tweet in a discreet structure, including: user_mentions, urls, and hashtags.
-	 */
+    /**
+     * Check if a user is a member of the specified list.
+     *
+     * @return    mixed
+     * @param    string $user                        The user.
+     * @param    string $id                            The id of the list.
+     * @param    string $userId                        Specfies the ID of the user for whom to return results for.
+     * @param bool $includeEntities [optional] $includeEntities        When set to true each tweet will include a node called "entities,". This node offers a variety of metadata about the tweet in a discreet structure, including: user_mentions, urls, and hashtags.
+     * @throws TwitterException
+     */
 	public function userListMembersId($user, $id, $userId, $includeEntities = false)
 	{
 		try
@@ -1953,16 +2008,16 @@ class Twitter extends expRecord
 		return (array) $this->doCall((string) $user . '/' . (string) $id . '/subscribers.json', $parameters, true, 'POST');
 	}
 
-
-	/**
-	 * Check if the specified user is a subscriber of the specified list.
-	 *
-	 * @return	mixed
-	 * @param	string $user						The user.
-	 * @param	string $id							The id of the list.
-	 * @param	string $userId						Specfies the ID of the user for whom to return results for.
-	 * @param	bool[optional] $includeEntities		When set to true each tweet will include a node called "entities,". This node offers a variety of metadata about the tweet in a discreet structure, including: user_mentions, urls, and hashtags.
-	 */
+    /**
+     * Check if the specified user is a subscriber of the specified list.
+     *
+     * @return    mixed
+     * @param    string $user                        The user.
+     * @param    string $id                            The id of the list.
+     * @param    string $userId                        Specfies the ID of the user for whom to return results for.
+     * @param bool $includeEntities [optional] $includeEntities        When set to true each tweet will include a node called "entities,". This node offers a variety of metadata about the tweet in a discreet structure, including: user_mentions, urls, and hashtags.
+     * @throws TwitterException
+     */
 	public function userListSubscribersId($user, $id, $userId, $includeEntities = false)
 	{
 		try
@@ -1986,16 +2041,22 @@ class Twitter extends expRecord
 
 
 // Direct Messages resources
-	/**
-	 * Returns a list of the 20 most recent direct messages sent to the authenticating user.
-	 *
-	 * @return	array
-	 * @param	string[optional] $sinceId			Returns results with an ID greater than (that is, more recent than) the specified ID.
-	 * @param	string[optional] $maxId				Returns results with an ID less than (that is, older than) or equal to the specified ID.
-	 * @param	int[optional] $count				Specifies the number of records to retrieve. May not be greater than 200.
-	 * @param	int[optional] $page					Specifies the page of results to retrieve.
-	 * @param	bool[optional] $includeEntities		When set to true each tweet will include a node called "entities,". This node offers a variety of metadata about the tweet in a discreet structure, including: user_mentions, urls, and hashtags.
-	 */
+    /**
+     * Returns a list of the 20 most recent direct messages sent to the authenticating user.
+     *
+     * @return    array
+     * @param null $sinceId
+     * @param null $maxId
+     * @param null $count
+     * @param null $page
+     * @param bool $includeEntities
+     * @throws TwitterException
+     * @internal param $string [optional] $sinceId            Returns results with an ID greater than (that is, more recent than) the specified ID.
+     * @internal param $string [optional] $maxId                Returns results with an ID less than (that is, older than) or equal to the specified ID.
+     * @internal param $int [optional] $count                Specifies the number of records to retrieve. May not be greater than 200.
+     * @internal param $int [optional] $page                    Specifies the page of results to retrieve.
+     * @internal param $bool [optional] $includeEntities        When set to true each tweet will include a node called "entities,". This node offers a variety of metadata about the tweet in a discreet structure, including: user_mentions, urls, and hashtags.
+     */
 	public function directMessages($sinceId = null, $maxId = null, $count = null, $page = null, $includeEntities = false)
 	{
 		try {
@@ -2017,17 +2078,22 @@ class Twitter extends expRecord
 		}
 	}
 
-
-	/**
-	 * Returns a list of the 20 most recent direct messages sent by the authenticating user.
-	 *
-	 * @return	array
-	 * @param	string[optional] $sinceId			Returns results with an ID greater than (that is, more recent than) the specified ID.
-	 * @param	string[optional] $maxId				Returns results with an ID less than (that is, older than) or equal to the specified ID.
-	 * @param	int[optional] $count				Specifies the number of records to retrieve. May not be greater than 200.
-	 * @param	int[optional] $page					Specifies the page of results to retrieve.
-	 * @param	bool[optional] $includeEntities		When set to true each tweet will include a node called "entities,". This node offers a variety of metadata about the tweet in a discreet structure, including: user_mentions, urls, and hashtags.
-	 */
+    /**
+     * Returns a list of the 20 most recent direct messages sent by the authenticating user.
+     *
+     * @return    array
+     * @param null $sinceId
+     * @param null $maxId
+     * @param null $count
+     * @param null $page
+     * @param bool $includeEntities
+     * @throws TwitterException
+     * @internal param $string [optional] $sinceId            Returns results with an ID greater than (that is, more recent than) the specified ID.
+     * @internal param $string [optional] $maxId                Returns results with an ID less than (that is, older than) or equal to the specified ID.
+     * @internal param $int [optional] $count                Specifies the number of records to retrieve. May not be greater than 200.
+     * @internal param $int [optional] $page                    Specifies the page of results to retrieve.
+     * @internal param $bool [optional] $includeEntities        When set to true each tweet will include a node called "entities,". This node offers a variety of metadata about the tweet in a discreet structure, including: user_mentions, urls, and hashtags.
+     */
 	public function directMessagesSent($sinceId = null, $maxId = null, $count = null, $page = null, $includeEntities = false)
 	{
 		try {
@@ -2049,17 +2115,20 @@ class Twitter extends expRecord
 		}
 	}
 
-
-	/**
-	 * Sends a new direct message to the specified user from the authenticating user.
-	 * Requires both the user and text parameters. Returns the sent message in the requested format when successful.
-	 *
-	 * @return	array
-	 * @param	string $text						The text of your direct message. Be sure to URL encode as necessary, and keep it under 140 characters.
-	 * @param 	string[optional] $userId			Specfies the screen name of the user for whom to return results for. Helpful for disambiguating when a valid screen name is also a user ID.
-	 * @param	string[optional] $screenName		Specfies the ID of the user for whom to return results for. Helpful for disambiguating when a valid user ID is also a valid screen name.
-	 * @param	bool[optional] $includeEntities		When set to true each tweet will include a node called "entities,". This node offers a variety of metadata about the tweet in a discreet structure, including: user_mentions, urls, and hashtags.
-	 */
+    /**
+     * Sends a new direct message to the specified user from the authenticating user.
+     * Requires both the user and text parameters. Returns the sent message in the requested format when successful.
+     *
+     * @return    array
+     * @param    string $text                        The text of your direct message. Be sure to URL encode as necessary, and keep it under 140 characters.
+     * @param null $userId
+     * @param null $screenName
+     * @param bool $includeEntities
+     * @throws TwitterException
+     * @internal param $string [optional] $userId            Specfies the screen name of the user for whom to return results for. Helpful for disambiguating when a valid screen name is also a user ID.
+     * @internal param $string [optional] $screenName        Specfies the ID of the user for whom to return results for. Helpful for disambiguating when a valid user ID is also a valid screen name.
+     * @internal param $bool [optional] $includeEntities        When set to true each tweet will include a node called "entities,". This node offers a variety of metadata about the tweet in a discreet structure, including: user_mentions, urls, and hashtags.
+     */
 	public function directMessagesNew($text, $userId = null, $screenName = null, $includeEntities = false)
 	{
 		try {
@@ -2099,17 +2168,22 @@ class Twitter extends expRecord
 
 
 // Friendship resources
-	/**
-	 * Allows the authenticating users to follow the user specified in the ID parameter.
-	 * Returns the befriended user in the requested format when successful.
-	 * Returns a string describing the failure condition when unsuccessful.
-	 *
-	 * @return	mixed
-	 * @param 	string[optional] $userId			Specfies the screen name of the user for whom to return results for. Helpful for disambiguating when a valid screen name is also a user ID.
-	 * @param	string[optional] $screenName		Specfies the ID of the user for whom to return results for. Helpful for disambiguating when a valid user ID is also a valid screen name.
-	 * @param	bool[optional] $follow				Returns public statuses that reference the given set of users.
-	 * @param	bool[optional] $includeEntities		When set to true each tweet will include a node called "entities,". This node offers a variety of metadata about the tweet in a discreet structure, including: user_mentions, urls, and hashtags.
-	 */
+    /**
+     * Allows the authenticating users to follow the user specified in the ID parameter.
+     * Returns the befriended user in the requested format when successful.
+     * Returns a string describing the failure condition when unsuccessful.
+     *
+     * @return    mixed
+     * @param null $userId
+     * @param null $screenName
+     * @param bool $follow
+     * @param bool $includeEntities
+     * @throws TwitterException
+     * @internal param $string [optional] $userId            Specfies the screen name of the user for whom to return results for. Helpful for disambiguating when a valid screen name is also a user ID.
+     * @internal param $string [optional] $screenName        Specfies the ID of the user for whom to return results for. Helpful for disambiguating when a valid user ID is also a valid screen name.
+     * @internal param $bool [optional] $follow                Returns public statuses that reference the given set of users.
+     * @internal param $bool [optional] $includeEntities        When set to true each tweet will include a node called "entities,". This node offers a variety of metadata about the tweet in a discreet structure, including: user_mentions, urls, and hashtags.
+     */
 	public function friendshipsCreate($userId = null, $screenName = null, $follow = false, $includeEntities = false)
 	{
 		try {
@@ -2130,16 +2204,19 @@ class Twitter extends expRecord
 		}
 	}
 
-
-	/**
-	 * Allows the authenticating users to unfollow the user specified in the ID parameter.
-	 * Returns the unfollowed user in the requested format when successful. Returns a string describing the failure condition when unsuccessful.
-	 *
-	 * @return	array
-	 * @param 	string[optional] $userId			Specfies the screen name of the user for whom to return results for. Helpful for disambiguating when a valid screen name is also a user ID.
-	 * @param	string[optional] $screenName		Specfies the ID of the user for whom to return results for. Helpful for disambiguating when a valid user ID is also a valid screen name.
-	 * @param	bool[optional] $includeEntities		When set to true each tweet will include a node called "entities,". This node offers a variety of metadata about the tweet in a discreet structure, including: user_mentions, urls, and hashtags.
-	 */
+    /**
+     * Allows the authenticating users to unfollow the user specified in the ID parameter.
+     * Returns the unfollowed user in the requested format when successful. Returns a string describing the failure condition when unsuccessful.
+     *
+     * @return    array
+     * @param null $userId
+     * @param null $screenName
+     * @param bool $includeEntities
+     * @throws TwitterException
+     * @internal param $string [optional] $userId            Specfies the screen name of the user for whom to return results for. Helpful for disambiguating when a valid screen name is also a user ID.
+     * @internal param $string [optional] $screenName        Specfies the ID of the user for whom to return results for. Helpful for disambiguating when a valid user ID is also a valid screen name.
+     * @internal param $bool [optional] $includeEntities        When set to true each tweet will include a node called "entities,". This node offers a variety of metadata about the tweet in a discreet structure, including: user_mentions, urls, and hashtags.
+     */
 	public function friendshipsDestroy($userId = null, $screenName = null, $includeEntities = false)
 	{
 		try {
@@ -2176,16 +2253,20 @@ class Twitter extends expRecord
 		return (bool) $this->doCall('friendships/exists.json', $parameters);
 	}
 
-
-	/**
-	 * Returns detailed information about the relationship between two users.
-	 *
-	 * @return	array
-	 * @param 	string[optional] $sourceId				The user_id of the subject user.
-	 * @param 	string[optional] $sourceScreenName		The screen_name of the subject user.
-	 * @param 	string[optional] $targetId				The screen_name of the subject user.
-	 * @param 	string[optional] $targetScreenName		The screen_name of the target user.
-	 */
+    /**
+     * Returns detailed information about the relationship between two users.
+     *
+     * @return    array
+     * @param null $sourceId
+     * @param null $sourceScreenName
+     * @param null $targetId
+     * @param null $targetScreenName
+     * @throws TwitterException
+     * @internal param $string [optional] $sourceId                The user_id of the subject user.
+     * @internal param $string [optional] $sourceScreenName        The screen_name of the subject user.
+     * @internal param $string [optional] $targetId                The screen_name of the subject user.
+     * @internal param $string [optional] $targetScreenName        The screen_name of the target user.
+     */
 	public function friendshipsShow($sourceId = null, $sourceScreenName = null, $targetId = null, $targetScreenName = null)
 	{
 		try {
@@ -2242,14 +2323,18 @@ class Twitter extends expRecord
 
 
 // Friends and Followers resources
-	/**
-	 * Returns an array of numeric IDs for every user the specified user is following.
-	 *
-	 * @return	array
-	 * @param 	string[optional] $userId		Specfies the screen name of the user for whom to return results for. Helpful for disambiguating when a valid screen name is also a user ID.
-	 * @param	string[optional] $screenName	Specfies the ID of the user for whom to return results for. Helpful for disambiguating when a valid user ID is also a valid screen name.
-	 * @param	string[optional] $cursor	Breaks the results into pages. This is recommended for users who are following many users. Provide a value of -1  to begin paging. Provide values as returned to in the response body's next_cursor  and previous_cursor attributes to page back and forth in the list.
-	 */
+    /**
+     * Returns an array of numeric IDs for every user the specified user is following.
+     *
+     * @return    array
+     * @param null $userId
+     * @param null $screenName
+     * @param null $cursor
+     * @throws TwitterException
+     * @internal param $string [optional] $userId        Specfies the screen name of the user for whom to return results for. Helpful for disambiguating when a valid screen name is also a user ID.
+     * @internal param $string [optional] $screenName    Specfies the ID of the user for whom to return results for. Helpful for disambiguating when a valid user ID is also a valid screen name.
+     * @internal param $string [optional] $cursor    Breaks the results into pages. This is recommended for users who are following many users. Provide a value of -1  to begin paging. Provide values as returned to in the response body's next_cursor  and previous_cursor attributes to page back and forth in the list.
+     */
 	public function friendsIds($userId = null, $screenName = null, $cursor = null)
 	{
 		try {
@@ -2269,15 +2354,18 @@ class Twitter extends expRecord
 		}
 	}
 
-
-	/**
-	 * Returns an array of numeric IDs for every user following the specified user.
-	 *
-	 * @return	array
-	 * @param 	string[optional] $userId		Specfies the screen name of the user for whom to return results for. Helpful for disambiguating when a valid screen name is also a user ID.
-	 * @param	string[optional] $screenName	Specfies the ID of the user for whom to return results for. Helpful for disambiguating when a valid user ID is also a valid screen name.
-	 * @param	string[optional] $cursor	Breaks the results into pages. This is recommended for users who are following many users. Provide a value of -1  to begin paging. Provide values as returned to in the response body's next_cursor  and previous_cursor attributes to page back and forth in the list.
-	 */
+    /**
+     * Returns an array of numeric IDs for every user following the specified user.
+     *
+     * @return    array
+     * @param null $userId
+     * @param null $screenName
+     * @param null $cursor
+     * @throws TwitterException
+     * @internal param $string [optional] $userId        Specfies the screen name of the user for whom to return results for. Helpful for disambiguating when a valid screen name is also a user ID.
+     * @internal param $string [optional] $screenName    Specfies the ID of the user for whom to return results for. Helpful for disambiguating when a valid user ID is also a valid screen name.
+     * @internal param $string [optional] $cursor    Breaks the results into pages. This is recommended for users who are following many users. Provide a value of -1  to begin paging. Provide values as returned to in the response body's next_cursor  and previous_cursor attributes to page back and forth in the list.
+     */
 	public function followersIds($userId = null, $screenName = null, $cursor = null)
 	{
 		try {
@@ -2327,12 +2415,12 @@ class Twitter extends expRecord
 		return (array) $this->doCall('account/rate_limit_status.json', null);
 	}
 
-
-	/**
-	 * Ends the session of the authenticating user, returning a null cookie. Use this method to sign users out of client-facing applications like widgets.
-	 *
-	 * @return	bool
-	 */
+    /**
+     * Ends the session of the authenticating user, returning a null cookie. Use this method to sign users out of client-facing applications like widgets.
+     *
+     * @throws TwitterException
+     * @return    bool
+     */
 	public function accountEndSession()
 	{
 		try
@@ -2367,19 +2455,25 @@ class Twitter extends expRecord
 		return (array) $this->doCall('account/update_delivery_device.json', $parameters, true, 'POST');
 	}
 
-
-	/**
-	 * Sets one or more hex values that control the color scheme of the authenticating user's profile page on twitter.com.
-	 * Each parameter's value must be a valid hexidecimal value, and may be either three or six characters (ex: #fff or #ffffff).
-	 *
-	 * @return	array
-	 * @param	string[optional] $profileBackgroundColor		Profile background color.
-	 * @param	string[optional] $profileTextColor				Profile text color.
-	 * @param	string[optional] $profileLinkColor				Profile link color.
-	 * @param	string[optional] $profileSidebarFillColor		Profile sidebar's background color.
-	 * @param	string[optional] $profileSidebarBorderColor		Profile sidebar's border color.
-	 * @param	bool[optional] $includeEntities					When set to true each tweet will include a node called "entities,". This node offers a variety of metadata about the tweet in a discreet structure, including: user_mentions, urls, and hashtags.
-	 */
+    /**
+     * Sets one or more hex values that control the color scheme of the authenticating user's profile page on twitter.com.
+     * Each parameter's value must be a valid hexidecimal value, and may be either three or six characters (ex: #fff or #ffffff).
+     *
+     * @return    array
+     * @param null $profileBackgroundColor
+     * @param null $profileTextColor
+     * @param null $profileLinkColor
+     * @param null $profileSidebarFillColor
+     * @param null $profileSidebarBorderColor
+     * @param bool $includeEntities
+     * @throws TwitterException
+     * @internal param $string [optional] $profileBackgroundColor        Profile background color.
+     * @internal param $string [optional] $profileTextColor                Profile text color.
+     * @internal param $string [optional] $profileLinkColor                Profile link color.
+     * @internal param $string [optional] $profileSidebarFillColor        Profile sidebar's background color.
+     * @internal param $string [optional] $profileSidebarBorderColor        Profile sidebar's border color.
+     * @internal param $bool [optional] $includeEntities                    When set to true each tweet will include a node called "entities,". This node offers a variety of metadata about the tweet in a discreet structure, including: user_mentions, urls, and hashtags.
+     */
 	public function accountUpdateProfileColors($profileBackgroundColor = null, $profileTextColor = null, $profileLinkColor = null, $profileSidebarFillColor = null, $profileSidebarBorderColor = null, $includeEntities = false)
 	{
 		try {
@@ -2401,14 +2495,14 @@ class Twitter extends expRecord
 		}
 	}
 
-
-	/**
-	 * Updates the authenticating user's profile image.
-	 *
-	 * @return	array
-	 * @param	string $image						The path to the avatar image for the profile. Must be a valid GIF, JPG, or PNG image of less than 700 kilobytes in size. Images with width larger than 500 pixels will be scaled down.
-	 * @param	bool[optional] $includeEntities		When set to true each tweet will include a node called "entities,". This node offers a variety of metadata about the tweet in a discreet structure, including: user_mentions, urls, and hashtags.
-	 */
+    /**
+     * Updates the authenticating user's profile image.
+     *
+     * @return    array
+     * @param    string $image                        The path to the avatar image for the profile. Must be a valid GIF, JPG, or PNG image of less than 700 kilobytes in size. Images with width larger than 500 pixels will be scaled down.
+     * @param bool $includeEntities [optional] $includeEntities        When set to true each tweet will include a node called "entities,". This node offers a variety of metadata about the tweet in a discreet structure, including: user_mentions, urls, and hashtags.
+     * @throws TwitterException
+     */
 	public function accountUpdateProfileImage($image, $includeEntities = false)
 	{
 		try {
@@ -2426,15 +2520,17 @@ class Twitter extends expRecord
 		}
 	}
 
-
-	/**
-	 * Updates the authenticating user's profile background image.
-	 *
-	 * @return	array
-	 * @param	string $image						The path to the background image for the profile. Must be a valid GIF, JPG, or PNG image of less than 800 kilobytes in size. Images with width larger than 2048 pixels will be forceably scaled down.
-	 * @param	bool[optional] $tile				Whether or not to tile the background image. If set to true the background image will be displayed tiled. The image will not be tiled otherwise.
-	 * @param	bool[optional] $includeEntities		When set to true each tweet will include a node called "entities,". This node offers a variety of metadata about the tweet in a discreet structure, including: user_mentions, urls, and hashtags.
-	 */
+    /**
+     * Updates the authenticating user's profile background image.
+     *
+     * @return    array
+     * @param    string $image                        The path to the background image for the profile. Must be a valid GIF, JPG, or PNG image of less than 800 kilobytes in size. Images with width larger than 2048 pixels will be forceably scaled down.
+     * @param bool $tile
+     * @param bool $includeEntities
+     * @throws TwitterException
+     * @internal param $bool [optional] $tile                Whether or not to tile the background image. If set to true the background image will be displayed tiled. The image will not be tiled otherwise.
+     * @internal param $bool [optional] $includeEntities        When set to true each tweet will include a node called "entities,". This node offers a variety of metadata about the tweet in a discreet structure, including: user_mentions, urls, and hashtags.
+     */
 	public function accountUpdateProfileBackgroundImage($image, $tile = false, $includeEntities = false)
 	{
 		try {
@@ -2538,14 +2634,18 @@ class Twitter extends expRecord
 
 
 // Notification resources
-	/**
-	 * Enables device notifications for updates from the specified user. Returns the specified user when successful.
-	 *
-	 * @return	array
-	 * @param 	string[optional] $userId			Specfies the screen name of the user for whom to return results for. Helpful for disambiguating when a valid screen name is also a user ID.
-	 * @param	string[optional] $screenName		Specfies the ID of the user for whom to return results for. Helpful for disambiguating when a valid user ID is also a valid screen name.
-	 * @param	bool[optional] $includeEntities		When set to true each tweet will include a node called "entities,". This node offers a variety of metadata about the tweet in a discreet structure, including: user_mentions, urls, and hashtags.
-	 */
+    /**
+     * Enables device notifications for updates from the specified user. Returns the specified user when successful.
+     *
+     * @return    array
+     * @param null $userId
+     * @param null $screenName
+     * @param bool $includeEntities
+     * @throws TwitterException
+     * @internal param $string [optional] $userId            Specfies the screen name of the user for whom to return results for. Helpful for disambiguating when a valid screen name is also a user ID.
+     * @internal param $string [optional] $screenName        Specfies the ID of the user for whom to return results for. Helpful for disambiguating when a valid user ID is also a valid screen name.
+     * @internal param $bool [optional] $includeEntities        When set to true each tweet will include a node called "entities,". This node offers a variety of metadata about the tweet in a discreet structure, including: user_mentions, urls, and hashtags.
+     */
 	public function notificationsFollow($userId = null, $screenName = null, $includeEntities = false)
 	{
 		// validate
@@ -2560,15 +2660,18 @@ class Twitter extends expRecord
 		return (array) $this->doCall('notifications/follow.json', $parameters, true, 'POST');
 	}
 
-
-	/**
-	 * Disables notifications for updates from the specified user to the authenticating user. Returns the specified user when successful.
-	 *
-	 * @return	array
-	 * @param 	string[optional] $userId			Specfies the screen name of the user for whom to return results for. Helpful for disambiguating when a valid screen name is also a user ID.
-	 * @param	string[optional] $screenName		Specfies the ID of the user for whom to return results for. Helpful for disambiguating when a valid user ID is also a valid screen name.
-	 * @param	bool[optional] $includeEntities		When set to true each tweet will include a node called "entities,". This node offers a variety of metadata about the tweet in a discreet structure, including: user_mentions, urls, and hashtags.
-	 */
+    /**
+     * Disables notifications for updates from the specified user to the authenticating user. Returns the specified user when successful.
+     *
+     * @return    array
+     * @param null $userId
+     * @param null $screenName
+     * @param bool $includeEntities
+     * @throws TwitterException
+     * @internal param $string [optional] $userId            Specfies the screen name of the user for whom to return results for. Helpful for disambiguating when a valid screen name is also a user ID.
+     * @internal param $string [optional] $screenName        Specfies the ID of the user for whom to return results for. Helpful for disambiguating when a valid user ID is also a valid screen name.
+     * @internal param $bool [optional] $includeEntities        When set to true each tweet will include a node called "entities,". This node offers a variety of metadata about the tweet in a discreet structure, including: user_mentions, urls, and hashtags.
+     */
 	public function notificationsLeave($userId = null, $screenName = null, $includeEntities = false)
 	{
 		try {
@@ -2589,14 +2692,18 @@ class Twitter extends expRecord
 
 
 // Block resources
-	/**
-	 * Blocks the user specified in the ID parameter as the authenticating user. Destroys a friendship to the blocked user if it exists. Returns the blocked user in the requested format when successful.
-	 *
-	 * @return	array
-	 * @param 	string[optional] $userId			Specfies the screen name of the user for whom to return results for. Helpful for disambiguating when a valid screen name is also a user ID.
-	 * @param	string[optional] $screenName		Specfies the ID of the user for whom to return results for. Helpful for disambiguating when a valid user ID is also a valid screen name.
-	 * @param	bool[optional] $includeEntities		When set to true each tweet will include a node called "entities,". This node offers a variety of metadata about the tweet in a discreet structure, including: user_mentions, urls, and hashtags.
-	 */
+    /**
+     * Blocks the user specified in the ID parameter as the authenticating user. Destroys a friendship to the blocked user if it exists. Returns the blocked user in the requested format when successful.
+     *
+     * @return    array
+     * @param null $userId
+     * @param null $screenName
+     * @param bool $includeEntities
+     * @throws TwitterException
+     * @internal param $string [optional] $userId            Specfies the screen name of the user for whom to return results for. Helpful for disambiguating when a valid screen name is also a user ID.
+     * @internal param $string [optional] $screenName        Specfies the ID of the user for whom to return results for. Helpful for disambiguating when a valid user ID is also a valid screen name.
+     * @internal param $bool [optional] $includeEntities        When set to true each tweet will include a node called "entities,". This node offers a variety of metadata about the tweet in a discreet structure, including: user_mentions, urls, and hashtags.
+     */
 	public function blocksCreate($userId = null, $screenName = null, $includeEntities = false)
 	{
 		try {
@@ -2615,15 +2722,18 @@ class Twitter extends expRecord
 		}
 	}
 
-
-	/**
-	 * Un-blocks the user specified in the ID parameter for the authenticating user. Returns the un-blocked user in the requested format when successful.
-	 *
-	 * @return	array
-	 * @param 	string[optional] $userId			Specfies the screen name of the user for whom to return results for. Helpful for disambiguating when a valid screen name is also a user ID.
-	 * @param	string[optional] $screenName		Specfies the ID of the user for whom to return results for. Helpful for disambiguating when a valid user ID is also a valid screen name.
-	 * @param	bool[optional] $includeEntities		When set to true each tweet will include a node called "entities,". This node offers a variety of metadata about the tweet in a discreet structure, including: user_mentions, urls, and hashtags.
-	 */
+    /**
+     * Un-blocks the user specified in the ID parameter for the authenticating user. Returns the un-blocked user in the requested format when successful.
+     *
+     * @return    array
+     * @param null $userId
+     * @param null $screenName
+     * @param bool $includeEntities
+     * @throws TwitterException
+     * @internal param $string [optional] $userId            Specfies the screen name of the user for whom to return results for. Helpful for disambiguating when a valid screen name is also a user ID.
+     * @internal param $string [optional] $screenName        Specfies the ID of the user for whom to return results for. Helpful for disambiguating when a valid user ID is also a valid screen name.
+     * @internal param $bool [optional] $includeEntities        When set to true each tweet will include a node called "entities,". This node offers a variety of metadata about the tweet in a discreet structure, including: user_mentions, urls, and hashtags.
+     */
 	public function blocksDestroy($userId = null, $screenName = null, $includeEntities = false)
 	{
 		try {
@@ -2642,15 +2752,18 @@ class Twitter extends expRecord
 		}
 	}
 
-
-	/**
-	 * Un-blocks the user specified in the ID parameter for the authenticating user. Returns the un-blocked user in the requested format when successful.
-	 *
-	 * @return	mixed
-	 * @param 	string[optional] $userId			Specfies the screen name of the user for whom to return results for. Helpful for disambiguating when a valid screen name is also a user ID.
-	 * @param	string[optional] $screenName		Specfies the ID of the user for whom to return results for. Helpful for disambiguating when a valid user ID is also a valid screen name.
-	 * @param	bool[optional] $includeEntities		When set to true each tweet will include a node called "entities,". This node offers a variety of metadata about the tweet in a discreet structure, including: user_mentions, urls, and hashtags.
-	 */
+    /**
+     * Un-blocks the user specified in the ID parameter for the authenticating user. Returns the un-blocked user in the requested format when successful.
+     *
+     * @return    mixed
+     * @param null $userId
+     * @param null $screenName
+     * @param bool $includeEntities
+     * @throws TwitterException
+     * @internal param $string [optional] $userId            Specfies the screen name of the user for whom to return results for. Helpful for disambiguating when a valid screen name is also a user ID.
+     * @internal param $string [optional] $screenName        Specfies the ID of the user for whom to return results for. Helpful for disambiguating when a valid user ID is also a valid screen name.
+     * @internal param $bool [optional] $includeEntities        When set to true each tweet will include a node called "entities,". This node offers a variety of metadata about the tweet in a discreet structure, including: user_mentions, urls, and hashtags.
+     */
 	public function blocksExists($userId = null, $screenName = null, $includeEntities = false)
 	{
 		// validate
@@ -2707,14 +2820,18 @@ class Twitter extends expRecord
 
 
 // Spam Reporting resources
-	/**
-	 * The user specified in the id is blocked by the authenticated user and reported as a spammer.
-	 *
-	 * @return	array
-	 * @param 	string[optional] $userId		Specfies the screen name of the user for whom to return results for. Helpful for disambiguating when a valid screen name is also a user ID.
-	 * @param	string[optional] $screenName	Specfies the ID of the user for whom to return results for. Helpful for disambiguating when a valid user ID is also a valid screen name.
-	 * @param	bool[optional] $includeEntities		When set to true each tweet will include a node called "entities,". This node offers a variety of metadata about the tweet in a discreet structure, including: user_mentions, urls, and hashtags.
-	 */
+    /**
+     * The user specified in the id is blocked by the authenticated user and reported as a spammer.
+     *
+     * @return    array
+     * @param null $userId
+     * @param null $screenName
+     * @param bool $includeEntities
+     * @throws TwitterException
+     * @internal param $string [optional] $userId        Specfies the screen name of the user for whom to return results for. Helpful for disambiguating when a valid screen name is also a user ID.
+     * @internal param $string [optional] $screenName    Specfies the ID of the user for whom to return results for. Helpful for disambiguating when a valid user ID is also a valid screen name.
+     * @internal param $bool [optional] $includeEntities        When set to true each tweet will include a node called "entities,". This node offers a variety of metadata about the tweet in a discreet structure, including: user_mentions, urls, and hashtags.
+     */
 	public function reportSpam($userId = null, $screenName = null, $includeEntities = false)
 	{
 		try {
@@ -2822,13 +2939,14 @@ class Twitter extends expRecord
 
 
 // OAuth resources
-	/**
-	 * Allows a Consumer application to obtain an OAuth Request Token to request user authorization.
-	 * This method fulfills Secion 6.1 of the OAuth 1.0 authentication flow.
-	 *
-	 * @return	array							An array containg the token and the secret
-	 * @param	string[optional] $callbackURL	The callback URL.
-	 */
+    /**
+     * Allows a Consumer application to obtain an OAuth Request Token to request user authorization.
+     * This method fulfills Secion 6.1 of the OAuth 1.0 authentication flow.
+     *
+     * @return    array                            An array containg the token and the secret
+     * @param    string[optional] $callbackURL    The callback URL.
+     * @throws TwitterException
+     */
 	public function oAuthRequestToken($callbackURL = null)
 	{
 		try {
@@ -2894,14 +3012,14 @@ class Twitter extends expRecord
 		header('Location: ' . self::SECURE_API_URL . '/oauth/authorize?oauth_token=' . $token);
 	}
 
-
-	/**
-	 * Allows a Consumer application to use an OAuth request_token to request user authorization. This method is a replacement fulfills Secion 6.2 of the OAuth 1.0 authentication flow for applications using the Sign in with Twitter authentication flow. The method will use the currently logged in user as the account to for access authorization unless the force_login parameter is set to true
-	 * REMARK: This method seems not to work	@later
-	 *
-	 * @return	void
-	 * @param	bool[optional] $force	Force the authentication.
-	 */
+    /**
+     * Allows a Consumer application to use an OAuth request_token to request user authorization. This method is a replacement fulfills Secion 6.2 of the OAuth 1.0 authentication flow for applications using the Sign in with Twitter authentication flow. The method will use the currently logged in user as the account to for access authorization unless the force_login parameter is set to true
+     * REMARK: This method seems not to work    @later
+     *
+     * @return    void
+     * @param bool $force [optional] $force    Force the authentication.
+     * @throws TwitterException
+     */
 	public function oAuthAuthenticate($force = false)
 	{
 		try {

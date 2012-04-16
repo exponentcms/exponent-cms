@@ -17,7 +17,7 @@
 <hr size="1" />
 <table cellpadding="0" cellspacing="0" border="0" width="100%">
     <tr>
-        <td><b>&lt;{'Name of Section'|gettext}&gt;</b></td>
+        <td><strong>&lt;{'Name of Section'|gettext}&gt;</strong></td>
         <td>
             [ <a class="mngmntlink sitetemplate_mngmntlink" href="{link action=edit_template parent=$template->id}">{'Add Subpage'|gettext}</a> ]
             [ <a class="mngmntlink sitetemplate_mngmntlink" href="{link action=edit_template id=$template->id}">{'Properties'|gettext}</a> ]
@@ -29,7 +29,7 @@
             {math equation="x-1" x=$sub->rank assign=prevrank}
             <tr>
                 <td style="padding-left: {math equation="x*20" x=$sub->depth}">
-                    <b>{$sub->name}</b>
+                    <strong>{$sub->name}</strong>
                 </td>
                 <td>
                     [ <a class="mngmntlink sitetemplate_mngmntlink" href="{link action=edit_template parent=$sub->id}">{'Add Subpage'|gettext}</a> ]

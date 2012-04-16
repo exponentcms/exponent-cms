@@ -17,7 +17,7 @@
 ##################################################
 
 ?>
-<b><?php echo gt('Using an Existing Database'); ?></b>
+<strong><?php echo gt('Using an Existing Database'); ?></strong>
 <div class="bodytext">
 <?php echo gt('A pre-existing database can be used to store the content of your website, however a few issues must be dealt with.'); ?>
 <br /><br />

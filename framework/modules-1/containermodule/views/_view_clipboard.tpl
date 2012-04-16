@@ -26,14 +26,14 @@
         {foreach name=a from=$items item=item}
             <tr class="row {cycle values='odd_row,even_row'}">
                 <td>{$item->module}</td>
-                <td><b>{$item->title}</b></td>
+                <td><strong>{$item->title}</strong></td>
                 <td>{$item->copied_from}</td>
                 <td>{$item->operation}</td>
                 <td>{$collection->description}</td>
             <tr>
         {foreachelse}
             <tr>
-                <td colspan="2" align="center"><i>{'Your clipboard is currently empty'|gettext}.</i></td>
+                <td colspan="2" align="center"><em>{'Your clipboard is currently empty'|gettext}.</em></td>
             </tr>
         {/foreach}
     </table>

@@ -438,7 +438,7 @@ class importexportController extends expController {
         
         if(count($errorSet))
         {
-            echo "<br/><hr><br/><font color='red'>The following records were NOT imported:<br/>";
+            echo "<br/><hr><br/><style color:'red'>The following records were NOT imported:<br/>";
             foreach ($errorSet as $row=>$err)
             {
                 echo "Row: " . $row . ". Reason:<br/>";
@@ -451,7 +451,7 @@ class importexportController extends expController {
                 }
                 else echo "--" . $err . "<br/>";
             }
-            echo "</font>";
+            echo "</style>";
         }    
     }
     

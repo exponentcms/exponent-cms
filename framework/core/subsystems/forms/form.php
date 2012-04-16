@@ -55,7 +55,7 @@ class form extends baseform {
 	/**
 	 * Registers a new Control with the form.  This function will simply append the new Control to the end of the Form.
 	 *
-	 * @param $name The internal name of the control.  This is used for referring to the control later.  If this is a null string, the Control will not be registered, and this function will return false.
+	 * @param string $name The internal name of the control.  This is used for referring to the control later.  If this is a null string, the Control will not be registered, and this function will return false.
 	 * @param $label
 	 * @param $control The Control object to register with the form.
 	 * @param \A|bool $replace boolean dictating what to do if a Control with the specified internal name already exists on the form.  If passed as true (default), the existing Control will be replaced.  Otherwise, the Control registration will fail and return false.
@@ -76,7 +76,7 @@ class form extends baseform {
 	/**
 	 * Unregisters a previously registered Control.
 	 *
-	 * @param $name The internal name of the control to remove from the Form.
+	 * @param string $name The internal name of the control to remove from the Form.
 	 *
 	 * @return boolean Returns true if the Control was unregistered.
 	 */
@@ -102,10 +102,10 @@ class form extends baseform {
 	/**
 	 * Registers a new Control, placing it after a pre-existing named Control.  If the Control that the caller wants to insert after does not exist, the new Control is appended to the end of the Form.
 	 *
-	 * @param $afterName The internal name of the Control to register the new Control after.
-	 * @param $name The internal name of the new Control.
-	 * @param $label
-	 * @param $control The Control object to register with the Form.
+	 * @param string $afterName The internal name of the Control to register the new Control after.
+	 * @param string $name The internal name of the new Control.
+	 * @param string $label
+	 * @param object $control The Control object to register with the Form.
 	 *
 	 * @return boolean Returns true if the new Control was registered.
 	 */
@@ -131,10 +131,10 @@ class form extends baseform {
 	/**
 	 * Registers a new Control, placing it before a pre-existing named Control.  If the Control that the caller wants to insert the new Control before does not exist, the new Control is prepended to the form.
 	 *
-	 * @param $beforeName The internal name of the Control to register the new Control before.
-	 * @param $name The internal name of the new Control.
-	 * @param $label
-	 * @param $control the Control object to register with the Form.
+	 * @param string $beforeName The internal name of the Control to register the new Control before.
+	 * @param string $name The internal name of the new Control.
+	 * @param string $label
+	 * @param object $control the Control object to register with the Form.
 	 *
 	 * @return boolean Returns true if the new Control was registered.
 	 */
@@ -160,7 +160,7 @@ class form extends baseform {
 	/**
 	 * Convert the form to HTML output.
 	 *
-	 * @return The HTML code use to display the form to the browser.
+	 * @return string The HTML code use to display the form to the browser.
 	 */
 	function toHTML() {
 		// Form validation script
