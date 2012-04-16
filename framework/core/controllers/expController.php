@@ -535,12 +535,15 @@ abstract class expController {
 	 */
 	function configure() {
         expHistory::set('editable', $this->params);
+        $order = isset($this->params['order']) ? $this->params['order'] : 'section';
+        $dir = isset($this->params['dir']) ? $this->params['dir'] : '';
         $pullable_modules = expModules::listInstalledControllers($this->classname, $this->loc);
         $views = get_config_templates($this, $this->loc);
         $page = new expPaginator(array(
                     'records'=>$pullable_modules,
                     'limit'=>count($pullable_modules),
-                    'order'=>'section',
+                    'order'=>$order,
+                    'dir'=>$dir,
                     'columns'=>array(gt('Title')=>'title',gt('Page')=>'section'),
                     ));
         assign_to_template(array('config'=>$this->config, 'pullable_modules'=>$pullable_modules, 'page'=>$page, 'views'=>$views));
