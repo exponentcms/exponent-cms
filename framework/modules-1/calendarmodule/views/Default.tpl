@@ -42,18 +42,24 @@
 			{/if}
 		</div>
 	{/permissions}
+    {*<form method="post" action="viewmonth">*}
+        {*<input type="hidden" name="module" value="calendarmodule"/>*}
+        {*<input type="hidden" name="src" value="{$__loc->src}" />*}
+        {*<input type="text" name="newtime" />*}
+        {*<button type="submit" class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}">{"Go to Date"|gettext}</button>*}
+    {*</form>*}
 	<table id="calendar" summary="{$moduletitle|default:'Calendar'|gettext}">
-	<caption>
-	&laquo;&nbsp;
-	<a class="module-actions calendar_mngmntlink" href="{link action=viewmonth time=$prevmonth3}" title="{$prevmonth3|format_date:"%B %Y"}">{$prevmonth3|format_date:"%b"}</a>&nbsp;&nbsp;&laquo;&nbsp;
-	<a class="module-actions calendar_mngmntlink" href="{link action=viewmonth time=$prevmonth2}" title="{$prevmonth2|format_date:"%B %Y"}">{$prevmonth2|format_date:"%b"}</a>&nbsp;&nbsp;&laquo;&nbsp;
-	<a class="module-actions calendar_mngmntlink" href="{link action=viewmonth time=$prevmonth}" title="{$prevmonth|format_date:"%B %Y"}">{$prevmonth|format_date:"%b"}</a>&nbsp;&nbsp;&laquo;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-	<b>{$time|format_date:"%B %Y"}</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&raquo;&nbsp;&nbsp;
-	<a class="module-actions calendar_mngmntlink" href="{link action=viewmonth time=$nextmonth}" title="{$nextmonth|format_date:"%B %Y"}">{$nextmonth|format_date:"%b"}</a>&nbsp;&nbsp;&raquo;&nbsp;
-	<a class="module-actions calendar_mngmntlink" href="{link action=viewmonth time=$nextmonth2}" title="{$nextmonth2|format_date:"%B %Y"}">{$nextmonth2|format_date:"%b"}</a>&nbsp;&nbsp;&raquo;&nbsp;
-	<a class="module-actions calendar_mngmntlink" href="{link action=viewmonth time=$nextmonth3}" title="{$nextmonth3|format_date:"%B %Y"}">{$nextmonth3|format_date:"%b"}</a>&nbsp;&nbsp;&raquo;
-	</caption>
-
+        <caption>
+            &laquo;&nbsp;
+            <a class="module-actions calendar_mngmntlink" href="{link action=viewmonth time=$prevmonth3}" title="{$prevmonth3|format_date:"%B %Y"}">{$prevmonth3|format_date:"%b"}</a>&nbsp;&nbsp;&laquo;&nbsp;
+            <a class="module-actions calendar_mngmntlink" href="{link action=viewmonth time=$prevmonth2}" title="{$prevmonth2|format_date:"%B %Y"}">{$prevmonth2|format_date:"%b"}</a>&nbsp;&nbsp;&laquo;&nbsp;
+            <a class="module-actions calendar_mngmntlink" href="{link action=viewmonth time=$prevmonth}" title="{$prevmonth|format_date:"%B %Y"}">{$prevmonth|format_date:"%b"}</a>&nbsp;&nbsp;&laquo;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <b>{$time|format_date:"%B %Y"}</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&raquo;&nbsp;&nbsp;
+            <a class="module-actions calendar_mngmntlink" href="{link action=viewmonth time=$nextmonth}" title="{$nextmonth|format_date:"%B %Y"}">{$nextmonth|format_date:"%b"}</a>&nbsp;&nbsp;&raquo;&nbsp;
+            <a class="module-actions calendar_mngmntlink" href="{link action=viewmonth time=$nextmonth2}" title="{$nextmonth2|format_date:"%B %Y"}">{$nextmonth2|format_date:"%b"}</a>&nbsp;&nbsp;&raquo;&nbsp;
+            <a class="module-actions calendar_mngmntlink" href="{link action=viewmonth time=$nextmonth3}" title="{$nextmonth3|format_date:"%B %Y"}">{$nextmonth3|format_date:"%b"}</a>&nbsp;&nbsp;&raquo;
+            <div style="float:right;">{icon img="use.png" action=viewmonth time=$today text="{'Go to Today'|gettext}"}</div>
+        </caption>
 		<tr class="daysoftheweek">
 			{if $smarty.const.DISPLAY_START_OF_WEEK == 0}
 			<th scope="col" abbr="{'Sunday'|gettext}" title="'Sunday'|gettext}">{'Sunday'|gettext}</th>
@@ -76,43 +82,43 @@
 				{if $number > -1}{assign var=moredata value=1}{/if}
 			{/foreach}
 			{if $moredata == 1}
-			<tr class="week{if $currentweek == $weeknum} currentweek{/if}">
-			{foreach name=w from=$week key=day item=items}
-				{assign var=number value=$counts[$weeknum][$day]}
-				<td {if $dayts == $today}class="today" {elseif $number == -1}class="notinmonth" {else}class="oneday" {/if}>
-					{if $number > -1}
-						{if $number == 0}
-							<span {if $dayts == $today}class="number today"{else}class="number"{/if}>
-								{$day}
-							</span>
-						{else}
-							<a class="number" href="{link action=viewday time=$dayts}" title="{$dayts|format_date:'%A, %B %e, %Y'}">{$day}</a>
-						{/if}
-					{/if}
-					{foreach name=e from=$items item=item}
-						<div {if $dayts == $today}class="calevent today"{else}class="calevent"{/if}>
-							<a class="mngmntlink calendar_mngmntlink" href="{link action=view id=$item->id date_id=$item->eventdate->id}"
-							   title="{if $item->is_allday == 1}{'All Day'|gettext}{elseif $item->eventstart != $item->eventend}{$item->eventstart|format_date:$smarty.const.DISPLAY_TIME_FORMAT} {'to'|gettext} {$item->eventend|format_date:$smarty.const.DISPLAY_TIME_FORMAT}{else}{$item->eventstart|format_date:$smarty.const.DISPLAY_TIME_FORMAT}{/if} - {$item->body|summarize:"html":"para"}">{$item->title}</a>
-							{permissions}
-								<div class="item-actions">
-									{if $permissions.edit == 1}
-										{icon img="edit.png" action=edit record=$item date_id=$item->eventdate->id title="Edit this Event"|gettext}
-									{/if}
-									{if $permissions.delete == 1}
-										{if $item->is_recurring == 0}
-											{icon img="delete.png" action=delete record=$item date_id=$item->eventdate->id title="Delete this Event"|gettext}
-										{else}
-											{icon img="delete.png" action=delete_form record=$item date_id=$item->eventdate->id title="Delete this Event"|gettext}
-										{/if}
-									{/if}
-								</div>	
-							{/permissions}
-						</div>						
-					{/foreach}				
-					{if $number != -1}{math equation="x+86400" x=$dayts assign=dayts}{/if}
-				</td>
-			{/foreach}
-			</tr>
+                <tr class="week{if $currentweek == $weeknum} currentweek{/if}">
+                    {foreach name=w from=$week key=day item=items}
+                        {assign var=number value=$counts[$weeknum][$day]}
+                        <td {if $dayts == $today}class="today" {elseif $number == -1}class="notinmonth" {else}class="oneday" {/if}>
+                            {if $number > -1}
+                                {if $number == 0}
+                                    <span {if $dayts == $today}class="number today"{else}class="number"{/if}>
+                                        {$day}
+                                    </span>
+                                {else}
+                                    <a class="number" href="{link action=viewday time=$dayts}" title="{$dayts|format_date:'%A, %B %e, %Y'}">{$day}</a>
+                                {/if}
+                            {/if}
+                            {foreach name=e from=$items item=item}
+                                <div {if $dayts == $today}class="calevent today"{else}class="calevent"{/if}>
+                                    <a class="mngmntlink calendar_mngmntlink" href="{link action=view id=$item->id date_id=$item->eventdate->id}"
+                                       title="{if $item->is_allday == 1}{'All Day'|gettext}{elseif $item->eventstart != $item->eventend}{$item->eventstart|format_date:$smarty.const.DISPLAY_TIME_FORMAT} {'to'|gettext} {$item->eventend|format_date:$smarty.const.DISPLAY_TIME_FORMAT}{else}{$item->eventstart|format_date:$smarty.const.DISPLAY_TIME_FORMAT}{/if} - {$item->body|summarize:"html":"para"}">{$item->title}</a>
+                                    {permissions}
+                                        <div class="item-actions">
+                                            {if $permissions.edit == 1}
+                                                {icon img="edit.png" action=edit record=$item date_id=$item->eventdate->id title="Edit this Event"|gettext}
+                                            {/if}
+                                            {if $permissions.delete == 1}
+                                                {if $item->is_recurring == 0}
+                                                    {icon img="delete.png" action=delete record=$item date_id=$item->eventdate->id title="Delete this Event"|gettext}
+                                                {else}
+                                                    {icon img="delete.png" action=delete_form record=$item date_id=$item->eventdate->id title="Delete this Event"|gettext}
+                                                {/if}
+                                            {/if}
+                                        </div>
+                                    {/permissions}
+                                </div>
+                            {/foreach}
+                            {if $number != -1}{math equation="x+86400" x=$dayts assign=dayts}{/if}
+                        </td>
+                    {/foreach}
+                </tr>
 			{/if}
 		{/foreach}
 	</table>

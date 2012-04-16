@@ -148,6 +148,9 @@ class calendarmodule {
 		}
 
 		$time = (isset($_GET['time']) ? $_GET['time'] : time());
+//        if (isset($_POST['newtime'])) {
+//            $time = strtotime($_POST['newtime']);
+//        }
 
 		$template->assign("time",$time);
 
