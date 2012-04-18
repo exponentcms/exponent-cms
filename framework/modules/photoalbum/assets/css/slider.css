@@ -1,10 +1,10 @@
-.fixfloat ul li .item-actions {
-    z-index  : -1;
-    position : absolute;
+.slider ul li .item-actions {
+    z-index          : -1;
+    position         : absolute;
     background-color : #404040;
 }
 
-.fixfloat ul li.on:hover .item-actions {
+.slider ul li.on:hover .item-actions {
     z-index    : 5;
     position   : relative;
     /*width: 80px;*/
@@ -14,11 +14,11 @@
     background : transparent;
 }
 
-.fixfloat, .cf {
+.slider, .cf {
     zoom : 1;
 }
 
-.fixfloat:after, .cf:after {
+.slider:after, .cf:after {
     content    : ".";
     display    : block;
     height     : 0;
@@ -26,17 +26,17 @@
     visibility : hidden;
 }
 
-.photoalbum-slider {
+.slider {
     padding  : 7px 0;
     overflow : hidden !important;
 }
 
-.photoalbum-slider .imglist {
+.sliderlist {
     float : left;
     /*width : 180px;*/
 }
 
-.photoalbum-slider .imglist img {
+.sliderlist img {
     /*width   : 73px;*/
     /*height  : 48px;*/
     /*border  : 1px solid #000;*/
@@ -45,19 +45,19 @@
     margin-right : 5px;
 }
 
-.photoalbum-slider .imglist div {
+.sliderlist div {
     float        : left;
     /*width        : 160px;*/
     color        : #fff;
     padding-left : 5px;
 }
 
-.photoalbum-slider .imglist .thumb-text {
+.sliderlist .thumb-text {
     float         : none;
     padding-right : 0;
 }
 
-.photoalbum-slider .imglist li {
+.sliderlist li {
     border           : 1px solid #525252;
     margin-bottom    : 1px;
     *display         : inline;
@@ -70,23 +70,23 @@
     /*background       : url(../images/slide.gif) repeat-x 0 -70px;*/
 }
 
-.photoalbum-slider .imglist li.on {
+.sliderlist li.on {
     background-position : 0 0;
-    background-color : rgb(82, 147, 226);
+    background-color    : rgb(82, 147, 226);
 }
 
-.photoalbum-slider .imglist li.on div {
+.sliderlist li.on div {
     background-color : rgb(82, 147, 226);
     padding-right    : 10px;
     /*width         : 150px;*/
     /*background       : url(../images/slide.gif) no-repeat right -510px;*/
 }
 
-.photoalbum-slider .imglist li.on div, .photoalbum-slider .imglist li.on div {
+.sliderlist li.on div, .slider .sliderlist li.on div {
     color : #fff;
 }
 
-.photoalbum-slider .showbox {
+.sliderbox {
     float    : right;
     /*width  : 600px;*/
     /*height : 375px;*/
@@ -95,7 +95,7 @@
     position : absolute;
 }
 
-.photoalbum-slider .showbox img {
+.sliderbox img {
     /*width  : 600px;*/
     /*height : 375px;*/
     overflow : hidden !important;

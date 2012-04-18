@@ -22,24 +22,24 @@
 
 {css unique="photoalbum`$name`" link="`$asset_path`css/slider.css"}
 {literal}
-    .photoalbum-slider .imglist {
+    .sliderlist {
         width : {/literal}{$config.sel_width|default:180}{literal}px;
     }
-    .photoalbum-slider .imglist div {
+    .sliderlist div {
         width : {/literal}{($config.sel_width|default:180)-20}{literal}px;
     }
-    .photoalbum-slider .imglist li {
+    .sliderlist li {
         height: {/literal}{$sel_height|default:55}{literal}px;
     }
-    .photoalbum-slider .imglist li.on div {
+    .sliderlist li.on div {
         width : {/literal}{($config.sel_width|default:180)-30}{literal}px;
     }
-    .photoalbum-slider .showbox {
+    .sliderbox {
         width  : {/literal}{$config.width|default:600}{literal}px;
         height : {/literal}{$config.height|default:375}{literal}px;
         margin-left: {/literal}{($config.sel_width|default:180)+15}{literal}px;
     }
-    .photoalbum-slider .showbox img {
+    .sliderbox img {
         width  : {/literal}{$config.width|default:600}{literal}px;
         height : {/literal}{$config.height|default:375}{literal}px;
     }
@@ -63,12 +63,12 @@
    	{/if}
 
     {assign var=myloc value=serialize($__loc)}
-    <div id="ss-{$name}" class="fixfloat photoalbum-slider">
+    <div id="ss-{$name}" class="slider">
 
-        <ul class="imglist dpd-slidetab tab-nav">
+        <ul class="sliderlist dpd-slidetab tab-nav">
 			{assign var=quality value=$config.quality|default:$smarty.const.THUMB_QUALITY}
             {foreach key=key from=$slides item=slide name=slides}
-                <li class="fixfloat{if $smarty.foreach.slides.first} on{/if}">
+                <li class="slider{if $smarty.foreach.slides.first} on{/if}">
                     {permissions}
                         <div class="item-actions">
                             {if $permissions.edit == 1}
@@ -99,7 +99,7 @@
             {/foreach}
         </ul>
 
-        <div class="showbox dpd-slidecontent tab-content">
+        <div class="sliderbox dpd-slidecontent tab-content">
             {foreach key=key from=$slides item=slide name=slides}
                 <div class="tab-pannel">
                     {if $slide->link}<a href="{$slide->link}">{/if}
