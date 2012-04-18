@@ -1,0 +1,102 @@
+.fixfloat ul li .item-actions {
+    z-index  : -1;
+    position : absolute;
+    background-color : #404040;
+}
+
+.fixfloat ul li.on:hover .item-actions {
+    z-index    : 5;
+    position   : relative;
+    /*width: 80px;*/
+    top        : 20px;
+    left       : 20px;
+    margin     : -20px;
+    background : transparent;
+}
+
+.fixfloat, .cf {
+    zoom : 1;
+}
+
+.fixfloat:after, .cf:after {
+    content    : ".";
+    display    : block;
+    height     : 0;
+    clear      : both;
+    visibility : hidden;
+}
+
+.photoalbum-slider {
+    padding  : 7px 0;
+    overflow : hidden !important;
+}
+
+.photoalbum-slider .imglist {
+    float : left;
+    /*width : 180px;*/
+}
+
+.photoalbum-slider .imglist img {
+    /*width   : 73px;*/
+    /*height  : 48px;*/
+    /*border  : 1px solid #000;*/
+    display      : block;
+    float        : left;
+    margin-right : 5px;
+}
+
+.photoalbum-slider .imglist div {
+    float        : left;
+    /*width        : 160px;*/
+    color        : #fff;
+    padding-left : 5px;
+}
+
+.photoalbum-slider .imglist .thumb-text {
+    float         : none;
+    padding-right : 0;
+}
+
+.photoalbum-slider .imglist li {
+    border           : 1px solid #525252;
+    margin-bottom    : 1px;
+    *display         : inline;
+    /*height        : 55px;*/
+    color            : #fff;
+    background-color : #404040;
+    padding          : 6px 0 0 6px;
+    cursor           : pointer;
+    overflow         : hidden !important;
+    /*background       : url(../images/slide.gif) repeat-x 0 -70px;*/
+}
+
+.photoalbum-slider .imglist li.on {
+    background-position : 0 0;
+    background-color : rgb(82, 147, 226);
+}
+
+.photoalbum-slider .imglist li.on div {
+    background-color : rgb(82, 147, 226);
+    padding-right    : 10px;
+    /*width         : 150px;*/
+    /*background       : url(../images/slide.gif) no-repeat right -510px;*/
+}
+
+.photoalbum-slider .imglist li.on div, .photoalbum-slider .imglist li.on div {
+    color : #fff;
+}
+
+.photoalbum-slider .showbox {
+    float    : right;
+    /*width  : 600px;*/
+    /*height : 375px;*/
+    /*margin-left: 195px;*/
+    overflow : hidden !important;
+    position : absolute;
+}
+
+.photoalbum-slider .showbox img {
+    /*width  : 600px;*/
+    /*height : 375px;*/
+    overflow : hidden !important;
+}

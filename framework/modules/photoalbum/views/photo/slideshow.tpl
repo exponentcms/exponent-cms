@@ -15,7 +15,7 @@
 
 {uniqueid prepend="slideshow" assign="name"}
 
-{css unique="photoalbum`$name`" corecss="common,pagination" link="`$asset_path`css/yui3-slideshow.css"}
+{css unique="photoalbum`$name`" corecss="common" link="`$asset_path`css/yui3-slideshow.css"}
 
 {/css}
 
