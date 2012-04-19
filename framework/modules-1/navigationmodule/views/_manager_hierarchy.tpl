@@ -238,47 +238,47 @@ var YAHOO = Y.YUI2;
 	}
 	
 	function addTopNode (){
-		window.location="{/literal}{$smarty.const.URL_FULL}{literal}index.php?module=navigationmodule&action=add_section&parent=0";
+		window.location=eXp.URL_FULL+"index.php?module=navigationmodule&action=add_section&parent=0";
 	}
 
 	function addSubNode (){
-		window.location="{/literal}{$smarty.const.URL_FULL}{literal}index.php?module=navigationmodule&action=add_section&parent="+currentMenuNode.data.id;
+		window.location=eXp.URL_FULL+"index.php?module=navigationmodule&action=add_section&parent="+currentMenuNode.data.id;
 	}
 	
 	function addContentSubNode (){
-		window.location="{/literal}{$smarty.const.URL_FULL}{literal}index.php?module=navigationmodule&action=edit_contentpage&parent="+currentMenuNode.data.id;
+		window.location=eXp.URL_FULL+"index.php?module=navigationmodule&action=edit_contentpage&parent="+currentMenuNode.data.id;
 	}
 
 	function addExternalSubNode (){
-		window.location="{/literal}{$smarty.const.URL_FULL}{literal}index.php?module=navigationmodule&action=edit_externalalias&parent="+currentMenuNode.data.id;
+		window.location=eXp.URL_FULL+"index.php?module=navigationmodule&action=edit_externalalias&parent="+currentMenuNode.data.id;
 	}
 
 	function addInternalSubNode (){
-		window.location="{/literal}{$smarty.const.URL_FULL}{literal}index.php?module=navigationmodule&action=edit_internalalias&parent="+currentMenuNode.data.id;
+		window.location=eXp.URL_FULL+"index.php?module=navigationmodule&action=edit_internalalias&parent="+currentMenuNode.data.id;
 	}
 
 	function addStandaloneSubNode (){
-		window.location="{/literal}{$smarty.const.URL_FULL}{literal}index.php?module=navigationmodule&action=move_standalone&parent="+currentMenuNode.data.id;
+		window.location=eXp.URL_FULL+"index.php?module=navigationmodule&action=move_standalone&parent="+currentMenuNode.data.id;
 	}
 
 	function viewNode (){
-		window.location="{/literal}{$smarty.const.URL_FULL}{literal}index.php?section="+currentMenuNode.data.id;
+		window.location=eXp.URL_FULL+"index.php?section="+currentMenuNode.data.id;
 	}
 	
 	function editNode (){
 		if (currentMenuNode.data.obj.alias_type==0){
-			window.location="{/literal}{$smarty.const.URL_FULL}{literal}index.php?module=navigationmodule&action=edit_contentpage&id="+currentMenuNode.data.id;
+			window.location=eXp.URL_FULL+"index.php?module=navigationmodule&action=edit_contentpage&id="+currentMenuNode.data.id;
 		} else if (currentMenuNode.data.obj.alias_type==1){
-			window.location="{/literal}{$smarty.const.URL_FULL}{literal}index.php?module=navigationmodule&action=edit_externalalias&id="+currentMenuNode.data.id;
+			window.location=eXp.URL_FULL+"index.php?module=navigationmodule&action=edit_externalalias&id="+currentMenuNode.data.id;
 		} else {
-			window.location="{/literal}{$smarty.const.URL_FULL}{literal}index.php?module=navigationmodule&action=edit_internalalias&id="+currentMenuNode.data.id;
+			window.location=eXp.URL_FULL+"index.php?module=navigationmodule&action=edit_internalalias&id="+currentMenuNode.data.id;
 		}
 	}
 	
 	function deleteNode (){
 		var handleYes = function() {
 			this.hide();
-			window.location="{/literal}{$smarty.const.URL_FULL}{literal}index.php?module=navigationmodule&action=remove&id="+currentMenuNode.data.id;
+			window.location=eXp.URL_FULL+"index.php?module=navigationmodule&action=remove&id="+currentMenuNode.data.id;
 		};
 		var handleNo = function() {
 			this.hide();
@@ -309,17 +309,17 @@ var YAHOO = Y.YUI2;
 
 	function editUserPerms (){
 		{/literal} {if ($smarty.const.SEF_URLS == 1)} {literal}
-			window.location="{/literal}{$smarty.const.URL_FULL}{literal}navigationmodule/userperms/int/"+currentMenuNode.data.id+"/_common/1";
+			window.location=eXp.URL_FULL+"navigationmodule/userperms/int/"+currentMenuNode.data.id+"/_common/1";
 		{/literal} {else} {literal}
-			window.location="{/literal}{$smarty.const.URL_FULL}{literal}index.php?module=navigationmodule&action=userperms&int="+currentMenuNode.data.id+"&_common=1";
+			window.location=eXp.URL_FULL+"index.php?module=navigationmodule&action=userperms&int="+currentMenuNode.data.id+"&_common=1";
 		{/literal} {/if} {literal}
 	}
 
 	function editGroupPerms (){
 		{/literal} {if ($smarty.const.SEF_URLS == 1)} {literal}
-			window.location="{/literal}{$smarty.const.URL_FULL}{literal}navigationmodule/groupperms/int/"+currentMenuNode.data.id+"/_common/1";
+			window.location=eXp.URL_FULL+"navigationmodule/groupperms/int/"+currentMenuNode.data.id+"/_common/1";
 		{/literal} {else} {literal}
-			window.location="{/literal}{$smarty.const.URL_FULL}{literal}index.php?module=navigationmodule&action=groupperms&int="+currentMenuNode.data.id+"&_common=1";
+			window.location=eXp.URL_FULL+"index.php?module=navigationmodule&action=groupperms&int="+currentMenuNode.data.id+"&_common=1";
 		{/literal} {/if} {literal}
 	}
 
