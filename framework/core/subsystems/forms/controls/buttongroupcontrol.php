@@ -73,7 +73,7 @@ class buttongroupcontrol extends formcontrol {
 				$html .= '{ return true; }';
 			}
 			$html .= ' else { return false; }"';
-			$html .= ' />';
+			$html .= ' >';
 			$html .= $this->submit;
 			$html .= ' </button>';
 
