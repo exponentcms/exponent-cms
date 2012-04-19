@@ -13,7 +13,13 @@
  *
  *}
 
+{uniqueid prepend="cal" assign="name"}
+
 {css unique="cal" link="`$smarty.const.PATH_RELATIVE`framework/modules-1/calendarmodule/assets/css/calendar.css"}
+
+{/css}
+
+{css unique="cal" link="`$smarty.const.PATH_RELATIVE`framework/modules-1/calendarmodule/assets/css/default.css"}
 
 {/css}
 
@@ -58,7 +64,9 @@
             <a class="module-actions calendar_mngmntlink" href="{link action=viewmonth time=$nextmonth}" title="{$nextmonth|format_date:"%B %Y"}">{$nextmonth|format_date:"%b"}</a>&nbsp;&nbsp;&raquo;&nbsp;
             <a class="module-actions calendar_mngmntlink" href="{link action=viewmonth time=$nextmonth2}" title="{$nextmonth2|format_date:"%B %Y"}">{$nextmonth2|format_date:"%b"}</a>&nbsp;&nbsp;&raquo;&nbsp;
             <a class="module-actions calendar_mngmntlink" href="{link action=viewmonth time=$nextmonth3}" title="{$nextmonth3|format_date:"%B %Y"}">{$nextmonth3|format_date:"%b"}</a>&nbsp;&nbsp;&raquo;
-            <div style="float:right;">{icon img="use.png" action=viewmonth time=$today text="{'Go to Today'|gettext}"}</div>
+            <div style="float:right;">
+                <a href="javascript:void(0);" id="J_popup_closeable">{'Go to Date'|gettext}</a>
+            </div>
         </caption>
 		<tr class="daysoftheweek">
 			{if $smarty.const.DISPLAY_START_OF_WEEK == 0}
@@ -123,3 +131,38 @@
 		{/foreach}
 	</table>
 </div>
+
+{script unique="cal-`$name`" yui3mods="node"}
+{literal}
+
+EXPONENT.YUI3_CONFIG.modules = {
+	'gallery-calendar': {
+		fullpath: '{/literal}{$smarty.const.PATH_RELATIVE}framework/modules-1/calendarmodule/assets/js/calendar.js{literal}',
+		requires: ['node']
+	}
+}
+
+YUI(EXPONENT.YUI3_CONFIG).use('gallery-calendar',function(Y){
+    var today = new Date({/literal}{$time}{literal}*1000);
+
+	//Popup
+	new Y.Calendar('J_popup_closeable',{
+		popup:true,
+		closeable:true,
+        startDay:{/literal}{$smarty.const.DISPLAY_START_OF_WEEK}{literal},
+        date:today,
+		action:['focus']
+	}).on('select',function(d){
+		//alert(d);
+        var unixtime = parseInt(d / 1000);
+        {/literal} {if ($smarty.const.SEF_URLS == 1)} {literal}
+            window.location=eXp.URL_FULL+'calendarmodule/viewmonth/time/'+unixtime+'/src/{/literal}{$__loc->src}{literal}';
+        {/literal} {else} {literal}
+            window.location=eXp.URL_FULL+'index.php?module=calendarmodule&action=viewmonth&time='+unixtime+'&src={/literal}{$__loc->src}{literal}';
+        {/literal} {/if} {literal}
+	});
+
+});
+
+{/literal}
+{/script}
