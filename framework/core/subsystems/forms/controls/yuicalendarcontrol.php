@@ -20,7 +20,7 @@
 if (!defined('EXPONENT')) exit('');
 
 /**
- * Popup YUI Date/Time Picker Control
+ * YUI Date Picker Control
  *
  * @package Subsystems-Forms
  * @subpackage Control

@@ -9,11 +9,14 @@ Added / Fixed / changed for 2.0.7
   - Exponent CMS should work on servers running php v5.4 (v5.2.1 or later required)
   - removes unnecessary (new) unpublish feature from blog
   - adds publish date feature to filedownloads
+  - adds 'go to date' feature to calendar module
+  - adds new photo album slideshow view with vertical thumbnails
   - better handling of video (and audio) uploads and previews
   - adds tag list/cloud sorting by # hits and setting limits
   - fixes youtube module to finally handle multiple items (paging, reordering, etc...)
   - fixes some pagination anomalies associated with multiple pages and sorting
   - manage users now is sortable with more accurate filters
+  - adds optional links to display printer friendly views or export pdf for blog, news, filedownload, & portfolio items and calendars
   - translation more widely implemented; machine translations updated
   - plus other tweaks, fixes, and features
 

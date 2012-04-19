@@ -20,8 +20,8 @@
 if (!defined('EXPONENT')) exit('');
 
 /**
- * Popup YUI Date/Time Control
- * uses the yuicalendarcontrol & datetimecontrol
+ * YUI Date/Time Control
+ * uses/combines yuicalendarcontrol & datetimecontrol
  *
  * @package Subsystems-Forms
  * @subpackage Control

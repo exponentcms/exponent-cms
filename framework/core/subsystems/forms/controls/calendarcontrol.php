@@ -20,7 +20,7 @@
 if (!defined('EXPONENT')) exit('');
 
 /**
- * Popup Date/Time Picker Control
+ * Date/Time Control w/ Popup Date Picker and time w/ am/pm combo
  *
  * @package Subsystems-Forms
  * @subpackage Control
