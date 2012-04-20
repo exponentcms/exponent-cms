@@ -82,6 +82,8 @@ return array(
 	"email_signature"=>array(
 		DB_FIELD_TYPE=>DB_DEF_STRING,
 		DB_FIELD_LEN=>500),	
+    'printlink'=>array(
+   	    DB_FIELD_TYPE=>DB_DEF_BOOLEAN),
 );
 
 ?>

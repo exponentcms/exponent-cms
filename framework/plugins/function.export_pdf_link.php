@@ -35,15 +35,24 @@
 function smarty_function_export_pdf_link($params,&$smarty) {
 	global $router;
 
-	// initialize a couple of variables
-	$text = isset($params['text']) ? $params['text'] : gt('Export as PDF');
-	$view = isset($params['view']) ? $params['view'] : null;
-    $orientation = isset($params['landscapepdf']) ? $params['landscapepdf'] : false;
-    $limit = isset($params['limit']) ? $params['limit'] : '';
+    $config = $smarty->getTemplateVars('config');
+    if (is_object($config)) {
+        $print = !empty($config->printlink);
+    } elseif (is_array($config)) {
+        $print = !empty($config['printlink']);
+    }
+    if ($print && !PRINTER_FRIENDLY && !EXPORT_AS_PDF && file_exists(BASE.'external/dompdf/dompdf.php')) {
+        // initialize a couple of variables
+        $text = isset($params['text']) ? $params['text'] : gt('Export as PDF');
+        $view = isset($params['view']) ? $params['view'] : null;
+        $prepend = isset($params['prepend']) ? $params['prepend'] : '';
+        $orientation = isset($params['landscapepdf']) ? $params['landscapepdf'] : false;
+        $limit = isset($params['limit']) ? $params['limit'] : '';
+        $class = isset($params['class']) ? $params['class'] : 'export-pdf-link';
 
-	// spit out the link
-	$class = isset($params['class']) ? $params['class'] : 'export-pdf-link';
-	echo $router->exportAsPDFLink($text, $class, 800, 600, $view, $orientation, $limit);
+        // spit out the link
+        echo $prepend.$router->exportAsPDFLink($text, $class, 800, 600, $view, $orientation, $limit);
+    }
 }
 
 ?>

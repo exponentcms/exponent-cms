@@ -35,13 +35,24 @@
 function smarty_function_printer_friendly_link($params,&$smarty) {
 	global $router;
 
-	// initialize a couple of variables
-	$text = isset($params['text']) ? $params['text'] : gt('View Printer Friendly');
-	$view = isset($params['view']) ? $params['view'] : null;
+    $config = $smarty->getTemplateVars('config');
+    if (is_object($config)) {
+        $print = !empty($config->printlink);
+    } elseif (is_array($config)) {
+        $print = !empty($config['printlink']);
+    } elseif (isset($params['show'])) {
+        $print = isset($params['show']) ? $params['show'] : null;
+    }
+    if ($print && !PRINTER_FRIENDLY && !EXPORT_AS_PDF) {
+        // initialize a couple of variables
+        $text = isset($params['text']) ? $params['text'] : gt('View Printer Friendly');
+        $view = isset($params['view']) ? $params['view'] : null;
+        $prepend = isset($params['prepend']) ? $params['prepend'] : '';
+        $class = isset($params['class']) ? $params['class'] : 'printer-friendly-link';
 
-	// spit out the link
-	$class = isset($params['class']) ? $params['class'] : 'printer-friendly-link';
-	echo $router->printerFriendlyLink($text, $class, 800, 600, $view);
+        // spit out the link
+        echo $prepend.$router->printerFriendlyLink($text, $class, 800, 600, $view);
+    }
 }
 
 ?>

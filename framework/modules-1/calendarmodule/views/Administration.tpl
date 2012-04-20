@@ -26,10 +26,8 @@
             &nbsp;&nbsp;|&nbsp;&nbsp;
             <span class="adminviewlink">{'Administration View'|gettext}</span>
         {/permissions}
-		&nbsp;&nbsp;|&nbsp;&nbsp;
-		{printer_friendly_link text='Printer-friendly'|gettext}
-        &nbsp;&nbsp;|&nbsp;&nbsp;
-        {export_pdf_link}
+		{printer_friendly_link text='Printer-friendly'|gettext prepend='&nbsp;&nbsp;|&nbsp;&nbsp;'}
+        {export_pdf_link prepend='&nbsp;&nbsp;|&nbsp;&nbsp;'}
 		{br}
 		<a class="listviewlink" href="{link _common=1 view='Past Events' action='show_view' time=$time}">{'Past Events View'|gettext}</a>{br}
 	</div>

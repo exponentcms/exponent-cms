@@ -40,13 +40,13 @@
         <div class="yui-content exp-ecom-table">
             <div id="invoice">
                 <div id="buttons">
-                    {printer_friendly_link class="awesome `$smarty.const.BTN_SIZE` `$smarty.const.BTN_COLOR`" text="Print this invoice"|gettext view="show_printable"}
+                    {printer_friendly_link class="awesome `$smarty.const.BTN_SIZE` `$smarty.const.BTN_COLOR`" text="Print this invoice"|gettext view="show_printable" show=1}
                     {if $smarty.const.HTMLTOPDF_PATH && $smarty.const.HTMLTOPDF_PATH_TMP}                                        
                         <a class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" href="{link controller='order' action='getPDF' id=$order->id inum=$order->invoice_number}">{'Download PDF'|gettext}</a>
                     {/if}
                     {permissions}
                         {if $permissions.manage == 1}
-                            {printer_friendly_link class="awesome `$smarty.const.BTN_SIZE` `$smarty.const.BTN_COLOR`" text="Print Packing Slip"|gettext view="show_packing"}
+                            {printer_friendly_link class="awesome `$smarty.const.BTN_SIZE` `$smarty.const.BTN_COLOR`" text="Print Packing Slip"|gettext view="show_packing" show=1}
                             <a class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" href="{link controller='order' action='createReferenceOrder' id=$order->id}">{'Spawn Reference Order'|gettext}</a>
                         {/if}
                     {/permissions} 

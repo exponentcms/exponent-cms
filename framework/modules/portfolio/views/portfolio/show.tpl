@@ -15,9 +15,7 @@
 
 <div class="module portfolio show">
 	<h1>{$record->title}</h1>
-    {if $config.printlink && !$smarty.const.PRINTER_FRIENDLY && !$smarty.const.EXPORT_AS_PDF}
-        {printer_friendly_link}  |  {export_pdf_link}{br}
-    {/if}
+    {printer_friendly_link}{export_pdf_link prepend='&nbsp;&nbsp;|&nbsp;&nbsp;'}{br}
     {assign var=myloc value=serialize($__loc)}
 	{permissions}
 		<div class="item-actions">

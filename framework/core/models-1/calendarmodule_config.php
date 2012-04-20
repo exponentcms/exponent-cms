@@ -95,11 +95,14 @@ class calendarmodule_config {
 				}
 			}
 		}
-	
+	    if (!isset($object->printlink)) {
+            $object->printlink = false;
+        }
 		// setup the config form	
 		$form->register(null,'',new htmlcontrol('<h3>'.gt('General Configuration').'</h3><hr size="1" />'));
 		// $form->register('enable_categories',gt('Enable Categories'),new checkboxcontrol($object->enable_categories,true));
-		$form->register('enable_feedback',gt('Enable Feedback'),new checkboxcontrol($object->enable_feedback,true));
+        $form->register('printlink',gt('Display Printer-Friendly and Export-to-PDF Links'),new checkboxcontrol($object->printlink));
+		$form->register('enable_feedback',gt('Enable Feedback'),new checkboxcontrol($object->enable_feedback));
 
 		$form->register(null,'',new htmlcontrol('<h3>'.gt('Events Reminder Email').'</h3><hr size="1" />'));
         if ($object->id) {
@@ -209,7 +212,9 @@ class calendarmodule_config {
 //		$object->feed_desc = $values['feed_desc'];
 		$object->rss_cachetime = $values['rss_cachetime'];
 		$object->rss_limit = $values['rss_limit'];
-		
+
+        $object->printlink = $values['printlink'];
+
 		// $object->enable_tags = (isset($values['enable_tags']) ? 1 : 0);
 		// $object->collections = serialize(listbuildercontrol::parseData($values,'collections'));
 		// $object->group_by_tags = (isset($values['group_by_tags']) ? 1 : 0);

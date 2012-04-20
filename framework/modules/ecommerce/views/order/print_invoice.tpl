@@ -14,7 +14,7 @@
  *}
 
 <div class="module order print-invoice">
-    {printer_friendly_link text="Print this invoice"|gettext}
+    {printer_friendly_link text="Print this invoice"|gettext show=1}
     {br}{br}
 	<table width=100% border="0" cellspacing="5" cellpadding="5">
 		<thead>

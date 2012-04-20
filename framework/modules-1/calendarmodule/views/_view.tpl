@@ -24,10 +24,9 @@
 		<a class="weekviewlink" href="{link action=viewweek time=$item->eventstart}" title="{'View Entire Week'|gettext}" alt="{'View Entire Week'|gettext}">{'View Week'|gettext}</a>
         &nbsp;&nbsp;|&nbsp;&nbsp;
 		<a class="monthviewlink" href="{link action=viewmonth time=$item->eventstart}" title="{'View Entire Month'|gettext}" alt="{'View Entire Month'|gettext}">{'View Month'|gettext}</a>
-        &nbsp;&nbsp;|&nbsp;&nbsp;
-		{printer_friendly_link text='Printer-friendly'|gettext}{br}
-        &nbsp;&nbsp;|&nbsp;&nbsp;
-        {export_pdf_link}
+		{printer_friendly_link text='Printer-friendly'|gettext prepend='&nbsp;&nbsp;|&nbsp;&nbsp;'}
+        {export_pdf_link prepend='&nbsp;&nbsp;|&nbsp;&nbsp;'}
+        {br}
 	</div>
 	<h2>
 		{if $enable_ical == true}
