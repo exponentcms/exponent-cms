@@ -25,13 +25,18 @@
 
 <div class="module calendar monthly">
 	<div class="module-actions">
-		<a class="monthviewlink" href="{link action=viewmonth time=$time}">{'Calendar View'|gettext}</a>&nbsp;&nbsp;|&nbsp;&nbsp;<span class="listviewlink"></span>{'List View'|gettext}
+		<a class="monthviewlink" href="{link action=viewmonth time=$time}">{'Calendar View'|gettext}</a>
+        &nbsp;&nbsp;|&nbsp;&nbsp;
+        <span class="listviewlink"></span>{'List View'|gettext}
 		{permissions}
 			{if $permissions.manage == 1}
-				&nbsp;&nbsp;|&nbsp;&nbsp;<a class="adminviewlink mngmntlink" href="{link _common=1 view='Administration' action='show_view' time=$time}">{'Administration View'|gettext}</a>
+				&nbsp;&nbsp;|&nbsp;&nbsp;
+                <a class="adminviewlink mngmntlink" href="{link _common=1 view='Administration' action='show_view' time=$time}">{'Administration View'|gettext}</a>
 			{/if}
 			&nbsp;&nbsp;|&nbsp;&nbsp;
 			{printer_friendly_link text='Printer-friendly'|gettext}
+            &nbsp;&nbsp;|&nbsp;&nbsp;
+            {export_pdf_link}
 			{br}
 		{/permissions}
 	</div>
@@ -57,7 +62,7 @@
 		<a class="module-actions calendar_mngmntlink" href="{link action=viewmonth view='Monthly List' time=$next_timestamp}" title="{$next_timestamp|format_date:"%B %Y"}">{$next_timestamp|format_date:"%b"}</a>&nbsp;&nbsp;&raquo;&nbsp;
 		<a class="module-actions calendar_mngmntlink" href="{link action=viewmonth view='Monthly List' time=$next_timestamp2}" title="{$next_timestamp2|format_date:"%B %Y"}">{$next_timestamp2|format_date:"%b"}</a>&nbsp;&nbsp;&raquo;&nbsp;
 		<a class="module-actions calendar_mngmntlink" href="{link action=viewmonth view='Monthly List' time=$next_timestamp3}" title="{$next_timestamp3|format_date:"%B %Y"}">{$next_timestamp3|format_date:"%b"}</a>&nbsp;&nbsp;&raquo;
-        <a style="float:right;" href="javascript:void(0);" id="J_popup_closeable">{'Go to Date'|gettext}</a>
+        <a class="module-actions" style="float:right;" href="javascript:void(0);" id="J_popup_closeable">{'Go to Date'|gettext}</a>
 	</p>
 	<dl class="viewweek">
 		{foreach from=$days item=items key=ts}

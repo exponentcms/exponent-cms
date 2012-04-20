@@ -89,7 +89,7 @@ if (MAINTENANCE_MODE && !$user->isAdmin() && (!isset($_REQUEST['controller']) ||
 	$page = expTheme::getTheme();
 
 	// If we are in a printer friendly request then we need to change to our printer friendly subtheme
-	if (PRINTER_FRIENDLY == 1) {
+	if (PRINTER_FRIENDLY == 1 || EXPORT_AS_PDF == 1) {
 		expSession::set("uilevel",0);
 		$pftheme = expTheme::getPrinterFriendlyTheme();  	// get the printer friendly theme
 		$page = $pftheme == null ? $page : $pftheme;		// if there was no theme found then just use the current subtheme
@@ -106,7 +106,7 @@ if (MAINTENANCE_MODE && !$user->isAdmin() && (!isset($_REQUEST['controller']) ||
 		echo sprintf(gt('Page "%s" not readable.'), $page);
 	}
 
-	if (PRINTER_FRIENDLY == 1) {
+	if (PRINTER_FRIENDLY == 1 || EXPORT_AS_PDF == 1) {
 		expSession::un_set('uilevel');
 	}
 }
@@ -115,6 +115,35 @@ if (MAINTENANCE_MODE && !$user->isAdmin() && (!isset($_REQUEST['controller']) ||
 //$i_end = $microtime_str[0] + $microtime_str[1];
 //echo "\r\n<!--".sprintf(gt('Execution time : %d seconds'),round($i_end - $i_start,4)).'-->';
 
-ob_end_flush();
+if (EXPORT_AS_PDF == 1) {
+    $content = ob_get_clean();
+
+    // convert to PDF
+//    require_once(BASE.'external/html2pdf_v4.03/html2pdf.class.php');
+//    try
+//    {
+//        $html2pdf = new HTML2PDF(EXPORT_AS_PDF_LANDSCAPE?'L':'P', 'A4', substr(LOCALE,0,2));
+//        $html2pdf->writeHTML($content);
+//        $html2pdf->Output($sectionObj->name.'.pdf',HTML2PDF_OUTPUT?'D':'');
+//    }
+//    catch(HTML2PDF_exception $e) {
+//        echo $e;
+////        exit;
+//    }
+    require_once(BASE.'external/dompdf/dompdf_config.inc.php');
+    $dompdf = new DOMPDF();
+    $dompdf->load_html($content);
+    $dompdf->set_paper('A4',EXPORT_AS_PDF_LANDSCAPE?'landscape':'portrait');
+    $dompdf->render();
+    $dompdf->stream($sectionObj->name.".pdf",array('Attachment'=>HTML2PDF_OUTPUT));
+
+    echo '<script language="javascript">
+        <!--
+        setTimeout("self.close();",10000)
+        //-->
+        </script>';  //FIXME timeout before closing an empty pdf or html2pdf error window
+} else {
+    ob_end_flush();
+}
 
 ?>

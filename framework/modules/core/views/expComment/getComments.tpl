@@ -71,7 +71,7 @@
         {/if}
     	{*$comments->links* <-- We'll need to fix pagination*}
 	{/if}
-	{if $config.usescomments!=1}
+	{if $config.usescomments!=1 && !$smarty.const.PRINTER_FRIENDLY && !$smarty.const.EXPORT_AS_PDF}
 	    {include file="edit.tpl"}
 	{/if}
 </div>

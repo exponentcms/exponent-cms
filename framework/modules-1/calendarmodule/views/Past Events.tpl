@@ -19,13 +19,18 @@
 
 <div class="module calendar cal-admin">
 	<div class="module-actions">
-		<a class="monthviewlink" href="{link action=viewmonth time=$time}">{'Calendar View'|gettext}</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a class="listviewlink" href="{link _common=1 view='Monthly List' action='show_view' time=$time}">{'List View'|gettext}</a>
+		<a class="monthviewlink" href="{link action=viewmonth time=$time}">{'Calendar View'|gettext}</a>
+        &nbsp;&nbsp;|&nbsp;&nbsp;
+        <a class="listviewlink" href="{link _common=1 view='Monthly List' action='show_view' time=$time}">{'List View'|gettext}</a>
 		{permissions}
 			{if $permissions.manage == 1}
-				&nbsp;&nbsp;|&nbsp;&nbsp;<a class="adminviewlink mngmntlink" href="{link _common=1 view='Administration' action='show_view' time=$time}">{'Administration View'|gettext}</a>
+				&nbsp;&nbsp;|&nbsp;&nbsp;
+                <a class="adminviewlink mngmntlink" href="{link _common=1 view='Administration' action='show_view' time=$time}">{'Administration View'|gettext}</a>
 			{/if}
 			&nbsp;&nbsp;|&nbsp;&nbsp;
 			{printer_friendly_link text='Printer-friendly'|gettext}
+            &nbsp;&nbsp;|&nbsp;&nbsp;
+            {export_pdf_link}
 			{br}
 			<span class="listviewlink">{'Past Events View'|gettext}{$config->colorize}</span>
 			{if $permissions.manage == 1}

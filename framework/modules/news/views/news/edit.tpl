@@ -13,10 +13,6 @@
  *
  *}
 
-{css unique="news-edit" link="`$smarty.const.YUI2_PATH`assets/skins/sam/calendar.css"}
-
-{/css}
-
 <div id="newsedit" class="module news edit">
     {if $record->id != ""}<h1>{'Editing'|gettext} {$record->title}</h1>{else}<h1>{'New'|gettext} {$modelname}</h1>{/if}
     {form action=update}
@@ -53,7 +49,7 @@
                 </div>
                 <div id="tab2">
                     {control type="yuidatetimecontrol" name="publish" label="Publish Date"|gettext edit_text="Publish Immediately" value=$record->publish}
-                    {control type="yuidatetimecontrol" name="unpublish" label="Un-publish Date"|gettext edit_text="Do Not Un-Publish" value=$record->unpublish}
+                    {control type="yuidatetimecontrol" name="unpublish" label="Un-Publish Date"|gettext edit_text="Un-Publish Immediately" value=$record->unpublish}
                 </div>
                 {if $config.filedisplay}
                     <div id="tab3">

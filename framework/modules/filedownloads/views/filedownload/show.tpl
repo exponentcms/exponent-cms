@@ -20,6 +20,9 @@
             {img class="preview-img" file_id=$record->expFile.preview[0]->id square=150}
         {/if}
         {if $record->title}<h2>{$record->title}</h2>{/if}
+        {if $config.printlink && !$smarty.const.PRINTER_FRIENDLY && !$smarty.const.EXPORT_AS_PDF}
+            {printer_friendly_link}  |  {export_pdf_link}{br}
+        {/if}
         {assign var=myloc value=serialize($__loc)}
         {permissions}
 			<div class="item-actions">

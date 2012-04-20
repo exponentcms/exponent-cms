@@ -26,7 +26,7 @@
  * Smarty {popupdatetimecontrol} function plugin
  *
  * Type:     function<br>
- * Name:     popupdatetimecontrol<br>
+ * Name:     popupdatetimecontrol<br>  //FIXME the popupdatetimecontrol is broken w/o the jscalendar files
  * Purpose:  ???
  *
  * @param         $params

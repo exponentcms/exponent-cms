@@ -26,7 +26,10 @@
 <div class="module calendar viewweek"> 
 	<div class="module-actions">
 		<a class="monthviewlink" href="{link action=viewmonth time=$startweek}" title="{'View Entire Month'|gettext}">{'View Month'|gettext}</a>
-		&nbsp;&nbsp;|&nbsp;&nbsp;{printer_friendly_link text='Printer-friendly'|gettext}
+		&nbsp;&nbsp;|&nbsp;&nbsp;
+        {printer_friendly_link text='Printer-friendly'|gettext}
+        &nbsp;&nbsp;|&nbsp;&nbsp;
+        {export_pdf_link}
 	</div>
 	<h1>
 		{if $enable_ical == true}
@@ -47,7 +50,7 @@
 		<span>{'Week of'|gettext} {$startweek|format_date:"%B %e, %Y"}</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&raquo;&nbsp;&nbsp;
 		<a class="module-actions calendar_mngmntlink" href="{link action=viewweek time=$startnextweek}" title="{'Week of'|gettext} {$startnextweek|format_date:"%B %e, %Y"}">{$startnextweek|format_date:"%b %e"}</a>&nbsp;&nbsp;&raquo;&nbsp;
 		<a class="module-actions calendar_mngmntlink" href="{link action=viewweek time=$startnextweek2}" title="{'Week of'|gettext} {$startnextweek2|format_date:"%B %e, %Y"}">{$startnextweek2|format_date:"%b %e"}</a>
-        <a style="float:right;" href="javascript:void(0);" id="J_popup_closeable">{'Go to Date'|gettext}</a>
+        <a class="module-actions" style="float:right;" href="javascript:void(0);" id="J_popup_closeable">{'Go to Date'|gettext}</a>
 	</p>
 	<dl class="viewweek">
 

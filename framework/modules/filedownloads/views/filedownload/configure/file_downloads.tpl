@@ -24,3 +24,4 @@
 {control type="checkbox" name="show_info" label="Show File Info"|gettext|cat:"?" value=1 checked=$config.show_info}
 {control type="checkbox" name="show_icon" label="Show File Icon or Preview"|gettext|cat:"?" value=1 checked=$config.show_icon}
 {control type="checkbox" name="show_player" label="Show Media Player"|gettext|cat:"?" value=1 checked=$config.show_player}
+{control type="checkbox" name="printlink" label="Display Printer-Friendly Link"|gettext value=1 checked=$config.printlink}

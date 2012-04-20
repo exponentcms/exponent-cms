@@ -25,9 +25,13 @@
 
 <div class="module calendar viewday"> 
 	<div class="module-actions">
-		<a class="weekviewlink" href="{link action=viewweek time=$now view=_viewweek}" title="{'View Entire Week'|gettext}">{'View Week'|gettext}</a>&nbsp;&nbsp;|&nbsp;&nbsp;
-		<a class="monthviewlink" href="{link action=viewmonth time=$item->eventstart}" title="{'View Entire Month'|gettext}" alt="{'View Entire Month'|gettext}">{'View Month'|gettext}</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+		<a class="weekviewlink" href="{link action=viewweek time=$now view=_viewweek}" title="{'View Entire Week'|gettext}">{'View Week'|gettext}</a>
+        &nbsp;&nbsp;|&nbsp;&nbsp;
+		<a class="monthviewlink" href="{link action=viewmonth time=$item->eventstart}" title="{'View Entire Month'|gettext}" alt="{'View Entire Month'|gettext}">{'View Month'|gettext}</a>
+        &nbsp;&nbsp;|&nbsp;&nbsp;
 		{printer_friendly_link text='Printer-friendly'|gettext}
+        &nbsp;&nbsp;|&nbsp;&nbsp;
+        {export_pdf_link}
 	</div>
 	<h1>
 		{if $enable_ical == true}
@@ -50,7 +54,7 @@
 		<a class="module-actions calendar_mngmntlink" href="{link action=viewday time=$nextday}" title="{$nextday|format_date:"%A, %B %e, %Y"}">{$nextday|format_date:"%a"}</a>&nbsp;&nbsp;&raquo;&nbsp;
 		<a class="module-actions calendar_mngmntlink" href="{link action=viewday time=$nextday2}" title="{$nextday2|format_date:"%A, %B %e, %Y"}">{$nextday2|format_date:"%a"}</a>&nbsp;&nbsp;&raquo;&nbsp;
 		<a class="module-actions calendar_mngmntlink" href="{link action=viewday time=$nextday3}" title="{$nextday3|format_date:"%A, %B %e, %Y"}">{$nextday3|format_date:"%a"}</a>
-        <a style="float:right;" href="javascript:void(0);" id="J_popup_closeable">{'Go to Date'|gettext}</a>
+        <a class="module-actions" style="float:right;" href="javascript:void(0);" id="J_popup_closeable">{'Go to Date'|gettext}</a>
 	</p>
 	<dl class="viewweek">
 		{assign var=count value=0}

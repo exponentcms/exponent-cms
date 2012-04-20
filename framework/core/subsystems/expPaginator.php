@@ -267,7 +267,9 @@ class expPaginator {
 		if (!empty($this->controller)) {
 		    unset($page_params['module']);
 		    $page_params['controller'] = str_replace("Controller","",$this->controller);
-		}
+		} else {
+            $page_params['controller'] = $mod;  // we can't be passing an empty controller or module to the router
+        }
 		
 		if (!empty($this->action)) $page_params['action'] =  $this->action;
 		if (!empty($this->src)) $page_params['src'] =  $this->src;

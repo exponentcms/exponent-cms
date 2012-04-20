@@ -25,13 +25,18 @@
 
 <div class="module calendar default">
 	<div class="module-actions">
-		<span class="monthviewlink">{'Calendar View'|gettext}</span>&nbsp;&nbsp;|&nbsp;&nbsp;<a class="listviewlink" href="{link _common=1 view='Monthly List' action='show_view' time=$time}">{'List View'|gettext}</a>
+		<span class="monthviewlink">{'Calendar View'|gettext}</span>
+        &nbsp;&nbsp;|&nbsp;&nbsp;
+        <a class="listviewlink" href="{link _common=1 view='Monthly List' action='show_view' time=$time}">{'List View'|gettext}</a>
 		{permissions}
 			{if $permissions.manage == 1}
-				&nbsp;&nbsp;|&nbsp;&nbsp;<a class="adminviewlink mngmntlink" href="{link _common=1 view='Administration' action='show_view' time=$time}">{'Administration View'|gettext}</a>
+				&nbsp;&nbsp;|&nbsp;&nbsp;
+                <a class="adminviewlink mngmntlink" href="{link _common=1 view='Administration' action='show_view' time=$time}">{'Administration View'|gettext}</a>
 			{/if}
 			&nbsp;&nbsp;|&nbsp;&nbsp;
 			{printer_friendly_link text='Printer-friendly'|gettext}
+            &nbsp;&nbsp;|&nbsp;&nbsp;
+            {export_pdf_link}
 			{br}
 		{/permissions}
 	</div>
@@ -55,7 +60,7 @@
         {*<button type="submit" class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}">{"Go to Date"|gettext}</button>*}
     {*</form>*}
 	<table id="calendar" summary="{$moduletitle|default:'Calendar'|gettext}">
-        <caption>
+        <p class="caption">
             &laquo;&nbsp;
             <a class="module-actions calendar_mngmntlink" href="{link action=viewmonth time=$prevmonth3}" title="{$prevmonth3|format_date:"%B %Y"}">{$prevmonth3|format_date:"%b"}</a>&nbsp;&nbsp;&laquo;&nbsp;
             <a class="module-actions calendar_mngmntlink" href="{link action=viewmonth time=$prevmonth2}" title="{$prevmonth2|format_date:"%B %Y"}">{$prevmonth2|format_date:"%b"}</a>&nbsp;&nbsp;&laquo;&nbsp;
@@ -64,10 +69,8 @@
             <a class="module-actions calendar_mngmntlink" href="{link action=viewmonth time=$nextmonth}" title="{$nextmonth|format_date:"%B %Y"}">{$nextmonth|format_date:"%b"}</a>&nbsp;&nbsp;&raquo;&nbsp;
             <a class="module-actions calendar_mngmntlink" href="{link action=viewmonth time=$nextmonth2}" title="{$nextmonth2|format_date:"%B %Y"}">{$nextmonth2|format_date:"%b"}</a>&nbsp;&nbsp;&raquo;&nbsp;
             <a class="module-actions calendar_mngmntlink" href="{link action=viewmonth time=$nextmonth3}" title="{$nextmonth3|format_date:"%B %Y"}">{$nextmonth3|format_date:"%b"}</a>&nbsp;&nbsp;&raquo;
-            <div style="float:right;">
-                <a href="javascript:void(0);" id="J_popup_closeable">{'Go to Date'|gettext}</a>
-            </div>
-        </caption>
+            <a class="module-actions" style="float:right;" href="javascript:void(0);" id="J_popup_closeable">{'Go to Date'|gettext}</a>
+        </p>
 		<tr class="daysoftheweek">
 			{if $smarty.const.DISPLAY_START_OF_WEEK == 0}
 			<th scope="col" abbr="{'Sunday'|gettext}" title="'Sunday'|gettext}">{'Sunday'|gettext}</th>

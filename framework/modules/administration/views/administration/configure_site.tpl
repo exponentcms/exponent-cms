@@ -223,8 +223,11 @@
                         </div>
 		                <h2>{"PDF Generation"|gettext}</h2>
                     </div>
+                    <h2>{"WKHTMLtoPDF - Store Orders"|gettext}</h2>
                     {control type="text" name="sc[HTMLTOPDF_PATH]" label="Full Path to the WKHTMLtoPDF Binary Utility"|gettext value=$smarty.const.HTMLTOPDF_PATH}
                     {control type="text" name="sc[HTMLTOPDF_PATH_TMP]" label="Full Path to the WKHTMLtoPDF Temp Directory"|gettext value=$smarty.const.HTMLTOPDF_PATH_TMP}
+                    <h2>{"HTML2PDF - Export as PDF"|gettext}</h2>
+                    {control type="checkbox" postfalse=1 name="sc[HTML2PDF_OUTPUT]" label="Force PDF File Download?"|gettext checked=$smarty.const.HTML2PDF_OUTPUT value=1}
                 </div>
 				<div id="tab14">
 					<div class="info-header">

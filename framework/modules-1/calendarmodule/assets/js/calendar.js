@@ -487,7 +487,9 @@ Y.mix(Y.Calendar,{
 		this.ctime = Y.Node.create('<div class="c-time">Time：<span class="h">h</span>:<span class="m">m</span>:<span class="s">s</span><!--{{arrow--><div class="cta"><button class="u"></button><button class="d"></button></div><!--arrow}}--></div>');
 		this.button = Y.Node.create('<button class="ct-ok">OK</button>');
 		//小时
-		this.h_a = ['00','01','02','03','04','05','06','07','08','09','10','11','12','13','14','15','16','17','18','19','20','21','22','23'];
+//FIXME this is the am/pm time string
+//		this.h_a = ['12a','1a','2a','3a','4a','5a','6a','7a','8a','9a','10a','11a','12p','1p','2p','3p','4p','5p','6p','7p','8p','9p','10p','11p'];
+        this.h_a = ['00','01','02','03','04','05','06','07','08','09','10','11','12','13','14','15','16','17','18','19','20','21','22','23'];
 		//分钟
 		this.m_a = ['00','10','20','30','40','50'];
 		//秒
@@ -505,6 +507,7 @@ Y.mix(Y.Calendar,{
 			var in_str = '';
 			for(var i = 0;i<a.length;i++){
 				in_str += '<a href="javascript:void(0);" class="item">'+a[i]+'</a>';
+                //FIXME add <br> if i+1%6==0
 			}
 			in_str += '<a href="javascript:void(0);" class="x">x</a>';
 			return in_str;
@@ -562,6 +565,7 @@ Y.mix(Y.Calendar,{
 			var v = Number(v);
 			switch(status){
 				case 'h':
+                    //FIXME here's where we'd parse the am/pm display
 					that.time.setHours(v);
 					break;
 				case 'm':

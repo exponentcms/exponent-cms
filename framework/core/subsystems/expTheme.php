@@ -166,7 +166,7 @@ class expTheme {
 
    		$validateTheme['footerinfo'] = true;
 
-   		if (!empty($user->getsToolbar) && PRINTER_FRIENDLY != 1 && !defined('SOURCE_SELECTOR') && empty($params['hide-slingbar'])) {
+   		if (!empty($user->getsToolbar) && PRINTER_FRIENDLY != 1 && EXPORT_AS_PDF != 1 && !defined('SOURCE_SELECTOR') && empty($params['hide-slingbar'])) {
    			self::module(array("controller"=>"administration","action"=>"toolbar","source"=>"admin"));
    		}
 

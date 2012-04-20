@@ -14,10 +14,10 @@
  *}
 
 <div class="module news show">
-    {if $config.printlink}
-    {printer_friendly_link}
-    {/if}
     <h1>{$record->title}</h1>
+    {if $config.printlink && !$smarty.const.PRINTER_FRIENDLY && !$smarty.const.EXPORT_AS_PDF}
+        {printer_friendly_link}  |  {export_pdf_link}{br}
+    {/if}
     {assign var=myloc value=serialize($__loc)}
     <span class="date">{$record->publish_date|format_date:"%A, %B %e, %Y"}</span>
     {if $record->expTag|@count>0 && !$config.disabletags}

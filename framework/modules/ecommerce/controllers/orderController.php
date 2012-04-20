@@ -466,6 +466,24 @@ exit();
 			ob_clean();			
 			$pdfer->output('D', $org_name . "_Invoice" . ".pdf");	
 			exit();
+            /**
+             * to do this same thing using html2pdf
+             * //FIXME uncomment to implement, comment out above
+                 require_once(BASE.'external/html2pdf_v4.03/html2pdf.class.php');
+                 $html2pdf = new HTML2PDF('P', 'LETTER', substr(LOCALE,0,2));
+                 $html2pdf->writeHTML($invoice);
+                 $html2pdf->Output($org_name . "_Invoice" . ".pdf",HTML2PDF_OUTPUT?'D':'');
+             */
+            /**
+             * to do this same thing using dompdf
+             * //FIXME uncomment to implement, comment out above
+                 require_once(BASE.'external/dompdf/dompdf_config.inc.php');
+                 $dompdf = new DOMPDF();
+                 $dompdf->load_html($invoice);
+                 $dompdf->set_paper('A4','portrait');
+                 $dompdf->render();
+                 $dompdf->stream($org_name . "_Invoice" . ".pdf",array('Attachment'=>HTML2PDF_OUTPUT));
+             */
 		}
     }
     
