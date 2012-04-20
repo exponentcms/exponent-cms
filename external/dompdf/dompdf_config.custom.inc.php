@@ -25,5 +25,5 @@
 //define("DOMPDF_ENABLE_FONTSUBSETTING", true);
 
 // DOMPDF authentication
-//define("DOMPDF_ADMIN_USERNAME", "user");
-//define("DOMPDF_ADMIN_PASSWORD", "password");
+define("DOMPDF_ADMIN_USERNAME", "user");
+define("DOMPDF_ADMIN_PASSWORD", "user");
