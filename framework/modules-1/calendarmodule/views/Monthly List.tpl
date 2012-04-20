@@ -33,12 +33,12 @@
 				&nbsp;&nbsp;|&nbsp;&nbsp;
                 <a class="adminviewlink mngmntlink" href="{link _common=1 view='Administration' action='show_view' time=$time}">{'Administration View'|gettext}</a>
 			{/if}
-			&nbsp;&nbsp;|&nbsp;&nbsp;
-			{printer_friendly_link text='Printer-friendly'|gettext}
-            &nbsp;&nbsp;|&nbsp;&nbsp;
-            {export_pdf_link}
-			{br}
 		{/permissions}
+        &nbsp;&nbsp;|&nbsp;&nbsp;
+        {printer_friendly_link text='Printer-friendly'|gettext}
+        &nbsp;&nbsp;|&nbsp;&nbsp;
+        {export_pdf_link}
+        {br}
 	</div>
 	<h1>
 		{if $enable_ical == true}

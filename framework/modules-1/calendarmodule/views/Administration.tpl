@@ -22,8 +22,10 @@
 		<a class="monthviewlink" href="{link action=viewmonth time=$time}">{'Calendar View'|gettext}</a>
         &nbsp;&nbsp;|&nbsp;&nbsp;
         <a class="listviewlink" href="{link _common=1 view='Monthly List' action='show_view' time=$time}">{'List View'|gettext}</a>
-		&nbsp;&nbsp;|&nbsp;&nbsp;
-        <span class="adminviewlink">{'Administration View'|gettext}</span>
+        {permissions}
+            &nbsp;&nbsp;|&nbsp;&nbsp;
+            <span class="adminviewlink">{'Administration View'|gettext}</span>
+        {/permissions}
 		&nbsp;&nbsp;|&nbsp;&nbsp;
 		{printer_friendly_link text='Printer-friendly'|gettext}
         &nbsp;&nbsp;|&nbsp;&nbsp;
