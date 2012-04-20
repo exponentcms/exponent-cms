@@ -154,7 +154,7 @@ switch ($page) {
 }
 
 ?>
-<!DOCTYPE>
+<!DOCTYPE HTML>
 <html>
 <head>
 	<title><?php echo gt('Exponent Install Wizard'); ?></title>

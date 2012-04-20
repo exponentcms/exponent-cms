@@ -4,13 +4,13 @@
 	
 	require_once('../../../exponent.php');
 ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE HTML>
+<html>
 
 	<head>
 		<title><?PHP echo gt('Insert/Modify Link'); ?></title>
 
-		<script type="text/javascript" src="<?PHP echo PATH_RELATIVE ?>exponent.js.php"></script>
+		<script type="text/javascript" src="<?PHP echo PATH_RELATIVE ?>exponent.js2.php"></script>
 		<script type="text/javascript" src="popup.js"></script>
 <!--		<script type="text/javascript" src="--><?PHP //echo PATH_RELATIVE . 'external/editors/connector/lang/' . exponent_lang_convertLangCode(LANG) . '.js'?><!--"></script>-->
 		<script type="text/javascript" src="<?PHP echo PATH_RELATIVE . 'external/editors/connector/lang/en.js'?>"></script>
