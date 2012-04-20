@@ -23,30 +23,32 @@
         {'If you would like to stay up to date with email alerts, simply give us your email address and pick what you would like to be alerted about.'|gettext}
     </p>
     {form action=signup}
-    <strong>{'Step 1: Let us know your email address'|gettext}</strong>
-    {control type="text" name="email" label="Email Address"|gettext}
-    
-    <strong>{'Step 2: Pick your E-Alerts'|gettext}</strong>
-    <table class="exp-skin-table">
-    <thead>
-    <tr>
-        <th>{'Subscribe'|gettext}</th>
-        <th>{'Name/Description'|gettext}</th>
-    </tr>
-    </thead>
-    <tbody>    
-    {foreach from=$ealerts item=ealert}
-        <td>
-            {control type="checkbox" name="ealerts[]" label=" " value=$ealert->id checked=$active}
-        </td>
-        <td>
-            <h2>{$ealert->ealert_title}</h2>
-            <p>{$ealert->ealert_desc}</p>
-        </td>
-    {/foreach}    
-    </tbody>
-    </table>
-    {control type="antispam"}    
-    {control type="buttongroup" submit="Sign up now"|gettext cancel="Cancel"|gettext}
+        <strong>{'Step 1: Let us know your email address'|gettext}</strong>
+        {control type="text" name="email" label="Email Address"|gettext}
+
+        <strong>{'Step 2: Pick your E-Alerts'|gettext}</strong>
+        <table class="exp-skin-table">
+            <thead>
+                <tr>
+                    <th>{'Subscribe'|gettext}</th>
+                    <th>{'Name/Description'|gettext}</th>
+                </tr>
+            </thead>
+            <tbody>
+                {foreach from=$ealerts item=ealert}
+                    <tr>
+                        <td>
+                            {control type="checkbox" name="ealerts[]" label=" " value=$ealert->id checked=$active}
+                        </td>
+                        <td>
+                            <h2>{$ealert->ealert_title}</h2>
+                            <p>{$ealert->ealert_desc}</p>
+                        </td>
+                    </tr>
+                {/foreach}
+            </tbody>
+        </table>
+        {control type="antispam"}
+        {control type="buttongroup" submit="Sign up now"|gettext cancel="Cancel"|gettext}
     {/form}
 </div>
