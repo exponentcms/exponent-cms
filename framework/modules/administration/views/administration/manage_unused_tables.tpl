@@ -32,18 +32,18 @@
             <tr>
                 <th>{'Delete'|gettext}?</th>
                 <th>{'Table Name'|gettext}</th>
-                <th># {'Rows'|gettext}</th>
+                <th># {'Entries'|gettext}</th>
             </tr>
         </thead>
         <tbody>
             {foreach from=$unused_tables item=table key=basename}
-            <tr class="{cycle values="even, odd"}">
-                <td>{control type="checkbox" name="tables[]" label=" " value=$table->name checked=1}</td>
-                <td>{$basename}</td>
-                <td>{$table->rows}</td>
-            </tr>
+                <tr class="{cycle values="even, odd"}">
+                    <td>{control type="checkbox" name="tables[]" label=" " value=$table->name checked=1}</td>
+                    <td>{$basename}</td>
+                    <td>{$table->rows}</td>
+                </tr>
             {foreachelse}
-            <tr><td>{'No unused tables were found'|gettext}.</td></tr>
+                <tr><td>{'No unused tables were found'|gettext}.</td></tr>
             {/foreach}
         </tbody>
         </table>

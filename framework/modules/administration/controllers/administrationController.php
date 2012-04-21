@@ -39,7 +39,7 @@ class administrationController extends expController {
     function description() { return gt("This is the Administration Module"); }
     function author() { return "OIC Group, Inc"; }
 
-	public static function install_dbtables() {
+	public static function install_dbtables($aggressive=false) {
 	    global $db;
 
 		expSession::clearCurrentUserSessionCache();
@@ -60,7 +60,7 @@ class administrationController extends expController {
 							$tables[$key] = $status;
 						}
 					} else {
-						foreach ($db->alterTable($tablename,$dd,$info) as $key=>$status) {
+						foreach ($db->alterTable($tablename,$dd,$info,$aggressive) as $key=>$status) {
 //							if (isset($tables[$key])) echo "$tablename, $key<br>";  //FIXME we shouldn't echo this, already installed?
 							if ($status == TABLE_ALTER_FAILED){
 								$tables[$key] = $status;
@@ -99,7 +99,7 @@ class administrationController extends expController {
 											$tables[$key] = $status;
 										}
 									} else {
-										foreach ($db->alterTable($tablename,$dd,$info) as $key=>$status) {
+										foreach ($db->alterTable($tablename,$dd,$info,$aggressive) as $key=>$status) {
 //											if (isset($tables[$key])) echo "$tablename, $key<br>";  //FIXME we shouldn't echo this, already installed?
 											if ($status == TABLE_ALTER_FAILED){
 												$tables[$key] = $status;
@@ -124,6 +124,12 @@ class administrationController extends expController {
 		ksort($tables);
         assign_to_template(array('status'=>$tables));
 	}
+
+    public function fix_unused_columns() {
+   		$tables = self::install_dbtables(true);
+   		ksort($tables);
+        assign_to_template(array('status'=>$tables));
+   	}
 
     public function manage_unused_tables() {
         global $db;

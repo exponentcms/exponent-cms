@@ -318,6 +318,14 @@ if ($user->isSuperAdmin()) {
                                 ))
                             ),
                             array(
+                                'text' => gt('Remove Unneeded Columns'),
+                                'classname' => 'remove',
+                                'url' => makeLink(array(
+                                    'controller' => 'administration',
+                                    'action' => 'fix_unused_columns'
+                                ))
+                            ),
+                            array(
                                 'text' => gt('Remove Unused Tables'),
                                 'classname' => 'remove',
                                 'url' => makeLink(array(
