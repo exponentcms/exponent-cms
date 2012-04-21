@@ -41,7 +41,7 @@
             <div id="invoice">
                 <div id="buttons">
                     {printer_friendly_link class="awesome `$smarty.const.BTN_SIZE` `$smarty.const.BTN_COLOR`" text="Print this invoice"|gettext view="show_printable" show=1}
-                    {if $smarty.const.HTMLTOPDF_PATH && $smarty.const.HTMLTOPDF_PATH_TMP}                                        
+                    {if $smarty.const.HTMLTOPDF_PATH && $smarty.const.HTMLTOPDF_PATH_TMP} {* FIXME file_exists($smarty.const.BASE.'external/dompdf/dompdf.php'*}
                         <a class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" href="{link controller='order' action='getPDF' id=$order->id inum=$order->invoice_number}">{'Download PDF'|gettext}</a>
                     {/if}
                     {permissions}

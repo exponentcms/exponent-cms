@@ -339,8 +339,36 @@ class orderController extends expController {
 	    $invoice .= "</BODY></HTML>";
 		$invoice = mb_convert_encoding($invoice, 'HTML-ENTITIES', "UTF-8");
         // eDebug($invoice);
-        $org_name = str_ireplace(" ","_",ORGANIZATION_NAME); 
+        $org_name = str_ireplace(" ","_",ORGANIZATION_NAME);
+
         //eDebug("Here",1);
+        // Actually create/output the pdf file
+
+        /**
+         * to do this same thing as below using html2pdf
+         * //FIXME uncomment to implement, comment out above
+             require_once(BASE.'external/html2pdf_v4.03/html2pdf.class.php');
+             $html2pdf = new HTML2PDF('P', 'LETTER', substr(LOCALE,0,2));
+             $html2pdf->writeHTML($invoice);
+             $html2pdf->Output($org_name . "_Invoice" . ".pdf",HTML2PDF_OUTPUT?'D':'');
+         */
+        /**
+         * to do this same thing as below using dompdf
+         * //FIXME uncomment to implement, comment out above
+             require_once(BASE.'external/dompdf/dompdf_config.inc.php');
+             $dompdf = new DOMPDF();
+             $dompdf->load_html($invoice);
+             $dompdf->set_paper('letter','portrait');
+             $dompdf->render();
+             $dompdf->stream($org_name . "_Invoice" . ".pdf",array('Attachment'=>HTML2PDF_OUTPUT));
+         */
+        /**
+         * to do this same thing as below using expHtmlToPDF2
+         * //FIXME uncomment to implement, comment out above
+             $dompdf = new DOMPDF('letter','portrait',$invoice);
+             $dompdf->createpdf(HTML2PDF_OUTPUT?'D':'I',$org_name . "_Invoice" . ".pdf");
+         */
+
 		if (stristr(PHP_OS, 'Win')) {
 			if(file_exists(HTMLTOPDF_PATH)) {
 				do{
@@ -356,10 +384,7 @@ class orderController extends expController {
             
             //require_once(BASE.'external/tcpdf/config/lang/eng.php');
             //require_once(BASE.'external/tcpdf/tcpdf.php');
-            
-            
-            
-            
+
             //----
             // create new PDF document
 /*$pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
@@ -466,24 +491,6 @@ exit();
 			ob_clean();			
 			$pdfer->output('D', $org_name . "_Invoice" . ".pdf");	
 			exit();
-            /**
-             * to do this same thing using html2pdf
-             * //FIXME uncomment to implement, comment out above
-                 require_once(BASE.'external/html2pdf_v4.03/html2pdf.class.php');
-                 $html2pdf = new HTML2PDF('P', 'LETTER', substr(LOCALE,0,2));
-                 $html2pdf->writeHTML($invoice);
-                 $html2pdf->Output($org_name . "_Invoice" . ".pdf",HTML2PDF_OUTPUT?'D':'');
-             */
-            /**
-             * to do this same thing using dompdf
-             * //FIXME uncomment to implement, comment out above
-                 require_once(BASE.'external/dompdf/dompdf_config.inc.php');
-                 $dompdf = new DOMPDF();
-                 $dompdf->load_html($invoice);
-                 $dompdf->set_paper('A4','portrait');
-                 $dompdf->render();
-                 $dompdf->stream($org_name . "_Invoice" . ".pdf",array('Attachment'=>HTML2PDF_OUTPUT));
-             */
 		}
     }
     

@@ -119,24 +119,8 @@ if (EXPORT_AS_PDF == 1) {
     $content = ob_get_clean();
 
     // convert to PDF
-//    require_once(BASE.'external/html2pdf_v4.03/html2pdf.class.php');
-//    try
-//    {
-//        $html2pdf = new HTML2PDF(EXPORT_AS_PDF_LANDSCAPE?'L':'P', 'A4', substr(LOCALE,0,2));
-//        $html2pdf->writeHTML($content);
-//        $html2pdf->Output($sectionObj->name.'.pdf',HTML2PDF_OUTPUT?'D':'');
-//    }
-//    catch(HTML2PDF_exception $e) {
-//        echo $e;
-////        exit;
-//    }
-    require_once(BASE.'external/dompdf/dompdf_config.inc.php');
-    $dompdf = new DOMPDF();
-    $dompdf->load_html($content);
-    $dompdf->set_paper('A4',EXPORT_AS_PDF_LANDSCAPE?'landscape':'portrait');
-    $dompdf->render();
-    $dompdf->stream($sectionObj->name.".pdf",array('Attachment'=>HTML2PDF_OUTPUT));
-
+    $pdf = new expHtmlToPDF2('A4',EXPORT_AS_PDF_LANDSCAPE?'landscape':'portrait',$content);
+    $pdf->createpdf(HTML2PDF_OUTPUT?'D':'I',$sectionObj->name.".pdf");
     echo '<script language="javascript">
         <!--
         setTimeout("self.close();",10000)
