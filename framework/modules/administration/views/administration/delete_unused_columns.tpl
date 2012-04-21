@@ -18,9 +18,9 @@
 {/css}
 
 <div class="form_header">
- 	<h1>{'Deleteing Unneeded Database Columns'|gettext}</h1>
+ 	<h1>{'Deleting Unneeded Database Columns'|gettext}</h1>
  	<p>
- 		{'Exponent is currently deleting unneeded database columns from existing tables.  Shown below is a summary of the actions that occurred.'|gettext}
+ 		{'Exponent has deleted unneeded database columns from existing tables.  Shown below is a summary of the actions that occurred.'|gettext}
     </p>
 </div>
 <table cellpadding="2" cellspacing="0" width="100%" border="0" class="exp-skin-table">

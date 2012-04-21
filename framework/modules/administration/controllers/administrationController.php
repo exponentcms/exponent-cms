@@ -125,7 +125,7 @@ class administrationController extends expController {
         assign_to_template(array('status'=>$tables));
 	}
 
-    public function fix_unused_columns() {
+    public function delete_unused_columns() {
    		$tables = self::install_dbtables(true);
    		ksort($tables);
         assign_to_template(array('status'=>$tables));

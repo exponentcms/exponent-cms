@@ -322,7 +322,7 @@ if ($user->isSuperAdmin()) {
                                 'classname' => 'remove',
                                 'url' => makeLink(array(
                                     'controller' => 'administration',
-                                    'action' => 'fix_unused_columns'
+                                    'action' => 'delete_unused_columns'
                                 ))
                             ),
                             array(
