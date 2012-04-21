@@ -13,7 +13,7 @@
  *
  *}
 
-<script src="{$smarty.const.URL_FULL}external/flowplayer3/example/flowplayer-3.2.6.min.js"></script>
+<script src="{$smarty.const.URL_FULL}external/flowplayer3/flowplayer-3.2.9.min.js"></script>
 <div class="module flowplayer showall-playlist">
     {if $moduletitle && !$config.hidemoduletitle}<h1>{$moduletitle}</h1>{/if}
     <a id="playlist-player" href="{$page->records[0]->expFile.video[0]->url}" style="display:block;width:{$config.video_width}px;height:{$config.video_height}px;">
@@ -67,7 +67,7 @@
     </ul>
     <!-- this script block will install Flowplayer inside previous anchor tag --> 
     <script language="JavaScript"> 
-        flowplayer("playlist-player", "{$smarty.const.PATH_RELATIVE}external/flowplayer3/flowplayer-3.2.7.swf",
+        flowplayer("playlist-player", "{$smarty.const.PATH_RELATIVE}external/flowplayer3/flowplayer-3.2.10.swf",
             {literal}
             {
 				wmode: 'opaque',
@@ -78,7 +78,7 @@
                 }, 
                 plugins: {
                     controls: { 
-                        url: '{/literal}{if $config.video_style == 1}flowplayer.controls-air-3.2.5.swf{elseif $config.video_style == 2}flowplayer.controls-tube-3.2.5.swf{else}flowplayer.controls-3.2.5.swf{/if}{literal}',
+                        url: '{/literal}{if $config.video_style == 1}flowplayer.controls-air-3.2.10.swf{elseif $config.video_style == 2}flowplayer.controls-tube-3.2.10.swf{else}flowplayer.controls-3.2.10.swf{/if}{literal}',
                         play: {/literal}{if !$config.control_play}false{else}true{/if}{literal},
                         stop: {/literal}{if $config.control_stop}true{else}false{/if}{literal},
                         scrubber: {/literal}{if $config.control_scrubber}true{else}false{/if}{literal},

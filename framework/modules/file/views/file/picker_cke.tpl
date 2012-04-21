@@ -26,7 +26,7 @@
 
     <script type="text/javascript" src="{$smarty.const.YUI3_PATH}yui/yui-min.js"></script>
     <script type="text/javascript" src="{$smarty.const.PATH_RELATIVE}exponent.js2.php"></script>
-	<script type="text/javascript" src="{$smarty.const.PATH_RELATIVE}external/flowplayer3/example/flowplayer-3.2.6.min.js"></script>
+	<script type="text/javascript" src="{$smarty.const.PATH_RELATIVE}external/flowplayer3/flowplayer-3.2.9.min.js"></script>
 </head>
 <body class=" exp-skin">
 <div id="filemanager">
@@ -110,7 +110,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event','yui2-container','yu
         );
         infopanel.render();
         infopanel.subscribe('hide',function(event){
-            flowplayer("a.player", EXPONENT.URL_FULL+"external/flowplayer3/flowplayer-3.2.7.swf",
+            flowplayer("a.player", EXPONENT.URL_FULL+"external/flowplayer3/flowplayer-3.2.10.swf",
          				{
          					wmode: 'opaque',
          					clip: {
@@ -151,7 +151,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event','yui2-container','yu
                 '</td></tr></table>'
             );
             infopanel.show();
-			flowplayer("a.player", EXPONENT.URL_FULL+"external/flowplayer3/flowplayer-3.2.7.swf",
+			flowplayer("a.player", EXPONENT.URL_FULL+"external/flowplayer3/flowplayer-3.2.10.swf",
 				{
 					wmode: 'opaque',
 					clip: {
