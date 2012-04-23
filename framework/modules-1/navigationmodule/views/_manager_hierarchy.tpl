@@ -183,9 +183,9 @@ var YAHOO = Y.YUI2;
 	
 	refreshDD = function () {
 		dds = YAHOO.util.Dom.getElementsByClassName("draggables");
-		//////console.debug(dds);
+		//console.debug(dds);
 		for (dd in dds){
-			////console.debug(dd.getAttribute("id"));
+			//console.debug(dd.getAttribute("id"));
 			new DDSend(dds[dd].getAttribute("id").replace("section",""));
 		}
 	}
@@ -409,8 +409,9 @@ var YAHOO = Y.YUI2;
 		var last = (section.last==true)?'lastonthelist':'';
 		var draggable = (section.manage!=false)? 'draggables' : 'nondraggables' ;
 		var dragafters = (section.manage!=false)? 'addafter' : 'cannotaddafter' ;
-		var dragbefores = (section.manage!=false)? 'addbefore' : 'cannotaddbefore' ;
-		var first = (section.rank==0)?'<div class="'+dragbefores+'" id="addbefore'+section.id+'"></div>':'';
+        if (section.parent==0 && usr.is_acting_admin!=1 && usr.is_admin!=1) dragafters = 'cannotaddafter' ;
+		//var dragbefores = (section.manage!=false)? 'addbefore' : 'cannotaddbefore' ;
+		//var first = (section.rank==0)?'<div class="'+dragbefores+'" id="addbefore'+section.id+'"></div>':'';
 		var drag = (section.manage!=false)?'<div class="draghandle" id="draghandle'+section.id+'">&nbsp;</div>':'';
 		var html = '<div class="'+draggable+'" id="section'+section.id+'">'+drag+'<a href="'+section.link+'"><span class="sectionlabel" id="sectionlabel'+section.id+'">'+section.name+'</span></a></div><div class="'+dragafters+' '+last+'" id="addafter'+section.id+'"></div>';
 		return html;
