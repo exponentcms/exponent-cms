@@ -92,31 +92,12 @@ class expPermissions {
 		}
 
 		if (!is_array($permission)) $permission = array($permission);
-        // always check for 'manage' and 'administrate' permissions
+        // always check for 'manage' permission
         $permission[] = 'manage';
-//        $permission[] = 'administrate';
-        // add variations to permission names for 1.0 modules such as containers
-//        if (array_intersect(array('configure','order_modules'),$permission)) {
-//            $permission[] = 'configure';
-//            $permission[] = 'order_modules';
-//        }
-//        if (array_intersect(array('edit','edit_module'),$permission)) {
+        // create permission implies edit permission
         if (array_intersect(array('edit'),$permission)) {
             $permission[] = 'create';
-//            $permission[] = 'post';
-//            $permission[] = 'add_module';
-//            $permission[] = 'edit';
-//            $permission[] = 'edit_module';
         }
-//        if (array_intersect(array('create','post','add_module'),$permission)) {  // also implied from edit perm
-//            $permission[] = 'create';
-//            $permission[] = 'post';
-//            $permission[] = 'add_module';
-//        }
-//        if (array_intersect(array('delete','delete_module'),$permission)) {
-//            $permission[] = 'delete';
-//            $permission[] = 'delete_module';
-//        }
         $permission = array_unique($permission);  // strip out duplicates
 
 		if (is_callable(array($location->mod,"getLocationHierarchy"))) {  //FIXME this is only available in calendarmodule
@@ -137,7 +118,7 @@ class expPermissions {
 
         // exit recursive calls for globally scoped modules
         $module_scope['error'] = false;
-        if (!empty($module_scope[$location->src][$location->mod]->scope)) {  // is this the main container?
+        if (!empty($location->src) && !empty($module_scope[$location->src][$location->mod]->scope)) {  // is this the main container?
             $rLoc = $db->selectObject("sectionref","source='" . $location->src . "' AND module='" . $location->mod . "'");
             if (!empty($rLoc) && $rLoc->refcount == 1000 && $module_scope[$location->src][$location->mod]->scope == 'global') {
                 $module_scope['error'] = true;
@@ -162,14 +143,14 @@ class expPermissions {
                 }
             }
          }
-        if (@$module_scope['error'] == true) {
+        if (@$module_scope['error'] === true) {
             $module_scope['error'] = false;
             return false;
         }
 
         // if this is the global sidebar, then exit since we don't care about page permissions
         $module_scope['error'] = false;
-        if (!empty($module_scope[$location->src][$location->mod]->scope)) {  // is this the main container?
+        if (!empty($location->src) && !empty($module_scope[$location->src][$location->mod]->scope)) {  // is this the main container?
             $rLoc = $db->selectObject("sectionref","source='" . $location->src . "' AND module='" . $location->mod . "'");
             if (!empty($rLoc) && $rLoc->refcount == 1000 && @$module_scope[$location->src][$location->mod]->scope == 'global') {
                 $module_scope['error'] = true;
@@ -192,9 +173,9 @@ class expPermissions {
                     return true;
                 }
                 // otherwise check for 'super' permission
-                if (self::check('manage',expCore::makeLocation('navigationmodule','',$page->parent))) {
-                    return true;
-                }
+//                if (self::check('manage',expCore::makeLocation('navigationmodule','',$page->parent))) {
+//                    return true;
+//                }
             }
         }
 
