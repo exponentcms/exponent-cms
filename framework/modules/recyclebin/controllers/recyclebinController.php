@@ -38,11 +38,6 @@ class recyclebinController extends expController {
 
         $orig_template = $template;
 
-        //instantiate an expRecord for the module in question
-        //$mod = new $this->params['recymod']();
-//        define('SOURCE_SELECTOR',1);
-//        define('PREVIEW_READONLY',1); // for mods
-
         //initialize a new recycle bin and grab the previously trashed items
         $bin = new recyclebin();
         $orphans = $bin->moduleOrphans(null);
