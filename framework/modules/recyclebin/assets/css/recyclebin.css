@@ -9,7 +9,7 @@ body {
 }
 
 .recyclebin.orphan-content h1.main {
-    padding:5px 40px;
+    padding:5px 40px !important;
     height:40px;
     background:url(../images/trashcan_full_large.png) no-repeat;
     border-bottom:2px solid #999999;
