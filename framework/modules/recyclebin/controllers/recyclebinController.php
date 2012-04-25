@@ -36,6 +36,7 @@ class recyclebinController extends expController {
     function showall() {
         global $db, $template;
 
+        expHistory::set('manageable', $this->params);
         $orig_template = $template;
 
         //initialize a new recycle bin and grab the previously trashed items

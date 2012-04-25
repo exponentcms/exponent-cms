@@ -25,8 +25,8 @@
             <h2 class="main">{$item->module|getcontrollername|capitalize} {'items'|gettext}</h2>
         {/if}
         <div class="rb-item">
-            {icon action=delete id=$item->id mod=$item->module src=$item->source onclick="return confirm('Are you sure you want to delete this recyclebin item?');window.close();"}
             <div class="recycledcontent">
+                {icon action=delete id=$item->id mod=$item->module src=$item->source onclick="return confirm('Are you sure you want to delete this recyclebin item?');window.close();"}
                 {$item->html}
             </div>
         </div>

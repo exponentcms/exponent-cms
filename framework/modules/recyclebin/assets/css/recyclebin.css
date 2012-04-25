@@ -26,6 +26,13 @@ body {
     background:url(../images/use-recycled.png) no-repeat;
     font-size: 115%;
 }
+
+.recyclebin.orphan-content .rb-item a.delete {
+    text-align: center;
+    padding: 5px 0px 5px 25px;
+    font-size: 115% !important;
+}
+
 .recyclebin.orphan-content .rb-item .recycledcontent {
     border:1px solid #dedede;
     padding:10px;
