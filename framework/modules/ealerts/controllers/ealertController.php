@@ -74,7 +74,7 @@ class ealertController extends expController {
         $id = $db->insertObject($obj, 'expeAlerts_temp');
         
         $bot = new expBot(array(
-            'url'=>URL_FULL."index.php?controller=ealert&action=send&id=".$id.'&ealert_id='.$this->params['id'],
+            'url'=>PATH_RELATIVE."index.php?controller=ealert&action=send&id=".$id.'&ealert_id='.$this->params['id'],
             'method'=>'POST',
         ));
         

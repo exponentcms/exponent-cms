@@ -725,7 +725,7 @@ class storeController extends expController {
                 $prod = new product($cnt['id']);
                 unset($cnt['id']);
                 //$cnt['title'] = $cnt['title'].' - SKU# '.$cnt['model'];
-                $cnt['title'] = (isset($prod->expFile['mainimage'][0]) ? '<img src="'.URL_FULL.'thumb.php?id='.$prod->expFile['mainimage'][0]->id.'&w=40&h=40&zc=1" style="float:left;margin-right:5px;" />':'') .$cnt['title']. (!empty($cnt['model']) ? ' - SKU#: '.$cnt['model']:'');
+                $cnt['title'] = (isset($prod->expFile['mainimage'][0]) ? '<img src="'.PATH_RELATIVE.'thumb.php?id='.$prod->expFile['mainimage'][0]->id.'&w=40&h=40&zc=1" style="float:left;margin-right:5px;" />':'') .$cnt['title']. (!empty($cnt['model']) ? ' - SKU#: '.$cnt['model']:'');
                 $search_record = new search($cnt, false, false);
                 $search_record->posted = empty($cnt['created_at']) ? null : $cnt['created_at'];
                 $search_record->view_link = $router->makeLink(array('controller'=>$this->baseclassname, 'action'=>'showByTitle', 'title'=>$cnt['sef_url']));

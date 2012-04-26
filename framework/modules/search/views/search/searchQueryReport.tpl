@@ -103,9 +103,9 @@ YUI(EXPONENT.YUI3_CONFIG).use('node', 'charts', 'yui2-yahoo-dom-event','yui2-ele
     
         userdropdown.on("change",function(e){
 			if(e.target.get('value') == -1) {
-				window.location = EXPONENT.URL_FULL+"search/searchQueryReport/";
+				window.location = EXPONENT.PATH_RELATIVE+"search/searchQueryReport/";
 			} else {
-				window.location = EXPONENT.URL_FULL+"search/searchQueryReport/user_id/"+e.target.get('value');
+				window.location = EXPONENT.PATH_RELATIVE+"search/searchQueryReport/user_id/"+e.target.get('value');
 			}
         });
             

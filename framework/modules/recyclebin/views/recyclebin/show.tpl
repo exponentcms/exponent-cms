@@ -16,8 +16,9 @@
 <html>
 <head>
     <title>{'Restore from Recycle Bin'|gettext}</title>
-    <link rel="stylesheet" type="text/css" href="{$smarty.const.URL_FULL}framework/core/assets/css/admin-global.css" >
-    <link rel="stylesheet" type="text/css" href="{$smarty.const.URL_FULL}framework/modules/recyclebin/assets/css/recyclebin.css" >
+    {css unique="show" corecss="admin-global" link="`$asset_path`css/recyclebin.css"}
+
+    {/css}
 </head>
 <body>
     <div class="recyclebin orphan-content">

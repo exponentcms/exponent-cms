@@ -79,7 +79,7 @@ function smarty_function_ddrerank($params,&$smarty) {
         <div id="panel'.$uniqueid.'" class="exp-skin-panel exp-skin-rerank hide">
             <div class="yui3-widget-hd">Order '.$params['label'].'</div>
             <div class="yui3-widget-bd">
-            <form method="post" action="'.URL_FULL.'">
+            <form method="post" action="'.PATH_RELATIVE.'">
             <input type="hidden" name="model" value="'.$model.'" />
             <input type="hidden" name="controller" value="'.$controller.'" />
             <input type="hidden" name="lastpage" value="'.curPageURL().'" />
@@ -97,7 +97,7 @@ function smarty_function_ddrerank($params,&$smarty) {
                     <input type="hidden" name="rerank[]" value="'.$item->id.'" />
                     <div class="fpdrag"></div>';
         			//Do we include the picture? It depends on if there is one set.
-                    $html .= ($item->expFile[0]->id && $item->expFile[0]->is_image) ? '<img class="filepic" src="'.URL_FULL.'thumb.php?id='.$item->expFile[0]->id.'&w=16&h=16&zc=1">' : '';
+                    $html .= ($item->expFile[0]->id && $item->expFile[0]->is_image) ? '<img class="filepic" src="'.PATH_RELATIVE.'thumb.php?id='.$item->expFile[0]->id.'&w=16&h=16&zc=1">' : '';
                     $html .= '<span class="label">'.(!empty($item->$sortfield) ? substr($item->$sortfield, 0, 40) : gt('Untitled')).'</span>
                     </li>';
                     $odd = $odd == "even" ? "odd" : "even";

@@ -29,10 +29,10 @@
     </form>
 </div>
 
-<script type="text/javascript">
+{script unique="select-version"}
 {literal}
 	function switch_ver(id){
 		location.href="index.php?module=help&action=switch_version&version=" + id
 	}
 {/literal}
-</script>
+{/script}

@@ -44,7 +44,7 @@ foreach($cols as $col) {
          }elseif ($coltype=='datetimecontrol') {
             $responses[$col->name] = $value;
         } elseif ($coltype == 'uploadcontrol') { 
-            $_POST[$col->name] = URL_FULL.call_user_func(array($coltype,'moveFile'),$col->name,$_FILES,true);
+            $_POST[$col->name] = PATH_RELATIVE.call_user_func(array($coltype,'moveFile'),$col->name,$_FILES,true);
             $value = call_user_func(array($coltype,'buildDownloadLink'),$_POST[$col->name],$_FILES[$col->name]['name'],true);
             //eDebug($value);
             $responses[$col->caption.$num] = $_FILES[$col->name]['name'];

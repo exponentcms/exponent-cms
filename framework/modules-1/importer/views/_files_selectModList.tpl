@@ -21,7 +21,7 @@
 	<div class="form_header">
 		<h2>{'Select Which Files to Import'|gettext}</h2>
 	</div>
-	<script type="text/javascript">
+    {script unique="selectmod"}
 	{literal}
 	function mods_selectUnselectAll(setChecked) {
 		var elems = document.getElementsByTagName("input");
@@ -32,7 +32,7 @@
 		}
 	}
 	{/literal}
-	</script>
+	{/script}
 	<form method="post" action="">
 		<input type="hidden" name="module" value="importer" />
 		<input type="hidden" name="action" value="page" />

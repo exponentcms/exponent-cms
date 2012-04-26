@@ -140,7 +140,7 @@ function smarty_function_rating($params,&$smarty) {
             }
         };
         function save_rating() {
-            var url = EXPONENT.URL_FULL+'index.php';
+            var url = EXPONENT.PATH_RELATIVE+'index.php';
             Y.io(url, iocfg);
             Y.on('io:success', onSuccess, this);
             Y.on('io:failure', onFailure, this);

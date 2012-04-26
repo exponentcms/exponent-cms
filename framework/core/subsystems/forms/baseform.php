@@ -37,7 +37,7 @@ class baseform {
 
 	function __construct() {
 		//$this->action = SCRIPT_RELATIVE.SCRIPT_FILENAME;
-		$this->action = URL_FULL.SCRIPT_FILENAME;
+		$this->action = PATH_RELATIVE.SCRIPT_FILENAME;
 	}
 
 	function meta($name,$value) {

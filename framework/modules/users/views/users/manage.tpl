@@ -13,7 +13,7 @@
  *
  *}
 
-{css unique="manage_groups" corecss="tables"}
+{css unique="manage_users" corecss="tables"}
 
 {/css}
 
@@ -46,7 +46,7 @@
 	
 </div>
 
-<script type="text/javascript">
+{script unique="manage_users"}
 	{literal}
 		YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event','yui2-container','yui2-json','yui2-datasource','yui2-connection','yui2-autocomplete','yui2-element','yui2-paginator','yui2-datatable', function(Y) {
 			var YAHOO=Y.YUI2;
@@ -105,7 +105,7 @@
                 {/literal}{/permissions}{literal}
 			];
 			// DataSource instance
-			var myDataSource = new YAHOO.util.DataSource(EXPONENT.URL_FULL+"index.php?controller=users&action=getUsersByJSON&json=1&ajax_action=1&filter={/literal}{$filter}{literal}&");
+			var myDataSource = new YAHOO.util.DataSource(EXPONENT.PATH_RELATIVE+"index.php?controller=users&action=getUsersByJSON&json=1&ajax_action=1&filter={/literal}{$filter}{literal}&");
 			myDataSource.responseType = YAHOO.util.DataSource.TYPE_JSON;
 			myDataSource.responseSchema = {
 				resultsList: "records",
@@ -176,4 +176,4 @@
 				
 		});
 	{/literal}
-</script>
+{/script}

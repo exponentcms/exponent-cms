@@ -57,7 +57,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','event', function(Y) {
         e.halt();
         var mainimg = e.currentTarget.ancestor('.showcase').one('.main-img img');
         var newid = e.currentTarget.getAttribute('rel').replace('showcase-','');
-        mainimg.setAttribute('src',EXPONENT.URL_FULL+"thumb.php?id="+newid+"&w=500&q=75");
+        mainimg.setAttribute('src',EXPONENT.PATH_RELATIVE+"thumb.php?id="+newid+"&w=500&q=75");
     });
     //Y.Lightbox.init();    
 });

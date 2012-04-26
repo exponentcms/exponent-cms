@@ -22,7 +22,7 @@
     {if $config.moduledescription != ""}
         {$config.moduledescription}
     {/if}
-    <form id="form" name="form" class="" method="POST" action="{$smarty.const.URL_FULL}index.php">
+    <form id="form" name="form" class="" method="POST" action="{$smarty.const.PATH_RELATIVE}index.php">
         <input type="hidden" name="action" id="action" value="search">
         <input type="hidden" name="module" id="module" value="search">
         {control type="text" name="search_string" id="search_string" value=$config.inputtext|default:"Keywords"|gettext}

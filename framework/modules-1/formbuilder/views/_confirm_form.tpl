@@ -14,13 +14,13 @@
  *}
 
 {if $recaptcha_theme !=""}
+    {script unique="confirmform"}
     {literal}
-        <script>
         var RecaptchaOptions = {
            theme : {/literal}'{$recaptcha_theme}'{literal}
         };
-        </script>
     {/literal}
+    {/script}
 {/if}
 
 {css unique="form-records" corecss="tables"}

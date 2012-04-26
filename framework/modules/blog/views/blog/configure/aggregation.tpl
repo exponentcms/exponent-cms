@@ -50,11 +50,11 @@
     </tbody>
 </table>
 
-<script type="text/javascript">
+{script unique="aggregation"}
     function selectAll(val) {
         var checks = document.getElementsByName("aggregate[]");
         for (var i = 0; i < checks.length; i++) {
           checks[i].checked = val;
         }
     }
-</script>
+{/script}

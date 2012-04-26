@@ -128,7 +128,7 @@
     {/form}
 </div>
 
-<script type="text/javascript">
+{script unique="manageusers"}
     function selectAllmu(val) {
         var checks = document.getElementsByName("users[]");
         for (var i = 0; i < checks.length; i++) {
@@ -155,4 +155,4 @@
           checks[i].checked = val;
         }
     }
-</script>
+{/script}

@@ -22,14 +22,14 @@
         {if $config.title}<h3>{$config.title}</h3>{/if}
 
         <script language="JavaScript">
-        TargetDate = "{$config.count}";
-        BackColor = "";
-        ForeColor = "";
-        CountActive = true;
-        CountStepper = -1;
-        LeadingZero = true;
-        DisplayFormat = "D:%%D%% H:%%H%% M:%%M%% S:%%S%%";
-        FinishMessage = "{$config.message}";
+            TargetDate = "{$config.count}";
+            BackColor = "";
+            ForeColor = "";
+            CountActive = true;
+            CountStepper = -1;
+            LeadingZero = true;
+            DisplayFormat = "D:%%D%% H:%%H%% M:%%M%% S:%%S%%";
+            FinishMessage = "{$config.message}";
         </script>
         <script language="JavaScript" src="{$asset_path}/js/countdown.js"></script>
 

@@ -56,7 +56,7 @@ class autocompletecontrol extends formcontrol {
             // autocomplete
             var autocomplete = function() {
                 // Use an XHRDataSource
-                var oDS = new YAHOO.util.XHRDataSource(EXPONENT.URL_FULL+\"index.php\");
+                var oDS = new YAHOO.util.XHRDataSource(EXPONENT.PATH_RELATIVE+\"index.php\");
                 // Set the responseType
                 oDS.responseType = YAHOO.util.XHRDataSource.TYPE_JSON;
 

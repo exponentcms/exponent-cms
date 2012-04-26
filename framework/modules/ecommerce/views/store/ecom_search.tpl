@@ -55,12 +55,12 @@ YUI(EXPONENT.YUI3_CONFIG).use("datasource-io","datasource-jsonschema","autocompl
         resultListLocator: 'data',
         resultTextLocator: 'title', // the field to place in the input after selection
         resultFormatter: formatResults,
-        source: EXPONENT.URL_FULL+'index.php?controller=store&action=search&json=1&ajax_action=1',
+        source: EXPONENT.PATH_RELATIVE+'index.php?controller=store&action=search&json=1&ajax_action=1',
         requestTemplate: '&query={query}'
     });
     
     autocomplete.ac.on('select', function (e) {
-        window.location = EXPONENT.URL_FULL+"store/showByTitle/title/"+e.result.raw.sef_url;
+        window.location = EXPONENT.PATH_RELATIVE+"store/showByTitle/title/"+e.result.raw.sef_url;
         return e.result.raw.title;
     });
     

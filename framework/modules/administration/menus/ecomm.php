@@ -34,7 +34,7 @@ if ($new_orders>0) {
 };
 
 $ecom = array(
-    'text'=>gt('Ecommerce').$newo.'<form id="orderQuickfinder" method="POST" action="'.URL_FULL.'index.php" enctype="multipart/form-data"><input type="hidden" name="controller" value="order"><input type="hidden" name="action" value="quickfinder"><input style="padding-top: 3px;" type="text" name="ordernum" id="ordernum" size="25" value="'.gt("Order Quickfinder").'" onclick="this.value=\'\';"></form>',
+    'text'=>gt('Ecommerce').$newo.'<form id="orderQuickfinder" method="POST" action="'.PATH_RELATIVE.'index.php" enctype="multipart/form-data"><input type="hidden" name="controller" value="order"><input type="hidden" name="action" value="quickfinder"><input style="padding-top: 3px;" type="text" name="ordernum" id="ordernum" size="25" value="'.gt("Order Quickfinder").'" onclick="this.value=\'\';"></form>',
     'classname'=>'ecom',
     'submenu'=>array(
         'id'=>'ecomm',

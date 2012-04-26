@@ -35,7 +35,7 @@
 		<em>{'Anonymous visitors see this'|gettext}:</em><br />
 	{/if}
 	{if $loggedin == false || $smarty.const.PREVIEW_READONLY == 1}
-		<form method="post" action="{$smarty.const.URL_FULL}index.php">
+		<form method="post" action="{$smarty.const.PATH_RELATIVE}index.php">
 			<input type="hidden" name="action" value="login" />
 			<input type="hidden" name="controller" value="login" />
 			<input type="text" class="text" name="username" id="login_username" size="15" />
