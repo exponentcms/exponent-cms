@@ -13,36 +13,61 @@
  *
  *}
 
-<script src="{$smarty.const.URL_FULL}external/flowplayer3/flowplayer-3.2.9.min.js"></script>
+{script unique="flowplayer" src="`$smarty.const.PATH_RELATIVE`external/flowplayer3/flowplayer-3.2.9.min.js"}
+{literal}
+flowplayer("playlist-player", EXPONENT.PATH_RELATIVE+"external/flowplayer3/flowplayer-3.2.10.swf",
+    {
+		wmode: 'opaque',
+		clip: {
+            url: '{/literal}{$page->records[0]->expFile.video[0]->url}{literal}',
+            autoPlay: {/literal}{if $config.autoplay}true{else}false{/if}{literal},
+            autoBuffering: false
+			},
+        plugins:  {
+            controls: {
+                url: '{/literal}{if $config.video_style == 1}flowplayer.controls-air-3.2.10.swf{elseif $config.video_style == 2}flowplayer.controls-tube-3.2.10.swf{else}flowplayer.controls-3.2.10.swf{/if}{literal}',
+                play: {/literal}{if !$config.control_play}false{else}true{/if}{literal},
+                stop: {/literal}{if $config.control_stop}true{else}false{/if}{literal},
+                scrubber: {/literal}{if $config.control_scrubber}true{else}false{/if}{literal},
+                time: {/literal}{if $config.control_time}true{else}false{/if}{literal},
+                mute: {/literal}{if $config.control_mute}true{else}false{/if}{literal},
+                volume: {/literal}{if $config.control_volume}true{else}false{/if}{literal},
+                fullscreen: {/literal}{if $config.control_fullscreen}true{else}false{/if}{literal},
+            }
+        }
+    }
+);
+{/literal}
+{/script}
+
 <div class="module flowplayer showall-playlist">
     {if $moduletitle && !$config.hidemoduletitle}<h1>{$moduletitle}</h1>{/if}
-    <a id="playlist-player" href="{$page->records[0]->expFile.video[0]->url}" style="display:block;width:{$config.video_width}px;height:{$config.video_height}px;">
-    </a>
     {permissions}
-		<div class="module-actions">		
-			{if $permissions.mangage == 1}
-				{ddrerank items=$page->records model="flowplayer" label="Videos"|gettext}
-			{/if}
-		</div>	
-    {/permissions}  
+   		<div class="module-actions">
+   			{if $permissions.manage == 1}
+   				{ddrerank items=$page->records model="flowplayer" label="Videos"|gettext}
+   			{/if}
+   		</div>
+   	{/permissions}
     {if $config.moduledescription != ""}
    		{$config.moduledescription}
    	{/if}
+    <a id="playlist-player" href="{$page->records[0]->expFile.video[0]->url}" style="display:block;width:{$config.video_width}px;height:{$config.video_height}px;">
+        {if $page->records[0]->expFile.splash[0]->url}
+            {img file_id=$page->records[0]->expFile.splash[0]->id w=$config.video_width h=$config.video_height zc=1}
+        {/if}
+    </a>
     <ul>
-		{permissions}
-			<div class="item">
-				<li>
-					<div class="module-actions">		
-						{if $permissions.edit == 1}
-							{icon class=add action=edit title="Add a Video at the Top"|gettext text="Add a Video"|gettext}{br}
-						{/if}
-					</div>	
-				</li>
-			</div>
-		{/permissions}  
+        {permissions}
+            <div class="module-actions">
+                {if $permissions.edit == 1}
+                    {icon class=add action=edit rank=1 title="Add a Video at the Top"|gettext text="Add a Video"|gettext}
+                {/if}
+            </div>
+        {/permissions}
 		{foreach name=items from=$page->records item=video}
 			<div class="item">
-				<li><a class="li-link" href="#" onclick="swapvideo('{$video->expFile.video[0]->url}')">{$video->title}</a>
+				<li><a class="li-link" href="#" title="{'Play this video'|gettext}" onclick="swapvideo('{$video->expFile.video[0]->url}')">{$video->title}</a>
 					{permissions}
 						<div class="item-actions">
 							{if $permissions.edit == 1}
@@ -53,6 +78,11 @@
 							{/if}
 						</div>
 					{/permissions}
+                    {if $video->body}
+                        <div class="info">
+                            {$video->body}
+                        </div>
+                    {/if}
 				</li>
 			</div>
 			{permissions}
@@ -65,33 +95,6 @@
 			{clear}
 		{/foreach}
     </ul>
-    <!-- this script block will install Flowplayer inside previous anchor tag --> 
-    <script language="JavaScript"> 
-        flowplayer("playlist-player", "{$smarty.const.PATH_RELATIVE}external/flowplayer3/flowplayer-3.2.10.swf",
-            {literal}
-            {
-				wmode: 'opaque',
-                clip: {
-                    url: '{/literal}{$page->records[0]->expFile.video[0]->url}{literal}', 
-					autoPlay: {/literal}{if $config.autoplay}true{else}false{/if}{literal},
-                    autoBuffering: false  
-                }, 
-                plugins: {
-                    controls: { 
-                        url: '{/literal}{if $config.video_style == 1}flowplayer.controls-air-3.2.10.swf{elseif $config.video_style == 2}flowplayer.controls-tube-3.2.10.swf{else}flowplayer.controls-3.2.10.swf{/if}{literal}',
-                        play: {/literal}{if !$config.control_play}false{else}true{/if}{literal},
-                        stop: {/literal}{if $config.control_stop}true{else}false{/if}{literal},
-                        scrubber: {/literal}{if $config.control_scrubber}true{else}false{/if}{literal},
-                        time: {/literal}{if $config.control_time}true{else}false{/if}{literal},
-                        mute: {/literal}{if $config.control_mute}true{else}false{/if}{literal},
-                        volume: {/literal}{if $config.control_volume}true{else}false{/if}{literal},
-                        fullscreen: {/literal}{if $config.control_fullscreen}true{else}false{/if}{literal}
-                    }         
-                } 
-            }
-            {/literal}
-        ); 
-    </script>
 </div>
 
 {script unique="playlist"}

@@ -62,7 +62,7 @@ flowplayer("a.flowplayer-video", EXPONENT.PATH_RELATIVE+"external/flowplayer3/fl
                     {if $video->expFile.splash[0]->url}
                         {img file_id=$video->expFile.splash[0]->id w=$video->width h=$video->height zc=1}
                     {/if}
-                </a> 
+                </a>
             </div>
 			{permissions}
 				<div class="item-actions">
