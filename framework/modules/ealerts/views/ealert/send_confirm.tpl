@@ -14,7 +14,7 @@
  *}
 
 <div class="module ealert send-confirmation">
-    <h1>{'Format Email Alert'|gettext}</h1>
+    <h1>{'Confirm Email Alert'|gettext}</h1>
     
     {form action="send_process"}
         <table>
