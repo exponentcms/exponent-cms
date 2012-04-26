@@ -158,14 +158,6 @@ if ($user->isAdmin()) {
 							'action' => 'spider'
 						))
 					),
-                    array(
-                        'text' => gt('View Recycle Bin'),
-                        'classname' => 'manage',
-                        'url' => makeLink(array(
-                            'controller' => 'recyclebin',
-                            'action' => 'showall'
-                        ))
-                    ),
 				)
 			)
 		);
@@ -214,14 +206,6 @@ if ($user->isAdmin()) {
 							'action' => 'spider'
 						))
 					),
-                    array(
-                        'text' => gt('View Recycle Bin'),
-                        'classname' => 'manage',
-                        'url' => makeLink(array(
-                            'controller' => 'recyclebin',
-                            'action' => 'showall'
-                        ))
-                    ),
 				)
 			)
 		);
@@ -464,6 +448,14 @@ if ($user->isSuperAdmin()) {
 	                    )
 					)
 				),
+                array(
+                    'text' => gt('View Recycle Bin'),
+                    'classname' => 'manage',
+                    'url' => makeLink(array(
+                        'controller' => 'recyclebin',
+                        'action' => 'showall'
+                    ))
+                ),
                 array(
 	                'text' => (MAINTENANCE_MODE)?gt('Turn Maintenance Mode off'):gt('Turn Maintenance Mode on'),
 	                'classname' => (MAINTENANCE_MODE)?'develop_on_red':'develop_off',
