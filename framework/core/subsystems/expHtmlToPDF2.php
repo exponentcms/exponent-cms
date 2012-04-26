@@ -28,7 +28,7 @@ class expHtmlToPDF2 {
     /**
      * Private use variables.
      */
-    private $pdf='';
+    private $pdf=null;
     private $size='A4';
     private $orient='portrait';
 
@@ -62,7 +62,7 @@ class expHtmlToPDF2 {
      * @param string $paper_size page size
      * @param string $orientation page orientation
      * @param string $html html code for page
-     * @param bool $use_file flag to show $html is an html file location to load
+     * @param bool $use_file a flag to show $html is an html file location to be loaded
      */
     public function __construct($paper_size="A4", $orientation="portrait",$html,$use_file=false) {
         require_once(BASE.'external/dompdf/dompdf_config.inc.php');
