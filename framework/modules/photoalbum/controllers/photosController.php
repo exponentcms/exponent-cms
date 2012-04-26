@@ -51,6 +51,7 @@ class photosController extends expController {
                     'limit'=>$limit,
                     'order'=>$order,
                     'categorize'=>empty($this->config['usecategories']) ? false : $this->config['usecategories'],
+                    'uncat'=>!empty($this->config['uncat']) ? $this->config['uncat'] : gt('Not Categorized'),
                     'src'=>$this->loc->src,
                     'controller'=>$this->baseclassname,
                     'action'=>$this->params['action'],

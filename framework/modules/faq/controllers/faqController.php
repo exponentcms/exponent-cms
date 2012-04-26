@@ -42,7 +42,7 @@ class faqController extends expController {
         $questions = $faqs->find('all', $this->aggregateWhereClause().' AND include_in_faq=1', 'rank');
 
         if (empty($this->config['usecategories']) ? false : $this->config['usecategories']) {
-            expCatController::addCats($questions,'rank');
+            expCatController::addCats($questions,'rank',!empty($this->config['uncat'])?$this->config['uncat']:gt('Not Categorized'));
             $cats = array();
             $cats[0]->name = '';
             expCatController::sortedByCats($questions,$cats);

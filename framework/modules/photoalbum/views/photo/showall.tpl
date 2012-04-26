@@ -47,7 +47,7 @@
     {assign var=quality value=$config.quality|default:$smarty.const.THUMB_QUALITY}	
     {foreach from=$page->records item=record name=items}
         {if $cat != $record->expCat[0]->id && $config.usecategories}
-            <h2 class="category">{if $record->expCat[0]->title!= ""}{$record->expCat[0]->title}{else}{'Uncategorized'|gettext}{/if}</h2>
+            <h2 class="category">{if $record->expCat[0]->title!= ""}{$record->expCat[0]->title}{elseif $config.uncat!=''}{$config.uncat}{else}{'Uncategorized'|gettext}{/if}</h2>
         {/if}
         <li style="width:{$config.pa_showall_thumbbox|default:"150"}px;height:{$config.pa_showall_thumbbox|default:"150"}px;">
             {if $config.lightbox}
