@@ -91,14 +91,14 @@ class yuidatetimecontrol extends formcontrol {
         
         $script = "
         YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
-            Y.on('click',function(e){
+            Y.one('#pub-".$name."').on('click',function(e){
                 var cal = Y.one('#datetime-".$name."');
                 if (cal.getStyle('display')=='none') {
                     cal.setStyle('display','block');
                 } else {
                     cal.setStyle('display','none');
                 }
-            },'#pub-".$name."');
+            });
         });
         ";
         
