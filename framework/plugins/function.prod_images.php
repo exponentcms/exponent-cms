@@ -34,8 +34,13 @@
  */
 function smarty_function_prod_images($params,&$smarty) {
     //load up the img plugin
-    require_once $smarty->_get_plugin_filepath('function', 'img');
-    
+    foreach ($smarty->smarty->plugins_dir as $value) {
+        $filepath = $value ."/function.img.php";
+        if (file_exists($filepath)) {
+            require_once $filepath;
+        }
+    }
+
     $rec = $params['record'];
     
     if ($rec->main_image_functionality == 'iws') {
