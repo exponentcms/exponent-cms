@@ -42,7 +42,7 @@ class simplepollmodule {
 		$question = $db->selectObject('poll_question',"is_active = 1 AND location_data='".serialize($loc)."'");
 		$answers = array();
 		if ($question) {
-			$answers = $db->selectObjects('poll_answer','question_id='.$question->id.' ORDER BY rank');
+			$answers = $db->selectObjects('poll_answer','question_id='.$question->id,'rank');
 		}
 //		$answers = expSorter::sort(array('array'=>$answers,'sortby'=>'rank', 'order'=>'ASC'));
 

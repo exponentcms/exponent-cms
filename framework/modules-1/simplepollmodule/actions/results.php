@@ -27,7 +27,7 @@ if (isset($_GET['id'])) {
 if ($question) {
 	if ($question->open_results == 1) {
 		$total = 0;
-		$answers = $db->selectObjects('poll_answer','question_id='.$question->id.' ORDER BY rank');
+		$answers = $db->selectObjects('poll_answer','question_id='.$question->id,'rank');
 //		$answers = expSorter::sort(array('array'=>$answers,'sortby'=>'vote_count', 'order'=>'DESC', 'type'=>'a'));
 		for ($i = 0; $i < count($answers); $i++) {
 			$total += $answers[$i]->vote_count;

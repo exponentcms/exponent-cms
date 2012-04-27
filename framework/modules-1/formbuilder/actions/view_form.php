@@ -28,7 +28,7 @@ if ($f) {
 	if (expPermissions::check("editform",unserialize($f->location_data))) {
 		expHistory::set('editable', $_GET);
 		$loc = unserialize($f->location_data);
-		$controls = $db->selectObjects("formbuilder_control","form_id=".$f->id.' ORDER BY rank');
+		$controls = $db->selectObjects("formbuilder_control","form_id=".$f->id,'rank');
 //		$controls = expSorter::sort(array('array'=>$controls,'sortby'=>'rank', 'order'=>'ASC'));
 
 		$form = new fakeform();

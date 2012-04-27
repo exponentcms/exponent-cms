@@ -69,7 +69,7 @@ class section {
 			// Pull the database object in from the global scope.
 			global $db;
 			// Retrieve all of the sections that are siblings of the new section
-			$sections = $db->selectObjects('section','parent='.$object->parent.' ORDER BY rank');
+			$sections = $db->selectObjects('section','parent='.$object->parent,'rank');
 			
 			if (count($sections) && $object->parent >= 0) {
 				// Initialize the sorting subsystem so that we can order the sections

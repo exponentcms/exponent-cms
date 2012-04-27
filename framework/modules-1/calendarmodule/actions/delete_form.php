@@ -29,7 +29,7 @@ if ($item) {
 		$eventdate = $db->selectObject('eventdate','id='.intval($_GET['date_id']));
 		$template->assign('checked_date',$eventdate);
 		
-		$eventdates = $db->selectObjects('eventdate','event_id='.$item->id.' ORDER BY date');
+		$eventdates = $db->selectObjects('eventdate','event_id='.$item->id,'date');
 //		$eventdates = expSorter::sort(array('array'=>$eventdates,'sortby'=>'date', 'order'=>'ASC'));
 
 		$template->assign('dates',$eventdates);

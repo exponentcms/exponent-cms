@@ -27,7 +27,7 @@ $f2 = $db->selectObject("formbuilder_form","location_data='".serialize($f2_loc).
 
 if ($f1 && $f2) {
 	if (expPermissions::check("editform",unserialize($f2->location_data))) {
-		$controls  = $db->selectObjects("formbuilder_control","form_id=".$f1->id.' ORDER BY rank');
+		$controls  = $db->selectObjects("formbuilder_control","form_id=".$f1->id,'rank');
 //		$controls = expSorter::sort(array('array'=>$controls,'sortby'=>'rank', 'order'=>'ASC'));
 
 		foreach ($controls as $control) {

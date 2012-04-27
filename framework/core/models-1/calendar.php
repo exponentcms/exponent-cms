@@ -65,7 +65,7 @@ class calendar {
 			// Edit applies to one or more...
 			$template = new template('calendarmodule','_recur_dates');
 			global $db;
-			$eventdates = $db->selectObjects('eventdate','event_id='.$object->id.' ORDER BY date');
+			$eventdates = $db->selectObjects('eventdate','event_id='.$object->id,'date');
 //			$eventdates = expSorter::sort(array('array'=>$eventdates,'sortby'=>'date', 'order'=>'ASC'));
 			if (isset($object->eventdate)) $template->assign('checked_date',$object->eventdate);
 			$template->assign('dates',$eventdates);

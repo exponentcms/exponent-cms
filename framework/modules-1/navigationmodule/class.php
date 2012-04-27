@@ -238,7 +238,7 @@ class navigationmodule {
 	function levelShowDropdown($parent,$depth=0,$default=0,$ignore_ids = array()) {
 		$html = '';
 		global $db;
-		$nodes = $db->selectObjects('section','parent='.$parent.' ORDER BY rank');
+		$nodes = $db->selectObjects('section','parent='.$parent,'rank');
 //		$nodes = expSorter::sort(array('array'=>$nodes,'sortby'=>'rank', 'order'=>'ASC'));
 		foreach ($nodes as $node) {
 			if (($node->public == 1 || expPermissions::check('view',expCore::makeLocation('navigationmodule','',$node->id))) && !in_array($node->id,$ignore_ids)) {
@@ -275,7 +275,7 @@ class navigationmodule {
 			$ar[0] = '&lt;'.gt('Top of Hierarchy').'&gt;';
 		}
 		global $db;
-		$nodes = $db->selectObjects('section','parent='.$parent.' ORDER BY rank');
+		$nodes = $db->selectObjects('section','parent='.$parent,'rank');
 //		$nodes = expSorter::sort(array('array'=>$nodes,'sortby'=>'rank', 'order'=>'ASC'));
 		foreach ($nodes as $node) {
 			if ((($perm=='view' && $node->public == 1) || expPermissions::check($perm,expCore::makeLocation('navigationmodule','',$node->id))) && !in_array($node->id,$ignore_ids)) {
@@ -397,7 +397,7 @@ class navigationmodule {
 		global $db;
 		
 		$arr = array();
-		$kids = $db->selectObjects('section_template','parent='.$parent.' ORDER BY rank');
+		$kids = $db->selectObjects('section_template','parent='.$parent,'rank');
 //		$kids = expSorter::sort(array('array'=>$kids,'sortby'=>'rank', 'order'=>'ASC'));
 
 		for ($i = 0; $i < count($kids); $i++) {

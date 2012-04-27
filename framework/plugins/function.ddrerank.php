@@ -43,6 +43,10 @@ function smarty_function_ddrerank($params,&$smarty) {
     if ($params['sql']) {
         $sql = explode("LIMIT",$params['sql']);
         $params['items'] = $db->selectObjectsBySQL($sql[0]);
+    } elseif ($params['module']) {
+        $where = !empty($params['where']) ? $params['where'] : 1 ;
+        $only = !empty($params['only']) ? ' AND '.$params['only'] : '';
+        $params['items'] = $db->selectObjects($params['module'],$where.$only,"rank");
     } else {
         if ($params['items'][0]->id) {
             $model = empty($params['model']) ? $params['items'][0]->classname : $params['model'] ;
@@ -67,7 +71,7 @@ function smarty_function_ddrerank($params,&$smarty) {
 		    )
 		);
         
-        $sortfield = empty($params['sortfield']) ? 'title' : $params['sortfield']; //what was this even for?
+        $sortfield = empty($params['sortfield']) ? 'title' : $params['sortfield']; // this is the field to display in list
    
         // attempt to translate the label
         if (!empty($params['label'])) {
