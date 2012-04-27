@@ -18,7 +18,7 @@
     {permissions}
         <div class="module-actions">
             {if $permissions.manage_answer == 1}
-                {ddrerank items=$items module="poll_answer" where="question_id=`$question->id`" sortfield="answer" label="Answers"|gettext}
+                {ddrerank module="poll_answer" where="question_id=`$question->id`" sortfield="answer" label="Poll Question Answers"|gettext}
             {/if}
         </div>
     {/permissions}

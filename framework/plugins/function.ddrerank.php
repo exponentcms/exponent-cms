@@ -96,6 +96,10 @@ function smarty_function_ddrerank($params,&$smarty) {
                 ';
                 $odd = "even";
                 foreach ($params['items'] as $item) {
+                    if (!empty($params['module']) && $params['module'] == 'formbuilder_control') {
+                        $control = expUnserialize($item->data);
+                        $item->$sortfield = (!empty($item->$sortfield) ? substr($item->$sortfield, 0, 40) : gt('Untitled')) . ' (' . get_class($control) . ')';
+                    }
                     $html .= '
                     <li class="'.$odd.'">
                     <input type="hidden" name="rerank[]" value="'.$item->id.'" />
