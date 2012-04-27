@@ -66,14 +66,6 @@
                     {if $permissions.delete == true}
                         {icon action=delete record=$item}
                     {/if}
-                    {if $permissions.edit == true && $config.order == 'rank ASC'}
-                        {if $smarty.foreach.items.first == 0}
-                            {icon action=rerank img='up.png' record=$item push=up}
-                        {/if}
-                        {if $smarty.foreach.items.last == 0}
-                            {icon action=rerank img='down.png' record=$item push=down}
-                        {/if}
-                    {/if}
                 </div>
                 {/permissions}
             {/if}

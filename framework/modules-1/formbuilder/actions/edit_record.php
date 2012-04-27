@@ -25,11 +25,11 @@ $_GET['form_id'] = intval($_GET['form_id']);
 
 $f = $db->selectObject('formbuilder_form','id='.$_GET['form_id']);
 $data = $db->selectObject('formbuilder_'.$f->table_name,'id='.$_GET['id']);
-$controls = $db->selectObjects('formbuilder_control','form_id='.$_GET['form_id']);
+$controls = $db->selectObjects('formbuilder_control','form_id='.$_GET['form_id'].' ORDER BY rank');
 
 if ($f && $data && $controls) {
 	if (expPermissions::check('editdata',unserialize($f->location_data))) {
-		$controls = expSorter::sort(array('array'=>$controls,'sortby'=>'rank', 'order'=>'ASC'));
+//		$controls = expSorter::sort(array('array'=>$controls,'sortby'=>'rank', 'order'=>'ASC'));
 
 		$form = new form();
 		foreach ($controls as $c) {

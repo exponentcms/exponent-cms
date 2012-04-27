@@ -35,8 +35,8 @@ if (isset($_GET['id'])) {
 		$sortfuncts = "";
 		if ($rpt->column_names == '') {
 			//define some default columns...
-			$controls = $db->selectObjects("formbuilder_control","form_id=".$f->id." and is_readonly = 0 and is_static = 0");
-			$controls = expSorter::sort(array('array'=>$controls,'sortby'=>'rank', 'order'=>'ASC'));
+			$controls = $db->selectObjects("formbuilder_control","form_id=".$f->id." and is_readonly = 0 and is_static = 0 ORDER BY rank");
+//			$controls = expSorter::sort(array('array'=>$controls,'sortby'=>'rank', 'order'=>'ASC'));
 
 			foreach (array_slice($controls,0,5) as $control) {
 				if ($rpt->column_names != '') $rpt->column_names .= '|!|';

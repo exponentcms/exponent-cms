@@ -39,11 +39,10 @@ class section_template {
 		
 		if (!isset($object->id) && $object->parent != 0) { // Add the 'Add' drop down if not a top level
 			global $db;
-			$sections = $db->selectObjects('section_template','parent='.$object->parent);
+			$sections = $db->selectObjects('section_template','parent='.$object->parent.' ORDER BY rank');
 			
 			if (count($sections)) {
-				$sections = expSorter::sort(array('array'=>$sections,'sortby'=>'rank', 'order'=>'ASC'));
-
+//				$sections = expSorter::sort(array('array'=>$sections,'sortby'=>'rank', 'order'=>'ASC'));
 				$dd = array(gt('At the Top'));
 				foreach ($sections as $s) $dd[] = sprintf(gt('After')." %s",$s->name);
 				
