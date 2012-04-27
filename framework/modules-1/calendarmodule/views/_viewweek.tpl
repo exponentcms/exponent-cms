@@ -122,7 +122,6 @@ YUI(EXPONENT.YUI3_CONFIG).use('gallery-calendar',function(Y){
         date:today,
 		action:['focus']
 	}).on('select',function(d){
-		//alert(d);
         var unixtime = parseInt(d / 1000);
         {/literal} {if ($smarty.const.SEF_URLS == 1)} {literal}
             window.location=eXp.PATH_RELATIVE+'calendarmodule/viewweek/time/'+unixtime+'/src/{/literal}{$__loc->src}{literal}';
