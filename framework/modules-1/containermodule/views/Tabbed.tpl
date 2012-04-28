@@ -19,7 +19,7 @@
 
 {uniqueid assign=tabs}
 
-<div class="containermodule tabbed">
+<div class="containermodule tabbed"{permissions}{if $hasParent != 0} style="border: 1px dashed darkgray;"{/if}{/permissions}>
 {viewfile module=$singlemodule view=$singleview var=viewfile} 
 <div id="{$tabs}" class="yui-navset exp-skin-tabview hide">
 	<ul class="yui-nav">

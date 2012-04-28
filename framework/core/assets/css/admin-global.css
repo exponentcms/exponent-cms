@@ -122,7 +122,7 @@ a.merge {
     background: url(../images/arrow_merge.png) no-repeat 0 50%;
 }
 
-a.reranklink {
+a.reranklink, .container-chrome ul li a.reranklink {
     background: url(../images/rerank.png) no-repeat 0 50%;
 }
 

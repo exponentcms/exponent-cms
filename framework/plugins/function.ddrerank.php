@@ -44,6 +44,11 @@ function smarty_function_ddrerank($params,&$smarty) {
         $sql = explode("LIMIT",$params['sql']);
         $params['items'] = $db->selectObjectsBySQL($sql[0]);
     } elseif ($params['module']) {
+        $uniqueloc = $smarty->getTemplateVars('container');
+        if (!empty($uniqueloc->internal)) {
+            $uniqueloc2 = expUnserialize($uniqueloc->internal);
+            $uniqueid = str_replace($badvals, "", $uniqueloc2->src).$params['id'];
+        }
         $where = !empty($params['where']) ? $params['where'] : 1 ;
         $only = !empty($params['only']) ? ' AND '.$params['only'] : '';
         $params['items'] = $db->selectObjects($params['module'],$where.$only,"rank");
@@ -95,10 +100,20 @@ function smarty_function_ddrerank($params,&$smarty) {
                 <ul id="listToOrder'.$uniqueid.'" style="'.((count($params['items']<12))?"":"height:350px").';overflow-y:auto;">
                 ';
                 $odd = "even";
+                $stringlen = 40;
                 foreach ($params['items'] as $item) {
-                    if (!empty($params['module']) && $params['module'] == 'formbuilder_control') {
-                        $control = expUnserialize($item->data);
-                        $item->$sortfield = (!empty($item->$sortfield) ? substr($item->$sortfield, 0, 40) : gt('Untitled')) . ' (' . get_class($control) . ')';
+                    if (!empty($params['module'])) {
+                        if ($params['module'] == 'formbuilder_control') {
+                            $control = expUnserialize($item->data);
+                            $ctrl = new $control();
+                            $name = $ctrl->name();
+                            $item->$sortfield = (!empty($item->$sortfield) ? substr($item->$sortfield, 0, $stringlen) : gt('Untitled')) . ' (' . $name . ')';
+                            $stringlen = 65;
+                        } elseif ($params['module'] == 'container') {
+                            $mod = expUnserialize($item->internal);
+                            $item->$sortfield = (!empty($item->$sortfield) ? substr($item->$sortfield, 0, $stringlen) : gt('Untitled')) . ' (' . ucfirst(expModules::getModuleName($mod->mod)) . ')';
+                            $stringlen = 65;
+                        }
                     }
                     $html .= '
                     <li class="'.$odd.'">
@@ -106,7 +121,7 @@ function smarty_function_ddrerank($params,&$smarty) {
                     <div class="fpdrag"></div>';
         			//Do we include the picture? It depends on if there is one set.
                     $html .= ($item->expFile[0]->id && $item->expFile[0]->is_image) ? '<img class="filepic" src="'.PATH_RELATIVE.'thumb.php?id='.$item->expFile[0]->id.'&w=16&h=16&zc=1">' : '';
-                    $html .= '<span class="label">'.(!empty($item->$sortfield) ? substr($item->$sortfield, 0, 40) : gt('Untitled')).'</span>
+                    $html .= '<span class="label">'.(!empty($item->$sortfield) ? substr($item->$sortfield, 0, $stringlen) : gt('Untitled')).'</span>
                     </li>';
                     $odd = $odd == "even" ? "odd" : "even";
                 }

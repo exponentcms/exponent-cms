@@ -24,21 +24,19 @@
     	{script yui3mods="1" unique="container-chrome" src="`$smarty.const.PATH_RELATIVE`framework/core/assets/js/exp-container.js"}
 
     	{/script}
-		<div id="cont{$top->id}" class="exp-container-module-wrapper">
+		<div id="cont{$top->id}" class="exp-container-module-wrapper"{if $hasParent != 0} style="border: 1px dashed darkgray; padding: 1em;"{/if}>
 	{/if}
-{/permissions}
-
-{permissions}
     {*if $hasParent == 0 && ($permissions.edit || $permissions.create || $permissions.delete || $permissions.order_module || $permissions.manage)*}
-    {if $hasParent == 0 && ($user->isAdmin())}
+    {if $hasParent == 0 && ($permissions.configure == 1 || $container->permissions.configure == 1)}
 	{** top level container module **}
 		<div class="container-chrome">
 			<a href="#" class="trigger" title="Container">{'Container'|gettext} ({if $top->scope == 'top-sectional'}{'Top'|gettext}{else}{$top->scope|gettext}{/if})</a>
 			<ul class="container-menu">
-			    {if $user->isAdmin()}
-    				<li><a href="{link _common=1 action=userperms}" class="user">{"User Permissions"|gettext}</a></li>
-    				<li><a href="{link _common=1 action=groupperms}" class="group">{"Group Permissions"|gettext}</a></li>
-			    {/if}
+                {if $user->isAdmin()}
+                <li><a href="{link _common=1 action=userperms}" class="user">{"User Permissions"|gettext}</a></li>
+                <li><a href="{link _common=1 action=groupperms}" class="group">{"Group Permissions"|gettext}</a></li>
+                {/if}
+                <li>{ddrerank module="container" where="external='`$containers[0]->external`'" label="Modules"|gettext}</li>
 				<li>{help text="Help with Containers"|gettext}</li>
 			</ul>
 		</div>
