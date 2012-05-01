@@ -107,6 +107,7 @@
                 { key:"Actions",label:"{/literal}{"Actions"|gettext}{literal}",sortable:false,formatter: formatactions}
                 {/literal}{/permissions}{literal}
 			];
+
 			// DataSource instance
 			var myDataSource = new YAHOO.util.DataSource(EXPONENT.PATH_RELATIVE+"index.php?controller=users&action=getUsersByJSON&json=1&ajax_action=1&filter={/literal}{$filter}{literal}&");
 			myDataSource.responseType = YAHOO.util.DataSource.TYPE_JSON;

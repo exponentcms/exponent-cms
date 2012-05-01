@@ -730,6 +730,7 @@ class usersController extends expController {
         // Sorted?
         if(strlen($_GET['sort']) > 0) {
             $sort = $_GET['sort'];
+            if ($sort = 'id') $sort = 'username';
         }
 
         if(!empty($_GET['filter'])) {
