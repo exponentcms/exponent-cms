@@ -57,7 +57,6 @@
 			 //set up autocomplete
 			var getTerms = function(query) {
 				myDataSource.sendRequest('sort=id&dir=asc&startIndex=0&results=10&query=' + query,myDataTable.onDataReturnInitializeTable, myDataTable);
-		
 			};
 			
 			var oACDS = new YAHOO.util.FunctionDataSource(getTerms);
@@ -138,7 +137,7 @@
 				sort = (oState.sortedBy) ? oState.sortedBy.key : oSelf.getColumnSet().keys[0].getKey();
 				dir = (oState.sortedBy && oState.sortedBy.dir === DataTable.CLASS_DESC) ? "desc" : "asc"; */
                 sort = (oState.sortedBy) ? oState.sortedBy.key : "id";
-                dir = (oState.sortedBy && oState.sortedBy.dir === YAHOO.widget.DataTable.CLASS_DESC) ? "desc" : "asc";
+                dir = (oState.sortedBy && oState.sortedBy.dir === YAHOO.widget.DataTable.CLASS_DESC) ? "desc" : "assc";
 				startIndex = (oState.pagination) ? oState.pagination.recordOffset : 0;
 				results = (oState.pagination) ? oState.pagination.rowsPerPage : null;
 				
@@ -153,7 +152,7 @@
 				generateRequest: requestBuilder,
 				initialRequest: "sort=id&dir=asc&startIndex=0&results=10", // Initial request for first page of data
 				dynamicData: true, // Enables dynamic server-driven data
-				sortedBy : {key:"id", dir:YAHOO.widget.DataTable.CLASS_DESC}, // Sets UI initial sort arrow
+				sortedBy : {key:"id", dir:YAHOO.widget.DataTable.CLASS_ASC}, // Sets UI initial sort arrow
 				paginator: new YAHOO.widget.Paginator({rowsPerPage:10,containers:"pagelinks"}) // Enables pagination 
 			};
 		

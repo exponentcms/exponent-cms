@@ -75,7 +75,8 @@ class usersController extends expController {
     
     public function create() {
         redirect_to(array('controller'=>'users', 'action'=>'edituser'));
-    }    
+    }
+
     public function edituser() {
         global $user, $db;
         
@@ -84,25 +85,20 @@ class usersController extends expController {
         expSession::set("userkey",sha1(microtime()));
 	    expSession::clearCurrentUserSessionCache();
 
-        $id = isset($this->params['id']) ? $this->params['id'] : null;
+        $id = !empty($this->params['id']) ? intval($this->params['id']) : null;
         
-        // check to see if we should be editing.  You either need to be an admin, or
-        // editing your own account.
+        // check to see if we should be editing.  You either need to be an admin, or editing own account.
         if ($user->isAdmin() || ($user->id == $id)) {
             $u = new user($id);
         } else {
             flash('error', gt('You do not have the proper permissions to edit this user'));
             expHistory::back();
         }
-//        $active_extensions = $db->selectColumn('profileextension','classname','active=1', 'rank');
         $active_extensions = $db->selectObjects('profileextension','active=1','rank');
 
-		//If there is no image uploaded and the system is not in the development mode, use the default avatar
-//		if(empty($u->image) && !DEVELOPMENT) {
-        if(empty($u->image)) {
-			$u->image = DEFAULT_AVATAR;
-		}
-		
+		//If there is no image uploaded, use the default avatar
+        if(empty($u->image)) $u->image = DEFAULT_AVATAR;
+
         assign_to_template(array('edit_user'=>$u, 'extensions'=>$active_extensions,"userkey"=>expSession::get("userkey")));
     }
     
@@ -110,7 +106,7 @@ class usersController extends expController {
         global $user, $db;
 
         // get the id of user we are editing, if there is one
-        $id = empty($this->params['id']) ? null : $this->params['id'];
+        $id = !empty($this->params['id']) ? intval($this->params['id']) : null;
         if ((($user->id == $id) || $user->isAdmin()) && $this->params['userkey'] != expSession::get("userkey")) expHistory::back();
         
         // make sure this user should be updating user accounts
