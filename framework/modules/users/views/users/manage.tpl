@@ -13,8 +13,12 @@
  *
  *}
 
-{css unique="manage_users" corecss="tables"}
-
+{css unique="manage_users" corecss="tables,autocomplete"}
+#user_dt_input {
+    position:relative;
+    width:200px;
+    height:20px;
+}
 {/css}
 
 <div class="module users manage yui-skin-sam">
