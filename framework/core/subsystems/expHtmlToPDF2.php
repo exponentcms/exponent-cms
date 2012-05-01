@@ -65,17 +65,21 @@ class expHtmlToPDF2 {
      * @param bool $use_file a flag to show $html is an html file location to be loaded
      */
     public function __construct($paper_size="A4", $orientation="portrait",$html,$use_file=false) {
-        require_once(BASE.'external/dompdf/dompdf_config.inc.php');
-        $this->pdf = new DOMPDF();
-        $this->size = $paper_size;
-        $this->orient = $orientation;
-        $this->pdf->set_paper($this->size,$this->orient);
-        if (!empty($html)) {
-            if ($use_file) {
-                $this->pdf->load_html_file($html);
-            } else {
-                $this->pdf->load_html($html);
+        if (file_exists(BASE.'external/dompdf/dompdf.php')) {
+            require_once(BASE.'external/dompdf/dompdf_config.inc.php');
+            $this->pdf = new DOMPDF();
+            $this->size = $paper_size;
+            $this->orient = $orientation;
+            $this->pdf->set_paper($this->size,$this->orient);
+            if (!empty($html)) {
+                if ($use_file) {
+                    $this->pdf->load_html_file($html);
+                } else {
+                    $this->pdf->load_html($html);
+                }
             }
+        } else {
+            return null;
         }
     }
 
