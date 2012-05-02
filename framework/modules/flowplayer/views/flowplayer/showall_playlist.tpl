@@ -17,7 +17,7 @@
 {literal}
 flowplayer("playlist-player", EXPONENT.PATH_RELATIVE+"external/flowplayer3/flowplayer-3.2.10.swf",
     {
-		wmode: 'opaque',
+		wmode: 'transparent',
 		clip: {
             url: '{/literal}{$page->records[0]->expFile.video[0]->url}{literal}',
             autoPlay: {/literal}{if $config.autoplay}true{else}false{/if}{literal},
