@@ -92,6 +92,9 @@ class formbuilder_form {
 			$form->controls['is_saved']->disabled = true;
 			$form->meta('is_saved','1');
 		}
+		$form->register('is_auto_respond',gt('Auto Respond?'),new checkboxcontrol($object->is_auto_respond,false));
+		$form->register('auto_respond_subject',gt('Auto Respond Subject'),new textcontrol($object->auto_respond_subject));
+		$form->register('auto_respond_body',gt('Auto Respond Body'),new texteditorcontrol($object->auto_respond_body));
 //		$form->register(null,'', new htmlcontrol('<br /><br /><br />'));
 		$form->register('submit','',new buttongroupcontrol(gt('Save'),'',gt('Cancel')));
 		
@@ -107,6 +110,9 @@ class formbuilder_form {
 		$object->submitbtn = $values['submitbtn'];
 		$object->resetbtn = $values['resetbtn'];
 		$object->subject = $values['subject'];
+		$object->is_auto_respond = $values['is_auto_respond'];
+		$object->auto_respond_subject = $values['auto_respond_subject'];
+		$object->auto_respond_body = $values['auto_respond_body'];
 		return $object;
 	}
 	
@@ -122,6 +128,9 @@ class formbuilder_form {
 				'ip'=>array(
 					DB_FIELD_TYPE=>DB_DEF_STRING,
 					DB_FIELD_LEN=>25),
+				'referrer'=>array(
+					DB_FIELD_TYPE=>DB_DEF_STRING,
+					DB_FIELD_LEN=>1000),
 				'timestamp'=>array(
 					DB_FIELD_TYPE=>DB_DEF_TIMESTAMP),
 				'user_id'=>array(
