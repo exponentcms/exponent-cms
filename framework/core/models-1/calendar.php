@@ -65,8 +65,8 @@ class calendar {
 			// Edit applies to one or more...
 			$template = new template('calendarmodule','_recur_dates');
 			global $db;
-			$eventdates = $db->selectObjects('eventdate','event_id='.$object->id);
-			$eventdates = expSorter::sort(array('array'=>$eventdates,'sortby'=>'date', 'order'=>'ASC'));
+			$eventdates = $db->selectObjects('eventdate','event_id='.$object->id,'date');
+//			$eventdates = expSorter::sort(array('array'=>$eventdates,'sortby'=>'date', 'order'=>'ASC'));
 			if (isset($object->eventdate)) $template->assign('checked_date',$object->eventdate);
 			$template->assign('dates',$eventdates);
 			$form->register(null,'',new htmlcontrol('<hr size="1"/>'.gt('This event is a recurring event, and occurs on the dates below.  Select which dates you wish to apply these edits to.')));

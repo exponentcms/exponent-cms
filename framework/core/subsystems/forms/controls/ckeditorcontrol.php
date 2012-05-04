@@ -133,7 +133,7 @@ class ckeditorcontrol extends formcontrol {
                         font_names :
                             ".$fontnames.",
     					uiColor : '#aaaaaa',
-     					baseHref : '".URL_FULL."'
+     					baseHref : '".PATH_RELATIVE."'
                     });
 
     				CKEDITOR.on( 'instanceReady', function( ev ) {

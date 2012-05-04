@@ -51,6 +51,7 @@ class filedownloadController extends expController {
                     'limit'=>$limit,
                     'order'=>$order,
                     'controller'=>$this->baseclassname,
+                    'uncat'=>!empty($this->config['uncat']) ? $this->config['uncat'] : gt('Not Categorized'),
                     'action'=>$this->params['action'],
                     'src'=>$this->loc->src,
                     'columns'=>array(gt('ID#')=>'id',gt('Title')=>'title',gt('Body')=>'body'),

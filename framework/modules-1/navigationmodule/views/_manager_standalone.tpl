@@ -61,11 +61,11 @@
     {/form}
 </div>
 
-<script type="text/javascript">
+{script unique="standalone"}
     function selectAll(val) {
         var checks = document.getElementsByName("deleteit[]");
         for (var i = 0; i < checks.length; i++) {
           checks[i].checked = val;
         }
     }
-</script>
+{/script}

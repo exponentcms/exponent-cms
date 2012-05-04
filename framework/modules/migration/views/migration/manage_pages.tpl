@@ -72,7 +72,7 @@
     {/form}
 </div>
 
-<script type="text/javascript">
+{script unique="managepages"}
     function selectAllp(val) {
         var checks = document.getElementsByName("page[]");
         for (var i = 0; i < checks.length; i++) {
@@ -86,4 +86,4 @@
           checks[i].checked = val;
         }
     }
-</script>
+{/script}

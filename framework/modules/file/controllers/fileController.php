@@ -124,6 +124,7 @@ class fileController extends expController {
         // Sorted?
         if(strlen($_GET['sort']) > 0) {
             $sort = $_GET['sort'];
+            if ($sort = 'id') $sort = 'filename';
         }
 
         // Sort dir?

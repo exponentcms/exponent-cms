@@ -39,16 +39,6 @@ function smarty_function_getchromemenu($params,&$smarty) {
 
 	$list = '<ul class="container-menu">';
 	$list .= '<li class="container-info">'.gt($module->action).' / '.gt(str_replace($module->action.'_','',$module->view)).'</li>';
-	if (!empty($params['rank']) && expPermissions::check('configure', $cloc)) {
-		$uplink = $router->makeLink(array('module'=>'containermodule','src'=>$cloc->src,'action'=>'order','a'=>$params['rank'] - 2,'b'=>$params['rank'] - 1));
-		$downlink = $router->makeLink(array('module'=>'containermodule','src'=>$cloc->src,'action'=>'order', 'a'=>$params['rank'] - 1,'b'=>$params['rank']));
-		if ($params['rank'] != 1) {	//dont show this up arrow if it's the first module in a container
-			$list .= '<li><a href="'.$uplink.'" class="mod-up">'.gt("Move Module Up").'</a></li>';
-		}
-		if (!$params['last']) { //if this is the last module in a container don't show down arrow.
-			$list .= '<li><a href="'.$downlink.'" class="mod-down">'.gt("Move Module Down").'</a></li>';
-		}
-	}
 
 	$rerank = $params['rerank'];
 	if ($rerank == 'false') {
@@ -62,6 +52,35 @@ function smarty_function_getchromemenu($params,&$smarty) {
 		$grouplink = $router->makeLink(array('module'=>expModules::getControllerName($module->info['class']), 'src'=>$module->info['source'], 'action'=>'groupperms', '_common'=>1));
 		$list .= '<li><a href="'.$userlink.'" class="user">'.gt("User Permissions").'</a></li>';
 		$list .= '<li><a href="'.$grouplink.'" class="group">'.gt("Group Permissions").'</a></li>';
+	}
+
+    echo $list;
+    $list = '';
+	if (!empty($params['rank']) && $module->info['class'] == 'containermodule' && expPermissions::check('configure', $cloc)) {
+        foreach ($smarty->smarty->plugins_dir as $value) {
+            $filepath = $value ."/function.ddrerank.php";
+            if (file_exists($filepath)) {
+                require_once $filepath;
+            }
+        }
+        $reorder = array();
+        $reorder['module'] = "container";
+        $reorder['where'] = "external='".$module->internal."'";
+        $reorder['label'] = gt("Modules");
+        echo '
+        <li>';
+        smarty_function_ddrerank($reorder, $smarty);
+        echo '</li>
+        ';
+
+//		$uplink = $router->makeLink(array('module'=>'containermodule','src'=>$cloc->src,'action'=>'order','a'=>$params['rank'] - 2,'b'=>$params['rank'] - 1));
+//		$downlink = $router->makeLink(array('module'=>'containermodule','src'=>$cloc->src,'action'=>'order', 'a'=>$params['rank'] - 1,'b'=>$params['rank']));
+//		if ($params['rank'] != 1) {	//dont show this up arrow if it's the first module in a container
+//			$list .= '<li><a href="'.$uplink.'" class="mod-up">'.gt("Move Module Up").'</a></li>';
+//		}
+//		if (!$params['last']) { //if this is the last module in a container don't show down arrow.
+//			$list .= '<li><a href="'.$downlink.'" class="mod-down">'.gt("Move Module Down").'</a></li>';
+//		}
 	}
 
 	if (!empty($module->id) && expPermissions::check('edit', $cloc) && $module->permissions['manage'] == 1) {

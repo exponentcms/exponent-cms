@@ -72,19 +72,6 @@ abstract class basetemplate {
 
 		$this->view = substr(basename($this->viewfile),0,-4);
 		
-		//fix for the wamp/lamp issue
-		//checks necessary in case a file from /views/ is used
-		//should go away, the stuff should be put into a CoreModule
-		//then this can be simplified
-		//TODO: generate this through $this->viewfile using find BASE/THEME_ABSOLUTE and replace with ""
-//		if($item_type != "") {
-//			$this->langdir .= $item_type . "/";
-//		}
-//		if($item_dir != "") {
-//			$this->langdir .= $item_dir . "/";
-//		}
-//		$this->langdir .= "views/";
-
 		$this->tpl->template_dir = $this->viewdir;
 		
 		$this->tpl->compile_dir = BASE . 'tmp/views_c';

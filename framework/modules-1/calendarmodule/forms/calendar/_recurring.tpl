@@ -78,7 +78,7 @@
     {'Until'|gettext} %%UNTILDATEPICKER%%
 </div>
 
-<script type="text/javascript">
+{script unique="recurring"}
 
 		var last = "recur_none";
 
@@ -103,4 +103,4 @@
 			last = id;
 		}
 
-</script>
+{/script}

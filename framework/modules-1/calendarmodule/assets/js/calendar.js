@@ -507,7 +507,7 @@ Y.mix(Y.Calendar,{
 			var in_str = '';
 			for(var i = 0;i<a.length;i++){
 				in_str += '<a href="javascript:void(0);" class="item">'+a[i]+'</a>';
-                //FIXME add <br> if i+1%6==0
+                //FIXME add <br> if (i+1)%6==0
 			}
 			in_str += '<a href="javascript:void(0);" class="x">x</a>';
 			return in_str;

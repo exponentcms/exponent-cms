@@ -28,9 +28,9 @@
 	    <div id="edituser-tabs" class="yui-navset exp-skin-tabview hide">
 		    <ul class="yui-nav">
 		        <li class="selected"><a href="#tab1"><em>{"General"|gettext}</em></a></li>
-		            {foreach from=$extensions item=extension}
-		        <li><a href="#tab{$extension->id}"><em>{$extension->title}</em></a></li>
-		            {/foreach}
+                {foreach from=$extensions item=extension}
+		            <li><a href="#tab{$extension->id}"><em>{$extension->title}</em></a></li>
+                {/foreach}
 		    </ul>
 	        <div class="yui-content">
 	            <div id="tab1">
@@ -46,26 +46,28 @@
                         {control type="hidden" name="id" value=$edit_user->id}
 	                {/if}
 	                {control type="hidden" name="userkey" value=$userkey}
-	                {if $smarty.const.USER_REGISTRATION_USE_EMAIL == 0}{control type=text name=email label="Email Address"|gettext value=$edit_user->email}{/if}
+	                {if $smarty.const.USER_REGISTRATION_USE_EMAIL == 0}
+                        {control type=text name=email label="Email Address"|gettext value=$edit_user->email}
+                    {/if}
 	                {control type=text name=firstname label="First Name"|gettext value=$edit_user->firstname}
 	                {control type=text name=lastname label="Last Name"|gettext value=$edit_user->lastname}
 	                {*control type=checkbox name="recv_html" label="I prefer HTML Email" value=1 checked=$edit_user->recv_html*}
-	                {if $user->isAdmin() == 1}
-	                    {if $edit_user->id==$user->id || $user->isActingAdmin() || $edit_user->id == 1}
-                            {control type=checkbox readonly="readonly" name=is_acting_admin value=1 label="Make this user an Administrator?"|gettext checked=$edit_user->is_acting_admin}
-                            {control type=hidden name=is_acting_admin value=1}
-	                    {else}
-	                        {control type=checkbox name=is_acting_admin value=1 label="Make this user an Administrator?"|gettext checked=$edit_user->is_acting_admin}
-	                    {/if}
-	                {/if}
-                    {if $user->isSuperAdmin() == 1}
-	                    {if $edit_user->id==$user->id || $edit_user->id == 1}
-                            {control type=checkbox readonly="readonly" name=is_admin value=1 label="Make this user a Super Administrator?"|gettext checked=$edit_user->is_admin}
-                            {control type=hidden name=is_admin value=1}
-	                    {else}
-                            {control type=checkbox name=is_admin value=1 label="Make this user a Super Administrator?"|gettext checked=$edit_user->is_admin}
+	                {if $user->isAdmin()}
+                        {if $user->isSuperAdmin()} {* only super admins can create/change admins *}
+                            {control type=checkbox name=is_acting_admin value=1 label="Make this user an Administrator?"|gettext checked=$edit_user->is_acting_admin}
+                        {else}
+                            {control type=checkbox readonly="readonly" name=is_acting_admin value=1 label="This user is an Administrator?"|gettext checked=$edit_user->is_acting_admin}
+                            {if $edit_user->is_acting_admin}{control type=hidden name=is_acting_admin value=1}{/if}
                         {/if}
-	                {/if}
+                        {if $user->isSuperAdmin()}
+                            {if $user->id == 1}  {* only the real super admin can create/change other super admins *}
+                                {control type=checkbox name=is_admin value=1 label="Make this user a Super Administrator?"|gettext checked=$edit_user->is_admin}
+                            {else}
+                                {control type=checkbox readonly="readonly" name=is_admin value=1 label="This user is a Super Administrator?"|gettext checked=$edit_user->is_admin}
+                                {if $edit_user->is_admin}{control type=hidden name=is_admin value=1}{/if}
+                            {/if}
+                        {/if}
+                    {/if}
 	            </div>
 	            {foreach from=$extensions item=extension}
 	            <div id="tab{$extension->id}" >

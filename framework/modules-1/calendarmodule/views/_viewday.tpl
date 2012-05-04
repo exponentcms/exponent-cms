@@ -121,12 +121,11 @@ YUI(EXPONENT.YUI3_CONFIG).use('gallery-calendar',function(Y){
         date:today,
 		action:['focus']
 	}).on('select',function(d){
-		//alert(d);
         var unixtime = parseInt(d / 1000);
         {/literal} {if ($smarty.const.SEF_URLS == 1)} {literal}
-            window.location=eXp.URL_FULL+'calendarmodule/viewday/time/'+unixtime+'/src/{/literal}{$__loc->src}{literal}';
+            window.location=eXp.PATH_RELATIVE+'calendarmodule/viewday/time/'+unixtime+'/src/{/literal}{$__loc->src}{literal}';
         {/literal} {else} {literal}
-            window.location=eXp.URL_FULL+'index.php?module=calendarmodule&action=viewday&time='+unixtime+'&src={/literal}{$__loc->src}{literal}';
+            window.location=eXp.PATH_RELATIVE+'index.php?module=calendarmodule&action=viewday&time='+unixtime+'&src={/literal}{$__loc->src}{literal}';
         {/literal} {/if} {literal}
 	});
 

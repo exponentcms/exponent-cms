@@ -13,11 +13,11 @@
  *
  *}
 
-<div id="newsedit" class="module news edit">
+<div id="editnews" class="module news edit">
     {if $record->id != ""}<h1>{'Editing'|gettext} {$record->title}</h1>{else}<h1>{'New'|gettext} {$modelname}</h1>{/if}
     {form action=update}
 	    {control type=hidden name=id value=$record->id}
-        <div id="newsedit-tabs" class="yui-navset exp-skin-tabview hide">
+        <div id="editnews-tabs" class="yui-navset exp-skin-tabview hide">
             <ul class="yui-nav">
                 <li class="selected"><a href="#tab1"><em>{'Post'|gettext}</em></a></li>
                 <li><a href="#tab2"><em>{'Publish'|gettext}</em></a></li>
@@ -70,12 +70,12 @@
      {/form}
 </div>
 
-{script unique="newstabs" yui3mods=1}
+{script unique="editform" yui3mods=1}
 {literal}
 	YUI(EXPONENT.YUI3_CONFIG).use('autocomplete','autocomplete-filters','autocomplete-highlighters','tabview', function(Y) {
-	    var tabview = new Y.TabView({srcNode:'#newsedit-tabs'});
+	    var tabview = new Y.TabView({srcNode:'#editnews-tabs'});
 	    tabview.render();
-		Y.one('#newsedit-tabs').removeClass('hide');
+		Y.one('#editnews-tabs').removeClass('hide');
 		Y.one('.loadingdiv').remove();
 
 		var inputNode = Y.one('#expTag');
@@ -114,7 +114,7 @@
 
 		// When the input node receives focus, send an empty query to display the full
 		// list of tag suggestions.
-		inputNode.on('focus', function () {
+			inputNode.on('focus', function () {
 			inputNode.ac.sendRequest('');
 		});
 

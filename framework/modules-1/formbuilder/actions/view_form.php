@@ -28,8 +28,8 @@ if ($f) {
 	if (expPermissions::check("editform",unserialize($f->location_data))) {
 		expHistory::set('editable', $_GET);
 		$loc = unserialize($f->location_data);
-		$controls = $db->selectObjects("formbuilder_control","form_id=".$f->id);
-		$controls = expSorter::sort(array('array'=>$controls,'sortby'=>'rank', 'order'=>'ASC'));
+		$controls = $db->selectObjects("formbuilder_control","form_id=".$f->id,'rank');
+//		$controls = expSorter::sort(array('array'=>$controls,'sortby'=>'rank', 'order'=>'ASC'));
 
 		$form = new fakeform();
 		foreach ($controls as $c) {
@@ -51,7 +51,7 @@ if ($f) {
 		uasort($types,"strnatcmp");
 		array_unshift($types,'['.gt('Please Select'.']'));
 		$template->assign("types",$types);
-		$template->assign("pickerurl",URL_FULL."source_selector.php?showmodules=formmodule&dest='+escape(\"".PATH_RELATIVE."?module=formbuilder&action=picked_source&form_id=".$f->id."&s=".$loc->src."&m=".$loc->mod ."\")+'&vmod=containermodule&vview=_sourcePicker");
+		$template->assign("pickerurl",PATH_RELATIVE."source_selector.php?showmodules=formmodule&dest='+escape(\"".PATH_RELATIVE."?module=formbuilder&action=picked_source&form_id=".$f->id."&s=".$loc->src."&m=".$loc->mod ."\")+'&vmod=containermodule&vview=_sourcePicker");
 		$template->output();
 	} else {
 		echo SITE_403_HTML;	

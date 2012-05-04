@@ -397,10 +397,12 @@ function smarty_function_control($params,&$smarty) {
         //$newid = str_replace($badvals, "", $params['name']);
         $control->id = isset($params['id']) && $params['id'] != "" ? $params['id'] : "";
         //echo $control->id;
+        if (empty($control->id)) $control->id = $params['name'];
+        if (empty($control->name)) $control->name = $params['id'];
 
         /*$labelclass = isset($params['labelclass']) ? ' '.$params['labelclass'] : '';
         
-        //container for the controll set, including labelSpan and input
+        //container for the control set, including labelSpan and input
         if($params['type']!='hidden') echo '<label id="'.$control->id.'Control" class="control">'; 
 
 
@@ -416,7 +418,7 @@ function smarty_function_control($params,&$smarty) {
         }
         //write out the control itself...and then we're done. 
         if (isset($params['model'])) {
-            echo $control->toHTML($params['label'], $params['model'].'['.$params['name'].']');
+            echo $control->toHTML($params['label'],$params['model'].'['.$params['name'].']');
         } else {
             echo $control->toHTML($params['label'],$params['name']);
         }

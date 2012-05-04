@@ -23,7 +23,7 @@
 	{permissions}
 	{if $can_manage_nav == 1}<a class="sitetree" href="{link module=navigationmodule action=manage}">{'Manage Site Navigation'|gettext}</a>{/if}
 		{if $permissions.manage == 1}
-		<a class="files" href="{$smarty.const.URL_FULL}framework/modules-1/filemanagermodule/actions/picker.php">{'Manage Files'|gettext}</a>
+		<a class="files" href="{$smarty.const.PATH_RELATIVE}framework/modules-1/filemanagermodule/actions/picker.php">{'Manage Files'|gettext}</a>
 		<a class="admin" href="{link module=administrationmodule action=index}">{'Site Administration'|gettext}</a>
 		{*<a id="addmodulelink" class="clicktoaddmodule" href="#">{'Add Module'|gettext}</a>*}
 		<a class="recycle" href="{link module=administrationmodule action=orphanedcontent}">{'Recycle Bin'|gettext}</a>

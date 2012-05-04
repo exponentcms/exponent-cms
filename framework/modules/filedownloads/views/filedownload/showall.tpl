@@ -46,7 +46,7 @@
     {assign var="cat" value="bad"}
     {foreach from=$page->records item=file name=files}
         {if $cat != $file->expCat[0]->id && $config.usecategories}
-            <h2 class="category">{if $file->expCat[0]->title!= ""}{$file->expCat[0]->title}{else}{'Uncategorized'|gettext}{/if}</h2>
+            <h2 class="category">{if $file->expCat[0]->title!= ""}{$file->expCat[0]->title}{elseif $config.uncat!=''}{$config.uncat}{else}{'Uncategorized'|gettext}{/if}</h2>
         {/if}
         {include 'filedownloaditem.tpl'}
         {assign var="cat" value=$file->expCat[0]->id}
@@ -59,7 +59,7 @@
     {literal}
     flowplayer("a.filedownload-media", EXPONENT.PATH_RELATIVE+"external/flowplayer3/flowplayer-3.2.10.swf",
         {
-    		wmode: 'opaque',
+    		wmode: 'transparent',
     		clip: {
     			autoPlay: false,
     			},

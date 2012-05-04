@@ -66,6 +66,7 @@ class expPaginator {
 	public $header_columns = '';
 	public $default = '';
 	public $view = null;
+    public $uncat ='';
 //    public $content_type = '';
 //    public $author = '';
 //    public $tag = '';
@@ -116,6 +117,7 @@ class expPaginator {
 		$this->dir = empty($params['dir']) ? 'ASC' : $params['dir'];
 		$this->src = empty($params['src']) ? null : $params['src'];
         $this->categorize = empty($params['categorize']) ? false : $params['categorize'];
+        $this->uncat = !empty($params['uncat']) ? $params['uncat'] : gt('Not Categorized');
 
 		// if a view was passed we'll use it.
 		if (isset($params['view'])) $this->view = $params['view'];
@@ -213,7 +215,7 @@ class expPaginator {
 
         // next we'll sort them based on categories if needed
         if (!empty($this->categorize) && $this->categorize) {
-            expCatController::addCats($this->records,$this->order.' '.$this->order_direction);
+            expCatController::addCats($this->records,$this->order.' '.$this->order_direction,$this->uncat);
         }
 
         // now we'll trim the records to the number requested

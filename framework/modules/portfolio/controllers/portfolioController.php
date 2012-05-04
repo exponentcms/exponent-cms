@@ -51,6 +51,7 @@ class portfolioController extends expController {
                     'limit'=>$limit,
                     'order'=>$order,
                     'categorize'=>empty($this->config['usecategories']) ? false : $this->config['usecategories'],
+                    'uncat'=>!empty($this->config['uncat']) ? $this->config['uncat'] : gt('Not Categorized'),
                     'controller'=>$this->baseclassname,
                     'src'=>$this->loc->src,
                     'action'=>$this->params['action'],

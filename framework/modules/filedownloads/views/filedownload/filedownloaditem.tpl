@@ -95,7 +95,11 @@
         {icon action=downloadfile fileid=$file->id text='Download'|gettext}
     {/if}
     {if $config.show_player && ($filetype == "mp3" || $filetype == "flv" || $filetype == "f4v")}
-        <a href="{$file->expFile.downloadable[0]->url}" style="display:block;width:360px;height:{if $filetype == "mp3"}26{else}240{/if}px;" class="filedownload-media"></a>
+        <a href="{$file->expFile.downloadable[0]->url}" style="display:block;width:360px;height:{if $filetype == "mp3"}26{else}240{/if}px;" class="filedownload-media">
+            {if $file->expFile.preview[0] != ""}
+                {img class="preview-img" file_id=$file->expFile.preview[0]->id w=360 h=240 zc=1}
+            {/if}
+        </a>
     {/if}
     {clear}
     {permissions}

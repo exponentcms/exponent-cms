@@ -65,7 +65,7 @@
             {assign value=$product->expFile.imagesforswatches.0 var=mainimg}
         {else}
             {if $config.enable_lightbox}
-                <a href="{$smarty.const.URL_FULL}thumb.php?id={$product->expFile.mainimage[0]->id}&w={$config.enlrg_w|default:500}" title="{$product->expFile.mainimage[0]->title|default:$product->title}" rel="lightbox[g{$product->id}]" id="enlarged-image-link">
+                <a href="{$smarty.const.PATH_RELATIVE}thumb.php?id={$product->expFile.mainimage[0]->id}&w={$config.enlrg_w|default:500}" title="{$product->expFile.mainimage[0]->title|default:$product->title}" rel="lightbox[g{$product->id}]" id="enlarged-image-link">
             {/if}
             {img file_id=$product->expFile.mainimage[0]->id w=250 alt=$product->image_alt_tag|default:"Image of `$product->title`" title="`$product->title`"  class="large-img" id="enlarged-image"}
             {if $config.enable_lightbox}
@@ -80,7 +80,7 @@
             <ul>
                 <li>
                     {if $config.enable_lightbox}
-                        <a href="{$smarty.const.URL_FULL}thumb.php?id={$product->expFile.mainimage[0]->id}&w={$config.enlrg_w|default:500}" title="{$mainimg->title|default:$product->title}" rel="lightbox[g{$product->id}]">
+                        <a href="{$smarty.const.PATH_RELATIVE}thumb.php?id={$product->expFile.mainimage[0]->id}&w={$config.enlrg_w|default:500}" title="{$mainimg->title|default:$product->title}" rel="lightbox[g{$product->id}]">
                     {/if}
                     {img file_id=$product->expFile.mainthumbnail[0]->id|default:$mainimg->id w=50 h=50 zc=1 class="thumbnail" id="thumb-`$mainimg->id`"}
                     {if $config.enable_lightbox}
@@ -90,7 +90,7 @@
                 {foreach from=$product->expFile.images item=thmb}
                 <li>
                     {if $config.enable_lightbox}
-                        <a href="{$smarty.const.URL_FULL}thumb.php?id={$thmb->id}&w={$config.enlrg_w|default:500}" title="{$thmb->title|default:$product->title}" rel="lightbox[g{$product->id}]">
+                        <a href="{$smarty.const.PATH_RELATIVE}thumb.php?id={$thmb->id}&w={$config.enlrg_w|default:500}" title="{$thmb->title|default:$product->title}" rel="lightbox[g{$product->id}]">
                     {/if}
                     {img file_id=$thmb->id w=50 h=50 zc=1 class="thumbnail" id="thumb-`$thmb->id`"}
                     {if $config.enable_lightbox}
@@ -155,7 +155,7 @@
 
             var swapimage = function(e){
                 var tmbid = e.target.get('id').split('-')[1];
-                mainimg.set('src',EXPONENT.URL_FULL+"thumb.php?id="+tmbid+"&w=250");
+                mainimg.set('src',EXPONENT.PATH_RELATIVE+"thumb.php?id="+tmbid+"&w=250");
             };
 
             thumbs.on('click',swapimage);

@@ -46,7 +46,7 @@
     {assign var="cat" value="bad"}
     {foreach from=$page->records item=record}
         {if $cat != $record->expCat[0]->id && $config.usecategories}
-            <h2 class="category">{if $record->expCat[0]->title!= ""}{$record->expCat[0]->title}{else}{'Uncategorized'|gettext}{/if}</h2>
+            <h2 class="category">{if $record->expCat[0]->title!= ""}{$record->expCat[0]->title}{elseif $config.uncat!=''}{$config.uncat}{else}{'Uncategorized'|gettext}{/if}</h2>
         {/if}
         {include 'portfolioitem.tpl'}
         {assign var="cat" value=$record->expCat[0]->id}

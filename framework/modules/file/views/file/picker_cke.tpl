@@ -18,15 +18,14 @@
 <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <title>{'File Manager'|gettext}  |  Exponent CMS</title>
+    {css unique="picker" corecss="msgq,button,admin-global" link="`$asset_path`css/filemanager.css"}
 
-    <link rel="stylesheet" type="text/css" href="{$smarty.const.URL_FULL}framework/core/assets/css/msgq.css" />
-    <link rel="stylesheet" type="text/css" href="{$smarty.const.URL_FULL}framework/core/assets/css/button.css" />
-    <link rel="stylesheet" type="text/css" href="{$smarty.const.URL_FULL}framework/core/assets/css/admin-global.css" />
-    <link rel="stylesheet" type="text/css" href="{$smarty.const.URL_FULL}framework/modules/file/assets/css/filemanager.css" />
-
+    {/css}
     <script type="text/javascript" src="{$smarty.const.YUI3_PATH}yui/yui-min.js"></script>
     <script type="text/javascript" src="{$smarty.const.PATH_RELATIVE}exponent.js2.php"></script>
-	<script type="text/javascript" src="{$smarty.const.PATH_RELATIVE}external/flowplayer3/flowplayer-3.2.9.min.js"></script>
+    {script unique="picker" src="`$smarty.const.PATH_RELATIVE`external/flowplayer3/flowplayer-3.2.9.min.js"}
+
+    {/script}
 </head>
 <body class=" exp-skin">
 <div id="filemanager">
@@ -60,9 +59,9 @@
         <a id="deletelink" class="delete awesome medium red" href="{link action=deleter ajax_action=1 ck=$smarty.get.ck update=$smarty.get.update}"><span>{'Delete Missing Files'|gettext}</span></a>
     {/if}
 </div>
-<script type="text/javascript">
-{literal}
 
+{script unique="picker"}
+{literal}
 // this.moveTo(1,1);
 // this.resizeTo(screen.width,screen.height);
 YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event','yui2-container','yui2-json','yui2-datasource','yui2-connection','yui2-autocomplete','yui2-element','yui2-paginator','yui2-datatable', function(Y) {
@@ -110,7 +109,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event','yui2-container','yu
         );
         infopanel.render();
         infopanel.subscribe('hide',function(event){
-            flowplayer("a.player", EXPONENT.URL_FULL+"external/flowplayer3/flowplayer-3.2.10.swf",
+            flowplayer("a.player", EXPONENT.PATH_RELATIVE+"external/flowplayer3/flowplayer-3.2.10.swf",
          				{
          					wmode: 'opaque',
          					clip: {
@@ -127,11 +126,11 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event','yui2-container','yu
             filetype = oRecordData.filename.replace(/^\s|\s$/g, "");
             ismedia = filetype.match(/([^\/\\]+)\.(mp3|flv|f4v)$/i)
             if (oRecordData.is_image==1) {
-    	        var oFile = '<img src="'+oRecordData.url+'" onError="this.src=\''+EXPONENT.URL_FULL+'/framework/core/assets/images/default_preview_notfound.gif\'">';
+    	        var oFile = '<img src="'+oRecordData.url+'" onError="this.src=\''+EXPONENT.PATH_RELATIVE+'/framework/core/assets/images/default_preview_notfound.gif\'">';
             }else if (ismedia){
                 var oFile = '<a href="'+oRecordData.url+'" style="display:block;width:450px;height:360px;" class="player"></a>';
             }else{
-                var oFile = '<img src="'+EXPONENT.URL_FULL+'framework/modules/file/assets/images/general.png">' ;
+                var oFile = '<img src="'+EXPONENT.PATH_RELATIVE+'framework/modules/file/assets/images/general.png">' ;
             };
         
             infopanel.setBody('<table class="wrapper" border="0" cellspacing="0" cellpadding="5" width=100%>'+
@@ -151,7 +150,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event','yui2-container','yu
                 '</td></tr></table>'
             );
             infopanel.show();
-			flowplayer("a.player", EXPONENT.URL_FULL+"external/flowplayer3/flowplayer-3.2.10.swf",
+			flowplayer("a.player", EXPONENT.PATH_RELATIVE+"external/flowplayer3/flowplayer-3.2.10.swf",
 				{
 					wmode: 'opaque',
 					clip: {
@@ -184,7 +183,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event','yui2-container','yu
         // filename formatter
         var formatTitle = function(elCell, oRecord, oColumn, sData) {
             if (oRecord.getData().is_image==1 && thumbnails) {
-                elCell.innerHTML = '<a href="#" class="fileinfo"><img src="'+EXPONENT.URL_FULL+'thumb.php?&id='+oRecord.getData().id+'&w={/literal}{$smarty.const.FM_THUMB_SIZE}{literal}&h={/literal}{$smarty.const.FM_THUMB_SIZE}{literal}"> '+oRecord.getData().filename+'</a>';
+                elCell.innerHTML = '<a href="#" class="fileinfo"><img src="'+EXPONENT.PATH_RELATIVE+'thumb.php?&id='+oRecord.getData().id+'&w={/literal}{$smarty.const.FM_THUMB_SIZE}{literal}&h={/literal}{$smarty.const.FM_THUMB_SIZE}{literal}"> '+oRecord.getData().filename+'</a>';
             } else {
                 elCell.innerHTML = '<a href="#" class="fileinfo">'+oRecord.getData().filename+'</a>';
             }
@@ -202,9 +201,9 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event','yui2-container','yu
         // shared formatter
         var formatShared = function(elCell, oRecord, oColumn, sData) {
             if (oRecord.getData().shared == 0) {
-                elCell.innerHTML = '<img src="'+EXPONENT.URL_FULL+'framework/modules/file/assets/images/unchecked.gif" title="{/literal}{"Make this file available to other users"|gettext}{literal}">';
+                elCell.innerHTML = '<img src="'+EXPONENT.PATH_RELATIVE+'framework/modules/file/assets/images/unchecked.gif" title="{/literal}{"Make this file available to other users"|gettext}{literal}">';
             } else {
-                elCell.innerHTML = '<img src="'+EXPONENT.URL_FULL+'framework/modules/file/assets/images/checked.gif" title="{/literal}{"Make this file available to other users"|gettext}{literal}">';
+                elCell.innerHTML = '<img src="'+EXPONENT.PATH_RELATIVE+'framework/modules/file/assets/images/checked.gif" title="{/literal}{"Make this file available to other users"|gettext}{literal}">';
             };
         }
     
@@ -287,12 +286,12 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event','yui2-container','yu
             { key:"id",label:"{/literal}{"File Name"|gettext}{literal}",formatter:formatTitle,sortable:true},
             { key:"title",label:"{/literal}{"Title"|gettext}{literal}",sortable:true, editor: new YAHOO.widget.TextboxCellEditor({asyncSubmitter:editTitle})},
             { key:"alt",label:"{/literal}{"alt"|gettext}{literal}", sortable:true, formatter:formatAlt, editor: new YAHOO.widget.TextboxCellEditor({asyncSubmitter:editAlt})},
-            { key:"shared",label:'<img src="'+EXPONENT.URL_FULL+'framework/modules/file/assets/images/public.png" title="{/literal}{"Make File Public"|gettext}{literal}" />',formatter:formatShared,editor: new YAHOO.widget.CheckboxCellEditor({checkboxOptions:[{label:"{/literal}{"Make this file public?"|gettext}{literal}",value:1}],asyncSubmitter:editShare})},
+            { key:"shared",label:'<img src="'+EXPONENT.PATH_RELATIVE+'framework/modules/file/assets/images/public.png" title="{/literal}{"Make File Public"|gettext}{literal}" />',formatter:formatShared,editor: new YAHOO.widget.CheckboxCellEditor({checkboxOptions:[{label:"{/literal}{"Make this file public?"|gettext}{literal}",value:1}],asyncSubmitter:editShare})},
             { label:"{/literal}{"Actions"|gettext}{literal}",sortable:false,formatter: formatactions}
             ];
 
         // DataSource instance
-        var myDataSource = new YAHOO.util.DataSource(EXPONENT.URL_FULL+"index.php?controller=file&action=getFilesByJSON&json=1&ajax_action=1&fck="+fck+"&");
+        var myDataSource = new YAHOO.util.DataSource(EXPONENT.PATH_RELATIVE+"index.php?controller=file&action=getFilesByJSON&json=1&ajax_action=1&fck="+fck+"&");
         myDataSource.responseType = YAHOO.util.DataSource.TYPE_JSON;
         myDataSource.responseSchema = {
             resultsList: "records",
@@ -399,7 +398,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event','yui2-container','yu
 	            data = YAHOO.util.Connect.setForm(obj.form);
 	            //slap a date in there so IE doesn't cache
 	            var dt = new Date().valueOf();
-	            var sUri = EXPONENT.URL_FULL + "index.php?ajax_action=1" + json + "&yaetime=" + dt;
+	            var sUri = EXPONENT.PATH_RELATIVE + "index.php?ajax_action=1" + json + "&yaetime=" + dt;
 	            return sUri;
 	        } else if (!obj.action || (!obj.controller && !obj.module)) {
 	            alert("{/literal}{"If you don\'t pass the ID of a form, you need to specify both a module/controller AND and a corresponding action."|gettext}{literal}");
@@ -407,7 +406,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event','yui2-container','yu
 	            //slap a date in there so IE doesn't cache
 	            var dt = new Date().valueOf();
 	            var modcontrol = (obj.controller) ? "&controller="+obj.controller : "&module="+obj.module;
-	            var sUri = EXPONENT.URL_FULL + "index.php?ajax_action=1" + modcontrol + "&action=" + obj.action + json + "&yaetime=" + dt + obj.params;
+	            var sUri = EXPONENT.PATH_RELATIVE + "index.php?ajax_action=1" + modcontrol + "&action=" + obj.action + json + "&yaetime=" + dt + obj.params;
 	            return sUri;
 	        }
 	    }
@@ -463,6 +462,6 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event','yui2-container','yu
 
 });
 {/literal}
-</script>
+{/script}
 </body>
 </html>

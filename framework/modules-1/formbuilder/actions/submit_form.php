@@ -30,8 +30,8 @@ if (!expValidator::check_antispam($post)) {
 global $db, $user;
 $f = $db->selectObject("formbuilder_form","id=".intval($_POST['id']));
 $rpt = $db->selectObject("formbuilder_report","form_id=".intval($_POST['id']));
-$controls = $db->selectObjects("formbuilder_control","form_id=".$f->id." and is_readonly=0");
-$controls = expSorter::sort(array('array'=>$controls,'sortby'=>'rank', 'order'=>'ASC'));
+$controls = $db->selectObjects("formbuilder_control","form_id=".$f->id." and is_readonly=0","rank");
+//$controls = expSorter::sort(array('array'=>$controls,'sortby'=>'rank', 'order'=>'ASC'));
 
 $db_data = null;
 $emailFields = array();

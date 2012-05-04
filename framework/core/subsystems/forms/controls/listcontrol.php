@@ -113,7 +113,7 @@ class listcontrol extends formcontrol {
             if ($val->mimetype!="image/png" && $val->mimetype!="image/gif" && $val->mimetype!="image/jpeg"){
                 $filepic = "<img class=\"filepic\" src='".ICON_RELATIVE."attachableitems/generic_22x22.png'>";
             } else {
-                $filepic = "<img class=\"filepic\" src=".URL_FULL."thumb.php?id=".$val->id."&square=24\">";
+                $filepic = "<img class=\"filepic\" src=".PATH_RELATIVE."thumb.php?id=".$val->id."&square=24\">";
             }
             $html = "<li class=\"".$cycle."\" id=\"imgdiv".$val->id."\">";
             $html .= "<input type=\"hidden\" name=\"".$subTypeName."\" value=\"".$val->id."\">";

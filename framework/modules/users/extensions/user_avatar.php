@@ -49,7 +49,7 @@ class user_avatar extends expRecord {
         
         // check for a previous avatar otherwise set the default
         $this->image = $params['current_avatar'];
-        if (empty($this->image)) $this->image = URL_FULL.'framework/modules/users/assets/images/avatar_not_found.jpg';
+        if (empty($this->image)) $this->image = PATH_RELATIVE.'framework/modules/users/assets/images/avatar_not_found.jpg';
 
         if (!empty($_FILES['avatar']['tmp_name'])) {  // if the user uploaded a new avatar lets save it!
             $info = expFile::getImageInfo($_FILES['avatar']['tmp_name']);

@@ -134,7 +134,7 @@ class expSorter {
 
         $properties = null;
 
-        function collapse($node, $props) {
+        if (!function_exists('collapse')) {function collapse($node, $props) {
             if (is_array($props)) {
                 foreach ($props as $prop) {
                     $node = (!isset($node->$prop)) ? null : $node->$prop;
@@ -143,8 +143,8 @@ class expSorter {
             } else {
                 return (!isset($node->$props)) ? null : $node->$props;
             }
-        };
-        function oasort($a, $b) {
+        }}
+        if (!function_exists('oasort')) {function oasort($a, $b) {
             global $properties;
             foreach($properties as $k => $v) {
                 if (is_int($k)) {
@@ -158,7 +158,7 @@ class expSorter {
                 }
             }
             return 0;
-        }
+        }}
 
         global $properties;
         if (is_string($props)) {

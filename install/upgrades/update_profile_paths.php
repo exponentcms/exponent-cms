@@ -60,7 +60,7 @@ class update_profile_paths extends upgradescript {
 		// update each bad default avatar reference to default
 	    $badavatarurls = $db->selectObjects('user_avatar',"image = ''URL_FULL .'");
 	    foreach ($badavatarurls as $badavatarurl) {
-            $badavatarurl->image = URL_FULL.'framework/modules/users/assets/images/avatar_not_found.jpg';
+            $badavatarurl->image = PATH_RELATIVE.'framework/modules/users/assets/images/avatar_not_found.jpg';
 		    $db->updateObject($badavatarurl,'user_avatar');
             $fixed =+1 ;
 	    }

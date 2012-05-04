@@ -37,7 +37,7 @@ class ealertController extends expController {
     ); // all options: ('aggregation','categories','comments','ealerts','files','module_title','pagination','rss','tags')
 	
     function displayname() { return gt("E-Alerts"); }
-    function description() { return gt("This module will allow your users to signup for email alerts on a module by module basis."); }
+    function description() { return gt("This module will allow users to sign up for email alerts on a module by module basis."); }
     
     public function showall() {
         $ealerts = new expeAlerts();
@@ -74,12 +74,12 @@ class ealertController extends expController {
         $id = $db->insertObject($obj, 'expeAlerts_temp');
         
         $bot = new expBot(array(
-            'url'=>URL_FULL."index.php?controller=ealert&action=send&id=".$id.'&ealert_id='.$this->params['id'],
+            'url'=>PATH_RELATIVE."index.php?controller=ealert&action=send&id=".$id.'&ealert_id='.$this->params['id'],
             'method'=>'POST',
         ));
         
         $bot->fire();
-        flash('message', gt("The E-Alerts are being sent to the subscribers."));
+        flash('message', gt("E-Alerts are being sent to subscribers."));
         expHistory::back();
     }
     

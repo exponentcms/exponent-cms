@@ -17,7 +17,7 @@
 {literal}
 flowplayer("a.flowplayer-video", EXPONENT.PATH_RELATIVE+"external/flowplayer3/flowplayer-3.2.10.swf",
     {
-		wmode: 'opaque',
+		wmode: 'transparent',
 		clip: {
 			autoPlay: {/literal}{if $config.autoplay}true{else}false{/if}{literal},
 			},		  
@@ -62,7 +62,7 @@ flowplayer("a.flowplayer-video", EXPONENT.PATH_RELATIVE+"external/flowplayer3/fl
                     {if $video->expFile.splash[0]->url}
                         {img file_id=$video->expFile.splash[0]->id w=$video->width h=$video->height zc=1}
                     {/if}
-                </a> 
+                </a>
             </div>
 			{permissions}
 				<div class="item-actions">

@@ -124,7 +124,7 @@ class expCatController extends expController {
             if (empty($records[$key]->catid)) {
                 $records[$key]->catid = null;
                 $records[$key]->catrank = 9999;
-                $records[$key]->cat = 'Not Categorized';
+                $records[$key]->cat = gt('Not Categorized');
             }
         }
         $orderby = explode(" ",$order);

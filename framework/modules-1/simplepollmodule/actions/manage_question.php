@@ -34,8 +34,8 @@ if ($question) {
 //		expHistory::flowSet(SYS_FLOW_PROTECTED,SYS_FLOW_ACTION);
 		expHistory::set('manageable', $router->params);
 
-		$answers = $db->selectObjects('poll_answer','question_id='.$question->id);
-		$answers = expSorter::sort(array('array'=>$answers,'sortby'=>'rank', 'order'=>'ASC', 'type'=>'a'));
+		$answers = $db->selectObjects('poll_answer','question_id='.$question->id,'rank');
+//		$answers = expSorter::sort(array('array'=>$answers,'sortby'=>'rank', 'order'=>'ASC', 'type'=>'a'));
 
 		$template = new template('simplepollmodule','_manageQuestion',$loc);
 		$template->assign('question',$question);

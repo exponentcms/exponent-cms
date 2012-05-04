@@ -47,12 +47,12 @@
     {assign var=quality value=$config.quality|default:$smarty.const.THUMB_QUALITY}	
     {foreach from=$page->records item=record name=items}
         {if $cat != $record->expCat[0]->id && $config.usecategories}
-            <h2 class="category">{if $record->expCat[0]->title!= ""}{$record->expCat[0]->title}{else}{'Uncategorized'|gettext}{/if}</h2>
+            <h2 class="category">{if $record->expCat[0]->title!= ""}{$record->expCat[0]->title}{elseif $config.uncat!=''}{$config.uncat}{else}{'Uncategorized'|gettext}{/if}</h2>
         {/if}
         <li style="width:{$config.pa_showall_thumbbox|default:"150"}px;height:{$config.pa_showall_thumbbox|default:"150"}px;">
             {if $config.lightbox}
                 {if $record->expFile[0]->width >= $record->expFile[0]->height}{assign var=x value="w"}{else}{assign var=x value="w"}{/if}
-                <a rel="lightbox[{$name}]" href="{$smarty.const.URL_FULL}thumb.php?id={$record->expFile[0]->id}&{$x}={$config.pa_showall_enlarged}" title="{$record->title|default:$record->expFile[0]->title}">
+                <a rel="lightbox[{$name}]" href="{$smarty.const.PATH_RELATIVE}thumb.php?id={$record->expFile[0]->id}&{$x}={$config.pa_showall_enlarged}" title="{$record->title|default:$record->expFile[0]->title}">
             {else}
                 <a href="{link action=show title=$record->sef_url}" title="{$record->title|default:$record->expFile[0]->title}">
             {/if}

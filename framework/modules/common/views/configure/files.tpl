@@ -46,7 +46,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','io', function(Y) {
     			arguments : { 'X-Transaction': 'Load File Config'}
     		};
     		
-	var sUrl = EXPONENT.URL_FULL+"index.php?controller=file&action=get_view_config&ajax_action=1";
+	var sUrl = EXPONENT.PATH_RELATIVE+"index.php?controller=file&action=get_view_config&ajax_action=1";
 
 	var handleSuccess = function(ioId, o){
 		Y.log(o.responseText);

@@ -62,7 +62,7 @@
     {/form}
 </div>
 
-<script type="text/javascript">
+{script unique="managecontent"}
     function selectAllm(val) {
         var checks = document.getElementsByName("migrate[]");
         for (var i = 0; i < checks.length; i++) {
@@ -76,4 +76,4 @@
           checks[i].checked = val;
         }
     }
-</script>
+{/script}

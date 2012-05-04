@@ -222,7 +222,7 @@ class filemanagercontrol extends formcontrol {
                         var objson = Y.JSON.parse(o.responseText);
                         var obj = objson.data;
                         if (obj.mimetype=='image/png' || obj.mimetype=='image/gif' || obj.mimetype=='image/jpeg' || obj.mimetype=='image/pjpeg' || obj.mimetype=='image/x-png') {
-                            var filepic = '<img class=\"filepic\" src=\"'+EXPONENT.URL_FULL+'thumb.php?id='+obj.id+'&amp;w=24&amp;h=24&amp;zc=1\">';
+                            var filepic = '<img class=\"filepic\" src=\"'+EXPONENT.PATH_RELATIVE+'thumb.php?id='+obj.id+'&amp;w=24&amp;h=24&amp;zc=1\">';
                         } else if (obj.mimetype=='audio/mpeg') {
                             var filepic = '<img class=\"filepic\" src=\"'+EXPONENT.ICON_RELATIVE+'attachableitems/audio_22x22.png\">';
                         } else if (obj.mimetype=='video/x-flv' || obj.mimetype=='video/mp4') {
@@ -278,7 +278,7 @@ class filemanagercontrol extends formcontrol {
                             success:complete
                         }
                     };
-                    Y.io(EXPONENT.URL_FULL+'index.php.php?controller=file&action=getFile&ajax_action=1&json=1&id='+id, cfg);
+                    Y.io(EXPONENT.PATH_RELATIVE+'index.php.php?controller=file&action=getFile&ajax_action=1&json=1&id='+id, cfg);
                     //ej.fetch({action:'getFile',controller:'fileController',json:1,params:'&id='+id});
                 }
 
@@ -326,7 +326,7 @@ class filemanagercontrol extends formcontrol {
         $html='';
         foreach($filearray as $val) {
             if ($val->mimetype=="image/png" || $val->mimetype=="image/gif" || $val->mimetype=="image/jpeg" || $val->mimetype=="image/pjpeg" || $val->mimetype=="image/x-png") {
-                $filepic = "<img class=\"filepic\" src=\"".URL_FULL."thumb.php?id=".$val->id."&amp;w=24&amp;h=24&amp;zc=1\">";
+                $filepic = "<img class=\"filepic\" src=\"".PATH_RELATIVE."thumb.php?id=".$val->id."&amp;w=24&amp;h=24&amp;zc=1\">";
             } elseif ($val->mimetype=="audio/mpeg") {
                 $filepic = "<img class=\"filepic\" src='".ICON_RELATIVE."attachableitems/audio_22x22.png'>";
             } elseif ($val->mimetype=="video/x-flv" || $val->mimetype=="video/mp4") {

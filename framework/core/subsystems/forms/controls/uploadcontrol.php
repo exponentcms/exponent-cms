@@ -95,7 +95,7 @@ class uploadcontrol extends formcontrol {
 
 	static function parseData($original_name,$formvalues) {
 		$file = $formvalues[$original_name];
-		return '<a href="'.URL_FULL.$file.'">'.basename($file).'</a>';
+		return '<a href="'.PATH_RELATIVE.$file.'">'.basename($file).'</a>';
 	}
 }
 

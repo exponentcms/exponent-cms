@@ -15,24 +15,26 @@
 # GPL: http://www.gnu.org/licenses/gpl.txt
 #
 ##################################################
-/** @define "BASE" "../../../../.." */
 
 if (!defined('EXPONENT')) exit('');
 
-$errors = null;
-$continue = PATH_RELATIVE.'index.php?section='.SITE_DEFAULT_SECTION;
+if (expPermissions::check('manage',$loc)) {
 
-expSession::clearAllUsersSessionCache();
+    $rank = 0;
+    foreach($_REQUEST['rerank'] as $key=>$id) {
+        $obj = $db->selectObject("poll_answer","id=".$id);
+        $obj->rank = $rank;
+        $db->updateObject($obj,"poll_answer");
+        $rank++;
+    }
 
-$template = new template('importer','_eql_results',$loc);
-//GREP:UPLOADCHECK
-if (!expFile::restoreDatabase($db,$_FILES['file']['tmp_name'],$errors)) {
-	$template->assign('success',0);
-	$template->assign('errors',$errors);
+    redirect_to($_REQUEST['lastpage']);
+
 } else {
-	$template->assign('success',1);
-	$template->assign('continue',$continue);
+	echo SITE_403_HTML;
 }
-$template->output();
+
+
+exit;
 
 ?>

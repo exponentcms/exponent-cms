@@ -88,8 +88,8 @@ class formmodule {
 			}
 
 			$floc = unserialize($f->location_data);
-			$controls = $db->selectObjects("formbuilder_control","form_id=".$f->id);
-			$controls = expSorter::sort(array('array'=>$controls,'sortby'=>'rank', 'order'=>'ASC'));
+			$controls = $db->selectObjects("formbuilder_control","form_id=".$f->id,'rank');
+//			$controls = expSorter::sort(array('array'=>$controls,'sortby'=>'rank', 'order'=>'ASC'));
 
 			$form = new form();
 			$data = expSession::get('formmodule_data_'.$f->id);

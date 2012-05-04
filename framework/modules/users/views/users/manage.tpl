@@ -13,8 +13,12 @@
  *
  *}
 
-{css unique="manage_groups" corecss="tables"}
-
+{css unique="manage_users" corecss="tables,autocomplete"}
+#user_dt_input {
+    position:relative;
+    width:200px;
+    height:20px;
+}
 {/css}
 
 <div class="module users manage yui-skin-sam">
@@ -46,7 +50,7 @@
 	
 </div>
 
-<script type="text/javascript">
+{script unique="manage_users"}
 	{literal}
 		YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event','yui2-container','yui2-json','yui2-datasource','yui2-connection','yui2-autocomplete','yui2-element','yui2-paginator','yui2-datatable', function(Y) {
 			var YAHOO=Y.YUI2;
@@ -57,7 +61,6 @@
 			 //set up autocomplete
 			var getTerms = function(query) {
 				myDataSource.sendRequest('sort=id&dir=asc&startIndex=0&results=10&query=' + query,myDataTable.onDataReturnInitializeTable, myDataTable);
-		
 			};
 			
 			var oACDS = new YAHOO.util.FunctionDataSource(getTerms);
@@ -104,8 +107,9 @@
                 { key:"Actions",label:"{/literal}{"Actions"|gettext}{literal}",sortable:false,formatter: formatactions}
                 {/literal}{/permissions}{literal}
 			];
+
 			// DataSource instance
-			var myDataSource = new YAHOO.util.DataSource(EXPONENT.URL_FULL+"index.php?controller=users&action=getUsersByJSON&json=1&ajax_action=1&filter={/literal}{$filter}{literal}&");
+			var myDataSource = new YAHOO.util.DataSource(EXPONENT.PATH_RELATIVE+"index.php?controller=users&action=getUsersByJSON&json=1&ajax_action=1&filter={/literal}{$filter}{literal}&");
 			myDataSource.responseType = YAHOO.util.DataSource.TYPE_JSON;
 			myDataSource.responseSchema = {
 				resultsList: "records",
@@ -138,7 +142,7 @@
 				sort = (oState.sortedBy) ? oState.sortedBy.key : oSelf.getColumnSet().keys[0].getKey();
 				dir = (oState.sortedBy && oState.sortedBy.dir === DataTable.CLASS_DESC) ? "desc" : "asc"; */
                 sort = (oState.sortedBy) ? oState.sortedBy.key : "id";
-                dir = (oState.sortedBy && oState.sortedBy.dir === YAHOO.widget.DataTable.CLASS_DESC) ? "desc" : "asc";
+                dir = (oState.sortedBy && oState.sortedBy.dir === YAHOO.widget.DataTable.CLASS_DESC) ? "desc" : "assc";
 				startIndex = (oState.pagination) ? oState.pagination.recordOffset : 0;
 				results = (oState.pagination) ? oState.pagination.rowsPerPage : null;
 				
@@ -153,7 +157,7 @@
 				generateRequest: requestBuilder,
 				initialRequest: "sort=id&dir=asc&startIndex=0&results=10", // Initial request for first page of data
 				dynamicData: true, // Enables dynamic server-driven data
-				sortedBy : {key:"id", dir:YAHOO.widget.DataTable.CLASS_DESC}, // Sets UI initial sort arrow
+				sortedBy : {key:"id", dir:YAHOO.widget.DataTable.CLASS_ASC}, // Sets UI initial sort arrow
 				paginator: new YAHOO.widget.Paginator({rowsPerPage:10,containers:"pagelinks"}) // Enables pagination 
 			};
 		
@@ -176,4 +180,4 @@
 				
 		});
 	{/literal}
-</script>
+{/script}

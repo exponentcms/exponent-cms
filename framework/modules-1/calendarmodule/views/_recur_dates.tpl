@@ -26,8 +26,8 @@
 	{/foreach}
 	<tr>
 		<td style="border:none;" colspan="2">
+        {script unique="recurdates"}
 		{literal}
-			<script type="text/javascript">
 			function recur_selectUnselectAll(setChecked) {
 				var elems = document.getElementsByTagName("input");
 				for (var key = 0; key < elems.length; key++) {
@@ -36,8 +36,8 @@
 					}
 				}
 			}
-			</script>
 		{/literal}
+        {/script}
 			<a class="mngmntlink calendar_mngmntlink" href="#" onclick="recur_selectUnselectAll(true); return false;">{'Select All'|gettext}</a>
 			&nbsp;/&nbsp;
 			<a class="mngmntlink calendar_mngmntlink" href="#" onclick="recur_selectUnselectAll(false); return false;">{'Unselect All'|gettext}</a>

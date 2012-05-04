@@ -54,7 +54,7 @@ function smarty_block_form($params,$content,&$smarty, &$repeat) {
 
 		expCSS::pushToHead(array("corecss"=>"forms"));
 
-		echo '<form id="'.$id.'" name="'.$name.'" class="'.$params['class'].'" method="'.$method.'" action="'.URL_FULL.'index.php" enctype="'.$enctype.'">'."\r\n";
+		echo '<form id="'.$id.'" name="'.$name.'" class="'.$params['class'].'" method="'.$method.'" action="'.PATH_RELATIVE.'index.php" enctype="'.$enctype.'">'."\r\n";
 		if (!empty($controller)) {
 			echo '<input type="hidden" name="controller" id="controller" value="'.$controller.'" />'."\r\n";
 		} else {

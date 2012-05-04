@@ -39,7 +39,7 @@ if (isset($_REQUEST['upgrade'])) {
     }
 ?>
     <p><?php echo gt('Log back in to start using all your fancy new enhancements!') ?></p>
-    <a class="awesome large green" href="<?php echo URL_FULL; ?>login.php"><?php echo gt("Log In Screen"); ?></a>
+    <a class="awesome large green" href="<?php echo PATH_RELATIVE; ?>login.php"><?php echo gt("Log In Screen"); ?></a>
 <?php
 
 } else {

@@ -106,7 +106,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','event','io', function(Y) {
     var vBody = Y.one('#vendorinfo');
     var vform = Y.one('#create_po');
     var poiForm = Y.one('#controlRowValues');
-    var baseURL = EXPONENT.URL_FULL+"index.php?ajax_action=1&controller=purchaseOrder&action=edit&"
+    var baseURL = EXPONENT.PATH_RELATIVE+"index.php?ajax_action=1&controller=purchaseOrder&action=edit&"
     var rc = 'odd';
 
     var selectVendor = function (e){

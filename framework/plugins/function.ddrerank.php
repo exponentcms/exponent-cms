@@ -43,6 +43,15 @@ function smarty_function_ddrerank($params,&$smarty) {
     if ($params['sql']) {
         $sql = explode("LIMIT",$params['sql']);
         $params['items'] = $db->selectObjectsBySQL($sql[0]);
+    } elseif ($params['module']) {
+        $uniqueloc = $smarty->getTemplateVars('container');
+        if (!empty($uniqueloc->internal)) {
+            $uniqueloc2 = expUnserialize($uniqueloc->internal);
+            $uniqueid = str_replace($badvals, "", $uniqueloc2->src).$params['id'];
+        }
+        $where = !empty($params['where']) ? $params['where'] : 1 ;
+        $only = !empty($params['only']) ? ' AND '.$params['only'] : '';
+        $params['items'] = $db->selectObjects($params['module'],$where.$only,"rank");
     } else {
         if ($params['items'][0]->id) {
             $model = empty($params['model']) ? $params['items'][0]->classname : $params['model'] ;
@@ -67,7 +76,7 @@ function smarty_function_ddrerank($params,&$smarty) {
 		    )
 		);
         
-        $sortfield = empty($params['sortfield']) ? 'title' : $params['sortfield']; //what was this even for?
+        $sortfield = empty($params['sortfield']) ? 'title' : $params['sortfield']; // this is the field to display in list
    
         // attempt to translate the label
         if (!empty($params['label'])) {
@@ -79,7 +88,7 @@ function smarty_function_ddrerank($params,&$smarty) {
         <div id="panel'.$uniqueid.'" class="exp-skin-panel exp-skin-rerank hide">
             <div class="yui3-widget-hd">Order '.$params['label'].'</div>
             <div class="yui3-widget-bd">
-            <form method="post" action="'.URL_FULL.'">
+            <form method="post" action="'.PATH_RELATIVE.'">
             <input type="hidden" name="model" value="'.$model.'" />
             <input type="hidden" name="controller" value="'.$controller.'" />
             <input type="hidden" name="lastpage" value="'.curPageURL().'" />
@@ -91,14 +100,28 @@ function smarty_function_ddrerank($params,&$smarty) {
                 <ul id="listToOrder'.$uniqueid.'" style="'.((count($params['items']<12))?"":"height:350px").';overflow-y:auto;">
                 ';
                 $odd = "even";
+                $stringlen = 40;
                 foreach ($params['items'] as $item) {
+                    if (!empty($params['module'])) {
+                        if ($params['module'] == 'formbuilder_control') {
+                            $control = expUnserialize($item->data);
+                            $ctrl = new $control();
+                            $name = $ctrl->name();
+                            $item->$sortfield = (!empty($item->$sortfield) ? substr($item->$sortfield, 0, $stringlen) : gt('Untitled')) . ' (' . $name . ')';
+                            $stringlen = 65;
+                        } elseif ($params['module'] == 'container') {
+                            $mod = expUnserialize($item->internal);
+                            $item->$sortfield = (!empty($item->$sortfield) ? substr($item->$sortfield, 0, $stringlen) : gt('Untitled')) . ' (' . ucfirst(expModules::getModuleName($mod->mod)) . ')';
+                            $stringlen = 65;
+                        }
+                    }
                     $html .= '
                     <li class="'.$odd.'">
                     <input type="hidden" name="rerank[]" value="'.$item->id.'" />
                     <div class="fpdrag"></div>';
         			//Do we include the picture? It depends on if there is one set.
-                    $html .= ($item->expFile[0]->id && $item->expFile[0]->is_image) ? '<img class="filepic" src="'.URL_FULL.'thumb.php?id='.$item->expFile[0]->id.'&w=16&h=16&zc=1">' : '';
-                    $html .= '<span class="label">'.(!empty($item->$sortfield) ? substr($item->$sortfield, 0, 40) : gt('Untitled')).'</span>
+                    $html .= ($item->expFile[0]->id && $item->expFile[0]->is_image) ? '<img class="filepic" src="'.PATH_RELATIVE.'thumb.php?id='.$item->expFile[0]->id.'&w=16&h=16&zc=1">' : '';
+                    $html .= '<span class="label">'.(!empty($item->$sortfield) ? substr($item->$sortfield, 0, $stringlen) : gt('Untitled')).'</span>
                     </li>';
                     $odd = $odd == "even" ? "odd" : "even";
                 }
