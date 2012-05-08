@@ -81,7 +81,7 @@ if (!isset($_POST['data_id']) || (isset($_POST['data_id']) && expPermissions::ch
                 $db_data->user_id = 0;
             }
             $db_data->timestamp = time();
-			$referrer = $db->selectValue("sessionticket", "referrer", "uid = {$user->id}");
+			$referrer = $db->selectValue("sessionticket", "referrer", "ticket = '" .expSession::getTicketString() . "'");
 			$db_data->referrer = $referrer;
         }        
         $db->insertObject($db_data, 'formbuilder_'.$f->table_name);
