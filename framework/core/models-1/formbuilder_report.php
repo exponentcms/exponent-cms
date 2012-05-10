@@ -20,6 +20,7 @@ class formbuilder_report {
 	static function form($object) {
 		global $db;
 		$form = new form();
+        $form->is_tabbed = true;
 		if (!isset($object->id)) {
 			$object->name = '';
 			$object->description = '';
@@ -27,12 +28,10 @@ class formbuilder_report {
 			$object->column_names = '';
 		}
 		
-		
-		$form->register('name',gt('Name'),new textcontrol($object->name));
-		$form->register('description',gt('Description'),new texteditorcontrol($object->description));
-		$form->register(null,'', new htmlcontrol(gt('Leave the below custom definition blank to use the default "all fields" e-mail report and record view.')));
-		$form->register('text',gt('Custom E-Mail Report and View Record Definition'),new htmleditorcontrol($object->text));
-		
+        $form->register(null,'',new htmlcontrol('<h2>'.gt('General Configuration').'</h2>'),true,gt('Report'));
+		$form->register('name',gt('Title'),new textcontrol($object->name),true,gt('Report'));
+		$form->register('description',gt('Description'),new texteditorcontrol($object->description),true,gt('Report'));
+
 		$fields = array();
 		$column_names = array();
 		$cols = array();
@@ -61,11 +60,15 @@ class formbuilder_report {
 			$fields['timestamp'] = gt('Timestamp');
 			if (in_array('timestamp',$cols)) $column_names['timestamp'] = gt('Timestamp');
 		}
+        $form->register(null,'',new htmlcontrol('<h2>'.gt('Data Field Configuration').'</h2>'),true,gt('Data Fields'));
+        $form->register(null,'', new htmlcontrol(gt('Selecting NO columns is equal to selecting all columns')),true,gt('Data Fields'));
+        $form->register('column_names',gt('Columns shown in View Data/Export CSV'), new listbuildercontrol($column_names,$fields),true,gt('Data Fields'));
+		$form->register(null,'', new htmlcontrol(gt('Leave the below custom definition blank to use the default "all fields" e-mail report and record view.')),true,gt('Data Fields'));
+		$form->register('text',gt('Custom E-Mail Report and View Record Definition'),new htmleditorcontrol($object->text),true,gt('Data Fields'));
 
-		$form->register('column_names',gt('Columns shown in View Data/Export CSV'), new listbuildercontrol($column_names,$fields));
-		$form->register(null,'', new htmlcontrol(gt('Selecting NO columns is equal to selecting all columns')));
-//		$form->register(null,'', new htmlcontrol('<br /><br /><br />'));
-		$form->register('submit','',new buttongroupcontrol(gt('Save'),'',gt('Cancel')));
+        $form->register(null,null,new htmlcontrol('<div class="loadingdiv">'.gt('Loading Form Settings').'</div>'),true,'base');
+		$form->register('submit','',new buttongroupcontrol(gt('Save'),'',gt('Cancel')),true,'base');
+
 		return $form;
 	}
 	

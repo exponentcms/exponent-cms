@@ -100,7 +100,7 @@ class expPermissions {
         }
         $permission = array_unique($permission);  // strip out duplicates
 
-		if (is_callable(array($location->mod,"getLocationHierarchy"))) {  //FIXME this is only available in calendarmodule
+		if (is_callable(array($location->mod,"getLocationHierarchy"))) {  //FIXME this is only available in calendarmodule, may not be needed if there is no 'int' property?
 			foreach (call_user_func(array($location->mod,"getLocationHierarchy"),$location) as $loc) {  //FIXME this is only available in calendarmodule
 				foreach ($permission as $perm) {
 					if (isset($exponent_permissions_r[$loc->mod][$loc->src][$loc->int][$perm])) {
@@ -251,6 +251,7 @@ class expPermissions {
 //            $perms[] = 'order_modules';
 //        }
         foreach ($perms as $perm) {
+            $tmpLoc = new stdClass();
             $tmpLoc->mod = $location->mod;
             $tmpLoc->src = $location->src;
             $tmpLoc->int = $location->int;
@@ -321,7 +322,7 @@ class expPermissions {
 	public static function grant($user,$permission,$location) {
 		if ($user !== null) {
 			if (!self::checkUser($user,$permission,$location)) {
-				$obj = null;
+				$obj = new stdClass();
 				$obj->uid = $user->id;
 				$obj->module = $location->mod;
 				$obj->source = $location->src;
@@ -382,6 +383,7 @@ class expPermissions {
 //            $perms[] = 'order_modules';
 //        }
         foreach ($perms as $perm) {
+            $tmpLoc = new stdClass();
             $tmpLoc->mod = $location->mod;
             $tmpLoc->src = $location->src;
             $tmpLoc->int = $location->int;
@@ -452,7 +454,7 @@ class expPermissions {
 	public static function grantGroup($group,$permission,$location) {
 		if ($group !== null) {
 			if (!self::checkGroup($group,$permission,$location)) {
-				$obj = null;
+				$obj = new stdClass();
 				$obj->gid = $group->id;
 				$obj->module = $location->mod;
 				$obj->source = $location->src;
@@ -522,7 +524,7 @@ class expPermissions {
 	 */
 	public static function triggerRefresh() {
 		global $db;
-		$obj = null;
+		$obj = new stdClass();
 		$obj->refresh = 1;
 		$db->updateObject($obj,'sessionticket','true'); // force a global refresh
 	}
@@ -538,7 +540,7 @@ class expPermissions {
 	 */
 	public static function triggerSingleRefresh($user) {  //FIXME not currently used
 		global $db;
-		$obj = null;
+		$obj = new stdClass();
 		$obj->refresh = 1;
 		$db->updateObject($obj,'sessionticket','uid='.$user->id); // force a global refresh
 	}

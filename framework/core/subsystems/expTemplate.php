@@ -58,7 +58,8 @@ class expTemplate {
 		$resolved_path = null;
 		$resolved_path = expCore::resolveFilePaths("modules", $module , "form" , $view);
 		if (isset($resolved_path) && $resolved_path != '') {
-			$filepath = array_shift(expCore::resolveFilePaths("modules", $module , "form" , $view));
+            $tmppath = expCore::resolveFilePaths("modules", $module , "form" , $view);
+			$filepath = array_shift($tmppath);
 		} else {
 			$filepath = false;
 		}
@@ -70,7 +71,8 @@ class expTemplate {
 		if ($form == null) $form = new form();
 		if ($form_file == "") return $form;
 
-		$form->register(null,"",new htmlcontrol("<hr size='1' /><b>".gt('Layout Configuration')."</b>"));
+//		$form->register(null,"",new htmlcontrol("<hr size='1' /><b>".gt('Layout Configuration')."</b>"));
+        $form->register(null,"",new htmlcontrol("<h2>".gt('Layout Configuration')."</h2>"),true,ucwords($view).' '.gt('View Configuration'));
 
 		$fh = fopen($form_file,"r");
 		while (($control_data = fgetcsv($fh,65536,"\t")) !== false) {
@@ -80,16 +82,16 @@ class expTemplate {
 			}
 			if (!isset($values[$data[0]])) $values[$data[0]] = 0;
 			if ($data[2] == "checkbox") {
-				$form->register("_viewconfig[".$data[0]."]",$data[1],new checkboxcontrol($values[$data[0]],true));
+				$form->register("_viewconfig[".$data[0]."]",$data[1],new checkboxcontrol($values[$data[0]],true),true,ucwords($view).' '.gt('View Configuration'));
 			} else if ($data[2] == 'text') {
-				$form->register("_viewconfig[".$data[0]."]",$data[1],new textcontrol($values[$data[0]]));
+				$form->register("_viewconfig[".$data[0]."]",$data[1],new textcontrol($values[$data[0]]),true,ucwords($view).' '.gt('View Configuration'));
 			} else {
 				$options = array_slice($data,3);
-				$form->register("_viewconfig[".$data[0]."]",$data[1],new dropdowncontrol($values[$data[0]],$options));
+				$form->register("_viewconfig[".$data[0]."]",$data[1],new dropdowncontrol($values[$data[0]],$options),true,ucwords($view).' '.gt('View Configuration'));
 			}
 		}
 
-		$form->register("submit","",new buttongroupcontrol("Save","","Cancel"));
+		$form->register("submit","",new buttongroupcontrol("Save","","Cancel"),true,'base');
 
 		return $form;
 	}

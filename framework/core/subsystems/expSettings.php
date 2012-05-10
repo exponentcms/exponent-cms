@@ -347,7 +347,7 @@ class expSettings {
                     }
                 }
             }
-            $form->registerAfter('activate',null,'',new htmlcontrol('<hr size="1" />'.implode('&nbsp;&nbsp;|&nbsp;&nbsp;',$sections)));
+//            $form->registerAfter('activate',null,'',new htmlcontrol('<hr size="1" />'.implode('&nbsp;&nbsp;|&nbsp;&nbsp;',$sections)));
             $form->register('submit','',new buttongroupcontrol(gt('Save'),'',gt('Cancel')));
 
             return $form;

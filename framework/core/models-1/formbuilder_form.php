@@ -22,6 +22,7 @@ class formbuilder_form {
 		//global $user;
 
 		$form = new form();
+        $form->is_tabbed = true;
 		if (!isset($object->id)) {
 			$object->name = '';
 			$object->description = '';
@@ -35,15 +36,23 @@ class formbuilder_form {
 			$form->meta('id',$object->id);
 		}
 		
-		$form->register('name',gt('Name'),new textcontrol($object->name));
-		$form->register('description',gt('Description'),new texteditorcontrol($object->description));
-		$form->register('response',gt('Response'),new htmleditorcontrol($object->response));
+        $form->register(null,'',new htmlcontrol('<h2>'.gt('General Configuration').'</h2>'),true,gt('Form'));
+		$form->register('name',gt('Name'),new textcontrol($object->name),true,gt('Form'));
+		$form->register('description',gt('Description'),new texteditorcontrol($object->description),true,gt('Form'));
+		$form->register('response',gt('Response'),new htmleditorcontrol($object->response),true,gt('Form'));
+		$form->register(null,'', new htmlcontrol('<h3>'.gt('Button Settings').'</h3>'),true,gt('Form'));
+		$form->register('submitbtn',gt('Submit Button Text'), new textcontrol($object->submitbtn),true,gt('Form'));
+		$form->register('resetbtn',gt('Reset Button Text'), new textcontrol($object->resetbtn),true,gt('Form'));
+        $form->register(null,'', new htmlcontrol('<h3>'.gt('Database Settings').'</h3>'),true,gt('Form'));
+        $form->register('is_saved',gt('Save Submissions to the Database'),new checkboxcontrol($object->is_saved,false),true,gt('Form'));
+        $form->register(null,'', new htmlcontrol('&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.gt('To help prevent data loss, you cannot remove a form\'s database table once it has been added.').'<br />'),true,gt('Form'));
+        if ($object->is_saved == 1) {
+            $form->controls['is_saved']->disabled = true;
+            $form->meta('is_saved','1');
+        }
 
-		$form->register(null,'', new htmlcontrol('<h3>'.gt('Button Settings').'</h3><hr size="1" />'));
-		$form->register('submitbtn',gt('Submit Button Text'), new textcontrol($object->submitbtn));
-		$form->register('resetbtn',gt('Reset Button Text'), new textcontrol($object->resetbtn));
-		$form->register(null,'', new htmlcontrol('<h3>'.gt('Email Settings').'</h3><hr size="1" />'));
-		$form->register('is_email',gt('Email Form'),new checkboxcontrol($object->is_email,false));
+		$form->register(null,'', new htmlcontrol('<h2>'.gt('Email Settings').'</h2>'),true,gt('Email'));
+		$form->register('is_email',gt('Email Form'),new checkboxcontrol($object->is_email,false),true,gt('Email'));
 		
 		// Get User list
     	$userlist = array();
@@ -58,7 +67,7 @@ class formbuilder_form {
 				$userlist[$locuser->id] = $locuser->firstname . ' ' . $locuser->lastname . ' (' . $locuser->username . ')';
 			}
 		}
-		$form->register('users',gt('Users'),new listbuildercontrol($defaults,$userlist));
+		$form->register('users',gt('Users'),new listbuildercontrol($defaults,$userlist),true,gt('Email'));
 
 		// Get Group list
 		$grouplist = array();
@@ -74,7 +83,7 @@ class formbuilder_form {
 					$grouplist[$group->id] = $group->name;
 				}
 			}
-			$form->register('groups',gt('Groups'),new listbuildercontrol($defaults,$grouplist));
+			$form->register('groups',gt('Groups'),new listbuildercontrol($defaults,$grouplist),true,gt('Email'));
 		}
 		
 		// Get free-form address list
@@ -82,21 +91,15 @@ class formbuilder_form {
 		foreach ($db->selectObjects('formbuilder_address','form_id='.$object->id." and email != ''") as $address) {
 			$defaults[$address->email] = $address->email;
 		}		
-		$form->register('addresses',gt('Other Addresses'),new listbuildercontrol($defaults,null));
-		
-		$form->register('subject',gt('Email Subject'),new textcontrol($object->subject));
-		$form->register(null,'', new htmlcontrol('<h3>'.gt('Database Settings').'</h3><hr size="1" /><br />'));
-		$form->register('is_saved',gt('Save Submissions to the Database'),new checkboxcontrol($object->is_saved,false));
-		$form->register(null,'', new htmlcontrol('&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.gt('To help prevent data loss, you cannot remove a form\'s database table once it has been added.').'<br />'));
-		if ($object->is_saved == 1) {
-			$form->controls['is_saved']->disabled = true;
-			$form->meta('is_saved','1');
-		}
-		$form->register('is_auto_respond',gt('Auto Respond?'),new checkboxcontrol($object->is_auto_respond,false));
-		$form->register('auto_respond_subject',gt('Auto Respond Subject'),new textcontrol($object->auto_respond_subject));
-		$form->register('auto_respond_body',gt('Auto Respond Body'),new texteditorcontrol($object->auto_respond_body));
-//		$form->register(null,'', new htmlcontrol('<br /><br /><br />'));
-		$form->register('submit','',new buttongroupcontrol(gt('Save'),'',gt('Cancel')));
+		$form->register('addresses',gt('Other Addresses'),new listbuildercontrol($defaults,null),true,gt('Email'));
+		$form->register('subject',gt('Email Subject'),new textcontrol($object->subject),true,gt('Email'));
+        $form->register(null,'', new htmlcontrol('<h3>'.gt('Auto Respond Email').'</h3>'),true,gt('Email'));
+		$form->register('is_auto_respond',gt('Auto Respond?'),new checkboxcontrol($object->is_auto_respond,false),true,gt('Email'));
+		$form->register('auto_respond_subject',gt('Auto Respond Subject'),new textcontrol($object->auto_respond_subject),true,gt('Email'));
+		$form->register('auto_respond_body',gt('Auto Respond Body'),new texteditorcontrol($object->auto_respond_body),true,gt('Email'));
+
+        $form->register(null,null,new htmlcontrol('<div class="loadingdiv">'.gt('Loading Form Settings').'</div>'),true,'base');
+		$form->register('submit','',new buttongroupcontrol(gt('Save'),'',gt('Cancel')),true,'base');
 		
 		return $form;
 	}
