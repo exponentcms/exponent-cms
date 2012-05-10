@@ -41,8 +41,8 @@ function smarty_block_css($params,$content,&$smarty, &$repeat) {
 		expCSS::pushToHead(array(
 		    "unique"=>$params['unique'],
 		    "css"=>$content,
-		    "link"=>$params['link'],
-		    "corecss"=>$params['corecss'],
+		    "link"=>!empty($params['link']) ? $params['link'] : '',
+		    "corecss"=>!empty($params['corecss']) ? $params['corecss'] : '',
 		    )
 		);
 	}

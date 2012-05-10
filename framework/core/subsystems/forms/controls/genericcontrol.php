@@ -102,7 +102,7 @@ class genericcontrol extends formcontrol {
 
         if (!empty($this->readonly)) $html .= ' readonly="readonly"';
 
-        $caption = $this->caption;
+        $caption = !empty($this->caption) ? $this->caption : '';
         if (!empty($this->required)) $html .= ' required="'.rawurlencode($this->default).'" caption="'.$caption.'" ';
         if (!empty($this->onclick)) $html .= ' onclick="'.$this->onclick.'" ';
         if (!empty($this->onchange)) $html .= ' onchange="'.$this->onchange.'" ';

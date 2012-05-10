@@ -37,13 +37,14 @@ function smarty_function_ddrerank($params,&$smarty) {
 	$loc = $smarty->getTemplateVars('__loc');
 	
     $badvals = array("[", "]", ",", " ", "'", "\"", "&", "#", "%", "@", "!", "$", "(", ")", "{", "}");
-    $uniqueid = str_replace($badvals, "", $loc->src).$params['id'];
+    $params_id = !empty($params['id']) ? $params['id'] : '';
+    $uniqueid = str_replace($badvals, "", $loc->src).$params_id;
     $controller = !empty($params['controller']) ? $params['controller'] : $loc->mod;
     
-    if ($params['sql']) {
+    if (!empty($params['sql'])) {
         $sql = explode("LIMIT",$params['sql']);
         $params['items'] = $db->selectObjectsBySQL($sql[0]);
-    } elseif ($params['module']) {
+    } elseif (!empty($params['module'])) {
         $uniqueloc = $smarty->getTemplateVars('container');
         if (!empty($uniqueloc->internal)) {
             $uniqueloc2 = expUnserialize($uniqueloc->internal);
@@ -53,17 +54,17 @@ function smarty_function_ddrerank($params,&$smarty) {
         $only = !empty($params['only']) ? ' AND '.$params['only'] : '';
         $params['items'] = $db->selectObjects($params['module'],$where.$only,"rank");
     } else {
-        if ($params['items'][0]->id) {
+        if (!empty($params['items'][0]->id)) {
             $model = empty($params['model']) ? $params['items'][0]->classname : $params['model'] ;
 	        $only = !empty($params['only']) ? ' AND '.$params['only'] : '';
             $obj = new $model();
             if ($params['model'] == 'expCat') {
-                $loc = '1';
+                $locsql = '1';
             } else {
-                $loc = "location_data='".serialize($loc)."'";
+                $locsql = "location_data='".serialize($loc)."'";
             }
 //            $params['items'] = $obj->find('all',"location_data='".serialize($loc)."'".$only,"rank");
-            $params['items'] = $obj->find('all',$loc.$only,"rank");
+            $params['items'] = $obj->find('all',$locsql.$only,"rank");
         } else {
             $params['items'] = array();
         }
@@ -95,7 +96,7 @@ function smarty_function_ddrerank($params,&$smarty) {
             <input type="hidden" name="src" value="'.$loc->src.'" />';
             if (!empty($params['items'])) {
                 // we may need to pass through an ID for some reason, like a category ID for products
-                $html .= ($params['id']) ? '<input type="hidden" name="id" value="'.$params['id'].'" />' : '';
+                $html .= !empty($params['id']) ? '<input type="hidden" name="id" value="'.$params['id'].'" />' : '';
                 $html .= '<input type="hidden" name="action" value="manage_ranks" />
                 <ul id="listToOrder'.$uniqueid.'" style="'.((count($params['items']<12))?"":"height:350px").';overflow-y:auto;">
                 ';
@@ -120,7 +121,7 @@ function smarty_function_ddrerank($params,&$smarty) {
                     <input type="hidden" name="rerank[]" value="'.$item->id.'" />
                     <div class="fpdrag"></div>';
         			//Do we include the picture? It depends on if there is one set.
-                    $html .= ($item->expFile[0]->id && $item->expFile[0]->is_image) ? '<img class="filepic" src="'.PATH_RELATIVE.'thumb.php?id='.$item->expFile[0]->id.'&w=16&h=16&zc=1">' : '';
+                    $html .= (!empty($item->expFile[0]->id) && !empty($item->expFile[0]->is_image)) ? '<img class="filepic" src="'.PATH_RELATIVE.'thumb.php?id='.$item->expFile[0]->id.'&w=16&h=16&zc=1">' : '';
                     $html .= '<span class="label">'.(!empty($item->$sortfield) ? substr($item->$sortfield, 0, $stringlen) : gt('Untitled')).'</span>
                     </li>';
                     $odd = $odd == "even" ? "odd" : "even";

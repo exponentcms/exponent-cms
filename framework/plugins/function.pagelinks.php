@@ -34,17 +34,17 @@
  */
 function smarty_function_pagelinks($params,&$smarty) {
     $config = $smarty->getTemplateVars('config');
-    if (!$config['pagelinks'] || $config['pagelinks']=="Top and Bottom") {
+    if (empty($config['pagelinks']) || (!empty($config['pagelinks']) && $config['pagelinks']=="Top and Bottom")) {
 		if ($params['paginate']->total_pages == 1 && $config['multipageonly']==1) {
 		} else {
 			echo $params['paginate']->links;
 		}
-    } else if ($params['top'] && $config['pagelinks']=="Top Only") {
+    } else if (!empty($params['top']) && !empty($config['pagelinks']) && $config['pagelinks']=="Top Only") {
 		if ($params['paginate']->total_pages == 1 && $config['multipageonly']==1) {
 		} else {
 			echo $params['paginate']->links;
 		}
-    } else if ($params['bottom'] && $config['pagelinks']=="Bottom Only") {
+    } else if (!empty($params['bottom']) && !empty($config['pagelinks']) && $config['pagelinks']=="Bottom Only") {
 		if ($params['paginate']->total_pages == 1 && $config['multipageonly']==1) {
 		} else {
 			echo $params['paginate']->links;

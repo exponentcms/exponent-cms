@@ -39,7 +39,7 @@ function smarty_function_icon($params,&$smarty) {
         $params['id'] = $record->id;
 	};
     
-    if ($record && empty($params['id'])){
+    if (!empty($record) && empty($params['id'])){
         $params['id'] = $record->id;
     }
     
@@ -54,7 +54,7 @@ function smarty_function_icon($params,&$smarty) {
     }
 	// guess the src if it is not set
 	if (!isset($params['src'])) {
-	    if ($record) {
+	    if (!empty($record)) {
 	        $modloc = expUnserialize($record->location_data);
 			$params['src'] = $modloc->src;
 	    } else if (!empty($params['controller']) || @call_user_func(array($loc->mod,'hasSources'))) {
@@ -97,7 +97,7 @@ function smarty_function_icon($params,&$smarty) {
     	$img 	= gt(ucfirst($class));
 	} else if (!empty($params['img'])) {
 	    $img 	= '<img class="'.$class.'" src="'.ICON_RELATIVE.$params['img'].'" title="'.$title.'" alt="'.$alt.'"'.XHTML_CLOSING.'>';
-	}
+	} else $img = '';
 
 	$linktext = $img.$text;
 
@@ -109,7 +109,7 @@ function smarty_function_icon($params,&$smarty) {
 	unset($params['class']);
 	unset($params['record']);
     unset($params['record']);
-    $onclick = $params['onclick'];
+    $onclick = !empty($params['onclick']) ? $params['onclick'] : '';
     unset($params['onclick']);
 	//eDebug($params);
 	if (!empty($params['action'])) {

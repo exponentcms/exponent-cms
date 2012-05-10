@@ -357,14 +357,6 @@ define('TABLE_ALTER_FAILED',	202);
 
 
 /**
- * Table Meta Info : Workflow Table
- *
- * If specified as true in a table info array, the workflow tables will
- * be created to match.
- */
-//define('DB_TABLE_WORKFLOW',	300);
-
-/**
  * Table Meta Info : Table Comment
  *
  * If specified in a table info array, a comment will be inserted
@@ -385,6 +377,14 @@ define('FORM_FIELD_NAME', 403);
 define('FORM_FIELD_LABEL', 404);
 define('DECIMAL_MONEY', 405);
 define('MONEY', 406);
+
+/**
+ * External Calendar Type
+ *
+ * This will specify what type of external calendar feed is referenced
+ */
+define('ICAL_TYPE',1);
+define('GOOGLE_TYPE',2);
 
 define('TEMPLATE_FALLBACK_VIEW',BASE.'framework/core/views/viewnotfound.tpl');
 
@@ -479,13 +479,14 @@ if (!defined('SMARTY_PATH')) {
 	define('SMARTY_VERSION', '3.1.8');
 	define('SMARTY_PATH', BASE.'external/Smarty-'.SMARTY_VERSION.'/libs/');
 }
+    define('SMARTY_DEVELOPMENT', false);
 
 if (!defined('SWIFT_PATH')) {
     /*
 	 * Swift Version Constant
 	 * Changing the version here lets Exponent adjust where to look
 	 */
-	define('SWIFT_VERSION', '4.1.6');
+	define('SWIFT_VERSION', '4.1.7');
 	define('SWIFT_PATH', BASE.'external/Swift-'.SWIFT_VERSION.'/lib/');
 }
 

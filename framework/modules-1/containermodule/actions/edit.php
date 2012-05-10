@@ -31,6 +31,7 @@ if (isset($_GET['id'])) {
 		$cloc->int = $container->id;
 	}
 } else {
+    $container = new stdClass();
 	$container->rank = $_GET['rank'];
 }
 $loc->src = urldecode($loc->src);

@@ -298,7 +298,7 @@ function smarty_function_control($params,&$smarty) {
             $control = new calendarcontrol();
         } elseif ($params['type'] == 'text') {
             $control = new genericcontrol($params['type']);
-            $control->size = $params['size'] ? $params['size'] : "40" ;
+            $control->size = !empty($params['size']) ? $params['size'] : "40" ;
 		} elseif ($params['type'] == 'autocomplete') {
             $control = new autocompletecontrol();
             $control->schema = "'".str_replace(",","','",$params['schema'])."'";
@@ -364,9 +364,9 @@ function smarty_function_control($params,&$smarty) {
             }
         } elseif (isset($params['value'])) {
             // if this field is filtered than lets go ahead and format the data before we stick it in the field.
-            if ($params['filter'] == 'money') {
+            if (!empty($params['filter']) && $params['filter'] == 'money') {
                 $params['value'] = expCore::getCurrencySymbol('USD').number_format($params['value'],2,'.',',');
-            } elseif ($params['filter'] == 'integer') {
+            } elseif (!empty($params['filter']) && $params['filter'] == 'integer') {
                 $params['value'] = number_format($params['value'],0,'.',',');
             }
             $control->default = $params['value'];
@@ -391,10 +391,12 @@ function smarty_function_control($params,&$smarty) {
         if (isset($params['default_hour'])) $control->default_hour = $params['default_hour'];  
         if (isset($params['default_min'])) $control->default_min = $params['default_min'];
         if (isset($params['default_ampm'])) $control->default_ampm = $params['default_ampm']; 
-        
+
+        $params['name'] =!empty($params['name']) ? $params['name'] : '';
         $control->name = $params['name'];
 //        $badvals = array("[", "]", ",", " ", "'", "\"", "&", "#", "%", "@", "!", "$", "(", ")", "{", "}");
         //$newid = str_replace($badvals, "", $params['name']);
+        $params['id'] =!empty($params['id']) ? $params['id'] : '';
         $control->id = isset($params['id']) && $params['id'] != "" ? $params['id'] : "";
         //echo $control->id;
         if (empty($control->id)) $control->id = $params['name'];
@@ -415,6 +417,8 @@ function smarty_function_control($params,&$smarty) {
         // attempt to translate the label
         if (!empty($params['label'])) {
             $params['label'] = gt($params['label']);
+        } else {
+            $params['label'] = null;
         }
         //write out the control itself...and then we're done. 
         if (isset($params['model'])) {
