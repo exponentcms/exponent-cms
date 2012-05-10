@@ -17,7 +17,7 @@
 /** @define "BASE" "../../.." */
 
 class calendarmodule_config {
-	function form($object) {
+	static function form($object) {
 		global $db;
 		$tag_collections = $db->selectObjects("tag_collections");
 		foreach ($tag_collections as $key => $collection) {
@@ -27,6 +27,7 @@ class calendarmodule_config {
 		//eDebug($all_calendars);
 
 		$form = new form();
+        $form->is_tabbed = true;
 		if (!isset($object->id)) {
 			// $object->enable_categories = 0;
 			$object->enable_feedback = 0;
@@ -98,15 +99,15 @@ class calendarmodule_config {
 	    if (!isset($object->printlink)) {
             $object->printlink = false;
         }
-		// setup the config form	
-		$form->register(null,'',new htmlcontrol('<h3>'.gt('General Configuration').'</h3><hr size="1" />'));
+		// setup the config form
+		$form->register(null,'',new htmlcontrol('<h2>'.gt('General Configuration').'</h2>'),true,gt('Calendar'));
 		// $form->register('enable_categories',gt('Enable Categories'),new checkboxcontrol($object->enable_categories,true));
-        $form->register('printlink',gt('Display Printer-Friendly and Export-to-PDF Links'),new checkboxcontrol($object->printlink));
-		$form->register('enable_feedback',gt('Enable Feedback'),new checkboxcontrol($object->enable_feedback));
+        $form->register('printlink',gt('Display Printer-Friendly and Export-to-PDF Links'),new checkboxcontrol($object->printlink),true,gt('Calendar'));
+		$form->register('enable_feedback',gt('Enable Feedback'),new checkboxcontrol($object->enable_feedback),true,gt('Calendar'));
 
-		$form->register(null,'',new htmlcontrol('<h3>'.gt('Events Reminder Email').'</h3><hr size="1" />'));
+		$form->register(null,'',new htmlcontrol('<h2>'.gt('Events Reminder Email').'</h2>'),true,gt('Reminders'));
         if ($object->id) {
-            $form->register(null,'',new htmlcontrol('<h4>'.gt('sendreminders.php Calendar ID:').' '.$object->id.'</h4>'));
+            $form->register(null,'',new htmlcontrol('<h4>'.gt('sendreminders.php Calendar ID:').' '.$object->id.'</h4>'),true,gt('Reminders'));
         }
 
 		// Get original style user lists
@@ -136,7 +137,7 @@ class calendarmodule_config {
 				$userlist[$locuser->id] = $locuser->firstname . ' ' . $locuser->lastname . ' (' . $locuser->username . ')';
 			}
 		}
-		$form->register('users',gt('Users'),new listbuildercontrol($defaults,$userlist));
+		$form->register('users',gt('Users'),new listbuildercontrol($defaults,$userlist),true,gt('Reminders'));
 
 		// Get Group list	
 		$defaults = array();
@@ -152,7 +153,7 @@ class calendarmodule_config {
 					$grouplist[$group->id] = $group->name;
 				}			
 			}
-			$form->register('groups',gt('Groups'),new listbuildercontrol($defaults,$grouplist));
+			$form->register('groups',gt('Groups'),new listbuildercontrol($defaults,$grouplist),true,gt('Reminders'));
 		}
 
 		// Get Freeform list		
@@ -160,34 +161,45 @@ class calendarmodule_config {
 		foreach ($db->selectObjects('calendar_reminder_address','calendar_id='.$object->id." and email != ''") as $address) {
 			$defaults[$address->email] = $address->email;
 		}
-		$form->register('addresses',gt('Other Addresses'),new listbuildercontrol($defaults,null));
+		$form->register('addresses',gt('Other Addresses'),new listbuildercontrol($defaults,null),true,gt('Reminders'));
 		
-		$form->register('email_title_reminder',gt('Message Subject Prefix'),new textcontrol($object->email_title_reminder,45));
-		$form->register('email_from_reminder',gt('From (Display)'),new textcontrol($object->email_from_reminder,45));
-		$form->register('email_address_reminder',gt('From (Email)'),new textcontrol($object->email_address_reminder,45));
-		$form->register('email_reply_reminder',gt('Reply-to'),new textcontrol($object->email_reply_reminder,45));
-		$form->register('email_showdetail',gt('Show detail in message?'),new checkboxcontrol($object->email_showdetail));
-		$form->register('email_signature',gt('Email Signature'),new texteditorcontrol($object->email_signature,5,30));
+		$form->register('email_title_reminder',gt('Message Subject Prefix'),new textcontrol($object->email_title_reminder,45),true,gt('Reminders'));
+		$form->register('email_from_reminder',gt('From (Display)'),new textcontrol($object->email_from_reminder,45),true,gt('Reminders'));
+		$form->register('email_address_reminder',gt('From (Email Address)'),new textcontrol($object->email_address_reminder,45),true,gt('Reminders'));
+		$form->register('email_reply_reminder',gt('Reply-to'),new textcontrol($object->email_reply_reminder,45),true,gt('Reminders'));
+		$form->register('email_showdetail',gt('Show detail in message?'),new checkboxcontrol($object->email_showdetail),true,gt('Reminders'));
+		$form->register('email_signature',gt('Email Signature'),new texteditorcontrol($object->email_signature,5,30),true,gt('Reminders'));
 
-		$form->register(null,'',new htmlcontrol('<h3>'.gt('Merge Calendars').'</h3><hr size="1" />'));
-		$form->register('aggregate',gt('Pull Events from These Other Calendars'),new listbuildercontrol($selected_calendars,$all_calendars));
+		$form->register(null,'',new htmlcontrol('<h2>'.gt('Aggregate Events').'</h2>'),true,gt('Aggregation'));
+		$form->register('aggregate',gt('Aggregate events from similar modules'),new listbuildercontrol($selected_calendars,$all_calendars),true,gt('Aggregation'));
+		// Get iCal list
+		$defaults = array();
+		foreach ($db->selectObjects('calendar_external','calendar_id='.$object->id.' and type='.ICAL_TYPE) as $icaladdress) {
+			$defaults[$icaladdress->url] = $icaladdress->url;
+		}
+		$form->register('ical_address',gt('Aggregate events from iCalendars').' (.ics)',new listbuildercontrol($defaults,null),true,gt('Aggregation'));
+		// Get Google Calendar list
+		$defaults = array();
+		foreach ($db->selectObjects('calendar_external','calendar_id='.$object->id.' and type='.GOOGLE_TYPE) as $googleaddress) {
+			$defaults[$googleaddress->url] = $googleaddress->url;
+		}
+		$form->register('google_address',gt('Aggregate events from Google Calendars').' (.xml)',new listbuildercontrol($defaults,null),true,gt('Aggregation'));
 
-		$form->register(null,'',new htmlcontrol('<h3>'.gt('iCalendar Configuration').'</h3><hr size="1" />'));
+		$form->register(null,'',new htmlcontrol('<h2>'.gt('iCalendar Configuration').'</h2>'),true,gt('iCalendar'));
 //		$form->register('enable_rss',gt('Enable RSS'), new checkboxcontrol($object->enable_rss));
-		$form->register('enable_ical',gt('Enable iCalendar'), new checkboxcontrol($object->enable_ical));
+		$form->register('enable_ical',gt('Enable iCalendar'), new checkboxcontrol($object->enable_ical),true,gt('iCalendar'));
 //   		$form->register('feed_title',gt('Title for this iCal feed'),new textcontrol($object->feed_title,35,false,75));
 //   		$form->register('feed_desc',gt('Description for this iCal feed'),new texteditorcontrol($object->feed_desc));
-		$form->register('rss_cachetime', gt('Recommended iCal feed update interval in minutes (1440 = 1 day)'), new textcontrol($object->rss_cachetime));
-		$form->register('rss_limit', gt('Maximum days of iCal items to publish (0 = all)'), new textcontrol($object->rss_limit));
+		$form->register('rss_cachetime', gt('Recommended iCal feed update interval in minutes (1440 = 1 day)'), new textcontrol($object->rss_cachetime),true,gt('iCalendar'));
+		$form->register('rss_limit', gt('Maximum days of iCal items to publish (0 = all)'), new textcontrol($object->rss_limit),true,gt('iCalendar'));
 
-		// $form->register(null,'',new htmlcontrol('<h3>'.gt('Tagging').'</h3><hr size="1" />'));
+		// $form->register(null,'',new htmlcontrol('<h2>'.gt('Tagging').'</h2><hr size="1" />'));
 		// $form->register('enable_tags',gt('Enable Tags'), new checkboxcontrol($object->enable_tags));
 		// $form->register('collections',gt('Tag Collections'),new listbuildercontrol($object->collections,$tc_list));
         // $form->register('group_by_tags',gt('Filter events by tags'), new checkboxcontrol($object->group_by_tags));
         // $form->register(null,'',new htmlcontrol(gt('Tags to show')));
         // $form->register('show_tags','',new listbuildercontrol($object->show_tags,$available_tags));
-
-		$form->register('submit','',new buttongroupcontrol(gt('Save'),'',gt('Cancel')));
+		$form->register('submit','',new buttongroupcontrol(gt('Save Config'),'',gt('Cancel')),true,'base');
 		return $form;
 	}
 	
@@ -246,6 +258,21 @@ class calendarmodule_config {
 				$db->insertObject($data,'calendar_reminder_address');
 			}
 		}
+        $caldata->calendar_id = $object->id;
+        if(isset($values['ical_address'])){
+            $caldata->type = ICAL_TYPE;
+            foreach (listbuildercontrol::parseData($values,'ical_address') as $url) {
+                $caldata->url = $url;
+                $db->insertObject($caldata,'calendar_external');
+            }
+        }
+        if(isset($values['google_address'])){
+            $caldata->type = GOOGLE_TYPE;
+            foreach (listbuildercontrol::parseData($values,'google_address') as $url) {
+                $caldata->url = $url;
+                $db->insertObject($caldata,'calendar_external');
+            }
+        }
 		return $object;
 	}
 }

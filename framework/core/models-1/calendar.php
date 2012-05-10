@@ -21,10 +21,12 @@ class calendar {
 		global $user;
 
 		$form = new form();
+        $form->is_tabbed = true;
 		if (!isset($object->id)) {
+            $object = new stdClass();
 			$object->title = '';
 			$object->body = '';
-			$object->eventdate = null;
+			$object->eventdate = new stdClass();
 			$object->eventdate->id = 0;
 			$object->eventdate->date = time();
 			$object->eventstart = time();
@@ -36,22 +38,22 @@ class calendar {
 			$form->meta('id',$object->id);
 		}
 
-		$form->register('title',gt('Title'),new textcontrol($object->title));
-		$form->register('body',gt('Body'),new htmleditorcontrol($object->body));
-
-		$form->register(null,'', new htmlcontrol('<hr size="1" />'));
+		$form->register('title',gt('Title'),new textcontrol($object->title),true,gt('Event'));
+		$form->register('body',gt('Body'),new htmleditorcontrol($object->body),true,gt('Event'));
+        $form->register('featured_header','',new htmlcontrol('<h3>'.gt('Featured Event').'</h3>'),true,gt('Event'));
+        $form->register('is_featured',gt('Feature this event'),new checkboxcontrol($object->is_featured,false),true,gt('Event'));
 
 		if ($object->is_recurring == 1) {
-			$form->register(null,'',new htmlcontrol(gt('Warning: If you change the date below, it will only affect this specific events.  All other changes can be applied to this and other events.'),false));
+			$form->register(null,'',new htmlcontrol(gt('Warning: If you change the date below, it will only affect this specific events.  All other changes can be applied to this and other events.'),false),true,gt('Date'));
 		}
 		//$form->register('eventdate',gt('Event Date'),new popupdatetimecontrol($object->eventdate->date,'',false));
-		$form->register('eventdate',gt('Event Date'),new yuicalendarcontrol($object->eventdate->date,'',false));
+		$form->register('eventdate',gt('Event Date'),new yuicalendarcontrol($object->eventdate->date,'',false),true,gt('Date'));
 
 		$cb = new checkboxcontrol($object->is_allday,false);
 		$cb->jsHooks = array('onclick'=>'exponent_forms_disable_datetime(\'eventstart\',this.form,this.checked); exponent_forms_disable_datetime(\'eventend\',this.form,this.checked);');
-		$form->register('is_allday',gt('All Day Event'),$cb);
-		$form->register('eventstart',gt('Start Time'),new datetimecontrol($object->eventstart,false));
-		$form->register('eventend',gt('End Time'),new datetimecontrol($object->eventend,false));
+		$form->register('is_allday',gt('All Day Event'),$cb,true,gt('Date'));
+		$form->register('eventstart',gt('Start Time'),new datetimecontrol($object->eventstart,false),true,gt('Date'));
+		$form->register('eventend',gt('End Time'),new datetimecontrol($object->eventend,false),true,gt('Date'));
 
 		if (!isset($object->id)) {
 //			$customctl = file_get_contents(BASE.'framework/modules-1/calendarmodule/form.part');
@@ -60,7 +62,7 @@ class calendar {
 			//$datectl = new popupdatetimecontrol($object->eventstart+365*86400,'',false);
 			$datectl = new yuicalendarcontrol($object->eventdate->date+365*86400,'',false);
 			$customctl = str_replace('%%UNTILDATEPICKER%%',$datectl->controlToHTML('untildate'),$customctl);
-			$form->register('recur',gt('Recurrence'),new customcontrol($customctl));
+			$form->register('recur',gt('Recurrence'),new customcontrol($customctl),true,gt('Date'));
 		} else if ($object->is_recurring == 1) {
 			// Edit applies to one or more...
 			$template = new template('calendarmodule','_recur_dates');
@@ -69,20 +71,13 @@ class calendar {
 //			$eventdates = expSorter::sort(array('array'=>$eventdates,'sortby'=>'date', 'order'=>'ASC'));
 			if (isset($object->eventdate)) $template->assign('checked_date',$object->eventdate);
 			$template->assign('dates',$eventdates);
-			$form->register(null,'',new htmlcontrol('<hr size="1"/>'.gt('This event is a recurring event, and occurs on the dates below.  Select which dates you wish to apply these edits to.')));
-			$form->register(null,'',new htmlcontrol('<table cellspacing="0" cellpadding="2" width="100%" class="exp-skin-table">'.$template->render().'</table>'));
+			$form->register(null,'',new htmlcontrol(gt('This event is a recurring event, and occurs on the dates below.  Select which dates you wish to apply these edits to.')),true,gt('Date'));
+			$form->register(null,'',new htmlcontrol('<table cellspacing="0" cellpadding="2" width="100%" class="exp-skin-table">'.$template->render().'</table>'),true,gt('Date'));
 
 			$form->meta('date_id',$object->eventdate->id); // Will be 0 if we are creating.
 		}
 
-		$form->register('featured_header','',new htmlcontrol('<h3>'.gt('Featured Event Info').'</h3><hr size="1" />'));
-		$form->register('is_featured',gt('Feature this event'),new checkboxcontrol($object->is_featured,false));
-/* Why was this even here?  No views have it. 6/23/09 Time to implement it - Maia*/
-		// $form->register('image_header','',new htmlcontrol('<h3>'.gt('Upload Image File').'</h3><hr size="1" />'));
-		// $form->register('file',gt('Upload Image'),new uploadcontrol());
-
-		// $form->register('tag_header','',new htmlcontrol('<h3>'.gt('Tags').'</h3><hr size="1" />'));
-		$form->register('submit','',new buttongroupcontrol(gt('Save'),'',gt('Cancel')));
+		$form->register('submit','',new buttongroupcontrol(gt('Save'),'',gt('Cancel')),true,'base');
 
 		return $form;
 	}

@@ -20,7 +20,6 @@ if (!defined('EXPONENT')) exit('');
 
 global $router;
 
-//expHistory::flowSet(SYS_FLOW_PUBLIC,SYS_FLOW_ACTION);
 expHistory::set('viewable', $router->params);
 
 $time = (isset($_GET['time']) ? $_GET['time'] : time());
@@ -36,7 +35,7 @@ $config = $db->selectObject("calendarmodule_config","location_data='".serialize(
 if (!empty($config->aggregate)) {
 	$locations = unserialize($config->aggregate);
 	foreach ($locations as $source) {
-		$tmploc = null;
+		$tmploc = new stdClass();
 		$tmploc->mod = 'calendarmodule';
 		$tmploc->src = $source;
 		$tmploc->int = '';
@@ -46,6 +45,7 @@ if (!empty($config->aggregate)) {
 $locsql .= ')';
 //$dates = $db->selectObjects("eventdate","location_data='".serialize($loc)."' AND date = '" . $start . "'");
 $dates = $db->selectObjects("eventdate",$locsql." AND date = '" . $start . "'");
+//FIXME isn't it better to use calendarmodule::_getEventsForDates less permissions
 $events = array();
 foreach ($dates as $d) {
 	$o = $db->selectObject("calendar","id=".$d->event_id);
@@ -60,28 +60,30 @@ foreach ($dates as $d) {
 			"delete"=>(expPermissions::check("delete",$thisloc) || expPermissions::check("delete",$loc))
 		);
 		//Get the image file if there is one.
-		if (isset($o->file_id) && $o->file_id > 0) {
-			$file = $db->selectObject('file', 'id='.$o->file_id);
-			$o->image_path = $file->directory.'/'.$file->filename;
-		}
+//		if (isset($o->file_id) && $o->file_id > 0) {
+//			$file = $db->selectObject('file', 'id='.$o->file_id);
+//			$o->image_path = $file->directory.'/'.$file->filename;
+//		}
 		
 		$events[] = $o;
 	}
 }
+//FIXME add external events to $events for date $start, one day
+$extitems = calendarmodule::getExternalEvents($loc,$start);
+$events = array_merge($extitems,$events);
 
 $template->register_permissions(
 	array("create","edit","delete","manage"),
 	$loc
 );
 
-if (!$config) {
-	$config->enable_categories = 0;
-	$config->enable_ical = 1;
-}
-
+//if (!$config) {
+////	$config->enable_categories = 0;
+//	$config->enable_ical = 1;
+//}
 $template->assign("config",$config);
-if (!isset($config->enable_ical)) {$config->enable_ical = 1;}
-$template->assign("enable_ical", $config->enable_ical);
+//if (!isset($config->enable_ical)) {$config->enable_ical = 1;}
+//$template->assign("enable_ical", $config->enable_ical);
 
 $template->assign("events",$events);
 $template->assign("now",$time);

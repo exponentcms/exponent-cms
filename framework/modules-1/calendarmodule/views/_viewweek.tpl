@@ -30,7 +30,7 @@
         {export_pdf_link prepend='&nbsp;&nbsp;|&nbsp;&nbsp;'}
 	</div>
 	<h1>
-		{if $enable_ical == true}
+        {if !empty($config->enable_ical)}
 			<a class="icallink module-actions" href="{link action=ical}" title="{'iCalendar Feed'|gettext}" alt="{'iCalendar Feed'|gettext}"> </a>
 		{/if}
 		{if $moduletitle}{$moduletitle}{/if}
@@ -56,7 +56,7 @@
 			<dt>
 				<strong>
 				{if $counts[$ts] != 0}
-					<a class="itemtitle calendar_mngmntlink" href="{link action=viewday time=$ts}">{$ts|format_date:"%A, %b %e"}</a>
+					<a class="itemtitle calendar_mngmntlink" href="{if $item->location_data != null}{link action=viewday time=$ts}{else}#{/if}">{$ts|format_date:"%A, %b %e"}</a>
 				{else}
 					{$ts|format_date:"%A, %b %e"}
 				{/if}

@@ -112,7 +112,7 @@ class calendarmodule {
 	}
 
 	static function show($view,$loc = null, $title = '') {
-		global $user;
+//		global $user;
 		global $db;
 
 		$locsql = "(location_data='".serialize($loc)."'";
@@ -120,7 +120,7 @@ class calendarmodule {
 		if (!empty($config->aggregate)) {
 			$locations = unserialize($config->aggregate);
 			foreach ($locations as $source) {
-				$tmploc = null;
+				$tmploc = new stdClass();
 				$tmploc->mod = 'calendarmodule';
 				$tmploc->src = $source;
 				$tmploc->int = '';
@@ -176,7 +176,6 @@ class calendarmodule {
 					}
 				}
 			}
-//eDebug($monthly);			
 			$template->assign("monthly",$monthly);
 			$template->assign("currentweek",$currentweek);
 			$template->assign("currentday",$currentday);
@@ -189,8 +188,8 @@ class calendarmodule {
 		} else if ($viewparams['type'] == "byday") {
 		  // Remember this is the code for weekly view and monthly listview
 		  // Test your fixes on both views before submitting your changes to cvs
-   			$startperiod = 0;
-			$totaldays = 0;
+//   		$startperiod = 0;
+//			$totaldays = 0;
 			if ($viewparams['range'] == "week") {
 				$startperiod = expDateTime::startOfWeekTimestamp($time);
 				$totaldays = 7;
@@ -223,7 +222,7 @@ class calendarmodule {
 
 			$days = array();
 			// added per Ignacio
-			$endofmonth = date('t', $time);
+//			$endofmonth = date('t', $time);
 			for ($i = 1; $i <= $totaldays; $i++) {
 				$info = getdate($time);
 				if ( $viewparams['range'] == "week" ) {
@@ -235,7 +234,7 @@ class calendarmodule {
 					$start = mktime(0,0,0,$info['mon'],$i,$info['year']);
 				}
 				$edates = $db->selectObjects("eventdate",$locsql." AND date = '".$start."'");
-				$days[$start] = calendarmodule::_getEventsForDates($edates);
+				$days[$start] = calendarmodule::_getEventsForDates($edates,true,isset($template->viewconfig['featured_only']) ? true : false);
 				for ($j = 0; $j < count($days[$start]); $j++) {
 					$thisloc = expCore::makeLocation($loc->mod,$loc->src,$days[$start][$j]->id);
 					$days[$start][$j]->permissions = array(
@@ -244,6 +243,9 @@ class calendarmodule {
 						"delete"=>(expPermissions::check("delete",$thisloc) || expPermissions::check("delete",$loc))
 					);
 				}
+                //FIXME add external events to $days[$start] for date $start, one day at a time
+                $extitems = calendarmodule::getExternalEvents($loc,$start);
+                $days[$start] = array_merge($extitems,$days[$start]);
 				$days[$start] = expSorter::sort(array('array'=>$days[$start],'sortby'=>'eventstart', 'order'=>'ASC'));
 			}
 			$template->assign("days",$days);
@@ -283,6 +285,9 @@ class calendarmodule {
 				//$dates = $db->selectObjects("eventdate",$locsql." AND date = $start");
 				$dates = $db->selectObjects("eventdate",$locsql." AND date = '".$start."'");
 				$monthly[$week][$i] = calendarmodule::_getEventsForDates($dates,true,isset($template->viewconfig['featured_only']) ? true : false);
+                //FIXME add external events to $monthly[$week][$i] for date $start, one day at a time
+                $extitems = calendarmodule::getExternalEvents($loc,$start);
+                $monthly[$week][$i] = array_merge($extitems,$monthly[$week][$i]);
 				$counts[$week][$i] = count($monthly[$week][$i]);
 				if ($weekday >= (6+DISPLAY_START_OF_WEEK)) {
 					$week++;
@@ -296,7 +301,6 @@ class calendarmodule {
 				$monthly[$week][$i+$endofmonth] = array();
 				$counts[$week][$i+$endofmonth] = -1;
 			}
-//eDebug($monthly);			
 			$template->assign("currentweek",$currentweek);
 			$template->assign("monthly",$monthly);
 			$template->assign("counts",$counts);
@@ -377,6 +381,9 @@ class calendarmodule {
 					break;
 			}
 			$items = calendarmodule::_getEventsForDates($dates,$sort_asc,isset($template->viewconfig['featured_only']) ? true : false);
+            //FIXME add external events to $items for date >= ".expDateTime::startOfMonthTimestamp(time()) . " AND date <= " . expDateTime::endOfMonthTimestamp(time())
+            $extitems = calendarmodule::getExternalEvents($loc,expDateTime::startOfMonthTimestamp(time()),expDateTime::endOfMonthTimestamp(time()));
+            $items = array_merge($items,$extitems);
 			// Upcoming events can be configured to show a specific number of events.
 			// The previous call gets all events in the future from today
 			// If configured, cut the array to the configured number of events
@@ -388,8 +395,7 @@ class calendarmodule {
 //						break;
 //				}
 //				$items = array_slice($items, 0, $template->viewconfig['num_events']);
-//eDebug($items);
-//			}			
+//			}
 			for ($i = 0; $i < count($items); $i++) {
 				$thisloc = expCore::makeLocation($loc->mod,$loc->src,$items[$i]->id);
 				if ($user && $items[$i]->poster == $user->id) $canviewapproval = 1;
@@ -399,14 +405,6 @@ class calendarmodule {
 					'delete'=>(expPermissions::check('delete',$thisloc) || expPermissions::check('delete',$loc))
 				);
 			}
-			//Get the image file if there is one.
-			// for ($i = 0; $i < count($items); $i++) {
-				// if (isset($items[$i]->file_id) && $items[$i]->file_id > 0) {
-					// $file = $db->selectObject('file', 'id='.$items[$i]->file_id);
-					// $items[$i]->image_path = $file->directory.'/'.$file->filename;
-				// }
-			// }
-			//eDebug($items);
 			$template->assign('items',$items);
 			$template->assign('moreevents',$moreevents);
 		}
@@ -417,49 +415,13 @@ class calendarmodule {
 			$loc
 		);
 
-//		$cats = $db->selectObjectsIndexedArray("category","location_data='".serialize($loc)."'");
-		// $cats = $db->selectObjectsIndexedArray("category");
-		// $cats[0] = null;
-		// $cats[0]->name = '<i>'.gt('No category').'</i>';
-		// $cats[0]->color = "#000000";
-		// $template->assign("categories",$cats);
-
-		if (!$config) {
-			// $config->enable_categories = 0;
-			$config->enable_ical = 1;
-		}
-
+//		if (!$config) {
+//			$config->enable_ical = 1;
+//		}
 		$template->assign("config",$config);
-		if (!isset($config->enable_ical)) {$config->enable_ical = 1;}
-		$template->assign("enable_ical", $config->enable_ical);
+//		if (!isset($config->enable_ical)) {$config->enable_ical = 1;}
+//		$template->assign("enable_ical", $config->enable_ical);
 
-		//Get the tags that have been selected to be shown in the grouped by tag views
-		// if (isset($config->show_tags)) {
-			// $available_tags = unserialize($config->show_tags);
-		// } else {
-			// $available_tags = array();
-		// }
-
-		// if (isset($items) && is_array($items)) {
-			// for ($i = 0; $i < count($items); $i++) {
-				// //Get the tags for this calendar event
-				// $selected_tags = array();
-				// $tag_ids = unserialize($items[$i]->tags);
-				// if(is_array($tag_ids)) {$selected_tags = $db->selectObjectsInArray('tags', $tag_ids, 'name');}
-				// $items[$i]->tags = $selected_tags;
-
-				// //If this module was configured to group the newsitems by tags, then we need to change the data array a bit
-				// if (isset($config->group_by_tags) && $config->group_by_tags == true) {
-					// $grouped_news = array();
-					// foreach($items[$i]->tags as $tag) {
-						// if (in_array($tag->id, $available_tags) || count($available_tags) == 0) {
-							// if (!isset($grouped_news[$tag->name])) { $grouped_news[$tag->name] = array();}
-							// array_push($grouped_news[$tag->name],$items[$i]);
-						// }
-					// }
-				// }
-			// }
-		// }
 		$template->output();
 	}
 
@@ -467,11 +429,7 @@ class calendarmodule {
 		global $db;
 		$refcount = $db->selectValue('sectionref', 'refcount', "source='".$loc->src."'");
         if ($refcount <= 0) {
-			$items = $db->selectObjects("calendar","location_data='".serialize($loc)."'");
-//			foreach ($items as $i) {
-////				$db->delete("calendar_wf_revision","wf_original=".$i->id);
-////				$db->delete("calendar_wf_info","real_id=".$i->id);
-//			}
+//			$items = $db->selectObjects("calendar","location_data='".serialize($loc)."'");
 			$db->delete("calendar","location_data='".serialize($loc)."'");
 		}
 	}
@@ -480,10 +438,10 @@ class calendarmodule {
 		return "Calendar Events";
 	}
 
-	function spiderContent($item = null) {
+	static function spiderContent($item = null) {
 		global $db;
 
-		$search = null;
+		$search = new stdClass();
 		$search->category = gt('Events');
 		$search->ref_module = 'calendarmodule';
 		$search->ref_type = 'calendar';
@@ -529,5 +487,64 @@ class calendarmodule {
 		$events = expSorter::sort(array('array'=>$events,'sortby'=>'eventstart', 'order'=>$sort_asc ? 'ASC' : 'DESC'));
 		return $events;
 	}
+
+    static function getExternalEvents($loc,$startdate,$enddate=null) {
+        global $db;
+
+        $extevents = array();
+        $dy = 0;
+        $config = $db->selectObject("calendarmodule_config","location_data='".serialize($loc)."'");
+        if (!empty($config)) foreach ($db->selectObjects('calendar_external',"calendar_id='".$config->id."'") as $extcal) {
+        	if ($extcal->type == GOOGLE_TYPE) {
+                //FIXME needs the google calendar routine here
+        		$emails[] = $extcal->url;
+        	} else if ($extcal->type == ICAL_TYPE) {
+                require_once BASE.'external/iCalcreator.class.php';
+                $v = new vcalendar(); // initiate new CALENDAR
+                $v->setConfig('url',$extcal->url);
+                $v->parse();
+                $startYear = date('Y',$startdate);
+                $startMonth = date('n',$startdate);
+                $startDay = date('j',$startdate);
+                if ($enddate == null) {
+                    $endYear = $startYear;
+                    $endMonth = $startMonth;
+                    $endDay = $startDay;
+                } else {
+                    $endYear = date('Y',$enddate);
+                    $endMonth = date('n',$enddate);
+                    $endDay = date('j',$enddate);
+                }
+                $eventArray = $v->selectComponents($startYear,$startMonth,$startDay,$endYear,$endMonth,$endDay,'vevent');
+                if (!empty($eventArray)) foreach ($eventArray as $year => $yearArray) {
+                    if (!empty($yearArray)) foreach ($yearArray as $month => $monthArray) {
+                        if (!empty($monthArray)) foreach ($monthArray as $day => $dailyEventsArray) {
+                            if (!empty($dailyEventsArray)) foreach ($dailyEventsArray as $vevent) {
+                                $currddate = $vevent->getProperty('x-current-dtstart');
+                                // if member of a recurrence set,
+                                // returns array( 'x-current-dtstart', <DATE>)
+                                // <DATE> = (string) date("Y-m-d [H:i:s][timezone/UTC offset]")
+                                $dtstart = $vevent->getProperty('dtstart');
+                                $extevents[$dy]->eventdate = iCalUtilityFunctions::_date2timestamp($dtstart);
+                                $extevents[$dy]->eventstart += iCalUtilityFunctions::_date2timestamp($dtstart);
+                                //FIXME must parse out date and start time
+                                $dtend = $vevent->getProperty('dtend');
+                                //FIXME must parse out end time
+                                $extevents[$dy]->eventend += iCalUtilityFunctions::_date2timestamp($dtend);
+                                // dtstart required, one occurrence, (orig. start date)
+                                $extevents[$dy]->title = $vevent->getProperty('summary');
+                                $extevents[$dy]->body = $vevent->getProperty('description');
+//                                $extevents[$dy]->location_data = serialize($loc);
+                                $extevents[$dy]->location_data = null;
+                                $dy++;
+                            }
+                        }
+                    }
+                }
+        	}
+        }
+        return $extevents;
+    }
+
 }
 ?>

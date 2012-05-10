@@ -21,7 +21,6 @@ if (!defined('EXPONENT')) exit('');
 
 global $router;
 
-//expHistory::flowSet(SYS_FLOW_PUBLIC,SYS_FLOW_ACTION);
 expHistory::set('viewable', $router->params);
 
 $title = $db->selectValue('container', 'title', "internal='".serialize($loc)."'");
@@ -42,7 +41,7 @@ $config = $db->selectObject("calendarmodule_config","location_data='".serialize(
 if (!empty($config->aggregate)) {
 	$locations = unserialize($config->aggregate);
 	foreach ($locations as $source) {
-		$tmploc = null;
+		$tmploc = new stdClass();
 		$tmploc->mod = 'calendarmodule';
 		$tmploc->src = $source;
 		$tmploc->int = '';
@@ -52,9 +51,10 @@ if (!empty($config->aggregate)) {
 $locsql .= ')';
 for ($i = 0; $i < 7; $i++) {
 	$start = mktime(0,0,0,$startinfo['mon'],$startinfo['mday']+$i,$startinfo['year']);
-	$days[$start] = array();
 //	$dates = $db->selectObjects("eventdate","location_data='".serialize($loc)."' AND date = $start");
 	$dates = $db->selectObjects("eventdate",$locsql." AND date = $start");	
+    //FIXME isn't it better to use calendarmodule::_getEventsForDates less permissions
+    $days[$start] = array();
 	for ($j = 0; $j < count($dates); $j++) {
 		$o = $db->selectObject("calendar","id=".$dates[$j]->event_id);
 		if ($o != null) {
@@ -69,14 +69,17 @@ for ($i = 0; $i < 7; $i++) {
 			);
 
 			//Get the image file if there is one.
-			if (isset($o->file_id) && $o->file_id > 0) {
-				$file = $db->selectObject('file', 'id='.$o->file_id);
-				$o->image_path = $file->directory.'/'.$file->filename;
-			}
+//			if (isset($o->file_id) && $o->file_id > 0) {
+//				$file = $db->selectObject('file', 'id='.$o->file_id);
+//				$o->image_path = $file->directory.'/'.$file->filename;
+//			}
 		
 			$days[$start][] = $o;
 		}
 	}
+    //FIXME add external events to $days[$start][] for date $start, one day at a time
+    $extitems = calendarmodule::getExternalEvents($loc,$start);
+    $days[$start] = array_merge($extitems,$days[$start]);
 	$counts[$start] = count($days[$start]);
 }
 
@@ -86,14 +89,13 @@ $template->register_permissions(
 );
 
 
-if (!$config) {
-	$config->enable_categories = 0;
-	$config->enable_ical = 1;
-}
-
+//if (!$config) {
+////	$config->enable_categories = 0;
+//	$config->enable_ical = 1;
+//}
 $template->assign("config",$config);
-if (!isset($config->enable_ical)) {$config->enable_ical = 1;}
-$template->assign("enable_ical", $config->enable_ical);
+//if (!isset($config->enable_ical)) {$config->enable_ical = 1;}
+//$template->assign("enable_ical", $config->enable_ical);
 		
 $template->assign("days",$days);
 $template->assign("counts",$counts);

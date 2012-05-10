@@ -32,7 +32,7 @@
         {export_pdf_link prepend='&nbsp;&nbsp;|&nbsp;&nbsp;'}
         {br}
         {permissions}
-			<span class="listviewlink">{'Past Events View'|gettext}{$config->colorize}</span>
+			<span class="listviewlink">{'Past Events View'|gettext}</span>
 			{if $permissions.manage == 1}
 				&nbsp;&nbsp;|&nbsp;&nbsp;
 				<img class="mngmnt_icon" style="border:none;" src="{$smarty.const.ICON_RELATIVE|cat:'delete.png'}" title="{'Delete All Past Events'|gettext}" alt="{'Delete All Past Events'|gettext}" />
@@ -42,7 +42,7 @@
 		{/permissions}
 	</div>
 	<h1>
-		{if $enable_ical == true}
+        {if !empty($config->enable_ical)}
 			<a class="icallink module-actions" href="{link action=ical}" title="{'iCalendar Feed'|gettext}" alt="{'iCalendar Feed'|gettext}"> </a>
 		{/if}
 		{if $moduletitle}{$moduletitle} - {'Past Events View'|gettext}{/if}

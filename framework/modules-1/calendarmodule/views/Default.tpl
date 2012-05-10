@@ -39,7 +39,7 @@
         {br}
 	</div>
 	<h1>
-		{if $enable_ical == true}
+        {if !empty($config->enable_ical)}
 			<a class="icallink module-actions" href="{link action=ical}" title="{'iCalendar Feed'|gettext}" alt="{'iCalendar Feed'|gettext}">&nbsp;</a>
 		{/if}
 		{if $moduletitle}{$moduletitle}{/if}
@@ -106,7 +106,7 @@
                             {/if}
                             {foreach name=e from=$items item=item}
                                 <div {if $dayts == $today}class="calevent today"{else}class="calevent"{/if}>
-                                    <a class="mngmntlink calendar_mngmntlink" href="{link action=view id=$item->id date_id=$item->eventdate->id}"
+                                    <a class="mngmntlink calendar_mngmntlink" href="{if $item->location_data != null}{link action=view id=$item->id date_id=$item->eventdate->id}{else}#{/if}"
                                        title="{if $item->is_allday == 1}{'All Day'|gettext}{elseif $item->eventstart != $item->eventend}{$item->eventstart|format_date:$smarty.const.DISPLAY_TIME_FORMAT} {'to'|gettext} {$item->eventend|format_date:$smarty.const.DISPLAY_TIME_FORMAT}{else}{$item->eventstart|format_date:$smarty.const.DISPLAY_TIME_FORMAT}{/if} - {$item->body|summarize:"html":"para"}">{$item->title}</a>
                                     {permissions}
                                         <div class="item-actions">

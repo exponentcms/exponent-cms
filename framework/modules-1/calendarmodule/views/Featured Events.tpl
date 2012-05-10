@@ -20,7 +20,7 @@
 <div class="module calendar cal-admin">  
 	<a href="{link _common=1 view=Default action=show_view}">Month View</a>{br}
 	<h1>
-        {if $enable_ical == true}
+        {if !empty($config->enable_ical)}
             <a class="icallink module-actions" href="{link action=ical}" title="{'iCalendar Feed'|gettext}" alt="{'iCalendar Feed'|gettext}">&nbsp;</a>
         {/if}
 		{if $moduletitle}{$moduletitle}{/if}
@@ -40,7 +40,7 @@
 						<table width=100% cellpadding="0" cellspacing="0" border="0">
 							<tr>
 								<td>
-									<a class="mngmntlink calendar_mngmntlink" href="{link action=view id=$item->id date_id=$item->eventdate->id}">{$item->title}</a>
+									<a class="mngmntlink calendar_mngmntlink" href="{if $item->location_data != null}{link action=view id=$item->id date_id=$item->eventdate->id}{else}#{/if}">{$item->title}</a>
 								</td>
 							</tr>
 							<tr>

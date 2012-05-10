@@ -29,7 +29,7 @@
         {br}
 	</div>
 	<h2>
-		{if $enable_ical == true}
+		{if !empty($config->enable_ical)}
 			<a class="icallink" href="{link action=ical date_id=$item->eventdate->id}" title="{'Export this Event as iCalendar file'|gettext}" alt="{'Export this Event as iCalendar file'|gettext}"> </a>
 		{/if}
 		{$item->title}

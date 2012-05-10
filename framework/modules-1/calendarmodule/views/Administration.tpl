@@ -32,7 +32,7 @@
 		<a class="listviewlink" href="{link _common=1 view='Past Events' action='show_view' time=$time}">{'Past Events View'|gettext}</a>{br}
 	</div>
 	<h1>
-		{if $enable_ical == true}
+        {if !empty($config->enable_ical)}
 			<a class="icallink module-actions" href="{link action=ical}" title="{'iCalendar Feed'|gettext}" alt="{'iCalendar Feed'|gettext}"> </a>
 		{/if}
 		{if $moduletitle}{$moduletitle} - {'Administration View'}{/if}

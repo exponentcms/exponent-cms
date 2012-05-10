@@ -19,7 +19,7 @@
 
 <div class="module calendar upcoming-events-headlines">
     <h2>
-        {if $enable_ical == true}
+        {if !empty($config->enable_ical)}
             <a class="icallink module-actions" href="{link action=ical}" title="{'iCalendar Feed'|gettext}" alt="{'iCalendar Feed'|gettext}"> </a>
         {/if}
         {if $moduletitle}{$moduletitle}{/if}
@@ -42,7 +42,7 @@
 		{foreach from=$items item=item}
 			{if (!$__viewconfig.num_events || $item_number < $__viewconfig.num_events) }	
 				<li>
-					<a class="link" href="{link action=view id=$item->id date_id=$item->eventdate->id}" title="{$item->body|summarize:"html":"para"}">{$item->title}</a>
+					<a class="link" href="{if $item->location_data != null}{link action=view id=$item->id date_id=$item->eventdate->id}{else}#{/if}" title="{$item->body|summarize:"html":"para"}">{$item->title}</a>
 					<em class="date">
 						{if $item->is_allday == 1}
 							{$item->eventstart|format_date}

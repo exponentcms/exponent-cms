@@ -32,7 +32,7 @@
         {export_pdf_link prepend='&nbsp;&nbsp;|&nbsp;&nbsp;'}
 	</div>
 	<h1>
-		{if $enable_ical == true}
+        {if !empty($config->enable_ical)}
 			<a class="icallink module-actions" href="{link action=ical}" title="{'iCalendar Feed'|gettext}" alt="{'iCalendar Feed'|gettext}"> </a>
 		{/if}
 		{if $moduletitle}{$moduletitle}{/if}
@@ -59,7 +59,7 @@
 		{foreach from=$events item=item}
 			{assign var=count value=1}
 			<dt>
-				<span class="eventtitle"><a class="itemtitle calendar_mngmntlink" href="{link action=view id=$item->id date_id=$item->eventdate->id}"><strong>{$item->title}</strong></a></span>
+				<span class="eventtitle"><a class="itemtitle calendar_mngmntlink" href="{if $item->location_data != null}{link action=view id=$item->id date_id=$item->eventdate->id}{else}#{/if}"><strong>{$item->title}</strong></a></span>
 				{permissions}
 					<div class="item-actions">
 						{if $permissions.edit == 1}

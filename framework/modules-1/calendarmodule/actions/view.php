@@ -20,7 +20,6 @@ if (!defined('EXPONENT')) exit('');
 
 global $router;
 
-//expHistory::flowSet(SYS_FLOW_PUBLIC,SYS_FLOW_ACTION);
 expHistory::set('viewable', $router->params);
 
 $item = $db->selectObject("calendar","id=" . intval($_GET['id']));
@@ -32,7 +31,7 @@ if ($item) {
 		"delete"=>(expPermissions::check("delete",$iloc) || expPermissions::check("delete",$loc)),
 		"manage"=>(expPermissions::check("manage",$iloc) || expPermissions::check("manage",$loc)),
 	);
-	// Debugger test
+	//FIXME Debugger test
 	$item->permissions = array(
 		"edit"=>expPermissions::check("edit",$iloc),
 		"delete"=>expPermissions::check("delete",$iloc),
@@ -86,21 +85,13 @@ if ($item) {
 		$template->assign('form', $form);
 	}
 
-//	$tags = unserialize($item->tags);
-//	if (!empty($tags)) {
-//		$selected_tags = $db->selectObjectsInArray('tags', $tags);
-//	} else {
-//		$selected_tags = array();
-//	}
-//	$template->assign('tags',$selected_tags);
-//	$template->assign('tagcnt',count($selected_tags));
-
 	$config = $db->selectObject("calendarmodule_config","location_data='".serialize($loc)."'");
-	if (!$config) {
-		$config->enable_ical = 1;
-	}
-	if (!isset($config->enable_ical)) {$config->enable_ical = 1;}
-	$template->assign("enable_ical", $config->enable_ical);
+//	if (!$config) {
+//		$config->enable_ical = 1;
+//	}
+    $template->assign("config",$config);
+//	if (!isset($config->enable_ical)) {$config->enable_ical = 1;}
+//	$template->assign("enable_ical", $config->enable_ical);
 	
 	$template->assign("item",$item);
 	$template->assign("directory","files/calendarmodule/".$loc->src);
