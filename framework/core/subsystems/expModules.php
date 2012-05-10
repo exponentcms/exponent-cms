@@ -91,7 +91,7 @@ class expModules {
     			$mod = new $module();
     			$modstate = $db->selectObject("modstate","module='$module'");
 
-    			$moduleInfo[$module] = null;
+    			$moduleInfo[$module] = new stdClass();
     			$moduleInfo[$module]->class = $module;
     			$moduleInfo[$module]->name = $mod->name();
     			$moduleInfo[$module]->author = $mod->author();
@@ -129,7 +129,7 @@ class expModules {
 	        foreach ($refs as $ref) {
 	            if ($ref->refcount > 0) {
 	                $instance = $db->selectObject('container', 'internal like "%'.$ref->source.'%"');
-	                $mod = null;
+	                $mod = new stdClass();
 	                $mod->title = !empty($instance->title) ? $instance->title : "Untitled";
 	                $mod->section = $db->selectvalue('section', 'name', 'id='.$ref->section);
                     $mod->src = $ref->source;
@@ -245,7 +245,7 @@ class expModules {
 				 $modstate = $db->selectObject("modstate","module='$module'");
 
 				 if (!method_exists($mod,"dontShowInModManager")) {
-				     $moduleInfo[$module] = null;
+				     $moduleInfo[$module] = new stdClass();
 				     $moduleInfo[$module]->class = $module;
 				     $moduleInfo[$module]->name = $mod->name();
 				     $moduleInfo[$module]->author = $mod->author();

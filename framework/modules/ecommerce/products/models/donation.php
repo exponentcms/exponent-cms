@@ -36,7 +36,7 @@ class donation extends product {
 		$this->price = '';
 	}
 
-    public function find($range='all', $where=null, $order=null, $limit=null, $limitstart=0) {
+    public function find($range='all', $where=null, $order=null, $limit=null, $limitstart=0, $get_assoc=true, $get_attached=true, $except=array(), $cascade_except = false) {
         global $db;
 
         if (is_numeric($range)) {
@@ -93,7 +93,7 @@ class donation extends product {
 		return 1;
 	}
 	
-	function addToCart($params) {	    
+	function addToCart($params, $orderid = null) {
 	    if (empty($params['dollar_amount'])) {
 	        return false;
 	    } else {

@@ -54,7 +54,7 @@ class news extends expRecord {
 	    }
 	}
 	
-	public function rerank($direction) {
+	public function rerank($direction, $where='') {
         global $db;
         if (!empty($this->rank)) {
             // since the some news might be hiding due to unpublish date we need to find the next "showable"

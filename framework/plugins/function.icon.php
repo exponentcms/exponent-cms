@@ -89,7 +89,7 @@ function smarty_function_icon($params,&$smarty) {
 	$text 	= (empty($params['text'])) ? '' : $params['text'];
 	$title 	= (empty($params['title'])) ? (empty($text) ? gt(ucfirst($class)).' '.gt('this').' '.$smarty->getTemplateVars('modelname').' '.gt('item') : $text) : $params['title'];
 	if (!empty($params['hash'])){
-	    $hash = $params['hash'];
+//	    $hash = $params['hash'];
 	    unset($params['hash']);
 	}
 	

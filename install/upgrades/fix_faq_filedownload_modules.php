@@ -32,7 +32,7 @@ class fix_faq_filedownload_modules extends upgradescript {
 	 * name/title of upgrade script
 	 * @return string
 	 */
-	function name() { return "Update faq and filedownloads modules with correct spelling"; }
+	static function name() { return "Update faq and filedownloads modules with correct spelling"; }
 
 	/**
 	 * generic description of upgrade script

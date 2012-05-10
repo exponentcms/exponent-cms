@@ -126,7 +126,7 @@ if ($passed) {
 }
 
 $insert_id = null;
-$obj = null;
+$obj = new stdClass();
 
 if ($passed) {
 	echoStart(gt('Checking INSERT privilege').':');
@@ -184,7 +184,7 @@ if ($passed) {
 	$db->alterTable($tablename,$dd,array());
 	$error = $db->error();
 
-	$obj = null;
+	$obj = new stdClass();
 	$obj->installer_test = "Exponent Installer ALTER test";
 	$obj->exponent = "Exponent";
 
@@ -214,7 +214,7 @@ if ($passed) {
 	$tables = administrationController::install_dbtables();
 
 	if ($db->tableIsEmpty('user')) {
-		$user = null;
+		$user = new stdClass();
 		$user->username = 'admin';
 		$user->password = md5('admin');
 		$user->is_admin = 1;
@@ -232,7 +232,7 @@ if ($passed) {
 	}
 
 	if ($db->tableIsEmpty('section')) {
-		$section = null;
+		$section = new stdClass();
 		$section->name = gt('Home');  //FIXME not sure if we should do this?
 		$section->public = 1;
 		$section->active = 1;
@@ -255,7 +255,7 @@ if ($passed) {
     // version tracking
 	$db->delete('version',1);  // clear table of old accumulated entries
 //    $version = EXPONENT_VERSION_MAJOR.'.'.EXPONENT_VERSION_MINOR.'.'.EXPONENT_VERSION_REVISION.'-'.EXPONENT_VERSION_TYPE.''.EXPONENT_VERSION_ITERATION;
-	$vo = null;
+	$vo = new stdClass();
 //    $vo->version = EXPONENT_VERSION_MAJOR.'.'.EXPONENT_VERSION_MINOR.'.'.EXPONENT_VERSION_REVISION;	$vo->type = EXPONENT_VERSION_TYPE;
 	$vo->major = EXPONENT_VERSION_MAJOR;
 	$vo->minor = EXPONENT_VERSION_MINOR;

@@ -31,10 +31,10 @@ class textcontrol extends formcontrol {
     var $maxlength = "";
     var $caption = "";
 
-    function name() { return "Text Box"; }
-    function isSimpleControl() { return true; }
+    static function name() { return "Text Box"; }
+    static function isSimpleControl() { return true; }
     function useGeneric() { return false; }
-    function getFieldDefinition() {
+    static function getFieldDefinition() {
         return array(
             DB_FIELD_TYPE=>DB_DEF_STRING,
             DB_FIELD_LEN=>512);

@@ -30,9 +30,9 @@ class datetimecontrol extends formcontrol {
 	var $showdate = true;
 	var $showtime = true;
 	
-	function name() { return "Date / Time Field"; }
-	function isSimpleControl() { return true; }
-	function getFieldDefinition() {
+	static function name() { return "Date / Time Field"; }
+	static function isSimpleControl() { return true; }
+	static function getFieldDefinition() {
 		return array(
 			DB_FIELD_TYPE=>DB_DEF_TIMESTAMP);
 	}
@@ -61,7 +61,7 @@ class datetimecontrol extends formcontrol {
 		return $html;
 	}
 	
-	function controlToHTML($name) {
+	function controlToHTML($name,$label=null) {
 		if (!$this->showdate && !$this->showtime) return "";
 		if ($this->default == 0) $this->default = time();
 		$default_date = getdate($this->default);

@@ -145,7 +145,7 @@ class formmodule {
 		$db->delete("formbuilder_form","location_data='".serialize($loc)."'");
 	}
 	
-	function spiderContent($item = null) {
+	static function spiderContent($item = null) {
 		// No content
 		return false;
 	}

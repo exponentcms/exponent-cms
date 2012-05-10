@@ -53,6 +53,7 @@ if ($db->selectValue('modstate', 'active', 'module="storeController"')) {
     $order = order::getUserCart();      
     // Create a globle store config
     // We're forcing the location. Global store setting will always have this loc
+    $cfg = new stdClass();
     $cfg->mod = "ecomconfig";
     $cfg->src = "@globalstoresettings";
     $cfg->int = "";

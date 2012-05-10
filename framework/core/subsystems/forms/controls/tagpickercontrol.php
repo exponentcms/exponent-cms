@@ -29,9 +29,9 @@ class tagpickercontrol extends formcontrol {
 	var $flip = false;
 	var $jsHooks = array();
 	
-	function name() { return "Tag Picker"; }
-	function isSimpleControl() { return false; }
-	function getFieldDefinition() { 
+	static function name() { return "Tag Picker"; }
+	static function isSimpleControl() { return false; }
+	static function getFieldDefinition() {
 		return array();
 	}
 

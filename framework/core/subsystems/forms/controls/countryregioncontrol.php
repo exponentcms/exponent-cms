@@ -30,7 +30,7 @@ class countryregioncontrol extends formcontrol {
 	var $size = 0;
 	var $maxlength = "";
 
-	function name() { return "Country / Region Selector"; }
+	static function name() { return "Country / Region Selector"; }
 
 	function __construct($country_default = "", $region_default = "", $allow_entire_country = false, $disabled = false) {
 		$this->country_default = $country_default;
@@ -39,7 +39,7 @@ class countryregioncontrol extends formcontrol {
 		$this->disabled = $disabled;
 	}
 
-	function controlToHTML($name) {
+	function controlToHTML($name,$label=null) {
 		$html = "";
 
 		$countries = expGeo::listCountriesOnly();
@@ -79,14 +79,14 @@ class countryregioncontrol extends formcontrol {
 			$html .= "	}";
 			$html .= "}";
 
-			$region = null;
+			$region = new stdClass();
 			$region->parent_id = 0;
 			$region->id = 0;
 			$region->name = "";
 			$html .= expJavascript::jClass($region,"geoRegion");
 			$html .= "var geo_regions = new Array();\n";
 			foreach ($countries as $cid=>$cname) {
-				$region = null;
+				$region = new stdClass();
 				$region->parent_id = $cid;
 				foreach (expGeo::listRegions($cid) as $rid=>$rname) {
 					$region->id = $rid;

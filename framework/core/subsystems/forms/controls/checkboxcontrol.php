@@ -33,10 +33,10 @@ class checkboxcontrol extends formcontrol {
     var $jsHooks = array();
     var $nowrap = '';
     
-    function name() { return "Checkbox"; }
-    function isSimpleControl() { return true; }
+    static function name() { return "Checkbox"; }
+    static function isSimpleControl() { return true; }
     function useGeneric() { return false; }
-    function getFieldDefinition() { 
+    static function getFieldDefinition() {
         return array(
             DB_FIELD_TYPE=>DB_DEF_BOOLEAN);
     }
@@ -95,7 +95,7 @@ class checkboxcontrol extends formcontrol {
     }
 */
 
-    function controlToHTML($name) {
+    function controlToHTML($name,$label=null) {
         $this->value = isset($this->value) ? $this->value : 1;
         $inputID  = (!empty($this->id)) ? ' id="'.$this->id.'"' : "";
         $html = '<input'.$inputID.' class="checkbox" type="checkbox" name="' . $name . '" value="'.$this->value.'"';

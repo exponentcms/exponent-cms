@@ -208,6 +208,7 @@ class storeController extends expController {
         // grab the configs for the category
         if (is_object($category)) 
         {
+            $ctcfg = new stdClass();
             $ctcfg->mod = "storeCategory";
             $ctcfg->src = "@store-".$category->id;
             $ctcfg->int = "";            
@@ -216,6 +217,7 @@ class storeController extends expController {
       
         // since router maps strip off src and we need that to pull configs, we won't get the configs
         // of the page is router mapped. We'll ensure we do here:
+        $cfg = new stdClass();
         $cfg->mod = "ecomconfig";
         $cfg->src = "@globalstoresettings";
         $cfg->int = "";
@@ -1376,8 +1378,8 @@ class storeController extends expController {
             $count++;
             $originalOrderId = $data[2];
             $data[2] = intval($data[2]);
-            $order = null;  
-            $bm = null;
+            $order = new stdClass();
+            $bm = new stdClass();
             $transactionState = null;
             
             //check for valid order number - if not present or not order, fail and continue with next record
@@ -1419,7 +1421,7 @@ class storeController extends expController {
             } 
             else 
             {
-                $bm = null;   
+                $bm = null;
                 $transactionState = '';
             }
             

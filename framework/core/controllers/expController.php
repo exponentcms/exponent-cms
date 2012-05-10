@@ -817,7 +817,7 @@ abstract class expController {
         
         if (!empty($this->config['aggregate'])) {
             foreach ($this->config['aggregate'] as $src) {
-                $loc = makeLocation($this->baseclassname, $src);
+                $loc = expCore::makeLocation($this->baseclassname, $src);
                 $sql .= " OR location_data ='".serialize($loc)."'";
             }
             

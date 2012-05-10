@@ -55,7 +55,7 @@ class blog extends expRecord {
    	    }
    	}
 
-    public function find($range='all', $where=null, $order=null, $limit=null, $limitstart=0, $get_assoc=true, $get_attached=true) {
+    public function find($range='all', $where=null, $order=null, $limit=null, $limitstart=0, $get_assoc=true, $get_attached=true, $except=array(), $cascade_except = false) {
         global $db, $user;
 
         if (is_numeric($range)) {

@@ -37,7 +37,7 @@ class htmleditorcontrol extends formcontrol {
 	var $module = "";
 	var $toolbar = "";
 
-	function name() {return "WYSIWYG Editor";}
+	static function name() {return "WYSIWYG Editor";}
 
 	function __construct($default="",$module = "",$rows = 20,$cols = 60, $toolbar = "", $height=300) {
 		$this->default = $default;
@@ -46,7 +46,7 @@ class htmleditorcontrol extends formcontrol {
 		$this->height = $height;
 	}
 
-	function controlToHTML($name) {
+	function controlToHTML($name,$label) {
 
 			global $db;
 			

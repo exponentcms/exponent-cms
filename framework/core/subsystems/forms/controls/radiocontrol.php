@@ -32,7 +32,7 @@ class radiocontrol extends formcontrol {
     var $flip = false;
     var $nowrap = '';
     
-    function name() { return "Radio Button"; }
+    static function name() { return "Radio Button"; }
     
     function __construct($default = false, $value = "", $groupname="radiogroup", $flip=false, $onclick="") {
         $this->default = $default;
@@ -71,7 +71,7 @@ class radiocontrol extends formcontrol {
         return $html;
     }
     
-    function controlToHTML($name) {
+    function controlToHTML($name,$label=null) {
         //echo "Here";
         $html = '<input class="radiobutton" type="radio" value="'.$this->value .'" name="' . $this->groupname . '"';
         if ($this->default) $html .= ' checked="checked"';

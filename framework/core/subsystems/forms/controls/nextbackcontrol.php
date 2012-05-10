@@ -32,7 +32,7 @@ class nextbackcontrol extends formcontrol {
 	var $cancel = "";
 	var $validateJS = "";
 
-	function name() { return "Next/Back Button Group"; }
+	static function name() { return "Next/Back Button Group"; }
 
 	function __construct($next = "Next >", $back = "< Back", $cancel = "") {
 		$this->next = $next;
@@ -45,7 +45,7 @@ class nextbackcontrol extends formcontrol {
 		return parent::toHTML($label,$name);
 	}
 
-	function controlToHTML($name) {
+	function controlToHTML($name,$label) {
 		if ($this->next . $this->back . $this->cancel == "") return "";
 		$html = "";
 		if ($this->back != "") {

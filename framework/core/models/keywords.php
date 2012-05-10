@@ -52,7 +52,7 @@ class keywords {
 		ob_start();
 		$mods = array();
 		foreach ($refs as $ref) {
-			$loc = null;
+			$loc = new stdClass();;
 			$loc->mod = $ref->module;
 			$loc->src = $ref->source;
 			$loc->int = $ref->internal;

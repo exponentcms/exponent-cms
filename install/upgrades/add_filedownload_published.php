@@ -32,7 +32,7 @@ class add_filedownload_published extends upgradescript {
 	 * name/title of upgrade script
 	 * @return string
 	 */
-	function name() { return "Update filedownloads with valid publish date"; }
+	static function name() { return "Update filedownloads with valid publish date"; }
 
 	/**
 	 * generic description of upgrade script

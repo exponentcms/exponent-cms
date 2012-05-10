@@ -328,6 +328,7 @@ class expSession {
 		//at this point either.  This just updates all sessionticket records to refresh=1
 
 		global $db;
+        $sessionticket = new stdClass();
 		$sessionticket->refresh = 1;
 		$db->updateObject($sessionticket, 'sessionticket', '1');
 
@@ -393,7 +394,7 @@ class expSession {
 	 * @node Subsystems:Sessions
 	 */
 	static function createTicket($user = null){
-		$ticket = null;
+		$ticket = new stdClass();
 		if (!isset($user->id)) $user = new user(0);
 		$ticket->uid = $user->id;
 		$ticket->ticket = uniqid("",true);

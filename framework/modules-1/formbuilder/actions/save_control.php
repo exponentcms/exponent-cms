@@ -22,7 +22,7 @@ if (!defined('EXPONENT')) exit('');
 $f = $db->selectObject('formbuilder_form','id='.intval($_POST['form_id']));
 if ($f) {
 	if (expPermissions::check('editform',unserialize($f->location_data))) {
-		$ctl = null;
+		$ctl = new stdClass();
 		$control = null;
 		if (isset($_POST['id'])) {
 			$control = $db->selectObject('formbuilder_control','id='.intval($_POST['id']));

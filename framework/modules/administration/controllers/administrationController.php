@@ -284,7 +284,7 @@ class administrationController extends expController {
 			$iloc = expUnserialize($container->internal);
 			if ($db->selectObject('sectionref',"module='".$iloc->mod."' AND source='".$iloc->src."'") == null) {
 			// There is no sectionref for this container.  Populate sectionref
-				$newSecRef = null;
+				$newSecRef = new stdClass();
 				$newSecRef->module   = $iloc->mod;
 				$newSecRef->source   = $iloc->src;
 				$newSecRef->internal = '';
@@ -705,7 +705,7 @@ class administrationController extends expController {
     			if (is_readable(BASE."themes/$file/class.php")) {
     				include_once(BASE."themes/$file/class.php");
     				$theme = new $file();
-    				$t = null;
+    				$t = new stdClass();
 				    $t->user_configured = isset($theme->user_configured) ? $theme->user_configured : '';
     				$t->name = $theme->name();
     				$t->description = $theme->description();
@@ -997,7 +997,7 @@ class theme {
 		}
 		$form->register(null,'',new htmlcontrol('<br>'));
 		$form->register('submit','',new buttongroupcontrol(gt('Save'),'',gt('Cancel')));
-		assign_to_template(array('name'=>self::name(),'form_html'=>$form->tohtml()));
+		assign_to_template(array('name'=>self::name(),'form_html'=>$form->toHTML()));
 	}
 
 	/**

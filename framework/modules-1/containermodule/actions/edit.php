@@ -21,8 +21,8 @@ if (!defined('EXPONENT')) exit('');
 
 expHistory::set('editable',array("module"=>"containermodule","action"=>"edit"));;
 $container = null;
-$iloc = null;
-$cloc = null;
+$iloc = new stdClass();
+$cloc = new stdClass();
 if (isset($_GET['id'])) {
 	$container = $db->selectObject('container','id=' . intval($_GET['id']) );
 	if ($container != null) {
@@ -42,7 +42,7 @@ if (expPermissions::check('edit',$loc) || expPermissions::check('create',$loc) |
 	#
 	# Initialize Container, in case its null
 	#
-	$secref = null;
+	$secref = new stdClass();
 	if (!isset($container->id)) {
 		$secref->description = '';
 		$container->view = '';
@@ -85,9 +85,8 @@ if (expPermissions::check('edit',$loc) || expPermissions::check('create',$loc) |
 	foreach ($modules_list as $moduleclass) {
 		$module = new $moduleclass();
 		
-		$mod = null;
-		
 		// Get basic module meta info
+        $mod = new stdClass();
 		$mod->name = $module->name();
 		$mod->author = $module->author();
 		$mod->description = $module->description();
@@ -117,7 +116,7 @@ if (expPermissions::check('edit',$loc) || expPermissions::check('create',$loc) |
 	//$js_init .= "\r\n</script>";
 	
     array_multisort(array_map('strtolower', $mods), $mods);
-	if (!key_exists($container->internal->mod, $mods) && !empty($container->id)) {
+	if (!array_key_exists($container->internal->mod, $mods) && !empty($container->id)) {
         $template->assign('error',gt('The module you are trying to edit is inactive. Please contact your administrator to activate this module.'));
 	}
 	$template->assign('user',$user);

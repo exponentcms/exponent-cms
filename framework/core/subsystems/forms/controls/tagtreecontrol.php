@@ -28,9 +28,9 @@ class tagtreecontrol extends formcontrol {
 
 	var $jsHooks = array();
 	
-	function name() { return "Nested Node Checkbox Dragdrop Tree"; }
-	function isSimpleControl() { return false; }
-	function getFieldDefinition() { 
+	static function name() { return "Nested Node Checkbox Dragdrop Tree"; }
+	static function isSimpleControl() { return false; }
+	static function getFieldDefinition() {
 		return array();
 	}
 

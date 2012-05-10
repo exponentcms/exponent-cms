@@ -32,7 +32,7 @@ class add_blog_published extends upgradescript {
 	 * name/title of upgrade script
 	 * @return string
 	 */
-	function name() { return "Update blog posts with valid publish date"; }
+	static function name() { return "Update blog posts with valid publish date"; }
 
 	/**
 	 * generic description of upgrade script

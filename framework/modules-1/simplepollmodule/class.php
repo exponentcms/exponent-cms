@@ -83,7 +83,7 @@ class simplepollmodule {
 		}
 	}
 	
-	function spiderContent($item = null) {
+	static function spiderContent($item = null) {
 		// Do nothing, no searchable content
 		return false;
 	}

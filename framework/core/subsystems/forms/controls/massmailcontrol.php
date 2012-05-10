@@ -29,14 +29,14 @@ class massmailcontrol extends formcontrol {
 
 	var $type = 0;
 
-	function name() { return "Mass-Mailing Control"; }
+	static function name() { return "Mass-Mailing Control"; }
 
 	function __construct($default = "",$type = 0) {
 		$this->default = $default;
 		$this->type = $type;
 	}
 
-	function controlToHTML($name) {
+	function controlToHTML($name,$label) {
 		// First, grab the data for the users
 		$html = "<script type='text/javascript' src='".PATH_RELATIVE."js/MassMailControl.js'></script>";
 		$html .= "<table cellpadding='0' cellspacing='0' border='0'><tr><td>";

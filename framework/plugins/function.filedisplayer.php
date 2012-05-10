@@ -41,7 +41,7 @@ function smarty_function_filedisplayer($params,&$smarty) {
     
     // get the view, pass params and render & return it.
     $view = isset($params['view']) ? $params['view'] : 'Downloadable Files';
-	$title = isset($params['title']) ? $params['title'] : '';
+//	$title = isset($params['title']) ? $params['title'] : '';
 
     $badvals = array("[", "]", ",", " ", "'", "\"", "&", "#", "%", "@", "!", "$", "(", ")", "{", "}");
     $config['uniqueid'] = str_replace($badvals, "", $smarty->getTemplateVars('__loc')->src).$params['record']->id;

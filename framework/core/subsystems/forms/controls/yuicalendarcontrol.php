@@ -30,9 +30,9 @@ class yuicalendarcontrol extends formcontrol {
     var $disable_text = "";
     var $showtime = true;
 
-    function name() { return "YAHOO! UI Calendar"; }
-    function isSimpleControl() { return false; }
-    function getFieldDefinition() {
+    static function name() { return "YAHOO! UI Calendar"; }
+    static function isSimpleControl() { return false; }
+    static function getFieldDefinition() {
         return array(
             DB_FIELD_TYPE=>DB_DEF_TIMESTAMP);
     }
@@ -58,7 +58,7 @@ class yuicalendarcontrol extends formcontrol {
         // $form->addScript("popupdatetimecontrol",PATH_RELATIVE."js/PopupDateTimeControl.js");
     }
 
-    function controlToHTML($name) {
+    function controlToHTML($name,$label=null) {
         $html = "
         <div class=\"yui-skin-sam\">
             <div id=\"cal".$name."Container\"></div>

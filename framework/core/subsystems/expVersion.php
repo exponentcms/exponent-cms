@@ -57,6 +57,7 @@ class expVersion {
 	public static function checkVersion() {
 		global $db, $user;
 
+        $swversion = new stdClass();
         $swversion->major = EXPONENT_VERSION_MAJOR;
         $swversion->minor = EXPONENT_VERSION_MINOR;
         $swversion->revision = EXPONENT_VERSION_REVISION;

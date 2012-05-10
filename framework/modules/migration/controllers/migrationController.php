@@ -470,10 +470,11 @@ class migrationController extends expController {
         foreach ($secref as $sr) {
             // hard coded modules
             if (array_key_exists($sr->module, $this->new_modules) && ($sr->refcount==1000)) {
-	            $iloc = null;
+	            $iloc = new stdClass();
 	            $iloc->mod = $sr->module;
                 $iloc->src = $sr->source;
                 $iloc->int = $sr->internal;
+                $tmp = new stdClass();
 	            $tmp->module = '';
 //                $this->convert($iloc,$iloc->mod,1);
                 $this->convert($iloc,$tmp,1);
@@ -563,7 +564,7 @@ class migrationController extends expController {
 			$users = $db->selectObjects('user','id > 1');
 			foreach($users as $user) {
 				$containers = $old_db->selectObjects('userpermission',"uid='".$user->id."' AND source != ''");
-				$loc = null;
+				$loc = new stdClass();;
 				foreach($containers as $item) {
 					$loc->mod = $item->module;
 					$loc->src = $item->source;
@@ -585,7 +586,7 @@ class migrationController extends expController {
 			$groups = $db->selectObjects('group','1');
 			foreach($groups as $group) {
 				$containers = $old_db->selectObjects('grouppermission',"gid='".$group->id."' AND source != ''");
-				$loc = null;
+				$loc = new stdClass();;
 				foreach($containers as $item) {
 					$loc->mod = $item->module;
 					$loc->src = $item->source;
@@ -734,8 +735,8 @@ class migrationController extends expController {
 				}				
 			}
 		}
-	    $users = null;
-	    $groups = null;
+	    $users = new stdClass();
+	    $groups = new stdClass();
 		if (!empty($this->params['groups']) && !empty($this->params['rep_groups'])) {
 			$groups = array_merge($this->params['groups'],$this->params['rep_groups']);
 		} elseif (!empty($this->params['groups'])) {
@@ -790,7 +791,7 @@ class migrationController extends expController {
         global $db;
         $old_db = $this->connect();
 		$linked = false;
-	    $loc = null;
+	    $loc = new stdClass();
         $newconfig = new expConfig();
         if ((!empty($module->is_existing) && $module->is_existing)) {
             $linked = true;
@@ -1772,13 +1773,13 @@ class migrationController extends expController {
 						$db->insertObject($address, 'formbuilder_address');
 					}
 
-					$report = null;
+					$report = new stdClass();
 					$report->name = $contactform->subject;
 					$report->location_data = $contactform->location_data;
 					$report->form_id = $contactform->id;
 					$db->insertObject($report, 'formbuilder_report');
 					// now add the controls to the form
-					$control = null;
+					$control = new stdClass();
 					$control->name = 'name';
 					$control->caption = 'Your Name';
 					$control->form_id = $contactform->id;

@@ -61,7 +61,7 @@ class billingController extends expController {
                     $classname = substr($file, 0, -4);
                     $id = $db->selectValue('billingcalculator', 'id', 'calculator_name="'.$classname.'"');
                     if (empty($id)) {
-                        $calobj = null;
+//                        $calobj = null;
                         $calcobj = new $classname();
                         if ($calcobj->isSelectable() == true) {                            
                             $obj = new billingcalculator(array(

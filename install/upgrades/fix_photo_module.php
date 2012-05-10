@@ -32,7 +32,7 @@ class fix_photo_module extends upgradescript {
 	 * name/title of upgrade script
 	 * @return string
 	 */
-	function name() { return "Update photoalbum module with correct spelling"; }
+	static function name() { return "Update photoalbum module with correct spelling"; }
 
 	/**
 	 * generic description of upgrade script

@@ -35,7 +35,7 @@
  */
 function smarty_function_max_filesize($params,&$smarty) {
     $size = ini_get("upload_max_filesize");
-	$size_msg = "";
+//	$size_msg = "";
 	$type = substr($size,-1,1);
 	$shorthand_size = substr($size,0,-1);
 	switch ($type) {

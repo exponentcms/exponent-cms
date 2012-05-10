@@ -30,9 +30,9 @@ class quantitycontrol extends formcontrol {
     public $min=0;
     public $max=99999;
 
-    function name() { return "Quantity Widget"; }
-    function isSimpleControl() { return false; }
-    function getFieldDefinition() {
+    static function name() { return "Quantity Widget"; }
+    static function isSimpleControl() { return false; }
+    static function getFieldDefinition() {
         return array(
             DB_FIELD_TYPE=>DB_DEF_STRING,
             DB_FIELD_LEN=>10000);

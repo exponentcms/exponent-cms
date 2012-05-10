@@ -27,9 +27,9 @@ if (!defined('EXPONENT')) exit('');
  */
 class uploadcontrol extends formcontrol {
 
-	function name() { return "File Upload Field"; }
-	function isSimpleControl() { return false; }
-	function getFieldDefinition() {
+	static function name() { return "File Upload Field"; }
+	static function isSimpleControl() { return true; }
+	static function getFieldDefinition() {
 		return array(
 			DB_FIELD_TYPE=>DB_DEF_STRING,
 			DB_FIELD_LEN=>250,);
@@ -43,7 +43,7 @@ class uploadcontrol extends formcontrol {
 		$form->enctype = "multipart/form-data";
 	}
 
-	function controlToHTML($name) {
+	function controlToHTML($name,$label) {
 		$html = "<input type=\"file\" name=\"$name\" ";
 		if(isset($this->class)) $html .=  'class="' . $this->class . '"';
 		$html .= ($this->disabled?"disabled ":"");
@@ -92,6 +92,11 @@ class uploadcontrol extends formcontrol {
         expFile::moveUploadedFile($formvalues[$original_name]['tmp_name'],BASE.$dest);
 		return $dest;
 	}
+
+//    static function buildDownloadLink($control_name,$file_name,$mode) {
+//   		$file = $formvalues[$original_name];
+//   		return '<a href="'.PATH_RELATIVE.$file.'">'.basename($file).'</a>';
+//   	}
 
 	static function parseData($original_name,$formvalues) {
 		$file = $formvalues[$original_name];

@@ -40,7 +40,7 @@ function smarty_function_attribution($params,&$smarty) {
 	}
 
 	if (!empty($u->id)) {
-		$str = "";
+//		$str = "";
 		$display = isset($params['display']) ? $params['display'] : DISPLAY_ATTRIBUTION;
 		switch ($display) {
 			case "firstlast":

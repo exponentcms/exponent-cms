@@ -30,8 +30,8 @@ class configcontrol extends formcontrol {
 	public $opts  = array();
 	public $title = '';
 
-	function name() { return "Configuration Manager Control"; }
-	function isSimpleControl() { return false; }
+	static function name() { return "Configuration Manager Control"; }
+	static function isSimpleControl() { return false; }
 	
 	function __construct($title="Config Manager", $welcome="", $opts=array()) {
 		$this->type = "configmanager";

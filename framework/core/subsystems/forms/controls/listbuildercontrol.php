@@ -32,7 +32,7 @@ class listbuildercontrol extends formcontrol {
 	var $newList = false;
 	var $process = null;
 
-	function name() { return "List Builder"; }
+	static function name() { return "List Builder"; }
 
 	function __construct($default,$source,$size=8) {
 		if (is_array($default)) $this->default = $default;

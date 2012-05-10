@@ -30,9 +30,9 @@ class texteditorcontrol extends formcontrol {
 	var $cols = 45;
 	var $rows = 5;
 	
-	function name() { return "Text Area"; }
-	function isSimpleControl() { return true; }
-	function getFieldDefinition() {
+	static function name() { return "Text Area"; }
+	static function isSimpleControl() { return true; }
+	static function getFieldDefinition() {
 		return array(
 			DB_FIELD_TYPE=>DB_DEF_STRING,
 			DB_FIELD_LEN=>10000);
@@ -46,7 +46,7 @@ class texteditorcontrol extends formcontrol {
 		$this->maxchars = 0;
 	}
 
-	function controlToHTML($name) {
+	function controlToHTML($name,$label) {
 		$html = "<textarea class=\"textarea\" id=\"$name\" name=\"$name\"";
 		$html .= " rows=\"" . $this->rows . "\" cols=\"" . $this->cols . "\"";
 		if ($this->accesskey != "") $html .= " accesskey=\"" . $this->accesskey . "\"";

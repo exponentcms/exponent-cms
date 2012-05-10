@@ -71,7 +71,7 @@ $target_lang_file = '';
  * @global \database $db the exponent database object
  * @name $db
  */
-$db = null;
+$db = new stdClass();
 
 // expHistory
 /**
@@ -79,7 +79,7 @@ $db = null;
  * @global expHistory $history
  * @name $history
  */
-$history = null;
+$history = new stdClass();
 
 // user model
 /**
@@ -87,7 +87,7 @@ $history = null;
  * @global user $user
  * @name $user
  */
-$user = null;
+$user = new stdClass();
 /**
  * This global array belongs exclusively to the user model, and is used to cache
  * users as they are retrieved, to help out with performance when doing a lot of
@@ -103,13 +103,13 @@ $SYS_USERS_CACHE = array();
  * @global expRouter $router
  * @name $router
  */
-$router = null;
+$router = new stdClass();
 /**
  * Stores the routing/link/url object
  * @global section $sectionObj
  * @name $sectionObj
  */
-$sectionObj = null;
+$sectionObj = new stdClass();
 
 // expCore
 /**
@@ -274,6 +274,7 @@ function renderAction(array $parms=array()) {
     if (isset($parms['moduletitle'])) {
         $template->assign('moduletitle', $parms['moduletitle']);
     } else {
+        $title = new stdClass();
         $title->mod = $controller->loc->mod.'Controller';  //FIXME do we process modules also needing this?
         $title->src = $controller->loc->src;
         $title->int = '';
@@ -443,6 +444,7 @@ function get_model_for_controller($controller_name) {
 }
 
 function get_common_template($view, $loc, $controllername='') {
+    $controller = new stdClass();
     $controller->baseclassname = empty($controllername) ? 'common' : $controllername;
     $controller->relative_viewpath = 'framework/modules-1/common/views'.$controller->baseclassname;
     $controller->loc = $loc;
@@ -664,13 +666,13 @@ function get_filedisplay_views() {
     return $views;
 }
 
-function makeLocation($mod=null,$src=null,$int=null) {
-        $loc = null;
-        $loc->mod = ($mod ? $mod : "");
-        $loc->src = ($src ? $src : "");
-        $loc->int = ($int ? $int : "");
-        return $loc;
-}
+//function makeLocation($mod=null,$src=null,$int=null) {
+//        $loc = new stdClass();;
+//        $loc->mod = ($mod ? $mod : "");
+//        $loc->src = ($src ? $src : "");
+//        $loc->int = ($int ? $int : "");
+//        return $loc;
+//}
 
 function object2Array($object=null) {
     $ret_array = array();

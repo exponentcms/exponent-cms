@@ -33,7 +33,7 @@ abstract class upgradescript {
 	 * The name/title of upgrade script
 	 * @return string
 	 */
-	function name() { }
+	static function name() { }
 
 	/**
 	 * The generic description of upgrade script
@@ -49,12 +49,14 @@ abstract class upgradescript {
 	function checkVersion($version) {
         $db_version = $version->major.'.'.$version->minor.'.'.$version->revision;
         $to_version = explode('.',$this->to_version);
+        $to_ver = new stdClass();
         $to_ver->major = $to_version[0];
         $to_ver->minor = $to_version[1];
         $to_ver->revision = $to_version[2];
         $to_ver->type = '';
         $to_ver->iteration = '';
         $from_version = explode('.',$this->from_version);
+        $from_ver = new stdClass();
         $from_ver->major = $from_version[0];
         $from_ver->minor = $from_version[1];
         $from_ver->revision = $from_version[2];

@@ -262,9 +262,9 @@ class expRecord {
         
         //check for location_data
         if (is_array($params) && (!empty($params['module']) && !empty($params['src']))) {
-            $params['location_data'] = serialize(makeLocation($params['module'], $params['src']));
+            $params['location_data'] = serialize(expCore::makeLocation($params['module'], $params['src']));
         } elseif(is_object($params) && (!empty($params->module) && !empty($params->src))) {
-            $params->location_data = serialize(makeLocation($params->module, $params->src));
+            $params->location_data = serialize(expCore::makeLocation($params->module, $params->src));
         }
     
         // Build Class properties based off table fields
@@ -333,7 +333,7 @@ class expRecord {
         // save the attachable items
         $refname = strtolower($item->classname).'s_id';
         $db->delete($item->attachable_table, 'content_type="'.$this->classname.'" AND content_id='.$this->id.' AND '.$refname.'='.$item->id);
-        $obj = null;
+        $obj = new stdClass();
         $obj->$refname = $item->id;
         $obj->content_id = $this->id;
         $obj->content_type = $this->classname;
@@ -363,7 +363,7 @@ class expRecord {
         //$this->saveAssociatedObjects(); 
         
         //Only grab fields that are valid and save this object
-        $saveObj = null;
+        $saveObj = new stdClass();
         $table = $db->getDataDefinition($this->tablename);
         foreach($table as $col=>$colDef) {
             $saveObj->$col = empty($this->$col) ? null : $this->$col;
@@ -456,7 +456,7 @@ class expRecord {
                         if (is_array($item)) {
                             foreach($item as $rank=>$value) {
                                 if (is_numeric($value)) {
-                                    $obj = null;
+                                    $obj = new stdClass();
                                     $obj->$refname = $value;
                                     $obj->subtype = $subtype;
                                     $obj->content_id = $this->id;
@@ -466,7 +466,7 @@ class expRecord {
                                 }
                             }
                         } elseif (is_numeric($item)) {
-                            $obj = null;
+                            $obj = new stdClass();
                             $obj->$refname = $item;
                             $obj->content_id = $this->id;
                             $obj->content_type = $this->classname;
@@ -912,7 +912,7 @@ class expRecord {
             $tablename = $this->makeManyToManyTablename($assocObj->tablename);
             $thisid = $this->tablename.'_id';
             $otherid = $assocObj->tablename.'_id';
-            $obj = null;
+            $obj = new stdClass();
             $obj->$thisid = $this->id;
             $obj->$otherid = $id;
             $db->insertObject($obj, $tablename);

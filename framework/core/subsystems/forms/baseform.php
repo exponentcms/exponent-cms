@@ -89,7 +89,7 @@ class baseform {
 		return true;
 	}
 	
-	function toHTML() {
+	function toHTML($form_id, $module) {
 		return "";
 	}
 }

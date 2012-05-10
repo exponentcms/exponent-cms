@@ -90,6 +90,7 @@ class blogController extends expController {
 	        } else {
                 $count++;
                 if ($count > $limit) break;
+                $blog_date[$year][$month] = new stdClass();
 	            $blog_date[$year][$month]->name = date('F',$date);
 	            $blog_date[$year][$month]->count = 1;    
 	        }

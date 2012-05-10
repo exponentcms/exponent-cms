@@ -19,8 +19,8 @@
 if (!defined('EXPONENT')) exit('');
 
 $container = null;
-$iloc = null;
-$cloc = null;
+$iloc = new stdClass();
+$cloc = new stdClass();
 if (isset($_POST['id'])) $container = $db->selectObject("container","id=" . intval($_POST['id']));
 if ($container != null) {
 	$iloc = unserialize($container->internal);

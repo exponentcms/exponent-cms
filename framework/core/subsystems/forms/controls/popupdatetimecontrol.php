@@ -31,9 +31,9 @@ class popupdatetimecontrol extends formcontrol {
 	var $disable_text = "";
 	var $showtime = true;
 
-	function name() { return "Popup Date/Time Selector"; }
-	function isSimpleControl() { return false; }
-	function getFieldDefinition() {
+	static function name() { return "Popup Date/Time Selector"; }
+	static function isSimpleControl() { return false; }
+	static function getFieldDefinition() {
 		return array(
 			DB_FIELD_TYPE=>DB_DEF_TIMESTAMP);
 	}
@@ -59,7 +59,7 @@ class popupdatetimecontrol extends formcontrol {
 		$form->addScript("popupdatetimecontrol",PATH_RELATIVE."js/PopupDateTimeControl.js");
 	}
 
-	function controlToHTML($name) {
+	function controlToHTML($name,$label) {
 		$html = "";
 		if ($this->default == 0) {
 			$this->default = time();

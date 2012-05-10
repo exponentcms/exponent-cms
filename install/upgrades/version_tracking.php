@@ -32,7 +32,7 @@ class version_tracking extends upgradescript {
 	 * name/title of upgrade script
 	 * @return string
 	 */
-	function name() { return gt("Update Version Information"); }
+	static function name() { return gt("Update Version Information"); }
 
 	/**
 	 * generic description of upgrade script
@@ -58,7 +58,7 @@ class version_tracking extends upgradescript {
 
 		// version tracking
 		$db->delete('version',1);  // clear table of old accumulated entries
-		$vo = null;
+		$vo = new stdClass();
 		$vo->major = EXPONENT_VERSION_MAJOR;
 		$vo->minor = EXPONENT_VERSION_MINOR;
 		$vo->revision = EXPONENT_VERSION_REVISION;

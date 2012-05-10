@@ -52,10 +52,10 @@ class expCore {
 	 * @return null
 	 */
 	public static function makeLocation($mod=null,$src=null,$int=null) {
-		$loc = null;
-		$loc->mod = ($mod ? $mod : "");
-		$loc->src = ($src ? $src : "");
-		$loc->int = (!empty($int) ? strval(intval($int)) : "");
+		$loc = new stdClass();
+		$loc->mod = !empty($mod) ? $mod : '';
+		$loc->src = !empty($src) ? $src : '';
+		$loc->int = !empty($int) ? strval(intval($int)) : '';
 		return $loc;
 	}
 

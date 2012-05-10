@@ -53,7 +53,7 @@ class linksController extends expController {
 
         if (empty($this->config['usecategories']) ? false : $this->config['usecategories']) {
             expCatController::addCats($links,$order,!empty($this->config['uncat'])?$this->config['uncat']:gt('Not Categorized'));
-            $cats = array();
+            $cats[] = new stdClass();
             $cats[0]->name = '';
             expCatController::sortedByCats($links,$cats);
             assign_to_template(array('cats'=>$cats));

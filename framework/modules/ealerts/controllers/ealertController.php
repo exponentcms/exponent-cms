@@ -153,7 +153,7 @@ class ealertController extends expController {
         // delete any old subscriptions and add the user to new subscriptions
         $db->delete('expeAlerts_subscribers', 'subscribers_id='.$subscriber->id);
         foreach($this->params['ealerts'] as $ea_id) {
-            $obj = null;
+            $obj = new stdClass();
             $obj->subscribers_id = $subscriber->id;
             $obj->expeAlerts_id = $ea_id;
             $db->insertObject($obj, 'expeAlerts_subscribers');
@@ -191,7 +191,7 @@ class ealertController extends expController {
         // delete any old subscriptions and add the user to new subscriptions
         $db->delete('expeAlerts_subscribers', 'subscribers_id='.$subscriber->id);
         foreach($this->params['ealerts'] as $ea_id) {
-            $obj = null;
+            $obj = new stdClass();
             $obj->subscribers_id = $subscriber->id;
             $obj->expeAlerts_id = $ea_id;
             $db->insertObject($obj, 'expeAlerts_subscribers');

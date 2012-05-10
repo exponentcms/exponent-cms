@@ -32,7 +32,7 @@ class update_profile_paths extends upgradescript {
 	 * name/title of upgrade script
 	 * @return string
 	 */
-	function name() { return "Corrects bad user profile extension path entries"; }
+	static function name() { return "Corrects bad user profile extension path entries"; }
 
 	/**
 	 * generic description of upgrade script

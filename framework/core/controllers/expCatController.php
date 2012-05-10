@@ -145,6 +145,7 @@ class expCatController extends expController {
         foreach ($records as $record) {
             if (empty($record->catid)) $record->catid = 0;
             if (empty($cats[$record->catid])) {
+                $cats[$record->catid] = new stdClass();
                 $cats[$record->catid]->count = 1;
                 $cats[$record->catid]->name = $record->cat;
             } else {

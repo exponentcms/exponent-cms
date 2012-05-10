@@ -168,7 +168,7 @@ class usersController extends expController {
 	        // are marked as 'inclusive' automatically pick up new users.  This is the part
 	        // of the code that goes out, finds those groups, and makes the new user a member
 	        // of them.
-	        $memb = null;
+	        $memb = new stdClass();
 	        $memb->member_id = $u->id;
 	        // Also need to process the groupcodes, for promotional signup
 	        $code_where = '';
@@ -420,7 +420,7 @@ class usersController extends expController {
             expValidator::failAndReturnToForm(gt('You cannot reset passwords for an administrator account.'), $this->params);
         }
 	
-        $tok = null;
+        $tok = new stdClass();
         $tok->uid = $u->id;
         $tok->expires = time() + 2*3600;
         $tok->token = md5(time()).uniqid('');
@@ -694,7 +694,7 @@ class usersController extends expController {
     	$group = $db->selectObject('group','id='.intval($this->params['id']));
 
 		$db->delete('groupmembership','group_id='.$group->id);
-		$memb = null;
+		$memb = new stdClass();
 		$memb->group_id = $group->id;
 		if ($this->params['memdata'] != "") {
 			foreach ($this->params['memdata'] as $u=>$str) {

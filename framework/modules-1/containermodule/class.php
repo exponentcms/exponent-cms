@@ -53,9 +53,9 @@ class containermodule {
 		}
 	}
 	
-	function show($view,$loc = null,$title = '') {
+	static function show($view,$loc = null,$title = '') {
 		if (empty($view)) $view = "Default";
-		$source_select = array();
+//		$source_select = array();
 		$clickable_mods = null; // Show all
 		$dest = null;
 		
@@ -81,6 +81,7 @@ class containermodule {
 				$container = $db->selectObject('container',"external='".serialize(null)."' AND internal='".$container_key."'");
 				//if container isn't here already, then create it.
 	            if ($container == null) {
+                    $container = new stdClass();
 					$container->external = serialize(null);
 					$container->internal = serialize($loc);
 					$container->view = $view;
@@ -93,7 +94,7 @@ class containermodule {
         		$container = $cache['top'][$container_key];
         	}
 			if (!defined('PREVIEW_READONLY') || defined('SELECTOR')) $view = empty($container->view) ? $view : $container->view;
-			$title = $container->title;
+//			$title = $container->title;
 		}
         $container->scope = empty($module_scope[$loc->src]["containermodule"]->scope) ? '' : $module_scope[$loc->src]["containermodule"]->scope;
 
@@ -173,7 +174,7 @@ class containermodule {
 			}
 			$containers[$i]->moduleLocation = $location;
 			
-			$cloc = null;
+			$cloc = new stdClass();
 			$cloc->mod = $loc->mod;
 			$cloc->src = $loc->src;
 			$cloc->int = $containers[$i]->id;
@@ -220,7 +221,7 @@ class containermodule {
 		}
 	}
 	
-	function spiderContent($item = null) {
+	static function spiderContent($item = null) {
 		// Do nothing, no content
 		return false;
 	}
@@ -228,7 +229,7 @@ class containermodule {
 	static function wrapOutput($modclass,$view,$loc = null,$title = '') {
 	    global $db;
 		if (defined('SOURCE_SELECTOR') && strtolower($modclass) != 'containermodule') {
-			$container = null;
+			$container = new stdClass();
 			$mod = new $modclass();
 			
 			ob_start();
@@ -239,11 +240,9 @@ class containermodule {
 			    $mod->show($view,$loc,$title);
 			}
 			
-			
 			$container->output = ob_get_contents();
 			ob_end_clean();
-			
-			
+
 			$source_select = expSession::get('source_select');
 			$c_view = $source_select['view'];
 			$c_module = $source_select['module'];

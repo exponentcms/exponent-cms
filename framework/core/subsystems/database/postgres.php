@@ -211,7 +211,7 @@ class postgres_database extends database {
 		return $res;
 	}
 	
-	function selectObjects($table,$where = null) {
+	function selectObjects($table,$where = null, $orderby = null) {
 		$sql = "SELECT * FROM " . $this->prefix.$table;
 		if ($where != null) $sql .= " WHERE $where";
 		$res = @pg_query($sql);
@@ -225,7 +225,7 @@ class postgres_database extends database {
 		return $records;
 	}
 	
-	function selectObjectsIndexedArray($table,$where = null) {
+	function selectObjectsIndexedArray($table,$where = null, $orderby = null) {
 		$sql = "SELECT * FROM " . $this->prefix.$table;
 		if ($where != null) $sql .= " WHERE $where";
 		$res = pg_query($sql);
@@ -285,7 +285,7 @@ class postgres_database extends database {
 		pg_query($this->connection,$sql);
 	}
 	
-	function updateObject($object,$table,$where=null) {
+	function updateObject($object,$table,$where=null, $identifier='id', $is_revisioned=false) {
 		$sql = "UPDATE " . $this->prefix.$table . " SET ";
 		foreach (get_object_vars($object) as $var=>$val) {
 			$sql .= "$var='".str_replace("'","\\'",$val)."',";
@@ -496,7 +496,7 @@ ENDSQL;
 			return $status;
 		} else $status["CREATE TABLE"] = true;
 		
-		$o = null;
+		$o = new stdClass();
 		$o->name = "Testing Name";
 		$insert_id = $this->insertObject($o,$tablename);
 		if ($insert_id == 0) {
@@ -527,7 +527,7 @@ ENDSQL;
 			DB_FIELD_TYPE=>DB_DEF_TIMESTAMP);
 		
 		$this->alterTable($tablename,$dd,array());
-		$o = null;
+		$o = new stdClass();
 		$o->name = "Alter Test";
 		$o->thirdcol = time();
 		if (!$this->insertObject($o,$tablename)) {
@@ -628,7 +628,7 @@ ENDSQL;
                 return $objects;
 	}
 
-	function selectColumn($table,$col,$where = null,$orderby = null) {
+	function selectColumn($table,$col,$where = null,$orderby = null, $distinct=false) {
                 if ($where == null) $where = "1";
                 if ($orderby == null) $orderby = '';
             	else $orderby = "ORDER BY " . $orderby;
@@ -707,7 +707,7 @@ ENDSQL;
     }
 
 	function translateTableStatus($status) {
-		$data = null;
+		$data = new stdClass();
 		$data->rows = $status->Rows;
 		$data->average_row_lenth = $status->Avg_row_length;
 		$data->data_overhead = $status->Data_free;

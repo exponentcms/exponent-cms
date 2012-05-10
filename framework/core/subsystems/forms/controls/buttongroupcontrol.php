@@ -36,7 +36,7 @@ class buttongroupcontrol extends formcontrol {
 	var $class = "";
 	var $validateJS = "";
 
-	function name() { return "Button Group"; }
+	static function name() { return "Button Group"; }
 
 	function __construct($submit = "Submit", $reset = "", $cancel = "", $class="", $returntype="") {
 		$this->submit = $submit;
@@ -55,7 +55,7 @@ class buttongroupcontrol extends formcontrol {
 		return $html;
 	}
 
-	function controlToHTML($name) {
+	function controlToHTML($name,$label=null) {
 		if ($this->submit . $this->reset . $this->cancel == "") return "";
 		if (empty($this->id)) $this->id = $name;
 		$html = "";

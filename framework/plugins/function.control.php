@@ -393,7 +393,7 @@ function smarty_function_control($params,&$smarty) {
         if (isset($params['default_ampm'])) $control->default_ampm = $params['default_ampm']; 
         
         $control->name = $params['name'];
-        $badvals = array("[", "]", ",", " ", "'", "\"", "&", "#", "%", "@", "!", "$", "(", ")", "{", "}");
+//        $badvals = array("[", "]", ",", " ", "'", "\"", "&", "#", "%", "@", "!", "$", "(", ")", "{", "}");
         //$newid = str_replace($badvals, "", $params['name']);
         $control->id = isset($params['id']) && $params['id'] != "" ? $params['id'] : "";
         //echo $control->id;

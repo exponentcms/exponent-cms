@@ -162,7 +162,9 @@ class expCSS {
                         $filename = $cssdir.$cssfile;
                         if ( is_file($filename) && substr($filename,-4,4) == ".css") {
     //                        $css_theme[reset(explode(".",end(explode("/",$filename))))."-theme"] = PATH_RELATIVE."themes/".DISPLAY_THEME_REAL."/css/".$cssfile;
-                            $css_theme[$key.reset(explode(".",end(explode("/",$filename))))."-theme".$variation] = PATH_RELATIVE."themes/".DISPLAY_THEME."/css".$variation."/".$cssfile;
+                            $endfile = explode("/",$filename);
+                            $tmpfile = explode(".",end($endfile));
+                            $css_theme[$key.reset($tmpfile)."-theme".$variation] = PATH_RELATIVE."themes/".DISPLAY_THEME."/css".$variation."/".$cssfile;
                         }
                     }
                 }

@@ -33,7 +33,7 @@ $rpt = $db->selectObject("formbuilder_report","form_id=".intval($_POST['id']));
 $controls = $db->selectObjects("formbuilder_control","form_id=".$f->id." and is_readonly=0","rank");
 //$controls = expSorter::sort(array('array'=>$controls,'sortby'=>'rank', 'order'=>'ASC'));
 
-$db_data = null;
+$db_data = new stdClass();
 $emailFields = array();
 $captions = array();
 foreach ($controls as $c) {

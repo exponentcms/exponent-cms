@@ -30,6 +30,7 @@ if (DEVELOPMENT) {
 	ini_set('display_errors',1);
 	// Up the ante on the error reporting so we can see notices as well.
 	ini_set('error_reporting',E_ALL);
+//    ini_set('error_reporting',E_ALL & ~E_STRICT);  // hide 'strict' warning in v5.4
 	// This is rarely set to true, but the first time it is, we'll be ready.
 	ini_set('ignore_repeated_errors',0);
 } else {

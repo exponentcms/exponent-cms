@@ -158,7 +158,7 @@ abstract class expNestedNode extends expRecord {
     //  $this->save();
     // }
     // 
-	public function delete() {
+	public function delete($where = '') {
 		global $db;
 		$db->deleteNestedNode($this->table, $this->lft, $this->rgt);
 	}

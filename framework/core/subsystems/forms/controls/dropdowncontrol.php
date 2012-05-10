@@ -34,9 +34,9 @@ class dropdowncontrol extends formcontrol {
     var $type = 'select';
     var $class = '';
     
-    function name() { return "Drop Down List"; }
-    function isSimpleControl() { return true; }
-    function getFieldDefinition() {
+    static function name() { return "Drop Down List"; }
+    static function isSimpleControl() { return true; }
+    static function getFieldDefinition() {
         return array(
             DB_FIELD_TYPE=>DB_DEF_STRING,
             DB_FIELD_LEN=>255);
@@ -50,7 +50,7 @@ class dropdowncontrol extends formcontrol {
         $this->multiple = $multiple;
     }
     
-    function controlToHTML($name) {          
+    function controlToHTML($name,$label=null) {
         $inputID  = (!empty($this->id)) ? ' id="'.$this->id.'"' : "";
         $disabled = $this->disabled != false ? "disabled" : "";
         $html = '<select'.$inputID.' name="' . $name;

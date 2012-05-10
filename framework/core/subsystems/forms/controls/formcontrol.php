@@ -38,15 +38,15 @@ class formcontrol {
 	var $inError = 0; // This will ONLY be set by the parent form.
 	var $type = 'text';
 
-	function name() { return "formcontrol"; }
+	static function name() { return "formcontrol"; }
 
 	/**
 	 * Is this a Simple Control?
 	 * Used to determine if control is available for the Form (Builder) module
 	 * @return bool
 	 */
-	function isSimpleControl() { return false; }
-	function getFieldDefinition() { return array(); }
+	static function isSimpleControl() { return false; }
+	static function getFieldDefinition() { return array(); }
 
 	function toHTML($label,$name) {
 		if (!empty($this->id)) {
@@ -76,7 +76,7 @@ class formcontrol {
 		return $html;
 	}
 	
-	function controlToHTML($name) {
+	function controlToHTML($name,$label) {
 		return "";
 	}
 	
@@ -92,7 +92,7 @@ class formcontrol {
 		return true;
 	}
 	
-	function templateFormat($db_data, $ctl = null) {
+	function templateFormat($db_data, $ctl) {
 		return isset($db_data)?$db_data:"";
 	}
 }

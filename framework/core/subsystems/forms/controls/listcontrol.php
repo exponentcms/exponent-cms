@@ -30,8 +30,8 @@ class listcontrol extends formcontrol {
     var $html;
     var $span;
     
-    function name() { return "List Control"; }
-    function isSimpleControl() { return false; }
+    static function name() { return "List Control"; }
+    static function isSimpleControl() { return false; }
     
     function __construct() {
     }
@@ -128,7 +128,7 @@ class listcontrol extends formcontrol {
         return $html;
     }
     
-    function controlToHTML($name) {
+    function controlToHTML($name,$label) {
         return $this->html;
     }
     

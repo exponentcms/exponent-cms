@@ -234,6 +234,7 @@ class expPaginator {
                     $title = '';
                 }
                 if (empty($this->cats[$title])) {
+                    $this->cats[$title] = new stdClass();
                     $this->cats[$title]->count = 1;
                     $this->cats[$title]->name = $title;
                 } else {

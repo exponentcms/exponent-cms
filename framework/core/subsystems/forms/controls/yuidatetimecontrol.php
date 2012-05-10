@@ -31,9 +31,9 @@ class yuidatetimecontrol extends formcontrol {
     var $showdate = true;
     var $showtime = true;
     
-    function name() { return "YUI Date / Time Field"; }
-    function isSimpleControl() { return false; }
-    function getFieldDefinition() {
+    static function name() { return "YUI Date / Time Field"; }
+    static function isSimpleControl() { return false; }
+    static function getFieldDefinition() {
         return array(
             DB_FIELD_TYPE=>DB_DEF_TIMESTAMP);
     }
@@ -70,7 +70,7 @@ class yuidatetimecontrol extends formcontrol {
         return $html;
     }
     
-    function controlToHTML($name) {
+    function controlToHTML($name,$label=null) {
         $datectl = new yuicalendarcontrol($this->default,'',false);
         $timectl = new datetimecontrol($this->default,false);
         $datetime = date('l, F d, o g:i a', $this->default);

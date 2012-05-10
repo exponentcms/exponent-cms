@@ -30,9 +30,9 @@ class hiddenfieldcontrol extends formcontrol {
 	var $flip = false;
 	var $jsHooks = array();
 	
-	function name() { return "generic"; }
-	function isSimpleControl() { return false; }
-	function getFieldDefinition() { 
+	static function name() { return "generic"; }
+	static function isSimpleControl() { return false; }
+	static function getFieldDefinition() {
 		return array();
 	}
 
@@ -44,7 +44,7 @@ class hiddenfieldcontrol extends formcontrol {
 		return $html;
 	}
 
-	function controlToHTML() {
+	function controlToHTML($name=null,$label=null) {
 		$html = '<input type="hidden" id="' . $this->id . '" name="' . $this->name . '" value="'.$this->default.'"';
 		$html .= ' />';
 		return $html;

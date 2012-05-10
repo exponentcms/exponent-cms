@@ -34,9 +34,9 @@ class calendarcontrol extends formcontrol {
     var $default_min = '';
     var $default_ampm = '';
 
-    function name() { return "YAHOO! UI Calendar"; }
-    function isSimpleControl() { return false; }
-    function getFieldDefinition() {
+    static function name() { return "YAHOO! UI Calendar"; }
+    static function isSimpleControl() { return false; }
+    static function getFieldDefinition() {
         return array(
             DB_FIELD_TYPE=>DB_DEF_TIMESTAMP);
     }

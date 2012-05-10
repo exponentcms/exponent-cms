@@ -108,7 +108,7 @@ class user extends expRecord {
 	public function updateLastLogin() {
 		global $db, $user;
 
-		$obj = null;
+		$obj = new stdClass();
 		$obj->id = $this->id;
 		$obj->last_login = time();
 		$db->updateObject($obj, 'user');
@@ -279,7 +279,7 @@ class user extends expRecord {
 	 * to the database.
 	 *
 	 * @param string $name The username of the user account to retrieve.
-	 * @return \user
+	 * @return user
 	 * @node Model:User
 	 */
 	public static function getUserByName($name) {
@@ -305,7 +305,7 @@ class user extends expRecord {
 	 * object do not result in another trip to the database engine.
 	 *
 	 * @param integer $uid The id of the user account to retrieve.
-	 * @return \user
+	 * @return user
 	 * @node Model:User
 	 */
 	public static function getUserById($uid) {

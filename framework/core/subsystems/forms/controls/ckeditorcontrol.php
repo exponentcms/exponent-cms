@@ -32,7 +32,7 @@ class ckeditorcontrol extends formcontrol {
 	var $maxchars;
 	var $toolbar;
 
-	function name() { return "CKEditor"; }
+	static function name() { return "CKEditor"; }
 	
 	function __construct ($default="",$rows = 5,$cols = 45) {
 		$this->default = $default;
@@ -42,7 +42,7 @@ class ckeditorcontrol extends formcontrol {
 		$this->maxchars = 0;
 	}
 
-	function controlToHTML($name) {
+	function controlToHTML($name,$label) {
 	    global $db;
 
         $contentCSS = '';

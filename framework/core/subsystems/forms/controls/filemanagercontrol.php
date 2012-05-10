@@ -30,8 +30,8 @@ class filemanagercontrol extends formcontrol {
     var $html;
     var $span;
     
-    function name() { return "Manage Files"; }
-    function isSimpleControl() { return false; }
+    static function name() { return "Manage Files"; }
+    static function isSimpleControl() { return false; }
     
     function __construct($subtype=null, $html = "",$span = true) {
         $this->span = $span;
@@ -347,7 +347,7 @@ class filemanagercontrol extends formcontrol {
         return $html;
     }
     
-    function controlToHTML($name) {
+    function controlToHTML($name,$label) {
         return $this->html;
     }
     
