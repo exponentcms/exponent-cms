@@ -94,12 +94,14 @@ class expCSS {
             $srt = array();
             $srt[$i] = "";
             foreach ($css_files as $file) {
-                if (strlen($srt[$i])+strlen($file)<= $strlen) {
-                    $srt[$i] .= $file.",";
-                } else {
-                    $i++;
-                    $srt[$i] = "";
-                    $srt[$i] .= $file.",";
+                if (!empty($file)) {
+                    if (strlen($srt[$i])+strlen($file)<= $strlen) {
+                        $srt[$i] .= $file.",";
+                    } else {
+                        $i++;
+                        $srt[$i] = "";
+                        $srt[$i] .= $file.",";
+                    }
                 }
             }
             foreach ($srt as $link) {
