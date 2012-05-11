@@ -8,7 +8,13 @@
 
 //Initialize exponent Framework
 include_once(dirname(__FILE__) .'/../../../exponent_bootstrap.php');
-//include_once(BASE.'conf/config.php');
+
+
+/**
+ * Allow use of the Minify URI Builder app. Only set this to true while you need it.
+ **/
+$min_enableBuilder = true;
+
 
 /**
  * Set to true to log messages to FirePHP (Firefox Firebug addon).
@@ -17,14 +23,13 @@ include_once(dirname(__FILE__) .'/../../../exponent_bootstrap.php');
  *
  * If you want to use a custom error logger, set this to your logger
  * instance. Your object should have a method log(string $message).
- *
- * @todo cache system does not have error logging yet.
  */
 //$min_errorLogger = false;
 $min_errorLogger = MINIFY_ERROR_LOGGER;
 
+
 /**
- * To allow debugging, you must set this option to true.
+ * To allow debug mode output, you must set this option to true.
  *
  * Once true, you can send the cookie minDebug to request debug mode output. The
  * cookie value should match the URIs you'd like to debug. E.g. to debug
@@ -37,11 +42,6 @@ $min_errorLogger = MINIFY_ERROR_LOGGER;
  */
 $min_allowDebugFlag = false;
 
-/**
- * Allow use of the Minify URI Builder app. If you no longer need 
- * this, set to false.
- **/
-$min_enableBuilder = true;
 
 /**
  * For best performance, specify your temp directory here. Otherwise Minify
@@ -50,7 +50,14 @@ $min_enableBuilder = true;
 //$min_cachePath = 'c:\\WINDOWS\\Temp';
 //$min_cachePath = '/tmp';
 //$min_cachePath = preg_replace('/^\\d+;/', '', session_save_path());
+/**
+ * To use APC/Memcache/ZendPlatform for cache storage, require the class and
+ * set $min_cachePath to an instance. Example below:
+ */
+//require dirname(__FILE__) . '/lib/Minify/Cache/APC.php';
+//$min_cachePath = new Minify_Cache_APC();
 $min_cachePath = BASE.'/tmp/minify';
+
 
 /**
  * Leave an empty string to use PHP's $_SERVER['DOCUMENT_ROOT'].
@@ -66,11 +73,13 @@ $min_documentRoot = '';
 //$min_documentRoot = substr(__FILE__, 0, -15);
 //$min_documentRoot = $_SERVER['SUBDOMAIN_DOCUMENT_ROOT'];
 
+
 /**
  * Cache file locking. Set to false if filesystem is NFS. On at least one 
  * NFS system flock-ing attempts stalled PHP for 30 seconds!
  */
 $min_cacheFileLocking = true;
+
 
 /**
  * Combining multiple CSS files can place @import declarations after rules, which
@@ -81,6 +90,7 @@ $min_cacheFileLocking = true;
  * affect CSS values (which is why this option is disabled by default).
  */
 $min_serveOptions['bubbleCssImports'] = false;
+
 
 /**
  * Cache-Control: max-age value sent to browser (in seconds). After this period,
@@ -95,6 +105,19 @@ $min_serveOptions['bubbleCssImports'] = false;
 $ma = MINIFY_MAXAGE;
 $ma = empty($ma)?0:$ma;
 $min_serveOptions['maxAge'] = $ma;
+
+
+/**
+ * To use Google's Closure Compiler API (falling back to JSMin on failure),
+ * uncomment the following lines:
+ */
+/*function closureCompiler($js) {
+    require_once 'Minify/JS/ClosureCompiler.php';
+    return Minify_JS_ClosureCompiler::minify($js);
+}
+$min_serveOptions['minifiers']['application/x-javascript'] = 'closureCompiler';
+//*/
+
 
 /**
  * If you'd like to restrict the "f" option to files within/below
@@ -112,6 +135,7 @@ $min_serveOptions['maxAge'] = $ma;
  */
 $min_serveOptions['minApp']['groupsOnly'] = false;
 
+
 /**
  * By default, Minify will not minify files with names containing .min or -min
  * before the extension. E.g. myFile.min.js will not be processed by JSMin
@@ -121,6 +145,7 @@ $min_serveOptions['minApp']['groupsOnly'] = false;
  */
 //$min_serveOptions['minApp']['noMinPattern'] = '@[-\\.]min\\.(?:js|css)$@i';
 $min_serveOptions['minApp']['maxFiles'] = MINIFY_MAX_FILES;
+
 
 /**
  * If you minify CSS files stored in symlink-ed directories, the URI rewriting
@@ -135,6 +160,7 @@ $min_serveOptions['minApp']['maxFiles'] = MINIFY_MAX_FILES;
  * </code>
  */
 $min_symlinks = array();
+
 
 /**
  * If you upload files from Windows to a non-Windows server, Windows may report
@@ -154,11 +180,13 @@ $min_symlinks = array();
  */
 $min_uploaderHoursBehind = 0;
 
+
 /**
  * Path to Minify's lib folder. If you happen to move it, change 
  * this accordingly.
  */
 $min_libPath = dirname(__FILE__) . '/lib';
+
 
 // try to disable output_compression (may not have an effect)
 ini_set('zlib.output_compression', '0');
