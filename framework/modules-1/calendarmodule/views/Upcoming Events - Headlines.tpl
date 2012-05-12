@@ -51,18 +51,20 @@
 						{/if}
 					</em>
 					{permissions}
-						<div class="item-actions">
-							{if $permissions.edit == 1}
-								{icon action=edit record=$item date_id=$item->eventdate->id title="Edit this Event"|gettext}
-							{/if}
-							{if $permissions.delete == 1}
-								{if $item->is_recurring == 0}
-									{icon action=delete record=$item date_id=$item->eventdate->id title="Delete this Event"|gettext}
-								{else}
-									{icon action=delete_form class=delete record=$item date_id=$item->eventdate->id title="Delete this Event"|gettext}
-								{/if}
-							{/if}
-						</div>
+                        {if $item->location_data != null}
+                            <div class="item-actions">
+                                {if $permissions.edit == 1}
+                                    {icon action=edit record=$item date_id=$item->eventdate->id title="Edit this Event"|gettext}
+                                {/if}
+                                {if $permissions.delete == 1}
+                                    {if $item->is_recurring == 0}
+                                        {icon action=delete record=$item date_id=$item->eventdate->id title="Delete this Event"|gettext}
+                                    {else}
+                                        {icon action=delete_form class=delete record=$item date_id=$item->eventdate->id title="Delete this Event"|gettext}
+                                    {/if}
+                                {/if}
+                            </div>
+                        {/if}
 					{/permissions}
 				</li>
 				{assign var=item_number value=$item_number+1}

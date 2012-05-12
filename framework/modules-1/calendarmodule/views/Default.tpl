@@ -109,18 +109,20 @@
                                     <a class="mngmntlink calendar_mngmntlink" href="{if $item->location_data != null}{link action=view id=$item->id date_id=$item->eventdate->id}{else}#{/if}"
                                        title="{if $item->is_allday == 1}{'All Day'|gettext}{elseif $item->eventstart != $item->eventend}{$item->eventstart|format_date:$smarty.const.DISPLAY_TIME_FORMAT} {'to'|gettext} {$item->eventend|format_date:$smarty.const.DISPLAY_TIME_FORMAT}{else}{$item->eventstart|format_date:$smarty.const.DISPLAY_TIME_FORMAT}{/if} - {$item->body|summarize:"html":"para"}">{$item->title}</a>
                                     {permissions}
+                                        {if $item->location_data != null}
                                         <div class="item-actions">
-                                            {if $permissions.edit == 1}
-                                                {icon img="edit.png" action=edit record=$item date_id=$item->eventdate->id title="Edit this Event"|gettext}
-                                            {/if}
-                                            {if $permissions.delete == 1}
-                                                {if $item->is_recurring == 0}
-                                                    {icon img="delete.png" action=delete record=$item date_id=$item->eventdate->id title="Delete this Event"|gettext}
-                                                {else}
-                                                    {icon img="delete.png" action=delete_form record=$item date_id=$item->eventdate->id title="Delete this Event"|gettext}
+                                                {if $permissions.edit == 1}
+                                                    {icon img="edit.png" action=edit record=$item date_id=$item->eventdate->id title="Edit this Event"|gettext}
                                                 {/if}
-                                            {/if}
-                                        </div>
+                                                {if $permissions.delete == 1}
+                                                    {if $item->is_recurring == 0}
+                                                        {icon img="delete.png" action=delete record=$item date_id=$item->eventdate->id title="Delete this Event"|gettext}
+                                                    {else}
+                                                        {icon img="delete.png" action=delete_form record=$item date_id=$item->eventdate->id title="Delete this Event"|gettext}
+                                                    {/if}
+                                                {/if}
+                                            </div>
+                                        {/if}
                                     {/permissions}
                                 </div>
                             {/foreach}

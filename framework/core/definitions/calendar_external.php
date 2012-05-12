@@ -29,7 +29,7 @@ return array(
    		DB_FIELD_TYPE=>DB_DEF_ID),
 	'url'=>array(
 		DB_FIELD_TYPE=>DB_DEF_STRING,
-		DB_FIELD_LEN=>100),
+		DB_FIELD_LEN=>255),
 	'calendar_id'=>array(
 		DB_FIELD_TYPE=>DB_DEF_ID)
 );

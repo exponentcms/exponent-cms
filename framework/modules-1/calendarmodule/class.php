@@ -496,8 +496,70 @@ class calendarmodule {
         $config = $db->selectObject("calendarmodule_config","location_data='".serialize($loc)."'");
         if (!empty($config)) foreach ($db->selectObjects('calendar_external',"calendar_id='".$config->id."'") as $extcal) {
         	if ($extcal->type == GOOGLE_TYPE) {
-                //FIXME needs the google calendar routine here
-        		$emails[] = $extcal->url;
+                $begin = date("Y-m-d\Th:i:sP", expDateTime::startOfDayTimestamp($startdate));
+                if (!empty($enddate)) {
+                    $end = date("Y-m-d\Th:i:sP", expDateTime::endOfDayTimestamp($enddate));
+                } else {
+                    $end = date("Y-m-d\Th:i:sP", expDateTime::endOfDayTimestamp($startdate));
+                }
+
+                if (substr($extcal->url,-5) == 'basic') {
+                    $extcal->url = substr($extcal->url,0,strlen($extcal->url)-5).'full';
+                }
+                $feed = $extcal->url."?orderby=starttime&singleevents=true&" .
+                    "start-min=" . $begin . "&" .
+                    "start-max=" . $end;
+
+//                $s = simplexml_load_file($feed);
+//               	foreach ($s->entry as $item) {
+
+                $doc = new DOMDocument();
+                $doc->load($feed);
+                $entries = $doc->getElementsByTagName( "entry" );
+                foreach ($entries as $item) {
+//               		$gd = $item->children('http://schemas.google.com/g/2005');
+//                    if (!empty($gd->when)) {
+//                       $dtstart = $gd->when->attributes()->startTime;
+//                    } elseif (!empty($gd->recurrence)){
+//                       $dtstart = $gd->recurrence->when->attributes()->startTime;
+//                    } else {
+//                        $dtstart = $item->attributes()->When;
+//                    }
+//                    //FIXME must convert $dtstart timezone
+//                    $extevents[$dy] = new stdClass();
+//                    $extevents[$dy]->eventdate = strtotime($dtstart);
+//                    $extevents[$dy]->eventstart += strtotime($dtstart);
+//                    if (!empty($gd->when)) {
+//                        $dtend = $gd->when->attributes()->endTime;
+//                    } elseif (!empty($gd->recurrence)) {
+//                        $dtend = $gd->recurrence->when->attributes()->endTime;
+//                    }
+//                    //FIXME must convert $dtend timezone
+//                    $extevents[$dy]->eventend += strtotime($dtend);
+//                    // dtstart required, one occurrence, (orig. start date)
+//                    $extevents[$dy]->title = $item->title;
+//                    $extevents[$dy]->body = $item->content;
+//                    $extevents[$dy]->location_data = null;
+
+                    $times = $item->getElementsByTagName("when");
+                    $dtstart = $times->item(0)->getAttributeNode("startTime")->value;
+//                  //FIXME must convert $dtstart & $dtend timezone
+                    $extevents[$dy]->eventdate = strtotime($dtstart);
+                    $dtend = $times->item(0)->getAttributeNode("endTime")->value;
+                    if (strlen($dtstart) > 10) {
+                        $extevents[$dy]->eventstart = (substr($dtstart,12,2)*3600)+(substr($dtstart,15,2)*60);
+                        $extevents[$dy]->eventend = (substr($dtend,12,2)*3600)+(substr($dtend,15,2)*60);
+                    } else {
+                        $extevents[$dy]->is_allday = 1;
+                    }
+
+                    $titles = $item->getElementsByTagName("title");
+                    $extevents[$dy]->title = $titles->item(0)->nodeValue;
+                    $contents = $item->getElementsByTagName("content");
+                    $extevents[$dy]->body = $contents->item(0)->nodeValue;
+                    $extevents[$dy]->location_data = null;
+                    $dy++;
+                }
         	} else if ($extcal->type == ICAL_TYPE) {
                 require_once BASE.'external/iCalcreator.class.php';
                 $v = new vcalendar(); // initiate new CALENDAR
@@ -525,12 +587,14 @@ class calendarmodule {
                                 // returns array( 'x-current-dtstart', <DATE>)
                                 // <DATE> = (string) date("Y-m-d [H:i:s][timezone/UTC offset]")
                                 $dtstart = $vevent->getProperty('dtstart');
+                                //FIXME must convert $dtstart timezone
+                                $extevents[$dy] = new stdClass();
                                 $extevents[$dy]->eventdate = iCalUtilityFunctions::_date2timestamp($dtstart);
-                                $extevents[$dy]->eventstart += iCalUtilityFunctions::_date2timestamp($dtstart);
-                                //FIXME must parse out date and start time
+                                $extevents[$dy]->eventstart = ($dtstart['hour']*3600)+($dtstart['min']*60);
                                 $dtend = $vevent->getProperty('dtend');
-                                //FIXME must parse out end time
-                                $extevents[$dy]->eventend += iCalUtilityFunctions::_date2timestamp($dtend);
+                                //FIXME must convert $dtend timezone
+                                $extevents[$dy]->eventend = ($dtend['hour']*3600)+($dtend['min']*60);
+                                //FIXME check for is_allday
                                 // dtstart required, one occurrence, (orig. start date)
                                 $extevents[$dy]->title = $vevent->getProperty('summary');
                                 $extevents[$dy]->body = $vevent->getProperty('description');
@@ -547,4 +611,5 @@ class calendarmodule {
     }
 
 }
+
 ?>

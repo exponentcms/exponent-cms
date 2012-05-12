@@ -61,21 +61,23 @@
 			<dt>
 				<span class="eventtitle"><a class="itemtitle calendar_mngmntlink" href="{if $item->location_data != null}{link action=view id=$item->id date_id=$item->eventdate->id}{else}#{/if}"><strong>{$item->title}</strong></a></span>
 				{permissions}
-					<div class="item-actions">
-						{if $permissions.edit == 1}
-							{icon action=edit record=$item date_id=$item->eventdate->id title="Edit this Event"|gettext}
-						{/if}
-						{if $permissions.delete == 1}
-							{if $item->is_recurring == 0}
-								{icon action=delete record=$item date_id=$item->eventdate->id title="Delete this Event"|gettext}
-							{else}
-								{icon action=delete_form class=delete record=$item date_id=$item->eventdate->id title="Delete this Event"|gettext}
-							{/if}
-						{/if}
-						{if $permissions.manage == 1 || $permissions.edit == 1 || $permissions.delete == 1}
-							{br}
-						{/if}
-					</div>
+                    {if $item->location_data != null}
+                        <div class="item-actions">
+                            {if $permissions.edit == 1}
+                                {icon action=edit record=$item date_id=$item->eventdate->id title="Edit this Event"|gettext}
+                            {/if}
+                            {if $permissions.delete == 1}
+                                {if $item->is_recurring == 0}
+                                    {icon action=delete record=$item date_id=$item->eventdate->id title="Delete this Event"|gettext}
+                                {else}
+                                    {icon action=delete_form class=delete record=$item date_id=$item->eventdate->id title="Delete this Event"|gettext}
+                                {/if}
+                            {/if}
+                            {if $permissions.manage == 1 || $permissions.edit == 1 || $permissions.delete == 1}
+                                {br}
+                            {/if}
+                        </div>
+                    {/if}
 				{/permissions}
 			</dt>
 			<dd>
