@@ -47,6 +47,8 @@ $counts = array();
 $startweek = expDateTime::startOfWeekTimestamp($time);
 $startinfo = getdate($startweek);
 
+//FIXME add external events to $days[$start][] for date $start, one day at a time
+$extitems = calendarmodule::getExternalEvents($loc,$startweek,expDateTime::endOfWeekTimestamp($startweek));
 for ($i = 0; $i < 7; $i++) {
 	$start = mktime(0,0,0,$startinfo['mon'],$startinfo['mday']+$i,$startinfo['year']);
 //	$dates = $db->selectObjects("eventdate","location_data='".serialize($loc)."' AND date = $start");
@@ -68,9 +70,8 @@ for ($i = 0; $i < 7; $i++) {
 			$days[$start][] = $o;
 		}
 	}
-    //FIXME add external events to $days[$start][] for date $start, one day at a time
-    $extitems = calendarmodule::getExternalEvents($loc,$start);
-    $days[$start] = array_merge($extitems,$days[$start]);
+    if (!empty($extitems[$start])) $days[$start] = array_merge($extitems[$start],$days[$start]);
+    $days[$start] = expSorter::sort(array('array'=>$days[$start],'sortby'=>'eventstart', 'order'=>'ASC'));
 	$counts[$start] = count($days[$start]);
 }
 

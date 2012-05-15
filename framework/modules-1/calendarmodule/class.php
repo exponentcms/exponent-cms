@@ -238,7 +238,7 @@ class calendarmodule {
 //                            "delete"=>(expPermissions::check("delete",$thisloc) || expPermissions::check("delete",$loc))
 //                        );
 //                    }
-                    $days[$start] = array_merge($extitems,$days[$start]);
+                    if (!empty($extitems[$start])) $days[$start] = array_merge($extitems[$start],$days[$start]);
                     $days[$start] = expSorter::sort(array('array'=>$days[$start],'sortby'=>'eventstart', 'order'=>'ASC'));
                 }
                 $template->assign("days",$days);
@@ -272,6 +272,8 @@ class calendarmodule {
                 // Grab day counts (deprecated, handled by the date function)
                 // $endofmonth = expDateTime::endOfMonthDay($time);
                 $endofmonth = date('t', $time);
+                //FIXME add external events to $monthly[$week][$i] for date $start, one day at a time
+                $extitems = calendarmodule::getExternalEvents($loc,$timefirst,expDateTime::endOfMonthTimestamp($timefirst));
                 for ($i = 1; $i <= $endofmonth; $i++) {
                     $start = mktime(0,0,0,$info['mon'],$i,$info['year']);
                     if ($i == $nowinfo['mday']) $currentweek = $week;
@@ -279,9 +281,8 @@ class calendarmodule {
                     //$dates = $db->selectObjects("eventdate",$locsql." AND date = $start");
                     $dates = $db->selectObjects("eventdate",$locsql." AND date = '".$start."'");
                     $monthly[$week][$i] = calendarmodule::_getEventsForDates($dates,true,isset($template->viewconfig['featured_only']) ? true : false);
-                    //FIXME add external events to $monthly[$week][$i] for date $start, one day at a time
-                    $extitems = calendarmodule::getExternalEvents($loc,$start);
-                    $monthly[$week][$i] = array_merge($extitems,$monthly[$week][$i]);
+                    if (!empty($extitems[$start])) $monthly[$week][$i] = array_merge($extitems[$start],$monthly[$week][$i]);
+                    $monthly[$week][$i] = expSorter::sort(array('array'=>$monthly[$week][$i],'sortby'=>'eventstart', 'order'=>'ASC'));
                     $counts[$week][$i] = count($monthly[$week][$i]);
                     if ($weekday >= (6+DISPLAY_START_OF_WEEK)) {
                         $week++;
@@ -317,17 +318,17 @@ class calendarmodule {
                     ) ? 1 : 0;
                 $dates = $db->selectObjects("eventdate",$locsql." AND date >= '".expDateTime::startOfDayTimestamp(time())."'");
                 $items = calendarmodule::_getEventsForDates($dates);
-                if (!$continue) {
-                    foreach ($items as $i) {
-                        $iloc = expCore::makeLocation($loc->mod,$loc->src,$i->id);
-                        if (expPermissions::check("edit",$iloc) ||
-                            expPermissions::check("delete",$iloc) ||
-                            expPermissions::check("manage",$iloc)
-                        ) {
-                            $continue = true;
-                        }
-                    }
-                }
+//                if (!$continue) {
+//                    foreach ($items as $i) {
+//                        $iloc = expCore::makeLocation($loc->mod,$loc->src,$i->id);
+//                        if (expPermissions::check("edit",$iloc) ||
+//                            expPermissions::check("delete",$iloc) ||
+//                            expPermissions::check("manage",$iloc)
+//                        ) {
+//                            $continue = true;
+//                        }
+//                    }
+//                }
                 if (!$continue) return;
 //                for ($i = 0; $i < count($items); $i++) {
 //                    $thisloc = expCore::makeLocation($loc->mod,$loc->src,$items[$i]->id);
@@ -356,30 +357,46 @@ class calendarmodule {
                             $eventlimit = "";
                         }
                         $dates = $db->selectObjects("eventdate",$locsql." AND date >= ".$day.$eventlimit." ORDER BY date ASC ");
+                        $begin = $day;
+                        $end = null;
     //					$moreevents = count($dates) < $db->countObjects("eventdate",$locsql." AND date >= $day");
                         break;
                     case "past":
                         $dates = $db->selectObjects("eventdate",$locsql." AND date < $day ORDER BY date DESC ");
     //					$moreevents = count($dates) < $db->countObjects("eventdate",$locsql." AND date < $day");
                         $sort_asc = false;
+                        $begin = null;
+                        $end = $day;
                         break;
                     case "today":
                         $dates = $db->selectObjects("eventdate",$locsql." AND date = $day");
+                        $begin = $day;
+                        $end = expDateTime::endOfDayTimestamp($day);
                         break;
                     case "next":
                         $dates = array($db->selectObject("eventdate",$locsql." AND date >= $day"));
                         break;
                     case "month":
                         $dates = $db->selectObjects("eventdate",$locsql." AND date >= ".expDateTime::startOfMonthTimestamp(time()) . " AND date <= " . expDateTime::endOfMonthTimestamp(time()));
+                        $begin = expDateTime::startOfMonthTimestamp($day);
+                        $end = expDateTime::endOfMonthTimestamp($day);
                         break;
                     case "all":
                     default;
                         $dates = $db->selectObjects("eventdate",$locsql);
+                        $begin = null;
+                        $end = null;
                 }
                 $items = calendarmodule::_getEventsForDates($dates,$sort_asc,isset($template->viewconfig['featured_only']) ? true : false);
                 //FIXME add external events to $items for date >= ".expDateTime::startOfMonthTimestamp(time()) . " AND date <= " . expDateTime::endOfMonthTimestamp(time())
-                $extitems = calendarmodule::getExternalEvents($loc,expDateTime::startOfMonthTimestamp(time()),expDateTime::endOfMonthTimestamp(time()));
-                $items = array_merge($items,$extitems);
+                $extitems = calendarmodule::getExternalEvents($loc,$begin,$end);
+                // we need to crunch these down
+                $extitem = array();
+                foreach ($extitems as $key=>$value) {
+                    $extitem[] = $value;
+                }
+                $items = array_merge($items,$extitem);
+                $items = expSorter::sort(array('array'=>$items,'sortby'=>'eventstart', 'order'=>'ASC'));
                 // Upcoming events can be configured to show a specific number of events.
                 // The previous call gets all events in the future from today
                 // If configured, cut the array to the configured number of events
@@ -478,8 +495,8 @@ class calendarmodule {
 		return $events;
 	}
 
-    static function getExternalEvents($loc,$startdate,$enddate=null) {
-        return array();  //FIXME
+    static function getExternalEvents($loc,$startdate,$enddate) {
+//        return array();  //FIXME
 
         global $db;
 
@@ -488,29 +505,19 @@ class calendarmodule {
         $config = $db->selectObject("calendarmodule_config","location_data='".serialize($loc)."'");
         if (!empty($config)) foreach ($db->selectObjects('calendar_external',"calendar_id='".$config->id."'") as $extcal) {
         	if ($extcal->type == GOOGLE_TYPE) {
-                $begin = date("Y-m-d\Th:i:sP", expDateTime::startOfDayTimestamp($startdate));
-                if (!empty($enddate)) {
-                    $end = date("Y-m-d\Th:i:sP", expDateTime::endOfDayTimestamp($enddate));
-                } else {
-                    $end = date("Y-m-d\Th:i:sP", expDateTime::endOfDayTimestamp($startdate));
-                }
+                if (!empty($startdate)) $begin = date("Y-m-d\Th:i:sP", expDateTime::startOfDayTimestamp($startdate));
+                if (!empty($enddate)) $end = date("Y-m-d\Th:i:sP", expDateTime::endOfDayTimestamp($enddate));
 
                 if (substr($extcal->url,-5) == 'basic') {
                     $extcal->url = substr($extcal->url,0,strlen($extcal->url)-5).'full';
                 }
-                $feed = $extcal->url."?orderby=starttime&singleevents=true&" .
-                    "start-min=" . $begin . "&" .
-                    "start-max=" . $end;
+                $feed = $extcal->url."?orderby=starttime&singleevents=true";
+                if (!empty($startdate)) $feed .= "&start-min=" . $begin;
+                if (!empty($enddate)) $feed .= "&start-max=" . $end;
 
                 // XML method
 //                $s = simplexml_load_file($feed);
 //               	foreach ($s->entry as $item) {
-                // DOM method
-                $doc = new DOMDocument();
-                $doc->load($feed);
-                $entries = $doc->getElementsByTagName( "entry" );
-                foreach ($entries as $item) {
-                    // XML method
 //               		$gd = $item->children('http://schemas.google.com/g/2005');
 //                    if (!empty($gd->when)) {
 //                       $dtstart = $gd->when->attributes()->startTime;
@@ -520,38 +527,48 @@ class calendarmodule {
 //                        $dtstart = $item->attributes()->When;
 //                    }
 //                    //FIXME must convert $dtstart timezone
-//                    $extevents[$dy] = new stdClass();
-//                    $extevents[$dy]->eventdate = strtotime($dtstart);
-//                    $extevents[$dy]->eventstart += strtotime($dtstart);
+//                    $eventdate = expDateTime::startOfDayTimestamp(strtotime($dtstart));
+//                    $extevents[$eventdate][$dy] = new stdClass();
+//                    $extevents[$eventdate][$dy]->eventdate = $eventdate;
+//                    $extevents[$eventdate][$dy]->eventstart += strtotime($dtstart);
 //                    if (!empty($gd->when)) {
 //                        $dtend = $gd->when->attributes()->endTime;
 //                    } elseif (!empty($gd->recurrence)) {
 //                        $dtend = $gd->recurrence->when->attributes()->endTime;
 //                    }
 //                    //FIXME must convert $dtend timezone
-//                    $extevents[$dy]->eventend += strtotime($dtend);
+//                    if (!empty($dtend)) $extevents[$eventdate][$dy]->eventend += strtotime($dtend);
 //                    // dtstart required, one occurrence, (orig. start date)
-//                    $extevents[$dy]->title = $item->title;
-//                    $extevents[$dy]->body = $item->content;
+//                    $extevents[$eventdate][$dy]->title = $item->title;
+//                    $extevents[$eventdate][$dy]->body = $item->content;
+                    // End XML method
 
-                    // DOM method
+                  // DOM method
+                $doc = new DOMDocument();
+                $doc->load($feed);
+                $entries = $doc->getElementsByTagName( "entry" );
+                foreach ($entries as $item) {
                     $times = $item->getElementsByTagName("when");
                     $dtstart = $times->item(0)->getAttributeNode("startTime")->value;
 //                  //FIXME must convert $dtstart & $dtend timezone
-                    $extevents[$dy]->eventdate = strtotime($dtstart);
+                    $eventdate = expDateTime::startOfDayTimestamp(strtotime($dtstart));
+                    $extevents[$eventdate][$dy] = new stdClass();
+                    $extevents[$eventdate][$dy]->eventdate = $eventdate;
                     $dtend = $times->item(0)->getAttributeNode("endTime")->value;
                     if (strlen($dtstart) > 10) {
-                        $extevents[$dy]->eventstart = (substr($dtstart,12,2)*3600)+(substr($dtstart,15,2)*60);
-                        $extevents[$dy]->eventend = (substr($dtend,12,2)*3600)+(substr($dtend,15,2)*60);
+                        $extevents[$eventdate][$dy]->eventstart = (substr($dtstart,12,2)*3600)+(substr($dtstart,15,2)*60);
+                        $extevents[$eventdate][$dy]->eventend = (substr($dtend,12,2)*3600)+(substr($dtend,15,2)*60);
                     } else {
-                        $extevents[$dy]->is_allday = 1;
+                        $extevents[$eventdate][$dy]->eventstart = null;
+                        $extevents[$eventdate][$dy]->is_allday = 1;
                     }
                     $titles = $item->getElementsByTagName("title");
-                    $extevents[$dy]->title = $titles->item(0)->nodeValue;
+                    $extevents[$eventdate][$dy]->title = $titles->item(0)->nodeValue;
                     $contents = $item->getElementsByTagName("content");
-                    $extevents[$dy]->body = $contents->item(0)->nodeValue;
+                    $extevents[$eventdate][$dy]->body = $contents->item(0)->nodeValue;
+                    // End DOM method
 
-                    $extevents[$dy]->location_data = null;
+                    $extevents[$eventdate][$dy]->location_data = null;
                     $dy++;
                 }
         	} else if ($extcal->type == ICAL_TYPE) {
@@ -559,13 +576,19 @@ class calendarmodule {
                 $v = new vcalendar(); // initiate new CALENDAR
                 $v->setConfig('url',$extcal->url);
                 $v->parse();
-                $startYear = date('Y',$startdate);
-                $startMonth = date('n',$startdate);
-                $startDay = date('j',$startdate);
                 if ($enddate == null) {
-                    $endYear = $startYear;
-                    $endMonth = $startMonth;
-                    $endDay = $startDay;
+                    $startYear = null;
+                    $startMonth = null;
+                    $startDay = null;
+                } else {
+                    $startYear = date('Y',$startdate);
+                    $startMonth = date('n',$startdate);
+                    $startDay = date('j',$startdate);
+                }
+                if ($enddate == null) {
+                    $endYear = null;
+                    $endMonth = null;
+                    $endDay = null;
                 } else {
                     $endYear = date('Y',$enddate);
                     $endMonth = date('n',$enddate);
@@ -582,18 +605,19 @@ class calendarmodule {
                                 // <DATE> = (string) date("Y-m-d [H:i:s][timezone/UTC offset]")
                                 $dtstart = $vevent->getProperty('dtstart');
                                 //FIXME must convert $dtstart timezone
-                                $extevents[$dy] = new stdClass();
-                                $extevents[$dy]->eventdate = iCalUtilityFunctions::_date2timestamp($dtstart);
-                                $extevents[$dy]->eventstart = ($dtstart['hour']*3600)+($dtstart['min']*60);
+                                $extevents[$eventdate][$dy] = new stdClass();
+                                $eventdate = expDateTime::startOfDayTimestamp(iCalUtilityFunctions::_date2timestamp($dtstart));
+                                $extevents[$eventdate][$dy]->eventdate = $eventdate;
+                                $extevents[$eventdate][$dy]->eventstart = ($dtstart['hour']*3600)+($dtstart['min']*60);
                                 $dtend = $vevent->getProperty('dtend');
                                 //FIXME must convert $dtend timezone
-                                $extevents[$dy]->eventend = ($dtend['hour']*3600)+($dtend['min']*60);
+                                $extevents[$eventdate][$dy]->eventend = ($dtend['hour']*3600)+($dtend['min']*60);
                                 //FIXME check for is_allday
                                 // dtstart required, one occurrence, (orig. start date)
-                                $extevents[$dy]->title = $vevent->getProperty('summary');
-                                $extevents[$dy]->body = $vevent->getProperty('description');
+                                $extevents[$eventdate][$dy]->title = $vevent->getProperty('summary');
+                                $extevents[$eventdate][$dy]->body = $vevent->getProperty('description');
 //                                $extevents[$dy]->location_data = serialize($loc);
-                                $extevents[$dy]->location_data = null;
+                                $extevents[$eventdate][$dy]->location_data = null;
                                 $dy++;
                             }
                         }

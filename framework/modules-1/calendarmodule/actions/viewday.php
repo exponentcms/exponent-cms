@@ -45,8 +45,10 @@ $start = mktime(0,0,0,$info['mon'],$info['mday'],$info['year']);
 
 //$dates = $db->selectObjects("eventdate","location_data='".serialize($loc)."' AND date = '" . $start . "'");
 $dates = $db->selectObjects("eventdate",$locsql." AND date = '" . $start . "'");
-//FIXME isn't it better to use calendarmodule::_getEventsForDates less permissions
 $events = array();
+//FIXME add external events to $events for date $start, one day
+$extitems = calendarmodule::getExternalEvents($loc,$start,expDateTime::endOfDayTimestamp($start)+1);
+//FIXME isn't it better to use calendarmodule::_getEventsForDates less permissions
 foreach ($dates as $d) {
 	$o = $db->selectObject("calendar","id=".$d->event_id);
 	if ($o != null) {
@@ -62,9 +64,8 @@ foreach ($dates as $d) {
 		$events[] = $o;
 	}
 }
-//FIXME add external events to $events for date $start, one day
-$extitems = calendarmodule::getExternalEvents($loc,$start);
-$events = array_merge($extitems,$events);
+if (!empty($extitems[$start])) $events = array_merge($extitems[$start],$events);
+$events = expSorter::sort(array('array'=>$events,'sortby'=>'eventstart', 'order'=>'ASC'));
 
 $template->register_permissions(
 	array("create","edit","delete","manage"),

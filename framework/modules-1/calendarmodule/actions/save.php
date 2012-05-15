@@ -20,17 +20,17 @@
 if (!defined('EXPONENT')) exit('');
 
 $item = null;
-$iloc = new stdClass();
+//$iloc = new stdClass();
 
 if (isset($_POST['id']) && !isset($_POST['submitNew'])) {
 	$item = $db->selectObject("calendar","id=".intval($_POST['id']));
 	$loc = unserialize($item->location_data);
-	$iloc = expCore::makeLocation($loc->mod,$loc->src,$item->id);
+//	$iloc = expCore::makeLocation($loc->mod,$loc->src,$item->id);
 }
 
 if (($item == null && expPermissions::check("create",$loc)) ||
-	($item != null && expPermissions::check("edit",$loc)) ||
-	($iloc != null && expPermissions::check("edit",$iloc))
+	($item != null && expPermissions::check("edit",$loc))
+//    || ($iloc != null && expPermissions::check("edit",$iloc))
 ) {
 
 	$item = calendar::update($_POST,$item);

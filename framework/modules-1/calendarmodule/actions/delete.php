@@ -21,10 +21,10 @@ if (!defined('EXPONENT')) exit('');
 $item = $db->selectObject('calendar','id='.intval($_GET['id']));
 if ($item) {
 	$loc = unserialize($item->location_data);
-	$iloc = expCore::makeLocation($loc->mod,$loc->src,$item->id);
+//	$iloc = expCore::makeLocation($loc->mod,$loc->src,$item->id);
 	
-	if (expPermissions::check('delete',$loc) ||
-		expPermissions::check('delete',$iloc)
+	if (expPermissions::check('delete',$loc)
+//        || expPermissions::check('delete',$iloc)
 	) {
 		$db->delete('calendar','id='.$item->id);
 		$db->delete('eventdate','event_id='.$item->id);

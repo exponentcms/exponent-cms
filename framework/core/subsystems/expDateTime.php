@@ -203,6 +203,19 @@ class expDateTime {
 		return self::startOfDayTimestamp($timestamp - (($info['wday'] - DISPLAY_START_OF_WEEK) * 86400));
 	}
 
+    /** exdoc
+   	 * Looks at a timestamp and returns another timestamp representing
+   	 * 12:00:01 am of the DISPLAY_START_OF_WEEK day of the same week.
+   	 *
+   	 * @param timestamp $timestamp The timestamp to check.
+   	 * @return int
+   	 * @node Subsystems:expDateTime
+   	 */
+   	public static function endOfWeekTimestamp($timestamp) {
+   		$info = getdate($timestamp);
+   		return self::endOfDayTimestamp(($timestamp - (($info['wday'] - DISPLAY_START_OF_WEEK) * 86400) + 7 * 86400));
+   	}
+
 	// Recurring Dates
 
 	/** exdoc

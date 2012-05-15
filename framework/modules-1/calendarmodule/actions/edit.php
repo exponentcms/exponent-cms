@@ -20,7 +20,7 @@
 if (!defined('EXPONENT')) exit('');
 
 $item = null;
-$iloc = new stdClass();
+//$iloc = new stdClass();
 if (isset($_GET['id'])) {
 	$item = $db->selectObject('calendar','id=' . intval($_GET['id']));	
 	if ($item) {
@@ -32,13 +32,13 @@ if (isset($_GET['id'])) {
 		$item->eventstart += $item->eventdate->date;
 		$item->eventend += $item->eventdate->date;
 		$loc = unserialize($item->location_data);
-		$iloc = expCore::makeLocation($loc->mod,$loc->src,$item->id);
+//		$iloc = expCore::makeLocation($loc->mod,$loc->src,$item->id);
 	}
 }
 
 if (($item == null && expPermissions::check('create',$loc)) ||
-	($item != null && expPermissions::check('edit',$loc)) ||
-	($iloc != null && expPermissions::check('edit',$iloc))
+	($item != null && expPermissions::check('edit',$loc))
+//    || ($iloc != null && expPermissions::check('edit',$iloc))
 ) {
 	$form = calendar::form($item);
 	$form->meta('action','save');
