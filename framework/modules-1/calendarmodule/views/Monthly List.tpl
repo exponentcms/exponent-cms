@@ -67,7 +67,7 @@
 			{if_elements array=$items}
 				<dt>
 					<div class="sectiontitle"><strong>
-						<a class="itemtitle calendar_mngmntlink" href="{if $item->location_data != null}{link action=viewday time=$ts}{else}#{/if}">{$ts|format_date:"%A, %b %e"}</a>
+						<a class="itemtitle calendar_mngmntlink" href="{link action=viewday time=$ts}">{$ts|format_date:"%A, %b %e"}</a>
 					</strong></div>
 				</dt>
 				<dd>
@@ -75,7 +75,7 @@
 					{foreach from=$items item=item}
 						{assign var=none value=0}
 						<div class="paragraph">
-							<a class="itemtitle calendar_mngmntlink" href="{link action=view id=$item->id date_id=$item->eventdate->id}" title="{$item->body|summarize:"html":"para"}">{$item->title}</a>
+							<a class="itemtitle calendar_mngmntlink" href="{if $item->location_data != null}{link action=view id=$item->id date_id=$item->eventdate->id}{else}#{/if}" title="{$item->body|summarize:"html":"para"}">{$item->title}</a>
 							{permissions}
                                 {if $item->location_data != null}
                                     <div class="item-actions">

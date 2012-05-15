@@ -23,18 +23,6 @@ global $router;
 
 expHistory::set('viewable', $router->params);
 
-$title = $db->selectValue('container', 'title', "internal='".serialize($loc)."'");
-
-$template = new template("calendarmodule","_viewweek",$loc,false);
-
-$time = (isset($_GET['time']) ? $_GET['time'] : time());
-$time = intval($time);
-
-$startweek = expDateTime::startOfWeekTimestamp($time);
-$days = array();
-$counts = array();
-$startinfo = getdate($startweek);
-
 $locsql = "(location_data='".serialize($loc)."'";
 // look for possible aggregate
 $config = $db->selectObject("calendarmodule_config","location_data='".serialize($loc)."'");
@@ -49,6 +37,16 @@ if (!empty($config->aggregate)) {
 	}
 }
 $locsql .= ')';
+
+$template = new template("calendarmodule","_viewweek",$loc,false);
+
+$time = intval(isset($_GET['time']) ? $_GET['time'] : time());
+
+$days = array();
+$counts = array();
+$startweek = expDateTime::startOfWeekTimestamp($time);
+$startinfo = getdate($startweek);
+
 for ($i = 0; $i < 7; $i++) {
 	$start = mktime(0,0,0,$startinfo['mon'],$startinfo['mday']+$i,$startinfo['year']);
 //	$dates = $db->selectObjects("eventdate","location_data='".serialize($loc)."' AND date = $start");
@@ -67,13 +65,6 @@ for ($i = 0; $i < 7; $i++) {
 				"edit"=>(expPermissions::check("edit",$thisloc) || expPermissions::check("edit",$loc)),
 				"delete"=>(expPermissions::check("delete",$thisloc) || expPermissions::check("delete",$loc))
 			);
-
-			//Get the image file if there is one.
-//			if (isset($o->file_id) && $o->file_id > 0) {
-//				$file = $db->selectObject('file', 'id='.$o->file_id);
-//				$o->image_path = $file->directory.'/'.$file->filename;
-//			}
-		
 			$days[$start][] = $o;
 		}
 	}
@@ -87,16 +78,10 @@ $template->register_permissions(
 	array("create","edit","delete","manage"),
 	$loc
 );
-
-
-//if (!$config) {
-////	$config->enable_categories = 0;
-//	$config->enable_ical = 1;
-//}
+$title = $db->selectValue('container', 'title', "internal='".serialize($loc)."'");
+$template->assign('moduletitle',$title);
 $template->assign("config",$config);
-//if (!isset($config->enable_ical)) {$config->enable_ical = 1;}
-//$template->assign("enable_ical", $config->enable_ical);
-		
+
 $template->assign("days",$days);
 $template->assign("counts",$counts);
 $template->assign("startweek",$startweek);
@@ -107,7 +92,6 @@ $template->assign("startnextweek",(strtotime('+1 weeks',$startweek)));
 $template->assign("startnextweek2",(strtotime('+2 weeks',$startweek)));
 $template->assign("startnextweek3",(strtotime('+3 weeks',$startweek)));
 
-$template->assign('moduletitle',$title);
 $template->output();
 
 ?>

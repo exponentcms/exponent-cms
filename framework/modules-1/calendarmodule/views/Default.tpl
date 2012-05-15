@@ -51,12 +51,6 @@
 			{/if}
 		</div>
 	{/permissions}
-    {*<form method="post" action="viewmonth">*}
-        {*<input type="hidden" name="module" value="calendarmodule"/>*}
-        {*<input type="hidden" name="src" value="{$__loc->src}" />*}
-        {*<input type="text" name="newtime" />*}
-        {*<button type="submit" class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}">{"Go to Date"|gettext}</button>*}
-    {*</form>*}
 	<table id="calendar" summary="{$moduletitle|default:'Calendar'|gettext}">
         <div class="caption">
             &laquo;&nbsp;
@@ -83,7 +77,7 @@
 			<th scope="col" abbr="{'Sunday'|gettext}" title="{'Sunday'|gettext}">{'Sunday'|gettext}</th>
 			{/if}
 		</tr>
-		{math equation="x-86400" x=$now assign=dayts}
+		{math equation="x" x=$now assign=dayts}
 		{foreach from=$monthly item=week key=weeknum}
 			{assign var=moredata value=0}
 			{foreach name=w from=$week key=day item=events}
@@ -94,10 +88,10 @@
                 <tr class="week{if $currentweek == $weeknum} currentweek{/if}">
                     {foreach name=w from=$week key=day item=items}
                         {assign var=number value=$counts[$weeknum][$day]}
-                        <td {if $dayts == $today}class="today" {elseif $number == -1}class="notinmonth" {else}class="oneday" {/if}>
+                        <td {if $dayts == $today}class="today"{elseif $number == -1}class="notinmonth"{else}class="oneday"{/if}>
                             {if $number > -1}
                                 {if $number == 0}
-                                    <span {if $dayts == $today}class="number today"{else}class="number"{/if}>
+                                    <span class="number{if $dayts == $today} today{/if}">
                                         {$day}
                                     </span>
                                 {else}
@@ -105,7 +99,7 @@
                                 {/if}
                             {/if}
                             {foreach name=e from=$items item=item}
-                                <div {if $dayts == $today}class="calevent today"{else}class="calevent"{/if}>
+                                <div class="calevent {if $dayts == $today}today{/if}">
                                     <a class="mngmntlink calendar_mngmntlink" href="{if $item->location_data != null}{link action=view id=$item->id date_id=$item->eventdate->id}{else}#{/if}"
                                        title="{if $item->is_allday == 1}{'All Day'|gettext}{elseif $item->eventstart != $item->eventend}{$item->eventstart|format_date:$smarty.const.DISPLAY_TIME_FORMAT} {'to'|gettext} {$item->eventend|format_date:$smarty.const.DISPLAY_TIME_FORMAT}{else}{$item->eventstart|format_date:$smarty.const.DISPLAY_TIME_FORMAT}{/if} - {$item->body|summarize:"html":"para"}">{$item->title}</a>
                                     {permissions}

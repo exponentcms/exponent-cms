@@ -17,6 +17,7 @@
 
 /**
  * This is the class expDateTime
+ * These methods do NOT take timezones into consideration unless documented otherwise
  *
  * @package Subsystems
  * @subpackage Subsystems
@@ -34,18 +35,18 @@ class expDateTime {
 	 */
 	public static function monthsDropdown($controlName,$default_month) {
 		$months = array(
-			1=>"January",
-			2=>"February",
-			3=>"March",
-			4=>"April",
-			5=>"May",
-			6=>"June",
-			7=>"July",
-			8=>"August",
-			9=>"September",
-			10=>"October",
-			11=>"November",
-			12=>"December"
+			1=>gt("January"),
+			2=>gt("February"),
+			3=>gt("March"),
+			4=>gt("April"),
+			5=>gt("May"),
+			6=>gt("June"),
+			7=>gt("July"),
+			8=>gt("August"),
+			9=>gt("September"),
+			10=>gt("October"),
+			11=>gt("November"),
+			12=>gt("December")
 		);
 
 		$html = '<select name="' . $controlName . '" size="1">';
@@ -123,14 +124,15 @@ class expDateTime {
 		$info = getdate($timestamp);
 		// No month has fewer than 28 days, even in leap year, so start out at 28.
 		// At most, we will loop through the while loop 3 times (29th, 30th, 31st)
-		$info['mday'] = 28;
-		// Keep incrementing the mday value until it is not valid, and use last valid value.
-		// This should get us the last day in the month, and take into account leap years
-		while (checkdate($info['mon'],$info['mday']+1,$info['year'])) $info['mday']++;
-		// Calculate the timestamp at 8am, and then subtract 8 hours, for Daylight Savings
-		// Time.  If we are in those strange edge cases of DST, 12:00am can turn out to be
-		// of the previous day.
-		return mktime(23,59,59,$info['mon'],$info['mday'],$info['year']);
+//		$info['mday'] = 28;
+//		// Keep incrementing the mday value until it is not valid, and use last valid value.
+//		// This should get us the last day in the month, and take into account leap years
+//		while (checkdate($info['mon'],$info['mday']+1,$info['year'])) $info['mday']++;
+//		// Calculate the timestamp at 8am, and then subtract 8 hours, for Daylight Savings
+//		// Time.  If we are in those strange edge cases of DST, 12:00am can turn out to be
+//		// of the previous day.
+//		return mktime(23,59,59,$info['mon'],$info['mday'],$info['year']);
+        return mktime(23,59,59,$info['mon']+1,0,$info['year']);
 	}
 
 	/** exdoc
@@ -143,14 +145,17 @@ class expDateTime {
 	 * @node Subsystems:expDateTime
 	 */
 	public static function endOfMonthDay($timestamp) {
-		$info = getdate($timestamp);
-		// No month has fewer than 28 days, even in leap year, so start out at 28.
-		// At most, we will loop through the while loop 3 times (29th, 30th, 31st)
-		$last = 28;
-		// Keep incrementing the mday value until it is not valid, and use last valid value.
-		// This should get us the last day in the month, and take into account leap years
-		while (checkdate($info['mon'],$last+1,$info['year'])) $last++;
-		return $last;
+//		$info = getdate($timestamp);
+//		// No month has fewer than 28 days, even in leap year, so start out at 28.
+//		// At most, we will loop through the while loop 3 times (29th, 30th, 31st)
+//		$last = 28;
+//		// Keep incrementing the mday value until it is not valid, and use last valid value.
+//		// This should get us the last day in the month, and take into account leap years
+//		while (checkdate($info['mon'],$last+1,$info['year'])) $last++;
+//		return $last;
+//        $info = mktime(23,59,59,$info['mon']+1,0,$info['year']);
+//        return $info['day'];
+        return date('t', $timestamp);
 	}
 
 	/** exdoc
@@ -182,12 +187,12 @@ class expDateTime {
    		// Calculate the timestamp at 8am, and then subtract 8 hours, for Daylight Savings
    		// Time.  If we are in those strange edge cases of DST, 12:00am can turn out to be
    		// of the previous day.
-   		return mktime(0,0,0,$info['mon'],$info['mday']+1,$info['year']);
+   		return mktime(23,59,59,$info['mon'],$info['mday'],$info['year']);
    	}
 
 	/** exdoc
 	 * Looks at a timestamp and returns another timestamp representing
-	 * 12:00:01 am of the Sunday of the same week.
+	 * 12:00:01 am of the DISPLAY_START_OF_WEEK day of the same week.
 	 *
 	 * @param timestamp $timestamp The timestamp to check.
 	 * @return int
@@ -195,14 +200,7 @@ class expDateTime {
 	 */
 	public static function startOfWeekTimestamp($timestamp) {
 		$info = getdate($timestamp);
-		// FIXME: The following line will sometimes calculate negative dates,
-		// FIXME: which will not work on Windows platforms.
-//		$firstOfWeek = $info['mday'] - $info['wday'];
-		// Calculate the timestamp at 8am, and then subtract 8 hours, for Daylight Savings
-		// Time.  If we are in those strange edge cases of DST, 12:00am can turn out to be
-		// of the previous day.
-//		$ts = self::startOfDayTimestamp($timestamp - ($info['wday'] * 86400));;
-		return self::startOfDayTimestamp($timestamp - ($info['wday'] * 86400));
+		return self::startOfDayTimestamp($timestamp - (($info['wday'] - DISPLAY_START_OF_WEEK) * 86400));
 	}
 
 	// Recurring Dates
@@ -492,7 +490,7 @@ class expDateTime {
 		// Grab non-day numbers only (before end of month)
 		$week = 0;
 
-		$infofirst = getdate(mktime(12,0,0,$info['mon'],1,$info['year']));
+		$infofirst = getdate(mktime(0,0,0,$info['mon'],1,$info['year']));
 
 		if ($infofirst['wday'] == 0) $monthly[$week] = array(); // initialize for non days
 		for ($i = 0 - $infofirst['wday']; $i < 0; $i++) {
@@ -595,7 +593,7 @@ class expDateTime {
 	}
 
     /**
-     * Return a date in the site preferred format
+     * Return a date in the preferred format
      *
      * @param        array
      * @param string $format
