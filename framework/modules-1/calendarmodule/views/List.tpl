@@ -34,7 +34,7 @@
 			{foreach from=$items item=item}
 				{assign var=none value=0}
 				<div class="paragraph">
-					<a class="mngmntlink calendar_mngmntlink" href="{if $item->location_data != null}{link action=view id=$item->id date_id=$item->eventdate->id}{else}#{/if}" title="{$item->body|summarize:"html":"para"}">{$item->title}</a>
+					<a class="mngmntlink calendar_mngmntlink" {if $item->location_data != null}href="{link action=view id=$item->id date_id=$item->eventdate->id}"{/if} title="{$item->body|summarize:"html":"para"}">{$item->title}</a>
 					{if $item->is_allday == 0}&nbsp;{$item->eventstart|format_date:$smarty.const.DISPLAY_TIME_FORMAT} - {$item->eventend|format_date:$smarty.const.DISPLAY_TIME_FORMAT}{/if}
 					{if $permissions.edit == 1 || $permissions.delete == 1 || $permissions.manage == 1}
 						<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;

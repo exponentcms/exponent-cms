@@ -40,7 +40,7 @@
 						<table width=100% cellpadding="0" cellspacing="0" border="0">
 							<tr>
 								<td>
-									<a class="mngmntlink calendar_mngmntlink" href="{if $item->location_data != null}{link action=view id=$item->id date_id=$item->eventdate->id}{else}#{/if}">{$item->title}</a>
+									<a class="mngmntlink calendar_mngmntlink" {if $item->location_data != null}href="{link action=view id=$item->id date_id=$item->eventdate->id}"{/if}>{$item->title}</a>
 								</td>
 							</tr>
 							<tr>

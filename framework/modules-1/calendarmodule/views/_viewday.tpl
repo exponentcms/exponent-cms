@@ -59,7 +59,7 @@
 		{foreach from=$events item=item}
 			{assign var=count value=1}
 			<dt>
-				<span class="eventtitle"><a class="itemtitle calendar_mngmntlink" href="{if $item->location_data != null}{link action=view id=$item->id date_id=$item->eventdate->id}{else}#{/if}"><strong>{$item->title}</strong></a></span>
+				<span class="eventtitle"><a class="itemtitle calendar_mngmntlink" {if $item->location_data != null}href="{link action=view id=$item->id date_id=$item->eventdate->id}"{/if}><strong>{$item->title}</strong></a></span>
 				{permissions}
                     {if $item->location_data != null}
                         <div class="item-actions">

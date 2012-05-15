@@ -45,7 +45,7 @@
 	<dl class="viewweek">
 	{foreach from=$items item=item}
 		<dt>
-			<strong><a class="itemtitle" href="{if $item->location_data != null}{link action=view id=$item->id date_id=$item->eventdate->id}{else}#{/if}">{$item->title}</a></strong>
+			<strong><a class="itemtitle" {if $item->location_data != null}href="{link action=view id=$item->id date_id=$item->eventdate->id}"{/if}>{$item->title}</a></strong>
 			{permissions}
                 {if $item->location_data != null}
                     <div class="item-actions">
