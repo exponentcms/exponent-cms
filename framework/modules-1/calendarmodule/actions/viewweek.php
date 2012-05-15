@@ -59,12 +59,12 @@ for ($i = 0; $i < 7; $i++) {
 			$o->eventdate = $dates[$j];
 			$o->eventstart += $o->eventdate->date;
 			$o->eventend += $o->eventdate->date;
-			$thisloc = expCore::makeLocation($loc->mod,$loc->src,$o->id);
-			$o->permissions = array(
-				"manage"=>(expPermissions::check("manage",$thisloc) || expPermissions::check("manage",$loc)),
-				"edit"=>(expPermissions::check("edit",$thisloc) || expPermissions::check("edit",$loc)),
-				"delete"=>(expPermissions::check("delete",$thisloc) || expPermissions::check("delete",$loc))
-			);
+//			$thisloc = expCore::makeLocation($loc->mod,$loc->src,$o->id);
+//			$o->permissions = array(
+//				"manage"=>(expPermissions::check("manage",$thisloc) || expPermissions::check("manage",$loc)),
+//				"edit"=>(expPermissions::check("edit",$thisloc) || expPermissions::check("edit",$loc)),
+//				"delete"=>(expPermissions::check("delete",$thisloc) || expPermissions::check("delete",$loc))
+//			);
 			$days[$start][] = $o;
 		}
 	}

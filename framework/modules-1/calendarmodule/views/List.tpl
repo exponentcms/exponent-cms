@@ -36,16 +36,16 @@
 				<div class="paragraph">
 					<a class="mngmntlink calendar_mngmntlink" href="{if $item->location_data != null}{link action=view id=$item->id date_id=$item->eventdate->id}{else}#{/if}" title="{$item->body|summarize:"html":"para"}">{$item->title}</a>
 					{if $item->is_allday == 0}&nbsp;{$item->eventstart|format_date:$smarty.const.DISPLAY_TIME_FORMAT} - {$item->eventend|format_date:$smarty.const.DISPLAY_TIME_FORMAT}{/if}
-					{if $permissions.edit == 1 || $item->permissions.edit == 1 || $permissions.delete == 1 || $item->permissions.delete == 1 || $permissions.manage == 1 || $item->permissions.manage == 1}
+					{if $permissions.edit == 1 || $permissions.delete == 1 || $permissions.manage == 1}
 						<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 					{/if}
 					{permissions}
                         {if $item->location_data != null}
                             <div class="item-actions">
-                                {if $permissions.edit == 1 || $item->permissions.edit == 1}
+                                {if $permissions.edit == 1}
                                     {icon action=edit record=$item date_id=$item->eventdate->id title="Edit this Event"|gettext}
                                 {/if}
-                                {if $permissions.delete == 1 || $item->permissions.delete == 1}
+                                {if $permissions.delete == 1}
                                     {if $item->is_recurring == 0}
                                         {icon action=delete record=$item date_id=$item->eventdate->id title="Delete this Event"|gettext}
                                     {else}

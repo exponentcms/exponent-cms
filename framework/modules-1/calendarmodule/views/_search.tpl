@@ -24,14 +24,14 @@
 			<tr><td><strong>{$event->eventdate|format_date:"%A, %B %e, %Y"}</strong><hr size="1" /></td></tr>
 			{foreach from=$event->dates item=dates}
 				<tr><td style="padding-left: 15px">
-					{if $permissions.edit == 1 || $event->permissions.edit == 1}
+					{if $permissions.edit == 1}
 						{if $event->approved == 1}
 							<a href="{link action=edit id=$event->id date_id=$event->eventdate->id}"><img class="mngmnt_icon" style="border:none;" src="{$smarty.const.ICON_RELATIVE|cat:'edit.png'}" title="{'Edit'|gettext}" alt="{'Edit'|gettext}" /></a>&nbsp;
 						{else}
 							<img class="mngmnt_icon" style="border:none;" src="{$smarty.const.ICON_RELATIVE|cat:'edit.disabled.png'}" title="{''|gettext}" alt="{''|gettext}" />
 						{/if}
 					{/if}
-					{if $permissions.delete == 1 || $event->permissions.delete == 1}
+					{if $permissions.delete == 1}
 						{if $event->approved == 1}
 							{if $event->is_recurring == 0}
 								<a href="{link action=delete id=$event->id}" onclick="return confirm('{'Confirm you want to delete this item'|gettext}');"><img class="mngmnt_icon" style="border:none;" src="{$smarty.const.ICON_RELATIVE|cat:'delete.png'}" title="{'Delete'|gettext}" alt="{'Delete'|gettext}" /></a>

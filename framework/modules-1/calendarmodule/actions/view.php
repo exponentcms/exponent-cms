@@ -25,21 +25,14 @@ expHistory::set('viewable', $router->params);
 $item = $db->selectObject("calendar","id=" . intval($_GET['id']));
 if ($item) {
 	$loc = unserialize($item->location_data);
-	$iloc = expCore::makeLocation($loc->mod,$loc->src,$item->id);
-	$item->permissions = array(
-		"edit"=>(expPermissions::check("edit",$iloc) || expPermissions::check("edit",$loc)),
-		"delete"=>(expPermissions::check("delete",$iloc) || expPermissions::check("delete",$loc)),
-		"manage"=>(expPermissions::check("manage",$iloc) || expPermissions::check("manage",$loc)),
-	);
+//	$iloc = expCore::makeLocation($loc->mod,$loc->src,$item->id);
+//	$item->permissions = array(
+//		"edit"=>(expPermissions::check("edit",$iloc) || expPermissions::check("edit",$loc)),
+//		"delete"=>(expPermissions::check("delete",$iloc) || expPermissions::check("delete",$loc)),
+//		"manage"=>(expPermissions::check("manage",$iloc) || expPermissions::check("manage",$loc)),
+//	);
 
     $template = new template("calendarmodule","_view",$loc);
-
-	//FIXME Debugger test
-	$item->permissions = array(
-		"edit"=>expPermissions::check("edit",$iloc),
-		"delete"=>expPermissions::check("delete",$iloc),
-		"manage"=>expPermissions::check("manage",$iloc)
-	);
 
 	if (!isset($_GET['date_id'])) {
 		$eventdate = $db->selectObject("eventdate","event_id=".$item->id);

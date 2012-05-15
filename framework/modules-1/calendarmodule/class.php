@@ -181,7 +181,8 @@ class calendarmodule {
                         $template->assign("prev_timestamp3",strtotime('-21 days',$startperiod));
                         $template->assign("prev_timestamp2",strtotime('-14 days',$startperiod));
                         $template->assign("prev_timestamp",strtotime('-7 days',$startperiod));
-                        $template->assign("next_timestamp",strtotime('+7 days',$startperiod));
+                        $next = strtotime('+7 days',$startperiod);
+                        $template->assign("next_timestamp",$next);
                         $template->assign("next_timestamp2",strtotime('+14 days',$startperiod));
                         $template->assign("next_timestamp3",strtotime('+21 days',$startperiod));
                         break;
@@ -191,7 +192,8 @@ class calendarmodule {
                         $template->assign("prev_timestamp3",strtotime('-42 days',$startperiod));
                         $template->assign("prev_timestamp2",strtotime('-28 days',$startperiod));
                         $template->assign("prev_timestamp",strtotime('-14 days',$startperiod));
-                        $template->assign("next_timestamp",strtotime('+14 days',$startperiod));
+                        $next = strtotime('+14 days',$startperiod);
+                        $template->assign("next_timestamp",$next);
                         $template->assign("next_timestamp2",strtotime('+28 days',$startperiod));
                         $template->assign("next_timestamp3",strtotime('+42 days',$startperiod));
                         break;
@@ -201,7 +203,8 @@ class calendarmodule {
                         $template->assign("prev_timestamp3",strtotime('-3 months',$startperiod));
                         $template->assign("prev_timestamp2",strtotime('-2 months',$startperiod));
                         $template->assign("prev_timestamp",strtotime('-1 months',$startperiod));
-                        $template->assign("next_timestamp",strtotime('+1 months',$startperiod));
+                        $next = strtotime('+1 months',$startperiod);
+                        $template->assign("next_timestamp",$next);
                         $template->assign("next_timestamp2",strtotime('+2 months',$startperiod));
                         $template->assign("next_timestamp3",strtotime('+3 months',$startperiod));
                 }
@@ -209,31 +212,32 @@ class calendarmodule {
 //                $days = array();
                 // added per Ignacio
     //			$endofmonth = date('t', $time);
+                //FIXME add external events to $days[$start] for date $start, one day at a time
+                $extitems = calendarmodule::getExternalEvents($loc,$startperiod,$next);
                 for ($i = 1; $i <= $totaldays; $i++) {
-                    $info = getdate($time);
-                    switch ($viewparams['range']) {
-                        case "week":
-                            $start = mktime(0,0,0,$info['mon'],$i,$info['year']);
-                            break;
-                        case "twoweek":
-                            $start = mktime(0,0,0,$info['mon'],$info['mday']+($i-1),$info['year']);
-        //          		$start = $startperiod + ($i*86400);
-                            break;
-                        default:  // range = month
-                            $start = mktime(0,0,0,$info['mon'],$i,$info['year']);
-                    }
+//                    $info = getdate($time);
+//                    switch ($viewparams['range']) {
+//                        case "week":
+//                            $start = mktime(0,0,0,$info['mon'],$i,$info['year']);  //FIXME this can't be right?
+//                            break;
+//                        case "twoweek":
+////                            $start = mktime(0,0,0,$info['mon'],$info['mday']+($i-1),$info['year']);  //FIXME this can't be right?
+//                  		    $start = $startperiod + ($i*86400);
+//                            break;
+//                        default:  // range = month
+//                            $start = mktime(0,0,0,$info['mon'],$i,$info['year']);
+//                    }
+                    $start = $startperiod + ($i*86400);
                     $edates = $db->selectObjects("eventdate",$locsql." AND date = '".$start."'");
                     $days[$start] = calendarmodule::_getEventsForDates($edates,true,isset($template->viewconfig['featured_only']) ? true : false);
-                    for ($j = 0; $j < count($days[$start]); $j++) {
-                        $thisloc = expCore::makeLocation($loc->mod,$loc->src,$days[$start][$j]->id);
-                        $days[$start][$j]->permissions = array(
-                            "manage"=>(expPermissions::check("manage",$thisloc) || expPermissions::check("manage",$loc)),
-                            "edit"=>(expPermissions::check("edit",$thisloc) || expPermissions::check("edit",$loc)),
-                            "delete"=>(expPermissions::check("delete",$thisloc) || expPermissions::check("delete",$loc))
-                        );
-                    }
-                    //FIXME add external events to $days[$start] for date $start, one day at a time
-                    $extitems = calendarmodule::getExternalEvents($loc,$start);
+//                    for ($j = 0; $j < count($days[$start]); $j++) {
+//                        $thisloc = expCore::makeLocation($loc->mod,$loc->src,$days[$start][$j]->id);
+//                        $days[$start][$j]->permissions = array(
+//                            "manage"=>(expPermissions::check("manage",$thisloc) || expPermissions::check("manage",$loc)),
+//                            "edit"=>(expPermissions::check("edit",$thisloc) || expPermissions::check("edit",$loc)),
+//                            "delete"=>(expPermissions::check("delete",$thisloc) || expPermissions::check("delete",$loc))
+//                        );
+//                    }
                     $days[$start] = array_merge($extitems,$days[$start]);
                     $days[$start] = expSorter::sort(array('array'=>$days[$start],'sortby'=>'eventstart', 'order'=>'ASC'));
                 }
@@ -325,15 +329,15 @@ class calendarmodule {
                     }
                 }
                 if (!$continue) return;
-                for ($i = 0; $i < count($items); $i++) {
-                    $thisloc = expCore::makeLocation($loc->mod,$loc->src,$items[$i]->id);
-    //				if ($user && $items[$i]->poster == $user->id) $canviewapproval = 1;
-                    $items[$i]->permissions = array(
-                        "manage"=>(expPermissions::check("manage",$thisloc) || expPermissions::check("manage",$loc)),
-                        "edit"=>(expPermissions::check("edit",$thisloc) || expPermissions::check("edit",$loc)),
-                        "delete"=>(expPermissions::check("delete",$thisloc) || expPermissions::check("delete",$loc))
-                    );
-                }
+//                for ($i = 0; $i < count($items); $i++) {
+//                    $thisloc = expCore::makeLocation($loc->mod,$loc->src,$items[$i]->id);
+//    //				if ($user && $items[$i]->poster == $user->id) $canviewapproval = 1;
+//                    $items[$i]->permissions = array(
+//                        "manage"=>(expPermissions::check("manage",$thisloc) || expPermissions::check("manage",$loc)),
+//                        "edit"=>(expPermissions::check("edit",$thisloc) || expPermissions::check("edit",$loc)),
+//                        "delete"=>(expPermissions::check("delete",$thisloc) || expPermissions::check("delete",$loc))
+//                    );
+//                }
                 $items = expSorter::sort(array('array'=>$items,'sortby'=>'eventstart', 'order'=>'ASC'));
                 $template->assign("items",$items);
                 break;
@@ -388,14 +392,14 @@ class calendarmodule {
     //				}
     //				$items = array_slice($items, 0, $template->viewconfig['num_events']);
     //			}
-                for ($i = 0; $i < count($items); $i++) {
-                    $thisloc = expCore::makeLocation($loc->mod,$loc->src,$items[$i]->id);
-                    $items[$i]->permissions = array(
-                        'manage'=>(expPermissions::check('manage',$thisloc) || expPermissions::check('manage',$loc)),
-                        'edit'=>(expPermissions::check('edit',$thisloc) || expPermissions::check('edit',$loc)),
-                        'delete'=>(expPermissions::check('delete',$thisloc) || expPermissions::check('delete',$loc))
-                    );
-                }
+//                for ($i = 0; $i < count($items); $i++) {
+//                    $thisloc = expCore::makeLocation($loc->mod,$loc->src,$items[$i]->id);
+//                    $items[$i]->permissions = array(
+//                        'manage'=>(expPermissions::check('manage',$thisloc) || expPermissions::check('manage',$loc)),
+//                        'edit'=>(expPermissions::check('edit',$thisloc) || expPermissions::check('edit',$loc)),
+//                        'delete'=>(expPermissions::check('delete',$thisloc) || expPermissions::check('delete',$loc))
+//                    );
+//                }
                 $template->assign('items',$items);
 //                $template->assign('moreevents',$moreevents);
 		}
